@@ -1,0 +1,2002 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language version="2.0">
+  <info>
+    <title>
+      <![CDATA[Dansk]]>
+    </title>
+    <code>dk-DK</code>
+    <character_set>utf-8</character_set>
+    <version>1.0.0</version>
+    <minVersion>5.0.0a</minVersion>
+    <maxVersion>5.1.*</maxVersion>
+    <default_currency>EUR</default_currency>
+    <text-direction>ltr</text-direction>
+    <override/>
+  </info>
+  <translation>
+    <group name="account">
+	<string name="payment_review"><![CDATA[Din betaling er blevet accepteret, men kræver manuel gennemgang af et medlem af personalet. Vi beklager for eventuelle forsinkelser i processen med din ordre.]]></string>
+    <string name="payment_decline"><![CDATA[Din betaling er blevet afvist. Kontroller venligst, at din faktureringsadresse passer med dit kort, og at det trecifrede sikkerhedskode er korrekt. Hvis problemet perists du kontakte et medlem af personalet.]]></string>
+    <string name="already_registered" introduced="5.0.0"><![CDATA[Allerede registreret?]]></string>
+    <string name="contact_details" introduced="5.0.0"><![CDATA[Kontaktoplysninger]]></string>
+    <string name="create_account" introduced="5.0.0"><![CDATA[Jeg vil gerne oprette en konto]]></string>
+    <string name="download_count" introduced="5.0.0"><![CDATA[Downloads]]></string>
+    <string name="download_deleted" introduced="5.0.0"><![CDATA[Dette download er ikke længere tilgængelig.]]></string>
+    <string name="download_expired" introduced="5.0.0"><![CDATA[Udløbet]]></string>
+    <string name="download_expires" introduced="5.0.0"><![CDATA[Udløber]]></string>
+    <string name="enter_validation_key" introduced="5.0.0"><![CDATA[Indtast venligst din e-mailadresse og validering nøgle nedenfor og derefter vælge en ny adgangskode]]></string>
+    <string name="error_address_added" introduced="5.0.0"><![CDATA[Kunne ikke gemme adresse.]]></string>
+    <string name="error_address_billing" introduced="5.0.0"><![CDATA[En faktureringsadresse er påkrævet, får du kan fortsætte.]]></string>
+    <string name="error_address_delete" introduced="5.0.0"><![CDATA[Det lykkedes ikke at slette adresse.]]></string>
+    <string name="error_address_not_found" introduced="5.0.0"><![CDATA[Adressen kunne ikke findes.]]></string>
+    <string name="error_address_updated" introduced="5.0.0"><![CDATA[Kunne ikke opdatere adresse.]]></string>
+    <string name="error_details_updated" introduced="5.0.0"><![CDATA[Dine oplysninger er ikke blevet opdateret.]]></string>
+    <string name="error_details_wrong" introduced="5.0.0"><![CDATA[Forkerte oplysninger, bedes du prøv igen.]]></string>
+    <string name="error_email_in_use" introduced="5.0.0"><![CDATA[Denne e-mailadresse er allerede brugt.]]></string>
+    <string name="error_login" introduced="5.0.0"><![CDATA[Forkert brugernavn og eller password]]></string>
+    <string name="error_login_block" introduced="5.0.0"><![CDATA[Bruger login spærret. Prøv venligst igen senere]]></string>
+    <string name="error_name_required" introduced="5.0.0"><![CDATA[Vi har brug for at kende dit navn.]]></string>
+    <string name="error_password_empty" introduced="5.0.0"><![CDATA[Din adgangskode kan ikke være tomt.]]></string>
+    <string name="error_password_mismatch" introduced="5.0.0"><![CDATA[Dine adgangskoder matcher ikke.]]></string>
+    <string name="error_password_recovery" introduced="5.0.0"><![CDATA[Email ikke sendt. Tjek din e-mail-adresse, og prøv igen.]]></string>
+    <string name="error_password_recover" introduced="5.0.0"><![CDATA[Kunne ikke opdatere din adgangskode. Tjek venligst den e-mailadresse og validering nøgle er korrekt, og kontrollere den nye adgangskode kampe.]]></string>
+    <string name="error_password_update" introduced="5.0.0"><![CDATA[Kunne ikke opdatere din adgangskode.]]></string>
+    <string name="error_password_update_mismatch" introduced="5.0.0"><![CDATA[Kontroller den oprindelige adgangskoden er korrekt, og at den nye adgangskode matcher password bekræftelse.]]></string>
+    <string name="error_profile_incomplete" introduced="5.0.0"><![CDATA[Udfyld din profil, før du fortsætter at sikre alle felter er gyldige.]]></string>
+    <string name="error_session_security_fail" introduced="5.0.0"><![CDATA[Din session er blevet opsagt af sikkerhedsmæssige årsager.]]></string>
+    <string name="error_terms_agree" introduced="5.0.0"><![CDATA[Du accepterer Vilkår &amp; Betingelser.]]></string>
+    <string name="error_valid_phone" introduced="5.0.0"><![CDATA[Indtast et gyldigt telefonnummer.]]></string>
+    <string name="error_valid_mobile_phone" introduced="5.0.0"><![CDATA[Indtast et gyldigt mobilnummer.]]></string>
+    <string name="error_validation" introduced="5.0.0"><![CDATA[Valideringen nøgle og / eller e-mail-adresse er ikke gyldige. Prøv venligst igen.]]></string>
+    <string name="forgotten_password" introduced="5.0.0"><![CDATA[Har du glemt dit password?]]></string>
+    <string name="log_in" introduced="5.0.0"><![CDATA[Log Ind]]></string>
+    <string name="login" introduced="5.0.0"><![CDATA[Login]]></string>
+    <string name="logins" introduced="5.0.0"><![CDATA[Logins]]></string>
+    <string name="login_return" introduced="5.0.0"><![CDATA[&laquo; Retur til Login]]></string>
+    <string name="logout" introduced="5.0.0"><![CDATA[Log Ud]]></string>
+    <string name="lookup_order" introduced="5.0.0"><![CDATA[Opslag Order]]></string>
+    <string name="new_password" introduced="5.0.0"><![CDATA[Nyt Password]]></string>
+    <string name="new_password_confirm" introduced="5.0.0"><![CDATA[Bekræft Nyt Password]]></string>
+    <string name="no_orders_made" introduced="5.0.0"><![CDATA[Ingen ordrer er blevet oprettet.]]></string>
+    <string name="notify_address_added" introduced="5.0.0"><![CDATA[Adresse er gemt.]]></string>
+    <string name="notify_address_delete" introduced="5.0.0"><![CDATA[Adresse er blevet slettet.]]></string>
+    <string name="notify_address_updated" introduced="5.0.0"><![CDATA[Adresse er blevet opdateret.]]></string>
+    <string name="notify_details_updated" introduced="5.0.0"><![CDATA[Dine oplysninger er blevet opdateret.]]></string>
+    <string name="notify_logged_out" introduced="5.0.0"><![CDATA[Du er blevet logget ud korrekt.]]></string>
+    <string name="notify_password_recovery" introduced="5.0.0"><![CDATA[Password skifte e-mail er blevet sendt.]]></string>
+    <string name="notify_password_recovery_success" introduced="5.0.0"><![CDATA[Tak. Dit password er blevet opdateret.]]></string>
+    <string name="password" introduced="5.0.0"><![CDATA[Password]]></string>
+    <string name="password_change" introduced="5.0.0"><![CDATA[Skift Password]]></string>
+    <string name="password_confirm" introduced="5.0.0"><![CDATA[Bekræft Password]]></string>
+    <string name="password_strength" introduced="5.0.0"><![CDATA[Password Styrke]]></string>
+    <string name="recover_password" introduced="5.0.0"><![CDATA[Genskab Password]]></string>
+    <string name="recover_password_text" introduced="5.0.0"><![CDATA[Hvis du har glemt din adgangskode, sætte din e-mail i feltet nedenfor og vi vil sende instrukser for at få adgang]]></string>
+    <string name="register" introduced="5.0.0"><![CDATA[Tilmeld]]></string>
+    <string name="register_mailing" introduced="5.0.0"><![CDATA[Afkryds dette felt for at abonnere på vores mailingliste.]]></string>
+    <string name="register_text" introduced="5.0.0"><![CDATA[Udfyld nedenstående felter for at registrere:]]></string>
+    <string name="register_terms_agree" introduced="5.0.0"><![CDATA[Jeg accepterer Vilkår & Betingelser]]></string>
+    <string name="remember_me" introduced="5.0.0"><![CDATA[Husk mig?]]></string>
+    <string name="share" introduced="5.0.0"><![CDATA[Del]]></string>
+    <string name="title_acp" introduced="5.0.0"><![CDATA[Admin Kontrol Panel]]></string>
+    <string name="title_login_acp" introduced="5.0.0"><![CDATA[Butik Kontrol Panel Login]]></string>
+    <string name="title_password_new" introduced="5.0.0"><![CDATA[Indtast en ny adgangskode]]></string>
+    <string name="update_your_details" introduced="5.0.0"><![CDATA[Dine eksisterende oplysninger kan redigeres nedenfor:]]></string>
+    <string name="update_your_password" introduced="5.0.0"><![CDATA[For at ændre din adgangskode bedes du først bekræfte din eksisterende derefter indtaste og bekræfte en ny:]]></string>
+    <string name="user_id" introduced="5.0.0"><![CDATA[User ID]]></string>
+    <string name="username" introduced="5.0.0"><![CDATA[Brugernavn]]></string>
+    <string name="validation_key" introduced="5.0.0"><![CDATA[Validering nøgle]]></string>
+    <string name="welcome_back" introduced="5.0.0"><![CDATA[Velkommen tilbage, %1$s %2$s]]></string>
+    <string name="welcome_back_guest" introduced="5.0.0"><![CDATA[Velkommen tilbage, Gæst!]]></string>
+    <string name="welcome_guest" introduced="5.0.0"><![CDATA[Hej, Gæst!]]></string>
+    <string name="your_account" introduced="5.0.0"><![CDATA[Din Konto]]></string>
+    <string name="your_addressbook" introduced="5.0.0"><![CDATA[Din Adressebog]]></string>
+    <string name="your_details" introduced="5.0.0"><![CDATA[Dine Detaljer]]></string>
+    <string name="your_downloads" introduced="5.0.0"><![CDATA[Dine Digitale Downloads]]></string>
+    <string name="your_order" introduced="5.0.0"><![CDATA[Dine Ordre]]></string>
+    <string name="your_orders" introduced="5.0.0"><![CDATA[Din Ordre Historik]]></string>
+    <string name="your_orders_explained" introduced="5.0.0"><![CDATA[Din fortid og eksisterende ordrer er vist her.]]></string>
+    <string name="your_subscription" introduced="5.0.0"><![CDATA[Nyhedsbrev Abonnementer]]></string>
+  </group>
+  <group name="address">
+    <string name="add_edit" introduced="5.0.0"><![CDATA[Tilføj / Rediger adresse]]></string>
+    <string name="address_add" introduced="5.0.0"><![CDATA[Tilføj ny adresse]]></string>
+    <string name="address_edit" introduced="5.0.0"><![CDATA[Rediger Adresse]]></string>
+    <string name="address_book" introduced="5.0.0"><![CDATA[Adresse Bog]]></string>
+    <string name="billing_address" introduced="5.0.0"><![CDATA[Faktureringsadresse]]></string>
+    <string name="billing_delivery_address" introduced="5.0.0"><![CDATA[Fakturering / Leveringsadresse]]></string>
+    <string name="company_name" introduced="5.0.0"><![CDATA[Firma Navn]]></string>
+    <string name="copy_from_billing" introduced="5.0.0"><![CDATA[Kopier fra Faktureringsadresse]]></string>
+    <string name="country" introduced="5.0.0"><![CDATA[Land]]></string>
+    <string name="default_billing_address" introduced="5.0.0"><![CDATA[Standard faktureringsadresse]]></string>
+    <string name="default_delivery_address" introduced="5.0.0"><![CDATA[Standard leveringsadresse]]></string>
+    <string name="delivery_address" introduced="5.0.0"><![CDATA[Leveringsadresse]]></string>
+    <string name="delivery_is_billing" introduced="5.0.0"><![CDATA[Min leveringsadresse er den samme som min faktureringsadresse.]]></string>
+    <string name="form_address_select" introduced="5.0.0"><![CDATA[-- Foruddefinerede adresser --]]></string>
+    <string name="line1" introduced="5.0.0"><![CDATA[Adresse]]></string>
+    <string name="line2" introduced="5.0.0"><![CDATA[&nbsp;]]></string>
+    <string name="mobile" introduced="5.0.0"><![CDATA[Mobil]]></string>
+    <string name="notify_addresses_none" introduced="5.0.0"><![CDATA[Ingen gemte adresser.]]></string>
+    <string name="phone" introduced="5.0.0"><![CDATA[Telefon]]></string>
+    <string name="postcode" introduced="5.0.0"><![CDATA[Postnr]]></string>
+    <string name="return_address" introduced="5.0.0"><![CDATA[Retur adresse]]></string>
+    <string name="ship_to_billing_only" introduced="5.0.0"><![CDATA[(Leverancer af materielle goder kan kun sendes til faktureringsadressen)]]></string>
+    <string name="state" introduced="5.0.0"><![CDATA[Stat/Område]]></string>
+    <string name="title_address" introduced="5.0.0"><![CDATA[Adresse]]></string>
+    <string name="town" introduced="5.0.0"><![CDATA[By]]></string>
+    <string name="your_address_book" introduced="5.0.0"><![CDATA[Dit adressekartotek]]></string>
+  </group>
+  <group name="admins">
+    <string name="account_link" introduced="5.0.0"><![CDATA[Link til kundens konto]]></string>
+    <string name="account_link_view" introduced="5.0.0"><![CDATA[Se linket konto]]></string>
+    <string name="account_linked" introduced="5.0.0"><![CDATA[Linked konto]]></string>
+    <string name="error_admin_batch_update" introduced="5.0.0"><![CDATA[Kan ikke opdatere administrator statusser.]]></string>
+    <string name="error_admin_create" introduced="5.0.0"><![CDATA[Kunne ikke tilføje administrator.]]></string>
+    <string name="error_admin_delete" introduced="5.0.0"><![CDATA[Det lykkedes ikke at slette administrator.]]></string>
+    <string name="error_admin_exists" introduced="5.0.0"><![CDATA[Kunne ikke finde, at administrator.]]></string>
+    <string name="error_admin_update" introduced="5.0.0"><![CDATA[Kunne ikke opdatere administrator.]]></string>
+    <string name="error_only_one_super" introduced="5.0.0"><![CDATA[Det lykkedes ikke at fjerne superbruger status som mindst én konto kræver dette niveau af adgang.]]></string>
+    <string name="login_count" introduced="5.0.0"><![CDATA[Antal logins]]></string>
+    <string name="login_last" introduced="5.0.0"><![CDATA[Sidste login]]></string>
+    <string name="notifications" introduced="5.0.0"><![CDATA[Modtag meddelelser om ordrer?]]></string>
+    <string name="notify_admin_batch_update" introduced="5.0.0"><![CDATA[Administrator statusser blevet opdateret.]]></string>
+    <string name="notify_admin_create" introduced="5.0.0"><![CDATA[Administrator korrekt tilføjet.]]></string>
+    <string name="notify_admin_delete" introduced="5.0.0"><![CDATA['%s' blev slettet.]]></string>
+    <string name="notify_admin_unlinked" introduced="5.0.0"><![CDATA[Konti er blevet adskilt.]]></string>
+    <string name="notify_admin_update" introduced="5.0.0"><![CDATA[Administrator blev opdateret.]]></string>
+    <string name="permission" introduced="5.0.0"><![CDATA[Tilladelser]]></string>
+    <string name="permission_all" introduced="5.0.0"><![CDATA[Alle Sektioner]]></string>
+    <string name="permission_section" introduced="5.0.0"><![CDATA[Sektion]]></string>
+    <string name="perm_categories" introduced="5.0.0"><![CDATA[Kategorier]]></string>
+    <string name="perm_categories_info" introduced="5.0.0"><![CDATA[Administrere og arrangere produktkategorier.]]></string>
+    <string name="perm_customers" introduced="5.0.0"><![CDATA[Kunder]]></string>
+    <string name="perm_customers_info" introduced="5.0.0"><![CDATA[Se og redigere kundeoplysninger.]]></string>
+    <string name="perm_documents" introduced="5.0.0"><![CDATA[Dokumenter]]></string>
+    <string name="perm_documents_info" introduced="5.0.0"><![CDATA[Oprette og redigere webstedsdokumenter.]]></string>
+    <string name="perm_filemanager" introduced="5.0.0"><![CDATA[File Manager]]></string>
+    <string name="perm_filemanager_info" introduced="5.0.0"><![CDATA[Administrer billeder og filer.]]></string>
+    <string name="perm_offers" introduced="5.0.0"><![CDATA[Tilbud]]></string>
+    <string name="perm_offers_info" introduced="5.0.0"><![CDATA[Administrer butik tilbud (Forældet)]]></string>
+    <string name="perm_orders" introduced="5.0.0"><![CDATA[Ordre]]></string>
+    <string name="perm_orders_info" introduced="5.0.0"><![CDATA[Vis og rediger ordre data.]]></string>
+    <string name="perm_products" introduced="5.0.0"><![CDATA[Produkter]]></string>
+    <string name="perm_products_info" introduced="5.0.0"><![CDATA[Tilføje, fjerne og opdatere produktinformation.]]></string>
+    <string name="perm_reviews" introduced="5.0.0"><![CDATA[Anmeldelser]]></string>
+    <string name="perm_reviews_info" introduced="5.0.0"><![CDATA[Kunde indsendte anmeldelse management.]]></string>
+    <string name="perm_settings" introduced="5.0.0"><![CDATA[Indstillinger]]></string>
+    <string name="perm_settings_info" introduced="5.0.0"><![CDATA[Adgang til at ændre gemme indstillinger og konfigurationer.]]></string>
+    <string name="perm_shipping" introduced="5.0.0"><![CDATA[Forsendelse]]></string>
+    <string name="perm_shipping_info" introduced="5.0.0"><![CDATA[Administrere forsendelse metoder. (Forældet)]]></string>
+    <string name="perm_statistics" introduced="5.0.0"><![CDATA[Statistik]]></string>
+    <string name="perm_statistics_info" introduced="5.0.0"><![CDATA[Se butik statistik.]]></string>
+    <string name="perm_users" introduced="5.0.0"><![CDATA[Administratorer]]></string>
+    <string name="perm_users_info" introduced="5.0.0"><![CDATA[Oprette, opdatere og fjerne butik administratorer.]]></string>
+    <string name="super_user" introduced="5.0.0"><![CDATA[Super bruger?]]></string>
+    <string name="tab_admin_create" introduced="5.0.0"><![CDATA[Tilføj ny administrator]]></string>
+    <string name="tab_overview" introduced="5.0.0"><![CDATA[Oversigt]]></string>
+    <string name="title_admin_add" introduced="5.0.0"><![CDATA[Tilføj Administrator]]></string>
+    <string name="title_admin_edit" introduced="5.0.0"><![CDATA[Rediger Administrator]]></string>
+    <string name="title_administrators" introduced="5.0.0"><![CDATA[Administratorer]]></string>
+  </group>
+  <group name="basket">
+    <string name="basket_checkout" introduced="5.0.0"><![CDATA[Checkud]]></string>
+    <string name="basket_empty" introduced="5.0.0"><![CDATA[Tøm indkøbskurv]]></string>
+    <string name="basket_is_empty" introduced="5.0.0"><![CDATA[Din indkøbskurv er tom.]]></string>
+    <string name="basket_item_count" introduced="5.0.0"><![CDATA[vare(r) i indkøbskurven]]></string>
+    <string name="basket_update" introduced="5.0.0"><![CDATA[Opdater indkøbskurv]]></string>
+    <string name="basket_zero_items" introduced="5.0.0"><![CDATA[Din indkøbskurv har (0) vare.]]></string>
+    <string name="cancel_order" introduced="5.0.0"><![CDATA[Annuller ordre]]></string>
+    <string name="complete_payment" introduced="5.0.0"><![CDATA[Gennemfør betaling]]></string>
+    <string name="coupon_add" introduced="5.0.0"><![CDATA[Tilføj Gavebevis eller en kupon]]></string>
+    <string name="customer_info" introduced="5.0.0"><![CDATA[Kundeoplysninger]]></string>
+    <string name="order_date" introduced="5.0.0"><![CDATA[Bestil Dato]]></string>
+    <string name="order_number" introduced="5.0.0"><![CDATA[Ordrenummer]]></string>
+    <string name="order_summary" introduced="5.0.0"><![CDATA[Ordreoversigt]]></string>
+    <string name="shipping" introduced="5.0.0"><![CDATA[Forsendelse]]></string>
+    <string name="shipping_cost" introduced="5.0.0"><![CDATA[Forsendelse Omkostninger]]></string>
+    <string name="shipping_handling" introduced="5.0.0"><![CDATA[Administation Omkostninger]]></string>
+    <string name="shipping_select" introduced="5.0.0"><![CDATA[Vælg din forsendelsesmetode]]></string>
+    <string name="total" introduced="5.0.0"><![CDATA[Total]]></string>
+    <string name="total_discount" introduced="5.0.0"><![CDATA[Samlet rabat]]></string>
+    <string name="total_grand" introduced="5.0.0"><![CDATA[Tilsammen]]></string>
+    <string name="total_sub" introduced="5.0.0"><![CDATA[Subtotal]]></string>
+    <string name="total_tax" introduced="5.0.0"><![CDATA[Total Skat]]></string>
+    <string name="track" introduced="5.0.0"><![CDATA[Track]]></string>
+    <string name="unconfirmed_locale_mark" introduced="5.0.0"><![CDATA[&#185;]]></string>
+    <string name="unconfirmed_locale" introduced="5.0.0"><![CDATA[Anslået værdi, som kan ændre sig, når fakturering & leveringsadressen er angivet.]]></string>
+    <string name="view_basket" introduced="5.0.0"><![CDATA[Se Indkøbskurv]]></string>
+    <string name="weight" introduced="5.0.0"><![CDATA[Indkøbskurv Vægt]]></string>
+    <string name="your_comments" introduced="5.0.0"><![CDATA[Følgesedler eller Yderligere kommentarer]]></string>
+  </group>
+  <group name="catalogue">
+    <string name="add_to_basket" introduced="5.0.0"><![CDATA[Læg i indkøbskurven]]></string>
+    <string name="allowed_uses" introduced="5.0.0"><![CDATA[Tilladte anvendelser]]></string>
+    <string name="all_sale_items" introduced="5.0.0"><![CDATA[Alle salgs Varer]]></string>
+    <string name="average_rating" introduced="5.0.0"><![CDATA[Gennemsnitlig Rating]]></string>
+    <string name="bulk_discount" introduced="5.0.0"><![CDATA[Mængderabatter tilgængelige]]></string>
+    <string name="buy" introduced="5.0.0"><![CDATA[Køb]]></string>
+    <string name="buy_now" introduced="5.0.0"><![CDATA[Køb nu]]></string>
+    <string name="buy_it" introduced="5.0.0"><![CDATA[Køb den]]></string>
+    <string name="category_add" introduced="5.0.0"><![CDATA[Tilføj kategori]]></string>
+    <string name="category_additional" introduced="5.0.0"><![CDATA[Yderligere]]></string>
+    <string name="category_primary" introduced="5.0.0"><![CDATA[Primær]]></string>
+    <string name="checkout_latest_products" introduced="5.0.0"><![CDATA[Tjek disse fantastiske produkter...]]></string>
+    <string name="click_enlarge" introduced="5.0.0"><![CDATA[Klik for større billede]]></string>
+    <string name="condition" introduced="5.0.0"><![CDATA[Betingelse]]></string>
+    <string name="condition_new" introduced="5.0.0"><![CDATA[Ny]]></string>
+    <string name="condition_used" introduced="5.0.0"><![CDATA[Brugt]]></string>
+    <string name="condition_refurbished" introduced="5.0.0"><![CDATA[Renoveret]]></string>
+    <string name="coupon_code" introduced="5.0.0"><![CDATA[Kode]]></string>
+    <string name="coupon_shipping" introduced="5.0.0"><![CDATA[Rabat gælder forsendelsesomkostning]]></string>
+    <string name="coupon_subtotal" introduced="5.2.3"><![CDATA[Rabat gælder kun for subtotaler]]></string>
+    <string name="coupon_no_shipping" introduced="5.1.5"><![CDATA[Når du angiver produkter, vil kupon IKKE gælde for fragten.]]></string>
+    <string name="coupon_include" introduced="5.1.5"><![CDATA[Kupon gælder KUN over produkter]]></string>
+    <string name="coupon_exclude" introduced="5.1.5"><![CDATA[Kupon gælder for alle UNDTAGEN ovennævnte produkter]]></string>
+    <string name="customer_reviews" introduced="5.0.0"><![CDATA[Kundeanmeldelser]]></string>
+    <string name="delete_option_disabled" introduced="5.0.0"><![CDATA[Denne mulighed kan ikke slettes, da det er en del af en option sæt. Skal du deaktivere i stedet.]]></string>
+    <string name="delimiter" introduced="5.0.0"><![CDATA[Afgrænser]]></string>
+    <string name="delimiter_tab" introduced="5.0.0"><![CDATA[Tab]]></string>
+    <string name="delivery_method" introduced="5.0.0"><![CDATA[Levering Metode]]></string>
+    <string name="discount_percent" introduced="5.0.0"><![CDATA[Procent Rabat]]></string>
+    <string name="discount_price" introduced="5.0.0"><![CDATA[Fast Pris Rabat]]></string>
+    <string name="discount_type" introduced="5.0.0"><![CDATA[Rabattype]]></string>
+    <string name="discount_value" introduced="5.0.0"><![CDATA[Rabatværdi]]></string>
+    <string name="download_access_key" introduced="5.0.0"><![CDATA[Hent adgangsnøgle]]></string>
+    <string name="error_category_defaulted" introduced="5.0.0"><![CDATA[Ingen primær kategori blev valgt, så man er blevet tildelt automatisk.]]></string>
+    <string name="error_category_error" introduced="5.0.0"><![CDATA[Denne kategori findes ikke.]]></string>
+    <string name="error_coupon_delete" introduced="5.0.0"><![CDATA[Det lykkedes ikke at slette kupon.]]></string>
+    <string name="error_gc_email" introduced="5.0.0"><![CDATA[Indtast en gyldig e-mail-adressen på modtageren.]]></string>
+    <string name="error_gc_value" introduced="5.0.0"><![CDATA[Indtast en numerisk værdi for gavekortet værdi.]]></string>
+    <string name="error_gc_value_high" introduced="5.0.0"><![CDATA[Gavekort værdien er for høj.]]></string>
+    <string name="error_gc_value_low" introduced="5.0.0"><![CDATA[Gavekort værdien er for lav.]]></string>
+    <string name="error_image_defaulted" introduced="5.0.0"><![CDATA[Ingen standard billede blev valgt, så man er blevet tildelt automatisk.]]></string>
+    <string name="error_import_empty" introduced="5.0.0"><![CDATA[Ingen import data fundet.]]></string>
+    <string name="error_import_invalid" introduced="5.0.0"><![CDATA[Ugyldigt filformat. Dokument skal være af almindelig tekst indhold. eks. *.txt eller *.csv]]></string>
+    <string name="error_import_upload" introduced="5.0.0"><![CDATA[Upload mislykkedes.]]></string>
+    <string name="error_manufacturer_create" introduced="5.0.0"><![CDATA[Kunne ikke tilføje producent.]]></string>
+    <string name="error_manufacturer_delete" introduced="5.0.0"><![CDATA[Det lykkedes ikke at slette producent.]]></string>
+    <string name="error_manufacturer_found" introduced="5.0.0"><![CDATA[Kan ikke finde producent.]]></string>
+    <string name="error_manufacturer_none" introduced="5.0.0"><![CDATA[Ingen producenter er blevet tilføjet.]]></string>
+    <string name="error_manufacturer_update" introduced="5.0.0"><![CDATA[Kunne ikke opdatere producent.]]></string>
+    <string name="error_minimum_quantity" introduced="5.2.6"><![CDATA[Minimum mængde for at købe denne post er %s!]]></string>
+    <string name="error_no_stock_available" introduced="5.2.0"><![CDATA[Desværre, men dette produkt er ikke på lager.]]></string>
+    <string name="error_no_stock_available_options" introduced="5.2.0"><![CDATA[Desværre men det valgte produkt option kombination er udsolgt.]]></string>
+    <string name="error_option_attrib_create" introduced="5.0.0"><![CDATA[Kunne ikke oprette attribut.]]></string>
+    <string name="error_option_attrib_create_parent" introduced="5.0.0"><![CDATA[Unabble to create attribute, as no parent was selected.]]></string>
+    <string name="error_option_attrib_delete" introduced="5.0.0"><![CDATA[Det lykkedes ikke at slette attribut.]]></string>
+    <string name="error_option_group_attrib_added" introduced="5.0.0"><![CDATA[Kan ikke tilføje attribut.]]></string>
+    <string name="error_option_group_attrib_delete" introduced="5.0.0"><![CDATA[Valgte attribut (r) ikke er blevet fjernet fra sæt.]]></string>
+    <string name="error_option_group_create" introduced="5.0.0"><![CDATA[Kunne ikke oprette Option Gruppe.]]></string>
+    <string name="error_option_group_delete" introduced="5.0.0"><![CDATA[Det lykkedes ikke at slette Option Gruppe.]]></string>
+    <string name="error_option_no_change" introduced="5.0.0"><![CDATA[Der er ikke foretaget produkt ændres optionen.]]></string>
+    <string name="error_option_required" introduced="5.0.0"><![CDATA[Vælg ønskede indstillinger, før du tilføjer til din indkøbskurv.]]></string>
+    <string name="error_option_set_create" introduced="5.0.0"><![CDATA[Kan ikke oprette option sæt.]]></string>
+    <string name="error_option_set_delete" introduced="5.0.0"><![CDATA[Kan ikke slette option set.]]></string>
+    <string name="error_product_deleted" introduced="5.0.0"><![CDATA[Kunne ikke slette produkt (er).]]></string>
+    <string name="error_product_search" introduced="5.0.0"><![CDATA[Ingen matchende produkter fundet.]]></string>
+    <string name="error_product_update" introduced="5.0.0"><![CDATA[Kunne ikke opdatere produkt.]]></string>
+    <string name="error_products_letter" introduced="5.0.0"><![CDATA[Ingen produkter starter med '%s'.]]></string>
+    <string name="error_review_submit" introduced="5.0.0"><![CDATA[Der var en fejl at indsende din anmeldelse.]]></string>
+    <string name="error_search_no_results" introduced="5.0.0"><![CDATA[Ikke fundet matchende produkter. Prøv venligst igen.]]></string>
+    <string name="error_tell_friend_email" introduced="5.0.0"><![CDATA[Sørg for din vens e-mail er korrekt.]]></string>
+    <string name="export_products_per" introduced="5.0.0"><![CDATA[Produkter pr eksport]]></string>
+    <string name="file_path" introduced="5.0.0"><![CDATA[File path/name.ext]]></string>
+    <string name="file_path_help" introduced="5.0.0"><![CDATA[Hvis en server sti / name.ext eller en komplet URL er angivet, er dette tilsidesætter eksisterende filer, der er blevet udvalgt.]]></string>
+    <string name="friends_email" introduced="5.0.0"><![CDATA[Ven's Email]]></string>
+    <string name="friends_name" introduced="5.0.0"><![CDATA[Ven's Navn]]></string>
+    <string name="gift_certificate" introduced="5.0.0"><![CDATA[Gavekort]]></string>
+    <string name="gift_certificate_value" introduced="5.0.0"><![CDATA[Gavekort skal have en værdi på mindst %1$s, og højest %2$s. Bemærk, at det kun er muligt at købe et gavekort i butikkerne vigtigste valuta.]]></string>
+    <string name="gift_certificates" introduced="5.0.0"><![CDATA[Gavekort]]></string>
+    <string name="hover_zoom" introduced="5.0.0"><![CDATA[Hold musen over billedet for at zoome]]></string>
+    <string name="image_excluded" introduced="5.0.0"><![CDATA[Ekskluderet Billede]]></string>
+    <string name="image_included" introduced="5.0.0"><![CDATA[Inkluderet Billede]]></string>
+    <string name="image_main" introduced="5.0.0"><![CDATA[Main Image]]></string>
+    <string name="import_column_ignore" introduced="5.0.0"><![CDATA[-- Ignorer --]]></string>
+    <string name="import_csv_headers" introduced="5.0.0"><![CDATA[CSV har kolonneoverskrifter]]></string>
+    <string name="import_format" introduced="5.0.0"><![CDATA[Format]]></string>
+    <string name="import_format_unknown" introduced="5.0.0"><![CDATA[-- Ukendt format eller Generic CSV --]]></string>
+    <string name="import_replace_existing" introduced="5.0.0"><![CDATA[Erstat eksisterende beholdning]]></string>
+    <string name="import_source" introduced="5.0.0"><![CDATA[Kilde]]></string>
+    <string name="imported" introduced="5.0.0"><![CDATA[Imported]]></string>
+    <string name="imported_products" introduced="5.0.0"><![CDATA[Imported Produkter]]></string>
+    <string name="is_digital" introduced="5.0.0"><![CDATA[Is Digitale Download]]></string>
+    <string name="latest_products" introduced="5.0.0"><![CDATA[Nyeste produkt]]></string>
+    <string name="login_to_view" introduced="5.0.0"><![CDATA[Log ind for at se pris]]></string>
+    <string name="manufacturer" introduced="5.0.0"><![CDATA[Producent]]></string>
+    <string name="master_caregory_id" introduced="5.0.0"><![CDATA[Master Kategori ID]]></string>
+    <string name="matrix_stock_level" introduced="5.2.6"><![CDATA[(Samlet antal af alle produkt-option kombinationer)]]></string>
+    <string name="minimum_quantity" introduced="5.2.6"><![CDATA[Minimum Mængde Køb]]></string>
+    <string name="minimum_subtotal" introduced="5.0.0"><![CDATA[Minimum Subtotal]]></string>
+    <string name="no_categories_specified" introduced="5.0.0"><![CDATA[Har fået tildelt Ingen kategorier til dette produkt.]]></string>
+    <string name="no_option_groups" introduced="5.0.0"><![CDATA[Der findes ingen mulighed grupper.]]></string>
+    <string name="no_option_sets" introduced="5.2.0b1"><![CDATA[Der findes ingen option sæt.]]></string>
+    <string name="no_taxes_setup" introduced="5.0.0"><![CDATA[Ingen Skat er opsat.]]></string>
+    <string name="notify_assign_update" introduced="5.0.0"><![CDATA[Produkter er blevet opdateret og tildelt i overensstemmelse hermed.]]></string>
+    <string name="notify_certs_none" introduced="5.0.0"><![CDATA[Der findes ingen gavekort.]]></string>
+    <string name="notify_coupon_deleted" introduced="5.0.0"><![CDATA[Kupon er slettet.]]></string>
+    <string name="notify_coupon_create" introduced="5.0.0"><![CDATA[Kupon tilføjet.]]></string>
+    <string name="notify_coupon_update" introduced="5.0.0"><![CDATA[Kupon opdateret.]]></string>
+    <string name="notify_coupons_none" introduced="5.0.0"><![CDATA[Der findes ingen kuponer.]]></string>
+    <string name="notify_import_complete" introduced="5.0.0"><![CDATA[Import komplet.]]></string>
+    <string name="notify_import_removed" introduced="5.0.0"><![CDATA[Foregående import fjernet.]]></string>
+    <string name="notify_import_removed_fail" introduced="5.0.0"><![CDATA[Det lykkedes ikke at fjerne tidligere import.]]></string>
+    <string name="notify_inv_empty" introduced="5.0.0"><![CDATA[Dit produkt opgørelse er tom.]]></string>
+    <string name="notify_manufacturer_create" introduced="5.0.0"><![CDATA[Producent tilføjet.]]></string>
+    <string name="notify_manufacturer_delete" introduced="5.0.0"><![CDATA[Producent slettet.]]></string>
+    <string name="notify_manufacturer_update" introduced="5.0.0"><![CDATA[Producent opdateret.]]></string>
+    <string name="notify_option_attrib_create" introduced="5.0.0"><![CDATA[Option Attribut oprettet.]]></string>
+    <string name="notify_option_attrib_delete" introduced="5.0.0"><![CDATA[Option Attribut slettet, og afhængigheder fjernet.]]></string>
+    <string name="notify_option_attrib_update" introduced="5.0.0"><![CDATA[Attributter blevet opdateret.]]></string>
+    <string name="notify_option_group_attrib_added" introduced="5.0.0"><![CDATA[Valgte egenskaber tilføjet for at indstille.]]></string>
+    <string name="notify_option_group_attrib_delete" introduced="5.0.0"><![CDATA[Valgte attributter fjernet fra sæt.]]></string>
+    <string name="notify_option_group_create" introduced="5.0.0"><![CDATA[Gruppen er med succes tilføjet.]]></string>
+    <string name="notify_option_group_delete" introduced="5.0.0"><![CDATA[Grupper succesfuldt slettet.]]></string>
+    <string name="notify_option_group_update" introduced="5.0.0"><![CDATA[Grupper succesfuldt opdateret.]]></string>
+    <string name="notify_option_set_create" introduced="5.0.0"><![CDATA[Indstillet oprettet.]]></string>
+    <string name="notify_option_set_delete" introduced="5.0.0"><![CDATA[Indstillet korrekt slettet.]]></string>
+    <string name="notify_option_sets_updated" introduced="5.0.0"><![CDATA[Option sæt blev opdateret.]]></string>
+    <string name="notify_option_sets_already_assigned" introduced="5.0.0"><![CDATA[Option sæt, der allerede er tildelt.]]></string>
+    <string name="notify_product_create" introduced="5.0.0"><![CDATA[Produkt oprettet.]]></string>
+    <string name="notify_product_delete" introduced="5.0.0"><![CDATA[Produkt (er) er blevet slettet.]]></string>
+    <string name="notify_product_search" introduced="5.0.0"><![CDATA[Produkter fundet matchende '%s'.]]></string>
+    <string name="notify_product_update" introduced="5.0.0"><![CDATA[Produkt blev opdateret.]]></string>
+    <string name="notify_review_submit" introduced="5.0.0"><![CDATA[Tak. Din anmeldelse er blevet sendt til moderation.]]></string>
+    <string name="notify_tell_friend" introduced="5.0.0"><![CDATA[Tak. Din ven er blevet e-mailet om dette produkt.]]></string>
+    <string name="option_attributes_none" introduced="5.0.0"><![CDATA[Ingen attributter er blevet føjet til denne mulighed.]]></string>
+    <string name="option_group_name" introduced="5.0.0"><![CDATA[Gruppe Navn]]></string>
+    <string name="option_group_type" introduced="5.0.0"><![CDATA[Gruppe Type]]></string>
+    <string name="option_type_checkbox" introduced="5.0.0"><![CDATA[Checkbox]]></string>
+    <string name="option_type_select" introduced="5.0.0"><![CDATA[Rulleliste]]></string>
+    <string name="option_type_textarea" introduced="5.0.0"><![CDATA[Textarea (Multiline)]]></string>
+    <string name="option_type_textbox" introduced="5.0.0"><![CDATA[Textbox (Enkelt line)]]></string>
+    <string name="out_of_stock" introduced="5.0.0"><![CDATA[Dette produkt er i øjeblikket udsolgt]]></string>
+    <string name="out_of_stock_short" introduced="5.0.0"><![CDATA[Udsolgt]]></string>
+    <string name="post_anonymously" introduced="5.0.0"><![CDATA[Indlæg anonymt]]></string>
+    <string name="price_hidden" introduced="5.0.0"><![CDATA[x.xx]]></string>
+    <string name="price_per_unit" introduced="5.0.0"><![CDATA[Pris pr enhed]]></string>
+    <string name="pricing_standard" introduced="5.0.0"><![CDATA[Retail Pricing]]></string>
+    <string name="product_add" introduced="5.0.0"><![CDATA[Tilføj produkt]]></string>
+    <string name="product_upc" introduced="5.0.0"><![CDATA[UPC Code]]></string>
+    <string name="product_ean" introduced="5.0.0"><![CDATA[EAN Code]]></string>
+    <string name="product_jan" introduced="5.0.0"><![CDATA[JAN Code]]></string>
+    <string name="product_isbn" introduced="5.0.0"><![CDATA[ISBN Code]]></string>
+    <string name="product_brand" introduced="5.2.1"><![CDATA[Brand]]></string>
+    <string name="product_google_category" introduced="5.2.3"><![CDATA[Google Kategori]]></string>
+    <string name="product_gtin" introduced="5.2.1"><![CDATA[GTIN Code]]></string>
+    <string name="product_mpn" introduced="5.2.1"><![CDATA[MPN Code]]></string>
+    <string name="product_code" introduced="5.0.0"><![CDATA[Produkt Kode]]></string>
+    <string name="product_code_auto" introduced="5.0.0"><![CDATA[Generer Produkt Kode]]></string>
+    <string name="product_details" introduced="5.0.0"><![CDATA[Produkt Detaljer]]></string>
+    <string name="product_description" introduced="5.0.0"><![CDATA[PRodukt Beskrivelse]]></string>
+    <string name="product_doesnt_exist" introduced="5.0.0"><![CDATA[Produktet kunne ikke findes.]]></string>
+    <string name="product_id" introduced="5.0.0"><![CDATA[Produkt Id]]></string>
+    <string name="product_info" introduced="5.0.0"><![CDATA[Produkt Information]]></string>
+    <string name="product_latest" introduced="5.0.0"><![CDATA[Medtag i nyeste produkter]]></string>
+    <string name="product_name" introduced="5.0.0"><![CDATA[Produkt Navn]]></string>
+    <string name="product_not_reviewed" introduced="5.0.0"><![CDATA[Dette produkt er endnu ikke anmeldt.]]></string>
+    <string name="product_type_digital" introduced="5.0.0"><![CDATA[Digital]]></string>
+    <string name="product_type_tangible" introduced="5.0.0"><![CDATA[Tangible]]></string>
+    <string name="product_weight" introduced="5.0.0"><![CDATA[Produkt Vægt]]></string>
+    <string name="quantity_discounts" introduced="5.0.0"><![CDATA[Mængderabatter]]></string>
+    <string name="quantity_discounts_explained" introduced="5.0.0"><![CDATA[Du kan spare penge på dette punkt, når du køber flere ad gangen. Tabellen nedenfor viser de minimumsmængder, der kræves for at drage fordel af dette tilbud, og hvor meget de vil koste.]]></string>
+    <string name="recipient_email" introduced="5.0.0"><![CDATA[Modtager e-mail]]></string>
+    <string name="recipient_name" introduced="5.0.0"><![CDATA[Modtager Navn]]></string>
+    <string name="redeem_download_code" introduced="5.0.0"><![CDATA[Indløs Download Kode]]></string>
+    <string name="related_products" introduced="5.0.0"><![CDATA[Kunder der har købt denne har også købt;]]></string>
+    <string name="restock_note" introduced="5.0.0"><![CDATA[Genpåfyldning Note]]></string>
+    <string name="review" introduced="5.0.0"><![CDATA[Anmeldelse]]></string>
+    <string name="review_anon" introduced="5.0.0"><![CDATA[Anonym]]></string>
+    <string name="review_info" introduced="5.0.0"><![CDATA[%1$s gennemsnit, baseret på <a href="%3$s">%2$s anmeldelse</a>]]></string>
+    <string name="review_title" introduced="5.0.0"><![CDATA[Anmeldelse Titel]]></string>
+    <string name="saving" introduced="5.0.0"><![CDATA[Gem]]></string>
+    <string name="set_assign" introduced="5.0.0"><![CDATA[Tildel indstillet]]></string>
+    <string name="stock_available" introduced="5.0.0"><![CDATA[På lager]]></string>
+    <string name="stock_level" introduced="5.0.0"><![CDATA[Lager Level]]></string>
+    <string name="stock_level_use" introduced="5.0.0"><![CDATA[Brug Lager Level]]></string>
+    <string name="stock_level_warn" introduced="5.0.0"><![CDATA[Lager Level Alarm]]></string>
+    <string name="submit_review" introduced="5.0.0"><![CDATA[Indsend bedømmelse]]></string>
+    <string name="tab_import_revert" introduced="5.0.0"><![CDATA[Fjern Forrige Import]]></string>
+    <string name="tax_class" introduced="5.0.0"><![CDATA[Skat]]></string>
+    <string name="tax_included" introduced="5.0.0"><![CDATA[Skat Incl]]></string>
+    <string name="tax_inclusive" introduced="5.0.0"><![CDATA[Skat Inclusiv]]></string>
+    <string name="tax_type" introduced="5.0.0"><![CDATA[Skat Type]]></string>
+    <string name="title_category_assign_to" introduced="5.0.0"><![CDATA[Tildele kategori]]></string>
+    <string name="title_category_assigned" introduced="5.0.0"><![CDATA[Kategori Opgave]]></string>
+    <string name="title_coupon_add" introduced="5.0.0"><![CDATA[Tilføj ny kupon]]></string>
+    <string name="title_coupon_code" introduced="5.0.0"><![CDATA[Kode]]></string>
+    <string name="title_coupon_count" introduced="5.0.0"><![CDATA[Gange brugt]]></string>
+    <string name="title_coupon_create" introduced="5.0.0"><![CDATA[Opret Kupon]]></string>
+    <string name="title_coupon_detail" introduced="5.0.0"><![CDATA[Kupon Detaljer]]></string>
+    <string name="title_coupon_edit" introduced="5.0.0"><![CDATA[Rediger Kupon]]></string>
+    <string name="title_coupon_expires" introduced="5.0.0"><![CDATA[Udløber]]></string>
+    <string name="title_coupon_limits" introduced="5.0.0"><![CDATA[Kupon Grænse]]></string>
+    <string name="title_coupon_products" introduced="5.1.5"><![CDATA[Produkt Liste Type]]></string>
+    <string name="title_coupon_value" introduced="5.0.0"><![CDATA[Kupon Værdi]]></string>
+    <string name="title_coupons" introduced="5.0.0"><![CDATA[Kuponner]]></string>
+    <string name="title_data_example" introduced="5.0.0"><![CDATA[Eksempel data]]></string>
+    <string name="title_digital" introduced="5.0.0"><![CDATA[Digital]]></string>
+    <string name="title_digital_options" introduced="5.0.0"><![CDATA[Digital Options]]></string>
+    <string name="title_discount_quantity" introduced="5.0.0"><![CDATA[Mængderabat]]></string>
+    <string name="title_export" introduced="5.0.0"><![CDATA[Export katalog]]></string>
+    <string name="export_explain" introduced="5.0.0"><![CDATA[Eksport butikken katalog kan opdeles i flere downloads til større lagre. Klik på nummeret for at hente hver del. Hvis der er en fejl eksporterer prøv en lavere værdi ved hjælp af rullemenuen. <p> Så længe en adgang data feed adgangskode indstilles i dine gemmer indstillinger (under "Øvrige" i <a href="?_g=settings#Advanced_Settings">Advanced Tab</a>) du kan automatisere dine feeds ved at indsætte URL føde i din udbydere kontrolpanel.</p>]]></string>
+    <string name="export_parts" introduced="5.0.0"><![CDATA[Hent Dele]]></string>
+    <string name="export_url" introduced="5.1.5"><![CDATA[Exporter URL]]></string>
+    <string name="title_feature" introduced="5.0.0"><![CDATA[Udvalgte produkter]]></string>
+    <string name="title_file_path_custom" introduced="5.0.0"><![CDATA[Brugerdefineret File Path]]></string>
+    <string name="title_image" introduced="5.0.0"><![CDATA[Billed]]></string>
+    <string name="title_import" introduced="5.0.0"><![CDATA[Importer Katalog]]></string>
+    <string name="title_import_csv" introduced="5.0.0"><![CDATA[Importer Produkt CSV]]></string>
+    <string name="title_import_delete_previous" introduced="5.0.0"><![CDATA[Slet Forrige Import]]></string>
+    <string name="title_import_options" introduced="5.0.0"><![CDATA[Indstillinger]]></string>
+    <string name="title_information_basic" introduced="5.0.0"><![CDATA[Basic Information]]></string>
+    <string name="title_information_general" introduced="5.0.0"><![CDATA[General Information]]></string>
+    <string name="title_items" introduced="5.0.0"><![CDATA[Varer]]></string>
+    <string name="title_last_updated" introduced="5.0.0"><![CDATA[Sidst Updated]]></string>
+    <string name="title_manufacturer" introduced="5.0.0"><![CDATA[Producent / Brand]]></string>
+    <string name="title_manufacturer_add" introduced="5.0.0"><![CDATA[Tilføj Producent]]></string>
+    <string name="title_manufacturer_edit" introduced="5.0.0"><![CDATA[Edit Producent]]></string>
+    <string name="title_misc" introduced="5.0.0"><![CDATA[Diverse]]></string>
+    <string name="title_option_add" introduced="5.0.0"><![CDATA[Tilføj ny Option]]></string>
+    <string name="title_option_attribute_add" introduced="5.0.0"><![CDATA[Tilføj ny attribut]]></string>
+    <string name="title_option_attributes" introduced="5.0.0"><![CDATA[Option Attributes]]></string>
+    <string name="title_option_group_add" introduced="5.0.0"><![CDATA[Tilføj ny gruppe]]></string>
+    <string name="title_option_groups" introduced="5.0.0"><![CDATA[Option Grupper]]></string>
+    <string name="title_option_set_add" introduced="5.0.0"><![CDATA[Opret ny Set]]></string>
+    <string name="title_option_set_append" introduced="5.0.0"><![CDATA[Tilføj attributter til Set]]></string>
+    <string name="title_option_set_assign" introduced="5.0.0"><![CDATA[Tildel Indstilling Sets]]></string>
+    <string name="title_option_sets" introduced="5.0.0"><![CDATA[Indstilling Sets]]></string>
+    <string name="title_options" introduced="5.0.0"><![CDATA[Indstillinger]]></string>
+    <string name="title_popular" introduced="5.0.0"><![CDATA[Populære produkter]]></string>
+    <string name="title_prices_update" introduced="5.0.0"><![CDATA[Opdater produkt priser]]></string>
+    <string name="title_pricing" introduced="5.0.0"><![CDATA[Pris]]></string>
+    <string name="title_product_create" introduced="5.0.0"><![CDATA[Tilføj produkt]]></string>
+    <string name="title_product_inventory" introduced="5.0.0"><![CDATA[Produkt Indhold]]></string>
+    <string name="title_product_list" introduced="5.0.0"><![CDATA[Produkt Liste]]></string>
+    <string name="title_product_options" introduced="5.0.0"><![CDATA[Produkt Indstilling]]></string>
+    <string name="title_product_options_matrix" introduced="5.2.0"><![CDATA[Indstilling Matrix]]></string>
+    <string name="title_product_update" introduced="5.0.0"><![CDATA[Rediger Produkt]]></string>
+    <string name="title_products" introduced="5.0.0"><![CDATA[Produkter]]></string>
+    <string name="title_products_assigned" introduced="5.0.0"><![CDATA[Tildelte Produkter]]></string>
+    <string name="title_saleitems" introduced="5.0.0"><![CDATA[Til Salg]]></string>
+    <string name="title_stock" introduced="5.0.0"><![CDATA[Lager]]></string>
+    <string name="title_stock_control" introduced="5.0.0"><![CDATA[Lager Kontrol]]></string>
+    <string name="title_value_remaining" introduced="5.0.0"><![CDATA[Antal Tilbage]]></string>
+    <string name="trackback_url" introduced="5.0.0"><![CDATA[Trackback URL]]></string>
+    <string name="trackbacks" introduced="5.0.0"><![CDATA[Trackbacks]]></string>
+    <string name="unknown_format" introduced="5.0.0"><![CDATA[Kommasepareret Værdi (CSV)]]></string>
+    <string name="update_by_amount" introduced="5.0.0"><![CDATA[ved Beløb]]></string>
+    <string name="update_by_percent" introduced="5.0.0"><![CDATA[ved procent]]></string>
+    <string name="update_checked_products" introduced="5.1.2"><![CDATA[Opdatering udvalgte produkter]]></string>
+    <string name="update_checked_categories" introduced="5.1.2"><![CDATA[Opdatering produkter i udvalgte kategorier]]></string>
+    <string name="view_all_saleitems" introduced="5.0.0"><![CDATA[Se alle salg poster]]></string>
+    <string name="view_product" introduced="5.0.0"><![CDATA[Se Produkt]]></string>
+    <string name="vote_down" introduced="5.0.0"><![CDATA[Stem Ned]]></string>
+    <string name="vote_up" introduced="5.0.0"><![CDATA[Stem Op]]></string>
+    <string name="write_a_review" introduced="5.0.0"><![CDATA[Skriv en anmeldelse]]></string>
+    <string name="write_review" introduced="5.0.0"><![CDATA[Skriv en anmeldelse]]></string>
+    <string name="your_email" introduced="5.0.0"><![CDATA[Din email]]></string>
+    <string name="your_name" introduced="5.0.0"><![CDATA[Dit Navn]]></string>
+  </group>
+  <group name="category">
+    <string name="no_products" introduced="5.0.0"><![CDATA[Ingen produkter fundet.]]></string>
+    <string name="sort_date" introduced="5.0.0"><![CDATA[dato tilføjet]]></string>
+    <string name="sort_date_added_asc" introduced="5.0.0"><![CDATA[Ældste Først]]></string>
+    <string name="sort_date_added_desc" introduced="5.0.0"><![CDATA[Nyeste Først]]></string>
+    <string name="sort_high_low" introduced="5.0.0"><![CDATA[Høj-Lav]]></string>
+    <string name="sort_low_high" introduced="5.0.0"><![CDATA[Lav-Høj]]></string>
+    <string name="sort_name_asc" introduced="5.0.0"><![CDATA[A-Z]]></string>
+    <string name="sort_name_desc" introduced="5.0.0"><![CDATA[Z-A]]></string>
+    <string name="sort_stock" introduced="5.0.0"><![CDATA[Lager]]></string>
+  </group>
+  <group name="checkout">
+    <string name="checkout" introduced="5.0.0"><![CDATA[Checkout]]></string>
+    <string name="error_shipping" introduced="5.0.0"><![CDATA[Der er desværre ingen egnede levering metoder til rådighed for din bestilling. Dette kan være fordi den samlede vægt af din ordre er for høj, eller vi kan ikke sende til dit land. Kontakt en af vores medarbejdere for eventuelle yderligere undersøgelser.]]></string>
+    <string name="check_shipping" introduced="5.0.0"><![CDATA[Nye shipping muligheder er tilgængelige! Kontroller, og fortsætte.]]></string>
+    <string name="error_too_many_added" introduced="5.0.0"><![CDATA[Beklager, men du kan ikke købe mere, end vi har. Vi har automatisk reduceret din mængde til de maksimale.]]></string>
+    <string name="error_voucher_expired" introduced="5.0.0"><![CDATA[Beklager, men denne kupon er udløbet.]]></string>
+    <string name="error_voucher_none" introduced="5.0.0"><![CDATA[Beklager, at koden ikke eksisterer.]]></string>
+    <string name="error_voucher_product" introduced="5.0.0"><![CDATA[Beklager, din indkøbskurven ikke opfylder betingelserne for at kupon.]]></string>
+    <string name="error_voucher_wrong_product" introduced="5.0.0"><![CDATA[Beklager, at koden er ikke gyldige for de varer i din kurv.]]></string>
+    <string name="make_payment" introduced="5.0.0"><![CDATA[I alt <strong>%s</strong> skyldes for løbenummer <strong>%s</strong>]]></string>
+    <string name="pay_now" introduced="5.0.0"><![CDATA[Betal Nu]]></string>
+    <string name="process_basket" introduced="5.0.0"><![CDATA[Indkøbskurv]]></string>
+    <string name="process_checkout" introduced="5.0.0"><![CDATA[Checkout]]></string>
+    <string name="process_complete" introduced="5.0.0"><![CDATA[Complet]]></string>
+    <string name="process_payment" introduced="5.0.0"><![CDATA[Betaling]]></string>
+    <string name="your_basket" introduced="5.0.0"><![CDATA[Din indkøbskurv]]></string>
+  </group>
+  <group name="common">
+    <string name="add" introduced="5.0.0"><![CDATA[Tilføj]]></string>
+    <string name="add_new" introduced="5.0.0"><![CDATA[Tilføj ny]]></string>
+    <string name="advanced" introduced="5.0.0"><![CDATA[Advancered]]></string>
+    <string name="all" introduced="5.0.0"><![CDATA[Alle]]></string>
+    <string name="all_translated" introduced="5.0.0"><![CDATA[Alle oversættelser er gjort allerede. Vælg venligst en at redigere, hvis du har brug for at foretage ændringer.]]></string>
+    <string name="amount" introduced="5.0.0"><![CDATA[Beløb]]></string>
+    <string name="any" introduced="5.0.0"><![CDATA[Enhver]]></string>
+    <string name="approved" introduced="5.0.0"><![CDATA[Godkendt]]></string>
+    <string name="arrange" introduced="5.0.0"><![CDATA[Arranger]]></string>
+    <string name="authenticate" introduced="5.0.0"><![CDATA[Godkend]]></string>
+    <string name="blank_to_default" introduced="5.0.0"><![CDATA[(Efterlad blank for standard)]]></string>
+    <string name="blank_to_disable" introduced="5.0.0"><![CDATA[(Efterlad blank for disabled)]]></string>
+    <string name="blank_for_no_expire" introduced="5.0.0"><![CDATA[(Efterlad blank for udløb aldrig)]]></string>
+    <string name="cancel" introduced="5.0.0"><![CDATA[Annuller]]></string>
+    <string name="change_currency" introduced="5.0.0"><![CDATA[Skift Valuta]]></string>
+    <string name="change_language" introduced="5.0.0"><![CDATA[Skift sprog]]></string>
+    <string name="change_skin" introduced="5.0.0"><![CDATA[Skift Skin]]></string>
+    <string name="click_edit" introduced="5.0.0"><![CDATA[Klik for at redigere]]></string>
+    <string name="clone" introduced="5.0.0"><![CDATA[Klone]]></string>
+    <string name="close" introduced="5.0.0"><![CDATA[Luk]]></string>
+    <string name="click_to_close" introduced="5.0.0"><![CDATA[Klik for at lukke]]></string>
+    <string name="closed" introduced="5.0.0"><![CDATA[Lukket]]></string>
+    <string name="combination" introduced="5.2.0"><![CDATA[Kombination]]></string>
+    <string name="comments" introduced="5.0.0"><![CDATA[Kommentar]]></string>
+    <string name="compress_file" introduced="5.0.0"><![CDATA[Pak filer]]></string>
+    <string name="continue" introduced="5.0.0"><![CDATA[Fortsæt]]></string>
+    <string name="copy" introduced="5.0.0"><![CDATA[Kopi]]></string>
+    <string name="create" introduced="5.0.0"><![CDATA[Opret]]></string>
+    <string name="currency" introduced="5.0.0"><![CDATA[Valuta]]></string>
+    <string name="date" introduced="5.0.0"><![CDATA[Dato]]></string>
+    <string name="date_time" introduced="5.0.0"><![CDATA[Dato/Tid]]></string>
+    <string name="default" introduced="5.0.0"><![CDATA[Standard]]></string>
+    <string name="delete" introduced="5.0.0"><![CDATA[Slet]]></string>
+    <string name="delete_selected" introduced="5.0.0"><![CDATA[Slet Valgte]]></string>
+    <string name="delivery" introduced="5.0.2"><![CDATA[Levere]]></string>
+    <string name="department" introduced="5.0.0"><![CDATA[Kontor]]></string>
+    <string name="description" introduced="5.0.0"><![CDATA[Beskrivelse]]></string>
+    <string name="decision_remove" introduced="5.0.0"><![CDATA[Er du sikker på du vil fjerne denne?]]></string>
+    <string name="desktop_site" introduced="5.1.1"><![CDATA[Desktop Site]]></string>
+    <string name="details" introduced="5.0.0"><![CDATA[Detaljer]]></string>
+    <string name="disable" introduced="5.0.0"><![CDATA[Slå fra]]></string>
+    <string name="disabled" introduced="5.0.0"><![CDATA[Slået fra]]></string>
+    <string name="display" introduced="5.0.0"><![CDATA[Display]]></string>
+    <string name="download" introduced="5.0.0"><![CDATA[Download]]></string>
+    <string name="downloads" introduced="5.0.0"><![CDATA[Downloads]]></string>
+    <string name="edit" introduced="5.0.0"><![CDATA[Rediger]]></string>
+    <string name="eg" introduced="5.0.0"><![CDATA[e.g.]]></string>
+    <string name="email" introduced="5.0.0"><![CDATA[Email]]></string>
+    <string name="email_example" introduced="5.0.0"><![CDATA[name@example.com]]></string>
+    <string name="enable" introduced="5.0.0"><![CDATA[Slå til]]></string>
+    <string name="enabled" introduced="5.0.0"><![CDATA[Slået til]]></string>
+    <string name="enquiry" introduced="5.0.0"><![CDATA[Forespørgsel]]></string>
+    <string name="error_email_invalid" introduced="5.0.0"><![CDATA[Indtast en gyldig e-mail-adresse.]]></string>
+    <string name="error_fields_required" introduced="5.0.0"><![CDATA[Udfyld venligst alle obligatoriske felter.]]></string>
+    <string name="error_no_changes" introduced="5.0.0"><![CDATA[Der er ikke foretaget ændringer.]]></string>
+    <string name="error_no_results" introduced="5.0.0"><![CDATA[Ingen resultater fundet.]]></string>
+    <string name="expired" introduced="5.0.0"><![CDATA[Udløbet]]></string>
+    <string name="export" introduced="5.0.0"><![CDATA[Export]]></string>
+    <string name="filter" introduced="5.0.0"><![CDATA[Filter]]></string>
+    <string name="find" introduced="5.0.0"><![CDATA[Find]]></string>
+    <string name="general" introduced="5.0.0"><![CDATA[General]]></string>
+    <string name="go" introduced="5.0.0"><![CDATA[Go]]></string>
+    <string name="guest" introduced="5.0.0"><![CDATA[Gæst]]></string>
+    <string name="height" introduced="5.0.0"><![CDATA[Højde]]></string>
+    <string name="help" introduced="5.0.0"><![CDATA[Hjælp]]></string>
+    <string name="help_required" introduced="5.0.0"><![CDATA[Læs venligst hjælp dokumentationen før du bruger denne!]]></string>
+    <string name="hide" introduced="5.0.0"><![CDATA[Skjul]]></string>
+    <string name="home" introduced="5.0.0"><![CDATA[Hjem]]></string>
+    <string name="import" introduced="5.0.0"><![CDATA[Importer]]></string>
+    <string name="info" introduced="5.0.0"><![CDATA[Info]]></string>
+    <string name="information" introduced="5.0.0"><![CDATA[Information]]></string>
+    <string name="installed" introduced="5.0.0"><![CDATA[Installed]]></string>
+    <string name="ip_address" introduced="5.0.0"><![CDATA[IP Adresse]]></string>
+    <string name="items" introduced="5.0.0"><![CDATA[Vare(r)]]></string>
+    <string name="language" introduced="5.0.0"><![CDATA[Sprog]]></string>
+    <string name="large" introduced="5.0.0"><![CDATA[Stor]]></string>
+    <string name="length" introduced="5.0.0"><![CDATA[Længde]]></string>
+    <string name="medium" introduced="5.0.0"><![CDATA[Medium]]></string>
+    <string name="message" introduced="5.0.0"><![CDATA[Besked]]></string>
+    <string name="misc" introduced="5.0.0"><![CDATA[Misc]]></string>
+    <string name="mobile_site" introduced="5.1.1"><![CDATA[Mobile Site]]></string>
+    <string name="more" introduced="5.0.0"><![CDATA[Mere...]]></string>
+    <string name="more_info" introduced="5.0.0"><![CDATA[Mere info]]></string>
+    <string name="name" introduced="5.0.0"><![CDATA[Navn]]></string>
+    <string name="negative" introduced="5.0.0"><![CDATA[Negative]]></string>
+    <string name="never" introduced="5.0.0"><![CDATA[Aldrig]]></string>
+    <string name="no" introduced="5.0.0"><![CDATA[Nej]]></string>
+    <string name="not_installed" introduced="5.0.0"><![CDATA[Ikke Installed]]></string>
+    <string name="notes" introduced="5.0.0"><![CDATA[Notes]]></string>
+    <string name="null" introduced="5.0.0"><![CDATA[ikke tilgængelig]]></string>
+    <string name="off" introduced="5.0.0"><![CDATA[Off]]></string>
+    <string name="ok" introduced="5.0.0"><![CDATA[OK]]></string>
+    <string name="on" introduced="5.0.0"><![CDATA[On]]></string>
+    <string name="open" introduced="5.0.0"><![CDATA[Åben]]></string>
+    <string name="optional" introduced="5.0.0"><![CDATA[(Optional)]]></string>
+    <string name="or" introduced="5.0.0"><![CDATA[or]]></string>
+    <string name="order_id" introduced="5.0.0"><![CDATA[Order ID]]></string>
+    <string name="other" introduced="5.0.0"><![CDATA[Andre]]></string>
+    <string name="overview" introduced="5.0.0"><![CDATA[Oversigt]]></string>
+    <string name="percentage" introduced="5.0.0"><![CDATA[Procent]]></string>
+	<string name="please_select" introduced="5.0.7"><![CDATA[Vælg Venligst]]></string>
+    <string name="popularity" introduced="5.1.6"><![CDATA[Popularitet]]></string>
+    <string name="post" introduced="5.0.0"><![CDATA[Post]]></string>
+    <string name="preview" introduced="5.0.0"><![CDATA[Eksempel]]></string>
+    <string name="price" introduced="5.0.0"><![CDATA[Pris]]></string>
+    <string name="price_cost" introduced="5.0.9"><![CDATA[Kost Pris]]></string>
+    <string name="price_sale" introduced="5.0.0"><![CDATA[Salg Pris]]></string>
+    <string name="price_standard" introduced="5.0.0"><![CDATA[Tilbuds Pris]]></string>
+    <string name="price_unit" introduced="5.0.0"><![CDATA[Enhedspris]]></string>
+    <string name="print" introduced="5.0.0"><![CDATA[Print]]></string>
+    <string name="proceed" introduced="5.0.0"><![CDATA[Fortsæt]]></string>
+    <string name="product" introduced="5.0.0"><![CDATA[Produkt]]></string>
+    <string name="quantity" introduced="5.0.0"><![CDATA[Mængde]]></string>
+    <string name="read" introduced="5.0.0"><![CDATA[Læs]]></string>
+    <string name="read_only" introduced="5.0.0"><![CDATA[Læs-Kun]]></string>
+    <string name="received" introduced="5.0.0"><![CDATA[modtaget svar]]></string>
+    <string name="refresh" introduced="5.0.0"><![CDATA[Opdater]]></string>
+    <string name="regions_all" introduced="5.0.0"><![CDATA[Alle Regioner]]></string>
+    <string name="relevance" introduced="5.0.0"><![CDATA[Relevance]]></string>
+    <string name="remove" introduced="5.0.0"><![CDATA[Fjern]]></string>
+    <string name="required" introduced="5.0.0"><![CDATA[Krævet]]></string>
+    <string name="request" introduced="5.0.0"><![CDATA[Anmodning Sent]]></string>
+    <string name="reset" introduced="5.0.0"><![CDATA[Reset]]></string>
+    <string name="restore" introduced="5.0.0"><![CDATA[Genskab]]></string>
+    <string name="revert" introduced="5.0.0"><![CDATA[Fortryd]]></string>
+    <string name="save" introduced="5.0.0"><![CDATA[Gem]]></string>
+    <string name="save_reload" introduced="5.0.0"><![CDATA[Gem & Reload]]></string>
+    <string name="search" introduced="5.0.0"><![CDATA[Søg]]></string>
+    <string name="send" introduced="5.0.0"><![CDATA[Send]]></string>
+    <string name="show" introduced="5.0.0"><![CDATA[Vis]]></string>
+    <string name="size" introduced="5.0.0"><![CDATA[Størrelse]]></string>
+    <string name="small" introduced="5.0.0"><![CDATA[Lille]]></string>
+    <string name="status" introduced="5.0.0"><![CDATA[Status]]></string>
+    <string name="subject" introduced="5.0.0"><![CDATA[Emne]]></string>
+    <string name="submit" introduced="5.0.0"><![CDATA[Indsend]]></string>
+    <string name="subtract" introduced="5.0.0"><![CDATA[Fratræk]]></string>
+    <string name="thanks" introduced="5.0.0"><![CDATA[Tak fordi de handlede med os!]]></string>
+    <string name="then" introduced="5.0.0"><![CDATA[derefter]]></string>
+    <string name="time" introduced="5.0.0"><![CDATA[Tid]]></string>
+    <string name="today" introduced="5.0.0"><![CDATA[I dag]]></string>
+    <string name="total" introduced="5.0.0"><![CDATA[Total]]></string>
+    <string name="type" introduced="5.0.0"><![CDATA[Type]]></string>
+    <string name="unapproved" introduced="5.0.0"><![CDATA[Ikke godkendt]]></string>
+    <string name="undo" introduced="5.0.0"><![CDATA[Fortryd]]></string>
+    <string name="unknown" introduced="5.0.0"><![CDATA[Ukendt]]></string>
+    <string name="update" introduced="5.0.0"><![CDATA[Updater]]></string>
+    <string name="upgrade" introduced="5.1.0"><![CDATA[Upgrader]]></string>
+    <string name="url" introduced="5.0.0"><![CDATA[URL]]></string>
+    <string name="value" introduced="5.0.0"><![CDATA[Værdi]]></string>
+    <string name="view_all" introduced="5.0.0"><![CDATA[Se Alle]]></string>
+    <string name="view_details" introduced="5.0.0"><![CDATA[Se Detaljer]]></string>
+    <string name="visible" introduced="5.0.0"><![CDATA[Synlig]]></string>
+    <string name="weight" introduced="5.0.0"><![CDATA[Vægt]]></string>
+    <string name="whats_this" introduced="5.0.0"><![CDATA[(Hvad er dette?)]]></string>
+    <string name="width" introduced="5.0.0"><![CDATA[Bredde]]></string>
+    <string name="writable" introduced="5.0.0"><![CDATA[Skrivbar]]></string>
+    <string name="yes" introduced="5.0.0"><![CDATA[Ja]]></string>
+    <string name="yesterday" introduced="5.0.0"><![CDATA[I går]]></string>
+  </group>
+  <group name="confirm">
+    <string name="confirm_page" introduced="5.0.0"><![CDATA[Bekræftelse Side]]></string>
+    <string name="fail_page" introduced="5.0.0"><![CDATA[Manglende Side]]></string>
+    <string name="print" introduced="5.0.0"><![CDATA[Udskriv kvittering]]></string>
+    <string name="order_pending" introduced="5.2.6"><![CDATA[Mange tak for din ordre! Ordrestatus afventer i øjeblikket, men det vil automatisk opdatere til behandling, når betalingen er bekræftet. Normalt er automatiseret og vil ske inden for en time, men undlad venligst at kontakte os, hvis kræver mere information.]]></string>
+    <string name="order_processing" introduced="5.2.6"><![CDATA[Mange tak for din ordre! Betalingen er modtaget, og din ordre bliver nu behandlet.]]></string>
+    <string name="order_complete" introduced="5.2.6"><![CDATA[Mange tak for din ordre! Betalingen er modtaget, og din ordre er nu færdig.]]></string>
+    <string name="order_failed" introduced="5.2.6"><![CDATA[Desværre betaling mislykkedes. Du kan bruge linket nedenfor for at forsøge et nyt køb eller kontakt et medlem af personalet for yderligere assistance.]]></string>
+    <string name="order_cancelled" introduced="5.2.6"><![CDATA[Din ordre er blevet annulleret. Kontakt venligst et medlem af personalet, hvis du har brug for yderligere hjælp. Alternativt vi håber at se dig igen i fremtiden.]]></string>
+  </group>
+  <group name="contact">
+    <string name="contact_form" introduced="5.0.0"><![CDATA[Kontakt formular]]></string>
+    <string name="contact_info" introduced="5.0.0"><![CDATA[Det er muligt at specificere bestemte afdelinger og e-mail-adresser nedenfor. Ved afslutningen vil blive præsenteret en drop down menu til kunden, så budskabet kan rettes til den relevante afdeling.]]></string>
+    <string name="content_info" introduced="5.0.0"><![CDATA[Det er muligt at tilføje ekstra information til kontakten del af butikken, såsom telefonnumre og postadresser hjælp af rich text editor nedenfor.]]></string>
+    <string name="email_content" introduced="5.0.0"><![CDATA[%s <%s> skrev til %s:
+        ---------------
+        %s
+        ---------------
+        
+        Denne e-mail sendes fra butikkerne mester email adresse, men det er muligt at besvare direkte til afsenderen ved hjælp af svar-knappen på din e-mail-software.]]></string>
+    <string name="email_override" introduced="5.0.0"><![CDATA[Indsendelser Formular skal sendes til]]></string>
+    <string name="error_contact_update" introduced="5.0.0"><![CDATA[Kan ikke opdatere Kontakt Form indstillinger.]]></string>
+    <string name="notify_contact_update" introduced="5.0.0"><![CDATA[Indstillinger kontaktformular opdateret.]]></string>
+    <string name="title_configuration" introduced="5.0.0"><![CDATA[Konfiguration]]></string>
+    <string name="title_contact" introduced="5.0.0"><![CDATA[Kontakt Form Settings]]></string>
+    <string name="title_content" introduced="5.0.0"><![CDATA['Kontakt os 'Sideindhold]]></string>
+    <string name="title_departments" introduced="5.0.0"><![CDATA[Afdelinger (valgfrit)]]></string>
+  </group>
+  <group name="country">
+    <string name="bread_geo" introduced="5.0.0"><![CDATA[Lande og Zoner]]></string>
+    <string name="country_iso_alpha2" introduced="5.0.0"><![CDATA[ISO Alpha-2]]></string>
+    <string name="country_iso_alpha3" introduced="5.0.0"><![CDATA[ISO Alpha-3]]></string>
+    <string name="country_iso_numeric" introduced="5.0.0"><![CDATA[ISO Numeric]]></string>
+    <string name="country_name" introduced="5.0.0"><![CDATA[Land Navn]]></string>
+    <string name="error_country_create" introduced="5.0.0"><![CDATA[Kunne ikke tilføje land.]]></string>
+    <string name="error_country_delete" introduced="5.0.0"><![CDATA[Det lykkedes ikke at slette land.]]></string>
+    <string name="error_country_delete_multi" introduced="5.0.0"><![CDATA[Ingen lande blev valgt til sletning.]]></string>
+    <string name="error_country_update" introduced="5.0.0"><![CDATA[Kunne ikke opdatere land.]]></string>
+    <string name="error_zone_create" introduced="5.0.0"><![CDATA[Kunne ikke tilføje zone.]]></string>
+    <string name="error_zone_delete" introduced="5.0.0"><![CDATA[Det lykkedes ikke at slette zone.]]></string>
+    <string name="error_zone_delete_multi" introduced="5.0.0"><![CDATA[Ingen zoner blev valgt til sletning.]]></string>
+    <string name="error_zone_update" introduced="5.0.0"><![CDATA[Kunne ikke opdatere zone.]]></string>
+    <string name="notify_country_create" introduced="5.0.0"><![CDATA[Land med succes tilføjet.]]></string>
+    <string name="notify_country_delete" introduced="5.0.0"><![CDATA[Land blev slettet.]]></string>
+    <string name="notify_country_update" introduced="5.0.0"><![CDATA[Land blev opdateret.]]></string>
+    <string name="notify_zone_create" introduced="5.0.0"><![CDATA[Zone korrekt tilføjet.]]></string>
+    <string name="notify_zone_delete" introduced="5.0.0"><![CDATA[Zone slettet.]]></string>
+    <string name="notify_zone_update" introduced="5.0.0"><![CDATA[Zone er opdateret.]]></string>
+    <string name="tab_country" introduced="5.0.0"><![CDATA[Lande]]></string>
+    <string name="tab_country_add" introduced="5.0.0"><![CDATA[Tilføj Land]]></string>
+    <string name="tab_zone" introduced="5.0.0"><![CDATA[Zoner]]></string>
+    <string name="tab_zone_add" introduced="5.0.0"><![CDATA[Tilføj Zone]]></string>
+    <string name="title_country" introduced="5.0.0"><![CDATA[Lande]]></string>
+    <string name="title_country_add" introduced="5.0.0"><![CDATA[Tilføj Land]]></string>
+    <string name="title_zone" introduced="5.0.0"><![CDATA[Zoner]]></string>
+    <string name="title_zone_add" introduced="5.0.0"><![CDATA[Tilføj Zone]]></string>
+    <string name="zone_abbrev" introduced="5.0.0"><![CDATA[Forkortelse]]></string>
+    <string name="zone_country" introduced="5.0.0"><![CDATA[Zone Land]]></string>
+    <string name="zone_name" introduced="5.0.0"><![CDATA[Navn]]></string>
+  </group>
+  <group name="customer">
+    <string name="customer_type" introduced="5.0.0"><![CDATA[Type]]></string>
+    <string name="customer_export" introduced="5.0.0"><![CDATA[Kunde Export]]></string>
+    <string name="date_registered" introduced="5.0.0"><![CDATA[Dato Tilmeldt]]></string>
+    <string name="error_address_delete" introduced="5.0.0"><![CDATA[Det lykkedes ikke at slette adresse.]]></string>
+    <string name="error_customer_create" introduced="5.0.0"><![CDATA[Kunne ikke tilføje kunden. Sørg fornavn, efternavn og e-mail-adresse er ikke tom, og at e-mail adressen ikke allerede er i brug.]]></string>
+    <string name="error_customer_delete" introduced="5.0.0"><![CDATA[Det lykkedes ikke at slette kunde.]]></string>
+    <string name="error_customer_delete_orders" introduced="5.0.0"><![CDATA[Kunden kan ikke slettes, da de har placeret ordrer.]]></string>
+    <string name="error_customer_found" introduced="5.0.0"><![CDATA[At kunden kunne ikke findes.]]></string>
+    <string name="error_customer_matching_x" introduced="5.0.0"><![CDATA[Ingen kunder fandt matchende '%s']]></string>
+    <string name="error_customer_status" introduced="5.0.0"><![CDATA[Kunne ikke opdatere kundestatus.]]></string>
+    <string name="error_customer_update" introduced="5.0.0"><![CDATA[Kunne ikke opdatere kunde.]]></string>
+    <string name="error_groups_create" introduced="5.0.0"><![CDATA[Kunne ikke oprette kundegruppe.]]></string>
+    <string name="error_groups_delete" introduced="5.0.0"><![CDATA[Det lykkedes ikke at slette kundegruppe.]]></string>
+    <string name="error_groups_update" introduced="5.0.0"><![CDATA[Kunne ikke opdatere kundegruppe.]]></string>
+    <string name="export_to" introduced="5.0.0"><![CDATA[Exporter til]]></string>
+    <string name="notify_address_delete" introduced="5.0.0"><![CDATA[Adresse blevet tilføjet.]]></string>
+    <string name="notify_customer_create" introduced="5.0.0"><![CDATA[Kunden korrekt tilføjet.]]></string>
+    <string name="notify_customer_delete" introduced="5.0.0"><![CDATA[Kunden blev slettet.]]></string>
+    <string name="notify_customer_groups" introduced="5.0.0"><![CDATA[Kundegrupper opdateret.]]></string>
+    <string name="notify_customer_matching_x" introduced="5.0.0"><![CDATA[Kundekonti matching '%s']]></string>
+    <string name="notify_customer_status" introduced="5.0.0"><![CDATA[Kundens status opdateret.]]></string>
+    <string name="notify_customer_update" introduced="5.0.0"><![CDATA[Kunden er opdateret.]]></string>
+    <string name="notify_groups_create" introduced="5.0.0"><![CDATA[Kundegruppe tilføjet.]]></string>
+    <string name="notify_groups_delete" introduced="5.0.0"><![CDATA[Kundegrupper slettet.]]></string>
+    <string name="notify_groups_update" introduced="5.0.0"><![CDATA[]]></string>
+    <string name="order_count" introduced="5.0.0"><![CDATA[Ordre]]></string>
+    <string name="order_count_single" introduced="5.0.0"><![CDATA[Ordre]]></string>
+    <string name="title_address" introduced="5.0.0"><![CDATA[Adresser]]></string>
+    <string name="title_customer" introduced="5.0.0"><![CDATA[Kunder]]></string>
+    <string name="title_customer_add" introduced="5.0.0"><![CDATA[Tilføj Kunden]]></string>
+    <string name="title_customer_edit" introduced="5.0.0"><![CDATA[Rediger kunde]]></string>
+    <string name="title_groups" introduced="5.0.0"><![CDATA[Kunde Grupper]]></string>
+    <string name="title_groups_available" introduced="5.0.0"><![CDATA[tilgængelige grupper]]></string>
+    <string name="title_groups_create" introduced="5.0.0"><![CDATA[Opret Kunde Gruppe]]></string>
+    <string name="title_groups_membership" introduced="5.0.0"><![CDATA[Gruppe medlemskab]]></string>
+    <string name="title_groups_membership_add" introduced="5.0.0"><![CDATA[Tilføj gruppe Medlemskab]]></string>
+    <string name="title_key_registered" introduced="5.0.0"><![CDATA[Registreret Kunde]]></string>
+    <string name="title_key_type" introduced="5.0.0"><![CDATA[Kunde Type]]></string>
+    <string name="title_key_unregistered" introduced="5.0.0"><![CDATA[Uregistered Kunder]]></string>
+    <string name="title_list" introduced="5.0.0"><![CDATA[Kunde Liste]]></string>
+  </group>
+  <group name="dashboard">
+  	<string name="error_version" introduced="5.2.3"><![CDATA[ADVARSEL: Din butik ser ud til at være ved hjælp af kildekoden fra %s men databasen er stadig på %s.Udfyld opgraderingen ved at køre <a href="setup">setup</a> process.]]></string>
+    <string name="error_global_risk" introduced="5.0.0"><![CDATA[ADVARSEL: includes / global.inc.php øjeblikket er skrivbar, du skal ændre filrettigheder kun at læse. På Linux eller Unix-systemer skal det CHMOD til 0444.]]></string>
+    <string name="error_mysql_root" introduced="5.0.0"><![CDATA[ADVARSEL: Du er i øjeblikket forbundet til databasen vha. root-konto. Det er ikke sikkert, og bør ændres.]]></string>
+    <string name="error_notes_save" introduced="5.0.0"><![CDATA[Det lykkedes ikke at gemme noter.]]></string>
+    <string name="error_setup_folder" introduced="5.0.0"><![CDATA[ADVARSEL: Slet venligst setup mappe fra din butik mappe, kan din butik være i fare, indtil du gør.]]></string>
+    <string name="error_version_update" introduced="5.0.0"><![CDATA[ADVARSEL: Din butik er ikke up-to-date, v%1$s er tilgængelig, men du kører v%2$s]]></string>
+    <string name="inv_customers" introduced="5.0.0"><![CDATA[Kunder]]></string>
+    <string name="inv_orders" introduced="5.0.0"><![CDATA[Ordre]]></string>
+    <string name="inv_products" introduced="5.0.0"><![CDATA[Produkt]]></string>
+    <string name="note_by" introduced="5.0.0"><![CDATA[Note af]]></string>
+    <string name="notes_read" introduced="5.0.0"><![CDATA[Læs Notes]]></string>
+    <string name="notice_notes_save" introduced="5.0.0"><![CDATA[Notes gemt.]]></string>
+    <string name="stock_level" introduced="5.0.0"><![CDATA[Lager level]]></string>
+    <string name="task_orders_view_day" introduced="5.0.0"><![CDATA[Se dagens ordrer]]></string>
+    <string name="task_orders_view_month" introduced="5.0.0"><![CDATA[Se denne måneds ordrer]]></string>
+    <string name="task_orders_view_week" introduced="5.0.0"><![CDATA[Se denne uges ordrer]]></string>
+    <string name="tech_browser" introduced="5.0.0"><![CDATA[Browser bruger-agent]]></string>
+    <string name="tech_server" introduced="5.0.0"><![CDATA[Server Software]]></string>
+    <string name="tech_size_download" introduced="5.0.0"><![CDATA[Download mappe størrelse]]></string>
+    <string name="tech_size_image" introduced="5.0.0"><![CDATA[Billedmappe størrelse]]></string>
+    <string name="tech_upload_max" introduced="5.0.0"><![CDATA[Max. Upload filesize]]></string>
+    <string name="tech_version_cc" introduced="5.0.0"><![CDATA[CubeCart Version]]></string>
+    <string name="tech_version_mysql" introduced="5.0.0"><![CDATA[MySQL Version]]></string>
+    <string name="tech_version_php" introduced="5.0.0"><![CDATA[PHP Version]]></string>
+    <string name="title_admin_cp" introduced="5.0.0"><![CDATA[Admin Kontrol Panel]]></string>
+    <string name="title_dashboard" introduced="5.0.0"><![CDATA[Dashboard]]></string>
+    <string name="title_day_of_month" introduced="5.0.0"><![CDATA[Dag i måneden]]></string>
+    <string name="title_error_log" introduced="5.0.0"><![CDATA[Error Log]]></string>
+    <string name="title_inventory_data" introduced="5.0.0"><![CDATA[Lager data]]></string>
+    <string name="title_last_orders" introduced="5.0.0"><![CDATA[Sidste 5 Ordre]]></string>
+    <string name="title_month_last" introduced="5.0.0"><![CDATA[Sidste Måned]]></string>
+    <string name="title_month_this" introduced="5.0.0"><![CDATA[Denne Måned]]></string>
+    <string name="title_my_notes" introduced="5.0.0"><![CDATA[Mine notater]]></string>
+    <string name="title_orders_unsettled" introduced="5.0.0"><![CDATA[uafviklede ordrer]]></string>
+    <string name="title_reviews_pending" introduced="5.0.0"><![CDATA[Ventende anmeldelser]]></string>
+    <string name="title_sales_average" introduced="5.0.0"><![CDATA[Gennemsnitlig salg]]></string>
+    <string name="title_sales_stats" introduced="5.0.0"><![CDATA[Salgsstatistikker]]></string>
+    <string name="title_sales_total" introduced="5.0.0"><![CDATA[Samlet salg]]></string>
+    <string name="title_sales_volume" introduced="5.0.0"><![CDATA[Sales Volume (%s)]]></string>
+    <string name="title_stock_warnings" introduced="5.0.0"><![CDATA[Lager Advarsel]]></string>
+    <string name="title_store_overview" introduced="5.0.0"><![CDATA[Butik Oversigt]]></string>
+    <string name="title_tasks" introduced="5.0.0"><![CDATA[hurtige opgaver]]></string>
+    <string name="title_technical_data" introduced="5.0.0"><![CDATA[Technical Details]]></string>
+  </group>
+  <group name="documents">
+    <string name="document_contact" introduced="5.0.0"><![CDATA[Kontakt Os]]></string>
+    <string name="document_content" introduced="5.0.0"><![CDATA[Indhold]]></string>
+    <string name="document_create" introduced="5.0.0"><![CDATA[Opret Dokument]]></string>
+    <string name="document_delete" introduced="5.0.0"><![CDATA[Slet Dokument]]></string>
+    <string name="document_edit" introduced="5.0.0"><![CDATA[Rediger Dokument]]></string>
+    <string name="document_translate" introduced="5.0.0"><![CDATA[Oversæt Dokument]]></string>
+    <string name="document_homepage" introduced="5.0.0"><![CDATA[Hjemmeside]]></string>
+    <string name="document_terms" introduced="5.0.0"><![CDATA[T&amp;Cs]]></string>
+    <string name="document_title" introduced="5.0.0"><![CDATA[Titel]]></string>
+    <string name="document_url" introduced="5.0.0"><![CDATA[URL]]></string>
+    <string name="document_url_open" introduced="5.0.0"><![CDATA[Åben URL i]]></string>
+    <string name="document_url_open_new" introduced="5.0.0"><![CDATA[Nyt vindue]]></string>
+    <string name="document_url_open_same" introduced="5.0.0"><![CDATA[Samme vindue]]></string>
+    <string name="error_document_contact" introduced="5.0.0"><![CDATA[Der var en fejl at sende din besked, prøv igen.]]></string>
+    <string name="error_document_create" introduced="5.0.0"><![CDATA[Kunne ikke oprette dokument.]]></string>
+    <string name="error_document_delete" introduced="5.0.0"><![CDATA[Det lykkedes ikke at slette dokumentet.]]></string>
+    <string name="error_document_update" introduced="5.0.0"><![CDATA[Kunne ikke opdatere dokument.]]></string>
+    <string name="language_primary" introduced="5.0.0"><![CDATA[Sprog]]></string>
+    <string name="navigation_link" introduced="5.1.0"><![CDATA[Vis link til dokument i butiksfacade?]]></string>
+    <string name="notify_document_arrange" introduced="5.0.0"><![CDATA[Dokument display ordre er opdateret.]]></string>
+    <string name="notify_document_contact" introduced="5.0.0"><![CDATA[Tak for din besked, vil et medlem af personalet svare på din email inden længe.]]></string>
+    <string name="notify_document_create" introduced="5.0.0"><![CDATA[Dokument oprettet.]]></string>
+    <string name="notify_document_delete" introduced="5.0.0"><![CDATA[Dokument blev slettet.]]></string>
+    <string name="notify_document_homepage" introduced="5.0.0"><![CDATA[Dokument som startside.]]></string>
+    <string name="notify_document_status" introduced="5.0.0"><![CDATA[Dokument status er opdateret.]]></string>
+    <string name="notify_document_terms" introduced="5.0.0"><![CDATA[Dokument indstillet som Vilkår & Betingelser.]]></string>
+    <string name="notify_document_update" introduced="5.0.0"><![CDATA[Dokument blev opdateret.]]></string>
+    <string name="rating" introduced="5.0.0"><![CDATA[Rating]]></string>
+    <string name="send_message" introduced="5.0.0"><![CDATA[Send Besked]]></string>
+    <string name="tab_content" introduced="5.0.0"><![CDATA[Indhold]]></string>
+    <string name="title_documents" introduced="5.0.0"><![CDATA[Side Dokumenter]]></string>
+  </group>
+  <group name="email">
+    <string name="confirm_cancel" introduced="5.0.0"><![CDATA[Er du sikker på du vil annullere afsendelsen af ​​dette nyhedsbrev?]]></string>
+    <string name="confirm_send" introduced="5.0.0"><![CDATA[Er du sikker på du vil sende dette nyhedsbrev?]]></string>
+    <string name="email_macro" introduced="5.0.0"><![CDATA[Macro]]></string>
+    <string name="email_macro_available" introduced="5.0.0"><![CDATA[Altid tilgængelig]]></string>
+    <string name="email_template" introduced="5.0.0"><![CDATA[Template]]></string>
+    <string name="email_type" introduced="5.0.0"><![CDATA[Email Type]]></string>
+    <string name="empty_equals_default" introduced="5.0.0"><![CDATA[If left empty stores default taken.]]></string>
+    <string name="error_content_create" introduced="5.0.0"><![CDATA[Kunne ikke gemme e-mail-indhold.]]></string>
+    <string name="error_content_delete" introduced="5.0.0"><![CDATA[Det lykkedes ikke at slette e-mail-indhold.]]></string>
+    <string name="error_content_single" introduced="5.0.0"><![CDATA[Det er ikke muligt at slette den eneste oversættelse af en e-mail-indhold.]]></string>
+    <string name="error_content_update" introduced="5.0.0"><![CDATA[Kunne ikke opdatere e-mail-indhold.]]></string>
+    <string name="error_export" introduced="5.0.0"><![CDATA[Eksport mislykkedes.]]></string>
+    <string name="error_macro_content" introduced="5.0.0"><![CDATA[{$EMAIL_CONTENT} macro not detected in template contents.]]></string>
+    <string name="error_news_delete" introduced="5.0.0"><![CDATA[Det lykkedes ikke at slette nyhedsbrevet]]></string>
+    <string name="error_news_export_empty" introduced="5.0.0"><![CDATA[Der er ingen postliste abonnenter.]]></string>
+    <string name="error_news_save" introduced="5.0.0"><![CDATA[Kunne ikke gemme nyhedsbrev.]]></string>
+    <string name="example_email" introduced="5.0.0"><![CDATA[(eks. amy.jones@example.com)]]></string>
+    <string name="example_fullname_long" introduced="5.0.0"><![CDATA[(eks. Miss Amy Jones)]]></string>
+    <string name="example_fullname_short" introduced="5.0.0"><![CDATA[(eks. Amy Jones)]]></string>
+    <string name="example_name_first" introduced="5.0.0"><![CDATA[(eks. Amy)]]></string>
+    <string name="example_name_last" introduced="5.0.0"><![CDATA[(eks. Jones)]]></string>
+    <string name="example_title" introduced="5.0.0"><![CDATA[(eks. Miss)]]></string>
+    <string name="export_compress" introduced="5.0.0"><![CDATA[Komprimer Export]]></string>
+    <string name="export_filename" introduced="5.0.0"><![CDATA[mailing-liste]]></string>
+    <string name="export_format" introduced="5.0.0"><![CDATA[Export Format]]></string>
+    <string name="help_content_html" introduced="5.0.0"><![CDATA[Abonnenter, der har deres e-mail-klient, der er at foretrække rige tekst HTML e-mails vil se indholdet af dette felt.]]></string>
+    <string name="help_content_text" introduced="5.0.0"><![CDATA[Abonnenter, der har deres e-mail-klient, der er at foretrække almindelig tekst e-mails vil se indholdet af dette felt. Indtast ikke HTML her.]]></string>
+    <string name="help_email_export" introduced="5.0.0"><![CDATA[Eksporter dine e-mail-tilpasninger til filen. Filen gemmes i det sprog mappe som 'email_&lt;language code&gt;-custom.xml'.]]></string>
+    <string name="help_email_import" introduced="5.0.0"><![CDATA[Du kan geninstallere dine e-mail skabeloner her, ved at vælge sprog i dropdown, derefter klikke på 'Gem'.<br />Advarsel: Dette vil erstatte alle e-mail indhold til det angivne sprog med deres standardindstillinger]]></string>
+    <string name="help_macro" introduced="5.0.0"><![CDATA[Bemærk: Besøgende behøver kun at tilføje deres e-mail adresse for at abonnere på postlisten. Nogle data vil kun være kendt, hvis de er registreret kunde.]]></string>
+    <string name="help_test_send" introduced="5.0.0"><![CDATA[Brug venligst dette til at sende en test kopi af e-mailen, før du sender den ud til dine kunder. Den e-mail modtages, vil blive sendt i flere dele format.<br />Hvis du vil se HTML eller tekst-version, du kan få brug for at redigere dine mail-klient indstillinger.<br />Dine kunder vil enten se rig HTML eller almindelig tekst, afhængigt af deres e-mail-klient.]]></string>
+    <string name="important" introduced="5.0.0"><![CDATA[<strong>IMPORTANT:</strong> Makroer skal opbevares i e-mail-indhold for at blive befolket med egnede data. Dynamiske regioner eller gentagne regioner skal også bevares (e.g. {foreach from=$products item=item}Dynamiske data eller gentage data{/foreach}).]]></string>
+    <string name="macro_admin_name" introduced="5.0.0"><![CDATA[Administratorens navn.]]></string>
+    <string name="macro_cert_code" introduced="5.0.0"><![CDATA[Certifikatet forløsning kode.]]></string>
+    <string name="macro_cert_recipient" introduced="5.0.0"><![CDATA[Modtagerens navn.]]></string>
+    <string name="macro_cert_value" introduced="5.0.0"><![CDATA[Certifikatet værdi.]]></string>
+    <string name="macro_ship_date" introduced="5.0.0"><![CDATA[Fremsendelsesdatoen]]></string>
+    <string name="macro_download_expire" introduced="5.0.0"><![CDATA[Den tid, hvor download-linket udløber.]]></string>
+    <string name="macro_gateway" introduced="5.2.6"><![CDATA[Anvendte betalingsmetode.]]></string>
+    <string name="macro_link_download" introduced="5.0.0"><![CDATA[Linket til at downloade produktet.]]></string>
+    <string name="macro_link_order" introduced="5.0.0"><![CDATA[Linket til at styre rækkefølgen.]]></string>
+    <string name="macro_link_password" introduced="5.0.0"><![CDATA[Linket til at indstille en ny adgangskode.]]></string>
+    <string name="macro_link_product" introduced="5.0.0"><![CDATA[Linket til produktet.]]></string>
+    <string name="macro_link_review" introduced="5.0.0"><![CDATA[Linket til at styre revision.]]></string>
+    <string name="macro_order_discount" introduced="5.0.0"><![CDATA[Discount beløb.]]></string>
+    <string name="macro_order_number" introduced="5.0.0"><![CDATA[Ordrenummeret.]]></string>
+    <string name="macro_order_date" introduced="5.0.0"><![CDATA[Datoen ordre.]]></string>
+    <string name="macro_order_shipping" introduced="5.0.0"><![CDATA[Forsendelse beløb.]]></string>
+    <string name="macro_order_shipping_method" introduced="5.0.0"><![CDATA[Forsendelse metode.]]></string>
+    <string name="macro_order_subtotal" introduced="5.0.0"><![CDATA[Bestil subtotal.]]></string>
+    <string name="macro_order_total" introduced="5.0.0"><![CDATA[Samlede udgifter til ordre.]]></string>
+    <string name="macro_payment_amount" introduced="5.0.0"><![CDATA[Det udbetalte beløb.]]></string>
+    <string name="macro_product_code" introduced="5.0.0"><![CDATA[Produkt kode.]]></string>
+    <string name="macro_product_name" introduced="5.0.0"><![CDATA[Produkt navn.]]></string>
+    <string name="macro_product_price" introduced="5.0.0"><![CDATA[Produkt pris.]]></string>
+    <string name="macro_product_quantity" introduced="5.0.0"><![CDATA[Produkt mængde]]></string>
+    <string name="macro_review_copy" introduced="5.0.0"><![CDATA[Indholdet af revisionen.]]></string>
+    <string name="macro_review_name" introduced="5.0.0"><![CDATA[Anmelder navn.]]></string>
+    <string name="macro_sender_message" introduced="5.0.0"><![CDATA[Afsenderens budskab.]]></string>
+    <string name="macro_sender_name" introduced="5.0.0"><![CDATA[Afsenderens navn.]]></string>
+    <string name="macro_sender_first_name" introduced="5.0.0"><![CDATA[Afsenderens fornavn.]]></string>
+    <string name="macro_sender_last_name" introduced="5.0.0"><![CDATA[Afsenderens efternavn.]]></string>
+    <string name="macro_ship_tracking" introduced="5.2.6"><![CDATA[Ship sporingskode.]]></string>
+    <string name="macro_tax_amount" introduced="5.0.0"><![CDATA[skat Beløb]]></string>
+    <string name="macro_tax_name" introduced="5.0.0"><![CDATA[Skat Navn]]></string>
+    <string name="macro_tax_rate" introduced="5.0.0"><![CDATA[Skat Procent]]></string>
+    <string name="macro_tell_friend" introduced="5.0.0"><![CDATA[Vennen's navn.]]></string>
+    <string name="macro_tell_message" introduced="5.0.0"><![CDATA[Meddelelse fra afsenderen til ven.]]></string>
+    <string name="macro_template_content" introduced="5.0.0"><![CDATA[Dette er nødvendigt for at vise noget indhold]]></string>
+    <string name="macro_template_store_logo" introduced="5.0.0"><![CDATA[Logoet for din butik]]></string>
+    <string name="macro_template_store_name" introduced="5.0.0"><![CDATA[Navnet på din butik]]></string>
+    <string name="macro_template_store_url" introduced="5.0.0"><![CDATA[Webadressen til butikken hjemmesiden.]]></string>
+    <string name="macro_template_unsubscribe" introduced="5.0.0"><![CDATA[Webadressen at afmelde.]]></string>
+    <string name="macro_first_name_d" introduced="5.0.0"><![CDATA[Forsendelse adresse fornavn]]></string>
+    <string name="macro_last_name_d" introduced="5.0.0"><![CDATA[Forsendelse adresse efternavn]]></string>
+    <string name="macro_company_name_d" introduced="5.0.0"><![CDATA[Forsendelse adresse firmanavn]]></string>
+    <string name="macro_line1_d" introduced="5.0.0"><![CDATA[Forsendelse adresse linje 1]]></string>
+    <string name="macro_line2_d" introduced="5.0.0"><![CDATA[Forsendelse adresse linje 2]]></string>
+    <string name="macro_town_d" introduced="5.0.0"><![CDATA[Forsendelse adresse by]]></string>
+    <string name="macro_state_d" introduced="5.0.0"><![CDATA[Forsendelse adresse tilstand]]></string>
+    <string name="macro_postcode_d" introduced="5.0.0"><![CDATA[Forsendelse adresse postnummer]]></string>
+    <string name="macro_country_d" introduced="5.0.0"><![CDATA[Forsendelse adresse land]]></string>
+    <string name="macro_first_name" introduced="5.0.0"><![CDATA[Faktureringsadresse fornavn]]></string>
+    <string name="macro_last_name" introduced="5.0.0"><![CDATA[Faktureringsadresse efternavn]]></string>
+    <string name="macro_company_name" introduced="5.0.0"><![CDATA[Faktureringsadresse firmanavn]]></string>
+    <string name="macro_line1" introduced="5.0.0"><![CDATA[Faktureringsadresse linje 1]]></string>
+    <string name="macro_line2" introduced="5.0.0"><![CDATA[Faktureringsadresse linje 2]]></string>
+    <string name="macro_town" introduced="5.0.0"><![CDATA[Faktureringsadresse by]]></string>
+    <string name="macro_state" introduced="5.0.0"><![CDATA[Faktureringsadresse stat]]></string>
+    <string name="macro_postcode" introduced="5.0.0"><![CDATA[Faktureringsadresse postnr]]></string>
+    <string name="macro_country" introduced="5.0.0"><![CDATA[Faktureringsadresse land]]></string>
+    <string name="macro_phone" introduced="5.0.0"><![CDATA[Faktureringsadresse telefon]]></string>
+    <string name="macro_email" introduced="5.0.0"><![CDATA[Faktura email]]></string>
+    <string name="news_cancel" introduced="5.0.0"><![CDATA[Annuler Send]]></string>
+    <string name="news_none" introduced="5.0.0"><![CDATA[Der er ikke oprettet nyhedsbreve.]]></string>
+    <string name="news_sender_email" introduced="5.0.0"><![CDATA[Afsenderens e-mail-adresse]]></string>
+    <string name="news_sender_name" introduced="5.0.0"><![CDATA[Afsenders navn]]></string>
+    <string name="news_subject" introduced="5.0.0"><![CDATA[Nyhedsbrev Emne]]></string>
+    <string name="notify_content_create" introduced="5.0.0"><![CDATA[E-mail-indhold gemmes.]]></string>
+    <string name="notify_content_delete" introduced="5.0.0"><![CDATA[E-mail-indhold slettes.]]></string>
+    <string name="notify_content_update" introduced="5.0.0"><![CDATA[E-mail-indhold opdateret.]]></string>
+    <string name="notify_export" introduced="5.0.0"><![CDATA[Export komplet.]]></string>
+    <string name="notify_export_language" introduced="5.0.0"><![CDATA[Sprog er blevet eksporteret fra database til fil.]]></string>
+    <string name="notify_import" introduced="5.0.0"><![CDATA[import komplet.]]></string>
+    <string name="notify_news_delete" introduced="5.0.0"><![CDATA[Nyhedsbrev slettet.]]></string>
+    <string name="notify_news_save" introduced="5.0.0"><![CDATA[Nyhedsbrev Gemt.]]></string>
+    <string name="notify_news_sent" introduced="5.0.0"><![CDATA[Nyhedsbrev sendt.]]></string>
+    <string name="notify_news_test_sent" introduced="5.0.0"><![CDATA[Test nyhedsbrev sendt.]]></string>
+    <string name="notify_template_create" introduced="5.0.0"><![CDATA[Skabelon skabt.]]></string>
+    <string name="notify_template_default" introduced="5.0.0"><![CDATA[Standardskabelon opdateret.]]></string>
+    <string name="notify_template_update" introduced="5.0.0"><![CDATA[Template opdateret.]]></string>
+    <string name="save_send_test" introduced="5.0.0"><![CDATA[Gem & Send]]></string>
+    <string name="template_create" introduced="5.0.0"><![CDATA[Oprette en skabelon]]></string>
+    <string name="template_name" introduced="5.0.0"><![CDATA[Template Navn]]></string>
+    <string name="template_none" introduced="5.0.0"><![CDATA[Ingen skabeloner fundet.]]></string>
+    <string name="test_email" introduced="5.0.0"><![CDATA[Modtager e-mail]]></string>
+    <string name="title_content_create" introduced="5.0.0"><![CDATA[Tilføj e-mail indhold Oversættelse]]></string>
+    <string name="title_content_html" introduced="5.0.0"><![CDATA[HTML Indhold]]></string>
+    <string name="title_content_manage" introduced="5.0.0"><![CDATA[Import / Export Email Indhold]]></string>
+    <string name="title_content_text" introduced="5.0.0"><![CDATA[Plain Text Indhold]]></string>
+    <string name="title_content_update" introduced="5.0.0"><![CDATA[Rediger Email Indhold]]></string>
+    <string name="title_contents" introduced="5.0.0"><![CDATA[E-mail-indhold]]></string>
+    <string name="title_email" introduced="5.0.0"><![CDATA[E-mail-indhold & Skabeloner]]></string>
+    <string name="title_email_contents" introduced="5.0.0"><![CDATA[E-mail-indhold]]></string>
+    <string name="title_email_templates" introduced="5.0.0"><![CDATA[Email Templates]]></string>
+    <string name="title_export" introduced="5.0.0"><![CDATA[Export Mailing List]]></string>
+    <string name="title_export_settings" introduced="5.0.0"><![CDATA[Export Indstilling]]></string>
+    <string name="title_list_export" introduced="5.0.0"><![CDATA[Export Mailing List]]></string>
+    <string name="title_macro_admin_order" introduced="5.0.0"><![CDATA[Admin: Bestilling modtaget]]></string>
+    <string name="title_macro_admin_password" introduced="5.0.0"><![CDATA[Admin: Gendan adgangskode]]></string>
+    <string name="title_macro_admin_review" introduced="5.0.0"><![CDATA[Admin: Bedømmelse Tilføjet]]></string>
+    <string name="title_macro_cart_certificate" introduced="5.0.0"><![CDATA[Kurv: Gavekort]]></string>
+    <string name="title_macro_cart_digital" introduced="5.0.0"><![CDATA[Kurv: Digital Download]]></string>
+    <string name="title_macro_order_cancelled" introduced="5.0.0"><![CDATA[Kurv: Bestilling Aflyst]]></string>
+    <string name="title_macro_order_confirmed" introduced="5.0.0"><![CDATA[Kurv: Ordre bekræftet]]></string>
+    <string name="title_macro_order_dispatched" introduced="5.0.0"><![CDATA[Kurv: Bestil Komplet]]></string>
+    <string name="title_macro_order_fraud" introduced="5.0.0"><![CDATA[Kurv: Bedrageri anmeldelse]]></string>
+    <string name="title_macro_order_payment" introduced="5.0.0"><![CDATA[Kurv: Betaling modtaget]]></string>
+    <string name="title_macro_tell_friend" introduced="5.0.0"><![CDATA[Katalog: Tip en ven]]></string>
+    <string name="title_macro_user_password" introduced="5.0.0"><![CDATA[Bruger: Gendan adgangskode]]></string>
+    <string name="title_macros" introduced="5.0.0"><![CDATA[Available Macros]]></string>
+    <string name="title_news_create" introduced="5.0.0"><![CDATA[Opret Nyhedsbrev]]></string>
+    <string name="title_newsletters" introduced="5.0.0"><![CDATA[Nyhedsbreve]]></string>
+    <string name="title_overview" introduced="5.0.0"><![CDATA[Oversigt]]></string>
+    <string name="title_send_test" introduced="5.0.0"><![CDATA[Send Test Email]]></string>
+    <string name="title_sending" introduced="5.0.0"><![CDATA[Sending&hellip;]]></string>
+    <string name="title_template_clone" introduced="5.0.0"><![CDATA[Klone Template]]></string>
+    <string name="title_template_create" introduced="5.0.0"><![CDATA[Tilføj Template]]></string>
+    <string name="title_template_update" introduced="5.0.0"><![CDATA[Rediger Template]]></string>
+    <string name="title_templates" introduced="5.0.0"><![CDATA[Email Templates]]></string>
+  </group>
+  <group name="filemanager">
+    <string name="error_dl_1" introduced="5.0.0"><![CDATA[Denne overførsel er udløbet.]]></string>
+    <string name="error_dl_2" introduced="5.0.0"><![CDATA[Du har downloadet denne fil det maksimale tilladte antal gange.]]></string>
+    <string name="error_dl_3" introduced="5.2.9"><![CDATA[Det har ikke været muligt at lokalisere den downloade filen.]]></string>
+	<string name="error_dl_4" introduced="5.2.9"><![CDATA[Produktet mangler eller slettet.]]></string>
+	<string name="error_dl_5" introduced="5.2.9"><![CDATA[ngen rekord for denne download eksisterer]]></string>
+	<string name="error_dl_6" introduced="5.0.0"><![CDATA[Betaling skal være afsluttet inden filen kan downloades.]]></string>
+    <string name="error_file_delete" introduced="5.0.0"><![CDATA[Det lykkedes ikke at slette filen.]]></string>
+    <string name="error_file_moved" introduced="5.0.0"><![CDATA[Kunne ikke omdøbe / flytte filen.]]></string>
+    <string name="error_file_update" introduced="5.0.0"><![CDATA[Kunne ikke opdatere filen.]]></string>
+    <string name="error_file_upload" introduced="5.0.0"><![CDATA[File upload mislykkedes.]]></string>
+    <string name="error_file_upload_size" introduced="5.2.6"><![CDATA[%s er over %s. Upload web optimerede kun billeder.]]></string>
+    <string name="error_image_missing" introduced="5.0.0"><![CDATA[Billedet virker ikke længere. Alle henvisninger til det er blevet fjernet.]]></string>
+    <string name="error_image_update" introduced="5.0.0"><![CDATA[Kunne ikke redigere billede.]]></string>
+    <string name="error_list_update" introduced="5.0.0"><![CDATA[Kunne ikke opdatere fillisten.]]></string>
+    <string name="file_name" introduced="5.0.0"><![CDATA[Filenavn]]></string>
+    <string name="file_none" introduced="5.0.0"><![CDATA[Ingen filer fundet]]></string>
+    <string name="file_subfolder" introduced="5.0.0"><![CDATA[Undermappe]]></string>
+    <string name="file_type_dl" introduced="5.0.0"><![CDATA[Download]]></string>
+    <string name="file_type_image" introduced="5.0.0"><![CDATA[Billed]]></string>
+    <string name="file_upload" introduced="5.0.0"><![CDATA[Upload]]></string>
+    <string name="file_upload_note" introduced="5.2.6"><![CDATA[<strong>Vigtigt:</strong> Venligst kun uploade web optimerede billeder.]]></string>
+    <string name="folder_create" introduced="5.0.0"><![CDATA[Opret mappe]]></string>
+    <string name="notify_db_update" introduced="5.0.0"><![CDATA[Filemanager database heldigt genopbygget.]]></string>
+    <string name="notify_file_delete" introduced="5.0.0"><![CDATA[Fil slettet korrekt.]]></string>
+    <string name="notify_file_upload" introduced="5.0.0"><![CDATA[Fil (er) uploadet korrekt.]]></string>
+    <string name="notify_image_update" introduced="5.0.0"><![CDATA[Billede redigeret.]]></string>
+    <string name="notify_list_update" introduced="5.0.0"><![CDATA[Filliste opdateret.]]></string>
+    <string name="overwrite" introduced="5.0.0"><![CDATA[Overskriv, hvis der allerede findes?]]></string>
+    <string name="tab_crop" introduced="5.0.0"><![CDATA[Image Cropper]]></string>
+    <string name="tab_files" introduced="5.0.0"><![CDATA[Filer]]></string>
+    <string name="tab_rebuild" introduced="5.0.0"><![CDATA[Update Fil Liste]]></string>
+    <string name="title_file_edit" introduced="5.0.0"><![CDATA[Rediger File]]></string>
+    <string name="title_image_crop" introduced="5.0.0"><![CDATA[Crop Image]]></string>
+  </group>
+  <group name="form">
+    <string name="action" introduced="5.0.0"><![CDATA[Action]]></string>
+    <string name="check_uncheck" introduced="5.0.0"><![CDATA[Check/Uncheck alle]]></string>
+    <string name="ignore" introduced="5.0.0"><![CDATA[-- Ignore --]]></string>
+    <string name="mark_read" introduced="5.0.0"><![CDATA[Marker som Læst]]></string>
+    <string name="mark_unread" introduced="5.0.0"><![CDATA[Marker som Ulæst]]></string>
+    <string name="none" introduced="5.0.0"><![CDATA[-- None --]]></string>
+    <string name="please_select" introduced="5.0.0"><![CDATA[-- Vælg Venligst --]]></string>
+    <string name="select" introduced="5.0.0"><![CDATA[-- Vælg --]]></string>
+    <string name="select_all" introduced="5.0.0"><![CDATA[Vælg Alle]]></string>
+    <string name="sort" introduced="5.0.0"><![CDATA[Sort]]></string>
+    <string name="sort_by" introduced="5.0.0"><![CDATA[Sort af]]></string>
+    <string name="submit" introduced="5.0.0"><![CDATA[Send]]></string>
+    <string name="uncheck" introduced="5.0.0"><![CDATA[Uncheck alle]]></string>
+    <string name="verify_human" introduced="5.0.0"><![CDATA[Bevis du er menneske]]></string>
+    <string name="verify_human_fail" introduced="5.0.0"><![CDATA[Din verification kode var forkert. Prøv venligst igen.]]></string>
+    <string name="with_selected" introduced="5.0.0"><![CDATA[-- With Selected --]]></string>
+  </group>
+  <group name="gateway">
+    <string name="amount_due" introduced="5.0.0"><![CDATA[Beløb]]></string>
+    <string name="bank_account_name" introduced="5.0.0"><![CDATA[Konto navn]]></string>
+    <string name="bank_account_no" introduced="5.0.0"><![CDATA[Konto nummer]]></string>
+    <string name="bank_address" introduced="5.0.0"><![CDATA[Bank Adresse]]></string>
+    <string name="bank_name" introduced="5.0.0"><![CDATA[Bank Navn]]></string>
+    <string name="bank_sort_code" introduced="5.0.0"><![CDATA[Sort Kode]]></string>
+    <string name="bank_swift_code" introduced="5.0.0"><![CDATA[Swift Code]]></string>
+    <string name="bank_transfer" introduced="5.0.0"><![CDATA[Pay med Bank Overførsel]]></string>
+    <string name="card_expiry_date" introduced="5.0.0"><![CDATA[Udløbsdato]]></string>
+    <string name="card_issue_date" introduced="5.0.0"><![CDATA[Udstedelsesdatoen]]></string>
+    <string name="card_issue_no" introduced="5.0.0"><![CDATA[Udstedelse Nummer]]></string>
+    <string name="card_number" introduced="5.0.0"><![CDATA[Kort Nummer]]></string>
+    <string name="card_payment" introduced="5.0.0"><![CDATA[Betal med Kort]]></string>
+    <string name="card_security" introduced="5.0.0"><![CDATA[Kort Security Kode]]></string>
+    <string name="card_type" introduced="5.0.0"><![CDATA[Kort Type]]></string>
+    <string name="cheque_payable_to" introduced="5.0.0"><![CDATA[Vær kontrol der skal betales til]]></string>
+    <string name="cheque_payment" introduced="5.0.0"><![CDATA[Betal med Cheque]]></string>
+    <string name="make_payment" introduced="5.0.0"><![CDATA[Lav Betaling]]></string>
+    <string name="no_gateways" introduced="5.0.0"><![CDATA[Ingen betaling gateways er tilgængelige.]]></string>
+    <string name="pay_by_card" introduced="5.0.0"><![CDATA[Betal med betalingskort / kreditkort]]></string>
+    <string name="postal_address" introduced="5.0.0"><![CDATA[Postadresse]]></string>
+    <string name="postal_order" introduced="5.0.0"><![CDATA[Postal Order]]></string>
+    <string name="select" introduced="5.0.0"><![CDATA[Vælg Betalingsmetode]]></string>
+    <string name="transfer_progress" introduced="5.0.0"><![CDATA[Betalingsgateway fremskridt]]></string>
+    <string name="transferring" introduced="5.0.0"><![CDATA[Overførsel, vent venligst...]]></string>
+    <string name="plugins_link" introduced="5.2.2"><![CDATA[Alternative Kassen udbydere såsom <strong>Amazon Betaling</strong>, <strong>Google Checkout</strong> and <strong>PayPal</strong> can be found in the &quot;<a href="?_g=modules&type=plugins">Plugins</a>&quot; section.]]></string>
+  </group>
+  <group name="gui_message">
+    <string name="error" introduced="5.0.0"><![CDATA[Error]]></string>
+    <string name="errors_detected" introduced="5.0.0"><![CDATA[Følgende fejl blev opdaget:]]></string>
+    <string name="warning" introduced="5.0.0"><![CDATA[Advarsel]]></string>
+    <string name="error_oops" introduced="5.0.0"><![CDATA[Oops! Noget er galt!]]></string>
+    <string name="contact_support" introduced="5.0.0"><![CDATA[For support, skal du kontakte din tekniker support eller web-master.]]></string>
+    <string name="retry" introduced="5.0.0"><![CDATA[Refresh &amp; Prøv igen]]></string>
+  </group>
+  <group name="kroge">
+    <string name="error_hook_create" introduced="5.0.0"><![CDATA[Kunne ikke tilføje krog.]]></string>
+    <string name="error_hook_none" introduced="5.0.0"><![CDATA[Ingen kroge er defineret for dette plugin.]]></string>
+    <string name="error_hook_status" introduced="5.0.0"><![CDATA[Kunne ikke opdatere krog statusser.]]></string>
+    <string name="error_hook_update" introduced="5.0.0"><![CDATA[Kunne ikke opdatere krog.]]></string>
+    <string name="error_plugin_config" introduced="5.0.0"><![CDATA[Plugin konfigurationsfil indeholder en fejl.]]></string>
+    <string name="error_plugin_none" introduced="5.0.0"><![CDATA[Der er ingen installeret / aktiveret plugins.]]></string>
+    <string name="name" introduced="5.0.0"><![CDATA[Krog Navn]]></string>
+    <string name="notify_hook_create" introduced="5.0.0"><![CDATA[Krog succesfuldt tilføjet.]]></string>
+    <string name="notify_hook_magic" introduced="5.0.0"><![CDATA[Nye kroge opdages og registreres automatisk, når denne side er indlæst.]]></string>
+    <string name="notify_hook_status" introduced="5.0.0"><![CDATA[Krog statuses updated.]]></string>
+    <string name="notify_hook_update" introduced="5.0.0"><![CDATA[Krog successfully updated.]]></string>
+<string name="path_to_file" introduced="5.0.0"><![CDATA[Path to file]]></string>
+    <string name="title_hook" introduced="5.0.0"><![CDATA[Kroge]]></string>
+    <string name="title_hook_add" introduced="5.0.0"><![CDATA[Tilføj Krog]]></string>
+    <string name="title_hook_available" introduced="5.0.0"><![CDATA[Tilgændelige Kroge]]></string>
+    <string name="title_hook_configure" introduced="5.0.0"><![CDATA[Opsæt Krog]]></string>
+    <string name="title_hook_optional" introduced="5.0.0"><![CDATA[Valgfri Opsætning]]></string>
+    <string name="title_hook_required" introduced="5.0.0"><![CDATA[Krævet Opsætning]]></string>
+    <string name="title_plugin" introduced="5.0.0"><![CDATA[Plugin]]></string>
+    <string name="title_plugins" introduced="5.0.0"><![CDATA[Plugins]]></string>
+    <string name="title_plugins_installed" introduced="5.0.0"><![CDATA[Installed Plugins (enabled only)]]></string>
+    <string name="trigger" introduced="5.0.0"><![CDATA[Trigger]]></string>
+    <string name="unique_id" introduced="5.2.0"><![CDATA[Unik ID]]></string>
+    <string name="php_code" introduced="5.2.0"><![CDATA[PHP Code]]></string>
+    <string name="version" introduced="5.2.0"><![CDATA[Version]]></string>
+    <string name="error_snippet_none" introduced="5.2.0"><![CDATA[Ingen kode snippets.]]></string>
+    <string name="add_snippet" introduced="5.2.6"><![CDATA[Tilføj Snippet]]></string>
+    <string name="title_code_snippet_add" introduced="5.2.0"><![CDATA[Tilføj Kode Snippet]]></string>
+    <string name="title_code_snippet_edit" introduced="5.2.0"><![CDATA[Rediger Kode Snippet]]></string>
+    <string name="title_code_snippets" introduced="5.2.0"><![CDATA[Kode Snippets]]></string>
+    <string name="title_code_snippet" introduced="5.2.0"><![CDATA[Kode Snippet]]></string>
+    <string name="notify_snippet_deleted" introduced="5.2.0"><![CDATA[Kode snippet slettet]]></string>
+    <string name="notify_snippet_updated" introduced="5.2.0"><![CDATA[Kode snippet opdateret]]></string>
+    <string name="notify_snippet_added" introduced="5.2.0"><![CDATA[Kode snippet tilføjet]]></string>
+    <string name="notify_snippet_not_added" introduced="5.2.0"><![CDATA[Kunne ikke tilføje kodestykke. Kontroller unikt navn ikke allerede er i brug.]]></string>
+    <string name="title_import_code_snippets" introduced="5.2.0"><![CDATA[Importer Kode Snippets]]></string>
+    <string name="browse_for_file" introduced="5.2.0"><![CDATA[Gennemse for XML filer;]]></string>
+    <string name="php_tag_replace" introduced="5.2.0"><![CDATA[Udsift PHP tag med {php} og luk PHP tag med {/php} for at forhindre server sikkerhedsindstillinger blokerer din kode indsendelse.]]></string>
+    <string name="priority" introduced="5.2.0"><![CDATA[Udførelse Ordre]]></string>
+    <string name="notify_snippet_imported" introduced="5.2.0"><![CDATA[Kode importeret korrekt]]></string>
+    <string name="notify_snippet_import_failed" introduced="5.2.0"><![CDATA[Fejl ved importering af kode]]></string>
+    <string name="author" introduced="5.2.0"><![CDATA[Forfatter]]></string>
+    <string name="example_code_snippet_xml" introduced="5.2.0"><![CDATA[Et eksempel på en import XML-feed, kan findes <a href="docs/examples/code_snippet_import.xml">here</a>. Brug venligst &quot;Help&quot; link for mere information.]]></string>
+  </group>
+  <group name="maintain">
+    <string name="affected_rows" introduced="5.0.0"><![CDATA[Berørte rækker]]></string>
+    <string name="backup_options" introduced="5.0.0"><![CDATA[Backup Indstilling]]></string>
+    <string name="cache_clear" introduced="5.0.0"><![CDATA[Ryd cache]]></string>
+    <string name="cache_image" introduced="5.0.0"><![CDATA[Ryd billed cache]]></string>
+    <string name="cache_language" introduced="5.0.0"><![CDATA[Ryd sprog cache]]></string>
+    <string name="cache_sql" introduced="5.0.0"><![CDATA[Ryd SQL cache]]></string>
+    <string name="cache_search" introduced="5.0.0"><![CDATA[Ryd søge historik]]></string>
+    <string name="cache_warning" introduced="5.0.0"><![CDATA[*Advarsel* Dette kunne slette session-filer, som vil få dig og dine brugere at logge ud]]></string>
+    <string name="db_data" introduced="5.0.0"><![CDATA[Medtag data i backup]]></string>
+    <string name="db_drop_table" introduced="5.0.0"><![CDATA[Tilføj 'DROP TABLE' til strukturen]]></string>
+    <string name="db_structure" introduced="5.0.0"><![CDATA[Medtag database struktur]]></string>
+    <string name="db_with_selected" introduced="5.0.0"><![CDATA[Med valgte]]></string>
+    <string name="db_restored" introduced="5.1.0"><![CDATA[Databasen er blevet gendannet med succes.]]></string>
+    <string name="file_download_fail" introduced="5.2.8"><![CDATA[Pakke downloade mislykkedes - fil findes ikke. Sørg mappe backup eksisterer og er skrivbar!]]></string>
+    <string name="files_restore_fail" introduced="5.1.0"><![CDATA[Nogle eller alle filerne kunne ikke gendannes. Venligst uploade filer med en FTP client.]]></string>
+    <string name="files_restore_success" introduced="5.1.0"><![CDATA[Filer er blevet gendannet korrekt.]]></string>
+    <string name="files_upgrade_fail" introduced="5.1.0"><![CDATA[Opgrader fil udvinding mislykkedes. Venligst uploade filer med en FTP client og derefter køre setup script.]]></string>
+    <string name="files_upgrade_download_fail" introduced="5.1.0"><![CDATA[Det lykkedes ikke at hente nyeste version. Venligst forsøge manuel opgradering.]]></string>
+    <string name="backup_deleted" introduced="5.1.0"><![CDATA[Backup slettet.]]></string>
+    <string name="db_backup_complete" introduced="5.1.0"><![CDATA[Database backup komplet.]]></string>
+    <string name="db_backup_desc" introduced="5.1.0"><![CDATA[Vælg om du vil inkludere struktur og / eller data, og klik på backup for at skabe en eksport af din database. Bemærk venligst, at det kun er muligt at genoprette databasen, hvis hver er valgt bort fra kompression.]]></string>
+    <string name="files_backup_desc" introduced="5.1.0"><![CDATA[Klik på backup til at bygge et komprimeret arkiv af hele din butik.]]></string>
+    <string name="files_backup_complete" introduced="5.1.0"><![CDATA[Files backup komplet.]]></string>
+    <string name="db_backup_failed" introduced="5.1.0"><![CDATA[Database backup fejlede.]]></string>
+    <string name="restore_db_confirm" introduced="5.1.0"><![CDATA[Er du sikker på, at du vil gendanne denne database?]]></string>
+    <string name="restore_files_confirm" introduced="5.1.0"><![CDATA[Er du sikker på, at du vil gendanne disse filer?]]></string>
+    <string name="upgrade_now" introduced="5.1.0"><![CDATA[Upgrader Nu]]></string>
+    <string name="upgrade_to_latest" introduced="5.1.0"><![CDATA[Opgrader til nyeste version]]></string>
+    <string name="upgrade_to_latest_desc" introduced="5.1.0"><![CDATA[Sørg for at skabe et arbejdsmiljø backup af både din butik database og filer, før du opgraderer til den nyeste version. Når dette er gjort skal du klikke på nedenstående link for at opgradere til den nyeste version.]]></string>
+    <string name="latest_installed" introduced="5.1.0"><![CDATA[Din butik er i øjeblikket ved hjælp af den nyeste version. Klik force opgradering til gendanne til standard koden til denne version.]]></string>
+    <string name="force_upgrade" introduced="5.1.0"><![CDATA[Tving Upgrade]]></string>
+    <string name="delete_error_log" introduced="5.1.0"><![CDATA[Slet Fejl Log]]></string>
+    <string name="files_restore_not_possible" introduced="5.1.0"><![CDATA[Det er ikke muligt at genskabe filen.]]></string>
+    <string name="current_version_restored" introduced="5.1.0"><![CDATA[Den nuværende version er blevet genoprettet.]]></string>
+    <string name="error_cache_search" introduced="5.0.0"><![CDATA[Søg historie ikke blev slettet.]]></string>
+    <string name="error_cache_session" introduced="5.0.0"><![CDATA[Kan ikke slette session cache.]]></string>
+    <string name="error_db_backup_conflict" introduced="5.0.0"><![CDATA[Hvis du vælger 'Include Drop Table' så skal du også tjekke 'Include Structure']]></string>
+    <string name="error_db_backup_option" introduced="5.0.0"><![CDATA[Vælg mindst én backup option.]]></string>
+    <string name="error_db_none_selected" introduced="5.0.0"><![CDATA[Ingen tabeller valgt.]]></string>
+    <string name="error_logs_admin" introduced="5.0.0"><![CDATA[Kan ikke slette admin logs.]]></string>
+    <string name="error_logs_transaction" introduced="5.0.0"><![CDATA[Transaktionslogfiler blev ikke tømt.]]></string>
+    <string name="error_logs_error" introduced="5.0.0"><![CDATA[Fejllogs blev ikke tømt.]]></string>
+    <string name="error_logs_request" introduced="5.0.0"><![CDATA[Anmodning logs blev ikke tømt.]]></string>
+    <string name="error_reset_product" introduced="5.0.0"><![CDATA[Synspunkter produkt er ikke blevet nulstillet.]]></string>
+    <string name="logs_admin" introduced="5.0.0"><![CDATA[Ryd admin aktivitet logs]]></string>
+    <string name="logs_request" introduced="5.0.0"><![CDATA[Ryd anmodnings logs]]></string>
+    <string name="logs_error" introduced="5.0.0"><![CDATA[Ryd fejl logs]]></string>
+    <string name="logs_transaction" introduced="5.0.0"><![CDATA[Ryd transaction logs]]></string>
+    <string name="notify_cache_image" introduced="5.0.0"><![CDATA[Image cache blev ryddet.]]></string>
+    <string name="notify_cache_cleared" introduced="5.0.0"><![CDATA[Cache blev ryddet.]]></string>
+    <string name="notify_copyright" introduced="5.0.0"><![CDATA[Copyright nøgle er fjernet.]]></string>
+    <string name="notify_db_action" introduced="5.0.0"><![CDATA[Handling `%s TABLE` er blevet udført med succes.]]></string>
+    <string name="notify_logs_admin" introduced="5.0.0"><![CDATA[Admin logs succes tømt.]]></string>
+    <string name="notify_logs_error" introduced="5.0.0"><![CDATA[Fejllogfiler succes tømt.]]></string>
+    <string name="notify_logs_request" introduced="5.0.0"><![CDATA[Anmodning logs succes tømt.]]></string>
+    <string name="notify_logs_transaction" introduced="5.0.0"><![CDATA[Transaktionslogfiler succes tømt.]]></string>
+    <string name="notify_reset_product" introduced="5.0.0"><![CDATA[Produkter resat korrekt.]]></string>
+    <string name="notify_sitemap" introduced="5.0.0"><![CDATA[Sitemap.xml genbygget korrekt.]]></string>
+    <string name="notify_sitemap_fail" introduced="5.0.0"><![CDATA[Fejl ved genbygning af sitemap.]]></string>
+    <string name="no_query_entered" introduced="5.0.0"><![CDATA[Ingen forespørgsel indtastet]]></string>
+    <string name="expert_use_only" introduced="5.0.0"><![CDATA[ADVARSEL: Brug kun dette værktøj, hvis du er sikker på du ved hvad du gør!]]></string>
+    <string name="reset_views" introduced="5.0.0"><![CDATA[Nulstil Allé produkt tællere]]></string>
+    <string name="sitemap" introduced="5.0.0"><![CDATA[Genskab Sitemap]]></string>
+    <string name="tab_backup" introduced="5.0.0"><![CDATA[Backup]]></string>
+    <string name="tab_db" introduced="5.0.0"><![CDATA[Database]]></string>
+    <string name="tab_rebuild" introduced="5.0.0"><![CDATA[Genskab]]></string>
+    <string name="tab_query_sql" introduced="5.0.0"><![CDATA[Query Database (Advanced)]]></string>
+    <string name="table_name" introduced="5.0.0"><![CDATA[Tabel]]></string>
+    <string name="table_records" introduced="5.0.0"><![CDATA[Rekords]]></string>
+    <string name="table_engine" introduced="5.0.0"><![CDATA[Maskine]]></string>
+    <string name="table_prefix" introduced="5.0.0"><![CDATA[Præfiks]]></string>
+    <string name="table_collation" introduced="5.0.0"><![CDATA[Sortering]]></string>
+    <string name="table_size" introduced="5.0.0"><![CDATA[Størrelse]]></string>
+    <string name="table_overhead" introduced="5.0.0"><![CDATA[Overhead]]></string>
+    <string name="table_operation" introduced="5.0.0"><![CDATA[Operation]]></string>
+    <string name="table_message_type" introduced="5.0.0"><![CDATA[Besked Type]]></string>
+    <string name="table_message_text" introduced="5.0.0"><![CDATA[Besked Tekst]]></string>
+    <string name="title_db" introduced="5.0.0"><![CDATA[Database Maintenance]]></string>
+    <string name="title_db_backup" introduced="5.0.0"><![CDATA[Database Backup]]></string>
+    <string name="title_files_backup" introduced="5.1.0"><![CDATA[Files Backup]]></string>
+    <string name="title_existing_backups" introduced="5.1.0"><![CDATA[Existing Backups]]></string>
+    <string name="title_db_info" introduced="5.0.0"><![CDATA[<strong>MySQL %s</strong> kører på <strong>%s</strong> som <strong>%s@%s</strong>]]></string>
+    <string name="title_db_tables" introduced="5.0.0"><![CDATA[Tabbeller]]></string>
+    <string name="title_rebuild" introduced="5.0.0"><![CDATA[Genskab]]></string>
+    <string name="title_rebuild_cache" introduced="5.0.0"><![CDATA[Cache]]></string>
+    <string name="title_rebuild_catalogue" introduced="5.0.0"><![CDATA[Katalog]]></string>
+    <string name="title_rebuild_logs" introduced="5.0.0"><![CDATA[Logs]]></string>
+    <string name="title_rebuild_misc" introduced="5.0.0"><![CDATA[Diverse]]></string>
+    <string name="title_query_db" introduced="5.0.0"><![CDATA[Query MySQL Database]]></string>
+    <string name="query_box" introduced="5.0.0"><![CDATA[Query Boks]]></string>
+  </group>
+  <group name="module">
+    <string name="aff_sale" introduced="5.0.0"><![CDATA[Base on]]></string>
+    <string name="aff_sale_grand" introduced="5.0.0"><![CDATA[Grand Total]]></string>
+    <string name="aff_sale_sub" introduced="5.0.0"><![CDATA[Subtotal]]></string>
+    <string name="aff_track" introduced="5.0.0"><![CDATA[Log kommission at]]></string>
+    <string name="aff_track_complete" introduced="5.0.0"><![CDATA[Order Komplet side]]></string>
+    <string name="aff_track_gateway" introduced="5.0.0"><![CDATA[Betalings Side]]></string>
+    <string name="config_settings" introduced="5.0.0"><![CDATA[Opsætnings Indstilling]]></string>
+    <string name="cubecart_settings" introduced="5.0.0"><![CDATA[Modul Opsætning]]></string>
+    <string name="3rd_party_settings_desc" introduced="5.0.0"><![CDATA[De følgende skrivebeskyttede indstillinger skal indstilles inden for de 3. parter kontrolpanel-interface.]]></string>
+    <string name="description_options" introduced="5.2.5"><![CDATA[* Det er muligt at enten indtaste tekst såsom "Kredit Kort" eller indtaste en filsti til et billede.]]></string>
+    <string name="merchant_id" introduced="5.0.0"><![CDATA[Merchant ID]]></string>
+    <string name="notify_module_status" introduced="5.0.0"><![CDATA[Module statusopdateret.]]></string>
+    <string name="mode_test" introduced="5.0.0"><![CDATA[Test Mode]]></string>
+    <string name="not_supported" introduced="5.0.0"><![CDATA[Denne funktion understøttes ikke]]></string>
+    <string name="title_regions_add" introduced="5.0.0"><![CDATA[TilføjRegion]]></string>
+    <string name="title_regions_enabled" introduced="5.0.0"><![CDATA[Aktiver Regions]]></string>
+    <string name="title_regions_disabled" introduced="5.0.8"><![CDATA[De-aktiver Regions]]></string>
+    <string name="transaction_type" introduced="5.0.0"><![CDATA[Transaktion Type]]></string>
+    <string name="social_location" introduced="5.0.0"><![CDATA[Hvor at vise]]></string>
+    <string name="social_location_all" introduced="5.0.0"><![CDATA[Produkt Detaljer og Side Dokumenter]]></string>
+    <string name="social_location_product" introduced="5.0.0"><![CDATA[Produkt Detaljer Kun]]></string>
+    <string name="social_location_document" introduced="5.0.0"><![CDATA[Side Dokument Kun]]></string>
+    <string name="shipping_name_eg" introduced="5.0.0"><![CDATA[eks. Næste dag levering, gratis forsendelse osv. ...]]></string>
+    <string name="scope" introduced="5.1.5"><![CDATA[Anvendelsesområde]]></string>
+    <string name="both" introduced="5.1.5"><![CDATA[Både Main Website og Mobile Website]]></string>
+    <string name="main" introduced="5.1.5"><![CDATA[Main hjemmeside kun]]></string>
+    <string name="mobile" introduced="5.1.5"><![CDATA[Mobile hjemmeside kun]]></string>
+    <string name="position" introduced="5.2.0"><![CDATA[Prioritet]]></string>
+    <string name="mobile_optimized" introduced="5.2.0"><![CDATA[Dette modul er optimeret til mobile enheder.]]></string>
+  </group>
+  <group name="navigation">
+    <string name="error_401" introduced="5.0.0"><![CDATA[Du har ikke de korrekte rettigheder til at udføre den pågældende handling.]]></string>
+    <string name="giftcerts" introduced="5.0.0"><![CDATA[Gavekort]]></string>
+    <string name="homepage" introduced="5.0.0"><![CDATA[Hjem]]></string>
+    <string name="nav_access_log" introduced="5.0.0"><![CDATA[Staff Access Log]]></string>
+    <string name="nav_administrators" introduced="5.0.0"><![CDATA[Administrators]]></string>
+    <string name="nav_advanced" introduced="5.0.0"><![CDATA[Advanced]]></string>
+    <string name="nav_affiliate" introduced="5.0.0"><![CDATA[Affiliate Trackers]]></string>
+    <string name="nav_archives" introduced="5.0.0"><![CDATA[Arkiv]]></string>
+    <string name="nav_cat_export" introduced="5.0.0"><![CDATA[Export Katalog]]></string>
+    <string name="nav_cat_import" introduced="5.0.0"><![CDATA[Import Katalog]]></string>
+    <string name="nav_categories" introduced="5.0.0"><![CDATA[Kategorier]]></string>
+    <string name="nav_certificates" introduced="5.0.0"><![CDATA[Gavekort]]></string>
+    <string name="nav_contact_form" introduced="5.0.0"><![CDATA[Kontakt Form]]></string>
+    <string name="nav_coupons" introduced="5.0.0"><![CDATA[Kupon]]></string>
+    <string name="nav_currencies" introduced="5.0.0"><![CDATA[Valutaer]]></string>
+    <string name="nav_customer_list" introduced="5.0.0"><![CDATA[Kunde Liste]]></string>
+    <string name="nav_customers" introduced="5.0.0"><![CDATA[Kunder]]></string>
+    <string name="nav_documents" introduced="5.0.0"><![CDATA[Dokument]]></string>
+    <string name="nav_downloads" introduced="5.0.0"><![CDATA[Downloads]]></string>
+    <string name="nav_email_templates" introduced="5.0.0"><![CDATA[Email Templates]]></string>
+    <string name="nav_error_log" introduced="5.0.0"><![CDATA[Error Log]]></string>
+    <string name="nav_request_log" introduced="5.0.0"><![CDATA[Anmodning Log]]></string>
+    <string name="nav_external" introduced="5.0.0"><![CDATA[External Software]]></string>
+    <string name="nav_file_manager" introduced="5.0.0"><![CDATA[File Manager]]></string>
+    <string name="nav_gateway" introduced="5.0.0"><![CDATA[Betaling Gateways]]></string>
+    <string name="nav_images" introduced="5.0.0"><![CDATA[Billeder]]></string>
+    <string name="nav_installer" introduced="5.0.0"><![CDATA[Installer]]></string>
+    <string name="nav_inventory" introduced="5.0.0"><![CDATA[Indhold]]></string>
+    <string name="nav_languages" introduced="5.0.0"><![CDATA[Sprog]]></string>
+    <string name="nav_livehelp" introduced="5.0.0"><![CDATA[Live Hjælp]]></string>
+    <string name="nav_maintenance" introduced="5.0.0"><![CDATA[Maintenance]]></string>
+    <string name="nav_manage_hooks" introduced="5.0.0"><![CDATA[Håndter Kroge]]></string>
+    <string name="nav_manufacturers" introduced="5.0.0"><![CDATA[Producenter]]></string>
+    <string name="nav_modules" introduced="5.0.0"><![CDATA[Modules]]></string>
+    <string name="nav_newsletters" introduced="5.0.0"><![CDATA[Nyhedsbrev]]></string>
+    <string name="nav_orders" introduced="5.0.0"><![CDATA[Ordre]]></string>
+    <string name="nav_plugins" introduced="5.0.0"><![CDATA[Plugins]]></string>
+    <string name="nav_prod_reviews" introduced="5.0.0"><![CDATA[Anmeldelse]]></string>
+    <string name="nav_product_options" introduced="5.0.0"><![CDATA[Produkt Indstilling]]></string>
+    <string name="nav_products" introduced="5.0.0"><![CDATA[Produkter]]></string>
+    <string name="nav_regions" introduced="5.0.0"><![CDATA[Lande/Zoner]]></string>
+    <string name="nav_sales_reports" introduced="5.0.0"><![CDATA[Salgs Reports]]></string>
+    <string name="nav_server_info" introduced="5.0.0"><![CDATA[PHP Info]]></string>
+    <string name="nav_settings" introduced="5.0.0"><![CDATA[Settings]]></string>
+    <string name="nav_settings_store" introduced="5.0.0"><![CDATA[Butik Settings]]></string>
+    <string name="nav_shipping" introduced="5.0.0"><![CDATA[Forsendelse Methods]]></string>
+    <string name="nav_social" introduced="5.0.0"><![CDATA[Social Plugins]]></string>
+    <string name="nav_statistics" introduced="5.0.0"><![CDATA[Statistics]]></string>
+    <string name="nav_taxes" introduced="5.0.0"><![CDATA[Skat]]></string>
+    <string name="nav_transaction_logs" introduced="5.0.0"><![CDATA[Transaction Logs]]></string>
+    <string name="saleitems" introduced="5.0.0"><![CDATA[Sælg Vare]]></string>
+    <string name="search_results" introduced="5.0.0"><![CDATA[Søg results]]></string>
+    <string name="seo_path_saleitems" introduced="5.0.0"><![CDATA[sale-items]]></string>
+    <string name="seo_path_search" introduced="5.0.0"><![CDATA[search]]></string>
+    <string name="seo_path_certificates" introduced="5.0.0"><![CDATA[gift-certificates]]></string>
+    <string name="seo_path_trackback" introduced="5.0.0"><![CDATA[trackback]]></string>
+    <string name="seo_path_contact" introduced="5.0.0"><![CDATA[contact-us]]></string>
+    <string name="seo_path_register" introduced="5.0.0"><![CDATA[register]]></string>
+    <string name="seo_path_login" introduced="5.0.0"><![CDATA[login]]></string>
+    <string name="title" introduced="5.0.0"><![CDATA[Kategorier]]></string>
+  </group>
+  <group name="newsletter">
+    <string name="click_to_subscribe" introduced="5.0.0"><![CDATA[Klik her for at abonnere.]]></string>
+    <string name="click_to_unsubscribe" introduced="5.0.0"><![CDATA[Klik her for at afmelde.]]></string>
+    <string name="customer_is_subscribed" introduced="5.0.0"><![CDATA[Du er i øjeblikket tilmeldt vores nyhedsbrev.]]></string>
+    <string name="customer_not_subscribed" introduced="5.0.0"><![CDATA[Du er ikke ved at blive sendt vores nyhedsbrev via e-mail.]]></string>
+    <string name="customer_subscribed" introduced="5.0.0"><![CDATA[Abonnerer på nyhedsbrev?]]></string>
+    <string name="email_subscribed" introduced="5.0.0"><![CDATA[Din e-mail-adresse er blevet tilmeldt vores mailingliste.]]></string>
+    <string name="email_invalid" introduced="5.0.0"><![CDATA[Den e-mail adresse indtastet var ikke gyldig.]]></string>
+    <string name="enter_email_signup" introduced="5.0.0"><![CDATA[Indtast din e-mail adresse for at modtage vores nyhedsbrev]]></string>
+    <string name="enter_email_subscribe_unsubscribe" introduced="5.0.0"><![CDATA[Indtast venligst din e-mailadresse nedenfor for at tilmelde eller framelde dig vores nyhedsbrev.]]></string>
+    <string name="error_email_verified" introduced="5.0.0"><![CDATA[Der var en fejl at kontrollere din e-mail-adresse.]]></string>
+    <string name="error_subscribed" introduced="5.0.0"><![CDATA[Du har enten susbcribed allerede, eller e-mail-adresse indtastet var ikke gyldig.]]></string>
+    <string name="mailing_list" introduced="5.0.0"><![CDATA[Mailing List]]></string>
+    <string name="newsletters" introduced="5.0.0"><![CDATA[Nyhedsbrev]]></string>
+    <string name="no_archived_newsletters" introduced="5.0.0"><![CDATA[Der er ingen arkiverede nyhedsbreve tilgængelige.]]></string>
+    <string name="notify_email_verified" introduced="5.0.0"><![CDATA[Din e-mail-adresse er blevet bekræftet.]]></string>
+    <string name="notify_subscribed" introduced="5.0.0"><![CDATA[Din e-mail-adresse er blevet tilføjet til vores mailingliste.]]></string>
+    <string name="notify_unsubscribed" introduced="5.0.0"><![CDATA[Din e-mail-adresse er blevet fjernet fra vores mailingliste.]]></string>
+    <string name="subscribe" introduced="5.0.0"><![CDATA[Tilmeld]]></string>
+    <string name="subscribe_now" introduced="5.0.0"><![CDATA[Tilmeld Nu]]></string>
+    <string name="subscription" introduced="5.0.0"><![CDATA[Abonnement]]></string>
+    <string name="view_newsletter_archive" introduced="5.0.0"><![CDATA[Se vores Nyhedsbrev arkiv.]]></string>
+  </group>
+  <group name="notification">
+    <string name="confirm_cancel" introduced="5.2.8"><![CDATA[Er du sikker på, du vil annullere?]]></string>
+    <string name="cookie_dialogue" introduced="5.0.0"><![CDATA[&quot;%s&quot; vil gerne placere cookies på din computer for at hjælpe os med at gøre denne hjemmeside bedre. For at finde ud af mere om cookies, se vores privacy policy.]]></string>
+    <string name="cookie_dialogue_declaration" introduced="5.0.0"><![CDATA[Jeg accepterer cookies fra dette site.]]></string>
+    <string name="confirm_delete" introduced="5.0.0"><![CDATA[Er du sikker på du ønsker at slette?]]></string>
+    <string name="confirm_revert" introduced="5.0.0"><![CDATA[Er du sikker på du ønsker at vende?]]></string>
+    <string name="confirm_update" introduced="5.0.0"><![CDATA[Er du sikker på, du vil opdatere?]]></string>
+    <string name="confirm_continue" introduced="5.1.0"><![CDATA[Er du sikker på, du vil fortsætte?]]></string>
+    <string name="created" introduced="5.0.0"><![CDATA[Tak, din konto blevet oprettet.]]></string>
+    <string name="error_module_settings" introduced="5.0.0"><![CDATA[Kunne ikke gemme indstillinger for %s.]]></string>
+    <string name="error_privileges" introduced="5.0.0"><![CDATA[Du har ikke de korrekte rettigheder til at udføre den pågældende handling.]]></string>
+    <string name="no_downloads_available" introduced="5.0.0"><![CDATA[Ingen downloads er tilgængelige.]]></string>
+    <string name="notify_failed_add" introduced="5.0.0"><![CDATA[%s ikke tilføjet]]></string>
+    <string name="notify_failed_delete" introduced="5.0.0"><![CDATA[%s ikke slettet]]></string>
+    <string name="notify_failed_update" introduced="5.0.0"><![CDATA[%s ikke opdateret]]></string>
+    <string name="notify_module_settings" introduced="5.0.0"><![CDATA[Module indstilling for &quot;%s&quot; gemt.]]></string>
+    <string name="notify_success_add" introduced="5.0.0"><![CDATA[%s tilføjet]]></string>
+    <string name="notify_success_delete" introduced="5.0.0"><![CDATA[%s slettet]]></string>
+    <string name="notify_success_update" introduced="5.0.0"><![CDATA[%s opdateret]]></string>
+  </group>
+  <group name="order_state">
+    <string name="desc_1" introduced="5.0.0"><![CDATA[Ordre er blevet oprettet og medarbejdere afventer betaling før eventuelle yderligere foranstaltninger vil blive truffet. Denne ordre kan automatisk blive annulleret, hvis betalingen ikke er foretaget af en bestemt tidsramme.]]></string>
+    <string name="desc_2" introduced="5.0.0"><![CDATA[Betaling kan eller har ikke ryddet eller ordren ikke er blevet behandlet endnu.]]></string>
+    <string name="desc_3" introduced="5.0.0"><![CDATA[Ordre er blevet betalt og afsendt. Varer bør ankomme kort. Sporing oplysninger kan være tilgængelige.]]></string>
+    <string name="desc_4" introduced="5.0.0"><![CDATA[Ordre er blevet afvist. Yderligere oplysninger kan være tilgængelige i orden noter.]]></string>
+    <string name="desc_5" introduced="5.0.0"><![CDATA[Betaling for ordre har undladt ekstern / intern svindel.]]></string>
+    <string name="desc_6" introduced="5.0.0"><![CDATA[Ordre er blevet annulleret. Årsager til ordreannullering skal vise i din bestilling noter. Bemærk, at nye ordrer, som ikke er blevet betalt for inden for en bestemt tidsramme automatisk kan annulleres.]]></string>
+    <string name="name_1" introduced="5.0.0"><![CDATA[Afventer]]></string>
+    <string name="name_2" introduced="5.0.0"><![CDATA[Behandles]]></string>
+    <string name="name_3" introduced="5.0.0"><![CDATA[Ordre Komplet]]></string>
+    <string name="name_4" introduced="5.0.0"><![CDATA[Afvist]]></string>
+    <string name="name_5" introduced="5.0.0"><![CDATA[Mislykket Svig anmeldelse]]></string>
+    <string name="name_6" introduced="5.0.0"><![CDATA[Annuleret]]></string>
+  </group>
+  <group name="orders">
+    <string name="card_card_cvv" introduced="5.0.0"><![CDATA[Sikkerhedskode]]></string>
+    <string name="card_card_details" introduced="5.0.0"><![CDATA[Kredit Kort Detaljer]]></string>
+    <string name="card_card_expire" introduced="5.0.0"><![CDATA[Udløbs Dato]]></string>
+    <string name="card_card_issue" introduced="5.0.0"><![CDATA[Udstedelse Nummer]]></string>
+    <string name="card_card_number" introduced="5.0.0"><![CDATA[Kort Nummer]]></string>
+    <string name="card_card_type" introduced="5.0.0"><![CDATA[Kort Type]]></string>
+    <string name="card_card_valid" introduced="5.0.0"><![CDATA[Gyldig fra]]></string>
+    <string name="card_delete" introduced="5.0.0"><![CDATA[Slet Kort Detaljer]]></string>
+    <string name="change_order_status" introduced="5.0.0"><![CDATA[Skift status til:]]></string>
+    <string name="customer_name" introduced="5.0.0"><![CDATA[Kundens navn]]></string>
+    <string name="dashboard_show" introduced="5.0.0"><![CDATA[Vis på Dashboard (ingen orden)]]></string>
+    <string name="error_card_delete" introduced="5.0.0"><![CDATA[Det lykkedes ikke at slette kortoplysninger.]]></string>
+    <string name="error_global_risk" introduced="5.0.0"><![CDATA[ADVARSEL: Den vigtigste konfigurationsfil, "includes / global.inc.php ', er skrivbar og din butik er i fare. Venligst ændre filrettigheder, så det er kun læsbar.]]></string>
+    <string name="error_login_previous" introduced="5.0.0"><![CDATA[Sidste login af %s, fejlede %s.]]></string>
+    <string name="error_order_create" introduced="5.0.0"><![CDATA[Kunne ikke skabe ordren.]]></string>
+    <string name="error_order_delete" introduced="5.0.0"><![CDATA[Kunne ikke slette ordre.]]></string>
+    <string name="error_order_update" introduced="5.0.0"><![CDATA[Kunne ikke opdatere ordre.]]></string>
+    <string name="error_orders_delete" introduced="5.0.0"><![CDATA[Kunne ikke slette valgte ordrer.]]></string>
+    <string name="error_print_generate" introduced="5.0.0"><![CDATA[Det har ikke været muligt at frembringe det printbar fil.]]></string>
+    <string name="error_search_logs" introduced="5.0.0"><![CDATA[Ingen logs fundet der matcher &quot;%s&quot;]]></string>
+    <string name="error_search_result" introduced="5.0.0"><![CDATA[Ingen ordrer er blevet fundet der matcher dine søgekriterier.]]></string>
+    <string name="error_setup_folder" introduced="5.0.0"><![CDATA[ADVARSEL: folder opsætning CubeCart 'setup /', der stadig findes på din server. Det skal straks slettes, eller din butik vil være i fare.]]></string>
+    <string name="certificate_codes_used" introduced="5.0.0"><![CDATA[Gavekort Bruges:]]></string>
+    <string name="discount_codes_used" introduced="5.0.0"><![CDATA[Rabat Koder Bruges:]]></string>
+    <string name="gateway_name" introduced="5.0.0"><![CDATA[Gateway]]></string>
+    <string name="my_order" introduced="5.0.0"><![CDATA[Mine Ordre]]></string>
+    <string name="note_content" introduced="5.0.0"><![CDATA[Note Indhold]]></string>
+    <string name="note_from" introduced="5.0.0"><![CDATA[Note fra]]></string>
+    <string name="note_explain_viewable" introduced="5.0.0"><![CDATA[Disse noter er ikke synlig for kunden]]></string>
+    <string name="notify_card_delete" introduced="5.0.0"><![CDATA[Kortoplysninger slettet.]]></string>
+    <string name="notify_login_previous" introduced="5.0.0"><![CDATA[Sidste login af %s den %s var korrekt.]]></string>
+    <string name="notify_order_cancelled" introduced="5.0.0"><![CDATA[Din ordre er blevet annulleret.]]></string>
+    <string name="notify_order_create" introduced="5.0.0"><![CDATA[Ordre oprettet korrekt.]]></string>
+    <string name="notify_order_delete" introduced="5.0.0"><![CDATA[Ordre slettet korrekt.]]></string>
+    <string name="notify_order_update" introduced="5.0.0"><![CDATA[Ordre opdateret korrekt.]]></string>
+    <string name="notify_orders_by" introduced="5.0.0"><![CDATA[Ordrer fra %1$s %2$s]]></string>
+    <string name="notify_orders_delete" introduced="5.0.0"><![CDATA[Udvalgte ordrer er blevet slettet.]]></string>
+    <string name="notify_orders_none" introduced="5.0.0"><![CDATA[Ingen ordre fundet.]]></string>
+    <string name="notify_orders_status" introduced="5.0.0"><![CDATA[Ordrestatusser er blevet opdateret.]]></string>
+    <string name="notify_search_logs" introduced="5.0.0"><![CDATA[Logs fundet matching &quot;%s&quot;]]></string>
+    <string name="notify_search_result" introduced="5.0.0"><![CDATA[Ordrer er blevet fundet der matcher dine søgekriterier.]]></string>
+    <string name="option_delete" introduced="5.0.0"><![CDATA[slet ordre]]></string>
+    <string name="option_nothing" introduced="5.0.0"><![CDATA[gør ingenting]]></string>
+    <string name="option_print" introduced="5.0.0"><![CDATA[udskrive en faktura]]></string>
+    <string name="option_status_no_change" introduced="5.0.0"><![CDATA[Du må ikke ændre ordrestatus]]></string>
+    <string name="order_number" introduced="5.0.0"><![CDATA[Ordre Nummer]]></string>
+    <string name="reset_download_link" introduced="5.0.0"><![CDATA[Reset Download Link]]></string>
+    <string name="search" introduced="5.0.0"><![CDATA[Søg Ordre]]></string>
+    <string name="shipping_date" introduced="5.0.0"><![CDATA[Fremsendelsesdatoen]]></string>
+    <string name="shipping_method" introduced="5.0.0"><![CDATA[Forsendelse Metode]]></string>
+    <string name="shipping_tracking" introduced="5.0.0"><![CDATA[Forsendelse Tracking Kode]]></string>
+    <string name="tab_billing" introduced="5.0.0"><![CDATA[Fakturering]]></string>
+    <string name="tab_delivery" introduced="5.0.0"><![CDATA[Levering]]></string>
+    <string name="tab_history" introduced="5.0.0"><![CDATA[Historik]]></string>
+    <string name="tab_inventory" introduced="5.0.0"><![CDATA[Indhold]]></string>
+    <string name="tab_orders_create" introduced="5.0.0"><![CDATA[Opret Ordre]]></string>
+    <string name="tab_orders_overview" introduced="5.0.0"><![CDATA[Ordre Oversigt]]></string>
+    <string name="tab_orders_search" introduced="5.0.0"><![CDATA[Søg Ordre]]></string>
+    <string name="tab_overview" introduced="5.0.0"><![CDATA[Oversigt]]></string>
+    <string name="title_card_details" introduced="5.0.0"><![CDATA[Kredit Kort Detaljer]]></string>
+    <string name="title_customer" introduced="5.0.0"><![CDATA[Kunder]]></string>
+    <string name="title_find_customers" introduced="5.0.0"><![CDATA[Find Kunde]]></string>
+    <string name="title_invoice_x" introduced="5.0.0"><![CDATA[Bestil Faktura - %s]]></string>
+    <string name="title_invoices" introduced="5.0.0"><![CDATA[Fakturaer]]></string>
+    <string name="title_note_add" introduced="5.0.0"><![CDATA[Tilføj Note]]></string>
+    <string name="title_notes_extra" introduced="5.0.0"><![CDATA[Yderlige Notes]]></string>
+    <string name="title_order_history" introduced="5.0.0"><![CDATA[Ordre Historik]]></string>
+    <string name="title_order_inventory" introduced="5.0.0"><![CDATA[Ordre Indhold]]></string>
+    <string name="title_order_notes" introduced="5.0.0"><![CDATA[Ordre Notes]]></string>
+    <string name="title_order_status" introduced="5.0.0"><![CDATA[Ordre Status]]></string>
+    <string name="title_order_summary" introduced="5.0.0"><![CDATA[Ordre Resume]]></string>
+    <string name="title_orders" introduced="5.0.0"><![CDATA[Ordre]]></string>
+    <string name="title_receipt_for" introduced="5.0.0"><![CDATA[Kvittering for]]></string>
+    <string name="title_search" introduced="5.0.0"><![CDATA[Søg ved ordre Detaljer]]></string>
+    <string name="title_shipping" introduced="5.0.0"><![CDATA[Forsendelse Information]]></string>
+    <string name="title_status_change" introduced="5.0.0"><![CDATA[Skift Status]]></string>
+    <string name="title_thanks" introduced="5.0.0"><![CDATA[Tak fordi de handlede hos os.]]></string>
+    <string name="title_transaction_logs" introduced="5.0.0"><![CDATA[Transaction Logs]]></string>
+    <string name="title_transaction_logs_for_order" introduced="5.0.0"><![CDATA[Transaction Logs for Order %s]]></string>
+    <string name="title_transaction_view" introduced="5.0.0"><![CDATA[Se Transaction]]></string>
+    <string name="transaction_id" introduced="5.0.0"><![CDATA[Transaction ID]]></string>
+    <string name="with_selected" introduced="5.0.0"><![CDATA[Med Valgte]]></string>
+  </group>
+  <group name="recaptcha">
+    <string name="enter_both_words" introduced="5.0.0"><![CDATA[Indtast begge ord, adskilt med et mellemrum:]]></string>
+    <string name="enter_the_numbers" introduced="5.0.0"><![CDATA[Indtast de tal, du hører:]]></string>
+    <string name="reload_numbers" introduced="5.0.0"><![CDATA[Kan ikke høre numrene? Prøv <a href="%1$s">different numbers</a>, or <a href="%2$s">look at an image</a>.]]></string>
+    <string name="reload_words" introduced="5.0.0"><![CDATA[Kan ikke læse ordene ovenstående? Prøv <a href="%1$s">different words</a>, or <a href="%2$s">listen to the audio</a>.]]></string>
+  </group>
+  <group name="reports">
+    <string name="data" introduced="5.0.0"><![CDATA[Data]]></string>
+    <string name="sales_data" introduced="5.0.0"><![CDATA[Salgsdata]]></string>
+    <string name="tab_results" introduced="5.0.0"><![CDATA[Resultat]]></string>
+    <string name="title_reports_from" introduced="5.0.0"><![CDATA[Salgs raport fra %s]]></string>
+    <string name="title_reports_from_to" introduced="5.0.0"><![CDATA[Salgs raport fra %1$s til %2$s]]></string>
+  </group>
+  <group name="reviews">
+    <string name="error_review_delete" introduced="5.0.0"><![CDATA[Det lykkedes ikke at slette bedømmelse.]]></string>
+    <string name="error_review_update" introduced="5.0.0"><![CDATA[Kunne ikke opdatere bedømmelse.]]></string>
+    <string name="error_reviews_none" introduced="5.0.0"><![CDATA[Ingen anmeldelser er foretaget.]]></string>
+    <string name="filter_approved" introduced="5.0.0"><![CDATA[Viser godkendte anmeldelser]]></string>
+    <string name="filter_by_product" introduced="5.0.0"><![CDATA[Filter ved Produkt]]></string>
+    <string name="filter_unapproved" introduced="5.0.0"><![CDATA[Viser godkendte anmeldelser]]></string>
+    <string name="notify_review_delete" introduced="5.0.0"><![CDATA[Anmeldelser slettet.]]></string>
+    <string name="notify_review_status" introduced="5.0.0"><![CDATA[Anmeldelse statusser opdateres.]]></string>
+    <string name="notify_review_update" introduced="5.0.0"><![CDATA[Anmeldelser er opdateret.]]></string>
+    <string name="title_reviews" introduced="5.0.0"><![CDATA[Produkt Anmeldelse]]></string>
+    <string name="title_bulk_delete" introduced="5.2.5"><![CDATA[Bulk Slet]]></string>
+    <string name="bulk_delete_desc" introduced="5.2.5"><![CDATA[Hvis du vil slette flere anmeldelser på en gang skal du indtaste en IP-adresse og / eller e-mail-adresse og klikke &quot;Send&quot;. Dette kan ikke fortrydes.]]></string>
+    <string name="notify_review_deleted" introduced="5.2.5"><![CDATA[Anmeldelser succesfuldt slettet.]]></string>
+    <string name="notify_review_delete_fail" introduced="5.2.5"><![CDATA[Ingen anmeldelser blev slettet.]]></string>
+    <string name="title_review_edit" introduced="5.0.0"><![CDATA[Rediger Anmeldelse]]></string>
+    <string name="title_review_search" introduced="5.0.0"><![CDATA[Søg Anmeldelse]]></string>
+  </group>
+  <group name="search">
+    <string name="advanced" introduced="5.0.0"><![CDATA[Advanced søgning]]></string>
+    <string name="date_range" introduced="5.0.0"><![CDATA[Dato Interval]]></string>
+    <string name="featured_only" introduced="5.0.0"><![CDATA[Udvalgte Produkter Kun]]></string>
+    <string name="in_stock" introduced="5.0.0"><![CDATA[På Lager]]></string>
+    <string name="input_default" introduced="5.0.0"><![CDATA[Søg i vores butik]]></string>
+    <string name="keywords" introduced="5.0.0"><![CDATA[Nøgleord]]></string>
+    <string name="price_range" introduced="5.0.0"><![CDATA[Pris Interval]]></string>
+    <string name="title_by_date" introduced="5.0.0"><![CDATA[Søg by Dato]]></string>
+    <string name="title_filter" introduced="5.0.0"><![CDATA[Report Filter]]></string>
+    <string name="title_search_customers" introduced="5.0.0"><![CDATA[Søg Kunder]]></string>
+    <string name="title_search_orders" introduced="5.0.0"><![CDATA[Søg Ordre]]></string>
+    <string name="title_search_products" introduced="5.0.0"><![CDATA[Søg Produkt]]></string>
+  </group>
+  <group name="settings">
+  	<string name="admin_order_status_notification" introduced="5.0.0"><![CDATA[Ordrestatus for admin e-mail meddelelser]]></string>
+    <string name="analyze" introduced="5.0.0"><![CDATA[Analyze]]></string>
+    <string name="allowed_zones" introduced="5.0.0"><![CDATA[Tillad Zoner]]></string>
+    <string name="disabled_zones" introduced="5.0.8"><![CDATA[Fravælg Zoner]]></string>
+    <string name="allow_no_shipping" introduced="5.0.5"><![CDATA[Tillad ingen forsendelse]]></string>
+    <string name="disable_shipping_groups" introduced="5.0.8"><![CDATA[Fravælg Forsendelse Gruppe]]></string>
+    <string name="archive_create" introduced="5.0.0"><![CDATA[Opret en ny butik arkiv. Afhængig af størrelsen af din beholdning, kan dette tage nogen tid.]]></string>
+    <string name="basket_jump_to" introduced="5.0.0"><![CDATA[Hop til Indkøbskurv ved tilføjelse]]></string>
+    <string name="bread_tax" introduced="5.0.0"><![CDATA[Skat]]></string>
+    <string name="cache_enable" introduced="5.0.0"><![CDATA[Vælg Caching]]></string>
+    <string name="category_directory_symbol" introduced="5.0.0"><![CDATA[Kategori bibliotek separator symbol]]></string>
+    <string name="category_display_empty" introduced="5.0.0"><![CDATA[Vis Tomme Kategorier]]></string>
+    <string name="category_expand_tree" introduced="5.0.0"><![CDATA[Udvid kategori navigationstræ]]></string>
+    <string name="category_has_subcat" introduced="5.0.0"><![CDATA[Denne Kategori indeholder %d underkategorier]]></string>
+    <string name="category_has_subcats" introduced="5.0.0"><![CDATA[Denne Kategori indeholder %d underkategorier]]></string>
+    <string name="category_id" introduced="5.0.0"><![CDATA[ID]]></string>
+    <string name="category_images" introduced="5.0.0"><![CDATA[Kategori Billed]]></string>
+    <string name="category_name" introduced="5.0.0"><![CDATA[Kategori Navn]]></string>
+    <string name="category_parent" introduced="5.0.0"><![CDATA[Hoved Kategori]]></string>
+    <string name="catalogue_mode" introduced="5.0.0"><![CDATA[Deaktiver Checkout (Katalog tilstand)]]></string>
+    <string name="changes_not_made" introduced="5.0.0"><![CDATA[Der er ikke foretaget ændringer.]]></string>
+    <string name="check" introduced="5.0.0"><![CDATA[Check]]></string>
+    <string name="cookie_dialogue" introduced="5.0.0"><![CDATA[Enable EU Cookie Compliance]]></string>
+    <string name="currency_decimal_places" introduced="5.0.0"><![CDATA[Decimalpladser]]></string>
+    <string name="currency_ecb" introduced="5.0.0"><![CDATA[Hent Priser]]></string>
+    <string name="currency_exchange_rate" introduced="5.0.0"><![CDATA[Exchange Rate]]></string>
+    <string name="currency_iso" introduced="5.0.0"><![CDATA[ISO Code]]></string>
+    <string name="currency_name" introduced="5.0.0"><![CDATA[Valuta Navn]]></string>
+    <string name="currency_symbol_left" introduced="5.0.0"><![CDATA[Symbol Venstre]]></string>
+    <string name="currency_symbol_right" introduced="5.0.0"><![CDATA[Symbol Højre]]></string>
+    <string name="currency_updated" introduced="5.0.0"><![CDATA[Sidst opdateret]]></string>
+    <string name="debug_enable" introduced="5.0.0"><![CDATA[Enable Debugging]]></string>
+    <string name="debug_ip_addresses" introduced="5.1.0"><![CDATA[Begræns debug til IP-adresse (kommaseparerede)]]></string>
+    <string name="default_currency" introduced="5.0.0"><![CDATA[Standard Valuta]]></string>
+    <string name="default_language" introduced="5.0.0"><![CDATA[Standard Sprog]]></string>
+    <string name="default_rss" introduced="5.0.0"><![CDATA[Default RSS URL for Admin Dashboard]]></string>
+    <string name="digital_attempts" introduced="5.0.0"><![CDATA[Maksimale download forsøg]]></string>
+    <string name="digital_custom_root" introduced="5.0.0"><![CDATA[Custom root file path]]></string>
+    <string name="digital_expiry" introduced="5.0.0"><![CDATA[Download udløb tid (i sekunder)]]></string>
+    <string name="disable_checkout_terms" introduced="5.0.0"><![CDATA[Deaktiver vilkår og betingelser afkrydsningsfeltet på kassen]]></string>
+    <string name="disable_mobile_skin" introduced="5.1.1"><![CDATA[Deaktiver mobil skin]]></string>
+    <string name="dispatch_to_non_invoice" introduced="5.0.0"><![CDATA[Tillad levering til ikke-faktura adresse]]></string>
+    <string name="dispatch_date_format" introduced="5.2.6"><![CDATA[Dispatch Date Format]]></string>
+    <string name="update_main_stock" introduced="5.2.6"><![CDATA[Main bestand niveau som resumé matrix lagerbeholdningen]]></string>
+    <string name="email_disable_alert" introduced="5.0.0"><![CDATA[Deaktivér nye ordens advarsler]]></string>
+    <string name="email_method" introduced="5.0.0"><![CDATA[Sende Metoder]]></string>
+    <string name="email_method_mail" introduced="5.0.0"><![CDATA[PHP mail() Function]]></string>
+    <string name="email_method_smtp" introduced="5.0.0"><![CDATA[SMTP]]></string>
+    <string name="email_sender_address" introduced="5.0.0"><![CDATA[Afsenderens e-mail-adresse]]></string>
+    <string name="email_sender_name" introduced="5.0.0"><![CDATA[Afsenders navn]]></string>
+    <string name="enable_reviews" introduced="5.0.0"><![CDATA[Aktiver Produkt Anmeldelser / Kommentarer]]></string>
+    <string name="error_archive_delete" introduced="5.0.0"><![CDATA[Kunne ikke slettet arkiv.]]></string>
+    <string name="error_archive_restore" introduced="5.0.0"><![CDATA[Vælg et arkiv til at gendanne fra.]]></string>
+    <string name="error_category_create" introduced="5.0.0"><![CDATA[Undladt at skabe kategori.]]></string>
+    <string name="error_category_delete" introduced="5.0.0"><![CDATA[Det lykkedes ikke at slette kategori.]]></string>
+    <string name="error_category_delete_cats" introduced="5.0.0"><![CDATA[Det lykkedes ikke at slette kategori, da det indeholder 1 eller flere underkategorier.]]></string>
+    <string name="error_category_delete_prod" introduced="5.0.0"><![CDATA[Det lykkedes ikke at slette kategori, da det indeholder 1 eller flere produkter.]]></string>
+    <string name="error_category_status" introduced="5.0.0"><![CDATA[Der er ikke foretaget ændringer i kategorierne status eller display ordre.]]></string>
+    <string name="error_category_update" introduced="5.0.0"><![CDATA[Kunne ikke opdatere kategori.]]></string>
+    <string name="error_currency_add" introduced="5.0.0"><![CDATA[Kunne ikke tilføje valuta.]]></string>
+    <string name="error_currency_delete" introduced="5.0.0"><![CDATA[Det lykkedes ikke at slette valuta.]]></string>
+    <string name="error_currency_rates_update" introduced="5.0.0"><![CDATA[Kunne ikke opdatere Valutakurser.]]></string>
+    <string name="error_htaccess_create" introduced="5.0.0"><![CDATA[.htaccess file kunne ikke skrives, derfor skal du oprette den manuelt ved hjælp af en FTP-klient eller web hosting filemanager.]]></string>
+    <string name="error_htaccess_update" introduced="5.0.0"><![CDATA[Ikke opdateres. Htaccess fil, skal du oprette den manuelt ved hjælp af en FTP-klient eller web hosting filemanager.]]></string>
+    <string name="error_js_required" introduced="5.0.0"><![CDATA[For at få fuld Kontrolpanel funktionalitet, skal du aktivere JavaScript i din browser.]]></string>
+    <string name="error_logo_upload" introduced="5.0.0"><![CDATA[Kunne ikke uploade logo.]]></string>
+    <string name="error_module_install" introduced="5.0.0"><![CDATA[Modul blev ikke installeret.]]></string>
+    <string name="error_settings_update" introduced="5.0.0"><![CDATA[Kunne opdaterede indstillinger.]]></string>
+    <string name="error_settings_verify" introduced="5.0.0"><![CDATA[Bekræft venligst din butik konfiguration. Nogle funktioner virker måske ikke efter hensigten, indtil du gør.]]></string>
+    <string name="error_tax_class_add" introduced="5.0.0"><![CDATA[Kunne ikke tilføje Skat.]]></string>
+    <string name="error_tax_class_delete" introduced="5.0.0"><![CDATA[Kunne ikke slette Skat.]]></string>
+    <string name="error_tax_detail_add" introduced="5.0.0"><![CDATA[Kunne ikke tilføje Skat Detaljer.]]></string>
+    <string name="error_tax_detail_delete" introduced="5.0.0"><![CDATA[Det lykkedes ikke at slette Skat.]]></string>
+    <string name="error_tax_rule_add" introduced="5.0.0"><![CDATA[Kunne ikke tilføje skatteregel.]]></string>
+    <string name="error_tax_rule_delete" introduced="5.0.0"><![CDATA[Det lykkedes ikke at slette skatteregel.]]></string>
+    <string name="expire_pending" introduced="5.0.0"><![CDATA[Tid (i sekunder) før ventende ordre udløber]]></string>
+    <string name="feed_access_key" introduced="5.1.5"><![CDATA[Product Feed Access Password]]></string>
+    <string name="force_completed" introduced="5.2.6"><![CDATA[Tving Ordre Komplet email]]></string>
+    <string name="gc_images" introduced="5.2.6"><![CDATA[Gavekort Billede]]></string>
+    <string name="gc_settings_legend" introduced="5.0.0"><![CDATA[Indstilling]]></string>
+    <string name="gc_expiry" introduced="5.0.0"><![CDATA[Gyldighedsperiode (Måneder)]]></string>
+    <string name="gc_type_both" introduced="5.0.0"><![CDATA[Digitale og fysiske]]></string>
+    <string name="gc_type_digital" introduced="5.0.0"><![CDATA[Digitale Kun]]></string>
+    <string name="gc_type_physical" introduced="5.0.0"><![CDATA[Fysiske Kun]]></string>
+    <string name="gc_value_max" introduced="5.0.0"><![CDATA[Maximum Værdi]]></string>
+    <string name="gc_value_min" introduced="5.0.0"><![CDATA[Minimum Værdi]]></string>
+    <string name="gc_weight" introduced="5.0.0"><![CDATA[Vægt (Af fysiske beviser)]]></string>
+    <string name="google_analytics" introduced="5.0.0"><![CDATA[Google Analytics]]></string>
+    <string name="google_analytics_id" introduced="5.0.0"><![CDATA[Google Analytics ID]]></string>
+    <string name="hide_prices" introduced="5.0.0"><![CDATA[Skjul priser indtil logget ind]]></string>
+    <string name="htaccess_error" introduced="5.0.0"><![CDATA[(Dette kan ikke sættes til ja, indtil. Htaccess filen findes i butikkerne rodmappen.)]]></string>
+    <string name="logo_all_skins" introduced="5.0.0"><![CDATA[Alle Skins]]></string>
+    <string name="logo_all_styles" introduced="5.0.0"><![CDATA[Alle Styles]]></string>
+    <string name="matrix_in_use" introduced="5.2.6"><![CDATA[(Matrix lager level i brug kun!)]]></string>
+    <string name="message_marked_read" introduced="5.0.0"><![CDATA[Besked markeret som læst.]]></string>
+    <string name="message_marked_unread" introduced="5.0.0"><![CDATA[Besked markeret som ikke læst.]]></string>
+    <string name="no_admin_affect" introduced="5.1.0"><![CDATA[(Påvirker ikke admin)]]></string>
+    <string name="no_skip_processing_check" introduced="5.0.0"><![CDATA[Kontroller ikke oversete ordrebehandling email]]></string>
+    <string name="notify_archive_create" introduced="5.0.0"><![CDATA[Arkiv oprettet.]]></string>
+    <string name="notify_archive_delete" introduced="5.0.0"><![CDATA[Arkiv slettet.]]></string>
+    <string name="notify_archive_restore" introduced="5.0.0"><![CDATA[Succesfuld gendannes fra arkivet.]]></string>
+    <string name="notify_category_create" introduced="5.0.0"><![CDATA[Kategori oprettet.]]></string>
+    <string name="notify_category_delete" introduced="5.0.0"><![CDATA[Kategori slettet.]]></string>
+    <string name="notify_category_status" introduced="5.0.0"><![CDATA[Kategorier status og display rækkefølge gemt.]]></string>
+    <string name="notify_category_update" introduced="5.0.0"><![CDATA[Kategori blev opdateret.]]></string>
+    <string name="notify_currency_add" introduced="5.0.0"><![CDATA[Valuta Tilføjet.]]></string>
+    <string name="notify_currency_delete" introduced="5.0.0"><![CDATA[Valuta %s slettet.]]></string>
+    <string name="notify_currency_rates_update" introduced="5.0.0"><![CDATA[Valutakurser opdateres.]]></string>
+    <string name="notify_currency_rates_update_fail" introduced="5.0.0"><![CDATA[Kunne ikke hente valutakurser. Husk at opdatere manuelt.]]></string>
+    <string name="notify_htaccess_create" introduced="5.0.0"><![CDATA[.htaccess fil skrevet korrekt.]]></string>
+    <string name="notify_htaccess_update" introduced="5.0.0"><![CDATA[.htaccess fil opdateret.]]></string>
+    <string name="notify_logo_upload" introduced="5.0.0"><![CDATA[Logo uploaded.]]></string>
+    <string name="notify_module_install" introduced="5.0.0"><![CDATA[Module installeret korrekt.]]></string>
+    <string name="notify_settings_update" introduced="5.0.0"><![CDATA[Settings opdatering.]]></string>
+    <string name="notify_tax_class_add" introduced="5.0.0"><![CDATA[Skat tilføjet.]]></string>
+    <string name="notify_tax_class_delete" introduced="5.0.0"><![CDATA[Skat slettet.]]></string>
+    <string name="notify_tax_detail_add" introduced="5.0.0"><![CDATA[Skat Detalje tilføjet.]]></string>
+    <string name="notify_tax_detail_delete" introduced="5.0.0"><![CDATA[Skat Detaljer slettet.]]></string>
+    <string name="notify_tax_rule_add" introduced="5.0.0"><![CDATA[Skatteregler tilføjet.]]></string>
+    <string name="notify_tax_rule_delete" introduced="5.0.0"><![CDATA[Skatteregler slettet.]]></string>
+    <string name="notify_tax_updated" introduced="5.0.0"><![CDATA[Tax Settings updated]]></string>
+    <string name="offline_admin" introduced="5.0.0"><![CDATA[Tillad admin adgang til at gemme, mens offline?]]></string>
+    <string name="offline_enable" introduced="5.0.0"><![CDATA[Luk butikken?]]></string>
+    <string name="offline_message" introduced="5.0.0"><![CDATA[Offline Besked]]></string>
+    <string name="optimize" introduced="5.0.0"><![CDATA[Optimize]]></string>
+    <string name="product_clone_acats" introduced="5.1.0"><![CDATA[yderligere kategorier]]></string>
+    <string name="product_clone_code" introduced="5.1.0"><![CDATA[Produkt kode]]></string>
+    <string name="product_clone_images" introduced="5.1.0"><![CDATA[Billed]]></string>
+    <string name="product_clone_new_code" introduced="5.1.0"><![CDATA[Generate]]></string>
+    <string name="product_clone_old_code" introduced="5.1.0"><![CDATA[Klone]]></string>
+    <string name="product_clone_options" introduced="5.1.0"><![CDATA[Produkt indstilling]]></string>
+    <string name="product_clone_options_matrix" introduced="5.1.0"><![CDATA[Produkt indstilling matrix]]></string>
+    <string name="product_clone_translations" introduced="5.1.0"><![CDATA[Oversættelse]]></string>
+    <string name="product_clone_redirect" introduced="5.1.0"><![CDATA[Omdirigere til klonede produkt detaljer]]></string>
+    <string name="product_clone_hide" introduced="5.1.0"><![CDATA[Fravælg og Gem knap]]></string>
+    <string name="product_latest" introduced="5.0.0"><![CDATA[Vis 'Nyeste produkter' på hjemmesiden?]]></string>
+    <string name="product_latest_number" introduced="5.0.0"><![CDATA[Antal »Nyeste produkter 'at vise]]></string>
+    <string name="product_per_page" introduced="5.0.0"><![CDATA[Produkter pr side]]></string>
+    <string name="product_popular" introduced="5.0.0"><![CDATA[Række populære produkter at vise]]></string>
+    <string name="product_popular_source" introduced="5.0.0"><![CDATA[Source data for populære produkter]]></string>
+    <string name="product_popular_views" introduced="5.0.0"><![CDATA[Produktvisninger]]></string>
+    <string name="product_popular_sales" introduced="5.0.0"><![CDATA[Produktsalg]]></string>
+    <string name="product_precis" introduced="5.0.0"><![CDATA[Længde af produkt]]></string>
+    <string name="proxy_enable" introduced="5.0.0"><![CDATA[Does this server use a proxy?]]></string>
+    <string name="proxy_host" introduced="5.0.0"><![CDATA[Proxy Host]]></string>
+    <string name="proxy_pass" introduced="5.0.0"><![CDATA[Proxy Password]]></string>
+    <string name="proxy_port" introduced="5.0.0"><![CDATA[Proxy Port]]></string>
+    <string name="proxy_user" introduced="5.0.0"><![CDATA[Proxy Username]]></string>
+    <string name="recaptcha_enable" introduced="5.0.0"><![CDATA[Tilvælg reCAPTCHA]]></string>
+    <string name="repair" introduced="5.0.0"><![CDATA[reparation]]></string>
+    <string name="sales_items_count" introduced="5.0.0"><![CDATA[Antal salg emner at vise]]></string>
+    <string name="sales_mode" introduced="5.0.0"><![CDATA[Salgs Mode]]></string>
+    <string name="sales_percentage" introduced="5.0.0"><![CDATA[Global procent rabat]]></string>
+    <string name="sales_per_product" introduced="5.0.0"><![CDATA[Pr-produkt]]></string>
+    <string name="seo_browser_title" introduced="5.0.0"><![CDATA[Browser Title]]></string>
+    <string name="seo_path" introduced="5.0.0"><![CDATA[Brugerdefineret SEO URL Path]]></string>
+    <string name="seo_enable" introduced="5.0.0"><![CDATA[Aktiver SEO URLs]]></string>
+    <string name="seo_format" introduced="5.0.0"><![CDATA[SEO URL Format]]></string>
+    <string name="seo_htaccess" introduced="5.0.0"><![CDATA[.htaccess file content]]></string>
+    <string name="seo_htaccess_install" introduced="5.0.0"><![CDATA[Install .htaccess]]></string>
+    <string name="seo_meta_behaviour" introduced="5.0.0"><![CDATA[Produkt, kategori & Document metadata]]></string>
+    <string name="seo_meta_description" introduced="5.0.0"><![CDATA[Meta Beskrivelse]]></string>
+    <string name="seo_meta_keywords" introduced="5.0.0"><![CDATA[Meta Keywords]]></string>
+    <string name="seo_meta_option_disable" introduced="5.0.0"><![CDATA[Deaktiveret (Brug globalt meta-data kun)]]></string>
+    <string name="seo_meta_option_merge" introduced="5.0.0"><![CDATA[Merge meta data (Recommended)]]></string>
+    <string name="seo_meta_option_replace" introduced="5.0.0"><![CDATA[Replace global meta data]]></string>
+    <string name="seo_meta_title" introduced="5.0.0"><![CDATA[Meta Title]]></string>
+    <string name="seo_method_lookback" introduced="5.0.0"><![CDATA[Apache directory lookback]]></string>
+    <string name="seo_method_rewrite" introduced="5.0.0"><![CDATA[Apache RewriteRule (Recommended)]]></string>
+    <string name="seo_path_taken" introduced="5.0.0"><![CDATA[The SEO path specified is already in use with another item. A unique one has been specified for you. Please check and amend if necessary.]]></string>
+    <string name="seo_rebuild" introduced="5.0.0"><![CDATA[Rebuild SEO?]]></string>
+    <string name="seo_rebuild_description" introduced="5.0.0"><![CDATA[Ønsker du at genopbygge SEO path?]]></string>
+    <string name="ship_per_item" introduced="5.0.0"><![CDATA[Pr Vare]]></string>
+    <string name="ship_per_item_intl" introduced="5.0.0"><![CDATA[Pr vare (International)]]></string>
+    <string name="ship_per_order" introduced="5.0.0"><![CDATA[Pr Forsendelse]]></string>
+    <string name="ship_per_order_intl" introduced="5.0.0"><![CDATA[Pr Forsendelse (International)]]></string>
+    <string name="skins_allow_change" introduced="5.0.0"><![CDATA[Tillad brugere at ændre Side skin?]]></string>
+    <string name="skins_default_admin" introduced="5.0.0"><![CDATA[Standard Admin skin]]></string>
+    <string name="skins_default_front" introduced="5.0.0"><![CDATA[Standard forside skin]]></string>
+    <string name="skins_mobile_default_front" introduced="5.1.0"><![CDATA[Standard forside mobile skin]]></string>
+    <string name="show_basket_weight" introduced="5.0.0"><![CDATA[Vis indkøbskurv vægt ved checkud]]></string>
+    <string name="smtp_auth" introduced="5.0.0"><![CDATA[Brug SMTP Godkendelse (Normalt Krævet)]]></string>
+    <string name="smtp_host" introduced="5.0.0"><![CDATA[Udgående SMTP Host]]></string>
+    <string name="smtp_pass" introduced="5.0.0"><![CDATA[SMTP Password]]></string>
+    <string name="smtp_port" introduced="5.0.0"><![CDATA[Udgående SMTP Port (Standard 25)]]></string>
+    <string name="smtp_user" introduced="5.0.0"><![CDATA[SMTP Brugernavn]]></string>
+    <string name="ssl_enable" introduced="5.0.0"><![CDATA[Aktiver SSL]]></string>
+    <string name="ssl_force" introduced="5.0.0"><![CDATA[Tving SSL mode på alle sider]]></string>
+    <string name="ssl_root_path" introduced="5.0.0"><![CDATA[SSL root path]]></string>
+    <string name="cookie_domain" introduced="5.2.9"><![CDATA[Cookie Domain]]></string>
+    <string name="ssl_url" introduced="5.0.0"><![CDATA[SSL Butik URL]]></string>
+    <string name="standard_url" introduced="5.0.0"><![CDATA[Standard Store URL]]></string>
+    <string name="stock_allow_oos" introduced="5.0.0"><![CDATA[Tillad udsolgt indkøb]]></string>
+    <string name="stock_reduce" introduced="5.0.0"><![CDATA[Reducer lagerbeholdningen]]></string>
+    <string name="stock_reduce_basket" introduced="5.0.0"><![CDATA[Når de lægges i kurven]]></string>
+    <string name="stock_reduce_complete" introduced="5.0.0"><![CDATA[Når ordren er fuldført]]></string>
+    <string name="stock_reduce_pending" introduced="5.0.0"><![CDATA[Når ordren er placeret (Afventer)]]></string>
+    <string name="stock_reduce_process" introduced="5.0.0"><![CDATA[Når betalingen er foretaget (Processing)]]></string>
+    <string name="stock_show" introduced="5.0.0"><![CDATA[Vis lager levels]]></string>
+    <string name="stock_warning_level" introduced="5.0.0"><![CDATA[Global lager advarsel level]]></string>
+    <string name="stock_warning_limit" introduced="5.2.2"><![CDATA[Lager Advarsel pr side]]></string>
+    <string name="stock_warning_method" introduced="5.0.0"><![CDATA[Admin Lager advarsel metode]]></string>
+    <string name="stock_warning_method_global" introduced="5.0.0"><![CDATA[Brug Global lager advarsel level]]></string>
+    <string name="stock_warning_method_product" introduced="5.0.0"><![CDATA[Brug produkt-specifikt level]]></string>
+    <string name="store_name" introduced="5.0.0"><![CDATA[Butik Navn]]></string>
+    <string name="store_root" introduced="5.0.0"><![CDATA[Store Root Path]]></string>
+    <string name="store_status" introduced="5.0.0"><![CDATA[Storefront Status]]></string>
+    <string name="store_url" introduced="5.0.0"><![CDATA[Store URL]]></string>
+    <string name="tab_advanced" introduced="5.0.0"><![CDATA[Advanced]]></string>
+    <string name="tab_copyright" introduced="5.0.0"><![CDATA[Copyright]]></string>
+    <string name="tab_currency_add" introduced="5.0.0"><![CDATA[Tilføj Valuta]]></string>
+    <string name="tab_currency_rate" introduced="5.0.0"><![CDATA[Valutakurser]]></string>
+    <string name="tab_features" introduced="5.0.0"><![CDATA[Funktioner]]></string>
+    <string name="tab_layout" introduced="5.0.0"><![CDATA[Layout]]></string>
+    <string name="tab_logos" introduced="5.0.0"><![CDATA[Logos]]></string>
+    <string name="tab_offline" introduced="5.0.0"><![CDATA[Offline]]></string>
+    <string name="tab_seo" introduced="5.0.0"><![CDATA[Søge MAskine]]></string>
+    <string name="tab_ssl" introduced="5.0.0"><![CDATA[SSL]]></string>
+    <string name="tab_stock" introduced="5.0.0"><![CDATA[Lager]]></string>
+    <string name="tax_apply_to" introduced="5.0.0"><![CDATA[Send Til]]></string>
+    <string name="tax_class" introduced="5.0.0"><![CDATA[Skat Class]]></string>
+    <string name="tax_class_name" introduced="5.0.0"><![CDATA[Skat Class Navn]]></string>
+    <string name="tax_customer" introduced="5.0.0"><![CDATA[Tilføj moms til kvalificerede kunder]]></string>
+    <string name="tax_customer_by" introduced="5.0.0"><![CDATA[Beskat kunden]]></string>
+    <string name="tax_delete" introduced="5.0.0"><![CDATA[WARNING: Sletning af dette vil også slette alle skattemæssige regler, der er afhængige af det. Er du sikker på du ønsker at fortsætte?]]></string>
+    <string name="tax_detail" introduced="5.0.0"><![CDATA[Skat Detaljer]]></string>
+    <string name="tax_name" introduced="5.0.0"><![CDATA[Unik Navn]]></string>
+    <string name="tax_name_display" introduced="5.0.0"><![CDATA[Vis Som]]></string>
+    <string name="tax_number" introduced="5.0.0"><![CDATA[Reg. Nummer]]></string>
+    <string name="tax_on_goods" introduced="5.0.0"><![CDATA[Varer]]></string>
+    <string name="tax_on_shipping" introduced="5.0.0"><![CDATA[Forsendelse]]></string>
+    <string name="tax_rate" introduced="5.0.0"><![CDATA[Skat Rate]]></string>
+    <string name="time_format" introduced="5.0.0"><![CDATA[Tids Format]]></string>
+    <string name="time_utc_offset" introduced="5.0.0"><![CDATA[UTC Offset]]></string>
+    <string name="time_zone" introduced="5.0.0"><![CDATA[Tidszone]]></string>
+    <string name="title_advanced" introduced="5.0.0"><![CDATA[Advanceret Opsætning]]></string>
+    <string name="title_archives" introduced="5.0.0"><![CDATA[Arkiv]]></string>
+    <string name="title_archives_create" introduced="5.0.0"><![CDATA[Opret Arkiv]]></string>
+    <string name="title_archives_existing" introduced="5.0.0"><![CDATA[Eksisterende Arkiv]]></string>
+    <string name="title_archives_restore" introduced="5.0.0"><![CDATA[Genskab fra arkiv]]></string>
+    <string name="title_category" introduced="5.0.0"><![CDATA[Kategorier]]></string>
+    <string name="title_categories" introduced="5.0.0"><![CDATA[Kategorier]]></string>
+    <string name="title_category_add" introduced="5.0.0"><![CDATA[Tilføj Kategori]]></string>
+    <string name="title_category_details" introduced="5.0.0"><![CDATA[Kategori Detaljer]]></string>
+    <string name="title_copyright" introduced="5.0.0"><![CDATA[Copyright Text]]></string>
+    <string name="title_currency" introduced="5.0.0"><![CDATA[Valutaer]]></string>
+    <string name="title_currency_add" introduced="5.0.0"><![CDATA[Tilføj Valuta]]></string>
+    <string name="title_description" introduced="5.0.0"><![CDATA[Beskrivelse]]></string>
+    <string name="title_digital" introduced="5.0.0"><![CDATA[Digital Produkt]]></string>
+    <string name="title_display" introduced="5.0.0"><![CDATA[Layout Opsætning]]></string>
+    <string name="title_error_log" introduced="5.0.0"><![CDATA[Error Log]]></string>
+    <string name="title_admin_error_log" introduced="5.0.0"><![CDATA[Admin Error Log]]></string>
+    <string name="title_system_error_log" introduced="5.0.0"><![CDATA[System Error Log]]></string>
+    <string name="title_extra" introduced="5.1.0"><![CDATA[Extra Settings]]></string>
+    <string name="title_features" introduced="5.0.0"><![CDATA[Feature Settings]]></string>
+    <string name="title_flood" introduced="5.0.0"><![CDATA[Spam Prevention]]></string>
+    <string name="title_geographical" introduced="5.0.0"><![CDATA[Geographical Settings]]></string>
+    <string name="title_hide_out_of_stock" introduced="5.1.0"><![CDATA[Gem udsolgte produkter]]></string>
+    <string name="title_images" introduced="5.0.0"><![CDATA[Images]]></string>
+    <string name="title_layout" introduced="5.0.0"><![CDATA[Layout Settings]]></string>
+    <string name="title_logo" introduced="5.0.0"><![CDATA[Store Logos]]></string>
+    <string name="title_logo_current" introduced="5.0.0"><![CDATA[Current Logos]]></string>
+    <string name="title_logo_upload" introduced="5.0.0"><![CDATA[Upload Logo]]></string>
+    <string name="title_logs" introduced="5.0.0"><![CDATA[Logs]]></string>
+    <string name="title_logs_access_admin" introduced="5.0.0"><![CDATA[Admin Access]]></string>
+    <string name="title_logs_access_customer" introduced="5.0.0"><![CDATA[Kunde Adgang]]></string>
+    <string name="title_logs_activity_admin" introduced="5.0.0"><![CDATA[Admin Activitet]]></string>
+    <string name="title_offline" introduced="5.0.0"><![CDATA[Offline Settings]]></string>
+    <string name="title_orders" introduced="5.0.0"><![CDATA[Orders]]></string>
+    <string name="title_performance" introduced="5.0.0"><![CDATA[Performance]]></string>
+    <string name="title_popular_latest" introduced="5.0.0"><![CDATA[Popular & nyeste produkter]]></string>
+    <string name="title_product_clone" introduced="5.1.0"><![CDATA[Produkt Klone]]></string>
+    <string name="title_proxy" introduced="5.0.0"><![CDATA[Proxy Indstilling]]></string>
+    <string name="title_sales" introduced="5.0.0"><![CDATA[Salg]]></string>
+    <string name="title_seo" introduced="5.0.0"><![CDATA[Søge Maskine Indstilling]]></string>
+    <string name="title_seo_add_cats" introduced="5.2.8"><![CDATA[Kategori navn i nyt produkt URL]]></string>
+    <string name="title_seo_meta_behaviour" introduced="5.0.0"><![CDATA[Global Meta Data Opførsel]]></string>
+    <string name="title_seo_meta_data" introduced="5.0.0"><![CDATA[Meta Data]]></string>
+    <string name="title_seo_urls" introduced="5.0.0"><![CDATA[Søge Maskine Optimeret (SEO) URLs]]></string>
+    <string name="title_shipping" introduced="5.0.0"><![CDATA[Forsendelse]]></string>
+    <string name="title_shipping_costs" introduced="5.0.0"><![CDATA[Forsendelse Pris]]></string>
+    <string name="title_skins" introduced="5.0.0"><![CDATA[Skin Indstilling]]></string>
+    <string name="title_ssl" introduced="5.0.0"><![CDATA[SSL Indstilling]]></string>
+    <string name="title_stock" introduced="5.0.0"><![CDATA[Lager Indstilling]]></string>
+    <string name="title_stock_general" introduced="5.0.0"><![CDATA[General Lager Indstillinger]]></string>
+    <string name="title_tax_class" introduced="5.0.0"><![CDATA[Skat Classes]]></string>
+    <string name="title_tax_class_add" introduced="5.0.0"><![CDATA[Tilføj Tax Class]]></string>
+    <string name="title_tax_class_current" introduced="5.0.0"><![CDATA[Nuværende Tax Classes]]></string>
+    <string name="title_tax_detail" introduced="5.0.0"><![CDATA[Skat Detailjer]]></string>
+    <string name="title_tax_detail_add" introduced="5.0.0"><![CDATA[Tilføj Skat Detailjer]]></string>
+    <string name="title_tax_detail_current" introduced="5.0.0"><![CDATA[Nuværende Skat Detailjer]]></string>
+    <string name="title_tax_lang" introduced="5.0.0"><![CDATA[Skat, Sprog, og Valuta]]></string>
+    <string name="title_tax_rule" introduced="5.0.0"><![CDATA[Skatteregler]]></string>
+    <string name="title_tax_rule_add" introduced="5.0.0"><![CDATA[Tilføj skatregler]]></string>
+    <string name="title_tax_rule_current" introduced="5.0.0"><![CDATA[Nuværende Skal Regler]]></string>
+    <string name="title_time_date" introduced="5.0.0"><![CDATA[Tid & Dato]]></string>
+    <string name="title_trackbacks" introduced="5.0.0"><![CDATA[Blog Trackbacks]]></string>
+    <string name="title_welcome_back" introduced="5.0.0"><![CDATA[Velkommen tilbage]]></string>
+    <string name="weight_unit" introduced="5.0.0"><![CDATA[Vægt Enhed]]></string>
+    <string name="title_licence_keys" introduced="5.0.0"><![CDATA[Licence Keys]]></string>
+    <string name="software_licence_key" introduced="5.0.0"><![CDATA[Software Licence Key]]></string>
+    <string name="current_value" introduced="5.0.0"><![CDATA[Nuværende værdi]]></string>
+    <string name="new_value" introduced="5.0.0"><![CDATA[Ny Værdi]]></string>
+    <string name="copyright_key" introduced="5.0.0"><![CDATA[Branding / Copyright Removal Key]]></string>
+    <string name="licence_key_changed" introduced="5.0.0"><![CDATA[Your software licence key has been changed.]]></string>
+    <string name="weight_unit_kg" introduced="5.0.0"><![CDATA[Metric (Kg)]]></string>
+    <string name="weight_unit_lb" introduced="5.0.0"><![CDATA[Imperial (lb)]]></string>
+    <string name="default_product_sort" introduced="5.2.0"><![CDATA[Product List Sorting]]></string>
+  </group>
+  <group name="setup">
+  	<string name="error_strict_mode" introduced="5.1.5"><![CDATA[WARNING: MySQL is running in &quot;Strict Mode&quot;. This must be disabled for your store to operate correctly.]]></string>
+    <string name="already_upgraded" introduced="5.0.0"><![CDATA[Din butik er allerede blevet opgraderet. Ingen yderligere handling er påkrævet.]]></string>
+    <string name="button_restart" introduced="5.0.0"><![CDATA[Start Igen]]></string>
+    <string name="button_retry" introduced="5.0.0"><![CDATA[Prøv Igen]]></string>
+    <string name="default_doc_title_welcome" introduced="5.0.0"><![CDATA[Velkommen til CubeCart 5]]></string>
+    <string name="default_doc_title_about" introduced="5.0.0"><![CDATA[Om Os]]></string>
+    <string name="default_doc_title_terms" introduced="5.0.0"><![CDATA[Vilkår og betingelser]]></string>
+    <string name="default_doc_title_privacy" introduced="5.0.0"><![CDATA[Privat Politik]]></string>
+    <string name="default_doc_content" introduced="5.0.0"><![CDATA[Dette kan forvaltes under <span class="navTitle">Dokumenter i admin kontrolpanel.</span>]]></string>
+    <string name="default_doc_content_welcome" introduced="5.0.0"><![CDATA[Denne meddelelse kan redigeres med <strong><span style="color: red;">Rich</span> <span style="color: blue;">Text</span> <span style="color: green;">Editor</span></strong> som kan bruges til at tilføje levende indhold til hjælpe med at sælge dine produkter. Dette kan findes på admin side af din butik under <i>Documents</i>.]]></string>
+    <string name="db_host" introduced="5.0.0"><![CDATA[Database Host]]></string>
+    <string name="db_name" introduced="5.0.0"><![CDATA[Database Name]]></string>
+    <string name="db_prefix" introduced="5.0.0"><![CDATA[Table Prefix]]></string>
+    <string name="error_accept_licence" introduced="5.0.0"><![CDATA[Du skal acceptere licensaftalen for at fortsætte.]]></string>
+    <string name="error_action_required" introduced="5.0.0"><![CDATA[Klik på den handling, du ønsker at udføre, før du fortsætter.]]></string>
+    <string name="error_admin_password_mismatch" introduced="5.0.0"><![CDATA[Din konto passwords matcher ikke.]]></string>
+    <string name="error_db_doesnt_exist" introduced="5.0.0"><![CDATA[Denne database findes ikke.]]></string>
+    <string name="error_db_incorrect_something" introduced="5.0.0"><![CDATA[Forkert database host, brugernavn og / eller adgangskode.]]></string>
+    <string name="error_db_password_mismatch" introduced="5.0.0"><![CDATA[Din database passwords matcher ikke.]]></string>
+    <string name="error_ion_zend_required" introduced="5.0.0"><![CDATA[Ioncube Loader kræves for at bruge CubeCart 5. Dette kan konfigureres efter installationen er færdig.]]></string>
+    <string name="error_licence_invalid" introduced="5.0.0"><![CDATA[Denne licens nøgle synes ikke at være gyldig. Efterlad tomt, hvis du ikke har en.]]></string>
+    <string name="error_licence_required" introduced="5.0.0"><![CDATA[En software licensnøgle er påkrævet for at installere og bruge denne software.]]></string>
+    <string name="error_rename_images" introduced="5.0.0"><![CDATA[Please manually rename your 'images/uploads/' folder to 'images/source/'.]]></string>
+    <string name="error_x_is_required" introduced="5.0.0"><![CDATA[%s er krævet for at kører CubeCart 5.]]></string>
+    <string name="error_x_not_writable" introduced="5.0.0"><![CDATA[%s er ikke skrivbar.]]></string>
+    <string name="install_complete" introduced="5.0.0"><![CDATA[Installation Complete]]></string>
+    <string name="install_complete_note" introduced="5.0.0"><![CDATA[Din butik er installeret korrekt. Du skal logge ind dit Admin Kontrolpanel, og konfigurere din butik, og tilføje produkter.]]></string>
+    <string name="install_cubecart" introduced="5.0.0"><![CDATA[Install CubeCart]]></string>
+    <string name="install_cubecart_title" introduced="5.0.0"><![CDATA[Install CubeCart %s]]></string>
+    <string name="install_drop_tables" introduced="5.0.0"><![CDATA[Drop Tables]]></string>
+    <string name="install_drop_tables_explained" introduced="5.0.0"><![CDATA[(Markér dette hvis du ønsker at overskrive eksisterende data.)]]></string>
+    <string name="install_fresh" introduced="5.0.0"><![CDATA[Vælg denne mulighed, hvis du ønsker at udføre en frisk installation af CubeCart.<br /><strong style='color: red;'>WARNING</strong>: Ved at gå videre med denne mulighed eksisterende lagre data kan overskrives!]]></string>
+    <string name="licence_agree" introduced="5.0.0"><![CDATA[Jeg accepterer vilkårene i software-licensen.]]></string>
+    <string name="link_admin_panel" introduced="5.0.0"><![CDATA[Admin Kontrol Panel]]></string>
+    <string name="link_store_front" introduced="5.0.0"><![CDATA[Butik Front]]></string>
+    <string name="percent_complete" introduced="5.0.0"><![CDATA[%d%% Komplet]]></string>
+    <string name="software_licence_key" introduced="5.0.0"><![CDATA[Software Licence Key]]></string>
+    <string name="title_admin_profile" introduced="5.0.0"><![CDATA[Administrator Profile]]></string>
+    <string name="title_advanced_settings" introduced="5.0.0"><![CDATA[Advanced Settings]]></string>
+    <string name="title_compat_check" introduced="5.0.0"><![CDATA[Kompatibilitet Check]]></string>
+    <string name="title_database_settings" introduced="5.0.0"><![CDATA[Database Settings]]></string>
+    <string name="title_file_permissions" introduced="5.0.0"><![CDATA[File Permissions]]></string>
+    <string name="title_licence" introduced="5.0.0"><![CDATA[Software Licence Agreement]]></string>
+    <string name="title_optional_features" introduced="5.0.0"><![CDATA[Optional Features]]></string>
+    <string name="title_software_licence" introduced="5.0.0"><![CDATA[Software Licence]]></string>
+    <string name="title_store_settings" introduced="5.0.0"><![CDATA[Butik Settings]]></string>
+    <string name="upgrade_click_continue" introduced="5.0.0"><![CDATA[Når du er klar til at starte opgraderingen, klik <strong>Fortsæt</strong>.]]></string>
+    <string name="upgrade_complete" introduced="5.0.0"><![CDATA[Upgrade Complete]]></string>
+    <string name="upgrade_complete_note" introduced="5.0.0"><![CDATA[Upgrade Complete. Du skal logge ind på din Admin Kontrolpanel, og kontrollere din butik konfiguration.]]></string>
+    <string name="upgrade_cubecart" introduced="5.0.0"><![CDATA[Upgrade CubeCart]]></string>
+    <string name="upgrade_cubecart_title" introduced="5.0.0"><![CDATA[Upgrade til CubeCart %s (Anbefalet)]]></string>
+    <string name="upgrade_existing" introduced="5.0.0"><![CDATA[Choose this option to upgrade your CubeCart store to the latest version. <br /><strong style='color: red;'>IMPORTANT:</strong> Please take a FULL backup of your database and files before continuing!]]></string>
+    <string name="upgrade_from_to" introduced="5.0.0"><![CDATA[Your store is ready to be upgraded from version <strong>%1$s</strong> to version <strong>%2$s</strong>]]></string>
+    <string name="upgrade_in_progress" introduced="5.0.0"><![CDATA[Upgrade in progress. Upgrading from version <strong>%1$s</strong> to version <strong>%2$s</strong>]]></string>
+    <string name="upgrade_licence_needed" introduced="5.0.0"><![CDATA[As you are upgrading from version <strong>%s</strong>, you can enter a Software Licence Key to use CubeCart Pro.]]></string>
+    <string name="upgrade_will_reload" introduced="5.0.0"><![CDATA[The page may reload several times, but this is perfectly normal. We'll let you know when it's done, so go grab a cup of coffee.]]></string>
+    <string name="help_dbhostname" introduced="5.0.0"><![CDATA[This is the database hostname e.g. localhost]]></string>
+    <string name="help_dbusername" introduced="5.0.0"><![CDATA[The username assigned to the database.]]></string>
+    <string name="help_dbuserpass" introduced="5.0.0"><![CDATA[The password required by the username.]]></string>
+    <string name="help_dbconfirmpass" introduced="5.0.0"><![CDATA[Confirm the password.]]></string>
+    <string name="help_dbname" introduced="5.0.0"><![CDATA[The database name for the store tables to be served from.]]></string>
+    <string name="help_dbprefix" introduced="5.0.0"><![CDATA[If you are hosting more then one store on one dtabase please define a table prefix to prevent clashing table names.]]></string>
+    <string name="help_defaultlang" introduced="5.0.0"><![CDATA[Please choose your stores default language.]]></string>
+    <string name="help_defaultcurrency" introduced="5.0.0"><![CDATA[Please choose your stores default currency.]]></string>
+  </group>
+  <group name="statistics">
+    <string name="notify_sales_none" introduced="5.0.0"><![CDATA[Ingen salg er blevet fortaget.]]></string>
+    <string name="percentage_of_sales" introduced="5.0.0"><![CDATA[Procentdel af det samlede produktsalg]]></string>
+    <string name="percentage_of_search" introduced="5.0.0"><![CDATA[Procentdel af de samlede hits]]></string>
+    <string name="percentage_of_total" introduced="5.0.0"><![CDATA[Percentage of Total]]></string>
+    <string name="percentage_of_views" introduced="5.0.0"><![CDATA[Pecentage of total product views]]></string>
+    <string name="product_hits" introduced="5.0.0"><![CDATA[Hits]]></string>
+    <string name="product_views" introduced="5.0.0"><![CDATA[Views]]></string>
+    <string name="quantity_sold" introduced="5.0.0"><![CDATA[Mængde Solgt]]></string>
+    <string name="sales_from_to" introduced="5.0.0"><![CDATA[Salg fra %1$s til %2$s]]></string>
+    <string name="sales_in" introduced="5.0.0"><![CDATA[Sales in %s]]></string>
+    <string name="sales_in_month_year" introduced="5.0.0"><![CDATA[Sales by day in %1$s %2$s]]></string>
+    <string name="sales_in_year" introduced="5.0.0"><![CDATA[Sales by month in %s]]></string>
+    <string name="sales_on_dmy" introduced="5.0.0"><![CDATA[Sales by hour on %1$s %2$s %3$s]]></string>
+    <string name="sales_volume" introduced="5.0.0"><![CDATA[Sales Volume (%s)]]></string>
+    <string name="search_term" introduced="5.0.0"><![CDATA[Search Term]]></string>
+    <string name="session_admin" introduced="5.0.0"><![CDATA[Is Admin?]]></string>
+    <string name="session_last" introduced="5.0.0"><![CDATA[Last Action]]></string>
+    <string name="session_length" introduced="5.0.0"><![CDATA[Session Length]]></string>
+    <string name="session_location" introduced="5.0.0"><![CDATA[Location]]></string>
+    <string name="session_started" introduced="5.0.0"><![CDATA[Session Started]]></string>
+    <string name="session_user" introduced="5.0.0"><![CDATA[User]]></string>
+    <string name="title_customers_active" introduced="5.0.0"><![CDATA[Kunder Online]]></string>
+    <string name="title_customers_best" introduced="5.0.0"><![CDATA[Bedste Kunder]]></string>
+    <string name="title_popular" introduced="5.0.0"><![CDATA[Bedst sælgende produkter]]></string>
+    <string name="title_sales" introduced="5.0.0"><![CDATA[Sales Statistics]]></string>
+    <string name="title_search" introduced="5.0.0"><![CDATA[Search Terms]]></string>
+    <string name="title_viewed" introduced="5.0.0"><![CDATA[Mest viste produkter]]></string>
+    <string name="total_expenditure" introduced="5.0.0"><![CDATA[Total Expenditure]]></string>
+    <string name="display_customers_only" introduced="5.2.6"><![CDATA[Display Customers Only]]></string>
+    <string name="display_bots_and_customers" introduced="5.2.6"><![CDATA[Display Webbots &amp; Customers]]></string>
+  </group>
+  <group name="translate">
+    <string name="error_language_create" introduced="5.0.0"><![CDATA[Undladt at skabe sprog.]]></string>
+    <string name="error_language_delete" introduced="5.0.0"><![CDATA[Det lykkedes ikke at slette sprog.]]></string>
+    <string name="error_language_import_failed" introduced="5.0.0"><![CDATA[Det lykkedes ikke at importere sprog.]]></string>
+    <string name="error_language_status" introduced="5.0.0"><![CDATA[Kunne ikke opdatere sprog status.]]></string>
+    <string name="error_translation_create" introduced="5.0.0"><![CDATA[Kunne ikke at skabe oversættelse.]]></string>
+    <string name="error_translation_delete" introduced="5.0.0"><![CDATA[Det lykkedes ikke at slette oversættelse.]]></string>
+    <string name="error_translation_update" introduced="5.0.0"><![CDATA[Kunne ikke opdatere oversættelse.]]></string>
+    <string name="example_upload" introduced="5.0.0"><![CDATA[e.g. es_ES.xml]]></string>
+    <string name="language_code" introduced="5.0.0"><![CDATA[Sprog Kode]]></string>
+    <string name="language_group_edit" introduced="5.0.0"><![CDATA[Phrase Group]]></string>
+    <string name="language_name" introduced="5.0.0"><![CDATA[Sprog Navn]]></string>
+    <string name="language_parent" introduced="5.0.0"><![CDATA[Hoved Sprog]]></string>
+    <string name="master_language" introduced="5.0.0"><![CDATA[Master Sprog File (definitions.xml)]]></string>
+    <string name="merge_db_file" introduced="5.0.0"><![CDATA[Merge to file]]></string>
+    <string name="notify_strings_update" introduced="5.0.0"><![CDATA[Sprogstrenge opdateret.]]></string>
+    <string name="notify_language_create" introduced="5.0.0"><![CDATA[Sprog oprettet.]]></string>
+    <string name="notify_language_delete" introduced="5.0.0"><![CDATA[Sprog slettet.]]></string>
+    <string name="notify_language_import_success" introduced="5.0.0"><![CDATA[Sprog importeret.]]></string>
+    <string name="notify_language_status" introduced="5.0.0"><![CDATA[Sprog status opdateret.]]></string>
+    <string name="notify_translation_create" introduced="5.0.0"><![CDATA[Oversættelse oprettet.]]></string>
+    <string name="notify_translation_delete" introduced="5.0.0"><![CDATA[Oversættelse slettet.]]></string>
+    <string name="notify_translation_update" introduced="5.0.0"><![CDATA[Oversættelse opdateret.]]></string>
+    <string name="phrase_group_account" introduced="5.0.0"><![CDATA[Konto - sætninger inden i kundens konto område]]></string>
+    <string name="phrase_group_address" introduced="5.0.0"><![CDATA[Adresse - sætninger, der er forbundet med post-eller faktura adresser og addressbook]]></string>
+    <string name="phrase_group_admins" introduced="5.0.0"><![CDATA[Administor - sætninger inden for administratorer sektion af kontrolpanelet]]></string>
+    <string name="phrase_group_basket" introduced="5.0.0"><![CDATA[Basket - sætninger vises i kurven sider]]></string>
+    <string name="phrase_group_catalogue" introduced="5.0.0"><![CDATA[Katalog - sætninger, der vises inden for produktgruppen opgørelse sider]]></string>
+    <string name="phrase_group_category" introduced="5.0.0"><![CDATA[Kategori - sætninger, der er forbundet med produktkategorier]]></string>
+    <string name="phrase_group_checkout" introduced="5.0.0"><![CDATA[Checkout - sætninger, der vises i løbet af købsprocessen]]></string>
+    <string name="phrase_group_common" introduced="5.0.0"><![CDATA[Common - Sætninger i flere steder]]></string>
+    <string name="phrase_group_confirm" introduced="5.0.0"><![CDATA[Bekræft - Sætninger efter betaling]]></string>
+    <string name="phrase_group_contact" introduced="5.0.0"><![CDATA[Kontakt - Sætninger på siden Kontakt os]]></string>
+    <string name="phrase_group_country" introduced="5.0.0"><![CDATA[Land - sætninger om land management]]></string>
+    <string name="phrase_group_customer" introduced="5.0.0"><![CDATA[Kunde - sætninger om kundestyring]]></string>
+    <string name="phrase_group_dashboard" introduced="5.0.0"><![CDATA[Dashboard - sætninger anvendes inden for administratorer instrumentbrættet]]></string>
+    <string name="phrase_group_documents" introduced="5.0.0"><![CDATA[Dokumenter - sætninger vises i administratorer dokumenthåndtering sektion]]></string>
+    <string name="phrase_group_email" introduced="5.0.0"><![CDATA[Email adresse - Sætninger i e-mail skabeloner ledelse]]></string>
+    <string name="phrase_group_filemanager" introduced="5.0.0"><![CDATA[Filemanager - sætninger vises i administrationsområdet filemanager]]></string>
+    <string name="phrase_group_form" introduced="5.0.0"><![CDATA[Form - Sætninger almindeligt anvendt på formularer]]></string>
+    <string name="phrase_group_gateway" introduced="5.0.0"><![CDATA[Gateway - sætninger vises på betalings-sider]]></string>
+    <string name="phrase_group_gui_message" introduced="5.0.0"><![CDATA[Global Fejl - sætninger for globale fejl eller advarsler]]></string>
+    <string name="phrase_group_hooks" introduced="5.0.0"><![CDATA[Kroge - Sætninger findes under kode krog management]]></string>
+    <string name="phrase_group_maintain" introduced="5.0.0"><![CDATA[Vedligehold - sætninger vises i sektion af administratorerne vedligeholdelse kontrolpanelet]]></string>
+    <string name="phrase_group_module" introduced="5.0.0"><![CDATA[Modul - sætninger vises i administrationsmoduler sektionen. fx Gateways, Shipping etc;]]></string>
+    <string name="phrase_group_navigation" introduced="5.0.0"><![CDATA[Navigation - sætninger vises i navigations elementer]]></string>
+    <string name="phrase_group_newsletter" introduced="5.0.0"><![CDATA[Nyhedsbrev - Sætninger i nyhedsbrevet management]]></string>
+    <string name="phrase_group_notification" introduced="5.0.0"><![CDATA[Notification - sætninger bruges til at anmelde kunder eller medarbejdere]]></string>
+    <string name="phrase_group_order_state" introduced="5.0.0"><![CDATA[Bestil State - ordrestatusser]]></string>
+    <string name="phrase_group_orders" introduced="5.0.0"><![CDATA[Ordrer - Sætninger releated at gemme ordrer]]></string>
+    <string name="phrase_group_recaptcha" introduced="5.0.0"><![CDATA[Recaptcha - sætninger vises i Recaptcha CAPTCHA-system]]></string>
+    <string name="phrase_group_reports" introduced="5.0.0"><![CDATA[Rapporter - sætninger, der anvendes inden for de administrational rapporteringsværktøjer]]></string>
+    <string name="phrase_group_reviews" introduced="5.0.0"><![CDATA[Anmeldelser - sætninger, der vises på revision management side]]></string>
+    <string name="phrase_group_search" introduced="5.0.0"><![CDATA[Søg - sætninger vises til kunden på produkt søgning]]></string>
+    <string name="phrase_group_settings" introduced="5.0.0"><![CDATA[Indstillinger - Sætninger]]></string>
+    <string name="phrase_group_setup" introduced="5.0.0"><![CDATA[Opsætning - sætninger, der vises under installationen / opgraderingen]]></string>
+    <string name="phrase_group_statistics" introduced="5.0.0"><![CDATA[Statistik - Sætninger vist på administrational statistik sider]]></string>
+    <string name="phrase_group_translate" introduced="5.0.0"><![CDATA[Translate - sætninger vedrørende oversætte sætninger]]></string>
+    <string name="phrase_group_ui" introduced="5.0.0"><![CDATA[Brugergrænseflade - sætninger specifikt til brugergrænsefladen]]></string>
+    <string name="phrase_group_user" introduced="5.0.0"><![CDATA[Bruger - Sætninger specifikke for kunderne]]></string>
+    <string name="replace_original" introduced="5.0.0"><![CDATA[Erstat originalsproget fil]]></string>
+    <string name="tab_group_create" introduced="5.0.0"><![CDATA[Opret Sætning Gruppe]]></string>
+    <string name="tab_string_create" introduced="5.0.0"><![CDATA[Opret Ny Sætning]]></string>
+    <string name="tab_string_edit" introduced="5.0.0"><![CDATA[Rediger Sætning]]></string>
+    <string name="title_language_create" introduced="5.0.0"><![CDATA[Opret Sprog]]></string>
+    <string name="title_language_import" introduced="5.0.0"><![CDATA[Importer Sprog]]></string>
+    <string name="title_languages" introduced="5.0.0"><![CDATA[Sprog]]></string>
+    <string name="title_translate" introduced="5.0.0"><![CDATA[Oversæt]]></string>
+    <string name="title_translations" introduced="5.0.0"><![CDATA[Oversættelse]]></string>
+    <string name="trans_add" introduced="5.0.0"><![CDATA[Tilføj Oversættelse]]></string>
+    <string name="trans_delete" introduced="5.0.0"><![CDATA[Slet Oversættelse]]></string>
+    <string name="trans_none" introduced="5.0.0"><![CDATA[Inge Oversættelse findes]]></string>
+  </group>
+  <group name="ui">
+    <string name="drag_reorder" introduced="5.0.0"><![CDATA[Træk for at omarrangere]]></string>
+  </group>
+  <group name="user">
+    <string name="email" introduced="5.0.0"><![CDATA[Email]]></string>
+    <string name="email_address" introduced="5.0.0"><![CDATA[Email Adresse]]></string>
+    <string name="fullname_long" introduced="5.0.0"><![CDATA[Fulde Navn - Lang]]></string>
+    <string name="fullname_short" introduced="5.0.0"><![CDATA[Fulde Navn - Kort]]></string>
+    <string name="name_first" introduced="5.0.0"><![CDATA[Fornavn]]></string>
+    <string name="name_full" introduced="5.0.0"><![CDATA[Fulde Navn]]></string>
+    <string name="name_last" introduced="5.0.0"><![CDATA[Efternavn]]></string>
+    <string name="password_confirm" introduced="5.0.0"><![CDATA[Bekræft password]]></string>
+    <string name="password_current" introduced="5.0.0"><![CDATA[Nuværende password]]></string>
+    <string name="password_new" introduced="5.0.0"><![CDATA[Nyt password]]></string>
+    <string name="title" introduced="5.0.0"><![CDATA[Title]]></string>
+  </group>
+  </translation>
+</language>

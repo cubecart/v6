@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="moneybookers">
+  <string name="logo_url"><![CDATA[Logo URL]]></string>
+  <string name="module_description"><![CDATA[To have access to the international payment network of Moneybookers please <a href="https://www.moneybookers.com/app/register.pl" class="txtLink" target="_blank">register here</a> for a free account if you don’t have one yet. More information can be found <a href="http://www.moneybookers.com/partners/cubecart/" class="txtLink" target="_blank">here</a>.]]></string>
+  <string name="module_title"><![CDATA[Moneybookers]]></string>
+  <string name="quick_checkout_info"><![CDATA[Quick Checkout enables you to take payments from credit cards, debit cards and over 50 other local payment options in over 200 countries.<br />The highly competitive rates for this service are published on the Moneybookers website at <a href="http://www.moneybookers.com/app/help.pl?s=m_fees" class="txtLink" target="_blank">www.moneybookers.com</a>. More information can be found <a href="http://www.moneybookers.com/app/help.pl?s=terms" class="txtLink" target="_blank">here</a>.]]></string>
+  <string name="iframe"><![CDATA[Enable iFrame (Highly Recommended)]]></string>
+ </group>
+</definitions>

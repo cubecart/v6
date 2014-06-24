@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="paypoint">
+  <string name="digest_key"><![CDATA[Digest Key]]></string>
+  <string name="module_title"><![CDATA[PayPoint]]></string>
+  <string name="remote_password"><![CDATA[Remote Password]]></string>
+  <string name="vendor_name"><![CDATA[Vendor Name]]></string>
+  <string name="settings"><![CDATA[PayPoint Settings]]></string>
+  <string name="call_url"><![CDATA[Callback URL]]></string>
+ </group>
+</definitions>

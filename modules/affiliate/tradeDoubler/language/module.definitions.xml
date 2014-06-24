@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions version="1.0">
+ <group name="tradedoubler">
+  <string name="organization"><![CDATA[Merchant ID]]></string>
+  <string name="event"><![CDATA[Sale Event ID]]></string>
+  <string name="module_description"><![CDATA[&#8220;TradeDoubler - Performance-based Digital Marketing.&#8221;]]></string>
+  <string name="module_title"><![CDATA[TradeDoubler]]></string>
+  <string name="default_event"><![CDATA[(Default is 253883)]]></string>
+ </group>
+</definitions>

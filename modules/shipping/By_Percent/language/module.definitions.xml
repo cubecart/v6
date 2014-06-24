@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions version="1.0">
+ <group name="by_percent">
+  <string name="module_description"><![CDATA[This shipping module calculates the shipping price based on a percentage of the basket subtotal.]]></string>
+  <string name="module_title"><![CDATA[By Percent]]></string>
+  <string name="percentage"><![CDATA[Percentage]]></string>
+ </group>
+</definitions>

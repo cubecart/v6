@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="ccnow">
+  <string name="activation_key"><![CDATA[Activation Key]]></string>
+  <string name="module_title"><![CDATA[CCNow]]></string>
+  <string name="thankyou_url"><![CDATA[Thank You Page Return Link]]></string>
+  <string name="thankyou_url_info"><![CDATA[This needs to be set in the ccNow control panel under &quot;Shopping Cart&quot; &raquo; &quot;Basic Shopping Cart Options&quot;]]></string>
+  <string name="settings"><![CDATA[ccNow Settings]]></string>
+  <string name="push_url"><![CDATA[Outgoing Order Push API Remote URL]]></string>
+  <string name="push_url_info"><![CDATA[This needs to be set in the ccNow control panel under &quot;Account Admin&quot; &raquo; &quot;Order API's&quot; &raquo; &quot;Outgoing Order Push API&quot; &raquo; &quot;Remote URL&quot;]]></string>
+ </group>
+</definitions>

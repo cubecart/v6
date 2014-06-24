@@ -1,0 +1,265 @@
+html * {
+    font-family: 'segoe ui', 'helvetica neue', arial, helvetica, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+/*input, textarea {
+  -webkit-appearance: none;
+  -webkit-border-radius: 0;
+}*/
+.old_price {
+    text-decoration: line-through;
+}
+
+.sale_price {
+    color: red;
+}
+
+.tabs {
+    border-bottom: 1px #EFEFEF solid;
+}
+
+/* Start Magnifier */
+#dio-lens {
+    background-color: #FFFFFF;
+    border: 1px solid #000000;
+    z-index: 9998;
+}
+
+#dio-lens img {
+    max-width: none;
+}
+
+#dio-sensor {
+    z-index: 11000;
+    cursor: -webkit-zoom-in;
+    cursor: -moz-zoom-in;
+    cursor: url(../images/icon_zoom.png), crosshair !important;
+}
+
+#dio-loader {
+    background: #FFFFFF;
+    text-indent: -30000px;
+}
+/* End Magnifier */
+
+/* Start Star Rating */
+div.rating-cancel,div.star-rating {
+    float: left;
+    width: 17px;
+    height: 15px;
+    text-indent: -999em;
+    cursor: pointer;
+    display: block;
+    background: transparent;
+    overflow: hidden;
+}
+
+div.rating-cancel,div.rating-cancel a {
+    background: url(../images/delete.gif) no-repeat 0 -16px;
+}
+
+div.star-rating,div.star-rating a {
+    background: url(../images/star.gif) no-repeat 0 0px;
+}
+
+div.rating-cancel a,div.star-rating a {
+    display: block;
+    width: 16px;
+    height: 100%;
+    background-position: 0 0px;
+    border: 0;
+}
+
+div.star-rating-on a {
+    background-position: 0 -32px!important;
+}
+
+div.star-rating-hover a {
+    background-position: 0 -16px;
+}
+
+div.star-rating-readonly a {
+    cursor: default!important;
+}
+
+div.star-rating {
+    background: transparent!important;
+    overflow: hidden!important;
+}
+/* End Star Rating */
+
+footer {
+    background-color: #000;
+    color: #fff;
+}
+
+footer h3 {
+    color: #fff;
+}
+
+div.alert-box a {
+	color: #fff;
+	text-decoration: underline;
+}
+
+/* Start Mini Basket */
+.basket-detail-container {
+    position: fixed;
+    z-index: 100;
+    width: 250px;
+    left: 50%;
+    top: 60px;
+    margin-left: 235px;
+}
+
+.small-basket-detail-container {
+    position: fixed;
+    z-index: 100;
+    width: 90%;
+    left: 5%;
+    top: 40%;
+    background-color: #397D02;
+    border: none;
+    color: #fff;
+    font-weight: bold;
+}
+
+.mini-basket-title {
+    background-color: #000;
+    color: #fff;
+}
+
+.basket-detail {
+    background-color: #F2F2F2;
+    border: 1px solid #000;
+}
+
+.basket-detail .total {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.mini-basket-arrow {
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid #000;
+    margin-left: 75%;
+}
+
+/* End Mini Basket */
+.social-icons {
+    font-size: 30px;
+}
+
+input.quantity {
+    width: 50px;
+    text-align: center;
+}
+
+/* Start Checkout Progress */
+.checkout-progress-wrapper {
+    background-color: #A0D3E8;
+    color: #4F4F4F;
+}
+
+.checkout-progress.previous {
+    background-color: #008CBA;
+}
+
+.checkout-progress.current {
+    background-color: #43AC6A;
+}
+
+.checkout-progress.next {
+}
+
+.checkout-progress a {
+    color: #4F4F4F;
+    text-decoration: none;
+}
+
+.checkout-progress.previous a,.checkout-progress.current a {
+    color: #FFF;
+    text-decoration: none;
+}
+
+/* End Checkout Progress */
+
+.skin_selector {
+    background-color: rgba(0, 0, 0, 0.7);
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    z-index: 100;
+    border-top: solid grey 1px;
+}
+
+.skin_selector h4 {
+    color: #fff;
+}
+
+#currency_menu, #language_menu {
+	position: absolute; 
+	z-index: 100; 
+	width: 200px; 
+	text-transform: capitalize;
+	background-color: #5E5E5E;
+	border: 1px solid #000;
+	left: -50px;
+	top: 30px;
+	padding-bottom: 20px;
+	padding-top: 15px;
+}
+#currency_menu h5, #language_menu h5, #currency_menu a, #language_menu a {
+	font-weight: bold;
+	color: #fff;
+}
+
+.flag {
+	width: 16px;
+	height: 11px;
+	background:url(../images/sprite_flags.png) no-repeat
+}
+.flag.flag-DE {background-position: 0 0}
+.flag.flag-ES {background-position: 0 -11px}
+.flag.flag-FR {background-position: 0 -22px}
+.flag.flag-GB {background-position: 0 -33px}
+.flag.flag-IL {background-position: 0 -44px}
+.flag.flag-NL {background-position: 0 -55px}
+.flag.flag-US {background-position: 0 -66px}
+.flag.flag-TR {background-position: 0 -77px}
+.flag.flag-DK {background-position: 0 -88px}
+
+.back-to-top {
+	position: fixed;
+	bottom: 3em;
+	right: 0px;
+	text-decoration: none;
+	color: #000000;
+	background-color: #EBEBEB;
+	padding: 1em;
+	display: none;
+	z-index: 100;
+}
+
+.back-to-top:hover {	
+	background-color: ;
+	color: #fff;
+}
+
+.button.white {
+	background-color: #fff;
+	color: #666;
+}
+@media only screen and (max-width: 40em) {
+  .small-collapse {
+    padding:0;
+    margin:0;
+    .columns {
+      padding:0;
+      margin:0;
+    }
+  }
+}

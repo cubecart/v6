@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="psigate">
+  <string name="gateway_mode"><![CDATA[Gateway Mode]]></string>
+  <string name="gateway_url"><![CDATA[Gateway URL]]></string>
+  <string name="mode_preauth"><![CDATA[PreAuth (Funds must be manually captured)]]></string>
+  <string name="mode_sale"><![CDATA[Sale]]></string>
+  <string name="module_title"><![CDATA[PsiGate]]></string>
+  <string name="passphrase"><![CDATA[Passphrase]]></string>
+ </group>
+</definitions>

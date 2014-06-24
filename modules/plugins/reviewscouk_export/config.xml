@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<installer version="1.0">
+  <info>
+	<uid>support@reviews.co.uk</uid>
+	<type>plugins</type>
+	<folder>reviewscouk_export</folder>
+	<name><![CDATA[Reviews.co.uk Export]]></name>
+	<description><![CDATA[Ask your customers for reviews automatically.]]></description>
+	<version>1.0.0</version>
+	<minVersion>5.0.0a</minVersion>
+	<maxVersion>5.0.*</maxVersion>
+	<creator><![CDATA[Reviews.co.uk]]></creator>
+	<homepage><![CDATA[http://www.reviews.co.uk]]></homepage>
+  </info>
+  
+  <hooks>
+	<hook trigger="admin.order.index.post_process" enabled="1"><![CDATA[Admin Configuration Page]]></hook>
+	<hook trigger="controller.admin" enabled="1"><![CDATA[Load admin area]]></hook>
+  </hooks>
+</installer>

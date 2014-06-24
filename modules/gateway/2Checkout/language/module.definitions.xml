@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="2checkout">
+  <string name="account_no"><![CDATA[Account Number]]></string>
+  <string name="module_description"><![CDATA[&#8220;Start selling in minutes&#8221;]]></string>
+  <string name="module_title"><![CDATA[2Checkout]]></string>
+  <string name="2checkout_settings"><![CDATA[2Checkout Settings]]></string>
+  <string name="direct_return"><![CDATA[Direct Return]]></string>
+  <string name="direct_return_value"><![CDATA[Header Redirect (Your URL)]]></string>
+  <string name="approved_url"><![CDATA[Approved URL]]></string>
+  <string name="mode_checkout"><![CDATA[2Checkout Mode]]></string>
+  <string name="single_page"><![CDATA[Single Page (Recommended)]]></string>
+  <string name="multi_page"><![CDATA[Multiple Pages]]></string>
+ </group>
+</definitions>

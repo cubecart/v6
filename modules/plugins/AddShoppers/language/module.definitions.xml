@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions version="1.0">
+ <group name="AddShoppers">
+  <string name="module_title"><![CDATA[AddShoppers]]></string>
+ </group>
+</definitions>

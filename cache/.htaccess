@@ -1,0 +1,5 @@
+Deny from all
+<Files cache.image.*.png>
+  Allow from all
+</Files>
+

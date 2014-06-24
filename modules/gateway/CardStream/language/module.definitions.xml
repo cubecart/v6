@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="cardstream">
+  <string name="merchant_id"><![CDATA[Merchant ID]]></string>
+  <string name="merchant_password"><![CDATA[Merchant Password]]></string>
+  <string name="payment_page_url"><![CDATA[Payment Page URL]]></string>
+  <string name="payment_page_url_default"><![CDATA[e.g. https://gateway.cardstream.com/secure.asp]]></string>
+ </group>
+</definitions>

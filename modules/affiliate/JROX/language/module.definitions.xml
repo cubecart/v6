@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions version="1.0">
+ <group name="jrox">
+  <string name="module_description"><![CDATA[&#8220;eCommerce Innovations&#8221;]]></string>
+  <string name="module_title"><![CDATA[JROX Affiliate Manager]]></string>
+ </group>
+</definitions>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions version="1.0">
+ <group name="disqus">
+  <string name="shortname"><![CDATA[Shortname]]></string>
+  <string name="developer"><![CDATA[Developer Mode]]></string>
+ </group>
+</definitions>

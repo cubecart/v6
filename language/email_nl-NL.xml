@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<emails version="2.0" language="nl-NL">
+	<email name="admin.password_recovery">
+	  <subject>
+	<![CDATA[Beheerders Wachtwoord Herstellen]]> 
+	  </subject>
+	  <content type="html">
+	<![CDATA[<p>Beste {$DATA.name},</p> 
+	<p>Klik op onderstaande link om weer toegang te krijgen tot het beheerders bedieningspaneel:</p> 
+	<p><a href="{$DATA.link}">{$DATA.link}</a></p> 
+	<p>Kopieer en plak bovenstaande link in de adresbalk van uw browser, mits de link niet werkt.</p>]]> 
+	  </content>
+	  <content type="text">
+	<![CDATA[Beste {$DATA.name},
+	 
+	Klik op onderstaande link om weer toegang te krijgen tot het beheerders bedieningspaneel:
+	 
+	{$DATA.link}
+	 
+	Kopieer en plak bovenstaande link in de adresbalk van uw browser, mits de link niet werkt.]]> 
+	  </content>
+	</email>
+	<email name="cart.order_complete">
+	  <subject>
+	<![CDATA[Bestelling voltooid]]> 
+	  </subject>
+	  <content type="html">
+	<![CDATA[<p>Hallo {$DATA.first_name},</p> 
+	<p>Het verheugd ons om te vertellen dat order nummer {$DATA.cart_order_id} is voltooid. Wanneer u een fysiek product heeft besteld dan zal deze binnenkort arriveren.</p>]]> 
+	  </content>
+	  <content type="text">
+	<![CDATA[Hallo {$DATA.first_name},
+	 
+	Het verheugd ons om te vertellen dat order nummer {$DATA.cart_order_id} is voltooid. Wanneer u een fysiek product heeft besteld dan zal deze binnenkort arriveren.]]> 
+	  </content>
+	</email>
+	<email name="cart.order_cancelled">
+	  <subject>
+	<![CDATA[Bestelling geannuleerd]]> 
+	  </subject>
+	  <content type="html">
+	<![CDATA[<p>Hallo {$DATA.first_name},</p> 
+	<p>Bestelnummer {$DATA.cart_order_id} is geannuleerd.</p>]]> 
+	  </content>
+	  <content type="text">
+	<![CDATA[Hallo {$DATA.first_name},
+	 
+	Bestelnummer {$DATA.cart_order_id} is geannuleerd.]]> 
+	  </content>
+	</email>
+	<email name="cart.order_confirmation">
+	  <subject>
+	<![CDATA[Bestellingsbevestiging #{$DATA.cart_order_id}]]> 
+	  </subject>
+	  <content type="html">
+	<![CDATA[<p>Bedankt {$DATA.first_name}!</p>
+	<p>uw bestelling {$DATA.cart_order_id} is ontvangen en is geplaatst op {$DATA.order_date}. Bewaar alstublief deze email ter referentie. U kunt de status van uw bestelling online bekijken.</p> 
+	<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+	<table width="100%">
+	  <tr>
+	    <td valign="top" width="50%"><strong>Factuuradres:</strong><br />
+	      {$BILLING.first_name} {$BILLING.last_name}<br />
+	      {if !empty({$BILLING.company_name})}{$BILLING.company_name}<br />
+	      {/if}
+	      {$BILLING.line1}<br />
+	      {if !empty({$BILLING.line2})}{$BILLING.line2}<br />
+	      {/if}
+	      {$BILLING.town}<br />
+	      {$BILLING.state}<br />
+	      {$BILLING.postcode}<br />
+	      {$BILLING.country}<br />
+	      {$BILLING.phone}<br />
+	      <br />
+	      <strong>Email:</strong><br />
+	      {$BILLING.email}</td>
+	    <td valign="top" width="50%"><strong>Bezorgadres:</strong><br />
+	      {$SHIPPING.first_name} {$SHIPPING.last_name}<br />
+	      {if !empty({$SHIPPING.company_name})}{$SHIPPING.company_name} <br />
+	      {/if}{$SHIPPING.line1}<br />
+	      {if !empty({$SHIPPING.line2})}{$SHIPPING.line2} <br />
+	      {/if}{$SHIPPING.town}<br />
+	      {$SHIPPING.state}<br />
+	      {$SHIPPING.postcode}<br />
+	      {$SHIPPING.country}</td>
+	  </tr>
+	</table>
+	<table border="0" cellpadding="3" cellspacing="0" width="100%">
+	  <tbody>
+	    <tr>
+	      <td><strong>Item</strong></td>
+	      <td><strong>Hoeveelheid</strong></td>
+	      <td><strong>Kosten</strong></td>
+	    </tr>
+	  {foreach from=$PRODUCTS item=product}
+	  <tr>
+	    <td>{$product.name} <br />{$product.product_options}</td>
+	    <td>{$product.quantity}</td>
+	    <td>{$product.price}</td>
+	  </tr>
+	  {/foreach}
+	  <tr>
+	    <td>&nbsp;</td>
+	    <td> Verzendmethode: {if $DATA.ship_method}({$DATA.ship_method}){/if}</td>
+	    <td> {$DATA.shipping}</td>
+	  </tr>
+	  <tr>
+	    <td>&nbsp;</td>
+	    <td> Korting:</td>
+	    <td> {$DATA.discount}</td>
+	  </tr>
+	  <tr>
+	    <td>&nbsp;</td>
+	    <td> Subtotaal:</td>
+	    <td> {$DATA.subtotal}</td>
+	  </tr>
+	  {foreach from=$TAXES item=tax}
+	  <tr>
+	    <td>&nbsp;</td>
+	    <td> {$tax.tax_name}: ({$tax.tax_percent}%)</td>
+	    <td> {$tax.tax_amount}</td>
+	  </tr>
+	  {/foreach}
+	  <tr>
+	    <td>&nbsp;</td>
+	    <td><strong>Bestelling Totaal: </strong></td>
+	    <td><strong>{$DATA.total}</strong></td>
+	  </tr>
+	  </tbody>
+	  
+	</table>]]> 
+	  </content>
+	  <content type="text">
+	<![CDATA[Bedankt {$DATA.first_name}!
+	
+	Uw bestelling {$DATA.cart_order_id} is ontvangen en is geplaatst op {$DATA.order_date}. Bewaar alstublief deze email ter referentie. U kunt de status van uw bestelling online bekijken.
+	
+	{$DATA.link}
+	
+	----------------------------------------------------------------------
+	Factuuradres:
+	  {$BILLING.first_name} {$BILLING.last_name}
+	  {if !empty({$BILLING.company_name})}{$BILLING.company_name}
+	  {/if}{$BILLING.line1}
+	  {if !empty({$BILLING.line2})}{$BILLING.line2}
+	  {/if}{$BILLING.town}
+	  {$BILLING.state}
+	  {$BILLING.postcode}
+	  {$BILLING.country}
+	  {$BILLING.phone}
+	
+	Email:
+	  {$BILLING.email}
+	
+	Bezorgadres:
+	  {$SHIPPING.first_name} {$SHIPPING.last_name}
+	  {if !empty({$SHIPPING.company_name})}{$SHIPPING.company_name}
+	  {/if}{$SHIPPING.line1}
+	  {if !empty({$SHIPPING.line2})}{$SHIPPING.line2}
+	  {/if}{$SHIPPING.town}
+	  {$SHIPPING.state}
+	  {$SHIPPING.postcode}
+	  {$SHIPPING.country}
+	
+	----------------------------------------------------------------------
+	Items in uw bestelling
+	
+	{foreach from=$PRODUCTS item=product}
+	-----------------------------------
+	{$product.name}
+	{$product.product_options}
+	
+	  Producttype Nummer: {$product.product_code}
+	  Stuk Prijs: {$product.price}
+	  Hoeveelheid: {$product.quantity}
+	
+	{/foreach}
+	-----------------------------------
+	  Subtotaal: {$DATA.subtotal}
+	  korting: {$DATA.discount}
+	  Verzending: {$DATA.shipping} {if $DATA.ship_method}({$DATA.ship_method}){/if}
+	  {foreach from=$TAXES item=tax}{$tax.tax_name} ({$tax.tax_percent}%): {$tax.tax_amount}
+	  {/foreach}
+	  --------------------------
+	  Bestelling totaal: {$DATA.total}
+	  ==========================]]> 
+	  </content>
+	</email>
+	<email name="cart.payment_fraud">
+	  <subject>
+	<![CDATA[Bestelling probleem]]> 
+	  </subject>
+	  <content type="html">
+	<![CDATA[ 
+	<p>Hallo {$DATA.first_name},</p> 
+	<p>Het spijt ons heel erg maar We konden de betaling niet ontvangen voor bestelling {$DATA.cart_order_id}. Mochten er vragen zijn dan kunt u het beste contact opnemen met onze medewerkers.</p>]]> 
+	  </content>
+	  <content type="text">
+	<![CDATA[Hallo {$DATA.first_name},
+	 
+	Het spijt ons heel erg maar We konden de betaling niet ontvangen voor bestelling {$DATA.cart_order_id}. Mochten er vragen zijn dan kunt u het beste contact opnemen met onze medewerkers.]]> 
+	  </content>
+	</email>
+	<email name="account.password_recovery">
+	  <subject>
+	<![CDATA[Wachtwoord herstellen]]> 
+	</subject>
+	  <content type="html">
+	<![CDATA[<p>Beste {$DATA.first_name} {$DATA.last_name},<br /> 
+	<br /> 
+	Om uw wachtwoord te herestellen kunt u op onderstaande link klikken of deze kopieren en plakken in de adresbalk van uw browser. Op de pagina wordt u gevraagd uw nieuwe wachtwoord in te voeren en te veriefieren.<br /> 
+	<br /> 
+	{$DATA.reset_link}<br /> 
+	<br /> 
+	Wanneer u meer ondersteuning nodigt heeft, dan kunt u altijd contact met ons opnemen.</p>]]> 
+	  </content>
+	  <content type="text">
+	<![CDATA[Hi {$DATA.first_name},
+	 
+	Om uw wachtwoord te herestellen kunt u op onderstaande link klikken of deze kopieren en plakken in de adresbalk van uw browser. Op de pagina wordt u gevraagd uw nieuwe wachtwoord in te voeren en te veriefieren.
+	 
+	{$DATA.reset_link}
+	 
+	Wanneer u meer ondersteuning nodigt heeft, dan kunt u altijd contact met ons opnemen.]]> 
+	  </content>
+	</email>
+	<email name="admin.order_received">
+	  <subject>
+	<![CDATA[Nieuwe bestelling #{$DATA.cart_order_id}]]> 
+	  </subject>
+	  <content type="html">
+	<![CDATA[<p>{$DATA.first_name} {$DATA.last_name} {if !empty({$BILLING.company_name})}({$BILLING.company_name}){/if} zojuist geplaatst order nummer {$DATA.cart_order_id} op {$DATA.order_date}.</p>
+	<p>Deze bestelling kan online worden beheerd door op de onderstaande link te klikken.</p> 
+	<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+	<table width="100%">
+	  <tr>
+	    <td valign="top" width="50%"><strong>Factuuradres:</strong><br />
+	      {$BILLING.first_name} {$BILLING.last_name}<br />
+	      {if !empty({$BILLING.company_name})}{$BILLING.company_name}<br />
+	      {/if}
+	      {$BILLING.line1}<br />
+	      {if !empty({$BILLING.line2})}{$BILLING.line2}<br />
+	      {/if}
+	      {$BILLING.town}<br />
+	      {$BILLING.state}<br />
+	      {$BILLING.postcode}<br />
+	      {$BILLING.country}<br />
+	      {$BILLING.phone}<br />
+	      <br />
+	      <strong>Email:</strong><br />
+	      {$BILLING.email}</td>
+	    <td valign="top" width="50%"><strong>Bezorgadres:</strong><br />
+	      {$SHIPPING.first_name} {$SHIPPING.last_name}<br />
+	      {if !empty({$SHIPPING.company_name})}{$SHIPPING.company_name} <br />
+	      {/if}{$SHIPPING.line1}<br />
+	      {if !empty({$SHIPPING.line2})}{$SHIPPING.line2} <br />
+	      {/if}{$SHIPPING.town}<br />
+	      {$SHIPPING.state}<br />
+	      {$SHIPPING.postcode}<br />
+	      {$SHIPPING.country}</td>
+	  </tr>
+	</table>
+	<table border="0" cellpadding="3" cellspacing="0" width="100%">
+	  <tbody>
+	    <tr>
+	      <td><strong>Item</strong></td>
+	      <td><strong>Hoeveelheid</strong></td>
+	      <td><strong>Kosten</strong></td>
+	    </tr>
+	  {foreach from=$PRODUCTS item=product}
+	  <tr>
+	    <td>{$product.name} <br />{$product.product_options}</td>
+	    <td>{$product.quantity}</td>
+	    <td>{$product.price}</td>
+	  </tr>
+	  {/foreach}
+	  <tr>
+	    <td>&nbsp;</td>
+	    <td> Verzendmethode: {if $DATA.ship_method}({$DATA.ship_method}){/if}</td>
+	    <td> {$DATA.shipping}</td>
+	  </tr>
+	  <tr>
+	    <td>&nbsp;</td>
+	    <td> Korting:</td>
+	    <td> {$DATA.discount}</td>
+	  </tr>
+	  <tr>
+	    <td>&nbsp;</td>
+	    <td> Subtotaal:</td>
+	    <td> {$DATA.subtotal}</td>
+	  </tr>
+	  {foreach from=$TAXES item=tax}
+	  <tr>
+	    <td>&nbsp;</td>
+	    <td> {$tax.tax_name}: ({$tax.tax_percent}%)</td>
+	    <td> {$tax.tax_amount}</td>
+	  </tr>
+	  {/foreach}
+	  <tr>
+	    <td>&nbsp;</td>
+	    <td><strong>Bestelling Totaal: </strong></td>
+	    <td><strong>{$DATA.total}</strong></td>
+	  </tr>
+	  </tbody>
+	  
+	</table>]]> 
+	  </content>
+	  <content type="text">
+	<![CDATA[{$DATA.first_name} {$DATA.last_name} {if !empty({$BILLING.company_name})}({$BILLING.company_name}){/if}  zojuist geplaatst order nummer {$DATA.cart_order_id} op {$DATA.order_date}.
+	
+	Deze bestelling kan online worden beheerd door op de onderstaande link te klikken.
+	
+	{$DATA.link}
+	
+	----------------------------------------------------------------------
+	Factuuradres:
+	  {$BILLING.first_name} {$BILLING.last_name}
+	  {if !empty({$BILLING.company_name})}{$BILLING.company_name}
+	  {/if}{$BILLING.line1}
+	  {if !empty({$BILLING.line2})}{$BILLING.line2}
+	  {/if}{$BILLING.town}
+	  {$BILLING.state}
+	  {$BILLING.postcode}
+	  {$BILLING.country}
+	  {$BILLING.phone}
+	
+	Email:
+	  {$BILLING.email}
+	
+	Bezorgadres:
+	  {$SHIPPING.first_name} {$SHIPPING.last_name}
+	  {if !empty({$SHIPPING.company_name})}{$SHIPPING.company_name}
+	  {/if}{$SHIPPING.line1}
+	  {if !empty({$SHIPPING.line2})}{$SHIPPING.line2}
+	  {/if}{$SHIPPING.town}
+	  {$SHIPPING.state}
+	  {$SHIPPING.postcode}
+	  {$SHIPPING.country}
+	
+	----------------------------------------------------------------------
+	Items in uw bestelling
+	
+	{foreach from=$PRODUCTS item=product}
+	-----------------------------------
+	{$product.name}
+	{$product.product_options}
+	
+	  Producttype Nummer: {$product.product_code}
+	  Stuk Prijs: {$product.price}
+	  Hoeveelheid: {$product.quantity}
+	
+	{/foreach}
+	-----------------------------------
+	  Subtotaal: {$DATA.subtotal}
+	  korting: {$DATA.discount}
+	  Verzending: {$DATA.shipping} {if $DATA.ship_method}({$DATA.ship_method}){/if}
+	  {foreach from=$TAXES item=tax}{$tax.tax_name} ({$tax.tax_percent}%): {$tax.tax_amount}
+	  {/foreach}
+	  --------------------------
+	  Bestelling totaal: {$DATA.total}
+	  ==========================]]> 
+	  </content>
+	</email>
+	<email name="admin.review_added">
+	  <subject>
+	<![CDATA[Nieuwe product beoordeling]]> 
+	  </subject>
+	  <content type="html">
+	<![CDATA[{$DATA.name} heeft een nieuwe beoordeling/reactie geplaatst over '{$DATA.product_name}'. Deze kan met de onderstande link worden beheerd.
+	<p><strong>Beheer Link:</strong><br /><a href='{$DATA.link}'>{$DATA.link}</a></p> 
+	<p><strong>Beoordeling Tekst:</strong><br />{$DATA.review}</p>]]> 
+	  </content>
+	  <content type="text">
+	<![CDATA[{$DATA.name} heeft een nieuwe beoordeling/reactie geplaatst over '{$DATA.product_name}'. Deze kan met de onderstande link worden beheerd.
+	 
+	Beheer Link: 
+	{$DATA.link}
+	Beoordeling Tekst:
+	{$DATA.review}]]> 
+	  </content>
+	</email>
+	<email name="cart.digital_download">
+	  <subject>
+	<![CDATA[ Uw Gekochte Downloads]]> 
+	  </subject>
+	  <content type="html">
+	<![CDATA[<p>Hallo {$DATA.first_name},</p> 
+	<p>Uw digitale bestanden zijn klaar om gedownload te worden. Om toegang tot ze te krijgen kunt u de onderstaande links gebruiken:</p> 
+	{foreach from=$DOWNLOADS item=download} 
+	<p><strong>{$download.name}:</strong> (Link vervalt op {$download.expire}<strong>)</strong><br /> 
+	{$download.url}</p> 
+	{/foreach}
+	<p>Wanneer bovenstaande links niet werken, kunt ut proberen ze te kopieren en te plakken in de adresbalk van uw browser. U kunt ook toegang tot deze bestanden krijgen via de klanten sectie van onze website.</p> 
+	<p>&nbsp;</p>]]> 
+	  </content>
+	  <content type="text">
+	<![CDATA[Hallo {$DATA.first_name},
+	 
+	Uw digitale bestanden zijn klaar om gedownload te worden. Om toegang tot ze te krijgen kunt u de onderstaande links gebruiken:
+	 
+	{foreach from=$DOWNLOADS item=download} 
+	{$download.name}: (Link expires on {$download.expire})
+	{$download.url}
+	{/foreach}
+	 
+	Wanneer bovenstaande links niet werken, kunt ut proberen ze te kopieren en te plakken in de adresbalk van uw browser. U kunt ook toegang tot deze bestanden krijgen via de klanten sectie van onze website.]]> 
+	  </content>
+	</email>
+	<email name="cart.gift_certificate">
+	  <subject>
+	<![CDATA[Uw Cadeaubon]]> 
+	  </subject>
+	  <content type="html">
+	<![CDATA[<p>Beste {$DATA.name},</p> 
+	<p>Wij zijn verheugd dat wij u deze cadeaubon toe mogen sturen, welke u kan gebruiken voor ieder gewenst product op de website.</p> 
+	<p>Veel Winkel Plezier!</p> 
+	<p><strong>Van: </strong>{$DATA.first_name} {$DATA.last_name}<br /> 
+	<strong>Waarde: </strong>{$DATA.value}<br /> 
+	<strong>Claim Code:</strong> {$DATA.code}<br /> 
+	<strong>Bericht bij Cadeau:</strong> {$DATA.message}</p> 
+	<p>-------------------</p> 
+	<p>Om uw cadeaubon in te gebruiken voer a.u.b de &quot;Cadeaubon Code&quot; boven in het tekstveld genaamd &quot;Voeg Cadeaubon of Coupon toe&quot; tijdens het afrekenen.</p> 
+	<p>Waarom zou u het nu niet uitgeven?</p>]]> 
+	  </content>
+	  <content type="text">
+	<![CDATA[Beste {$DATA.name},
+	 
+	Wij zijn verheugd dat wij u deze cadeaubon toe mogen sturen, welke u kan gebruiken voor ieder gewenst product op de website.
+	 
+	Veel Winkel Plezier!
+	 
+	From: {$DATA.first_name} {$DATA.last_name}
+	Amount: {$DATA.value}
+	Claim Code: {$DATA.code}
+	Gift Message: {$DATA.message}
+	 
+	-------------------
+	 
+	Om uw cadeaubon in te gebruiken voer a.u.b de &quot;Cadeaubon Code&quot; boven in het tekstveld genaamd &quot;Voeg Cadeaubon of Coupon toe&quot; tijdens het afrekenen.</p>
+	 
+	Waarom zou u het nu niet uitgeven?]]> 
+	  </content>
+	</email>
+	<email name="catalogue.tell_friend">
+	  <subject>
+	<![CDATA[{$DATA.from} heeft iets aangeraden]]> 
+	  </subject>
+	  <content type="html">
+	<![CDATA[Beste {$DATA.to},
+	<p>Uw vriend <strong>{$DATA.from}</strong> dacht dat u misschien geintreseerd zou zijn in <strong>{$DATA.name}</strong>.</p> 
+	<p><strong>Product Link:</strong> <a href="{$DATA.link}">{$DATA.name}</a></p> 
+	<p>{$DATA.message}</p>]]> 
+	  </content>
+	  <content type="text">
+	<![CDATA[Beste {$DATA.to},
+	 
+	Uw vriend {$DATA.from} dacht dat u misschien geintreseerd zou zijn in '{$DATA.name}'.
+	 
+	{$DATA.name}
+	Product Link: {$DATA.link}
+	 
+	{$DATA.message}]]> 
+	  </content>
+	</email>
+	<email name="cart.payment_received">
+	    <subject>
+	<![CDATA[ Bedankt voor uw betaling]]> 
+	  </subject>
+	  <content type="html">
+	<![CDATA[<p>Hallo {$DATA.first_name},</p> 
+	<p>Bedankt. We hebben een betaling van {$DATA.total} ontvangen voor bestelnummer {$DATA.cart_order_id}.</p>]]> 
+	  </content>
+	  <content type="text">
+	<![CDATA[Hallo {$DATA.first_name},
+	 
+	We hebben een betaling van {$DATA.total} ontvangen voor bestelnummer {$DATA.cart_order_id}.]]> 
+	  </content>
+	</email>
+</emails>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions version="1.0">
+ <group name="flat_rate">
+  <string name="module_description"><![CDATA[This module can be used to specify a flat rate shipping cost to all orders.]]></string>
+  <string name="module_title"><![CDATA[Flat Rate]]></string>
+ </group>
+</definitions>

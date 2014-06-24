@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="cresecure">
+  <string name="account_id"><![CDATA[CRE Secure ID]]></string>
+  <string name="api_token"><![CDATA[CRE Secure API Token]]></string>
+  <string name="module_title"><![CDATA[CRE Secure]]></string>
+ </group>
+</definitions>

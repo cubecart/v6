@@ -1,0 +1,133 @@
+/* CSS Document for Print out of Order */
+
+html, body {
+	margin: 0px;
+	padding: 0px;
+	
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 0.9em;
+	
+	border: none;
+}
+
+hr {
+	height: 1px;
+	border: none;
+	color: #000000;
+	background-color: #000000;
+}
+
+#info {
+	display: none;
+	visibility: hidden;
+}
+
+
+#header {
+	padding-bottom: 7px;
+	border-bottom: 1px solid #666666;
+	background-repeat: no-repeat;
+	background-position: top left;
+	overflow: visible;
+}
+
+#printLabel {
+	width: 80mm;
+	height: 50mm;
+	float: right;
+	padding: 4mm;
+	z-index: 100;
+}
+
+.sender {
+	border-top: 1px solid #CCCCCC;
+	margin-top: 20px;
+	padding-top: 4px;
+	font-size: 0.7em;
+}
+
+#storeLabel {
+	width: 80mm;
+	height: 50mm;
+	padding-top: 4mm;
+	overflow: hidden;
+	z-index: -1;
+}
+
+#storeLabel h3 {
+	text-align: center;
+	margin: 0px;
+	padding: 0px;
+}
+
+div.info {
+	margin: 10px 0px 30px;
+}
+
+span.orderid {
+	width: 230px;
+	float: right;
+}
+
+div.product {
+	padding: 5px 0px;
+	clear: both;
+	border-bottom: 1px dashed #E7E7E7;
+}
+span.price {
+	float: right;
+	font-weight: bold;
+}
+span.options {
+	font-style: italic;
+}
+
+#totals {
+	margin-top: 5px;
+}
+#totals div.total {
+	text-align: right;
+}
+
+fieldset {
+	border: 1px solid #C7C7C7;
+	padding: 5px;
+	margin: 10px 30px 0 0;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	font-size: 10px;
+}
+fieldset > legend {
+	padding: 0 7px;
+	font-weight: bold;
+}
+.other {
+	width: 400px;
+}
+.other label {
+	float: left;
+	width: 180px;
+	margin: 0;
+	padding: 0;
+}
+
+#thanks {
+	margin-top: 20px;
+	text-align: center;
+	font-weight: bold;
+}
+
+#footer {
+	margin: 10px 0px 0px;
+	padding-top: 5px;
+	border-top: 1px solid #666666;
+	text-align: center;
+	font-size: 0.8em;
+}
+#footer p {
+	margin: 0px;
+}
+.page-break {
+	page-break-after: always;
+}
+fieldset

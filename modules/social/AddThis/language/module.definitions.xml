@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions version="1.0">
+ <group name="addthis">
+  <string name="large_icons"><![CDATA[Use Large Icons]]></string>
+  <string name="analytics"><![CDATA[Enable Analytics (Requires AddThis Username)]]></string>
+  <string name="username"><![CDATA[AddThis Username (Optional)]]></string>
+  <string name="preferred_count"><![CDATA[Number of buttons to show (Max 11)]]></string>
+  <string name="specific_buttons"><![CDATA[Specific Service Buttons (Comma seperated)]]></string>
+  <string name="preferred_count_desc"><![CDATA[AddThis use an algorithm combining the user's share history and locale to optimize the order. For example, a user who shares exclusively to Twitter would see the Twitter icon first.]]></string>
+  <string name="specific_buttons_desc"><![CDATA[If you would like to specify specific service buttons it is possible to list them here. A full list can be found at <a href="http://www.addthis.com/services/list">http://www.addthis.com/services/list</a>. Specific buttons take preference over number of buttons to show. e.g. email,facebook,twitter,stumbleupon ]]></string>
+ </group>
+</definitions>

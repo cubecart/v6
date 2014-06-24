@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions version="1.0">
+ <group name="per_category">
+  <string name="countries_national"><![CDATA[National Countries]]></string>
+  <string name="countries_international"><![CDATA[International Countries]]></string>
+  <string name="module_description"><![CDATA[Below it is possible to specify national and international countries as well as an optional handling charge. The actual shipping costs per category can be set for each category once this shipping method is enabled. A &quot;Shipping&quot; tab will be available when editing or adding a category.]]></string>
+  <string name="module_title"><![CDATA[Per Category]]></string>
+  <string name="title_examples"><![CDATA[Examples]]></string>
+  <string name="tax_type"><![CDATA[Tax Type]]></string>
+ </group>
+</definitions>

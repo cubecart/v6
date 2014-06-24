@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions version="1.0">
+ <group name="wishpot">
+  <string name="user_id"><![CDATA[Wishpot ID]]></string>
+  <string name="choose_button"><![CDATA[Choose Button]]></string>
+ </group>
+</definitions>

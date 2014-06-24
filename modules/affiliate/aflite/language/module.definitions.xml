@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions version="1.0">
+ <group name="aflite">
+  <string name="welcome"><![CDATA[Aflite Network - The affiliate network for new, small and exciting businesses. No set up fees just pay on performance!<br />Set up your account at <a href="http://aflite.co.uk/merchants" target="_blank">http://aflite.co.uk/merchants</a>]]></string>
+  <string name="module_title"><![CDATA[Aflite]]></string>
+  <string name="mid"><![CDATA[Merchant ID]]></string>
+  <string name="gid"><![CDATA[Goal ID]]></string>
+ </group>
+</definitions>

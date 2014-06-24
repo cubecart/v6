@@ -1,0 +1,20 @@
+.order_status {
+	font-weight:700;
+	font-size:1.375rem;
+}
+
+.order_status_1 {
+	color:#008CBA;
+}
+
+.order_status_2 {
+	color:orange;
+}
+
+.order_status_3 {
+	color:#43AC6A;
+}
+
+.order_status_4,.order_status_5,.order_status_6 {
+	color:#F04124;
+}

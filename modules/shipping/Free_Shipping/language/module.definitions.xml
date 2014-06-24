@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions version="1.0">
+ <group name="free_shipping">
+  <string name="module_description"><![CDATA[This module can be used to provide free shipping. It is possible to specify a minimum subtotal for free shipping.]]></string>
+  <string name="module_title"><![CDATA[Free Shipping]]></string>
+  <string name="min_subtotal"><![CDATA[Minimum Subtotal]]></string>
+  <string name="max_orderweight"><![CDATA[Maximum Order Weight]]></string>
+ </group>
+</definitions>

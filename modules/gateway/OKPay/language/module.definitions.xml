@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+	<group name="okpay">
+		<string name="wallet_id"><![CDATA[WalletID or Email]]></string>
+		<string name="use_ssl"><![CDATA[Use SSL in IPN processing?]]></string>
+		<string name="module_description"><![CDATA[This is the standard OKPAY payment gateway.]]></string>
+		<string name="module_title"><![CDATA[OKPAY Standard]]></string>
+	</group>
+</definitions>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="sage">
+  <string name="blank_disable_exchange_rate"><![CDATA[Leave blank to disable outputting the Exchange Rate column]]></string>
+  <string name="code_countries_unspecified"><![CDATA[This is the code that will be used for any countries not specified in the tax config below.]]></string>
+  <string name="country_tax_code_settings"><![CDATA[Country Tax Code Settings]]></string>
+  <string name="customer_acc_code"><![CDATA[Use this option if you want to export all invoices into one single customer account. Use this box to specify the Sage customer account code.]]></string>
+  <string name="customer_acc_prefix"><![CDATA[Customer Account Prefix]]></string>
+  <string name="customer_acc_single"><![CDATA[Customer Account (Single)]]></string>
+  <string name="dont_export"><![CDATA[Don't Export (Single account)]]></string>
+  <string name="exchange_rate"><![CDATA[Exchange Rate]]></string>
+  <string name="export_customer_account"><![CDATA[Export Customer Account]]></string>
+  <string name="export_customer_payments"><![CDATA[Export Customer Payments]]></string>
+  <string name="gateway_nominal_values"><![CDATA[Payment Gateway Nominal Values]]></string>
+  <string name="prefix_plus_id"><![CDATA[Prefix + ID]]></string>
+  <string name="prefix_plus_id_8_char"><![CDATA[Prefix + ID (8 chars)]]></string>
+  <string name="sales_nominal"><![CDATA[Nominal for Sales]]></string>
+  <string name="tax_code"><![CDATA[Tax Code]]></string>
+ </group>
+</definitions>

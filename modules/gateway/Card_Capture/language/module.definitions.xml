@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="card_capture">
+  <string name="card_cvv_store"><![CDATA[Store CVV Security Code]]></string>
+  <string name="card_cvv_require"><![CDATA[Require CVV Security Code]]></string>
+  <string name="card_show_issue"><![CDATA[Show Issue Number/Date]]></string>
+  <string name="card_validation"><![CDATA[Enable Card Validation]]></string>
+  <string name="module_description"><![CDATA[This module has been design to enable the capture of encrypted credit cards for processing offline.]]></string>
+  <string name="module_title"><![CDATA[Manual Card Capture]]></string>
+  <string name="title_config_basic"><![CDATA[Basic Configuration]]></string>
+  <string name="title_cards_accept"><![CDATA[Accepted Cards]]></string>
+  <string name="confirmation_email"><![CDATA[Send order confirmation email?]]></string>
+ </group>
+</definitions>

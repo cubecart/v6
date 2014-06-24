@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="optimalpayments">
+  <string name="description"><![CDATA[&quot;The Optimal Payment Solution.&quot;]]></string>
+  <string name="api_method"><![CDATA[API Method]]></string>
+  <string name="api_tradegard"><![CDATA[Checkout API Tradegard]]></string>
+  <string name="api_standard"><![CDATA[Checkout API]]></string>
+  <string name="shop_id"><![CDATA[Shop ID]]></string>
+  <string name="shared_key"><![CDATA[Shared Key]]></string>
+  <string name="settings"><![CDATA[Optimal Payments Settings]]></string>
+  <string name="call_url"><![CDATA[Callback URL]]></string>
+ </group>
+</definitions>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions version="1.0">
+ <group name="auspost">
+  <string name="module_description"><![CDATA[This module will communicate with AusPost to retrieve real-time shipping quotes based on the basket weight. Please make sure all products have a weight to use this module.]]></string>
+  <string name="module_title"><![CDATA[Australia Post]]></string>
+  <string name="package_size"><![CDATA[Packaging Size (cm)]]></string>
+  <string name="package_weight"><![CDATA[Package Weight (Kg)]]></string>
+  <string name="postcode_origin"><![CDATA[Origin Postcode]]></string>
+  <string name="service_air"><![CDATA[Air Mail]]></string>
+  <string name="service_eci_d"><![CDATA[Express Courier International (Document)]]></string>
+  <string name="service_eci_m"><![CDATA[Express Courier International (Merchandise)]]></string>
+  <string name="service_epi"><![CDATA[Express Post International]]></string>
+  <string name="service_express"><![CDATA[Express Delivery]]></string>
+  <string name="service_sea"><![CDATA[Sea Mail]]></string>
+  <string name="service_standard"><![CDATA[Standard Delivery]]></string>
+  <string name="title_service_domestic"><![CDATA[Domestic Services]]></string>
+  <string name="title_service_international"><![CDATA[International Services]]></string>
+ </group>
+</definitions>

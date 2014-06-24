@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions version="1.0">
+ <group name="amazon_checkout">
+  <string name="button_color"><![CDATA[Button Colour]]></string>
+  <string name="button_size"><![CDATA[Button Size]]></string>
+  <string name="button_background"><![CDATA[Button Background]]></string>
+  <string name="medium"><![CDATA[Medium]]></string>
+  <string name="large"><![CDATA[Large]]></string>
+  <string name="x_large"><![CDATA[Extra Large]]></string>
+  <string name="orange"><![CDATA[Orange]]></string>
+  <string name="tan"><![CDATA[Tan]]></string>
+  <string name="white"><![CDATA[White]]></string>
+  <string name="dark"><![CDATA[Dark]]></string>
+  <string name="light"><![CDATA[Light]]></string>
+  <string name="mode"><![CDATA[Checkout Mode]]></string>
+  <string name="production"><![CDATA[Production]]></string>
+  <string name="sandbox"><![CDATA[Sandbox]]></string>
+  <string name="access_key"><![CDATA[Access Key]]></string>
+  <string name="secret_key"><![CDATA[Secret Key]]></string>
+  <string name="merchant_id"><![CDATA[Merchant ID]]></string>
+  <string name="merchant_url"><![CDATA[Merchant URL: (<a href="https://payments.amazon.co.uk/help/Checkout-by-Amazon/Technical-Resources/SSL-Certificates-and-the-Callback-API" target="_blank">Approved SSL Required</a>)]]></string>
+  <string name="settings"><![CDATA[Checkout Pipeline Settings]]></string>
+  <string name="merchant_token"><![CDATA[Merchant Token]]></string>
+  <string name="market_place_id"><![CDATA[Market Place ID]]></string>
+  <string name="country"><![CDATA[Merchant Account Country]]></string>
+  <string name="US"><![CDATA[Amazon US]]></string>
+  <string name="UK"><![CDATA[Amazon UK]]></string>
+  <string name="DE"><![CDATA[Amazon DE]]></string>
+ </group>
+</definitions>

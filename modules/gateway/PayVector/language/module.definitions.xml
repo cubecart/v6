@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+    <group name="payvector">
+
+        <string name="module_title"><![CDATA[PayVector]]></string>
+        
+        <string name="crt"><![CDATA[Enable CrossReference Transactions]]></string>
+        
+        <string name="mode"><![CDATA[Mode]]></string>
+        <string name="api"><![CDATA[Direct/API (Requires SSL)]]></string>
+        <string name="hpf"><![CDATA[Hosted Payment Form]]></string>
+        <string name="tr"><![CDATA[Transparent Redirect]]></string>
+        
+        <string name="test_mode"><![CDATA[Test Mode]]></string>
+        <string name="merchant_id_test"><![CDATA[Merchant ID (<strong>Test</strong> Account)]]></string>
+        <string name="password_test"><![CDATA[Password (<strong>Test</strong> Account)]]></string>
+        <string name="ca_test"><![CDATA[Simulate Continuous Authority Account Behaviour]]></string>
+        
+        <string name="merchant_id_prod"><![CDATA[Merchant ID (<strong>Production</strong> Account)]]></string>
+        <string name="password_prod"><![CDATA[Password (<strong>Production</strong> Account)]]></string>
+        
+        <string name="merchant_id_ca"><![CDATA[Merchant ID (<strong>CA</strong> Account)]]></string>
+        <string name="password_ca"><![CDATA[Password (<strong>CA</strong> Account)]]></string>
+
+		<string name="name_on_card"><![CDATA[Name On Card]]></string>
+
+        <string name="hpfButtonCaption"><![CDATA[Pay Now]]></string>
+
+        <string name="hpfPreSharedKey"><![CDATA[Pre Shared Key]]></string>
+
+        <string name="hpfHashMethod"><![CDATA[Hash Method]]></string>
+        <string name="hmSHA1"><![CDATA[SHA1]]></string>
+        <string name="hmMD5"><![CDATA[MD5]]></string>
+        <string name="hmHMACSHA1"><![CDATA[HMACSHA1]]></string>
+        <string name="hmHMACMD5"><![CDATA[HMACMD5]]></string>
+
+        <string name="hpfResultDeliveryMethod"><![CDATA[Result Delivery Method]]></string>
+        <string name="rdmPost"><![CDATA[POST]]></string>
+        <string name="rdmServer"><![CDATA[SERVER]]></string>
+        <string name="rdmServer_Pull"><![CDATA[SERVER_PULL]]></string>
+
+        <string name="hpfCV2Mandatory"><![CDATA[CV2 Mandatory]]></string>
+        <string name="hpfAddress1Mandatory"><![CDATA[Address1 Mandatory]]></string>
+        <string name="hpfCityMandatory"><![CDATA[City Mandatory]]></string>
+        <string name="hpfPostCodeMandatory"><![CDATA[PostCode Mandatory]]></string>
+        <string name="hpfStateMandatory"><![CDATA[State Mandatory]]></string>
+        <string name="hpfCountryMandatory"><![CDATA[Country Mandatory]]></string>
+
+    </group>
+</definitions>

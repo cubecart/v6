@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language version="2.0">
+  <info>
+    <title>English (US)</title>
+    <code>en-US</code>
+    <character_set>utf-8</character_set>
+    <version>1.0.0</version>
+    <minVersion>5.0.0a</minVersion>
+    <maxVersion>5.1.*</maxVersion>
+    <default_currency>USD</default_currency>
+    <text-direction>ltr</text-direction>
+    <override></override>
+  </info>
+  <translation>
+    <group name="address">
+      <string name="postcode">
+        <![CDATA[Zip Code]]></string>
+      <string name="mobile" introduced="5.0.0"><![CDATA[Cell Phone]]></string>
+    </group>
+    <group name="gateway">
+      <string name="cheque_payable_to" introduced="5.0.0"><![CDATA[Please make checks payable to]]></string>
+      <string name="cheque_payment" introduced="5.0.0"><![CDATA[Pay by Check]]></string>
+    </group>
+    <group name="account">
+      <string name="error_valid_mobile_phone" introduced="5.0.0"><![CDATA[Please enter a valid cell phone number.]]></string>
+    </group>
+  </translation>
+</language>

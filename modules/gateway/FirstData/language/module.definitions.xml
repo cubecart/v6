@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="firstdata">
+  <string name="check_both"><![CDATA[Please check both of these boxes]]></string>
+  <string name="confirm_url"><![CDATA[Confirmation Page]]></string>
+  <string name="connect_settings"><![CDATA[FirstData Settings]]></string>
+  <string name="fail_url"><![CDATA[Failure Page]]></string>
+  <string name="gateway_mode"><![CDATA[Gateway Mode]]></string>
+  <string name="gateway_solution"><![CDATA[Gateway Solution]]></string>
+  <string name="leave_empty"><![CDATA[Leave empty]]></string>
+  <string name="mode_live"><![CDATA[Live]]></string>
+  <string name="mode_staging"><![CDATA[Staging]]></string>
+  <string name="module_title"><![CDATA[FirstData]]></string>
+  <string name="solution_api"><![CDATA[API]]></string>
+  <string name="solution_ggc"><![CDATA[Global Gateway Connect]]></string>
+  <string name="store_number"><![CDATA[Store Number]]></string>
+  <string name="submit_url"><![CDATA[Submission Form URL]]></string>
+  <string name="txn_authorize"><![CDATA[Authorize Only]]></string>
+  <string name="txn_sale"><![CDATA[Sale]]></string>
+  <string name="url_is_cgi"><![CDATA[URL is a CGI Script]]></string>
+ </group>
+</definitions>

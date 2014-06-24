@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions version="1.0">
+ <group name="poscodeanywhere">
+     <string name="module_title"><![CDATA[Postcode Anywhere]]></string>
+     <string name="sign_up"><![CDATA[Need an account? <a href="http://www.postcodeanywhere.co.uk/partners/%20INDIV74428.aspx">Signup Here</a>]]></string>
+     <string name="capture_key"><![CDATA[Capture+ Key]]></string>
+ </group>
+</definitions>

@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<emails version="2.0" language="fi-FI">
+  <email name="admin.password_recovery">
+    <subject>
+      <![CDATA[Admin Password Recovery]]>
+    </subject>
+    <content type="html">
+      <![CDATA[<p>Kære {$DATA.name},</p> 
+        <p>For at genvinde adgang til butikkerne administration kontrolpanel. Følg venligst nedenstående link:</p> 
+        <p><a href="{$DATA.link}">{$DATA.link}</a></p> 
+        <p>Hvis ovenstående link ikke virker, skal du kopiere og indsætte det i din browsers adresselinje.</p>]]>
+    </content>
+    <content type="text">
+      <![CDATA[Kære {$DATA.name},
+        
+        For at genvinde adgang til butikkerne administration kontrolpanel. Følg venligst nedenstående link:
+        
+        {$DATA.link}
+        
+        Hvis ovenstående link ikke virker, skal du kopiere og indsætte det i din browsers adresselinje.]]>
+    </content>
+  </email>
+  <email name="cart.order_complete">
+    <subject>
+      <![CDATA[Order Complete]]>
+    </subject>
+    <content type="html">
+      <![CDATA[<p>Hej {$DATA.first_name},</p> 
+        <p>Vi er glade for at sige, at ordrenummer {$DATA.cart_order_id} er færdig. Hvis du har bestilt fysiske varer, de bør ankomme kort.</p>]]>
+    </content>
+    <content type="text">
+      <![CDATA[Hej {$DATA.first_name},
+        
+        Vi er glade for at sige, at ordrenummer {$DATA.cart_order_id} er færdig. Hvis du har bestilt fysiske varer, de bør ankomme kort.]]>
+    </content>
+  </email>
+  <email name="cart.order_cancelled">
+    <subject>
+      <![CDATA[Order Cancelled]]>
+    </subject>
+    <content type="html">
+      <![CDATA[<p>Hej {$DATA.first_name},</p> 
+        <p>Ordre nummer {$DATA.cart_order_id} er blevet annuleret.</p>]]>
+    </content>
+    <content type="text">
+      <![CDATA[Hej {$DATA.first_name},
+        
+        Ordre nummer {$DATA.cart_order_id} er blevet annuleret.]]>
+    </content>
+  </email>
+  <email name="cart.order_confirmation">
+    <subject>
+      <![CDATA[Order Confirmation #{$DATA.cart_order_id}]]>
+    </subject>
+    <content type="html">
+      <![CDATA[<p>Tak {$DATA.first_name}!</p>
+        <p>Din ordre {$DATA.cart_order_id} er modtaget, som blev placeret på {$DATA.order_date}. Opbevar venligst denne e-mail til dine optegnelser. Det er muligt at se status for din ordre online.</p> 
+        <p><a href="{$DATA.link}">{$DATA.link}</a></p>
+        <table width="100%">
+        <tr>
+        <td valign="top" width="50%"><strong>Faktureringsadresse:</strong><br />
+        {$BILLING.first_name} {$BILLING.last_name}<br />
+        {if !empty({$BILLING.company_name})}{$BILLING.company_name}<br />
+        {/if}
+        {$BILLING.line1}<br />
+        {if !empty({$BILLING.line2})}{$BILLING.line2}<br />
+        {/if}
+        {$BILLING.town}<br />
+        {$BILLING.state}<br />
+        {$BILLING.postcode}<br />
+        {$BILLING.country}<br />
+        {$BILLING.phone}<br />
+        <br />
+        <strong>Email:</strong><br />
+        {$BILLING.email}</td>
+        <td valign="top" width="50%"><strong>Forsendelse adresse:</strong><br />
+        {$SHIPPING.first_name} {$SHIPPING.last_name}<br />
+        {if !empty({$SHIPPING.company_name})}{$SHIPPING.company_name} <br />
+        {/if}{$SHIPPING.line1}<br />
+        {if !empty({$SHIPPING.line2})}{$SHIPPING.line2} <br />
+        {/if}{$SHIPPING.town}<br />
+        {$SHIPPING.state}<br />
+        {$SHIPPING.postcode}<br />
+        {$SHIPPING.country}</td>
+        </tr>
+        </table>
+        <table border="0" cellpadding="3" cellspacing="0" width="100%">
+        <tbody>
+        <tr>
+        <td><strong>Vare</strong></td>
+        <td><strong>Mængde</strong></td>
+        <td><strong>Koster</strong></td>
+        </tr>
+        {foreach from=$PRODUCTS item=product}
+        <tr>
+        <td>{$product.name} <br />{$product.product_options}</td>
+        <td>{$product.quantity}</td>
+        <td>{$product.price}</td>
+        </tr>
+        {/foreach}
+        <tr>
+        <td>&nbsp;</td>
+        <td> Shipping: {if $DATA.ship_method}({$DATA.ship_method}){/if}</td>
+        <td> {$DATA.shipping}</td>
+        </tr>
+        <tr>
+        <td>&nbsp;</td>
+        <td> Discount:</td>
+        <td> {$DATA.discount}</td>
+        </tr>
+        <tr>
+        <td>&nbsp;</td>
+        <td> Subtotal:</td>
+        <td> {$DATA.subtotal}</td>
+        </tr>
+        {foreach from=$TAXES item=tax}
+        <tr>
+        <td>&nbsp;</td>
+        <td> {$tax.tax_name}: ({$tax.tax_percent}%)</td>
+        <td> {$tax.tax_amount}</td>
+        </tr>
+        {/foreach}
+        <tr>
+        <td>&nbsp;</td>
+        <td><strong>Order Total: </strong></td>
+        <td><strong>{$DATA.total}</strong></td>
+        </tr>
+        </tbody>
+        
+        </table>]]>
+    </content>
+    <content type="text">
+      <![CDATA[Tak {$DATA.first_name}!
+        
+        Your order {$DATA.cart_order_id} has been received which was placed on {$DATA.order_date}. Please keep this email for your records. It is possible to view the status of your order online. 
+        
+        {$DATA.link}
+        
+        ----------------------------------------------------------------------
+        Faktureringsadresse:
+        {$BILLING.first_name} {$BILLING.last_name}
+        {if !empty({$BILLING.company_name})}{$BILLING.company_name}
+        {/if}{$BILLING.line1}
+        {if !empty({$BILLING.line2})}{$BILLING.line2}
+        {/if}{$BILLING.town}
+        {$BILLING.state}
+        {$BILLING.postcode}
+        {$BILLING.country}
+        {$BILLING.phone}
+        
+        Email:
+        {$BILLING.email}
+        
+        Shipping address:
+        {$SHIPPING.first_name} {$SHIPPING.last_name}
+        {if !empty({$SHIPPING.company_name})}{$SHIPPING.company_name}
+        {/if}{$SHIPPING.line1}
+        {if !empty({$SHIPPING.line2})}{$SHIPPING.line2}
+        {/if}{$SHIPPING.town}
+        {$SHIPPING.state}
+        {$SHIPPING.postcode}
+        {$SHIPPING.country}
+        
+        ----------------------------------------------------------------------
+        Varer i din ordre
+        
+        {foreach from=$PRODUCTS item=product}
+        -----------------------------------
+        {$product.name}
+        {$product.product_options}
+        
+        Part Number: {$product.product_code}
+        Unit Price: {$product.price}
+        Qty: {$product.quantity}
+        
+        {/foreach}
+        -----------------------------------
+        Subtotal: {$DATA.subtotal}
+        Discount: {$DATA.discount}
+        Shipping: {$DATA.shipping} {if $DATA.ship_method}({$DATA.ship_method}){/if}
+        {foreach from=$TAXES item=tax}{$tax.tax_name} ({$tax.tax_percent}%): {$tax.tax_amount}
+        {/foreach}
+        --------------------------
+        Order Total: {$DATA.total}
+        ==========================]]>
+    </content>
+  </email>
+  <email name="cart.payment_fraud">
+    <subject>
+      <![CDATA[Order Problem]]>
+    </subject>
+    <content type="html">
+      <![CDATA[<p>Hej {$DATA.first_name},</p> 
+        <p>Vi er meget kede af, men vi har ikke været i stand til at acceptere betaling for ordre {$DATA.cart_order_id}. Du er velkommen til at kontakte et medlem af personalet, hvis du har spørgsmål.</p>]]>
+    </content>
+    <content type="text">
+      <![CDATA[Hej {$DATA.first_name},
+        
+        Vi er meget kede af, men vi har ikke været i stand til at acceptere betaling for ordre {$DATA.cart_order_id}. Du er velkommen til at kontakte et medlem af personalet, hvis du har spørgsmål.]]>
+    </content>
+  </email>
+  <email name="account.password_recovery">
+    <subject>
+      <![CDATA[Password Recovery]]>
+    </subject>
+    <content type="html">
+      <![CDATA[<p>Kære {$DATA.first_name} {$DATA.last_name},<br /> 
+        <br /> 
+        For at nulstille din adgangskode, skal du klikke på linket herunder eller kopiere og indsætte adressen på din web-browsers adressefelt vindue. Når du er på den webside, vil du blive bedt om at angive og bekræfte din nye adgangskode.<br /> 
+        <br /> 
+        {$DATA.reset_link}<br /> 
+        <br /> 
+        Hvis du har brug for yderligere hjælp i at nulstille din adgangskode, bedes du kontakte os.</p>]]>
+    </content>
+    <content type="text">
+      <![CDATA[Hej {$DATA.first_name},
+        
+        For at nulstille din adgangskode, skal du klikke på linket herunder eller kopiere og indsætte adressen på din web-browsers adressefelt vindue. Når du er på den webside, vil du blive bedt om at angive og bekræfte din nye adgangskode.
+        
+        {$DATA.reset_link}
+        
+        Hvis du har brug for yderligere hjælp i at nulstille din adgangskode, bedes du kontakte os.]]>
+    </content>
+  </email>
+  <email name="admin.order_received">
+    <subject>
+      <![CDATA[Ny Ordre #{$DATA.cart_order_id}]]>
+    </subject>
+    <content type="html">
+      <![CDATA[<p>{$DATA.first_name} {$DATA.last_name} {if !empty({$BILLING.company_name})}({$BILLING.company_name}){/if} netop har placeret ordrenummer {$DATA.cart_order_id} on {$DATA.order_date}.</p>
+        <p>Denne ordre kan styres online ved at følge nedenstående link.</p> 
+        <p><a href="{$DATA.link}">{$DATA.link}</a></p>
+        <table width="100%">
+        <tr>
+        <td valign="top" width="50%"><strong>Faktureringsadresse:</strong><br />
+        {$BILLING.first_name} {$BILLING.last_name}<br />
+        {if !empty({$BILLING.company_name})}{$BILLING.company_name}<br />
+        {/if}
+        {$BILLING.line1}<br />
+        {if !empty({$BILLING.line2})}{$BILLING.line2}<br />
+        {/if}
+        {$BILLING.town}<br />
+        {$BILLING.state}<br />
+        {$BILLING.postcode}<br />
+        {$BILLING.country}<br />
+        {$BILLING.phone}<br />
+        <br />
+        <strong>Email:</strong><br />
+        {$BILLING.email}</td>
+        <td valign="top" width="50%"><strong>Forsendelse adresse:</strong><br />
+        {$SHIPPING.first_name} {$SHIPPING.last_name}<br />
+        {if !empty({$SHIPPING.company_name})}{$SHIPPING.company_name} <br />
+        {/if}{$SHIPPING.line1}<br />
+        {if !empty({$SHIPPING.line2})}{$SHIPPING.line2} <br />
+        {/if}{$SHIPPING.town}<br />
+        {$SHIPPING.state}<br />
+        {$SHIPPING.postcode}<br />
+        {$SHIPPING.country}</td>
+        </tr>
+        </table>
+        <table border="0" cellpadding="3" cellspacing="0" width="100%">
+        <tbody>
+        <tr>
+        <td><strong>Vare</strong></td>
+        <td><strong>Antal</strong></td>
+        <td><strong>Pris</strong></td>
+        </tr>
+        {foreach from=$PRODUCTS item=product}
+        <tr>
+        <td>{$product.name} <br />{$product.product_options}</td>
+        <td>{$product.quantity}</td>
+        <td>{$product.price}</td>
+        </tr>
+        {/foreach}
+        <tr>
+        <td>&nbsp;</td>
+        <td> Shipping: {if $DATA.ship_method}({$DATA.ship_method}){/if}</td>
+        <td> {$DATA.shipping}</td>
+        </tr>
+        <tr>
+        <td>&nbsp;</td>
+        <td> Discount:</td>
+        <td> {$DATA.discount}</td>
+        </tr>
+        <tr>
+        <td>&nbsp;</td>
+        <td> Subtotal:</td>
+        <td> {$DATA.subtotal}</td>
+        </tr>
+        {foreach from=$TAXES item=tax}
+        <tr>
+        <td>&nbsp;</td>
+        <td> {$tax.tax_name}: ({$tax.tax_percent}%)</td>
+        <td> {$tax.tax_amount}</td>
+        </tr>
+        {/foreach}
+        <tr>
+        <td>&nbsp;</td>
+        <td><strong>Order Total: </strong></td>
+        <td><strong>{$DATA.total}</strong></td>
+        </tr>
+        </tbody>
+        
+        </table>]]>
+    </content>
+    <content type="text">
+      <![CDATA[{$DATA.first_name} {$DATA.last_name} {if !empty({$BILLING.company_name})}({$BILLING.company_name}){/if} netop har placeret ordrenummer {$DATA.cart_order_id} on {$DATA.order_date}.
+        
+        Denne ordre kan styres online ved at følge nedenstående link.
+        
+        {$DATA.link}
+        
+        ----------------------------------------------------------------------
+        Faktureringsadresse:
+        {$BILLING.first_name} {$BILLING.last_name}
+        {if !empty({$BILLING.company_name})}{$BILLING.company_name}
+        {/if}{$BILLING.line1}
+        {if !empty({$BILLING.line2})}{$BILLING.line2}
+        {/if}{$BILLING.town}
+        {$BILLING.state}
+        {$BILLING.postcode}
+        {$BILLING.country}
+        {$BILLING.phone}
+        
+        Email:
+        {$BILLING.email}
+        
+        Shipping address:
+        {$SHIPPING.first_name} {$SHIPPING.last_name}
+        {if !empty({$SHIPPING.company_name})}{$SHIPPING.company_name}
+        {/if}{$SHIPPING.line1}
+        {if !empty({$SHIPPING.line2})}{$SHIPPING.line2}
+        {/if}{$SHIPPING.town}
+        {$SHIPPING.state}
+        {$SHIPPING.postcode}
+        {$SHIPPING.country}
+        
+        ----------------------------------------------------------------------
+        Varer i din Ordre
+        
+        {foreach from=$PRODUCTS item=product}
+        -----------------------------------
+        {$product.name}
+        {$product.product_options}
+        
+        Part Number: {$product.product_code}
+        Unit Price: {$product.price}
+        Qty: {$product.quantity}
+        
+        {/foreach}
+        -----------------------------------
+        Subtotal: {$DATA.subtotal}
+        Discount: {$DATA.discount}
+        Shipping: {$DATA.shipping} {if $DATA.ship_method}({$DATA.ship_method}){/if}
+        {foreach from=$TAXES item=tax}{$tax.tax_name} ({$tax.tax_percent}%): {$tax.tax_amount}
+        {/foreach}
+        --------------------------
+        Order Total: {$DATA.total}
+        ==========================]]>
+    </content>
+  </email>
+  <email name="admin.review_added">
+    <subject>
+      <![CDATA[Ny Produkt Bedømmelse]]>
+    </subject>
+    <content type="html">
+      <![CDATA[{$DATA.name} har indsende en ny gennemgang / kommentar om '{$DATA.product_name}'. Dette kan modereret at følge nedenstående link.
+        <p><strong>Moderation Link:</strong><br /><a href='{$DATA.link}'>{$DATA.link}</a></p> 
+        <p><strong>Bedømmelses Tekst:</strong><br />{$DATA.review}</p>]]>
+    </content>
+    <content type="text">
+      <![CDATA[{$DATA.name} har indsende en ny gennemgang / kommentar om '{$DATA.product_name}'. Dette kan modereret at følge nedenstående link.
+        
+        Moderation Link: 
+        {$DATA.link}
+        Bedømmelses Tekst:
+        {$DATA.review}]]>
+    </content>
+  </email>
+  <email name="cart.digital_download">
+    <subject>
+      <![CDATA[Dine købte Downloads]]>
+    </subject>
+    <content type="html">
+      <![CDATA[<p>Hej {$DATA.first_name},</p> 
+        <p>Dine digitale filer er nu klar til download. Brug venligst nedenstående links for at få adgang til dem herunder:</p> 
+        {foreach from=$DOWNLOADS item=download} 
+        <p><strong>{$download.name}:</strong> (Link Udløber {$download.expire}<strong>)</strong><br /> 
+        {$download.url}</p> 
+        {/foreach}
+        <p>Hvis ovenstående links ikke virker, skal du prøve at kopiere og indsætte dem det i din browsers adresselinje. Du kan også finde adgang til disse filer fra din kunde på vores hjemmeside.</p> 
+        <p>&nbsp;</p>]]>
+    </content>
+    <content type="text">
+      <![CDATA[Hej {$DATA.first_name},
+        
+        Dine digitale filer er nu klar til download. Brug venligst nedenstående links for at få adgang til dem under:
+        
+        {foreach from=$DOWNLOADS item=download} 
+        {$download.name}: (Link udløber den {$download.expire})
+        {$download.url}
+        {/foreach}
+        
+        Hvis ovenstående links ikke virker, skal du prøve at kopiere og indsætte dem det i din browsers adresselinje. Du kan også finde adgang til disse filer fra din kunde på vores hjemmeside.]]>
+    </content>
+  </email>
+  <email name="cart.gift_certificate">
+    <subject>
+      <![CDATA[Dit Gavekort]]>
+    </subject>
+    <content type="html">
+      <![CDATA[<p>Kære {$DATA.name},</p> 
+        <p>Vi er så glade for at sende dig dette gavekort, som du kan bruge i forbindelse med køb af en vare (r) på vores hjemmeside.</p> 
+        <p>Happy shopping!</p> 
+        <p><strong>Fra: </strong>{$DATA.first_name} {$DATA.last_name}<br /> 
+        <strong>Beløb: </strong>{$DATA.value}<br /> 
+        <strong>Kræv Kode:</strong> {$DATA.code}<br /> 
+        <strong>Gave Besked:</strong> {$DATA.message}</p> 
+        <p>-------------------</p> 
+        <p>For at indløse dette gavekort bedes du indtaste "Krævet Kode" oven i tekstfeltet mærket "Tilføj Gavebevis eller en kupon" løbet af kassen.</p> 
+        <p>Hvorfor ikke bruge det nu?</p>]]>
+    </content>
+    <content type="text">
+      <![CDATA[Kære {$DATA.name},
+        
+        Vi er så glade for at sende dig dette gavekort, som du kan bruge i forbindelse med køb af en vare (r) på vores hjemmeside.
+        
+        Happy shopping!
+        
+        Fra: {$DATA.first_name} {$DATA.last_name}
+        Beløb: {$DATA.value}
+        Kræv Kode: {$DATA.code}
+        Gave Besked: {$DATA.message}
+        
+        -------------------
+        
+        For at indløse dette gavekort bedes du indtaste "Krævet Kode" oven i tekstfeltet mærket "Tilføj Gavebevis eller en kupon" løbet af kassen.
+        
+        Hvorfor ikke bruge det nu?]]>
+    </content>
+  </email>
+  <email name="catalogue.tell_friend">
+    <subject>
+      <![CDATA[{$DATA.from} has recommended something]]>
+    </subject>
+    <content type="html">
+      <![CDATA[Kære {$DATA.to},
+        <p>Din ven <strong>{$DATA.from}</strong> troede, at du kunne være interesseret i <strong>{$DATA.name}</strong>.</p> 
+        <p><strong>Produkt Link:</strong> <a href="{$DATA.link}">{$DATA.name}</a></p> 
+        <p>{$DATA.message}</p>]]>
+    </content>
+    <content type="text">
+      <![CDATA[Kære {$DATA.to},
+        
+        Din Ven {$DATA.from} mente du kunne have interesse i '{$DATA.name}'.
+        
+        {$DATA.name}
+        Produkt Link: {$DATA.link}
+        
+        {$DATA.message}]]>
+    </content>
+  </email>
+  <email name="cart.payment_received">
+    <subject>
+      <![CDATA[Tak for din betaling!]]>
+    </subject>
+    <content type="html">
+      <![CDATA[<p>Hej {$DATA.first_name},</p> 
+        <p>Tak. Vi har modtaget en betaling på {$DATA.total} for ordre nummer {$DATA.cart_order_id}.</p>]]>
+    </content>
+    <content type="text">
+      <![CDATA[Hej {$DATA.first_name},
+        
+        Tak. Vi har modtaget en betaling på {$DATA.total} for ordre nummer {$DATA.cart_order_id}.]]>
+    </content>
+  </email>
+</emails>

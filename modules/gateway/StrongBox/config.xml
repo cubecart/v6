@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<installer version="1.0">
+  <info>
+	<uid>info@itrustoffice.com</uid>
+	<type>gateway</type>
+	<mobile_optimized>false</mobile_optimized>
+	<name><![CDATA[StrongBox]]></name>
+	<description><![CDATA[StrongBox Payment Gateway]]></description>
+	<version>1.0.0</version>
+	<minVersion>5.0.0</minVersion>
+	<maxVersion>5.1.*</maxVersion>
+	<creator><![CDATA[iTrustOffice]]></creator>
+	<homepage><![CDATA[http://www.itrustoffice.com]]></homepage>
+  </info>
+</installer>

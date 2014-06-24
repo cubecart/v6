@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions version="1.0">
+ <group name="livefyre">
+  <string name="site_id"><![CDATA[Site ID]]></string>
+ </group>
+</definitions>

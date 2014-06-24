@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions version="1.0">
+ <group name="allinoneshipping">
+
+  <string name="module_description"><![CDATA[This module allows you to offer multiple shipping options to your customers. You can define different shipping rates according to destination, shipping method and the total weight, subtotal or number of items in the order.]]></string>
+  <string name="module_help_using_tabs"><![CDATA[Use the tabs at the top of the page to create your shipping zones and to setup rates for each zone.]]></string>
+  <string name="warning_product_weights"><![CDATA[Warning: Some of your products do not have a weight entered. If you are using this module to setup shipping based on weight, check you have entered weights for all your products and you have the correct weight unit selected within Store Settings.]]></string>
+
+  <string name="module_settings"><![CDATA[Module Settings]]></string>
+  <string name="range_weight"><![CDATA[Weight-based rates]]></string>
+  <string name="range_weight_description"><![CDATA[Example: Shipping is $5 for 0 - 1 kg, $7 for 1 - 2 kg, etc.]]></string>
+  <string name="range_subtotal"><![CDATA[Subtotal-based rates]]></string>
+  <string name="range_subtotal_description"><![CDATA[Example: Free shipping for orders over $100.]]></string>
+  <string name="range_items"><![CDATA[Total quantity-based rates]]></string>
+  <string name="range_items_description"><![CDATA[Example: Shipping is $3 for a total quantity up to 5 items, $5 for up to 10 items, etc.]]></string>
+  <string name="multiple_zones"><![CDATA[If customer address matches multiple zones]]></string>
+  <string name="use_all_matching_zones"><![CDATA[Use all matching zones]]></string>
+  <string name="use_first_matching_zone"><![CDATA[Use first matching zone only]]></string>
+  <string name="use_all_matching_zones_description"><![CDATA["Use all matching zones" means that if a customer's address matches two or more shipping zones, they will be offered shipping rates from all of the matching zones (excluding 'Rest of World').]]></string>
+  <string name="use_first_matching_zone_description"><![CDATA["Use first matching zone only" is useful if you have postcode zones and you want to create a country zone that will catch all other postcodes (e.g. 'Rest of UK').]]></string>
+  <string name="debug"><![CDATA[Debugging]]></string>
+  <string name="no_debug"><![CDATA[No debug / Live store]]></string>
+  <string name="enable_debug"><![CDATA[Debug enabled]]></string>
+  <string name="verbose_debug"><![CDATA[Debug enabled (verbose)]]></string>
+
+  <string name="advanced_settings"><![CDATA[Advanced Settings]]></string>
+  <string name="show_advanced_settings"><![CDATA[Show advanced settings]]></string>
+  <string name="shipping_pricing"><![CDATA[Shipping price calculation]]></string>
+  <string name="use_flat"><![CDATA[Flat rate component (Recommended) e.g. $8]]></string>
+  <string name="use_item"><![CDATA[Per item component e.g. $3 multiplied by the total quantity of items in the order]]></string>
+  <string name="use_percent"><![CDATA[Percentage component e.g. 10% of the order subtotal]]></string>
+  <string name="use_weight"><![CDATA[Weight component e.g. $0.50 multiplied by the total weight of the order]]></string>
+
+  <string name="shipping_zones"><![CDATA[Shipping Zones (Optional)]]></string>
+  <string name="shipping_zones_description"><![CDATA[If you wish to use this shipping module to charge different shipping prices to different addresses, you should setup shipping zones using the Add Shipping Zone tab at the top of the page.]]></string>
+
+  <string name="title_shipping_zones"><![CDATA[Shipping Zones]]></string>
+  <string name="tab_shipping_zones"><![CDATA[Shipping Zones]]></string>
+  <string name="arrange"><![CDATA[Arrange]]></string>
+  <string name="zone_name"><![CDATA[Zone Name/Description]]></string>
+  <string name="countries"><![CDATA[Countries]]></string>
+  <string name="states_provinces_postcodes"><![CDATA[States/Provinces<br/>or Postal Codes]]></string>
+  <string name="shipping_rates"><![CDATA[Shipping Rates]]></string>
+  <string name="zone_actions"><![CDATA[Actions]]></string>
+  <string name="rest_of_world"><![CDATA[Rest of World]]></string>
+  <string name="all_countries"><![CDATA[-- All other regions --]]></string>
+  <string name="unnamed_zone"><![CDATA[Unnamed Zone]]></string>
+
+  <string name="save_all_changes"><![CDATA[Save all changes]]></string>
+  <string name="save"><![CDATA[Save]]></string>
+
+  <string name="title_shipping_zone_add"><![CDATA[Add new Shipping Zone]]></string>
+  <string name="tab_shipping_zone_add"><![CDATA[Add shipping zone]]></string>
+  <string name="zone_name_description"><![CDATA[Zone name/description]]></string>
+  <string name="what_will_this_zone_contain"><![CDATA[What will this zone contain?]]></string>
+  <string name="one_or_more_countries"><![CDATA[One or more countries]]></string>
+  <string name="one_or_more_states"><![CDATA[One or more states/provinces]]></string>
+  <string name="one_or_more_postcodes"><![CDATA[One or more postal codes]]></string>
+  <string name="country_countries"><![CDATA[Country/countries]]></string>
+  <string name="choose_each_country"><![CDATA[Choose each country by typing here...]]></string>
+  <string name="select_country"><![CDATA[Select the country]]></string>
+  <string name="zone_states"><![CDATA[States/provinces]]></string>
+  <string name="choose_each_state"><![CDATA[Choose each state/province by typing here...]]></string>
+  <string name="postal_code_regions"><![CDATA[Postal code regions]]></string>
+
+  <string name="zone_id"><![CDATA[Zone]]></string>
+  <string name="method_name_description"><![CDATA[Method Name/Description]]></string>
+  <string name="shipping_price"><![CDATA[Shipping Price]]></string>
+  <string name="weight_limits"><![CDATA[Order Weight Limits]]></string>
+  <string name="subtotal_limits"><![CDATA[Subtotal Limits]]></string>
+  <string name="total_quantity_of_items"><![CDATA[Total Quantity of Items]]></string>
+  <string name="rate_actions"><![CDATA[Actions]]></string>
+  <string name="per_item"><![CDATA[per item]]></string>
+  <string name="percent_of_subtotal"><![CDATA[% of subtotal]]></string>
+  <string name="per_weight"><![CDATA[per kg/lb]]></string>
+  <string name="add_new_shipping_rates"><![CDATA[Add new shipping rates]]></string>
+
+  <string name="click_to_edit"><![CDATA[Click to edit]]></string>
+  <string name="edit_row"><![CDATA[Edit Row]]></string>
+  <string name="delete_row"><![CDATA[Delete Row]]></string>
+  <string name="cancel_delete_row"><![CDATA[Cancel Delete Row]]></string>
+  <string name="add_rows"><![CDATA[Add Rows]]></string>
+
+  <string name="notify_database_changes"><![CDATA[Database changes successfully applied.]]></string>
+  <string name="error_database_changes"><![CDATA[Error applying database changes.]]></string>
+
+  <string name="notify_shipping_zone_add"><![CDATA[Shipping zone successfully created.]]></string>
+  <string name="error_shipping_zone_add"><![CDATA[Failed to create shipping zone.]]></string>
+  <string name="notify_shipping_zone_update"><![CDATA[Shipping zone successfully updated.]]></string>
+  <string name="notify_shipping_zone_delete"><![CDATA[Shipping zone successfully deleted.]]></string>
+  <string name="error_shipping_zone_delete"><![CDATA[Failed to delete shipping zone.]]></string>
+  <string name="error_country_zone"><![CDATA[At least one country needs to be selected.]]></string>
+  <string name="error_state_zone"><![CDATA[The country must be selected and at least one state/province.]]></string>
+  <string name="error_postcode_zone"><![CDATA[The country must be selected and enter at least one postal code.]]></string>
+  <string name="notify_shipping_zone_sort_order"><![CDATA[Shipping zone sort order successfully updated.]]></string>
+  <string name="notify_shipping_rate_changes"><![CDATA[Successfully changed shipping rates: added %1$d, updated %2$d, deleted %3$d.]]></string>
+
+  <string name="error_shipping_rate_changes"><![CDATA[Failed to change shipping rates: failed to add %1$d, failed to delete %2$d.]]></string>
+  <string name="error_shipping_price_components"><![CDATA[At least one shipping rate component needs to be enabled. Flat rate component now enabled.]]></string>
+  <string name="notify_data_upgrade"><![CDATA[Successfully upgraded shipping zone data from CubeCart 4 All In One Shipping module. *** IMPORTANT *** Please check that all your zones contain the correct countries and/or states/provinces!]]></string>
+  <string name="error_data_upgrade"><![CDATA[Problems may have occurred when upgrading your shipping zone data. Check the countries and/or states/provinces in all of your shipping zones!]]></string>
+
+  <string name="postcode_zone_instructions"><![CDATA[
+<p><strong>Instructions</strong></p>
+<ul>
+<li>List your postal codes on separate lines, or separated by commas.</li>
+<li>For countries with numerical postal codes (e.g. USA, Australia, etc) use a dash (-) to match a number range, e.g. 90210-90214</li>
+<li>Use an asterisk (*) or a percent sign (%) to match any letters/numbers (any length, zero or more characters) e.g. 902*</li>
+<li>Use an underscore (_) to match exactly one letter/number e.g. 9021_</li>
+</ul>
+<p><strong>Shipping Zone Example (New York City)</strong></p>
+<pre>10000-10499
+11004
+11005
+11100-11400
+11600-11699</pre>
+<p><strong>Shipping Zone Example (Section of Downtown Toronto)</strong></p>
+<pre>M4G*, M4H*, M4M*, M4W*, M4X*, M4Y*,
+M5A*, M5B*, M5C*, M5E*, M5G*, M5H*, M5J*,
+M5K*, M5L*, M5T*, M5V*, M5W*, M5X*
+M6J*
+M6K*
+M6R*</pre>
+  ]]></string>
+
+  <string name="postcode_zone_instructions_us"><![CDATA[
+<p><strong>Instructions (USA)</strong></p>
+<ul>
+<li>List your zipcodes on separate lines, or separated by commas.</li>
+<li>Use a dash (-) to match a number range, e.g. 90210-90214</li>
+<li>Use an asterisk (*) or a percent sign (%) to match any letters/numbers (any length, zero or more characters) e.g. 902*</li>
+<li>Use an underscore (_) to match exactly one letter/number e.g. 9021_</li>
+</ul>
+<p><strong>Shipping Zone Example (New York City)</strong></p>
+<pre>10000-10499
+11004
+11005
+11100-11400
+11600-11699</pre>
+  ]]></string>
+
+  <string name="postcode_zone_instructions_au"><![CDATA[
+<p><strong>Instructions (Australia)</strong></p>
+<ul>
+<li>List your postcodes on separate lines, or separated by commas.</li>
+<li>Use a dash (-) to match a number range, e.g. 2000-2234</li>
+<li>Use an asterisk (*) or a percent sign (%) to match any letters/numbers (any length, zero or more characters) e.g. 2*</li>
+<li>Use an underscore (_) to match exactly one letter/number e.g. 200_</li>
+</ul>
+<p><strong>Shipping Zone Example (Sydney CBD)</strong></p>
+<pre>1100-1299
+2000-2001
+2007
+2009</pre>
+  ]]></string>
+
+  <string name="postcode_zone_instructions_ca"><![CDATA[
+<p><strong>Instructions (Canada)</strong></p>
+<ul>
+<li>List your postcodes on separate lines, or separated by commas.</li>
+<li>Use an asterisk (*) or a percent sign (%) to match any letters/numbers (any length, zero or more characters) e.g. M*</li>
+<li>Use an underscore (_) to match exactly one letter/number e.g. M4B 1B_</li>
+<li>Note that you cannot use a dash (-) to match a number range since Canadian postcodes contain letters.</li>
+</ul>
+<p><strong>Shipping Zone Example (Section of Downtown Toronto)</strong></p>
+<pre>M4G*, M4H*, M4M*, M4W*, M4X*, M4Y*,
+M5A*, M5B*, M5C*, M5E*, M5G*, M5H*, M5J*,
+M5K, M5L*, M5T*, M5V*, M5W*, M5X*
+M6J*
+M6K*
+M6R*</pre>
+  ]]></string>
+
+  <string name="postcode_zone_instructions_gb"><![CDATA[
+<p><strong>Instructions (United Kingdom)</strong></p>
+<ul>
+<li>List your postcodes on separate lines, or separated by commas.</li>
+<li><strong>(UK postcodes only)</strong> Enter one letter or a pair of letters to match an exact UK postcode area. For example, if you were to setup a postcode zone containing <strong>B</strong> this would match all customers in Birmingham (e.g. B11 1AA etc) but it WOULDN'T match customers in Northern Ireland or Bristol etc (e.g. BT11 1AA, BS11 1AA, etc)</li>
+<li><strong>(UK postcodes only)</strong> Enter one or two letters immediately followed by one or two numbers to match an exact UK postcode district. For example, if you were to setup a postcode code zone containing <strong>KA27</strong> this would match all customers within the Isle of Arran (e.g. KA27 1AA, KA27 2BB, etc).</li>
+<li>Use an asterisk (*) or a percent sign (%) to match any letters/numbers (any length, zero or more characters)</li>
+<li>Use an underscore (_) to match exactly one letter/number</li>
+<li>Note that you cannot use a dash (-) to match a number range since UK postcodes contain letters.</li>
+</ul>
+<p><strong>Shipping Zone Example 1 (Scottish Highlands &amp; Islands)</strong></p>
+<pre>IV
+HS
+KA27, KA28
+KW
+PA20, PA21, PA22, PA23, PA24, PA25, PA26, PA27, PA28, PA29,
+PA30, PA31, PA33, PA33, PA34, PA35, PA36, PA37, PA38, PA39,
+PA40, PA41, PA44, PA44, PA44, PA45, PA46, PA47, PA48, PA49,
+PA60, PA61, PA66, PA66, PA66, PA65, PA66, PA67, PA68, PA69,
+PA70, PA71, PA77, PA77, PA77, PA75, PA77, PA77, PA78,
+PH17, PH18, PH19,
+PH20, PH21, PH22, PH23, PH24, PH25, PH26,
+PH30, PH31, PH33, PH33, PH34, PH35, PH36, PH37, PH38, PH39,
+PH40, PH41, PH44, PH44, PH44,
+PH49, PH50
+ZE</pre>
+<p><strong>Shipping Zone Example 2 (Northern Ireland, Isle of Man, Isles of Scilly, Channel Islands)</strong></p>
+<pre>BT
+IM
+TR21, TR22, TR23, TR24, TR25
+JE
+GY</pre>
+  ]]></string>
+
+ </group>
+</definitions>

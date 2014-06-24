@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<installer version="1.0">
+  <info>
+	<uid>checkout-paypal@devellion.com</uid>
+	<type>plugins</type>
+	<mobile_optimized>true</mobile_optimized>
+	<folder>PayPal_Pro</folder>
+	<name><![CDATA[PayPal]]></name>
+	<description><![CDATA[PayPal Express Checkout integration]]></description>
+	<version>2.0.1</version>
+	<minVersion>5.0.0a</minVersion>
+	<maxVersion>5.1.*</maxVersion>
+	<creator><![CDATA[Devellion, Ltd]]></creator>
+	<homepage><![CDATA[http://www.cubecart.com]]></homepage>
+  </info>
+  
+  <hooks>
+	<hook trigger="class.cart.clear" enabled="1"><![CDATA[Empty Basket]]></hook>
+	<hook trigger="class.cubecart.construct.callback.gateway" enabled="1"><![CDATA[Callback Handler]]></hook>
+	<hook trigger="class.cubecart.construct.cancel" enabled="1"><![CDATA[Cancel Process Handler]]></hook>
+	<hook trigger="class.cubecart.construct.confirm" enabled="1"><![CDATA[Checkout Confirmation]]></hook>
+	<hook trigger="class.cubecart.construct.gateway" enabled="1"><![CDATA[Payment Handler]]></hook>
+	<hook trigger="class.cubecart.display_basket.alternate" enabled="1"><![CDATA[Checkout Button]]></hook>
+	<hook trigger="class.cubecart.display_gateways" enabled="1"><![CDATA[Gateways for Payments Pro]]></hook>
+	<hook trigger="class.cubecart.checkout_progress" enabled="1"><![CDATA[Checkout Progress]]></hook>
+	<hook trigger="class.gui.javascripts" enabled="1"><![CDATA[PayPal JS]]></hook>
+  </hooks>
+</installer>

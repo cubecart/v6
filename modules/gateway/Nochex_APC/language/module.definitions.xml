@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="nochex_apc">
+  <string name="module_title"><![CDATA[Nochex APC]]></string>
+  <string name="settings"><![CDATA[Nochex Settings]]></string>
+  <string name="APC_note"><![CDATA[IMPORTANT:
+Before you can start using APC you are required to contact Nochex Customer Services to enable APC on your account; you will need to quote your registered email address. CubeCart will handle the and call back/responder URL for you automatically.]]></string>
+ </group>
+</definitions>

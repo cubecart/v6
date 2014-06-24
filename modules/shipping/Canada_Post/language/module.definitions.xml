@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions version="1.0">
+ <group name="canada_post">
+  <string name="module_description"><![CDATA[This shipping module gets real time quotes directly from Canada Post based on the basket weight. Please make sure every product has a value set for its weight in order to use this module.]]></string>
+  <string name="module_title"><![CDATA[Canada Post]]></string>
+  <string name="package_size"><![CDATA[Box Size]]></string>
+  <string name="package_weight"><![CDATA[Box Weight]]></string>
+  <string name="postcode_origin"><![CDATA[Origin Postcode]]></string>
+
+  <string name="service_1010"><![CDATA[Regular]]></string>
+  <string name="service_1020"><![CDATA[Expedited]]></string>
+  <string name="service_1030"><![CDATA[Xpress Post]]></string>
+  <string name="service_1040"><![CDATA[Priority Courier]]></string>
+  
+  <string name="service_2005"><![CDATA[Small Packets (Surface)]]></string>
+  <string name="service_2015"><![CDATA[Small Packets (Air)]]></string>
+  <string name="service_2020"><![CDATA[Expedited US Business Contract]]></string>
+  <string name="service_2025"><![CDATA[Expedited US Commercial]]></string>
+  <string name="service_2030"><![CDATA[Xpress Post USA]]></string>
+  <string name="service_2040"><![CDATA[Priority Worldwide USA]]></string>
+  <string name="service_2050"><![CDATA[Priority Worldwide Pak USA]]></string>
+  
+  <string name="service_3005"><![CDATA[Small Packets (Surface)]]></string>
+  <string name="service_3010"><![CDATA[Surface International]]></string>
+  <string name="service_3015"><![CDATA[Small Packets (Air)]]></string>
+  <string name="service_3020"><![CDATA[Air International]]></string>
+  <string name="service_3025"><![CDATA[Xpress Post International]]></string>
+  <string name="service_3040"><![CDATA[Priority Worldwide International]]></string>
+  <string name="service_3050"><![CDATA[Priority Worldwide Pak International]]></string>
+  
+  <string name="title_service_domestic"><![CDATA[Domestic Services]]></string>
+  <string name="title_service_international"><![CDATA[International Services]]></string>
+  <string name="title_service_us"><![CDATA[US Product Services]]></string>
+ </group>
+</definitions>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions version="1.0">
+ <group name="osiaffiliate">
+  <string name="module_description"><![CDATA[&#8220;Affiliate Software made Easy&#8221;]]></string>
+  <string name="module_title"><![CDATA[OSI Affiliate Manager]]></string>
+ </group>
+</definitions>

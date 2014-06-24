@@ -1,0 +1,127 @@
+<div class="wrap">
+	<?php if($show_header):?>
+    <h2>
+        <a href="http://www.shareyourcart.com" target="_blank" title="Shareyourcart" class="shareyourcart-logo">
+            <img src="<?php echo $this->createUrl(dirname(__FILE__) . '/../img/shareyourcart-logo.png'); ?>"/>
+        </a>
+    </h2>
+	<?php endif; ?>
+
+    <?php if (!empty($status_message)): ?>
+        <div class="updated settings-error"><p><strong>
+                    <?php echo $status_message; ?>
+                </strong></p></div>
+    <?php endif; ?>
+
+    <div id="visual-options">       	
+        <form method="POST" enctype="multipart/form-data" id="syc-form"> 	        	
+            <fieldset>
+                
+                <div class="buttonOption">
+                    
+                    <input class="buttonOptionRadio" type="radio" value="1" id="button_type_1" <?php if ($current_button_type == '1'||$current_button_type == '') echo 'checked' ?> name="button_type" />
+                    <label class="buttonOptionLabel" for="button_type_1">Use Standard Button</label>	
+                    <br /><br />
+                    <table class="form-table shareyourcart_button_standard" name="shareyourcart_button_standard">
+                        <tr align="center">
+                            <th scope="row">Button skin</th>
+                        </tr>
+                        <tr align="center">
+                            <td>
+                                <select name="button_skin" id="button_skin">
+                                    <option name="orange" <?php echo $current_skin == 'orange' ? 'selected="selected"' : ''; ?> value="orange">Orange</option>
+                                    <option name="blue" <?php echo $current_skin == 'blue' ? 'selected="selected"' : ''; ?> value="blue">Blue</option>
+                                </select>                        
+                            </td>
+                        </tr>
+                        <tr align="center">
+                            <th scope="row">Button position</th>
+                        </tr>
+                        <tr align="center">
+                            <td>
+                                <select name="button_position" id="button_position">
+                                    <option name="normal" <?php echo $current_position == 'normal' ? 'selected="selected"' : ''; ?> value="normal">Normal</option>
+                                    <option name="floating" <?php echo $current_position == 'floating' ? 'selected="selected"' : ''; ?> value="floating">Floating</option>
+                                </select>                        
+                            </td>
+                        </tr>				
+                    </table>
+                </div>
+
+                <div class="buttonOption">
+                    <input class="buttonOptionRadio" type="radio" value="2" id="button_type_2" name="button_type" <?php if ($current_button_type == '2') echo 'checked' ?>/>
+                    <label class="buttonOptionLabel" for="button_type_2">Image Button</label>
+                    <br /><?php if (empty($button_img)){ ?><br /><?php } ?>
+                    <table class="form-table shareyourcart_button_image" name="shareyourcart_button_image">
+                        <tr align="center">
+                            <th><label>Image:</label></th>
+                        </tr>
+                        <tr align="center">
+                            <td>
+                                <?php if (!empty($button_img)): ?>
+                                    <img src="<?php echo $button_img ?>" height="40" />
+                                <?php endif; ?>
+                                <input type="hidden" name="MAX_FILE_SIZE" value="100000000000" />
+                                <input type="file" accept="image/gif, image/jpeg, image/jpg, image/png" name="button-img" id="button-img" />
+                            </td>
+                        </tr> 
+
+                        <tr align="center">
+                            <th><label>Hover image:</label></th>
+                        </tr>
+                        <tr align="center">
+                            <td>
+                                <?php if (!empty($button_img_hover)): ?>
+                                    <img src="<?php echo $button_img_hover ?>" height="40" />
+                                <?php endif; ?>
+                                <input type="hidden" name="MAX_FILE_SIZE" value="100000000000" />
+                                <input type="file" accept="image/gif, image/jpeg, image/jpg, image/png" name="button-img-hover" id="button-img-hover" />
+                            </td>
+                        </tr>               				
+                    </table>
+                </div>
+
+                <div class="buttonOption last">
+                    <input class="buttonOptionRadio" type="radio" value="3" id="button_type_3" name="button_type" <?php if ($current_button_type == '3') echo 'checked' ?>/>
+                    <label class="buttonOptionLabel" for="button_type_3">Build your own HTML button</label>	
+                    <table class="form-table shareyourcart_button_html" name="shareyourcart_button_html">
+                        <tr>                    
+                            <td>
+                                <textarea id="syc_button_textarea" class="buttonTextarea" rows="7" cols="56" name="button_html"><?php echo ($button_html!=''?urldecode($button_html):'<button>Get a<div class="shareyourcart-discount"></div> discount </button>'); ?></textarea>                    
+                            </td>
+                        </tr>               			
+                    </table>
+
+                    <?php echo $html; ?>
+                    
+                </div>
+                
+                <br clear="all" />
+                
+                <hr />
+                <br />
+                <table class="form-table table-small" name="shareyourcart_settings">
+                        <tr>
+                            <th scope="row" valign="top">Show button by default on: </th>
+                            <td>
+                                <input class="buttonCheckbox" name="show_on_product" <?php echo $show_on_product ? 'checked="checked"' : ''; ?>  type='checkbox'>Product page</input>
+                                <br />
+                                <input class="buttonCheckbox" name="show_on_checkout" <?php echo $show_on_checkout ? 'checked="checked"' : ''; ?> type='checkbox'>Checkout page</input>                        
+                            </td>
+                        </tr>
+                    </table>
+              
+                
+                <div class="submit"><input type="submit" class="button" name="syc-visual-form" id="syc-visual-form" value="Save"></div>            
+                
+            </fieldset>	
+            <br />
+        </form>        
+    </div>
+
+	<?php if($show_footer):?>
+    <h2>Contact</h2>
+    <p>You can find help in our <a href="http://shareyourcart.uservoice.com" target="_blank" title="forum">forum</a>, or if you have a private question, you can <a href="http://www.shareyourcart.com/contact" target="_blank">contact us directly</a></p>
+    <br />
+	<?php endif; ?>
+</div>

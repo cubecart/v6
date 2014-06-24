@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<installer version="1.0">
+  <info>
+	<uid>checkout-amazon@devellion.com</uid>
+	<type>plugins</type>
+	<folder>Amazon_Checkout</folder>
+	<name><![CDATA[Amazon Checkout]]></name>
+	<description><![CDATA[Amazon Checkout integration]]></description>
+	<version>2.0.0</version>
+	<minVersion>5.0.0a</minVersion>
+	<maxVersion>5.1.*</maxVersion>
+	<creator><![CDATA[Devellion, Ltd]]></creator>
+	<homepage><![CDATA[http://www.cubecart.com]]></homepage>
+  </info>
+  
+  <hooks>
+	<hook trigger="class.cubecart.display_basket.alternate" enabled="1"><![CDATA[Checkout Button]]></hook>
+	<hook trigger="class.cubecart.basket" enabled="1"><![CDATA[Authenticated Address List]]></hook>
+	<hook trigger="class.cubecart.pre_basket" enabled="1"><![CDATA[Clear authenticated users temporarily]]></hook>
+	<hook trigger="class.cart.clear" enabled="1"><![CDATA[Delete Sesson Data]]></hook>
+	<hook trigger="class.cubecart.construct.confirm" enabled="1"><![CDATA[Create Order]]></hook>
+	<hook trigger="class.cubecart.construct.callback.gateway" enabled="1"><![CDATA[Callback Handler]]></hook>
+	<hook trigger="class.order.order_status" enabled="1"><![CDATA[Order Status]]></hook>
+	<hook trigger="class.gui.display_session_box" enabled="1"><![CDATA[Show Logged In]]></hook>
+	<hook trigger="class.cubecart.checkout_progress" enabled="1"><![CDATA[Checkout Progress]]></hook>
+  </hooks>
+</installer>

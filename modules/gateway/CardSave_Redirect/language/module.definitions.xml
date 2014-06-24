@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="cardsave">
+  <string name="module_title"><![CDATA[CardSave Redirect]]></string>
+  <string name="module_version"><![CDATA[v1.0]]></string>
+  <string name="module_date"><![CDATA[22 August 2011]]></string>
+  
+  <string name="merchantsettings_title"><![CDATA[CardSave Redirect]]></string>
+  <string name="merchantsettings_description"><![CDATA[Enter your CardSave Gateway details below.]]></string>  	  
+  <string name="merchantID"><![CDATA[Merchant ID]]></string>
+  <string name="merchantPass"><![CDATA[Merchant Password]]></string>
+  <string name="merchantPSK"><![CDATA[Merchant Pre-Shared Key]]></string>
+  
+  <string name="mandatoryfields_title"><![CDATA[Mandatory Fields]]></string>  
+  <string name="mandatoryfields_description"><![CDATA[Using the options below, you can set which fields will be shown as mandatory on the gateway page presented to your customer.]]></string>  
+  <string name="mand_CV2"><![CDATA[CV2]]></string>
+  <string name="mand_Address1"><![CDATA[Address Line 1]]></string>
+  <string name="mand_City"><![CDATA[City]]></string>
+  <string name="mand_PostCode"><![CDATA[Post Code]]></string>
+  <string name="mand_State"><![CDATA[State/County]]></string>
+  <string name="mand_Country"><![CDATA[Country]]></string>
+  
+  <string name="mode_auth"><![CDATA[Authorise and Capture]]></string>
+  <string name="mode_preauth"><![CDATA[Authorise Only]]></string>
+
+
+  <string name="post_user"><![CDATA[Post Verification Username]]></string>
+  <string name="post_pass"><![CDATA[Post Verification Password]]></string>
+  <string name="post_url"><![CDATA[Post URL]]></string>
+ </group>
+</definitions>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="realex">
+  <string name="merchant_id"><![CDATA[Merchant ID]]></string>
+  <string name="secret_word"><![CDATA[Shared Secret]]></string>
+  <string name="contact_realex"><![CDATA[This payment module will not work until you contact Realex with reference to your merchant ID at <a href="mailto:support@realexpayments.com">support@realexpayments.com</a> to tell them your referring and response URL.]]></string>
+  <string name="referring_url"><![CDATA[Referring URL]]></string>
+  <string name="response_url"><![CDATA[Response URL]]></string>
+ </group>
+</definitions>

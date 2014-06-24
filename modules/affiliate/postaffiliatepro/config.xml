@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<installer version="1.0">
+  <info>
+	<uid>support@qualityunit.com</uid>
+	<type>affiliate</type>
+	<name><![CDATA[Post Affiliate Pro 4]]></name>
+	<description><![CDATA[Post Affiliate Pro 4 affiliate module]]></description>
+	<version>1.0.0</version>
+	<minVersion>5.0.0a</minVersion>
+	<maxVersion>5.1.*</maxVersion>
+	<creator><![CDATA[QualityUnit]]></creator>
+	<homepage><![CDATA[http://www.qualityunit.com]]></homepage>
+	<block>false</block>
+  </info>
+</installer>

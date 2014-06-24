@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions version="1.0">
+ <group name="per_item">
+  <string name="module_description"><![CDATA[This module can be used to set a shipping price per item sold.]]></string>
+  <string name="module_example"><![CDATA[e.g. If the cost per item is set at £2.00 with £0.50 for handling, then shipping for three items will cost $6.50 excluding tax.]]></string>
+  <string name="module_title"><![CDATA[Per Item]]></string>
+ </group>
+</definitions>

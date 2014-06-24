@@ -1,0 +1,14 @@
+.ui-dialog-content {
+	margin: 0 !important;
+}
+.tab_notify {
+	width: 16px !important;
+}
+div.tab {
+	cursor: pointer;
+	cursor: hand;
+	width: 100px !important;
+}
+tbody.scroll {
+	height: auto !important;
+}

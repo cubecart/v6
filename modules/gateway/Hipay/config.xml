@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<installer version="1.0">
+  <info>
+	<uid>dferreira@hi-media.com</uid>
+	<type>gateway</type>
+	<mobile_optimized>true</mobile_optimized>
+	<name><![CDATA[Hipay Wallet]]></name>
+	<description><![CDATA[Hipay Wallet Payment Gateway]]></description>
+	<version>1.0.0</version>
+	<minVersion>1.0.0</minVersion>
+	<maxVersion>1.0.*</maxVersion>
+	<creator><![CDATA[Hi-Media Portugal, Lda]]></creator>
+	<homepage><![CDATA[http://www.cubecart.com]]></homepage>
+	<block>false</block>
+  </info>
+</installer>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions version="1.0">
+ <group name="by_price">
+  <string name="free_level"><![CDATA[Free Shipping for orders over]]></string>
+  <string name="module_description"><![CDATA[Set a flat rate for shipping, with free shipping for orders over a defined amount.]]></string>
+  <string name="module_title"><![CDATA[By Price]]></string>
+ </group>
+</definitions>

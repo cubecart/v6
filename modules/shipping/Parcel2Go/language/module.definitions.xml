@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions version="1.0">
+ <group name="parcel2go">
+  <string name="api_key"><![CDATA[API Key]]></string>
+  <string name="collection_title"><![CDATA[Parcel Collection Address]]></string>
+  <string name="collection_addressee"><![CDATA[Adressee]]></string>
+  <string name="collection_telephone"><![CDATA[Telephone Number]]></string>
+  <string name="collection_company_name"><![CDATA[Company Name]]></string>
+  <string name="collection_property"><![CDATA[Property Name/Number]]></string>
+  <string name="collection_street"><![CDATA[Street]]></string>
+  <string name="collection_locality"><![CDATA[Locality]]></string>
+  <string name="collection_town"><![CDATA[Town/City]]></string>
+  <string name="collection_county"><![CDATA[County]]></string>
+  <string name="collection_country"><![CDATA[Country Code e.g. GB]]></string>
+  <string name="collection_postcode"><![CDATA[Postcode]]></string>
+  <string name="package_size"><![CDATA[Package Size]]></string>
+  <string name="tax_type"><![CDATA[Tax Type]]></string>
+ </group>
+</definitions>

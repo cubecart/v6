@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions version="1.0">
+ <group name="fedex">
+  <string name="account_no"><![CDATA[Account Number]]></string>
+  <string name="password"><![CDATA[Account Password]]></string>
+  <string name="key"><![CDATA[Account Key]]></string>
+  <string name="package_width"><![CDATA[Packaging Width]]></string>
+  <string name="package_height"><![CDATA[Packaging Height]]></string>
+  <string name="package_length"><![CDATA[Packaging Length]]></string>
+  <string name="carrier_service_info"><![CDATA[Please note that not all combinations below may be allowed for national/international and FedEx Express/FedEx Ground combinations. If a combination is selected that isn't valid no result will be returned.]]></string>
+  <string name="dropoff_method"><![CDATA[Parcel Drop-off Method]]></string>
+  <string name="drop_courier"><![CDATA[Request Courier]]></string>
+  <string name="drop_dropbox"><![CDATA[Drop Box]]></string>
+  <string name="drop_regular"><![CDATA[Regular Pickup]]></string>
+  <string name="drop_service"><![CDATA[Business Service Centre]]></string>
+  <string name="drop_station"><![CDATA[Station]]></string>
+  <string name="meter_no"><![CDATA[Meter Number]]></string>
+  <string name="module_description"><![CDATA[This module can be used to get real time shipping rates directly from FedEx. Please make sure that every product has a value set for its weight in order to use this module.]]></string>
+  <string name="module_title"><![CDATA[FedEx]]></string>
+  <string name="package_weight"><![CDATA[Packaging Weight]]></string>
+  <string name="shipping_free_info"><![CDATA[Options displayed to customer will be shown as free]]></string>
+  <string name="title_carrier_service"><![CDATA[Carrier/Service Matrix]]></string>
+  <string name="title_express"><![CDATA[FedEx Express]]></string>
+  <string name="title_ground"><![CDATA[FedEx Ground]]></string>
+  <string name="title_parcel_origin"><![CDATA[Parcel Origin Information]]></string>
+  <string name="title_service"><![CDATA[Service]]></string>
+  <string name="title_settings_shipping"><![CDATA[Shipping Settings]]></string>
+ </group>
+</definitions>

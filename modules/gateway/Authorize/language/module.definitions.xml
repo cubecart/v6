@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="authorize">
+  <string name="info_trans_pass"><![CDATA[Please fill in either the Transaction Key OR password field, not both.]]></string>
+  <string name="merchant_id"><![CDATA[API Login ID]]></string>
+  <string name="module_title"><![CDATA[Authorize.net]]></string>
+  <string name="mode"><![CDATA[Mode]]></string>
+  <string name="transaction_key"><![CDATA[Transaction Key]]></string>
+  <string name="sim"><![CDATA[SIM (Recommended)]]></string>
+  <string name="aim"><![CDATA[AIM (Requires SSL & PCI Compliance)]]></string>
+  <string name="sim"><![CDATA[SIM (Recommended)]]></string>
+  <string name="aim"><![CDATA[AIM (Requires SSL & PCI Compliance)]]></string>
+  <string name="auth_capture"><![CDATA[Authorize &amp; Capture]]></string>
+  <string name="auth_only"><![CDATA[Authorize Only]]></string>
+  <string name="payment_type"><![CDATA[Transaction Type]]></string>
+  <string name="delimeter"><![CDATA[Direct Response Delimiter (AIM Only)]]></string>
+  <string name="delimeter_value"><![CDATA[| (Pipe)]]></string>
+  <string name="encapsulation_char"><![CDATA[Field encapsulation character]]></string>
+  <string name="encapsulation_char_value"><![CDATA[This must be set to nothing.]]></string>
+  <string name="settings"><![CDATA[Authorize.net Settings]]></string>
+  <string name="password_mode"><![CDATA[Password Required Mode]]></string>
+  <string name="password_mode_value"><![CDATA[Disabled]]></string>
+ </group>
+</definitions>

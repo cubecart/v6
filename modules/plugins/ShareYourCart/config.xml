@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<installer version="1.0">
+  <info>
+	<uid>vlad.barliba@barandisolutions.ro</uid>
+	<type>plugins</type>
+	<folder>shareyourcart</folder>
+	<name><![CDATA[shareyourcart]]></name>
+	<description><![CDATA[shareyourcart integration]]></description>
+	<version>1.0.0</version>
+	<minVersion>5.0.0a</minVersion>
+	<maxVersion>5.0.*</maxVersion>
+	<creator><![CDATA[Barandi Solutions]]></creator>
+	<homepage><![CDATA[http://www.shareyourcart.com]]></homepage>
+  </info>
+  
+  <hooks>
+	<hook trigger="class.cubecart.display_basket.alternate" enabled="1"><![CDATA[Checkout Button]]></hook>
+	<hook trigger="class.cubecart.display_product" enabled="1"></hook>
+	<hook trigger="class.cubecart.construct.callback.gateway"
+		enabled="1"><![CDATA[Callback]]>
+	</hook>
+  </hooks>
+</installer>

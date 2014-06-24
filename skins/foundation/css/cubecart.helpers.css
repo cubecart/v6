@@ -1,0 +1,207 @@
+.nopad {
+	padding:0!important;
+}
+
+.pad {
+	padding:.625em;
+}
+
+.pad-side {
+	padding:0 .625em;
+}
+
+.pad-left {
+	padding-left:.625em;
+}
+
+.pad-right {
+	padding-right:.625em;
+}
+
+.pad-top {
+	padding-top:.625em;
+}
+
+.pad-bottom {
+	padding-bottom:.625em;
+}
+
+.pad-topbottom {
+	padding:.625em 0;
+}
+
+.thickpad {
+	padding:1.25em;
+}
+
+.thickpad-side {
+	padding:0 1.25em;
+}
+
+.thickpad-left {
+	padding-left:1.25em;
+}
+
+.thickpad-right {
+	padding-right:1.25em;
+}
+
+.thickpad-top {
+	padding-top:1.25em;
+}
+
+.thickpad-bottom {
+	padding-bottom:1.25em;
+}
+
+.thickpad-topbottom {
+	padding:1.25em 0;
+}
+
+.thinpad {
+	padding:.3125em;
+}
+
+.thinpad-side {
+	padding:0 .3125em;
+}
+
+.thinpad-left {
+	padding-left:.3125em;
+}
+
+.thinpad-right {
+	padding-right:.3125em;
+}
+
+.thinpad-top {
+	padding-top:.3125em;
+}
+
+.thinpad-bottom {
+	padding-bottom:.3125em;
+}
+
+.thinpad-topbottom {
+	padding:.3125em 0;
+}
+
+.extrathickpad {
+	padding:1.875em;
+}
+
+.extrathickpad-side {
+	padding:0 1.875em;
+}
+
+.extrathickpad-left {
+	padding-left:1.875em;
+}
+
+.extrathickpad-right {
+	padding-right:1.875em;
+}
+
+.extrathickpad-top {
+	padding-top:1.875em;
+}
+
+.extrathickpad-bottom {
+	padding-bottom:1.875em;
+}
+
+.extrathickpad-topbottom {
+	padding:1.875em 0;
+}
+
+.nomarg {
+	margin:0!important;
+}
+
+.marg {
+	margin:.625em;
+}
+
+.marg-side {
+	margin:0 .625em;
+}
+
+.marg-left {
+	margin-left:.625em;
+}
+
+.marg-right {
+	margin-right:.625em;
+}
+
+.marg-top {
+	margin-top:.625em;
+}
+
+.marg-bottom {
+	margin-bottom:.625em;
+}
+
+.marg-topbottom {
+	margin:.625em 0;
+}
+
+.thickmarg {
+	margin:1.25em;
+}
+
+.thickmarg-side {
+	margin:0 1.25em;
+}
+
+.thickmarg-left {
+	margin-left:1.25em;
+}
+
+.thickmarg-right {
+	margin-right:1.25em;
+}
+
+.thickmarg-top {
+	margin-top:1.25em;
+}
+
+.thickmarg-bottom {
+	margin-bottom:1.25em;
+}
+
+.thickmarg-topbottom {
+	margin:1.25em 0;
+}
+
+.thinmarg {
+	margin:.3125em;
+}
+
+.thinmarg-side {
+	margin:0 .3125em;
+}
+
+.thinmarg-left {
+	margin-left:.3125em;
+}
+
+.thinmarg-right {
+	margin-right:.3125em;
+}
+
+.thinmarg-top {
+	margin-top:.3125em;
+}
+
+.thinmarg-bottom {
+	margin-bottom:.3125em;
+}
+
+.thinmarg-topbottom {
+	margin:.3125em 0;
+}
+
+.expand {
+	width:100%!important;
+}

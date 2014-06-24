@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions version="1.0">
+ <group name="by_weight">
+  <string name="countries"><![CDATA[Countries (List comma separated ISO codes)]]></string>
+  <string name="module_description"><![CDATA[This module will calculate shipping by weight based on countries and specific weight bands. (Please make sure you have the correct weight unit selected in your settings and that each product has a weight set to use this module.)]]></string>
+  <string name="module_title"><![CDATA[By Weight]]></string>
+  <string name="packaging_weight"><![CDATA[Packaging Weight]]></string>
+  <string name="rate_1st"><![CDATA[1st Class Shipping Rates]]></string>
+  <string name="rate_2nd"><![CDATA[2nd Class Shipping Rates]]></string>
+  <string name="rate_1"><![CDATA[1st Class]]></string>
+  <string name="rate_2"><![CDATA[2nd Class]]></string>
+  <string name="rate"><![CDATA[Shipping Rates]]></string>
+  <string name="name_class1"><![CDATA[1st Option Name]]></string>
+  <string name="name_class2"><![CDATA[2nd Option Name]]></string>
+  <string name="shipping_name_eg1"><![CDATA[e.g. 1st Class, Next Day etc...]]></string>
+  <string name="shipping_name_eg2"><![CDATA[e.g. 2nd Class, Next Week etc...]]></string>
+  <string name="zone"><![CDATA[Zone]]></string>
+ </group>
+</definitions>

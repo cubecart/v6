@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="virtualmerchant">
+  <string name="module_title"><![CDATA[Virtual Merchant by Evalon]]></string>
+  <string name="merchant_id"><![CDATA[Merchant ID]]></string>
+  <string name="user_id"><![CDATA[User ID]]></string>
+  <string name="pin"><![CDATA[Pin]]></string>
+  <string name="mode_test"><![CDATA[Test Mode Enabled]]></string>
+  <string name="payment_type"><![CDATA[Payment Mode]]></string>
+  <string name="ccsale"><![CDATA[Sale]]></string>
+  <string name="ccauth"><![CDATA[Authorize Only]]></string>
+ </group>
+</definitions>

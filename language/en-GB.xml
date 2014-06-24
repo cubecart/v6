@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language version="2.0">
+  <info>
+    <title>
+      <![CDATA[English (UK)]]>
+    </title>
+    <code>en-GB</code>
+    <character_set>utf-8</character_set>
+    <version>1.0.0</version>
+    <minVersion>5.0.0a</minVersion>
+    <maxVersion>5.1.*</maxVersion>
+    <default_currency>GBP</default_currency>
+    <text-direction>ltr</text-direction>
+    <override/>
+  </info>
+  <translation>
+    <group name="address">
+      <string name="state">
+        <![CDATA[County]]></string>
+    </group>
+  </translation>
+</language>

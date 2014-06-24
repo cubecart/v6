@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<installer version="1.0">
+  <info>
+	<uid>info@addshoppers.com</uid>
+	<type>plugins</type>
+	<folder>AddShoppers</folder>
+	<name><![CDATA[AddShoppers Social Apps]]></name>
+	<description><![CDATA[AddShoppers integration]]></description>
+	<version>1.0.0</version>
+	<minVersion>5.0.0a</minVersion>
+	<maxVersion>5.1.*</maxVersion>
+	<creator><![CDATA[AddShoppers]]></creator>
+	<homepage><![CDATA[http://www.addshoppers.com]]></homepage>
+  </info>
+  
+  <hooks>
+  	<hook trigger="class.cubecart.login" enabled="1"><![CDATA[Login Handler]]></hook>
+  	<hook trigger="class.gui.display" enabled="1"><![CDATA[JavaScript Include]]></hook>
+  </hooks>
+</installer>

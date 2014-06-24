@@ -1,0 +1,477 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<emails version="1.0" language="tr-Tr">
+  <email name="admin.password_recovery">
+    <subject>
+        <![CDATA[Kullanıcı Şifresi Hatırlatma]]>
+        </subject>
+    <content type="html">
+        <![CDATA[<p>Sayın {$DATA.name},</p> 
+        <p>Mağaza yönetim kontrol paneline erişim kazanmak için. Aşağıdaki bağlantıyı takip edin:</p>  
+        <p><a href="{$DATA.link}">{$DATA.link}</a> </p>  
+        <p>Yukarıdaki bağlantı işe yaramazsa, tarayıcınıza adresi kopyalayıp, yapıştırın ve enterı tuşlayın.</p> ]]> 
+    </content>
+    <content type="text">
+        <![CDATA[Sayın {$DATA.name},
+        
+        Mağaza yönetim kontrol paneline erişim kazanmak için. Aşağıdaki bağlantıyı takip edin:
+        
+        {$DATA.link}
+        
+        If the link above doesn't work, please copy and paste it into your browser address bar.]]>
+    </content>
+  </email>
+  <email name="cart.order_complete">
+    <subject>
+        <![CDATA[Ödeme Alındı]]>
+    </subject>
+    <content type="html">
+        <![CDATA[<p>Merhaba {$DATA.first_name},</p>  
+        <p>Siparişiniz için teşekkür ederiz. Numaralı{$DATA.cart_order_id} Siparişiniz tamamlandı. Eğer fiziksel bir mal siparişi verdiyseniz kısa bir süre içinde kargoya verilecektir.</p> ]]>
+    </content>
+    <content type="text">
+        <![CDATA[ Merhaba {$DATA.first_name},
+        
+        Siparişiniz için teşekkür ederiz.  {$DATA.cart_order_id} Nolu siparişiniz tamamlandı. Eğer fiziksel bir mal siparişi verdiyseniz kısa bir süre içinde kargoya verilecektir.]]>
+    </content>
+  </email>
+  <email name="cart.order_cancelled">
+    <subject>
+        <![CDATA[ Sipariş İptal Edildi]]>
+    </subject>
+    <content type="html">
+        <![CDATA[<p>Merhaba {$DATA.first_name},</p>  
+        <p> {$DATA.cart_order_id} Nolu siparişiniz iptal edildi.</p> 
+        ]]>
+        </content>
+    <content type="text">
+        <![CDATA[Merhaba {$DATA.first_name},
+        
+        {$DATA.cart_order_id} Nolu siparişiniz iptal edildi.]]>
+    </content>
+  </email>
+  <email name="cart.order_confirmation">
+      <subject> <![CDATA[Sipariş Onayı #{$DATA.cart_order_id}]]>
+      </subject>
+      <content type="html">
+          <![CDATA[<p>Teşekkürler {$DATA.first_name}</p> 
+          <p> {$DATA.cart_order_id} Nolu siparişiniz{$DATA.order_date} tarihinde alındı. Bu emaili kaydediniz. Siparişinizin durumunu online olarak takip edebilirsiniz.</p>  
+        <p><a href="{$DATA.link}">{$DATA.link}</a> </p> 
+        <table width="100%">
+        <tr>
+        <td valign="top" width="50%"><strong>Fatura Adresi : </strong> <br/> 
+        {$BILLING.first_name} {$BILLING.last_name}<br/> 
+        {if !empty({$BILLING.company_name})}{$BILLING.company_name}<br/> 
+        {/if}
+        {$BILLING.line1}<br/> 
+        {if !empty({$BILLING.line2})}{$BILLING.line2}<br/> 
+        {/if}
+        {$BILLING.town}<br/> 
+        {$BILLING.state}<br/> 
+        {$BILLING.postcode}<br/> 
+        {$BILLING.country}<br/> 
+        {$BILLING.phone}<br/> 
+        <br/>
+        <strong>Email:</strong> <br/> 
+        {$BILLING.email}</td> 
+        <td valign="top" width="50%"><strong>Kargo Adresi:</strong> <br/> 
+        {$SHIPPING.first_name} {$SHIPPING.last_name}<br/> 
+        {if !empty({$SHIPPING.company_name})}{$SHIPPING.company_name} <br/> 
+        {/if}{$SHIPPING.line1}<br/> 
+        {if !empty({$SHIPPING.line2})}{$SHIPPING.line2} <br/> 
+        {/if}{$SHIPPING.town}<br/> 
+        {$SHIPPING.state}<br/> 
+        {$SHIPPING.postcode}<br/> 
+        {$SHIPPING.country}</td> 
+        </tr> 
+        </table> 
+        <table border="0" cellpadding="3" cellspacing="0" width="100%">
+        <tbody>
+        <tr>
+        <td><strong>Açıklama</strong> </td> 
+        <td><strong>Miktar</strong> </td> 
+        <td><strong>Tutar</strong> </td> 
+        </tr> 
+        {foreach from=$PRODUCTS item=product}
+        <tr>
+        <td>{$product.name} <br/>{$product.product_options}</td> 
+        <td>{$product.quantity}</td> 
+        <td>{$product.price}</td> 
+        </tr> 
+        {/foreach}
+        <tr>
+        <td> </td> 
+        <td> Shipping: {if $DATA.ship_method}({$DATA.ship_method}){/if}</td> 
+        <td> {$DATA.shipping}</td> 
+        </tr> 
+        <tr>
+        <td> </td> 
+        <td> İndirim:</td> 
+        <td> {$DATA.discount}</td> 
+        </tr> 
+        <tr>
+        <td> </td> 
+        <td> Ara Toplam:</td> 
+        <td> {$DATA.subtotal}</td> 
+        </tr> 
+        {foreach from=$TAXES item=tax}
+        <tr>
+        <td> </td> 
+        <td> {$tax.tax_name}: ({$tax.tax_percent}%)</td> 
+        <td> {$tax.tax_amount}</td> 
+        </tr> 
+        {/foreach}
+        <tr>
+        <td> </td> 
+        <td><strong>Şipariş Toplamı: </strong> </td> 
+        <td><strong>{$DATA.total}</strong> </td> 
+        </tr>
+        </tbody>
+        
+        </table>]]>
+      </content>
+    <content type="text">
+        <![CDATA[Teşekkürler {$DATA.first_name}!
+        
+        {$DATA.cart_order_id} Nolu siparişiniz {$DATA.order_date} tarihinde alınmıştır. Bu emaili kaydediniz. Siparişinizin durumunu online olarak takip edebilirsiniz 
+        
+        {$DATA.link}
+        
+        ----------------------------------------------------------------------
+        Fatura Adresi:
+        {$BILLING.first_name} {$BILLING.last_name}
+        {if !empty({$BILLING.company_name})}{$BILLING.company_name}
+        {/if}{$BILLING.line1}
+        {if !empty({$BILLING.line2})}{$BILLING.line2}
+        {/if}{$BILLING.town}
+        {$BILLING.state}
+        {$BILLING.postcode}
+        {$BILLING.country}
+        {$BILLING.phone}
+        
+        Email:
+        {$BILLING.email}
+        
+        Teslimat Adresi:
+        {$SHIPPING.first_name} {$SHIPPING.last_name}
+        {if !empty({$SHIPPING.company_name})}{$SHIPPING.company_name}
+        {/if}{$SHIPPING.line1}
+        {if !empty({$SHIPPING.line2})}{$SHIPPING.line2}
+        {/if}{$SHIPPING.town}
+        {$SHIPPING.state}
+        {$SHIPPING.postcode}
+        {$SHIPPING.country}
+        
+        ----------------------------------------------------------------------
+        Siparişinizdeki Ürünler
+        
+        {foreach from=$PRODUCTS item=product}
+        -----------------------------------
+        {$product.name}
+        {$product.product_options}
+        
+        Ürün Kodu: {$product.product_code}
+        Ürün Fiyatı: {$product.price}
+        Miktar: {$product.quantity}
+        
+        {/foreach}
+        -----------------------------------
+        Ara Toplam: {$DATA.subtotal}
+        İndirim       : {$DATA.discount}
+        Nakliye       : {$DATA.shipping} {if $DATA.ship_method}({$DATA.ship_method}){/if}
+        {foreach from=$TAXES item=tax}{$tax.tax_name} ({$tax.tax_percent}%): {$tax.tax_amount}
+        {/foreach}
+        --------------------------
+        Sipariş Toplamı: {$DATA.total}
+        ========================== ]]>
+    </content>
+  </email>
+  <email name="cart.payment_fraud">
+    <subject>
+        <![CDATA[Sipariş Sorunu]]>
+    </subject>
+      <content type="html">
+          <![CDATA[<p>Merhaba {$DATA.first_name},</p>  
+        <p>Siparişiniz için ödemenizi kabul edemiyoruz {$DATA.cart_order_id}. Lütfen endişelenmeyin sorularınızı yanıtlamaya hazırız.</p>]]>
+      </content>
+    <content type="text">
+        <![CDATA[Merhaba {$DATA.first_name},
+        
+        Siparişiniz için ödemenizi kabul edemiyoruz {$DATA.cart_order_id}. Lütfen endişelenmeyin sorularınızı yanıtlamaya hazırız.]]>
+        </content>
+  </email>
+  <email name="account.password_recovery">
+    <subject>
+        <![CDATA[Hesap Şifre Hatırlatması]]>
+        </subject>
+    <content type="html">
+        <![CDATA[<p>Sayın {$DATA.first_name} {$DATA.last_name},<br/> 
+        <br/> 
+        Şifrenizi tekrar alabilmek için aşağıdaki linki tıklayın veya web tarayıcınıza kopyalayıp yapıştırınız. Web sayfasındaki yönergelere göre şifrenizi yenileyiniz.<br/> 
+        <br/> 
+        {$DATA.reset_link}<br/> 
+        <br/> 
+        If you require further assistance in resetting your password, please contact us.</p>]]>
+    </content>
+    <content type="text">
+        <![CDATA[Merhaba {$DATA.first_name},
+        
+        Şifrenizi tekrar alabilmek için aşağıdaki linki tıklayın veya web tarayıcınıza kopyalayıp yapıştırınız. Web sayfasındaki yönergelere göre şifrenizi yenileyiniz.
+        
+        {$DATA.reset_link}
+        
+        If you require further assistance in resetting your password, please contact us.]]>
+    </content>
+  </email>
+  <email name="admin.order_received">
+    <subject>
+        <![CDATA[Yeni Sipariş #{$DATA.cart_order_id}]]>
+    </subject>
+      <content type="html">
+          <![CDATA[<p>{$DATA.first_name} {$DATA.last_name} {if !empty({$BILLING.company_name})}({$BILLING.company_name}){/if} just placed order number {$DATA.cart_order_id} on {$DATA.order_date}.</p> 
+        <p>Siparişinizi aşağıdaki link'ten online takip edebilirsiniz.</p>  
+        <p><a href="{$DATA.link}">{$DATA.link}</a> </p> 
+        <table width="100%">
+        <tr>
+        <td valign="top" width="50%"><strong>Fatura Adresi:</strong> <br/> 
+        {$BILLING.first_name} {$BILLING.last_name}<br/> 
+        {if !empty({$BILLING.company_name})}{$BILLING.company_name}<br/> 
+        {/if}
+        {$BILLING.line1}<br/> 
+        {if !empty({$BILLING.line2})}{$BILLING.line2}<br/> 
+        {/if}
+        {$BILLING.town}<br >
+        {$BILLING.state}<br/> 
+        {$BILLING.postcode}<br/> 
+        {$BILLING.country}<br/> 
+        {$BILLING.phone}<br/> 
+        <br/>
+        <strong>Email:</strong> <br/> 
+        <td>{$BILLING.email} </td> 
+        <td valign="top" width="50%"><strong>Teslimat Adresi:</strong> <br/> 
+        {$SHIPPING.first_name} {$SHIPPING.last_name}<br/> 
+        {if !empty({$SHIPPING.company_name})}{$SHIPPING.company_name} <br/> 
+        {/if}{$SHIPPING.line1}<br/> 
+        {if !empty({$SHIPPING.line2})}{$SHIPPING.line2} <br/> 
+        {/if}{$SHIPPING.town}<br/> 
+        {$SHIPPING.state}<br/> 
+        {$SHIPPING.postcode}<br/> 
+        {$SHIPPING.country}</td> 
+</tr> 
+        </table> 
+        <table border="0" cellpadding="3" cellspacing="0" width="100%">
+        <tbody>
+        <tr>
+        <td><strong>Ürün</strong> </td> 
+        <td><strong>Miktar</strong> </td> 
+        <td><strong>Tutar</strong> </td> 
+        </tr>
+        {foreach from=$PRODUCTS item=product}
+        <tr>
+        <td>{$product.name} <br/>{$product.product_options}</td> 
+        <td>{$product.quantity}</td> 
+        <td>{$product.price}</td> 
+        </tr> 
+        {/foreach}
+        <tr>
+        <td> </td> 
+        <td> Teslimat: {if $DATA.ship_method}({$DATA.ship_method}){/if}</td> 
+        <td> {$DATA.shipping}</td> 
+        </tr> 
+        <tr>
+        <td> </td> 
+        <td> İndirim:</td> 
+        <td> {$DATA.discount}</td> 
+        </tr> 
+        <tr>
+        <td> </td> 
+        <td> Ara Toplam:</td> 
+        <td> {$DATA.subtotal}</td> 
+        </tr> 
+        {foreach from=$TAXES item=tax}
+        <tr>
+        <td> </td> 
+        <td> {$tax.tax_name}: ({$tax.tax_percent}%)</td> 
+        <td> {$tax.tax_amount}</td> 
+        </tr> 
+        {/foreach}
+        <tr>
+        <td> </td> 
+        <td><strong>Sipariş Toplamı: </strong> </td> 
+        <td><strong>{$DATA.total}</strong> </td> 
+        </tr> 
+        </tbody> 
+        
+        </table> ]]>
+      </content>
+    <content type="text">
+        <![CDATA[{$DATA.first_name} {$DATA.last_name} {if !empty({$BILLING.company_name})}({$BILLING.company_name}){/if} just placed order number {$DATA.cart_order_id} on {$DATA.order_date}.
+        
+        Siparişinizi aşağıdaki link'ten online takip edebilirsiniz.
+        
+        {$DATA.link}
+        
+        ----------------------------------------------------------------------
+        Fatura Adresi:
+        {$BILLING.first_name} {$BILLING.last_name}
+        {if !empty({$BILLING.company_name})}{$BILLING.company_name}
+        {/if}{$BILLING.line1}
+        {if !empty({$BILLING.line2})}{$BILLING.line2}
+        {/if}{$BILLING.town}
+        {$BILLING.state}
+        {$BILLING.postcode}
+        {$BILLING.country}
+        {$BILLING.phone}
+        
+        Email:
+        {$BILLING.email}
+        
+        Teslimat Adresi:
+        {$SHIPPING.first_name} {$SHIPPING.last_name}
+        {if !empty({$SHIPPING.company_name})}{$SHIPPING.company_name}
+        {/if}{$SHIPPING.line1}
+        {if !empty({$SHIPPING.line2})}{$SHIPPING.line2}
+        {/if}{$SHIPPING.town}
+        {$SHIPPING.state}
+        {$SHIPPING.postcode}
+        {$SHIPPING.country}
+        
+        ----------------------------------------------------------------------
+        Siparişinizdeki Ürünler
+        
+        {foreach from=$PRODUCTS item=product}
+        -----------------------------------
+        {$product.name}
+        {$product.product_options}
+        
+        Ürün Numarası: {$product.product_code}
+        Ürün Fiyatı: {$product.price}
+        Miktar: {$product.quantity}
+        
+        {/foreach}
+        -----------------------------------
+        Ara Toplam : {$DATA.subtotal}
+        İndirim        : {$DATA.discount}
+        Nakliye        : {$DATA.shipping} {if $DATA.ship_method}({$DATA.ship_method}){/if}
+        {foreach from=$TAXES item=tax}{$tax.tax_name} ({$tax.tax_percent}%): {$tax.tax_amount}
+        {/foreach}
+        --------------------------
+        Sipariş Toplamı: {$DATA.total}
+        ========================== ]]>
+        </content>
+  </email>
+  <email name="admin.review_added">
+      <subject>
+          <![CDATA[Yeni Ürün İnceleme]]>
+      </subject>
+    <content type="html">
+        <![CDATA[{$DATA.name} yeni ürün talep edildi '{$DATA.product_name}'. Bu aşağıdaki link'ten yönetilebilir
+        <p><strong>Moderation Link:</strong> <br/> <a href='{$DATA.link}'> {$DATA.link}</a> </p>  
+        <p><strong>Review Text:</strong> <br/> {$DATA.review}</p>]]>
+    </content>
+    <content type="text">
+      <![CDATA[{$DATA.name} has submit a new review/comment about '{$DATA.product_name}'. This can be moderated following the link below.
+        
+        Moderation Link: 
+        {$DATA.link}
+        Review Text:
+        {$DATA.review}]]>
+    </content>
+  </email>
+  <email name="cart.digital_download">
+      <subject>
+          <![CDATA[Dijital ortam siparişleriniz]]>
+      </subject>
+      <content type="html">
+          <![CDATA[<p>Merhaba {$DATA.first_name},</p>  
+        <p>Satın aldığınız dijital ürünlerinizi indirmek için linkten faydalanabilirsiniz:</p>  
+        {foreach from=$DOWNLOADS item=download} 
+        <p><strong>{$download.name}:</strong>  (Link expires on {$download.expire})<strong> )</strong> <br/>  
+        {$download.url}</p>  
+        {/foreach}
+        <p>Eğer verilen Linkler çalışmıyor ise; linki web taracınıza kopyalayıp yapıştırınız. açılan web adresindeki yönergeleri uygulayınız.</p>  
+        <p> </p> ]]>
+      </content>
+    <content type="text">
+        <![CDATA[Merhaba {$DATA.first_name},
+        
+        Satın aldığınız dijital ürünlerinizi indirmek için linkten faydalanabilirsiniz:
+        
+        {foreach from=$DOWNLOADS item=download} 
+        {$download.name}: (Link expires on {$download.expire})
+        {$download.url}
+        {/foreach}
+        
+       Eğer verilen Linkler çalışmıyor ise; linki web taracınıza kopyalayıp yapıştırınız. açılan web adresindeki yönergeleri uygulayınız.]]>
+    </content>
+  </email>
+  <email name="cart.gift_certificate">
+    <subject>
+        <![CDATA[Hediye Kartı]]>
+    </subject>
+    <content type="html">
+        <![CDATA[<p>Sayın {$DATA.name},</p>  
+        <p>Biz; sizin için hediye kartı hazırladık; hediye kartını web sitemizdeki ürünler için kullanabilirsiniz.</p>  
+        <p>Mutlu alışverişler!!!</p>  
+        <p><strong>Gönderen: </strong> {$DATA.first_name} {$DATA.last_name}<br/>  
+        <strong>Tutar: </strong> {$DATA.value}<br/>  
+        <strong>Sertifika Kodu:</strong>  {$DATA.code}<br/>  
+        <strong>Hediye Mesajı:</strong>  {$DATA.message}</p>  
+        <p>-------------------</p>  
+        <p>Hediye Kartını kullanmak için hediye kodunu satınalmanız sırasında gerekli yere yazınız.</p>  
+        <p>Hediye Kartınızı şimdi kullanmak istermisiniz?</p> ]]>
+    </content>
+      <content type="text">
+          <![CDATA[Sayın {$DATA.name},
+        
+        Biz; sizin için hediye kartı hazırladık; hediye kartını web sitemizdeki ürünler için kullanabilirsiniz.
+        
+        Mutlu Alışverişler!!!
+        
+        Gönderen: {$DATA.first_name} {$DATA.last_name}
+        Tutar: {$DATA.value}
+        Sertifika Kodu: {$DATA.code}
+        Hediye mesajı: {$DATA.message}
+        
+        -------------------
+        
+        Hediye Kartını kullanmak için hediye kodunu satınalmanız sırasında gerekli yere yazınız.
+        
+        Hediye Kartınızı şimdi kullanmak istermisiniz?]]>
+      </content>
+  </email>
+  <email name="catalogue.tell_friend">
+      <subject>
+          <![CDATA[{$DATA.from} Size Bir Önerimiz Var]]>
+      </subject>
+    <content type="html">
+        <![CDATA[Sayın {$DATA.to},
+        <p>Değerli Dostum <strong>{$DATA.from}</strong>  tİlginizi çekebileceğini düşündüm <strong> {$DATA.name}</strong> .</p>  
+        <p><strong>Ürün Linki::</strong>  <a href="{$DATA.link}"> {$DATA.name}</a> </p>  
+        <p>{$DATA.message}</p>]]>
+    </content>
+    <content type="text">
+        <![CDATA[Sayın {$DATA.to},
+        
+        Dostum{$DATA.from} İlginizi çekebileceğini düşündüm '{$DATA.name}'.
+        
+        {$DATA.name}
+        Ürün lLnki: {$DATA.link}
+        
+        {$DATA.message}]]></content>
+  </email>
+  <email name="cart.payment_received">
+    <subject>
+        <![CDATA[Ödemeniz İçin Teşekkürler.]]>
+    </subject>
+    <content type="html">
+        <![CDATA[<p>Merhaba  {$DATA.first_name},</p>  
+        <p>Teşekkürler {$DATA.total}numaralı {$DATA.cart_order_id} ödemeniz için.</p>]]>
+    </content>
+    <content type="text">
+        <![CDATA[Merhaba {$DATA.first_name},
+        
+        Teşekkürler  {$DATA.total} numaralı {$DATA.cart_order_id} ödemeniz için.]]>
+    </content>
+  </email>
+</emails>
+

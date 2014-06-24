@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions version="1.0">
+ <group name="facebook">
+  <string name="appid"><![CDATA[Application ID]]></string>
+  <string name="appid_info"><![CDATA[To use the comments plug-in, your site must have an application ID. You can get an application ID by <a href="http://developers.facebook.com/setup">registering your site</a>.]]></string>
+  
+  <string name="like_button"><![CDATA[Product Page &quot;Like&quot; Button]]></string>
+  <string name="button_text"><![CDATA[Verb to display]]></string>
+  <string name="button_showfaces"><![CDATA[Show Faces?]]></string>
+  <string name="button_color"><![CDATA[Color Scheme]]></string>
+  <string name="button_width"><![CDATA[Width]]></string>
+  <string name="button_layout"><![CDATA[Layout Style]]></string>
+
+  <string name="comments"><![CDATA[Facebook Comments]]></string>
+  <string name="comments_width"><![CDATA[Width]]></string>
+  <string name="comments_numposts"><![CDATA[Number of Comments]]></string>
+  <string name="comments_feed"><![CDATA[Publish Feed]]></string>
+ </group>
+</definitions>

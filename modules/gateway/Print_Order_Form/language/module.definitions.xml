@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="print_order_form">
+  <string name="address"><![CDATA[Address]]></string>
+  <string name="bank_account"><![CDATA[Account Number]]></string>
+  <string name="bank_account_name"><![CDATA[Account Name]]></string>
+  <string name="bank_allow"><![CDATA[Allow bank transfers?]]></string>
+  <string name="bank_name"><![CDATA[Bank Name]]></string>
+  <string name="bank_sort"><![CDATA[Sort Code]]></string>
+  <string name="bank_swift"><![CDATA[Swift/IBAN Code]]></string>  
+  <string name="cards_accept"><![CDATA[Cards Accepted]]></string>
+  <string name="cards_allow"><![CDATA[Allow Payment by Card?]]></string>
+  <string name="cards_example"><![CDATA[Visa, Mastercard, American Express, Discover]]></string>
+  <string name="cheque_allow"><![CDATA[Allow payment by cheque?]]></string>
+  <string name="cheque_payable"><![CDATA[Cheques made payable to]]></string>
+  <string name="currency_multi"><![CDATA[Allow Payment in Multiple Currencies?]]></string>
+  <string name="module_title"><![CDATA[Printable Order Form]]></string>
+  <string name="notes"><![CDATA[Notes to customer]]></string>
+  <string name="confirmation_email"><![CDATA[Send order confirmation email?]]></string>
+  <string name="title_bank_transfer"><![CDATA[Bank Transfers]]></string>
+ </group>
+</definitions>

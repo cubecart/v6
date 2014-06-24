@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="chronopay">
+  <string name="access_url"><![CDATA[Product Access URL]]></string>
+  <string name="currency_info"><![CDATA[Ensure the default currency set in the stores settings matches the payment gateway settings.]]></string>
+  <string name="module_title"><![CDATA[Chronopay]]></string>
+  <string name="product_id"><![CDATA[Product ID]]></string>
+  <string name="product_name"><![CDATA[Product Name]]></string>
+  <string name="shared_sec"><![CDATA[SharedSec]]></string>
+  <string name="settings"><![CDATA[ChronoPay Settings]]></string>
+ </group>
+</definitions>

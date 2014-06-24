@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="MercadoPago">
+  <string name="acc_id"><![CDATA[N&uacute;mero de Cuenta]]></string>
+  <string name="codigo"><![CDATA[C&oacute;digo de Validacion]]></string>
+  <string name="country"><![CDATA[C&oacute;digo Pa&iacute;s]]></string>
+  <string name="module_description"><![CDATA[&#8220;Comienza a vender en minutos en Latinoam&eacute;rica!&#8221;]]></string>
+  <string name="module_title"><![CDATA[MercadoPago]]></string>
+  <string name="MercadoPago_settings"><![CDATA[Opciones de MercadoPago]]></string>
+ </group>
+</definitions>

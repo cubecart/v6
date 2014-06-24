@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<snippets_import version="1.0">
+<info>
+  	<author>Joe Shmoe</author>
+  	<homepage>http://www.example.com</homepage>
+</info>
+<snippets>
+  <snippet>
+	<enabled>1</enabled>
+	<unique_id>sample-1@example.com</unique_id>
+	<description>Displays test on screen</description>
+	<hook_trigger>controller.admin</hook_trigger>
+	<php_code><![CDATA[<?php 
+echo "test";
+?>]]></php_code>
+	<version>1.0.0</version>
+	<priority>1</priority>
+  </snippet>
+  <snippet>
+	<enabled>1</enabled>
+	<unique_id>sample-2@example.com</unique_id>
+	<description>Displays test2 on screen with lower priority.</description>
+	<hook_trigger>controller.admin</hook_trigger>
+	<php_code><![CDATA[<?php 
+echo "test2";
+?>]]></php_code>
+	<version>1.0.0</version>
+	<priority>2</priority>
+  </snippet>
+</snippets>
+</snippets_import>

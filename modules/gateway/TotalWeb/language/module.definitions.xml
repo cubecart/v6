@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="totalweb">
+  <string name="module_title"><![CDATA[Total Web Solutions]]></string>
+  <string name="merchant_id"><![CDATA[Merchant ID]]></string>
+  <string name="mode_test"><![CDATA[Test Mode]]></string>
+  <string name="mode_live"><![CDATA[Live Mode]]></string>
+  <string name="settings"><![CDATA[Total Web Solutions Settings]]></string>
+  <string name="secretkey"><![CDATA[Secret Key]]></string>
+ </group>
+</definitions>

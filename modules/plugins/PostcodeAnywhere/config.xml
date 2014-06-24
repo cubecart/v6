@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<installer version="1.0">
+  <info>
+	<uid>postcodeanywhere@cubecart.com</uid>
+	<type>plugins</type>
+	<folder>PostcodeAnywhere</folder>
+	<name><![CDATA[Postcode Anywhere]]></name>
+	<description><![CDATA[Postcode anywhere integration]]></description>
+	<version>1.0.0</version>
+	<minVersion>6.0.0b</minVersion>
+	<maxVersion>6.0.*</maxVersion>
+	<creator><![CDATA[CubeCart Staff]]></creator>
+	<homepage><![CDATA[http://www.cubecart.com]]></homepage>
+  </info>
+  
+  <hooks>
+	<hook trigger="class.gui.head_js" enabled="1"><![CDATA[Postcode Anywhere Header JS]]></hook>
+	<hook trigger="class.gui.body_js" enabled="1"><![CDATA[Postcode Anywhere Body JS]]></hook>
+	<hook trigger="class.gui.css" enabled="1"><![CDATA[CSS]]></hook>
+  </hooks>
+</installer>

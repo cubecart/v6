@@ -1,0 +1,46 @@
+/* Menu DIV */
+.jqac-menu{
+  color: black;
+  background-color: white;
+  border: 1px solid #999999;
+  z-index: 90 !important;
+}
+
+/* unordered list for suggestions */
+.jqac-menu ul{
+  list-style: none;
+  margin: 1px;
+  padding: 1px;
+  overflow: hidden;
+}
+/* SPAN "link" */
+.jqac-menu .jqac-link {
+  cursor: hand; cursor: pointer;
+  display: block;
+}
+/* highlighted menu item */
+.jqac-menu .jqac-highlight {
+  background-color: #EBF3FF;
+}
+/* warning for no results */
+.jqac-menu .jqac-warning {
+  font-style: italic;
+}
+/* loading for AJAX get */
+.jqac-menu .jqac-loading {
+  font-style: italic;
+  text-decoration: blink;
+}
+/* matched sub-string */
+.jqac-menu em {
+	font-style: normal;
+	font-weight: bold;
+    text-decoration: none;
+}
+/* suggestion info */
+.jqac-menu .jqs-info {
+    text-align: right;
+    font-style: italic;
+    font-size: .75em;
+    color: #CCCCCC !important;
+}

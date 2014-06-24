@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions version="1.0">
+ <group name="store_collection">
+  <string name="module_description"><![CDATA[This module can be used to allow the customer to collect from the store. Shipping will be set as free of charge.]]></string>
+  <string name="module_title"><![CDATA[Store Collection]]></string>
+ </group>
+</definitions>

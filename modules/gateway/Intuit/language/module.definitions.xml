@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="intuit">
+  <string name="pw"><![CDATA[Password]]></string>
+  <string name="username"><![CDATA[Username]]></string>
+  <string name="module_title"><![CDATA[Intuit]]></string>
+  <string name="mode"><![CDATA[Mode]]></string>
+  <string name="auth_capture"><![CDATA[Authorize &amp; Capture]]></string>
+  <string name="auth_only"><![CDATA[Authorize Only]]></string>
+  <string name="payment_type"><![CDATA[Transaction Type]]></string>
+ </group>
+</definitions>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions version="1.0">
+ <group name="google_checkout">
+  <string name="action"><![CDATA[Action]]></string>
+  <string name="action_capture"><![CDATA[Capture Transaction]]></string>
+  <string name="action_refund"><![CDATA[Refund Transaction]]></string>
+  <string name="advanced_info"><![CDATA[Under Advanced settings, the following options should be selected:<br />&bull; Provide the first name, last name and full name of the buyer and order recipient in separate fields in the new order notification.<br />&bull; Return the buyer's ship-to phone number in the new order notification.<br />&bull; Return the buyer's billing phone number in the new order notification.<br />]]></string>
+  <string name="button_size"><![CDATA[Button Size]]></string>
+  <string name="callback_info"><![CDATA[Callback method <strong>MUST</strong> be set to <strong>XML</strong>]]></string>
+  <string name="callback_url"><![CDATA[API Callback URL]]></string>
+  <string name="delivery_info"><![CDATA[No additional data is required. If you have set the Shipping Method and Tracking Code on the <strong>Delivery</strong> tab, this data will be added to Google Checkout.]]></string>
+  <string name="merchant_key"><![CDATA[Merchant Key]]></string>
+  <string name="method"><![CDATA[Method]]></string>
+  <string name="method_auth"><![CDATA[Authorize]]></string>
+  <string name="method_cancel"><![CDATA[Cancel]]></string>
+  <string name="method_charge"><![CDATA[Charge]]></string>
+  <string name="method_deliver"><![CDATA[Deliver]]></string>
+  <string name="method_message"><![CDATA[Send Message]]></string>
+  <string name="method_refund"><![CDATA[Refund]]></string>
+  <string name="mode"><![CDATA[Mode]]></string>
+  <string name="mode_live"><![CDATA[Live]]></string>
+  <string name="mode_sandbox"><![CDATA[Sandbox]]></string>
+  <string name="module_title"><![CDATA[Google Checkout]]></string>
+  <string name="no_data_required"><![CDATA[No additional data is required.]]></string>
+  <string name="reason"><![CDATA[Reason]]></string>
+  <string name="reason_customer"><![CDATA[Customer request to cancel]]></string>
+  <string name="reason_damage"><![CDATA[Product is defective/damaged]]></string>
+  <string name="reason_delivery"><![CDATA[The delivery took too long]]></string>
+  <string name="reason_described"><![CDATA[Not as described/expected]]></string>
+  <string name="reason_discontinued"><![CDATA[Item discontinued]]></string>
+  <string name="reason_other"><![CDATA[Other&hellip; (describe below)]]></string>
+  <string name="reason_parts"><![CDATA[Parts are missing in the product.]]></string>
+  <string name="reason_price"><![CDATA[Found better price elsewhere]]></string>
+  <string name="reason_size"><![CDATA[Wrong size]]></string>
+  <string name="reason_stock"><![CDATA[Product is out of stock]]></string>
+  <string name="settings"><![CDATA[Google Checkout Settings]]></string>
+  <string name="settings_info"><![CDATA[These options need to be set in your Google Checkout management screen under "Settings" &raquo; "Integration"]]></string>
+  <string name="title_authorize"><![CDATA[Authorize Order]]></string>
+  <string name="title_deliver"><![CDATA[Deliver Order]]></string>
+  <string name="title_message"><![CDATA[Send message to buyer]]></string>
+ </group>
+</definitions>

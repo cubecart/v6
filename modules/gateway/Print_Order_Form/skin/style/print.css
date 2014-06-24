@@ -1,0 +1,111 @@
+html, body {
+	font-family: Verdana, Arial, Helvetica, sans-serif; 
+	font-size: 12px;
+}
+
+#wrapper {
+	margin: auto;
+	padding: 2px;
+	width: 650px;
+	border: 2px solid #CCCCCC;
+	background-color:#FFFFFF;
+}
+
+#header {
+	padding: 10px 10px;
+	margin-bottom: 10px;
+	
+	width: 620px;
+	z-index: 100;
+	overflow: hidden;
+}
+
+#address {
+	margin: 0px 10px;
+	clear: both;
+	padding: 10px 0px;
+	border-top: 1px solid #666666;
+	border-bottom: 1px solid #666666;
+	height: 120px;
+}
+
+#invoice-to {
+	width: 300px;
+}
+
+#deliver-to {
+	width: 300px;
+	float: right;
+}
+
+#info {
+	margin: 10px 0px 30px;
+	padding: 0px 10px;
+	clear: both;
+}
+
+div.product {
+	clear: both;
+	padding: 2px 10px;
+	border-bottom: 1px dashed #CCCCCC;
+}
+span.price {
+	float: right;
+}
+
+#totals {
+	margin-top: 5px;
+}
+.total {
+	text-align: right;
+	padding-right: 10px;
+}
+
+div.payment_method {
+	margin: 10px;
+	padding: 2px;
+	border-top: 1px solid #CCCCCC;
+	clear: both;
+}
+div.payment_method > div {
+	margin: 2px 0px;
+}
+
+#card_types {
+	width: 300px;
+}
+
+#card_details {
+	float: right;
+	width: 300px;
+}
+#card_details > .detail {
+	margin: 3px 0px;
+	height: 30px;
+	border-bottom: 1px solid #666666;
+}
+
+#notes {
+	margin: 10px;
+	padding: 3px;
+	border-top: 1px solid #CCCCCC;
+	border-bottom: 1px solid #CCCCCC;
+	text-align: center
+}
+
+#thanks {
+	margin-top: 20px;
+	text-align: center;
+	font-weight: bold;
+}
+
+#footer {
+	margin: 10px 0px 0px;
+	padding-top: 5px;
+	border-top: 1px solid #666666;
+	text-align: center;
+	font-size: 0.8em;
+}
+#footer p {
+	margin: 0px;
+}

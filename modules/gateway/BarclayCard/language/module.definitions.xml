@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="barclaycard">
+  <string name="clientid"><![CDATA[Client ID or PSPID]]></string>
+  <string name="settings"><![CDATA[Barclaycard ePDQ Control Panel Settings Integration (Old)]]></string>
+  <string name="settings_new"><![CDATA[Barclaycard ePDQ Control Panel Settings Integration (New)]]></string>
+  <string name="mode_auth"><![CDATA[Sale]]></string>
+  <string name="mode_preauth"><![CDATA[Authorize Only]]></string>
+  <string name="module_title"><![CDATA[Barclaycard ePDQ]]></string>
+  <string name="passphrase"><![CDATA[Passphrase or SHA-IN Pass phrase]]></string>
+  <string name="passphrase_out"><![CDATA[SHA-OUT Pass phrase]]></string>
+  <string name="post_user"><![CDATA[Post Verification Username]]></string>
+  <string name="post_pass"><![CDATA[Post Verification Password]]></string>
+  <string name="post_url"><![CDATA[Post URL]]></string>
+  <string name="post_url_new"><![CDATA[Data and origin verification URL]]></string>
+  <string name="mode_old"><![CDATA[Old - I have been given a client ID]]></string>
+  <string name="mode_new"><![CDATA[New - I have been given a PSPID]]></string>
+  <string name="integration_mode"><![CDATA[Integration Mode]]></string>
+  <string name="old_integration_only"><![CDATA[<strong>Key:</strong><br /> O - Required for Old<br /> N - Required for New]]></string>
+  <string name="call_url"><![CDATA[Direct HTTP server-to-server request URL's]]></string>
+  <string name="global_security_params"><![CDATA[Global security parameters]]></string>
+  <string name="hash_alogrithm"><![CDATA[Hash algorithm]]></string>
+  <string name="char_encoding"><![CDATA[Character encoding]]></string>
+  <string name="payment_page_layout"><![CDATA[Payment Page layout]]></string>
+  <string name="back_redirect"><![CDATA[Back button redirection]]></string>
+  <string name="origin_verification"><![CDATA[Data and origin verification]]></string>
+  <string name="transaction_feedback"><![CDATA[Transaction feedback]]></string>
+  <string name="response_url"><![CDATA[Direct HTTP server-to-server request URL (Both)]]></string>
+  <string name="timing"><![CDATA[Timing of the request]]></string> 
+  <string name="request_method"><![CDATA[Request method]]></string>
+  <string name="logo_url"><![CDATA[Secure URL to Logo]]></string>
+  <string name="allowed_url"><![CDATA[Allowed URL]]></string>
+ </group>
+</definitions>

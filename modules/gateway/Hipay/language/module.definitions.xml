@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="hipay">
+  <string name="module_description"><![CDATA[This is the Hipay Wallet Payment solution; Be sure to register at Hipay to get a live and a sandbox account.<p>Don't forget that you need cURL and SimpleXML installed on your server.</p><p><a href="https://www.hipaywallet.com" target="_blank">You need an Hipay Account?</a></p><p>Please ensure to set a string at "Code to encrypt Callback" with more than 5 digits.</p><p>You need to have cURL and SimpleXML enabled at your server.</p>]]></string>
+  <string name="email_ack"><![CDATA[Payment Acknowledge Email Address]]></string>
+  <string name="mode"><![CDATA[Mode]]></string>
+  <string name="mode_live"><![CDATA[Live]]></string>
+  <string name="mode_sandbox"><![CDATA[Sandbox]]></string>
+  <string name="sandbox_account_id"><![CDATA[Sandbox Account Number]]></string>
+  <string name="sandbox_website_id"><![CDATA[Sandbox Website ID]]></string>
+  <string name="sandbox_website_category"><![CDATA[Sandbox Website Category]]></string>
+  <string name="sandbox_website_password"><![CDATA[Sandbox Website Password]]></string>
+  <string name="sandbox_shop_id"><![CDATA[Sandbox Shop ID]]></string>
+  <string name="live_account_id"><![CDATA[Live Account Number]]></string>
+  <string name="live_website_id"><![CDATA[Live Website ID]]></string>
+  <string name="live_website_category"><![CDATA[Live Website Category]]></string>
+  <string name="live_website_password"><![CDATA[Live Website Password]]></string>
+  <string name="live_shop_id"><![CDATA[Live Shop ID]]></string>
+  <string name="code_to_encrypt"><![CDATA[Code to encrypt Callback]]></string>
+  <string name="code_to_encrypt_desc"><![CDATA[Change once before selling, ex: 3er45e]]></string>
+  <string name="age_group"><![CDATA[Category of authorized age groups]]></string>
+  <string name="locale"><![CDATA[Default language of the interface]]></string>
+  <string name="module_title"><![CDATA[Hipay Wallet Payment Gateway]]></string>
+  <string name="debug_mode"><![CDATA[Debug Mode]]></string>
+  <string name="debug_mode_desc"><![CDATA[Writes a log called hipay.log at site's root. For debug purposes only - disable in production please!]]></string>
+  <string name="on"><![CDATA[On]]></string>
+  <string name="off"><![CDATA[Off]]></string>
+  <string name="currency"><![CDATA[Default currency of the interface]]></string>
+
+ </group>
+</definitions>

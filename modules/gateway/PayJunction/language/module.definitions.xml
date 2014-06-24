@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="payjunction">
+  <string name="module_title"><![CDATA[PayJunction]]></string>
+  <string name="module_description"><![CDATA[&#8220;Where increased sales and lower costs meet&#8221;]]></string>
+ </group>
+</definitions>

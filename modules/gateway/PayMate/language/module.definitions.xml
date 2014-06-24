@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="paymate">
+  <string name="account_no"><![CDATA[PayMate Username]]></string>
+ </group>
+</definitions>

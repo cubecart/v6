@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<installer version="1.0">
+  <info>
+	<uid>support@webtopay.com</uid>
+	<type>gateway</type>
+	<mobile_optimized>false</mobile_optimized>
+	<name><![CDATA[WebToPay]]></name>
+	<description><![CDATA[WebToPay Payment Gateway]]></description>
+	<version>1.0.0</version>
+	<minVersion>5.0.0a</minVersion>
+	<maxVersion>5.0.*</maxVersion>
+	<creator><![CDATA[EVP International]]></creator>
+	<homepage><![CDATA[http://www.webtopay.com]]></homepage>
+	<block>false</block>
+  </info>
+</installer>

@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<skin version="3.1">
+  <info>
+	<!--
+	UIDs can be generated on the unix/linux command line using `uuid -v4`, or you can use any string, as long as you think it wont accidentally be picked by anyone else
+	A good example of the latter would be something like 'skin-blank@example.com'. While not necessarily an active email address, it's a pretty good approximation of a unique key
+	--> 
+	<uid>foundation-1.0@cubecart.com</uid>
+	<type>skin</type>
+	<name><![CDATA[foundation]]></name>
+	<display><![CDATA[Foundation]]></display>
+	<version>1.0</version>
+	<minVersion>6.0.0a</minVersion>
+	<maxVersion>6.0.*</maxVersion>
+	<creator>Devellion Ltd</creator>
+	<homepage>http://www.cubecart.com</homepage>
+	<mobile>false</mobile>
+  </info>
+  <layout>
+	<products>
+		<perpage amount="6" />
+		<perpage default="true" amount="12" />
+		<perpage amount="24" />
+		<perpage amount="48" />
+		<perpage amount="96" />
+	</products>
+  </layout>
+  <styles>
+	<style images="false" default="true">
+	  <!-- images: TRUE tells the template system that this style has its own image folder. FALSE would use the contents in the root of the images folder -->
+	  <directory>green</directory>
+	  <name><![CDATA[Green]]></name>
+	  <description><![CDATA[Green style]]></description>
+	  <default />
+	</style>
+	<style images="false">
+	  <directory>red</directory>
+	  <name><![CDATA[Red]]></name>
+	  <description><![CDATA[Red style]]></description>
+	</style>
+  </styles>
+  <images>
+	<image reference="thumbnail" maximum="150" quality="80" default="noimage.png" />
+	<image reference="category" maximum="800" quality="80" default="" /><!-- Doesnt need a default -->
+	<image reference="subcategory" maximum="70" quality="80" default="noimage.png" />
+	<image reference="gallery" maximum="50" quality="80" default="noimage.png" />
+	<image reference="normal" maximum="300" quality="80" default="noimage.png" />
+	<image reference="enlarge" maximum="600" quality="80" default="" /><!-- Doesnt need a default -->
+	<image reference="tiny" maximum="30" quality="80" default="noimage.png" />
+	<image reference="small" maximum="200" quality="80" default="noimage.png" />
+	<image reference="medium" maximum="500" quality="80" default="noimage.png" />
+	<image reference="large" maximum="600" quality="80" default="" /><!-- Doesnt need a default -->
+  </images>
+  
+</skin>

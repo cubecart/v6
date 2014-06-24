@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<installer version="1.0">
+  <info>
+	<uid>checkout-google@devellion.com</uid>
+	<type>plugins</type>
+	<folder>Google_Checkout</folder>
+	<name><![CDATA[Google Checkout]]></name>
+	<description><![CDATA[Google Checkout integration]]></description>
+	<version>2.0.0</version>
+	<minVersion>5.0.0a</minVersion>
+	<maxVersion>5.1.*</maxVersion>
+	<creator><![CDATA[Devellion, Ltd]]></creator>
+	<homepage><![CDATA[http://www.cubecart.com]]></homepage>
+  </info>
+  
+  <hooks>
+	<hook trigger="admin.order.index.display" enabled="1"><![CDATA[ACP - Order details tab]]></hook>
+	<hook trigger="admin.order.index.post_process" enabled="1"><![CDATA[Admin - Post-processing plugin]]></hook>
+	<hook trigger="admin.order.index.transaction" enabled="1"><![CDATA[ACP - Order Transactions log plugin]]></hook>
+	<hook trigger="class.cubecart.display_basket.alternate" enabled="1"><![CDATA[Checkout Button]]></hook>
+	<hook trigger="class.cubecart.display_gateways" enabled="1"><![CDATA[Gateway Processor]]></hook>
+	<hook trigger="class.order.place_order" enabled="1"><![CDATA[Place Order plugin]]></hook>
+	<hook trigger="class.order.order_status" enabled="1"><![CDATA[Order Status plugin]]></hook>
+	<hook trigger="class.cubecart.construct.callback.gateway" enabled="1"><![CDATA[Callback Handler]]></hook>
+  </hooks>
+</installer>

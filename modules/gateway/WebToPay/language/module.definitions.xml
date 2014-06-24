@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="2.0">
+ <group name="webtopay">
+  <string name="address_override"><![CDATA[Email address override]]></string>
+  <string name="projectid"><![CDATA[WebToPay project ID]]></string>
+  <string name="projectpass"><![CDATA[WebToPay project password]]></string>
+  <string name="mode"><![CDATA[Mode]]></string>
+  <string name="mode_live"><![CDATA[Live]]></string>
+  <string name="mode_sandbox"><![CDATA[Test]]></string>
+  <string name="module_description"><![CDATA[This is the WebToPay payment gateway.]]></string>
+  <string name="module_title"><![CDATA[WebToPay Standard]]></string>
+  <string name="module_paymethods"><![CDATA[Enable payment methods]]></string>
+  <string name="yes"><![CDATA[Yes]]></string>
+  <string name="no"><![CDATA[No]]></string>
+ </group>
+</definitions>

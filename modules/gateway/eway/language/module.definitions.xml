@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="eway">
+  <string name="customerid"><![CDATA[Customer ID]]></string>
+  <string name="customername"><![CDATA[Customer Name]]></string>
+  <string name="mode"><![CDATA[Country]]></string>
+  <string name="module_title"><![CDATA[eWay]]></string>
+  <string name="module_subtitle"><![CDATA[Online payments made easy!]]></string>
+ </group>
+</definitions>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions version="1.0">
+ <group name="postaffiliatepro">
+  <string name="descr"><![CDATA[Post Affiliate Pro 4 - Build your own affiliate program powered by award winning and full featured affiliate software. Post Affiliate Pro is a complete solution for all types of industries.<br />You can go with a hosted or an owned license. <a href="http://www.qualityunit.com/postaffiliatepro/" target="_blank">http://www.qualityunit.com/postaffiliatepro/</a>]]></string>
+  <string name="module_title"><![CDATA[Post Affiliate Pro 4]]></string>
+  <string name="url"><![CDATA[URL to your PAP installation]]></string>
+  <string name="aid"><![CDATA[Account ID]]></string>
+ </group>
+</definitions>

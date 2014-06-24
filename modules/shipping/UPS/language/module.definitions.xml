@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions version="1.0">
+ <group name="ups">
+  <string name="address_commercial"><![CDATA[Commercial]]></string>
+  <string name="address_residential"><![CDATA[Residential]]></string>
+  <string name="module_description"><![CDATA[This module will communicate with UPS to retrieve real time shipping quotes based on the basket weight. Please make sure all products have a weight to use this module.]]></string>
+  <string name="module_title"><![CDATA[UPS]]></string>
+  <string name="package_type"><![CDATA[Packaging Type]]></string>
+  <string name="package_weight"><![CDATA[Packaging Weight]]></string>
+  <string name="pack_custom"><![CDATA[Custom Packaging]]></string>
+  <string name="pack_envelope"><![CDATA[UPS Letter Envelope]]></string>
+  <string name="pack_tube"><![CDATA[UPS Tube]]></string>
+  <string name="pack_box"><![CDATA[Express Box]]></string>
+  <string name="pack_25k"><![CDATA[Worldwide 25kg]]></string>
+  <string name="pack_10k"><![CDATA[Worldwide 10kg]]></string>
+  <string name="postcode_origin"><![CDATA[Origin Postcode]]></string>
+  <string name="rate_rdp"><![CDATA[Regular Daily Pickup]]></string>
+  <string name="rate_oca"><![CDATA[On Call Air]]></string>
+  <string name="rate_otp"><![CDATA[One-Time Pickup]]></string>
+  <string name="rate_lc"><![CDATA[Letter Center]]></string>
+  <string name="rate_cc"><![CDATA[Customer Counter]]></string>
+  <string name="service_canada_standard"><![CDATA[Canada Standard]]></string>
+  <string name="service_day2_air"><![CDATA[2nd Day Air]]></string>
+  <string name="service_day2_am"><![CDATA[2nd Day Air Early AM]]></string>
+  <string name="service_day3_select"><![CDATA[3 Day Select]]></string>
+  <string name="service_ground"><![CDATA[Ground]]></string>
+  <string name="service_nextday_air"><![CDATA[Next Day Air]]></string>
+  <string name="service_nextday_am"><![CDATA[Next Day Air Early AM]]></string>
+  <string name="service_nextday_saver"><![CDATA[Next Day Air Saver]]></string>
+  <string name="service_worldwide_expedited"><![CDATA[Worldwide Expedited]]></string>
+  <string name="service_worldwide_express"><![CDATA[Worldwide Express]]></string>
+  <string name="service_worldwide_express_plus"><![CDATA[Worldwide Express Plus]]></string>
+  <string name="title_address"><![CDATA[Destination Address Type]]></string>
+  <string name="title_products"><![CDATA[UPS Products]]></string>
+  <string name="title_rate"><![CDATA[Rate]]></string>
+ </group>
+</definitions>

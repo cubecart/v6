@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="payson">
+  <string name="address_override"><![CDATA[Email address override]]></string>
+  <string name="mode"><![CDATA[Mode]]></string>
+  <string name="mode_live"><![CDATA[Live]]></string>
+  <string name="mode_test"><![CDATA[Test]]></string>
+  <string name="module_description"><![CDATA[Please makse sure your default currency is set to SEK to use this module.]]></string>
+  <string name="module_title"><![CDATA[Pason Payment Gateway]]></string>
+  <string name="paymethod"><![CDATA[Payment Method]]></string>
+  <string name="paymethod_0"><![CDATA[All Payment Methods (Card, Internet Bank and Payson)]]></string>
+  <string name="paymethod_1"><![CDATA[Credit Card (VISA / Mastercard)]]></string>
+  <string name="paymethod_2"><![CDATA[Internet Bank (SEB, Handelsbanken, Nordea and Swedbank)]]></string>
+  <string name="paymethod_3"><![CDATA[Credits at Payson Account]]></string>
+  <string name="paymethod_4"><![CDATA[Internet Bank and Credits at Payson Account]]></string>
+  <string name="agentid"><![CDATA[Agent ID]]></string>
+  <string name="key"><![CDATA[MD5 Key]]></string>
+ </group>
+</definitions>

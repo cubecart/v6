@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="hsbc">
+  <string name="accept_amex"><![CDATA[Accept American Express]]></string>
+  <string name="accept_amex_info"><![CDATA[You must have a separate American Express merchant account linked to your HSBC merchant account.]]></string>
+  <string name="alias_id"><![CDATA[HSBC Alias ID]]></string>
+  <string name="avs_check"><![CDATA[AVS Check]]></string>
+  <string name="avs_check_info"><![CDATA[This will increase security by checking the cards against the supplied address information.]]></string>
+  <string name="client_id"><![CDATA[HSBC Client ID]]></string>
+  <string name="info_in_header"><![CDATA[This can be found in the Secure ePayments header after logging in.]]></string>
+  <string name="mode_test_decline"><![CDATA[On (Always Declined)]]></string>
+  <string name="mode_test_success"><![CDATA[On (Always Successful)]]></string>
+  <string name="module_description"><![CDATA[Please check with HSBC that your account has API access, as HSBC CPI is not supported.]]></string>
+  <string name="module_title"><![CDATA[HSBC API]]></string>
+  <string name="password"><![CDATA[HSBC Secure ePayments Password]]></string>
+  <string name="require_cvv"><![CDATA[Require CVV Security Code]]></string>
+  <string name="txn_standard"><![CDATA[Standard Transaction]]></string>
+  <string name="txn_preauth"><![CDATA[Pre-Authorisation]]></string>
+  <string name="user_id"><![CDATA[HSBC Secure ePayments User ID]]></string>
+ </group>
+</definitions>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="dineromail">
+  <string name="dm_account"><![CDATA[Numero de cuenta]]></string>
+  <string name="dm_country"><![CDATA[Pais]]></string>
+  <string name="dm_currency"><![CDATA[Moneda]]></string>
+  <string name="dm_payment_methods"><![CDATA[Medios de pago que acepta (opcional)]]></string>
+  <string name="dm_payment_methods_desc"><![CDATA[Valores numericos separados por coma, para obtener informacion sobre los codigos de los medios de pago consulte el manual de venta de DineroMail]]></string>
+  <string name="dm_store_logo_url"><![CDATA[Incluir el logo de su sitio(opcional)]]></string>
+  <string name="dm_message"><![CDATA[Quieres que tus compradores puedan incluir 
+un mensaje cuando pagan?(opcional)]]></string>
+  <string name="dm_delivery_addres"><![CDATA[Quieres que tus compradores puedan incluir 
+la direccion de entrega del producto?(opcional)]]></string>
+  <string name="pending_notes"><![CDATA[Estado de la orden cuando esta pendiente]]></string>
+  <string name="processing_notes"><![CDATA[Estado de la orden cuando el proceso fue exitoso en DineroMail]]></string>
+  <string name="cancelled_notes"><![CDATA[Estado de la orden cuando el proceso fracaso en DineroMail]]></string>
+ </group>
+</definitions>

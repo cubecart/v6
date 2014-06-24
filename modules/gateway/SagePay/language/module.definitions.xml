@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="sagepay">
+  <string name="encryption_phrase"><![CDATA[Encryption Passphrase]]></string>
+  <string name="module_title"><![CDATA[SagePay]]></string>
+  <string name="transaction_mode"><![CDATA[Transaction Mode]]></string>
+  <string name="tx_live"><![CDATA[Live]]></string>
+  <string name="tx_simulate"><![CDATA[Simulator]]></string>
+  <string name="tx_test"><![CDATA[Test]]></string>
+  <string name="type_authenticate"><![CDATA[Authenticate]]></string>
+  <string name="type_deferred"><![CDATA[Deferred]]></string>
+  <string name="type_payment"><![CDATA[Payment]]></string>
+  <string name="iframe"><![CDATA[Enable iFrame Checkout (Recommended)]]></string>
+  <string name="mode_warning"><![CDATA[* Please note that SagePay will issue a seperate Merchant ID and Encryption Passphrase for each Transaction Mode. So for example it is not possible to use your Live credentials for Test or Simulator mode.]]></string>
+  <string name="recommended"><![CDATA[Recommended]]></string>
+  <string name="encryption"><![CDATA[Encryption Mode]]></string>
+  <string name="vendor_email"><![CDATA[Email Address for Payment Notifications]]></string>
+ </group>
+</definitions>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="strongbox">
+  <string name="module_title"><![CDATA[ StrongBox ]]></string>
+  <string name="dealer_id"><![CDATA[ Company Name ]]></string>
+  <string name="callback_url"><![CDATA[ Callback URL ]]></string>
+  <string name="settings"><![CDATA[ StrongBox Settings ]]></string>
+  <string name="cust_id_prefix"><![CDATA[ Customer Id Prefix]]></string>
+
+ </group>
+</definitions>

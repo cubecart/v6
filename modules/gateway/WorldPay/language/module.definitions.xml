@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="worldpay">
+  <string name="module_title"><![CDATA[RBS WorldPay]]></string>
+  <string name="install_id"><![CDATA[Installation ID]]></string>
+  <string name="mode_success"><![CDATA[Enabled - Always Successful]]></string>
+  <string name="mode_decline"><![CDATA[Enabled - Always Declined]]></string>
+  <string name="callback_url"><![CDATA[Callback URL]]></string>
+  <string name="settings"><![CDATA[WorldPay Settings]]></string>
+  <string name="callback_enabled"><![CDATA[Callback Enabled]]></string>
+  <string name="callback_response"><![CDATA[Use Callback Response]]></string>
+ </group>
+</definitions>

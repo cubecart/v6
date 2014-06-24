@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="olark">
+  <string name="site_id"><![CDATA[Site ID]]></string>
+ </group>
+</definitions>
