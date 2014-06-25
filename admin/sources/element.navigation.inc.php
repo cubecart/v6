@@ -48,7 +48,8 @@ $nav_items['settings']  = array(
 );
 
 $nav_items['modules']  = array(
-	$lang['navigation']['nav_plugins']   => '?_g=marketplace',
+	$lang['navigation']['nav_marketplace']   => 'https://mp.cubecart.com',
+	$lang['navigation']['nav_plugins']   => '?_g=plugins',
 	/*
 	$lang['navigation']['nav_plugins']   => '?_g=modules&type=plugins',
 	$lang['navigation']['nav_affiliate']  => '?_g=modules&type=affiliate',
