@@ -39,16 +39,12 @@ if (!empty($_GET['_g'])) {
 			$GLOBALS['main']->wikiPage($_GET['module']);
 			// Load additional data from XML
 			$config_xml = CC_ROOT_DIR.'/modules/'.$module_type.'/'.$_GET['module'].'/config.xml';
-			if (file_exists($config_xml)) {
-				$xml   = new SimpleXMLElement(file_get_contents($config_xml));
-				$module_info = array(
-					'name' => (string)$xml->info->name,
-				);
-			} else {
-				$module_info = array(
-					'name' => str_replace('_', ' ', $_GET['module']),
-				);
-			}
+			
+			$xml   = new SimpleXMLElement(file_get_contents($config_xml));
+			$module_info = array(
+				'name' => (string)$xml->info->name,
+			);
+			
 			$module = array(
 				'type' => strtolower($module_type),
 				'module'=> ($module_type == 'installer') ? '' : $_GET['module'],

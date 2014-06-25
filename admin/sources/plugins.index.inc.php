@@ -34,7 +34,6 @@ if(!$modules = $GLOBALS['cache']->read('module_list')) {
 		
 	}
 	ksort($modules);
-	
 	$GLOBALS['cache']->write($modules, 'module_list');
 }
 $GLOBALS['smarty']->assign('MODULES',$modules);
