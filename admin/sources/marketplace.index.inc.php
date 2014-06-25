@@ -23,6 +23,7 @@ if(!$modules = $GLOBALS['cache']->read('module_list')) {
 			'creator' 			=> (string)$xml->info->creator,
 			'homepage' 			=> (string)$xml->info->homepage,
 			'block' 			=> (string)$xml->info->block,
+			'basename' 			=> basename(str_replace('config.xml', $module_xml)),
 			'config'			=> $config[0]
 		);
 	}

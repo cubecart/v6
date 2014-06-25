@@ -25,10 +25,6 @@ if (isset($_GET['autoupdate']) && $_GET['autoupdate']) {
 	httpredir('index.php');
 }
 
-if (isset($_POST['license_key'])) {
-	$_SESSION['setup']['license_key'] = $_POST['license_key'];
-}
-
 // Empty the cache before we start
 $GLOBALS['cache'] = Cache::getInstance();
 if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
@@ -61,8 +57,6 @@ $installed = false;
 $restart = true;
 
 $default_config_settings = array (
-
-	'license_key'      => '',
 	'default_language'     => '',
 	'default_currency'     => '',
 	'email_address'      => '',
@@ -509,7 +503,6 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
 				'verify_settings'  => true,
 				'enable_reviews'  => true,
 				'show_basket_weight' => true,
-				'license_key'   => $_SESSION['setup']['license_key']
 			);
 			$new_config = array_merge($defaults, $new_config);
 			ksort($new_config);

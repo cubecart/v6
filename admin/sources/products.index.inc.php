@@ -455,13 +455,13 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 			$GLOBALS['main']->setACPNotify($lang['catalogue']['notify_product_create']);
 			$_POST['previous-tab'] = ($_POST['submit_cont']) ? $_POST['previous-tab'] : null;
 			$rem_array = array('action');
-		} else if ($updated) {
-			$GLOBALS['main']->setACPNotify($lang['catalogue']['notify_product_update']);
-			if (!isset($option_update)) {
-				//$_POST['previous-tab'] = null;
-				$rem_array = array('action', 'product_id');
-			}
-		} else {
+	} else if ($updated) {
+		$GLOBALS['main']->setACPNotify($lang['catalogue']['notify_product_update']);
+		if (!isset($option_update)) {
+			//$_POST['previous-tab'] = null;
+			$rem_array = array('action', 'product_id');
+		}
+	} else {
 		$GLOBALS['main']->setACPWarning($lang['catalogue']['error_product_update']);
 		$rem_array = false;
 	}
@@ -759,8 +759,8 @@ if (isset($_GET['action'])) {
 				$GLOBALS['smarty']->assign('LANGUAGES', $smarty_data['list_langs']);
 			}
 			$GLOBALS['smarty']->assign('DISPLAY_TRANSLATE_FORM', true);
+		}
 
-		} else {
 		// Add content tabs
 		$GLOBALS['main']->addTabControl($lang['catalogue']['title_pricing'], 'pricing');
 		$GLOBALS['main']->addTabControl($lang['settings']['title_category'], 'category');

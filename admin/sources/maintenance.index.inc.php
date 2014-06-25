@@ -32,13 +32,13 @@ foreach($files as $file) {
 	$folder = substr($file['filename'], 0, 1);
 	$GLOBALS['db']->update('CubeCart_filemanager', array('filepath' => $folder.'/'), array('file_id' => $file['file_id']));
 }
-*/
 
 if ($_SESSION['setup']['complete']==true) {
 	recursiveDelete(CC_ROOT_DIR.'/setup');
 	unlink(CC_ROOT_DIR.'/setup');
 	unset($_SESSION['setup']);
 }
+*/
 
 if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 	$file_path = CC_ROOT_DIR.'/backup/'.$_GET['restore'];

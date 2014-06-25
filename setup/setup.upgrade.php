@@ -75,7 +75,7 @@ if (!isset($_SESSION['setup']['permissions'])) {
 	}
 
 	if (!isset($_SESSION['setup']['progress']) || is_null($_SESSION['setup']['progress'])) {
-		if (isset($_POST['progress']) && (isset($_SESSION['setup']['license_key']) || version_compare($current, 4, 'ge'))) {
+		if (isset($_POST['progress']) && version_compare($current, 4, 'ge')) {
 			$_SESSION['setup']['progress'] = true;
 			httpredir('index.php');
 		}
@@ -84,11 +84,6 @@ if (!isset($_SESSION['setup']['permissions'])) {
 
 			$step = 4;
 			$GLOBALS['smarty']->assign('UPGRADE', array('from' => $current, 'to' => CC_VERSION));
-
-			if (version_compare($current, '4.0.0', '<') || (version_compare($current, '5.0.0', '<') && !isset($config['license_key']))) {
-				$GLOBALS['smarty']->assign('LANG_UPGRADE_LICENCE_NEEDED', sprintf($strings['setup']['upgrade_licence_needed'], $current));
-				$GLOBALS['smarty']->append('SHOW_LICENCE', true);
-			}
 			$_SESSION['setup']['start_version'] = $current;
 			$GLOBALS['smarty']->assign('LANG_UPGRADE_FROM_TO', sprintf($strings['setup']['upgrade_from_to'], $current, CC_VERSION));
 			$GLOBALS['smarty']->assign('MODE_UPGRADE_CONFIRM', true);
@@ -182,9 +177,6 @@ if (!isset($_SESSION['setup']['permissions'])) {
 
 			## Upgrade v4 global file to v5 spec
 			include $global_file;
-			if (!empty($glob['license_key'])) {
-				$_SESSION['setup']['license_key'] = $glob['license_key'];
-			}
 			unset($glob['license_key'], $glob['rootDir'], $glob['rootRel'], $glob['storeURL']);
 			ksort($glob);
 			## Write new file

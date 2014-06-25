@@ -25,10 +25,11 @@ if (Admin::getInstance()->is() || ($_GET['_g']=='products' && $_GET['node']=='ex
 } else {
 	include CC_ROOT_DIR.CC_DS.'controllers'.CC_DS.'controller.admin.session.false.inc.php';
 	$GLOBALS['smarty']->display('templates/'.$global_template_file['session_false']);
+	exit;
 }
 // Render the completed page
 if (!isset($suppress_output) || !$suppress_output) {
 	$GLOBALS['gui']->displayCommon(true);
 	$GLOBALS['smarty']->display('templates/'.$global_template_file['session_true']);
-
+	exit;
 }

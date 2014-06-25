@@ -57,15 +57,6 @@
 	  {$check.title}
 	  </div>
 	  {/foreach}
-	  <!--
-	  <h3>{$LANG.setup.title_optional_features}</h3>
-	  {foreach from=$EXTENSIONS item=ext}
-	  <div>
-		<span class="result">{if $ext.status}<span class="pass">{$LANG.common.installed}</span>{else}<span class="fail">{$LANG.common.not_installed}</span>{/if}</span>
-		{$ext.name}
-	  </div>
-	  {/foreach}
-	  -->
   {/if}
 
   {if isset($MODE_METHOD)}
@@ -141,11 +132,6 @@
 	  <div><label for="form-realname" rel="">{$LANG.user.name_full}</label><span><input type="text" name="admin[name]" id="form-realname" value="{$FORM.admin.name}" class="textbox required" /></span></div>
 	  <div><label for="form-email" rel="">{$LANG.common.email}</label><span><input type="text" name="admin[email]" id="form-email" value="{$FORM.admin.email}" class="textbox required" /></span></div>
 	</fieldset>
-	<h3 class="first">{$LANG.setup.title_software_licence} {$LANG.common.optional}</h3>
-	<p>Please leave this field empty to use &quot;<a href="http://cubecart.com/tour/features" target="_blank">CubeCart Lite</a>&quot;. (Link opens in new window)</p>
-	<fieldset>
-	  <div><label for="form-licence" class="help" rel="">{$LANG.setup.software_licence_key} {$LANG.common.optional}</label><span><input type="text" name="license_key" id="form-licence" value="{$FORM.license_key}" class="textbox" /> </span></div>
-	</fieldset>
 	<h3>{$LANG.setup.title_advanced_settings}</h3>
 	<fieldset>
 	  <div><label for="form-drop" class="help" title="{$LANG.setup.install_drop_tables_explained}">{$LANG.setup.install_drop_tables}</label><span><input type="checkbox" name="drop" id="form-drop" value="1" /> {$LANG.setup.install_drop_tables_explained}</span></div>
@@ -157,16 +143,6 @@
 	{if isset($MODE_UPGRADE_CONFIRM)}
 	<div>{$LANG_UPGRADE_FROM_TO}<br />
 	{$LANG.setup.upgrade_will_reload}<br />
-	<br />
-	{if isset($SHOW_LICENCE)}
-	<fieldset>
-	  <div>{$LANG_UPGRADE_LICENCE_NEEDED}</div>
-	  <p>Please leave this field empty to use &quot;<a href="http://cubecart.com/tour/features" target="_blank">CubeCart Lite</a>&quot;. (Link opens in new window)</p>
-	  <br />
-	  <div><label for="licence_key">{$LANG.setup.software_licence_key} {$LANG.common.optional}</label><span><input type="text" id="licence_key" name="license_key" class="textbox" value="" /></span></div>
-	</fieldset>
-	{/if}
-
 	<br />{$LANG.setup.upgrade_click_continue}</div>
 	<input type="hidden" name="progress" value="0" />
 	{/if}

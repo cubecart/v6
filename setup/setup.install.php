@@ -51,25 +51,12 @@ if (!isset($_SESSION['setup']['permissions'])) {
 		if (isset($_POST['global']) && isset($_POST['admin'])) {
 			// Validation
 			$validated = true;
-			$required = array('dbhost', 'dbusername', 'dbdatabase', 'license_key');
+			$required = array('dbhost', 'dbusername', 'dbdatabase');
 			foreach ($_POST['global'] as $key => $value) {
 				if (in_array($key, $required) && empty($value)) {
 					$validated  = false;
 					unset($_POST[$key]);
 				}
-			}
-			// Validate licence key structure
-			if (isset($_POST['license_key']) && !empty($_POST['license_key'])) {
-				$regex = '#(\d{1,})-(\d{1,})-(\d{1,})-(\d{10})-([0-9a-f]{8})$|^\d{5}\-\d{5}\-\d{5}\-\d{5}\-\d{5}\-\d{5}$#i';
-				if (!preg_match($regex, $_POST['license_key'])) {
-					$validated = false;
-					$errors[] = $strings['setup']['error_licence_invalid'];
-					unset($_POST['license_key']);
-				}
-			} else {
-				/*$validated	= false;
-				$errors[] 	= $strings['setup']['error_licence_required'];*/
-				unset($_POST['license_key']);
 			}
 
 			if ($_POST['global']['dbpassword'] !== $_POST['global']['dbpassconf']) {
@@ -222,7 +209,6 @@ if (!isset($_SESSION['setup']['permissions'])) {
 			$random_name = $store_names[rand(0, count($store_names)-1)];
 			$config_settings = array_merge($default_config_settings,
 				array(
-					'license_key'      => $_SESSION['setup']['license_key'],
 					'default_language'     => $_SESSION['setup']['config']['default_language'],
 					'default_currency'     => $_SESSION['setup']['config']['default_currency'],
 					'email_address'      => $_SESSION['setup']['admin']['email'],
