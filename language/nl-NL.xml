@@ -1743,12 +1743,8 @@
       <string name="title_trackbacks" introduced="5.0.0"><![CDATA[Blog Trackbacks]]></string>
       <string name="title_welcome_back" introduced="5.0.0"><![CDATA[Welkom terug]]></string>
       <string name="weight_unit" introduced="5.0.0"><![CDATA[Gewichtseenheid]]></string>
-      <string name="title_licence_keys" introduced="5.0.0"><![CDATA[Licentie Sleutels]]></string>
-      <string name="software_licence_key" introduced="5.0.0"><![CDATA[Software Licentie Sleutels]]></string>
       <string name="current_value" introduced="5.0.0"><![CDATA[De huidige waarde]]></string>
       <string name="new_value" introduced="5.0.0"><![CDATA[Nieuwe waarde]]></string>
-      <string name="copyright_key" introduced="5.0.0"><![CDATA[Branding / Copyright Verwijdering Sleutel]]></string>
-      <string name="licence_key_changed" introduced="5.0.0"><![CDATA[Uw software licentie sleutel is gewijzigd.]]></string>
       <string name="weight_unit_kg" introduced="5.0.0"><![CDATA[Metrisch (kg)]]></string>
       <string name="weight_unit_lb" introduced="5.0.0"><![CDATA[Imperial (lb)]]></string>
       <string name="default_product_sort" introduced="5.2.0"><![CDATA[Volgorde van producten]]></string>
@@ -1789,7 +1785,6 @@
       <string name="link_admin_panel" introduced="5.0.0"><![CDATA[Beheerder Bedieningspaneel]]></string>
       <string name="link_store_front" introduced="5.0.0"><![CDATA[Winkel voorkant]]></string>
       <string name="percent_complete" introduced="5.0.0"><![CDATA[%d%% Voltooid]]></string>
-      <string name="software_licence_key" introduced="5.0.0"><![CDATA[Software Licentie Sleutel]]></string>
       <string name="title_admin_profile" introduced="5.0.0"><![CDATA[Beheerdersprofiel]]></string>
       <string name="title_advanced_settings" introduced="5.0.0"><![CDATA[Geavanceerde instellingen]]></string>
       <string name="title_compat_check" introduced="5.0.0"><![CDATA[Compatibileits Check]]></string>

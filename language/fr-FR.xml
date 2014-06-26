@@ -1744,12 +1744,8 @@
       <string name="title_trackbacks" introduced="5.0.0"><![CDATA[Rétroliens Blog]]></string>
       <string name="title_welcome_back" introduced="5.0.0"><![CDATA[Bienvenue à nouveau]]></string>
       <string name="weight_unit" introduced="5.0.0"><![CDATA[Poids unitaire]]></string>
-      <string name="title_licence_keys" introduced="5.0.0"><![CDATA[Clés de licence]]></string>
-      <string name="software_licence_key" introduced="5.0.0"><![CDATA[Clé de licence logicielle]]></string>
       <string name="current_value" introduced="5.0.0"><![CDATA[Valeur actuelle]]></string>
       <string name="new_value" introduced="5.0.0"><![CDATA[Nouvelle valeur]]></string>
-      <string name="copyright_key" introduced="5.0.0"><![CDATA[Clé de retrait de la marque / Copyright]]></string>
-      <string name="licence_key_changed" introduced="5.0.0"><![CDATA[Votre clé de licence logicielle a été modifiée.]]></string>
       <string name="weight_unit_kg" introduced="5.0.0"><![CDATA[Métrique (Kg)]]></string>
       <string name="weight_unit_lb" introduced="5.0.0"><![CDATA[Impérial (lb)]]></string>
       <string name="default_product_sort" introduced="5.2.0"><![CDATA[Liste des produits Tri]]></string>
@@ -1790,7 +1786,6 @@
       <string name="link_admin_panel" introduced="5.0.0"><![CDATA[Panneau de contrôle de l'administrateur]]></string>
       <string name="link_store_front" introduced="5.0.0"><![CDATA[Vitrine de la boutique]]></string>
       <string name="percent_complete" introduced="5.0.0"><![CDATA[%d%% terminé]]></string>
-      <string name="software_licence_key" introduced="5.0.0"><![CDATA[Clé de licence logicielle]]></string>
       <string name="title_admin_profile" introduced="5.0.0"><![CDATA[Profil de l'administrateur]]></string>
       <string name="title_advanced_settings" introduced="5.0.0"><![CDATA[Paramètres avancés]]></string>
       <string name="title_compat_check" introduced="5.0.0"><![CDATA[Vérification de compatibilité]]></string>

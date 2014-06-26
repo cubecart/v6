@@ -1744,12 +1744,8 @@
       <string name="title_trackbacks" introduced="5.0.0"><![CDATA[Blog-Rückverweise]]></string>
       <string name="title_welcome_back" introduced="5.0.0"><![CDATA[Willkommen zurück]]></string>
       <string name="weight_unit" introduced="5.0.0"><![CDATA[Einheit Gewicht]]></string>
-      <string name="title_licence_keys" introduced="5.0.0"><![CDATA[Lizenzschlüssel]]></string>
-      <string name="software_licence_key" introduced="5.0.0"><![CDATA[Software-Lizenzschlüssel]]></string>
       <string name="current_value" introduced="5.0.0"><![CDATA[Aktueller Wert]]></string>
       <string name="new_value" introduced="5.0.0"><![CDATA[Neuer Wert]]></string>
-      <string name="copyright_key" introduced="5.0.0"><![CDATA[Markenbildung / Copyright-Entfernungsschlüssel]]></string>
-      <string name="licence_key_changed" introduced="5.0.0"><![CDATA[Ihr Software-Lizenzschlüssel wurde geändert.]]></string>
       <string name="weight_unit_kg" introduced="5.0.0"><![CDATA[Metrisch (Kg)]]></string>
       <string name="weight_unit_lb" introduced="5.0.0"><![CDATA[Britisch (lb)]]></string>
       <string name="default_product_sort" introduced="5.2.0"><![CDATA[Sortierung der Produktliste]]></string>
@@ -1790,7 +1786,6 @@
       <string name="link_admin_panel" introduced="5.0.0"><![CDATA[Admin-Bedienkonsole]]></string>
       <string name="link_store_front" introduced="5.0.0"><![CDATA[Ladenfront]]></string>
       <string name="percent_complete" introduced="5.0.0"><![CDATA[%d%% abgeschlossen]]></string>
-      <string name="software_licence_key" introduced="5.0.0"><![CDATA[Software-Lizenzschlüssel]]></string>
       <string name="title_admin_profile" introduced="5.0.0"><![CDATA[Administrator-Profil]]></string>
       <string name="title_advanced_settings" introduced="5.0.0"><![CDATA[Erweiterte Einstellungen]]></string>
       <string name="title_compat_check" introduced="5.0.0"><![CDATA[Kompatibilitätsprüfung]]></string>

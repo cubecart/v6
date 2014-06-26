@@ -1852,12 +1852,8 @@
     <string name="title_trackbacks" introduced="5.0.0"><![CDATA[Blog Trackbacks]]></string>
     <string name="title_welcome_back" introduced="5.0.0"><![CDATA[Welcome back]]></string>
     <string name="weight_unit" introduced="5.0.0"><![CDATA[Weight Unit]]></string>
-    <string name="title_licence_keys" introduced="5.0.0"><![CDATA[Licence Keys]]></string>
-    <string name="software_licence_key" introduced="5.0.0"><![CDATA[Software Licence Key]]></string>
     <string name="current_value" introduced="5.0.0"><![CDATA[Current Value]]></string>
     <string name="new_value" introduced="5.0.0"><![CDATA[New Value]]></string>
-    <string name="copyright_key" introduced="5.0.0"><![CDATA[Branding / Copyright Removal Key]]></string>
-    <string name="licence_key_changed" introduced="5.0.0"><![CDATA[Your software licence key has been changed.]]></string>
     <string name="weight_unit_kg" introduced="5.0.0"><![CDATA[Metric (Kg)]]></string>
     <string name="weight_unit_lb" introduced="5.0.0"><![CDATA[Imperial (lb)]]></string>
     <string name="default_product_sort" introduced="5.2.0"><![CDATA[Product List Sorting]]></string>
@@ -1899,7 +1895,6 @@
     <string name="link_admin_panel" introduced="5.0.0"><![CDATA[Admin Control Panel]]></string>
     <string name="link_store_front" introduced="5.0.0"><![CDATA[Store Front]]></string>
     <string name="percent_complete" introduced="5.0.0"><![CDATA[%d%% Complete]]></string>
-    <string name="software_licence_key" introduced="5.0.0"><![CDATA[Software Licence Key]]></string>
     <string name="title_admin_profile" introduced="5.0.0"><![CDATA[Administrator Profile]]></string>
     <string name="title_advanced_settings" introduced="5.0.0"><![CDATA[Advanced Settings]]></string>
     <string name="title_compat_check" introduced="5.0.0"><![CDATA[Compatibility Check]]></string>

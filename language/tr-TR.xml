@@ -1796,12 +1796,8 @@
    <string name="title_trackbacks"><![CDATA[Blog Trackbacks]]></string>
    <string name="title_welcome_back"><![CDATA[Hoşgeldiniz...]]></string>
    <string name="weight_unit"><![CDATA[Ağırlık Birimi]]></string>
-   <string name="title_licence_keys"><![CDATA[Licence Anahtarı]]></string>
-   <string name="software_licence_key"><![CDATA[Yazılım Lisans Anahtarı]]></string>
    <string name="current_value"><![CDATA[Geçerli Değer]]></string>
    <string name="new_value"><![CDATA[Yeni Değer]]></string>
-   <string name="copyright_key"><![CDATA[Markalaşma / Telif Hakkı Kaldırma Anahtarı]]></string>
-   <string name="licence_key_changed"><![CDATA[Sizin yazılım lisans anahtarı değiştirildi.]]></string>
    <string name="weight_unit_kg"><![CDATA[Metric (Kg)]]></string>
    <string name="weight_unit_lb"><![CDATA[Imperial (lb)]]></string>
    <string name="default_product_sort"><![CDATA[Ürün Listesi Sıralama]]></string>
@@ -1843,7 +1839,6 @@
    <string name="link_admin_panel"><![CDATA[Yönetici Kontrol Paneli]]></string>
    <string name="link_store_front"><![CDATA[Store Front]]></string>
    <string name="percent_complete"><![CDATA[%d%% Tamamlandı]]></string>
-   <string name="software_licence_key"><![CDATA[Yazılım Lisans Anahtarı]]></string>
    <string name="title_admin_profile"><![CDATA[Yönetici Profili]]></string>
    <string name="title_advanced_settings"><![CDATA[Gelişmiş Ayarlar]]></string>
    <string name="title_compat_check"><![CDATA[Uyumluluğunu Denetle]]></string>

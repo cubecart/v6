@@ -1746,12 +1746,8 @@
    <string name="title_trackbacks"><![CDATA[בלוג מעקבי קישור]]></string>
    <string name="title_welcome_back"><![CDATA[ברוך השב]]></string>
    <string name="weight_unit"><![CDATA[יחידת משקל]]></string>
-   <string name="title_licence_keys"><![CDATA[מפתחות רישיון]]></string>
-   <string name="software_licence_key"><![CDATA[מפתח רישיון לתוכנה]]></string>
    <string name="current_value"><![CDATA[ערך נוכחי]]></string>
    <string name="new_value"><![CDATA[ערך חדש]]></string>
-   <string name="copyright_key"><![CDATA[מפתח מיתוג / הסרת זכויות יוצרים]]></string>
-   <string name="licence_key_changed"><![CDATA[מפתח הרישיון לתוכנה שונה בהצלחה.]]></string>
    <string name="weight_unit_kg"><![CDATA[מטרי (ק"ג)]]></string>
    <string name="weight_unit_lb"><![CDATA[אימפריאלי (פאונד)]]></string>
    <string name="allow_no_shipping"><![CDATA[אפשר ללא משלוח]]></string>
@@ -1816,7 +1812,6 @@
    <string name="link_admin_panel"><![CDATA[לוח הבקרה לניהול]]></string>
    <string name="link_store_front"><![CDATA[חזית החנות]]></string>
    <string name="percent_complete"><![CDATA[%d%% הסתיימו]]></string>
-   <string name="software_licence_key"><![CDATA[קוד רישיון לתוכנה]]></string>
    <string name="title_admin_profile"><![CDATA[פרופיל מנהל ראשי]]></string>
    <string name="title_advanced_settings"><![CDATA[הגדרות מתקדמות]]></string>
    <string name="title_compat_check"><![CDATA[בדיקת התאמה]]></string>
