@@ -59,9 +59,7 @@ if(!$modules = $GLOBALS['cache']->read('module_list')) {
 			'basename' 			=> $basename,
 			'config'			=> $config[0]
 		);
-		
 		$i++;
-		
 	}
 	ksort($modules);
 	$GLOBALS['cache']->write($modules, 'module_list');
