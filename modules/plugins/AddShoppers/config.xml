@@ -3,7 +3,6 @@
   <info>
 	<uid>info@addshoppers.com</uid>
 	<type>plugins</type>
-	<folder>AddShoppers</folder>
 	<name><![CDATA[AddShoppers Social Apps]]></name>
 	<description><![CDATA[AddShoppers integration]]></description>
 	<version>1.0.0</version>

@@ -3,9 +3,8 @@
   <info>
 	<uid>vlad.barliba@barandisolutions.ro</uid>
 	<type>plugins</type>
-	<folder>shareyourcart</folder>
-	<name><![CDATA[shareyourcart]]></name>
-	<description><![CDATA[shareyourcart integration]]></description>
+	<name><![CDATA[ShareYourCart]]></name>
+	<description><![CDATA[ShareYourCart Integration]]></description>
 	<version>1.0.0</version>
 	<minVersion>5.0.0a</minVersion>
 	<maxVersion>5.0.*</maxVersion>

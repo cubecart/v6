@@ -3,7 +3,6 @@
   <info>
 	<uid>checkout-google@devellion.com</uid>
 	<type>plugins</type>
-	<folder>Google_Checkout</folder>
 	<name><![CDATA[Google Checkout]]></name>
 	<description><![CDATA[Google Checkout integration]]></description>
 	<version>2.0.0</version>

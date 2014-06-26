@@ -289,26 +289,20 @@ optgroup > option {
 	width: 100px !important;
 }
 .tab_content .number-right {
-	width: 100px !important;
 	text-align: right;
 }
 /* Tab Elements */
 
 div.tab {
-	min-width: 80px;
 	height: 26px;
-	padding: 0 5px;
+	padding: 0 3px;
 	float: left;
 	line-height: 27px;
-
-	background: #CDCDCD url(../images/tab_gradient.png) repeat-x;
+	background: #C7C7C7;
 	text-align: center;
 	cursor: pointer;
-	margin-right: 5px;
+	margin-right: 2px;
 	border: 1px solid #999999;
-	-webkit-border-top-left-radius: 5px;
-	-webkit-border-top-right-radius: 5px;
-	-moz-border-radius: 5px 5px 0 0;
 }
 
 div.tab > a {
@@ -330,7 +324,7 @@ div.tab-selected {
 }
 
 div.tab:hover {
-	background-color: #FFF;
+	background-color: #E8E8E8;
 }
 
 .form_control {

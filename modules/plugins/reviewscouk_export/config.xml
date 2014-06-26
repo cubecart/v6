@@ -3,7 +3,6 @@
   <info>
 	<uid>support@reviews.co.uk</uid>
 	<type>plugins</type>
-	<folder>reviewscouk_export</folder>
 	<name><![CDATA[Reviews.co.uk Export]]></name>
 	<description><![CDATA[Ask your customers for reviews automatically.]]></description>
 	<version>1.0.0</version>

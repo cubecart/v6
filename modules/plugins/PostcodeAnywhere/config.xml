@@ -3,7 +3,6 @@
   <info>
 	<uid>postcodeanywhere@cubecart.com</uid>
 	<type>plugins</type>
-	<folder>PostcodeAnywhere</folder>
 	<name><![CDATA[Postcode Anywhere]]></name>
 	<description><![CDATA[Postcode anywhere integration]]></description>
 	<version>1.0.0</version>

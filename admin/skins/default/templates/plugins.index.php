@@ -1,13 +1,6 @@
+<form action="{$VAL_SELF}" method="post">
 <div id="plugins" class="tab_content">
 	<h3>Installed Plugins</h3>
-	<!--
-	<p>{$LANG.form.sort_by} 
-	  <select name="order" class="auto_submit show_submit">
-	    <option value="alpha"{$ORDER_SELECT.alpha}>{$LANG.common.name}</option>
-	    <option value="pop"{$ORDER_SELECT.pop}>{$LANG.common.popularity}</option>
-	  </select>
-	</p>
-	-->
 	{if $PLUGINS_LINK}
 	<p>{$LANG.gateway.plugins_link}</p>
 	{/if}
@@ -22,7 +15,10 @@
 	<tbody>
 	{foreach from=$MODULES item=module}
 	  <tr>
-	  	<td align="center"><input type="hidden" id="status_{$module.basename}" name="status[{$module.basename}]" value="{$module.config.status}" class="toggle"></td>
+	  	<td align="center">
+	  		<input type="hidden" id="status_{$module.basename}" name="status[{$module.basename}]" value="{$module.config.status}" class="toggle">
+	  		<input type="hidden" name="type[{$module.basename}]" value="{$module.type}" />
+	  	</td>
 		<td><a href="?_g=modules&type={$module.type}&module={$module.basename}">{$module.name}</a><br>{$module.description}</td>
 		<td>
 		  <a href="?_g=modules&type={$module.type}&module={$module.basename}" class="edit"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/edit.png" alt="{$LANG.common.edit}"></a>
@@ -38,3 +34,9 @@
 	 {include file='templates/element.hook_form_content.php'}
 	
 </div>
+
+<div class="form_control">
+	<input type="submit" value="{$LANG.common.save}">
+  </div>
+  <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+</form>

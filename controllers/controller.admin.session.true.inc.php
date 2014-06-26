@@ -25,11 +25,11 @@ if (isset($_GET['_g']) && !empty($_GET['_g']) && $_GET['_g'] != 'modules') {
 
 if (!empty($_GET['_g'])) {
 
-	$module_type = preg_match("/[a-z]/i", $_GET['type']) ? $_GET['type'] : '';
-
 	$node = (!empty($_GET['node'])) ? strtolower($_GET['node']) : 'index';
+	
 	if (strtolower($_GET['_g']) == 'modules' && !empty($module_type)) {
-
+		
+		$module_type = preg_match("/[a-z]/i", $_GET['type']) ? $_GET['type'] : '';
 		$GLOBALS['gui']->addBreadcrumb($lang['navigation']['nav_plugins'],'?_g=plugins');
 		// Display Modules
 		$GLOBALS['main']->wikiNamespace('Modules');
@@ -113,10 +113,13 @@ if (!empty($page_content)) {
 // jQuery UI & Themeroller styles
 $styles = glob('js/{styles}/*.css', GLOB_BRACE);
 if ($styles && is_array($styles)) {
+	$vars = array();
 	foreach ($styles as $style) {
 		if (preg_match('#^ui\.#iuU', basename($style))) {
 			$vars['jquery_styles'][] = str_replace('/', "/", $style);
 		}
 	}
-	$GLOBALS['smarty']->assign('JQUERY_STYLES', $vars['jquery_styles']);
+	if(isset($vars['jquery_styles'])) {
+		$GLOBALS['smarty']->assign('JQUERY_STYLES', $vars['jquery_styles']);
+	}
 }

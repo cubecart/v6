@@ -3,7 +3,6 @@
   <info>
 	<uid>checkout-amazon@devellion.com</uid>
 	<type>plugins</type>
-	<folder>Amazon_Checkout</folder>
 	<name><![CDATA[Amazon Checkout]]></name>
 	<description><![CDATA[Amazon Checkout integration]]></description>
 	<version>2.0.0</version>

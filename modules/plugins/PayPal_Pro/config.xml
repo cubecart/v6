@@ -4,7 +4,6 @@
 	<uid>checkout-paypal@devellion.com</uid>
 	<type>plugins</type>
 	<mobile_optimized>true</mobile_optimized>
-	<folder>PayPal_Pro</folder>
 	<name><![CDATA[PayPal]]></name>
 	<description><![CDATA[PayPal Express Checkout integration]]></description>
 	<version>2.0.1</version>
