@@ -2260,7 +2260,7 @@ class Cubecart {
 		if (($product = $GLOBALS['catalogue']->getProductData($_GET['product_id'])) === false) {
 			return;
 		}
-		if (isset($_POST['review']) && is_array($_POST['review'])) {
+		if ($GLOBALS['config']->get('config','enable_reviews') && isset($_POST['review']) && is_array($_POST['review'])) {
 		
 			foreach ($GLOBALS['hooks']->load('class.cubecart.review') as $hook) include $hook;
 		
