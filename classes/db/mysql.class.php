@@ -15,7 +15,7 @@ require CC_ROOT_DIR.'/classes/db/database.class.php';
 class Database extends Database_Contoller {
 
 	final protected function __construct($config) {
-		$this->_db_engine = 'MySQLi';
+		$this->_db_engine = 'MySQL';
 		//Connect to the db server
 		if (($this->_db_connect_id = mysql_connect($config['dbhost'], $config['dbusername'], $config['dbpassword'], false, MYSQL_CLIENT_COMPRESS)) === false) {
 			trigger_error(mysql_error(), E_USER_ERROR);

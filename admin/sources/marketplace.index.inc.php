@@ -32,4 +32,4 @@ $file = CC_ROOT_DIR.'/files/hash.'.$hash.'.php';
 $fp = fopen($file, 'w');
 fwrite($fp, '<?php echo "'.$store_id.'"; unlink("'.$file.'"); ?>');
 fclose($fp);
-httpredir('http://marketplace.cubecart.com/auth?hash='.$hash.'&store_id='.$store_id.'&store_url='.urlencode(CC_STORE_URL));
+httpredir('http://marketplace.cubecart.com/store/auth?hash='.$hash.'&store_id='.$store_id.'&store_url='.urlencode(CC_STORE_URL));
