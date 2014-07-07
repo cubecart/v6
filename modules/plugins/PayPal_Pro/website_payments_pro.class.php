@@ -170,7 +170,6 @@ class Website_Payments_Pro  {
 				$nvp_data['ISSUENUMBER']	= trim($nvp['issue_no']);
 			}
 			unset($nvp);
-			## PayPal's statistic stuff
 			switch (strtoupper($GLOBALS['config']->get('config','default_currency'))) {
 				case 'CAD':
 					$nvp_data['BUTTONSOURCE']	= 'CubeCart_Cart_DP_CA';

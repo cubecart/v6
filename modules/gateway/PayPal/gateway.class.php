@@ -52,17 +52,18 @@ class Gateway {
 			$cancel_return = 'gateway';
 		}
 		
+		$default_currency = $GLOBALS['config']->get('config', 'default_currency');
+		
 		$hidden	= array(
 			'cmd'			=> '_xclick',
 			'charset'		=> 'utf-8',
 			'amount'		=> $this->_basket['total'],
 			'upload'		=> true,
 			'no_note'		=> true,
-			'bn'			=> $GLOBALS['config']->get('config', 'default_currency') ? 'CubeCart_Cart_ST_CA' : 'CubeCart_Cart_ST',	## PayPal's integration usage statistics. We get commission from this, so please be kind and leave it in.
-
+			'bn'			=> ($default_currency == 'CAD') ? 'CubeCart_Cart_ST_CA' : 'CubeCart_Cart_ST',	
 			'business'		=> $this->_module['email'],
 			'invoice'		=> $this->_basket['cart_order_id'],
-			'currency_code'	=> $GLOBALS['config']->get('config', 'default_currency'),
+			'currency_code'	=> $default_currency,
 			'item_name'		=> 'Order '.$this->_basket['cart_order_id'],
 			'item_number' 	=> $this->_basket['cart_order_id'],
 
