@@ -66,6 +66,7 @@ class Gateway {
 			
 			return array(
 				'subtotal' 		=> $this->_basket['total'],
+				'invoice' 		=> $this->_basket['cart_order_id'],
 				'paymentaction' => strtolower($this->_module['paymentAction']),
 				'currency_code' => $GLOBALS['config']->get('config', 'default_currency'),
 				'buyer_email' 	=> $this->_basket['billing_address']['email'],
