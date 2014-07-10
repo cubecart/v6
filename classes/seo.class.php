@@ -437,7 +437,7 @@ class SEO {
 		if ((int)$GLOBALS['config']->get('config', 'seo_metadata')!==self::TAGS_DEFAULT && !isset($title[1]) && isset($this->_meta_data['name'])) {
 			$title[2] = $this->_meta_data['name'];
 		}
-		if ((int)$GLOBALS['config']->get('config', 'seo_metadata')!==self::TAGS_REPLACE) {
+		if ((int)$GLOBALS['config']->get('config', 'seo_metadata')!==self::TAGS_REPLACE && $GLOBALS['config']->get('config', 'store_title')!=='') {
 			$title[69] = $GLOBALS['config']->get('config', 'store_title');
 		}
 		ksort($title);
