@@ -411,8 +411,9 @@ class SEO {
 				if(!empty($this->_meta_data['keywords'])) {
 					$keywords[]	= $this->_meta_data['keywords'];
 				}
-				if(!empty($GLOBALS['config']->get('config', 'store_meta_keywords')) {
-					$keywords[]	= $GLOBALS['config']->get('config', 'store_meta_keywords');
+				$store_meta_keywords = $GLOBALS['config']->get('config', 'store_meta_keywords');
+				if(!empty($store_meta_keywords)) {
+					$keywords[]	= $store_meta_keywords;
 				}
 				break;
 			case self::TAGS_REPLACE:
