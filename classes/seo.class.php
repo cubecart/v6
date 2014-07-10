@@ -408,8 +408,12 @@ class SEO {
 		if ($GLOBALS['config']->has('config', 'seo_metadata') && $GLOBALS['config']->get('config', 'seo_metadata') && !empty($this->_meta_data['keywords'])) {
 			switch ((int)$GLOBALS['config']->get('config', 'seo_metadata')) {
 			case self::TAGS_MERGE:
-				$keywords[] = $this->_meta_data['keywords'];
-				$keywords[] = $GLOBALS['config']->get('config', 'store_meta_keywords');
+				if(!empty($this->_meta_data['keywords']) {
+					$keywords[]	= $this->_meta_data['keywords'];
+				}
+				if(!empty($GLOBALS['config']->get('config', 'store_meta_keywords')) {
+					$keywords[]	= $GLOBALS['config']->get('config', 'store_meta_keywords');
+				}
 				break;
 			case self::TAGS_REPLACE:
 				$keywords = $this->_meta_data['keywords'];
