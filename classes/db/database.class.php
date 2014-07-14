@@ -662,10 +662,9 @@ class Database_Contoller {
 	 */
 	public function truncate($input) {
 		if (is_array($input)) {
-			$this->_query = '';
 			$result = true;
 			foreach ($input as $table) {
-				$this->_query .= 'TRUNCATE `'.$this->_prefix.$table.'`; ';
+				$this->_query = 'TRUNCATE `'.$this->_prefix.$table.'`; ';
 				if (!$this->_execute(false)) {
 					$result = false;
 				}
