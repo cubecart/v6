@@ -242,8 +242,8 @@
 	  </div>
 	  <div><label for="edit_state">{$LANG.address.state}</label><span><input type="text" name="address[state][]" id="edit_state" class="textbox add state-list"> *</span></div>
 	  <div><label for="edit_postcode">{$LANG.address.postcode}</label><span><input type="text" name="address[postcode][]" id="edit_postcode" class="textbox add uppercase"> *</span></div>
-	  <div><label for="billing">{$LANG.address.billing_address}</label><span><input type="hidden" name="address[billing][]" id="billing"  class="toggle"></div>
-	  <div><label for="default">{$LANG.common.default}</label><span><input type="hidden" name="address[default][]" id="default" class="toggle"></div>
+	  <div><label for="billing">{$LANG.address.billing_address}</label><span><input type="hidden" name="address[billing][]" id="billing"  class="toggle"></span></div>
+	  <div><label for="default">{$LANG.common.default}</label><span><input type="hidden" name="address[default][]" id="default" class="toggle"></span></div>
 	  <input type="hidden" name="add_div_class" value="note">
 	  <input type="button" value="{$LANG.common.add}" class="add" target="address-list" onclick="$.fn.colorbox.close()">
 	</div>
