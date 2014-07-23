@@ -846,10 +846,14 @@ function base64url_decode($data) {
  */
 function cmpmc($a, $b) {
 
-	$b = $b['priority'];
-	$a = $a['priority'];
-
-	return $a<$b ? -1 : ($a>$b ? 1 : 0);
+	if(is_numeric() && is_numeric()){	
+		$b = $b['priority'];
+		$a = $a['priority'];
+	
+		return $a<$b ? -1 : ($a>$b ? 1 : 0);
+	} else {
+		return false;
+	}
 }
 /**
  * Recursive Diff
