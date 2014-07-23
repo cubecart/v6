@@ -846,7 +846,7 @@ function base64url_decode($data) {
  */
 function cmpmc($a, $b) {
 
-	if(is_numeric() && is_numeric()){	
+	if(is_numeric($a['priority']) && is_numeric($b['priority'])){	
 		$b = $b['priority'];
 		$a = $a['priority'];
 	
