@@ -81,6 +81,7 @@ $fields = array(
 	'town',
 	'state',
 	'country',
+	'postcode',
 	'title_d',
 	'first_name_d',
 	'last_name_d',
@@ -90,6 +91,7 @@ $fields = array(
 	'town_d',
 	'state_d',
 	'country_d',
+	'postcode_d',
 	'phone',
 	'email',
 	'gateway'
