@@ -387,7 +387,7 @@
 	<p>Uw digitale bestanden zijn klaar om gedownload te worden. Om toegang tot ze te krijgen kunt u de onderstaande links gebruiken:</p> 
 	{foreach from=$DOWNLOADS item=download} 
 	<p><strong>{$download.name}:</strong> (Link vervalt op {$download.expire}<strong>)</strong><br /> 
-	{$download.url}</p> 
+	<a href="{$download.url}">{$download.url}</a></p>  
 	{/foreach}
 	<p>Wanneer bovenstaande links niet werken, kunt ut proberen ze te kopieren en te plakken in de adresbalk van uw browser. U kunt ook toegang tot deze bestanden krijgen via de klanten sectie van onze website.</p> 
 	<p>&nbsp;</p>]]> 

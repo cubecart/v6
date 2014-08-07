@@ -386,7 +386,7 @@
         <p>Satın aldığınız dijital ürünlerinizi indirmek için linkten faydalanabilirsiniz:</p>  
         {foreach from=$DOWNLOADS item=download} 
         <p><strong>{$download.name}:</strong>  (Link expires on {$download.expire})<strong> )</strong> <br/>  
-        {$download.url}</p>  
+        <a href="{$download.url}">{$download.url}</a></p>   
         {/foreach}
         <p>Eğer verilen Linkler çalışmıyor ise; linki web taracınıza kopyalayıp yapıştırınız. açılan web adresindeki yönergeleri uygulayınız.</p>  
         <p> </p> ]]>

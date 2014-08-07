@@ -304,7 +304,7 @@ Texto de la opinión:
 <p>Sus archivos digitales están listos para su descarga. Por favor, utilice los enlaces que se proporcionan a continuación para acceder a ellos:</p> 
 {foreach from=$DOWNLOADS item=download} 
 <p><strong>{$download.name}:</strong> (El enlace caduca en {$download.expire}<strong>)</strong><br /> 
-{$download.url}</p> 
+<a href="{$download.url}">{$download.url}</a></p>  
 {/foreach}
 <p>Si los enlaces anteriores no funcionan, por favor, intente copiar y pegar las direcciones en la barra de direcciones de su navegador. También puede encontrar acceso a estos archivos desde el área del cliente de su sitio web.</p> 
 <p>&nbsp;</p>]]></content> <content type="text"><![CDATA[Hola, {$DATA.first_name},

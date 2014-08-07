@@ -386,7 +386,7 @@
         <p>Dine digitale filer er nu klar til download. Brug venligst nedenstående links for at få adgang til dem herunder:</p> 
         {foreach from=$DOWNLOADS item=download} 
         <p><strong>{$download.name}:</strong> (Link Udløber {$download.expire}<strong>)</strong><br /> 
-        {$download.url}</p> 
+        <a href="{$download.url}">{$download.url}</a></p>  
         {/foreach}
         <p>Hvis ovenstående links ikke virker, skal du prøve at kopiere og indsætte dem det i din browsers adresselinje. Du kan også finde adgang til disse filer fra din kunde på vores hjemmeside.</p> 
         <p>&nbsp;</p>]]>

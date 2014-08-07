@@ -296,7 +296,7 @@ Texte de l'avis :
 <p>Vos fichiers numériques sont désormais prêts pour le téléchargement. Veuillez utiliser les liens fournis ci-dessous pour y accéder ensuite :</p> 
 {foreach from=$DOWNLOADS item=download} 
 <p><strong>{$download.name}:</strong> (Lien expire le {$download.expire}<strong>)</strong><br /> 
-{$download.url}</p> 
+<a href="{$download.url}">{$download.url}</a></p>  
 {/foreach}
 <p>Si les liens ci-dessus ne fonctionnent pas, veuillez essayer de les copier et coller dans la barre d'adresse de votre navigateur. Vous pouvez également accéder à ces fichiers à partir de votre espace client de notre site Web.</p> 
 <p>&nbsp;</p>]]></content> <content type="text"><![CDATA[Bonjour {$DATA.first_name},

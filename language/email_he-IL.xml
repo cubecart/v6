@@ -336,7 +336,7 @@
         <p>ההורדה הדיגיטלית שלך מוכנה להורדה. אנא השתמש בקישורים שלהלן על מנת לגשת אל ההורדה:</p> 
         {foreach from=$DOWNLOADS item=download} 
         <p><strong>{$download.name}:</strong> (הקישור יפוג ב-{$download.expire}<strong>)</strong><br /> 
-        {$download.url}</p> 
+        <a href="{$download.url}">{$download.url}</a></p>  
         {/foreach}
         <p>במידה והקישורים הנ&quot;ל אינם עובדים. אנא נסה להעתיק ולהדביק אותם אל שורת הכתובת שבדפדפן האינטרנט שלך. ביכולתך לגשת אל קבצים אלו גם מאזור הלקוחות האישי שלך שבאתרנו.</p> 
         <p>&nbsp;</p>]]></content>

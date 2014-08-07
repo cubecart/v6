@@ -335,7 +335,7 @@
         <p>Ihre digitalen Dateien stehen jetzt zum Download bereit. Bitte benutzen Sie die nachfolgenden Links, um darauf zuzugreifen:</p> 
         {foreach from=$DOWNLOADS item=download} 
         <p><strong>{$download.name}:</strong> (Link verfällt am {$download.expire}<strong>)</strong><br /> 
-        {$download.url}</p> 
+        <a href="{$download.url}">{$download.url}</a></p>  
         {/foreach}
         <p>Wenn die obigen Links nicht funktionieren, versuchen Sie bitte, sie in die Adressleiste Ihres Browsers zu kopieren. Sie können auf diese Dateien auch von Ihrem Kundenbereich unserer Webseite aus zugreifen.</p> 
         <p>&nbsp;</p>]]></content>

@@ -335,7 +335,7 @@
         <p>Your digital files are now ready for download. Please use the links provided below to access them below:</p> 
         {foreach from=$DOWNLOADS item=download} 
         <p><strong>{$download.name}:</strong> (Link expires on {$download.expire}<strong>)</strong><br /> 
-        {$download.url}</p> 
+        <a href="{$download.url}">{$download.url}</a></p>  
         {/foreach}
         <p>If the links above don't work, please try copy and pasting them it into your browser address bar. You can also find access to these files from your the customer area of our website.</p> 
         <p>&nbsp;</p>]]></content>
