@@ -61,7 +61,41 @@ $GLOBALS['smarty']->assign('REPORT_TITLE', $report_title);
 
 $GLOBALS['main']->addTabControl($lang['reports']['tab_results'], 'results');
 ## Fetch data, and display, and/or provide download
-$orders = $GLOBALS['db']->select('CubeCart_order_summary', array('order_date', 'cart_order_id', 'status', 'subtotal', 'discount', 'shipping', 'total_tax', 'total', 'country', 'state', 'customer_id', 'first_name', 'last_name', 'gateway'), $where);
+
+$fields = array(
+	'order_date', 
+	'cart_order_id',
+	'status',
+	'subtotal',
+	'discount',
+	'shipping',
+	'total_tax',
+	'total',
+	'customer_id',
+	'title',
+	'first_name',
+	'last_name',
+	'company_name',
+	'line1',
+	'line2',
+	'town',
+	'state',
+	'country',
+	'title_d',
+	'first_name_d',
+	'last_name_d',
+	'company_name_d',
+	'line1_d',
+	'line2_d',
+	'town_d',
+	'state_d',
+	'country_d',
+	'phone',
+	'email',
+	'gateway'
+);
+
+$orders = $GLOBALS['db']->select('CubeCart_order_summary', $fields, $where);
 if ($orders) {
 	## If we are wanting an external report start new External class
 	if (isset($_POST['external_report']) && is_array($_POST['external_report'])) {
@@ -84,9 +118,11 @@ if ($orders) {
 				$tally[$field] += $value;
 			}
 		}
-		$order_summary['country'] = (is_numeric($order_summary['country'])) ? getCountryFormat($order_summary['country']) : $order_summary['country'];
-		$order_summary['state'] = (is_numeric($order_summary['state'])) ? getStateFormat($order_summary['state']) : $order_summary['state'];
-		$order_summary['date'] = formatTime($order_summary['order_date'], false, true);
+		$order_summary['country']	= (is_numeric($order_summary['country'])) ? getCountryFormat($order_summary['country']) : $order_summary['country'];
+		$order_summary['state']	= (is_numeric($order_summary['state'])) ? getStateFormat($order_summary['state']) : $order_summary['state'];
+		$order_summary['country_d']	= (is_numeric($order_summary['country_d'])) ? getCountryFormat($order_summary['country_d']) : $order_summary['country_d'];
+		$order_summary['state_d']	= (is_numeric($order_summary['state_d'])) ? getStateFormat($order_summary['state_d']) : $order_summary['state_d'];
+		$order_summary['date']	= formatTime($order_summary['order_date'],false,true);
 
 		## Run line of external report data
 		if (isset($external_report) && is_object($external_report)) $external_report->report_order_data($order_summary);
