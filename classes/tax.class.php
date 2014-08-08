@@ -83,7 +83,7 @@ class Tax {
 		$GLOBALS['cart']->set('order_taxes', false);
 		if (is_array($this->_tax_table_applied)) {
 			foreach ($this->_tax_table_applied as $tax_id => $tax_name) {
-				$tax_value	= ($this->_tax_table_inc[$tax_id]+$this->_tax_table_add[$tax_id])*$this->_adjust_tax;
+				$tax_value	= sprintf("%0.2f",(($this->_tax_table_inc[$tax_id]+$this->_tax_table_add[$tax_id])*$this->_adjust_tax));
 				$tax_data[$tax_name]+= $tax_value;
 				$basket_taxes[] = array(
 					'tax_id' => $tax_id,
