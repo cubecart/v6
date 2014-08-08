@@ -491,6 +491,7 @@
       <string name="your_basket" introduced="5.0.0"><![CDATA[Su cesta]]></string>
     </group>
     <group name="common">
+      <string name="inherit" introduced="5.2.13"><![CDATA[Heredar]]></string>
       <string name="add" introduced="5.0.0"><![CDATA[Añadir]]></string>
       <string name="add_new" introduced="5.0.0"><![CDATA[Añadir nuevo]]></string>
       <string name="advanced" introduced="5.0.0"><![CDATA[Avanzado]]></string>

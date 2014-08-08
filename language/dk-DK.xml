@@ -505,6 +505,7 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Din indkøbskurv]]></string>
   </group>
   <group name="common">
+    <string name="inherit" introduced="5.2.13"><![CDATA[Arve]]></string>
     <string name="add" introduced="5.0.0"><![CDATA[Tilføj]]></string>
     <string name="add_new" introduced="5.0.0"><![CDATA[Tilføj ny]]></string>
     <string name="advanced" introduced="5.0.0"><![CDATA[Advancered]]></string>

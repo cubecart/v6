@@ -530,6 +530,7 @@
   	<string name="max" introduced="6.0.0"><![CDATA[Max]]></string>
   	<string name="from" introduced="6.0.0"><![CDATA[From]]></string>
   	<string name="to" introduced="6.0.0"><![CDATA[To]]></string>
+    <string name="inherit" introduced="5.2.13"><![CDATA[Inherit]]></string>
     <string name="add" introduced="5.0.0"><![CDATA[Add]]></string>
     <string name="add_new" introduced="5.0.0"><![CDATA[Add new]]></string>
     <string name="advanced" introduced="5.0.0"><![CDATA[Advanced]]></string>

@@ -33,6 +33,7 @@ class Tax {
 
 	public $_total_tax_add = 0;
 	public $_total_tax_inc = 0;
+	private $_adjust_tax	= 1;
 
 	public $_tax_classes;
 
@@ -82,21 +83,36 @@ class Tax {
 		$GLOBALS['cart']->set('order_taxes', false);
 		if (is_array($this->_tax_table_applied)) {
 			foreach ($this->_tax_table_applied as $tax_id => $tax_name) {
-				$tax_value = $this->_tax_table_inc[$tax_id]+$this->_tax_table_add[$tax_id];
-				$tax_data = array(
-					'name' => $tax_name,
-					'value' => $GLOBALS['tax']->priceFormat($tax_value, true),
-				);
+				$tax_value	= ($this->_tax_table_inc[$tax_id]+$this->_tax_table_add[$tax_id])*$this->_adjust_tax;
+				$tax_data[$tax_name]+= $tax_value;
 				$basket_taxes[] = array(
 					'tax_id' => $tax_id,
 					'amount' => $tax_value
 				);
-				$taxes[] = $tax_data;
 			}
+		
+			// split inherited tax amongst other taxes
+			if(isset($tax_data['inherited'])) {
+				if($tax_data['inherited']>0) {
+					$shared_tax = $tax_data['inherited']/(count($tax_data)-1);
+				}
+				unset($tax_data['inherited']);
+			}
+
+			// group taxes by name!
+			foreach($tax_data as $tax_name => $tax_value) {
+				$taxes[] = array('name' => $tax_name, 'value' => $this->priceFormat($tax_value+$shared_tax,true));
+			}
+
 			$GLOBALS['cart']->set('order_taxes', $basket_taxes);
 			$GLOBALS['smarty']->assign('TAXES', $taxes);
 		}
 		$GLOBALS['smarty']->assign('TOTAL_TAX', $this->priceFormat($this->_total_tax_add + $this->_total_tax_inc));
+	}
+
+	public function adjustTax($total_tax) {
+		$reduction = $total_tax/$this->totalTax();
+		$this->_adjust_tax = $reduction;
 	}
 
 	public function exchangeRate(&$price, $from = false) {
@@ -111,8 +127,8 @@ class Tax {
 
 	public function fetchTaxAmounts() {
 		return array(
-			'applied' => $this->_total_tax_add,
-			'included' => $this->_total_tax_inc,
+			'applied'	=> $this->_total_tax_add*$this->_adjust_tax,
+			'included'	=> $this->_total_tax_inc*$this->_adjust_tax
 		);
 	}
 
@@ -249,7 +265,36 @@ class Tax {
 	}
 
 	## Calculate tax per item
-	public function productTax(&$price, $tax_type, $tax_inclusive = false, $state = 0, $type = 'goods') {
+	public function productTax(&$price, $tax_type, $tax_inclusive = false, $state = 0, $type = 'goods', $sum = true) {
+		if($price<=0) return false; 
+
+		if($tax_type == 999999 && $sum) {
+			
+			$this->_tax_table_applied[$tax_id]	= 'inherited';
+			
+			$last_inherited = $GLOBALS['session']->get('last_inherited');
+		
+			$total_tax = ($last_inherited>0) ? $GLOBALS['cart']->basket['total_tax'] - $last_inherited : $GLOBALS['cart']->basket['total_tax'];
+
+			$percent = $total_tax / $GLOBALS['cart']->basket['subtotal'];
+
+			if($tax_inclusive) {
+				$amount = $price - sprintf('%.2f', $price/($percent+1), 2);
+				$this->_tax_table_applied[$tax_id]	= $tax['name'];
+				$this->_tax_table_inc[$tax_id]		+= $amount;
+				$this->_total_tax_inc				+= $amount;
+			} else {
+				$amount	= $price * sprintf('%.2f',$percent);
+				if (isset($this->_tax_table_add[$tax_id])) {
+					$this->_tax_table_add[$tax_id]	+= $amount;
+				} else {
+					$this->_tax_table_add[$tax_id]	= $amount;
+				}
+				$this->_total_tax_add				+= $amount;	
+			}
+			$GLOBALS['session']->set('last_inherited', $amount);
+		}
+
 		if (is_array($this->_tax_table) && !empty($this->_tax_table)) {
 			foreach ($this->_tax_table as $tax_id => $tax) {
 				if ($tax[$type] && $tax['type'] == $tax_type && in_array($tax['county_id'], array($state, 0))) {
@@ -257,21 +302,25 @@ class Tax {
 					case true:
 						## Already includes tax - but how much?
 						$amount = $price - sprintf('%.2f', $price/(($tax['percent']/100)+1), 2); // Changed from round( in 5.1
-						$this->_tax_table_applied[$tax_id] = $tax['name'];
-						$this->_tax_table_inc[$tax_id]  += $amount;
-						$this->_total_tax_inc    += $amount;
+						if($sum) {
+							$this->_tax_table_applied[$tax_id] = $tax['name'];
+							$this->_tax_table_inc[$tax_id]  += $amount;
+							$this->_total_tax_inc    += $amount;
+						}
 						break;
 					case false:
 					default:
 						## Excludes tax - lets add it
 						$amount = $price*($tax['percent']/100);
-						$this->_tax_table_applied[$tax_id] = $tax['name'];
-						if (isset($this->_tax_table_add[$tax_id])) {
-							$this->_tax_table_add[$tax_id] += $amount;
-						} else {
-							$this->_tax_table_add[$tax_id] = $amount;
+						if($sum) {
+							$this->_tax_table_applied[$tax_id] = $tax['name'];
+							if (isset($this->_tax_table_add[$tax_id])) {
+								$this->_tax_table_add[$tax_id] += $amount;
+							} else {
+								$this->_tax_table_add[$tax_id] = $amount;
+							}
+							$this->_total_tax_add    += $amount;
 						}
-						$this->_total_tax_add    += $amount;
 						break;
 					}
 				}

@@ -505,6 +505,7 @@
    <string name="your_basket"><![CDATA[Alışveriş Sepetiniz]]></string>
   </group>
   <group name="common">
+   <string name="inherit"><![CDATA[Miras]]></string>
    <string name="add"><![CDATA[Ekle]]></string>
    <string name="add_new"><![CDATA[Yeni Ekle]]></string>
    <string name="advanced"><![CDATA[Gelişmiş]]></string>

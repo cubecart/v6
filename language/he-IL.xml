@@ -501,6 +501,7 @@
    <string name="error_shipping"><![CDATA[לצערנו לא נמצאו שיטות משלוח המתאימות להזמנתך. יתכן כי דבר זה נגרם עקב משקל סחורה גבוה מדי או משום שאיננו מבצעים משלוחים לאזורך. אנא צור קשר עם צוות האתר לשאלות נוספות.]]></string>
   </group>
   <group name="common">
+   <string name="inherit" introduced="5.2.13"><![CDATA[לרשת]]></string>
    <string name="add"><![CDATA[הוספה]]></string>
    <string name="add_new"><![CDATA[הוספת חדש]]></string>
    <string name="advanced"><![CDATA[מתקדם]]></string>

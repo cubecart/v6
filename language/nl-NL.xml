@@ -491,6 +491,7 @@
       <string name="your_basket" introduced="5.0.0"><![CDATA[Uw Winkelwagen]]></string>
     </group>
     <group name="common">
+      <string name="inherit" introduced="5.2.13"><![CDATA[Erven]]></string>
       <string name="add" introduced="5.0.0"><![CDATA[Toevoegen]]></string>
       <string name="add_new" introduced="5.0.0"><![CDATA[Voeg nieuwe toe]]></string>
       <string name="advanced" introduced="5.0.0"><![CDATA[Gevorderd]]></string>

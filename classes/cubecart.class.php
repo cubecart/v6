@@ -1433,7 +1433,8 @@ class Cubecart {
 							'offset' => $offset,
 							'name'  => $data['name'],
 							'value'  => $data['value'],
-							'tax_id' => $data['tax_id'],
+							'tax_id' => $data['tax_id'], // Kept for legacy
+							'tax'		=> $data['tax']
 						);
 						$shipping_values[] = $value;
 						$data['name'] = empty($data['name']) ? '' : ' ('.$data['name'].')';
