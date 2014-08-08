@@ -82,30 +82,41 @@ class Tax {
 		// Display applied taxes
 		$GLOBALS['cart']->set('order_taxes', false);
 		if (is_array($this->_tax_table_applied)) {
+			
 			foreach ($this->_tax_table_applied as $tax_id => $tax_name) {
-				$tax_value	= sprintf("%0.2f",(($this->_tax_table_inc[$tax_id]+$this->_tax_table_add[$tax_id])*$this->_adjust_tax));
-				$tax_data[$tax_name]+= $tax_value;
-				$basket_taxes[] = array(
-					'tax_id' => $tax_id,
-					'amount' => $tax_value
-				);
-			}
-		
-			// split inherited tax amongst other taxes
-			if(isset($tax_data['inherited'])) {
-				if($tax_data['inherited']>0) {
-					$shared_tax = $tax_data['inherited']/(count($tax_data)-1);
-				}
-				unset($tax_data['inherited']);
+				$taxes[$tax_name]['value']+= sprintf("%0.2f",(($this->_tax_table_inc[$tax_id]+$this->_tax_table_add[$tax_id])*$this->_adjust_tax));
+				$taxes[$tax_name]['tax_id']= $tax_id;
 			}
 
 			// group taxes by name!
-			foreach($tax_data as $tax_name => $tax_value) {
-				$taxes[] = array('name' => $tax_name, 'value' => $this->priceFormat($tax_value+$shared_tax,true));
+			$total_standard_taxes = 0;
+			foreach($taxes as $tax_name => $tax) {
+				if($tax_name!=='inherited') {
+					$total_standard_taxes += $tax['value'];
+				}
+			}
+			
+			if(isset($taxes['inherited'])) {
+				if($taxes['inherited']['value']>0) {
+					foreach($taxes as $tax_name => $tax) {
+						if($tax_name!=='inherited') {
+							$inherited_split = ($tax['value']/$total_standard_taxes) * $taxes['inherited']['value'];
+							$tax_value = $tax['value']+$inherited_split;
+							$display_taxes[] = array('name' => $tax_name, 'value' => $this->priceFormat($tax_value));
+							$basket_taxes[] = array('tax_id' => $tax['tax_id'], 'amount' => $tax_value);
+						}
+					}
+				}
+				unset($tax_data['inherited']);
+			} else {
+				foreach($taxes as $tax_name => $tax) {
+					$display_taxes[] = array('name' => $tax_name, 'value' => $this->priceFormat($tax['value']));
+					$basket_taxes[] = array('tax_id' => $tax['tax_id'], 'amount' => $tax['value']);
+				}
 			}
 
 			$GLOBALS['cart']->set('order_taxes', $basket_taxes);
-			$GLOBALS['smarty']->assign('TAXES', $taxes);
+			$GLOBALS['smarty']->assign('TAXES', $display_taxes);
 		}
 		$GLOBALS['smarty']->assign('TOTAL_TAX', $this->priceFormat($this->_total_tax_add + $this->_total_tax_inc));
 	}
@@ -151,11 +162,15 @@ class Tax {
 		$taxes = $GLOBALS['db']->query($query);
 		if (is_array($taxes)) {
 			foreach ($taxes as $i => $tax_group) {
+				
+				$name = (!empty($tax_group['display'])) ? $tax_group['display'] : $tax_group['name'];
+				$name .= ' ('.$tax_group['type_name'].' '.sprintf('%.2f',$tax_group['tax_percent']).'%)';
+
 				$tax_table[$tax_group['id']] = array(
 					'goods'  => (bool)$tax_group['goods'],
 					'shipping' => (bool)$tax_group['shipping'],
 					'type'  => $tax_group['type_id'],
-					'name'  => (!empty($tax_group['display'])) ? $tax_group['display'] : $tax_group['name'],
+					'name'		=> $name,
 					'percent' => $tax_group['tax_percent'],
 					'county_id' => $tax_group['county_id'],
 				);

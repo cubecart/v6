@@ -1,4 +1,4 @@
-INSERT INTO `CubeCart_tax_class` (`tax_name`) VALUES ('Standard Tax'), ('Reduced Rate'), ('Tax Exempt'); #EOQ
+INSERT INTO `CubeCart_tax_class` (`tax_name`) VALUES ('Standard Rate'), ('Reduced Rate'), ('Zero Rate'); #EOQ
 INSERT INTO `CubeCart_tax_details` (`name`, `display`, `status`) VALUES ('VAT', 'VAT', 1); #EOQ
 INSERT INTO `CubeCart_tax_rates` (`type_id`, `details_id`, `country_id`, `tax_percent`, `goods`, `shipping`, `active`) VALUES (1, 1, 826, '20', 1, 1, 0), (2, 1, 826, '5.0', 1, 1, 0), (3, 1, 826, '0.0', 1, 1, 0); #EOQ
 
