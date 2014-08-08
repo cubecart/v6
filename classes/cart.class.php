@@ -894,6 +894,7 @@ class Cart {
 								uasort($packages, 'price_sort');
 								// work out tax amount on shipping
 								foreach($packages as $package){
+									$package['value'] = sprintf('%.2f',$package['value']);
 									$packages_with_tax[] = array_merge($package,array('tax' => $GLOBALS['tax']->productTax($package['value'],$package['tax_id'],$package['tax_inclusive'],0,'goods',false)));
 								}
 
