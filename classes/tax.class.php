@@ -179,7 +179,7 @@ class Tax {
 		if (is_array($tax_table)) {
 			foreach ($tax_table as $tax_id => $tax) {
 				if ($tax[$type] && $tax['type'] == $tax_type && in_array($tax['county_id'], array($GLOBALS['config']->get('config', 'store_zone'), 0))) {
-					$tax_total += sprintf('%.4f', $price - ($price/(($tax['percent']/100)+1)));
+					$tax_total += sprintf('%.2f', $price - ($price/(($tax['percent']/100)+1)));
 				}
 			}
 			$price -= $tax_total;
