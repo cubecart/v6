@@ -88,7 +88,6 @@ class Tax {
 				$taxes[$tax_name]['tax_id']= $tax_id;
 			}
 
-			// group taxes by name!
 			$total_standard_taxes = 0;
 			foreach($taxes as $tax_name => $tax) {
 				if($tax_name!=='inherited') {
