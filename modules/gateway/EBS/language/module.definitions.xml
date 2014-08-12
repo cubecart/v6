@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="ebs">
+  <string name="account_id"><![CDATA[Account ID]]></string>
+  <string name="secretkey"><![CDATA[Secret Key]]></string>
+  <string name="module_description"><![CDATA[&#8220;E-Billing Solutions Payment Gateway&#8221;]]></string>
+  <string name="module_title"><![CDATA[EBS]]></string>
+  <string name="ebs_settings"><![CDATA[EBS Settings]]></string>
+ </group>
+</definitions>

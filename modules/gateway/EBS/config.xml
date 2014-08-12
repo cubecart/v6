@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<installer version="1.0">
+  <info>
+	<uid>gateway</uid>
+	<type>gateway</type>
+	<name><![CDATA[EBS]]></name>
+	<description><![CDATA[EBS Payment Gateway]]></description>
+	<version>2.0.0</version>
+	<minVersion>5.0.0a</minVersion>
+	<maxVersion>5.0.*</maxVersion>
+	<creator><![CDATA[EBS]]></creator>
+	<homepage><![CDATA[http://support.ebs.in]]></homepage>
+	<block>false</block>
+  </info>
+</installer>
