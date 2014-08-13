@@ -4,4 +4,4 @@ Sitemap: sitemap.xml
 Disallow: backup/
 Disallow: cache/
 Disallow: files/
-Disallow: images/cache
+Disallow: images/
