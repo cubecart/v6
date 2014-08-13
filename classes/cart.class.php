@@ -1219,9 +1219,11 @@ class Cart {
 					if($discount<$subtotal){
 						$subtotal -= $discount;
 						$this->_discount += $discount;
+						$this->basket['coupons'][$key]['value_display'] = sprintf('%.2f',$discount);
 						$remainder = 0;
 					} elseif($discount>=$subtotal) {
 						$remainder = $discount - $subtotal;
+						$this->basket['coupons'][$key]['value_display'] = sprintf('%.2f',$subtotal);
 						$this->_discount += $subtotal;
 						$subtotal = 0;
 					}
