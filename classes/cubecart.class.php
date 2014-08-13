@@ -1517,12 +1517,12 @@ class Cubecart {
 						$coupon['remove_code'] = $coupon['voucher'];
 						if ($coupon['type'] == 'fixed') {
 							$this->_basket['discount_type'] = 'f';
-							$coupon['value'] = $GLOBALS['tax']->priceFormat($coupon['value'], true);
+							$coupon['value'] = $GLOBALS['tax']->priceFormat($coupon['value_display'], true);
 							$coupons[] = $coupon;
 						} else if ($coupon['type'] == 'percent') {
 								$this->_basket['discount_type'] = $coupon['products'] ? 'pp' : 'p';
 								$coupon['voucher'] .= ' ('.$coupon['value'].'%)';
-								$coupon['value'] = $GLOBALS['tax']->priceFormat($coupon['discount_value'], true);
+								$coupon['value'] = $GLOBALS['tax']->priceFormat($coupon['value_display'], true);
 								$coupons[] = $coupon;
 							}
 					}
