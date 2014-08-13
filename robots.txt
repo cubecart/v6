@@ -1,5 +1,7 @@
 Sitemap: sitemap.xml.gz
 Sitemap: sitemap.xml
 
+Disallow: backup/
 Disallow: cache/
-Disallow: images/
+Disallow: files/
+Disallow: images/cache
