@@ -161,15 +161,12 @@ class Tax {
 		$taxes = $GLOBALS['db']->query($query);
 		if (is_array($taxes)) {
 			foreach ($taxes as $i => $tax_group) {
-				
-				$name = (!empty($tax_group['display'])) ? $tax_group['display'] : $tax_group['name'];
-				$name .= ' ('.$tax_group['type_name'].' '.sprintf('%.2f',$tax_group['tax_percent']).'%)';
 
 				$tax_table[$tax_group['id']] = array(
 					'goods'  => (bool)$tax_group['goods'],
 					'shipping' => (bool)$tax_group['shipping'],
 					'type'  => $tax_group['type_id'],
-					'name'		=> $name,
+					'name'		=> (!empty($tax_group['display'])) ? $tax_group['display'] : $tax_group['name'],
 					'percent' => $tax_group['tax_percent'],
 					'county_id' => $tax_group['county_id'],
 				);
@@ -227,13 +224,17 @@ class Tax {
 			$taxes = $GLOBALS['db']->query($query);
 			if (is_array($taxes)) {
 				foreach ($taxes as $i => $tax_group) {
+					
+					$name = (!empty($tax_group['display'])) ? $tax_group['display'] : $tax_group['name'];
+					$name .= ' ('.$tax_group['type_name'].' '.sprintf('%.2f',$tax_group['tax_percent']).'%)';
+
 					$this->_tax_table[$tax_group['id']] = array(
 						// What is is applied to?
 						'goods'  => (int)$tax_group['goods'],
 						'shipping' => (int)$tax_group['shipping'],
 						// Details
 						'type'  => $tax_group['type_id'],
-						'name'  => (!empty($tax_group['display'])) ? $tax_group['display'] : $tax_group['name'],
+						'name'  => $name,
 						'percent' => $tax_group['tax_percent'],
 						'county_id' => $tax_group['county_id'],
 					);
@@ -243,7 +244,7 @@ class Tax {
 	}
 
 	public function priceConvertFX($price) {
-		return $price / $this->_currency_vars['value'];
+		return ($price / $this->_currency_vars['value']);
 	}
 
 
@@ -315,7 +316,7 @@ class Tax {
 					switch ($tax_inclusive) {
 					case true:
 						## Already includes tax - but how much?
-						$amount = $price - sprintf('%.2f', $price/(($tax['percent']/100)+1), 2); // Changed from round( in 5.1
+						$amount = $price - sprintf('%.2f', $price/(($tax['percent']/100)+1), 2);
 						if($sum) {
 							$this->_tax_table_applied[$tax_id] = $tax['name'];
 							$this->_tax_table_inc[$tax_id]  += $amount;

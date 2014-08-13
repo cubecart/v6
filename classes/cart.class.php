@@ -962,7 +962,6 @@ class Cart {
 		// Remove an item from the basket
 		if (!is_null($identifier) && isset($this->basket['contents'][$identifier])) {
 			unset($this->basket['contents'][$identifier]);
-			//   $this->_applyDiscounts();
 			$this->save();
 			return $this->update();
 		}
@@ -1054,7 +1053,6 @@ class Cart {
 					$this->discountAdd($key);
 				}
 			}
-			//$this->_applyDiscounts(); // moved above as it shows discount on subtotal once products related discount used
 		}
 
 		//If the cart is empty
@@ -1228,7 +1226,7 @@ class Cart {
 					$this->basket['coupons'][$key]['remainder'] = $remainder;	
 				}
 			}
-			
+			$ave_tax_rate = sprintf('%.2f',$ave_tax_rate);
 			$tax = ($subtotal>0) ? ($subtotal*$ave_tax_rate) : 0;
 			$GLOBALS['tax']->adjustTax($tax);
 
@@ -1237,74 +1235,6 @@ class Cart {
 		}
 
 		return false;
-	}
-
-	/**
-	 * Apply product discount
-	 *
-	 * @param float $price
-	 * @param int $product_id
-	 * @param int $quantity
-	 */
-	private function _applyProductDiscount(&$price, $product_id, $quantity = 1) {
-		// Apply 'assigned product' discounts on a per-product basis
-		if (isset($product_id) && is_numeric($product_id)) {
-			if (isset($this->basket['coupons']) && is_array($this->basket['coupons'])) {
-				foreach ($this->basket['coupons'] as $key => $data) {
-					if ($data['subtotal']) {
-						continue; // subtotal based coupon
-					}
-					$products = unserialize($data['product']);
-					$incexc = array_shift($products);
-					// workaround for empty product arrays and exclude set....cause excluding NOTHING causes weird behavior
-					if (count($products) == 0) $incexc = 'include';
-					if ($incexc == 'include' && in_array($product_id, $products)) {
-						switch ($data['type']) {
-						case 'percent':
-							$discount = $price*($data['value']/100);
-							$this->_discount += $discount*$quantity;
-							break;
-						case 'fixed':
-						default:
-							//        $available = ($quantity > $data['available']) ? $data['available'] : $quantity;
-							//        $discount = (($price / $quantity) < $data['value']) ? ($price / $quantity) * $available : $data['value'] * $available;
-							//        $this->_discount += $discount;
-							$discount = ($price < $data['value']) ? $price : $data['value'];
-							$this->_discount += $discount*$quantity;
-						}
-						//      $this->_discount += $discount;
-						$price -= $discount;
-					} elseif ($incexc == 'exclude' && !in_array($product_id, $products)) {
-						switch ($data['type']) {
-						case 'percent':
-							$discount = $price*($data['value']/100);
-							$this->_discount += $discount*$quantity;
-							break;
-						case 'fixed':
-						default:
-							//        $available = ($quantity > $data['available']) ? $data['available'] : $quantity;
-							//        $discount = (($price / $quantity) < $data['value']) ? ($price / $quantity) * $available : $data['value'] * $available;
-							//        $this->_discount += $discount;
-							$discount = ($price < $data['value']) ? $price : $data['value'];
-							$this->_discount += $discount*$quantity;
-						}
-						//      $this->_discount += $discount;
-						$price -= $discount;
-						// Cover old coupons
-					} elseif ($data['product']=='0' || !is_array($products)) {
-						$products = array();
-					}
-					// if we're including or excluding ANY products, whether in the cart or not,
-					// we need to block full cart discounts
-					if (count($products) > 0) {
-						$this->_item_discount = true;
-						$this->basket['coupons'][$key]['products'] = 1;
-					}
-				}
-			}
-		}
-
-		$this->save();
 	}
 
 	/**
