@@ -154,32 +154,37 @@ class Tax {
 
 	// Remove inclusive tax
 	public function inclusiveTaxRemove(&$price, $tax_type, $type = 'goods') {
-		$tax_total = 0;
-		$country_id = $GLOBALS['config']->get('config', 'store_country');
+		$tax_total	= 0;
+		
+		if($tax_type==999999) {
+			$percent = $this->_getInheritedTax();
+			$price = sprintf('%.2f', $price/($percent+1), 2);
+		} else {
+			$country_id = $GLOBALS['config']->get('config', 'store_country');
 
-		$query = "SELECT SQL_CACHE T.tax_name AS type_name, D.display, D.name, R.id, R.type_id, R.tax_percent, R.goods, R.shipping, R.county_id FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_tax_rates AS R, ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_tax_details AS D, ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_tax_class AS T, ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_geo_country AS C WHERE D.id = R.details_id AND C.numcode = R.country_id AND R.type_id = T.id AND D.status = 1 AND R.active = 1 AND R.country_id = ".(int)$country_id;
-		$taxes = $GLOBALS['db']->query($query);
-		if (is_array($taxes)) {
-			foreach ($taxes as $i => $tax_group) {
-
-				$tax_table[$tax_group['id']] = array(
-					'goods'  => (bool)$tax_group['goods'],
-					'shipping' => (bool)$tax_group['shipping'],
-					'type'  => $tax_group['type_id'],
-					'name'		=> (!empty($tax_group['display'])) ? $tax_group['display'] : $tax_group['name'],
-					'percent' => $tax_group['tax_percent'],
-					'county_id' => $tax_group['county_id'],
-				);
-			}
-		}
-
-		if (is_array($tax_table)) {
-			foreach ($tax_table as $tax_id => $tax) {
-				if ($tax[$type] && $tax['type'] == $tax_type && in_array($tax['county_id'], array($GLOBALS['config']->get('config', 'store_zone'), 0))) {
-					$tax_total += sprintf('%.2f', $price - ($price/(($tax['percent']/100)+1)));
+			$query	= "SELECT SQL_CACHE T.tax_name AS type_name, D.display, D.name, R.id, R.type_id, R.tax_percent, R.goods, R.shipping, R.county_id FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_tax_rates AS R, ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_tax_details AS D, ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_tax_class AS T, ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_geo_country AS C WHERE D.id = R.details_id AND C.numcode = R.country_id AND R.type_id = T.id AND D.status = 1 AND R.active = 1 AND R.country_id = ".(int)$country_id;
+			$taxes	= $GLOBALS['db']->query($query);
+			if (is_array($taxes)) {
+				foreach ($taxes as $i => $tax_group) {
+					$tax_table[$tax_group['id']] = array(
+						'goods'		=> (bool)$tax_group['goods'],
+						'shipping'	=> (bool)$tax_group['shipping'],
+						'type'		=> $tax_group['type_id'],
+						'name'		=> (!empty($tax_group['display'])) ? $tax_group['display'] : $tax_group['name'],
+						'percent'	=> $tax_group['tax_percent'],
+						'county_id'	=> $tax_group['county_id'],
+					);
 				}
 			}
-			$price -= $tax_total;
+
+			if (is_array($tax_table)) {
+				foreach ($tax_table as $tax_id => $tax) {
+					if ($tax[$type] && $tax['type'] == $tax_type && in_array($tax['county_id'], array($GLOBALS['config']->get('config', 'store_zone'), 0))) {
+						$tax_total	+= sprintf('%.2f', $price - ($price/(($tax['percent']/100)+1)));
+					}
+				}
+				$price	-= $tax_total;
+			}
 		}
 		return $price;
 	}
@@ -288,17 +293,7 @@ class Tax {
 			
 			$this->_tax_table_applied[$tax_id]	= 'inherited';
 			
-			$subtotal = $total_tax = 0;
-			foreach ($GLOBALS['cart']->basket['contents'] as $hash => $item) {
-				if($item['total_price_each']>0) {
-					$subtotal += ($item['total_price_each'] * $item['quantity']);
-				}
-				if($item['tax_each']['amount']>0) {
-					$tax_total += $item['tax_each']['amount'];
-				}
-			}
-
-			$percent = $tax_total / $subtotal;
+			$percent = $this->_getInheritedTax();
 
 			if($tax_inclusive) {
 				// if tax inclusive we need to remove tax and flag it as done!
@@ -400,5 +395,19 @@ class Tax {
 			$price = (double)$price;
 		}
 		return $price;
+	}
+
+	private function _getInheritedTax() {
+		$subtotal = $total_tax = 0;
+		foreach ($GLOBALS['cart']->basket['contents'] as $hash => $item) {
+			if($item['total_price_each']>0) {
+				$subtotal += ($item['total_price_each'] * $item['quantity']);
+			}
+			if($item['tax_each']['amount']>0) {
+				$tax_total += $item['tax_each']['amount'];
+			}
+		}
+
+		return $tax_total / $subtotal;	
 	}
 }
