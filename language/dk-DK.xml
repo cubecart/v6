@@ -1551,6 +1551,7 @@
     <string name="email_method" introduced="5.0.0"><![CDATA[Sende Metoder]]></string>
     <string name="email_method_mail" introduced="5.0.0"><![CDATA[PHP mail() Function]]></string>
     <string name="email_method_smtp" introduced="5.0.0"><![CDATA[SMTP]]></string>
+    <string name="email_method_smtp_ssl" introduced="5.2.13"><![CDATA[SMTP med SSL]]></string>
     <string name="email_sender_address" introduced="5.0.0"><![CDATA[Afsenderens e-mail-adresse]]></string>
     <string name="email_sender_name" introduced="5.0.0"><![CDATA[Afsenders navn]]></string>
     <string name="enable_reviews" introduced="5.0.0"><![CDATA[Aktiver Produkt Anmeldelser / Kommentarer]]></string>

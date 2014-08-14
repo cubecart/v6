@@ -1546,6 +1546,7 @@
    <string name="email_method"><![CDATA[Gönderme Yöntemi]]></string>
    <string name="email_method_mail"><![CDATA[PHP mail() Funksiyonu]]></string>
    <string name="email_method_smtp"><![CDATA[SMTP]]></string>
+   <string name="email_method_smtp_ssl" introduced="5.2.13"><![CDATA[SMTP ile SSL]]></string>
    <string name="email_sender_address"><![CDATA[Gönderenin E-posta Adresi]]></string>
    <string name="email_sender_name"><![CDATA[Gönderenin İsmi]]></string>
    <string name="enable_reviews"><![CDATA[Ürün İncelemeleri / Yorumları etkinleştirme]]></string>

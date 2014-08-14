@@ -1600,6 +1600,7 @@
     <string name="email_method" introduced="5.0.0"><![CDATA[Sending Method]]></string>
     <string name="email_method_mail" introduced="5.0.0"><![CDATA[PHP mail() Function]]></string>
     <string name="email_method_smtp" introduced="5.0.0"><![CDATA[SMTP]]></string>
+    <string name="email_method_smtp_ssl" introduced="5.2.13"><![CDATA[SMTP with SSL]]></string>
     <string name="email_sender_address" introduced="5.0.0"><![CDATA[Sender's Email Address]]></string>
     <string name="email_sender_name" introduced="5.0.0"><![CDATA[Sender's Name]]></string>
     <string name="enable_reviews" introduced="5.0.0"><![CDATA[Enable Product Reviews/Comments]]></string>

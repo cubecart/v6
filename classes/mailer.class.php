@@ -32,11 +32,15 @@ class Mailer extends PHPMailer {
 		$this->FromName  = $GLOBALS['config']->get('config', 'email_name');
 		$this->CharSet   = 'UTF-8';
 
-		switch (strtolower($GLOBALS['config']->get('config', 'email_method'))) {
+		switch ($GLOBALS['config']->get('config', 'email_method')) {
 		case 'smtp':
+		case 'smtp_ssl':
 			$this->IsSMTP(true);
 			$this->Host = $GLOBALS['config']->get('config', 'email_smtp_host');
 			$this->Port = $GLOBALS['config']->get('config', 'email_smtp_port');
+			if($GLOBALS['config']->get('config', 'email_method')=='smtp_ssl') {
+				$this->SMTPSecure = 'ssl';
+			}
 			if ($GLOBALS['config']->get('config', 'email_smtp')) {
 				$this->SMTPAuth = true;
 				$this->Username = $GLOBALS['config']->get('config', 'email_smtp_user');

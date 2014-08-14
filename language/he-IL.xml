@@ -1520,6 +1520,7 @@
    <string name="email_method"><![CDATA[שיטת שליחה]]></string>
    <string name="email_method_mail"><![CDATA[פונקציית PHP mail()]]></string>
    <string name="email_method_smtp"><![CDATA[SMTP]]></string>
+   <string name="email_method_smtp_ssl" introduced="5.2.13"><![CDATA[SMTP עם SSL]]></string>
    <string name="email_sender_address"><![CDATA[כתובת הדוא"ל של השולח]]></string>
    <string name="email_sender_name"><![CDATA[שם השולח]]></string>
    <string name="enable_reviews"><![CDATA[אפשר ביקורות/תגובות על מוצרים]]></string>
