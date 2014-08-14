@@ -281,66 +281,77 @@ class Tax {
 
 	## Calculate tax per item
 	public function productTax(&$price, $tax_type, $tax_inclusive = false, $state = 0, $type = 'goods', $sum = true) {
+		
 		if($price<=0) return false; 
 
-		if($tax_type == 999999 && $sum) {
+		if($tax_type == 999999) {
 			
 			$this->_tax_table_applied[$tax_id]	= 'inherited';
 			
-			$last_inherited = $GLOBALS['session']->get('last_inherited');
-		
-			$total_tax = ($last_inherited>0) ? $GLOBALS['cart']->basket['total_tax'] - $last_inherited : $GLOBALS['cart']->basket['total_tax'];
+			$subtotal = $total_tax = 0;
+			foreach ($GLOBALS['cart']->basket['contents'] as $hash => $item) {
+				if($item['total_price_each']>0) {
+					$subtotal += ($item['total_price_each'] * $item['quantity']);
+				}
+				if($item['tax_each']['amount']>0) {
+					$tax_total += $item['tax_each']['amount'];
+				}
+			}
 
-			$percent = $total_tax / $GLOBALS['cart']->basket['subtotal'];
+			$percent = $tax_total / $subtotal;
 
 			if($tax_inclusive) {
+				// if tax inclusive we need to remove tax and flag it as done!
 				$amount = $price - sprintf('%.2f', $price/($percent+1), 2);
-				$this->_tax_table_applied[$tax_id]	= $tax['name'];
-				$this->_tax_table_inc[$tax_id]		+= $amount;
-				$this->_total_tax_inc				+= $amount;
+				if($sum) {
+					$this->_tax_table_inc[$tax_id]		+= $amount;
+					$this->_total_tax_inc				+= $amount;
+				}
 			} else {
 				$amount	= $price * sprintf('%.2f',$percent);
-				if (isset($this->_tax_table_add[$tax_id])) {
-					$this->_tax_table_add[$tax_id]	+= $amount;
-				} else {
-					$this->_tax_table_add[$tax_id]	= $amount;
+				if($sum) {
+					if (isset($this->_tax_table_add[$tax_id])) {
+						$this->_tax_table_add[$tax_id]	+= $amount;
+					} else {
+						$this->_tax_table_add[$tax_id]	= $amount;
+					}
+					$this->_total_tax_add				+= $amount;	
 				}
-				$this->_total_tax_add				+= $amount;	
 			}
-			$GLOBALS['session']->set('last_inherited', $amount);
+			return array('amount' => sprintf('%.2f',$amount), 'tax_inclusive' => $tax_inclusive, 'tax_name' => 'inherited');
 		}
-
 		if (is_array($this->_tax_table) && !empty($this->_tax_table)) {
 			foreach ($this->_tax_table as $tax_id => $tax) {
 				if ($tax[$type] && $tax['type'] == $tax_type && in_array($tax['county_id'], array($state, 0))) {
+					$tax_name = $tax['name'];
 					switch ($tax_inclusive) {
-					case true:
-						## Already includes tax - but how much?
-						$amount = $price - sprintf('%.2f', $price/(($tax['percent']/100)+1), 2);
-						if($sum) {
-							$this->_tax_table_applied[$tax_id] = $tax['name'];
-							$this->_tax_table_inc[$tax_id]  += $amount;
-							$this->_total_tax_inc    += $amount;
-						}
-						break;
-					case false:
-					default:
-						## Excludes tax - lets add it
-						$amount = $price*($tax['percent']/100);
-						if($sum) {
-							$this->_tax_table_applied[$tax_id] = $tax['name'];
-							if (isset($this->_tax_table_add[$tax_id])) {
-								$this->_tax_table_add[$tax_id] += $amount;
-							} else {
-								$this->_tax_table_add[$tax_id] = $amount;
+						case true:
+							## Already includes tax - but how much?
+							$amount = $price - sprintf('%.2f', $price/(($tax['percent']/100)+1), 2);
+							if($sum) {
+								$this->_tax_table_applied[$tax_id]	= $tax['name'];
+								$this->_tax_table_inc[$tax_id]		+= $amount;
+								$this->_total_tax_inc				+= $amount;
 							}
-							$this->_total_tax_add    += $amount;
-						}
-						break;
+							break;
+						case false:
+						default:
+							## Excludes tax - lets add it
+							$amount	= $price*($tax['percent']/100);
+							if($sum) {
+								$this->_tax_table_applied[$tax_id]	= $tax['name'];
+								if (isset($this->_tax_table_add[$tax_id])) {
+									$this->_tax_table_add[$tax_id]	+= $amount;
+								} else {
+									$this->_tax_table_add[$tax_id]	= $amount;
+								}
+								$this->_total_tax_add				+= $amount;
+							}
+							break;
 					}
 				}
 			}
-			return array('amount' => sprintf('%.2f', $amount), 'tax_inclusive' => $tax_inclusive, 'tax_name' => $tax['name']);
+			return array('amount' => sprintf('%.2f',$amount), 'tax_inclusive' => $tax_inclusive, 'tax_name' => $tax_name);
 		}
 		return false;
 	}

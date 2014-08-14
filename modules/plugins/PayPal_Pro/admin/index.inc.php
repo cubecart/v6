@@ -14,8 +14,7 @@ $script_file = CC_ROOT_DIR.'/includes/extra/PayPal_acceptance.js';
 
 if($module->acceptance_mark=='1' &&  in_array($store_country, array(840,826))) {
 	
-	$ssl = $GLOBALS['config']->get('config','ssl');
-	$store_url = ($ssl=='1') ? $GLOBALS['config']->get('config','ssl_url') : CC_STORE_URL;
+	$store_url = str_replace(array('http://','https://'),'//',CC_STORE_URL);
 	
 	$script_data = <<<END
 jQuery(document).ready(function() {
