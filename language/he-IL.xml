@@ -1354,6 +1354,7 @@
    <string name="name_6"><![CDATA[בוטלה]]></string>
   </group>
   <group name="orders">
+   <string name="cancel_by_customer" introduced="5.2.13"><![CDATA[הזמנה בוטלה על ידי לקוחות מאזור החשבון שלהם.]]></string>
    <string name="card_card_cvv"><![CDATA[קוד אבטחה CVV]]></string>
    <string name="card_card_details"><![CDATA[פרטי כרטיס אשראי]]></string>
    <string name="card_card_expire"><![CDATA[תוקף]]></string>

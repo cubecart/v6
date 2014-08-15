@@ -1369,6 +1369,7 @@
    <string name="name_6"><![CDATA[İptal Edildi]]></string>
   </group>
   <group name="orders">
+   <string name="cancel_by_customer" introduced="5.2.13"><![CDATA[Sipariş hesap alanından müşteri tarafından iptal edildi.]]></string>
    <string name="card_card_cvv"><![CDATA[Güvenlik Kodu]]></string>
    <string name="card_card_details"><![CDATA[Kredi Kartı Detayları]]></string>
    <string name="card_card_expire"><![CDATA[Son Kullanma Tarihi]]></string>

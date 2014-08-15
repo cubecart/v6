@@ -1339,6 +1339,7 @@
       <string name="name_6" introduced="5.0.0"><![CDATA[Annulée]]></string>
     </group>
     <group name="orders">
+      <string name="cancel_by_customer" introduced="5.2.13"><![CDATA[Afin d'annulation par le client de leur zone de compte.]]></string>
       <string name="card_card_cvv" introduced="5.0.0"><![CDATA[Code de sécurité]]></string>
       <string name="card_card_details" introduced="5.0.0"><![CDATA[Détails de la carte de crédit]]></string>
       <string name="card_card_expire" introduced="5.0.0"><![CDATA[Date d'expiration]]></string>

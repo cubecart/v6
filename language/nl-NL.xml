@@ -1338,6 +1338,7 @@
       <string name="name_6" introduced="5.0.0"><![CDATA[Geannuleerd]]></string>
     </group>
     <group name="orders">
+      <string name="cancel_by_customer" introduced="5.2.13"><![CDATA[Bestelling geannuleerd door de klant van hun rekening gebied.]]></string>
       <string name="card_card_cvv" introduced="5.0.0"><![CDATA[Beveiliging Code]]></string>
       <string name="card_card_details" introduced="5.0.0"><![CDATA[Creditcard Gegevens]]></string>
       <string name="card_card_expire" introduced="5.0.0"><![CDATA[Vervaldatum]]></string>

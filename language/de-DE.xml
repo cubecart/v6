@@ -1339,6 +1339,7 @@
       <string name="name_6" introduced="5.0.0"><![CDATA[Storniert]]></string>
     </group>
     <group name="orders">
+      <string name="cancel_by_customer" introduced="5.2.13"><![CDATA[Sortieren nach Kunde von ihrem Konto Bereich abgebrochen.]]></string>
       <string name="card_card_cvv" introduced="5.0.0"><![CDATA[Sicherheitscode]]></string>
       <string name="card_card_details" introduced="5.0.0"><![CDATA[Kreditkarteninformationen]]></string>
       <string name="card_card_expire" introduced="5.0.0"><![CDATA[Ablaufdatum]]></string>

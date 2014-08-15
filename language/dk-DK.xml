@@ -1374,6 +1374,7 @@
     <string name="name_6" introduced="5.0.0"><![CDATA[Annuleret]]></string>
   </group>
   <group name="orders">
+    <string name="cancel_by_customer" introduced="5.2.13"><![CDATA[Ordren blev annulleret af kunden fra deres konto område.]]></string>
     <string name="card_card_cvv" introduced="5.0.0"><![CDATA[Sikkerhedskode]]></string>
     <string name="card_card_details" introduced="5.0.0"><![CDATA[Kredit Kort Detaljer]]></string>
     <string name="card_card_expire" introduced="5.0.0"><![CDATA[Udløbs Dato]]></string>
