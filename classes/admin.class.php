@@ -192,6 +192,9 @@ class Admin {
 		if (filter_var($email, FILTER_VALIDATE_EMAIL) && !empty($validation) && !empty($password['new']) && !empty($password['confirm']) && ($password['new'] === $password['confirm'])) {
 			if (($check = $GLOBALS['db']->select('CubeCart_admin_users', array('admin_id', 'username'), array('email' => $email, 'verify' => $validation, 'status' => '1'))) !== false) {
 
+				// Remove any blocks
+				$GLOBALS['db']->delete('CubeCart_blocker', array('username' => $email));
+				
 				$salt = Password::getInstance()->createSalt();
 				$record = array(
 					'salt'  => $salt,

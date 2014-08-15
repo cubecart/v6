@@ -191,7 +191,7 @@ class Session {
 					'level'			=> ($blocked['last_attempt'] <= ($now - $time)) ? 1 : $blocked['level'] + 1,
 				);
 				if ($record['level'] == $attempts) {
-					// Blocked, bitches...
+					// Blocked
 					$record['ban_expires'] = ($now+$time);
 					$this->_user_blocked = true;
 				}

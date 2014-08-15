@@ -88,6 +88,7 @@ class GD {
 		$im = $this->gdGetCurrentData();
 		if ($im) {
 			$file = $this->_gdTargetDir.$filename;
+			imageinterlace($im, true);
 			switch ($this->_gdImageType) {
 			case IMAGETYPE_GIF:
 				$this->_gdImageSource = imagegif($im, $file);

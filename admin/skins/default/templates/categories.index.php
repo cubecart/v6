@@ -137,7 +137,7 @@
   {if $MODE_TRANSLATE}
   <div id="general" class="tab_content">
 	<fieldset><legend>{$LANG.common.general}</legend>
-	  <div><label for="trans_name">{$LANG.settings.category_name}</label><span><input type="text" name="translate[cat_name]" id="trans_name" value="{$TRANS.cat_name}" class="textbox"></span></div>
+	  <div><label for="trans_name">{$LANG.settings.category_name}</label><span><input type="text" name="translate[cat_name]" id="trans_name" value="{$TRANS.cat_name}" class="textbox required" required="required"></span></div>
 	  <div><label for="trans_lang">{$LANG.common.language}</label><span><select name="translate[language]" id="trans_lang" class="textbox">
 	  {foreach from=$LANGUAGES item=lang}<option value="{$lang.code}"{$lang.selected}>{$lang.title}</option>{/foreach}
 	  </select></span></div>

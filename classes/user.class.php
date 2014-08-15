@@ -592,6 +592,10 @@ class User {
 	public function passwordReset($email, $verification, $password) {
 		if (filter_var($email, FILTER_VALIDATE_EMAIL) && !empty($verification) && !empty($password['password']) && !empty($password['passconf']) && ($password['password'] === $password['passconf'])) {
 			if (($check = $GLOBALS['db']->select('CubeCart_customer', array('customer_id', 'email'), array('email' => $email, 'verify' => $verification))) !== false) {
+				
+				// Remove any blocks
+				$GLOBALS['db']->delete('CubeCart_blocker', array('username' => $email));
+
 				$salt = Password::getInstance()->createSalt();
 
 				$record = array(
