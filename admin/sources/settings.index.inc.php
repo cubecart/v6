@@ -14,6 +14,14 @@ if (empty($ssl_url) && CC_SSL) {
 	$GLOBALS['config']->set('config', 'standard_url', CC_STORE_URL);
 }
 
+$cookie_domain 	= $GLOBALS['config']->get('config','cookie_domain');
+
+if(empty($cookie_domain)) {
+	$domain = parse_url(CC_STORE_URL);
+	$cookie_domain = '.'.str_replace('www.','',$domain['host']);
+	$GLOBALS['config']->set('config','cookie_domain',$cookie_domain);
+}
+
 if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_PERM_FULL)) {
 	$config_old = $GLOBALS['config']->get('config');
 	if (!empty($_FILES)) {
