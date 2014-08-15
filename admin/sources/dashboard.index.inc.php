@@ -107,7 +107,6 @@ foreach ($GLOBALS['hooks']->load('admin.dashboard.quick_tasks') as $hook) includ
 $GLOBALS['smarty']->assign('QUICK_TASKS', $quick_tasks);
 
 ## Statistics (Google Charts)
-
 $sales = $GLOBALS['db']->select('CubeCart_order_summary', array('order_date', 'total'), array('order_date' => '>='.mktime(0, 0, 0, date('m', $last_year), 1, date('Y', $last_year)), 'status' => array(3), 'total' => '>0'));
 $data= array();
 if ($sales) { ## Get data to put in chart
@@ -146,9 +145,20 @@ $unsettled_orders = $GLOBALS['db']->select('CubeCart_order_summary', array('cart
 if ($unsettled_orders) {
 	$tax = Tax::getInstance();
 	$GLOBALS['main']->addTabControl($lang['dashboard']['title_orders_unsettled'], 'orders', null, null, $unsettled_count);
+	
+	foreach($unsettled_orders as $order) {
+		$customer_ids[$order['customer_id']] = true;
+	}
+	$customers_in = implode(array_keys($customer_ids),',');
+	
+	$customers = $GLOBALS['db']->select('CubeCart_customer', array('type','customer_id'), 'customer_id IN ('.$customers_in.')');
+	foreach($customers as $customer) {
+		$customer_type[$customer['customer_id']] = $customer['type'];
+	}
+
 	foreach ($unsettled_orders as $order) {
 		$cart_order_ids[] = "'".$order['cart_order_id']."'";
-		$order['icon'] = (empty($order['customer_id'])) ? 'user_ghost' : 'user_registered';
+		$order['icon'] = $customer_type[$order['customer_id']]==1 ? 'user_registered' : 'user_ghost';
 		$order['date'] = formatTime($order['order_date']);
 		$order['total'] = Tax::getInstance()->priceFormat($order['total']);
 		$order['status'] = $lang['order_state']['name_'.$order['status']];
