@@ -1,4 +1,4 @@
-<h2>{$LANG.orders.title_card_details}</h3>
+<h2>{$LANG.orders.title_card_details}</h2>
 <table width="100%" cellpadding="3" cellspacing="10" border="0">
 	<tr>
 		<td width="140">{$LANG.user.name_first}</td>
