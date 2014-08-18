@@ -671,6 +671,8 @@
       <string name="title_departments" introduced="5.0.0"><![CDATA[Departamentos (opcional)]]></string>
     </group>
     <group name="country">
+      <string name="eu" introduced="5.2.13"><![CDATA[Unión Europea]]></string>
+      <string name="assign_to_eu" introduced="5.2.13"><![CDATA[Asigne a la Unión Europea?]]></string>
       <string name="bread_geo" introduced="5.0.0"><![CDATA[Países y zonas]]></string>
       <string name="country_iso_alpha2" introduced="5.0.0"><![CDATA[ISO código alfa-2]]></string>
       <string name="country_iso_alpha3" introduced="5.0.0"><![CDATA[ISO código alfa-3]]></string>

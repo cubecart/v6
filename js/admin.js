@@ -4,7 +4,9 @@ $(window).load(function() {
 });
 
 $(document).ready(function() {
-
+	$('#rule-eu').click(function() {		
+		$( "#country-region" ).toggle( "slow", function() {});
+	});
 	$('a.colorbox.hostip').colorbox({
 		iframe:true,
 		innerHeight:'100px',

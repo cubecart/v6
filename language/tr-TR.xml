@@ -689,6 +689,8 @@
    <string name="title_departments"><![CDATA[Bölümler (isteğe bağlı)]]></string>
   </group>
   <group name="country">
+   <string name="eu" introduced="5.2.13"><![CDATA[Avrupa Birliği]]></string>
+   <string name="assign_to_eu" introduced="5.2.13"><![CDATA[Avrupa Birliği atama?]]></string>
    <string name="bread_geo"><![CDATA[Ülkeler & Bölgeler]]></string>
    <string name="country_iso_alpha2"><![CDATA[ISO Alpha-2]]></string>
    <string name="country_iso_alpha3"><![CDATA[ISO Alpha-3]]></string>

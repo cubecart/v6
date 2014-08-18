@@ -95,12 +95,15 @@
 	<div><label for="rule-detail">{$LANG.settings.tax_detail}</label><span><select name="addrule[details_id]" class="textbox" id="rule-detail">
 	  {foreach from=$TAX_DETAILS item=detail}<option value="{$detail.id}">{$detail.display}</option>{/foreach}
 	</select></span></div>
-	
+	<div><label for="rule-eu">{$LANG.country.eu}</label><span>
+		<input type="checkbox" name="addrule[eu]" id="rule-eu" value="1" />
+	</span></div>
+	<div id="country-region">
 	<div><label for="country-list">{$LANG.address.country}</label><span><select name="addrule[country_id]" id="country-list" class="textbox no-custom-zone" title="{$LANG.common.regions_all}">
 	  {foreach from=$COUNTRIES item=country}<option value="{$country.numcode}" {if $country.numcode == $CONFIG.store_country}selected="selected"{/if}>{$country.name}</option>{/foreach}
 	</select></span></div>
 	<div><label for="state-list">{$LANG.address.state}</label><span><input name="addrule[county_id]" type="text" id="state-list" class="textbox" value="{$VAL_TAX_STATE}"></span></div>
-	
+	</div>
 	<div><label for="rule-taxrate">{$LANG.settings.tax_rate}</label><span><input name="addrule[tax_percent]" id="rule-taxrate" type="text" class="textbox number"></span></div>
 	<div><label for="rule-applyto">{$LANG.settings.tax_apply_to}</label><span>
 		<input type="hidden" name="addrule[goods]" id="rule-goods" value="0" class="toggle"> {$LANG.settings.tax_on_goods} 

@@ -88,11 +88,21 @@ if (isset($_POST['rule']) && is_array($_POST['rule']) && Admin::getInstance()->p
 }
 ## Add Tax Rule
 if (isset($_POST['addrule']) && is_array($_POST['addrule']) && is_numeric($_POST['addrule']['tax_percent']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
-	if ($GLOBALS['db']->insert('CubeCart_tax_rates', $_POST['addrule'])) {
-		$GLOBALS['main']->setACPNotify($lang['settings']['notify_tax_rule_add']);
-	} else {
-		$GLOBALS['main']->setACPWarning($lang['settings']['error_tax_rule_add']);
-	}
+	if($_POST['addrule']['eu']==1) {
+		$eu_countries = $GLOBALS['db']->select('CubeCart_geo_country','numcode',array('eu' => 1));
+		foreach($eu_countries as $country){
+			$_POST['addrule']['country_id'] = $country['numcode'];
+			$_POST['addrule']['county_id'] = 0;
+			$GLOBALS['db']->insert('CubeCart_tax_rates', $_POST['addrule']);
+			$GLOBALS['main']->setACPNotify($lang['settings']['notify_tax_rule_add']);	
+		}
+ 	} else {
+		if ($GLOBALS['db']->insert('CubeCart_tax_rates', $_POST['addrule'])) {
+			$GLOBALS['main']->setACPNotify($lang['settings']['notify_tax_rule_add']);
+		} else {
+			$GLOBALS['main']->setACPWarning($lang['settings']['error_tax_rule_add']);
+		}
+ 	}
 	$redirect = true;
 }
 ## Delete Tax Rule

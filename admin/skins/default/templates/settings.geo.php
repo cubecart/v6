@@ -5,10 +5,11 @@
 	  <thead>
 		<tr>
 		  <td>&nbsp;</td>
-		  <td width="310">{$LANG.country.country_name}</td>
-		  <td width="110">{$LANG.country.country_iso_alpha2}</td>
-		  <td width="110">{$LANG.country.country_iso_alpha3}</td>
-		  <td width="110">{$LANG.country.country_iso_numeric}</td>
+		  <td>{$LANG.country.country_name}</td>
+		  <td>{$LANG.country.country_iso_alpha2}</td>
+		  <td>{$LANG.country.country_iso_alpha3}</td>
+		  <td>{$LANG.country.country_iso_numeric}</td>
+		  <td>{$LANG.country.eu}</td>
 		  <td>&nbsp;</td>
 		</tr>
 	  </thead>
@@ -20,6 +21,7 @@
 		  <td><span class="editable number" name="country[{$country.id}][iso]">{$country.iso}</span></td>
 		  <td><span class="editable number" name="country[{$country.id}][iso3]">{$country.iso3}</span></td>
 		  <td><span class="editable number" name="country[{$country.id}][numcode]">{$country.numcode}</span></td>
+		  <td><input name="country[{$country.id}][eu]" id="{$country.id}_eu" type="hidden" class="toggle" value="{$country.eu}" /></td>
 		  <td align="center"><a href="{$country.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a></td>
 		</tr>
 	  {/foreach}
@@ -50,6 +52,7 @@
 		  <div><label for="country-iso">{$LANG.country.country_iso_alpha2}</label><span><input type="text" name="new_country[iso]" id="country-iso" class="textbox"></span></div>
 		  <div><label for="country-iso3">{$LANG.country.country_iso_alpha3}</label><span><input type="text" name="new_country[iso3]" id="country-iso3" class="textbox"></span></div>
 		  <div><label for="country-num">{$LANG.country.country_iso_numeric}</label><span><input type="text" name="new_country[numcode]" id="country-num" class="textbox"></span></div>
+		  <div><label for="country-eu">{$LANG.country.assign_to_eu}</label><span><input name="new_country[eu]" id="country-eu" type="hidden" class="toggle" value="0" /></span></div>
 		</fieldset>
 	</div>
 
