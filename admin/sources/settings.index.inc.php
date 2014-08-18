@@ -92,7 +92,7 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
 	}
 
 	## Set default currency to have an exchange rate of 1
-	$GLOBALS['db']->update('CubeCart_currency',array('value' => 1), array('code' => $_POST['config']['default_currency']);
+	$GLOBALS['db']->update('CubeCart_currency',array('value' => 1), array('code' => $_POST['config']['default_currency']));
 
 	##
 	## TO DO: Add more validation routines
