@@ -321,14 +321,16 @@ CREATE TABLE IF NOT EXISTS `CubeCart_filemanager` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_geo_country` (
-	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	`iso` CHAR(2) NOT NULL,
-	`name` VARBINARY(80) NOT NULL DEFAULT '',
-	`iso3` CHAR(3) DEFAULT NULL,
-	`numcode` SMALLINT(3) UNSIGNED ZEROFILL DEFAULT NULL,
-	PRIMARY KEY (`iso`),
-	KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `iso` char(2) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varbinary(80) NOT NULL DEFAULT '',
+  `iso3` char(3) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `numcode` smallint(3) unsigned zerofill DEFAULT NULL,
+  `eu` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`iso`),
+  KEY `id` (`id`),
+  KEY `eu` (`eu`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_geo_zone` (
 	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,

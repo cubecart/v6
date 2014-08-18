@@ -274,8 +274,12 @@ $GLOBALS['config']->get('config', 'dnLoadRootPath', rootHomePath());
 $GLOBALS['config']->get('config', 'dnLoadCustomPath', ($GLOBALS['config']->isEmpty('config', 'dnLoadCustomPath')) ? 'files' : $GLOBALS['config']->get('config', 'dnLoadCustomPath'));
 
 ## Auto assign config settings to {VAL_[KEYNAME]}
+for( $i = 1; $i <= 6; ++$i ) {
+	$a_n_s[(string)$i] = $lang['order_state']['name_' . (string)$i];
+}
+
 $select_options = array(
-	'admin_notify_status' => array('2' => $lang['order_state']['name_2'], '1' => $lang['order_state']['name_1']),
+	'admin_notify_status'	=> $a_n_s,
 	'basket_jump_to'  => null,
 	'cache'     => array($lang['common']['disabled'], $lang['common']['enabled']),
 	'catalogue_expand_tree' => null,

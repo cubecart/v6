@@ -34,57 +34,33 @@ class Gateway {
 		}
 		return $newPass;
 	}
-
-	private function _simpleXor($InString) {
-		$KeyList = array();
-		$output = "";
-		$Key = $this->_module['passphrase'];
-		for($i = 0; $i < strlen($Key); $i++) {
-			$KeyList[$i] = ord(substr($Key, $i, 1));
-		}
-		for($i = 0; $i < strlen($InString); $i++) {
-	    	$output.= chr(ord(substr($InString, $i, 1)) ^ ($KeyList[$i % strlen($Key)]));
-	  	}
-	  	return $output;
-	}
 	
 	private function _encryptAndEncode($strIn) {
+		//** AES encryption, CBC blocking with PKCS5 padding then HEX encoding - DEFAULT **
+	    	
+    	//** add PKCS5 padding to the text to be encypted
+    	$strIn = $this->_addPKCS5Padding($strIn);
+
+    	//** perform encryption with PHP's MCRYPT module
+		$strCrypt = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $this->_module['passphrase'], $strIn, MCRYPT_MODE_CBC, $this->_module['passphrase']);
 		
-		if ($this->_encryption=="XOR") {
-			//** XOR encryption with Base64 encoding **
-			return $this->_base64Encode($this->_simpleXor($strIn));
-		} else {
-			//** AES encryption, CBC blocking with PKCS5 padding then HEX encoding - DEFAULT **
-		    	
-	    	//** add PKCS5 padding to the text to be encypted
-	    	$strIn = $this->_addPKCS5Padding($strIn);
-	
-	    	//** perform encryption with PHP's MCRYPT module
-			$strCrypt = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $this->_module['passphrase'], $strIn, MCRYPT_MODE_CBC, $this->_module['passphrase']);
-			
-			//** perform hex encoding and return
-			return "@" . bin2hex($strCrypt);
-		}
+		//** perform hex encoding and return
+		return "@" . bin2hex($strCrypt);
 	}
 	
 	
 	//** Wrapper function do decode then decrypt based on header of the encrypted field **
 	private function _decodeAndDecrypt($strIn) {
-		if (substr($strIn,0,1)=="@") {
-			//** HEX decoding then AES decryption, CBC blocking with PKCS5 padding - DEFAULT **
-			
-	    	//** remove the first char which is @ to flag this is AES encrypted
-	    	$strIn = substr($strIn,1); 
-	    	
-	    	//** HEX decoding
-	    	$strIn = pack('H*', $strIn);
-	    	
-	    	//** perform decryption with PHP's MCRYPT module
-			return $this->_removePKCS5Padding(mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $this->_module['passphrase'], $strIn, MCRYPT_MODE_CBC, $this->_module['passphrase'])); 
-		} else {
-			//** Base 64 decoding plus XOR decryption **
-			return $this->_simpleXor($this->_base64Decode($strIn));
-		}
+		//** HEX decoding then AES decryption, CBC blocking with PKCS5 padding - DEFAULT **
+		
+    	//** remove the first char which is @ to flag this is AES encrypted
+    	$strIn = substr($strIn,1); 
+    	
+    	//** HEX decoding
+    	$strIn = pack('H*', $strIn);
+    	
+    	//** perform decryption with PHP's MCRYPT module
+		return $this->_removePKCS5Padding(mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $this->_module['passphrase'], $strIn, MCRYPT_MODE_CBC, $this->_module['passphrase'])); 
 	}
 	
 	private function _removePKCS5Padding($decrypted) {
@@ -165,48 +141,22 @@ class Gateway {
 		  return $output;
 	}
 
-	private function _cleaninput($strRawText, $filterType) {
-	    $strAllowableChars = "";
+	private function _ci($strRawText) {
+	 	$strAllowableChars = "";
 	    $blnAllowAccentedChars = FALSE;
 	    $strCleaned = "";
-	    $filterType = strtolower($filterType); //ensures filterType matches constant values
 	    
-	    if ($filterType == CLEAN_INPUT_FILTER_TEXT)
-	    { 
-	        $strAllowableChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,'/\\{}@():?-_&£$=%~*+\"\n\r";
-	        $strCleaned = cleanInput2($strRawText, $strAllowableChars, TRUE);
-		}
-	    elseif ($filterType == CLEAN_INPUT_FILTER_NUMERIC) 
-	    {
-	        $strAllowableChars = "0123456789 .,";
-	        $strCleaned = cleanInput2($strRawText, $strAllowableChars, FALSE);
-	    }   
-	    elseif ($filterType == CLEAN_INPUT_FILTER_ALPHABETIC || $filterType == CLEAN_INPUT_FILTER_ALPHABETIC_AND_ACCENTED)
-		{
-	        $strAllowableChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz";
-	        if ($filterType == CLEAN_INPUT_FILTER_ALPHABETIC_AND_ACCENTED) $blnAllowAccentedChars = TRUE;
-	        $strCleaned = cleanInput2($strRawText, $strAllowableChars, $blnAllowAccentedChars);
-		}
-	    elseif ($filterType == CLEAN_INPUT_FILTER_ALPHANUMERIC || $filterType == CLEAN_INPUT_FILTER_ALPHANUMERIC_AND_ACCENTED)
-		{
-	        $strAllowableChars = "0123456789 ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-	        if ($filterType == CLEAN_INPUT_FILTER_ALPHANUMERIC_AND_ACCENTED) $blnAllowAccentedChars = TRUE;
-	        $strCleaned = cleanInput2($strRawText, $strAllowableChars, $blnAllowAccentedChars);
-		}
-	    else // Widest Allowable Character Range
-	    {
-	        $strAllowableChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,'/\\{}@():?-_&£$=%~*+\"\n\r";
-	        $strCleaned = $this->_cleanInput2($strRawText, $strAllowableChars, TRUE);
-	    }
+	    $strAllowableChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,'/\\{}@():?-_&£$=%~*+\"\n\r";
+	    $strCleaned = $this->_ci2($strRawText, $strAllowableChars, TRUE);
 	    
 	    return $strCleaned;
 	}
 	
-	private function _cleaninput2($strRawText, $strAllowableChars, $blnAllowAccentedChars)
-	{
+	private function _ci2($strRawText, $strAllowableChars, $blnAllowAccentedChars) {
 	    $iCharPos = 0;
 	    $chrThisChar = "";
 	    $strCleanedText = "";
+	    
 	    
 	    //Compare each character based on list of acceptable characters
 	    while ($iCharPos < strlen($strRawText))
@@ -232,39 +182,6 @@ class Gateway {
 	    return $strCleanedText;
 	}
 	
-	
-	/* Base 64 Encoding function **
-	** PHP does it natively but just for consistency and ease of maintenance, let's declare our own function **/
-	
-	private function _base64Encode($plain) {
-	  // Initialise output variable
-	  $output = "";
-	  
-	  // Do encoding
-	  $output = base64_encode($plain);
-	  
-	  // Return the result
-	  return $output;
-	}
-	
-	/* Base 64 decoding function **
-	** PHP does it natively but just for consistency and ease of maintenance, let's declare our own function **/
-	
-	private function _base64Decode($scrambled) {
-	  // Initialise output variable
-	  $output = "";
-	  
-	  // Fix plus to space conversion issue
-	  $scrambled = str_replace(" ","+",$scrambled);
-	  
-	  // Do encoding
-	  $output = base64_decode($scrambled);
-	  
-	  // Return the result
-	  return $output;
-	}
-
-
 	public function transfer() {
 
 		$transfer	= array(
@@ -292,60 +209,62 @@ class Gateway {
 
 	public function fixedVariables() {
 
-		$cryptVars =
-		"VendorTxCode=".$this->_vendorTxCode
-		."&Amount=".$this->_basket['total']
-		."&Currency=".$GLOBALS['config']->get('config', 'default_currency')
-		."&Description=Cart - ".$this->_basket['cart_order_id']
-		."&ApplyAVSCV2=0"
-		."&Apply3DSecure=0"
-		."&SuccessURL=".$GLOBALS['storeURL'].'/index.php?_g=rm&type=gateway&cmd=process&module=SagePay&cart_order_id='.$this->_basket['cart_order_id']
-		."&FailureURL=".$GLOBALS['storeURL'].'/index.php?_g=rm&type=gateway&cmd=process&module=SagePay&cart_order_id='.$this->_basket['cart_order_id']
-		."&CustomerEmail=".$this->_cleaninput($this->_basket['billing_address']['email'], CLEAN_INPUT_FILTER_TEXT)
-		."&CustomerName=".$this->_cleaninput($this->_basket['billing_address']['first_name']." ".$this->_basket['billing_address']['last_name'], CLEAN_INPUT_FILTER_TEXT)
-		."&BillingSurname=".$this->_cleaninput($this->_basket['billing_address']['last_name'], CLEAN_INPUT_FILTER_TEXT)
-		."&BillingFirstnames=".$this->_cleaninput($this->_basket['billing_address']['first_name'], CLEAN_INPUT_FILTER_TEXT)
-		."&BillingAddress1=".$this->_cleaninput($this->_basket['billing_address']['line1'], CLEAN_INPUT_FILTER_TEXT)
-		."&BillingAddress2=".$this->_cleaninput($this->_basket['billing_address']['line2'], CLEAN_INPUT_FILTER_TEXT)
-		."&BillingCity=".$this->_cleaninput($this->_basket['billing_address']['town'], CLEAN_INPUT_FILTER_TEXT)
-		."&BillingCountry=".$this->_cleaninput($this->_basket['billing_address']['country_iso'], CLEAN_INPUT_FILTER_TEXT)
-		."&BillingPostCode=".$this->_cleaninput($this->_basket['delivery_address']['postcode'], CLEAN_INPUT_FILTER_TEXT)
-		."&BillingPhone=".$this->_cleaninput($this->_basket['billing_address']['phone'], CLEAN_INPUT_FILTER_TEXT)
-		."&DeliverySurname=".$this->_cleaninput($this->_basket['delivery_address']['last_name'], CLEAN_INPUT_FILTER_TEXT)
-		."&DeliveryFirstnames=".$this->_cleaninput($this->_basket['delivery_address']['first_name'], CLEAN_INPUT_FILTER_TEXT)
-		."&DeliveryAddress1=".$this->_cleaninput($this->_basket['delivery_address']['line1'], CLEAN_INPUT_FILTER_TEXT)
-		."&DeliveryAddress2=".$this->_cleaninput($this->_basket['delivery_address']['line2'], CLEAN_INPUT_FILTER_TEXT)
-		."&DeliveryCity=".$this->_cleaninput($this->_basket['delivery_address']['town'], CLEAN_INPUT_FILTER_TEXT)
-		."&DeliveryPostCode=".$this->_cleaninput($this->_basket['delivery_address']['postcode'], CLEAN_INPUT_FILTER_TEXT)
-		."&DeliveryCountry=".$this->_cleaninput($this->_basket['delivery_address']['country_iso'], CLEAN_INPUT_FILTER_TEXT)
-		."&DeliveryPhone=".$this->_cleaninput($this->_basket['delivery_address']['phone'], CLEAN_INPUT_FILTER_TEXT)
-		."&Basket="
-		."&AllowGiftAid=0"
-		."&SendEMail=1"
-		."&VendorEMail=".$this->_module['VendorEMail'];
+		
+		$cryptVars = "VendorTxCode=".$this->_vendorTxCode
+			."&Amount="				.$this->_basket['total']
+			."&Currency="			.$GLOBALS['config']->get('config', 'default_currency')
+			."&Description="		."Cart - ".$this->_basket['cart_order_id']
+			."&ApplyAVSCV2="		."0"
+			."&Apply3DSecure="		."0"
+			."&SuccessURL="			.$GLOBALS['storeURL'].'/index.php?_g=rm&type=gateway&cmd=process&module=SagePay&cart_order_id='.$this->_basket['cart_order_id']
+			."&FailureURL="			.$GLOBALS['storeURL'].'/index.php?_g=rm&type=gateway&cmd=process&module=SagePay&cart_order_id='.$this->_basket['cart_order_id']
+			."&CustomerEmail="		.$this->_ci($this->_basket['billing_address']['email'], CLEAN_INPUT_FILTER_TEXT)
+			."&CustomerName="		.$this->_ci($this->_basket['billing_address']['first_name']." ".$this->_basket['billing_address']['last_name'], CLEAN_INPUT_FILTER_TEXT)
+			."&BillingSurname="		.$this->_ci($this->_basket['billing_address']['last_name'], CLEAN_INPUT_FILTER_TEXT)
+			."&BillingFirstnames="	.$this->_ci($this->_basket['billing_address']['first_name'], CLEAN_INPUT_FILTER_TEXT)
+			."&BillingAddress1="	.$this->_ci($this->_basket['billing_address']['line1'], CLEAN_INPUT_FILTER_TEXT)
+			."&BillingAddress2="	.$this->_ci($this->_basket['billing_address']['line2'], CLEAN_INPUT_FILTER_TEXT)
+			."&BillingCity="		.$this->_ci($this->_basket['billing_address']['town'], CLEAN_INPUT_FILTER_TEXT)
+			."&BillingCountry="		.$this->_ci($this->_basket['billing_address']['country_iso'], CLEAN_INPUT_FILTER_TEXT)
+			."&BillingPostCode="	.$this->_ci($this->_basket['delivery_address']['postcode'], CLEAN_INPUT_FILTER_TEXT)
+			."&BillingPhone="		.$this->_ci($this->_basket['billing_address']['phone'], CLEAN_INPUT_FILTER_TEXT)
+			."&DeliverySurname="	.$this->_ci($this->_basket['delivery_address']['last_name'], CLEAN_INPUT_FILTER_TEXT)
+			."&DeliveryFirstnames="	.$this->_ci($this->_basket['delivery_address']['first_name'], CLEAN_INPUT_FILTER_TEXT)
+			."&DeliveryAddress1="	.$this->_ci($this->_basket['delivery_address']['line1'], CLEAN_INPUT_FILTER_TEXT)
+			."&DeliveryAddress2="	.$this->_ci($this->_basket['delivery_address']['line2'], CLEAN_INPUT_FILTER_TEXT)
+			."&DeliveryCity="		.$this->_ci($this->_basket['delivery_address']['town'], CLEAN_INPUT_FILTER_TEXT)
+			."&DeliveryPostCode="	.$this->_ci($this->_basket['delivery_address']['postcode'], CLEAN_INPUT_FILTER_TEXT)
+			."&DeliveryCountry="	.$this->_ci($this->_basket['delivery_address']['country_iso'], CLEAN_INPUT_FILTER_TEXT)
+			."&DeliveryPhone="		.$this->_ci($this->_basket['delivery_address']['phone'], CLEAN_INPUT_FILTER_TEXT)
+			."&Basket="				.''
+			."&AllowGiftAid="		.'0'
+			."&SendEMail="			.'1'
+			."&VendorEMail="		.$this->_module['VendorEMail']
+			."&ReferrerID="			."32839EA8-8935-49A4-95FB-369E755B632C";
+
 
 		if($this->_basket['delivery_address']['country_iso']=="US") {
 			if(strlen($this->_basket['billing_address']['state_abbrev']) > 2) {
 				$this->_basket['billing_address']['state_abbrev'] = getStateFormat($this->_basket['billing_address']['state_abbrev'], 'name', 'abbrev');
 			}
-			$cryptVars.="&BillingState=".$this->_cleaninput($this->_basket['billing_address']['state_abbrev'], CLEAN_INPUT_FILTER_TEXT);
+			$cryptVars .= "&BillingState=" .$this->_ci($this->_basket['billing_address']['state_abbrev'], CLEAN_INPUT_FILTER_TEXT);
 		}
 		if($this->_basket['delivery_address']['country_iso']=="US") {
 			if(strlen($this->_basket['delivery_address']['state_abbrev']) > 2) {
 				$this->_basket['delivery_address']['state_abbrev'] = getStateFormat($this->_basket['delivery_address']['state_abbrev'], 'name', 'abbrev');
 			}
-			$cryptVars.="&DeliveryState=".$this->_cleaninput($this->_basket['delivery_address']['state_abbrev'], CLEAN_INPUT_FILTER_TEXT);
+			$cryptVars .= "&DeliveryState" .$this->_ci($this->_basket['delivery_address']['state_abbrev'],CLEAN_INPUT_FILTER_TEXT);
 		}
 
 		$TxType	= empty($this->_module['TxType']) ? 'PAYMENT' : $this->_module['TxType'];
 
-		$hidden		= 	array(
-							//'VendorTxCode' 	=> $this->_vendorTxCode,
-							'VPSProtocol' 	=> '2.23',
-							'TxType' 		=> $TxType,
-							'Vendor'		=> $this->_module['acNo'],
-							'Crypt'			=> $this->_encryptAndEncode($cryptVars)
-						);
+		$hidden	= 	array(
+			'VPSProtocol' 	=> '3.00',
+			'TxType' 		=> $TxType,
+			'Vendor'		=> $this->_module['acNo'],
+			'Crypt'			=> $this->_encryptAndEncode($cryptVars),
+			'BillingAgreement' => 0
+		);
 		return $hidden;
 	}
 
@@ -371,14 +290,23 @@ class Gateway {
 		$transData['status'] 		= $values['Status'];
 		$transData['order_id']		= $cart_order_id;
 
+		$transData['notes'] = '';
+		
+		if(!empty($values['StatusDetail']))		$transData['notes'] .= "StatusDetail: ".$values['StatusDetail'].'<br>';
+		if(!empty($values['ExpiryDate'])) 		$transData['notes'] .= "ExpiryDate: ".$values['ExpiryDate'].'<br>';
+		if(!empty($values['BankAuthCode'])) 	$transData['notes'] .= "BankAuthCode: ".$values['BankAuthCode'].'<br>';
+		if(!empty($values['DeclineCode'])) 		$transData['notes'] .= "DeclineCode: ".$values['DeclineCode'].'<br>';
+		if(!empty($values['FraudResponse'])) 	$transData['notes'] .= "FraudResponse: ".$values['FraudResponse'].'<br>';
+		if(!empty($values['Surcharge'])) 		$transData['notes'] .= "Surcharge: ".$values['Surcharge'].'<br>';
+		if(!empty($values['AddressStatus'])) 	$transData['notes'] .= "AddressStatus: ".$values['AddressStatus'].'<br>';
+		if(!empty($values['PayerStatus'])) 		$transData['notes'] .= "PayerStatus: ".$values['PayerStatus'];
+
 		if($values['Status']=="OK"){
 			$order->orderStatus(Order::ORDER_PROCESS, $cart_order_id);
 			$order->paymentStatus(Order::PAYMENT_SUCCESS, $cart_order_id);
-			$transData['notes'] = $values['StatusDetail'];
 		} else {
 			$order->orderStatus(Order::ORDER_PENDING, $cart_order_id);
 			$order->paymentStatus(Order::PAYMENT_PENDING, $cart_order_id);
-			$transData['notes'] = $values['StatusDetail'];
 		}
 		$order->logTransaction($transData);
 		httpredir(currentPage(array('_g', 'type', 'cmd', 'module'), array('_a' => 'complete')));

@@ -1,0 +1,2 @@
+ALTER TABLE  `CubeCart_geo_country` ADD  `eu` TINYINT UNSIGNED NOT NULL DEFAULT '0', ADD INDEX (  `eu` ); #EOQ
+UPDATE `CubeCart_geo_country` SET `eu` = 1 WHERE `iso` IN('BG','CZ','DK','DE','EE','IE','EL','ES','FR','HR','IT','CY','LV','LT','LU','HU','MT','NL','AT','PL','PT','RO','SI','SK','FI','SE','UK'); #EOQ
