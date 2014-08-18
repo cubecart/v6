@@ -91,6 +91,9 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
 		$config_new['time_format'] = '%Y-%m-%d %H:%M';
 	}
 
+	## Set default currency to have an exchange rate of 1
+	$GLOBALS['db']->update('CubeCart_currency',array('value' => 1), array('code' => $_POST['config']['default_currency']);
+
 	##
 	## TO DO: Add more validation routines
 	$updated = ($GLOBALS['config']->set('config', '', $config_new)) ? true : false;
