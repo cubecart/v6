@@ -95,7 +95,7 @@
 	<div><label for="rule-detail">{$LANG.settings.tax_detail}</label><span><select name="addrule[details_id]" class="textbox" id="rule-detail">
 	  {foreach from=$TAX_DETAILS item=detail}<option value="{$detail.id}">{$detail.display}</option>{/foreach}
 	</select></span></div>
-	<div><label for="rule-eu">{$LANG.country.eu}</label><span>
+	<div><label for="rule-eu">{$LANG.country.assign_to_eu}</label><span>
 		<input type="checkbox" name="addrule[eu]" id="rule-eu" value="1" />
 	</span></div>
 	<div id="country-region">
