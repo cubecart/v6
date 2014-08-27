@@ -153,8 +153,8 @@ class FedEx {
 																		'Contact' => null,
 																		'Address' => array('CountryCode' => 'US'))));
 																		
-		$request['RequestedShipment']['RateRequestTypes'] = 'ACCOUNT'; 
-		$request['RequestedShipment']['RateRequestTypes'] = 'LIST'; 
+		$request['RequestedShipment']['RateRequestType'] = 'ACCOUNT'; 
+		$request['RequestedShipment']['RateRequestType'] = 'LIST'; 
 		$request['RequestedShipment']['PackageCount'] = '1';
 		$request['RequestedShipment']['RequestedPackageLineItems'] = array(
 		'0' => array(
