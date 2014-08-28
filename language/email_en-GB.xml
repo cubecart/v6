@@ -175,7 +175,7 @@
         <br /> 
         To reset your password, please click on the link below or copy and paste the address onto your web browser's address window. Once you're on the web page, you will be instructed to enter and confirm your new password.<br /> 
         <br /> 
-        {$DATA.reset_link}<br /> 
+        <a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br /> 
         <br /> 
         If you require further assistance in resetting your password, please contact us.</p>]]></content>
     <content type="text"><![CDATA[Hi {$DATA.first_name},

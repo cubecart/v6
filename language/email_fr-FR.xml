@@ -150,7 +150,7 @@ Nous sommes désolés mais nous ne pouvons pas accepter le paiement pour la comm
 <br /> 
 Pour réinitialiser votre mot de passe, veuillez cliquer sur le lien ci-dessous ou copier et coller l'adresse dans la fenêtre d'adresse de votre navigateur Web. Une fois que vous êtes sur la page Web, il vous sera demandé d'entrer et de confirmer votre nouveau mot de passe.<br /> 
 <br /> 
-{$DATA.reset_link}<br /> 
+<a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br /> 
 <br /> 
 Si vous avez besoin davantage d'assistance pour la réinitialisation de votre mot de passe, veuillez nous contacter.</p>]]></content> <content type="text"><![CDATA[Bonjour {$DATA.first_name},
  

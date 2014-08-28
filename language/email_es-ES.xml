@@ -155,7 +155,7 @@ Lo sentimos mucho, pero no hemos podido aceptar el pago del pedido {$DATA.cart_o
 <br /> 
 Para borrar su contraseña y crear otra, haga clic en el siguiente vínculo o copie y pegue la dirección en la barra de direcciones de su navegador. Una vez que esté en la página web, recibirá instrucciones para introducir y confirmar su nueva contraseña.<br /> 
 <br /> 
-{$DATA.reset_link}<br /> 
+<a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br /> 
 <br /> 
 Si necesita más ayuda para restablecer su contraseña, por favor, póngase en contacto con nosotros.</p>]]></content> <content type="text"><![CDATA[Hola, {$DATA.first_name},
  

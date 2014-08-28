@@ -1,0 +1,15 @@
+Array
+(
+    [oid] => 140828-160944-9090
+    [cv2avsresult] => SECURITY CODE MATCH ONLY
+    [upgcardtype] => Visa Credit
+    [upgauthcode] => 153196
+    [sh_reason] => testing
+    [transactionnumber] => 73314133
+    [transactiontime] => 2014-08-28 17:13:10
+    [_g] => rm
+    [type] => gateway
+    [cmd] => call
+    [module] => UPG
+    [_a] => 
+)

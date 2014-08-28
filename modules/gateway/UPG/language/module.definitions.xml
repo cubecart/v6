@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions version="1.0">
+ <group name="upg">
+  <string name="module_description"><![CDATA[UPG (Secure Hosting) Payment Gateway]]></string>
+  <string name="test_mode"><![CDATA[Test]]></string>
+  <string name="live_mode"><![CDATA[Live]]></string>
+  <string name="mode"><![CDATA[Transaction Mode]]></string>
+  <string name="shreference"><![CDATA[Account Reference]]></string>
+  <string name="checkcode"><![CDATA[Second level security check code]]></string>
+  <string name="filename"><![CDATA[Payment Form Filename]]></string>
+  <string name="download_example"><![CDATA[Download Example]]></string>
+ </group>
+</definitions>

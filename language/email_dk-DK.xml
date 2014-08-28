@@ -208,7 +208,7 @@
         <br /> 
         For at nulstille din adgangskode, skal du klikke på linket herunder eller kopiere og indsætte adressen på din web-browsers adressefelt vindue. Når du er på den webside, vil du blive bedt om at angive og bekræfte din nye adgangskode.<br /> 
         <br /> 
-        {$DATA.reset_link}<br /> 
+        <a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br /> 
         <br /> 
         Hvis du har brug for yderligere hjælp i at nulstille din adgangskode, bedes du kontakte os.</p>]]>
     </content>

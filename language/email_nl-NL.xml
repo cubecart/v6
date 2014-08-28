@@ -209,7 +209,7 @@
 	<br /> 
 	Om uw wachtwoord te herestellen kunt u op onderstaande link klikken of deze kopieren en plakken in de adresbalk van uw browser. Op de pagina wordt u gevraagd uw nieuwe wachtwoord in te voeren en te veriefieren.<br /> 
 	<br /> 
-	{$DATA.reset_link}<br /> 
+	<a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br /> 
 	<br /> 
 	Wanneer u meer ondersteuning nodigt heeft, dan kunt u altijd contact met ons opnemen.</p>]]> 
 	  </content>

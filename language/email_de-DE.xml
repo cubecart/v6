@@ -175,7 +175,7 @@
         <br /> 
         klicken Sie bitte auf den nachfolgenden Link oder kopieren Sie die Adresse in die Adresszeile Ihres Browsers, um Ihr Passwort zurückzusetzen. Sobald Sie auf der Webseite sind, erhalten Sie die Anweisung, Ihr neues Passwort einzugeben und zu bestätigen.<br /> 
         <br /> 
-        {$DATA.reset_link}<br /> 
+        <a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br /> 
         <br /> 
         Wenn Sie weitere Unterstützung bei der Rücksetzung Ihres Passworts brauchen, wenden Sie sich bitte an uns.</p>]]></content>
     <content type="text"><![CDATA[Hallo {$DATA.first_name},
