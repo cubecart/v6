@@ -18,7 +18,6 @@ CREATE TABLE IF NOT EXISTS `CubeCart_addressbook` (
 	`billing` ENUM('0','1') NOT NULL DEFAULT '0',
 	`default` ENUM('0','1') NOT NULL DEFAULT '0',
 	`description` VARCHAR(250) NOT NULL,
-	`addressee` VARCHAR(100) NOT NULL,
 	`title` VARCHAR(20) NOT NULL,
 	`first_name` VARCHAR(250) NOT NULL,
 	`last_name` VARCHAR(250) NOT NULL,
