@@ -561,7 +561,7 @@ class User {
 	 */
 	public function passwordRequest($email) {
 		if (!empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
-			if (($check = $GLOBALS['db']->select('CubeCart_customer', false, array('email' => $email))) !== false) {
+			if (($check = $GLOBALS['db']->select('CubeCart_customer', false, array('email' => $email, 'type' => 1))) !== false) {
 				// Generate validation key
 				$validation = Password::getInstance()->createSalt();
 

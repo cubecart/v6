@@ -27,9 +27,8 @@ if(empty($store_id)) {
 	$store_id = generateStoreId();
 	$GLOBALS['config']->set('marketplace','store_id',$store_id);
 }
-$hash = generateStoreId();
-$file = CC_ROOT_DIR.'/files/hash.'.$hash.'.php';
+$file = CC_ROOT_DIR.'/files/hash.'.$store_id.'.php';
 $fp = fopen($file, 'w');
 fwrite($fp, '<?php echo "'.$store_id.'"; unlink("'.$file.'"); ?>');
 fclose($fp);
-httpredir('http://marketplace.cubecart.com/store/auth?hash='.$hash.'&store_id='.$store_id.'&store_url='.urlencode(CC_STORE_URL));
+httpredir('https://www2.cubecart.com/store/auth?store_id='.$store_id.'&store_url='.urlencode(CC_STORE_URL));

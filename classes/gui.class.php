@@ -129,6 +129,10 @@ class GUI {
 
 			//Give smarty the logo
 			$this->_setLogo();
+			if (empty($this->_logo)) {
+				$this->rebuildLogos();
+				$this->_setLogo();
+			}
 			$GLOBALS['smarty']->assign('STORE_LOGO', CC_ROOT_REL.$this->_logo);
 
 			//CSS hooks
