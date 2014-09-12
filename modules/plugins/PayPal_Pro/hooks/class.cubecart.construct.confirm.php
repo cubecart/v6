@@ -23,6 +23,8 @@ if (isset($_GET['token']) && isset($_GET['PayerID']) && $GLOBALS['session']->get
 		
 		if(isset($response['PAYMENTREQUEST_0_SHIPTOPHONENUM']) && !empty($response['PAYMENTREQUEST_0_SHIPTOPHONENUM'])) {
 			$phone_no = $response['PAYMENTREQUEST_0_SHIPTOPHONENUM'];
+		} elseif(!empty($response['PHONENUM'])) {
+			$phone_no = $response['PHONENUM'];
 		} elseif(!empty($phone_no)) {
 			// use it :)
 		} else {
