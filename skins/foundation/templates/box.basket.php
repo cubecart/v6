@@ -1,3 +1,16 @@
+<?php
+/**
+ * CubeCart v6
+ * ========================================
+ * CubeCart is a registered trade mark of CubeCart Limited
+ * Copyright CubeCart Limited 2014. All rights reserved.
+ * UK Private Limited Company No. 5323904
+ * ========================================
+ * Web:   http://www.cubecart.com
+ * Email:  sales@devellion.com
+ * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
+ */
+?>
 <div id="mini-basket">
    <div class="show-for-medium-up">
       <a href="#" id="basket-summary" class="button white small"><i class="fa fa-shopping-cart"></i> {$CART_TOTAL}</a> 

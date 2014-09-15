@@ -1,3 +1,16 @@
+<?php
+/**
+ * CubeCart v6
+ * ========================================
+ * CubeCart is a registered trade mark of CubeCart Limited
+ * Copyright CubeCart Limited 2014. All rights reserved.
+ * UK Private Limited Company No. 5323904
+ * ========================================
+ * Web:   http://www.cubecart.com
+ * Email:  sales@devellion.com
+ * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
+ */
+?>
 <h3>{$LANG.common.information}</h3>
 <nav>
 <ul class="small-block-grid-1 medium-block-grid-3 large-block-grid-3">

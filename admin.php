@@ -1,4 +1,15 @@
 <?php
+/**
+ * CubeCart v6
+ * ========================================
+ * CubeCart is a registered trade mark of CubeCart Limited
+ * Copyright CubeCart Limited 2014. All rights reserved.
+ * UK Private Limited Company No. 5323904
+ * ========================================
+ * Web:   http://www.cubecart.com
+ * Email:  sales@devellion.com
+ * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
+ */
 ## Don't let anything be cached
 header('Cache-Control: no-store, no-cache, must-revalidate');
 header('Cache-Control: pre-check=0, post-check=0, max-age=0');

@@ -1,3 +1,16 @@
+<?php
+/**
+ * CubeCart v6
+ * ========================================
+ * CubeCart is a registered trade mark of CubeCart Limited
+ * Copyright CubeCart Limited 2014. All rights reserved.
+ * UK Private Limited Company No. 5323904
+ * ========================================
+ * Web:   http://www.cubecart.com
+ * Email:  sales@devellion.com
+ * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
+ */
+?>
 <div class="box-basket-content">
    <h4 class="mini-basket-title nomarg pad-side">{$LANG.basket.your_basket}</h4>
    <div class="pad-side basket-detail">

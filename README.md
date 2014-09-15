@@ -1,6 +1,6 @@
-# Welcome to CubeCart v5
+# Welcome to CubeCart v6
 
-CubeCart is a ecommerce software solution used by tens of thousands of merchants globally. The "CubeCart" name is a registered trade mark of Devellion Limited which is a UK registered company (5323904). Please do take the time to read our [software license agreement](http://cubecart.com/software-license).
+CubeCart is a ecommerce software solution used by tens of thousands of merchants globally. The "CubeCart" name is a registered trade mark of CubeCart Limited which is a UK registered company (5323904). Please do take the time to read our [software license agreement](http://cubecart.com/software-license).
 
 Install and upgrade instructions can be found online following the links provided below. 
 

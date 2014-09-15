@@ -1,20 +1,14 @@
 <?php
 /**
- * CubeCart v5
+ * CubeCart v6
  * ========================================
- * CubeCart is a registered trade mark of Devellion Limited
- * Copyright Devellion Limited 2010. All rights reserved.
+ * CubeCart is a registered trade mark of CubeCart Limited
+ * Copyright CubeCart Limited 2014. All rights reserved.
  * UK Private Limited Company No. 5323904
  * ========================================
  * Web:   http://www.cubecart.com
  * Email:  sales@devellion.com
- * License:  http://www.cubecart.com/v5-software-license
- * ========================================
- * CubeCart is NOT Open Source.
- * Unauthorized reproduction is not allowed.
- *
- * @note FirePHP path looks for the newer version (> 1.0.0).  However the commands use the old
- * version (< 0.5.0) due to the security needed to use the new version.
+ * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  */
 
 

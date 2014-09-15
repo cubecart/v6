@@ -1,8 +1,15 @@
 <?php
-/*
-$Date: 2010-06-08 17:11:38 +0100 (Tue, 08 Jun 2010) $
-$Rev: 1169 $
-*/
+/**
+ * CubeCart v6
+ * ========================================
+ * CubeCart is a registered trade mark of CubeCart Limited
+ * Copyright CubeCart Limited 2014. All rights reserved.
+ * UK Private Limited Company No. 5323904
+ * ========================================
+ * Web:   http://www.cubecart.com
+ * Email:  sales@devellion.com
+ * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
+ */
 # Enable specific gateways for Website Payments Pro (Post-Checkout)
 $settings	= $GLOBALS['config']->get('PayPal_Pro');
 if ($settings['status']) {

@@ -1,18 +1,15 @@
 <?php
-/*
-+--------------------------------------------------------------------------
-|   CubeCart 5
-|	$Date: 2010-06-04 14:51:49 +0100 (Fri, 04 Jun 2010) $
-|   ========================================
-|	CubeCart is a registered trade mark of Devellion Limited
-|   Copyright Devellion Limited 2006. All rights reserved.
-|	License Type: CubeCart is NOT Open Source Software and limitations apply
-|   Licence Info: http://www.cubecart.com/site/faq/license.php
-+--------------------------------------------------------------------------
-*/
-
-// I'll be honest, you probably shouldn't tinker with anything in here, all it does is ensure everyone has the same ini settings
-// If you really must customise anything, create a file called ini-custom.inc.php and put your changes in there
+/**
+ * CubeCart v6
+ * ========================================
+ * CubeCart is a registered trade mark of CubeCart Limited
+ * Copyright CubeCart Limited 2014. All rights reserved.
+ * UK Private Limited Company No. 5323904
+ * ========================================
+ * Web:   http://www.cubecart.com
+ * Email:  sales@devellion.com
+ * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
+ */
 
 // These are in case something goes wrong before we get to debug
 ini_set('display_errors', true);

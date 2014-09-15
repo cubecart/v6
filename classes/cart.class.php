@@ -1,17 +1,14 @@
 <?php
 /**
- * CubeCart v5
+ * CubeCart v6
  * ========================================
- * CubeCart is a registered trade mark of Devellion Limited
- * Copyright Devellion Limited 2010. All rights reserved.
+ * CubeCart is a registered trade mark of CubeCart Limited
+ * Copyright CubeCart Limited 2014. All rights reserved.
  * UK Private Limited Company No. 5323904
  * ========================================
  * Web:   http://www.cubecart.com
  * Email:  sales@devellion.com
- * License:  http://www.cubecart.com/v5-software-license
- * ========================================
- * CubeCart is NOT Open Source.
- * Unauthorized reproduction is not allowed.
+ * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  */
 /**
  * Cart controller

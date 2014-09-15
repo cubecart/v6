@@ -1,19 +1,15 @@
 <?php
-/*
-+--------------------------------------------------------------------------
-|   CubeCart
-|   ========================================
-|	CubeCart is a registered trade mark of Devellion Limited
-|   (c) Devellion Limited 2008. All rights reserved.
-|   ========================================
-|   Web: http://www.cubecart.com
-|   Email: info (at) cubecart (dot) com
-|	License Type: CubeCart is NOT Open Source Software and Limitations Apply
-|   Licence Info: http://www.cubecart.com/site/faq/license.php
-+--------------------------------------------------------------------------
-|	Manage product reviews
-+--------------------------------------------------------------------------
-*/
+/**
+ * CubeCart v6
+ * ========================================
+ * CubeCart is a registered trade mark of CubeCart Limited
+ * Copyright CubeCart Limited 2014. All rights reserved.
+ * UK Private Limited Company No. 5323904
+ * ========================================
+ * Web:   http://www.cubecart.com
+ * Email:  sales@devellion.com
+ * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
+ */
 
 if (!defined('CC_INI_SET')) die('Access Denied');
 Admin::getInstance()->permissions('reviews', CC_PERM_READ, true);
