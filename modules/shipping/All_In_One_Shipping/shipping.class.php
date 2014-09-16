@@ -1,15 +1,14 @@
 <?php
-/*-----------------------------------------------------------------------------
- * All In One Shipping with Postcodes CC5
- *-----------------------------------------------------------------------------
- * Author:   Estelle Winterflood
- * Email:    cubecart@expandingbrain.com
- * Store:    http://cubecart.expandingbrain.com
- * 
- * Date:     July 22, 2012
- * Updated:  n/a
- * Compatible with CubeCart Version:  5.x.x
- *-----------------------------------------------------------------------------
+/**
+ * CubeCart v6
+ * ========================================
+ * CubeCart is a registered trade mark of CubeCart Limited
+ * Copyright CubeCart Limited 2014. All rights reserved.
+ * UK Private Limited Company No. 5323904
+ * ========================================
+ * Web:   http://www.cubecart.com
+ * Email:  sales@devellion.com
+ * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  */
 
 class All_In_One_Shipping {

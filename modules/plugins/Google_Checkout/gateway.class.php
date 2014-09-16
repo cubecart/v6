@@ -1,8 +1,15 @@
 <?php
-/*
-$Date: 2010-05-12 15:19:39 +0100 (Wed, 12 May 2010) $
-$Rev: 1091 $
-*/
+/**
+ * CubeCart v6
+ * ========================================
+ * CubeCart is a registered trade mark of CubeCart Limited
+ * Copyright CubeCart Limited 2014. All rights reserved.
+ * UK Private Limited Company No. 5323904
+ * ========================================
+ * Web:   http://www.cubecart.com
+ * Email:  sales@devellion.com
+ * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
+ */
 class Gateway {
 
 	private $_module;

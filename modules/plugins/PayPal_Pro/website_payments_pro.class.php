@@ -1,8 +1,15 @@
 <?php
-/*
-$Date: 2010-05-11 16:50:17 +0100 (Tue, 11 May 2010) $
-$Rev: 1087 $
-*/
+/**
+ * CubeCart v6
+ * ========================================
+ * CubeCart is a registered trade mark of CubeCart Limited
+ * Copyright CubeCart Limited 2014. All rights reserved.
+ * UK Private Limited Company No. 5323904
+ * ========================================
+ * Web:   http://www.cubecart.com
+ * Email:  sales@devellion.com
+ * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
+ */
 class Website_Payments_Pro  {
 
 	private $_api_username;
