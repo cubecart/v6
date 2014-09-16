@@ -39,7 +39,7 @@ if (isset($_POST['status'])) {
 	if ($updated) {
 		$GLOBALS['gui']->setNotify($lang['module']['notify_module_status']);
 	}
-	$GLOBALS['cache']->clear();
+	$GLOBALS['cache']->delete('module_list');
 	httpredir('?_g=plugins');
 }
 

@@ -10,12 +10,8 @@
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  */
-/* Chronopay malforms the return URL so we have to bring it to a *static* URL. */
-$_GET = array(
-	'_g' => 'rm',
-	'type' => 'gateway',
-	'cmd' => 'process',
-	'module' => 'Realex'
-);
-
-require('..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'index.php');
+/*
+This files is not used. Instead it borrows modules/gateways/moneybookers/gateway.class.php
+*/
+if(!defined('CC_INI_SET')) die('Access Denied');
+require('modules/gateway/moneybookers/gateway.class.php');

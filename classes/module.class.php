@@ -116,7 +116,7 @@ class Module {
 				} else {
 					$GLOBALS['hooks']->uninstall($this->_module_name);
 				}
-
+				$GLOBALS['cache']->delete('module_list');
 			}
 			// Add default tab
 			$GLOBALS['main']->addTabControl($GLOBALS['language']->common['general'], $this->_module_name);

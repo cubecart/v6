@@ -1,3 +1,16 @@
+<?php
+/**
+ * CubeCart v6
+ * ========================================
+ * CubeCart is a registered trade mark of CubeCart Limited
+ * Copyright CubeCart Limited 2014. All rights reserved.
+ * UK Private Limited Company No. 5323904
+ * ========================================
+ * Web:   http://www.cubecart.com
+ * Email:  sales@devellion.com
+ * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
+ */
+?>
 <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
     <div id="Icepay" class="tab_content"
         style="background-image: url(http://192.168.1.76/icepay/branches/wouter/development/webshop_modules/woocommerce/1_6_5_2/dev/wp-content/plugins/woocommerce-icepay/images/icepay-header.png); 

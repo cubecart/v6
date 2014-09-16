@@ -61,15 +61,6 @@ $nav_items['settings']  = array(
 $nav_items['modules']  = array(
 	$lang['navigation']['nav_marketplace']   => '?_g=marketplace',
 	$lang['navigation']['nav_plugins']   => '?_g=plugins',
-	/*
-	$lang['navigation']['nav_plugins']   => '?_g=modules&type=plugins',
-	$lang['navigation']['nav_affiliate']  => '?_g=modules&type=affiliate',
-	$lang['navigation']['nav_gateway']   => '?_g=modules&type=gateway',
-	$lang['navigation']['nav_shipping']   => '?_g=modules&type=shipping',
-	$lang['navigation']['nav_social']   => '?_g=modules&type=social',
-	$lang['navigation']['nav_external']   => '?_g=modules&type=external',
-	$lang['navigation']['nav_livehelp']   => '?_g=modules&type=livehelp',
-	*/
 );
 
 $nav_items['advanced']  = array(

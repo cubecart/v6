@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
-/**
  * CubeCart v6
  * ========================================
  * CubeCart is a registered trade mark of CubeCart Limited
@@ -9,9 +9,7 @@
  * Web:   http://www.cubecart.com
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
- */
 -->
-<?xml version="1.0" encoding="utf-8"?>
 <language version="2.0">
   <info>
     <title>
@@ -1091,7 +1089,6 @@
     <string name="select" introduced="5.0.0"><![CDATA[Vælg Betalingsmetode]]></string>
     <string name="transfer_progress" introduced="5.0.0"><![CDATA[Betalingsgateway fremskridt]]></string>
     <string name="transferring" introduced="5.0.0"><![CDATA[Overførsel, vent venligst...]]></string>
-    <string name="plugins_link" introduced="5.2.2"><![CDATA[Alternative Kassen udbydere såsom <strong>Amazon Betaling</strong>, <strong>Google Checkout</strong> and <strong>PayPal</strong> can be found in the &quot;<a href="?_g=modules&type=plugins">Plugins</a>&quot; section.]]></string>
   </group>
   <group name="gui_message">
     <string name="error" introduced="5.0.0"><![CDATA[Error]]></string>

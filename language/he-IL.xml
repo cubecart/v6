@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
-/**
  * CubeCart v6
  * ========================================
  * CubeCart is a registered trade mark of CubeCart Limited
@@ -9,9 +9,7 @@
  * Web:   http://www.cubecart.com
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
- */
 -->
-<?xml version="1.0" encoding="UTF-8"?>
 <language version="2.0">
  <info>
  <!-- By Tom Glazer, Tomglazer89@gmail.com, Hebsoft-il.com -->
@@ -1074,7 +1072,6 @@
    <string name="select"><![CDATA[בחר שיטת תשלום]]></string>
    <string name="transfer_progress"><![CDATA[שלוחת התשלום בתהליכים]]></string>
    <string name="transferring"><![CDATA[מעביר, אנא המתן...]]></string>
-   <string name="plugins_link"><![CDATA[דרכי תשלום חלופיים כגון Amazon Payments, Google Checkout   ו-PayPal נמצאים תחת אזור ה-"תוספים".]]></string>
   </group>
   <group name="gui_message">
    <string name="error"><![CDATA[שגיאה]]></string>

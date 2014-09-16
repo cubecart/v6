@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
-/**
  * CubeCart v6
  * ========================================
  * CubeCart is a registered trade mark of CubeCart Limited
@@ -9,9 +9,7 @@
  * Web:   http://www.cubecart.com
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
- */
 -->
-<?xml version="1.0" encoding="UTF-8"?>
 <definitions version="1.0">
  <group name="postaffiliatepro">
   <string name="descr"><![CDATA[Post Affiliate Pro 4 - Build your own affiliate program powered by award winning and full featured affiliate software. Post Affiliate Pro is a complete solution for all types of industries.<br />You can go with a hosted or an owned license. <a href="http://www.qualityunit.com/postaffiliatepro/" target="_blank">http://www.qualityunit.com/postaffiliatepro/</a>]]></string>

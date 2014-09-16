@@ -1,3 +1,16 @@
+<?php
+/**
+ * CubeCart v6
+ * ========================================
+ * CubeCart is a registered trade mark of CubeCart Limited
+ * Copyright CubeCart Limited 2014. All rights reserved.
+ * UK Private Limited Company No. 5323904
+ * ========================================
+ * Web:   http://www.cubecart.com
+ * Email:  sales@devellion.com
+ * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
+ */
+?>
 {if $DISPLAY_3DS}
 <div id="3dsecure" style="width:100%; height:450px; margin: 0px auto;">
   <iframe width="100%" height="400" style="border: 1px solid #CCCCCC;" scrolling="auto" src="{$STORE_URL}/modules/plugins/PayPal_Pro/3dsecure.php"></iframe>

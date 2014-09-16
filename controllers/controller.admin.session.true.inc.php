@@ -30,15 +30,17 @@ if ($GLOBALS['config']->has('config', 'verify_settings') && (!isset($_GET['_g'])
 if (isset($_GET['_g']) && in_array($_GET['_g'], array('login', 'password', 'recovery'))) {
 	httpredir('?');
 }
-if (isset($_GET['_g']) && !empty($_GET['_g']) && $_GET['_g'] != 'modules') {
+if (isset($_GET['_g']) && !empty($_GET['_g']) && $_GET['_g'] != 'plugins') {
 	$GLOBALS['gui']->addBreadcrumb(ucwords($_GET['_g']));
 }
 
 if (!empty($_GET['_g'])) {
 
+	$module_type = preg_match("/[a-z]/i", $_GET['type']) ? $_GET['type'] : '';
+
 	$node = (!empty($_GET['node'])) ? strtolower($_GET['node']) : 'index';
 	
-	if (strtolower($_GET['_g']) == 'modules' && !empty($module_type)) {
+	if (strtolower($_GET['_g']) == 'plugins' && !empty($module_type)) {
 		
 		$module_type = preg_match("/[a-z]/i", $_GET['type']) ? $_GET['type'] : '';
 		$GLOBALS['gui']->addBreadcrumb($lang['navigation']['nav_plugins'],'?_g=plugins');

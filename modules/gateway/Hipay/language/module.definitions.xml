@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
-/**
  * CubeCart v6
  * ========================================
  * CubeCart is a registered trade mark of CubeCart Limited
@@ -9,9 +9,7 @@
  * Web:   http://www.cubecart.com
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
- */
 -->
-<?xml version="1.0" encoding="utf-8"?>
 <definitions version="1.0">
  <group name="hipay">
   <string name="module_description"><![CDATA[This is the Hipay Wallet Payment solution; Be sure to register at Hipay to get a live and a sandbox account.<p>Don't forget that you need cURL and SimpleXML installed on your server.</p><p><a href="https://www.hipaywallet.com" target="_blank">You need an Hipay Account?</a></p><p>Please ensure to set a string at "Code to encrypt Callback" with more than 5 digits.</p><p>You need to have cURL and SimpleXML enabled at your server.</p>]]></string>
