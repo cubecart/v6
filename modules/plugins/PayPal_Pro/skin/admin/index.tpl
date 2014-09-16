@@ -36,6 +36,7 @@
             </select>
             </span>
          </div>
+         <!--
          <div>
             <label for="ec_mode">{$LANG.paypal_pro.ec_action}</label>
             <span>
@@ -44,6 +45,7 @@
             </select>
             </span>
          </div>
+         -->
          <div><label for="paypal_username">{$LANG.paypal_pro.api_username}</label><span><input type="text" name="module[username]" id="paypal_username" value="{$MODULE.username}" class="textbox required" /></span></div>
          <div><label for="paypal_password">{$LANG.paypal_pro.api_password}</label><span><input type="text" name="module[password]" id="paypal_password" value="{$MODULE.password}" class="textbox required" /></span></div>
          <div><label for="paypal_signature">{$LANG.paypal_pro.api_signature}</label><span><input type="text" name="module[signature]" id="paypal_signature" value="{$MODULE.signature}" class="textbox required" /></span></div>
@@ -60,7 +62,6 @@
             </select>
             </span>
          </div>
-         <!-- Inline Checkout Depreciated for now
          <div>
             <label for="paypal_action">{$LANG.paypal_pro.payment_action}</label>
             <span>
@@ -69,7 +70,6 @@
             </select>
             </span>
          </div>
-         -->
          <div>
             <label for="paypal_confirmed">{$LANG.paypal_pro.confirmed_address}</label>
             <span>
