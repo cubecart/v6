@@ -893,7 +893,7 @@ class Order {
 			$GLOBALS['db']->insert('CubeCart_order_inventory', $record);
 			// Taxes
 			$tax_on = ($GLOBALS['config']->get('config', 'basket_tax_by_delivery')) ? 'delivery_address' : 'billing_address';
-			$tax_state_id = is_numeric($this->_basket[$tax_on]['state_id']) ? $this->_basket[$tax_on]['state_id'] : getStateFormat($this->_baskett[$tax_on]['state_id'], 'name', 'id');
+			$tax_state_id = is_numeric($this->_basket[$tax_on]['state_id']) ? $this->_basket[$tax_on]['state_id'] : getStateFormat($this->_basket[$tax_on]['state_id'], 'name', 'id');
 
 			$tax_amount = ($record['price'] * $record['quantity']);
 			// By this stage product prices will always be excluding tax!
