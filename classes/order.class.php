@@ -631,13 +631,17 @@ class Order {
 					// Get product name
 					$product = $GLOBALS['db']->select('CubeCart_order_inventory', array('name'), array('id' => $download['order_inv_id']));
 					// Set minimum expiry time (min 30 mins = 1800 seconds)
-					$validity_time = ($GLOBALS['config']->get('config', 'download_expire') > 1800) ? $GLOBALS['config']->get('config', 'download_expire') : 1800;
-					$expire = time() + $validity_time;
+					if (!$GLOBALS['config']->isEmpty('config', 'download_expire')) {
+					  $validity_time = ($GLOBALS['config']->get('config', 'download_expire') > 1800) ? $GLOBALS['config']->get('config', 'download_expire') : 1800;
+					  $expire = time() + $validity_time;
+					} else {
+					  $expire = 0;
+					}
 					$GLOBALS['db']->update('CubeCart_downloads', array('expire' => $expire), array('digital_id' => $download['digital_id']));
 					$dkeys[] = array(
 						'accesskey' => $download['accesskey'],
 						'name'  => $product[0]['name'],
-						'expire' => formatTime($expire, false, true),
+						'expire'    => ($expire > 0) ? formatTime($expire, false, true) : $GLOBALS['language']->common['never']
 					);
 				}
 
