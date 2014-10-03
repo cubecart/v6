@@ -133,6 +133,20 @@ if (isset($_POST['process'])) {
 							'primary'  => 1
 						);
 						$GLOBALS['db']->insert('CubeCart_category_index', $category_record);
+					} elseif(strstr($product_record['cat_id'],',')) {
+						$cats = explode(',',$product_record['cat_id']);
+						$primary = 1;
+						foreach($cats as $cat) {
+							if($cat>0) {
+								$category_record = array (
+									'product_id' => $product_id,
+									'cat_id'  => $cat,
+									'primary'  => $primary
+								);
+								$primary = 0;
+								$GLOBALS['db']->insert('CubeCart_category_index', $category_record);
+							}
+						}
 					}
 					// Insert primary image
 					if ($image[0]['file_id']>0) {
