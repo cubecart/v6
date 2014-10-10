@@ -398,7 +398,7 @@ class Catalogue {
 	}
 
 	function getCategoryStatusByProductID($product_id) {
-		if($product_id>0) {
+		if(is_int($product_id) && $product_id>0) {
 			if (empty($this->_category_status_prod_id[$product_id])) {
                     $query = sprintf("SELECT CI.* , C.status FROM `%1\$sCubeCart_category_index` AS CI, `%1\$sCubeCart_category` AS C WHERE CI.product_id = '$product_id' AND CI.cat_id = C.cat_id ORDER BY CI.product_id", $GLOBALS['config']->get('config', 'dbprefix'));
                     if (($data = $GLOBALS['db']->query($query)) !== false) {
