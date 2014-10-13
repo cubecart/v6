@@ -224,6 +224,7 @@ class Cubecart {
 				$mod_type = (isset($_GET['mod_type'])) ? $_GET['mod_type'] : $_GET['type'];
 				if (!empty($mod_type)) {
 					switch (strtolower($mod_type)) {
+					case 'plugins':
 					case 'gateway':
 						foreach ($GLOBALS['hooks']->load('class.cubecart.construct.callback.gateway') as $hook) include $hook;
 						$folder = (isset($plugin)) ? 'plugins' : 'gateway';
