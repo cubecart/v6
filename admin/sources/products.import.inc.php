@@ -35,7 +35,6 @@ if (isset($_POST['process'])) {
 			'CubeCart_option_assign',
 			'CubeCart_reviews',
 			'CubeCart_category_index',
-			'CubeCart_image_index',
 			'CubeCart_inventory_language',
 			'CubeCart_options_set_product',
 			'CubeCart_pricing_quantity',
