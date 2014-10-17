@@ -469,11 +469,11 @@ class User {
 					$state_field = is_numeric($address['state']) ? 'id' : 'name';
 					$address['state_id']  = getStateFormat($address['state'], $state_field, 'id');
 					$address['country_id']  = $address['country'];
-					$address['state']   = getStateFormat($address['state_id']);
 					$address['country']   = getCountryFormat($address['country_id']);
 					$address['state_abbrev'] = getStateFormat($address['state'], $state_field, 'abbrev');
 					$address['country_iso']  = getCountryFormat($address['country_id'], 'numcode', 'iso');
 					$address['country_iso3'] = getCountryFormat($address['country_id'], 'numcode', 'iso3');
+					$address['state']   = getStateFormat($address['state_id']);
 					$address['user_defined'] = true;
 					$addressArray[] = $address;
 				}
