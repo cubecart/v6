@@ -223,7 +223,10 @@ class GUI {
 
 		//Assign common GUI parts
 		$GLOBALS['smarty']->assign('VAL_SELF',  currentPage());
-		$GLOBALS['smarty']->assign('CANONICAL',  currentPage(array('sort'), null, false));
+		$canonical = $GLOBALS['smarty']->getTemplateVars('CANONICAL');
+		if(empty($canonical) && !is_numeric($canonical)) {
+			$GLOBALS['smarty']->assign('CANONICAL', currentPage(true, null, false));
+		}
 		$GLOBALS['smarty']->assign('STORE_URL',  $GLOBALS['storeURL']);
 		$GLOBALS['smarty']->assign('ROOT_PATH',  $GLOBALS['rootRel']);
 		$GLOBALS['smarty']->assign('CURRENT_PAGE',  currentPage());
