@@ -683,7 +683,7 @@ class User {
 			$_POST['salt']  = Password::getInstance()->createSalt();
 			$_POST['password'] = Password::getInstance()->getSalted($_POST['password'], $_POST['salt']);
 			$_POST['registered']= time();
-			if ($_POST['ip_address']=get_ip_address() === false) $_POST['ip_address'] = 'Unknown'; // Get IP Address
+			if(($_POST['ip_address'] = get_ip_address()) === false) $_POST['ip_address'] = 'Unknown'; // Get IP Address
 
 			foreach ($GLOBALS['hooks']->load('class.user.register_user.insert') as $hook) include $hook;
 
