@@ -42,21 +42,22 @@ if (isset($_POST['price'])) {
 	if (is_array($product_ids) && isset($_POST['price']) && is_array($_POST['price']) && Admin::getInstance()->permissions('products', CC_PERM_EDIT)) {
 		if (!empty($_POST['price']['value']) && is_numeric($_POST['price']['value'])) {
 			## Update prices by x amount/percent
+			$field = $_POST['price']['field'];
 			foreach ($product_ids as $product_id) {
 				if (!is_numeric($product_id)) continue;
-				if (($product = $GLOBALS['db']->select('CubeCart_inventory', array('price'), array('product_id' => (int)$product_id))) !== false) {
-					$action = $_POST['price']['action'];
-					$price = $product[0]['price'];
-					$value = $_POST['price']['value'];
+				if (($product = $GLOBALS['db']->select('CubeCart_inventory', array($field), array('product_id' => (int)$product_id))) !== false) {
+					$action	= $_POST['price']['action'];
+					$price	= $product[0][$field];
+					$value	= $_POST['price']['value'];
 					switch (strtolower($_POST['price']['method'])) {
-					case 'percent':
-						$shift = ($action) ? 1 : 0;
-						$price = $product[0]['price'] * (($value/100)+(int)$shift);
-						break;
-					default:
-						$price += ($action) ? $value : $value-($value*2);
+						case 'percent':
+							$shift	= ($action) ? 1 : 0;
+							$price	= $product[0][$field] * (($value/100)+(int)$shift);
+							break;
+						default:
+							$price	+= ($action) ? $value : $value-($value*2);
 					}
-					$record = array('price' => $price);
+					$record	= array($field	=> $price);
 					$GLOBALS['db']->update('CubeCart_inventory', $record, array('product_id' => (int)$product_id));
 				}
 			}

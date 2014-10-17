@@ -44,6 +44,11 @@
 		  <option value="1">{$LANG.common.add}</option>
 		</select>
 		<input type="text" name="price[value]" value="" class="textbox number">
+		<select name="price[field]">
+		  <option value="price">{$LANG.common.price_standard}</option>
+		  <option value="sale_price">{$LANG.common.price_sale}</option>
+		  <option value="cost_price">{$LANG.common.price_cost}</option>
+		</select>
 	  </div>
 	</fieldset>
 	{if isset($CATEGORIES)}
