@@ -894,7 +894,7 @@ class Order {
 
 			foreach ($GLOBALS['hooks']->load('class.order.products.add.pre') as $hook) include $hook;
 
-			$GLOBALS['db']->insert('CubeCart_order_inventory', $record);
+			$insert_id = $GLOBALS['db']->insert('CubeCart_order_inventory', $record);
 			// Taxes
 			$tax_on = ($GLOBALS['config']->get('config', 'basket_tax_by_delivery')) ? 'delivery_address' : 'billing_address';
 			$tax_state_id = is_numeric($this->_basket[$tax_on]['state_id']) ? $this->_basket[$tax_on]['state_id'] : getStateFormat($this->_basket[$tax_on]['state_id'], 'name', 'id');
@@ -909,7 +909,7 @@ class Order {
 
 			if ($record['digital'] && !isset($item['certificate'])) {
 				// If digital, create a download code
-				$this->_createDownload($item['id'], (int)$GLOBALS['db']->insertid());
+				$this->_createDownload($item['id'], (int)$insert_id);
 			}
 			return $product;
 		}
