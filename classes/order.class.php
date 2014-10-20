@@ -613,13 +613,13 @@ class Order {
 
 		$expire = ($GLOBALS['config']->get('config', 'download_expire')>0) ? time() + $GLOBALS['config']->get('config', 'download_expire') : 0;
 
-		$record  = array(
-			'cart_order_id' => $this->_order_id,
-			'order_inv_id' => $order_inv_id,
-			'customer_id' => $GLOBALS['user']->getId(),
-			'product_id' => (int)$product_id,
-			'expire'  => $expire,
-			'accesskey'  => $accesskey,
+		$record		= array(
+			'cart_order_id' => (isset($this->_order_summary['cart_order_id'])) ? $this->_order_summary['cart_order_id'] : $this->_order_id , // $this->_order_id,
+			'order_inv_id'	=> $order_inv_id,
+			'customer_id' => (isset($this->_order_summary['customer_id'])) ? $this->_order_summary['customer_id'] : $GLOBALS['user']->getId(), // $GLOBALS['user']->getId(),
+			'product_id'	=> (int)$product_id,
+			'expire'		=> $expire,
+			'accesskey'		=> $accesskey,
 		);
 		return $GLOBALS['db']->insert('CubeCart_downloads', $record);
 	}
