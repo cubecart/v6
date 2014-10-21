@@ -496,7 +496,7 @@ class Catalogue {
 		}
 
 		// Get product option specific data
-		$products_matrix_data = $GLOBALS['db']->select('CubeCart_option_matrix', array('stock_level' , 'product_code', 'upc', 'jan', 'isbn', 'image'), array('product_id' => (int)$product_id, 'options_identifier' => $options_identifier, 'status' => 1, 'use_stock' => 1));
+		$products_matrix_data = $GLOBALS['db']->select('CubeCart_option_matrix', array('stock_level' , 'product_code', 'upc', 'jan', 'isbn', 'image'), array('product_id' => (int)$product_id, 'options_identifier' => $options_identifier, 'status' => 1));
 		if ($products_matrix_data) {
 			foreach ($products_matrix_data[0] as $key => $value) {
 				if (!is_null($value) && !empty($value)) {
