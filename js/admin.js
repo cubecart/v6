@@ -285,12 +285,12 @@ $(document).ready(function() {
 /* Update Form Fields for Address */
 function updateAddressValues(key,i,data) {
 	if (i == "country") {
-		$('#'+key+'_'+i+" option:contains(\""+data[i]+"\")").first().attr('selected', 'selected');
+		$('#'+key+'_'+i+' option').filter(function () { return $(this).html() == data[i]; }).first().attr('selected', 'selected');
 		$('#'+key+'_'+i).trigger("change");
 		if ($('#'+key+'_state').get(0).tagName == "INPUT") {
 			$('#'+key+'_state').val(data["state"]);
 		} else {
-			$("#"+key+"_state option:contains(\""+data["state"]+"\")").attr('selected', 'selected');
+			$("#"+key+"_state option").filter(function () { return $(this).html() == data["state"]; }).attr('selected', 'selected');
 		}
 	} else if (i != "state") {
 		$('#'+key+'_'+i).val(data[i]);
