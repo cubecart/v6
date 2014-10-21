@@ -1553,22 +1553,24 @@ class Cubecart {
 				}
 				if (($related_products = $GLOBALS['db']->select('CubeCart_order_inventory', array('DISTINCT' => 'product_id'), array('cart_order_id' => $related, '!product_id' => $product_list), false, 3)) !== false) {
 					foreach ($related_products as $related) {
-						$related = $GLOBALS['catalogue']->getProductData($related['product_id']);
-						$related['img_src'] = $GLOBALS['gui']->getProductImage($related['product_id']);
-						$related['url'] = $GLOBALS['seo']->buildURL('prod', $related['product_id'], '&');
-						
-						$related['ctrl_sale'] = (!$GLOBALS['tax']->salePrice($related['price'], $related['sale_price']) || !$GLOBALS['config']->get('config', 'catalogue_sale_mode')) ? false : true;
-						
-						$GLOBALS['catalogue']->getProductPrice($related);
-						$sale = $GLOBALS['tax']->salePrice($related['price'], $related['sale_price']);
-						
-						$related['price_unformatted']  = $related['price'];
-						$related['sale_price_unformatted'] = ($sale) ? $related['sale_price'] : null;
-						$related['price']  = $GLOBALS['tax']->priceFormat($related['price']);
-						$related['sale_price'] = ($sale) ? $GLOBALS['tax']->priceFormat($related['sale_price']) : null;
-						
-						if ($related['product_id']>0) {
-							$related_list[] = $related;
+						if(!in_array($related['product_id'], $product_list)) {
+							$related = $GLOBALS['catalogue']->getProductData($related['product_id']);
+							$related['img_src'] = $GLOBALS['gui']->getProductImage($related['product_id']);
+							$related['url'] = $GLOBALS['seo']->buildURL('prod', $related['product_id'], '&');
+							
+							$related['ctrl_sale'] = (!$GLOBALS['tax']->salePrice($related['price'], $related['sale_price']) || !$GLOBALS['config']->get('config', 'catalogue_sale_mode')) ? false : true;
+							
+							$GLOBALS['catalogue']->getProductPrice($related);
+							$sale = $GLOBALS['tax']->salePrice($related['price'], $related['sale_price']);
+							
+							$related['price_unformatted']  = $related['price'];
+							$related['sale_price_unformatted'] = ($sale) ? $related['sale_price'] : null;
+							$related['price']  = $GLOBALS['tax']->priceFormat($related['price']);
+							$related['sale_price'] = ($sale) ? $GLOBALS['tax']->priceFormat($related['sale_price']) : null;
+							
+							if ($related['product_id']>0) {
+								$related_list[] = $related;
+							}
 						}
 					}
 					$GLOBALS['smarty']->assign('RELATED', $related_list);
