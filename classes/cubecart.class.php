@@ -834,6 +834,8 @@ class Cubecart {
 				// Handle user data, and put into the basket array
 				$this->_basket['customer'] = $_POST['user'];
 
+				$old_addresses = md5(serialize(array_merge($this->_basket['billing_address'],$this->_basket['delivery_address'])));
+
 				$this->_basket['billing_address'] = array(
 					'user_defined' => true,
 					'title'   => $_POST['user']['title'],
@@ -876,6 +878,12 @@ class Cubecart {
 
 				$this->_basket['delivery_address']['is_billing'] = (isset($_POST['delivery_is_billing'])) ? true : false;
 
+				$new_addresses = md5(serialize(array_merge($this->_basket['billing_address'],$this->_basket['delivery_address'])));
+
+				if($new_addresses!==$old_addresses) {
+					// Set notice to prevent proceed to payment screen
+					$GLOBALS['gui']->setNotify($GLOBALS['language']->account["notify_address_updated"]);
+				}
 
 				if ($GLOBALS['config']->get('config', 'recaptcha') && !$GLOBALS['session']->get('confirmed', 'recaptcha')) {
 					if (($message = $GLOBALS['session']->get('error', 'recaptcha')) === false) {
