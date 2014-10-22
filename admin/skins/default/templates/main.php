@@ -102,6 +102,7 @@
   </div>
   <div style="display: none" id="val_admin_folder">{$SKIN_VARS.admin_folder}</div>
   <div style="display: none" id="val_admin_file">{$SKIN_VARS.admin_file}</div>
+  <div style="display: none" id="val_skin_folder">{$SKIN_VARS.skin_folder}</div>
   <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
   <script type="text/javascript" src="js/jquery-ui-1.10.4.min.js"></script>
   <script type="text/javascript" src="js/plugins.php"></script>

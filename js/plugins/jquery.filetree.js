@@ -39,7 +39,18 @@ function array_search( needle, haystack, strict ) {
 }
 
 if (jQuery)(function($){
-	var image_dir = $('#val_admin_folder').text()+'/skins/default/images/';
+	
+	var image_dir = 'skins/'+$('#val_skin_folder').text()+'/images/';
+	
+	if ($('#val_admin_folder').length) {
+		image_dir = $('#val_admin_folder').text()+'/'+image_dir;
+	} else if ($('#val_store_url').length) {
+		image_dir = $('#val_store_url').text()+'/'+image_dir;
+	}
+	if ($('#val_skin_common_images').length) {
+		image_dir = image_dir+$('#val_skin_common_images').text()+'/';
+	}
+
 	$.extend($.fn, {
 		fileTree: function(o, h) {
 			if (!o) var o = {};
