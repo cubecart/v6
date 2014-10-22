@@ -17,7 +17,6 @@
 {/if}
 {if isset($LATEST_PRODUCTS)}
 <h2>{$LANG.catalogue.latest_products}</h2>
-<input type="hidden" class="toggle">
 <ul class="small-block-grid-1 medium-block-grid-3 large-block-grid-3" data-equalizer>
    {foreach from=$LATEST_PRODUCTS item=product}
    <li>

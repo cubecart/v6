@@ -40,17 +40,6 @@ function array_search( needle, haystack, strict ) {
 
 if (jQuery)(function($){
 	
-	var image_dir = 'skins/'+$('#val_skin_folder').text()+'/images/';
-	
-	if ($('#val_admin_folder').length) {
-		image_dir = $('#val_admin_folder').text()+'/'+image_dir;
-	} else if ($('#val_store_url').length) {
-		image_dir = $('#val_store_url').text()+'/'+image_dir;
-	}
-	if ($('#val_skin_common_images').length) {
-		image_dir = image_dir+$('#val_skin_common_images').text()+'/';
-	}
-
 	$.extend($.fn, {
 		fileTree: function(o, h) {
 			if (!o) var o = {};
@@ -114,7 +103,7 @@ if (jQuery)(function($){
 											default:
 												status = bool;
 										}
-										img.src = image_dir+status+'.png';
+										img.src = $('#val_admin_folder').text()+'/skins/default/images/'+status+'.png';
 										$(img).attr({rel: '#'+o.name+'_'+item.id}).addClass('checkbox');
 										if (o.unique) $(img).addClass('unique');
 										$(span).append(img);
@@ -164,7 +153,7 @@ if (jQuery)(function($){
 	$('input.toggle:hidden').each(function(){
 		var img_status = ($(this).val() == '1') ? '1' : '0';
 		var img			= document.createElement('img');
-		img.src = image_dir+img_status+'.png';
+		img.src = $('#val_admin_folder').text()+'/skins/default/images/'+img_status+'.png';
 		if (img_status == '1') {
 			img.alt = img.title = 'Disable';
 		} else {
@@ -184,7 +173,7 @@ if (jQuery)(function($){
 				var status = '0'; var alt = 'Enable'; break;
 		}
 		var controller = 'img.checkbox[rel=#'+$(this).attr('id')+']';
-		$(controller).attr({'src': image_dir+status+'.png', 'alt' : alt, 'title' : alt});
+		$(controller).attr({'src': $('#val_admin_folder').text()+'/skins/default/images/'+status+'.png', 'alt' : alt, 'title' : alt});
 	});
 
 	// handle special insertion of form element only when an image is changed from current
@@ -215,7 +204,7 @@ if (jQuery)(function($){
 					status = '0'; break;
 			}
 			var controller = 'img.checkbox[rel=#'+id_val+']';
-			$(controller).attr({'src': image_dir+status+'.png'});
+			$(controller).attr({'src': $('#val_admin_folder').text()+'/skins/default/images/'+status+'.png'});
 		});
 		var parent_span = $(this).parent('span.action');
 		$(this).before(input);
