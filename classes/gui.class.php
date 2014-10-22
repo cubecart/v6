@@ -1361,6 +1361,8 @@ class GUI {
 		$GLOBALS['smarty']->assign('SKIN_CUSTOM', $custom);
 
 		$GLOBALS['smarty']->assign('SKIN_FOLDER', $this->_skin);
+		$common = file_exists(CC_ROOT_DIR.CC_DS.'skins'.CC_DS.$this->_skin.CC_DS.'images'.CC_DS.'common') ? 'common' : false;
+		$GLOBALS['smarty']->assign('SKIN_COMMON', $common);
 	}
 
 	/**

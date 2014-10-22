@@ -120,6 +120,9 @@
                   </div>
                </div>
             </footer>
+            <div style="display: none" id="val_skin_folder">{$SKIN_FOLDER}</div>
+            <div style="display: none" id="val_store_url">{$STORE_URL}</div>
+            {if $SKIN_COMMON}<div style="display: none" id="val_skin_common_images">{$SKIN_COMMON}</div>{/if}
             <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/jquery.js"></script>
             <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/foundation.min.js"></script>
             <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/jquery.rating.js"></script>
