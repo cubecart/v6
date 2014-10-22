@@ -39,7 +39,7 @@ function array_search( needle, haystack, strict ) {
 }
 
 if (jQuery)(function($){
-	
+	var image_dir = $('#val_admin_folder').text()+'/skins/default/images/';
 	$.extend($.fn, {
 		fileTree: function(o, h) {
 			if (!o) var o = {};
@@ -103,7 +103,7 @@ if (jQuery)(function($){
 											default:
 												status = bool;
 										}
-										img.src = $('#val_admin_folder').text()+'/skins/default/images/'+status+'.png';
+										img.src = image_dir+status+'.png';
 										$(img).attr({rel: '#'+o.name+'_'+item.id}).addClass('checkbox');
 										if (o.unique) $(img).addClass('unique');
 										$(span).append(img);
@@ -153,7 +153,7 @@ if (jQuery)(function($){
 	$('input.toggle:hidden').each(function(){
 		var img_status = ($(this).val() == '1') ? '1' : '0';
 		var img			= document.createElement('img');
-		img.src = $('#val_admin_folder').text()+'/skins/default/images/'+img_status+'.png';
+		img.src = image_dir+img_status+'.png';
 		if (img_status == '1') {
 			img.alt = img.title = 'Disable';
 		} else {
@@ -173,7 +173,7 @@ if (jQuery)(function($){
 				var status = '0'; var alt = 'Enable'; break;
 		}
 		var controller = 'img.checkbox[rel=#'+$(this).attr('id')+']';
-		$(controller).attr({'src': $('#val_admin_folder').text()+'/skins/default/images/'+status+'.png', 'alt' : alt, 'title' : alt});
+		$(controller).attr({'src': image_dir+status+'.png', 'alt' : alt, 'title' : alt});
 	});
 
 	// handle special insertion of form element only when an image is changed from current
@@ -204,7 +204,7 @@ if (jQuery)(function($){
 					status = '0'; break;
 			}
 			var controller = 'img.checkbox[rel=#'+id_val+']';
-			$(controller).attr({'src': $('#val_admin_folder').text()+'/skins/default/images/'+status+'.png'});
+			$(controller).attr({'src': image_dir+status+'.png'});
 		});
 		var parent_span = $(this).parent('span.action');
 		$(this).before(input);
