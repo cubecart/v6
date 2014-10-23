@@ -217,14 +217,15 @@ class Catalogue {
 
 				// Display gallery
 				$GLOBALS['smarty']->assign('GALLERY', $this->_productGallery($product['product_id']));
-				$GLOBALS['smarty']->assign('OPTIONS', $this->displayProductOptions($product['product_id']));
+				$product_options = $this->_displayProductOptions($product['product_id']);
+				$GLOBALS['smarty']->assign('OPTIONS', $product_options);
 
 				$allow_purchase = true;
 				$out = $hide = false;
 
 				if ((bool)$product['use_stock_level']) {
 					// Get Stock Level
-					$stock_level = $this->getProductStock($product['product_id'], null, true);
+					$stock_level = ($product_options) ? $this->getProductStock($product['product_id'], null, true) : $product['stock_level'];
 
 					$product['stock_level'] = ($stock_level>0) ? $stock_level : 0;
 					if ((int)$stock_level <= 0) {
@@ -293,7 +294,7 @@ class Catalogue {
 				$product['url'] = $GLOBALS['seo']->buildURL('prod', $product['product_id'], '&');
 
 				// Get stock level variations for options
-				if ($stock_variations = $GLOBALS['db']->select('CubeCart_option_matrix', 'MAX(stock_level) AS max_stock, MIN(stock_level) AS min_stock', array('product_id' => $product['product_id'], 'use_stock' => 1, 'status' => 1), false, 1)) {
+				if ($product_options && $stock_variations = $GLOBALS['db']->select('CubeCart_option_matrix', 'MAX(stock_level) AS max_stock, MIN(stock_level) AS min_stock', array('product_id' => $product['product_id'], 'use_stock' => 1, 'status' => 1), false, 1)) {
 					if (is_numeric($stock_variations[0]['min_stock']) && is_numeric($stock_variations[0]['max_stock'])) {
 						$product['stock_level'] =  ($stock_variations[0]['min_stock'] == $stock_variations[0]['max_stock']) ? $stock_variations[0]['max_stock'] : $stock_variations[0]['min_stock'].' - '.$stock_variations[0]['max_stock'];
 					}
