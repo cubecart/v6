@@ -1439,7 +1439,7 @@ class Cubecart {
 						$GLOBALS['tax']->exchangeRate($data['value'], (!empty($data['currency'])) ? $data['currency'] : $GLOBALS['config']->get('config', 'default_currency'));
 						$value = array(
 							'offset' => $offset,
-							'name'  => $data['name'],
+							'name'		=> $ship_name.': '.$data['name'],
 							'value'		=> $data['value'],
 							'tax_id' => $data['tax_id'], // Kept for legacy
 							'tax'		=> $data['tax']
