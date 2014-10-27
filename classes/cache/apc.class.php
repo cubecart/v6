@@ -202,7 +202,7 @@ class Cache extends Cache_Controler {
 				$mem_size = $mem['num_seg'] * $mem['seg_size'];
 				$mem_avail = $mem['avail_mem'];
 				$mem_used = $mem_size - $mem_avail;
-				return sprintf('Max: %s - Used: %s (%.2f%%) - Available: %s (%.2f%%)', formatBytes($mem_size, true), formatBytes($mem_used, true), ($mem_used * (100 / $mem_size)), formatBytes($mem_avail, true), ($mem_avail * (100 / $mem_size)));
+				return sprintf('Max: %s - Used: %s (%.2F%%) - Available: %s (%.2F%%)', formatBytes($mem_size, true), formatBytes($mem_used, true), ($mem_used * (100 / $mem_size)), formatBytes($mem_avail, true), ($mem_avail * (100 / $mem_size)));
 			} else {
 				return 'APC Statistics are unavailable.';
 			}

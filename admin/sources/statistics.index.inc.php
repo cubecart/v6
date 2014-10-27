@@ -317,7 +317,7 @@ if (($results = $GLOBALS['db']->query($query)) !== false) {
 	foreach ($results as $user) {
 		$user['is_admin']  = ((int)$user['admin_id'] > 0) ? 1 : 0;
 		$user['name']   = ((int)$user['customer_id'] != 0) ? sprintf('%s %s', $user['first_name'], $user['last_name']) : $lang['common']['guest'];
-		$user['session_length'] = sprintf('%.2f', ($user['session_last']-$user['session_start'])/60);
+		$user['session_length'] = sprintf('%.2F', ($user['session_last']-$user['session_start'])/60);
 		$user['session_start'] = formatTime($user['session_start']);
 		$user['session_last'] = formatTime($user['session_last']);
 		$smarty_data['users_online'][] = $user;

@@ -275,7 +275,7 @@ if (isset($_GET['action'])) {
 					
 					$product['options'] = Catalogue::getInstance()->displayProductOptions($product['product_id'],$product['options_array']);
 					
-					$product['line_price_less_options'] = sprintf("%.2f",$product['line']-Catalogue::getInstance()->getOptionsLinePrice());
+					$product['line_price_less_options'] = sprintf("%.2F",$product['line']-Catalogue::getInstance()->getOptionsLinePrice());
 					
 					$smarty_data['products'][] = $product;
 				}

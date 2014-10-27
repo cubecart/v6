@@ -166,7 +166,7 @@ if ($orders) {
 	## Show table footer
 	$tally['orders'] = count($orders);
 	foreach ($tally as $key => $value) {
-		$tallyformatted[$key] = ($key=='orders') ? $value : sprintf('%.2f', $value);
+		$tallyformatted[$key] = ($key=='orders') ? $value : sprintf('%.2F', $value);
 	}
 	$smarty_data['tally']  = $tallyformatted;
 	$GLOBALS['smarty']->assign('DOWNLOAD', true);

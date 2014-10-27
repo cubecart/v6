@@ -754,11 +754,11 @@ class Cart {
 			$this->_applyDiscounts();
 
 			$this->basket['weight']  = sprintf('%.3f', $this->_weight);
-			$this->basket['discount'] = sprintf('%.2f', $this->_discount);
-			$this->basket['subtotal'] = sprintf('%.2f', $this->_subtotal);
+			$this->basket['discount'] = sprintf('%.2F', $this->_discount);
+			$this->basket['subtotal'] = sprintf('%.2F', $this->_subtotal);
 			$taxes = $GLOBALS['tax']->fetchTaxAmounts();
 			foreach ($GLOBALS['hooks']->load('class.cart.get.fetchtaxes') as $hook) include $hook;
-			$this->basket['total_tax'] = sprintf('%.2f', $taxes['applied']);
+			$this->basket['total_tax'] = sprintf('%.2F', $taxes['applied']);
 
 			$this->_total = (($this->_subtotal + $this->_shipping) + $this->basket['total_tax']);
 			// if we are using per-product coupon, the prices are already reduced, so the total is fine
@@ -767,7 +767,7 @@ class Cart {
 			if ($this->_total < 0) {
 				$this->_total = 0;
 			}
-			$this->basket['total'] = sprintf('%.2f', $this->_total);
+			$this->basket['total'] = sprintf('%.2F', $this->_total);
 
 			foreach ($GLOBALS['hooks']->load('class.cart.get') as $hook) include $hook;
 
@@ -892,7 +892,7 @@ class Cart {
 								uasort($packages, 'price_sort');
 								// work out tax amount on shipping
 								foreach($packages as $package){
-									$package['value'] = sprintf('%.2f',$package['value']);
+									$package['value'] = sprintf('%.2F',$package['value']);
 									$packages_with_tax[] = array_merge($package,array('tax' => $GLOBALS['tax']->productTax($package['value'],$package['tax_id'],$package['tax_inclusive'],0,'goods',false)));
 								}
 
@@ -1142,10 +1142,10 @@ class Cart {
 					if($discount<$subtotal){
 						$subtotal -= $discount;
 						$this->_discount = $discount;
-						$this->basket['coupons'][$key]['value_display'] = sprintf('%.2f',$discount);
+						$this->basket['coupons'][$key]['value_display'] = sprintf('%.2F',$discount);
 					} elseif($discount>=$subtotal) {
 						$this->_discount = $subtotal;
-						$this->basket['coupons'][$key]['value_display'] = sprintf('%.2f',$subtotal);
+						$this->basket['coupons'][$key]['value_display'] = sprintf('%.2F',$subtotal);
 						$subtotal = 0;
 						if((!is_array($excluded_products) && !is_array($excluded_shipping))) {
 							$GLOBALS['tax']->adjustTax(0);
@@ -1216,18 +1216,18 @@ class Cart {
 					if($discount<$subtotal){
 						$subtotal -= $discount;
 						$this->_discount += $discount;
-						$this->basket['coupons'][$key]['value_display'] = sprintf('%.2f',$discount);
+						$this->basket['coupons'][$key]['value_display'] = sprintf('%.2F',$discount);
 						$remainder = 0;
 					} elseif($discount>=$subtotal) {
 						$remainder = $discount - $subtotal;
-						$this->basket['coupons'][$key]['value_display'] = sprintf('%.2f',$subtotal);
+						$this->basket['coupons'][$key]['value_display'] = sprintf('%.2F',$subtotal);
 						$this->_discount += $subtotal;
 						$subtotal = 0;
 					}
 					$this->basket['coupons'][$key]['remainder'] = $remainder;	
 				}
 			}
-			$ave_tax_rate = sprintf('%.2f',$ave_tax_rate);
+			$ave_tax_rate = sprintf('%.2F',$ave_tax_rate);
 			$tax = ($subtotal>0) ? ($subtotal*$ave_tax_rate) : 0;
 			$GLOBALS['tax']->adjustTax($tax);
 
