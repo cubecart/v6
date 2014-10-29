@@ -58,7 +58,7 @@
 	</div>
 	<div id="breadcrumbs">
 	  <span class="helpdocs" style="float: right;">
-		<a href="{$HELP_URL}" id="wikihelp" class="colorbox wiki">{$LANG.common.help}</a> | <a href="index.php" target="blank">{$LANG.settings.store_status} {if ($STORE_STATUS)}<span class="store_open">{$LANG.common.open}</span>{else}<span class="store_closed">{$LANG.common.closed}</span>{/if}</a>
+		<a href="{$HELP_URL}" id="wikihelp" class="colorbox wiki">{$LANG.common.help}</a> | <a href="index.php" target="_blank">{$LANG.settings.store_status} {if ($STORE_STATUS)}<span class="store_open">{$LANG.common.open}</span>{else}<span class="store_closed">{$LANG.common.closed}</span>{/if}</a>
 	  </span>
 	  <a href="?">{$LANG.dashboard.title_dashboard}</a>
 	  {if isset($CRUMBS)}{foreach from=$CRUMBS item=crumb} &raquo; <a href="{$crumb.url}">{$crumb.title}</a>{/foreach}{/if}

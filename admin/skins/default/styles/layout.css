@@ -109,6 +109,7 @@ input[type="submit"]:hover, input[type="button"]:hover {
 /* Dynamic styles - used by the jQuery functions */
 img.checkbox, .editable {
 	cursor: pointer;
+	margin: 7px 0 0 0;
 }
 input.editable {
 	cursor: text;
@@ -190,7 +191,7 @@ body {
 /* General tag styles */
 fieldset {
 	border: 1px solid #C7C7C7;
-	padding: 5px;
+	padding: 0px;
 	margin: 10px 0;
 	-moz-border-radius: 6px;
 	-webkit-border-radius: 6px;
@@ -331,7 +332,6 @@ div.tab:hover {
 	padding: 5px 10px;
 }
 div.tab_content {
-	/* border-bottom: 1px solid #E7E7E7; */
 	margin-bottom: 10px;
 	padding: 10px;
 	clear: right;
@@ -344,9 +344,14 @@ div.tab_content > h3, div.tb-form > h3 {
 	color: #4F9AAF;
 	font-size: 18px;
 }
-div.tab_content div {
-	margin: 3px 0;
+div.tab_content fieldset div {
+	padding: 0 0 0 5px;
+	min-height: 34px;
 }
+div.tab_content fieldset div:nth-child(odd) {
+	background-color: #F4F4F4
+}
+
 div.tab_content div.tall {
 	height: 32px;
 }
