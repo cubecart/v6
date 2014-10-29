@@ -137,18 +137,10 @@ if (isset($_POST['process'])) {
 					if ($GLOBALS['db']->insert('CubeCart_inventory', $product_record)) $insert++;
 					// Insert primary category
 					$product_id = $GLOBALS['db']->insertid();
-					if($product_record['cat_id']>0) {
-						$category_record = array (
-							'product_id'	=> $product_id,
-							'cat_id'		=> $product_record['cat_id'],
-							'primary'		=> 1
-						);
-						$GLOBALS['db']->insert('CubeCart_category_index', $category_record);
-					} elseif(strstr($product_record['cat_id'],',')) {
+					if(isset($product_record['cat_id']) && !empty($product_record['cat_id'])) {
 						$cats = explode(',',$product_record['cat_id']);
 						$primary = 1;
 						foreach($cats as $cat) {
-							
 							if(!is_numeric($cat)) {
 								$existing_cat = $GLOBALS['db']->select('CubeCart_category', array('cat_id'), array('cat_name' => $cat));
 								if($existing_cat && $existing_cat[0]['cat_id']>0) {
@@ -165,10 +157,14 @@ if (isset($_POST['process'])) {
 									'cat_id'  => $cat,
 									'primary'  => $primary
 								);
+								if($primary==1) { 
+									$primary_category = $cat;
+								}
 								$primary = 0;
 								$GLOBALS['db']->insert('CubeCart_category_index', $category_record);
 							}
 						}
+						$product_record['cat_id'] = $primary_category;
 					}
 					if(is_array($images)) {
 						$primary = 1;
