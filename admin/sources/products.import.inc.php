@@ -148,7 +148,18 @@ if (isset($_POST['process'])) {
 						$cats = explode(',',$product_record['cat_id']);
 						$primary = 1;
 						foreach($cats as $cat) {
-							if($cat>0) {
+							
+							if(!is_numeric($cat)) {
+								$existing_cat = $GLOBALS['db']->select('CubeCart_category', array('cat_id'), array('cat_name' => $cat));
+								if($existing_cat && $existing_cat[0]['cat_id']>0) {
+									$cat = $existing_cat[0]['cat_id'];
+								} else {
+									$GLOBALS['db']->insert('CubeCart_category', array('cat_name' => $cat));
+									$cat = $GLOBALS['db']->insertid();
+								}
+							}
+
+							if(is_numeric($cat) && $cat>0) {
 								$category_record = array (
 									'product_id' => $product_id,
 									'cat_id'  => $cat,
