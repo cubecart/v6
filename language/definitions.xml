@@ -127,7 +127,7 @@
     <string name="delivery_is_billing" introduced="5.0.0"><![CDATA[My delivery address is the same as my billing address.]]></string>
     <string name="form_address_select" introduced="5.0.0"><![CDATA[-- Predefined Addresses --]]></string>
     <string name="line1" introduced="5.0.0"><![CDATA[Address]]></string>
-    <string name="line2" introduced="5.0.0"><![CDATA[]]></string>
+    <string name="line2" introduced="5.0.0"><![CDATA[&nbsp;]]></string>
     <string name="mobile" introduced="5.0.0"><![CDATA[Mobile]]></string>
     <string name="notify_addresses_none" introduced="5.0.0"><![CDATA[No saved addresses.]]></string>
     <string name="phone" introduced="5.0.0"><![CDATA[Phone]]></string>

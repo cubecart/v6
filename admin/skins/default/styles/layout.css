@@ -109,7 +109,6 @@ input[type="submit"]:hover, input[type="button"]:hover {
 /* Dynamic styles - used by the jQuery functions */
 img.checkbox, .editable {
 	cursor: pointer;
-	margin: 7px 0 0 0;
 }
 input.editable {
 	cursor: text;
@@ -191,7 +190,7 @@ body {
 /* General tag styles */
 fieldset {
 	border: 1px solid #C7C7C7;
-	padding: 0px;
+	padding: 7px 0;
 	margin: 10px 0;
 	-moz-border-radius: 6px;
 	-webkit-border-radius: 6px;
@@ -344,40 +343,20 @@ div.tab_content > h3, div.tb-form > h3 {
 	color: #4F9AAF;
 	font-size: 18px;
 }
-div.tab_content fieldset div {
-	padding: 0 0 0 5px;
-	min-height: 34px;
+.tb-form {
+	margin: 10px;
 }
-div.tab_content fieldset div:nth-child(odd) {
-	background-color: #F4F4F4
+.tb-form fieldset {
+	border: 0px;
 }
-
-div.tab_content div.tall {
-	height: 32px;
-}
-div.tab_content div>label {
-	padding-top: 5px;
-	width: 25em;
-	float: left;
-}
+.tb-form fieldset label, div.tab_content fieldset label {clear:both;float:left;width: 25em;padding-left: 0.5rem;}
+.tb-form fieldset span, div.tab_content fieldset span {float:left;width:auto;}
 div.tab_content label.wide {
 	width: 50em;
-}
-div.tab_content div>label:after {
-/*	content: ':';	*/
 }
 div.tab_content div>label.spacer:after {
 	content: '' !important;
 }
-div.tb-form div {
-	margin: 3px 0;
-}
-div.tb-form div>label {
-	padding-top: 4px;
-	width: 25em;
-	float: left;
-}
-
 /* Module Layout Styles */
 div.module {
 	width: 400px;

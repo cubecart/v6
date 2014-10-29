@@ -237,6 +237,7 @@
   <div style="display: none;">
 	<div id="address-form" class="tb-form">
 	  <h3>{$LANG.address.address_add}</h3>
+	  <fieldset>
 	  <div><label for="edit_description">{$LANG.common.description}</label><span><input type="text" name="address[description][]" id="edit_description" class="textbox add display"> *</span></div>
 	  <div><label for="edit_title">{$LANG.user.title}</label><span><input type="text" name="address[title][]" id="edit_title" class="textbox add capitalize"></span></div>
 	  <div><label for="edit_first_name">{$LANG.user.name_first}</label><span><input type="text" name="address[first_name][]" id="edit_first_name" class="textbox add capitalize"> *</span></div>
@@ -257,9 +258,11 @@
 	  <div><label for="edit_postcode">{$LANG.address.postcode}</label><span><input type="text" name="address[postcode][]" id="edit_postcode" class="textbox add uppercase"> *</span></div>
 	  <div><label for="billing">{$LANG.address.billing_address}</label><span><input type="hidden" name="address[billing][]" id="billing"  class="toggle"></span></div>
 	  <div><label for="default">{$LANG.common.default}</label><span><input type="hidden" name="address[default][]" id="default" class="toggle"></span></div>
+	  </fieldset>
 	  <input type="hidden" name="add_div_class" value="note">
 	  <input type="button" value="{$LANG.common.add}" class="add" target="address-list" onclick="$.fn.colorbox.close()">
 	</div>
+
   </div>
   <script type="text/javascript">
 	var county_list = {$JSON_STATE}
