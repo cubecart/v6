@@ -28,6 +28,29 @@ input[type="submit"]:hover, input[type="button"]:hover {
 	background-image: -o-linear-gradient(#e1e1e1, #ededed);
 	background-color: #ededed;
 }
+input[type="checkbox"]{
+		margin: 0;
+		position: absolute;
+		z-index: 2;            
+		cursor: pointer;
+		outline: none;
+		opacity: 0;
+		/* CSS hacks for older browsers */
+		_noFocusLine: expression(this.hideFocus=true); 
+		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+		filter: alpha(opacity=0);
+		-khtml-opacity: 0;
+		-moz-opacity: 0;
+		background-color: red;
+	}
+.custom-checkbox {
+	background: url(../images/0.png);
+	width: 16px;
+	height: 16px;
+}
+.custom-checkbox.selected {
+	background: url(../images/1.png);
+}
 .mini_button {
 	font-size: 10px !important;
 	padding: 5px 3px 3px 3px !important;
@@ -210,6 +233,7 @@ fieldset > legend {
 	border-bottom: 1px solid #DDD;
 	width: 100%;
 	padding: 0 0 4px 0;
+	text-transform: capitalize;
 }
 a {
 	color: #4F9AAF;
@@ -360,8 +384,9 @@ div.tab_content > h3, div.tb-form > h3 {
 .tb-form fieldset {
 	border: 0px;
 }
-.tb-form fieldset label, div.tab_content fieldset label {clear:both;float:left;width: 25em;padding-left: 0.5rem;}
+.tb-form fieldset label, div.tab_content fieldset label {clear:both;float:left;width: 25em;}
 .tb-form fieldset span, div.tab_content fieldset span {float:left;width:auto;}
+
 div.tab_content label.wide {
 	width: 50em;
 }

@@ -283,6 +283,18 @@ $(document).ready(function() {
 	var nav_height = $('#navigation').height();
 	$('#page_content').height(nav_height+100);
 
+
+	var checkBox = $('input[type="checkbox"]');
+    $(checkBox).each(function(){
+        $(this).wrap( "<div class='custom-checkbox'></div>" );
+        if($(this).is(':checked')){
+            $(this).parent().addClass("selected");
+        }
+    });
+    $(checkBox).click(function(){
+        $(this).parent().toggleClass("selected");
+    });
+
 });
 
 

@@ -46,7 +46,7 @@
       </table>
       <p>{$PAGINATION}</p>
       {else}
-      <p>{$LANG.form.none}</p>
+      <div>{$LANG.form.none}</div>
       {/if}
       
    </div>
