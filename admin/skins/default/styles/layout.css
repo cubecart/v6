@@ -29,20 +29,22 @@ input[type="submit"]:hover, input[type="button"]:hover {
 	background-color: #ededed;
 }
 input[type="checkbox"]{
-		margin: 0;
-		position: absolute;
-		z-index: 2;            
-		cursor: pointer;
-		outline: none;
-		opacity: 0;
-		/* CSS hacks for older browsers */
-		_noFocusLine: expression(this.hideFocus=true); 
-		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-		filter: alpha(opacity=0);
-		-khtml-opacity: 0;
-		-moz-opacity: 0;
-		background-color: red;
-	}
+	margin: 0;
+	position: absolute;
+	z-index: 2;            
+	cursor: pointer;
+	outline: none;
+	opacity: 0;
+	/* CSS hacks for older browsers */
+	_noFocusLine: expression(this.hideFocus=true); 
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	filter: alpha(opacity=0);
+	-khtml-opacity: 0;
+	-moz-opacity: 0;
+	background-color: red;
+	width: 16px;
+	height: 16px;
+}
 .custom-checkbox {
 	background: url(../images/0.png);
 	width: 16px;

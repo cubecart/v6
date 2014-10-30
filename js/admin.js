@@ -286,21 +286,28 @@ $(document).ready(function() {
 		$('#page_content').height(nav_height+100);
 	}
 
-
-	var checkBox = $('input[type="checkbox"]');
-    $(checkBox).each(function(){
-        $(this).wrap( "<div class='custom-checkbox'></div>" );
+	$('input[type="checkbox"]').each(function(){
+        if(!$(this).parent().hasClass("custom-checkbox")) {
+        	$(this).wrap("<div class='custom-checkbox'></div>");
+        }
         if($(this).is(':checked')){
             $(this).parent().addClass("selected");
+        } else {
+        	$(this).parent().removeClass("selected");
         }
     });
-    $(checkBox).click(function(){
-        $(this).parent().toggleClass("selected");
+	
+    $('.check-primary, .check_cat, .check-all, .custom-checkbox').on('click', function() {
+    	$('input[type="checkbox"]').each(function(){
+	        if($(this).is(':checked')){
+	            $(this).parent().addClass("selected");
+	        } else {
+	        	$(this).parent().removeClass("selected");
+	        }
+	    });
     });
-
+    
 });
-
-
 /* Update Form Fields for Address */
 function updateAddressValues(key,i,data) {
 	if (i == "country") {
