@@ -305,8 +305,7 @@ $(document).ready(function() {
 	        	$(this).parent().removeClass("selected");
 	        }
 	    });
-    });
-    
+    });    
 });
 /* Update Form Fields for Address */
 function updateAddressValues(key,i,data) {

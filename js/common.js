@@ -26,35 +26,7 @@ jQuery(document).ready(function() {
 			}
 		});
 	};
-	jQuery.fn.checkUncheck	= function(settings) {
-		jQuery(this).each(function(){
-			var onAction	= (jQuery(this).is(':checkbox')) ? 'change' : 'click';
-			var controller	= jQuery(this);
-			jQuery(this).bind(onAction, function(){
-				var target	= jQuery(this).attr('rel');
-				if (jQuery(controller).is('input:checkbox')) {
-					if (jQuery(controller).is(':checked')) {
-						jQuery('input:checkbox.'+target).attr('checked', 'checked');
-					} else {
-						jQuery('input:checkbox.'+target).removeAttr('checked').change(function(){
-							jQuery(controller).removeAttr('checked');
-						});
-					}
-				} else {
-					if (jQuery(controller).is(':checked') || jQuery(controller).attr('checked')) {
-						jQuery('input:checkbox.'+target).removeAttr('checked');
-						jQuery(controller).removeAttr('checked');
-					} else {
-						jQuery('input:checkbox.'+target).attr('checked','checked').change(function(){
-							jQuery(controller).removeAttr('checked');
-						});
-						jQuery(controller).attr({'checked':'checked'});
-					}
-					return false;
-				}
-			});
-		});
-	};
+	
 	jQuery.fn.confirmPassword = function(settings) {
 		var options = jQuery.extend({
 			updateOn: 'keyup'
@@ -176,7 +148,11 @@ jQuery(document).ready(function() {
 		return false;
 	});
 
-	$('.check-all').checkUncheck();
+	$('.check-all').click(function() {
+		var rel = $(this).attr('rel');
+		var checkBoxes = $("input[type=checkbox]."+rel);
+        checkBoxes.prop("checked", !checkBoxes.prop("checked")); 
+	});
 
 	$('select.auto_submit').each(function(){
 		if(!$(this).hasClass('show_submit')) {
@@ -436,15 +412,6 @@ function updateStriping(element) {
 	// alternate the rows on everything else
 	$('.list,.reorder-list').find('>div:nth-child(even),tbody>tr:nth-child(even)').addClass('list-even');
 	$('.list,.reorder-list').find('>div:nth-child(odd),tbody>tr:nth-child(odd)').addClass('list-odd');
-}
-
-function checkUncheck(filter) {
-	var filter_on = (filter.length > 0) ? filter  : '';
-	if ($(filter+':checkbox').attr('checked')) {
-		$(filter+':checkbox').removeAttr('checked');
-	} else {
-		$(filter+':checkbox').attr('checked', 'checked');
-	}
 }
 
 function pageChanged(element) {
