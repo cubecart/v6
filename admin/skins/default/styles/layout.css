@@ -429,12 +429,14 @@ div.tools {
 	background-color: #CEFECE !important;
 }
 
+table { 
+    border-spacing: 1px;
+    border-collapse: separate;
+}
 td {
 	padding: 0 2px;
 }
-
 thead {
-	font-weight: bold;
 	text-align: left;
 	background-color: #E7E7E7;
 	height: 30px;
@@ -605,13 +607,6 @@ input.save-changes {
 .dashboard_content li {
 	list-style: none;
 }
-table { 
-    border-spacing: 0px;
-    border-collapse: separate;
-}
-table td {
-	padding: 3px;
-} 
 
 dl>dt {
 	font-weight: bold;

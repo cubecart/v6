@@ -14,6 +14,7 @@
 <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
    <div id="general" class="tab_content">
       <h3>{$LANG.navigation.nav_subscribers}</h3>
+      {if $SUBSCRIBERS}
       <table>
          <thead>
             <th></th>
@@ -44,6 +45,9 @@
          </tfooter>
       </table>
       <p>{$PAGINATION}</p>
+      {else}
+      <p>{$LANG.form.none}</p>
+      {/if}
       
    </div>
    <div id="import" class="tab_content">
