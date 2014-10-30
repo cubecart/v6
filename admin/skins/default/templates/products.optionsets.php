@@ -15,7 +15,7 @@
   <div id="assign" class="tab_content">
 	<h3>{$LANG.catalogue.title_option_set_assign}</h3>
 	<fieldset><legend>{$LANG.catalogue.title_option_sets}</legend>
-	  <div class="list" style="height: 200px; overflow: auto;">
+	  <div style="height: 200px; overflow: auto;">
 		{foreach from=$OPTION_SETS item=set}
 		<div>
 		  <span><input type="checkbox" name="set[]" value="{$set.set_id}"></span>
@@ -28,7 +28,7 @@
 	</fieldset>
 
 	<fieldset><legend>{$LANG.catalogue.title_products}</legend>
-	  <div class="list" style="height: 200px; overflow: auto;">
+	  <div style="height: 200px; overflow: auto;">
 		{foreach from=$PRODUCTS item=product}
 		<div>
 		  <span><input type="checkbox" name="product[]" value="{$product.product_id}"></span>

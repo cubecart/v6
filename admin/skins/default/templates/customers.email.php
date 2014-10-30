@@ -61,7 +61,7 @@
 <div id="newsletter-list" class="tab_content">
   <h3>{$LANG.email.title_newsletters}</h3>
   {if isset($NEWSLETTERS)}
-  <fieldset class="list">
+  <fieldset>
   {foreach from=$NEWSLETTERS item=newsletter}
 	<div>
 	  <span class="actions">
@@ -93,7 +93,7 @@
 		</span>
     </div>
 	</fieldset>
-	<table class="list">
+	<table>
 	  <thead>
 	    <tr>
 	      <td>{$LANG.email.email_macro}</td>

@@ -14,7 +14,7 @@
 <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
   <div id="exchange" class="tab_content">
 	<h3>{$LANG.settings.title_currency}</h3>
-	<table class="list">
+	<table>
 	  <thead>
 	  <tr>
 		<td align="center">{$LANG.common.status}</td>

@@ -137,7 +137,7 @@
     <div id="prodsales" style="width: 600px; height: 500px;"></div>
   
   <div>{$PAGINATION_SALES}</div>
- <table class="list">
+ <table>
 	<thead>
 	  <tr>
 		<td></td>
@@ -182,7 +182,7 @@
     </script>
     <div id="prodviews" style="width: 600px; height: 500px;"></div>
   <div>{$PAGINATION_VIEWS}</div>
-  <table class="list">
+  <table>
 	<thead>
 	  <tr>
 		<td width="20">&nbsp;</td>
@@ -227,7 +227,7 @@
     </script>
     <div id="search" style="width: 600px; height: 500px;"></div>
   <div>{$PAGINATION_SEARCH}</div>
-  <table class="list">
+  <table>
 	<thead>
 	  <tr>
 		<td width="20">&nbsp;</td>
@@ -271,7 +271,7 @@
     </script>
     <div id="best_customers" style="width: 600px; height: 500px;"></div>
   <div>{$PAGINATION_BEST}</div>
-  <table class="list">
+  <table>
 	<thead>
 	  <tr>
 		<td width="20">&nbsp;</td>
@@ -304,7 +304,7 @@
   	<a href="?_g=statistics&bots=true#stats_online">{$LANG.statistics.display_bots_and_customers}</a>
   {/if}
   </p>
-  <table class="list">
+  <table>
 	<thead>
 	  <tr>
 		<td>{$LANG.statistics.session_admin}</td>

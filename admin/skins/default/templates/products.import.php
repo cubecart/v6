@@ -30,7 +30,7 @@
   </div>
   {if isset($REVERTS)}
   <div id="revert" class="tab_content">
-	<fieldset class="list"><legend>{$LANG.catalogue.title_import_delete_previous}</legend>
+	<fieldset><legend>{$LANG.catalogue.title_import_delete_previous}</legend>
 	  {foreach from=$REVERTS item=revert}
 	  <div><input type="checkbox" name="revert[]" value="{$revert.date_added}"> {$revert.date_added_fuzzy} <span class="actions">{$revert.Count} {$LANG.catalogue.imported_products}</span></div>
 	  {/foreach}
@@ -43,7 +43,7 @@
   <div id="general" class="tab_content">
   <h3>{$LANG.catalogue.title_import}</h3>
 	{if isset($EXAMPLES)}
-	<fieldset class="list"><legend>{$LANG.catalogue.title_data_example}</legend>
+	<fieldset><legend>{$LANG.catalogue.title_data_example}</legend>
 	  {foreach from=$EXAMPLES item=example}
 	  <div><strong>{$example.column}:</strong> {$example.value}</div>
 	  {/foreach}

@@ -116,7 +116,7 @@
 <div id="orders" class="tab_content">
   <h3>{$LANG.dashboard.title_orders_unsettled}</h3>
   <div>
-	<table class="list">
+	<table>
 	  <thead>
 		<tr>
 		  <td width="120">{$LANG.orders.order_number}</td>
@@ -194,7 +194,7 @@
 {if isset($STOCK)}
 <div id="stock_warnings" class="tab_content">
   <h3>{$LANG.dashboard.title_stock_warnings}</h3>
-  <div class="list">
+  <div>
   {foreach from=$STOCK item=warn}
 	<div>
 	  <span class="actions"><a href="?_g=products&action=edit&product_id={$warn.product_id}{if $warn.M_use_stock==1}#Options{/if}" class="edit"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/edit.png" alt="{$LANG.common.edit}"></a></span>

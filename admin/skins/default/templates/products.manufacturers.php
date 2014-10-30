@@ -16,7 +16,7 @@
   <div id="manufacturers" class="tab_content">
 	<h3>{$LANG.catalogue.title_manufacturer}</h3>
 	{if isset($MANUFACTURERS)}
-	<table class="list">
+	<table>
 	  <thead>
 		<tr>
 		  <td width="250">{$LANG.catalogue.manufacturer}</td>

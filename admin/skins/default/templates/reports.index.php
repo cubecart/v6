@@ -14,7 +14,7 @@
 <form action="{$VAL_SELF}" method="post">
   <div id="results" class="tab_content">
 	<h3>{$REPORT_TITLE}</h3>
-	<table class="list">
+	<table>
 	  <thead>
 		<tr>
 		  <td>{$LANG.orders.order_number}</td>

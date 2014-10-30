@@ -15,7 +15,7 @@
   {if isset($DISPLAY_PRODUCT_LIST)}
   <div id="general" class="tab_content">
 	<h3>{$LANG.catalogue.title_product_inventory}</h3>
-
+	{if isset($PRODUCTS)}
 	<table width="100%">
   		<tr>
 			<td align="right">
@@ -54,8 +54,7 @@
 	  			<th nowrap="nowrap">&nbsp;</th>
   			</tr>
   		</thead>
-	  	<tbody class="list">
-	  		{if isset($PRODUCTS)}
+	  	<tbody>
 	  		{foreach from=$PRODUCTS item=product}
 	  		<tr>
 		  		<td align="center" width="10"><input type="checkbox" name="delete[]" id="{$product.product_id}" value="{$product.product_id}" class="table"></td>
@@ -99,6 +98,7 @@
 				</td>
 	  		</tr>
 	  		{/foreach}
+	  		
 	  	</tbody>
 	  	<tfoot>
 	  	  <tr>
@@ -115,11 +115,6 @@
 			  </select>
 	  		</td>
 	  	  </tr>
-	  		{else}
-	  		<tr>
-		  		<td align="center" colspan="11">{$LANG.form.none}</td>
-	  		</tr>
-	  		{/if}
 	  		<tr>
 	  		<td colspan="11">
 	  		<div class="pagination">
@@ -129,6 +124,9 @@
 	  		</tr>
 	  	</tfoot>
   	</table>
+  	{else}
+	  	<p>{$LANG.form.none}</p>	
+	{/if}
   </div>
   
   
@@ -229,7 +227,7 @@
 	  <fieldset><legend>{$LANG.catalogue.title_discount_quantity}</legend>
 		<div><label>{$LANG.common.quantity}</label><span>{$LANG.common.price}</span></div>
 		<div style="width: 500px;">
-		  <div id="qty_discount_0" class="list">
+		  <div id="qty_discount_0">
 		    {if isset($QUANTITY_DISCOUNTS)}
 			{foreach from=$QUANTITY_DISCOUNTS item=discount}
 			<div><span class="actions"><a href="#" rel="{$discount.discount_id}" class="remove" name="discount_delete" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a></span><label><span class="editable number-right" name="discount[{$discount.discount_id}][quantity]" title="Click to edit">{$discount.quantity}</span></label>
@@ -304,7 +302,7 @@
 
   <div id="category" class="tab_content">
   <h3>{$LANG.settings.title_categories}</h3>
-	<table class="list">
+	<table>
 		<thead>
 		  <tr>
 		    <th>{$LANG.catalogue.category_primary}</th>
@@ -334,7 +332,7 @@
   <div id="Options" class="tab_content">
 	<h3>{$LANG.catalogue.title_product_options}</h3>
 	<fieldset><legend>{$LANG.catalogue.title_product_options}</legend>
-	  <table class="list">
+	  <table>
 		<thead>
 		  <tr>
 			<td width="20">{$LANG.common.status}</td>
@@ -436,7 +434,7 @@
 
 	{if isset($OPTION_SETS)}
 	<fieldset><legend>{$LANG.catalogue.title_option_sets}</legend>
-	  <div id="option_sets" class="list" style="width: 850px;">
+	  <div id="option_sets" style="width: 850px;">
 		{if isset($OPTION_SETS_ENABLED)} {foreach from=$OPTION_SETS_ENABLED item=set}
 		<div id="">
 		  <span class="actions">
@@ -474,7 +472,7 @@
 	      <th>{$LANG.catalogue.restock_note}</th>
 	    </tr>
 	  </thead>
-	  <tbody class="list">
+	  <tbody>
 	{foreach from=$OPTIONS_MATRIX.all_possible item=row}
 	    <tr>
 		  <td>{$row.options_values}</td>
@@ -559,7 +557,7 @@
   {if isset($DISPLAY_TRANSLATE)}
   <div id="translate" class="tab_content">
 	<h3>{$LANG.translate.title_translations}</h3>
-	<fieldset class="list">
+	<fieldset>
 	  {if isset($TRANSLATIONS)}
 	  {foreach from=$TRANSLATIONS item=translation}
 	  <div>

@@ -53,7 +53,7 @@
 
   <div id="permissions" class="tab_content">
   <h3>{$LANG.admins.permission}</h3>
-	<table class="list">
+	<table>
 	  <thead>
 		<tr>
 		  <th width="400">{$LANG.admins.permission_section}</th>

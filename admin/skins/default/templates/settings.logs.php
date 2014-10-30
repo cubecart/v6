@@ -14,7 +14,7 @@
 {if isset($ADMIN_LOGS)}
 <div id="logs_admin" class="tab_content">
   <h3>{$LANG.settings.title_logs_access_admin}</h3>
-  <table class="list">
+  <table>
 	<thead>
 	  <tr>
 		<td nowrap="nowrap">{$THEAD_ADMIN.username}</td>
@@ -41,7 +41,7 @@
 {if isset($ADMIN_ACTIVITY)}
 <div id="logs_activity" class="tab_content">
   <h3>{$LANG.settings.title_logs_activity_admin}</h3>
-  <table class="list">
+  <table>
 	<thead>
 	  <tr>
 		<td>{$THEAD_ACTIVITY.username}</td>
@@ -68,7 +68,7 @@
 {if isset($CUSTOMER_ACTIVITY)}
 <div id="logs_customer" class="tab_content">
   <h3>{$LANG.settings.title_logs_access_customer}</h3>
-  <table class="list">
+  <table>
 	<thead>
 	  <tr>
 		<td nowrap="nowrap">{$THEAD_CUSTOMER.username}</td>

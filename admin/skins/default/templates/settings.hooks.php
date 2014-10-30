@@ -15,7 +15,7 @@
   {if $DISPLAY_PLUGINS}
   <div id="plugins" class="tab_content">
 	<h3>{$LANG.hooks.title_plugins_installed}</h3>
-	<fieldset class="list">
+	<fieldset>
 	  {foreach from=$PLUGINS item=plugin}
 	  <div>
 		<span class="actions">&nbsp;</span>
@@ -29,7 +29,7 @@
   <div id="snippets" class="tab_content">
 	<h3>{$LANG.hooks.title_code_snippets}</h3>
 	<p><a href="?_g=settings&node=hooks&add_snippet=1#snippets" class="delete">{$LANG.hooks.add_snippet}</a></p>
-	<fieldset class="list">
+	<fieldset>
 	  {foreach from=$SNIPPETS item=snippet}
 	  <div>
 		<span class="actions"><a href="?_g=settings&node=hooks&snippet={$snippet.snippet_id}#snippets"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/edit.png" alt=""></a> <a href="?_g=settings&node=hooks&delete_snippet={$snippet.snippet_id}#snippets" class="delete" title="{$LANG.notification.confirm_continue}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt=""></a></span>
@@ -114,7 +114,7 @@
   {if $DISPLAY_HOOKS}
   <div id="hooks" class="tab_content">
 	<h3>{$PLUGIN}</h3>
-	<fieldset class="list"><legend>{$LANG.hooks.title_hook_available}</legend>
+	<fieldset><legend>{$LANG.hooks.title_hook_available}</legend>
 	  {foreach from=$HOOKS item=hook}
 	  <div>
 		<span class="actions">

@@ -246,7 +246,6 @@ a:hover {
 a.delete {
 	color: #FF0000;
 }
-
 img {
 	border: none;
 }
@@ -436,24 +435,6 @@ div.tools {
 	text-align: right;
 }
 
-/* Zebra striping */
-.list-odd {
-	background-color: #EBF3FF;
-}
-.list-even {
-	background-color: #FCFCFC;
-}
-
-.list-hover {
-	background-color: #D1DDEF !important;
-}
-.list-changed {
-	background-color: #FFCECE !important;
-}
-.list-custom {
-	background-color: #CEFECE !important;
-}
-
 table { 
     border-spacing: 1px;
     border-collapse: separate;
@@ -461,10 +442,21 @@ table {
 td {
 	padding: 0 2px;
 }
+th .left, th .right {
+	display: inline-block;
+}
+th .right {
+	text-align: right;
+	width: 10px;
+}
 thead {
 	text-align: left;
 	background-color: #E7E7E7;
 	height: 30px;
+}
+
+tbody tr:nth-child(even) {
+	background-color: #EDF4F7;
 }
 
 thead span {
@@ -793,4 +785,5 @@ dl {
 .powered {
 	border-top: 1px solid #DDD;
 	text-align: center;
+	margin: 0px 7px;
 }

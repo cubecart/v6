@@ -281,7 +281,10 @@ $(document).ready(function() {
 	window.scrollTo(0,0);
 
 	var nav_height = $('#navigation').height();
-	$('#page_content').height(nav_height+100);
+	var content_height = $('#page_content').height();
+	if(nav_height > content_height) {
+		$('#page_content').height(nav_height+100);
+	}
 
 
 	var checkBox = $('input[type="checkbox"]');

@@ -15,7 +15,7 @@
   {if isset($LANGUAGES)}
   <div id="lang_list" class="tab_content">
 	<h3>{$LANG.translate.title_languages}</h3>
-	<div class="list">
+	<div>
 	<div>
 		<span class="actions">
 		  <a href="?_g=settings&node=language&download=definitions" title="{$LANG.common.download}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/download.png" alt="{$LANG.common.download}"></a>
@@ -94,7 +94,7 @@
 	{/if}
 
 	{if isset($STRINGS)}
-	<fieldset class="list"><legend>{$STRING_TYPE}</legend>
+	<fieldset><legend>{$STRING_TYPE}</legend>
 	  {foreach from=$STRINGS item=string}
 	  <div id="row_{$string.name}">
 		<span class="actions">

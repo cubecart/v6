@@ -21,7 +21,7 @@
 			<td>&nbsp;</td>
 		  </tr>
 		</thead>
-		<tbody class="list">
+		<tbody>
 		{foreach from=$REQUEST_LOG item=log}
 		  <tr>
 			<td valign="top" nowrap="nowrap">{$log.time}</td>

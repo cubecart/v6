@@ -16,7 +16,7 @@
 
   <div id="coupons" class="tab_content">
 	<h3>{$LANG.catalogue.title_coupons}</h3>
-	<table class="list">
+	<table>
 	  <thead>
 		<tr>
 		  <td>{$THEAD_COUPON.status}</td>
@@ -52,7 +52,7 @@
 
   <div id="certificates" class="tab_content">
 	<h3>{$LANG.catalogue.gift_certificates}</h3>
-	<table class="list">
+	<table>
 	  <thead>
 		<tr>
 		  <td>{$THEAD_CERTIFICATE.status}</td>
@@ -118,7 +118,7 @@
   </div>
   <div id="edit-products" class="tab_content">
 	<fieldset>
-	  <div id="assigned-prods" class="list">
+	  <div id="assigned-prods">
 	  	{foreach from=$PRODUCTS item=product}
 		<div>
 		  <span class="actions"><a href="#" class="remove" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a></span>

@@ -52,7 +52,7 @@
   <h3>{$LANG.maintain.title_existing_backups}</h3>
   <fieldset><legend>{$LANG.common.downloads}</legend>
 	{if $EXISTING_BACKUPS}
-	<div class="list">
+	<div>
 		{foreach from=$EXISTING_BACKUPS item=backup}
 		<div>
 		  <label for="{$backup.filename}" class="wide"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/{$backup.type}.png" alt="{$LANG.common.download}"></a> <a href="{$backup.download_link}">{$backup.filename}</a> - {$backup.size}</label>
@@ -146,7 +146,7 @@
 	  	    <td>{$LANG.maintain.table_overhead}</td>
 	  	  </tr>
 	  	</thead>
-	  	<tbody class="list">
+	  	<tbody>
 	  	  {foreach from=$TABLES item=table}
 	  	  <tr>
 	  		<td><input type="checkbox" id="{$table.Name}" name="tablename[]" value="{$table.Name}" class="table"></td>
@@ -190,7 +190,7 @@
   			<td>{$LANG.maintain.table_message_text}</td>
   		  </tr>
   		</thead>
-  		<tbody class="list">
+  		<tbody>
 	  	{foreach from=$TABLES_AFTER item=table}
 	  		<tr>
 	  		{foreach from=$table key=k item=v}

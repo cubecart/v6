@@ -15,7 +15,7 @@
   {if $LIST_CATEGORIES}
   <div id="categories" class="tab_content">
 	<h3>{$LANG.settings.title_category}</h3>
-	<table class="list">
+	<table>
 	  <thead>
 		<tr>
 		  <td width="15" align="center">{$LANG.settings.category_id}</td>
@@ -126,7 +126,7 @@
 	{if $DISPLAY_TRANSLATIONS}
   <div id="cat_translate" class="tab_content">
 	<h3>{$LANG.translate.title_translate}</h3>
-	<fieldset class="list"><legend>{$LANG.translate.title_translations}</legend>
+	<fieldset><legend>{$LANG.translate.title_translations}</legend>
 	  {if isset($TRANSLATIONS)}
 	  {foreach from=$TRANSLATIONS item=translation}
 	  <div>

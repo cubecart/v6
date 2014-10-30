@@ -15,7 +15,7 @@
   {if isset($DISPLAY_EMAIL_LIST)}
   <div id="email_contents" class="tab_content">
 	<h3>{$LANG.email.title_contents}</h3>
-	<table class="list">
+	<table>
 	  <thead>
 		<tr>
 		  <td width="300">{$LANG.email.email_type}</td>
@@ -46,7 +46,7 @@
 
   <div id="email_templates" class="tab_content">
 	<h3>{$LANG.email.title_templates}</h3>
-	  <fieldset class="list">
+	  <fieldset>
 	  {if isset($EMAIL_TEMPLATES)}
 	  {foreach from=$EMAIL_TEMPLATES item=template}
 	  <div>
@@ -121,7 +121,7 @@
 
   	<h3>{$LANG.email.title_macros}</h3>
   	<p>{$LANG.email.important}</p>
-  	<table class="list">
+  	<table>
   		<thead>
   		  <tr>
   			<td>{$LANG.email.email_macro}</td>
@@ -143,7 +143,7 @@
 	<textarea name="content[content_text]" id="content_text" class="textbox" style="width: 100%; height: 480px">{$CONTENT.content_text}</textarea>
   	<h3>{$LANG.email.title_macros}</h3>
   	<p>{$LANG.email.important}</p>
-  	<table class="list">
+  	<table>
   		<thead>
   		  <tr>
   			<td>{$LANG.email.email_macro}</td>
@@ -183,7 +183,7 @@
 	  //]]>
 	</script>
   	<h3>{$LANG.email.title_macros}</h3>
-  	<table class="list">
+  	<table>
   		<thead>
   			<tr>
   				<td>{$LANG.email.email_macro}</td>
@@ -207,7 +207,7 @@
     <h3>{$LANG.email.title_content_text}</h3>
 	<textarea name="template[content_text]" id="template_text" class="textbox" style="width: 100%; height: 480px">{$TEMPLATE.content_text}</textarea>
   	<h3>{$LANG.email.title_macros}</h3>
-  	<table class="list">
+  	<table>
   		<thead>
 		  <tr>
 			<td>{$LANG.email.email_macro}</td>

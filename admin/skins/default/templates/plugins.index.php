@@ -14,7 +14,7 @@
 <form action="{$VAL_SELF}" method="post">
 <div id="plugins" class="tab_content">
 	<h3>Installed Plugins</h3>
-	<table class="list">
+	<table>
 	<thead>
 		<tr>
 		<th>Status</th>

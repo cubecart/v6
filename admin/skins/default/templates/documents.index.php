@@ -15,7 +15,7 @@
   {if isset($DISPLAY_DOCUMENT_LIST)}
   <div id="overview" class="tab_content">
 	<h3>{$LANG.documents.title_documents}</h3>
-	<table class="list">
+	<table>
 	  <thead>
 		<tr>
 		  <td>{$LANG.common.arrange}</td>

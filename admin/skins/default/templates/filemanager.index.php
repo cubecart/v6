@@ -15,7 +15,7 @@
   {if isset($mode_list)}
   <div id="filemanager" class="tab_content">
 	<h3>{$FILMANAGER_TITLE}</h3>
-	<div class="list" style="height: 430px; overflow: auto; padding-right: 5px;">
+	<div style="height: 430px; overflow: auto; padding-right: 5px;">
 	  {if isset($FOLDERS)}
 	  {foreach from=$FOLDERS item=folder}
 	  <div>

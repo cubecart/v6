@@ -15,7 +15,7 @@
   <div id="assign" class="tab_content">
 	<h3>{$LANG.catalogue.title_category_assign_to}</h3>
 	<fieldset><legend>{$LANG.catalogue.title_products}</legend>
-	  <div class="list" style="height: 200px; overflow: auto;">
+	  <div style="height: 200px; overflow: auto;">
 	  	<input type="checkbox" name="" value="" id="product_check">{$LANG.form.check_uncheck}
 		{foreach from=$PRODUCTS item=product}
 		<div>
@@ -53,7 +53,7 @@
 	</fieldset>
 	{if isset($CATEGORIES)}
 	<fieldset><legend>{$LANG.settings.title_category}</legend>
-	  <div class="list" style="height: 200px; overflow: auto;">
+	  <div style="height: 200px; overflow: auto;">
 		{foreach from=$CATEGORIES item=category}
 		<div>
 		  <span><input type="checkbox" name="category[]" value="{$category.id}"></span>

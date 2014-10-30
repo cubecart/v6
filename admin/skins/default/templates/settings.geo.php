@@ -14,7 +14,7 @@
 <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
   <div id="countries" class="tab_content">
 	<h3>{$LANG.country.title_country}</h3>
-	<table class="list">
+	<table>
 	  <thead>
 		<tr>
 		  <td>&nbsp;</td>
@@ -71,7 +71,7 @@
 
   <div id="zones" class="tab_content">
   <h3>{$LANG.country.title_zone}</h3>
-	<table class="list">
+	<table>
 	  <thead>
 		<tr>
 		  <td>&nbsp;</td>

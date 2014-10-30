@@ -21,7 +21,7 @@
 	</fieldset>
 
 	<fieldset><legend>{$LANG.contact.title_departments}</legend>
-	  <div id="departments" class="list">
+	  <div id="departments">
 	  {if isset($DEPARTMENTS)}
 	  {foreach from=$DEPARTMENTS item=department}
 		<div>

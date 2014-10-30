@@ -30,7 +30,7 @@
 <div id="taxdetails" class="tab_content">
   <h3>{$LANG.settings.title_tax_detail}</h3>
   <fieldset><legend>{$LANG.settings.title_tax_detail_current}</legend>
-	<table class="list">
+	<table>
 	  <thead>
 		<tr>
 		  <td width="50">{$LANG.common.status}</td>
@@ -79,7 +79,7 @@
 	      <td width="20">&nbsp;</td>
 		</tr>
 	  </thead>
-	  <tbody class="list">
+	  <tbody>
 		{foreach from=$TAX_RULES item=rule}
 		<tr>
 		  <td align="center"><input type="hidden" name="rule[{$rule.id}][active]" id="rule_{$rule.id}" value="{$rule.active}" class="toggle"></td>

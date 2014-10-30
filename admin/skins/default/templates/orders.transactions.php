@@ -20,7 +20,7 @@
 	</div>
 	<input type="hidden" name="token" value="{$SESSION_TOKEN}">
   </form>
-  <table class="list">
+  <table>
 	<thead>
 	  <tr>
 		<td width="120">{$THEAD.cart_order_id}</td>
@@ -56,7 +56,7 @@
 {if $DISPLAY_ORDER_TRANSACTIONS}
 <div id="log" class="tab_content">
 <h3>{$TRANSACTION_LOGS_TITLE}</h3>
-  <table class="list">
+  <table>
 	<thead>
 	  <tr>
 		<td nowrap="nowrap">{$LANG.orders.transaction_id}</td>

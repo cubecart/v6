@@ -28,7 +28,7 @@
 	  <thead>
 	  	<th>{$LANG.email.export_format}</th><th>{$LANG.catalogue.export_parts}</th><th>{$LANG.catalogue.export_url}</th>
 	  </thead>
-	  <tbody class="list">
+	  <tbody>
 	  {foreach from=$FORMATS item=format}
 	    <tr><td>{$format.name}</td><td align="center">{$format.parts}</td><td align="center"><a href="{$format.link}" target="_blank"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/link.png" alt=""></a></td></tr>
 	  {/foreach}

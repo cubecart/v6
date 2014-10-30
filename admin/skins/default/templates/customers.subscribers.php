@@ -21,7 +21,7 @@
             <th>{$LANG.common.email}</th>
             <th></th>
          </thead>
-         <tbody class="list">
+         <tbody>
             {foreach from=$SUBSCRIBERS item=subscriber}
             <tr>
                <td><input type="checkbox" name="rem_subscriber[{$subscriber.subscriber_id}]" value="1" class="subscribers"></td>

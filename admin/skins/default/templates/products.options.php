@@ -15,7 +15,7 @@
   <form action="{$VAL_SELF}" method="post">
 	<div id="groups" class="tab_content">
 	  <h3>{$LANG.catalogue.title_option_groups}</h3>
-	  <table class="list">
+	  <table>
 		<thead>
 		  <tr>
 			<td width="20">{$LANG.common.arrange}</td>
@@ -122,7 +122,7 @@
 
 	  {foreach from=$SETS item=set}
 	  <fieldset class="field_select_target" id="set_{$set.set_id}" rel="add_options"><legend>{$set.set_name}</legend>
-		<div class="list">
+		<div>
 		{foreach from=$set.members key=set_id item=members}
 		  {foreach from=$members item=member}
 		  <div>

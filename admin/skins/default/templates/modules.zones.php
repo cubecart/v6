@@ -13,7 +13,7 @@
 ?>
   <div id="zone-list" class="tab_content">
 	<h3>{$LANG.settings.allowed_zones}</h3>
-	<fieldset id="enabled-zones" class="list"><legend>{$LANG.module.title_regions_enabled}</legend>
+	<fieldset id="enabled-zones"><legend>{$LANG.module.title_regions_enabled}</legend>
 	  {foreach from=$ENABLED_COUNTRIES item=country}
 	  <div>
 		<span class="actions"><a href="#" class="remove dynamic" title="{$LANG.messages.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a></span>

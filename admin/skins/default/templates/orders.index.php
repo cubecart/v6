@@ -15,7 +15,7 @@
   {if isset($DISPLAY_ORDER_LIST)}
   <div id="orders" class="tab_content">
 	<h3>{$LANG.orders.title_orders}</h3>
-	<table class="list" width="100%">
+	<table width="100%">
 	  <thead>
 		<tr>
 		  <td>&nbsp;</td>
@@ -287,7 +287,7 @@
 		</span>
 	  </div>
 
-	  <table class="list">
+	  <table>
 		<thead>
 		  <tr>
 			<th width="102">{$LANG.common.quantity}</th>
@@ -438,7 +438,7 @@
 
 	<div id="order_history" class="tab_content">
 	  <h3>{$LANG.orders.title_order_history}</h3>
-		<table class="list">
+		<table>
 		  <thead>
 		    <tr>
 		      <td width="150">{$LANG.common.status}</td>
@@ -473,7 +473,7 @@
 			{if $DISPLAY_ACTIONS}<td width="60">{$LANG.common.action}</td>{/if}
 		  </tr>
 		</thead>
-		<tbody class="list">
+		<tbody>
 		  {foreach from=$TRANSACTIONS item=transaction}
 		  <tr>
 			<td>{$transaction.trans_id}</td>

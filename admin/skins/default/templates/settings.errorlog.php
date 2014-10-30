@@ -15,7 +15,7 @@
   <h3>{$LANG.settings.title_error_log}</h3>
   <p>[<a href="?_g=maintenance&clearLogs=true">{$LANG.maintain.logs_error}</a>]</p>
   <form action="{$VAL_SELF}#admin_error_log" method="post" enctype="multipart/form-data">
-	  <table class="list">
+	  <table>
 		<thead>
 		  <tr>
 			<td>&nbsp;</td>
@@ -63,7 +63,7 @@
   <p>[<a href="?_g=maintenance&emptyErrorLogs=true">{$LANG.maintain.logs_error}</a>]</p>
   
   <form action="{$VAL_SELF}#system_error_log" method="post" enctype="multipart/form-data">
-	  <table class="list">
+	  <table>
 		<thead>
 		  <tr>
 			<td>&nbsp;</td>

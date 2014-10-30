@@ -33,7 +33,7 @@
 		  <td>&nbsp;</td>
 		</tr>
 	  </thead>
-	  <tbody class="list">
+	  <tbody>
 		{foreach from=$CUSTOMERS item=customer}
 		<tr>
 		  <td align="center"><input type="hidden" name="status[{$customer.customer_id}]" id="status_{$customer.customer_id}" value="{$customer.status}" class="toggle"></td>
@@ -80,7 +80,7 @@
 
   <div id="customer-groups" class="tab_content">
 	<h3>{$LANG.customer.title_groups}</h3>
-	<fieldset id="group-list" class="list"><legend>{$LANG.customer.title_groups_available}</legend>
+	<fieldset id="group-list"><legend>{$LANG.customer.title_groups_available}</legend>
 	  {if isset($CUSTOMER_GROUPS)}
 	  {foreach from=$CUSTOMER_GROUPS item=group}
 	  <div>
@@ -199,7 +199,7 @@
 	{if isset($DISPLAY_CUSTOMER_GROUPS)}
 	<div id="groups" class="tab_content">
 	  <h3>{$LANG.customer.title_groups}</h3>
-	  <fieldset id="membership" class="list"><legend>{$LANG.customer.title_groups_membership}</legend>
+	  <fieldset id="membership"><legend>{$LANG.customer.title_groups_membership}</legend>
 		{if isset($CUSTOMER_GROUPS)}
 		{foreach from=$CUSTOMER_GROUPS item=group}
 		<div>
