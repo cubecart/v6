@@ -525,6 +525,7 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="logo" introduced="6.0.0"><![CDATA[Logo]]></string>
   	<string name="reorder" introduced="6.0.0"><![CDATA[Reorder]]></string>
   	<string name="recommended" introduced="6.0.0"><![CDATA[Recommended]]></string>
   	<string name="all_pages" introduced="6.0.0"><![CDATA[Force on all pages]]></string>
@@ -1769,7 +1770,7 @@
     <string name="stock_warning_method_product" introduced="5.0.0"><![CDATA[Use product-specific level]]></string>
     <string name="store_name" introduced="5.0.0"><![CDATA[Store Name]]></string>
     <string name="store_root" introduced="5.0.0"><![CDATA[Store Root Path]]></string>
-    <string name="store_status" introduced="5.0.0"><![CDATA[Storefront Status]]></string>
+    <string name="store_status" introduced="5.0.0"><![CDATA[Storefront]]></string>
     <string name="store_url" introduced="5.0.0"><![CDATA[Store URL]]></string>
     <string name="tab_advanced" introduced="5.0.0"><![CDATA[Advanced]]></string>
     <string name="tab_copyright" introduced="5.0.0"><![CDATA[Copyright]]></string>

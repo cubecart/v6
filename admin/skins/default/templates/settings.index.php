@@ -270,11 +270,30 @@
    <div id="Logos" class="tab_content">
       <h3>{$LANG.settings.title_logo}</h3>
       {if isset($LOGOS)}
-      <fieldset class="list">
+      <fieldset>
          <legend>{$LANG.settings.title_logo_current}</legend>
+         <table width="100%">
+         <thead>
+         <tr>
+         <td>
+         {$LANG.common.status}
+         </td>
+         <td>{$LANG.common.logo}</td>
+         <td>{$LANG.module.scope}</td>
+         <td>{$LANG.form.action}</td>
+         </tr>
+         </thead>
+         <tbody>
          {foreach from=$LOGOS item=logo}
-         <div>
-            <span class="actions">
+         <tr>
+            <td>
+            <input type="hidden" name="logo[{$logo.logo_id}][status]" id="logo_{$logo.logo_id}_status" value="{$logo.status}" class="toggle">
+            </td>
+            <td>
+           
+            <a href="images/logos/{$logo.filename}" target="_blank" class="colorbox"><img src="images/logos/{$logo.filename}" alt="{$logo.filename}" height="50"></a>
+            </td>
+            <td>
                <input type="hidden" class="default-style" value="{$logo.style}">
                <select id="" name="logo[{$logo.logo_id}][skin]" class="textbox select-skin">
                   <optgroup label="Skins">
@@ -291,17 +310,20 @@
                <select id="" name="logo[{$logo.logo_id}][style]" class="textbox select-style">
                   <option value="">{$LANG.settings.logo_all_styles}</option>
                </select>
-               <a href="{$logo.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a>
-            </span>
-            <span style="float: left; width: 25px;"><input type="hidden" name="logo[{$logo.logo_id}][status]" id="logo_{$logo.logo_id}_status" value="{$logo.status}" class="toggle"></span>
-            <a href="images/logos/{$logo.filename}" target="_blank" class="colorbox"><img src="images/logos/{$logo.filename}" alt="{$logo.filename}" height="50"></a>
-         </div>
+               
+            </td>
+            <td>
+<a href="{$logo.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a>
+            </td>
+         </tr>
          {/foreach}
+         </tbody>
+         </table>
       </fieldset>
       {/if}
       <fieldset>
          <legend>{$LANG.settings.title_logo_upload}</legend>
-         <div><input type="file" name="logo" class="textbox multiple"></div>
+         <div><input type="file" name="logo" class="multiple"></div>
       </fieldset>
    </div>
    <div id="Advanced_Settings" class="tab_content">

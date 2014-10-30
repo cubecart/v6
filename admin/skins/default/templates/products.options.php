@@ -39,7 +39,7 @@
 		  </tr>
 		  {foreachelse}
 		  <tr>
-			<td align="center" colspan="5">{$LANG.catalogue.no_option_groups}</td>
+			<td align="center" colspan="6">{$LANG.catalogue.no_option_groups}</td>
 		  </tr>
 		  {/foreach}
 		</tbody>

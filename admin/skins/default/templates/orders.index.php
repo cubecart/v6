@@ -15,7 +15,7 @@
   {if isset($DISPLAY_ORDER_LIST)}
   <div id="orders" class="tab_content">
 	<h3>{$LANG.orders.title_orders}</h3>
-	<table class="list">
+	<table class="list" width="100%">
 	  <thead>
 		<tr>
 		  <td>&nbsp;</td>

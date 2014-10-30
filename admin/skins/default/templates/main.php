@@ -17,7 +17,7 @@
   <meta charset="utf-8">
   <title>{$LANG.dashboard.title_admin_cp}</title>
   <link rel="shortcut icon" href="{$STORE_URL}/favicon.ico" type="image/x-icon">
-  <!--[if IE 7]><link rel="stylesheet" type="text/css" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/styles/ie7.css" media="screen"><![endif]-->
+  <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,700italic,400italic&subset=cyrillic,cyrillic-ext,latin,greek-ext,greek,latin-ext' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" type="text/css" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/styles/layout.css" media="screen">
   {if isset($JQUERY_STYLES)}
   	{foreach from=$JQUERY_STYLES item=style}
@@ -25,12 +25,14 @@
   	{/foreach}
   {/if}
   <link rel="stylesheet" type="text/css" href="js/styles/styles.php" media="screen">
+
 </head>
 
 <body>
   <div id="header">
   <span class="user_info">{$LANG.settings.title_welcome_back} <a href="?_g=settings&node=admins&action=edit&admin_id={$ADMIN_UID}">{$ADMIN_USER}</a> - [<a href="?_g=logout">{$LANG.account.logout}</a>]</span>
   </div>
+  <div id="wrapper">
   <div id="navigation">
   {if isset($NAVIGATION)}
     {foreach from=$NAVIGATION item=group}
@@ -56,12 +58,15 @@
 	  {/foreach}
 	  {/if}
 	</div>
+	<div id="content_body">
 	<div id="breadcrumbs">
+	  <div class="inner">
 	  <span class="helpdocs" style="float: right;">
-		<a href="{$HELP_URL}" id="wikihelp" class="colorbox wiki">{$LANG.common.help}</a> | <a href="index.php" target="_blank">{$LANG.settings.store_status} {if ($STORE_STATUS)}<span class="store_open">{$LANG.common.open}</span>{else}<span class="store_closed">{$LANG.common.closed}</span>{/if}</a>
+		<a href="{$HELP_URL}" id="wikihelp" class="colorbox wiki">{$LANG.common.help}</a> | <a href="index.php" target="_blank">{$LANG.settings.store_status} - {if ($STORE_STATUS)}<span class="store_open">{$LANG.common.open}</span>{else}<span class="store_closed">{$LANG.common.closed}</span>{/if}</a>
 	  </span>
 	  <a href="?">{$LANG.dashboard.title_dashboard}</a>
 	  {if isset($CRUMBS)}{foreach from=$CRUMBS item=crumb} &raquo; <a href="{$crumb.url}">{$crumb.title}</a>{/foreach}{/if}
+	  </div>
 	</div>
 	{include file='templates/common.gui_message.php'}
 	<div id="page_content">
@@ -99,6 +104,10 @@
 	  <div id="loading_content"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/loading.gif" alt=""></div>
 	  {$DISPLAY_CONTENT}
 	</div>
+
+	</div>
+	<div class="powered">eCommerce by <a href="http://www.cubecart.com">CubeCart</a></div>
+  </div>
   </div>
   <div style="display: none" id="val_admin_folder">{$SKIN_VARS.admin_folder}</div>
   <div style="display: none" id="val_admin_file">{$SKIN_VARS.admin_file}</div>
@@ -124,5 +133,6 @@
   		<script type="text/javascript" src="{$js_src}"></script>
   	{/foreach}
   {/if}
+
 </body>
 </html>

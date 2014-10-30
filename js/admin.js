@@ -279,6 +279,10 @@ $(document).ready(function() {
 	});
 	$('input.date').datepicker();
 	window.scrollTo(0,0);
+
+	var nav_height = $('#navigation').height();
+	$('#page_content').height(nav_height+100);
+
 });
 
 
