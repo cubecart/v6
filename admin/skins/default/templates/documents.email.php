@@ -90,7 +90,7 @@
 		  <option value="{$export}">{$export}</option>
 		  {/foreach}
 		  </select>
-		<input type="checkbox" name="export_compress" id="export_compress" value="1" checked="checked"><label for='export_compress'>&nbsp;</label> {$LANG.email.export_compress}
+		<input type="checkbox" name="export_compress" value="1" checked="checked"> {$LANG.email.export_compress}
 	  </div>
 	</fieldset>
 	{/if}

@@ -32,7 +32,7 @@
 		{if isset($ORDER_LIST)}
 		{foreach from=$ORDER_LIST item=order}
 		<tr>
-		  <td align="center"><input type="checkbox" id="oid_{$order.cart_order_id}" name="multi-order[]" value="{$order.cart_order_id}" class="all-orders"><label for="oid_{$order.cart_order_id}">&nbsp;</label></td>
+		  <td align="center"><input type="checkbox" id="" name="multi-order[]" value="{$order.cart_order_id}" class="all-orders"></td>
 		  <td><a href="{$order.link_edit}">{$order.cart_order_id}</a></td>
 		  <td align="center"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/{$order.icon}.png" alt=""></td>
 		  <td><a href="{$order.link_customer}" title="{$order.name}">{$order.name}</a></td>
