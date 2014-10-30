@@ -28,6 +28,26 @@ input[type="submit"]:hover, input[type="button"]:hover {
 	background-image: -o-linear-gradient(#e1e1e1, #ededed);
 	background-color: #ededed;
 }
+input[type=checkbox] {
+	display:none;
+}
+ 
+input[type=checkbox] + label
+{
+	background: #999;
+	height: 16px;
+	width: 16px;
+	display:inline-block;
+	padding: 0 0 0 0px;
+}
+input[type=checkbox]:checked + label
+{
+	background: #0080FF;
+	height: 16px;
+	width: 16px;
+	display:inline-block;
+	padding: 0 0 0 0px;
+}
 .mini_button {
 	font-size: 10px !important;
 	padding: 5px 3px 3px 3px !important;
@@ -429,12 +449,14 @@ div.tools {
 	background-color: #CEFECE !important;
 }
 
+table { 
+    border-spacing: 1px;
+    border-collapse: separate;
+}
 td {
 	padding: 0 2px;
 }
-
 thead {
-	font-weight: bold;
 	text-align: left;
 	background-color: #E7E7E7;
 	height: 30px;
@@ -605,13 +627,6 @@ input.save-changes {
 .dashboard_content li {
 	list-style: none;
 }
-table { 
-    border-spacing: 0px;
-    border-collapse: separate;
-}
-table td {
-	padding: 3px;
-} 
 
 dl>dt {
 	font-weight: bold;

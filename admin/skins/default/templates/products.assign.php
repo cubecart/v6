@@ -16,11 +16,11 @@
 	<h3>{$LANG.catalogue.title_category_assign_to}</h3>
 	<fieldset><legend>{$LANG.catalogue.title_products}</legend>
 	  <div class="list" style="height: 200px; overflow: auto;">
-	  	<input type="checkbox" name="" value="" id="product_check">{$LANG.form.check_uncheck}
+	  	<input type="checkbox" name="" value="" id="product_check"><label for="product_check">&nbsp;</label>{$LANG.form.check_uncheck}
 		{foreach from=$PRODUCTS item=product}
 		<div>
 		  <span style="float: right; margin: 5px 3px; display: inline;">{if !empty($product.product_code)}({$product.product_code}){/if}</span>
-		  <span><input type="checkbox" name="product[]" value="{$product.product_id}"></span>
+		  <span><input type="checkbox" name="product[]" id="prod_{$product.product_id}" value="{$product.product_id}"><label for="prod_{$product.product_id}">&nbsp;</label></span>
 		  {$product.name}
 		</div>
 		{foreachelse}
@@ -56,7 +56,7 @@
 	  <div class="list" style="height: 200px; overflow: auto;">
 		{foreach from=$CATEGORIES item=category}
 		<div>
-		  <span><input type="checkbox" name="category[]" value="{$category.id}"></span>
+		  <span><input type="checkbox" name="category[]" id="cat_{$category.id}" value="{$category.id}"><label for="cat_{$category.id}"></label></span>
 		  {$category.name}
 		</div>
 		{/foreach}

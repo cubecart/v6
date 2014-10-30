@@ -149,7 +149,7 @@
 	  	<tbody class="list">
 	  	  {foreach from=$TABLES item=table}
 	  	  <tr>
-	  		<td><input type="checkbox" id="{$table.Name}" name="tablename[]" value="{$table.Name}" class="table"></td>
+	  		<td><input type="checkbox" id="{$table.Name}" name="tablename[]" value="{$table.Name}" id="tbl_{$table.Name}" class="table"><label for="tbl_{$table.Name}">&nbsp;</label></td>
 	  		<td><label for="{$table.Name}">{$table.Name_Display}</label></td>
 	  		<td>{$table.Rows}</td>
 	  		<td>{$table.Engine}</td>
