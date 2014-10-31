@@ -341,7 +341,7 @@
 				<input type="text" rel="price" class="textbox number-right lineprice">
 			</td>
 			<td><input type="text" rel="line_price" class="textbox number-right subtotal"></td>
-			<td><span class="action"><a href="#" class="remove dynamic" title="{$LANG.common.decision_remove}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
+			<td align="center"><span class="action"><a href="#" class="remove dynamic" title="{$LANG.common.decision_remove}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
 		  </tr>
 
 		  <tr>
@@ -395,13 +395,13 @@
 			  </select>
 			</th>
 			<td><input type="text" rel="amount" class="textbox number-right tax not-empty" ></td>
-			<td><a href="#" class="add" target="tax-list"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a></td>
+			<td align="center"><a href="#" class="add" target="tax-list"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a></td>
 		  </tr>
 		  <!-- Source for inline adding -->
 		  <tr class="update-subtotal inline-source" name="tax_add">
 			<th colspan="3"><input type="hidden" rel="tax_id"><span rel="tax_id"></span></th>
 			<td><input type="text" rel="amount" class="textbox number-right tax"></td>
-			<td><a href="#" class="remove dynamic" title=""><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
+			<td align="center"><a href="#" class="remove dynamic" title=""><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
 		  </tr>
 		  <tr>
 			<th colspan="3">{$LANG.basket.total_tax}</th>
@@ -413,7 +413,7 @@
 		  <tr>
 			<th colspan="3">{$LANG.basket.total}</th>
 			<td><input type="text" id="total" name="summary[total]" class="textbox number-right" value="{$SUMMARY.total}"></td>
-			<td><a href="#" class="refresh"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/arrow_refresh.png" alt="{$LANG.common.refresh}" title="{$LANG.common.refresh}"></a></td>
+			<td align="center"><a href="#" class="refresh"><i class="fa fa-refresh" title="{$LANG.common.refresh}"></i></a></td>
 		  </tr>
 		</tfoot>
 	  </table>

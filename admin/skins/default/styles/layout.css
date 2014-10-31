@@ -800,7 +800,7 @@ dl {
 .fa {
 	color: #555;
 }
-.fa-user.registered {
+.fa-user.registered, .fa-refresh, .fa-plus-circle {
 	color: #44B215;
 }
 .fa-trash, .fa-user.unregistered {
