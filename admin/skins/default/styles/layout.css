@@ -806,6 +806,16 @@ dl {
 .fa-user.unregistered {
 	color: red;
 }
+table#order-builder .textbox {
+	width: 100px;
+}
+table#order-builder #ajax_name {
+	width: 250px;
+}
+table#order-builder .quantity {
+	width: 45px !important;
+	text-align: center;
+}
 .powered {
 	border-top: 1px solid #DDD;
 	text-align: center;

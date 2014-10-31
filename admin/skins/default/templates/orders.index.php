@@ -46,7 +46,7 @@
 		  <td>{$order.date}</td>
 		  <td align="right">{$order.prod_total}</td>
 		  <td align="center">
-			<a href="{$order.link_print}" class="print" title="{$LANG.common.print}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/print.png" alt="{$LANG.common.print}"></a>
+			<a href="{$order.link_print}" class="print" title="{$LANG.common.print}"><i class="fa fa-print" title="{$LANG.common.print}"></i></a>
 			<a href="{$order.link_edit}" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
 			<a href="{$order.link_delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		  </td>
@@ -115,7 +115,7 @@
   <div>
 	<div id="order_summary" class="tab_content" style="width: 660px;">
 	  <h3>{$LANG.orders.title_order_summary}</h3>
-	  <p><a href="?_g=orders&node=index&print[]={$SUMMARY.cart_order_id}" class="print" target="_blank"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/print.png" alt="{$LANG.common.print}"></a></p>
+	  <p><a href="?_g=orders&node=index&print[]={$SUMMARY.cart_order_id}" class="print" target="_blank"><i class="fa fa-print" title="{$LANG.common.print}"></i></a></p>
 	  <fieldset><legend>{$LANG.orders.title_status_change}</legend>
 		<div><label for="o_status">{$LANG.orders.title_order_status}</label><span><select name="order[status]" id="o_status">
 		  {foreach from=$LIST_ORDER_STATUS item=status}<option value="{$status.id}"{$status.selected}>{$status.string}</option>{/foreach}
@@ -290,13 +290,13 @@
 		</span>
 	  </div>
 
-	  <table>
+	  <table id="order-builder">
 		<thead>
 		  <tr>
-			<th width="102">{$LANG.common.quantity}</th>
+			<th>{$LANG.common.quantity}</th>
 			<th>{$LANG.catalogue.product_name}</th>
-			<th width="102">{$LANG.common.price_unit}</th>
-			<th width="102">{$LANG.common.price}</th>
+			<th>{$LANG.common.price_unit}</th>
+			<th>{$LANG.common.price}</th>
 			<th width="20">&nbsp;</th>
 		  </tr>
 		</thead>

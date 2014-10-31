@@ -61,18 +61,26 @@
 <div id="newsletter-list" class="tab_content">
   <h3>{$LANG.email.title_newsletters}</h3>
   {if isset($NEWSLETTERS)}
-  <fieldset>
+  <table width="100%">
+  <thead>
+  <tr>
+  <td>{$LANG.email.news_subject}</td>
+  <td></td>
+  </tr>
+  </thead>
   {foreach from=$NEWSLETTERS item=newsletter}
-	<div>
-	  <span class="actions">
+	<tbody>
+	<tr>
+	<td><a href="{$newsletter.edit}" class="edit">{$newsletter.subject}</a></td>
+	<td><span class="actions">
 		<a href="{$newsletter.send}" class="confirm" title="{$LANG.email.confirm_send}"><i class="fa fa-paper-plane" title="{$LANG.common.send}"></i></a>
 		<a href="{$newsletter.edit}" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
 		<a href="{$newsletter.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
-	  </span>
-	  <a href="{$newsletter.edit}" class="edit">{$newsletter.subject}</a>
-	</div>
+	  </span></td>
+	</tr>
+	</tbody>
 	{/foreach}
-  </fieldset>
+  </table>
   {else}
   <p>{$LANG.email.news_none}</p>
   {/if}
