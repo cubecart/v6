@@ -475,7 +475,7 @@ thead {
 	height: 30px;
 }
 
-tbody tr:nth-child(even) {
+tbody tr:nth-child(even), #filemanager div div:nth-child(even) {
 	background-color: #EDF4F7;
 }
 
@@ -803,7 +803,7 @@ dl {
 .fa-user.registered {
 	color: #44B215;
 }
-.fa-user.unregistered {
+.fa-trash, .fa-user.unregistered {
 	color: red;
 }
 table#order-builder .textbox {
