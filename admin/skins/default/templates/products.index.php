@@ -505,7 +505,9 @@
 	  </div>
 	</div>
 	<p>{$LANG.filemanager.file_upload_note}</p>
+	<fieldset>
 	<div><label for="uploader">{$LANG.filemanager.file_upload}</label><span><input name="image" id="uploader" type="file" class="multiple"></span></div>
+	</fieldset>
 
   </div>
 

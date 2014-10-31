@@ -188,7 +188,7 @@ if (jQuery)(function($){
 	});
 
 	// handle special insertion of form element only when an image is changed from current
-	$('img.imgtoggle').on('click', function(){
+	$('.fm-container').on('click','img.imgtoggle', function(){
 		var id_val = $(this).data('id');
 		var is_unique = $(this).hasClass('unique');
 		var input = document.createElement('input');
@@ -222,7 +222,7 @@ if (jQuery)(function($){
 		$(this).removeClass('imgtoggle').addClass('toggle');
 	});
 
-	$('img.checkbox').on('click', function(){
+	$('.fm-container').on('click','img.checkbox', function(){
 		var parent = $(this).attr('rel');
 
 		var is_filemanager	= $(this).parents('div:first').hasClass('fm-filelist');

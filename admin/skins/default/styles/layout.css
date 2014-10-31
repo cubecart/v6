@@ -35,7 +35,6 @@ input[type="checkbox"]{
 	cursor: pointer;
 	outline: none;
 	opacity: 0;
-	/* CSS hacks for older browsers */
 	_noFocusLine: expression(this.hideFocus=true); 
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
 	filter: alpha(opacity=0);
