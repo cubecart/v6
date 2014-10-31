@@ -58,9 +58,9 @@
 		  <label for="{$backup.filename}" class="wide"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/{$backup.type}.png" alt="{$LANG.common.download}"></a> <a href="{$backup.download_link}">{$backup.filename}</a> - {$backup.size}</label>
 		  <span class="actions">
 		    {if $backup.restore_link}
-		    <a href="{$backup.restore_link}" class="delete" title="{$backup.warning}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/restore.png" alt="{$LANG.common.restore}"></a>
+		    <a href="{$backup.restore_link}" class="delete" title="{$backup.warning}"><i class="fa fa-refresh" titl="{$LANG.common.restore}"></i></a>
 		    {/if}
-		    <a href="{$backup.download_link}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/download.png" alt="{$LANG.common.download}"></a>
+		    <a href="{$backup.download_link}"><i class="fa fa-download" title="{$LANG.common.download}"></i></a>
 		    <a href="{$backup.delete_link}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		  </span>
 		</div>

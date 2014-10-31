@@ -372,14 +372,14 @@
 		  <tr class="update-subtotal">
 			<th colspan="3">{$tax.type_name}: {$tax.display}</th>
 			<td><input type="text" name="tax[{$tax.id}]" class="textbox number-right tax" value="{$tax.amount}"></td>
-			<td><a href="#" class="remove" name="tax_remove" rel="{$tax.id}" title=""><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.remove}" title="{$LANG.common.remove}"></a></td>
+			<td><a href="#" class="remove" name="tax_remove" rel="{$tax.id}" title=""><i class="fa fa-trash" title="{$LANG.common.remove}"></i></a></td>
 		  </tr>
 		  {/foreach}
 		  {/if}
 		  <tr class="inline-source">
 		  	<th colspan="3">{$tax.type_name}: {$tax.display}</th>
 			<td><input type="text" name="tax[{$tax.id}]" class="textbox number-right tax" value="{$tax.amount}"></td>
-			<td><a href="#" class="remove" name="tax_remove" rel="{$tax.id}" title=""><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.remove}" title="{$LANG.common.remove}"></a></td>
+			<td><a href="#" class="remove" name="tax_remove" rel="{$tax.id}" title=""><i class="fa fa-trash" title="{$LANG.common.remove}"></i></a></td>
 		  </tr>
 		  <tr class="inline-add">
 			<th colspan="3">

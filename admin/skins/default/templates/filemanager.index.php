@@ -24,7 +24,7 @@
 		<a href="{$folder.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		{/if}
 		</span>
-		<img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/folder.png" alt="{$folder.name}">
+		<i class="fa fa-folder" alt="{$folder.name}"></i>
 		<a href="{$folder.link}">{$folder.name}</a>
 	  </div>
 	  {/foreach}
@@ -41,7 +41,11 @@
 		  <a href="{$file.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		  {/if}
 		</span>
-		<img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/{$file.icon}.png" alt="{$file.mimetype}">
+		{if $FILMANAGER_MODE == '1'}
+		<i class="fa fa-picture-o" title="{$file.mimetype}"></i>
+		{else}
+		<i class="fa fa-download"></i>
+		{/if}
 		<a href="{$file.filepath}?{$file.random}" {$file.class} title="{$file.description}" target="_self">{$file.filename}</a>
 	  </div>
 	  {/foreach}
