@@ -1,4 +1,3 @@
-<?php
 /**
  * CubeCart v6
  * ========================================
@@ -10,7 +9,6 @@
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  */
-?>
 <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data"> <!-- title="You have not saved this order yet" -->
   {if isset($DISPLAY_ORDER_LIST)}
   <div id="orders" class="tab_content">

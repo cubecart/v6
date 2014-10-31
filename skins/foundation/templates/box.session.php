@@ -1,4 +1,3 @@
-<?php
 /**
  * CubeCart v6
  * ========================================
@@ -10,7 +9,6 @@
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  */
-?>
 {if $IS_USER}
 <a href="#" data-dropdown="session" class="button white small">{$CUSTOMER.first_name} {$CUSTOMER.last_name}</a><br>
 <ul id="session" data-dropdown-content class="f-dropdown">

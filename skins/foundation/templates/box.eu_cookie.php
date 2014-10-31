@@ -1,4 +1,3 @@
-<?php
 /**
  * CubeCart v6
  * ========================================
@@ -10,7 +9,6 @@
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  */
-?>
 {if $COOKIE_DIALOGUE}
 <div class="row" id="eu_cookie_dialogue">
    <form action="{$VAL_SELF}" class="marg" method="POST">

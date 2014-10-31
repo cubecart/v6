@@ -1,4 +1,3 @@
-<?php
 /**
  * CubeCart v6
  * ========================================
@@ -10,7 +9,6 @@
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  */
-?>
 <form id="form-settings" action="{$PHP_SELF}" method="post" enctype="multipart/form-data">
    <div id="General" class="tab_content">
       <h3>{$LANG.common.general}</h3>

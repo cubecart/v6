@@ -1,4 +1,3 @@
-<?php
 /**
  * CubeCart v6
  * ========================================
@@ -10,7 +9,6 @@
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  */
-?>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <div id="stats_sales" class="tab_content">
   <h3>{$LANG.statistics.title_sales}</h3>

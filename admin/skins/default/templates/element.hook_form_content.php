@@ -1,4 +1,3 @@
-<?php
 /**
  * CubeCart v6
  * ========================================
@@ -10,7 +9,6 @@
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  */
-?>
 <!-- Bring in Tab Content for plugin hooks. -->
 {if $HOOK_TAB_CONTENT}
   {foreach from=$HOOK_TAB_CONTENT item=tabfile}

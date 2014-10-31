@@ -1,4 +1,3 @@
-<?php
 /**
  * CubeCart v6
  * ========================================
@@ -10,7 +9,6 @@
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  */
-?>
 <h2>{$LANG.documents.document_contact}</h2>
 <p>{$CONTACT.description}</p>
 <form action="{$VAL_SELF}" id="contact_form" method="post">

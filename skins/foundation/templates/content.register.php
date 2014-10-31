@@ -1,4 +1,3 @@
-<?php
 /**
  * CubeCart v6
  * ========================================
@@ -10,7 +9,6 @@
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  */
-?>
 <p>{$LANG.account.already_registered} <a href="{$STORE_URL}/login.html">{$LANG.account.login_here}</a></p>
 <h2>{$LANG.account.register}</h2>
 <form action="{$VAL_SELF}" id="registration_form" method="post" name="registration">

@@ -1,4 +1,3 @@
-<?php
 /**
  * CubeCart v6
  * ========================================
@@ -10,7 +9,6 @@
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  */
-?>
 <h3>{$LANG.common.follow_us}</h3>
 <ul class="small-block-grid-4 no-bullet nomarg social-icons text-left">
    {if !empty($CONFIG.twitter)}<li><a href="https://twitter.com/{$CONFIG.twitter}" title="Twitter"><i class="fa fa-twitter"></i></a></li>{/if}

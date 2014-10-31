@@ -1,4 +1,3 @@
-<?php
 /**
  * CubeCart v6
  * ========================================
@@ -10,7 +9,6 @@
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  */
-?>
 <div id="request_log" class="tab_content">
   <h3>{$LANG.navigation.nav_request_log}</h3>
   <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
