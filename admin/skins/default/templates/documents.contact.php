@@ -27,7 +27,7 @@
 		<div>
 		  {$LANG.common.name}: <input type="text" name="department[name][]" id="" value="{$department.name}" class="textbox">
 		  {$LANG.common.email}: <input type="text" name="department[email][]" id="" value="{$department.email}" class="textbox">
-		  <a href="#" class="remove" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a>
+		  <a href="#" class="remove" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		</div>
 	  {/foreach}
 	  {/if}

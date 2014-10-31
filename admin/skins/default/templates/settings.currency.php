@@ -39,7 +39,7 @@
 		<td><input type="text" name="currency[{$currency.code}][symbol_right]" class="textbox number edited" value="{$currency.symbol_right}"></td>
 		<td><input type="text" name="currency[{$currency.code}][decimal_places]" class="textbox number edited" value="{$currency.decimal_places}"></td>
 		<td align="center">{$currency.updated}</td>
-		<td align="center"><a href="{$VAL_SELF}&delete={$currency.code}" class="delete" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a></td>
+		<td align="center"><a href="{$VAL_SELF}&delete={$currency.code}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
 	  </tr>
 	  {/foreach}
 	  </tbody>

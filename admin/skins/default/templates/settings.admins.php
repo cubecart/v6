@@ -88,8 +88,8 @@
 	{foreach from=$ADMINS item=admin}
 	<div>
 	  <span class="actions">
-		<a href="{$admin.link_edit}" class="edit" title="{$LANG.common.edit}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/edit.png" alt="{$LANG.common.edit}"></a>
-		{if $admin.link_delete}<a href="{$admin.link_delete}" class="delete" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a>{/if}
+		<a href="{$admin.link_edit}" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
+		{if $admin.link_delete}<a href="{$admin.link_delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>{/if}
 	  </span>
 	  <input type="hidden" name="status[{$admin.admin_id}]" id="status_{$admin.admin_id}" value="{$admin.status}" class="toggle">
 	  <a href="{$admin.link_edit}" title="{$LANG.account.logins}: {$admin.logins}">{$admin.name}</a>

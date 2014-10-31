@@ -389,15 +389,11 @@ jQuery(document).ready(function() {
 		});
 	}
 
-	/*
-	$('#login-controller > div.control').each(function(){
-		$('div.login-method:not(:first)').slideUp();
-		$(this).click(function(){
-			$('div.login-method').slideUp();
-			$(this).next('div.login-method').slideDown();
-		});
+	/* Click and check a check box */
+	$('#content_body').on('click', '.check-primary',function(){
+	   var rel = $(this).attr('rel');
+	   $('#'+rel+':checkbox').attr('checked','checked');
 	});
-	*/
 
 });
 
@@ -426,11 +422,6 @@ function pageChanged(element) {
 		}
 	}
 }
-/* Click and check a check box */
-$('.check-primary').on('click', function(){
-   var rel = $(this).attr('rel');
-   $('#'+rel+':checkbox').attr('checked','checked');
-});
 
 /**
  * Strips a parameter from a URL

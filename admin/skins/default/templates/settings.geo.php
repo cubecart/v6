@@ -35,7 +35,7 @@
 		  <td><span class="editable number" name="country[{$country.id}][iso3]">{$country.iso3}</span></td>
 		  <td><span class="editable number" name="country[{$country.id}][numcode]">{$country.numcode}</span></td>
 		  <td><input name="country[{$country.id}][eu]" id="{$country.id}_eu" type="hidden" class="toggle" value="{$country.eu}" /></td>
-		  <td align="center"><a href="{$country.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a></td>
+		  <td align="center"><a href="{$country.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
 		</tr>
 	  {/foreach}
   	  <tfoot>
@@ -88,7 +88,7 @@
 		  <td>{$zone.country}</td>
 		  <td><span class="editable" name="zone[{$zone.id}][name]">{$zone.name}</span></td>
 		  <td width="110"><span class="editable number" name="zone[{$zone.id}][abbrev]">{$zone.abbrev}</span></td>
-		  <td><a href="{$zone.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a></td>
+		  <td><a href="{$zone.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
 		</tr>
 	  {/foreach}
 	  </tbody>

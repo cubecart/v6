@@ -31,7 +31,7 @@
 
 <body>
   <div id="header">
-  <span class="user_info">{$LANG.settings.title_welcome_back} <a href="?_g=settings&node=admins&action=edit&admin_id={$ADMIN_UID}">{$ADMIN_USER}</a> [<a href="?_g=logout">{$LANG.account.logout} <i class="fa fa-sign-out"></i></a>]</span>
+  <span class="user_info">{$LANG.settings.title_welcome_back} <a href="?_g=settings&node=admins&action=edit&admin_id={$ADMIN_UID}">{$ADMIN_USER}</a> - <a href="?_g=logout">{$LANG.account.logout} <i class="fa fa-sign-out"></i></a></span>
   </div>
   <div id="wrapper">
   <div id="navigation">

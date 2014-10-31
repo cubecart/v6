@@ -49,8 +49,8 @@
 		  <td>{$customer.registered}</td>
 		  <td align="center"><a href="?_g=orders&customer_id={$customer.customer_id}">{$customer.order_count}</a></td>
 		  <td align="center">
-			<a href="{$customer.edit}" title="{$LANG.common.edit}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/edit.png" alt="{$LANG.common.edit}"></a>
-			<a href="{$customer.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a>
+			<a href="{$customer.edit}" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
+			<a href="{$customer.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		  </td>
 		</tr>
 		{foreachelse}
@@ -85,7 +85,7 @@
 	  {foreach from=$CUSTOMER_GROUPS item=group}
 	  <div>
 		<span class="actions">
-		  <a href="#" class="remove" name="group_delete" rel="{$group.group_id}" title="{$LANG.common.delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a>
+		  <a href="#" class="remove" name="group_delete" rel="{$group.group_id}" title="{$LANG.common.delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		</span>
 		<strong><span class="editable" name="group_edit[{$group.group_id}][name]">{$group.group_name}</span></strong>
 		<br>
@@ -179,8 +179,8 @@
 		{foreach from=$ADDRESS_LIST item=address}
 		<div class="note">
 		  <span class="actions">
-			<a href="{$address.edit}#address" class="edit" title="{$LANG.common.edit}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/edit.png" alt="{$LANG.common.edit}"></a>
-			<a href="{$address.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a>
+			<a href="{$address.edit}#address" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
+			<a href="{$address.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		  </span>
 		  <strong>{$address.description}</strong> - {$address.title} {$address.first_name} {$address.last_name}
 		  {if !empty({$address.company_name})}({$address.company_name}){/if}
@@ -204,7 +204,7 @@
 		{foreach from=$CUSTOMER_GROUPS item=group}
 		<div>
 		  <span class="actions">
-			<a href="#" class="remove" name="membership_delete" rel="{$group.membership_id}" title="{$LANG.common.delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a>
+			<a href="#" class="remove" name="membership_delete" rel="{$group.membership_id}" title="{$LANG.common.delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		  </span>
 		  {$group.group_name}
 		</div>

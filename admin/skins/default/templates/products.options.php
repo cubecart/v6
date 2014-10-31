@@ -35,7 +35,7 @@
 			<td><span class="editable" name="edit_group[{$group.id}][option_name]">{$group.name}</span></td>
 			<td><span class="editable select" name="edit_group[{$group.id}][option_type]">{$group.type_name}</span></td>
 			<td><span class="editable" name="edit_group[{$group.id}][option_description]">{$group.description}</span>&nbsp;</td>
-			<td align="center"><a href="{$group.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a></td>
+			<td align="center"><a href="{$group.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
 		  </tr>
 		  {foreachelse}
 		  <tr>
@@ -80,7 +80,7 @@
 			<input type="hidden" name="attr_priority[]" value="{$key}">
 		  </span>
 		  <span class="actions">
-			<a href="?_g=products&node=options&delete=attribute&id={$key}" class="delete" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a>
+			<a href="?_g=products&node=options&delete=attribute&id={$key}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		  </span>
 		  &bull; <span class="editable" name="edit_attribute[{$key}][value_name]">{$option}</span>
 		</div>
@@ -103,7 +103,7 @@
 
 		<div id="attr_source" class="inline-source">
 		  <span class="actions">
-			<a href="#" class="remove" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a>
+			<a href="#" class="remove" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		  </span>
 		  &bull; <span rel="attr_name"></span><input type="hidden" rel="attr_name">
 		</div>
@@ -127,7 +127,7 @@
 		  {foreach from=$members item=member}
 		  <div>
 			<span class="actions">
-			  <a href="#" class="remove" name="member_delete" rel="{$member.set_member_id}" title=""><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a>
+			  <a href="#" class="remove" name="member_delete" rel="{$member.set_member_id}" title=""><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 			</span>
 			&bull; {$member.display}
 		  </div>

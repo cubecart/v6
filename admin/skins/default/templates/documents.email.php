@@ -52,8 +52,8 @@
 	  <div>
 		<span class="actions">
 		  <a href="{$template.clone}" title="{$LANG.common.clone}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/page_copy.png" alt="{$LANG.common.clone}"></a>
-		  <a href="{$template.edit}" title="{$LANG.common.edit}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/edit.png" alt="{$LANG.common.edit}"></a>
-		  <a href="{$template.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a>
+		  <a href="{$template.edit}" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
+		  <a href="{$template.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		</span>
 		<input type="hidden" name="template_default[{$template.template_id}]" id="template_default_{$template.template_id}" value="{$template.template_default}" class="toggle unique"> <a href="{$template.edit}">{$template.title}</a>
 	  </div>

@@ -297,7 +297,7 @@ $(document).ready(function() {
         }
     });
 	
-    $('.check-primary, .check_cat, .check-all, .custom-checkbox').on('click', function() {
+    $('#content_body').on('click','img.checkbox, .check-primary, .check_cat, .check-all, .custom-checkbox', function() {
     	$('input[type="checkbox"]').each(function(){
 	        if($(this).is(':checked')){
 	            $(this).parent().addClass("selected");

@@ -61,7 +61,7 @@
 		    <a href="{$backup.restore_link}" class="delete" title="{$backup.warning}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/restore.png" alt="{$LANG.common.restore}"></a>
 		    {/if}
 		    <a href="{$backup.download_link}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/download.png" alt="{$LANG.common.download}"></a>
-		    <a href="{$backup.delete_link}" class="delete" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a>
+		    <a href="{$backup.delete_link}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		  </span>
 		</div>
 		{/foreach}

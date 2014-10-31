@@ -31,7 +31,7 @@
 	  	</td>
 		<td><a href="?_g=plugins&type={$module.type}&module={$module.basename}">{$module.name}</a><br>{$module.description}</td>
 		<td>
-		  <a href="?_g=plugins&type={$module.type}&module={$module.basename}" class="edit"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/edit.png" alt="{$LANG.common.edit}"></a>
+		  <a href="?_g=plugins&type={$module.type}&module={$module.basename}" class="edit"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
 		  {if $module.mobile_optimized=='true'}
 		  <a href="javascript:alert('{$LANG.module.mobile_optimized}');"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/phone.png" title="{$LANG.module.mobile_optimized}"></a>
 		  {/if}

@@ -58,8 +58,8 @@
 	      </td>
 	      <td>
 		    <a href="{$category.translate}" title="{$LANG.translate.trans_add}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/add.png" alt="{$LANG.translate.trans_add}"></a>
-		    <a href="{$category.edit}" title="{$LANG.common.edit}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/edit.png" alt="{$LANG.common.edit}"></a>
-		    <a href="{$category.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a>
+		    <a href="{$category.edit}" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
+		    <a href="{$category.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 	      </td>
 	    </tr>
 	    {/foreach}
@@ -131,8 +131,8 @@
 	  {foreach from=$TRANSLATIONS item=translation}
 	  <div>
 		<span class="actions">
-		  <a href="{$translation.edit}" class="edit" title="{$LANG.common.edit}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/edit.png" alt="{$LANG.common.edit}"></a>
-		  <a href="{$translation.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a>
+		  <a href="{$translation.edit}" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
+		  <a href="{$translation.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		</span>
 		<input type="hidden" name="" id="">
 		<a href="{$translation.edit}" title="{$translation.cat_name} - ({$translation.language})"><img src="language/flags/{$translation.language}.png" alt="{$translation.langauge}"></a> - <a href="{$translation.edit}">{$translation.cat_name}</a>

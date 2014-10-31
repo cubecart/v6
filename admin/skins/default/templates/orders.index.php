@@ -41,8 +41,8 @@
 		  <td align="right">{$order.prod_total}</td>
 		  <td align="center">
 			<a href="{$order.link_print}" class="print" title="{$LANG.common.print}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/print.png" alt="{$LANG.common.print}"></a>
-			<a href="{$order.link_edit}" class="edit" title="{$LANG.common.edit}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/edit.png" alt="{$LANG.common.edit}"></a>
-			<a href="{$order.link_delete}" class="delete" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a>
+			<a href="{$order.link_edit}" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
+			<a href="{$order.link_delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		  </td>
 		</tr>
 		{/foreach}
@@ -280,7 +280,7 @@
 	  <h3>{$LANG.orders.title_order_inventory}</h3>
 	  <div style="display: none;">
 		<span class="actions">
-		  <img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}">
+		  <i class="fa fa-trash" title="{$LANG.common.delete}"></i>
 		</span>
 	  </div>
 
@@ -313,7 +313,7 @@
 				<input type="text" name="inv[{$product.id}][price]" id="{$product.id}_price" class="textbox number-right lineprice original-fix" original="{$product.line_price_less_options}" value="{$product.line}">
 			</td>
 			<td align="right"><input type="text" name="inv[{$product.id}][line_price]" class="textbox number-right subtotal" value="{$product.price_total}"></td>
-			<td align="center"><a href="#{$product.id}" class="remove" title="{$LANG.notification.confirm_delete}" name="inv_remove" rel="{$PRODUCT.id}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}" title="{$LANG.common.delete}"></a></td>
+			<td align="center"><a href="#{$product.id}" class="remove" title="{$LANG.notification.confirm_delete}" name="inv_remove" rel="{$PRODUCT.id}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
 		  </tr>
 		  {/foreach}
 		  {/if}
@@ -335,7 +335,7 @@
 				<input type="text" rel="price" class="textbox number-right lineprice">
 			</td>
 			<td><input type="text" rel="line_price" class="textbox number-right subtotal"></td>
-			<td><span class="action"><a href="#" class="remove dynamic" title="{$LANG.common.decision_remove}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}" title="{$LANG.common.delete}"></a></td>
+			<td><span class="action"><a href="#" class="remove dynamic" title="{$LANG.common.decision_remove}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
 		  </tr>
 
 		  <tr>
@@ -395,7 +395,7 @@
 		  <tr class="update-subtotal inline-source" name="tax_add">
 			<th colspan="3"><input type="hidden" rel="tax_id"><span rel="tax_id"></span></th>
 			<td><input type="text" rel="amount" class="textbox number-right tax"></td>
-			<td><a href="#" class="remove dynamic" title=""><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a></td>
+			<td><a href="#" class="remove dynamic" title=""><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
 		  </tr>
 		  <tr>
 			<th colspan="3">{$LANG.basket.total_tax}</th>
@@ -419,7 +419,7 @@
 	  {if isset($LIST_NOTES)}{foreach from=$LIST_NOTES item=note}
 	  <div class="note">
 		<span class="actions">
-		  <a href="{$note.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a>
+		  <a href="{$note.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		</span>
 		<div class="note-header">{if !empty($note.author)}{$LANG.dashboard.note_by} {$note.author} - {/if}{$note.time}</div>{$note.content|nl2br}
 	  </div>
@@ -500,7 +500,7 @@
 		{foreach from=$CARD_DATA item=data}
 		<div><label for="{$card}">{$data.name}</label><span><input type="text" name="card[{$card}]" id="{$card}" value="{$data.value}" class="textbox"></span></div>
 	  	{/foreach}
-	  	<div><label for="delete">{$LANG.orders.card_delete}</label><span><a href="{$CARD_DELETE}" class="delete" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a></span></div>
+	  	<div><label for="delete">{$LANG.orders.card_delete}</label><span><a href="{$CARD_DELETE}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></span></div>
 	  </fieldset>
 	</div>
 	{/if}

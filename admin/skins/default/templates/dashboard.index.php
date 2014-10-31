@@ -144,8 +144,8 @@
 		  <td>{$order.date}</td>
 		  <td>{$order.total}</td>
 		  <td>
-		  	<a href="?_g=orders&action=edit&order_id={$order.cart_order_id}" title="{$LANG.common.edit}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/edit.png"></a>
-		  	<a href="?_g=orders&delete={$order.cart_order_id}" class="delete" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a>
+		  	<a href="?_g=orders&action=edit&order_id={$order.cart_order_id}" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
+		  	<a href="?_g=orders&delete={$order.cart_order_id}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		  	{if isset($order.notes)}
 		  	<a href="?_g=orders&action=edit&order_id={$order.cart_order_id}#order_notes" title="{foreach $order.notes as $note}{$note.time} {$note.content}{"\r\n"}{/foreach}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/note.png" alt="{$LANG.common.notes}"></a>
 		  	{/if}
@@ -167,8 +167,8 @@
 	  <div class="note">
 		<span class="actions">
 		  <input type="hidden" class="toggle" name="approve[{$review.id}]" id="approve_{$review.id}" value="{$review.approved}">
-		  <a href="{$review.edit}" class="edit" title="{$LANG.common.edit}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/edit.png" alt="{$LANG.common.edit}"></a>
-		  <a href="{$review.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a>
+		  <a href="{$review.edit}" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
+		  <a href="{$review.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		</span>
 		<div><strong>{$review.title}</strong></div>
 		<p>{$review.review}</p>
@@ -197,7 +197,7 @@
   <div>
   {foreach from=$STOCK item=warn}
 	<div>
-	  <span class="actions"><a href="?_g=products&action=edit&product_id={$warn.product_id}{if $warn.M_use_stock==1}#Options{/if}" class="edit"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/edit.png" alt="{$LANG.common.edit}"></a></span>
+	  <span class="actions"><a href="?_g=products&action=edit&product_id={$warn.product_id}{if $warn.M_use_stock==1}#Options{/if}" class="edit"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a></span>
 	  <a href="?_g=products&action=edit&product_id={$warn.product_id}{if $warn.M_use_stock==1}#Options{/if}">{$warn.name}</a> ({$LANG.dashboard.stock_level}: {if $warn.M_use_stock==1}{$warn.M_stock_level}{else}{$warn.I_stock_level}{/if})
 	  {if $warn.cached_name}
 	  - {$warn.cached_name}

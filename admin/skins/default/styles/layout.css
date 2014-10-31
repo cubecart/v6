@@ -449,11 +449,14 @@ td {
 	padding: 0 2px;
 }
 th .left, th .right {
-	display: inline-block;
+	float: left;
 }
 th .right {
-	text-align: right;
-	width: 10px;
+	float: right;
+	width: 9px;
+}
+th a .right  {
+	color: #555;
 }
 thead {
 	text-align: left;

@@ -42,15 +42,15 @@
   		<thead>
   			<tr>
 	  			<th nowrap="nowrap">&nbsp;</th>
-	  			<th nowrap="nowrap">{$THEAD.status}</th>
+	  			<th nowrap="nowrap">{$THEAD.name}</th>
 	  			<th nowrap="nowrap">{$THEAD.digital}</th>
 	  			<th nowrap="nowrap">{$THEAD.image}</th>
-	  			<th nowrap="nowrap">{$THEAD.name}</th>
 	  			<th nowrap="nowrap">{$THEAD.product_code}</th>
 	  			<th nowrap="nowrap">{$THEAD.price}</th>
 	  			<th nowrap="nowrap">{$THEAD.stock_level}</th>
 	  			<th nowrap="nowrap">{$THEAD.updated}</th>
 	  			<th nowrap="nowrap">{$THEAD.translations}</th>
+	  			<th nowrap="nowrap">{$THEAD.status}</th>
 	  			<th nowrap="nowrap">&nbsp;</th>
   			</tr>
   		</thead>
@@ -58,20 +58,25 @@
 	  		{foreach from=$PRODUCTS item=product}
 	  		<tr>
 		  		<td align="center" width="10"><input type="checkbox" name="delete[]" id="{$product.product_id}" value="{$product.product_id}" class="table"></td>
-		  		<td align="center"><input type="hidden" name="status[{$product.product_id}]" id="status_{$product.product_id}" value="{$product.status}" class="toggle"></td>
-		  		<td align="center"><img src="{$product.type_icon}" alt="{$product.type_alt}"></td>
+		  		<td><a href="{$product.link_edit}">{$product.name}</a>
+				{if isset($product.category)}
+				<br>
+				<span class="light-category">{$product.category}</span>
+				{/if}
+				</td>
+		  		<td align="center">
+		  		{if $product.digital}
+		  		<i class="fa fa-download" title="{$product.type_alt}"></i>
+				{else}
+				<i class="fa fa-archive" title="{$product.type_alt}"></i>
+				{/if}
+		  		</td>
 				<td align="center">
 					{if !empty($product.image_path_tiny)}
 					<a href="{$product.image_path_large}" class="colorbox" title="{$product.name}" target="_blank"><img src="{$product.image_path_tiny}" alt="{$product.name}"></a>
 					{elseif !empty($product.image_path_large)}
 					<a href="{$product.image_path_large}" class="colorbox" title="{$product.name}" target="_blank"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/image.png" alt="{$product.name}"></a>
 					{/if}
-				</td>
-				<td><a href="{$product.link_edit}">{$product.name}</a>
-				{if isset($product.category)}
-				<br>
-				<span class="light-category">{$product.category}</span>
-				{/if}
 				</td>
 				<td>{$product.product_code}</td>
 		 		<td>{$product.price}</td>
@@ -88,13 +93,14 @@
 		  			<a href="{$translation.link}"><img src="language/flags/{$translation.language}.png" alt="{$translation.language}"></a>
 		  			{/foreach}
 		  		</td>
+		  		<td align="center"><input type="hidden" name="status[{$product.product_id}]" id="status_{$product.product_id}" value="{$product.status}" class="toggle"></td>
 		  		<td align="center">
 		  		{if isset($product.link_clone)}
-					<a href="{$product.link_clone}" title="{$LANG.common.clone}" alt="{$LANG.common.clone}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/clone.png" alt="{$LANG.common.clone}"></a>
+					<a href="{$product.link_clone}" title="{$LANG.common.clone}" alt="{$LANG.common.clone}"><i class="fa fa-files-o" title="{$LANG.common.clone}"></i></a>
 				{/if}
-					<a href="{$product.link_preview}" title="{$LANG.common.preview}" target="_blank" alt="{$LANG.common.preview}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/magnifier.png" alt="{$LANG.common.preview}"></a>
-		 			<a href="{$product.link_edit}" title="{$LANG.common.edit}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/edit.png" alt="{$LANG.common.edit}"></a>
-					<a href="{$product.link_delete}" class="delete" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a>
+					<a href="{$product.link_preview}" title="{$LANG.common.preview}" target="_blank" alt="{$LANG.common.preview}"><i class="fa fa-search" title="{$LANG.common.preview}"></i></a>
+		 			<a href="{$product.link_edit}" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
+					<a href="{$product.link_delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 				</td>
 	  		</tr>
 	  		{/foreach}
@@ -230,7 +236,7 @@
 		  <div id="qty_discount_0">
 		    {if isset($QUANTITY_DISCOUNTS)}
 			{foreach from=$QUANTITY_DISCOUNTS item=discount}
-			<div><span class="actions"><a href="#" rel="{$discount.discount_id}" class="remove" name="discount_delete" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a></span><label><span class="editable number-right" name="discount[{$discount.discount_id}][quantity]" title="Click to edit">{$discount.quantity}</span></label>
+			<div><span class="actions"><a href="#" rel="{$discount.discount_id}" class="remove" name="discount_delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></span><label><span class="editable number-right" name="discount[{$discount.discount_id}][quantity]" title="Click to edit">{$discount.quantity}</span></label>
 			<input type="text" name="discount[{$discount.discount_id}][price]" class="textbox number-right" value="{$discount.price}">
 			</div>
 			{/foreach}{/if}
@@ -242,7 +248,7 @@
 		  </div>
 		  <!-- Source for inline adding -->
 		  <div class="inline-source" name="discount_add[0]">
-			<span class="actions"><a href="#" class="remove dynamic" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a></span>
+			<span class="actions"><a href="#" class="remove dynamic" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></span>
 			<label rel="quantity"></label><input type="hidden" rel="quantity"><input type="text" class="textbox number-right" rel="price">
 		  </div>
 
@@ -278,7 +284,7 @@
 		  <div id="discount_list_{$group.group_id}" >
 			{foreach from=$group.quantities item=quantity}
 			<div>
-			  <span class="actions"><a href="#" rel="{$quantity.discount_id}" class="remove" name="discount_delete" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a></span>
+			  <span class="actions"><a href="#" rel="{$quantity.discount_id}" class="remove" name="discount_delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></span>
 			  <label><span class="editable number-right" name="discount[{$quantity.discount_id}][quantity]" title="Click to edit">{$quantity.quantity}</span></label><input type="text" name="discount[{$quantity.discount_id}][price]" class="textbox number-right" value="{$quantity.price}">
 			</div>
 			{/foreach}
@@ -290,7 +296,7 @@
 		  </div>
 		  <!-- Source for inline adding -->
 		  <div class="inline-source" name="discount_add[{$group.group_id}]">
-			<span class="actions"><a href="#" class="remove dynamic" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a></span>
+			<span class="actions"><a href="#" class="remove dynamic" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></span>
 			<label rel="quantity"></label><input type="hidden" rel="quantity"><input type="text" class="textbox number-right" rel="price">
 		  </div>
 		</div>
@@ -356,7 +362,7 @@
 			<td><span class="editable number-right" name="option_update[{$option.assign_id}][option_price]" title="{$LANG.common.click_edit}">{$option.option_price}</span></td>
 			<td><span class="editable number" name="option_update[{$option.assign_id}][option_weight]" title="{$LANG.common.click_edit}">{$option.option_weight}</span></td>
 			<td align="center">
-			  {if !$option.set_member_id}<a href="#" name="option_remove" class="remove" rel="{$option.assign_id}" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a>{else}<a href="#"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete_disabled.png" title="{$LANG.catalogue.delete_option_disabled}" class="delete_disabled"></a>{/if}
+			  {if !$option.set_member_id}<a href="#" name="option_remove" class="remove" rel="{$option.assign_id}" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>{else}<a href="#"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete_disabled.png" title="{$LANG.catalogue.delete_option_disabled}" class="delete_disabled"></a>{/if}
 			  <input type="hidden" id="data_{$option.assign_id}" value="{$option.data}">
 			</td>
 		  </tr>
@@ -412,7 +418,7 @@
 			<td class="price"><input type="hidden" rel=""></td>
 			<td class="weight"><input type="hidden" rel=""></td>
 			<!-- td class="stock"><input type="hidden" rel=""></td -->
-			<td align="center"><a href="#" class="remove dynamic"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a></td>
+			<td align="center"><a href="#" class="remove dynamic"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
 		  </tr>
 
 		  <tr id="option_template" class="dynamic">
@@ -423,7 +429,7 @@
 			<td class="price"><input type="hidden" name="option_add[price][]" value="" disabled="disabled"></td>
 			<td class="weight"><input type="hidden" name="option_add[weight][]" value="" disabled="disabled"></td>
 			<!-- td class="stock"><input type="hidden" name="option_add[stock][]" value="" disabled="disabled"></td -->
-			<td align="center"><a href="#" class="remove" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a></td>
+			<td align="center"><a href="#" class="remove" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
 		  </tr>
 		</tfoot>
 	  </table>
@@ -438,7 +444,7 @@
 		{if isset($OPTION_SETS_ENABLED)} {foreach from=$OPTION_SETS_ENABLED item=set}
 		<div id="">
 		  <span class="actions">
-		  	<a href="#" name="set_remove" class="remove" rel="{$set.set_product_id}" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a>
+		  	<a href="#" name="set_remove" class="remove" rel="{$set.set_product_id}" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		  </span>
 		  {$set.set_name}
 		</div>
@@ -538,8 +544,8 @@
 	<div class="note">
 	  <span class="actions">
 		<input type="hidden" name="review[{$review.id}]" id="review_{$review.id}" value="{$review.approved}" class="toggle">
-		<a href="?_g=reviews&edit={$review.id}" class="edit" title="{$LANG.common.edit}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/edit.png" alt="{$LANG.common.edit}"></a>
-		<a href="{$review.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a>
+		<a href="?_g=reviews&edit={$review.id}" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
+		<a href="{$review.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 	  </span>
 	  <strong>{$review.title}</strong>
 	  <div>{$review.review}</div>
@@ -564,8 +570,8 @@
 	  {foreach from=$TRANSLATIONS item=translation}
 	  <div>
 		<span class="actions">
-		  <a href="{$translation.edit}" class="edit" title="{$LANG.common.edit}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/edit.png" alt="{$LANG.common.edit}"></a>
-		  <a href="{$translation.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a>
+		  <a href="{$translation.edit}" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
+		  <a href="{$translation.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		</span>
 		<input type="hidden" name="" id="">
 		<a href="{$translation.edit}" title="{$translation.name}"><img src="language/flags/{$translation.language}.png" alt="{$translation.name}"></a>

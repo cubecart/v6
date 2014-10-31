@@ -16,7 +16,7 @@
 	<fieldset id="disabled-zones"><legend>{$LANG.module.title_regions_disabled}</legend>
 	  {foreach from=$DISABLED_COUNTRIES item=country}
 	  <div>
-		<span class="actions"><a href="#" class="remove dynamic" title="{$LANG.messages.confirm_delete}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete.png" alt="{$LANG.common.delete}"></a></span>
+		<span class="actions"><a href="#" class="remove dynamic" title="{$LANG.messages.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></span>
 		<input type="hidden" name="disabled_zones[]" value="{$country.numcode}">
 		{$country.name}
 	  </div>
