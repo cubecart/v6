@@ -15,6 +15,7 @@
   {if isset($DISPLAY_ORDER_LIST)}
   <div id="orders" class="tab_content">
 	<h3>{$LANG.orders.title_orders}</h3>
+	{if isset($ORDER_LIST)}
 	<table width="100%">
 	  <thead>
 		<tr>
@@ -29,7 +30,6 @@
 		</tr>
 	  </thead>
 	  <tbody>
-		{if isset($ORDER_LIST)}
 		{foreach from=$ORDER_LIST item=order}
 		<tr>
 		  <td align="center"><input type="checkbox" id="" name="multi-order[]" value="{$order.cart_order_id}" class="all-orders"></td>
@@ -46,13 +46,7 @@
 		  </td>
 		</tr>
 		{/foreach}
-		{else}
-		<tr>
-		  <td colspan="8" align="center"><strong>{$LANG.orders.notify_orders_none}</strong></td>
-		</tr>
-		{/if}
 	  </tbody>
-	  {if isset($ORDER_LIST)}
 	  <tfoot>
 		<tr>
 		  <td><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/select_all.gif" alt=""></td>
@@ -83,8 +77,11 @@
 	  	  </td>
 	  	</tr>
 	  </tfoot>
-	  {/if}
 	</table>
+	{else}
+		<p align="center"><strong>{$LANG.orders.notify_orders_none}</strong></p>
+		</tr>
+		{/if}
   </div>
   <div id="search" class="tab_content">
 	<fieldset><legend>{$LANG.orders.title_search}</legend>
