@@ -62,20 +62,13 @@
 	</div>
 	<input type="hidden" name="token" value="{$SESSION_TOKEN}">
   </form>
-	<!-- Include JavaScript last - YSlow! rates it better this way -->
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
-
-  <!--[if lte IE 6]>
-  <script type="text/javascript">
-	{literal}var IE6UPDATE_OPTIONS = {icons_path: "http://static.ie6update.com/hosted/ie6update/images/"}{/literal}
-  </script>
-  <script type="text/javascript" src="http://static.ie6update.com/hosted/ie6update/ie6update.js"></script>
-  <![endif]-->
   <script type="text/javascript" src="js/plugins.php"></script>
   <!-- Common JavaScript functionality -->
   <script type="text/javascript" src="js/common.js"></script>
   <script type="text/javascript" src="js/admin.js"></script>
   </div>
+  {include file='templates/ccpower.php'}
 </body>
 </html>

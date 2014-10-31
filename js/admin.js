@@ -44,7 +44,7 @@ $(document).ready(function() {
 	$('input:file.multiple').MultiFile({
 		max: 4,
 		namePattern: '$name$i',
-		remove: '<img src="images/icons/bin.png" alt="x" />'
+		remove: '<i class="fa fa-trash-o"></i>'
 	});
 
 	/* Load the CKEditor */

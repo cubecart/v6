@@ -169,12 +169,6 @@ body {
 	color: #ccc;
 }
 
-#header #logo {
-	position: absolute;
-	left: 3px;
-	top: 14px;
-}
-
 #navigation {
 	float: left;
     width: 120px;
@@ -741,6 +735,7 @@ a.handle {
 .preauth-wrapper #logo {
 	padding: 20px 0 10px 0;
 	background-color: #000;
+	text-align: center;
 }
 #login-box {
 	color: #6B6B6B;
@@ -817,8 +812,14 @@ table#order-builder .quantity {
 	width: 45px !important;
 	text-align: center;
 }
-.powered {
+div#content .powered {
 	border-top: 1px solid #DDD;
+	text-align: center;
+	padding: 7px 0;
+	font-size: 12px;
+	color: #ccc;
+}
+.preauth-body .powered {
 	text-align: center;
 	padding: 7px 0;
 	font-size: 12px;

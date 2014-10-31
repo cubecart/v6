@@ -343,7 +343,7 @@ $.fn.autocomplete = function(options){ return this.each(function(){
       }
 
       $(span).attr('name',i+1);
-      $(span).click(function () { setHighlightedValue(); });
+      $(span).click(function () { setHighlightedValue(); alert('kok'); });
       $(span).mouseover(function () { setHighlight($(this).attr('name'),true); });
 
       var li = $('<li></li>').get(0);
@@ -406,7 +406,6 @@ $.fn.autocomplete = function(options){ return this.each(function(){
       // pass selected object to callback function, if exists
       if ($.isFunction(options.callback))
         options.callback(suggestions[current_highlight-1], ele, rel);
-
       clearSuggestions();
     }
   };

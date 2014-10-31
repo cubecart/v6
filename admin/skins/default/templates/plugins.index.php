@@ -14,6 +14,7 @@
 <form action="{$VAL_SELF}" method="post">
 <div id="plugins" class="tab_content">
 	<h3>Installed Plugins</h3>
+	{if is_array($MODULES)}
 	<table>
 	<thead>
 		<tr>
@@ -40,13 +41,13 @@
 	{/foreach}
 	</tbody>
 	</table>
-	
-	 {include file='templates/element.hook_form_content.php'}
-	
+	{include file='templates/element.hook_form_content.php'}
+	<div class="form_control">
+		<input type="submit" value="{$LANG.common.save}">
+	  </div>
+	  <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+	</form>
+	{else}
+	<p>{$LANG.form.none}</p>
+	{/if}
 </div>
-
-<div class="form_control">
-	<input type="submit" value="{$LANG.common.save}">
-  </div>
-  <input type="hidden" name="token" value="{$SESSION_TOKEN}">
-</form>

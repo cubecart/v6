@@ -1,0 +1,1 @@
+<div class="powered">eCommerce by <a href="http://www.cubecart.com">CubeCart</a></div>
