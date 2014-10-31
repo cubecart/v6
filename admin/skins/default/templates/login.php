@@ -16,7 +16,6 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>{$LANG.dashboard.title_admin_cp}</title>
-  <!--[if IE 7]><link rel="stylesheet" type="text/css" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/styles/ie7.css" media="screen"><![endif]-->
   <link rel="stylesheet" type="text/css" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/styles/layout.css" media="screen">
 </head>
 <body class="preauth-body">
