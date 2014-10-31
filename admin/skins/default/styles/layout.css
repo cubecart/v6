@@ -156,7 +156,7 @@ body {
 	font-family: 'Roboto', Helvetica, Arial, sans-serif;
 	font-size: 12px;
 	color: #555;
-	background: #000 url(../images/login-bg.jpg) no-repeat center;
+	background: #000 url(../images/bg.png);
 }
 
 /* Main layout items */
@@ -723,15 +723,13 @@ a.handle {
 	height: 180;
 	padding: 0 0 6px 0;
 	margin-top: 30px;
-	border-left: 40px solid #333;
-	border-bottom: 40px solid #333;
-	border-right: 40px solid #333;
-	opacity: 0.8;
+	border-left: 40px solid #000;
+	border-bottom: 40px solid #000;
+	border-right: 40px solid #000;
 }
 .preauth-wrapper #logo {
 	padding: 20px 0 10px 0;
-	background-color: #333;
-	opacity: 1;
+	background-color: #000;
 }
 #login-box {
 	color: #6B6B6B;
