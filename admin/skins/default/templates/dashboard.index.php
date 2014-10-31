@@ -132,7 +132,13 @@
 		{foreach from=$ORDERS item=order}
 		<tr>
 		  <td><a href="?_g=orders&action=edit&order_id={$order.cart_order_id}">{$order.cart_order_id}</a></td>
-		  <td><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/{$order.icon}.png" alt=""></td>
+		  <td>
+		  	{if $order.icon=='user_registered'}
+		  	<i class="fa fa-user registered" title="{$LANG.customer.title_key_registered}"></i>
+		  {else}
+		  	<i class="fa fa-user unregistered" title="{$LANG.customer.title_key_unregistered}"></i>
+		  {/if}
+		  </td>
 		  <td>
 		    <a href="?_g=customers&action=edit&customer_id={$order.customer_id}">{if empty($order.first_name) && empty($order.last_name)}
 		  		{$order.name}

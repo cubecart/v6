@@ -65,7 +65,7 @@
   {foreach from=$NEWSLETTERS item=newsletter}
 	<div>
 	  <span class="actions">
-		<a href="{$newsletter.send}" class="confirm" title="{$LANG.email.confirm_send}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/newspaper_go.png" alt="{$LANG.common.send}"></a>
+		<a href="{$newsletter.send}" class="confirm" title="{$LANG.email.confirm_send}"><i class="fa fa-paper-plane" title="{$LANG.common.send}"></i></a>
 		<a href="{$newsletter.edit}" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
 		<a href="{$newsletter.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 	  </span>

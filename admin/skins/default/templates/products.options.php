@@ -97,7 +97,7 @@
 		  <label for="new-value-name">{$LANG.common.name}</label>
 		  <span>
 			<input type="text" name="add-value[value_name]" id="new-value-name" rel="attr_name" class="textbox">
-			<a href="#" id="group_target" class="add"><img src="images/icons/add.png" alt="{$LANG.common.add}"></a>
+			<a href="#" id="group_target" class="add"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a>
 		  </span>
 		</div>
 

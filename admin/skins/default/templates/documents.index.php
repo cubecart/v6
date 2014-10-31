@@ -49,7 +49,7 @@
 		  <td align="center"><input type="radio" name="terms" value="{$document.doc_id}" {$document.terms}></td>
 		  <td align="center"><input type="radio" name="home" value="{$document.doc_id}" {$document.homepage}></td>
 		  <td align="center">
-			<a href="{$document.link.translate}" title="{$LANG.translate.trans_add}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/add.png" alt="{$LANG.translate.trans_add}"></a>
+			<a href="{$document.link.translate}" title="{$LANG.translate.trans_add}"><i class="fa fa-plus-circle" title="{$LANG.translate.trans_add}"></i></a>
 			<a href="{$document.link.edit}" title="{$LANG.common.edit}" class="edit"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
 			<a href="{$document.link.delete}" title="{$LANG.notification.confirm_delete}" class="delete"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		  </td>

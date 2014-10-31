@@ -448,15 +448,26 @@ table {
 td {
 	padding: 0 2px;
 }
-th .left, th .right {
+.clearfix {
+	*zoom:1;
+}  
+.clearfix:before,.clearfix:after {
+	content:" ";
+	display:table;
+}
+
+.clearfix:after {
+	clear:both;
+}
+.left {
 	float: left;
 }
-th .right {
+.right {
 	float: right;
-	width: 9px;
 }
 th a .right  {
 	color: #555;
+	margin-right: 3px;
 }
 thead {
 	text-align: left;
@@ -466,10 +477,6 @@ thead {
 
 tbody tr:nth-child(even) {
 	background-color: #EDF4F7;
-}
-
-thead span {
-	float: right;
 }
 
 thead td, thead th {
@@ -789,6 +796,15 @@ dl {
 .request strong, .received strong {
 	display: block;
 	font-family: Helvetica, Arial, Verdana, sans-serif !important;
+}
+.fa {
+	color: #555;
+}
+.fa-user.registered {
+	color: #44B215;
+}
+.fa-user.unregistered {
+	color: red;
 }
 .powered {
 	border-top: 1px solid #DDD;

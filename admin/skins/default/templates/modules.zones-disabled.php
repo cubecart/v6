@@ -33,7 +33,7 @@
 			<option value="{$country.numcode}">{$country.name}</option>
 			{/foreach}
 		  </select>
-		  <a href="#" class="add" target="disabled-zones"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/add.png" alt="{$LANG.common.add}"></a>
+		  <a href="#" class="add" target="disabled-zones"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a>
 		</span>
 	  </div>
 	</fieldset>

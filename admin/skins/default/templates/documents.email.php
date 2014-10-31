@@ -36,7 +36,7 @@
 			{/if}
 		  </td>
 		  <td width="30" align="center">
-			<a href="{$content.translate}" title="{$LANG.translate.trans_add}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/add.png" alt="{$LANG.translate.trans_add}"></a>
+			<a href="{$content.translate}" title="{$LANG.translate.trans_add}"><i class="fa fa-plus-circle" title="{$LANG.translate.trans_add}"></i></a>
 		  </td>
 		</tr>
 		{/foreach}

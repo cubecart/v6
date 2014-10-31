@@ -242,7 +242,7 @@
 			{/foreach}{/if}
 		  </div>
 		  <div class="inline-add">
-			<span class="actions"><a href="#" class="add" target="qty_discount_0"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/add.png" alt="{$LANG.common.add}"></a></span>
+			<span class="actions"><a href="#" class="add" target="qty_discount_0"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a></span>
 			<label><input type="text" rel="quantity" class="editable textbox number not-empty"></label>
 			<input type="text" rel="price" class="textbox number-right not-empty">
 		  </div>
@@ -290,7 +290,7 @@
 			{/foreach}
 		  </div>
 		  <div class="inline-add">
-			<span class="actions"><a href="#" class="add" target="discount_list_{$group.group_id}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/add.png" alt="{$LANG.common.add}"></a></span>
+			<span class="actions"><a href="#" class="add" target="discount_list_{$group.group_id}"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a></span>
 			<label><input type="text" rel="quantity" class="textbox number not-empty"></label>
 			<input type="text" rel="price" class="textbox number-right not-empty">
 		  </div>
@@ -408,7 +408,7 @@
 			<td><input type="text" id="opt_price" rel="price" class="textbox number-right data"></td>
 			<td><input type="text" id="opt_weight" rel="weight" class="textbox number data"></td>
 			<!-- td><input type="text" id="opt_stock" rel="stock" class="textbox number data"></td -->
-			<td align="center"><a href="#" onclick="optionAdd('option_template', 'options_added'); return false;"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/add.png" alt="{$LANG.common.add}"></a></td>
+			<td align="center"><a href="#" onclick="optionAdd('option_template', 'options_added'); return false;"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a></td>
 		  </tr>
 
 		  <tr class="inline-source">

@@ -24,7 +24,7 @@ $nav_items['customers']  = array(
 	$lang['navigation']['nav_customer_list'] => '?_g=customers',
 	$lang['navigation']['nav_orders']   => '?_g=orders',
 	$lang['navigation']['nav_transaction_logs'] => '?_g=orders&node=transactions',
-	$lang['navigation']['nav_newsletters']  => '?_g=customers&node=newsletters',
+	$lang['navigation']['nav_newsletters']  => '?_g=customers&node=email',
 	$lang['navigation']['nav_subscribers']  => '?_g=customers&node=subscribers',
 );
 

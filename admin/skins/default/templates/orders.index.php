@@ -15,7 +15,7 @@
   {if isset($DISPLAY_ORDER_LIST)}
   <div id="orders" class="tab_content">
 	<h3>{$LANG.orders.title_orders}</h3>
-	{if isset($ORDER_LIST)}
+	{if $ORDER_LIST}
 	<table width="100%">
 	  <thead>
 		<tr>
@@ -34,7 +34,13 @@
 		<tr>
 		  <td align="center"><input type="checkbox" id="" name="multi-order[]" value="{$order.cart_order_id}" class="all-orders"></td>
 		  <td><a href="{$order.link_edit}">{$order.cart_order_id}</a></td>
-		  <td align="center"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/{$order.icon}.png" alt=""></td>
+		  <td align="center">
+		  {if $order.icon=='user_registered'}
+		  	<i class="fa fa-user registered" title="{$LANG.customer.title_key_registered}"></i>
+		  {else}
+		  	<i class="fa fa-user unregistered" title="{$LANG.customer.title_key_unregistered}"></i>
+		  {/if}
+			</td>
 		  <td><a href="{$order.link_customer}" title="{$order.name}">{$order.name}</a></td>
 		  <td>{$order.status}</td>
 		  <td>{$order.date}</td>
@@ -325,7 +331,7 @@
 			<td><input type="hidden" id="ajax_product_id" rel="product_id"><input type="text" id="ajax_name" placeholder="{$LANG.common.type_to_search}" class="textbox ajax not-empty" rel="product"></td>
 			<td><input type="text" id="ajax_price" class="textbox number-right lineprice" rel="price" value="0.00"></td>
 			<td  align="right"><input type="text" rel="line_price" class="textbox number-right subtotal" value="0.00"></td>
-			<td align="center" class="action"><a href="#" title="{$LANG.common.add}" class="add" target="inventory-list"><image src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/add.png" alt="{$LANG.common.add}" title="{$LANG.common.add}"></a></td>
+			<td align="center" class="action"><a href="#" title="{$LANG.common.add}" class="add" target="inventory-list"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a></td>
 		  </tr>
 		  <!-- Source for inline adding -->
 		  <tr class="update-subtotal inline-source" name="inv_add">
@@ -389,7 +395,7 @@
 			  </select>
 			</th>
 			<td><input type="text" rel="amount" class="textbox number-right tax not-empty" ></td>
-			<td><a href="#" class="add" target="tax-list"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/add.png" alt="{$LANG.common.add}" title="{$LANG.common.add}"></a></td>
+			<td><a href="#" class="add" target="tax-list"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a></td>
 		  </tr>
 		  <!-- Source for inline adding -->
 		  <tr class="update-subtotal inline-source" name="tax_add">

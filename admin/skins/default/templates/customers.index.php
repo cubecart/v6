@@ -17,11 +17,11 @@
   <div id="customer-list" class="tab_content">
     <h3>{$LANG.customer.title_list}</h3>
     <p>
-	<strong>{$LANG.customer.title_key_type}</strong>
-	  <img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/user_registered.png" alt="{$LANG.customer.title_key_registered}"> - {$LANG.customer.title_key_registered}
-	  <img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/user_ghost.png" alt="{$LANG.customer.title_key_unregistered}"> - {$LANG.customer.title_key_unregistered}
+	<strong>{$LANG.customer.title_key_type}:</strong><br>
+	  <i class="fa fa-user registered" title="{$LANG.customer.title_key_registered}"></i> - {$LANG.customer.title_key_registered}<br>
+	  <i class="fa fa-user unregistered" title="{$LANG.customer.title_key_unregistered}"></i> - {$LANG.customer.title_key_unregistered}
 	</p>
-	<table>
+	<table width="100%">
 	  <thead>
 		<tr>
 		  <td>{$THEAD.status}</td>
@@ -39,9 +39,9 @@
 		  <td align="center"><input type="hidden" name="status[{$customer.customer_id}]" id="status_{$customer.customer_id}" value="{$customer.status}" class="toggle"></td>
 		  <td align="center">
 		  	{if $customer.type==1}
-		  	<img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/user_registered.png" alt="{$LANG.customer.title_key_registered}">
+		  	<i class="fa fa-user registered" title="{$LANG.customer.title_key_registered}"></i>
 		  	{elseif $customer.type==2}
-		  	<img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/user_ghost.png" alt="{$LANG.customer.title_key_unregistered}">
+		  	<i class="fa fa-user unregistered" title="{$LANG.customer.title_key_unregistered}"></i>
 		  	{/if}
 		  </td>
 		  <td><a href="{$customer.edit}">{$customer.last_name}, {$customer.first_name}</a> {if !empty($customer.groups)}({$customer.groups}){/if}</td>
@@ -217,7 +217,7 @@
 			<option value="">{$LANG.form.please_select}</option>
 			{foreach from=$ALL_CUSTOMER_GROUPS item=group}<option value="{$group.group_id}">{$group.group_name}</option>{/foreach}
 		  </select>
-		  <a href="#" class="add" target="membership" title="{$LANG.common.add}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/add.png" alt="{$LANG.common.add}"></a>
+		  <a href="#" class="add" target="membership" title="{$LANG.common.add}"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a>
 		</div>
 	  </fieldset>
 	</div>
