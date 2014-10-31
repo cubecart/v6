@@ -107,7 +107,7 @@
 	</div>
 
 	</div>
-	<div class="powered">eCommerce by <a href="http://www.cubecart.com">CubeCart</a></div>
+	<div class="powered">eCommerce by <a href="http://www.cubecart.com">CubeCart</a><sup>&reg;</sup></div>
   </div>
   </div>
   <div style="display: none" id="val_admin_folder">{$SKIN_VARS.admin_folder}</div>

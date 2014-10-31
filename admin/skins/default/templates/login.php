@@ -22,7 +22,7 @@
 <body class="preauth-body">
   {include file='templates/common.gui_message.php'}
   <div class="preauth-wrapper{if !$SKIP_AD} preauth-wrapper-left-shift{/if}">
-  <div id="logo"></div>
+  <div id="logo"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/cubecart-logo.png" alt="CubeCart Logo"></div>
   <form action="{$VAL_SELF}" method="post" enctype="application/x-www-form-urlencoded" name="acp-login">
 	<div id="login-box">
 	{if isset($RECOVERY)}

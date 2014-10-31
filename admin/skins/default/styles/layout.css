@@ -155,8 +155,8 @@ body {
 	padding: 0;
 	font-family: 'Roboto', Helvetica, Arial, sans-serif;
 	font-size: 12px;
-	background-color: #FDFDFD;
 	color: #555;
+	background: #000 url(../images/login-bg.jpg) no-repeat center;
 }
 
 /* Main layout items */
@@ -166,6 +166,7 @@ body {
 #header {
 	padding: 2px;
 	height: 12px;
+	color: #ccc;
 }
 
 #header #logo {
@@ -179,10 +180,10 @@ body {
     width: 120px;
 	padding: 28px 0 0 3px;
 	height: auto;
+	color: #ccc;
 }
 #content {
 	margin-left: 123px;
-	background-color: #fff;
 	height: 100%;
 	min-height: 100%;
 }
@@ -190,10 +191,12 @@ body {
 	height: 26px;
 	padding: 0 0 1px 0;
 	border-bottom: 1px solid #DDDDDD;
-	background-color: #FDFDFD;
+	opacity: 0.9;
 }
 #content_body {
 	border-left: 1px solid #DDDDDD;
+	background-color: #fff;
+	opacity: 0.9;
 }
 
 #breadcrumbs {
@@ -711,7 +714,7 @@ a.handle {
 
 /* Begin Pre Authentication */
 .preauth-body {
-	background-color: #FFF;
+	
 }
 .preauth-wrapper {
 	background-color: #FFF;
@@ -720,13 +723,15 @@ a.handle {
 	height: 180;
 	padding: 0 0 6px 0;
 	margin-top: 30px;
-	border-left: 40px solid #F7F7F7;
-	border-bottom: 40px solid #F7F7F7;
-	border-right: 40px solid #F7F7F7;
+	border-left: 40px solid #333;
+	border-bottom: 40px solid #333;
+	border-right: 40px solid #333;
+	opacity: 0.8;
 }
 .preauth-wrapper #logo {
 	padding: 20px 0 10px 0;
-	background-color: #F7F7F7;
+	background-color: #333;
+	opacity: 1;
 }
 #login-box {
 	color: #6B6B6B;
@@ -774,7 +779,6 @@ a.handle {
 #newsletter_send {
 	text-align: center;
 }
-
 dl {
 	margin: 3px 0;
 }
@@ -788,5 +792,7 @@ dl {
 .powered {
 	border-top: 1px solid #DDD;
 	text-align: center;
-	margin: 0px 7px;
+	padding: 7px 0;
+	font-size: 12px;
+	color: #ccc;
 }
