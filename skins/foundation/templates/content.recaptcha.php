@@ -1,3 +1,4 @@
+<?php
 /**
  * CubeCart v6
  * ========================================
@@ -9,6 +10,7 @@
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  */
+?>
 {if $RECAPTCHA}
 <h3>{$LANG.form.verify_human}</h3>
 <div class="row">

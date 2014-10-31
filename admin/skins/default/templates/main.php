@@ -1,3 +1,4 @@
+<?php
 /**
  * CubeCart v6
  * ========================================
@@ -9,6 +10,7 @@
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  */
+?>
 <!DOCTYPE html>
 <html class="no-js" xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="utf-8">
 <head>

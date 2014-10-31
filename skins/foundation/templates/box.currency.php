@@ -1,3 +1,4 @@
+<?php
 /**
  * CubeCart v6
  * ========================================
@@ -9,6 +10,7 @@
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  */
+?>
 <a href="#" data-dropdown="currency-switch" class="button white small">{$CURRENT_CURRENCY.symbol_left} {$CURRENT_CURRENCY.code} {$CURRENT_CURRENCY.symbol_right}</a><br>
 <ul id="currency-switch" data-dropdown-content class="f-dropdown">
   {foreach from=$CURRENCIES item=currency}

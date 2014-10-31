@@ -1,3 +1,4 @@
+<?php
 /**
  * CubeCart v6
  * ========================================
@@ -9,6 +10,7 @@
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  */
+?>
 <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
   {if isset($DISPLAY_PRODUCT_LIST)}
   <div id="general" class="tab_content">

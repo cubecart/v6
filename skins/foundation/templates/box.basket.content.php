@@ -1,3 +1,4 @@
+<?php
 /**
  * CubeCart v6
  * ========================================
@@ -9,6 +10,7 @@
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  */
+?>
 <div class="box-basket-content">
    <h4 class="mini-basket-title nomarg pad-side">{$LANG.basket.your_basket}</h4>
    <div class="pad-side basket-detail">

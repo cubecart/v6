@@ -1,3 +1,4 @@
+<?php
 /**
  * CubeCart v6
  * ========================================
@@ -9,6 +10,7 @@
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  */
+?>
 <div id="general" class="tab_content">
 	<h3>{$LANG.maintain.title_query_db}</h3>
 	<p>{$INFO} {if !empty($PREFIX)} {$LANG.maintain.table_prefix}: '{$PREFIX}'{/if}</p>

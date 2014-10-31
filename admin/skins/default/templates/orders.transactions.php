@@ -1,3 +1,4 @@
+<?php
 /**
  * CubeCart v6
  * ========================================
@@ -9,6 +10,7 @@
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  */
+?>
 {if isset($DISPLAY_ALL_TRANSACTIONS)}
 <div id="logs" class="tab_content">
   <h3>{$LANG.orders.title_transaction_logs}</h3>

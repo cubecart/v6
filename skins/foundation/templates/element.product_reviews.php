@@ -1,3 +1,4 @@
+<?php
 /**
  * CubeCart v6
  * ========================================
@@ -9,6 +10,7 @@
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  */
+?>
 {if $CTRL_REVIEW}
 <h2 id="reviews">{$LANG.catalogue.customer_reviews}</h2>
 <div id="review_read">

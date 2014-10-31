@@ -1,3 +1,4 @@
+<?php
 /**
  * CubeCart v6
  * ========================================
@@ -9,6 +10,7 @@
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  */
+?>
 <form action="{$STORE_URL}/search.html" id="search_form" method="get">
 	<div class="row collapse">
 		<div class="small-10 large-11 columns">

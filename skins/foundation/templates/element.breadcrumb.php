@@ -1,3 +1,4 @@
+<?php
 /**
  * CubeCart v6
  * ========================================
@@ -9,6 +10,7 @@
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  */
+?>
 {if $CRUMBS}
 <ul class="breadcrumbs">
    <li><a href="{$STORE_URL}"><span class="show-for-small-only"><i class="fa fa-home"></i></span><span class="show-for-medium-up">{$LANG.common.home}</a></li>

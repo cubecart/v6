@@ -1,3 +1,4 @@
+<?php
 /**
  * CubeCart v6
  * ========================================
@@ -9,6 +10,7 @@
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  */
+?>
 {if isset($CTRL_VIEW) && $CTRL_VIEW}
 <h2>{$NEWSLETTER.subject}</h2>
 <div>{$NEWSLETTER.content_html}</div>

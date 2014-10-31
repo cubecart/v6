@@ -1,3 +1,4 @@
+<?php
 /**
  * CubeCart v6
  * ========================================
@@ -9,6 +10,7 @@
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  */
+?>
 <form id="gc_form" action="{$VAL_SELF}" method="post">
   <h2>{$LANG.catalogue.gift_certificates}</h2>
   <p>{$LANG_CERT_VALUES}</p>

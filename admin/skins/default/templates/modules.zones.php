@@ -1,3 +1,4 @@
+<?php
 /**
  * CubeCart v6
  * ========================================
@@ -9,6 +10,7 @@
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  */
+?>
   <div id="zone-list" class="tab_content">
 	<h3>{$LANG.settings.allowed_zones}</h3>
 	<fieldset id="enabled-zones"><legend>{$LANG.module.title_regions_enabled}</legend>
