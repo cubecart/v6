@@ -215,7 +215,7 @@ if (isset($_POST['process'])) {
 			$fields	= array(	# Update for language strings
 				'status'			=> $lang['common']['status'],
 				'name'				=> $lang['catalogue']['product_name'],
-				'image'				=> $lang['catalogue']['image_main'],
+				'image'				=> $lang['catalogue']['image_comma'],
 				'product_code'		=> $lang['catalogue']['product_code'],
 				'cat_id'			=> $lang['catalogue']['master_caregory_id'],
 				'description'		=> $lang['common']['description'],

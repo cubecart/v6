@@ -67,7 +67,9 @@ input[type="checkbox"]{
 	height: 400px;
 	width: 525px;
 	overflow-y: scroll;
-	border: 1px solid #000;
+	border: 1px solid #C7C7C7;
+	padding: 3px;
+	margin: 5px 0;
 	float: left;
 }
 #image .fm-container .fm-filelist {

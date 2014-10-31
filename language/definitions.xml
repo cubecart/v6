@@ -307,7 +307,8 @@
     <string name="hover_zoom" introduced="5.0.0"><![CDATA[Hover over image to zoom]]></string>
     <string name="image_excluded" introduced="5.0.0"><![CDATA[Excluded Image]]></string>
     <string name="image_included" introduced="5.0.0"><![CDATA[Included Image]]></string>
-    <string name="image_main" introduced="5.0.0"><![CDATA[Images (Comma Separated)]]></string>
+    <string name="image_main" introduced="5.0.0"><![CDATA[Main Image]]></string>
+    <string name="image_comma" introduced="6.0.0"><![CDATA[Images (Comma Separated)]]></string>
     <string name="import_column_ignore" introduced="5.0.0"><![CDATA[-- Ignore --]]></string>
     <string name="import_csv_headers" introduced="5.0.0"><![CDATA[CSV has column headers]]></string>
     <string name="import_format" introduced="5.0.0"><![CDATA[Format]]></string>
