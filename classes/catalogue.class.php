@@ -184,6 +184,7 @@ class Catalogue {
 	public function displayProduct($product = false, $popularity = false) {
 		if (isset($product) && is_numeric($product)) {
 			if (($product = $this->getProductData($product)) !== false) {
+				$product['condition'] = $GLOBALS['language']->common[$product['condition']];
 				$meta_data = array(
 					'name'   => $product['name'],
 					'path'   => null,
@@ -217,7 +218,7 @@ class Catalogue {
 
 				// Display gallery
 				$GLOBALS['smarty']->assign('GALLERY', $this->_productGallery($product['product_id']));
-				$product_options = $this->_displayProductOptions($product['product_id']);
+				$product_options = $this->displayProductOptions($product['product_id']);
 				$GLOBALS['smarty']->assign('OPTIONS', $product_options);
 
 				$allow_purchase = true;

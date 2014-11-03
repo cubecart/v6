@@ -1,5 +1,4 @@
-<?php
-/**
+{*
  * CubeCart v6
  * ========================================
  * CubeCart is a registered trade mark of CubeCart Limited
@@ -9,8 +8,7 @@
  * Web:   http://www.cubecart.com
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
- */
-?>
+ *}
 <div id="admin_error_log" class="tab_content">
   <h3>{$LANG.settings.title_error_log}</h3>
   <p>[<a href="?_g=maintenance&clearLogs=true">{$LANG.maintain.logs_error}</a>]</p>

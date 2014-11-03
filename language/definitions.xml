@@ -526,6 +526,10 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="condition" introduced="6.0.0"><![CDATA[Condition]]></string>
+    <string name="new" introduced="6.0.0"><![CDATA[New]]></string>
+    <string name="used" introduced="6.0.0"><![CDATA[Used]]></string>
+    <string name="refurbished" introduced="6.0.0"><![CDATA[Refurbished]]></string>
     <string name="logo" introduced="6.0.0"><![CDATA[Logo]]></string>
   	<string name="reorder" introduced="6.0.0"><![CDATA[Reorder]]></string>
   	<string name="recommended" introduced="6.0.0"><![CDATA[Recommended]]></string>

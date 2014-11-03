@@ -1,5 +1,4 @@
-<?php
-/**
+{*
  * CubeCart v6
  * ========================================
  * CubeCart is a registered trade mark of CubeCart Limited
@@ -9,8 +8,7 @@
  * Web:   http://www.cubecart.com
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
- */
-?>
+ *}
 {if ($page >= $show-1)}
   {$params[$var_name] = 1}
   <a href="{$current}{

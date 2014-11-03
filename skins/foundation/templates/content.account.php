@@ -1,5 +1,4 @@
-<?php
-/**
+{*
  * CubeCart v6
  * ========================================
  * CubeCart is a registered trade mark of CubeCart Limited
@@ -9,8 +8,7 @@
  * Web:   http://www.cubecart.com
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
- */
-?>
+ *}
 <h2>{$LANG.account.your_account}</h2>
 <ul class="no-bullet small-block-grid-1 medium-block-grid-3 large-block-grid-3">
    <li><a href="{$STORE_URL}/index.php?_a=profile" title="{$LANG.account.your_details}" class="button secondary expand nomarg"><i class="fa fa-user"></i> {$LANG.account.your_details}</a></li>

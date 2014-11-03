@@ -1,5 +1,4 @@
-<?php
-/**
+{*
  * CubeCart v6
  * ========================================
  * CubeCart is a registered trade mark of CubeCart Limited
@@ -9,8 +8,7 @@
  * Web:   http://www.cubecart.com
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
- */
-?>
+ *}
 <div id="upgrade" class="tab_content">
   <h3>Upgrade Required</h3>
   <p>Right now your store uses &quot;CubeCart Lite&quot; the free version of CubeCart which has restricted features and a limit of {$TRIAL_LIMITS.customers} customers or {$TRIAL_LIMITS.orders} orders (whichever comes first) and {$TRIAL_LIMITS.administrator} administrator. Below is our website showing our pricing and links to further information.</p>

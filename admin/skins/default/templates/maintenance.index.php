@@ -1,5 +1,4 @@
-<?php
-/**
+{*
  * CubeCart v6
  * ========================================
  * CubeCart is a registered trade mark of CubeCart Limited
@@ -9,8 +8,7 @@
  * Web:   http://www.cubecart.com
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
- */
-?>
+ *}
 <div id="backup" class="tab_content">
   <h3>{$LANG.maintain.title_files_backup}</h3>
   <form action="?_g=maintenance&node=index&files_backup=1#backup" method="post">
