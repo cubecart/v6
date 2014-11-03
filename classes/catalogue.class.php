@@ -615,7 +615,7 @@ class Catalogue {
 			}
 		}
 		// Sort option values
-		if (is_array($option_array)) {
+		if (isset($option_array) && is_array($option_array)) {
 			foreach ($option_array as $type => $option_list) {
 				if (is_array($option_list)) {
 					foreach ($option_list as $oid => $array) {
