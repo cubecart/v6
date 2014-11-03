@@ -917,7 +917,10 @@ class GUI {
 	 * Display navigation box
 	 */
 	private function _displayNavigation() {
-		if (($content = $GLOBALS['cache']->read('html.'.$this->_skin.'.menu.'.$GLOBALS['language']->current())) == false) {
+		$cache_id = 'html.'.$this->_skin.'.menu.'.$GLOBALS['language']->current();
+		$serialize = false;
+		if (($content = $GLOBALS['cache']->read($cache_id,$serialize)) == false) {
+			
 			//Get the navigation tree data
 			$tree_data = $GLOBALS['catalogue']->getCategoryTree();
 			//Make the navigation tree
@@ -944,8 +947,8 @@ class GUI {
 			foreach ($GLOBALS['hooks']->load('class.gui.display_navigation.pre_cache') as $hook) include $hook;
 			$content = $GLOBALS['smarty']->fetch('templates/box.navigation.php');
 			$content = str_replace('/index.php/', '/', $content);
-
-			$GLOBALS['cache']->write($content, 'html.'.$this->_skin.'.menu.'.$GLOBALS['language']->current());
+			
+			$GLOBALS['cache']->write($content, $cache_id, '', $serialize);
 		}
 
 		foreach ($GLOBALS['hooks']->load('class.gui.display_navigation') as $hook) include $hook;

@@ -146,23 +146,13 @@ class Cache extends Cache_Controler {
 		$this->_empties = $this->read($this->_empties_id);
 	}
 
-	public function deepslashes(&$array) {  
-	  if(is_array($array)) {  
-	    foreach ($array as &$val)  
-	      is_array($val) ? self::deepslashes($val):$val=addslashes($val);  
-	      unset($val);  
-	  } else { 
-	    $array=addslashes($array); 
-	  } 
-	} 
-
 	/**
 	 * Get the cache data
 	 *
 	 * @param string $id Cache identifier
 	 * @return data/false
 	 */
-	public function read($id) {
+	public function read($id, $serialized = true) {
 		
 		if (!$this->status()) {
 			return false;
@@ -201,7 +191,7 @@ class Cache extends Cache_Controler {
 					unlink($file);
 					return false;
 				}
-				$this->_dupes[$id] = unserialize($data);
+				$this->_dupes[$id] = ($serialized) ? unserialize($data) : $data;
 				return $this->_dupes[$id];
 			}
 		}
@@ -218,7 +208,7 @@ class Cache extends Cache_Controler {
 	 * @param int $expire Force a time to live
 	 * return bool
 	 */
-	public function write($data, $id, $expire = '') {
+	public function write($data, $id, $expire = '', $serialize = true) {
 			
 		if (!$this->status()) {
 			return true;
@@ -233,7 +223,7 @@ class Cache extends Cache_Controler {
 		}
 		
 		try {
-			$data = serialize($this->deepslashes($data));
+			$data = ($serialize) ? serialize($data) : $data;
 		} catch (Exception $e) {
 		    trigger_error($e->getMessage());
 		    return false;
@@ -247,7 +237,7 @@ class Cache extends Cache_Controler {
 			'expire' => (!empty($expire) && is_numeric($expire)) ? $expire : $this->_expire,
 		);
 		//Combine the meta and the data
-		$data  = serialize($this->deepslashes($meta)).$this->_file_data_split.$data;
+		$data  = serialize($meta).$this->_file_data_split.$data;
 
 		//Write to file
 		if (file_put_contents($this->_cache_path.$name, $data)) {

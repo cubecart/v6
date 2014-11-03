@@ -9,7 +9,8 @@
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  *}
-<nav class="top-bar category-nav" data-topbar="">
+
+{if $CATEGORIES}{$CATEGORIES}{else}<nav class="top-bar category-nav" data-topbar="">
   <ul class="title-area">
      <li class="name"></li>
      <li class="toggle-topbar left"><a href="">{$LANG.navigation.title} <i class="fa fa-caret-down"></i></a></li>
@@ -26,4 +27,4 @@
         {/if}
      </ul>
   </section>
-</nav>
+</nav>{/if}
