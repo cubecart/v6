@@ -19,14 +19,13 @@
   <link rel="shortcut icon" href="{$STORE_URL}/favicon.ico" type="image/x-icon">
   <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,700italic,400italic&subset=cyrillic,cyrillic-ext,latin,greek-ext,greek,latin-ext' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" type="text/css" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/styles/layout.css" media="screen">
+  <link rel="stylesheet" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/styles/font-awesome.min.css">
   {if isset($JQUERY_STYLES)}
   	{foreach from=$JQUERY_STYLES item=style}
   	<link rel="stylesheet" type="text/css" href="{$style}" media="screen">
   	{/foreach}
   {/if}
   <link rel="stylesheet" type="text/css" href="js/styles/styles.php" media="screen">
-  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-
 </head>
 
 <body>
@@ -35,6 +34,7 @@
   </div>
   <div id="wrapper">
   <div id="navigation">
+  {include file='templates/common.search.php'}
   {if isset($NAVIGATION)}
     {foreach from=$NAVIGATION item=group}
 	<div id="{$group.group}" class="menu" onclick="$('#menu_{$group.group}').toggle();">{$group.title}</div>
@@ -72,36 +72,6 @@
 	{include file='templates/common.gui_message.php'}
 	<div id="page_content">
 	  <noscript><p class="warnText">{$LANG.settings.error_js_required}</p></noscript>
-	  <div id="sidebar_contain">
-		<span id="sidebar_control">&laquo;</span>
-		<div id="sidebar_content">
-		  <div class="sidebar_content">
-			<form action="?_g=customers" method="post">
-			  <h4>{$LANG.search.title_search_customers}</h4>
-			  <input type="text" name="search[keywords]" placeholder="{$LANG.common.type_to_search}" id="customer_id" class="textbox ajax" rel="user">
-			  <input type="hidden" id="result_customer_id" name="search[customer_id]" value="">
-			  <input type="submit" value="{$LANG.common.go}">
-			  <input type="hidden" name="token" value="{$SESSION_TOKEN}">
-			</form>
-		  </div>
-		  <div class="sidebar_content">
-			<form action="?_g=products" method="post">
-			  <h4>{$LANG.search.title_search_products}</h4>
-			  <input type="text" name="search[product]" placeholder="{$LANG.common.type_to_search}" id="product" class="textbox ajax" rel="product"> <input type="submit" value="{$LANG.common.go}">
-			   <input type="hidden" id="result_product" name="search[product_id]" value="">
-			   <input type="hidden" name="token" value="{$SESSION_TOKEN}">
-			</form>
-		  </div>
-		  <div class="sidebar_content">
-			<form action="?_g=orders" method="post">
-			  <h4>{$LANG.search.title_search_orders}</h4>
-			  <input type="text" name="search[order_number]" placeholder="{$LANG.common.type_to_search}" id="search_order" class="textbox"> <input type="submit" value="{$LANG.common.go}">
-			  <input type="hidden" name="token" value="{$SESSION_TOKEN}">
-			</form>
-		  </div>
-		  {if isset($SIDEBAR_CONTENT)} {foreach from=$SIDEBAR_CONTENT item=content}<div class="sidebar_content">{$content}</div>{/foreach}{/if}
-		</div>
-	  </div>
 	  <div id="loading_content"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/loading.gif" alt=""></div>
 	  {$DISPLAY_CONTENT}
 	</div>

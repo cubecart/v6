@@ -343,7 +343,7 @@ $.fn.autocomplete = function(options){ return this.each(function(){
       }
 
       $(span).attr('name',i+1);
-      $(span).click(function () { setHighlightedValue(); alert('kok'); });
+      $(span).click(function () { setHighlightedValue(); });
       $(span).mouseover(function () { setHighlight($(this).attr('name'),true); });
 
       var li = $('<li></li>').get(0);

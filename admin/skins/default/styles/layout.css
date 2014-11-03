@@ -106,7 +106,7 @@ input[type="checkbox"]{
 	color:#FFF;
 	font-size:14px;
 	font-weight: bold;
-	padding: 6px 2px 2px 30px;
+	padding: 2px 2px 2px 30px;
 	text-align: left;
 	cursor: pointer;
 	min-height: 16px;
@@ -581,33 +581,34 @@ input.save-changes {
 	background-color: #FFCFCF;
 }
 
-
 #sidebar_contain {
 	background-color: #4F9AAF;
-	border: 2px solid #4F9AAF;
+	border: 0px solid #4F9AAF;
 	border-right: none;
 	min-height: 200px;
-	right: -340px;
+	left: -302px;
+	top: 0px;
 	position: fixed;
 	z-index: 10;
-	width: 351px;
-}
-#sidebar_control {
-	color: #FFF;
-	cursor: pointer;
-	float: left;
-	font-size: 16px !important;
-	font-weight: bold;
-	min-height: 200px;
-	padding-left: 2px;
-	width: 10px !important;
+	width: 300px;
 }
 #sidebar_content {
 	background-color: #F7F7F7;
-	border: 1px solid #F7F7F7;
-	margin-left: 12px;
+	margin: 0 5px 5px 0;
 	min-height: 200px;
 	padding-top: 5px;
+}
+#sidebar_content:last-child {
+	padding-bottom: 5px;
+}
+.sidebar_content h4 {
+	color: #555;
+	-webkit-margin-before: 0;
+	-webkit-margin-after: 0;
+	font-size: 14px;
+}
+.sidebar_content .textbox {
+	width: 218px;
 }
 #sidebar_content #product, #sidebar_content #customer_id, #sidebar_content #search_order {
 	background-color: #FFF;
@@ -617,8 +618,24 @@ input.save-changes {
 	margin: 5px 10px 10px !important;
 	padding: 10px 5px;
 }
-
-
+.sidebar_content .textbox {
+	font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+	width: 213px;
+	height: 24px;
+	line-height: 24px;
+	text-indent: 5px;
+	font-size: 12px;
+}
+input.search {
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+    width: 110px;
+}
 .dashboard_content {
 	/*margin-right: 290px !important;*/
 	margin-top: 10px !important;

@@ -242,7 +242,11 @@ $(document).ready(function() {
 		return false;
 	});
 	/* AJAX lookups */
-	$('input.ajax').autocomplete({ timeout: 5000, ajax_get : ajaxSuggest, callback: ajaxSelected });
+	$('input.ajax').autocomplete({
+		timeout: 5000,
+		ajax_get : ajaxSuggest,
+		callback: ajaxSelected
+    });
 
 	$('select.field_select').each(function(){
 		$(this).find('option:first').attr('selected', 'selected');
@@ -420,6 +424,7 @@ function ajaxSelected(v, id, rel) {
 			$('#ajax_'+key).val(v.data[key]).trigger("change");
 		}
 	}
+	$('#result_'+id).closest("form").submit();
 }
 function ajaxSuggest(key, cont, rel) {
 	var script_name	= './admin.php';
@@ -659,13 +664,12 @@ $('a.duplicate').on('click', function(){
 	return false;
 });
 
-$('#sidebar_control').on("click",function(){
-	var right_current	= $('#sidebar_contain').css('right').replace('px','');
-	var right_target	= (right_current >= 0) ? -340 : 0;
-
-	$('#sidebar_contain').animate({'right':right_target+'px'});
-	$(this).html((right_current >= 0) ? '&laquo;' : '&raquo;');
-
+$('#search-placeholder').on("mouseover",function(){
+	$('#sidebar_contain').animate({left:'0px'});
+	return false;
+});
+$('#sidebar_contain').on("mouseleave",function(){
+	$(this).animate({left:'-340px'});
 	return false;
 });
 
