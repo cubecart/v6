@@ -424,7 +424,9 @@ function ajaxSelected(v, id, rel) {
 			$('#ajax_'+key).val(v.data[key]).trigger("change");
 		}
 	}
-	$('#result_'+id).closest("form").submit();
+	if($('#result_'+id).hasClass('clickSubmit')) {
+		$('#result_'+id).closest("form").submit();
+	}
 }
 function ajaxSuggest(key, cont, rel) {
 	var script_name	= './admin.php';
