@@ -10,7 +10,10 @@
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  *}
 <form action="{$VAL_SELF}" method="post">
+
 <div id="plugins" class="tab_content">
+<h3>Install/Upgrade/Downgrade Plugin</h3>
+Plugin Token:<br><input type="textbox" class="textbox" name="token" value="" placeholder="XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX"> <input type="submit" value="{$LANG.common.go}">
 	<h3>Installed Plugins</h3>
 	{if is_array($MODULES)}
 	<table>

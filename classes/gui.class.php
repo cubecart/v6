@@ -427,7 +427,7 @@ class GUI {
 							
 				if(!isset($_GET[$page_key]) && $default) {
 					$selected = true;
-				} elseif($_GET[$page_key]==$amount) {
+				} elseif(isset($_GET[$page_key]) && $_GET[$page_key]==$amount) {
 					$selected = true;
 				} else {
 					$selected = false;
