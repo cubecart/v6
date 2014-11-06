@@ -131,7 +131,7 @@
                $(document).foundation({
                	orbit: {
                		slide_number: false,
-	               timer_show_progress_bar: false
+	                  timer_show_progress_bar: false
 	               }
                });
             </script>

@@ -305,7 +305,7 @@ function grid_view(duration) {
     });
     $('.product_list').fadeIn(duration, function () {
         $.cookie('product_view', 'grid', {
-            expires: 730
+            expires: 90
         });
     });
     return false;
@@ -323,7 +323,7 @@ function list_view(duration) {
     });
     $('.product_list').fadeIn(duration, function () {
         $.cookie('product_view', 'list', {
-            expires: 730
+            expires: 90
         });
     });
     return false;
