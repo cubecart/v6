@@ -80,7 +80,7 @@ class Catalogue {
 	public function categoryPagination($page) {
 		if ($this->_category_count) {
 			//Pagination
-			if((int)$_GET['perpage']>0) {
+			if(isset($_GET['perpage']) && (int)$_GET['perpage']>0) {
 				$catalogue_products_per_page = (int)$_GET['perpage'];
 			} elseif (!is_numeric($GLOBALS['config']->get('config', 'catalogue_products_per_page'))) {
 				$catalogue_products_per_page = 10;
