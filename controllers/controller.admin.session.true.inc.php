@@ -36,7 +36,7 @@ if (isset($_GET['_g']) && !empty($_GET['_g']) && $_GET['_g'] != 'plugins') {
 
 if (!empty($_GET['_g'])) {
 
-	$module_type = preg_match("/[a-z]/i", $_GET['type']) ? $_GET['type'] : '';
+	$module_type = (isset($_GET['type']) && preg_match("/[a-z]/i", $_GET['type'])) ? $_GET['type'] : '';
 
 	$node = (!empty($_GET['node'])) ? strtolower($_GET['node']) : 'index';
 	

@@ -871,10 +871,12 @@ class Language {
 		$lang_data = $this->getData();
 
 		//Assign left to right or right to left
-		$GLOBALS['smarty']->assign('TEXT_DIRECTION', $lang_data['text-direction']);
+		$text_dir = isset($lang_data['text-direction']) ? $lang_data['text-direction'] : 'ltr';
+		$GLOBALS['smarty']->assign('TEXT_DIRECTION', $text_dir);
 
 		//Assign character set
-		$GLOBALS['smarty']->assign('CHARACTER_SET', $lang_data['character_set']);
+		$char_set = isset($lang_data['character_set']) ? $lang_data['character_set'] : 'utf8';
+		$GLOBALS['smarty']->assign('CHARACTER_SET', $char_set);
 
 		//Assign all language values
 		$this->assignLang();
