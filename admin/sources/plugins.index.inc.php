@@ -19,7 +19,7 @@ $GLOBALS['main']->addTabControl('Installed Plugins', 'plugins');
 
 if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 	$token = str_replace('-','',$_POST['plugin_token']);
-	$json = file_get_contents('http://sandbox.cubecart.com/extensions/token/'.$token);
+	$json = file_get_contents('http://sandbox.cubecart.com/extensions/token/'.$token.'/get');
 	if($json && !empty($json)) {
 		$data = json_decode($json, true);
 		$destination = CC_ROOT_DIR.'/'.$data['path'];
@@ -71,6 +71,7 @@ if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 							$GLOBALS['main']->setACPWarning('Failed to install plugin.');	
 						} else {
 							$GLOBALS['main']->setACPNotify('Plugin installed successfully.');
+							file_get_contents('http://sandbox.cubecart.com/extensions/token/'.$token.'/delete');
 						}
 					}
 
@@ -84,6 +85,8 @@ if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 		} else {
 			$GLOBALS['main']->setACPWarning('Error: '.$destination.' does not exist. Please create it and try again.');
 		}
+	} else {
+		$GLOBALS['main']->setACPWarning('Error: Token was not recognised.');
 	}
 }
 

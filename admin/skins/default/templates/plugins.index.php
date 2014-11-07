@@ -13,7 +13,12 @@
 
 <div id="plugins" class="tab_content">
 <h3>Install/Upgrade/Downgrade Plugin</h3>
-Plugin Token:<br><input type="textbox" class="textbox" name="plugin_token" value="" placeholder="XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX"> <input type="submit" value="{$LANG.common.go}">
+
+<fieldset>
+	<p>Installing anything from the CubeCart Marketplace is a breeze using install tokens. Locate the item you want and click the thunderbolt icon (<i class="fa fa-bolt"></i>) next to the file name.</p>
+    <div><label for="plugin_token">Plugin Token</label><span><input type="textbox" class="textbox" name="plugin_token" id="plugin_token" value="" placeholder="e.g. XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX"> <input type="submit" value="{$LANG.common.go}"></span></div>
+</fieldset>
+
 	<h3>Installed Plugins</h3>
 	{if is_array($MODULES)}
 	<table>
