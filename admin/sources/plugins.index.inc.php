@@ -16,6 +16,21 @@ global $lang, $glob;
 
 $GLOBALS['main']->addTabControl('Installed Plugins', 'plugins');
 
+
+if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
+	$token = str_replace('-','',$_POST['plugin_token']);
+	$json = file_get_contents('http://sandbox.cubecart.com/extensions/token/'.$token);
+	if($json && !empty($json)) {
+		$data = json_decode($json, true);
+		$destination = CC_ROOT_DIR.'/'.$data['path'];
+		if(file_exists($destination)) {
+
+		} else {
+			$GLOBALS['main']->setACPWarning('Error: '.$destination.' is not writable by the web server.');
+		}
+	}
+}
+
 if (isset($_POST['status'])) {
 	$updated = false;
 	foreach ($_POST['status'] as $module_name => $status) {
