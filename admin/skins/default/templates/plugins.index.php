@@ -15,7 +15,7 @@
 <h3>Install/Upgrade/Downgrade Plugin</h3>
 
 <fieldset>
-	<p>Installing anything from the CubeCart Marketplace is a breeze using install tokens. Locate the item you want and click the thunderbolt icon (<i class="fa fa-bolt"></i>) next to the file name.</p>
+	<p>Installing anything from the CubeCart Marketplace is a breeze using install tokens. Locate the item you want and click the thunderbolt icon (<i class="fa fa-bolt"></i>) next to the file name. This will generate your install token.</p>
     <div><label for="plugin_token">Plugin Token</label><span><input type="textbox" class="textbox" name="plugin_token" id="plugin_token" value="" placeholder="e.g. XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX"> <input type="submit" value="{$LANG.common.go}"></span></div>
 </fieldset>
 
