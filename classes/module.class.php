@@ -96,6 +96,12 @@ class Module {
 	#########################################
 
 	public function __construct($path = false, $local_name = false, $template = 'index.tpl', $zones = false, $fetch = true) {
+		// This needs to be wedged in with global variables for backward compatibility
+		if(isset($_GET['delete']) && $_GET['delete']==1) {
+			$this->_module_data($path, $local_name);
+			$this->_delete();
+		}
+
 		$this->_template = $template;
 		if ($path) {
 			// Load Package info
@@ -189,6 +195,30 @@ class Module {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Delete Module
+	 *
+	 * @return bool
+	 */
+	private function _delete($dir = '') {
+		$dir = empty($dir) ? CC_ROOT_DIR.'/modules/'.$this->_info['type'].'/'.$this->_module_name : $dir;
+		if (is_dir($dir)) { 
+	     $objects = scandir($dir); 
+	     foreach ($objects as $object) { 
+	       if ($object != "." && $object != "..") { 
+	         if (filetype($dir."/".$object) == "dir") rmdir($dir."/".$object); else unlink($dir."/".$object); 
+	       } 
+	     } 
+	     reset($objects); 
+	     rmdir($dir); 
+	   } 
+	   $GLOBALS['db']->delete('CubeCart_config',array('name' => $this->_module_name));
+	   $GLOBALS['db']->delete('CubeCart_modules',array('folder' => $this->_module_name));
+	   $GLOBALS['db']->delete('CubeCart_hooks',array('plugin' => $this->_module_name));
+	   $GLOBALS['cache']->clear();
+	   httpredir('?_g=plugins');
 	}
 
 	/**

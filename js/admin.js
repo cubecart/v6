@@ -617,12 +617,12 @@ $('a.add, a.inline-add, input[type="button"].add').on('click', function(){
 		var content	= document.createElement('div');
 		var actions	= document.createElement('span');
 		var remove	= document.createElement('a');
-		var image	= document.createElement('img');
+		var i	= document.createElement('i');
 		if($('input[name="add_div_class"]')) {
 			$(content).addClass($('input[name="add_div_class"]').val());
 		}
-		$(image).attr({src: 'images/icons/delete.png'});
-		$(remove).attr({href: '#'}).addClass('remove dynamic').append(image);
+		$(i).attr({class: 'fa fa-trash'});
+		$(remove).attr({href: '#'}).addClass('remove dynamic').append(i);
 		$(actions).addClass('actions').append(remove);
 
 		$(this).parents('div:first,tr:first').find('.add:input').each(function(){

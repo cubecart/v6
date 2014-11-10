@@ -386,6 +386,7 @@ div.tab_content > h3, div.tb-form > h3 {
 }
 .tb-form fieldset label, div.tab_content fieldset label {clear:both;float:left;width: 25em;}
 .tb-form fieldset span, div.tab_content fieldset span {float:left;width:auto;}
+#enabled-zones div, #disabled-zone-list div {clear:left;width:auto;}
 
 div.tab_content label.wide {
 	width: 50em;

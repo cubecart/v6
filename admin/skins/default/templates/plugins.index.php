@@ -41,8 +41,9 @@
 	  		<input type="hidden" name="type[{$module.basename}]" value="{$module.type}" />
 	  	</td>
 		<td><a href="?_g=plugins&type={$module.type}&module={$module.basename}">{$module.name}</a><br>{$module.description}</td>
-		<td>
+		<td nowrap>
 		  <a href="?_g=plugins&type={$module.type}&module={$module.basename}" class="edit"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
+		  <a href="?_g=plugins&type={$module.type}&module={$module.basename}&delete=1"  class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		  {if $module.mobile_optimized=='true'}
 		  <a href="javascript:alert('{$LANG.module.mobile_optimized}');"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/phone.png" title="{$LANG.module.mobile_optimized}"></a>
 		  {/if}

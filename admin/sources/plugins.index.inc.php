@@ -19,7 +19,7 @@ $GLOBALS['main']->addTabControl('Manage Plugins', 'plugins');
 
 if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 	$token = str_replace('-','',$_POST['plugin_token']);
-	$json = file_get_contents('http://sandbox.cubecart.com/extensions/token/'.$token.'/get');
+	$json = file_get_contents('http://sandbox.cubecart.com/extensions/token/'.$token);
 	if($json && !empty($json)) {
 		$data = json_decode($json, true);
 		$destination = CC_ROOT_DIR.'/'.$data['path'];
@@ -80,11 +80,9 @@ if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 							file_get_contents('http://sandbox.cubecart.com/extensions/token/'.$token.'/delete');
 						}
 					}
-
 				} else {
 					$GLOBALS['main']->setACPWarning('Error: It\'s not been possible to read the contents of the file '.$data['file_name'].'.');
 				}
-
 			} else {
 				$GLOBALS['main']->setACPWarning('Error: '.$destination.' is not writable by the web server.');
 			}
@@ -94,6 +92,7 @@ if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 	} else {
 		$GLOBALS['main']->setACPWarning('Error: Token was not recognised.');
 	}
+	$GLOBALS['cache']->clear();
 }
 
 if (isset($_POST['status'])) {
