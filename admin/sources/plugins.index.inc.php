@@ -14,12 +14,11 @@ if (!defined('CC_INI_SET')) die('Access Denied');
 
 global $lang, $glob;
 
-$GLOBALS['main']->addTabControl('Manage Plugins', 'plugins');
-
+$GLOBALS['main']->addTabControl($lang['navigation']['nav_plugins'], 'plugins');
 
 if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 	$token = str_replace('-','',$_POST['plugin_token']);
-	$json = file_get_contents('http://sandbox.cubecart.com/extensions/token/'.$token);
+	$json = file_get_contents('http://sandbox.cubecart.com/extensions/token/'.$token.'/get');
 	if($json && !empty($json)) {
 		$data = json_decode($json, true);
 		$destination = CC_ROOT_DIR.'/'.$data['path'];
@@ -48,7 +47,8 @@ if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 						}
 
 						if(file_exists($root_path) && !is_writable($root_path)) {
-							$GLOBALS['main']->setACPWarning('Error: '.$data['path'].'/'.$file.' already exists and is not writable.');
+							$error_path = $data['path'].'/'.$file;
+							$GLOBALS['main']->setACPWarning(sprintf($lang['module']['exists_not_writable'],$error_path));
 							$extract = false;
 						}
 					}
@@ -64,33 +64,33 @@ if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 						if ($archive->create($backup_list) == 0) {
 							if($_POST['abort']=='1') {
 								$extract = false;
-								$GLOBALS['main']->setACPWarning('Failed to backup existing plugin. Process aborted.');
+								$GLOBALS['main']->setACPWarning($lang['module']['exists_not_writable'].' '.$lang['module']['process_aborted']);
 							} else {
-								$GLOBALS['main']->setACPWarning('Failed to backup existing plugin.');
+								$GLOBALS['main']->setACPWarning($lang['module']['exists_not_writable']);
 							}
 						} else {
-							$GLOBALS['main']->setACPNotify('Backup of existing plugin created.');
+							$GLOBALS['main']->setACPNotify($lang['module']['backup_created']);
 						}
 					}
 					if($extract) {
 						if ($source->extract(PCLZIP_OPT_PATH, $destination, PCLZIP_OPT_REPLACE_NEWER) == 0) {
-							$GLOBALS['main']->setACPWarning('Failed to install plugin.');	
+							$GLOBALS['main']->setACPWarning($lang['module']['failed_install']);	
 						} else {
-							$GLOBALS['main']->setACPNotify('Plugin installed successfully.');
-							file_get_contents('http://sandbox.cubecart.com/extensions/token/'.$token.'/delete');
+							$GLOBALS['main']->setACPNotify($lang['module']['success_install']);
+							file_get_contents('http://sandbox.cubecart.com/extensions/token/'.$token.'/confirm');
 						}
 					}
 				} else {
-					$GLOBALS['main']->setACPWarning('Error: It\'s not been possible to read the contents of the file '.$data['file_name'].'.');
+					$GLOBALS['main']->setACPWarning(sprintf($lang['module']['read_fail'],$data['file_name']));
 				}
 			} else {
-				$GLOBALS['main']->setACPWarning('Error: '.$destination.' is not writable by the web server.');
+				$GLOBALS['main']->setACPWarning(sprintf($lang['module']['not_writable'], $destination));
 			}
 		} else {
-			$GLOBALS['main']->setACPWarning('Error: '.$destination.' does not exist. Please create it and try again.');
+			$GLOBALS['main']->setACPWarning(sprintf($lang['module']['not_exist'], $destination));
 		}
 	} else {
-		$GLOBALS['main']->setACPWarning('Error: Token was not recognised.');
+		$GLOBALS['main']->setACPWarning($lang['module']['token_unknown']);
 	}
 	$GLOBALS['cache']->clear();
 }

@@ -526,6 +526,8 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="options" introduced="6.0.0"><![CDATA[Options]]></string>
+    <string name="name_and_desc" introduced="6.0.0"><![CDATA[Name &amp; Description]]></string>
     <string name="condition" introduced="6.0.0"><![CDATA[Condition]]></string>
     <string name="new" introduced="6.0.0"><![CDATA[New]]></string>
     <string name="used" introduced="6.0.0"><![CDATA[Used]]></string>
@@ -1274,6 +1276,22 @@
     <string name="query_box" introduced="5.0.0"><![CDATA[Query Box]]></string>
   </group>
   <group name="module">
+    <string name="exists_not_writable" introduced="6.0.0"><![CDATA[Error: '%s' already exists and is not writable.]]></string>
+    <string name="failed_backup" introduced="6.0.0"><![CDATA[Failed to backup existing plugin.]]></string>
+    <string name="process_aborted" introduced="6.0.0"><![CDATA[Process aborted]]></string>
+    <string name="backup_created" introduced="6.0.0"><![CDATA[Backup of existing plugin created.]]></string>
+    <string name="failed_install" introduced="6.0.0"><![CDATA[Failed to install plugin.]]></string>
+    <string name="success_install" introduced="6.0.0"><![CDATA[Plugin installed successfully.]]></string>
+    <string name="read_fail" introduced="6.0.0"><![CDATA[Error: It's not been possible to read the contents of the file %s.]]></string>
+    <string name="not_writable" introduced="6.0.0"><![CDATA[Error: %s is not writable by the web server.]]></string>
+    <string name="not_exist" introduced="6.0.0"><![CDATA[Error: %s does not exist. Please create it and try again.]]></string>
+    <string name="token_unknown" introduced="6.0.0"><![CDATA[Error: Token was not recognised or has expired.]]></string>
+    <string name="token_title" introduced="6.0.0"><![CDATA[Auto Install/Upgrade Token]]></string>
+    <string name="token_desc" introduced="6.0.0"><![CDATA[Installing anything from the CubeCart Marketplace is a breeze using install tokens. Locate the item you want and click the thunderbolt icon (<i class="fa fa-bolt"></i>) next to the file name. This will generate your install token which can be used here to install/upgrade and downgrade.]]></string>
+    <string name="backup_if_exists" introduced="6.0.0"><![CDATA[Backup if already exists]]></string>
+    <string name="backup_abort" introduced="6.0.0"><![CDATA[Abort if backup fails]]></string>
+    <string name="available_plugins" introduced="6.0.0"><![CDATA[Available Plugins]]></string>
+    <string name="token" introduced="6.0.0"><![CDATA[Token]]></string>
     <string name="aff_sale" introduced="5.0.0"><![CDATA[Base on]]></string>
     <string name="aff_sale_grand" introduced="5.0.0"><![CDATA[Grand Total]]></string>
     <string name="aff_sale_sub" introduced="5.0.0"><![CDATA[Subtotal]]></string>
