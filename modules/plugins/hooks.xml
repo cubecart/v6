@@ -61,6 +61,8 @@
  <hook trigger="admin.product.coupons.save.pre_process" deprecated="" />
  <hook trigger="admin.product.coupons.save.post_process" deprecated="" />
  <hook trigger="admin.product.coupons.status" deprecated="" />
+ <hook trigger="admin.product.import.list" deprecated="" />
+ <hook trigger="admin.product.import.format" deprecated="" />
  <hook trigger="admin.settings.admins.sections" deprecated="" />
  <hook trigger="admin.settings.currency.post_process" deprecated="" />
  <hook trigger="admin.settings.currency.pre_process" deprecated="" />

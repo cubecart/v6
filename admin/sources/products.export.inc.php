@@ -45,53 +45,19 @@ if (isset($_GET['format']) && !empty($_GET['format'])) {
 	}
 
 	if ($results = $GLOBALS['db']->query($query, $per_page, $page)) {
-		switch (strtolower($_GET['format'])) {
-		case 'googlebase':
-		case 'storeya':
-			$header_fields = array('id', 'product_type', 'google_product_category', 'link', 'title', 'description', 'image_link', 'price', 'condition', 'shipping_weight', 'upc', 'ean', 'jan', 'isbn', 'availability', 'brand', 'gtin', 'mpn', 'identifier_exists');
-			$fields  = array('product_id', 'store_category', 'google_category', 'url', 'name', 'description', 'image', 'price', 'condition', 'product_weight', 'upc', 'ean', 'jan', 'isbn', 'availability', 'manufacturer', 'gtin', 'mpn', 'identifier_exists');
-			$delimiter = "\t";
-			$extension = 'txt';
-			$glue  = "\r\n";
-			$field_wrapper = '"';
-			$field_keys_to_wrap = array('description');
-			$image_path = 'url';
-			$image_mode = 'medium';
-			break;
-		case 'shopzilla':
-			$header_fields = array('Category', 'Manufacturer', 'Title', 'Product Description', 'Link', 'Image', 'SKU', 'Stock', 'Condition', 'Shipping Weight', 'Shipping Cost', 'Bid', 'Promotional Description', 'EAN/UPC', 'Price');
-			$fields  = array('', 'manufacturer', 'name', 'description', 'url', 'image', 'product_code', 'In Stock', 'New', 'weight', '', '', '', 'upc', 'price');
-			$delimiter = "\t";
-			$extension = 'txt';
-			$glue  = "\n";
-			$field_wrapper = '"';
-			$field_keys_to_wrap = $fields;
-			$image_path = 'url';
-			$image_mode = 'medium';
-			break;
-		case 'shopping.com':
-			$header_fields = array('condition', 'unique merchant sku', 'mpn', 'upc', 'manufacturer', 'product name', 'product description', 'price', 'stock', 'stock description', 'product url', 'image url', 'category', 'shipping_rate');
-			$fields  = array('condition', 'product_code', 'product_code', 'upc', 'manufacturer', 'name', 'description', 'price', 'stock_level', '', 'url', 'image', 'shopping_com_category', '0.00');
-			$delimiter = ',';
-			$extension = 'txt';
-			$glue  = "\n";
-			$field_wrapper = '"';
-			$field_keys_to_wrap = $fields;
-			$image_path = 'url';
-			$image_mode = 'medium';
-			break;
-		case 'cubecart':
-			$header_fields = array('Product Name', 'Status', 'Include in latest products', 'Product Code', 'Weight', 'Description', 'Price', 'Sale Price', 'Cost Price', 'Tax Class', 'Tax Inclusive', 'Main Image', 'Stock Level', 'Use Stock Level', 'Stock Level Warning', 'Master Category ID', 'Manufacturer', 'UPC Code', 'EAN Code', 'JAN Code', 'ISBN Code', 'Brand', 'MPN Code', 'GTIN Code', 'Meta Title', 'Meta Keywords', 'Meta Description', 'Condition');
-			$fields  = array('name', 'status', 'featured', 'product_code', 'product_weight', 'description', 'price', 'sale_price', 'cost_price', 'tax_type', 'tax_inclusive', 'image', 'stock_level', 'use_stock_level', 'stock_warning', 'cat_id', 'manufacturer', 'upc', 'ean', 'jan', 'isbn', 'brand', 'mpn', 'gtin', 'seo_meta_title', 'seo_meta_description', 'seo_meta_keywords', 'condition');
-			$delimiter = ',';
-			$extension = 'csv';
-			$glue  = "\n";
-			$field_wrapper = '"';
-			$field_keys_to_wrap = $fields;
-			$image_path = 'filename';
-			$image_mode = 'source';
-			break;
-		}
+		
+		$header_fields = array('Product Name', 'Status', 'Include in latest products', 'Product Code', 'Weight', 'Description', 'Price', 'Sale Price', 'Cost Price', 'Tax Class', 'Tax Inclusive', 'Main Image', 'Stock Level', 'Use Stock Level', 'Stock Level Warning', 'Master Category ID', 'Manufacturer', 'UPC Code', 'EAN Code', 'JAN Code', 'ISBN Code', 'Brand', 'MPN Code', 'GTIN Code', 'Meta Title', 'Meta Keywords', 'Meta Description', 'Condition');
+		$fields  = array('name', 'status', 'featured', 'product_code', 'product_weight', 'description', 'price', 'sale_price', 'cost_price', 'tax_type', 'tax_inclusive', 'image', 'stock_level', 'use_stock_level', 'stock_warning', 'cat_id', 'manufacturer', 'upc', 'ean', 'jan', 'isbn', 'brand', 'mpn', 'gtin', 'seo_meta_title', 'seo_meta_description', 'seo_meta_keywords', 'condition');
+		$delimiter = ',';
+		$extension = 'csv';
+		$glue  = "\n";
+		$field_wrapper = '"';
+		$field_keys_to_wrap = $fields;
+		$image_path = 'filename';
+		$image_mode = 'source';
+
+		foreach ($GLOBALS['hooks']->load('admin.product.import.format') as $hook) include $hook;
+
 		foreach ($results as $i => $result) {
 			# strip tags is plain text file CSV should be good to keep but lose two double quotes
 			$stock_level = $GLOBALS['catalogue']->getProductStock($result['product_id']);
@@ -191,13 +157,9 @@ if (isset($_GET['format']) && !empty($_GET['format'])) {
 
 $GLOBALS['main']->addTabControl($lang['common']['export'], 'export');
 
-$formats = array (
-	'googlebase'  => 'Google Base',
-	'shopzilla'  => 'Shopzilla',
-	'shopping.com'  => 'Shopping.com',
-	'storeya'   => 'StoreYa',
-	'cubecart'  => 'CubeCart'
-);
+$formats = array ('cubecart'  => 'CubeCart');
+
+foreach ($GLOBALS['hooks']->load('admin.product.import.list') as $hook) include $hook;
 
 $page_limits = array (
 	50, 100, 250, 500, 1000, 5000, 10000, 25000

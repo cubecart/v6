@@ -99,7 +99,6 @@ class Cache extends Cache_Controler {
 			return true;
 		}
 		clearstatcache(); // Clear cached results
-
 		if (file_exists($this->_cache_path.$this->_makeName($id))) {
 			return unlink($this->_cache_path.$this->_makeName($id));
 		}
