@@ -17,10 +17,11 @@
   <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,700italic,400italic&subset=cyrillic,cyrillic-ext,latin,greek-ext,greek,latin-ext' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" type="text/css" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/styles/layout.css" media="screen">
 </head>
-<body class="preauth-body">
+<body>
+<div class="preauth-body">
   {include file='templates/common.gui_message.php'}
-  <div class="preauth-wrapper">
   <div id="logo"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/cubecart-logo.png" alt="CubeCart Logo"></div>
+  <div class="preauth-wrapper">
   <form action="{$VAL_SELF}" method="post" enctype="application/x-www-form-urlencoded" name="acp-login">
 	<div id="login-box">
 	{if isset($RECOVERY)}
@@ -68,5 +69,6 @@
   <script type="text/javascript" src="js/admin.js"></script>
   </div>
   {include file='templates/ccpower.php'}
+  </div>
 </body>
 </html>
