@@ -14,7 +14,7 @@ if (!defined('CC_INI_SET')) die('Access Denied');
 
 global $lang, $glob;
 
-$GLOBALS['main']->addTabControl('Installed Plugins', 'plugins');
+$GLOBALS['main']->addTabControl('Manage Plugins', 'plugins');
 
 
 if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
@@ -52,7 +52,8 @@ if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 							$extract = false;
 						}
 					}
-					if($backup) {
+	
+					if($_POST['backup']=='1' && $backup) {
 						$destination_filepath = CC_ROOT_DIR.'/backup/'.$data['file_name'].'_'.date("dMy-His").'.zip';
 						$archive = new PclZip($destination_filepath);
 						chdir($destination);
@@ -61,7 +62,12 @@ if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 							$backup_list[] = $file;
 						}
 						if ($archive->create($backup_list) == 0) {
-							$GLOBALS['main']->setACPWarning('Failed to backup existing plugin.');
+							if($_POST['abort']=='1') {
+								$extract = false;
+								$GLOBALS['main']->setACPWarning('Failed to backup existing plugin. Process aborted.');
+							} else {
+								$GLOBALS['main']->setACPWarning('Failed to backup existing plugin.');
+							}
 						} else {
 							$GLOBALS['main']->setACPNotify('Backup of existing plugin created.');
 						}

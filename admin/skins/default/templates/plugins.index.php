@@ -12,14 +12,18 @@
 <form action="{$VAL_SELF}" method="post">
 
 <div id="plugins" class="tab_content">
-<h3>Install/Upgrade/Downgrade Plugin</h3>
-
+<h3>Auto Install/Upgrade Token</h3>
+<p>Installing anything from the CubeCart Marketplace is a breeze using install tokens. Locate the item you want and click the thunderbolt icon (<i class="fa fa-bolt"></i>) next to the file name. This will generate your install token which can be used here to install/upgrade and downgrade.</p>
 <fieldset>
-	<p>Installing anything from the CubeCart Marketplace is a breeze using install tokens. Locate the item you want and click the thunderbolt icon (<i class="fa fa-bolt"></i>) next to the file name. This will generate your install token.</p>
-    <div><label for="plugin_token">Plugin Token</label><span><input type="textbox" class="textbox" name="plugin_token" id="plugin_token" value="" placeholder="e.g. XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX"> <input type="submit" value="{$LANG.common.go}"></span></div>
+	<legend>Token</legend>
+    <div><label for="plugin_token">Token</label><span><input type="textbox" class="textbox" name="plugin_token" id="plugin_token" value="" placeholder="XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX"></span></div>
+    <div><label><strong>Options</strong></label></div>
+    <div><label for="backup">Backup if already exists</label><span><input type="hidden" id="backup" name="backup" value="1" class="toggle"></span></div>
+    <div><label for="backup">Abort if backup fails</label><span><input type="hidden" id="abort" name="abort" value="1" class="toggle"></span></div>
+    <div><label>&nbsp;</label><span><input type="submit" value="{$LANG.common.go}"></span></div>
 </fieldset>
 
-	<h3>Installed Plugins</h3>
+	<h3>Available Plugins</h3>
 	{if is_array($MODULES)}
 	<table>
 	<thead>
