@@ -1292,6 +1292,7 @@
     <string name="backup_abort" introduced="6.0.0"><![CDATA[Abort if backup fails]]></string>
     <string name="available_plugins" introduced="6.0.0"><![CDATA[Available Plugins]]></string>
     <string name="token" introduced="6.0.0"><![CDATA[Token]]></string>
+    <string name="get_file_failed" introduced="6.0.0"><![CDATA[Failed to retrieve file.]]></string>
     <string name="aff_sale" introduced="5.0.0"><![CDATA[Base on]]></string>
     <string name="aff_sale_grand" introduced="5.0.0"><![CDATA[Grand Total]]></string>
     <string name="aff_sale_sub" introduced="5.0.0"><![CDATA[Subtotal]]></string>

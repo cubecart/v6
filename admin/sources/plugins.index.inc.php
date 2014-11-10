@@ -29,7 +29,7 @@ if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 				fwrite($fp, hex2bin($data['file_data']));
 				fclose($fp);
 				if(!file_exists($tmp_path)) {
-					$GLOBALS['main']->setACPWarning('Failed to retrieve file.');
+					$GLOBALS['main']->setACPWarning($lang['module']['get_file_failed']);
 				}
 				// Read the zip
 				require_once CC_INCLUDES_DIR.'lib/pclzip/pclzip.lib.php';
