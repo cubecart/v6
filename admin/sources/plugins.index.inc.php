@@ -15,7 +15,25 @@ if (!defined('CC_INI_SET')) die('Access Denied');
 global $lang, $glob;
 
 $GLOBALS['main']->addTabControl($lang['navigation']['nav_plugins'], 'plugins');
+if(isset($_GET['delete']) && $_GET['delete']==1) {
+	$dir = CC_ROOT_DIR.'/modules/'.$_GET['type'].'/'.$_GET['module'];
+	if(file_exists($dir)) {
+	   recursiveDelete($dir);
+	   $GLOBALS['db']->delete('CubeCart_config',array('name' => $_GET['module']));
+	   $GLOBALS['db']->delete('CubeCart_modules',array('folder' => $_GET['module']));
+	   $GLOBALS['db']->delete('CubeCart_hooks',array('plugin' => $_GET['module']));
+	   $GLOBALS['cache']->clear();
 
+	   if(file_exists($dir)) {
+	   	$GLOBALS['main']->setACPWarning($lang['module']['plugin_still_exists']);
+	   } else {
+	   	$GLOBALS['main']->setACPNotify($lang['module']['plugin_deleted_successfully']);
+	   }
+	} else {
+		$GLOBALS['main']->setACPNotify($lang['module']['plugin_deleted_already']);
+	}
+   httpredir('?_g=plugins');
+}
 if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 	$token = str_replace('-','',$_POST['plugin_token']);
 	$json = file_get_contents('http://sandbox.cubecart.com/extensions/token/'.$token.'/get');
@@ -93,6 +111,7 @@ if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 		$GLOBALS['main']->setACPWarning($lang['module']['token_unknown']);
 	}
 	$GLOBALS['cache']->clear();
+	httpredir('?_g=plugins');
 }
 
 if (isset($_POST['status'])) {
@@ -153,7 +172,9 @@ if(!$modules = $GLOBALS['cache']->read('module_list')) {
 		);
 		$i++;
 	}
-	ksort($modules);
+	if(is_array($modules)) {
+		ksort($modules);
+	}
 	$GLOBALS['cache']->write($modules, 'module_list');
 }
 $GLOBALS['smarty']->assign('MODULES',$modules);

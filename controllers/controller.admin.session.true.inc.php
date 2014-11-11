@@ -40,7 +40,7 @@ if (!empty($_GET['_g'])) {
 
 	$node = (!empty($_GET['node'])) ? strtolower($_GET['node']) : 'index';
 	
-	if (strtolower($_GET['_g']) == 'plugins' && !empty($module_type)) {
+	if (!isset($_GET['delete']) && strtolower($_GET['_g']) == 'plugins' && !empty($module_type)) {
 		
 		$module_type = preg_match("/[a-z]/i", $_GET['type']) ? $_GET['type'] : '';
 		$GLOBALS['gui']->addBreadcrumb($lang['navigation']['nav_plugins'],'?_g=plugins');
