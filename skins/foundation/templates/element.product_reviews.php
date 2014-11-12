@@ -38,10 +38,10 @@
    </div>
    {/foreach}
    {if isset($PAGINATION)}{$PAGINATION}{/if}
-   <a href="#" class="button review_toggle">{$LANG.catalogue.write_a_review}</a>
+   <a href="#" class="button review_show">{$LANG.catalogue.write_a_review}</a>
    {else}
    <p>{$LANG.catalogue.product_not_reviewed}</p>
-   <a href="#" class="button review_toggle">{$LANG.catalogue.write_a_review}</a>
+   <a href="#" class="button review_show">{$LANG.catalogue.write_a_review}</a>
    {/if}
 </div>
 <div id="review_write" class="hide">
@@ -78,7 +78,7 @@
       </div>
       <div class="clearfix">
          <input type="submit" value="{$LANG.catalogue.submit_review}" class="button">
-         <input type="button" value="{$LANG.common.cancel}" class="button secondary right review_toggle">
+         <input type="button" value="{$LANG.common.cancel}" class="button secondary right review_hide">
       </div>
    </form>
 </div>

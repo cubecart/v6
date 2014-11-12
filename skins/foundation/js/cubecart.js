@@ -21,9 +21,14 @@ jQuery(document).ready(function () {
             $(this).removeClass('has-dropdown');
         }
     });
-    $(".review_toggle").click(function () {
-        $('#review_read').slideToggle();
-        $('#review_write').slideToggle();
+    $(".review_hide").click(function () {
+        $('#review_read').show();
+        $('#review_write').slideUp();
+        return false;
+    });
+    $(".review_show").click(function () {
+        $('#review_read').hide();
+        $('#review_write').slideDown();
         return false;
     });
     $(".show-small-search").click(function () {
