@@ -296,6 +296,7 @@ function mini_basket_action() {
 
     $('#small-basket-detail').slideDown();
     $('#small-basket-detail').delay(3000).fadeOut();
+    return false;
 }
 
 function grid_view(duration) {
