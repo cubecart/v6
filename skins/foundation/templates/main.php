@@ -118,15 +118,15 @@
                   </div>
                </div>
             </footer>
-            <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/jquery.js"></script>
+            <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.js"></script>
             <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/foundation.min.js"></script>
-            <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/jquery.rating.js"></script>
-            <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/jquery.magnifier.js"></script>
-            <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/jquery.validate.js"></script>
-            <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/jquery.jscroll.min.js"></script>
-            <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/jquery.cookie.js"></script>
-            <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/modernizr.js"></script>
-            <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/fastclick.js"></script>
+            <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.rating.js"></script>
+            <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.magnifier.js"></script>
+            <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.validate.js"></script>
+            <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.jscroll.min.js"></script>
+            <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.cookie.js"></script>
+            <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/modernizr.js"></script>
+            <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/fastclick.js"></script>
             <script>
                $(document).foundation({
                	orbit: {
