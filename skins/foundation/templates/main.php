@@ -68,9 +68,9 @@
                   <div class="row">
                      <div class="right text-center">{include file='templates/box.basket.php'}</div>
                      <div class="right text-center show-for-small"><a class="left-off-canvas-toggle button white tiny" href="#"><i class="fa fa-bars fa-2x"></i> <a class="button white tiny show-small-search" href="#"><i class="fa fa-search fa-2x"></i></a></div>
-                     <div class="right text-center show-for-medium-up">{include file='templates/box.currency.php'}</div>
-                     <div class="right text-center show-for-medium-up">{include file='templates/box.language.php'}</div>
-                     <div class="right text-right show-for-medium-up">{include file='templates/box.session.php'}</div>
+                     {include file='templates/box.currency.php'}
+                     {include file='templates/box.language.php'}
+                     {include file='templates/box.session.php'}
                   </div>
                   <div class="row show-for-medium-up">
                      <div class="small-12 columns">{include file='templates/box.search.php'}</div>

@@ -67,8 +67,7 @@
       {/foreach}
       {/if}
       {if $PRODUCT.review_score && $CTRL_REVIEW}
-      <p itemprop="aggregateRating"
-    itemscope itemtype="http://schema.org/AggregateRating">
+      <p itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
          <meta itemprop="ratingValue" content="{$REVIEW_AVERAGE}">
          <meta itemprop="reviewCount" content="{$REVIEW_COUNT}">
          {for $i = 1; $i <= 5; $i++}
@@ -91,7 +90,6 @@
          {else}
          {$PRODUCT.price}
          {/if}
-         
       </h3>
       {if isset($PRODUCT.discounts)}
          <p>(<a href="#quantity_discounts">{$LANG.catalogue.bulk_discount}</a>)</p>

@@ -188,11 +188,7 @@ class GUI {
 			$google_analytics = $GLOBALS['config']->get('config', 'google_analytics');
 			if (!empty($google_analytics)) {
 				// Third party cookies are needed for this define to we can warn
-				if (!$GLOBALS['session']->cookiesBlocked()) {
-					$GLOBALS['smarty']->assign('ANALYTICS', $google_analytics);
-				} else {
-					define('THIRD_PARTY_COOKIES', true);
-				}
+				$GLOBALS['smarty']->assign('ANALYTICS', $google_analytics);
 			}
 		} else {
 			$skin_folder = (!$GLOBALS['config']->isEmpty('config', 'admin_skin')) ? $GLOBALS['config']->get('config', 'admin_skin') : 'default';
@@ -773,7 +769,7 @@ class GUI {
 				$GLOBALS['smarty']->assign('COOKIE_DIALOGUE_FAIL', true);
 			}
 		}
-		if (Config::getInstance()->get('config', 'cookie_dialogue') && $GLOBALS['session']->cookiesBlocked() && defined('THIRD_PARTY_COOKIES')) {
+		if (Config::getInstance()->get('config', 'cookie_dialogue') && !isset($_COOKIE['accept_cookies'])) {
 			$GLOBALS['smarty']->assign('COOKIE_DIALOGUE', true);
 		} else {
 			$GLOBALS['smarty']->assign('COOKIE_DIALOGUE', false);

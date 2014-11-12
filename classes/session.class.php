@@ -221,6 +221,7 @@ class Session {
 		return ($this->get('token') == $token);
 	}
 	
+	// Depreciated but left for backward compatibility
 	public function cookiesBlocked() {
 	
 		// Check cookies exists for verified and if so return value

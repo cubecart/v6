@@ -1205,13 +1205,10 @@ class Cubecart {
 				if ($affiliates) {
 					$GLOBALS['smarty']->assign('AFFILIATES', $affiliates);
 				}
-				if (!$GLOBALS['session']->cookiesBlocked()) {
-					$ga_id = $GLOBALS['config']->get('config', 'google_analytics');
-					$ga_id = trim($ga_id);
-					$GLOBALS['smarty']->assign('ANALYTICS', !empty($ga_id) ? $ga_id : false);
-				} else {
-					define('THIRD_PARTY_COOKIES', true);
-				}
+				
+				$ga_id = $GLOBALS['config']->get('config', 'google_analytics');
+				$ga_id = trim($ga_id);
+				$GLOBALS['smarty']->assign('ANALYTICS', !empty($ga_id) ? $ga_id : false);
 
 				$content = $GLOBALS['smarty']->fetch('templates/content.receipt.php');
 				$GLOBALS['smarty']->assign('PAGE_CONTENT', $content);

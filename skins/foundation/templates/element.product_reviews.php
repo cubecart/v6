@@ -44,7 +44,7 @@
    <a href="#" class="button review_toggle">{$LANG.catalogue.write_a_review}</a>
    {/if}
 </div>
-<div id="review_write" style="display: none;">
+<div id="review_write" class="hide">
    <h3>{$LANG.catalogue.write_review}</h3>
    <form action="{$VAL_SELF}#reviews_write" id="review_form" method="post">
       <div class="panel">

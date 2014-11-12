@@ -9,6 +9,7 @@
  * Email:  sales@devellion.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  *}
+<div class="right text-right show-for-medium-up">
 {if $IS_USER}
 <a href="#" data-dropdown="session" class="button white small">{$CUSTOMER.first_name} {$CUSTOMER.last_name}</a><br>
 <ul id="session" data-dropdown-content class="f-dropdown">
@@ -26,3 +27,4 @@
 {else}
 <a href="{$STORE_URL}/index.php?_a=login" class="button white small">{$LANG.account.login} / {$LANG.account.register}</a>
 {/if}
+</div>
