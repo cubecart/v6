@@ -148,6 +148,7 @@
             <div class="row">
                <div class="large-12 columns text-center">
                   {$COPYRIGHT}
+                  {include file='templates/ccpower.php'}
                </div>
             </div>
          </div>

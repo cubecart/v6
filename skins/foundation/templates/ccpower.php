@@ -4,4 +4,4 @@
 	Be nice and consider leaving a link back to us. ♥ 
 	</guilt_trip> 
 *}
-<div class="powered">eCommerce by <a href="http://www.cubecart.com">CubeCart</a></div>
+<p>eCommerce by <a href="http://www.cubecart.com">CubeCart</a></p>
