@@ -845,8 +845,12 @@ class SEO {
 	}
 
 	private static function _checkModRewrite() {
-		$htaccess_path = CC_ROOT_DIR.'/.htaccess';
-		$htaccess_content = '## File Security
+		if($seo_check = $GLOBALS['cache']->read('seo_check')) {
+			return false;
+		} else {
+
+			$htaccess_path = CC_ROOT_DIR.'/.htaccess';
+			$htaccess_content = '## File Security
 <FilesMatch "\.(htaccess)$">
  Order Allow,Deny
  Deny from all
@@ -857,7 +861,6 @@ DirectoryIndex index.php index.htm index.html
 IndexIgnore *
 
 #### Rewrite rules for SEO functionality ####
-
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteCond %{REQUEST_FILENAME} !-f
@@ -866,19 +869,26 @@ IndexIgnore *
   RewriteRule ^(.*)\.html?$ index.php?seo_path=$1 [L,QSA]
 </IfModule>';
 
-		if(!file_exists($htaccess_path)) {
-			if(!file_put_contents($htaccess_path, $htaccess_content)) {
-				die('Failed to create .htaccess file for Search Engine Friendly URL\'s. Please create this file in the stores root directory with the content.<textarea style="width: 400px; height: 300px;" readonly>'.$htaccess_content.'</textarea>');
-			} else {
-				httpredir('?');
-			}
-		} else {
-			$current_contents = file_get_contents($htaccess_path);
-			if(!strstr($current_contents,'seo_path')) {
-				$htaccess_content = $current_contents."\r\n\r\n".$htaccess_content;
+			if(!file_exists($htaccess_path)) {
 				if(!file_put_contents($htaccess_path, $htaccess_content)) {
-					die('Failed to update existing .htaccess file for Search Engine Friendly URL\'s. Please edit this file in the stores root directory to have the content.<textarea style="width: 400px; height: 300px;" readonly>'.$htaccess_content.'</textarea>');
+					die('Failed to create .htaccess file for Search Engine Friendly URL\'s. Please create this file in the stores root directory with the content.<textarea style="width: 400px; height: 300px;" readonly>'.$htaccess_content.'</textarea>');
 				} else {
+					
+					$GLOBALS['cache']->write('1', 'seo_check');
+					httpredir('?');
+				}
+			} else {
+				$current_contents = file_get_contents($htaccess_path);
+				if(!strstr($current_contents,'seo_path')) {
+					$htaccess_content = $current_contents."\r\n\r\n".$htaccess_content;
+					if(!file_put_contents($htaccess_path, $htaccess_content)) {
+						die('Failed to update existing .htaccess file for Search Engine Friendly URL\'s. Please edit this file in the stores root directory to have the content.<textarea style="width: 400px; height: 300px;" readonly>'.$htaccess_content.'</textarea>');
+					} else {
+						$GLOBALS['cache']->write('1', 'seo_check');
+						httpredir('?');
+					}
+				} else {
+					$GLOBALS['cache']->write('1', 'seo_check');
 					httpredir('?');
 				}
 			}
