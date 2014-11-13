@@ -272,10 +272,13 @@ if (!isset($_SESSION['setup']['permissions'])) {
 				1 => array('doc_name' => $strings['setup']['default_doc_title_about'], 'doc_content' => $strings['setup']['default_doc_content'], 'doc_order' => 2, 'doc_lang' => $config['default_language'], 'doc_home' => 0, 'doc_terms' => 0),
 				2 => array('doc_name' => $strings['setup']['default_doc_title_terms'], 'doc_content' => $strings['setup']['default_doc_content'], 'doc_order' => 3, 'doc_lang' => $config['default_language'], 'doc_home' => 0, 'doc_terms' => 1),
 				3 => array('doc_name' => $strings['setup']['default_doc_title_privacy'], 'doc_content' => $strings['setup']['default_doc_content'], 'doc_order' => 4, 'doc_lang' => $config['default_language'], 'doc_home' => 0, 'doc_terms' => 0),
+				4 => array('doc_name' => 'Returns Policy', 'doc_content' => $strings['setup']['default_doc_content'], 'doc_order' => 5, 'doc_lang' => $config['default_language'], 'doc_home' => 0, 'doc_terms' => 0)
 			);
 			foreach ($default_docs as $default_doc) {
 				$GLOBALS['db']->insert('CubeCart_documents', $default_doc);
 			}
+			$contact_form = base64_encode(json_encode(array('status' => 1, 'email' => $_SESSION['setup']['admin']['email'],'description' => '')));
+			$GLOBALS['db']->insert('CubeCart_config', array('name' => 'Contact_Form', 'array' => $contact_form));
 
 			// Install email templates based on all languages
 			if (is_array($languages)) {

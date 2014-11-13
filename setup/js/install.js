@@ -23,7 +23,7 @@ jQuery(document).ready(function(){
 		$('div.selected').removeClass('selected');
 		$(this).addClass('selected');
 		$(this).children('input:radio').attr('checked', 'checked');
-
+		$(this).removeClass('faded');
 	});
 	if ($('div.click-select').size() == 1) $('div.click-select').click();
 	$('input.cancel:submit').click(function(){

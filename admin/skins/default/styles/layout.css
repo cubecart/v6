@@ -102,6 +102,9 @@ input[type="checkbox"]{
 #gui_message {
 	margin: 0 0 5px 10px;
 }
+.preauth-wrapper #gui_message {
+	margin: 0;
+}
 .infoText, .warnText {
 	color:#FFF;
 	font-size:14px;
@@ -185,12 +188,10 @@ body {
 	height: 26px;
 	padding: 0 0 1px 0;
 	border-bottom: 1px solid #DDDDDD;
-	opacity: 0.9;
 }
 #content_body {
 	border-left: 1px solid #DDDDDD;
 	background-color: #fff;
-	opacity: 0.9;
 }
 
 #breadcrumbs {
@@ -747,8 +748,6 @@ a.handle {
 	background-color: #FFF;
 	height: 180;
 	padding: 0 0 6px 0;
-	opacity: 0.9;
-    filter: alpha(opacity=90); /* For IE8 and earlier (not that we want to suport that junk) */
 }
 .preauth-body #logo {
 	margin-top: 30px;

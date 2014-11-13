@@ -35,7 +35,6 @@ if (isset($_GET['autoupdate']) && $_GET['autoupdate']) {
   $_SESSION['setup']['autoupgrade'] = true;
   httpredir('index.php');
 }
-
 // Empty the cache before we start
 $GLOBALS['cache'] = Cache::getInstance();
 if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {

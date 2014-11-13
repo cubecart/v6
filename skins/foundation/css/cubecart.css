@@ -253,6 +253,9 @@ input.quantity {
 	background-color: #fff;
 	color: #666;
 }
+textarea#contact_enquiry {
+    height: 150px;
+}
 @media only screen and (max-width: 40em) {
   .small-collapse {
     padding:0;
