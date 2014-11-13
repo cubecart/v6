@@ -1917,7 +1917,6 @@
     <string name="error_db_doesnt_exist" introduced="5.0.0"><![CDATA[That database doesn't exist.]]></string>
     <string name="error_db_incorrect_something" introduced="5.0.0"><![CDATA[Incorrect database host, username, and/or password.]]></string>
     <string name="error_db_password_mismatch" introduced="5.0.0"><![CDATA[Your database passwords do not match.]]></string>
-    <string name="error_ion_zend_required" introduced="5.0.0"><![CDATA[Ioncube Loader is required to use CubeCart 5. This can be configured after setup is complete.]]></string>
     <string name="error_licence_invalid" introduced="5.0.0"><![CDATA[That licence key does not appear to be valid. Please leave empty if you do not have one.]]></string>
     <string name="error_licence_required" introduced="5.0.0"><![CDATA[A software licence key is required to install and use this software.]]></string>
     <string name="error_rename_images" introduced="5.0.0"><![CDATA[Please manually rename your 'images/uploads/' folder to 'images/source/'.]]></string>

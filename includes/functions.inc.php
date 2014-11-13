@@ -511,15 +511,6 @@ function glob_recursive($pattern, $flags = 0) {
 }
 
 /**
- * Has ioncube
- *
- * @return bool
- */
-function has_ioncube_loader() {
-	return (bool)extension_loaded('ionCube Loader');
-}
-
-/**
  * Redirect to a page
  *
  * @param string $destination
