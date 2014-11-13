@@ -14,7 +14,7 @@
 <head>
   <title>CubeCart&trade; {$VERSION} Installer</title>
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-  <link rel="stylesheet" type="text/css" href="styles/style.css" media="screen" />
+  <link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
   {if isset($REFRESH)}<meta http-equiv="refresh" content="5" />{/if}
 </head>
 <body>
@@ -196,7 +196,7 @@
   </form>
 </div>
 <div id="footer">
-  Copyright <a href="http://www.cubecart.com" target="_blank">Devellion Ltd</a> {$COPYRIGHT_YEAR}. All rights reserved.
+  eCommerce by <a href="http://www.cubecart.com">CubeCart</a>
 </div>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>

@@ -1,7 +1,7 @@
 html, body {
 	font-size: 0.8em;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	background-color: #FFFFFF;
+	background-color: #ccc;
 	margin: 0px;
 	padding: 0px;
 }
@@ -10,13 +10,13 @@ html, body {
 	width: 676px;
 	margin: 30px auto 10px;
 	padding: 30px 40px;
-	background-color: #F7F7F7;
+	background: #333 url(../../admin/skins/default/images/bg.png);
 }
 
 #header {
 	height: 50px;
 	margin-bottom: 10px;
-	background-image: url(../../admin/skins/default/images/ccAdminLogoLrg.png);
+	background-image: url(../../admin/skins/default/images/cubecart-logo.png);
 	background-position: left bottom;
 	background-repeat: no-repeat;
 }

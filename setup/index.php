@@ -253,29 +253,8 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
   );
   
   $GLOBALS['smarty']->assign('CHECKS', $checks);
-  // Optional extensions
-  $extensions = array(
-    'APC',
-    'bz2',
-    'EXIF',
-    'FileInfo',
-    'Hash',
-    'mCrypt',
-    'mysqli',
-    'XCache',
-    'XDebug',
-    'ZIP'
-  );
-  natcasesort($extensions);
-  foreach ($extensions as $extension) {
-    $GLOBALS['smarty']->append('EXTENSIONS', array(
-      'name' => $extension,
-      'status' => (bool) extension_loaded($extension)
-    ));
-  }
   $GLOBALS['smarty']->assign('MODE_COMPAT', true);
 } else {
-  
   if (!isset($_SESSION['setup']['method'])) {
     $step = 2;
     // Select Install/Upgrade
@@ -292,15 +271,17 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
     }
     $GLOBALS['smarty']->assign('MODE_METHOD', true);
   } else if (!isset($_SESSION['setup']['licence'])) {
-    $step = 3;
-    if (file_exists(CC_ROOT_DIR . '/docs/licence.txt')) {
-      $GLOBALS['smarty']->assign('SOFTWARE_LICENCE', file_get_contents(CC_ROOT_DIR . '/docs/licence.txt'));
+    
+    die($step);
+    if (file_exists(CC_ROOT_DIR . '/docs/license.txt')) {
+      $GLOBALS['smarty']->assign('SOFTWARE_LICENCE', file_get_contents(CC_ROOT_DIR . '/docs/license.txt'));
     }
     $GLOBALS['smarty']->assign('MODE_LICENCE', true);
   } else if (!isset($_SESSION['setup']['complete'])) {
     if (in_array($_SESSION['setup']['method'], array(
       'install' => 'upgrade'
     ))) {
+
       require_once 'setup.' . $_SESSION['setup']['method'] . '.php';
     } else {
       require_once 'setup.install.php';
