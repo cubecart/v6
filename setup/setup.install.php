@@ -216,16 +216,15 @@ if (!isset($_SESSION['setup']['permissions'])) {
 			# }
 			## Insert Email Contents & Templates
 			$GLOBALS['db']->parseSchema(file_get_contents($setup_path.'db/install/email.sql', false));
-			## Insert basic configuration
-			$random_name = $store_names[rand(0, count($store_names)-1)];
+			
 			$config_settings = array_merge($default_config_settings,
 				array(
 					'default_language'     => $_SESSION['setup']['config']['default_language'],
 					'default_currency'     => $_SESSION['setup']['config']['default_currency'],
 					'email_address'      => $_SESSION['setup']['admin']['email'],
-					'store_title'      => $random_name,
-					'store_name'      => $random_name,
-					'email_name'      => $random_name,
+					'store_title'      => 'CubeCart',
+					'store_name'      => 'CubeCart',
+					'email_name'      => 'CubeCart',
 				)
 			);
 			Config::getInstance($glob)->set('config', '', $config_settings, true);
