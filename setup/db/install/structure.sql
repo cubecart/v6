@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_access_log` (
 	`useragent` TEXT NOT NULL,
 	`success` ENUM('Y','N') NOT NULL,
 	PRIMARY KEY (`log_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_addressbook` (
 	`address_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_addressbook` (
 	`country` SMALLINT(3) UNSIGNED NOT NULL,
 	PRIMARY KEY (`address_id`),
 	KEY `customer_id` (`customer_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_admin_log` (
 	`log_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_admin_log` (
 	`description` TEXT NOT NULL,
 	PRIMARY KEY (`log_id`),
 	KEY `admin_id` (`admin_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_admin_error_log` (
 	`log_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_admin_error_log` (
 	`read` tinyint(1) unsigned NOT NULL,
   PRIMARY KEY (`log_id`),
   KEY `admin_id` (`admin_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_admin_users` (
 	`admin_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_admin_users` (
 	`dashboard_notes` TEXT NULL,
 	`order_notify` TINYINT(1) UNSIGNED DEFAULT '0',
 	KEY `admin_id` (`admin_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_alt_shipping` (
 	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_alt_shipping` (
 	`notes` VARCHAR(255) DEFAULT NULL,
 	`order` INT UNSIGNED DEFAULT '0',
 	KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_alt_shipping_prices` (
 	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_alt_shipping_prices` (
 	`high` DECIMAL(16,3) NOT NULL DEFAULT '0.000',
 	`price` DECIMAL(16,2) NOT NULL DEFAULT '0.00',
 	KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_blocker` (
 	`block_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_blocker` (
 	PRIMARY KEY (`block_id`),
 	KEY `location` (`location`),
 	KEY `last_attempt` (`last_attempt`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_category` (
 	`cat_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -130,7 +130,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_category` (
 	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
 	PRIMARY KEY (`cat_id`),
 	KEY `cat_parent_id` (`cat_parent_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_category_index` (
 	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -140,7 +140,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_category_index` (
 	PRIMARY KEY (`id`),
 	KEY `cat_id` (`cat_id`),
 	KEY `product_id` (`product_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_category_language` (
 	`translation_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -153,7 +153,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_category_language` (
 	`seo_meta_keywords` TEXT NULL,
 	KEY `id` (`translation_id`),
 	KEY `cat_master_id` (`cat_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_code_snippet` (
   `snippet_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -168,13 +168,13 @@ CREATE TABLE IF NOT EXISTS `CubeCart_code_snippet` (
   PRIMARY KEY (`snippet_id`),
   UNIQUE KEY `unique_id` (`unique_id`),
   KEY `hook_trigger` (`hook_trigger`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_config` (
 	`name` VARCHAR(100) NOT NULL,
 	`array` text NOT NULL,
 	UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_coupons` (
 	`coupon_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -194,7 +194,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_coupons` (
 	`cart_order_id` VARCHAR(18) DEFAULT NULL,
 	PRIMARY KEY (`coupon_id`),
 	UNIQUE KEY `code` (`code`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_currency` (
 	`currency_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -210,7 +210,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_currency` (
 	`symbol_decimal` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	PRIMARY KEY (`currency_id`),
 	UNIQUE KEY `code` (`code`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_customer` (
 	`customer_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -234,14 +234,14 @@ CREATE TABLE IF NOT EXISTS `CubeCart_customer` (
 	PRIMARY KEY (`customer_id`),
 	UNIQUE KEY `email` (`email`),
 	FULLTEXT KEY `fulltext` (`first_name`,`last_name`,`email`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_customer_group` (
 	`group_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`group_name` VARCHAR(150) NOT NULL,
 	`group_description` TEXT NOT NULL,
 	PRIMARY KEY (`group_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_customer_membership` (
 	`membership_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -250,7 +250,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_customer_membership` (
 	PRIMARY KEY (`membership_id`),
 	KEY `group_id` (`group_id`),
 	KEY `customer_id` (`customer_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_documents` (
 	`doc_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -271,7 +271,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_documents` (
 	`doc_parse` tinyint(1) NOT NULL DEFAULT '0',
 	PRIMARY KEY (`doc_id`),
 	KEY `doc_parent_id` (`doc_parent_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_downloads` (
 	`digital_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -283,7 +283,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_downloads` (
 	`product_id` INT UNSIGNED NOT NULL DEFAULT '0',
 	`accesskey` VARCHAR(32) NOT NULL,
 	KEY `id` (`digital_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_email_content` (
 	`content_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -295,7 +295,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_email_content` (
 	PRIMARY KEY (`content_id`),
 	KEY `content_type` (`content_type`),
 	KEY `language` (`language`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_email_template` (
 	`template_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -304,7 +304,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_email_template` (
 	`content_html` TEXT NOT NULL,
 	`content_text` TEXT NOT NULL,
 	PRIMARY KEY (`template_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_filemanager` (
 	`file_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -317,7 +317,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_filemanager` (
 	`md5hash` VARCHAR(32) NOT NULL,
 	`description` TEXT NOT NULL,
 	PRIMARY KEY (`file_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_geo_country` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -329,7 +329,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_geo_country` (
   PRIMARY KEY (`iso`),
   KEY `id` (`id`),
   KEY `eu` (`eu`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ; #EOQ
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_geo_zone` (
 	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -337,14 +337,14 @@ CREATE TABLE IF NOT EXISTS `CubeCart_geo_zone` (
 	`abbrev` VARBINARY(4) NOT NULL DEFAULT '',
 	`name` VARBINARY(40) NOT NULL DEFAULT '',
 	PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_history` (
 	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`version` VARCHAR(50) NOT NULL,
 	`time` INT UNSIGNED NOT NULL,
 	PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_hooks` (
 	`hook_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -356,7 +356,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_hooks` (
 	`priority` INT UNSIGNED NOT NULL DEFAULT '0',
 	PRIMARY KEY (`hook_id`),
 	KEY `trigger` (`trigger`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_image_index` (
 	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -366,7 +366,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_image_index` (
 	PRIMARY KEY `id` (`id`),
 	KEY `file_id` (`file_id`),
 	KEY `productId` (`product_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_inventory` (
   `product_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Product ID',
@@ -408,7 +408,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_inventory` (
   KEY `status` (`status`),
   KEY `popularity` (`popularity`),
   FULLTEXT KEY `fulltext` (`product_code`,`description`,`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `CubeCart_inventory_language` (
 	`translation_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -421,7 +421,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_inventory_language` (
 	`seo_meta_keywords` TEXT NOT NULL,
 	KEY `id` (`translation_id`),
 	FULLTEXT KEY `fulltext` (`name`,`description`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_lang_strings` (
 	`string_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -433,7 +433,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_lang_strings` (
 	KEY `language` (`language`),
 	KEY `type` (`type`),
 	KEY `name` (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_logo` (
 	`logo_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -445,7 +445,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_logo` (
 	`skin` VARCHAR(100) NOT NULL,
 	`style` VARCHAR(100) NOT NULL,
 	PRIMARY KEY (`logo_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_manufacturers` (
 	`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -453,7 +453,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_manufacturers` (
 	`URL` VARCHAR(250) NULL,
 	`image` INT(10) UNSIGNED NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ 
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ 
 
 CREATE TABLE IF NOT EXISTS `CubeCart_modules` (
 	`module_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -464,7 +464,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_modules` (
 	`countries` TINYTEXT DEFAULT NULL,
 	`position` int(11) NOT NULL DEFAULT '1',
 	KEY `module_id` (`module_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_newsletter` (
 	`newsletter_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -478,7 +478,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_newsletter` (
 	`content_html` TEXT NOT NULL,
 	`content_text` TEXT NOT NULL,
 	PRIMARY KEY (`newsletter_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_newsletter_subscriber` (
 	`subscriber_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -488,14 +488,14 @@ CREATE TABLE IF NOT EXISTS `CubeCart_newsletter_subscriber` (
 	`validation` VARCHAR(50) DEFAULT NULL,
 	PRIMARY KEY (`subscriber_id`),
 	KEY `customer_id` (`customer_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_options_set` (
 	`set_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`set_name` TEXT NOT NULL,
 	`set_description` TEXT NOT NULL,
 	PRIMARY KEY (`set_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_options_set_member` (
 	`set_member_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -505,7 +505,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_options_set_member` (
 	`priority` INT NOT NULL,
 	PRIMARY KEY (`set_member_id`),
 	KEY `set_id` (`set_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_options_set_product` (
 	`set_product_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -514,7 +514,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_options_set_product` (
 	PRIMARY KEY (`set_product_id`),
 	KEY `set_id` (`set_id`),
 	KEY `product_id` (`product_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_option_assign` (
 	`assign_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -529,7 +529,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_option_assign` (
 	`matrix_include` TINYINT(1) NOT NULL DEFAULT  '0',
 	PRIMARY KEY (`assign_id`),
 	KEY `member_id` (`set_member_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_option_group` (
 	`option_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -539,7 +539,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_option_group` (
 	`option_required` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`priority` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 	PRIMARY KEY (`option_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_option_matrix` (
   `matrix_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -558,7 +558,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_option_matrix` (
   `restock_note` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`matrix_id`),
   KEY `product_id` (`product_id`,`options_identifier`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 
 CREATE TABLE IF NOT EXISTS `CubeCart_option_value` (
@@ -568,7 +568,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_option_value` (
 	`priority` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 	PRIMARY KEY (`value_id`),
 	KEY `option_id` (`option_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_order_history` (
 	`history_id` int(10) unsigned NOT NULL auto_increment,
@@ -577,7 +577,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_history` (
 	`updated` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`history_id`),
   KEY `cart_order_id` (`cart_order_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_order_inventory` (
 	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -598,7 +598,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_inventory` (
 	KEY `product_id` (`product_id`),
 	KEY `cart_order_id` (`cart_order_id`),
 	KEY `options_identifier` (`options_identifier`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_order_notes` (
 	`note_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -609,7 +609,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_notes` (
 	PRIMARY KEY (`note_id`),
 	KEY `admin_id` (`admin_id`,`cart_order_id`,`time`),
 	FULLTEXT KEY `content` (`content`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_order_summary` (
 	`cart_order_id` VARCHAR(18) NOT NULL,
@@ -660,7 +660,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_summary` (
 	KEY `status` (`status`),
 	KEY `email` (`email`),
 	KEY `order_date` (`order_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_order_tax` (
 	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -669,7 +669,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_tax` (
 	`amount` DECIMAL(16,2) UNSIGNED NOT NULL,
 	PRIMARY KEY (`id`),
 	KEY `cart_order_id` (`cart_order_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_permissions` (
 	`permission_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -679,7 +679,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_permissions` (
 	PRIMARY KEY (`permission_id`),
 	KEY `admin_id` (`admin_id`),
 	KEY `section_id` (`section_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_pricing_group` (
 	`price_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -692,7 +692,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_pricing_group` (
 	PRIMARY KEY (`price_id`),
 	KEY `group_id` (`group_id`),
 	KEY `product_id` (`product_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_pricing_quantity` (
 	`discount_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -702,7 +702,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_pricing_quantity` (
 	`price` DECIMAL(16,2) NOT NULL,
 	PRIMARY KEY (`discount_id`),
 	KEY `product_id` (`product_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_reviews` (
 	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -724,20 +724,20 @@ CREATE TABLE IF NOT EXISTS `CubeCart_reviews` (
 	KEY `votes` (`vote_up`,`vote_down`),
 	KEY `approved` (`approved`),
 	FULLTEXT KEY `fulltext` (`name`,`email`,`title`,`review`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_saved_cart` (
   `customer_id` INT UNSIGNED NOT NULL,
   `basket` mediumblob NOT NULL,
   PRIMARY KEY (`customer_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_search` (
 	`id` INT(64) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`hits` INT(64) NOT NULL DEFAULT '1',
 	`searchstr` VARBINARY(255) NOT NULL DEFAULT '',
 	PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_sessions` (
 	`session_id` VARCHAR(32) NOT NULL,
@@ -751,7 +751,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_sessions` (
 	PRIMARY KEY (`session_id`),
 	KEY `customer_id` (`customer_id`),
 	KEY `session_last` (`session_last`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_shipping_rates` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -768,7 +768,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_shipping_rates` (
   `percent_rate` DECIMAL(12,2) NOT NULL DEFAULT '0.00',
   `item_rate` DECIMAL(12,2) NOT NULL DEFAULT '0.00',
   PRIMARY KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 
 CREATE TABLE IF NOT EXISTS `CubeCart_shipping_zones` (
@@ -779,7 +779,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_shipping_zones` (
   `postcodes` TEXT NOT NULL DEFAULT '',
   `sort_order` INT NOT NULL DEFAULT '1',
   PRIMARY KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 
 CREATE TABLE IF NOT EXISTS `CubeCart_system_error_log` (
@@ -788,13 +788,13 @@ CREATE TABLE IF NOT EXISTS `CubeCart_system_error_log` (
 	`message` text COLLATE utf8_unicode_ci NOT NULL,
 	`read` tinyint(1) unsigned NOT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_tax_class` (
 	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`tax_name` VARCHAR(50) NOT NULL,
 	PRIMARY KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_tax_details` (
 	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -803,7 +803,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_tax_details` (
 	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_tax_rates` (
 	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -817,7 +817,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_tax_rates` (
 	`active` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `type_id` (`type_id`,`details_id`,`country_id`,`county_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_transactions` (
 	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -835,7 +835,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_transactions` (
 	KEY `order_id` (`order_id`),
 	KEY `customer_id` (`customer_id`),
 	KEY `time` (`time`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_request_log` (
 	`request_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -844,7 +844,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_request_log` (
 	`result` blob NOT NULL,
 	`time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`request_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ; #EOQ
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ; #EOQ
 
 CREATE TABLE `CubeCart_seo_urls` (
 	`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -855,4 +855,4 @@ CREATE TABLE `CubeCart_seo_urls` (
   KEY `id` (`id`),
   KEY `type` (`type`),
   KEY `item_id` (`item_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ; #EOQ
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ; #EOQ
