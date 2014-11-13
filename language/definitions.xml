@@ -1426,7 +1426,7 @@
   </group>
   <group name="notification">
     <string name="confirm_cancel" introduced="5.2.8"><![CDATA[Are you sure you want to cancel?]]></string>
-    <string name="cookie_dialogue" introduced="5.0.0"><![CDATA[&quot;%s&quot; uses cookies to improve its website. For more details and how to manage cookies, please see our <a href="index.php?_a=document&doc_id=4">privacy policy</a>.]]></string>
+    <string name="cookie_dialogue" introduced="5.0.0"><![CDATA[&quot;%s&quot; uses cookies to improve its website. For more details and how to manage cookies, please see our privacy policy.]]></string>
     <string name="cookie_dialogue_declaration" introduced="5.0.0"><![CDATA[I accept cookies from this site.]]></string>
     <string name="confirm_delete" introduced="5.0.0"><![CDATA[Are you sure you want to delete?]]></string>
     <string name="confirm_revert" introduced="5.0.0"><![CDATA[Are you sure you want to revert?]]></string>
