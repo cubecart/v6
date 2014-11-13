@@ -66,7 +66,7 @@ class Mailer extends PHPMailer {
 	public function loadContent($content_type, $language = null, $data = false) {
 
 		$language = (!empty($language) && preg_match(Language::LANG_REGEX, $language, $match)) ? $language : $GLOBALS['language']->current();
-		$language = ($language == 'en') ? 'en-GB' : $language;
+		$language = ($language == 'en') ? 'en-US' : $language;
 
 		if (!empty($content_type)) {
 			if (($contents =  $GLOBALS['db']->select('CubeCart_email_content', false, array('content_type' => (string)$content_type, 'language' => $language))) !== false) {

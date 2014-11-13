@@ -12,7 +12,7 @@
 	<version>1.0</version>
 	<minVersion>6.0.0a</minVersion>
 	<maxVersion>6.0.*</maxVersion>
-	<creator>Devellion Ltd</creator>
+	<creator>CubeCart Limited</creator>
 	<homepage>http://www.cubecart.com</homepage>
 	<mobile>false</mobile>
   </info>

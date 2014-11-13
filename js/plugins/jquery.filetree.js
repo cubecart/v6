@@ -2,7 +2,7 @@
 jQuery File Tree Plugin
 Version 1.8 - 27th June 2012
 
-Martin Purcell & Bill Wheeler - Devellion (http://devellion.com)
+Martin Purcell & Bill Wheeler - CubeCart (http://cubecart.com)
 - re-engineered specifically for CubeCart to use a JSON response, instead of html
 - modified to only insert form tags when images change
 

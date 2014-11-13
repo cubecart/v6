@@ -173,7 +173,7 @@ if (isset($_POST['language'])) {
   httpredir('index.php', 'language');
 } else {
   if (!isset($_SESSION['language'])) {
-    $_SESSION['language'] = 'en-GB';
+    $_SESSION['language'] = 'en-US';
   }
 }
 
@@ -529,8 +529,8 @@ function build_logos($image_name = '')
     }
   }
   /* Add default skin image to invoices and emails */
-  $logo_config['emails']   = (!empty($image_name)) ? $image_name : 'skins/kurouto/images/blue/logo/default.png';
-  $logo_config['invoices'] = (!empty($image_name)) ? $image_name : 'skins/kurouto/images/blue/logo/default.png';
+  $logo_config['emails']   = (!empty($image_name)) ? $image_name : 'skins/foundation/images/logo/default.png';
+  $logo_config['invoices'] = (!empty($image_name)) ? $image_name : 'skins/foundation/images/logo/default.png';
   
   $db->insert('CubeCart_config', array(
     'name' => 'logos',
