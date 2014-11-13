@@ -84,8 +84,8 @@ $default_config_settings = array(
   'catalogue_mode' => false,
   'debug' => false,
   'admin_skin' => 'default',
-  'skin_folder' => 'kurouto',
-  'skin_style' => 'blue',
+  'skin_folder' => 'foundation',
+  'skin_style' => 'default',
   'skin_change' => false,
   'default_rss_feed' => 'http://forums.cubecart.com/rss/forums/1-cubecart-news-announcements/',
   'email_method' => 'mail',
@@ -433,8 +433,8 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
       
       ## Redefine the default skin
       $reset      = array(
-        'skin_folder' => 'kurouto',
-        'skin_style' => 'blue',
+        'skin_folder' => 'foundation',
+        'skin_style' => 'default',
         'seo' => '0',
         'default_language' => $default_language
       );
