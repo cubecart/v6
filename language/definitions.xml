@@ -1383,7 +1383,6 @@
     <string name="seo_path_saleitems" introduced="5.0.0"><![CDATA[sale-items]]></string>
     <string name="seo_path_search" introduced="5.0.0"><![CDATA[search]]></string>
     <string name="seo_path_certificates" introduced="5.0.0"><![CDATA[gift-certificates]]></string>
-    <string name="seo_path_trackback" introduced="5.0.0"><![CDATA[trackback]]></string>
     <string name="seo_path_contact" introduced="5.0.0"><![CDATA[contact-us]]></string>
     <string name="seo_path_register" introduced="5.0.0"><![CDATA[register]]></string>
     <string name="seo_path_login" introduced="5.0.0"><![CDATA[login]]></string>
@@ -1890,7 +1889,6 @@
     <string name="title_tax_rule_add" introduced="5.0.0"><![CDATA[Add Tax Rule]]></string>
     <string name="title_tax_rule_current" introduced="5.0.0"><![CDATA[Current Tax Rules]]></string>
     <string name="title_time_date" introduced="5.0.0"><![CDATA[Time &amp; Date]]></string>
-    <string name="title_trackbacks" introduced="5.0.0"><![CDATA[Blog Trackbacks]]></string>
     <string name="title_welcome_back" introduced="5.0.0"><![CDATA[Welcome back]]></string>
     <string name="weight_unit" introduced="5.0.0"><![CDATA[Weight Unit]]></string>
     <string name="current_value" introduced="5.0.0"><![CDATA[Current Value]]></string>

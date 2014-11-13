@@ -319,17 +319,11 @@ $select_options = array(
 	'stock_level'   => null,
 	'stock_change_time'  => array(2 => $lang['settings']['stock_reduce_pending'], 1 => $lang['settings']['stock_reduce_process'], 0 => $lang['settings']['stock_reduce_complete']),
 	'stock_warn_type'  => array($lang['settings']['stock_warning_method_global'], $lang['settings']['stock_warning_method_product']),
-
-	'seo_trackbacks'  => array($lang['common']['disabled'], $lang['common']['enabled']),
 	'product_weight_unit' => array('Lb' => $lang['settings']['weight_unit_lb'], 'Kg' => $lang['settings']['weight_unit_kg']),
-
 	'time_format'   => '%Y-%m-%d %H:%M',
-
 	'product_sort_direction' => array('ASC' => 'ASC', 'DESC' => 'DESC'),
-
 	'product_clone'      => array('0' => $lang['common']['disabled'], '2' => $lang['settings']['product_clone_hide'], '1' => $lang['common']['enabled']),
-	'product_clone_code'    => array('1' => $lang['settings']['product_clone_new_code'], '2' => $lang['settings']['product_clone_old_code']),
-
+	'product_clone_code'    => array('1' => $lang['settings']['product_clone_new_code'], '2' => $lang['settings']['product_clone_old_code'])
 );
 
 if ($inventory_columns = $GLOBALS['db']->misc('SHOW FULL COLUMNS FROM '.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory')) {

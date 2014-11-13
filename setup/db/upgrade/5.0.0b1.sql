@@ -617,18 +617,6 @@ ALTER TABLE `CubeCart_tax_rates` CHANGE `goods` `goods` TINYINT(1) UNSIGNED NOT 
 ALTER TABLE `CubeCart_tax_rates` CHANGE `shipping` `shipping` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'; #EOQ
 ALTER TABLE `CubeCart_tax_rates` CHANGE `active` `active` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'; #EOQ
 
-CREATE TABLE IF NOT EXISTS `CubeCart_trackback` (
-	`trackback_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	`product_id` INT UNSIGNED NOT NULL,
-	`url` VARCHAR(250) NOT NULL,
-	`title` TEXT NULL,
-	`excerpt` TINYTEXT NULL,
-	`blog_name` TEXT  NULL,
-	PRIMARY KEY  (`trackback_id`),
-	UNIQUE KEY `url` (`url`),
-	KEY `product_id` (`product_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
-
 ALTER TABLE `CubeCart_transactions` DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_transactions` CHANGE `id` `id` INT UNSIGNED NOT NULL AUTO_INCREMENT; #EOQ
 ALTER TABLE `CubeCart_transactions` CHANGE `customer_id` `customer_id` INT UNSIGNED NULL DEFAULT NULL; #EOQ

@@ -819,18 +819,6 @@ CREATE TABLE IF NOT EXISTS `CubeCart_tax_rates` (
 	UNIQUE KEY `type_id` (`type_id`,`details_id`,`country_id`,`county_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
-CREATE TABLE IF NOT EXISTS `CubeCart_trackback` (
-	`trackback_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	`product_id` INT UNSIGNED NOT NULL,
-	`url` VARCHAR(250) NOT NULL,
-	`title` TEXT NULL,
-	`excerpt` TINYTEXT NULL,
-	`blog_name` TEXT NULL,
-	PRIMARY KEY (`trackback_id`),
-	UNIQUE KEY `url` (`url`),
-	KEY `product_id` (`product_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
-
 CREATE TABLE IF NOT EXISTS `CubeCart_transactions` (
 	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`gateway` VARCHAR(100) DEFAULT NULL,

@@ -286,12 +286,6 @@ class Catalogue {
 					$GLOBALS['smarty']->assign('RATING_STARS', $vars['rating_stars']);
 				}
 
-				// Trackbacks
-				if ($GLOBALS['config']->get('config', 'seo_trackbacks')) {
-					$trackbacks = $GLOBALS['db']->select('CubeCart_trackback', false, array('product_id' => $product['product_id']));
-					$GLOBALS['smarty']->assign('TRACKBACKS', ($trackbacks) ? $trackbacks : false);
-					$GLOBALS['smarty']->assign('TRACKBACK_URL', currentPage(null, array('_a' => 'trackback'), true));
-				}
 				$product['url'] = $GLOBALS['seo']->buildURL('prod', $product['product_id'], '&');
 
 				// Get stock level variations for options

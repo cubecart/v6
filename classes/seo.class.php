@@ -89,6 +89,9 @@ class SEO {
 	//////////////////////////////////////////
 
 	public function __construct() {
+		
+		self::_checkModRewrite();
+
 		// Build an array of ALL categories
 		$this->_getCategoryList();
 		//If URL is an SEO
@@ -841,45 +844,44 @@ class SEO {
 		$this->_sitemap_xml->endElement();
 	}
 
-	/**
-	 * Create talkback
-	 *
-	 * @param string $product_id
-	 * @param string $data
-	 */
-	private function _trackback($product_id = false, $data = false) {
-		$products = $GLOBALS['db']->select('CubeCart_inventory', 'product_id', array('product_id' => (int)$product_id));
-		if ($products) {
-			if (isset($data['url']) && filter_var(urldecode($data['url']), FILTER_VALIDATE_URL)) {
-				$record = array(
-					'product_id' => (int)$product_id,
-					'url'   => urldecode($data['url']),
-					'blog_name'  => (isset($data['blog_name']) && !empty($data['blog_name'])) ? strip_tags($data['blog_name']) : null,
-					'title'   => (isset($data['title']) && !empty($data['title'])) ? strip_tags($data['title']) : null,
-					'excerpt'  => (isset($data['excerpt']) && !empty($data['excerpt'])) ? strip_tags($data['excerpt']) : null,
-				);
-				if (!$GLOBALS['db']->insert('CubeCart_trackback', $record)) $error = 'Unknown Error';
+	private static function _checkModRewrite() {
+		$htaccess_path = CC_ROOT_DIR.'/.htaccess';
+		$htaccess_content = '## File Security
+<FilesMatch "\.(htaccess)$">
+ Order Allow,Deny
+ Deny from all
+</FilesMatch>
+
+#### Apache directory listing rules ####
+DirectoryIndex index.php index.htm index.html
+IndexIgnore *
+
+#### Rewrite rules for SEO functionality ####
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_URI} !=/favicon.ico
+  RewriteRule ^(.*)\.html?$ index.php?seo_path=$1 [L,QSA]
+</IfModule>';
+
+		if(!file_exists($htaccess_path)) {
+			if(!file_put_contents($htaccess_path, $htaccess_content)) {
+				die('Failed to create .htaccess file for Search Engine Friendly URL\'s. Please create this file in the stores root directory with the content.<textarea style="width: 400px; height: 300px;" readonly>'.$htaccess_content.'</textarea>');
 			} else {
-				$error = 'Invalid URL';
+				httpredir('?');
 			}
 		} else {
-			$error = 'That page does not exist';
+			$current_contents = file_get_contents($htaccess_path);
+			if(!strstr($current_contents,'seo_path')) {
+				$htaccess_content = $current_contents."\r\n\r\n".$htaccess_content;
+				if(!file_put_contents($htaccess_path, $htaccess_content)) {
+					die('Failed to update existing .htaccess file for Search Engine Friendly URL\'s. Please edit this file in the stores root directory to have the content.<textarea style="width: 400px; height: 300px;" readonly>'.$htaccess_content.'</textarea>');
+				} else {
+					httpredir('?');
+				}
+			}
 		}
-		// Generate response
-		$response = new XMLWriter();
-		$response->openMemory();
-		$response->startDocument('1.0', 'UTF-8');
-		$response->startElement('response');
-		if (isset($error)) {
-			// Failure
-			$response->writeElement('error', '1');
-			$response->writeElement('message', strip_tags($error));
-		} else {
-			// Success
-			$response->writeElement('error', '0');
-		}
-		$response->endElement();
-		// Send response
-		die($response->outputMemory(true));
 	}
 }
