@@ -118,7 +118,7 @@ $default_config_settings = array(
   'catalogue_latest_products_count' => 8,
   'catalogue_latest_products' => true,
   'catalogue_popular_products_count' => 10,
-  'catalogue_popular_products_source' => 1,
+  'catalogue_popular_products_source' => 0,
   'catalogue_products_per_page' => 10,
   'catalogue_sale_items' => 10,
   'catalogue_sale_mode' => false,
@@ -519,17 +519,21 @@ function build_logos($image_name = '')
       if (!is_numeric($skinname)) {
         if (is_array($value)) {
           foreach ($value as $subskin => $name) {
-            $logo_config[$skinname . $subskin] = (!empty($image_name)) ? 'images/logos/' . $image_name : 'skins/' . $skinname . '/images/' . $subskin . '/logo/default.png';
+            $logo_config[$skinname . $subskin] = (!empty($image_name)) ? 
+              'images/logos/' . $image_name : 
+              'skins/'.$skinname.'/images/'.$subskin.'/logo/default.png';
           }
         } else {
-          $logo_config[$skinname] = (!empty($image_name)) ? 'images/logos/' . $image_name : 'skins/' . $skinname . '/images/logo/default.png';
+          $logo_config[$skinname] = (!empty($image_name)) ? 
+            'images/logos/'.$image_name : 
+            'skins/'.$skinname.'/images/logo/default.png';
         }
       }
     }
   }
   /* Add default skin image to invoices and emails */
-  $logo_config['emails']   = (!empty($image_name)) ? $image_name : 'skins/foundation/images/logo/default.png';
-  $logo_config['invoices'] = (!empty($image_name)) ? $image_name : 'skins/foundation/images/logo/default.png';
+  $logo_config['emails']   = (!empty($image_name)) ? $image_name : 'skins/foundation/images/default/logo/default.png';
+  $logo_config['invoices'] = (!empty($image_name)) ? $image_name : 'skins/foundation/images/default/logo/default.png';
   
   $db->insert('CubeCart_config', array(
     'name' => 'logos',

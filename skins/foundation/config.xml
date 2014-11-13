@@ -28,16 +28,18 @@
   <styles>
 	<style images="false" default="true">
 	  <!-- images: TRUE tells the template system that this style has its own image folder. FALSE would use the contents in the root of the images folder -->
-	  <directory>green</directory>
-	  <name><![CDATA[Green]]></name>
-	  <description><![CDATA[Green style]]></description>
+	  <directory>default</directory>
+	  <name><![CDATA[Default]]></name>
+	  <description><![CDATA[Default Subtheme]]></description>
 	  <default />
 	</style>
+	<!-- You can have as many subthemes as you want
 	<style images="false">
 	  <directory>red</directory>
 	  <name><![CDATA[Red]]></name>
 	  <description><![CDATA[Red style]]></description>
 	</style>
+	-->
   </styles>
   <images>
 	<image reference="thumbnail" maximum="150" quality="80" default="noimage.png" />

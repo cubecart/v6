@@ -876,6 +876,8 @@ IndexIgnore *
 				if(!file_put_contents($htaccess_path, $htaccess_content)) {
 					die('Failed to create .htaccess file for Search Engine Friendly URL\'s. Please create this file in the stores root directory with the content.<textarea style="width: 400px; height: 300px;" readonly>'.$htaccess_content.'</textarea>');
 				}
+				$GLOBALS['cache']->write('1',$cache_id);
+				httpredir();
 			} else {
 				$current_contents = file_get_contents($htaccess_path);
 				if(!strstr($current_contents,'seo_path')) {
@@ -883,10 +885,9 @@ IndexIgnore *
 					if(!file_put_contents($htaccess_path, $htaccess_content)) {
 						die('Failed to update existing .htaccess file for Search Engine Friendly URL\'s. Please edit this file in the stores root directory to have the content.<textarea style="width: 400px; height: 300px;" readonly>'.$htaccess_content.'</textarea>');
 					}
+					$GLOBALS['cache']->write('1',$cache_id);
+					httpredir();
 				}
-			}
-			if(!defined(CC_IN_ADMIN)) {
-				httpredir();
 			}
 		}
 	}
