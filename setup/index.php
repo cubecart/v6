@@ -121,7 +121,7 @@ $default_config_settings = array(
   'catalogue_popular_products_source' => 0,
   'catalogue_products_per_page' => 10,
   'catalogue_sale_items' => 10,
-  'catalogue_sale_mode' => false,
+  'catalogue_sale_mode' => 1,
   'catalogue_sale_percentage' => '',
   'catalogue_show_empty' => true,
   'product_weight_unit' => 'Lb',
@@ -519,8 +519,8 @@ function build_logos($image_name = '')
       if (!is_numeric($skinname)) {
         if (is_array($value)) {
           foreach ($value as $subskin => $name) {
-            $logo_config[$skinname . $subskin] = (!empty($image_name)) ? 
-              'images/logos/' . $image_name : 
+            $logo_config[$skinname.$subskin] = (!empty($image_name)) ? 
+              'images/logos/'.$image_name : 
               'skins/'.$skinname.'/images/'.$subskin.'/logo/default.png';
           }
         } else {

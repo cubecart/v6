@@ -303,10 +303,11 @@ function grid_view(duration) {
         $('.list_view').parent('dd').removeClass('active');
         $('.product_list_view').addClass('hide');
         $('.product_grid_view').removeClass('hide');
+        $('.product_list').fadeIn(duration, function () {
+            $.cookie('product_view', 'grid', {expires: 730});
+        });
     });
-    $('.product_list').fadeIn(duration, function () {
-        $.cookie('product_view', 'grid', {expires: 730});
-    });
+    
     return false;
 }
 
@@ -319,10 +320,11 @@ function list_view(duration) {
         $('.grid_view').parent('dd').removeClass('active');
         $('.product_grid_view').addClass('hide');
         $('.product_list_view').removeClass('hide');
+        $('.product_list').fadeIn(duration, function () {
+            $.cookie('product_view', 'list', {expires: 730});
+        });
     });
-    $('.product_list').fadeIn(duration, function () {
-        $.cookie('product_view', 'list', {expires: 730});
-    });
+    
     return false;
 }
 
