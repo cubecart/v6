@@ -5,7 +5,4 @@ modules/plugins/CubeCart_*
 importdata.tmp
 .DS_Store
 Thumbs.db
-admin_no_enc.php
-index_no_enc.php
-admin_obf.php
-index_obf.php
+/.htaccess
