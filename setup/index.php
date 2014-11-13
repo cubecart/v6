@@ -71,6 +71,10 @@ $domain = parse_url(CC_STORE_URL);
 $cookie_domain = '.'.str_replace('www.','',$domain['host']);
 
 $default_config_settings = array (
+	'twitter' => 'cubecart',
+	'facebook' => 'cubecart',
+	'google_plus' => 'cubecart',
+	'youtube' => 'cubecart',
 	'default_language'     => '',
 	'default_currency'     => '',
 	'email_address'      => '',

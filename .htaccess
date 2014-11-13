@@ -9,7 +9,6 @@ DirectoryIndex index.php index.htm index.html
 IndexIgnore *
 
 #### Rewrite rules for SEO functionality ####
-
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteCond %{REQUEST_FILENAME} !-f

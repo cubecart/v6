@@ -845,7 +845,10 @@ class SEO {
 	}
 
 	private static function _checkModRewrite() {
-		if($seo_check = $GLOBALS['cache']->read('seo_check')) {
+		
+		$cache_id = 'seo_check';
+
+		if($GLOBALS['cache']->read($cache_id)) {
 			return false;
 		} else {
 
@@ -874,7 +877,7 @@ IndexIgnore *
 					die('Failed to create .htaccess file for Search Engine Friendly URL\'s. Please create this file in the stores root directory with the content.<textarea style="width: 400px; height: 300px;" readonly>'.$htaccess_content.'</textarea>');
 				} else {
 					
-					$GLOBALS['cache']->write('1', 'seo_check');
+					$GLOBALS['cache']->write('1', $cache_id);
 					httpredir('?');
 				}
 			} else {
@@ -884,11 +887,11 @@ IndexIgnore *
 					if(!file_put_contents($htaccess_path, $htaccess_content)) {
 						die('Failed to update existing .htaccess file for Search Engine Friendly URL\'s. Please edit this file in the stores root directory to have the content.<textarea style="width: 400px; height: 300px;" readonly>'.$htaccess_content.'</textarea>');
 					} else {
-						$GLOBALS['cache']->write('1', 'seo_check');
+						$GLOBALS['cache']->write('1', $cache_id);
 						httpredir('?');
 					}
 				} else {
-					$GLOBALS['cache']->write('1', 'seo_check');
+					$GLOBALS['cache']->write('1', $cache_id);
 					httpredir('?');
 				}
 			}
