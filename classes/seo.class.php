@@ -878,7 +878,7 @@ IndexIgnore *
 				} else {
 					
 					$GLOBALS['cache']->write('1', $cache_id);
-					httpredir('?');
+					httpredir();
 				}
 			} else {
 				$current_contents = file_get_contents($htaccess_path);
@@ -888,11 +888,11 @@ IndexIgnore *
 						die('Failed to update existing .htaccess file for Search Engine Friendly URL\'s. Please edit this file in the stores root directory to have the content.<textarea style="width: 400px; height: 300px;" readonly>'.$htaccess_content.'</textarea>');
 					} else {
 						$GLOBALS['cache']->write('1', $cache_id);
-						httpredir('?');
+						httpredir();
 					}
 				} else {
 					$GLOBALS['cache']->write('1', $cache_id);
-					httpredir('?');
+					httpredir();
 				}
 			}
 		}
