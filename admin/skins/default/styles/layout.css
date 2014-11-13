@@ -3,7 +3,7 @@ input[type="submit"], input[type="button"] {
 	display: inline-block; 
 	font-size: 12px; 
 	text-decoration: none!important; 
-	font-family: Helvetica, Arial, sans serif;
+	font-family: 'Open Sans', sans-serif;
 	padding: 8px 12px; 
 	border-radius: 3px; 
 	-moz-border-radius: 3px; 
@@ -236,7 +236,7 @@ fieldset > legend {
 	padding: 0 0 4px 0;
 	text-transform: capitalize;
 }
-a {
+a, #header .user_info i {
 	color: #4F9AAF;
 	text-decoration: none;
 }
@@ -525,7 +525,7 @@ div.pagination span {
 	border: 1px solid #FFE6B8;
 	-moz-border-radius: 6px;
 	-webkit-border-radius: 6px;
-	font-family: Lucida Console, Monaco, monospace;
+	font-family: 'Open Sans', sans-serif;
 	font-size: 12px;
 	z-index: 50;
 }
@@ -540,7 +540,7 @@ div.pagination span {
 	border: 0;
 	background-color: #FFFBF2;
 	width: 99%;
-	font-family: Lucida Console, Monaco, monospace;
+	font-family: 'Open Sans', sans-serif;
 	font-size: 10px;
 	padding: 5px;
 	height: 60px;
@@ -550,7 +550,7 @@ div.pagination span {
 	background: #E88E22 none;
 	border: 1px solid #FFE6B8;
 	color: white;
-	font-family: Lucida Console, Monaco, monospace;
+	font-family: 'Open Sans', sans-serif;
 	height: auto !important;
 }
 /* End Notes Styling */
@@ -573,7 +573,7 @@ div.pagination span {
 	color: #FFF;
 	font-weight: normal;
 	font-size: 10px;
-	font-family: Helvetica, Arial, Verdana, sans-serif !important;
+	font-family: 'Open Sans', sans-serif;
 	line-height: 16px;
 	background: url(../images/tab_badge.png) no-repeat;
 }
@@ -808,7 +808,7 @@ dl {
 }
 .request strong, .received strong {
 	display: block;
-	font-family: Helvetica, Arial, Verdana, sans-serif !important;
+	font-family: 'Open Sans', sans-serif !important;
 }
 .fa {
 	color: #555;
