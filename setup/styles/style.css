@@ -1,6 +1,6 @@
 html, body {
 	font-size: 0.8em;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: 'Open Sans', sans-serif;
 	background-color: #ccc;
 	margin: 0px;
 	padding: 0px;
@@ -14,7 +14,7 @@ html, body {
 }
 
 #header {
-	height: 50px;
+	height: 55px;
 	margin-bottom: 10px;
 	background-image: url(../../admin/skins/default/images/cubecart-logo.png);
 	background-position: left bottom;
@@ -135,8 +135,8 @@ textarea, .license {
 	height: 300px;
 	border: 1px solid #CDCDCD;
 	padding: 3px 0px 0px 3px;
-	font-family: Tahoma, san-serif;
-	font-size: 0.9em;
+	"Courier New", Courier, monospace
+	font-size: 1.25rem;
 	overflow: auto;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
@@ -161,28 +161,33 @@ span.result {
 
 /* Begin Submit Buttons */
 input[type="submit"], input[type="button"] {
-	/* Start Reset Defaults */
-	margin: 0; padding: 0; border: 0; font-weight: normal; font-style: normal; font-size: 100%; line-height: 1; font-family: inherit; text-align: left;
-	/* End Reset Defaults */
-	background: #4F9AAF url(../images/alert-overlay.png) repeat-x;
 	display: inline-block; 
-	padding: 5px 10px 6px; 
-	color: #fff; 
-	font-size: 13px;
-	font-weight: bold;
-	text-decoration: none;
-	-moz-border-radius: 5px; 
-	-webkit-border-radius: 5px;
-	-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
-	-webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
-	text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
-	border-bottom: 1px solid rgba(0,0,0,0.25);
-	position: relative;
-	cursor: pointer;
+	font-size: 12px; 
+	text-decoration: none!important; 
+	font-family: 'Open Sans', sans-serif;
+	padding: 8px 12px; 
+	border-radius: 3px; 
+	-moz-border-radius: 3px; 
+	box-shadow: inset 0px 0px 2px #fff;
+	-o-box-shadow: inset 0px 0px 2px #fff;
+	-webkit-box-shadow: inset 0px 0px 2px #fff;
+	-moz-box-shadow: inset 0px 0px 2px #fff;
+	color: #444;
+	border: 1px solid #d0d0d0;
+	background-image: -moz-linear-gradient(#ededed, #e1e1e1);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#e1e1e1), to(#ededed));
+	background-image: -webkit-linear-gradient(#ededed, #e1e1e1);
+	background-image: -o-linear-gradient(#ededed, #e1e1e1);
+	text-shadow: 1px 1px 1px #fff;
+	background-color: #e1e1e1;
 }
 input[type="submit"]:hover, input[type="button"]:hover {
-	background-color: #438A9D; 
-	color: #fff;	
+	border: 1px solid #b0b0b0;
+	background-image: -moz-linear-gradient(#e1e1e1, #ededed);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ededed), to(#e1e1e1));
+	background-image: -webkit-linear-gradient(#e1e1e1, #ededed);
+	background-image: -o-linear-gradient(#e1e1e1, #ededed);
+	background-color: #ededed;
 }
 .mini_button {
 	font-size: 10px !important;

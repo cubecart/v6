@@ -14,7 +14,8 @@
 <head>
   <title>CubeCart&trade; {$VERSION} Installer</title>
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-  <link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="styles/style.css" media="screen" />
   {if isset($REFRESH)}<meta http-equiv="refresh" content="5" />{/if}
 </head>
 <body>
@@ -89,7 +90,7 @@
 
   {if isset($MODE_LICENCE)}
 	<h3 class="first">{$LANG.setup.title_licence}</h3>
-	<div class="license">{include file="$ROOT/docs/license.htm"}</div>
+	<div><textarea class="license" readonly>{$SOFTWARE_LICENCE}</textarea></div>
 	<div><input type="checkbox" id="licence_agree" name="licence" value="1" /> <label for="licence_agree">{$LANG.setup.licence_agree}</label></div>
   {/if}
 

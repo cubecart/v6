@@ -15,7 +15,7 @@
   <meta charset="utf-8">
   <title>{$LANG.dashboard.title_admin_cp}</title>
   <link rel="shortcut icon" href="{$STORE_URL}/favicon.ico" type="image/x-icon">
-  <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,700italic,400italic&subset=cyrillic,cyrillic-ext,latin,greek-ext,greek,latin-ext' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" type="text/css" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/styles/layout.css" media="screen">
   <link rel="stylesheet" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/styles/font-awesome.min.css">
   {if isset($JQUERY_STYLES)}

@@ -271,8 +271,6 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
     }
     $GLOBALS['smarty']->assign('MODE_METHOD', true);
   } else if (!isset($_SESSION['setup']['licence'])) {
-    
-    die($step);
     if (file_exists(CC_ROOT_DIR . '/docs/license.txt')) {
       $GLOBALS['smarty']->assign('SOFTWARE_LICENCE', file_get_contents(CC_ROOT_DIR . '/docs/license.txt'));
     }
@@ -281,7 +279,6 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
     if (in_array($_SESSION['setup']['method'], array(
       'install' => 'upgrade'
     ))) {
-
       require_once 'setup.' . $_SESSION['setup']['method'] . '.php';
     } else {
       require_once 'setup.install.php';
@@ -462,11 +459,7 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
       ));
       $_SESSION['setup']['config_update'] = true;
     }
-    ## Delete the key file, if it exists
-    $key_file = CC_ROOT_DIR . '/includes/extra/key.php';
-    if (file_exists($key_file))
-      unlink($key_file);
-    
+
     $proceed = false;
     $restart = true;
     $step    = 6;
