@@ -134,7 +134,7 @@ $default_config_settings = array(
   'stock_warn_level' => 5,
   'enable_reviews' => true,
   'store_address' => '',
-  'store_copyright' => '',
+  'store_copyright' => '<p>&copy;'.date('Y').' '.$domain['host'].' -  All rights reserved.</p>',
   'store_postcode' => '',
   'store_zone' => '',
   'ssl_force' => false,
@@ -324,7 +324,6 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
         'show_category_count',
         'stock_change_time',
         'stock_warn_type',
-        'store_copyright',
         'sqlSessionExpiry',
         'taxCountry',
         'taxCounty',
@@ -498,42 +497,15 @@ if (isset($step)) {
 ## Build Logos
 function build_logos($image_name = '')
 {
-  
   global $db;
-  
-  $skins = glob('../skins/*/config.xml');
-  if ($skins) {
-    foreach ($skins as $skin) {
-      $xml = new SimpleXMLElement(file_get_contents($skin));
-      if (isset($xml->styles)) {
-        ## List substyles
-        foreach ($xml->styles->style as $style) {
-          $skins[(string) $xml->info->name][(string) $style->directory] = ((string) $style->attributes()->images == 'true') ? true : false;
-        }
-      } else {
-        ## Only one style here
-        $skins[(string) $xml->info->name] = true;
-      }
-    }
-    foreach ($skins as $skinname => $value) {
-      if (!is_numeric($skinname)) {
-        if (is_array($value)) {
-          foreach ($value as $subskin => $name) {
-            $logo_config[$skinname.$subskin] = (!empty($image_name)) ? 
-              'images/logos/'.$image_name : 
-              'skins/'.$skinname.'/images/'.$subskin.'/logo/default.png';
-          }
-        } else {
-          $logo_config[$skinname] = (!empty($image_name)) ? 
-            'images/logos/'.$image_name : 
-            'skins/'.$skinname.'/images/logo/default.png';
-        }
-      }
-    }
-  }
-  /* Add default skin image to invoices and emails */
-  $logo_config['emails']   = (!empty($image_name)) ? $image_name : 'skins/foundation/images/default/logo/default.png';
-  $logo_config['invoices'] = (!empty($image_name)) ? $image_name : 'skins/foundation/images/default/logo/default.png';
+
+  $logo_path = empty($image_name) ? 'skins/foundation/images/default/logo/default.png' : 'images/logos/'.$image_name;
+
+  $logo_config = array (
+    'foundationdefault' => $logo_path,
+    'emails' => $logo_path,
+    'invoices' => $logo_path
+  );
   
   $db->insert('CubeCart_config', array(
     'name' => 'logos',

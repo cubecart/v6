@@ -234,6 +234,7 @@ label.help {
 }
 
 .textbox {
+	font-family: 'Open Sans', sans-serif !important;
 	border: 1px solid #CDCDCD;
 	background-color: #F7F7F7;
 	width: 250px;

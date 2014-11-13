@@ -4,4 +4,8 @@
 	You could maybe.. just possibly.. leave a little link back to us? ♥ x 
 	</note>
 *}
-<p>eCommerce by <a href="http://www.cubecart.com">CubeCart</a></p>
+<div class="row">
+	<div class="large-12 columns text-center">
+		<p>eCommerce by <a href="http://www.cubecart.com">CubeCart</a></p>
+	</div>
+</div>

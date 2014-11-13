@@ -107,6 +107,7 @@
                <div class="row">
                   <div class="medium-7 large-7 columns">
                      {include file='templates/box.documents.php'}
+                     {$COPYRIGHT}
                   </div>
                   <div class="medium-5 large-5 columns">
                      {include file='templates/element.social.php'}
@@ -145,12 +146,7 @@
             {$DEBUG_INFO}
             {include file='templates/box.skins.php'}
             <a class="exit-off-canvas"></a>
-            <div class="row">
-               <div class="large-12 columns text-center">
-                  {$COPYRIGHT}
-                  {include file='templates/ccpower.php'}
-               </div>
-            </div>
+            {include file='templates/ccpower.php'}
          </div>
       </div>
    </body>

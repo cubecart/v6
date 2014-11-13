@@ -290,7 +290,7 @@ if (!isset($_SESSION['setup']['permissions'])) {
 			// Set version number
 			$GLOBALS['db']->insert('CubeCart_history', array('version' => CC_VERSION, 'time' => time()));
 
-			build_logos('');
+			build_logos();
 
 			$_SESSION['setup']['complete'] = true;
 			httpredir('index.php');
