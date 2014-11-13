@@ -113,7 +113,7 @@
    </div>
 </div>
 <hr>
-<dl class="tabs" data-tab data-options="deep_linking:true; scroll_to_content:true">
+<dl class="tabs" data-tab data-options="deep_linking:true; scroll_to_content:false">
    {if !empty($PRODUCT.description)}<dd class="active"><a href="#product_info">{$LANG.catalogue.product_info}</a></dd>{/if}
    <dd><a href="#product_spec">{$LANG.common.specification}</a></dd>
    {if isset($PRODUCT.discounts)}
