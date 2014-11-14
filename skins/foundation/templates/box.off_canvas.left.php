@@ -36,6 +36,7 @@
       {/if}
       {/foreach}
    </ul>
+   {if $LANGUAGES}
    <ul class="off-canvas-list">
       <li><label>{$LANG.common.change_language}</label></li>
       {foreach from=$LANGUAGES item=language}
@@ -44,4 +45,5 @@
       {/if}
       {/foreach}  
    </ul>
+   {/if}
 </aside>
