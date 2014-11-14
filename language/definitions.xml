@@ -1600,7 +1600,6 @@
     <string name="basket_jump_to" introduced="5.0.0"><![CDATA[Jump to basket on add]]></string>
     <string name="bread_tax" introduced="5.0.0"><![CDATA[Taxes]]></string>
     <string name="cache_enable" introduced="5.0.0"><![CDATA[Enable Caching]]></string>
-    <string name="category_directory_symbol" introduced="5.0.0"><![CDATA[Category directory separator symbol]]></string>
     <string name="category_display_empty" introduced="5.0.0"><![CDATA[Display empty categories]]></string>
     <string name="category_expand_tree" introduced="5.0.0"><![CDATA[Expand category navigation tree]]></string>
     <string name="category_has_subcat" introduced="5.0.0"><![CDATA[This category contains %d subcategory]]></string>

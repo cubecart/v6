@@ -328,7 +328,8 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
         'taxCountry',
         'taxCounty',
         'uploadSize',
-        'noRelatedProds'
+        'noRelatedProds',
+        'cache'
       );
       // Rename existing keys
       $remapped  = array(

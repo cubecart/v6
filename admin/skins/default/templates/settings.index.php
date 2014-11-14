@@ -122,7 +122,6 @@
             </select></span>
          </div>
          <div><label for="product_precis">{$LANG.settings.product_precis}</label><span><input name="config[product_precis]" id="product_precis" class="textbox number" value="{$CONFIG.product_precis}"></span></div>
-         <div><label for="dirSymbol">{$LANG.settings.category_directory_symbol}</label><span><input name="config[default_directory_symbol]" id="dirSymbol" class="textbox number" value="{$CONFIG.default_directory_symbol}"></span></div>
          <div><label for="catalogue_expand_tree">{$LANG.settings.category_expand_tree}</label><span><select name="config[catalogue_expand_tree]" id="catalogue_expand_tree" class="textbox">
             {foreach from=$OPT_CATALOGUE_EXPAND_TREE item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
             </select></span>

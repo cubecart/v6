@@ -1,7 +1,8 @@
 includes/extra/key.php
 includes/extra/snippet_*
 includes/global.inc.*
-modules/plugins/CubeCart_*
+/modules/*
+!/modules/plugins/hooks.xml
 importdata.tmp
 .DS_Store
 Thumbs.db
