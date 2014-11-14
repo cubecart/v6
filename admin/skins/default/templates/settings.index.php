@@ -336,11 +336,11 @@
          <div><label for="email_address">{$LANG.settings.email_sender_address}</label><span><input name="config[email_address]" id="email_address" type="text" class="textbox" value="{$CONFIG.email_address}"></span></div>
          <div><label for="email_smtp_host">{$LANG.settings.smtp_host}</label><span><input name="config[email_smtp_host]" id="email_smtp_host" type="text" class="textbox" value="{$CONFIG.email_smtp_host}"></span></div>
          <div><label for="email_smtp_port">{$LANG.settings.smtp_port}</label><span><input name="config[email_smtp_port]" id="email_smtp_port" type="text" class="textbox number" value="{$CONFIG.email_smtp_port}"></span></div>
-         <div><label for="email_smtp">{$LANG.settings.smtp_auth}</label><span><select name="config[email_smtp]" id="email_smtp" class="textbox">
+         <div><label for="email_smtp">{$LANG.settings.smtp_auth}</label><span><select name="config[email_smtp]" id="email_smtp" class="textbox" autocomplete="off">
             {foreach from=$OPT_EMAIL_SMTP item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
             </select></span>
          </div>
-         <div><label for="email_smtp_user">{$LANG.settings.smtp_user}</label><span><input name="config[email_smtp_user]" id="email_smtp_user" type="text" class="textbox" value="{$CONFIG.email_smtp_user}"></span></div>
+         <div><label for="email_smtp_user">{$LANG.settings.smtp_user}</label><span><input name="config[email_smtp_user]" id="email_smtp_user" type="text" class="textbox" value="{$CONFIG.email_smtp_user}" autocomplete="off"></span></div>
          <div><label for="email_smtp_password">{$LANG.settings.smtp_pass}</label><span><input name="config[email_smtp_password]" id="email_smtp_password" type="password" class="textbox" value="{$CONFIG.email_smtp_password}" autocomplete="off"></span></div>
       </fieldset>
       <fieldset>

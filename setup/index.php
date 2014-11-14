@@ -137,7 +137,6 @@ $default_config_settings = array(
   'store_address' => '',
   'store_copyright' => '<p>&copy;'.date('Y').' '.$domain['host'].' -  All rights reserved.</p>',
   'store_postcode' => '',
-  'store_zone' => '',
   'ssl_force' => false,
   'ssl_path' => '',
   'standard_url' => '',
@@ -152,7 +151,7 @@ $default_config_settings = array(
   'bftime' => '600',
   'bfattempts' => 5,
   'fuzzy_time_format' => '%H:%M',
-  'feed_access_key' => randomString(16)
+  'feed_access_key' => randomString(12)
 );
 
 ksort($default_config_settings);
