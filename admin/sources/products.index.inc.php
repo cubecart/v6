@@ -464,7 +464,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 
 	foreach ($GLOBALS['hooks']->load('admin.product.save.post_process') as $hook) include $hook;
 
-	$GLOBALS['cache']->clear();
+	//$GLOBALS['cache']->clear();
 	if (isset($_POST['submit_cont'])) {
 		httpredir(currentPage(null, array('action' => 'edit', 'product_id' => (int)$product_id)));
 	} else {
@@ -474,7 +474,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 
 if (isset($_GET['delete_review']) && is_numeric($_GET['delete_review']) && Admin::getInstance()->permissions('products', CC_PERM_EDIT)) {
 	$GLOBALS['db']->delete('CubeCart_reviews', array('id' => (int)$_GET['delete_review'], 'product_id' => (int)$_GET['product_id']));
-	$GLOBALS['cache']->clear();
+	//$GLOBALS['cache']->clear();
 	httpredir(currentPage(array('delete_review')), 'reviews');
 }
 
@@ -505,7 +505,7 @@ if (isset($_POST['translate']) && isset($_POST['product_id']) && is_numeric($_PO
 			$add_array = false;
 		}
 	}
-	$GLOBALS['cache']->clear();
+	//$GLOBALS['cache']->clear();
 	httpredir(currentPage($rem_array, $add_array), 'translate');
 }
 
@@ -551,7 +551,7 @@ if (((isset($_GET['delete']) && !empty($_GET['delete'])) || is_array($_POST['del
 		$GLOBALS['main']->setACPNotify($lang['catalogue']['notify_product_delete']);
 	}
 
-	$GLOBALS['cache']->clear();
+	//$GLOBALS['cache']->clear();
 	httpredir(currentPage(array('delete')));
 }
 
@@ -560,7 +560,7 @@ if (isset($_POST['status']) && is_array($_POST['status']) && Admin::getInstance(
 	foreach ($_POST['status'] as $product_id => $status) {
 		$GLOBALS['db']->update('CubeCart_inventory', array('status' => $status), array('product_id' => $product_id));
 	}
-	$GLOBALS['cache']->clear();
+	//$GLOBALS['cache']->clear();
 	httpredir(currentPage());
 }
 
@@ -719,7 +719,7 @@ if (isset($_GET['action'])) {
 	if (strtolower($_GET['action']) == 'delete' && Admin::getInstance()->permissions('products', CC_PERM_DELETE)) {
 		if (isset($_GET['translation_id']) && is_numeric($_GET['translation_id'])) {
 			$GLOBALS['db']->delete('CubeCart_inventory_language', array('translation_id' => (int)$_GET['translation_id']));
-			$GLOBALS['cache']->clear();
+			//$GLOBALS['cache']->clear();
 			httpredir(currentPage(array('translation_id'), array('action' => 'edit')), 'translate');
 		}
 	} else if (strtolower($_GET['action']) == 'translate' && isset($_GET['product_id'])) {
