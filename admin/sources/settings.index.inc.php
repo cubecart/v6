@@ -235,7 +235,7 @@ if (($languages = $GLOBALS['language']->listLanguages()) !== false) {
 }
 
 ## Get countries
-if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('numcode', 'name'))) !== false) {
+if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('numcode', 'name'),false, array('name'=>'ASC'))) !== false) {
 	$store_country = $GLOBALS['config']->get('config', 'store_country');
 	foreach ($countries as $country) {
 		$country['selected'] = ($country['numcode'] == $store_country) ? ' selected="selected"' : '';

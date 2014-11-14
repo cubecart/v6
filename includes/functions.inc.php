@@ -736,8 +736,7 @@ function sigfig($value, $figures = 2) {
  *
  * @return json
  */
-function randomString() { 
-	$length	= 30;
+function randomString($length	= 30) { 
 	while (strlen($hash) < ($length-1)) {
 		$hash .= mt_rand(0,9);
 	}

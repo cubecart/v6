@@ -112,10 +112,11 @@ $default_config_settings = array(
   'basket_order_expire' => '',
   'basket_out_of_stock_purchase' => false,
   'basket_tax_by_delivery' => false,
-  'store_country' => '',
+  'store_country' => 840,
+  'store_zone' => 12,
   'catalogue_expand_tree' => true,
   'catalogue_hide_prices' => false,
-  'catalogue_latest_products_count' => 8,
+  'catalogue_latest_products_count' => 9,
   'catalogue_latest_products' => true,
   'catalogue_popular_products_count' => 10,
   'catalogue_popular_products_source' => 0,
@@ -150,7 +151,8 @@ $default_config_settings = array(
   'product_sort_direction' => 'ASC',
   'bftime' => '600',
   'bfattempts' => 5,
-  'fuzzy_time_format' => '%H:%M'
+  'fuzzy_time_format' => '%H:%M',
+  'feed_access_key' => randomString(16)
 );
 
 ksort($default_config_settings);
