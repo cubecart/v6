@@ -797,8 +797,7 @@ class Cubecart {
 			if (!isset($this->_basket['register'])) {
 				$this->_basket['register'] = true;
 			}
-
-			if (!isset($_POST['username']) && !isset($_POST['password']) && isset($_POST['user']) && isset($_POST['billing'])) {
+			if (!isset($_POST['username']) && isset($_POST['user']) && isset($_POST['billing'])) {
 			
 				$proceed = true;
 				$optional = array('mobile', 'line2');

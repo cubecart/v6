@@ -104,10 +104,12 @@ class Module {
 			$this->_module_classes();
 			if (isset($_POST['module']['status']) && is_array($_POST['module'])) {
 				// Automatically handle module save requests
+				$this->_info['name'] ? $this->_info['name'] : $this->_settings['folder'];
+				$this->_info['name'] = str_replace('_',' ', $this->_info['name']);
 				if ($this->module_settings_save($_POST['module'])) {
-					$GLOBALS['main']->setACPNotify(sprintf($GLOBALS['language']->notification['notify_module_settings'], $this->_info['name'] ? $this->_info['name'] : $this->_settings['folder']));
+					$GLOBALS['main']->setACPNotify(sprintf($GLOBALS['language']->notification['notify_module_settings'], $this->_info['name']));
 				} else {
-					$GLOBALS['main']->setACPWarning(sprintf($GLOBALS['language']->notification['error_module_settings'], $this->_info['name'] ? $this->_info['name'] : $this->_settings['folder']));
+					$GLOBALS['main']->setACPWarning(sprintf($GLOBALS['language']->notification['error_module_settings'], $this->_info['name']));
 				}
 				$this->_module_data($path, $local_name);
 				// Install hooks if required

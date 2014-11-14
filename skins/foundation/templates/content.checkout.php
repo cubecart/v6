@@ -16,7 +16,7 @@
    {/if}
    <h2>{$LANG.checkout.your_basket}</h2>
    {include file='templates/content.checkout.medium-up.php'}
-   {*include file='templates/content.checkout.small.php'*}
+   {include file='templates/content.checkout.small.php'}
    <div class="row">
          <div class="small-8 columns text-right">
             {$LANG.basket.coupon_add}
