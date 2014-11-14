@@ -323,7 +323,7 @@ class Module {
 				'default' => $settings['default'],
 				'position' => (isset($settings['position']) && $settings['position'] > 0) ? $settings['position'] : 0,
 			);
-			unset($settings['status'], $settings['default']);
+			//unset($settings['status'], $settings['default']);
 			if ($GLOBALS['config']->set($this->_local_name, '', $settings)) {
 				$updated = true;
 			}
@@ -419,7 +419,7 @@ class Module {
 		if (!empty($this->_module_name)) {
 			$config = $GLOBALS['config']->get($this->_local_name);
 			$module = $GLOBALS['db']->select('CubeCart_modules', false, array('folder' => $this->_module_name));
-			unset($config['status'], $config['default']);
+			//unset($config['status'], $config['default']);
 			$this->_settings = ($module) ? array_merge($module[0], $config) : $config;
 		}
 	}
