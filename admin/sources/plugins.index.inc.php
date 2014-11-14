@@ -22,7 +22,7 @@ if(isset($_GET['delete']) && $_GET['delete']==1) {
 	   $GLOBALS['db']->delete('CubeCart_config',array('name' => $_GET['module']));
 	   $GLOBALS['db']->delete('CubeCart_modules',array('folder' => $_GET['module']));
 	   $GLOBALS['db']->delete('CubeCart_hooks',array('plugin' => $_GET['module']));
-	   //$GLOBALS['cache']->clear();
+	   $GLOBALS['cache']->clear();
 
 	   if(file_exists($dir)) {
 	   	$GLOBALS['main']->setACPWarning($lang['module']['plugin_still_exists']);
@@ -110,12 +110,12 @@ if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 	} else {
 		$GLOBALS['main']->setACPWarning($lang['module']['token_unknown']);
 	}
-	//$GLOBALS['cache']->clear();
+	$GLOBALS['cache']->clear();
 	httpredir('?_g=plugins');
 }
 
 if (isset($_POST['status'])) {
-	//$GLOBALS['cache']->clear();
+	$GLOBALS['cache']->clear();
 	$before = md5(serialize($GLOBALS['db']->select('CubeCart_modules')));
 
 	foreach ($_POST['status'] as $module_name => $status) {
@@ -139,11 +139,11 @@ if (isset($_POST['status'])) {
 	if ($before !== $after) {
 		$GLOBALS['gui']->setNotify($lang['module']['notify_module_status']);
 	}
-	//$GLOBALS['cache']->clear();
+	$GLOBALS['cache']->clear();
 	httpredir('?_g=plugins');
 }
 
-//$GLOBALS['cache']->clear();
+$GLOBALS['cache']->clear();
 
 $module_paths = glob("modules/*/*/config.xml");
 $i=0;

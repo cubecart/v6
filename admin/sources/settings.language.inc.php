@@ -195,7 +195,7 @@ if (isset($_GET['export'])) {
 	$GLOBALS['main']->addTabControl($lang['translate']['tab_string_edit'], 'general');
 	$GLOBALS['main']->addTabControl($lang['translate']['merge_db_file'], false, currentPage(array('language'), array('export' => $_GET['language'])));
 } else {
-	//$GLOBALS['cache']->clear();
+	$GLOBALS['cache']->clear();
 	if (!empty($_FILES['import']['tmp_name']['file'])) {
 		if ($GLOBALS['language']->importLanguage($_FILES['import'], $_POST['import']['overwrite'])) {
 			$GLOBALS['main']->setACPNotify($lang['translate']['notify_language_import_success']);
