@@ -1,9 +1,8 @@
-includes/extra/key.php
-includes/extra/snippet_*
-includes/global.inc.*
+/includes/extra/snippet_*
+/includes/global.inc.*
+/includes/extra/importdata.tmp
 /modules/*
 !/modules/plugins/hooks.xml
-importdata.tmp
 .DS_Store
 Thumbs.db
 /.htaccess
