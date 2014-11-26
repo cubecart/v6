@@ -6,7 +6,7 @@
  * UK Private Limited Company No. 5323904
  * ========================================
  * Web:   http://www.cubecart.com
- * Email:  sales@devellion.com
+ * Email:  sales@cubecart.com
  * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
  *}
 <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data"> <!-- title="You have not saved this order yet" -->

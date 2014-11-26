@@ -86,7 +86,7 @@ if (!isset($_SESSION['setup']['permissions'])) {
 	}
 
 	if (!isset($_SESSION['setup']['progress']) || is_null($_SESSION['setup']['progress'])) {
-		if (isset($_POST['progress']) && version_compare($current, 4, 'ge')) {
+		if (isset($_POST['progress']) && version_compare($current, 3, 'ge')) {
 			$_SESSION['setup']['progress'] = true;
 			httpredir('index.php');
 		}
