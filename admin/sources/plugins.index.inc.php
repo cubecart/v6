@@ -36,7 +36,7 @@ if(isset($_GET['delete']) && $_GET['delete']==1) {
 }
 if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 	$token = str_replace('-','',$_POST['plugin_token']);
-	$json = file_get_contents('http://sandbox.cubecart.com/extensions/token/'.$token.'/get');
+	$json = file_get_contents('https://www.cubecart.com/extensions/token/'.$token.'/get');
 	if($json && !empty($json)) {
 		$data = json_decode($json, true);
 		$destination = CC_ROOT_DIR.'/'.$data['path'];
@@ -95,7 +95,7 @@ if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 							$GLOBALS['main']->setACPWarning($lang['module']['failed_install']);	
 						} else {
 							$GLOBALS['main']->setACPNotify($lang['module']['success_install']);
-							file_get_contents('http://sandbox.cubecart.com/extensions/token/'.$token.'/confirm');
+							file_get_contents('https://www.cubecart.com/extensions/token/'.$token.'/confirm');
 						}
 					}
 				} else {
