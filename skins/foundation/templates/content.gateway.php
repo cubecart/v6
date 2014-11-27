@@ -45,7 +45,7 @@
    {$FORM_TEMPLATE}
    {/if}
    {if !$DISPLAY_3DS}
-   <div class="text-center"><input type="submit" value="{$BTN_PROCEED}" class="hide"></div>
+   <div class="text-center"><input type="submit" class="button success" value="{$BTN_PROCEED}"></div>
    {/if}
    {foreach from=$AFFILIATES item=affiliate}
    {$affiliate}

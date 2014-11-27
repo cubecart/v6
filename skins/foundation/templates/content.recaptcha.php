@@ -12,7 +12,7 @@
 {if $RECAPTCHA}
 <h3>{$LANG.form.verify_human}</h3>
 <div class="row">
-   <div class="small-6 columns">
+   <div class="medium-6 columns">
       <script type="text/javascript">
          var RecaptchaOptions = {
             theme : 'custom',
@@ -22,7 +22,7 @@
       <div id="recaptcha_widget" style="display:none">
          <div class="row">
             <div id="recaptcha_image" class="small-8 columns"></div>
-            <div class="small-4 columns"><a href="javascript:Recaptcha.reload()"><i class="fa fa-refresh"></i></a></div>
+            <div class="medium-4 columns"><a href="javascript:Recaptcha.reload()"><i class="fa fa-refresh"></i></a></div>
          </div>
          <div class="recaptcha_only_if_incorrect_sol" class="error">Incorrect please try again</div>
          <span class="recaptcha_only_if_image"><label for="recaptcha_response_field">Enter the words above:</label></span>

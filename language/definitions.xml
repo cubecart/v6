@@ -1901,7 +1901,7 @@
     <string name="already_upgraded" introduced="5.0.0"><![CDATA[Your store has already been upgraded. No further action is required.]]></string>
     <string name="button_restart" introduced="5.0.0"><![CDATA[Start Again]]></string>
     <string name="button_retry" introduced="5.0.0"><![CDATA[Try Again]]></string>
-    <string name="default_doc_title_welcome" introduced="5.0.0"><![CDATA[Welcome to CubeCart 6]]></string>
+    <string name="default_doc_title_welcome" introduced="5.0.0"><![CDATA[Welcome to CubeCart]]></string>
     <string name="default_doc_title_about" introduced="5.0.0"><![CDATA[About Us]]></string>
     <string name="default_doc_title_terms" introduced="5.0.0"><![CDATA[Terms and Conditions]]></string>
     <string name="default_doc_title_privacy" introduced="5.0.0"><![CDATA[Privacy Policy]]></string>
