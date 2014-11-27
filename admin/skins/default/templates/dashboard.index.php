@@ -117,13 +117,13 @@
 	<table>
 	  <thead>
 		<tr>
-		  <td width="120">{$LANG.orders.order_number}</td>
-		  <td width="16">&nbsp;</td>
+		  <td>{$LANG.orders.order_number}</td>
+		  <td>&nbsp;</td>
 		  <td>{$LANG.common.name}</td>
-		  <td width="190" nowrap="nowrap">{$LANG.common.status}</td>
-		  <td width="190">{$LANG.common.date}</td>
-		  <td width="75">{$LANG.basket.total}</td>
-		  <td width="60">&nbsp;</td>
+		  <td nowrap="nowrap">{$LANG.common.status}</td>
+		  <td>{$LANG.common.date}</td>
+		  <td>{$LANG.basket.total}</td>
+		  <td>&nbsp;</td>
 		</tr>
 	  </thead>
 	  <tbody>
