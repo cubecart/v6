@@ -120,18 +120,18 @@ if (isset($_POST['status'])) {
 
 	foreach ($_POST['status'] as $module_name => $status) {
 		$module_type = $_POST['type'][$module_name];
-		if($GLOBALS['db']->select('CubeCart_modules',false,array('folder' => $module_name))) {
-			$GLOBALS['db']->update('CubeCart_modules', array('status' => $status), array('folder' => $module_name), true);
-			if ($module_type=='plugins') {
-				if ($status) {
-					$GLOBALS['hooks']->install($module_name);
-				} else {
-					$GLOBALS['hooks']->uninstall($module_name);
-				}
+		
+		if ($module_type=='plugins') {
+			if ($status) {
+				$GLOBALS['hooks']->install($module_name);
+			} else {
+				$GLOBALS['hooks']->uninstall($module_name);
 			}
-		} else {
-			$GLOBALS['db']->insert('CubeCart_modules', array('status' => (int)$status, 'folder' => $module_name, 'module' => $module_type));
 		}
+		// Delete to prevent potential duplicate nightmare
+		$GLOBALS['db']->delete('CubeCart_modules',array('folder' => $module_name, 'module' => $module_type)); 
+		$GLOBALS['db']->insert('CubeCart_modules', array('status' => (int)$status, 'folder' => $module_name, 'module' => $module_type));
+		
 		// Update config
 		$GLOBALS['config']->set($module_name, 'status', $status);
 	}

@@ -333,17 +333,12 @@ class Module {
 					$updated = true;
 				}
 			}
-			// Check if a record already exists
-			if (($state = $GLOBALS['db']->select('CubeCart_modules', array('module_id'), array('module' => $this->_info['type'], 'folder' => $this->_local_name))) !== false) {
-				if ($GLOBALS['db']->update('CubeCart_modules', $data, array('module_id' => $state[0]['module_id']))) {
-					$updated = true;
-				}
-			} else {
-				$data['folder'] = $this->_local_name;
-				$data['module'] = $this->_info['type'];
-				if ($GLOBALS['db']->insert('CubeCart_modules', $data)) {
-					$updated = true;
-				}
+			// Delete to prevent potential duplicate nightmare
+			$GLOBALS['db']->delete('CubeCart_modules', array('module' => $this->_info['type'], 'folder' => $this->_local_name));
+			$data['folder'] = $this->_local_name;
+			$data['module'] = $this->_info['type'];
+			if ($GLOBALS['db']->insert('CubeCart_modules', $data)) {
+				$updated = true;
 			}
 			return $updated;
 		}
