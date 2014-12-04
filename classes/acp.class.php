@@ -275,7 +275,7 @@ class ACP {
 			$this->_wiki_page = preg_replace('#\W#', '_', ucwords($this->_wiki_page));
 			$page = (!empty($this->_wiki_namespace)) ? ucfirst($this->_wiki_namespace).':'.$this->_wiki_page : $this->_wiki_page;
 			// Assign and Parse
-			$GLOBALS['smarty']->assign('HELP_URL', 'http://wiki.cubecart.com/'.$page.'?useskin=chick');
+			$GLOBALS['smarty']->assign('HELP_URL', 'https://wiki.cubecart.com/'.$page.'?useskin=chick');
 			$GLOBALS['smarty']->assign('STORE_STATUS', !(bool)Config::getInstance()->get('config', 'offline'));
 		}
 	}
