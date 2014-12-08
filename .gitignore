@@ -1,6 +1,7 @@
 /includes/extra/snippet_*
 /includes/global.inc.*
 /includes/extra/importdata.tmp
+/modules/*
 !/modules/plugins/hooks.xml
 .DS_Store
 Thumbs.db
