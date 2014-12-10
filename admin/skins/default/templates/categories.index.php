@@ -105,7 +105,7 @@
     <fieldset>
 	  <div><label for="seo_meta_title">{$LANG.settings.seo_meta_title}</label><span><input type="text" name="cat[seo_meta_title]" id="seo_meta_title" class="textbox" value="{$CATEGORY.seo_meta_title}"></span></div>
 	  <div><label for="seo_path">{$LANG.settings.seo_path}</label><span><input type="text" name="seo_path" id="seo_path" class="textbox" value="{$CATEGORY.seo_path}"></span></div>
-	  <div><label for="seo_meta_keywords">{$LANG.settings.seo_meta_keywords}</label><span><textarea name="cat[seo_meta_keywords]" id="seo_meta_keywords" class="textbox">{$CATEGORY.seo_meta_keywords}</textarea></div>
+	  <div><label for="seo_meta_keywords">{$LANG.settings.seo_meta_keywords}</label><span><textarea name="cat[seo_meta_keywords]" id="seo_meta_keywords" class="textbox">{$CATEGORY.seo_meta_keywords}</textarea></span></div>
 	  <div><label for="seo_meta_description">{$LANG.settings.seo_meta_description}</label><span><textarea name="cat[seo_meta_description]" id="seo_meta_description" class="textbox">{$CATEGORY.seo_meta_description}</textarea></span></div>
 	</fieldset>
   </div>
@@ -162,7 +162,7 @@
   <fieldset>
 	  <div><label for="seo_meta_title">{$LANG.settings.seo_meta_title}</label><span><input type="text" name="translate[seo_meta_title]" id="seo_meta_title" class="textbox" value="{$TRANS.seo_meta_title}"></span></div>
 	  <div><label for="seo_path">{$LANG.settings.seo_path}</label><span><input type="text" name="seo_path" id="seo_path" class="textbox" value="{$TRANS.seo_path}"></span></div>
-	  <div><label for="seo_meta_keywords">{$LANG.settings.seo_meta_keywords}</label><span><textarea name="translate[cat_meta_keywords]" id="seo_meta_keywords" class="textbox">{$TRANS.seo_meta_keywords}</textarea></div>
+	  <div><label for="seo_meta_keywords">{$LANG.settings.seo_meta_keywords}</label><span><textarea name="translate[cat_meta_keywords]" id="seo_meta_keywords" class="textbox">{$TRANS.seo_meta_keywords}</textarea></span></div>
 	  <div><label for="seo_meta_description">{$LANG.settings.seo_meta_description}</label><span><textarea name="translate[seo_meta_description]" id="seo_meta_description" class="textbox">{$TRANS.seo_meta_description}</textarea></span></div>
 	</fieldset>
   </div>

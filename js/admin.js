@@ -4,6 +4,7 @@ $(window).load(function() {
 });
 
 $(document).ready(function() {
+
 	$('#rule-eu').click(function() {		
 		$( "#country-region" ).toggle( "slow", function() {});
 	});
@@ -70,7 +71,8 @@ $(document).ready(function() {
 
 	/* Filemanager inline widgets */
 	$('div.fm-filelist').each(function(){
-		$(this).fileTree({'root':'/', 'script':'./admin.php', 'group':$(this).attr('rel'), 'name':$(this).attr('id')});
+		var admin_file = $('#val_admin_file').text();
+		$(this).fileTree({'root':'/', 'script':'./'+admin_file, 'group':$(this).attr('rel'), 'name':$(this).attr('id')});
 	});
 
 	/* Tab Controller */
@@ -398,10 +400,11 @@ function optionAdd(source, target) {
 }
 
 function ajaxSelected(v, id, rel) {
+	var admin_file = $('#val_admin_file').text();
 	$('#result_'+id).val(v.id);
 	switch (rel.toLowerCase()) {
 		case 'user':
-			$.getJSON('./admin.php', {'_g':'xml','type':'address','q':v.id, 'function':'search'}, function(data){
+			$.getJSON('./'+admin_file, {'_g':'xml','type':'address','q':v.id, 'function':'search'}, function(data){
 				$('select.address-list>option.temporary').remove();
 				for (var i=0;i<data.length;i++) {
 					var option = document.createElement('option');
@@ -429,7 +432,7 @@ function ajaxSelected(v, id, rel) {
 	}
 }
 function ajaxSuggest(key, cont, rel) {
-	var script_name	= './admin.php';
+	var script_name	= './'+$('#val_admin_file').text();
 	var params		= { '_g': 'xml', 'type': rel, 'q':key, 'function':'search' };
 	$.get(script_name, params, function(obj){
 		var res	= [];
@@ -441,7 +444,8 @@ function ajaxSuggest(key, cont, rel) {
 }
 
 function ajaxNewsletter(news_id, cycle) {
-	$.getJSON('./admin.php', {'_g': 'xml', type: 'newsletter', q: news_id, page: cycle, 'function':'search'}, function(data){
+	var admin_file = $('#val_admin_file').text();
+	$.getJSON('./'+admin_file, {'_g': 'xml', type: 'newsletter', q: news_id, page: cycle, 'function':'search'}, function(data){
 		$('div#progress_bar').css({width: data.percent+'%'});
 		$('div#progress_bar_percent').text(Math.round(data.percent)+'%');
 		if (data.percent == 100 || data.complete == 'true') {
@@ -581,6 +585,7 @@ $('a.add, a.inline-add, input[type="button"].add').on('click', function(){
 	if ($(source).length == 1) {
 		var varname	= $(source).attr('name');
 		var content	= $(source).clone(true).attr({name: ''}).removeAttr('id').removeClass('inline-source');
+		var admin_file = $('#val_admin_file').text();
 		$(parent).find(':input').each(function(){
 			var rel		= $(this).attr('rel');
 			var value	= $(this).val();
@@ -593,7 +598,7 @@ $('a.add, a.inline-add, input[type="button"].add').on('click', function(){
 			
 			if(rel=='product_id' && value>0) {
 				$.ajax({
-					url: './admin.php',
+					url: './'+admin_file,
 					type: 'GET',
 					cache: false,
 					data: { '_g': 'xml', 'type': 'prod_options','q':value,'function':'template' },
@@ -724,12 +729,13 @@ $('#gui_message').on('click', function(){
 });
 
 $('#seo').on("change",function() {
+	var admin_file = $('#val_admin_file').text();
 	if ($('#seo').val() == 1) {
 		seo = "seo_code";
 	} else {
 		seo = "no_seo_code";
 	}
-	$.getJSON('./admin.php', {'_g': 'xml', type: seo, 'function':'get'}, function(data){
+	$.getJSON('./'+admin_file, {'_g': 'xml', type: seo, 'function':'get'}, function(data){
 		$('#htaccess').val(data.content);
 	});
 });
