@@ -104,8 +104,8 @@ if (isset($_POST['process'])) {
 									} else if (function_exists('mime_content_type')) {
 										$mime	= mime_content_type($root_image_path);
 									} else {
-										$data	= getimagesize($root_image_path);
-										$mime	= $data['mime'];
+										$img_info	= getimagesize($root_image_path);
+										$mime	= $img_info['mime'];
 									}
 									$filesize = filesize($root_image_path);
 									$filesize = ($filesize > 0)? $filesize : 0;
