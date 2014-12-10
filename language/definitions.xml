@@ -1097,6 +1097,8 @@
     <string name="select_all" introduced="5.0.0"><![CDATA[Select All]]></string>
     <string name="sort" introduced="5.0.0"><![CDATA[Sort]]></string>
     <string name="sort_by" introduced="5.0.0"><![CDATA[Sort by]]></string>
+    <string name="sort_by_desc" introduced="5.0.0"><![CDATA[Sort by %s descending]]></string>
+    <string name="sort_by_asc" introduced="5.0.0"><![CDATA[Sort by %s ascending]]></string>
     <string name="submit" introduced="5.0.0"><![CDATA[Submit]]></string>
     <string name="uncheck" introduced="5.0.0"><![CDATA[Uncheck all]]></string>
     <string name="verify_human" introduced="5.0.0"><![CDATA[Verify you are a human]]></string>

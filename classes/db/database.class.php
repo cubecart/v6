@@ -523,7 +523,7 @@ class Database_Contoller {
 		}
 
 		if ($columns) {
-			if (is_array($allowed) && is_array($columns)) {
+			if (isset($allowed) && isset($columns) && is_array($allowed) && is_array($columns)) {
 				foreach ($columns as $key => $field) {
 					if (in_array($field, $allowed) && !is_numeric($field)) {
 						if (!is_numeric($key) && in_array(strtoupper($key), array('DISTINCT'))) {
