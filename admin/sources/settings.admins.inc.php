@@ -55,7 +55,7 @@ if (isset($_POST['admin']) && is_array($_POST['admin']) && Admin::getInstance()-
 		}
 
 		//If there only one super then don't allow demoting
-		if ($record['super_user'] == '0' && $count <= 1) {
+		if ($record['super_user'] == '0' && $count <= 1 && Admin::getInstance()->superUser() && (int)$_POST['admin_id'] === (int)Admin::getInstance()->getId()) {
 			$record['super_user'] = '1';
 		}
 		$record['new_password'] = 1;
