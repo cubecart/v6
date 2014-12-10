@@ -114,7 +114,7 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
 	} else {
 		$GLOBALS['main']->setACPWarning($lang['settings']['error_settings_update']);
 	}
-	$GLOBALS['cache']->clear();
+	
 	httpredir(currentPage());
 }
 
@@ -139,7 +139,7 @@ if (isset($_GET['logo']) && isset($_GET['logo_id'])) {
 			break;
 		}
 	}
-	$GLOBALS['cache']->clear();
+	
 	$GLOBALS['gui']->rebuildLogos();
 	httpredir(currentPage(array('logo', 'logo_id')), 'Logos');
 }

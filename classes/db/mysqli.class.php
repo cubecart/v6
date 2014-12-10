@@ -168,6 +168,8 @@ class Database extends Database_Contoller {
 
 		if (!empty($this->_query)) {
 			$this->_result = array();
+			// Don't read from cache in admin CP but write only for front end
+			$cache = (defined('ADMIN_CP') && ADMIN_CP) ? false : $cache;
 			if ($cache) {
 				//Try getting the SQL cache
 				$this->_result = $this->_getCached($this->_query);

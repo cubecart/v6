@@ -95,7 +95,7 @@ if (isset($_POST['cat']) && is_array($_POST['cat']) && Admin::getInstance()->per
 
 	foreach ($GLOBALS['hooks']->load('admin.category.save.post_process') as $hook) include $hook;
 
-	$GLOBALS['cache']->clear();
+	
 	if ($redirect) {
 		httpredir(currentPage($keys_remove, $keys_add));
 	}
@@ -122,7 +122,7 @@ if (isset($_GET['delete']) && is_numeric($_GET['delete']) && Admin::getInstance(
 	} else {
 		$GLOBALS['main']->setACPWarning($lang['settings']['error_category_delete_cats']);
 	}
-	$GLOBALS['cache']->clear();
+	
 	httpredir(currentPage(array('delete')));
 }
 
@@ -161,7 +161,7 @@ if (isset($_POST['translate']) && isset($_POST['cat_id']) && is_numeric($_POST['
 
 	foreach ($GLOBALS['hooks']->load('admin.category.translate.save.post_process') as $hook) include $hook;
 
-	$GLOBALS['cache']->clear();
+	
 	httpredir(currentPage($remarray, $addarray, $anchor));
 }
 
@@ -185,7 +185,7 @@ if (isset($_POST['visible']) && is_array($_POST['visible'])) {
 	foreach ($_POST['visible'] as $cat_id => $visible) {
 		$update[$cat_id]['hide'] = $visible && $_POST['status'][$cat_id]  ? 0 : 1;
 	}
-	$GLOBALS['cache']->clear();
+	
 }
 
 if (!empty($update) && is_array($update) && Admin::getInstance()->permissions('categories', CC_PERM_EDIT)) {
@@ -199,7 +199,7 @@ if (!empty($update) && is_array($update) && Admin::getInstance()->permissions('c
 	} else {
 		$GLOBALS['main']->setACPWarning($lang['settings']['error_category_status']);
 	}
-	$GLOBALS['cache']->clear();
+	
 	httpredir(currentPage());
 }
 
