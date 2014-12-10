@@ -32,7 +32,7 @@ if (isset($_POST['execute'])) {
 
 $GLOBALS['main']->addTabControl($lang['maintain']['tab_query_sql'], 'general');
 
-$GLOBALS['smarty']->assign('INFO', sprintf($lang['maintain']['title_db_info'], mysql_get_server_info(), $glob['dbhost'], $glob['dbusername'], $glob['dbhost']));
+$GLOBALS['smarty']->assign('INFO', sprintf($lang['maintain']['title_db_info'], $GLOBALS['db']->serverVersion(), $glob['dbhost'], $glob['dbusername'], $glob['dbhost']));
 $prefix = (!$GLOBALS['config']->isEmpty('config', 'dbprefix')) ? $GLOBALS['config']->get('config', 'dbprefix') : false;
 $GLOBALS['smarty']->assign('PREFIX', $prefix);
 if (!empty($_POST['query'])) {

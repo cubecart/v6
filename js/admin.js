@@ -780,7 +780,7 @@ $('#parent').on("change",function() {
 });
 
 $('#cat_subset').on("change",function(){
-    $location = document.URL;
+    $location = document.URL.replace(/&?page=[0-9]/, '');
     if ($location.indexOf('cat_id') != -1) {
            $location = removeVariableFromURL($location, 'cat_id');
     }

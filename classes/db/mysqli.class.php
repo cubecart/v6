@@ -138,7 +138,7 @@ class Database extends Database_Contoller {
 	 * @return string
 	 */
 	public function serverVersion() {
-		return $this->_db_connect_id->server_version;
+		return $this->_db_connect_id->server_info;
 	}
 
 	/**
