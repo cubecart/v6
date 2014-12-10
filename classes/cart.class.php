@@ -1197,8 +1197,10 @@ class Cart {
 							$excluded_tax_total += $excluded_shipping['tax']['amount'];
 						}
 					}
-					$excluded_ave_tax_rate = ($excluded_tax_total / $excluded_subtotal);
-					$ave_tax_rate = ($ave_tax_rate + $excluded_ave_tax_rate) / 2;
+					if($excluded_tax_total>0) {
+						$excluded_ave_tax_rate = ($excluded_tax_total / $excluded_subtotal);
+						$ave_tax_rate = ($ave_tax_rate + $excluded_ave_tax_rate) / 2;
+					}
 					$subtotal += $excluded_subtotal;
 				}
 
