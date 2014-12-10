@@ -163,7 +163,7 @@ if (isset($_GET['action']) && (Admin::getInstance()->superUser() || ((int)$_GET[
 				unset($admin[0]['super_user']);
 			}
 			$GLOBALS['smarty']->assign('ADMIN', $admin[0]);
-			$GLOBALS['gui']->addBreadcrumb($admin[0]['name']);
+			$GLOBALS['gui']->addBreadcrumb($admin[0]['name'], currentPage());
 			## Load Permissions data
 			$permissions = $GLOBALS['db']->select('CubeCart_permissions', false, array('admin_id' => $admin[0]['admin_id']));
 			if ($permissions) {
