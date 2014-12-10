@@ -243,7 +243,7 @@ if (isset($_POST['process'])) {
 				'isbn'				=> $lang['catalogue']['product_isbn'],
 				'brand'				=> $lang['catalogue']['product_brand'],
 				'gtin'				=> $lang['catalogue']['product_gtin'],
-				'man'				=> $lang['catalogue']['product_mpn'],
+				'mpn'				=> $lang['catalogue']['product_mpn'],
 				'condition'			=> $lang['catalogue']['condition']
 			);
 			$fp		= fopen($source, 'r');
