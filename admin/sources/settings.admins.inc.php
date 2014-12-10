@@ -127,10 +127,10 @@ if (isset($_POST['status']) && is_array($_POST['status']) && Admin::getInstance(
 
 $GLOBALS['gui']->addBreadcrumb($GLOBALS['lang']['admins']['title_administrators']);
 
-if (isset($_GET['action']) && (Admin::getInstance()->superUser() || ((int)$_GET['admin_id'] === (int)$session->admin_id || Admin::getInstance()->permissions('users', CC_PERM_FULL)))) {
+if (isset($_GET['action']) && (Admin::getInstance()->superUser() || ((int)$_GET['admin_id'] === (int)Admin::getInstance()->getId() || Admin::getInstance()->permissions('users', CC_PERM_FULL)))) {
 	if ($_GET['action'] == 'delete' && is_numeric($_GET['admin_id'])) {
 		//If there only one super then don't allow deleting
-		if ($count > 1 && ($admin_user = $GLOBALS['db']->select('CubeCart_admin_users', false, array('admin_id' => (int)$_GET['admin_id']))) !== false) {
+		if ($admin_user = $GLOBALS['db']->select('CubeCart_admin_users', false, array('admin_id' => (int)$_GET['admin_id']))) {
 			if ($GLOBALS['db']->delete('CubeCart_admin_users', array('admin_id' => (int)$admin_user[0]['admin_id']))) {
 				$GLOBALS['main']->setACPNotify(sprintf($lang['admins']['notify_admin_delete'], $admin_user[0]['username']));
 			} else {
@@ -236,10 +236,10 @@ if (isset($_GET['action']) && (Admin::getInstance()->superUser() || ((int)$_GET[
 			$no_delete = true;
 		}
 		foreach ($admins as $admin) {
-			if (!Admin::getInstance()->superUser() && (int)$admin['admin_id'] !== (int)$session->admin_id) {
+			if (!Admin::getInstance()->superUser() && (int)$admin['admin_id'] !== (int)Admin::getInstance()->getId()) {
 				continue;
 			}
-			if (!$no_delete || $admin['super_user'] != 1) {
+			if (!$no_delete || $admin['super_user'] == 0) {
 				$admin['link_delete'] = currentPage(null, array('action' => 'delete', 'admin_id' => $admin['admin_id']));
 			}
 			$admin['link_edit'] = currentPage(null, array('action' => 'edit', 'admin_id' => $admin['admin_id']));
