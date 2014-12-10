@@ -64,7 +64,7 @@ if (isset($gc['image'])) {
 
 if (($taxes = $GLOBALS['db']->select('CubeCart_tax_class')) !== false) {
 	foreach ($taxes as $tax) {
-		$tax['selected'] = ($gc['taxType'] == $tax['id'])? ' selected="selected"' : '';
+		$tax['selected'] = (isset($gc['taxType']) && $gc['taxType'] == $tax['id'])? ' selected="selected"' : '';
 		$smarty_data['taxs'][] = $tax;
 	}
 	$GLOBALS['smarty']->assign('TAXES', $smarty_data['taxs']);

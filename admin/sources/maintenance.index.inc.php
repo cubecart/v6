@@ -485,7 +485,7 @@ $GLOBALS['main']->addTabControl($lang['maintain']['tab_query_sql'], 'general', '
 ##########
 
 ## Database
-if ($database_result) {
+if (isset($database_result) && $database_result) {
 	$GLOBALS['smarty']->assign('TABLES_AFTER', $database_result);
 } elseif (($tables = $GLOBALS['db']->getRows()) !== false) {
 	foreach ($tables as $table) {

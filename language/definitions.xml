@@ -929,6 +929,8 @@
     <string name="help_macro" introduced="5.0.0"><![CDATA[Note: Visitors only need to add their email address to subscribe to the mailing list. Some data will only be known if they are a registered customer.]]></string>
     <string name="help_test_send" introduced="5.0.0"><![CDATA[Please use this to send a test copy of the email before sending it out to your customers. The email received will be sent in multipart format.<br />To view the HTML or text version you may need to edit your mail client settings.<br />Your customers will either see rich HTML or plain text depending on their email client settings.]]></string>
     <string name="important" introduced="5.0.0"><![CDATA[<strong>IMPORTANT:</strong> Macros must be retained in the email content for it to be populated with suitable data. Dynamic regions or repeat regions must also be retained (e.g. {foreach from=$products item=item}Dynamic data or repeat data{/foreach}).]]></string>
+    <string name="macro_sender_name_first" introduced="6.0.0"><![CDATA[Senders first name.]]></string>
+    <string name="macro_sender_name_last" introduced="6.0.0"><![CDATA[Senders last name.]]></string>
     <string name="macro_admin_name" introduced="5.0.0"><![CDATA[The administrator's name.]]></string>
     <string name="macro_cert_code" introduced="5.0.0"><![CDATA[The certificate's redemption code.]]></string>
     <string name="macro_cert_recipient" introduced="5.0.0"><![CDATA[Recipient's name.]]></string>

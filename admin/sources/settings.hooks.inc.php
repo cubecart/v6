@@ -21,7 +21,7 @@ if (Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
 
 	$snippet_redirect = false;
 
-	if (is_array($_POST['snippet_status'])) {
+	if (isset($_POST['snippet_status']) && is_array($_POST['snippet_status'])) {
 		foreach ($_POST['snippet_status'] as $key => $value) {
 			if ($GLOBALS['db']->update('CubeCart_code_snippet', array('enabled' => $value), array('snippet_id' => $key))) {
 				$snippet_redirect = true;
@@ -243,11 +243,11 @@ if (isset($_GET['plugin']) && isset($plugins[(string)$_GET['plugin']]) && !is_nu
 		$snippet[0] = $_POST['snippet'];
 		$GLOBALS['smarty']->assign('SNIPPET', $snippet[0]);
 		$GLOBALS['smarty']->assign('DISPLAY_SNIPPET_FORM', true);
-	} elseif ($_GET['add_snippet']) {
+	} elseif (isset($_GET['add_snippet']) && $_GET['add_snippet']) {
 		$GLOBALS['smarty']->assign('DISPLAY_SNIPPET_FORM', true);
 	}
 
-	if (is_array($snippet[0])) {
+	if (isset($snippet[0]) && is_array($snippet[0])) {
 		$snippet[0]['php_code'] = str_replace(array('<?php', '?>'), array('{php}', '{/php}'), $snippet[0]['php_code']);
 		$GLOBALS['smarty']->assign('SNIPPET', $snippet[0]);
 	}

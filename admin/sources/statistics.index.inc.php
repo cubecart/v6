@@ -178,6 +178,7 @@ if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
 	
 	$g_graph_data['prodsales']['data'] = "['".$lang['statistics']['percentage_of_sales']."','".$lang['common']['percentage']."'],";
 	
+	$smarty_data['product_sales'] = array();
 	foreach ($results as $key => $result) {
 		$result['key']  = (($page-1)*$per_page)+($key+1);
 		$result['percent'] = 100*($result['quan']/$divider[0]['totalProducts']);
@@ -187,7 +188,7 @@ if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
 		$smarty_data['product_sales'][] = $result;
 	}
 	
-	$g_graph_data['prodsales']['data'] .= implode(',',$tmp_col_data);
+	$g_graph_data['prodsales']['data'] .= isset($tmp_col_data) ? implode(',',$tmp_col_data) : '';
 	unset($tmp_col_data);
 	
 	$g_graph_data['prodsales']['title'] = $lang['statistics']['percentage_of_sales'];
@@ -247,6 +248,7 @@ if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
 	
 	$g_graph_data['search']['data'] = "['".$lang['statistics']['percentage_of_views']."','".$lang['common']['percentage']."'],";
 	
+	$smarty_data['search_terms'] = array();
 	foreach ($results as $key => $result) {
 		$result['percent']  = 100*($result['hits']/$divider[0]['totalHits']);
 		$max_percent = ($result['percent']>$max_percent) ? $result['percent'] : $max_percent;
@@ -257,7 +259,7 @@ if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
 		$smarty_data['search_terms'][] = $result;
 	}
 	
-	$g_graph_data['search']['data'] .= implode(',',$tmp_col_data);
+	$g_graph_data['search']['data'] .= isset($tmp_col_data) ? implode(',',$tmp_col_data) : '';
 	unset($tmp_col_data);
 	$g_graph_data['search']['title'] = '';
 	$g_graph_data['search']['hAxis'] = $lang['statistics']['search_term'];
@@ -279,6 +281,7 @@ if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
 	
 	$g_graph_data['best_customers']['data'] = "['".$lang['statistics']['percentage_of_views']."','".sprintf($lang['statistics']['sales_volume'], 		$GLOBALS['config']->get('config', 'default_currency'))."'],";
 	
+	$smarty_data['best_customers'] = array();
 	foreach ($results as $key => $result) {
 		$result['key']  = (($page-1)*$per_page)+($key+1);
 		$result['expenditure'] = Tax::getInstance()->priceFormat($result['customer_expenditure']);
@@ -288,7 +291,7 @@ if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
 		$smarty_data['best_customers'][] = $result;
 	}
 	
-	$g_graph_data['best_customers']['data'] .= implode(',',$tmp_col_data);
+	$g_graph_data['best_customers']['data'] .= isset($tmp_col_data) ? implode(',',$tmp_col_data) : '';
 	unset($tmp_col_data);
 	$g_graph_data['best_customers']['title'] = '';
 	$g_graph_data['best_customers']['hAxis'] = $lang['dashboard']['inv_customers'];
@@ -303,7 +306,7 @@ if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
 // Customers Online
 $timeLimit = time()-1800;  // 30 minutes
 
-if ($_GET['bots']=='false') {
+if (isset($_GET['bots']) && $_GET['bots']=='false') {
 	$filter = '(S.session_last > S.session_start) AND ';
 	$GLOBALS['smarty']->assign('BOTS', false);
 } else {
@@ -314,6 +317,7 @@ if ($_GET['bots']=='false') {
 $query  = sprintf("SELECT S.*, C.first_name, C.last_name FROM %1\$sCubeCart_sessions AS S LEFT JOIN %1\$sCubeCart_customer AS C ON S.customer_id = C.customer_id WHERE ".$filter."S.session_last>".$timeLimit." ORDER BY S.session_last DESC", $glob['dbprefix']);
 if (($results = $GLOBALS['db']->query($query)) !== false) {
 	$GLOBALS['main']->addTabControl($lang['statistics']['title_customers_active'], 'stats_online', false, false, count($results));
+	$smarty_data['users_online'] = array();
 	foreach ($results as $user) {
 		$user['is_admin']  = ((int)$user['admin_id'] > 0) ? 1 : 0;
 		$user['name']   = ((int)$user['customer_id'] != 0) ? sprintf('%s %s', $user['first_name'], $user['last_name']) : $lang['common']['guest'];

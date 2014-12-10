@@ -270,7 +270,7 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
 		}
 		$send_redirect = true;
 	}
-	if ($send_redirect) {
+	if (isset($send_redirect) && $send_redirect) {
 		httpredir(currentPage(array('delete_addr')));
 	}
 }
@@ -435,7 +435,7 @@ if (isset($_GET['action']) && Admin::getInstance()->permissions('customers', CC_
 				foreach ($group_membership as $membership) {
 					$member_groups[] = $membership['group_name'];
 				}
-				$customer['groups'] = implode(',', $member_groups);
+				$customer['groups'] = isset($member_groups) ? implode(',', $member_groups) : '';
 			}
 			foreach ($GLOBALS['hooks']->load('admin.customer.list') as $hook) include $hook;
 			unset($group_membership, $member_groups);

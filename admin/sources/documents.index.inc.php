@@ -150,7 +150,7 @@ if (isset($_GET['action'])) {
 		foreach ($languages as $option) {
 			if ($_GET['action']=='translate' && $option['code'] == $GLOBALS['config']->get('config', 'default_language')) continue;
 
-			$option['selected'] = (($option['code'] == $document[0]['doc_lang']) || (!isset($document[0]['doc_lang']) && $option['code']==$GLOBALS['config']->get('config', 'default_language'))) ? ' selected="selected"' : '';
+			$option['selected'] = ((isset($document[0]['doc_lang']) && $option['code'] == $document[0]['doc_lang']) || (!isset($document[0]['doc_lang']) && $option['code']==$GLOBALS['config']->get('config', 'default_language'))) ? ' selected="selected"' : '';
 			$smarty_data['languages'][] = $option;
 		}
 		$GLOBALS['smarty']->assign('LANGUAGES', $smarty_data['languages']);
@@ -163,13 +163,13 @@ if (isset($_GET['action'])) {
 				$options = array($lang['common']['no'], $lang['common']['yes']);
 			}
 			foreach ($options as $value => $title) {
-				$selected = ($data[$field] == $value) ? ' selected="selected"' : '';
+				$selected = (isset($data[$field]) && $data[$field] == $value) ? ' selected="selected"' : '';
 				$smarty_data['targets'][] = array('value' => $value, 'title' => $title, 'selected' => $selected);
 			}
 		}
 		$GLOBALS['smarty']->assign('TARGETS', $smarty_data['targets']);
 	}
-	$data['seo_path'] = $GLOBALS['seo']->getdbPath('doc', $data['doc_id']);
+	$data['seo_path'] = isset($data['doc_id']) ? $GLOBALS['seo']->getdbPath('doc', $data['doc_id']) : '';
 	if (!isset($data['navigation_link'])) {
 		$data['navigation_link'] = 1;
 	}

@@ -147,6 +147,7 @@ if (isset($_POST['status'])) {
 
 $module_paths = glob("modules/*/*/config.xml");
 $i=0;
+$modules = false;
 foreach ($module_paths as $module_path) {
 
 	$xml   = new SimpleXMLElement(file_get_contents($module_path));
@@ -173,6 +174,7 @@ foreach ($module_paths as $module_path) {
 	);
 	$i++;
 }
+
 if(is_array($modules)) {
 	ksort($modules);
 }

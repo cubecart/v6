@@ -266,6 +266,8 @@ if (isset($_GET['action'])) {
 					$product['line_formatted'] = Tax::getInstance()->priceFormat($product['price']);
 					$product['price_total_formatted'] = Tax::getInstance()->priceFormat($price_total);
 
+					$product['options_array'] = false;
+
 					if (!empty($product['product_options']) && preg_match('/^a:[0-9]/', $product['product_options'])) {
 						$product['options_array'] = cc_unserialize($product['product_options']);
 						$product['options_text'] = implode(' ', cc_unserialize($product['product_options']));

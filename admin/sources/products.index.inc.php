@@ -509,7 +509,7 @@ if (isset($_POST['translate']) && isset($_POST['product_id']) && is_numeric($_PO
 	httpredir(currentPage($rem_array, $add_array), 'translate');
 }
 
-if (((isset($_GET['delete']) && !empty($_GET['delete'])) || is_array($_POST['delete'])) && Admin::getInstance()->permissions('products', CC_PERM_DELETE)) {
+if (((isset($_GET['delete']) && !empty($_GET['delete'])) || (isset($_POST['delete']) && is_array($_POST['delete']))) && Admin::getInstance()->permissions('products', CC_PERM_DELETE)) {
 	// Delete Product
 	foreach ($GLOBALS['hooks']->load('admin.product.delete') as $hook) include $hook;
 
@@ -1067,6 +1067,7 @@ if (isset($_GET['action'])) {
 			value_name = value name e.g. large
 
 		*/
+		$unique_groups = array();
 		if ($options) {
 			// Work out unique groups
 			$key_id = -1;
@@ -1102,6 +1103,7 @@ if (isset($_GET['action'])) {
 			return $output;
 		}
 		$option_matrix = option_matrix($unique_groups);
+		$possible = false;
 
 		if (is_array($option_matrix)):
 			foreach ($option_matrix as $matrix_values) {
@@ -1125,13 +1127,14 @@ if (isset($_GET['action'])) {
 		}
 
 		// update cached name
-		if (is_array($smarty_data['option_matrix']['all_possible'])) {
+		if (isset($smarty_data['option_matrix']['all_possible']) && is_array($smarty_data['option_matrix']['all_possible'])) {
 			foreach ($smarty_data['option_matrix']['all_possible'] as $option_group) {
 				$GLOBALS['db']->update('CubeCart_option_matrix', array('cached_name' => $option_group['options_values'], 'status' => 1), array('options_identifier' => $option_group['options_identifier']));
 			}
 		}
 
 		// Get existing
+		$smarty_data['option_matrix'] = array();
 		if ($existing_matrices = $GLOBALS['db']->select('CubeCart_option_matrix', false, array('product_id'=>$product_id))) {
 			foreach ($existing_matrices as $existing_matrix) {
 				$smarty_data['option_matrix']['existing'][$existing_matrix['options_identifier']] = $existing_matrix;
@@ -1156,9 +1159,9 @@ if (isset($_GET['action'])) {
 			$result[0][$key] = htmlentities($value, ENT_COMPAT, 'UTF-8');
 		}
 		$result[0]['auto_code_checked'] = (empty($result[0]['product_code'])) ? 'checked="checked"' : '';
-		$result[0]['seo_path'] = $GLOBALS['seo']->getdbPath('prod', $result[0]['product_id']);
+		$result[0]['seo_path'] = isset($result[0]['product_id']) ? $GLOBALS['seo']->getdbPath('prod', $result[0]['product_id']) : '';
 
-		$master_image = $GLOBALS['gui']->getProductImage((int)$_GET['product_id']);
+		$master_image = isset($_GET['product_id']) ? $GLOBALS['gui']->getProductImage((int)$_GET['product_id']) : '';
 		$result[0]['master_image'] =  !empty($master_image) ? $master_image : 'images/general/px.gif';
 
 		// Update global stock level when matrix stock level in use

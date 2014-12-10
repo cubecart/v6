@@ -217,7 +217,7 @@ class HookLoader {
 	 * @return bool
 	 */
 	public function scan_all_plugins($dir = 'plugins', $enabled = false) {
-
+		$plugins = false;
 		$dir = ($dir=='plugins') ? $this->_hook_dir : $dir;
 		if (($folders = glob($dir.'/'.'*', GLOB_ONLYDIR)) !== false) {
 			foreach ($folders as $folder) {
