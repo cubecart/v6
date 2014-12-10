@@ -261,8 +261,16 @@ class Debug {
 			// Display SQL Queries and Errors
 			if (!empty($this->_sql)) {
 				$output[] = '<strong>'.Database::getInstance()->getDbEngine().'</strong><br />';
+
+				if(defined('ADMIN_CP') && ADMIN_CP) {
+					$output[] = '### In the admin control panel SQL cache is written but not read! ###<br />';
+				} else {
+					$output[] = '<br />';
+				}
+
 				if (!empty($this->_sql['query'])) {
-					$output[] = '<strong>Queries ('.count($this->_sql['query']).')</strong>:<br />';
+					$output[] = '<strong>Queries ('.count($this->_sql['query']).')</strong>:';
+
 					foreach ($this->_sql['query'] as $index => $query) {
 						if (!empty($query)) {
 							$output[] = '[<strong>'.($index + 1).'</strong>] '.strip_tags($query).'<br />';

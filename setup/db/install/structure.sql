@@ -609,7 +609,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_notes` (
 	PRIMARY KEY (`note_id`),
 	KEY `admin_id` (`admin_id`,`cart_order_id`,`time`),
 	FULLTEXT KEY `content` (`content`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_order_summary` (
 	`cart_order_id` VARCHAR(18) NOT NULL,

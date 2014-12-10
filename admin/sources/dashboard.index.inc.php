@@ -165,7 +165,7 @@ if ($unsettled_orders) {
 		$order['status'] = $lang['order_state']['name_'.$order['status']];
 		$orders[$order['cart_order_id']] = $order;
 	}
-	if (($notes = $GLOBALS['db']->select('CubeCart_order_notes', array('cart_order_id', 'time', 'content'), array('cart_order_id' => $cart_order_ids))) !== false) {
+	if (($notes = $GLOBALS['db']->select('CubeCart_order_notes', '`cart_order_id`,`time`,`content`', array('cart_order_id' => $cart_order_ids))) !== false) {
 		foreach ($notes as $note) {
 			$order_notes[$note['cart_order_id']]['notes'][] = $note;
 		}
