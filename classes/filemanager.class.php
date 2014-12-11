@@ -321,7 +321,8 @@ class FileManager {
 								header('Vary: User-Agent');
 
 								if (($openfile = fopen($file, 'rb')) !== false) {
-									while (!feof($openfile)) { // && !connection_status()) {
+									while (!feof($openfile)) {
+										set_time_limit(120);
 										echo fread($openfile, 8192);
 										flush();
 									}
