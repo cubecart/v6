@@ -1014,13 +1014,18 @@ class Cubecart {
 				$GLOBALS['smarty']->assign('STATE_JSON', state_json());
 			}
 			if (!isset($this->_basket['recaptcha'])) {
-				$GLOBALS['smarty']->assign('LANG_RECAPTCHA', array(
+				$recaptcha = $GLOBALS['config']->get('config', 'recaptcha');
+				if($recaptcha==2) {
+					$GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
+				} else {
+					$GLOBALS['smarty']->assign('LANG_RECAPTCHA', array(
 						'reload_words'  => sprintf($GLOBALS['language']->recaptcha['reload_words'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('audio')"),
 						'reload_numbers' => sprintf($GLOBALS['language']->recaptcha['reload_numbers'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('image')"),
 					));
-				if ($GLOBALS['config']->get('config', 'recaptcha') && !$GLOBALS['session']->get('confirmed', 'recaptcha')) {
-					$GLOBALS['smarty']->assign('DISPLAY_RECAPTCHA', recaptcha_get_html($GLOBALS['recaptcha_keys']['captcha_public'], $GLOBALS['recaptcha']['error'], CC_SSL));
-					$GLOBALS['smarty']->assign('RECAPTCHA', true);
+					if ($GLOBALS['config']->get('config', 'recaptcha') && !$GLOBALS['session']->get('confirmed', 'recaptcha')) {
+						$GLOBALS['smarty']->assign('DISPLAY_RECAPTCHA', recaptcha_get_html($GLOBALS['recaptcha_keys']['captcha_public'], $GLOBALS['recaptcha']['error'], CC_SSL));
+						$GLOBALS['smarty']->assign('RECAPTCHA', true);
+					}
 				}
 			}
 			$GLOBALS['smarty']->assign('TERMS_CONDITIONS', (!$GLOBALS['config']->get('config', 'disable_checkout_terms') && $terms = $GLOBALS['db']->select('CubeCart_documents', false, array('doc_terms' => '1'))) ? $GLOBALS['seo']->buildURL('doc', $terms[0]['doc_id'], '&') : false);
@@ -1303,12 +1308,17 @@ class Cubecart {
 			}
 
 			if ($GLOBALS['config']->get('config', 'recaptcha') && !$GLOBALS['session']->get('confirmed', 'recaptcha')) {
-				$GLOBALS['smarty']->assign('LANG_RECAPTCHA', array(
-						'reload_words' => sprintf($GLOBALS['language']->recaptcha['reload_words'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('audio')"),
-						'reload_numbers' => sprintf($GLOBALS['language']->recaptcha['reload_numbers'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('image')"),
-					));
-				$GLOBALS['smarty']->assign('DISPLAY_RECAPTCHA', recaptcha_get_html($GLOBALS['recaptcha_keys']['captcha_public'], $GLOBALS['session']->get('error', 'recaptcha'), CC_SSL));
-				$GLOBALS['smarty']->assign('RECAPTCHA', true);
+				$recaptcha = $GLOBALS['config']->get('config', 'recaptcha');
+				if($recaptcha==2) {
+					$GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
+				} else {
+					$GLOBALS['smarty']->assign('LANG_RECAPTCHA', array(
+							'reload_words' => sprintf($GLOBALS['language']->recaptcha['reload_words'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('audio')"),
+							'reload_numbers' => sprintf($GLOBALS['language']->recaptcha['reload_numbers'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('image')"),
+						));
+					$GLOBALS['smarty']->assign('DISPLAY_RECAPTCHA', recaptcha_get_html($GLOBALS['recaptcha_keys']['captcha_public'], $GLOBALS['session']->get('error', 'recaptcha'), CC_SSL));
+					$GLOBALS['smarty']->assign('RECAPTCHA', true);
+				}
 			}
 			$content = $GLOBALS['smarty']->fetch('templates/content.contact.php');
 			$GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
@@ -2410,12 +2420,18 @@ class Cubecart {
 	 */
 	private function _recaptcha($force = false) {
 		if ($force || (!$GLOBALS['user']->is() && $GLOBALS['config']->get('config', 'recaptcha') && !$GLOBALS['session']->get('confirmed', 'recaptcha'))) {
-			$GLOBALS['smarty']->assign('LANG_RECAPTCHA', array(
-					'reload_words'  => sprintf($GLOBALS['language']->recaptcha['reload_words'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('audio')"),
-					'reload_numbers' => sprintf($GLOBALS['language']->recaptcha['reload_numbers'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('image')"),
-				));
-			$GLOBALS['smarty']->assign('DISPLAY_RECAPTCHA', recaptcha_get_html($GLOBALS['recaptcha_keys']['captcha_public'], $GLOBALS['recaptcha']['error'], CC_SSL));
-			$GLOBALS['smarty']->assign('RECAPTCHA', true);
+			
+			$recaptcha = $GLOBALS['config']->get('config', 'recaptcha');
+			if($recaptcha==2) {
+				$GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
+			} else {
+				$GLOBALS['smarty']->assign('LANG_RECAPTCHA', array(
+						'reload_words'  => sprintf($GLOBALS['language']->recaptcha['reload_words'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('audio')"),
+						'reload_numbers' => sprintf($GLOBALS['language']->recaptcha['reload_numbers'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('image')"),
+					));
+				$GLOBALS['smarty']->assign('DISPLAY_RECAPTCHA', recaptcha_get_html($GLOBALS['recaptcha_keys']['captcha_public'], $GLOBALS['recaptcha']['error'], CC_SSL));
+				$GLOBALS['smarty']->assign('RECAPTCHA', true);
+			}
 		}
 	}
 
@@ -2564,12 +2580,17 @@ class Cubecart {
 		if (!$GLOBALS['user']->is()) {
 			// Email validation thingy will go here
 			if ($GLOBALS['config']->get('config', 'recaptcha') && !$GLOBALS['session']->get('confirmed', 'recaptcha')) {
-				$GLOBALS['smarty']->assign('LANG_RECAPTCHA', array(
-						'reload_words'  => sprintf($GLOBALS['language']->recaptcha['reload_words'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('audio')"),
-						'reload_numbers' => sprintf($GLOBALS['language']->recaptcha['reload_numbers'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('image')"),
-					));
-				$GLOBALS['smarty']->assign('DISPLAY_RECAPTCHA', recaptcha_get_html($GLOBALS['recaptcha_keys']['captcha_public'], $GLOBALS['recaptcha']['error'], CC_SSL));
-				$GLOBALS['smarty']->assign('RECAPTCHA', true);
+				$recaptcha = $GLOBALS['config']->get('config', 'recaptcha');
+				if($recaptcha==2) {
+					$GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
+				} else {
+					$GLOBALS['smarty']->assign('LANG_RECAPTCHA', array(
+							'reload_words'  => sprintf($GLOBALS['language']->recaptcha['reload_words'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('audio')"),
+							'reload_numbers' => sprintf($GLOBALS['language']->recaptcha['reload_numbers'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('image')"),
+						));
+					$GLOBALS['smarty']->assign('DISPLAY_RECAPTCHA', recaptcha_get_html($GLOBALS['recaptcha_keys']['captcha_public'], $GLOBALS['recaptcha']['error'], CC_SSL));
+					$GLOBALS['smarty']->assign('RECAPTCHA', true);
+				}
 			}
 			$GLOBALS['smarty']->assign('DATA', $_POST);
 			if (($terms = $GLOBALS['db']->select('CubeCart_documents', false, array('doc_terms' => '1'))) !== false) {

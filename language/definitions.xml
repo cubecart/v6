@@ -1547,12 +1547,6 @@
     <string name="transaction_id" introduced="5.0.0"><![CDATA[Transaction ID]]></string>
     <string name="with_selected" introduced="5.0.0"><![CDATA[With Selected]]></string>
   </group>
-  <group name="recaptcha">
-    <string name="enter_both_words" introduced="5.0.0"><![CDATA[Enter both words, separated with a space:]]></string>
-    <string name="enter_the_numbers" introduced="5.0.0"><![CDATA[Enter the numbers you hear:]]></string>
-    <string name="reload_numbers" introduced="5.0.0"><![CDATA[Can't hear the numbers? Try <a href="%1$s">different numbers</a>, or <a href="%2$s">look at an image</a>.]]></string>
-    <string name="reload_words" introduced="5.0.0"><![CDATA[Can't read the words above? Try <a href="%1$s">different words</a>, or <a href="%2$s">listen to the audio</a>.]]></string>
-  </group>
   <group name="reports">
     <string name="data" introduced="5.0.0"><![CDATA[Data]]></string>
     <string name="sales_data" introduced="5.0.0"><![CDATA[Sales Data]]></string>
@@ -1742,7 +1736,9 @@
     <string name="proxy_pass" introduced="5.0.0"><![CDATA[Proxy Password]]></string>
     <string name="proxy_port" introduced="5.0.0"><![CDATA[Proxy Port]]></string>
     <string name="proxy_user" introduced="5.0.0"><![CDATA[Proxy Username]]></string>
-    <string name="recaptcha_enable" introduced="5.0.0"><![CDATA[Enable reCAPTCHA]]></string>
+    <string name="recaptcha_enable" introduced="5.0.0"><![CDATA[Enable <a href="https://www.google.com/recaptcha/intro/index.html">reCAPTCHA</a>]]></string>
+    <string name="recaptcha_public_key" introduced="6.0.0"><![CDATA[reCAPTCHA Site Key]]></string>
+    <string name="recaptcha_secret_key" introduced="6.0.0"><![CDATA[reCAPTCHA Secret Key]]></string>
     <string name="repair" introduced="5.0.0"><![CDATA[Repair]]></string>
     <string name="sales_items_count" introduced="5.0.0"><![CDATA[Number of sale items to display]]></string>
     <string name="sales_mode" introduced="5.0.0"><![CDATA[Sales Mode]]></string>

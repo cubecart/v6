@@ -85,7 +85,15 @@
       </fieldset>
       <fieldset>
          <legend>{$LANG.settings.title_flood}</legend>
-         <div><label for="recaptcha">{$LANG.settings.recaptcha_enable}</label><span><input name="config[recaptcha]" id="recaptcha" type="hidden" class="toggle" value="{$CONFIG.recaptcha}"></span></div>
+         <div><label for="recaptcha">{$LANG.settings.recaptcha_enable}</label><span>
+
+            <select name="config[recaptcha]" id="recaptcha" class="textbox">
+            {foreach from=$OPT_RECAPTCHA item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
+            </select>
+
+         </span></div>
+         <div><label for="recaptcha_public_key">{$LANG.settings.recaptcha_public_key}</label><span><input name="config[recaptcha_public_key]" id="recaptcha_public_key" class="textbox" value="{$CONFIG.recaptcha_public_key}"></span></div>
+         <div><label for="recaptcha_secret_key">{$LANG.settings.recaptcha_secret_key}</label><span><input name="config[recaptcha_secret_key]" id="recaptcha_secret_key" class="textbox" value="{$CONFIG.recaptcha_secret_key}"></span></div>
       </fieldset>
       <fieldset>
          <legend>{$LANG.common.misc}</legend>

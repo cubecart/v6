@@ -13,6 +13,9 @@
 <h3>{$LANG.form.verify_human}</h3>
 <div class="row">
    <div class="medium-6 columns">
+      {if $RECAPTCHA==='2'}
+         <div class="g-recaptcha" data-sitekey="{$CONFIG.recaptcha_public_key}"></div>
+      {else}
       <script type="text/javascript">
          var RecaptchaOptions = {
             theme : 'custom',
@@ -41,6 +44,7 @@
          </textarea>
          <input type="hidden" name="recaptcha_response_field" value="manual_challenge">
       </noscript>
+      {/if}
    </div>
 </div>
 {/if}

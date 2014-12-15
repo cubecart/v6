@@ -68,23 +68,38 @@ $GLOBALS['cart'] = Cart::getInstance();
 // Set store timezone - default to UTC
 date_default_timezone_set(($GLOBALS['config']->get('config', 'time_zone')) ? $GLOBALS['config']->get('config', 'time_zone') : 'UTC');
 if ($GLOBALS['config']->get('config', 'recaptcha') && !$GLOBALS['session']->get('confirmed', 'recaptcha')) {
-
-	require CC_INCLUDES_DIR.'lib/recaptcha/recaptchalib.php';
-	$GLOBALS['recaptcha_keys'] = array('captcha_private' => '6LfT4sASAAAAAKQMCK9w6xmRkkn6sl6ORdnOf83H', 'captcha_public' => '6LfT4sASAAAAAOl71cRz11Fm0erGiqNG8VAfKTHn');
-
+	
 	$recaptcha['error'] = null;
 	$recaptcha['confirmed'] = false;
 
-	if (isset($_POST['recaptcha_response_field'])) {
-		$resp = recaptcha_check_answer($GLOBALS['recaptcha_keys']['captcha_private'], $_SERVER['REMOTE_ADDR'], $_POST['recaptcha_challenge_field'], $_POST['recaptcha_response_field']);
-		if ($resp->is_valid) {
-			// All good!
+	if($GLOBALS['config']->get('config', 'recaptcha')==2 && isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
+		$g_data = array(
+			'secret' => $GLOBALS['config']->get('config', 'recaptcha_secret_key'),
+			'response' => $_POST['g-recaptcha-response'],
+			'remoteip' => get_ip_address()
+		);
+		$json = file_get_contents('https://www.google.com/recaptcha/api/siteverify?'.http_build_query($g_data));
+		$g_result = json_decode($json);
+		if($g_result->success) {
 			$recaptcha['confirmed'] = true;
 		} else {
-			// Set the error code so that we can display it
 			$recaptcha['error'] = $GLOBALS['language']->form['verify_human_fail'];
 		}
-	}
+	} else {
+		require CC_INCLUDES_DIR.'lib/recaptcha/recaptchalib.php';
+		$GLOBALS['recaptcha_keys'] = array('captcha_private' => '6LfT4sASAAAAAKQMCK9w6xmRkkn6sl6ORdnOf83H', 'captcha_public' => '6LfT4sASAAAAAOl71cRz11Fm0erGiqNG8VAfKTHn');
+
+		if (isset($_POST['recaptcha_response_field'])) {
+			$resp = recaptcha_check_answer($GLOBALS['recaptcha_keys']['captcha_private'], $_SERVER['REMOTE_ADDR'], $_POST['recaptcha_challenge_field'], $_POST['recaptcha_response_field']);
+			if ($resp->is_valid) {
+				// All good!
+				$recaptcha['confirmed'] = true;
+			} else {
+				// Set the error code so that we can display it
+				$recaptcha['error'] = $GLOBALS['language']->form['verify_human_fail'];
+			}
+		}
+	}	
 	$GLOBALS['session']->set('', $recaptcha, 'recaptcha');
 } elseif (!$GLOBALS['session']->get('confirmed', 'recaptcha')) {
 	$GLOBALS['session']->delete('', 'recaptcha');

@@ -35,6 +35,8 @@
       <meta property="og:image" content="{$PRODUCT.thumbnail}">
       <meta property="og:url" content="{$VAL_SELF}">
       {/if}
+      {include file='templates/content.recaptcha.head.php'}
+      <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.js"></script>
       {if $ANALYTICS}
       {literal}<script type="text/javascript">
          var _gaq = _gaq || [];
@@ -95,7 +97,6 @@
                   </div>
                </div>
             </footer>
-            <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.js"></script>
             <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/foundation.min.js"></script>
             <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.rating.js"></script>
             <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.magnifier.js"></script>
