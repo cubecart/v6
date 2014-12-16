@@ -180,7 +180,7 @@ foreach ($module_paths as $module_path) {
 	$basename = (string)basename(str_replace('config.xml','', $module_path));
 	$key = trim((string)$xml->info->name.$i);
 	
-	$config = $GLOBALS['db']->select('CubeCart_modules','*',array('folder' => $basename, 'module' => (string)$xml->info->type));
+	$module_config = $GLOBALS['db']->select('CubeCart_modules','*',array('folder' => $basename, 'module' => (string)$xml->info->type));
 
 	$modules[$key] = array(
 		'uid' 				=> (string)$xml->info->uid,
@@ -195,7 +195,7 @@ foreach ($module_paths as $module_path) {
 		'homepage' 			=> (string)$xml->info->homepage,
 		'block' 			=> (string)$xml->info->block,
 		'basename' 			=> $basename,
-		'config'			=> $config[0]
+		'config'			=> $module_config[0]
 	);
 	$i++;
 }
