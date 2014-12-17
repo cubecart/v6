@@ -202,14 +202,31 @@ class Database_Contoller {
 	 *
 	 * @return string
 	 */
-	public function doSQLBackup($dropTables = false, $incStructure = true, $incRows = true) {
+	public function doSQLBackup($dropTables = false, $incStructure = true, $incRows = true, $file_name, $compress = false) {
 		$data = "-- --------------------------------------------------------\n-- CubeCart SQL Dump\n-- version ".CC_VERSION."\n-- http://www.cubecart.com\n-- \n-- Host: ".$GLOBALS['config']->get('config', 'dbhost')."\n-- Generation Time: ".strftime($GLOBALS['config']->get('config', 'time_format'), time())."\n-- Server version: ".$this->serverVersion()."\n-- PHP Version: ".phpversion()."\n-- \n-- Database: `".$GLOBALS['config']->get('config', 'dbdatabase')."`\n";
 		$tables = $this->getRows();
-		foreach ($tables as $table) {
-			$data .= $this->sqldumptable($table, $dropTables, $incStructure, $incRows);
+
+		$fp = fopen($file_name, 'w');
+
+		foreach($tables as $table){
+			set_time_limit(200);
+			fwrite($fp, $this->sqldumptable($table, $dropTables, $incStructure, $incRows));
 		}
-		$data .= "-- --------------------------------------------------------\n-- CubeCart SQL Dump Complete\n-- --------------------------------------------------------";
-		return $data;
+		$close_text = "-- --------------------------------------------------------\n-- CubeCart SQL Dump Complete\n-- --------------------------------------------------------";
+		fwrite($fp, $close_text);
+		fclose($fp);
+
+		if($compress) {
+			include_once(CC_INCLUDES_DIR.'lib'.CC_DS.'pclzip'.CC_DS.'pclzip.lib.php');
+			$archive = new PclZip($file_name.'.zip');
+			$v_list = $archive->create($file_name);
+			if($v_list == 0) {
+				$GLOBALS['main']->setACPWarning($archive->errorInfo(true));
+			}
+			unlink($file_name);
+			return file_exists($file_name.'.zip');
+		}
+		return file_exists($file_name);
 	}
 
 	/**

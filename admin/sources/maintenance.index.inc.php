@@ -435,35 +435,18 @@ if (isset($_GET['files_backup'])) {
 	httpredir('?_g=maintenance&node=index#backup');
 }
 
-if (isset($_POST['backup'])) {
-	set_time_limit(600);
-
+iif (isset($_POST['backup'])) {
 	if (!$_POST['drop'] && !$_POST['structure'] && !$_POST['data']) {
 		$GLOBALS['main']->setACPWarning($lang['maintain']['error_db_backup_option']);
 	} else {
 		if ($_POST['drop'] && !$_POST['structure']) {
 			$GLOBALS['main']->setACPWarning($lang['maintain']['error_db_backup_conflict']);
 		} else {
-			$full = ($_POST['drop'] && $_POST['structure'] && $_POST['data']) ? '_full' : '';
-			$fileName  = 'backup/database'.$full.'_'.CC_VERSION.'_'.$glob['dbdatabase']."_".date("dMy-His").'.sql';
-			$sqlDumpOut = $GLOBALS['db']->doSQLBackup($_POST['drop'], $_POST['structure'], $_POST['data']);
-			$fp = fopen($fileName, 'w');
-			$write = fwrite($fp, $sqlDumpOut);
-			fclose($fp);
-			if ($write) {
-				if ($_POST['compress']) {
-					include_once $pclzip_path;
-					$archive = new PclZip($fileName.'.zip');
-					$v_list = $archive->create($fileName);
-					if ($v_list == 0) {
-						$GLOBALS['main']->setACPWarning($archive->errorInfo(true));
-					} else {
-						$GLOBALS['main']->setACPNotify($lang['maintain']['db_backup_complete']);
-					}
-					unlink($fileName);
-				} else {
-					$GLOBALS['main']->setACPNotify($lang['maintain']['db_backup_complete']);
-				}
+			$full = ($_POST['drop'] && $_POST['structure'] && $_POST['data']) ? '_full' : ''; 
+			$fileName 	= CC_ROOT_DIR.'/backup/database'.$full.'_'.CC_VERSION.'_'.$glob['dbdatabase']."_".date("dMy-His").'.sql';
+			$write = $GLOBALS['db']->doSQLBackup($_POST['drop'],$_POST['structure'],$_POST['data'], $fileName, $_POST['compress']);
+			if($write) {
+				$GLOBALS['main']->setACPNotify($lang['maintain']['db_backup_complete']);
 			} else {
 				$GLOBALS['main']->setACPWarning($lang['maintain']['db_backup_failed']);
 			}
