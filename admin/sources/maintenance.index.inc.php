@@ -435,7 +435,7 @@ if (isset($_GET['files_backup'])) {
 	httpredir('?_g=maintenance&node=index#backup');
 }
 
-iif (isset($_POST['backup'])) {
+if (isset($_POST['backup'])) {
 	if (!$_POST['drop'] && !$_POST['structure'] && !$_POST['data']) {
 		$GLOBALS['main']->setACPWarning($lang['maintain']['error_db_backup_option']);
 	} else {

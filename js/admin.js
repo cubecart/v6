@@ -671,7 +671,7 @@ $('a.duplicate').on('click', function(){
 	return false;
 });
 
-$('#search-placeholder').on("mouseover",function(){
+$('#search-placeholder').on("click",function(){
 	$('#sidebar_contain').animate({left:'0px'});
 	return false;
 });

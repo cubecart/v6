@@ -812,6 +812,7 @@ dl {
 }
 .fa {
 	color: #555;
+	padding: 2px;
 }
 .fa-user.registered, .fa-refresh, .fa-plus-circle {
 	color: #44B215;
