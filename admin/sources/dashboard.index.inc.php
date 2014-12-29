@@ -122,8 +122,8 @@ if ($sales) { ## Get data to put in chart
 	}
 }
 
-$this_year = strftime('%G', strtotime('this year'));
-$last_year = strftime('%G', strtotime('last year'));
+$this_year = date('Y');
+$last_year = $this_year - 1;
 
 $chart_data['data'] = "['Month', '$this_year', '$last_year'],";
 
