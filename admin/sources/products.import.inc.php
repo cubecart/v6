@@ -8,7 +8,7 @@
  * ========================================
  * Web:   http://www.cubecart.com
  * Email:  sales@cubecart.com
- * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
+ * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  */
 if (!defined('CC_INI_SET')) die('Access Denied');
 Admin::getInstance()->permissions('products', CC_PERM_EDIT, true);

@@ -8,7 +8,7 @@
  * ========================================
  * Web:   http://www.cubecart.com
  * Email:  sales@cubecart.com
- * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
+ * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  */
 if (file_exists('..'.DIRECTORY_SEPARATOR.'admin.php')) {
 	header('location: ../admin.php', true, 301);

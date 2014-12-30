@@ -8,7 +8,7 @@
  * ========================================
  * Web:   http://www.cubecart.com
  * Email:  sales@devellion.com
- * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
+ * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  */
 require_once preg_replace('/setup/', '', realpath(dirname(__FILE__))) . 'ini.inc.php';
 require_once CC_INCLUDES_DIR . 'functions.inc.php';

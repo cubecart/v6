@@ -7,7 +7,7 @@
  * ========================================
  * Web:   http://www.cubecart.com
  * Email:  sales@devellion.com
- * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
+ * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
 <div class="right text-center show-for-medium-up">
 <a href="#" data-dropdown="currency-switch" class="button white small">{$CURRENT_CURRENCY.symbol_left} {$CURRENT_CURRENCY.code} {$CURRENT_CURRENCY.symbol_right}</a><br>

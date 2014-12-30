@@ -7,7 +7,7 @@
  * ========================================
  * Web:   http://www.cubecart.com
  * Email:  sales@devellion.com
- * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
+ * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
 <h2>{$LANG.documents.document_contact}</h2>
 <p>{$CONTACT.description}</p>

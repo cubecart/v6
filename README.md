@@ -1,6 +1,6 @@
 # Welcome to CubeCart v6
 
-CubeCart is a ecommerce software solution used by tens of thousands of merchants globally. CubeCart is released under the [GPL-2.0](http://opensource.org/licenses/GPL-2.0) software license agreement.
+CubeCart is a ecommerce software solution used by tens of thousands of merchants globally. CubeCart is released under the [GPL-3.0](https://www.gnu.org/licenses/quick-guide-gplv3.html) software license agreement.
 
 Install and upgrade instructions can be found online following the links provided below. 
 

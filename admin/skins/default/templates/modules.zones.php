@@ -7,7 +7,7 @@
  * ========================================
  * Web:   http://www.cubecart.com
  * Email:  sales@cubecart.com
- * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
+ * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
   <div id="zone-list" class="tab_content">
 	<h3>{$LANG.settings.allowed_zones}</h3>
