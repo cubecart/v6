@@ -8,9 +8,9 @@
  * ========================================
  * Web:   http://www.cubecart.com
  * Email:  sales@devellion.com
- * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
+ * License:  GPL-2.0 http://opensource.org/licenses/GPL-2.0
 -->
-<emails version="2.0" language="en-US">
+<emails version="2.0" language="en-GB">
   <email name="admin.password_recovery">
     <subject><![CDATA[Admin Password Recovery]]></subject>
     <content type="html"><![CDATA[<p>Dear {$DATA.name},</p> 
