@@ -1,7 +1,0 @@
-Sitemap: sitemap.xml.gz
-Sitemap: sitemap.xml
-
-Disallow: backup/
-Disallow: cache/
-Disallow: files/
-Disallow: images/
