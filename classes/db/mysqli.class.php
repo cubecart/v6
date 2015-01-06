@@ -177,7 +177,6 @@ class Database extends Database_Contoller {
 					$this->_found_rows = sizeof($this->_result);
 					return true;
 				} elseif($this->_result=='empty') {
-					echo "empty";
 					return false;
 				}
 			}
