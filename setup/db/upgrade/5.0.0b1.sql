@@ -65,7 +65,7 @@ ALTER TABLE `CubeCart_admin_users` CHANGE `noLogins` `logins` INT UNSIGNED NOT N
 ALTER TABLE `CubeCart_admin_users` CHANGE `isSuper` `super_user` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'; #EOQ
 ALTER TABLE `CubeCart_admin_users` CHANGE `sessId` `session_id` VARCHAR(32) NULL DEFAULT NULL; #EOQ
 ALTER TABLE `CubeCart_admin_users` CHANGE `sessIp` `ip_address` VARCHAR(45) NULL DEFAULT NULL; #EOQ
-ALTER TABLE `CubeCart_admin_users` ADD `language` VARCHAR(5) NOT NULL DEFAULT 'en-US'; #EOQ
+ALTER TABLE `CubeCart_admin_users` ADD `language` VARCHAR(5) NOT NULL DEFAULT 'en-GB'; #EOQ
 ALTER TABLE `CubeCart_admin_users` ADD `dashboard_notes` TEXT NULL DEFAULT NULL; #EOQ
 ALTER TABLE `CubeCart_admin_users` ADD `order_notify` TINYINT( 1 ) UNSIGNED NULL; #EOQ
 ALTER TABLE `CubeCart_admin_users` CHANGE `name` `name` VARCHAR( 150 ) NOT NULL; #EOQ
@@ -197,7 +197,7 @@ ALTER TABLE `CubeCart_customer` CHANGE `regTime` `registered` INT UNSIGNED NOT N
 ALTER TABLE `CubeCart_customer` CHANGE `ipAddress` `ip_address` VARCHAR(45) NOT NULL; #EOQ
 ALTER TABLE `CubeCart_customer` CHANGE `noOrders` `order_count` INT UNSIGNED NOT NULL DEFAULT '0'; #EOQ
 ALTER TABLE `CubeCart_customer` CHANGE `type` `type` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1'; #EOQ
-ALTER TABLE `CubeCart_customer` ADD `language` VARCHAR(5) NOT NULL DEFAULT 'en-US'; #EOQ
+ALTER TABLE `CubeCart_customer` ADD `language` VARCHAR(5) NOT NULL DEFAULT 'en-GB'; #EOQ
 ALTER TABLE `CubeCart_customer` DROP `optIn1st`; #EOQ
 ALTER TABLE `CubeCart_customer` DROP `htmlEmail`; #EOQ
 ALTER TABLE `CubeCart_customer` ADD `verify` VARCHAR( 32 ) NULL; #EOQ

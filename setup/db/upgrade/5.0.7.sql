@@ -32,7 +32,7 @@ UPDATE `CubeCart_documents` SET `doc_lang` = 'se-SE' WHERE `doc_lang` = 'se'; #E
 
 UPDATE `CubeCart_documents` SET `doc_lang` = 'sk-SK' WHERE `doc_lang` = 'sk'; #EOQ
 
-UPDATE `CubeCart_documents` SET `doc_lang` = 'en-US' WHERE `doc_lang` = ''; #EOQ
+UPDATE `CubeCart_documents` SET `doc_lang` = 'en-GB' WHERE `doc_lang` = ''; #EOQ
 
 UPDATE `CubeCart_inventory_language` SET `language` = 'de-DE' WHERE `language` = 'de'; #EOQ
 
@@ -62,7 +62,7 @@ UPDATE `CubeCart_inventory_language` SET `language` = 'se-SE' WHERE `language` =
 
 UPDATE `CubeCart_inventory_language` SET `language` = 'sk-SK' WHERE `language` = 'sk'; #EOQ
 
-UPDATE `CubeCart_inventory_language` SET `language` = 'en-US' WHERE `language` = ''; #EOQ
+UPDATE `CubeCart_inventory_language` SET `language` = 'en-GB' WHERE `language` = ''; #EOQ
 
 UPDATE `CubeCart_category_language` SET `language` = 'de-DE' WHERE `language` = 'de'; #EOQ
 
@@ -92,4 +92,4 @@ UPDATE `CubeCart_category_language` SET `language` = 'se-SE' WHERE `language` = 
 
 UPDATE `CubeCart_category_language` SET `language` = 'sk-SK' WHERE `language` = 'sk'; #EOQ
 
-UPDATE `CubeCart_category_language` SET `language` = 'en-US' WHERE `language` = ''; #EOQ
+UPDATE `CubeCart_category_language` SET `language` = 'en-GB' WHERE `language` = ''; #EOQ

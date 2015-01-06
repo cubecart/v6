@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_admin_users` (
 	`session_id` VARCHAR(32) DEFAULT NULL,
 	`browser` TEXT NULL,
 	`ip_address` VARCHAR(45) DEFAULT NULL COMMENT 'Supports IPv6 addresses',
-	`language` VARCHAR(5) NOT NULL DEFAULT 'en-US',
+	`language` VARCHAR(5) NOT NULL DEFAULT 'en-GB',
 	`dashboard_notes` TEXT NULL,
 	`order_notify` TINYINT(1) UNSIGNED DEFAULT '0',
 	KEY `admin_id` (`admin_id`)
@@ -230,7 +230,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_customer` (
 	`ip_address` VARCHAR(45) NOT NULL COMMENT 'Supports IPv6 addresses',
 	`order_count` INT UNSIGNED DEFAULT '0',
 	`type` TINYINT(1) UNSIGNED DEFAULT '1',
-	`language` VARCHAR(5) NOT NULL DEFAULT 'en-US',
+	`language` VARCHAR(5) NOT NULL DEFAULT 'en-GB',
 	PRIMARY KEY (`customer_id`),
 	UNIQUE KEY `email` (`email`),
 	FULLTEXT KEY `fulltext` (`first_name`,`last_name`,`email`)

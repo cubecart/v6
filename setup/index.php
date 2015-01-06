@@ -111,7 +111,7 @@ $default_config_settings = array(
   'basket_order_expire' => '',
   'basket_out_of_stock_purchase' => false,
   'basket_tax_by_delivery' => false,
-  'store_country' => 840,
+  'store_country' => 826,
   'store_zone' => 12,
   'catalogue_expand_tree' => true,
   'catalogue_hide_prices' => false,
@@ -172,7 +172,7 @@ if (isset($_POST['language'])) {
   httpredir('index.php', 'language');
 } else {
   if (!isset($_SESSION['language'])) {
-    $_SESSION['language'] = 'en-US';
+    $_SESSION['language'] = 'en-GB';
   }
 }
 
@@ -429,7 +429,7 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
       } elseif (isset($_SESSION['setup']['long_lang_identifier']) && file_exists('language/' . $_SESSION['setup']['long_lang_identifier'] . '.xml')) {
         $default_language = $_SESSION['setup']['long_lang_identifier'];
       } else {
-        $default_language = 'en-US';
+        $default_language = 'en-GB';
       }
       
       ## Redefine the default skin

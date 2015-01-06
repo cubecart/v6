@@ -13,7 +13,7 @@ case 'dk':
 	$_SESSION['setup']['long_lang_identifier'] = 'dk-DK';
 	break;
 case 'en':
-	$_SESSION['setup']['long_lang_identifier'] = 'en-US';
+	$_SESSION['setup']['long_lang_identifier'] = 'en-GB';
 	break;
 case 'es':
 	$_SESSION['setup']['long_lang_identifier'] = 'es-ES';
@@ -46,7 +46,7 @@ case 'sk':
 	$_SESSION['setup']['long_lang_identifier'] = 'sk-SK';
 	break;
 default:
-	$_SESSION['setup']['long_lang_identifier'] = 'en-US';
+	$_SESSION['setup']['long_lang_identifier'] = 'en-GB';
 }
 
 if ($homepage = $db->select('CubeCart_lang', false, array('identifier' => '/'.$short_lang_identifier.'/home.inc.php'))) {
