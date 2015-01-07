@@ -679,6 +679,16 @@ $('#sidebar_contain').on("mouseleave",function(){
 	$(this).animate({left:'-340px'});
 	return false;
 });
+$('div#tab_sidebar').on("click",function(){
+	var sidebar = $('#sidebar_contain');
+	var position = sidebar.position();
+	if(position.left==0) {
+		sidebar.animate({left:'-340px'});
+	} else {
+		sidebar.animate({left:'0px'});
+	}
+	return false;
+});
 
 /* Option Controller */
 $('.option-edit').on('click', function(){
