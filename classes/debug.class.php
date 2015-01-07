@@ -264,12 +264,10 @@ class Debug {
 
 				if(defined('ADMIN_CP') && ADMIN_CP) {
 					$output[] = '### In the admin control panel SQL cache is written but not read! ###<br />';
-				} else {
-					$output[] = '<br />';
 				}
 
 				if (!empty($this->_sql['query'])) {
-					$output[] = '<strong>Queries ('.count($this->_sql['query']).')</strong>:';
+					$output[] = '<strong>Queries ('.count($this->_sql['query']).')</strong>:<br />';
 
 					foreach ($this->_sql['query'] as $index => $query) {
 						if (!empty($query)) {
