@@ -28,6 +28,7 @@
             <tr>
                <th width="10">{$LANG.common.status}</th>
                <th>{$LANG.common.name_and_desc}</th>
+               <th>{$LANG.common.type}</th>
                <th width="10">&nbsp;</th>
             </tr>
          </thead>
@@ -39,6 +40,7 @@
                   <input type="hidden" name="type[{$module.basename}]" value="{$module.type}" />
                </td>
                <td><a href="?_g=plugins&type={$module.type}&module={$module.basename}">{$module.name}</a><br>{$module.description}</td>
+               <td>{$module.type|ucfirst}</td>
                <td nowrap>
                   <a href="?_g=plugins&type={$module.type}&module={$module.basename}" class="edit"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
                   <a href="?_g=plugins&type={$module.type}&module={$module.basename}&delete=1"  class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
