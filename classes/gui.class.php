@@ -1336,8 +1336,14 @@ class GUI {
 						break;
 					}
 				}
-				$GLOBALS['config']->set('config', 'skin_folder'.$this->_skin_config_postfix, 'foundation');
+				if (!empty($this->_skin)) {
+					$GLOBALS['config']->set('config', 'skin_folder'.$this->_skin_config_postfix, $this->_skin);
+				}
 			}
+		}
+
+		if (empty($this->_skin)) {
+			$GLOBALS['config']->set('config', 'skin_folder'.$this->_skin_config_postfix, 'foundation');
 		}
 
 		if (($custom = $GLOBALS['cache']->read('skin.custom')) === false && file_exists(CC_ROOT_DIR.'/skins/'.$this->_skin.'/'.'config.xml')) {
