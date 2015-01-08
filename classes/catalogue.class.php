@@ -1329,7 +1329,7 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 							$group_priority = $option['priority'];
 							unset ($option['priority']);
 							foreach ($option as $value) {
-								//if (!isset($option_list[$value['option_id']])) {
+								if (!isset($option_list[$value['option_id']])) {
 									$option_list[$value['option_id']] = array(
 										'type'   => $value['option_type'],
 										'option_id'  => $value['option_id'],
@@ -1337,7 +1337,7 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 										'required'  => (bool)$value['option_required'],
 										'selected' => ($selected[$value['assign_id']]) ? true : false
 									);
-								//}
+								}
 								$option_list[$value['option_id']]['values'][] = array(
 									'assign_id'  => $value['assign_id'],
 									'decimal_price'   => $value['option_price'],
