@@ -123,15 +123,15 @@ if (!isset($_SESSION['setup']['permissions'])) {
 					$find   = array("latin1", $table['Name']);
 					$replace  = array("utf8", $table['Name'].'_utf8');
 
-					$db->misc(str_replace($find, $replace, $schema[0]['Create Table']));
-
-					if ($GLOBALS['db']->misc("SHOW TABLES LIKE '".$table['Name']."_utf8'", false)) {
-						## Copy Data
-						$db->misc('INSERT INTO '.$table['Name'].'_utf8 SELECT * FROM '.$table['Name']);
-						## Deleting Original Table
-						$db->misc('DROP TABLE '.$table['Name']);
-						## Renaming Temporary Table
-						$db->misc('ALTER TABLE '.$table['Name'].'_utf8 RENAME TO '.$table['Name']);
+					if($db->misc(str_replace($find, $replace, $schema[0]['Create Table']))) {
+						if ($db->misc("SHOW TABLES LIKE '".$table['Name']."_utf8'", false)) {
+							## Copy Data
+							$db->misc('INSERT INTO '.$table['Name'].'_utf8 SELECT * FROM '.$table['Name']);
+							## Deleting Original Table
+							$db->misc('DROP TABLE '.$table['Name']);
+							## Renaming Temporary Table
+							$db->misc('ALTER TABLE '.$table['Name'].'_utf8 RENAME TO '.$table['Name']);
+						}
 					}
 				}
 			}
