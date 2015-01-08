@@ -1386,7 +1386,7 @@ class GUI {
 						$GLOBALS['config']->set('config', 'skin_style'.$this->_skin_config_postfix, $this->_style);
 					}
 				} else {
-					trigger_error('No skins style found!', E_USER_ERROR);
+					$this->_style = '';
 				}
 			} else {
 				//There are no styles
