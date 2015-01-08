@@ -1327,7 +1327,6 @@ class GUI {
 		} else if ($GLOBALS['config']->has('config', 'skin_folder'.$this->_skin_config_postfix) && isset($this->_skins[$GLOBALS['config']->get('config', 'skin_folder'.$this->_skin_config_postfix)])) {
 				$this->_skin = $GLOBALS['config']->get('config', 'skin_folder'.$this->_skin_config_postfix);
 			} else {
-			trigger_error('Last ditch skin', E_USER_WARNING);
 			//This is a last ditch effort to get a skin loaded
 			if (is_array($this->_skins) && !empty($this->_skins)) {
 				foreach ($this->_skins as $name => $skin) {
