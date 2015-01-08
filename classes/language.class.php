@@ -88,7 +88,7 @@ class Language {
 					$this->_language = (!empty($admin_lang)) ? $admin_lang : $GLOBALS['config']->get('config', 'default_language');
 				} else {
 					//Try the default config language
-					$this->_language = ($GLOBALS['config']->has('config', 'default_language') && !$GLOBALS['config']->isEmpty('config', 'default_language')) ? $GLOBALS['config']->get('config', 'default_language') : 'en-US';
+					$this->_language = ($GLOBALS['config']->has('config', 'default_language') && !$GLOBALS['config']->isEmpty('config', 'default_language')) ? $GLOBALS['config']->get('config', 'default_language') : 'en-GB';
 					if (!$this->_valid($this->_language)) {
 						trigger_error('No valid language found!', E_USER_ERROR);
 					} else {
@@ -98,7 +98,7 @@ class Language {
 				}
 			}
 		} else {
-			$this->_language = 'en-US';
+			$this->_language = 'en-GB';
 		}
 		$GLOBALS['smarty']->assign("CURRENT_LANGUAGE", $this->_language);
 		$this->loadLang();

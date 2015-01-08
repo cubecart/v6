@@ -66,7 +66,7 @@ class Mailer extends PHPMailer {
 	public function loadContent($content_type, $language = null, $data = false) {
 
 		$language = (!empty($language) && preg_match(Language::LANG_REGEX, $language, $match)) ? $language : $GLOBALS['language']->current();
-		$language = ($language == 'en') ? 'en-US' : $language;
+		$language = ($language == 'en') ? 'en-GB' : $language;
 
 		if (!empty($content_type)) {
 			if (($contents =  $GLOBALS['db']->select('CubeCart_email_content', false, array('content_type' => (string)$content_type, 'language' => $language))) !== false) {
@@ -103,7 +103,7 @@ class Mailer extends PHPMailer {
 					$this->_import_new = true;
 					$this->loadContent($content_type, $language, $data);
 				} elseif (isset($match[2]) && strlen($match[2])==5) {
-					// Try the parent language, if this is a regional translation (i.e. en-US)
+					// Try the parent language, if this is a regional translation (i.e. en-GB)
 					return $this->loadContent($content_type, $match[1], $data);
 				} else if ($language !=  $GLOBALS['config']->get('config', 'default_language')) {
 						// Try loading the default language content

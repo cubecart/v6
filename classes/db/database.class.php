@@ -461,7 +461,7 @@ class Database_Contoller {
 			$queries = preg_split("/;\s?(#EOQ|[\n\r])/i", $schema, -1, PREG_SPLIT_NO_EMPTY);
 			if (is_array($queries)) {
 
-				$default_lang = (isset($_SESSION['setup']['long_lang_identifier']) && !empty($_SESSION['setup']['long_lang_identifier'])) ? $_SESSION['setup']['long_lang_identifier'] : 'en-US';
+				$default_lang = (isset($_SESSION['setup']['long_lang_identifier']) && !empty($_SESSION['setup']['long_lang_identifier'])) ? $_SESSION['setup']['long_lang_identifier'] : 'en-GB';
 
 				foreach ($queries as $i => $query) {
 					if (!empty($this->_prefix)) {
