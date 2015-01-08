@@ -121,7 +121,7 @@ if (!isset($_SESSION['setup']['permissions'])) {
 				if ($schema = $db->misc('SHOW CREATE TABLE '.$table['Name'])) {
 					## Fix Schema and Create Temp Table
 					$find   = array("latin1", $table['Name']);
-					$replace  = array("utf8 COLLATE utf8_unicode_ci", $table['Name'].'_utf8');
+					$replace  = array("utf8", $table['Name'].'_utf8');
 
 					$db->misc(str_replace($find, $replace, $schema[0]['Create Table']));
 
