@@ -1022,12 +1022,12 @@ if (isset($_GET['action'])) {
 		$categoryArray = $GLOBALS['db']->select('CubeCart_category', array('cat_name', 'cat_parent_id', 'cat_id'));
 
 		if ($categoryArray) {
-			$cat_ist[] = $GLOBALS['config']->get('config', 'default_directory_symbol');
+			$cat_ist[] = '/';
 			$seo = SEO::getInstance();
 			$seo->setCache(false);
 			foreach ($categoryArray as $category) {
 				if ($category['cat_parent_id'] == $category['cat_id']) continue;
-				$cat_list[$category['cat_id']] = $seo->getDirectory((int)$category['cat_id'], false, $GLOBALS['config']->get('config', 'default_directory_symbol'), false, false);
+				$cat_list[$category['cat_id']] = $seo->getDirectory((int)$category['cat_id'], false, '/', false, false);
 			}
 			$seo->setCache(true);
 			natcasesort($cat_list);
@@ -1301,7 +1301,7 @@ if (isset($_GET['action'])) {
 			$result['type_alt']  = $result['digital'] ? $lang['catalogue']['product_type_digital'] : $lang['catalogue']['product_type_tangible'];
 			// Get master category path
 			if (($category = $GLOBALS['db']->select('CubeCart_category_index', array('cat_id'), array('primary' => 1, 'product_id' => $result['product_id']))) !== false) {
-				$result['category'] = $seo->getDirectory($category[0]['cat_id'], false, $GLOBALS['config']->get('config', 'default_directory_symbol'), false, false);
+				$result['category'] = $seo->getDirectory($category[0]['cat_id'], false, '/', false, false);
 			}
 			// Check for master image
 			if (($image = $GLOBALS['db']->select('CubeCart_image_index', 'file_id', array('product_id' => $result['product_id'], 'main_img' => 1))) !== false) {

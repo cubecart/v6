@@ -128,7 +128,6 @@ $default_config_settings = array(
   'proxy' => false,
   'proxy_host' => '',
   'proxy_port' => '',
-  'default_directory_symbol' => '/',
   'product_precis' => 120,
   'stock_warn_type' => 0,
   'stock_warn_level' => 5,

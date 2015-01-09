@@ -322,7 +322,7 @@ if (isset($_GET['action'])) {
 			}
 
 			// Add parent category here before query
-			$catList[0] = $GLOBALS['config']->get('config', 'default_directory_symbol');
+			$catList[0] = '/';
 			if (($categories = $GLOBALS['db']->select('CubeCart_category', array('cat_name', 'cat_parent_id', 'cat_id'))) !== false) {
 				$seo = SEO::getInstance();
 				$seo->setCache(false);
@@ -336,8 +336,8 @@ if (isset($_GET['action'])) {
 							continue;
 						}
 					}
-					if ($cat_path = $seo->getDirectory($category['cat_id'], false, $GLOBALS['config']->get('config', 'default_directory_symbol'), false, false)) {
-						$category['display'] = $GLOBALS['config']->get('config', 'default_directory_symbol').$cat_path;
+					if ($cat_path = $seo->getDirectory($category['cat_id'], false, '/', false, false)) {
+						$category['display'] = '/'.$cat_path;
 						$catList[$category['cat_id']] = $category['display'];
 					} else {
 						continue;

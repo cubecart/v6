@@ -81,11 +81,11 @@ if (($products = $GLOBALS['db']->select('CubeCart_inventory', array('product_id'
 }
 ## Category list
 if (($category_array = $GLOBALS['db']->select('CubeCart_category', array('cat_name', 'cat_parent_id', 'cat_id'))) !== false) {
-	$cat_list[] = $GLOBALS['config']->get('config', 'default_directory_symbol');
+	$cat_list[] = '/';
 	$seo  = SEO::getInstance();
 	foreach ($category_array as $category) {
 		if ($category['cat_id'] == $category['cat_parent_id']) continue;
-		$cat_list[$category['cat_id']] = $GLOBALS['config']->get('config', 'default_directory_symbol').$seo->getDirectory($category['cat_id'], false, $GLOBALS['config']->get('config', 'default_directory_symbol'), false, false);
+		$cat_list[$category['cat_id']] = '/'.$seo->getDirectory($category['cat_id'], false, '/', false, false);
 	}
 	natcasesort($cat_list);
 	foreach ($cat_list as $cat_id => $cat_name) {
