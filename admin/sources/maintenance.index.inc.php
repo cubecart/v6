@@ -512,6 +512,7 @@ $GLOBALS['smarty']->assign('EXISTING_BACKUPS', $existing_backups);
 ## Upgrade
 ## Check current version
 if ($request = new Request('www.cubecart.com', '/version-check/'.CC_VERSION)) {
+	$request->skiplog(true);
 	$request->cache(true);
 	$request->setUserAgent('CubeCart');
 	$request->setData(array('version' => CC_VERSION));
