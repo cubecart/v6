@@ -112,6 +112,9 @@
             <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/cubecart.validate.js"></script>
 
             {foreach from=$BODY_JS item=js}{$js}{/foreach}
+            {foreach from=$JS_SCRIPTS key=k item=script}
+               <script type="text/javascript" src="{$STORE_URL}/{$script|replace:'\\':'/'}"></script>
+            {/foreach}
             {$LIVE_HELP}
             {$DEBUG_INFO}
             {$SKIN_SELECT}

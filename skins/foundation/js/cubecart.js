@@ -77,37 +77,49 @@ jQuery(document).ready(function () {
         return update_quantity(rel, sign);
     });
 
-    $('form#add_to_basket').submit(function () {
+    $('form#add_to_basket').submit(function (event) {
+        var submit_form = true;
 
-        var add = $(this).serialize();
-        var action = $(this).attr('action').replace(/\?.*/, '');
-        var on_canvas_basket = $('#mini-basket');
-        var on_canvas_basket_content = '';
-        var off_canvas_basket_content = $(".right-off-canvas-menu .box-basket-content");
-        var parts = action.split("?");
-        if (parts.length > 1) {
-            action += "&";
-        } else {
-            action += "?";
-        }
-        $.ajax({
-            url: action + '_g=ajaxadd',
-            type: 'POST',
-            cache: false,
-            data: add,
-            complete: function (returned) {
-                if (returned.responseText.match("Redir")) {
-                    window.location = returned.responseText.substr(6);
-                } else {
-                    on_canvas_basket.replaceWith(returned.responseText);
-                    on_canvas_basket_content = $('#mini-basket .box-basket-content').html();
-                    off_canvas_basket_content.replaceWith(on_canvas_basket_content);
-                    $("#gui_message").slideUp();
-                    mini_basket_action();
-                }
-            }
+        $("select[name^=productOptions]").each(function () {
+            if ($(this).is("[required]") && $(this).val() == '') {
+                submit_form = false;
+                return false;
+            } 
         });
-        return false;
+
+        if(submit_form == false) {
+            event.preventDefault();
+            return false;
+        } else {
+            var add = $(this).serialize();
+            var action = $(this).attr('action').replace(/\?.*/, '');
+            var on_canvas_basket = $('#mini-basket');
+            var on_canvas_basket_content = '';
+            var off_canvas_basket_content = $(".right-off-canvas-menu .box-basket-content");
+            var parts = action.split("?");
+            if (parts.length > 1) {
+                action += "&";
+            } else {
+                action += "?";
+            }
+            $.ajax({
+                url: action + '_g=ajaxadd',
+                type: 'POST',
+                cache: false,
+                data: add,
+                complete: function (returned) {
+                    if (returned.responseText.match("Redir")) {
+                        window.location = returned.responseText.substr(6);
+                    } else {
+                        on_canvas_basket.replaceWith(returned.responseText);
+                        on_canvas_basket_content = $('#mini-basket .box-basket-content').html();
+                        off_canvas_basket_content.replaceWith(on_canvas_basket_content);
+                        $("#gui_message").slideUp();
+                        mini_basket_action();
+                    }
+                }
+            });
+        }
     }); /* Initial setup of country/state menu */
     $('select#country-list, select.country-list').each(function () {
         if (typeof (county_list) == 'object') {
