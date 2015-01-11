@@ -94,7 +94,7 @@ class ACP {
 				} else {
 					$this->_navigation[$group][] = array(
 						'name' => strip_tags($name),
-						'url' => $url['address'],
+						'url' => $url,
 						'target' => '_self'
 					);	
 				}
