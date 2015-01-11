@@ -39,7 +39,7 @@
 	{if isset($group.members)}
 	<ul id="menu_{$group.group}" class="submenu">
 	  {foreach from=$group.members item=nav}
-	  <li><a href="{$nav.url}">{$nav.title}</a></li>
+	  <li><a href="{$nav.url}" target="{$nav.target}">{$nav.title}</a></li>
 	  {/foreach}
 	</ul>
 	{/if}

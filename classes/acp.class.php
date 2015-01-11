@@ -85,10 +85,21 @@ class ACP {
 	public function addNavItem($group, $array) {
 		if (!empty($array)) {
 			foreach ($array as $name => $url) {
-				$this->_navigation[$group][] = array(
-					'name' => strip_tags($name),
-					'url' => $url,
-				);
+				if(is_array($url)) {
+					$this->_navigation[$group][] = array(
+						'name' => strip_tags($name),
+						'url' => $url['address'],
+						'target' => $url['target']
+					);
+				} else {
+					$this->_navigation[$group][] = array(
+						'name' => strip_tags($name),
+						'url' => $url['address'],
+						'target' => '_self'
+					);	
+				}
+				
+
 			}
 		}
 	}
@@ -299,6 +310,7 @@ class ACP {
 						$item['members'][] = array(
 							'title' => ucwords($submenu['name']),
 							'url' => $submenu['url'],
+							'target' => $submenu['target']
 						);
 					}
 					$navigation[] = $item;
