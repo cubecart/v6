@@ -342,7 +342,7 @@
 			<td width="20">{$LANG.common.status}</td>
 			<td width="20">{$LANG.catalogue.title_product_options_matrix}</td>
 			<td width="302">{$LANG.common.type}</td>
-			<td width="50"  align="right">{$LANG.common.negative}</td>
+			<td width="50">{$LANG.common.negative}</td>
 			<td width="102">{$LANG.common.price}</td>
 			<td width="102">{$LANG.common.weight}</td>
 			<td width="20">&nbsp;</td>
@@ -356,7 +356,7 @@
 			<td align="center"><input type="hidden" id="enable_{$option.assign_id}" name="option_update[{$option.assign_id}][set_enabled]" value="{$option.set_enabled}" class="toggle"></td>
 			<td align="center"><input type="hidden" id="matrix_include_{$option.assign_id}" name="option_update[{$option.assign_id}][matrix_include]" value="{$option.matrix_include}" class="toggle"></td>
 			<td>{$option.display}</td>
-			<td align="right"><input type="checkbox" name="option_update[{$option.assign_id}][option_negative]" {if isset($option.option_negative) && $option.option_negative == 1}checked="checked"{/if} value="1"></td>
+			<td align="center"><input type="checkbox" name="option_update[{$option.assign_id}][option_negative]" {if isset($option.option_negative) && $option.option_negative == 1}checked="checked"{/if} value="1"></td>
 			<td><span class="editable number-right" name="option_update[{$option.assign_id}][option_price]" title="{$LANG.common.click_edit}">{$option.option_price}</span></td>
 			<td><span class="editable number" name="option_update[{$option.assign_id}][option_weight]" title="{$LANG.common.click_edit}">{$option.option_weight}</span></td>
 			<td align="center">
@@ -367,10 +367,10 @@
 		  {else}
 
 		  <tr id="option_member_{$option.set_member_id}">
-			<td align="center"><input type="hidden" id="enable_member_{$option.set_member_id}" name="option_create[{$option.set_member_id}][set_enabled]" value="{$option.set_enabled}" class="toggle"></td>
-			<td align="center"><input type="hidden" id="matrix_include_{$option.assign_id}" name="option_update[{$option.assign_id}][matrix_include]" value="{$option.matrix_include}" class="toggle"></td>
+			<td align="center"><input type="checkbox" id="enable_member_{$option.set_member_id}" name="option_create[{$option.set_member_id}][set_enabled]" value="{$option.set_enabled}"></td>
+			<td align="center"><input type="checkbox" id="matrix_include_{$option.set_member_id}" name="option_update[{$option.assign_id}][matrix_include]" value="{$option.matrix_include}"></td>
 			<td>{$option.display}</td>
-			<td align="right"><input type="checkbox" name="option_create[{$option.set_member_id}][option_negative]" {if isset($option.option_negative) && $option.option_negative == 1}checked="checked"{/if}  value="1"></td>
+			<td align="center"><input type="checkbox" name="option_create[{$option.set_member_id}][option_negative]" {if isset($option.option_negative) && $option.option_negative == 1}checked="checked"{/if}  value="1"></td>
 			<td><span class="editable number-right" name="option_create[{$option.set_member_id}][option_price]" title="{$LANG.common.click_edit}">{$option.option_price}</span></td>
 			<td><span class="editable number" name="option_create[{$option.set_member_id}][option_weight]" title="{$LANG.common.click_edit}">{$option.option_weight}</span></td>
 			<td><a href="#"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete_disabled.png" title="{$LANG.catalogue.delete_option_disabled}" class="delete_disabled"></a></td>
@@ -382,8 +382,8 @@
 		<tfoot>
 		  <th><td colspan="6">{$LANG.catalogue.title_option_add}</td></th>
 		  <tr>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
+			<td><input type="hidden" id="opt_set_enabled" value="1" rel="set_enabled" class="data"></td>
+			<td><input type="hidden" id="opt_matrix_include" value="0" rel="matrix_include" class="data"></td>
 			<td>
 			  <select id="opt_mid" class="textbox data">
 				<option value="">{$LANG.form.please_select}</option>
@@ -402,31 +402,29 @@
 				{/if}
 			  </select>
 			</td>
-			<td align="right"><input type="checkbox" id="opt_negative" rel="negative" class="checkbox data"></td>
-			<td><input type="text" id="opt_price" rel="price" class="textbox number-right data"></td>
+			<td align="center"><input type="checkbox" id="opt_negative" rel="negative" class="checkbox data"></td>
+			<td><input type="text" id="opt_price" rel="price" class="textbox number data"></td>
 			<td><input type="text" id="opt_weight" rel="weight" class="textbox number data"></td>
-			<!-- td><input type="text" id="opt_stock" rel="stock" class="textbox number data"></td -->
 			<td align="center"><a href="#" onclick="optionAdd('option_template', 'options_added'); return false;"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a></td>
 		  </tr>
 
 		  <tr class="inline-source">
-			<td>&nbsp;</td>
+			<td class="set_enabled"><input type="hidden" rel=""></td>
+			<td class="matrix_include"><input type="hidden" rel=""></td>
 			<td class="name"><input type="hidden" rel=""></td>
 			<td class="negative"><input type="hidden" rel=""></td>
 			<td class="price"><input type="hidden" rel=""></td>
 			<td class="weight"><input type="hidden" rel=""></td>
-			<!-- td class="stock"><input type="hidden" rel=""></td -->
 			<td align="center"><a href="#" class="remove dynamic"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
 		  </tr>
 
 		  <tr id="option_template" class="dynamic">
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
+			<td align="center" class="set_enabled"><input type="checkbox" class="set_enabled" name="option_add[set_enabled][]" value="1"></td>
+			<td align="center" class="matrix_include"><input type="checkbox" name="option_add[matrix_include][]" value="1"></td>
 			<td class="name"><input type="hidden" name="option_add[value][]" value="" disabled="disabled"></td>
-			<td class="negative" align="right"><input type="checkbox" name="option_add[negative][]" value="1" disabled="disabled"></td>
+			<td class="negative" align="center"><input type="checkbox" name="option_add[negative][]" value="1" disabled="disabled"></td>
 			<td class="price"><input type="hidden" name="option_add[price][]" value="" disabled="disabled"></td>
 			<td class="weight"><input type="hidden" name="option_add[weight][]" value="" disabled="disabled"></td>
-			<!-- td class="stock"><input type="hidden" name="option_add[stock][]" value="" disabled="disabled"></td -->
 			<td align="center"><a href="#" class="remove" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
 		  </tr>
 		</tfoot>
@@ -489,7 +487,9 @@
 		  <td><input type="text" name="option_matrix[{$row.options_identifier}][isbn]" class="textbox number" value="{$OPTIONS_MATRIX.existing.{$row.options_identifier}.isbn}"></td>
 		  <td><input type="text" name="option_matrix[{$row.options_identifier}][restock_note]" class="textbox number" value="{$OPTIONS_MATRIX.existing.{$row.options_identifier}.restock_note}" maxlength="255" ></td>
 	    </tr>
-	{/foreach} 
+	{foreachelse} 
+		<tr><td colspan="9" align="center">{$LANG.form.none}</td></tr>
+	{/foreach}
 	  </tbody>
 	</table>
 	{/if}

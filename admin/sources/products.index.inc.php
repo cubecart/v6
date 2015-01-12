@@ -208,6 +208,8 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 				'option_negative' => (isset($_POST['option_add']['negative'][$offset])) ? $_POST['option_add']['negative'][$offset] : '0',
 				'option_price'  => $_POST['option_add']['price'][$offset],
 				'option_weight'  => $_POST['option_add']['weight'][$offset],
+				'matrix_include'  => $_POST['option_add']['matrix_include'][$offset],
+				'set_enabled'  => $_POST['option_add']['set_enabled'][$offset],
 			);
 			if ($value > 0) {
 				// get the option id
@@ -1139,7 +1141,6 @@ if (isset($_GET['action'])) {
 				$smarty_data['option_matrix']['existing'][$existing_matrix['options_identifier']] = $existing_matrix;
 			}
 		}
-
 		$GLOBALS['smarty']->assign('OPTIONS_MATRIX', $smarty_data['option_matrix']);
 
 		// List Manufacturers

@@ -391,15 +391,28 @@ function optionAdd(source, target) {
 		var data = $('input.data');
 		for (i=0; i<data.length; i++) {
 			var rel	= $(data[i]).attr('rel');
-			var value = ($(data[i]).val() == (null || '')) ? 0 : $(data[i]).val();
-			if (rel != "negative") {
-				$(row).find('.'+rel).append(value).find('input:first').val(value).removeAttr('disabled');
-			} else {
-				$(row).find('.'+rel).find('input:first').removeAttr('disabled');
-				if ($(data[i]).is(':checked')) {
-					$(row).find('.'+rel).find('input:first').attr('checked', 'checked');
+			var value = ($(data[i]).val() == (null || '')) ? '0' : $(data[i]).val();
+			var this_field = $(row).find('.'+rel).find('input:first');
+
+			if(rel == "matrix_include") {
+				this_field.attr('name', 'option_add['+rel+']['+options_added+']');
+			} else if(rel == "set_enabled") {
+				this_field.removeAttr('disabled');
+				if (value==1) {
+					this_field.parent().addClass("selected");
+					this_field.attr('checked', 'checked');
 				}
-				$(row).find('.'+rel).find('input:first').attr('name', 'option_add[negative]['+options_added+']');
+				this_field.attr('name', 'option_add['+rel+']['+options_added+']');
+			} else if(rel == "negative") {
+				this_field.removeAttr('disabled');
+				if ($(data[i]).is(':checked')) {
+					this_field.parent().addClass("selected");
+					this_field.attr('checked', 'checked');
+				}
+				this_field.attr('name', 'option_add['+rel+']['+options_added+']');
+			} else {
+				value = parseFloat(value, 10).toFixed(2);
+				$(row).find('.'+rel).append(value).find('input:first').val(parseFloat(value)).removeAttr('disabled');
 			}
 			$(data[i]).val('');
 		}
