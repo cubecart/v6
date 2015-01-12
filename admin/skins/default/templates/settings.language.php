@@ -96,23 +96,25 @@
       {if isset($STRINGS)}
       <fieldset>
          <legend>{$STRING_TYPE}</legend>
-         {foreach from=$STRINGS item=string}
-         <div id="row_{$string.name}">
-            <span class="actions">
-            <input type="hidden" id="default_{$string.name}" value="{$string.default}">
-            <a href="#" class="revert" rel="{$string.name}" title="{$LANG.common.revert}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/time.png" alt="{$LANG.common.revert}"></a>
-            </span>
-            <label for="string_{$string.name}">{$string.name}</label>
-            <span>
-            <input type="hidden" id="defined_{$string.name}" value="{$string.defined}">
-            {if isset($string.multiline)}
-            <textarea id="string_{$string.name}" name="string[{$string.type}][{$string.name}]" class="textbox">{$string.value}</textarea>
-            {else}
-            <input type="text" id="string_{$string.name}" name="string[{$string.type}][{$string.name}]" value="{$string.value}" class="textbox">
-            {/if}
-            </span>
-         </div>
-         {/foreach}
+         <table>
+            {foreach from=$STRINGS item=string}
+            <tr id="row_{$string.name}">
+               <td>
+                  <label for="string_{$string.name}">{$string.name}</label>
+                  <input type="hidden" id="defined_{$string.name}" value="{$string.defined}">
+                  {if isset($string.multiline)}
+                  <textarea id="string_{$string.name}" name="string[{$string.type}][{$string.name}]" class="textbox">{$string.value}</textarea>
+                  {else}
+                  <input type="text" id="string_{$string.name}" name="string[{$string.type}][{$string.name}]" value="{$string.value}" class="textbox">
+                  {/if}
+               </td>
+               <td class="actions">
+                  <input type="hidden" id="default_{$string.name}" value="{$string.default}">
+                  <a href="#" class="revert" rel="{$string.name}" title="{$LANG.common.revert}"><i class="fa fa-clock-o"></i></a>
+               </td>
+            </tr>
+            {/foreach}
+         </table>
       </fieldset>
       {/if}
       <div>

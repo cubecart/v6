@@ -161,6 +161,12 @@ body {
 	color: #555;
 	background: #000 url(../images/bg.png);
 }
+hr {
+	height:1px;
+	border:none;
+	color:#ddd;
+	background-color:#ddd;
+}
 
 /* Main layout items */
 #wrapper {

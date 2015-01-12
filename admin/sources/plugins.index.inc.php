@@ -195,7 +195,10 @@ foreach ($module_paths as $module_path) {
 		'homepage' 			=> (string)$xml->info->homepage,
 		'block' 			=> (string)$xml->info->block,
 		'basename' 			=> $basename,
-		'config'			=> $module_config[0]
+		'config'			=> $module_config[0],
+		'edit_url'			=> '?_g=plugins&type='.(string)$xml->info->type.'&module='.$basename,
+		'delete_url'		=> '?_g=plugins&type=g'.(string)$xml->info->type.'&module='.$basename.'&delete=1'
+
 	);
 	$i++;
 }
@@ -205,4 +208,30 @@ if(is_array($modules)) {
 }
 	
 $GLOBALS['smarty']->assign('MODULES',$modules);
+
+$languages_installed = $GLOBALS['language']->listLanguages();
+
+if(is_array($languages_installed)) {
+	$language_modules = array();
+	$enabled = $GLOBALS['config']->get('languages');
+	foreach($languages_installed as $key => $value) {
+		$language_modules[$key] = array(
+			'status' 		=> (isset($enabled[$key])) ? (int)$enabled[$key] : 1,
+			'lang_code' 	=> $key,
+			'name' 			=> $value['title'],
+			'type' 			=> 'language',
+			'edit_url'		=> '?_g=settings&node=language&language='.$key,
+			'delete_url' 	=> '?_g=settings&node=language&delete='.$key
+		);
+		$i++;	
+	}
+	$GLOBALS['smarty']->assign('LANGUAGES',$language_modules);
+}
+
+$skins = $GLOBALS['gui']->listSkins();
+
+if(is_array($skins)) {
+	$GLOBALS['smarty']->assign('SKINS',$skins);
+}
+
 $page_content = $GLOBALS['smarty']->fetch('templates/plugins.index.php');

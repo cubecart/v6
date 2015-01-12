@@ -195,12 +195,6 @@ if (($skins = $GLOBALS['gui']->listSkins()) !== false) {
 
 	$GLOBALS['smarty']->assign('SKINS_ALL', array_merge($smarty_data['skins'], $smarty_data['skins_mobile'], $other_logo_array));
 
-	$software_license_key = $GLOBALS['config']->get('config', 'license_key');
-
-	if (empty($software_license_key)) {
-		$GLOBALS['smarty']->assign('MOBILE_DISABLED', ' disabled="disabled"');
-	}
-
 	if (isset($skin_style)) {
 		$GLOBALS['smarty']->assign('JSON_STYLES', json_encode((array)$skin_style));
 	}
