@@ -37,8 +37,8 @@
             </td>
          </tr>
          {/foreach}
+         </table>
    </div>
-   </table>
    <div id="lang_create" class="tab_content">
       <h3>{$LANG.translate.title_language_create}</h3>
       <p><strong>{$LANG.common.advanced}</strong>: {$LANG.common.help_required}</p>
