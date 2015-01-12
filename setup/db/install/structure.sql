@@ -842,6 +842,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_request_log` (
 	`request_url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
 	`request` blob NOT NULL,
 	`result` blob NOT NULL,
+	`error` blob NOT NULL,
 	`time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`request_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ; #EOQ

@@ -803,8 +803,12 @@ a.handle {
 dl {
 	margin: 3px 0;
 }
-.request, .received {
+.request, .received, .request_error {
 	font-family: "Courier New", Courier, monospace;
+}
+#request_log tr.request_error {
+	background: #FFF2F2;
+	color: #ff0000;
 }
 .request strong, .received strong {
 	display: block;

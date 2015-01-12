@@ -21,13 +21,19 @@
 		</thead>
 		<tbody>
 		{foreach from=$REQUEST_LOG item=log}
-		  <tr>
+		  <tr {if $log.error}class="request_error"{/if}>
 			<td valign="top" nowrap="nowrap">{$log.time}</td>
 			<td>
 			<div class="request">
 			  <strong>{$LANG.common.request} - {$log.request_url}</strong>
 			  {$log.request}
 			</div>
+			{if $log.error}
+			<div class="request">
+			  <strong>Error:</strong>
+			  {$log.error}
+			</div>
+			{/if}
 			<div class="received">
 			  <strong>{$LANG.common.received}</strong>
 			  {$log.result}

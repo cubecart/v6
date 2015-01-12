@@ -1,4 +1,4 @@
-<?php
+,<?php
 /**
  * CubeCart v6
  * ========================================
@@ -21,14 +21,15 @@ if (Admin::getInstance()->superUser()) {
 	//System errors
 	$per_page = 25;
 	$page = (isset($_GET['page'])) ? $_GET['page'] : 1;
-	$request_log = $GLOBALS['db']->select('CubeCart_request_log', array('time', 'request', 'result', 'request_url'), false, array('time' => 'DESC'), $per_page, $page, false);
+	$request_log = $GLOBALS['db']->select('CubeCart_request_log', '*', false, array('time' => 'DESC'), $per_page, $page, false);
 	if (is_array($request_log)) {
 		foreach ($request_log as $log) {
 			$smarty_data['request_log'][] = array(
 				'time'    => formatTime(strtotime($log['time'])),
 				'request'   => htmlspecialchars($log['request']),
 				'result'   => htmlspecialchars($log['result']),
-				'request_url' => $log['request_url']
+				'request_url' => $log['request_url'],
+				'error' => empty($log['error']) ? false : htmlspecialchars($log['error'])
 			);
 		}
 	}

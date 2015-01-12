@@ -249,7 +249,8 @@ class Request {
 							$error_no = "NA";
 							$error = "cURL is installed but may be disabled by the host. cURL exec returns false.";
 						}
-						trigger_error(sprintf('cURL Error (%d): %s', $error_no, $error));
+						$error = sprintf('cURL Error (%d): %s', $error_no, $error);
+						$this->log($this->_request_body, $return, $error);
 					}
 				} else {
 				## Fallback to fsockopen
@@ -285,12 +286,15 @@ class Request {
 		}
 	}
 
-	private function log($request, $result) {
+	private function log($request, $result, $error = '') {
 		if (!$this->_log) return false;
 		if (!empty($request)) {
-			$data['request_url']  = $this->_request_protocol.'://'.$this->_request_url.$this->_request_path;
-			$data['request']   = $this->mask_cc($request);
-			$data['result']    = $this->mask_cc($result);
+			$data = array (
+				'request_url'  	=> $this->_request_protocol.'://'.$this->_request_url.$this->_request_path,
+				'request'  		=> $this->mask_cc($request),	
+				'result'    	=> $this->mask_cc($result),
+				'error'   		=> $error
+			);
 			$GLOBALS['db']->insert('CubeCart_request_log', $data);
 		} else {
 			return false;
