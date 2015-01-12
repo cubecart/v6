@@ -96,7 +96,7 @@
       {if isset($STRINGS)}
       <fieldset>
          <legend>{$STRING_TYPE}</legend>
-         <table>
+         <table class="phrases">
             {foreach from=$STRINGS item=string}
             <tr id="row_{$string.name}">
                <td>
@@ -110,7 +110,7 @@
                </td>
                <td class="actions">
                   <input type="hidden" id="default_{$string.name}" value="{$string.default}">
-                  <a href="#" class="revert" rel="{$string.name}" title="{$LANG.common.revert}"><i class="fa fa-clock-o"></i></a>
+                  <a href="#" class="revert" id="revert_{$string.name}" rel="{$string.name}" title="{$LANG.common.revert}"><i class="fa fa-clock-o"></i></a>
                </td>
             </tr>
             {/foreach}

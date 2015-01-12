@@ -234,6 +234,8 @@ $(document).ready(function() {
 		} else {
 			if ($('#string_'+name).val() != $('#default_'+name).val()) {
 				$('#row_'+name).addClass('custom-phrase');
+			} else {
+				$(this).hide();
 			}
 		}
 	}).on('click', function(){
@@ -241,12 +243,16 @@ $(document).ready(function() {
 		var basis	= $('#default_'+target).val();
 		$('#string_'+target).val(basis);
 		$('#row_'+target).removeClass('custom-phrase');
+		$(this).hide();
 		return false;
 	});
 	$('.editable_phrase').focusout(function() {
 		var name	= $(this).attr('rel');
 		if ($(this).val() != $('#default_'+name).val()) {
 			$('#row_'+name).addClass('custom-phrase');
+			$('#revert_'+name).show();
+		} else {
+			$('#revert_'+name).hide();
 		}
 	});
 
