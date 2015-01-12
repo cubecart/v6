@@ -1198,7 +1198,8 @@ class GUI {
 	 * Display select skin box
 	 */
 	private function _displaySkinSelect() {
-		if ($GLOBALS['config']->get('config', 'skin_change')) {
+		$skin_setting = $GLOBALS['config']->get('config', 'skin_change');
+		if ($skin_setting == '1' || ($skin_setting == '2' && Admin::getInstance()->is())) {
 			foreach ($this->_skins as $skin => $data) {
 				## Do not show mobile skins
 				if (!$data['info']['mobile']) {
