@@ -237,7 +237,7 @@ class Cart {
 				
 				$options_identifier_string = $GLOBALS['catalogue']->defineOptionsIdentifier($optionsArray);
 
-				$product = $GLOBALS['catalogue']->getProductData($product_id, $options_identifier_string);
+				$product = $GLOBALS['catalogue']->getProductData($product_id, 1, false, 10, 1, false, $options_identifier);
 
 				if ($product) {
 					// Check for options
