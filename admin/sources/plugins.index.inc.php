@@ -72,7 +72,13 @@ if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 				if(is_array($files)) {
 					$extract = true;
 					$backup = false;
+					$import_language = false;
+
 					foreach($files as $file) {
+						if(preg_match('/^email_[a-z]{2}-[A-Z]{2}.xml$/', $file['filename'])) {
+							$import_language = $file['filename'];
+						}
+
 						$root_path = $destination.'/'.$file['filename'];
 						
 						if(file_exists($root_path) && basename($file['filename'])=="config.xml") {
@@ -110,6 +116,11 @@ if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 						if ($source->extract(PCLZIP_OPT_PATH, $destination, PCLZIP_OPT_REPLACE_NEWER) == 0) {
 							$GLOBALS['main']->setACPWarning($lang['module']['failed_install']);	
 						} else {
+							// Attempt email template install
+							if($import_language) {
+								$GLOBALS['language']->importEmail($import_language);
+							}
+
 							$GLOBALS['main']->setACPNotify($lang['module']['success_install']);
 							
 							$request = new Request($cc_domain, $cc_conf_path, 80, false, true, 10);
