@@ -1134,7 +1134,6 @@ if (isset($_GET['action'])) {
 		}
 
 		// Get existing
-		$smarty_data['option_matrix'] = array();
 		if ($existing_matrices = $GLOBALS['db']->select('CubeCart_option_matrix', false, array('product_id'=>$product_id))) {
 			foreach ($existing_matrices as $existing_matrix) {
 				$smarty_data['option_matrix']['existing'][$existing_matrix['options_identifier']] = $existing_matrix;
