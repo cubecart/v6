@@ -534,6 +534,7 @@ div.pagination span {
 	font-family: 'Open Sans', sans-serif;
 	font-size: 12px;
 	z-index: 50;
+	margin-bottom: 5px;
 }
 .note p {
 	background: url(../images/note.png) no-repeat left 4px;

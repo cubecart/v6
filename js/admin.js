@@ -317,7 +317,7 @@ $(document).ready(function() {
         }
     });
 	
-    $('#content_body').on('click','img.checkbox, .check-primary, .check_cat, .check-all, .custom-checkbox', function() {
+    $('body').on('click','img.checkbox, .check-primary, .check_cat, .check-all, .custom-checkbox', function() {
     	$('input[type="checkbox"]').each(function(){
 	        if($(this).is(':checked')){
 	            $(this).parent().addClass("selected");
@@ -607,6 +607,7 @@ $('a.add, a.inline-add, input[type="button"].add').on('click', function(){
 		}
 		inputs[rel]	= value;
 	});
+
 	if (proceed == false) return false;
 	$(parent).removeClass('highlight');
 	if ($(source).length == 1) {
@@ -650,6 +651,7 @@ $('a.add, a.inline-add, input[type="button"].add').on('click', function(){
 		var actions	= document.createElement('span');
 		var remove	= document.createElement('a');
 		var i	= document.createElement('i');
+
 		if($('input[name="add_div_class"]')) {
 			$(content).addClass($('input[name="add_div_class"]').val());
 		}
@@ -865,7 +867,7 @@ $('.update-subtotal input.number').on("change",function(){
 });
 
 /* Generic remove code - removes (almost) any row, and appends a hidden value to the form, if one is needed */
-$('a.remove').on('click', function(){
+$('body').on('click','a.remove', function() {
 	var msg		= $(this).attr('title');
 	var rel		= $(this).attr('rel');
 	var url		= $(this).attr('href');
