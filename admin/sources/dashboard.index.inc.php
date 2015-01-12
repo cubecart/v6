@@ -236,6 +236,7 @@ if ($GLOBALS['config']->has('config', 'default_rss_feed') && !$GLOBALS['config']
 	$path = (isset($url['query'])) ? $url['path'].'?'.$url['query'] : $url['path'];
 	$request = new Request($url['host'], $path);
 	$request->cache(true);
+	$request->skiplog(true);
 	$request->setMethod('post');
 	$request->setData('Null');
 	if (($response = $request->send()) !== false) {
