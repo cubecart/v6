@@ -90,7 +90,9 @@
                      </td>
                   </tr>
                   {foreachelse}
-                  {$LANG.catalogue.option_attributes_none}
+                  <tr>
+                     <td colspan="3">{$LANG.catalogue.option_attributes_none}</td>
+                  </tr>
                   {/foreach}
                </tbody>
             </table>
