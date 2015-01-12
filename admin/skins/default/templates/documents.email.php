@@ -98,15 +98,20 @@
   {if isset($DISPLAY_CONTENT_FORM)}
   <div id="general" class="tab_content">
 	<h3>{$ADD_EDIT_CONTENT}</h3>
+	{if $LANGUAGES}
 	<fieldset>
 	  <div><label for="content_subject">{$LANG.common.subject}</label><span><input type="text" name="content[subject]" id="content_subject" value="{$CONTENT.subject}" class="textbox"></span></div>
 	  <div><label for="content_language">{$LANG.common.language}</label><span><select name="content[language]" id="content_language" class="textbox">
 	  {foreach from=$LANGUAGES item=language}<option value="{$language.code}"{$language.selected}>{$language.title}</option>{/foreach}
 	  </select></span></div>
 	</fieldset>
+	{else}
+	<p>{$LANG.email.install_master_lang}</p> 
+	{/if}
   </div>
   <div id="email_html" class="tab_content">
     <h3>{$LANG.email.title_content_html}</h3>
+	{if $LANGUAGES}
 	<textarea name="content[content_html]" id="content_html" class="textbox fck">{$CONTENT.content_html}</textarea>
   	<script type="text/javascript">
 	  //<![CDATA[
@@ -135,9 +140,13 @@
   		  {/foreach}
   		</tbody>
   	</table>
+  	{else}
+	<p>{$LANG.email.install_master_lang}</p> 
+	{/if}
   </div>
   <div id="email_text" class="tab_content">
   	<h3>{$LANG.email.title_content_text}</h3>
+  	{if $LANGUAGES}
 	<textarea name="content[content_text]" id="content_text" class="textbox" style="width: 100%; height: 480px">{$CONTENT.content_text}</textarea>
   	<h3>{$LANG.email.title_macros}</h3>
   	<p>{$LANG.email.important}</p>
@@ -157,6 +166,9 @@
   		  {/foreach}
   		</tbody>
   	</table>
+  	{else}
+	<p>{$LANG.email.install_master_lang}</p> 
+	{/if}
   </div>
   <input type="hidden" name="content[content_type]" value="{$CONTENT.content_type}">
   <input type="hidden" name="content[content_id]" value="{$CONTENT.content_id}">

@@ -897,6 +897,7 @@
     <string name="title_documents" introduced="5.0.0"><![CDATA[Site Documents]]></string>
   </group>
   <group name="email">
+    <string name="install_master_lang" introduced="6.0.0"><![CDATA[Your store currently only has one master language. Before the email contents can be translated the master language file must be installed from our <a href="?_g=marketplace">extensions marketplace</a>.]]></string>
     <string name="confirm_cancel" introduced="5.0.0"><![CDATA[Are you sure you want to cancel the sending of this newsletter?]]></string>
     <string name="confirm_send" introduced="5.0.0"><![CDATA[Are you sure you want to send this newsletter?]]></string>
     <string name="email_macro" introduced="5.0.0"><![CDATA[Macro]]></string>
