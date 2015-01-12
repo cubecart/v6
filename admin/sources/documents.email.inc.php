@@ -497,9 +497,14 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
 		foreach ($email_types as $key => $values) {
 			$translations = $GLOBALS['db']->select('CubeCart_email_content', array('content_id', 'language'), array('content_type' => $key), array('language' => 'ASC'));
 			if ($translations) {
+				// check language is installed
+
 				foreach ($translations as $translation) {
-					$translation['edit'] = currentPage(null, array('type' => 'content', 'action' => 'edit', 'content_id' => $translation['content_id']));
-					$content['translations'][] = $translation;
+					// Check the translation exists otherwise it's redundant
+					if(file_exists(CC_ROOT_DIR.'/language/'.$translation['language'].'.xml')) {
+						$translation['edit'] = currentPage(null, array('type' => 'content', 'action' => 'edit', 'content_id' => $translation['content_id']));
+						$content['translations'][] = $translation;
+					}
 				}
 			}
 			$content['translate'] = currentPage(null, array('type' => 'content', 'action' => 'add', 'content_type' => $key));
