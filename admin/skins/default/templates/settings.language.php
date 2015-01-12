@@ -103,9 +103,9 @@
                   <label for="string_{$string.name}">{$string.name}</label>
                   <input type="hidden" id="defined_{$string.name}" value="{$string.defined}">
                   {if isset($string.multiline)}
-                  <textarea id="string_{$string.name}" name="string[{$string.type}][{$string.name}]" class="textbox">{$string.value}</textarea>
+                  <textarea id="string_{$string.name}" name="string[{$string.type}][{$string.name}]" class="textbox editable_phrase" rel="{$string.name}">{$string.value}</textarea>
                   {else}
-                  <input type="text" id="string_{$string.name}" name="string[{$string.type}][{$string.name}]" value="{$string.value}" class="textbox">
+                  <input type="text" id="string_{$string.name}" name="string[{$string.type}][{$string.name}]" value="{$string.value}" class="textbox editable_phrase" rel="{$string.name}">
                   {/if}
                </td>
                <td class="actions">

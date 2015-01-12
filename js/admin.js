@@ -233,16 +233,24 @@ $(document).ready(function() {
 			$('#row_'+name).addClass('list-changed');
 		} else {
 			if ($('#string_'+name).val() != $('#default_'+name).val()) {
-				$('#row_'+name).addClass('list-custom');
+				$('#row_'+name).addClass('custom-phrase');
 			}
 		}
 	}).on('click', function(){
 		var target	= $(this).attr('rel');
 		var basis	= $('#default_'+target).val();
 		$('#string_'+target).val(basis);
-		$('#row_'+target).removeClass('list-custom');
+		$('#row_'+target).removeClass('custom-phrase');
 		return false;
 	});
+	$('.editable_phrase').focusout(function() {
+		var name	= $(this).attr('rel');
+		if ($(this).val() != $('#default_'+name).val()) {
+			$('#row_'+name).addClass('custom-phrase');
+		}
+	});
+
+
 	/* AJAX lookups */
 	$('input.ajax').autocomplete({
 		timeout: 5000,

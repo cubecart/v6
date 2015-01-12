@@ -816,6 +816,9 @@ dl {
 	background: #FFF2F2;
 	color: #ff0000;
 }
+.custom-phrase {
+	background: #F2FFF2;
+}
 .request strong, .received strong {
 	display: block;
 	font-family: 'Open Sans', sans-serif !important;
