@@ -31,9 +31,9 @@
             <td><img src="{$language.flag}" alt="{$language.title}"></td>
             <td><a href="{$language.edit}">{$language.title}</a></td>
             <td class="actions">
+               <a href="{$language.download}" title="{$LANG.common.download}"><i class="fa fa-download" title="{$LANG.common.download}"></i></a>
                <a href="{$language.edit}" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
                <a href="{$language.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
-               <a href="{$language.download}" title="{$LANG.common.download}"><i class="fa fa-download" title="{$LANG.common.download}"></i></a>
             </td>
          </tr>
          {/foreach}
