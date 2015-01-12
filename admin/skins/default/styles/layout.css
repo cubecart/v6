@@ -817,7 +817,7 @@ dl {
 	color: #ff0000;
 }
 .custom-phrase {
-	background: #F2FFF2;
+	background: #F2FFF2 !important;
 }
 .request strong, .received strong {
 	display: block;
