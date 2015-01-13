@@ -104,6 +104,13 @@ $(document).ready(function() {
 		window.scrollTo(0,0);
 	}).on('click', function(){
 		var target = $(this).children('a').attr('href');
+		
+		var content_height = $(target).height();
+
+		if($('#navigation').height() < content_height) {
+			$('#page_content').height(content_height+100);
+		}
+
 		if (target == '#sidebar') {
 			$('#sidebar_control').click();
 			return false;
