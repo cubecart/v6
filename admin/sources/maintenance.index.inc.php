@@ -14,7 +14,7 @@ if (!defined('CC_INI_SET')) die('Access Denied');
 Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT, true);
 
 global $lang;
-$cache = Cache::getInstance();
+
 $pclzip_path = CC_INCLUDES_DIR.'lib/pclzip/pclzip.lib.php';
 
 

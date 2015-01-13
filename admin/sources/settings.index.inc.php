@@ -289,7 +289,6 @@ for( $i = 1; $i <= 6; ++$i ) {
 $select_options = array(
 	'admin_notify_status'	=> $a_n_s,
 	'basket_jump_to'  => null,
-	'cache'     => array($lang['common']['disabled'], $lang['common']['enabled']),
 	'catalogue_expand_tree' => null,
 	'skin_change'   => array($lang['common']['no'], $lang['settings']['all_skin_select'], $lang['settings']['admin_only_skin_select']),
 	'debug'     => array($lang['common']['disabled'], $lang['common']['enabled']),
