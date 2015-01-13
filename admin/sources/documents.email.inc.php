@@ -324,8 +324,6 @@ if (isset($_POST['content']) && Admin::getInstance()->permissions('documents', C
 			$GLOBALS['main']->setACPWarning($lang['email']['error_content_update']);
 
 		}
-
-
 	} else {
 		if (!empty($_POST['content']['content_type']) && !empty($_POST['content']['language'])) {
 			$check = $GLOBALS['db']->select('CubeCart_email_content', array('content_id'), array('content_type' => $_POST['content']['content_type'], 'language' => $_POST['content']['language']));
@@ -498,7 +496,6 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
 			$translations = $GLOBALS['db']->select('CubeCart_email_content', array('content_id', 'language'), array('content_type' => $key), array('language' => 'ASC'));
 			if ($translations) {
 				// check language is installed
-
 				foreach ($translations as $translation) {
 					// Check the translation exists otherwise it's redundant
 					if(file_exists(CC_ROOT_DIR.'/language/'.$translation['language'].'.xml')) {

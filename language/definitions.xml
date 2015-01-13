@@ -2082,7 +2082,7 @@
     <string name="title_translations" introduced="5.0.0"><![CDATA[Translations]]></string>
     <string name="trans_add" introduced="5.0.0"><![CDATA[Add Translation]]></string>
     <string name="trans_delete" introduced="5.0.0"><![CDATA[Delete Translation]]></string>
-    <string name="trans_none" introduced="5.0.0"><![CDATA[No Translations exist]]></string>
+    <string name="trans_none" introduced="5.0.0"><![CDATA[No translations exist]]></string>
   </group>
   <group name="ui">
     <string name="drag_reorder" introduced="5.0.0"><![CDATA[Drag to reorder]]></string>
