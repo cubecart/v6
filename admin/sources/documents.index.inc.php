@@ -194,8 +194,9 @@ if (isset($_GET['action'])) {
 			$document['link'] = array(
 				'translate' => currentPage(null, array('action' => 'translate', 'doc_id' => $document['doc_id'])),
 				'edit'  => currentPage(null, array('action' => 'edit', 'doc_id' => $document['doc_id'])),
-				'delete' => currentPage(null, array('delete' => $document['doc_id'])),
+				'delete' => currentPage(null, array('delete' => $document['doc_id']))
 			);
+			$document['flag']	= file_exists('language/flags/'.$document['doc_lang'].'.png') ? 'language/flags/'.$document['doc_lang'].'.png' : 'language/flags/unknown.png';
 			$document['terms']  = ($document['doc_terms']) ? 'checked="checked"' : '';
 			$document['homepage'] = ($document['doc_home']) ? 'checked="checked"' : '';
 			$smarty_data['documents'][] = $document;

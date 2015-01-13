@@ -46,16 +46,18 @@
 	<h3>{$LANG.email.title_templates}</h3>
 	  <fieldset>
 	  {if isset($EMAIL_TEMPLATES)}
+	  <table width="70%">
 	  {foreach from=$EMAIL_TEMPLATES item=template}
-	  <div>
-		<span class="actions">
-		  <a href="{$template.clone}" title="{$LANG.common.clone}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/page_copy.png" alt="{$LANG.common.clone}"></a>
-		  <a href="{$template.edit}" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
-		  <a href="{$template.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
-		</span>
-		<input type="hidden" name="template_default[{$template.template_id}]" id="template_default_{$template.template_id}" value="{$template.template_default}" class="toggle unique"> <a href="{$template.edit}">{$template.title}</a>
-	  </div>
+	  <tr>
+		<td width="10"><input type="hidden" name="template_default[{$template.template_id}]" id="template_default_{$template.template_id}" value="{$template.template_default}" class="toggle unique"></td>
+		<td><a href="{$template.edit}">{$template.title}</a></td>
+		<td width="10"><a href="{$template.clone}"><i class="fa fa-files-o" title="{$LANG.common.clone}"></i></a></td>
+		<td width="10"><a href="{$template.edit}" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a></td>
+		<td width="10"><a href="{$template.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
+		</td>
+	  </tr>
 	  {/foreach}
+	  </table>
 	  {else}
 	  <div>{$EMAIL.email.templates_none}</div>
 	  {/if}

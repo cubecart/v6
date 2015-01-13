@@ -35,7 +35,7 @@
 			<input type="hidden" name="order[]" value="{$document.doc_id}">
 			<input type="hidden" id="status-{$document.doc_id}" name="status[{$document.doc_id}]" value="{$document.doc_status}" class="toggle">
 		  </td>
-		  <td align="center"><img src="language/flags/{$document.doc_lang}.png"></td>
+		  <td align="center"><img src="{$document.flag}"></td>
 		  <td><a href="{$document.link.edit}">{$document.doc_name}</a></td>
 		  <td align="center" nowrap="nowrap">
 			{if isset($document.translations)}
