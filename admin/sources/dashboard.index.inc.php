@@ -55,9 +55,12 @@ if (stristr($mysql_mode[0]['@@sql_mode'], 'strict')) {
 ## Check current version
 if (!isset($_SESSION['version-check']) && $request = new Request('www.cubecart.com', '/version-check/'.CC_VERSION)) {
 	$request->skiplog(true);
+	$request->setMethod('get');
 	$request->cache(true);
+	$request->setSSL(true);
 	$request->setUserAgent('CubeCart');
 	$request->setData(array('version' => CC_VERSION));
+
 	if (($response = $request->send()) !== false) {
 		if (version_compare(trim($response), CC_VERSION, '>')) {
 			$GLOBALS['main']->setACPWarning(sprintf($lang['dashboard']['error_version_update'], $response, CC_VERSION).' <a href="?_g=maintenance&node=index#upgrade">'.$lang['maintain']['upgrade_now'].'</a>');
