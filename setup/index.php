@@ -24,6 +24,14 @@ if (!is_writable(CC_CACHE_DIR)) {
   die('<p>Please make sure the following folders are writable in order to continue.</p><pre>' . $cache_dir . '</pre>');
 }
 
+$gitignore = CC_ROOT_DIR.'/images/source/.gitignore';
+if(file_exists($gitignore)) {
+  @unlink($gitignore);
+  if(file_exists($gitignore)) {
+    die('Please delete the images/source/.gitignore file before proceeding.');
+  }
+}
+
 $global_file = CC_INCLUDES_DIR . 'global.inc.php';
 $setup_path  = CC_ROOT_DIR . '/setup' . '/';
 
