@@ -392,6 +392,7 @@ jQuery(document).ready(function() {
 	/* Click and check a check box */
 	$('#content_body').on('click', '.check-primary',function(){
 	   var rel = $(this).attr('rel');
+	   $('#'+rel).parent().addClass("selected");
 	   $('#'+rel+':checkbox').attr('checked','checked');
 	});
 
