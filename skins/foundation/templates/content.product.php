@@ -40,7 +40,7 @@
    <div class="small-5 columns">
       {if is_array($OPTIONS)}
       {foreach from=$OPTIONS item=option}
-      {if $option.type == '0'}
+      {if $option.type == Catalogue::OPTION_SELECT}
       <div class="row">
          <div class="small-12 columns">
             <label for="option_{$option.option_id}" class="return">{$option.option_name}{if $option.price} ({$option.symbol}{$option.price}){/if}{if $option.required} *{/if}</label>
