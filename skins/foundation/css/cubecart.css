@@ -158,6 +158,10 @@ input.quantity {
     text-align: center;
 }
 
+div#box-session {
+   font-size: 0.8125rem;
+}
+
 /* Start Checkout Progress */
 .checkout-progress-wrapper {
     background-color: #A0D3E8;

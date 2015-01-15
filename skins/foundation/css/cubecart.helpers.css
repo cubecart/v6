@@ -1,6 +1,10 @@
 .nopad {
 	padding:0!important;
 }
+.nopad-sides {
+	padding-left:0!important;
+	padding-right:0!important;
+}
 
 .pad {
 	padding:.625em;

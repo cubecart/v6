@@ -25,7 +25,7 @@
       <li><a href="{$STORE_URL}/index.php?_a=logout" title="{$LANG.account.logout}">{$LANG.account.logout}</a></li>
       {else}
       <li><label>{$LANG.account.your_account}</label></li>
-      <li><a href="{$STORE_URL}/index.php?_a=login">{$LANG.account.login} / {$LANG.account.register}</a></li>
+      <li><a href="{$STORE_URL}/login.html">{$LANG.account.login} / {$LANG.account.register}</a></li>
       {/if}
    </ul>
    <ul class="off-canvas-list">
