@@ -1342,7 +1342,7 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 									'assign_id'  => $value['assign_id'],
 									'decimal_price'   => $value['option_price'],
 									'price'   => (isset($value['option_price']) && $value['option_price']>0) ? Tax::getInstance()->priceFormat($value['option_price'], true) : false,
-									'symbol'  => (isset($value['option_price']) && $value['option_negative'] == 0) ? '+' : '-',
+									'symbol'  => (isset($value['option_price']) && $value['option_price']>0 && $value['option_negative'] == 0) ? '+' : '-',
 									'value_id'  => $value['value_id'],
 									'value_name' => $value['value_name'],
 									'selected' => ($selected[$value['assign_id']]) ? true : false
@@ -1365,7 +1365,7 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 						foreach ($group as $key => $option) {
 							
 							// You could say this is a bit of a fudge but it works	
-							$price = (isset($option[0]['option_price'])) ? Tax::getInstance()->priceFormat($option[0]['option_price']) : false;
+							$price = (isset($option[0]['option_price']) && $option[0]['option_price']>0) ? Tax::getInstance()->priceFormat($option[0]['option_price']) : false;
 							$symbol = (isset($option[0]['option_price']) && $option[0]['option_negative'] == 0) ? '+' : '-';
 							$value = trim(str_replace(array($option[0]['option_name'].':','('.$symbol.$price.')'),'',$selected[$option[0]['assign_id']]));
 							
@@ -1392,7 +1392,6 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 						break;
 					}
 				}
-				
 				uasort($option_list, 'cmpmc'); // sort groups
 				return $option_list;
 			}

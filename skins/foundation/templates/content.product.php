@@ -56,9 +56,9 @@
       <div class="row">
          <div class="small-12 columns">
             <label for="option_{$option.option_id}" class="return">{$option.option_name}{if $option.price} ({$option.symbol}{$option.price}){/if}{if $option.required} *{/if}</label>
-            {if $option.type == '1'}
+            {if $option.type == Catalogue::OPTION_TEXTBOX}
             <input type="text" name="productOptions[{$option.option_id}][{$OPT.assign_id}]" id="option_{$option.option_id}" {if $option.required}required{/if} >
-            {elseif $option.type == '2'}
+            {elseif $option.type == Catalogue::OPTION_TEXTAREA}
             <textarea name="productOptions[{$option.option_id}][{$OPT.assign_id}]" id="option_{$option.option_id}" {if $option.required}required{/if}></textarea>
             {/if}
          </div>
