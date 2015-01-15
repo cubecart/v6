@@ -145,7 +145,7 @@
 	                *}
 	               {/if}
 	            </div>
-	            {* Uncomment this if you want to show a moe info link
+	            {* Uncomment this if you want to show a more info link
 	            <a href="{$product.url}" title="{$product.name}" class="button tiny secondary left">{$LANG.common.info}</a>
 	            *}
 	            {if $product.ctrl_purchase && !$CATALOGUE_MODE}
