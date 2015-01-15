@@ -79,7 +79,7 @@
 	               </h3>
 	               {$product.description_short}
 	               {if $product.review_score}
-	               <!--
+	               {* Uncomment this if you want rating starts
 	                  <div>
 	                     {for $i = 1; $i <= 5; $i++}
 	                     {if $product.review_score >= $i}
@@ -92,7 +92,7 @@
 	                     {/for}
 	                     </div>
 	                  <p class="rating-info">{$product.review_info}</p>
-	                  -->
+	                *}
 	               {/if}
 	            </div>
 	            <div class="small-3 columns">
