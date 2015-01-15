@@ -145,7 +145,9 @@
 	                *}
 	               {/if}
 	            </div>
-	            <!--<a href="{$product.url}" title="{$product.name}" class="button tiny secondary left">{$LANG.common.info}</a>-->
+	            {* Uncomment this if you want to show a moe info link
+	            <a href="{$product.url}" title="{$product.name}" class="button tiny secondary left">{$LANG.common.info}</a>
+	            *}
 	            {if $product.ctrl_purchase && !$CATALOGUE_MODE}
 	            <div class="marg-top">
 	               <div class="row collapse marg-top">
