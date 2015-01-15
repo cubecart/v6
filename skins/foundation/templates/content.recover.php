@@ -16,4 +16,4 @@
 	<div><label for="recover_email">{$LANG.common.email}</label><span><input type="text" name="email" id="recover_email" class="required"> *</span></div>
   </fieldset>
   <div><input type="submit" value="{$LANG.form.submit}" class="button_submit"></div>
-  </form>
+</form>

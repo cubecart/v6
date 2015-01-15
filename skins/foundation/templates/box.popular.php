@@ -9,7 +9,7 @@
  * Email:  sales@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
-<div class="panel">
+<div class="panel" id="box-popular">
   <h3>{$LANG.catalogue.title_popular}</h3>
   <ol>
 	{foreach from=$POPULAR item=product}

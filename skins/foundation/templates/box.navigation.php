@@ -9,8 +9,10 @@
  * Email:  sales@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
-
-{if $CATEGORIES}{$CATEGORIES}{else}<nav class="top-bar category-nav" data-topbar="">
+{if $CATEGORIES}
+{$CATEGORIES}
+{else}
+<nav class="top-bar category-nav" data-topbar="" id="box-navigation">
   <ul class="title-area">
      <li class="name"></li>
      <li class="toggle-topbar left"><a href="">{$LANG.navigation.title} <i class="fa fa-caret-down"></i></a></li>

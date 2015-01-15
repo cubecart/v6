@@ -73,35 +73,35 @@
    </tbody>
    {/foreach}
    <tfoot>
-   <tr>
-      <td colspan="2"></td>
-      <td>{$LANG.basket.total_sub}</td>
-      <td class="text-right">{$SUM.subtotal}</td>
-   </tr>
-   <tr>
-      <td colspan="2"></td>
-      <td>{$LANG.basket.shipping}</td>
-      <td class="text-right">{$SUM.shipping}</td>
-   </tr>
-   {foreach from=$TAXES item=tax}
-   <tr>
-      <td colspan="2"></td>
-      <td>{$tax.name}</td>
-      <td class="text-right">{$tax.value}</td>
-   </tr>
-   {/foreach}
-   {if $DISCOUNT}
-   <tr>
-      <td colspan="2"></td>
-      <td>{$LANG.basket.total_discount}</td>
-      <td class="text-right">{$SUM.discount}</td>
-   </tr>
-   {/if}
-   <tr>
-      <td colspan="2"></td>
-      <td>{$LANG.basket.total_grand}</td>
-      <td class="text-right">{$SUM.total}</td>
-   </tr>
+      <tr>
+         <td colspan="2"></td>
+         <td>{$LANG.basket.total_sub}</td>
+         <td class="text-right">{$SUM.subtotal}</td>
+      </tr>
+      <tr>
+         <td colspan="2"></td>
+         <td>{$LANG.basket.shipping}</td>
+         <td class="text-right">{$SUM.shipping}</td>
+      </tr>
+      {foreach from=$TAXES item=tax}
+      <tr>
+         <td colspan="2"></td>
+         <td>{$tax.name}</td>
+         <td class="text-right">{$tax.value}</td>
+      </tr>
+      {/foreach}
+      {if $DISCOUNT}
+      <tr>
+         <td colspan="2"></td>
+         <td>{$LANG.basket.total_discount}</td>
+         <td class="text-right">{$SUM.discount}</td>
+      </tr>
+      {/if}
+      <tr>
+         <td colspan="2"></td>
+         <td>{$LANG.basket.total_grand}</td>
+         <td class="text-right">{$SUM.total}</td>
+      </tr>
    </tfoot>
 </table>
 {if !empty($SUM.customer_comments)}

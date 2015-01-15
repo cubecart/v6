@@ -9,7 +9,7 @@
  * Email:  sales@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
-<ul class="pagination hide-for-small-only">
+<ul class="pagination hide-for-small-only" id="element-paginate">
    {if ($page >= $show-1)}
    {$params[$var_name] = 1}
    <li><a href="{$current}{http_build_query($params)}{$anchor}">1</a></li>

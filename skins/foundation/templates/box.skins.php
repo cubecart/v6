@@ -10,8 +10,7 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
 {if $SKINS}
-<div class="pad skin_selector">
-<form action="{$VAL_SELF}" method="post" class="autosubmit nomarg">
+<form action="{$VAL_SELF}" method="post" class="autosubmit nomarg" id="box-skin">
    <div class="row">
       <div class="small-6 large-2 columns"><h4>Change Skin:</h4></div>
       <div class="small-6 large-3 end columns">
@@ -30,5 +29,4 @@
    </div>
    <input type="submit" value="submit" class="hide">
 </form>
-</div>
 {/if}

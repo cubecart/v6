@@ -9,13 +9,15 @@
  * Email:  sales@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
-{if $CRUMBS}
-<ul class="breadcrumbs">
-   <li><a href="{$STORE_URL}"><span class="show-for-small-only"><i class="fa fa-home"></i></span><span class="show-for-medium-up">{$LANG.common.home}</a></li>
-   {foreach from=$CRUMBS item=crumb}
-   <li><a href="{$crumb.url}">{$crumb.title}</a></li>
-   {/foreach}
-</ul>
-{else}
-<div class="thickpad-top"></div>
-{/if}
+<div id="element-breadcrumbs">
+   {if $CRUMBS}
+   <ul class="breadcrumbs">
+      <li><a href="{$STORE_URL}"><span class="show-for-small-only"><i class="fa fa-home"></i></span><span class="show-for-medium-up">{$LANG.common.home}</a></li>
+      {foreach from=$CRUMBS item=crumb}
+      <li><a href="{$crumb.url}">{$crumb.title}</a></li>
+      {/foreach}
+   </ul>
+   {else}
+   <div class="thickpad-top"></div>
+   {/if}
+</div>

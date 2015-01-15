@@ -9,7 +9,7 @@
  * Email:  sales@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
-<div class="box-basket-content">
+<div class="box-basket-content" id="box-basket-content">
    <h4 class="mini-basket-title nomarg pad-side">{$LANG.basket.your_basket}</h4>
    <div class="pad-side basket-detail">
       {if isset($CONTENTS) && count($CONTENTS) > 0}
