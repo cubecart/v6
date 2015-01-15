@@ -79,7 +79,7 @@
 	               </h3>
 	               {$product.description_short}
 	               {if $product.review_score}
-	               {* Uncomment this if you want rating starts
+	               {* Uncomment this if you want rating stars
 	                  <div>
 	                     {for $i = 1; $i <= 5; $i++}
 	                     {if $product.review_score >= $i}
@@ -129,7 +129,7 @@
 	            </h3>
 	            <div class="rating">
 	               {if $product.review_score}
-	               {* Uncomment this if you want rating starts
+	               {* Uncomment this if you want rating stars
 	                  <div>
 	                     {for $i = 1; $i <= 5; $i++}
 	                     {if $product.review_score >= $i}
