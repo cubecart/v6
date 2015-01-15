@@ -166,15 +166,11 @@ function currentPage($excluded = null, $included = null, $remove_excluded = true
 		}
 	}
 
-	// Make it SEO friendly
-	if (Config::getInstance()->get('config', 'seo')) {
-		// $_GET['seo_path'] should never be set... but if it is this will fix it
-		if(isset($_GET['seo_path']) && !empty($_GET['seo_path'])) {
-			$currentPage = SEO::getInstance()->getItem($_GET['seo_path'], true);
-		}
-		return SEO::getInstance()->SEOable($currentPage);
+	// $_GET['seo_path'] should never be set... but if it is this will fix it
+	if(isset($_GET['seo_path']) && !empty($_GET['seo_path'])) {
+		$currentPage = SEO::getInstance()->getItem($_GET['seo_path'], true);
 	}
-	return $currentPage;
+	return SEO::getInstance()->SEOable($currentPage);
 }
 
 /**
