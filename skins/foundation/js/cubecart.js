@@ -77,9 +77,9 @@ jQuery(document).ready(function () {
         return update_quantity(rel, sign);
     });
 
-    $('form.add_to_basket').submit(function (event) {
+    $('form.add_to_basket').submit(function(e) {
         var submit_form = true;
-        $("select[name^=productOptions]").each(function () {
+        $("[name^=productOptions]").each(function () {
             if ($(this).is("[required]") && $(this).val() == '') {
                 submit_form = false;
                 return false;
@@ -87,7 +87,7 @@ jQuery(document).ready(function () {
         });
 
         if(submit_form == false) {
-            event.preventDefault();
+            e.preventDefault();
             return false;
         } else {
             var add = $(this).serialize();
