@@ -18,7 +18,7 @@
 <ul class="small-block-grid-1 medium-block-grid-3 large-block-grid-3" data-equalizer>
    {foreach from=$LATEST_PRODUCTS item=product}
    <li>
-      <form action="{$VAL_SELF}" method="post" class="panel" id="add_to_basket" data-equalizer-watch>
+      <form action="{$VAL_SELF}" method="post" class="panel add_to_basket" data-equalizer-watch>
          <div class="text-center">
             <a class="th" href="{$product.url}" title="{$product.name}"><img src="{$product.image}" alt="{$product.name}"></a>
          </div>

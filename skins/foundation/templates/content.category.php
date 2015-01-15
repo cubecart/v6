@@ -66,7 +66,7 @@
 	<ul class="small-block-grid-1 product_list" data-equalizer>
 	   {foreach from=$PRODUCTS item=product}
 	   <li data-equalizer-watch>
-	      <form action="{$VAL_SELF}" method="post" class="panel" id="add_to_basket" >
+	      <form action="{$VAL_SELF}" method="post" class="panel add_to_basket">
 	         <div class="row product_list_view">
 	            <div class="small-3 columns">
 	               <a href="{$product.url}" title="{$product.name}">

@@ -10,7 +10,7 @@
 		required: $('#validate_field_required').text()
 	});
 	
-	$("#add_to_basket").validate();
+	$("form.add_to_basket").validate();
 	$("#review_form").validate({
 		rules: {
 			'review[name]': {

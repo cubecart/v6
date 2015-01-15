@@ -11,7 +11,7 @@
  *}
 {if isset($PRODUCT) && $PRODUCT}
 <div itemscope itemtype="http://schema.org/Product">
-<form action="{$VAL_SELF}" method="post" id="add_to_basket">
+<form action="{$VAL_SELF}" method="post" class="add_to_basket">
 <div class="row">
    <div class="small-12 columns">
       <h1 itemprop="name">{$PRODUCT.name}</h1>

@@ -77,9 +77,8 @@ jQuery(document).ready(function () {
         return update_quantity(rel, sign);
     });
 
-    $('form#add_to_basket').submit(function (event) {
+    $('form.add_to_basket').submit(function (event) {
         var submit_form = true;
-
         $("select[name^=productOptions]").each(function () {
             if ($(this).is("[required]") && $(this).val() == '') {
                 submit_form = false;
@@ -119,6 +118,7 @@ jQuery(document).ready(function () {
                     }
                 }
             });
+            return false;
         }
     }); /* Initial setup of country/state menu */
     $('select#country-list, select.country-list').each(function () {
