@@ -50,7 +50,7 @@
 	<div id="tab_control">
 	  {if isset($TABS)}
 	  {foreach from=$TABS item=tab}
-	  <div id="{$tab.tab_id}" class="tab">
+	  <div {if !empty($tab.tab_id)}id="{$tab.tab_id}" {/if}class="tab">
 		{if !empty($tab.notify)}<span class="tab_notify">{$tab.notify}</span>{/if}
 		<a href="{$tab.url}{$tab.target}" accesskey="{$tab.accesskey}" target="{$tab.a_target}">{$tab.name}</a>
 	  </div>

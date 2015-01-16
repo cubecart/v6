@@ -333,7 +333,7 @@ class ACP {
 		if (Admin::getInstance()->is() && !empty($this->_tabs) && is_array($this->_tabs)) {
 			foreach ($this->_tabs as $tab) {
 				$tab['name'] = ucfirst($tab['name']);
-				$tab['tab_id'] = 'tab_'.str_replace(' ', '_', $tab['target']);
+				$tab['tab_id'] = empty($tab['target']) ? '' : 'tab_'.str_replace(' ', '_', $tab['target']);
 				$tab['target'] = (!empty($tab['target'])) ? '#'.$tab['target'] : '';
 				$tabs[] = $tab;
 			}
