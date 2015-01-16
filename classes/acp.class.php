@@ -114,7 +114,7 @@ class ACP {
 	 * @param string $notify_count
 	 * @return bool
 	 */
-	public function addTabControl($name, $target = '', $url = null, $accesskey = null, $notify_count = false) {
+	public function addTabControl($name, $target = '', $url = null, $accesskey = null, $notify_count = false, $a_target = '_self') {
 		if (!empty($name)) {
 			$url = (!empty($url) && is_array($url)) ? currentPage(null, $url) : $url;
 			$this->_tabs[] = array(
@@ -123,6 +123,7 @@ class ACP {
 				'url'  => preg_replace('/(#.*)$/i', '', $url),
 				'accesskey' => $accesskey,
 				'notify' => $notify_count,
+				'a_target' => $a_target
 			);
 			return true;
 		}
@@ -331,7 +332,7 @@ class ACP {
 	public function showTabs() {
 		if (Admin::getInstance()->is() && !empty($this->_tabs) && is_array($this->_tabs)) {
 			foreach ($this->_tabs as $tab) {
-				$tab['name'] = ucwords($tab['name']);
+				$tab['name'] = ucfirst($tab['name']);
 				$tab['tab_id'] = 'tab_'.str_replace(' ', '_', $tab['target']);
 				$tab['target'] = (!empty($tab['target'])) ? '#'.$tab['target'] : '';
 				$tabs[] = $tab;

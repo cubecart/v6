@@ -47,7 +47,8 @@
 		  <td>{$customer.registered}</td>
 		  <td align="center"><a href="?_g=orders&customer_id={$customer.customer_id}">{$customer.order_count}</a></td>
 		  <td align="center">
-			<a href="{$customer.edit}" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
+		  	<a href="{$customer.signinas_url}" target="_blank"><i class="fa fa-sign-in" title="{$customer.signinas_name}"></i></a>
+			<a href="{$customer.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
 			<a href="{$customer.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		  </td>
 		</tr>

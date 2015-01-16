@@ -52,7 +52,7 @@
 	  {foreach from=$TABS item=tab}
 	  <div id="{$tab.tab_id}" class="tab">
 		{if !empty($tab.notify)}<span class="tab_notify">{$tab.notify}</span>{/if}
-		<a href="{$tab.url}{$tab.target}" accesskey="{$tab.accesskey}">{$tab.name}</a>
+		<a href="{$tab.url}{$tab.target}" accesskey="{$tab.accesskey}" target="{$tab.a_target}">{$tab.name}</a>
 	  </div>
 	  {/foreach}
 	  {/if}

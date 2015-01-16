@@ -279,6 +279,13 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
 $per_page = 20;
 
 if (isset($_GET['action']) && Admin::getInstance()->permissions('customers', CC_PERM_EDIT)) {
+	
+	if ($_GET['action'] == 'signinas' && isset($_GET['customer_id']) && $_GET['customer_id']) {
+		$GLOBALS['db']->update('CubeCart_sessions', array('customer_id' => $_GET['customer_id']), array('session_id' => $GLOBALS['session']->getId()));
+		httpredir('index.php');
+		exit;
+	}
+
 	if ($_GET['action'] == 'delete' && isset($_GET['customer_id']) && Admin::getInstance()->permissions('customers', CC_PERM_DELETE)) {
 		if (($customer = $GLOBALS['db']->select('CubeCart_customer', array('customer_id'), array('customer_id' => (int)$_GET['customer_id']))) !== false) {
 			if (!$GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id'), array('customer_id' => $customer[0]['customer_id']))) {
@@ -303,9 +310,13 @@ if (isset($_GET['action']) && Admin::getInstance()->permissions('customers', CC_
 	$GLOBALS['main']->addTabControl($lang['common']['general'], 'general');
 	$GLOBALS['main']->addTabControl($lang['customer']['title_address'], 'address');
 
+
 	if ($_GET['action'] == 'edit' && isset($_GET['customer_id']) && is_numeric($_GET['customer_id'])) {
 		if (($customer = $GLOBALS['db']->select('CubeCart_customer', false, array('customer_id' => (int)$_GET['customer_id']))) !== false) {
 			$customer = $customer[0];
+
+			$GLOBALS['main']->addTabControl(sprintf($lang['customer']['signinas'],$customer['first_name'],$customer['last_name']), '', currentPage('', array('action' => 'signinas', 'customer_id' => $customer['customer_id'])), null, false, '_blank');
+
 			$customer_id = (int)$customer['customer_id'];
 			$GLOBALS['smarty']->assign('ADD_EDIT_CUSTOMER', $lang['customer']['title_customer_edit']);
 
@@ -427,7 +438,8 @@ if (isset($_GET['action']) && Admin::getInstance()->permissions('customers', CC_
 			$orders = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id'), array('customer_id' => $customer['customer_id']));
 			$customer['order_count'] = ($orders) ? count($orders) : 0;
 			$customer['registered'] = formatTime($customer['registered']);
-
+			$customer['signinas_url'] = currentPage(array('page'), array('action' => 'signinas', 'customer_id' => $customer['customer_id']));
+			$customer['signinas_name'] = sprintf($lang['customer']['signinas'],$customer['first_name'],$customer['last_name']);
 			$customer['edit'] = currentPage(array('page'), array('action' => 'edit', 'customer_id' => $customer['customer_id']));
 			$customer['delete'] = currentPage(array('page'), array('action' => 'delete', 'customer_id' => $customer['customer_id']));
 			$group_membership = $GLOBALS['db']->misc('SELECT `group_name` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_customer_membership` AS M INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_customer_group` AS G WHERE G.`group_id` = M.`group_id` AND M.`customer_id` = '.$customer['customer_id'].';');
