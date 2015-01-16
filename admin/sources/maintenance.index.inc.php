@@ -458,11 +458,10 @@ if (isset($_POST['backup'])) {
 if ($clear_post) httpredir(currentPage(array('clearLogs', 'emptyErrorLogs')));
 
 ########## Tabs ##########
+$GLOBALS['main']->addTabControl($lang['maintain']['tab_rebuild'], 'rebuild');
 $GLOBALS['main']->addTabControl($lang['maintain']['tab_backup'], 'backup');
 $GLOBALS['main']->addTabControl($lang['common']['upgrade'], 'upgrade');
 $GLOBALS['main']->addTabControl($lang['maintain']['tab_db'], 'database');
-$GLOBALS['main']->addTabControl($lang['maintain']['tab_rebuild'], 'rebuild');
-
 $GLOBALS['main']->addTabControl($lang['maintain']['tab_query_sql'], 'general', '?_g=maintenance&node=sql');
 
 ##########
