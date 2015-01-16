@@ -757,7 +757,8 @@ if (isset($_GET['action'])) {
 				$GLOBALS['smarty']->assign('LANGUAGES', $smarty_data['list_langs']);
 			}
 			$GLOBALS['smarty']->assign('DISPLAY_TRANSLATE_FORM', true);
-		}
+		
+	} else {
 
 		// Add content tabs
 		$GLOBALS['main']->addTabControl($lang['catalogue']['title_pricing'], 'pricing');
@@ -776,8 +777,7 @@ if (isset($_GET['action'])) {
 		$request->skiplog(true);
 		$request->cache(true);
 		$request->setData(array('null'=>true));
-		if ($response = $request->send()) {
-			$google_cats = explode("\n", $response);
+
 		if($response = $request->send()) {
 			$google_cats = explode("\n",$response);
 		}
@@ -1107,7 +1107,7 @@ if (isset($_GET['action'])) {
 		$option_matrix = option_matrix($unique_groups);
 		$possible = false;
 
-		if (is_array($option_matrix)):
+		if (is_array($option_matrix)) {
 			foreach ($option_matrix as $matrix_values) {
 				foreach ($matrix_values as $matrix_value_id) {
 					$options_values[] =  '<strong>'.$option[$matrix_value_id]['option_group'].'</strong>: '.$option[$matrix_value_id]['option_name'];
@@ -1121,7 +1121,7 @@ if (isset($_GET['action'])) {
 				$possible[] = $option_identifier_string;
 				unset($options_identifier, $options_values);
 			}
-		endif;
+		}
 
 		if (is_array($possible)) {
 			$delete_query = "UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_option_matrix` SET `status` = 0 WHERE `product_id` = $product_id AND `options_identifier` NOT IN ('".implode("','", $possible)."')";
