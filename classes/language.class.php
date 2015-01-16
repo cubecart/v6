@@ -294,6 +294,11 @@ class Language {
 				foreach ($files as $file) {
 					unlink($file);
 				}
+				// Don't for get the flag!
+				$flag_path = CC_LANGUAGE_DIR.'flags/'.$code.'.png';
+				if(file_exists($flag_path)) {
+					unlink($flag_path);
+				}
 				return true;
 			}
 		}
