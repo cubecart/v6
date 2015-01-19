@@ -208,11 +208,11 @@ jQuery(document).ready(function () {
         }
     });
 
-    $('.grid_view').click(function () {
-        grid_view(200);
+    $('.grid_view').click(function (event) {
+        grid_view(200, event);
     });
-    $('.list_view').click(function () {
-        list_view(200);
+    $('.list_view').click(function (event) {
+        list_view(200, event);
     });
 
     set_product_view(0);
@@ -296,7 +296,7 @@ function checkout_form_toggle(register) {
 
 function set_product_view(delay) {
     if ($.cookie('product_view') == 'grid') {
-        grid_view(delay);
+        grid_view(delay, null);
     }
 }
 
@@ -306,8 +306,10 @@ function mini_basket_action() {
   });
 }
 
-function grid_view(duration) {
-    event.preventDefault();
+function grid_view(duration, event) {
+    if(event != null) {
+        event.preventDefault();
+    }
     $('.product_list').fadeOut(duration, function () {
         $('.product_list').removeClass('small-block-grid-1');
         $('.product_list').addClass('small-block-grid-3');
@@ -323,8 +325,10 @@ function grid_view(duration) {
     return false;
 }
 
-function list_view(duration) {
-    event.preventDefault();
+function list_view(duration, event) {
+    if(event != null) {
+        event.preventDefault();
+    }
     $('.product_list').fadeOut(duration, function () {
         $('.product_list').removeClass('small-block-grid-3');
         $('.product_list').addClass('small-block-grid-1');
