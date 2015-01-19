@@ -369,6 +369,7 @@ class GUI {
 			'text'  => $GLOBALS['language']->basket['view_basket']
 		);
 		$GLOBALS['smarty']->assign('BUTTON', $button);
+		foreach ($GLOBALS['hooks']->load('class.gui.display_side_basket') as $hook) include $hook;
 		$content = $GLOBALS['smarty']->fetch('templates/box.basket.php');
 		$GLOBALS['smarty']->assign('SHOPPING_CART', $content);
 

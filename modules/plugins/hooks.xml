@@ -121,6 +121,7 @@
  <hook trigger="class.gui.head_js" deprecated="" />
  <hook trigger="class.gui.body_js" deprecated="" />
  <hook trigger="class.gui.display" deprecated="" />
+ <hook trigger="class.gui.display_side_basket" deprecated="" />
  <hook trigger="class.gui.display_currency_switch" deprecated="" />
  <hook trigger="class.gui.display_documents" deprecated="" />
  <hook trigger="class.gui.display_language_switch" deprecated="" />
