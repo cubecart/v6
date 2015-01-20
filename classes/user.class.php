@@ -180,6 +180,18 @@ class User {
 	 * @return bool
 	 */
 	public function authenticate($username, $password, $remember = false, $from_cookie = false, $is_openid = false, $redirect = true) {
+
+		//Check we are not upgrading an unregistered account
+		if($unregistered = $GLOBALS['db']->select('CubeCart_customer', array('customer_id'), array('type' => 2, 'email' => $username, 'status' => true))) {
+			$record = array(
+				'type' => 1,
+				'new_password' => 0,
+				'password' => md5($password)
+			);
+			$GLOBALS['db']->update('CubeCart_customer', $record, array('customer_id' => (int)$unregistered[0]['customer_id']));
+			$this->authenticate($username, $password);
+		}
+
 		$hash_password = '';
 		//Get customer_id, password, and salt for the user
 		if (($user = $GLOBALS['db']->select('CubeCart_customer', array('customer_id', 'password', 'salt', 'new_password'), array('type' => 1, 'email' => $username, 'status' => true))) !== false) {

@@ -954,6 +954,7 @@ class Cubecart {
 					foreach ($GLOBALS['hooks']->load('class.cubecart.construct.confirm.create_user.created') as $hook) include $hook;
 
 					// Log in
+					$GLOBALS['session']->set('redir',$GLOBALS['rootRel'].'index.php?_a=confirm');
 					if (isset($_POST['register']) && $_POST['register']==1 && !$GLOBALS['user']->authenticate($_POST['user']['email'], $_POST['password'], false, false, false, false)) {
 						httpredir('index.php?_a=login');
 					}
