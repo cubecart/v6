@@ -860,3 +860,7 @@ div#content .powered {
 	font-size: 12px;
 	color: #ccc;
 }
+.cat_product_assign {
+	height: 200px;
+	overflow: auto;
+}
