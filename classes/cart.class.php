@@ -402,7 +402,6 @@ class Cart {
 				$this->basket['contents'] = unserialize($result[0]['basket']);
 				$this->save();
 			}
-
 		}
 	}
 
