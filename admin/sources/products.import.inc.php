@@ -41,7 +41,7 @@ if (isset($_POST['process'])) {
 			'CubeCart_pricing_group',
 		);
 		$GLOBALS['db']->truncate($tables);
-		$GLOBALS['db']->misc("DELETE FROM `".$glob['dbprefix']."CubeCart_seo_urls` WHERE `type` = 'prod'");
+		$GLOBALS['db']->delete('CubeCart_seo_urls',array('type' => 'prod'));
 	}
 
 	$schema		= $importers.CC_DS.basename($_POST['process']);
@@ -199,6 +199,13 @@ if (isset($_POST['process'])) {
 				foreach($products as $product) {
 					$GLOBALS['db']->delete('CubeCart_category_index', array('product_id' => $product['product_id']));
 					$GLOBALS['db']->delete('CubeCart_image_index', array('product_id' => $product['product_id']));
+					$GLOBALS['db']->delete('CubeCart_option_assign', array('product' => $product['product_id']));
+					$GLOBALS['db']->delete('CubeCart_reviews', array('product_id' => $product['product_id']));
+					$GLOBALS['db']->delete('CubeCart_inventory_language', array('product_id' => $product['product_id']));
+					$GLOBALS['db']->delete('CubeCart_options_set_product', array('product_id' => $product['product_id']));
+					$GLOBALS['db']->delete('CubeCart_pricing_quantity', array('product_id' => $product['product_id']));
+					$GLOBALS['db']->delete('CubeCart_pricing_group', array('product_id' => $product['product_id']));
+					$GLOBALS['db']->delete('CubeCart_seo_urls',array('type' => 'prod', 'item_id' => $product['product_id']));
 				}
 				$GLOBALS['db']->delete('CubeCart_inventory', array('date_added' => (string)$revert));
 				$GLOBALS['main']->setACPNotify($lang['catalogue']['notify_import_removed']);
