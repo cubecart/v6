@@ -786,8 +786,8 @@ $('#seo').on("change",function() {
 	});
 });
 
-$('#cat_name').on("change",function() {
-	$('#cat_save').on("click",function() {
+$('#cat_general').on('change','#cat_name', function() {
+	$('#cat_general').on('click','#cat_save', function() {
 		$( "#dialog-seo" ).dialog({
 			modal: true,
 			buttons: {
@@ -805,8 +805,8 @@ $('#cat_name').on("change",function() {
 		return false;
 	});
 });
-$('#parent').on("change",function() {
-	$('#cat_save').on("click",function() {
+$('#cat_general').on('change','#parent', function() {
+	$('#cat_general').on('click','#cat_save', function() {
 		$( "#dialog-seo" ).dialog({
 			modal: true,
 			buttons: {
