@@ -23,13 +23,15 @@ if(isset($_GET['delete']) && $_GET['delete']==1) {
 	   $GLOBALS['db']->delete('CubeCart_modules',array('folder' => $_GET['module']));
 	   $GLOBALS['db']->delete('CubeCart_hooks',array('plugin' => $_GET['module']));
 	   
-
 	   if(file_exists($dir)) {
 	   	$GLOBALS['main']->setACPWarning($lang['module']['plugin_still_exists']);
 	   } else {
 	   	$GLOBALS['main']->setACPNotify($lang['module']['plugin_deleted_successfully']);
 	   }
 	} else {
+		$GLOBALS['db']->delete('CubeCart_config',array('name' => $_GET['module']));
+	    $GLOBALS['db']->delete('CubeCart_modules',array('folder' => $_GET['module']));
+	    $GLOBALS['db']->delete('CubeCart_hooks',array('plugin' => $_GET['module']));
 		$GLOBALS['main']->setACPNotify($lang['module']['plugin_deleted_already']);
 	}
    httpredir('?_g=plugins');
@@ -208,7 +210,7 @@ foreach ($module_paths as $module_path) {
 		'basename' 			=> $basename,
 		'config'			=> $module_config[0],
 		'edit_url'			=> '?_g=plugins&type='.(string)$xml->info->type.'&module='.$basename,
-		'delete_url'		=> '?_g=plugins&type=g'.(string)$xml->info->type.'&module='.$basename.'&delete=1'
+		'delete_url'		=> '?_g=plugins&type='.(string)$xml->info->type.'&module='.$basename.'&delete=1'
 
 	);
 	$i++;
