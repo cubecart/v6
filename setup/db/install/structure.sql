@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_addressbook` (
 	`state` VARCHAR(100) NOT NULL,
 	`postcode` VARCHAR(15) NOT NULL,
 	`country` SMALLINT(3) UNSIGNED NOT NULL,
+	`hash` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
 	PRIMARY KEY (`address_id`),
 	KEY `customer_id` (`customer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ

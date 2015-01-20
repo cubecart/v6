@@ -726,6 +726,12 @@ class User {
 	 * @return true/false
 	 */
 	public function saveAddress($array, $new_user = false) {
+
+		$address_hash = md5(serialize($array));
+		if($GLOBALS['db']->select('CubeCart_addressbook',array('address_id'),array('hash' => $address_hash))) {
+			return false;
+		}
+
 		if ($this->is() || $new_user) {
 			if ($array['billing']) {
 				$reset['billing'] = '0';
@@ -743,6 +749,7 @@ class User {
 			$array['first_name'] = ucwords($array['first_name']);
 			$array['last_name']  = ucwords($array['last_name']);
 			$array['postcode']  = strtoupper($array['postcode']); // e.g. ab12 34cd to  AB12 34CD
+			$array['hash']  = $address_hash; // e.g. ab12 34cd to  AB12 34CD
 
 			if (isset($reset)) {
 				// "There can only be one"
@@ -757,7 +764,6 @@ class User {
 				return $GLOBALS['db']->insert('CubeCart_addressbook', $array);
 			}
 		}
-
 		return false;
 	}
 
