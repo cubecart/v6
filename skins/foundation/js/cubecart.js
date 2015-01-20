@@ -77,6 +77,14 @@ jQuery(document).ready(function () {
         return update_quantity(rel, sign);
     });
 
+    $('#checkout_proceed').click(function () {
+        $('<input>').attr({
+                        type: 'hidden',
+                        name: 'proceed',
+                        value: '1'
+                    }).appendTo('form#checkout_form');
+    });
+
     $('form.add_to_basket').submit(function(e) {
         var submit_form = true;
         $("[name^=productOptions]").each(function () {

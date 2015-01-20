@@ -321,8 +321,7 @@ class User {
 			} else {
 				$data['registered']  = time();
 				$data['type']    = $type;
-				$GLOBALS['db']->insert('CubeCart_customer', $data);
-				$customer_id = $GLOBALS['db']->insertid();
+				$customer_id = $GLOBALS['db']->insert('CubeCart_customer', $data);
 			}
 			if ($login) {
 				// Automatically log 'em in

@@ -52,7 +52,7 @@
       <div class="show-for-medium-up"><input type="submit" name="update" class="button secondary left" value="{$LANG.basket.basket_update}"></div>
       <div class="show-for-small-only"><button type="submit" name="update" class="button secondary left" value="{$LANG.basket.basket_update}">{$LANG.common.update}</button></div>
       {if $DISABLE_CHECKOUT_BUTTON!==true}
-      <button type="submit" name="proceed" class="button right">{$CHECKOUT_BUTTON} <i class="fa fa-chevron-right"></i></button>
+      <button type="submit" name="proceed" id="checkout_proceed" class="button right">{$CHECKOUT_BUTTON} <i class="fa fa-chevron-right"></i></button>
       {/if}
    </div>
 </form>
