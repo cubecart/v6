@@ -86,46 +86,62 @@ if (!isset($_SESSION['setup']['permissions'])) {
 					unset($_POST[$key]);
 				}
 			}
+			$mysql_connect = false;
 			// Connection Check - Update for mysqli
-			$connect = mysql_connect($_POST['global']['dbhost'], $_POST['global']['dbusername'], $_POST['global']['dbpassword'], false);
-			if ($connect) {
-				if (mysql_select_db($_POST['global']['dbdatabase'], $connect)) {
-					##ÊDatabase is fine, so continue to next step
-					mysql_close($connect);
-					if ($validated) {
-						# Set session variables, then proceed
-						unset($_POST['global']['dbpassconf'], $_POST['admin']['passconf']);
-
-						$_SESSION['setup']['progress'] = true;
-						$_SESSION['setup']['droptable'] = (isset($_POST['drop'])) ? true : false;
-
-						$global = array(
-							'installed'  => true,
-							'adminFolder' => 'admin',
-							'adminFile'  => 'admin.php',
-						);
-						$_SESSION['setup']['global'] = array_merge($_POST['global'], $global);
-						$_SESSION['setup']['config'] = $_POST['config'];
-						$salt = Password::getInstance()->createSalt();
-						$_SESSION['setup']['admin']  = array_merge($_POST['admin'], array(
-								'order_notify' => 1,
-								'super_user' => 1,
-								'status'  => 1,
-								'salt'   => $salt,
-								'language'  => $_POST['config']['default_language'],
-								'password'  => Password::getInstance()->getSalted($_POST['admin']['password'], $salt),
-							));
-						httpredir('index.php');
-					}
+			if (function_exists('mysqli_connect')) {
+				$connect = mysqli_connect($_POST['global']['dbhost'], $_POST['global']['dbusername'], $_POST['global']['dbpassword'], $_POST['global']['dbdatabase']);
+				if ($connect) {
+					// Database is fine, so continue to next step
+					mysqli_close($connect);
+					$mysql_connect = true;
 				} else {
-					// No such database
-					$errors['dbdatabase'] = $strings['setup']['error_db_doesnt_exist'];
-					unset($_POST['global']['dbdatabase']);
+					// Incorrect host/user/pass
+					$errors[] = $strings['setup']['error_db_incorrect_something'];
+					unset($_POST['global']['dbhost'], $_POST['global']['dbusername'], $_POST['global']['dbpassword']);
 				}
 			} else {
-				// Incorrect host/user/pass
-				$errors[] = $strings['setup']['error_db_incorrect_something'];
-				unset($_POST['global']['dbhost'], $_POST['global']['dbusername'], $_POST['global']['dbpassword']);
+				$connect = mysql_connect($_POST['global']['dbhost'], $_POST['global']['dbusername'], $_POST['global']['dbpassword'], false);
+				if ($connect) {
+					if (mysql_select_db($_POST['global']['dbdatabase'], $connect)) {
+						// Database is fine, so continue to next step
+						mysql_close($connect);
+						$mysql_connect = true;
+					} else {
+						// No such database
+						$errors['dbdatabase'] = $strings['setup']['error_db_doesnt_exist'];
+						unset($_POST['global']['dbdatabase']);
+					}
+				} else {
+					// Incorrect host/user/pass
+					$errors[] = $strings['setup']['error_db_incorrect_something'];
+					unset($_POST['global']['dbhost'], $_POST['global']['dbusername'], $_POST['global']['dbpassword']);
+				}
+			}
+
+			if ($validated && $mysql_connect) {
+				// Set session variables, then proceed
+				unset($_POST['global']['dbpassconf'], $_POST['admin']['passconf']);
+
+				$_SESSION['setup']['progress'] = true;
+				$_SESSION['setup']['droptable'] = (isset($_POST['drop'])) ? true : false;
+
+				$global = array(
+					'installed'  => true,
+					'adminFolder' => 'admin',
+					'adminFile'  => 'admin.php',
+				);
+				$_SESSION['setup']['global'] = array_merge($_POST['global'], $global);
+				$_SESSION['setup']['config'] = $_POST['config'];
+				$salt = Password::getInstance()->createSalt();
+				$_SESSION['setup']['admin']  = array_merge($_POST['admin'], array(
+						'order_notify' => 1,
+						'super_user' => 1,
+						'status'  => 1,
+						'salt'   => $salt,
+						'language'  => $_POST['config']['default_language'],
+						'password'  => Password::getInstance()->getSalted($_POST['admin']['password'], $salt),
+					));
+				httpredir('index.php');
 			}
 			$GLOBALS['smarty']->assign('FORM', $_POST);
 		}
