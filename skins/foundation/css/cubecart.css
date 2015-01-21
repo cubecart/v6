@@ -107,9 +107,8 @@ div.alert-box a {
     position: fixed;
     z-index: 100;
     width: 250px;
-    left: 50%;
     top: 60px;
-    margin-left: 235px;
+    margin-left: -146px;
 }
 
 .small-basket-detail-container {
