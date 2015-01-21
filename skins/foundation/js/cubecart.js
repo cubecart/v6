@@ -115,8 +115,9 @@ jQuery(document).ready(function () {
                 cache: false,
                 data: add,
                 complete: function (returned) {
-                    if (returned.responseText.match("Redir")) {
-                        window.location = returned.responseText.substr(6);
+                    if (returned.responseText.match("Redir:")) {
+                        var redir = returned.responseText.split('Redir:');
+                        window.location = redir[1];
                     } else {
                         on_canvas_basket.replaceWith(returned.responseText);
                         on_canvas_basket_content = $('#mini-basket .box-basket-content').html();
