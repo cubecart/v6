@@ -14,7 +14,7 @@
       <h3>{$LANG.navigation.nav_subscribers}</h3>
       
       <fieldset><legend>{$LANG.common.filter}</legend>
-      <label class="narrow">{$LANG.statistics.search_term}</label><input type="text" name="email_filter" value="{$EMAIL_FILTER}"> <input type="submit" name="submit" class="tiny" value="Go">
+      <label class="narrow">{$LANG.statistics.search_term}</label><input type="text" name="email_filter" value="{$EMAIL_FILTER}"> <input type="submit" name="submit" class="tiny" value="{$LANG.common.go}">
       </fieldset>
       {if $SUBSCRIBERS}
       <table>
