@@ -45,7 +45,7 @@
 				  <option value="1">{$LANG.form.mark_read}</option>
 				  <option value="0">{$LANG.form.mark_unread}</option>
 			    </select>
-				<input type="submit" value="{$LANG.common.go}" name="go">
+				<input type="submit" value="{$LANG.common.go}" name="go" class="tiny">
 			  </td>
 			</tr>
 		  </tfoot>
@@ -93,7 +93,7 @@
 				  <option value="1">{$LANG.form.mark_read}</option>
 				  <option value="0">{$LANG.form.mark_unread}</option>
 			    </select>
-				<input type="submit" value="{$LANG.common.go}" name="go">
+				<input type="submit" value="{$LANG.common.go}" name="go" class="tiny">
 			  </td>
 			</tr>
 		  </tfoot>

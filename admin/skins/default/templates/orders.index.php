@@ -70,7 +70,7 @@
                      <option value="print">{$LANG.orders.option_print}</option>
                      <option value="delete" style="color: red;">{$LANG.orders.option_delete}</option>
                   </select>
-                  <input type="submit" value="{$LANG.common.go}" name="go"/>
+                  <input type="submit" value="{$LANG.common.go}" name="go" class="tiny">
                </td>
             </tr>
             <tr>

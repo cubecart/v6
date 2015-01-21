@@ -17,6 +17,14 @@ global $lang;
 
 $redirect = false;
 
+if(isset($_POST['email_filter'])) {
+	if(empty($_POST['email_filter'])) {
+		$GLOBALS['session']->delete('email_filter');
+	} elseif(preg_match('/[a-z0-9\._-]/i',$_POST['email_filter'])) {
+		$GLOBALS['session']->set('email_filter', $_POST['email_filter']);
+	}
+}
+
 if(isset($_POST['subscribers']) && !empty($_POST['subscribers'])) {
 	
 	$added = false;
@@ -99,13 +107,23 @@ if($redirect) {
 $per_page  = 20;
 
 $page = (isset($_GET['page'])) ? $_GET['page'] : 1;
-$subscriber_count = $GLOBALS['db']->select('CubeCart_newsletter_subscriber');
+if($GLOBALS['session']->has('email_filter') && $email_filter = $GLOBALS['session']->get('email_filter')) {
+	$GLOBALS['smarty']->assign('EMAIL_FILTER',$email_filter);
+	if(filter_var($email_filter, FILTER_VALIDATE_EMAIL)) {
+		$where = array('email' => $email_filter);
+	} else {
+		$where = "`email` LIKE '%$email_filter%'";
+	} 
+} else {
+	$where = false;
+}
+$subscriber_count = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', false, $where);
 $count   = count($subscriber_count);
 if ($count > $per_page) {
 	$GLOBALS['smarty']->assign('PAGINATION', $GLOBALS['db']->pagination($count, $per_page, $page, 9, 'page', 'subscribers'));
 }
 
-$subscribers = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', false, false, array('email' => 'ASC'), $per_page, $page);
+$subscribers = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', false, $where, array('email' => 'ASC'), $per_page, $page);
 
 $GLOBALS['smarty']->assign('SUBSCRIBERS', $subscribers); 
 

@@ -44,6 +44,9 @@ input[type="checkbox"]{
 	width: 16px;
 	height: 16px;
 }
+input[type="submit"].tiny {
+	padding: 2px 4px !important;
+}
 .custom-checkbox {
 	background: url(../images/0.png);
 	width: 16px;
@@ -394,6 +397,8 @@ div.tab_content > h3, div.tb-form > h3 {
 .tb-form fieldset label, div.tab_content fieldset label {clear:both;float:left;width: 25em;}
 .tb-form fieldset span, div.tab_content fieldset span {float:left;width:auto;}
 #enabled-zones div, #disabled-zone-list div {clear:left;width:auto;}
+
+div.tab_content fieldset label.narrow {width: 12em;}
 
 div.tab_content label.wide {
 	width: 50em;

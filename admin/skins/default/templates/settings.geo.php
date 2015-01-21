@@ -45,7 +45,7 @@
   	  	   	  <option value="">{$LANG.form.with_selected}</option>
   	  	      <option value="delete">{$LANG.common.delete}</option>
   	  	    </select>
-  	  	    <input type="submit" value="{$LANG.common.go}" name="go">
+  	  	    <input type="submit" value="{$LANG.common.go}" name="go" class="tiny">
   	  	  </td>
   	  	</tr>
   	  </tfoot>
@@ -99,7 +99,7 @@
   	  	    	<option value="">{$LANG.form.with_selected}</option>
   	  	        <option value="delete">{$LANG.common.delete}</option>
   	  	    </select>
-  	  	    <input type="submit" name="go" value="{$LANG.common.go}">
+  	  	    <input type="submit" name="go" value="{$LANG.common.go}" class="tiny">
   	  	  </td>
   	  	</tr>
   	  </tfoot>

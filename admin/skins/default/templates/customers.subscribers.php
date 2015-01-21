@@ -12,6 +12,10 @@
 <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
    <div id="general" class="tab_content">
       <h3>{$LANG.navigation.nav_subscribers}</h3>
+      
+      <fieldset><legend>{$LANG.common.filter}</legend>
+      <label class="narrow">{$LANG.statistics.search_term}</label><input type="text" name="email_filter" value="{$EMAIL_FILTER}"> <input type="submit" name="submit" class="tiny" value="Go">
+      </fieldset>
       {if $SUBSCRIBERS}
       <table>
          <thead>
@@ -37,7 +41,7 @@
                      <option value="">{$LANG.form.with_selected}</option>
                      <option value="delete">{$LANG.common.remove}</option>
                   </select>
-                  <input type="submit" value="{$LANG.common.go}" name="go">
+                  <input type="submit" value="{$LANG.common.go}" name="go" class="tiny">
                </td>
             </tr>
          </tfooter>
