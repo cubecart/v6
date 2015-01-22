@@ -425,7 +425,7 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 
 			foreach ($categories as $category) {
 
-				$sql = 'SELECT C.`product_id` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_category_index` AS C INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory` AS I ON I.`product_id` = C.`product_id` WHERE C.cat_id = '.$category['cat_id'].' AND I.status = 1';
+				$sql = 'SELECT C.`product_id`, I.`use_stock_level` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_category_index` AS C INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory` AS I ON I.`product_id` = C.`product_id` WHERE C.cat_id = '.$category['cat_id'].' AND I.status = 1';
 				$available_products = $GLOBALS['db']->misc($sql);
 
 				if ($available_products && $GLOBALS['config']->get('config', 'hide_out_of_stock')) {
@@ -433,19 +433,21 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 					// Hide products out of stock
 					$in_stock = array();
 					foreach($available_products as $key => $product) {
-						if($options = $GLOBALS['db']->select('CubeCart_option_matrix', array('stock_level', 'use_stock'), array('product_id' => $product['product_id'], 'status' => 1))) {
+						if($product['use_stock_level']=='1') {
+							if($options = $GLOBALS['db']->select('CubeCart_option_matrix', array('stock_level', 'use_stock'), array('product_id' => $product['product_id'], 'status' => 1))) {
 
-							$oos_combos = array();
-							foreach($options as $option) {
-								if($option['use_stock']==1 && $option['stock_level']<=0) {
-									$oos_combos[] = true;
+								$oos_combos = array();
+								foreach($options as $option) {
+									if($option['use_stock']==1 && $option['stock_level']<=0) {
+										$oos_combos[] = true;
+									}
 								}
-							}
-							// If ALL matrix options are out of stock and all use stock levels
-							if(count($options)==count($oos_combos)) {
-								unset($available_products[$key]);
-							} else {
-								$in_stock[] = $product['product_id'];
+								// If ALL matrix options are out of stock and all use stock levels
+								if(count($options)==count($oos_combos)) {
+									unset($available_products[$key]);
+								} else {
+									$in_stock[] = $product['product_id'];
+								}
 							}
 						}
 					}
