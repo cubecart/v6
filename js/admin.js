@@ -886,7 +886,11 @@ $('body').on('click','a.remove', function() {
 	if (name == "inv_remove") {
 		$(this).parents('form:first').append("<input type=\"hidden\" name=\"inv_remove[]\" value=\""+url.substring(1)+"\" />");
 	}
-	var target = $(this).parents('tr:first,div:first:not(.tab_content)');
+	if($(this).hasClass('tr')) {
+		var target = $(this).parents('tr:first');
+	} else {
+		var target = $(this).parents('tr:first,div:first:not(.tab_content)');
+	}
 	$(target).remove();
 	$('.update-subtotal input.number').trigger("change");
 	return false;
