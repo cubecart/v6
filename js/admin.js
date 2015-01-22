@@ -746,10 +746,6 @@ $('.delete_disabled').on("click",function() {
   alert($(this).attr('title'));
 });
 
-$('#product_check').on("change",function() {
-	$('.list').find('input[name="product[]"]').attr('checked', this.checked);
-});
-
 $('input#product_code').on("keyup",function() {
     if($('input#product_code').val().length > 0) {
     	$('input#product_code_auto').attr('checked', false);

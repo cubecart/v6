@@ -19,7 +19,7 @@
             <table width="70%">
                <thead>
                   <tr>
-                     <th width="10"><input type="checkbox" name="" value="" id="product_check"></th>
+                     <th width="10"><input type="checkbox" name="" value="" class="check-all" rel="products"></th>
                      <th>{$LANG.catalogue.product_name}</th>
                      <th nowrap="nowrap" width="150">{$LANG.catalogue.product_code}</th>
                   </tr>
@@ -27,7 +27,7 @@
                <tbody>
                   {foreach from=$PRODUCTS item=product}
                   <tr>
-                     <td width="10"><input type="checkbox" name="product[]" value="{$product.product_id}"></td>
+                     <td width="10"><input type="checkbox" name="product[]" class="products" value="{$product.product_id}"></td>
                      <td>{$product.name}</td>
                      <td nowrap="nowrap" width="150">{$product.product_code}</td>
                   </tr>

@@ -148,7 +148,10 @@ jQuery(document).ready(function() {
 		return false;
 	});
 
-	$('.check-all').click(function() {
+	$('.check-all').click(function(e) {
+		if($(this).is("a")) {
+			e.preventDefault();
+		}
 		var rel = $(this).attr('rel');
 		var checkBoxes = $("input[type=checkbox]."+rel);
         checkBoxes.prop("checked", !checkBoxes.prop("checked")); 
