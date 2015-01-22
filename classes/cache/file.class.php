@@ -158,7 +158,7 @@ class Cache extends Cache_Controler {
 		}
 		
 		if(isset($this->_empties[$id])) {
-			return 'empty';
+			return false;
 		}
 		
 		if(isset($this->_dupes[$id])) {

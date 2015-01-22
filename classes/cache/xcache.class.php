@@ -154,7 +154,7 @@ class Cache extends Cache_Controler {
 		}
 		
 		if(isset($this->_empties[$id])) {
-			return 'empty';
+			return false;
 		}
 
 		//Setup the name of the cache
