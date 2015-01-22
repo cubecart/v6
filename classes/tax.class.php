@@ -269,9 +269,14 @@ class Tax {
 				return $this->priceFormatHidden();
 			} else {
 				$price = ($this->_currency_vars['value']*$price);				
-				$symbol_d = ($this->_currency_vars['symbol_decimal']) ? ',' : '.';
-				$symbol_t = (!$this->_currency_vars['symbol_decimal']) ? ',' : '.';
-				return $this->_currency_vars['symbol_left'].number_format($this->priceCorrection($price), $this->_currency_vars['decimal_places'], $symbol_d, $symbol_t).$this->_currency_vars['symbol_right'];
+				return 	$this->_currency_vars['symbol_left'].
+						number_format(
+							$this->priceCorrection($price), 
+							$this->_currency_vars['decimal_places'],
+							$this->_currency_vars['symbol_decimal'],
+							$this->_currency_vars['symbol_thousand']
+						).
+						$this->_currency_vars['symbol_right'];
 			}
 		}
 		return false;

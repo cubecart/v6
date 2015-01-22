@@ -1622,6 +1622,8 @@
     <string name="currency_symbol_left" introduced="5.0.0"><![CDATA[Symbol Left]]></string>
     <string name="currency_symbol_right" introduced="5.0.0"><![CDATA[Symbol Right]]></string>
     <string name="currency_updated" introduced="5.0.0"><![CDATA[Last Updated]]></string>
+    <string name="currency_symbol_decimal" introduced="6.0.0"><![CDATA[Decimal Symbol]]></string>
+    <string name="currency_symbol_thousand" introduced="6.0.0"><![CDATA[Thousands Separator]]></string>
     <string name="debug_enable" introduced="5.0.0"><![CDATA[Enable Debugging]]></string>
     <string name="debug_ip_addresses" introduced="5.1.0"><![CDATA[Restrict debug to IP Address (Comma Separated)]]></string>
     <string name="default_currency" introduced="5.0.0"><![CDATA[Default Currency]]></string>

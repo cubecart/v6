@@ -331,6 +331,7 @@ optgroup > option {
 	width: 100px !important;
 }
 .tab_content .number-right {
+	width: 100px !important;
 	text-align: right;
 }
 /* Tab Elements */

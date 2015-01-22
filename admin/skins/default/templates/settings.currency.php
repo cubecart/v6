@@ -16,27 +16,31 @@
 	  <thead>
 	  <tr>
 		<td align="center">{$LANG.common.status}</td>
-		<td align="center" width="70">{$LANG.settings.currency_iso}</td>
-		<td align="center" width="302">{$LANG.settings.currency_name}</td>
+		<td align="center">{$LANG.settings.currency_iso}</td>
+		<td align="center">{$LANG.settings.currency_name}</td>
 		<td align="center">{$LANG.settings.currency_symbol_left}</td>
-		<td align="center" width="102">{$LANG.settings.currency_exchange_rate}</td>
+		<td align="center">{$LANG.settings.currency_exchange_rate}</td>
 		<td align="center">{$LANG.settings.currency_symbol_right}</td>
 		<td align="center">{$LANG.settings.currency_decimal_places}</td>
-		<td align="center" width="120">{$LANG.settings.currency_updated}</td>
-		<td align="center" width="70">{$LANG.common.delete}</td>
+		<td align="center">{$LANG.settings.currency_symbol_decimal}</td>
+		<td align="center">{$LANG.settings.currency_symbol_thousand}</td>
+		<td align="center">{$LANG.settings.currency_updated}</td>
+		<td align="center">{$LANG.common.delete}</td>
 	  </tr>
 	  </thead>
 	  <tbody>
 	  {foreach from=$CURRENCIES item=currency}
 	  <tr>
 		<td align="center"><input type="hidden" name="currency[{$currency.code}][active]" id="{$currency.code}" class="toggle" value="{$currency.active}"></td>
-		<td align="center"><strong>{$currency.code}</strong></td>
+		<td><strong>{$currency.code}</strong></td>
 		<td><span class="editable" name="currency[{$currency.code}][name]">{$currency.name}</span></td>
-		<td><input type="text" name="currency[{$currency.code}][symbol_left]" class="textbox number edited" value="{$currency.symbol_left}"></td>
+		<td align="center"><input type="text" name="currency[{$currency.code}][symbol_left]" class="textbox number edited" value="{$currency.symbol_left}"></td>
 		<td align="right"><span class="editable number-right" name="currency[{$currency.code}][value]">{$currency.value}</span></td>
-		<td><input type="text" name="currency[{$currency.code}][symbol_right]" class="textbox number edited" value="{$currency.symbol_right}"></td>
-		<td><input type="text" name="currency[{$currency.code}][decimal_places]" class="textbox number edited" value="{$currency.decimal_places}"></td>
-		<td align="center">{$currency.updated}</td>
+		<td align="center"><input type="text" name="currency[{$currency.code}][symbol_right]" class="textbox number edited" value="{$currency.symbol_right}"></td>
+		<td align="center"><input type="text" name="currency[{$currency.code}][decimal_places]" class="textbox number edited" value="{$currency.decimal_places}"></td>
+		<td align="center"><input type="text" name="currency[{$currency.code}][symbol_decimal]" class="textbox number edited" value="{$currency.symbol_decimal}" maxlength="10"></td>
+		<td align="center"><input type="text" name="currency[{$currency.code}][symbol_thousand]" class="textbox number edited" value="{$currency.symbol_thousand}" maxlength="10"></td>
+		<td align="center">{if $currency.updated}{$currency.updated}{else}-{/if}</td>
 		<td align="center"><a href="{$VAL_SELF}&delete={$currency.code}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
 	  </tr>
 	  {/foreach}

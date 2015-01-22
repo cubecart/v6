@@ -198,20 +198,21 @@ CREATE TABLE IF NOT EXISTS `CubeCart_coupons` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_currency` (
-	`currency_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	`name` VARBINARY(255) NOT NULL DEFAULT '',
-	`code` VARCHAR(7) NOT NULL,
-	`iso` INT(3) UNSIGNED ZEROFILL DEFAULT NULL,
-	`symbol_left` VARCHAR(10) DEFAULT NULL,
-	`symbol_right` VARCHAR(10) DEFAULT NULL,
-	`value` DECIMAL(10,5) NOT NULL DEFAULT '0.00000',
-	`decimal_places` TINYINT(2) UNSIGNED DEFAULT '2',
-	`updated` INT UNSIGNED NOT NULL DEFAULT '0',
-	`active` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
-	`symbol_decimal` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
-	PRIMARY KEY (`currency_id`),
-	UNIQUE KEY `code` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+  `currency_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varbinary(255) NOT NULL DEFAULT '',
+  `code` varchar(7) COLLATE utf8_unicode_ci NOT NULL,
+  `iso` int(3) unsigned zerofill DEFAULT NULL,
+  `symbol_left` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `symbol_right` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `value` decimal(10,5) NOT NULL DEFAULT '0.00000',
+  `decimal_places` tinyint(2) unsigned DEFAULT '2',
+  `updated` int(10) unsigned NOT NULL DEFAULT '0',
+  `active` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `symbol_decimal` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT '.',
+  `symbol_thousand` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT ',',
+  PRIMARY KEY (`currency_id`),
+  UNIQUE KEY `code` (`code`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=32 ; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_customer` (
 	`customer_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
