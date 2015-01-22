@@ -425,17 +425,51 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 
 			foreach ($categories as $category) {
 
-				$where = ' AND I.status = 1';
+				$sql = 'SELECT C.`product_id` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_category_index` AS C INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory` AS I ON I.`product_id` = C.`product_id` WHERE C.cat_id = '.$category['cat_id'].' AND I.status = 1';
+				$available_products = $GLOBALS['db']->misc($sql);
 
-				if ($GLOBALS['config']->get('config', 'hide_out_of_stock')) {
-					$where .= ' AND I.use_stock_level = 1 AND I.stock_level > 0';
+				if ($available_products && $GLOBALS['config']->get('config', 'hide_out_of_stock')) {
+					
+					// Hide products out of stock
+					$in_stock = array();
+					foreach($available_products as $key => $product) {
+						if($options = $GLOBALS['db']->select('CubeCart_option_matrix', array('stock_level', 'use_stock'), array('product_id' => $product['product_id']))) {
+
+							$oos_combos = array();
+							foreach($options as $option) {
+								if($option['use_stock']==1 && $option['stock_level']<=0) {
+									$oos_combos[] = true;
+								}
+							}
+							// If ALL matrix options are out of stock and all use stock levels
+							if(count($options)==count($oos_combos)) {
+								unset($available_products[$key]);
+							} else {
+								$in_stock[] = $product['product_id'];
+							}
+						}
+					}
+					
+					// Check stock at main level
+					$product_dataset = $GLOBALS['db']->misc($sql.' AND I.use_stock_level = 1 AND I.stock_level <= 0');
+
+					if($product_dataset) {
+						foreach($product_dataset as $key => $product) {
+							if(!in_array($product['product_id'], $in_stock)) {
+								foreach($available_products as $master_key => $master_product) {
+									if($master_product['product_id']==$product['product_id']) {
+										unset($available_products[$master_key]);
+									}
+								}
+							}
+						}
+					}
 				}
 
-				$products_array = $GLOBALS['db']->misc('SELECT `id` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_category_index` AS C INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory` AS I ON I.`product_id` = C.`product_id` WHERE C.cat_id = '.$category['cat_id'].$where);
-				$products = $products_array ? count($products_array) : 0;
+				$products = $available_products ? count($available_products) : 0;
 
 				$children = $GLOBALS['db']->count('CubeCart_category', 'cat_id', array('cat_parent_id' => $category['cat_id'], 'status' => '1'));
-				if (($products || $GLOBALS['config']->get('config', 'catalogue_show_empty')) || $children) {
+				if (($products> 0 || $GLOBALS['config']->get('config', 'catalogue_show_empty')) || $children) {
 					$result = array(
 						'name'  => (isset($this->_category_translations[$category['cat_id']]) && !empty($this->_category_translations[$category['cat_id']])) ? $this->_category_translations[$category['cat_id']] : $category['cat_name'],
 						'cat_id' => $category['cat_id'],
