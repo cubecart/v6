@@ -433,7 +433,7 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 					// Hide products out of stock
 					$in_stock = array();
 					foreach($available_products as $key => $product) {
-						if($options = $GLOBALS['db']->select('CubeCart_option_matrix', array('stock_level', 'use_stock'), array('product_id' => $product['product_id']))) {
+						if($options = $GLOBALS['db']->select('CubeCart_option_matrix', array('stock_level', 'use_stock'), array('product_id' => $product['product_id'], 'status' => 1))) {
 
 							$oos_combos = array();
 							foreach($options as $option) {

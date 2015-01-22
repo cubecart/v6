@@ -238,6 +238,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 
 	if (is_array($_POST['option_matrix'])) {
 		foreach ($_POST['option_matrix'] as $options_identifier => $data) {
+
 			$data['product_id'] = $product_id;
 			if ($GLOBALS['db']->select('CubeCart_option_matrix', array('matrix_id'), array('product_id' => $product_id, 'options_identifier' => $options_identifier))) {
 				$GLOBALS['db']->update('CubeCart_option_matrix', $data, array('options_identifier' => $options_identifier, 'product_id' => $product_id));
@@ -1126,6 +1127,8 @@ if (isset($_GET['action'])) {
 		if (is_array($possible)) {
 			$delete_query = "UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_option_matrix` SET `status` = 0 WHERE `product_id` = $product_id AND `options_identifier` NOT IN ('".implode("','", $possible)."')";
 			$GLOBALS['db']->misc($delete_query);
+		} else {
+			$GLOBALS['db']->update('CubeCart_option_matrix', array('status'=>0), array('product_id'=>$product_id));
 		}
 
 		// update cached name
