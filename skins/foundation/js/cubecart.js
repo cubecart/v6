@@ -60,7 +60,7 @@ jQuery(document).ready(function () {
             }).unbind().magnify(magnify_options);
         }
     });
-    $('#basket-summary').click(function () {
+    $('body').on('click','#basket-summary', function() {
         mini_basket_action();
     });
 
