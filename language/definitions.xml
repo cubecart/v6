@@ -140,6 +140,7 @@
     <string name="your_address_book" introduced="5.0.0"><![CDATA[Your Address Book]]></string>
   </group>
   <group name="admins">
+    <string name="tour_shown" introduced="6.0.0"><![CDATA[Prevent welcome tour on next login?]]></string>
     <string name="account_link" introduced="5.0.0"><![CDATA[Link to customer account]]></string>
     <string name="account_link_view" introduced="5.0.0"><![CDATA[View linked account]]></string>
     <string name="account_linked" introduced="5.0.0"><![CDATA[Linked Account]]></string>
@@ -822,7 +823,6 @@
   </group>
   <group name="dashboard">
     <string name="quick_tour" introduced="6.0.0"><![CDATA[Quick Tour]]></string>
-    <string name="tour_shown" introduced="6.0.0"><![CDATA[Prevent welcome tour on next login?]]></string>
     <string name="tour_welcome" introduced="6.0.0"><![CDATA[Please follow this very short five stop tour to help get you on your way.]]></string>
     <string name="tour_1" introduced="6.0.0"><![CDATA[Define some basic information here such as your store name &amp; address, main currency and upload a logo.]]></string>
     <string name="tour_2" introduced="6.0.0"><![CDATA[Create the category structure for your product inventory. There are no limits to how many you can have or how many levels your subcategories can go.]]></string>
