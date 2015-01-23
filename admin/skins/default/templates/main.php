@@ -72,7 +72,7 @@
       <div style="display: none" id="val_admin_file">{$SKIN_VARS.admin_file}</div>
       <div style="display: none" id="val_skin_folder">{$SKIN_VARS.skin_folder}</div>
       <ol id="joyrideTour" style="display: none">
-         <li>
+         <li data-button="{$LANG.dashboard.ok_go}">
             <h2>{$LANG.common.hi_casual} {$ADMIN_USER_FIRST_NAME}!</h2>
             <p>{$LANG.dashboard.tour_welcome}</p>
          </li>
@@ -96,9 +96,9 @@
             <h2>5. {$LANG.navigation.nav_plugins}</h2>
             <p>{$LANG.dashboard.tour_5}</p>
          </li>
-         <li data-button="Close">
+         <li data-button="{$LANG.common.close}">
             <h2>{$LANG.common.thats_it}</h2>
-            <p>{$LANG.dashboard.tour_end}</p>
+            {$LANG.dashboard.tour_end}
          </li>
       </ol>
       <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
