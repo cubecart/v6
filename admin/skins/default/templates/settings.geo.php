@@ -20,7 +20,8 @@
 		  <td>{$LANG.country.country_iso_alpha2}</td>
 		  <td>{$LANG.country.country_iso_alpha3}</td>
 		  <td>{$LANG.country.country_iso_numeric}</td>
-		  <td>{$LANG.country.eu}</td>
+		  <td><abbr title="{$LANG.country.eu}">{$LANG.country.eu_short}</abbr></td>
+		  <td>{$LANG.common.status}</td>
 		  <td>&nbsp;</td>
 		</tr>
 	  </thead>
@@ -32,7 +33,8 @@
 		  <td><span class="editable number" name="country[{$country.id}][iso]">{$country.iso}</span></td>
 		  <td><span class="editable number" name="country[{$country.id}][iso3]">{$country.iso3}</span></td>
 		  <td><span class="editable number" name="country[{$country.id}][numcode]">{$country.numcode}</span></td>
-		  <td><input name="country[{$country.id}][eu]" id="{$country.id}_eu" type="hidden" class="toggle" value="{$country.eu}" /></td>
+		  <td align="center"><input name="country[{$country.id}][eu]" id="{$country.id}_eu" type="hidden" class="toggle" value="{$country.eu}"></td>
+		  <td align="center"><input name="country[{$country.id}][status]" id="{$country.id}_status" type="hidden" class="toggle" value="{$country.status}"></td>
 		  <td align="center"><a href="{$country.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
 		</tr>
 	  {/foreach}

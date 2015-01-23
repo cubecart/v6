@@ -466,7 +466,7 @@ class Cubecart {
 							'default'  => (!is_array($addresses)) ? 'checked="checked"' : '',
 						));
 				}
-				if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('numcode', 'name'))) !== false) {
+				if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('numcode', 'name'), array('status' => 1))) !== false) {
 					if (!isset($address['country'])) {
 						$address['country'] = $GLOBALS['config']->get('config', 'store_country');
 					}
@@ -996,7 +996,7 @@ class Cubecart {
 			}
 
 			// Parse page elements
-			if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('numcode', 'name'), false, array('name' => 'ASC'))) !== false) {
+			if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('numcode', 'name'), array('status' => 1), array('name' => 'ASC'))) !== false) {
 				foreach ($countries as $country) {
 					$country['selected'] = '';
 					if (isset($this->_basket['billing_address'])) {

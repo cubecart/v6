@@ -328,7 +328,8 @@ CREATE TABLE IF NOT EXISTS `CubeCart_geo_country` (
   `name` varbinary(80) NOT NULL DEFAULT '',
   `iso3` char(3) COLLATE utf8_unicode_ci DEFAULT NULL,
   `numcode` smallint(3) unsigned zerofill DEFAULT NULL,
-  `eu` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `eu` enum('0','1') COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+  `status` enum('0','1') COLLATE utf8_unicode_ci NOT NULL DEFAULT '1',
   PRIMARY KEY (`iso`),
   KEY `id` (`id`),
   KEY `eu` (`eu`)

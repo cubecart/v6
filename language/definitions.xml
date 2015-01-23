@@ -746,6 +746,7 @@
   </group>
   <group name="country">
     <string name="eu" introduced="5.2.13"><![CDATA[European Union]]></string>
+    <string name="eu_short" introduced="5.2.13"><![CDATA[EU]]></string>
     <string name="assign_to_eu" introduced="5.2.13"><![CDATA[Assign to European Union?]]></string>
     <string name="bread_geo" introduced="5.0.0"><![CDATA[Countries &amp; Zones]]></string>
     <string name="country_iso_alpha2" introduced="5.0.0"><![CDATA[ISO Alpha-2]]></string>
