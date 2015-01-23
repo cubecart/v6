@@ -466,7 +466,7 @@ class Cubecart {
 							'default'  => (!is_array($addresses)) ? 'checked="checked"' : '',
 						));
 				}
-				if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('numcode', 'name'), array('status' => 1))) !== false) {
+				if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('numcode', 'name'), array('status' => 1), array('name'=>'ASC'))) !== false) {
 					if (!isset($address['country'])) {
 						$address['country'] = $GLOBALS['config']->get('config', 'store_country');
 					}
