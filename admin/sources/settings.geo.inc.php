@@ -17,13 +17,26 @@ global $lang;
 
 $GLOBALS['gui']->addBreadcrumb($lang['country']['bread_geo']);
 
-if (isset($_POST['multi_country_action']) && !empty($_POST['multi_country_action']) && strtolower($_POST['multi_country_action']) == 'delete'  && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
+if (isset($_POST['multi_country_action']) && !empty($_POST['multi_country_action'])  && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
 	if (is_array($_POST['multi_country'])) {
 		foreach ($_POST['multi_country'] as $country => $value) {
-			$GLOBALS['db']->delete('CubeCart_geo_country', array('id' => $country));
-			$GLOBALS['db']->delete('CubeCart_geo_zone', array('country_id' => $country));
+			switch($_POST['multi_country_action']) {
+				case 'delete':
+					$GLOBALS['db']->delete('CubeCart_geo_country', array('id' => $country));
+					$GLOBALS['db']->delete('CubeCart_geo_zone', array('country_id' => $country));
+				break;
+				case 'enable':
+					$GLOBALS['db']->update('CubeCart_geo_country', array('status' => 1), array('id' => $country));
+				break;
+				case 'disable':
+					$GLOBALS['db']->update('CubeCart_geo_country', array('status' => 0), array('id' => $country));
+				break;
+			}
+			
 		}
-		$GLOBALS['main']->setACPNotify($lang['country']['notify_country_delete']);
+		if($_POST['multi_country_action']=='delete') {
+			$GLOBALS['main']->setACPNotify($lang['country']['notify_country_delete']);
+		}
 	} else {
 		$GLOBALS['main']->setACPWarning($lang['country']['error_country_delete_multi']);
 	}

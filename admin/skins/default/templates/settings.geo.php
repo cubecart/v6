@@ -46,6 +46,8 @@
   	  	    <select name="multi_country_action">
   	  	   	  <option value="">{$LANG.form.with_selected}</option>
   	  	      <option value="delete">{$LANG.common.delete}</option>
+  	  	      <option value="enable">{$LANG.common.enable}</option>
+  	  	      <option value="disable">{$LANG.common.disable}</option>
   	  	    </select>
   	  	    <input type="submit" value="{$LANG.common.go}" name="go" class="tiny">
   	  	  </td>
