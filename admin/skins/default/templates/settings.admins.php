@@ -34,6 +34,7 @@
 		<input type="hidden" id="result_admin-customer" name="admin[customer_id]"><input type="text" id="admin-customer" class="ajax textbox" rel="user">
 	  </span></div>
 	  {/if}
+	  <div><label for="tour_shown">{$LANG.admins.tour_shown}</label><span><input type="hidden" name="admin[tour_shown]" id="tour_shown" class="toggle" value="{$ADMIN.tour_shown}"></span></div>
 	</fieldset>
 	<fieldset><legend>{$LANG.account.password}</legend>
 	  <div><label for="admin-password">{$LANG.account.password}</label><span><input type="password" autocomplete="off" name="password" id="admin-password" class="textbox"></span></div>

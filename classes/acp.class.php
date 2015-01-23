@@ -89,13 +89,15 @@ class ACP {
 					$this->_navigation[$group][] = array(
 						'name' => strip_tags($name),
 						'url' => $url['address'],
-						'target' => $url['target']
+						'target' => (isset($url['target']) && !empty($url['target'])) ? $url['target'] : '_self',
+						'id' => (isset($url['id']) && !empty($url['id'])) ? $url['id'] : ''
 					);
 				} else {
 					$this->_navigation[$group][] = array(
 						'name' => strip_tags($name),
 						'url' => $url,
-						'target' => '_self'
+						'target' => '_self',
+						'id' => ''
 					);	
 				}
 				
@@ -261,8 +263,18 @@ class ACP {
 	 */
 	public function setTemplate() {
 		if (Admin::getInstance()->is()) {
-			$GLOBALS['smarty']->assign('ADMIN_USER', strip_tags(Admin::getInstance()->get('name')));
+			$full_name = trim(Admin::getInstance()->get('name'));
+			$names = explode(' ',$full_name);
+
+			$GLOBALS['smarty']->assign('ADMIN_USER_FIRST_NAME', $names[0]);
+			$GLOBALS['smarty']->assign('ADMIN_USER', $full_name);
 			$GLOBALS['smarty']->assign('ADMIN_UID', Admin::getInstance()->getId());
+
+			if(Admin::getInstance()->get('tour_shown')=='0') {
+				$GLOBALS['smarty']->assign('TOUR_AUTO_START', 'true');
+			} else {
+				$GLOBALS['smarty']->assign('TOUR_AUTO_START', 'false');
+			}
 		}
 	}
 
@@ -311,7 +323,8 @@ class ACP {
 						$item['members'][] = array(
 							'title' => ucwords($submenu['name']),
 							'url' => $submenu['url'],
-							'target' => $submenu['target']
+							'target' => $submenu['target'],
+							'id' => $submenu['id'],
 						);
 					}
 					$navigation[] = $item;

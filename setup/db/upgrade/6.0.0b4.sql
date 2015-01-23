@@ -1,0 +1,1 @@
+ALTER TABLE  `CubeCart_admin_users` ADD  `tour_shown` ENUM('0','1') NOT NULL DEFAULT '0'; #EOQ

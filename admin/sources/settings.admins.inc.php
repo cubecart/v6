@@ -11,6 +11,15 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  */
 if (!defined('CC_INI_SET')) die('Access Denied');
+
+if(isset($_GET['tour_shown']) && is_numeric($_GET['tour_shown'])) {
+	
+	$query = "UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_admin_users` SET `tour_shown` = '1' WHERE `admin_id` = ".$_GET['tour_shown'];
+	$GLOBALS['db']->misc($query);
+	$data = $GLOBALS['session']->set('tour_shown',1, 'admin_data');
+	exit;
+}
+
 Admin::getInstance()->permissions('users', CC_PERM_READ, true);
 
 global $lang;

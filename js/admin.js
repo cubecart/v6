@@ -4,7 +4,10 @@ $(window).load(function() {
 });
 
 $(document).ready(function() {
-
+	$("#quickTour").on('click', function(){
+		$("#joyrideTour").joyride();
+	});
+	
 	$('#rule-eu').click(function() {		
 		$( "#country-region" ).toggle( "slow", function() {});
 	});

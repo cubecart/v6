@@ -526,6 +526,8 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="thats_it" introduced="6.0.0"><![CDATA[That's it!]]></string>
+    <string name="hi_casual" introduced="6.0.0"><![CDATA[Hey]]></string>
     <string name="options" introduced="6.0.0"><![CDATA[Options]]></string>
     <string name="name_and_desc" introduced="6.0.0"><![CDATA[Name &amp; Description]]></string>
     <string name="condition" introduced="6.0.0"><![CDATA[Condition]]></string>
@@ -819,6 +821,15 @@
     <string name="title_list" introduced="5.0.0"><![CDATA[Customer List]]></string>
   </group>
   <group name="dashboard">
+    <string name="quick_tour" introduced="6.0.0"><![CDATA[Quick Tour]]></string>
+    <string name="tour_shown" introduced="6.0.0"><![CDATA[Prevent welcome tour on next login?]]></string>
+    <string name="tour_welcome" introduced="6.0.0"><![CDATA[Please follow this very short five stop tour to help get you on your way.]]></string>
+    <string name="tour_1" introduced="6.0.0"><![CDATA[Define some basic information here such as your store name &amp; address, main currency and upload a logo.]]></string>
+    <string name="tour_2" introduced="6.0.0"><![CDATA[Create the category structure for your product inventory. There are no limits to how many you can have or how many levels your subcategories can go.]]></string>
+    <string name="tour_3" introduced="6.0.0"><![CDATA[Add a few digital or physical products whilst assigning them to one or more categories.]]></string>
+    <string name="tour_4" introduced="6.0.0"><![CDATA[Select a 100% free shipping rate calculator and payment integration from the CubeCart Marketplace. There are a huge amount to choose from including FedEx, PayPal etc&hellip;]]></string>
+    <string name="tour_5" introduced="6.0.0"><![CDATA[Configure your chosen shipping rate calculator and payment integration from the plugins area.]]></string>
+    <string name="tour_end" introduced="6.0.0"><![CDATA[We have only touched the tip of the iceberg but it's enough to get you selling today.]]></string>
   	<string name="error_version" introduced="5.2.3"><![CDATA[WARNING: Your store appears to be using source code from %s but the database is still at %s.Please complete the upgrade by running the <a href="setup">setup</a> process.]]></string>
     <string name="error_global_risk" introduced="5.0.0"><![CDATA[WARNING: Your includes/global.inc.php is currently writable, you should change the file permissions to read only. On Linux or Unix systems it should be CHMOD to 0444.]]></string>
     <string name="error_mysql_root" introduced="5.0.0"><![CDATA[WARNING: You are currently connected to the database using the root account. This is not secure, and should be changed.]]></string>
