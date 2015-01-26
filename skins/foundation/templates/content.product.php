@@ -47,7 +47,7 @@
                   <select name="productOptions[{$option.option_id}]" id="option_{$option.option_id}" class="nomarg" {if $option.required}required{/if}>
                   <option value="">{$LANG.form.please_select}</option>
                   {foreach from=$option.values item=value}
-                  <option value="{$value.assign_id}">{$value.value_name}{if $value.price} ({$value.symbol}{$value.price}){/if}</option>
+                  <option value="{$value.assign_id}" {if $option.required && count($option.values)==1}selected="selected"{/if}>{$value.value_name}{if $value.price} ({$value.symbol}{$value.price}){/if}</option>
                   {/foreach}
                   </select>
                </div>
