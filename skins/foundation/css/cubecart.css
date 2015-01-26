@@ -164,9 +164,8 @@ div#box-session {
     bottom: 0px;
     width: 100%;
     z-index: 100;
-    border-top: solid #C0C0C0 1px;
 }
-.skin_selector h4 {
+.skin_selector h4, .skin_selector h4 a {
     color: #fff;
 }
 #currency_menu, #language_menu {

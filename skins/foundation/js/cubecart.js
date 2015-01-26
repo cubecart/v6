@@ -39,6 +39,11 @@ jQuery(document).ready(function () {
         }
         return;
     });
+    $(".hide_skin_selector").click(function (e) {
+        e.preventDefault();
+        $('.skin_selector').hide();
+        return;
+    });   
     $('input[type=radio].rating').rating({
         required: true
     });

@@ -10,10 +10,10 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
 {if $SKINS}
-<form action="{$VAL_SELF}" method="post" class="autosubmit nomarg" id="box-skin">
+<form action="{$VAL_SELF}" method="post" class="autosubmit nomarg skin_selector thickpad-top" id="box-skin">
    <div class="row">
-      <div class="small-6 large-2 columns"><h4>Change Skin:</h4></div>
-      <div class="small-6 large-3 end columns">
+      <div class="small-6 columns text-right"><h4>Change Skin:</h4></div>
+      <div class="small-5 columns">
          <select name="select_skin" class="auto_submit">
          {foreach from=$SKINS item=skin}
          {if isset($skin.styles)}
@@ -25,6 +25,9 @@
          {/if}
          {/foreach}
          </select>
+      </div>
+      <div class="small-1 columns">
+         <h4><a href="#" class="hide_skin_selector"><i class="fa fa-chevron-down"></i></a></h4>
       </div>
    </div>
    <input type="submit" value="submit" class="hide">
