@@ -285,8 +285,9 @@ class Cache extends Cache_Controler {
 			foreach (glob($this->_cache_path.'*', GLOB_NOSORT) as $file) {
 				$cache_size += filesize($file);
 			}
-			
-			return 'Cache Used: '.formatBytes($this->_page_cache_usage, true).' of '.formatBytes($cache_size, true).' ('.number_format((($this->_page_cache_usage/$cache_size) * 100),2).'%)';
+			$cache_used = ($cache_size > 0) ? formatBytes($this->_page_cache_usage, true).' of '.formatBytes($cache_size, true).' ('.number_format((($this->_page_cache_usage/$cache_size) * 100),2).'%)' : 'None'; 
+			return 'Cache Used: '.$cache_used;
+
 		} else {
 			return 'Cache is disabled';
 		}
