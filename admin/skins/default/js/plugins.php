@@ -5,7 +5,8 @@ $search		= dirname(__FILE__).DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.'
 $plugins	= glob($search, GLOB_BRACE);
 if ($plugins && is_array($plugins)) {
 	foreach ($plugins as $plugin) {
-		echo "\n\n/* ".basename($plugin)." */\n\n";
+		echo "/* ".basename($plugin)." */\n";
 		echo file_get_contents($plugin);
+		echo "\n\n";
 	}
 }
