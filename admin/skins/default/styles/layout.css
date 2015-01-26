@@ -40,7 +40,6 @@ input[type="checkbox"]{
 	filter: alpha(opacity=0);
 	-khtml-opacity: 0;
 	-moz-opacity: 0;
-	background-color: red;
 	width: 16px;
 	height: 16px;
 }
