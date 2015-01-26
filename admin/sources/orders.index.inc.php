@@ -511,6 +511,9 @@ if (isset($_GET['action'])) {
 					'country' => getCountryFormat($GLOBALS['config']->get('config', 'store_country')),
 					'postcode' => $GLOBALS['config']->get('config', 'store_postcode'))
 			);
+
+			foreach ($GLOBALS['hooks']->load('admin.order.index.print') as $hook) include $hook;
+			
 			// Parse
 			$template = $GLOBALS['smarty']->fetch('templates/orders.print.php');
 

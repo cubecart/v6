@@ -45,6 +45,7 @@
  <hook trigger="admin.order.index.post_process" deprecated="" />
  <hook trigger="admin.order.index.pre_display" deprecated="" />
  <hook trigger="admin.order.index.pre_process" deprecated="" />
+ <hook trigger="admin.order.index.print" deprecated="" />
  <hook trigger="admin.order.index.transaction" deprecated="" />
  <hook trigger="admin.product.clone" deprecated="" />
  <hook trigger="admin.product.delete" deprecated="" />
