@@ -16,7 +16,7 @@
          <legend>{$LANG.catalogue.title_products}</legend>
          <div class="cat_product_assign">
             {if $PRODUCTS}
-            <table width="70%">
+            <table width="700">
                <thead>
                   <tr>
                      <th width="10"><input type="checkbox" name="" value="" class="check-all" rel="products"></th>
@@ -66,7 +66,7 @@
       <fieldset>
          <legend>{$LANG.settings.title_category}</legend>
          <div class="cat_product_assign">
-            <table width="70%">
+            <table width="700">
                <thead>
                   <tr>
                      <th width="10">&nbsp;</th>
