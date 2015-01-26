@@ -15,6 +15,9 @@ if (!defined('CC_INI_SET')) die('Access Denied');
 
 global $glob, $lang, $admin_data;
 
+## Quick tour
+$GLOBALS['smarty']->assign('QUICK_TOUR', true);
+
 ## Save notes
 if (isset($_POST['notes']['dashboard_notes']) && !empty($_POST['notes']['dashboard_notes'])) {
 	$update = array('dashboard_notes' => $_POST['notes']['dashboard_notes']);

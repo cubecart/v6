@@ -50,7 +50,9 @@
             <div id="breadcrumbs">
                <div class="inner">
                   <span class="helpdocs" style="float: right;">
+                  {if $QUICK_TOUR}
                   <a href="#" id="quickTour">{$LANG.dashboard.quick_tour}</a> |
+                  {/if}
                   <a href="{$HELP_URL}" id="wikihelp" class="colorbox wiki">{$LANG.common.help}</a> | <a href="index.php" target="_blank">{$LANG.settings.store_status} - {if ($STORE_STATUS)}<span class="store_open">{$LANG.common.open}</span>{else}<span class="store_closed">{$LANG.common.closed}</span>{/if}</a>
                   </span>
                   <a href="?">{$LANG.dashboard.title_dashboard}</a>
