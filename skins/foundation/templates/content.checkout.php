@@ -37,7 +37,7 @@
                <li>
                   <input name="gateway" type="radio" value="{$gateway.folder}" id="{$gateway.folder}" required {$gateway.checked}><label for="{$gateway.folder}">{$gateway.description}</label>
                   {if !empty($gateway.help)}
-                  <a href="{$gateway.help}" class="info" title="{$LANG.common.information}"><img src="images/icons/information.png" alt="{$LANG.common.information}"></a>
+                  <a href="{$gateway.help}" class="info" title="{$LANG.common.information}"><i class="fa fa-info-circle"></i></a>
                   {/if}
                </li>
                {/foreach}
