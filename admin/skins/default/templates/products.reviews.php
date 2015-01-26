@@ -13,6 +13,7 @@
   {if $LIST_REVIEWS}
   <div id="reviews" class="tab_content">
 	<h3>{$LANG.reviews.title_reviews}</h3>
+	{if $REVIEWS}
 	<div class="tools">
 	  {$LANG.form.sort_by}
 	  <select name="field" class="textbox">
@@ -45,13 +46,14 @@
 		{$review.date} - {$review.name} <<a href="mailto:{$review.email}">{$review.email}</a>> {$review.ip_address}
 	  </div>
 	</div>
-	{foreachelse}
-	<p>{$LANG.reviews.error_reviews_none}</p>
 	{/foreach}
 
 	<div class="pagination">
 	  <span>{$LANG.common.total}: {$TOTAL_RESULTS}</span>{$PAGINATION}
 	</div>
+	{else}
+	<p>{$LANG.reviews.error_reviews_none}</p>
+	{/if}
   </div>
   <div id="bulk_delete" class="tab_content">
 	<h3>{$LANG.reviews.title_bulk_delete}</h3>
