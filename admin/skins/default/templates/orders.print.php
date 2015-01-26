@@ -14,7 +14,7 @@
 <head>
   <title>{$PAGE_TITLE}</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <link rel="stylesheet" href="../{$SKIN_VARS.admin_folder}/styles/print.css" media="screen,print">
+  <link rel="stylesheet" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/styles/styles/print.css" media="screen,print">
 </head>
 <body onload="window.print();">
   {if isset($ORDER_LIST)}
