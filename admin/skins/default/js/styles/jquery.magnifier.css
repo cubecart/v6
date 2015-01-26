@@ -1,13 +1,1 @@
-#dio-lens {
-	background-color: #FFFFFF;
-	border: 1px solid #000000;
-	z-index: 9998;
-}
-#dio-sensor{
-	z-index: 11000;
-	cursor: url(../../images/icons/zoom.png), crosshair !important;
-}
-#dio-loader{
-	background: #FFFFFF url('images/loading.gif') no-repeat center 40px;	
-	text-indent: -30000px;
-}
+#dio-lens{background-color:#FFF;border:1px solid #000;z-index:9998}#dio-sensor{z-index:11000;cursor:url(../../images/icons/zoom.png),crosshair!important}#dio-loader{background:url(images/loading.gif) center 40px no-repeat #FFF;text-indent:-30000px}
