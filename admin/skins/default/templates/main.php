@@ -122,8 +122,6 @@
          });
          {/literal}
       </script>
-      <!-- Common JavaScript functionality -->
-      <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/common.js"></script>
       <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/admin.js"></script>
       {if isset($CLOSE_WINDOW)}
       <script type="text/javascript">
