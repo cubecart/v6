@@ -406,7 +406,6 @@ $.fn.autocomplete = function(options){ return this.each(function(){
       // pass selected object to callback function, if exists
       if ($.isFunction(options.callback))
         options.callback(suggestions[current_highlight-1], ele, rel);
-
       clearSuggestions();
     }
   };

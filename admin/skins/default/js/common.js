@@ -26,35 +26,7 @@ jQuery(document).ready(function() {
 			}
 		});
 	};
-	jQuery.fn.checkUncheck	= function(settings) {
-		jQuery(this).each(function(){
-			var onAction	= (jQuery(this).is(':checkbox')) ? 'change' : 'click';
-			var controller	= jQuery(this);
-			jQuery(this).bind(onAction, function(){
-				var target	= jQuery(this).attr('rel');
-				if (jQuery(controller).is('input:checkbox')) {
-					if (jQuery(controller).is(':checked')) {
-						jQuery('input:checkbox.'+target).attr('checked', 'checked');
-					} else {
-						jQuery('input:checkbox.'+target).removeAttr('checked').change(function(){
-							jQuery(controller).removeAttr('checked');
-						});
-					}
-				} else {
-					if (jQuery(controller).is(':checked') || jQuery(controller).attr('checked')) {
-						jQuery('input:checkbox.'+target).removeAttr('checked');
-						jQuery(controller).removeAttr('checked');
-					} else {
-						jQuery('input:checkbox.'+target).attr('checked','checked').change(function(){
-							jQuery(controller).removeAttr('checked');
-						});
-						jQuery(controller).attr({'checked':'checked'});
-					}
-					return false;
-				}
-			});
-		});
-	};
+	
 	jQuery.fn.confirmPassword = function(settings) {
 		var options = jQuery.extend({
 			updateOn: 'keyup'
@@ -98,7 +70,9 @@ jQuery(document).ready(function() {
 
 	/* Notify the user if they're navigating away without submitting a form */
 	$(':input, :input:hidden').each(function(){
-		$(this).attr('original', $(this).val());
+		if(!$(this).hasClass('original-fix')) {
+			$(this).attr('original', $(this).val());
+		}
 	}).change(function(){
 		pageChanged(this);
 	});
@@ -174,7 +148,14 @@ jQuery(document).ready(function() {
 		return false;
 	});
 
-	$('.check-all').checkUncheck();
+	$('.check-all').click(function(e) {
+		if($(this).is("a")) {
+			e.preventDefault();
+		}
+		var rel = $(this).attr('rel');
+		var checkBoxes = $("input[type=checkbox]."+rel);
+        checkBoxes.prop("checked", !checkBoxes.prop("checked")); 
+	});
 
 	$('select.auto_submit').each(function(){
 		if(!$(this).hasClass('show_submit')) {
@@ -184,7 +165,7 @@ jQuery(document).ready(function() {
 		$(this).parents('form:first').submit();
 	});
 
-	$('.insert-text').live('click', function(){
+	$('.insert-text').on('click', function(){
 		var target	= '#'+$(this).attr('target');
 		var text	= $(this).text();
 		$(target).insertAtCaret(text);
@@ -411,15 +392,12 @@ jQuery(document).ready(function() {
 		});
 	}
 
-	/*
-	$('#login-controller > div.control').each(function(){
-		$('div.login-method:not(:first)').slideUp();
-		$(this).click(function(){
-			$('div.login-method').slideUp();
-			$(this).next('div.login-method').slideDown();
-		});
+	/* Click and check a check box */
+	$('#content_body').on('click', '.check-primary',function(){
+	   var rel = $(this).attr('rel');
+	   $('#'+rel).parent().addClass("selected");
+	   $('#'+rel+':checkbox').attr('checked','checked');
 	});
-	*/
 
 });
 
@@ -436,15 +414,6 @@ function updateStriping(element) {
 	$('.list,.reorder-list').find('>div:nth-child(odd),tbody>tr:nth-child(odd)').addClass('list-odd');
 }
 
-function checkUncheck(filter) {
-	var filter_on = (filter.length > 0) ? filter  : '';
-	if ($(filter+':checkbox').attr('checked')) {
-		$(filter+':checkbox').removeAttr('checked');
-	} else {
-		$(filter+':checkbox').attr('checked', 'checked');
-	}
-}
-
 function pageChanged(element) {
 	var parent	= $(element).parents('form:first');
 	if (parent.length == 1) {
@@ -457,11 +426,6 @@ function pageChanged(element) {
 		}
 	}
 }
-/* Click and check a check box */
-$('.check-primary').live('click', function(){
-   var rel = $(this).attr('rel');
-   $('#'+rel+':checkbox').attr('checked','checked');
-});
 
 /**
  * Strips a parameter from a URL

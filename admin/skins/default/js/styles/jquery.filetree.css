@@ -1,0 +1,38 @@
+ul.filetree {
+	font-family: Verdana, sans-serif;
+	font-size: 11px;
+	line-height: 18px;
+	padding: 0px;
+	margin: 0px;
+}
+
+ul.filetree li {
+	min-height: 21px;
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+	padding-left: 20px;
+	white-space: nowrap;
+}
+
+ul.filetree a {
+	color: #333;
+	text-decoration: none;
+	display: block;
+	padding: 0px 2px;
+}
+
+ul.filetree a:hover {
+	background: #BBDDFF;
+}
+
+/* Core Styles */
+.filetree li.directory { background: url(../../images/icons/folder.png) left top no-repeat; }
+.filetree li.expanded { background: url(../../images/icons/folder_open.png) left top no-repeat; }
+.filetree li.file { background: url(../../images/icons/page_generic.png) left top no-repeat; }
+.filetree li.wait { background: url(../../images/icons/spinner.gif) left top no-repeat; }
+
+/* File Extensions */
+.filetree li.image { background: url(../../images/icons/image.png) left top no-repeat !important; }
+.filetree li.video { background: url(../../images/icons/video.png) left top no-repeat; }
+.filetree li.archive { background: url(../../images/icons/page_archive.png) left top no-repeat; }

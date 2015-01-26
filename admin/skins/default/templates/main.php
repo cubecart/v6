@@ -13,7 +13,7 @@
       <link rel="stylesheet" type="text/css" href="{$style}" media="screen">
       {/foreach}
       {/if}
-      <link rel="stylesheet" type="text/css" href="js/styles/styles.php" media="screen">
+      <link rel="stylesheet" type="text/css" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/styles/styles.php" media="screen">
    </head>
    <body>
       <div id="header">
@@ -103,9 +103,9 @@
             {$LANG.dashboard.tour_end}
          </li>
       </ol>
-      <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
-      <script type="text/javascript" src="js/jquery-ui-1.10.4.min.js"></script>
-      <script type="text/javascript" src="js/plugins.php"></script>
+      <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/jquery-1.11.1.min.js"></script>
+      <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/jquery-ui-1.10.4.min.js"></script>
+      <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/plugins.php"></script>
       <!-- Include CKEditor -->
       <script type="text/javascript" src="includes/ckeditor/ckeditor.js"></script>
       <script type="text/javascript" src="includes/ckeditor/adapters/jquery.js"></script>
@@ -123,8 +123,8 @@
          {/literal}
       </script>
       <!-- Common JavaScript functionality -->
-      <script type="text/javascript" src="js/common.js"></script>
-      <script type="text/javascript" src="js/admin.js"></script>
+      <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/common.js"></script>
+      <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/admin.js"></script>
       {if isset($CLOSE_WINDOW)}
       <script type="text/javascript">
          $(document).ready(function () {

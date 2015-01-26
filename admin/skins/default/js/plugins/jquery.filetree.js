@@ -39,7 +39,7 @@ function array_search( needle, haystack, strict ) {
 }
 
 if (jQuery)(function($){
-
+	
 	var image_dir = 'skins/'+$('#val_skin_folder').text()+'/images/';
 	
 	if ($('#val_admin_folder').length) {
@@ -62,6 +62,7 @@ if (jQuery)(function($){
 			if (!o.unique) {
 				o.unique = ($(this).hasClass('unique')) ? true : false;
 			}
+			
 			$(this).each(function() {
 				function showTree(c, t) {
 					$(c).addClass('wait');
@@ -187,7 +188,7 @@ if (jQuery)(function($){
 	});
 
 	// handle special insertion of form element only when an image is changed from current
-	$('img.imgtoggle').live('click', function(){
+	$('#content_body').on('click','img.imgtoggle', function(){
 		var id_val = $(this).data('id');
 		var is_unique = $(this).hasClass('unique');
 		var input = document.createElement('input');
@@ -221,7 +222,7 @@ if (jQuery)(function($){
 		$(this).removeClass('imgtoggle').addClass('toggle');
 	});
 
-	$('img.checkbox').live('click', function(){
+	$('#content_body').on('click','img.checkbox', function(){
 		var parent = $(this).attr('rel');
 
 		var is_filemanager	= $(this).parents('div:first').hasClass('fm-filelist');
