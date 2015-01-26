@@ -240,7 +240,6 @@ class Cubecart {
 								# if (method_exists($gateway, $command)) $gateway->{$command}();
 								switch ($_GET['cmd']) {
 								case 'call':
-								case 'request':
 									if (method_exists($gateway, 'call')) {
 										$gateway->call();
 									}
