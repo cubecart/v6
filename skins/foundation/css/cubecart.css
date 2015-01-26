@@ -2,40 +2,30 @@ html * {
     font-family: 'segoe ui', 'helvetica neue', arial, helvetica, sans-serif;
     -webkit-font-smoothing: antialiased;
 }
-/*input, textarea {
-  -webkit-appearance: none;
-  -webkit-border-radius: 0;
-}*/
 .old_price {
     text-decoration: line-through;
 }
-
 .sale_price {
     color: red;
 }
-
 .tabs {
     border-bottom: 1px #EFEFEF solid;
 }
-
 /* Start Magnifier */
 #dio-lens {
     background-color: #FFFFFF;
     border: 1px solid #000000;
     z-index: 9998;
 }
-
 #dio-lens img {
     max-width: none;
 }
-
 #dio-sensor {
     z-index: 11000;
     cursor: -webkit-zoom-in;
     cursor: -moz-zoom-in;
     cursor: url(../images/icon_zoom.png), crosshair !important;
 }
-
 #dio-loader {
     background: #FFFFFF;
     text-indent: -30000px;
@@ -53,15 +43,12 @@ div.rating-cancel,div.star-rating {
     background: transparent;
     overflow: hidden;
 }
-
 div.rating-cancel,div.rating-cancel a {
     background: url(../images/delete.gif) no-repeat 0 -16px;
 }
-
 div.star-rating,div.star-rating a {
     background: url(../images/star.gif) no-repeat 0 0px;
 }
-
 div.rating-cancel a,div.star-rating a {
     display: block;
     width: 16px;
@@ -69,19 +56,15 @@ div.rating-cancel a,div.star-rating a {
     background-position: 0 0px;
     border: 0;
 }
-
 div.star-rating-on a {
     background-position: 0 -32px!important;
 }
-
 div.star-rating-hover a {
     background-position: 0 -16px;
 }
-
 div.star-rating-readonly a {
     cursor: default!important;
 }
-
 div.star-rating {
     background: transparent!important;
     overflow: hidden!important;
@@ -92,11 +75,9 @@ footer {
     background-color: #000;
     color: #fff;
 }
-
 footer h3 {
     color: #fff;
 }
-
 div.alert-box a {
 	color: #fff;
 	text-decoration: underline;
@@ -110,7 +91,6 @@ div.alert-box a {
     top: 60px;
     margin-left: -146px;
 }
-
 .small-basket-detail-container {
     position: fixed;
     z-index: 100;
@@ -122,22 +102,18 @@ div.alert-box a {
     color: #fff;
     font-weight: bold;
 }
-
 .mini-basket-title {
     background-color: #000;
     color: #fff;
 }
-
 .basket-detail {
     background-color: #F2F2F2;
     border: 1px solid #000;
 }
-
 .basket-detail .total {
     font-size: 1.2em;
     font-weight: 700;
 }
-
 .mini-basket-arrow {
     width: 0;
     height: 0;
@@ -151,12 +127,10 @@ div.alert-box a {
 .social-icons {
     font-size: 30px;
 }
-
 input.quantity {
     width: 50px;
     text-align: center;
 }
-
 div#box-session {
    font-size: 0.8125rem;
 }
@@ -166,43 +140,35 @@ div#box-session {
     background-color: #A0D3E8;
     color: #4F4F4F;
 }
-
 .checkout-progress.previous {
     background-color: #008CBA;
 }
-
 .checkout-progress.current {
     background-color: #43AC6A;
 }
-
 .checkout-progress.next {
 }
-
 .checkout-progress a {
     color: #4F4F4F;
     text-decoration: none;
 }
-
 .checkout-progress.previous a,.checkout-progress.current a {
     color: #FFF;
     text-decoration: none;
 }
 
 /* End Checkout Progress */
-
 .skin_selector {
     background-color: rgba(0, 0, 0, 0.7);
     position: fixed;
     bottom: 0px;
     width: 100%;
     z-index: 100;
-    border-top: solid grey 1px;
+    border-top: solid #C0C0C0 1px;
 }
-
 .skin_selector h4 {
     color: #fff;
 }
-
 #currency_menu, #language_menu {
 	position: absolute; 
 	z-index: 100; 
@@ -219,7 +185,6 @@ div#box-session {
 	font-weight: bold;
 	color: #fff;
 }
-
 .flag {
 	width: 16px;
 	height: 11px;
@@ -234,7 +199,6 @@ div#box-session {
 .flag.flag-US {background-position: 0 -66px}
 .flag.flag-TR {background-position: 0 -77px}
 .flag.flag-DK {background-position: 0 -88px}
-
 .back-to-top {
 	position: fixed;
 	bottom: 3em;
@@ -246,12 +210,10 @@ div#box-session {
 	display: none;
 	z-index: 100;
 }
-
 .back-to-top:hover {	
 	background-color: ;
 	color: #fff;
 }
-
 .button.white {
 	background-color: #fff;
 	color: #666;
