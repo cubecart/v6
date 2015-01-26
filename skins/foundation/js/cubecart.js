@@ -41,7 +41,7 @@ jQuery(document).ready(function () {
     });
     $(".hide_skin_selector").click(function (e) {
         e.preventDefault();
-        $('.skin_selector').hide();
+        $('.skin_selector').fadeOut();
         return;
     });   
     $('input[type=radio].rating').rating({
