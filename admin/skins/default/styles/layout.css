@@ -28,6 +28,14 @@ input[type="submit"]:hover, input[type="button"]:hover {
 	background-image: -o-linear-gradient(#e1e1e1, #ededed);
 	background-color: #ededed;
 }
+input[type="submit"].tiny {
+	padding: 2px 4px !important;
+}
+.mini_button {
+	font-size: 10px !important;
+	padding: 5px 3px 3px 3px !important;
+}
+/* End Submit Buttons */
 input[type="checkbox"]{
 	margin: 0;
 	padding: 0;
@@ -44,9 +52,6 @@ input[type="checkbox"]{
 	width: 16px;
 	height: 16px;
 }
-input[type="submit"].tiny {
-	padding: 2px 4px !important;
-}
 .custom-checkbox {
 	background: url(../images/0.png);
 	width: 16px;
@@ -55,11 +60,6 @@ input[type="submit"].tiny {
 .custom-checkbox.selected {
 	background: url(../images/1.png);
 }
-.mini_button {
-	font-size: 10px !important;
-	padding: 5px 3px 3px 3px !important;
-}
-/* End Submit Buttons */
 
 /* Filemanager */
 .fm-container {
