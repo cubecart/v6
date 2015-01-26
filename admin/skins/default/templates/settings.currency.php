@@ -40,7 +40,7 @@
 		<td align="center"><input type="text" name="currency[{$currency.code}][decimal_places]" class="textbox number edited" value="{$currency.decimal_places}"></td>
 		<td align="center"><input type="text" name="currency[{$currency.code}][symbol_decimal]" class="textbox number edited" value="{$currency.symbol_decimal}" maxlength="10"></td>
 		<td align="center"><input type="text" name="currency[{$currency.code}][symbol_thousand]" class="textbox number edited" value="{$currency.symbol_thousand}" maxlength="10"></td>
-		<td align="center">{if $currency.updated}{$currency.updated}{else}-{/if}</td>
+		<td align="center">{if $currency.updated}{$currency.updated}{else}{$LANG.common.unknown}{/if}</td>
 		<td align="center"><a href="{$VAL_SELF}&delete={$currency.code}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
 	  </tr>
 	  {/foreach}
