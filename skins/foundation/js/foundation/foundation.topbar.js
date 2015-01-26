@@ -225,7 +225,9 @@
               section.find('>.name').css({right: 100 * topbar.data('index') + '%'});
             }
 
-            topbar.css('height', $this.siblings('ul').outerHeight(true) + topbar.data('height'));
+            if (!self.small()) {
+              topbar.css('height', $this.siblings('ul').outerHeight(true) + topbar.data('height'));
+            }
           }
         });
 
