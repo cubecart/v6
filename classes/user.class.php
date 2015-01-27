@@ -843,24 +843,23 @@ class User {
 	private function _load() {
 		foreach ($GLOBALS['hooks']->load('class.user.load') as $hook) include $hook;
 
-		if (($results = $GLOBALS['db']->select('CubeCart_sessions', array('customer_id'), array('session_id' => $GLOBALS['session']->getID()), false, 1, false, false)) !== false) {
-			if ($results[0]['customer_id'] == 0) {
-				return ;
+		if ($GLOBALS['session']->session_data['customer_id'] == '0') {
+			return ;
+		}
+		if ($results[0]['customer_id'] && $result = $GLOBALS['db']->select('CubeCart_customer', false, array('customer_id' => (int)$results[0]['customer_id']), null, 1)) {
+			$this->_user_data = $result[0];
+			foreach ($GLOBALS['hooks']->load('class.user.load.user') as $hook) include $hook;
+			$this->_logged_in = true;
+			if (!$GLOBALS['session']->has('user_language', 'client')) {
+				$GLOBALS['session']->set('user_language', (isset($result[0]['language']) && preg_match(Language::LANG_REGEX, $result[0]['language'])) ? $result[0]['language'] : $GLOBALS['config']->get('config', 'default_language'), 'client');
 			}
-			if ($results[0]['customer_id'] && $result = $GLOBALS['db']->select('CubeCart_customer', false, array('customer_id' => (int)$results[0]['customer_id']), null, 1)) {
-				$this->_user_data = $result[0];
-				foreach ($GLOBALS['hooks']->load('class.user.load.user') as $hook) include $hook;
-				$this->_logged_in = true;
-				if (!$GLOBALS['session']->has('user_language', 'client')) {
-					$GLOBALS['session']->set('user_language', (isset($result[0]['language']) && preg_match(Language::LANG_REGEX, $result[0]['language'])) ? $result[0]['language'] : $GLOBALS['config']->get('config', 'default_language'), 'client');
-				}
-				if ((empty($this->_user_data['email']) || !filter_var($this->_user_data['email'], FILTER_VALIDATE_EMAIL) || empty($this->_user_data['first_name']) || empty($this->_user_data['last_name'])) && !in_array(strtolower($_GET['_a']), array('profile', 'logout'))) {
-					// Force account details page
-					$GLOBALS['session']->set('temp_profile_required', true);
-					httpredir(currentPage(null, array('_a' => 'profile')));
-				}
+			if ((empty($this->_user_data['email']) || !filter_var($this->_user_data['email'], FILTER_VALIDATE_EMAIL) || empty($this->_user_data['first_name']) || empty($this->_user_data['last_name'])) && !in_array(strtolower($_GET['_a']), array('profile', 'logout'))) {
+				// Force account details page
+				$GLOBALS['session']->set('temp_profile_required', true);
+				httpredir(currentPage(null, array('_a' => 'profile')));
 			}
 		}
+		
 	}
 
 	/**
