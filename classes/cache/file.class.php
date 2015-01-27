@@ -33,12 +33,10 @@ class Cache extends Cache_Controler {
 
 	final protected function __construct() {
 		if (!$this->setPath()) {
-			$this->_online = false;
-			return ;
+			return;
 		}
 
 		$this->_mode = 'File';
-		$this->_online = true;
 		
 		$this->_getEmpties();
 		
@@ -95,9 +93,6 @@ class Cache extends Cache_Controler {
 	 * @return bool
 	 */
 	public function delete($id) {
-		if (!$this->status()) {
-			return true;
-		}
 		clearstatcache(); // Clear cached results
 		if (file_exists($this->_cache_path.$this->_makeName($id))) {
 			return unlink($this->_cache_path.$this->_makeName($id));
@@ -114,10 +109,7 @@ class Cache extends Cache_Controler {
 	 * @return bool
 	 */
 	public function exists($id) {
-		if (!$this->status()) {
-			return false;
-		}
-
+		
 		clearstatcache(); // Clear cached results
 
 		return file_exists($this->_cache_path.$this->_makeName($id));
@@ -152,10 +144,6 @@ class Cache extends Cache_Controler {
 	 * @return data/false
 	 */
 	public function read($id, $serialized = true) {
-		
-		if (!$this->status()) {
-			return false;
-		}
 		
 		if(isset($this->_empties[$id])) {
 			return false;
@@ -209,10 +197,6 @@ class Cache extends Cache_Controler {
 	 */
 	public function write($data, $id, $expire = '', $serialize = true) {
 			
-		if (!$this->status()) {
-			return true;
-		}
-		
 		if($this->_empties_id!==$id && empty($data)) {
 			if(!isset($this->_empties[$id])) {
 				$this->_empties[$id] = true;

@@ -25,12 +25,9 @@ class Cache extends Cache_Controler {
 	final protected function __construct() {
 		//Make sure we can use APC
 		if (!extension_loaded('APC') || !ini_get('apc.enabled')) {
-			$this->_online = false;
 			return ;
 		}
 		$this->_mode = 'APC';
-		$this->_online = true;
-		
 		$this->_getEmpties();
 
 		//Run the parent constructor
@@ -101,10 +98,6 @@ class Cache extends Cache_Controler {
 	 * @return bool
 	 */
 	public function delete($id) {
-		if (!$this->status()) {
-			return true;
-		}
-
 		return apc_delete($this->_makeName($id));
 	}
 
@@ -115,9 +108,6 @@ class Cache extends Cache_Controler {
 	 * @return bool
 	 */
 	public function exists($id) {
-		if (!$this->status()) {
-			return false;
-		}
 
 		$name = $this->_makeName($id);
 
@@ -161,9 +151,6 @@ class Cache extends Cache_Controler {
 	 * @return data/false
 	 */
 	public function read($id) {
-		if (!$this->status()) {
-			return false;
-		}
 		
 		if(isset($this->_empties[$id])) {
 			return false;
@@ -196,18 +183,14 @@ class Cache extends Cache_Controler {
 	 * @return string
 	 */
 	public function usage() {
-		if ($this->status()) {
-			$mem = @apc_sma_info();
-			if ($mem) {
-				$mem_size = $mem['num_seg'] * $mem['seg_size'];
-				$mem_avail = $mem['avail_mem'];
-				$mem_used = $mem_size - $mem_avail;
-				return sprintf('Max: %s - Used: %s (%.2F%%) - Available: %s (%.2F%%)', formatBytes($mem_size, true), formatBytes($mem_used, true), ($mem_used * (100 / $mem_size)), formatBytes($mem_avail, true), ($mem_avail * (100 / $mem_size)));
-			} else {
-				return 'APC Statistics are unavailable.';
-			}
+		$mem = @apc_sma_info();
+		if ($mem) {
+			$mem_size = $mem['num_seg'] * $mem['seg_size'];
+			$mem_avail = $mem['avail_mem'];
+			$mem_used = $mem_size - $mem_avail;
+			return sprintf('Max: %s - Used: %s (%.2F%%) - Available: %s (%.2F%%)', formatBytes($mem_size, true), formatBytes($mem_used, true), ($mem_used * (100 / $mem_size)), formatBytes($mem_avail, true), ($mem_avail * (100 / $mem_size)));
 		} else {
-			return 'Cache is disabled';
+			return 'APC Statistics are unavailable.';
 		}
 	}
 
@@ -220,10 +203,6 @@ class Cache extends Cache_Controler {
 	 * @return bool
 	 */
 	public function write($data, $id, $expire = '') {
-		if (!$this->status()) {
-			return true;
-		}
-
 		if($this->_empties_id!==$id && empty($data)) {
 			if(!isset($this->_empties[$id])) {
 				$this->_empties[$id] = true;

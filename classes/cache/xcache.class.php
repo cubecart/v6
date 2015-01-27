@@ -26,8 +26,6 @@ class Cache extends Cache_Controler {
 	final protected function __construct() {
 		
 		$this->_mode = 'XCache';
-		$this->_online = true;
-
 		$this->_getEmpties();
 		
 		//Run the parent constructor
@@ -95,10 +93,7 @@ class Cache extends Cache_Controler {
 	 * @return bool
 	 */
 	public function delete($id) {
-		if (!$this->status()) {
-			return true;
-		}
-
+	
 		return xcache_unset($this->_makeName($id));
 	}
 
@@ -109,9 +104,6 @@ class Cache extends Cache_Controler {
 	 * @return bool
 	 */
 	public function exists($id) {
-		if (!$this->status()) {
-			return false;
-		}
 
 		return xcache_isset($this->_makeName($id));
 	}
@@ -149,9 +141,6 @@ class Cache extends Cache_Controler {
 	 * @return data/false
 	 */
 	public function read($id) {
-		if (!$this->status()) {
-			return false;
-		}
 		
 		if(isset($this->_empties[$id])) {
 			return false;
@@ -179,11 +168,7 @@ class Cache extends Cache_Controler {
 	 * @return string
 	 */
 	public function usage() {
-		if ($this->status()) {
-			return 'XCache Statistics are unavailable.';
-		} else {
-			return 'Cache is disabled';
-		}
+		return 'XCache Statistics are unavailable.';
 	}
 
 	/**
@@ -195,9 +180,6 @@ class Cache extends Cache_Controler {
 	 * @return bool
 	 */
 	public function write($data, $id, $expire = '') {
-		if (!$this->status()) {
-			return true;
-		}
 		
 		if($this->_empties_id!==$id && empty($data)) {
 			if(!isset($this->_empties[$id])) {

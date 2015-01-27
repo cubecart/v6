@@ -50,12 +50,6 @@ class Cache_Controler {
 	 */
 	protected $_mode  = 'None';
 	/**
-	 * Is the cache system itself online (did it load)
-	 *
-	 * @var bool
-	 */
-	protected $_online  = false;
-	/**
 	 * Cache prefix
 	 *
 	 * @var string
@@ -87,7 +81,6 @@ class Cache_Controler {
 	protected $_dupes = array();
 
 	protected function __construct() {
-		// Using the db name as a fixed identifier np's
 		$this->_setPrefix();
 	}
 	
@@ -115,20 +108,6 @@ class Cache_Controler {
 		}
 
 		return 'None';
-	}
-	/**
-	 * Setup the cache system after the configs are loaded
-	 */
-	public function setup() {
-		$this->enable($GLOBALS['config']->get('config', 'cache'));
-	}
-	/**
-	 * Get the cache status
-	 *
-	 * @return bool
-	 */
-	public function status() {
-		return $this->_online && $this->_enabled;
 	}
 
 	/**

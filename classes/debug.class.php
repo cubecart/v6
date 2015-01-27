@@ -505,7 +505,6 @@ class Debug {
 		if (!is_null($status) && is_bool($status)) {
 			$this->_enabled = $status;
 		}
-
 		return $this->_enabled;
 	}
 
