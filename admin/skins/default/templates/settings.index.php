@@ -357,6 +357,9 @@
             </select></span>
          </div>
          <div><label for="debug">{$LANG.settings.debug_ip_addresses}</label><span><input name="config[debug_ip_addresses]" id="debug_ip_addresses" type="text" class="textbox" value="{$CONFIG.debug_ip_addresses}"></span></div>
+         <div><label for="cache">{$LANG.settings.cache_enable}</label><span><select name="config[cache]" id="cache" class="textbox">
+     {foreach from=$OPT_CACHE item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
+   </select></span></div>
       </fieldset>
       <fieldset>
          <legend>{$LANG.settings.title_proxy}</legend>
