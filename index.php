@@ -19,5 +19,4 @@ global $config_default;
 
 include CC_ROOT_DIR.CC_DS.'controllers'.CC_DS.'controller.index.inc.php';
 
-$htmlout = $GLOBALS['smarty']->fetch('templates/'.$global_template_file);
-die($htmlout);
+$GLOBALS['smarty']->display('templates/'.$global_template_file);
