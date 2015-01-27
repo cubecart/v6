@@ -40,8 +40,12 @@ if ($glob['installed'] && file_exists(CC_ROOT_DIR.'/setup')) {
 	}
 }
 ## Are they using the mysql root user?
-if ($glob['dbusername'] == 'root' && !$GLOBALS['config']->get('config', 'debug')) {
+if ($glob['dbusername'] == 'root' && !(bool)$GLOBALS['config']->get('config', 'debug')) {
 	$GLOBALS['main']->setACPWarning($lang['dashboard']['error_mysql_root'], true, false);
+}
+## Is caching disabled
+if (!(bool)$GLOBALS['config']->get('config', 'cache')) {
+	$GLOBALS['main']->setACPWarning($lang['dashboard']['error_caching_disabled']);
 }
 ## Windows only - Is global.inc.php writable?
 if (substr(PHP_OS, 0, 3) !== 'WIN' && is_writable('includes/global.inc.php')) {

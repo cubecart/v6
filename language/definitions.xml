@@ -836,6 +836,7 @@
   	<string name="error_version" introduced="5.2.3"><![CDATA[WARNING: Your store appears to be using source code from %s but the database is still at %s.Please complete the upgrade by running the <a href="setup">setup</a> process.]]></string>
     <string name="error_global_risk" introduced="5.0.0"><![CDATA[WARNING: Your includes/global.inc.php is currently writable, you should change the file permissions to read only. On Linux or Unix systems it should be CHMOD to 0444.]]></string>
     <string name="error_mysql_root" introduced="5.0.0"><![CDATA[WARNING: You are currently connected to the database using the root account. This is not secure, and should be changed.]]></string>
+    <string name="error_caching_disabled" introduced="6.0.0"><![CDATA[WARNING: Caching is disabled. Please enable it in the advanced tab of your stores <a href="?_g=settings#Advanced_Settings">settings</a>.]]></string>
     <string name="error_notes_save" introduced="5.0.0"><![CDATA[Failed to save notes.]]></string>
     <string name="error_setup_folder" introduced="5.0.0"><![CDATA[WARNING: Please delete the setup folder from your store directory, your store may be at risk until you do.]]></string>
     <string name="error_version_update" introduced="5.0.0"><![CDATA[WARNING: Your store is not up-to-date, v%1$s is available, but you are running v%2$s]]></string>
