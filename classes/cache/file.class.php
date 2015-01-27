@@ -144,9 +144,13 @@ class Cache extends Cache_Controler {
 	 * @return data/false
 	 */
 	public function read($id, $serialized = true) {
+
+		if(!$this->status()) {
+			return false;
+		}
 		
 		if(isset($this->_empties[$id])) {
-			return false;
+			return 'empty';
 		}
 		
 		if(isset($this->_dupes[$id])) {
@@ -264,14 +268,10 @@ class Cache extends Cache_Controler {
 	 * @return string
 	 */
 	public function usage() {
-		if ($this->status()) {
-			$cache_size = 0;
-			foreach (glob($this->_cache_path.'*', GLOB_NOSORT) as $file) {
-				$cache_size += filesize($file);
-			} 
-			return 'Cache Used: '.($cache_size > 0) ? formatBytes($this->_page_cache_usage, true).' of '.formatBytes($cache_size, true).' ('.number_format((($this->_page_cache_usage/$cache_size) * 100),2).'%)' : '0%';
-		} else {
-			return 'Cache is disabled';
-		}
+		$cache_size = 0;
+		foreach (glob($this->_cache_path.'*', GLOB_NOSORT) as $file) {
+			$cache_size += filesize($file);
+		} 
+		return 'Cache Used: '.($cache_size > 0) ? formatBytes($this->_page_cache_usage, true).' of '.formatBytes($cache_size, true).' ('.number_format((($this->_page_cache_usage/$cache_size) * 100),2).'%)' : '0%';
 	}
 }

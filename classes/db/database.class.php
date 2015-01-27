@@ -920,7 +920,6 @@ class Database_Contoller {
 		if (isset($GLOBALS['cache']) && is_object($GLOBALS['cache'])) {
 			return $GLOBALS['cache']->write($data, 'sql.'.$query_hash);
 		}
-
 		return false;
 	}
 }

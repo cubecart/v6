@@ -21,13 +21,6 @@
  */
 class Debug {
 	/**
-	 * FirePHP controller
-	 *
-	 * @var FirePHP object
-	 */
-	public $firephp  = null;
-
-	/**
 	 * Custom debug messages
 	 *
 	 * @var array of strings
@@ -58,12 +51,6 @@ class Debug {
 	 */
 	private $_errors  = array();
 	/**
-	 * FirePHP log group
-	 *
-	 * @var array
-	 */
-	private $_messages  = array();
-	/**
 	 * SQL messages
 	 *
 	 * @var array of strings
@@ -81,7 +68,6 @@ class Debug {
 	 * @var bool
 	 */
 	private $_xdebug  = false;
-
 	/**
 	 * Class instance
 	 *
@@ -109,7 +95,7 @@ class Debug {
 
 		// Enable debugger
 		if (isset($GLOBALS['config']) && is_object($GLOBALS['config'])) {
-			$this->_enabled = $GLOBALS['config']->get('config', 'debug');
+			$this->_enabled = (bool)$GLOBALS['config']->get('config', 'debug');
 			$ip_string = $GLOBALS['config']->get('config', 'debug_ip_addresses');
 			if (!empty($ip_string)) {
 				if (strstr($ip_string, ',')) {
@@ -138,12 +124,6 @@ class Debug {
 		}
 
 		$this->_debug_timer = $this->_getTime();
-
-		if ($this->_enabled && file_exists(CC_INCLUDES_DIR.'FirePHPCore/')) {
-			require_once CC_INCLUDES_DIR.'FirePHPCore/fb.php';    // (procedural API) or
-			require_once CC_INCLUDES_DIR.'FirePHPCore/FirePHP.class.php'; // (object oriented API)
-			$this->firephp = FirePHP::getInstance(true);
-		}
 
 		// Check register_globals
 		if (ini_get('register_globals')) {
@@ -271,7 +251,8 @@ class Debug {
 
 					foreach ($this->_sql['query'] as $index => $query) {
 						if (!empty($query)) {
-							$output[] = '[<strong>'.($index + 1).'</strong>] '.strip_tags($query).'<br />';
+							$color = preg_match('/\[CACHED\]$/', $query) ? '#008000' : '#000';
+							$output[] = '<span style="color: '.$color.'">[<strong>'.($index + 1).'</strong>] '.strip_tags($query).'</span><br />';
 						}
 					}
 				}
@@ -280,7 +261,7 @@ class Debug {
 					foreach ($this->_sql['error'] as $index => $error) {
 						if (!empty($error)) {
 							$sql_error = true;
-							$output[] = '[<strong>'.($index + 1).'</strong>] '.strip_tags($error).'<br />';
+							$output[] = '<span style="color: #ff0000">[<strong>'.($index + 1).'</strong>] '.strip_tags($error).'</span><br />';
 						}
 					}
 					if (!isset($sql_error)) {
@@ -319,9 +300,11 @@ class Debug {
 			$output[] = '<strong>Memory: Peak Usage / Max (%)</strong>:<br />'.$this->_debugMemoryUsage(true).'<hr size="1" />';
 			// Show cache stats
 			//We need another cache instance because of the destruct
-			
 			$cache = Cache::getInstance();
-			$output[] = '<strong>Cache ('.$cache->getCacheSystem().')</strong>:<br />'.$cache->usage().' [<a href="'.currentPage(null, array('debug-cache-clear' => 'true')).'">Clear Cache</a>]<hr size="1" />';
+
+			$cacheState = $cache->status ? '<span style="color: #008000">'.$cache->status_desc.'</span>' : '<span style="color: #ff0000">'.$cache->status_desc.'</span>';
+
+			$output[] = '<strong>Cache ('.$cache->getCacheSystem().'): '.$cacheState.'</strong><br />'.$cache->usage().' [<a href="'.currentPage(null, array('debug-cache-clear' => 'true')).'">Clear Cache</a>]<hr size="1" />';
 
 			// Page render timer
 			$output[] = '<strong>Page Load Time</strong>:<br />'.($this->_getTime() - $this->_debug_timer).' seconds';
@@ -329,10 +312,11 @@ class Debug {
 				$output[] = ' [<a href="'.currentPage(null, array('XDEBUG_PROFILE' => 'true')).'">CacheGrind</a>]';
 			}
 
+
 			$output[] = '</div>';
 			$content = implode($glue, $output);
 			$this->_display = false;
-			
+
 			if ($return) {
 				return $content;
 			} else {
@@ -440,50 +424,10 @@ class Debug {
 		$this->_errors[] = $error;
 
 		if ($log) {
-			if (is_object($this->firephp)) {
-				$this->firephp->error($error_file.":".$error_line." - ".$error_string, 'ERROR');
-			}
 			$this->_writeErrorLog($error);
 		}
 
 		return false;
-	}
-
-	/**
-	 * Bulk firePHP something
-	 *
-	 */
-	public function firePHP() {
-		if (!$this->_enabled || !is_object($this->firephp)) {
-			return;
-		}
-
-		$arg_list = func_get_args();
-		$numargs = func_num_args();
-		$type = 'log';
-		for ($i = 0; $i < $numargs; ++$i) {
-			if ($i == 0) {
-				switch ($arg_list[0]) {
-				case 'error':
-					$type = 'error';
-					break;
-				case 'info':
-					$type = 'info';
-					break;
-				case 'log':
-					$type = 'log';
-					break;
-				case 'warn':
-					$type = 'warn';
-					break;
-				default:
-					$this->firephp->{$type}($arg_list[0]);
-					break;
-				}
-			} else {
-				$this->firephp->{$type}($arg_list[$i]);
-			}
-		}
 	}
 
 	/**

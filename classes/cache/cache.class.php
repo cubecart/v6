@@ -20,17 +20,23 @@
  */
 class Cache_Controler {
 	/**
+	 * Public status
+	 *
+	 * @var @string
+	 */
+	public $status_desc = '';
+	/**
+	 * Public status
+	 *
+	 * @var @bool
+	 */
+	public $status = false;
+	/**
 	 * Make sure the cache doesn't get cleared more than once
 	 *
 	 * @var bool
 	 */
 	protected $_cleared = false;
-	/**
-	 * Cache enabled
-	 *
-	 * @var bool
-	 */
-	protected $_enabled  = true;
 	/**
 	 * Cache expire
 	 *
@@ -89,25 +95,26 @@ class Cache_Controler {
 	}
 
 	/**
-	 * Enable/Disable cache
-	 *
-	 * @param bool $enable
-	 */
-	public function enable($enable = true) {
-		$this->_enabled = (bool)($enable);
-	}
-
-	/**
 	 * Get the current cache type
 	 *
 	 * @return string Cache system
 	 */
 	public final function getCacheSystem() {
-		if ($this->status()) {
-			return $this->_mode;
-		}
+		return $this->_mode;
+	}
 
-		return 'None';
+	public function status() {
+		if(defined('CC_IN_ADMIN') && CC_IN_ADMIN === true) {
+			$this->status_desc = 'Always Disabled in ACP';
+			$this->status = false;
+		} else { 
+			$this->status_desc = $this->status ? 'Enabled' : 'Disabled';
+		}
+		return $this->status;
+	}
+
+	public function setStatus($status = false) {
+		$this->status = $status;
 	}
 
 	/**
@@ -127,8 +134,6 @@ class Cache_Controler {
 	 * @return bool
 	 */
 	public function tidy() {
-		trigger_error('Cleaning cached files...', E_USER_NOTICE);
-
 		//Loop through the cache folder
 		if (($files = glob(CC_CACHE_DIR.'*', GLOB_NOSORT)) !== false) {
 			foreach ($files as $file) {

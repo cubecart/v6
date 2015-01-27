@@ -152,8 +152,12 @@ class Cache extends Cache_Controler {
 	 */
 	public function read($id) {
 		
-		if(isset($this->_empties[$id])) {
+		if(!$this->status()) {
 			return false;
+		}
+
+		if(isset($this->_empties[$id])) {
+			return 'empty';
 		}
 
 		//Setup the name of the cache
