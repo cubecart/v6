@@ -24,6 +24,20 @@
 	});
 	
 	$("form.add_to_basket").validate();
+	$("#recover_password").validate({
+		rules: {
+			'email': {
+				required: true,
+				email: true
+			}
+		},
+		messages: {
+			'email': {
+				required: $('#validate_email').text(),
+				review: $('#validate_email').text()
+			}
+		}
+	});
 	$("#review_form").validate({
 		rules: {
 			'review[name]': {
