@@ -1028,12 +1028,10 @@ if (isset($_GET['action'])) {
 		if ($categoryArray) {
 			$cat_ist[] = '/';
 			$seo = SEO::getInstance();
-			$seo->setCache(false);
 			foreach ($categoryArray as $category) {
 				if ($category['cat_parent_id'] == $category['cat_id']) continue;
 				$cat_list[$category['cat_id']] = $seo->getDirectory((int)$category['cat_id'], false, '/', false, false);
 			}
-			$seo->setCache(true);
 			natcasesort($cat_list);
 			foreach ($cat_list as $cat_id => $cat_name) {
 				if (empty($cat_name)) continue;

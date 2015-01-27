@@ -43,19 +43,19 @@
             {if $option.type == Catalogue::OPTION_RADIO}
             <div class="row">
                <div class="small-12 columns">
-                  
                   {* If we only have one required option replace with hidden field *}
                   {if $option.required && count($option.values)===1}
-                  <label for="option_{$option.option_id}" class="return">{$option.option_name}{if $option.price} ({$option.symbol}{$option.price}){/if}{if $option.required} *{/if}</label>
+                  <label for="option_{$option.option_id}" class="return">{$option.option_name}</label>
                   {$option.values.0.value_name}{if $option.values.0.price} ({$option.values.0.symbol}{$option.values.0.price}){/if}
                   <input type="hidden" name="productOptions[{$option.option_id}]" id="option_{$option.option_id}" value="{$option.values.0.assign_id}">
                   {else}
-                  <div>{$option.option_name}{if $option.price} ({$option.symbol}{$option.price}){/if}{if $option.required} *{/if}</div>
+                  <div>{$option.option_name}{if $option.required} ({$LANG.common.required}){/if}</div>
                   <span id="error_option_{$option.option_id}">
-                  {foreach from=$option.values item=value}
-                  <div><input type="radio" name="productOptions[{$option.option_id}]" id="option_{$value.assign_id}" value="{$value.assign_id}" class="nomarg" rel="error_option_{$option.option_id}" {if $option.required}required{/if}>
-                  <label for="option_{$value.assign_id}" class="return">{$value.value_name}{if $value.price} ({$value.symbol}{$value.price}){/if}</label></div>
-                  {/foreach}
+                     {foreach from=$option.values item=value}
+                     <div><input type="radio" name="productOptions[{$option.option_id}]" id="option_{$value.assign_id}" value="{$value.assign_id}" class="nomarg" rel="error_option_{$option.option_id}" {if $option.required}required{/if}>
+                        <label for="option_{$value.assign_id}" class="return">{$value.value_name}{if $value.price} ({$value.symbol}{$value.price}){/if}</label>
+                     </div>
+                     {/foreach}
                   </span>
                   {/if}
                </div>
@@ -63,12 +63,13 @@
             {elseif $option.type == Catalogue::OPTION_SELECT}
             <div class="row">
                <div class="small-12 columns">
-                  <label for="option_{$option.option_id}" class="return">{$option.option_name}{if $option.price} ({$option.symbol}{$option.price}){/if}{if $option.required} *{/if}</label>
                   {* If we only have one required option replace with hidden field *}
                   {if $option.required && count($option.values)===1}
+                  <label for="option_{$option.option_id}" class="return">{$option.option_name}</label>
                   {$option.values.0.value_name}{if $option.values.0.price} ({$option.values.0.symbol}{$option.values.0.price}){/if}
                   <input type="hidden" name="productOptions[{$option.option_id}]" id="option_{$option.option_id}" value="{$option.values.0.assign_id}">
                   {else}
+                  <label for="option_{$option.option_id}" class="return">{$option.option_name}{if $option.required} ({$LANG.common.required}){/if}</label>
                   <select name="productOptions[{$option.option_id}]" id="option_{$option.option_id}" class="nomarg" {if $option.required}required{/if}>
                   <option value="">{$LANG.form.please_select}</option>
                   {foreach from=$option.values item=value}

@@ -325,7 +325,6 @@ if (isset($_GET['action'])) {
 			$catList[0] = '/';
 			if (($categories = $GLOBALS['db']->select('CubeCart_category', array('cat_name', 'cat_parent_id', 'cat_id'))) !== false) {
 				$seo = SEO::getInstance();
-				$seo->setCache(false);
 				foreach ($categories as $category) {
 					// Prevent adding to self, or a child
 
@@ -343,7 +342,6 @@ if (isset($_GET['action'])) {
 						continue;
 					}
 				}
-				$seo->setCache(true);
 			}
 			natcasesort($catList);
 			foreach ($catList as $id => $display) {

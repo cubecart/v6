@@ -1375,11 +1375,12 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 										'selected' => ($selected[$value['assign_id']]) ? true : false
 									);
 								}
+					
 								$option_list[$value['option_id']]['values'][] = array(
 									'assign_id'  => $value['assign_id'],
 									'decimal_price'   => $value['option_price'],
-									'price'   => (isset($value['option_price']) && $value['option_price']>0) ? Tax::getInstance()->priceFormat($value['option_price'], true) : false,
-									'symbol'  => (isset($value['option_price']) && $value['option_price']>0 && $value['option_negative'] == 0) ? '+' : '-',
+									'price'   => (isset($value['option_price']) && $value['option_price']!=0) ? Tax::getInstance()->priceFormat($value['option_price'], true) : false,
+									'symbol'  => (isset($value['option_price']) && $value['option_price']!=0 && $value['option_negative'] == 0) ? '+' : '-',
 									'value_id'  => $value['value_id'],
 									'value_name' => $value['value_name'],
 									'selected' => ($selected[$value['assign_id']]) ? true : false
@@ -1395,6 +1396,7 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 							}
 							$option_list[$value['option_id']]['priority'] = $group_priority;
 						}
+						
 						break;
 					case self::OPTION_TEXTBOX:  ## Textbox options
 					case self::OPTION_TEXTAREA:  ## Textarea option

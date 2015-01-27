@@ -619,15 +619,6 @@ class SEO {
 	}
 
 	/**
-	 * Enable/Disable cache
-	 *
-	 * @param bool $enable
-	 */
-	public function setCache($enable) {
-		$GLOBALS['cache']->status($enable);
-	}
-
-	/**
 	 * Create sitemap
 	 *
 	 * @return bool
