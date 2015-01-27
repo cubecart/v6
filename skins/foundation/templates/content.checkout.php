@@ -32,10 +32,10 @@
       <hr>
       <div class="row">
          <div class="small-12 columns">
-            <ul class="no-bullet center">
+            <ul class="no-bullet center" id="gateway_error">
                {foreach from=$GATEWAYS item=gateway}
                <li>
-                  <input name="gateway" type="radio" value="{$gateway.folder}" id="{$gateway.folder}" required {$gateway.checked}><label for="{$gateway.folder}">{$gateway.description}</label>
+                  <input name="gateway" type="radio" value="{$gateway.folder}" id="{$gateway.folder}" required {$gateway.checked} rel="gateway_error"><label for="{$gateway.folder}">{$gateway.description}</label>
                   {if !empty($gateway.help)}
                   <a href="{$gateway.help}" class="info" title="{$LANG.common.information}"><i class="fa fa-info-circle"></i></a>
                   {/if}

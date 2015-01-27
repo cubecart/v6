@@ -573,7 +573,7 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 							if ($group['option_required']) {
 								$this->_option_required = true;
 							}
-							if ($group['option_type'] == 0) {
+							if ($group['option_type'] == 0 || $group['option_type'] == 4) {
 								if (isset($set_values[$group['option_id']]) && !empty($set_values[$group['option_id']])) {
 									$value_id = $set_values[$group['option_id']];
 								}
@@ -623,7 +623,7 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 					if ($category['option_required']) {
 						$this->_option_required = true;
 					}
-					if ($category['option_type'] == 0) {
+					if ($category['option_type'] == 0 || $category['option_type'] == 4) {
 						// Get Option Values
 						if (($values = $GLOBALS['db']->select('CubeCart_option_value', false, array('option_id' => $category['option_id'], 'value_id' => $mid), array('priority' => 'ASC', 'value_name' => 'ASC'))) !== false) {
 							foreach ($values as $value) {
@@ -799,7 +799,7 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 				}
 			} else {
 				$assigned = $GLOBALS['db']->select('CubeCart_option_assign', false, array('assign_id' => (int)$assign_id));
-				if ($category[0]['option_type'] == 0) {
+				if ($category[0]['option_type'] == 0 || $category[0]['option_type'] == 4) {
 					// Select
 					if (($value = $GLOBALS['db']->select('CubeCart_option_value', false, array('option_id' => $category[0]['option_id'], 'value_id' => $assigned[0]['value_id']))) !== false) {
 						return array_merge($category[0], $assigned[0], $value[0]);
@@ -1361,6 +1361,7 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 				foreach ($optionArray as $type => $group) {
 					switch ($type) {
 					case self::OPTION_SELECT:  ## Dropdown options
+					case self::OPTION_RADIO:  ## Radio options
 						foreach ($group as $key => $option) {
 							$group_priority = $option['priority'];
 							unset ($option['priority']);

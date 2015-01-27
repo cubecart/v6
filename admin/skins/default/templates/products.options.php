@@ -68,13 +68,13 @@
          <h3>{$LANG.catalogue.title_option_attributes}</h3>
          <div>
             <select name="add-value[option_id]" id="select_group_id" rel="group_" class="field_select">
-               {foreach from=$GROUPS item=group}{if $group.type==0}
+               {foreach from=$GROUPS item=group}{if $group.type==0 || $group.type==4}
                <option value="{$group.id}">{$group.name}</option>
                {/if}{/foreach}
             </select>
          </div>
          {foreach from=$GROUPS item=group}
-         {if $group.type==0}
+         {if $group.type==0 || $group.type==4}
          <fieldset id="group_{$group.id}" class="field_select_target">
             <legend>{$group.name}</legend>
             <table width="100%">

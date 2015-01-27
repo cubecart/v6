@@ -268,9 +268,9 @@ if (($categories = $GLOBALS['db']->select('CubeCart_option_group', false, false,
 
 $optionTypes = array(
 	0 => $lang['catalogue']['option_type_select'],
+	4 => $lang['catalogue']['option_type_radio'],
 	1 => $lang['catalogue']['option_type_textbox'],
-	2 => $lang['catalogue']['option_type_textarea'],
-	# 3 => $lang['catalogue']['option_type_checkbox'],
+	2 => $lang['catalogue']['option_type_textarea']
 );
 $GLOBALS['smarty']->assign('OPTION_TYPES', $optionTypes);
 $GLOBALS['smarty']->assign('OPTION_TYPE_JSON', json_encode($optionTypes));

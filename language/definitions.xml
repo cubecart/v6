@@ -366,6 +366,7 @@
     <string name="option_group_type" introduced="5.0.0"><![CDATA[Group Type]]></string>
     <string name="option_type_checkbox" introduced="5.0.0"><![CDATA[Checkbox]]></string>
     <string name="option_type_select" introduced="5.0.0"><![CDATA[Dropdown List]]></string>
+    <string name="option_type_radio" introduced="5.0.0"><![CDATA[Radio Button List]]></string>
     <string name="option_type_textarea" introduced="5.0.0"><![CDATA[Textarea (Multiline)]]></string>
     <string name="option_type_textbox" introduced="5.0.0"><![CDATA[Textbox (Single line)]]></string>
     <string name="out_of_stock" introduced="5.0.0"><![CDATA[This product is currently out of stock]]></string>

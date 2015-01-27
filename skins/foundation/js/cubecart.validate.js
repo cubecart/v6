@@ -1,6 +1,14 @@
 ;jQuery(document).ready(function() {
 	$.validator.setDefaults({
-		errorElement: 'small'
+		errorElement: 'small',
+		errorPlacement: function(error, element) {
+			if (element.is(":radio") || element.is(":checkbox")) {
+				var errorLocation = element.attr('rel');
+				error.insertAfter('#'+errorLocation);
+			} else {
+				error.insertAfter(element);
+			}
+		}
 	});
 	$.validator.addMethod("phone", function(phone, element) {
 		phone = phone.replace(/\s+/g, "");
@@ -96,17 +104,6 @@
 		}
 	});
 	$("#checkout_form").validate({
-		errorPlacement: function(error, element) {
-			if (element.attr("name") == "gateway") {
-				element.removeClass("error");
-				alert(error.text());
-			} else if (element.attr("name") == "terms_agree") {
-				element.removeClass("error");
-				alert(error.text());
-			} else {
-				error.insertAfter(element);
-			}
-		},
 		rules: {
 			username: {
 				required: true,
@@ -305,14 +302,6 @@
 		}
 	});
 	$("#registration_form").validate({
-		errorPlacement: function(error, element) {
-			if (element.attr("name") == "terms_agree") {
-				element.removeClass("error");
-				alert(error.text());
-			} else {
-				error.insertAfter(element);
-			}
-		},
 		rules: {
 			first_name: {
 				required: true

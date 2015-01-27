@@ -93,9 +93,14 @@ jQuery(document).ready(function () {
     $('form.add_to_basket').submit(function(e) {
         var submit_form = true;
         $("[name^=productOptions]").each(function () {
-            if ($(this).is("[required]") && $(this).val() == '') {
-                submit_form = false;
-                return false;
+            if ($(this).is("[required]")) {
+                if($(this).is(':radio') && !$(this).is(':checked')) {
+                    submit_form = false;
+                    return false;
+                } else if ($(this).val() == '') {
+                    submit_form = false;
+                    return false;
+                }
             } 
         });
 
