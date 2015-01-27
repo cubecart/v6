@@ -42,5 +42,4 @@ if (Admin::getInstance()->is() || (isset($_GET['_g']) && $_GET['_g']=='products'
 if (!isset($suppress_output) || !$suppress_output) {
 	$GLOBALS['gui']->displayCommon(true);
 	$GLOBALS['smarty']->display('templates/'.$global_template_file['session_true']);
-	exit;
 }
