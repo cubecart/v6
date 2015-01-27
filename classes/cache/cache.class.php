@@ -120,7 +120,7 @@ class Cache_Controler {
 	 * Setup the cache system after the configs are loaded
 	 */
 	public function setup() {
-		$this->enable(true);
+		$this->enable($GLOBALS['config']->get('config', 'cache'));
 	}
 	/**
 	 * Get the cache status
