@@ -624,7 +624,7 @@ class SEO {
 	 * @param bool $enable
 	 */
 	public function setCache($enable) {
-		$GLOBALS['cache']->enable($enable);
+		$GLOBALS['cache']->status($enable);
 	}
 
 	/**
