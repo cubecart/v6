@@ -87,7 +87,7 @@ function chmod_writable() {
 		}
 
 		if (is_writable(CC_CACHE_DIR)) {
-			$tmpdir = CC_CACHE_DIR.'/chmodtmp';
+			$tmpdir = CC_CACHE_DIR.'/'.'chmodtmp';
 			mkdir($tmpdir, octdec((int)$mode));
 			if (!file_exists($tmpdir)) {
 				trigger_error('Error checking CHMOD', E_USER_ERROR);
@@ -100,11 +100,9 @@ function chmod_writable() {
 			}
 			rmdir($tmpdir);
 		}
-
-		define('CC_CHMOD', $mode);
+		define('CC_CHMOD', octdec((int)$mode));
 	}
-
-	return octdec((int)CC_CHMOD);
+	return CC_CHMOD;
 }
 
 /**
