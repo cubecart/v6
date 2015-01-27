@@ -4,7 +4,12 @@
 		errorPlacement: function(error, element) {
 			if (element.is(":radio") || element.is(":checkbox")) {
 				var errorLocation = element.attr('rel');
-				error.insertAfter('#'+errorLocation);
+				if ($('#' + errorLocation).length) {
+					error.insertAfter('#' + errorLocation);
+				} else {
+					element.removeClass("error");
+					alert(error.text());
+				}
 			} else {
 				error.insertAfter(element);
 			}
