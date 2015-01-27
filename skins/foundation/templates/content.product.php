@@ -44,12 +44,18 @@
             <div class="row">
                <div class="small-12 columns">
                   <label for="option_{$option.option_id}" class="return">{$option.option_name}{if $option.price} ({$option.symbol}{$option.price}){/if}{if $option.required} *{/if}</label>
+                  {* If we only have one required option replace with hidden field *}
+                  {if $option.required && count($option.values)==1}
+                  {$option.values.0.value_name}{if $option.values.0.price} ({$option.values.0.symbol}{$option.values.0.price}){/if}
+                  <input type="hidden" name="productOptions[{$option.option_id}]" id="option_{$option.option_id}" value="{$option.values.0.assign_id}">
+                  {else}
                   <select name="productOptions[{$option.option_id}]" id="option_{$option.option_id}" class="nomarg" {if $option.required}required{/if}>
                   <option value="">{$LANG.form.please_select}</option>
                   {foreach from=$option.values item=value}
-                  <option value="{$value.assign_id}" {if $option.required && count($option.values)==1}selected="selected"{/if}>{$value.value_name}{if $value.price} ({$value.symbol}{$value.price}){/if}</option>
+                  <option value="{$value.assign_id}">{$value.value_name}{if $value.price} ({$value.symbol}{$value.price}){/if}</option>
                   {/foreach}
                   </select>
+                  {/if}
                </div>
             </div>
             {else}
