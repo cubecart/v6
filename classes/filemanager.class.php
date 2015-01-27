@@ -651,7 +651,7 @@ class FileManager {
 							if ($GLOBALS['db']->insert('CubeCart_filemanager', $record)) {
 								$file_id[] = $GLOBALS['db']->insertid();
 								move_uploaded_file($tmp_name, $target);
-								chmod($target, 0755);
+								chmod($target, chmod_writable());
 							}
 
 						}
@@ -695,7 +695,7 @@ class FileManager {
 						if ($GLOBALS['db']->insert('CubeCart_filemanager', $record)) {
 							$file_id[] = $GLOBALS['db']->insertid();
 							move_uploaded_file($file['tmp_name'], $target);
-							chmod($target, 0755);
+							chmod($target, chmod_writable());
 						}
 
 

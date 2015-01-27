@@ -190,7 +190,7 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 		if (file_exists($destination_path)) {
 
 			## Make the new file read/writable which is probably not needed
-			chmod($destination_path, 0775);
+			chmod($destination_path, chmod_writable());
 
 			require_once $pclzip_path;
 
