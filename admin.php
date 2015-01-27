@@ -25,7 +25,7 @@ define('CC_IN_ADMIN', true);
 ## Include core functions
 require 'includes/functions.inc.php';
 
-//=====[ Load ]====================================================================================================
+## Include admin presession controller
 include CC_ROOT_DIR.CC_DS.'controllers'.CC_DS.'controller.admin.pre_session.inc.php';
 
 $feed_access_key = $GLOBALS['config']->get('config','feed_access_key');
