@@ -52,7 +52,7 @@
                   <div>{$option.option_name}{if $option.required} ({$LANG.common.required}){/if}</div>
                   <span id="error_option_{$option.option_id}">
                      {foreach from=$option.values item=value name=options}
-                     <div><input type="radio" name="productOptions[{$option.option_id}]" id="option_{$value.assign_id}" value="{$value.assign_id}" class="nomarg" rel="error_option_{$option.option_id}" {if $option.required}required{/if}>
+                     <div><input type="radio" name="productOptions[{$option.option_id}]" id="option_{$value.assign_id}" value="{$value.assign_id}" class="nomarg"{if $smarty.foreach.options.first} rel="error_option_{$option.option_id}" {if $option.required}required{/if}{/if}>
                         <label for="option_{$value.assign_id}" class="return">{$value.value_name}{if $value.price} ({$value.symbol}{$value.price}){/if}</label>
                      </div>
                      {/foreach}
