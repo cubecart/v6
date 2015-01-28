@@ -222,8 +222,7 @@ if (isset($_GET['export'])) {
 	$enabled = $GLOBALS['config']->get('languages');
 
 	$GLOBALS['main']->addTabControl($lang['translate']['title_languages'], 'lang_list');
-	$GLOBALS['main']->addTabControl($lang['translate']['title_language_create'], 'lang_create');
-	$GLOBALS['main']->addTabControl($lang['translate']['title_language_import'], 'lang_import');
+	
 	## List available language files
 	if (($languageList = $GLOBALS['language']->listLanguages()) !== false) {
 		foreach ($languageList as $code => $info) {
@@ -238,6 +237,8 @@ if (isset($_GET['export'])) {
 			$info['download'] = currentPage(null, array('download' => $info['code']));
 			$smarty_data['languages'][] = $info;
 		}
+		$GLOBALS['main']->addTabControl($lang['translate']['title_language_create'], 'lang_create');
+		$GLOBALS['main']->addTabControl($lang['translate']['title_language_import'], 'lang_import');
 		$GLOBALS['smarty']->assign('LANGUAGES', $smarty_data['languages']);
 	}
 }

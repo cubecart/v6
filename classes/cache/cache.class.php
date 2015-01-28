@@ -110,6 +110,9 @@ class Cache_Controler {
 		} else { 
 			$this->status_desc = $this->status ? 'Enabled' : 'Disabled';
 		}
+		if(!$this->status) {
+			$this->clear();
+		}
 		return $this->status;
 	}
 

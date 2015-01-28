@@ -71,6 +71,11 @@
       <input type="hidden" name="previous-tab" id="previous-tab" value="">
       <input type="submit" name="save" value="{$LANG.common.save}">
    </div>
+   {else}
+   <div id="lang_list" class="tab_content">
+   <h3>{$LANG.translate.title_languages}</h3>
+   <p>{$LANG.translate.error_no_languages}</p>
+   </div>
    {/if}
    {if $DISPLAY_EDITOR}
    <div class="tab_content" id="general">
@@ -139,11 +144,6 @@
    <div class="form_control">
       <input type="submit" name="export" value="{$LANG.common.export}">
    </div>
-   <input type="hidden" name="token" value="{$SESSION_TOKEN}">
-   {else}
-   <div id="lang_list" class="tab_content">
-   <h3>{$LANG.translate.title_languages}</h3>
-   <p>{$LANG.translate.error_no_languages}</p>
-   </div>
    {/if}
+   <input type="hidden" name="token" value="{$SESSION_TOKEN}">
 </form>

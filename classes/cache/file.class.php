@@ -144,10 +144,6 @@ class Cache extends Cache_Controler {
 	 * @return data/false
 	 */
 	public function read($id, $serialized = true) {
-
-		if(!$this->status()) {
-			return false;
-		}
 		
 		if(isset($this->_empties[$id])) {
 			return 'empty';
