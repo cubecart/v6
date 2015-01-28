@@ -53,7 +53,7 @@
   <br>
   <h3>{$LANG.maintain.title_db_backup}</h3>
   <p>{$LANG.maintain.db_backup_desc}</p> 
-  <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
+  <form action="{$VAL_SELF}#backup" method="post" enctype="multipart/form-data">
 	<fieldset><legend>{$LANG.maintain.backup_options}</legend>
 	  <div>
 		<label for="db_drop">{$LANG.maintain.db_drop_table}</label>
@@ -130,7 +130,7 @@
 </div>
 <div id="database" class="tab_content">
   <h3>{$LANG.maintain.title_db}</h3>
-  <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
+  <form action="{$VAL_SELF}#database" method="post" enctype="multipart/form-data">
   <fieldset><legend>{$LANG.maintain.title_db_tables}</legend>
 	  {if $TABLES}
 	  <table width="650">
