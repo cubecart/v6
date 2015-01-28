@@ -794,8 +794,9 @@ function recursive_implode($glue, $pieces) {
 				$ret[] = $r_pieces;
 			}
 		}
+		return implode($glue, $ret);
 	}
-	return implode($glue, $ret);
+	return (is_scalar($pieces)) ? (string)$pieces : false;
 }
 
 /**
