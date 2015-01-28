@@ -12,7 +12,7 @@
 <h2>{$category.cat_name}</h2>
 {if isset($category.image)}
 <div class="row">
-   <div class="small-12 columns"><img src="{$category.image}" alt="{$category.cat_name}"></div>
+   <div class="small-12 columns"><img src="{$category.image}" alt="{$category.cat_name}" class="marg-bottom"></div>
 </div>
 {/if}
 {if !empty($category.cat_desc)}
