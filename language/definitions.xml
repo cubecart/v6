@@ -1608,6 +1608,9 @@
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
+    <string name="seo_add_cats" introduced="6.0.0"><![CDATA[Add category to product URL path?]]></string>
+    <string name="seo_add_cats_top" introduced="6.0.0"><![CDATA[Top level category only]]></string>
+    <string name="seo_add_cats_all" introduced="6.0.0"><![CDATA[Top level and all subcategories]]></string>
     <string name="admin_only_skin_select" introduced="6.0.0"><![CDATA[Yes (Logged in admins only)]]></string>
     <string name="all_skin_select" introduced="6.0.0"><![CDATA[Yes (Everyone)]]></string>
   	<string name="admin_order_status_notification" introduced="5.0.0"><![CDATA[Order status for admin email notifications]]></string>

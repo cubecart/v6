@@ -300,11 +300,22 @@ class SEO {
 				if (($existing = $GLOBALS['db']->select('CubeCart_seo_urls', 'path', array('type' => 'prod', 'item_id' => $id))) !== false) {
 					$path = $existing[0]['path'];
 				} elseif (($prods = $GLOBALS['db']->select('CubeCart_inventory', array('product_id', 'name', 'cat_id'), array('product_id' => (int)$id), false, 1)) !== false) {
-					$cat_directory = '';
-					if (($cats = $GLOBALS['db']->select('CubeCart_category_index', array('cat_id'), array('product_id' => (int)$id), array('primary' => 'DESC'), 1)) !== false) {
-						$prods[0]['cat_id'] = $cats[0]['cat_id'];
+					
+					$category_scope = $GLOBALS['config']->get('config', 'seo_add_cats');
+
+					if($category_scope==0) {
+						$path = $prods[0]['name'];
+					} else {
+						$cat_directory = '';
+						if (($cats = $GLOBALS['db']->select('CubeCart_category_index', array('cat_id'), array('product_id' => (int)$id), array('primary' => 'DESC'), 1)) !== false) {
+							$prods[0]['cat_id'] = $cats[0]['cat_id'];
+						}
+						$cat_directory = $this->getDirectory($prods[0]['cat_id']);
+						if($category_scope==1) {
+							$cat_directories = explode('/', $cat_directory);
+							$cat_directory = $cat_directories[0];
+						}
 					}
-					$cat_directory = $this->getDirectory($prods[0]['cat_id']);
 					$path = empty($cat_directory) ? $prods[0]['name'] : $cat_directory.'/'.$prods[0]['name'];
 				}
 				break;

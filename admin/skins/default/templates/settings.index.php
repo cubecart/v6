@@ -65,13 +65,11 @@
       </fieldset>
       <fieldset>
          <legend>{$LANG.settings.title_orders}</legend>
-         <!--
+         {*
             <div><label for="email_disable_alert">{$LANG.settings.email_disable_alert}</label><span><select name="config[email_disable_alert]" id="email_disable_alert" class="textbox">
-            -->
          {foreach from=$OPT_EMAIL_DISABLE_ALERT item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
-         <!--
             </select></span></div>
-            -->
+         *}
          <div><label for="basket_order_expire">{$LANG.settings.expire_pending}</label><span><input name="config[basket_order_expire]" id="basket_order_expire" class="textbox number" value="{$CONFIG.basket_order_expire}"> {$LANG.common.blank_to_disable}</span></div>
       </fieldset>
       <fieldset>
@@ -231,6 +229,10 @@
          <div><label for="store_title">{$LANG.settings.seo_browser_title}</label><span><input name="config[store_title]" id="store_title" type="text" class="textbox" value="{$CONFIG.store_title}"></span></div>
          <div><label for="store_meta_description">{$LANG.settings.seo_meta_description}</label><span><textarea name="config[store_meta_description]" id="store_meta_description" class="textbox">{$CONFIG.store_meta_description}</textarea></span></div>
          <div><label for="store_meta_keywords">{$LANG.settings.seo_meta_keywords}</label><span><textarea name="config[store_meta_keywords]" id="store_meta_keywords" class="textbox">{$CONFIG.store_meta_keywords}</textarea></span></div>
+         <div><label for="store_meta_keywords">{$LANG.settings.seo_add_cats}</label><span>
+         <select name="config[seo_add_cats]" id="seo_add_cats" class="textbox">
+            {foreach from=$OPT_SEO_ADD_CATS item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
+            </select></span></div>
       </fieldset>
       <fieldset>
          <legend>{$LANG.settings.title_seo_meta_behaviour}</legend>
