@@ -851,13 +851,15 @@ CREATE TABLE IF NOT EXISTS `CubeCart_request_log` (
   PRIMARY KEY (`request_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ; #EOQ
 
-CREATE TABLE `CubeCart_seo_urls` (
-	`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-	`path` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-	`type` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-	`item_id` int(25) unsigned DEFAULT NULL,
+CREATE TABLE IF NOT EXISTS `CubeCart_seo_urls` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `path` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `type` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `item_id` int(25) unsigned DEFAULT NULL,
+  `custom` enum('0','1') COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   PRIMARY KEY (`path`),
   KEY `id` (`id`),
   KEY `type` (`type`),
-  KEY `item_id` (`item_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ; #EOQ
+  KEY `item_id` (`item_id`),
+  KEY `custom` (`custom`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1; #EOQ

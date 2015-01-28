@@ -582,6 +582,9 @@ class SEO {
 	 */
 	public function setdbPath($type, $item_id, $path, $bool = true, $show_error = true) {
 		if (in_array($type, array_merge($this->_dynamic_sections, $this->_static_sections))) {
+
+			$custom = 1;
+
 			// if path is empty or already taken generate one
 			if (empty($path) || $GLOBALS['db']->count('CubeCart_seo_urls', 'id', "`path` = '$path' AND `type` = '$type' AND `item_id` <> $item_id") > 0) {
 				// send warning if in use
@@ -592,6 +595,7 @@ class SEO {
 				}
 				// try to generate
 				$path = $this->generatePath($item_id, $type);
+				$custom = 0;
 			}
 			$path = sanitizeSEOPath($path);
 
@@ -599,15 +603,15 @@ class SEO {
 				return ($bool) ? false : '';
 			}
 			if (($existing = $GLOBALS['db']->select('CubeCart_seo_urls', 'id', array('type' => $type, 'item_id' => $item_id))) !== false) {
-				$GLOBALS['db']->update('CubeCart_seo_urls', array('type' => $type, 'item_id' => $item_id, 'path' => $path), array('id' => $existing[0]['id']));
+				$GLOBALS['db']->update('CubeCart_seo_urls', array('type' => $type, 'item_id' => $item_id, 'path' => $path, 'custom' => $custom), array('id' => $existing[0]['id']));
 			} else {
 				//Check for dup path
 				if (!$GLOBALS['db']->select('CubeCart_seo_urls', false, array('path' => $path))) {
-					$GLOBALS['db']->insert('CubeCart_seo_urls', array('type' => $type, 'item_id' => $item_id, 'path' => $path));
+					$GLOBALS['db']->insert('CubeCart_seo_urls', array('type' => $type, 'item_id' => $item_id, 'path' => $path, 'custom' => $custom));
 				} else {
 					// Force unique path is it's already taken
 					$unique_id = substr($type, 0, 1).$item_id;
-					$GLOBALS['db']->insert('CubeCart_seo_urls', array('type' => $type, 'item_id' => $item_id, 'path' => $path.'-'.$unique_id));
+					$GLOBALS['db']->insert('CubeCart_seo_urls', array('type' => $type, 'item_id' => $item_id, 'path' => $path.'-'.$unique_id, 'custom' => $custom));
 					$GLOBALS['gui']->setError($GLOBALS['language']->settings['seo_path_taken']);
 				}
 			}

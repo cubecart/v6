@@ -308,6 +308,23 @@ if (isset($_POST['truncate_seo'])) {
 	$clear_post = true;
 }
 
+if (isset($_POST['truncate_seo_custom'])) {
+	if ($GLOBALS['db']->delete('CubeCart_seo_urls', array('custom' => 1))) {
+		$GLOBALS['main']->setACPNotify($lang['maintain']['seo_urls_emptied']);
+	} else {
+		$GLOBALS['main']->setACPWarning($lang['maintain']['seo_urls_not_emptied']);
+	}
+	$clear_post = true;
+}
+if (isset($_POST['truncate_seo_auto'])) {
+	if ($GLOBALS['db']->delete('CubeCart_seo_urls', array('custom' => 0))) {
+		$GLOBALS['main']->setACPNotify($lang['maintain']['seo_urls_emptied']);
+	} else {
+		$GLOBALS['main']->setACPWarning($lang['maintain']['seo_urls_not_emptied']);
+	}
+	$clear_post = true;
+}
+
 if (isset($_POST['sitemap'])) {
 	if ($GLOBALS['seo']->sitemap()) {
 		$GLOBALS['main']->setACPNotify($lang['maintain']['notify_sitemap']);
