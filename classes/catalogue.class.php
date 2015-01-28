@@ -689,12 +689,14 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 			//Are we in sale mode?
 			$sale = false;
 			$product_data['ctrl_sale'] = false;
+			$product_data['price_to_pay'] = $product_data['price'];
 
 			switch ((int)$GLOBALS['config']->get('config', 'catalogue_sale_mode')) {
 			case 0:
 				break;
 			case 1:
 				if ($product_data['sale_price'] && ($product_data['sale_price'] > 0 && $product_data['sale_price'] != Tax::getInstance()->priceFormatHidden())) {
+					$product_data['price_to_pay'] = $product_data['sale_price'];
 					$product_data['ctrl_sale'] = true;
 				}
 				$sale = true;
@@ -708,6 +710,7 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 					$product_data['sale_price'] = $product_price - ($product_price / 100) * $GLOBALS['config']->get('config', 'catalogue_sale_percentage');
 
 					$product_data['ctrl_sale'] = ($product_data['sale_price'] > 0 && $product_data['sale_price'] != Tax::getInstance()->priceFormatHidden()) ? true : false;
+					$product_data['price_to_pay'] = $product_data['sale_price'];
 					$sale = true;
 				}
 				break;

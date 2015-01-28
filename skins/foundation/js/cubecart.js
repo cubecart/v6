@@ -239,9 +239,26 @@ jQuery(document).ready(function() {
         $('#checkout_register').click(function() {
             checkout_form_toggle(true);
         });
-
     }
+    calc_price_to_pay();
+    $("[name^=productOptions]").blur(function() {
+        calc_price_to_pay();
+    });
 });
+
+function calc_price_to_pay() {
+    var total = 0;
+    $("[name^=productOptions]").each(function () {
+        if($(this).is('input:radio') && $(this).is(':checked')) {
+            total += parseFloat($(this).attr("data-price"));
+        } else if ($(this).is('select') && $(this).val()) {
+            total += parseFloat($(this).find("option:selected").attr("data-price"));
+        } else if (($(this).is('textarea') || $(this).is('input:text')) && $(this).val() !== '') {
+            total += parseFloat($(this).attr("data-price"));
+        }
+    });
+    total += parseFloat($('#base_price').text());
+}
 
 function add_to_basket(form) {
     var add = $(form).serialize();
