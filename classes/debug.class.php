@@ -242,10 +242,6 @@ class Debug {
 			if (!empty($this->_sql)) {
 				$output[] = '<strong>'.Database::getInstance()->getDbEngine().'</strong><br />';
 
-				if(defined('ADMIN_CP') && ADMIN_CP) {
-					$output[] = '### In the admin control panel SQL cache is written but not read! ###<br />';
-				}
-
 				if (!empty($this->_sql['query'])) {
 					$output[] = '<strong>Queries ('.count($this->_sql['query']).')</strong>:<br />';
 
@@ -301,7 +297,7 @@ class Debug {
 			// Show cache stats
 			//We need another cache instance because of the destruct
 			$cache = Cache::getInstance();
-
+			$cache->status();
 			$cacheState = $cache->status ? '<span style="color: #008000">'.$cache->status_desc.'</span>' : '<span style="color: #ff0000">'.$cache->status_desc.'</span>';
 
 			$output[] = '<strong>Cache ('.$cache->getCacheSystem().'): '.$cacheState.'</strong><br />'.$cache->usage().' [<a href="'.currentPage(null, array('debug-cache-clear' => 'true')).'">Clear Cache</a>]<hr size="1" />';
@@ -311,7 +307,6 @@ class Debug {
 			if ($this->_xdebug && ini_get('xdebug.profiler_enable_trigger') == 1) {
 				$output[] = ' [<a href="'.currentPage(null, array('XDEBUG_PROFILE' => 'true')).'">CacheGrind</a>]';
 			}
-
 
 			$output[] = '</div>';
 			$content = implode($glue, $output);

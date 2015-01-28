@@ -70,7 +70,7 @@ class Config {
 		} else {
 			$this->_config['config'] = $glob;
 		}
-		$GLOBALS['cache']->setStatus($this->_config['config']['cache']);
+		$GLOBALS['cache']->setStatus((bool)$this->_config['config']['cache']);
 	}
 
 	public function __destruct() {

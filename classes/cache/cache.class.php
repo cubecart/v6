@@ -104,7 +104,7 @@ class Cache_Controler {
 	}
 
 	public function status() {
-		if(defined('CC_IN_ADMIN') && CC_IN_ADMIN === true) {
+		if(defined('ADMIN_CP') && ADMIN_CP) {
 			$this->status_desc = 'Always Disabled in ACP';
 			$this->status = false;
 		} else { 
@@ -118,6 +118,7 @@ class Cache_Controler {
 
 	public function setStatus($status = false) {
 		$this->status = $status;
+		$this->status();
 	}
 
 	/**
