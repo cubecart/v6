@@ -319,7 +319,8 @@ $select_options = array(
 	'product_sort_direction' => array('ASC' => 'ASC', 'DESC' => 'DESC'),
 	'product_clone'      => array('0' => $lang['common']['disabled'], '2' => $lang['settings']['product_clone_hide'], '1' => $lang['common']['enabled']),
 	'product_clone_code'    => array('1' => $lang['settings']['product_clone_new_code'], '2' => $lang['settings']['product_clone_old_code']),
-	'seo_add_cats'      => array('0' => $lang['common']['no'], '1' => $lang['settings']['seo_add_cats_top'], '2' => $lang['settings']['seo_add_cats_all'])
+	'seo_add_cats'      => array('0' => $lang['common']['no'], '1' => $lang['settings']['seo_add_cats_top'], '2' => $lang['settings']['seo_add_cats_all']),
+	'seo_cat_add_cats'      => array('1' => $lang['common']['yes'], '0' => $lang['common']['no'])
 );
 
 if ($inventory_columns = $GLOBALS['db']->misc('SHOW FULL COLUMNS FROM '.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory')) {

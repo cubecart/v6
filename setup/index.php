@@ -158,7 +158,9 @@ $default_config_settings = array(
   'bftime' => '600',
   'bfattempts' => 5,
   'fuzzy_time_format' => '%H:%M',
-  'feed_access_key' => randomString(12)
+  'feed_access_key' => randomString(12),
+  'seo_add_cats'  => 2,
+  'seo_cat_add_cats' => 1
 );
 
 ksort($default_config_settings);

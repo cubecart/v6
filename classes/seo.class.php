@@ -281,6 +281,13 @@ class SEO {
 					// last panic resort which shouldn't happen
 					$path = 'cat'.$id;
 				}
+
+				$category_scope = $GLOBALS['config']->get('config', 'seo_cat_add_cats');
+				if($GLOBALS['config']->get('config', 'seo_cat_add_cats') == 0) {
+					$path_categories = explode('/', $path);
+					$path = array_pop($path_categories);
+				}
+
 				break;
 			case 'doc':
 			case 'document':
