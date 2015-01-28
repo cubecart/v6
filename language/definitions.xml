@@ -1207,6 +1207,7 @@
   </group>
   <group name="maintain">
     <string name="truncate_seo" introduced="6.0.0"><![CDATA[Clear all SEO URL's]]></string>
+    <string name="truncate_seo_warning" introduced="6.0.0"><![CDATA[Danger: This can not be undone!]]></string>
     <string name="seo_urls_emptied" introduced="6.0.0"><![CDATA[All SEO URL's have been cleared]]></string>
     <string name="seo_urls_not_emptied" introduced="6.0.0"><![CDATA[Failed to clear SEO URL's. Maybe this has been done already.]]></string>
     <string name="affected_rows" introduced="5.0.0"><![CDATA[Affected Rows]]></string>
@@ -1216,7 +1217,6 @@
     <string name="cache_language" introduced="5.0.0"><![CDATA[Clear language cache]]></string>
     <string name="cache_sql" introduced="5.0.0"><![CDATA[Clear SQL cache]]></string>
     <string name="cache_search" introduced="5.0.0"><![CDATA[Clear search history]]></string>
-    <string name="cache_warning" introduced="5.0.0"><![CDATA[*Warning* This could delete session files which will cause you and your users to log out]]></string>
     <string name="db_data" introduced="5.0.0"><![CDATA[Include data in backup]]></string>
     <string name="db_drop_table" introduced="5.0.0"><![CDATA[Add 'DROP TABLE' to structure]]></string>
     <string name="db_structure" introduced="5.0.0"><![CDATA[Include database structure]]></string>

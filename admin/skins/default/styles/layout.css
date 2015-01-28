@@ -245,6 +245,9 @@ fieldset > legend {
 	padding: 0 0 4px 0;
 	text-transform: capitalize;
 }
+fieldset div.clear {
+	clear: left;
+}
 a, #header .user_info i {
 	color: #4F9AAF;
 	text-decoration: none;
@@ -269,8 +272,8 @@ img {
 .store_open {
 	color: #44B215;
 }
-.store_closed {
-	color: red;
+.store_closed, .important {
+	color: #900;
 }
 
 
