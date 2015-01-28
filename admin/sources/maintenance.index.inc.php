@@ -299,6 +299,15 @@ if (isset($_GET['download']) && file_exists('backup/'.$_GET['download'])) {
 ########## Rebuild ##########
 $clear_post = false;
 
+if (isset($_POST['truncate_seo'])) {
+	if ($GLOBALS['db']->delete('CubeCart_seo_urls')) {
+		$GLOBALS['main']->setACPNotify($lang['maintain']['seo_urls_emptied']);
+	} else {
+		$GLOBALS['main']->setACPWarning($lang['maintain']['seo_urls_not_emptied']);
+	}
+	$clear_post = true;
+}
+
 if (isset($_POST['sitemap'])) {
 	if ($GLOBALS['seo']->sitemap()) {
 		$GLOBALS['main']->setACPNotify($lang['maintain']['notify_sitemap']);

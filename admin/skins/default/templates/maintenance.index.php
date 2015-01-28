@@ -13,23 +13,26 @@
   <h3>{$LANG.maintain.title_rebuild}</h3>
   <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
   <fieldset><legend>{$LANG.maintain.title_rebuild_catalogue}</legend>
-	<div style="height: 20px;"><label for="prodViews">{$LANG.maintain.reset_views}</label><span><input type="checkbox" id="prodViews" name="prodViews" value="1"></span></div>
+	<div><label for="prodViews">{$LANG.maintain.reset_views}</label><span><input type="checkbox" id="prodViews" name="prodViews" value="1"></span></div>
+  </fieldset>
+  <fieldset><legend>{$LANG.settings.title_seo_urls}</legend>
+	<div><label for="truncate_seo">{$LANG.maintain.truncate_seo}</label><span><input type="checkbox" id="truncate_seo" name="truncate_seo" value="1"></span></div>
   </fieldset>
   <fieldset><legend>{$LANG.maintain.title_rebuild_cache}</legend>
-	<div style="height: 20px;"><label for="clearCache">{$LANG.maintain.cache_clear}</label><span><input type="checkbox" id="clearCache" name="clearCache" value="1"></span><!--{$LANG.maintain.cache_warning}--></div>
-	<div style="height: 20px;"><label for="clearSQLCache">{$LANG.maintain.cache_sql}</label><span><input type="checkbox" id="clearSQLCache" name="clearSQLCache" value="1"></span></div>
-	<div style="height: 20px;"><label for="clearLangCache">{$LANG.maintain.cache_language}</label><span><input type="checkbox" id="clearLangCache" name="clearLangCache" value="1"></span></div>
-	<div style="height: 20px;"><label for="clearImageCache">{$LANG.maintain.cache_image}</label><span><input type="checkbox" id="clearImageCache" name="clearImageCache" value="1"></span></div>
+	<div><label for="clearCache">{$LANG.maintain.cache_clear}</label><span><input type="checkbox" id="clearCache" name="clearCache" value="1"></span><!--{$LANG.maintain.cache_warning}--></div>
+	<div><label for="clearSQLCache">{$LANG.maintain.cache_sql}</label><span><input type="checkbox" id="clearSQLCache" name="clearSQLCache" value="1"></span></div>
+	<div><label for="clearLangCache">{$LANG.maintain.cache_language}</label><span><input type="checkbox" id="clearLangCache" name="clearLangCache" value="1"></span></div>
+	<div><label for="clearImageCache">{$LANG.maintain.cache_image}</label><span><input type="checkbox" id="clearImageCache" name="clearImageCache" value="1"></span></div>
   </fieldset>
 
   <fieldset><legend>{$LANG.maintain.title_rebuild_logs}</legend>
-	<div style="height: 20px;"><label for="clearLogs">{$LANG.maintain.logs_admin}</label><span><input type="checkbox" id="clearLogs" name="clearLogs" value="1"></span></div>
-	<div style="height: 20px;"><label for="emptyErrorLogs">{$LANG.maintain.logs_error}</label><span><input type="checkbox" id="emptyErrorLogs" name="emptyErrorLogs" value="1"></span></div>
-	<div style="height: 20px;"><label for="emptyRequestLogs">{$LANG.maintain.logs_request}</label><span><input type="checkbox" id="emptyRequestLogs" name="emptyRequestLogs" value="1"></span></div>
-	<div style="height: 20px;"><label for="emptyTransLogs">{$LANG.maintain.logs_transaction}</label><span><input type="checkbox" id="emptyTransLogs" name="emptyTransLogs" value="1"></span></div>
+	<div><label for="clearLogs">{$LANG.maintain.logs_admin}</label><span><input type="checkbox" id="clearLogs" name="clearLogs" value="1"></span></div>
+	<div><label for="emptyErrorLogs">{$LANG.maintain.logs_error}</label><span><input type="checkbox" id="emptyErrorLogs" name="emptyErrorLogs" value="1"></span></div>
+	<div><label for="emptyRequestLogs">{$LANG.maintain.logs_request}</label><span><input type="checkbox" id="emptyRequestLogs" name="emptyRequestLogs" value="1"></span></div>
+	<div><label for="emptyTransLogs">{$LANG.maintain.logs_transaction}</label><span><input type="checkbox" id="emptyTransLogs" name="emptyTransLogs" value="1"></span></div>
   </fieldset>
   <fieldset><legend>{$LANG.maintain.title_rebuild_misc}</legend>
-	<div style="height: 20px;"><label for="sitemap">{$LANG.maintain.sitemap}</label><span><input type="checkbox" id="sitemap" name="sitemap" value="1"></span></div>
+	<div><label for="sitemap">{$LANG.maintain.sitemap}</label><span><input type="checkbox" id="sitemap" name="sitemap" value="1"></span></div>
   </fieldset>
 	<div>
 		<input type="hidden" name="previous-tab" id="previous-tab" value="rebuild">

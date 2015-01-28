@@ -1206,6 +1206,9 @@
     <string name="example_code_snippet_xml" introduced="5.2.0"><![CDATA[An example of an import XML feed can be found <a href="docs/examples/code_snippet_import.xml">here</a>. Please use the &quot;Help&quot; link for further information.]]></string>
   </group>
   <group name="maintain">
+    <string name="truncate_seo" introduced="6.0.0"><![CDATA[Clear all SEO URL's]]></string>
+    <string name="seo_urls_emptied" introduced="6.0.0"><![CDATA[All SEO URL's have been cleared]]></string>
+    <string name="seo_urls_not_emptied" introduced="6.0.0"><![CDATA[Failed to clear SEO URL's. Maybe this has been done already.]]></string>
     <string name="affected_rows" introduced="5.0.0"><![CDATA[Affected Rows]]></string>
     <string name="backup_options" introduced="5.0.0"><![CDATA[Backup Options]]></string>
     <string name="cache_clear" introduced="5.0.0"><![CDATA[Clear cache]]></string>
