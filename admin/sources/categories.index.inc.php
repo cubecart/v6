@@ -76,6 +76,9 @@ if (isset($_POST['cat']) && is_array($_POST['cat']) && Admin::getInstance()->per
 				if (substr($_POST['seo_path'], 0, 1) == '/' || substr($_POST['seo_path'], 0, 1) == '\\') {
 					$_POST['seo_path'] = substr($_POST['seo_path'], 1);
 				}
+				if(empty($_POST['seo_path'])) {
+					$GLOBALS['seo']->delete('cat', $cat_id);
+				}
 				$GLOBALS['seo']->setdbPath('cat', $cat_id, $_POST['seo_path'], false, false);
 				$GLOBALS['seo']->rebuildCategoryList();
 			}

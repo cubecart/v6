@@ -106,10 +106,11 @@
   <h3>{$LANG.settings.title_seo}</h3>
     <fieldset>
 	  <div><label for="seo_meta_title">{$LANG.settings.seo_meta_title}</label><span><input type="text" name="cat[seo_meta_title]" id="seo_meta_title" class="textbox" value="{$CATEGORY.seo_meta_title}"></span></div>
-	  <div><label for="seo_path">{$LANG.settings.seo_path}</label><span><input type="text" name="seo_path" id="seo_path" class="textbox" value="{$CATEGORY.seo_path}"></span></div>
+	  <div><label for="seo_path">{$LANG.settings.seo_path} *</label><span><input type="text" name="seo_path" id="seo_path" class="textbox" value="{$CATEGORY.seo_path}"></span></div>
 	  <div><label for="seo_meta_keywords">{$LANG.settings.seo_meta_keywords}</label><span><textarea name="cat[seo_meta_keywords]" id="seo_meta_keywords" class="textbox">{$CATEGORY.seo_meta_keywords}</textarea></span></div>
 	  <div><label for="seo_meta_description">{$LANG.settings.seo_meta_description}</label><span><textarea name="cat[seo_meta_description]" id="seo_meta_description" class="textbox">{$CATEGORY.seo_meta_description}</textarea></span></div>
 	</fieldset>
+	<p>* {$LANG.settings.seo_path_auto}</p>
   </div>
 	{if isset($DISPLAY_SHIPPING)}
   <div id="cat_shipping" class="tab_content">

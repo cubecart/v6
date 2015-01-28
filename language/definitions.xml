@@ -1770,6 +1770,7 @@
     <string name="sales_per_product" introduced="5.0.0"><![CDATA[Per-product]]></string>
     <string name="seo_browser_title" introduced="5.0.0"><![CDATA[Browser Title]]></string>
     <string name="seo_path" introduced="5.0.0"><![CDATA[Custom SEO URL Path]]></string>
+    <string name="seo_path_auto" introduced="6.0.0"><![CDATA[This will be generated automatically if left empty.]]></string>
     <string name="seo_enable" introduced="5.0.0"><![CDATA[Enable SEO URLs]]></string>
     <string name="seo_format" introduced="5.0.0"><![CDATA[SEO URL Format]]></string>
     <string name="seo_htaccess" introduced="5.0.0"><![CDATA[.htaccess file content]]></string>
