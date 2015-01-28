@@ -443,6 +443,9 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 	if (substr($_POST['seo_path'], 0, 1) == '/' || substr($_POST['seo_path'], 0, 1) == '\\') {
 		$_POST['seo_path'] = substr($_POST['seo_path'], 1);
 	}
+	if(empty($_POST['seo_path'])) {
+		$GLOBALS['seo']->delete('prod', $product_id);
+	}
 	if ($GLOBALS['seo']->setdbPath('prod', $product_id, $_POST['seo_path'])) {
 		$updated = true;
 	}
@@ -677,17 +680,6 @@ if (isset($_GET['action']) && strtolower($_GET['action'])=='clone' && isset($_GE
 				}
 
 			}
-
-			// SEO
-			if (($seo_path = $GLOBALS['db']->select('CubeCart_seo_urls', array('path'), array('item_id' => $product_id_parent, 'type' => 'prod'))) !== false) {
-
-				$GLOBALS['db']->insert('CubeCart_seo_urls', array('type' => 'prod', 'item_id' => $product_id, 'path' => sprintf('%s-p%s', $seo_path[0]['path'], $product_id)));
-
-			} else {
-
-				$GLOBALS['seo']->setdbPath('prod', $product_id, '');
-			}
-
 			// Custom clone
 			foreach ($GLOBALS['hooks']->load('admin.product.clone') as $hook) include $hook;
 
