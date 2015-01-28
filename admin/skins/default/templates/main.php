@@ -67,6 +67,7 @@
                {$DISPLAY_CONTENT}
             </div>
          </div>
+         {include file='templates/ccpower.php'}
       </div>
       </div>
       <div style="display: none" id="val_admin_folder">{$SKIN_VARS.admin_folder}</div>
