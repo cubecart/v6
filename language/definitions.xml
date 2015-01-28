@@ -2037,6 +2037,7 @@
     <string name="display_bots_and_customers" introduced="5.2.6"><![CDATA[Display Webbots &amp; Customers]]></string>
   </group>
   <group name="translate">
+    <string name="error_no_languages" introduced="6.0.0"><![CDATA[No languages have been found. Please visit the <a href="?_g=marketplace">marketplace</a> to get hold of the ones you want.]]></string>
     <string name="error_language_create" introduced="5.0.0"><![CDATA[Failed to create language.]]></string>
     <string name="error_language_delete" introduced="5.0.0"><![CDATA[Failed to delete language.]]></string>
     <string name="error_language_import_failed" introduced="5.0.0"><![CDATA[Failed to import language.]]></string>

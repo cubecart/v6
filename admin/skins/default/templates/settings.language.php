@@ -139,6 +139,11 @@
    <div class="form_control">
       <input type="submit" name="export" value="{$LANG.common.export}">
    </div>
-   {/if}
    <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+   {else}
+   <div id="lang_list" class="tab_content">
+   <h3>{$LANG.translate.title_languages}</h3>
+   <p>{$LANG.translate.error_no_languages}</p>
+   </div>
+   {/if}
 </form>
