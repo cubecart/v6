@@ -268,7 +268,7 @@ function add_to_basket(form) {
                 on_canvas_basket.replaceWith(returned.responseText);
                 on_canvas_basket_content = $('#mini-basket .box-basket-content').html();
                 off_canvas_basket_content.replaceWith(on_canvas_basket_content);
-                $("#gui_message").slideUp();
+                $(".alert-box").slideUp();
                 mini_basket_action();
             }
         }
