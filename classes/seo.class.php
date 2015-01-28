@@ -284,8 +284,8 @@ class SEO {
 
 				$category_scope = $GLOBALS['config']->get('config', 'seo_cat_add_cats');
 				if($GLOBALS['config']->get('config', 'seo_cat_add_cats') == 0) {
-					$path_categories = explode('/', $path);
-					$path = array_pop($path_categories);
+					// Get last part of path
+					$path = array_pop(explode('/', $path));
 				}
 
 				break;
@@ -319,8 +319,8 @@ class SEO {
 						}
 						$cat_directory = $this->getDirectory($prods[0]['cat_id']);
 						if($category_scope==1) {
-							$cat_directories = explode('/', $cat_directory);
-							$cat_directory = $cat_directories[0];
+							// Get first part of path
+							$cat_directory = array_shift(explode('/', $cat_directory));
 						}
 					}
 					$path = empty($cat_directory) ? $prods[0]['name'] : $cat_directory.'/'.$prods[0]['name'];
