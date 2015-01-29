@@ -10,7 +10,6 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
 <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
-   <!-- title="You have not saved this order yet" -->
    {if isset($DISPLAY_ORDER_LIST)}
    <div id="orders" class="tab_content">
       <h3>{$LANG.orders.title_orders}</h3>
