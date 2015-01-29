@@ -122,6 +122,11 @@
             <p>(<a href="#quantity_discounts">{$LANG.catalogue.bulk_discount}</a>)</p>
             {/if}
             <div class="row collapse">
+               {if $PRODUCT.available == '0'}
+               <div class="small-12 columns">
+                  <input type="submit" value="{$LANG.common.unavailable}" class="button small disabled expand marg-top" disabled>
+               </div>
+               {else}
                <div class="small-2 columns">
                   <input type="text" name="quantity" value="1" class="quantity required text-center">
                   <input type="hidden" name="add" value="{$PRODUCT.product_id}">
@@ -129,6 +134,7 @@
                <div  class="small-10 columns">
                   <button type="submit" value="{$LANG.catalogue.add_to_basket}" class="button postfix">{$LANG.catalogue.add_to_basket}</button>
                </div>
+               {/if}
             </div>
             {else}
             {if $CTRL_HIDE_PRICES}

@@ -408,6 +408,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_inventory` (
   `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Last Updated',
   `manufacturer` int(10) unsigned DEFAULT NULL COMMENT 'Manufacturer ID',
   `condition` varchar(25) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Condition',
+  `available` enum('0','1') COLLATE utf8_unicode_ci NOT NULL DEFAULT '1',
   PRIMARY KEY (`product_id`),
   KEY `status` (`status`),
   KEY `popularity` (`popularity`),

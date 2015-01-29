@@ -104,12 +104,18 @@
 	               </h3>
 	               {if $product.ctrl_purchase && !$CATALOGUE_MODE}
 	               <div class="row collapse">
+	                  {if $product.available == '0'}
+	                  <div class="small-12 columns">
+		                  <input type="submit" value="{$LANG.common.unavailable}" class="button small disabled expand marg-top" disabled>
+		              </div>
+	                  {else}
 	                  <div class="small-4 columns">
 	                     <input type="text" name="add[{$product.product_id}][quantity]" value="1" class="quantity text-center">
 	                  </div>
 	                  <div class="small-8 columns">
 	                     <button type="submit" value="{$LANG.catalogue.add_to_basket}" class="button small postfix">{$LANG.catalogue.add_to_basket}</button>
 	                  </div>
+	                  {/if}
 	               </div>
 	               {elseif $product.out}
 	               <input type="submit" value="{$LANG.catalogue.out_of_stock_short}" disabled class="button disabled expand small">
@@ -151,12 +157,18 @@
 	            {if $product.ctrl_purchase && !$CATALOGUE_MODE}
 	            <div class="marg-top">
 	               <div class="row collapse marg-top">
+	               	  {if $product.available == '0'}
+		              <div class="small-12 columns">
+		                  <input type="submit" value="{$LANG.common.unavailable}" class="button small disabled expand marg-top" disabled>
+		              </div>
+		              {else}
 	                  <div class="small-3 columns">
 	                     <input type="text" name="quantity" value="1" class="quantity required text-center">
 	                  </div>
 	                  <div class="small-9 columns ">
 	                     <button type="submit" value="{$LANG.catalogue.add_to_basket}" class="button small postfix">{$LANG.catalogue.add_to_basket}</button>
 	                  </div>
+	                  {/if}
 	               </div>
 	            </div>
 	            {elseif !$CATALOGUE_MODE}

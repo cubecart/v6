@@ -226,6 +226,7 @@
     <string name="your_comments" introduced="5.0.0"><![CDATA[Delivery Notes or Additional Comments]]></string>
   </group>
   <group name="catalogue">
+    <string name="available_for_purchase" introduced="6.0.0"><![CDATA[Available for purchase]]></string>
   	<string name="added_to_basket" introduced="6.0.0"><![CDATA[Added to Basket]]></string>
     <string name="add_to_basket" introduced="5.0.0"><![CDATA[Add to Basket]]></string>
     <string name="allowed_uses" introduced="5.0.0"><![CDATA[Allowed Uses]]></string>
@@ -386,7 +387,7 @@
     <string name="product_gtin" introduced="5.2.1"><![CDATA[GTIN Code]]></string>
     <string name="product_mpn" introduced="5.2.1"><![CDATA[MPN Code]]></string>
     <string name="product_code" introduced="5.0.0"><![CDATA[Product Code]]></string>
-    <string name="product_code_auto" introduced="5.0.0"><![CDATA[Generate Product Code]]></string>
+    <string name="product_code_auto" introduced="5.0.0"><![CDATA[Automatically generate product code]]></string>
     <string name="product_details" introduced="5.0.0"><![CDATA[Product Details]]></string>
     <string name="product_description" introduced="5.0.0"><![CDATA[Product Description]]></string>
     <string name="product_doesnt_exist" introduced="5.0.0"><![CDATA[That product couldn't be found.]]></string>
@@ -528,6 +529,7 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="unavailable" introduced="6.0.0"><![CDATA[Unavailable]]></string>
     <string name="thats_it" introduced="6.0.0"><![CDATA[That's it!]]></string>
     <string name="hi_casual" introduced="6.0.0"><![CDATA[Hey]]></string>
     <string name="options" introduced="6.0.0"><![CDATA[Options]]></string>

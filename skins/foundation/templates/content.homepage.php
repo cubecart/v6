@@ -38,7 +38,9 @@
             </div>
             {/if}
             <!--<a href="{$product.url}" title="{$product.name}" class="button tiny secondary left">{$LANG.common.info}</a>-->
-            {if $product.ctrl_stock && !$CATALOGUE_MODE}
+            {if $product.available == '0'}
+               <input type="submit" value="{$LANG.common.unavailable}" class="button small disabled expand marg-top" disabled>
+            {elseif $product.ctrl_stock && !$CATALOGUE_MODE}
             <div class="marg-top">
                <div class="row collapse marg-top">
                   <div class="small-3 columns">
