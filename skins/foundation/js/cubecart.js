@@ -241,15 +241,15 @@ jQuery(document).ready(function() {
         });
     }
 
-    if($('#ptp_target').length > 0) {
-        calc_price_to_pay();
+    if($('#ptp_target').length > 0 && $('[name^=productOptions]').length > 0) {
+        price_inc_options();
         $("[name^=productOptions]").change(function() {
-            calc_price_to_pay();
+            price_inc_options();
         });
     }
 });
 
-function calc_price_to_pay() {
+function price_inc_options() {
     var action = $('form.add_to_basket').attr('action');
     var total = 0;
     var ptp = parseFloat($('#ptp').text());
