@@ -182,6 +182,10 @@
                      <td>{$LANG.common.condition}</td>
                      <td>{$PRODUCT.condition}</td>
                   </tr>
+                  <tr>
+                     <td>{$LANG.common.weight}</td>
+                     <td>{$PRODUCT.product_weight} {$CONFIG.product_weight_unit}</td>
+                  </tr>
                </tbody>
             </table>
          </div>
