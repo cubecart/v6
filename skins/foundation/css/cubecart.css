@@ -2,6 +2,15 @@ html * {
     font-family: 'segoe ui', 'helvetica neue', arial, helvetica, sans-serif;
     -webkit-font-smoothing: antialiased;
 }
+.pseudo-label {
+    font-size: 0.875rem;
+    color: #4D4D4D;
+    cursor: pointer;
+    display: block;
+    font-weight: normal;
+    line-height: 1.5;
+    margin-bottom: 0;
+}
 .old_price {
     text-decoration: line-through;
 }

@@ -49,11 +49,11 @@
                   {$option.values.0.value_name}{if $option.values.0.price} {$option.values.0.symbol}{$option.values.0.price}{/if}
                   <input type="hidden" name="productOptions[{$option.option_id}]" id="option_{$option.option_id}" value="{$option.values.0.assign_id}" data-price="{$option.values.0.decimal_price}">
                   {else}
-                  <div>{$option.option_name}{if $option.required} ({$LANG.common.required}){/if}</div>
+                  <div class="pseudo-label">{$option.option_name}{if $option.required} ({$LANG.common.required}){/if}</div>
                   <span id="error_option_{$option.option_id}">
                      {foreach from=$option.values item=value name=options}
-                     <div><input type="radio" name="productOptions[{$option.option_id}]" id="option_{$value.assign_id}" value="{$value.assign_id}" class="nomarg" data-price="{$value.decimal_price}"{if $smarty.foreach.options.first} rel="error_option_{$option.option_id}" {if $option.required}required{/if}{/if}>
-                        <label for="option_{$value.assign_id}" class="return">{$value.value_name}{if $value.price} {$value.symbol}{$value.price}{/if}</label>
+                     <div><input type="radio" name="productOptions[{$option.option_id}]" id="rad_option_{$value.assign_id}" value="{$value.assign_id}" class="nomarg" data-price="{$value.decimal_price}"{if $smarty.foreach.options.first} rel="error_option_{$option.option_id}" {if $option.required}required{/if}{/if}>
+                        <label for="rad_option_{$value.assign_id}" class="return">{$value.value_name}{if $value.price} {$value.symbol}{$value.price}{/if}</label>
                      </div>
                      {/foreach}
                   </span>
