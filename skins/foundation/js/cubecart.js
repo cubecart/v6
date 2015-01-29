@@ -275,24 +275,22 @@ function price_inc_options() {
         }
     });
     ptp += total;
-    if(ptp_original!==ptp) {
-        $.ajax({
-            url: action + ptp,
-            complete: function(returned) {
-                $('#ptp_target').html(returned.responseText);
-            }
-        });
-    }
+    
+    $.ajax({
+        url: action + ptp,
+        complete: function(returned) {
+            $('#ptp_target').html(returned.responseText);
+        }
+    });
+    
     if($('#fbp_target').length > 0) {
         fbp += total;
-        if(fbp!==fbp_original) {
-            $.ajax({
-                url: action + fbp,
-                complete: function(returned) {
-                    $('#fbp_target').html(returned.responseText);
-                }
-            });
-        } 
+        $.ajax({
+            url: action + fbp,
+            complete: function(returned) {
+                $('#fbp_target').html(returned.responseText);
+            }
+        });
     }
 }
 
