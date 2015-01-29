@@ -241,7 +241,7 @@ jQuery(document).ready(function() {
         });
     }
 
-    if($('#ptp_target').length > 0 && $('[name^=productOptions]').length > 0) {
+    if($('#ptp').length > 0 && $('[name^=productOptions]').length > 0) {
         price_inc_options();
         $("[name^=productOptions]").change(function() {
             price_inc_options();
@@ -252,8 +252,8 @@ jQuery(document).ready(function() {
 function price_inc_options() {
     var action = $('form.add_to_basket').attr('action');
     var total = 0;
-    var ptp = parseFloat($('#ptp').text());
-    var fbp = parseFloat($('#fbp').text());
+    var ptp = parseFloat($('#ptp').attr("data-price"));
+    var fbp = parseFloat($('#fbp').attr("data-price"));
     var ptp_original = ptp;
     var fbp_original = fbp;
     var parts = action.split("?");
@@ -280,17 +280,17 @@ function price_inc_options() {
         url: action + ptp,
         cache: true,
         complete: function(returned) {
-            $('#ptp_target').html(returned.responseText);
+            $('#ptp').html(returned.responseText);
         }
     });
     
-    if($('#fbp_target').length > 0) {
+    if($('#fbp').length > 0) {
         fbp += total;
         $.ajax({
             url: action + fbp,
             cache: true,
             complete: function(returned) {
-                $('#fbp_target').html(returned.responseText);
+                $('#fbp').html(returned.responseText);
             }
         });
     }

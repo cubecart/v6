@@ -91,10 +91,6 @@
                </div>
             </div>
             {/if}
-            <div class="hide">
-            <div id="ptp">{$PRODUCT.price_to_pay}</div>
-            <div id="fbp">{$PRODUCT.full_base_price}</div>
-            </div>
             {/foreach}
             {/if}
             {if $PRODUCT.review_score && $CTRL_REVIEW}
@@ -116,10 +112,10 @@
             {if ($CTRL_ALLOW_PURCHASE) && (!$CATALOGUE_MODE)}
             <h3>
                {if $PRODUCT.ctrl_sale}
-               <span class="old_price" id="fbp_target">{$PRODUCT.price}</span>
-               <span class="sale_price" id="ptp_target">{$PRODUCT.sale_price}</span>
+               <span class="old_price" id="fbp" data-price="{$PRODUCT.full_base_price}">{$PRODUCT.price}</span>
+               <span class="sale_price" id="ptp" data-price="{$PRODUCT.price_to_pay}">{$PRODUCT.sale_price}</span>
                {else}
-               <span id="ptp_target">{$PRODUCT.price}</span>
+               <span id="ptp" data-price="{$PRODUCT.price_to_pay}">{$PRODUCT.price}</span>
                {/if}
             </h3>
             {if isset($PRODUCT.discounts)}
