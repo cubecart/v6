@@ -243,7 +243,7 @@ jQuery(document).ready(function() {
 
     if($('#ptp_target').length > 0) {
         calc_price_to_pay();
-        $("[name^=productOptions]").blur(function() {
+        $("[name^=productOptions]").change(function() {
             calc_price_to_pay();
         });
     }
