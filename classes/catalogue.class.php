@@ -690,6 +690,7 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 			$sale = false;
 			$product_data['ctrl_sale'] = false;
 			$product_data['price_to_pay'] = $product_data['price'];
+			$product_data['full_base_price'] = $product_data['price'];
 
 			switch ((int)$GLOBALS['config']->get('config', 'catalogue_sale_mode')) {
 			case 0:

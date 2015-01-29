@@ -197,6 +197,13 @@ class Cubecart {
 
 		if (isset($_GET['_g']) && !empty($_GET['_g'])) {
 			switch (strtolower($_GET['_g'])) {
+			case 'ajax_price_format':
+				$GLOBALS['debug']->supress();
+				if(is_numeric($_GET['price'])) {
+					echo $GLOBALS['tax']->priceFormat($_GET['price']);
+				}
+				exit;
+			break;
 			case 'ajax_email':
 				$GLOBALS['debug']->supress();
 

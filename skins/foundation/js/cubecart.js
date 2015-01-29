@@ -240,14 +240,31 @@ jQuery(document).ready(function() {
             checkout_form_toggle(true);
         });
     }
-    calc_price_to_pay();
-    $("[name^=productOptions]").blur(function() {
+
+    if($('#ptp_target').length > 0) {
         calc_price_to_pay();
-    });
+        $("[name^=productOptions]").blur(function() {
+            calc_price_to_pay();
+        });
+    }
 });
 
 function calc_price_to_pay() {
+    var action = $('form.add_to_basket').attr('action');
     var total = 0;
+    var ptp = parseFloat($('#ptp').text());
+    var fbp = parseFloat($('#fbp').text());
+    var ptp_original = ptp;
+    var fbp_original = fbp;
+    var parts = action.split("?");
+    
+    if (parts.length > 1) {
+        action += "&";
+    } else {
+        action += "?";
+    }
+    action += '_g=ajax_price_format&price=';
+
     $("[name^=productOptions]").each(function () {
         if($(this).is('input:radio') && $(this).is(':checked')) {
             total += parseFloat($(this).attr("data-price"));
@@ -257,7 +274,26 @@ function calc_price_to_pay() {
             total += parseFloat($(this).attr("data-price"));
         }
     });
-    total += parseFloat($('#base_price').text());
+    ptp += total;
+    if(ptp_original!==ptp) {
+        $.ajax({
+            url: action + ptp,
+            complete: function(returned) {
+                $('#ptp_target').html(returned.responseText);
+            }
+        });
+    }
+    if($('#fbp_target').length > 0) {
+        fbp += total;
+        if(fbp!==fbp_original) {
+            $.ajax({
+                url: action + fbp,
+                complete: function(returned) {
+                    $('#fbp_target').html(returned.responseText);
+                }
+            });
+        } 
+    }
 }
 
 function add_to_basket(form) {
