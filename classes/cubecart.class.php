@@ -426,8 +426,16 @@ class Cubecart {
 			if (empty($_POST['description'])) {
 				$_POST['description'] = $GLOBALS['language']->account['billing_address'];
 			}
+			$required_fields = array('first_name','last_name','line1','town','country','state','postcode');
+			$empties = false;
+			foreach($_POST as $key => $value) {
+				if(in_array($key, $required_fields) && empty($value)) {
+					$empties = true;
+					break;
+				}
+			}
 			// Update address data
-			if ($GLOBALS['user']->saveAddress($_POST)) {
+			if (!$empties && $GLOBALS['user']->saveAddress($_POST)) {
 				$message = ($_POST['address_id']) ? $GLOBALS['language']->account['notify_address_updated'] : $GLOBALS['language']->account['notify_address_added'];
 				$GLOBALS['gui']->setNotify($message);
 				httpredir('?_a='.$_a);

@@ -30,7 +30,7 @@
     <string name="error_address_billing" introduced="5.0.0"><![CDATA[A billing address is required before you can proceed.]]></string>
     <string name="error_address_delete" introduced="5.0.0"><![CDATA[Failed to delete address.]]></string>
     <string name="error_address_not_found" introduced="5.0.0"><![CDATA[The address could not be found.]]></string>
-    <string name="error_address_updated" introduced="5.0.0"><![CDATA[Failed to update address.]]></string>
+    <string name="error_address_updated" introduced="5.0.0"><![CDATA[Failed to update address. Please make sure all required fields are completed.]]></string>
     <string name="error_details_updated" introduced="5.0.0"><![CDATA[Your details have not been updated.]]></string>
     <string name="error_details_wrong" introduced="5.0.0"><![CDATA[Incorrect details, please try again.]]></string>
     <string name="error_email_in_use" introduced="5.0.0"><![CDATA[That email address is already being used.]]></string>
