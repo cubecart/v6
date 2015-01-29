@@ -2398,26 +2398,24 @@ class Cubecart {
 				}
 			}
 			if ($change_pass) {
-				$change_pass = $updated = $GLOBALS['user']->changePassword();
+				if($change_pass = $GLOBALS['user']->changePassword()) {
+					$GLOBALS['gui']->setNotify($GLOBALS['language']->account['password_updated']);
+				}
 			}
 		}
 
-		if (isset($_POST['update']) && $GLOBALS['user']->update()) {
-			$updated = true;
-		} else if (isset($_POST['update']) && !$change_pass) {
+		if (isset($_POST['update'])) {
+			if($updated = $GLOBALS['user']->update()) {
+				$GLOBALS['gui']->setNotify($GLOBALS['language']->account['notify_details_updated']);
+			} elseif(!$change_pass) {
 				$GLOBALS['gui']->setError($GLOBALS['language']->account['error_details_updated']);
 			}
+		}
+			
+		if ($updated || $change_pass || isset($_POST['update'])) {	
+			httpredir('?_a=profile');
+		}
 
-		if ($updated) {
-			$GLOBALS['gui']->setNotify($GLOBALS['language']->account['notify_details_updated']);
-			httpredir('?_a=account');
-		} else if (isset($_POST['update'])) {
-				httpredir('?_a=profile');
-			}
-
-		/*if (!filter_var($this->_user_data['email'], FILTER_VALIDATE_EMAIL)){
-			 unset($this->_user_data['email']);
-		}*/
 		$customer_data = $GLOBALS['user']->get();
 		$GLOBALS['smarty']->assign('USER', $customer_data);
 		if (!empty($customer_data['password'])) {

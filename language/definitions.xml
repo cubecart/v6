@@ -15,6 +15,7 @@
 -->
 <definitions version="1.0">
   <group name="account">
+    <string name="password_updated" introduced="6.0.0"><![CDATA[Your password has been updated.]]></string>
   	<string name="return_register_form" introduced="6.0.0"><![CDATA[Need to register?]]></string>
     <string name="already_registered" introduced="5.0.0"><![CDATA[Already registered?]]></string>
     <string name="contact_details" introduced="5.0.0"><![CDATA[Contact Details]]></string>
@@ -64,7 +65,7 @@
     <string name="notify_address_added" introduced="5.0.0"><![CDATA[Address has been saved.]]></string>
     <string name="notify_address_delete" introduced="5.0.0"><![CDATA[Address has been deleted.]]></string>
     <string name="notify_address_updated" introduced="5.0.0"><![CDATA[Address has been updated and new shipping options may be available. Click &quot;Checkout&quot; to proceed.]]></string>
-    <string name="notify_details_updated" introduced="5.0.0"><![CDATA[Your details have been updated.]]></string>
+    <string name="notify_details_updated" introduced="5.0.0"><![CDATA[Your profile has been updated.]]></string>
     <string name="notify_logged_out" introduced="5.0.0"><![CDATA[You have been logged out successfully.]]></string>
     <string name="notify_password_recovery" introduced="5.0.0"><![CDATA[Password recovery email has been sent.]]></string>
     <string name="notify_password_recovery_success" introduced="5.0.0"><![CDATA[Thank you. Your password has been updated.]]></string>

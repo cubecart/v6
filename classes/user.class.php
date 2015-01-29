@@ -143,8 +143,6 @@ class User {
 	}
 
 	public function __destruct() {
-		//Update the db
-		$this->_update();
 	}
 
 	/**
@@ -804,7 +802,7 @@ class User {
 				}
 			}
 			if ($this->_changed) {
-				return true;
+				return $this->_update();
 			}
 		} else if (isset($_POST['update'])) {
 				$remove = array_diff_key($_POST, $this->_user_data);
@@ -824,10 +822,9 @@ class User {
 				if (!empty($diff)) {
 					$this->_user_data = array_merge($this->_user_data, $update);
 					$this->_changed = true;
-					return true;
+					return $this->_update();
 				}
 			}
-
 		return false;
 	}
 
@@ -866,9 +863,6 @@ class User {
 	 * Update db
 	 */
 	private function _update() {
-		//Only run if data changed
-		if ($this->_changed) {
-			Database::getInstance()->update('CubeCart_customer', $this->_user_data, array('customer_id' => $this->_user_data['customer_id']), true);
-		}
+		return Database::getInstance()->update('CubeCart_customer', $this->_user_data, array('customer_id' => $this->_user_data['customer_id']), true);
 	}
 }
