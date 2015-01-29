@@ -263,7 +263,7 @@ function price_inc_options() {
     } else {
         action += "?";
     }
-    action += '_g=ajax_price_format&price=';
+    action += '_g=ajax_price_format&price[0]=';
 
     $("[name^=productOptions]").each(function () {
         if($(this).is('input:radio') && $(this).is(':checked')) {
@@ -276,21 +276,24 @@ function price_inc_options() {
     });
     ptp += total;
 
-    $.ajax({
-        url: action + ptp,
-        cache: true,
-        complete: function(returned) {
-            $('#ptp').html(returned.responseText);
-        }
-    });
-    
     if($('#fbp').length > 0) {
         fbp += total;
         $.ajax({
-            url: action + fbp,
+            url: action + ptp + '&price[1]='+ fbp,
             cache: true,
             complete: function(returned) {
-                $('#fbp').html(returned.responseText);
+                var prices = $.parseJSON(returned.responseText);
+                $('#ptp').html(prices[0]);
+                $('#fbp').html(prices[1]);
+            }
+        });
+    } else {
+        $.ajax({
+            url: action + ptp,
+            cache: true,
+            complete: function(returned) {
+                var prices = $.parseJSON(returned.responseText);
+                $('#ptp').html(prices[0]);
             }
         });
     }

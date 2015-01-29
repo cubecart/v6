@@ -200,7 +200,15 @@ class Cubecart {
 			case 'ajax_price_format':
 				$GLOBALS['debug']->supress();
 				if(is_numeric($_GET['price'])) {
-					echo $GLOBALS['tax']->priceFormat($_GET['price']);
+					echo json_encode($GLOBALS['tax']->priceFormat($_GET['price']));
+				} else if(is_array($_GET['price'])) {
+					$prices = array();
+					foreach($_GET['price'] as $price) {
+						if(is_numeric($price)) {
+							$prices[] = $GLOBALS['tax']->priceFormat($price);
+						}
+					}
+					die(json_encode($prices));
 				}
 				exit;
 			break;
