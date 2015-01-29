@@ -79,7 +79,9 @@ class Cache extends Cache_Controler {
 		$files = glob($this->_cache_path.$this->_prefix.$prefix.$this->_suffix, GLOB_NOSORT);
 		if (is_array($files)) {
 			foreach ($files as $file) {
-				unlink($file);
+				if(file_exists($file)) {
+					@unlink($file);
+				}
 			}
 		}
 		clearstatcache();

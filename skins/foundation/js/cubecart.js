@@ -275,9 +275,10 @@ function price_inc_options() {
         }
     });
     ptp += total;
-    
+
     $.ajax({
         url: action + ptp,
+        cache: true,
         complete: function(returned) {
             $('#ptp_target').html(returned.responseText);
         }
@@ -287,6 +288,7 @@ function price_inc_options() {
         fbp += total;
         $.ajax({
             url: action + fbp,
+            cache: true,
             complete: function(returned) {
                 $('#fbp_target').html(returned.responseText);
             }
