@@ -1201,7 +1201,6 @@
     <string name="notify_snippet_not_added" introduced="5.2.0"><![CDATA[Failed to add code snippet. Please check the unique name is not already in use.]]></string>
     <string name="title_import_code_snippets" introduced="5.2.0"><![CDATA[Import Code Snippets]]></string>
     <string name="browse_for_file" introduced="5.2.0"><![CDATA[Browse for XML file&hellip;]]></string>
-    <string name="php_tag_replace" introduced="5.2.0"><![CDATA[Please replace open PHP tag with {php} and close PHP tag with {/php} to prevent server security settings blocking your code submission.]]></string>
     <string name="priority" introduced="5.2.0"><![CDATA[Execution Order]]></string>
     <string name="notify_snippet_imported" introduced="5.2.0"><![CDATA[Code imported successfully]]></string>
     <string name="notify_snippet_import_failed" introduced="5.2.0"><![CDATA[Failed to import code]]></string>

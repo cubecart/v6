@@ -79,8 +79,8 @@
 		</span>
 	  </div>
 	  <div>
-		<label for="php_code">{$LANG.hooks.php_code}*</label>
-		  <span><textarea name="snippet[php_code]" id="php_code" class="required" rows="12" cols="50">{$SNIPPET.php_code}</textarea></span>
+		<label for="php_code">{$LANG.hooks.php_code}</label>
+		  <span><textarea id="php_code" class="required" rows="12" cols="50">{$SNIPPET.php_code}</textarea></span>
 	  </div>
 	  <div>
 		<label for="version">{$LANG.hooks.version}</label>
@@ -95,8 +95,8 @@
 		</span>
 	  </div>
 	  <input type="hidden" name="snippet[snippet_id]" id="snippet_id" class="textbox" value="{$SNIPPET.snippet_id}">
+	  <input type="hidden" name="snippet[php_code]" id="php_code_base64" class="textbox" value="{$SNIPPET.php_code_base64}">
 	</fieldset>
-	* {$LANG.hooks.php_tag_replace}
 	{/if}
   </div>
   
