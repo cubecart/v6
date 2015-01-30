@@ -95,6 +95,16 @@ class Cache_Controler {
 	}
 
 	/**
+	 * Enable/Disable cache
+	 *
+	 * @param bool $enable
+	 */
+	public function enable($enable = true) {
+		$this->status = $enable;
+		$this->status();
+	}
+
+	/**
 	 * Get the current cache type
 	 *
 	 * @return string Cache system
@@ -114,11 +124,6 @@ class Cache_Controler {
 			$this->clear();
 		}
 		return $this->status;
-	}
-
-	public function setStatus($status = false) {
-		$this->status = $status;
-		$this->status();
 	}
 
 	/**
