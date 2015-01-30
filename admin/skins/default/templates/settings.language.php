@@ -14,11 +14,14 @@
    <div id="lang_list" class="tab_content">
       <h3>{$LANG.translate.title_languages}</h3>
       <table>
+         <thead>
          <tr>
             <th>{$LANG.common.status}</th>
             <th colspan="2">{$LANG.common.language}</th>
             <th>{$LANG.form.action}</th>
          </tr>
+         </thead>
+         <tbody>
          <tr>
             <td></td>
             <td><img src="language/flags/globe.png" alt="{$LANG.translate.master_language}"></td>
@@ -37,6 +40,7 @@
             </td>
          </tr>
          {/foreach}
+         </tbody>
          </table>
    </div>
    <div id="lang_create" class="tab_content">
