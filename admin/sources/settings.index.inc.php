@@ -289,11 +289,10 @@ for( $i = 1; $i <= 6; ++$i ) {
 $select_options = array(
 	'admin_notify_status'	=> $a_n_s,
 	'basket_jump_to'  => null,
-	'cache'					=> array($lang['common']['disabled'], $lang['common']['enabled']),
+	'cache'					=> array('1' => $lang['common']['enabled'], '0' => $lang['common']['disabled']),
 	'catalogue_expand_tree' => null,
 	'skin_change'   => array($lang['common']['no'], $lang['settings']['all_skin_select'], $lang['settings']['admin_only_skin_select']),
 	'debug'     => array($lang['common']['disabled'], $lang['common']['enabled']),
-	#'email_disable_alert' => null,
 	'ssl_force'    => array($lang['common']['some_pages'], $lang['common']['all_pages'].' ('.$lang['common']['recommended'].')'),
 	'catalogue_hide_prices' => null,
 	'email_method'			=> array('mail' => $lang['settings']['email_method_mail'], 'smtp' => $lang['settings']['email_method_smtp'], 'smtp_ssl' => $lang['settings']['email_method_smtp_ssl']),
@@ -344,6 +343,7 @@ if (isset($select_options)) {
 			$options = array($lang['common']['no'], $lang['common']['yes']);
 		}
 		foreach ($options as $value => $title) {
+			
 			$selected = ($GLOBALS['config']->has('config', $field) && $GLOBALS['config']->get('config', $field) == $value) ? ' selected="selected"' : '';
 			$smarty_data['options'][] = array('value' => $value, 'title' => $title, 'selected' => $selected);
 		}

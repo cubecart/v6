@@ -114,7 +114,7 @@ $default_config_settings = array(
   'email_smtp_user' => '',
   'enable_ssl' => false,
   'google_analytics' => '',
-  'cache'               => true,
+  'cache' => true,
   'basket_allow_non_invoice_address' => true,
   'basket_jump_to' => false,
   'basket_order_expire' => '',
@@ -338,8 +338,7 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
         'taxCountry',
         'taxCounty',
         'uploadSize',
-        'noRelatedProds',
-        'cache'
+        'noRelatedProds'
       );
       // Rename existing keys
       $remapped  = array(

@@ -118,8 +118,8 @@ class Config {
 			if (empty($element)) {
 				return $this->_config[$config_name];
 			} else if (isset($this->_config[$config_name][$element])) {
-					return $this->_config[$config_name][$element];
-				}
+				return $this->_config[$config_name][$element];
+			}
 
 			return false;
 		}
