@@ -179,11 +179,11 @@ class Database extends Database_Contoller {
 			if ($cache) {
 				//Try getting the SQL cache
 				$this->_result = $this->_getCached($this->_query);
-				if ($this->_result) {
+				if($this->_result=='empty') {
+					return false;
+				} elseif($this->_result) {
 					$this->_found_rows = sizeof($this->_result);
 					return true;
-				} elseif($this->_result=='empty') {
-					return false;
 				}
 			}
 
