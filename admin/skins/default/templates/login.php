@@ -45,12 +45,6 @@
 	  </div>
 	{else}
 	  <h1>{if $SSL.state=='mixed'}<span id="login_ssl_switch"><a href="{$SSL.url}"><img src="{$SSL.icon}"></a></span>{elseif $SSL.state=='forced'}<span id="login_ssl_switch"><img src="{$SSL.icon}"></span>{/if}{$LANG.account.title_login_acp}</h1>
-	  {if $TRIAL_LIMITS} 
-  		<p>
-  		<strong style="display: inline-block; width: 55px;">Version:</strong> CubeCart Lite (<a href="{$TRIAL_LIMITS.url}">Upgrade</a>)<br>
-  		<strong style="display: inline-block; width: 55px;">Limits:</strong> {$TRIAL_LIMITS.orders} orders / {$TRIAL_LIMITS.customers} customers / {$TRIAL_LIMITS.administrator} Administrator<br>
-  		</p>
-  	  {/if}
 	  <div><span><input type="text" name="username" id="username" class="textbox required" value="{$USERNAME}"></span><label for="username">{$LANG.account.username}</label>:</div>
 	  <div><span><input type="password" name="password" id="password" class="textbox required" value="{$PASSWORD}"></span><label for="password">{$LANG.account.password}</label>:</div>
 	  <div id="login-box-foot">
