@@ -175,15 +175,10 @@
          {if $SKINS_MOBILE}
          <div><label for="skin_folder_mobile">{$LANG.settings.skins_mobile_default_front}</label><span>
             <input type="hidden" class="default-style-mobile" value="{$CONFIG.skin_style_mobile}">
-            <select name="config[skin_folder_mobile]" id="skin_folder_mobile" class="textbox select-skin-mobile no-drop"{$MOBILE_DISABLED}>
+            <select name="config[skin_folder_mobile]" id="skin_folder_mobile" class="textbox select-skin-mobile no-drop">
             {foreach from=$SKINS_MOBILE item=skin}<option value="{$skin.name}" title="{$skin.description}"{$skin.selected}>{$skin.display}</option>{/foreach}
             </select>
             <select name="config[skin_style_mobile]" id="skin_style_mobile" class="textbox select-style-mobile"{$MOBILE_DISABLED}></select> 
-            {if $MOBILE_DISABLED}
-            (<a href="{$TRIAL_LIMITS.url}">Upgrade</a>)
-            <input type="hidden" name="skin_style_mobile" value="mobile">
-            <input type="hidden" name="skin_folder_mobile" value="blue">
-            {/if}
             </span>
          </div>
          <div><label for="disable_mobile_skin">{$LANG.settings.disable_mobile_skin}</label><span><input name="config[disable_mobile_skin]" id="disable_mobile_skin" type="hidden" class="toggle" value="{$CONFIG.disable_mobile_skin}"></span></div>
