@@ -98,7 +98,7 @@
             <h2>5. {$LANG.navigation.nav_plugins}</h2>
             <p>{$LANG.dashboard.tour_5}</p>
          </li>
-         <li data-button="{$LANG.common.close}">
+         <li class="joyride_tour_end" data-button="{$LANG.common.close}">
             <h2>{$LANG.common.thats_it}</h2>
             {$LANG.dashboard.tour_end}
          </li>
