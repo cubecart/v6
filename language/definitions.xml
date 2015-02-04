@@ -1767,7 +1767,8 @@
     <string name="proxy_pass" introduced="5.0.0"><![CDATA[Proxy Password]]></string>
     <string name="proxy_port" introduced="5.0.0"><![CDATA[Proxy Port]]></string>
     <string name="proxy_user" introduced="5.0.0"><![CDATA[Proxy Username]]></string>
-    <string name="recaptcha_enable" introduced="5.0.0"><![CDATA[Enable <a href="https://www.google.com/recaptcha/intro/index.html">reCAPTCHA</a>]]></string>
+    <string name="recaptcha_enable" introduced="5.0.0"><![CDATA[Enable <a href="https://www.google.com/recaptcha/intro/index.html" target="_blank">reCAPTCHA</a>]]></string>
+    <string name="new_recaptcha_note" introduced="6.0.0"><![CDATA[If &quot;New reCAPTCHA&quot; is selected you must obtain a Site Key and Secret Key <a href="https://www.google.com/recaptcha/admin" target="_blank">from Google</a> for it to work.]]></string>
     <string name="recaptcha_public_key" introduced="6.0.0"><![CDATA[reCAPTCHA Site Key]]></string>
     <string name="recaptcha_secret_key" introduced="6.0.0"><![CDATA[reCAPTCHA Secret Key]]></string>
     <string name="repair" introduced="5.0.0"><![CDATA[Repair]]></string>
