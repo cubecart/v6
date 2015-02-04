@@ -585,6 +585,23 @@ class Session {
 	 */
 	private function _start() {
 
+		$save_path = session_save_path();
+		if(!file_exists($save_path) || !is_writeable($save_path)) {	
+			if(is_writeable(CC_INCLUDES_DIR.'/extra')) {
+				session_save_path(CC_INCLUDES_DIR.'/extra');
+			} else {
+				die("Error: Failed to create PHP session. It may be possible to fix this by following these steps:
+			<ol>
+				<li>Create a folder in the root directory of your store called &quot;sessions&quot;</li>
+				<li>Create a file in the root folder of your store called &quot;ini-custom.inc.php&quot;</li>
+				<li>Add the following code to this file and save the changes.
+				<pre>".htmlspecialchars("<?php
+session_save_path(CC_ROOT_DIR.'/sessions');")."</pre>
+				</li>
+			</ol>Once that has been done refresh this page.");
+			}
+			
+		}
 		session_cache_limiter('none');
 		session_start();
 		
@@ -592,6 +609,7 @@ class Session {
 		if($this->_http_user_agent()!=='IEX') {
 			$this->set_cookie(session_name(),session_id(),time()+$this->_session_timeout);
 		}
+		
 	}
 
 	/**
