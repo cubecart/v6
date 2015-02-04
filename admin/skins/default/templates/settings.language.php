@@ -75,7 +75,7 @@
       <input type="hidden" name="previous-tab" id="previous-tab" value="">
       <input type="submit" name="save" value="{$LANG.common.save}">
    </div>
-   {else}
+   {elseif !$DISPLAY_EDITOR}
    <div id="lang_list" class="tab_content">
    <h3>{$LANG.translate.title_languages}</h3>
    <p>{$LANG.translate.error_no_languages}</p>
