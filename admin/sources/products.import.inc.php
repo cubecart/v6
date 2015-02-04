@@ -70,8 +70,10 @@ if (isset($_POST['process'])) {
 				}
 				foreach ($data as $offset => $value) {
 					$field_name	= ($polymorph) ? $map[$headers[$offset]] : $map[$offset];
-					## Handle manufacturers
-					if ($field_name == 'manufacturer' && !empty($value) && !is_numeric($value)) {
+					
+					if(in_array($field_name, array('price','sale_price','cost_price'))) {
+						$value = preg_replace("/[^0-9\.]/", "", $value);
+					} else if ($field_name == 'manufacturer' && !empty($value) && !is_numeric($value)) {
 						if (($manufacturer = $GLOBALS['db']->select('CubeCart_manufacturers', false, array('name' => $value), false, 1)) !== false) {
 							$value	= $manufacturer[0]['id'];
 						} else {
