@@ -70,7 +70,7 @@
                </td>
                <td align="center">
                   {if !empty($product.image_path_tiny)}
-                  <a href="{$product.image_path_large}" class="colorbox" title="{$product.name}" target="_blank"><img src="{$product.image_path_tiny}" alt="{$product.name}"></a>
+                  <a href="{$product.image_path_large}" class="colorbox" title="{$product.name}" target="_blank"><img src="{$product.image_path_tiny}" style="max-width: 30px; max-height: 30px" alt="{$product.name}"></a>
                   {elseif !empty($product.image_path_large)}
                   <a href="{$product.image_path_large}" class="colorbox" title="{$product.name}" target="_blank"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/image.png" alt="{$product.name}"></a>
                   {/if}
