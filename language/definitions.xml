@@ -1674,8 +1674,8 @@
     <string name="error_archive_restore" introduced="5.0.0"><![CDATA[Please select an archive to restore from.]]></string>
     <string name="error_category_create" introduced="5.0.0"><![CDATA[Failed to create category.]]></string>
     <string name="error_category_delete" introduced="5.0.0"><![CDATA[Failed to delete category.]]></string>
-    <string name="error_category_delete_cats" introduced="5.0.0"><![CDATA[Failed to delete category, as it contains 1 or more subcategories.]]></string>
-    <string name="error_category_delete_prod" introduced="5.0.0"><![CDATA[Failed to delete category, as it contains 1 or more products.]]></string>
+    <string name="error_category_delete_cats" introduced="5.0.0"><![CDATA[Failed to delete category, as it contains one or more subcategories.]]></string>
+    <string name="error_category_delete_prod" introduced="5.0.0"><![CDATA[Failed to delete category, as it contains one or more products.]]></string>
     <string name="error_category_status" introduced="5.0.0"><![CDATA[No changes have been made to the categories status or display order.]]></string>
     <string name="error_category_update" introduced="5.0.0"><![CDATA[Failed to update category.]]></string>
     <string name="error_currency_add" introduced="5.0.0"><![CDATA[Failed to add currency.]]></string>

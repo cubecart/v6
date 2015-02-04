@@ -1,0 +1,1 @@
+ALTER TABLE `CubeCart_admin_users` ADD PRIMARY KEY(`admin_id`); #EOQ

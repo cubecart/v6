@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_admin_users` (
 	`dashboard_notes` TEXT NULL,
 	`order_notify` TINYINT(1) UNSIGNED DEFAULT '0',
 	`tour_shown` ENUM('0','1') NOT NULL DEFAULT '0',
-	KEY `admin_id` (`admin_id`)
+	PRIMARY KEY `admin_id` (`admin_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_alt_shipping` (
