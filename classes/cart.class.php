@@ -89,6 +89,7 @@ class Cart {
 	protected static $_instance;
 
 	final protected function __construct() {
+		foreach ($GLOBALS['hooks']->load('class.cart.construct.pre') as $hook) include $hook;
 		if ($GLOBALS['user']->is()) {
 			if (($currency = $GLOBALS['user']->get('currency')) !== false) {
 				if ($GLOBALS['config']->get('config', 'default_currency') != $currency) {
