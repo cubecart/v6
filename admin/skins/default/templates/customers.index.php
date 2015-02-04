@@ -118,6 +118,7 @@
 	<div id="general" class="tab_content">
 	<h3>{$ADD_EDIT_CUSTOMER}</h3>
 	  <fieldset><legend>{$LANG.common.details}</legend>
+		<div><label for="customer_status">{$LANG.common.status}</label><span><input type="hidden" name="customer[status]" id="customer_status" value="{$CUSTOMER.status}" class="toggle"></span></div>
 		<div><label for="cust-title">{$LANG.user.title}</label><span><input type="text" name="customer[title]" id="cust-title" class="textbox capitalize" value="{$CUSTOMER.title}"></span></div>
 		<div><label for="cust-firstname">{$LANG.user.name_first}</label><span><input type="text" name="customer[first_name]" id="cust-firstname" value="{$CUSTOMER.first_name}" class="textbox capitalize"></span></div>
 		<div><label for="cust-lastname">{$LANG.user.name_last}</label><span><input type="text" name="customer[last_name]" id="cust-lastname" value="{$CUSTOMER.last_name}" class="textbox capitalize"></span></div>
