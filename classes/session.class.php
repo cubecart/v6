@@ -584,39 +584,14 @@ class Session {
 	 * Start session
 	 */
 	private function _start() {
-		/* Defunct for security reasons
-		$session_name = session_name();
-		// Only allow session interchange for SSL and when SSL domains don't match!
- 		$config = $GLOBALS['config']->get('config');
- 		if($config['ssl']==1) {
- 			$ssl_url 		= str_replace('https','',$config['ssl_url']);
- 			$standard_url 	= str_replace('http','',$config['standard_url']);
- 			if ($ssl_url!==$standard_url && isset($_GET[$session_name]) && !empty($_GET[$session_name])) {
- 				session_id($_GET[$session_name]);
- 			}
- 		}
- 		*/
+
 		session_cache_limiter('none');
 		session_start();
-		
-		/* Regerate session every 5 seconds (This causes random admin logout)
-		$session_time = $this->get('session_last');
-		if((time() - $session_time) > 5) {
-			$old_sessionid = $this->getId();
-			session_regenerate_id(true);
-			
-			//Use the instance because the global might be gone already
-			Database::getInstance()->update('CubeCart_sessions', array('session_id'	=> session_id()), array('session_id' => $old_sessionid), false);
-		}
-		*/
 		
 		// Increase session length on each page load. NOT IE however as we all know it is a wingy PITA
 		if($this->_http_user_agent()!=='IEX') {
 			$this->set_cookie(session_name(),session_id(),time()+$this->_session_timeout);
 		}
-
-		//Stupid IE6
-		header('P3P: CP="NOI ADM DEV PSAi COM NAV OUR OTRo STP IND DEM"');
 	}
 
 	/**
