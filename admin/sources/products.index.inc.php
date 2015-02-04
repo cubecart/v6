@@ -102,7 +102,18 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 		}
 
 	} else {
+		
 		// Add product
+		if (!empty($record['digital_path'])) {
+			$record['digital'] = 1;
+	    } elseif (isset($_POST['download'])) {
+	    	foreach ($_POST['download'] as $key => $enabled) {
+				if ($enabled) {
+					$record['digital'] = $key; break;
+				}
+			}
+		}
+
 		$date_added = date('Y-m-d H:i:s', time());
 		$record['date_added'] = $date_added;
 		$record['updated'] = $date_added;
