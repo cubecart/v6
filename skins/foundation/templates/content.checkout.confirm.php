@@ -113,6 +113,11 @@
    <div class="small-12 large-8 columns"><span id="error_terms_agree"><input type="checkbox" id="reg_terms" name="terms_agree" value="1" {$TERMS_CONDITIONS_CHECKED} rel="error_terms_agree"><label for="reg_terms">{$LANG.account.register_terms_agree_link|replace:'%s':{$TERMS_CONDITIONS}}</label></span></div>
 </div>
 {/if}
+<div class="row">
+   <div class="small-12 large-8 columns">
+      <input type="checkbox" id="mailing_list" name="mailing_list" value="1" {$MAILING_LIST_SUBSCRIBE}><label for="mailing_list">{$LANG.account.register_mailing}</label>
+   </div>
+</div>
 {if $ALLOW_DELIVERY_ADDRESS}
 <div class="row">
    <div class="small-12 large-8 columns"><input type="checkbox" name="delivery_is_billing" id="delivery_is_billing" {$DELIVERY_CHECKED}><label for="delivery_is_billing">{$LANG.address.delivery_is_billing}</label></div>

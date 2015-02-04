@@ -19,7 +19,7 @@
   	<string name="return_register_form" introduced="6.0.0"><![CDATA[Need to register?]]></string>
     <string name="already_registered" introduced="5.0.0"><![CDATA[Already registered?]]></string>
     <string name="contact_details" introduced="5.0.0"><![CDATA[Contact Details]]></string>
-    <string name="create_account" introduced="5.0.0"><![CDATA[I would like to create an account]]></string>
+    <string name="create_account" introduced="5.0.0"><![CDATA[I would like to create an account.]]></string>
     <string name="download_count" introduced="5.0.0"><![CDATA[Downloads]]></string>
     <string name="download_deleted" introduced="5.0.0"><![CDATA[This download is no longer available.]]></string>
     <string name="download_expired" introduced="5.0.0"><![CDATA[Expired]]></string>
@@ -77,13 +77,13 @@
     <string name="recover_password_text" introduced="5.0.0"><![CDATA[If you have forgotten your password, put your email in the box below and we'll send instructions to regain access]]></string>
     <string name="register" introduced="5.0.0"><![CDATA[Register]]></string>
     <string name="register_welcome" introduced="6.0.0"><![CDATA[New here? Please click the button below to register.]]></string>
-    <string name="register_mailing" introduced="5.0.0"><![CDATA[Check this box to subscribe to our mailing list]]></string>
+    <string name="register_mailing" introduced="5.0.0"><![CDATA[Check this box to subscribe to our mailing list.]]></string>
     <string name="register_text" introduced="6.0.0"><![CDATA[Please complete the fields below to register.]]></string>
     <string name="login_here" introduced="6.0.0"><![CDATA[Login here]]></string>
     <string name="want_to_signup" introduced="6.0.0"><![CDATA[Want to signup?]]></string>
     <string name="register_here" introduced="6.0.0"><![CDATA[Register here]]></string>
-    <string name="register_terms_agree" introduced="5.0.0"><![CDATA[I agree to the Terms &amp; Conditions]]></string>
-    <string name="register_terms_agree_link" introduced="6.0.0"><![CDATA[I agree to the <a href="%s">Terms &amp; Conditions</a>]]></string>
+    <string name="register_terms_agree" introduced="5.0.0"><![CDATA[I agree to the Terms &amp; Conditions.]]></string>
+    <string name="register_terms_agree_link" introduced="6.0.0"><![CDATA[I agree to the <a href="%s">Terms &amp; Conditions</a>.]]></string>
     <string name="remember_me" introduced="5.0.0"><![CDATA[Remember Me?]]></string>
     <string name="share" introduced="5.0.0"><![CDATA[Share]]></string>
     <string name="title_acp" introduced="5.0.0"><![CDATA[Admin Control Panel]]></string>

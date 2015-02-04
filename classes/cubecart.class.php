@@ -1055,8 +1055,14 @@ class Cubecart {
 			if (isset($_POST['terms_agree']) && $_POST['terms_agree']==1) {
 				$this->_basket['terms_agree'] = true;
 			}
+			if(isset($_POST['mailing_list']) && $_POST['mailing_list']==1) {
+				$this->_basket['mailing_list'] = true;
+				$newsletter = Newsletter::getInstance();
+				$newsletter->subscribe($this->_basket['customer']['email']);
+			}
 			$GLOBALS['smarty']->assign('REGISTER_CHECKED', (isset($this->_basket['register']) && $this->_basket['register']) ? 'checked="checked"' : '');
 			$GLOBALS['smarty']->assign('TERMS_CONDITIONS_CHECKED', (isset($this->_basket['terms_agree']) && $this->_basket['terms_agree']) ? 'checked="checked"' : '');
+			$GLOBALS['smarty']->assign('MAILING_LIST_SUBSCRIBE', (isset($this->_basket['terms_agree']) && $this->_basket['terms_agree']) ? 'checked="checked"' : '');
 		} else {
 			// Registered users - Display predefined addresses, if any exist
 			$this->_displayAddresses();
