@@ -112,10 +112,10 @@
   {/if}
 </div>
 
-{if isset($PRODUCT_SALES)}
+
 <div id="stats_prod_sales" class="tab_content">
   <h3>{$LANG.statistics.title_popular}</h3>
-  
+  {if $PRODUCT_SALES}
   <script type="text/javascript">
       {literal}
       google.load("visualization", "1", {packages:["corechart"]});
@@ -155,8 +155,10 @@
 	  {/foreach}
 	</tbody>
   </table>
+  {else}
+  <p>{$LANG.statistics.notify_sales_none}</p>
+  {/if}
 </div>
-{/if}
 
 {if isset($PRODUCT_VIEWS)}
 <div id="stats_prod_views" class="tab_content">
@@ -206,7 +208,7 @@
 {if isset($SEARCH_TERMS)}
 <div id="stats_search" class="tab_content">
   <h3>{$LANG.statistics.title_search}</h3>
-  
+  {if $SEARCH_TERMS}
   <script type="text/javascript">
       {literal}
       google.load("visualization", "1", {packages:["corechart"]});
@@ -245,12 +247,16 @@
 	  {/foreach}
 	<tbody>
   </table>
+  {else}
+  {$LANG.statistics.notify_searches_none}
+  {/if}
 </div>
 {/if}
 
 {if isset($BEST_CUSTOMERS)}
   <div id="stats_best_customers" class="tab_content">
   <h3>{$LANG.statistics.title_customers_best}</h3>
+  {if $BEST_CUSTOMERS}
   <script type="text/javascript">
       {literal}
       google.load("visualization", "1", {packages:["corechart"]});
@@ -289,6 +295,9 @@
 	  {/foreach}
 	<tbody>
   </table>
+  {else}
+  {$LANG.statistics.notify_customers_none}
+  {/if}
   </div>
   {/if}
 
