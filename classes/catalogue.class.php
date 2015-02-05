@@ -1712,7 +1712,6 @@ class Catalogue {
 			$GLOBALS['db']->update('CubeCart_inventory', array('popularity' => '+1'), array('product_id' => (int)$product_id), false);
 			return true;
 		}
-
 		return false;
 	}
 }
