@@ -36,7 +36,7 @@ if ($glob['installed'] && file_exists(CC_ROOT_DIR.'/setup')) {
 	if($_COOKIE['delete_setup']) {
 		recursiveDelete(CC_ROOT_DIR.'/setup');
 		unlink(CC_ROOT_DIR.'/setup');
-		setcookie('delete_setup');
+		setcookie('delete_setup', '', time()-3600);
 	}
 
 	$history = $GLOBALS['db']->misc('SELECT `version` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_history` ORDER BY `time` DESC LIMIT 1');
