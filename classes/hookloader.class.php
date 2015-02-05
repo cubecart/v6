@@ -106,12 +106,11 @@ class HookLoader {
 		return self::$_instance;
 	}
 
-	//=====[ Public ]====================================================================================================
-
 	/**
 	 * Delete code snippet include file
 	 *
-	 * @param bool $enable
+	 * @param int/string $unique_id
+	 * @return bool
 	 */
 	public function delete_snippet_file($unique_id = '') {
 
@@ -141,113 +140,11 @@ class HookLoader {
 	}
 
 	/**
-	 * Load hook
-	 *
-	 * @param string $trigger
-	 * @param unknown_type $gui
-	 */
-	public function load($trigger) {
-		if ($this->_enabled && !empty($trigger) && !empty($this->_hook_list)) {
-			// Find all registered hooks
-			if (is_array($this->_hook_list) && isset($this->_hook_list[$trigger]) && !empty($this->_hook_list[$trigger])) {
-				// Load hooks for plugins
-				foreach ($this->_hook_list[$trigger] as $hook) {
-					$this->_plugin_name($hook['plugin']);
-					$this->_plugin_language($hook['plugin']);
-					$hook['filepath'] = (!empty($hook['filepath'])) ? str_replace('/', '/', $hook['filepath']) : 'hooks/'.$trigger.'.php';
-					if (file_exists($this->_hook_dir.'/'.$hook['plugin'].'/'.$hook['filepath']) && $this->_security_check($hook['filepath'])) {
-						$include[] = $this->_hook_dir.'/'.$hook['plugin'].'/'.$hook['filepath'];
-					} else {
-						trigger_error("Error: Hook '".$hook['plugin'].'/'.$hook['filepath']."' was not found", E_USER_NOTICE);
-					}
-				}
-
-			}
-		}
-
-		// Load hook for code snippets
-		if ($this->_snippet_list) {
-			foreach ($this->_snippet_list as $snippet) {
-				if ($snippet['hook_trigger'] == $trigger) {
-					$file_name = $this->_snippet_dir.'/'.$this->_snippet_prefix.md5($snippet['unique_id']).'.php';
-					if (file_exists($file_name)) {
-						$include[] = $file_name;
-					} else {
-						if (file_put_contents($file_name, $snippet['php_code'])) {
-							$include[] = $file_name;
-						} else {
-							trigger_error("Error: Failed to write code snippet for '".$snippet['description']."'", E_USER_NOTICE);
-						}
-					}
-				}
-			}
-		}
-		return (isset($include) && is_array($include)) ? $include : array();
-	}
-
-	public function is_enabled($trigger, $plugin) {
-
-		if (!empty($trigger) && !empty($plugin)) {
-			$result = $GLOBALS['db']->select('CubeCart_hooks', array('enabled'), array('trigger' => $trigger, 'plugin' => $plugin));
-			if ($result[0]['enabled']==1) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Scan for new plugs
-	 *
-	 * @return bool
-	 */
-	public function scan_plugins() {
-		// Scan the plugins directory for config files, and adds the hooks to the database if they don't already exist
-		if (($files = glob($this->_hook_dir.'/'.'*', GLOB_ONLYDIR | GLOB_NOSORT)) !== false) {
-			foreach ($files as $file) {
-				$this->install(basename($file));
-			}
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Scan for all plugs
-	 *
-	 * @return bool
-	 */
-	public function scan_all_plugins($dir = 'plugins', $enabled = false) {
-		$plugins = false;
-		$dir = ($dir=='plugins') ? $this->_hook_dir : $dir;
-		if (($folders = glob($dir.'/'.'*', GLOB_ONLYDIR)) !== false) {
-			foreach ($folders as $folder) {
-				$basename = basename($folder);
-
-				if ($enabled) {
-					$plugin = $GLOBALS['config']->get($basename);
-					if (!$plugin['status']) continue;
-				}
-
-				$plugins[$basename] = array(
-					'plugin' => $basename,
-					'name'  => str_replace('_', ' ', $basename),
-				);
-			}
-			return $plugins;
-		}
-		return array();
-	}
-
-
-	/**
 	 * Import code snippets
 	 *
-	 * @param $_FILES array
-	 *
+	 * @param array file
 	 * @return bool
 	 */
-
 	public function import_code_snippets($file) {
 		if (file_exists($file['tmp_name'])) {
 			if ($file['size']>0) {
@@ -311,7 +208,6 @@ class HookLoader {
 	 * Install new plugin
 	 *
 	 * @param string $plugin
-	 *
 	 * @return bool
 	 */
 	public function install($plugin) {
@@ -353,10 +249,117 @@ class HookLoader {
 	}
 
 	/**
+	 * Check hook is enabled
+	 *
+	 * @param string $trigger
+	 * @param string $plugin
+	 * @return array
+	 */
+	public function is_enabled($trigger, $plugin) {
+
+		if (!empty($trigger) && !empty($plugin)) {
+			$result = $GLOBALS['db']->select('CubeCart_hooks', array('enabled'), array('trigger' => $trigger, 'plugin' => $plugin));
+			if ($result[0]['enabled']==1) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Load hook
+	 *
+	 * @param string $trigger
+	 * @return array
+	 */
+	public function load($trigger) {
+		if ($this->_enabled && !empty($trigger) && !empty($this->_hook_list)) {
+			// Find all registered hooks
+			if (is_array($this->_hook_list) && isset($this->_hook_list[$trigger]) && !empty($this->_hook_list[$trigger])) {
+				// Load hooks for plugins
+				foreach ($this->_hook_list[$trigger] as $hook) {
+					$this->_plugin_name($hook['plugin']);
+					$this->_plugin_language($hook['plugin']);
+					$hook['filepath'] = (!empty($hook['filepath'])) ? str_replace('/', '/', $hook['filepath']) : 'hooks/'.$trigger.'.php';
+					if (file_exists($this->_hook_dir.'/'.$hook['plugin'].'/'.$hook['filepath']) && $this->_security_check($hook['filepath'])) {
+						$include[] = $this->_hook_dir.'/'.$hook['plugin'].'/'.$hook['filepath'];
+					} else {
+						trigger_error("Error: Hook '".$hook['plugin'].'/'.$hook['filepath']."' was not found", E_USER_NOTICE);
+					}
+				}
+
+			}
+		}
+
+		// Load hook for code snippets
+		if ($this->_snippet_list) {
+			foreach ($this->_snippet_list as $snippet) {
+				if ($snippet['hook_trigger'] == $trigger) {
+					$file_name = $this->_snippet_dir.'/'.$this->_snippet_prefix.md5($snippet['unique_id']).'.php';
+					if (file_exists($file_name)) {
+						$include[] = $file_name;
+					} else {
+						if (file_put_contents($file_name, $snippet['php_code'])) {
+							$include[] = $file_name;
+						} else {
+							trigger_error("Error: Failed to write code snippet for '".$snippet['description']."'", E_USER_NOTICE);
+						}
+					}
+				}
+			}
+		}
+		return (isset($include) && is_array($include)) ? $include : array();
+	}
+
+	/**
+	 * Scan for all plugs
+	 *
+	 * @param string $dir
+	 * @param bool $enabled
+	 * @return array
+	 */
+	public function scan_all_plugins($dir = 'plugins', $enabled = false) {
+		$plugins = false;
+		$dir = ($dir=='plugins') ? $this->_hook_dir : $dir;
+		if (($folders = glob($dir.'/'.'*', GLOB_ONLYDIR)) !== false) {
+			foreach ($folders as $folder) {
+				$basename = basename($folder);
+
+				if ($enabled) {
+					$plugin = $GLOBALS['config']->get($basename);
+					if (!$plugin['status']) continue;
+				}
+
+				$plugins[$basename] = array(
+					'plugin' => $basename,
+					'name'  => str_replace('_', ' ', $basename),
+				);
+			}
+			return $plugins;
+		}
+		return array();
+	}
+
+	/**
+	 * Scan for new plugins and install
+	 *
+	 * @return bool
+	 */
+	public function scan_plugins() {
+		// Scan the plugins directory for config files, and adds the hooks to the database if they don't already exist
+		if (($files = glob($this->_hook_dir.'/'.'*', GLOB_ONLYDIR | GLOB_NOSORT)) !== false) {
+			foreach ($files as $file) {
+				$this->install(basename($file));
+			}
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Uninstall plugin
 	 *
 	 * @param string $plugin
-	 *
 	 * @return bool
 	 */
 	public function uninstall($plugin) {
@@ -365,15 +368,35 @@ class HookLoader {
 		}
 	}
 
+	/**
+	 * Build hook list
+	 *
+	 * @param string $trigger
+	 * @param bool $enabled_only
+	 * @return bool
+	 */
+	private function _build_code_snippet_list($trigger = null, $enabled_only = true) {
+		$where = array();
+		if (!is_null($trigger) && !empty($trigger)) {
+			$where['hook_trigger'] = $trigger;
+		}
+		if ($enabled_only) {
+			$where['enabled'] = '1';
+		}
 
-	//=====[ Private ]===================================================================================================
+		if ($snippets = $GLOBALS['db']->select('CubeCart_code_snippet', array('php_code', 'unique_id', 'description', 'hook_trigger'), $where, array('priority' => 'ASC'))) {
+			$this->_snippet_list = $snippets;
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	/**
 	 * Build hook list
 	 *
 	 * @param string $trigger
 	 * @param bool $enabled_only
-	 *
 	 * @return bool
 	 */
 	private function _build_hooks_list($trigger = null, $enabled_only = true) {
@@ -397,36 +420,10 @@ class HookLoader {
 	}
 
 	/**
-	 * Build hook list
-	 *
-	 * @param string $trigger
-	 * @param bool $enabled_only
-	 *
-	 * @return bool
-	 */
-	private function _build_code_snippet_list($trigger = null, $enabled_only = true) {
-		$where = array();
-		if (!is_null($trigger) && !empty($trigger)) {
-			$where['hook_trigger'] = $trigger;
-		}
-		if ($enabled_only) {
-			$where['enabled'] = '1';
-		}
-
-		if ($snippets = $GLOBALS['db']->select('CubeCart_code_snippet', array('php_code', 'unique_id', 'description', 'hook_trigger'), $where, array('priority' => 'ASC'))) {
-			$this->_snippet_list = $snippets;
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	/**
 	 * Get hook unique ID
 	 *
 	 * @param int code snippet id
-	 *
-	 * @return bool
+	 * @return string/false
 	 */
 	private function _get_unique_id($snippet_id) {
 		if ($id = $GLOBALS['db']->select('CubeCart_code_snippet', array('unique_id'), array('snippet_id' => $snippet_id))) {
@@ -447,11 +444,7 @@ class HookLoader {
 			if (file_exists($lang_dir)) {
 				$GLOBALS['language']->loadDefinitions($plugin, $lang_dir, 'module.definitions.xml');
 				$strings = $GLOBALS['language']->loadLanguageXML($plugin, '', $lang_dir);
-				/* already done above
-				if (!empty($strings)) {
-					$GLOBALS['language']->addStrings($strings);
-				}
-*/
+				
 				unset($strings);
 				$this->_loaded_lang[$plugin] = true;
 				$GLOBALS['language']->assignLang(); // Make the language strings fresh
@@ -463,8 +456,6 @@ class HookLoader {
 	 * Setup plugin name
 	 *
 	 * @param string $plugin_name
-	 *
-	 * @return bool
 	 */
 	private function _plugin_name(&$plugin_name) {
 		$plugin_name = preg_replace('#[^a-z0-9]#iU', '_', $plugin_name);
@@ -478,6 +469,7 @@ class HookLoader {
 	 * Check plugin
 	 *
 	 * @param string $filename
+	 * @return bool
 	 */
 	private static function _security_check(&$filename) {
 		$find  = array('#^[^a-z0-9.\\\\/_]$#iU', '#(/+)|(\\\+)#', '#\.{1,2}/#');
