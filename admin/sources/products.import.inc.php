@@ -136,6 +136,13 @@ if (isset($_POST['process'])) {
 					if(!isset($product_record['product_code']) || empty($product_record['product_code'])) {
 						$product_record['product_code'] = generate_product_code($product_record['name']);
 					}
+					// If no stock level is set we assume no stock control is used
+					if(isset($product_record['use_stock_level']) && ($product_record['use_stock_level']==1 || strtolower($product_record['use_stock_level'])=='true')) {
+						$product_record['use_stock_level'] = 1;
+					} elseif(!isset($product_record['stock_level']) || empty($product_record['stock_level'])) {
+						$product_record['use_stock_level'] = 0;
+					}
+
 					if ($GLOBALS['db']->insert('CubeCart_inventory', $product_record)) $insert++;
 					// Insert primary category
 					$product_id = $GLOBALS['db']->insertid();
