@@ -53,19 +53,6 @@ class Ajax {
 		return $return_data;
 	}
 
-	public static function template($type, $search_string) {
-		
-		switch (strtolower($type)) {
-			case 'prod_options':
-				$options['options'] = Catalogue::getInstance()->displayProductOptions($search_string);				
-				$GLOBALS['smarty']->assign('product',$options);
-				$data = $GLOBALS['smarty']->fetch('templates/element.product_options.php');
-			break;
-		}
-		die($data);
-	}
-
-
 	/**
 	 * Admin search function
 	 *
@@ -182,5 +169,23 @@ class Ajax {
 			return json_encode($data);
 		}
 		return false;
+	}
+
+	/**
+	 * Dynamic template load
+	 *
+	 * @param string $type
+	 * @param string $search_string
+	 * @return data/false
+	 */
+	public static function template($type, $search_string) {
+		switch (strtolower($type)) {
+			case 'prod_options':
+				$options['options'] = Catalogue::getInstance()->displayProductOptions($search_string);				
+				$GLOBALS['smarty']->assign('product',$options);
+				die($GLOBALS['smarty']->fetch('templates/element.product_options.php'));
+			break;
+		}
+		return false;	
 	}
 }
