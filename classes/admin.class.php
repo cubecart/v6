@@ -84,17 +84,6 @@ class Admin {
 	}
 
 	/**
-	 * Magic get
-	 *
-	 * @param string $name
-	 */
-	public function __get($name) {
-		return (isset($this->_admin_data[$name])) ? $this->_admin_data[$name] : false;
-	}
-
-	//=====[ Public ]====================================================================================================
-
-	/**
 	 * Get admin data element or the entire array if element is empty
 	 *
 	 * @param string $element
@@ -149,35 +138,6 @@ class Admin {
 	}
 
 	/**
-	 * Request password
-	 *
-	 * @param string $username
-	 * @param string $email
-	 * @return bool
-	 */
-	public function passwordRequest($username, $email) {
-		if (!empty($username) && !empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
-			if (($check = $GLOBALS['db']->select('CubeCart_admin_users', array('admin_id', 'email', 'language', 'name'), array('username' => $username, 'email' => $email, 'status' => '1'))) !== false) {
-				// Generate validation key
-				$validation = Password::getInstance()->createSalt();
-				if ($GLOBALS['db']->update('CubeCart_admin_users', array('verify' => $validation), array('admin_id' => (int)$check[0]['admin_id']))) {
-					// Send email
-					$mailer = Mailer::getInstance();
-					$data['link'] = $GLOBALS['storeURL'].'/'.$GLOBALS['config']->get('config', 'adminFile').'?_g=recovery&email='.$check[0]['email'].'&validate='.$validation;
-					$data['name'] = $check[0]['name'];
-
-					$content = $mailer->loadContent('admin.password_recovery', $check[0]['language'], $data);
-					if ($content) {
-						$GLOBALS['smarty']->assign('DATA', $data);
-						return $mailer->sendEmail($check[0]['email'], $content);
-					}
-				}
-			}
-		}
-		return false;
-	}
-
-	/**
 	 * Reset password
 	 *
 	 * @param string $email
@@ -206,6 +166,35 @@ class Admin {
 				);
 				if ($GLOBALS['db']->update('CubeCart_admin_users', $record, $where)) {
 					return $this->_authenticate($check[0]['username'], $password['new']);
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Request password
+	 *
+	 * @param string $username
+	 * @param string $email
+	 * @return bool
+	 */
+	public function passwordRequest($username, $email) {
+		if (!empty($username) && !empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			if (($check = $GLOBALS['db']->select('CubeCart_admin_users', array('admin_id', 'email', 'language', 'name'), array('username' => $username, 'email' => $email, 'status' => '1'))) !== false) {
+				// Generate validation key
+				$validation = Password::getInstance()->createSalt();
+				if ($GLOBALS['db']->update('CubeCart_admin_users', array('verify' => $validation), array('admin_id' => (int)$check[0]['admin_id']))) {
+					// Send email
+					$mailer = Mailer::getInstance();
+					$data['link'] = $GLOBALS['storeURL'].'/'.$GLOBALS['config']->get('config', 'adminFile').'?_g=recovery&email='.$check[0]['email'].'&validate='.$validation;
+					$data['name'] = $check[0]['name'];
+
+					$content = $mailer->loadContent('admin.password_recovery', $check[0]['language'], $data);
+					if ($content) {
+						$GLOBALS['smarty']->assign('DATA', $data);
+						return $mailer->sendEmail($check[0]['email'], $content);
+					}
 				}
 			}
 		}
@@ -280,8 +269,6 @@ class Admin {
 	public function superUser() {
 		return ($this->_admin_data['super_user']) ? true : false;
 	}
-
-	//=====[ Private ]===================================================================================================
 
 	/**
 	 * Authenticate user as admin
@@ -531,5 +518,14 @@ class Admin {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Magic get
+	 *
+	 * @param string $name
+	 */
+	public function __get($name) {
+		return (isset($this->_admin_data[$name])) ? $this->_admin_data[$name] : false;
 	}
 }
