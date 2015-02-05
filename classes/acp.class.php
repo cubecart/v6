@@ -63,19 +63,6 @@ class ACP {
 	}
 
 	/**
-	 * Setup the instance (singleton)
-	 *
-	 * @return ACP
-	 */
-	public static function getInstance() {
-		if (!(self::$_instance instanceof self)) {
-			self::$_instance = new self();
-		}
-
-		return self::$_instance;
-	}
-
-	/**
 	 * Add a admin navigation item
 	 *
 	 * @param string $group
@@ -167,6 +154,19 @@ class ACP {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Setup the instance (singleton)
+	 *
+	 * @return ACP
+	 */
+	public static function getInstance() {
+		if (!(self::$_instance instanceof self)) {
+			self::$_instance = new self();
+		}
+
+		return self::$_instance;
 	}
 
 	/**

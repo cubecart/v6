@@ -82,23 +82,6 @@ class Config {
 	}
 
 	/**
-	 * Setup the instance (singleton)
-	 *
-	 * @param $glob array Current globals
-	 *
-	 * @return Config
-	 */
-	public static function getInstance($glob = array()) {
-		if (!(self::$_instance instanceof self)) {
-			self::$_instance = new self($glob);
-		}
-
-		return self::$_instance;
-	}
-
-	//=====[ Public ]====================================================================================================
-
-	/**
 	 * Get a value from the config
 	 *
 	 * Not all config types are loaded from the start this
@@ -130,6 +113,21 @@ class Config {
 
 		//Return it if found
 		return $this->get($config_name, $element);
+	}
+
+	/**
+	 * Setup the instance (singleton)
+	 *
+	 * @param $glob array Current globals
+	 *
+	 * @return Config
+	 */
+	public static function getInstance($glob = array()) {
+		if (!(self::$_instance instanceof self)) {
+			self::$_instance = new self($glob);
+		}
+
+		return self::$_instance;
 	}
 
 	/**
