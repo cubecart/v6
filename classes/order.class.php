@@ -85,7 +85,7 @@ class Order {
 	}
 
 
-	//=====[ Public ]====================================================================================================
+	//=====[ Public ]=======================================
 
 	public function addNote($order_id = null, $note = null) {
 		if (!empty($order_id) && !empty($note)) {
@@ -572,7 +572,7 @@ class Order {
 	}
 
 
-	//=====[ Private ]===================================================================================================
+	//=====[ Private ]=======================================
 
 	private function _addHistory($order_id, $status_id) {
 		if (!empty($order_id) && !empty($status_id)) {

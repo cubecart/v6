@@ -458,6 +458,8 @@ class Debug {
 		$this->_display = false;
 	}
 
+	//=====[ Private ]=======================================
+
 	/**
 	 * Get the byte size
 	 *

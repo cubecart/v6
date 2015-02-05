@@ -235,6 +235,8 @@ class Config {
 		return true;
 	}
 
+	//=====[ Private ]=======================================
+
 	/**
 	 * Strip slashes
 	 *

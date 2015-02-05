@@ -74,7 +74,8 @@ class Tax {
 		return self::$_instance;
 	}
 
-	//=====[ Public ]====================================================================================================
+	//=====[ Public ]=======================================
+	
 	public function displayTaxes() {
 		// Display applied taxes
 		$GLOBALS['cart']->set('order_taxes', false);

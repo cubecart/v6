@@ -410,6 +410,8 @@ class Cubecart {
 		}
 	}
 
+	//=====[ Private ]=======================================
+
 	/**
 	 * Display addressbook
 	 */

@@ -229,7 +229,6 @@ class FileManager {
 		}
 
 		if (isset($updated) && $updated === true) {
-			# $GLOBALS['gui']->setNotify($GLOBALS['language']->filemanager['notify_db_update']);
 			return true;
 		}
 	}

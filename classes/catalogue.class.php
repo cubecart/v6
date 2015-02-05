@@ -1645,6 +1645,8 @@ class Catalogue {
 		$this->_categoryData[$id] = $name;
 	}
 
+	//=====[ Private ]=======================================
+
 	/**
 	 * Translate a category if a translation exists
 	 *

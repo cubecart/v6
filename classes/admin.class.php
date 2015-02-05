@@ -270,6 +270,8 @@ class Admin {
 		return ($this->_admin_data['super_user']) ? true : false;
 	}
 
+	//=====[ Private ]=======================================
+
 	/**
 	 * Authenticate user as admin
 	 *

@@ -1091,6 +1091,8 @@ class Cart {
 		}
 	}
 
+	//=====[ Private ]=======================================
+
 	/**
 	 * Apply a discount to the cart
 	 *

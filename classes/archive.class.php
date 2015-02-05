@@ -126,6 +126,8 @@ class Archive {
 		return false;
 	}
 
+	//=====[ Private ]=======================================
+
 	/**
 	 * Get error
 	 *
