@@ -40,6 +40,6 @@ if (Admin::getInstance()->is() || (isset($_GET['_g']) && $_GET['_g']=='products'
 }
 // Render the completed page
 if (!isset($suppress_output) || !$suppress_output) {
-	$GLOBALS['gui']->displayCommon(true);
+	$GLOBALS['gui']->displayCommon();
 	$GLOBALS['smarty']->display('templates/'.$global_template_file['session_true']);
 }

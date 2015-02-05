@@ -68,4 +68,4 @@ default:
 		$GLOBALS['smarty']->assign('REDIRECT_TO', $redir);
 	}
 }
-$GLOBALS['gui']->displayCommon(true);
+$GLOBALS['gui']->displayCommon();

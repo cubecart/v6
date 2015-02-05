@@ -245,10 +245,8 @@ class GUI {
 		return self::$_instance;
 	}
 
-	//=====[ Public ]====================================================================================================
-
 	/**
-	 * Add a bread crumb
+	 * Add a breadcrumb
 	 *
 	 * @param string $name
 	 * @param array $url
@@ -282,7 +280,7 @@ class GUI {
 	/**
 	 * Change template location
 	 *
-	 * @param path $directory
+	 * @param string $directory
 	 */
 	public function changeTemplateDir($directory = '') {
 		if (empty($directory)) {
@@ -294,9 +292,12 @@ class GUI {
 
 	/**
 	 * Display common GUI parts like the boxes
+	 *
+	 * @param bool $admin
+	 * @param array $url
 	 */
-	public function displayCommon($admin = false) {
-		if (!$admin) {
+	public function displayCommon() {
+		if (!CC_IN_ADMIN) {
 			if (!isset($_GET['_a']) || $_GET['_a'] != 'template') {
 				$this->_displayLanguageSwitch();
 				$this->_displayCurrencySwitch();
@@ -390,56 +391,13 @@ class GUI {
 	public function getBreadcrumbs() {
 		return (!empty($this->_breadcrumb)) ? $this->_breadcrumb : false;
 	}
-	
-	/**
-	 * Get number items per page
-	 *
-	 * @return int
-	 */
-	public function itemsPerPage($list_id = 'products', $page_key = 'perpage') {
-	
-		if(isset($this->_skin_data['layout'][$list_id]['perpage'])) {
-			foreach($this->_skin_data['layout'][$list_id]['perpage'] as $amount => $default) {
-				if($amount) {
-					return (int)$amount;	
-				}
-			}
-		}
-		
-		if((int)$_GET[$page_key]>0) {
-			return (int)$_GET[$page_key];
-		} elseif (is_numeric($GLOBALS['config']->get('config', 'catalogue_products_per_page'))) {
-			return $GLOBALS['config']->get('config', 'catalogue_products_per_page');
-		} else { // Last ditch ..
-			return 10;
-		} 
-	}
-	
-	public function perPageSplits($list_id = 'products', $page_key = 'perpage') {
-		
-		
-		if(isset($this->_skin_data['layout'][$list_id]['perpage'])) {
-			foreach($this->_skin_data['layout'][$list_id]['perpage'] as $amount => $default) {
-							
-				if(!isset($_GET[$page_key]) && $default) {
-					$selected = true;
-				} elseif(isset($_GET[$page_key]) && $_GET[$page_key]==$amount) {
-					$selected = true;
-				} else {
-					$selected = false;
-				}
-					
-				$page_splits[] = array('selected' => $selected ,'url' => currentPage(null, array($page_key => $amount)), 'amount' => $amount);
 
-			}
-			return $page_splits;
-		}
-		return false;		
-	}
-	
 	/**
 	 * Get custom template for module from default skin
 	 *
+	 * @param string $type
+	 * @param string $dirname
+	 * @param string $file_name
 	 * @return string
 	 */
 	public function getCustomModuleSkin($type = 'gateway', $dirname, $file_name) {
@@ -450,6 +408,8 @@ class GUI {
 	/**
 	 * Get current logo
 	 *
+	 * @param bool $absolute
+	 * @param string $type
 	 * @return string
 	 */
 	public function getLogo($absolute = false, $type = '') {
@@ -536,6 +496,32 @@ class GUI {
 		}
 		return $this->_style;
 	}
+	
+	/**
+	 * Get number items per page
+	 *
+	 * @param string $list_id
+	 * @param string $page_key
+	 * @return int
+	 */
+	public function itemsPerPage($list_id = 'products', $page_key = 'perpage') {
+	
+		if(isset($this->_skin_data['layout'][$list_id]['perpage'])) {
+			foreach($this->_skin_data['layout'][$list_id]['perpage'] as $amount => $default) {
+				if($amount) {
+					return (int)$amount;	
+				}
+			}
+		}
+		
+		if((int)$_GET[$page_key]>0) {
+			return (int)$_GET[$page_key];
+		} elseif (is_numeric($GLOBALS['config']->get('config', 'catalogue_products_per_page'))) {
+			return $GLOBALS['config']->get('config', 'catalogue_products_per_page');
+		} else { // Last ditch ..
+			return 10;
+		} 
+	}
 
 	/**
 	 * Get the currently available skins
@@ -616,23 +602,34 @@ class GUI {
 
 		return false;
 	}
+	
 
 	/**
-	 * Set an error message
+	 * Get number items per page
 	 *
-	 * @param string $message
+	 * @param string $list_id
+	 * @param string $page_key
+	 * @return int
 	 */
-	public function setError($message = null) {
-		$this->_errorMessage('error', $message);
-	}
+	public function perPageSplits($list_id = 'products', $page_key = 'perpage') {
+		
+		if(isset($this->_skin_data['layout'][$list_id]['perpage'])) {
+			foreach($this->_skin_data['layout'][$list_id]['perpage'] as $amount => $default) {
+							
+				if(!isset($_GET[$page_key]) && $default) {
+					$selected = true;
+				} elseif(isset($_GET[$page_key]) && $_GET[$page_key]==$amount) {
+					$selected = true;
+				} else {
+					$selected = false;
+				}
+					
+				$page_splits[] = array('selected' => $selected ,'url' => currentPage(null, array($page_key => $amount)), 'amount' => $amount);
 
-	/**
-	 * Set a notification message
-	 *
-	 * @param string $message
-	 */
-	public function setNotify($message = null) {
-		$this->_errorMessage('notice', $message);
+			}
+			return $page_splits;
+		}
+		return false;		
 	}
 
 	/**
@@ -713,15 +710,31 @@ class GUI {
 			$logo_config[$type] = $target;
 		}
 		$GLOBALS['config']->set('logos', false, str_replace('/', '/', $logo_config)); // Save skin and extra templates
-
 	}
 
-	//=====[ Private ]===================================================================================================
+	/**
+	 * Set an error message
+	 *
+	 * @param string $message
+	 */
+	public function setError($message = null) {
+		$this->_errorMessage('error', $message);
+	}
 
+	/**
+	 * Set a notification message
+	 *
+	 * @param string $message
+	 */
+	public function setNotify($message = null) {
+		$this->_errorMessage('notice', $message);
+	}
 
 	/**
 	 * Detect mobile phone browser. Open Source code thanks to http://detectmobilebrowsers.com
-	 * Returns boolean
+	 *
+	 * @param string $useragent
+	 * @return bool
 	 */
 	private function _detectMobile($useragent = '') {
 
@@ -838,6 +851,16 @@ class GUI {
 	}
 
 	/**
+	 * Display errors
+	 */
+	private function _displayErrors() {
+		if ($GLOBALS['session']->has('GUI_MESSAGE')) {
+			$GLOBALS['smarty']->assign('GUI_MESSAGE', $GLOBALS['session']->get('GUI_MESSAGE'));
+			$GLOBALS['session']->delete('GUI_MESSAGE');
+		}
+	}
+
+	/**
 	 * Display language switch box
 	 */
 	private function _displayLanguageSwitch() {
@@ -872,16 +895,6 @@ class GUI {
 				$content = $GLOBALS['smarty']->fetch('templates/box.language.php');
 				$GLOBALS['smarty']->assign('LANGUAGE', $content);
 			}
-		}
-	}
-
-	/**
-	 * Display errors
-	 */
-	private function _displayErrors() {
-		if ($GLOBALS['session']->has('GUI_MESSAGE')) {
-			$GLOBALS['smarty']->assign('GUI_MESSAGE', $GLOBALS['session']->get('GUI_MESSAGE'));
-			$GLOBALS['session']->delete('GUI_MESSAGE');
 		}
 	}
 
@@ -1197,6 +1210,29 @@ class GUI {
 	}
 
 	/**
+	 * Display session box
+	 */
+	private function _displaySessionBox() {
+		if ($GLOBALS['user']->is()) {
+			
+			$customer = $GLOBALS['user']->get();
+			
+			$GLOBALS['smarty']->assign('CUSTOMER', $customer);
+			
+			// Account may be made but name may not be known yet e.g. Yahoo login
+			if (empty($customer['first_name'])) {
+				$GLOBALS['smarty']->assign('LANG_WELCOME_BACK', $GLOBALS['language']->account['welcome_back_guest']);
+			} else {
+				$GLOBALS['smarty']->assign('LANG_WELCOME_BACK', sprintf($GLOBALS['language']->account['welcome_back'], $customer['first_name'], ''));
+			}
+		}
+		foreach ($GLOBALS['hooks']->load('class.gui.display_session_box') as $hook) include $hook;
+		$GLOBALS['smarty']->assign('URL', array('login' => $GLOBALS['seo']->buildURL('login'), 'register' => $GLOBALS['seo']->buildURL('register')));
+		$content = $GLOBALS['smarty']->fetch('templates/box.session.php');
+		$GLOBALS['smarty']->assign('SESSION', $content);
+	}
+
+	/**
 	 * Display select skin box
 	 */
 	private function _displaySkinSelect() {
@@ -1223,30 +1259,9 @@ class GUI {
 	}
 
 	/**
-	 * Display session box
-	 */
-	private function _displaySessionBox() {
-		if ($GLOBALS['user']->is()) {
-			
-			$customer = $GLOBALS['user']->get();
-			
-			$GLOBALS['smarty']->assign('CUSTOMER', $customer);
-			
-			// Account may be made but name may not be known yet e.g. Yahoo login
-			if (empty($customer['first_name'])) {
-				$GLOBALS['smarty']->assign('LANG_WELCOME_BACK', $GLOBALS['language']->account['welcome_back_guest']);
-			} else {
-				$GLOBALS['smarty']->assign('LANG_WELCOME_BACK', sprintf($GLOBALS['language']->account['welcome_back'], $customer['first_name'], ''));
-			}
-		}
-		foreach ($GLOBALS['hooks']->load('class.gui.display_session_box') as $hook) include $hook;
-		$GLOBALS['smarty']->assign('URL', array('login' => $GLOBALS['seo']->buildURL('login'), 'register' => $GLOBALS['seo']->buildURL('register')));
-		$content = $GLOBALS['smarty']->fetch('templates/box.session.php');
-		$GLOBALS['smarty']->assign('SESSION', $content);
-	}
-
-	/**
 	 * Setup error messages
+	 * @param string $type
+	 * @param string $message
 	 */
 	private function _errorMessage($type, $message) {
 		if (!empty($message)) {
@@ -1263,6 +1278,8 @@ class GUI {
 
 	/**
 	 * Get default skin logo
+	 * @param string $skin
+	 * @param string $style
 	 */
 	private function _getLogoDefault($skin = '', $style = '') {
 
@@ -1279,6 +1296,7 @@ class GUI {
 	/**
 	 * Make navigation tree
 	 *
+	 * @param array $tree_data
 	 * @return string
 	 */
 	private function _makeTree($tree_data) {
@@ -1294,12 +1312,13 @@ class GUI {
 				$out .= $GLOBALS['smarty']->fetch('templates/element.navigation_tree.php');
 			}
 		}
-
 		return $out;
 	}
 
 	/**
 	 * Set logo
+	 *
+	 * @param string $type
 	 */
 	private function _setLogo($type = '') {
 
@@ -1395,5 +1414,4 @@ class GUI {
 		}
 		$GLOBALS['smarty']->assign('SKIN_SUBSET', $this->_style);
 	}
-
 }
