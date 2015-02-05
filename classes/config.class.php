@@ -145,6 +145,23 @@ class Config {
 	}
 
 	/**
+	 * Is an element empty
+	 *
+	 * @param string $config_name
+	 * @param string $element
+	 *
+	 * @return bool
+	 */
+	public function isEmpty($config_name, $element) {
+		//If the element isn't there then it is empty
+		if (!$this->has($config_name, $element)) {
+			return true;
+		}
+
+		return empty($this->_config[$config_name][$element]);
+	}
+
+	/**
 	 * Merge an emlemet to the config
 	 *
 	 * This is done for items that do not need to be recorded to the db
@@ -168,23 +185,6 @@ class Config {
 				$this->_config[$config_name] = merge_array($this->_config[$config_name], $data);
 			}
 		}
-	}
-
-	/**
-	 * Is an element empty
-	 *
-	 * @param string $config_name
-	 * @param string $element
-	 *
-	 * @return bool
-	 */
-	public function isEmpty($config_name, $element) {
-		//If the element isn't there then it is empty
-		if (!$this->has($config_name, $element)) {
-			return true;
-		}
-
-		return empty($this->_config[$config_name][$element]);
 	}
 
 	/**
@@ -236,8 +236,6 @@ class Config {
 
 		return true;
 	}
-
-	//=====[ Private ]===================================================================================================
 
 	/**
 	 * Strip slashes
