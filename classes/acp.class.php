@@ -131,24 +131,6 @@ class ACP {
 	}
 
 	/**
-	 * Remove tab control
-	 *
-	 * @param string $name
-	 * @return self
-	 */
-
-	public function removeTabControl($name) {
-		if (!empty($name)) {
-			foreach ($this->_tabs as $key => $tab) {
-				if ( $tab['name'] == $name ) {
-					unset($this->_tabs[$key]);
-				}
-			}
-		}
-		return $this;
-	}
-
-	/**
 	 * Log admin message
 	 *
 	 * @param string $message
@@ -224,36 +206,21 @@ class ACP {
 	}
 
 	/**
-	 * Set admin warning
+	 * Remove tab control
 	 *
-	 * @param string $message
+	 * @param string $name
+	 * @return self
 	 */
-	public function setACPWarning($message, $show_once = false, $display = true) {
-		if (empty($message)) {
-			return;
-		}
-		// Log message and don't show again to current staff member
-		if ($show_once) {
-			if (!$GLOBALS['db']->select('CubeCart_admin_error_log', 'log_id', array('message' => $message, 'admin_id' => Admin::getInstance()->get('admin_id')))) {
-				$GLOBALS['db']->insert('CubeCart_admin_error_log', array('message' => $message, 'admin_id' => Admin::getInstance()->get('admin_id'), 'time' => time()));
-				if ($display) {
-					$GLOBALS['gui']->setError($message);
+
+	public function removeTabControl($name) {
+		if (!empty($name)) {
+			foreach ($this->_tabs as $key => $tab) {
+				if ( $tab['name'] == $name ) {
+					unset($this->_tabs[$key]);
 				}
 			}
-		}  else if ($display) {
-				$GLOBALS['gui']->setError($message);
-			}
-	}
-
-	/**
-	 * Set admin warning
-	 *
-	 * @param string $message
-	 */
-	public function setACPNotify($message) {
-		$GLOBALS['gui']->setNotify($message);
-		// Add record to admin log
-		$this->adminLog($message);
+		}
+		return $this;
 	}
 
 	/**
@@ -274,6 +241,39 @@ class ACP {
 				$GLOBALS['smarty']->assign('TOUR_AUTO_START', 'false');
 			}
 		}
+	}
+
+	/**
+	 * Set admin warning
+	 *
+	 * @param string $message
+	 */
+	public function setACPNotify($message) {
+		$GLOBALS['gui']->setNotify($message);
+		// Add record to admin log
+		$this->adminLog($message);
+	}
+
+	/**
+	 * Set admin warning
+	 *
+	 * @param string $message
+	 */
+	public function setACPWarning($message, $show_once = false, $display = true) {
+		if (empty($message)) {
+			return;
+		}
+		// Log message and don't show again to current staff member
+		if ($show_once) {
+			if (!$GLOBALS['db']->select('CubeCart_admin_error_log', 'log_id', array('message' => $message, 'admin_id' => Admin::getInstance()->get('admin_id')))) {
+				$GLOBALS['db']->insert('CubeCart_admin_error_log', array('message' => $message, 'admin_id' => Admin::getInstance()->get('admin_id'), 'time' => time()));
+				if ($display) {
+					$GLOBALS['gui']->setError($message);
+				}
+			}
+		}  else if ($display) {
+				$GLOBALS['gui']->setError($message);
+			}
 	}
 
 	/**
@@ -300,6 +300,26 @@ class ACP {
 			$GLOBALS['smarty']->assign('HELP_URL', 'https://wiki.cubecart.com/'.$page.'?useskin=chick');
 			$GLOBALS['smarty']->assign('STORE_STATUS', !(bool)Config::getInstance()->get('config', 'offline'));
 		}
+	}
+
+	/**
+	 * Show admin tabs
+	 *
+	 * @return bool
+	 */
+	public function showTabs() {
+		if (Admin::getInstance()->is() && !empty($this->_tabs) && is_array($this->_tabs)) {
+			foreach ($this->_tabs as $tab) {
+				$tab['name'] = ucfirst($tab['name']);
+				$tab['tab_id'] = empty($tab['target']) ? '' : 'tab_'.str_replace(' ', '_', $tab['target']);
+				$tab['target'] = (!empty($tab['target'])) ? '#'.$tab['target'] : '';
+				$tabs[] = $tab;
+			}
+			foreach ($GLOBALS['hooks']->load('admin.tabs') as $hook) include $hook;
+			$GLOBALS['smarty']->assign('TABS', $tabs);
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -330,26 +350,6 @@ class ACP {
 				$GLOBALS['cache']->write($navigation, 'acp.showNavigation');
 			}
 			$GLOBALS['smarty']->assign('NAVIGATION', $navigation);
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Show admin tabs
-	 *
-	 * @return bool
-	 */
-	public function showTabs() {
-		if (Admin::getInstance()->is() && !empty($this->_tabs) && is_array($this->_tabs)) {
-			foreach ($this->_tabs as $tab) {
-				$tab['name'] = ucfirst($tab['name']);
-				$tab['tab_id'] = empty($tab['target']) ? '' : 'tab_'.str_replace(' ', '_', $tab['target']);
-				$tab['target'] = (!empty($tab['target'])) ? '#'.$tab['target'] : '';
-				$tabs[] = $tab;
-			}
-			foreach ($GLOBALS['hooks']->load('admin.tabs') as $hook) include $hook;
-			$GLOBALS['smarty']->assign('TABS', $tabs);
 			return true;
 		}
 		return false;
