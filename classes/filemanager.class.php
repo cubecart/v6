@@ -275,6 +275,67 @@ class FileManager {
 	}
 
 	/**
+	 * Delete file
+	 *
+	 * @param int $file_id
+	 * @return bool
+	 */
+	private function deleteFile($file_id = null) {
+		if (!is_null($file_id) && is_numeric($file_id)) {
+			if (($result = $GLOBALS['db']->select('CubeCart_filemanager', false, array('file_id' => (int)$file_id))) !== false) {
+				if ($this->_mode == self::FM_FILETYPE_IMG && preg_match('#^image#', $result[0]['mimetype'])) {
+					// Clean the image cache
+					if (preg_match('#(.*)(\.\w+)$#iu', $result[0]['filename'], $match)) {
+						$filename = sprintf('%s.*%s', $match[1], $match[2]);
+						if (($caches = glob($this->_manage_cache.'/'.$this->_sub_dir.$filename, GLOB_BRACE)) !== false) {
+							foreach ($caches as $cached) {
+								unlink($cached);
+							}
+						}
+					}
+				}
+				$file = $this->_manage_root.'/'.$this->_sub_dir.$result[0]['filename'];
+				if (file_exists($file) && unlink($file) || !file_exists($file)) {
+					if ($GLOBALS['db']->delete('CubeCart_filemanager', array('file_id' => (int)$file_id))) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Recursive delete
+	 *
+	 * @param string $directory
+	 * @return bool
+	 */
+	private function deleteRecursive($directory = null) {
+		$directory = urldecode($directory);
+		$scan = glob($this->_manage_root.'/'.$directory.'/'.'*');
+		if (is_array($scan)) {
+			foreach ($scan as $entry) {
+				$this->_sub_dir = str_replace(array($this->_manage_root.'/', basename($entry)), '', $entry);
+				if (is_dir($entry)) {
+					$this->deleteRecursive(str_replace($this->_manage_root.'/', '', $entry));
+				} else {
+					if (!in_array(basename(dirname($entry)), array('source', 'thumbs', '_vti_cnf'))) {
+						$files = $GLOBALS['db']->select('CubeCart_filemanager', array('file_id'), array('filename' => basename($entry), 'filepath' => $this->_sub_dir));
+						if ($files) {
+							foreach ($files as $file) {
+								$this->deleteFile($file['file_id']);
+							}
+						}
+					}
+				}
+			}
+			return (bool)rmdir($this->_manage_root.'/'.$directory);
+		}
+		return false;
+	}
+
+	/**
 	 * Deliver download file
 	 *
 	 * @param string $access_key
@@ -340,67 +401,6 @@ class FileManager {
 			}
 			// Download record doesn't exist
 			$error = self::FM_DL_ERROR_NORECORD;
-		}
-		return false;
-	}
-
-	/**
-	 * Delete file
-	 *
-	 * @param int $file_id
-	 * @return bool
-	 */
-	private function deleteFile($file_id = null) {
-		if (!is_null($file_id) && is_numeric($file_id)) {
-			if (($result = $GLOBALS['db']->select('CubeCart_filemanager', false, array('file_id' => (int)$file_id))) !== false) {
-				if ($this->_mode == self::FM_FILETYPE_IMG && preg_match('#^image#', $result[0]['mimetype'])) {
-					// Clean the image cache
-					if (preg_match('#(.*)(\.\w+)$#iu', $result[0]['filename'], $match)) {
-						$filename = sprintf('%s.*%s', $match[1], $match[2]);
-						if (($caches = glob($this->_manage_cache.'/'.$this->_sub_dir.$filename, GLOB_BRACE)) !== false) {
-							foreach ($caches as $cached) {
-								unlink($cached);
-							}
-						}
-					}
-				}
-				$file = $this->_manage_root.'/'.$this->_sub_dir.$result[0]['filename'];
-				if (file_exists($file) && unlink($file) || !file_exists($file)) {
-					if ($GLOBALS['db']->delete('CubeCart_filemanager', array('file_id' => (int)$file_id))) {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Recursive delete
-	 *
-	 * @param string $directory
-	 * @return bool
-	 */
-	private function deleteRecursive($directory = null) {
-		$directory = urldecode($directory);
-		$scan = glob($this->_manage_root.'/'.$directory.'/'.'*');
-		if (is_array($scan)) {
-			foreach ($scan as $entry) {
-				$this->_sub_dir = str_replace(array($this->_manage_root.'/', basename($entry)), '', $entry);
-				if (is_dir($entry)) {
-					$this->deleteRecursive(str_replace($this->_manage_root.'/', '', $entry));
-				} else {
-					if (!in_array(basename(dirname($entry)), array('source', 'thumbs', '_vti_cnf'))) {
-						$files = $GLOBALS['db']->select('CubeCart_filemanager', array('file_id'), array('filename' => basename($entry), 'filepath' => $this->_sub_dir));
-						if ($files) {
-							foreach ($files as $file) {
-								$this->deleteFile($file['file_id']);
-							}
-						}
-					}
-				}
-			}
-			return (bool)rmdir($this->_manage_root.'/'.$directory);
 		}
 		return false;
 	}
