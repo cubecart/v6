@@ -66,8 +66,6 @@ class Archive {
 		}
 	}
 
-	//=====[ Public ]====================================================================================================
-
 	/**
 	 * Add file to the archive
 	 *
@@ -122,34 +120,6 @@ class Archive {
 			$index = $this->_zip->locateName($filename, ZIPARCHIVE::FL_NODIR);
 			if ($index) {
 				return $this->deleteIndex((int)$index);
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * Open archive
-	 *
-	 * @param string $archive
-	 * @param bool $create
-	 * @return bool
-	 */
-	private function open($archive, $create = false) {
-		if ($this->_enabled) {
-			$archive = str_replace('/', '/', $archive);
-			if ($create) {
-				$this->_archive = $this->_zip->open($archive, ZIPARCHIVE::CREATE);
-			} else if (file_exists($archive)) {
-					$this->_archive = $this->_zip->open($archive);
-				}
-
-			if ($this->_archive === true) {
-				$this->contents();
-				return true;
-			} else {
-				$this->error();
-				return false;
 			}
 		}
 
@@ -223,6 +193,34 @@ class Archive {
 	}
 
 	/**
+	 * Open archive
+	 *
+	 * @param string $archive
+	 * @param bool $create
+	 * @return bool
+	 */
+	private function open($archive, $create = false) {
+		if ($this->_enabled) {
+			$archive = str_replace('/', '/', $archive);
+			if ($create) {
+				$this->_archive = $this->_zip->open($archive, ZIPARCHIVE::CREATE);
+			} else if (file_exists($archive)) {
+					$this->_archive = $this->_zip->open($archive);
+				}
+
+			if ($this->_archive === true) {
+				$this->contents();
+				return true;
+			} else {
+				$this->error();
+				return false;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Read archive
 	 *
 	 * @param string $filename
@@ -260,8 +258,6 @@ class Archive {
 	public function revert() {
 		return ($this->_enabled) ? $this->_zip->unchangeAll() : false;
 	}
-
-	//=====[ Private ]====================================================================================================
 
 	/**
 	 * Adds file to archive.
