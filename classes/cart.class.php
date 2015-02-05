@@ -180,8 +180,6 @@ class Cart {
 		return self::$_instance;
 	}
 
-	//=====[ Public ]====================================================================================================
-
 	/**
 	 * Add item to the basket
 	 *
@@ -405,6 +403,46 @@ class Cart {
 				$this->save();
 			}
 		}
+	}
+
+	/**
+	 * Check - Minimum Quantity
+	 */
+	public function checkMinimumProductQuantity($productID, $quantity, $redirect=true) {
+
+		$data = $GLOBALS['catalogue']->getProductData($productID);
+		$min_q = (int)$data['minimum_quantity'];
+
+		if ($min_q && $min_q > $quantity ) {
+
+			$GLOBALS['gui']->setError(sprintf($GLOBALS['language']->catalogue['error_minimum_quantity'], $min_q));
+
+			if ($redirect) $this->redirectToProductPage($productID);
+		}
+
+		return false;
+	}
+
+	/**
+	 * Check shipping method is allowed for country
+	 *
+	 * @return bool
+	 */
+	public function checkShippingModuleCountry($countries, $zone) {
+
+		$_country = $country_match = false;
+
+		if (is_array($countries)) {
+
+			foreach ($countries as $country) {
+				if ($this->basket['delivery_address']['country_id'] == $country || $this->basket['delivery_address']['country'] == $country) {
+					$country_match = true;
+				}
+			}
+			$_country = (($zone=='enabled' && !$country_match) || ($zone=='disabled' && $country_match)) ? true : false;
+		}
+
+		return $_country;
 	}
 
 	/**
@@ -932,24 +970,6 @@ class Cart {
 		}
 	}
 
-
-	public function checkShippingModuleCountry($countries, $zone) {
-
-		$_country = $country_match = false;
-
-		if (is_array($countries)) {
-
-			foreach ($countries as $country) {
-				if ($this->basket['delivery_address']['country_id'] == $country || $this->basket['delivery_address']['country'] == $country) {
-					$country_match = true;
-				}
-			}
-			$_country = (($zone=='enabled' && !$country_match) || ($zone=='disabled' && $country_match)) ? true : false;
-		}
-
-		return $_country;
-	}
-
 	/**
 	 * Remove an item from the basket
 	 *
@@ -1060,23 +1080,6 @@ class Cart {
 	}
 
 	/**
-	 * Check - Minimum Quantity
-	 */
-	public function checkMinimumProductQuantity($productID, $quantity, $redirect=true) {
-
-		$data = $GLOBALS['catalogue']->getProductData($productID);
-		$min_q = (int)$data['minimum_quantity'];
-
-		if ($min_q && $min_q > $quantity ) {
-
-			$GLOBALS['gui']->setError(sprintf($GLOBALS['language']->catalogue['error_minimum_quantity'], $min_q));
-
-			if ($redirect) $this->redirectToProductPage($productID);
-		}
-
-		return false;
-	}
-	/**
 	 * Redirect to product page
 	 */
 	public function redirectToProductPage($productID) {
@@ -1088,8 +1091,6 @@ class Cart {
 			httpredir("index.php?_a=product&product_id=$productID");
 		}
 	}
-
-	//=====[ Private ]===================================================================================================
 
 	/**
 	 * Apply a discount to the cart
