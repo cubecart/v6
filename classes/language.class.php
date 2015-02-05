@@ -105,37 +105,17 @@ class Language {
 		$this->loadLang();
 	}
 
-	public function loadLang() {
-
-		//Load the core language files
-		$this->loadDefinitions('lang.core');
-		$this->_language_strings_def = $this->_language_strings; // Admin Langs - show default core groups only
-
-		$this->loadLanguageXML('lang.core');
-
-		//Set the system locale
-		$this->_setLocale();
-
-	}
-
-	public function assignLang() {
-
-		$GLOBALS['smarty']->assign('LANG', $this->_language_strings);
-
-	}
-
-
 	/**
 	 * Magic get of a string value
 	 *
 	 * @param string $name
+	 * @return array/false
 	 */
 	public function __get($name) {
 		$name = strtolower($name);
 		if (isset($this->_language_strings[$name])) {
 			return $this->_language_strings[$name];
 		}
-
 		return false;
 	}
 
@@ -143,6 +123,7 @@ class Language {
 	 * Magic isset of a string value
 	 *
 	 * @param string $name
+	 * @return string
 	 */
 	public function __isset($name) {
 		return isset($this->_language_strings[strtolower($name)]);
@@ -152,6 +133,7 @@ class Language {
 	 * Magic set of a string value
 	 *
 	 * @param string $name
+	 * @param array $value
 	 */
 	public function __set($name, $value) {
 		$name = strtolower($name);
@@ -174,21 +156,6 @@ class Language {
 	}
 
 	/**
-	 * Setup the instance (singleton)
-	 *
-	 * @return Language
-	 */
-	public static function getInstance($admin = false) {
-		if (!(self::$_instance instanceof self)) {
-			self::$_instance = new self($admin);
-		}
-
-		return self::$_instance;
-	}
-
-	//=====[ Public ]====================================================================================================
-
-	/**
 	 * Add strings to the language
 	 *
 	 * @param array $strings
@@ -197,6 +164,13 @@ class Language {
 		if (!empty($strings) && is_array($strings)) {
 			$this->_language_strings = merge_array($strings, $this->_language_strings);
 		}
+	}
+
+	/**
+	 * Assign language to template
+	 */
+	public function assignLang() {
+		$GLOBALS['smarty']->assign('LANG', $this->_language_strings);
 	}
 
 	/**
@@ -265,6 +239,7 @@ class Language {
 	 * Delete a langauge
 	 *
 	 * @param string $code
+	 * @param string $path
 	 * @return bool
 	 */
 	public function deleteLanguage($code, $path = CC_LANGUAGE_DIR) {
@@ -365,6 +340,7 @@ class Language {
 	 * Get custom language strings
 	 *
 	 * @param string $group
+	 * @param string $language
 	 * @return array
 	 */
 	public function getCustom($group, $language = '') {
@@ -403,7 +379,7 @@ class Language {
 	 * Get language definitions
 	 *
 	 * @param string $group
-	 * @return array/false
+	 * @return array
 	 */
 	public function getDefinitions($group) {
 		if (!empty($group) && isset($this->_language_definitions[$group]) && isset($this->_language_definition_data[$group])) {
@@ -414,6 +390,21 @@ class Language {
 			return $definition;
 		}
 		return array();
+	}
+
+	/**
+	 * Get friendly module path from relative path
+	 *
+	 * @param string $path
+	 * @param bool $name_only
+	 * @return friendly path
+	 */
+	public function getFriendlyModulePath($path, $name_only = false) {
+		$path_parts = explode('/', $path);
+		if ($name_only) {
+			return strtolower($path_parts[2]);
+		}
+		return ucfirst($path_parts[0]).' - '.ucfirst($path_parts[1]).' - '.$path_parts[2];
 	}
 
 	/**
@@ -435,6 +426,19 @@ class Language {
 			return $this->_language_groups;
 		}
 		return false;
+	}
+
+	/**
+	 * Setup the instance (singleton)
+	 *
+	 * @return Language
+	 */
+	public static function getInstance($admin = false) {
+		if (!(self::$_instance instanceof self)) {
+			self::$_instance = new self($admin);
+		}
+
+		return self::$_instance;
 	}
 
 	/**
@@ -463,32 +467,17 @@ class Language {
 	/**
 	 * Get all the language strings
 	 *
-	 * @return array of strings / false
+	 * @return array/false
 	 */
 	public function getLanguageStrings() {
 		return (!empty($this->_language_strings)) ? $this->_language_strings : false;
-	}
-
-
-	/**
-	 * Get friendly module path from relative path
-	 *
-	 * @param string $path
-	 * @return friendly path
-	 */
-	public function getFriendlyModulePath($path, $name_only = false) {
-		$path_parts = explode('/', $path);
-		if ($name_only) {
-			return strtolower($path_parts[2]);
-		}
-		return ucfirst($path_parts[0]).' - '.ucfirst($path_parts[1]).' - '.$path_parts[2];
 	}
 
 	/**
 	 * Get language strings
 	 *
 	 * @param string $group
-	 * @return array
+	 * @return array/false
 	 */
 	public function getStrings($group = false) {
 		if (!empty($group)) {
@@ -508,7 +497,7 @@ class Language {
 	 * Import email language
 	 *
 	 * @param string $source
-	 * @param path $path
+	 * @param string $path
 	 * @return bool
 	 */
 	public function importEmail($source, $path = CC_LANGUAGE_DIR) {
@@ -562,6 +551,7 @@ class Language {
 	 * Import language file if valid
 	 *
 	 * @param file $file
+	 * @param bool $overwrite
 	 * @return bool
 	 */
 	public function importLanguage($file, $overwrite = false) {
@@ -596,7 +586,7 @@ class Language {
 	 * List availible languages
 	 *
 	 * @param bool $cache
-	 * @return array
+	 * @return array/false
 	 */
 	public function listLanguages($cache = true) {
 		//Try cache first
@@ -645,7 +635,7 @@ class Language {
 	 * Load language definitions
 	 *
 	 * @param string $name
-	 * @param path $path
+	 * @param string $path
 	 * @param string $file_name
 	 * @param bool $cache
 	 */
@@ -661,8 +651,6 @@ class Language {
 			&& ($GLOBALS['cache']->exists($name.'.definition_data') && is_array($GLOBALS['cache']->read($name.'.definition_data')))) {
 			$this->_language_definitions = $GLOBALS['cache']->read($name.'.definitions');
 			$this->_language_definition_data = $GLOBALS['cache']->read($name.'.definition_data');
-			//   $this->_language_definitions = array_merge($GLOBALS['cache']->read($name.'.definitions'), $this->_language_definitions);
-			//   $this->_language_definition_data = array_merge($GLOBALS['cache']->read($name.'.definition_data'), $this->_language_definition_data);
 		} else {
 			// Load language definitions
 			$file = $path.$file_name;
@@ -698,8 +686,6 @@ class Language {
 				if (!empty($definition)) {
 					$GLOBALS['cache']->write($definition, $name.'.definitions');
 					$GLOBALS['cache']->write($definition_data, $name.'.definition_data');
-					//     $this->_language_definitions = array_merge($definition, $this->_language_definitions);
-					//     $this->_language_definition_data = array_merge($definition_data, $this->_language_definition_data);
 					$this->_language_definitions = $definition;
 					$this->_language_definition_data = $definition_data;
 				}
@@ -710,13 +696,27 @@ class Language {
 	}
 
 	/**
+	 * Load language
+	 */
+	public function loadLang() {
+		//Load the core language files
+		$this->loadDefinitions('lang.core');
+		$this->_language_strings_def = $this->_language_strings; // Admin Langs - show default core groups only
+
+		$this->loadLanguageXML('lang.core');
+
+		//Set the system locale
+		$this->_setLocale();
+	}
+
+	/**
 	 * Load language XML file(s)
 	 *
 	 * @param string $name
 	 * @param string $language
-	 * @param path $path
+	 * @param string $path
 	 * @param bool $merge
-	 *
+	 * @param bool load_custom
 	 * @return array/false
 	 */
 	public function loadLanguageXML($name, $language = '', $path = CC_LANGUAGE_DIR, $merge = true, $load_custom = true) {
@@ -770,9 +770,6 @@ class Language {
 						$strings[(string)$string['type']][(string)$string['name']] = $string['value'];
 					}
 				}
-
-			} else {
-
 			}
 
 			unset($custom, $data, $string, $xml);
@@ -794,7 +791,7 @@ class Language {
 	 * @param string $language
 	 * @param bool $compress
 	 * @param bool $replace
-	 * @param path $path
+	 * @param string $path
 	 * @return bool
 	 */
 	public function saveLanguageXML($language, $compress = false, $replace, $path = CC_LANGUAGE_DIR) {
@@ -864,7 +861,6 @@ class Language {
 				}
 
 				return (bool)file_put_contents($target.$ext, $output);
-
 			}
 		}
 		return false;
@@ -892,7 +888,7 @@ class Language {
 	 * Translate a category
 	 *
 	 * @param array $category
-	 * @return array
+	 * @return array/false
 	 */
 	public function translateCategory(&$category) {
 		if (!empty($category)) {
@@ -910,7 +906,7 @@ class Language {
 	 * Translate a document
 	 *
 	 * @param array $document
-	 * @return array
+	 * @return array/false
 	 */
 	public function translateDocument(&$document) {
 		if (!empty($document)) {
@@ -928,7 +924,7 @@ class Language {
 	 * Translate a product
 	 *
 	 * @param array $product
-	 * @return array
+	 * @return array/false
 	 */
 	public function translateProduct(&$product) {
 		if (!empty($product)) {
@@ -941,8 +937,6 @@ class Language {
 		}
 		return false;
 	}
-
-	//=====[ Private ]===================================================================================================
 
 	/**
 	 * Checks to make sure the path passed in is valid
@@ -1009,7 +1003,7 @@ class Language {
 	 * Set Locale
 	 */
 	private function _setLocale() {
-		setlocale(LC_ALL, 'en_US.UTF-8');
+		setlocale(LC_ALL, 'en_GB.UTF-8');
 	}
 
 	/**
@@ -1022,7 +1016,6 @@ class Language {
 		if (!preg_match(self::LANG_REGEX, $language)) {
 			return false;
 		}
-
 		return file_exists(CC_LANGUAGE_DIR.$language.'.xml');
 	}
 }
