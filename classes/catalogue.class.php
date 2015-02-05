@@ -59,6 +59,14 @@ class Catalogue {
 		return self::$_instance;
 	}
 
+	/**
+	 * Build HTML select of categories
+	 *
+	 * @param int $parent_id
+	 * @param string $breakout
+	 * @param int $spaces
+	 * @return array
+	 */
 	public function buildCategoriesDropDown($parent_id = 0, $breakout = '|', $spaces = 0) {
 		$out = array();
 		if (($categories = $GLOBALS['db']->select('CubeCart_category', array('cat_parent_id', 'cat_id', 'cat_name'), array('cat_parent_id' => $parent_id), 'priority, cat_name ASC')) !== false) {
@@ -76,6 +84,12 @@ class Catalogue {
 		return $out;
 	}
 
+	/**
+	 * Paginate categories
+	 *
+	 * @param int $page
+	 * @return nothing
+	 */
 	public function categoryPagination($page) {
 		if ($this->_category_count) {
 			//Pagination
@@ -93,6 +107,16 @@ class Catalogue {
 		}
 	}
 
+	/**
+	 * Build category breadcrumb path
+	 *
+	 * @param int $category_id
+	 * @param string $glue
+	 * @param bool $link
+	 * @param bool $reverse_sort
+	 * @param bool $top
+	 * @return string
+	 */
 	public function categoryPath($category_id, $glue = '/', $link = true, $reverse_sort = true, $top = true) {
 		if ($top) {
 			$this->_pathElements = null;
@@ -113,6 +137,12 @@ class Catalogue {
 		}
 	}
 
+	/**
+	 * Create unique option combination identifier
+	 *
+	 * @param array $optionsArray
+	 * @return string
+	 */
 	public function defineOptionsIdentifier($optionsArray) {
 		if (is_array($optionsArray)) {
 
@@ -140,6 +170,11 @@ class Catalogue {
 		return '';
 	}
 
+	/**
+	 * Display category list page
+	 *
+	 * @return bool
+	 */
 	public function displayCategory() {
 
 		// Allow hooks to see/change what will be displayed
@@ -207,6 +242,13 @@ class Catalogue {
 		return true;
 	}
 
+	/**
+	 * Display product detail page
+	 *
+	 * @param int $product
+	 * @param bool $popularity
+	 * @return bool
+	 */
 	public function displayProduct($product = false, $popularity = false) {
 		if (isset($product) && is_numeric($product)) {
 			if (($product = $this->getProductData($product)) !== false) {
@@ -339,7 +381,7 @@ class Catalogue {
 			if ($GLOBALS['config']->get('config', 'recaptcha') && !$GLOBALS['session']->get('confirmed', 'recaptcha')) {
 				$GLOBALS['smarty']->assign('DISPLAY_RECAPTCHA', recaptcha_get_html($GLOBALS['recaptcha_keys']['captcha_public'], $GLOBALS['recaptcha']['error'], CC_SSL));
 				$recaptcha = $GLOBALS['config']->get('config', 'recaptcha');
-$GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
+				$GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 			}
 
 			// Output to main GUI
@@ -354,6 +396,13 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 		return false;
 	}
 
+	/**
+	 * Display product option
+	 *
+	 * @param int $product_id
+	 * @param array $selected_options_array
+	 * @return array/false
+	 */
 	public function displayProductOptions($product_id = null, $selected_options_array = null) {
 	
 		if (isset($product_id) && is_numeric($product_id)) {
@@ -447,6 +496,12 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 		return false;
 	}
 
+	/**
+	 * Display sort on category list
+	 *
+	 * @param string $search
+	 * @return array
+	 */
 	public function displaySort($search = false) {
 		// Sort
 		if ($search) {
@@ -483,6 +538,12 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 		return $data;
 	}
 
+	/**
+	 * Display subcategories on category list
+	 *
+	 * @param int $category_id
+	 * @return array/false
+	 */
 	public function displaySubCategory($category_id) {
 		if (!empty($category_id) && is_numeric($category_id)) {
 			if (($subcats = $GLOBALS['db']->select('CubeCart_category', false, array('cat_parent_id' => $category_id, 'status' => '1', 'hide' => '0'), array('priority'=>'ASC'))) !== false) {
@@ -503,14 +564,32 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 		return false;
 	}
 
+	/**
+	 * Convert parameter to int
+	 *
+	 * @param undefined $input
+	 * @return int
+	 */
 	public function get_int($input) {
 		return (int)$input;
 	}
 
+	/**
+	 * Convert array values to int
+	 *
+	 * @param array $input
+	 * @return array
+	 */
 	public function get_int_array($inputArray) {
 		return array_map(array(&$this, 'get_int'), $inputArray);
 	}
 
+	/**
+	 * Get specific category data
+	 *
+	 * @param int $category_id
+	 * @return array/false
+	 */
 	public function getCategoryData($category_id) {
 		if (($result = $GLOBALS['db']->select('CubeCart_category', false, array('cat_id' => $category_id, 'status' => 1))) !== false) {
 			$GLOBALS['language']->translateCategory($result[0]);
@@ -521,6 +600,15 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 		return false;
 	}
 
+	/**
+	 * Get products of specific category
+	 *
+	 * @param int $category_id
+	 * @param int $page
+	 * @param int $per_page
+	 * @param bool $hidden
+	 * @return array/false
+	 */
 	public function getCategoryProducts($category_id, $page = 1, $per_page = 10, $hidden = false) {
 		if (strtolower($page) == 'all') {
 			$per_page = false;
@@ -551,6 +639,13 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 		return (isset($productList) && is_array($productList)) ? $productList : false;
 	}
 
+
+	/**
+	 * Get status of category from product ID
+	 *
+	 * @param int $product_id
+	 * @return array
+	 */
 	public function getCategoryStatusByProductID($product_id) {
 
 		if(is_numeric($product_id) && $product_id>0) {
@@ -570,6 +665,12 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
         return array();
     }
 
+    /**
+	 * Get tree of categories & subcategories for navigation
+	 *
+	 * @param int $parent_id
+	 * @return array/false
+	 */
 	public function getCategoryTree($parent_id = 0) {
 		if (($categories = $GLOBALS['db']->select('CubeCart_category', array('cat_parent_id', 'cat_id', 'cat_name'), array('cat_parent_id' => $parent_id, 'status' => 1, 'hide' => 0), 'priority, cat_name ASC')) !== false) {
 
@@ -644,8 +745,14 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 		return (isset($tree_data)) ? $tree_data : false;
 	}
 
-	public function getManufacturer($id) {
-		if (($manufacturers = $GLOBALS['db']->select('CubeCart_manufacturers', array('name', 'URL'), array('id' => $id))) !== false) {
+	/**
+	 * Get specific manufacturer data
+	 *
+	 * @param int $manufacturer_id
+	 * @return array/false
+	 */
+	public function getManufacturer($manufacturer_id) {
+		if (($manufacturers = $GLOBALS['db']->select('CubeCart_manufacturers', array('name', 'URL'), array('id' => $manufacturer_id))) !== false) {
 			if (filter_var($manufacturers[0]['URL'], FILTER_VALIDATE_URL)) {
 				return '<a href="'.$manufacturers[0]['URL'].'" target="_blank">'.$manufacturers[0]['name'].'</a>';
 			} else {
@@ -656,6 +763,13 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 		}
 	}
 
+	/**
+	 * Get specific product option data
+	 *
+	 * @param int $option_id
+	 * @param int $assign_id
+	 * @return array/false
+	 */
 	public function getOptionData($option_id, $assign_id) {
 		if (($category = $GLOBALS['db']->select('CubeCart_option_group', false, array('option_id' => (int)$option_id))) !== false) {
 			// Is it assigned, or was it from an option set?
@@ -684,14 +798,37 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 		return false;
 	}
 
+	/**
+	 * Get product option price
+	 *
+	 * @return float
+	 */
 	public function getOptionsLinePrice() {
 		return (float)$this->_options_line_price;
 	}
 
+	/**
+	 * See if product option is required
+	 *
+	 * @return bool
+	 */
 	public function getOptionRequired() {
 		return $this->_option_required;
 	}
 
+	/**
+	 * Get product data
+	 *
+	 * @param int $product_id
+	 * @param int $quantity
+	 * @param bool $order
+	 * @param int $per_page
+	 * @param int $page
+	 * @param bool $category
+	 * @param string $options_identifier
+	 * @param int $assign_id
+	 * @return array/false
+	 */
 	public function getProductData($product_id, $quantity = 1, $order = false, $per_page = 10, $page = 1, $category = false, $options_identifier = null) {
 
 		if (!is_array($product_id)) {
@@ -751,6 +888,12 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 		return false;
 	}
 
+	/**
+	 * Get options for specific product
+	 *
+	 * @param int $product_id
+	 * @return array/false
+	 */
 	public function getProductOptions($product_id = null) {
 		if (($setlist = $GLOBALS['db']->select('CubeCart_options_set_product', array('set_id'), array('product_id' => (int)$product_id))) !== false) {
 			// Fetch Option Sets
@@ -859,6 +1002,12 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 		return false;
 	}
 
+	/**
+	 * Get product price
+	 *
+	 * @param array $product_data
+	 * @return array/false
+	 */
 	public function getProductPrice(&$product_data, $quantity = 1) {
 		if (isset($product_data['product_id']) && is_numeric($product_data['product_id'])) {
 			$product_id = (int)$product_data['product_id'];
@@ -956,6 +1105,14 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 		return false;
 	}
 
+	/**
+	 * Check product stock level
+	 *
+	 * @param array $product_id
+	 * @param string $options_identifier_string
+	 * @param bool $return_max
+	 * @return array/false
+	 */
 	public function getProductStock($product_id = null, $options_identifier_string = null, $return_max = false) {
 		// Choose option combination specific stock
 		if (is_numeric($product_id) && (!empty($options_identifier_string) || $return_max == true)) {
@@ -985,6 +1142,15 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 		return false;
 	}
 
+	/**
+	 * Get image path
+	 *
+	 * @param int/string $input
+ 	 * @param string $mode
+ 	 * @param string $path
+	 * @param bool $return_placeholder
+	 * @return string
+	 */
 	public function imagePath($input, $mode = 'medium', $path = 'relative', $return_placeholder = true) {
 		$defaults = true;
 		if (is_numeric($input)) {
@@ -993,9 +1159,9 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 				$defaults = false;
 			}
 		} else if (!empty($input)) {
-				$file  = str_replace(array('images/cache/', 'images/uploads/'), '', $input);
-				$defaults = false;
-			}
+			$file  = str_replace(array('images/cache/', 'images/uploads/'), '', $input);
+			$defaults = false;
+		}
 
 		$skins = $GLOBALS['gui']->getSkinData();
 		// Fetch a default image, just in case...
@@ -1066,6 +1232,14 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 		}
 	}
 
+	/**
+	 * Work out SQL where clause
+	 *
+	 * @param bool $original
+ 	 * @param bool $label
+ 	 * @param bool $force
+	 * @return string
+	 */
 	public function outOfStockWhere($original = false, $label = false, $force = false) {
 
 		$def = $original ? str_replace('WHERE ', '', $GLOBALS['db']->where('CubeCart_inventory', $original)) : '';
@@ -1077,6 +1251,12 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 		return ($GLOBALS['config']->get('config', 'hide_out_of_stock') && !Admin::getInstance()->is()) ? $oos : $def;
 	}
 
+	/**
+	 * Assign product into product display 
+	 *
+	 * @param int $product
+ 	 * @param bool $product_view
+	 */
 	public function productAssign(&$product, $product_view = true) {
 		## Short Description
 		$product['description_short'] = (strlen($product['description']) > $GLOBALS['config']->get('config', 'product_precis')) ? substr(strip_tags($product['description']), 0, $GLOBALS['config']->get('config', 'product_precis')).'&hellip;' : strip_tags($product['description']);
@@ -1166,9 +1346,14 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 		}
 		foreach ($GLOBALS['hooks']->load('class.catalogue.productassign') as $hook) include $hook;
 		return true;
-
 	}
 
+	/**
+	 * Count products in a category
+	 *
+	 * @param int $cat_id
+	 * @return int
+	 */
 	public function productCount($cat_id) {
 		$products = $GLOBALS['db']->select('CubeCart_category_index', array('id'), array('cat_id' => $cat_id));
 		$count  = ($products) ? count($products) : 0;
@@ -1178,9 +1363,18 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 				$count += $this->productCount($child['cat_id']);
 			}
 		}
-		return $count;
+		return (int)$count;
 	}
 
+	/**
+	 * Search product catalog
+	 *
+	 * @param string $search_data
+	 * @param int $page
+	 * @param int $per_page
+	 * @param string $search_mode
+	 * @return bool
+	 */
 	public function searchCatalogue($search_data = null, $page = 1, $per_page = 10, $search_mode = 'fulltext') {
 
 		$per_page = (!is_numeric($per_page) || $per_page < 1) ? 10 : $per_page;
@@ -1415,38 +1609,48 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 					return true;
 				}
 			} else if (strtolower($search_data) == 'sale') {
-					if (isset($_GET['sort']) && is_array($_GET['sort'])) {
-						foreach ($_GET['sort'] as $field => $direction) {
-							$order[$field] = (strtolower($direction) == 'asc') ? 'ASC' : 'DESC';
-							break;
-						}
-					} else {
-						$order['name'] = 'ASC';
+				if (isset($_GET['sort']) && is_array($_GET['sort'])) {
+					foreach ($_GET['sort'] as $field => $direction) {
+						$order[$field] = (strtolower($direction) == 'asc') ? 'ASC' : 'DESC';
+						break;
 					}
-
-					if(is_array($order)) { 
-						$order_string = 'ORDER BY '.key($order).' '.current($order);
-					}
-					
-					$where2 = $this->outOfStockWhere(false, 'I', true);
-					$whereString = 'IF (G.sale_price IS NULL, I.sale_price, G.sale_price) > 0'.$where2;
-					$query = sprintf("SELECT I.* FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND %2\$s %3\$s %4\$s", $GLOBALS['config']->get('config', 'dbprefix'), $whereString, $order_string, $limit);
-					if (($sale = $GLOBALS['db']->query($query)) !== false) {
-						$q2 = sprintf("SELECT I.* FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND %2\$s %3\$s", $GLOBALS['config']->get('config', 'dbprefix'), $whereString, $order_string);
-						$count = $GLOBALS['db']->query($q2);
-						$this->_category_count  = (int)count($count);
-						$this->_category_products = $sale;
-					}
+				} else {
+					$order['name'] = 'ASC';
 				}
-		}
 
+				if(is_array($order)) { 
+					$order_string = 'ORDER BY '.key($order).' '.current($order);
+				}
+				
+				$where2 = $this->outOfStockWhere(false, 'I', true);
+				$whereString = 'IF (G.sale_price IS NULL, I.sale_price, G.sale_price) > 0'.$where2;
+				$query = sprintf("SELECT I.* FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND %2\$s %3\$s %4\$s", $GLOBALS['config']->get('config', 'dbprefix'), $whereString, $order_string, $limit);
+				if (($sale = $GLOBALS['db']->query($query)) !== false) {
+					$q2 = sprintf("SELECT I.* FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND %2\$s %3\$s", $GLOBALS['config']->get('config', 'dbprefix'), $whereString, $order_string);
+					$count = $GLOBALS['db']->query($q2);
+					$this->_category_count  = (int)count($count);
+					$this->_category_products = $sale;
+				}
+			}
+		}
 		return false;
 	}
 
-	public function setCategory($element, $data) {
-		$this->_categoryData[$element] = $data;
+	/**
+	 * Set category id/name
+	 *
+	 * @param string $id
+	 * @param string $name
+	 */
+	public function setCategory($id, $name) {
+		$this->_categoryData[$id] = $name;
 	}
 
+	/**
+	 * Translate a category if a translation exists
+	 *
+	 * @return bool
+	 */
 	private function _categoryTranslation() {
 		if (isset($GLOBALS['language']) && !empty($GLOBALS['language'])) {
 			if (($result = $GLOBALS['db']->select('CubeCart_category_language', array('cat_name', 'cat_desc'), array('cat_id' => $this->_categoryData['cat_id'], 'language' => $GLOBALS['language']))) !== false) {
@@ -1458,6 +1662,12 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 		return false;
 	}
 
+	/**
+	 * Get product image gallery
+	 *
+	 * @param int $product_id
+	 * @return array/false
+	 */
 	private function _productGallery($product_id = false) {
 		if (isset($product_id) && is_numeric($product_id)) {
 			$skins = $GLOBALS['gui']->getSkinData();
@@ -1491,6 +1701,12 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 		return false;
 	}
 
+	/**
+	 * Increment product views
+	 *
+	 * @param int $product_id
+	 * @return bool
+	 */
 	private function _productPopularity($product_id = false) {
 		if ($product_id && is_numeric($product_id)) {
 			$GLOBALS['db']->update('CubeCart_inventory', array('popularity' => '+1'), array('product_id' => (int)$product_id), false);
