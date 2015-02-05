@@ -85,22 +85,22 @@ if (!empty($earliest_order[0]['MIN_order_date'])) {
 
 	if (count($yearly) >= 1) {
 		
-		$g_graph_data['yearly']['data'] = "['Year','".sprintf($lang['statistics']['sales_volume'], $GLOBALS['config']->get('config', 'default_currency'))."'],";
+		$g_graph_data[1]['data'] = "['Year','".sprintf($lang['statistics']['sales_volume'], $GLOBALS['config']->get('config', 'default_currency'))."'],";
 		
-		for ($i = $earliest['year']; $i <= $now['year']; ++$i) {
+		for ($i = $earliest[1]; $i <= $now['year']; ++$i) {
 			$value = isset($yearly[$i]) ? $yearly[$i] : 0;
 			$tmp_col_data[] = "['".$i."',".$value."]";
 		}
-		$g_graph_data['yearly']['data'] .= implode(',',$tmp_col_data);
+		$g_graph_data[1]['data'] .= implode(',',$tmp_col_data);
 		unset($tmp_col_data);
 	
-		$g_graph_data['yearly']['title'] = ($earliest['year'] == $now['year']) ? sprintf($lang['statistics']['sales_in'], $now['year']) : sprintf($lang['statistics']['sales_from_to'], $earliest['year'], $now['year']);
-		$g_graph_data['yearly']['hAxis'] = '';
-		$g_graph_data['yearly']['vAxis'] = '';
+		$g_graph_data[1]['title'] = ($earliest['year'] == $now['year']) ? sprintf($lang['statistics']['sales_in'], $now['year']) : sprintf($lang['statistics']['sales_from_to'], $earliest['year'], $now['year']);
+		$g_graph_data[1]['hAxis'] = '';
+		$g_graph_data[1]['vAxis'] = '';
 		
 	}
 
-	$g_graph_data['monthly']['data'] = "['Month','".sprintf($lang['statistics']['sales_volume'], $GLOBALS['config']->get('config', 'default_currency'))."'],";
+	$g_graph_data[2]['data'] = "['Month','".sprintf($lang['statistics']['sales_volume'], $GLOBALS['config']->get('config', 'default_currency'))."'],";
 
 	for ($i = 1; $i <= 12; ++$i) {
 		$i    = str_pad($i, 2, '0', STR_PAD_LEFT);
@@ -112,14 +112,14 @@ if (!empty($earliest_order[0]['MIN_order_date'])) {
 		$smarty_data['months'][] = array('value' => $i, 'title' => $month_text, 'selected' => $selected);
 	}
 	
-	$g_graph_data['monthly']['data'] .= implode(',',$tmp_col_data);
+	$g_graph_data[2]['data'] .= implode(',',$tmp_col_data);
 	unset($tmp_col_data);
 	
 	$GLOBALS['smarty']->assign('MONTHS', $smarty_data['months']);
 		
-	$g_graph_data['monthly']['title'] = sprintf($lang['statistics']['sales_in_year'], $select['year']);
-	$g_graph_data['monthly']['hAxis'] = '';
-	$g_graph_data['monthly']['vAxis'] = '';
+	$g_graph_data[2]['title'] = sprintf($lang['statistics']['sales_in_year'], $select['year']);
+	$g_graph_data[2]['hAxis'] = '';
+	$g_graph_data[2]['vAxis'] = '';
 	
 	
 	$monthLength = date('t', mktime(0, 0, 0, $select['month'], 1, $select['year']));
@@ -130,32 +130,32 @@ if (!empty($earliest_order[0]['MIN_order_date'])) {
 	}
 	$GLOBALS['smarty']->assign('DAYS', $smarty_data['days']);
 
-	$g_graph_data['daily']['data'] = "['Day','".sprintf($lang['statistics']['sales_volume'], $GLOBALS['config']->get('config', 'default_currency'))."'],";
+	$g_graph_data[3]['data'] = "['Day','".sprintf($lang['statistics']['sales_volume'], $GLOBALS['config']->get('config', 'default_currency'))."'],";
 
 	for ($i = 1;$i <= $monthLength; ++$i) {
 		$i    = str_pad($i, 2, '0', STR_PAD_LEFT);
 		$value   = isset($daily[$i]) ? $daily[$i] : 0;
 		$tmp_col_data[] = "['".(int)$i."',".$value."]";
 	}
-	$g_graph_data['daily']['data'] .= implode(',',$tmp_col_data);
+	$g_graph_data[3]['data'] .= implode(',',$tmp_col_data);
 	unset($tmp_col_data);
-	$g_graph_data['daily']['title'] = sprintf($lang['statistics']['sales_in_month_year'], $monthList[$select['month']], $select['year']);
-	$g_graph_data['daily']['hAxis'] = '';
-	$g_graph_data['daily']['vAxis'] = '';
+	$g_graph_data[3]['title'] = sprintf($lang['statistics']['sales_in_month_year'], $monthList[$select['month']], $select['year']);
+	$g_graph_data[3]['hAxis'] = '';
+	$g_graph_data[3]['vAxis'] = '';
 	
 
-	$g_graph_data['hourly']['data'] = "['Hour','".sprintf($lang['statistics']['sales_volume'], $GLOBALS['config']->get('config', 'default_currency'))."'],";
+	$g_graph_data[4]['data'] = "['Hour','".sprintf($lang['statistics']['sales_volume'], $GLOBALS['config']->get('config', 'default_currency'))."'],";
 
 	for ($i = 0; $i <= 23; ++$i) {
 		$i    = str_pad($i, 2, '0', STR_PAD_LEFT);
 		$value   = isset($hourly[$i]) ? $hourly[$i] : 0;
 		$tmp_col_data[] = "['".$i.":00',".$value."]";
 	}
-	$g_graph_data['hourly']['data'] .= implode(',',$tmp_col_data);
+	$g_graph_data[4]['data'] .= implode(',',$tmp_col_data);
 	unset($tmp_col_data);
-	$g_graph_data['hourly']['title'] = sprintf($lang['statistics']['sales_on_dmy'], $select['day'], $monthList[$select['month']], $select['year']);
-	$g_graph_data['hourly']['hAxis'] = '';
-	$g_graph_data['hourly']['vAxis'] = '';
+	$g_graph_data[4]['title'] = sprintf($lang['statistics']['sales_on_dmy'], $select['day'], $monthList[$select['month']], $select['year']);
+	$g_graph_data[4]['hAxis'] = '';
+	$g_graph_data[4]['vAxis'] = '';
 
 	// Populate dropdowns
 	$select_options = array('month' => $monthList);
@@ -176,24 +176,24 @@ if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
 	$numrows = $GLOBALS['db']->numrows($query);
 	$divider = $GLOBALS['db']->query("SELECT SUM(quantity) as totalProducts FROM  `".$glob['dbprefix']."CubeCart_order_inventory`");
 	
-	$g_graph_data['prodsales']['data'] = "['".$lang['statistics']['percentage_of_sales']."','".$lang['common']['percentage']."'],";
+	$g_graph_data[5]['data'] = "['".$lang['statistics']['percentage_of_sales']."','".$lang['common']['percentage']."'],";
 	
-	$smarty_data['product_sales'] = array();
+	$smarty_data[5] = array();
 	foreach ($results as $key => $result) {
 		$result['key']  = (($page-1)*$per_page)+($key+1);
 		$result['percent'] = 100*($result['quan']/$divider[0]['totalProducts']);
 		$result['percent'] = number_format($result['percent'], 2);
 		$tmp_col_data[] = "['".$result['key'].". ".$result['name']."',".$result['percent']."]";
 		// Create a product legend
-		$smarty_data['product_sales'][] = $result;
+		$smarty_data[5][] = $result;
 	}
 	
-	$g_graph_data['prodsales']['data'] .= isset($tmp_col_data) ? implode(',',$tmp_col_data) : '';
+	$g_graph_data[5]['data'] .= isset($tmp_col_data) ? implode(',',$tmp_col_data) : '';
 	unset($tmp_col_data);
 	
-	$g_graph_data['prodsales']['title'] = $lang['statistics']['percentage_of_sales'];
-	$g_graph_data['prodsales']['hAxis'] = $lang['dashboard']['inv_products'];;
-	$g_graph_data['prodsales']['vAxis'] = $lang['common']['percentage'];
+	$g_graph_data[5]['title'] = $lang['statistics']['percentage_of_sales'];
+	$g_graph_data[5]['hAxis'] = $lang['dashboard']['inv_products'];;
+	$g_graph_data[5]['vAxis'] = $lang['common']['percentage'];
 	
 	$GLOBALS['smarty']->assign('PRODUCT_SALES', $smarty_data['product_sales']);
 	
@@ -212,7 +212,7 @@ if ($results) {
 	$divider = $GLOBALS['db']->query('SELECT SUM(popularity) as `totalHits` FROM  `'.$glob['dbprefix'].'CubeCart_inventory`');
 	$max_percent = 0;
 	
-	$g_graph_data['prodviews']['data'] = "['".$lang['statistics']['percentage_of_views']."','".$lang['common']['percentage']."'],";
+	$g_graph_data[6]['data'] = "['".$lang['statistics']['percentage_of_views']."','".$lang['common']['percentage']."'],";
 	
 	foreach ($results as $key => $result) {
 		$result['key']  = (($page-1)*$per_page)+($key+1);
@@ -224,11 +224,11 @@ if ($results) {
 		$smarty_data['product_views'][] = $result;
 	}
 	
-	$g_graph_data['prodviews']['data'] .= implode(',',$tmp_col_data);
+	$g_graph_data[6]['data'] .= implode(',',$tmp_col_data);
 	unset($tmp_col_data);
-	$g_graph_data['prodviews']['title'] = $lang['statistics']['percentage_of_views'];
-	$g_graph_data['prodviews']['hAxis'] = $lang['dashboard']['inv_products'];
-	$g_graph_data['prodviews']['vAxis'] = $lang['common']['percentage'];
+	$g_graph_data[6]['title'] = $lang['statistics']['percentage_of_views'];
+	$g_graph_data[6]['hAxis'] = $lang['dashboard']['inv_products'];
+	$g_graph_data[6]['vAxis'] = $lang['common']['percentage'];
 	
 	$GLOBALS['smarty']->assign('PRODUCT_VIEWS', $smarty_data['product_views']);
 
@@ -246,9 +246,9 @@ if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
 	$divider = $GLOBALS['db']->query("SELECT SUM(hits) as `totalHits` FROM  `".$glob['dbprefix']."CubeCart_search`");
 	$max_percent = 0;
 	
-	$g_graph_data['search']['data'] = "['".$lang['statistics']['percentage_of_views']."','".$lang['common']['percentage']."'],";
+	$g_graph_data[7]['data'] = "['".$lang['statistics']['percentage_of_views']."','".$lang['common']['percentage']."'],";
 	
-	$smarty_data['search_terms'] = array();
+	$smarty_data[7] = array();
 	foreach ($results as $key => $result) {
 		$result['percent']  = 100*($result['hits']/$divider[0]['totalHits']);
 		$max_percent = ($result['percent']>$max_percent) ? $result['percent'] : $max_percent;
@@ -259,11 +259,11 @@ if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
 		$smarty_data['search_terms'][] = $result;
 	}
 	
-	$g_graph_data['search']['data'] .= isset($tmp_col_data) ? implode(',',$tmp_col_data) : '';
+	$g_graph_data[7]['data'] .= isset($tmp_col_data) ? implode(',',$tmp_col_data) : '';
 	unset($tmp_col_data);
-	$g_graph_data['search']['title'] = '';
-	$g_graph_data['search']['hAxis'] = $lang['statistics']['search_term'];
-	$g_graph_data['search']['vAxis'] = $lang['statistics']['percentage_of_search'];
+	$g_graph_data[7]['title'] = '';
+	$g_graph_data[7]['hAxis'] = $lang['statistics']['search_term'];
+	$g_graph_data[7]['vAxis'] = $lang['statistics']['percentage_of_search'];
 	
 	$GLOBALS['smarty']->assign('SEARCH_TERMS', $smarty_data['search_terms']);
 	
@@ -279,23 +279,23 @@ if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
 	$numrows = $GLOBALS['db']->numrows($query);
 	$divider = $GLOBALS['db']->query("SELECT sum(`total`) as `total_sales` FROM `".$glob['dbprefix']."CubeCart_order_summary` WHERE `status` = 3");
 	
-	$g_graph_data['best_customers']['data'] = "['".$lang['statistics']['percentage_of_views']."','".sprintf($lang['statistics']['sales_volume'], 		$GLOBALS['config']->get('config', 'default_currency'))."'],";
+	$g_graph_data[8]['data'] = "['".$lang['statistics']['percentage_of_views']."','".sprintf($lang['statistics']['sales_volume'], 		$GLOBALS['config']->get('config', 'default_currency'))."'],";
 	
-	$smarty_data['best_customers'] = array();
+	$smarty_data[8] = array();
 	foreach ($results as $key => $result) {
 		$result['key']  = (($page-1)*$per_page)+($key+1);
 		$result['expenditure'] = Tax::getInstance()->priceFormat($result['customer_expenditure']);
 		$result['percent'] = $divider[0]['total_sales'] ? number_format(100*($result['customer_expenditure']/$divider[0]['total_sales']), 2) : 0;
 		$tmp_col_data[] = "['".$result['key'].". ".$result['last_name'].", ".$result['first_name']."',".$result['customer_expenditure']."]";
 		// Create a customer legend
-		$smarty_data['best_customers'][] = $result;
+		$smarty_data[8][] = $result;
 	}
 	
-	$g_graph_data['best_customers']['data'] .= isset($tmp_col_data) ? implode(',',$tmp_col_data) : '';
+	$g_graph_data[8]['data'] .= isset($tmp_col_data) ? implode(',',$tmp_col_data) : '';
 	unset($tmp_col_data);
-	$g_graph_data['best_customers']['title'] = '';
-	$g_graph_data['best_customers']['hAxis'] = $lang['dashboard']['inv_customers'];
-	$g_graph_data['best_customers']['vAxis'] = $lang['statistics']['total_expenditure'];
+	$g_graph_data[8]['title'] = '';
+	$g_graph_data[8]['hAxis'] = $lang['dashboard']['inv_customers'];
+	$g_graph_data[8]['vAxis'] = $lang['statistics']['total_expenditure'];
 	
 	$GLOBALS['smarty']->assign('BEST_CUSTOMERS', $smarty_data['best_customers']);
 
