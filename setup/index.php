@@ -480,6 +480,8 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
         break;
     }
     $GLOBALS['smarty']->assign('MODE_COMPLETE', true);
+    // delete setup folder on admin login
+    setcookie('delete_setup', true, time()+604800);
     $GLOBALS['smarty']->assign('SHOW_LINKS', true);
     
     /* Truncate CubeCart_system_error_log table. There are a number of failed SQL queries on upgrade depending

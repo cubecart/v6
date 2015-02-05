@@ -32,6 +32,12 @@ if (isset($_POST['notes']['dashboard_notes']) && !empty($_POST['notes']['dashboa
 
 ## Check if setup folder remains after install/upgrade
 if ($glob['installed'] && file_exists(CC_ROOT_DIR.'/setup')) {
+	## Attempt auto delete as we have just upgraded or installed
+	if($_COOKIE['delete_setup']) {
+		recursiveDelete(CC_ROOT_DIR.'/setup');
+		unlink(CC_ROOT_DIR.'/setup');
+	}
+
 	$history = $GLOBALS['db']->misc('SELECT `version` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_history` ORDER BY `time` DESC LIMIT 1');
 	if (version_compare(CC_VERSION, $history[0]['version'], '>')) {
 		$GLOBALS['main']->setACPWarning(sprintf($lang['dashboard']['error_version'], CC_VERSION, $history[0]['version']));
