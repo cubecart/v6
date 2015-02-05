@@ -13,7 +13,7 @@ jQuery(document).ready(function() {
     $(".autosubmit select").change(function() {
         $(this).parents(".autosubmit").submit();
     });
-    $('img.imagesubmit').each(function() {
+    $('i.fa-submit').each(function() {
         $(this).parents('form').submit();
     });
     $(".category-nav li").each(function(index) {

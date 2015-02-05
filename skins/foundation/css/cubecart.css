@@ -229,6 +229,10 @@ div#box-session {
 textarea#contact_enquiry {
     height: 150px;
 }
+.fa-submit {
+    font-size: 45px;
+    color: #008CBA;
+}
 @media only screen and (max-width: 40em) {
   .small-collapse {
     padding:0;

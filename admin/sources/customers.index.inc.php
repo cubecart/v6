@@ -315,7 +315,7 @@ if (isset($_GET['action']) && Admin::getInstance()->permissions('customers', CC_
 		if (($customer = $GLOBALS['db']->select('CubeCart_customer', false, array('customer_id' => (int)$_GET['customer_id']))) !== false) {
 			$customer = $customer[0];
 
-			$GLOBALS['main']->addTabControl(sprintf($lang['customer']['signinas'],$customer['first_name'],$customer['last_name']), '', currentPage('', array('action' => 'signinas', 'customer_id' => $customer['customer_id'])), null, false, '_blank');
+			$GLOBALS['main']->addTabControl('<i class="fa fa-sign-in"></i> '.sprintf($lang['customer']['signinas'],$customer['first_name'],$customer['last_name']), '', currentPage('', array('action' => 'signinas', 'customer_id' => $customer['customer_id'])), null, false, '_blank');
 
 			$customer_id = (int)$customer['customer_id'];
 			$GLOBALS['smarty']->assign('ADD_EDIT_CUSTOMER', $lang['customer']['title_customer_edit']);

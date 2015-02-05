@@ -784,7 +784,7 @@
     <string name="zone_name" introduced="5.0.0"><![CDATA[Name]]></string>
   </group>
   <group name="customer">
-    <string name="signinas" introduced="6.0.0"><![CDATA[View storefront as %s %s]]></string>
+    <string name="signinas" introduced="6.0.0"><![CDATA[Login as %s %s]]></string>
     <string name="customer_type" introduced="5.0.0"><![CDATA[Type]]></string>
     <string name="customer_export" introduced="5.0.0"><![CDATA[Customer Export]]></string>
     <string name="date_registered" introduced="5.0.0"><![CDATA[Date Registered]]></string>
