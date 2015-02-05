@@ -18,6 +18,7 @@ require CC_ROOT_DIR.'/classes/cache/cache.class.php';
  * Cache specific class
  *
  * @author Technocrat
+ * @author Al Brookbanks
  * @version 1.1.0
  * @since 5.0.0
  */

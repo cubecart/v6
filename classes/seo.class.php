@@ -15,6 +15,7 @@
  * Language controller
  *
  * @author Technocrat
+ * @author Al Brookbanks
  * @author Al
  * @version 1.2.0
  * @since 5.0.0

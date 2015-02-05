@@ -15,6 +15,7 @@
  * XML controller
  *
  * @author Technocrat
+ * @author Al Brookbanks
  * @version 1.1.0
  * @since 5.0.0
  */
