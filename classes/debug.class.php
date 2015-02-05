@@ -142,7 +142,7 @@ class Debug {
 	/**
 	 * Setup the instance (singleton)
 	 *
-	 * @return Debug
+	 * @return This instance
 	 */
 	public static function getInstance() {
 		if (!(self::$_instance instanceof self)) {
@@ -150,6 +150,15 @@ class Debug {
 		}
 
 		return self::$_instance;
+	}
+
+	/**
+	 * Set a debug message
+	 *
+	 * @param string $message
+	 */
+	public function debugMessage($message) {
+		$this->_messages[] = $message;
 	}
 
 	/**
@@ -166,15 +175,6 @@ class Debug {
 		}
 
 		return false;
-	}
-
-	/**
-	 * Set a debug message
-	 *
-	 * @param string $message
-	 */
-	public function debugMessage($message) {
-		$this->_messages[] = $message;
 	}
 
 	/**
@@ -198,6 +198,10 @@ class Debug {
 
 	/**
 	 * Display debug
+	 *
+	 * @param bool $return
+	 * @param glue $string
+	 * @return bool
 	 */
 	public function display($return = false, $glue = "\n") {
 		
@@ -343,17 +347,6 @@ class Debug {
 	}
 
 	/**
-	 * Error handler
-	 *
-	 * @param object $e
-	 */
-	public function exceptionHandler($e) {
-		$message = "[<strong>Exception</strong>] \t".$e->getFile().":".$e->getLine()." - ".$e->getMessage();
-		$this->_errors[] = $message;
-		$this->_writeErrorLog($message);
-	}
-
-	/**
 	 * Error logger
 	 *
 	 * @param int $error_no
@@ -424,6 +417,17 @@ class Debug {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Error handler
+	 *
+	 * @param object $e
+	 */
+	public function exceptionHandler($e) {
+		$message = "[<strong>Exception</strong>] \t".$e->getFile().":".$e->getLine()." - ".$e->getMessage();
+		$this->_errors[] = $message;
+		$this->_writeErrorLog($message);
 	}
 
 	/**
