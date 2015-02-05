@@ -16,7 +16,7 @@ require 'phpMailer/PHPMailerAutoload.php';
 /**
  * Language controller
  *
- * @author Technocrat
+ * @author Al Brookbanks
  * @since 5.0.0
  */
 
@@ -70,6 +70,14 @@ class Mailer extends PHPMailer {
 		return self::$_instance;
 	}
 
+	/**
+	 * Load email content
+	 *
+	 * @param string $content_type
+	 * @param string $language
+	 * @param bool $data
+	 * @return array/false
+	 */
 	public function loadContent($content_type, $language = null, $data = false) {
 
 		$language = (!empty($language) && preg_match(Language::LANG_REGEX, $language, $match)) ? $language : $GLOBALS['language']->current();
@@ -122,6 +130,14 @@ class Mailer extends PHPMailer {
 
 	}
 
+	/**
+	 * Send the email
+	 *
+	 * @param string $email
+	 * @param string $contents
+	 * @param int $template_id
+	 * @return bool
+	 */
 	public function sendEmail($email = false, $contents = false, $template_id = false) {
 		$this->ClearAddresses();
 		if (strstr($email, ',')) {
@@ -184,6 +200,12 @@ class Mailer extends PHPMailer {
 		return false;
 	}
 
+	/**
+	 * Parse contents though Smarty
+	 *
+	 * @param string $contents
+	 * @return string
+	 */
 	private function _parseContents($contents) {
 		if (is_array($contents)) {
 			foreach ($contents as $key => $content) {
@@ -193,6 +215,14 @@ class Mailer extends PHPMailer {
 		return $out;
 	}
 
+	/**
+	 * Parse template though Smarty
+	 *
+	 * @param array $templates
+	 * @param string $data
+	 * @param string $email_content
+	 * @return string
+	 */
 	private function _parseTemplate($templates, $data, $email_content = '') {
 		$GLOBALS['smarty']->assign('DATA', $data);
 		$GLOBALS['smarty']->assign('EMAIL_CONTENT', $email_content);
