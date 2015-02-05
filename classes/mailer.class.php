@@ -200,6 +200,8 @@ class Mailer extends PHPMailer {
 		return false;
 	}
 
+	//=====[ Private ]=======================================
+
 	/**
 	 * Parse contents though Smarty
 	 *

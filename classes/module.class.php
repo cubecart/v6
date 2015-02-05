@@ -353,7 +353,8 @@ class Module {
 		return (isset($zones)) ? serialize($zones) : '';
 	}
 
-
+	//=====[ Private ]=======================================
+	
 	/**
 	 * Load module classes
 	 *

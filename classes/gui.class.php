@@ -766,6 +766,8 @@ class GUI {
 		return $this->mobile;
 	}
 
+	//=====[ Private ]=======================================
+
 	/**
 	 * Display cookie acceptance dialogue
 	 */

@@ -937,6 +937,8 @@ class Language {
 		return false;
 	}
 
+	//=====[ Private ]=======================================
+
 	/**
 	 * Checks to make sure the path passed in is valid
 	 *

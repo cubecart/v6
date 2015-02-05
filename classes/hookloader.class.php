@@ -367,6 +367,8 @@ class HookLoader {
 		}
 	}
 
+	//=====[ Private ]=======================================
+
 	/**
 	 * Build hook list
 	 *
