@@ -59,8 +59,6 @@ class Catalogue {
 		return self::$_instance;
 	}
 
-	//=====[ Public ]====================================================================================================
-
 	public function buildCategoriesDropDown($parent_id = 0, $breakout = '|', $spaces = 0) {
 		$out = array();
 		if (($categories = $GLOBALS['db']->select('CubeCart_category', array('cat_parent_id', 'cat_id', 'cat_name'), array('cat_parent_id' => $parent_id), 'priority, cat_name ASC')) !== false) {
@@ -113,6 +111,33 @@ class Catalogue {
 			($reverse_sort) ? krsort($this->_pathElements) : ksort($this->_pathElements);
 			return implode($glue, $this->_pathElements);
 		}
+	}
+
+	public function defineOptionsIdentifier($optionsArray) {
+		if (is_array($optionsArray)) {
+
+			foreach ($optionsArray as $value) {
+				if (is_numeric($value)) {
+					$assign_ids[] = $value;
+				}
+			}
+
+			if (is_array($assign_ids)) {
+				$query = 'SELECT `option_id`, `value_id` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_option_assign` WHERE `matrix_include` = 1 AND `assign_id` IN ('.implode(',', $assign_ids).') ORDER BY `option_id`, `value_id` ASC';
+
+				$option_identifiers = $GLOBALS['db']->query($query);
+				// Update product code & stock based on options matrix
+
+				$options_identifier_string = '';
+				if(is_array($option_identifiers)) {
+					foreach($option_identifiers as $option_identifier) {
+						$options_identifier_string .= $option_identifier['option_id'].$option_identifier['value_id'];
+					}	
+					return md5($options_identifier_string);
+				}
+			}
+		}
+		return '';
 	}
 
 	public function displayCategory() {
@@ -329,6 +354,99 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 		return false;
 	}
 
+	public function displayProductOptions($product_id = null, $selected_options_array = null) {
+	
+		if (isset($product_id) && is_numeric($product_id)) {
+			
+			if(is_array($selected_options_array)) {
+				foreach($selected_options_array as $selected_assign_id => $value) {
+					$selected[$selected_assign_id] = $value;
+				}
+			}
+			$optionArray = $this->getProductOptions($product_id);
+			if (is_array($optionArray)) {
+				ksort($optionArray);
+				foreach ($optionArray as $type => $group) {
+					switch ($type) {
+					case self::OPTION_SELECT:  ## Dropdown options
+					case self::OPTION_RADIO:  ## Radio options
+						foreach ($group as $key => $option) {
+							$group_priority = $option['priority'];
+							unset ($option['priority']);
+							foreach ($option as $value) {
+								if (!isset($option_list[$value['option_id']])) {
+									$option_list[$value['option_id']] = array(
+										'type'   => $value['option_type'],
+										'option_id'  => $value['option_id'],
+										'option_name' => $value['option_name'],
+										'required'  => (bool)$value['option_required'],
+										'selected' => ($selected[$value['assign_id']]) ? true : false
+									);
+								}
+					
+								$option_list[$value['option_id']]['values'][] = array(
+									'assign_id'  => $value['assign_id'],
+									'decimal_price'   => $value['option_price'],
+									'price'   => (isset($value['option_price']) && $value['option_price']!=0) ? Tax::getInstance()->priceFormat($value['option_price'], true) : false,
+									'symbol'  => (isset($value['option_price']) && $value['option_price']!=0 && $value['option_negative'] == 0) ? '+' : '-',
+									'value_id'  => $value['value_id'],
+									'value_name' => $value['value_name'],
+									'selected' => ($selected[$value['assign_id']]) ? true : false
+								);
+								
+								if($selected[$value['assign_id']]) {
+									if($value['option_price']>0 && $value['option_negative'] == 0) { 
+										$this->_options_line_price +=  $value['option_price'];
+									} elseif($value['option_price']>0) { 
+										$this->_options_line_price -=  $value['option_price'];
+									}
+								}
+							}
+							$option_list[$value['option_id']]['priority'] = $group_priority;
+						}
+						
+						break;
+					case self::OPTION_TEXTBOX:  ## Textbox options
+					case self::OPTION_TEXTAREA:  ## Textarea option
+						
+						foreach ($group as $key => $option) {
+							
+							// You could say this is a bit of a fudge but it works	
+							$price = (isset($option[0]['option_price']) && $option[0]['option_price']>0) ? Tax::getInstance()->priceFormat($option[0]['option_price']) : false;
+							$symbol = (isset($option[0]['option_price']) && $option[0]['option_negative'] == 0) ? '+' : '-';
+							$value = trim(str_replace(array($option[0]['option_name'].':','('.$symbol.$price.')'),'',$selected[$option[0]['assign_id']]));
+							
+							$option_list[] = array(
+								'type'   => $option[0]['option_type'],
+								'option_id'  => $option[0]['option_id'],
+								'option_name' => $option[0]['option_name'],
+								'required'  => (bool)$option[0]['option_required'],
+								'price'   => $price,
+								'decimal_price'   => $option[0]['option_price'],
+								'symbol'  => $symbol,
+								'priority'      => $option['priority'],
+								'value'	=> $value
+							);
+							
+							if($option[0]['option_price']>0 && $option[0]['option_negative'] == 0) { 
+								$this->_options_line_price +=  $option[0]['option_price'];
+							} elseif($value['option_price']>0) { 
+								$this->_options_line_price -=  $option[0]['option_price'];
+							}
+								
+							
+						}
+						break;
+					}
+				}
+				uasort($option_list, 'cmpmc'); // sort groups
+				return $option_list;
+			}
+		}
+
+		return false;
+	}
+
 	public function displaySort($search = false) {
 		// Sort
 		if ($search) {
@@ -385,6 +503,14 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 		return false;
 	}
 
+	public function get_int($input) {
+		return (int)$input;
+	}
+
+	public function get_int_array($inputArray) {
+		return array_map(array(&$this, 'get_int'), $inputArray);
+	}
+
 	public function getCategoryData($category_id) {
 		if (($result = $GLOBALS['db']->select('CubeCart_category', false, array('cat_id' => $category_id, 'status' => 1))) !== false) {
 			$GLOBALS['language']->translateCategory($result[0]);
@@ -395,7 +521,37 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 		return false;
 	}
 
-	function getCategoryStatusByProductID($product_id) {
+	public function getCategoryProducts($category_id, $page = 1, $per_page = 10, $hidden = false) {
+		if (strtolower($page) == 'all') {
+			$per_page = false;
+			$page  = false;
+		}
+
+		$where2 = $this->outOfStockWhere(false, 'INV', true);
+
+		if (($result = $GLOBALS['db']->query('SELECT I.product_id FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_category_index` as I,  `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory` as INV WHERE I.cat_id = '.$category_id.' AND I.product_id = INV.product_id AND INV.status = 1'.$where2)) !== false) {
+			$this->_category_count = $GLOBALS['db']->numrows();
+			if (isset($_GET['sort']) && is_array($_GET['sort'])) {
+				foreach ($_GET['sort'] as $field => $direction) {
+					$order[$field] = (strtolower($direction) == 'asc') ? 'ASC' : 'DESC';
+					break;
+				}
+			} else {
+				$order_column = $GLOBALS['config']->get('config', 'product_sort_column');
+				$order_direction = $GLOBALS['config']->get('config', 'product_sort_direction');
+				$order[$order_column] = $order_direction;
+			}
+			foreach ($result as $product) {
+				$list[] = $product['product_id'];
+			}
+			foreach ($GLOBALS['hooks']->load('class.catalogue.category_product_list') as $hook) include $hook;
+			$productList = $this->getProductData($list, 1, $order, $per_page, $page, true);
+		}
+
+		return (isset($productList) && is_array($productList)) ? $productList : false;
+	}
+
+	public function getCategoryStatusByProductID($product_id) {
 
 		if(is_numeric($product_id) && $product_id>0) {
 			if (empty($this->_category_status_prod_id[$product_id])) {
@@ -498,6 +654,42 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 		} else {
 			return false;
 		}
+	}
+
+	public function getOptionData($option_id, $assign_id) {
+		if (($category = $GLOBALS['db']->select('CubeCart_option_group', false, array('option_id' => (int)$option_id))) !== false) {
+			// Is it assigned, or was it from an option set?
+			if (is_int($assign_id) && $assign_id < 0) {
+				// Option Set
+				if (($value = $GLOBALS['db']->select('CubeCart_option_value', false, array('value_id' => abs($assign_id)))) !== false) {
+					return array_merge($category[0], $value[0]);
+				}
+			} else {
+				$assigned = $GLOBALS['db']->select('CubeCart_option_assign', false, array('assign_id' => (int)$assign_id));
+				if ($category[0]['option_type'] == 0 || $category[0]['option_type'] == 4) {
+					// Select
+					if (($value = $GLOBALS['db']->select('CubeCart_option_value', false, array('option_id' => $category[0]['option_id'], 'value_id' => $assigned[0]['value_id']))) !== false) {
+						return array_merge($category[0], $assigned[0], $value[0]);
+					}
+				} else {
+					// Text
+					if (isset($assigned[0])) {
+						return array_merge($category[0], $assigned[0]);
+					} else {
+						return $category[0];
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	public function getOptionsLinePrice() {
+		return (float)$this->_options_line_price;
+	}
+
+	public function getOptionRequired() {
+		return $this->_option_required;
 	}
 
 	public function getProductData($product_id, $quantity = 1, $order = false, $per_page = 10, $page = 1, $category = false, $options_identifier = null) {
@@ -764,97 +956,7 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 		return false;
 	}
 
-	public function getCategoryProducts($category_id, $page = 1, $per_page = 10, $hidden = false) {
-		if (strtolower($page) == 'all') {
-			$per_page = false;
-			$page  = false;
-		}
-
-		$where2 = $this->outOfStockWhere(false, 'INV', true);
-
-		if (($result = $GLOBALS['db']->query('SELECT I.product_id FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_category_index` as I,  `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory` as INV WHERE I.cat_id = '.$category_id.' AND I.product_id = INV.product_id AND INV.status = 1'.$where2)) !== false) {
-			$this->_category_count = $GLOBALS['db']->numrows();
-			if (isset($_GET['sort']) && is_array($_GET['sort'])) {
-				foreach ($_GET['sort'] as $field => $direction) {
-					$order[$field] = (strtolower($direction) == 'asc') ? 'ASC' : 'DESC';
-					break;
-				}
-			} else {
-				$order_column = $GLOBALS['config']->get('config', 'product_sort_column');
-				$order_direction = $GLOBALS['config']->get('config', 'product_sort_direction');
-				$order[$order_column] = $order_direction;
-			}
-			foreach ($result as $product) {
-				$list[] = $product['product_id'];
-			}
-			foreach ($GLOBALS['hooks']->load('class.catalogue.category_product_list') as $hook) include $hook;
-			$productList = $this->getProductData($list, 1, $order, $per_page, $page, true);
-		}
-
-		return (isset($productList) && is_array($productList)) ? $productList : false;
-	}
-
-	public function getOptionData($option_id, $assign_id) {
-		if (($category = $GLOBALS['db']->select('CubeCart_option_group', false, array('option_id' => (int)$option_id))) !== false) {
-			// Is it assigned, or was it from an option set?
-			if (is_int($assign_id) && $assign_id < 0) {
-				// Option Set
-				if (($value = $GLOBALS['db']->select('CubeCart_option_value', false, array('value_id' => abs($assign_id)))) !== false) {
-					return array_merge($category[0], $value[0]);
-				}
-			} else {
-				$assigned = $GLOBALS['db']->select('CubeCart_option_assign', false, array('assign_id' => (int)$assign_id));
-				if ($category[0]['option_type'] == 0 || $category[0]['option_type'] == 4) {
-					// Select
-					if (($value = $GLOBALS['db']->select('CubeCart_option_value', false, array('option_id' => $category[0]['option_id'], 'value_id' => $assigned[0]['value_id']))) !== false) {
-						return array_merge($category[0], $assigned[0], $value[0]);
-					}
-				} else {
-					// Text
-					if (isset($assigned[0])) {
-						return array_merge($category[0], $assigned[0]);
-					} else {
-						return $category[0];
-					}
-				}
-			}
-		}
-		return false;
-	}
-
-	public function getOptionRequired() {
-		return $this->_option_required;
-	}
-
-	public function defineOptionsIdentifier($optionsArray) {
-		if (is_array($optionsArray)) {
-
-			foreach ($optionsArray as $value) {
-				if (is_numeric($value)) {
-					$assign_ids[] = $value;
-				}
-			}
-
-			if (is_array($assign_ids)) {
-				$query = 'SELECT `option_id`, `value_id` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_option_assign` WHERE `matrix_include` = 1 AND `assign_id` IN ('.implode(',', $assign_ids).') ORDER BY `option_id`, `value_id` ASC';
-
-				$option_identifiers = $GLOBALS['db']->query($query);
-				// Update product code & stock based on options matrix
-
-				$options_identifier_string = '';
-				if(is_array($option_identifiers)) {
-					foreach($option_identifiers as $option_identifier) {
-						$options_identifier_string .= $option_identifier['option_id'].$option_identifier['value_id'];
-					}	
-					return md5($options_identifier_string);
-				}
-			}
-		}
-		return '';
-	}
-
 	public function getProductStock($product_id = null, $options_identifier_string = null, $return_max = false) {
-
 		// Choose option combination specific stock
 		if (is_numeric($product_id) && (!empty($options_identifier_string) || $return_max == true)) {
 
@@ -964,6 +1066,17 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 		}
 	}
 
+	public function outOfStockWhere($original = false, $label = false, $force = false) {
+
+		$def = $original ? str_replace('WHERE ', '', $GLOBALS['db']->where('CubeCart_inventory', $original)) : '';
+
+		if ($GLOBALS['config']->get('config', 'hide_out_of_stock') && !Admin::getInstance()->is()) {
+			$def .= ($force || $def) ? ' AND' : '';
+			$oos = sprintf('%1$s ((%2$s.stock_level > 0 AND %2$s.use_stock_level = 1) OR %2$s.use_stock_level = 0)', $def, ($label ? $label : sprintf('%sCubeCart_inventory', $GLOBALS['config']->get('config', 'dbprefix'))));
+		}
+		return ($GLOBALS['config']->get('config', 'hide_out_of_stock') && !Admin::getInstance()->is()) ? $oos : $def;
+	}
+
 	public function productAssign(&$product, $product_view = true) {
 		## Short Description
 		$product['description_short'] = (strlen($product['description']) > $GLOBALS['config']->get('config', 'product_precis')) ? substr(strip_tags($product['description']), 0, $GLOBALS['config']->get('config', 'product_precis')).'&hellip;' : strip_tags($product['description']);
@@ -1068,16 +1181,6 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 		return $count;
 	}
 
-	public function setCategory($element, $data) {
-		$this->_categoryData[$element] = $data;
-	}
-
-	public function get_int($input) {
-		return (int)$input;
-	}
-	public function get_int_array($inputArray) {
-		return array_map(array(&$this, 'get_int'), $inputArray);
-	}
 	public function searchCatalogue($search_data = null, $page = 1, $per_page = 10, $search_mode = 'fulltext') {
 
 		$per_page = (!is_numeric($per_page) || $per_page < 1) ? 10 : $per_page;
@@ -1340,115 +1443,9 @@ $GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
 		return false;
 	}
 
-	public function outOfStockWhere($original = false, $label = false, $force = false) {
-
-		$def = $original ? str_replace('WHERE ', '', $GLOBALS['db']->where('CubeCart_inventory', $original)) : '';
-
-		if ($GLOBALS['config']->get('config', 'hide_out_of_stock') && !Admin::getInstance()->is()) {
-			$def .= ($force || $def) ? ' AND' : '';
-			$oos = sprintf('%1$s ((%2$s.stock_level > 0 AND %2$s.use_stock_level = 1) OR %2$s.use_stock_level = 0)', $def, ($label ? $label : sprintf('%sCubeCart_inventory', $GLOBALS['config']->get('config', 'dbprefix'))));
-		}
-		return ($GLOBALS['config']->get('config', 'hide_out_of_stock') && !Admin::getInstance()->is()) ? $oos : $def;
+	public function setCategory($element, $data) {
+		$this->_categoryData[$element] = $data;
 	}
-
-	public function displayProductOptions($product_id = null, $selected_options_array = null) {
-	
-		if (isset($product_id) && is_numeric($product_id)) {
-			
-			if(is_array($selected_options_array)) {
-				foreach($selected_options_array as $selected_assign_id => $value) {
-					$selected[$selected_assign_id] = $value;
-				}
-			}
-			$optionArray = $this->getProductOptions($product_id);
-			if (is_array($optionArray)) {
-				ksort($optionArray);
-				foreach ($optionArray as $type => $group) {
-					switch ($type) {
-					case self::OPTION_SELECT:  ## Dropdown options
-					case self::OPTION_RADIO:  ## Radio options
-						foreach ($group as $key => $option) {
-							$group_priority = $option['priority'];
-							unset ($option['priority']);
-							foreach ($option as $value) {
-								if (!isset($option_list[$value['option_id']])) {
-									$option_list[$value['option_id']] = array(
-										'type'   => $value['option_type'],
-										'option_id'  => $value['option_id'],
-										'option_name' => $value['option_name'],
-										'required'  => (bool)$value['option_required'],
-										'selected' => ($selected[$value['assign_id']]) ? true : false
-									);
-								}
-					
-								$option_list[$value['option_id']]['values'][] = array(
-									'assign_id'  => $value['assign_id'],
-									'decimal_price'   => $value['option_price'],
-									'price'   => (isset($value['option_price']) && $value['option_price']!=0) ? Tax::getInstance()->priceFormat($value['option_price'], true) : false,
-									'symbol'  => (isset($value['option_price']) && $value['option_price']!=0 && $value['option_negative'] == 0) ? '+' : '-',
-									'value_id'  => $value['value_id'],
-									'value_name' => $value['value_name'],
-									'selected' => ($selected[$value['assign_id']]) ? true : false
-								);
-								
-								if($selected[$value['assign_id']]) {
-									if($value['option_price']>0 && $value['option_negative'] == 0) { 
-										$this->_options_line_price +=  $value['option_price'];
-									} elseif($value['option_price']>0) { 
-										$this->_options_line_price -=  $value['option_price'];
-									}
-								}
-							}
-							$option_list[$value['option_id']]['priority'] = $group_priority;
-						}
-						
-						break;
-					case self::OPTION_TEXTBOX:  ## Textbox options
-					case self::OPTION_TEXTAREA:  ## Textarea option
-						
-						foreach ($group as $key => $option) {
-							
-							// You could say this is a bit of a fudge but it works	
-							$price = (isset($option[0]['option_price']) && $option[0]['option_price']>0) ? Tax::getInstance()->priceFormat($option[0]['option_price']) : false;
-							$symbol = (isset($option[0]['option_price']) && $option[0]['option_negative'] == 0) ? '+' : '-';
-							$value = trim(str_replace(array($option[0]['option_name'].':','('.$symbol.$price.')'),'',$selected[$option[0]['assign_id']]));
-							
-							$option_list[] = array(
-								'type'   => $option[0]['option_type'],
-								'option_id'  => $option[0]['option_id'],
-								'option_name' => $option[0]['option_name'],
-								'required'  => (bool)$option[0]['option_required'],
-								'price'   => $price,
-								'decimal_price'   => $option[0]['option_price'],
-								'symbol'  => $symbol,
-								'priority'      => $option['priority'],
-								'value'	=> $value
-							);
-							
-							if($option[0]['option_price']>0 && $option[0]['option_negative'] == 0) { 
-								$this->_options_line_price +=  $option[0]['option_price'];
-							} elseif($value['option_price']>0) { 
-								$this->_options_line_price -=  $option[0]['option_price'];
-							}
-								
-							
-						}
-						break;
-					}
-				}
-				uasort($option_list, 'cmpmc'); // sort groups
-				return $option_list;
-			}
-		}
-
-		return false;
-	}
-	
-	public function getOptionsLinePrice() {
-		return (float)$this->_options_line_price;
-	}
-	
-	//=====[ Private ]===================================================================================================
 
 	private function _categoryTranslation() {
 		if (isset($GLOBALS['language']) && !empty($GLOBALS['language'])) {
