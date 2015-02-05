@@ -13,6 +13,13 @@
 if (!defined('CC_INI_SET')) die('Access Denied');
 require 'phpMailer/PHPMailerAutoload.php';
 
+/**
+ * Language controller
+ *
+ * @author Technocrat
+ * @since 5.0.0
+ */
+
 class Mailer extends PHPMailer {
 
 	private $_debugger;

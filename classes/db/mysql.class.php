@@ -18,7 +18,6 @@ require CC_ROOT_DIR.'/classes/db/database.class.php';
  *
  * @author Technocrat
  * @author Al Brookbanks
- * @version 1.1.0
  * @since 5.0.0
  */
 class Database extends Database_Contoller {
