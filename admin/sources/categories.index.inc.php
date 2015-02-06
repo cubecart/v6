@@ -392,6 +392,17 @@ if (isset($_GET['action'])) {
 			++$i;
 		}
 	}
+
+	// If no categories exist but parent is set redirect back to next level up
+	if(!isset($category_list) && isset($_GET['parent']) && $_GET['parent']>0) {
+		$parent_cat = $GLOBALS['db']->select('CubeCart_category', array('cat_parent_id'), array('cat_id' => $_GET['parent']));
+		if($parent_cat && $parent_cat[0]['cat_parent_id']>0) {
+			httpredir('?_g=categories&parent='.$parent_cat[0]['cat_parent_id']);
+		} else {
+			httpredir('?_g=categories');
+		}
+	}
+
 	$GLOBALS['smarty']->assign('LIST_CATEGORIES', true);
 	$GLOBALS['smarty']->assign('CATEGORIES', $category_list);
 }
