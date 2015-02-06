@@ -64,19 +64,6 @@ class Cubecart {
 	//=====[ Public ]=======================================
 
 	/**
-	 * Setup the instance (singleton)
-	 *
-	 * @return Cubecart
-	 */
-	public static function getInstance() {
-		if (!(self::$_instance instanceof self)) {
-			self::$_instance = new self();
-		}
-
-		return self::$_instance;
-	}
-
-	/**
 	 * Show the home page
 	 */
 	public function displayHomePage() {
@@ -192,6 +179,19 @@ class Cubecart {
 		$contents['doc_content'] = ($contents['doc_parse']==1) ? $GLOBALS['smarty']->fetch('string:'.$contents['doc_content']) : $contents['doc_content'];
 
 		return (isset($contents) && !empty($contents)) ? $contents : false;
+	}
+
+	/**
+	 * Setup the instance (singleton)
+	 *
+	 * @return Cubecart
+	 */
+	public static function getInstance() {
+		if (!(self::$_instance instanceof self)) {
+			self::$_instance = new self();
+		}
+
+		return self::$_instance;
 	}
 
 	/**
@@ -417,6 +417,24 @@ class Cubecart {
 	//=====[ Private ]=======================================
 
 	/**
+	 * Display user account
+	 */
+	private function _account() {
+		// Display profile overview
+		$GLOBALS['user']->is(true);
+
+		$GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->account['your_account'], 'index.php?_a=account');
+
+		// Custom Account Menu Items
+		$account_list_hooks = array();
+		foreach ($GLOBALS['hooks']->load('class.cubecart.account.list') as $hook) include $hook;
+		$GLOBALS['smarty']->assign('ACCOUNT_LIST_HOOKS', $account_list_hooks);
+		$content = $GLOBALS['smarty']->fetch('templates/content.account.php');
+		$GLOBALS['smarty']->assign('SECTION_NAME', 'account');
+		$GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
+	}
+
+	/**
 	 * Display addressbook
 	 */
 	private function _addressbook() {
@@ -524,24 +542,6 @@ class Cubecart {
 
 		$GLOBALS['smarty']->assign('VAL_JSON_STATE', state_json());
 		$content = $GLOBALS['smarty']->fetch('templates/content.addressbook.php');
-		$GLOBALS['smarty']->assign('SECTION_NAME', 'account');
-		$GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
-	}
-
-	/**
-	 * Display user account
-	 */
-	private function _account() {
-		// Display profile overview
-		$GLOBALS['user']->is(true);
-
-		$GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->account['your_account'], 'index.php?_a=account');
-
-		// Custom Account Menu Items
-		$account_list_hooks = array();
-		foreach ($GLOBALS['hooks']->load('class.cubecart.account.list') as $hook) include $hook;
-		$GLOBALS['smarty']->assign('ACCOUNT_LIST_HOOKS', $account_list_hooks);
-		$content = $GLOBALS['smarty']->fetch('templates/content.account.php');
 		$GLOBALS['smarty']->assign('SECTION_NAME', 'account');
 		$GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
 	}
@@ -1630,42 +1630,6 @@ class Cubecart {
 			foreach ($GLOBALS['hooks']->load('class.cubecart.display_basket') as $hook) include $hook;
 		}
 	}
-	
-	private function _listPaymentOptions($selected_gateway = '') {
-		$gateways = $GLOBALS['db']->select('CubeCart_modules', false, array('module' => 'gateway', 'status' => '1'), array('position' => 'ASC'));
-		// Gateway hooks
-		foreach ($GLOBALS['hooks']->load('class.cubecart.display_gateways') as $hook) include $hook;
-		
-		// List all available and enabled payment gateways
-		foreach ($gateways as $gateway) {
-			$gateway_path  = CC_ROOT_DIR.'/modules/gateway/'.$gateway['folder'].'/gateway.class.php';
-			$plugin_path  = CC_ROOT_DIR.'/modules/plugins/'.$gateway['base_folder'].'/gateway.class.php';
-
-			if (!file_exists($gateway_path) && !file_exists($plugin_path)) {
-				continue;
-			}
-			$module = (isset($gateway['plugin']) && $gateway['plugin']) ? $gateway : $GLOBALS['config']->get($gateway['folder']);
-
-			$countries = (!empty($module['countries'])) ? unserialize($module['countries']) : false;
-			$disabled_countries = (!empty($module['disabled_countries'])) ? unserialize($module['disabled_countries']) : false;
-
-			// Check module isn't set for mobile / main only!
-			if (isset($module['scope']) && !empty($module['scope']) && ($module['scope']=='main' && $GLOBALS['gui']->mobile) || ($module['scope']=='mobile' && !$GLOBALS['gui']->mobile)) continue;
-
-			if (is_array($countries) && !in_array($GLOBALS['cart']->basket['delivery_address']['country_id'], $countries) || is_array($disabled_countries) && in_array($GLOBALS['cart']->basket['delivery_address']['country_id'], $disabled_countries)) continue;
-
-			if (preg_match('#\.(gif|jpg|png|jpeg)$#i', strtolower($module['desc']))) {
-				$gateway['description'] = sprintf('<img src="%s" border="0" title="" alt="" />', $module['desc']);
-			} elseif (!empty($module['desc'])) {
-				$gateway['description'] = $module['desc'];
-			} else {
-				$gateway['description'] = $gateway['folder'];
-			}
-			$gateway['checked'] = ((isset($gateway['default']) && $gateway['default'] && $selected_gateway=='') || ($selected_gateway == $gateway['folder'])) ? 'checked="checked"' : '';
-			$gateway_list[] = $gateway;
-		}
-		$GLOBALS['smarty']->assign('GATEWAYS', $gateway_list);
-	}
 
 	/**
 	 * Display gateways (Semi depreciated)
@@ -1984,6 +1948,45 @@ class Cubecart {
 			}
 		}
 		return (isset($social_html) && is_array($social_html) && !empty($social_html[0])) ? $social_html : false;
+	}
+
+	/**
+	 * List payment gateways
+	 */
+	private function _listPaymentOptions($selected_gateway = '') {
+		$gateways = $GLOBALS['db']->select('CubeCart_modules', false, array('module' => 'gateway', 'status' => '1'), array('position' => 'ASC'));
+		// Gateway hooks
+		foreach ($GLOBALS['hooks']->load('class.cubecart.display_gateways') as $hook) include $hook;
+		
+		// List all available and enabled payment gateways
+		foreach ($gateways as $gateway) {
+			$gateway_path  = CC_ROOT_DIR.'/modules/gateway/'.$gateway['folder'].'/gateway.class.php';
+			$plugin_path  = CC_ROOT_DIR.'/modules/plugins/'.$gateway['base_folder'].'/gateway.class.php';
+
+			if (!file_exists($gateway_path) && !file_exists($plugin_path)) {
+				continue;
+			}
+			$module = (isset($gateway['plugin']) && $gateway['plugin']) ? $gateway : $GLOBALS['config']->get($gateway['folder']);
+
+			$countries = (!empty($module['countries'])) ? unserialize($module['countries']) : false;
+			$disabled_countries = (!empty($module['disabled_countries'])) ? unserialize($module['disabled_countries']) : false;
+
+			// Check module isn't set for mobile / main only!
+			if (isset($module['scope']) && !empty($module['scope']) && ($module['scope']=='main' && $GLOBALS['gui']->mobile) || ($module['scope']=='mobile' && !$GLOBALS['gui']->mobile)) continue;
+
+			if (is_array($countries) && !in_array($GLOBALS['cart']->basket['delivery_address']['country_id'], $countries) || is_array($disabled_countries) && in_array($GLOBALS['cart']->basket['delivery_address']['country_id'], $disabled_countries)) continue;
+
+			if (preg_match('#\.(gif|jpg|png|jpeg)$#i', strtolower($module['desc']))) {
+				$gateway['description'] = sprintf('<img src="%s" border="0" title="" alt="" />', $module['desc']);
+			} elseif (!empty($module['desc'])) {
+				$gateway['description'] = $module['desc'];
+			} else {
+				$gateway['description'] = $gateway['folder'];
+			}
+			$gateway['checked'] = ((isset($gateway['default']) && $gateway['default'] && $selected_gateway=='') || ($selected_gateway == $gateway['folder'])) ? 'checked="checked"' : '';
+			$gateway_list[] = $gateway;
+		}
+		$GLOBALS['smarty']->assign('GATEWAYS', $gateway_list);
 	}
 
 	/**
