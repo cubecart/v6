@@ -11,6 +11,13 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  */
 
+/**
+ * Newsletter management
+ *
+ * @author Martin Purcell
+ * @author Al Brookbanks
+ * @since 5.0.0
+ */
 class Newsletter {
 
 	private $_mailer;
@@ -27,6 +34,21 @@ class Newsletter {
 	}
 
 	/**
+	 * Delete newsletter
+	 *
+	 * @param int $newsletter_id
+	 * @return bool
+	 */
+	public function deleteNewsletter($newsletter_id = false) {
+		if ($newsletter_id && is_numeric($newsletter_id)) {
+			$GLOBALS['db']->delete('CubeCart_newsletter', array('newsletter_id' => (int)$newsletter_id));
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
 	 * Setup the instance (singleton)
 	 *
 	 * @return Newsletter
@@ -39,55 +61,24 @@ class Newsletter {
 		return self::$_instance;
 	}
 
-
-	public function subscribe($email = false) {
-		// Subscribe, generate validation email, and send
-		if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-			// Valid email, but is it a dupe...
-			if (!$dupes = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', array('email'), array('email' => strtolower($email)))) {
-
-				$record = array(
-					'status'  => true,
-					'email'   => $email,
-					'validation' => $this->generateValidation($email),
-				);
-				$GLOBALS['db']->insert('CubeCart_newsletter_subscriber', $record);
-
-				return true;
-			}
-			return false;
-		}
-		$GLOBALS['gui']->setError($GLOBALS['language']->newsletter['email_invalid']);
-		return false;
-	}
-
+	/**
+	 * Generate validaton key for email verification
+	 *
+	 * @param string $key
+	 * @return string
+	 */
 	private function generateValidation($email) {
 		// Generate a validation key for the specified email address
 		$string = sprintf('%s@%s', crypt($email), date('U.u'));
 		return md5($string);
 	}
 
-	public function verify($validation = false) {
-		// Verify the validation email
-		if (!empty($validation)) {
-			$validate = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', array('subscriber_id', 'email'), array('validation' => $validation));
-			if ($validate) {
-				$GLOBALS['db']->update('CubeCart_newsletter_subscriber', array('status' => '1'), array('subscriber_id' => $validate[0]['subscriber_id']));
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public function unsubscribe($email = false) {
-		// Unsubscribe the user
-		if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-			$GLOBALS['db']->delete('CubeCart_newsletter_subscriber', array('email' => $email));
-			return true;
-		}
-		return false;
-	}
-
+	/**
+	 * Save newsletter
+	 *
+	 * @param array $newsletter
+	 * @return bool
+	 */
 	public function saveNewsletter($newsletter = false) {
 		$result = false;
 		if (!empty($newsletter) && is_array($newsletter)) {
@@ -102,15 +93,14 @@ class Newsletter {
 		return $result;
 	}
 
-	public function deleteNewsletter($newsletter_id = false) {
-		if ($newsletter_id && is_numeric($newsletter_id)) {
-			$GLOBALS['db']->delete('CubeCart_newsletter', array('newsletter_id' => (int)$newsletter_id));
-			return true;
-		} else {
-			return false;
-		}
-	}
-
+	/**
+	 * Send newsletter
+	 *
+	 * @param int $newsletter_id
+	 * @param int $cycle
+	 * @param bool $test
+	 * @return bool
+	 */
 	public function sendNewsletter($newsletter_id = false, $cycle = 1, $test = false) {
 		// Load newsletter from database, and send
 		if ($newsletter_id && is_numeric($newsletter_id)) {
@@ -173,4 +163,64 @@ class Newsletter {
 		}
 		return false;
 	}
+
+	/**
+	 * Subscribe to newsletter
+	 *
+	 * @param string $email
+	 * @return bool
+	 */
+	public function subscribe($email = false) {
+		// Subscribe, generate validation email, and send
+		if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			// Valid email, but is it a dupe...
+			if (!$dupes = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', array('email'), array('email' => strtolower($email)))) {
+
+				$record = array(
+					'status'  => true,
+					'email'   => $email,
+					'validation' => $this->generateValidation($email),
+				);
+				$GLOBALS['db']->insert('CubeCart_newsletter_subscriber', $record);
+
+				return true;
+			}
+			return false;
+		}
+		$GLOBALS['gui']->setError($GLOBALS['language']->newsletter['email_invalid']);
+		return false;
+	}
+
+	/**
+	 * Unsubscribe from newsletter
+	 *
+	 * @param string $email
+	 * @return bool
+	 */
+	public function unsubscribe($email = false) {
+		// Unsubscribe the user
+		if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			$GLOBALS['db']->delete('CubeCart_newsletter_subscriber', array('email' => $email));
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Verify newsletter subscription
+	 *
+	 * @param string $validation
+	 * @return bool
+	 */
+	public function verify($validation = false) {
+		// Verify the validation email
+		if (!empty($validation)) {
+			$validate = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', array('subscriber_id', 'email'), array('validation' => $validation));
+			if ($validate) {
+				$GLOBALS['db']->update('CubeCart_newsletter_subscriber', array('status' => '1'), array('subscriber_id' => $validate[0]['subscriber_id']));
+				return true;
+			}
+		}
+		return false;
+	}	
 }
