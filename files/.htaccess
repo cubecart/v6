@@ -5,7 +5,7 @@
 # need public (administrator) access.
 
 # The hash files are used by the CubeCart Marketplace
-# to verify the store. They contain zero data.
+# to verify the store. They contain zero 
 
 deny from all
 <Files print.*.php>

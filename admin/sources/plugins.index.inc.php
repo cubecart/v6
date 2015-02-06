@@ -14,6 +14,14 @@ if (!defined('CC_INI_SET')) die('Access Denied');
 
 global $lang, $glob;
 
+## Delete any remnant hash verification files
+$hash_files = glob(CC_ROOT_DIR.'/files/hash.*.php');
+if(is_array($hash_files)) {
+	foreach($hash_files as $file) {
+		unlink($file);
+	}
+}
+
 $GLOBALS['main']->addTabControl($lang['navigation']['nav_plugins'], 'plugins');
 if(isset($_GET['delete']) && $_GET['delete']==1) {
 	$dir = CC_ROOT_DIR.'/modules/'.$_GET['type'].'/'.$_GET['module'];
