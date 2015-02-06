@@ -44,19 +44,7 @@ class Database extends Database_Contoller {
 		parent::__construct();
 	}
 
-	/**
-	 * Setup the instance (singleton)
-	 *
-	 * @param $config array
-	 * @return Database
-	 */
-	public static function getInstance($config = '') {
-		if (!(self::$_instance instanceof self)) {
-			self::$_instance = new self($config);
-		}
-
-		return self::$_instance;
-	}
+	//=====[ Public ]=======================================
 
 	/**
 	 * Returns the rows affected
@@ -132,6 +120,20 @@ class Database extends Database_Contoller {
 	}
 
 	/**
+	 * Setup the instance (singleton)
+	 *
+	 * @param $config array
+	 * @return Database
+	 */
+	public static function getInstance($config = '') {
+		if (!(self::$_instance instanceof self)) {
+			self::$_instance = new self($config);
+		}
+
+		return self::$_instance;
+	}
+
+	/**
 	 * Get the inserted ID
 	 *
 	 * @return id
@@ -163,6 +165,8 @@ class Database extends Database_Contoller {
 
 		return (!$quote || is_null($value)) ? $value : "'$value'";
 	}
+
+	//=====[ Private ]=======================================
 
 	/**
 	 * Execute a query
