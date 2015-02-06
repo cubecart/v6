@@ -10,6 +10,7 @@
  * Email:  sales@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  */
+
 /**
  * Configuration controller
  *
@@ -113,6 +114,7 @@ class SSL {
 	 *
 	 * @param array/string $input
 	 * @param bool $secure
+	 * @return bool
 	 */
 	public function defineSecurePage($input = null, $secure = true) {
 		if (!is_null($input)) {
@@ -130,11 +132,15 @@ class SSL {
 
 	/**
 	 * Force SSL
+	 *
+	 * @param bool $default
 	 */
 	public function sslForce($default = true) {
 		// Force the current page into SSL mode
 		$this->_sslSwitch($default);
 	}
+
+	//=====[ Private ]=======================================
 
 	/**
 	 * Switch to SSL
