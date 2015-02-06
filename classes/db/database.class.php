@@ -95,6 +95,8 @@ class Database_Contoller {
 
 	public function __destruct() { }
 
+	//=====[ Public ]=======================================
+
 	/**
 	 * Display column sort
 	 *
@@ -125,10 +127,6 @@ class Database_Contoller {
 		}
 		
 		return  $html_out;
-	}
-	
-	public function getDbEngine() {
-		return $this->_db_engine;
 	}
 	
 	/**
@@ -232,6 +230,15 @@ class Database_Contoller {
 	}
 
 	/**
+	 * Get DB engine
+	 *
+	 * @return string
+	 */
+	public function getDbEngine() {
+		return $this->_db_engine;
+	}
+
+	/**
 	 * Get DB debug info
 	 *
 	 * @return array
@@ -278,22 +285,6 @@ class Database_Contoller {
 	}
 
 	/**
-	 * Gets the size of the ft_min_word_len
-	 *
-	 * @return int
-	 */
-	public function getSearchWordLen() {
-		if (($query = $this->query("SHOW VARIABLES LIKE 'ft_min_word_len'")) !== false) {
-			if (isset($query[0]['Value']) && is_numeric($query[0]['Value'])) {
-				return (int)$query[0]['Value'];
-			}
-		}
-
-		//Guess at 4
-		return 4;
-	}
-
-	/**
 	 * Get all rows from a table
 	 *
 	 * @param string $query
@@ -318,6 +309,22 @@ class Database_Contoller {
 		}
 
 		return ($tables) ? $tables : false;
+	}
+
+	/**
+	 * Gets the size of the ft_min_word_len
+	 *
+	 * @return int
+	 */
+	public function getSearchWordLen() {
+		if (($query = $this->query("SHOW VARIABLES LIKE 'ft_min_word_len'")) !== false) {
+			if (isset($query[0]['Value']) && is_numeric($query[0]['Value'])) {
+				return (int)$query[0]['Value'];
+			}
+		}
+
+		// Guess at 4 which is default in most cases
+		return 4;
 	}
 
 	/**
@@ -684,7 +691,6 @@ class Database_Contoller {
 	 * TRUNCATE table
 	 *
 	 * @param string/array $input
-	 *
 	 * @return bool
 	 */
 	public function truncate($input) {
@@ -850,6 +856,8 @@ class Database_Contoller {
 
 		return false;
 	}
+
+	//=====[ Private ]=======================================
 
 	/**
 	 * Get cached query
