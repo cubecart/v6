@@ -68,6 +68,8 @@ class Archive {
 		}
 	}
 
+	//=====[ Public ]=======================================
+
 	/**
 	 * Add file to the archive
 	 *

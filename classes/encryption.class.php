@@ -69,6 +69,8 @@ class Encryption {
 		}
 	}
 
+	//=====[ Public ]=======================================
+
 	/**
 	 * Decrypt data
 	 *

@@ -108,6 +108,8 @@ class SEO {
 		}
 	}
 
+	//=====[ Public ]=======================================
+
 	/**
 	 * Add another element to the ignored url segments
 	 *

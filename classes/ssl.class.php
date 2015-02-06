@@ -96,6 +96,8 @@ class SSL {
 		}
 	}
 
+	//=====[ Public ]=======================================
+
 	/**
 	 * Setup the instance (singleton)
 	 *

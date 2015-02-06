@@ -147,6 +147,8 @@ class User {
 	public function __destruct() {
 	}
 
+	//=====[ Public ]=======================================
+
 	/**
 	 * Setup the instance (singleton)
 	 *
@@ -159,8 +161,6 @@ class User {
 
 		return self::$_instance;
 	}
-
-	//=====[ Public ]=======================================
 
 	public function addOrder() {
 		if ($this->is()) {

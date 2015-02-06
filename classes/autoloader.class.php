@@ -26,6 +26,8 @@ class Autoloader {
 	 */
 	private static $_paths = null;
 
+	//=====[ Public ]=======================================
+
 	/**
 	 * Append a path to the path array
 	 *

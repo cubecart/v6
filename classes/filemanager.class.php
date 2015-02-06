@@ -142,6 +142,8 @@ class FileManager {
 		$this->findDirectories($this->_manage_root);
 	}
 
+	//=====[ Public ]=======================================
+
 	/**
 	 * Setup admin screen
 	 *

@@ -168,6 +168,8 @@ class Cart {
 		$this->save();
 	}
 
+	//=====[ Public ]=======================================
+
 	/**
 	 * Setup the instance (singleton)
 	 *

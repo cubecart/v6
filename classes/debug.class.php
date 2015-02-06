@@ -140,6 +140,8 @@ class Debug {
 		restore_exception_handler();
 	}
 
+	//=====[ Public ]=======================================
+
 	/**
 	 * Set a debug message
 	 *

@@ -59,6 +59,8 @@ class Mailer extends PHPMailer {
 		}
 	}
 
+	//=====[ Public ]=======================================
+
 	/**
 	 * Setup the instance (singleton)
 	 *

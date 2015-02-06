@@ -192,6 +192,8 @@ class Module {
 		return false;
 	}
 
+	//=====[ Public ]=======================================
+
 	/**
 	 * Get a module value
 	 *

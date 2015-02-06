@@ -38,6 +38,8 @@ class GD {
 		$this->_gdJpegQuality = $jpegQuality;
 	}
 
+	//=====[ Public ]=======================================
+
 	/**
 	 * Set GD params false
 	 */

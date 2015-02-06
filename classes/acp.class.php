@@ -63,6 +63,8 @@ class ACP {
 	final private function __construct() {
 	}
 
+	//=====[ Public ]=======================================
+
 	/**
 	 * Add a admin navigation item
 	 *

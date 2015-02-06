@@ -82,6 +82,8 @@ class Config {
 		}
 	}
 
+	//=====[ Public ]=======================================
+
 	/**
 	 * Get a value from the config
 	 *

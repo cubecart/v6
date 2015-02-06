@@ -61,6 +61,8 @@ class Cubecart {
 		}
 	}
 
+	//=====[ Public ]=======================================
+
 	/**
 	 * Setup the instance (singleton)
 	 *

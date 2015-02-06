@@ -72,6 +72,8 @@ class Admin {
 		$this->_load();
 	}
 
+	//=====[ Public ]=======================================
+
 	/**
 	 * Get admin data element or the entire array if element is empty
 	 *

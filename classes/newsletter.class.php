@@ -35,6 +35,8 @@ class Newsletter {
 		$this->_mailer = Mailer::getInstance();
 	}
 
+	//=====[ Public ]=======================================
+
 	/**
 	 * Delete newsletter
 	 *

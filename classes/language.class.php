@@ -106,6 +106,8 @@ class Language {
 		$this->loadLang();
 	}
 
+	//=====[ Public ]=======================================
+
 	/**
 	 * Magic get of a string value
 	 *

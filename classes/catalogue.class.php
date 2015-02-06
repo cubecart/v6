@@ -45,6 +45,8 @@ class Catalogue {
 	 */
 	protected static $_instance;
 
+	//=====[ Public ]=======================================
+
 	/**
 	 * Build HTML select of categories
 	 *

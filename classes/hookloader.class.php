@@ -92,6 +92,8 @@ class HookLoader {
 		$this->_build_code_snippet_list(null, true);
 	}
 
+	//=====[ Public ]=======================================
+
 	/**
 	 * Delete code snippet include file
 	 *

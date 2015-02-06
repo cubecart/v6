@@ -20,6 +20,8 @@
  */
 class Ajax {
 
+	//=====[ Public ]=======================================
+
 	/**
 	 * Load the proper AJAX function/method
 	 */
