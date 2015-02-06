@@ -93,8 +93,6 @@ class Module {
 	 */
 	private $_template_data = array();
 
-	#########################################
-
 	public function __construct($path = false, $local_name = false, $template = 'index.tpl', $zones = false, $fetch = true) {
 		$this->_template = $template;
 		if ($path) {
@@ -286,6 +284,22 @@ class Module {
 	}
 
 	/**
+	 * Get module logo
+	 *
+	 * @param string $label
+	 * @return serialized string/empty
+	 */
+	public function module_fetch_zones($label) {
+
+		if (!isset($_POST[$label]) || !is_array($_POST[$label])) return '';
+
+		foreach ($_POST[$label] as $zone) {
+			if (!empty($zone)) $zones[] = $zone;
+		}
+		return (isset($zones)) ? serialize($zones) : '';
+	}
+
+	/**
 	 * Get module language strings
 	 *
 	 * @return array of strings
@@ -342,15 +356,6 @@ class Module {
 			return $updated;
 		}
 		return false;
-	}
-	public function module_fetch_zones($label) {
-
-		if (!isset($_POST[$label]) || !is_array($_POST[$label])) return '';
-
-		foreach ($_POST[$label] as $zone) {
-			if (!empty($zone)) $zones[] = $zone;
-		}
-		return (isset($zones)) ? serialize($zones) : '';
 	}
 
 	//=====[ Private ]=======================================
