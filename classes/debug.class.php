@@ -75,6 +75,8 @@ class Debug {
 	 */
 	protected static $_instance;
 
+	##############################################
+
 	final protected function __construct() {
 		// Turn error reporting off as it is displayed in debugger mode only!
 		ini_set('display_errors', false);

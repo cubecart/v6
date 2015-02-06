@@ -53,6 +53,8 @@ class Config {
 	 */
 	protected static $_instance;
 
+	##############################################
+
 	final protected function __construct($glob) {
 		//Get the main config because it will be used
 		if (isset($GLOBALS['db']) && ($result = $GLOBALS['db']->select('CubeCart_config', array('array'), array('name' => 'config'), false, 1, false, false)) !== false) {

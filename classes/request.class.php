@@ -48,6 +48,8 @@ class Request {
 	private $_debug    = array();
 	private $_log    = true;
 
+	##############################################
+
 	public function __construct($url, $path = '/', $port = 80, $return_headers = false, $return_transfer = true, $timeout = 15, $cache = false) {
 		## Is cURL available?
 		$this->_curl   = (function_exists('curl_init')) ? curl_init() : false;

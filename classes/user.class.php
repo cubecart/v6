@@ -115,6 +115,8 @@ class User {
 	 */
 	protected static $_instance;
 
+	##############################################
+
 	final protected function __construct() {
 		//If there is a login attempt
 		if (isset($_POST['username']) && isset($_POST['password'])) {

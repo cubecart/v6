@@ -29,6 +29,8 @@ class Newsletter {
 
 	protected static $_instance;
 
+	##############################################
+
 	public function __construct() {
 		$this->_mailer = Mailer::getInstance();
 	}

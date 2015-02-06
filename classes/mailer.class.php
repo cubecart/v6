@@ -30,6 +30,8 @@ class Mailer extends PHPMailer {
 
 	protected static $_instance;
 
+	##############################################
+
 	public function __construct() {
 		// Configure PHPMailer variables
 		$this->From   = $GLOBALS['config']->get('config', 'email_address');

@@ -27,6 +27,8 @@ class FileManager {
 	const FM_FILETYPE_IMG = 1;
 	const FM_FILETYPE_DL = 2;
 
+	##############################################
+
 	public function __construct($mode = false, $sub_dir = false) {
 		// Define some constants
 		if (!defined('FM_DL_ERROR_EXPIRED')) define('FM_DL_ERROR_EXPIRED', 1);

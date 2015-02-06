@@ -22,6 +22,8 @@ require CC_ROOT_DIR.'/classes/db/database.class.php';
  */
 class Database extends Database_Contoller {
 
+	##############################################
+
 	final protected function __construct($config) {
 		$this->_db_engine = 'MySQLi';
 

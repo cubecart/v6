@@ -56,6 +56,8 @@ class Session {
 	 */
 	public $session_data = array();
 
+	##############################################
+
 	final private function __construct() {
 
 		if (session_id()) {

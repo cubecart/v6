@@ -30,6 +30,8 @@ class SSL {
 	 */
 	protected static $_instance;
 
+	##############################################
+
 	public function __construct() {
 
 		$ssl_url = $GLOBALS['config']->get('config', 'ssl_url');

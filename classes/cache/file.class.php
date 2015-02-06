@@ -31,6 +31,8 @@ class Cache extends Cache_Controler {
 	protected $_page_cache_usage = 0;
 	protected $_file_data_split = "\n-- CubeCart Cache Split --\n";
 
+	##############################################
+
 	final protected function __construct() {
 		if (!$this->setPath()) {
 			return;

@@ -53,6 +53,8 @@ class Cubecart {
 	 */
 	protected static $_instance;
 
+	##############################################
+
 	final protected function __construct() {
 		if (isset($_SERVER['REDIRECT_STATUS']) && $_SERVER['REDIRECT_STATUS'] >= 400) {
 			$_GET['_a'] = 'error';

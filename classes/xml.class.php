@@ -20,6 +20,8 @@
  */
 class XML extends XMLWriter {
 
+	##############################################
+
 	public function __construct($xml_header = true, $indent_string = ' ') {
 		$this->openMemory();
 		$this->setIndent(true);

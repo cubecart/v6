@@ -39,7 +39,7 @@ class Tax {
 
 	public static $_instance;
 
-	#####################################################
+	##############################################
 
 	final protected function __construct() {
 		$cache = Cache::getInstance();

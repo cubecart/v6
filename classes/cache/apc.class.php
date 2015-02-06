@@ -22,6 +22,9 @@ require CC_ROOT_DIR.'/classes/cache/cache.class.php';
  * @since 5.0.0
  */
 class Cache extends Cache_Controler {
+
+	##############################################
+
 	final protected function __construct() {
 		//Make sure we can use APC
 		if (!extension_loaded('APC') || !ini_get('apc.enabled')) {

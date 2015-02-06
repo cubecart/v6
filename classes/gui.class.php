@@ -92,6 +92,8 @@ class GUI {
 	 */
 	protected static $_instance;
 
+	##############################################
+
 	final protected function __construct($admin = false) {
 
 		//Get current skins

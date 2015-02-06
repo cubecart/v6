@@ -93,6 +93,8 @@ class Module {
 	 */
 	private $_template_data = array();
 
+	##############################################
+
 	public function __construct($path = false, $local_name = false, $template = 'index.tpl', $zones = false, $fetch = true) {
 		$this->_template = $template;
 		if ($path) {

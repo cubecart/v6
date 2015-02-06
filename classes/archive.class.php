@@ -50,6 +50,8 @@ class Archive {
 	 */
 	private $_zip  = false;
 
+	##############################################
+
 	public function __construct($archive, $create = false) {
 		$this->_enabled = (extension_loaded('zip')) ? true : false;
 		if ($this->_enabled && !empty($archive)) {

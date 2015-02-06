@@ -86,6 +86,8 @@ class Cache_Controler {
 	
 	protected $_dupes = array();
 
+	##############################################
+
 	protected function __construct() {
 		$this->_setPrefix();
 	}

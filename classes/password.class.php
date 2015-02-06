@@ -28,6 +28,8 @@ class Password {
 	 */
 	private static $_instance;
 
+	##############################################
+
 	final private function __construct() { }
 
 	/**

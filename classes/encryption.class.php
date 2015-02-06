@@ -58,6 +58,8 @@ class Encryption {
 	 */
 	protected static $_instance;
 
+	##############################################
+
 	final protected function __construct() { }
 
 	public function __destruct() {

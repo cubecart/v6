@@ -27,6 +27,7 @@ class GD {
 
 	private $_gdUploaded = false;
 
+	##############################################
 
 	public function __construct($targetDir, $maxImage = false, $jpegQuality = 100) {
 		if (substr($targetDir, -1) != '/') {

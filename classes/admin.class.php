@@ -51,6 +51,8 @@ class Admin {
 	 */
 	protected static $_instance;
 
+	##############################################
+
 	final private function __construct() {
 		// Logout requests
 		if (isset($_GET['_g']) && $_GET['_g'] == 'logout') {

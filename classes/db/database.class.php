@@ -89,6 +89,8 @@ class Database_Contoller {
 	 */
 	protected static $_instance;
 
+	##############################################
+
 	protected function __construct() { }
 
 	public function __destruct() { }
