@@ -91,6 +91,8 @@ class Cache_Controler {
 	protected function __construct() {
 		$this->_setPrefix();
 	}
+
+	//=====[ Public ]=======================================
 	
 	protected function _setPrefix() {
 		$this->_prefix = substr(md5($GLOBALS['glob']['dbdatabase']), 0, 5).'.';
@@ -115,6 +117,22 @@ class Cache_Controler {
 		return $this->_mode;
 	}
 
+	/**
+	 * Set cache expire time
+	 *
+	 * @param int $expire One day
+	 */
+	public function setExpire($expire = 86400) {
+		if (is_numeric($expire)) {
+			$this->_expire = $expire;
+		}
+	}
+
+	/**
+	 * Return cache status
+	 *
+	 * @return bool
+	 */
 	public function status() {
 		if(defined('ADMIN_CP') && ADMIN_CP) {
 			$this->status_desc = 'Always Disabled in ACP';
@@ -126,17 +144,6 @@ class Cache_Controler {
 			$this->clear();
 		}
 		return $this->status;
-	}
-
-	/**
-	 * Set cache expire time
-	 *
-	 * @param int $expire One day
-	 */
-	public function setExpire($expire = 86400) {
-		if (is_numeric($expire)) {
-			$this->_expire = $expire;
-		}
 	}
 
 	/**
@@ -169,6 +176,16 @@ class Cache_Controler {
 		}
 		clearstatcache();
 		return true;
+	}
+
+	//=====[ Private ]=======================================
+
+	/**
+	 * Get empty cache queries
+	 */
+	private function _getEmpties() {
+		$this->_setPrefix();
+		$this->_empties = $this->read($this->_empties_id);
 	}
 
 	/**

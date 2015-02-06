@@ -39,18 +39,7 @@ class Cache extends Cache_Controler {
 		if($this->_emptied_added) $this->write($this->_empties, $this->_empties_id);
 	}
 
-	/**
-	 * Setup the instance (singleton)
-	 *
-	 * @return instance
-	 */
-	public static function getInstance() {
-		if (!(self::$_instance instanceof self)) {
-			self::$_instance = new self();
-		}
-
-		return self::$_instance;
-	}
+	//=====[ Public ]=======================================
 
 	/**
 	 * Clear the cache
@@ -131,10 +120,18 @@ class Cache extends Cache_Controler {
 
 		return $this->_ids;
 	}
-	
-	private function _getEmpties() {
-		$this->_setPrefix();
-		$this->_empties = $this->read($this->_empties_id);
+
+	/**
+	 * Setup the instance (singleton)
+	 *
+	 * @return instance
+	 */
+	public static function getInstance() {
+		if (!(self::$_instance instanceof self)) {
+			self::$_instance = new self();
+		}
+
+		return self::$_instance;
 	}
 	
 	/**
