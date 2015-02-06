@@ -37,7 +37,6 @@ class XML extends XMLWriter {
 	 * Add an array to the element
 	 *
 	 * @param array $array
-	 *
 	 * @return bool
 	 */
 	public function addArray($array) {
@@ -62,7 +61,6 @@ class XML extends XMLWriter {
 
 	/**
 	 * End element
-	 *
 	 * @param bool $full_end
 	 */
 	public function endElement($full_end = true) {
@@ -77,7 +75,6 @@ class XML extends XMLWriter {
 	 * Get current document
 	 *
 	 * @param bool $flush
-	 *
 	 * @return string
 	 */
 	public function getDocument($flush = true) {
@@ -87,7 +84,6 @@ class XML extends XMLWriter {
 
 	/**
 	 * Display XML
-	 *
 	 * @return XML
 	 */
 	public function output() {
