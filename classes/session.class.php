@@ -123,19 +123,6 @@ class Session {
 		$this->_close();
 	}
 
-	/**
-	 * Setup the instance (singleton)
-	 *
-	 * @return Session
-	 */
-	public static function getInstance() {
-		if (!(self::$_instance instanceof self)) {
-            self::$_instance = new self();
-        }
-
-        return self::$_instance;
-	}
-
 	//=====[ Public ]=======================================
 
 	/**
@@ -223,14 +210,20 @@ class Session {
 	 * Check a form token
 	 *
 	 * @param string $token
-	 *
 	 * @return bool
 	 */
 	public function checkToken($token) {
 		return ($this->get('token') == $token);
 	}
-	
-	// Depreciated but left for backward compatibility
+	 
+	/**
+	 * Have cookied been accepted or not
+	 *
+	 * Depreciated but left for backward compatibility
+	 *
+	 * @param string $token
+	 * @return bool
+	 */
 	public function cookiesBlocked() {
 	
 		// Check cookies exists for verified and if so return value
@@ -253,7 +246,6 @@ class Session {
 	 *
 	 * @param string $name
 	 * @param string $namespace
-	 *
 	 * @return bool
 	 */
 	public function delete($name, $namespace = 'system') {
@@ -317,9 +309,9 @@ class Session {
 	 *
 	 * If name is empty the entire name space will be returned
 	 *
-	 * @param unknown_type $name
-	 * @param unknown_type $namespace
-	 * @param unknown_type $default
+	 * @param string $name
+	 * @param string $namespace
+	 * @param string $default
 	 */
 	public function get($name, $namespace = 'system', $default = false) {
 		$namespace = $this->_namespace($namespace);
@@ -346,7 +338,7 @@ class Session {
 	/**
 	 * Get session id
 	 *
-	 * @return string The session id
+	 * @return string
 	 */
 	public function getId() {
 		if ($this->_state == 'destroyed') {
@@ -354,6 +346,19 @@ class Session {
 		}
 
 		return session_id();
+	}
+
+	/**
+	 * Setup the instance (singleton)
+	 *
+	 * @return Session
+	 */
+	public static function getInstance() {
+		if (!(self::$_instance instanceof self)) {
+            self::$_instance = new self();
+        }
+
+        return self::$_instance;
 	}
 
 	/**
@@ -372,7 +377,7 @@ class Session {
 	/**
 	 * Get the session state
 	 *
-	 * @return string The session state
+	 * @return string
 	 */
     public function getState() {
 		return $this->_state;
@@ -398,7 +403,6 @@ class Session {
 	 *
 	 * @param string $name
 	 * @param string $namespace
-	 *
 	 * @return bool
 	 */
 	public function has($name, $namespace = 'system') {
@@ -424,7 +428,6 @@ class Session {
 	 *
 	 * @param string $config_name
 	 * @param string $element
-	 *
 	 * @return bool
 	 */
 	public function isEmpty($name, $namespace) {
@@ -444,7 +447,7 @@ class Session {
 	 * @param string $name
 	 * @param string $value
 	 * @param string $namespace
-	 *
+	 * @param bool $overwrite
 	 * @return bool
 	 */
 	public function set($name, $value, $namespace = 'system', $overwrite = false) {
@@ -500,7 +503,6 @@ class Session {
 	 * @param string $name
 	 * @param string $value
 	 * @param integer $expire
-	 *
 	 * @return bool
 	 */
 	public function set_cookie($name, $value, $expire) {
@@ -511,14 +513,9 @@ class Session {
 	//=====[ Private ]=======================================
 	
 	/**
-	 * User agent
-	 */
-	private function _http_user_agent() {
-		return strpos($_SERVER['HTTP_USER_AGENT'], 'Trident') ? 'IEX' : $_SERVER['HTTP_USER_AGENT'];
-	}
-	
-	/**
 	 * Close a session
+	 *
+	 * @return true
 	 */
 	private function _close() {
 		if ($this->_state == 'closed') {
@@ -554,10 +551,18 @@ class Session {
 	}
 
 	/**
+	 * User agent
+	 *
+	 * @return string
+	 */
+	private function _http_user_agent() {
+		return strpos($_SERVER['HTTP_USER_AGENT'], 'Trident') ? 'IEX' : $_SERVER['HTTP_USER_AGENT'];
+	}
+
+	/**
 	 * Check & build the namespace
 	 *
 	 * @param string $namespace
-	 *
 	 * @return string
 	 */
 	private function _namespace($namespace) {
