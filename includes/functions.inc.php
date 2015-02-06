@@ -13,29 +13,13 @@
 if(!defined('CC_INI_SET')) die('Access Denied');
 
 ## AutoLoader - automatically load classes if not already included
-
 include CC_ROOT_DIR.'/classes/autoloader.class.php';
 Autoloader::autoload_register(array('Autoloader', 'autoload'));
-
-/**
- * Fix broken serialized data from multibyte characters stored without UTF8
- *
- * @param string $data
- *
- * @return array
- */
-function cc_unserialize($data) {
-	$data = html_entity_decode($data, ENT_QUOTES, 'UTF-8');
-	$data = preg_replace('!s:(\d+):"(.*?)";!e', "'s:'.strlen('$2').':\"$2\";'", $data );
-	$data = unserialize($data);
-	return $data;
-}
 
 /**
  * Append DS to a path string (ie \ or /)
  *
  * @param string $path
- *
  * @return string
  */
 function appendDS($path) {
@@ -52,10 +36,58 @@ function appendDS($path) {
 }
 
 /**
+ * Recursive Diff
+ *
+ * @param array $aArray1
+ * @param array $aArray2
+ * @return diff array
+ */
+function arrayRecursiveDiff($aArray1, $aArray2) { 
+    $aReturn = array(); 
+   
+    foreach ($aArray1 as $mKey => $mValue) { 
+        if (array_key_exists($mKey, $aArray2)) { 
+            if (is_array($mValue)) { 
+                $aRecursiveDiff = arrayRecursiveDiff($mValue, $aArray2[$mKey]); 
+                if (count($aRecursiveDiff)) { $aReturn[$mKey] = $aRecursiveDiff; } 
+            } else { 
+                if ($mValue != $aArray2[$mKey]) { 
+                    $aReturn[$mKey] = $mValue; 
+                } 
+            } 
+        } else { 
+            $aReturn[$mKey] = $mValue; 
+        } 
+    } 
+   
+    return $aReturn; 
+}
+
+/**
+ * URL safe base64 encoding
+ *
+ * @param string $data
+ * @return string
+ */
+function base64url_encode($data) {
+  return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
+}
+
+/**
+ * URL safe base64 decoding
+ *
+ * @param string $data
+ * @return string
+ */
+function base64url_decode($data) {
+  return base64_decode(strtr($data, '-_', '+/'));
+  //return base64_decode(str_pad(strtr($data, '-_', '+/'), strlen($data) % 4, '=', STR_PAD_RIGHT));
+}
+
+/**
  * Print an array in a more readable format
  *
  * @param array $array
- *
  * @return string
  */
 function cc_print_array($array) {
@@ -65,6 +97,19 @@ function cc_print_array($array) {
 	} else {
 		return 'No Data!';
 	}
+}
+
+/**
+ * Fix broken serialized data from multibyte characters stored without UTF8
+ *
+ * @param string $data
+ * @return array
+ */
+function cc_unserialize($data) {
+	$data = html_entity_decode($data, ENT_QUOTES, 'UTF-8');
+	$data = preg_replace('!s:(\d+):"(.*?)";!e', "'s:'.strlen('$2').':\"$2\";'", $data );
+	$data = unserialize($data);
+	return $data;
 }
 
 /**
@@ -106,12 +151,30 @@ function chmod_writable() {
 }
 
 /**
+ * Custom product optionsarray sorting
+ *
+ * @param array $a
+ * @param array $b
+ * @return int
+ */
+function cmpmc($a, $b) {
+
+	if(isset($a['priority']) && isset($b['priority']) && is_numeric($a['priority']) && is_numeric($b['priority'])) {	
+		$b = $b['priority'];
+		$a = $a['priority'];
+	
+		return $a<$b ? -1 : ($a>$b ? 1 : 0);
+	} else {
+		return false;
+	}
+}
+
+/**
  * Get the current page url
  *
  * @param array $excluded
  * @param array $included
  * @param bool $remove_excluded
- *
  * @return string
  */
 function currentPage($excluded = null, $included = null, $remove_excluded = true) {
@@ -177,7 +240,6 @@ function currentPage($excluded = null, $included = null, $remove_excluded = true
  * @param string $item
  * @param trash $key
  * @param trash $one_time_keys
- *
  * @return string
  */
 function custom_urlencode($item, $key, $one_time_keys) {
@@ -192,7 +254,6 @@ function custom_urlencode($item, $key, $one_time_keys) {
  * @param string $localFile
  * @param string $data
  * @param string $fileName
- *
  * @return file data
  */
 function deliverFile($path, $localFile = true, $data = null, $fileName = null) {
@@ -255,7 +316,6 @@ function detectGD() {
  *
  * @param unknown_type $path
  * @param unknown_type $total
- *
  * @return float
  */
 function dirsize($path, &$total) {
@@ -301,7 +361,6 @@ function findFiles(&$list, $path = false, $recursive = true) {
  *
  * @param float $bytes
  * @param bool $implode
- *
  * @return array
  */
 function formatBytes($bytes = 0, $implode = false, $decimal_places = 2) {
@@ -327,12 +386,31 @@ function formatBytes($bytes = 0, $implode = false, $decimal_places = 2) {
 }
 
 /**
+ * Format Dispatch Date
+ *
+ * @param string $timestamp
+ * @param bool $format
+ * @return string/false
+ */
+function formatDispatchDate($date, $format = '%b %d %Y') {
+
+	if (empty($date)) {
+		return false;
+	}
+
+	$seconds = strtotime($date);
+
+	$format = $GLOBALS['config']->get('config', 'dispatch_date_format') ? $GLOBALS['config']->get('config', 'dispatch_date_format') : $format;
+
+	return strftime($format, $seconds);
+}
+
+/**
  * Format time
  *
  * @param string $timestamp
  * @param bool $format
  * @param bool $dynamic
- *
  * @return string/false
  */
 function formatTime($timestamp, $format = false, $static = false) {
@@ -371,26 +449,12 @@ function formatTime($timestamp, $format = false, $static = false) {
 }
 
 /**
- * Format Dispatch Date
+ * Format time
  *
- * @param string $timestamp
- * @param bool $format
- *
- * @return string/false
+ * @param string $product_name
+ * @param bool $cat_id
+ * @return string
  */
-function formatDispatchDate($date, $format = '%b %d %Y') {
-
-	if (empty($date)) {
-		return false;
-	}
-
-	$seconds = strtotime($date);
-
-	$format = $GLOBALS['config']->get('config', 'dispatch_date_format') ? $GLOBALS['config']->get('config', 'dispatch_date_format') : $format;
-
-	return strftime($format, $seconds);
-}
-
 function generate_product_code($product_name, $cat_id = false) {
 	$chars = array(
 		'A','B','C','D','E','F','G','H','I','J','K','L','M',
@@ -420,29 +484,11 @@ function generate_product_code($product_name, $cat_id = false) {
  * @param string $input
  * @param string $match
  * @param string $fetch
- *
  * @return string
  */
 function getCountryFormat($input, $match = 'numcode', $fetch = 'name') {
 	$country = $GLOBALS['db']->select('CubeCart_geo_country', array($fetch), array($match => $input));
 	return ($country) ? utf8_encode($country[0][$fetch]) : false;
-}
-
-/**
- * Get state format
- *
- * @param string $input
- * @param string $match
- * @param string $fetch
- *
- * @return string
- */
-function getStateFormat($input, $match = 'id', $fetch = 'name') {
-	if (($county = $GLOBALS['db']->select('CubeCart_geo_zone', false, array($match => $input))) !== false) {
-//		return ($fetch == 'abbrev' && empty($county[0][$fetch])) ? $county[0]['name'] : utf8_encode($county[0][$fetch]);
-		return ($fetch == 'abbrev' && empty($county[0][$fetch])) ? $county[0]['name'] : $county[0][$fetch];
-	}
-	return $input;
 }
 
 /**
@@ -492,8 +538,26 @@ function get_ip_address() {
 }
 
 /**
+ * Get state format
+ *
+ * @param string $input
+ * @param string $match
+ * @param string $fetch
+ * @return string
+ */
+function getStateFormat($input, $match = 'id', $fetch = 'name') {
+	if (($county = $GLOBALS['db']->select('CubeCart_geo_zone', false, array($match => $input))) !== false) {
+//		return ($fetch == 'abbrev' && empty($county[0][$fetch])) ? $county[0]['name'] : utf8_encode($county[0][$fetch]);
+		return ($fetch == 'abbrev' && empty($county[0][$fetch])) ? $county[0]['name'] : $county[0][$fetch];
+	}
+	return $input;
+}
+
+/**
  * Get all files and folders for a directory recursively
  *
+ * @param string $pattern
+ * @param int/constant $flags
  * @return array
  */
 function glob_recursive($pattern, $flags = 0) {
@@ -505,11 +569,30 @@ function glob_recursive($pattern, $flags = 0) {
 }
 
 /**
+ * hex2bin
+ *
+ * @param $str hex string
+ * @return binary string
+ */
+if (!function_exists('hex2bin')) {
+    function hex2bin($str) {
+        $sbin = "";
+        $len = strlen( $str );
+        for ( $i = 0; $i < $len; $i += 2 ) {
+            $sbin .= pack( "H*", substr( $str, $i, 2 ) );
+        }
+        return $sbin;
+    }
+}
+
+/**
  * Redirect to a page
  *
  * @param string $destination
  * @param string $anchor
  * @param bool $meta_refresh
+ * @param int $status
+ * @return header/string
  */
 
 function httpredir($destination = '', $anchor = '', $meta_refresh = false, $status = 302) {
@@ -574,7 +657,6 @@ function httpredir($destination = '', $anchor = '', $meta_refresh = false, $stat
  *
  * @param array $first
  * @param array $second
- *
  * @return array
  */
 function merge_array($first, $second) {
@@ -605,7 +687,6 @@ function merge_array($first, $second) {
  *
  * @param string $min
  * @param string $max
- *
  * @return bool
  */
 function moduleVersion($min = false, $max = false) {
@@ -650,7 +731,6 @@ function offline() {
  *
  * @param array $x
  * @param array $y
- *
  * @return 0/1
  */
 function price_sort($x, $y) {
@@ -663,72 +743,9 @@ function price_sort($x, $y) {
 }
 
 /**
- * Recursive delete
- *
- * @param string $path
- *
- * @return bool
- */
-
-function recursiveDelete($path) {
-	if (is_dir($path)) {
-		$files	= glob($path.'/'.'*');
-		foreach ($files as $file) {
-			if (is_dir($file)) {
-				recursiveDelete($file);
-			} else if (is_file($file)) {
-				unlink($file);
-			}
-		}
-		return rmdir($path);
-	} else if (is_file($path)) {
-		return unlink($path);
-	}
-}
-
-/**
- * Sanitize a variable
- *
- * @param string $text
- *
- * @return string
- */
-function sanitizeVar($text) {
-	## Sanitize GET variables to prevent XSS attacks
-	return htmlspecialchars($text, ENT_COMPAT);
-}
-
-/**
- * Sanitize SEO allowed path
- *
- * @return string
- */
-function sanitizeSEOPath($path) {
-	## Remove extention
-	$path = preg_replace("/\.\w{2,4}$/", '', $path);
-	## Make path lowercase
-	$path = strtolower($path);
-	## Allow 0-9, a-z, -,_ and /
-	$path = preg_replace('/[^a-z0-9-_\/]/', '-', $path);
-	## Trim multiple dashes
-	return trim(preg_replace('/-+/', '-', $path), '-');
-}
-
-/**
- *
- * @param float $value
- * @param int $figures
- */
-function sigfig($value, $figures = 2) {
-	$exponent		= floor(log10($value) + 1);
-	$significant	= $value / pow(10, $exponent);
-	$significant	= ceil($significant * pow(10, $figures)) / pow(10, $figures);
-	return $significant * pow(10, $exponent);
-}
-/**
  * Create random string
  *
- * @return json
+ * @return string (json)
  */
 function randomString($length = 30) { 
 	while (strlen($hash) < ($length-1)) {
@@ -749,32 +766,25 @@ function randomString($length = 30) {
 }
 
 /**
- * Create state json
+ * Recursive delete
  *
- * @return json
+ * @param string $path
+ * @return bool
  */
-function state_json() {
-
-	## Generate a JSON string for state selector
-	if (($json = $GLOBALS['cache']->read('json.states')) === false) {
-		$counties = $GLOBALS['db']->query('SELECT gc.numcode, gz.id, gz.name FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_geo_zone` AS `gz` LEFT JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_geo_country` AS `gc` ON gc.id=gz.country_id ORDER BY gc.name, gz.name ASC');
-		$json_array = array();
-		if ($counties) {
-			$current = '';
-			foreach ($counties as $state) {
-				if ($current != $state['numcode']) {
-					$json_array[$state['numcode']][] = array('id' => '0', 'name' => '-- '.$GLOBALS['language']->common['please_select'].' --');
-					$current = $state['numcode'];
-				}
-//				$json_array[$state['numcode']][] = array('id' => $state['id'], 'name' => utf8_encode($state['name'])); // data already utf-8
-				$json_array[$state['numcode']][] = array('id' => $state['id'], 'name' => $state['name']);
+function recursiveDelete($path) {
+	if (is_dir($path)) {
+		$files	= glob($path.'/'.'*');
+		foreach ($files as $file) {
+			if (is_dir($file)) {
+				recursiveDelete($file);
+			} else if (is_file($file)) {
+				unlink($file);
 			}
-
-			$json = json_encode($json_array);
-			$GLOBALS['cache']->write($json, 'json.states');
 		}
+		return rmdir($path);
+	} else if (is_file($path)) {
+		return unlink($path);
 	}
-	return $json;
 }
 
 /**
@@ -809,10 +819,76 @@ function rootHomePath() {
 }
 
 /**
+ * Sanitize SEO allowed path
+ *
+ * @return string
+ */
+function sanitizeSEOPath($path) {
+	## Remove extention
+	$path = preg_replace("/\.\w{2,4}$/", '', $path);
+	## Make path lowercase
+	$path = strtolower($path);
+	## Allow 0-9, a-z, -,_ and /
+	$path = preg_replace('/[^a-z0-9-_\/]/', '-', $path);
+	## Trim multiple dashes
+	return trim(preg_replace('/-+/', '-', $path), '-');
+}
+
+/**
+ * Sanitize a variable
+ *
+ * @param string $text
+ * @return string
+ */
+function sanitizeVar($text) {
+	## Sanitize GET variables to prevent XSS attacks
+	return htmlspecialchars($text, ENT_COMPAT);
+}
+
+/**
+ *
+ * @param float $value
+ * @param int $figures
+ */
+function sigfig($value, $figures = 2) {
+	$exponent		= floor(log10($value) + 1);
+	$significant	= $value / pow(10, $exponent);
+	$significant	= ceil($significant * pow(10, $figures)) / pow(10, $figures);
+	return $significant * pow(10, $exponent);
+}
+
+/**
+ * Create state json
+ *
+ * @return json
+ */
+function state_json() {
+	## Generate a JSON string for state selector
+	if (($json = $GLOBALS['cache']->read('json.states')) === false) {
+		$counties = $GLOBALS['db']->query('SELECT gc.numcode, gz.id, gz.name FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_geo_zone` AS `gz` LEFT JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_geo_country` AS `gc` ON gc.id=gz.country_id ORDER BY gc.name, gz.name ASC');
+		$json_array = array();
+		if ($counties) {
+			$current = '';
+			foreach ($counties as $state) {
+				if ($current != $state['numcode']) {
+					$json_array[$state['numcode']][] = array('id' => '0', 'name' => '-- '.$GLOBALS['language']->common['please_select'].' --');
+					$current = $state['numcode'];
+				}
+//				$json_array[$state['numcode']][] = array('id' => $state['id'], 'name' => utf8_encode($state['name'])); // data already utf-8
+				$json_array[$state['numcode']][] = array('id' => $state['id'], 'name' => $state['name']);
+			}
+
+			$json = json_encode($json_array);
+			$GLOBALS['cache']->write($json, 'json.states');
+		}
+	}
+	return $json;
+}
+
+/**
  * Create a valid html string
  *
  * @param string $var
- *
  * @return string
  */
 function validHTML($var) {
@@ -831,92 +907,4 @@ function validHTML($var) {
  */
 function version_clean($version) {
 	return substr($version, 0, strpos($version, '-'));
-}
-
-/**
- * URL safe base64 encoding
- *
- * @param string $data
- *
- * @return string
- */
-function base64url_encode($data) {
-  return rtrim(strtr(base64_encode($data), '+/', '-_'), '=');
-}
-
-/**
- * URL safe base64 decoding
- *
- * @param string $data
- *
- * @return string
- */
-function base64url_decode($data) {
-  return base64_decode(strtr($data, '-_', '+/'));
-  //return base64_decode(str_pad(strtr($data, '-_', '+/'), strlen($data) % 4, '=', STR_PAD_RIGHT));
-}
-/**
- * Custom product optionsarray sorting
- *
- * @param array $a
- * @param array $b
- *
- * @return integer
- */
-function cmpmc($a, $b) {
-
-	if(isset($a['priority']) && isset($b['priority']) && is_numeric($a['priority']) && is_numeric($b['priority'])) {	
-		$b = $b['priority'];
-		$a = $a['priority'];
-	
-		return $a<$b ? -1 : ($a>$b ? 1 : 0);
-	} else {
-		return false;
-	}
-}
-/**
- * Recursive Diff
- *
- * @param array $aArray1
- * @param array $aArray2
- *
- * @return diff array
- */
-function arrayRecursiveDiff($aArray1, $aArray2) { 
-    $aReturn = array(); 
-   
-    foreach ($aArray1 as $mKey => $mValue) { 
-        if (array_key_exists($mKey, $aArray2)) { 
-            if (is_array($mValue)) { 
-                $aRecursiveDiff = arrayRecursiveDiff($mValue, $aArray2[$mKey]); 
-                if (count($aRecursiveDiff)) { $aReturn[$mKey] = $aRecursiveDiff; } 
-            } else { 
-                if ($mValue != $aArray2[$mKey]) { 
-                    $aReturn[$mKey] = $mValue; 
-                } 
-            } 
-        } else { 
-            $aReturn[$mKey] = $mValue; 
-        } 
-    } 
-   
-    return $aReturn; 
-}
-
-if (!function_exists('hex2bin')) {
-	/**
-	 * hex2bin
-	 *
-	 * @param $str hex string
-	 *
-	 * @return binary string
-	 */
-    function hex2bin($str) {
-        $sbin = "";
-        $len = strlen( $str );
-        for ( $i = 0; $i < $len; $i += 2 ) {
-            $sbin .= pack( "H*", substr( $str, $i, 2 ) );
-        }
-        return $sbin;
-    }
 }
