@@ -32,6 +32,17 @@ class Password {
 
 	final private function __construct() { }
 
+	//=====[ Public ]=======================================
+
+	/**
+	 * Create salt for passwords
+	 * @author http://www.richardlord.net/blog/php-password-security
+	 * @return string
+	 */
+	public function createSalt() {
+		return substr(str_pad(dechex(mt_rand()), 8, '0', STR_PAD_LEFT ), -8);
+	}
+
 	/**
 	 * Setup the instance (singleton)
 	 *
@@ -45,24 +56,11 @@ class Password {
 		return self::$_instance;
 	}
 
-	//=====[ Public ]=======================================
-
-	/**
-	 * Create salt for passwords
-	 * @author http://www.richardlord.net/blog/php-password-security
-	 *
-	 * @return string
-	 */
-	public function createSalt() {
-		return substr(str_pad(dechex(mt_rand()), 8, '0', STR_PAD_LEFT ), -8);
-	}
-
 	/**
 	 * Create a salted password
 	 *
 	 * @param string $value
 	 * @param string $salt
-	 *
 	 * @return string
 	 */
 	public function getSalted($value, $salt = '') {
@@ -79,7 +77,6 @@ class Password {
 	 *
 	 * @param string $value
 	 * @param string $salt
-	 *
 	 * @return string
 	 */
 	public function getSaltedOld($value, $salt) {
@@ -91,7 +88,6 @@ class Password {
 	 *
 	 * @param md5 string $md5
 	 * @param string $salt
-	 *
 	 * @return string
 	 */
 	public function updateOld($md5, $salt) {
