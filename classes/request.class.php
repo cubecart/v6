@@ -79,74 +79,23 @@ class Request {
 		}
 	}
 
-	##################################################
+	//=====[ Public ]=======================================
 
-	public function sendHeaders($bool = true) {
-		$this->_send_headers =  $bool;
-	}
-
-	public function setMethod($method = 'post') {
-		switch (strtolower($method)) {
-		case 'get':
-		case 'post':
-			$this->_request_method = strtolower($method);
-			break;
-		default:
-			return false;
-		}
-		return true;
-	}
-
-	public function setSSL($verify_peer = false, $verify_host = false, $cert = null) {
-		$this->_request_protocol = 'https';
-		## Some systems use custom ports, so only redefine it if not already specified e.g. https://dev.psigate.com:7989
-		if ($this->_request_port == 80) {
-			$this->_request_port = 443;
-		}
-		if ($this->_curl) {
-			$this->_curl_options[CURLOPT_SSL_VERIFYPEER] = $verify_peer;
-			if (!empty($cert) && file_exists($cert)) {
-				if (is_dir($cert)) {
-					$this->_curl_options[CURL_SSL_CAPATH] = $cert;
-				} else {
-					$this->_curl_options[CURL_SSL_CAINFO] = $cert;
-				}
-			}
-			$this->_curl_options[CURLOPT_SSL_VERIFYHOST] = $verify_host;
-		}
-	}
-
-	public function setProxy($proxy_host, $proxy_port = 80, $username = null, $password = null) {
-		if ($this->_curl) {
-			if (!empty($username) && !empty($password)) {
-				$this->_curl_options[CURLOPT_PROXYUSERPWD] = $username.':'.$password;
-			}
-			$this->_curl_options[CURLOPT_HTTPHEADER] = array('Host: '.$this->_request_url);
-			$this->_curl_options[CURLOPT_PROXY] = $proxy_host.':'.$proxy_port;
-		} else {
-			$this->_proxy_host = $proxy_host;
-			$this->_proxy_port = $proxy_port;
-			if (!empty($username) && !empty($password)) {
-				$this->_proxy_username  = $password;
-				$this->_proxy_password  = $username;
-				$this->_request_headers[] = 'Proxy-Authorization: Basic '.base64_encode($username.':'.$password);
-			}
-		}
-	}
-	// Use this to appand headers onto default ones
+	/**
+	 * Appand headers into request
+	 *
+	 * @param string $header
+	 */
 	public function appendHeaders($header) {
 		$this->_add_request_headers[] = $header;
 	}
-	// Use this to add custom headers ONLY removing default ones
-	public function customHeaders($header) {
-		$this->_custom_request_headers[] = $header;
-	}
 
-	// Use this to add custom options
-	public function customOption($optionName, $optionValue) {
-		$this->_curl_options[$optionName] = $optionValue;
-	}
-
+	/**
+	 * Authentication for request
+	 *
+	 * @param string $username
+	 * @param string $password
+	 */
 	public function authenticate($username, $password) {
 		if ($this->_curl) {
 			$this->_curl_options[CURLOPT_USERPWD] = $username.':'.$password;
@@ -155,10 +104,80 @@ class Request {
 		}
 	}
 
-	public function setHTTPVersion($version = '1.0') {
-		$this->_request_http_version = $version;
+	/**
+	 * Authentication for request
+	 *
+	 * @param bool $status
+	 * @return bool
+	 */
+	public function cache($status = null) {
+		if (!is_null($status)) $this->_request_cache = (bool)$status;
+		return $this->_request_cache;
 	}
 
+	/**
+	 * Add headers REMOVING default ones
+	 *
+	 * @param text $header
+	 */
+	public function customHeaders($header) {
+		$this->_custom_request_headers[] = $header;
+	}
+
+	/**
+	 * Add cURL options
+	 *
+	 * @param string $optionName
+	 * @param string $optionValue
+	 */
+	public function customOption($optionName, $optionValue) {
+		$this->_curl_options[$optionName] = $optionValue;
+	}
+
+	/**
+	 * Log the request and response
+	 *
+	 * @param string $request
+	 * @param string $result
+	 * @param string $error
+	 * @return bool
+	 */
+	private function log($request, $result, $error = '') {
+		if (!$this->_log) return false;
+		if (!empty($request)) {
+			$data = array (
+				'request_url'  	=> $this->_request_protocol.'://'.$this->_request_url.$this->_request_path,
+				'request'  		=> $this->mask_cc($request),	
+				'result'    	=> $this->mask_cc($result),
+				'error'   		=> $error
+			);
+			$GLOBALS['db']->insert('CubeCart_request_log', $data);
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	 * Mask credit card from request
+	 *
+	 * @param string $string
+	 * @param string $mask_char
+	 * @return string
+	 */
+	private function mask_cc($string, $mask_char = '*') {
+		if (preg_match('/([0-9]{12,16})/', $string, $matches)) {
+			$replacement = preg_replace('/(?!^.?)[0-9](?!(.){0,3}$)/', $mask_char, $matches[0]);
+			return preg_replace('/'.$matches[0].'/', $replacement, $string);
+		} else {
+			return $string;
+		}
+	}
+
+	/**
+	 * Set the request data
+	 *
+	 * @param array $dataArray
+	 */
 	public function setData($dataArray = null) {
 		if (is_array($dataArray)) {
 			$this->_request_body = strip_tags(http_build_query($dataArray, '', '&'));
@@ -190,29 +209,13 @@ class Request {
 		}
 	}
 
-	public function setUserAgent($user_agent) {
-		if ($this->_curl) {
-			$this->_curl_options[CURLOPT_USERAGENT] = $user_agent;
-		} else {
-			$this->_request_headers[] = 'User-Agent: '.$user_agent;
-		}
-	}
-
-	public function skiplog($bool = false) {
-		if ($bool) {
-			$this->_log = false;
-			return true;
-		}
-		return false;
-	}
-
-	public function cache($status = null) {
-		if (!is_null($status)) $this->_request_cache = (bool)$status;
-		return $this->_request_cache;
-	}
-
-	##################################################
-
+	/**
+	 * Send request via cURL or fsock
+	 *
+	 * @param int $timeout
+	 * @param string $mask_char
+	 * @return string/false
+	 */
 	public function send($timeout = null) {
 		if (!empty($this->_request_body)) {
 			if (!empty($timeout)) $this->_request_timeout = (int)$timeout;
@@ -279,27 +282,120 @@ class Request {
 		}
 		return false;
 	}
-	private function mask_cc($string, $mask_char = '*') {
-		if (preg_match('/([0-9]{12,16})/', $string, $matches)) {
-			$replacement = preg_replace('/(?!^.?)[0-9](?!(.){0,3}$)/', $mask_char, $matches[0]);
-			return preg_replace('/'.$matches[0].'/', $replacement, $string);
+
+	/**
+	 * Send request headers
+	 *
+	 * @param bool $bool
+	 */
+	public function sendHeaders($bool = true) {
+		$this->_send_headers =  $bool;
+	}
+
+	/**
+	 * Set HTTP protocol version
+	 *
+	 * @param float (as a string) $version
+	 */
+	public function setHTTPVersion($version = '1.0') {
+		$this->_request_http_version = $version;
+	}
+
+	/**
+	 * Set request method of post or get
+	 *
+	 * @param string $method
+	 * @return bool
+	 */
+	public function setMethod($method = 'post') {
+		switch (strtolower($method)) {
+		case 'get':
+		case 'post':
+			$this->_request_method = strtolower($method);
+			break;
+		default:
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Set up proxy server route if it exists (rare)
+	 *
+	 * @param string $proxy_host
+	 * @param int $proxy_port
+	 * @param string $username
+	 * @param string $password
+	 */
+	public function setProxy($proxy_host, $proxy_port = 80, $username = null, $password = null) {
+		if ($this->_curl) {
+			if (!empty($username) && !empty($password)) {
+				$this->_curl_options[CURLOPT_PROXYUSERPWD] = $username.':'.$password;
+			}
+			$this->_curl_options[CURLOPT_HTTPHEADER] = array('Host: '.$this->_request_url);
+			$this->_curl_options[CURLOPT_PROXY] = $proxy_host.':'.$proxy_port;
 		} else {
-			return $string;
+			$this->_proxy_host = $proxy_host;
+			$this->_proxy_port = $proxy_port;
+			if (!empty($username) && !empty($password)) {
+				$this->_proxy_username  = $password;
+				$this->_proxy_password  = $username;
+				$this->_request_headers[] = 'Proxy-Authorization: Basic '.base64_encode($username.':'.$password);
+			}
 		}
 	}
 
-	private function log($request, $result, $error = '') {
-		if (!$this->_log) return false;
-		if (!empty($request)) {
-			$data = array (
-				'request_url'  	=> $this->_request_protocol.'://'.$this->_request_url.$this->_request_path,
-				'request'  		=> $this->mask_cc($request),	
-				'result'    	=> $this->mask_cc($result),
-				'error'   		=> $error
-			);
-			$GLOBALS['db']->insert('CubeCart_request_log', $data);
-		} else {
-			return false;
+	/**
+	 * Set protocol/port for SSL
+	 *
+	 * @param string $proxy_host
+	 * @param int $proxy_port
+	 * @param string $username
+	 * @param string $password
+	 */
+	public function setSSL($verify_peer = false, $verify_host = false, $cert = null) {
+		$this->_request_protocol = 'https';
+		## Some systems use custom ports, so only redefine it if not already specified e.g. https://dev.psigate.com:7989
+		if ($this->_request_port == 80) {
+			$this->_request_port = 443;
+		}
+		if ($this->_curl) {
+			$this->_curl_options[CURLOPT_SSL_VERIFYPEER] = $verify_peer;
+			if (!empty($cert) && file_exists($cert)) {
+				if (is_dir($cert)) {
+					$this->_curl_options[CURL_SSL_CAPATH] = $cert;
+				} else {
+					$this->_curl_options[CURL_SSL_CAINFO] = $cert;
+				}
+			}
+			$this->_curl_options[CURLOPT_SSL_VERIFYHOST] = $verify_host;
 		}
 	}
+	
+	/**
+	 * Set request useragent
+	 *
+	 * @param string $user_agent
+	 */
+	public function setUserAgent($user_agent) {
+		if ($this->_curl) {
+			$this->_curl_options[CURLOPT_USERAGENT] = $user_agent;
+		} else {
+			$this->_request_headers[] = 'User-Agent: '.$user_agent;
+		}
+	}
+
+	/**
+	 * Use to prevent request logging
+	 *
+	 * @param bool $bool
+	 * @return bool
+	 */
+	public function skiplog($bool = false) {
+		if ($bool) {
+			$this->_log = false;
+			return true;
+		}
+		return false;
+	}	
 }
