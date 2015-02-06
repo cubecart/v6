@@ -71,22 +71,15 @@ class Order {
 		$this->_tidyOrders();
 	}
 
-	/**
-	 * Setup the instance (singleton)
-	 *
-	 * @return Order
-	 */
-	public static function getInstance() {
-		if (!(self::$_instance instanceof self)) {
-			self::$_instance = new self();
-		}
-
-		return self::$_instance;
-	}
-
-
 	//=====[ Public ]=======================================
 
+	/**
+	 * Add order note
+	 *
+	 * @param string $order_id
+	 * @param string $note
+	 * @return bool
+	 */
 	public function addNote($order_id = null, $note = null) {
 		if (!empty($order_id) && !empty($note)) {
 			$record = array(
@@ -104,6 +97,34 @@ class Order {
 		return false;
 	}
 
+	/**
+	 * Assign order details to smarty template
+	 *
+	 * @param array $values
+	 * @param any $admin
+	 */
+	public function assignOrderDetails($values = null, $admin = null) {
+
+		$this->_email_details = (is_null($values)) ? $this->_email_details : $values;
+		$order_id = $this->_email_details['order_summary']['cart_order_id'];
+		$this->_email_details['order_summary']['link'] = (is_null($admin)) ? $GLOBALS['storeURL'].'/index.php?_a=vieworder&cart_order_id='.$order_id : $GLOBALS['storeURL'].'/'.$GLOBALS['config']->get('config', 'adminFile').'?_g=orders&action=edit&order_id='.$order_id;
+
+		foreach ($GLOBALS['hooks']->load('class.order.assign_order_details') as $hook) include $hook; // custom made details
+
+		$GLOBALS['smarty']->assign('DATA', $this->_email_details['order_summary']);
+		$GLOBALS['smarty']->assign('BILLING', $this->_email_details['billing'] );
+		$GLOBALS['smarty']->assign('SHIPPING', $this->_email_details['shipping']);
+		$GLOBALS['smarty']->assign('TAXES', $this->_email_details['taxes']);
+		$GLOBALS['smarty']->assign('PRODUCTS', $this->_email_details['products']);
+	}
+
+	/**
+	 * Create the order number
+	 *
+	 * @param bool $return
+	 * @param bool $set_basket
+	 * @return string/true
+	 */
 	public function createOrderId($return = false, $set_basket = true) {
 		// Self explainitory really...
 		$this->_order_id = date('ymd-His-').rand(1000, 9999);
@@ -118,10 +139,22 @@ class Order {
 		return ($return) ? $this->_order_id : true;
 	}
 
+	/**
+	 * Delete encrypted credit card
+	 *
+	 * @param string $cart_order_id
+	 * @return bool
+	 */
 	public function deleteCard($cart_order_id) {
 		return (bool)$GLOBALS['db']->update('CubeCart_order_summary', array('offline_capture' => null), array('cart_order_id' => $cart_order_id));
 	}
 
+	/**
+	 * Delete order
+	 *
+	 * @param string $cart_order_id
+	 * @return bool
+	 */
 	public function deleteOrder($order_id) {
 		// Delete the order from the system
 		$deleted = false;
@@ -142,10 +175,121 @@ class Order {
 		return $deleted;
 	}
 
+	/**
+	 * Disable admin email notification
+	 */
 	public function disableAdminEmail() {
 		$this->_email_admin_enabled = false;
 	}
 
+	/**
+	 * Setup the instance (singleton)
+	 *
+	 * @return Order
+	 */
+	public static function getInstance() {
+		if (!(self::$_instance instanceof self)) {
+			self::$_instance = new self();
+		}
+
+		return self::$_instance;
+	}
+
+	/**
+	 * Get order details (summary & line items)
+	 *
+	 * @param string $order_id
+	 * @return array
+	 */
+	public function getOrderDetails($order_id) {
+
+		$order_summary = $this->getSummary($order_id);
+
+		// Format prices etc for order emails...
+		$order_summary['subtotal']  = Tax::getInstance()->priceFormat($order_summary['subtotal'], true);
+		$order_summary['total']  = Tax::getInstance()->priceFormat($order_summary['total'], true);
+		$order_summary['discount']  = Tax::getInstance()->priceFormat($order_summary['discount'], true);
+		$order_summary['shipping'] = Tax::getInstance()->priceFormat($order_summary['shipping'], true);
+		// Get taxes
+		$order_taxes = $GLOBALS['db']->select('CubeCart_order_tax', array('tax_id', 'amount'), array('cart_order_id' => $order_id));
+
+		// Put in items
+		$vars = array();
+		foreach ($this->_order_inventory as $item) {
+			if ($item['product_id']>0) {
+				$product    = array_merge($GLOBALS['catalogue']->getProductData($item['product_id']), $item);
+				$product['item_price'] = Tax::getInstance()->priceFormat($product['price']);
+				$product['price']   = Tax::getInstance()->priceFormat($product['price']*$product['quantity']);
+				if (!empty($product['product_options']))  $product['product_options'] = implode(' ', unserialize($item['product_options']));
+				$vars['products'][] = $product;
+			} else {
+				$item['price'] = Tax::getInstance()->priceFormat($item['price']);
+				$vars['products'][] = $item;
+			}
+		}
+
+		// Put tax in
+		if ($order_taxes) {
+			foreach ($order_taxes as $order_tax) {
+				$tax_data = Tax::getInstance()->fetchTaxDetails($order_tax['tax_id']);
+				$tax['tax_name']  = $tax_data['name'];
+				//$tax['tax_percent'] = sprintf('%.3F',$tax_data['tax_percent']);
+				$tax['tax_percent'] = floatval($tax_data['tax_percent']); // get rid of zeroes
+				$tax['tax_amount']  = Tax::getInstance()->priceFormat($order_tax['amount']);
+				$vars['taxes'][] = $tax;
+			}
+		}
+
+		$billing = array (
+			'first_name'  => $order_summary['first_name'],
+			'last_name'  => $order_summary['last_name'],
+			'company_name'  => $order_summary['company_name'],
+			'line1'   => $order_summary['line1'],
+			'line2'   => $order_summary['line2'],
+			'town'    => $order_summary['town'],
+			'state'   => getStateFormat($order_summary['state']),
+			'postcode'   => $order_summary['postcode'],
+			'country'   => getCountryFormat($order_summary['country']),
+			'phone'   => $order_summary['phone'],
+			'email'   => $order_summary['email']
+		);
+		$shipping = array (
+			'first_name'  => $order_summary['first_name_d'],
+			'last_name'  => $order_summary['last_name_d'],
+			'company_name'  => $order_summary['company_name_d'],
+			'line1'   => $order_summary['line1_d'],
+			'line2'   => $order_summary['line2_d'],
+			'town'    => $order_summary['town_d'],
+			'state'   => getStateFormat($order_summary['state_d']),
+			'postcode'   => $order_summary['postcode_d'],
+			'country'   => getCountryFormat($order_summary['country_d'])
+		);
+
+		// Format data
+		$order_summary['ship_date']  = ((int)(str_replace('-', '', $order_summary['ship_date'])) > 0) ? formatDispatchDate($order_summary['ship_date']) : "";
+		$order_summary['ship_date']  = $order_summary['ship_date'] ? formatDispatchDate($order_summary['ship_date']) : "";
+		$order_summary['gateway']    = str_replace('_', ' ', $order_summary['gateway']);
+
+
+		$values['order_summary'] = $order_summary;
+		$values['billing']       = $billing;
+		$values['shipping']      = $shipping;
+		$values['taxes']         = $vars['taxes'];
+		$values['products']      = $vars['products'];
+
+		foreach ($GLOBALS['hooks']->load('class.order.get_order_details') as $hook) include $hook;
+
+		$this->_email_details    = $values;
+		return $this->_email_details;
+
+	}
+
+	/**
+	 * Get the order summary
+	 *
+	 * @param string $cart_order_id
+	 * @return array/false
+	 */
 	public function getSummary($order_id = null) {
 		// Returns the order summary data
 		$this->_order_id = (is_null($order_id)) ? $this->_order_id : $order_id;
@@ -159,6 +303,13 @@ class Order {
 		return false;
 	}
 
+	/**
+	 * Log payment transaction
+	 *
+	 * @param array $log
+	 * @param bool $force_log
+	 * @return bool
+	 */
 	public function logTransaction($log, $force_log = false) {
 		// Log the transaction data returned from the payment gateways
 		if (is_array($log) && !empty($log)) {
@@ -185,6 +336,14 @@ class Order {
 		return false;
 	}
 
+	/**
+	 * Change the order status
+	 *
+	 * @param int $status_id
+	 * @param string $order_id
+	 * @param bool $force
+	 * @return bool
+	 */
 	public function orderStatus($status_id, $order_id, $force = false) {
 		global $glob;
 
@@ -336,6 +495,47 @@ class Order {
 		return false;
 	}
 
+	/**
+	 * Update payment status for order
+	 *
+	 * @param int $status_id
+	 * @param string $order_id
+	 */
+	public function paymentStatus($status_id, $order_id) {
+		if (!empty($status_id) && !empty($order_id)) {
+			$this->getSummary($order_id);
+			
+			if ((int)$this->_order_summary['status'] == 0) return false; // no order record
+			
+			$mailer = Mailer::getInstance();
+			switch ($status_id) {
+			case self::PAYMENT_PENDING:
+				/* $content = $mailer->loadContent('cart.payment_pending', $this->_order_summary['lang'], $this->_order_summary);*/
+				break;
+			case self::PAYMENT_PROCESS:
+				break;
+			case self::PAYMENT_SUCCESS:
+				$content = $mailer->loadContent('cart.payment_received', $this->_order_summary['lang'], $this->_order_summary);
+				break;
+			case self::PAYMENT_DECLINE:
+				break;
+			case self::PAYMENT_FAILED:
+				break;
+			case self::PAYMENT_CANCEL:
+				break;
+			}
+			if ($this->_email_enabled && isset($content)) {
+				$mailer->sendEmail($this->_order_summary['email'], $content);
+			}
+		}
+	}
+
+	/**
+	 * Create order
+	 *
+	 * @param bool $force
+	 * @return bool
+	 */
 	public function placeOrder($force_order = false) {
 		foreach ($GLOBALS['hooks']->load('class.order.place_order') as $hook) include $hook;
 
@@ -430,39 +630,82 @@ class Order {
 		return false;
 	}
 
-	public function paymentStatus($status_id, $order_id) {
-		if (!empty($status_id) && !empty($order_id)) {
-			$this->getSummary($order_id);
-			
-			if ((int)$this->_order_summary['status'] == 0) return false; // no order record
-			
-			$mailer = Mailer::getInstance();
-			switch ($status_id) {
-			case self::PAYMENT_PENDING:
-				/* $content = $mailer->loadContent('cart.payment_pending', $this->_order_summary['lang'], $this->_order_summary);*/
-				break;
-			case self::PAYMENT_PROCESS:
-				break;
-			case self::PAYMENT_SUCCESS:
-				$content = $mailer->loadContent('cart.payment_received', $this->_order_summary['lang'], $this->_order_summary);
-				break;
-			case self::PAYMENT_DECLINE:
-				break;
-			case self::PAYMENT_FAILED:
-				break;
-			case self::PAYMENT_CANCEL:
-				break;
+	/**
+	 * Create serialized array of product options
+	 *
+	 * @param array $options
+	 * @param int $product_id
+	 * @return string
+	 */
+	public function serializeOptions($options, $product_id) {
+		if (isset($options) && !empty($options)) {
+			foreach ($options as $option_id => $assign_id) {
+				if (!is_array($assign_id)) {
+					if (($value = $GLOBALS['catalogue']->getOptionData((int)$option_id, (int)$assign_id)) !== false) {
+						$value['price_display'] = '';
+						if (isset($value['option_price']) && $value['option_price']>0) { // record option price but not zero
+							if ($value['option_negative']) {
+								//$record['price'] -= $value['option_price'];
+								$value['price_display'] = ' (-';
+							} else {
+								//$record['price'] += $value['option_price'];
+								$value['price_display'] = ' (+';
+							}
+							$value['price_display'] .= Tax::getInstance()->priceFormat($value['option_price'], true).')';
+						}
+						$option[$assign_id] = $value['option_name'].': '.$value['value_name'].$value['price_display'];
+					}
+				} else {
+					foreach ($assign_id as $id => $option_value) {
+						if (($assign_id = $GLOBALS['db']->select('CubeCart_option_assign', array('assign_id'), array('option_id' => (int)$option_id, 'product' => $product_id))) !== false) {
+							$assign_id = (int)$assign_id[0]['assign_id'];
+						} else {
+							$assign_id = 0;
+						}
+						
+						if (($value = $GLOBALS['catalogue']->getOptionData((int)$option_id, $assign_id)) !== false) {
+							$value['price_display'] = '';
+							if (isset($value['option_price']) && $value['option_price']>0) { // record option price but not zero
+								if ($value['option_negative']) {
+									//$record['price'] -= $value['option_price'];
+									$value['price_display'] = ' (-';
+								} else {
+									//$record['price'] += $value['option_price'];
+									$value['price_display'] = ' (+';
+								}
+								$value['price_display'] .= Tax::getInstance()->priceFormat($value['option_price'], true).')';
+							}
+							$option[$assign_id] = $value['option_name'].': '.$option_value.$value['price_display'];
+						}
+					}
+
+				}
 			}
-			if ($this->_email_enabled && isset($content)) {
-				$mailer->sendEmail($this->_order_summary['email'], $content);
+			if (is_array($option)) {
+				return serialize($option);
 			}
 		}
+		return '';
 	}
 
+	/**
+	 * Store transaction data for payment
+	 *
+	 * @param array $transData
+	 * @param bool $forceLog
+	 * @return bool
+	 */
 	public function storeTrans($transData, $forceLog = false) {
 		return $this->logTransaction($transData, $forceLog);
 	}
 
+	/**
+	 * Update the order summary
+	 *
+	 * @param string $order_id
+	 * @param array $dataArray
+	 * @return bool
+	 */
 	public function updateSummary($order_id, $dataArray) {
 		## Add notes, update status, gateway, shipping date, courier tracking url
 		if (!empty($dataArray) && is_array($dataArray)) {
@@ -472,108 +715,15 @@ class Order {
 		return false;
 	}
 
-
-	public function getOrderDetails($order_id) {
-
-		$order_summary = $this->getSummary($order_id);
-
-		// Format prices etc for order emails...
-		$order_summary['subtotal']  = Tax::getInstance()->priceFormat($order_summary['subtotal'], true);
-		$order_summary['total']  = Tax::getInstance()->priceFormat($order_summary['total'], true);
-		$order_summary['discount']  = Tax::getInstance()->priceFormat($order_summary['discount'], true);
-		$order_summary['shipping'] = Tax::getInstance()->priceFormat($order_summary['shipping'], true);
-		// Get taxes
-		$order_taxes = $GLOBALS['db']->select('CubeCart_order_tax', array('tax_id', 'amount'), array('cart_order_id' => $order_id));
-
-		// Put in items
-		$vars = array();
-		foreach ($this->_order_inventory as $item) {
-			if ($item['product_id']>0) {
-				$product    = array_merge($GLOBALS['catalogue']->getProductData($item['product_id']), $item);
-				$product['item_price'] = Tax::getInstance()->priceFormat($product['price']);
-				$product['price']   = Tax::getInstance()->priceFormat($product['price']*$product['quantity']);
-				if (!empty($product['product_options']))  $product['product_options'] = implode(' ', unserialize($item['product_options']));
-				$vars['products'][] = $product;
-			} else {
-				$item['price'] = Tax::getInstance()->priceFormat($item['price']);
-				$vars['products'][] = $item;
-			}
-		}
-
-		// Put tax in
-		if ($order_taxes) {
-			foreach ($order_taxes as $order_tax) {
-				$tax_data = Tax::getInstance()->fetchTaxDetails($order_tax['tax_id']);
-				$tax['tax_name']  = $tax_data['name'];
-				//$tax['tax_percent'] = sprintf('%.3F',$tax_data['tax_percent']);
-				$tax['tax_percent'] = floatval($tax_data['tax_percent']); // get rid of zeroes
-				$tax['tax_amount']  = Tax::getInstance()->priceFormat($order_tax['amount']);
-				$vars['taxes'][] = $tax;
-			}
-		}
-
-		$billing = array (
-			'first_name'  => $order_summary['first_name'],
-			'last_name'  => $order_summary['last_name'],
-			'company_name'  => $order_summary['company_name'],
-			'line1'   => $order_summary['line1'],
-			'line2'   => $order_summary['line2'],
-			'town'    => $order_summary['town'],
-			'state'   => getStateFormat($order_summary['state']),
-			'postcode'   => $order_summary['postcode'],
-			'country'   => getCountryFormat($order_summary['country']),
-			'phone'   => $order_summary['phone'],
-			'email'   => $order_summary['email']
-		);
-		$shipping = array (
-			'first_name'  => $order_summary['first_name_d'],
-			'last_name'  => $order_summary['last_name_d'],
-			'company_name'  => $order_summary['company_name_d'],
-			'line1'   => $order_summary['line1_d'],
-			'line2'   => $order_summary['line2_d'],
-			'town'    => $order_summary['town_d'],
-			'state'   => getStateFormat($order_summary['state_d']),
-			'postcode'   => $order_summary['postcode_d'],
-			'country'   => getCountryFormat($order_summary['country_d'])
-		);
-
-		// Format data
-		$order_summary['ship_date']  = ((int)(str_replace('-', '', $order_summary['ship_date'])) > 0) ? formatDispatchDate($order_summary['ship_date']) : "";
-		$order_summary['ship_date']  = $order_summary['ship_date'] ? formatDispatchDate($order_summary['ship_date']) : "";
-		$order_summary['gateway']    = str_replace('_', ' ', $order_summary['gateway']);
-
-
-		$values['order_summary'] = $order_summary;
-		$values['billing']       = $billing;
-		$values['shipping']      = $shipping;
-		$values['taxes']         = $vars['taxes'];
-		$values['products']      = $vars['products'];
-
-		foreach ($GLOBALS['hooks']->load('class.order.get_order_details') as $hook) include $hook;
-
-		$this->_email_details    = $values;
-		return $this->_email_details;
-
-	}
-
-	public function assignOrderDetails($values = null, $admin = null) {
-
-		$this->_email_details = (is_null($values)) ? $this->_email_details : $values;
-		$order_id = $this->_email_details['order_summary']['cart_order_id'];
-		$this->_email_details['order_summary']['link'] = (is_null($admin)) ? $GLOBALS['storeURL'].'/index.php?_a=vieworder&cart_order_id='.$order_id : $GLOBALS['storeURL'].'/'.$GLOBALS['config']->get('config', 'adminFile').'?_g=orders&action=edit&order_id='.$order_id;
-
-		foreach ($GLOBALS['hooks']->load('class.order.assign_order_details') as $hook) include $hook; // custom made details
-
-		$GLOBALS['smarty']->assign('DATA', $this->_email_details['order_summary']);
-		$GLOBALS['smarty']->assign('BILLING', $this->_email_details['billing'] );
-		$GLOBALS['smarty']->assign('SHIPPING', $this->_email_details['shipping']);
-		$GLOBALS['smarty']->assign('TAXES', $this->_email_details['taxes']);
-		$GLOBALS['smarty']->assign('PRODUCTS', $this->_email_details['products']);
-	}
-
-
 	//=====[ Private ]=======================================
 
+	/**
+	 * Log order status history with timestamp
+	 *
+	 * @param string $order_id
+	 * @param int $status_id
+	 * @return bool
+	 */
 	private function _addHistory($order_id, $status_id) {
 		if (!empty($order_id) && !empty($status_id)) {
 			$record = array(
@@ -586,6 +736,15 @@ class Order {
 		return false;
 	}
 
+	/**
+	 * Create gift certificate
+	 *
+	 * @param float $value
+	 * @param int $blocks
+	 * @param int $bsize
+	 * @param string $glue
+	 * @return bool
+	 */
 	private function _createCertificate($value, $blocks = 5, $bsize = 4, $glue = '-') {
 		// Create Certificate Code
 		$length = ($blocks*$bsize)+($blocks-1);
@@ -607,6 +766,13 @@ class Order {
 		return (int)$GLOBALS['db']->insert('CubeCart_coupons', $record);
 	}
 
+	/**
+	 * Create digital download for order ready to be sent later
+	 *
+	 * @param int $product_id
+	 * @param string $order_inv_id
+	 * @return bool
+	 */
 	private function _createDownload($product_id, $order_inv_id) {
 		// Create a reference for a download
 		$accesskey = md5($this->_order_id.$product_id.date('cZ@u').mt_rand());
@@ -624,6 +790,13 @@ class Order {
 		return $GLOBALS['db']->insert('CubeCart_downloads', $record);
 	}
 
+	/**
+	 * Deliver digital download from _createDownload
+	 *
+	 * @param string $order_id
+	 * @param string $email
+	 * @return bool
+	 */
 	private function _digitalDelivery($order_id, $email) {
 		if (!empty($order_id) && !empty($email)) {
 			if (($digital = $GLOBALS['db']->select('CubeCart_downloads', array('digital_id', 'accesskey', 'order_inv_id'), array('cart_order_id' => $order_id))) !== false) {
@@ -662,6 +835,13 @@ class Order {
 		return false;
 	}
 
+	/**
+	 * Get order line items only
+	 *
+	 * @param string $order_id
+	 * @param bool $force_db
+	 * @return bool
+	 */
 	private function _getInventory($order_id = null, $force_db = false) {
 		// Returns a list of products from the order
 		if (!$force_db && !empty($this->_basket['contents']) && $this->_basket['cart_order_id'] == $order_id) {
@@ -682,6 +862,14 @@ class Order {
 		}
 		return false;
 	}
+
+	/**
+	 * Manage stock level for order inventory items
+	 *
+	 * @param int $status_id
+	 * @param string $order_id
+	 * @return bool
+	 */
 	private function _manageStock($status_id, $order_id) {
 
 		foreach ($GLOBALS['hooks']->load('class.order.manage_stock') as $hook) include $hook;
@@ -807,57 +995,32 @@ class Order {
 		return false;
 	}
 
-	public function serializeOptions($options, $product_id) {
-		if (isset($options) && !empty($options)) {
-			foreach ($options as $option_id => $assign_id) {
-				if (!is_array($assign_id)) {
-					if (($value = $GLOBALS['catalogue']->getOptionData((int)$option_id, (int)$assign_id)) !== false) {
-						$value['price_display'] = '';
-						if (isset($value['option_price']) && $value['option_price']>0) { // record option price but not zero
-							if ($value['option_negative']) {
-								//$record['price'] -= $value['option_price'];
-								$value['price_display'] = ' (-';
-							} else {
-								//$record['price'] += $value['option_price'];
-								$value['price_display'] = ' (+';
-							}
-							$value['price_display'] .= Tax::getInstance()->priceFormat($value['option_price'], true).')';
-						}
-						$option[$assign_id] = $value['option_name'].': '.$value['value_name'].$value['price_display'];
-					}
-				} else {
-					foreach ($assign_id as $id => $option_value) {
-						if (($assign_id = $GLOBALS['db']->select('CubeCart_option_assign', array('assign_id'), array('option_id' => (int)$option_id, 'product' => $product_id))) !== false) {
-							$assign_id = (int)$assign_id[0]['assign_id'];
-						} else {
-							$assign_id = 0;
-						}
-						
-						if (($value = $GLOBALS['catalogue']->getOptionData((int)$option_id, $assign_id)) !== false) {
-							$value['price_display'] = '';
-							if (isset($value['option_price']) && $value['option_price']>0) { // record option price but not zero
-								if ($value['option_negative']) {
-									//$record['price'] -= $value['option_price'];
-									$value['price_display'] = ' (-';
-								} else {
-									//$record['price'] += $value['option_price'];
-									$value['price_display'] = ' (+';
-								}
-								$value['price_display'] .= Tax::getInstance()->priceFormat($value['option_price'], true).')';
-							}
-							$option[$assign_id] = $value['option_name'].': '.$option_value.$value['price_display'];
-						}
-					}
-
-				}
+	/**
+	 * Get list of admin email addresses to recieve order notification
+	 *
+	 * @return string 
+	 */
+	private function _notifyAdmins() {
+		if (($admins = $GLOBALS['db']->select('CubeCart_admin_users', array('email'), array('status' => 1, 'order_notify' => 1))) !== false) {
+			## Get their email addresses
+			foreach ($admins as $admin) {
+				if (filter_var($admin['email'], FILTER_VALIDATE_EMAIL)) $list[] = $admin['email'];
 			}
-			if (is_array($option)) {
-				return serialize($option);
-			}
+			## Add master email, while avoiding duplications
+			$list = array_merge($list, array($GLOBALS['config']->get('config', 'email_address')));
+			return implode(',', array_unique($list));
+		} else {
+			return $GLOBALS['config']->get('config', 'email_address');
 		}
-		return '';
 	}
 
+	/**
+	 * Add product to order line items
+	 *
+	 * @param array $item
+	 * @param string $hash
+	 * @return array/false
+	 */
 	private function _orderAddProduct($item, $hash = '') {
 		// Add an item to the order - fetch the details from the database
 		if (is_array($item)) {
@@ -916,6 +1079,14 @@ class Order {
 		return false;
 	}
 
+	/**
+	 * Update or insert order summary
+	 *
+	 * @param bool $update
+	 * @param bool $force_order
+	 * @param bool $suppress_email
+	 * @return nothing/false
+	 */
 	private function _orderSummary($update = false, $force_order = false, $suppress_email = false) {
 		// Populate the order summary table
 		$userdata = $GLOBALS['user']->get();
@@ -1011,6 +1182,12 @@ class Order {
 		}
 	}
 
+	/**
+	 * Repurchase an existing order
+	 *
+	 * @param string $order_id
+	 * @return bool
+	 */
 	private function _retrieveOrder($order_id) {
 		// Retrieve an order from the database, and put it back into the session
 		if (!empty($order_id)) {
@@ -1025,6 +1202,9 @@ class Order {
 		return false;
 	}
 
+	/**
+	 * Save customers billing/delivery address
+	 */
 	private function _saveAddresses() {
 		if (($addresses = $GLOBALS['user']->getAddresses()) !== false) {
 			if (isset($_POST['delivery_address']) && is_numeric($_POST['delivery_address'])) {
@@ -1051,22 +1231,32 @@ class Order {
 		}
 	}
 
-	private function _sendCoupon($coupon_id, $array) {
+	/**
+	 * Send gift certificate va email
+	 *
+	 * @param int $coupon_id
+	 * @param array $data
+	 * @return bool
+	 */
+	private function _sendCoupon($coupon_id, $data) {
 		if (!empty($coupon_id)) {
 			if (($coupon = $GLOBALS['db']->select('CubeCart_coupons', false, array('coupon_id' => (int)$coupon_id))) !== false) {
 				$mailer = Mailer::getInstance();
 				if (isset($coupon[0]['value'])) {
 					$coupon[0]['value'] = Tax::getInstance()->priceFormat($coupon[0]['value']);
 				}
-				$array['storeURL']  = $this->config['storeURL'];
-				if (($content = $mailer->loadContent('cart.gift_certificate', $this->_order_summary['lang'], array_merge($this->_order_summary, $array, $coupon[0]))) !== false) {
-					return $mailer->sendEmail($array['email'], $content);
+				$data['storeURL']  = $this->config['storeURL'];
+				if (($content = $mailer->loadContent('cart.gift_certificate', $this->_order_summary['lang'], array_merge($this->_order_summary, $data, $coupon[0]))) !== false) {
+					return $mailer->sendEmail($data['email'], $content);
 				}
 			}
 		}
 		return false;
 	}
 
+	/**
+	 * Auto cancel orders over x seconds of age
+	 */
 	private function _tidyOrders() {
 		$expire = $GLOBALS['config']->get('config', 'basket_order_expire');
 		if (!empty($expire) && is_numeric($expire)) {
@@ -1082,6 +1272,11 @@ class Order {
 		}
 	}
 
+	/**
+	 * Update order inventory from basket changes
+	 *
+	 * @return bool
+	 */
 	private function _updateOrder() {
 		// Add new items to the order, as long as its only 'Pending'
 		if (!isset($this->_basket['order_status']) || $this->_basket['order_status'] < self::ORDER_PROCESS) {
@@ -1121,19 +1316,5 @@ class Order {
 			return true;
 		}
 		return false;
-	}
-
-	private function _notifyAdmins() {
-		if (($admins = $GLOBALS['db']->select('CubeCart_admin_users', array('email'), array('status' => 1, 'order_notify' => 1))) !== false) {
-			## Get their email addresses
-			foreach ($admins as $admin) {
-				if (filter_var($admin['email'], FILTER_VALIDATE_EMAIL)) $list[] = $admin['email'];
-			}
-			## Add master email, while avoiding duplications
-			$list = array_merge($list, array($GLOBALS['config']->get('config', 'email_address')));
-			return implode(',', array_unique($list));
-		} else {
-			return $GLOBALS['config']->get('config', 'email_address');
-		}
 	}
 }

@@ -73,6 +73,8 @@ class Language {
 	 */
 	protected static $_instance;
 
+	##############################################
+
 	final protected function __construct() {
 		if (isset($GLOBALS['session'])) {
 			//If the language is trying to be changed try to change it
