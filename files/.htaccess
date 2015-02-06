@@ -1,0 +1,16 @@
+# Digital downloads default to here. We need to prevent
+# direct download.
+
+# Admin order prints are also stored here
+# need public (administrator) access.
+
+# The hash files are used by the CubeCart Marketplace
+# to verify the store. They contain zero data.
+
+deny from all
+<Files print.*.php>
+  allow from all
+</Files>
+<Files hash.*.php>
+  allow from all
+</Files>
