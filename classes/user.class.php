@@ -150,18 +150,8 @@ class User {
 	//=====[ Public ]=======================================
 
 	/**
-	 * Setup the instance (singleton)
-	 *
-	 * @return User
+	 * Increment customer order count by 1
 	 */
-	public static function getInstance() {
-		if (!(self::$_instance instanceof self)) {
-			self::$_instance = new self();
-		}
-
-		return self::$_instance;
-	}
-
 	public function addOrder() {
 		if ($this->is()) {
 			$this->update(array('order_count' => ((int)$this->_user_data['order_count'] + 1)));
@@ -176,7 +166,6 @@ class User {
 	 * @param bool $remember
 	 * @param bool $from_cookie
 	 * @param bool $redirect
-	 *
 	 * @return bool
 	 */
 	public function authenticate($username, $password, $remember = false, $from_cookie = false, $is_openid = false, $redirect = true) {
@@ -314,11 +303,34 @@ class User {
 	}
 
 	/**
+	 * Change a user password
+	 *
+	 * @return bool
+	 */
+	public function changePassword() {
+		//If everything lines up
+		if (Password::getInstance()->getSalted($_POST['passold'], $this->_user_data['salt']) == $this->_user_data['password'] && $_POST['passnew'] === $_POST['passconf']) {
+			//Change it
+			$record = array('password' => Password::getInstance()->getSalted($_POST['passnew'], $this->_user_data['salt']));
+			if ($GLOBALS['db']->update('CubeCart_customer', $record, array('customer_id' => (int)$this->_user_data['customer_id']), true)) {
+				$this->_user_data['password'] = $record['password'];
+				return true;
+			} else {
+				$GLOBALS['gui']->setError($GLOBALS['language']->account['error_password_update']);
+			}
+		} else {
+			$GLOBALS['gui']->setError($GLOBALS['language']->account['error_password_update_mismatch']);
+		}
+
+		return false;
+	}
+
+	/**
 	 * Manually create a user
 	 *
 	 * @param array $data
 	 * @param bool $login
-	 *
+	 * @param int $type
 	 * @return customer_id/false
 	 */
 	public function createUser($data, $login = false, $type = 1) {
@@ -345,33 +357,9 @@ class User {
 	}
 
 	/**
-	 * Change a user password
-	 *
-	 * @return bool
-	 */
-	public function changePassword() {
-		//If everything lines up
-		if (Password::getInstance()->getSalted($_POST['passold'], $this->_user_data['salt']) == $this->_user_data['password'] && $_POST['passnew'] === $_POST['passconf']) {
-			//Change it
-			$record = array('password' => Password::getInstance()->getSalted($_POST['passnew'], $this->_user_data['salt']));
-			if ($GLOBALS['db']->update('CubeCart_customer', $record, array('customer_id' => (int)$this->_user_data['customer_id']), true)) {
-				$this->_user_data['password'] = $record['password'];
-				return true;
-			} else {
-				$GLOBALS['gui']->setError($GLOBALS['language']->account['error_password_update']);
-			}
-		} else {
-			$GLOBALS['gui']->setError($GLOBALS['language']->account['error_password_update_mismatch']);
-		}
-
-		return false;
-	}
-
-	/**
 	 * Delete an address from the address book
 	 *
 	 * @param array/address_id $delete
-	 *
 	 * @return bool
 	 */
 	public function deleteAddress($delete) {
@@ -397,8 +385,7 @@ class User {
 	 * Get an element or all the user data
 	 *
 	 * @param string $field
-	 *
-	 * @return mixed/false
+	 * @return string/false
 	 */
 	public function get($field = '') {
 		if (!$this->is()) {
@@ -419,7 +406,6 @@ class User {
 	 * Get address information
 	 *
 	 * @param int $address_id
-	 *
 	 * @return array/false
 	 */
 	public function getAddress($address_id) {
@@ -429,7 +415,6 @@ class User {
 				return $address[0];
 			}
 		}
-
 		return false;
 	}
 
@@ -437,7 +422,6 @@ class User {
 	 * Get all addresses
 	 *
 	 * @param bool $show_all
-	 *
 	 * @return array/false
 	 */
 	public function getAddresses($show_all = true) {
@@ -468,7 +452,6 @@ class User {
 
 	/**
 	 * Get the default shipping address
-	 *
 	 * @return array/false
 	 */
 	public function getDefaultAddress() {
@@ -491,7 +474,6 @@ class User {
 				return $addressArray;
 			}
 		}
-
 		return false;
 	}
 
@@ -509,10 +491,22 @@ class User {
 	}
 
 	/**
+	 * Setup the instance (singleton)
+	 *
+	 * @return User
+	 */
+	public static function getInstance() {
+		if (!(self::$_instance instanceof self)) {
+			self::$_instance = new self();
+		}
+
+		return self::$_instance;
+	}
+
+	/**
 	 * Is a customer
 	 *
 	 * @param bool $force_login
-	 *
 	 * @return bool
 	 */
 	public function is($force_login = false) {
@@ -563,8 +557,7 @@ class User {
 	/**
 	 * Request password
 	 *
-	 * @param email $email
-	 *
+	 * @param string $email
 	 * @return bool
 	 */
 	public function passwordRequest($email) {
@@ -733,8 +726,7 @@ class User {
 	 *
 	 * @param array $array
 	 * @param bool $new_user
-	 *
-	 * @return true/false
+	 * @return bool
 	 */
 	public function saveAddress($array, $new_user = false) {
 
@@ -782,7 +774,6 @@ class User {
 	 * Set customer id for unregistered customers
 	 *
 	 * @param int $customer_id
-	 *
 	 * @return bool
 	 */
 	public function setGhostId($customer_id = '') {
@@ -793,6 +784,7 @@ class User {
 	 * Update customer data
 	 *
 	 * @param array $update
+	 * @return bool
 	 */
 	public function update($update = null) {
 		if (!empty($update) && is_array($update)) {
