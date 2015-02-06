@@ -277,4 +277,14 @@ class Cache extends Cache_Controler {
 		} 
 		return 'Cache Used: '.($cache_size > 0) ? formatBytes($this->_page_cache_usage, true).' of '.formatBytes($cache_size, true).' ('.number_format((($this->_page_cache_usage/$cache_size) * 100),2).'%)' : '0%';
 	}
+
+	//=====[ Private ]=======================================
+
+	/**
+	 * Get empty cache queries
+	 */
+	private function _getEmpties() {
+		$this->_setPrefix();
+		$this->_empties = $this->read($this->_empties_id);
+	}
 }

@@ -181,14 +181,6 @@ class Cache_Controler {
 	//=====[ Private ]=======================================
 
 	/**
-	 * Get empty cache queries
-	 */
-	private function _getEmpties() {
-		$this->_setPrefix();
-		$this->_empties = $this->read($this->_empties_id);
-	}
-
-	/**
 	 * Make the cache name key
 	 *
 	 * @param string $id
