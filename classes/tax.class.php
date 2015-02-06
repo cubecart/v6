@@ -61,21 +61,21 @@ class Tax {
 		$this->loadCurrencyVars();
 	}
 
-	/**
-	 * Setup the instance (singleton)
-	 *
-	 * @return Tax
-	 */
-	public static function getInstance() {
-		if (!(self::$_instance instanceof self)) {
-			self::$_instance = new self();
-		}
-
-		return self::$_instance;
-	}
-
 	//=====[ Public ]=======================================
+
+	/**
+	 * Adjust tax
+	 *
+	 * @param string $total_tax
+	 */
+	public function adjustTax($total_tax) {
+		$reduction = $total_tax/$this->totalTax();
+		$this->_adjust_tax = $reduction;
+	}
 	
+	/**
+	 * Display all taxes
+	 */
 	public function displayTaxes() {
 		// Display applied taxes
 		$GLOBALS['cart']->set('order_taxes', false);
@@ -118,11 +118,12 @@ class Tax {
 		$GLOBALS['smarty']->assign('TOTAL_TAX', $this->priceFormat($this->_total_tax_add + $this->_total_tax_inc));
 	}
 
-	public function adjustTax($total_tax) {
-		$reduction = $total_tax/$this->totalTax();
-		$this->_adjust_tax = $reduction;
-	}
-
+	/**
+	 * Calculate price from exchange rate
+	 *
+	 * @param float $price
+	 * @param bool $from
+	 */
 	public function exchangeRate(&$price, $from = false) {
 		if (!empty($from) && $from != $GLOBALS['config']->get('config', 'default_currency')) {
 			$currency = $GLOBALS['db']->select('CubeCart_currency', array('value'), array('code' => $from));
@@ -133,6 +134,11 @@ class Tax {
 		return true;
 	}
 
+	/**
+	 * Fetch tax exclusive and inclusive tax amount
+	 *
+	 * @return array
+	 */
 	public function fetchTaxAmounts() {
 		return array(
 			'applied'	=> $this->_total_tax_add*$this->_adjust_tax,
@@ -140,6 +146,12 @@ class Tax {
 		);
 	}
 
+	/**
+	 * Fetch tax details from tax ID number
+	 *
+	 * @param int $tax_id
+	 * @return array/false
+	 */
 	public function fetchTaxDetails($tax_id) {
 		if (($rate = $GLOBALS['db']->select('CubeCart_tax_rates', false, array('id' => (int)$tax_id))) !== false) {
 			if (($detail = $GLOBALS['db']->select('CubeCart_tax_details', false, array('id' => $rate[0]['details_id']))) !== false) {
@@ -150,7 +162,27 @@ class Tax {
 		return false;
 	}
 
-	// Remove inclusive tax
+	/**
+	 * Setup the instance (singleton)
+	 *
+	 * @return Tax
+	 */
+	public static function getInstance() {
+		if (!(self::$_instance instanceof self)) {
+			self::$_instance = new self();
+		}
+
+		return self::$_instance;
+	}
+
+	/**
+	 * Remove tax from tax inclusive price
+	 *
+	 * @param float $price
+	 * @param int $tax_type
+	 * @param string $type
+	 * @return float
+	 */
 	public function inclusiveTaxRemove(&$price, $tax_type, $type = 'goods') {
 		$tax_total	= 0;
 		
@@ -187,6 +219,11 @@ class Tax {
 		return $price;
 	}
 
+	/**
+	 * List all tax classes
+	 *
+	 * @return array/false
+	 */
 	public function listTaxClasses() {
 		if (!empty($this->_tax_classes)) {
 			return $this->_tax_classes;
@@ -201,6 +238,12 @@ class Tax {
 		return false;
 	}
 
+	/**
+	 * Load all currency values for specific currency code
+	 *
+	 * @param string $code
+	 * @return bool
+	 */
 	public function loadCurrencyVars($code = false) {
 		if (!$code) {
 			if ($GLOBALS['session']->has('currency', 'client')) {
@@ -217,6 +260,11 @@ class Tax {
 		return false;
 	}
 
+	/**
+	 * Load tax tables from country numcode
+	 *
+	 * @param int $country_id
+	 */
 	public function loadTaxes($country_id) {
 
 		if (!empty($country_id)) {
@@ -246,16 +294,33 @@ class Tax {
 		}
 	}
 
+	/**
+	 * Convert price
+	 *
+	 * @return float
+	 */
 	public function priceConvertFX($price) {
 		return ($price / $this->_currency_vars['value']);
 	}
 
 
-	## Price Correction - Prevent negative-value items
+	/**
+	 * Correct price (unused) but kept for legacy
+	 *
+	 * @return float
+	 */
 	public function priceCorrection($price) {
 		return $price;
 	}
 
+	/**
+	 * Format price to display including currency symbol etc
+	 *
+	 * @param float $price
+	 * @param bool $display_null
+	 * @param bool $default_currency
+	 * @return string/false
+	 */
 	public function priceFormat($price, $display_null = true, $default_currency = false) {
 
 		if ($default_currency) {
@@ -272,7 +337,7 @@ class Tax {
 				$price = ($this->_currency_vars['value']*$price);				
 				return 	$this->_currency_vars['symbol_left'].
 						number_format(
-							$this->priceCorrection($price), 
+							$price, 
 							$this->_currency_vars['decimal_places'],
 							$this->_currency_vars['symbol_decimal'],
 							$this->_currency_vars['symbol_thousand']
@@ -283,11 +348,26 @@ class Tax {
 		return false;
 	}
 
+	/**
+	 * Format price for hidden fields
+	 *
+	 * @return string
+	 */
 	public function priceFormatHidden() {
 		return $this->_currency_vars['symbol_left'].$GLOBALS['language']->catalogue['price_hidden'].$this->_currency_vars['symbol_right'];
 	}
 
-	## Calculate tax per item
+	/**
+	 * Calculate tax per line item
+	 *
+	 * @param float $price
+	 * @param int $tax_type
+	 * @param bool $tax_inclusive
+	 * @param int $state
+	 * @param string $type
+	 * @param bool $sum
+	 * @return foat/false
+	 */
 	public function productTax(&$price, $tax_type, $tax_inclusive = false, $state = 0, $type = 'goods', $sum = true) {
 		
 		if($price<=0) return false; 
@@ -354,7 +434,14 @@ class Tax {
 		return false;
 	}
 
-	## Check the sale price of an item
+	/**
+	 * Check the sale price of an item
+	 *
+	 * @param float $normal_price
+	 * @param float $sale_price
+	 * @param bool $format
+	 * @return string/bool
+	 */
 	public function salePrice($normal_price = null, $sale_price = null, $format = true) {
 		if (Config::getInstance()->has('config', 'catalogue_sale_mode')) {
 			switch (Config::getInstance()->get('config', 'catalogue_sale_mode')) {
@@ -375,10 +462,9 @@ class Tax {
 		return false;
 	}
 
-	public function totalTax() {
-		return round(($this->_total_tax_add + $this->_total_tax_inc), 2);
-	}
-
+	/**
+	 * Reset all tax parameters
+	 */
 	public function taxReset() {
 		// Reset tax vars
 		$this->_tax_table   = false;
@@ -389,17 +475,26 @@ class Tax {
 		$this->_total_tax_inc  = 0;
 	}
 
-	private function _removeSymbol($price) {
-		//Just in case we have a currency symbol
-		if ($price && is_string($price)) {
-			if (!ctype_digit($price{0})) {
-				$price = substr($price, 1);
-			}
-			$price = (double)$price;
-		}
-		return $price;
+	/**
+	 * Add up total tax
+	 *
+	 * @return float
+	 */
+
+	public function totalTax() {
+		return round(($this->_total_tax_add + $this->_total_tax_inc), 2);
 	}
 
+	//=====[ Private ]=======================================
+
+	/**
+	 * Calculate inherited tax based on ratios 
+	 *
+	 * This is used to calculate tax on shipping of a combined 
+	 * rate of different product taxes... Enter if you dare!!
+	 *
+	 * @return float
+	 */
 	private function _getInheritedTax() {
 		$subtotal = $total_tax = 0;
 		foreach ($GLOBALS['cart']->basket['contents'] as $hash => $item) {
@@ -412,5 +507,21 @@ class Tax {
 		}
 
 		return $tax_total / $subtotal;	
+	}
+
+	/**
+	 * Remove symbol from price
+	 *
+	 * @return float
+	 */
+	private function _removeSymbol($price) {
+		//Just in case we have a currency symbol
+		if ($price && is_string($price)) {
+			if (!ctype_digit($price{0})) {
+				$price = substr($price, 1);
+			}
+			$price = (double)$price;
+		}
+		return $price;
 	}
 }

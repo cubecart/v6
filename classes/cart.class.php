@@ -728,7 +728,7 @@ class Cart {
 					$product = array(
 						'quantity'  => $item['quantity'],
 						'product_code' => $gc['product_code'],
-						'price'   => $GLOBALS['tax']->priceCorrection($item['certificate']['value']),
+						'price'   => $item['certificate']['value'],
 						'name'   => sprintf('%s (%s)', $GLOBALS['language']->catalogue['gift_certificate'], $GLOBALS['tax']->priceFormat($item['certificate']['value'], true)),
 						'digital'  => (bool)$item['digital'],
 						'tax_type'  => $gc['taxType'],
@@ -744,13 +744,13 @@ class Cart {
 					$this->basket_digital = true;
 				}
 
-				$product['line_price_display'] = $GLOBALS['tax']->priceCorrection($product['price_display']+$option_price_ignoring_tax);
-				$product['price_display']  = $GLOBALS['tax']->priceCorrection(($product['price_display']+$option_price_ignoring_tax)*$item['quantity']);
+				$product['line_price_display'] = $product['price_display']+$option_price_ignoring_tax;
+				$product['price_display']  = ($product['price_display']+$option_price_ignoring_tax)*$item['quantity'];
 
 
 				## Update Subtotals
 				$product['line_price'] = $product['price'];
-				$product['price']  = $GLOBALS['tax']->priceCorrection($product['price'] * $item['quantity']);
+				$product['price']  = $product['price'] * $item['quantity'];
 
 				$this->_subtotal  += $product['price'];
 				$this->_weight   += $product['quantity'] * $product['product_weight'];

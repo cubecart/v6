@@ -733,6 +733,8 @@ class GUI {
 		$this->_errorMessage('notice', $message);
 	}
 
+	//=====[ Private ]=======================================
+
 	/**
 	 * Detect mobile phone browser. Open Source code thanks to http://detectmobilebrowsers.com
 	 *
@@ -769,8 +771,6 @@ class GUI {
 
 		return $this->mobile;
 	}
-
-	//=====[ Private ]=======================================
 
 	/**
 	 * Display cookie acceptance dialogue
