@@ -1,6 +1,7 @@
 # Session data may be written here if the default 
 # server config has a problem. They need protection.
 # Relates to Session->_start()
+
 <Files sess_*>
   deny from all
 </Files>
