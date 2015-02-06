@@ -11,6 +11,13 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  */
 
+/**
+ * Password class
+ *
+ * @author Martin Purcell
+ * @author Al Brookbanks
+ * @since 5.0.0
+ */
 class Request {
 
 	private $_curl;

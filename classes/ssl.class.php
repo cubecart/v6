@@ -13,7 +13,6 @@
 /**
  * Configuration controller
  *
- * @version 1.0.0
  * @since 5.0.0
  */
 class SSL {

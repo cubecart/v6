@@ -12,13 +12,29 @@
  */
 
 /**
- * Santize controller
+ * Santize class
  *
  * @author Technocrat
  * @author Al Brookbanks
- * @since
+ * @since 5.0.0
  */
 class Sanitize {
+
+	/**
+	 * Checks POSTs for valid security token
+	 */
+	static public function checkToken() {
+		if (!empty($_POST)) {
+			//Validate the POST token
+			if (!isset($_POST['token']) || !$GLOBALS['session']->checkToken($_POST['token'])) {
+				//Make a new token just to insure that it doesn't get used again
+				$GLOBALS['session']->getToken(true);
+				self::_stopToken();
+			}
+			//Make a new token
+			$GLOBALS['session']->getToken(true);
+		}
+	}
 
 	/**
 	 * Clean all the global varaibles
@@ -36,22 +52,6 @@ class Sanitize {
 		self::_clean($_POST);
 		self::_clean($_COOKIE);
 		self::_clean($_REQUEST);
-	}
-
-	/**
-	 * Checks POSTs for valid security token
-	 */
-	static public function checkToken() {
-		if (!empty($_POST)) {
-			//Validate the POST token
-			if (!isset($_POST['token']) || !$GLOBALS['session']->checkToken($_POST['token'])) {
-				//Make a new token just to insure that it doesn't get used again
-				$GLOBALS['session']->getToken(true);
-				self::_stopToken();
-			}
-			//Make a new token
-			$GLOBALS['session']->getToken(true);
-		}
 	}
 
 	//=====[ Private ]=======================================
@@ -93,6 +93,7 @@ class Sanitize {
 	 * Sanitize a string for HTML
 	 *
 	 * @param string $value
+	 * @return string
 	 */
 	private static function _safety($value) {
 		return filter_var($value, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
