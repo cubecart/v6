@@ -117,12 +117,14 @@
             <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.jscroll.min.js"></script>
             <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.cookie.min.js"></script>
             <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/fastclick.min.js"></script>
+            <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/cubecart.js"></script>
+            <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/cubecart.validate.js"></script>
             <script>
                $(document).foundation({
-               	orbit: {
-               		slide_number: false,
-	                  timer_show_progress_bar: false
-	               }
+                  orbit: {
+                     slide_number: false,
+                     timer_show_progress_bar: false
+                  }
                });
             </script>
             {foreach from=$BODY_JS item=js}{$js}{/foreach}
