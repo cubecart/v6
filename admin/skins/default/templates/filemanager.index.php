@@ -74,6 +74,7 @@
   {if isset($mode_form)}
   <div id="fm-details" class="tab_content">
 	<h3>{$LANG.filemanager.title_file_edit}</h3>
+	<fieldset>
 	<div><label for="filename">{$LANG.filemanager.file_name}</label><span><input type="text" id="filename" name="details[filename]" class="textbox" value="{$FILE.filename}"></span></div>
 	<div><label for="move">{$LANG.filemanager.file_subfolder}</label><span><select name="details[move]" id="move" class="textbox">
 	  <option value="">{$LANG.form.please_select}</option>
@@ -81,6 +82,7 @@
 	</select>
 	</span></div>
 	<div><label for="description">{$LANG.common.description}</label><span><textarea name="details[description]" id="description" class="textbox">{$FILE.description}</textarea></span></div>
+	</fieldset>
   </div>
   {if isset($SHOW_CROP)}
   <div id="fm-cropper" class="tab_content">
