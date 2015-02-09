@@ -1683,7 +1683,7 @@ class Catalogue {
 			$image_types[] = 'source';
 
 			// Look for images
-			if (($gallery = $GLOBALS['db']->select('CubeCart_image_index', false, array('product_id' => $product_id), array('main_img' => 'DESC'))) !== false) {
+			if (($gallery = $GLOBALS['db']->select('CubeCart_image_index AS i INNER JOIN CubeCart_filemanager AS f ON i.file_id = f.file_id', false, array('product_id' => $product_id), array('main_img' => 'DESC'))) !== false) {
 				$duplicates = array();
 				foreach ($gallery as $key => $image) {
 					if (is_array($image_types) && !in_array($image['file_id'], $duplicates)) {
