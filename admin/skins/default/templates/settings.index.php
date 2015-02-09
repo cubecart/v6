@@ -98,6 +98,7 @@
             {foreach from=$OPT_ADMIN_NOTIFY_STATUS item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
             </select></span>
          </div>
+         <div><label for="inc_oid">Increment Order ID (Experimental)</label><span><input name="config[inc_oid]" id="inc_oid" type="hidden" class="toggle" value="{$CONFIG.inc_oid}"></span></div>
          <div><label for="no_skip_processing_check">{$LANG.settings.no_skip_processing_check}</label><span><input name="config[no_skip_processing_check]" id="no_skip_processing_check" type="hidden" class="toggle" value="{$CONFIG.no_skip_processing_check}"></span></div>
          <div><label for="catalogue_hide_prices">{$LANG.settings.hide_prices}</label><span><input name="config[catalogue_hide_prices]" id="catalogue_hide_prices" type="hidden" class="toggle" value="{$CONFIG.catalogue_hide_prices}"></span>&nbsp;{$LANG.settings.no_admin_affect}</div>
          <div><label for="catalogue_mode">{$LANG.settings.catalogue_mode}</label><span><input name="config[catalogue_mode]" id="catalogue_mode" type="hidden" class="toggle" value="{$CONFIG.catalogue_mode}"></span></div>

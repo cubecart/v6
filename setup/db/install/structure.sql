@@ -617,6 +617,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_notes` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_order_summary` (
+	`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 	`cart_order_id` VARCHAR(18) NOT NULL,
 	`order_date` INT UNSIGNED NOT NULL DEFAULT '0',
 	`customer_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -661,7 +662,8 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_summary` (
 	`basket` BLOB NULL DEFAULT NULL,
 	`lang` varchar(5) DEFAULT NULL,
 	`note_to_customer` TEXT,
-	PRIMARY KEY (`cart_order_id`),
+	PRIMARY KEY (`id`),
+	KEY `cart_order_id` (`cart_order_id`),
 	KEY `customer_id` (`customer_id`),
 	KEY `status` (`status`),
 	KEY `email` (`email`),
