@@ -400,6 +400,7 @@ class Catalogue {
 					$selected[$selected_assign_id] = $value;
 				}
 			}
+
 			$optionArray = $this->getProductOptions($product_id);
 			if (is_array($optionArray)) {
 				ksort($optionArray);
@@ -447,8 +448,7 @@ class Catalogue {
 					case self::OPTION_TEXTAREA:  ## Textarea option
 						
 						foreach ($group as $key => $option) {
-							
-							// You could say this is a bit of a fudge but it works	
+								
 							$price = (isset($option[0]['option_price']) && $option[0]['option_price']>0) ? Tax::getInstance()->priceFormat($option[0]['option_price']) : false;
 							$symbol = (isset($option[0]['option_price']) && $option[0]['option_negative'] == 0) ? '+' : '-';
 							$value = trim(str_replace(array($option[0]['option_name'].':','('.$symbol.$price.')'),'',$selected[$option[0]['assign_id']]));
