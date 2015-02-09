@@ -456,6 +456,7 @@ class Catalogue {
 							$option_list[] = array(
 								'type'   => $option[0]['option_type'],
 								'option_id'  => $option[0]['option_id'],
+								'assign_id'  => $option[0]['option_id'],
 								'option_name' => $option[0]['option_name'],
 								'required'  => (bool)$option[0]['option_required'],
 								'price'   => $price,
