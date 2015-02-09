@@ -37,6 +37,7 @@
       <meta property="og:url" content="{$VAL_SELF}">
       {/if}
       {include file='templates/content.recaptcha.head.php'}
+      <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/modernizr.min.js"></script>
       <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.js"></script>
       {if $ANALYTICS}
       {literal}<script type="text/javascript">
@@ -104,7 +105,6 @@
             <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.validate.min.js"></script>
             <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.jscroll.min.js"></script>
             <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.cookie.min.js"></script>
-            <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/modernizr.min.js"></script>
             <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/fastclick.min.js"></script>
             <script>
                $(document).foundation();
