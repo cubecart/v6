@@ -1,3 +1,4 @@
+;
 jQuery(document).ready(function() {
 
     var window_loc_hash = window.location.hash;
