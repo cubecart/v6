@@ -27,7 +27,7 @@
             <img src="{$PRODUCT.medium}" alt="{$PRODUCT.name}" id="preview">
             {/if}
             {if $GALLERY}
-            <ul class="small-block-grid-5 marg-top" data-clearing>
+            <ul class="small-block-grid-5 marg-top">
                {foreach from=$GALLERY item=image}
                <li><a href="{$image.large}" id="image_{$image.id}" class="colorbox gallery" rel="gallery"><img class="th" src="{$image.gallery}" alt="{$LANG.catalogue.click_enlarge}"></a></li>
                {/foreach}
