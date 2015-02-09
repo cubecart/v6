@@ -3,6 +3,10 @@ jQuery(document).ready(function() {
 
     var window_loc_hash = window.location.hash;
 
+    if(!mqisSmall()) {
+        $('.field_small_only').attr('disabled', true);
+    }
+
     $("#eu_cookie_button").click(function() {
         $('#eu_cookie_dialogue').slideUp();
         $.cookie('accept_cookies', 1, {
@@ -10,6 +14,7 @@ jQuery(document).ready(function() {
         });
         return false;
     });
+
     $(".autosubmit select").change(function() {
         $(this).parents(".autosubmit").submit();
     });
@@ -426,4 +431,19 @@ function update_quantity(rel, sign) {
         $('#checkout_form').removeAttr("action").attr("action", '#basket_item_' + rel);
     }
     return false;
+}
+/* Detect Current Media Query */
+function mqisSmall() {
+      return matchMedia(Foundation.media_queries.small).matches &&
+        !matchMedia(Foundation.media_queries.medium).matches;
+    }
+function mqisMedium() {
+  return matchMedia(Foundation.media_queries.small).matches &&
+    matchMedia(Foundation.media_queries.medium).matches &&
+    !matchMedia(Foundation.media_queries.large).matches;
+}
+function mqisLarge() {
+  return matchMedia(Foundation.media_queries.small).matches &&
+    matchMedia(Foundation.media_queries.medium).matches &&
+    matchMedia(Foundation.media_queries.large).matches;
 }

@@ -26,7 +26,7 @@
          <div class="small-4 columns">
             <a href="#" class="quan subtract" rel="{$hash}"><i class="fa fa-minus-circle"></i></a>
             <span class="disp_quan_{$hash}">{$item.quantity}</span>
-            <input name="quan[{$hash}]" type="hidden" value="{$item.quantity}">
+            <input name="quan[{$hash}]" class="field_small_only" type="hidden" value="{$item.quantity}">
             <span id="original_val_{$hash}" class="hide">{$item.quantity}</span>
             <a href="#" class="quan add" rel="{$hash}"><i class="fa fa-plus-circle"></i></a>
          </div>
@@ -56,7 +56,7 @@
       {if isset($SHIPPING)}
       <tr>
          <td>
-            <select name="shipping">
+            <select name="shipping" class="field_small_only">
                <option value="">{$LANG.form.please_select}</option>
                {foreach from=$SHIPPING key=group item=methods}
                {if $HIDE_OPTION_GROUPS ne '1'}
