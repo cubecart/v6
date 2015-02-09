@@ -712,7 +712,7 @@ class Cart {
 						$product['options'] = false;
 					}
 
-					$product['price'] = sprintf("%0.2f",$product['price']);
+					$product['price'] = sprintf("%0.2F",$product['price']);
 					// Add the total product price inc options etc for payment gateways
 					$this->basket['contents'][$hash]['option_line_price'] = $option_line_price;
 					$this->basket['contents'][$hash]['total_price_each'] = $product['price'];
