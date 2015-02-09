@@ -18,23 +18,14 @@
          </div>
       </div>
       <div class="row">
-         <div class="small-7 columns">
-            {if $PRODUCT.magnify}
-            <a href="{$PRODUCT.source}" class="magnify" title="{$PRODUCT.name}" rel="">
-            <img src="{$PRODUCT.medium}" alt="{$PRODUCT.name}" id="preview">
-            </a>
-            {else}
-            <img src="{$PRODUCT.medium}" alt="{$PRODUCT.name}" id="preview">
-            {/if}
+         <div class="small-7 columns">            
+            <a href="#" class="open-clearing" data-thumb-index="0"><img src="{$PRODUCT.medium}" alt="{$PRODUCT.name}" id="img-preview"></a>
             {if $GALLERY}
-            <ul class="small-block-grid-5 marg-top">
+            <ul class="clearing-thumbs small-block-grid-5 marg-top" data-clearing>
                {foreach from=$GALLERY item=image}
-               <li><a href="{$image.large}" id="image_{$image.id}" class="colorbox gallery" rel="gallery"><img class="th" src="{$image.gallery}" alt="{$LANG.catalogue.click_enlarge}"></a></li>
+               <li><a href="{$image.source}"><img src="{$image.gallery}" data-image-swap="{$image.medium}" class="th image-gallery" alt="{$LANG.catalogue.click_enlarge}"></a></li>
                {/foreach}
             </ul>
-            <script type="text/javascript">
-               var gallery_json  = {$GALLERY_JSON}
-            </script>
             {/if}
          </div>
          <div class="small-5 columns">
