@@ -124,7 +124,6 @@
             </footer>
             <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/foundation.min.js"></script>
             <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.rating.min.js"></script>
-            <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.magnifier.min.js"></script>
             <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.validate.min.js"></script>
             <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.jscroll.min.js"></script>
             <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.cookie.min.js"></script>

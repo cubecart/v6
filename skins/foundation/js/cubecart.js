@@ -49,24 +49,6 @@ jQuery(document).ready(function() {
     $('input[type=radio].rating').rating({
         required: true
     });
-    var magnify_options = {
-        lensWidth: 300,
-        lensHeight: 300,
-        link: true,
-        delay: 250
-    };
-    $('a.magnify').magnify(magnify_options);
-    $('a.gallery').hover(function() {
-        var id = $(this).attr('id');
-        if (typeof gallery_json == 'object') {
-            $('a.magnify > img#preview').attr({
-                src: gallery_json[id].medium
-            });
-            $('a.magnify').attr({
-                href: gallery_json[id].source
-            }).unbind().magnify(magnify_options);
-        }
-    });
     $('body').on('click', '#basket-summary', function() {
         mini_basket_action();
     });
