@@ -1513,7 +1513,9 @@
     <string name="discount_codes_used" introduced="5.0.0"><![CDATA[Discount Codes Used:]]></string>
     <string name="gateway_name" introduced="5.0.0"><![CDATA[Gateway]]></string>
     <string name="my_order" introduced="5.0.0"><![CDATA[My Order]]></string>
-    <string name="note_content" introduced="5.0.0"><![CDATA[Note Content]]></string>
+    <string name="note_content" introduced="5.0.0"><![CDATA[Internal Note Content]]></string>
+    <string name="note_content_public" introduced="6.0.0"><![CDATA[Public Note Content]]></string>
+    <string name="note_explain_email" introduced="6.0.0"><![CDATA[These notes CAN be viewed by the customer and will be appended to order notifications.]]></string>
     <string name="note_from" introduced="5.0.0"><![CDATA[Note from]]></string>
     <string name="note_explain_viewable" introduced="5.0.0"><![CDATA[These notes are not visible to the customer]]></string>
     <string name="notify_card_delete" introduced="5.0.0"><![CDATA[Card details deleted.]]></string>

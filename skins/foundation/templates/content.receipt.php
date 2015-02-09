@@ -104,6 +104,9 @@
       </tr>
    </tfoot>
 </table>
+{if !empty($SUM.note_to_customer)}
+<blockquote>{$SUM.note_to_customer}</blockquote>
+{/if}
 {if !empty($SUM.customer_comments)}
 <h3>{$LANG.common.comments}</h3>
 <p>&quot;{$SUM.customer_comments}&quot;</p>

@@ -1,0 +1,1 @@
+ALTER TABLE  `CubeCart_order_summary` ADD  `note_to_customer` TEXT NOT NULL; #EOQ

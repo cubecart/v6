@@ -660,6 +660,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_summary` (
 	`discount_type` char(1) NOT NULL DEFAULT 'f',
 	`basket` BLOB NULL DEFAULT NULL,
 	`lang` varchar(5) DEFAULT NULL,
+	`note_to_customer` TEXT,
 	PRIMARY KEY (`cart_order_id`),
 	KEY `customer_id` (`customer_id`),
 	KEY `status` (`status`),

@@ -432,8 +432,12 @@
          <fieldset>
             <legend>{$LANG.orders.title_note_add}</legend>
             <div>
-               <div><label for="note">{$LANG.orders.note_content}</label><span><textarea name="note" class="textbox"></textarea></span></div>
-               <div><label class="spacer">&nbsp;</label>{$LANG.orders.note_explain_viewable}</div>
+               <div><label for="note">{$LANG.orders.note_content}<br>({$LANG.orders.note_explain_viewable})</label><span><textarea name="note" class="textbox"></textarea></span></div>
+               <div><label class="spacer">&nbsp;</label></div>
+            </div>
+            <div>
+               <div><label for="note">{$LANG.orders.note_content_public}<br>({$LANG.orders.note_explain_email})</label><span><textarea name="summary[note_to_customer]" class="textbox">{$SUMMARY.note_to_customer}</textarea></span></div>
+               <div><label class="spacer">&nbsp;</label></div>
             </div>
          </fieldset>
       </div>

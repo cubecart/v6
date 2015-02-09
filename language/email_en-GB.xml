@@ -116,8 +116,10 @@
         <td><strong>{$DATA.total}</strong></td>
         </tr>
         </tbody>
-        
-        </table>]]></content>
+        </table>
+        {if !empty({$DATA.note_to_customer})}
+        <p>&quot;{$DATA.note_to_customer}&quot;</p>
+        {/if}]]></content>
     <content type="text"><![CDATA[Thank You {$DATA.first_name}!
         
         Your order {$DATA.cart_order_id} has been received which was placed on {$DATA.order_date}. Please keep this email for your records. It is possible to view the status of your order online. 
@@ -170,7 +172,9 @@
         {/foreach}
         --------------------------
         Order Total: {$DATA.total}
-        ==========================]]></content>
+        ==========================
+        {if !empty({$DATA.note_to_customer})}
+        "{$DATA.note_to_customer}"{/if}]]></content>
   </email>
   <email name="cart.payment_fraud">
     <subject><![CDATA[Order Problem]]></subject>
