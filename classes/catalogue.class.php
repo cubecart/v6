@@ -397,6 +397,11 @@ class Catalogue {
 			
 			if(is_array($selected_options_array)) {
 				foreach($selected_options_array as $selected_assign_id => $value) {
+					if(is_array($value)) {
+						foreach($value as $selected_assign_id => $value) {
+							$selected[$selected_assign_id] = $value;
+						}
+					}
 					$selected[$selected_assign_id] = $value;
 				}
 			}

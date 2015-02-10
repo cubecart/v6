@@ -1050,10 +1050,10 @@ class Order {
 				'custom'   => (isset($product['custom'])) ? $product['custom'] : null,
 				'coupon_id'   => (isset($product['coupon_id'])) ? $product['coupon_id'] : 0,
 				'hash'    => $hash,
-				'options_identifier'=> $item['options_identifier']
+				'options_identifier' => $item['options_identifier'],
+				'options_array' => serialize($item['options']),
+				'product_options' => $this->serializeOptions($item['options'])
 			);
-
-			$record['product_options'] = $this->serializeOptions($item['options']);
 
 			foreach ($GLOBALS['hooks']->load('class.order.products.add.pre') as $hook) include $hook;
 

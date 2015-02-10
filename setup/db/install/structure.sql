@@ -593,6 +593,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_inventory` (
 	`price` DECIMAL(16,2) NOT NULL DEFAULT '0.00',
 	`cart_order_id` VARCHAR(18) NOT NULL,
 	`product_options` BLOB NULL,
+	`options_array` BLOB NULL,
 	`digital` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`stock_updated` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`custom` BLOB NULL,
