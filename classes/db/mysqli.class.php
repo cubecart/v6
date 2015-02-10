@@ -231,7 +231,6 @@ class Database extends Database_Contoller {
 		}
 
 		//Force UTF-8
-		@mysqli_query($this->_db_connect_id, "SET NAMES 'utf8'");
-		@mysqli_query($this->_db_connect_id, "SET CHARACTER SET 'utf8'");
+		$this->_db_connect_id->set_charset("utf8");
 	}
 }
