@@ -226,7 +226,7 @@ class Database extends Database_Contoller {
 	 */
 	private function _setup() {
 
-		@mysql_query($this->_db_connect_id, "SET SESSION sql_mode = ''");
+		@mysql_query("SET SESSION sql_mode = ''", $this->_db_connect_id);
 
 		if (defined('SKIP_DB_SETUP') && SKIP_DB_SETUP) {
 			// check MySQL Strict mode on upgrade/install
