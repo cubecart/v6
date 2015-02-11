@@ -90,17 +90,19 @@
   {if $DISPLAY_FORM}
   <div id="review" class="tab_content">
 	<h3>{$LANG.reviews.title_review_edit}</h3>
-	<div><label for="review_name">{$LANG.common.status}</label><span><input type="hidden" class="toggle" name="review[approved]" id="review_approved" value="{$REVIEW.approved}"></span></div>
-	<div><label for="review_name">{$LANG.common.name}</label><span><input type="text" name="review[name]" id="review_name" value="{$REVIEW.name}" class="textbox"></span></div>
-	<div><label for="review_email">{$LANG.common.email}</label><span><input type="text" name="review[email]" id="review_email" value="{$REVIEW.email}" class="textbox"></span></div>
-	<div><label for="review_title">{$LANG.documents.document_title}</label><span><input type="text" name="review[title]" id="review_title" value="{$REVIEW.title}" class="textbox"></span></div>
-	<div><label for="review_content">{$LANG.documents.document_content}</label><span><textarea name="review[review]" id="review_content" class="textbox">{$REVIEW.review}</textarea></span></div>
-	<div><label for="">{$LANG.documents.rating}</label><span>
-	{section name=i start=1 loop=6 step=1}<input type="radio" name="rating" value="{$smarty.section.i.index}" class="rating" {if $REVIEW.rating == $smarty.section.i.index}checked="checked"{/if}>{/section}
-	&nbsp;</span>
-	</div>
-	<br>
-	<input type="hidden" name="review[id]" value="{$REVIEW.id}">
+	<fieldset>
+		<div><label for="review_name">{$LANG.common.status}</label><span><input type="hidden" class="toggle" name="review[approved]" id="review_approved" value="{$REVIEW.approved}"></span></div>
+		<div><label for="review_name">{$LANG.common.name}</label><span><input type="text" name="review[name]" id="review_name" value="{$REVIEW.name}" class="textbox"></span></div>
+		<div><label for="review_email">{$LANG.common.email}</label><span><input type="text" name="review[email]" id="review_email" value="{$REVIEW.email}" class="textbox"></span></div>
+		<div><label for="review_title">{$LANG.documents.document_title}</label><span><input type="text" name="review[title]" id="review_title" value="{$REVIEW.title}" class="textbox"></span></div>
+		<div><label for="review_content">{$LANG.documents.document_content}</label><span><textarea name="review[review]" id="review_content" class="textbox">{$REVIEW.review}</textarea></span></div>
+		<div><label for="">{$LANG.documents.rating}</label><span>
+		{section name=i start=1 loop=6 step=1}<input type="radio" name="rating" value="{$smarty.section.i.index}" class="rating" {if $REVIEW.rating == $smarty.section.i.index}checked="checked"{/if}>{/section}
+		&nbsp;</span>
+		</div>
+		<br>
+		<input type="hidden" name="review[id]" value="{$REVIEW.id}">
+	</fieldset>
   </div>
   {/if}
   
