@@ -148,6 +148,7 @@ div#box-session {
 .checkout-progress-wrapper {
     background-color: #A0D3E8;
     color: #4F4F4F;
+    margin-bottom: 10px !important;
 }
 .checkout-progress.previous {
     background-color: #008CBA;
