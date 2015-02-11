@@ -75,7 +75,7 @@
                <div class="small-12 columns">
                   <label for="option_{$option.option_id}" class="return">{$option.option_name}{if $option.price} {$option.symbol}{$option.price}{/if}{if $option.required} ({$LANG.common.required}){/if}</label>
                   {if $option.type == Catalogue::OPTION_TEXTBOX}
-                  <input type="text" name="productOptions[{$option.option_id}][{$option.assign_id}]" id="option_{$option.option_id}" data-price="{$option.decimal_price}" {if $option.required}required{/if} >
+                  <input type="text" name="productOptions[{$option.option_id}][{$option.assign_id}]" id="option_{$option.option_id}" data-price="{$option.decimal_price}" {if $option.required}required{/if}>
                   {elseif $option.type == Catalogue::OPTION_TEXTAREA}
                   <textarea name="productOptions[{$option.option_id}][{$option.assign_id}]" id="option_{$option.option_id}" data-price="{$option.decimal_price}" {if $option.required}required{/if}></textarea>
                   {/if}
