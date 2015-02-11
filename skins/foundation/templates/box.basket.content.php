@@ -27,7 +27,7 @@
       <div class="left total">{$LANG.basket.total}:</div>
       <div class="right total">{$CART_TOTAL}</div>
       </p>
-      <div><a href="{$STORE_URL}/index.php?_a=checkout" class="button expand marg-top">{if $CONFIG.ssl}{$LANG.basket.basket_secure_checkout}{else}{$LANG.basket.basket_checkout}{/if}</a></div>
+      <div><a href="{$STORE_URL}/index.php?_a=checkout" class="button expand marg-top">{if $CONFIG.ssl}<i class="fa fa-lock"></i> {$LANG.basket.basket_secure_checkout}{else}<i class="fa fa-lock"></i>{$LANG.basket.basket_checkout}{/if}</a></div>
       {if !$IS_USER}
       <div><a href="{$STORE_URL}/index.php?_a=basket" class="button secondary expand">{$LANG.basket.view_basket}</a></div>
       {/if}

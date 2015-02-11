@@ -45,7 +45,12 @@
       {$BILLING.town}<br>
       {$BILLING.state}, {$BILLING.postcode}<br>
       {$BILLING.country_iso}
-      <div class="pad-top"><a href="#" class="button tiny secondary show_address_form">{$LANG.address.address_edit}</a></div>
+      <h3>{$LANG.account.contact_details}</h3>
+      <table>
+        <tr><td align="center"><i class="fa fa-envelope"></i></td><td>{$BILLING.first_name} {$BILLING.last_name} &lt;{$USER.email}&gt;</td></tr>
+        <tr><td align="center"><i class="fa fa-phone"></i></td><td>{$USER.phone}</td></tr>
+        {if !empty($USER.mobile)}<tr><td align="center"><i class="fa fa-mobile"></i></td><td>{$USER.mobile}</td></tr>{/if}
+      </table>
    </div>
    <div class="large-6 columns">
       <h2>{$LANG.address.delivery_address}</h2>
@@ -56,7 +61,7 @@
       {$DELIVERY.town}<br>
       {$DELIVERY.state}, {$BILLING.postcode}<br>
       {$DELIVERY.country_iso}
-      <div class="pad-top"><a href="#" class="button tiny secondary show_address_form">{$LANG.address.address_edit}</a></div>
+      <div class="pad-top"><a href="#" class="button small show_address_form"><i class="fa fa-reply"></i> {$LANG.form.make_changes}</a></div>
    </div>
 </div>
 <div class="hide" id="checkout_login_form">

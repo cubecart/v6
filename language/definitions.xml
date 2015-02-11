@@ -1107,6 +1107,7 @@
   </group>
   <group name="form">
   	<string name="required" introduced="6.0.0"><![CDATA[(Required)]]></string>
+    <string name="make_changes" introduced="6.0.0"><![CDATA[Make Changes]]></string>
   	<string name="field_required" introduced="6.0.0"><![CDATA[This field is required.]]></string>
     <string name="action" introduced="5.0.0"><![CDATA[Action]]></string>
     <string name="check_uncheck" introduced="5.0.0"><![CDATA[Check/Uncheck all]]></string>
