@@ -77,7 +77,6 @@ jQuery(document).ready(function() {
         }
         return update_quantity(rel, sign);
     });
-
     $('#checkout_proceed').click(function() {
         $('<input>').attr({
             type: 'hidden',
@@ -152,7 +151,19 @@ jQuery(document).ready(function() {
             }
         }
     });
-    if ($('#delivery_is_billing:checkbox').is(':checked') == true) $('fieldset#address_delivery').hide();
+    
+    $('.show_address_form').click(function() {
+        $('#register_false_address').hide();
+        $('#checkout_register_form').show();
+    });
+
+    if($('#delivery_is_billing:checkbox').length) {
+        if($('#delivery_is_billing:checkbox').prop('checked') == true) {
+            $('#address_delivery').hide();
+        } else {
+            $('#address_delivery').show();
+        }
+    }
     $('#delivery_is_billing:checkbox').change(function() {
         if ($(this).is(':checked')) {
             $('#address_delivery').hide();

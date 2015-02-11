@@ -35,6 +35,30 @@
    </div>
 </div>
 {else}
+<div id="register_false_address" class="row{if empty($BILLING.line1)} hide{/if}">
+   <div class="large-6 columns">
+      <h2>{$LANG.address.billing_address}</h2>
+      {$BILLING.title} {$BILLING.first_name} {$BILLING.last_name}<br>
+      {if $BILLING.company_name}{$BILLING.company_name}<br>{/if}
+      {$BILLING.line1}<br>
+      {if $BILLING.line2}{$BILLING.line2}<br>{/if}
+      {$BILLING.town}<br>
+      {$BILLING.state}, {$BILLING.postcode}<br>
+      {$BILLING.country_iso}
+      <div class="pad-top"><a href="#" class="button tiny secondary show_address_form">{$LANG.address.address_edit}</a></div>
+   </div>
+   <div class="large-6 columns">
+      <h2>{$LANG.address.delivery_address}</h2>
+      {$DELIVERY.title} {$DELIVERY.first_name} {$DELIVERY.last_name}<br>
+      {if $DELIVERY.company_name}{$DELIVERY.company_name}<br>{/if}
+      {$DELIVERY.line1}<br>
+      {if $DELIVERY.line2}{$DELIVERY.line2}<br>{/if}
+      {$DELIVERY.town}<br>
+      {$DELIVERY.state}, {$BILLING.postcode}<br>
+      {$DELIVERY.country_iso}
+      <div class="pad-top"><a href="#" class="button tiny secondary show_address_form">{$LANG.address.address_edit}</a></div>
+   </div>
+</div>
 <div class="hide" id="checkout_login_form">
    <h2>{$LANG.account.login}</h2>
    <p>{$LANG.account.return_register_form} <a href="#" id="checkout_register">{$LANG.common.signup}</a></p>
@@ -50,7 +74,7 @@
       </div>
    </div>
 </div>
-<div id="checkout_register_form">
+<div id="checkout_register_form"{if !empty($BILLING.line1)} class="hide"{/if}>
    <h2>{$LANG.account.your_details}</h2>
    <p>{$LANG.account.already_registered} <a href="#" id="checkout_login">{$LANG.account.log_in}</a></p>
    <h3>{$LANG.account.contact_details}</h3>
