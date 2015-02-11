@@ -55,7 +55,7 @@
                <div class="small-5 medium-4 large-3 columns">
                   <a href="{$STORE_URL}" class="main-logo"><img src="{$STORE_LOGO}" alt="{$META_TITLE}"></a>
                </div>
-               <div class="small-7 medium-8 large-9 columns">
+               <div class="small-7 medium-8 large-9 columns nav-boxes">
                   <div class="row">
                      <div class="right text-center">{include file='templates/box.basket.php'}</div>
                      <div class="right text-center show-for-small"><a class="left-off-canvas-toggle button white tiny" href="#"><i class="fa fa-bars fa-2x"></i> <a class="button white tiny show-small-search" href="#"><i class="fa fa-search fa-2x"></i></a></div>

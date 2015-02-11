@@ -891,12 +891,11 @@ class GUI {
 					}
 					$language['url'] = currentPage(null, array('set_language' => $language['code']));
 					$language['css'] = ($language['selected']) ? 'current' : '';
-
 					$languages[] = $language;
 				}
 				foreach ($GLOBALS['hooks']->load('class.gui.display_language_switch') as $hook) include $hook;
 				$GLOBALS['smarty']->assign('current_language', $current_language);
-				$GLOBALS['smarty']->assign('LANGUAGES', $languages);
+				$GLOBALS['smarty']->assign('LANGUAGES', $languages); 
 				$content = $GLOBALS['smarty']->fetch('templates/box.language.php');
 				$GLOBALS['smarty']->assign('LANGUAGE', $content);
 			}

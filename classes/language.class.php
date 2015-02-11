@@ -619,7 +619,7 @@ class Language {
 						}
 						$data = new simpleXMLElement($xml);
 						foreach ((array)$data->info as $key => $value) {
-							$list[(string)$data->info->code][(string)$key] = (string)$value;
+							$list[trim((string)$data->info->code)][trim((string)$key)] = trim((string)$value);
 						}
 						unset($data, $xml);
 					}

@@ -10,11 +10,11 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
 <div class="right text-center show-for-medium-up" id="box-currency">
-   <a href="#" data-dropdown="currency-switch" class="button white small">{$CURRENT_CURRENCY.symbol_left} {$CURRENT_CURRENCY.code} {$CURRENT_CURRENCY.symbol_right}</a><br>
+   <a href="#" data-dropdown="currency-switch" class="button white small">{$CURRENT_CURRENCY.symbol_left|escape:'htmlall'} {$CURRENT_CURRENCY.code} {$CURRENT_CURRENCY.symbol_right|escape:'htmlall'}</a>
    <ul id="currency-switch" data-dropdown-content class="f-dropdown">
       {foreach from=$CURRENCIES item=currency}
       {if $currency.code!==$CURRENT_CURRENCY.code}
-      <li class="text-left"><a href="{$currency.url}">{$currency.symbol_left} {$currency.code} {$currency.symbol_right} ({$currency.name})</a></li>
+      <li class="text-left"><a href="{$currency.url}">{$currency.symbol_left|escape:'htmlall'} {$currency.code} {$currency.symbol_right|escape:'htmlall'} ({$currency.name})</a></li>
       {/if}
       {/foreach}
    </ul>

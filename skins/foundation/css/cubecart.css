@@ -193,20 +193,31 @@ div#box-session {
 	font-weight: bold;
 	color: #fff;
 }
-.flag {
+#box-currency, #box-language {
+    margin-left: 60px;
+} 
+#box-currency {
+    margin-right: 32px;
+}
+#box-currency .button, #box-language .button {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+span.flag {
+    display: inline-block;
 	width: 16px;
 	height: 11px;
 	background:url(../images/sprite_flags.png) no-repeat
 }
-.flag.flag-DE {background-position: 0 0}
-.flag.flag-ES {background-position: 0 -11px}
-.flag.flag-FR {background-position: 0 -22px}
-.flag.flag-GB {background-position: 0 -33px}
-.flag.flag-IL {background-position: 0 -44px}
-.flag.flag-NL {background-position: 0 -55px}
-.flag.flag-US {background-position: 0 -66px}
-.flag.flag-TR {background-position: 0 -77px}
-.flag.flag-DK {background-position: 0 -88px}
+span.flag.flag-DE {background-position: 0 0}
+span.flag.flag-ES {background-position: 0 -11px}
+span.flag.flag-FR {background-position: 0 -22px}
+span.flag.flag-GB {background-position: 0 -33px}
+span.flag.flag-IL {background-position: 0 -44px}
+span.flag.flag-NL {background-position: 0 -55px}
+span.flag.flag-US {background-position: 0 -66px}
+span.flag.flag-TR {background-position: 0 -77px}
+span.flag.flag-DK {background-position: 0 -88px}
 .back-to-top {
 	position: fixed;
 	bottom: 3em;
