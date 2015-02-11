@@ -178,7 +178,7 @@
                   {if $PRODUCT.product_weight > 0}
                   <tr>
                      <td>{$LANG.common.weight}</td>
-                     <td>{$PRODUCT.product_weight} {$CONFIG.product_weight_unit}</td>
+                     <td>{$PRODUCT.product_weight}{$CONFIG.product_weight_unit}</td>
                   </tr>
                   {/if}
                </tbody>
@@ -218,19 +218,6 @@
    {foreach from=$COMMENTS item=html}
    {$html}
    {/foreach}
-   {if isset($TALKBACKS) && $TALKBACKS}
-   <div>
-      <h2>{$LANG.catalogue.trackbacks}</h2>
-      {foreach from=$TRACKBACKS item=track}
-      <p>
-         <a href="{$track.url}" target="_blank">{$track.title}</a><br>
-      <blockquote cite="{$track.url}">&quot;{$track.excerpt}&quot;</blockquote>
-      </p>
-      {/foreach}
-      <h3>{$LANG.catalogue.trackback_url}</h3>
-      <p>{$TRACKBACK_URL}</p>
-   </div>
-   {/if}
 </div>
 {else}
 <p>{$LANG.catalogue.product_doesnt_exist}</p>
