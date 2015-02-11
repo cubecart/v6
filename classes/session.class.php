@@ -98,8 +98,9 @@ class Session {
 		//If the current session time is longer we will not change anything
 		if ($ini['session.gc_maxlifetime'] < $this->_session_timeout) {
 			ini_set('session.gc_maxlifetime', $this->_session_timeout);
+		}
+		if ($ini['session.cookie_lifetime'] < $this->_session_timeout) {
 			ini_set('session.cookie_lifetime', $this->_session_timeout);
-			session_set_cookie_params($this->_session_timeout);
 		}
 		if (!$ini['session.use_cookies']) {
 			//Enforce cookies only
