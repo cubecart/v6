@@ -571,8 +571,10 @@ class Database_Contoller {
 		if ($order) {
 			if (is_array($order)) {
 				foreach ($order as $field => $sort) {
-					if (in_array($field, $allowed)) {
-						$orderArray[] = "`$field` ".$this->sqlSafe($sort);
+					if(is_array($allowed)) {
+						if (in_array($field, $allowed)) {
+							$orderArray[] = "`$field` ".$this->sqlSafe($sort);
+						}
 					}
 				}
 				if (isset($orderArray) && is_array($orderArray)) {
