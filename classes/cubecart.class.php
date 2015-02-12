@@ -2528,7 +2528,7 @@ class Cubecart {
 				$summary['state_d']  = is_numeric($summary['state_d']) ? getStateFormat($summary['state_d']) : $summary['state_d'];
 				$summary['country_d'] = getCountryFormat($summary['country_d']);
 				$summary['order_status'] = $GLOBALS['language']->order_state['name_'.$summary['status']];
-				$summary['vat_number'] = 'EU875677676';
+				$summary['vat_number'] = $GLOBALS['config']->get('config', 'tax_number');
 
 				$summary['order_date']  = formatTime($summary['order_date'], '%d %B %Y', true);
 				$var[] = $summary;
