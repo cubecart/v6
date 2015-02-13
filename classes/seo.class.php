@@ -230,7 +230,8 @@ class SEO {
 
 				if($GLOBALS['config']->get('config', 'seo_cat_add_cats') == 0) {
 					// Get last part of path
-					$path = array_pop(explode('/', $path));
+					$cat_parts = explode('/', $path);
+					$path = array_pop($path_parts);
 				}
 
 				break;
@@ -263,7 +264,8 @@ class SEO {
 						$cat_directory = $this->getDirectory($prods[0]['cat_id']);
 						if($GLOBALS['config']->get('config', 'seo_add_cats')==1) {
 							// Get first part of path
-							$cat_directory = array_shift(explode('/', $cat_directory));
+							$cat_parts = explode('/', $cat_directory);
+							$cat_directory = array_shift($cat_parts);
 						}
 					}
 					$path = empty($cat_directory) ? $prods[0]['name'] : $cat_directory.'/'.$prods[0]['name'];
