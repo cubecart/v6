@@ -228,7 +228,6 @@ class SEO {
 					$path = 'cat'.$id;
 				}
 
-				$category_scope = $GLOBALS['config']->get('config', 'seo_cat_add_cats');
 				if($GLOBALS['config']->get('config', 'seo_cat_add_cats') == 0) {
 					// Get last part of path
 					$path = array_pop(explode('/', $path));
@@ -253,10 +252,8 @@ class SEO {
 				if (($existing = $GLOBALS['db']->select('CubeCart_seo_urls', 'path', array('type' => 'prod', 'item_id' => $id))) !== false) {
 					$path = $existing[0]['path'];
 				} elseif (($prods = $GLOBALS['db']->select('CubeCart_inventory', array('product_id', 'name', 'cat_id'), array('product_id' => (int)$id), false, 1)) !== false) {
-					
-					$category_scope = $GLOBALS['config']->get('config', 'seo_add_cats');
 
-					if($category_scope==0) {
+					if($GLOBALS['config']->get('config', 'seo_add_cats')==0) {
 						$path = $prods[0]['name'];
 					} else {
 						$cat_directory = '';
@@ -264,7 +261,7 @@ class SEO {
 							$prods[0]['cat_id'] = $cats[0]['cat_id'];
 						}
 						$cat_directory = $this->getDirectory($prods[0]['cat_id']);
-						if($category_scope==1) {
+						if($GLOBALS['config']->get('config', 'seo_add_cats')==1) {
 							// Get first part of path
 							$cat_directory = array_shift(explode('/', $cat_directory));
 						}
