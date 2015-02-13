@@ -476,8 +476,6 @@ class Catalogue {
 							} elseif($value['option_price']>0) { 
 								$this->_options_line_price -=  $option[0]['option_price'];
 							}
-								
-							
 						}
 						break;
 					}
@@ -486,7 +484,6 @@ class Catalogue {
 				return $option_list;
 			}
 		}
-
 		return false;
 	}
 
