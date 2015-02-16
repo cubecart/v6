@@ -116,7 +116,7 @@
             </table>
          </div>
       </div>
-      {if isset($order.customer_comments)}
+      {if !empty($order.customer_comments)}
       <div class="row">
          <div class="small-12 columns"><h3>{$LANG.common.comments}</h3> &quot;{$order.customer_comments}&quot;</div>
       </div>
