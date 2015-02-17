@@ -1,1 +1,0 @@
-ALTER TABLE `CubeCart_order_sum` ADD `lang` VARCHAR(2) DEFAULT NULL; #EOQ

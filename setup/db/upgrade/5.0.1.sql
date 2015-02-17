@@ -1,1 +1,0 @@
-ALTER TABLE  `CubeCart_order_summary` ADD  `basket` BLOB NULL DEFAULT NULL; #EOQ
