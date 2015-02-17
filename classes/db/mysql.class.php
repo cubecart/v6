@@ -188,10 +188,12 @@ class Database extends Database_Contoller {
 				if(is_array($cache_check) && $cache_check['empty'] && isset($cache_check['data'])) {
 					$this->_result = $cache_check;
 					$this->_found_rows = sizeof($this->_result);
+					$this->_sqlDebug($cache, true);
 					return true;
 				} elseif($cache_check) {
 					$this->_result = $cache_check;
 					$this->_found_rows = sizeof($this->_result);
+					$this->_sqlDebug($cache, true);
 					return true;
 				}
 			}
@@ -218,7 +220,7 @@ class Database extends Database_Contoller {
 			//Cache the result if needed
 			$this->_writeCache($this->_result, $this->_query);
 			
-			return (!$this->_sqlDebug($cache)) ? true : false;
+			return (!$this->_sqlDebug($cache, false)) ? true : false;
 		}
 
 		return false;

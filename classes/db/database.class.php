@@ -892,15 +892,12 @@ class Database_Contoller {
 	 *
 	 * @return bool
 	 */
-	protected function _sqlDebug($cache) {
+	protected function _sqlDebug($cache, $source) {
 		if (isset($GLOBALS['debug']) && $GLOBALS['debug'] instanceof Debug) {
 			$message = "{$this->_query} -- ({$this->_query_time} sec)";
-			if ($cache) {
-				$message .= ' [CACHED]';
-			}
-			$GLOBALS['debug']->debugSQL('query', $message);
+			$GLOBALS['debug']->debugSQL('query', $message, $cache,  $source);
 			$this->_error = ($this->error()) ? $this->error().': '.$this->errorInfo() : false;
-			$GLOBALS['debug']->debugSQL('error', $this->_error);
+			$GLOBALS['debug']->debugSQL('error', $this->_error, $cache, $source);
 		}
 
 		return $this->error();

@@ -158,9 +158,23 @@ class Debug {
 	 * @param string $message
 	 * @return bool
 	 */
-	public function debugSQL($type, $message) {
-		if (!is_null($type) && !is_null($message)) {
-			$this->_sql[$type][] = htmlentities($message, ENT_COMPAT, 'UTF-8');
+	public function debugSQL($type, $message, $cache, $source) {
+		if (!is_null($type) && !is_null($message) && !empty($message)) {
+			
+			if($cache && $source) { // Request from cache and taken from cache
+				$tag = 'CACHE READ';
+				$colour = '008000';
+			} elseif($cache && !$source) { // Request from cache but taken from SQL!
+				$tag = 'CACHE WRITE';
+				$colour = 'FF6600';
+			} elseif(!$cache && $source) { // NOT requested from cache but taken from cache
+				$tag = 'CACHE READ - NOT REQUESTED!';
+				$colour = 'FF0000';
+			} elseif(!$cache && !$source) {
+				$tag = 'NOT CACHED';
+				$colour = '000';
+			}
+			$this->_sql[$type][] = '<span style="color:#'.$colour.'">'.htmlentities(strip_tags($message).' ['.$tag.']', ENT_COMPAT, 'UTF-8').'</span>';
 			return true;
 		}
 
@@ -242,8 +256,7 @@ class Debug {
 
 					foreach ($this->_sql['query'] as $index => $query) {
 						if (!empty($query)) {
-							$color = preg_match('/\[CACHED\]$/', $query) ? '#008000' : '#000';
-							$output[] = '<span style="color: '.$color.'">[<strong>'.($index + 1).'</strong>] '.strip_tags($query).'</span><br />';
+							$output[] = '[<strong>'.($index + 1).'</strong>] '.$query.'<br />';
 						}
 					}
 				}
