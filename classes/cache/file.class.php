@@ -147,7 +147,7 @@ class Cache extends Cache_Controler {
 	 * @return data/false
 	 */
 	public function read($id, $serialized = true) {
-		
+
 		if(!$this->status) return false;
 		
 		if($this->_empties_id!==$id && isset($this->_empties[$id])) {
@@ -180,7 +180,6 @@ class Cache extends Cache_Controler {
 
 				//Check to see if the cache is past the experation date
 				if (($meta['time'] + $meta['expire']) <= time()) {
-					
 					unlink($file);
 					return false;
 				}

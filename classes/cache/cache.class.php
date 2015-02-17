@@ -69,7 +69,7 @@ class Cache_Controler {
 	protected $_suffix  = '.cache';
 	protected $_empties_id = 'empties';
 	protected $_empties = array();
-	protected $_emptied_added = false;
+	protected $_empties_added = false;
 	/**
 	 * Temp variable to hold the cache read for exists function
 	 *

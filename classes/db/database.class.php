@@ -619,7 +619,7 @@ class Database_Contoller {
 				$count_query = 'SELECT FOUND_ROWS() as Count;';
 				if($count = $this->_getCached($parent_query.$count_query)) {				
 					$this->_found_rows = $count[0]['Count'];
-				} elseif($count = $this->misc($count_query, false)) { // Cache managed here not in DB->query					
+				} elseif($count = $this->misc($count_query, false)) { // Cache managed here not in DB->query				
 					$this->_found_rows = $count[0]['Count'];
 					$this->_writeCache($count, $parent_query.$count_query);
 				}
@@ -868,6 +868,7 @@ class Database_Contoller {
 	 * @return data/false
 	 */
 	protected function _getCached($query) {
+		
 		$query_hash = md5($query);
 		$this->_cached = false;
 		
