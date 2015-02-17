@@ -176,10 +176,13 @@ class Database extends Database_Contoller {
 			$cache = (defined('ADMIN_CP') && ADMIN_CP) ? false : $cache;
 			if ($cache) {
 				//Try getting the SQL cache
-				$this->_result = $this->_getCached($this->_query);
-				if($this->_result=='empty') {
-					return false;
-				} elseif($this->_result) {
+				$cache_check = $this->_getCached($this->_query);
+				if(is_array($cache_check) && $cache_check['empty'] && isset($cache_check['data'])) {
+					$this->_result = $cache_check;
+					$this->_found_rows = sizeof($this->_result);
+					return true;
+				} elseif($cache_check) {
+					$this->_result = $cache_check;
 					$this->_found_rows = sizeof($this->_result);
 					return true;
 				}
@@ -187,7 +190,9 @@ class Database extends Database_Contoller {
 
 			$this->_startTimer();
 
-			if (($result = $this->_db_connect_id->query($this->_query)) !== false) {
+			$result = $this->_db_connect_id->query($this->_query);
+
+			if ($result) {
 				if (is_bool($result)) {
 					$this->_result = $result;
 				} else {

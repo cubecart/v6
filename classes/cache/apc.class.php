@@ -156,8 +156,8 @@ class Cache extends Cache_Controler {
 
 		if(!$this->status) return false;
 		
-		if(isset($this->_empties[$id])) {
-			return 'empty';
+		if($this->_empties_id!==$id && isset($this->_empties[$id])) {
+			return array('empty' => true, 'data' => $this->_empties[$id]);
 		}
 
 		//Setup the name of the cache
@@ -212,7 +212,7 @@ class Cache extends Cache_Controler {
 
 		if($this->_empties_id!==$id && empty($data)) {
 			if(!isset($this->_empties[$id])) {
-				$this->_empties[$id] = true;
+				$this->_empties[$id] = $data;
 				$this->_emptied_added = true;
 			}
 			return false;

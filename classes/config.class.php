@@ -336,7 +336,6 @@ class Config {
 					Database::getInstance()->insert('CubeCart_config', $record);
 				}
 			}
-
 			Cache::getInstance()->clear('sql');
 		}
 	}

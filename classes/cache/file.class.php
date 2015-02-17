@@ -147,16 +147,17 @@ class Cache extends Cache_Controler {
 	 * @return data/false
 	 */
 	public function read($id, $serialized = true) {
-
+		
 		if(!$this->status) return false;
 		
-		if(isset($this->_empties[$id])) {
-			return 'empty';
+		if($this->_empties_id!==$id && isset($this->_empties[$id])) {
+			return array('empty' => true, 'data' => $this->_empties[$id]);
 		}
 		
-		if(isset($this->_dupes[$id])) {
+		if($this->_empties_id!==$id && isset($this->_dupes[$id])) {
 			return $this->_dupes[$id];
 		} else {
+			
 			$name = $this->_makeName($id);
 			$file = $this->_cache_path.$name;
 	
@@ -187,7 +188,6 @@ class Cache extends Cache_Controler {
 				return $this->_dupes[$id];
 			}
 		}
-		
 		return false;
 	}
 
@@ -202,11 +202,11 @@ class Cache extends Cache_Controler {
 	 */
 	public function write($data, $id, $expire = '', $serialize = true) {
 
-		if(!$this->status) return false;
-			
+		if(!$this->status) return false;		
+
 		if($this->_empties_id!==$id && empty($data)) {
 			if(!isset($this->_empties[$id])) {
-				$this->_empties[$id] = true;
+				$this->_empties[$id] = $data;
 				$this->_emptied_added = true;
 			}
 			return false;
