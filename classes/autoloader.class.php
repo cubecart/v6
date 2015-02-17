@@ -56,14 +56,14 @@ class Autoloader {
 			return true;
 		}
 
-		//If its a DB class use the db method
-		if ($class == 'Database') {
-			return self::autoload_db();
-		}
-
 		//If its a cache class use the cache method
 		if ($class == 'Cache') {
 			return self::autoload_cache();
+		}
+
+		//If its a DB class use the db method
+		if ($class == 'Database') {
+			return self::autoload_db();
 		}
 
 		//If its smarty we need to use the smarty loader
