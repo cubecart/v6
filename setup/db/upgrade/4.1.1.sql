@@ -1,1 +1,0 @@
-ALTER TABLE `CubeCart_category` CHANGE `noProducts` `noProducts` INT UNSIGNED NOT NULL DEFAULT '0'; #EOQ
