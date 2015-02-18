@@ -1,0 +1,1 @@
+ALTER TABLE `CubeCart_inventory` CHANGE `product_weight` `product_weight` DECIMAL( 10, 3 ) NULL DEFAULT NULL; #EOQ

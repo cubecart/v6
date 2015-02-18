@@ -1,0 +1,3 @@
+INSERT INTO `CubeCart_category` (`cat_name`, `cat_desc`, `priority`, `status`) VALUES ('Test Category', 'This is a test category setup during install. It can be edited or deleted from the store admin control panel.', 1, 1) ; #EOQ
+INSERT INTO `CubeCart_inventory` (`status`, `product_code`, `quantity`, `description`, `price`, `name`, `cat_id`, `sale_price`, `use_stock_level`, `product_weight`, `tax_type`, `date_added`) VALUES (1, 'TESA31', 1, 'This is the main copy for the product.', 10.00, 'Test Product', 1, 6.99, 0, 4.00, 1, CURRENT_TIMESTAMP); #EOQ
+INSERT INTO `CubeCart_category_index` (`cat_id`, `product_id`, `primary`) VALUES (1, LAST_INSERT_ID(), 1) ; #EOQ
