@@ -74,7 +74,8 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 		$product_id = $_POST['product_id'];
 		// Update product
 		if (!empty($_POST['digital_path'])) {
-			$record['digital'] = 1; $record['digital_path'] = $_POST['digital_path'];
+			$record['digital'] = 1;
+			$record['digital_path'] = $_POST['digital_path'];
 		} else { 
 			if (!isset($_POST['download'])) {
 				if ($old_product_data[0]['digital']) {
