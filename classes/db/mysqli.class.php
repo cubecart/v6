@@ -178,7 +178,7 @@ class Database extends Database_Contoller {
 				//Try getting the SQL cache
 				$cache_check = $this->_getCached($this->_query);
 				if(is_array($cache_check) && $cache_check['empty'] && isset($cache_check['data'])) {
-					$this->_result = $cache_check;
+					$this->_result = $cache_check['data'];
 					$this->_found_rows = sizeof($this->_result);
 					$this->_sqlDebug($cache, true);
 					return true;

@@ -148,9 +148,9 @@ class Cache extends Cache_Controler {
 
 		if(!$this->status) return false;
 		
-		if($this->_empties_id!==$id && isset($this->_empties[$id])) {
+		if(preg_match('/^sql\./',$id) && $this->_empties_id!==$id && isset($this->_empties[$id])) {
 			return array('empty' => true, 'data' => $this->_empties[$id]);
-		}
+		} 
 		
 		if($this->_empties_id!==$id && isset($this->_dupes[$id])) {
 			return $this->_dupes[$id];
@@ -201,7 +201,7 @@ class Cache extends Cache_Controler {
 
 		if(!$this->status) return false;		
 
-		if($this->_empties_id!==$id && empty($data)) {
+		if(preg_match('/^sql\./',$id) && $this->_empties_id!==$id && empty($data)) {
 			if(!isset($this->_empties[$id])) {
 				$this->_empties[$id] = $data;
 				$this->_emptied_added = true;

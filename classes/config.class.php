@@ -72,6 +72,7 @@ class Config {
 		} else {
 			$this->_config['config'] = $glob;
 		}
+		
 		$cache = (bool)$this->_config['config']['cache'];
 		$GLOBALS['cache']->enable($cache);
 		if(!$cache) {
@@ -238,7 +239,6 @@ class Config {
 			$this->_writeDB();
 			$this->_write_db = false;
 		}
-
 		return true;
 	}
 
