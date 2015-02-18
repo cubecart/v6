@@ -73,27 +73,22 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 
 		$product_id = $_POST['product_id'];
 		// Update product
-		if (isset($_POST['download']) || !empty($_POST['digital_path'])) {
-			if (!empty($record['digital_path'])) {
-				$record['digital'] = 1;
-			} else {
-				$record['digital'] = 0;
-				foreach ($_POST['download'] as $key => $enabled) {
-					if ($enabled) {
-						$record['digital'] = $key;
-						break;
-					}
+		if (!empty($_POST['digital_path'])) {
+			$record['digital'] = 1; $record['digital_path'] = $_POST['digital_path'];
+		} else { 
+			if (!isset($_POST['download'])) {
+				if ($old_product_data[0]['digital']) {
+		    		$record['digital'] = $old_product_data[0]['digital'];
 				}
-				if (!$record['digital'] && isset($_POST['download'][$old_product_data[0]['digital']]) && !$_POST['download'][$old_product_data[0]['digital']]) {
-					$record['digital'] = 0;
-				} elseif (!$record['digital']) {
-					$record['digital'] = $old_product_data[0]['digital'];
-				}
-
-			}
-			unset($_POST['download']);
-		} else {
-			$record['digital'] = 0; // no path nor list of files
+		 	} else { 
+		    	$record['digital'] = 0;
+		    	foreach ($_POST['download'] as $key => $enabled) {
+		      		if ($enabled) {
+		        		$record['digital'] = $key;
+		        		break;
+		      		}
+		    	}
+		  	}
 		}
 		$record['updated'] = date('Y-m-d H:i:s', time());
 		if ($GLOBALS['db']->update('CubeCart_inventory', $record, array('product_id' => $_POST['product_id']), true, array('stock_level'))) {
