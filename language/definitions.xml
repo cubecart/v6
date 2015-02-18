@@ -433,6 +433,9 @@
     <string name="title_coupon_edit" introduced="5.0.0"><![CDATA[Edit Coupon]]></string>
     <string name="title_coupon_expires" introduced="5.0.0"><![CDATA[Expires]]></string>
     <string name="title_coupon_limits" introduced="5.0.0"><![CDATA[Coupon Limits]]></string>
+    <string name="title_coupon_convert" introduced="6.0.0"><![CDATA[Gift Certificate Conversion]]></string>
+    <string name="coupon_convert_desc" introduced="6.0.0"><![CDATA[To use a coupon as a gift certificate (keeping a balance for multiple uses) it is possible to do so by assigning an order number to it. It must be a real order number with a status of &quot;Processing&quot; or &quot;Complete&quot;.]]></string>
+    <string name="notify_gc_not_fixed" introduced="6.0.0"><![CDATA[Gift certificates can't have a percentage discount type.]]></string>
     <string name="title_coupon_products" introduced="5.1.5"><![CDATA[Product List Type]]></string>
     <string name="title_coupon_value" introduced="5.0.0"><![CDATA[Coupon Value]]></string>
     <string name="title_coupons" introduced="5.0.0"><![CDATA[Coupons]]></string>
@@ -1487,6 +1490,7 @@
     <string name="name_6" introduced="5.0.0"><![CDATA[Cancelled]]></string>
   </group>
   <group name="orders">
+    <string name="order_not_found" introduced="6.0.0"><![CDATA[Sorry but order %s was not found.]]></string>
     <string name="cancel_by_customer" introduced="5.2.13"><![CDATA[Order cancelled by customer from their account area.]]></string>
     <string name="card_card_cvv" introduced="5.0.0"><![CDATA[Security Code]]></string>
     <string name="card_card_details" introduced="5.0.0"><![CDATA[Credit Card Details]]></string>

@@ -113,6 +113,10 @@
 	  <div><label for="form-shipping">{$LANG.catalogue.coupon_shipping}</label><span><input type="hidden" name="coupon[shipping]" id="form-shipping" class="toggle" value="{$COUPON.shipping}"></span></div>
 	  <input type="hidden" name="coupon[coupon_id]" value="{$COUPON.coupon_id}">
 	</fieldset>
+	<fieldset><legend>{$LANG.catalogue.title_coupon_convert}</legend>
+	  <div><label for="form-expires">{$LANG.orders.order_number}</label><span><input type="text" name="coupon[cart_order_id]" id="form-expires" value="{$COUPON.cart_order_id}" class="textbox"></span></div>
+	  <div class="clear">{$LANG.catalogue.coupon_convert_desc}</div>
+	</fieldset>
   </div>
   <div id="edit-products" class="tab_content">
 	<fieldset>

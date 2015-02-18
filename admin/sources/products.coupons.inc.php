@@ -42,6 +42,7 @@ if (isset($_POST['coupon']) && is_array($_POST['coupon'])) {
 	foreach ($GLOBALS['hooks']->load('admin.product.coupons.save.pre_process') as $hook) include $hook;
 
 	$coupon_id = (isset($_POST['coupon']['coupon_id'])) ? (int)$_POST['coupon']['coupon_id'] : null;
+
 	$record  = array(
 		# 'status'  => (isset($_POST['coupon']['status'])) ? 1 : 0,
 		# 'archived'  => (isset($_POST['coupon']['archived'])) ? 1 : 0,
@@ -55,35 +56,52 @@ if (isset($_POST['coupon']) && is_array($_POST['coupon'])) {
 		'description' => $_POST['coupon']['description'],
 		## Temporary reset
 		'discount_percent' => 0,
-		'discount_price' => 0,
+		'discount_price' => 0
 	);
-	if (isset($_POST['product']) && is_array($_POST['product'])) {
-		foreach ($_POST['product'] as $key => $value) {
-			if (empty($value)) unset($_POST['product'][$key]);
+	$continue = true;
+	if(!empty($_POST['coupon']['cart_order_id'])) {
+		if(!$GLOBALS['db']->select('CubeCart_order_summary', false, array('cart_order_id' => $_POST['coupon']['cart_order_id']))) {
+			$GLOBALS['main']->setACPWarning(sprintf($lang['orders']['order_not_found'], $_POST['coupon']['cart_order_id']));
+			$_POST['coupon']['cart_order_id'] = null;
+			$continue = false;
+		} else {
+			if($_POST['discount_type']=='fixed') {
+				$record['cart_order_id'] = $_POST['coupon']['cart_order_id'];
+			} else {
+				$GLOBALS['main']->setACPWarning($lang['catalogue']['notify_gc_not_fixed']);
+				$continue = false;
+			}
 		}
-		array_unshift($_POST['product'], $_POST['incexc']);
-		$record['product_id'] = serialize($_POST['product']);
 	}
-	switch (strtolower($_POST['discount_type'])) {
-	case 'fixed':
-		$record['discount_price'] = $_POST['discount_value'];
-		break;
-	case 'percent':
-	default:
-		$record['discount_percent'] = $_POST['discount_value'];
-	}
+	if($continue) {
+		if (isset($_POST['product']) && is_array($_POST['product'])) {
+			foreach ($_POST['product'] as $key => $value) {
+				if (empty($value)) unset($_POST['product'][$key]);
+			}
+			array_unshift($_POST['product'], $_POST['incexc']);
+			$record['product_id'] = serialize($_POST['product']);
+		}
+		switch (strtolower($_POST['discount_type'])) {
+		case 'fixed':
+			$record['discount_price'] = $_POST['discount_value'];
+			break;
+		case 'percent':
+		default:
+			$record['discount_percent'] = $_POST['discount_value'];
+		}
 
-	if (!empty($coupon_id) && is_numeric($coupon_id)) {
-		if ($GLOBALS['db']->update('CubeCart_coupons', $record, array('coupon_id' => (int)$coupon_id))) {
-			$GLOBALS['main']->setACPNotify($lang['catalogue']['notify_coupon_update']);
-		}
-	} else {
-		if ($GLOBALS['db']->insert('CubeCart_coupons', $record)) {
-			$GLOBALS['main']->setACPNotify($lang['catalogue']['notify_coupon_create']);
+		if (!empty($coupon_id) && is_numeric($coupon_id)) {
+			if ($GLOBALS['db']->update('CubeCart_coupons', $record, array('coupon_id' => (int)$coupon_id))) {
+				$GLOBALS['main']->setACPNotify($lang['catalogue']['notify_coupon_update']);
+			}
+		} else {
+			if ($GLOBALS['db']->insert('CubeCart_coupons', $record)) {
+				$GLOBALS['main']->setACPNotify($lang['catalogue']['notify_coupon_create']);
+			}
 		}
 	}
 	foreach ($GLOBALS['hooks']->load('admin.product.coupons.save.post_process') as $hook) include $hook;
-	httpredir(currentPage(array('action', 'coupon_id')));
+	httpredir(currentPage());
 }
 
 ###########################################
