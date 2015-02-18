@@ -784,6 +784,11 @@ class Catalogue {
 				}
 			} else {
 				$assigned = $GLOBALS['db']->select('CubeCart_option_assign', false, array('assign_id' => (int)$assign_id));
+				
+				if($assigned) {
+					if($GLOBALS['config']->get('config', 'catalogue_sale_mode') == 2 && $GLOBALS['config']->get('config', 'catalogue_sale_percentage')>0) $assigned[0]['option_price'] = $assigned[0]['option_price'] - ($assigned[0]['option_price'] / 100) * $GLOBALS['config']->get('config', 'catalogue_sale_percentage');
+				}
+				
 				if ($category[0]['option_type'] == 0 || $category[0]['option_type'] == 4) {
 					// Select
 					if (($value = $GLOBALS['db']->select('CubeCart_option_value', false, array('option_id' => $category[0]['option_id'], 'value_id' => $assigned[0]['value_id']))) !== false) {
@@ -899,6 +904,9 @@ class Catalogue {
 	 * @return array/false
 	 */
 	public function getProductOptions($product_id = null) {
+		
+		$sale_percent = ($GLOBALS['config']->get('config', 'catalogue_sale_mode') == 2 && $GLOBALS['config']->get('config', 'catalogue_sale_percentage')>0) ? $GLOBALS['config']->get('config', 'catalogue_sale_percentage') : false;
+
 		if (($setlist = $GLOBALS['db']->select('CubeCart_options_set_product', array('set_id'), array('product_id' => (int)$product_id))) !== false) {
 			// Fetch Option Sets
 			foreach ($setlist as $set_data) {
@@ -922,6 +930,7 @@ class Catalogue {
 										if (($assigns = $GLOBALS['db']->select('CubeCart_option_assign', false, array('value_id' => $value['value_id'], 'option_id' => $value['option_id'], 'product' => (int)$product_id, 'set_member_id' => $set_members))) !== false) {
 											foreach ($assigns as $assign) {
 												if (!$assign['set_enabled']) continue;
+												if($sale_percent) $assign['option_price'] = $assign['option_price'] - ($assign['option_price'] / 100) * $sale_percent;
 												$option_array[$group['option_type']][$value['option_id']][] = array_merge($group, $value, $assign);
 											}
 										} else {
@@ -933,6 +942,7 @@ class Catalogue {
 							} else {
 								// Text option
 								if (($assigns = $GLOBALS['db']->select('CubeCart_option_assign', false, array('option_id' => $group['option_id'], 'product' => (int)$product_id))) !== false) {
+									if($sale_percent) $assigns[0]['option_price'] = $assigns[0]['option_price'] - ($assigns[0]['option_price'] / 100) * $sale_percent;
 									$assign = $assigns[0];
 								} else {
 									$assign = array();
@@ -950,7 +960,13 @@ class Catalogue {
 
 		if (($products = $GLOBALS['db']->select('CubeCart_option_assign', false, array('product' => (int)$product_id, 'set_member_id' => 0, 'set_enabled' => '1'))) !== false) {
 			$option = array();
+
+			$sale_percent = ($GLOBALS['config']->get('config', 'catalogue_sale_mode') == 2 && $GLOBALS['config']->get('config', 'catalogue_sale_percentage')>0) ? $GLOBALS['config']->get('config', 'catalogue_sale_percentage') : false;
+
 			foreach ($products as $assigned) {
+				
+				if($sale_percent) $assigned['option_price'] = $assigned['option_price'] - ($assigned['option_price'] / 100) * $sale_percent;
+
 				if ($assigned['option_id'] > 0) {
 					$option[$assigned['option_id']][] = $assigned;
 					$top[] = $assigned['option_id'];
