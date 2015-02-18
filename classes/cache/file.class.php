@@ -40,8 +40,6 @@ class Cache extends Cache_Controler {
 
 		$this->_mode = 'File';
 		
-		$this->_getEmpties();
-		
 		//Run the parent constructor
 		parent::__construct();
 	}
@@ -147,7 +145,7 @@ class Cache extends Cache_Controler {
 	 * @return data/false
 	 */
 	public function read($id, $serialized = true) {
-		
+
 		if(!$this->status) return false;
 		
 		if($this->_empties_id!==$id && isset($this->_empties[$id])) {
@@ -288,7 +286,7 @@ class Cache extends Cache_Controler {
 	/**
 	 * Get empty cache queries
 	 */
-	private function _getEmpties() {
+	protected function _getEmpties() {
 		$this->_setPrefix();
 		$this->_empties = $this->read($this->_empties_id);
 	}

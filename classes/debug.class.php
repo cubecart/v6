@@ -161,6 +161,8 @@ class Debug {
 	public function debugSQL($type, $message, $cache, $source) {
 		if (!is_null($type) && !is_null($message) && !empty($message)) {
 			
+			$tag = '';
+
 			if($cache && $source) { // Request from cache and taken from cache
 				$tag = 'CACHE READ';
 				$colour = '008000';
@@ -173,6 +175,11 @@ class Debug {
 			} elseif(!$cache && !$source) {
 				$tag = 'NOT CACHED';
 				$colour = '000';
+			}
+
+			if($type=='error' || preg_match('/CubeCart_system_error_log/',$message)) {
+				$tag = empty($tag) ? 'ERROR' : 'ERROR - '.$tag;
+				$colour = 'FF0000';
 			}
 			$this->_sql[$type][] = '<span style="color:#'.$colour.'">'.htmlentities(strip_tags($message).' ['.$tag.']', ENT_COMPAT, 'UTF-8').'</span>';
 			return true;

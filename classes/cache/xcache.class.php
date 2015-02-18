@@ -209,7 +209,7 @@ class Cache extends Cache_Controler {
 	/**
 	 * Get empty cache queries
 	 */
-	private function _getEmpties() {
+	protected function _getEmpties() {
 		$this->_setPrefix();
 		$this->_empties = $this->read($this->_empties_id);
 	}

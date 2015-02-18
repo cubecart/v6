@@ -72,7 +72,11 @@ class Config {
 		} else {
 			$this->_config['config'] = $glob;
 		}
-		$GLOBALS['cache']->enable((bool)$this->_config['config']['cache']);
+		$cache = (bool)$this->_config['config']['cache'];
+		$GLOBALS['cache']->enable($cache);
+		if(!$cache) {
+			$GLOBALS['cache']->clear();
+		}
 	}
 
 	public function __destruct() {
@@ -336,7 +340,6 @@ class Config {
 					Database::getInstance()->insert('CubeCart_config', $record);
 				}
 			}
-			Cache::getInstance()->clear('sql');
 		}
 	}
 }

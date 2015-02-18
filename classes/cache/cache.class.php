@@ -106,6 +106,7 @@ class Cache_Controler {
 	public function enable($enable = true) {
 		$this->status = $enable;
 		$this->status();
+		if($enable) $this->_getEmpties();
 	}
 
 	/**
@@ -139,9 +140,6 @@ class Cache_Controler {
 			$this->status = false;
 		} else { 
 			$this->status_desc = $this->status ? 'Enabled' : 'Disabled';
-		}
-		if(!$this->status) {
-			$this->clear();
 		}
 		return $this->status;
 	}

@@ -869,12 +869,12 @@ class Database_Contoller {
 	 */
 	protected function _getCached($query) {
 		
-		$query_hash = md5($query);
+		$query_hash = 'sql.'.md5($query);
 		$this->_cached = false;
 		
 		if (isset($GLOBALS['cache']) && is_object($GLOBALS['cache'])) {
 			$this->_cached = true;
-			return $GLOBALS['cache']->read('sql.'.$query_hash);
+			return $GLOBALS['cache']->read($query_hash);
 		}
 
 		return false;
