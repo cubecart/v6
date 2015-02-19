@@ -801,6 +801,9 @@ class FileManager {
 	 * @return int/false
 	 */
 	public function upload($type = false, $thumbnail = false) {
+		
+		if(!is_writable($this->_manage_root)) return false;
+
 		if (!empty($_FILES)) {
 			$finfo = (extension_loaded('fileinfo')) ? new finfo(FILEINFO_SYMLINK | FILEINFO_MIME) : false;
 			foreach ($_FILES as $file) {
