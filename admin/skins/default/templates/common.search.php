@@ -1,4 +1,4 @@
-<input type="text" class="form-control search" id="search-placeholder" placeholder="&#xF002; Search">
+<input type="text" class="form-control search" id="search-placeholder" placeholder="&#xF002; Search&hellip;">
 <div id="sidebar_contain">
 	<div id="sidebar_content">
 	  <div class="sidebar_content">

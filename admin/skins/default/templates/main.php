@@ -16,6 +16,7 @@
    </head>
    <body>
       <div id="header">
+         <a href="?"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/logo.cubecart.png" width="158" height="30"></a>
          <span class="user_info">{$LANG.settings.title_welcome_back} <a href="?_g=settings&node=admins&action=edit&admin_id={$ADMIN_UID}">{$ADMIN_USER}</a> - <a href="?_g=logout">{$LANG.account.logout} <i class="fa fa-sign-out"></i></a></span>
       </div>
       <div id="wrapper">
@@ -34,6 +35,21 @@
             {/foreach}
             {/if}
          </div>
+         <div id="breadcrumbs">
+               <div class="inner">
+                  <ul class="quick_links">
+                  {if $QUICK_TOUR}
+                  <li><a href="#" id="quickTour">{$LANG.dashboard.quick_tour}</a></li>
+                  {/if}
+                  <li><a href="{$HELP_URL}" id="wikihelp" class="colorbox wiki">{$LANG.common.help}</a></li>
+                  <li><a href="index.php" target="_blank">{$LANG.settings.store_status} - {if ($STORE_STATUS)}<span class="store_open">{$LANG.common.open}</span>{else}<span class="store_closed">{$LANG.common.closed}</span>{/if}</a></li>
+                  </ul>
+                  <ul class="location">
+                  <li><i class="fa fa-home"></i> <a href="?">{$LANG.dashboard.title_dashboard}</a></li>
+                  {if isset($CRUMBS)}{foreach from=$CRUMBS item=crumb}<li><i class="fa fa-chevron-right"></i> <a href="{$crumb.url}">{$crumb.title}</a></li>{/foreach}{/if}
+                  </ul>
+               </div>
+            </div>
          <div id="content">
             <div id="tab_control">
                {if isset($TABS)}
@@ -46,18 +62,7 @@
             {/if}
          </div>
          <div id="content_body">
-            <div id="breadcrumbs">
-               <div class="inner">
-                  <span class="helpdocs" style="float: right;">
-                  {if $QUICK_TOUR}
-                  <a href="#" id="quickTour">{$LANG.dashboard.quick_tour}</a> |
-                  {/if}
-                  <a href="{$HELP_URL}" id="wikihelp" class="colorbox wiki">{$LANG.common.help}</a> | <a href="index.php" target="_blank">{$LANG.settings.store_status} - {if ($STORE_STATUS)}<span class="store_open">{$LANG.common.open}</span>{else}<span class="store_closed">{$LANG.common.closed}</span>{/if}</a>
-                  </span>
-                  <a href="?">{$LANG.dashboard.title_dashboard}</a>
-                  {if isset($CRUMBS)}{foreach from=$CRUMBS item=crumb} &raquo; <a href="{$crumb.url}">{$crumb.title}</a>{/foreach}{/if}
-               </div>
-            </div>
+            
             {include file='templates/common.gui_message.php'}
             <div id="page_content">
                <noscript>
