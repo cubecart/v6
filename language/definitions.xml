@@ -319,6 +319,7 @@
     <string name="import_replace_existing" introduced="5.0.0"><![CDATA[Replace existing inventory]]></string>
     <string name="import_source" introduced="5.0.0"><![CDATA[Source]]></string>
     <string name="imported" introduced="5.0.0"><![CDATA[Imported]]></string>
+    <string name="importing_progress" introduced="6.0.0"><![CDATA[Imported %s of %s &hellip;]]></string>
     <string name="imported_products" introduced="5.0.0"><![CDATA[Imported Products]]></string>
     <string name="is_digital" introduced="5.0.0"><![CDATA[Is Digital Download]]></string>
     <string name="latest_products" introduced="5.0.0"><![CDATA[Latest Products]]></string>

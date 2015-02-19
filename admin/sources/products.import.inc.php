@@ -18,6 +18,7 @@ global $lang;
 $dir 			= CC_ROOT_DIR.CC_DS.'includes'.CC_DS.'extra'.CC_DS;
 $source			= $dir.'importdata.tmp';
 $import_source	= $dir.'importdata_%s.tmp';
+$splitSize = 2;
 
 $delimiter	= (isset($_POST['delimiter']) && !empty($_POST['delimiter'])) ? $_POST['delimiter'] : ',';
 
@@ -74,7 +75,7 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 	if (isset($map) && file_exists($this_import)) {
 
 		## Load source data
-		$fp	= fopen($this_import, 'rb');
+		$fp	= fopen($this_import, 'r');
 		if ($fp) {
 			
 			$row	= 0;
@@ -217,7 +218,15 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 	}
 	$next_cycle = $cycle+1;
 	if(file_exists(sprintf($import_source,$next_cycle))) {
-		$GLOBALS['smarty']->assign('NEXT_CYCLE',$next_cycle);
+		
+		$data = array(
+			'next_cycle' => $next_cycle,
+			'total' => ($has_header) ? $GLOBALS['session']->get('columns','import')-1 : $GLOBALS['session']->get('columns','import'),
+			'imported' => $cycle * $splitSize
+		);
+
+		$GLOBALS['smarty']->assign('DATA',$data);
+		
 		$page_content = $GLOBALS['smarty']->fetch('templates/products.importing.php');
 	} else {
 		$GLOBALS['main']->setACPNotify($lang['catalogue']['notify_import_complete']);
@@ -253,7 +262,6 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 
 		// Split source file into 50 rows at a time
 		$outputFile = $dir.'importdata_';
-		$splitSize = 25;
 		$in = fopen($source, 'r');
 
 		$rowCount = 0;
@@ -270,6 +278,7 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 		        fputcsv($out, $data);
 		    $rowCount++;
 		}
+		$GLOBALS['session']->set('columns', $rowCount, 'import');
 		fclose($out);
 
 		## Display interstitial page before actually importing, either displaying example data from source, or a means to map the CSV to the database columns
