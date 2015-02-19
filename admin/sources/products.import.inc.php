@@ -252,7 +252,7 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 
 		// Split source file into 50 rows at a time
 		$outputFile = $dir.'importdata_';
-		$splitSize = 2;
+		$splitSize = 25;
 		$in = fopen($source, 'r');
 
 		$rowCount = 0;
