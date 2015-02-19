@@ -29,7 +29,6 @@ class Cache extends Cache_Controler {
 	final protected function __construct() {
 		
 		$this->_mode = 'XCache';
-		$this->_getEmpties();
 		
 		//Run the parent constructor
 		parent::__construct();
@@ -144,7 +143,7 @@ class Cache extends Cache_Controler {
 
 		if(!$this->status) return false;
 		
-		if($this->_empties_id!==$id && isset($this->_empties[$id])) {
+		if(preg_match('/^sql\./',$id) && $this->_empties_id!==$id && isset($this->_empties[$id])) {
 			return array('empty' => true, 'data' => $this->_empties[$id]);
 		}
 
@@ -185,7 +184,7 @@ class Cache extends Cache_Controler {
 
 		if(!$this->status) return false;
 		
-		if($this->_empties_id!==$id && empty($data)) {
+		if(preg_match('/^sql\./',$id) && $this->_empties_id!==$id && empty($data)) {
 			if(!isset($this->_empties[$id])) {
 				$this->_empties[$id] = $data;
 				$this->_empties_added = true;
