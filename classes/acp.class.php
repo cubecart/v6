@@ -341,7 +341,7 @@ class ACP {
 					if(isset($_COOKIE['nav_'.$group])) {
 						$visible = $_COOKIE['nav_'.$group];
 					} else {
-						$visible = true;
+						$visible = 'true';
 					}
 
 					$item = array(
