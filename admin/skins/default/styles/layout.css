@@ -113,7 +113,7 @@ input[type="checkbox"] {
 }
 
 #gui_message {
-  margin: 0 0 5px 10px;
+  margin: 0 0 5px 0px;
 }
 
 .preauth-wrapper #gui_message {
