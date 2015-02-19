@@ -45,7 +45,7 @@ class Cache extends Cache_Controler {
 	}
 	
 	public function __destruct() {
-		if($this->_emptied_added) $this->write($this->_empties, $this->_empties_id);
+		if($this->_empties_added) $this->write($this->_empties, $this->_empties_id);
 	}
 
 	//=====[ Public ]=======================================
@@ -204,7 +204,7 @@ class Cache extends Cache_Controler {
 		if(preg_match('/^sql\./',$id) && $this->_empties_id!==$id && empty($data)) {
 			if(!isset($this->_empties[$id])) {
 				$this->_empties[$id] = $data;
-				$this->_emptied_added = true;
+				$this->_empties_added = true;
 			}
 			return false;
 		}

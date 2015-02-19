@@ -15,18 +15,19 @@ Admin::getInstance()->permissions('products', CC_PERM_EDIT, true);
 
 global $lang;
 
-$source		= CC_ROOT_DIR.CC_DS.'includes'.CC_DS.'extra'.CC_DS.'importdata.tmp';
-$importers	= CC_ROOT_DIR.CC_DS.'includes'.CC_DS.'importers';
+$dir 			= CC_ROOT_DIR.CC_DS.'includes'.CC_DS.'extra'.CC_DS;
+$source			= $dir.'importdata.tmp';
+$import_source	= $dir.'importdata_%s.tmp';
 
 $delimiter	= (isset($_POST['delimiter']) && !empty($_POST['delimiter'])) ? $_POST['delimiter'] : ',';
 
 $GLOBALS['main']->addTabControl($lang['common']['import'], 'general');
-if (isset($_POST['process'])) {
+if (isset($_POST['process']) || isset($_GET['cycle'])) {
 	## This will (theoretically) prevent a partial import
 	ignore_user_abort(true);
 	set_time_limit(0);
 	ini_set('max_execution_time', '0');
-	$updated	= array('updated' => 'false');
+	
 	## Truncate?
 	if (isset($_POST['option']['truncate'])) {
 		$tables = array(
@@ -44,27 +45,44 @@ if (isset($_POST['process'])) {
 		$GLOBALS['db']->delete('CubeCart_seo_urls',array('type' => 'prod'));
 	}
 
-	$schema		= $importers.CC_DS.basename($_POST['process']);
 	$column		= 0;
 	
 	if (isset($_POST['map']) && is_array($_POST['map'])) {
+		$GLOBALS['session']->set('map', $_POST['map'], 'import');
+		
+		$delimiter	= (isset($_POST['delimiter']) && !empty($delimiter)) ? $_POST['delimiter'] : ',';
+		$GLOBALS['session']->set('delimiter', $delimiter, 'import');
+		
+		$has_header	= (isset($_POST['option']['headers'])) ? true : false;
+		$GLOBALS['session']->set('headers', $has_header, 'import');
+	}
+
+	if ($GLOBALS['session']->has('map','import')) {
 		## Use the user defined mapping
-		foreach ($_POST['map'] as $col => $value) {
+		foreach ($GLOBALS['session']->get('map','import') as $col => $value) {
 			$map[$column++]	= (string)$value;
 		}
-		$delimiter	= (isset($_POST['delimiter']) && !empty($delimiter)) ? $_POST['delimiter'] : ',';
-		$has_header	= (isset($_POST['option']['headers'])) ? true : false;
+		$delimiter	= $GLOBALS['session']->get('delimiter','import');
+		$has_header	= $GLOBALS['session']->get('headers','import');
+		if(!isset($_GET['cycle'])) {
+			$cycle = 1;
+		} else {
+			$cycle = $_GET['cycle'];
+		}
 	}
-	if (isset($map) && file_exists($source)) {
+	$this_import = sprintf($import_source,$cycle);
+	if (isset($map) && file_exists($this_import)) {
+
 		## Load source data
-		$fp	= fopen($source, 'rb');
+		$fp	= fopen($this_import, 'rb');
 		if ($fp) {
+			
 			$row	= 0;
 			$insert	= 0;
 			$now	= date('Y-m-d H:i:s', time());
 			while (($data = fgetcsv($fp, false, str_replace('tab', "\t", $delimiter))) !== false) {
 				$row++;
-				if ($has_header && $row == 1) {
+				if ($cycle == 1 && $has_header && $row == 1) {
 					$headers	= $data;
 					continue;
 				}
@@ -195,10 +213,16 @@ if (isset($_POST['process'])) {
 			}
 			fclose($fp);
 		}
-		unlink($source);
+		unlink($this_import);
 	}
-	$GLOBALS['main']->setACPNotify($lang['catalogue']['notify_import_complete']);
-	httpredir(currentPage());
+	$next_cycle = $cycle+1;
+	if(file_exists(sprintf($import_source,$next_cycle))) {
+		$GLOBALS['smarty']->assign('NEXT_CYCLE',$next_cycle);
+		$page_content = $GLOBALS['smarty']->fetch('templates/products.importing.php');
+	} else {
+		$GLOBALS['main']->setACPNotify($lang['catalogue']['notify_import_complete']);
+		httpredir(currentPage());
+	}
 } else if (isset($_POST['upload'])) {
 	## Remove previous import data
 	if (isset($_POST['revert']) && is_array($_POST['revert'])) {
@@ -225,6 +249,28 @@ if (isset($_POST['process'])) {
 		}
 		httpredir(currentPage());
 	} else if (is_uploaded_file($_FILES['source']['tmp_name']) && move_uploaded_file($_FILES['source']['tmp_name'], $source)) {
+
+		// Split source file into 50 rows at a time
+		$outputFile = $dir.'importdata_';
+		$splitSize = 2;
+		$in = fopen($source, 'r');
+
+		$rowCount = 0;
+		$fileCount = 1;
+		while (!feof($in)) {
+		    if (($rowCount % $splitSize) == 0) {
+		        if ($rowCount > 0) {
+		            fclose($out);
+		        }
+		        $out = fopen($outputFile . $fileCount++ . '.tmp', 'w');
+		    }
+		    $data = fgetcsv($in);
+		    if ($data)
+		        fputcsv($out, $data);
+		    $rowCount++;
+		}
+		fclose($out);
+
 		## Display interstitial page before actually importing, either displaying example data from source, or a means to map the CSV to the database columns
 			$delimiter	= (isset($_POST['delimiter']) && !empty($_POST['delimiter'])) ? $_POST['delimiter'] : ',';
 			## No format map available, so give them a manual assignment form
@@ -265,6 +311,8 @@ if (isset($_POST['process'])) {
 			$fp		= fopen($source, 'r');
 			$data	= fgetcsv($fp, null, str_replace('tab', "\t", $delimiter));
 			fclose($fp);
+			unlink($source);
+
 			if (is_array($data)) {
 				foreach ($data as $offset => $value) {
 					$smarty_data['maps'][]	= array('offset' => (int)$offset, 'example' => $value);
@@ -287,6 +335,7 @@ if (isset($_POST['process'])) {
 		$GLOBALS['main']->setACPWarning($lang['catalogue']['error_import_upload']);
 		httpredir(currentPage());
 	}
+	$page_content = $GLOBALS['smarty']->fetch('templates/products.import.php');
 } else {
 	## Find previous imports, and list
 	if (($reverts = $GLOBALS['db']->query(sprintf("SELECT COUNT(product_id) AS Count, date_added FROM %sCubeCart_inventory WHERE 1 GROUP BY date_added ORDER BY date_added ASC", $GLOBALS['config']->get('config', 'dbprefix')))) !== false) {
@@ -304,6 +353,5 @@ if (isset($_POST['process'])) {
 		}
 	}
 	$GLOBALS['smarty']->assign('DISPLAY_FORM',true);
-
+	$page_content = $GLOBALS['smarty']->fetch('templates/products.import.php');
 }
-$page_content = $GLOBALS['smarty']->fetch('templates/products.import.php');
