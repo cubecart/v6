@@ -54,7 +54,11 @@ if (isset($_GET['rebuild']) && Admin::getInstance()->permissions('filemanager', 
 
 if (Admin::getInstance()->permissions('filemanager', CC_PERM_EDIT) && !empty($_FILES)) {
 	if ($fm->upload()) {
-		$GLOBALS['main']->setACPNotify($lang['filemanager']['notify_file_upload']);
+		if(count($_FILES)>1) {
+			$GLOBALS['main']->setACPNotify($lang['filemanager']['notify_files_upload']);
+		} else {
+			$GLOBALS['main']->setACPNotify($lang['filemanager']['notify_file_upload']);
+		}
 	} else {
 		$GLOBALS['main']->setACPWarning($lang['filemanager']['error_file_upload']);
 	}
