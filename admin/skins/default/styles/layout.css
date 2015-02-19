@@ -369,9 +369,10 @@ img {
   padding: 0;
   list-style: none;
   background: #F1F1F1;
-
 }
-
+#navigation ul.submenu.hide {
+  display: none;
+}
 #navigation ul.submenu>li {
   margin-top: 0;
   padding: 5px;
