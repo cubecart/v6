@@ -35,7 +35,7 @@
             {/foreach}
             {/if}
          </div>
-         {include file='templates/element.breadcrumb.php'}
+         {include file='templates/common.breadcrumb.php'}
          <div id="content">
             <div id="tab_control">
                {if isset($TABS)}
