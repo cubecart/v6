@@ -221,7 +221,8 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 		$page_content = $GLOBALS['smarty']->fetch('templates/products.importing.php');
 	} else {
 		$GLOBALS['main']->setACPNotify($lang['catalogue']['notify_import_complete']);
-		httpredir(currentPage());
+		$GLOBALS['session']->delete('','import');
+		httpredir('?_g=products&node=import');
 	}
 } else if (isset($_POST['upload'])) {
 	## Remove previous import data
