@@ -84,7 +84,6 @@
       </table>
       {else}
       <p align="center"><strong>{$LANG.orders.notify_orders_none}</strong></p>
-      </tr>
       {/if}
    </div>
    <div id="search" class="tab_content">
