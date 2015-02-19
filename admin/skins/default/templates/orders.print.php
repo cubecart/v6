@@ -51,7 +51,11 @@
 	  <div class="product">
 		<span class="price">{$item.price}</span>{$item.quantity} &times; {$item.name} {if !empty($item.product_code)}({$item.product_code}){/if}
 		{if isset($item.options)}
-		<br>{$LANG.catalogue.title_options} {foreach from=$item.options item=option}&raquo; {$option}{/foreach}
+		<ul>
+		{foreach from=$item.options item=option}
+		<li>{$option}</li>
+		{/foreach}
+		</ul>
 		{/if}
 	  </div>
 	  {/foreach}
