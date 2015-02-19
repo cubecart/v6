@@ -335,10 +335,21 @@ class ACP {
 			$admin_session_language = Admin::getInstance()->get('language');
 			if (($navigation = $GLOBALS['cache']->read('acp.showNavigation.'.$admin_session_language)) === false) {
 				foreach ($this->_navigation as $group => $menu) {
+					$title = $group;
+					$group = str_replace(' ', '_', $group);
+					
+					if(isset($_COOKIE['nav_'.$group])) {
+						$visible = $_COOKIE['nav_'.$group];
+					} else {
+						$visible = true;
+					}
+
 					$item = array(
-						'title' => $group,
-						'group' => str_replace(' ', '_', $group)
+						'title' => $title,
+						'group' => $group,
+						'visible' => $visible
 					);
+					
 					foreach ($menu as $submenu) {
 						$item['members'][] = array(
 							'title' => ucwords($submenu['name']),

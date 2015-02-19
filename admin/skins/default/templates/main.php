@@ -22,18 +22,7 @@
       <div id="wrapper">
          <div id="navigation">
             {include file='templates/common.search.php'}
-            {if isset($NAVIGATION)}
-            {foreach from=$NAVIGATION item=group}
-            <div id="{$group.group}" class="menu" onclick="$('#menu_{$group.group}').toggle();">{$group.title}</div>
-            {if isset($group.members)}
-            <ul id="menu_{$group.group}" class="submenu">
-               {foreach from=$group.members item=nav}
-               <li><a href="{$nav.url}" target="{$nav.target}"{if !empty($nav.id)} id="{$nav.id}"{/if}>{$nav.title}</a></li>
-               {/foreach}
-            </ul>
-            {/if}
-            {/foreach}
-            {/if}
+            {include file='templates/common.navigation.php'}
          </div>
          {include file='templates/common.breadcrumb.php'}
          <div id="content">
