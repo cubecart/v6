@@ -11,8 +11,7 @@
  *}
 {if ($page >= $show-1)}
   {$params[$var_name] = 1}
-  <a href="{$current}{
-  ($params)}{$anchor}">1</a> &hellip;
+  <a href="{$current}{http_build_query($params)}{$anchor}">1</a> &hellip;
 {/if}
 
 {if ($page > 1)}
