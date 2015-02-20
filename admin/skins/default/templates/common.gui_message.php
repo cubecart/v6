@@ -13,7 +13,6 @@
 <div id="gui_message">
   {if isset($GUI_MESSAGE.error)}
   <div class="warnText" title="{$LANG.common.click_to_close}">
-	{$LANG.gui_message.errors_detected}
 	<ul>
 		{foreach from=$GUI_MESSAGE.error item=error}
 	  	<li>{$error}</li>
