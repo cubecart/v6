@@ -90,7 +90,7 @@
         {/foreach}
         <tr>
         <td>&nbsp;</td>
-        <td> Shipping: {if $DATA.ship_method}({$DATA.ship_method}){/if}</td>
+        <td> {if !empty($DATA.ship_method)}{$DATA.ship_method|replace:'_':' '}{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Shipping{/if}:</td>
         <td> {$DATA.shipping}</td>
         </tr>
         <tr>
@@ -167,7 +167,7 @@
         -----------------------------------
         Subtotal: {$DATA.subtotal}
         Discount: {$DATA.discount}
-        Shipping: {$DATA.shipping} {if $DATA.ship_method}({$DATA.ship_method}){/if}
+        {if !empty($DATA.ship_method)}{$DATA.ship_method|replace:'_':' '}{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Shipping{/if}: {$DATA.shipping}
         {foreach from=$TAXES item=tax}{$tax.tax_name} ({$tax.tax_percent}%): {$tax.tax_amount}
         {/foreach}
         --------------------------

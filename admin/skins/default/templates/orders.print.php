@@ -80,7 +80,7 @@
 	  <fieldset class="other"><legend>{$LANG.orders.title_shipping}</legend>
 		<div><label>{$LANG.orders.gateway_name}</label><span>{$order.gateway}</span></div>
 		<div><label>{$LANG.orders.shipping_date}</label><span>{$order.ship_date}</span></div>
-		<div><label>{$LANG.orders.shipping_method}</label><span>{$order.ship_method}</span></div>
+		<div><label>{$LANG.orders.shipping_method}</label><span>{$order.ship_method}{if !empty($order.ship_product)}: {$order.ship_product}{/if}</span></div>
 		<div><label>{$LANG.orders.shipping_tracking}</label><span>{$order.ship_tracking}</span></div>
 	  </fieldset>
 	  <div id="thanks">{$LANG.orders.title_thanks}</div>

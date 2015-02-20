@@ -630,6 +630,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_summary` (
 	`total` DECIMAL(16,2) NOT NULL DEFAULT '0.00',
 	`offline_capture` BLOB NULL,
 	`ship_method` VARCHAR(100) DEFAULT NULL,
+	`ship_product` VARCHAR(100) DEFAULT NULL,
 	`ship_date` date DEFAULT NULL,
 	`ship_tracking` VARCHAR(100) DEFAULT NULL,
 	`gateway` VARCHAR(100) NOT NULL,

@@ -1128,6 +1128,7 @@ class Order {
 			'total'   => $this->_basket['total'],
 			## Shipping
 			'ship_method' => $this->_basket['shipping']['name'],
+			'ship_product' => $this->_basket['shipping']['product'],
 			'shipping'  => ($this->_basket['shipping']['value']>0) ? $this->_basket['shipping']['value'] : '0.00',
 			# Misc
 			'phone'   => $phone,

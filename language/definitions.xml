@@ -1546,7 +1546,10 @@
     <string name="search" introduced="5.0.0"><![CDATA[Order Search]]></string>
     <string name="shipping_date" introduced="5.0.0"><![CDATA[Dispatch Date]]></string>
     <string name="shipping_method" introduced="5.0.0"><![CDATA[Shipping Method]]></string>
-    <string name="shipping_tracking" introduced="5.0.0"><![CDATA[Shipment Tracking Code]]></string>
+    <string name="shipping_method_eg" introduced="6.0.0"><![CDATA[e.g. FedEx]]></string>
+    <string name="shipping_product" introduced="6.0.0"><![CDATA[Shipping Product]]></string>
+    <string name="shipping_product_eg" introduced="6.0.0"><![CDATA[e.g. Next Day]]></string>
+    <string name="shipping_tracking" introduced="5.0.0"><![CDATA[Delivery Tracking Code]]></string>
     <string name="tab_billing" introduced="5.0.0"><![CDATA[Billing]]></string>
     <string name="tab_delivery" introduced="5.0.0"><![CDATA[Delivery]]></string>
     <string name="tab_history" introduced="5.0.0"><![CDATA[History]]></string>

@@ -90,7 +90,7 @@
                   </tr>
                   <tr>
                      <td colspan="2"></td>
-                     <td>{$LANG.basket.shipping}</td>
+                     <td>{if !empty($order.ship_method)}{$order.ship_method|replace:'_':' '}{if !empty($order.ship_product)} ({$order.ship_product}){/if}{else}{$LANG.basket.shipping}{/if}</td>
                      <td class="text-right">{$order.shipping}</td>
                   </tr>
                   {foreach from=$TAXES item=tax}

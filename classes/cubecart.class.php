@@ -1478,11 +1478,18 @@ class Cubecart {
 						if ($data['tax_inclusive']) $GLOBALS['tax']->inclusiveTaxRemove($data['value'], $data['tax_id']);
 
 						$GLOBALS['tax']->exchangeRate($data['value'], (!empty($data['currency'])) ? $data['currency'] : $GLOBALS['config']->get('config', 'default_currency'));
+						
+						$regex = '/[^a-z0-9]/i';
+						if(preg_replace($regex, '', $data['name']) == preg_replace($regex, '', $ship_name)) {
+							$data['name'] = '';
+						}
+
 						$value = array(
-							'offset' => $offset,
-							'name'		=> $ship_name.': '.$data['name'],
+							'offset' 	=> $offset,
+							'name'		=> $ship_name, // e.g. UPS
+							'product'	=> $data['name'], // e.g. Ground
 							'value'		=> $data['value'],
-							'tax_id' => $data['tax_id'], // Kept for legacy
+							'tax_id' 	=> $data['tax_id'], // Kept for legacy
 							'tax'		=> $data['tax']
 						);
 						$shipping_values[] = $value;
@@ -2168,11 +2175,9 @@ class Cubecart {
 					$GLOBALS['smarty']->assign('SUM', $order);
 					$GLOBALS['smarty']->assign('ORDER', $order);
 					$GLOBALS['session']->delete('ghost_customer_id');
-					//@todo This needs fixing
-					//$GLOBALS['smarty']->assign('CTRL_PAYMENT', (in_array($order['status'], array(1,4,5))) ? true : false);
 
 					// Courier Tracking URLs
-					if (!empty($order['ship_method']) && !empty($order['ship_tracking'])) {
+					if (!empty($order['ship_method'])) {
 						// Load the module
 						$method = str_replace(' ', '_', $order['ship_method']);
 						$ship_class = CC_ROOT_DIR.'/modules/shipping/'.$method.'/'.'shipping.class.php';
@@ -2181,21 +2186,25 @@ class Cubecart {
 							if (class_exists($method) && method_exists((string)$method, 'tracking')) {
 								$shipping = new $method(false);
 								$url = $shipping->tracking($order['ship_tracking']);
-								if ($url) {
-									$delivery = array(
-										'url'  => $url,
-										'method' => $order['ship_method'],
-										'date'  => (!empty($order['ship_date'])) ? $order['ship_date'] : '',
-									);
-								}
+								
+								$delivery = array(
+									'url'  => (!empty($url)) ? $url : false,
+									'method' => $order['ship_method'],
+									'date'  => (!empty($order['ship_date'])) ? $order['ship_date'] : '',
+									'tracking' => $order['ship_tracking'],
+								);
 							}
 							unset($ship_class);
 						} else {
 							$delivery = array(
 								'method' => $order['ship_method'],
+								'product' => $order['ship_product'],
 								'tracking' => $order['ship_tracking'],
 								'date'  => (!empty($order['ship_date'])) ? $order['ship_date'] : '',
 							);
+						}
+						if(empty($delivery['date']) && empty($delivery['url']) && empty($delivery['tracking'])) {
+							$delivery = false;
 						}
 					} else {
 						$delivery = false;

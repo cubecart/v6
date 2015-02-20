@@ -296,7 +296,7 @@ if (isset($_GET['action'])) {
 
 			$overview_summary['name']  = (isset($summary[0]['name']) && !empty($summary[0]['name'])) ? $summary[0]['name'] : $summary[0]['first_name'].' '.$summary[0]['last_name'];
 			$overview_summary['name_d']  = (isset($summary[0]['name_d']) && !empty($summary[0]['name_d'])) ? $summary[0]['name_d'] : $summary[0]['first_name_d'].' '.$summary[0]['last_name_d'];
-			$overview_summary['ship_date']  = $overview_summary['ship_date'] ? formatDispatchDate($overview_summary['ship_date']) : "&nbsp;";
+			$overview_summary['ship_date']  = $overview_summary['ship_date'] ? formatDispatchDate($overview_summary['ship_date']) : "";
 			$overview_summary['discount']  = $GLOBALS['tax']->priceFormat($overview_summary['discount']);
 			$overview_summary['subtotal']  = $GLOBALS['tax']->priceFormat($overview_summary['subtotal']);
 			$overview_summary['shipping']  = $GLOBALS['tax']->priceFormat($overview_summary['shipping']);
@@ -315,11 +315,6 @@ if (isset($_GET['action'])) {
 					$smarty_data['tax_summary'][] = $overview_summary_tax;
 				}
 				$GLOBALS['smarty']->assign('TAX_SUMMARY', $smarty_data['tax_summary']);
-			}
-
-			$label_fix = array('ship_method', 'ship_tracking', 'gateway');
-			foreach ($overview_summary as $key => $value) {
-				if (empty($value) && in_array($key, $label_fix)) $overview_summary[$key] = '&nbsp;';
 			}
 
 			$GLOBALS['smarty']->assign('OVERVIEW_SUMMARY', $overview_summary);
@@ -484,13 +479,7 @@ if (isset($_GET['action'])) {
 				$summary['state_d'] = (is_numeric($summary['state_d'])) ? getStateFormat($summary['state_d']) : $summary['state_d'];
 				$summary['country_d'] = getCountryFormat($summary['country_d']);
 				$summary['order_date'] = formatTime($summary['order_date'], false, true);
-				$summary['ship_date'] = ((int)(str_replace('-', '', $summary['ship_date'])) > 0) ? formatDispatchDate($summary['ship_date']) : '&nbsp;';
-
-				$label_fix = array('ship_method', 'ship_tracking', 'gateway');
-				foreach ($summary as $key => $value) {
-					if (empty($value) && in_array($key, $label_fix)) $summary[$key] = '&nbsp;';
-				}
-
+				$summary['ship_date'] = ((int)(str_replace('-', '', $summary['ship_date'])) > 0) ? formatDispatchDate($summary['ship_date']) : '';
 
 				if (($notes = $GLOBALS['db']->select('CubeCart_order_notes', false, array('cart_order_id' => $summary['cart_order_id']))) !== false) {
 					foreach ($notes as $key => $note) {

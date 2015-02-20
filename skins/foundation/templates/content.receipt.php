@@ -36,16 +36,17 @@
    </div>
 </div>
 {if $DELIVERY}
-<h3>{$LANG.common.delivery}</h3>
+<hr>
+<h4>{$LANG.common.delivery}</h4>
 {if !empty($DELIVERY.date)}
-<p>{$LANG.orders.shipping_date}: {$DELIVERY.date}</p>
+<div>{$LANG.orders.shipping_date}: {$DELIVERY.date}</div>
 {/if}
-{if isset($DELIVERY.url)}
-<p>{$LANG.basket.track}: <a href="{$DELIVERY.url}" target="_blank">{$DELIVERY.method}</a></p>
-{else}
-<p>{$DELIVERY.method} - {$LANG.orders.shipping_tracking}: {$DELIVERY.tracking}
-   {/if}
-   {/if}
+{if !empty($DELIVERY.url)}
+<div>{$LANG.basket.track}: <a href="{$DELIVERY.url}" target="_blank">{$DELIVERY.method}{if !empty($DELIVERY.product)}: {$DELIVERY.product}{/if}</a></div>
+{elseif !empty($DELIVERY.tracking)}
+<div>{$LANG.orders.shipping_tracking}: {$DELIVERY.tracking}</div>
+{/if}
+{/if}
 <hr>
 <h3>{$LANG.basket.order_summary}</h3>
 <table class="expand">
@@ -80,7 +81,7 @@
       </tr>
       <tr>
          <td colspan="2"></td>
-         <td>{$LANG.basket.shipping}</td>
+         <td>{if !empty($SUM.ship_method)}{$SUM.ship_method|replace:'_':' '}{if !empty($SUM.ship_product)} ({$SUM.ship_product}){/if}{else}{$LANG.basket.shipping}{/if}</td>
          <td class="text-right">{$SUM.shipping}</td>
       </tr>
       {foreach from=$TAXES item=tax}
