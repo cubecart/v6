@@ -78,10 +78,21 @@
 		<div><label>{$LANG.address.mobile}</label><span>{$order.mobile}</span></div>
 	  </fieldset>
 	  <fieldset class="other"><legend>{$LANG.orders.title_shipping}</legend>
+		{if !empty($order.gateway)}
 		<div><label>{$LANG.orders.gateway_name}</label><span>{$order.gateway}</span></div>
+		{/if}
+		{if !empty($order.ship_date)}
 		<div><label>{$LANG.orders.shipping_date}</label><span>{$order.ship_date}</span></div>
-		<div><label>{$LANG.orders.shipping_method}</label><span>{$order.ship_method}{if !empty($order.ship_product)}: {$order.ship_product}{/if}</span></div>
+		{/if}
+		{if !empty($order.ship_method)}
+		<div><label>{$LANG.orders.shipping_method}</label><span>{$order.ship_method}</span></div>
+		{/if}
+		{if !empty($order.ship_product)}
+		<div><label>{$LANG.orders.shipping_product}</label><span>{$order.ship_product}</span></div>
+		{/if}
+		{if !empty($order.ship_tracking)}
 		<div><label>{$LANG.orders.shipping_tracking}</label><span>{$order.ship_tracking}</span></div>
+		{/if}
 	  </fieldset>
 	  <div id="thanks">{$LANG.orders.title_thanks}</div>
 	  <div id="footer">

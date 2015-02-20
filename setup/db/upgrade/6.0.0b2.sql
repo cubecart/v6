@@ -1,1 +1,0 @@
-ALTER TABLE `CubeCart_request_log` ADD `error` BLOB NOT NULL AFTER `result`; #EOQ
