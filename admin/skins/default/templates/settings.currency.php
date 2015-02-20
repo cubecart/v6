@@ -56,13 +56,16 @@
   </div>
   <div id="addrate" class="tab_content">
   <h3>{$LANG.settings.title_currency_add}</h3>
-	<fieldset>
+	<fieldset><legend>{$LANG.settings.title_currency_add}</legend>
+	  <div><label for="currency-active">{$LANG.common.status}</label><span><input name="add[active]" id="currency-active" type="hidden" class="toggle" value=""></span></div>
 	  <div><label for="currency-name">{$LANG.settings.currency_name}</label><span><input name="add[name]" id="currency-name" type="text" class="textbox required"></span></div>
 	  <div><label for="currency-code"><a href="http://en.wikipedia.org/wiki/ISO_4217" target="_blank">{$LANG.settings.currency_iso}</a></label><span><input name="add[code]" id="currency-code" type="text" class="textbox number required"></span></div>
-	  <div><label for="currency-code">{$LANG.settings.currency_exchange_rate}</label><span><input name="add[value]" id="currency-code" type="text" class="textbox number required"></span></div>
-	  <div><label for="currency-decimal">{$LANG.settings.currency_decimal_places}</label><span><input name="add[decimal_places]" id="currency-code" type="text" class="textbox number required"></span></div>
-	  <div><label for="currency-left">{$LANG.settings.currency_symbol_left}</label><span><input name="add[symbol_left]" id="currency-code" type="text" class="textbox number"></span></div>
-	  <div><label for="currency-right">{$LANG.settings.currency_symbol_right}</label><span><input name="add[symbol_right]" id="currency-code" type="text" class="textbox number"></span></div>
+	  <div><label for="currency-value">{$LANG.settings.currency_exchange_rate}</label><span><input name="add[value]" id="currency-value" type="text" class="textbox number required"></span></div>
+	  <div><label for="currency-decimal_places">{$LANG.settings.currency_decimal_places}</label><span><input name="add[decimal_places]" id="currency-decimal_places" type="text" class="textbox number required"></span></div>
+	  <div><label for="currency-symbol_left">{$LANG.settings.currency_symbol_left}</label><span><input name="add[symbol_left]" id="currency-symbol_left" type="text" class="textbox number"></span></div>
+	  <div><label for="currency-symbol_right">{$LANG.settings.currency_symbol_right}</label><span><input name="add[symbol_right]" id="currency-symbol_right" type="text" class="textbox number"></span></div>
+	  <div><label for="currency-symbol_decimal">{$LANG.settings.currency_symbol_decimal}</label><span><input name="add[symbol_decimal]" id="currency-symbol_decimal" type="text" class="textbox number"></span></div>
+	  <div><label for="currency-symbol_thousand">{$LANG.settings.currency_symbol_thousand}</label><span><input name="add[symbol_thousand]" id="currency-symbol_thousand" type="text" class="textbox number"></span></div>
 	</fieldset>
 	
 	{include file='templates/element.hook_form_content.php'}

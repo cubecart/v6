@@ -335,7 +335,7 @@ class Tax {
 				return $this->priceFormatHidden();
 			} else {
 				$price = ($this->_currency_vars['value']*$price);				
-				return 	$this->_currency_vars['symbol_left'].
+				$string = $this->_currency_vars['symbol_left'].
 						number_format(
 							$price, 
 							$this->_currency_vars['decimal_places'],
@@ -343,6 +343,7 @@ class Tax {
 							$this->_currency_vars['symbol_thousand']
 						).
 						$this->_currency_vars['symbol_right'];
+				return str_replace(' ', '&nbsp;', $string);
 			}
 		}
 		return false;

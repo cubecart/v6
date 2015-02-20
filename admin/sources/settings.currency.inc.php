@@ -54,17 +54,18 @@ if (isset($_POST['autoupdate']) && Admin::getInstance()->permissions('settings',
 	} else {
 		$GLOBALS['main']->setACPNotify($lang['settings']['notify_currency_rates_update_fail']);
 	}
-	httpredir(currentPage());
+	httpredir('?_g=settings&node=currency','exchange');
 }
 
 if (isset($_POST['add'])) {
 	if (!empty($_POST['add']['name']) && !empty($_POST['add']['code'])) {
+		$_POST['add']['updated'] = time();
 		if (Admin::getInstance()->permissions('settings', CC_PERM_EDIT) && $GLOBALS['db']->insert('CubeCart_currency', $_POST['add'])) {
 			$GLOBALS['main']->setACPNotify($lang['settings']['notify_currency_add']);
 		} else {
 			$GLOBALS['main']->setACPWarning($lang['settings']['error_currency_add']);
 		}
-		httpredir(currentPage(array('add', 'delete')));
+		httpredir('?_g=settings&node=currency','exchange');
 	}
 }
 
@@ -86,7 +87,7 @@ if (isset($_POST['update_manual']) && Admin::getInstance()->permissions('setting
 			$GLOBALS['main']->setACPNotify($lang['settings']['error_currency_rates_update']);
 		}
 	}
-	httpredir(currentPage());
+	httpredir('?_g=settings&node=currency','exchange');
 }
 
 if (isset($_GET['delete']) ) {
@@ -95,7 +96,7 @@ if (isset($_GET['delete']) ) {
 	} else {
 		$GLOBALS['main']->setACPWarning($lang['settings']['error_currency_delete']);
 	}
-	httpredir(currentPage(array('add', 'delete')));
+	httpredir('?_g=settings&node=currency','exchange');
 }
 
 ###########################################
