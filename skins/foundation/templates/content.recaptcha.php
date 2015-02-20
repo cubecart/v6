@@ -29,15 +29,17 @@
       <div id="recaptcha_widget" style="display:none">
          <div class="row">
             <div id="recaptcha_image" class="small-8 columns"></div>
-            <div class="small-4 columns"><a href="javascript:Recaptcha.reload()"><i class="fa fa-refresh" title="Try a different image"></i></a></div>
+            <div class="small-4 columns">
+            <a href="javascript:Recaptcha.reload()"><i class="fa fa-refresh" title="Try a different image"></i></a>
+            <span class="recaptcha_only_if_image"><a href="javascript:Recaptcha.switch_type('audio')"><i class="fa fa-volume-up" title="Get an audio CAPTCHA"></i></a></span>
+         <span class="recaptcha_only_if_audio"><a href="javascript:Recaptcha.switch_type('image')"><i class="fa fa-picture-o" title="Get an image CAPTCHA"></i></a></span>
+         <span><a href="javascript:Recaptcha.showhelp()"><i class="fa fa-info-circle" title="Help"></i></a></span>
+            </div>
          </div>
          <div class="recaptcha_only_if_incorrect_sol" class="error">Incorrect please try again</div>
          <span class="recaptcha_only_if_image"><label for="recaptcha_response_field">Enter the words above:</label></span>
          <span class="recaptcha_only_if_audio">Enter the numbers you hear:</span>
          <input type="text" id="recaptcha_response_field" name="recaptcha_response_field" required />
-         <div class="recaptcha_only_if_image hide"><a href="javascript:Recaptcha.switch_type('audio')">Get an audio CAPTCHA</a></div>
-         <div class="recaptcha_only_if_audio hide"><a href="javascript:Recaptcha.switch_type('image')">Get an image CAPTCHA</a></div>
-         <div><a href="javascript:Recaptcha.showhelp()" class="hide">Help</a></div>
       </div>
       <script type="text/javascript"
          src="http://www.google.com/recaptcha/api/challenge?k=6LfT4sASAAAAAOl71cRz11Fm0erGiqNG8VAfKTHn"></script>
