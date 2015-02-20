@@ -239,24 +239,22 @@
             <div><label for="minimum_quantity">{$LANG.catalogue.minimum_quantity}</label><span><input name="minimum_quantity" id="minimum_quantity" class="textbox number-right" type="text" value="{$PRODUCT.minimum_quantity}"></span></div>
          </fieldset>
          <fieldset>
-            <legend>{$LANG.catalogue.title_discount_quantity}</legend>
-            <div id="qty_discounts">
-            {if isset($QUANTITY_DISCOUNTS)}
             <table>
                <thead>
                   <tr>
-                     <th>{$LANG.common.quantity}</th>
-                     <th>{$LANG.common.price}</th>
+                     <th width="150">{$LANG.common.quantity}</th>
+                     <th width="150">{$LANG.common.price}</th>
                      <th>&nbsp;</th>
                   </tr>
                </thead>
                <tbody>
+                  {if isset($QUANTITY_DISCOUNTS)}
                   {foreach from=$QUANTITY_DISCOUNTS item=discount}
                   <tr>
-                     <td>
+                     <td width="150">
                         <label><span class="editable number-right" name="discount[{$discount.discount_id}][quantity]" title="Click to edit">{$discount.quantity}</span></label>
                      </td>
-                     <td>
+                     <td width="150">
                         <input type="text" name="discount[{$discount.discount_id}][price]" class="textbox number" value="{$discount.price}">
                      </td>
                      <td>
@@ -264,33 +262,21 @@
                      </td>
                   </tr>
                   {/foreach}
+                  {/if}
+                  <tr class="inline-add" id="qty_discounts">
+                     <td width="150"><input type="text" rel="quantity" class="editable textbox number not-empty"></td>
+                     <td width="150">
+                        <input type="text" rel="price" class="textbox number not-empty">
+                     </td>
+                     <td><span class="actions"><a href="#" class="add before" target="qty_discounts"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a></span></td>
+                  </tr>
+                  <tr class="inline-source" name="discount_add[0]">
+                     <td width="150"><input type="text" class="textbox number" rel="quantity"></td>
+                     <td width="150"><input type="text" class="textbox number" rel="price"></td>
+                     <td><span class="actions"><a href="#" class="remove dynamic tr" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></span></td>
+                  </tr>
                </tbody>
             </table>
-            {/if}
-            </div>
-            <div style="width: 500px;">
-               <div class="inline-add">
-                  <table>
-                     <tr>
-                        <td><label><input type="text" rel="quantity" class="editable textbox number not-empty"></label></td>
-                        <td>
-                           <input type="text" rel="price" class="textbox number not-empty">
-                        </td>
-                        <td><span class="actions"><a href="#" class="add" target="qty_discounts"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a></span></td>
-                     </tr>
-                  </table>
-               </div>
-               <!-- Source for inline adding -->
-               <div class="inline-source" name="discount_add[0]">
-                  <table>
-                     <tr>
-                        <td><label rel="quantity"></label><input type="hidden" rel="quantity"></td>
-                        <td><input type="text" class="textbox number" rel="price"></td>
-                        <td><span class="actions"><a href="#" class="remove dynamic tr" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></span></td>
-                     </tr>
-                  </table>
-               </div>
-            </div>
          </fieldset>
       </div>
       {if isset($CUSTOMER_GROUPS)}
@@ -632,8 +618,8 @@
       <input type="submit" value="{$LANG.common.save}"> <input type="submit" name="submit_cont" value="{$LANG.common.save_reload}">
    </div>
    <script type="text/javascript">
-      {if isset($JSON_IMAGES)}var file_list		= {$JSON_IMAGES};{/if}
-      {if isset($DEFAULT_IMAGE)}var file_default	= {$DEFAULT_IMAGE};{/if}
+      {if isset($JSON_IMAGES)}var file_list     = {$JSON_IMAGES};{/if}
+      {if isset($DEFAULT_IMAGE)}var file_default   = {$DEFAULT_IMAGE};{/if}
        
    </script>
    {/if}
