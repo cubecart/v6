@@ -182,7 +182,7 @@
   {if isset($SHOW_LINKS)}
 	  <div>
 		<ul>
-		  <li><a href="../admin.php?_g=settings" target="_blank">{$LANG.setup.link_admin_panel}</a></li>
+		  <li><a href="../admin.php" target="_blank">{$LANG.setup.link_admin_panel}</a></li>
 		  <li><a href="../index.php" target="_blank">{$LANG.setup.link_store_front}</a></li>
 		</ul>
 	  </div>

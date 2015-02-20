@@ -16,17 +16,6 @@ if (!isset($_GET['_g']) || !in_array(strtolower($_GET['_g']), array('login', 'lo
 	$GLOBALS['main']->setTemplate();
 }
 
-if ($GLOBALS['config']->has('config', 'verify_settings') && (!isset($_GET['_g']) || $_GET['_g'] != 'settings')) {
-	$GLOBALS['gui']->setNotify($lang['settings']['error_settings_verify']);
-	$config_new = $GLOBALS['config']->get('config');
-	unset($config_new['verify_settings']);
-	// Remove global file variables from config data
-	foreach ($glob as $key => $value) unset($config_new[$key]);
-	// Replace config data
-	$GLOBALS['config']->set('config', '', $config_new);
-	httpredir('?_g=settings');
-}
-
 if (isset($_GET['_g']) && in_array($_GET['_g'], array('login', 'password', 'recovery'))) {
 	httpredir('?');
 }

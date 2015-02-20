@@ -100,7 +100,6 @@ $default_config_settings = array(
   'seo_metadata' => '',
   'store_meta_keywords' => '',
   'store_meta_description' => '',
-  'verify_settings' => true,
   'recaptcha' => true,
   'time_format' => '%d %b %Y, %H:%M',
   'time_offset' => 0,
@@ -452,7 +451,6 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
       ## Set some defaults
       $defaults   = array(
         'admin_skin' => 'default',
-        'verify_settings' => true,
         'enable_reviews' => true,
         'show_basket_weight' => true
       );
