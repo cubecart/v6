@@ -90,7 +90,7 @@
                      </td>
                   </tr>
                   {foreachelse}
-                  <tr>
+                  <tr class="dymanic_none">
                      <td colspan="3">{$LANG.catalogue.option_attributes_none}</td>
                   </tr>
                   {/foreach}

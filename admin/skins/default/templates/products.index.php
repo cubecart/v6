@@ -361,12 +361,11 @@
    <div id="Options" class="tab_content">
       <h3>{$LANG.catalogue.title_product_options}</h3>
       <fieldset>
-         <legend>{$LANG.catalogue.title_product_options}</legend>
          <table>
             <thead>
                <tr>
                   <td width="20">{$LANG.common.status}</td>
-                  <td width="20">{$LANG.catalogue.title_product_options_matrix}</td>
+                  <td width="90">{$LANG.catalogue.title_product_options_matrix}</td>
                   <td width="302">{$LANG.common.type}</td>
                   <td width="50">{$LANG.common.negative}</td>
                   <td width="102">{$LANG.common.price}</td>
