@@ -175,6 +175,7 @@
 	            <input type="submit" value="{$LANG.catalogue.out_of_stock_short}" class="button small disabled expand marg-top" disabled>
 	            {/if}
 	            <input type="hidden" name="add" value="{$product.product_id}">
+	         </div> 
 	      </form>
 	   </li>
 	   {foreachelse}
