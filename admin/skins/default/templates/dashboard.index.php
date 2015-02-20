@@ -69,20 +69,20 @@
             <td valign="top" nowrap="nowrap" width="25%">
                <table width="100%">
                   <tr>
-                     <th align="center" width="50%">{$LANG.dashboard.title_sales_total}</th>
-                     <th align="center" width="50%">{$LANG.dashboard.title_sales_average}</th>
+                     <th align="center" width="50%" class="nostripe">{$LANG.dashboard.title_sales_total}</th>
+                     <th align="center" width="50%" class="nostripe">{$LANG.dashboard.title_sales_average}</th>
                   </tr>
                   <tr>
-                     <td align="center" width="50%">{$QUICK_STATS.total_sales}</td>
-                     <td align="center" width="50%">{$QUICK_STATS.ave_order}</td>
+                     <td align="center" width="50%" class="nostripe">{$QUICK_STATS.total_sales}</td>
+                     <td align="center" width="50%" class="nostripe">{$QUICK_STATS.ave_order}</td>
                   </tr>
                   <tr>
-                     <th align="center" width="50%">{$LANG.dashboard.title_month_this}</th>
-                     <th align="center" width="50%">{$LANG.dashboard.title_month_last}</th>
+                     <th align="center" width="50%" class="nostripe">{$LANG.dashboard.title_month_this}</th>
+                     <th align="center" width="50%" class="nostripe">{$LANG.dashboard.title_month_last}</th>
                   </tr>
                   <tr>
-                     <td align="center" width="50%">{$QUICK_STATS.this_month}</td>
-                     <td align="center" width="50%">{$QUICK_STATS.last_month}</td>
+                     <td align="center" width="50%" class="nostripe">{$QUICK_STATS.this_month}</td>
+                     <td align="center" width="50%" class="nostripe">{$QUICK_STATS.last_month}</td>
                   </tr>
                </table>
             </td>
