@@ -27,14 +27,12 @@
 
 <div id="taxdetails" class="tab_content">
   <h3>{$LANG.settings.title_tax_detail}</h3>
-  <fieldset><legend>{$LANG.settings.title_tax_detail_current}</legend>
 	<table>
 	  <thead>
 		<tr>
 		  <td width="50">{$LANG.common.status}</td>
 		  <td width="302">{$LANG.settings.tax_name}</td>
 		  <td width="302">{$LANG.settings.tax_name_display}</td>
-		  <td>{$LANG.settings.tax_number}</td>
 		  <td width="20">&nbsp;</td>
 		</tr>
 	  </thead>
@@ -57,7 +55,6 @@
 	  <option value="0">{$LANG.common.disabled}</option>
 	  <option value="1">{$LANG.common.enabled}</option>
 	</select></span></div>
-  </fieldset>
 </div>
 
 <div id="taxrules" class="tab_content">
