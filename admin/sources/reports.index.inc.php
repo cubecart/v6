@@ -216,3 +216,5 @@ $GLOBALS['smarty']->assign('STATUS', $smarty_data['status']);
 foreach ($GLOBALS['hooks']->load('admin.reports.final') as $hook) include $hook;
 
 $page_content = $GLOBALS['smarty']->fetch('templates/reports.index.php');
+
+foreach ($GLOBALS['hooks']->load('admin.reports.display') as $hook) include $hook;

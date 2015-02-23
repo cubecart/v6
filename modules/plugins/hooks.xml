@@ -64,6 +64,7 @@
  <hook trigger="admin.product.coupons.status" deprecated="" />
  <hook trigger="admin.product.import.list" deprecated="" />
  <hook trigger="admin.product.import.format" deprecated="" />
+ <hook trigger="admin.reports.display" deprecated="" />
  <hook trigger="admin.reports.final" deprecated="" />
  <hook trigger="admin.reports.order.pre" deprecated="" />
  <hook trigger="admin.reports.order.post" deprecated="" />
