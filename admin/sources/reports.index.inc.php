@@ -111,7 +111,12 @@ $fields = array(
 	'gateway'
 );
 
+foreach ($GLOBALS['hooks']->load('admin.reports.order.pre') as $hook) include $hook;
+
 $orders = $GLOBALS['db']->select('CubeCart_order_summary', $fields, $where);
+
+foreach ($GLOBALS['hooks']->load('admin.reports.order.post') as $hook) include $hook;
+
 if ($orders) {
 	## If we are wanting an external report start new External class
 	if (isset($_POST['external_report']) && is_array($_POST['external_report'])) {
