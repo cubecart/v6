@@ -37,6 +37,9 @@ if (!isset($_POST['report']['status']) && !isset($_GET['report']['status'])) {
 $default_date = array('from' => strftime('%Y-%m-01'), 'to' => strftime('%Y-%m-%d'));
 $date_range  = (isset($report_filter['date']) && is_array($report_filter['date'])) ? $report_filter['date'] : $default_date;
 
+// Moved below so suppress/updated/inserted can be affected
+foreach ($GLOBALS['hooks']->load('admin.reports.top') as $hook) include $hook;
+
 $i = 0;
 ## Date filtering
 foreach ($date_range as $key => $value) {
