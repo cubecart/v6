@@ -197,7 +197,7 @@ if ($orders) {
 $GLOBALS['smarty']->assign('TALLY', $smarty_data['tally']);
 $GLOBALS['smarty']->assign('POST', $report_filter);
 
-foreach ($GLOBALS['hooks']->load('admin.reports.order.post.filter') as $hook) include $hook;
+foreach ($GLOBALS['hooks']->load('admin.reports.order.filter') as $hook) include $hook;
 
 /* Show report builder options */
 
@@ -212,4 +212,7 @@ for ($i = 1; $i <= 6; ++$i) {
 	$smarty_data['status'][] = $status;
 }
 $GLOBALS['smarty']->assign('STATUS', $smarty_data['status']);
+
+foreach ($GLOBALS['hooks']->load('admin.reports.final') as $hook) include $hook;
+
 $page_content = $GLOBALS['smarty']->fetch('templates/reports.index.php');
