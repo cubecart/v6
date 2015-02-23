@@ -109,7 +109,7 @@
             <td>{$view.percent}</td>
          </tr>
          {/foreach}
-      <tbody>
+      </tbody>
    </table>
 </div>
 {/if}
@@ -140,7 +140,7 @@
             <td>{$term.percent}</td>
          </tr>
          {/foreach}
-      <tbody>
+      </tbody>
    </table>
    {else}
    {$LANG.statistics.notify_searches_none}
@@ -175,7 +175,7 @@
             <td>{$customer.percent}</td>
          </tr>
          {/foreach}
-      <tbody>
+      </tbody>
    </table>
    {else}
    {$LANG.statistics.notify_customers_none}
