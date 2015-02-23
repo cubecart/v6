@@ -59,7 +59,7 @@ $nav_items['settings']  = array(
 );
 
 $nav_items['modules']  = array(
-	$lang['navigation']['nav_marketplace']   => array('address' => '?_g=marketplace', 'target' => '_blank', 'id' => 'nav_marketplace'),
+	$lang['navigation']['nav_marketplace']   => array('address' => '?_g=marketplace', 'target' => '_blank', 'id' => 'nav_marketplace', 'icon' => 'fa-external-link'),
 	$lang['navigation']['nav_plugins']   => array('address' => '?_g=plugins', 'id' => 'nav_plugins'),
 );
 

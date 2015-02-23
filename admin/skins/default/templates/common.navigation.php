@@ -4,7 +4,7 @@
 {if isset($group.members)}
 <ul id="menu_{$group.group}" class="submenu{if $group.visible=="false"} hide{/if}">
    {foreach from=$group.members item=nav}
-   <li><a href="{$nav.url}" target="{$nav.target}"{if !empty($nav.id)} id="{$nav.id}"{/if}>{$nav.title}</a></li>
+   <li><a href="{$nav.url}" target="{$nav.target}"{if !empty($nav.id)} id="{$nav.id}"{/if}>{if !empty($nav.icon)}<i class="fa {$nav.icon}"></i> {/if}{$nav.title}</a></li>
    {/foreach}
 </ul>
 {/if}

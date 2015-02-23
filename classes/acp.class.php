@@ -79,7 +79,8 @@ class ACP {
 						'name' => strip_tags($name),
 						'url' => $url['address'],
 						'target' => (isset($url['target']) && !empty($url['target'])) ? $url['target'] : '_self',
-						'id' => (isset($url['id']) && !empty($url['id'])) ? $url['id'] : ''
+						'id' => (isset($url['id']) && !empty($url['id'])) ? $url['id'] : '',
+						'icon' => (isset($url['icon']) && !empty($url['icon'])) ? $url['icon'] : ''
 					);
 				} else {
 					$this->_navigation[$group][] = array(
@@ -356,6 +357,7 @@ class ACP {
 							'url' => $submenu['url'],
 							'target' => $submenu['target'],
 							'id' => $submenu['id'],
+							'icon' => $submenu['icon']
 						);
 					}
 					$navigation[] = $item;
