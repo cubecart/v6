@@ -87,7 +87,7 @@ if (!empty($earliest_order[0]['MIN_order_date'])) {
 		
 		$g_graph_data[1]['data'] = "['Year','".sprintf($lang['statistics']['sales_volume'], $GLOBALS['config']->get('config', 'default_currency'))."'],";
 		
-		for ($i = $earliest[1]; $i <= $now['year']; ++$i) {
+		for ($i = $earliest['year']; $i <= $now['year']; ++$i) {
 			$value = isset($yearly[$i]) ? $yearly[$i] : 0;
 			$tmp_col_data[] = "['".$i."',".$value."]";
 		}
