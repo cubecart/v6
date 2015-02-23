@@ -18,13 +18,19 @@
          <fieldset>
             <legend>{$LANG.common.filter}</legend>
             <select name="select[year]">
-            {foreach from=$YEARS item=year}><option value="{$year.value}" {$year.selected}>{$year.value}</option>{/foreach}
+            {foreach from=$YEARS item=year}>
+              <option value="{$year.value}" {$year.selected}>{$year.value}</option>
+            {/foreach}
             </select>
             <select name="select[month]">
-            {foreach from=$MONTHS item=month}<option value="{$month.value}"{$month.selected}>{$month.title}{/foreach}
+            {foreach from=$MONTHS item=month}
+              <option value="{$month.value}"{$month.selected}>{$month.title}</option>
+            {/foreach}
             </select>
             <select name="select[day]">
-            {foreach from=$DAYS item=day}<option value="{$day.value}"{$day.selected}>{$day.value}</option>{/foreach}
+            {foreach from=$DAYS item=day}
+              <option value="{$day.value}"{$day.selected}>{$day.value}</option>
+            {/foreach}
             </select>
             <input type="submit" value="{$LANG.common.go}">
          </fieldset>
