@@ -197,6 +197,8 @@ if ($orders) {
 $GLOBALS['smarty']->assign('TALLY', $smarty_data['tally']);
 $GLOBALS['smarty']->assign('POST', $report_filter);
 
+foreach ($GLOBALS['hooks']->load('admin.reports.order.post.filter') as $hook) include $hook;
+
 /* Show report builder options */
 
 $GLOBALS['main']->addTabControl($lang['common']['filter'], 'search');
