@@ -1412,7 +1412,7 @@ class Cubecart {
 				}
 			}
 			if (!$billing_address) {
-				$GLOBALS['gui']->setError($GLOBALS['language']->account['error_address_billing']);
+				$GLOBALS['gui']->setInfo($GLOBALS['language']->account['error_address_billing']);
 				httpredir('?_a=addressbook&action=add&redir=confirm');
 			}
 			// If for some reason we have no delivery address defined but we do have billing address.. take that
@@ -1427,7 +1427,7 @@ class Cubecart {
 			$GLOBALS['smarty']->assign('CTRL_DELIVERY', ($GLOBALS['config']->get('config', 'basket_allow_non_invoice_address') && !$GLOBALS['cart']->getBasketDigital()));
 		} else {
 			// no address found - lets redirect to the 'add address' page
-			$GLOBALS['gui']->setError($GLOBALS['language']->account['error_address_billing']);
+			$GLOBALS['gui']->setInfo($GLOBALS['language']->account['error_address_billing']);
 			httpredir('?_a=addressbook&action=add');
 		}
 

@@ -733,6 +733,15 @@ class GUI {
 		$this->_errorMessage('notice', $message);
 	}
 
+	/**
+	 * Set a notification message
+	 *
+	 * @param string $message
+	 */
+	public function setInfo($message = null) {
+		$this->_errorMessage('info', $message);
+	}
+
 	//=====[ Private ]=======================================
 
 	/**

@@ -30,3 +30,13 @@
    <a href="#" class="close">&times;</a>
 </div>
 {/if}
+{if isset($GUI_MESSAGE.info)}
+<div data-alert class="alert-box">
+   <ul class="nomarg no-bullet">
+      {foreach from=$GUI_MESSAGE.info item=info}
+      <li>{$info}</li>
+      {/foreach}
+   </ul>
+   <a href="#" class="close">&times;</a>
+</div>
+{/if}
