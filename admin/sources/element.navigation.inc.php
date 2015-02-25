@@ -70,10 +70,10 @@ $nav_items['modules']  = array(
 );
 
 $nav_items['advanced']  = array(
+	$lang['navigation']['nav_maintenance']  => '?_g=maintenance',
+	$lang['navigation']['nav_request_log']  => '?_g=settings&node=requestlog',
 	$lang['navigation']['nav_access_log']  => '?_g=settings&node=logs',
 	$lang['navigation']['nav_error_log']  => '?_g=settings&node=errorlog',
-	$lang['navigation']['nav_request_log']  => '?_g=settings&node=requestlog',
-	$lang['navigation']['nav_maintenance']  => '?_g=maintenance',
 	$lang['navigation']['nav_server_info']  => '?_g=phpinfo'
 );
 
