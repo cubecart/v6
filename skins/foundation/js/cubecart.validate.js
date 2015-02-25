@@ -190,8 +190,7 @@ jQuery(document).ready(function() {
                 required: true
             },
             password: {
-                required: true,
-                minlength: 6
+                required: true
             },
             passconf: {
                 equalTo: "#reg_password"
@@ -221,8 +220,7 @@ jQuery(document).ready(function() {
                 phone: $('#validate_mobile').text()
             },
             password: {
-                required: $('#validate_password').text(),
-                minlength: $('#validate_password_length').text()
+                required: $('#validate_password').text()
             },
             passconf: {
                 required: $('#validate_password_mismatch').text(),
@@ -236,6 +234,20 @@ jQuery(document).ready(function() {
             }
         }
     });
+
+    $("#checkout_form").on("click", '#checkout_register', function() {
+        $("#reg_password").rules("add", {
+            minlength: 6,
+            messages: {
+                minlength: $('#validate_password_length').text()
+            }
+        });
+    });
+
+    $("#checkout_form").on("click", '#checkout_login', function() {
+        $("#reg_password").rules("remove","minlength");
+    });
+
     $("#addressbook_form").validate({
         rules: {
             description: {
