@@ -75,7 +75,7 @@ class Config {
 		
 		$cache = (bool)$this->_config['config']['cache'];
 		$GLOBALS['cache']->enable($cache);
-		if(!$cache) {
+		if(!$cache || (defined('CC_IN_ADMIN') && CC_IN_ADMIN)) {
 			$GLOBALS['cache']->clear();
 		}
 	}
