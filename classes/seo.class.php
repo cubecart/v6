@@ -739,6 +739,29 @@ IndexIgnore *
 #### Rewrite rules for SEO functionality ####
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  
+  ######## START v4 SEO URL BACKWARD COMPATIBILITY ########
+  RewriteCond %{QUERY_STRING} (.*)$
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule cat_([0-9]+)(\.[a-z]{3,4})?(.*)$ index.php?_a=category&cat_id=$1&%1 [NC]
+
+  RewriteCond %{QUERY_STRING} (.*)$
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule prod_([0-9]+)(\.[a-z]{3,4})?$ index.php?_a=product&product_id=$1&%1 [NC]
+
+  RewriteCond %{QUERY_STRING} (.*)$
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule info_([0-9]+)(\.[a-z]{3,4})?$ index.php?_a=document&doc_id=$1&%1 [NC]
+
+  RewriteCond %{QUERY_STRING} (.*)$
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule tell_([0-9]+)(\.[a-z]{3,4})?$ index.php?_a=product&product_id=$1&%1 [NC]
+
+  RewriteCond %{QUERY_STRING} (.*)$
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule _saleItems(\.[a-z]+)?(\?.*)?$ index.php?_a=saleitems&%1 [NC,L]
+  ######## END v4 SEO URL BACKWARD COMPATIBILITY ########
+
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_URI} !=/favicon.ico
