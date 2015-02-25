@@ -117,6 +117,9 @@ div.alert-box a {
 .social-icons {
     font-size: 30px;
 }
+td .fa-trash-o,td .fa-trash {
+    color: #F04124
+}
 input.quantity {
     width: 50px;
     text-align: center;
@@ -149,7 +152,6 @@ div#box-session {
 }
 
 /* End Checkout Progress */
-
 ul.item_options {
     font-size: 0.75rem;
 }
