@@ -335,7 +335,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 
 	#############################################
 	// Filemanager - Images
-	if (($uploaded = $filemanager->upload()) !== false) {
+	if (($uploaded = $filemanager->upload()) !== false && is_array($uploaded)) {
 		foreach ($uploaded as $file_id) {
 			$_POST['image'][(int)$file_id] = true;
 		}
