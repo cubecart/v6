@@ -20,27 +20,6 @@ html * {
 .tabs {
     border-bottom: 1px #EFEFEF solid;
 }
-/* Start Magnifier */
-#dio-lens {
-    background-color: #FFFFFF;
-    border: 1px solid #000000;
-    z-index: 9998;
-}
-#dio-lens img {
-    max-width: none;
-}
-#dio-sensor {
-    z-index: 11000;
-    cursor: -webkit-zoom-in;
-    cursor: -moz-zoom-in;
-    cursor: url(../images/icon_zoom.png), crosshair !important;
-}
-#dio-loader {
-    background: #FFFFFF;
-    text-indent: -30000px;
-}
-/* End Magnifier */
-
 /* Start Star Rating */
 div.rating-cancel,div.star-rating {
     float: left;
@@ -79,7 +58,9 @@ div.star-rating {
     overflow: hidden!important;
 }
 /* End Star Rating */
-
+.top-bar-section .left {
+    background-color: #333;
+}
 footer {
     background-color: #000;
     color: #fff;
