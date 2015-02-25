@@ -429,9 +429,6 @@ jQuery(document).ready(function() {
                 required: false,
                 phone: true
             },
-            passold: {
-                minlength: 6,
-            },
             passnew: {
                 minlength: 6,
             },
@@ -456,9 +453,6 @@ jQuery(document).ready(function() {
             },
             mobile: {
                 phone: $('#validate_mobile').text()
-            },
-            passold: {
-                minlength: $('#validate_password_length').text()
             },
             passnew: {
                 minlength: $('#validate_password_length').text()
