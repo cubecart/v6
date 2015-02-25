@@ -31,6 +31,7 @@ if (isset($_POST['execute'])) {
 }
 
 $GLOBALS['main']->addTabControl($lang['maintain']['tab_query_sql'], 'general');
+$GLOBALS['gui']->addBreadcrumb($lang['maintain']['tab_query_sql']);
 
 $GLOBALS['smarty']->assign('INFO', sprintf($lang['maintain']['title_db_info'], $GLOBALS['db']->serverVersion(), $glob['dbhost'], $glob['dbusername'], $glob['dbhost']));
 $prefix = (!$GLOBALS['config']->isEmpty('config', 'dbprefix')) ? $GLOBALS['config']->get('config', 'dbprefix') : false;
