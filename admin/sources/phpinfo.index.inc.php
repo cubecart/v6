@@ -14,6 +14,7 @@ if (!defined('CC_INI_SET')) die('Access Denied');
 
 Admin::getInstance()->permissions('settings', CC_PERM_EDIT, true);
 $GLOBALS['main']->addTabControl('PHP Info', 'php_info');
+$GLOBALS['gui']->addBreadcrumb('PHP Info', '?_g=phpinfo', true);
 
 ob_start();
 phpinfo();

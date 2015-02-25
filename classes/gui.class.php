@@ -240,7 +240,12 @@ class GUI {
 	 * @param string $name
 	 * @param array $url
 	 */
-	public function addBreadcrumb($name, $url = array()) {
+	public function addBreadcrumb($name, $url = array(), $replace = false) {
+		
+		if($replace) {
+			$this->_breadcrumb = array();
+		}
+
 		if (is_array($url) && !empty($url)) {
 			$href = '?'.http_build_query($url);
 		} else {
