@@ -27,7 +27,7 @@
                {/if}
                <p>
             </td>
-            <td class="text-right">{$item.line_price_display}</td>
+            <td>{$item.line_price_display}</td>
             <td>
                <input name="quan[{$hash}]" type="text" value="{$item.quantity}" maxlength="3" class="quantity" {$QUAN_READ_ONLY}>
             </td>
