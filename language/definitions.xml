@@ -1388,6 +1388,7 @@
     <string name="nav_images" introduced="5.0.0"><![CDATA[Images]]></string>
     <string name="nav_installer" introduced="5.0.0"><![CDATA[Installer]]></string>
     <string name="nav_inventory" introduced="5.0.0"><![CDATA[Inventory]]></string>
+    <string name="nav_reporting" introduced="6.0.0"><![CDATA[Reporting]]></string>
     <string name="nav_languages" introduced="5.0.0"><![CDATA[Languages]]></string>
     <string name="nav_livehelp" introduced="5.0.0"><![CDATA[Live Help]]></string>
     <string name="nav_maintenance" introduced="5.0.0"><![CDATA[Maintenance]]></string>
