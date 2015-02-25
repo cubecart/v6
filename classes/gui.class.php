@@ -916,7 +916,7 @@ class GUI {
 	 */
 	private function _displayMailingList() {
 		if ($GLOBALS['user']->is()) {
-			$GLOBALS['smarty']->assign('CTRL_SUBSCRIBED', (bool)$GLOBALS['db']->select('CubeCart_newsletter_subscriber', false, array('email' => $GLOBALS['user']->get('email')), false, false, false, false));
+			$GLOBALS['smarty']->assign('CTRL_SUBSCRIBED', (bool)$GLOBALS['db']->select('CubeCart_newsletter_subscriber', false, array('email' => $GLOBALS['user']->get('email')), false, 1));
 		}
 
 		if (isset($_POST['subscribe'])) {
