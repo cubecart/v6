@@ -149,6 +149,11 @@ div#box-session {
 }
 
 /* End Checkout Progress */
+
+ul.item_options {
+    font-size: 0.75rem;
+}
+
 .skin_selector {
     background-color: rgba(0, 0, 0, 0.7);
     position: fixed;

@@ -4,7 +4,7 @@
       <thead>
          <tr>
             <td></td>
-            <td>{$LANG.common.name}</td>
+            <td colspan="2">{$LANG.common.name}</td>
             <td>{$LANG.common.price_unit}</td>
             <td>{$LANG.common.quantity}</td>
             <td>{$LANG.common.price}</td>
@@ -14,11 +14,12 @@
          {foreach from=$ITEMS key=hash item=item}
          <tr>
             <td class="text-center"><a href="{$STORE_URL}/index.php?_a=basket&remove-item={$hash}"><i class="fa fa-trash-o"></i></a></td>
-            <td>
-               <a href="{$item.link}" class="th" title="{$item.name}"><img src="{$item.image}" width="80" alt="{$item.name}"></a>
-               <a href="{$item.link}" class="txtDefault"><strong>{$item.name}</strong></a>
+            <td width="120">
+               <a href="{$item.link}" class="th" title="{$item.name}"><img src="{$item.image}" alt="{$item.name}"></a></td>
+               <td>
+               <a href="{$item.link}"><strong>{$item.name}</strong></a>
                {if $item.options}
-               <ul class="no-bullet">
+               <ul class="no-bullet item_options">
                   {foreach from=$item.options item=option}
                   <li><strong>{$option.option_name}</strong>: {$option.value_name|truncate:45:"&hellip;":true}{if !empty($option.price_display)} ({$option.price_display}){/if}</li>
                   {/foreach}
@@ -36,7 +37,7 @@
       </tbody>
       <tfoot>
          <tr>
-            <td colspan="3">{if $BASKET_WEIGHT}
+            <td colspan="4">{if $BASKET_WEIGHT}
                {$LANG.basket.weight}: {$BASKET_WEIGHT}
                {/if}
             </td>
@@ -45,7 +46,7 @@
          </tr>
          {if isset($SHIPPING)}
          <tr>
-            <td colspan="3">
+            <td colspan="4">
                {$LANG.basket.shipping_select}:
                <select name="shipping">
                   <option value="">{$LANG.form.please_select}</option>
@@ -67,27 +68,27 @@
          {/if}
          {foreach from=$TAXES item=tax}
          <tr>
-            <td colspan="3"></td>
+            <td colspan="4"></td>
             <td>{$tax.name}{$CUSTOMER_LOCALE.mark}</td>
             <td class="text-right">{$tax.value}</td>
          </tr>
          {/foreach}
          {foreach from=$COUPONS item=coupon}
          <tr>
-            <td colspan="3"></td>
+            <td colspan="4"></td>
             <td><a href="{$VAL_SELF}&remove_code={$coupon.remove_code}" title="{$LANG.common.remove}">{$coupon.voucher}</a></td>
             <td class="text-right">{$coupon.value}</td>
          </tr>
          {/foreach}
          {if isset($DISCOUNT)}
          <tr>
-            <td colspan="3"></td>
+            <td colspan="4"></td>
             <td>{$LANG.basket.total_discount}</td>
             <td class="text-right">{$DISCOUNT}</td>
          </tr>
          {/if}
          <tr>
-            <td colspan="3"></td>
+            <td colspan="4"></td>
             <td>{$LANG.basket.total_grand}</td>
             <td class="text-right">{$TOTAL}</td>
          </tr>

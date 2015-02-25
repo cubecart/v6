@@ -7,7 +7,7 @@
             <a href="{$item.link}" class="th" title="{$item.name}"><img src="{$item.image}" alt="{$item.name}"></a>
          </div>
          <div class="small-8 columns">
-            <a href="{$item.link}" class="txtDefault"><strong>{$item.name}</strong></a>
+            <a href="{$item.link}"><strong>{$item.name}</strong></a>
             {if $item.options}
             <ul class="no-bullet">
                {foreach from=$item.options item=option}
