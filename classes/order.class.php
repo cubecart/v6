@@ -1052,7 +1052,7 @@ class Order {
 				'hash'    => $hash,
 				'options_identifier' => $item['options_identifier'],
 				'options_array' => serialize($item['options']),
-				'product_options' => $this->serializeOptions($item['options'])
+				'product_options' => $this->serializeOptions($item['options'], $item['id'])
 			);
 
 			foreach ($GLOBALS['hooks']->load('class.order.products.add.pre') as $hook) include $hook;
