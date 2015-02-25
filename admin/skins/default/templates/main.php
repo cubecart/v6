@@ -94,6 +94,11 @@
          $(window).load(function() {
            $("#joyrideTour").joyride({
              autoStart: {/literal}{$TOUR_AUTO_START}{literal},
+             postStepCallback: function (index, tip) {
+               if (index == 5) {
+                  $('<p><iframe src="//player.vimeo.com/video/118638908" width="500" height="313" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></p>').insertAfter($(".joyride_tour_end p").last());
+               }
+             },
              postRideCallback: function (){
               $.ajax({url: "{/literal}{$SKIN_VARS.admin_file}{literal}?_g=settings&node=admins&tour_shown={/literal}{$ADMIN_UID}{literal}"});
              },
