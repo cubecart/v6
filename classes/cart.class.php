@@ -602,8 +602,10 @@ class Cart {
 			$this->_discount = $this->_subtotal = $this->_total_tax_add = $this->_weight = 0;
 			// Include inline shipping maths for Per Category Shipping
 			$ship_by_cat = $GLOBALS['config']->get('Per_Category');
-			if (isset($ship_by_cat['status']) && $ship_by_cat['status']) {
-				require_once CC_ROOT_DIR.'/modules/shipping/Per_Category/line.inc.php';
+			
+			$sbc_path = CC_ROOT_DIR.'/modules/shipping/Per_Category/line.inc.php';
+			if (file_exists($sbc_path) && isset($ship_by_cat['status']) && $ship_by_cat['status']) {
+				require_once $sbc_path;
 				$line_shipping = new Per_Category_Line($ship_by_cat, $this->basket);
 			}
 
