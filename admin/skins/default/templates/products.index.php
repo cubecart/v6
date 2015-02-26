@@ -548,8 +548,8 @@
       </div>
       <fieldset>
          <legend>{$LANG.catalogue.title_file_path_custom}</legend>
-         <div>{$LANG.catalogue.file_path_help}</div>
          <div id="digital_freetype"><label for="digital_path">{$LANG.catalogue.file_path}</label><span> <input name="digital_path" id="digital_path" class="textbox" type="text" value="{$PRODUCT.digital_path}" {$VAL_DIGITALDIR_EMPTY}></span></div>
+         <div>{$LANG.catalogue.file_path_help}</div>
       </fieldset>
    </div>
    <div id="seo" class="tab_content">
