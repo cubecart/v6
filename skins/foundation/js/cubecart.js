@@ -410,10 +410,6 @@ function grid_view(duration, event) {
     return false;
 }
 
-function equalize() {
-    $(document).foundation('equalizer','reflow');
-}
-
 function list_view(duration, event) {
     if (event != null) {
         event.preventDefault();
@@ -431,8 +427,12 @@ function list_view(duration, event) {
             });
         });
     });
-
+    setTimeout("equalize()",duration+10);
     return false;
+}
+
+function equalize() {
+    $(document).foundation('equalizer','reflow');
 }
 
 function update_quantity(rel, sign) {
