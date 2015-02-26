@@ -406,7 +406,7 @@ function grid_view(duration, event) {
             });
         });
     });
-    setTimeout("equalize()",duration+10);
+    setTimeout("equalize()",duration+50);
     return false;
 }
 
@@ -427,7 +427,7 @@ function list_view(duration, event) {
             });
         });
     });
-    setTimeout("equalize()",duration+10);
+    setTimeout("equalize()",duration+50);
     return false;
 }
 
