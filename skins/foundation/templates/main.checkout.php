@@ -87,7 +87,6 @@
             </footer>
             <script type="text/javascript" src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.rating.min.js"></script>
             <script type="text/javascript" src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.validate.min.js"></script>
-            <script type="text/javascript" src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.jscroll.min.js"></script>
             <script type="text/javascript" src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.cookie.min.js"></script>
             {foreach from=$BODY_JS item=js}{$js}{/foreach}
             {foreach from=$JS_SCRIPTS key=k item=script}

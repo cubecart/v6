@@ -62,7 +62,7 @@
    </div>
 </div>
 {/if}
-<div id="jscroll">
+<div id="ccScroll">
 	<ul class="small-block-grid-1 product_list" data-equalizer>
 	   {foreach from=$PRODUCTS item=product}
 	   <li>
@@ -200,7 +200,7 @@
 	</div>
 	{if ($page < $total)}
 	{$params[$var_name] = $page + 1}
-	<a href="{$current}{http_build_query($params)}{$anchor}" class="button tiny expand" id="jscroll-next">{$LANG.common.more} <i class="fa fa-angle-down"></i></a>
+	<a href="{$current}{http_build_query($params)}{$anchor}" class="button tiny expand" id="ccScroll-next">{$LANG.common.more} <i class="fa fa-angle-down"></i></a>
 	{/if}
 </div>
 <div class="hide" id="lang_loading">{$LANG.common.loading}</div>

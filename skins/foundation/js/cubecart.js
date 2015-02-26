@@ -200,15 +200,35 @@ jQuery(document).ready(function() {
         }
         return false;
     });
+    
+    $( "#ccScroll" ).on( "click", "#ccScroll-next", function(event) {
+        
+        event.preventDefault();
 
-    $('#jscroll').jscroll({
-        loadingHtml: '<p class="text-center"><i class="fa fa-spinner fa-spin thickpad-topbottom"></i> ' + $('#lang_loading').text() + '&hellip;<p>',
-        nextSelector: '#jscroll-next',
-        contentSelector: '#jscroll',
-        autoTrigger: false,
-        callback: function() {
-            set_product_view(0)
-        }
+        var product_list = $('.product_list');
+        var next_link = $('a#ccScroll-next');
+        var loadingHtml = '<p class="text-center" id="loading"><i class="fa fa-spinner fa-spin thickpad-topbottom"></i> ' + $('#lang_loading').text() + '&hellip;<p>';
+
+        $(this).after(function() {
+            return loadingHtml;
+        });
+
+        $.ajax({
+            url: $(this).attr('href'),
+            cache: true,
+            complete: function(returned) {
+                
+                $('p#loading').hide();
+
+                var page = returned.responseText;
+                var list = $('.product_list li', page);
+                var next = $('a#ccScroll-next', page);
+                
+                product_list.append(list);
+                set_product_view(0)
+                $(next_link).replaceWith(next);
+            }
+        });
     });
 
     var duration = 500;
