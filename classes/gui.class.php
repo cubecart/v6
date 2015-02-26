@@ -514,17 +514,19 @@ class GUI {
 	 */
 	public function itemsPerPage($list_id = 'products', $page_key = 'perpage') {
 	
+		if((int)$_GET[$page_key]>0) {
+			return (int)$_GET[$page_key];
+		} 
+
 		if(isset($this->_skin_data['layout'][$list_id]['perpage'])) {
 			foreach($this->_skin_data['layout'][$list_id]['perpage'] as $amount => $default) {
-				if($amount) {
+				if($default) {
 					return (int)$amount;	
 				}
 			}
 		}
-		
-		if((int)$_GET[$page_key]>0) {
-			return (int)$_GET[$page_key];
-		} elseif (is_numeric($GLOBALS['config']->get('config', 'catalogue_products_per_page'))) {
+
+		if (is_numeric($GLOBALS['config']->get('config', 'catalogue_products_per_page'))) {
 			return $GLOBALS['config']->get('config', 'catalogue_products_per_page');
 		} else { // Last ditch ..
 			return 10;
@@ -613,7 +615,7 @@ class GUI {
 	
 
 	/**
-	 * Get number items per page
+	 * Get page splits
 	 *
 	 * @param string $list_id
 	 * @param string $page_key

@@ -81,13 +81,8 @@ class Catalogue {
 	public function categoryPagination($page) {
 		if ($this->_category_count) {
 			//Pagination
-			if(isset($_GET['perpage']) && (int)$_GET['perpage']>0) {
-				$catalogue_products_per_page = (int)$_GET['perpage'];
-			} elseif (!is_numeric($GLOBALS['config']->get('config', 'catalogue_products_per_page'))) {
-				$catalogue_products_per_page = 10;
-			} else {
-				$catalogue_products_per_page = $GLOBALS['config']->get('config', 'catalogue_products_per_page');
-			}
+			$catalogue_products_per_page = $GLOBALS['gui']->itemsPerPage('products', 'perpage');
+			
 			if (($pages = $GLOBALS['db']->pagination($this->_category_count, $catalogue_products_per_page, $page)) !== false) {
 				// Display pagination
 				$GLOBALS['smarty']->assign('PAGINATION', $pages);
