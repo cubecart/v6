@@ -166,7 +166,7 @@
             </span>
          </div>
          <div><label for="product_code">{$LANG.catalogue.product_code}</label><span><input name="product_code" id="product_code" class="textbox" type="text" value="{$PRODUCT.product_code}"></span></div>
-         <div><label for="product_code_auto">{$LANG.catalogue.product_code_auto}</label><span><input name="product_code_auto" id="product_code_auto" type="checkbox" {$PRODUCT.auto_code_checked}> <input name="product_code_old" id="product_code_old" type="hidden" value=""> </span></div>
+         <div><label for="product_code_auto">{$LANG.catalogue.product_code_auto}</label><span><input name="product_code_auto" id="product_code_auto" type="hidden" class="toggle" {$PRODUCT.auto_code_checked}> <input name="product_code_old" id="product_code_old" type="hidden" value=""> </span></div>
          <div><label for="product_weight">{$LANG.catalogue.product_weight}</label><span><input name="product_weight" id="product_weight" class="textbox number" type="text" value="{$PRODUCT.product_weight}"></span></div>
          <div><label for="product_featured">{$LANG.catalogue.product_latest}</label><span><input type="hidden" name="featured" id="product_featured" class="toggle" value="{$PRODUCT.featured}"></span></div>
          <div><label for="available">{$LANG.catalogue.available_for_purchase}</label><span><input type="hidden" name="available" id="available" class="toggle" value="{if isset($PRODUCT.available)}{$PRODUCT.available}{else}1{/if}"></span></div>
