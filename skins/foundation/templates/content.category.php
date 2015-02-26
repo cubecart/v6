@@ -65,7 +65,7 @@
 <div id="jscroll">
 	<ul class="small-block-grid-1 product_list" data-equalizer>
 	   {foreach from=$PRODUCTS item=product}
-	   <li data-equalizer-watch>
+	   <li>
 	      <form action="{$VAL_SELF}" method="post" class="panel add_to_basket">
 	         <div class="row product_list_view">
 	            <div class="small-3 columns">
@@ -77,9 +77,7 @@
 	               <h3>
 	                  <a href="{$product.url}" title="{$product.name}">{$product.name}</a> 
 	               </h3>
-	               {$product.description_short}
 	               {if $product.review_score}
-	               {* Uncomment this if you want rating stars
 	                  <div>
 	                     {for $i = 1; $i <= 5; $i++}
 	                     {if $product.review_score >= $i}
@@ -91,9 +89,9 @@
 	                     {/if}
 	                     {/for}
 	                     </div>
-	                  <p class="rating-info">{$product.review_info}</p>
-	                *}
+	                  	{*<p class="rating-info">{$product.review_info}</p>*}
 	               {/if}
+	               {$product.description_short}
 	            </div>
 	            <div class="small-3 columns">
 	               <h3>
@@ -123,19 +121,13 @@
 	            </div>
 	         </div>
 	         <div class="product_grid_view hide">
-	            <div class="text-center">
-	               <a href="{$product.url}" title="{$product.name}"><img class="th" src="{$product.thumbnail}" alt="{$product.name}"></a>
-	            </div>
-	            <h3><a href="{$product.url}" title="{$product.name}">{$product.name|truncate:38:"&hellip;"}</a></h3>
-	            <h3>
-	               {if $product.ctrl_sale}<span class="old_price">{$product.price}</span> <span class="sale_price">{$product.sale_price}</span>
-	               {else}
-	               {$product.price}
-	               {/if}
-	            </h3>
-	            <div class="rating">
-	               {if $product.review_score}
-	               {* Uncomment this if you want rating stars
+	            <div data-equalizer-watch>
+		            <div class="text-center">
+		               <a href="{$product.url}" title="{$product.name}"><img class="th" src="{$product.thumbnail}" alt="{$product.name}"></a>
+		            </div>
+		            <h3><a href="{$product.url}" title="{$product.name}">{$product.name|truncate:38:"&hellip;"}</a></h3>
+		            {if $product.review_score}
+		            <div class="rating">
 	                  <div>
 	                     {for $i = 1; $i <= 5; $i++}
 	                     {if $product.review_score >= $i}
@@ -147,10 +139,16 @@
 	                     {/if}
 	                     {/for}
 	                     </div>
-	                  <p class="rating-info">{$product.review_info}</p>
-	                *}
-	               {/if}
+	                  	 {*<p class="rating-info">{$product.review_info}</p>*}
+		            </div>
+		            {/if}
 	            </div>
+	            <h3>
+	               {if $product.ctrl_sale}<span class="old_price">{$product.price}</span> <span class="sale_price">{$product.sale_price}</span>
+	               {else}
+	               {$product.price}
+	               {/if}
+	            </h3>
 	            {* Uncomment this if you want to show a more info link
 	            <a href="{$product.url}" title="{$product.name}" class="button tiny secondary left">{$LANG.common.info}</a>
 	            *}

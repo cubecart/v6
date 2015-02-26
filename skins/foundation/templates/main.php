@@ -123,6 +123,9 @@
                   orbit: {
                      slide_number: false,
                      timer_show_progress_bar: false
+                  },
+                  equalizer: {
+                     equalize_on_stack: true
                   }
                });
             </script>
