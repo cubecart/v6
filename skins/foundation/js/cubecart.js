@@ -406,8 +406,12 @@ function grid_view(duration, event) {
             });
         });
     });
-
+    setTimeout("equalize()",duration+10);
     return false;
+}
+
+function equalize() {
+    $(document).foundation('equalizer','reflow');
 }
 
 function list_view(duration, event) {
