@@ -182,6 +182,7 @@
    		{/if}
 	   {/foreach}
 	</ul>
+	{* Remove "hide" class for traditional pagination *}
 	<div class="row hide">
 	   <div class="small-12 large-9 columns">
 	      {$PAGINATION}
@@ -198,6 +199,7 @@
 	      </dl>
 	   </div>
 	</div>
+	{* Add "hide" class to hide more button ajax load *}
 	{if ($page < $total)}
 	{$params[$var_name] = $page + 1}
 	<a href="{$current}{http_build_query($params)}{$anchor}" class="button tiny expand" id="ccScroll-next">{$LANG.common.more} <i class="fa fa-angle-down"></i></a>
