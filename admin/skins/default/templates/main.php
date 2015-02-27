@@ -78,6 +78,10 @@
             <h2>5. {$LANG.navigation.nav_plugins}</h2>
             <p>{$LANG.dashboard.tour_5}</p>
          </li>
+         <li data-id="nav_docs">
+            <h2>6. {$LANG.dashboard.tour_6_title}</h2>
+            <p>{$LANG.dashboard.tour_6}</p>
+         </li>
          <li class="joyride_tour_end" data-button="{$LANG.common.close}">
             <h2>{$LANG.common.thats_it}</h2>
             {$LANG.dashboard.tour_end}
@@ -95,7 +99,7 @@
            $("#joyrideTour").joyride({
              autoStart: {/literal}{$TOUR_AUTO_START}{literal},
              postStepCallback: function (index, tip) {
-               if (index == 5) {
+               if (index == 6) {
                   $('<p><iframe src="//player.vimeo.com/video/118638908" width="500" height="313" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></p>').insertAfter($(".joyride_tour_end p").last());
                }
              },
