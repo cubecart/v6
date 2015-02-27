@@ -153,24 +153,29 @@
 	            <a href="{$product.url}" title="{$product.name}" class="button tiny secondary left">{$LANG.common.info}</a>
 	            *}
 	            {if $product.ctrl_purchase && !$CATALOGUE_MODE}
-	            <div class="marg-top">
-	               <div class="row collapse marg-top">
-	               	  {if $product.available == '0'}
-		              <div class="small-12 columns">
-		                  <input type="submit" value="{$LANG.common.unavailable}" class="button small disabled expand marg-top" disabled>
-		              </div>
-		              {else}
-	                  <div class="small-3 columns">
-	                     <input type="text" name="quantity" value="1" class="quantity required text-center">
-	                  </div>
-	                  <div class="small-9 columns ">
-	                     <button type="submit" value="{$LANG.catalogue.add_to_basket}" class="button small postfix">{$LANG.catalogue.add_to_basket}</button>
-	                  </div>
-	                  {/if}
-	               </div>
-	            </div>
+                
+               	  {if $product.available == '0'}
+               	  <div class="row collapse marg-top">
+	              <div class="small-12 columns">
+	                  <input type="submit" value="{$LANG.common.unavailable}" class="button small postfix disabled expand" disabled>
+	              </div>
+	              </div>
+	              {else}
+	              <div class="row collapse marg-top">
+                  	<div class="small-3 columns">
+                     <input type="text" name="quantity" value="1" class="quantity required text-center">
+                  	</div>
+                  	<div class="small-9 columns ">
+                     <button type="submit" value="{$LANG.catalogue.add_to_basket}" class="button small postfix">{$LANG.catalogue.add_to_basket}</button>
+                  	</div>
+                  </div>
+                  {/if}
+               
 	            {elseif !$CATALOGUE_MODE}
-	            <input type="submit" value="{$LANG.catalogue.out_of_stock_short}" class="button small disabled expand marg-top" disabled>
+	            <div class="row collapse marg-top">
+	              <div class="small-12 columns">
+	            <input type="submit" value="{$LANG.catalogue.out_of_stock_short}" class="button small postfix disabled expand marg-top" disabled>
+	            </div>
 	            {/if}
 	            <input type="hidden" name="add" value="{$product.product_id}">
 	         </div> 

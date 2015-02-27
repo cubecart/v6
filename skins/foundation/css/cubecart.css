@@ -238,6 +238,9 @@ textarea#contact_enquiry {
     color: #B9B9B9;
     margin: 10px 15px 0 0;
 }
+form.add_to_basket input, form.add_to_basket button {
+    margin: 0 !important;
+}
 @media only screen and (max-width: 40em) {
   .small-collapse {
     padding:0;

@@ -32,7 +32,6 @@
                   {if $product.review_score >= $i} <img src="{$STORE_URL}/skins/{$SKIN_FOLDER}/images/star.png" alt=""> {elseif $product.review_score > ($i - 1) && $product.review_score < $i} <img src="{$STORE_URL}/skins/{$SKIN_FOLDER}/images/star_half.png" alt=""> {else} <img src="{$STORE_URL}/skins/{$SKIN_FOLDER}/images/star_off.png" alt=""> {/if}
                   {/for} 
                </div>
-
                {/if}
             </div>
             {if $product.ctrl_sale}
@@ -45,20 +44,26 @@
             <a href="{$product.url}" title="{$product.name}" class="button tiny secondary left">{$LANG.common.info}</a>
             *}
             {if $product.available == '0'}
-               <input type="submit" value="{$LANG.common.unavailable}" class="button small disabled expand marg-top" disabled>
+            <div class="row collapse marg-top">
+               <div class="small-12 columns">
+                  <input type="submit" value="{$LANG.common.unavailable}" class="button small disabled postfix expand" disabled>
+               </div>
+            </div>
             {elseif $product.ctrl_stock && !$CATALOGUE_MODE}
-            <div class="marg-top">
-               <div class="row collapse marg-top">
-                  <div class="small-3 columns">
-                     <input type="text" name="quantity" value="1" class="quantity required text-center">
-                  </div>
-                  <div class="small-9 columns ">
-                     <button type="submit" value="{$LANG.catalogue.add_to_basket}" class="button small postfix">{$LANG.catalogue.add_to_basket}</button>
-                  </div>
+            <div class="row collapse marg-top">
+               <div class="small-3 columns">
+                  <input type="text" name="quantity" value="1" class="quantity required text-center">
+               </div>
+               <div class="small-9 columns ">
+                  <button type="submit" value="{$LANG.catalogue.add_to_basket}" class="button small postfix">{$LANG.catalogue.add_to_basket}</button>
                </div>
             </div>
             {elseif !$CATALOGUE_MODE}
-            <input type="submit" value="{$LANG.catalogue.out_of_stock_short}" class="button small disabled expand marg-top" disabled>
+            <div class="row collapse marg-top">
+               <div class="small-12 columns">
+                  <input type="submit" value="{$LANG.catalogue.out_of_stock_short}" class="button small postfix disabled expand marg-top" disabled>
+               </div>
+            </div>
             {/if}
             <input type="hidden" name="add" value="{$product.product_id}">
          </form>
