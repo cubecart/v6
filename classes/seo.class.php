@@ -101,8 +101,7 @@ class SEO {
 				//If the SEO URL != to the current URL
 				if (str_replace($GLOBALS['rootRel'], '', $_SERVER['REQUEST_URI']) != $seo_url) {
 					//Push the user to that URL
-					header('Location: '.$seo_url, true, 301);
-					exit;
+					httpredir($seo_url);
 				}
 			}
 		}
