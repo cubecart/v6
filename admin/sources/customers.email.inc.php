@@ -83,6 +83,7 @@ $newsletter = Newsletter::getInstance();
 
 if (isset($_POST['newsletter']) && !empty($_POST['newsletter'])) {
 	$redirect = false;
+	$_POST['newsletter']['content_html'] = $GLOBALS['RAW']['POST']['newsletter']['content_html'];
 	if ($newsletter->saveNewsletter($_POST['newsletter'])) {
 		$redirect = true;
         $_POST['newsletter']['newsletter_id'] = (!empty($_POST['newsletter']['newsletter_id'])) ? $_POST['newsletter']['newsletter_id'] : $newsletter->_newsletter_id;
