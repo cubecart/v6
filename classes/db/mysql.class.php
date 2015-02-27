@@ -44,6 +44,20 @@ class Database extends Database_Contoller {
 		parent::__construct();
 	}
 
+	/**
+	 * Setup the instance (singleton)
+	 *
+	 * @param $config array
+	 * @return Database
+	 */
+	public static function getInstance($config = '') {
+		if (!(self::$_instance instanceof self)) {
+			self::$_instance = new self($config);
+		}
+
+		return self::$_instance;
+	}
+
 	//=====[ Public ]=======================================
 
 	/**
@@ -117,20 +131,6 @@ class Database extends Database_Contoller {
 		$this->_allowedColumns[$table] = $return;
 
 		return $return;
-	}
-
-	/**
-	 * Setup the instance (singleton)
-	 *
-	 * @param $config array
-	 * @return Database
-	 */
-	public static function getInstance($config = '') {
-		if (!(self::$_instance instanceof self)) {
-			self::$_instance = new self($config);
-		}
-
-		return self::$_instance;
 	}
 
 	/**

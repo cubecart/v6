@@ -108,6 +108,19 @@ class SEO {
 		}
 	}
 
+	/**
+	 * Setup the instance (singleton)
+	 *
+	 * @return SEO
+	 */
+	public static function getInstance() {
+		if (!(self::$_instance instanceof self)) {
+			self::$_instance = new self();
+		}
+
+		return self::$_instance;
+	}
+
 	//=====[ Public ]=======================================
 
 	/**
@@ -293,19 +306,6 @@ class SEO {
 		} else {
 			return '';
 		}
-	}
-
-	/**
-	 * Setup the instance (singleton)
-	 *
-	 * @return SEO
-	 */
-	public static function getInstance() {
-		if (!(self::$_instance instanceof self)) {
-			self::$_instance = new self();
-		}
-
-		return self::$_instance;
 	}
 
 	/**

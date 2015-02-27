@@ -96,8 +96,6 @@ class SSL {
 		}
 	}
 
-	//=====[ Public ]=======================================
-
 	/**
 	 * Setup the instance (singleton)
 	 *
@@ -110,6 +108,8 @@ class SSL {
 
 		return self::$_instance;
 	}
+
+	//=====[ Public ]=======================================
 
 	/**
 	 * Define a custom page to use SSL

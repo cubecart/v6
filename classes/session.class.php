@@ -125,6 +125,19 @@ class Session {
 		$this->_close();
 	}
 
+	/**
+	 * Setup the instance (singleton)
+	 *
+	 * @return Session
+	 */
+	public static function getInstance() {
+		if (!(self::$_instance instanceof self)) {
+            self::$_instance = new self();
+        }
+
+        return self::$_instance;
+	}
+
 	//=====[ Public ]=======================================
 
 	/**
@@ -348,19 +361,6 @@ class Session {
 		}
 
 		return session_id();
-	}
-
-	/**
-	 * Setup the instance (singleton)
-	 *
-	 * @return Session
-	 */
-	public static function getInstance() {
-		if (!(self::$_instance instanceof self)) {
-            self::$_instance = new self();
-        }
-
-        return self::$_instance;
 	}
 
 	/**

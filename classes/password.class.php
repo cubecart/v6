@@ -31,17 +31,6 @@ class Password {
 
 	final private function __construct() { }
 
-	//=====[ Public ]=======================================
-
-	/**
-	 * Create salt for passwords
-	 * @author http://www.richardlord.net/blog/php-password-security
-	 * @return string
-	 */
-	public function createSalt() {
-		return substr(str_pad(dechex(mt_rand()), 8, '0', STR_PAD_LEFT ), -8);
-	}
-
 	/**
 	 * Setup the instance (singleton)
 	 *
@@ -53,6 +42,17 @@ class Password {
 		}
 
 		return self::$_instance;
+	}
+
+	//=====[ Public ]=======================================
+
+	/**
+	 * Create salt for passwords
+	 * @author http://www.richardlord.net/blog/php-password-security
+	 * @return string
+	 */
+	public function createSalt() {
+		return substr(str_pad(dechex(mt_rand()), 8, '0', STR_PAD_LEFT ), -8);
 	}
 
 	/**

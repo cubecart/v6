@@ -59,8 +59,6 @@ class Mailer extends PHPMailer {
 		}
 	}
 
-	//=====[ Public ]=======================================
-
 	/**
 	 * Setup the instance (singleton)
 	 *
@@ -73,6 +71,8 @@ class Mailer extends PHPMailer {
 
 		return self::$_instance;
 	}
+
+	//=====[ Public ]=======================================
 
 	/**
 	 * Load email content

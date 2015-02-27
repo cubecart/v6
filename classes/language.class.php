@@ -106,6 +106,19 @@ class Language {
 		$this->loadLang();
 	}
 
+	/**
+	 * Setup the instance (singleton)
+	 *
+	 * @return Language
+	 */
+	public static function getInstance($admin = false) {
+		if (!(self::$_instance instanceof self)) {
+			self::$_instance = new self($admin);
+		}
+
+		return self::$_instance;
+	}
+
 	//=====[ Public ]=======================================
 
 	/**
@@ -429,19 +442,6 @@ class Language {
 			return $this->_language_groups;
 		}
 		return false;
-	}
-
-	/**
-	 * Setup the instance (singleton)
-	 *
-	 * @return Language
-	 */
-	public static function getInstance($admin = false) {
-		if (!(self::$_instance instanceof self)) {
-			self::$_instance = new self($admin);
-		}
-
-		return self::$_instance;
 	}
 
 	/**

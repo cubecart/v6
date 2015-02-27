@@ -60,7 +60,19 @@ class ACP {
 
 	##############################################
 
-	final private function __construct() {
+	final private function __construct() {}
+
+	/**
+	 * Setup the instance (singleton)
+	 *
+	 * @return ACP
+	 */
+	public static function getInstance() {
+		if (!(self::$_instance instanceof self)) {
+			self::$_instance = new self();
+		}
+
+		return self::$_instance;
 	}
 
 	//=====[ Public ]=======================================
@@ -158,19 +170,6 @@ class ACP {
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * Setup the instance (singleton)
-	 *
-	 * @return ACP
-	 */
-	public static function getInstance() {
-		if (!(self::$_instance instanceof self)) {
-			self::$_instance = new self();
-		}
-
-		return self::$_instance;
 	}
 
 	/**

@@ -69,6 +69,20 @@ class Encryption {
 		}
 	}
 
+	/**
+	 * Setup the instance (singleton)
+	 *
+	 * @return Encryption
+	 */
+	public static function getInstance() {
+		if (!(self::$_instance instanceof self)) {
+			self::$_instance = new self();
+		}
+		self::$_instance->setup();
+
+		return self::$_instance;
+	}
+
 	//=====[ Public ]=======================================
 
 	/**
@@ -95,20 +109,6 @@ class Encryption {
 			return base64_encode(mcrypt_encrypt($this->_cipher, $this->_key, $data, $this->_mode, $this->_iv));
 		}
 		return false;
-	}
-
-	/**
-	 * Setup the instance (singleton)
-	 *
-	 * @return Encryption
-	 */
-	public static function getInstance() {
-		if (!(self::$_instance instanceof self)) {
-			self::$_instance = new self();
-		}
-		self::$_instance->setup();
-
-		return self::$_instance;
 	}
 
 	/**

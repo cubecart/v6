@@ -168,8 +168,6 @@ class Cart {
 		$this->save();
 	}
 
-	//=====[ Public ]=======================================
-
 	/**
 	 * Setup the instance (singleton)
 	 *
@@ -182,6 +180,8 @@ class Cart {
 
 		return self::$_instance;
 	}
+
+	//=====[ Public ]=======================================
 
 	/**
 	 * Add item to the basket

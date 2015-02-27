@@ -61,6 +61,19 @@ class Tax {
 		$this->loadCurrencyVars();
 	}
 
+	/**
+	 * Setup the instance (singleton)
+	 *
+	 * @return Tax
+	 */
+	public static function getInstance() {
+		if (!(self::$_instance instanceof self)) {
+			self::$_instance = new self();
+		}
+
+		return self::$_instance;
+	}
+
 	//=====[ Public ]=======================================
 
 	/**
@@ -160,19 +173,6 @@ class Tax {
 		}
 
 		return false;
-	}
-
-	/**
-	 * Setup the instance (singleton)
-	 *
-	 * @return Tax
-	 */
-	public static function getInstance() {
-		if (!(self::$_instance instanceof self)) {
-			self::$_instance = new self();
-		}
-
-		return self::$_instance;
 	}
 
 	/**

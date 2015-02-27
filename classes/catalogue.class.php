@@ -45,6 +45,19 @@ class Catalogue {
 	 */
 	protected static $_instance;
 
+	/**
+	 * Setup the instance (singleton)
+	 *
+	 * @return Catalogue
+	 */
+	public static function getInstance() {
+		if (!(self::$_instance instanceof self)) {
+			self::$_instance = new self();
+		}
+
+		return self::$_instance;
+	}
+
 	//=====[ Public ]=======================================
 
 	/**
@@ -729,19 +742,6 @@ class Catalogue {
 		}
 
 		return (isset($tree_data)) ? $tree_data : false;
-	}
-
-	/**
-	 * Setup the instance (singleton)
-	 *
-	 * @return Catalogue
-	 */
-	public static function getInstance() {
-		if (!(self::$_instance instanceof self)) {
-			self::$_instance = new self();
-		}
-
-		return self::$_instance;
 	}
 
 	/**

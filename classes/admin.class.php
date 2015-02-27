@@ -72,6 +72,19 @@ class Admin {
 		$this->_load();
 	}
 
+	/**
+	 * Setup the instance (singleton)
+	 *
+	 * @return Admin
+	 */
+	public static function getInstance() {
+		if (!(self::$_instance instanceof self)) {
+			self::$_instance = new self();
+		}
+
+		return self::$_instance;
+	}
+
 	//=====[ Public ]=======================================
 
 	/**
@@ -95,19 +108,6 @@ class Admin {
 	 */
 	public function getId() {
 		return isset($this->_admin_data['admin_id']) ? $this->_admin_data['admin_id'] : 0;
-	}
-
-	/**
-	 * Setup the instance (singleton)
-	 *
-	 * @return Admin
-	 */
-	public static function getInstance() {
-		if (!(self::$_instance instanceof self)) {
-			self::$_instance = new self();
-		}
-
-		return self::$_instance;
 	}
 
 	/**

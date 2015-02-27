@@ -140,6 +140,19 @@ class Debug {
 		restore_exception_handler();
 	}
 
+	/**
+	 * Setup the instance (singleton)
+	 *
+	 * @return This instance
+	 */
+	public static function getInstance() {
+		if (!(self::$_instance instanceof self)) {
+			self::$_instance = new self();
+		}
+
+		return self::$_instance;
+	}
+
 	//=====[ Public ]=======================================
 
 	/**
@@ -438,19 +451,6 @@ class Debug {
 		$message = "[<strong>Exception</strong>] \t".$e->getFile().":".$e->getLine()." - ".$e->getMessage();
 		$this->_errors[] = $message;
 		$this->_writeErrorLog($message);
-	}
-
-	/**
-	 * Setup the instance (singleton)
-	 *
-	 * @return This instance
-	 */
-	public static function getInstance() {
-		if (!(self::$_instance instanceof self)) {
-			self::$_instance = new self();
-		}
-
-		return self::$_instance;
 	}
 
 	/**

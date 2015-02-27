@@ -149,7 +149,19 @@ class User {
 		}
 	}
 
-	public function __destruct() {
+	public function __destruct() {}
+
+	/**
+	 * Setup the instance (singleton)
+	 *
+	 * @return User
+	 */
+	public static function getInstance() {
+		if (!(self::$_instance instanceof self)) {
+			self::$_instance = new self();
+		}
+
+		return self::$_instance;
 	}
 
 	//=====[ Public ]=======================================
@@ -493,19 +505,6 @@ class User {
 		} else {
 			return $this->_user_data['customer_id'];
 		}
-	}
-
-	/**
-	 * Setup the instance (singleton)
-	 *
-	 * @return User
-	 */
-	public static function getInstance() {
-		if (!(self::$_instance instanceof self)) {
-			self::$_instance = new self();
-		}
-
-		return self::$_instance;
 	}
 
 	/**

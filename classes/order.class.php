@@ -71,6 +71,19 @@ class Order {
 		$this->_tidyOrders();
 	}
 
+	/**
+	 * Setup the instance (singleton)
+	 *
+	 * @return Order
+	 */
+	public static function getInstance() {
+		if (!(self::$_instance instanceof self)) {
+			self::$_instance = new self();
+		}
+
+		return self::$_instance;
+	}
+
 	//=====[ Public ]=======================================
 
 	/**
@@ -180,19 +193,6 @@ class Order {
 	 */
 	public function disableAdminEmail() {
 		$this->_email_admin_enabled = false;
-	}
-
-	/**
-	 * Setup the instance (singleton)
-	 *
-	 * @return Order
-	 */
-	public static function getInstance() {
-		if (!(self::$_instance instanceof self)) {
-			self::$_instance = new self();
-		}
-
-		return self::$_instance;
 	}
 
 	/**

@@ -35,6 +35,19 @@ class Newsletter {
 		$this->_mailer = Mailer::getInstance();
 	}
 
+	/**
+	 * Setup the instance (singleton)
+	 *
+	 * @return Newsletter
+	 */
+	public static function getInstance() {
+		if (!(self::$_instance instanceof self)) {
+			self::$_instance = new self();
+		}
+
+		return self::$_instance;
+	}
+
 	//=====[ Public ]=======================================
 
 	/**
@@ -50,19 +63,6 @@ class Newsletter {
 		} else {
 			return false;
 		}
-	}
-
-	/**
-	 * Setup the instance (singleton)
-	 *
-	 * @return Newsletter
-	 */
-	public static function getInstance() {
-		if (!(self::$_instance instanceof self)) {
-			self::$_instance = new self();
-		}
-
-		return self::$_instance;
 	}
 
 	/**

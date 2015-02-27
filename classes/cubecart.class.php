@@ -61,6 +61,19 @@ class Cubecart {
 		}
 	}
 
+	/**
+	 * Setup the instance (singleton)
+	 *
+	 * @return Cubecart
+	 */
+	public static function getInstance() {
+		if (!(self::$_instance instanceof self)) {
+			self::$_instance = new self();
+		}
+
+		return self::$_instance;
+	}
+
 	//=====[ Public ]=======================================
 
 	/**
@@ -179,19 +192,6 @@ class Cubecart {
 		$contents['doc_content'] = ($contents['doc_parse']==1) ? $GLOBALS['smarty']->fetch('string:'.$contents['doc_content']) : $contents['doc_content'];
 
 		return (isset($contents) && !empty($contents)) ? $contents : false;
-	}
-
-	/**
-	 * Setup the instance (singleton)
-	 *
-	 * @return Cubecart
-	 */
-	public static function getInstance() {
-		if (!(self::$_instance instanceof self)) {
-			self::$_instance = new self();
-		}
-
-		return self::$_instance;
 	}
 
 	/**

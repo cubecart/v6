@@ -92,6 +92,19 @@ class HookLoader {
 		$this->_build_code_snippet_list(null, true);
 	}
 
+	/**
+	 * Setup the instance (singleton)
+	 *
+	 * @return HookLoader
+	 */
+	public static function getInstance() {
+		if (!(self::$_instance instanceof self)) {
+			self::$_instance = new self();
+		}
+
+		return self::$_instance;
+	}
+
 	//=====[ Public ]=======================================
 
 	/**
@@ -125,19 +138,6 @@ class HookLoader {
 	 */
 	public function enable($enable = true) {
 		$this->_enabled = (bool)$enable;
-	}
-
-	/**
-	 * Setup the instance (singleton)
-	 *
-	 * @return HookLoader
-	 */
-	public static function getInstance() {
-		if (!(self::$_instance instanceof self)) {
-			self::$_instance = new self();
-		}
-
-		return self::$_instance;
 	}
 
 	/**

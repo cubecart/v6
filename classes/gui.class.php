@@ -232,6 +232,20 @@ class GUI {
 
 	}
 
+	/**
+	 * Setup the instance (singleton)
+	 *
+	 * @param bool
+	 * @return GUI
+	 */
+	public static function getInstance($admin = false) {
+		if (!(self::$_instance instanceof self)) {
+			self::$_instance = new self($admin);
+		}
+
+		return self::$_instance;
+	}
+
 	//=====[ Public ]=======================================
 
 	/**
@@ -397,20 +411,6 @@ class GUI {
 	public function getCustomModuleSkin($type = 'gateway', $dirname, $file_name) {
 		$root_path  = CC_ROOT_DIR.'/skins/'.$GLOBALS['config']->get('config', 'skin_folder').'/'.'templates/modules/'.$type.'/'.basename($dirname);
 		return file_exists($root_path.'/'.$file_name) ? $root_path : $dirname.'/'.'skin';
-	}
-
-	/**
-	 * Setup the instance (singleton)
-	 *
-	 * @param bool
-	 * @return GUI
-	 */
-	public static function getInstance($admin = false) {
-		if (!(self::$_instance instanceof self)) {
-			self::$_instance = new self($admin);
-		}
-
-		return self::$_instance;
 	}
 
 	/**
