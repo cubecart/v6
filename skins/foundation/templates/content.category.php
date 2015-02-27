@@ -63,151 +63,154 @@
 </div>
 {/if}
 <div id="ccScroll">
-	<ul class="small-block-grid-1 product_list" data-equalizer>
-	   {foreach from=$PRODUCTS item=product}
-	   <li>
-	      <form action="{$VAL_SELF}" method="post" class="panel add_to_basket">
-	         <div class="row product_list_view">
-	            <div class="small-3 columns">
-	               <a href="{$product.url}" title="{$product.name}">
-	               <img class="th" src="{$product.thumbnail}" alt="{$product.name}">
-	               </a>
-	            </div>
-	            <div class="small-6 columns">
-	               <h3>
-	                  <a href="{$product.url}" title="{$product.name}">{$product.name}</a> 
-	               </h3>
-	               {if $product.review_score}
-	                  <div>
-	                     {for $i = 1; $i <= 5; $i++}
-	                     {if $product.review_score >= $i}
-	                     <img src="{$STORE_URL}/skins/{$SKIN_FOLDER}/images/star.png" alt="">
-	                     {elseif $product.review_score > ($i - 1) && $product.review_score < $i}
-	                     <img src="{$STORE_URL}/skins/{$SKIN_FOLDER}/images/star_half.png" alt="">
-	                     {else}
-	                     <img src="{$STORE_URL}/skins/{$SKIN_FOLDER}/images/star_off.png" alt="">
-	                     {/if}
-	                     {/for}
-	                     </div>
-	                  	{*<p class="rating-info">{$product.review_info}</p>*}
-	               {/if}
-	               {$product.description_short}
-	            </div>
-	            <div class="small-3 columns">
-	               <h3>
-	                  {if $product.ctrl_sale}<span class="old_price">{$product.price}</span> <span class="sale_price">{$product.sale_price}</span>
-	                  {else}
-	                  {$product.price}
-	                  {/if}
-	               </h3>
-	               {if $product.ctrl_purchase && !$CATALOGUE_MODE}
-	               <div class="row collapse">
-	                  {if $product.available == '0'}
-	                  <div class="small-12 columns">
-		                  <input type="submit" value="{$LANG.common.unavailable}" class="button small disabled expand marg-top" disabled>
-		              </div>
-	                  {else}
-	                  <div class="small-4 columns">
-	                     <input type="text" name="add[{$product.product_id}][quantity]" value="1" class="quantity text-center">
-	                  </div>
-	                  <div class="small-8 columns">
-	                     <button type="submit" value="{$LANG.catalogue.add_to_basket}" class="button small postfix">{$LANG.catalogue.add_to_basket}</button>
-	                  </div>
-	                  {/if}
-	               </div>
-	               {elseif $product.out}
-	               <input type="submit" value="{$LANG.catalogue.out_of_stock_short}" disabled class="button disabled expand small">
-	               {/if}
-	            </div>
-	         </div>
-	         <div class="product_grid_view hide">
-	            <div data-equalizer-watch>
-		            <div class="text-center">
-		               <a href="{$product.url}" title="{$product.name}"><img class="th" src="{$product.thumbnail}" alt="{$product.name}"></a>
-		            </div>
-		            <h3><a href="{$product.url}" title="{$product.name}">{$product.name|truncate:38:"&hellip;"}</a></h3>
-		            {if $product.review_score}
-		            <div class="rating">
-	                  <div>
-	                     {for $i = 1; $i <= 5; $i++}
-	                     {if $product.review_score >= $i}
-	                     <img src="{$STORE_URL}/skins/{$SKIN_FOLDER}/images/star.png" alt="">
-	                     {elseif $product.review_score > ($i - 1) && $product.review_score < $i}
-	                     <img src="{$STORE_URL}/skins/{$SKIN_FOLDER}/images/star_half.png" alt="">
-	                     {else}
-	                     <img src="{$STORE_URL}/skins/{$SKIN_FOLDER}/images/star_off.png" alt="">
-	                     {/if}
-	                     {/for}
-	                     </div>
-	                  	 {*<p class="rating-info">{$product.review_info}</p>*}
-		            </div>
-		            {/if}
-	            </div>
-	            <h3>
-	               {if $product.ctrl_sale}<span class="old_price">{$product.price}</span> <span class="sale_price">{$product.sale_price}</span>
-	               {else}
-	               {$product.price}
-	               {/if}
-	            </h3>
-	            {* Uncomment this if you want to show a more info link
-	            <a href="{$product.url}" title="{$product.name}" class="button tiny secondary left">{$LANG.common.info}</a>
-	            *}
-	            {if $product.ctrl_purchase && !$CATALOGUE_MODE}
-                
-               	  {if $product.available == '0'}
-               	  <div class="row collapse marg-top">
-	              <div class="small-12 columns">
-	                  <input type="submit" value="{$LANG.common.unavailable}" class="button small postfix disabled expand" disabled>
-	              </div>
-	              </div>
-	              {else}
-	              <div class="row collapse marg-top">
-                  	<div class="small-3 columns">
-                     <input type="text" name="quantity" value="1" class="quantity required text-center">
-                  	</div>
-                  	<div class="small-9 columns ">
-                     <button type="submit" value="{$LANG.catalogue.add_to_basket}" class="button small postfix">{$LANG.catalogue.add_to_basket}</button>
-                  	</div>
+   <ul class="small-block-grid-1 product_list" data-equalizer>
+      {foreach from=$PRODUCTS item=product}
+      <li>
+         <form action="{$VAL_SELF}" method="post" class="panel add_to_basket">
+            <div class="row product_list_view">
+               <div class="small-3 columns">
+                  <a href="{$product.url}" title="{$product.name}">
+                  <img class="th" src="{$product.thumbnail}" alt="{$product.name}">
+                  </a>
+               </div>
+               <div class="small-6 columns">
+                  <h3>
+                     <a href="{$product.url}" title="{$product.name}">{$product.name}</a> 
+                  </h3>
+                  {if $product.review_score}
+                  <div>
+                     {for $i = 1; $i <= 5; $i++}
+                     {if $product.review_score >= $i}
+                     <img src="{$STORE_URL}/skins/{$SKIN_FOLDER}/images/star.png" alt="">
+                     {elseif $product.review_score > ($i - 1) && $product.review_score < $i}
+                     <img src="{$STORE_URL}/skins/{$SKIN_FOLDER}/images/star_half.png" alt="">
+                     {else}
+                     <img src="{$STORE_URL}/skins/{$SKIN_FOLDER}/images/star_off.png" alt="">
+                     {/if}
+                     {/for}
+                  </div>
+                  {*
+                  <p class="rating-info">{$product.review_info}</p>
+                  *}
+                  {/if}
+                  {$product.description_short}
+               </div>
+               <div class="small-3 columns">
+                  <h3>
+                     {if $product.ctrl_sale}<span class="old_price">{$product.price}</span> <span class="sale_price">{$product.sale_price}</span>
+                     {else}
+                     {$product.price}
+                     {/if}
+                  </h3>
+                  {if $product.ctrl_purchase && !$CATALOGUE_MODE}
+                  <div class="row collapse">
+                     {if $product.available == '0'}
+                     <div class="small-12 columns">
+                        <input type="submit" value="{$LANG.common.unavailable}" class="button small disabled expand marg-top" disabled>
+                     </div>
+                     {else}
+                     <div class="small-4 columns">
+                        <input type="text" name="add[{$product.product_id}][quantity]" value="1" class="quantity text-center">
+                     </div>
+                     <div class="small-8 columns">
+                        <button type="submit" value="{$LANG.catalogue.add_to_basket}" class="button small postfix">{$LANG.catalogue.add_to_basket}</button>
+                     </div>
+                     {/if}
+                  </div>
+                  {elseif $product.out}
+                  <input type="submit" value="{$LANG.catalogue.out_of_stock_short}" disabled class="button disabled expand small">
+                  {/if}
+               </div>
+            </div>
+            <div class="product_grid_view hide">
+               <div data-equalizer-watch>
+                  <div class="text-center">
+                     <a href="{$product.url}" title="{$product.name}"><img class="th" src="{$product.thumbnail}" alt="{$product.name}"></a>
+                  </div>
+                  <h3><a href="{$product.url}" title="{$product.name}">{$product.name|truncate:38:"&hellip;"}</a></h3>
+                  {if $product.review_score}
+                  <div class="rating">
+                     <div>
+                        {for $i = 1; $i <= 5; $i++}
+                        {if $product.review_score >= $i}
+                        <img src="{$STORE_URL}/skins/{$SKIN_FOLDER}/images/star.png" alt="">
+                        {elseif $product.review_score > ($i - 1) && $product.review_score < $i}
+                        <img src="{$STORE_URL}/skins/{$SKIN_FOLDER}/images/star_half.png" alt="">
+                        {else}
+                        <img src="{$STORE_URL}/skins/{$SKIN_FOLDER}/images/star_off.png" alt="">
+                        {/if}
+                        {/for}
+                     </div>
+                     {*
+                     <p class="rating-info">{$product.review_info}</p>
+                     *}
                   </div>
                   {/if}
-               
-	            {elseif !$CATALOGUE_MODE}
-	            <div class="row collapse marg-top">
-	              <div class="small-12 columns">
-	            <input type="submit" value="{$LANG.catalogue.out_of_stock_short}" class="button small postfix disabled expand marg-top" disabled>
-	            </div>
-	            {/if}
-	            <input type="hidden" name="add" value="{$product.product_id}">
-	         </div> 
-	      </form>
-	   </li>
-	   {foreachelse}
-	   {if !isset($SUBCATS) || !$SUBCATS}
-   			<li>{$LANG.category.no_products}</li>
-   		{/if}
-	   {/foreach}
-	</ul>
-	{* Remove "hide" class for traditional pagination *}
-	<div class="row hide">
-	   <div class="small-12 large-9 columns">
-	      {$PAGINATION}
-	   </div>
-	   <div class="large-3 columns show-for-medium-up">
-	      <dl>
-	         <dd>
-	            <select class="url_select">
-	            {foreach from=$PAGE_SPLITS item=page_split}
-	            <option value="{$page_split.url}"{if $page_split.selected} selected{/if}>{$page_split.amount}</option>
-	            {/foreach}
-	            </select>
-	         </dd>
-	      </dl>
-	   </div>
-	</div>
-	{* Add "hide" class to hide more button ajax load *}
-	{if ($page < $total)}
-	{$params[$var_name] = $page + 1}
-	<a href="{$current}{http_build_query($params)}{$anchor}" class="button tiny expand" id="ccScroll-next">{$LANG.common.more} <i class="fa fa-angle-down"></i></a>
-	{/if}
+               </div>
+               <h3>
+                  {if $product.ctrl_sale}<span class="old_price">{$product.price}</span> <span class="sale_price">{$product.sale_price}</span>
+                  {else}
+                  {$product.price}
+                  {/if}
+               </h3>
+               {* Uncomment this if you want to show a more info link
+               <a href="{$product.url}" title="{$product.name}" class="button tiny secondary left">{$LANG.common.info}</a>
+               *}
+               {if $product.ctrl_purchase && !$CATALOGUE_MODE}
+               {if $product.available == '0'}
+               <div class="row collapse marg-top">
+                  <div class="small-12 columns">
+                     <input type="submit" value="{$LANG.common.unavailable}" class="button small postfix disabled expand" disabled>
+                  </div>
+               </div>
+               {else}
+               <div class="row collapse marg-top">
+                  <div class="small-3 columns">
+                     <input type="text" name="quantity" value="1" class="quantity required text-center">
+                  </div>
+                  <div class="small-9 columns ">
+                     <button type="submit" value="{$LANG.catalogue.add_to_basket}" class="button small postfix">{$LANG.catalogue.add_to_basket}</button>
+                  </div>
+               </div>
+               {/if}
+               {elseif !$CATALOGUE_MODE}
+               <div class="row collapse marg-top">
+                  <div class="small-12 columns">
+                     <input type="submit" value="{$LANG.catalogue.out_of_stock_short}" class="button small postfix disabled expand marg-top" disabled>
+                  </div>
+               </div>
+               {/if}
+               <input type="hidden" name="add" value="{$product.product_id}">
+            </div>
+         </form>
+      </li>
+      {foreachelse}
+      {if !isset($SUBCATS) || !$SUBCATS}
+      <li>{$LANG.category.no_products}</li>
+      {/if}
+      {/foreach}
+   </ul>
+   {* Remove "hide" class for traditional pagination *}
+   <div class="row hide">
+      <div class="small-12 large-9 columns">
+         {$PAGINATION}
+      </div>
+      <div class="large-3 columns show-for-medium-up">
+         <dl>
+            <dd>
+               <select class="url_select">
+               {foreach from=$PAGE_SPLITS item=page_split}
+               <option value="{$page_split.url}"{if $page_split.selected} selected{/if}>{$page_split.amount}</option>
+               {/foreach}
+               </select>
+            </dd>
+         </dl>
+      </div>
+   </div>
+   {* Add "hide" class to hide more button ajax load *}
+   {if ($page < $total)}
+   {$params[$var_name] = $page + 1}
+   <a href="{$current}{http_build_query($params)}{$anchor}" class="button tiny expand" id="ccScroll-next">{$LANG.common.more} <i class="fa fa-angle-down"></i></a>
+   {/if}
 </div>
 <div class="hide" id="lang_loading">{$LANG.common.loading}</div>
