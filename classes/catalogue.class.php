@@ -1587,7 +1587,7 @@ class Catalogue {
 
 					$rlike = '';
 					if (!empty($search_data['keywords'])) {
-						$searchwords = preg_split( '/[ ,]/', $GLOBALS['db']->sqlSafe($search_data['keywords']));
+						$searchwords = preg_split( '/[\s,]+/', $GLOBALS['db']->sqlSafe($search_data['keywords']));
 						foreach ($searchwords as $word) {
 							$searchArray[] = $word;
 						}
