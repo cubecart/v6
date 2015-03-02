@@ -1990,7 +1990,7 @@ class Cubecart {
 			} else {
 				$gateway['description'] = $gateway['folder'];
 			}
-			$gateway['checked'] = ((isset($gateway['default']) && $gateway['default'] && $selected_gateway=='') || ($selected_gateway == $gateway['folder'])) ? 'checked="checked"' : '';
+			$gateway['checked'] = ((isset($gateway['default']) && $gateway['default'] && $selected_gateway=='') || ($selected_gateway == $gateway['folder']) || count($gateways)==1) ? 'checked="checked"' : '';
 			$gateway_list[] = $gateway;
 		}
 		$GLOBALS['smarty']->assign('GATEWAYS', $gateway_list);
