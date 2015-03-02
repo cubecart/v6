@@ -24,11 +24,14 @@ jQuery(document).ready(function() {
         required: $('#validate_field_required').text()
     });
 
-    $("form.add_to_basket").validate({
-        submitHandler: function(form) {
-            add_to_basket(form);
-        }
+    $("form.add_to_basket").each(function(index, el)  {
+        $(el).validate({
+            submitHandler: function(form) {
+                add_to_basket(form);
+            }
+        });
     });
+
     $("#recover_password").validate({
         rules: {
             'email': {
