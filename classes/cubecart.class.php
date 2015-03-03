@@ -448,7 +448,15 @@ class Cubecart {
 
 		if (isset($_POST['save'])) {
 			if (empty($_POST['description'])) {
-				$_POST['description'] = $GLOBALS['language']->account['billing_address'];
+				if($_POST['billing']==1 && $_POST['default']==1) {
+					$_POST['description'] = $GLOBALS['language']->address['billing_delivery_address'];
+				} elseif($_POST['billing']==1) {
+					$_POST['description'] = $GLOBALS['language']->address['billing_address'];
+				} elseif($_POST['default']==1) {
+					$_POST['description'] = $GLOBALS['language']->address['delivery_address'];
+				} else {
+					$_POST['description'] = $GLOBALS['language']->address['extra_address'];
+				}
 			}
 			$required_fields = array('first_name','last_name','line1','town','country','state','postcode');
 			$empties = false;

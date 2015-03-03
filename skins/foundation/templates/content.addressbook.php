@@ -25,10 +25,10 @@
                   {$LANG.address.billing_address}
                </div>
                <div class="small-4 columns text-center">
-                  {$LANG.address.delivery_address}
+                  {$LANG.address.delivery_address} ({$LANG.common.default})
                </div>
                <div class="small-4 columns text-center">
-                  {$LANG.address.delivery_address} ({$LANG.common.default})
+                  {$LANG.address.delivery_address}
                </div>
             </div>
             <div class="row pad-top">
@@ -36,10 +36,10 @@
                   <i class="fa fa-{if $address.billing}check{else}times{/if}"></i>
                </div>
                <div class="small-4 columns text-center">
-                  <i class="fa fa-check"></i>
+                  <i class="fa fa-{if $address.default}check{else}times{/if}"></i>
                </div>
                <div class="small-4 columns text-center">
-                  <i class="fa fa-{if $address.default}check{else}times{/if}"></i>
+                  <i class="fa fa-check"></i>
                </div>
             </div>
          </div>
