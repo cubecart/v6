@@ -13,7 +13,7 @@
 <h2>{$LANG.address.your_address_book}</h2>
 <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
    {foreach from=$ADDRESSES item=address}
-   <div class="panel">
+   <div class="panel {if $address.billing}callout{/if}">
       <div class="row">
          <div class="small-4 columns">
             <a href="?_a=addressbook&action=edit&address_id={$address.address_id}">{$address.description}</a><br>
