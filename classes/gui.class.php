@@ -1292,80 +1292,70 @@ class GUI {
 			$vars[] = array(
 				'url' => (filter_var($config['facebook'], FILTER_VALIDATE_URL)) ? $config['facebook'] : 'https://www.facebook.com/'.$config['facebook'],
 				'name' => 'Facebook',
-				'icon'	=> 'facebook-square',
-				'color'	=> '#3b5998'
+				'icon'	=> 'facebook-square'
 			);
 		}
 		if(!empty($config['flickr'])) {
 			$vars[] = array(
 				'url' => (filter_var($config['flickr'], FILTER_VALIDATE_URL)) ? $config['flickr'] : 'http://www.flickr.com/photos/'.$config['flickr'],
 				'name' => 'Flickr',
-				'icon'	=> 'flickr',
-				'color'	=> '#ff0084'
+				'icon'	=> 'flickr'
 			);
 		} 
 		if(!empty($config['google_plus'])) {
 			$vars[] = array(
 				'url' => (filter_var($config['google_plus'], FILTER_VALIDATE_URL)) ? $config['google_plus'] : 'https://plus.google.com/'.$config['google_plus'],
 				'name' => 'Google+',
-				'icon'	=> 'google-plus-square',
-				'color'	=> '#C63D2D'
+				'icon'	=> 'google-plus-square'
 			);
 		}
 		if(!empty($config['instagram'])) {
 			$vars[] = array(
 				'url' => (filter_var($config['instagram'], FILTER_VALIDATE_URL)) ? $config['instagram'] : 'http://www.pinterest.com/'.$config['instagram'],
 				'name' => 'Instagram',
-				'icon'	=> 'instagram',
-				'color'	=> '#517fa4'
+				'icon'	=> 'instagram'
 			);
 		}
 		if(!empty($config['linkedin'])) {
 			$vars[] = array(
 				'url' => (filter_var($config['linkedin'], FILTER_VALIDATE_URL)) ? $config['linkedin'] : 'http://www.linkedin.com/company/'.$config['linkedin'],
 				'name' => 'Linkedin',
-				'icon'	=> 'linkedin-square',
-				'color'	=> '#4875B4'
+				'icon'	=> 'linkedin-square'
 			);
 		} 
 		if(!empty($config['pinterest'])) {
 			$vars[] = array(
 				'url' => (filter_var($config['pinterest'], FILTER_VALIDATE_URL)) ? $config['pinterest'] : 'http://www.pinterest.com/'.$config['pinterest'],
 				'name' => 'Pinterest',
-				'icon'	=> 'pinterest-square',
-				'color' => '#C92228'
+				'icon'	=> 'pinterest-square'
 			);
 		}
 		if(!empty($config['twitter'])) {
 			$vars[] = array(
 				'url' => (filter_var($config['twitter'], FILTER_VALIDATE_URL)) ? $config['twitter'] : 'https://twitter.com/'.$config['twitter'],
 				'name' => 'Twitter',
-				'icon'	=> 'twitter-square',
-				'color'	=> '#4099FF'
+				'icon'	=> 'twitter-square'
 			);
 		}
 		if(!empty($config['vimeo'])) {
 			$vars[] = array(
 				'url' => (filter_var($config['vimeo'], FILTER_VALIDATE_URL)) ? $config['vimeo'] : 'https://vimeo.com/'.$config['vimeo'],
 				'name' => 'Vimeo',
-				'icon'	=> 'vimeo-square',
-				'color'	=> '#86B32D'
+				'icon'	=> 'vimeo-square'
 			);
 		}
 		if(!empty($config['wordpress'])) {
 			$vars[] = array(
 				'url' => (filter_var($config['wordpress'], FILTER_VALIDATE_URL)) ? $config['wordpress'] : 'http://'.$config['wordpress'].'.wordpress.com',
 				'name' => 'WordPress',
-				'icon'	=> 'wordpress',
-				'color'	=> '#FFF'
+				'icon'	=> 'wordpress'
 			);
 		}
 		if(!empty($config['youtube'])) {
 			$vars[] = array(
 				'url' => (filter_var($config['youtube'], FILTER_VALIDATE_URL)) ? $config['youtube'] : 'http://www.youtube.com/user/'.$config['youtube'],
 				'name' => 'YouTube',
-				'icon'	=> 'youtube-square',
-				'color'	=> '#cd201f'
+				'icon'	=> 'youtube-square'
 			);
 		}
 
