@@ -82,7 +82,7 @@
                      {$COPYRIGHT}
                   </div>
                   <div class="medium-5 large-5 columns">
-                     {include file='templates/element.social.php'}
+                     {$SOCIAL_LIST}
                   </div>
                </div>
             </footer>

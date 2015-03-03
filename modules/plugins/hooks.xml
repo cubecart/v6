@@ -143,6 +143,7 @@
  <hook trigger="class.gui.display_search_box" deprecated="" />
  <hook trigger="class.gui.display_skin_select" deprecated="" />
  <hook trigger="class.gui.display_session_box" deprecated="" />
+ <hook trigger="class.gui.display_social" deprecated="" />
  <hook trigger="class.gui.javascripts" deprecated="" />
  <hook trigger="class.order.delete" deprecated="" />
  <hook trigger="class.order.manage_stock" deprecated="" />

@@ -102,7 +102,7 @@
                      {$COPYRIGHT}
                   </div>
                   <div class="medium-5 large-5 columns">
-                     {include file='templates/element.social.php'}
+                     {$SOCIAL_LIST}
                      <div class="row collapse">
                         <div class="large-12 columns">
                            {include file='templates/box.newsletter.php'}

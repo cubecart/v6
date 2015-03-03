@@ -322,6 +322,7 @@ class GUI {
 			$this->_displayRandomProduct();
 			$this->_displayPopularProducts();
 			$this->_displaySkinSelect();
+			$this->_displaySocial();
 			/*! display common hooks */
 			foreach ($GLOBALS['hooks']->load('class.gui.display') as $hook) include $hook;
 			if (isset($display_html) && is_array($display_html)) {
@@ -1276,6 +1277,95 @@ class GUI {
 			$content = $GLOBALS['smarty']->fetch('templates/box.skins.php');
 			$GLOBALS['smarty']->assign('SKIN_SELECT', $content);
 		}
+	}
+
+	/**
+	 * Display social links
+	 */
+	private function _displaySocial() {
+		
+		$vars = array();
+		
+		$config = $GLOBALS['config']->get('config');
+		
+		if(!empty($config['facebook'])) {
+			$vars[] = array(
+				'url' => (filter_var($config['facebook'], FILTER_VALIDATE_URL)) ? $config['facebook'] : 'https://www.facebook.com/'.$config['facebook'],
+				'name' => 'Facebook',
+				'icon'	=> 'facebook-square',
+				'color'	=> '#3b5998'
+			);
+		}
+		if(!empty($config['flickr'])) {
+			$vars[] = array(
+				'url' => (filter_var($config['flickr'], FILTER_VALIDATE_URL)) ? $config['flickr'] : 'http://www.flickr.com/photos/'.$config['flickr'],
+				'name' => 'Flickr',
+				'icon'	=> 'flickr',
+				'color'	=> '#ff0084'
+			);
+		} 
+		if(!empty($config['google_plus'])) {
+			$vars[] = array(
+				'url' => (filter_var($config['google_plus'], FILTER_VALIDATE_URL)) ? $config['google_plus'] : 'https://plus.google.com/'.$config['google_plus'],
+				'name' => 'Google+',
+				'icon'	=> 'google-plus-square',
+				'color'	=> '#C63D2D'
+			);
+		}
+		if(!empty($config['instagram'])) {
+			$vars[] = array(
+				'url' => (filter_var($config['instagram'], FILTER_VALIDATE_URL)) ? $config['instagram'] : 'http://www.pinterest.com/'.$config['instagram'],
+				'name' => 'Instagram',
+				'icon'	=> 'instagram',
+				'color'	=> '#517fa4'
+			);
+		}
+		if(!empty($config['linkedin'])) {
+			$vars[] = array(
+				'url' => (filter_var($config['linkedin'], FILTER_VALIDATE_URL)) ? $config['linkedin'] : 'http://www.linkedin.com/company/'.$config['linkedin'],
+				'name' => 'Linkedin',
+				'icon'	=> 'linkedin-square',
+				'color'	=> '#4875B4'
+			);
+		} 
+		if(!empty($config['pinterest'])) {
+			$vars[] = array(
+				'url' => (filter_var($config['pinterest'], FILTER_VALIDATE_URL)) ? $config['pinterest'] : 'http://www.pinterest.com/'.$config['pinterest'],
+				'name' => 'Pinterest',
+				'icon'	=> 'pinterest-square',
+				'color' => '#C92228'
+			);
+		}
+		if(!empty($config['twitter'])) {
+			$vars[] = array(
+				'url' => (filter_var($config['twitter'], FILTER_VALIDATE_URL)) ? $config['twitter'] : 'https://twitter.com/'.$config['twitter'],
+				'name' => 'Twitter',
+				'icon'	=> 'twitter-square',
+				'color'	=> '#4099FF'
+			);
+		}
+		if(!empty($config['vimeo'])) {
+			$vars[] = array(
+				'url' => (filter_var($config['vimeo'], FILTER_VALIDATE_URL)) ? $config['vimeo'] : 'http://www.linkedin.com/company/'.$config['vimeo'],
+				'name' => 'Vimeo',
+				'icon'	=> 'vimeo-square',
+				'color'	=> '#86B32D'
+			);
+		}
+		if(!empty($config['youtube'])) {
+			$vars[] = array(
+				'url' => (filter_var($config['youtube'], FILTER_VALIDATE_URL)) ? $config['youtube'] : 'http://www.youtube.com/user/'.$config['youtube'],
+				'name' => 'YouTube',
+				'icon'	=> 'youtube-square',
+				'color'	=> '#cd201f'
+			);
+		}
+
+		foreach ($GLOBALS['hooks']->load('class.gui.display_social') as $hook) include $hook;   
+
+		$GLOBALS['smarty']->assign('SOCIAL_LINKS', $vars);
+		$content = $GLOBALS['smarty']->fetch('templates/element.social.php');
+		$GLOBALS['smarty']->assign('SOCIAL_LIST', $content);
 	}
 
 	/**
