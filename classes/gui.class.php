@@ -1346,10 +1346,18 @@ class GUI {
 		}
 		if(!empty($config['vimeo'])) {
 			$vars[] = array(
-				'url' => (filter_var($config['vimeo'], FILTER_VALIDATE_URL)) ? $config['vimeo'] : 'http://www.linkedin.com/company/'.$config['vimeo'],
+				'url' => (filter_var($config['vimeo'], FILTER_VALIDATE_URL)) ? $config['vimeo'] : 'https://vimeo.com/'.$config['vimeo'],
 				'name' => 'Vimeo',
 				'icon'	=> 'vimeo-square',
 				'color'	=> '#86B32D'
+			);
+		}
+		if(!empty($config['wordpress'])) {
+			$vars[] = array(
+				'url' => (filter_var($config['wordpress'], FILTER_VALIDATE_URL)) ? $config['wordpress'] : 'http://'.$config['wordpress'].'.wordpress.com',
+				'name' => 'WordPress',
+				'icon'	=> 'wordpress',
+				'color'	=> '#FFF'
 			);
 		}
 		if(!empty($config['youtube'])) {
