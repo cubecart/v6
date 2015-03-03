@@ -24,19 +24,6 @@
          <div><label for="store_postcode">{$LANG.address.postcode}</label><span><input name="config[store_postcode]" id="store_postcode" type="text" class="textbox" value="{$CONFIG.store_postcode}"></span></div>
       </fieldset>
       <fieldset>
-         <legend>{$LANG.settings.social_accounts}</legend>
-         <div><label for="facebook">Facebook</label><span><input name="config[facebook]" id="facebook" type="text" class="textbox" value="{$CONFIG.facebook}"></span></div>
-         <div><label for="flickr">Flickr</label><span><input name="config[flickr]" id="flickr" type="text" class="textbox" value="{$CONFIG.flickr}"></span></div>
-         <div><label for="google_plus">Google+</label><span><input name="config[google_plus]" id="google_plus" type="text" class="textbox" value="{$CONFIG.google_plus}"></span></div>
-         <div><label for="instagram">Instagram</label><span><input name="config[instagram]" id="instagram" type="text" class="textbox" value="{$CONFIG.instagram}"></span></div>
-         <div><label for="linkedin">LinkedIn</label><span><input name="config[linkedin]" id="linkedin" type="text" class="textbox" value="{$CONFIG.linkedin}"></span></div>
-         <div><label for="pinterest">Pinterest</label><span><input name="config[pinterest]" id="pinterest" type="text" class="textbox" value="{$CONFIG.pinterest}"></span></div>
-         <div><label for="twitter">Twitter</label><span><input name="config[twitter]" id="twitter" type="text" class="textbox" value="{$CONFIG.twitter}"></span></div>
-         <div><label for="vimeo">Vimeo</label><span><input name="config[vimeo]" id="vimeo" type="text" class="textbox" value="{$CONFIG.vimeo}"></span></div>
-         <div><label for="wordpress">WordPress</label><span><input name="config[wordpress]" id="wordpress" type="text" class="textbox" value="{$CONFIG.wordpress}"></span></div>
-         <div><label for="youtube">YouTube</label><span><input name="config[youtube]" id="youtube" type="text" class="textbox" value="{$CONFIG.youtube}"></span></div>
-      </fieldset>
-      <fieldset>
          <legend>{$LANG.settings.title_tax_lang}</legend>
          <div><label for="default_language">{$LANG.settings.default_language}</label><span><select name="config[default_language]" id="default_language" class="textbox">
             {foreach from=$LANGUAGES item=language}<option value="{$language.code}"{$language.selected}>{$language.title}</option>{/foreach}
@@ -53,6 +40,19 @@
             {foreach from=$OPT_BASKET_TAX_BY_DELIVERY item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
             </select></span>
          </div>
+      </fieldset>
+      <fieldset>
+         <legend>{$LANG.settings.social_accounts}</legend>
+         <div><label for="facebook">Facebook</label><span><input name="config[facebook]" id="facebook" type="text" class="textbox" value="{$CONFIG.facebook}"></span></div>
+         <div><label for="flickr">Flickr</label><span><input name="config[flickr]" id="flickr" type="text" class="textbox" value="{$CONFIG.flickr}"></span></div>
+         <div><label for="google_plus">Google+</label><span><input name="config[google_plus]" id="google_plus" type="text" class="textbox" value="{$CONFIG.google_plus}"></span></div>
+         <div><label for="instagram">Instagram</label><span><input name="config[instagram]" id="instagram" type="text" class="textbox" value="{$CONFIG.instagram}"></span></div>
+         <div><label for="linkedin">LinkedIn</label><span><input name="config[linkedin]" id="linkedin" type="text" class="textbox" value="{$CONFIG.linkedin}"></span></div>
+         <div><label for="pinterest">Pinterest</label><span><input name="config[pinterest]" id="pinterest" type="text" class="textbox" value="{$CONFIG.pinterest}"></span></div>
+         <div><label for="twitter">Twitter</label><span><input name="config[twitter]" id="twitter" type="text" class="textbox" value="{$CONFIG.twitter}"></span></div>
+         <div><label for="vimeo">Vimeo</label><span><input name="config[vimeo]" id="vimeo" type="text" class="textbox" value="{$CONFIG.vimeo}"></span></div>
+         <div><label for="wordpress">WordPress</label><span><input name="config[wordpress]" id="wordpress" type="text" class="textbox" value="{$CONFIG.wordpress}"></span></div>
+         <div><label for="youtube">YouTube</label><span><input name="config[youtube]" id="youtube" type="text" class="textbox" value="{$CONFIG.youtube}"></span></div>
       </fieldset>
    </div>
    <div id="Features" class="tab_content">
