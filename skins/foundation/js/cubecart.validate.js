@@ -253,9 +253,6 @@ jQuery(document).ready(function() {
 
     $("#addressbook_form").validate({
         rules: {
-            description: {
-                required: true
-            },
             first_name: {
                 required: true
             },

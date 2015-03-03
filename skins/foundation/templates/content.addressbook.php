@@ -60,7 +60,7 @@
 <h2>{if $DATA.address_id>0}{$LANG.address.edit_address}{else}{$LANG.address.add_address}{/if}</h2>
 <form action="{$VAL_SELF}" method="post" id="addressbook_form" enctype="multipart/form-data">
    <div class="row">
-      <div class="small-12 large-8 columns"><label for="addr_description">{$LANG.common.description}</label><input type="text" name="description" id="addr_description" value="{$DATA.description}" required placeholder="{$LANG.address.example_address_description} {$LANG.form.required}"></div>
+      <div class="small-12 large-8 columns"><label for="addr_description">{$LANG.common.description}</label><input type="text" name="description" id="addr_description" value="{$DATA.description}" placeholder="{$LANG.address.example_address_description}"></div>
    </div>
    <div class="row">
       <div class="small-12 large-8 columns"><label for="addr_title">{$LANG.user.title}</label><input type="text" name="title" id="addr_title" value="{$DATA.title}" placeholder="{$LANG.user.title}"></div>
