@@ -15,17 +15,18 @@
       <title>{$META_TITLE}</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <link rel="canonical" href="{$CANONICAL}">
-      <link rel="shortcut icon" href="{$STORE_URL}/favicon.ico" type="image/x-icon">
-      <link rel="stylesheet" href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/normalize.css">
-      <link rel="stylesheet" href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/foundation.min.css">
+      <link href="{$CANONICAL}" rel="canonical">
+      <link href="{$STORE_URL}/favicon.ico" rel="shortcut icon" type="image/x-icon">
+      <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/normalize.css" rel="stylesheet">
+      <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/foundation.min.css" rel="stylesheet">
       <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-      <link rel="stylesheet" href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/cubecart.css">
-      <link rel="stylesheet" href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/cubecart.common.css">
-      <link rel="stylesheet" href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/cubecart.helpers.css">
-      <link rel="stylesheet" href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/cubecart.{$SKIN_SUBSET}.css">
+      <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/cubecart.css" rel="stylesheet">
+      <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/cubecart.common.css" rel="stylesheet">
+      <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/cubecart.helpers.css" rel="stylesheet">
+      <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/cubecart.{$SKIN_SUBSET}.css" rel="stylesheet">
+      <link href="//fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type='text/css'>
       {foreach from=$CSS key=css_keys item=css_files}
-      <link rel="stylesheet" type="text/css" href="{$STORE_URL}/{$css_files}" media="screen">
+      <link href="{$STORE_URL}/{$css_files}" rel="stylesheet" type="text/css" media="screen">
       {/foreach}
       <meta http-equiv="Content-Type" content="text/html;charset={$CHARACTER_SET}">
       <meta name="description" content="{if isset($META_DESCRIPTION)}{$META_DESCRIPTION}{/if}">
@@ -110,12 +111,12 @@
                   </div>
                </div>
             </footer>
-            <script type="text/javascript" src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.rating.min.js"></script>
-            <script type="text/javascript" src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.validate.min.js"></script>
-            <script type="text/javascript" src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.cookie.min.js"></script>
+            <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.rating.min.js" type="text/javascript"></script>
+            <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.validate.min.js" type="text/javascript"></script>
+            <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.cookie.min.js" type="text/javascript"></script>
             {foreach from=$BODY_JS item=js}{$js}{/foreach}
             {foreach from=$JS_SCRIPTS key=k item=script}
-            <script type="text/javascript" src="{$STORE_URL}/{$script|replace:'\\':'/'}"></script>
+            <script src="{$STORE_URL}/{$script|replace:'\\':'/'}" type="text/javascript"></script>
             {/foreach}
             <script>
                $(document).foundation({
