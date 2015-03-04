@@ -1224,7 +1224,8 @@ class Cubecart {
 					}
 					$order[$key] = $GLOBALS['tax']->priceFormat($value);
 				}
-				$order['order_date_formatted'] = formatTime($order['order_date']);
+				$order['order_date_formatted'] = formatTime($order['order_date'], false, true);
+
 				$GLOBALS['smarty']->assign('SUM', $order);
 
 				switch ($order['status']) {
@@ -2179,7 +2180,8 @@ class Cubecart {
 						$order[$key] = $GLOBALS['tax']->priceFormat($order[$key], true);
 					}
 					$order['order_status'] = $GLOBALS['language']->order_state['name_'.$order['status']];
-					$order['order_date_formatted'] = formatTime($order['order_date']);
+					$order['order_date_formatted'] = formatTime($order['order_date'], false, true);
+
 
 					$GLOBALS['smarty']->assign('SUM', $order);
 					$GLOBALS['smarty']->assign('ORDER', $order);
@@ -2318,7 +2320,8 @@ class Cubecart {
 						$order[$key] = $GLOBALS['tax']->priceFormat($order[$key], true);
 					}
 					$order['order_status'] = $GLOBALS['language']->order_state['name_'.$order['status']];
-					$order['order_date_formatted'] = formatTime($order['order_date']);
+					$order['order_date_formatted'] = formatTime($order['order_date'], false, true);
+
 					$GLOBALS['smarty']->assign('SUM', $order);
 					$GLOBALS['smarty']->assign('ORDER', $order);
 				}
