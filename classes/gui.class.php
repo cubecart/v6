@@ -1108,6 +1108,7 @@ class GUI {
 			$p++;
 			$this->_displayRandomProduct($p);
 		}
+		if($random_product) return $product;
 	}
 
 	/**
