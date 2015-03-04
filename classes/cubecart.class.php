@@ -1224,6 +1224,7 @@ class Cubecart {
 					}
 					$order[$key] = $GLOBALS['tax']->priceFormat($value);
 				}
+				$order['order_date_formatted'] = formatTime($order['order_date']);
 				$GLOBALS['smarty']->assign('SUM', $order);
 
 				switch ($order['status']) {
@@ -2171,7 +2172,6 @@ class Cubecart {
 
 					if ($order['discount']>0) {
 						$GLOBALS['smarty']->assign('DISCOUNT', true);
-
 					}
 
 					// Loop through price values, and do the formatting
@@ -2179,6 +2179,7 @@ class Cubecart {
 						$order[$key] = $GLOBALS['tax']->priceFormat($order[$key], true);
 					}
 					$order['order_status'] = $GLOBALS['language']->order_state['name_'.$order['status']];
+					$order['order_date_formatted'] = formatTime($order['order_date']);
 
 					$GLOBALS['smarty']->assign('SUM', $order);
 					$GLOBALS['smarty']->assign('ORDER', $order);
@@ -2317,6 +2318,7 @@ class Cubecart {
 						$order[$key] = $GLOBALS['tax']->priceFormat($order[$key], true);
 					}
 					$order['order_status'] = $GLOBALS['language']->order_state['name_'.$order['status']];
+					$order['order_date_formatted'] = formatTime($order['order_date']);
 					$GLOBALS['smarty']->assign('SUM', $order);
 					$GLOBALS['smarty']->assign('ORDER', $order);
 				}
