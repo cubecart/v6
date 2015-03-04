@@ -123,9 +123,9 @@ class Module {
 			$GLOBALS['main']->addTabControl($GLOBALS['language']->common['general'], $this->_module_name);
 
 			// Include module language strings - use Language class
-			$GLOBALS['language']->loadDefinitions($this->_module_name, $this->_path.'/'.'language', 'module.definitions.xml');
+			$GLOBALS['language']->loadDefinitions($this->_module_name, $this->_path.'/language', 'module.definitions.xml');
 			// Load other lang either customized ones
-			$GLOBALS['language']->loadLanguageXML($this->_module_name, '', $this->_path.'/'.'language');
+			$GLOBALS['language']->loadLanguageXML($this->_module_name, '', $this->_path.'/language');
 
 			// Enable this class as an ACP interface
 			if ($template) {
