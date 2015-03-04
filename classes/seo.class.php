@@ -243,7 +243,7 @@ class SEO {
 				if($GLOBALS['config']->get('config', 'seo_cat_add_cats') == 0) {
 					// Get last part of path
 					$cat_parts = explode('/', $path);
-					$path = array_pop($path_parts);
+					$path = array_pop($cat_parts);
 				}
 
 				break;
