@@ -242,7 +242,7 @@ class Debug {
 			$output[] = '<strong>PHP</strong>:<br />'.$this->_errorDisplay().'<hr size="1" />';
 
 			//Get the super globals
-			if (($ret = $this->_makeExportString('GET', $_GET)) !== false) {
+			if (($ret = $this->_makeExportString('GET', merge_array(array('Before Sanitise:' => $GLOBALS['RAW']['GET']), array('After Sanitise:' => $_GET)))) !== false) {
 				$output[] = $ret;
 			}
 			if (($ret = $this->_makeExportString('POST', $_POST)) !== false) {
@@ -564,7 +564,7 @@ class Debug {
 			if (is_array($value)) {
 				$output .= '<div style="margin-left: '.$left.'px;">\''.$key.'\' => '.$this->_makeExport($value, ($left + 8)).'</div>';
 			} else {
-				$output .= '<div style="margin-left: '.$left.'px;">\''.$key.'\' => '.var_export($value, true).'</div>';
+				$output .= '<div style="margin-left: '.$left.'px;">\''.$key.'\' => '.nl2br(htmlspecialchars($value)).'</div>';
 			}
 		}
 
