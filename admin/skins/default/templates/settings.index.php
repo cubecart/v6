@@ -114,9 +114,22 @@
       <h3>{$LANG.settings.title_layout}</h3>
       <fieldset>
          <legend>{$LANG.settings.title_display}</legend>
-         {* This setting has been replaced with layout > products > perpage section of the skins config.xml file
-         <div><label for="catalogue_products_per_page">{$LANG.settings.product_per_page}</label><span><input name="config[catalogue_products_per_page]" id="catalogue_products_per_page" class="textbox number" value="{$CONFIG.catalogue_products_per_page}"></span></div>
-         *}
+         {****************************************************************** 
+          * This setting has been replaced with layout > products > perpage 
+          *  section of the skins config.xml file wich includes page splits. 
+          *  Example:
+          *  <layout>
+          *     <products>
+          *        <perpage amount="6" />
+          *        <perpage default="true" amount="12" />
+          *        <perpage amount="24" />
+          *        <perpage amount="48" />
+          *        <perpage amount="96" />
+          *     </products>
+          *  </layout>
+          ****************************************************************** 
+          <div><label for="catalogue_products_per_page">{$LANG.settings.product_per_page}</label><span><input name="config[catalogue_products_per_page]" id="catalogue_products_per_page" class="textbox number" value="{$CONFIG.catalogue_products_per_page}"></span></div>
+          *}
          <input type="hidden" name="config[catalogue_products_per_page]" value="10">
          <div><label for="default_product_sort">{$LANG.settings.default_product_sort}</label>
             <span>
