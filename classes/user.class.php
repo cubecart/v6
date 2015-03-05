@@ -120,10 +120,6 @@ class User {
 	final protected function __construct() {
 		//If there is a login attempt
 		if (isset($_POST['username']) && isset($_POST['password'])) {
-			
-			if(strlen($_POST['password']) < 6) {
-				$GLOBALS['gui']->setInfo($GLOBALS['language']->account['error_pass_length']);
-			}
 
 			//Did they check the remember me box
 			$remember = (isset($_POST['remember']) && !empty($_POST['remember'])) ? true : false;
@@ -266,6 +262,10 @@ class User {
 					$GLOBALS['db']->update('CubeCart_sessions', array('customer_id' => $user[0]['customer_id']), array('session_id' => $GLOBALS['session']->getId()));
 					// Load user data
 					$this->_load();
+
+					if(strlen($password) < 6) {
+						$GLOBALS['gui']->setInfo($GLOBALS['language']->account['error_pass_length']);
+					}
 
 					$GLOBALS['session']->set('check_autoload', true);
 
