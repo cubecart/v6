@@ -101,7 +101,7 @@ if (isset($_POST['coupon']) && is_array($_POST['coupon'])) {
 		}
 	}
 	foreach ($GLOBALS['hooks']->load('admin.product.coupons.save.post_process') as $hook) include $hook;
-	httpredir(currentPage());
+	httpredir('?_g=products&node=coupons');
 }
 
 ###########################################
