@@ -52,6 +52,12 @@ class SEO {
 		'account', 'addressbook', 'basket', 'checkout', 'complete', 'confirm', 'downloads', 'gateway', 'logout', 'profile', 'recover', 'recovery', 'remote', 'vieworder', 'plugin'
 	);
 	/**
+	 * Rewrite URL Full URL
+	 *
+	 * @var bool
+	 */
+	private $_rewriteUrlFull = false;
+	/**
 	 * Meta data
 	 *
 	 * @var array
@@ -220,72 +226,73 @@ class SEO {
 			} else {
 				$path = (!empty($GLOBALS['language']->navigation['seo_path_'.$type])) ? $GLOBALS['language']->navigation['seo_path_'.$type] : $type;
 			}
+
 		} else { /*! Dymanic */
 			switch ($type) {
-			case 'cat':
-			case 'category':
-			case 'viewcat':
-				// check its not been made already
-				if (($existing = $GLOBALS['db']->select('CubeCart_seo_urls', 'path', array('type' => 'cat', 'item_id' => $id))) !== false) {
-					$path = $existing[0]['path'];
-				} elseif (is_numeric($id) && isset($this->_cat_dirs[$id])) {
-					$path = $this->getDirectory($id);
-				} elseif (!isset($this->_cat_dirs[$id])) {
-					// new category won't be in cache so it needs rebuilding
-					$GLOBALS['cache']->delete('seo.category.list');
-					$this->_getCategoryList();
-					$path = $this->getDirectory($id);
-				} else {
-					// last panic resort which shouldn't happen
-					$path = 'cat'.$id;
-				}
-
-				if($GLOBALS['config']->get('config', 'seo_cat_add_cats') == 0) {
-					// Get last part of path
-					$cat_parts = explode('/', $path);
-					$path = array_pop($cat_parts);
-				}
-
-				break;
-			case 'doc':
-			case 'document':
-			case 'viewdoc':
-				// check its not been made already
-				if (($existing = $GLOBALS['db']->select('CubeCart_seo_urls', 'path', array('type' => 'doc', 'item_id' => $id))) !== false) {
-					$path = $existing[0]['path'];
-				} else {
-					$docs = $GLOBALS['db']->select('CubeCart_documents', array('doc_name'), array('doc_id' => $id));
-					$path = $docs[0]['doc_name'];
-				}
-				break;
-			case 'prod':
-			case 'product':
-			case 'viewprod':
-				// check its not been made already
-				if (($existing = $GLOBALS['db']->select('CubeCart_seo_urls', 'path', array('type' => 'prod', 'item_id' => $id))) !== false) {
-					$path = $existing[0]['path'];
-				} elseif (($prods = $GLOBALS['db']->select('CubeCart_inventory', array('product_id', 'name', 'cat_id'), array('product_id' => (int)$id), false, 1)) !== false) {
-
-					if($GLOBALS['config']->get('config', 'seo_add_cats')==0) {
-						$path = $prods[0]['name'];
+				case 'cat':
+				case 'category':
+				case 'viewcat':
+					// check its not been made already
+					if (($existing = $GLOBALS['db']->select('CubeCart_seo_urls', 'path', array('type' => 'cat', 'item_id' => $id))) !== false) {
+						$path = $existing[0]['path'];
+					} elseif (is_numeric($id) && isset($this->_cat_dirs[$id])) {
+						$path = $this->getDirectory($id);
+					} elseif (!isset($this->_cat_dirs[$id])) {
+						// new category won't be in cache so it needs rebuilding
+						$GLOBALS['cache']->delete('seo.category.list');
+						$this->_getCategoryList();
+						$path = $this->getDirectory($id);
 					} else {
-						$cat_directory = '';
-						if (($cats = $GLOBALS['db']->select('CubeCart_category_index', array('cat_id'), array('product_id' => (int)$id), array('primary' => 'DESC'), 1)) !== false) {
-							$prods[0]['cat_id'] = $cats[0]['cat_id'];
-						}
-						$cat_directory = $this->getDirectory($prods[0]['cat_id']);
-						if($GLOBALS['config']->get('config', 'seo_add_cats')==1) {
-							// Get first part of path
-							$cat_parts = explode('/', $cat_directory);
-							$cat_directory = array_shift($cat_parts);
-						}
+						// last panic resort which shouldn't happen
+						$path = 'cat'.$id;
 					}
-					$path = empty($cat_directory) ? $prods[0]['name'] : $cat_directory.'/'.$prods[0]['name'];
-				}
-				break;
-			default:
-				$this->_url = 'index.php?_a=' . $type . '&' . $key . '=' . $id;
-				return $this->_url;
+
+					if($GLOBALS['config']->get('config', 'seo_cat_add_cats') == 0) {
+						// Get last part of path
+						$cat_parts = explode('/', $path);
+						$path = array_pop($cat_parts);
+					}
+
+					break;
+				case 'doc':
+				case 'document':
+				case 'viewdoc':
+					// check its not been made already
+					if (($existing = $GLOBALS['db']->select('CubeCart_seo_urls', 'path', array('type' => 'doc', 'item_id' => $id))) !== false) {
+						$path = $existing[0]['path'];
+					} else {
+						$docs = $GLOBALS['db']->select('CubeCart_documents', array('doc_name'), array('doc_id' => $id));
+						$path = $docs[0]['doc_name'];
+					}
+					break;
+				case 'prod':
+				case 'product':
+				case 'viewprod':
+					// check its not been made already
+					if (($existing = $GLOBALS['db']->select('CubeCart_seo_urls', 'path', array('type' => 'prod', 'item_id' => $id))) !== false) {
+						$path = $existing[0]['path'];
+					} elseif (($prods = $GLOBALS['db']->select('CubeCart_inventory', array('product_id', 'name', 'cat_id'), array('product_id' => (int)$id), false, 1)) !== false) {
+
+						if($GLOBALS['config']->get('config', 'seo_add_cats')==0) {
+							$path = $prods[0]['name'];
+						} else {
+							$cat_directory = '';
+							if (($cats = $GLOBALS['db']->select('CubeCart_category_index', array('cat_id'), array('product_id' => (int)$id), array('primary' => 'DESC'), 1)) !== false) {
+								$prods[0]['cat_id'] = $cats[0]['cat_id'];
+							}
+							$cat_directory = $this->getDirectory($prods[0]['cat_id']);
+							if($GLOBALS['config']->get('config', 'seo_add_cats')==1) {
+								// Get first part of path
+								$cat_parts = explode('/', $cat_directory);
+								$cat_directory = array_shift($cat_parts);
+							}
+						}
+						$path = empty($cat_directory) ? $prods[0]['name'] : $cat_directory.'/'.$prods[0]['name'];
+					}
+					break;
+				default:
+					$this->_url = 'index.php?_a=' . $type . '&' . $key . '=' . $id;
+					return $this->_url;
 			}
 		}
 		$safe_path = $this->_safeUrl($path);
@@ -528,17 +535,18 @@ class SEO {
 	/**
 	 * Rewrite URL
 	 *
-	 * @param string $page_html
-	 * @param bool $page_html
+	 * @param string $html
+	 * @param bool $html
 	 * @return bool
 	 */
-	public function rewriteUrls($page_html, $full_urls = false) {
-		$index = $this->_getBaseUrl($full_urls);
-		$search[0] = '#(href|action)=["\'](.*/)?[\w]+.[a-z]+\?_a\=([\w]+)\&(amp;)?([\w]+)\=([\w\-\_]+)([^"\']*)["\']#Sei';
-		$replace[0] = '"$1=\"".$index.$this->generatePath(\'$6\', \'$3\', \'$5\').$this->queryString(\'$7\')."\""';
-		$search[1] = '#(href|src|background)=([\"\'])([^\"]*)([\"\'])#Suie';
-		$replace[1] = '"$1=$2".$this->fullURL(\'$3\', $full_urls)."$4"';
-		return preg_replace($search, $replace, $page_html);
+	public function rewriteUrls($html, $full_urls = false) {
+		$this->_rewriteUrlFull  = $full_urls;
+		
+		$search 	= '#(href|action)=["\'](.*/)?[\w]+.[a-z]+\?_a\=([\w]+)\&(amp;)?([\w]+)\=([\w\-\_]+)([^"\']*)["\']#Si';
+		$rule1 		= preg_replace_callback($search, array(&$this, '_callbackRule1'), $html);
+
+		$search 	= '#(href|src|background)=([\"\'])([^\"]*)([\"\'])#Sui';
+		return preg_replace_callback($search, array(&$this, '_callbackRule2'), $rule1);
 	}
 
 	/**
@@ -710,6 +718,25 @@ class SEO {
 	}
 
 	//=====[ Private ]=======================================
+
+	/**
+	 * Get SEO path from standard one
+	 *
+	 * @return string
+	 */
+	private function _callbackRule1($matches) {
+		$base_path = $this->_getBaseUrl($this->_rewriteUrlFull);
+		return $matches[1].'="'.$base_path.$this->generatePath($matches[6], $matches[3], $matches[5]).$this->queryString($matches[7]).'"';
+	}
+
+	/**
+	 * Add base path onto SEO path
+	 *
+	 * @return string
+	 */
+	private function _callbackRule2($matches) {
+		return $matches[1].'="'.$matches[2].$this->fullURL($matches[3], $this->_rewriteUrlFull).$matches[4].'"';
+	}
 
 	/**
 	 * Create .htaccess exists and write if not
