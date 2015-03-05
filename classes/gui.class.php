@@ -1285,6 +1285,10 @@ class GUI {
 	 */
 	private function _displaySocial() {
 		
+		if(!$GLOBALS['smarty']->templateExists('templates/element.social.php')) {
+			return false;
+		}
+
 		$vars = array();
 		
 		$config = $GLOBALS['config']->get('config');
