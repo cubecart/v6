@@ -726,7 +726,7 @@ class SEO {
 	 */
 	private function _callbackRule1($matches) {
 		$base_path = $this->_getBaseUrl($this->_rewrite_url_absolute);
-		return $matches[1].'="'.$base_path.$this->generatePath($matches[6], $matches[3], $matches[5]).$this->queryString($matches[7]).'"';
+		return $matches[1].'="'.$base_path.$this->generatePath($matches[6], $matches[3], $matches[5]).$this->queryString($matches[7]);
 	}
 
 	/**
@@ -735,7 +735,7 @@ class SEO {
 	 * @return string
 	 */
 	private function _callbackRule2($matches) {
-		return $matches[1].'="'.$matches[2].$this->fullURL($matches[3], $this->_rewrite_url_absolute).$matches[4].'"';
+		return $matches[1].'='.$matches[2].$this->fullURL($matches[3], $this->_rewrite_url_absolute).$matches[4];
 	}
 
 	/**
