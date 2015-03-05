@@ -431,7 +431,10 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
       if ($new_config['recaptcha'] == 'recaptcha') {
         $new_config['recaptcha'] = true;
       }
-      
+      ## Set default RSS feed to correct value if not set, empty or our of date
+      if(empty($new_config['default_rss_feed']) || !isset($new_config['default_rss_feed']) || $new_config['default_rss_feed'] == 'http://forums.cubecart.com/index.php?act=rssout&id=1') {
+        $new_config['default_rss_feed'] = 'http://forums.cubecart.com/rss/forums/1-cubecart-news-announcements/';
+      }
       if (file_exists('language/' . $main_config['default_language'] . '.xml')) {
         $default_language = $main_config['default_language'];
       } elseif (isset($_SESSION['setup']['long_lang_identifier']) && file_exists('language/' . $_SESSION['setup']['long_lang_identifier'] . '.xml')) {
