@@ -52,11 +52,11 @@ class SEO {
 		'account', 'addressbook', 'basket', 'checkout', 'complete', 'confirm', 'downloads', 'gateway', 'logout', 'profile', 'recover', 'recovery', 'remote', 'vieworder', 'plugin'
 	);
 	/**
-	 * Rewrite URL Full URL
+	 * Rewrite URL Absolute?
 	 *
 	 * @var bool
 	 */
-	private $_rewriteUrlFull = false;
+	private $_rewrite_url_absolute = false;
 	/**
 	 * Meta data
 	 *
@@ -539,8 +539,8 @@ class SEO {
 	 * @param bool $html
 	 * @return bool
 	 */
-	public function rewriteUrls($html, $full_urls = false) {
-		$this->_rewriteUrlFull  = $full_urls;
+	public function rewriteUrls($html, $absolute = false) {
+		$this->_rewrite_url_absolute  = $absolute;
 		
 		$search 	= '#(href|action)=["\'](.*/)?[\w]+.[a-z]+\?_a\=([\w]+)\&(amp;)?([\w]+)\=([\w\-\_]+)([^"\']*)["\']#Si';
 		$rule1 		= preg_replace_callback($search, array(&$this, '_callbackRule1'), $html);
@@ -725,7 +725,7 @@ class SEO {
 	 * @return string
 	 */
 	private function _callbackRule1($matches) {
-		$base_path = $this->_getBaseUrl($this->_rewriteUrlFull);
+		$base_path = $this->_getBaseUrl($this->_rewrite_url_absolute);
 		return $matches[1].'="'.$base_path.$this->generatePath($matches[6], $matches[3], $matches[5]).$this->queryString($matches[7]).'"';
 	}
 
@@ -735,7 +735,7 @@ class SEO {
 	 * @return string
 	 */
 	private function _callbackRule2($matches) {
-		return $matches[1].'="'.$matches[2].$this->fullURL($matches[3], $this->_rewriteUrlFull).$matches[4].'"';
+		return $matches[1].'="'.$matches[2].$this->fullURL($matches[3], $this->_rewrite_url_absolute).$matches[4].'"';
 	}
 
 	/**
