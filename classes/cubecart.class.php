@@ -2198,8 +2198,10 @@ class Cubecart {
 								$shipping = new $method(false);
 								$url = $shipping->tracking($order['ship_tracking']);
 								
+								$url = (empty($url) && filter_var($order['ship_tracking'], FILTER_VALIDATE_URL)) ? $order['ship_tracking'] : $url;
+
 								$delivery = array(
-									'url'  => (!empty($url)) ? $url : false,
+									'url'  => $url,
 									'method' => $order['ship_method'],
 									'date'  => (!empty($order['ship_date'])) ? $order['ship_date'] : '',
 									'tracking' => $order['ship_tracking'],
@@ -2207,7 +2209,9 @@ class Cubecart {
 							}
 							unset($ship_class);
 						} else {
+
 							$delivery = array(
+								'url' => filter_var($order['ship_tracking'], FILTER_VALIDATE_URL) ? $order['ship_tracking'] : '',
 								'method' => $order['ship_method'],
 								'product' => $order['ship_product'],
 								'tracking' => $order['ship_tracking'],

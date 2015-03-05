@@ -43,7 +43,7 @@
 <div>{$LANG.orders.shipping_date}: {$DELIVERY.date}</div>
 {/if}
 {if !empty($DELIVERY.url)}
-<div>{$LANG.basket.track}: <a href="{$DELIVERY.url}" target="_blank">{$DELIVERY.method}{if !empty($DELIVERY.product)}: {$DELIVERY.product}{/if}</a></div>
+<div>{$LANG.orders.shipping_tracking}: <a href="{$DELIVERY.url}" target="_blank">{$DELIVERY.method}{if !empty($DELIVERY.product)}: {$DELIVERY.product}{/if}</a></div>
 {elseif !empty($DELIVERY.tracking)}
 <div>{$LANG.orders.shipping_tracking}: {$DELIVERY.tracking}</div>
 {/if}

@@ -294,7 +294,7 @@
             <div><label for="sum_ship_date">{$LANG.orders.shipping_date}</label><span><input type="text" id="sum_ship_date" name="summary[ship_date]" value="{$SUMMARY.ship_date}" class="textbox date"></span></div>
             <div><label for="sum_ship_method">{$LANG.orders.shipping_method}</label><span><input type="text" id="sum_ship_method" name="summary[ship_method]" placeholder="{$LANG.orders.shipping_method_eg}" value="{$SUMMARY.ship_method}" class="textbox"></span></div>
             <div><label for="sum_ship_product">{$LANG.orders.shipping_product}</label><span><input type="text" id="sum_ship_product" name="summary[ship_product]" placeholder="{$LANG.orders.shipping_product_eg}" value="{$SUMMARY.ship_product}" class="textbox"></span></div>
-            <div><label for="sum_ship_tracking">{$LANG.orders.shipping_tracking}</label><span><input type="text" id="sum_ship_tracking" name="summary[ship_tracking]" value="{$SUMMARY.ship_tracking}" class="textbox"></span></div>
+            <div><label for="sum_ship_tracking">{$LANG.orders.shipping_tracking} {$LANG.orders.shipping_url_or_code}</label><span><input type="text" id="sum_ship_tracking" name="summary[ship_tracking]" value="{$SUMMARY.ship_tracking}" class="textbox"></span></div>
          </fieldset>
       </div>
       <div id="order_inventory" class="tab_content">
