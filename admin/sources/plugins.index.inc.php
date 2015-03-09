@@ -139,9 +139,6 @@ if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 							$request->setData(array('null'=>0));
 							$request->setUserAgent('CubeCart');
 							$request->skiplog(true);
-							if(!$request->send()) {
-								file_get_contents($cc_domain.$cc_conf_path);
-							}
 						}
 					}
 				} else {
