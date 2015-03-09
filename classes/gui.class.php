@@ -221,7 +221,7 @@ class GUI {
 		$GLOBALS['smarty']->assign('VAL_SELF',  currentPage());
 		$canonical = $GLOBALS['smarty']->getTemplateVars('CANONICAL');
 		if(empty($canonical) && !is_numeric($canonical)) {
-			$GLOBALS['smarty']->assign('CANONICAL', currentPage(false, null, false));
+			$GLOBALS['smarty']->assign('CANONICAL', currentPage(array('sort','perpage'), null, false));
 		}
 		$GLOBALS['smarty']->assign('STORE_URL',  $GLOBALS['storeURL']);
 		$GLOBALS['smarty']->assign('ROOT_PATH',  $GLOBALS['rootRel']);
