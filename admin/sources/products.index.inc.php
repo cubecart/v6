@@ -48,7 +48,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 	$record['description'] = $GLOBALS['RAW']['POST']['description'];
 	unset($record['categories'], $record['group'], $record['image']);
 
-	if (isset($record['product_code_auto'])) {
+	if (isset($record['product_code_auto']) && $record['product_code_auto']==1) {
 		unset($record['product_code']);
 		// Generate a new product code automatically (a-la v4)
 		$record['product_code'] = generate_product_code($_POST['name']);
@@ -212,7 +212,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 		foreach ($_POST['option_add']['value'] as $offset => $value) {
 			$record = array(
 				'product'   => $product_id,
-				'option_negative' => (isset($_POST['option_add']['negative'][$offset])) ? $_POST['option_add']['negative'][$offset] : '0',
+				'option_negative' => (isset($_POST['option_add']['negative'][$offset]) && $_POST['option_add']['negative'][$offset]==1) ? $_POST['option_add']['negative'][$offset] : '0',
 				'option_price'  => $_POST['option_add']['price'][$offset],
 				'option_weight'  => $_POST['option_add']['weight'][$offset],
 				'matrix_include'  => $_POST['option_add']['matrix_include'][$offset],
