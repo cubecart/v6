@@ -322,7 +322,6 @@ class SEO {
 	 * @param bool $url
 	 */
 	public function getItem($path, $url = false) {
-
 		if (isset($_GET['seo_path'])) unset($_GET['seo_path']);
 
 		if (!empty($path)) {
@@ -335,7 +334,13 @@ class SEO {
 					return true;
 				}
 			} else {
-				httpredir('index.php');
+				if(!$GLOBALS['session']->has($path, 'seo_retry')) {
+					$GLOBALS['cache']->clear();
+					$GLOBALS['session']->set($path, '1', 'seo');
+					httpredir(CC_ROOT_REL.$path);
+				} else {
+					httpredir('index.php');
+				}
 			}
 		} else {
 			httpredir('index.php');
