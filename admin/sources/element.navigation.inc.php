@@ -46,7 +46,7 @@ $nav_items['reporting']  = array(
 );
 
 $nav_items['filemanager'] = array(
-	$lang['navigation']['nav_documents']  => array('?_g=documents', 'id' => 'nav_docs'),
+	$lang['navigation']['nav_documents']  => array('address' => '?_g=documents', 'id' => 'nav_docs'),
 	$lang['navigation']['nav_downloads']  => '?_g=filemanager&mode=digital',
 	$lang['navigation']['nav_images']   => '?_g=filemanager',
 	$lang['navigation']['nav_email_templates'] => '?_g=documents&node=email',
