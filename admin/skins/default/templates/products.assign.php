@@ -13,14 +13,13 @@
    <div id="assign" class="tab_content">
       <h3>{$LANG.catalogue.title_category_assign_to}</h3>
       <fieldset>
-         <legend>{$LANG.catalogue.title_products}</legend>
          <div class="cat_product_assign">
             {if $PRODUCTS}
-            <table width="700">
+            <table width="100%">
                <thead>
                   <tr>
                      <th width="10"><input type="checkbox" name="" value="" class="check-all" rel="products"></th>
-                     <th>{$LANG.catalogue.product_name}</th>
+                     <th>{$LANG.catalogue.title_products}</th>
                      <th nowrap="nowrap" width="150">{$LANG.catalogue.product_code}</th>
                   </tr>
                </thead>
@@ -64,13 +63,12 @@
       </fieldset>
       {if isset($CATEGORIES)}
       <fieldset>
-         <legend>{$LANG.settings.title_category}</legend>
          <div class="cat_product_assign">
-            <table width="700">
+            <table width="100%">
                <thead>
                   <tr>
                      <th width="10">&nbsp;</th>
-                     <th>{$LANG.settings.category_name}</th>
+                     <th>{$LANG.settings.title_category}</th>
                   </tr>
                </thead>
                <tbody>
