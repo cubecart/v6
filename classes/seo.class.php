@@ -334,6 +334,7 @@ class SEO {
 					return true;
 				}
 			} else {
+				// Retry once incase emties have been cached
 				if(!$GLOBALS['session']->has($path, 'seo_retry')) {
 					$GLOBALS['cache']->clear();
 					$GLOBALS['session']->set($path, '1', 'seo');
