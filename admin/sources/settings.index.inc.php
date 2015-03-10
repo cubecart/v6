@@ -351,5 +351,5 @@ if (isset($select_options)) {
 		unset($smarty_data['options']);
 	}
 }
-
+$GLOBALS['smarty']->assign('HOOK_TAB_CONTENT', $GLOBALS['hook_tab_content']);
 $page_content = $GLOBALS['smarty']->fetch('templates/settings.index.php');
