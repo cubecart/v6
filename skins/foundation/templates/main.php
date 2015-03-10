@@ -89,9 +89,9 @@
                   {$PAGE_CONTENT}
                </div>
                <div class="large-3 columns show-for-large-up">
-                  {include file='templates/box.featured.php'}
-                  {include file='templates/box.popular.php'}
-                  {include file='templates/box.sale_items.php'}
+                  {$RANDOM_PROD}
+                  {$POPULAR_PRODUCTS}
+                  {$SALE_ITEMS}
                </div>
                <a href="#" class="back-to-top"><i class="fa fa-angle-up"></i> {$LANG.common.top}</a>
             </div>
