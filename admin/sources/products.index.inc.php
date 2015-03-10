@@ -1216,7 +1216,7 @@ if (isset($_GET['action'])) {
 	$thead_sort = array (
 		'status'   => $GLOBALS['db']->column_sort('status', $lang['common']['status'], 'sort', $current_page, $_GET['sort']),
 		'digital'   => $GLOBALS['db']->column_sort('digital', $lang['common']['type'], 'sort', $current_page, $_GET['sort']),
-		'image'   => $GLOBALS['db']->column_sort('image', $lang['catalogue']['title_image'], 'sort', $current_page, $_GET['sort']),
+		'image'   => $lang['catalogue']['title_image'],
 		'name'    => $GLOBALS['db']->column_sort('name', $lang['catalogue']['product_name'], 'sort', $current_page, $_GET['sort']),
 		'product_code'  => $GLOBALS['db']->column_sort('product_code', $lang['catalogue']['product_code'], 'sort', $current_page, $_GET['sort']),
 		'price'   => $GLOBALS['db']->column_sort('price', $lang['common']['price'], 'sort', $current_page, $_GET['sort']),
