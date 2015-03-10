@@ -9,7 +9,7 @@
  * Email:  sales@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
-{if $PRODUCTS}
+{if $PRODUCTS && $CONFIG['catalogue_sale_mode']>0}
 <div class="panel" id="box-sale_items">
   <h3>{$LANG.catalogue.title_saleitems}</h3>
   <ul>
