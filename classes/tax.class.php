@@ -338,9 +338,9 @@ class Tax {
 				$string = $this->_currency_vars['symbol_left'].
 						number_format(
 							$price, 
-							$this->_currency_vars['decimal_places'],
-							$this->_currency_vars['symbol_decimal'],
-							$this->_currency_vars['symbol_thousand']
+							(empty($this->_currency_vars['decimal_places']) || !is_numeric($this->_currency_vars['decimal_places'])) ? 2 : $this->_currency_vars['decimal_places'],
+							empty($this->_currency_vars['symbol_decimal']) ? '.' : $this->_currency_vars['symbol_decimal'],
+							empty($this->_currency_vars['symbol_thousand']) ? ',' : $this->_currency_vars['symbol_thousand']
 						).
 						$this->_currency_vars['symbol_right'];
 				return str_replace(' ', '&nbsp;', $string);
