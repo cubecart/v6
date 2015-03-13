@@ -1706,6 +1706,7 @@
     <string name="error_logo_upload" introduced="5.0.0"><![CDATA[Failed to upload logo.]]></string>
     <string name="error_module_install" introduced="5.0.0"><![CDATA[Module was not installed.]]></string>
     <string name="error_settings_update" introduced="5.0.0"><![CDATA[Failed to updated settings.]]></string>
+    <string name="error_mobile_vs_responsive" introduced="6.0.0"><![CDATA[Mobile skin has been disabled as the chosen default front-end skin is responsive.]]></string>
     <string name="error_tax_class_add" introduced="5.0.0"><![CDATA[Failed to add Tax Class.]]></string>
     <string name="error_tax_class_delete" introduced="5.0.0"><![CDATA[Failed to delete Tax Class.]]></string>
     <string name="error_tax_detail_add" introduced="5.0.0"><![CDATA[Failed to add Tax Detail.]]></string>
