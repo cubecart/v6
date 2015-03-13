@@ -162,7 +162,11 @@
 	{if isset($MODE_UPGRADE_PROGRESS)}
 	  <div>
 	  <p>{$LANG_UPGRADE_IN_PROGRESS}</p>
+	  {if isset($GUI_MESSAGE)}
+	  <p>Please click continue to continue upgrade.</p>
+	  {else}
 	  <img src="images/loading.gif" align="middle" />
+	  {/if}
 	  </div>
 	{/if}
   {/if}
