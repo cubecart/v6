@@ -354,9 +354,9 @@ class ACP {
 						$item['members'][] = array(
 							'title' => ucwords($submenu['name']),
 							'url' => $submenu['url'],
-							'target' => $submenu['target'],
-							'id' => $submenu['id'],
-							'icon' => $submenu['icon']
+							'target' => isset($submenu['target']) ? $submenu['target'] : '',
+							'id' => isset($submenu['id']) ? $submenu['id'] : '',
+							'icon' => isset($submenu['icon']) ? $submenu['icon'] : ''
 						);
 					}
 					$navigation[] = $item;
