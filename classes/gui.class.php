@@ -759,7 +759,6 @@ class GUI {
 	 * @return bool
 	 */
 	private function _detectMobile($useragent = '') {
-
 		if (isset($_GET['display_mobile'])) {
 			$GLOBALS['session']->set('display_mobile', (bool)$_GET['display_mobile']);
 			httpredir('index.php');
@@ -1458,8 +1457,8 @@ class GUI {
 			$this->_skin = $GLOBALS['session']->get('skin', 'client');
 			//Try the config
 		} else if ($GLOBALS['config']->has('config', 'skin_folder'.$this->_skin_config_postfix) && isset($this->_skins[$GLOBALS['config']->get('config', 'skin_folder'.$this->_skin_config_postfix)])) {
-				$this->_skin = $GLOBALS['config']->get('config', 'skin_folder'.$this->_skin_config_postfix);
-			} else {
+			$this->_skin = $GLOBALS['config']->get('config', 'skin_folder'.$this->_skin_config_postfix);
+		} else {
 			//This is a last ditch effort to get a skin loaded
 			if (is_array($this->_skins) && !empty($this->_skins)) {
 				foreach ($this->_skins as $name => $skin) {
