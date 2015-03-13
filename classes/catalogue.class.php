@@ -489,6 +489,7 @@ class Catalogue {
 					}
 				}
 				uasort($option_list, 'cmpmc'); // sort groups
+				foreach ($GLOBALS['hooks']->load('class.catalogue.display_product_options') as $hook) include $hook;
 				return $option_list;
 			}
 		}
