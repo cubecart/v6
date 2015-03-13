@@ -8,6 +8,6 @@ foreach($files as $file) {
 }
 foreach($files as $file) {
 	if(file_exists($js_path)) {
-		$errors[] 'Please delete the file skins/foundation/js/'.$file;
+		$errors[] = 'Please delete the file skins/foundation/js/'.$file;
 	}
 }
