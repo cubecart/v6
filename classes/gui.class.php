@@ -161,7 +161,7 @@ class GUI {
 			$js = glob('skins/'.$this->_skin.'/'.'{js,scripts}/*.js', GLOB_BRACE | GLOB_NOSORT);
 			foreach ($GLOBALS['hooks']->load('class.gui.javascripts') as $hook) include $hook;
 
-			$GLOBALS['smarty']->assign('JS_SCRIPTS', str_replace('/', "/", $js));
+			$GLOBALS['smarty']->assign('JS_SCRIPTS', $js);
 
 			//Put in the live help
 			if (($livehelp_plugins = $GLOBALS['db']->select('CubeCart_modules', array('folder'), array('module' => 'livehelp', 'status' => '1'))) !== false) {

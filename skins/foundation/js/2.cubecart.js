@@ -394,8 +394,10 @@ function grid_view(duration, event) {
         event.preventDefault();
     }
     $.when($('.product_list').fadeOut(duration, function() {
-        $('.product_list').removeClass('small-block-grid-1');
-        $('.product_list').addClass('small-block-grid-3');
+        if(!mqisSmall()) {
+            $('.product_list').removeClass('small-block-grid-1');
+            $('.product_list').addClass('small-block-grid-3');
+        }
         $('.grid_view').parent('dd').addClass('active');
         $('.list_view').parent('dd').removeClass('active');
         $('.product_list_view').addClass('hide');
@@ -479,4 +481,8 @@ function mqisLarge() {
   return matchMedia(Foundation.media_queries.small).matches &&
     matchMedia(Foundation.media_queries.medium).matches &&
     matchMedia(Foundation.media_queries.large).matches;
+}
+/* We must only show grid view with 1 grid column for medium */
+if(mqisSmall()) {
+    grid_view(0);
 }
