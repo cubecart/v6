@@ -28,7 +28,7 @@
   </layout>
   <styles>
 	<style images="false" default="true">
-	  <!-- images: TRUE tells the template system that this style has its own image folder. FALSE would use the contents in the root of the images folder -->
+	  <!-- images: TRUE tells the template system that this style has its own image folder. FALSE would use the contents in the root of the images folder. For example with this as false images/image.jpg vs images/default/image.jpg if set to true -->
 	  <directory>default</directory>
 	  <name><![CDATA[Default]]></name>
 	  <description><![CDATA[Default Subtheme]]></description>
