@@ -15,6 +15,7 @@
 	<creator>CubeCart Limited</creator>
 	<homepage>http://www.cubecart.com</homepage>
 	<mobile>false</mobile>
+	<responsive>true</responsive>
   </info>
   <layout>
 	<products>
@@ -44,7 +45,7 @@
   <images>
 	<image reference="thumbnail" maximum="150" quality="80" default="noimage.png" />
 	<image reference="category" maximum="800" quality="80" default="" /><!-- Doesnt need a default -->
-	<image reference="subcategory" maximum="70" quality="80" default="noimage.png" />
+	<image reference="subcategory" maximum="105" quality="80" default="noimage.png" />
 	<image reference="gallery" maximum="50" quality="80" default="noimage.png" />
 	<image reference="normal" maximum="300" quality="80" default="noimage.png" />
 	<image reference="enlarge" maximum="600" quality="80" default="" /><!-- Doesnt need a default -->
