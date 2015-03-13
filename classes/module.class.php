@@ -257,6 +257,11 @@ class Module {
 	 * Send template date to the screen
 	 */
 	public function fetch() {
+		
+		if(!$GLOBALS['smarty']->templateExists($this->_template)) {
+			return false;
+		}
+
 		if (!empty($this->_template_data)) {
 			foreach ($this->_template_data as $key => $value) {
 				$GLOBALS['smarty']->assign($key, $value);
