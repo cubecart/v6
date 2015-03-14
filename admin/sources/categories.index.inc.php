@@ -27,7 +27,7 @@ if (isset($_POST['cat']) && is_array($_POST['cat']) && Admin::getInstance()->per
 	$keys_add  = null;
 
 	$filemanager = new FileManager(FileManager::FM_FILETYPE_IMG);
-	if (($uploaded = $filemanager->upload()) !== false) {
+	if (($uploaded = $filemanager->upload()) !== false && is_array($uploaded)) {
 		foreach ($uploaded as $file_id) {
 			$_POST['image'][(int)$file_id] = true;
 		}
