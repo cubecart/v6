@@ -102,23 +102,28 @@
                      {$product.price}
                      {/if}
                   </h3>
-                  {if $product.ctrl_purchase && !$CATALOGUE_MODE}
+                  
+                  {if $product.available == '0'}
                   <div class="row collapse">
-                     {if $product.available == '0'}
                      <div class="small-12 columns">
                         <input type="submit" value="{$LANG.common.unavailable}" class="button small disabled expand marg-top" disabled>
                      </div>
-                     {else}
+                  </div>
+                  {elseif $product.ctrl_stock && !$CATALOGUE_MODE}
+                  <div class="row collapse">
                      <div class="small-4 columns">
                         <input type="text" name="add[{$product.product_id}][quantity]" value="1" class="quantity text-center">
                      </div>
                      <div class="small-8 columns">
                         <button type="submit" value="{$LANG.catalogue.add_to_basket}" class="button small postfix">{$LANG.catalogue.add_to_basket}</button>
                      </div>
-                     {/if}
                   </div>
-                  {elseif $product.out}
-                  <input type="submit" value="{$LANG.catalogue.out_of_stock_short}" disabled class="button disabled expand small">
+                  {elseif !$CATALOGUE_MODE}
+                  <div class="row collapse">
+                     <div class="small-12 columns">
+                        <input type="submit" value="{$LANG.catalogue.out_of_stock_short}" disabled class="button disabled expand small">
+                     </div>
+                  </div>
                   {/if}
                </div>
             </div>
@@ -156,31 +161,30 @@
                {* Uncomment this if you want to show a more info link
                <a href="{$product.url}" title="{$product.name}" class="button tiny secondary left">{$LANG.common.info}</a>
                *}
-               {if $product.ctrl_purchase && !$CATALOGUE_MODE}
+               
                {if $product.available == '0'}
                <div class="row collapse marg-top">
                   <div class="small-12 columns">
                      <input type="submit" value="{$LANG.common.unavailable}" class="button small postfix disabled expand" disabled>
                   </div>
                </div>
-               {else}
+               {elseif $product.ctrl_stock && !$CATALOGUE_MODE}
                <div class="row collapse marg-top">
                   <div class="small-3 columns">
                      <input type="text" name="quantity" value="1" class="quantity required text-center">
                   </div>
                   <div class="small-9 columns ">
                      <button type="submit" value="{$LANG.catalogue.add_to_basket}" class="button small postfix">{$LANG.catalogue.add_to_basket}</button>
+                     <input type="hidden" name="add" value="{$product.product_id}">
                   </div>
                </div>
-               {/if}
-               {elseif !$CATALOGUE_MODE}
+                {elseif !$CATALOGUE_MODE}
                <div class="row collapse marg-top">
                   <div class="small-12 columns">
                      <input type="submit" value="{$LANG.catalogue.out_of_stock_short}" class="button small postfix disabled expand marg-top" disabled>
                   </div>
                </div>
                {/if}
-               <input type="hidden" name="add" value="{$product.product_id}">
             </div>
          </form>
       </li>
