@@ -374,6 +374,8 @@ class Tax {
 		if($price<=0) return false; 
 
 		if($tax_type == 999999) {
+
+			$tax_id = $tax_type; // see issue cubecart/v6#385
 			
 			$this->_tax_table_applied[$tax_id]	= 'inherited';
 			
