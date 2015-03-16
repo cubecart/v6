@@ -634,7 +634,7 @@ class Cart {
 					$product = $GLOBALS['catalogue']->getProductData($item['id'], $item['quantity'], false, 10, 1, false, $item['options_identifier']);
 					
 					if(!$product) {
-						// If we know the name of the producy no longer avaiable lets warn
+						// Warn that the product has been removed
 						if(!empty($item['name'])) {
 							$GLOBALS['gui']->setError(sprintf($GLOBALS['language']->checkout['error_item_not_available'],$item['name']));
 						}
