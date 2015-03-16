@@ -17,7 +17,6 @@
       <fieldset>
          <legend>{$LANG.module.token}</legend>
          <div><label for="plugin_token">{$LANG.module.token}</label><span><input type="textbox" class="textbox" name="plugin_token" id="plugin_token" value="" placeholder="XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX"></span></div>
-         <div><label><strong>{$LANG.common.options}</strong></label></div>
          <div><label for="backup">{$LANG.module.backup_if_exists}</label><span><input type="hidden" id="backup" name="backup" value="1" class="toggle"></span></div>
          <div><label for="backup">{$LANG.module.backup_abort}</label><span><input type="hidden" id="abort" name="abort" value="1" class="toggle"></span></div>
          <div><label>&nbsp;</label><span><input type="submit" value="{$LANG.common.go}"><input type="hidden" name="token" value="{$SESSION_TOKEN}"></span></div>
