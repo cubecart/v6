@@ -1226,6 +1226,8 @@ class Cubecart {
 				}
 				$order['order_date_formatted'] = formatTime($order['order_date'], false, true);
 
+				foreach ($GLOBALS['hooks']->load('class.cubecart.order_summary') as $hook) include $hook;
+
 				$GLOBALS['smarty']->assign('SUM', $order);
 
 				switch ($order['status']) {
@@ -2182,6 +2184,7 @@ class Cubecart {
 					$order['order_status'] = $GLOBALS['language']->order_state['name_'.$order['status']];
 					$order['order_date_formatted'] = formatTime($order['order_date'], false, true);
 
+					foreach ($GLOBALS['hooks']->load('class.cubecart.order_summary') as $hook) include $hook;
 
 					$GLOBALS['smarty']->assign('SUM', $order);
 					$GLOBALS['smarty']->assign('ORDER', $order);
@@ -2326,6 +2329,8 @@ class Cubecart {
 					}
 					$order['order_status'] = $GLOBALS['language']->order_state['name_'.$order['status']];
 					$order['order_date_formatted'] = formatTime($order['order_date'], false, true);
+
+					foreach ($GLOBALS['hooks']->load('class.cubecart.order_summary') as $hook) include $hook;
 
 					$GLOBALS['smarty']->assign('SUM', $order);
 					$GLOBALS['smarty']->assign('ORDER', $order);
