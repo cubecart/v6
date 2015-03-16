@@ -591,7 +591,7 @@ class Cart {
 	/**
 	 * Get the current basket
 	 *
-	 * @return baket/false
+	 * @return basket/false
 	 */
 	public function get() {
 		if ($GLOBALS['session']->get('hide_prices')) {
@@ -632,6 +632,16 @@ class Cart {
 				if (is_numeric($item['id'])) {
 
 					$product = $GLOBALS['catalogue']->getProductData($item['id'], $item['quantity'], false, 10, 1, false, $item['options_identifier']);
+					
+					if(!$product) {
+						// If we know the name of the producy no longer avaiable lets warn
+						if(!empty($item['name'])) {
+							$GLOBALS['gui']->setError(sprintf($GLOBALS['language']->checkout['error_item_not_available'],$item['name']));
+						}
+						unset($this->basket['contents'][$hash]);
+						continue;
+					}
+
 					$product['quantity'] = $item['quantity'];
 					if ($GLOBALS['tax']->salePrice($product['price'], $product['sale_price'])) {
 						$product['price'] = $product['sale_price'];

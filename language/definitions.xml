@@ -526,6 +526,7 @@
     <string name="error_voucher_expired" introduced="5.0.0"><![CDATA[Sorry, that voucher has expired.]]></string>
     <string name="error_voucher_none" introduced="5.0.0"><![CDATA[Sorry, that voucher does not exist.]]></string>
     <string name="error_voucher_product" introduced="5.0.0"><![CDATA[Sorry, your basket does not qualify for that coupon.]]></string>
+    <string name="error_item_not_available" introduced="6.0.1"><![CDATA[Sorry but %s is no longer available and has been removed form your basket.]]></string>
     <string name="error_voucher_wrong_product" introduced="5.0.0"><![CDATA[Sorry, that voucher is not valid for the items in your basket.]]></string>
     <string name="make_payment" introduced="5.0.0"><![CDATA[A total of <strong>%s</strong> is due for order number <strong>%s</strong>]]></string>
     <string name="pay_now" introduced="5.0.0"><![CDATA[Pay Now]]></string>
