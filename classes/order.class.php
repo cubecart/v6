@@ -266,8 +266,8 @@ class Order {
 		);
 
 		// Format data
+		$order_summary['order_date'] = formatTime($order_summary['order_date'],false,true);
 		$order_summary['ship_date']  = ((int)(str_replace('-', '', $order_summary['ship_date'])) > 0) ? formatDispatchDate($order_summary['ship_date']) : "";
-		$order_summary['ship_date']  = $order_summary['ship_date'] ? formatDispatchDate($order_summary['ship_date']) : "";
 		$order_summary['gateway']    = str_replace('_', ' ', $order_summary['gateway']);
 
 
