@@ -294,8 +294,8 @@ $system = array(
 	'cc_build'  => null,
 	'php_version' => PHP_VERSION,
 	'mysql_version' => $GLOBALS['db']->serverVersion(),
-	'server'  => $_SERVER['SERVER_SOFTWARE'],
-	'client'  => $_SERVER['HTTP_USER_AGENT'],
+	'server'  => htmlspecialchars($_SERVER['SERVER_SOFTWARE']),
+	'client'  => htmlspecialchars($_SERVER['HTTP_USER_AGENT']),
 	'dir_images' => dirsize(CC_ROOT_DIR.'/images', $tmp1),
 	'dir_files'  => dirsize(CC_ROOT_DIR.'/files', $tmp2),
 );
