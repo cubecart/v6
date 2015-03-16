@@ -30,6 +30,7 @@
             <tr>
                <th width="10">{$LANG.common.status}</th>
                <th>{$LANG.common.name_and_desc}</th>
+               <th>{$LANG.hooks.version}</th>
                <th>{$LANG.common.type}</th>
                <th width="10">&nbsp;</th>
             </tr>
@@ -42,6 +43,7 @@
                   <input type="hidden" name="type[{$module.basename}]" value="{$module.type}" />
                </td>
                <td><a href="{$module.edit_url}">{$module.name}</a><br>{$module.description}</td>
+               <td>{$module.version}</td>
                <td>{$module.type|ucfirst}</td>
                <td nowrap>
                   <a href="{$module.edit_url}" class="edit"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
