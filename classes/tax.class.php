@@ -44,7 +44,7 @@ class Tax {
 	final protected function __construct() {
 		$cache = Cache::getInstance();
 		// Should we be showing prices?
-		if (Config::getInstance()->get('config', 'catalogue_hide_prices') && !User::getInstance()->is() && !CC_IN_ADMIN) {
+		if (Config::getInstance()->get('config', 'catalogue_hide_prices') && !User::getInstance()->is() && !CC_IN_ADMIN && !$GLOBALS['session']->has('admin_id','admin_data')) {
 			Session::getInstance()->set('hide_prices', true);
 		} else {
 			Session::getInstance()->delete('hide_prices');
