@@ -2280,6 +2280,7 @@ class Cubecart {
 						$order['status'] = array('icon' => $icon, 'text' => $GLOBALS['language']->order_state['name_'.(int)$order['status']]);
 						$vars['orders'][] = $order;
 					}
+					foreach ($GLOBALS['hooks']->load('class.cubecart.order_list') as $hook) include $hook;
 					$GLOBALS['smarty']->assign('ORDERS', $vars['orders']);
 					$GLOBALS['smarty']->assign('PAGINATION', $GLOBALS['db']->pagination(count($orders), $per_page, $page));
 				}
