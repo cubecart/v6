@@ -753,7 +753,7 @@ class SEO {
 		
 		$cache_id = 'seo_check';
 
-		if($GLOBALS['cache']->read($cache_id)) {
+		if(!isset($GLOBALS['cache']) || !is_object($GLOBALS['cache']) || $GLOBALS['cache']->read($cache_id)) {
 			return false;
 		} else {
 

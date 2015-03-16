@@ -227,6 +227,7 @@ function currentPage($excluded = null, $included = null, $remove_excluded = true
 		}
 	}
 
+	if( !isset($GLOBALS['seo']) || !is_object($GLOBALS['seo']) ) return $currentPage;
 	// $_GET['seo_path'] should never be set... but if it is this will fix it
 	if(isset($_GET['seo_path']) && !empty($_GET['seo_path'])) {
 		$currentPage = SEO::getInstance()->getItem($_GET['seo_path'], true);
