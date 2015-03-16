@@ -1233,6 +1233,7 @@
     <string name="cache_search" introduced="5.0.0"><![CDATA[Clear search history]]></string>
     <string name="db_data" introduced="5.0.0"><![CDATA[Include data in backup]]></string>
     <string name="db_drop_table" introduced="5.0.0"><![CDATA[Add 'DROP TABLE' to structure]]></string>
+    <string name="db_3rdparty" introduced="6.0.2"><![CDATA[Backup tables <u>not</u> matching `%sCubeCart_`]]></string>
     <string name="db_structure" introduced="5.0.0"><![CDATA[Include database structure]]></string>
     <string name="db_with_selected" introduced="5.0.0"><![CDATA[With selected]]></string>
     <string name="db_restored" introduced="5.1.0"><![CDATA[Database has been restored successfully.]]></string>

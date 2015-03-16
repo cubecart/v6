@@ -202,9 +202,9 @@ class Database_Contoller {
 	 *
 	 * @return string
 	 */
-	public function doSQLBackup($dropTables = false, $incStructure = true, $incRows = true, $file_name, $compress = false) {
+	public function doSQLBackup($dropTables = false, $incStructure = true, $incRows = true, $file_name, $compress = false, $all_tables = false) {
 		$data = "-- --------------------------------------------------------\n-- CubeCart SQL Dump\n-- version ".CC_VERSION."\n-- http://www.cubecart.com\n-- \n-- Host: ".$GLOBALS['config']->get('config', 'dbhost')."\n-- Generation Time: ".strftime($GLOBALS['config']->get('config', 'time_format'), time())."\n-- Server version: ".$this->serverVersion()."\n-- PHP Version: ".phpversion()."\n-- \n-- Database: `".$GLOBALS['config']->get('config', 'dbdatabase')."`\n";
-		$tables = $this->getRows();
+		$tables = $this->getRows(false, 'CubeCart_' ,$all_tables);
 
 		$fp = fopen($file_name, 'w');
 
@@ -290,14 +290,17 @@ class Database_Contoller {
 	 * @param string $query
 	 * @return array
 	 */
-	public function getRows($query = false) {
+	public function getRows($query = false, $native_prefix = '', $all_tables = false) {
 		// Used in maintenance/backup and database, also in upgrade
 		if (!$query) {
 			$this->_query = 'SHOW tables';
 		} else {
 			$this->_query = $query;
 		}
-		$this->_query .= (empty($this->_prefix)) ?  '' : " LIKE '".$this->_prefix."%'";
+
+		$table_match = $this->_prefix.$native_prefix;
+
+		$this->_query .= (empty($table_match) || $all_tables == true) ?  '' : " LIKE '".$table_match."%'";
 		$this->_execute(false);
 		$tableNames = $this->_result;
 		foreach ($tableNames as $tableName) {

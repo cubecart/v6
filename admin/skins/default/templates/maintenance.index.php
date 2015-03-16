@@ -73,6 +73,10 @@
 		<label for="db_data">{$LANG.common.compress_file}</label>
 		<span><input type="hidden" name="compress" id="compress" class="toggle" value="1"></span>
 	  </div>
+	  <div>
+		<label for="db_data">{$LANG.maintain.db_3rdparty|replace:'%s':$CONFIG.dbprefix}</label>
+		<span><input type="hidden" name="db_3rdparty" id="db_3rdparty" class="toggle" value="0"></span>
+	  </div>
 	</fieldset>
 	<div>
 		<input type="hidden" name="previous-tab" id="previous-tab" value="backup">

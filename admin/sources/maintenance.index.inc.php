@@ -461,7 +461,8 @@ if (isset($_POST['backup'])) {
 		} else {
 			$full = ($_POST['drop'] && $_POST['structure'] && $_POST['data']) ? '_full' : ''; 
 			$fileName 	= CC_ROOT_DIR.'/backup/database'.$full.'_'.CC_VERSION.'_'.$glob['dbdatabase']."_".date("dMy-His").'.sql';
-			$write = $GLOBALS['db']->doSQLBackup($_POST['drop'],$_POST['structure'],$_POST['data'], $fileName, $_POST['compress']);
+			$all_tables = (isset($_POST['db_3rdparty']) && $_POST['db_3rdparty'] == '1') ? true : false;
+			$write = $GLOBALS['db']->doSQLBackup($_POST['drop'],$_POST['structure'],$_POST['data'], $fileName, $_POST['compress'], $all_tables);
 			if($write) {
 				$GLOBALS['main']->setACPNotify($lang['maintain']['db_backup_complete']);
 			} else {
