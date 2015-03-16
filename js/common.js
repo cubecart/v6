@@ -387,8 +387,7 @@ jQuery(document).ready(function() {
 			} else {
 				action += "?";
 			}
-
-			//$.debug(action);
+			
 			$.ajax({
 				url: action + '_g=ajaxadd',
 				type: 'POST',
@@ -396,7 +395,6 @@ jQuery(document).ready(function() {
 				data: add,
 				complete: function(returned) {
 					if(returned.responseText.match("Redir")) {
-						//$.debug(returned);
 						window.location = returned.responseText.substr(6);
 					} else {
 						basket.replaceWith(returned.responseText);
