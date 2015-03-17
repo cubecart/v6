@@ -34,14 +34,14 @@
 {/if}
 {if $PRODUCTS}
 <div class="row">
-   <div class="small-12 large-8 columns">
+   <div class="small-12 medium-8 columns">
       {if isset($SORTING)}
       <form action="{$VAL_SELF}" class="autosubmit" method="post">
          <div class="row">
-            <div class="small-2 columns">
+            <div class="small-3 medium-2 columns">
                <label for="product_sort">{$LANG.form.sort_by}</label>
             </div>
-            <div class="small-5 columns left">
+            <div class="small-9 medium-5 columns left">
                <select name="sort" id="product_sort">
                   <option value="" disabled>{$LANG.form.please_select}</option>
                   {foreach from=$SORTING item=sort}
@@ -54,7 +54,7 @@
       </form>
       {/if}
    </div>
-   <div class="large-4 columns show-for-medium-up">
+   <div class="medium-4 columns show-for-medium-up">
       <dl class="sub-nav right" id="layout_toggle">
          <dd><a href="#" class="grid_view"><i class="fa fa-th-large"></i></a></dd>
          <dd class="active"><a href="#" class="list_view"><i class="fa fa-th-list"></i></a></dd>
