@@ -1226,6 +1226,7 @@
     <string name="seo_urls_not_emptied" introduced="6.0.0"><![CDATA[Failed to clear SEO URL's. Maybe this has been done already or there were none to delete.]]></string>
     <string name="affected_rows" introduced="5.0.0"><![CDATA[Affected Rows]]></string>
     <string name="backup_options" introduced="5.0.0"><![CDATA[Backup Options]]></string>
+    <string name="skip_images" introduced="6.0.2"><![CDATA[Skip images/source folder]]></string>
     <string name="cache_clear" introduced="5.0.0"><![CDATA[Clear cache]]></string>
     <string name="cache_image" introduced="5.0.0"><![CDATA[Clear image cache]]></string>
     <string name="cache_language" introduced="5.0.0"><![CDATA[Clear language cache]]></string>

@@ -436,12 +436,19 @@ if (isset($_GET['files_backup'])) {
 	$destination_filepath = 'backup/files_'.CC_VERSION.'_'.date("dMy-His").'.zip';
 	$archive = new PclZip($destination_filepath);
 
-	$files = glob('*');
-	foreach ($files as $file) {
-		if ($file !== "backup") {
-			$backup_list[] = $file;
-		}
+	$skip_folders = 'backup|cache|images/cache';
+	if(isset($_POST['skip_images']) && $_POST['skip_images']=='1') {
+		$skip_folders .= '|images/source';
 	}
+
+	$backup_list = array();
+	$files = glob_recursive('*');
+	foreach ($files as $file) {
+		$file_match = preg_replace('#^./#','',$file);
+		if($file == 'images' || preg_match('#^('.$skip_folders.')#', $file_match)) continue;
+		$backup_list[] = $file;
+	}
+	
 	$v_list = $archive->create($backup_list);
 	if ($v_list == 0) {
 		@unlink($destination_filepath);

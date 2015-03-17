@@ -47,6 +47,12 @@
   <h3>{$LANG.maintain.title_files_backup}</h3>
   <form action="?_g=maintenance&node=index&files_backup=1#backup" method="post">
 	<p>{$LANG.maintain.files_backup_desc}</p>
+	<fieldset><legend>{$LANG.maintain.backup_options}</legend>
+	  <div>
+		<label for="skip_images">{$LANG.maintain.skip_images}</label>
+		<span><input type="hidden" name="skip_images" id="skip_images" class="toggle" value="0"></span>
+	  </div>
+	</fieldset>
 	<div>
 		<input type="submit" name="backup" class="delete" title="{$LANG.notification.confirm_continue}" value="{$LANG.maintain.tab_backup}">
 		<input type="hidden" name="token" value="{$SESSION_TOKEN}">
