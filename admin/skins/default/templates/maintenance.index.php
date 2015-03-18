@@ -52,6 +52,10 @@
 		<label for="skip_images">{$LANG.maintain.skip_images}</label>
 		<span><input type="hidden" name="skip_images" id="skip_images" class="toggle" value="0"></span>
 	  </div>
+	  <div>
+		<label for="skip_downloads">{$LANG.maintain.skip_downloads}</label>
+		<span><input type="hidden" name="skip_downloads" id="skip_downloads" class="toggle" value="0"></span>
+	  </div>
 	</fieldset>
 	<div>
 		<input type="submit" name="backup" class="delete" title="{$LANG.notification.confirm_continue}" value="{$LANG.maintain.tab_backup}">

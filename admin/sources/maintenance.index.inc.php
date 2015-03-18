@@ -440,6 +440,9 @@ if (isset($_GET['files_backup'])) {
 	if(isset($_POST['skip_images']) && $_POST['skip_images']=='1') {
 		$skip_folders .= '|images/source';
 	}
+	if(isset($_POST['skip_downloads']) && $_POST['skip_downloads']=='1') {
+		$skip_folders .= '|files';
+	}
 
 	$backup_list = array();
 	$files = glob_recursive('*');
