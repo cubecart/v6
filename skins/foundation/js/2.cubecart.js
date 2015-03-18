@@ -201,7 +201,7 @@ jQuery(document).ready(function() {
         return false;
     });
     
-    $( "#ccScroll" ).on( "click", "#ccScroll-next", function(event) {
+    $("#ccScroll").on( "click", "#ccScroll-next", function(event) {
         
         event.preventDefault();
 
