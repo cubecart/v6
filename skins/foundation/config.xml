@@ -54,5 +54,4 @@
 	<image reference="medium" maximum="500" quality="80" default="noimage.png" />
 	<image reference="large" maximum="600" quality="80" default="" /><!-- Doesnt need a default -->
   </images>
-  
 </skin>
