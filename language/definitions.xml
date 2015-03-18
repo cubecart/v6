@@ -1962,23 +1962,12 @@
     <string name="default_doc_title_terms" introduced="5.0.0"><![CDATA[Terms and Conditions]]></string>
     <string name="default_doc_title_privacy" introduced="5.0.0"><![CDATA[Privacy Policy]]></string>
     <string name="default_doc_content" introduced="5.0.0"><![CDATA[This can be managed under <span class="navTitle">Documents in the admin control panel.</span>]]></string>
-    <string name="default_doc_content_welcome" introduced="5.0.0"><![CDATA[<ul class="example-orbit" data-orbit>
-  <li>
-    <img src="skins/foundation/images/examples/slide1.jpg" alt="slide 1" />
-    <div class="orbit-caption">
-      Promotional Message One
-    </div>
-  </li>
-  <li class="active">
-    <img src="skins/foundation/images/examples/slide2.jpg" alt="slide 2" />
-  </li>
-  <li>
-    <img src="skins/foundation/images/examples/slide3.jpg" alt="slide 3" />
-    <div class="orbit-caption">
-      Promotional Message Two
-    </div>
-  </li>
-</ul>This message and the slider above (including the images) can be edited using the <strong><span style="color: red;">Rich</span> <span style="color: blue;">Text</span> <span style="color: green;">Editor</span></strong> which can be found in the admin control panel of your store under <i>File Manager &gt; Documents</i>.]]></string>
+    <string name="default_doc_content_welcome" introduced="5.0.0"><![CDATA[<ul class="bxslider">
+   <li><img src="skins/foundation/images/examples/slide1.jpg" title="Promotional Message One" /></li>
+   <li><img src="skins/foundation/images/examples/slide2.jpg" /></li>
+   <li><img src="skins/foundation/images/examples/slide3.jpg" title="Promotional Message Two" /></li>
+</ul>
+<p>This message and the slider above (including the images) can be edited using the <strong><span style="color: red;">Rich</span> <span style="color: blue;">Text</span> <span style="color: green;">Editor</span></strong> which can be found in the admin control panel of your store under <i>File Manager &gt; Documents</i>.</p>]]></string>
     <string name="db_host" introduced="5.0.0"><![CDATA[Database Host]]></string>
     <string name="db_name" introduced="5.0.0"><![CDATA[Database Name]]></string>
     <string name="db_prefix" introduced="5.0.0"><![CDATA[Table Prefix]]></string>

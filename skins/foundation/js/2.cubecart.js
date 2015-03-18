@@ -3,6 +3,8 @@ jQuery(document).ready(function() {
 
     var window_loc_hash = window.location.hash;
 
+    $('.bxslider').bxSlider({captions:true});
+
     if(!mqisSmall()) {
         $('.field_small_only').attr('disabled', true);
     }

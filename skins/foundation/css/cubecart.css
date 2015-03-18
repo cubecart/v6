@@ -79,7 +79,7 @@ div.alert-box a {
     z-index: 100;
     width: 250px;
     top: 60px;
-    margin-left: -153px;
+    margin-left: -161px;
 }
 .small-basket-detail-container {
     position: fixed;
@@ -110,7 +110,7 @@ div.alert-box a {
     border-left: 7px solid transparent;
     border-right: 7px solid transparent;
     border-bottom: 7px solid #000;
-    margin-left: 75%;
+    margin-left: 85%;
 }
 
 /* End Mini Basket */
@@ -232,9 +232,6 @@ textarea#contact_enquiry {
 .fa-submit {
     font-size: 45px;
     color: #008CBA;
-}
-.orbit-timer {
-    display:none;
 }
 #recaptcha_widget .fa {
     font-size: 30px;

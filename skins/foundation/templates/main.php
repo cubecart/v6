@@ -24,6 +24,7 @@
       <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/cubecart.common.css" rel="stylesheet">
       <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/cubecart.helpers.css" rel="stylesheet">
       <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/cubecart.{$SKIN_SUBSET}.css" rel="stylesheet">
+      <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/jquery.bxslider.css" rel="stylesheet">
       <link href="//fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type='text/css'>
       {foreach from=$CSS key=css_keys item=css_files}
       <link href="{$STORE_URL}/{$css_files}" rel="stylesheet" type="text/css" media="screen">
@@ -114,20 +115,13 @@
             <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.rating.min.js" type="text/javascript"></script>
             <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.validate.min.js" type="text/javascript"></script>
             <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.cookie.min.js" type="text/javascript"></script>
+            <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.bxslider.min.js" type="text/javascript"></script>
             {foreach from=$BODY_JS item=js}{$js}{/foreach}
             {foreach from=$JS_SCRIPTS key=k item=script}
             <script src="{$STORE_URL}/{$script|replace:'\\':'/'}" type="text/javascript"></script>
             {/foreach}
             <script>
-               $(document).foundation({
-                  orbit: {
-                     slide_number: false,
-                     timer_show_progress_bar: false
-                  },
-                  equalizer: {
-                     equalize_on_stack: true
-                  }
-               });
+               {literal}$(document).foundation({equalizer:{equalize_on_stack:true}});{/literal}
             </script>
             {$LIVE_HELP}
             {$DEBUG_INFO}
