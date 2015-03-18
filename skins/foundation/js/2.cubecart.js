@@ -3,9 +3,7 @@ jQuery(document).ready(function() {
 
     var window_loc_hash = window.location.hash;
 
-    $('.bxslider').bxSlider({captions:true});
-
-    if(!mqisSmall()) {
+    if(Foundation.utils.is_medium_up()) {
         $('.field_small_only').attr('disabled', true);
     }
 
@@ -396,7 +394,7 @@ function grid_view(duration, event) {
         event.preventDefault();
     }
     $.when($('.product_list').fadeOut(duration, function() {
-        if(!mqisSmall()) {
+        if(Foundation.utils.is_medium_up()) {
             $('.product_list').removeClass('small-block-grid-1');
             $('.product_list').addClass('small-block-grid-3');
         }
@@ -405,9 +403,7 @@ function grid_view(duration, event) {
         $('.product_list_view').addClass('hide');
         $('.product_grid_view').removeClass('hide');
         $('.product_list').fadeIn(duration, function() {
-            $.cookie('product_view', 'grid', {
-                expires: 730
-            });
+        $.cookie('product_view', 'grid', {expires: 730});
         });
     })).done(function() {
         $(document).foundation('equalizer','reflow');
@@ -427,9 +423,7 @@ function list_view(duration, event) {
         $('.product_grid_view').addClass('hide');
         $('.product_list_view').removeClass('hide');
         $('.product_list').fadeIn(duration, function() {
-            $.cookie('product_view', 'list', {
-                expires: 730
-            });
+        $.cookie('product_view', 'list', {expires: 730});
         });
     })).done(function() {
         $(document).foundation('equalizer','reflow');
@@ -469,22 +463,8 @@ function update_quantity(rel, sign) {
     }
     return false;
 }
-/* Detect Current Media Query */
-function mqisSmall() {
-      return matchMedia(Foundation.media_queries.small).matches &&
-        !matchMedia(Foundation.media_queries.medium).matches;
-    }
-function mqisMedium() {
-  return matchMedia(Foundation.media_queries.small).matches &&
-    matchMedia(Foundation.media_queries.medium).matches &&
-    !matchMedia(Foundation.media_queries.large).matches;
-}
-function mqisLarge() {
-  return matchMedia(Foundation.media_queries.small).matches &&
-    matchMedia(Foundation.media_queries.medium).matches &&
-    matchMedia(Foundation.media_queries.large).matches;
-}
+
 /* We must only show grid view with 1 grid column for medium */
-if(mqisSmall()) {
+if(Foundation.utils.is_small_only()) {
     grid_view(0);
 }

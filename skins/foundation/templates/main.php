@@ -121,7 +121,10 @@
             <script src="{$STORE_URL}/{$script|replace:'\\':'/'}" type="text/javascript"></script>
             {/foreach}
             <script>
-               {literal}$(document).foundation({equalizer:{equalize_on_stack:true}});{/literal}
+               {literal}
+               $(document).foundation({equalizer:{equalize_on_stack:true}});
+               $('.bxslider').bxSlider({captions:true});
+               {/literal}
             </script>
             {$LIVE_HELP}
             {$DEBUG_INFO}
