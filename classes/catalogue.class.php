@@ -1167,6 +1167,7 @@ class Catalogue {
 	 * @return string
 	 */
 	public function imagePath($input, $mode = 'medium', $path = 'relative', $return_placeholder = true) {
+		
 		$defaults = true;
 		if (is_numeric($input)) {
 			if (($result = $GLOBALS['db']->select('CubeCart_filemanager', false, array('file_id' => (int)$input))) !== false) {
@@ -1190,7 +1191,7 @@ class Catalogue {
 			}
 			
 			if ($files) {
-				$default_image = str_replace('/', '/', $GLOBALS['storeURL'].'/'.$files[0]);
+				$default_image = $GLOBALS['storeURL'].'/'.$files[0];
 			}
 		} else {
 			$default_image = '';
