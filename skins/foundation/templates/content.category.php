@@ -21,7 +21,7 @@
 </div>
 {/if}
 {if isset($SUBCATS) && $SUBCATS}
-<ul class="small-block-grid-6 text-center show-for-medium-up" data-equalizer>
+<ul class="medium-block-grid-6 text-center show-for-medium-up" data-equalizer>
    {foreach from=$SUBCATS item=subcat}
    <li data-equalizer-watch>
       <a href="{$subcat.url}" title="{$subcat.cat_name}">
