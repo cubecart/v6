@@ -1184,7 +1184,7 @@ class Catalogue {
 		if ($return_placeholder && isset($skins['images'][$mode])) {
 			$default = (string)$skins['images'][$mode]['default'];
 			
-			if($GLOBALS['gui']->getStyle() !== '') { // do we use a seperate style folder for images?
+			if($skins['styles'][$GLOBALS['gui']->getStyle()]['images']) { // do we use a seperate style folder for images?
 				$files = glob('skins/'.$GLOBALS['gui']->getSkin().'/'.'images/{common,'.$GLOBALS['gui']->getStyle().'}/'.$default , GLOB_BRACE);
 			} else {
 				$files = glob('skins/'.$GLOBALS['gui']->getSkin().'/'.'images/'.$default , GLOB_BRACE);
