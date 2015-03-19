@@ -213,8 +213,6 @@ class Catalogue {
 
 		if (!empty($catData)) {
 			$GLOBALS['smarty']->assign('SUBCATS', $this->displaySubCategory(isset($_GET['cat_id']) ? $_GET['cat_id'] : ''));
-
-
 			// Generate Breadcrumbs
 			$string = $GLOBALS['seo']->getDirectory((isset($catData['cat_id'])) ? $catData['cat_id'] : '', true, '|');
 			$cats = explode('|', $string);
@@ -1233,14 +1231,14 @@ class Catalogue {
 				$img = $filename;
 				break;
 			case 'root':  ## Calculate the absolute filesystem path
-				$img = str_replace('/', '/', CC_ROOT_DIR.'/images/'.$folder.'/'.$filename);
+				$img = CC_ROOT_DIR.'/images/'.$folder.'/'.$filename;
 				break;
 			case 'url':   ## Calculate the absolute url
-				$img = str_replace('/', '/', $GLOBALS['storeURL'].'/images/'.$folder.'/'.$filename);
+				$img = $GLOBALS['storeURL'].'/images/'.$folder.'/'.$filename;
 				break;
 			case 'rel':
 			case 'relative': ## Calculate the relative web path
-				$img = str_replace('/', '/', $GLOBALS['rootRel'].'images/'.$folder.'/'.$filename);
+				$img = $GLOBALS['rootRel'].'images/'.$folder.'/'.$filename;
 				break;
 			}
 			return $img;
