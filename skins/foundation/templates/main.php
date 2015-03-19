@@ -71,7 +71,9 @@
                </div>
             </div>
             <div class="row hide" id="small-search">
-               <div class="small-12 columns">{include file='templates/box.search.php'}</div>
+               <div class="small-12 columns">
+                  {include file='templates/box.search.php'}
+               </div>
             </div>
             <div class="row">
                <div class="small-12 columns small-collapse">

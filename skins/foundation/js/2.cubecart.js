@@ -36,14 +36,8 @@ jQuery(document).ready(function() {
         $('#review_write').slideDown();
         return false;
     });
-    $(".show-small-search").click(function() {
-        if ($(this).hasClass('hidden')) {
-            $("#small-search").slideDown();
-            $(this).removeClass('hidden');
-        } else {
-            $("#small-search").slideUp();
-            $(this).addClass('hidden');
-        }
+    $(".show-small-search").click(function() { 
+        $('#small-search').slideToggle();
         return;
     });
     $(".hide_skin_selector").click(function(e) {
