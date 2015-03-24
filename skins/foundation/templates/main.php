@@ -102,13 +102,14 @@
                <div class="row">
                   <div class="medium-7 large-7 columns">
                      {include file='templates/box.documents.php'}
-                     {$COPYRIGHT}
+                     <span class="show-for-medium-up">{$COPYRIGHT}</span>
                   </div>
                   <div class="medium-5 large-5 columns">
                      {$SOCIAL_LIST}
                      <div class="row collapse">
                         <div class="large-12 columns">
                            {include file='templates/box.newsletter.php'}
+                           <span class="show-for-small-only">{$COPYRIGHT}</span>
                         </div>
                      </div>
                   </div>
