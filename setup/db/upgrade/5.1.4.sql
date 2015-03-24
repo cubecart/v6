@@ -1,1 +1,0 @@
-ALTER TABLE  `CubeCart_order_inventory` ADD  `hash` VARCHAR( 32 ) NULL; #EOQ
