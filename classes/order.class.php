@@ -1164,7 +1164,7 @@ class Order {
 
 		foreach ($GLOBALS['hooks']->load('class.order.order_summary') as $hook) include $hook;
 
-		if (!$check = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id'), array('cart_order_id' => $this->_order_id))) {
+		if (!$check = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id'), array('cart_order_id' => $this->_order_id), false, false, false, false)) {
 			$update = false;
 		}
 		if ($update) {

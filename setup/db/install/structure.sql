@@ -665,7 +665,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_summary` (
 	`lang` varchar(5) DEFAULT NULL,
 	`note_to_customer` TEXT,
 	PRIMARY KEY (`id`),
-	KEY `cart_order_id` (`cart_order_id`),
+	UNIQUE KEY `cart_order_id` (`cart_order_id`),
 	KEY `customer_id` (`customer_id`),
 	KEY `status` (`status`),
 	KEY `email` (`email`),
