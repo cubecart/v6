@@ -59,7 +59,7 @@
       {$DELIVERY.line1}<br>
       {if $DELIVERY.line2}{$DELIVERY.line2}<br>{/if}
       {$DELIVERY.town}<br>
-      {$DELIVERY.state}, {$BILLING.postcode}<br>
+      {$DELIVERY.state}, {$DELIVERY.postcode}<br>
       {$DELIVERY.country_iso}
       <div class="pad-top"><a href="#" class="button small show_address_form"><i class="fa fa-reply"></i> {$LANG.form.make_changes}</a></div>
    </div>
