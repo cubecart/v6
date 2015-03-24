@@ -78,7 +78,7 @@
     <string name="recover_password_text" introduced="5.0.0"><![CDATA[If you have forgotten your password, put your email in the box below and we'll send instructions to regain access]]></string>
     <string name="register" introduced="5.0.0"><![CDATA[Register]]></string>
     <string name="register_welcome" introduced="6.0.0"><![CDATA[New here? Please click the button below to register.]]></string>
-    <string name="register_mailing" introduced="5.0.0"><![CDATA[Check this box to subscribe to our mailing list.]]></string>
+    <string name="register_mailing" introduced="5.0.0"><![CDATA[Subscribe to mailing list.]]></string>
     <string name="register_text" introduced="6.0.0"><![CDATA[Please complete the fields below to register.]]></string>
     <string name="login_here" introduced="6.0.0"><![CDATA[Login here]]></string>
     <string name="want_to_signup" introduced="6.0.0"><![CDATA[Want to signup?]]></string>
@@ -127,7 +127,7 @@
     <string name="default_billing_address" introduced="5.0.0"><![CDATA[Default Billing Address]]></string>
     <string name="default_delivery_address" introduced="5.0.0"><![CDATA[Default Delivery Address]]></string>
     <string name="delivery_address" introduced="5.0.0"><![CDATA[Delivery Address]]></string>
-    <string name="delivery_is_billing" introduced="5.0.0"><![CDATA[My delivery address is the same as my billing address.]]></string>
+    <string name="delivery_is_billing" introduced="5.0.0"><![CDATA[Deliver to billing address.]]></string>
     <string name="form_address_select" introduced="5.0.0"><![CDATA[-- Predefined Addresses --]]></string>
     <string name="line1" introduced="5.0.0"><![CDATA[Address]]></string>
     <string name="line2" introduced="5.0.0"><![CDATA[&nbsp;]]></string>
