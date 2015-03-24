@@ -358,14 +358,13 @@ class FileManager {
 					// Maximum download limit has been reached
 					if ($GLOBALS['config']->get('config', 'download_count') > 0 && (int)$download['downloads'] >= $GLOBALS['config']->get('config', 'download_count')) $error = self::FM_DL_ERROR_MAXDL;
 					if (!empty($error)) return false;
-					if ($data = $this->getFileInfo($download['product_id']) !== false) {
-
-
+					$data = $this->getFileInfo($download['product_id']);
+					if ($data !== false) {
 						// Deliver file contents
 						if (isset($data['file']) && ($data['is_url'] || file_exists($data['file']))) {
-							if ($is_url) {
+							if ($data['is_url']) {
 								$GLOBALS['db']->update('CubeCart_downloads', array('downloads' => $download['downloads']+1), array('digital_id' => $download['digital_id']));
-								httpredir($file);
+								httpredir($data['file']);
 								return true;
 							} else {
 								ob_end_clean();
