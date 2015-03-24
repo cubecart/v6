@@ -676,7 +676,7 @@ class GUI {
 
 		if ($skins) {
 			foreach ($skins as $skin) {
-				$xml = $this->getSkinConfig($data_file);
+				$xml = $this->getSkinConfig($skin);
 				if (isset($xml->styles)) {
 					## List substyles
 					foreach ($xml->styles->style as $style) {
