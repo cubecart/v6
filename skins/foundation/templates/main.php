@@ -126,7 +126,7 @@
             <script>
                {literal}
                $(document).foundation({equalizer:{equalize_on_stack:true}});
-               $('.bxslider').bxSlider({captions:true});
+               $('.bxslider').bxSlider({auto:true,captions:true});
                {/literal}
             </script>
             {$LIVE_HELP}
