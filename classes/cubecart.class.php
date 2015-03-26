@@ -1654,32 +1654,22 @@ class Cubecart {
 	 * Display gateways (Semi depreciated)
 	 */
 	private function _displayGateways($name = false) {
-		$where = array('module' => 'gateway', 'status' => '1');
+		$where = array('status' => '1');
 		$this->_basket =& $GLOBALS['cart']->basket;
 
 		if ($name) {
 			$where['folder'] = $name;
 			// Update Order Summary with gateway name
 			$GLOBALS['db']->update('CubeCart_order_summary', array('gateway' => $name), array('cart_order_id' => $this->_basket['cart_order_id']));
+		} else {
+			$where['module'] = 'gateway';
 		}
 		$gateways = $GLOBALS['db']->select('CubeCart_modules', false, $where, array('position' => 'ASC'));
 		// Gateway hooks
-		if(!$name) {
-			foreach ($GLOBALS['hooks']->load('class.cubecart.display_gateways') as $hook) include $hook;
-		}
+		foreach ($GLOBALS['hooks']->load('class.cubecart.display_gateways') as $hook) include $hook;
 
 		if ($gateways) {
-			$skip_auto_jump = false;
-			if (!isset($_REQUEST['gateway'])) {
-				foreach ($gateways as $gateway) {
-					if ($gateway['plugin']) {
-						$skip_auto_jump = true;
-						break;
-					}
-				}
-			}
-
-			if (count($gateways) == 1 && !$skip_auto_jump) {
+			if (count($gateways) == 1) {
 				if (!isset($gateways[0])) {
 					sort($gateways);
 				}
