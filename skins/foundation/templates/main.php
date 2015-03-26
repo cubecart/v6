@@ -96,7 +96,7 @@
                   {include file='templates/box.popular.php'}
                   {include file='templates/box.sale_items.php'}
                </div>
-               <a href="#" class="back-to-top"><i class="fa fa-angle-up"></i> {$LANG.common.top}</a>
+               <a href="#" class="back-to-top"><span class="show-for-small-only"><i class="fa fa-angle-up"></i></span><span class="show-for-medium-up"><i class="fa fa-angle-up"></i> {$LANG.common.top}</span></a>
             </div>
             <footer>
                <div class="row">

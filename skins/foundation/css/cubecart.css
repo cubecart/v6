@@ -212,9 +212,9 @@ span.flag.flag-DK {background-position: 0 -88px}
 	bottom: 3em;
 	right: 0px;
 	text-decoration: none;
-	color: #000000;
+	color: #000;
 	background-color: #EBEBEB;
-	padding: 1em;
+	padding: 0.5em 1em;
 	display: none;
 	z-index: 100;
 }
