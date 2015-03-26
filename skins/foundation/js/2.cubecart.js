@@ -14,9 +14,9 @@ jQuery(document).ready(function() {
         colorbox.attr('href', '#').attr('data-reveal-id', 'colorbox');
 
         $('.colorbox').after(
-            $('<div>').attr('id', 'colorbox').addClass('reveal-modal').addClass('tiny').attr('data-reveal','').attr('aria-labelledby',title).attr('aria-hidden','true').attr('role', 'dialog').html('<h3>'+title+'</h3><img src="'+href+'">')
+            $('<div>').attr('id', 'colorbox').addClass('reveal-modal').addClass('tiny').attr('data-reveal','').attr('aria-labelledby',title).attr('aria-hidden','true').attr('role', 'dialog').html('<h3>'+title+'</h3><img src="'+href+'"><a class="close-reveal-modal">&#215;</a>')
         );
-        $(".colorbox").click(function() {
+        $(".gateway_wrapper .colorbox").click(function() {
             $('#colorbox').foundation('reveal', 'open');
         });
     }
