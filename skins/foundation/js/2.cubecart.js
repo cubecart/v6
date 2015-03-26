@@ -6,7 +6,20 @@ jQuery(document).ready(function() {
     if(Foundation.utils.is_medium_up()) {
         $('.field_small_only').attr('disabled', true);
     }
+    if($('.gateway_wrapper .colorbox').length) {
+        var colorbox = $('.colorbox');
+        var href = colorbox.attr('href');
+        var title = colorbox.attr('title');
 
+        colorbox.attr('href', '#').attr('data-reveal-id', 'colorbox');
+
+        $('.colorbox').after(
+            $('<div>').attr('id', 'colorbox').addClass('reveal-modal').addClass('tiny').attr('data-reveal','').attr('aria-labelledby',title).attr('aria-hidden','true').attr('role', 'dialog').html('<h3>'+title+'</h3><img src="'+href+'">')
+        );
+        $(".colorbox").click(function() {
+            $('#colorbox').foundation('reveal', 'open');
+        });
+    }
     $("#eu_cookie_button").click(function() {
         $('#eu_cookie_dialogue').slideUp();
         $.cookie('accept_cookies', 1, {
