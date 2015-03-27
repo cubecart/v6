@@ -378,14 +378,17 @@ class Order {
 				if ($GLOBALS['config']->get('config', 'admin_notify_status')=="1" && $this->_email_admin_enabled && $admin_notify = $this->_notifyAdmins()) {
 
 					$admin_mailer = Mailer::getInstance();
-					if (($content = $admin_mailer->loadContent('admin.order_received')) !== false) {
+
+					$message_id = md5('admin.order_received'.$status_id.$order_id);
+
+					if (!$GLOBALS['session']->has($message_id, 'email') && ($content = $admin_mailer->loadContent('admin.order_received')) !== false) {
 						$this->assignOrderDetails(null, true);
 						$admin_mailer->sendEmail($admin_notify, $content);
+						$GLOBALS['session']->set($message_id, true, 'email');
 						unset($content);
 					}
 				}
-
-
+				
 				break;
 
 			case self::ORDER_PROCESS;
@@ -409,9 +412,13 @@ class Order {
 				// Send email to store admins (2 IS a string) :)
 				if ($GLOBALS['config']->get('config', 'admin_notify_status')=="2" && $this->_email_enabled && $this->_email_admin_enabled && $admin_notify = $this->_notifyAdmins()) {
 					$admin_mailer = Mailer::getInstance();
-					if (($content = $admin_mailer->loadContent('admin.order_received')) !== false) {
+					
+					$message_id = md5('admin.order_received'.$status_id.$order_id);
+
+					if (!$GLOBALS['session']->has($message_id, 'email') && ($content = $admin_mailer->loadContent('admin.order_received')) !== false) {
 						$this->assignOrderDetails(null, true);
 						$admin_mailer->sendEmail($admin_notify, $content);
+						$GLOBALS['session']->set($message_id, true, 'email');
 						unset($content);
 					}
 				}
@@ -1167,6 +1174,7 @@ class Order {
 		if (!$check = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id'), array('cart_order_id' => $this->_order_id), false, false, false, false)) {
 			$update = false;
 		}
+
 		if ($update) {
 			// Update Summary
 			$GLOBALS['db']->update('CubeCart_order_summary', $record, array('cart_order_id' => $this->_basket['cart_order_id']));
