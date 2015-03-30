@@ -46,7 +46,7 @@
       <h3>{$LANG.email.title_send_test}</h3>
       <p>{$LANG.email.help_test_send}</p>
       <fieldset>
-         <div><label for="email_test">{$LANG.email.test_email}</label><span><input type="text" name="newsletter[test_email]" id="email_test" class="textbox" value=""> <input type="submit" value="{$LANG.email.save_send_test}"></span></div>
+         <div><label for="email_test">{$LANG.email.test_email}</label><span><input type="text" name="newsletter[test_email]" id="email_test" class="textbox" value=""> <input type="submit" value="{$LANG.email.save_send_test}" class="tiny"></span></div>
       </fieldset>
    </div>
    {include file='templates/element.hook_form_content.php'}
