@@ -80,7 +80,9 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 			
 			$row	= 0;
 			$insert	= 0;
-			$now	= date('Y-m-d H:i:s', time());
+			if($cycle == 1) {
+				$GLOBALS['session']->set('date_added', date('Y-m-d H:i:s', time()), 'import');
+			}
 			while (($data = fgetcsv($fp, false, str_replace('tab', "\t", $delimiter))) !== false) {
 				$row++;
 				if ($cycle == 1 && $has_header && $row == 1) {
@@ -150,7 +152,7 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 				}
 				// Insert if we have a product record with at minimum a value for the product name
 				if (isset($product_record) && !empty($product_record) && !empty($product_record['name'])) {
-					$product_record['date_added']	= $now;
+					$product_record['date_added']	= $GLOBALS['session']->get('date_added', 'import');
 					// Insert product
 					if(!isset($product_record['product_code']) || empty($product_record['product_code'])) {
 						$product_record['product_code'] = generate_product_code($product_record['name']);
