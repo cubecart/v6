@@ -5,14 +5,14 @@
       <title>{$LANG.dashboard.title_admin_cp}</title>
       <link rel="shortcut icon" href="{$STORE_URL}/favicon.ico" type="image/x-icon">
       <link href='//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
-      <link rel="stylesheet" type="text/css" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/styles/layout.css" media="screen">
-      <link rel="stylesheet" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/styles/font-awesome.min.css">
+      <link rel="stylesheet" type="text/css" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/styles/layout.css?{$VERSION_HASH}" media="screen">
+      <link rel="stylesheet" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/styles/font-awesome.min.css?{$VERSION_HASH}">
       {if isset($JQUERY_STYLES)}
       {foreach from=$JQUERY_STYLES item=style}
-      <link rel="stylesheet" type="text/css" href="{$style}" media="screen">
+      <link rel="stylesheet" type="text/css" href="{$style}?{$VERSION_HASH}" media="screen">
       {/foreach}
       {/if}
-      <link rel="stylesheet" type="text/css" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/styles/styles.php" media="screen">
+      <link rel="stylesheet" type="text/css" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/styles/styles.php?{$VERSION_HASH}" media="screen">
    </head>
    <body>
       <div id="header">
@@ -89,7 +89,7 @@
       </ol>
       <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/jquery-1.11.2.min.js"></script>
       <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/jquery-ui-1.11.2.min.js"></script>
-      <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/plugins.php"></script>
+      <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/plugins.php?{$VERSION_HASH}"></script>
       <!-- Include CKEditor -->
       <script type="text/javascript" src="includes/ckeditor/ckeditor.js"></script>
       <script type="text/javascript" src="includes/ckeditor/adapters/jquery.js"></script>
@@ -110,7 +110,7 @@
          });
          {/literal}
       </script>
-      <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/admin.min.js"></script>
+      <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/admin.min.js?{$VERSION_HASH}"></script>
       {if isset($CLOSE_WINDOW)}
       <script type="text/javascript">
          $(document).ready(function () {
