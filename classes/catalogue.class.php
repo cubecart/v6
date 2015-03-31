@@ -434,9 +434,11 @@ class Catalogue {
 									);
 								}
 					
+								$decimal_price_sign = $value['option_negative'] ? '-' : '';
+
 								$option_list[$value['option_id']]['values'][] = array(
 									'assign_id'  => $value['assign_id'],
-									'decimal_price'   => $value['option_price'],
+									'decimal_price'   => (string)$decimal_price_sign.$value['option_price'],
 									'price'   => (isset($value['option_price']) && $value['option_price']!=0) ? Tax::getInstance()->priceFormat($value['option_price'], true) : false,
 									'symbol'  => (isset($value['option_price']) && $value['option_price']!=0 && $value['option_negative'] == 0) ? '+' : '-',
 									'value_id'  => $value['value_id'],
@@ -465,6 +467,9 @@ class Catalogue {
 							$symbol = (isset($option[0]['option_price']) && $option[0]['option_negative'] == 0) ? '+' : '-';
 							$description = trim(str_replace(array($option[0]['option_name'].':','('.$symbol.$price.')'),'',$selected[$option[0]['assign_id']]));
 							
+							
+							$decimal_price_sign = $option[0]['option_negative'] ? '-' : '';
+
 							$option_list[] = array(
 								'type'   => $option[0]['option_type'],
 								'option_id'  => $option[0]['option_id'],
@@ -472,7 +477,7 @@ class Catalogue {
 								'option_name' => $option[0]['option_name'],
 								'required'  => (bool)$option[0]['option_required'],
 								'price'   => $price,
-								'decimal_price'   => $option[0]['option_price'],
+								'decimal_price'   => (string)$decimal_price_sign.$option[0]['option_price'],
 								'symbol'  => $symbol,
 								'priority'      => $option['priority'],
 								'value'	=> $description
