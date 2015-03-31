@@ -467,7 +467,6 @@ class Catalogue {
 							$symbol = (isset($option[0]['option_price']) && $option[0]['option_negative'] == 0) ? '+' : '-';
 							$description = trim(str_replace(array($option[0]['option_name'].':','('.$symbol.$price.')'),'',$selected[$option[0]['assign_id']]));
 							
-							
 							$decimal_price_sign = $option[0]['option_negative'] ? '-' : '';
 
 							$option_list[] = array(
