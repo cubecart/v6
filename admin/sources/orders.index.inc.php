@@ -154,7 +154,7 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
 		$order->orderStatus($_POST['order']['status'], $order_id, true);
 	} else {
 		// Update/create summary
-		$update_status = $GLOBALS['db']->update('CubeCart_order_summary', $record, array('cart_order_id' => $order_id));
+		$update_status = $GLOBALS['db']->update('CubeCart_order_summary', $record, array('cart_order_id' => $order_id), true, array('phone', 'mobile'));
 		// Update order status, if set
 		//$order_status = $order->orderStatus($_POST['order']['status'], $order_id, true);
 		$order_status = $order->orderStatus($_POST['order']['status'], $order_id);
