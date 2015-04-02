@@ -279,6 +279,11 @@ jQuery(document).ready(function() {
             price_inc_options();
         });
     }
+
+    /* We must only show grid view with 1 grid column for medium */
+    if(Foundation.utils.is_small_only()) {
+        grid_view(0);
+    }
 });
 
 function price_inc_options() {
@@ -469,9 +474,4 @@ function update_quantity(rel, sign) {
         $('#checkout_form').removeAttr("action").attr("action", '#basket_item_' + rel);
     }
     return false;
-}
-
-/* We must only show grid view with 1 grid column for medium */
-if(Foundation.utils.is_small_only()) {
-    grid_view(0);
 }
