@@ -112,6 +112,35 @@ class Encryption {
 	}
 
 	/**
+	 * Get encryption key
+	 *
+	 * @return string
+	 */
+	public function getEncryptKey() {
+		if($GLOBALS['config']->has('config', 'enc_key')) {
+			return $GLOBALS['config']->get('config', 'enc_key');
+		} else {
+			return $this->setEncryptKey();
+		}
+	}
+
+	/**
+	 * Set encryption key
+	 *
+	 * @return string
+	 */
+	public function setEncryptKey() {
+
+		$key = $GLOBALS['config']->get('config', 'license_key');
+
+		if(empty($key)) {
+			$key = randomString();
+		}
+		$GLOBALS['config']->set('config', 'enc_key', $key);
+		return $key;
+	}
+
+	/**
 	 * Setup encryption
 	 *
 	 * @param string $key
@@ -120,8 +149,8 @@ class Encryption {
 	 * @param string $mode
 	 */
 	public function setup($key = '', $iv = '', $cipher = MCRYPT_RIJNDAEL_256, $mode = MCRYPT_MODE_CBC) {
-		$key   = (!empty($key)) ? $key : $GLOBALS['config']->get('config', 'license_key');
-		$iv    = (!empty($iv)) ? $iv : $GLOBALS['config']->get('config', 'license_key');
+		$key   = (!empty($key)) ? $key : $this->getEncryptKey();
+		$iv    = (!empty($iv)) ? $iv : $this->getEncryptKey();
 
 		$this->_cipher = $cipher;
 		$this->_mode = $mode;
