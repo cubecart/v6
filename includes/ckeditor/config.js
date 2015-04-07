@@ -22,3 +22,6 @@ CKEDITOR.editorConfig = function(config) {
 	config.entities_greek = false ;
 	config.protectedSource.push(/\{foreach[\s\S]*?}|\{\/foreach}/g);
 }
+CKEDITOR.on('instanceReady', function(ev) {
+    ev.editor.dataProcessor.writer.selfClosingEnd = '>';
+});
