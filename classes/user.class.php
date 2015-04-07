@@ -263,7 +263,9 @@ class User {
 					// Load user data
 					$this->_load();
 
-					if(strlen($password) < 6) {
+					$pass_len = strlen($password);
+
+					if($pass_len > 0 && $pass_len < 6) {
 						$GLOBALS['gui']->setInfo($GLOBALS['language']->account['error_pass_length']);
 					}
 
