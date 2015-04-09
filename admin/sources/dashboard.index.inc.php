@@ -247,7 +247,7 @@ if ($GLOBALS['config']->has('config', 'default_rss_feed') && !$GLOBALS['config']
 
 	$default_rss_feed = $GLOBALS['config']->get('config', 'default_rss_feed');
 
-	$url = ($default_rss_feed == "http://forums.cubecart.com/index.php?act=rssout&id=1") ? 'http://forums.cubecart.com/rss/forums/1-cubecart-news-announcements/' : $default_rss_feed;
+	$url = ($default_rss_feed == "http://forums.cubecart.com/index.php?act=rssout&id=1") ? 'https://forums.cubecart.com/forum/1-news-announcements.xml' : $default_rss_feed;
 
 	$url = parse_url($url);
 	$path = (isset($url['query'])) ? $url['path'].'?'.$url['query'] : $url['path'];
