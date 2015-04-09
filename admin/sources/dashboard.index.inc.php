@@ -247,7 +247,7 @@ if ($GLOBALS['config']->has('config', 'default_rss_feed') && !$GLOBALS['config']
 
 	$default_rss_feed = $GLOBALS['config']->get('config', 'default_rss_feed');
 
-	$url = ($default_rss_feed == "http://forums.cubecart.com/index.php?act=rssout&id=1") ? 'https://forums.cubecart.com/forum/1-news-announcements.xml' : $default_rss_feed;
+	$url = (preg_match('/(act=rssout&id=1|1-cubecart-news-announcements)/', $default_rss_feed)) ? 'https://forums.cubecart.com/forum/1-news-announcements.xml' : $default_rss_feed;
 
 	$url = parse_url($url);
 	$path = (isset($url['query'])) ? $url['path'].'?'.$url['query'] : $url['path'];
@@ -256,6 +256,7 @@ if ($GLOBALS['config']->has('config', 'default_rss_feed') && !$GLOBALS['config']
 	$request->skiplog(true);
 	$request->setMethod('post');
 	$request->setData('Null');
+
 	if (($response = $request->send()) !== false) {
 		try {
 			if (($data = new SimpleXMLElement($response)) !== false) {
@@ -264,11 +265,14 @@ if ($GLOBALS['config']->has('config', 'default_rss_feed') && !$GLOBALS['config']
 					$news[$key] = (string)$value;
 				}
 				if ($data['version'] >= 2) {
+					$i = 1;
 					foreach ($data->channel->item as $item) {
 						$news['items'][] = array(
 							'title'   => (string)$item->title,
 							'link'   => (string)$item->link,
 						);
+						if($i==5) break;
+						$i++;
 					}
 				}
 				$GLOBALS['smarty']->assign('NEWS', $news);
