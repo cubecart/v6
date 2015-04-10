@@ -2565,7 +2565,7 @@ class Cubecart {
 				);
 
 				$GLOBALS['smarty']->assign('STORE_LOGO', $GLOBALS['gui']->getLogo(true, 'invoices'));
-				
+				foreach ($GLOBALS['hooks']->load('class.cubecart.print.receipt') as $hook) include $hook;
 				$GLOBALS['smarty']->display('templates/print.receipt.php');
 			}
 			$GLOBALS['debug']->supress();

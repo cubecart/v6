@@ -126,6 +126,7 @@
  <hook trigger="class.cubecart.order_list" deprecated="" />
  <hook trigger="class.cubecart.order_summary" deprecated="" />
  <hook trigger="class.cubecart.product_price" deprecated="" />
+ <hook trigger="class.cubecart.print.receipt" deprecated="" />
  <hook trigger="class.cubecart.review" deprecated="" />
  <hook trigger="class.cubecart.review.insert" deprecated="" />
  <hook trigger="class.gui.css" deprecated="" />
