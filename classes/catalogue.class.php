@@ -372,12 +372,6 @@ class Catalogue {
 				}
 				$GLOBALS['gui']->addBreadcrumb($product['name'], currentPage());
 			}
-			// Fire up recaptcha
-			if ($GLOBALS['config']->get('config', 'recaptcha') && !$GLOBALS['session']->get('confirmed', 'recaptcha')) {
-				$GLOBALS['smarty']->assign('DISPLAY_RECAPTCHA', recaptcha_get_html($GLOBALS['recaptcha_keys']['captcha_public'], $GLOBALS['recaptcha']['error'], CC_SSL));
-				$recaptcha = $GLOBALS['config']->get('config', 'recaptcha');
-				$GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
-			}
 
 			// Output to main GUI
 			foreach ($GLOBALS['hooks']->load('class.cubecart.display_product') as $hook) include $hook;

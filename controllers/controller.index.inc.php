@@ -72,18 +72,23 @@ if ($GLOBALS['config']->get('config', 'recaptcha') && !$GLOBALS['session']->get(
 	$recaptcha['error'] = null;
 	$recaptcha['confirmed'] = false;
 
-	if($GLOBALS['config']->get('config', 'recaptcha')==2 && isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
-		$g_data = array(
-			'secret' => $GLOBALS['config']->get('config', 'recaptcha_secret_key'),
-			'response' => $_POST['g-recaptcha-response'],
-			'remoteip' => get_ip_address()
-		);
-		$json = file_get_contents('https://www.google.com/recaptcha/api/siteverify?'.http_build_query($g_data));
-		$g_result = json_decode($json);
-		if($g_result->success) {
-			$recaptcha['confirmed'] = true;
-		} else {
+	if($GLOBALS['config']->get('config', 'recaptcha')==2 && isset($_POST['g-recaptcha-response'])) {
+
+		if(empty($_POST['g-recaptcha-response'])) {
 			$recaptcha['error'] = $GLOBALS['language']->form['verify_human_fail'];
+		} else {
+			$g_data = array(
+				'secret' => $GLOBALS['config']->get('config', 'recaptcha_secret_key'),
+				'response' => $_POST['g-recaptcha-response'],
+				'remoteip' => get_ip_address()
+			);
+			$json = file_get_contents('https://www.google.com/recaptcha/api/siteverify?'.http_build_query($g_data));
+			$g_result = json_decode($json);
+			if($g_result->success) {
+				$recaptcha['confirmed'] = true;
+			} else {
+				$recaptcha['error'] = $GLOBALS['language']->form['verify_human_fail'];
+			}
 		}
 	} else {
 		require CC_INCLUDES_DIR.'lib/recaptcha/recaptchalib.php';
