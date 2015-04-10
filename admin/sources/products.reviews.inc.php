@@ -34,12 +34,22 @@ if (!empty($_POST['delete']['email'])) {
 	$delete_array_email = array('email' => $_POST['delete']['email']);
 	$bulk_delete = true;
 }
+if (isset($_POST['multi-status']) && isset($_POST['go'])) {
+    switch ($_POST['multi-status']) {
+        case 'delete':
+            if (!empty($_POST['delete']['individual'])) {
+                $delete_array_individual = array('id' => array_keys($_POST['delete']['individual']));
+                $bulk_delete = true;
+            }
+        break;
+    }
+}
 if (!empty($_POST['delete']['ip_address'])) {
 	$delete_array_ip_address = array('ip_address' => $_POST['delete']['ip_address']);
 	$bulk_delete = true;
 }
 if ($bulk_delete) {
-	$delete_array = array_merge($delete_array_email, $delete_array_ip_address);
+	$delete_array = array_merge($delete_array_individual, $delete_array_email, $delete_array_ip_address);
 	if ($GLOBALS['db']->delete('CubeCart_reviews', $delete_array)) {
 		$GLOBALS['main']->setACPNotify($lang['reviews']['notify_review_deleted']);
 	} else {
