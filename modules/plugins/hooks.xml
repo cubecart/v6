@@ -123,6 +123,7 @@
  <hook trigger="class.cubecart.display_basket.alternate" deprecated="" />
  <hook trigger="class.cubecart.display_basket.related" deprecated="" />
  <hook trigger="class.cubecart.document_widgets" deprecated="" />
+ <hook trigger="class.cubecart.gallery" deprecated="" />
  <hook trigger="class.cubecart.login" deprecated="" />
  <hook trigger="class.cubecart.order_list" deprecated="" />
  <hook trigger="class.cubecart.order_summary" deprecated="" />

@@ -1714,6 +1714,7 @@ class Catalogue {
 						$json['image_'.$image['id']] = $image;
 					}
 				}
+				foreach ($GLOBALS['hooks']->load('class.cubecart.gallery') as $hook) include $hook;
 				$GLOBALS['smarty']->assign('GALLERY_JSON', json_encode($json));
 				return $return;
 			}
