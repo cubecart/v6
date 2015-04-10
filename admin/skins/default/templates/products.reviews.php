@@ -27,7 +27,7 @@
          {/foreach}
          </select>
          <input type="submit" class="submit mini_button" name="filter" value="{$LANG.common.go}">
-         <a href="?_g=products&node=reviews">{$LANG.common.reset}</a>
+         <a href="?_g=products&amp;node=reviews">{$LANG.common.reset}</a>
       </div>
       {foreach from=$REVIEWS item=review}
       <div class="note">
@@ -44,8 +44,8 @@
             <span style="float: right;">
             {section name=i start=1 loop=6 step=1}<input type="radio" class="rating" name="rating_{$review.id}" value="{$smarty.section.i.index}" disabled="disabled" {if $review.rating == $smarty.section.i.index}checked="checked"{/if}>{/section}
             </span>
-            <a href="index.php?_a=product&product_id={$review.product_id}" target="_blank">{$review.product.name}</a> &raquo;
-            {$review.date} - {$review.name} <<a href="mailto:{$review.email}">{$review.email}</a>> {$review.ip_address}
+            <a href="index.php?_a=product&amp;product_id={$review.product_id}" target="_blank">{$review.product.name}</a> &raquo;
+            {$review.date} - {$review.name} &lt;<a href="mailto:{$review.email}">{$review.email}</a>&gt; {$review.ip_address}
          </div>
       </div>
       {/foreach}
