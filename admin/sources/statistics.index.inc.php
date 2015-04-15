@@ -195,7 +195,7 @@ if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
 	$g_graph_data[5]['hAxis'] = $lang['dashboard']['inv_products'];;
 	$g_graph_data[5]['vAxis'] = $lang['common']['percentage'];
 	
-	$GLOBALS['smarty']->assign('PRODUCT_SALES', $smarty_data['product_sales']);
+	$GLOBALS['smarty']->assign('PRODUCT_SALES', $smarty_data[5]);
 	
 	$GLOBALS['smarty']->assign('PAGINATION_SALES', $GLOBALS['db']->pagination($numrows, $per_page, $page, 5, 'page_sales', 'stats_prod_sales', ' ', false));
 	unset($results,$result,$divider);
@@ -297,7 +297,7 @@ if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
 	$g_graph_data[8]['hAxis'] = $lang['dashboard']['inv_customers'];
 	$g_graph_data[8]['vAxis'] = $lang['statistics']['total_expenditure'];
 	
-	$GLOBALS['smarty']->assign('BEST_CUSTOMERS', $smarty_data['best_customers']);
+	$GLOBALS['smarty']->assign('BEST_CUSTOMERS', $smarty_data[8]);
 
 	$GLOBALS['smarty']->assign('PAGINATION_BEST', $GLOBALS['db']->pagination($numrows, $per_page, $page, 5, 'page_customers', 'stats_best_customers', ' ', false));
 	unset($results, $result, $divider);
