@@ -158,7 +158,7 @@ class GUI {
 			}
 
 			//Put in the javascripts
-			$js = glob('skins/'.$this->_skin.'/'.'{js,scripts}/*.js', GLOB_BRACE | GLOB_NOSORT);
+			$js = glob('skins/'.$this->_skin.'/'.'{js,scripts}/*.js', GLOB_BRACE);
 			foreach ($GLOBALS['hooks']->load('class.gui.javascripts') as $hook) include $hook;
 
 			$GLOBALS['smarty']->assign('JS_SCRIPTS', $js);
