@@ -82,22 +82,35 @@ $seo  = SEO::getInstance();
 $newsletter = Newsletter::getInstance();
 
 if (isset($_POST['newsletter']) && !empty($_POST['newsletter'])) {
+	
 	$redirect = false;
-	$_POST['newsletter']['content_html'] = $GLOBALS['RAW']['POST']['newsletter']['content_html'];
-	if ($newsletter->saveNewsletter($_POST['newsletter'])) {
-		$redirect = true;
-        $_POST['newsletter']['newsletter_id'] = (!empty($_POST['newsletter']['newsletter_id'])) ? $_POST['newsletter']['newsletter_id'] : $newsletter->_newsletter_id;
-		$GLOBALS['main']->setACPNotify($lang['email']['notify_news_save']);
-	} else {
-		$GLOBALS['main']->setACPWarning($lang['email']['error_news_save']);
+	$proceed = true;
+
+	if(empty($_POST['newsletter']['subject'])) {
+		$proceed = false;
+		$GLOBALS['main']->setACPWarning($lang['email']['error_no_subject']);	
 	}
-	if (isset($_POST['newsletter']['test_email']) && !empty($_POST['newsletter']['test_email'])) {
-		if ($newsletter->sendNewsletter($_POST['newsletter']['newsletter_id'], false, $_POST['newsletter']['test_email'])) {
-			$GLOBALS['main']->setACPNotify($lang['email']['notify_news_test_sent']);
+	if(empty($_POST['newsletter']['content_html']) && empty($_POST['newsletter']['content_text'])) {
+		$proceed = false;
+		$GLOBALS['main']->setACPWarning($lang['email']['error_no_message']);
+	}
+	if($proceed) {
+		$_POST['newsletter']['content_html'] = $GLOBALS['RAW']['POST']['newsletter']['content_html'];
+		if ($newsletter->saveNewsletter($_POST['newsletter'])) {
+			$redirect = true;
+	        $_POST['newsletter']['newsletter_id'] = (!empty($_POST['newsletter']['newsletter_id'])) ? $_POST['newsletter']['newsletter_id'] : $newsletter->_newsletter_id;
+			$GLOBALS['main']->setACPNotify($lang['email']['notify_news_save']);
+		} else {
+			$GLOBALS['main']->setACPWarning($lang['email']['error_news_save']);
 		}
-	}
-	if ($redirect) {
-		httpredir('?_g=customers&node=email');
+		if (isset($_POST['newsletter']['test_email']) && !empty($_POST['newsletter']['test_email'])) {
+			if ($newsletter->sendNewsletter($_POST['newsletter']['newsletter_id'], false, $_POST['newsletter']['test_email'])) {
+				$GLOBALS['main']->setACPNotify($lang['email']['notify_news_test_sent']);
+			}
+		}
+		if ($redirect) {
+			httpredir('?_g=customers&node=email');
+		}
 	}
 }
 
