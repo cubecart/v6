@@ -403,7 +403,7 @@ class Catalogue {
 							$selected[$selected_assign_id] = $value;
 						}
 					}
-					$selected[$selected_assign_id] = $value;
+					$selected[$value] = $value;
 				}
 			}
 
@@ -424,7 +424,7 @@ class Catalogue {
 										'option_id'  => $value['option_id'],
 										'option_name' => $value['option_name'],
 										'required'  => (bool)$value['option_required'],
-										'selected' => ($selected[$value['assign_id']]) ? true : false
+										'selected' => isset($selected[$value['assign_id']]) ? true : false
 									);
 								}
 					
@@ -437,7 +437,7 @@ class Catalogue {
 									'symbol'  => (isset($value['option_price']) && $value['option_price']!=0 && $value['option_negative'] == 0) ? '+' : '-',
 									'value_id'  => $value['value_id'],
 									'value_name' => $value['value_name'],
-									'selected' => ($selected[$value['assign_id']]) ? true : false
+									'selected' => isset($selected[$value['assign_id']]) ? true : false
 								);
 								
 								if($selected[$value['assign_id']]) {
