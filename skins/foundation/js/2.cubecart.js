@@ -416,6 +416,7 @@ function grid_view(duration, event) {
         $('.product_grid_view').removeClass('hide');
         $('.product_grid_view .quantity').prop('disabled', false);
         $('.product_list_view .quantity').prop('disabled', true);
+        $('.product_list_view .quantity').val('1');
         $('.product_list').fadeIn(duration, function() {
             $.cookie('product_view', 'grid', {expires: 730});
         });
@@ -438,6 +439,7 @@ function list_view(duration, event) {
         $('.product_list_view').removeClass('hide');
         $('.product_grid_view .quantity').prop('disabled', true);
         $('.product_list_view .quantity').prop('disabled', false);
+        $('.product_grid_view .quantity').val('1');
         $('.product_list').fadeIn(duration, function() {
             $.cookie('product_view', 'list', {expires: 730});
         });
