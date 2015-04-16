@@ -368,17 +368,17 @@ class FileManager {
 								return true;
 							} else {
 								ob_end_clean();
-								if (!is_file($file) or connection_status()!=0) return false;
+								if (!is_file($data['file']) or connection_status()!=0) return false;
 
 								header("Expires: ".gmdate("D, d M Y H:i:s", mktime(date("H")+2, date("i"), date("s"), date("m"), date("d"), date("Y")))." GMT");
 								header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT");
-								header('Content-Disposition: attachment; filename="'.basename($file).'"');
+								header('Content-Disposition: attachment; filename="'.basename($data['file']).'"');
 								header("Content-Type: application/octet-stream");
 								header("Content-Transfer-Encoding: binary");
 								## IE 7 Fix
 								header('Vary: User-Agent');
 
-								if (($openfile = fopen($file, 'rb')) !== false) {
+								if (($openfile = fopen($data['file'], 'rb')) !== false) {
 									while (!feof($openfile)) {
 										set_time_limit(120);
 										echo fread($openfile, 8192);
