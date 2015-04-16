@@ -102,7 +102,6 @@
                      {$product.price}
                      {/if}
                   </h3>
-                  
                   {if $product.available == '0'}
                   <div class="row collapse">
                      <div class="small-12 columns">
@@ -112,7 +111,7 @@
                   {elseif $product.ctrl_stock && !$CATALOGUE_MODE}
                   <div class="row collapse">
                      <div class="small-4 columns">
-                        <input type="text" name="add[{$product.product_id}][quantity]" value="1" class="quantity text-center">
+                        <input type="text" name="quantity" value="1" class="quantity text-center">
                      </div>
                      <div class="small-8 columns">
                         <button type="submit" value="{$LANG.catalogue.add_to_basket}" class="button small postfix">{$LANG.catalogue.add_to_basket}</button>
@@ -128,6 +127,7 @@
                </div>
             </div>
             <div class="product_grid_view hide">
+               <form action="{$VAL_SELF}" method="post" class="panel add_to_basket">
                <div data-equalizer-watch>
                   <div class="text-center">
                      <a href="{$product.url}" title="{$product.name}"><img class="th" src="{$product.thumbnail}" alt="{$product.name}"></a>
@@ -161,7 +161,6 @@
                {* Uncomment this if you want to show a more info link
                <a href="{$product.url}" title="{$product.name}" class="button tiny secondary left">{$LANG.common.info}</a>
                *}
-               
                {if $product.available == '0'}
                <div class="row collapse marg-top">
                   <div class="small-12 columns">
@@ -171,7 +170,7 @@
                {elseif $product.ctrl_stock && !$CATALOGUE_MODE}
                <div class="row collapse marg-top">
                   <div class="small-3 columns">
-                     <input type="text" name="quantity" value="1" class="quantity required text-center">
+                     <input type="text" name="quantity" value="1" class="quantity text-center" disabled>
                   </div>
                   <div class="small-9 columns ">
                      <button type="submit" value="{$LANG.catalogue.add_to_basket}" class="button small postfix">{$LANG.catalogue.add_to_basket}</button>
