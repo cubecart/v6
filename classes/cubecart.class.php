@@ -235,7 +235,6 @@ class Cubecart {
 			case 'ajaxadd':
 				$GLOBALS['debug']->supress();
 				$sideBasket = $GLOBALS['gui']->displaySideBasket();
-				die($sideBasket);
 				break;
 			case 'rm':
 			case 'remote':

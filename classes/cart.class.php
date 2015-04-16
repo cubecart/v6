@@ -201,8 +201,9 @@ class Cart {
 		// Don't allow products to be added to the basket if prices are hidden AND they're not logged in
 		if ($GLOBALS['session']->get('hide_prices')) {
 			if (isset($_GET['_g']) && $_GET['_g'] == 'ajaxadd') {
+				$path = $GLOBALS['seo']->buildURL('prod', $_POST['add']);
 				$GLOBALS['debug']->supress();
-				die($GLOBALS['seo']->rewriteUrls("Redir:".currentPage(), true));
+				die('Redir:'.$path);
 			} else {
 				httpredir(currentPage());
 			}
