@@ -96,6 +96,7 @@
  <hook trigger="class.catalogue.pre_search" deprecated="" />
  <hook trigger="class.catalogue.productassign" deprecated="" />
  <hook trigger="class.cubecart.account.list" deprecated="" />
+ <hook trigger="class.cubecart.addressbook" deprecated="" />
  <hook trigger="class.cubecart.pre_basket" deprecated="" />
  <hook trigger="class.cubecart.basket" deprecated="" />
  <hook trigger="class.cubecart.checkout_progress" deprecated="" />
@@ -108,6 +109,7 @@
  <hook trigger="class.cubecart.construct.confirm.create_user.created" deprecated="" />
  <hook trigger="class.cubecart.construct.download" deprecated="" />
  <hook trigger="class.cubecart.construct.gateway" deprecated="" />
+ <hook trigger="class.cubecart.prerecaptcha.confirm" deprecated="" />
  <hook trigger="class.cubecart.construct.logout" deprecated="" />
  <hook trigger="class.cubecart.construct.register" deprecated="" />
  <hook trigger="class.cubecart.construct.search" deprecated="" />

@@ -548,6 +548,9 @@ class Cubecart {
 		}
 
 		$GLOBALS['smarty']->assign('VAL_JSON_STATE', state_json());
+		
+		foreach ($GLOBALS['hooks']->load('class.cubecart.addressbook') as $hook) include $hook;
+
 		$content = $GLOBALS['smarty']->fetch('templates/content.addressbook.php');
 		$GLOBALS['smarty']->assign('SECTION_NAME', 'account');
 		$GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
@@ -1049,6 +1052,9 @@ class Cubecart {
 				}
 				$GLOBALS['smarty']->assign('STATE_JSON', state_json());
 			}
+
+			foreach ($GLOBALS['hooks']->load('class.cubecart.prerecaptcha.confirm') as $hook) include $hook;
+
 			if (!isset($this->_basket['recaptcha'])) {
 				$recaptcha = $GLOBALS['config']->get('config', 'recaptcha');
 				if($recaptcha==2) {
