@@ -19,10 +19,10 @@
       <div class="panel" itemprop="review" itemscope itemtype="http://schema.org/Review">
          <meta itemprop="datePublished" content="{$review.date_schema}">
          <div class="row">
-            <div class="small-9 columns">
+            <div class="medium-9 columns">
                <h3>{$review.title}</h3>
             </div>
-            <div class="small-3 columns text-right" itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+            <div class="medium-3 columns text-right" itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
                {for $i = 1; $i <= 5; $i++}
                {if $i <= $review.rating}
                <img src="{$STORE_URL}/skins/{$SKIN_FOLDER}/images/star.png" alt="{$i}">
