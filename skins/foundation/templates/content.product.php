@@ -21,7 +21,7 @@
          <div class="small-7 columns">            
             <a href="#" class="open-clearing" data-thumb-index="0"><img src="{$PRODUCT.medium}" alt="{$PRODUCT.name}" id="img-preview"></a>
             {if $GALLERY}
-            <ul class="clearing-thumbs small-block-grid-5 marg-top" data-clearing>
+            <ul class="clearing-thumbs small-block-grid-3 medium-block-grid-5 marg-top" data-clearing>
                {foreach from=$GALLERY item=image}
                <li><a href="{$image.source}"><img src="{$image.small}" data-image-swap="{$image.medium}" data-caption="{$PRODUCT.name}{if !empty($image.description)}: {/if}{$image.description}" class="th image-gallery" alt="{$LANG.catalogue.click_enlarge}"></a></li>
                {/foreach}
