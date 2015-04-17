@@ -37,13 +37,12 @@
             {/if}
          </div>
          <div id="content_body">
-            
             {include file='templates/common.gui_message.php'}
             <div id="page_content">
                <noscript>
                   <p class="warnText">{$LANG.settings.error_js_required}</p>
                </noscript>
-               <div id="loading_content"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/loading.gif" alt=""></div>
+               <div id="loading_content"><i class="fa fa-spinner fa-pulse"></i></div>
                {$DISPLAY_CONTENT}
             </div>
          </div>
