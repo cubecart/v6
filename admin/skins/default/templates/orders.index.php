@@ -44,7 +44,7 @@
                <td>{$order.date}</td>
                <td align="right">{$order.prod_total}</td>
                <td align="center">
-                  <a href="{$order.link_print}" class="print" title="{$LANG.common.print}"><i class="fa fa-print" title="{$LANG.common.print}"></i></a>
+                  <a href="{$order.link_print}" class="print" target="_blank" title="{$LANG.common.print}"><i class="fa fa-print" title="{$LANG.common.print}"></i></a>
                   <a href="{$order.link_edit}" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
                   <a href="{$order.link_delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
                </td>
