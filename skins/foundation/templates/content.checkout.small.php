@@ -3,10 +3,10 @@
    {foreach from=$ITEMS key=hash item=item}
    <div class="panel" id="basket_item_{$hash}">
       <div class="row">
-         <div class="small-4 columns">
-            <a href="{$item.link}" class="th" title="{$item.name}"><img src="{$item.image}" alt="{$item.name}"></a>
+         <div class="small-3 columns">
+            <a href="{$item.link}" class="th" title="{$item.name}"><img src="{$item.image}" alt="{$item.name}" width="50"></a>
          </div>
-         <div class="small-8 columns">
+         <div class="small-6 columns">
             <a href="{$item.link}"><strong>{$item.name}</strong></a>
             {if $item.options}
             <ul class="no-bullet">
@@ -15,7 +15,9 @@
                {/foreach}
             </ul>
             {/if}
-            {$item.line_price_display}
+         </div>
+         <div class="small-3 columns">
+         {$item.line_price_display}
          </div>
       </div>
       <hr>
