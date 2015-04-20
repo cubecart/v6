@@ -368,6 +368,9 @@
          </div>
          <div><label for="email_smtp_user">{$LANG.settings.smtp_user}</label><span><input name="config[email_smtp_user]" id="email_smtp_user" type="text" class="textbox" value="{$CONFIG.email_smtp_user}" autocomplete="off"></span></div>
          <div><label for="email_smtp_password">{$LANG.settings.smtp_pass}</label><span><input name="config[email_smtp_password]" id="email_smtp_password" type="password" class="textbox" value="{$CONFIG.email_smtp_password}" autocomplete="off"></span></div>
+         <div><label for="smtp_test_url">&nbsp;</label><span>
+         <button type="button" class="button" id="smtp_test" onclick="$.colorbox({ href:'{$STORE_URL}/{$SKIN_VARS.admin_file}?_g=xml&amp;function=SMTPTest' })">{$LANG.common.test} ({$LANG.common.after_save})</button>
+</span></div>
       </fieldset>
       <fieldset>
          <legend>{$LANG.settings.title_performance}</legend>

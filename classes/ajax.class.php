@@ -44,6 +44,9 @@ class Ajax {
 		$string = ($_GET['q']) ? $_GET['q'] : '';
 		
 		switch ($_GET['function']) {
+			case 'SMTPTest':
+				$return_data = self::SMTPTest();
+			break;
 			case 'template':
 				$return_data = self::template($type, $string);
 			break;
@@ -169,6 +172,44 @@ class Ajax {
 				$data = array();
 			}
 			return json_encode($data);
+		}
+		return false;
+	}
+
+	/**
+	 * Test SMPT 
+	 *
+	 * @return data/false
+	 */
+	public static function SMTPTest() {
+		if (CC_IN_ADMIN) {
+		    @ob_start();
+		    $test_mailer = Mailer::getInstance();
+		    $test_mailer->SMTPDebug = 2;
+		    $test_mailer->Debugoutput = "html";
+		    $test_mailer->ClearAddresses();
+		    $test_mailer->Password = $GLOBALS['config']->get('config', 'email_smtp_password');
+		    $test_mailer->AddAddress($GLOBALS['config']->get('config', 'email_address'));
+		    $test_mailer->Subject = "Testing CubeCart";
+		    $test_mailer->Body = "Testing from CubeCart v".CC_VERSION." at ".CC_STORE_URL;
+		    $test_mailer->AltBody = "Testing from CubeCart v".CC_VERSION." at ".CC_STORE_URL;
+		    // Send email
+		    $email_test_send_result = $test_mailer->Send();
+		    $email_test_results = @ob_get_contents();@ob_end_clean();
+
+		    if(!empty($email_test_results)) {
+		      $email_test_results_data = array (
+		            'request_url' => 'mailto:'.$GLOBALS['config']->get('config', 'email_address'),
+		            'request' => 'Subject: Testing CubeCart',
+		            'result' => $email_test_results,
+		            'error' => ($email_test_send_result) ? null : "Mailer Failed" ,
+		        );
+		      $GLOBALS['db']->insert('CubeCart_request_log', $email_test_results_data);
+		      $json = $email_test_results;
+		    } else {
+		      $json = "Test failed to execute.";
+		    }
+		    return $json;
 		}
 		return false;
 	}

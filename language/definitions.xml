@@ -537,6 +537,8 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="test" introduced="6.0.3"><![CDATA[Test]]></string>
+    <string name="after_save" introduced="6.0.3"><![CDATA[After Save]]></string>
     <string name="unavailable" introduced="6.0.0"><![CDATA[Unavailable]]></string>
     <string name="thats_it" introduced="6.0.0"><![CDATA[That's it!]]></string>
     <string name="hi_casual" introduced="6.0.0"><![CDATA[Hey]]></string>
