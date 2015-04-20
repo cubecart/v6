@@ -449,7 +449,7 @@ class User {
 			if (!$show_all) {
 				$where['billing'] = '1';
 			}
-			if (($addresses = $GLOBALS['db']->select('CubeCart_addressbook', false, $where, 'billing DESC')) !== false) {
+			if (($addresses = $GLOBALS['db']->select('CubeCart_addressbook', false, $where, 'billing DESC', false, false, false)) !== false) {
 				foreach ($addresses as $address) {
 					$state_field = is_numeric($address['state']) ? 'id' : 'name';
 					$address['state_id']  = getStateFormat($address['state'], $state_field, 'id');
@@ -477,7 +477,7 @@ class User {
 		if ($this->is()) {
 			$where['customer_id'] = $this->_user_data['customer_id'];
 			$where['default'] = '1';
-			if (($addresses = $GLOBALS['db']->select('CubeCart_addressbook', false, $where, 'billing DESC')) !== false) {
+			if (($addresses = $GLOBALS['db']->select('CubeCart_addressbook', false, $where, 'billing DESC', false, false, false)) !== false) {
 				foreach ($addresses as $address) {
 					$state_field = is_numeric($address['state']) ? 'id' : 'name';
 					$address['state_id']  = getStateFormat($address['state'], $state_field, 'id');
