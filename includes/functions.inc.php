@@ -108,7 +108,7 @@ function cc_print_array($array) {
 function cc_unserialize($data) {
 	$data = html_entity_decode($data, ENT_QUOTES, 'UTF-8');
 	$data = preg_replace_callback(
-				'!s:(\d+):"(.*?)";!',
+				'/s:(\d+):"(.*?)";/',
 				function ($m) {
             		return 's:'.strlen($m[2]).':"'.$m[2].'";';
         		},
