@@ -18,7 +18,7 @@
          </div>
       </div>
       <div class="row">
-         <div class="small-7 columns">            
+         <div class="small-5 medium-7 columns">            
             <a href="#" class="open-clearing" data-thumb-index="0"><img src="{$PRODUCT.medium}" alt="{$PRODUCT.name}" id="img-preview"></a>
             {if $GALLERY}
             <ul class="clearing-thumbs small-block-grid-3 medium-block-grid-5 marg-top" data-clearing>
@@ -28,7 +28,7 @@
             </ul>
             {/if}
          </div>
-         <div class="small-5 columns">
+         <div class="small-7 medium-5 columns">
             {if is_array($OPTIONS)}
             {foreach from=$OPTIONS item=option}
             {if $option.type == Catalogue::OPTION_RADIO}
