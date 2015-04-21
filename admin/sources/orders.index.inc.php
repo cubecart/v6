@@ -64,6 +64,7 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
 				'price'   => $data['price'],
 				'cart_order_id' => $order_id,
 				'options_identifier' => $GLOBALS['catalogue']->defineOptionsIdentifier($data['productOptions']),
+				'options_array' => serialize($data['productOptions']),
 				'product_options' => $GLOBALS['order']->serializeOptions($data['productOptions'],$data['product_id'])
 			);
 			if (!empty($data['product_id']) && is_numeric($data['product_id'])) {
@@ -82,6 +83,7 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
 	if (isset($_POST['inv']) && is_array($_POST['inv'])) {
 		foreach ($_POST['inv'] as $data) {
 			$data['options_identifier'] = $GLOBALS['catalogue']->defineOptionsIdentifier($data['productOptions']);
+			$data['options_array'] 		= serialize($data['productOptions']);
 			$data['product_options'] 	= $GLOBALS['order']->serializeOptions($data['productOptions'],$data['product_id']);
 			$GLOBALS['db']->update('CubeCart_order_inventory', $data, array('cart_order_id' => $order_id, 'id' => (int)$data['id']));
 		}
