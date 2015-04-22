@@ -107,14 +107,19 @@ function cc_print_array($array) {
  */
 function cc_unserialize($data) {
 	$data = html_entity_decode($data, ENT_QUOTES, 'UTF-8');
-	$data = preg_replace_callback(
-				'/s:(\d+):"(.*?)";/',
-				function ($m) {
-            		return 's:'.strlen($m[2]).':"'.$m[2].'";';
-        		},
-        	$data);
+	$data = preg_replace_callback('!s:(\d+):"(.*?)";!', 'cc_unserialize_callback', $data);
 	$data = unserialize($data);
 	return $data;
+}
+
+/**
+ * Callback function for cc_unserialize
+ *
+ * @param matches array $m
+ * @return string
+ */
+function cc_unserialize_callback($m) {
+	return 's:'.strlen($m[2]).':"'.$m[2].'";';
 }
 
 /**
