@@ -183,7 +183,7 @@ if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
 		$result['key']  = (($page-1)*$per_page)+($key+1);
 		$result['percent'] = 100*($result['quan']/$divider[0]['totalProducts']);
 		$result['percent'] = number_format($result['percent'], 2);
-		$tmp_col_data[] = "['".$result['key'].". ".$result['name']."',".$result['percent']."]";
+		$tmp_col_data[] = "['".$result['key'].". ".addslashes($result['name'])."',".$result['percent']."]";
 		// Create a product legend
 		$smarty_data[5][] = $result;
 	}
@@ -219,7 +219,7 @@ if ($results) {
 		$result['percent'] = (100*($result['popularity']/$divider[0]['totalHits']));
 		$max_percent = ($result['percent']>$max_percent) ? $result['percent'] : $max_percent;
 		$result['percent'] = number_format($result['percent'], 2);
-		$tmp_col_data[] = "['".$result['key'].". ".$result['name']."',".$result['percent']."]";
+		$tmp_col_data[] = "['".$result['key'].". ".addslashes($result['name'])."',".$result['percent']."]";
 		// Create a product legend
 		$smarty_data['product_views'][] = $result;
 	}
@@ -255,7 +255,7 @@ if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
 		$result['percent'] = number_format($result['percent'], 2);
 		$result['key']   = (($page-1)*$per_page)+($key+1);
 		$result['searchstr']  = ucfirst(strtolower($result['searchstr']));
-		$tmp_col_data[] = "['".$result['key'].". ".$result['searchstr']."',".$result['percent']."]";
+		$tmp_col_data[] = "['".$result['key'].". ".addslashes($result['searchstr'])."',".$result['percent']."]";
 		$smarty_data['search_terms'][] = $result;
 	}
 	
@@ -286,7 +286,7 @@ if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
 		$result['key']  = (($page-1)*$per_page)+($key+1);
 		$result['expenditure'] = Tax::getInstance()->priceFormat($result['customer_expenditure']);
 		$result['percent'] = $divider[0]['total_sales'] ? number_format(100*($result['customer_expenditure']/$divider[0]['total_sales']), 2) : 0;
-		$tmp_col_data[] = "['".$result['key'].". ".$result['last_name'].", ".$result['first_name']."',".$result['customer_expenditure']."]";
+		$tmp_col_data[] = "['".$result['key'].". ".addslashes($result['last_name'].", ".$result['first_name'])."',".$result['customer_expenditure']."]";
 		// Create a customer legend
 		$smarty_data[8][] = $result;
 	}
