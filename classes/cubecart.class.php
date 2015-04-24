@@ -2243,7 +2243,8 @@ class Cubecart {
 					httpredir(currentPage(array('cancel')));
 				} else if(isset($_GET['reorder']) && preg_match('#^[0-9]{6}-[0-9]{6}-[0-9]{4}$#i', trim($_GET['reorder']))) {
 					$basket = $GLOBALS['db']->select('CubeCart_order_summary',array('basket'),array('cart_order_id'=>$_GET['reorder'], 'customer_id' => $GLOBALS['user']->get('customer_id')));
-					$GLOBALS['cart']->basket = unserialize($basket[0]['basket']);
+					$past_data = unserialize($basket[0]['basket']);
+					$GLOBALS['cart']->basket['contents'] = $past_data['contents'];
 					$GLOBALS['cart']->save();
 					httpredir('?_a=basket');
 				}
