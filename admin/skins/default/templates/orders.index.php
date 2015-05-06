@@ -92,7 +92,7 @@
          <div><label for="order_no">{$LANG.orders.order_number}</label><span><input type="text" name="search[order_number]" class="textbox"></span></div>
          <div>
             <label for="customer_id">{$LANG.orders.customer_name}</label>
-            <span><input type="text" id="search_customer_id" class="textbox ajax" rel="user"><input type="hidden" id="result_search_customer_id" name="search[search_customer_id]" value=""></span>
+            <span><input type="text" id="search_customer_id" class="textbox ajax" rel="user"><input type="hidden" id="result_search_customer_id" name="search[search_customer_id]" autocomplete="off" value=""></span>
          </div>
          <div>
             <label for="search_status">{$LANG.orders.title_order_status}</label>
