@@ -334,11 +334,20 @@ class Tax {
 				## Hide the price, but create a string that is representative of the currency formating for the current locale
 				return $this->priceFormatHidden();
 			} else {
+
+				$decimal_places = $this->_currency_vars['decimal_places'];
+
+				if($decimal_places == '0') {
+					$decimal_places = 0;
+				} elseif(empty($decimal_places) || !is_numeric($this->_currency_vars['decimal_places'])) {
+					$decimal_places = 2;
+				}
+			
 				$price = ($this->_currency_vars['value']*$price);				
 				$string = $this->_currency_vars['symbol_left'].
 						number_format(
 							$price, 
-							(empty($this->_currency_vars['decimal_places']) || !is_numeric($this->_currency_vars['decimal_places'])) ? 2 : $this->_currency_vars['decimal_places'],
+							$decimal_places,
 							empty($this->_currency_vars['symbol_decimal']) ? '.' : $this->_currency_vars['symbol_decimal'],
 							empty($this->_currency_vars['symbol_thousand']) ? ',' : $this->_currency_vars['symbol_thousand']
 						).
