@@ -1437,7 +1437,7 @@
   <group name="newsletter">
     <string name="click_to_subscribe" introduced="5.0.0"><![CDATA[Click here to subscribe.]]></string>
     <string name="click_to_unsubscribe" introduced="5.0.0"><![CDATA[Click here to unsubscribe.]]></string>
-    <string name="customer_is_subscribed" introduced="5.0.0"><![CDATA[You are subscribed to recieve to our newsletter.]]></string>
+    <string name="customer_is_subscribed" introduced="5.0.0"><![CDATA[You are subscribed to receive our newsletter.]]></string>
     <string name="customer_not_subscribed" introduced="5.0.0"><![CDATA[You are not subscribed to our newsletter.]]></string>
     <string name="customer_subscribed" introduced="5.0.0"><![CDATA[Subscribed to newsletter?]]></string>
     <string name="email_subscribed" introduced="5.0.0"><![CDATA[Your email address has been subscribed to our mailing list.]]></string>
