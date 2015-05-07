@@ -15,7 +15,11 @@
       <ul class="no-bullet">
       {if isset($CONTENTS) && count($CONTENTS) > 0}
       
-      {foreach from=$CONTENTS item=item}
+      {foreach from=$CONTENTS item=item name=items}
+      {if $smarty.foreach.items.index == 10}
+         <li class="clearfix"><div class="left">&hellip;</div></li>
+         {break}
+      {/if}
       <li class="clearfix">
       <div class="left"><a href="{$item.link}" title="{$item.name}">{$item.quantity} &times; {$item.name|truncate:25:"&hellip;"}</a></div>
       <div class="right">{$item.total}</div>
