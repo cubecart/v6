@@ -12,21 +12,25 @@
 <div class="box-basket-content" id="box-basket-content">
    <h4 class="mini-basket-title nomarg pad-side">{$LANG.basket.your_basket}</h4>
    <div class="pad-side basket-detail">
+      <ul class="no-bullet">
       {if isset($CONTENTS) && count($CONTENTS) > 0}
+      
       {foreach from=$CONTENTS item=item}
-      <p class="clearfix">
+      <li class="clearfix">
       <div class="left"><a href="{$item.link}" title="{$item.name}">{$item.quantity} &times; {$item.name|truncate:25:"&hellip;"}</a></div>
       <div class="right">{$item.total}</div>
-      </p>
+      </li>
       {/foreach}
-      <p class="clearfix">
+      <li class="clearfix">
+      <hr>
       <div class="left">{$LANG.common.item_plural}:</div>
       <div class="right">{$CART_ITEMS}</div>
-      </p>
-      <p class="clearfix">
+      </li>
+      <li class="clearfix">
       <div class="left total">{$LANG.basket.total}:</div>
       <div class="right total">{$CART_TOTAL}</div>
-      </p>
+      </li>
+      </ul>
       <div><a href="{$STORE_URL}/index.php?_a=checkout" class="button expand marg-top">{if $CONFIG.ssl == 1}<i class="fa fa-lock"></i> {$LANG.basket.basket_secure_checkout}{else}{$LANG.basket.basket_checkout}{/if}</a></div>
       {if !$IS_USER}
       <div><a href="{$STORE_URL}/index.php?_a=basket" class="button secondary expand">{$LANG.basket.view_basket}</a></div>
