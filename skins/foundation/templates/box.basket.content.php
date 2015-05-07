@@ -14,26 +14,25 @@
    <div class="pad-side basket-detail">
       <ul class="no-bullet">
       {if isset($CONTENTS) && count($CONTENTS) > 0}
-      
       {foreach from=$CONTENTS item=item name=items}
       {if $smarty.foreach.items.index == 10}
          <li class="clearfix"><div class="left">&hellip;</div></li>
          {break}
       {/if}
-      <li class="clearfix">
-      <div class="left"><a href="{$item.link}" title="{$item.name}">{$item.quantity} &times; {$item.name|truncate:25:"&hellip;"}</a></div>
-      <div class="right">{$item.total}</div>
-      </li>
+         <li class="clearfix">
+            <div class="left"><a href="{$item.link}" title="{$item.name}">{$item.quantity} &times; {$item.name|truncate:25:"&hellip;"}</a></div>
+            <div class="right">{$item.total}</div>
+         </li>
       {/foreach}
-      <li class="clearfix">
-      <hr>
-      <div class="left">{$LANG.common.item_plural}:</div>
-      <div class="right">{$CART_ITEMS}</div>
-      </li>
-      <li class="clearfix">
-      <div class="left total">{$LANG.basket.total}:</div>
-      <div class="right total">{$CART_TOTAL}</div>
-      </li>
+         <li class="clearfix">
+            <hr>
+            <div class="left">{$LANG.common.item_plural}:</div>
+            <div class="right">{$CART_ITEMS}</div>
+         </li>
+         <li class="clearfix">
+            <div class="left total">{$LANG.basket.total}:</div>
+            <div class="right total">{$CART_TOTAL}</div>
+         </li>
       </ul>
       <div><a href="{$STORE_URL}/index.php?_a=checkout" class="button expand marg-top">{if $CONFIG.ssl == 1}<i class="fa fa-lock"></i> {$LANG.basket.basket_secure_checkout}{else}{$LANG.basket.basket_checkout}{/if}</a></div>
       {if !$IS_USER}
