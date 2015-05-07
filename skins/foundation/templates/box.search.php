@@ -13,10 +13,10 @@
    <form action="{$STORE_URL}/search.html" id="search_form" method="get">
       <div class="row collapse">
          <div class="small-10 large-11 columns">
-            <input name="search[keywords]" type="text" placeholder="{$LANG.search.input_default}" required>
+            <input name="search[keywords]" type="text" class="nomarg" placeholder="{$LANG.search.input_default}" required><small><a href="{$STORE_URL}/search.html">{$LANG.search.advanced}</a></small>
          </div>
          <div class="small-2 large-1 columns">
-            <button class="button postfix" type="submit" value="{$LANG.common.search}"><i class="fa fa-search"></i></button>
+            <button class="button postfix nomarg" type="submit" value="{$LANG.common.search}"><i class="fa fa-search"></i></button>
          </div>
       </div>
       <input type="hidden" name="_a" value="category">
