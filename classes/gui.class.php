@@ -1327,7 +1327,7 @@ class GUI {
 		}
 		if(!empty($config['instagram'])) {
 			$vars[] = array(
-				'url' => (filter_var($config['instagram'], FILTER_VALIDATE_URL)) ? $config['instagram'] : 'http://www.pinterest.com/'.$config['instagram'],
+				'url' => (filter_var($config['instagram'], FILTER_VALIDATE_URL)) ? $config['instagram'] : 'http://www.instagram.com/'.$config['instagram'],
 				'name' => 'Instagram',
 				'icon'	=> 'instagram'
 			);
