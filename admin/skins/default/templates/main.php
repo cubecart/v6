@@ -109,7 +109,7 @@
          });
          {/literal}
       </script>
-      <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/admin.min.js?{$VERSION_HASH}"></script>
+      <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/admin.js?{$VERSION_HASH}"></script>
       {if isset($CLOSE_WINDOW)}
       <script type="text/javascript">
          $(document).ready(function () {

@@ -115,15 +115,6 @@
     <h3>{$LANG.email.title_content_html}</h3>
 	{if $LANGUAGES}
 	<textarea name="content[content_html]" id="content_html" class="textbox fck">{$CONTENT.content_html}</textarea>
-  	<script type="text/javascript">
-	  //<![CDATA[
-		CKEDITOR.replace( 'content_html',
-			{
-				fullPage : true
-			});
-	  //]]>
-	</script>
-
   	<h3>{$LANG.email.title_macros}</h3>
   	<p>{$LANG.email.important}</p>
   	<table>

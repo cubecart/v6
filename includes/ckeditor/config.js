@@ -21,6 +21,7 @@ CKEDITOR.editorConfig = function(config) {
 	config.filebrowserImageBrowseUrl	= 'admin.php?_g=filemanager&mode=fck'; 
 	config.entities_greek = false ;
 	config.protectedSource.push(/\{foreach[\s\S]*?}|\{\/foreach}/g);
+	//config.protectedSource.push(/{(.*?)}/g);
 }
 CKEDITOR.on('instanceReady', function(ev) {
     ev.editor.dataProcessor.writer.selfClosingEnd = '>';
