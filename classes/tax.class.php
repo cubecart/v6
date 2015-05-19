@@ -379,6 +379,8 @@ class Tax {
 	 * @return foat/false
 	 */
 	public function productTax(&$price, $tax_type, $tax_inclusive = false, $state = 0, $type = 'goods', $sum = true) {
+
+		foreach ($GLOBALS['hooks']->load('class.tax.producttax') as $hook) include $hook;
 		
 		if($price<=0) return false; 
 
