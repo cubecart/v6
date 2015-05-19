@@ -93,6 +93,7 @@
  <hook trigger="class.catalogue.product_data" deprecated="" />
  <hook trigger="class.catalogue.product_options" deprecated="" />
  <hook trigger="class.catalogue.display_product_options" deprecated="" />
+ <hook trigger="class.catalogue.imagepath" deprecated="" />
  <hook trigger="class.catalogue.pre_search" deprecated="" />
  <hook trigger="class.catalogue.productassign" deprecated="" />
  <hook trigger="class.cubecart.account.list" deprecated="" />

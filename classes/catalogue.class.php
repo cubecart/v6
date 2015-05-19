@@ -1165,6 +1165,8 @@ class Catalogue {
 	 * @return string
 	 */
 	public function imagePath($input, $mode = 'medium', $path = 'relative', $return_placeholder = true) {
+
+		foreach ($GLOBALS['hooks']->load('class.catalogue.imagepath') as $hook) include $hook;
 		
 		$defaults = true;
 		if (is_numeric($input)) {
