@@ -677,10 +677,12 @@ class User {
 			}
 			$error['recaptcha'] = true;
 		}
-
-		if (!$GLOBALS['config']->get('config', 'disable_checkout_terms') && ($terms = $GLOBALS['db']->select('CubeCart_documents', false, array('doc_terms' => '1')) && isset($_POST['terms_agree'])) !== true) {
-			$GLOBALS['gui']->setError($GLOBALS['language']->account['error_terms_agree']);
-			$error['terms'] = true;
+		
+		if($terms = $GLOBALS['db']->select('CubeCart_documents', false, array('doc_terms' => '1'))) {
+			if(isset($_POST['terms_agree']) !== true && !$GLOBALS['config']->get('config', 'disable_checkout_terms')) {
+				$GLOBALS['gui']->setError($GLOBALS['language']->account['error_terms_agree']);
+				$error['terms'] = true;
+			}
 		}
 
 		if (!$error) {
