@@ -315,7 +315,7 @@ class Catalogue {
 				//Are we displaying reviews, or the "tell-a-friend" form?
 
 				$GLOBALS['smarty']->assign('CTRL_REVIEW', (bool)$GLOBALS['config']->get('config', 'enable_reviews'));
-				// Display Reviews
+				// Display Reviews
 				$page  = (isset($_GET['page']) && !empty($_GET['page'])) ? $_GET['page'] : 1;
 				$per_page = 5;
 				if (($reviews = $GLOBALS['db']->select('CubeCart_reviews', false, array('approved' => 1, 'product_id' => $product['product_id']), 'time DESC', $per_page, $page)) !== false) {
