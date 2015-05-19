@@ -43,7 +43,7 @@
             {* Remove comment if you want info button
             <a href="{$product.url}" title="{$product.name}" class="button tiny secondary left">{$LANG.common.info}</a>
             *}
-            {if $product.available == '0'}
+            {if $product.available <= 0}
             <div class="row collapse marg-top">
                <div class="small-12 columns">
                   <input type="submit" value="{$LANG.common.unavailable}" class="button small disabled postfix expand" disabled>

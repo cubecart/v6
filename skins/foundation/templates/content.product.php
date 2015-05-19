@@ -113,7 +113,7 @@
             <p>(<a href="#quantity_discounts">{$LANG.catalogue.bulk_discount}</a>)</p>
             {/if}
             <div class="row collapse">
-               {if $PRODUCT.available == '0'}
+               {if $PRODUCT.available <= 0}
                <div class="small-12 columns">
                   <input type="submit" value="{$LANG.common.unavailable}" class="button small disabled expand marg-top" disabled>
                </div>

@@ -102,7 +102,7 @@
                      {$product.price}
                      {/if}
                   </h3>
-                  {if $product.available == '0'}
+                  {if $product.available <= 0}
                   <div class="row collapse">
                      <div class="small-12 columns">
                         <input type="submit" value="{$LANG.common.unavailable}" class="button small disabled expand marg-top" disabled>
@@ -161,7 +161,7 @@
                {* Uncomment this if you want to show a more info link
                <a href="{$product.url}" title="{$product.name}" class="button tiny secondary left">{$LANG.common.info}</a>
                *}
-               {if $product.available == '0'}
+               {if $product.available <= 0}
                <div class="row collapse marg-top">
                   <div class="small-12 columns">
                      <input type="submit" value="{$LANG.common.unavailable}" class="button small postfix disabled expand" disabled>
