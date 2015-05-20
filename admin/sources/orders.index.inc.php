@@ -520,7 +520,7 @@ if (isset($_GET['action'])) {
 				httpredir(currentPage(array('print')));
 			}
 		} else {
-			$GLOBALS['main']->setACPWarning($lang['orders']['error_print_generate']);
+			$GLOBALS['main']->setACPWarning($lang['orders']['order_not_found']);
 			httpredir(currentPage(array('print')));
 		}
 	} else {

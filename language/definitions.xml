@@ -1524,7 +1524,7 @@
     <string name="error_order_create" introduced="5.0.0"><![CDATA[Failed to create order.]]></string>
     <string name="error_order_delete" introduced="5.0.0"><![CDATA[Failed to delete order.]]></string>
     <string name="error_order_update" introduced="5.0.0"><![CDATA[Failed to update order.]]></string>
-    <string name="error_orders_delete" introduced="5.0.0"><![CDATA[Unable to delete the selecetd orders.]]></string>
+    <string name="error_orders_delete" introduced="5.0.0"><![CDATA[Unable to delete the selected orders.]]></string>
     <string name="error_print_generate" introduced="5.0.0"><![CDATA[It has not been possible to generate the printable file.]]></string>
     <string name="error_search_logs" introduced="5.0.0"><![CDATA[No logs found that match &quot;%s&quot;]]></string>
     <string name="error_search_result" introduced="5.0.0"><![CDATA[No orders have been found that match your search criteria.]]></string>
