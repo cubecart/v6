@@ -69,6 +69,12 @@ class Module {
 	 */
 	private $_path;
 	/**
+	 * RAW Post Array
+	 *
+	 * @var array of strings
+	 */
+	private $_rawvarsout = array();
+	/**
 	 * Module language strings
 	 *
 	 * @var array of strings
@@ -106,6 +112,9 @@ class Module {
 				// Automatically handle module save requests
 				$this->_info['name'] ? $this->_info['name'] : $this->_settings['folder'];
 				$this->_info['name'] = str_replace('_',' ', $this->_info['name']);
+				
+				$this->_enumerateRawVars();
+				foreach($this->_rawvarsout as $key => $key_name) $_POST['module'][$key_name] = $GLOBALS['RAW']['POST']['module'][$key_name];
 				if ($this->module_settings_save($_POST['module'])) {
 					$GLOBALS['main']->setACPNotify(sprintf($GLOBALS['language']->notification['notify_module_settings'], $this->_info['name']));
 				} else {
@@ -368,6 +377,17 @@ class Module {
 	}
 
 	//=====[ Private ]=======================================
+
+	/**
+	 * Allow specified raw POST variables
+	 */
+	private function _enumerateRawVars() {
+		if (file_exists($this->_path.'/'.$this->_package_xml)) {
+			$xml = new SimpleXMLElement(file_get_contents($this->_path.'/'.$this->_package_xml, true));
+			## Parse and handle XML data
+			foreach ((array)$xml->rawvars->var as $value) $this->_rawvarsout[] = (string)$value;
+		}
+	}
 	
 	/**
 	 * Load module classes
