@@ -197,7 +197,7 @@ if ($unsettled_orders) {
 ## Product Reviews Tab
 $page  = (isset($_GET['reviews'])) ? $_GET['reviews'] : 1;
 if (($reviews = $GLOBALS['db']->select('CubeCart_reviews', false, array('approved' => '0'), false, 25, $page)) !== false) {
-	$reviews_count = $GLOBALS['db']->count('CubeCart_reviews', 'id');
+	$reviews_count = $GLOBALS['db']->getFoundRows();
 
 	$GLOBALS['main']->addTabControl($lang['dashboard']['title_reviews_pending'], 'product_reviews', null, null, $reviews_count);
 	foreach ($reviews as $review) {
