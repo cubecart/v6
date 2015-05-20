@@ -50,6 +50,7 @@
  <hook trigger="admin.product.clone" deprecated="" />
  <hook trigger="admin.product.delete" deprecated="" />
  <hook trigger="admin.product.export" deprecated="" />
+ <hook trigger="admin.products.options.types" deprecated="" />
  <hook trigger="admin.product.pre_display" deprecated="" />
  <hook trigger="admin.product.save.pre_process" deprecated="" />
  <hook trigger="admin.product.save.post_process" deprecated="" />

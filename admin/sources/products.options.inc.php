@@ -272,6 +272,9 @@ $optionTypes = array(
 	1 => $lang['catalogue']['option_type_textbox'],
 	2 => $lang['catalogue']['option_type_textarea']
 );
+
+foreach ($GLOBALS['hooks']->load('admin.products.options.types') as $hook) include $hook;
+
 $GLOBALS['smarty']->assign('OPTION_TYPES', $optionTypes);
 $GLOBALS['smarty']->assign('OPTION_TYPE_JSON', json_encode($optionTypes));
 
