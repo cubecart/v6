@@ -1,0 +1,15 @@
+#################################################
+# Please use this file to restrict access to the 
+# admin side of your store by trusted IP's only.
+#
+# To do this please "uncomment" by removing the 
+# hash (or pound) symbol "#" and enter a list of
+# trusted IP addresses.
+#
+# More infomration can be found at: 
+# http://httpd.apache.org/docs/current/howto/htaccess.html
+#################################################
+
+#deny from all
+#allow from xxx.xxx.xxx.xxx
+#allow from yyy.yyy.yyy.yyy
