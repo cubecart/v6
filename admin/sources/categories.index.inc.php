@@ -141,6 +141,8 @@ if (isset($_GET['delete']) && is_numeric($_GET['delete']) && Admin::getInstance(
 
 if (isset($_POST['translate']) && isset($_POST['cat_id']) && is_numeric($_POST['cat_id'])) {
 
+	$_POST['translate']['cat_desc'] = $GLOBALS['RAW']['POST']['translate']['cat_desc'];
+
 	foreach ($GLOBALS['hooks']->load('admin.category.translate.save.pre_process') as $hook) include $hook;
 
 	$addarray  = false;
