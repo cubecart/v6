@@ -278,6 +278,15 @@ $(document).ready(function() {
             $(this).attr("rel")
         }), "undefined" != typeof gui_message_json && "object" == typeof gui_message_json)
         for (var e in gui_message_json) $("#" + e).addClass("required-error").val("");
+    
+    $('.url_select').bind('change', function () {
+        var url = $(this).val(); // get selected value
+        if (url) { // require a URL
+            window.location = url; // redirect
+        }
+        return false;
+    });
+
     $(":input.required").blur(function() {
         $(this).attr("id"), "" == $(this).val().replace(/\s/i, "") ? $(this).addClass("required-error") : $(this).removeClass("required-error")
     }), $("select.certificate-delivery").change(function() {

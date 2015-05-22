@@ -18,10 +18,10 @@
          <tr>
             <td align="right">
                {$LANG.common.filter}: 
-               <select id="cat_subset">
+               <select id="cat_subset" class="url_select">
                   <option value="any">{$LANG.common.any}</option>
                   {foreach from=$CAT_LIST item=cat_dropdown}
-                  <option value="{$cat_dropdown.cat_id}" {if $cat_dropdown.cat_id == $CURRENT_CAT}selected="selected"{/if}>{$cat_dropdown.name}</option>
+                  <option value="?_g=products&amp;cat_id={$cat_dropdown.cat_id}" {if $cat_dropdown.cat_id == $CURRENT_CAT}selected="selected"{/if}>{$cat_dropdown.name}</option>
                   {/foreach}
                </select>
             </td>
