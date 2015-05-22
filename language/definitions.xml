@@ -601,6 +601,7 @@
     <string name="delivery" introduced="5.0.2"><![CDATA[Delivery]]></string>
     <string name="department" introduced="5.0.0"><![CDATA[Department]]></string>
     <string name="description" introduced="5.0.0"><![CDATA[Description]]></string>
+    <string name="description_short" introduced="6.0.5"><![CDATA[Short Description]]></string>
     <string name="decision_remove" introduced="5.0.0"><![CDATA[Are you sure you want to remove this?]]></string>
     <string name="desktop_site" introduced="5.1.1"><![CDATA[Desktop Site]]></string>
     <string name="details" introduced="5.0.0"><![CDATA[Details]]></string>
@@ -2127,6 +2128,7 @@
     <string name="title_language_import" introduced="5.0.0"><![CDATA[Import Language]]></string>
     <string name="title_languages" introduced="5.0.0"><![CDATA[Languages]]></string>
     <string name="title_translate" introduced="5.0.0"><![CDATA[Translate]]></string>
+    <string name="title_translate_short" introduced="6.0.5"><![CDATA[Short Translation]]></string>
     <string name="title_translations" introduced="5.0.0"><![CDATA[Translations]]></string>
     <string name="trans_add" introduced="5.0.0"><![CDATA[Add Translation]]></string>
     <string name="trans_delete" introduced="5.0.0"><![CDATA[Delete Translation]]></string>

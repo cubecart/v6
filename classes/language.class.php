@@ -932,7 +932,7 @@ class Language {
 	public function translateProduct(&$product) {
 		if (!empty($product)) {
 			if ($this->_language != $GLOBALS['config']->get('config', 'default_language')) {
-				if (($translation = $GLOBALS['db']->select('CubeCart_inventory_language', array('name', 'description', 'seo_meta_title', 'seo_meta_description', 'seo_meta_keywords'), array('product_id' => (int)$product['product_id'], 'language' => $this->_language))) !== false) {
+				if (($translation = $GLOBALS['db']->select('CubeCart_inventory_language', false, array('product_id' => (int)$product['product_id'], 'language' => $this->_language))) !== false) {
 					$product = array_merge($product, $translation[0]);
 				}
 			}

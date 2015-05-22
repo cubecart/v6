@@ -1275,7 +1275,7 @@ class Catalogue {
 	 */
 	public function productAssign(&$product, $product_view = true) {
 		## Short Description
-		$product['description_short'] = (strlen($product['description']) > $GLOBALS['config']->get('config', 'product_precis')) ? substr(strip_tags($product['description']), 0, $GLOBALS['config']->get('config', 'product_precis')).'&hellip;' : strip_tags($product['description']);
+		$product['description_short'] = ($product['description_short']) ? ($product['description_short']) : ((strlen($product['description']) > $GLOBALS['config']->get('config', 'product_precis')) ? substr(strip_tags($product['description']), 0, $GLOBALS['config']->get('config', 'product_precis')).'&hellip;' : strip_tags($product['description']));
 
 		$product['price_unformatted']  = $product['price'];
 		$product['sale_price_unformatted'] = $product['sale_price'];

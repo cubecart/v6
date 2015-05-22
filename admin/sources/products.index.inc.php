@@ -46,6 +46,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 
 	$record = $_POST;
 	$record['description'] = $GLOBALS['RAW']['POST']['description'];
+	$record['description_short'] = $GLOBALS['RAW']['POST']['description_short'];
 	unset($record['categories'], $record['group'], $record['image']);
 
 	if (isset($record['product_code_auto']) && $record['product_code_auto']==1) {
@@ -498,6 +499,7 @@ if (isset($_GET['delete_review']) && is_numeric($_GET['delete_review']) && Admin
 if (isset($_POST['translate']) && isset($_POST['product_id']) && is_numeric($_POST['product_id']) && Admin::getInstance()->permissions('products', CC_PERM_EDIT)) {
 	
 	$_POST['translate']['description'] = $GLOBALS['RAW']['POST']['translate']['description'];
+	$_POST['translate']['description_short'] = $GLOBALS['RAW']['POST']['translate']['description_short'];
 	
 	// Insert/Update translation
 	if (!empty($_POST['translation_id']) && is_numeric($_POST['translation_id'])) {

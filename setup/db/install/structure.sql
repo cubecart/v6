@@ -378,6 +378,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_inventory` (
   `product_code` varchar(60) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Product Code',
   `quantity` int(11) NOT NULL DEFAULT '1' COMMENT 'Quantity',
   `description` text COLLATE utf8_unicode_ci COMMENT 'Description',
+  `description_short` text NULL COLLATE utf8_unicode_ci COMMENT 'Short Description',
   `price` decimal(16,2) NOT NULL DEFAULT '0.00' COMMENT 'Retail Price',
   `sale_price` decimal(16,2) DEFAULT '0.00' COMMENT 'Sale Price',
   `cost_price` decimal(16,2) NOT NULL DEFAULT '0.00' COMMENT 'Cost Price',

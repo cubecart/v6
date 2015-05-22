@@ -296,6 +296,7 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 				'product_code'		=> $lang['catalogue']['product_code'],
 				'cat_id'			=> $lang['catalogue']['master_caregory_id'],
 				'description'		=> $lang['common']['description'],
+				'description_short'		=> $lang['common']['description_short'],
 				'manufacturer'		=> $lang['catalogue']['manufacturer'],
 				'price'				=> $lang['common']['price'],
 				'sale_price'		=> $lang['common']['price_sale'],
