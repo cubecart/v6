@@ -125,7 +125,7 @@
       </div>
       <div class="row">
          <div class="small-12 large-8 columns"><label for="country-list" class="show-for-medium-up">{$LANG.address.country}</label>
-            <select name="billing[country]"  id="country-list">
+            <select name="billing[country]" class="nosubmit"  id="country-list">
             {foreach from=$COUNTRIES item=country}
             <option value="{$country.numcode}" {$country.selected}>{$country.name}</option>
             {/foreach}

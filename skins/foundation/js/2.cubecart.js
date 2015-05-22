@@ -28,7 +28,7 @@ jQuery(document).ready(function() {
         return false;
     });
 
-    $(".autosubmit select").change(function() {
+    $(".autosubmit select").not('.nosubmit').change(function() {
         $(this).parents(".autosubmit").submit();
     });
     $('i.fa-submit').each(function() {
