@@ -78,7 +78,7 @@ if (isset($_POST['type'])) {
 	httpredir(currentPage(null, array('type' => $_POST['type'])));
 }
 
-$GLOBALS['gui']->addBreadcrumb('Languages');
+$GLOBALS['gui']->addBreadcrumb($lang['translate']['title_languages']);
 
 if (isset($_GET['export'])) {
 	## display the export options
