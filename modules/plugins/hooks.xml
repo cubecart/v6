@@ -39,6 +39,8 @@
  <hook trigger="admin.documents.save.pre_process" deprecated="" />
  <hook trigger="admin.documents.save.post_process" deprecated="" />
  <hook trigger="admin.documents.status" deprecated="" />
+ <hook trigger="admin.head_js" deprecated="" />
+ <hook trigger="admin.body_js" deprecated="" />
  <hook trigger="admin.navigation" deprecated="" />
  <hook trigger="admin.order.index.display" deprecated="" />
  <hook trigger="admin.order.index.post_display" deprecated="" />

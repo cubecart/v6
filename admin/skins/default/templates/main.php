@@ -13,6 +13,11 @@
       {/foreach}
       {/if}
       <link rel="stylesheet" type="text/css" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/styles/styles.php?{$VERSION_HASH}" media="screen">
+      {if is_array($HEAD_JS)}
+      {foreach from=$HEAD_JS item=js_src}
+      <script type="text/javascript" src="{$js_src}"></script>
+      {/foreach}
+      {/if}
    </head>
    <body>
       <div id="header">
@@ -119,6 +124,11 @@
       {/if}
       {if is_array($EXTRA_JS)}
       {foreach from=$EXTRA_JS item=js_src}
+      <script type="text/javascript" src="{$js_src}"></script>
+      {/foreach}
+      {/if}
+      {if is_array($BODY_JS)}
+      {foreach from=$BODY_JS item=js_src}
       <script type="text/javascript" src="{$js_src}"></script>
       {/foreach}
       {/if}

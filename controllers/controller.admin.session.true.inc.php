@@ -120,3 +120,11 @@ if ($styles && is_array($styles)) {
 		$GLOBALS['smarty']->assign('JQUERY_STYLES', $vars['jquery_styles']);
 	}
 }
+
+$body_js = array();
+foreach ($GLOBALS['hooks']->load('admin.body_js') as $hook) include $hook;
+$GLOBALS['smarty']->assign('BODY_JS', $body_js);
+
+$head_js = array();
+foreach ($GLOBALS['hooks']->load('admin.head_js') as $hook) include $hook;
+$GLOBALS['smarty']->assign('HEAD_JS', $head_js);
