@@ -14,7 +14,7 @@
    <h2 id="reviews">{$LANG.catalogue.customer_reviews}</h2>
    <div id="review_read">
       {if $REVIEWS}
-      <p class="pagination_top"><span class="pagination">{if isset($PAGINATION)}{$PAGINATION}{/if}</span>{$LANG.catalogue.average_rating}: <strong>{$REVIEW_AVERAGE}</strong></p>
+      <div class="pagination_top"><span class="pagination">{if isset($PAGINATION)}{$PAGINATION}{/if}</span>{$LANG.catalogue.average_rating}: <strong>{$REVIEW_AVERAGE}</strong></div>
       {foreach from=$REVIEWS item=review}
       <div class="panel" itemprop="review" itemscope itemtype="http://schema.org/Review">
          <meta itemprop="datePublished" content="{$review.date_schema}">
