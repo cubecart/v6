@@ -265,6 +265,7 @@
     <string name="download_access_key" introduced="5.0.0"><![CDATA[Download Access Key]]></string>
     <string name="error_category_defaulted" introduced="5.0.0"><![CDATA[No primary category was selected, so one has been automatically assigned.]]></string>
     <string name="error_category_error" introduced="5.0.0"><![CDATA[This category doesn't exist.]]></string>
+    <string name="error_rating_required" introduced="6.0.5"><![CDATA[No star rating was specified.]]></string>
     <string name="error_coupon_delete" introduced="5.0.0"><![CDATA[Failed to delete coupon.]]></string>
     <string name="error_gc_email" introduced="5.0.0"><![CDATA[Please enter a valid email address for the recipient.]]></string>
     <string name="error_gc_value" introduced="5.0.0"><![CDATA[Please enter a numeric value for the gift certificate value.]]></string>

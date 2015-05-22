@@ -2385,6 +2385,10 @@ class Cubecart {
 					break;
 				}
 			}
+			if($record['rating']==0) {
+				$GLOBALS['gui']->setError($GLOBALS['language']->catalogue['error_rating_required']);
+				$error = true;
+			}
 			if (!filter_var($record['email'], FILTER_VALIDATE_EMAIL)) {
 				$GLOBALS['gui']->setError($GLOBALS['language']->common['error_email_invalid']);
 				$error = true;
