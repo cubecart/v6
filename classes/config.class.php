@@ -73,7 +73,7 @@ class Config {
 			$this->_config['config'] = $glob;
 		}
 		
-		// Don't allow cache if current domain is now the real one.
+		// Don't allow cache if current domain is not the real one.
 		$cache = !strstr(currentPage(), trim($this->_config['config']['cookie_domain'],'.')) ? false : (bool)$this->_config['config']['cache'];
 		$GLOBALS['cache']->enable($cache);
 
