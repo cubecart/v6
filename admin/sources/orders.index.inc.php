@@ -439,9 +439,11 @@ if (isset($_GET['action'])) {
 
 		if (($summaries = $GLOBALS['db']->select('CubeCart_order_summary', false, array('cart_order_id' => $order_list))) !== false) {
 			foreach ($summaries as $key => $summary) {
+				$summary['raw'] = $summary;
 				$GLOBALS['smarty']->assign('PAGE_TITLE', (count($_GET['print'])>1) ? $lang['orders']['title_invoices'] : sprintf($lang['orders']['title_invoice_x'], $summary['cart_order_id']));
 				if (($inventory = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('cart_order_id' => $summary['cart_order_id']))) !== false) {
 					foreach ($inventory as $item) {
+						$item['raw'] = $item;
 						$item['item_price'] = Tax::getInstance()->priceFormat($item['price'], true);
 						$item['price'] = Tax::getInstance()->priceFormat(($item['price']*$item['quantity']), true);
 						if (!empty($item['product_options'])) {
@@ -645,6 +647,7 @@ if (isset($_GET['action'])) {
 		}
 
 		foreach ($orders as $order) {
+			$order['raw'] = $order;
 			$order['name']   = (isset($order['name']) && !empty($order['name'])) ? $order['name'] : sprintf('%s %s %s', $order['title'], $order['first_name'], $order['last_name']);
 
 			$order['icon']   = ($order['type']==2 || empty($order['customer_id'])) ? 'user_ghost' : 'user_registered';
