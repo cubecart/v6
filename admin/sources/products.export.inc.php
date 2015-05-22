@@ -177,7 +177,7 @@ $GLOBALS['smarty']->assign('LIMITS', $smarty_data['limits']);
 foreach ($formats as $format_key => $format_name) {
 	$format['name']  = $format_name;
 	$format['parts']  = download_parts($format_key, $no_rows, $per_page);
-	$format['link']  = $GLOBALS['storeURL'].'/'.$GLOBALS['config']->get('config', 'adminFile')."?_g=products&node=export&page=1&per_page=5000&format=$format_key&node=export&access=".$GLOBALS['config']->get('config', 'feed_access_key');
+	$format['link']  = $GLOBALS['storeURL'].'/'.$GLOBALS['config']->get('config', 'adminFile')."?_g=products&node=export&page=1&per_page=1000000&format=$format_key&node=export&access=".$GLOBALS['config']->get('config', 'feed_access_key');
 	$smarty_data['formats'][] = $format;
 }
 $GLOBALS['smarty']->assign('FORMATS', $smarty_data['formats']);
