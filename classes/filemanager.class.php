@@ -624,7 +624,7 @@ class FileManager {
 						'filepath' => dirname($product[0]['digital_path']),
 						'filesize' => filesize($product[0]['digital_path']),
 						'md5hash' => md5_file($product[0]['digital_path']),
-						'is_url' => true
+						'is_url' => false
 					);
 					$data['file'] = $product[0]['digital_path'];
 				}
