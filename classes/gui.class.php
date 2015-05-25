@@ -1014,7 +1014,7 @@ class GUI {
 			break;
 		default: // view-based
 			$where      = $GLOBALS['catalogue']->outOfStockWhere(array('status' => '1'));
-			$products = $GLOBALS['db']->select('CubeCart_inventory', array('name', 'product_id', 'quantity'), $where, 'popularity DESC', $GLOBALS['config']->get('config', 'catalogue_popular_products_count'));
+			$products = $GLOBALS['db']->select('CubeCart_inventory', array('name', 'product_id', 'quantity', 'price', 'sale_price'), $where, 'popularity DESC', $GLOBALS['config']->get('config', 'catalogue_popular_products_count'));
 		}
 		if ($products) {
 			foreach ($products as $product) {
