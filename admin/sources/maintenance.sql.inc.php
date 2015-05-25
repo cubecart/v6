@@ -17,7 +17,12 @@ global $lang, $glob;
 
 if (isset($_POST['execute'])) {
 	if (!empty($_POST['query'])) {
-		$GLOBALS['db']->query(stripslashes($_POST['query']), false);
+		if(strstr($_POST['query'], '; #EOQ')) {
+			die('EOQ');
+			$db->parseSchema($_POST['query']);
+		} else {
+			$GLOBALS['db']->query(stripslashes($_POST['query']), false);
+		}
 		if ($GLOBALS['db']->error()) {
 			$GLOBALS['main']->setACPWarning($GLOBALS['db']->errorInfo());
 		} else {
