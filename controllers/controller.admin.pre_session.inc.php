@@ -44,7 +44,7 @@ $GLOBALS['gui'] = GUI::getInstance(true);
 //Initialize SEO
 $GLOBALS['seo'] = SEO::getInstance();
 //Initialize SSL
-$GLOBALS['ssl2'] = SSL2::getInstance();
+$GLOBALS['ssl'] = SSL::getInstance();
 //Setup language template
 $GLOBALS['language']->setTemplate();
 //Initialize Catalogue
