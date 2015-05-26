@@ -16,17 +16,7 @@ Admin::getInstance()->permissions('settings', CC_PERM_READ, true);
 
 global $lang;
 
-// specify some SSL for them if its not been set yet
-$ssl_url   = $GLOBALS['config']->get('config', 'ssl_url');
-$standard_url  = $GLOBALS['config']->get('config', 'standard_url');
-if (empty($ssl_url) && CC_SSL) {
-	$GLOBALS['config']->set('config', 'ssl_url', CC_STORE_URL);
-} elseif (empty($standard_url) && !CC_SSL) {
-	$GLOBALS['config']->set('config', 'standard_url', CC_STORE_URL);
-}
-
 $cookie_domain 	= $GLOBALS['config']->get('config','cookie_domain');
-
 if(empty($cookie_domain)) {
 	$domain = parse_url(CC_STORE_URL);
 	$cookie_domain = '.'.str_replace('www.','',$domain['host']);
@@ -100,12 +90,17 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
 	$config_new['offline_content'] = $GLOBALS['RAW']['POST']['config']['offline_content'];
 	$config_new['store_copyright'] = $GLOBALS['RAW']['POST']['config']['store_copyright'];
 
-	## Validate SSL URL
-	if (!filter_var($config_new['ssl_url'], FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED)) {
-		unset($config_new['ssl_url']);
-		$config_new['ssl'] = false;
-		$config_new['ssl_force'] = false;
+	$config_new['standard_url'] = preg_replace('#^https://#','http://',$config_new['standard_url']);
+	if(substr($config_new['standard_url'],0,7) !=="http://") {
+		$config_new['standard_url'] = 'http://'.$config_new['standard_url'];
 	}
+	if (!filter_var($config_new['standard_url'], FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED)) {
+		$config_new['standard_url'] = CC_STORE_URL;
+	}
+	// Added for backward compatibility as these old values may be used in extensions
+	$config_new['ssl_url'] = preg_replace('#^http://#','https://',$config_new['standard_url']);
+	$domain_parts = parse_url($config_new['standard_url']);
+	$config_new['ssl_path'] = $domain_parts['path'].'/';
 
 	if (empty($config_new['time_format'])) {
 		$config_new['time_format'] = '%Y-%m-%d %H:%M';
@@ -114,8 +109,6 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
 	## Set default currency to have an exchange rate of 1
 	$GLOBALS['db']->update('CubeCart_currency',array('value' => 1), array('code' => $_POST['config']['default_currency']));
 
-	##
-	## TO DO: Add more validation routines
 	$updated = ($GLOBALS['config']->set('config', '', $config_new)) ? true : false;
 
 	if ((isset($updated) && $updated) || isset($logo_update)) {
@@ -302,7 +295,6 @@ $select_options = array(
 	'catalogue_expand_tree' => null,
 	'skin_change'   => array($lang['common']['no'], $lang['settings']['all_skin_select'], $lang['settings']['admin_only_skin_select']),
 	'debug'     => array($lang['common']['disabled'], $lang['common']['enabled']),
-	'ssl_force'    => array($lang['common']['some_pages'], $lang['common']['all_pages'].' ('.$lang['common']['recommended'].')'),
 	'catalogue_hide_prices' => null,
 	'email_method'			=> array('mail' => $lang['settings']['email_method_mail'], 'smtp' => $lang['settings']['email_method_smtp'], 'smtp_ssl' => $lang['settings']['email_method_smtp_ssl']),
 	'offline'    => null,

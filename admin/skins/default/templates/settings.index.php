@@ -263,16 +263,10 @@
       <h3>{$LANG.settings.title_ssl}</h3>
       <fieldset>
          <legend>{$LANG.settings.title_ssl}</legend>
-         <div><label for="enable_ssl">{$LANG.settings.ssl_enable}</label><span><select name="config[ssl]" id="enable_ssl" class="textbox">
+         <div><label for="ssl">{$LANG.settings.ssl_enable}</label><span><select name="config[ssl]" id="ssl" class="textbox">
             {foreach from=$OPT_SSL item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
             </select></span>
          </div>
-         <div><label for="ssl_force">{$LANG.settings.ssl_force}</label><span><select name="config[ssl_force]" id="ssl_force" class="textbox">
-            {foreach from=$OPT_SSL_FORCE item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
-            </select></span>
-         </div>
-         <div><label for="ssl_path">{$LANG.settings.ssl_root_path}</label><span><input name="config[ssl_path]" id="ssl_path" type="text" class="textbox" value="{$CONFIG.ssl_path}"> {$LANG.common.eg} /store/</span></div>
-         <div><label for="ssl_url">{$LANG.settings.ssl_url}</label><span><input name="config[ssl_url]" id="ssl_url" type="text" class="textbox" value="{$CONFIG.ssl_url}"> {$LANG.common.eg} https://www.example.com/store</span></div>
          <div><label for="standard_url">{$LANG.settings.standard_url}</label><span><input name="config[standard_url]" id="standard_url" type="text" class="textbox" value="{$CONFIG.standard_url}"> {$LANG.common.eg} http://www.example.com/store</span></div>
          <div><label for="cookie_domain">{$LANG.settings.cookie_domain}</label><span><input name="config[cookie_domain]" id="cookie_domain" type="text" class="textbox" value="{$CONFIG.cookie_domain}"> {$LANG.common.eg} .example.com</span></div>
       </fieldset>

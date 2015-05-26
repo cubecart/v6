@@ -827,7 +827,9 @@ class Order {
 
 				$mailer = Mailer::getInstance();
 				if ($this->_email_enabled && ($contents = $mailer->loadContent('cart.digital_download', $this->_order_summary['lang'], $this->_order_summary))) {
+
 					$storeURL = (CC_SSL) ? $GLOBALS['config']->get('config', 'ssl_url') : $GLOBALS['storeURL'];
+
 					foreach ($dkeys as $dkey) {
 						$download['url']  = $storeURL.'/index.php?_a=download&accesskey='.$dkey['accesskey'];
 						$download['name']  = $dkey['name'];

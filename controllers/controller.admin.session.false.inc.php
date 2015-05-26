@@ -50,18 +50,20 @@ default:
 	}
 
 	if ($GLOBALS['config']->get('config', 'ssl')) {
+		$current_page = currentPage();
 		if (CC_SSL) {
 			$ssl = array(
-				'url'   => currentPage(false, array('ssl_switch' => 0)),
-				'icon'  => $GLOBALS['config']->get('config', 'adminFolder').'/skins/'.$GLOBALS['config']->get('config', 'admin_skin').'/images/ssl_true.png'
+				'url'   => preg_replace('#^https#','http',$current_page),
+				'icon'  => $GLOBALS['config']->get('config', 'adminFolder').'/skins/'.$GLOBALS['config']->get('config', 'admin_skin').'/images/ssl_true.png',
+				'state' => true
 			);
 		} else {
 			$ssl = array(
-				'url'   => currentPage(false, array('ssl_switch' => 1)),
-				'icon'  => $GLOBALS['config']->get('config', 'adminFolder').'/skins/'.$GLOBALS['config']->get('config', 'admin_skin').'/images/ssl_false.png'
+				'url'   => preg_replace('#^http#','https',$current_page),
+				'icon'  => $GLOBALS['config']->get('config', 'adminFolder').'/skins/'.$GLOBALS['config']->get('config', 'admin_skin').'/images/ssl_false.png',
+				'state' => true
 			);
 		}
-		$ssl['state'] = ($GLOBALS['config']->get('config', 'ssl_force')) ? 'forced' : 'mixed';
 		$GLOBALS['smarty']->assign('SSL', $ssl);
 	}
 	if (isset($redir) && !empty($redir)) {

@@ -44,7 +44,7 @@
 	    <input name="login" type="submit" id="login" value="{$LANG.form.submit}" class="submit no-change">
 	  </div>
 	{else}
-	  <h1>{if $SSL.state=='mixed'}<span id="login_ssl_switch"><a href="{$SSL.url}"><img src="{$SSL.icon}"></a></span>{elseif $SSL.state=='forced'}<span id="login_ssl_switch"><img src="{$SSL.icon}"></span>{/if}{$LANG.account.title_login_acp}</h1>
+	  <h1>{if $SSL.state}<span id="login_ssl_switch"><a href="{$SSL.url}"><img src="{$SSL.icon}"></a></span>{/if}{$LANG.account.title_login_acp}</h1>
 	  <div><span><input type="text" name="username" id="username" class="textbox required" value="{$USERNAME}"></span><label for="username">{$LANG.account.username}</label>:</div>
 	  <div><span><input type="password" name="password" id="password" class="textbox required" value="{$PASSWORD}"></span><label for="password">{$LANG.account.password}</label>:</div>
 	  <div id="login-box-foot">
