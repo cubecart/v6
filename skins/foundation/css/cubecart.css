@@ -240,6 +240,9 @@ textarea#contact_enquiry {
 form.add_to_basket input, form.add_to_basket button {
     margin: 0 !important;
 }
+button.small, .button.small {
+    padding: 0 !important;
+}
 @media only screen and (max-width: 40em) {
   .small-collapse {
     padding:0;
