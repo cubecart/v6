@@ -51,7 +51,7 @@ if (isset($_GET['seo_path']) && !empty($_GET['seo_path'])) {
 	$GLOBALS['seo']->getItem($_GET['seo_path']);
 }
 //Initialize SSL
-$GLOBALS['ssl'] = SSL::getInstance();
+$GLOBALS['ssl2'] = SSL2::getInstance();
 //Initialize GUI
 $GLOBALS['gui'] = GUI::getInstance();
 //Initialize Taxes
