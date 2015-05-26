@@ -189,6 +189,7 @@ class Tax {
 		if($tax_type==999999) {
 			$percent = $this->_getInheritedTax();
 			$price = sprintf('%.2F', $price/($percent+1), 2);
+
 		} else {
 			$country_id = $GLOBALS['config']->get('config', 'store_country');
 
@@ -210,7 +211,7 @@ class Tax {
 			if (is_array($tax_table)) {
 				foreach ($tax_table as $tax_id => $tax) {
 					if ($tax[$type] && $tax['type'] == $tax_type && in_array($tax['county_id'], array($GLOBALS['config']->get('config', 'store_zone'), 0))) {
-						$tax_total	+= sprintf('%.2F', $price - ($price/(($tax['percent']/100)+1)));
+						$tax_total	+= sprintf('%.3F', $price - ($price/(($tax['percent']/100)+1)));
 					}
 				}
 				$price	-= $tax_total;
