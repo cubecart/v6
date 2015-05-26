@@ -35,8 +35,6 @@ class SSL {
 
 	public function __construct() {
 
-		$this->defineIgnorePage();
-
 		if ($GLOBALS['config']->get('config', 'ssl') && !ADMIN_CP && !CC_SSL && !in_array($_GET['_g'], $this->_ignored_pages)) {
 			$current_url = currentPage();
 			$current_url = preg_replace('#^http://#','https://',$current_url);
