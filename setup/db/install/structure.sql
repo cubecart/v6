@@ -570,7 +570,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_option_matrix` (
 
 CREATE TABLE IF NOT EXISTS `CubeCart_option_value` (
 	`value_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	`value_name` blob NOT NULL,
+	`value_name` varchar(100) NOT NULL,
 	`option_id` INT UNSIGNED NOT NULL DEFAULT '0',
 	`priority` INT(10) UNSIGNED NOT NULL DEFAULT '0',
 	PRIMARY KEY (`value_id`),
