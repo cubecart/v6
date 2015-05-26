@@ -212,15 +212,14 @@ span.flag.flag-DK {background-position: 0 -88px}
 	bottom: 3em;
 	right: 0px;
 	text-decoration: none;
-	color: #000;
+	color: #000 !important;
 	background-color: #EBEBEB;
 	padding: 0.5em 1em;
 	display: none;
 	z-index: 100;
 }
-.back-to-top:hover {	
-	background-color: ;
-	color: #fff;
+a.back-to-top, a.back-to-top:hover, a.back-to-top:active, a.back-to-top:visited  {
+    color: #000 !important;
 }
 .button.white {
 	background-color: #fff;
