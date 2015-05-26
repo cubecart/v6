@@ -1061,8 +1061,13 @@ class Cart {
 					}
 					if (isset($max_stock)) {
 						if (isset($max_stock) && $quantity > $max_stock) {
-							$GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_too_many_added']);
-							$quantity = $max_stock;
+							if($max_stock <=0) {
+								$GLOBALS['gui']->setError(sprintf($GLOBALS['language']->checkout['error_item_not_available'],$this->basket['contents'][$hash]['name']));
+								$this->remove($hash);
+							} else {
+								$GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_too_many_added']);
+								$quantity = $max_stock;
+							}
 						}
 					}
 					$this->basket['contents'][$hash]['quantity'] = (int)$quantity; // or ceil($quantity);
