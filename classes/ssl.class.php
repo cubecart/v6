@@ -19,6 +19,11 @@
 class SSL {
 
 	/**
+	 * SSL enabled pages
+	 * @var array
+	 */
+	private $_ssl_pages  = array();
+	/**
 	 * Class instance
 	 *
 	 * @var instance
@@ -42,7 +47,7 @@ class SSL {
 		}
 		if (ADMIN_CP) {
 			if (isset($_GET['ssl_switch']) && $_GET['ssl_switch']) {
-				$this->_sslSwitch();
+				$this->_sslSwitch('on');
 			} elseif (isset($_GET['ssl_switch']) && !$_GET['ssl_switch']) {
 				$this->_sslSwitch('off');
 			}
@@ -50,9 +55,41 @@ class SSL {
 			$GLOBALS['rootRel']  = CC_ROOT_REL;
 
 		} elseif ($GLOBALS['config']->get('config', 'ssl')) {
+			// Define a list of pages that should always be in SSL mode
+			$this->_ssl_pages = array(
+				// Cart
+				'basket'  => true,
+				'cart'   => true,
+				'checkout'  => true,
+				'complete'  => true,
+				'confirm'  => true,
+				'gateway'  => true,
+				'remote'  => true,
+				'template'  => true,
+
+				// User Related
+				'login'   => true,
+				'logout'  => true,
+				'recover'  => true,
+				'recovery'  => true,
+				'register'  => true,
+				'contact'  => true,
+
+				'account'  => true,
+				'addressbook' => true,
+				'downloads'  => true,
+				'download'  => true,
+				'profile'  => true,
+				'vieworder'  => true,
+				'receipt'  => true,
+			);
+
+			foreach ($GLOBALS['hooks']->load('class.ssl.pages') as $hook) include $hook;
+
 			// Switch to SSL, if necessary
 			$this->_sslSwitch();
 		} else {
+
 			// Defaulted
 			$GLOBALS['storeURL'] = CC_STORE_URL;
 			$GLOBALS['rootRel']  = CC_ROOT_REL;
@@ -82,6 +119,16 @@ class SSL {
 	 * @return bool
 	 */
 	public function defineSecurePage($input = null, $secure = true) {
+		if (!is_null($input)) {
+			if (is_array($input)) {
+				foreach ($input as $section) {
+					$this->_ssl_pages[$section] = (!isset($this->_ssl_pages[$section])) ? $secure : true;
+				}
+			} else {
+				$this->_ssl_pages[$input] = (!isset($this->_ssl_pages[$input])) ? $secure : true;
+			}
+			$this->_sslSwitch();
+		}
 		return false;
 	}
 
@@ -90,7 +137,7 @@ class SSL {
 	 *
 	 * @param bool $default
 	 */
-	public function sslForce($default = 'on') {
+	public function sslForce($default = true) {
 		// Force the current page into SSL mode
 		$this->_sslSwitch($default);
 	}
@@ -102,10 +149,18 @@ class SSL {
 	 *
 	 * @param bool $force
 	 */
-	private function _sslSwitch($force = 'on') {
+	private function _sslSwitch($force = false) {
 		if ($GLOBALS['config']->get('config', 'ssl') && $_GET['_g']!=='remote' &&  $_GET['_g']!=='rm') { // NEVER switch if a remote call is made
 			if (isset($_SERVER['QUERY_STRING']) && !empty($_SERVER['QUERY_STRING'])) {
 				parse_str($_SERVER['QUERY_STRING'], $params);
+			}
+			if (isset($params['SSL'])) {
+				$hash  = $params['SSL'];
+				$compare = $params;
+				unset($compare['SSL'], $compare[session_name()]);
+				$validate = md5(serialize($compare));
+				$force_val = is_string($force) ? $force : true;
+				$force  = ($hash === $validate) ? $force_val : false;
 			}
 
 			if (isset($GLOBALS['seo']->_a) && !empty($GLOBALS['seo']->_a)) {
@@ -114,7 +169,16 @@ class SSL {
 				$current_mode = (isset($_GET['_a'])) ? $_GET['_a'] : '';
 			}
 
-			$enable_ssl = ($force=='off') ? false : true;
+			if (is_string($force)) {
+				$enable_ssl = ($force=='off') ? false : true;
+			} else {
+				$enable_ssl  = ($force || $GLOBALS['config']->get('config', 'ssl_force') || (isset($this->_ssl_pages[$current_mode]) && $this->_ssl_pages[$current_mode] == true)) ? true : false;
+			}
+
+			// Fix for remote calls! This STOPS redirect from SSL to standard protocol if a call is to SSL.
+			if ($_GET['_g']=='rm' && CC_SSL) {
+				$enable_ssl = true;
+			}
 
 			if ($enable_ssl && !CC_SSL) {
 				// Switch into SSL mode
@@ -125,6 +189,9 @@ class SSL {
 			}
 
 			if (isset($page)) {
+				if ($force) {
+					$params['SSL'] = md5(serialize($params));
+				}
 				unset($params['ssl_switch']);
 				if (!empty($params)) {
 					$page .= '?'.http_build_query($params, false, '&');
@@ -134,6 +201,7 @@ class SSL {
 					$URL = SEO::getInstance()->getItem($params['seo_path'], true);
 					$page = str_ireplace($GLOBALS['config']->get('config', 'ssl_url'), $GLOBALS['config']->get('config', 'standard_url'), SEO::getInstance()->SEOable($URL));
 				}
+
 				httpredir($page);
 			} else {
 				return false;
@@ -141,6 +209,7 @@ class SSL {
 		}
 
 		// Get/Set paths and directories
+
 		if ($GLOBALS['config']->get('config', 'ssl') && CC_SSL) {
 			$GLOBALS['storeURL'] = $GLOBALS['config']->get('config', 'ssl_url');
 			$GLOBALS['rootRel']  = $GLOBALS['config']->get('config', 'ssl_path');
