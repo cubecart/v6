@@ -1206,7 +1206,7 @@ class Order {
 		// Retrieve an order from the database, and put it back into the session
 		if (!empty($order_id)) {
 			// Fetch summary
-			if (($summary = $GLOBALS['db']->select('CubeCart_order_summary', 'basket', array('cart_order_id' => (string)$order_id))) !== false) {
+			if (($summary = $GLOBALS['db']->select('CubeCart_order_summary', 'basket', array('cart_order_id' => (string)$order_id), false, false, false, false)) !== false) {
 				if ($this->_basket = unserialize($summary[0]['basket'])) {
 					$GLOBALS['cart']->save();
 					return true;
