@@ -72,6 +72,9 @@ class SSL {
 	 * @return bool
 	 */
 	public function defineIgnorePage($input = null) {
+		
+		foreach ($GLOBALS['hooks']->load('class.ssl.ignored') as $hook) include $hook;
+
 		if (!is_null($input)) {
 			if (is_array($input)) {
 				foreach ($input as $section) {

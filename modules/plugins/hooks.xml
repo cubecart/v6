@@ -173,6 +173,7 @@
  <hook trigger="class.user.register_user" deprecated="" />
  <hook trigger="class.user.register_user.insert" deprecated="" />
  <hook trigger="class.user.register_user.inserted" deprecated="" />
- <hook trigger="class.ssl.pages" deprecated="" />
+ <hook trigger="class.ssl.pages" deprecated="true" />
+ <hook trigger="class.ssl.ignored" deprecated="" />
  <hook trigger="class.tax.producttax" deprecated="" />
 </hooks>
