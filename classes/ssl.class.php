@@ -41,12 +41,11 @@ class SSL {
 			
 			$ssl_url = $GLOBALS['config']->get('config', 'ssl_url');
 			
-			// Make sure the domain matches for SSL?!
-			if(preg_match('#^'.$ssl_url.'#',$current_url)) {
+			if(preg_match('#^'.$ssl_url.'#',$current_url)) { // Make sure the domain for SSL is expected
 				httpredir($current_url);
-			} else {
-				// Salvage path, query and anchor
+			} else { // If not we try to make it based on what we have
 				$url_parts = parse_url($current_url);
+				
 				$url_parts['path'] = str_replace($GLOBALS['config']->get('config', 'ssl_path'),'/',$url_parts['path']);
 				$ssl_url .= (!empty($url_parts['path'])) ? $url_parts['path'] : '';
 				$ssl_url .= (!empty($url_parts['query'])) ? '?'.$url_parts['query'] : '';
