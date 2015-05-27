@@ -28,6 +28,9 @@ class Database extends Database_Contoller {
 		$this->_db_engine = 'MySQLi';
 
 		$this->_db_connect_id = new mysqli($config['dbhost'], $config['dbusername'], $config['dbpassword'], $config['dbdatabase']);
+
+		mysqli_options($this->_db_connect_id, MYSQLI_OPT_LOCAL_INFILE, true);
+
 		if ($this->_db_connect_id->connect_error) {
 			trigger_error($this->_db_connect_id->connect_error, E_USER_ERROR);
 		}
