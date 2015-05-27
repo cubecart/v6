@@ -289,6 +289,17 @@ if (isset($_POST['template'])) {
 
 	## Save/Update Template
 	$proceed = true;
+
+	if(empty($_POST['template']['content_html'])) {
+		$GLOBALS['main']->setACPWarning($lang['email']['error_html_empty']);
+		$proceed = false;
+	}
+
+	if(empty($_POST['template']['content_text']) && !empty($_POST['template']['content_html'])) {
+		$GLOBALS['main']->setACPNotify($lang['email']['error_plain_empty']);
+		$_POST['template']['content_text'] = strip_tags($_POST['template']['content_html']);	
+	}
+
 	foreach (array('content_html', 'content_text') as $key) {
 		if (!preg_match("/{$EMAIL_CONTENT}/", $_POST['template'][$key])) {
 			$GLOBALS['main']->setACPWarning($lang['email']['error_macro_content']);
@@ -314,31 +325,47 @@ if (isset($_POST['content']) && Admin::getInstance()->permissions('documents', C
 	$_POST['content']['content_html'] = $GLOBALS['RAW']['POST']['content']['content_html'];
 	$_POST['content']['content_text'] = $GLOBALS['RAW']['POST']['content']['content_text'];
 	
-	## Save/Update Content
-	if (isset($_POST['content']['content_id']) && !empty($_POST['content']['content_id'])) {
-		## remove double encoding in repeat regions required to show them in FCK
-		if ($GLOBALS['db']->update('CubeCart_email_content', $_POST['content'], array('content_id' => (int)$_POST['content']['content_id']))) {
-			$GLOBALS['main']->setACPNotify($lang['email']['notify_content_update']);
-			httpredir('?_g=documents&node=email&type=content');
-		} else {
-			$GLOBALS['main']->setACPWarning($lang['email']['error_content_update']);
 
-		}
-	} else {
-		if (!empty($_POST['content']['content_type']) && !empty($_POST['content']['language'])) {
-			$check = $GLOBALS['db']->select('CubeCart_email_content', array('content_id'), array('content_type' => $_POST['content']['content_type'], 'language' => $_POST['content']['language']));
-			if ($check) {
-				# $GLOBALS['db']->update('CubeCart_email_content', $_POST['content'], array('content_id' => (int)$check[0]['content_id']));
+	$proceed = true;
+
+	if(empty($_POST['content']['content_html'])) {
+		$GLOBALS['main']->setACPWarning($lang['email']['error_html_empty']);
+		$proceed = false;
+	}
+
+	if(empty($_POST['content']['content_text']) && !empty($_POST['content']['content_html'])) {
+		$GLOBALS['main']->setACPNotify($lang['email']['error_plain_empty']);
+		$_POST['content']['content_text'] = strip_tags($_POST['content']['content_html']);	
+	}
+
+	if($proceed) {
+		## Save/Update Content
+		if (isset($_POST['content']['content_id']) && !empty($_POST['content']['content_id'])) {
+			## remove double encoding in repeat regions required to show them in FCK
+			if ($GLOBALS['db']->update('CubeCart_email_content', $_POST['content'], array('content_id' => (int)$_POST['content']['content_id']))) {
+				$GLOBALS['main']->setACPNotify($lang['email']['notify_content_update']);
+				httpredir('?_g=documents&node=email&type=content');
 			} else {
-				if ($GLOBALS['db']->insert('CubeCart_email_content', $_POST['content'])) {
-					$GLOBALS['main']->setACPNotify('Email content saved.');
-					httpredir('?_g=documents&node=email&type=content');
+				$GLOBALS['main']->setACPWarning($lang['email']['error_content_update']);
+			}
+		} else {
+			if (!empty($_POST['content']['content_type']) && !empty($_POST['content']['language'])) {
+				$check = $GLOBALS['db']->select('CubeCart_email_content', array('content_id'), array('content_type' => $_POST['content']['content_type'], 'language' => $_POST['content']['language']));
+				if ($check) {
+					# $GLOBALS['db']->update('CubeCart_email_content', $_POST['content'], array('content_id' => (int)$check[0]['content_id']));
 				} else {
-					$GLOBALS['main']->setACPWarning($lang['email']['error_content_create']);
-					httpredir(currentPage());
+					if ($GLOBALS['db']->insert('CubeCart_email_content', $_POST['content'])) {
+						$GLOBALS['main']->setACPNotify('Email content saved.');
+						httpredir('?_g=documents&node=email&type=content');
+					} else {
+						$GLOBALS['main']->setACPWarning($lang['email']['error_content_create']);
+						httpredir(currentPage());
+					}
 				}
 			}
 		}
+	} else {
+		httpredir(currentPage());
 	}
 }
 

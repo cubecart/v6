@@ -942,6 +942,8 @@
     <string name="error_content_delete" introduced="5.0.0"><![CDATA[Failed to delete email content.]]></string>
     <string name="error_content_single" introduced="5.0.0"><![CDATA[It is not possible to delete the only translation of an email content.]]></string>
     <string name="error_content_update" introduced="5.0.0"><![CDATA[Failed to update email content.]]></string>
+    <string name="error_plain_empty" introduced="6.0.5"><![CDATA[Plain text version was empty. We have automatically created a version based on the HTML version.]]></string>
+    <string name="error_html_empty" introduced="6.0.5"><![CDATA[The HTML version was empty. Please create some content and try again.]]></string>
     <string name="error_export" introduced="5.0.0"><![CDATA[Export failed.]]></string>
     <string name="error_macro_content" introduced="5.0.0"><![CDATA[{$EMAIL_CONTENT} macro not detected in template contents.]]></string>
     <string name="error_news_delete" introduced="5.0.0"><![CDATA[Failed to delete newsletter]]></string>
