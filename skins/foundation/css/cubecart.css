@@ -78,8 +78,8 @@ div.alert-box a {
     position: fixed;
     z-index: 100;
     width: 250px;
-    top: 60px;
-    margin-left: -161px;
+    top: 30px;
+    margin-left: -150px;
 }
 .small-basket-detail-container {
     position: fixed;
@@ -91,6 +91,9 @@ div.alert-box a {
     border: none;
     color: #fff;
     font-weight: bold;
+}
+#mini-basket {
+    min-width: 100px;
 }
 .mini-basket-title {
     background-color: #000;
