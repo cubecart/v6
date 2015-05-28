@@ -11,7 +11,7 @@
  *}
 <div class="box-basket-content" id="box-basket-content">
    <h4 class="mini-basket-title nomarg pad-side">{$LANG.basket.your_basket}</h4>
-   <div class="pad-side basket-detail">
+   <div class="pad basket-detail">
       <ul class="no-bullet">
       {if isset($CONTENTS) && count($CONTENTS) > 0}
       {foreach from=$CONTENTS item=item name=items}

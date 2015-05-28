@@ -78,7 +78,7 @@ div.alert-box a {
     position: fixed;
     z-index: 100;
     width: 250px;
-    top: 30px;
+    top: 27px;
     margin-left: -150px;
 }
 .small-basket-detail-container {
@@ -110,10 +110,10 @@ div.alert-box a {
 .mini-basket-arrow {
     width: 0;
     height: 0;
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    border-bottom: 7px solid #000;
-    margin-left: 85%;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid #000;
+    margin-left: 229px;
 }
 
 /* End Mini Basket */
