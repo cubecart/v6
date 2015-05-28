@@ -61,13 +61,6 @@
                   </div>
                </div>
             </div>
-            <div>
-               <div class="row">
-                  <div class="small-12 columns">
-                     {include file='templates/element.breadcrumb.php'} 
-                  </div>
-               </div>
-            </div>
             <div class="row {$SECTION_NAME}_wrapper">
                <div class="small-12 large-12 columns small-collapse">
                	{include file='templates/box.progress.php'}
