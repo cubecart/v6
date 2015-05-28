@@ -961,9 +961,9 @@
     <string name="help_content_html" introduced="5.0.0"><![CDATA[Subscribers who have their email client set to prefer rich text HTML emails will see the contents of this field.]]></string>
     <string name="help_content_text" introduced="5.0.0"><![CDATA[Subscribers who have their email client set to prefer plain text emails will see the contents of this field. Please do not enter HTML here.]]></string>
     <string name="help_email_export" introduced="5.0.0"><![CDATA[Export your email customizations to file. The file will be saved in the languages directory as 'email_&lt;language code&gt;-custom.xml'.]]></string>
-    <string name="help_email_import" introduced="5.0.0"><![CDATA[You can reinstall your email templates here, by selecting the language in the dropdown, then clicking 'save'.<br />Warning: This will replace ALL email contents for the specified language with their defaults]]></string>
+    <string name="help_email_import" introduced="5.0.0"><![CDATA[You can reinstall your email templates here, by selecting the language in the dropdown, then clicking 'save'.<br>Warning: This will replace ALL email contents for the specified language with their defaults]]></string>
     <string name="help_macro" introduced="5.0.0"><![CDATA[Note: Visitors only need to add their email address to subscribe to the mailing list. Some data will only be known if they are a registered customer.]]></string>
-    <string name="help_test_send" introduced="5.0.0"><![CDATA[Please use this to send a test copy of the email before sending it out to your customers. The email received will be sent in multipart format.<br />To view the HTML or text version you may need to edit your mail client settings.<br />Your customers will either see rich HTML or plain text depending on their email client settings.]]></string>
+    <string name="help_test_send" introduced="5.0.0"><![CDATA[Please use this to send a test copy of the email before sending it out to your customers. The email received will be sent in multipart format.<br>To view the HTML or text version you may need to edit your mail client settings.<br>Your customers will either see rich HTML or plain text depending on their email client settings.]]></string>
     <string name="important" introduced="5.0.0"><![CDATA[<strong>IMPORTANT:</strong> Macros must be retained in the email content for it to be populated with suitable data. Dynamic regions or repeat regions must also be retained (e.g. {foreach from=$products item=item}Dynamic data or repeat data{/foreach}).]]></string>
     <string name="macro_sender_name_first" introduced="6.0.0"><![CDATA[Senders first name.]]></string>
     <string name="macro_sender_name_last" introduced="6.0.0"><![CDATA[Senders last name.]]></string>
@@ -1993,7 +1993,7 @@
     <string name="install_cubecart_title" introduced="5.0.0"><![CDATA[Install CubeCart %s]]></string>
     <string name="install_drop_tables" introduced="5.0.0"><![CDATA[Drop Tables]]></string>
     <string name="install_drop_tables_explained" introduced="5.0.0"><![CDATA[(Check this if you wish to overwrite existing data.)]]></string>
-    <string name="install_fresh" introduced="5.0.0"><![CDATA[Choose this option if you wish to perform a fresh installation of CubeCart.<br /><strong style='color: red;'>WARNING</strong>: By proceeding with this option any existing store data may be overwritten!]]></string>
+    <string name="install_fresh" introduced="5.0.0"><![CDATA[Choose this option if you wish to perform a fresh installation of CubeCart.<br><strong style='color: red;'>WARNING</strong>: By proceeding with this option any existing store data may be overwritten!]]></string>
     <string name="licence_agree" introduced="5.0.0"><![CDATA[I agree to to the terms of the software licence.]]></string>
     <string name="link_admin_panel" introduced="5.0.0"><![CDATA[Admin Control Panel]]></string>
     <string name="link_store_front" introduced="5.0.0"><![CDATA[Store Front]]></string>
@@ -2012,7 +2012,7 @@
     <string name="upgrade_complete_note" introduced="5.0.0"><![CDATA[Upgrade Complete. Please log in to your Admin Control Panel, and verify your store's configuration.]]></string>
     <string name="upgrade_cubecart" introduced="5.0.0"><![CDATA[Upgrade CubeCart]]></string>
     <string name="upgrade_cubecart_title" introduced="5.0.0"><![CDATA[Upgrade to CubeCart %s (Recommended)]]></string>
-    <string name="upgrade_existing" introduced="5.0.0"><![CDATA[Choose this option to upgrade your CubeCart store to the latest version. <br /><strong style='color: red;'>IMPORTANT:</strong> Please take a FULL backup of your database and files before continuing!]]></string>
+    <string name="upgrade_existing" introduced="5.0.0"><![CDATA[Choose this option to upgrade your CubeCart store to the latest version. <br><strong style='color: red;'>IMPORTANT:</strong> Please take a FULL backup of your database and files before continuing!]]></string>
     <string name="upgrade_from_to" introduced="5.0.0"><![CDATA[Your store is ready to be upgraded from version <strong>%1$s</strong> to version <strong>%2$s</strong>]]></string>
     <string name="upgrade_in_progress" introduced="5.0.0"><![CDATA[Upgrade in progress. Upgrading from version <strong>%1$s</strong> to version <strong>%2$s</strong>]]></string>
     <string name="upgrade_licence_needed" introduced="5.0.0"><![CDATA[As you are upgrading from version <strong>%s</strong>, you can enter a Software Licence Key to use CubeCart Pro.]]></string>

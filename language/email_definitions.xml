@@ -48,29 +48,29 @@
         <p><a href="{$DATA.link}">{$DATA.link}</a></p>
         <table width="100%">
         <tr>
-        <td valign="top" width="50%"><strong>Billing address:</strong><br />
-        {$BILLING.first_name} {$BILLING.last_name}<br />
-        {if !empty({$BILLING.company_name})}{$BILLING.company_name}<br />
+        <td valign="top" width="50%"><strong>Billing address:</strong><br>
+        {$BILLING.first_name} {$BILLING.last_name}<br>
+        {if !empty({$BILLING.company_name})}{$BILLING.company_name}<br>
         {/if}
-        {$BILLING.line1}<br />
-        {if !empty({$BILLING.line2})}{$BILLING.line2}<br />
+        {$BILLING.line1}<br>
+        {if !empty({$BILLING.line2})}{$BILLING.line2}<br>
         {/if}
-        {$BILLING.town}<br />
-        {$BILLING.state}<br />
-        {$BILLING.postcode}<br />
-        {$BILLING.country}<br />
-        {$BILLING.phone}<br />
-        <br />
-        <strong>Email:</strong><br />
+        {$BILLING.town}<br>
+        {$BILLING.state}<br>
+        {$BILLING.postcode}<br>
+        {$BILLING.country}<br>
+        {$BILLING.phone}<br>
+        <br>
+        <strong>Email:</strong><br>
         {$BILLING.email}</td>
-        <td valign="top" width="50%"><strong>Shipping address:</strong><br />
-        {$SHIPPING.first_name} {$SHIPPING.last_name}<br />
-        {if !empty({$SHIPPING.company_name})}{$SHIPPING.company_name} <br />
-        {/if}{$SHIPPING.line1}<br />
-        {if !empty({$SHIPPING.line2})}{$SHIPPING.line2} <br />
-        {/if}{$SHIPPING.town}<br />
-        {$SHIPPING.state}<br />
-        {$SHIPPING.postcode}<br />
+        <td valign="top" width="50%"><strong>Shipping address:</strong><br>
+        {$SHIPPING.first_name} {$SHIPPING.last_name}<br>
+        {if !empty({$SHIPPING.company_name})}{$SHIPPING.company_name} <br>
+        {/if}{$SHIPPING.line1}<br>
+        {if !empty({$SHIPPING.line2})}{$SHIPPING.line2} <br>
+        {/if}{$SHIPPING.town}<br>
+        {$SHIPPING.state}<br>
+        {$SHIPPING.postcode}<br>
         {$SHIPPING.country}</td>
         </tr>
         </table>
@@ -83,7 +83,7 @@
         </tr>
         {foreach from=$PRODUCTS item=product}
         <tr>
-        <td>{$product.name} <br />{$product.product_options}</td>
+        <td>{$product.name} <br>{$product.product_options}</td>
         <td>{$product.quantity}</td>
         <td>{$product.price}</td>
         </tr>
@@ -186,12 +186,12 @@
   </email>
   <email name="account.password_recovery">
     <subject><![CDATA[Password Recovery]]></subject>
-    <content type="html"><![CDATA[<p>Dear {$DATA.first_name} {$DATA.last_name},<br /> 
-        <br /> 
-        To reset your password, please click on the link below or copy and paste the address onto your web browser's address window. Once you're on the web page, you will be instructed to enter and confirm your new password.<br /> 
-        <br /> 
-        <a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br /> 
-        <br /> 
+    <content type="html"><![CDATA[<p>Dear {$DATA.first_name} {$DATA.last_name},<br> 
+        <br> 
+        To reset your password, please click on the link below or copy and paste the address onto your web browser's address window. Once you're on the web page, you will be instructed to enter and confirm your new password.<br> 
+        <br> 
+        <a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br> 
+        <br> 
         If you require further assistance in resetting your password, please contact us.</p>]]></content>
     <content type="text"><![CDATA[Hi {$DATA.first_name},
         
@@ -208,29 +208,29 @@
         <p><a href="{$DATA.link}">{$DATA.link}</a></p>
         <table width="100%">
         <tr>
-        <td valign="top" width="50%"><strong>Billing address:</strong><br />
-        {$BILLING.first_name} {$BILLING.last_name}<br />
-        {if !empty({$BILLING.company_name})}{$BILLING.company_name}<br />
+        <td valign="top" width="50%"><strong>Billing address:</strong><br>
+        {$BILLING.first_name} {$BILLING.last_name}<br>
+        {if !empty({$BILLING.company_name})}{$BILLING.company_name}<br>
         {/if}
-        {$BILLING.line1}<br />
-        {if !empty({$BILLING.line2})}{$BILLING.line2}<br />
+        {$BILLING.line1}<br>
+        {if !empty({$BILLING.line2})}{$BILLING.line2}<br>
         {/if}
-        {$BILLING.town}<br />
-        {$BILLING.state}<br />
-        {$BILLING.postcode}<br />
-        {$BILLING.country}<br />
-        {$BILLING.phone}<br />
-        <br />
-        <strong>Email:</strong><br />
+        {$BILLING.town}<br>
+        {$BILLING.state}<br>
+        {$BILLING.postcode}<br>
+        {$BILLING.country}<br>
+        {$BILLING.phone}<br>
+        <br>
+        <strong>Email:</strong><br>
         {$BILLING.email}</td>
-        <td valign="top" width="50%"><strong>Shipping address:</strong><br />
-        {$SHIPPING.first_name} {$SHIPPING.last_name}<br />
-        {if !empty({$SHIPPING.company_name})}{$SHIPPING.company_name} <br />
-        {/if}{$SHIPPING.line1}<br />
-        {if !empty({$SHIPPING.line2})}{$SHIPPING.line2} <br />
-        {/if}{$SHIPPING.town}<br />
-        {$SHIPPING.state}<br />
-        {$SHIPPING.postcode}<br />
+        <td valign="top" width="50%"><strong>Shipping address:</strong><br>
+        {$SHIPPING.first_name} {$SHIPPING.last_name}<br>
+        {if !empty({$SHIPPING.company_name})}{$SHIPPING.company_name} <br>
+        {/if}{$SHIPPING.line1}<br>
+        {if !empty({$SHIPPING.line2})}{$SHIPPING.line2} <br>
+        {/if}{$SHIPPING.town}<br>
+        {$SHIPPING.state}<br>
+        {$SHIPPING.postcode}<br>
         {$SHIPPING.country}</td>
         </tr>
         </table>
@@ -243,7 +243,7 @@
         </tr>
         {foreach from=$PRODUCTS item=product}
         <tr>
-        <td>{$product.name} <br />{$product.product_options}</td>
+        <td>{$product.name} <br>{$product.product_options}</td>
         <td>{$product.quantity}</td>
         <td>{$product.price}</td>
         </tr>
@@ -335,8 +335,8 @@
   <email name="admin.review_added">
     <subject><![CDATA[New Product Review]]></subject>
     <content type="html"><![CDATA[{$DATA.name} has submit a new review/comment about '{$DATA.product_name}'. This can be moderated following the link below.
-        <p><strong>Moderation Link:</strong><br /><a href='{$DATA.link}'>{$DATA.link}</a></p> 
-        <p><strong>Review Text:</strong><br />{$DATA.review}</p>]]></content>
+        <p><strong>Moderation Link:</strong><br><a href='{$DATA.link}'>{$DATA.link}</a></p> 
+        <p><strong>Review Text:</strong><br>{$DATA.review}</p>]]></content>
     <content type="text"><![CDATA[{$DATA.name} has submit a new review/comment about '{$DATA.product_name}'. This can be moderated following the link below.
         
         Moderation Link: 
@@ -349,7 +349,7 @@
     <content type="html"><![CDATA[<p>Hi {$DATA.first_name},</p> 
         <p>Your digital files are now ready for download. Please use the links provided below to access them below:</p> 
         {foreach from=$DOWNLOADS item=download} 
-        <p><strong>{$download.name}:</strong> (Link expires on {$download.expire}<strong>)</strong><br /> 
+        <p><strong>{$download.name}:</strong> (Link expires on {$download.expire}<strong>)</strong><br> 
         <a href="{$download.url}">{$download.url}</a></p>  
         {/foreach}
         <p>If the links above don't work, please try copy and pasting them it into your browser address bar. You can also find access to these files from your the customer area of our website.</p> 
@@ -370,9 +370,9 @@
     <content type="html"><![CDATA[<p>Dear {$DATA.name},</p> 
         <p>We are please to be sending you this gift certificate which you can use towards the purchase of any item(s) on our website.</p> 
         <p>Happy shopping!</p> 
-        <p><strong>From: </strong>{$DATA.first_name} {$DATA.last_name}<br /> 
-        <strong>Amount: </strong>{$DATA.value}<br /> 
-        <strong>Claim Code:</strong> {$DATA.code}<br /> 
+        <p><strong>From: </strong>{$DATA.first_name} {$DATA.last_name}<br> 
+        <strong>Amount: </strong>{$DATA.value}<br> 
+        <strong>Claim Code:</strong> {$DATA.code}<br> 
         <strong>Gift Message:</strong> {$DATA.message}</p> 
         <p>-------------------</p> 
         <p>To reedeem this gift certificate please enter the &quot;Claim Code&quot; above into the text field labeled &quot;Add Gift Certificate or Coupon&quot; during checkout.</p> 
