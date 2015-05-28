@@ -409,29 +409,25 @@ class User {
 	 * @return array
 	 */
 	public function formatAddress($address = array(), $user_defined = true) {
-		if($user_defined) {
-			$state_field = is_numeric($address['state']) ? 'id' : 'name';
-			$address['state_id']  = getStateFormat($address['state'], $state_field, 'id');
-			$address['country_id']  = $address['country'];
-			$address['country']   = getCountryFormat($address['country_id']);
-			$address['state_abbrev'] = getStateFormat($address['state'], $state_field, 'abbrev');
-			$address['country_iso']  = getCountryFormat($address['country_id'], 'numcode', 'iso');
-			$address['country_iso3'] = getCountryFormat($address['country_id'], 'numcode', 'iso3');
-			$address['state']   = getStateFormat($address['state_id']);
-			$address['user_defined'] = $user_defined;
-			return $address;
-		} else {
-			return array(
-				'user_defined' => $user_defined,
+		
+		if(!$user_defined && !is_array($address)) {
+			$address = array(
 				'postcode' => $GLOBALS['config']->get('config', 'store_postcode'),
 				'country' => $GLOBALS['config']->get('config', 'store_country'),
-				'country_iso' => getCountryFormat($GLOBALS['config']->get('config', 'store_country'), 'numcode', 'iso'),
-				'country_iso3' => getCountryFormat($GLOBALS['config']->get('config', 'store_country'), 'numcode', 'iso3'),
-				'state_id' => $GLOBALS['config']->get('config', 'store_zone'),
-				'state'  => getStateFormat($GLOBALS['config']->get('config', 'store_zone')),
-				'state_abbrev' => getStateFormat($GLOBALS['config']->get('config', 'store_zone'), 'id', 'abbrev')
+				'state' => $GLOBALS['config']->get('config', 'store_zone')
 			);
 		}
+
+		$state_field = is_numeric($address['state']) ? 'id' : 'name';
+		$address['state_id']  = getStateFormat($address['state'], $state_field, 'id');
+		$address['country_id']  = $address['country'];
+		$address['country']   = getCountryFormat($address['country_id']);
+		$address['state_abbrev'] = getStateFormat($address['state'], $state_field, 'abbrev');
+		$address['country_iso']  = getCountryFormat($address['country_id'], 'numcode', 'iso');
+		$address['country_iso3'] = getCountryFormat($address['country_id'], 'numcode', 'iso3');
+		$address['state']   = getStateFormat($address['state_id']);
+		$address['user_defined'] = $user_defined;
+		return $address;
 	}
 
 
