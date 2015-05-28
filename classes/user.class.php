@@ -119,7 +119,7 @@ class User {
 
 	final protected function __construct() {
 		//If there is a login attempt
-		if (isset($_POST['username']) && isset($_POST['password'])) {
+		if (isset($_POST['username']) && isset($_POST['password']) && !empty($_POST['username']) && !empty($_POST['password'])) {
 
 			//Did they check the remember me box
 			$remember = (isset($_POST['remember']) && !empty($_POST['remember'])) ? true : false;

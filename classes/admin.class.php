@@ -64,7 +64,7 @@ class Admin {
 			$GLOBALS['session']->set('currency', $GLOBALS['config']->get('config', 'default_currency'), 'client');
 
 		// Action Auto-Handlers
-		if (isset($_POST['username']) && isset($_POST['password'])) {
+		if (isset($_POST['username']) && isset($_POST['password']) && !empty($_POST['username']) && !empty($_POST['password'])) {
 			// Login requests
 			$this->_authenticate($_POST['username'], $_POST['password']);
 		}
