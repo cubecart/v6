@@ -53,9 +53,11 @@
                   <a href="{$STORE_URL}" class="main-logo"><img src="{$STORE_LOGO}" alt="{$META_TITLE}"></a>
                </div>
                <div class="small-7 medium-8 large-9 columns">
-                  <div class="row">
-                     <div class="right text-center show-for-small"><a class="left-off-canvas-toggle button white tiny" href="#"><i class="fa fa-bars fa-2x"></i></a></div>
-                     <div class="right text-right show-for-medium-up">{include file='templates/box.session.php'}</div>
+                  <div class="row" id="nav-actions">
+                     <div class="small-12 columns">
+                        <div class="right text-center show-for-small"><a class="left-off-canvas-toggle button white tiny" href="#"><i class="fa fa-bars fa-2x"></i></a></div>
+                        <div class="right text-right show-for-medium-up">{include file='templates/box.session.php'}</div>
+                     </div>
                   </div>
                </div>
             </div>
