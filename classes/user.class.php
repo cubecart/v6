@@ -388,10 +388,12 @@ class User {
 				foreach ($delete as $address) {
 					$where['address_id'] = $address;
 					$GLOBALS['db']->delete('CubeCart_addressbook', $where);
+					$this->_deleteBasketAddress($address);
 				}
 			} else {
 				$where['address_id'] = $delete;
 				$GLOBALS['db']->delete('CubeCart_addressbook', $where);
+				$this->_deleteBasketAddress($address);
 			}
 
 			return true;
@@ -399,6 +401,39 @@ class User {
 
 		return false;
 	}
+
+	/**
+	 * Format address array
+	 *
+	 * @param array
+	 * @return array
+	 */
+	public function formatAddress($address = array(), $user_defined = true) {
+		if($user_defined) {
+			$state_field = is_numeric($address['state']) ? 'id' : 'name';
+			$address['state_id']  = getStateFormat($address['state'], $state_field, 'id');
+			$address['country_id']  = $address['country'];
+			$address['country']   = getCountryFormat($address['country_id']);
+			$address['state_abbrev'] = getStateFormat($address['state'], $state_field, 'abbrev');
+			$address['country_iso']  = getCountryFormat($address['country_id'], 'numcode', 'iso');
+			$address['country_iso3'] = getCountryFormat($address['country_id'], 'numcode', 'iso3');
+			$address['state']   = getStateFormat($address['state_id']);
+			$address['user_defined'] = $user_defined;
+			return $address;
+		} else {
+			return array(
+				'user_defined' => $user_defined,
+				'postcode' => $GLOBALS['config']->get('config', 'store_postcode'),
+				'country' => $GLOBALS['config']->get('config', 'store_country'),
+				'country_iso' => getCountryFormat($GLOBALS['config']->get('config', 'store_country'), 'numcode', 'iso'),
+				'country_iso3' => getCountryFormat($GLOBALS['config']->get('config', 'store_country'), 'numcode', 'iso3'),
+				'state_id' => $GLOBALS['config']->get('config', 'store_zone'),
+				'state'  => getStateFormat($GLOBALS['config']->get('config', 'store_zone')),
+				'state_abbrev' => getStateFormat($GLOBALS['config']->get('config', 'store_zone'), 'id', 'abbrev')
+			);
+		}
+	}
+
 
 	/**
 	 * Get an element or all the user data
@@ -427,11 +462,15 @@ class User {
 	 * @param int $address_id
 	 * @return array/false
 	 */
-	public function getAddress($address_id) {
+	public function getAddress($address_id, $format = false) {
 		if ($this->is()) {
-			if (($address = $GLOBALS['db']->select('CubeCart_addressbook', false, array('customer_id' => $this->_user_data['customer_id'], 'address_id' => $address_id))) !== false) {
-				$address[0]['user_defined'] = true;
-				return $address[0];
+			if (($raw_address = $GLOBALS['db']->select('CubeCart_addressbook', false, array('customer_id' => $this->_user_data['customer_id'], 'address_id' => $address_id), false, false, false, false)) !== false) {
+				
+				if($format) {
+					return $this->formatAddress($raw_address[0]);
+				} else {	
+					return $raw_address[0];
+				}
 			}
 		}
 		return false;
@@ -451,16 +490,7 @@ class User {
 			}
 			if (($addresses = $GLOBALS['db']->select('CubeCart_addressbook', false, $where, 'billing DESC', false, false, false)) !== false) {
 				foreach ($addresses as $address) {
-					$state_field = is_numeric($address['state']) ? 'id' : 'name';
-					$address['state_id']  = getStateFormat($address['state'], $state_field, 'id');
-					$address['country_id']  = $address['country'];
-					$address['country']   = getCountryFormat($address['country_id']);
-					$address['state_abbrev'] = getStateFormat($address['state'], $state_field, 'abbrev');
-					$address['country_iso']  = getCountryFormat($address['country_id'], 'numcode', 'iso');
-					$address['country_iso3'] = getCountryFormat($address['country_id'], 'numcode', 'iso3');
-					$address['state']   = getStateFormat($address['state_id']);
-					$address['user_defined'] = true;
-					$addressArray[] = $address;
+					$addressArray[] = $this->formatAddress($address);
 				}
 				return $addressArray;
 			}
@@ -479,16 +509,7 @@ class User {
 			$where['default'] = '1';
 			if (($addresses = $GLOBALS['db']->select('CubeCart_addressbook', false, $where, 'billing DESC', false, false, false)) !== false) {
 				foreach ($addresses as $address) {
-					$state_field = is_numeric($address['state']) ? 'id' : 'name';
-					$address['state_id']  = getStateFormat($address['state'], $state_field, 'id');
-					$address['country_id']  = $address['country'];
-					$address['country']   = getCountryFormat($address['country_id']);
-					$address['state_abbrev'] = getStateFormat($address['state'], $state_field, 'abbrev');
-					$address['country_iso']  = getCountryFormat($address['country_id'], 'numcode', 'iso');
-					$address['country_iso3'] = getCountryFormat($address['country_id'], 'numcode', 'iso3');
-					$address['state']   = getStateFormat($address['state_id']);
-					$address['user_defined'] = true;
-					$addressArray[] = $address;
+					$addressArray[] = $this->formatAddress($address);
 				}
 				return $addressArray;
 			}
@@ -768,7 +789,9 @@ class User {
 			}
 			if (isset($array['address_id']) && is_numeric($array['address_id'])) {
 				// Update
-				return $GLOBALS['db']->update('CubeCart_addressbook', $array, array('address_id' => $array['address_id'], 'customer_id' => $user_id), true);
+				$result = $GLOBALS['db']->update('CubeCart_addressbook', $array, array('address_id' => $array['address_id'], 'customer_id' => $user_id), true);
+				$this->_updateBasketAddress($array['address_id']);
+				return $result;
 			} else {
 				// Insert
 				$array['customer_id'] = $user_id;
@@ -837,6 +860,27 @@ class User {
 	//=====[ Private ]=======================================
 
 	/**
+	 * Delete address from basket
+	 *
+	 * @param int $id
+	 * @return bool
+	 */
+	private function _deleteBasketAddress($id) {
+		$match = false;
+		if(isset($GLOBALS['cart']->basket['delivery_address']['address_id']) && $GLOBALS['cart']->basket['delivery_address']['address_id']==$id) {
+			unset($GLOBALS['cart']->basket['delivery_address']);
+			$GLOBALS['cart']->save();
+			$match = true;
+		}
+		if(isset($GLOBALS['cart']->basket['billing_address']['address_id']) && $GLOBALS['cart']->basket['billing_address']['address_id']==$id) {
+			unset($GLOBALS['cart']->basket['billing_address']);
+			$GLOBALS['cart']->save();
+			$match = true;
+		}
+		return $match;
+	}
+
+	/**
 	 * Load customer data
 	 */
 	private function _load() {
@@ -866,5 +910,30 @@ class User {
 	 */
 	private function _update() {
 		return Database::getInstance()->update('CubeCart_customer', $this->_user_data, array('customer_id' => $this->_user_data['customer_id']), true);
+	}
+
+	/**
+	 * Update address from basket
+	 *
+	 * @param int $id
+	 * @return bool
+	 */
+	private function _updateBasketAddress($id) {
+		
+		$match = false;
+
+		$updated_address = $this->getAddress($id, true);
+
+		if(isset($GLOBALS['cart']->basket['delivery_address']['address_id']) && $GLOBALS['cart']->basket['delivery_address']['address_id']==$id) {
+			$GLOBALS['cart']->basket['delivery_address'] = array_merge($GLOBALS['cart']->basket['delivery_address'], $updated_address);
+			$GLOBALS['cart']->save();
+			$match = true;
+		}
+		if(isset($GLOBALS['cart']->basket['billing_address']['address_id']) && $GLOBALS['cart']->basket['billing_address']['address_id']==$id) {
+			$GLOBALS['cart']->basket['billing_address'] = array_merge($GLOBALS['cart']->basket['billing_address'], $updated_address);
+			$GLOBALS['cart']->save();
+			$match = true;
+		}
+		return $match;
 	}
 }

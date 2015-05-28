@@ -15,6 +15,7 @@
 -->
 <definitions version="1.0">
   <group name="account">
+    <string name="check_basket_address" introduced="6.0.5"><![CDATA[The updated address was selected as your billing or delivery address for your current basket. Please check the correct address is assigned before proceeding to payment.]]></string>
     <string name="password_updated" introduced="6.0.0"><![CDATA[Your password has been updated.]]></string>
   	<string name="return_register_form" introduced="6.0.0"><![CDATA[Need to register?]]></string>
     <string name="already_registered" introduced="5.0.0"><![CDATA[Already registered?]]></string>

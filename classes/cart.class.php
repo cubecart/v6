@@ -896,29 +896,11 @@ class Cart {
 			// Fetch the basket data
 			$basket_data = ($this->basket) ? $this->basket : false;
 			if (!isset($basket_data['delivery_address'])) {
-				$basket_data['delivery_address'] = array(
-					'user_defined' => false,
-					'postcode'  => $GLOBALS['config']->get('config', 'store_postcode'),
-					'country'  => $GLOBALS['config']->get('config', 'store_country'),
-					'country_iso' => getCountryFormat($GLOBALS['config']->get('config', 'store_country'), 'numcode', 'iso'),
-					'country_iso3' => getCountryFormat($GLOBALS['config']->get('config', 'store_country'), 'numcode', 'iso3'),
-					'state_id'  => $GLOBALS['config']->get('config', 'store_zone'),
-					'state'   => getStateFormat($GLOBALS['config']->get('config', 'store_zone')),
-					'state_abbrev' => getStateFormat($GLOBALS['config']->get('config', 'store_zone'), 'id', 'abbrev')
-				);
+				$basket_data['delivery_address'] = $GLOBALS['user']->formatAddress('',false);
 				$this->basket['delivery_address'] = $basket_data['delivery_address'];
 			}
 			if (!isset($basket_data['billing_address'])) {
-				$basket_data['billing_address'] = array(
-					'user_defined' => false,
-					'postcode' => $GLOBALS['config']->get('config', 'store_postcode'),
-					'country' => $GLOBALS['config']->get('config', 'store_country'),
-					'country_iso' => getCountryFormat($GLOBALS['config']->get('config', 'store_country'), 'numcode', 'iso'),
-					'country_iso3' => getCountryFormat($GLOBALS['config']->get('config', 'store_country'), 'numcode', 'iso3'),
-					'state_id' => $GLOBALS['config']->get('config', 'store_zone'),
-					'state'  => getStateFormat($GLOBALS['config']->get('config', 'store_zone')),
-					'state_abbrev' => getStateFormat($GLOBALS['config']->get('config', 'store_zone'), 'id', 'abbrev')
-				);
+				$basket_data['billing_address'] = $GLOBALS['user']->formatAddress('',false);
 				$this->basket['billing_address'] = $basket_data['billing_address'];
 			}
 			foreach ($basket_data['contents'] as $hash => $item) {
