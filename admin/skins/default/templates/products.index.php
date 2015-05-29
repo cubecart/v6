@@ -367,12 +367,12 @@
          <table>
             <thead>
                <tr>
-                  <td width="20">{$LANG.common.status}</td>
-                  <td width="90">{$LANG.catalogue.title_product_options_matrix}</td>
-                  <td width="302">{$LANG.common.type}</td>
-                  <td width="50">{$LANG.common.negative}</td>
-                  <td width="102">{$LANG.common.price}</td>
-                  <td width="102">{$LANG.common.weight}</td>
+                  <td>{$LANG.common.status}</td>
+                  <td>{$LANG.catalogue.title_product_options_matrix}</td>
+                  <td>{$LANG.common.type}</td>
+                  <td>{$LANG.common.negative}</td>
+                  <td>{$LANG.common.price}</td>
+                  <td>{$LANG.common.weight}</td>
                   <td width="20">&nbsp;</td>
                </tr>
             </thead>
@@ -407,12 +407,12 @@
                {/foreach}
             </tbody>
             <tfoot>
-               <th>
-               <td colspan="6">{$LANG.catalogue.title_option_add}</td>
-               </th>
                <tr>
-                  <td><input type="hidden" id="opt_set_enabled" value="1" rel="set_enabled" class="data"></td>
-                  <td><input type="hidden" id="opt_matrix_include" value="0" rel="matrix_include" class="data"></td>
+                  <td colspan="2">
+                  {$LANG.catalogue.title_option_add}:
+                  <input type="hidden" id="opt_set_enabled" value="1" rel="set_enabled" class="data">
+                  <input type="hidden" id="opt_matrix_include" value="0" rel="matrix_include" class="data">
+                  </td>
                   <td>
                      <select id="opt_mid" class="textbox data">
                         <option value="">{$LANG.form.please_select}</option>
