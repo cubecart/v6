@@ -334,6 +334,8 @@
     <string name="no_categories_specified" introduced="5.0.0"><![CDATA[No categories have been assigned to this product.]]></string>
     <string name="no_option_groups" introduced="5.0.0"><![CDATA[No option groups exist.]]></string>
     <string name="no_option_sets" introduced="5.2.0b1"><![CDATA[No option sets exist.]]></string>
+    <string name="no_option_set_attributes" introduced="6.0.5"><![CDATA[No attributes have been assigned.]]></string>
+    <string name="no_option_sets_assigned" introduced="6.0.5"><![CDATA[No option sets have been assigned.]]></string>
     <string name="no_taxes_setup" introduced="5.0.0"><![CDATA[No taxs have been setup.]]></string>
     <string name="notify_assign_update" introduced="5.0.0"><![CDATA[Products have been updated and assigned accordingly.]]></string>
     <string name="notify_certs_none" introduced="5.0.0"><![CDATA[No gift certificates exist.]]></string>

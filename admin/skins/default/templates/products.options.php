@@ -137,20 +137,19 @@
          </div>
          {foreach from=$SETS item=set}
          <fieldset class="field_select_target" id="set_{$set.set_id}" rel="add_options">
-            <legend>{$set.set_name}</legend>
-            <div>
+            <legend>{$set.set_name} <a href="{$set.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></legend>
                {foreach from=$set.members key=set_id item=members}
                {foreach from=$members item=member}
                <div>
                   <span class="actions">
                   <a href="#" class="remove" name="member_delete" rel="{$member.set_member_id}" title=""><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
                   </span>
-                  &bull; {$member.display}
+                  {$member.display}
                </div>
                {/foreach}
+               {foreachelse}
+               <div>{$LANG.catalogue.no_option_set_attributes}</div>
                {/foreach}
-            </div>
-            <div style="text-align: center;"><a href="{$set.delete}" class="delete" title="{$LANG.notification.confirm_delete}">{$LANG.common.delete}</a></div>
          </fieldset>
          {/foreach}
          <fieldset id="add_options" class="field_select_target">

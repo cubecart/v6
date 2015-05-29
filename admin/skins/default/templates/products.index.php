@@ -464,19 +464,19 @@
       {if isset($OPTION_SETS)}
       <fieldset>
          <legend>{$LANG.catalogue.title_option_sets}</legend>
-         <div id="option_sets" style="width: 850px;">
-            {if isset($OPTION_SETS_ENABLED)} {foreach from=$OPTION_SETS_ENABLED item=set}
-            <div id="">
-               <span class="actions">
-               <a href="#" name="set_remove" class="remove" rel="{$set.set_product_id}" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
-               </span>
-               {$set.set_name}
-            </div>
-            {/foreach}
-            {/if}
+         
+         {foreach from=$OPTION_SETS_ENABLED item=set}
+         <div>
+            <span class="actions">
+            <a href="#" name="set_remove" class="remove" rel="{$set.set_product_id}" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
+            </span>
+            {$set.set_name}
          </div>
+         {foreachelse}
+         {$LANG.catalogue.no_option_sets_assigned}
+         {/foreach}
          <div class="list-footer">
-            <label for="">{$LANG.catalogue.set_assign}</label>
+            <label for="">{$LANG.catalogue.set_assign}:</label>
             <span>
                <select id="" name="set_assign">
                   <option value="">{$LANG.form.please_select}</option>
@@ -484,7 +484,7 @@
                   <option value="{$option_set.set_id}">{$option_set.set_name}</option>
                   {/foreach}
                </select>
-               <input type="submit" value="{$LANG.common.add}">
+               <input type="submit" class="tiny" value="{$LANG.common.add}">
             </span>
          </div>
       </fieldset>
