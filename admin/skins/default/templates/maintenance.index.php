@@ -145,7 +145,7 @@
 <div id="database" class="tab_content">
   <h3>{$LANG.maintain.title_db}</h3>
   <form action="{$VAL_SELF}#database" method="post" enctype="multipart/form-data">
-  <fieldset><legend>{$LANG.maintain.title_db_tables}</legend>
+  <fieldset>
 	  {if $TABLES}
 	  <table width="650">
 	  	<thead>
