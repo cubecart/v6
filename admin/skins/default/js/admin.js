@@ -723,9 +723,12 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
         left: "0px"
     }), !1
 }), $("#sidebar_contain").on("mouseleave", function() {
-    return $(this).animate({
-        left: "-340px"
-    }), !1
+    if(!$(".jqac-menu").length) {
+        return $(this).animate({
+            left: "-340px"
+        })
+    , !1
+    }
 }), $("div#tab_sidebar").on("click", function() {
     var t = $("#sidebar_contain"),
         e = t.position();
