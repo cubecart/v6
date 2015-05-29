@@ -26,6 +26,9 @@ if(empty($cookie_domain)) {
 if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_PERM_FULL)) {
 	$config_old = $GLOBALS['config']->get('config');
 	if (!empty($_FILES)) {
+		## Do we already have a logo enabled?
+		$existing_logo = $GLOBALS['db']->select('CubeCart_logo','logo_id', array('status' => 1));
+
 		## New logos being uploaded
 		foreach ($_FILES as $logo) {
 			if (file_exists($logo['tmp_name']) && $logo['size'] > 0) {
@@ -41,12 +44,15 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
 						'mimetype' => $image['mime'],
 						'width'  => $image[0],
 						'height' => $image[1],
+						'status' => (count($_FILES)==1 && !$existing_logo) ? '1' : '0'
 					);
+
 					$GLOBALS['db']->insert('CubeCart_logo', $record);
 					if (!$logo_update) { // prevents x amount of notifications for same thing
 						$GLOBALS['main']->setACPNotify($lang['settings']['notify_logo_upload']);
 					}
 					$logo_update = true;
+
 					break;
 				case UPLOAD_ERR_INI_SIZE:
 				case UPLOAD_ERR_FORM_SIZE:

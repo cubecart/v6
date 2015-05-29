@@ -289,7 +289,6 @@
       <h3>{$LANG.settings.title_logo}</h3>
       {if isset($LOGOS)}
       <fieldset>
-         <legend>{$LANG.settings.title_logo_current}</legend>
          <table width="100%">
          <thead>
          <tr>
