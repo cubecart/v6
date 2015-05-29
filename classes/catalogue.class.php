@@ -462,7 +462,7 @@ class Catalogue {
 							$description = trim(str_replace(array($option[0]['option_name'].':','('.$symbol.$price.')'),'',$selected[$option[0]['assign_id']]));
 							
 							$decimal_price_sign = $option[0]['option_negative'] ? '-' : '';
-
+							
 							$option_list[] = array(
 								'type'   => $option[0]['option_type'],
 								'option_id'  => $option[0]['option_id'],
@@ -940,6 +940,7 @@ class Catalogue {
 								} else {
 									$assign = array();
 								}
+								$assign['assign_id'] = $product_id.$set_data['set_id'].$group['option_id'];
 								$option_array[$group['option_type']][$group['option_id']][] = array_merge($group, $assign);
 							}
 							$option_array[$group['option_type']][$group['option_id']]['priority'] = $group['priority'];
