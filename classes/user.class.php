@@ -718,6 +718,7 @@ class User {
 
 			if ($existing[0]['type']==2) {
 				$_POST['type'] = 1;
+				$_POST['new_password'] = 1;
 				$GLOBALS['db']->update('CubeCart_customer', $_POST, array('email' => strtolower($_POST['email'])));
 				$insert = $existing[0]['customer_id'];
 			} else {
