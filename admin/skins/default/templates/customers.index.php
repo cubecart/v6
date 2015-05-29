@@ -45,7 +45,13 @@
 		  <td><a href="{$customer.edit}">{$customer.last_name}, {$customer.first_name}</a> {if !empty($customer.groups)}({$customer.groups}){/if}</td>
 		  <td>{$customer.email}</td>
 		  <td>{$customer.registered}</td>
-		  <td align="center"><a href="?_g=orders&customer_id={$customer.customer_id}">{$customer.order_count}</a></td>
+		  <td align="center">
+		  {if $customer.order_count>0}
+		  	<a href="?_g=orders&customer_id={$customer.customer_id}">{$customer.order_count}</a>
+		  {else}
+		  	{$customer.order_count}
+		  {/if}
+		  </td>
 		  <td align="center">
 		  	<a href="{$customer.signinas_url}" target="_blank"><i class="fa fa-sign-in" title="{$customer.signinas_name}"></i></a>
 			<a href="{$customer.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
