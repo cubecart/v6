@@ -142,7 +142,7 @@ jQuery(document).ready(function() {
                 $('select' + target + ' > option[value=' + setting + ']').attr('selected', 'selected');
             } else {
                 var input = document.createElement('input');
-                var placeholder = $('label[for="' + $(this).attr('id') + '"]').text() + ' ' + $('#validate_required').text();
+                var placeholder = $('label[for="' + $(this).attr('rel') + '"]').text() + ' ' + $('#validate_required').text();
                 var replacement = $(input).attr({
                     'type': 'text',
                     'placeholder': placeholder,

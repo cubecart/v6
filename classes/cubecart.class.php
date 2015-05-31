@@ -578,7 +578,7 @@ class Cubecart {
 					$basket_data['delivery_address'] = $GLOBALS['user']->formatAddress($_POST['estimate'],false);
 					$this->_basket['delivery_address'] = $basket_data['delivery_address'];
 					$GLOBALS['cart']->save();
-					$GLOBALS['gui']->setInfo($GLOBALS['language']->basket['shipping_address_updated']);
+					$GLOBALS['gui']->setNotify($GLOBALS['language']->basket['shipping_address_updated']);
 				}
 
 				// Estimated shipping

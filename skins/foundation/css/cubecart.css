@@ -248,12 +248,10 @@ button.small, .button.small {
 }
 #getEstimateSmall {
     text-align: left;
-    position: absolute;
     left: 0;
-    width: 100%;
-    z-index: 1000
+    width: 100%
 }
-#getEstimate {
+#getEstimate, #getEstimateSmall {
     position: absolute;
     z-index: 1000
 }
