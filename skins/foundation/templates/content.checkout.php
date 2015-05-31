@@ -56,9 +56,6 @@
       {/if}
    </div>
 </form>
-{if $CUSTOMER_LOCALE.description}
-<small>{$CUSTOMER_LOCALE.mark} {$LANG.basket.unconfirmed_locale}</small>
-{/if}
 {if $CHECKOUTS}
 <div class="row">
    <div class="small-12 columns text-right">-- {$LANG.common.or} --</div>

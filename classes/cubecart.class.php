@@ -572,6 +572,39 @@ class Cubecart {
 		}
 
 		if ($editable) {
+			if($_GET['_a']=='basket') {
+				if(isset($_POST['get-estimate'])) {
+					$_POST['estimate']['postcode'] = empty($_POST['estimate']['postcode']) ? $GLOBALS['config']->get('config', 'store_postcode') : $_POST['estimate']['postcode'];
+					$basket_data['delivery_address'] = $GLOBALS['user']->formatAddress($_POST['estimate'],false);
+					$this->_basket['delivery_address'] = $basket_data['delivery_address'];
+					$GLOBALS['cart']->save();
+					$GLOBALS['gui']->setInfo($GLOBALS['language']->basket['shipping_address_updated']);
+				}
+
+				// Estimated shipping
+				if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('numcode', 'name'), array('status' => 1), array('name' => 'ASC'))) !== false) {
+					foreach ($countries as $country) {
+						$country['selected'] = '';
+
+						if (isset($this->_basket['delivery_address'])) {
+							if ($country['numcode'] == $this->_basket['delivery_address']['country_id']) $country['selected'] = 'selected="selected"';
+						} else {
+							if ($country['numcode'] == $GLOBALS['config']->get('config', 'store_country')) $country['selected_d'] = 'selected="selected"';
+						}
+						$GLOBALS['smarty']->append('COUNTRIES', $country);
+					}
+					$delivery_address = $this->_basket['delivery_address'];
+					if($this->_basket['delivery_address']['postcode'] == $GLOBALS['config']->get('config', 'store_postcode')) {
+						$delivery_address['postcode'] = '';
+					}
+					$GLOBALS['smarty']->assign('ESTIMATES', $delivery_address);
+					$GLOBALS['smarty']->assign('STATE_JSON', state_json());
+					$GLOBALS['smarty']->assign('ESTIMATE_SHIPPING', true);
+				}
+			} else {
+				$GLOBALS['smarty']->assign('ESTIMATE_SHIPPING', false);
+			}
+
 			$GLOBALS['smarty']->assign('INCLUDE_CHECKOUT', false);
 		}
 
@@ -1039,13 +1072,13 @@ class Cubecart {
 				foreach ($countries as $country) {
 					$country['selected'] = '';
 					if (isset($this->_basket['billing_address'])) {
-						if ($country['numcode'] == $this->_basket['billing_address']['country']) $country['selected'] = 'selected="selected"';
+						if ($country['numcode'] == $this->_basket['billing_address']['country_id']) $country['selected'] = 'selected="selected"';
 					} else {
 						if ($country['numcode'] == $GLOBALS['config']->get('config', 'store_country')) $country['selected'] = 'selected="selected"';
 					}
 					$country['selected_d'] = '';
 					if (isset($this->_basket['delivery_address'])) {
-						if ($country['numcode'] == $this->_basket['delivery_address']['country']) $country['selected_d'] = 'selected="selected"';
+						if ($country['numcode'] == $this->_basket['delivery_address']['country_id']) $country['selected_d'] = 'selected="selected"';
 					} else {
 						if ($country['numcode'] == $GLOBALS['config']->get('config', 'store_country')) $country['selected_d'] = 'selected="selected"';
 					}

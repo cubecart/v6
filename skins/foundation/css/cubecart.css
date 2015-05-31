@@ -246,6 +246,17 @@ form.add_to_basket input, form.add_to_basket button {
 button.small, .button.small {
     padding: 0 !important;
 }
+#getEstimateSmall {
+    text-align: left;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    z-index: 1000
+}
+#getEstimate {
+    position: absolute;
+    z-index: 1000
+}
 @media only screen and (max-width: 40em) {
   .small-collapse {
     padding:0;

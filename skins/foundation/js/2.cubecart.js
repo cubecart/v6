@@ -3,9 +3,6 @@ jQuery(document).ready(function() {
 
     var window_loc_hash = window.location.hash;
 
-    if(Foundation.utils.is_medium_up()) {
-        $('.field_small_only').attr('disabled', true);
-    }
     if($('.gateway_wrapper .colorbox').length) {
         var colorbox = $('.colorbox');
         var href = colorbox.attr('href');
@@ -283,6 +280,9 @@ jQuery(document).ready(function() {
     /* We must only show grid view with 1 grid column for medium */
     if(Foundation.utils.is_small_only()) {
         grid_view(0);
+    }
+    if(Foundation.utils.is_medium_up()) {
+        $('.field_small_only').attr('disabled', true);
     }
 });
 

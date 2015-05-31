@@ -195,6 +195,9 @@
     <string name="title_administrators" introduced="5.0.0"><![CDATA[Administrators]]></string>
   </group>
   <group name="basket">
+    <string name="fetch_shipping_rates" introduced="6.0.5"><![CDATA[Fetch Shipping Rates]]></string>
+    <string name="specify_shipping" introduced="6.0.5"><![CDATA[Specify your shipping address]]></string>
+    <string name="shipping_address_updated" introduced="6.0.5"><![CDATA[Shipping address has been updated.]]></string>
     <string name="your_basket" introduced="6.0.0"><![CDATA[Your Basket]]></string>
   	<string name="basket" introduced="6.0.0"><![CDATA[Basket]]></string>
     <string name="basket_checkout" introduced="5.0.0"><![CDATA[Checkout]]></string>
@@ -539,6 +542,7 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="estimated" introduced="6.0.5"><![CDATA[Estimated]]></string>
     <string name="test" introduced="6.0.3"><![CDATA[Test]]></string>
     <string name="after_save" introduced="6.0.3"><![CDATA[After Save]]></string>
     <string name="unavailable" introduced="6.0.0"><![CDATA[Unavailable]]></string>

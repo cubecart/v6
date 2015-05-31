@@ -64,7 +64,7 @@
                {if $HIDE_OPTION_GROUPS ne '1'}
                <optgroup label="{$group}">{/if}
                   {foreach from=$methods item=method}
-                  <option value="{$method.value}" {$method.selected}>{$CUSTOMER_LOCALE.mark} {$method.display}</option>
+                  <option value="{$method.value}" {$method.selected}>{$method.display}</option>
                   {/foreach}
                   {if $HIDE_OPTION_GROUPS ne '1'}
                </optgroup>
@@ -73,7 +73,25 @@
             </select>
          </td>
          <td width="10%" class="text-right">
-            {$CUSTOMER_LOCALE.mark}{$SHIPPING_VALUE}
+            {$SHIPPING_VALUE}
+            {if $ESTIMATE_SHIPPING}
+               (<a href="#" onclick="$('#getEstimateSmall').slideToggle();">{$LANG.common.estimated}</a>)
+               <div id="getEstimateSmall" class="hide panel callout">
+                  <h4>{$LANG.basket.specify_shipping}</h4>
+                  <label for="estimate_country_small" class="hide-for-small-only">{$LANG.address.country}</label>
+                  <select name="estimate[country]" id="estimate_country_small"  class="nosubmit country-list field_small_only" rel="estimate_state_small">
+                     {foreach from=$COUNTRIES item=country}<option value="{$country.numcode}" {$country.selected}>{$country.name}</option>{/foreach}
+                  </select>
+                  <label for="estimate_state_small" class="hide-for-small-only">{$LANG.address.state}</label>
+                  <input type="text" name="estimate[state]" id="estimate_state_small" value="{$ESTIMATES.state}" class="field_small_only" placeholder="{$LANG.address.state}">
+                  <label for="estimate_postcode_small" class="hide-for-small-only">{$LANG.address.postcode}</label>
+                  <input type="text" class="field_small_only" value="{$ESTIMATES.postcode}" placeholder="{$LANG.address.postcode}" id="estimate_postcode_small" name="estimate[postcode]">
+                  <input type="submit" name="get-estimate" class="button expand field_small_only" value="{$LANG.basket.fetch_shipping_rates}">
+                  <script type="text/javascript">
+                  var county_list = {$STATE_JSON};
+                  </script>
+               </div>
+               {/if}
          </td>
       </tr>
       {/if}

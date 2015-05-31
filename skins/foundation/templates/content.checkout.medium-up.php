@@ -54,7 +54,7 @@
                   {if $HIDE_OPTION_GROUPS ne '1'}
                   <optgroup label="{$group}">{/if}
                      {foreach from=$methods item=method}
-                     <option value="{$method.value}" {$method.selected}>{$CUSTOMER_LOCALE.mark} {$method.display}</option>
+                     <option value="{$method.value}" {$method.selected}>{$method.display}</option>
                      {/foreach}
                      {if $HIDE_OPTION_GROUPS ne '1'}
                   </optgroup>
@@ -62,8 +62,27 @@
                   {/foreach}
                </select>
             </td>
-            <td>{$LANG.basket.shipping}{$CUSTOMER_LOCALE.mark}</td>
-            <td class="text-right">{$SHIPPING_VALUE}</td>
+            <td>{$LANG.basket.shipping}
+               {if $ESTIMATE_SHIPPING}
+               (<a href="#" onclick="$('#getEstimate').slideToggle();">{$LANG.common.estimated}</a>)
+               <div id="getEstimate" class="hide panel callout">
+                  <h4>{$LANG.basket.specify_shipping}</h4>
+                  <label for="estimate_country">{$LANG.address.country}</label>
+                  <select name="estimate[country]" id="estimate_country"  class="nosubmit country-list" rel="estimate_state">
+                     {foreach from=$COUNTRIES item=country}<option value="{$country.numcode}" {$country.selected}>{$country.name}</option>{/foreach}
+                  </select>
+                  <label for="estimate_state">{$LANG.address.state}</label>
+                  <input type="text" name="estimate[state]" id="estimate_state" value="{$ESTIMATES.state}" placeholder="{$LANG.address.state}">
+                  <label for="estimate_postcode">{$LANG.address.postcode}</label>
+                  <input type="text" value="{$ESTIMATES.postcode}" id="estimate_postcode" placeholder="{$LANG.address.postcode}" name="estimate[postcode]">
+                  <input type="submit" name="get-estimate" class="button expand" value="{$LANG.basket.fetch_shipping_rates}">
+                  <script type="text/javascript">
+                  var county_list = {$STATE_JSON};
+                  </script>
+               </div>
+               {/if}
+            </td>
+            <td  valign="top"class="text-right">{$SHIPPING_VALUE}</td>
          </tr>
          {/if}
          {foreach from=$TAXES item=tax}
