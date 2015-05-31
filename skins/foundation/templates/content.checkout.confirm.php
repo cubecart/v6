@@ -125,7 +125,7 @@
       </div>
       <div class="row">
          <div class="small-12 large-8 columns"><label for="country-list" class="show-for-medium-up">{$LANG.address.country}</label>
-            <select name="billing[country]" class="nosubmit"  id="country-list">
+            <select name="billing[country]" class="nosubmit" rel="state-list" id="country-list">
             {foreach from=$COUNTRIES item=country}
             <option value="{$country.numcode}" {$country.selected}>{$country.name}</option>
             {/foreach}
@@ -179,7 +179,7 @@
       </div>
       <div class="row">
          <div class="small-12 large-8 columns"><label for="delivery_country" class="show-for-medium-up">{$LANG.address.country}</label>
-            <select name="delivery[country]" id="delivery_country"  class="country-list" rel="delivery_state">
+            <select name="delivery[country]" id="delivery_country"  class="nosubmit country-list" rel="delivery_state">
             {foreach from=$COUNTRIES item=country}
             <option value="{$country.numcode}" {$country.selected_d}>{$country.name}</option>
             {/foreach}

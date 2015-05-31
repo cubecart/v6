@@ -79,7 +79,7 @@
                <div id="getEstimateSmall" class="hide panel callout">
                   <h4>{$LANG.basket.specify_shipping}</h4>
                   <label for="estimate_country_small" class="hide-for-small-only">{$LANG.address.country}</label>
-                  <select name="estimate[country]" id="estimate_country_small"  class="nosubmit country-list field_small_only" rel="estimate_state_small">
+                  <select name="estimate[country]" id="estimate_country_small" class="nosubmit country-list field_small_only" rel="estimate_state_small">
                      {foreach from=$COUNTRIES item=country}<option value="{$country.numcode}" {$country.selected}>{$country.name}</option>{/foreach}
                   </select>
                   <label for="estimate_state_small" class="hide-for-small-only">{$LANG.address.state}</label>
