@@ -408,7 +408,7 @@ class User {
 	 * @param array
 	 * @return array
 	 */
-	public function formatAddress($address = array(), $user_defined = true) {
+	public function formatAddress($address = array(), $user_defined = true, $estimate = false) {
 		
 		if(!$user_defined && !is_array($address)) {
 			$address = array(
@@ -427,6 +427,7 @@ class User {
 		$address['country_iso3'] = getCountryFormat($address['country_id'], 'numcode', 'iso3');
 		$address['state']   = getStateFormat($address['state_id']);
 		$address['user_defined'] = $user_defined;
+		$address['estimate'] = $estimate;
 		return $address;
 	}
 

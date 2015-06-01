@@ -575,8 +575,9 @@ class Cubecart {
 			if($_GET['_a']=='basket') {
 				if(isset($_POST['get-estimate'])) {
 					$_POST['estimate']['postcode'] = empty($_POST['estimate']['postcode']) ? $GLOBALS['config']->get('config', 'store_postcode') : $_POST['estimate']['postcode'];
-					$basket_data['delivery_address'] = $GLOBALS['user']->formatAddress($_POST['estimate'],false);
+					$basket_data['delivery_address'] = $GLOBALS['user']->formatAddress($_POST['estimate'],false,true);
 					$this->_basket['delivery_address'] = $basket_data['delivery_address'];
+					$this->_basket['billing_address'] = $basket_data['delivery_address'];
 					$GLOBALS['cart']->save();
 					$GLOBALS['gui']->setNotify($GLOBALS['language']->basket['shipping_address_updated']);
 				}
@@ -1055,10 +1056,10 @@ class Cubecart {
 			if (isset($this->_basket['customer'])) {
 				$GLOBALS['smarty']->assign('USER', $this->_basket['customer']);
 			}
-			if (isset($this->_basket['billing_address']) && $this->_basket['billing_address']['user_defined']) {
+			if ((isset($this->_basket['billing_address']) && $this->_basket['billing_address']['user_defined']) || $this->_basket['billing_address']['estimate']) {
 				$GLOBALS['smarty']->assign('BILLING', $this->_basket['billing_address']);
 			}
-			if (isset($this->_basket['delivery_address']) && $this->_basket['delivery_address']['user_defined']) {
+			if (isset($this->_basket['delivery_address']) && $this->_basket['delivery_address']['user_defined'] || $this->_basket['delivery_address']['estimate']) {
 				$GLOBALS['smarty']->assign('DELIVERY', $this->_basket['delivery_address']);
 			}
 
