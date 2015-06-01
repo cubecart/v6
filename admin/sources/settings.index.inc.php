@@ -32,39 +32,43 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
 		## New logos being uploaded
 		foreach ($_FILES as $logo) {
 			if (file_exists($logo['tmp_name']) && $logo['size'] > 0) {
-				switch ((int)$logo['error']) {
-				case UPLOAD_ERR_OK:
-					## Upload is okay, so move to the logo directory, and add a database reference
-					$filename = preg_replace('#[^\w\d\.\-]#', '_', $logo['name']);
-					$target  = CC_ROOT_DIR.'/images/logos/'.$filename;
-					move_uploaded_file($logo['tmp_name'], $target);
-					$image  = getimagesize($target, $image_info);
-					$record  = array(
-						'filename' => $filename,
-						'mimetype' => $image['mime'],
-						'width'  => $image[0],
-						'height' => $image[1],
-						'status' => (count($_FILES)==1 && !$existing_logo) ? '1' : '0'
-					);
+				if(preg_match('/^.*\.(jpg|jpeg|png|gif)$/i',$logo['name'])) {
+					switch ((int)$logo['error']) {
+						case UPLOAD_ERR_OK:
+							## Upload is okay, so move to the logo directory, and add a database reference
+							$filename = preg_replace('#[^\w\d\.\-]#', '_', $logo['name']);
+							$target  = CC_ROOT_DIR.'/images/logos/'.$filename;
+							move_uploaded_file($logo['tmp_name'], $target);
+							$image  = getimagesize($target, $image_info);
+							$record  = array(
+								'filename' => $filename,
+								'mimetype' => $image['mime'],
+								'width'  => $image[0],
+								'height' => $image[1],
+								'status' => (count($_FILES)==1 && !$existing_logo) ? '1' : '0'
+							);
 
-					$GLOBALS['db']->insert('CubeCart_logo', $record);
-					if (!$logo_update) { // prevents x amount of notifications for same thing
-						$GLOBALS['main']->setACPNotify($lang['settings']['notify_logo_upload']);
+							$GLOBALS['db']->insert('CubeCart_logo', $record);
+							if (!$logo_update) { // prevents x amount of notifications for same thing
+								$GLOBALS['main']->setACPNotify($lang['settings']['notify_logo_upload']);
+							}
+							$logo_update = true;
+
+						break;
+						case UPLOAD_ERR_INI_SIZE:
+						case UPLOAD_ERR_FORM_SIZE:
+						case UPLOAD_ERR_PARTIAL:
+						case UPLOAD_ERR_NO_FILE:
+						case UPLOAD_ERR_NO_TMP_DIR:
+						case UPLOAD_ERR_CANT_WRITE:
+						case UPLOAD_ERR_EXTENSION:
+						default:
+							$GLOBALS['main']->setACPWarning($lang['settings']['error_logo_upload']);
+							trigger_error('Upload Error! Logo not saved.');
+						break;
 					}
-					$logo_update = true;
-
-					break;
-				case UPLOAD_ERR_INI_SIZE:
-				case UPLOAD_ERR_FORM_SIZE:
-				case UPLOAD_ERR_PARTIAL:
-				case UPLOAD_ERR_NO_FILE:
-				case UPLOAD_ERR_NO_TMP_DIR:
-				case UPLOAD_ERR_CANT_WRITE:
-				case UPLOAD_ERR_EXTENSION:
-				default:
+				} else {
 					$GLOBALS['main']->setACPWarning($lang['settings']['error_logo_upload']);
-					trigger_error('Upload Error! Logo not saved.');
-					break;
 				}
 			}
 		}
