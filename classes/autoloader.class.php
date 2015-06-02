@@ -126,8 +126,6 @@ class Autoloader {
 			if (!$enable_auth || $enable_auth == strtolower('off')) {
 				include CC_ROOT_DIR.'/classes/cache/xcache.class.php';
 				return true;
-			} else {
-				trigger_error("XCache can't be used until `xcache.admin.enable_auth` is set to 0 in php.ini");
 			}
 		}
 
