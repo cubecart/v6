@@ -92,9 +92,6 @@ div.alert-box a {
     color: #fff;
     font-weight: bold;
 }
-#mini-basket {
-    min-width: 100px;
-}
 .mini-basket-title {
     background-color: #000;
     color: #fff;
@@ -255,6 +252,7 @@ button.small, .button.small {
     position: absolute;
     z-index: 1000
 }
+/* Small viewport only */
 @media only screen and (max-width: 40em) {
   .small-collapse {
     padding:0;
@@ -264,4 +262,10 @@ button.small, .button.small {
       margin:0;
     }
   }
+}
+/* Medium viewport and above */
+@media only screen and (min-width: 40.0625em) {
+    #mini-basket {
+        min-width: 100px;
+    }
 }
