@@ -74,7 +74,14 @@ class Config {
 		}
 		
 		// Don't allow cache if current domain is not the real one.
-		$cache = !strstr(currentPage(), trim($this->_config['config']['cookie_domain'],'.')) ? false : (bool)$this->_config['config']['cache'];
+		if(!isset($this->_config['config']['cookie_domain']) || empty($this->_config['config']['cookie_domain'])) {
+			$cache = false;
+		} elseif(!strstr(currentPage(), trim($this->_config['config']['cookie_domain'],'.'))) {
+			$cache = false;
+		} else {
+			$cache = (bool)$this->_config['config']['cache'];
+		}
+
 		$GLOBALS['cache']->enable($cache);
 
 		if(!$cache || (defined('CC_IN_ADMIN') && CC_IN_ADMIN)) {
