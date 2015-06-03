@@ -82,7 +82,7 @@
                </div>
                {/if}
             </td>
-            <td  valign="top"class="text-right">{$SHIPPING_VALUE}</td>
+            <td class="text-right">{$SHIPPING_VALUE}</td>
          </tr>
          {/if}
          {foreach from=$TAXES item=tax}
