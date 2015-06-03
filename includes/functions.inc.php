@@ -645,7 +645,7 @@ function httpredir($destination = '', $anchor = '', $meta_refresh = false, $stat
 	## Now we'll send the redirect header using one method or another
 	$destination = filter_var($destination, FILTER_UNSAFE_RAW);
 	## Nasty HTML meta refresh required to lose domain masking for certain payment modules
-	if ($meta_refresh) {
+	if (headers_sent() || $meta_refresh) {
 		echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
