@@ -340,7 +340,7 @@ class SEO {
 					$GLOBALS['session']->set($path, '1', 'seo_retry');
 					httpredir(CC_ROOT_REL.$path);
 				} else {
-					httpredir('index.php');
+					$_GET['_a'] = '404';
 				}
 			}
 		} else {
@@ -758,7 +758,9 @@ class SEO {
 		} else {
 
 			$htaccess_path = CC_ROOT_DIR.'/.htaccess';
-			$htaccess_content = '## File Security
+			$htaccess_content = '##### START CubeCart .htaccess #####
+
+## File Security
 <FilesMatch "\.(htaccess)$">
  Order Allow,Deny
  Deny from all
@@ -771,6 +773,7 @@ IndexIgnore *
 #### Rewrite rules for SEO functionality ####
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  RewriteBase '.CC_ROOT_REL.' 
   
   ######## START v4 SEO URL BACKWARD COMPATIBILITY ########
   RewriteCond %{QUERY_STRING} (.*)$
@@ -798,7 +801,12 @@ IndexIgnore *
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_URI} !=/favicon.ico
   RewriteRule ^(.*)\.html?$ index.php?seo_path=$1 [L,QSA]
-</IfModule>';
+</IfModule>
+
+## Default store 404 page
+ErrorDocument 404 '.CC_ROOT_REL.'index.php
+
+##### END CubeCart .htaccess #####';
 
 			if(!file_exists($htaccess_path)) {
 				if(!file_put_contents($htaccess_path, $htaccess_content)) {
@@ -812,6 +820,22 @@ IndexIgnore *
 					$htaccess_content = $current_contents."\r\n\r\n".$htaccess_content;
 					if(!file_put_contents($htaccess_path, $htaccess_content)) {
 						die('Failed to update existing .htaccess file for Search Engine Friendly URL\'s. Please edit this file in the stores root directory to have the content.<textarea style="width: 400px; height: 300px;" readonly>'.$htaccess_content.'</textarea>');
+					}
+					$GLOBALS['cache']->write('1',$cache_id);
+					httpredir();
+				} elseif (!strstr($current_contents,'RewriteBase '.CC_ROOT_REL) || !strstr($current_contents, CC_ROOT_REL.'index.php')) {
+					
+					$find = array(
+							'/^.*?RewriteBase.*\n?/m',
+							'/^.*?ErrorDocument.*\n?/m'
+						);
+					$replace = array(
+							"\tRewriteBase ".CC_ROOT_REL."\r\n",
+							"ErrorDocument 404 ".CC_ROOT_REL."index.php\r\n"
+						);
+
+					if(!file_put_contents($htaccess_path, preg_replace($find, $replace, $current_contents))) {
+						die('Failed to update existing .htaccess file for Search Engine Friendly URL\'s. Please edit this file in the stores root directory to have the content.<textarea style="width: 400px; height: 300px;" readonly>'.$current_contents.'</textarea>');
 					}
 					$GLOBALS['cache']->write('1',$cache_id);
 					httpredir();

@@ -900,6 +900,8 @@
     <string name="title_technical_data" introduced="5.0.0"><![CDATA[Technical Details]]></string>
   </group>
   <group name="documents">
+    <string name="404_title" introduced="6.0.6"><![CDATA[404 - Page Not Found]]></string>
+    <string name="404_content" introduced="6.0.6"><![CDATA[Sorry but the page you are looking for could not be found.]]></string>
   	<string name="smarty_parse" introduced="6.0.0"><![CDATA[Parse Smarty Tags]]></string>
     <string name="document_contact" introduced="5.0.0"><![CDATA[Contact Us]]></string>
     <string name="document_content" introduced="5.0.0"><![CDATA[Content]]></string>

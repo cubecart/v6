@@ -57,7 +57,7 @@ class Cubecart {
 
 	final protected function __construct() {
 		if (isset($_SERVER['REDIRECT_STATUS']) && $_SERVER['REDIRECT_STATUS'] >= 400) {
-			$_GET['_a'] = 'error';
+			$_GET['_a'] = '404';
 		}
 	}
 
@@ -296,7 +296,11 @@ class Cubecart {
 					 * All others are done by the case default using $this->{$method}() method
 					 * See below
 					 */
-
+				case '404':
+					$GLOBALS['smarty']->assign('SECTION_NAME', '404');
+					
+					$this->_404();
+					break;
 				case 'cancel':
 					$GLOBALS['smarty']->assign('SECTION_NAME', 'checkout');
 					// Cancel payment
@@ -1830,6 +1834,18 @@ class Cubecart {
 			httpredir('index.php?_a=complete');
 		}
 		return;
+	}
+
+	/**
+	 * Download
+	 */
+	private function _404() {
+		header("HTTP/1.0 404 Not Found");
+		if($content = $GLOBALS['smarty']->fetch('templates/content.404.php')) {
+			$GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
+		} else {
+			httpredir('index.php');
+		}
 	}
 
 	/**
