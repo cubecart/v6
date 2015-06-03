@@ -337,7 +337,7 @@ class SEO {
 				// Retry once incase emties have been cached
 				if(!$GLOBALS['session']->has($path, 'seo_retry')) {
 					$GLOBALS['cache']->clear();
-					$GLOBALS['session']->set($path, '1', 'seo');
+					$GLOBALS['session']->set($path, '1', 'seo_retry');
 					httpredir(CC_ROOT_REL.$path);
 				} else {
 					httpredir('index.php');
