@@ -1847,7 +1847,7 @@ class Cubecart {
 		if($content = $GLOBALS['smarty']->templateExists($template)) {
 			$content = $GLOBALS['smarty']->fetch($template);
 		} else {
-			$content = '<h2>'.$GLOBALS['language']->documents['404_title']."</h2>\r\n<p>".$GLOBALS['language']->documents['404_title'].'</p>';			
+			$content = '<h2>'.$GLOBALS['language']->documents['404_title']."</h2>\r\n<p>".$GLOBALS['language']->documents['404_content'].'</p>';			
 		}
 		$GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
 	}
