@@ -1837,15 +1837,19 @@ class Cubecart {
 	}
 
 	/**
-	 * Download
+	 * 404 Handling
 	 */
 	private function _404() {
-		header("HTTP/1.0 404 Not Found");
-		if($content = $GLOBALS['smarty']->fetch('templates/content.404.php')) {
-			$GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
+		
+		header("HTTP/1.0 404 Not Found");		
+		$template = 'templates/content.404.php';
+		
+		if($content = $GLOBALS['smarty']->templateExists($template)) {
+			$content = $GLOBALS['smarty']->fetch($template);
 		} else {
-			httpredir('index.php');
+			$content = '<h2>'.$GLOBALS['language']->documents['404_title']."</h2>\r\n<p>".$GLOBALS['language']->documents['404_title'].'</p>';			
 		}
+		$GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
 	}
 
 	/**
