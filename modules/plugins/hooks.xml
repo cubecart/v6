@@ -151,6 +151,7 @@
  <hook trigger="class.gui.display_navigation" deprecated="" />
  <hook trigger="class.gui.display_popular_products" deprecated="" />
  <hook trigger="class.gui.display_random_product" deprecated="" />
+ <hook trigger="class.gui.display_random_product_pre" deprecated="" />
  <hook trigger="class.gui.display_sale_items" deprecated="" />
  <hook trigger="class.gui.display_search_box" deprecated="" />
  <hook trigger="class.gui.display_skin_select" deprecated="" />

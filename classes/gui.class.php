@@ -1057,6 +1057,8 @@ class GUI {
 	 */
 	private function _displayRandomProduct($p=0) {
 
+		foreach ($GLOBALS['hooks']->load('class.gui.display_random_product_pre') as $hook) include $hook;
+
 		$where = $GLOBALS['catalogue']->outOfStockWhere(array('status' => '1'));
 		// SQL below used to replace RAND which is a monster on resources over 100 products
 		$query   = 'SELECT * FROM  `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory` JOIN (SELECT CEIL(RAND() * (SELECT MAX(`product_id`) FROM  `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory`)) AS  `product_id`) AS  `r` USING (`product_id`) WHERE '.$where;
