@@ -36,7 +36,7 @@
          <span><a href="javascript:Recaptcha.showhelp()"><i class="fa fa-info-circle" title="Help"></i></a></span>
             </div>
          </div>
-         <div class="recaptcha_only_if_incorrect_sol" class="error">Incorrect please try again</div>
+         <div class="recaptcha_only_if_incorrect_sol error">Incorrect please try again</div>
          <span class="recaptcha_only_if_image"><label for="recaptcha_response_field">Enter the words above:</label></span>
          <span class="recaptcha_only_if_audio">Enter the numbers you hear:</span>
          <input type="text" id="recaptcha_response_field" name="recaptcha_response_field" required />
