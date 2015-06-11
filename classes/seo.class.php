@@ -823,22 +823,6 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
 					}
 					$GLOBALS['cache']->write('1',$cache_id);
 					httpredir();
-				} elseif (!strstr($current_contents,'RewriteBase '.CC_ROOT_REL) || !strstr($current_contents, CC_ROOT_REL.'index.php')) {
-					
-					$find = array(
-							'/^.*?RewriteBase.*\n?/m',
-							'/^.*?ErrorDocument.*\n?/m'
-						);
-					$replace = array(
-							"\tRewriteBase ".CC_ROOT_REL."\r\n",
-							"ErrorDocument 404 ".CC_ROOT_REL."index.php\r\n"
-						);
-
-					if(!file_put_contents($htaccess_path, preg_replace($find, $replace, $current_contents))) {
-						die('Failed to update existing .htaccess file for Search Engine Friendly URL\'s. Please edit this file in the stores root directory to have the content.<textarea style="width: 400px; height: 300px;" readonly>'.$current_contents.'</textarea>');
-					}
-					$GLOBALS['cache']->write('1',$cache_id);
-					httpredir();
 				}
 			}
 		}
