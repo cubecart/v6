@@ -18,7 +18,6 @@ global $lang, $glob;
 if (isset($_POST['execute'])) {
 	if (!empty($_POST['query'])) {
 		if(strstr($_POST['query'], '; #EOQ')) {
-			die('EOQ');
 			$db->parseSchema($_POST['query']);
 		} else {
 			$GLOBALS['db']->query(stripslashes($_POST['query']), false);
