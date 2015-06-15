@@ -611,4 +611,4 @@ INSERT INTO `CubeCart_geo_country` (`id`, `iso`, `name`, `iso3`, `numcode`) VALU
 INSERT INTO `CubeCart_geo_country` (`id`, `iso`, `name`, `iso3`, `numcode`) VALUES (240, 'ME', 'Montenegro', 'MNE', 499); #EOQ
 INSERT INTO `CubeCart_geo_country` (`id`, `iso`, `name`, `iso3`, `numcode`) VALUES (241, 'GG', 'Guernsey', 'GGY', 831); #EOQ
 INSERT INTO `CubeCart_geo_country` (`id`, `iso`, `name`, `iso3`, `numcode`) VALUES (242, 'JE', 'Jersey', 'JEY', 832); #EOQ
-UPDATE `CubeCart_geo_country` SET `eu` = '1' WHERE `iso` IN('BG','BE','CZ','DK','DE','EE','GB','GR','IE','ES','FR','HR','IT','CY','LV','LT','LU','HU','MT','NL','AT','PL','PT','RO','SI','SK','FI','SE'); #EOQ
+UPDATE `CubeCart_geo_country` SET `eu` = '1' WHERE `iso` IN('BE','BG','CZ','DK','DE','EE','GB','GR','IE','ES','FR','HR','IT','CY','LV','LT','LU','HU','MT','NL','AT','PL','PT','RO','SI','SK','FI','SE'); #EOQ

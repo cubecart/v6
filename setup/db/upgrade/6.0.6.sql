@@ -1,2 +1,3 @@
 UPDATE `CubeCart_email_content` SET `content_html` = replace(`content_html`, '{$DATA.ship_method|replace:&#39;_&#39;:&#39; &#39;}', '{$DATA.ship_method}'); #EOQ
 UPDATE `CubeCart_email_content` SET `content_html` = replace(`content_html`, '{$DATA.ship_method|replace:\'_\':\' \'}', '{$DATA.ship_method}'); #EOQ
+UPDATE `CubeCart_geo_country` SET `eu` = '1' WHERE `iso` IN('BE','BG','CZ','DK','DE','EE','GB','GR','IE','ES','FR','HR','IT','CY','LV','LT','LU','HU','MT','NL','AT','PL','PT','RO','SI','SK','FI','SE'); #EOQ
