@@ -24,7 +24,7 @@ ALTER TABLE `CubeCart_admin_users` ADD PRIMARY KEY(`admin_id`); #EOQ
 ALTER TABLE `CubeCart_currency` CHANGE  `symbol_left`  `symbol_left` TINYBLOB; #EOQ
 ALTER TABLE `CubeCart_currency` CHANGE  `symbol_right`  `symbol_right` TINYBLOB; #EOQ
 ALTER TABLE `CubeCart_order_summary` ADD  `ship_product` VARCHAR(100) NULL AFTER `ship_method`; #EOQ
-UPDATE `CubeCart_geo_country` SET `eu` = '1' WHERE `iso` IN('BG','CZ','DK','DE','EE','IE','EL','ES','FR','HR','IT','CY','LV','LT','LU','HU','MT','NL','AT','PL','PT','RO','SI','SK','FI','SE','UK'); #EOQ
+UPDATE `CubeCart_geo_country` SET `eu` = '1' WHERE `iso` IN('BG','BE','CZ','DK','DE','EE','GB','GR','IE','ES','FR','HR','IT','CY','LV','LT','LU','HU','MT','NL','AT','PL','PT','RO','SI','SK','FI','SE'); #EOQ
 UPDATE `CubeCart_currency` SET `symbol_left` = '£' WHERE `symbol_left` = '&pound;'; #EOQ
 UPDATE `CubeCart_currency` SET `symbol_left` = '$' WHERE `symbol_left` = '&dollar;'; #EOQ
 UPDATE `CubeCart_currency` SET `symbol_left` = '¥' WHERE `symbol_left` = '&yen;'; #EOQ
