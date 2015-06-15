@@ -42,9 +42,9 @@
          <input type="text" id="recaptcha_response_field" name="recaptcha_response_field" required />
       </div>
       <script type="text/javascript"
-         src="http://www.google.com/recaptcha/api/challenge?k=6LfT4sASAAAAAOl71cRz11Fm0erGiqNG8VAfKTHn"></script>
+         src="//www.google.com/recaptcha/api/challenge?k=6LfT4sASAAAAAOl71cRz11Fm0erGiqNG8VAfKTHn"></script>
       <noscript>
-         <iframe src="http://www.google.com/recaptcha/api/noscript?k=6LfT4sASAAAAAOl71cRz11Fm0erGiqNG8VAfKTHn"
+         <iframe src="//www.google.com/recaptcha/api/noscript?k=6LfT4sASAAAAAOl71cRz11Fm0erGiqNG8VAfKTHn"
             height="300" width="500" frameborder="0"></iframe><br>
          <textarea name="recaptcha_challenge_field" rows="3" cols="40">
          </textarea>
