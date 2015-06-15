@@ -116,6 +116,11 @@ class Autoloader {
 		}
 
 		//Try to pick the best opcode cache
+		if(class_exists('Memcache')) {
+			include CC_ROOT_DIR.'/classes/cache/memcache.class.php';
+			return true;	
+		}
+
 		if (extension_loaded('APC') && ini_get('apc.enabled')) {
 			include CC_ROOT_DIR.'/classes/cache/apc.class.php';
 			return true;

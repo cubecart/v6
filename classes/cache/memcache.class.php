@@ -1,0 +1,235 @@
+<?php
+/**
+ * CubeCart v6
+ * ========================================
+ * CubeCart is a registered trade mark of CubeCart Limited
+ * Copyright CubeCart Limited 2015. All rights reserved.
+ * UK Private Limited Company No. 5323904
+ * ========================================
+ * Web:   http://www.cubecart.com
+ * Email:  sales@cubecart.com
+ * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
+ */
+
+if (!defined('CC_INI_SET')) die('Access Denied');
+
+require CC_ROOT_DIR.'/classes/cache/cache.class.php';
+
+/**
+ * Cache specific class
+ *
+ * @author Al Brookbanks
+ * @since 6.0.0
+ */
+class Cache extends Cache_Controler {
+
+	##############################################
+
+	final protected function __construct() {
+		
+		global $glob;
+
+		ini_set('display_errors', true);
+
+		$this->_mode = 'Memcache';
+		$this->_memcache = new Memcache;
+	
+		$memcache_host = isset($glob['memcache_host']) ? $glob['memcache_host'] : '127.0.0.1';
+		$memcache_post = isset($glob['memcache_post']) ? $glob['memcache_post'] : '11211';
+		if(!$this->_memcache->connect($memcache_host, $memcache_post)) {
+			trigger_error("Couldn't initiate Memcache. Please set 'memcache_host' and 'memcache_port' in the includes/global.inc.php file.", E_USER_WARNING);	
+		}
+
+		//Run the parent constructor
+		parent::__construct();
+	}
+	
+	public function __destruct() {
+		if($this->_empties_added) $this->write($this->_empties, $this->_empties_id);
+	}
+
+	/**
+	 * Setup the instance (singleton)
+	 *
+	 * @return instance
+	 */
+	public static function getInstance() {
+		if (!(self::$_instance instanceof self)) {
+			self::$_instance = new self();
+		}
+
+		return self::$_instance;
+	}
+
+	//=====[ Public ]=======================================
+
+	/**
+	 * Clear the cache
+	 *
+	 * @param string $type Cache type prefix
+	 * @return bool
+	 */
+	public function clear($type = '') {
+		//Get the current cache IDs
+		$this->getIDs();
+
+		if (!empty($type)) {
+			$type = strtolower($type);
+			$len = strlen($type);
+		}
+
+		$return = true;
+		if (!empty($this->_ids)) {
+			//Loop through each id to delete it
+			foreach ($this->_ids as $id) {
+				//If there is a type we need to only delete that
+				if (!empty($type)) {
+					if (substr($id, 0, $len) == $type) {
+						if (!$this->delete($id)) {
+							$return = false;
+						}
+					}
+				} else {
+					//If no type delete every id
+					if (!$this->delete($id)) {
+						$return = false;
+					}
+				}
+			}
+		}
+		return $return;
+	}
+
+	/**
+	 * Remove a single item of cache
+	 *
+	 * @param string $id Cache identifier
+	 * @return bool
+	 */
+	public function delete($id) {
+	
+		return $this->_memcache->delete($this->_makeName($id));
+	}
+
+	/**
+	 * Check to see if the cache file exists
+	 *
+	 * @param string $id Cache identifier
+	 * @return bool
+	 */
+	public function exists($id) {
+		if(!$this->status) return false;
+		
+		if(!$this->_memcache->get($this->_makeName($id))) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	/**
+	 * Get all the cache ids
+	 *
+	 * @return array
+	 */
+	public function getIDs() {
+		if (empty($this->_ids)) {
+			$list = array(); 
+		    $allSlabs = $this->_memcache->getExtendedStats('slabs'); 
+		    foreach($allSlabs as $server => $slabs) { 
+		        foreach($slabs AS $slabId => $slabMeta) { 
+		            $cdump = $this->_memcache->getExtendedStats('cachedump',(int)$slabId); 
+		            if(is_array($cdump)) {
+			            foreach($cdump AS $keys => $arrVal) { 
+			                if(is_array($arrVal)) {
+			                	foreach($arrVal AS $k => $v) {                    
+			                    	$this->_ids[] = str_replace(array($this->_prefix, $this->_suffix), '', $k);
+			                	} 
+			            	}
+			           	} 
+		       		}
+		        } 
+		    }  
+		}
+		return $this->_ids;
+	}
+	
+	/**
+	 * Get the cached data
+	 *
+	 * @param string $id Cache identifier
+	 * @return data/false
+	 */
+	public function read($id) {
+
+		if(!$this->status) return false;
+		
+		if(preg_match('/^sql\./',$id) && $this->_empties_id!==$id && isset($this->_empties[$id])) {
+			return array('empty' => true, 'data' => $this->_empties[$id]);
+		}
+
+		//Setup the name of the cache
+		$name = $this->_makeName($id);
+
+		//Make sure the cache file exists
+		if ($this->_memcache->get($name)) {
+			$contents = $this->_memcache->get($name);
+			if (!empty($contents)) {
+				//Remove base64 & serialization
+				return $contents;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Calculates the cache usage
+	 *
+	 * @return string
+	 */
+	public function usage() {
+		return 'Memcache Statistics are unavailable.';
+	}
+
+	/**
+	 * Write cache data
+	 *
+	 * @param mixed $data Data to write to the file
+	 * @param string $id Cache identifier
+	 * @param int $expire Force a time to live
+	 * @return bool
+	 */
+	public function write($data, $id, $expire = '') {
+
+		if(!$this->status) return false;
+		
+		if(preg_match('/^sql\./',$id) && $this->_empties_id!==$id && empty($data)) {
+			if(!isset($this->_empties[$id])) {
+				$this->_empties[$id] = $data;
+				$this->_empties_added = true;
+			}
+			return false;
+		}
+
+		$name = $this->_makeName($id);
+
+		//Write to file
+		if ($this->_memcache->set($name, $data, (!empty($expire) && is_numeric($expire)) ? $expire : $this->_expire)) {
+			return true;
+		}
+		trigger_error('Cache data not written (Memcache).', E_USER_WARNING);
+
+		return false;
+	}
+
+	//=====[ Private ]=======================================
+
+	/**
+	 * Get empty cache queries
+	 */
+	protected function _getEmpties() {
+		$this->_setPrefix();
+		$this->_empties = $this->read($this->_empties_id);
+	}
+}
