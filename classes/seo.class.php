@@ -665,9 +665,7 @@ class SEO {
 		$this->_sitemap_xml->startElement('urlset', array('xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9'));
 
 		// Generate Standard records
-		# Homepage
-
-		$store_url = (CC_SSL) ? $GLOBALS['config']->get('config', 'standard_url') : $GLOBALS['storeURL'];
+		$store_url = (CC_SSL) ? $GLOBALS['config']->get('config', 'ssl_url') : $GLOBALS['config']->get('config', 'standard_url');
 
 		$this->_sitemap_link(array('url' => $store_url.'/index.php'));
 		# Sale Items
