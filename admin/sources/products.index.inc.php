@@ -569,9 +569,11 @@ if (((isset($_GET['delete']) && !empty($_GET['delete'])) || (isset($_POST['delet
 	} else {
 		$GLOBALS['main']->setACPNotify($lang['catalogue']['notify_product_delete']);
 	}
-
-	
-	httpredir(currentPage(array('delete')));
+	if(isset($_GET['dashboard'])) {
+		httpredir('?','stock_warnings');
+	} else {
+		httpredir(currentPage(array('delete')));
+	}
 }
 
 if (isset($_POST['status']) && is_array($_POST['status']) && Admin::getInstance()->permissions('products', CC_PERM_EDIT)) {
@@ -579,7 +581,6 @@ if (isset($_POST['status']) && is_array($_POST['status']) && Admin::getInstance(
 	foreach ($_POST['status'] as $product_id => $status) {
 		$GLOBALS['db']->update('CubeCart_inventory', array('status' => $status), array('product_id' => $product_id));
 	}
-	
 	httpredir(currentPage());
 }
 
