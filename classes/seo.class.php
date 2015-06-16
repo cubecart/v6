@@ -669,9 +669,13 @@ class SEO {
 
 		$this->_sitemap_link(array('url' => $store_url.'/index.php'));
 		# Sale Items
-		$this->_sitemap_link(array('url' => $store_url.'/index.php?_a=saleitems'));
+		if ($GLOBALS['config']->get('config', 'catalogue_sale_mode')!=='0') {
+			$this->_sitemap_link(array('url' => $store_url.'/index.php?_a=saleitems'));
+		}
 		# Gift Certificates
-		$this->_sitemap_link(array('url' => $store_url.'/index.php?_a=certificates'));
+		if ($GLOBALS['config']->get('gift_certs','status')=='1') {
+			$this->_sitemap_link(array('url' => $store_url.'/index.php?_a=certificates'));
+		}
 
 		$queryArray = array(
 			'category' => $GLOBALS['db']->select('CubeCart_category', array('cat_id'), array('status' => '1')),

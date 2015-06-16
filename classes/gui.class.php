@@ -972,9 +972,9 @@ class GUI {
 			$GLOBALS['smarty']->assign('CTRL_SALE', $GLOBALS['config']->get('config', 'catalogue_sale_mode'));
 
 			//Check for gift certs
-			$gc = $GLOBALS['config']->get('gift_certs');
-			if (isset($gc['status']) && $gc['status']) {
-				$GLOBALS['smarty']->assign('CTRL_CERTIFICATES', $gc['status']);
+			$gc_status = $GLOBALS['config']->get('gift_certs','status');
+			if ($gc_status=='1') {
+				$GLOBALS['smarty']->assign('CTRL_CERTIFICATES', true);
 			} else {
 				$GLOBALS['smarty']->assign('CTRL_CERTIFICATES', false);
 			}
