@@ -372,7 +372,7 @@ class GUI {
 				$basket_total += $product['price_display'];
 				$basket_items += $product['quantity'];
 			}
-			$GLOBALS['smarty']->assign('CONTENTS', $vars['contents']);
+			$GLOBALS['smarty']->assign('CONTENTS', array_reverse($vars['contents'], true));
 			$GLOBALS['smarty']->assign('CART_ITEMS', $basket_items);
 		}
 		$GLOBALS['smarty']->assign('CART_TOTAL', isset($this->_total) ? Tax::getInstance()->priceFormat($this->_total) : $GLOBALS['tax']->priceFormat($basket_total));
