@@ -31,13 +31,14 @@ class Cache extends Cache_Controler {
 
 		ini_set('display_errors', true);
 
-		$this->_mode = 'Memcache';
-		$this->_memcache = new Memcache;
+		$this->_mode = 'Memcached';
+		$this->_memcached = new memcached;
 	
-		$memcache_host = isset($glob['memcache_host']) ? $glob['memcache_host'] : '127.0.0.1';
-		$memcache_post = isset($glob['memcache_post']) ? $glob['memcache_post'] : '11211';
-		if(!$this->_memcache->connect($memcache_host, $memcache_post)) {
-			trigger_error("Couldn't initiate Memcache. Please set 'memcache_host' and 'memcache_port' in the includes/global.inc.php file.", E_USER_WARNING);	
+		$memcache_servers = isset($glob['memcached_servers']) ? $glob['memcached_servers'] : array('127.0.0.1',11211);
+
+		$this->_memcached->setOption(Memcached::OPT_LIBKETAMA_COMPATIBLE, true);
+		if (!count($mc->getServerList())) {
+		    $this->_memcached->addServers($memcache_servers);
 		}
 
 		//Run the parent constructor
@@ -108,7 +109,7 @@ class Cache extends Cache_Controler {
 	 */
 	public function delete($id) {
 	
-		return $this->_memcache->delete($this->_makeName($id));
+		return $this->_memcached->delete($this->_makeName($id));
 	}
 
 	/**
@@ -120,7 +121,7 @@ class Cache extends Cache_Controler {
 	public function exists($id) {
 		if(!$this->status) return false;
 		
-		if(!$this->_memcache->get($this->_makeName($id))) {
+		if(!$this->_memcached->get($this->_makeName($id))) {
 			return false;
 		} else {
 			return true;
@@ -133,22 +134,13 @@ class Cache extends Cache_Controler {
 	 * @return array
 	 */
 	public function getIDs() {
-		if (empty($this->_ids)) { 
-		    $allSlabs = $this->_memcache->getExtendedStats('slabs'); 
-		    foreach($allSlabs as $server => $slabs) { 
-		        foreach($slabs AS $slabId => $slabMeta) { 
-		            $cdump = $this->_memcache->getExtendedStats('cachedump',(int)$slabId); 
-		            if(is_array($cdump)) {
-			            foreach($cdump AS $keys => $arrVal) { 
-			                if(is_array($arrVal)) {
-			                	foreach($arrVal AS $k => $v) {                    
-			                    	$this->_ids[] = str_replace(array($this->_prefix, $this->_suffix), '', $k);
-			                	} 
-			            	}
-			           	} 
-		       		}
-		        } 
-		    }  
+		if (empty($this->_ids)) {
+		    $keys = $this->_memcached->getAllKeys(); 
+		    if(is_array($keys))
+		    	foreach($keys as $key) {                
+                	$this->_ids[] = str_replace(array($this->_prefix, $this->_suffix), '', $key); 
+		    	}
+			}
 		}
 		return $this->_ids;
 	}
@@ -171,8 +163,8 @@ class Cache extends Cache_Controler {
 		$name = $this->_makeName($id);
 
 		//Make sure the cache file exists
-		if ($this->_memcache->get($name)) {
-			$contents = $this->_memcache->get($name);
+		if ($this->_memcached->get($name)) {
+			$contents = $this->_memcached->get($name);
 			if (!empty($contents)) {
 				//Remove base64 & serialization
 				return $contents;
@@ -188,7 +180,7 @@ class Cache extends Cache_Controler {
 	 * @return string
 	 */
 	public function usage() {
-		$stats = $this->_memcache->getStats();
+		$stats = $this->_memcached->getStats();
 		if(is_array($stats)) {
 			$output = '';
 			foreach($stats as $server => $data) {
@@ -196,7 +188,7 @@ class Cache extends Cache_Controler {
 			}
 			return $output;
 		} else {
-			return "No stats available for memcache."
+			return "No stats available for memcached."
 		}
 	}
 
@@ -223,7 +215,7 @@ class Cache extends Cache_Controler {
 		$name = $this->_makeName($id);
 
 		//Write to file
-		if ($this->_memcache->set($name, $data, 0,(!empty($expire) && is_numeric($expire)) ? $expire : $this->_expire)) {
+		if ($this->_memcached->set($name, $data, 0,(!empty($expire) && is_numeric($expire)) ? $expire : $this->_expire)) {
 			return true;
 		}
 		trigger_error('Cache data not written (Memcache).', E_USER_WARNING);
@@ -240,7 +232,6 @@ class Cache extends Cache_Controler {
 		$this->_setPrefix();
 		$this->_empties = $this->read($this->_empties_id);
 	}
-	
 	/**
 	 * Return string of stats for output
 	 */
