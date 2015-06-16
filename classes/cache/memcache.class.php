@@ -190,13 +190,10 @@ class Cache extends Cache_Controler {
 	public function usage() {
 		$stats = $this->_memcache->getStats();
 		if(is_array($stats)) {
-			$output = '';
-			foreach($stats as $server => $data) {
-				$output .= $this->_printStats($server,$data);
-			}
+			$output = $this->_printStats($stats);
 			return $output;
 		} else {
-			return "No stats available for memcache."
+			return "No stats available for memcache.";
 		}
 	}
 
@@ -223,7 +220,7 @@ class Cache extends Cache_Controler {
 		$name = $this->_makeName($id);
 
 		//Write to file
-		if ($this->_memcache->set($name, $data, 0,(!empty($expire) && is_numeric($expire)) ? $expire : $this->_expire)) {
+		if ($this->_memcache->set($name, $data,(!empty($expire) && is_numeric($expire)) ? $expire : $this->_expire)) {
 			return true;
 		}
 		trigger_error('Cache data not written (Memcache).', E_USER_WARNING);
@@ -244,10 +241,9 @@ class Cache extends Cache_Controler {
 	/**
 	 * Return string of stats for output
 	 */
-	private function _printStats($server, $data){ 
-		$output = '';
-		$output .= "<strong>Server: ".$server."</strong>";
-		$output .= "<table border='1'>"; 
+	private function _printStats($data){ 
+		$output = "";
+		$output .= "<table border='1'><tbody>"; 
         $output .= "<tr><td>Memcache Server version:</td><td> ".$data["version"]."</td></tr>"; 
         $output .= "<tr><td>Process id of this server process </td><td>".$data["pid"]."</td></tr>"; 
         $output .= "<tr><td>Number of seconds this server has been running </td><td>".$data["uptime"]."</td></tr>";
@@ -265,7 +261,7 @@ class Cache extends Cache_Controler {
         $percCacheMiss=100-$percCacheHit; 
 
         $output .= "<tr><td>Number of keys that have been requested and found present </td><td>".$data["get_hits"]." ($percCacheHit%)</td></tr>"; 
-        $output .= "<tr><td>Number of items that have been requested and not found </td><td>".$data["get_misses"]."($percCacheMiss%)</td></tr>"; 
+        $output .= "<tr><td>Number of items that have been requested and not found </td><td>".$data["get_misses"]." ($percCacheMiss%)</td></tr>"; 
         $MBRead= (real)$data["bytes_read"]/(1024*1024); 
         $output .= "<tr><td>Total number of bytes read by this server from network </td><td>".$MBRead." Mega Bytes</td></tr>"; 
         $MBWrite=(real) $data["bytes_written"]/(1024*1024) ; 
@@ -273,7 +269,7 @@ class Cache extends Cache_Controler {
         $MBSize=(real) $data["limit_maxbytes"]/(1024*1024) ; 
         $output .= "<tr><td>Number of bytes this server is allowed to use for storage.</td><td>".$MBSize." Mega Bytes</td></tr>"; 
         $output .= "<tr><td>Number of valid items removed from cache to free memory for new items.</td><td>".$data["evictions"]."</td></tr>"; 
-		$output .= "</table>"; 
+		$output .= "</tbody></table>"; 
 		return $output;
     }
 }
