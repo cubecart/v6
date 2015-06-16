@@ -215,7 +215,7 @@ class Cache extends Cache_Controler {
 		$name = $this->_makeName($id);
 
 		//Write to file
-		if ($this->_memcache->set($name, $data, (!empty($expire) && is_numeric($expire)) ? $expire : $this->_expire)) {
+		if ($this->_memcache->set($name, $data, 0,(!empty($expire) && is_numeric($expire)) ? $expire : $this->_expire)) {
 			return true;
 		}
 		trigger_error('Cache data not written (Memcache).', E_USER_WARNING);
