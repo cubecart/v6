@@ -15,7 +15,7 @@
    <div class="medium-8 columns">
       {if $RECAPTCHA==='2'}
       {if empty($CONFIG.recaptcha_public_key) || empty($CONFIG.recaptcha_secret_key)}
-      <p>reCAPTCHA public and/or private key has not been set!</p>
+      <p>{$LANG.form.recaptcha_key_not_set}</p>
       {else}
       <div class="g-recaptcha" data-sitekey="{$CONFIG.recaptcha_public_key}"></div>
       {/if}
@@ -30,15 +30,15 @@
          <div class="row">
             <div id="recaptcha_image" class="small-8 columns"></div>
             <div class="small-4 columns">
-            <a href="javascript:Recaptcha.reload()"><i class="fa fa-refresh" title="Try a different image"></i></a>
-            <span class="recaptcha_only_if_image"><a href="javascript:Recaptcha.switch_type('audio')"><i class="fa fa-volume-up" title="Get an audio CAPTCHA"></i></a></span>
-         <span class="recaptcha_only_if_audio"><a href="javascript:Recaptcha.switch_type('image')"><i class="fa fa-picture-o" title="Get an image CAPTCHA"></i></a></span>
-         <span><a href="javascript:Recaptcha.showhelp()"><i class="fa fa-info-circle" title="Help"></i></a></span>
+            <a href="javascript:Recaptcha.reload()"><i class="fa fa-refresh" title="{$LANG.form.recaptcha_try_diff_img}"></i></a>
+            <span class="recaptcha_only_if_image"><a href="javascript:Recaptcha.switch_type('audio')"><i class="fa fa-volume-up" title="{$LANG.form.recaptcha_get_audio}"></i></a></span>
+         <span class="recaptcha_only_if_audio"><a href="javascript:Recaptcha.switch_type('image')"><i class="fa fa-picture-o" title="{$LANG.form.recaptcha_get_img}"></i></a></span>
+         <span><a href="javascript:Recaptcha.showhelp()"><i class="fa fa-info-circle" title="{$LANG.common.help}"></i></a></span>
             </div>
          </div>
-         <div class="recaptcha_only_if_incorrect_sol error">Incorrect please try again</div>
-         <span class="recaptcha_only_if_image"><label for="recaptcha_response_field">Enter the words above:</label></span>
-         <span class="recaptcha_only_if_audio">Enter the numbers you hear:</span>
+         <div class="recaptcha_only_if_incorrect_sol error">{$LANG.form.recaptcha_incorrect}</div>
+         <span class="recaptcha_only_if_image"><label for="recaptcha_response_field">{$LANG.form.recaptcha_enter_words}</label></span>
+         <span class="recaptcha_only_if_audio">{$LANG.form.recaptcha_enter_numbers}</span>
          <input type="text" id="recaptcha_response_field" name="recaptcha_response_field" required />
       </div>
       <script type="text/javascript"
