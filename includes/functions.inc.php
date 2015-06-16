@@ -738,7 +738,7 @@ function offline() {
 }
 
 /**
- * Sort by prince
+ * Sort by price
  *
  * @param array $x
  * @param array $y
