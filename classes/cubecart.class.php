@@ -1522,7 +1522,7 @@ class Cubecart {
 				}
 				$items[$hash] = $product;
 			}
-			$GLOBALS['smarty']->assign('ITEMS', $items);
+			$GLOBALS['smarty']->assign('ITEMS', array_reverse($items, true));
 
 			// Shipping Calculations
 			if (($shipping = $GLOBALS['cart']->loadShippingModules()) !== false) {
