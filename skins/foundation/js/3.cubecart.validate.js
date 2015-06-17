@@ -74,6 +74,9 @@ jQuery(document).ready(function() {
             'contact[subject]': {
                 required: true
             },
+            'contact[dept]': {
+                required: true
+            },
             'contact[enquiry]': {
                 required: true
             },
