@@ -39,7 +39,13 @@
                   <i class="fa fa-user unregistered" title="{$LANG.customer.title_key_unregistered}"></i>
                   {/if}
                </td>
-               <td><a href="{$order.link_customer}" title="{$order.name}">{$order.name}</a></td>
+               <td>
+               {if $order.customer_id}
+                  <a href="{$order.link_customer}" title="{$order.name}">{$order.name}</a>
+               {else}
+                  {$order.name}
+               {/if}
+               </td>
                <td>{$order.status}</td>
                <td>{$order.date}</td>
                <td align="right">{$order.prod_total}</td>
