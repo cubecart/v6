@@ -140,7 +140,7 @@ class Order {
 	 * @return bool
 	 */
 	public function createDownload($product_id, $order_inv_id, $customer_id = '') {
-		if(empty($customer_id) || empty($product_id) || empty($order_inv_id)) return false;
+		if(empty($product_id) || empty($order_inv_id)) return false;
 		$this->_order_summary['customer_id'] = $customer_id;
 		return $this->_createDownload($product_id, $order_inv_id);
 	}
