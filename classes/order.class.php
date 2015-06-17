@@ -132,6 +132,20 @@ class Order {
 	}
 
 	/**
+	 * Create digital download for order ready to be sent later (Public)
+	 *
+	 * @param int $product_id
+	 * @param int $order_inv_id
+	 * @param int $customer_id
+	 * @return bool
+	 */
+	public function createDownload($product_id, $order_inv_id, $customer_id = '') {
+		if(empty($customer_id) || empty($product_id) || empty($order_inv_id)) return false;
+		$this->_order_summary['customer_id'] = $customer_id;
+		return $this->_createDownload($product_id, $order_inv_id);
+	}
+
+	/**
 	 * Create the order number
 	 *
 	 * @param bool $return
