@@ -29,6 +29,7 @@ if (($cat_dropdown = $GLOBALS['cache']->read('products_category_dropdown')) === 
 	$cat_dropdown = $GLOBALS['catalogue']->buildCategoriesDropDown();
 	$GLOBALS['cache']->write($cat_dropdown, 'products_category_dropdown');
 }
+$GLOBALS['smarty']->assign('CAT_LIST_ANY', currentPage(array('cat_id')));
 $GLOBALS['smarty']->assign('CAT_LIST', $cat_dropdown);
 $GLOBALS['smarty']->assign('CURRENT_CAT', (isset($_GET['cat_id'])) ? $_GET['cat_id'] : '');
 
