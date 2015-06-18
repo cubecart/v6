@@ -31,7 +31,7 @@
 	  <tbody>
 		{foreach from=$REPORT_DATE item=data}
 		<tr>{$data.value}
-		  <td><a href="?_g=orders&action=edit&order_id={$data.cart_order_id}">{$data.cart_order_id}</a></td>
+		  <td nowrap="nowrap"><a href="?_g=orders&action=edit&order_id={$data.cart_order_id}">{$data.cart_order_id}</a></td>
 		  <td align="right">{$data.subtotal}</td>
 		  <td align="right">{$data.discount}</td>
 		  <td align="right">{$data.shipping}</td>
