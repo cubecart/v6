@@ -39,13 +39,26 @@
 {if $DELIVERY}
 <hr>
 <h4>{$LANG.common.delivery}</h4>
-{if !empty($DELIVERY.date)}
-<div>{$LANG.orders.shipping_date}: {$DELIVERY.date}</div>
+{if !empty($DELIVERY.date) && $DELIVERY.date!=='0000-00-00'}
+<div class="row">
+  <div class="small-6 medium-3 columns">{$LANG.orders.shipping_date}:</div>
+  <div class="small-6 medium-9 columns">{$DELIVERY.date}</div>
+</div>
 {/if}
 {if !empty($DELIVERY.url)}
-<div>{$LANG.orders.shipping_tracking}: <a href="{$DELIVERY.url}" target="_blank">{$DELIVERY.method}{if !empty($DELIVERY.product)}: {$DELIVERY.product}{/if}</a></div>
+<div class="row">
+  <div class="small-6 medium-3 columns">{$LANG.orders.shipping_tracking}:</div>
+  <div class="small-6 medium-9 columns"><a href="{$DELIVERY.url}" target="_blank">{$DELIVERY.method}{if !empty($DELIVERY.product)} ({$DELIVERY.product}){/if}</a></div>
+</div>
 {elseif !empty($DELIVERY.tracking)}
-<div>{$LANG.orders.shipping_tracking}: {$DELIVERY.tracking}</div>
+<div class="row">
+  <div class="small-6 medium-3 columns">{$LANG.catalogue.delivery_method}:</div>
+  <div class="small-6 medium-9 columns">{$DELIVERY.method}{if !empty($DELIVERY.product)} ({$DELIVERY.product}){/if}</div>
+</div>
+<div class="row">
+  <div class="small-6 medium-3 columns">{$LANG.orders.shipping_tracking}:</div>
+  <div class="small-6 medium-9 columns">{$DELIVERY.tracking}</div>
+</div>
 {/if}
 {/if}
 <hr>

@@ -128,7 +128,12 @@
          <div class="row">
             <div class="small-12 columns text-center">
                <hr>
-               <small>{$LANG.address.return_address}: {$STORE.address}, {$STORE.county}, {$STORE.postcode} {$STORE.country}</small>
+               <small>
+               {$LANG.address.return_address}: 
+               {if !empty($STORE.address)}{$STORE.address}, {/if}
+               {if !empty($STORE.county)}{$STORE.county}, {/if}
+               {if !empty($STORE.postcode)}{$STORE.postcode} {/if}
+               {if !empty($STORE.country)}{$STORE.country} {/if}</small>
             </div>
          </div>
       </footer>
