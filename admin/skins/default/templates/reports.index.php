@@ -17,10 +17,10 @@
 		<tr>
 		  <td>{$LANG.orders.order_number}</td>
 		  <td>{$LANG.basket.total_sub}</td>
-		  <td>{$LANG.basket.total_discount}</td>
+		  <td>{$LANG.common.discount}</td>
 		  <td>{$LANG.basket.shipping}</td>
-		  <td>{$LANG.basket.total_tax}</td>
-		  <td>{$LANG.basket.total_grand}</td>
+		  <td>{$LANG.common.tax}</td>
+		  <td>{$LANG.common.total}</td>
 		  <td>{$LANG.common.name}</td>
 		  <td>{$LANG.address.country}</td>
 		  <td>{$LANG.address.state}</td>
