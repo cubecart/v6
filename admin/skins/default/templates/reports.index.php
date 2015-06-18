@@ -60,12 +60,12 @@
 	  </tfoot>
 	</table>
 	<div>{$PAGINATION}</div>
-  	<div>
-	{if $DOWNLOAD}<input type="submit" name="download" class="submit" value="{$LANG.common.export}">{/if}
-	{foreach from=$EXPORT item=module}
-	<input type="submit" name="external_report[{$module.folder}]" class="submit" value="{$LANG.customer.export_to} {$module.description}">
-	{/foreach}
-  </div>
+  	<p>
+		{if $DOWNLOAD}<input type="submit" name="download" class="submit" value="{$LANG.common.export}">{/if}
+		{foreach from=$EXPORT item=module}
+		<input type="submit" name="external_report[{$module.folder}]" class="submit" value="{$LANG.customer.export_to} {$module.description}">
+		{/foreach}
+  	</p>
   </div>
 
   <div id="search" class="tab_content">
