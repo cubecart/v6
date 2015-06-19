@@ -1140,7 +1140,7 @@ if (isset($_GET['action'])) {
 		// update cached name
 		if (isset($smarty_data['option_matrix']['all_possible']) && is_array($smarty_data['option_matrix']['all_possible'])) {
 			foreach ($smarty_data['option_matrix']['all_possible'] as $option_group) {
-				$GLOBALS['db']->update('CubeCart_option_matrix', array('cached_name' => $option_group['options_values'], 'status' => 1, 'product_id' => $product_id), array('options_identifier' => $option_group['options_identifier']));
+				$GLOBALS['db']->update('CubeCart_option_matrix', array('cached_name' => $option_group['options_values'], 'status' => 1), array('options_identifier' => $option_group['options_identifier'], 'product_id' => $product_id));
 			}
 		}
 
