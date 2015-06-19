@@ -358,7 +358,7 @@ class User {
 			$data['new_password'] = '0';
 			$data['ip_address']  = get_ip_address();
 
-			if ($existing = $GLOBALS['db']->select('CubeCart_customer', 'customer_id', array('email' => $data['email']))) {
+			if ($existing = $GLOBALS['db']->select('CubeCart_customer', 'customer_id', array('email' => $data['email']), false, 1, false, false)) {
 				$GLOBALS['db']->update('CubeCart_customer', $data, array('email' => $data['email']));
 				$customer_id = $existing[0]['customer_id'];
 			} else {
