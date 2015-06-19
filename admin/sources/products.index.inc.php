@@ -63,7 +63,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 	}
 
 	//Need to remove these in some cases to stop SQL errors
-	$records = array('product_id', 'manufacturer', 'product_weight', 'stock_level', 'stock_warning');
+	$records = array('product_id', 'product_weight', 'stock_level', 'stock_warning');
 	foreach ($records as $r) {
 		if (empty($record[$r]) && $record[$r]!=='0' && $record[$r]!=='0.0') {
 			unset($record[$r]);
