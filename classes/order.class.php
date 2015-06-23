@@ -1124,8 +1124,7 @@ class Order {
 				$email    = $this->_basket['customer']['email'];
 				$phone    = $this->_basket['customer']['phone'];
 				$mobile    = $this->_basket['customer']['mobile'];
-
-			} else {
+		} else {
 			// Erm, oops?
 			if (!$force_order) {
 				trigger_error('No customer information detected. Order summary was not built or inserted.', E_USER_WARNING);
