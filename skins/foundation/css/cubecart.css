@@ -252,6 +252,9 @@ button.small, .button.small {
     position: absolute;
     z-index: 1000
 }
+form#newsletter_form_box .button {
+    padding: 0 1rem;
+}
 /* Small viewport only */
 @media only screen and (max-width: 40em) {
   .small-collapse {
