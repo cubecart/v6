@@ -218,7 +218,7 @@ class Cache extends Cache_Controler {
 		if ($this->_memcached->set($name, $data, (!empty($expire) && is_numeric($expire)) ? $expire : $this->_expire)) {
 			return true;
 		}
-		trigger_error('Cache data not written (Memcachednightma).', E_USER_WARNING);
+		trigger_error('Cache data not written (Memcached).', E_USER_WARNING);
 
 		return false;
 	}
