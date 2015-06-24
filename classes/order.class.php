@@ -1196,11 +1196,6 @@ class Order {
 		} else {
 			// Insert Summary
 			if ($order_id = $GLOBALS['db']->insert('CubeCart_order_summary', $record)) {
-				// Change order if to number (experimental)
-				if($GLOBALS['config']->get('config', 'inc_oid')=='1') {
-					$this->_order_id = $order_id;
-					$GLOBALS['db']->update('CubeCart_order_summary', array('cart_order_id' => $order_id), array('cart_order_id' => $this->_basket['cart_order_id']));
-				}
 				// Insert history
 				$this->_addHistory($this->_order_id, 1);
 				if ($GLOBALS['user']->is()) {
