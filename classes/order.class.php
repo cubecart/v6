@@ -363,7 +363,7 @@ class Order {
 
 		// Update order status, manage stock, and email if required
 		if (!empty($status_id) && !empty($order_id)) {
-			$currentStatus = $GLOBALS['db']->select('CubeCart_order_summary', array('status'), array('cart_order_id' => $order_id));
+			$currentStatus = $GLOBALS['db']->select('CubeCart_order_summary', array('status'), array('cart_order_id' => $order_id), false, false, false, false);
 			
 			if ((int)$currentStatus[0]['status'] == 0) return false; // no order record
 			
