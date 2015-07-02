@@ -672,7 +672,7 @@ class Order {
 								//$record['price'] += $value['option_price'];
 								$value['price_display'] = ' (+';
 							}
-							$value['price_display'] .= Tax::getInstance()->priceFormat($value['option_price'], true).')';
+							$value['price_display'] .= Tax::getInstance()->priceFormat($value['option_price'], true, true).')';
 						}
 						$option[$assign_id] = $value['option_name'].': '.$value['value_name'].$value['price_display'];
 					}
@@ -694,7 +694,7 @@ class Order {
 									//$record['price'] += $value['option_price'];
 									$value['price_display'] = ' (+';
 								}
-								$value['price_display'] .= Tax::getInstance()->priceFormat($value['option_price'], true).')';
+								$value['price_display'] .= Tax::getInstance()->priceFormat($value['option_price'], true, true).')';
 							}
 							$option[$assign_id] = $value['option_name'].': '.$option_value.$value['price_display'];
 						}
