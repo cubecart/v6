@@ -516,7 +516,7 @@ class GUI {
 	 */
 	public function itemsPerPage($list_id = 'products', $page_key = 'perpage') {
 	
-		if((int)$_GET[$page_key]>0) {
+		if(isset($_GET[$page_key]) && (int)$_GET[$page_key]>0) {
 			return (int)$_GET[$page_key];
 		} 
 
