@@ -239,7 +239,7 @@ class Debug {
 			$output[] = "<div style='font-family: \"Courier New\",Courier,monospace;font-size: 10px;border-top: 5px dashed silver;color: #000;background-color: #E7E7E7; clear: both'>";
 
 			// Display the PHP errors
-			$output[] = '<strong>PHP</strong>:<br />'.$this->_errorDisplay().'<hr size="1" />';
+			$output[] = '<strong>PHP</strong>:<br />'.htmlspecialchars(strip_tags($this->_errorDisplay())).'<hr size="1" />';
 
 			//Get the super globals
 			if (($ret = $this->_makeExportString('GET', merge_array(array('Before Sanitise:' => $GLOBALS['RAW']['GET']), array('After Sanitise:' => $_GET)))) !== false) {
