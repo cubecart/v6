@@ -23,4 +23,8 @@
 	  </fieldset>
 	  <input type="hidden" name="token" value="{$SESSION_TOKEN}">
 	</form>
+	<p><strong>{$LANG.common.tip}:</strong> {$LANG.maintain.sql_delimiter}</p>
+	<h4>{$LANG.common.example}:</h4>
+	<p class="courier">UPDATE `CubeCart_inventory` SET `tax_type` = 1; #EOQ<br>
+	DELETE FROM `CubeCart_logo` WHERE `status` = 0; #EOQ</p>
 </div>

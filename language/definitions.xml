@@ -542,6 +542,8 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="example" introduced="6.0.7"><![CDATA[Example]]></string>
+    <string name="tip" introduced="6.0.7"><![CDATA[Tip]]></string>
     <string name="tax" introduced="6.0.6"><![CDATA[Tax]]></string>
     <string name="discount" introduced="6.0.6"><![CDATA[Discount]]></string>
     <string name="estimated" introduced="6.0.5"><![CDATA[Estimated]]></string>
@@ -1310,6 +1312,7 @@
     <string name="notify_sitemap_fail" introduced="5.0.0"><![CDATA[Failed to rebuild sitemap.]]></string>
     <string name="no_query_entered" introduced="5.0.0"><![CDATA[No query entered]]></string>
     <string name="expert_use_only" introduced="5.0.0"><![CDATA[WARNING: Only use this tool if you are confident you know what you are doing!]]></string>
+    <string name="sql_delimiter" introduced="6.0.7"><![CDATA[Seperate MySQL queries with delimiter <span class="courier">; #EOQ</span> at the end of each line.]]></string>
     <string name="reset_views" introduced="5.0.0"><![CDATA[Reset all product view counts]]></string>
     <string name="sitemap" introduced="5.0.0"><![CDATA[Rebuild Sitemap]]></string>
     <string name="tab_backup" introduced="5.0.0"><![CDATA[Backup]]></string>
