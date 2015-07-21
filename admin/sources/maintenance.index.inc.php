@@ -167,7 +167,7 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 	$request->skiplog(true);
 
 	if (!$contents = $request->send()) {
-		$contents = file_get_contents('https://www.cubecart.com/download/'.$_GET['upgrade'].'/zip');
+		$contents = file_get_contents('https://www.cubecart.com/download/'.$_GET['upgrade'].'.zip');
 	}
 
 	if (empty($contents)) {
