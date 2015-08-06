@@ -612,6 +612,7 @@ session_save_path(CC_ROOT_DIR.'/sessions');")."</pre>
 			
 		}
 		session_cache_limiter('none');
+		session_name('CC_SESSION');
 		session_start();
 		
 		// Increase session length on each page load. NOT IE however as we all know it is a wingy PITA
