@@ -69,8 +69,8 @@
          <form action="{$VAL_SELF}" method="post" class="panel add_to_basket">
             <div class="row product_list_view">
                <div class="small-3 columns">
-                  <a href="{$product.url}" title="{$product.name}">
-                  <img class="th" src="{$product.thumbnail}" alt="{$product.name}">
+                  <a href="{$product.url}" class="th" title="{$product.name}">
+                  <img src="{$product.thumbnail}" alt="{$product.name}">
                   </a>
                </div>
                <div class="small-6 columns">
