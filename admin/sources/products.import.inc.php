@@ -284,6 +284,7 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 		    $rowCount++;
 		}
 		$GLOBALS['session']->set('columns', $rowCount, 'import');
+		fclose($in);
 		fclose($out);
 
 		## Display interstitial page before actually importing, either displaying example data from source, or a means to map the CSV to the database columns
