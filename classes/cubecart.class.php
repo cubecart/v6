@@ -1335,13 +1335,13 @@ class Cubecart {
 				$required = array('email', 'name', 'subject', 'enquiry');
 				foreach ($_POST['contact'] as $key => $value) {
 					if (in_array($key, $required) && empty($value)) {
-						$GLOBALS['gui']->setError($GLOBALS['languague']->common['error_fields_required']);
+						$GLOBALS['gui']->setError($GLOBALS['language']->common['error_fields_required']);
 						$error = true;
 						break;
 					}
 				}
 				if (!filter_var($_POST['contact']['email'], FILTER_VALIDATE_EMAIL)) {
-					$GLOBALS['gui']->setError($GLOBALS['languague']->common['error_email_invalid']);
+					$GLOBALS['gui']->setError($GLOBALS['language']->common['error_email_invalid']);
 					$error = true;
 				}
 
