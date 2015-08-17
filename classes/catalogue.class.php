@@ -429,22 +429,28 @@ class Catalogue {
 								}
 					
 								$decimal_price_sign = $value['option_negative'] ? '-' : '';
+								$symbol = (isset($value['option_price']) && $value['option_price']!=0 && $value['option_negative'] == 0) ? '+' : '-';
 
 								$option_list[$value['option_id']]['values'][] = array(
 									'assign_id'  => $value['assign_id'],
 									'decimal_price'   => (string)$decimal_price_sign.$value['option_price'],
 									'price'   => (isset($value['option_price']) && $value['option_price']!=0) ? Tax::getInstance()->priceFormat($value['option_price'], true) : false,
-									'symbol'  => (isset($value['option_price']) && $value['option_price']!=0 && $value['option_negative'] == 0) ? '+' : '-',
+									'symbol'  => ($value['absolute_price']=='1' && $symbol=='+') ? '' : $symbol,
 									'value_id'  => $value['value_id'],
 									'value_name' => $value['value_name'],
-									'selected' => isset($selected[$value['assign_id']]) ? true : false
+									'selected' => isset($selected[$value['assign_id']]) ? true : false,
+									'absolute_price' => $value['absolute_price']
 								);
 								
 								if($selected[$value['assign_id']]) {
-									if($value['option_price']>0 && $value['option_negative'] == 0) { 
-										$this->_options_line_price +=  $value['option_price'];
-									} elseif($value['option_price']>0) { 
-										$this->_options_line_price -=  $value['option_price'];
+									if($value['absolute_price']=='1') {
+										$this->_options_line_price =  $value['option_price'];
+									} else {
+										if($value['option_price']>0 && $value['option_negative'] == 0) { 
+											$this->_options_line_price +=  $value['option_price'];
+										} elseif($value['option_price']>0) { 
+											$this->_options_line_price -=  $value['option_price'];
+										}
 									}
 								}
 							}
@@ -471,15 +477,20 @@ class Catalogue {
 								'required'  => (bool)$option[0]['option_required'],
 								'price'   => $price,
 								'decimal_price'   => (string)$decimal_price_sign.$option[0]['option_price'],
-								'symbol'  => $symbol,
+								'symbol'  => ($option[0]['absolute_price']=='1' && $symbol=='+') ? '' : $symbol,
 								'priority'      => $option['priority'],
-								'value'	=> $description
+								'value'	=> $description,
+								'absolute_price' => $option[0]['absolute_price']
 							);
 							
-							if($option[0]['option_price']>0 && $option[0]['option_negative'] == 0) { 
-								$this->_options_line_price +=  $option[0]['option_price'];
-							} elseif($value['option_price']>0) { 
-								$this->_options_line_price -=  $option[0]['option_price'];
+							if($option[0]['absolute_price']=='1') {
+								$this->_options_line_price =  $option[0]['option_price'];
+							} else {
+								if($option[0]['option_price']>0 && $option[0]['option_negative'] == 0) { 
+									$this->_options_line_price +=  $option[0]['option_price'];
+								} elseif($value['option_price']>0) { 
+									$this->_options_line_price -=  $option[0]['option_price'];
+								}
 							}
 						}
 						break;

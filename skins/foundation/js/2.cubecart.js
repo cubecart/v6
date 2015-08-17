@@ -303,11 +303,15 @@ function price_inc_options() {
     action += '_g=ajax_price_format&price[0]=';
 
     $("[name^=productOptions]").each(function () {
+        
         if($(this).is('input:radio') && $(this).is(':checked')) {
+            if($(this).hasClass('absolute')) { total = ptp = 0; }
             total += parseFloat($(this).attr("data-price"));
         } else if ($(this).is('select') && $(this).val()) {
+            if($("option:selected", this).hasClass('absolute')) { total = ptp = 0; }
             total += parseFloat($(this).find("option:selected").attr("data-price"));
         } else if (($(this).is('textarea') || $(this).is('input:text')) && $(this).val() !== '') {
+            if($(this).hasClass('absolute')) { total = ptp = 0; }
             total += parseFloat($(this).attr("data-price"));
         }
     });

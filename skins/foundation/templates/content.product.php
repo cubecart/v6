@@ -43,7 +43,7 @@
                   <div class="pseudo-label">{$option.option_name}{if $option.required} ({$LANG.common.required}){/if}</div>
                   <span id="error_option_{$option.option_id}">
                      {foreach from=$option.values item=value name=options}
-                     <div><input type="radio" name="productOptions[{$option.option_id}]" id="rad_option_{$value.assign_id}" value="{$value.assign_id}" class="nomarg" data-price="{$value.decimal_price}"{if $smarty.foreach.options.first} rel="error_option_{$option.option_id}" {if $option.required}required{/if}{/if}>
+                     <div><input type="radio" name="productOptions[{$option.option_id}]" id="rad_option_{$value.assign_id}" value="{$value.assign_id}" class="nomarg{if $value.absolute_price == '1'} absolute{/if}" data-price="{$value.decimal_price}"{if $smarty.foreach.options.first} rel="error_option_{$option.option_id}" {if $option.required}required{/if}{/if}>
                         <label for="rad_option_{$value.assign_id}" class="return">{$value.value_name}{if $value.price} {$value.symbol}{$value.price}{/if}</label>
                      </div>
                      {/foreach}
@@ -64,7 +64,7 @@
                   <select name="productOptions[{$option.option_id}]" id="option_{$option.option_id}" class="nomarg" {if $option.required}required{/if}>
                   <option value="">{$LANG.form.please_select}</option>
                   {foreach from=$option.values item=value}
-                  <option value="{$value.assign_id}" data-price="{$value.decimal_price}">{$value.value_name}{if $value.price} {$value.symbol}{$value.price}{/if}</option>
+                  <option value="{$value.assign_id}"{if $value.absolute_price == '1'}class="absolute"{/if} data-price="{$value.decimal_price}">{$value.value_name}{if $value.price} {$value.symbol}{$value.price}{/if}</option>
                   {/foreach}
                   </select>
                   {/if}
@@ -75,9 +75,9 @@
                <div class="small-12 columns">
                   <label for="option_{$option.option_id}" class="return">{$option.option_name}{if $option.price} {$option.symbol}{$option.price}{/if}{if $option.required} ({$LANG.common.required}){/if}</label>
                   {if $option.type == Catalogue::OPTION_TEXTBOX}
-                  <input type="text" name="productOptions[{$option.option_id}][{$option.assign_id}]" id="option_{$option.option_id}" data-price="{$option.decimal_price}" {if $option.required}required{/if}>
+                  <input type="text" name="productOptions[{$option.option_id}][{$option.assign_id}]" id="option_{$option.option_id}"{if $option.absolute_price == '1'} class="absolute"{/if}data-price="{$option.decimal_price}" {if $option.required}required{/if}>
                   {elseif $option.type == Catalogue::OPTION_TEXTAREA}
-                  <textarea name="productOptions[{$option.option_id}][{$option.assign_id}]" id="option_{$option.option_id}" data-price="{$option.decimal_price}" {if $option.required}required{/if}></textarea>
+                  <textarea name="productOptions[{$option.option_id}][{$option.assign_id}]" id="option_{$option.option_id}"{if $option.absolute_price == '1'} class="absolute"{/if} data-price="{$option.decimal_price}" {if $option.required}required{/if}></textarea>
                   {/if}
                </div>
             </div>

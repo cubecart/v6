@@ -203,6 +203,9 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 			if (!isset($values['option_negative'])) {
 				$values['option_negative'] = 0;
 			}
+			if(!isset($values['absolute_price'])) {
+				$values['absolute_price'] = 0;
+			}
 			$GLOBALS['db']->update('CubeCart_option_assign', $values, array('assign_id' => $assign_id));
 		}
 		unset($values);
@@ -219,6 +222,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 				'option_weight'  => $_POST['option_add']['weight'][$offset],
 				'matrix_include'  => $_POST['option_add']['matrix_include'][$offset],
 				'set_enabled'  => $_POST['option_add']['set_enabled'][$offset],
+				'absolute_price'  => $_POST['option_add']['absolute_price'][$offset]
 			);
 			if ($value > 0) {
 				// get the option id
