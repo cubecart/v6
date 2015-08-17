@@ -1,0 +1,1 @@
+ALTER TABLE `CubeCart_option_assign` ADD `absolute_price` enum('0','1') NOT NULL DEFAULT '0'; #EOQ
