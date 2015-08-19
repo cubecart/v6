@@ -523,8 +523,8 @@
          <h3>{$LANG.orders.title_card_details}</h3>
          <fieldset>
             <legend>{$LANG.orders.title_card_details}</legend>
-            {foreach from=$CARD_DATA item=data}
-            <div><label for="{$card}">{$data.name}</label><span><input type="text" name="card[{$card}]" id="{$card}" value="{$data.value}" class="textbox"></span></div>
+            {foreach from=$CARD_DATA key=k item=data}
+            <div><label for="{$k}">{$data.name}</label><span><input type="text" name="card[{$k}]" id="{$k}" value="{$data.value}" class="textbox"></span></div>
             {/foreach}
             <div><label for="delete">{$LANG.orders.card_delete}</label><span><a href="{$CARD_DELETE}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></span></div>
          </fieldset>
