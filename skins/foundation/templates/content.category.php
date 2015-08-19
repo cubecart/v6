@@ -127,7 +127,6 @@
                </div>
             </div>
             <div class="product_grid_view hide">
-               <form action="{$VAL_SELF}" method="post" class="panel add_to_basket">
                <div data-equalizer-watch>
                   <div class="text-center">
                      <a href="{$product.url}" title="{$product.name}"><img class="th" src="{$product.thumbnail}" alt="{$product.name}"></a>
