@@ -100,7 +100,6 @@
             <div>{$LANG_REVIEW_INFO}</div>
             </p>
             {/if}
-            {if ($CTRL_ALLOW_PURCHASE) && (!$CATALOGUE_MODE)}
             <h3>
                {if $PRODUCT.ctrl_sale}
                <span class="old_price" id="fbp" data-price="{$PRODUCT.full_base_price}">{$PRODUCT.price}</span>
@@ -112,6 +111,7 @@
             {if isset($PRODUCT.discounts)}
             <p>(<a href="#quantity_discounts">{$LANG.catalogue.bulk_discount}</a>)</p>
             {/if}
+            {if ($CTRL_ALLOW_PURCHASE) && (!$CATALOGUE_MODE)}
             <div class="row collapse">
                {if $PRODUCT.available <= 0}
                <div class="small-12 columns">
