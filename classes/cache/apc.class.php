@@ -66,7 +66,6 @@ class Cache extends Cache_Controler {
 		$this->getIDs();
 
 		if (!empty($type)) {
-			if($type=='SQL') $this->delete('empties');
 			$type = strtolower($type);
 			$len = strlen($type);
 		}
