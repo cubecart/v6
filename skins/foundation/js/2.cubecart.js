@@ -208,7 +208,7 @@ jQuery(document).ready(function() {
     $("#ccScroll").on( "click", "#ccScroll-next", function(event) {
         
         event.preventDefault();
-
+        $(this).hide();
         var product_list = $('.product_list');
         var next_link = $('a#ccScroll-next');
         var loadingHtml = '<p class="text-center" id="loading"><i class="fa fa-spinner fa-spin thickpad-topbottom"></i> ' + $('#lang_loading').text() + '&hellip;<p>';
