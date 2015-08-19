@@ -643,7 +643,7 @@ class Catalogue {
 			foreach ($GLOBALS['hooks']->load('class.catalogue.category_product_list') as $hook) include $hook;
 			$productList = $this->getProductData($list, 1, $order, $per_page, $page, true);
 		}
-
+		foreach ($GLOBALS['hooks']->load('class.catalogue.category_product_list_return') as $hook) include $hook;
 		return (isset($productList) && is_array($productList)) ? $productList : false;
 	}
 
