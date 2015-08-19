@@ -71,7 +71,9 @@ class Cache extends Cache_Controler {
 	 * @return bool
 	 */
 	public function clear($type = '') {
+		$type = 'SQL';
 		if (!empty($type)) {
+			if($type=='SQL') $this->delete('empties');
 			$prefix = '*'.strtolower($type).'*';
 		} else {
 			$prefix = '*';
