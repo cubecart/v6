@@ -58,10 +58,10 @@
  <hook trigger="admin.product.save.pre_process" deprecated="" />
  <hook trigger="admin.product.save.post_process" deprecated="" />
  <hook trigger="admin.product.import.image.pre_process" deprecated="" />
- <hook trigger="admin.product.manufacturer.delete" deprecated="" />
+ <hook trigger="admin.product.manufacturers.delete" deprecated="" />
  <hook trigger="admin.product.manufacturer.pre_display" deprecated="" />
- <hook trigger="admin.product.manufacturer.save.pre_process" deprecated="" />
- <hook trigger="admin.product.manufacturer.save.post_process" deprecated="" />
+ <hook trigger="admin.product.manufacturers.save.pre_process" deprecated="" />
+ <hook trigger="admin.product.manufacturers.save.post_process" deprecated="" />
  <hook trigger="admin.product.coupons.delete" deprecated="" />
  <hook trigger="admin.product.coupons.pre_display" deprecated="" />
  <hook trigger="admin.product.coupons.save.pre_process" deprecated="" />
