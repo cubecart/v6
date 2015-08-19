@@ -43,8 +43,12 @@ if (isset($_POST['manufacturer']) && is_array($_POST['manufacturer'])) {
 			$GLOBALS['main']->setACPWarning($lang['catalogue']['error_manufacturer_update']);
 		}
 	} else {
-		if ($GLOBALS['db']->insert('CubeCart_manufacturers', $_POST['manufacturer'])) {
-			$GLOBALS['main']->setACPNotify($lang['catalogue']['notify_manufacturer_create']);
+		if(!$GLOBALS['db']->select('CubeCart_manufacturers', array('id'), array('name' => $_POST['manufacturer']['name']))) {
+			if ($GLOBALS['db']->insert('CubeCart_manufacturers', $_POST['manufacturer'])) {
+				$GLOBALS['main']->setACPNotify($lang['catalogue']['notify_manufacturer_create']);
+			} else {
+				$GLOBALS['main']->setACPWarning($lang['catalogue']['error_manufacturer_create']);
+			}
 		} else {
 			$GLOBALS['main']->setACPWarning($lang['catalogue']['error_manufacturer_create']);
 		}

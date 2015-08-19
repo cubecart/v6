@@ -279,7 +279,7 @@
     <string name="error_import_empty" introduced="5.0.0"><![CDATA[No import data found.]]></string>
     <string name="error_import_invalid" introduced="5.0.0"><![CDATA[Invalid file format. Document must be of plain text content. e.g. *.txt or *.csv]]></string>
     <string name="error_import_upload" introduced="5.0.0"><![CDATA[Upload failed.]]></string>
-    <string name="error_manufacturer_create" introduced="5.0.0"><![CDATA[Failed to add manufacturer.]]></string>
+    <string name="error_manufacturer_create" introduced="5.0.0"><![CDATA[Failed to add manufacturer or manufacturer with the same name already exists.]]></string>
     <string name="error_manufacturer_delete" introduced="5.0.0"><![CDATA[Failed to delete manufacturer.]]></string>
     <string name="error_manufacturer_found" introduced="5.0.0"><![CDATA[Unable to find manufacturer.]]></string>
     <string name="error_manufacturer_none" introduced="5.0.0"><![CDATA[No manufacturers have been added.]]></string>
