@@ -34,6 +34,13 @@
       {/if}
    </div>
 </div>
+{if !$USER_SUBSCRIBED}
+<div class="row">
+   <div class="small-12 large-8 columns">
+      <input type="checkbox" id="mailing_list" name="mailing_list" value="1"><label for="mailing_list">{$LANG.account.register_mailing}</label>
+   </div>
+</div>
+{/if}
 {else}
 <div id="register_false_address" class="row{if empty($BILLING.line1)} hide{/if}">
    <div class="large-6 columns">

@@ -141,6 +141,10 @@ class User {
 			//IS_USER defines if a the user is a valid user on the template
 			$GLOBALS['smarty']->assign('IS_USER', $this->is());
 
+			if($this->is() && isset($_POST['mailing_list'])) {
+				Newsletter::getInstance()->subscribe($this->get('email'));
+			}
+
 			$this->isBot();
 		}
 	}

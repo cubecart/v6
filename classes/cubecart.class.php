@@ -1479,8 +1479,11 @@ class Cubecart {
 
 			$GLOBALS['smarty']->assign('ADDRESSES', $address_list);
 			// Display selector, if allowed
-
 			$GLOBALS['smarty']->assign('CTRL_DELIVERY', ($GLOBALS['config']->get('config', 'basket_allow_non_invoice_address') && !$GLOBALS['cart']->getBasketDigital()));
+
+			$subscribed = $GLOBALS['db']->select('CubeCart_newsletter_subscriber','subscriber_id', array('status' => '1', 'email' => $GLOBALS['user']->get('email')), false, false, false, false);
+			$GLOBALS['smarty']->assign('USER_SUBSCRIBED', $subscribed);
+			
 		} else {
 			// no address found - lets redirect to the 'add address' page
 			$GLOBALS['gui']->setInfo($GLOBALS['language']->account['error_address_billing']);
