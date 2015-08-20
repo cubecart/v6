@@ -83,9 +83,7 @@ class Tax {
 	 * @return float/false
 	 */
 	public function adjustTax($total_tax) {
-		
 		if($this->totalTax()<=0) return false;
-
 		$reduction = $total_tax / $this->totalTax();
 		return $this->_adjust_tax = $reduction;
 	}
