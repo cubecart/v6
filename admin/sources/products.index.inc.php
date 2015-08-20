@@ -312,7 +312,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 		} else {
 			$hash_before = null;
 		}
-		$record = array(); //Fixes bug 2457
+		$record = array();
 		foreach ($_POST['group'] as $group_id => $group) {
 			foreach ($group as $field => $value) {
 				$record[$field] = $value;
@@ -1001,6 +1001,7 @@ if (isset($_GET['action'])) {
 					} else {
 						$group['price']   = $result[0]['price'];
 						$group['sale_price'] = $result[0]['sale_price'];
+						$tax_inclusive = $result[0]['tax_inclusive'];
 					}
 				}
 				foreach ($tax_list as $tax_id => $details) {
