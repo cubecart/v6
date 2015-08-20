@@ -18,7 +18,7 @@ global $lang;
 $dir 			= CC_ROOT_DIR.CC_DS.'includes'.CC_DS.'extra'.CC_DS;
 $source			= $dir.'importdata.tmp';
 $import_source	= $dir.'importdata_%s.tmp';
-$splitSize = 2;
+$splitSize 		= 50;
 
 $delimiter	= (isset($_POST['delimiter']) && !empty($_POST['delimiter'])) ? $_POST['delimiter'] : ',';
 
