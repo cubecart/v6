@@ -966,7 +966,8 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
 		$url = preg_replace("/\.\w{2,4}$/", '', $url);
 		$url = str_replace(' ', '-', html_entity_decode($url, ENT_QUOTES));
 		$url = preg_replace('#[^\w\-_/]#iuU', '-', str_replace('/', '/', $url));
-		return preg_replace(array('#/{2,}#iu', '#-{2,}#'), array('/', '-'), $url);
+		$url = preg_replace(array('#/{2,}#iu', '#-{2,}#'), array('/', '-'), $url);
+		return trim($url,'-');
 	}
 
 	/**
