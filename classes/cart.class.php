@@ -930,6 +930,8 @@ class Cart {
 
 		if (($shipping = $GLOBALS['db']->select('CubeCart_modules', array('folder', 'countries'), array('module' => 'shipping', 'status' => '1'))) !== false) {
 
+			$tax_on = ($GLOBALS['config']->get('config', 'basket_tax_by_delivery')) ? 'delivery_address' : 'billing_address';
+
 			// Fetch the basket data
 			$basket_data = ($this->basket) ? $this->basket : false;
 			if (!isset($basket_data['delivery_address'])) {
@@ -967,7 +969,7 @@ class Cart {
 								// work out tax amount on shipping
 								foreach($packages as $package){
 									$package['value'] = sprintf('%.2F',$package['value']);
-									$packages_with_tax[] = array_merge($package,array('tax' => $GLOBALS['tax']->productTax($package['value'],$package['tax_id'],$package['tax_inclusive'],0,'goods',false)));
+									$packages_with_tax[] = array_merge($package,array('tax' => $GLOBALS['tax']->productTax($package['value'],$package['tax_id'],$package['tax_inclusive'],$this->basket[$tax_on]['state_id'],'shipping',false)));
 								}
 
 								$shipArray[$module['folder']]	= $packages_with_tax;
