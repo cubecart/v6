@@ -209,6 +209,8 @@ jQuery(document).ready(function() {
         
         event.preventDefault();
         $(this).hide();
+        window.location.hash = $(this).attr("data-next-page");
+
         var product_list = $('.product_list');
         var next_link = $('a#ccScroll-next');
         var loadingHtml = '<p class="text-center" id="loading"><i class="fa fa-spinner fa-spin thickpad-topbottom"></i> ' + $('#lang_loading').text() + '&hellip;<p>';

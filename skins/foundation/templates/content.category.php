@@ -212,7 +212,7 @@
    {* Add "hide-for-small-up" to the class attribute to not display the more button *}
    {if ($page < $total)}
    {$params[$var_name] = $page + 1}
-   <a href="{$current}{http_build_query($params)}{$anchor}" class="button tiny expand" id="ccScroll-next">{$LANG.common.more} <i class="fa fa-angle-down"></i></a>
+   <a href="{$current}{http_build_query($params)}{$anchor}" data-next-page="{$params[$var_name]}" class="button tiny expand" id="ccScroll-next">{$LANG.common.more} <i class="fa fa-angle-down"></i></a>
    {/if}
 </div>
 <div class="hide" id="lang_loading">{$LANG.common.loading}</div>
