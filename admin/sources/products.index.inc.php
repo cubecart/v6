@@ -257,7 +257,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 				$data['product_code'] = $_POST['product_code'].'-'.$pc_postfix;
 			}
 			if ($GLOBALS['db']->select('CubeCart_option_matrix', array('matrix_id'), array('product_id' => $product_id, 'options_identifier' => $options_identifier))) {
-				$GLOBALS['db']->update('CubeCart_option_matrix', $data, array('options_identifier' => $options_identifier, 'product_id' => $product_id));
+				$GLOBALS['db']->update('CubeCart_option_matrix', $data, array('options_identifier' => $options_identifier, 'product_id' => $product_id), true, 'all');
 			} else {
 				$data['options_identifier'] = $options_identifier;
 				$GLOBALS['db']->insert('CubeCart_option_matrix', $data);
