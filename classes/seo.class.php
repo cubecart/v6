@@ -295,7 +295,7 @@ class SEO {
 					return $this->_url;
 			}
 		}
-		$safe_path = $this->_safeUrl($path);
+		$safe_path = SEO::_safeUrl($path);
 		return (($absolute) ? $GLOBALS['storeURL'] . '/' . $safe_path : $safe_path) . (($extension) ? $this->_extension : '');
 	}
 
@@ -556,6 +556,16 @@ class SEO {
 	}
 
 	/**
+	 * Generate a safe SEO URL
+	 *
+	 * @param string $path
+	 * @return string
+	 */
+	public static function sanitizeSEOPath($path) {
+		return SEO::_safeUrl($path);
+	}
+
+	/**
 	 * Can we use SEO?
 	 *
 	 * @param string $path
@@ -609,9 +619,10 @@ class SEO {
 				}
 				// try to generate
 				$path = $this->generatePath($item_id, $type);
+				
 				$custom = 0;
 			}
-			$path = sanitizeSEOPath($path);
+			$path = SEO::_safeUrl($path);
 
 			if (empty($path)) {
 				return ($bool) ? false : '';
@@ -949,8 +960,10 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
 	 * @param string $url
 	 * @return bool
 	 */
-	private function _safeUrl($url) {
+	private static function _safeUrl($url) {
 		$url = trim($url);
+		$url = mb_strtolower($url);
+		$url = preg_replace("/\.\w{2,4}$/", '', $url);
 		$url = str_replace(' ', '-', html_entity_decode($url, ENT_QUOTES));
 		$url = preg_replace('#[^\w\-_/]#iuU', '-', str_replace('/', '/', $url));
 		return preg_replace(array('#/{2,}#iu', '#-{2,}#'), array('/', '-'), $url);

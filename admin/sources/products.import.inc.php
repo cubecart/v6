@@ -213,7 +213,7 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 					}
 					// Insert SEO custom URL
 					if (empty($product_record['seo_path'])) $product_record['seo_path'] = $GLOBALS['seo']->generatePath($product_id, 'prod');
-					$GLOBALS['db']->insert('CubeCart_seo_urls', array('path'=> sanitizeSEOPath($product_record['seo_path']), 'item_id' => $product_id, 'type' => 'prod'));
+					$GLOBALS['db']->insert('CubeCart_seo_urls', array('path'=> SEO::sanitizeSEOPath($product_record['seo_path']), 'item_id' => $product_id, 'type' => 'prod'));
 				}
 				unset($product_record, $category_record, $image_record, $image, $images);
 			}
