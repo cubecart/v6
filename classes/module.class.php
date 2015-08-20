@@ -423,7 +423,6 @@ class Module {
 				$this->_path = substr($this->_path, 0, -1);
 			}
 		}
-		echo $this->_path;
 		// Load package configuration data
 		if (file_exists($this->_path.'/'.$this->_package_xml)) {
 			$xml = new SimpleXMLElement(file_get_contents($this->_path.'/'.$this->_package_xml, true));
