@@ -739,27 +739,30 @@ class GUI {
 	 * Set an error message
 	 *
 	 * @param string $message
+	 * @param bool admin_only
 	 */
-	public function setError($message = null) {
-		$this->_errorMessage('error', $message);
+	public function setError($message = null, $admin_only = false) {
+		if($admin_only && ADMIN_CP) $this->_errorMessage('error', $message);
 	}
 
 	/**
 	 * Set a notification message
 	 *
 	 * @param string $message
+	 * @param bool admin_only
 	 */
-	public function setNotify($message = null) {
-		$this->_errorMessage('notice', $message);
+	public function setNotify($message = null, $admin_only = false) {
+		if($admin_only && ADMIN_CP) $this->_errorMessage('notice', $message);
 	}
 
 	/**
 	 * Set a notification message
 	 *
 	 * @param string $message
+	 * @param bool admin_only
 	 */
-	public function setInfo($message = null) {
-		$this->_errorMessage('info', $message);
+	public function setInfo($message = null, $admin_only = false) {
+		if($admin_only && ADMIN_CP) $this->_errorMessage('info', $message);
 	}
 
 	//=====[ Private ]=======================================

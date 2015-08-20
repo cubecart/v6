@@ -614,7 +614,7 @@ class SEO {
 				// send warning if in use
 				if (!empty($path)) {
 					if ($show_error && CC_IN_ADMIN) {
-						$GLOBALS['gui']->setError($GLOBALS['language']->settings['seo_path_taken']);
+						$GLOBALS['gui']->setError($GLOBALS['language']->settings['seo_path_taken'], true);
 					}
 				}
 				// try to generate
@@ -637,7 +637,7 @@ class SEO {
 					// Force unique path is it's already taken
 					$unique_id = substr($type, 0, 1).$item_id;
 					$GLOBALS['db']->insert('CubeCart_seo_urls', array('type' => $type, 'item_id' => $item_id, 'path' => $path.'-'.$unique_id, 'custom' => $custom));
-					$GLOBALS['gui']->setError($GLOBALS['language']->settings['seo_path_taken']);
+					$GLOBALS['gui']->setError($GLOBALS['language']->settings['seo_path_taken'], true);
 				}
 			}
 			return $bool ? true : $path;
