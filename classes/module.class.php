@@ -416,13 +416,14 @@ class Module {
 	private function _module_data($path = false, $local_name = false) {
 		// Set Module Path
 		if ($path) {
-			$drop = array('admin', 'classes', 'skin', 'language');
+			$drop = array('/admin', '/classes', '/skin', '/language');
 			$this->_path = CC_ROOT_DIR.str_replace($drop, '', dirname(str_replace(CC_ROOT_DIR, '', $path)));
 			// Drop trailing slashes
 			if (substr($this->_path, -1) == '/') {
 				$this->_path = substr($this->_path, 0, -1);
 			}
 		}
+		echo $this->_path;
 		// Load package configuration data
 		if (file_exists($this->_path.'/'.$this->_package_xml)) {
 			$xml = new SimpleXMLElement(file_get_contents($this->_path.'/'.$this->_package_xml, true));
