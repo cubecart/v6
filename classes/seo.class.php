@@ -613,7 +613,7 @@ class SEO {
 			if (empty($path) || $GLOBALS['db']->count('CubeCart_seo_urls', 'id', "`path` = '$path' AND `type` = '$type' AND `item_id` <> $item_id") > 0) {
 				// send warning if in use
 				if (!empty($path)) {
-					if ($show_error && CC_IN_ADMIN) {
+					if ($show_error) {
 						$GLOBALS['gui']->setError($GLOBALS['language']->settings['seo_path_taken'], true);
 					}
 				}
