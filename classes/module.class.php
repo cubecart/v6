@@ -129,7 +129,8 @@ class Module {
 				}
 			}
 			// Add default tab
-			$GLOBALS['main']->addTabControl($GLOBALS['language']->common['general'], $this->_module_name);
+			$GLOBALS['main']->addTabControl($GLOBALS['language']->common['general'], $_GET['module']);
+			$GLOBALS['smarty']->assign('GENERAL_TAB_ID', $_GET['module']);
 
 			// Include module language strings - use Language class
 			$GLOBALS['language']->loadDefinitions($this->_module_name, $this->_path.'/language', 'module.definitions.xml');
