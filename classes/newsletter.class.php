@@ -174,22 +174,22 @@ class Newsletter {
 	 * @param string $email
 	 * @return bool
 	 */
-	public function subscribe($email = false) {
+	public function subscribe($email = false, $customer_id = null) {
 		// Subscribe, generate validation email, and send
 		if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-			// Valid email, but is it a dupe...
-			if (!$dupes = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', array('email'), array('email' => strtolower($email)))) {
 
-				$record = array(
-					'status'  => true,
-					'email'   => $email,
-					'validation' => $this->generateValidation($email),
-				);
-				$GLOBALS['db']->insert('CubeCart_newsletter_subscriber', $record);
+			$GLOBALS['db']->delete('CubeCart_newsletter_subscriber', array('email' => strtolower($email)));
 
-				return true;
-			}
-			return false;
+			$record = array(
+				'status'  => true,
+				'email'   => $email,
+				'customer_id'   => $customer_id,
+				'validation' => $this->generateValidation($email),
+			);
+			$GLOBALS['db']->insert('CubeCart_newsletter_subscriber', $record);
+
+			return true;
+			
 		}
 		$GLOBALS['gui']->setError($GLOBALS['language']->newsletter['email_invalid']);
 		return false;

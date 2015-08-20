@@ -142,7 +142,7 @@ class User {
 			$GLOBALS['smarty']->assign('IS_USER', $this->is());
 
 			if($this->is() && isset($_POST['mailing_list'])) {
-				Newsletter::getInstance()->subscribe($this->get('email'));
+				Newsletter::getInstance()->subscribe($this->get('email'), $this->getId());
 			}
 
 			$this->isBot();
