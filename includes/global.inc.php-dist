@@ -1,0 +1,22 @@
+<?php
+/**
+ * CubeCart v6
+ * ========================================
+ * CubeCart is a registered trade mark of CubeCart Limited
+ * Copyright CubeCart Limited 2014. All rights reserved.
+ * UK Private Limited Company No. 5323904
+ * ========================================
+ * Web:   http://www.cubecart.com
+ * Email:  sales@cubecart.com
+ * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
+ */
+$glob['dbdatabase'] 	= '';			// e.g. cubecart 
+$glob['dbhost'] 		= '';			// e.g. localhost (Can be domain or ip address)
+$glob['dbprefix'] 		= '';			// e.g. store_1_ prefixed on to table names
+$glob['dbusername'] 	= '';			// username that has access to the db
+$glob['dbpassword'] 	= '';			// password for username
+$glob['installed'] 		= '0';			// set to 1 if store is installed
+$glob['adminFolder'] 	= 'admin';		// Change this if you have changed the admin folder name
+$glob['adminFile'] 		= 'admin.php';	// Change this if you have changed the admin file name
+$glob['cache'] 		= 'file';	// Cache in use can be (apc, file, memcache, memcached, xcache) 
+?>

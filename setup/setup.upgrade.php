@@ -159,6 +159,7 @@ if (!isset($_SESSION['setup']['permissions'])) {
 			$append = array(
 				'adminFolder' => 'admin',
 				'adminFile'  => 'admin.php',
+				'cache'  => 'file'
 			);
 			$global = array_merge($glob, $append);
 			ksort($global);
@@ -188,6 +189,8 @@ if (!isset($_SESSION['setup']['permissions'])) {
 
 			## Upgrade v4 global file to v5 spec
 			include $global_file;
+			$append = array('cache'  => 'file');
+			$global = array_merge($glob, $append);
 			unset($glob['license_key'], $glob['rootDir'], $glob['rootRel'], $glob['storeURL']);
 			ksort($glob);
 			## Write new file
