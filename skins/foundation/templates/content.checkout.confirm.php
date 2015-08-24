@@ -51,7 +51,7 @@
       {if $BILLING.line2}{$BILLING.line2}<br>{/if}
       {$BILLING.town}<br>
       {$BILLING.state}, {$BILLING.postcode}<br>
-      {$BILLING.country_iso}
+      {$BILLING.country_name}
       <h3>{$LANG.account.contact_details}</h3>
       <table>
         <tr><td align="center"><i class="fa fa-envelope"></i></td><td>{$BILLING.first_name} {$BILLING.last_name} &lt;{$USER.email}&gt;</td></tr>
@@ -67,7 +67,7 @@
       {if $DELIVERY.line2}{$DELIVERY.line2}<br>{/if}
       {$DELIVERY.town}<br>
       {$DELIVERY.state}, {$DELIVERY.postcode}<br>
-      {$DELIVERY.country_iso}
+      {$DELIVERY.country_name}
       <div class="pad-top"><a href="#" class="button small show_address_form"><i class="fa fa-reply"></i> {$LANG.form.make_changes}</a></div>
    </div>
 </div>

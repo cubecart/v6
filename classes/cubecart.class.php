@@ -927,7 +927,8 @@ class Cubecart {
 					'state_abbrev'  => getStateFormat($_POST['billing']['state'], 'id', 'abbrev'),
 					'country'   => $_POST['billing']['country'],
 					'country_id'  => $_POST['billing']['country'],
-					'country_iso'  => getCountryFormat($_POST['billing']['country'], 'numcode', 'iso')
+					'country_iso'  => getCountryFormat($_POST['billing']['country'], 'numcode', 'iso'),
+					'country_name' => getCountryFormat($_POST['billing']['country'], 'numcode', 'name')
 				);
 
 				if (isset($_POST['delivery']) && !isset($_POST['delivery_is_billing'])) {
@@ -946,7 +947,8 @@ class Cubecart {
 						'state_abbrev'  => getStateFormat($_POST['delivery']['state'], 'id', 'abbrev'),
 						'country'   => $_POST['delivery']['country'],
 						'country_id'  => $_POST['delivery']['country'],
-						'country_iso'  => getCountryFormat($_POST['delivery']['country'], 'numcode', 'iso')
+						'country_iso'  => getCountryFormat($_POST['delivery']['country'], 'numcode', 'iso'),
+						'country_name' => getCountryFormat($_POST['delivery']['country'], 'numcode', 'name')
 					);
 				} else {
 					$this->_basket['delivery_address'] = $this->_basket['billing_address'];
