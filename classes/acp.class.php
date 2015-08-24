@@ -39,6 +39,18 @@ class ACP {
 	 */
 	private $_tabs    = array();
 	/**
+	 * Tab key prefix
+	 *
+	 * @var string
+	 */
+	private $_tab_key    = 'k_';
+	/**
+	 * Tabs Priority
+	 *
+	 * @var int
+	 */
+	private $_tab_priority    = 0;
+	/**
 	 * Wiki namespace
 	 *
 	 * @var string
@@ -116,10 +128,11 @@ class ACP {
 	 * @param string $notify_count
 	 * @return bool
 	 */
-	public function addTabControl($name, $target = '', $url = null, $accesskey = null, $notify_count = false, $a_target = '_self') {
+	public function addTabControl($name, $target = '', $url = null, $accesskey = null, $notify_count = false, $a_target = '_self', $priority = null) {
 		if (!empty($name)) {
 			$url = (!empty($url) && is_array($url)) ? currentPage(null, $url) : $url;
-			$this->_tabs[] = array(
+			$priority = $this->_setTabPriority($priority);
+			$this->_tabs[$this->_tab_key.$priority] = array(
 				'name'  => $name,
 				'target' => $target,
 				'url'  => preg_replace('/(#.*)$/i', '', $url),
@@ -311,6 +324,7 @@ class ACP {
 	 */
 	public function showTabs() {
 		if (Admin::getInstance()->is() && !empty($this->_tabs) && is_array($this->_tabs)) {
+			ksort($this->_tabs);
 			foreach ($this->_tabs as $tab) {
 				$tab['name'] = ucfirst($tab['name']);
 				$tab['tab_id'] = empty($tab['target']) ? '' : 'tab_'.str_replace(' ', '_', $tab['target']);
@@ -398,5 +412,27 @@ class ACP {
 	 */
 	public function wikiPage($page = null) {
 		$this->_wiki_page = (!empty($page)) ? ucwords($page) : 'Index';
+	}
+
+	//=====[ Private ]=======================================
+
+	/**
+	 * Set tab priority
+	 *
+	 * @param null/int/float $priority
+	 */
+	private function _setTabPriority($priority = null) {
+		if($priority>0) {
+			if(isset($this->_tabs[$this->_tab_key.$priority])) {
+				$priority += 0.01;
+				return $this->_setTabPriority($priority);
+			} else {
+				return $priority;
+			}
+		} else {
+			$priority = $this->_tab_priority;
+			$this->_tab_priority++;
+			return $priority;
+		}
 	}
 }
