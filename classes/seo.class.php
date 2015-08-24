@@ -406,7 +406,7 @@ class SEO {
 	 * @param string $glue
 	 * @return string
 	 */
-	public function meta_description($glue = ' - ') {
+	public function meta_description() {
 		if ($GLOBALS['config']->has('config', 'seo_metadata') && $GLOBALS['config']->get('config', 'seo_metadata') && !empty($this->_meta_data['description'])) {
 			switch ((int)$GLOBALS['config']->get('config', 'seo_metadata')) {
 			case self::TAGS_MERGE:
@@ -423,7 +423,7 @@ class SEO {
 				$description = $this->_meta_data['description'];
 				break;
 			}
-			return (is_array($description)) ? implode($glue, $description) : $description;
+			return (is_array($description)) ? implode(' ', $description) : $description;
 		} else {
 			return $GLOBALS['config']->get('config', 'store_meta_description');
 		}
