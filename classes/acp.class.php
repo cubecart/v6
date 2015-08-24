@@ -43,7 +43,7 @@ class ACP {
 	 *
 	 * @var string
 	 */
-	private $_tab_key    = 'k_';
+	private $_tab_key_prefix    = 'k_';
 	/**
 	 * Tabs Priority
 	 *
@@ -132,7 +132,7 @@ class ACP {
 		if (!empty($name)) {
 			$url = (!empty($url) && is_array($url)) ? currentPage(null, $url) : $url;
 			$priority = $this->_setTabPriority($priority);
-			$this->_tabs[$this->_tab_key.$priority] = array(
+			$this->_tabs[$this->_tab_key_prefix.$priority] = array(
 				'name'  => $name,
 				'target' => $target,
 				'url'  => preg_replace('/(#.*)$/i', '', $url),
@@ -423,7 +423,7 @@ class ACP {
 	 */
 	private function _setTabPriority($priority = null) {
 		if($priority>0) {
-			if(isset($this->_tabs[$this->_tab_key.$priority])) {
+			if(isset($this->_tabs[$this->_tab_key_prefix.$priority])) {
 				$priority += 0.01;
 				return $this->_setTabPriority($priority);
 			} else {
