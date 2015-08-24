@@ -16,6 +16,7 @@
  <hook trigger="admin.category.addedit_display" deprecated="" />
  <hook trigger="admin.category.delete" deprecated="" />
  <hook trigger="admin.category.pre_display" deprecated="" />
+ <hook trigger="admin.category.pre_smarty" deprecated="" />
  <hook trigger="admin.category.save.pre_process" deprecated="" />
  <hook trigger="admin.category.save.post_process" deprecated="" />
  <hook trigger="admin.category.translate.save.pre_process" deprecated="" />

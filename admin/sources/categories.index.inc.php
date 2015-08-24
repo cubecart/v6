@@ -414,7 +414,7 @@ if (isset($_GET['action'])) {
 			httpredir('?_g=categories');
 		}
 	}
-
+	foreach ($GLOBALS['hooks']->load('admin.category.pre_smarty') as $hook) include $hook;
 	$GLOBALS['smarty']->assign('LIST_CATEGORIES', true);
 	$GLOBALS['smarty']->assign('CATEGORIES', $category_list);
 }
