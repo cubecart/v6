@@ -321,7 +321,7 @@ class Admin {
 					$this->_logged_in = true;
 					$update = array(
 						'blockTime'  => 0,
-						'browser'  => $_SERVER['HTTP_USER_AGENT'],
+						'browser'  => htmlspecialchars($_SERVER['HTTP_USER_AGENT']),
 						'failLevel'  => 0,
 						'session_id' => $GLOBALS['session']->getId(),
 						'ip_address' => get_ip_address(),
