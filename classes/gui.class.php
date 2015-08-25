@@ -742,7 +742,7 @@ class GUI {
 	 * @param bool admin_only
 	 */
 	public function setError($message = null, $admin_only = false) {
-		if($admin_only && ADMIN_CP) $this->_errorMessage('error', $message);
+		if(($admin_only && ADMIN_CP) || ADMIN_CP) $this->_errorMessage('error', $message);
 	}
 
 	/**
@@ -752,7 +752,7 @@ class GUI {
 	 * @param bool admin_only
 	 */
 	public function setNotify($message = null, $admin_only = false) {
-		if($admin_only && ADMIN_CP) $this->_errorMessage('notice', $message);
+		if(($admin_only && ADMIN_CP) || ADMIN_CP) $this->_errorMessage('notice', $message);
 	}
 
 	/**
@@ -762,7 +762,7 @@ class GUI {
 	 * @param bool admin_only
 	 */
 	public function setInfo($message = null, $admin_only = false) {
-		if($admin_only && ADMIN_CP) $this->_errorMessage('info', $message);
+		if(($admin_only && ADMIN_CP) || ADMIN_CP) $this->_errorMessage('info', $message);
 	}
 
 	//=====[ Private ]=======================================
