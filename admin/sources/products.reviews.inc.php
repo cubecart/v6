@@ -27,33 +27,25 @@ if (isset($_GET['delete']) && is_numeric($_GET['delete']) && Admin::getInstance(
 }
 
 ## Bulk delete reviews
-$delete_array_email = array();
-$delete_array_ip_address = array();
-$bulk_delete = false;
 if (!empty($_POST['delete']['email'])) {
-	$delete_array_email = array('email' => $_POST['delete']['email']);
-	$bulk_delete = true;
+	if($GLOBALS['db']->delete('CubeCart_reviews', array('email' => $_POST['delete']['email']))) {
+		$GLOBALS['main']->setACPNotify($lang['reviews']['notify_review_deleted']);
+	}
 }
 if (isset($_POST['multi-status']) && isset($_POST['go'])) {
     switch ($_POST['multi-status']) {
         case 'delete':
             if (!empty($_POST['delete']['individual'])) {
-                $delete_array_individual = array('id' => array_keys($_POST['delete']['individual']));
-                $bulk_delete = true;
+                if($GLOBALS['db']->delete('CubeCart_reviews', array('id' => array_keys($_POST['delete']['individual'])))) {
+                	$GLOBALS['main']->setACPNotify($lang['reviews']['notify_review_deleted']);
+                }
             }
         break;
     }
 }
 if (!empty($_POST['delete']['ip_address'])) {
-	$delete_array_ip_address = array('ip_address' => $_POST['delete']['ip_address']);
-	$bulk_delete = true;
-}
-if ($bulk_delete) {
-	$delete_array = array_merge($delete_array_individual, $delete_array_email, $delete_array_ip_address);
-	if ($GLOBALS['db']->delete('CubeCart_reviews', $delete_array)) {
+	if($GLOBALS['db']->delete('CubeCart_reviews', array('ip_address' => $_POST['delete']['ip_address']))) {
 		$GLOBALS['main']->setACPNotify($lang['reviews']['notify_review_deleted']);
-	} else {
-		$GLOBALS['main']->setACPWarning($lang['reviews']['notify_review_delete_fail']);
 	}
 }
 
