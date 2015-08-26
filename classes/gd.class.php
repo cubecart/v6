@@ -19,7 +19,6 @@ class GD {
 	private $_gdTargetDir;
 
 	private $_gdImageData;
-	private $_gdImageExif;
 	private $_gdImageType;
 
 	private $_gdImageSource;
@@ -47,7 +46,6 @@ class GD {
 		$this->_gdImageOutput = false;
 		$this->_gdImageSource = false;
 		$this->_gdImageData  = false;
-		$this->_gdImageExif  = false;
 	}
 
 	/**
@@ -101,9 +99,6 @@ class GD {
 				case IMAGETYPE_JPEG:
 					$this->_jpegMemoryAllocation($file);
 					$this->_gdImageSource = imagecreatefromjpeg($file);
-					if (function_exists('exif_read_data')) {
-						$this->_gdImageExif = @exif_read_data($file);
-					}
 					break;
 				case IMAGETYPE_PNG:
 					$this->_gdImageSource = imagecreatefrompng($file);
