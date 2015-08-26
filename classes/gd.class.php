@@ -95,21 +95,21 @@ class GD {
 			$this->_gdImageType = $this->_gdImageData[2];
 
 			switch ($this->_gdImageType) {
-			case IMAGETYPE_GIF:
-				$this->_gdImageSource = imagecreatefromgif($file);
-				break;
-			case IMAGETYPE_JPEG:
-				$this->_gdImageSource = imagecreatefromjpeg($file);
-				if (function_exists('exif_read_data')) {
-					$this->_gdImageExif = @exif_read_data($file);
-				}
-				break;
-			case IMAGETYPE_PNG:
-				$this->_gdImageSource = imagecreatefrompng($file);
-				imagesavealpha($this->_gdImageSource, true);
-				break;
-			default:
-				return false;
+				case IMAGETYPE_GIF:
+					$this->_gdImageSource = imagecreatefromgif($file);
+					break;
+				case IMAGETYPE_JPEG:
+					$this->_gdImageSource = imagecreatefromjpeg($file);
+					if (function_exists('exif_read_data')) {
+						$this->_gdImageExif = @exif_read_data($file);
+					}
+					break;
+				case IMAGETYPE_PNG:
+					$this->_gdImageSource = imagecreatefrompng($file);
+					imagesavealpha($this->_gdImageSource, true);
+					break;
+				default:
+					return false;
 			}
 			return true;
 		}
