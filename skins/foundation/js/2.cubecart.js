@@ -208,6 +208,8 @@ jQuery(document).ready(function() {
     $("#ccScroll").on( "click", "#ccScroll-next", function(event) {
         
         event.preventDefault();
+        $(this).hide();
+        window.location.hash = $(this).attr("data-next-page");
 
         var product_list = $('.product_list');
         var next_link = $('a#ccScroll-next');
@@ -303,11 +305,15 @@ function price_inc_options() {
     action += '_g=ajax_price_format&price[0]=';
 
     $("[name^=productOptions]").each(function () {
+        
         if($(this).is('input:radio') && $(this).is(':checked')) {
+            if($(this).hasClass('absolute')) { total = ptp = 0; }
             total += parseFloat($(this).attr("data-price"));
         } else if ($(this).is('select') && $(this).val()) {
+            if($("option:selected", this).hasClass('absolute')) { total = ptp = 0; }
             total += parseFloat($(this).find("option:selected").attr("data-price"));
         } else if (($(this).is('textarea') || $(this).is('input:text')) && $(this).val() !== '') {
+            if($(this).hasClass('absolute')) { total = ptp = 0; }
             total += parseFloat($(this).attr("data-price"));
         }
     });

@@ -675,17 +675,30 @@ class Cart {
 											if ($remove_options_tax) {
 												$GLOBALS['tax']->inclusiveTaxRemove($value['option_price'], $product['tax_type']);
 											}
-
-											if (isset($value['option_negative']) && $value['option_negative']) {
-												$product['price'] -= $value['option_price'];
-												$option_line_price -= $value['option_price'];
-												$option_price_ignoring_tax -= $display_option_tax;
-												$value['price_display'] = '-';
+											if($value['absolute_price']) {
+												define('ABSOLUTE_PRICE', true);
+												$product['price'] = $option_line_price = $option_price_ignoring_tax = 0;
+												if (isset($value['option_negative']) && $value['option_negative']) {
+													$product['price'] -= $value['option_price'];
+													$option_line_price -= $value['option_price'];
+													$option_price_ignoring_tax -= $display_option_tax;
+												} else {
+													$product['price'] += $value['option_price'];
+													$option_line_price += $value['option_price'];
+													$option_price_ignoring_tax += $display_option_tax;
+												}
 											} else {
-												$product['price'] += $value['option_price'];
-												$option_line_price += $value['option_price'];
-												$option_price_ignoring_tax += $display_option_tax;
-												$value['price_display'] = '+';
+												if (isset($value['option_negative']) && $value['option_negative']) {
+													$product['price'] -= $value['option_price'];
+													$option_line_price -= $value['option_price'];
+													$option_price_ignoring_tax -= $display_option_tax;
+													$value['price_display'] = '-';
+												} else {
+													$product['price'] += $value['option_price'];
+													$option_line_price += $value['option_price'];
+													$option_price_ignoring_tax += $display_option_tax;
+													$value['price_display'] = '+';
+												}
 											}
 											$value['price_display'] .= $GLOBALS['tax']->priceFormat($display_option_tax, true);
 										}
@@ -697,27 +710,46 @@ class Cart {
 							} else if (is_numeric($option_data)) {
 									// Select option
 									if (($value = $GLOBALS['catalogue']->getOptionData((int)$option_id, (int)$option_data)) !== false) {
+
 										$value['price_display'] = '';
 										if ($value['option_price']>0) {
+
 											$display_option_tax = $value['option_price'];
 											if ($remove_options_tax) {
 												$GLOBALS['tax']->inclusiveTaxRemove($value['option_price'], $product['tax_type']);
 											}
-											if (isset($value['option_negative']) && $value['option_negative']) {
-												$option_line_price -= $value['option_price'];
-												$product['price'] -= $value['option_price'];
-												$option_price_ignoring_tax -= $display_option_tax;
-												$value['price_display'] = '-';
+
+											if($value['absolute_price']) {
+												define('ABSOLUTE_PRICE', true);
+												$product['price'] = $option_line_price = $option_price_ignoring_tax = 0;
+												if (isset($value['option_negative']) && $value['option_negative']) {
+													$option_line_price -= $value['option_price'];
+													$product['price'] -= $value['option_price'];
+													$option_price_ignoring_tax -= $display_option_tax;
+												} else {
+													$option_line_price += $value['option_price'];
+													$product['price'] += $value['option_price'];
+													$option_price_ignoring_tax += $display_option_tax;
+												}
+
 											} else {
-												$option_line_price += $value['option_price'];
-												$product['price'] += $value['option_price'];
-												$option_price_ignoring_tax += $display_option_tax;
-												$value['price_display'] = '+';
+												if (isset($value['option_negative']) && $value['option_negative']) {
+													$option_line_price -= $value['option_price'];
+													$product['price'] -= $value['option_price'];
+													$option_price_ignoring_tax -= $display_option_tax;
+													$value['price_display'] = '-';
+												} else {
+													$option_line_price += $value['option_price'];
+													$product['price'] += $value['option_price'];
+													$option_price_ignoring_tax += $display_option_tax;
+													$value['price_display'] = '+';
+												}
+												$value['price_display'] .= $GLOBALS['tax']->priceFormat($display_option_tax, true);
 											}
-											$value['price_display'] .= $GLOBALS['tax']->priceFormat($display_option_tax, true);
 										}
 										$product['product_weight'] += (isset($value['option_weight'])) ? $value['option_weight'] : 0;
 										$product['options'][] = $value;
+										
 									}
 								}
 						}
@@ -757,8 +789,13 @@ class Cart {
 					$this->basket_digital = true;
 				}
 
-				$product['line_price_display'] = $product['price_display']+$option_price_ignoring_tax;
-				$product['price_display']  = ($product['price_display']+$option_price_ignoring_tax)*$item['quantity'];
+				if(defined('ABSOLUTE_PRICE')) {
+					$product['line_price_display'] = $option_price_ignoring_tax;
+					$product['price_display']  = $option_price_ignoring_tax*$item['quantity'];
+				} else {
+					$product['line_price_display'] = $product['price_display']+$option_price_ignoring_tax;
+					$product['price_display']  = ($product['price_display']+$option_price_ignoring_tax)*$item['quantity'];
+				}
 
 
 				## Update Subtotals
@@ -893,6 +930,8 @@ class Cart {
 
 		if (($shipping = $GLOBALS['db']->select('CubeCart_modules', array('folder', 'countries'), array('module' => 'shipping', 'status' => '1'))) !== false) {
 
+			$tax_on = ($GLOBALS['config']->get('config', 'basket_tax_by_delivery')) ? 'delivery_address' : 'billing_address';
+
 			// Fetch the basket data
 			$basket_data = ($this->basket) ? $this->basket : false;
 			if (!isset($basket_data['delivery_address'])) {
@@ -930,7 +969,7 @@ class Cart {
 								// work out tax amount on shipping
 								foreach($packages as $package){
 									$package['value'] = sprintf('%.2F',$package['value']);
-									$packages_with_tax[] = array_merge($package,array('tax' => $GLOBALS['tax']->productTax($package['value'],$package['tax_id'],$package['tax_inclusive'],0,'goods',false)));
+									$packages_with_tax[] = array_merge($package,array('tax' => $GLOBALS['tax']->productTax($package['value'],$package['tax_id'],$package['tax_inclusive'],$this->basket[$tax_on]['state_id'],'shipping',false)));
 								}
 
 								$shipArray[$module['folder']]	= $packages_with_tax;

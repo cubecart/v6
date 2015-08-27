@@ -39,7 +39,7 @@
             <td valign="top" nowrap="nowrap" width="25%">
                <h4>{$LANG.dashboard.title_tasks}</h4>
                <ul>
-                  {foreach from=$CUSTOM_QUICK_TASKS item=$task}
+                  {foreach from=$CUSTOM_QUICK_TASKS key=k item=task}
                   <li><a href="{$task.url}">{$task.name}</a></li>
                   {foreachelse}
                   <li><a href="?_g=reports&report[date][from]={$QUICK_TASKS.today}&report[date][to]={$QUICK_TASKS.today}">{$LANG.dashboard.task_orders_view_day}</a></li>

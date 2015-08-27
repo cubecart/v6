@@ -67,7 +67,7 @@ class Cache_Controler {
 	 * @var string
 	 */
 	protected $_suffix  = '.cache';
-	protected $_empties_id = 'empties';
+	protected $_empties_id = 'sql.empties';
 	protected $_empties = array();
 	protected $_empties_added = false;
 	/**

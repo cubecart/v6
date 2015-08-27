@@ -128,3 +128,7 @@ $GLOBALS['smarty']->assign('BODY_JS', $body_js);
 $head_js = array();
 foreach ($GLOBALS['hooks']->load('admin.head_js') as $hook) include $hook;
 $GLOBALS['smarty']->assign('HEAD_JS', $head_js);
+
+$head_css = array();
+foreach ($GLOBALS['hooks']->load('admin.head_css') as $hook) include $hook;
+$GLOBALS['smarty']->assign('HEAD_CSS', $head_css);

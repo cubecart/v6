@@ -19,7 +19,7 @@
             <td align="right">
                {$LANG.common.filter}: 
                <select id="cat_subset" class="url_select">
-                  <option value="any">{$LANG.common.any}</option>
+                  <option value="{$CAT_LIST_ANY}">{$LANG.common.any}</option>
                   {foreach from=$CAT_LIST item=cat_dropdown}
                   <option value="?_g=products&amp;cat_id={$cat_dropdown.cat_id}" {if $cat_dropdown.cat_id == $CURRENT_CAT}selected="selected"{/if}>{$cat_dropdown.name}</option>
                   {/foreach}
@@ -372,6 +372,7 @@
                   <td>{$LANG.common.type}</td>
                   <td>{$LANG.common.negative}</td>
                   <td>{$LANG.common.price}</td>
+                  <td>{$LANG.catalogue.absolute_price}</td>
                   <td>{$LANG.common.weight}</td>
                   <td width="20">&nbsp;</td>
                </tr>
@@ -386,6 +387,7 @@
                   <td>{$option.display}</td>
                   <td align="center"><input type="checkbox" name="option_update[{$option.assign_id}][option_negative]" {if isset($option.option_negative) && $option.option_negative == 1}checked="checked"{/if} value="1"></td>
                   <td><span class="editable number-right" name="option_update[{$option.assign_id}][option_price]" title="{$LANG.common.click_edit}">{$option.option_price}</span></td>
+                  <td align="center"><input type="checkbox" name="option_update[{$option.assign_id}][absolute_price]" {if isset($option.absolute_price) && $option.absolute_price == 1}checked="checked"{/if} value="1"></td>
                   <td><span class="editable number" name="option_update[{$option.assign_id}][option_weight]" title="{$LANG.common.click_edit}">{$option.option_weight}</span></td>
                   <td align="center">
                      {if !$option.set_member_id}<a href="#" name="option_remove" class="remove" rel="{$option.assign_id}" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>{else}<a href="#"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete_disabled.png" title="{$LANG.catalogue.delete_option_disabled}" class="delete_disabled"></a>{/if}
@@ -399,6 +401,7 @@
                   <td>{$option.display}</td>
                   <td align="center"><input type="checkbox" name="option_create[{$option.set_member_id}][option_negative]" {if isset($option.option_negative) && $option.option_negative == 1}checked="checked"{/if}  value="1"></td>
                   <td><span class="editable number-right" name="option_create[{$option.set_member_id}][option_price]" title="{$LANG.common.click_edit}">{$option.option_price}</span></td>
+                  <td align="center"><input type="checkbox" name="option_create[{$option.set_member_id}][absolute_price]" {if isset($option.absolute_price) && $option.absolute_price == 1}checked="checked"{/if}  value="1"></td>
                   <td><span class="editable number" name="option_create[{$option.set_member_id}][option_weight]" title="{$LANG.common.click_edit}">{$option.option_weight}</span></td>
                   <td><a href="#"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete_disabled.png" title="{$LANG.catalogue.delete_option_disabled}" class="delete_disabled"></a></td>
                </tr>
@@ -433,6 +436,7 @@
                   </td>
                   <td align="center"><input type="checkbox" id="opt_negative" rel="negative" class="checkbox data"></td>
                   <td><input type="text" id="opt_price" rel="price" class="textbox number data"></td>
+                  <td align="center"><input type="checkbox" id="opt_absolute_price" rel="absolute_price" class="checkbox data"></td>
                   <td><input type="text" id="opt_weight" rel="weight" class="textbox number data"></td>
                   <td align="center"><a href="#" onclick="optionAdd('option_template', 'options_added'); return false;"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a></td>
                </tr>
@@ -442,6 +446,7 @@
                   <td class="name"><input type="hidden" rel=""></td>
                   <td class="negative"><input type="hidden" rel=""></td>
                   <td class="price"><input type="hidden" rel=""></td>
+                  <td class="absolute_price"><input type="hidden" rel=""></td>
                   <td class="weight"><input type="hidden" rel=""></td>
                   <td align="center"><a href="#" class="remove dynamic"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
                </tr>
@@ -451,6 +456,7 @@
                   <td class="name"><input type="hidden" name="option_add[value][]" value="" disabled="disabled"></td>
                   <td class="negative" align="center"><input type="checkbox" name="option_add[negative][]" value="1" disabled="disabled"></td>
                   <td class="price"><input type="hidden" name="option_add[price][]" value="" disabled="disabled"></td>
+                  <td class="absolute_price" align="center"><input type="checkbox" name="option_add[absolute_price][]" value="1" disabled="disabled"></td>
                   <td class="weight"><input type="hidden" name="option_add[weight][]" value="" disabled="disabled"></td>
                   <td align="center"><a href="#" class="remove" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
                </tr>

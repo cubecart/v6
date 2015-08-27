@@ -9,6 +9,7 @@
  * Email:  sales@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
+ {if !$CATALOGUE_MODE}
 <div id="mini-basket">
    <div class="show-for-medium-up">
       <div class="text-right"><a href="#" id="basket-summary" class="button white small"><i class="fa fa-shopping-cart"></i> {$CART_TOTAL}</a></div>
@@ -22,3 +23,4 @@
       <div class="hide panel radius small-basket-detail-container js_fadeOut" id="small-basket-detail"><i class="fa fa-check"></i> {$LANG.catalogue.added_to_basket}</div>
    </div>
 </div>
+{/if}

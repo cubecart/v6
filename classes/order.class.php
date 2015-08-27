@@ -132,6 +132,20 @@ class Order {
 	}
 
 	/**
+	 * Create digital download for order ready to be sent later (Public)
+	 *
+	 * @param int $product_id
+	 * @param int $order_inv_id
+	 * @param int $customer_id
+	 * @return bool
+	 */
+	public function createDownload($product_id, $order_inv_id, $customer_id = '') {
+		if(empty($product_id) || empty($order_inv_id)) return false;
+		$this->_order_summary['customer_id'] = $customer_id;
+		return $this->_createDownload($product_id, $order_inv_id);
+	}
+
+	/**
 	 * Create the order number
 	 *
 	 * @param bool $return
@@ -349,7 +363,7 @@ class Order {
 
 		// Update order status, manage stock, and email if required
 		if (!empty($status_id) && !empty($order_id)) {
-			$currentStatus = $GLOBALS['db']->select('CubeCart_order_summary', array('status'), array('cart_order_id' => $order_id));
+			$currentStatus = $GLOBALS['db']->select('CubeCart_order_summary', array('status'), array('cart_order_id' => $order_id), false, false, false, false);
 			
 			if ((int)$currentStatus[0]['status'] == 0) return false; // no order record
 			
@@ -658,7 +672,7 @@ class Order {
 								//$record['price'] += $value['option_price'];
 								$value['price_display'] = ' (+';
 							}
-							$value['price_display'] .= Tax::getInstance()->priceFormat($value['option_price'], true).')';
+							$value['price_display'] .= Tax::getInstance()->priceFormat($value['option_price'], true, true).')';
 						}
 						$option[$assign_id] = $value['option_name'].': '.$value['value_name'].$value['price_display'];
 					}
@@ -680,7 +694,7 @@ class Order {
 									//$record['price'] += $value['option_price'];
 									$value['price_display'] = ' (+';
 								}
-								$value['price_display'] .= Tax::getInstance()->priceFormat($value['option_price'], true).')';
+								$value['price_display'] .= Tax::getInstance()->priceFormat($value['option_price'], true, true).')';
 							}
 							$option[$assign_id] = $value['option_name'].': '.$option_value.$value['price_display'];
 						}
@@ -1110,8 +1124,7 @@ class Order {
 				$email    = $this->_basket['customer']['email'];
 				$phone    = $this->_basket['customer']['phone'];
 				$mobile    = $this->_basket['customer']['mobile'];
-
-			} else {
+		} else {
 			// Erm, oops?
 			if (!$force_order) {
 				trigger_error('No customer information detected. Order summary was not built or inserted.', E_USER_WARNING);
@@ -1183,11 +1196,6 @@ class Order {
 		} else {
 			// Insert Summary
 			if ($order_id = $GLOBALS['db']->insert('CubeCart_order_summary', $record)) {
-				// Change order if to number (experimental)
-				if($GLOBALS['config']->get('config', 'inc_oid')=='1') {
-					$this->_order_id = $order_id;
-					$GLOBALS['db']->update('CubeCart_order_summary', array('cart_order_id' => $order_id), array('cart_order_id' => $this->_basket['cart_order_id']));
-				}
 				// Insert history
 				$this->_addHistory($this->_order_id, 1);
 				if ($GLOBALS['user']->is()) {

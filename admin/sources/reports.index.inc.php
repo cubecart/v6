@@ -185,8 +185,10 @@ if ($orders) {
 	## Start classes for external reports
 	if (($module = $GLOBALS['db']->select('CubeCart_modules', 'folder', $where)) !== false) {
 		foreach ($module as $module_data) {
-			$module_data['description'] = ucfirst($module_data['folder']);
-			$smarty_data['export'][] = $module_data;
+			if(file_exists(CC_ROOT_DIR.'/modules/external/'.$module_data['folder'])) {
+				$module_data['description'] = ucfirst(str_replace('_',' ',$module_data['folder']));
+				$smarty_data['export'][] = $module_data;
+			}
 		}
 		$GLOBALS['smarty']->assign('EXPORT', $smarty_data['export']);
 	}

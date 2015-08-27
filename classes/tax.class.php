@@ -80,10 +80,12 @@ class Tax {
 	 * Adjust tax
 	 *
 	 * @param string $total_tax
+	 * @return float/false
 	 */
 	public function adjustTax($total_tax) {
-		$reduction = $total_tax/$this->totalTax();
-		$this->_adjust_tax = $reduction;
+		if($this->totalTax()<=0) return false;
+		$reduction = $total_tax / $this->totalTax();
+		return $this->_adjust_tax = $reduction;
 	}
 	
 	/**

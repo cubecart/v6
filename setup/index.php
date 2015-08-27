@@ -83,7 +83,6 @@ $default_config_settings = array(
   'recaptcha_public_key' => '',
   'recaptcha_secret_key' => '',
   'no_skip_processing_check' => '',
-  'inc_oid' => '0',
   'hide_out_of_stock' => '',
   'force_completed' => '',
   'dispatch_date_format' => '%b %d %Y',

@@ -84,7 +84,7 @@
                      <td width="10"><a href="#" class="handle"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/updown.gif" title="{$LANG.ui.drag_reorder}"></a>
                         <input type="hidden" name="attr_priority[]" value="{$key}">
                      </td>
-                     <td name="edit_attribute[{$key}][value_name]"><span class="editable">{$option}</span></td>
+                     <td><span class="editable" name="edit_attribute[{$key}][value_name]">{$option}</span></td>
                      <td width="10" class="actions">
                         <a href="?_g=products&node=options&delete=attribute&id={$key}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
                      </td>

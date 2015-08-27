@@ -516,7 +516,7 @@ class GUI {
 	 */
 	public function itemsPerPage($list_id = 'products', $page_key = 'perpage') {
 	
-		if((int)$_GET[$page_key]>0) {
+		if(isset($_GET[$page_key]) && (int)$_GET[$page_key]>0) {
 			return (int)$_GET[$page_key];
 		} 
 
@@ -739,8 +739,10 @@ class GUI {
 	 * Set an error message
 	 *
 	 * @param string $message
+	 * @param bool admin_only
 	 */
-	public function setError($message = null) {
+	public function setError($message = null, $admin_only = false) {
+		if($admin_only && !ADMIN_CP) return false;
 		$this->_errorMessage('error', $message);
 	}
 
@@ -748,8 +750,10 @@ class GUI {
 	 * Set a notification message
 	 *
 	 * @param string $message
+	 * @param bool admin_only
 	 */
-	public function setNotify($message = null) {
+	public function setNotify($message = null, $admin_only = false) {
+		if($admin_only && !ADMIN_CP) return false;
 		$this->_errorMessage('notice', $message);
 	}
 
@@ -757,8 +761,10 @@ class GUI {
 	 * Set a notification message
 	 *
 	 * @param string $message
+	 * @param bool admin_only
 	 */
-	public function setInfo($message = null) {
+	public function setInfo($message = null, $admin_only = false) {
+		if($admin_only && !ADMIN_CP) return false;
 		$this->_errorMessage('info', $message);
 	}
 

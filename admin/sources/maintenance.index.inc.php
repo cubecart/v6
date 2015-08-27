@@ -167,7 +167,7 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 	$request->skiplog(true);
 
 	if (!$contents = $request->send()) {
-		$contents = file_get_contents('http://www.cubecart.com/download/'.$_GET['upgrade'].'/zip');
+		$contents = file_get_contents('https://www.cubecart.com/download/'.$_GET['upgrade'].'.zip');
 	}
 
 	if (empty($contents)) {
@@ -234,7 +234,8 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 					}
 
 					## Read the file content
-					$v_content = fread($v_file, filesize($file));
+					$v_filesize = filesize($file);
+					$v_content = ($v_filesize>0) ? fread($v_file, $v_filesize) : '';
 
 					## Close the file
 					fclose($v_file);
@@ -269,7 +270,7 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 				## Try to delete setup folder
 				recursiveDelete(CC_ROOT_DIR.'/setup');
 				unlink(CC_ROOT_DIR.'/setup');
-				## If that failes we try an obscure rename
+				## If that fails we try an obscure rename
 				if (file_exists(CC_ROOT_DIR.'/setup')) {
 					rename(CC_ROOT_DIR.'/setup', CC_ROOT_DIR.'/setup_'.md5(time().$_GET['upgrade']));
 				}

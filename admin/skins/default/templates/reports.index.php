@@ -17,10 +17,10 @@
 		<tr>
 		  <td>{$LANG.orders.order_number}</td>
 		  <td>{$LANG.basket.total_sub}</td>
-		  <td>{$LANG.basket.total_discount}</td>
+		  <td>{$LANG.common.discount}</td>
 		  <td>{$LANG.basket.shipping}</td>
-		  <td>{$LANG.basket.total_tax}</td>
-		  <td>{$LANG.basket.total_grand}</td>
+		  <td>{$LANG.common.tax}</td>
+		  <td>{$LANG.common.total}</td>
 		  <td>{$LANG.common.name}</td>
 		  <td>{$LANG.address.country}</td>
 		  <td>{$LANG.address.state}</td>
@@ -31,7 +31,7 @@
 	  <tbody>
 		{foreach from=$REPORT_DATE item=data}
 		<tr>{$data.value}
-		  <td><a href="?_g=orders&action=edit&order_id={$data.cart_order_id}">{$data.cart_order_id}</a></td>
+		  <td nowrap="nowrap"><a href="?_g=orders&action=edit&order_id={$data.cart_order_id}">{$data.cart_order_id}</a></td>
 		  <td align="right">{$data.subtotal}</td>
 		  <td align="right">{$data.discount}</td>
 		  <td align="right">{$data.shipping}</td>
@@ -60,12 +60,12 @@
 	  </tfoot>
 	</table>
 	<div>{$PAGINATION}</div>
-  	<div>
-	{if $DOWNLOAD}<input type="submit" name="download" class="submit" value="{$LANG.common.export}">{/if}
-	{foreach from=$EXPORT item=module}
-	<input type="submit" name="external_report[{$module.folder}]" class="submit" value="{$LANG.customer.export_to} {$module.description}">
-	{/foreach}
-  </div>
+  	<p>
+		{if $DOWNLOAD}<input type="submit" name="download" class="submit" value="{$LANG.common.export}">{/if}
+		{foreach from=$EXPORT item=module}
+		<input type="submit" name="external_report[{$module.folder}]" class="submit" value="{$LANG.customer.export_to} {$module.description}">
+		{/foreach}
+  	</p>
   </div>
 
   <div id="search" class="tab_content">

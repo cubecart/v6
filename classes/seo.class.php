@@ -295,7 +295,7 @@ class SEO {
 					return $this->_url;
 			}
 		}
-		$safe_path = $this->_safeUrl($path);
+		$safe_path = SEO::_safeUrl($path);
 		return (($absolute) ? $GLOBALS['storeURL'] . '/' . $safe_path : $safe_path) . (($extension) ? $this->_extension : '');
 	}
 
@@ -406,7 +406,7 @@ class SEO {
 	 * @param string $glue
 	 * @return string
 	 */
-	public function meta_description($glue = ' - ') {
+	public function meta_description() {
 		if ($GLOBALS['config']->has('config', 'seo_metadata') && $GLOBALS['config']->get('config', 'seo_metadata') && !empty($this->_meta_data['description'])) {
 			switch ((int)$GLOBALS['config']->get('config', 'seo_metadata')) {
 			case self::TAGS_MERGE:
@@ -423,7 +423,7 @@ class SEO {
 				$description = $this->_meta_data['description'];
 				break;
 			}
-			return (is_array($description)) ? implode($glue, $description) : $description;
+			return (is_array($description)) ? implode(' ', $description) : $description;
 		} else {
 			return $GLOBALS['config']->get('config', 'store_meta_description');
 		}
@@ -556,6 +556,16 @@ class SEO {
 	}
 
 	/**
+	 * Generate a safe SEO URL
+	 *
+	 * @param string $path
+	 * @return string
+	 */
+	public static function sanitizeSEOPath($path) {
+		return SEO::_safeUrl($path);
+	}
+
+	/**
 	 * Can we use SEO?
 	 *
 	 * @param string $path
@@ -603,15 +613,16 @@ class SEO {
 			if (empty($path) || $GLOBALS['db']->count('CubeCart_seo_urls', 'id', "`path` = '$path' AND `type` = '$type' AND `item_id` <> $item_id") > 0) {
 				// send warning if in use
 				if (!empty($path)) {
-					if ($show_error && CC_IN_ADMIN) {
-						$GLOBALS['gui']->setError($GLOBALS['language']->settings['seo_path_taken']);
+					if ($show_error) {
+						$GLOBALS['gui']->setError($GLOBALS['language']->settings['seo_path_taken'], true);
 					}
 				}
 				// try to generate
 				$path = $this->generatePath($item_id, $type);
+				
 				$custom = 0;
 			}
-			$path = sanitizeSEOPath($path);
+			$path = SEO::_safeUrl($path);
 
 			if (empty($path)) {
 				return ($bool) ? false : '';
@@ -626,7 +637,7 @@ class SEO {
 					// Force unique path is it's already taken
 					$unique_id = substr($type, 0, 1).$item_id;
 					$GLOBALS['db']->insert('CubeCart_seo_urls', array('type' => $type, 'item_id' => $item_id, 'path' => $path.'-'.$unique_id, 'custom' => $custom));
-					$GLOBALS['gui']->setError($GLOBALS['language']->settings['seo_path_taken']);
+					$GLOBALS['gui']->setError($GLOBALS['language']->settings['seo_path_taken'], true);
 				}
 			}
 			return $bool ? true : $path;
@@ -949,11 +960,14 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
 	 * @param string $url
 	 * @return bool
 	 */
-	private function _safeUrl($url) {
+	private static function _safeUrl($url) {
 		$url = trim($url);
+		$url = mb_strtolower($url);
+		$url = preg_replace("/\.\w{2,4}$/", '', $url);
 		$url = str_replace(' ', '-', html_entity_decode($url, ENT_QUOTES));
 		$url = preg_replace('#[^\w\-_/]#iuU', '-', str_replace('/', '/', $url));
-		return preg_replace(array('#/{2,}#iu', '#-{2,}#'), array('/', '-'), $url);
+		$url = preg_replace(array('#/{2,}#iu', '#-{2,}#'), array('/', '-'), $url);
+		return trim($url,'-');
 	}
 
 	/**

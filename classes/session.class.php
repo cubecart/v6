@@ -558,7 +558,7 @@ class Session {
 	 * @return string
 	 */
 	private function _http_user_agent() {
-		return strpos($_SERVER['HTTP_USER_AGENT'], 'Trident') ? 'IEX' : $_SERVER['HTTP_USER_AGENT'];
+		return strpos($_SERVER['HTTP_USER_AGENT'], 'Trident') ? 'IEX' : htmlspecialchars($_SERVER['HTTP_USER_AGENT']);
 	}
 
 	/**
@@ -612,6 +612,7 @@ session_save_path(CC_ROOT_DIR.'/sessions');")."</pre>
 			
 		}
 		session_cache_limiter('none');
+		session_name('CCS_'.strtoupper(substr(md5(ROOT_REL), 0,10)));
 		session_start();
 		
 		// Increase session length on each page load. NOT IE however as we all know it is a wingy PITA

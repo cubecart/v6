@@ -62,7 +62,7 @@
 </div>
 {foreach from=$CHECKOUTS item=checkout}
 <div class="row">
-   <div class="small-12 columns text-right pad-topbottom">{$checkout}</div>
+   <div class="small-12 columns text-right pad">{$checkout}</div>
 </div>
 {/foreach}
 {/if}

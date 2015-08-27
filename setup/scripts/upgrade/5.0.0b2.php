@@ -30,14 +30,14 @@ if ($order_names = $db->select('CubeCart_order_summary', array('name', 'cart_ord
 if ($products = $db->select('CubeCart_inventory', array('product_id', 'seo_custom_url'))) {
 	foreach ($products as $item) {
 		if (empty($item['seo_custom_url'])) continue;
-		$db->insert('CubeCart_seo_urls', array('path' => sanitizeSEOPath($item['seo_custom_url']), 'item_id' => $item['product_id'], 'type' => 'prod'));
+		$db->insert('CubeCart_seo_urls', array('path' => SEO::sanitizeSEOPath($item['seo_custom_url']), 'item_id' => $item['product_id'], 'type' => 'prod'));
 	}
 }
 
 if ($categories = $db->select('CubeCart_category', array('cat_id', 'seo_custom_url'))) {
 	foreach ($categories as $item) {
 		if (empty($item['seo_custom_url'])) continue;
-		$db->insert('CubeCart_seo_urls', array('path'=> sanitizeSEOPath($item['seo_custom_url']), 'item_id' => $item['cat_id'], 'type' => 'cat'));
+		$db->insert('CubeCart_seo_urls', array('path'=> SEO::sanitizeSEOPath($item['seo_custom_url']), 'item_id' => $item['cat_id'], 'type' => 'cat'));
 	}
 }
 ## Sort out taxes

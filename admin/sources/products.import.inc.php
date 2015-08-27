@@ -18,7 +18,7 @@ global $lang;
 $dir 			= CC_ROOT_DIR.CC_DS.'includes'.CC_DS.'extra'.CC_DS;
 $source			= $dir.'importdata.tmp';
 $import_source	= $dir.'importdata_%s.tmp';
-$splitSize = 2;
+$splitSize 		= 50;
 
 $delimiter	= (isset($_POST['delimiter']) && !empty($_POST['delimiter'])) ? $_POST['delimiter'] : ',';
 
@@ -213,7 +213,7 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 					}
 					// Insert SEO custom URL
 					if (empty($product_record['seo_path'])) $product_record['seo_path'] = $GLOBALS['seo']->generatePath($product_id, 'prod');
-					$GLOBALS['db']->insert('CubeCart_seo_urls', array('path'=> sanitizeSEOPath($product_record['seo_path']), 'item_id' => $product_id, 'type' => 'prod'));
+					$GLOBALS['db']->insert('CubeCart_seo_urls', array('path'=> SEO::sanitizeSEOPath($product_record['seo_path']), 'item_id' => $product_id, 'type' => 'prod'));
 				}
 				unset($product_record, $category_record, $image_record, $image, $images);
 			}
@@ -284,6 +284,7 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 		    $rowCount++;
 		}
 		$GLOBALS['session']->set('columns', $rowCount, 'import');
+		fclose($in);
 		fclose($out);
 
 		## Display interstitial page before actually importing, either displaying example data from source, or a means to map the CSV to the database columns

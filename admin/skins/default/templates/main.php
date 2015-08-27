@@ -7,17 +7,16 @@
       <link href='//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
       <link rel="stylesheet" type="text/css" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/styles/layout.css?{$VERSION_HASH}" media="screen">
       <link rel="stylesheet" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/styles/font-awesome.min.css?{$VERSION_HASH}">
-      {if isset($JQUERY_STYLES)}
       {foreach from=$JQUERY_STYLES item=style}
       <link rel="stylesheet" type="text/css" href="{$style}?{$VERSION_HASH}" media="screen">
       {/foreach}
-      {/if}
+      {foreach from=$HEAD_CSS item=style}
+      <link rel="stylesheet" type="text/css" href="{$style}?{$VERSION_HASH}" media="screen">
+      {/foreach}
       <link rel="stylesheet" type="text/css" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/styles/styles.php?{$VERSION_HASH}" media="screen">
-      {if is_array($HEAD_JS)}
       {foreach from=$HEAD_JS item=js_src}
       <script type="text/javascript" src="{$js_src}"></script>
       {/foreach}
-      {/if}
    </head>
    <body>
       <div id="header">
@@ -32,14 +31,12 @@
          {include file='templates/common.breadcrumb.php'}
          <div id="content">
             <div id="tab_control">
-               {if isset($TABS)}
-               {foreach from=$TABS item=tab}
+            {foreach from=$TABS item=tab}
                <div {if !empty($tab.tab_id)}id="{$tab.tab_id}" {/if}class="tab">
                {if !empty($tab.notify)}<span class="tab_notify">{$tab.notify}</span>{/if}
                <a href="{$tab.url}{$tab.target}" accesskey="{$tab.accesskey}" target="{$tab.a_target}">{$tab.name}</a>
             </div>
             {/foreach}
-            {/if}
          </div>
          <div id="content_body">
             {include file='templates/common.gui_message.php'}
@@ -122,15 +119,11 @@
          });
       </script>
       {/if}
-      {if is_array($EXTRA_JS)}
       {foreach from=$EXTRA_JS item=js_src}
       <script type="text/javascript" src="{$js_src}"></script>
       {/foreach}
-      {/if}
-      {if is_array($BODY_JS)}
       {foreach from=$BODY_JS item=js_src}
       <script type="text/javascript" src="{$js_src}"></script>
       {/foreach}
-      {/if}
    </body>
 </html>

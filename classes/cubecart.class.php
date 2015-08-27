@@ -927,7 +927,8 @@ class Cubecart {
 					'state_abbrev'  => getStateFormat($_POST['billing']['state'], 'id', 'abbrev'),
 					'country'   => $_POST['billing']['country'],
 					'country_id'  => $_POST['billing']['country'],
-					'country_iso'  => getCountryFormat($_POST['billing']['country'], 'numcode', 'iso')
+					'country_iso'  => getCountryFormat($_POST['billing']['country'], 'numcode', 'iso'),
+					'country_name' => getCountryFormat($_POST['billing']['country'], 'numcode', 'name')
 				);
 
 				if (isset($_POST['delivery']) && !isset($_POST['delivery_is_billing'])) {
@@ -946,7 +947,8 @@ class Cubecart {
 						'state_abbrev'  => getStateFormat($_POST['delivery']['state'], 'id', 'abbrev'),
 						'country'   => $_POST['delivery']['country'],
 						'country_id'  => $_POST['delivery']['country'],
-						'country_iso'  => getCountryFormat($_POST['delivery']['country'], 'numcode', 'iso')
+						'country_iso'  => getCountryFormat($_POST['delivery']['country'], 'numcode', 'iso'),
+						'country_name' => getCountryFormat($_POST['delivery']['country'], 'numcode', 'name')
 					);
 				} else {
 					$this->_basket['delivery_address'] = $this->_basket['billing_address'];
@@ -1335,13 +1337,13 @@ class Cubecart {
 				$required = array('email', 'name', 'subject', 'enquiry');
 				foreach ($_POST['contact'] as $key => $value) {
 					if (in_array($key, $required) && empty($value)) {
-						$GLOBALS['gui']->setError($GLOBALS['languague']->common['error_fields_required']);
+						$GLOBALS['gui']->setError($GLOBALS['language']->common['error_fields_required']);
 						$error = true;
 						break;
 					}
 				}
 				if (!filter_var($_POST['contact']['email'], FILTER_VALIDATE_EMAIL)) {
-					$GLOBALS['gui']->setError($GLOBALS['languague']->common['error_email_invalid']);
+					$GLOBALS['gui']->setError($GLOBALS['language']->common['error_email_invalid']);
 					$error = true;
 				}
 
@@ -1479,8 +1481,11 @@ class Cubecart {
 
 			$GLOBALS['smarty']->assign('ADDRESSES', $address_list);
 			// Display selector, if allowed
-
 			$GLOBALS['smarty']->assign('CTRL_DELIVERY', ($GLOBALS['config']->get('config', 'basket_allow_non_invoice_address') && !$GLOBALS['cart']->getBasketDigital()));
+
+			$subscribed = $GLOBALS['db']->select('CubeCart_newsletter_subscriber','subscriber_id', array('status' => '1', 'email' => $GLOBALS['user']->get('email')), false, false, false, false);
+			$GLOBALS['smarty']->assign('USER_SUBSCRIBED', $subscribed);
+			
 		} else {
 			// no address found - lets redirect to the 'add address' page
 			$GLOBALS['gui']->setInfo($GLOBALS['language']->account['error_address_billing']);

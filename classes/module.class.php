@@ -129,7 +129,8 @@ class Module {
 				}
 			}
 			// Add default tab
-			$GLOBALS['main']->addTabControl($GLOBALS['language']->common['general'], $this->_module_name);
+			$GLOBALS['main']->addTabControl($GLOBALS['language']->common['general'], $_GET['module']);
+			$GLOBALS['smarty']->assign('GENERAL_TAB_ID', $_GET['module']);
 
 			// Include module language strings - use Language class
 			$GLOBALS['language']->loadDefinitions($this->_module_name, $this->_path.'/language', 'module.definitions.xml');
@@ -416,7 +417,7 @@ class Module {
 	private function _module_data($path = false, $local_name = false) {
 		// Set Module Path
 		if ($path) {
-			$drop = array('admin', 'classes', 'skin', 'language');
+			$drop = array('/admin', '/classes', '/skin', '/language');
 			$this->_path = CC_ROOT_DIR.str_replace($drop, '', dirname(str_replace(CC_ROOT_DIR, '', $path)));
 			// Drop trailing slashes
 			if (substr($this->_path, -1) == '/') {

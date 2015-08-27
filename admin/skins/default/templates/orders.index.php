@@ -39,7 +39,13 @@
                   <i class="fa fa-user unregistered" title="{$LANG.customer.title_key_unregistered}"></i>
                   {/if}
                </td>
-               <td><a href="{$order.link_customer}" title="{$order.name}">{$order.name}</a></td>
+               <td>
+               {if $order.customer_id}
+                  <a href="{$order.link_customer}" title="{$order.name}">{$order.name}</a>
+               {else}
+                  {$order.name}
+               {/if}
+               </td>
                <td>{$order.status}</td>
                <td>{$order.date}</td>
                <td align="right">{$order.prod_total}</td>
@@ -517,8 +523,8 @@
          <h3>{$LANG.orders.title_card_details}</h3>
          <fieldset>
             <legend>{$LANG.orders.title_card_details}</legend>
-            {foreach from=$CARD_DATA item=data}
-            <div><label for="{$card}">{$data.name}</label><span><input type="text" name="card[{$card}]" id="{$card}" value="{$data.value}" class="textbox"></span></div>
+            {foreach from=$CARD_DATA key=k item=data}
+            <div><label for="{$k}">{$data.name}</label><span><input type="text" name="card[{$k}]" id="{$k}" value="{$data.value}" class="textbox"></span></div>
             {/foreach}
             <div><label for="delete">{$LANG.orders.card_delete}</label><span><a href="{$CARD_DELETE}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></span></div>
          </fieldset>

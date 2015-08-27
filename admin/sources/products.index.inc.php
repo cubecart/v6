@@ -29,6 +29,7 @@ if (($cat_dropdown = $GLOBALS['cache']->read('products_category_dropdown')) === 
 	$cat_dropdown = $GLOBALS['catalogue']->buildCategoriesDropDown();
 	$GLOBALS['cache']->write($cat_dropdown, 'products_category_dropdown');
 }
+$GLOBALS['smarty']->assign('CAT_LIST_ANY', currentPage(array('cat_id')));
 $GLOBALS['smarty']->assign('CAT_LIST', $cat_dropdown);
 $GLOBALS['smarty']->assign('CURRENT_CAT', (isset($_GET['cat_id'])) ? $_GET['cat_id'] : '');
 
@@ -62,7 +63,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 	}
 
 	//Need to remove these in some cases to stop SQL errors
-	$records = array('product_id', 'manufacturer', 'product_weight', 'stock_level', 'stock_warning');
+	$records = array('product_id', 'product_weight', 'stock_level', 'stock_warning');
 	foreach ($records as $r) {
 		if (empty($record[$r]) && $record[$r]!=='0' && $record[$r]!=='0.0') {
 			unset($record[$r]);
@@ -202,6 +203,9 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 			if (!isset($values['option_negative'])) {
 				$values['option_negative'] = 0;
 			}
+			if(!isset($values['absolute_price'])) {
+				$values['absolute_price'] = 0;
+			}
 			$GLOBALS['db']->update('CubeCart_option_assign', $values, array('assign_id' => $assign_id));
 		}
 		unset($values);
@@ -218,6 +222,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 				'option_weight'  => $_POST['option_add']['weight'][$offset],
 				'matrix_include'  => $_POST['option_add']['matrix_include'][$offset],
 				'set_enabled'  => $_POST['option_add']['set_enabled'][$offset],
+				'absolute_price'  => $_POST['option_add']['absolute_price'][$offset]
 			);
 			if ($value > 0) {
 				// get the option id
@@ -252,7 +257,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 				$data['product_code'] = $_POST['product_code'].'-'.$pc_postfix;
 			}
 			if ($GLOBALS['db']->select('CubeCart_option_matrix', array('matrix_id'), array('product_id' => $product_id, 'options_identifier' => $options_identifier))) {
-				$GLOBALS['db']->update('CubeCart_option_matrix', $data, array('options_identifier' => $options_identifier, 'product_id' => $product_id));
+				$GLOBALS['db']->update('CubeCart_option_matrix', $data, array('options_identifier' => $options_identifier, 'product_id' => $product_id), true, 'all');
 			} else {
 				$data['options_identifier'] = $options_identifier;
 				$GLOBALS['db']->insert('CubeCart_option_matrix', $data);
@@ -307,7 +312,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 		} else {
 			$hash_before = null;
 		}
-		$record = array(); //Fixes bug 2457
+		$record = array();
 		foreach ($_POST['group'] as $group_id => $group) {
 			foreach ($group as $field => $value) {
 				$record[$field] = $value;
@@ -996,6 +1001,7 @@ if (isset($_GET['action'])) {
 					} else {
 						$group['price']   = $result[0]['price'];
 						$group['sale_price'] = $result[0]['sale_price'];
+						$tax_inclusive = $result[0]['tax_inclusive'];
 					}
 				}
 				foreach ($tax_list as $tax_id => $details) {
@@ -1139,7 +1145,7 @@ if (isset($_GET['action'])) {
 		// update cached name
 		if (isset($smarty_data['option_matrix']['all_possible']) && is_array($smarty_data['option_matrix']['all_possible'])) {
 			foreach ($smarty_data['option_matrix']['all_possible'] as $option_group) {
-				$GLOBALS['db']->update('CubeCart_option_matrix', array('cached_name' => $option_group['options_values'], 'status' => 1, 'product_id' => $product_id), array('options_identifier' => $option_group['options_identifier']));
+				$GLOBALS['db']->update('CubeCart_option_matrix', array('cached_name' => $option_group['options_values'], 'status' => 1), array('options_identifier' => $option_group['options_identifier'], 'product_id' => $product_id));
 			}
 		}
 

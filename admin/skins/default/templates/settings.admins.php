@@ -84,16 +84,22 @@
   {else}
   <div id="admins" class="tab_content list">
 	<h3>{$LANG.admins.title_administrators}</h3>
-	{foreach from=$ADMINS item=admin}
-	<div>
-	  <span class="actions">
-		<a href="{$admin.link_edit}" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
-		{if $admin.link_delete}<a href="{$admin.link_delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>{/if}
-	  </span>
-	  <input type="hidden" name="status[{$admin.admin_id}]" id="status_{$admin.admin_id}" value="{$admin.status}" class="toggle">
-	  <a href="{$admin.link_edit}" title="{$LANG.account.logins}: {$admin.logins}">{$admin.name}</a>
-	</div>
-	{/foreach}
+	<table width="300">
+		<tbody>
+		{foreach from=$ADMINS item=admin}
+			<tr>
+				<td><input type="hidden" name="status[{$admin.admin_id}]" id="status_{$admin.admin_id}" value="{$admin.status}" class="toggle">
+		  <a href="{$admin.link_edit}" title="{$LANG.account.logins}: {$admin.logins}">{$admin.name}</a></td>
+				<td>
+		  			<span class="actions">
+						<a href="{$admin.link_edit}" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
+						{if $admin.link_delete}<a href="{$admin.link_delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>{/if}
+		  			</span>
+				</td>
+			</tr>
+		{/foreach}
+		</tbody>
+	</table>
   </div>
 {/if}
 

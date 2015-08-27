@@ -231,6 +231,7 @@
     <string name="your_comments" introduced="5.0.0"><![CDATA[Delivery Notes or Additional Comments]]></string>
   </group>
   <group name="catalogue">
+    <string name="absolute_price" introduced="6.0.7"><![CDATA[Absolute Price]]></string>
     <string name="available_for_purchase" introduced="6.0.0"><![CDATA[Available for purchase]]></string>
   	<string name="added_to_basket" introduced="6.0.0"><![CDATA[Added to Basket]]></string>
     <string name="add_to_basket" introduced="5.0.0"><![CDATA[Add to Basket]]></string>
@@ -278,7 +279,7 @@
     <string name="error_import_empty" introduced="5.0.0"><![CDATA[No import data found.]]></string>
     <string name="error_import_invalid" introduced="5.0.0"><![CDATA[Invalid file format. Document must be of plain text content. e.g. *.txt or *.csv]]></string>
     <string name="error_import_upload" introduced="5.0.0"><![CDATA[Upload failed.]]></string>
-    <string name="error_manufacturer_create" introduced="5.0.0"><![CDATA[Failed to add manufacturer.]]></string>
+    <string name="error_manufacturer_create" introduced="5.0.0"><![CDATA[Failed to add manufacturer or manufacturer with the same name already exists.]]></string>
     <string name="error_manufacturer_delete" introduced="5.0.0"><![CDATA[Failed to delete manufacturer.]]></string>
     <string name="error_manufacturer_found" introduced="5.0.0"><![CDATA[Unable to find manufacturer.]]></string>
     <string name="error_manufacturer_none" introduced="5.0.0"><![CDATA[No manufacturers have been added.]]></string>
@@ -367,7 +368,7 @@
     <string name="notify_option_sets_already_assigned" introduced="5.0.0"><![CDATA[Option set(s) already assigned.]]></string>
     <string name="notify_product_create" introduced="5.0.0"><![CDATA[Product successfully created.]]></string>
     <string name="notify_product_delete" introduced="5.0.0"><![CDATA[Product(s) successfully deleted.]]></string>
-    <string name="notify_product_search" introduced="5.0.0"><![CDATA[Products found matching '%s'.]]></string>
+    <string name="notify_product_search" introduced="5.0.0"><![CDATA[Products found matching '%s']]></string>
     <string name="notify_product_update" introduced="5.0.0"><![CDATA[Product successfully updated.]]></string>
     <string name="notify_review_submit" introduced="5.0.0"><![CDATA[Thank you. Your review has been submitted for moderation.]]></string>
     <string name="notify_tell_friend" introduced="5.0.0"><![CDATA[Thank you. Your friend has been emailed about this product.]]></string>
@@ -542,6 +543,10 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="example" introduced="6.0.7"><![CDATA[Example]]></string>
+    <string name="tip" introduced="6.0.7"><![CDATA[Tip]]></string>
+    <string name="tax" introduced="6.0.6"><![CDATA[Tax]]></string>
+    <string name="discount" introduced="6.0.6"><![CDATA[Discount]]></string>
     <string name="estimated" introduced="6.0.5"><![CDATA[Estimated]]></string>
     <string name="test" introduced="6.0.3"><![CDATA[Test]]></string>
     <string name="after_save" introduced="6.0.3"><![CDATA[After Save]]></string>
@@ -1308,6 +1313,7 @@
     <string name="notify_sitemap_fail" introduced="5.0.0"><![CDATA[Failed to rebuild sitemap.]]></string>
     <string name="no_query_entered" introduced="5.0.0"><![CDATA[No query entered]]></string>
     <string name="expert_use_only" introduced="5.0.0"><![CDATA[WARNING: Only use this tool if you are confident you know what you are doing!]]></string>
+    <string name="sql_delimiter" introduced="6.0.7"><![CDATA[Seperate MySQL queries with delimiter <span class="courier">; #EOQ</span> at the end of each line.]]></string>
     <string name="reset_views" introduced="5.0.0"><![CDATA[Reset all product view counts]]></string>
     <string name="sitemap" introduced="5.0.0"><![CDATA[Rebuild Sitemap]]></string>
     <string name="tab_backup" introduced="5.0.0"><![CDATA[Backup]]></string>

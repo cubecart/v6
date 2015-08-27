@@ -69,8 +69,8 @@
          <form action="{$VAL_SELF}" method="post" class="panel add_to_basket">
             <div class="row product_list_view">
                <div class="small-3 columns">
-                  <a href="{$product.url}" title="{$product.name}">
-                  <img class="th" src="{$product.thumbnail}" alt="{$product.name}">
+                  <a href="{$product.url}" class="th" title="{$product.name}">
+                  <img src="{$product.thumbnail}" alt="{$product.name}">
                   </a>
                </div>
                <div class="small-6 columns">
@@ -127,7 +127,6 @@
                </div>
             </div>
             <div class="product_grid_view hide">
-               <form action="{$VAL_SELF}" method="post" class="panel add_to_basket">
                <div data-equalizer-watch>
                   <div class="text-center">
                      <a href="{$product.url}" title="{$product.name}"><img class="th" src="{$product.thumbnail}" alt="{$product.name}"></a>
@@ -210,10 +209,10 @@
          </dl>
       </div>
    </div>
-   {* Add "hide" class to hide more button ajax load *}
+   {* Add "hide-for-small-up" to the class attribute to not display the more button *}
    {if ($page < $total)}
    {$params[$var_name] = $page + 1}
-   <a href="{$current}{http_build_query($params)}{$anchor}" class="button tiny expand" id="ccScroll-next">{$LANG.common.more} <i class="fa fa-angle-down"></i></a>
+   <a href="{$current}{http_build_query($params)}{$anchor}" data-next-page="{$params[$var_name]}" class="button tiny expand" id="ccScroll-next">{$LANG.common.more} <i class="fa fa-angle-down"></i></a>
    {/if}
 </div>
 <div class="hide" id="lang_loading">{$LANG.common.loading}</div>

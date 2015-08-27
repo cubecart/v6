@@ -141,6 +141,10 @@ class User {
 			//IS_USER defines if a the user is a valid user on the template
 			$GLOBALS['smarty']->assign('IS_USER', $this->is());
 
+			if($this->is() && isset($_POST['mailing_list'])) {
+				Newsletter::getInstance()->subscribe($this->get('email'), $this->getId());
+			}
+
 			$this->isBot();
 		}
 	}
@@ -358,7 +362,9 @@ class User {
 			$data['new_password'] = '0';
 			$data['ip_address']  = get_ip_address();
 
-			if ($existing = $GLOBALS['db']->select('CubeCart_customer', 'customer_id', array('email' => $data['email']))) {
+			$data = array_map('trim', $data);
+
+			if ($existing = $GLOBALS['db']->select('CubeCart_customer', 'customer_id', array('email' => $data['email']), false, 1, false, false)) {
 				$GLOBALS['db']->update('CubeCart_customer', $data, array('email' => $data['email']));
 				$customer_id = $existing[0]['customer_id'];
 			} else {
@@ -756,6 +762,8 @@ class User {
 	 * @return bool
 	 */
 	public function saveAddress($array, $new_user = false) {
+
+		$array = array_map('trim', $array);
 
 		$address_hash = md5(serialize($array));
 		if($GLOBALS['db']->select('CubeCart_addressbook',array('address_id'),array('hash' => $address_hash))) {

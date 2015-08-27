@@ -1,5 +1,6 @@
 /includes/extra/snippet_*
 /includes/global.inc.*
+!/includes/global.inc.php-dist
 /includes/extra/importdata.tmp
 /modules/*
 !/modules/plugins/hooks.xml

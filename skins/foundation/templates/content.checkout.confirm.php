@@ -34,6 +34,13 @@
       {/if}
    </div>
 </div>
+{if !$USER_SUBSCRIBED}
+<div class="row">
+   <div class="small-12 large-8 columns">
+      <input type="checkbox" id="mailing_list" name="mailing_list" value="1"><label for="mailing_list">{$LANG.account.register_mailing}</label>
+   </div>
+</div>
+{/if}
 {else}
 <div id="register_false_address" class="row{if empty($BILLING.line1)} hide{/if}">
    <div class="large-6 columns">
@@ -44,7 +51,7 @@
       {if $BILLING.line2}{$BILLING.line2}<br>{/if}
       {$BILLING.town}<br>
       {$BILLING.state}, {$BILLING.postcode}<br>
-      {$BILLING.country_iso}
+      {$BILLING.country_name}
       <h3>{$LANG.account.contact_details}</h3>
       <table>
         <tr><td align="center"><i class="fa fa-envelope"></i></td><td>{$BILLING.first_name} {$BILLING.last_name} &lt;{$USER.email}&gt;</td></tr>
@@ -60,7 +67,7 @@
       {if $DELIVERY.line2}{$DELIVERY.line2}<br>{/if}
       {$DELIVERY.town}<br>
       {$DELIVERY.state}, {$DELIVERY.postcode}<br>
-      {$DELIVERY.country_iso}
+      {$DELIVERY.country_name}
       <div class="pad-top"><a href="#" class="button small show_address_form"><i class="fa fa-reply"></i> {$LANG.form.make_changes}</a></div>
    </div>
 </div>

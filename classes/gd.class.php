@@ -19,7 +19,6 @@ class GD {
 	private $_gdTargetDir;
 
 	private $_gdImageData;
-	private $_gdImageExif;
 	private $_gdImageType;
 
 	private $_gdImageSource;
@@ -47,7 +46,6 @@ class GD {
 		$this->_gdImageOutput = false;
 		$this->_gdImageSource = false;
 		$this->_gdImageData  = false;
-		$this->_gdImageExif  = false;
 	}
 
 	/**
@@ -95,21 +93,19 @@ class GD {
 			$this->_gdImageType = $this->_gdImageData[2];
 
 			switch ($this->_gdImageType) {
-			case IMAGETYPE_GIF:
-				$this->_gdImageSource = imagecreatefromgif($file);
-				break;
-			case IMAGETYPE_JPEG:
-				$this->_gdImageSource = imagecreatefromjpeg($file);
-				if (function_exists('exif_read_data')) {
-					$this->_gdImageExif = @exif_read_data($file);
-				}
-				break;
-			case IMAGETYPE_PNG:
-				$this->_gdImageSource = imagecreatefrompng($file);
-				imagesavealpha($this->_gdImageSource, true);
-				break;
-			default:
-				return false;
+				case IMAGETYPE_GIF:
+					$this->_gdImageSource = imagecreatefromgif($file);
+					break;
+				case IMAGETYPE_JPEG:
+					$this->_jpegMemoryAllocation($file);
+					$this->_gdImageSource = imagecreatefromjpeg($file);
+					break;
+				case IMAGETYPE_PNG:
+					$this->_gdImageSource = imagecreatefrompng($file);
+					imagesavealpha($this->_gdImageSource, true);
+					break;
+				default:
+					return false;
 			}
 			return true;
 		}
@@ -192,6 +188,21 @@ class GD {
 			return true;
 		}
 		return false;
+	}
+
+	//=====[ Private ]=======================================
+
+	/**
+	 * Calculate and set memory for jpeg
+	 * Credit to Karolis Tamutis karolis.t_AT_gmail.com
+	 *
+	 * @param string $path
+	 */
+	private function _jpegMemoryAllocation($path) {
+		$memoryNeeded = round(($this->_gdImageData[0] * $this->_gdImageData[1] * $this->_gdImageData['bits'] * $this->_gdImageData['channels'] / 8 + Pow(2, 16)) * 1.65);                
+		if (function_exists('memory_get_usage') && memory_get_usage() + $memoryNeeded > (integer) ini_get('memory_limit') * pow(1024, 2)) {                  
+		    ini_set('memory_limit', (integer) ini_get('memory_limit') + ceil(((memory_get_usage() + $memoryNeeded) - (integer) ini_get('memory_limit') * pow(1024, 2)) / pow(1024, 2)) . 'M');
+		}
 	}
 
 }

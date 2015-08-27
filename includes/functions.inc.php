@@ -830,19 +830,22 @@ function rootHomePath() {
 }
 
 /**
- * Sanitize SEO allowed path
+ * Sanitize SEO allowed path (Depreciated since 6.0.7)
+ * Use static function SEO::sanitizeSEOPath instead
  *
  * @return string
  */
-function sanitizeSEOPath($path) {
-	## Remove extention
-	$path = preg_replace("/\.\w{2,4}$/", '', $path);
-	## Make path lowercase
-	$path = strtolower($path);
-	## Allow 0-9, a-z, -,_ and /
-	$path = preg_replace('/[^a-z0-9-_\/]/', '-', $path);
-	## Trim multiple dashes
-	return trim(preg_replace('/-+/', '-', $path), '-');
+function sanitizeSEOPath($url) {
+	
+	if(method_exists('SEO', 'sanitizeSEOPath')) {
+		return SEO::sanitizeSEOPath($seo_path['path']);
+	}
+
+	$url = preg_replace("/\.\w{2,4}$/", '', $url); ## Remove extention
+	$url = trim($url);
+	$url = str_replace(' ', '-', html_entity_decode($url, ENT_QUOTES));
+	$url = preg_replace('#[^\w\-_/]#iuU', '-', str_replace('/', '/', $url));
+	return preg_replace(array('#/{2,}#iu', '#-{2,}#'), array('/', '-'), $url);
 }
 
 /**

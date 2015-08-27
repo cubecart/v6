@@ -97,8 +97,7 @@ if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 						}
 
 						if(file_exists($root_path) && !is_writable($root_path)) {
-							$error_path = $data['path'].'/'.$file;
-							$GLOBALS['main']->setACPWarning(sprintf($lang['module']['exists_not_writable'],$error_path));
+							$GLOBALS['main']->setACPWarning(sprintf($lang['module']['exists_not_writable'],$root_path));
 							$extract = false;
 						}
 					}

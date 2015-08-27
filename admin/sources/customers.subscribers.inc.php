@@ -41,7 +41,7 @@ if(isset($_POST['subscribers']) && !empty($_POST['subscribers'])) {
 						$where['customer_id'] = $existing_customer[0]['customer_id'];
 					}
 				}
-				
+				$where['status'] = 1;
 				if($GLOBALS['db']->insert('CubeCart_newsletter_subscriber',$where)) {
 					$added = true;
 					$j++;

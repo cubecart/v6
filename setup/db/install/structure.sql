@@ -534,6 +534,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_option_assign` (
 	`option_price` DECIMAL(16,2) NOT NULL DEFAULT '0.00',
 	`option_weight` DECIMAL(10,2) NOT NULL DEFAULT '0.00',
 	`matrix_include` TINYINT(1) NOT NULL DEFAULT  '0',
+	`absolute_price` enum('0','1') NOT NULL DEFAULT '0',
 	PRIMARY KEY (`assign_id`),
 	KEY `member_id` (`set_member_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
