@@ -42,25 +42,25 @@ function appendDS($path) {
  * @param array $aArray2
  * @return diff array
  */
-function arrayRecursiveDiff($aArray1, $aArray2) { 
-    $aReturn = array(); 
-   
-    foreach ($aArray1 as $mKey => $mValue) { 
-        if (array_key_exists($mKey, $aArray2)) { 
-            if (is_array($mValue)) { 
-                $aRecursiveDiff = arrayRecursiveDiff($mValue, $aArray2[$mKey]); 
-                if (count($aRecursiveDiff)) { $aReturn[$mKey] = $aRecursiveDiff; } 
-            } else { 
-                if ($mValue != $aArray2[$mKey]) { 
-                    $aReturn[$mKey] = $mValue; 
-                } 
-            } 
-        } else { 
-            $aReturn[$mKey] = $mValue; 
-        } 
-    } 
-   
-    return $aReturn; 
+function arrayRecursiveDiff($aArray1, $aArray2) {
+    $aReturn = array();
+
+    foreach ($aArray1 as $mKey => $mValue) {
+        if (array_key_exists($mKey, $aArray2)) {
+            if (is_array($mValue)) {
+                $aRecursiveDiff = arrayRecursiveDiff($mValue, $aArray2[$mKey]);
+                if (count($aRecursiveDiff)) { $aReturn[$mKey] = $aRecursiveDiff; }
+            } else {
+                if ($mValue != $aArray2[$mKey]) {
+                    $aReturn[$mKey] = $mValue;
+                }
+            }
+        } else {
+            $aReturn[$mKey] = $mValue;
+        }
+    }
+
+    return $aReturn;
 }
 
 /**
@@ -169,10 +169,10 @@ function chmod_writable() {
  */
 function cmpmc($a, $b) {
 
-	if(isset($a['priority']) && isset($b['priority']) && is_numeric($a['priority']) && is_numeric($b['priority'])) {	
+	if(isset($a['priority']) && isset($b['priority']) && is_numeric($a['priority']) && is_numeric($b['priority'])) {
 		$b = $b['priority'];
 		$a = $a['priority'];
-	
+
 		return $a<$b ? -1 : ($a>$b ? 1 : 0);
 	} else {
 		return false;
@@ -188,7 +188,7 @@ function cmpmc($a, $b) {
  * @return string
  */
 function currentPage($excluded = null, $included = null, $remove_excluded = true) {
-	
+
 	static $base = null;
 
 	if (is_null($base)) {
@@ -205,7 +205,7 @@ function currentPage($excluded = null, $included = null, $remove_excluded = true
 	// If there are GET variables, strip redir and rebuild query string
 	if (!empty($_GET)) {
 		$array = (is_array($included) && !empty($included)) ? array_merge($_GET, $included) : $_GET;
-		
+
 		$one_time = array('added', 'completed', 'deleted', 'edited', 'failed', 'removed', 'subscribed', 'submitted', 'unsubscribed', 'updated', session_name());
 		if ($excluded === true) {
 			// Drop *all* $_GET vars, except $protected
@@ -634,14 +634,14 @@ function httpredir($destination = '', $anchor = '', $meta_refresh = false, $stat
 			$destination = $destination.'.html';
 		}
 	}
-	
+
 	// Redirect - appending the last tab anchor for extra cleverness
 	if (!empty($anchor)) {
 		$destination .= '#'.$anchor;
 	} else if (isset($_POST['previous-tab'])) {
 		$destination	.= (preg_match('/^#/', $_POST['previous-tab'])) ? $_POST['previous-tab'] : '#'.$_POST['previous-tab'];
 	}
-	
+
 	## Now we'll send the redirect header using one method or another
 	$destination = filter_var($destination, FILTER_UNSAFE_RAW);
 	## Nasty HTML meta refresh required to lose domain masking for certain payment modules
@@ -732,7 +732,7 @@ function offline() {
 			foreach ($GLOBALS['hooks']->load('offline') as $hook) include $hook;
 			exit;
 		} else {
-			$GLOBALS['smarty']->assign('STORE_OFFLINE',true); 
+			$GLOBALS['smarty']->assign('STORE_OFFLINE',true);
 		}
 	}
 }
@@ -758,7 +758,7 @@ function price_sort($x, $y) {
  *
  * @return string (json)
  */
-function randomString($length = 30) { 
+function randomString($length = 30) {
 	while (strlen($hash) < ($length-1)) {
 		$hash .= mt_rand(0,9);
 	}

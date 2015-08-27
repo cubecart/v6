@@ -564,7 +564,7 @@
   	<string name="recommended" introduced="6.0.0"><![CDATA[Recommended]]></string>
   	<string name="all_pages" introduced="6.0.0"><![CDATA[Force on all pages]]></string>
   	<string name="some_pages" introduced="6.0.0"><![CDATA[Only on sensitive pages]]></string>
-  	<string name="warning_offline" introduced="6.0.0"><![CDATA[WARNING: This store is closed. Only staff members logged in can view the store whilst it is offline. To view the offline message message please <a href="admin.php?_g=logout&r=front">log out</a>.]]></string>
+  	<string name="warning_offline" introduced="6.0.0"><![CDATA[WARNING: This store is closed. Only staff members logged in can view the store whilst it is offline. To view the offline message please <a href="admin.php?_g=logout&r=front">log out</a>.]]></string>
   	<string name="top" introduced="6.0.0"><![CDATA[Top]]></string>
   	<string name="loading" introduced="6.0.0"><![CDATA[Loading]]></string>
   	<string name="signup" introduced="6.0.0"><![CDATA[Signup]]></string>
@@ -759,7 +759,7 @@
         ---------------
         %s
         ---------------
-        
+
         This email is sent from the stores master email address but it is possible to reply directly to the sender using the reply button on your email software.]]></string>
     <string name="email_override" introduced="5.0.0"><![CDATA[Form submissions should be sent to]]></string>
     <string name="error_contact_update" introduced="5.0.0"><![CDATA[Unable to update Contact Form settings.]]></string>
