@@ -3,10 +3,13 @@
    {foreach from=$ITEMS key=hash item=item}
    <div class="panel" id="basket_item_{$hash}">
       <div class="row">
+         <div class="small-1 columns">
+            <a href="{$STORE_URL}/index.php?_a=basket&remove-item={$hash}"><i class="fa fa-trash-o"></i></a>
+         </div>
          <div class="small-3 columns">
             <a href="{$item.link}" class="th" title="{$item.name}"><img src="{$item.image}" alt="{$item.name}" width="50"></a>
          </div>
-         <div class="small-6 columns">
+         <div class="small-5 columns">
             <a href="{$item.link}"><strong>{$item.name}</strong></a>
             {if $item.options}
             <ul class="no-bullet">
