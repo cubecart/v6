@@ -55,7 +55,7 @@
             {include file='templates/box.off_canvas.right.php'}
             {include file='templates/box.off_canvas.left.php'}
             {include file='templates/box.eu_cookie.php'}
-            <div class="row marg-top">
+            <div class="row marg-top" id="top_header">
                <div class="small-5 medium-4 large-3 columns">
                   <a href="{$STORE_URL}" class="main-logo"><img src="{$STORE_LOGO}" alt="{$META_TITLE}"></a>
                </div>
@@ -90,12 +90,12 @@
                </div>
             </div>
             <div class="row {$SECTION_NAME}_wrapper">
-               <div class="small-12 large-9 columns small-collapse">
+               <div class="small-12 large-9 columns small-collapse" id="main_content">
                   {include file='templates/box.errors.php'}
                   {include file='templates/box.progress.php'}
                   {$PAGE_CONTENT}
                </div>
-               <div class="large-3 columns show-for-large-up">
+               <div class="large-3 columns show-for-large-up" id="sidebar_left">
                   {include file='templates/box.featured.php'}
                   {include file='templates/box.popular.php'}
                   {include file='templates/box.sale_items.php'}
