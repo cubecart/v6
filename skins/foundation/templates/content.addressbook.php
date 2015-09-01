@@ -19,27 +19,40 @@
             <a href="?_a=addressbook&action=edit&address_id={$address.address_id}">{$address.description}</a><br>
             {$address.line1},<br/>{if !empty($address.line2)} {$address.line2},<br/>{/if} {$address.town},<br/> {$address.state},<br/> {$address.postcode}<br>{$address.country}
          </div>
-         <div class="small-6 columns">
+         <div class="small-6 columns show-for-medium-up">
             <div class="row">
-               <div class="small-4 columns text-center">
+               <div class="medium-4 columns text-center">
                   {$LANG.address.billing_address}
                </div>
-               <div class="small-4 columns text-center">
+               <div class="medium-4 columns text-center">
                   {$LANG.address.delivery_address} ({$LANG.common.default})
                </div>
-               <div class="small-4 columns text-center">
+               <div class="medium-4 columns text-center">
                   {$LANG.address.delivery_address}
                </div>
             </div>
             <div class="row pad-top">
-               <div class="small-4 columns text-center">
+               <div class="medium-4 columns text-center">
                   <i class="fa fa-{if $address.billing}check{else}times{/if}"></i>
                </div>
-               <div class="small-4 columns text-center">
+               <div class="medium-4 columns text-center">
                   <i class="fa fa-{if $address.default}check{else}times{/if}"></i>
                </div>
-               <div class="small-4 columns text-center">
+               <div class="medium-4 columns text-center">
                   <i class="fa fa-check"></i>
+               </div>
+            </div>
+         </div>
+         <div class="small-6 columns show-for-small-only">
+            <div class="row">
+               <div>
+                  {$LANG.address.billing_address}<div class="right"><i class="fa fa-{if $address.billing}check{else}times{/if}"></i></div>
+               </div>
+               <div>
+                  {$LANG.address.delivery_address} ({$LANG.common.default})<div class="right"><i class="fa fa-{if $address.default}check{else}times{/if}"></i></div>
+               </div>
+               <div>
+                  {$LANG.address.delivery_address}<div class="right"><i class="fa fa-check"></i></div>
                </div>
             </div>
          </div>
