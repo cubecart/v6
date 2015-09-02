@@ -50,9 +50,9 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 	$record['description_short'] = $GLOBALS['RAW']['POST']['description_short'];
 	unset($record['categories'], $record['group'], $record['image']);
 
-	if (isset($record['product_code_auto']) && $record['product_code_auto']==1) {
+	if ((isset($record['product_code_auto']) && $record['product_code_auto']==1) || (empty($record['product_code']) && $record['product_code_auto']==0)) {
 		unset($record['product_code']);
-		// Generate a new product code automatically (a-la v4)
+		// Generate a new product code automatically
 		$record['product_code'] = generate_product_code($_POST['name']);
 		unset($record['product_code_auto']);
 	}
