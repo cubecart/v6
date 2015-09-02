@@ -108,6 +108,7 @@
  <hook trigger="class.cubecart.basket" deprecated="" />
  <hook trigger="class.cubecart.checkout_progress" deprecated="" />
  <hook trigger="class.cubecart.construct" deprecated="" />
+ <hook trigger="class.cubecart.construct.g_switch" deprecated="" />
  <hook trigger="class.cubecart.construct.addressbook" deprecated="" />
  <hook trigger="class.cubecart.construct.callback.gateway" deprecated="" />
  <hook trigger="class.cubecart.construct.cancel" deprecated="" />

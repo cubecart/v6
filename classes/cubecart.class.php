@@ -281,6 +281,7 @@ class Cubecart {
 					}
 					break;
 				default:
+					foreach ($GLOBALS['hooks']->load('class.cubecart.construct.g_switch') as $hook) include $hook;
 					trigger_error('No callback method defined.', E_USER_WARNING);
 					httpredir('index.php');
 			}
