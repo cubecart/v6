@@ -67,6 +67,9 @@ class Ajax {
 	 */
 	public static function search($type, $search_string) {
 		$data = false;
+		
+		foreach ($GLOBALS['hooks']->load('class.ajax.search') as $hook) include $hook;
+
 		if (!empty($type) && !empty($search_string)) {
 			switch (strtolower($type)) {
 			case 'user':
