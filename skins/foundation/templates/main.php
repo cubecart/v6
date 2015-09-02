@@ -90,7 +90,7 @@
                </div>
             </div>
             <div class="row {$SECTION_NAME}_wrapper">
-               <div class="small-12 large-9 columns small-collapse" id="main_content">
+               <div class="small-12 large-9 columns" id="main_content">
                   {include file='templates/box.errors.php'}
                   {include file='templates/box.progress.php'}
                   {$PAGE_CONTENT}
