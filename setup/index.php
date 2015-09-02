@@ -264,6 +264,12 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
       'pass' => $strings['common']['installed'],
       'fail' => $strings['common']['not_installed']
     ),
+    'XML' => array(
+      'title' => 'XML Parser',
+      'status' => extension_loaded('simplexml'),
+      'pass' => $strings['common']['installed'],
+      'fail' => $strings['common']['not_installed']
+    ),
     'cURL' => array(
       'title' => 'cURL',
       'status' => extension_loaded('curl'),
