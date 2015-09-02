@@ -80,8 +80,10 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 			$record['digital_path'] = $_POST['digital_path'];
 		} else { 
 			if (!isset($_POST['download'])) {
-				if ($old_product_data[0]['digital']) {
-		    		$record['digital'] = $old_product_data[0]['digital'];
+				if ($old_product_data[0]['digital'] > 1) { // Danger, as the FileManager file_id may be 1!
+				    $record['digital'] = $old_product_data[0]['digital'];
+				} else {
+				    $record['digital'] = 0;
 				}
 		 	} else { 
 		    	$record['digital'] = 0;
