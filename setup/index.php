@@ -265,7 +265,7 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
       'fail' => $strings['common']['not_installed']
     ),
     'XML' => array(
-      'title' => 'XML Parser',
+      'title' => 'Simple XML Parser',
       'status' => extension_loaded('simplexml'),
       'pass' => $strings['common']['installed'],
       'fail' => $strings['common']['not_installed']
