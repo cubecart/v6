@@ -201,88 +201,88 @@ class Cubecart {
 
 		if (isset($_GET['_g']) && !empty($_GET['_g'])) {
 			switch (strtolower($_GET['_g'])) {
-			case 'ajax_price_format':
-				$GLOBALS['debug']->supress();
-				if(is_numeric($_GET['price'])) {
-					echo json_encode($GLOBALS['tax']->priceFormat($_GET['price']));
-				} else if(is_array($_GET['price'])) {
-					$prices = array();
-					foreach($_GET['price'] as $price) {
-						if(is_numeric($price)) {
-							$prices[] = $GLOBALS['tax']->priceFormat($price);
-						}
-					}
-					die(json_encode($prices));
-				}
-				exit;
-			break;
-			case 'ajax_email':
-				$GLOBALS['debug']->supress();
-
-				if ($_GET['source']=='newsletter') {
-					$result = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', 'subscriber_id', array('email' => $_POST['subscribe']));
-				} else {
-					$email = isset($_POST['user']['email']) ? $_POST['user']['email'] : $_POST['email'];
-					$result = $GLOBALS['db']->select('CubeCart_customer', 'customer_id', array('email' => $email, 'type' => 1));
-				}
-
-				if ($result) {
-					die(json_encode(false));
-				} else {
-					die(json_encode(true));
-				}
-				break;
-			case 'ajaxadd':
-				$GLOBALS['debug']->supress();
-				$sideBasket = $GLOBALS['gui']->displaySideBasket();
-				die($sideBasket);
-				break;
-			case 'rm':
-			case 'remote':
-				$GLOBALS['debug']->supress();
-				$mod_type = (isset($_GET['mod_type'])) ? $_GET['mod_type'] : $_GET['type'];
-				if (!empty($mod_type)) {
-					switch (strtolower($mod_type)) {
-					case 'plugins':
-					case 'gateway':
-						foreach ($GLOBALS['hooks']->load('class.cubecart.construct.callback.gateway') as $hook) include $hook;
-						$folder = (isset($plugin)) ? 'plugins' : 'gateway';
-						$module = $_GET['module'];
-
-						$class_file = CC_ROOT_DIR.'/modules/'.$folder.'/'.$module.'/'.'gateway.class.php';
-
-						if (file_exists($class_file)) {
-							include $class_file;
-							$gateway = new Gateway($GLOBALS['config']->get($module));
-							$command = (isset($_GET['cmd'])) ? strtolower($_GET['cmd']) : null;
-							if (!empty($command)) {
-								# if (method_exists($gateway, $command)) $gateway->{$command}();
-								switch ($_GET['cmd']) {
-								case 'call':
-									if (method_exists($gateway, 'call')) {
-										$gateway->call();
-									}
-									exit;
-									break;
-								case 'process':
-									if (method_exists($gateway, 'process')) {
-										$gateway->process();
-									}
-									break;
-								}
+				case 'ajax_price_format':
+					$GLOBALS['debug']->supress();
+					if(is_numeric($_GET['price'])) {
+						echo json_encode($GLOBALS['tax']->priceFormat($_GET['price']));
+					} else if(is_array($_GET['price'])) {
+						$prices = array();
+						foreach($_GET['price'] as $price) {
+							if(is_numeric($price)) {
+								$prices[] = $GLOBALS['tax']->priceFormat($price);
 							}
 						}
-						break;
-					default;
+						die(json_encode($prices));
+					}
+					exit;
+				break;
+				case 'ajax_email':
+					$GLOBALS['debug']->supress();
+
+					if ($_GET['source']=='newsletter') {
+						$result = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', 'subscriber_id', array('email' => $_POST['subscribe']));
+					} else {
+						$email = isset($_POST['user']['email']) ? $_POST['user']['email'] : $_POST['email'];
+						$result = $GLOBALS['db']->select('CubeCart_customer', 'customer_id', array('email' => $email, 'type' => 1));
+					}
+
+					if ($result) {
+						die(json_encode(false));
+					} else {
+						die(json_encode(true));
+					}
+					break;
+				case 'ajaxadd':
+					$GLOBALS['debug']->supress();
+					$sideBasket = $GLOBALS['gui']->displaySideBasket();
+					die($sideBasket);
+					break;
+				case 'rm':
+				case 'remote':
+					$GLOBALS['debug']->supress();
+					$mod_type = (isset($_GET['mod_type'])) ? $_GET['mod_type'] : $_GET['type'];
+					if (!empty($mod_type)) {
+						switch (strtolower($mod_type)) {
+						case 'plugins':
+						case 'gateway':
+							foreach ($GLOBALS['hooks']->load('class.cubecart.construct.callback.gateway') as $hook) include $hook;
+							$folder = (isset($plugin)) ? 'plugins' : 'gateway';
+							$module = $_GET['module'];
+
+							$class_file = CC_ROOT_DIR.'/modules/'.$folder.'/'.$module.'/'.'gateway.class.php';
+
+							if (file_exists($class_file)) {
+								include $class_file;
+								$gateway = new Gateway($GLOBALS['config']->get($module));
+								$command = (isset($_GET['cmd'])) ? strtolower($_GET['cmd']) : null;
+								if (!empty($command)) {
+									# if (method_exists($gateway, $command)) $gateway->{$command}();
+									switch ($_GET['cmd']) {
+									case 'call':
+										if (method_exists($gateway, 'call')) {
+											$gateway->call();
+										}
+										exit;
+										break;
+									case 'process':
+										if (method_exists($gateway, 'process')) {
+											$gateway->process();
+										}
+										break;
+									}
+								}
+							}
+							break;
+						default;
+							httpredir('index.php');
+						}
+					} else {
 						httpredir('index.php');
 					}
-				} else {
+					break;
+				default:
+					trigger_error('No callback method defined.', E_USER_WARNING);
 					httpredir('index.php');
-				}
-				break;
-			default:
-				trigger_error('No callback method defined.', E_USER_WARNING);
-				httpredir('index.php');
 			}
 		} else if (isset($_GET['_a']) && !empty($_GET['_a'])) {
 				//Clear cart
