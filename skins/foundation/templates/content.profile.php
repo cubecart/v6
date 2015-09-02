@@ -9,7 +9,7 @@
  * Email:  sales@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
-<div>
+
    <h2>{$LANG.account.your_details}</h2>
    <p>{$LANG.account.update_your_details}</p>
    <form action="{$VAL_SELF}" method="post" id="profile_form">
@@ -51,7 +51,7 @@
          </div>
       </div>
    </form>
-</div>
+
 <div class="hide" id="validate_email">{$LANG.common.error_email_invalid}</div>
 <div class="hide" id="validate_firstname">{$LANG.account.error_firstname_required}</div>
 <div class="hide" id="validate_lastname">{$LANG.account.error_lastname_required}</div>
