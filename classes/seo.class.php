@@ -725,13 +725,15 @@ class SEO {
 			$filename = CC_ROOT_DIR.'/sitemap.xml';
 			$mapdata = $sitemap;
 		}
-		if (file_put_contents($filename, $mapdata)) {
-			// Ping Google
-			$request = new Request('www.google.com', '/webmasters/sitemaps/ping');
-			$request->setMethod('get');
-			$request->setData(array('sitemap' => $store_url.'/'.basename($filename)));
-			$request->send();
-			return true;
+		if($GLOBALS['config']->get('config', 'offline')=='0') {
+			if (file_put_contents($filename, $mapdata)) {
+				// Ping Google
+				$request = new Request('www.google.com', '/webmasters/sitemaps/ping');
+				$request->setMethod('get');
+				$request->setData(array('sitemap' => $store_url.'/'.basename($filename)));
+				$request->send();
+				return true;
+			}
 		}
 		return false;
 	}
