@@ -93,8 +93,12 @@ class Language {
 					$cl = $GLOBALS['config']->get('config', 'default_language');
 					$this->_language = (!empty($cl) && file_exists(CC_ROOT_DIR.'/language/'.$cl.'.xml') && $this->_valid($cl)) ? $cl : 'en-GB';
 					
-					//Set the language to the session
-					$GLOBALS['session']->set('language', $this->_language, 'client');
+					if(file_exists(CC_ROOT_DIR.'/language/'.$this->_language.'.xml')) {
+						//Set the language to the session
+						$GLOBALS['session']->set('language', $this->_language, 'client');
+					} else {
+						trigger_error('No valid language found!', E_USER_ERROR);
+					}
 					
 				}
 			}
