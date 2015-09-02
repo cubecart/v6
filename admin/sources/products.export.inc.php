@@ -88,10 +88,6 @@ if (isset($_GET['format']) && !empty($_GET['format'])) {
 				$result['identifier_exists'] = 'TRUE';
 			}
 
-			if (strtolower($_GET['format']) == 'shopping.com') {
-				$result['description'] = addslashes(html_entity_decode($result['description'], ENT_QUOTES));
-			}
-
 			$result['condition'] = (empty($result['condition'])) ? 'new' : $result['condition'];
 
 			# Manufacturer
