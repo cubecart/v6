@@ -164,6 +164,12 @@
                      <option value="g{$group.id}-{$value_id}">{$value_name}</option>
                      {/foreach}
                   </optgroup>
+                  {else if $group.type == 4}
+                  <optgroup label="{$group.name}">
+                     {foreach from=$group.options key=value_id item=value_name}
+                     <option value="g{$group.id}-{$value_id}">{$value_name}</option>
+                     {/foreach}
+                  </optgroup>
                   {else}
                   <option value="{$group.id}">{$group.name}</option>
                   {/if}
