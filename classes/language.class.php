@@ -90,13 +90,12 @@ class Language {
 					$this->_language = (!empty($admin_lang)) ? $admin_lang : $GLOBALS['config']->get('config', 'default_language');
 				} else {
 					//Try the default config language
-					$this->_language = ($GLOBALS['config']->has('config', 'default_language') && !$GLOBALS['config']->isEmpty('config', 'default_language')) ? $GLOBALS['config']->get('config', 'default_language') : 'en-GB';
-					if (!$this->_valid($this->_language)) {
-						trigger_error('No valid language found!', E_USER_ERROR);
-					} else {
-						//Set the language to the session
-						$GLOBALS['session']->set('language', $this->_language, 'client');
-					}
+					$cl = $GLOBALS['config']->get('config', 'default_language');
+					$this->_language = (!empty($cl) && file_exists(CC_ROOT_DIR.'/language/'.$cl.'.xml') && $this->_valid($cl)) ? $cl : 'en-GB';
+					
+					//Set the language to the session
+					$GLOBALS['session']->set('language', $this->_language, 'client');
+					
 				}
 			}
 		} else {
