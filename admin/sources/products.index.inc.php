@@ -373,7 +373,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 		}
 
 		foreach ($old_images as $image_id) {
-			if (!in_array($image_id, $removed_images)) {
+			if (!in_array($image_id, $removed_images) && !in_array($image_id, $img_add)) {
 				$img_add[] = $image_id;
 				if (isset($old_default) && $image_id == $old_default && !isset($default)) {
 					$default = $old_default;
