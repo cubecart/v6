@@ -247,7 +247,8 @@ class Cubecart {
 						case 'gateway':
 							/* Important Notice!
 							Please be careful with this hook that you don't always force $plugin to 'plugin'.
-							This will stop other normal gateways working.
+							This will stop other normal gateways working. Wrap your code in a condition to
+							make sure that it only ever executed when needed.
 							*/
 							foreach ($GLOBALS['hooks']->load('class.cubecart.construct.callback.gateway') as $hook) include $hook;
 							$folder = (isset($plugin)) ? 'plugins' : 'gateway';
