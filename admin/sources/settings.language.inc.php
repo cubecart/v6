@@ -164,6 +164,7 @@ if (isset($_GET['export'])) {
 						'default' => htmlspecialchars($default, ENT_COMPAT, 'UTF-8', false),
 						'value'  => htmlspecialchars($value, ENT_COMPAT, 'UTF-8', false),
 						'defined' => (int)$defined,
+						'multiline' => strstr($value, PHP_EOL) ? true : false
 					);
 					$smarty_data['strings'][] = $assign;
 				}
@@ -174,11 +175,12 @@ if (isset($_GET['export'])) {
 					$defined = (isset($strings[$name]) || isset($custom[$name])) ? true : false;
 					$value = (isset($custom[$name])) ? $custom[$name] : $default;
 					$assign = array(
-						'name'  => $name,
-						'type'  => $type,
-						'default' => htmlspecialchars($default, ENT_COMPAT, 'UTF-8', false),
-						'value'  => htmlspecialchars($value, ENT_COMPAT, 'UTF-8', false),
-						'defined' => (int)$defined,
+						'name'  	=> $name,
+						'type'  	=> $type,
+						'default' 	=> htmlspecialchars($default, ENT_COMPAT, 'UTF-8', false),
+						'value'  	=> htmlspecialchars($value, ENT_COMPAT, 'UTF-8', false),
+						'defined' 	=> (int)$defined,
+						'multiline' => strstr($value, PHP_EOL) ? true : false
 					);
 					$smarty_data['strings'][] = $assign;
 				}
