@@ -345,9 +345,7 @@ function price_inc_options() {
 function add_to_basket(form) {
     var add = $(form).serialize();
     var action = $(form).attr('action').replace(/\?.*/, '');
-    var on_canvas_basket = $('#mini-basket');
     var on_canvas_basket_content = '';
-    var off_canvas_basket_content = $(".right-off-canvas-menu .box-basket-content");
     var parts = action.split("?");
     if (parts.length > 1) {
         action += "&";
@@ -364,9 +362,9 @@ function add_to_basket(form) {
                 var redir = returned.responseText.split('Redir:');
                 window.location = redir[1];
             } else {
-                on_canvas_basket.replaceWith(returned.responseText);
+                $('#mini-basket').replaceWith(returned.responseText);
                 on_canvas_basket_content = $('#mini-basket .box-basket-content').html();
-                off_canvas_basket_content.replaceWith(on_canvas_basket_content);
+                $(".right-off-canvas-menu .box-basket-content").html(on_canvas_basket_content);
                 $(".alert-box").slideUp();
                 mini_basket_action();
             }
