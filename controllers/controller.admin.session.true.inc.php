@@ -19,6 +19,12 @@ if (!isset($_GET['_g']) || !in_array(strtolower($_GET['_g']), array('login', 'lo
 if (isset($_GET['_g']) && in_array($_GET['_g'], array('login', 'password', 'recovery'))) {
 	httpredir('?');
 }
+// Backard compatibility for links to v5 modules
+if(isset($_GET['_g']) && $_GET['_g']=='modules') {
+	$_GET['_g'] = 'plugins';
+	unset($_GET['type']);
+}
+
 if (isset($_GET['_g']) && !empty($_GET['_g']) && $_GET['_g'] != 'plugins') {
 	$GLOBALS['gui']->addBreadcrumb(ucwords($_GET['_g']));
 }
