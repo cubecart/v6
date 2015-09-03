@@ -129,7 +129,7 @@
          <tbody>
             {foreach from=$ORDERS item=order}
             <tr>
-               <td><a href="?_g=orders&action=edit&order_id={$order.cart_order_id}">{$order.cart_order_id}</a></td>
+               <td><a href="?_g=orders&action=edit&order_id={$order.cart_order_id}&source=dashboard">{$order.cart_order_id}</a></td>
                <td>
                   {if $order.icon=='user_registered'}
                   <i class="fa fa-user registered" title="{$LANG.customer.title_key_registered}"></i>
@@ -148,10 +148,10 @@
                <td>{$order.date}</td>
                <td>{$order.total}</td>
                <td>
-                  <a href="?_g=orders&action=edit&order_id={$order.cart_order_id}" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
-                  <a href="?_g=orders&delete={$order.cart_order_id}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
+                  <a href="?_g=orders&action=edit&order_id={$order.cart_order_id}&source=dashboard" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
+                  <a href="?_g=orders&delete={$order.cart_order_id}&source=dashboard" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
                   {if isset($order.notes)}
-                  <a href="?_g=orders&action=edit&order_id={$order.cart_order_id}#order_notes" title="{foreach $order.notes as $note}{$note.time} {$note.content}{"\r\n"}{/foreach}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/note.png" alt="{$LANG.common.notes}"></a>
+                  <a href="?_g=orders&action=edit&order_id={$order.cart_order_id}&source=dashboard#order_notes" title="{foreach $order.notes as $note}{$note.time} {$note.content}{"\r\n"}{/foreach}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/note.png" alt="{$LANG.common.notes}"></a>
                   {/if}
                </td>
             </tr>

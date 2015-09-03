@@ -40,7 +40,11 @@ if (isset($_GET['delete']) && !empty($_GET['delete']) && Admin::getInstance()->p
 	} else {
 		$GLOBALS['main']->setACPWarning($lang['orders']['error_order_delete']);
 	}
-	httpredir(currentPage(array('delete')));
+	if(isset($_GET['source']) && $_GET['source']=='dashboard') {
+		httpredir($glob['adminFile'],'orders');
+	} else {
+		httpredir(currentPage(array('delete')));
+	}
 }
 
 if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders', CC_PERM_EDIT)) {
@@ -177,8 +181,10 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
 	// Hook
 	foreach ($GLOBALS['hooks']->load('admin.order.index.post_process') as $hook) include $hook;
 
-	if (isset($_POST['submit_cont'])) {
-		httpredir(currentPage(null, array('action' => 'edit', 'order_id' => $order_id)));
+	if(isset($_POST['submit_cont'])) {
+		httpredir(currentPage(array('source'), array('action' => 'edit', 'order_id' => $order_id)));
+	} elseif (isset($_GET['source']) && $_GET['source']=='dashboard') {
+		httpredir($glob['adminFile'],'orders');
 	} else {
 		httpredir(currentPage(array('action', 'order_id')));
 	}
