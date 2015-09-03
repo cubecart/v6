@@ -145,8 +145,8 @@
       <p>This setting has been replaced with the layout > products > perpage section of the skins config.xml file wich includes page splits. This setting is ignored for skins that have this block of XML. Please edit the skins config.xml file instead.</p> 
       <p>Example:</p>
 <pre>&lt;layout&gt;
-      &lt;products&gt;
-         &lt;perpage amount="6" /&gt;
+   &lt;products&gt;
+      &lt;perpage amount="6" /&gt;
          &lt;perpage default="true" amount="12" /&gt;
          &lt;perpage amount="24" /&gt;
          &lt;perpage amount="48" /&gt;
