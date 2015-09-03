@@ -113,23 +113,7 @@
       <h3>{$LANG.settings.title_layout}</h3>
       <fieldset>
          <legend>{$LANG.settings.title_display}</legend>
-         {****************************************************************** 
-          * This setting has been replaced with layout > products > perpage 
-          *  section of the skins config.xml file wich includes page splits. 
-          *  Example:
-          *  <layout>
-          *     <products>
-          *        <perpage amount="6" />
-          *        <perpage default="true" amount="12" />
-          *        <perpage amount="24" />
-          *        <perpage amount="48" />
-          *        <perpage amount="96" />
-          *     </products>
-          *  </layout>
-          ****************************************************************** 
-          <div><label for="catalogue_products_per_page">{$LANG.settings.product_per_page}</label><span><input name="config[catalogue_products_per_page]" id="catalogue_products_per_page" class="textbox number" value="{$CONFIG.catalogue_products_per_page}"></span></div>
-          *}
-         <input type="hidden" name="config[catalogue_products_per_page]" value="10">
+          <div><label for="catalogue_products_per_page">{$LANG.settings.product_per_page} (<a href="#" onclick="$('#per_page_note').slideToggle()">Depreciated</a>)</label><span><input name="config[catalogue_products_per_page]" id="catalogue_products_per_page" class="textbox number" value="{$CONFIG.catalogue_products_per_page}"></span></div>
          <div><label for="default_product_sort">{$LANG.settings.default_product_sort}</label>
             <span>
             <select name="config[product_sort_column]" id="product_sort_column" class="textbox">
@@ -156,6 +140,20 @@
          <div><label for="disable_checkout_terms">{$LANG.settings.disable_checkout_terms}</label><span><input name="config[disable_checkout_terms]" id="disable_checkout_terms" type="hidden" class="toggle" value="{$CONFIG.disable_checkout_terms}"></span></div>
          <div><label for="default_rss_feed">{$LANG.settings.default_rss}</label><span><input name="config[default_rss_feed]" id="default_rss_feed" class="textbox" value="{$CONFIG.default_rss_feed}"></span></div>
       </fieldset>
+      <div style="display:none" id="per_page_note">
+      <h3>{$LANG.settings.product_per_page}</h3>
+      <p>This setting has been replaced with the layout > products > perpage section of the skins config.xml file wich includes page splits. This setting is ignored for skins that have this block of XML. Please edit the skins config.xml file instead.</p> 
+      <p>Example:</p>
+<pre>&lt;layout&gt;
+      &lt;products&gt;
+         &lt;perpage amount="6" /&gt;
+         &lt;perpage default="true" amount="12" /&gt;
+         &lt;perpage amount="24" /&gt;
+         &lt;perpage amount="48" /&gt;
+      &lt;perpage amount="96" /&gt;
+   &lt;/products&gt;
+&lt;/layout&gt;</pre>
+</div>
       <fieldset>
          <legend>{$LANG.settings.title_popular_latest}</legend>
          <div><label for="catalogue_latest_products">{$LANG.settings.product_latest}</label><span><select name="config[catalogue_latest_products]" id="catalogue_latest_products" class="textbox">
