@@ -118,6 +118,7 @@ class User {
 	##############################################
 
 	final protected function __construct() {
+
 		//If there is a login attempt
 		if (isset($_POST['username']) && isset($_POST['password']) && !empty($_POST['username']) && !empty($_POST['password'])) {
 
@@ -370,6 +371,11 @@ class User {
 			} else {
 				$data['registered']  = time();
 				$data['type']    = $type;
+
+				$customer_id = $this->_validCustomerId();
+				if($customer_id) {
+					$data['customer_id']  = $customer_id;
+				}
 				$customer_id = $GLOBALS['db']->insert('CubeCart_customer', $data);
 			}
 			if ($login) {
@@ -941,5 +947,27 @@ class User {
 			$match = true;
 		}
 		return $match;
+	}
+	/**
+	 * New Customer ID must not be less than max order summary customer ID
+	 *
+	 * @return false/int
+	 */
+	private function _validCustomerId() {
+		$customers = $GLOBALS['db']->misc("SHOW TABLE STATUS LIKE '".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_customer'");
+		
+		$orders = $GLOBALS['db']->misc("SELECT MAX(`customer_id`) as `max_id` FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary`");
+		
+		// Do we have any orders yet and is the max customer_id > 0?
+		if($orders && $orders[0]['max_id'] > 0) {
+			// Do we have any customers yet and is the auto increment > 0?
+			if($customers && $customers[0]['Auto_increment'] > 0) {
+				// Are there existing customers orders with higher customer id than next customer id?
+				if($orders[0]['max_id'] >= $customers[0]['Auto_increment']) {
+					return $orders[0]['max_id']+1;
+				}
+			}
+		}
+		return false;
 	}
 }
