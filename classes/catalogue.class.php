@@ -28,6 +28,7 @@ class Catalogue {
 	private $_category_translations = false;
 	private $_option_required = false;
 	private $_options_line_price = 0;
+	private $_sort_by_relevance = false;
 
 	const OPTION_SELECT     = 0;
 	const OPTION_TEXTBOX    = 1;
@@ -226,7 +227,7 @@ class Catalogue {
 		}
 
 		// Sorting
-		$GLOBALS['smarty']->assign('SORTING', ($sorting = $this->displaySort((isset($_GET['cat_id']) && $_GET['cat_id'] == 'sale'))) ? $sorting : false);
+		$GLOBALS['smarty']->assign('SORTING', $this->displaySort());
 				
 		$GLOBALS['smarty']->assign('PAGE_SPLITS', $GLOBALS['gui']->perPageSplits());
 		
@@ -511,8 +512,9 @@ class Catalogue {
 	 * @return array
 	 */
 	public function displaySort($search = false) {
+		
 		// Sort
-		if ($search) {
+		if ($search || $this->_sort_by_relevance) {
 			$sorters['Relevance'] = $GLOBALS['language']->common['relevance'];
 		}
 		$sorters['name']  = $GLOBALS['language']->common['name'];
@@ -1592,13 +1594,14 @@ class Catalogue {
 						$count = $GLOBALS['db']->query($q2, false, 0);
 						$this->_category_count  = (int)count($count);
 						$this->_category_products = $search;
+						$this->_sort_by_relevance = true;
 						return true;
 					} elseif ($search_mode == 'fulltext') {
 						return $this->searchCatalogue($original_search_data, 1, $per_page, 'like');
 					}
 
 				} else {
-
+					$this->_sort_by_relevance = false;
 					$rlike = '';
 					if (!empty($search_data['keywords'])) {
 						$searchwords = preg_split( '/[\s,]+/', $GLOBALS['db']->sqlSafe($search_data['keywords']));
