@@ -522,8 +522,8 @@ class SEO {
 			if (!empty($fragment)) {
 				$append[] = '#'. $fragment;
 			}
-
-			if (!empty($append)) {
+			
+			if (is_array($append)) {
 				return implode('', $append);
 			}
 		}
@@ -588,6 +588,12 @@ class SEO {
 			}
 
 		if (preg_match('#^(.*/)?[\w]+.[a-z]+\?_a\=([\w]+)\&(amp;)?([\w\[\]]+)\=([\w\-\_]+)([^"\']*)$#ieS', $path, $match)) {
+			
+			if(in_array($match[2], $this->_static_sections)) {
+				if(!empty($match[4]) && !empty($match[5])) {
+					$match[6] = '&'.$match[4].'='.$match[5];
+				}
+			}
 			return $this->generatePath($match[5], $match[2], $match[4], true, true).$this->queryString($match[6]);
 		} else {
 			return $path;
