@@ -157,9 +157,12 @@ jQuery(document).ready(function() {
     });
     
     $('.show_address_form').click(function() {
-        $('#register_false_address').hide();
-        $('#checkout_register_form').show();
+        show_address_form();
     });
+
+    if($('div.alert').length) {
+        show_address_form(); 
+    }
 
     if($('#delivery_is_billing:checkbox').length) {
         if($('#delivery_is_billing:checkbox').prop('checked') == true) {
@@ -397,6 +400,11 @@ function set_product_view(delay) {
     if ($.cookie('product_view') == 'grid') {
         grid_view(delay, null);
     }
+}
+
+function show_address_form() {
+    $('#register_false_address').hide();
+    $('#checkout_register_form').show(); 
 }
 
 function mini_basket_action() {
