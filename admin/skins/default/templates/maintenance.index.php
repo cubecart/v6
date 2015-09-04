@@ -141,6 +141,24 @@
   <div><textarea rows="10" cols="70">{$UPGRADE_ERROR_LOG}</textarea></div>
   <a href="?_g=maintenance&node=index&delete=upgrade_error_log#upgrade" class="delete">{$LANG.maintain.delete_error_log}</a>
   {/if}
+  <br>
+  <h3>{$LANG.maintain.upgrade_history}</h3>
+  <table>
+  	<thead>
+  		<tr>
+  			<th>{$LANG.dashboard.tech_version_cc}</th>
+  			<th>{$LANG.common.date}</th>
+  		</tr>
+  	</thead>
+  	<tbody>
+  	{foreach from=$VERSIONS item=version}
+  		<tr>
+  		  <td>{$version.version}</td>
+  		  <td>{$version.time|date_format:"%A, %e %B %Y"}</td>
+  		</tr>
+  	{/foreach} 
+  	</tbody>
+  </table>
 </div>
 <div id="database" class="tab_content">
   <h3>{$LANG.maintain.title_db}</h3>

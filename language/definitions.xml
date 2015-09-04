@@ -1246,6 +1246,7 @@
     <string name="example_code_snippet_xml" introduced="5.2.0"><![CDATA[An example of an import XML feed can be found <a href="docs/examples/code_snippet_import.xml">here</a>. Please use the &quot;Help&quot; link for further information.]]></string>
   </group>
   <group name="maintain">
+    <string name="upgrade_history" introduced="6.0.7"><![CDATA[Upgrade History]]></string>
     <string name="truncate_seo_custom" introduced="6.0.0"><![CDATA[Clear all custom defined SEO URL's]]></string>
     <string name="truncate_seo_auto" introduced="6.0.0"><![CDATA[Clear all auto generated SEO URL's]]></string>
     <string name="truncate_seo_warning" introduced="6.0.0"><![CDATA[Danger: These actions can not be undone!]]></string>

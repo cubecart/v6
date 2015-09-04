@@ -50,6 +50,10 @@ if ($_SESSION['setup']['complete']==true) {
 }
 */
 
+$version_history = $GLOBALS['db']->select('CubeCart_history', false, false, "`version` DESC");
+
+$GLOBALS['smarty']->assign('VERSIONS', $version_history);
+
 if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 	$file_path = CC_ROOT_DIR.'/backup/'.$_GET['restore'];
 	require_once $pclzip_path;
