@@ -591,7 +591,7 @@ class SEO {
 			
 			if(in_array($match[2], $this->_static_sections)) {
 				if(!empty($match[4]) && !empty($match[5])) {
-					$match[6] = '&'.$match[4].'='.$match[5];
+					$match[6] = $match[6].'&'.$match[4].'='.$match[5];
 				}
 			}
 			return $this->generatePath($match[5], $match[2], $match[4], true, true).$this->queryString($match[6]);
