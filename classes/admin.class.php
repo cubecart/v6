@@ -43,6 +43,12 @@ class Admin {
 	 * @var array
 	 */
 	private $_sections  = array();
+	/**
+	 * Length of validation key
+	 *
+	 * @var int
+	 */
+	private $_validate_key_len  = 32;
 
 	/**
 	 * Class instance
@@ -150,7 +156,7 @@ class Admin {
 	 * @return bool
 	 */
 	public function passwordReset($email, $validation, $password) {
-		if (filter_var($email, FILTER_VALIDATE_EMAIL) && !empty($validation) && !empty($password['new']) && !empty($password['confirm']) && ($password['new'] === $password['confirm'])) {
+		if ($GLOBALS['session']->has('recover_login') && filter_var($email, FILTER_VALIDATE_EMAIL) && strlen($validation) == $this->_validate_key_len && !empty($password['new']) && !empty($password['confirm']) && ($password['new'] === $password['confirm'])) {
 			if (($check = $GLOBALS['db']->select('CubeCart_admin_users', array('admin_id', 'username'), array('email' => $email, 'verify' => $validation, 'status' => '1'))) !== false) {
 
 				// Remove any blocks
@@ -168,6 +174,9 @@ class Admin {
 					'email'  => $email,
 					'verify' => $validation,
 				);
+
+				$GLOBALS['session']->delete('recover_login');
+
 				if ($GLOBALS['db']->update('CubeCart_admin_users', $record, $where)) {
 					return $this->_authenticate($check[0]['username'], $password['new']);
 				}
@@ -187,7 +196,7 @@ class Admin {
 		if (!empty($username) && !empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
 			if (($check = $GLOBALS['db']->select('CubeCart_admin_users', array('admin_id', 'email', 'language', 'name'), array('username' => $username, 'email' => $email, 'status' => '1'))) !== false) {
 				// Generate validation key
-				$validation = Password::getInstance()->createSalt();
+				$validation = randomString($this->_validate_key_len);
 				if ($GLOBALS['db']->update('CubeCart_admin_users', array('verify' => $validation), array('admin_id' => (int)$check[0]['admin_id']))) {
 					// Send email
 					$mailer = Mailer::getInstance();
@@ -197,6 +206,7 @@ class Admin {
 					$content = $mailer->loadContent('admin.password_recovery', $check[0]['language'], $data);
 					if ($content) {
 						$GLOBALS['smarty']->assign('DATA', $data);
+						$GLOBALS['session']->set('recover_login', true);
 						return $mailer->sendEmail($check[0]['email'], $content);
 					}
 				}
