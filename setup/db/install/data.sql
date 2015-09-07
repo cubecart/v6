@@ -377,6 +377,7 @@ INSERT INTO `CubeCart_geo_country` (`id`, `iso`, `name`, `iso3`, `numcode`) VALU
 INSERT INTO `CubeCart_geo_country` (`id`, `iso`, `name`, `iso3`, `numcode`) VALUES (3, 'DZ', 'Algeria', 'DZA', 012); #EOQ
 INSERT INTO `CubeCart_geo_country` (`id`, `iso`, `name`, `iso3`, `numcode`) VALUES (4, 'AS', 'American Samoa', 'ASM', 016); #EOQ
 INSERT INTO `CubeCart_geo_country` (`id`, `iso`, `name`, `iso3`, `numcode`) VALUES (5, 'AD', 'Andorra', 'AND', 020); #EOQ
+INSERT INTO `CubeCart_geo_country` (`id`, `iso`, `name`, `iso3`, `numcode`) VALUES (6, 'AO', 'Angola', 'AGO', 244); #EOQ
 INSERT INTO `CubeCart_geo_country` (`id`, `iso`, `name`, `iso3`, `numcode`) VALUES (7, 'AI', 'Anguilla', 'AIA', 660); #EOQ
 INSERT INTO `CubeCart_geo_country` (`id`, `iso`, `name`, `iso3`, `numcode`) VALUES (8, 'AQ', 'Antarctica', 'ATA', 010); #EOQ
 INSERT INTO `CubeCart_geo_country` (`id`, `iso`, `name`, `iso3`, `numcode`) VALUES (9, 'AG', 'Antigua and Barbuda', 'ATG', 028); #EOQ
