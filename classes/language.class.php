@@ -561,6 +561,11 @@ class Language {
 	 * @return bool
 	 */
 	public function importLanguage($file, $overwrite = false) {
+		if(!preg_match('/.xml$/',$file['name']['file'])) {
+			trigger_error('Please upload a valid XML file.');
+			return false;
+		}
+
 		$temp_name   = $file['tmp_name']['file'];
 		$destination  = CC_LANGUAGE_DIR.$file['name']['file'];
 		$file_content  = file_get_contents($temp_name);
