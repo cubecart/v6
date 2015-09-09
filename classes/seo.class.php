@@ -988,7 +988,7 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
 	private function _sitemap_link($input, $updated = false, $type = false) {
 		$updated = (!$updated) ? time() : $updated;
 
-		$store_url = (CC_SSL) ? $GLOBALS['config']->get('config', 'standard_url') : $GLOBALS['storeURL'];
+		$store_url = (CC_SSL) ? $GLOBALS['config']->get('config', 'ssl_url') : $GLOBALS['config']->get('config', 'standard_url');
 
 		if (!isset($input['url']) && !empty($type)) {
 			$input['url'] = $store_url.'/'.$this->generatePath($input['id'], $type, '', false, true);
