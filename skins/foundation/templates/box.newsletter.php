@@ -22,7 +22,7 @@
       <div class="hide">{$LANG.newsletter.enter_email_signup}</div>
       <div class="row collapse">
          <div class="small-8 medium-9 columns"><input name="subscribe" id="newsletter_email" type="text" size="18" maxlength="250" title="{$LANG.newsletter.subscribe}"/></div>
-         <div class="small-4 medium-9 columns"><input type="submit" class="button postfix" value="{$LANG.newsletter.subscribe}"></div>
+         <div class="small-4 medium-3 columns"><input type="submit" class="button postfix" value="{$LANG.newsletter.subscribe}"></div>
       </div>
    </form>
    <div class="hide" id="validate_email">{$LANG.common.error_email_invalid}</div>
