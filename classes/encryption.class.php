@@ -99,6 +99,27 @@ class Encryption {
 	}
 
 	/**
+     * Decrypt CC3/CC4 data 
+     *
+     * @param string $data
+     * @param string $cart_order_id
+     * @return string/false
+     */
+    public function decryptDepreciated($data, $cart_order_id) {
+        $keyArray = array($cart_order_id);
+        $this->_td_old  = mcrypt_module_open(MCRYPT_RIJNDAEL_256, '', 'ecb', '');
+        $this->_iv_old  = mcrypt_create_iv(mcrypt_enc_get_iv_size($this->_td_old), MCRYPT_RAND);
+        $this->_ks_old  = mcrypt_enc_get_key_size($this->_td_old);
+        $this->_key_old = substr(md5(implode('@', $keyArray)), 0, $this->_ks_old);
+        if (!empty($data)) {
+            mcrypt_generic_init($this->_td_old, $this->_key_old, $this->_iv_old);
+            $stringDecrypted = mdecrypt_generic($this->_td_old, $data);
+            mcrypt_generic_deinit($this->_td_old);
+            return trim($stringDecrypted);
+        }
+    }
+
+	/**
 	 * Encrypt data
 	 *
 	 * @param string $data
