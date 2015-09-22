@@ -2203,7 +2203,7 @@ class Cubecart {
 		if ($GLOBALS['user']->is()) {
 			$GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->account['your_account'], 'index.php?_a=account');
 			$GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->account['your_orders'], currentPage(array('cart_order_id'), null, false));
-			if (isset($_GET['cart_order_id']) && $GLOBALS['order']->validOrderId(trim($_GET['cart_order_id']))) {
+			if (isset($_GET['cart_order_id']) && preg_match('#^[0-9]{6}-[0-9]{6}-[0-9]{4}$#i', trim($_GET['cart_order_id']))) {
 				if (($orders = $GLOBALS['db']->select('CubeCart_order_summary', false, array('customer_id' => $GLOBALS['user']->get('customer_id'), 'cart_order_id' => $_GET['cart_order_id']))) !== false) {
 					$template = 'templates/content.receipt.php';
 					$order = $orders[0];
@@ -2293,7 +2293,7 @@ class Cubecart {
 					httpredir(currentPage(array('cart_order_id')));
 				}
 			} else {
-				if (isset($_GET['cancel']) && $GLOBALS['order']->validOrderId(trim($_GET['cancel']))) {
+				if (isset($_GET['cancel']) && preg_match('#^[0-9]{6}-[0-9]{6}-[0-9]{4}$#i', trim($_GET['cancel']))) {
 					$order = Order::getInstance();
 					if ($order->orderStatus(Order::ORDER_CANCELLED, $_GET['cancel'])) {
 						// Specify order was cancelled by customer
@@ -2306,7 +2306,7 @@ class Cubecart {
 						$GLOBALS['gui']->setError($GLOBALS['language']->orders['notify_order_cancelled']);
 					}
 					httpredir(currentPage(array('cancel')));
-				} else if(isset($_GET['reorder']) && $GLOBALS['order']->validOrderId(trim($_GET['reorder']))) {
+				} else if(isset($_GET['reorder']) && preg_match('#^[0-9]{6}-[0-9]{6}-[0-9]{4}$#i', trim($_GET['reorder']))) {
 					$basket = $GLOBALS['db']->select('CubeCart_order_summary',array('basket'),array('cart_order_id'=>$_GET['reorder'], 'customer_id' => $GLOBALS['user']->get('customer_id')));
 					$past_data = unserialize($basket[0]['basket']);
 					$GLOBALS['cart']->basket['contents'] = $past_data['contents'];
@@ -2353,7 +2353,7 @@ class Cubecart {
 		} else {
 
 			// Order lookup for unregistered users
-			if (isset($_POST['cart_order_id']) && isset($_POST['email']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) && $GLOBALS['order']->validOrderId(trim($_POST['cart_order_id']))) {
+			if (isset($_POST['cart_order_id']) && isset($_POST['email']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) && preg_match('#^[0-9]{6}-[0-9]{6}-[0-9]{4}$#i', trim($_POST['cart_order_id']))) {
 
 				$GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->orders['my_order'], currentPage());
 				if (($orders = $GLOBALS['db']->select('CubeCart_order_summary', false, array('email' => $_POST['email'], 'cart_order_id' => $_POST['cart_order_id']))) !== false) {
@@ -2399,7 +2399,7 @@ class Cubecart {
 				}
 			} else {
 				// Display a search page
-				$cart_oder_id = $GLOBALS['order']->validOrderId(trim($_GET['cart_order_id'])) ? trim($_GET['cart_order_id']) : '';
+				$cart_oder_id = preg_match('#^[0-9]{6}-[0-9]{6}-[0-9]{4}$#i', trim($_GET['cart_order_id'])) ? trim($_GET['cart_order_id']) : '';
 				$GLOBALS['smarty']->assign('ORDER_NUMBER', $cart_oder_id);
 				$GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->orders['search'], currentPage());
 			}
