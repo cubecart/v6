@@ -736,6 +736,19 @@ class Order {
 		return false;
 	}
 
+	/**
+	 * Validate order ID
+	 *
+	 * @param string $order_id
+	 * @return bool
+	 */
+	public static function validOrderId($order_id) {
+		if(preg_match('#^[0-9]{6}-[0-9]{6}-[0-9]{4}$#i', $order_id)) {
+			return true;
+		}
+		return false;
+	}
+
 	//=====[ Private ]=======================================
 
 	/**
