@@ -93,14 +93,14 @@
                      <td>{if !empty($order.ship_method)}{$order.ship_method|replace:'_':' '}{if !empty($order.ship_product)} ({$order.ship_product}){/if}{else}{$LANG.basket.shipping}{/if}</td>
                      <td class="text-right">{$order.shipping}</td>
                   </tr>
-                  {foreach from=$TAXES item=tax}
+                  {foreach from=$order.taxes item=tax}
                   <tr>
                      <td colspan="2"></td>
                      <td>{$tax.name}</td>
                      <td class="text-right">{$tax.value}</td>
                   </tr>
                   {/foreach}
-                  {if $DISCOUNT}
+                  {if isset($order.discount_type)}
                   <tr>
                      <td colspan="2"></td>
                      <td>{$LANG.basket.total_discount}</td>
