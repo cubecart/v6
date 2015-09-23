@@ -54,7 +54,7 @@
 	<p>{$LANG.filemanager.file_upload_note}</p>
 	{/if}
 	<div>
-	  <label for="uploader">{$LANG.filemanager.file_upload}</label><span><input name="file" id="uploader" type="file" class="multiple"></span>
+	  <label for="uploader">{$LANG.filemanager.file_upload} ({$LANG.common.max}: {$UPLOAD_LIMIT})</label><span><input name="file" id="uploader" type="file" class="multiple"></span>
 	</div>
   </div>
   <div id="folder" class="tab_content">

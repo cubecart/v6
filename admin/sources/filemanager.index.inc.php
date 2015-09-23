@@ -73,7 +73,7 @@ if (Admin::getInstance()->permissions('filemanager', CC_PERM_DELETE) && isset($_
 	}
 	httpredir(currentPage(array('delete')));
 }
-
+$GLOBALS['smarty']->assign('UPLOAD_LIMIT', ini_get('post_max_size'));
 if (isset($_GET['fm-edit']) && is_numeric($_GET['fm-edit'])) {
 	$page_content = $fm->editor($_GET['fm-edit']);
 } else {

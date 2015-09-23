@@ -370,5 +370,6 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 		}
 	}
 	$GLOBALS['smarty']->assign('DISPLAY_FORM',true);
+	$GLOBALS['smarty']->assign('UPLOAD_LIMIT', ini_get('upload_max_filesize'));
 	$page_content = $GLOBALS['smarty']->fetch('templates/products.import.php');
 }

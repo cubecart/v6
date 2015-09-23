@@ -14,7 +14,7 @@
   <div id="general" class="tab_content">
   <h3>{$LANG.catalogue.title_import}</h3>
 	<fieldset><legend>{$LANG.catalogue.title_import_csv}</legend>
-	  <div><label for="import_source">{$LANG.catalogue.import_source}</label><span><input type="file" name="source" id="import_source"></span></div>
+	  <div><label for="import_source">{$LANG.catalogue.import_source} ({$LANG.common.max}: {$UPLOAD_LIMIT})</label><span><input type="file" name="source" id="import_source"></span></div>
 	  <div><label for="import_format">{$LANG.catalogue.import_format}</label><span><select name="format" id="import_format">
 		<option value="">{$LANG.catalogue.unknown_format}</option>
 	  </select></span></div>
