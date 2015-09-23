@@ -104,6 +104,7 @@ jQuery(document).ready(function() {
         }
     });
     $("#newsletter_form, #newsletter_form_box").validate({
+        onkeyup: false,
         rules: {
             subscribe: {
                 required: true,
