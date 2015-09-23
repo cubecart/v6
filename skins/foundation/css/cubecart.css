@@ -255,6 +255,9 @@ button.small, .button.small {
 form#newsletter_form_box .button {
     padding: 0 1rem;
 }
+span.button {
+    cursor: not-allowed;
+}
 /* Small viewport only */
 @media only screen and (max-width: 40em) {
   .small-collapse {

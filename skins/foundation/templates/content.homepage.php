@@ -15,7 +15,7 @@
    {$DOCUMENT.content}
 </div>
 {/if}
-{if isset($LATEST_PRODUCTS)}
+{if $LATEST_PRODUCTS}
 <div id="content_latest_products">
    <h2>{$LANG.catalogue.latest_products}</h2>
    <ul class="small-block-grid-1 medium-block-grid-3 large-block-grid-3" data-equalizer>

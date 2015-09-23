@@ -10,6 +10,7 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
 <div class="right text-center show-for-medium-up" id="box-currency">
+   {if count($CURRENCIES)>1}
    <a href="#" data-dropdown="currency-switch" class="button white small">{$CURRENT_CURRENCY.symbol_left|escape:'htmlall'} {$CURRENT_CURRENCY.code} {$CURRENT_CURRENCY.symbol_right|escape:'htmlall'}</a>
    <ul id="currency-switch" data-dropdown-content class="f-dropdown">
       {foreach from=$CURRENCIES item=currency}
@@ -18,4 +19,7 @@
       {/if}
       {/foreach}
    </ul>
+   {else}
+   	<span class="button white small">{$CURRENT_CURRENCY.symbol_left|escape:'htmlall'} {$CURRENT_CURRENCY.code} {$CURRENT_CURRENCY.symbol_right|escape:'htmlall'}</span>
+   {/if}
 </div>

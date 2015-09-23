@@ -835,7 +835,7 @@ class GUI {
 	 */
 	private function _displayCurrencySwitch() {		
 		if (($currencies = $GLOBALS['db']->select('CubeCart_currency', false, array('active' => '1'))) !== false) {
-			if (count($currencies) > 1) {
+			if (count($currencies) > 0) {
 				$vars = array();
 				foreach ($currencies as $offset => $currency) {
 					$currency['selected']  = ($GLOBALS['session']->has('currency', 'client') && $GLOBALS['session']->get('currency', 'client') == $currency['code'] || !$GLOBALS['session']->has('currency', 'client') && $GLOBALS['config']->get('config', 'default_currency') == $currency['code']) ? 'selected="selected"' : '';
