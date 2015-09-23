@@ -236,6 +236,7 @@ jQuery(document).ready(function() {
                 product_list.append(list);
                 set_product_view(0)
                 $(next_link).replaceWith(next);
+                init_add_to_basket();
             }
         });
     });
@@ -290,6 +291,16 @@ jQuery(document).ready(function() {
         $('.field_small_only').attr('disabled', true);
     }
 });
+
+function init_add_to_basket() {
+    $("form.add_to_basket").each(function(index, el)  {
+        $(el).validate({
+            submitHandler: function(form) {
+                add_to_basket(form);
+            }
+        });
+    });
+}
 
 function price_inc_options() {
     var action = $('form.add_to_basket').attr('action');
