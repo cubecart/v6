@@ -360,6 +360,16 @@ if (isset($_REQUEST['emptyRequestLogs']) && Admin::getInstance()->permissions('m
 	$clear_post = true;
 }
 
+if (isset($_POST['clearSearch']) && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
+	$GLOBALS['cache']->clear();
+	if ($GLOBALS['db']->truncate('CubeCart_search')) {
+		$GLOBALS['main']->setACPNotify($lang['maintain']['notify_search_clear']);
+	} else {
+		$GLOBALS['main']->setACPWarning($lang['maintain']['error_search_clear']);
+	}
+	$clear_post = true;
+}
+
 if (isset($_POST['clearCache']) && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
 	$GLOBALS['cache']->clear();
 	$GLOBALS['cache']->tidy();
