@@ -89,6 +89,7 @@ class Ajax {
 					foreach ($results as $result) {
 						$result['state'] = getStateFormat($result['state']);
 						$result['country'] = getCountryFormat($result['country']);
+						$result['description'] = empty($result['description']) ? $result['line1'].', '.$result['postcode'] : $result['description'];
 						$data[]    = $result;
 					}
 				}

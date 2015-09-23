@@ -382,6 +382,7 @@ if (isset($_GET['action'])) {
 			if (($addresses = $GLOBALS['db']->select('CubeCart_addressbook', false, array('customer_id' => $summary[0]['customer_id']))) !== false) {
 				foreach ($addresses as $key => $address) {
 					$address['country_name'] = getCountryFormat($address['country']);
+					$address['description'] = empty($address['description']) ? $address['line1'].', '.$address['postcode'] : $address['description'];
 					$address['key']    = $key;
 					$smarty_data['list_address'][] = $address;
 				}
