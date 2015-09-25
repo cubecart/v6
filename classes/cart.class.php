@@ -933,7 +933,7 @@ class Cart {
 			$tax_on = ($GLOBALS['config']->get('config', 'basket_tax_by_delivery')) ? 'delivery_address' : 'billing_address';
 
 			// Fetch the basket data
-			$basket_data = ($this->basket) ? $this->basket : false;
+			$basket_data = ($GLOBALS['cart']->basket) ? $GLOBALS['cart']->basket : false;
 			if (!isset($basket_data['delivery_address'])) {
 				$basket_data['delivery_address'] = $GLOBALS['user']->formatAddress('',false);
 				$this->basket['delivery_address'] = $basket_data['delivery_address'];
