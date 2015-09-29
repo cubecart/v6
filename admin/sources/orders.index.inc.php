@@ -500,6 +500,8 @@ if (isset($_GET['action'])) {
 					if (isset($summary[$field])) $summary[$field] = Tax::getInstance()->priceFormat($summary[$field]);
 				}
 				$summary['state_d'] = (is_numeric($summary['state_d'])) ? getStateFormat($summary['state_d']) : $summary['state_d'];
+				$summary['state'] = (is_numeric($summary['state'])) ? getStateFormat($summary['state']) : $summary['state'];
+				$summary['country'] = getCountryFormat($summary['country']);
 				$summary['country_d'] = getCountryFormat($summary['country_d']);
 				$summary['order_date'] = formatTime($summary['order_date'], false, true);
 				$summary['ship_date'] = ((int)(str_replace('-', '', $summary['ship_date'])) > 0) ? formatDispatchDate($summary['ship_date']) : '';
