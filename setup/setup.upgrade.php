@@ -253,7 +253,7 @@ if (!isset($_SESSION['setup']['permissions'])) {
 					include $file_php;
 				}
 				## Add version history record if less than current as its added at the end
-				if (!$db->select('CubeCart_history', false, array('version' => $version))) {
+				if (version_compare(CC_VERSION, '4.0.0') >= 0 && !$db->select('CubeCart_history', false, array('version' => $version))) {
 					$db->insert('CubeCart_history', array('version' => $version, 'time' => time()));
 				}
 				break;
@@ -280,8 +280,8 @@ if (!isset($_SESSION['setup']['permissions'])) {
 				}
 			}
 
-			// Set version number
-			if (!$GLOBALS['db']->select('CubeCart_history', false, array('version' => CC_VERSION))) {
+			## Set version number
+			if (version_compare(CC_VERSION, '4.0.0') >= 0 && !$GLOBALS['db']->select('CubeCart_history', false, array('version' => CC_VERSION))) {
 				$GLOBALS['db']->insert('CubeCart_history', array('version' => CC_VERSION, 'time' => time()));
 			}
 
