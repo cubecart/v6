@@ -520,6 +520,7 @@ if (isset($_GET['action'])) {
 			$store_logo = $GLOBALS['gui']->getLogo(true, 'invoices');
 			$GLOBALS['smarty']->assign('STORE_LOGO', $store_logo);
 			$GLOBALS['smarty']->assign('STORE', array(
+					'name' => $GLOBALS['config']->get('config', 'store_name'),
 					'address' => $GLOBALS['config']->get('config', 'store_address'),
 					'county' => getStateFormat($GLOBALS['config']->get('config', 'store_zone')),
 					'country' => getCountryFormat($GLOBALS['config']->get('config', 'store_country')),
