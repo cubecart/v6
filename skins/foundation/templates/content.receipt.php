@@ -67,9 +67,9 @@
    <thead>
       <tr>
          <th>{$LANG.common.product}</th>
-         <th>{$LANG.catalogue.price_each}</th>
-         <th>{$LANG.common.quantity}</th>
-         <th>{$LANG.common.price}</th>
+         <th class="text-center">{$LANG.catalogue.price_each}</th>
+         <th class="text-center">{$LANG.common.quantity}</th>
+         <th class="text-right">{$LANG.common.price}</th>
       </tr>
    </thead>
    <tbody>
@@ -81,7 +81,7 @@
             <p>{foreach from=$item.options item=option}{$option}<br>{/foreach}</p>
             {/if}
          </td>
-         <td class="text-right">{$item.price}</td>
+         <td class="text-center">{$item.price}</td>
          <td class="text-center">{$item.quantity}</td>
          <td class="text-right">{$item.price_total}</td>
       </tr>
