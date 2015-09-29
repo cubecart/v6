@@ -51,7 +51,7 @@
    {/foreach}
    <table class="expand">
       <tr>
-         <td>
+         <td colspan="2">
             {$LANG.basket.total_sub}
          </td>
          <td width="10%" class="text-right">
@@ -60,9 +60,9 @@
       </tr>
       {if isset($SHIPPING)}
       <tr>
+         <td>{$LANG.basket.shipping}</td>
          <td>
-            {$LANG.basket.shipping}
-            <select name="shipping" class="field_small_only">
+            <select name="shipping" class="field_small_only nomarg">
                <option value="">{$LANG.form.please_select}</option>
                {foreach from=$SHIPPING key=group item=methods}
                {if $HIDE_OPTION_GROUPS ne '1'}
@@ -101,7 +101,7 @@
       {/if}
       {foreach from=$TAXES item=tax}
       <tr>
-         <td>
+         <td colspan="2">
             {$tax.name}
          </td>
          <td width="10%" class="text-right">
@@ -111,7 +111,7 @@
       {/foreach}
       {foreach from=$COUPONS item=coupon}
       <tr>
-         <td>
+         <td colspan="2">
             <a href="{$VAL_SELF}&remove_code={$coupon.remove_code}" title="{$LANG.common.remove}">{$coupon.voucher}</a>
          </td>
          <td width="10%" class="text-right">
@@ -121,7 +121,7 @@
          {/foreach}
          {if isset($DISCOUNT)}
       <tr>
-         <td>
+         <td colspan="2">
             {$LANG.basket.total_discount}
          </td>
          <td width="10%" class="text-right">
@@ -130,7 +130,7 @@
       </tr>
       {/if}
       <tr>
-         <td>
+         <td colspan="2">
             {$LANG.basket.total_grand}
          </td>
          <td width="10%" class="text-right">
