@@ -61,6 +61,7 @@
       {if isset($SHIPPING)}
       <tr>
          <td>
+            {$LANG.basket.shipping}
             <select name="shipping" class="field_small_only">
                <option value="">{$LANG.form.please_select}</option>
                {foreach from=$SHIPPING key=group item=methods}
