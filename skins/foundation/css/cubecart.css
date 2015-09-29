@@ -252,6 +252,10 @@ button.small, .button.small {
     position: absolute;
     z-index: 1000
 }
+#getEstimateClose {
+    color: #aaa;
+    cursor: pointer; cursor: hand;
+}
 form#newsletter_form_box .button {
     padding: 0 1rem;
 }
