@@ -258,8 +258,14 @@ form#newsletter_form_box .button {
 span.button {
     cursor: not-allowed;
 }
+
 /* Small viewport only */
 @media only screen and (max-width: 40em) {
+  
+  #colorbox.reveal-modal {
+      min-height:0vh !important;
+      width: 100%;
+  }
   .small-collapse {
     padding:0;
     margin:0;
