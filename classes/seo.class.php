@@ -247,9 +247,7 @@ class SEO {
 						$path = 'cat'.$id;
 					}
 
-					if($GLOBALS['config']->get('config', 'v4seo') == '1') {
-						$path = $path.'/cat_'.$id;	
-					} elseif($GLOBALS['config']->get('config', 'seo_cat_add_cats') == 0) {
+					if($GLOBALS['config']->get('config', 'seo_cat_add_cats') == 0) {
 						// Get last part of path
 						$cat_parts = explode('/', $path);
 						$path = array_pop($cat_parts);
@@ -266,10 +264,6 @@ class SEO {
 						$docs = $GLOBALS['db']->select('CubeCart_documents', array('doc_name'), array('doc_id' => $id));
 						$path = $docs[0]['doc_name'];
 					}
-					if($GLOBALS['config']->get('config', 'v4seo') == '1') {
-						$path = $path.'/info_'.$id;	
-					}
-
 					break;
 				case 'prod':
 				case 'product':
@@ -295,11 +289,6 @@ class SEO {
 						}
 						$path = empty($cat_directory) ? $prods[0]['name'] : $cat_directory.'/'.$prods[0]['name'];
 					}
-
-					if($GLOBALS['config']->get('config', 'v4seo') == '1') {
-						$path = $path.'/prod_'.$id;	
-					}
-
 					break;
 				default:
 					$this->_url = 'index.php?_a=' . $type . '&' . $key . '=' . $id;
