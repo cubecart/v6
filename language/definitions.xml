@@ -1665,6 +1665,7 @@
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
+    <string name="v4seo" introduced="6.0.8"><![CDATA[Use CubeCart v4 style paths]]></string>
     <string name="social_accounts" introduced="6.0.0"><![CDATA[Social Account (Username or URL)]]></string>
     <string name="seo_add_cats" introduced="6.0.0"><![CDATA[Add category to product URL path?]]></string>
     <string name="seo_add_cats_top" introduced="6.0.0"><![CDATA[Top level category only]]></string>

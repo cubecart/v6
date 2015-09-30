@@ -239,6 +239,7 @@
          <div><label for="store_title">{$LANG.settings.seo_browser_title}</label><span><input name="config[store_title]" id="store_title" type="text" class="textbox" value="{$CONFIG.store_title}"></span></div>
          <div><label for="store_meta_description">{$LANG.settings.seo_meta_description}</label><span><textarea name="config[store_meta_description]" id="store_meta_description" class="textbox">{$CONFIG.store_meta_description}</textarea></span></div>
          <div><label for="store_meta_keywords">{$LANG.settings.seo_meta_keywords}</label><span><textarea name="config[store_meta_keywords]" id="store_meta_keywords" class="textbox">{$CONFIG.store_meta_keywords}</textarea></span></div>
+         <div><label for="v4seo">{$LANG.settings.v4seo}</label><span><input name="config[v4seo]" id="v4seo" type="hidden" class="toggle" value="{$CONFIG.v4seo}"></span></div>
          <div><label for="seo_add_cats">{$LANG.settings.seo_add_cats}</label><span>
          <select name="config[seo_add_cats]" id="seo_add_cats" class="textbox">
             {foreach from=$OPT_SEO_ADD_CATS item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
