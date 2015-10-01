@@ -787,7 +787,7 @@ class Cubecart {
 				$GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->navigation['search_results'], currentPage());
 				$GLOBALS['gui']->setError($GLOBALS['language']->catalogue['error_search_no_results']);
 			} else {
-				$GLOBALS['catalogue']->setCategory('cat_name', sprintf($GLOBALS['language']->catalogue['notify_product_search'], $_REQUEST['search']['keywords']));
+				$GLOBALS['catalogue']->setCategory('cat_name', sprintf($GLOBALS['language']->catalogue['notify_product_search'], htmlspecialchars($_REQUEST['search']['keywords'])));
 				$GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->common['search'], 'index.php?_a=search');
 				$GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->navigation['search_results'], currentPage());
 			}
