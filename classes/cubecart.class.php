@@ -2421,7 +2421,7 @@ class Cubecart {
 			foreach ($GLOBALS['hooks']->load('class.cubecart.review') as $hook) include $hook;
 		
 			$error = false;
-			$record = $_POST['review'];
+			$record = array_map('htmlspecialchars', $_POST['review']);
 			if ($GLOBALS['user']->is()) {
 				$record['name']   = $GLOBALS['user']->get('first_name').' '.$GLOBALS['user']->get('last_name');
 				$record['email']  = $GLOBALS['user']->get('email');
