@@ -418,6 +418,11 @@ class Cubecart {
 					foreach ($GLOBALS['hooks']->load('class.cubecart.construct') as $hook) include $hook;
 					break;
 				}
+
+				if(get_class($GLOBALS['smarty']->getVariable('PAGE_CONTENT')) == 'Smarty_Undefined_Variable') {
+					$this->_404();
+				}
+				
 			} else {
 			$GLOBALS['smarty']->assign('SECTION_NAME', 'home');
 			$this->displayHomePage();
