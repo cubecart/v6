@@ -70,6 +70,7 @@ if (isset($GLOBALS['RAW']['POST']['maillist_format'])) {
 			unset($customer, $replace, $member, $long_name, $short_name);
 		}
 		$GLOBALS['debug']->supress(true);
+		$file_data = preg_replace('#\{.*?\}#s', '', $file_data); 
 		deliverFile(false, false, $file_data, $lang['email']['export_filename'].'.'.$_POST['maillist_extension']);
 		exit;
 	} else {

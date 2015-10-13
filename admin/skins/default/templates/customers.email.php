@@ -100,7 +100,7 @@
                   <option value="txt">.txt</option>
                   <option value="csv">.csv</option>
                </select>
-               <input type="submit" class="submit" id="mailing_list_export" value="{$LANG.common.export}">
+               <input type="submit" class="tiny" id="mailing_list_export" value="{$LANG.common.export}">
             </span>
          </div>
       </fieldset>
@@ -115,32 +115,32 @@
          <tbody>
             <tr>
                <td>{literal}{$EMAIL_ADDRESS}{/literal}</td>
-               <td align="center"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/1.png" alt="{$LANG.common.yes}"></td>
+               <td align="center"><i class="fa fa-check" alt="{$LANG.common.yes}"></i></td>
                <td>{$LANG.user.email_address} {$LANG.email.example_email}</td>
             </tr>
             <tr>
                <td>{literal}{$FULL_NAME_LONG}{/literal}</td>
-               <td align="center"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/0.png" alt="{$LANG.common.no}"></td>
+               <td align="center"><i class="fa fa-times" alt="{$LANG.common.no}"></i></td>
                <td>{$LANG.user.fullname_long} {$LANG.email.example_fullname_long}</td>
             </tr>
             <tr>
                <td>{literal}{$FULL_NAME_SHORT}{/literal}</td>
-               <td align="center"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/0.png" alt="{$LANG.common.no}"></td>
+               <td align="center"><i class="fa fa-times" alt="{$LANG.common.no}"></i></td>
                <td>{$LANG.user.fullname_short} {$LANG.email.example_fullname_short}</td>
             </tr>
             <tr>
                <td>{literal}{$TITLE}{/literal}</td>
-               <td align="center"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/0.png" alt="{$LANG.common.no}"></td>
+               <td align="center"><i class="fa fa-times" alt="{$LANG.common.no}"></i></td>
                <td>{$LANG.user.title} {$LANG.email.example_title}</td>
             </tr>
             <tr>
                <td>{literal}{$FIRST_NAME}{/literal}</td>
-               <td align="center"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/0.png" alt="{$LANG.common.no}"></td>
+               <td align="center"><i class="fa fa-times" alt="{$LANG.common.no}"></i></td>
                <td>{$LANG.user.name_first} {$LANG.email.example_name_first}</td>
             </tr>
             <tr>
                <td>{literal}{$LAST_NAME}{/literal}</td>
-               <td align="center"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/0.png" alt="{$LANG.common.no}"></td>
+               <td align="center"><i class="fa fa-times" alt="{$LANG.common.no}"></i></td>
                <td>{$LANG.user.name_first} {$LANG.email.example_name_last}</td>
             </tr>
          </tbody>
