@@ -304,6 +304,7 @@ function init_add_to_basket() {
 
 function price_inc_options() {
     var action = $('form.add_to_basket').attr('action');
+    var absolute = false;
     var total = 0;
     var ptp = parseFloat($('#ptp').attr("data-price"));
     var fbp = parseFloat($('#fbp').attr("data-price"));
@@ -321,20 +322,20 @@ function price_inc_options() {
     $("[name^=productOptions]").each(function () {
         
         if($(this).is('input:radio') && $(this).is(':checked')) {
-            if($(this).hasClass('absolute')) { total = ptp = 0; }
+            if($(this).hasClass('absolute')) { total = ptp = 0; absolute = true; }
             total += parseFloat($(this).attr("data-price"));
         } else if ($(this).is('select') && $(this).val()) {
-            if($("option:selected", this).hasClass('absolute')) { total = ptp = 0; }
+            if($("option:selected", this).hasClass('absolute')) { total = ptp = 0; absolute = true; }
             total += parseFloat($(this).find("option:selected").attr("data-price"));
         } else if (($(this).is('textarea') || $(this).is('input:text')) && $(this).val() !== '') {
-            if($(this).hasClass('absolute')) { total = ptp = 0; }
+            if($(this).hasClass('absolute')) { total = ptp = 0; absolute = true; }
             total += parseFloat($(this).attr("data-price"));
         }
     });
-    ptp += total;
+    ptp = (absolute ? total : ptp + total);
 
     if($('#fbp').length > 0) {
-        fbp += total;
+        fbp = (absolute ? total : fbp + total);
         $.ajax({
             url: action + ptp + '&price[1]='+ fbp,
             cache: true,
@@ -342,6 +343,13 @@ function price_inc_options() {
                 var prices = $.parseJSON(returned.responseText);
                 $('#ptp').html(prices[0]);
                 $('#fbp').html(prices[1]);
+                if (absolute && prices[0] <= prices[1]) {
+                    $('#fbp').hide();
+                    $('#ptp').removeClass('sale_price');
+                } else {
+                    $('#fbp').show();
+                    $('#ptp').addClass('sale_price');
+                }
             }
         });
     } else {
