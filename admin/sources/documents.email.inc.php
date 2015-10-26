@@ -226,7 +226,7 @@ $email_types = array(
 	),
 );
 ## Add hook
-#foreach ($hooks->() as $hook) include $hook
+foreach ($GLOBALS['hooks']->load('admin.documents.email.macros') as $hook) include $hook;
 
 $GLOBALS['gui']->addBreadcrumb($lang['email']['title_email'], currentPage(array('action', 'content_id', 'content_type', 'template_id')));
 
