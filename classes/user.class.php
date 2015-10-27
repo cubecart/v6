@@ -423,11 +423,19 @@ class User {
 	public function formatAddress($address = array(), $user_defined = true, $estimate = false) {
 		
 		if(!$user_defined && !is_array($address)) {
-			$address = array(
-				'postcode' => $GLOBALS['config']->get('config', 'store_postcode'),
-				'country' => $GLOBALS['config']->get('config', 'store_country'),
-				'state' => $GLOBALS['config']->get('config', 'store_zone')
-			);
+			if($GLOBALS['config']->get('config', 'disable_estimates')=='1') {
+				$address = array(
+					'postcode' => '',
+					'country' => '',
+					'state' => ''
+				);
+			} else {
+				$address = array(
+					'postcode' => $GLOBALS['config']->get('config', 'store_postcode'),
+					'country' => $GLOBALS['config']->get('config', 'store_country'),
+					'state' => $GLOBALS['config']->get('config', 'store_zone')
+				);
+			}
 		}
 
 		$state_field = is_numeric($address['state']) ? 'id' : 'name';
