@@ -689,13 +689,11 @@ class Cubecart {
 			$gatway_proceed = (($_GET['_a']=='confirm' || $_GET['_a']=='checkout') && isset($_POST['proceed'])) ? true : false;
 
 			// Check shipping has been defined for tangible orders
-			if (!isset($this->_basket['digital_only'])) {
-				if (!isset($this->_basket['shipping'])) {
-					if(($GLOBALS['config']->get('config', 'disable_estimates')=='1' && $this->_basket['delivery_address']['user_defined']) || $GLOBALS['config']->get('config', 'disable_estimates')=='0') {
-						$GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_shipping']);
-					}
-					$gatway_proceed = false;
+			if (!isset($this->_basket['digital_only']) && !isset($this->_basket['shipping'])) {
+				if(($GLOBALS['config']->get('config', 'disable_estimates')=='1' && $this->_basket['delivery_address']['user_defined']) || $GLOBALS['config']->get('config', 'disable_estimates')=='0') {
+					$GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_shipping']);
 				}
+				$gatway_proceed = false;
 			}
 
 			// Check billing address is user defined
