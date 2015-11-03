@@ -690,7 +690,8 @@ class Cubecart {
 
 			// Check shipping has been defined for tangible orders
 			if (!isset($this->_basket['digital_only']) && !isset($this->_basket['shipping'])) {
-				if(($GLOBALS['config']->get('config', 'disable_estimates')=='1' && $this->_basket['delivery_address']['user_defined']) || $GLOBALS['config']->get('config', 'disable_estimates')=='0') {
+				$de = $GLOBALS['config']->get('config', 'aaadisable_estimates');
+				if(($de == '1' && $this->_basket['delivery_address']['user_defined']) || ($de == '0' || !$de)) {
 					$GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_shipping']);
 				}
 				$gatway_proceed = false;
