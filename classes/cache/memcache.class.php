@@ -29,8 +29,6 @@ class Cache extends Cache_Controler {
 		
 		global $glob;
 
-		ini_set('display_errors', true);
-
 		$this->_mode = 'Memcache';
 		$this->_memcache = new Memcache;
 	
