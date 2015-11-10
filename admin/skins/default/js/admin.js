@@ -170,9 +170,6 @@ function productOptionPrices(t) {
     }), e.val(i.toFixed(2)), $(".update-subtotal input.number").trigger("change"), !1
 }
 $(document).ready(function() {
-    setTimeout(function() {
-        window.scrollTo(0, 0)
-    }, 1);
     var t = !1;
     if (jQuery.debug = function(t) {
             window.console ? console.debug("CubeCart: " + t) : alert(t)
@@ -493,13 +490,13 @@ $(document).ready(function() {
                 a = i.split("#");
             $("#wikihelp").attr("href", a[0] + e)
         }
-        $("#previous-tab").val(e), $("input.previous-tab").val(e), window.scrollTo(0, 0)
+        $("#previous-tab").val(e), $("input.previous-tab").val(e), window.scrollTo(-81, 0)
     }).on("click", function() {
         var t = $(this).children("a").attr("href"),
             e = $(t).height();
         if ($("#navigation").height() < e && $("#page_content").height(e + 100), "#sidebar" == t) return $("#sidebar_control").click(), !1;
         if (t.match(/^#/)) {
-            if (document.location.hash = t, $(".tab").removeClass("tab-selected"), $(this).addClass("tab-selected"), $("div.tab_content").hide(), $(t).show(), window.scrollTo(0, 0), $("#previous-tab").val(t), $("input.previous-tab").val(t), $("#wikihelp").exists()) {
+            if (document.location.hash = t, $(".tab").removeClass("tab-selected"), $(this).addClass("tab-selected"), $("div.tab_content").hide(), $(t).show(), window.scrollTo(-81, 0), $("#previous-tab").val(t), $("input.previous-tab").val(t), $("#wikihelp").exists()) {
                 var i = $("#wikihelp").attr("href"),
                     a = i.split("#");
                 $("#wikihelp").attr("href", a[0] + t)
