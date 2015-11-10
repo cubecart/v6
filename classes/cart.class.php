@@ -634,6 +634,7 @@ class Cart {
 				// Basket Contents
 				if (is_numeric($item['id'])) {
 
+					$item['options_identifier'] = isset($item['options_identifier']) ? $item['options_identifier'] : '';
 					$product = $GLOBALS['catalogue']->getProductData($item['id'], $item['quantity'], false, 10, 1, false, $item['options_identifier']);
 					
 					if(!$product) {
