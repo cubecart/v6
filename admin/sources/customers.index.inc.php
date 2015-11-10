@@ -98,6 +98,9 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
 		$required = array('first_name', 'last_name', 'email');
 		$customer['registered'] = time();
 		foreach ($customer as $field => $value) {
+			if($field == 'email' && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
+				$error = true;
+			}
 			if (in_array($field, $required) && empty($value)) {
 				$error = true;
 			}
