@@ -461,6 +461,8 @@ class Cubecart {
 
 		$_a = isset($_GET['redir']) ? $_GET['redir'] : 'addressbook';
 
+		$GLOBALS['smarty']->assign('REDIR', $_a);
+
 		if (isset($_POST['save'])) {
 			if (empty($_POST['description'])) {
 				if($_POST['billing']==1 && $_POST['default']==1) {

@@ -125,7 +125,9 @@
    <div class="row clearfix">
       <div class="small-12 large-8 columns">
          <input type="hidden" name="address_id" value="{$DATA.address_id}">
-         <input type="submit" name="save" value="{$LANG.common.save}" class="button left"> <button type="reset" class="button secondary right"><i class="fa fa-refresh"></i> {$LANG.common.reset}</button>
+         <input type="submit" name="save" value="{$LANG.common.save}" class="button success left">
+         <a href="index.php?_a={$REDIR}"class="button left">{$LANG.common.cancel}</a>
+         <button type="reset" class="button secondary right"><i class="fa fa-refresh"></i> {$LANG.common.reset}</button>
       </div>
    </div>
    <div class="hide" id="validate_field_required">{$LANG.form.field_required}</div>
