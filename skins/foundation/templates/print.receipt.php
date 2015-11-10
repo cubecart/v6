@@ -47,7 +47,6 @@
             {$order.state}<br>
             {$order.postcode}<br>
             {$order.country}
-            {if !empty({$order.vat_number})}<br>{$LANG.settings.tax_vat_number}: {$order.vat_number}{/if}
          </div>
          <div class="small-6 columns text-right thickmarg-topbottom">
             <strong>{$LANG.common.invoice}: {$order.cart_order_id}<br>	
