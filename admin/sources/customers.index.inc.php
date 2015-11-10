@@ -99,6 +99,7 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
 		$customer['registered'] = time();
 		foreach ($customer as $field => $value) {
 			if($field == 'email' && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
+				$GLOBALS['main']->setACPWarning($lang['common']['error_email_invalid']);
 				$error = true;
 			}
 			if (in_array($field, $required) && empty($value)) {
