@@ -288,7 +288,7 @@
     <string name="error_no_stock_available" introduced="5.2.0"><![CDATA[Sorry but that product is out of stock.]]></string>
     <string name="error_no_stock_available_options" introduced="5.2.0"><![CDATA[Sorry but the chosen product option combination is out of stock.]]></string>
     <string name="error_option_attrib_create" introduced="5.0.0"><![CDATA[Failed to create attribute.]]></string>
-    <string name="error_option_attrib_create_parent" introduced="5.0.0"><![CDATA[Unabble to create attribute, as no parent was selected.]]></string>
+    <string name="error_option_attrib_create_parent" introduced="5.0.0"><![CDATA[Unable to create attribute, as no parent was selected.]]></string>
     <string name="error_option_attrib_delete" introduced="5.0.0"><![CDATA[Failed to delete attribute.]]></string>
     <string name="error_option_group_attrib_added" introduced="5.0.0"><![CDATA[Unable to add attribute.]]></string>
     <string name="error_option_group_attrib_delete" introduced="5.0.0"><![CDATA[Selected attribute(s) have not been removed from set.]]></string>
