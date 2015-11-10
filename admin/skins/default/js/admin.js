@@ -170,6 +170,11 @@ function productOptionPrices(t) {
     }), e.val(i.toFixed(2)), $(".update-subtotal input.number").trigger("change"), !1
 }
 $(document).ready(function() {
+
+    setTimeout(function() {
+        window.scrollTo(-81, 0)
+    }, 1);
+
     var t = !1;
     if (jQuery.debug = function(t) {
             window.console ? console.debug("CubeCart: " + t) : alert(t)
