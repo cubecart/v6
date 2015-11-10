@@ -417,7 +417,7 @@ class Module {
 	private function _module_data($path = false, $local_name = false) {
 		// Set Module Path
 		if ($path) {
-			$drop = array('/admin', '/classes', '/skin', '/language');
+			$drop = array( CC_DS.'admin',  CC_DS.'classes',  CC_DS.'skin',  CC_DS.'language');
 			$this->_path = CC_ROOT_DIR.str_replace($drop, '', dirname(str_replace(CC_ROOT_DIR, '', $path)));
 			// Drop trailing slashes
 			if (substr($this->_path, -1) == '/') {
