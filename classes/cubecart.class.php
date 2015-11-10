@@ -1567,6 +1567,8 @@ class Cubecart {
 				}
 			}
 
+			foreach ($GLOBALS['hooks']->load('class.cubecart.post_coupon') as $hook) include $hook;
+
 			// Shipping Calculations
 			if (($shipping = $GLOBALS['cart']->loadShippingModules()) !== false) {
 				$offset = 1;
