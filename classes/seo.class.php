@@ -49,7 +49,7 @@ class SEO {
 	 * @var array of strings
 	 */
 	private $_ignored   = array(
-		'account', 'addressbook', 'basket', 'checkout', 'complete', 'confirm', 'downloads', 'gateway', 'logout', 'profile', 'recover', 'recovery', 'remote', 'vieworder', 'plugin'
+		'account', 'addressbook', 'basket', 'checkout', 'complete', 'confirm', 'downloads', 'gateway', 'logout', 'profile', 'receipt', 'recover', 'recovery', 'remote', 'vieworder', 'plugin'
 	);
 	/**
 	 * Rewrite URL Absolute?
