@@ -1155,7 +1155,7 @@ class GUI {
 		// Get customer group prices first
 		if (isset($GLOBALS['user']) && $GLOBALS['user']->is()) {
 			// Check for group pricing
-			if (($memberships = $GLOBALS['db']->select('CubeCart_customer_membership', array('group_id'), array('customer_id' => (int)$GLOBALS['user']->getId()))) !== false) {
+			if (($memberships = $GLOBALS['user']->getMemberships((int)$GLOBALS['user']->getId())) !== false) {
 				foreach ($memberships as $membership) {
 					$group_id[] = $membership['group_id'];
 				}

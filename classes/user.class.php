@@ -548,6 +548,18 @@ class User {
 	}
 
 	/**
+	 * Get customer group memberships
+	 *
+	 * @return false/array
+	 */
+	public function getMemberships($customer_id) {
+		if($customer_id>0) {
+			return $GLOBALS['db']->select('CubeCart_customer_membership', false, array('customer_id' => $customer_id));
+		}
+		return false;
+	}
+
+	/**
 	 * Is a customer
 	 *
 	 * @param bool $force_login
