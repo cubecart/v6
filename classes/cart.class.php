@@ -581,7 +581,7 @@ class Cart {
 	 */
 	public function discountRemove($code) {
 		if ($code && isset($this->basket['coupons'][strtoupper($code)])) {
-			unset($this->basket['coupons'][strtoupper($code)]);
+			unset($this->basket['coupons'][strtoupper($code)], $this->basket['discount_type']);
 			$this->save();
 			return true;
 		}
