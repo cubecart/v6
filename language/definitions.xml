@@ -830,7 +830,7 @@
     <string name="notify_customer_update" introduced="5.0.0"><![CDATA[Customer successfully updated.]]></string>
     <string name="notify_groups_create" introduced="5.0.0"><![CDATA[Customer group added.]]></string>
     <string name="notify_groups_delete" introduced="5.0.0"><![CDATA[Customer groups deleted.]]></string>
-    <string name="notify_groups_update" introduced="5.0.0"><![CDATA[]]></string>
+    <string name="notify_groups_update" introduced="5.0.0"><![CDATA[Customer groups updated.]]></string>
     <string name="order_count" introduced="5.0.0"><![CDATA[Orders]]></string>
     <string name="order_count_single" introduced="5.0.0"><![CDATA[Order]]></string>
     <string name="title_address" introduced="5.0.0"><![CDATA[Addresses]]></string>
