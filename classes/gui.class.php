@@ -1152,15 +1152,13 @@ class GUI {
 		$sale_sql_standard_where = $GLOBALS['catalogue']->outOfStockWhere($sale_sql_standard_where);
 		$sale_sql_group_where    = $GLOBALS['catalogue']->outOfStockWhere($sale_sql_group_where, 'G');
 
-		// Get customer group prices first
-		if (isset($GLOBALS['user']) && $GLOBALS['user']->is()) {
-			// Check for group pricing
-			if (($memberships = $GLOBALS['user']->getMemberships((int)$GLOBALS['user']->getId())) !== false) {
-				foreach ($memberships as $membership) {
-					$group_id[] = $membership['group_id'];
-				}
+		// Check for group pricing
+		if (($memberships = $GLOBALS['user']->getMemberships()) !== false) {
+			foreach ($memberships as $membership) {
+				$group_id[] = $membership['group_id'];
 			}
 		}
+
 		if (!$GLOBALS['config']->get('config', 'catalogue_sale_items')) {
 			$catalogue_sale_items = 10;
 		} else {

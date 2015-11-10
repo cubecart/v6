@@ -1039,20 +1039,18 @@ class Catalogue {
 		if (isset($product_data['product_id']) && is_numeric($product_data['product_id'])) {
 			$product_id = (int)$product_data['product_id'];
 			$group_id = 0;
-			
-			if (isset($GLOBALS['user']) && $GLOBALS['user']->is()) {
-				// Check for group pricing
-				if (($memberships = $GLOBALS['user']->getMemberships((int)$GLOBALS['user']->getId())) !== false) {
-					$group_id = array();
-					foreach ($memberships as $membership) {
-						$group_id[] = $membership['group_id'];
-					}
-					if (($pricing_group = $GLOBALS['db']->select('CubeCart_pricing_group', false, array('product_id' => $product_id, 'group_id' => $group_id), array('price' => 'ASC'), 1)) !== false) {
-						$product_data['price']   = $pricing_group[0]['price'];
-						$product_data['sale_price']  = $pricing_group[0]['sale_price'];
-						$product_data['tax_inclusive'] = $pricing_group[0]['tax_inclusive']; # do not rely on retail price setting!
-						$product_data['tax_type']  = $pricing_group[0]['tax_type'];
-					}
+
+			// Check for group pricing
+			if (($memberships = $GLOBALS['user']->getMemberships()) !== false) {
+				$group_id = array();
+				foreach ($memberships as $membership) {
+					$group_id[] = $membership['group_id'];
+				}
+				if (($pricing_group = $GLOBALS['db']->select('CubeCart_pricing_group', false, array('product_id' => $product_id, 'group_id' => $group_id), array('price' => 'ASC'), 1)) !== false) {
+					$product_data['price']   = $pricing_group[0]['price'];
+					$product_data['sale_price']  = $pricing_group[0]['sale_price'];
+					$product_data['tax_inclusive'] = $pricing_group[0]['tax_inclusive']; # do not rely on retail price setting!
+					$product_data['tax_type']  = $pricing_group[0]['tax_type'];
 				}
 			}
 
