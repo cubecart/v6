@@ -9,9 +9,10 @@
  * Email:  sales@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
-{if isset($GATEWAYS)}
+{if !isset($TRANSFER)}
 <h2>{$LANG.gateway.select}</h2>
 <form id="gateway-select" action="{$VAL_SELF}" method="post">
+   {if $GATEWAYS}
    <ul class="no-bullet">
       {foreach from=$GATEWAYS item=gateway}
       <li>
@@ -24,6 +25,9 @@
       {/foreach}
    </ul>
    <div class="text-center"><input type="submit" value="{$LANG.common.continue}" class="button"></div>
+   {else}
+   <p>{$LANG.gateway.none_defined}</p>
+   {/if}
 </form>
 {/if}
 {if isset($TRANSFER)}
