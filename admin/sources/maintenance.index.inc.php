@@ -572,6 +572,11 @@ if ($request = new Request('www.cubecart.com', '/version-check/'.'2.3.22')) {
 			$GLOBALS['smarty']->assign('UPGRADE_NOW', $lang['maintain']['force_upgrade']);
 			$GLOBALS['smarty']->assign('FORCE', '1');
 		}
+	} else {
+		$GLOBALS['smarty']->assign('LATEST_VERSION', $lang['common']['unknown']);
+		$GLOBALS['smarty']->assign('UPGRADE_NOW', $lang['maintain']['force_upgrade']);
+		$GLOBALS['smarty']->assign('FORCE', '1');
+		$GLOBALS['main']->setACPNotify($lang['maintain']['latest_version_unknown']);
 	}
 }
 
