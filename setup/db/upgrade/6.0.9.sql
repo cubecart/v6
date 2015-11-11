@@ -1,0 +1,1 @@
+ALTER TABLE `CubeCart_order_summary` ADD `weight` DECIMAL(16,3) NOT NULL DEFAULT '0.000' AFTER `ship_method`; #EOQ

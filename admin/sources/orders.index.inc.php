@@ -251,6 +251,13 @@ if (isset($_GET['action'])) {
 	if (in_array($_GET['action'], array('add', 'edit'))) {
 		// Load order summary
 		if (isset($_GET['order_id']) && ($summary = $GLOBALS['db']->select('CubeCart_order_summary', false, array('cart_order_id' => $_GET['order_id']))) !== false) {
+		
+			// Seek weight from basket data for orders placed before 6.0.9
+			if((float)$summary[0]['weight'] == 0) {
+				$basket_array = unserialize($summary[0]['basket']);
+				$summary[0]['weight'] = $basket_array['weight'];
+			}
+
 			// Make some values frendlier
 			$summary[0]['ship_method']   = str_replace('_', ' ', $summary[0]['ship_method']);
 			$summary[0]['ship_date']   = ((int)(str_replace('-', '', $summary[0]['ship_date'])) > 0) ? $summary[0]['ship_date'] : "";
