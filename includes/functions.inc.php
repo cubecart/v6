@@ -189,54 +189,56 @@ function cmpmc($a, $b) {
  */
 function currentPage($excluded = null, $included = null, $remove_excluded = true) {
 
-	static $base = null;
+ 	$currentPage = '';
+ 	$params = array();
+	$php_self = htmlentities($_SERVER['PHP_SELF']); // fixes XSS
+	$one_time = array('added', 'completed', 'deleted', 'edited', 'failed', 'removed', 'subscribed', 'submitted', 'unsubscribed', 'updated', session_name());
 
-	if (is_null($base)) {
-		$php_self = htmlentities($_SERVER['PHP_SELF']); // fixes XSS
-
-		if (isset($GLOBALS['storeURL'], $GLOBALS['rootRel'])) {
-			$base = $GLOBALS['storeURL'].str_replace($GLOBALS['rootRel'], '/', $php_self);
-		} else {
-			$base = null;
-		}
+	if (isset($GLOBALS['storeURL'], $GLOBALS['rootRel'])) {
+		$currentPage = $GLOBALS['storeURL'].str_replace($GLOBALS['rootRel'], '/', $php_self);
+	} else {
+		$currentPage = '';
 	}
 
-	$currentPage = $base;
-	// If there are GET variables, strip redir and rebuild query string
-	if (!empty($_GET)) {
-		$array = (is_array($included) && !empty($included)) ? array_merge($_GET, $included) : $_GET;
+	if(is_array($_GET) && count($_GET) > 0) {
+		$params = array_merge($params, $_GET);
+	}
 
-		$one_time = array('added', 'completed', 'deleted', 'edited', 'failed', 'removed', 'subscribed', 'submitted', 'unsubscribed', 'updated', session_name());
-		if ($excluded === true) {
-			// Drop *all* $_GET vars, except $protected
-			$protected	= array('_a');
-			$excluded	= array();
-			foreach ($array as $key => $val) {
+	if(is_array($included) && count($included) > 0) {
+		$params = array_merge($params, $included);
+	}
+
+	if ($excluded === true) {
+		// Drop *all* $_GET vars, except $protected
+		$protected	= array('_a');
+		$excluded	= array();
+		if(count($params) > 0) {
+			foreach ($params as $key => $val) {
 				if (!in_array($key, $protected)) {
 					$excluded[] = $key;
 				}
 			}
-		} else {
-			$excluded	= (is_array($excluded) && !empty($excluded)) ? $excluded : array();
 		}
-
-		// Delete unwanted keys
-		if (!empty($array)) {
-			foreach ($excluded as $key) {
-				if (isset($array[$key])) {
-					unset($array[$key]);
-					if (!CC_IN_ADMIN && $remove_excluded) {
-						unset($_GET[$key]); // fix for other areas that want exclusion
-					}
-				}
-			}
-			array_walk_recursive($array, 'custom_urlencode', $one_time);
-			if (isset($array) && is_array($array)) {
-				$currentPage .= '?'.http_build_query($array, '', '&');
-			}
-		}
+	} else {
+		$excluded	= (is_array($excluded) && !empty($excluded)) ? $excluded : array();
 	}
 
+	// Delete unwanted keys
+	if(count($params) > 0) {
+		foreach ($excluded as $key) {
+			if (isset($params[$key])) {
+				unset($params[$key]);
+				if (!CC_IN_ADMIN && $remove_excluded) {
+					unset($_GET[$key]); // fix for other areas that want exclusion
+				}
+			}
+		}
+		array_walk_recursive($params, 'custom_urlencode', $one_time);
+		if (isset($params) && is_array($params)) {
+			$currentPage .= '?'.http_build_query($params, '', '&');
+		}
+	}
+	
 	if( !isset($GLOBALS['seo']) || !is_object($GLOBALS['seo']) ) return $currentPage;
 	// $_GET['seo_path'] should never be set... but if it is this will fix it
 	if(isset($_GET['seo_path']) && !empty($_GET['seo_path'])) {
