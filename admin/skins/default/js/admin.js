@@ -499,7 +499,7 @@ $(document).ready(function() {
     }).on("click", function() {
         var t = $(this).children("a").attr("href"),
             e = $(t).height();
-        if ($("#navigation").height() < e && $("#page_content").height(e + 100), "#sidebar" == t) return $("#sidebar_control").click(), !1;
+        if ($("#navigation").height() < e && $("#page_content").css('min-height',e + 100 +'px'), "#sidebar" == t) return $("#sidebar_control").click(), !1;
         if (t.match(/^#/)) {
             if (document.location.hash = t, $(".tab").removeClass("tab-selected"), $(this).addClass("tab-selected"), $("div.tab_content").hide(), $(t).show(), window.scrollTo(-81, 0), $("#previous-tab").val(t), $("input.previous-tab").val(t), $("#wikihelp").exists()) {
                 var i = $("#wikihelp").attr("href"),
@@ -620,7 +620,7 @@ $(document).ready(function() {
     }), $("input.date").datepicker(), window.scrollTo(0, 0);
     var s = $("#navigation").height(),
         r = $("#page_content").height();
-    s > r && $("#page_content").height(s + 100), $('input[type="checkbox"]').each(function() {
+    s > r && $("#page_content").css('min-height',s + 100 +'px'), $('input[type="checkbox"]').each(function() {
         $(this).parent().hasClass("custom-checkbox") || $(this).wrap("<div class='custom-checkbox'></div>"), $(this).is(":checked") ? $(this).parent().addClass("selected") : $(this).parent().removeClass("selected")
     }), $("body").on("click", "img.checkbox, .check-primary, .check_cat, .check-all, .custom-checkbox", function() {
         $('input[type="checkbox"]').each(function() {
