@@ -189,15 +189,14 @@ function cmpmc($a, $b) {
  */
 function currentPage($excluded = null, $included = null, $remove_excluded = true) {
 
- 	$currentPage = '';
+ 	$url_path = '';
  	$params = array();
-	$php_self = htmlentities($_SERVER['PHP_SELF']); // fixes XSS
 	$one_time = array('added', 'completed', 'deleted', 'edited', 'failed', 'removed', 'subscribed', 'submitted', 'unsubscribed', 'updated', session_name());
 
 	if (isset($GLOBALS['storeURL'], $GLOBALS['rootRel'])) {
-		$currentPage = $GLOBALS['storeURL'].str_replace($GLOBALS['rootRel'], '/', $php_self);
+		$url_path = $GLOBALS['storeURL'].str_replace($GLOBALS['rootRel'], '/', htmlentities($_SERVER['PHP_SELF']));
 	} else {
-		$currentPage = '';
+		$url_path = '';
 	}
 
 	if(is_array($_GET) && count($_GET) > 0) {
@@ -235,16 +234,16 @@ function currentPage($excluded = null, $included = null, $remove_excluded = true
 		}
 		array_walk_recursive($params, 'custom_urlencode', $one_time);
 		if (isset($params) && is_array($params)) {
-			$currentPage .= '?'.http_build_query($params, '', '&');
+			$url_path .= '?'.http_build_query($params, '', '&');
 		}
 	}
 	
-	if( !isset($GLOBALS['seo']) || !is_object($GLOBALS['seo']) ) return $currentPage;
+	if( !isset($GLOBALS['seo']) || !is_object($GLOBALS['seo']) ) return $url_path;
 	// $_GET['seo_path'] should never be set... but if it is this will fix it
 	if(isset($_GET['seo_path']) && !empty($_GET['seo_path'])) {
-		$currentPage = SEO::getInstance()->getItem($_GET['seo_path'], true);
+		$url_path = SEO::getInstance()->getItem($_GET['seo_path'], true);
 	}
-	return SEO::getInstance()->SEOable($currentPage);
+	return SEO::getInstance()->SEOable($url_path);
 }
 
 /**
