@@ -257,6 +257,7 @@ if (isset($_GET['action'])) {
 				$basket_array = unserialize($summary[0]['basket']);
 				$summary[0]['weight'] = $basket_array['weight'];
 			}
+			$GLOBALS['smarty']->assign('WEIGHT_UNIT',$GLOBALS['config']->get('config','product_weight_unit'));
 
 			// Make some values frendlier
 			$summary[0]['ship_method']   = str_replace('_', ' ', $summary[0]['ship_method']);
