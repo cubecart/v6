@@ -224,11 +224,13 @@ function currentPage($excluded = null, $included = null, $remove_excluded = true
 
 	// Delete unwanted keys
 	if(count($params) > 0) {
-		foreach ($excluded as $key) {
-			if (isset($params[$key])) {
-				unset($params[$key]);
-				if (!CC_IN_ADMIN && $remove_excluded) {
-					unset($_GET[$key]); // fix for other areas that want exclusion
+		if(count($excluded) > 0) {
+			foreach ($excluded as $key) {
+				if (isset($params[$key])) {
+					unset($params[$key]);
+					if (!CC_IN_ADMIN && $remove_excluded) {
+						unset($_GET[$key]); // fix for other areas that want exclusion
+					}
 				}
 			}
 		}
