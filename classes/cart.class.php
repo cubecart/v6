@@ -1288,6 +1288,8 @@ class Cart {
 			$tax = ($subtotal>0) ? ($subtotal*$ave_tax_rate) : 0;
 			$GLOBALS['tax']->adjustTax($tax);
 
+			foreach ($GLOBALS['hooks']->load('class.cart.apply_discounts') as $hook) include $hook;
+
 			$this->save();
 			return true;
 		}
