@@ -714,6 +714,7 @@ class Cart {
 							# 'Recipient' => $item['certificate']['name'],
 							# 'Message' => $item['certificate']['message'],
 						),
+						'option_price_ignoring_tax' => 0,
 					);
 					$product['price_display'] = $product['price'];
 				}
