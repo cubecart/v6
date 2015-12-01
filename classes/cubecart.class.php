@@ -1092,13 +1092,13 @@ class Cubecart {
 			if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('numcode', 'name'), array('status' => 1), array('name' => 'ASC'))) !== false) {
 				foreach ($countries as $country) {
 					$country['selected'] = '';
-					if (isset($this->_basket['billing_address'])) {
+					if (isset($this->_basket['billing_address']['country_id']) && !empty($this->_basket['billing_address']['country_id']) ) {
 						if ($country['numcode'] == $this->_basket['billing_address']['country_id']) $country['selected'] = 'selected="selected"';
 					} else {
 						if ($country['numcode'] == $GLOBALS['config']->get('config', 'store_country')) $country['selected'] = 'selected="selected"';
 					}
 					$country['selected_d'] = '';
-					if (isset($this->_basket['delivery_address'])) {
+					if (isset($this->_basket['delivery_address']['country_id']) && !empty($this->_basket['delivery_address']['country_id'])) {
 						if ($country['numcode'] == $this->_basket['delivery_address']['country_id']) $country['selected_d'] = 'selected="selected"';
 					} else {
 						if ($country['numcode'] == $GLOBALS['config']->get('config', 'store_country')) $country['selected_d'] = 'selected="selected"';
