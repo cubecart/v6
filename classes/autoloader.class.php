@@ -73,8 +73,8 @@ class Autoloader {
 		}
 
 		//Try classes first
-		if (file_exists(CC_CLASSES_DIR.'/'.strtolower($class).'.class.php')) {
-			include_once CC_CLASSES_DIR.'/'.strtolower($class).'.class.php';
+		if (file_exists(CC_CLASSES_DIR.strtolower($class).'.class.php')) {
+			include_once CC_CLASSES_DIR.strtolower($class).'.class.php';
 			return true;
 		}
 
