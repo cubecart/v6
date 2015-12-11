@@ -211,7 +211,7 @@ class Ajax {
 		      $GLOBALS['db']->insert('CubeCart_request_log', $email_test_results_data);
 		      $json = $email_test_results;
 		    } else {
-		      $json = "Test failed to execute.";
+		      $json = "Test failed to execute. ".$test_mailer->ErrorInfo;
 		    }
 		    return $json;
 		}
