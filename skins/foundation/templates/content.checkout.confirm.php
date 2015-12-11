@@ -140,7 +140,7 @@
          </div>
       </div>
       <div class="row">
-         <div class="small-12 large-8 columns"><label for="state-list" class="show-for-medium-up">{$LANG.address.state}</label></span><input type="text" name="billing[state]" id="state-list"  required value="{$BILLING.state}" autocomplete="address-line1"></div>
+         <div class="small-12 large-8 columns"><label for="state-list" class="show-for-medium-up">{$LANG.address.state}</label><input type="text" name="billing[state]" id="state-list"  required value="{$BILLING.state}" autocomplete="address-line1"></div>
       </div>
 </div>
 </address>
@@ -194,7 +194,7 @@
          </div>
       </div>
       <div class="row">
-         <div class="small-12 large-8 columns"><label for="delivery_state" class="show-for-medium-up">{$LANG.address.state}</label></span><input type="text" name="delivery[state]" id="delivery_state"  required value="{$DELIVERY.state}" placeholder="{$LANG.address.state} {$LANG.form.required}" autocomplete="address-level1"></div>
+         <div class="small-12 large-8 columns"><label for="delivery_state" class="show-for-medium-up">{$LANG.address.state}</label><input type="text" name="delivery[state]" id="delivery_state"  required value="{$DELIVERY.state}" placeholder="{$LANG.address.state} {$LANG.form.required}" autocomplete="address-level1"></div>
       </div>
    </address>
 </div>
@@ -208,10 +208,10 @@
 <div id="account-reg">
    <h3>{$LANG.account.password}</h3>
    <div class="row">
-      <div class="small-12 large-8 columns"><label for="reg_password" class="show-for-medium-up">{$LANG.account.password}</label></span><input type="password" autocomplete="off" name="password" id="reg_password"  required  placeholder="{$LANG.account.password} {$LANG.form.required}" autocomplete="new-password"></div>
+      <div class="small-12 large-8 columns"><label for="reg_password" class="show-for-medium-up">{$LANG.account.password}</label><input type="password" autocomplete="off" name="password" id="reg_password"  required  placeholder="{$LANG.account.password} {$LANG.form.required}" autocomplete="new-password"></div>
    </div>
    <div class="row">
-      <div class="small-12 large-8 columns"><label for="reg_passconf" class="show-for-medium-up">{$LANG.user.password_confirm}</label></span><input type="password" autocomplete="off" name="passconf" id="reg_passconf"  required  placeholder="{$LANG.user.password_confirm} {$LANG.form.required}" autocomplete="new-password"></div>
+      <div class="small-12 large-8 columns"><label for="reg_passconf" class="show-for-medium-up">{$LANG.user.password_confirm}</label><input type="password" autocomplete="off" name="passconf" id="reg_passconf"  required  placeholder="{$LANG.user.password_confirm} {$LANG.form.required}" autocomplete="new-password"></div>
    </div>
 </div>
 {include file='templates/content.recaptcha.php'}
