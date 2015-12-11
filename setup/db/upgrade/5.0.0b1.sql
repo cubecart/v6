@@ -273,7 +273,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_email_template` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 UPDATE `CubeCart_filemanager` SET `filepath` = REPLACE(`filepath`, 'images/uploads/', ''); #EOQ
-UPDATE `CubeCart_filemanager` SET `filepath` = REPLACE(`filepath`, 'images\uploads\\', ''); #EOQ
+UPDATE `CubeCart_filemanager` SET `filepath` = REPLACE(`filepath`, 'images\\uploads\\', ''); #EOQ
 UPDATE `CubeCart_filemanager` SET `filepath` = REPLACE(`filepath`, `filename`, ''); #EOQ
 
 ALTER TABLE `CubeCart_filemanager` CHANGE `filepath` `filepath` VARCHAR(255) default NULL; #EOQ
