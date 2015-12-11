@@ -220,6 +220,7 @@
    {$html}
    {/foreach}
 </div>
+<div class="hide" id="validate_field_required">{$LANG.form.field_required}</div>
 {else}
 <p>{$LANG.catalogue.product_doesnt_exist}</p>
 {/if}

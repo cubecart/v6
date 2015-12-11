@@ -84,6 +84,5 @@
       </form>
    </div>
    <div class="hide" id="validate_email">{$LANG.common.error_email_invalid}</div>
-   <div class="hide" id="validate_field_required">{$LANG.form.field_required}</div>
 </div>
 {/if}
