@@ -596,7 +596,7 @@ class FileManager {
 	 * @return array/false
 	 */
 	public function getFileInfo($product_id) {
-		$product = $GLOBALS['db']->select('CubeCart_inventory', array('digital', 'digital_path'), array('product_id' => $product_id), false, 1);  $GLOBALS['db']->select('CubeCart_filemanager', false, array('file_id' => $product[0]['digital']));
+		$product = $GLOBALS['db']->select('CubeCart_inventory', array('digital', 'digital_path'), array('product_id' => $product_id), false, 1);
 
 		if (empty($product[0]['digital_path'])) {
 			if (($files = $GLOBALS['db']->select('CubeCart_filemanager', false, array('file_id' => $product[0]['digital']))) !== false) {
