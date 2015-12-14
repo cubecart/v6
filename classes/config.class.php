@@ -62,6 +62,8 @@ class Config {
 
 		//Remove the db password for safety
 		unset($glob['dbpassword']);
+		//Remove cache setting due to variable clash
+		if(isset($glob['cache'])) { unset($glob['cache']); }
 
 		if (!empty($array_out)) {
 			$this->_config['config'] = $this->_clean($array_out);
