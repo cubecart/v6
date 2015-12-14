@@ -151,9 +151,11 @@ class Mailer extends PHPMailer {
 					$this->AddAddress($mail);
 				}
 			}
+			$email_param = '';
 		} else if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-				$this->AddAddress($email, (isset($contents['to'])) ? $contents['to'] : '');
-			} else {
+			$this->AddAddress($email, (isset($contents['to'])) ? $contents['to'] : '');
+			$email_param = '&amp;unsubscribe='.urlencode($email);
+		} else {
 			return false;
 		}
 		$contents = $this->_parseContents($contents);
@@ -171,7 +173,7 @@ class Mailer extends PHPMailer {
 							$data['store_name'] = $GLOBALS['config']->get('config', 'store_name');
 							$data['storeName']  = $GLOBALS['config']->get('config', 'store_name');
 							$data['storeURL']  = $GLOBALS['storeURL'];
-							$data['unsubscribeURL'] = $GLOBALS['storeURL'].'/index.php?_a=unsubscribe';
+							$data['unsubscribeURL'] = $GLOBALS['storeURL'].'/index.php?_a=unsubscribe'.$email_param;
 
 							$template = $this->_parseTemplate($templates[0], $data, $string);
 							// assign to right variable
