@@ -9,6 +9,7 @@
  * Email:  sales@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
+{if !$DISABLE_BOX_NEWSLETTER}
 <div id="box-newsletter">
    <h3>{$LANG.newsletter.mailing_list}</h3>
    {if $IS_USER}
@@ -29,3 +30,4 @@
    <div class="hide" id="validate_already_subscribed">{$LANG.newsletter.notify_already_subscribed}</div>
    {/if}
 </div>
+{/if}

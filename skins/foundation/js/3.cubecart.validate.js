@@ -128,6 +128,21 @@ jQuery(document).ready(function() {
             },
         }
     });
+    $("#newsletter_form_unsubscribe").validate({
+        onkeyup: false,
+        rules: {
+            unsubscribe: {
+                required: true,
+                email: true
+            },
+        },
+        messages: {
+            unsubscribe: {
+                required: $('#validate_email').text(),
+                email: $('#validate_email').text()
+            },
+        }
+    });
     $("#checkout_form").validate({
         rules: {
             username: {

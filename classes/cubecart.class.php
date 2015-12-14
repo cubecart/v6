@@ -2144,11 +2144,13 @@ class Cubecart {
 			if (isset($_POST['subscribe'])) {
 				if ($newsletter->subscribe($_POST['subscribe'])) {
 					$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_subscribed']);
+					httpredir('?_a=unsubscribe');
 				} else if ($GLOBALS['user']->is()) {
 						$GLOBALS['gui']->setError($GLOBALS['language']->common['error_email_invalid']);
 					} else {
 					if ($newsletter->unsubscribe($_POST['subscribe'])) {
 						$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_unsubscribed']);
+						httpredir('?_a=newsletter');
 					} else {
 						$GLOBALS['gui']->setError($GLOBALS['language']->common['error_email_invalid']);
 					}
@@ -2156,10 +2158,10 @@ class Cubecart {
 				httpredir(currentPage());
 			}
 
-			if (isset($_GET['unsubscribe']) && filter_var($_GET['unsubscribe'], FILTER_VALIDATE_EMAIL)) {
-				if ($newsletter->unsubscribe($_GET['unsubscribe'])) {
+			if (isset($_REQUEST['unsubscribe']) && filter_var($_REQUEST['unsubscribe'], FILTER_VALIDATE_EMAIL)) {
+				if ($newsletter->unsubscribe($_REQUEST['unsubscribe'])) {
 					$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_unsubscribed']);
-					httpredir(currentPage(array('unsubscribe')));
+					httpredir('?_a=newsletter');
 				}
 			}
 			if (isset($_GET['verify'])) {
@@ -2203,8 +2205,19 @@ class Cubecart {
 				$GLOBALS['smarty']->assign('NEWSLETTERS', $vars['newsletters']);
 			}
 		}
-		$content = $GLOBALS['smarty']->fetch('templates/content.newsletter.php');
+		
+		if($_GET['_a'] == 'unsubscribe') {
+			$form_id 	= 'newsletter_form_unsubscribe';
+			$mode 		= 'unsubscribe';
+		} else {
+			$form_id 	= 'newsletter_form';
+			$mode 		= 'subscribe';
+		}
+		$GLOBALS['smarty']->assign('FORM_ID', $form_id);
+		$GLOBALS['smarty']->assign('SUBSCRIBE_MODE', $mode);
+		$GLOBALS['smarty']->assign('DISABLE_BOX_NEWSLETTER', true);
 		$GLOBALS['smarty']->assign('SECTION_NAME', 'account');
+		$content = $GLOBALS['smarty']->fetch('templates/content.newsletter.php');
 		$GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
 	}
 
