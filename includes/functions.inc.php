@@ -191,7 +191,6 @@ function currentPage($excluded = null, $included = null, $remove_excluded = true
 
  	$url_path = '';
  	$params = array();
-	$one_time = array('added', 'completed', 'deleted', 'edited', 'failed', 'removed', 'subscribed', 'submitted', 'unsubscribed', 'updated', session_name());
 
 	if (isset($GLOBALS['storeURL'], $GLOBALS['rootRel'])) {
 		$url_path = $GLOBALS['storeURL'].str_replace($GLOBALS['rootRel'], '/', htmlentities($_SERVER['PHP_SELF']));
@@ -234,7 +233,7 @@ function currentPage($excluded = null, $included = null, $remove_excluded = true
 				}
 			}
 		}
-		array_walk_recursive($params, 'custom_urlencode', $one_time);
+		array_walk_recursive($params, 'custom_urlencode');
 		if (isset($params) && is_array($params)) {
 			$url_path .= '?'.http_build_query($params, '', '&');
 		}
@@ -253,10 +252,9 @@ function currentPage($excluded = null, $included = null, $remove_excluded = true
  *
  * @param string $item
  * @param trash $key
- * @param trash $one_time_keys
  * @return string
  */
-function custom_urlencode($item, $key, $one_time_keys) {
+function custom_urlencode($item, $key) {
 	$item = urlencode(html_entity_decode(stripslashes($item)));
 	return $item;
 }
