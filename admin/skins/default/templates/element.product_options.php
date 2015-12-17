@@ -30,7 +30,7 @@
    {if $option.type == '1'}
    <input type="text" class="text_calc" placeholder="{if $option.price}({$option.symbol}{$option.price}){/if}" name="inv[{$product.id}][productOptions][{$option.option_id}][{$option.assign_id}]" id="option_{$option.option_id}" value="{$option.value}" rel="{$option.symbol}{$option.decimal_price}">
    {elseif $option.type == '2'}
-   <textarea  class="text_calc" name="inv[{$product.id}][productOptions][{$option.option_id}][{$OPT.assign_id}]" rel="{$option.symbol}{$option.decimal_price}" placeholder="{if $option.price}({$option.symbol}{$option.price}){/if}" id="option_{$option.option_id}">{$option.value}</textarea>
+   <textarea  class="text_calc" name="inv[{$product.id}][productOptions][{$option.option_id}][{$option.assign_id}]" rel="{$option.symbol}{$option.decimal_price}" placeholder="{if $option.price}({$option.symbol}{$option.price}){/if}" id="option_{$option.option_id}">{$option.value}</textarea>
    {/if}
    </span>
 </div>
