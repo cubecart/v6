@@ -208,7 +208,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 			if(!isset($values['absolute_price'])) {
 				$values['absolute_price'] = 0;
 			}
-			$GLOBALS['db']->update('CubeCart_option_assign', $values, array('assign_id' => $assign_id));
+			$GLOBALS['db']->update('CubeCart_option_assign', $values, array('assign_id' => $assign_id), true,'all');
 		}
 		unset($values);
 		$updated = true;
