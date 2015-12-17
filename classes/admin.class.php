@@ -294,7 +294,11 @@ class Admin {
 	 * @return bool
 	 */
 	private function _authenticate($username, $password) {
+		
+		$username = (string)$username;
+		$password = (string)$password;
 		$hash_password = '';
+
 		if (!empty($username)) {
 			// Fetch salt
 			if (($user = $GLOBALS['db']->select('CubeCart_admin_users', array('admin_id', 'password', 'salt', 'new_password'), array('username' => $username, 'status' => '1'), null, 1)) !== false) {
