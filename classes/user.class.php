@@ -188,6 +188,9 @@ class User {
 	 */
 	public function authenticate($username, $password, $remember = false, $from_cookie = false, $is_openid = false, $redirect = true) {
 
+		$username = (string)$username;
+		$password = (string)$password;
+
 		//Check we are not upgrading an unregistered account
 		if($unregistered = $GLOBALS['db']->select('CubeCart_customer', array('customer_id'), array('type' => 2, 'email' => $username, 'status' => true))) {
 			$record = array(
