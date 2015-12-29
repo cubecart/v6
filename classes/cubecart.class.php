@@ -2426,8 +2426,8 @@ class Cubecart {
 				}
 			} else {
 				// Display a search page
-				$cart_oder_id = Order::validOrderId(trim($_GET['cart_order_id'])) ? trim($_GET['cart_order_id']) : '';
-				$GLOBALS['smarty']->assign('ORDER_NUMBER', $cart_oder_id);
+				$cart_order_id = Order::validOrderId(trim($_GET['cart_order_id'])) ? trim($_GET['cart_order_id']) : '';
+				$GLOBALS['smarty']->assign('ORDER_NUMBER', $cart_order_id);
 				$GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->orders['search'], currentPage());
 			}
 		}
