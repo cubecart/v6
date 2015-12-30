@@ -733,6 +733,9 @@ class SEO {
 		} else {
 			$filename = CC_ROOT_DIR.'/sitemap.xml';
 			$mapdata = $sitemap;
+			if(file_exists(CC_ROOT_DIR.'/sitemap.xml.gz')) {
+				unlink(CC_ROOT_DIR.'/sitemap.xml.gz');
+			}
 		}
 		if($GLOBALS['config']->get('config', 'offline')=='0') {
 			if (file_put_contents($filename, $mapdata)) {
