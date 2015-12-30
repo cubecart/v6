@@ -501,6 +501,7 @@ function generate_product_code($product_name, $cat_id = false) {
  * @return string
  */
 function getCountryFormat($input, $match = 'numcode', $fetch = 'name') {
+	if(($match == 'id' || $match == 'numcode') && !ctype_digit($input)) return $input;
 	$country = $GLOBALS['db']->select('CubeCart_geo_country', array($fetch), array($match => $input));
 	return ($country) ? utf8_encode($country[0][$fetch]) : false;
 }
@@ -560,8 +561,8 @@ function get_ip_address() {
  * @return string
  */
 function getStateFormat($input, $match = 'id', $fetch = 'name') {
+	if($match == 'id' && !ctype_digit($input)) return $input;
 	if (($county = $GLOBALS['db']->select('CubeCart_geo_zone', false, array($match => $input))) !== false) {
-//		return ($fetch == 'abbrev' && empty($county[0][$fetch])) ? $county[0]['name'] : utf8_encode($county[0][$fetch]);
 		return ($fetch == 'abbrev' && empty($county[0][$fetch])) ? $county[0]['name'] : $county[0][$fetch];
 	}
 	return $input;
