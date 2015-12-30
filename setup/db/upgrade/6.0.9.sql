@@ -1,1 +1,2 @@
 ALTER TABLE `CubeCart_order_summary` ADD `weight` DECIMAL(16,3) NOT NULL DEFAULT '0.000' AFTER `ship_method`; #EOQ
+UPDATE `CubeCart_customer` SET `order_count` = (SELECT COUNT(`id`) FROM `CubeCart_order_summary` WHERE `CubeCart_order_summary`.`customer_id` = `CubeCart_customer`.`customer_id`); #EOQ
