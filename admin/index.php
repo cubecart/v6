@@ -10,14 +10,9 @@
  * Email:  sales@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  */
-if (file_exists('..'.DIRECTORY_SEPARATOR.'admin.php')) {
-	header('location: ../admin.php', true, 301);
-	exit;
-} else {
-	header('HTTP/1.1 404 Not Found');
-	header('HTTP/1.0 404 Not Found');
-	header('Status: 404 Not Found');
-}
+header('HTTP/1.1 404 Not Found');
+header('HTTP/1.0 404 Not Found');
+header('Status: 404 Not Found');
 ?>
 <html>
 <head>
