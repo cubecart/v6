@@ -1342,13 +1342,14 @@ class Cubecart {
 		if ($contact && $contact['status']) {
 			$GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->documents['document_contact'], currentPage());
 			if (isset($_POST['contact'])) {
+
+				$error = false;
+				$required = array('email', 'name', 'subject', 'enquiry');
 				
 				foreach ($GLOBALS['hooks']->load('class.cubecart.contact') as $hook) include $hook;
 				
 				$GLOBALS['smarty']->assign('MESSAGE', $_POST['contact']);
 				// Validation
-				$error = false;
-				$required = array('email', 'name', 'subject', 'enquiry');
 				foreach ($_POST['contact'] as $key => $value) {
 					if (in_array($key, $required) && empty($value)) {
 						$GLOBALS['gui']->setError($GLOBALS['language']->common['error_fields_required']);
