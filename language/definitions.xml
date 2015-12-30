@@ -209,7 +209,7 @@
     <string name="basket_zero_items" introduced="5.0.0"><![CDATA[Your basket has (0) items.]]></string>
     <string name="cancel_order" introduced="5.0.0"><![CDATA[Cancel Order]]></string>
     <string name="complete_payment" introduced="5.0.0"><![CDATA[Complete Payment]]></string>
-    <string name="coupon_add" introduced="5.0.0"><![CDATA[Gift Certificate or Coupon]]></string>
+    <string name="coupon_add" introduced="5.0.0"><![CDATA[Gift Certificate/Coupon]]></string>
     <string name="customer_info" introduced="5.0.0"><![CDATA[Customer Information]]></string>
     <string name="order_date" introduced="5.0.0"><![CDATA[Order Date]]></string>
     <string name="order_number" introduced="5.0.0"><![CDATA[Order Number]]></string>
