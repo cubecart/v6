@@ -1041,7 +1041,7 @@ class Catalogue {
 			$group_id = 0;
 
 			// Check for group pricing
-			if (($memberships = $GLOBALS['user']->getMemberships()) !== false) {
+			if (isset($GLOBALS['user']) && $GLOBALS['user']->is() && ($memberships = $GLOBALS['user']->getMemberships()) !== false) {
 				$group_id = array();
 				foreach ($memberships as $membership) {
 					$group_id[] = $membership['group_id'];
