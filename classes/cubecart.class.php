@@ -1136,7 +1136,7 @@ class Cubecart {
 			}
 			$GLOBALS['smarty']->assign('REGISTER_CHECKED', (isset($this->_basket['register']) && $this->_basket['register']) ? 'checked="checked"' : '');
 			$GLOBALS['smarty']->assign('TERMS_CONDITIONS_CHECKED', (isset($this->_basket['terms_agree']) && $this->_basket['terms_agree']) ? 'checked="checked"' : '');
-			$GLOBALS['smarty']->assign('MAILING_LIST_SUBSCRIBE', (isset($this->_basket['terms_agree']) && $this->_basket['terms_agree']) ? 'checked="checked"' : '');
+			$GLOBALS['smarty']->assign('MAILING_LIST_SUBSCRIBE', (isset($this->_basket['mailing_list']) && $this->_basket['mailing_list']) ? 'checked="checked"' : '');
 		} else {
 			// Registered users - Display predefined addresses, if any exist
 			$this->_displayAddresses();
