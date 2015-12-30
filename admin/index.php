@@ -20,7 +20,5 @@ header('Status: 404 Not Found');
 </head><body>
 <h1>Not Found</h1>
 <p>The requested URL <?php echo $_SERVER['REQUEST_URI']; ?> was not found on this server.</p>
-<hr>
-<address><?php echo $_SERVER['SERVER_SOFTWARE']; ?></address>
 </body>
 </html>
