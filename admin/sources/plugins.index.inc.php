@@ -171,8 +171,11 @@ if (isset($_POST['status'])) {
 			}
 		}
 		// Delete to prevent potential duplicate nightmare
-		$GLOBALS['db']->delete('CubeCart_modules',array('folder' => $module_name, 'module' => $module_type)); 
-		$GLOBALS['db']->insert('CubeCart_modules', array('status' => (int)$status, 'folder' => $module_name, 'module' => $module_type));
+		if($GLOBALS['db']->select('CubeCart_modules', array('module_id'), array('folder' => $module_name, 'module' => $module_type))) {
+			$GLOBALS['db']->update('CubeCart_modules', array('status' => (int)$status), array('folder' => $module_name, 'module' => $module_type));
+		} else {
+			$GLOBALS['db']->insert('CubeCart_modules', array('status' => (int)$status, 'folder' => $module_name, 'module' => $module_type));
+		}
 		
 		// Update config
 		$GLOBALS['config']->set($module_name, 'status', $status);
