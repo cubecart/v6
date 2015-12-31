@@ -114,7 +114,7 @@ jQuery(document).ready(function() {
                         if(counties[i].id>0) {
                             $('select' + target).append($(option).val(counties[i].id).text(counties[i].name));
                         } else {
-                            $('select' + target).append($(option).text(counties[i].name));   
+                            $('select' + target).append($(option).val('').text(counties[i].name));   
                         }
                     }
                 }
@@ -146,7 +146,7 @@ jQuery(document).ready(function() {
                     if(list[i].id > 0) {
                         $('select' + target).append($(option).val(list[i].id).text(list[i].name));
                     } else {
-                        $('select' + target).append($(option).text(list[i].name));  
+                        $('select' + target).append($(option).val('').text(list[i].name));  
                     } 
                 }
                 if(setting>0) {
