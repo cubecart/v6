@@ -99,18 +99,23 @@ jQuery(document).ready(function() {
                 $(target).replaceWith($(select).attr({
                     'name': $(target).attr('name'),
                     'id': $(target).attr('id'),
-                    'class': $(target).attr('class')
+                    'class': $(target).attr('class'),
+                    'required': $(target).attr('required')
                 }));
                 if ($(this).attr('title')) {
                     var option = document.createElement('option');
-                    $('select' + target).append($(option).val('0').text($(this).attr('title')));
+                    $('select' + target).append($(option).text($(this).attr('title')));
                 }
                 for (i in counties) {
                     var option = document.createElement('option');
                     if (setting == counties[i].name || setting == counties[i].id) {
                         $('select' + target).append($(option).val(counties[i].id).text(counties[i].name).attr('selected', 'selected'));
                     } else {
-                        $('select' + target).append($(option).val(counties[i].id).text(counties[i].name));
+                        if(counties[i].id>0) {
+                            $('select' + target).append($(option).val(counties[i].id).text(counties[i].name));
+                        } else {
+                            $('select' + target).append($(option).text(counties[i].name));   
+                        }
                     }
                 }
             } else {
@@ -129,17 +134,24 @@ jQuery(document).ready(function() {
                 $(target).replaceWith($(select).attr({
                     'name': $(target).attr('name'),
                     'id': $(target).attr('id'),
-                    'class': $(target).attr('class')
+                    'class': $(target).attr('class'),
+                    'required': $(target).attr('required')
                 }));
                 if ($(this).attr('title')) {
                     var option = document.createElement('option');
-                    $('select' + target).append($(option).val('0').text($(this).attr('title')));
+                    $('select' + target).append($(option).text($(this).attr('title')));
                 }
                 for (var i = 0; i < list.length; i++) {
                     var option = document.createElement('option');
-                    $('select' + target).append($(option).val(list[i].id).text(list[i].name));
+                    if(list[i].id > 0) {
+                        $('select' + target).append($(option).val(list[i].id).text(list[i].name));
+                    } else {
+                        $('select' + target).append($(option).text(list[i].name));  
+                    } 
                 }
-                $('select' + target + ' > option[value=' + setting + ']').attr('selected', 'selected');
+                if(setting>0) {
+                    $('select' + target + ' > option[value=' + setting + ']').attr('selected', 'selected');
+                }
             } else {
                 var input = document.createElement('input');
                 var placeholder = $('label[for="' + $(this).attr('rel') + '"]').text() + ' ' + $('#validate_required').text();
@@ -148,7 +160,8 @@ jQuery(document).ready(function() {
                     'placeholder': placeholder,
                     'id': $(target).attr('id'),
                     'name': $(target).attr('name'),
-                    'class': $(target).attr('class')
+                    'class': $(target).attr('class'),
+                    'required': $(target).attr('required')
                 });
                 if ($(this).hasClass('no-custom-zone')) $(replacement).attr('disabled', 'disabled').val($(this).attr('title'));
                 $(target).replaceWith($(replacement));
