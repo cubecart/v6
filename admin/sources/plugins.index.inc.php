@@ -170,7 +170,7 @@ if (isset($_POST['status'])) {
 				$GLOBALS['hooks']->uninstall($module_name);
 			}
 		}
-		// Delete to prevent potential duplicate nightmare
+		// Make any changes
 		if($GLOBALS['db']->select('CubeCart_modules', array('module_id'), array('folder' => $module_name, 'module' => $module_type))) {
 			$GLOBALS['db']->update('CubeCart_modules', array('status' => (int)$status), array('folder' => $module_name, 'module' => $module_type));
 		} else {
