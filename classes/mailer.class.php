@@ -197,8 +197,10 @@ class Mailer extends PHPMailer {
 			$this->AltBody  = $this->_text;
 
 			if (isset($contents['email'])) {
-				$this->AddReplyTo($contents['email'], (isset($contents['from'])) ? $contents['from'] : '');
+				$this->addReplyTo($contents['email'], (isset($contents['from'])) ? $contents['from'] : '');
 			}
+			$this->Sender = $GLOBALS['config']->get('config', 'email_address');
+	
 			// Send email
 			return $this->Send();
 		}

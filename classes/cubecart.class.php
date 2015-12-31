@@ -1390,7 +1390,7 @@ class Cubecart {
 					if (isset($_POST['contact']['cc'])) {
 						$mailer->AddAddress($_POST['contact']['email'], strip_tags($_POST['contact']['name']));
 					}
-					$mailer->AddReplyTo($_POST['contact']['email'], strip_tags($_POST['contact']['name']));
+					$mailer->addReplyTo($_POST['contact']['email'], strip_tags($_POST['contact']['name']));
 					$mailer->Subject = strip_tags($_POST['contact']['subject']);
 					$mailer->Body  = sprintf($GLOBALS['language']->contact['email_content'], $_POST['contact']['name'], $_POST['contact']['email'], $department, strip_tags($_POST['contact']['enquiry']));
 					// Send
