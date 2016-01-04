@@ -1352,6 +1352,7 @@
     <string name="query_box" introduced="5.0.0"><![CDATA[Query Box]]></string>
   </group>
   <group name="module">
+    <string name="package_fail" introduced="6.0.9"><![CDATA[Error: Failed to obtain package information. Please install via FTP.]]></string>
     <string name="plugin_still_exists" introduced="6.0.0"><![CDATA[Plugin still exists. Please delete manually via FTP or hosting filemanager.]]></string>
     <string name="plugin_deleted_successfully" introduced="6.0.0"><![CDATA[Plugin deleted succesfully.]]></string>
     <string name="plugin_deleted_already" introduced="6.0.0"><![CDATA[Plugin not found. Maybe it was deleted already.]]></string>

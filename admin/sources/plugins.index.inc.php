@@ -65,89 +65,93 @@ if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 
 	if($json && !empty($json)) {
 		$data = json_decode($json, true);
-		$destination = CC_ROOT_DIR.'/'.$data['path'];
-		if(file_exists($destination)) {
-			if(is_writable($destination)) {
-				$tmp_path = CC_ROOT_DIR.'/cache/'.$data['file_name'];
-				$fp = fopen($tmp_path, 'w');
-				fwrite($fp, hex2bin($data['file_data']));
-				fclose($fp);
-				if(!file_exists($tmp_path)) {
-					$GLOBALS['main']->setACPWarning($lang['module']['get_file_failed']);
-				}
-				// Read the zip
-				require_once CC_INCLUDES_DIR.'lib/pclzip/pclzip.lib.php';
-				$source = new PclZip($tmp_path);
-				$files = $source->listContent();
-				if(is_array($files)) {
-					$extract = true;
-					$backup = false;
-					$import_language = false;
-
-					foreach($files as $file) {
-						if(preg_match('/^email_[a-z]{2}-[A-Z]{2}.xml$/', $file['filename'])) {
-							$import_language = $file['filename'];
-						}
-
-						$root_path = $destination.'/'.$file['filename'];
-						
-						if(file_exists($root_path) && basename($file['filename'])=="config.xml") {
-							// backup existing
-							$backup = str_replace('config.xml','',$file['filename'])."*";
-						}
-
-						if(file_exists($root_path) && !is_writable($root_path)) {
-							$GLOBALS['main']->setACPWarning(sprintf($lang['module']['exists_not_writable'],$root_path));
-							$extract = false;
-						}
+		if($data && !empty($data['file_name']) && !empty($data['file_data'])) {
+			$destination = CC_ROOT_DIR.'/'.$data['path'];
+			if(file_exists($destination)) {
+				if(is_writable($destination)) {
+					$tmp_path = CC_ROOT_DIR.'/cache/'.$data['file_name'];
+					$fp = fopen($tmp_path, 'w');
+					fwrite($fp, hex2bin($data['file_data']));
+					fclose($fp);
+					if(!file_exists($tmp_path)) {
+						$GLOBALS['main']->setACPWarning($lang['module']['get_file_failed']);
 					}
-	
-					if($_POST['backup']=='1' && $backup) {
-						$destination_filepath = CC_ROOT_DIR.'/backup/'.$data['file_name'].'_'.date("dMy-His").'.zip';
-						$archive = new PclZip($destination_filepath);
-						chdir($destination);
-						$files = glob($backup);
-						foreach ($files as $file) {
-							$backup_list[] = $file;
-						}
-						if ($archive->create($backup_list) == 0) {
-							if($_POST['abort']=='1') {
-								$extract = false;
-								$GLOBALS['main']->setACPWarning($lang['module']['exists_not_writable'].' '.$lang['module']['process_aborted']);
-							} else {
-								$GLOBALS['main']->setACPWarning($lang['module']['exists_not_writable']);
-							}
-						} else {
-							$GLOBALS['main']->setACPNotify($lang['module']['backup_created']);
-						}
-					}
-					if($extract) {
-						if ($source->extract(PCLZIP_OPT_PATH, $destination, PCLZIP_OPT_REPLACE_NEWER) == 0) {
-							$GLOBALS['main']->setACPWarning($lang['module']['failed_install']);	
-						} else {
-							// Attempt email template install
-							if($import_language) {
-								$GLOBALS['language']->importEmail($import_language);
+					// Read the zip
+					require_once CC_INCLUDES_DIR.'lib/pclzip/pclzip.lib.php';
+					$source = new PclZip($tmp_path);
+					$files = $source->listContent();
+					if(is_array($files)) {
+						$extract = true;
+						$backup = false;
+						$import_language = false;
+
+						foreach($files as $file) {
+							if(preg_match('/^email_[a-z]{2}-[A-Z]{2}.xml$/', $file['filename'])) {
+								$import_language = $file['filename'];
 							}
 
-							$GLOBALS['main']->setACPNotify($lang['module']['success_install']);
+							$root_path = $destination.'/'.$file['filename'];
 							
-							$request = new Request($cc_domain, $cc_conf_path, 80, false, true, 10);
-							$request->setMethod('get');
-							$request->setSSL();
-							$request->setData(array('null'=>0));
-							$request->setUserAgent('CubeCart');
-							$request->skiplog(true);
+							if(file_exists($root_path) && basename($file['filename'])=="config.xml") {
+								// backup existing
+								$backup = str_replace('config.xml','',$file['filename'])."*";
+							}
+
+							if(file_exists($root_path) && !is_writable($root_path)) {
+								$GLOBALS['main']->setACPWarning(sprintf($lang['module']['exists_not_writable'],$root_path));
+								$extract = false;
+							}
 						}
+		
+						if($_POST['backup']=='1' && $backup) {
+							$destination_filepath = CC_ROOT_DIR.'/backup/'.$data['file_name'].'_'.date("dMy-His").'.zip';
+							$archive = new PclZip($destination_filepath);
+							chdir($destination);
+							$files = glob($backup);
+							foreach ($files as $file) {
+								$backup_list[] = $file;
+							}
+							if ($archive->create($backup_list) == 0) {
+								if($_POST['abort']=='1') {
+									$extract = false;
+									$GLOBALS['main']->setACPWarning($lang['module']['exists_not_writable'].' '.$lang['module']['process_aborted']);
+								} else {
+									$GLOBALS['main']->setACPWarning($lang['module']['exists_not_writable']);
+								}
+							} else {
+								$GLOBALS['main']->setACPNotify($lang['module']['backup_created']);
+							}
+						}
+						if($extract) {
+							if ($source->extract(PCLZIP_OPT_PATH, $destination, PCLZIP_OPT_REPLACE_NEWER) == 0) {
+								$GLOBALS['main']->setACPWarning($lang['module']['failed_install']);	
+							} else {
+								// Attempt email template install
+								if($import_language) {
+									$GLOBALS['language']->importEmail($import_language);
+								}
+
+								$GLOBALS['main']->setACPNotify($lang['module']['success_install']);
+								
+								$request = new Request($cc_domain, $cc_conf_path, 80, false, true, 10);
+								$request->setMethod('get');
+								$request->setSSL();
+								$request->setData(array('null'=>0));
+								$request->setUserAgent('CubeCart');
+								$request->skiplog(true);
+							}
+						}
+					} else {
+						$GLOBALS['main']->setACPWarning(sprintf($lang['module']['read_fail'],$data['file_name']));
 					}
 				} else {
-					$GLOBALS['main']->setACPWarning(sprintf($lang['module']['read_fail'],$data['file_name']));
+					$GLOBALS['main']->setACPWarning(sprintf($lang['module']['not_writable'], $destination));
 				}
 			} else {
-				$GLOBALS['main']->setACPWarning(sprintf($lang['module']['not_writable'], $destination));
+				$GLOBALS['main']->setACPWarning(sprintf($lang['module']['not_exist'], $destination));
 			}
 		} else {
-			$GLOBALS['main']->setACPWarning(sprintf($lang['module']['not_exist'], $destination));
+			$GLOBALS['main']->setACPWarning($lang['module']['package_fail']);
 		}
 	} else {
 		$GLOBALS['main']->setACPWarning($lang['module']['token_unknown']);
