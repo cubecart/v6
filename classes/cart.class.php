@@ -694,7 +694,6 @@ class Cart {
 						$product['options'] = false;
 					}
 
-					$product['price'] = sprintf("%0.2F",$product['price']);
 					// Add the total product price inc options etc for payment gateways
 					$this->basket['contents'][$hash]['option_line_price'] = $product['option_line_price'];
 					$this->basket['contents'][$hash]['total_price_each'] = $product['price'];
@@ -715,10 +714,7 @@ class Cart {
 						'digital'  => (bool)$item['digital'],
 						'tax_type'  => $gc['taxType'],
 						'tax_inclusive' => true,
-						'options'  => array(
-							# 'Recipient' => $item['certificate']['name'],
-							# 'Message' => $item['certificate']['message'],
-						),
+						'options'  => array(),
 						'option_price_ignoring_tax' => 0,
 					);
 					$product['price_display'] = $product['price'];
@@ -1217,7 +1213,6 @@ class Cart {
 					$this->basket['coupons'][$key]['remainder'] = $remainder;	
 				}
 			}
-			$ave_tax_rate = sprintf('%.4F',$ave_tax_rate);
 			$tax = ($subtotal>0) ? ($subtotal*$ave_tax_rate) : 0;
 			$GLOBALS['tax']->adjustTax($tax);
 

@@ -97,7 +97,7 @@ class Tax {
 		if (is_array($this->_tax_table_applied)) {
 			
 			foreach ($this->_tax_table_applied as $tax_id => $tax_name) {
-				$taxes[$tax_name]['value']+= sprintf("%0.2f",(($this->_tax_table_inc[$tax_id]+$this->_tax_table_add[$tax_id])*$this->_adjust_tax));
+				$taxes[$tax_name]['value']+= (float)sprintf("%0.3F",(($this->_tax_table_inc[$tax_id]+$this->_tax_table_add[$tax_id])*$this->_adjust_tax));
 				$taxes[$tax_name]['tax_id']= $tax_id;
 			}
 
@@ -190,7 +190,7 @@ class Tax {
 		
 		if($tax_type==999999) {
 			$percent = $this->_getInheritedTax();
-			$price = sprintf('%.2F', $price/($percent+1), 2);
+			$price = $price/($percent+1);
 
 		} else {
 			$country_id = $GLOBALS['config']->get('config', 'store_country');
@@ -213,7 +213,7 @@ class Tax {
 			if (is_array($tax_table)) {
 				foreach ($tax_table as $tax_id => $tax) {
 					if ($tax[$type] && $tax['type'] == $tax_type && in_array($tax['county_id'], array($GLOBALS['config']->get('config', 'store_zone'), 0))) {
-						$tax_total	+= sprintf('%.3F', $price - ($price/(($tax['percent']/100)+1)));
+						$tax_total	+= $price - ($price/(($tax['percent']/100)+1));
 					}
 				}
 				$price	-= $tax_total;
@@ -280,7 +280,7 @@ class Tax {
 				foreach ($taxes as $i => $tax_group) {
 					
 					$name = (!empty($tax_group['display'])) ? $tax_group['display'] : $tax_group['name'];
-					$name .= ' ('.$tax_group['type_name'].' '.sprintf('%.2F',$tax_group['tax_percent']).'%)';
+					$name .= ' ('.$tax_group['type_name'].' '.(float)sprintf('%.3F',$tax_group['tax_percent']).'%)';
 
 					$this->_tax_table[$tax_group['id']] = array(
 						// What is is applied to?
@@ -397,13 +397,13 @@ class Tax {
 
 			if($tax_inclusive) {
 				// if tax inclusive we need to remove tax and flag it as done!
-				$amount = $price - sprintf('%.2F', $price/($percent+1), 2);
+				$amount = $price - ($price/($percent+1));
 				if($sum) {
 					$this->_tax_table_inc[$tax_id]		+= $amount;
 					$this->_total_tax_inc				+= $amount;
 				}
 			} else {
-				$amount	= $price * sprintf('%.2F',$percent);
+				$amount	= $price * $percent;
 				if($sum) {
 					if (isset($this->_tax_table_add[$tax_id])) {
 						$this->_tax_table_add[$tax_id]	+= $amount;
@@ -413,7 +413,7 @@ class Tax {
 					$this->_total_tax_add				+= $amount;	
 				}
 			}
-			return array('amount' => sprintf('%.2F',$amount), 'tax_inclusive' => $tax_inclusive, 'tax_name' => 'inherited');
+			return array('amount' => $amount, 'tax_inclusive' => $tax_inclusive, 'tax_name' => 'inherited');
 		}
 		if (is_array($this->_tax_table) && !empty($this->_tax_table)) {
 			foreach ($this->_tax_table as $tax_id => $tax) {
@@ -422,7 +422,7 @@ class Tax {
 					switch ($tax_inclusive) {
 						case true:
 							## Already includes tax - but how much?
-							$amount = $price - sprintf('%.2F', $price/(($tax['percent']/100)+1), 2);
+							$amount = $price - ($price/(($tax['percent']/100)+1));
 							if($sum) {
 								$this->_tax_table_applied[$tax_id]	= $tax['name'];
 								$this->_tax_table_inc[$tax_id]		+= $amount;
@@ -446,7 +446,7 @@ class Tax {
 					}
 				}
 			}
-			return array('amount' => sprintf('%.2F',$amount), 'tax_inclusive' => $tax_inclusive, 'tax_name' => $tax_name);
+			return array('amount' => $amount, 'tax_inclusive' => $tax_inclusive, 'tax_name' => $tax_name);
 		}
 		return false;
 	}
