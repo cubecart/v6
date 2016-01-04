@@ -1668,6 +1668,9 @@
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
+    <string name="assign_all_products" introduced="6.0.9"><![CDATA[Assign to all products]]></string>
+    <string name="notify_tax_class_assigned" introduced="6.0.9"><![CDATA[Tas classes have been assigned to %s products.]]></string>
+    <string name="notify_tax_class_not_assigned" introduced="6.0.9"><![CDATA[No products have been updated.]]></string>
     <string name="disable_estimates" introduced="6.0.9"><![CDATA[Disable initial shipping &amp; tax estimates]]></string>
     <string name="social_accounts" introduced="6.0.0"><![CDATA[Social Account (Username or URL)]]></string>
     <string name="seo_add_cats" introduced="6.0.0"><![CDATA[Add category to product URL path?]]></string>

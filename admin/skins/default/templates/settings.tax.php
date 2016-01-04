@@ -16,7 +16,7 @@
          <legend>{$LANG.settings.title_tax_class_current}</legend>
          {foreach from=$TAX_CLASSES item=class}
          <div><input type="text" name="class[{$class.id}][tax_name]" value="{$class.tax_name}" class="textbox">
-            <a href="{$VAL_SELF}&delete_class={$class.id}" class="delete" title="{$LANG.settings.tax_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
+            <a href="{$VAL_SELF}&delete_class={$class.id}" class="delete" title="{$LANG.settings.tax_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a> <a href="?_g=settings&node=tax&assign_class={$class.id}#taxclasses" class="delete"  title="{$LANG.notification.confirm_update}">{$LANG.settings.assign_all_products}</a>
          </div>
          {/foreach}
       </fieldset>

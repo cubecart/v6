@@ -23,6 +23,15 @@ $updated  = false;
 $redirect  = false;
 $anchor  = false;
 
+if(isset($_GET['assign_class']) && $_GET['assign_class']>0) {
+	if($no_assigned = $GLOBALS['db']->update('CubeCart_inventory', array('tax_type' => (int)$_GET['assign_class']))) {
+		$GLOBALS['main']->setACPNotify(sprintf($lang['settings']['notify_tax_class_assigned'],$no_assigned));
+	} else {
+		$GLOBALS['main']->setACPWarning($lang['settings']['notify_tax_class_not_assigned']);
+	}
+	$redirect = true;
+}
+
 #######################
 ## Update Tax Classes
 if (isset($_POST['class']) && is_array($_POST['class']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
@@ -131,7 +140,7 @@ if ($updated) {
 	$GLOBALS['main']->setACPNotify($lang['settings']['notify_tax_updated']);
 }
 if ($redirect) {
-	httpredir(currentPage(array('delete_class', 'delete_detail', 'delete_rule')), $anchor);
+	httpredir(currentPage(array('delete_class', 'delete_detail', 'delete_rule', 'assign_class')), $anchor);
 }
 
 ###############################################################
