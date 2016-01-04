@@ -97,7 +97,7 @@ class Tax {
 		if (is_array($this->_tax_table_applied)) {
 			
 			foreach ($this->_tax_table_applied as $tax_id => $tax_name) {
-				$taxes[$tax_name]['value']+= (float)sprintf("%0.3F",(($this->_tax_table_inc[$tax_id]+$this->_tax_table_add[$tax_id])*$this->_adjust_tax));
+				$taxes[$tax_name]['value']+= (float)sprintf(($this->_tax_table_inc[$tax_id]+$this->_tax_table_add[$tax_id])*$this->_adjust_tax);
 				$taxes[$tax_name]['tax_id']= $tax_id;
 			}
 
@@ -280,7 +280,7 @@ class Tax {
 				foreach ($taxes as $i => $tax_group) {
 					
 					$name = (!empty($tax_group['display'])) ? $tax_group['display'] : $tax_group['name'];
-					$name .= ' ('.$tax_group['type_name'].' '.(float)sprintf('%.3F',$tax_group['tax_percent']).'%)';
+					$name .= ' ('.$tax_group['type_name'].' '.(float)$tax_group['tax_percent'].'%)';
 
 					$this->_tax_table[$tax_group['id']] = array(
 						// What is is applied to?
