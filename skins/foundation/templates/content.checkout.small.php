@@ -9,7 +9,7 @@
          <div class="small-3 columns">
             <a href="{$item.link}" class="th" title="{$item.name}"><img src="{$item.image}" alt="{$item.name}" width="50"></a>
          </div>
-         <div class="small-5 columns">
+         <div class="small-7 columns text-right">
             <a href="{$item.link}"><strong>{$item.name}</strong></a>
             {if $item.options}
             <ul class="no-bullet">
@@ -18,9 +18,8 @@
                {/foreach}
             </ul>
             {/if}
-         </div>
-         <div class="small-3 columns">
-         {$item.line_price_display}
+            <br>
+            {$item.line_price_display}
          </div>
       </div>
       <hr>
