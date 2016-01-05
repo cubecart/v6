@@ -120,6 +120,7 @@ if (isset($_GET['export'])) {
 		$GLOBALS['smarty']->assign('SECTIONS', $smarty_data['sections']);
 		## Assign module paths eeep!
 		foreach (glob('modules/*/*/language/module.definitions.xml') as $path) {
+			$GLOBALS['language']->cloneModuleLanguage($path, $_GET['language']);
 			$modules[] = array(
 				'path' => urlencode($path),
 				'name' => $GLOBALS['language']->getFriendlyModulePath($path),

@@ -209,6 +209,51 @@ class Language {
 	}
 
 	/**
+	 * Clone language for transaltion
+	 *
+	 * @param string $from
+	 * @param string $to
+	 */
+	public function cloneModuleLanguage($from, $language) {
+		$from = CC_ROOT_DIR.'/'.$from;
+		$language = str_replace('-','_',$language);
+		$to = str_replace('module.definitions.xml', $language.'.xml', $from);
+
+		if(file_exists($from) && !file_exists($to)) {
+			$content = simplexml_load_file($from);
+
+			$output =  '<?xml version="1.0" encoding="UTF-8" ?>
+<language version="1.0">
+	<info>
+		<title>'.$language.'</title>
+		<code>'.$language.'</code>
+		<character_set>utf-8</character_set>
+		<version>1.0.0</version>
+		<minVersion>5.0.0</minVersion>
+		<maxVersion>6.*.*</maxVersion>
+	</info>
+	<translation>';	
+
+			if(!isset($content->group->string) && !isset($content->group[0]->attributes()->name)) {
+				return false;
+			}
+
+			foreach($content->group->string as $key) {
+$output .= "
+	<string>
+		<name>".$key."</name>
+		<value><![CDATA[".(string)$key."]]></value>
+		<type>".(string)$content->group[0]->attributes()->name."</type>
+	</string>";
+			}
+$output .= "
+	</translation>
+</language>";
+			return file_put_contents($to, $output);
+		}
+	}
+
+	/**
 	 * Create language file
 	 *
 	 * @param array $array
