@@ -65,7 +65,6 @@
    <div id="taxrules" class="tab_content">
       <h3>{$LANG.settings.title_tax_rule}</h3>
       <fieldset>
-         <legend>{$LANG.settings.title_tax_rule_current}</legend>
          <table>
             <thead>
                <tr>
