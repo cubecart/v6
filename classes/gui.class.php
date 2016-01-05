@@ -453,7 +453,8 @@ class GUI {
 		if (isset($this->_skin_data['images'][$mode])) {
 			$default = $this->_skin_data['images'][$mode]['default'];
 			
-			if($this->_style !== '' && $this->_skin_data['styles'][$this->_style]['images']) { // do we use a seperate style folder for images?
+			if($this->_style !== '' && $this->_skin_data['styles'][$this->_style]['images']) { // do we use a separate
+ style folder for images?
 				$files = glob('skins/'.$this->_skin.'/'.'images/{common,'.$this->_style.'}/'.$default , GLOB_BRACE);
 			} else {
 				$files = glob('skins/'.$this->_skin.'/'.'images/'.$default , GLOB_BRACE);

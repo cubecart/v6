@@ -1320,7 +1320,8 @@
     <string name="notify_sitemap_fail" introduced="5.0.0"><![CDATA[Failed to rebuild sitemap.]]></string>
     <string name="no_query_entered" introduced="5.0.0"><![CDATA[No query entered]]></string>
     <string name="expert_use_only" introduced="5.0.0"><![CDATA[WARNING: Only use this tool if you are confident you know what you are doing!]]></string>
-    <string name="sql_delimiter" introduced="6.0.7"><![CDATA[Seperate MySQL queries with delimiter <span class="courier">; #EOQ</span> at the end of each line.]]></string>
+    <string name="sql_delimiter" introduced="6.0.7"><![CDATA[Separate
+ MySQL queries with delimiter <span class="courier">; #EOQ</span> at the end of each line.]]></string>
     <string name="reset_views" introduced="5.0.0"><![CDATA[Reset all product view counts]]></string>
     <string name="sitemap" introduced="5.0.0"><![CDATA[Rebuild Sitemap]]></string>
     <string name="tab_backup" introduced="5.0.0"><![CDATA[Backup]]></string>
@@ -1670,7 +1671,7 @@
   </group>
   <group name="settings">
     <string name="assign_all_products" introduced="6.0.9"><![CDATA[Assign to all products]]></string>
-    <string name="notify_tax_class_assigned" introduced="6.0.9"><![CDATA[Tas classes have been assigned to %s products.]]></string>
+    <string name="notify_tax_class_assigned" introduced="6.0.9"><![CDATA[Tax classes have been assigned to %s products.]]></string>
     <string name="notify_tax_class_not_assigned" introduced="6.0.9"><![CDATA[No products have been updated.]]></string>
     <string name="disable_estimates" introduced="6.0.9"><![CDATA[Disable initial shipping &amp; tax estimates]]></string>
     <string name="social_accounts" introduced="6.0.0"><![CDATA[Social Account (Username or URL)]]></string>
