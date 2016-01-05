@@ -166,7 +166,6 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 	## Download the version we want
 	$request = new Request('www.cubecart.com', '/download/'.$_GET['upgrade'].'.zip', 80, false, true, 10);
 	$request->setSSL();
-	$request->setData(array('null'=>0)); // setData needs a value to work
 	$request->setUserAgent('CubeCart');
 	$request->skiplog(true);
 

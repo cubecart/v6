@@ -25,7 +25,6 @@ if (isset($_POST['autoupdate']) && Admin::getInstance()->permissions('settings',
 
 	## European Central Bank
 	if (($request = new Request('www.ecb.europa.eu', '/stats/eurofxref/eurofxref-daily.xml')) !== false) {
-		$request->setData(array('null'=>0)); // setData needs a value to work
 		$rates_xml = $request->send();
 
 		// If this fails fall back to original file_get_contents, if that failes we have tried all we can
