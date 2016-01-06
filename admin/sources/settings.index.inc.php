@@ -322,7 +322,7 @@ $select_options = array(
 	'email_smtp'   => null,
 	'ssl'     => null,
 	'stock_level'   => null,
-	'stock_change_time'  => array(2 => $lang['settings']['stock_reduce_pending'], 1 => $lang['settings']['stock_reduce_process'], 0 => $lang['settings']['stock_reduce_complete']),
+	'stock_change_time'  => array(1 => $lang['settings']['stock_reduce_process'], 0 => $lang['settings']['stock_reduce_complete'], 2 => $lang['settings']['stock_reduce_pending']),
 	'stock_warn_type'  => array($lang['settings']['stock_warning_method_global'], $lang['settings']['stock_warning_method_product']),
 	'product_weight_unit' => array('Lb' => $lang['settings']['weight_unit_lb'], 'Kg' => $lang['settings']['weight_unit_kg']),
 	'time_format'   => '%Y-%m-%d %H:%M',
