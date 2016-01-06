@@ -21,6 +21,12 @@
 class Database_Contoller {
 
 	/**
+	 * Do we have a connection?
+	 *
+	 * @var bool
+	 */
+	public $connected = false;
+	/**
 	 * Allowed exceptions
 	 *
 	 * @var array

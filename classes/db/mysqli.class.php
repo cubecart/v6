@@ -33,6 +33,8 @@ class Database extends Database_Contoller {
 
 		if ($this->_db_connect_id->connect_error) {
 			trigger_error($this->_db_connect_id->connect_error, E_USER_ERROR);
+		} else {
+			$this->connected = true;
 		}
 
 		$this->_prefix = $config['dbprefix'];

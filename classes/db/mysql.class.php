@@ -34,6 +34,8 @@ class Database extends Database_Contoller {
 		//Open the db
 		if (!mysql_select_db($config['dbdatabase'], $this->_db_connect_id)) {
 			trigger_error(mysql_error(), E_USER_ERROR);
+		} else {
+			$this->connected = true;
 		}
 
 		$this->_prefix = $config['dbprefix'];

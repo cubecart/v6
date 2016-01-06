@@ -380,64 +380,61 @@ class Debug {
 	 * @return bool
 	 */
 	public function errorLogger($error_no, $error_string, $error_file, $error_line, $error_context = null) {
-		$log = true;
 		switch ($error_no) {
-		case E_CORE_ERROR:
-			$type = 'Core Error';
+			case E_CORE_ERROR:
+				$type = 'Core Error';
 			break;
-		case E_CORE_WARNING:
-			$type = 'Core Warning';
-			$log = false;
+			case E_CORE_WARNING:
+				$type = 'Core Warning';
+				$log = false;
 			break;
-		case E_COMPILE_ERROR:
-			$type = 'Compile Error';
+			case E_COMPILE_ERROR:
+				$type = 'Compile Error';
 			break;
-		case E_COMPILE_WARNING:
-			$type = 'Compile Warning';
+			case E_COMPILE_WARNING:
+				$type = 'Compile Warning';
 			break;
-		case E_ERROR:
-		case E_USER_ERROR:
-			$type = 'Error';
+			case E_ERROR:
+			case E_USER_ERROR:
+				$type = 'Error';
 			break;
-		case E_NOTICE:
-		case E_USER_NOTICE:
-			$type = 'Notice';
-			$log = false;
+			case E_NOTICE:
+			case E_USER_NOTICE:
+				$type = 'Notice';
+				$log = false;
 			break;
-		case E_PARSE:
-			$type = 'Parse Error';
+			case E_PARSE:
+				$type = 'Parse Error';
 			break;
-		case E_RECOVERABLE_ERROR:
-			$type = 'Recoverable';
+			case E_RECOVERABLE_ERROR:
+				$type = 'Recoverable';
 			break;
-		case E_STRICT:
-			$type = 'Strict';
-			$group = 'warn';
-			$log = false;
+			case E_STRICT:
+				$type = 'Strict';
+				$group = 'warn';
+				$log = false;
+				break;
+			case E_WARNING:
+			case E_USER_WARNING:
+				$type = 'Warning';
+				$log = false;
 			break;
-		case E_WARNING:
-		case E_USER_WARNING:
-			$type = 'Warning';
-			$log = false;
+			case 'EXCEPTION':
+				$type = 'Exception';
 			break;
-		case 'EXCEPTION':
-			$type = 'Exception';
-			break;
-		default:
-			$type = 'Unknown ('.$error_no.')';
-			if (CC_PHP_ID > 52) {
-				if ($error_no == E_DEPRECATED || $error_no == E_USER_DEPRECATED) {
-					$type = 'Deprecated';
+			default:
+				$type = 'Unknown ('.$error_no.')';
+				if (CC_PHP_ID > 52) {
+					if ($error_no == E_DEPRECATED || $error_no == E_USER_DEPRECATED) {
+						$type = 'Deprecated';
+					}
 				}
-			}
 			break;
 		}
 		$error = "[<strong>".$type."</strong>] \t".$error_file.":".$error_line." - ".$error_string;
 		$this->_errors[] = $error;
 
-		if ($log) {
-			$this->_writeErrorLog($error);
-		}
+		$this->_writeErrorLog($error, $type);
 
 		return false;
 	}
@@ -450,7 +447,7 @@ class Debug {
 	public function exceptionHandler($e) {
 		$message = "[<strong>Exception</strong>] \t".$e->getFile().":".$e->getLine()." - ".$e->getMessage();
 		$this->_errors[] = $message;
-		$this->_writeErrorLog($message);
+		$this->_writeErrorLog($message, 'Exception');
 	}
 
 	/**
@@ -599,7 +596,11 @@ class Debug {
 	 *
 	 * @param string $message
 	 */
-	private function _writeErrorLog($message) {
-		Database::getInstance()->insert('CubeCart_system_error_log', array('message' => $message, 'time' => time()));
+	private function _writeErrorLog($message, $type) {
+		if(isset($GLOBALS['db']) && $GLOBALS['db']->connected) {
+			$GLOBALS['db']->insert('CubeCart_system_error_log', array('message' => $message, 'time' => time()));
+		} elseif($type == 'Exception' || $type == E_PARSE) {
+			echo $message;
+		}
 	}
 }
