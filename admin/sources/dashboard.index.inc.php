@@ -255,6 +255,7 @@ if ($GLOBALS['config']->has('config', 'default_rss_feed') && !$GLOBALS['config']
 	$request->cache(true);
 	$request->skiplog(true);
 	$request->setMethod('post');
+	$request->setData('Null');
 
 	if (($response = $request->send()) !== false) {
 		try {

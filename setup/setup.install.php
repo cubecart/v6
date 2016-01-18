@@ -253,6 +253,7 @@ if (!isset($_SESSION['setup']['permissions'])) {
 				// if fail fall back to our outdated copy locally
 				$rates_xml = file_get_contents('data/eurofxref-daily.xml');
 			} else {
+				$request->setData(array('null'=>0)); // setData needs a value to work
 				$rates_xml = $request->send();
 			}
 

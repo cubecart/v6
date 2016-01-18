@@ -52,9 +52,10 @@ if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 	$cc_get_path 	= '/extensions/token/'.$token.'/get';
 	$cc_conf_path 	= '/extensions/token/'.$token.'/confirm';
 	
-	$request = new Request($cc_domain, $cc_get_path, 443, false, true, 10);
+	$request = new Request($cc_domain, $cc_get_path, 80, false, true, 10);
 	$request->setMethod('get');
 	$request->setSSL();
+	$request->setData(array('null'=>0));
 	$request->setUserAgent('CubeCart');
 	$request->skiplog(true);
 
@@ -132,9 +133,10 @@ if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 
 								$GLOBALS['main']->setACPNotify($lang['module']['success_install']);
 								
-								$request = new Request($cc_domain, $cc_conf_path, 443, false, true, 10);
+								$request = new Request($cc_domain, $cc_conf_path, 80, false, true, 10);
 								$request->setMethod('get');
 								$request->setSSL();
+								$request->setData(array('null'=>0));
 								$request->setUserAgent('CubeCart');
 								$request->skiplog(true);
 							}
