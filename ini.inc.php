@@ -13,7 +13,7 @@
 
 // These are in case something goes wrong before we get to debug
 ini_set('display_errors', true);
-error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED & ~E_WARNING);
 
 
 if (version_compare(PHP_VERSION, '5.4.0') >= 0) {
