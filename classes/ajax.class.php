@@ -133,7 +133,7 @@ class Ajax {
 				$filemanager = new FileManager($_GET['group'], $dir);
 
 				// Directories
-				if (($dirs = $filemanager->findDirectories()) !== false) {
+				if (is_array($dirs = $filemanager->findDirectories())) {
 					foreach ($dirs[$filemanager->formatPath($dir)] as $parent => $folder) {
 						$path = (!empty($dir)) ? '/' : '';
 						$json[] = array(
