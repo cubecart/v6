@@ -500,7 +500,7 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
     /* Truncate CubeCart_system_error_log table. There are a number of failed SQL queries on upgrade depending
      * on to/from version. We need a clean slate to detect operational errors.
      */
-    $db->misc('TRUNCATE TABLE `' . $glob['dbprefix'] . 'CubeCart_system_error_log`');
+    $db->truncate('CubeCart_system_error_log')
   }
 }
 
