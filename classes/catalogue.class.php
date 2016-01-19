@@ -403,8 +403,9 @@ class Catalogue {
 						foreach($value as $selected_assign_id => $value) {
 							$selected[$selected_assign_id] = $value;
 						}
+					} else {
+						$selected[$value] = $value;
 					}
-					$selected[$value] = $value;
 				}
 			}
 
