@@ -923,7 +923,7 @@ class User {
 	private function _load() {
 		foreach ($GLOBALS['hooks']->load('class.user.load') as $hook) include $hook;
 
-		if ($GLOBALS['session']->session_data['customer_id'] == '0') {
+		if (!array_key_exists('customer_id', $GLOBALS['session']->session_data) || $GLOBALS['session']->session_data['customer_id'] == '0') {
 			return;
 		}
 		if ($GLOBALS['session']->session_data['customer_id'] && $result = $GLOBALS['db']->select('CubeCart_customer', false, array('customer_id' => (int)$GLOBALS['session']->session_data['customer_id']), null, 1)) {
