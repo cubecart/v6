@@ -380,6 +380,9 @@ class Debug {
 	 * @return bool
 	 */
 	public function errorLogger($error_no, $error_string, $error_file, $error_line, $error_context = null) {
+
+		$log = true;
+
 		switch ($error_no) {
 			case E_CORE_ERROR:
 				$type = 'Core Error';
@@ -434,7 +437,9 @@ class Debug {
 		$error = "[<strong>".$type."</strong>] \t".$error_file.":".$error_line." - ".$error_string;
 		$this->_errors[] = $error;
 
-		$this->_writeErrorLog($error, $type);
+		if($log) {
+			$this->_writeErrorLog($error, $type);
+		}
 
 		return false;
 	}
