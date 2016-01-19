@@ -443,7 +443,7 @@ class Catalogue {
 									'absolute_price' => $value['absolute_price']
 								);
 								
-								if(isset($selected[$value['assign_id']])) {
+								if(isset($selected[$value['assign_id']]) && $selected[$value['assign_id']] > 0) {
 									if($value['absolute_price']=='1') {
 										$this->_options_line_price =  $value['option_price'];
 									} else {
