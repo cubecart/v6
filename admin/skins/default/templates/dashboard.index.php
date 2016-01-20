@@ -222,6 +222,11 @@
    <div>{$STOCK_PAGINATION}</div>
 </div>
 {/if}
+{if isset($PLUGIN_TABS)}
+	{foreach from=$PLUGIN_TABS item=tab}
+		{$tab}
+	{/foreach}
+{/if}
 <div id="advanced" class="tab_content">
    <h3>{$LANG.dashboard.title_store_overview}</h3>
    <div>
