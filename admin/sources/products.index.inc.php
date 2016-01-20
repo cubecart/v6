@@ -1194,11 +1194,6 @@ if (isset($_GET['action'])) {
 		}
 		$GLOBALS['smarty']->assign('PRODUCT', $result[0]);
 
-		$selectArray = array(
-			'featured',
-			'use_stock_level',
-		);
-
 		if (isset($select_options)) {
 			foreach ($select_options as $field => $options) {
 				if (!is_array($options) || empty($options)) {
