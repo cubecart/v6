@@ -614,7 +614,7 @@ class Cart {
 				require_once $sbc_path;
 				$line_shipping = new Per_Category_Line($ship_by_cat, $this->basket);
 			} else {
-				$ship_by_cat = array('status', false);
+				$ship_by_cat = array('status' => false);
 			}
 
 			$tax_on = ($GLOBALS['config']->get('config', 'basket_tax_by_delivery')) ? 'delivery_address' : 'billing_address';
