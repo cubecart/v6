@@ -77,14 +77,14 @@ if (isset($_GET['edit']) && is_numeric($_GET['edit'])) {
 	$catalogue = Catalogue::getInstance();
 	$page  = (isset($_GET['page'])) ? $_GET['page'] : 1;
 	$per_page = 10;
-	if (($manufacturers = $GLOBALS['db']->select('CubeCart_manufacturers', array('id', 'image'), false, 'name', $per_page, $page)) !== false) {
+	if (($manufacturers = $GLOBALS['db']->select('CubeCart_manufacturers', false, false, 'name', $per_page, $page)) !== false) {
 		$GLOBALS['smarty']->assign('PAGINATION', $GLOBALS['db']->pagination(false, $per_page, $page));
-		foreach ($manufacturers as $manufacturer) {
-			$manufacturer['name'] = $catalogue->getManufacturer($manufacturer['id']);
-			$smarty_data['manufacturers'][] = $manufacturer;
+		foreach ($manufacturers as $i => $manufacturer) {
+			if (filter_var($manufacturer['URL'], FILTER_VALIDATE_URL)) {
+				$manufacturers[$i]['name'] = '<a href="'.$manufacturer['URL'].'" target="_blank">'.$manufacturer['name'].'</a>';
+			}
 		}
-		$GLOBALS['smarty']->assign('MANUFACTURERS', $smarty_data['manufacturers']);
-
+		$GLOBALS['smarty']->assign('MANUFACTURERS', $manufacturers);
 	}
 	$GLOBALS['smarty']->assign('DISPLAY_LIST', true);
 }
