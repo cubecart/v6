@@ -11,6 +11,7 @@
  *}
 <div id="email_log" class="tab_content">
   <h3>{$LANG.settings.title_email_log}</h3>
+  {if $EMAIL_LOG}
   <table>
 	<thead>
 	  <tr>
@@ -32,19 +33,18 @@
 		<td>{$log.to}</td>
 		<td>{$log.from}</td>
 		<td>
-			<a href="#" onclick="{literal}$.colorbox({title:'{/literal}{$log.subject} (HTML){literal}',width:'90%', height:'90%', html:'<iframe width=\'100%\' height=\'95%\' frameBorder=\'0\' src=\'?_g=xml&amp;function=viewEmail&amp;id={/literal}{$log.id}{literal}&amp;mode=content_html\'></iframe>'}){/literal}">{$LANG.common.html}</a>
+			<a href="#" onclick="{literal}$.colorbox({title:'{/literal}{$log.subject} ({$LANG.common.html}){literal}',width:'90%', height:'90%', html:'<iframe width=\'100%\' height=\'95%\' frameBorder=\'0\' src=\'?_g=xml&amp;function=viewEmail&amp;id={/literal}{$log.id}{literal}&amp;mode=content_html\'></iframe>'}){/literal}">{$LANG.common.html}</a>
 		</td>
 		<td>
-			<a href="#" onclick="{literal}$.colorbox({title:'{/literal}{$log.subject} (HTML){literal}',width:'90%', height:'90%', html:'<iframe width=\'100%\' height=\'95%\' frameBorder=\'0\' src=\'?_g=xml&amp;function=viewEmail&amp;id={/literal}{$log.id}{literal}&amp;mode=content_text\'></iframe>'}){/literal}">{$LANG.common.plain_text}</a>
+			<a href="#" onclick="{literal}$.colorbox({title:'{/literal}{$log.subject} ({$LANG.common.plain_text}){literal}',width:'90%', height:'90%', html:'<iframe width=\'100%\' height=\'95%\' frameBorder=\'0\' src=\'?_g=xml&amp;function=viewEmail&amp;id={/literal}{$log.id}{literal}&amp;mode=content_text\'></iframe>'}){/literal}">{$LANG.common.plain_text}</a>
 		</td>
 		<td align="center">{if $log.email_content_id>0}<a href="?_g=documents&amp;node=email&amp;type=content&amp;action=edit&amp;content_id={$log.email_content_id}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>{/if}</td>
 	  </tr>
-	{foreachelse}
-	  <tr>
-		<td colspan="4" align="center" width="650"><strong>{$LANG.form.none}</strong></td>
-	  </tr>
-	{/foreach}
+	  {/foreach}
 	</tbody>
   </table>
+  {else}
+  	{$LANG.form.none}
+  {/if}
   <div>{$PAGINATION_EMAIL_LOG}</div>
 </div>

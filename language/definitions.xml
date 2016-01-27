@@ -1301,11 +1301,13 @@
     <string name="error_logs_admin" introduced="5.0.0"><![CDATA[Unable to delete admin logs.]]></string>
     <string name="error_logs_transaction" introduced="5.0.0"><![CDATA[Transaction logs were not emptied.]]></string>
     <string name="error_logs_error" introduced="5.0.0"><![CDATA[Error logs were not emptied.]]></string>
+    <string name="error_logs_email" introduced="5.0.0"><![CDATA[Email logs were not emptied.]]></string>
     <string name="error_logs_request" introduced="5.0.0"><![CDATA[Request logs were not emptied.]]></string>
     <string name="error_reset_product" introduced="5.0.0"><![CDATA[Product views have not been reset.]]></string>
     <string name="logs_admin" introduced="5.0.0"><![CDATA[Clear admin activity logs]]></string>
     <string name="logs_request" introduced="5.0.0"><![CDATA[Clear request logs]]></string>
     <string name="logs_error" introduced="5.0.0"><![CDATA[Clear error logs]]></string>
+    <string name="logs_email" introduced="6.1.0"><![CDATA[Clear email logs]]></string>
     <string name="logs_transaction" introduced="5.0.0"><![CDATA[Clear transaction logs]]></string>
     <string name="clear_search" introduced="6.0.8"><![CDATA[Clear search log]]></string>
     <string name="notify_search_clear" introduced="6.0.8"><![CDATA[Search has been cleared.]]></string>
@@ -1316,6 +1318,7 @@
     <string name="notify_db_action" introduced="5.0.0"><![CDATA[Action `%s TABLE` has been performed successfully.]]></string>
     <string name="notify_logs_admin" introduced="5.0.0"><![CDATA[Admin logs successfully emptied.]]></string>
     <string name="notify_logs_error" introduced="5.0.0"><![CDATA[Error logs successfully emptied.]]></string>
+    <string name="notify_logs_email" introduced="6.1.0"><![CDATA[Email logs successfully emptied.]]></string>
     <string name="notify_logs_request" introduced="5.0.0"><![CDATA[Request logs successfully emptied.]]></string>
     <string name="notify_logs_transaction" introduced="5.0.0"><![CDATA[Transaction logs successfully emptied.]]></string>
     <string name="notify_reset_product" introduced="5.0.0"><![CDATA[Product views were successfully reset.]]></string>
