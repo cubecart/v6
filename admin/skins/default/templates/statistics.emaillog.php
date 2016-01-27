@@ -19,7 +19,8 @@
 		<td>{$LANG.common.subject}</td>
 		<td>{$LANG.common.to}</td>
 		<td>{$LANG.common.from}</td>
-		<td>&nbsp;</td>		
+		<td colspan="2" align="center">{$LANG.common.read}</td>
+		<td>{$LANG.common.edit}</td>	
 	  </tr>
 	</thead>
 	<tbody>
@@ -27,12 +28,16 @@
 	  <tr>
 	  	<td align="center">{if $log.result==1}<i class="fa fa-check" title="{$LANG.common.yes}"></i>{else}<i class="fa fa-times" title="{$LANG.common.no}"></i>{/if}</td>
 		<td>{$log.date}</td>
-		<td>
-			<a href="#" onclick="{literal}$.colorbox({title:'{/literal}{$log.subject} (HTML){literal}',width:'90%', height:'90%', html:'<iframe width=\'100%\' height=\'95%\' frameBorder=\'0\' src=\'?_g=xml&amp;function=viewEmail&amp;id={/literal}{$log.id}{literal}&amp;mode=content_html\'></iframe>'}){/literal}">{$log.subject}</a>
-		</td>
+		<td>{$log.subject}</td>
 		<td>{$log.to}</td>
 		<td>{$log.from}</td>
-		<td>{if $log.email_content_id>0}<a href="?_g=documents&amp;node=email&amp;type=content&amp;action=edit&amp;content_id={$log.email_content_id}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>{/if}</td>
+		<td>
+			<a href="#" onclick="{literal}$.colorbox({title:'{/literal}{$log.subject} (HTML){literal}',width:'90%', height:'90%', html:'<iframe width=\'100%\' height=\'95%\' frameBorder=\'0\' src=\'?_g=xml&amp;function=viewEmail&amp;id={/literal}{$log.id}{literal}&amp;mode=content_html\'></iframe>'}){/literal}">{$LANG.common.html}</a>
+		</td>
+		<td>
+			<a href="#" onclick="{literal}$.colorbox({title:'{/literal}{$log.subject} (HTML){literal}',width:'90%', height:'90%', html:'<iframe width=\'100%\' height=\'95%\' frameBorder=\'0\' src=\'?_g=xml&amp;function=viewEmail&amp;id={/literal}{$log.id}{literal}&amp;mode=content_text\'></iframe>'}){/literal}">{$LANG.common.plain_text}</a>
+		</td>
+		<td align="center">{if $log.email_content_id>0}<a href="?_g=documents&amp;node=email&amp;type=content&amp;action=edit&amp;content_id={$log.email_content_id}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>{/if}</td>
 	  </tr>
 	{foreachelse}
 	  <tr>
