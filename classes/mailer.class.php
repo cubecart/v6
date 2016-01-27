@@ -26,6 +26,7 @@ class Mailer extends PHPMailer {
 
 	private $_html;
 	private $_text;
+	private $_email_content_id;
 	private $_import_new = false;
 
 	protected static $_instance;
@@ -91,6 +92,7 @@ class Mailer extends PHPMailer {
 
 		if (!empty($content_type)) {
 			if (($contents =  $GLOBALS['db']->select('CubeCart_email_content', false, array('content_type' => (string)$content_type, 'language' => $language))) !== false) {
+				$this->_email_content_id = $contents[0]['content_id'];
 				$elements = array(
 					'subject'  => $contents[0]['subject'],
 					'content_html' => $contents[0]['content_html'],
@@ -213,7 +215,8 @@ class Mailer extends PHPMailer {
                 'content_text' => $this->_text,
                 'to' => $email,
                 'from' => $this->Sender,
-                'result' => $result
+                'result' => $result,
+                'email_content_id' => $this->_email_content_id
             );
 
             $GLOBALS['db']->insert('CubeCart_email_log', $email_data);
