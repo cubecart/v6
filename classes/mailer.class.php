@@ -204,7 +204,21 @@ class Mailer extends PHPMailer {
 			$this->Sender = $GLOBALS['config']->get('config', 'email_address');
 	
 			// Send email
-			return $this->Send();
+            $result = $this->Send();
+
+            // Log email
+            $email_data = array(
+                'subject' => $this->Subject,
+                'content_html' => $this->_html,
+                'content_text' => $this->_text,
+                'to' => $email,
+                'from' => $this->Sender,
+                'result' => $result
+            );
+
+            $GLOBALS['db']->insert('CubeCart_email_log', $email_data);
+
+            return $result;
 		}
 
 		return false;
