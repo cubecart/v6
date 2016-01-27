@@ -46,6 +46,8 @@ class Mailer extends PHPMailer {
 			$this->Port = $GLOBALS['config']->get('config', 'email_smtp_port');
 			if($GLOBALS['config']->get('config', 'email_method')=='smtp_ssl') {
 				$this->SMTPSecure = 'ssl';
+			} else if($GLOBALS['config']->get('config', 'email_method')=='smtp_tls') {
+				$this->SMTPSecure = 'tls';
 			}
 			if ($GLOBALS['config']->get('config', 'email_smtp')) {
 				$this->SMTPAuth = true;
