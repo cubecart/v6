@@ -69,6 +69,10 @@ if (isset($_GET['edit']) && is_numeric($_GET['edit'])) {
 		$GLOBALS['main']->setACPWarning($lang['catalogue']['error_manufacturer_found']);
 		httpredir(currentPage(array('edit')));
 	}
+	
+	foreach ($GLOBALS['hooks']->load('admin.product.manufacturer.tabs') as $hook) include $hook;
+	$GLOBALS['smarty']->assign('PLUGIN_TABS', $smarty_data['plugin_tabs']);	
+	
 	$GLOBALS['smarty']->assign('DISPLAY_FORM', true);
 
 } else {
