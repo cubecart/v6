@@ -19,6 +19,7 @@
  <hook trigger="admin.category.pre_smarty" deprecated="" />
  <hook trigger="admin.category.save.pre_process" deprecated="" />
  <hook trigger="admin.category.save.post_process" deprecated="" />
+ <hook trigger="admin.category.tabs" deprecated="" /> 
  <hook trigger="admin.category.translate.save.pre_process" deprecated="" />
  <hook trigger="admin.category.translate.save.post_process" deprecated="" />
  <hook trigger="admin.customer.add" deprecated="" />
@@ -31,6 +32,7 @@
  <hook trigger="admin.customer.group.delete" deprecated="" />
  <hook trigger="admin.customer.group.get" deprecated="" />
  <hook trigger="admin.customer.list" deprecated="" />
+ <hook trigger="admin.customer.tabs" deprecated="" /> 
  <hook trigger="admin.customer.update" deprecated="" />
  <hook trigger="admin.customer.post_process" deprecated="" />
  <hook trigger="admin.dashboard.quick_tasks" deprecated="" />
@@ -65,6 +67,7 @@
  <hook trigger="admin.product.manufacturer.pre_display" deprecated="" />
  <hook trigger="admin.product.manufacturers.save.pre_process" deprecated="" />
  <hook trigger="admin.product.manufacturers.save.post_process" deprecated="" />
+ <hook trigger="admin.product.manufacturer.tabs" deprecated="" /> 
  <hook trigger="admin.product.coupons.delete" deprecated="" />
  <hook trigger="admin.product.coupons.pre_display" deprecated="" />
  <hook trigger="admin.product.coupons.save.pre_process" deprecated="" />
@@ -72,6 +75,7 @@
  <hook trigger="admin.product.coupons.status" deprecated="" />
  <hook trigger="admin.product.import.list" deprecated="" />
  <hook trigger="admin.product.import.format" deprecated="" />
+ <hook trigger="admin.product.tabs" deprecated="" /> 
  <hook trigger="admin.reports.display" deprecated="" />
  <hook trigger="admin.reports.final" deprecated="" />
  <hook trigger="admin.reports.order.pre" deprecated="" />
