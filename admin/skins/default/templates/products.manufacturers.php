@@ -67,7 +67,11 @@
 	<input type="submit" value="{$LANG.form.submit}" class="submit">
   </div>
   </div>
-
+  {if isset($PLUGIN_TABS)}
+	{foreach from=$PLUGIN_TABS item=tab}
+		{$tab}
+	{/foreach}
+  {/if}
   {/if}
   <input type="hidden" name="token" value="{$SESSION_TOKEN}">
 </form>
