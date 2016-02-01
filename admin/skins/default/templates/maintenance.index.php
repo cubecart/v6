@@ -30,7 +30,6 @@
   <fieldset><legend>{$LANG.maintain.title_rebuild_logs}</legend>
 	<div><label for="clearLogs">{$LANG.maintain.logs_admin}</label><span><input type="checkbox" id="clearLogs" name="clearLogs" value="1"></span></div>
 	<div><label for="emptyErrorLogs">{$LANG.maintain.logs_error}</label><span><input type="checkbox" id="emptyErrorLogs" name="emptyErrorLogs" value="1"></span></div>
-	<div><label for="emptyEmailLogs">{$LANG.maintain.logs_email}</label><span><input type="checkbox" id="emptyEmailLogs" name="emptyEmailLogs" value="1"></span></div>
 	<div><label for="emptyRequestLogs">{$LANG.maintain.logs_request}</label><span><input type="checkbox" id="emptyRequestLogs" name="emptyRequestLogs" value="1"></span></div>
 	<div><label for="emptyTransLogs">{$LANG.maintain.logs_transaction}</label><span><input type="checkbox" id="emptyTransLogs" name="emptyTransLogs" value="1"></span></div>
 	<div><label for="clearSearch">{$LANG.maintain.clear_search}</label><span><input type="checkbox" id="clearSearch" name="clearSearch" value="1"></span></div>
