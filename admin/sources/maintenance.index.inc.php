@@ -553,7 +553,7 @@ $GLOBALS['smarty']->assign('EXISTING_BACKUPS', $existing_backups);
 
 ## Upgrade
 ## Check current version
-if ($request = new Request('www.cubecart.com', '/version-check/'.'2.3.22')) {
+if ($request = new Request('www.cubecart.com', '/version-check/'.CC_VERSION)) {
 	$request->skiplog(true);
 	$request->setMethod('get');
 	$request->cache(true);
