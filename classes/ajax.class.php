@@ -44,9 +44,6 @@ class Ajax {
 		$string = ($_GET['q']) ? $_GET['q'] : '';
 		
 		switch ($_GET['function']) {
-			case 'viewEmail':
-				$return_data = self::viewEmail((int)$_GET['id'], (string)$_GET['mode']);
-			break;
 			case 'SMTPTest':
 				$return_data = self::SMTPTest();
 			break;
@@ -237,25 +234,5 @@ class Ajax {
 			break;
 		}
 		return false;	
-	}
-
-	/**
-	 * View Email 
-	 *
-	 * @param int $id
-	 * @return data/false
-	 */
-	public static function viewEmail($id, $mode) {
-		$column = ($mode == 'content_text') ? 'content_text' : 'content_html';
-
-		if (CC_IN_ADMIN) {
-		    $email = $GLOBALS['db']->select('CubeCart_email_log', array($column), array('id' => $id));
-		    if($mode == 'content_text') {
-		    	return '<div style="font-family: \'Courier New\', Courier">'.nl2br($email[0][$column]).'</div>';
-		    } else {
-		    	return $email[0][$column];
-			}
-		}
-		return false;
 	}
 }

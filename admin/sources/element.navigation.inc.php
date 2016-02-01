@@ -42,8 +42,7 @@ $nav_items['inventory']  = array(
 
 $nav_items['reporting']  = array(
 	$lang['navigation']['nav_sales_reports'] => '?_g=reports',
-	$lang['navigation']['nav_statistics']  => '?_g=statistics',
-	$lang['navigation']['nav_email_log']  => '?_g=statistics&node=emaillog',
+	$lang['navigation']['nav_statistics']  => '?_g=statistics'
 );
 
 $nav_items['filemanager'] = array(

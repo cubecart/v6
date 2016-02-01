@@ -544,9 +544,6 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
-    <string name="plain_text" introduced="6.1.0"><![CDATA[Plain Text]]></string>
-    <string name="sent" introduced="6.1.0"><![CDATA[Sent]]></string>
-    <string name="html" introduced="6.1.0"><![CDATA[HTML]]></string>
     <string name="example" introduced="6.0.7"><![CDATA[Example]]></string>
     <string name="tip" introduced="6.0.7"><![CDATA[Tip]]></string>
     <string name="tax" introduced="6.0.6"><![CDATA[Tax]]></string>
@@ -1301,13 +1298,11 @@
     <string name="error_logs_admin" introduced="5.0.0"><![CDATA[Unable to delete admin logs.]]></string>
     <string name="error_logs_transaction" introduced="5.0.0"><![CDATA[Transaction logs were not emptied.]]></string>
     <string name="error_logs_error" introduced="5.0.0"><![CDATA[Error logs were not emptied.]]></string>
-    <string name="error_logs_email" introduced="5.0.0"><![CDATA[Email logs were not emptied.]]></string>
     <string name="error_logs_request" introduced="5.0.0"><![CDATA[Request logs were not emptied.]]></string>
     <string name="error_reset_product" introduced="5.0.0"><![CDATA[Product views have not been reset.]]></string>
     <string name="logs_admin" introduced="5.0.0"><![CDATA[Clear admin activity logs]]></string>
     <string name="logs_request" introduced="5.0.0"><![CDATA[Clear request logs]]></string>
     <string name="logs_error" introduced="5.0.0"><![CDATA[Clear error logs]]></string>
-    <string name="logs_email" introduced="6.1.0"><![CDATA[Clear email logs]]></string>
     <string name="logs_transaction" introduced="5.0.0"><![CDATA[Clear transaction logs]]></string>
     <string name="clear_search" introduced="6.0.8"><![CDATA[Clear search log]]></string>
     <string name="notify_search_clear" introduced="6.0.8"><![CDATA[Search has been cleared.]]></string>
@@ -1318,7 +1313,6 @@
     <string name="notify_db_action" introduced="5.0.0"><![CDATA[Action `%s TABLE` has been performed successfully.]]></string>
     <string name="notify_logs_admin" introduced="5.0.0"><![CDATA[Admin logs successfully emptied.]]></string>
     <string name="notify_logs_error" introduced="5.0.0"><![CDATA[Error logs successfully emptied.]]></string>
-    <string name="notify_logs_email" introduced="6.1.0"><![CDATA[Email logs successfully emptied.]]></string>
     <string name="notify_logs_request" introduced="5.0.0"><![CDATA[Request logs successfully emptied.]]></string>
     <string name="notify_logs_transaction" introduced="5.0.0"><![CDATA[Transaction logs successfully emptied.]]></string>
     <string name="notify_reset_product" introduced="5.0.0"><![CDATA[Product views were successfully reset.]]></string>
@@ -1431,7 +1425,6 @@
     <string name="nav_downloads" introduced="5.0.0"><![CDATA[Downloads]]></string>
     <string name="nav_email_templates" introduced="5.0.0"><![CDATA[Email Templates]]></string>
     <string name="nav_error_log" introduced="5.0.0"><![CDATA[Error Log]]></string>
-    <string name="nav_email_log" introduced="6.1.0"><![CDATA[Email Log]]></string>
     <string name="nav_request_log" introduced="5.0.0"><![CDATA[Request Log]]></string>
     <string name="nav_external" introduced="5.0.0"><![CDATA[External Software]]></string>
     <string name="nav_file_manager" introduced="5.0.0"><![CDATA[File Manager]]></string>
@@ -1946,7 +1939,6 @@
     <string name="title_display" introduced="5.0.0"><![CDATA[Layout Settings]]></string>
     <string name="title_error_log" introduced="5.0.0"><![CDATA[Error Log]]></string>
     <string name="title_admin_error_log" introduced="5.0.0"><![CDATA[Admin Error Log]]></string>
-    <string name="title_email_log" introduced="6.1.0"><![CDATA[Email Log]]></string>
     <string name="title_system_error_log" introduced="5.0.0"><![CDATA[System Error Log]]></string>
     <string name="title_extra" introduced="5.1.0"><![CDATA[Extra Settings]]></string>
     <string name="title_features" introduced="5.0.0"><![CDATA[Feature Settings]]></string>
