@@ -146,6 +146,11 @@
 	<div><a href="{$TRANSLATE}">{$LANG.translate.trans_add}</a></div>
   </div>
   {/if}
+  {if isset($PLUGIN_TABS)}
+	{foreach from=$PLUGIN_TABS item=tab}
+		{$tab}
+	{/foreach}
+  {/if}  
   {/if}
 
   {if $MODE_TRANSLATE}

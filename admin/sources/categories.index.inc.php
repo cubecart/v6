@@ -368,6 +368,10 @@ if (isset($_GET['action'])) {
 			if (isset($catData['cat_image'])) {
 				$GLOBALS['smarty']->assign('JSON_IMAGES', json_encode(array($catData['cat_image'])));
 			}
+			
+			foreach ($GLOBALS['hooks']->load('admin.category.tabs') as $hook) include $hook;
+			$GLOBALS['smarty']->assign('PLUGIN_TABS', $smarty_data['plugin_tabs']);			
+			
 			$GLOBALS['smarty']->assign('SELECT_CATEGORIES', $select_categories);
 			$GLOBALS['smarty']->assign('MODE_ADDEDIT', true);
 			foreach ($GLOBALS['hooks']->load('admin.category.addedit_display') as $hook) include $hook;

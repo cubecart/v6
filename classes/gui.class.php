@@ -1267,6 +1267,9 @@ class GUI {
 				$GLOBALS['smarty']->assign('LANG_WELCOME_BACK', sprintf($GLOBALS['language']->account['welcome_back'], $customer['first_name'], ''));
 			}
 		}
+        	$session_list_hooks = array();
+        	foreach ($GLOBALS['hooks']->load('class.gui.session.list') as $hook) include $hook;
+        	$GLOBALS['smarty']->assign('SESSION_LIST_HOOKS', $session_list_hooks);		
 		foreach ($GLOBALS['hooks']->load('class.gui.display_session_box') as $hook) include $hook;
 		$GLOBALS['smarty']->assign('URL', array('login' => $GLOBALS['seo']->buildURL('login'), 'register' => $GLOBALS['seo']->buildURL('register')));
 		$content = $GLOBALS['smarty']->fetch('templates/box.session.php');
