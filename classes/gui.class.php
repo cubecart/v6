@@ -1190,9 +1190,9 @@ class GUI {
 
 
 		// Get Retail Prices second
-		$no_sale_items = ($GLOBALS['config']->get('config', 'catalogue_sale_items') > 0) ? $GLOBALS['config']->get('config', 'catalogue_sale_items') : 10;
+		$no_sale_items = (is_numeric($GLOBALS['config']->get('config', 'catalogue_sale_items'))) ? (int)$GLOBALS['config']->get('config', 'catalogue_sale_items') : 10;
 
-		if (isset($sale_sql_standard_select) && ($standard_pricing = $GLOBALS['db']->query('SELECT `price`, `sale_price`, `product_id`,`description`,`name`, '.$sale_sql_standard_select.' AS `saving` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory` WHERE '.$sale_sql_standard_where.' AND `status` = \'1\' '.$not_on_sale.' LIMIT '.$no_sale_items)) !== false && is_array($standard_pricing)) {
+		if ($no_sale_items && isset($sale_sql_standard_select) && ($standard_pricing = $GLOBALS['db']->query('SELECT `price`, `sale_price`, `product_id`,`description`,`name`, '.$sale_sql_standard_select.' AS `saving` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory` WHERE '.$sale_sql_standard_where.' AND `status` = \'1\' '.$not_on_sale.' LIMIT '.$no_sale_items)) !== false && is_array($standard_pricing)) {
 			foreach ($standard_pricing as $product) {
 				if (isset($group_products[$product['product_id']])) {
 					$unsorted_products[$product['product_id']] = $group_products[$product['product_id']];
