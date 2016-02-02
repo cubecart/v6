@@ -18,7 +18,7 @@ CKEDITOR.editorConfig = function(config) {
 		['Styles','Format','Font','FontSize'],['TextColor','BGColor'],['Maximize', 'ShowBlocks']
 	];
 	config.toolbar = 'CubeCart';
-	config.filebrowserImageBrowseUrl	= 'admin.php?_g=filemanager&mode=fck'; 
+	config.filebrowserImageBrowseUrl = document.location.pathname+'?_g=filemanager&mode=fck'; 
 	config.entities_greek = false ;
 	config.protectedSource.push(/\{foreach[\s\S]*?}|\{\/foreach}/g);
 	//config.protectedSource.push(/{(.*?)}/g);
