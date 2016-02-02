@@ -210,7 +210,7 @@ class FileManager {
 					);
 
 					// Hash comparison check
-					$checkhash = $GLOBALS['db']->select('CubeCart_filemanager', array('file_id'), array('type' => $this->_mode, 'md5hash' => $record['md5hash'], 'filepath' => $record['filepath']), false, 1);
+					$checkhash = $GLOBALS['db']->select('CubeCart_filemanager', array('file_id'), array('type' => $this->_mode, 'md5hash' => $record['md5hash'], 'filepath' => $record['filepath'], 'filename' => $record['filename']), false, 1);
 					if (!$checkhash) {
 						$GLOBALS['db']->insert('CubeCart_filemanager', $record);
 						$updated = true;
