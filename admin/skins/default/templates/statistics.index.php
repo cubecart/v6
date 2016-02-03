@@ -188,6 +188,11 @@
    {/if}
 </div>
 {/if}
+{if isset($PLUGIN_TABS)}
+   {foreach from=$PLUGIN_TABS item=tab}
+      {$tab}
+   {/foreach}
+{/if}
 {if isset($USERS_ONLINE)}
 <div id="stats_online" class="tab_content">
    <h3>{$LANG.statistics.title_customers_active}</h3>
