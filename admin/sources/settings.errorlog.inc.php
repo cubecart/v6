@@ -79,9 +79,9 @@ if (Admin::getInstance()->superUser()) {
 				'style'  => ($log['read'] == '1') ? '' : 'style="font-weight: bold"'
 			);
 		}
+		$GLOBALS['smarty']->assign('SYSTEM_ERROR_LOG', $smarty_data['system_error_log']);
 	}
 
-	$GLOBALS['smarty']->assign('SYSTEM_ERROR_LOG', $smarty_data['system_error_log']);
 	$count = $GLOBALS['db']->count('CubeCart_system_error_log', 'log_id');
 	$GLOBALS['smarty']->assign('PAGINATION_SYSTEM_ERROR_LOG', $GLOBALS['db']->pagination($count, $per_page, $page, 5, 'page', 'system_error_log'));
 }
