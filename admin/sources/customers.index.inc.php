@@ -400,10 +400,9 @@ if (isset($_GET['action']) && Admin::getInstance()->permissions('customers', CC_
 		$GLOBALS['smarty']->assign('DISPLAY_CUSTOMER_GROUPS', true);
 	}
 	
-	foreach ($GLOBALS['hooks']->load('admin.customer.tabs') as $hook) include $hook;
-	$GLOBALS['smarty']->assign('PLUGIN_TABS', $smarty_data['plugin_tabs']);	
-	
 	$GLOBALS['smarty']->assign('CUSTOMER', $customer);
+	foreach ($GLOBALS['hooks']->load('admin.customer.tabs') as $hook) include $hook;
+	$GLOBALS['smarty']->assign('PLUGIN_TABS', $smarty_data['plugin_tabs']);
 	$GLOBALS['smarty']->assign('DISPLAY_CUSTOMER_FORM', true);
 } else {
 	$GLOBALS['main']->addTabControl($lang['customer']['title_customer'], 'customer-list');
