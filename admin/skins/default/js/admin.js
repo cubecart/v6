@@ -743,8 +743,6 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
     var t = $(this).attr("rel"),
         e = $("#data_" + t).val().split("|");
     $("#opt_assign_id").val(t), $("#opt_mid").val(e[0]), $("#opt_price").val(e[1]), $("#opt_weight").val(e[2]), $("#opt_stock").val(e[3]), $(this).parent().parent().remove()
-}), $("img.toggle-add").on("click", function() {
-    $(this).attr("src", $(this).attr("src").match("add") ? "images/icons/delete.png" : "images/icons/add.png")
 }), $(".delete_disabled").on("click", function() {
     alert($(this).attr("title"))
 }), $("input#product_code").on("keyup", function() {
