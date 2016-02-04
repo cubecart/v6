@@ -1183,6 +1183,7 @@
     <string name="card_payment" introduced="5.0.0"><![CDATA[Pay by Card]]></string>
     <string name="card_security" introduced="5.0.0"><![CDATA[Card Security Code]]></string>
     <string name="card_type" introduced="5.0.0"><![CDATA[Card Type]]></string>
+    <string name="card_view_ssl" introduced="6.0.11"><![CDATA[View under SSL]]></string>
     <string name="cheque_payable_to" introduced="5.0.0"><![CDATA[Please make cheques payable to]]></string>
     <string name="cheque_payment" introduced="5.0.0"><![CDATA[Pay by Cheque]]></string>
     <string name="make_payment" introduced="5.0.0"><![CDATA[Make Payment]]></string>

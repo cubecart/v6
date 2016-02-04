@@ -378,7 +378,7 @@ if (isset($_GET['action'])) {
 				foreach ($card as $key => $value) {
 					$smarty_data['card_data'][$key] = array(
 						'name' => $lang['orders']['card_'.$key],
-						'value' => (CC_SSL) ? $value : 'View under SSL',
+						'value' => (CC_SSL) ? $value : $lang['gateway']['card_view_ssl'],
 					);
 				}
 				$GLOBALS['smarty']->assign('CARD_DATA', $smarty_data['card_data']);
