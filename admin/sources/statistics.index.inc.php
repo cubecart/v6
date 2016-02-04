@@ -303,6 +303,9 @@ if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
 	unset($results, $result, $divider);
 }
 
+foreach ($GLOBALS['hooks']->load('admin.statistics.tabs') as $hook) include $hook;
+$GLOBALS['smarty']->assign('PLUGIN_TABS', $smarty_data['plugin_tabs']);
+
 // Customers Online
 $timeLimit = time()-1800;  // 30 minutes
 
