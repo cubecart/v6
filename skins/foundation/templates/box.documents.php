@@ -21,6 +21,9 @@
          {if isset($CONTACT_URL)}
          <li><a href="{$CONTACT_URL}" title="{$LANG.documents.document_contact}">{$LANG.documents.document_contact}</a></li>
          {/if}
+         {foreach from=$DOCUMENTS_LIST_HOOKS item=list_item}
+         <li><a href="{$list_item.href}" title="{$list_item.title}">{$list_item.title}</a></li>
+         {/foreach}         
       </ul>
    </nav>
 </div>
