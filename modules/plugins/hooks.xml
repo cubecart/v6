@@ -159,6 +159,7 @@
  <hook trigger="class.gui.display_side_basket" deprecated="" />
  <hook trigger="class.gui.display_currency_switch" deprecated="" />
  <hook trigger="class.gui.display_documents" deprecated="" />
+ <hook trigger="class.gui.documents.list" deprecated="" />
  <hook trigger="class.gui.display_language_switch" deprecated="" />
  <hook trigger="class.gui.display_mailing_list" deprecated="" />
  <hook trigger="class.gui.display_navigation.make_tree" deprecated="" />
