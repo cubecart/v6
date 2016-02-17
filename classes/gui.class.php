@@ -885,6 +885,9 @@ class GUI {
 		}
 		foreach ($GLOBALS['hooks']->load('class.gui.display_documents') as $hook) include $hook;
 		$GLOBALS['smarty']->assign('DOCUMENTS', $vars);
+		$documents_list_hooks = array();
+		foreach ($GLOBALS['hooks']->load('class.gui.documents.list') as $hook) include $hook;
+		$GLOBALS['smarty']->assign('DOCUMENTS_LIST_HOOKS', $documents_list_hooks);		
 		$content = $GLOBALS['smarty']->fetch('templates/box.documents.php');
 		$GLOBALS['smarty']->assign('SITE_DOCS', $content);
 	}
