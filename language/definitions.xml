@@ -544,6 +544,7 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="back" introduced="6.0.11"><![CDATA[Back]]></string>
     <string name="example" introduced="6.0.7"><![CDATA[Example]]></string>
     <string name="tip" introduced="6.0.7"><![CDATA[Tip]]></string>
     <string name="tax" introduced="6.0.6"><![CDATA[Tax]]></string>
