@@ -2003,7 +2003,7 @@ meta.foundation-mq-topbar {
     padding: 0;
     position: absolute;
     top: 0;
-    z-index: 99;
+    z-index: 10000;
     left: 100%; }
     .top-bar-section .dropdown li {
       height: auto;
