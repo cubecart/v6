@@ -686,7 +686,7 @@ class SEO {
 
 		$this->_sitemap_link(array('url' => $store_url.'/index.php'));
 		# Sale Items
-		if ($GLOBALS['config']->get('config', 'catalogue_sale_mode')!=='0') {
+		if ($GLOBALS['config']->get('config', 'catalogue_sale_mode')!=='0' && $GLOBALS['config']->get('config', 'catalogue_sale_mode')!=='2') {
 			$this->_sitemap_link(array('url' => $store_url.'/index.php?_a=saleitems'));
 		}
 		# Gift Certificates
