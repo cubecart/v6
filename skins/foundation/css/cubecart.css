@@ -121,7 +121,7 @@ td .fa-trash-o,td .fa-trash {
     color: #333
 }
 input.quantity {
-    width: 50px;
+    width: 100%;
     text-align: center;
 }
 div#nav-actions {
