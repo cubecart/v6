@@ -107,33 +107,9 @@ class Autoloader {
 	public static function autoload_cache() {
 		global $glob;
 
-		//If the configuration has a DB try to load that one first
 		if (isset($glob['cache']) && !empty($glob['cache'])) {
 			if (file_exists(CC_ROOT_DIR.'/classes/cache/'.$glob['cache'].'.class.php')) {
 				include CC_ROOT_DIR.'/classes/cache/'.$glob['cache'].'.class.php';
-				return true;
-			}
-		}
-
-		//Try to pick the best opcode cache
-		if(class_exists('memcached')) {
-			include CC_ROOT_DIR.'/classes/cache/memcached.class.php';
-			return true;	
-		}
-		if(class_exists('Memcache')) {
-			include CC_ROOT_DIR.'/classes/cache/memcache.class.php';
-			return true;	
-		}
-
-		if (extension_loaded('APC') && ini_get('apc.enabled')) {
-			include CC_ROOT_DIR.'/classes/cache/apc.class.php';
-			return true;
-		}
-
-		if (extension_loaded('XCache') && ini_get('xcache.size') > 0) {
-			$enable_auth = ini_get('xcache.admin.enable_auth');
-			if (!$enable_auth || $enable_auth == strtolower('off')) {
-				include CC_ROOT_DIR.'/classes/cache/xcache.class.php';
 				return true;
 			}
 		}
