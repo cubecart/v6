@@ -1578,8 +1578,6 @@ class Cubecart {
 					foreach ($methods as $data) {
 
 						if ($data['tax_inclusive']) $GLOBALS['tax']->inclusiveTaxRemove($data['value'], $data['tax_id']);
-
-						$GLOBALS['tax']->exchangeRate($data['value'], (!empty($data['currency'])) ? $data['currency'] : $GLOBALS['config']->get('config', 'default_currency'));
 						
 						$regex = '/[^a-z0-9]/i';
 						if(preg_replace($regex, '', $data['name']) == preg_replace($regex, '', $ship_name)) {
