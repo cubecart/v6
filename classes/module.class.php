@@ -474,7 +474,7 @@ class Module {
 				$GLOBALS['smarty']->assign('ENABLED_COUNTRIES', $enabled_countries);
 			}
 
-			$GLOBALS['main']->addTabControl($GLOBALS['language']->settings['allowed_zones'], 'zone-list');
+			$GLOBALS['main']->addTabControl($GLOBALS['language']->settings['allowed_zones'], 'zone-list', null, null, count($enabled_countries));
 			$GLOBALS['gui']->changeTemplateDir();
 			$GLOBALS['smarty']->assign('LANG', $GLOBALS['lang']);
 			$zone_tabs = $GLOBALS['smarty']->fetch('templates/modules.zones.php');
@@ -489,7 +489,7 @@ class Module {
 				$GLOBALS['smarty']->assign('DISABLED_COUNTRIES', $disabled_countries);
 			}
 
-			$GLOBALS['main']->addTabControl($GLOBALS['language']->settings['disabled_zones'], 'disabled-zone-list');
+			$GLOBALS['main']->addTabControl($GLOBALS['language']->settings['disabled_zones'], 'disabled-zone-list', null, null, count($disabled_countries));
 			$zone_tabs .= $GLOBALS['smarty']->fetch('templates/modules.zones-disabled.php');
 
 			$GLOBALS['smarty']->assign('MODULE_ZONES', $zone_tabs);
