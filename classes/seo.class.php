@@ -717,7 +717,7 @@ class SEO {
 						$key = 'doc_id';
 						break;
 					}
-					$this->_sitemap_link(array('key' => $key, 'id' => $id), (!isset($record['updated'])) ? (int)$record['updated'] : time(), $type);
+					$this->_sitemap_link(array('key' => $key, 'id' => $id), (isset($record['updated'])) ? (int)$record['updated'] : time(), $type);
 				}
 			}
 		}

@@ -289,12 +289,15 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 	} // end if $contents
 }
 
-if (isset($_GET['delete']) && file_exists('backup/'.$_GET['delete'])) {
-	## Generic error message for logs delete specific for backup
-	$message = preg_match('/\_error_log$/', $_GET['delete']) ? $lang['filemanager']['notify_file_delete'] : $lang['maintain']['backup_deleted'];
-	$GLOBALS['main']->setACPWarning($message);
-	unlink('backup/'.$_GET['delete']);
-	httpredir('?_g=maintenance&node=index#backup');
+if (isset($_GET['delete'])) {
+	$file = 'backup/'.basename($_GET['delete']);
+	if(file_exists($file) && preg_match('/^.*\.(sql|zip)$/i', $file)) {
+		## Generic error message for logs delete specific for backup
+		$message = preg_match('/\_error_log$/', $file) ? $lang['filemanager']['notify_file_delete'] : $lang['maintain']['backup_deleted'];
+		$GLOBALS['main']->setACPWarning($message);
+		unlink($file);
+		httpredir('?_g=maintenance&node=index#backup');
+	}
 }
 if (isset($_GET['download']) && file_exists('backup/'.$_GET['download'])) {
 	deliverFile('backup/'.$_GET['download']);
