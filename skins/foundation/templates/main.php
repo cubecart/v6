@@ -13,7 +13,7 @@
 <html class="no-js" xmlns="http://www.w3.org/1999/xhtml" dir="{$TEXT_DIRECTION}" lang="{$HTML_LANG}">
    <head>
       <title>{$META_TITLE}</title>
-      <meta charset="utf-8">
+      <meta charset="{$CHARACTER_SET}">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link href="{$CANONICAL}" rel="canonical">
       <link href="{$STORE_URL}/favicon.ico" rel="shortcut icon" type="image/x-icon">
