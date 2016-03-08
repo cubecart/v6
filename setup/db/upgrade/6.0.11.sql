@@ -1,0 +1,1 @@
+ALTER TABLE `CubeCart_documents` CHANGE `doc_content` `doc_content` MEDIUMTEXT NOT NULL; #EOQ

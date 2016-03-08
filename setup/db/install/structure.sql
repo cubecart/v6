@@ -264,7 +264,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_documents` (
 	`doc_home` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`doc_lang` VARCHAR(5) NOT NULL,
 	`doc_name` VARCHAR(200) NOT NULL,
-	`doc_content` TEXT NOT NULL,
+	`doc_content` MEDIUMTEXT NOT NULL,
 	`doc_url` VARCHAR(200) DEFAULT NULL,
 	`doc_url_openin` TINYINT(1) UNSIGNED DEFAULT NULL,
 	`seo_meta_title` TEXT NOT NULL,
