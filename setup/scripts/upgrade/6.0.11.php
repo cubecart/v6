@@ -1,7 +1,7 @@
 <?php
 $cache_defined = false;
 foreach ($glob as $key => $value) {
-	$config[] = sprintf("\$glob['%s'] = '%s';", $key, addslashes($value));
+	$cfg[] = sprintf("\$glob['%s'] = '%s';", $key, addslashes($value));
 	if($key == 'cache') {
 		$cache_defined = true;
 	}
@@ -26,9 +26,9 @@ if(!$cache_defined) {
 		$cache_name = 'file';
 	}
 
-	$config[] =sprintf("\$glob['cache'] = '%s';", $cache_name);
+	$cfg[] =sprintf("\$glob['cache'] = '%s';", $cache_name);
 
-	$config = sprintf("<?php\n%s\n?>", implode("\n", $config));
+	$cfg = sprintf("<?php\n%s\n?>", implode("\n", $cfg));
 	rename($global_file, $global_file.'-'.date('Ymdgis').'.php');
-	file_put_contents($global_file, $config);
+	file_put_contents($global_file, $cfg);
 }
