@@ -124,6 +124,9 @@ input.quantity {
     width: 100%;
     text-align: center;
 }
+input.quantity.checkout {
+	width:50px;
+}
 div#nav-actions {
    font-size: 0.8125rem;
 }
