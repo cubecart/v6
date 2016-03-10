@@ -115,7 +115,7 @@
             <div class="row collapse">
                {if $PRODUCT.available <= 0}
                <div class="small-12 columns">
-                  <input type="submit" value="{$LANG.common.unavailable}" class="button small disabled expand marg-top" disabled>
+                  <input type="submit" value="{$LANG.common.unavailable}" class="button small postfix disabled expand marg-top" disabled>
                </div>
                {else}
                <div class="medium-2 columns show-for-medium-up">
