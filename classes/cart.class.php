@@ -640,6 +640,8 @@ class Cart {
 
 					$item['options_identifier'] = isset($item['options_identifier']) ? $item['options_identifier'] : '';
 					$product = $GLOBALS['catalogue']->getProductData($item['id'], $item['quantity'], false, 10, 1, false, $item['options_identifier']);
+
+					foreach ($GLOBALS['hooks']->load('class.cart.get.product_prices') as $hook) include $hook;
 					
 					if(!$product) {
 						// Warn that the product has been removed
