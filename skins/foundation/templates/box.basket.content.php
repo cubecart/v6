@@ -12,8 +12,8 @@
 <div class="box-basket-content" id="box-basket-content">
    <h4 class="mini-basket-title nomarg pad-side">{$LANG.basket.your_basket}</h4>
    <div class="pad basket-detail">
-      <ul class="no-bullet">
       {if isset($CONTENTS) && count($CONTENTS) > 0}
+      <ul class="no-bullet">
       {foreach from=$CONTENTS item=item name=items}
       {if $smarty.foreach.items.index == 10}
          <li class="clearfix"><div class="left">&hellip;</div></li>
