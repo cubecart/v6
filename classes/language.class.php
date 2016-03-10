@@ -933,7 +933,7 @@ $output .= "
 		$GLOBALS['smarty']->assign('TEXT_DIRECTION', $text_dir);
 
 		//Assign character set
-		$char_set = isset($lang_data['character_set']) ? $lang_data['character_set'] : 'utf8';
+		$char_set = isset($lang_data['character_set']) ? $lang_data['character_set'] : 'utf-8';
 		$GLOBALS['smarty']->assign('CHARACTER_SET', $char_set);
 
 		//Assign all language values
