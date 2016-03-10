@@ -76,7 +76,7 @@
                <div class="row">
                   <div class="medium-7 large-7 columns">
                      {include file='templates/box.documents.php'}
-                     <span class="show-for-medium-up">{$COPYRIGHT}</span>
+                     <div class="show-for-medium-up">{$COPYRIGHT}</div>
                   </div>
                   <div class="medium-5 large-5 columns">
                      {$SOCIAL_LIST}
