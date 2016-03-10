@@ -29,7 +29,7 @@
             </td>
             <td>{$item.line_price_display}</td>
             <td>
-               <input name="quan[{$hash}]" type="text" value="{$item.quantity}" maxlength="3" class="quantity" {$QUAN_READ_ONLY}>
+               <input name="quan[{$hash}]" type="text" value="{$item.quantity}" maxlength="3" class="quantity checkout" {$QUAN_READ_ONLY}>
             </td>
             <td class="text-right">{$item.price_display}</td>
          </tr>
