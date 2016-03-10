@@ -322,7 +322,7 @@ if (isset($_POST['template'])) {
 
 if (isset($_POST['content']) && Admin::getInstance()->permissions('documents', CC_PERM_EDIT)) {
 	
-	$_POST['content']['content_html'] = $GLOBALS['RAW']['POST']['content']['content_html'];
+	$_POST['content']['content_html'] = str_replace(array('<!--','-->'),'',$GLOBALS['RAW']['POST']['content']['content_html']);
 	$_POST['content']['content_text'] = $GLOBALS['RAW']['POST']['content']['content_text'];
 	
 
@@ -437,6 +437,13 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
 			}
 			$GLOBALS['smarty']->assign('ADD_EDIT_CONTENT', $page_title);
 			$data['content_text'] = htmlentities($data['content_text'], ENT_QUOTES, 'UTF-8');
+			$data['content_html'] = str_replace('{/foreach}', '<!--{/foreach}-->', $data['content_html']);
+			$data['content_html'] = preg_replace_callback	('|{foreach(.*?)}|',
+																function ($matches) {
+																	return '<!--'.$matches[0].'-->';
+																},
+        														$data['content_html']
+    														);
 
 			$GLOBALS['smarty']->assign('CONTENT', $data);
 
