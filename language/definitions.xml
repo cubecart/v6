@@ -526,7 +526,7 @@
   </group>
   <group name="checkout">
     <string name="new_oid_check" introduced="6.0.11"><![CDATA[We didn't expect to find you here! Did you use the browser back button? Please check your order inventory below before proceeding and contact us if you require any assitance.]]></string>
-    <string name="oid_paid_for" introduced="6.0.11"><![CDATA[Sorry but it looks like that order has already been paid for. Your basket has been emptied.]]></string>
+    <string name="oid_paid_for" introduced="6.0.11"><![CDATA[Something might have gone wrong!? Please check your order and contact us if you require any asstance.]]></string>
     <string name="checkout" introduced="5.0.0"><![CDATA[Checkout]]></string>
     <string name="secure_checkout" introduced="6.0.0"><![CDATA[Secure Checkout]]></string>
     <string name="error_shipping" introduced="5.0.0"><![CDATA[Unfortunately there are no suitable shipping methods available for your order. This may be because the total weight of your order is too high or we cannot ship to your country. Please contact a member of our staff for any further inquiries.]]></string>
