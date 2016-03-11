@@ -867,6 +867,24 @@ class Cubecart {
 	 */
 	private function _checkout() {
 
+		$order_fixed = $GLOBALS['session']->get('order_fixed');
+		$stock_change_time = $GLOBALS['config']->get('config', 'stock_change_time');
+
+		// Make sure order is not paid for!
+		if($order_fixed) {
+			if($status = $GLOBALS['db']->select('CubeCart_order_summary', array('status'), array('cart_order_id' => $order_fixed), false, false, false, false)) {
+				if($status[0]['status']>1) {
+					$GLOBALS['gui']->setError($GLOBALS['language']->checkout['oid_paid_for']);
+					$GLOBALS['session']->delete('order_fixed');
+					httpredir('?_a=basket&empty-basket=true');
+				}
+			}
+		}
+
+		if($stock_change_time == '2' && $order_fixed) { 
+			$GLOBALS['gui']->setError($GLOBALS['language']->checkout['new_oid_check']);
+		}
+
 		// Update basket if we need to!
 		$GLOBALS['cart']->update();
 
@@ -1810,7 +1828,7 @@ class Cubecart {
 						if ($affiliates) {
 							$GLOBALS['smarty']->assign('AFFILIATES', $affiliates);
 						}
-						$GLOBALS['session']->set('order_fixed', true);
+						$GLOBALS['session']->set('order_fixed', $this->_basket['cart_order_id']);
 						$GLOBALS['smarty']->assign('TRANSFER', $transfer);
 					} else {
 						// If there's no transfer method, then it can't be used as a module
@@ -1940,6 +1958,7 @@ class Cubecart {
 	private function _gateway() {
 		
 		if (!isset($_REQUEST['gateway']) || (isset($_GET['cart_order_id']) && $_GET['retrieve'])) {
+			$GLOBALS['session']->set('order_fixed', false);
 			Order::getInstance()->placeOrder();
 		}
 
