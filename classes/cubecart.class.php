@@ -2628,7 +2628,7 @@ class Cubecart {
 			if (!$customer_id) {
 				$customer_id = $GLOBALS['session']->get('ghost_customer_id');
 			}
-			if(isset($_GET['email'])) {
+			if(isset($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)) {
 				$where =  array(
 					'cart_order_id' => $_GET['cart_order_id'],
 					'email' => $_GET['email'],
