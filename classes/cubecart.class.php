@@ -2402,10 +2402,10 @@ class Cubecart {
 		} else {
 
 			// Order lookup for unregistered users
-			if (isset($_POST['cart_order_id']) && isset($_POST['email']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) && Order::validOrderId(trim($_POST['cart_order_id']))) {
+			if (isset($_REQUEST['cart_order_id']) && isset($_REQUEST['email']) && filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL) && Order::validOrderId(trim($_REQUEST['cart_order_id']))) {
 
 				$GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->orders['my_order'], currentPage());
-				if (($orders = $GLOBALS['db']->select('CubeCart_order_summary', false, array('email' => $_POST['email'], 'cart_order_id' => $_POST['cart_order_id']))) !== false) {
+				if (($orders = $GLOBALS['db']->select('CubeCart_order_summary', false, array('email' => $_REQUEST['email'], 'cart_order_id' => $_REQUEST['cart_order_id']))) !== false) {
 					$template = 'templates/content.receipt.php';
 					$order = $orders[0];
 					$GLOBALS['user']->setGhostId($order['customer_id']);
@@ -2622,17 +2622,23 @@ class Cubecart {
 	 * Receipt
 	 */
 	private function _receipt() {
-		if (isset($_GET['cart_order_id']) && $GLOBALS['user']->is()) {
+		if (isset($_GET['cart_order_id']) && ($GLOBALS['user']->is() || isset($_GET['email']))) {
 
 			$customer_id = $GLOBALS['user']->getId();
 			if (!$customer_id) {
 				$customer_id = $GLOBALS['session']->get('ghost_customer_id');
 			}
-
-			$where =  array(
-				'cart_order_id' => $_GET['cart_order_id'],
-				'customer_id' => $customer_id,
-			);
+			if(isset($_GET['email'])) {
+				$where =  array(
+					'cart_order_id' => $_GET['cart_order_id'],
+					'email' => $_GET['email'],
+				);
+			} else {
+				$where =  array(
+					'cart_order_id' => $_GET['cart_order_id'],
+					'customer_id' => $customer_id,
+				);
+			}
 			if (($summaries = $GLOBALS['db']->select('CubeCart_order_summary', false, $where)) !== false) {
 				$summary = $summaries[0];
 				if (($products = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('cart_order_id' => $_GET['cart_order_id']))) !== false) {
