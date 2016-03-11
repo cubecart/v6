@@ -176,14 +176,6 @@
   <div id="email_html" class="tab_content">
     <h3>{$LANG.email.title_content_html}</h3>
 	<textarea name="template[content_html]" id="template_html" class="textbox fck fck-full">{$TEMPLATE.content_html}</textarea>
-	<script type="text/javascript">
-	  //<![CDATA[
-		CKEDITOR.replace( 'template_html',
-			{
-				fullPage : true
-			});
-	  //]]>
-	</script>
   	<h3>{$LANG.email.title_macros}</h3>
   	<table>
   		<thead>

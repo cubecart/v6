@@ -457,13 +457,11 @@ $(document).ready(function() {
             if ($(this).hasClass("fck-full")) var t = {
                 path: "includes/ckeditor/",
                 fullPage: !0,
-                toolbar: "CubeCart",
                 selector: "textarea.fck"
             };
             else var t = {
                 path: "includes/ckeditor/",
                 fullPage: !1,
-                toolbar: "CubeCart",
                 selector: "textarea.fck"
             };
             $(this).ckeditor(t)
