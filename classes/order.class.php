@@ -219,6 +219,9 @@ class Order {
 
 		$order_summary = $this->getSummary($order_id);
 
+		$hide_prices = $GLOBALS['session']->has('hide_prices') ? $GLOBALS['session']->get('hide_prices') : false; 
+		$GLOBALS['session']->set('hide_prices', false);
+
 		// Format prices etc for order emails...
 		$order_summary['subtotal']  = Tax::getInstance()->priceFormat($order_summary['subtotal'], true);
 		$order_summary['total']  = Tax::getInstance()->priceFormat($order_summary['total'], true);
@@ -292,7 +295,7 @@ class Order {
 		$values['products']      = $vars['products'];
 
 		foreach ($GLOBALS['hooks']->load('class.order.get_order_details') as $hook) include $hook;
-
+		$GLOBALS['session']->set('hide_prices', $hide_prices);
 		$this->_email_details    = $values;
 		return $this->_email_details;
 

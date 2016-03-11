@@ -295,6 +295,7 @@ if (isset($_GET['delete']) && file_exists('backup/'.$_GET['delete'])) {
 	$GLOBALS['main']->setACPWarning($message);
 	unlink('backup/'.$_GET['delete']);
 	httpredir('?_g=maintenance&node=index#backup');
+		## Generic error message for logs delete specific for backup
 }
 if (isset($_GET['download']) && file_exists('backup/'.$_GET['download'])) {
 	deliverFile('backup/'.$_GET['download']);
