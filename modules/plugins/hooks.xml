@@ -189,6 +189,7 @@
  <hook trigger="class.user.load.user" deprecated="" />
  <hook trigger="class.user.logout" deprecated="" />
  <hook trigger="class.user.get_session_data" deprecated="" />
+ <hook trigger="class.user.preredirect" deprecated="" />
  <hook trigger="class.user.register_user" deprecated="" />
  <hook trigger="class.user.register_user.insert" deprecated="" />
  <hook trigger="class.user.register_user.inserted" deprecated="" />
