@@ -9,4 +9,5 @@ CKEDITOR.editorConfig = function( config ) {
 	config.extraPlugins = 'showprotected';
 	config.filebrowserWindowHeight  = 500;
 	config.filebrowserWindowWidth  = 650;
+	config.allowedContent = true;
 };
