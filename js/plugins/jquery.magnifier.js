@@ -51,7 +51,7 @@
                     setLargeImage:function()
                     {
                         magnifier.$largeImage = $(new Image());
-                        magnifier.$largeImage.attr('src', magnifier.a.href).css('display', 'none');
+                        magnifier.$largeImage.attr('src', magnifier.a.href).css({'display':'none','max-width':'none'});
                     },
 					
                     setLens:function()
