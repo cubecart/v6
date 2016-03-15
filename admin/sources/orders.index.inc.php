@@ -300,6 +300,20 @@ if (isset($_GET['action'])) {
 					}
 				
 					$product['line_price_less_options'] = sprintf("%.2F",$product['line']-Catalogue::getInstance()->getOptionsLinePrice());
+
+					if($product['digital']) {
+						$digital_data = $GLOBALS['db']->select('CubeCart_downloads', array('accesskey', 'downloads', 'expire'), array('cart_order_id' => $summary[0]['cart_order_id'], 'product_id' => $product['product_id'], 'customer_id' => $summary[0]['customer_id']));
+						if($digital_data && !empty($digital_data[0]['accesskey'])) {
+							$product['accesskey'] = $digital_data[0]['accesskey'];
+							$product['downloads'] = $digital_data[0]['downloads'];
+							$product['expire'] = formatTime($digital_data[0]['expire']);
+							$product['expired'] = ($digital_data[0]['downloads'] >= $GLOBALS['config']->get('config', 'download_count') || time() > $digital_data[0]['expire']) ? true : false;	
+						} else {
+							$product['accesskey'] = false;
+						}
+					} else {
+						$product['accesskey'] = false;
+					}
 					
 					$smarty_data['products'][] = $product;
 				}

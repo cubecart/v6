@@ -168,10 +168,15 @@
                <legend>{$LANG.catalogue.title_items}</legend>
                {foreach from=$PRODUCTS item=product}
                <div id="item">
-                  {$product.quantity} x {$product.name} - {$product.product_code} ({$product.line_formatted}) {if $product.digital}<a href="{$VAL_SELF}&reset_id={$product.id}">[{$LANG.orders.reset_download_link}]</a>{/if}<span>{$product.price_total_formatted}</span>
+                  {$product.quantity} x {$product.name} - {$product.product_code} ({$product.line_formatted}) {if $product.digital}{/if}<span>{$product.price_total_formatted}</span>
+                  {if $product.accesskey}
+                  <div class="download_info"><i class="fa fa-download"></i>{$STORE_URL}/index.php?_a=download&amp;accesskey={$product.accesskey}<br>
+                  <a href="{$VAL_SELF}&reset_id={$product.id}"><i class="fa fa-recycle"></i>{$LANG.orders.reset_download_link}</a> <font class="{if $product.expired}link_expired{else}link_active{/if}">({$LANG.common.downloads}: {$product.downloads}/{$CONFIG.download_count} {$LANG.catalogue.title_coupon_expires}: {$product.expire})</font></div>
+                  {/if}
                   {if $product.options_text}
                   <br>{$product.options_text}
                   {/if}
+                  {debug}
                </div>
                {/foreach}
                <div>{$LANG.basket.total_sub}:<span>{$OVERVIEW_SUMMARY.subtotal}</span></div>
