@@ -2389,8 +2389,9 @@ class Cubecart {
 						}
 
 						$order['total'] = $GLOBALS['tax']->priceFormat($order['total'], true);
-						$order['make_payment'] = ($order['status'] == 1 && !empty($order['basket'])) ? true : false;
-						$order['cancel'] = (in_array($order['status'], array(1, 2))) ? true : false;
+						$existing_transactions = $GLOBALS['db']->select('CubeCart_transactions',array('id'), array('order_id' => $order['cart_order_id']));
+						$order['make_payment'] = ($order['status'] == 1 && !empty($order['basket']) && !$existing_transactions) ? true : false;
+						$order['cancel'] = ($order['status']==1 && !$existing_transactions) ? true : false;
 						$order['status'] = array('icon' => $icon, 'text' => $GLOBALS['language']->order_state['name_'.(int)$order['status']]);
 						$vars['orders'][] = $order;
 					}
