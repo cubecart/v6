@@ -503,7 +503,7 @@ function generate_product_code($product_name, $cat_id = false) {
 function getCountryFormat($input, $match = 'numcode', $fetch = 'name') {
 	if(($match == 'id' || $match == 'numcode') && !ctype_digit($input)) return $input;
 	$country = $GLOBALS['db']->select('CubeCart_geo_country', array($fetch), array($match => $input));
-	return ($country) ? utf8_encode($country[0][$fetch]) : false;
+	return ($country) ? $country[0][$fetch] : false;
 }
 
 /**
