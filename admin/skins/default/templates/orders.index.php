@@ -176,7 +176,6 @@
                   {if $product.options_text}
                   <br>{$product.options_text}
                   {/if}
-                  {debug}
                </div>
                {/foreach}
                <div>{$LANG.basket.total_sub}:<span>{$OVERVIEW_SUMMARY.subtotal}</span></div>
