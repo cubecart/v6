@@ -2316,8 +2316,9 @@ class Cubecart {
 								$delivery = array(
 									'url'  => $url,
 									'method' => $order['ship_method'],
-									'date'  => (!empty($order['ship_date'])) ? $order['ship_date'] : '',
+									'product' => $order['ship_product'],
 									'tracking' => $order['ship_tracking'],
+									'date'  => (!empty($order['ship_date'])) ? $order['ship_date'] : ''
 								);
 							}
 							unset($ship_class);
@@ -2328,7 +2329,7 @@ class Cubecart {
 								'method' => $order['ship_method'],
 								'product' => $order['ship_product'],
 								'tracking' => $order['ship_tracking'],
-								'date'  => (!empty($order['ship_date'])) ? $order['ship_date'] : '',
+								'date'  => (!empty($order['ship_date'])) ? $order['ship_date'] : ''
 							);
 						}
 						if(empty($delivery['date']) && empty($delivery['url']) && empty($delivery['tracking'])) {
