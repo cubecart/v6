@@ -25,6 +25,10 @@ if (isset($_POST['search']) && !empty($_POST['search'])) {
 	}
 }
 
+if (isset($_GET['char']) && strlen($_GET['char'])>1) {
+	httpredir(currentPage(array('char')));	
+}
+
 if (($cat_dropdown = $GLOBALS['cache']->read('products_category_dropdown')) === false || empty($cat_dropdown)) {
 	$cat_dropdown = $GLOBALS['catalogue']->buildCategoriesDropDown();
 	$GLOBALS['cache']->write($cat_dropdown, 'products_category_dropdown');

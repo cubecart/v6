@@ -292,6 +292,8 @@ class User {
 								$redir = $GLOBALS['session']->get('back');
 							}
 
+						foreach ($GLOBALS['hooks']->load('class.user.preredirect') as $hook) include $hook;
+
 						//If there is a redirect
 						if (!empty($redir)) {
 							if (preg_match('#^http#iU', $redir)) {
@@ -367,6 +369,10 @@ class User {
 			$data['ip_address']  = get_ip_address();
 
 			$data = array_map('trim', $data);
+
+			foreach($data as $key => $value) {
+				$data[$key] = filter_var($value, FILTER_SANITIZE_STRING);
+			}
 
 			if ($existing = $GLOBALS['db']->select('CubeCart_customer', 'customer_id', array('email' => $data['email']), false, 1, false, false)) {
 				$GLOBALS['db']->update('CubeCart_customer', $data, array('email' => $data['email']));
@@ -753,7 +759,11 @@ class User {
 			if(($_POST['ip_address'] = get_ip_address()) === false) $_POST['ip_address'] = 'Unknown'; // Get IP Address
 
 			foreach ($GLOBALS['hooks']->load('class.user.register_user.insert') as $hook) include $hook;
-
+			
+			foreach($_POST as $key => $value) {
+				$_POST[$key] = filter_var($value, FILTER_SANITIZE_STRING);
+			}
+			
 			if ($existing[0]['type']==2) {
 				$_POST['type'] = 1;
 				$_POST['new_password'] = 1;
