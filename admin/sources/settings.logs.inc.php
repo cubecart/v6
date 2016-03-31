@@ -37,6 +37,7 @@ $thead_sort = array (
 	'success'   => $GLOBALS['db']->column_sort('success', 'Success?', $sort_var, $current_page, $_GET[$sort_var], $anchor),
 	'ip_address' => $GLOBALS['db']->column_sort('ip_address', $lang['common']['ip_address'], $sort_var, $current_page, $_GET[$sort_var], $anchor),
 	'username'   => $GLOBALS['db']->column_sort('username', $lang['account']['username'], $sort_var, $current_page, $_GET[$sort_var], $anchor),
+	'username_exists' => $GLOBALS['db']->column_sort('username_exists', $lang['account']['username_exists'], $sort_var, $current_page, $_GET[$sort_var], $anchor),	
 	'date'    => $GLOBALS['db']->column_sort('time', $lang['common']['date'], $sort_var, $current_page, $_GET[$sort_var], $anchor)
 );
 $GLOBALS['smarty']->assign('THEAD_ADMIN', $thead_sort);
@@ -47,6 +48,7 @@ if ($logs_admin) {
 	foreach ($logs_admin as $log) {
 		$log['date'] = formatTime($log['time']);
 		$log['img']  = ($log['success']=='Y') ? 1 : 0;
+		$log['img_ue'] = ($log['username_exists']=='Y') ? 1 : 0;		
 		$smarty_data['admin_logs'][] = $log;
 	}
 	$GLOBALS['smarty']->assign('PAGINATION_ADMIN_ACCESS', $GLOBALS['db']->pagination(false, $per_page, $page_admin, 5, $page_var, $anchor));
