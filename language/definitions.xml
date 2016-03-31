@@ -93,6 +93,7 @@
     <string name="update_your_password" introduced="5.0.0"><![CDATA[To change your password please verify your existing one then enter and confirm a new one.]]></string>
     <string name="user_id" introduced="5.0.0"><![CDATA[User ID]]></string>
     <string name="username" introduced="5.0.0"><![CDATA[Username]]></string>
+    <string name="username_exists" introduced="5.0.0"><![CDATA[Username Exists]]></string>    
     <string name="validation_key" introduced="5.0.0"><![CDATA[Validation key]]></string>
     <string name="welcome_back" introduced="5.0.0"><![CDATA[Welcome back, %1$s %2$s]]></string>
     <string name="welcome_back_guest" introduced="5.0.0"><![CDATA[Welcome back, Guest!]]></string>
