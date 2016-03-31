@@ -158,13 +158,14 @@ class Session {
 	 * @param int $attempts
 	 * @param int $time
 	 */
-	public function blocker($user, $user_id, $login = false, $location = false, $attempts = 5, $time = 600) {
+	public function blocker($user, $user_id, $login = false, $location = false, $attempts = 5, $time = 600, $user_exists = false) {
 		$now = time();
 		// Access Log
 		$record	= array(
 			'type'		=> $location,
 			'time'		=> $now,
 			'username'	=> (!empty($user)) ? $user : '--',
+			'username_exists' => ($user_exists) ? 'Y' : 'N',
 			'user_id'   => $user_id,
 			'ip_address'=> get_ip_address(),
 			'useragent' => $this->_http_user_agent(),
