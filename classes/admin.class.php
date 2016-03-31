@@ -325,12 +325,19 @@ class Admin {
 					}
 				}
 			} else {
-				$GLOBALS['gui']->setError($GLOBALS['language']->account['error_login']);
-				return false;
+				if (($blocked_invalid_admin = $GLOBALS['session']->blocker($username, 0, (bool)false, Session::BLOCKER_BACKEND, $GLOBALS['config']->get('config', 'bfattempts'), $GLOBALS['config']->get('config', 'bftime'), (bool)false)) !== false) {
+					$minutes_blocked = ceil(($GLOBALS['config']->get('config', 'bftime')/60));
+					$GLOBALS['gui']->setError(sprintf('Too many invalid logins have been made. Access has been blocked for %s minutes.', $minutes_blocked));
+					return false;
+				} else {
+					$GLOBALS['gui']->setError($GLOBALS['language']->account['error_login']);
+					foreach ($GLOBALS['hooks']->load('admin.authenticate.failed_invalid_admin') as $hook) include $hook;
+					return false;
+				}
 			}
 			$result = $GLOBALS['db']->select('CubeCart_admin_users', array('admin_id', 'customer_id', 'logins', 'new_password'), array('username' => $username, 'password' => $hash_password, 'status' => '1'));
-			$GLOBALS['session']->blocker($username, 0, (bool)$result, Session::BLOCKER_BACKEND, $GLOBALS['config']->get('config', 'bfattempts'), $GLOBALS['config']->get('config', 'bftime'));
 			if ($result) {
+				$GLOBALS['session']->blocker($username, 0, (bool)$result, Session::BLOCKER_BACKEND, $GLOBALS['config']->get('config', 'bfattempts'), $GLOBALS['config']->get('config', 'bftime'), (bool)true);
 				if (!$GLOBALS['session']->blocked()) {
 					$this->_logged_in = true;
 					$update = array(
@@ -367,20 +374,20 @@ class Admin {
 							$newdata['failLevel'] = 1;
 							$newdata['blockTime'] = 0;
 						} else if ($user[0]['failLevel'] == ($GLOBALS['config']->get('config', 'bfattempts') - 1)) {
-								$timeAgo = time() - $GLOBALS['config']->get('config', 'bftime');
-								if ($user[0]['lastTime'] < $timeAgo) {
-									$newdata['failLevel'] = 1;
-									$newdata['blockTime'] = 0;
-								} else {
-									// block the account
-									$newdata['failLevel'] = $GLOBALS['config']->get('config', 'bfattempts');
-									$newdata['blockTime'] = time() + $GLOBALS['config']->get('config', 'bftime');
-								}
-							} else if ($user[0]['blockTime'] < time()) {
-								$timeAgo    = time() - $GLOBALS['config']->get('config', 'bftime');
-								$newdata['failLevel'] = ($user[0]['lastTime']<$timeAgo) ? 1 : $user[0]['failLevel'] + 1;
+							$timeAgo = time() - $GLOBALS['config']->get('config', 'bftime');
+							if ($user[0]['lastTime'] < $timeAgo) {
+								$newdata['failLevel'] = 1;
 								$newdata['blockTime'] = 0;
 							} else {
+								// block the account
+								$newdata['failLevel'] = $GLOBALS['config']->get('config', 'bfattempts');
+								$newdata['blockTime'] = time() + $GLOBALS['config']->get('config', 'bftime');
+							}
+						} else if ($user[0]['blockTime'] < time()) {
+							$timeAgo    = time() - $GLOBALS['config']->get('config', 'bftime');
+							$newdata['failLevel'] = ($user[0]['lastTime']<$timeAgo) ? 1 : $user[0]['failLevel'] + 1;
+							$newdata['blockTime'] = 0;
+						} else {
 							// Display Blocked message
 							$GLOBALS['gui']->setError(sprintf($GLOBALS['language']->account['error_login_block'] ($GLOBALS['config']->get('config', 'bftime') / 60)));
 							$this->_blocked = true;
@@ -389,8 +396,26 @@ class Admin {
 							$newdata['lastTime'] = time();
 							$GLOBALS['db']->update('CubeCart_admin_users', $newdata, array('admin_id' => $user[0]['admin_id']));
 						}
+						if (($blocked_valid_admin = $GLOBALS['session']->blocker($username, $user[0]['admin_id'], (bool)false, Session::BLOCKER_BACKEND, $GLOBALS['config']->get('config', 'bfattempts'), $GLOBALS['config']->get('config', 'bftime'), (bool)true)) !== false) {
+							$minutes_blocked = ceil(($GLOBALS['config']->get('config', 'bftime')/60));
+							$GLOBALS['gui']->setError(sprintf('Too many invalid logins have been made. Access has been blocked for %s minutes.', $minutes_blocked));
+							return false;
+						} else {
+							$GLOBALS['gui']->setError($GLOBALS['language']->account['error_login']);
+							foreach ($GLOBALS['hooks']->load('admin.authenticate.failed_valid_admin') as $hook) include $hook;
+							return false;
+						}
+					} else {
+						if (($blocked_invalid_admin = $GLOBALS['session']->blocker($username, 0, (bool)false, Session::BLOCKER_BACKEND, $GLOBALS['config']->get('config', 'bfattempts'), $GLOBALS['config']->get('config', 'bftime'), (bool)false)) !== false) {
+							$minutes_blocked = ceil(($GLOBALS['config']->get('config', 'bftime')/60));
+							$GLOBALS['gui']->setError(sprintf('Too many invalid logins have been made. Access has been blocked for %s minutes.', $minutes_blocked));
+							return false;
+						} else {
+							$GLOBALS['gui']->setError($GLOBALS['language']->account['error_login']);
+							foreach ($GLOBALS['hooks']->load('admin.authenticate.failed_invalid_admin') as $hook) include $hook;
+							return false;
+						}
 					}
-					$GLOBALS['gui']->setError($GLOBALS['language']->account['error_login']);
 				} else {
 					$minutes_blocked = ceil(($GLOBALS['config']->get('config', 'bftime')/60));
 					$GLOBALS['gui']->setError(sprintf('Too many invalid logins have been made. Access has been blocked for %s minutes.', $minutes_blocked));
@@ -433,6 +458,7 @@ class Admin {
 				$GLOBALS['gui']->setError(sprintf('Too many invalid logins have been made. Access has been blocked for %s minutes.', $minutes_blocked));
 			}
 		} else {
+			foreach ($GLOBALS['hooks']->load('admin.authenticate.failed_3') as $hook) include $hook;
 			$GLOBALS['gui']->setError($GLOBALS['language']->account['error_login']);
 		}
 		return false;
