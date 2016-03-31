@@ -13,6 +13,8 @@
 <hooks version="1.0">
  <!-- Admin Hooks -->
  <hook trigger="controller.admin" deprecated="" />
+ <hook trigger="admin.authenticate.failed_invalid_admin.php" deprecated="" />
+ <hook trigger="admin.authenticate.failed_valid_admin.php" deprecated="" /> 
  <hook trigger="admin.category.addedit_display" deprecated="" />
  <hook trigger="admin.category.delete" deprecated="" />
  <hook trigger="admin.category.pre_display" deprecated="" />
