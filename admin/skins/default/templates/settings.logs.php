@@ -16,6 +16,7 @@
 	<thead>
 	  <tr>
 		<td nowrap="nowrap">{$THEAD_ADMIN.username}</td>
+		<td nowrap="nowrap">{$THEAD_ADMIN.username_exists}</td>		
 		<td nowrap="nowrap">{$THEAD_ADMIN.date}</td>
 		<td nowrap="nowrap">{$THEAD_ADMIN.ip_address}</td>
 		<td nowrap="nowrap">{$THEAD_ADMIN.success}</td>
@@ -23,10 +24,11 @@
 	</thead>
 	<tbody>
 	{foreach from=$ADMIN_LOGS item=log}
-	  <tr>
+	  <tr {if $log.success == 'N'}class="admin_access_log_alert"{/if}>
 		<td>{$log.username}</td>
+		<td align="center">{if $log.username_exists == ''}?{else}<img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/{$log.img_ue}.png" alt="{$log.username_exists}">{/if}</td>
 		<td>{$log.date}</td>
-		<td><a href="http://api.hostip.info/get_html.php?ip={$log.ip_address}&position=true" class="colorbox hostip">{$log.ip_address}</a></td>
+		<td><a href="http://api.hostip.info/get_html.php?ip={$log.ip_address}&position=true" class="colorbox hostip{if $log.success == 'N'} admin_access_log_alert{/if}">{$log.ip_address}</a></td>
 		<td align="center"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/{$log.img}.png" alt="{$log.success}"></td>
 	  </tr>
 	{/foreach}
