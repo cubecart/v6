@@ -871,22 +871,18 @@ class Cubecart {
 		$stock_change_time = $GLOBALS['config']->get('config', 'stock_change_time');
 
 		// Make sure order is not paid for!
-		if($order_fixed && !is_bool($order_fixed)) {
+		if($order_fixed) {
 			if($status = $GLOBALS['db']->select('CubeCart_order_summary', array('status'), array('cart_order_id' => $order_fixed), false, false, false, false)) {
 				if($status[0]['status']>1) {
 					$GLOBALS['gui']->setError($GLOBALS['language']->checkout['oid_paid_for']);
 					$GLOBALS['session']->delete('order_fixed');
-					$GLOBALS['cart']->clear();
-					httpredir('?_a=vieworder&cart_order_id='.$order_fixed);
+					httpredir('?_a=basket&empty-basket=true');
 				}
 			}
 		}
 
-		if($stock_change_time == '2' && !is_bool($order_fixed)) {
-			$GLOBALS['session']->set('order_fixed', true);
+		if($stock_change_time == '2' && $order_fixed) { 
 			$GLOBALS['gui']->setError($GLOBALS['language']->checkout['new_oid_check']);
-			httpredir('?_a=confirm');
-			exit;
 		}
 
 		// Update basket if we need to!
@@ -1962,6 +1958,7 @@ class Cubecart {
 	private function _gateway() {
 		
 		if (!isset($_REQUEST['gateway']) || (isset($_GET['cart_order_id']) && $_GET['retrieve'])) {
+			$GLOBALS['session']->set('order_fixed', false);
 			Order::getInstance()->placeOrder();
 		}
 

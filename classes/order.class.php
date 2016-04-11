@@ -576,7 +576,7 @@ class Order {
 				$stock_change_time = $GLOBALS['config']->get('config', 'stock_change_time');
 
 				$update_order = ($stock_change_time == '2' && $order_fixed) ? false : true;
-				
+
 				if ($update_order && isset($this->_basket['cart_order_id']) && !empty($this->_basket['cart_order_id'])) {
 					// Order has already been placed, so we only need to update
 					$this->_updateOrder();
