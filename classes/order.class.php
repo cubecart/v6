@@ -571,11 +571,16 @@ class Order {
 		} else if (!empty($this->_basket)) {
 				// Order Creation/Updating
 				$this->_saveAddresses();
-				
 				$order_fixed = $GLOBALS['session']->get('order_fixed');
 				$stock_change_time = $GLOBALS['config']->get('config', 'stock_change_time');
 
-				$update_order = ($stock_change_time == '2' && $order_fixed) ? false : true;
+				if($stock_change_time=='2' && $order_fixed) {
+					$GLOBALS['gui']->setNotify($lang['checkout']['new_oid_check']);
+					$update_order = false;
+				} else {
+					$update_order = true;
+				}
+
 
 				if ($update_order && isset($this->_basket['cart_order_id']) && !empty($this->_basket['cart_order_id'])) {
 					// Order has already been placed, so we only need to update
