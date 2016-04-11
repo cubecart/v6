@@ -1810,7 +1810,6 @@ class Cubecart {
 						if ($affiliates) {
 							$GLOBALS['smarty']->assign('AFFILIATES', $affiliates);
 						}
-						$GLOBALS['session']->set('order_fixed', true);
 						$GLOBALS['smarty']->assign('TRANSFER', $transfer);
 					} else {
 						// If there's no transfer method, then it can't be used as a module

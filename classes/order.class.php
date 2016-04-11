@@ -571,25 +571,13 @@ class Order {
 		} else if (!empty($this->_basket)) {
 				// Order Creation/Updating
 				$this->_saveAddresses();
-				$order_fixed = $GLOBALS['session']->get('order_fixed');
-				$stock_change_time = $GLOBALS['config']->get('config', 'stock_change_time');
-
-				if($stock_change_time=='2' && $order_fixed) {
-					$GLOBALS['gui']->setNotify($lang['checkout']['new_oid_check']);
-					$update_order = false;
-				} else {
-					$update_order = true;
-				}
-
-
-				if ($update_order && isset($this->_basket['cart_order_id']) && !empty($this->_basket['cart_order_id'])) {
+				if (isset($this->_basket['cart_order_id']) && !empty($this->_basket['cart_order_id'])) {
 					// Order has already been placed, so we only need to update
 					$this->_updateOrder();
 					$update = true;
 				} else {
 					// Create a new order
 					$this->createOrderId();
-					$GLOBALS['session']->set('order_fixed', false);
 					// Take basket data from session, and insert into database
 					foreach ($this->_basket['contents'] as $key => $item) {
 						$product = $this->_orderAddProduct($item, $key);
