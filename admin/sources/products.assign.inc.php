@@ -42,12 +42,11 @@ if (isset($_POST['price'])) {
 	if (is_array($product_ids) && isset($_POST['price']) && is_array($_POST['price']) && Admin::getInstance()->permissions('products', CC_PERM_EDIT)) {
 		if (!empty($_POST['price']['value']) && is_numeric($_POST['price']['value'])) {
 			## Update prices by x amount/percent
-			$field = $_POST['price']['field'];
 			foreach ($product_ids as $product_id) {
 				if (!is_numeric($product_id)) continue;
 
-				$fields = ($field == 'all') ? array('price', 'sale_price', 'cost_price') : array($field);
-
+				$fields = ($_POST['price']['field'] == 'all') ? array('price', 'sale_price', 'cost_price') : array($_POST['price']['field']);
+				
 				foreach($fields as $field) {
 					if (($product = $GLOBALS['db']->select('CubeCart_inventory', array($field), array('product_id' => (int)$product_id))) !== false) {
 						$action	= $_POST['price']['action'];
