@@ -178,7 +178,7 @@
                   {if $PRODUCT.product_weight > 0}
                   <tr>
                      <td>{$LANG.common.weight}</td>
-                     <td>{$PRODUCT.product_weight}{$CONFIG.product_weight_unit}</td>
+                     <td>{$PRODUCT.product_weight}{$CONFIG.product_weight_unit|lower}</td>
                   </tr>
                   {/if}
                </tbody>

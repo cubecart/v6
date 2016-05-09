@@ -1989,7 +1989,7 @@
     <string name="weight_unit" introduced="5.0.0"><![CDATA[Weight Unit]]></string>
     <string name="current_value" introduced="5.0.0"><![CDATA[Current Value]]></string>
     <string name="new_value" introduced="5.0.0"><![CDATA[New Value]]></string>
-    <string name="weight_unit_kg" introduced="5.0.0"><![CDATA[Metric (Kg)]]></string>
+    <string name="weight_unit_kg" introduced="5.0.0"><![CDATA[Metric (kg)]]></string>
     <string name="weight_unit_lb" introduced="5.0.0"><![CDATA[Imperial (lb)]]></string>
     <string name="default_product_sort" introduced="5.2.0"><![CDATA[Product List Sorting]]></string>
   </group>
