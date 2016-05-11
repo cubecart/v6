@@ -13,7 +13,7 @@
 require dirname(__FILE__).DIRECTORY_SEPARATOR.'ini.inc.php';
 define('CC_IN_ADMIN', false);
 
-header('X-Frame-Options: SAME-ORIGIN'); // do not allow iframes
+header('X-Frame-Options: SAMEORIGIN'); // do not allow iframes
 
 global $config_default;
 
