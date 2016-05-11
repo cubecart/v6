@@ -119,21 +119,23 @@
 	</fieldset>
   </div>
   <div id="edit-products" class="tab_content">
-	<fieldset>
-	  <div id="assigned-prods">
+	<fieldset id="assigned-prods"><legend>{$LANG.catalogue.title_products_assigned}</legend>
 	  	{foreach from=$PRODUCTS item=product}
 		<div>
 		  <span class="actions"><a href="#" class="remove" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></span>
 		  <input type="hidden" name="product[]" value="{$product.product_id}">{$product.name}
 		</div>
+		{foreachelse}
+		<div class="form-none">{$LANG.form.none}</div>
 		{/foreach}
-	  </div>
+	</fieldset>
+	<fieldset><legend>{$LANG.catalogue.product_add}</legend>
 	  <div>
 		<label for="form-product">{$LANG.common.product}</label>
 		<span>
 		  <input type="hidden" name="product[]" id="result_form-product" class="add">
 
-		  <input type="text" id="form-product" rel="product" class="ajax textbox add display">
+		  <input type="text" id="form-product" placeholder="{$LANG.common.type_to_search}" rel="product" class="ajax textbox add display">
 
 		  <a href="#" target="assigned-prods" class="add"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a>
 		</span>

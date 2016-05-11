@@ -645,6 +645,7 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
         a = $(i).next(".inline-source"),
         n = new Array,
         s = !0;
+    $('#'+e+' .form-none').hide();    
     if ($(".inline-add").removeClass("highlight"), $(":input", i).each(function() {
             $(this).removeClass("required-error");
             var t = $(this).attr("rel"),
