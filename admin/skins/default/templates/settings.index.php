@@ -419,6 +419,7 @@
          <div><label for="product_clone_options">{$LANG.settings.product_clone_options}</label><span><input name="config[product_clone_options]" id="product_clone_options" type="hidden" class="toggle" value="{$CONFIG.product_clone_options}"></span></div>
          <div><label for="product_clone_options_matrix">{$LANG.settings.product_clone_options_matrix}</label><span><input name="config[product_clone_options_matrix]" id="product_clone_options_matrix" type="hidden" class="toggle" value="{$CONFIG.product_clone_options_matrix}"></span></div>
          <div><label for="product_clone_acats">{$LANG.settings.product_clone_acats}</label><span><input name="config[product_clone_acats]" id="product_clone_acats" type="hidden" class="toggle" value="{$CONFIG.product_clone_acats}"></span></div>
+         <div><label for="product_clone_main_stock">{$LANG.settings.product_clone_stock}</label><span><input name="config[product_clone_main_stock]" id="product_clone_main_stock" type="hidden" class="toggle" value="{$CONFIG.product_clone_main_stock}"></span></div>
          <div><label for="product_clone_code">{$LANG.settings.product_clone_code}</label><span><select name="config[product_clone_code]" id="product_clone_code" class="textbox">
             {foreach from=$OPT_PRODUCT_CLONE_CODE item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
             </select></span>

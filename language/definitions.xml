@@ -1671,6 +1671,7 @@
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
+    <string name="product_clone_stock" introduced="6.0.12"><![CDATA[Main stock level]]></string>
     <string name="assign_all_products" introduced="6.0.9"><![CDATA[Assign to all products]]></string>
     <string name="notify_tax_class_assigned" introduced="6.0.9"><![CDATA[Tax classes have been assigned to %s products.]]></string>
     <string name="notify_tax_class_not_assigned" introduced="6.0.9"><![CDATA[No products have been updated.]]></string>

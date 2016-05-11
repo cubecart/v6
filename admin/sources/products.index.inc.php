@@ -615,8 +615,13 @@ if (isset($_GET['action']) && strtolower($_GET['action'])=='clone' && isset($_GE
 		$record['date_added'] = $date_added;
 		$record['updated'] = $date_added;
 
-		if ($GLOBALS['config']->get('config', 'product_clone_code') == 1)
+		if ($GLOBALS['config']->get('config', 'product_clone_code') == 1) {
 			$record['product_code'] = generate_product_code($record['name']);
+		}
+
+		if ($GLOBALS['config']->get('config', 'product_clone_main_stock') != 1) {
+  			unset($record['stock_level']);
+  		}
 
 		unset($record['product_id'], $record['popularity']);
 
