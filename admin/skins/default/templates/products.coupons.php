@@ -137,7 +137,7 @@
 
 		  <input type="text" id="form-product" placeholder="{$LANG.common.type_to_search}" rel="product" class="ajax textbox add display">
 
-		  <a href="#" target="assigned-prods" class="add"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a>
+		  <a href="#" target="assigned-prods" class="add"><i class="fa fa-plus-circle" style="display: none" id="add-button" title="{$LANG.common.add}"></i></a>
 		</span>
 	  </div>
 	  <div><label for="form-subtotal">{$LANG.catalogue.coupon_subtotal}</label><span><input type="hidden" name="coupon[subtotal]" id="form-subtotal" class="toggle" value="{$COUPON.subtotal}"></span></div>
