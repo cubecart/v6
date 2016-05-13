@@ -22,7 +22,7 @@ if (version_compare(PHP_VERSION, '5.4.0') >= 0) {
 	error_reporting(E_ALL ^ (E_NOTICE | E_DEPRECATED | E_USER_DEPRECATED));
 } elseif (version_compare(PHP_VERSION, '5.2.0') >= 0) {
 	define('CC_PHP_ID', 52);
-	error_reporting(E_ALL ^ (E_ALL ^ E_NOTICE);
+	error_reporting(E_ALL ^ E_NOTICE);
 } else {
 	die("You need PHP 5.2 or higher to use CubeCart.");
 }
