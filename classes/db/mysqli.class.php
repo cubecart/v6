@@ -27,7 +27,10 @@ class Database extends Database_Contoller {
 	final protected function __construct($config) {
 		$this->_db_engine = 'MySQLi';
 
-		$this->_db_connect_id = new mysqli($config['dbhost'], $config['dbusername'], $config['dbpassword'], $config['dbdatabase']);
+		$dbport = (isset($config['dbport']) && !empty($config['dbport'])) ? $config['dbport'] : ini_get('mysqli.default_port');
+		$dbsocket = (isset($config['dbsocket']) && !empty($config['dbsocket'])) ? $config['dbsocket'] : ini_get('mysqli.default_socket');
+
+		$this->_db_connect_id = new mysqli($config['dbhost'], $config['dbusername'], $config['dbpassword'], $config['dbdatabase'], $dbport, $dbsocket);
 
 		mysqli_options($this->_db_connect_id, MYSQLI_OPT_LOCAL_INFILE, true);
 
