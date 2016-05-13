@@ -1,0 +1,1 @@
+ALTER TABLE `CubeCart_category` CHANGE `cat_image` `cat_image` INT(10) NOT NULL; #EOQ

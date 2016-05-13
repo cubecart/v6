@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_category` (
 	`cat_name` VARCHAR(100) NOT NULL,
 	`cat_desc` TEXT NULL,
 	`cat_parent_id` INT UNSIGNED NOT NULL DEFAULT '0',
-	`cat_image` VARBINARY(250) NOT NULL DEFAULT '',
+	`cat_image` int(10) NOT NULL,
 	`per_ship` DECIMAL(20,2) NOT NULL DEFAULT '0.00',
 	`item_ship` DECIMAL(20,2) NOT NULL DEFAULT '0.00',
 	`item_int_ship` DECIMAL(20,2) NOT NULL DEFAULT '0.00',
