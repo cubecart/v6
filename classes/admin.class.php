@@ -325,6 +325,7 @@ class Admin {
 					}
 				}
 			} else {
+				foreach ($GLOBALS['hooks']->load('admin.authenticate.failed_invalid_admin') as $hook) include $hook;
 				$GLOBALS['gui']->setError($GLOBALS['language']->account['error_login']);
 				return false;
 			}
@@ -356,6 +357,7 @@ class Admin {
 					$GLOBALS['session']->set('admin_id', $result[0]['admin_id'], 'client');
 					$this->_load();
 				} else {
+					foreach ($GLOBALS['hooks']->load('admin.authenticate.failed_valid_admin') as $hook) include $hook;
 					$minutes_blocked = ceil(($GLOBALS['config']->get('config', 'bftime')/60));
 					$GLOBALS['gui']->setError(sprintf('Too many invalid logins have been made. Access has been blocked for %s minutes.', $minutes_blocked));
 				}
@@ -395,6 +397,7 @@ class Admin {
 					$minutes_blocked = ceil(($GLOBALS['config']->get('config', 'bftime')/60));
 					$GLOBALS['gui']->setError(sprintf('Too many invalid logins have been made. Access has been blocked for %s minutes.', $minutes_blocked));
 				}
+				foreach ($GLOBALS['hooks']->load('admin.authenticate.failed_valid_admin') as $hook) include $hook;
 
 			}
 			if (!$GLOBALS['session']->blocked()) {
