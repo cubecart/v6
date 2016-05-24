@@ -313,4 +313,14 @@ $GLOBALS['smarty']->assign('COUNT', $count);
 
 $GLOBALS['main']->addTabControl($lang['common']['search'], 'sidebar');
 
+// Plugin Updates Available Tab
+$plugin_updates_available = 0;
+$plugin_updates_list = array();
+foreach ($GLOBALS['hooks']->load('admin.dashboard.plugin_updates_available') as $hook) include $hook;
+if ($plugin_updates_available > 0) {
+	$GLOBALS['main']->addTabControl($lang['dashboard']['title_plugin_updates_available_tab'], 'plugin_updates_available', null, null, $plugin_updates_available);
+	$GLOBALS['smarty']->assign('PLUGIN_UPDATES', $plugin_updates_list);
+	$GLOBALS['smarty']->assign('PLUGIN_UPDATES_AVAILABLE', true);
+}
+
 $page_content = $GLOBALS['smarty']->fetch('templates/dashboard.index.php');
