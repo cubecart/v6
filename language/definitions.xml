@@ -850,6 +850,12 @@
     <string name="title_list" introduced="5.0.0"><![CDATA[Customer List]]></string>
   </group>
   <group name="dashboard">
+    <string name="title_plugin_updates_available_tab" introduced="5.0.0"><![CDATA[Plugin Updates]]></string>
+    <string name="title_plugin_updates_available" introduced="5.0.0"><![CDATA[Plugin Updates Available]]></string>
+    <string name="pua_heading_plugin_creator" introduced="5.0.0"><![CDATA[Plugin Creator]]></string>
+    <string name="pua_heading_plugin_name" introduced="5.0.0"><![CDATA[Plugin Name]]></string>
+    <string name="pua_heading_installed_version" introduced="5.0.0"><![CDATA[Installed Version]]></string>
+    <string name="pua_heading_current_version" introduced="5.0.0"><![CDATA[Current Version]]></string>  	
     <string name="quick_tour" introduced="6.0.0"><![CDATA[Quick Tour]]></string>
     <string name="tour_welcome" introduced="6.0.0"><![CDATA[Welcome to your store. Please follow this quick tour to help get you started.]]></string>
     <string name="ok_go" introduced="6.0.0"><![CDATA[Ok, lets go!]]></string>
