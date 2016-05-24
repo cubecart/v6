@@ -264,3 +264,30 @@
       </fieldset>
    </div>
 </div>
+{if $PLUGIN_UPDATES_AVAILABLE}
+<div id="plugin_updates_available" class="tab_content">
+	<h3>{$LANG.dashboard.title_plugin_updates_available}</h3>
+	<table width="100%">
+		<thead>		
+			<tr>
+				<th width="40%">{$LANG.dashboard.pua_heading_plugin_name}</th>
+				<th width="40%">{$LANG.dashboard.pua_heading_plugin_creator}</th>
+				<th width="10%" align="center">{$LANG.dashboard.pua_heading_installed_version}</th>
+				<th width="10%" align="center">{$LANG.dashboard.pua_heading_current_version}</th>
+			</tr>
+		</thead>
+		{foreach from=$PLUGIN_UPDATES item=plugin_update}
+			<tr>
+				<td>
+					<a href="{$plugin_update.plugin_href}" title="{$plugin_update.plugin_name}">{$plugin_update.plugin_name}</a>
+				</td>
+				<td>
+					<a href="{$plugin_update.plugin_creator_href}" title="{$plugin_update.plugin_creator_name}" target="_blank">{$plugin_update.plugin_creator_name}</a>
+				</td>
+				<td align="center" style="color: RED;">{$plugin_update.plugin_installed_version}</td>
+				<td align="center" style="color: GREEN;">{$plugin_update.plugin_current_version}</td>
+			</tr>
+		{/foreach}
+	</table>
+</div>	
+{/if}
