@@ -30,7 +30,8 @@
             <tr>
                <th width="10">{$LANG.common.status}</th>
                <th>{$LANG.common.name_and_desc}</th>
-               <th>{$LANG.hooks.version}</th>
+               <th>{$LANG.module.installed_version}</th>
+               <th>{$LANG.module.current_version}</th>
                <th>{$LANG.common.type}</th>
                <th width="10">&nbsp;</th>
             </tr>
@@ -42,8 +43,12 @@
                   <input type="hidden" id="status_{$module.basename}" name="status[{$module.basename}]" value="{$module.config.status}" class="toggle">
                   <input type="hidden" name="type[{$module.basename}]" value="{$module.type}" />
                </td>
-               <td><a href="{$module.edit_url}">{$module.name}</a><br>{$module.description}</td>
+               <td>
+                  <a href="{$module.edit_url}">{$module.name}</a>{if $module.update_available} - <a href="{$module.update_url}" class="update_available" target="_blank" title="{$module.creator}">{$LANG.module.update_available}</a>{/if}
+                  <br>{$module.description}
+               </td>
                <td>{$module.version}</td>
+               <td>{$module.current_version}</td>               
                <td>{$module.type|ucfirst}</td>
                <td nowrap>
                   <a href="{$module.edit_url}" class="edit"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
