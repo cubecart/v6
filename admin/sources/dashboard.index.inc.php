@@ -313,10 +313,46 @@ $GLOBALS['smarty']->assign('COUNT', $count);
 
 $GLOBALS['main']->addTabControl($lang['common']['search'], 'sidebar');
 
-// Plugin Updates Available Tab
+## Plugin Updates Available Tab
 $plugin_updates_available = 0;
 $plugin_updates_list = array();
-foreach ($GLOBALS['hooks']->load('admin.dashboard.plugin_updates_available') as $hook) include $hook;
+
+$module_paths = glob("modules/*/*/config.xml");
+
+foreach ($module_paths as $module_path) {
+	$xml = new SimpleXMLElement(file_get_contents($module_path));
+	$basename = (string)basename(str_replace('config.xml','', $module_path));
+	$installed_version = (string)$xml->info->version;
+	$version_check_url = (string)$xml->info->version_check_url;
+	if (!empty($version_check_url) && $request = new Request($version_check_url)) {
+		$request->skiplog(true);
+		$request->setMethod('get');
+		$request->cache(true);
+		$request->setSSL(true);
+		$request->setUserAgent('CubeCart');
+		$request->setData(array('plugin_version' => $installed_version));
+		if (($response = $request->send()) !== false) {
+			if (version_compare(trim($response), $installed_version, '>')) {
+				if (!empty($xml->info->update_url)) {
+					$update_url = (string)$xml->info->update_url;
+				} else {
+					$update_url = 'https://www.cubecart.com/extensions';
+				}
+				$plugin_updates_list[$basename] = array(
+					'plugin_href' => '?_g=plugins&type='.(string)$xml->info->type.'&module='.$basename,
+					'plugin_name' => (string)$xml->info->name,
+					'plugin_creator_href' => (string)$xml->info->homepage,
+					'plugin_creator_name' => (string)$xml->info->creator,
+					'plugin_installed_version' => $installed_version,
+					'plugin_current_version' => $response,
+					'plugin_update_url' => $update_url,
+				);
+				++$plugin_updates_available;
+			}
+		} 
+	}
+}
+
 if ($plugin_updates_available > 0) {
 	$GLOBALS['main']->addTabControl($lang['dashboard']['title_plugin_updates_available_tab'], 'plugin_updates_available', null, null, $plugin_updates_available);
 	$GLOBALS['smarty']->assign('PLUGIN_UPDATES', $plugin_updates_list);
