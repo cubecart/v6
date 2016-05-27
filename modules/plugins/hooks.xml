@@ -37,7 +37,6 @@
  <hook trigger="admin.customer.tabs" deprecated="" /> 
  <hook trigger="admin.customer.update" deprecated="" />
  <hook trigger="admin.customer.post_process" deprecated="" />
- <hook trigger="admin.dashboard.plugin_updates_available" deprecated="" /> 
  <hook trigger="admin.dashboard.quick_tasks" deprecated="" />
  <hook trigger="admin.dashboard.stock.post" deprecated="" />
  <hook trigger="admin.dashboard.tabs" deprecated="" />
