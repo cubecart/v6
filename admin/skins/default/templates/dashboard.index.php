@@ -279,13 +279,13 @@
 		{foreach from=$PLUGIN_UPDATES item=plugin_update}
 			<tr>
 				<td>
-					<a href="{$plugin_update.plugin_href}" title="{$plugin_update.plugin_name}">{$plugin_update.plugin_name}</a>
+					<a href="{$plugin_update.plugin_href}" title="{$plugin_update.plugin_name}">{$plugin_update.plugin_name}</a> - <a href="{$plugin_update.plugin_update_url}" class="update_available" target="_blank" title="{$plugin_update.creator}">{$LANG.dashboard.update_available}</a>
 				</td>
 				<td>
 					<a href="{$plugin_update.plugin_creator_href}" title="{$plugin_update.plugin_creator_name}" target="_blank">{$plugin_update.plugin_creator_name}</a>
 				</td>
-				<td align="center" style="color: RED;">{$plugin_update.plugin_installed_version}</td>
-				<td align="center" style="color: GREEN;">{$plugin_update.plugin_current_version}</td>
+				<td align="center">{$plugin_update.plugin_installed_version}</td>
+				<td align="center">{$plugin_update.plugin_current_version}</td>
 			</tr>
 		{/foreach}
 	</table>
