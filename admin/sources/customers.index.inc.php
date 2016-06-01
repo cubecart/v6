@@ -210,7 +210,7 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
 		} else if ($customer_updated) {
 			$GLOBALS['main']->setACPNotify($lang['customer']['notify_customer_update']);
 			// Lose get vars to return to customer list
-			$variable_rem_fields = array('customer_id', 'action');
+			$variable_rem_fields = array();
 		} else {
 		$GLOBALS['main']->setACPWarning($lang['customer']['error_customer_update']);
 	}
