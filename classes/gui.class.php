@@ -1051,7 +1051,7 @@ class GUI {
 				$product['sale_price_unformatted'] = ($sale) ? $product['sale_price'] : null;
 				$product['price'] = $GLOBALS['tax']->priceFormat($product['price']);
 				$product['sale_price'] = ($sale) ? $GLOBALS['tax']->priceFormat($product['sale_price']) : null;
-
+				$product['image'] = $this->getProductImage($product['product_id']);
 				$vars[] = $product;
 			}
 			foreach ($GLOBALS['hooks']->load('class.gui.display_popular_products') as $hook) include $hook;
