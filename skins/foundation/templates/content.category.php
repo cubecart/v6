@@ -192,8 +192,9 @@
       {/if}
       {/foreach}
    </ul>
-   {* Remove "hide" class for traditional pagination *}
-   <div class="row hide">
+   {* Uncomment for traditional pagination *}
+   {*
+   <div class="row">
       <div class="small-12 large-9 columns">
          {$PAGINATION}
       </div>
@@ -209,6 +210,7 @@
          </dl>
       </div>
    </div>
+   *}
    {* Add "hide-for-small-up" to the class attribute to not display the more button *}
    {if $page!=='all' && ($page < $total)}
    {$params[$var_name] = $page + 1}

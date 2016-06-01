@@ -33,14 +33,14 @@
    <li><a href="{$current}{http_build_query($params)}{$anchor}">{$i}</a></li>
    {/if}
    {/for}
-   {if ($page < $total)}
-   {$params[$var_name] = $page + 1}
-   <li class="arrow"><a href="{$current}{http_build_query($params)}{$anchor}"><i class="fa fa-angle-double-right"></i></a></li>
-   {/if}
    {if ($i <= $total)}
    {$params[$var_name] = $total}
    <li class="unavailable">&hellip;</li>
    <li><a href="{$current}{http_build_query($params)}{$anchor}">{$total}</a></li>
+   {/if}
+   {if ($page < $total)}
+   {$params[$var_name] = $page + 1}
+   <li class="arrow"><a href="{$current}{http_build_query($params)}{$anchor}"><i class="fa fa-angle-double-right"></i></a></li>
    {/if}
    <!-- Replaced with dropdown quantities
    {if ($view_all)}
