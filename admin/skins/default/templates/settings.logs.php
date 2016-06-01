@@ -26,7 +26,7 @@
 	  <tr>
 		<td>{$log.username}</td>
 		<td>{$log.date}</td>
-		<td><a href="http://api.hostip.info/get_html.php?ip={$log.ip_address}&position=true" class="colorbox hostip">{$log.ip_address}</a></td>
+		<td><a href="http://whois.domaintools.com/{$log.ip_address}" target="_blank">{$log.ip_address}</a></td>
 		<td align="center"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/{$log.img}.png" alt="{$log.success}"></td>
 	  </tr>
 	{/foreach}
@@ -54,7 +54,7 @@
 		<td>{$log.admin.username} ({$log.admin.name})</td>
 		<td>{$log.description}</td>
 		<td align="center">{$log.date}</td>
-		<td><a href="http://api.hostip.info/get_html.php?ip={$log.ip_address}&position=true" class="colorbox hostip">{$log.ip_address}</a></td>
+		<td><a href="http://whois.domaintools.com/{$log.ip_address}" target="_blank">{$log.ip_address}</a></td>
 	  </tr>
 	{/foreach}
 	</tbody>
@@ -80,7 +80,7 @@
 	  <tr>
 		<td>{$log.username}</td>
 		<td>{$log.date}</td>
-		<td><a href="http://api.hostip.info/get_html.php?ip={$log.ip_address}&position=true" class="colorbox hostip">{$log.ip_address}</a></td>
+		<td><a href="http://whois.domaintools.com/{$log.ip_address}" target="_blank">{$log.ip_address}</a></td>
 		<td align="center"><img src="images/icons/{$log.img}.png" alt="{$log.success}"></td>
 	  </tr>
 	  {/foreach}

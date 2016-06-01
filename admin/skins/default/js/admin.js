@@ -425,10 +425,6 @@ $(document).ready(function() {
             $("#navigation .submenu").show(), $("#joyrideTour").joyride()
         }), $("#rule-eu").click(function() {
             $("#country-region").toggle("slow", function() {})
-        }), $("a.colorbox.hostip").colorbox({
-            iframe: !0,
-            innerHeight: "100px",
-            innerWidth: "320px"
         }), $("a.colorbox.wiki").bind("cbox_complete", function() {
             window.scrollTo(0, 0)
         }).colorbox({

@@ -228,7 +228,7 @@
                </strong>
                {if !empty($user.ip_address)}
                <br>
-               [<a href="http://api.hostip.info/get_html.php?ip={$user.ip_address}&position=true" class="colorbox hostip">{$user.ip_address}</a>]
+               [<a href="http://whois.domaintools.com/{$user.ip_address}" target="_blank">{$user.ip_address}</a>]
                {/if}
             </td>
             <td>{$user.location} <a href="{$user.location}" target="_blank">&raquo;</a></td>

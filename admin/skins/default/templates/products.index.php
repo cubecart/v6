@@ -590,7 +590,7 @@
             <input type="radio" class="rating" name="rating_{$review.id}" value="{$smarty.section.i.index}" disabled="disabled" {if $review.rating == $smarty.section.i.index}checked="checked"{/if}>
             {/section}
             </span>
-            {$review.date} :: <a href="mailto:<{$review.email}">{$review.name}</a> (<a href="http://api.hostip.info/get_html.php?ip={$review.ip_address}&position=true" class="colourbox hostip">{$review.ip_address}</a>)
+            {$review.date} :: <a href="mailto:<{$review.email}">{$review.name}</a> (<a href="http://whois.domaintools.com/{$review.ip_address}" target="_blank">{$review.ip_address}</a>)
          </div>
       </div>
       {/foreach}
