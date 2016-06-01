@@ -167,9 +167,9 @@ $GLOBALS['main']->addTabControl($lang['settings']['tab_seo'], 'Search_Engines');
 $GLOBALS['main']->addTabControl($lang['settings']['tab_ssl'], 'SSL');
 $GLOBALS['main']->addTabControl($lang['settings']['tab_offline'], 'Offline');
 $GLOBALS['main']->addTabControl($lang['settings']['tab_logos'], 'Logos');
-$GLOBALS['main']->addTabControl($lang['settings']['tab_advanced'], 'Advanced_Settings');
 $GLOBALS['main']->addTabControl($lang['settings']['tab_copyright'], 'Copyright');
-$GLOBALS['main']->addTabControl($lang['settings']['tab_extra'], 'Extra');
+$GLOBALS['main']->addTabControl($lang['settings']['tab_advanced'], 'Advanced_Settings');
+$GLOBALS['main']->addTabControl($lang['settings']['tab_extra'], 'Extra', null, null, false, '_self', 99);
 
 ## Get Front End skins
 if (($skins = $GLOBALS['gui']->listSkins()) !== false) {
