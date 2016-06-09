@@ -308,11 +308,7 @@ ALTER TABLE `CubeCart_image_index` CHANGE `productId` `product_id` INT UNSIGNED 
 ALTER TABLE `CubeCart_image_index` ADD `file_id` INT UNSIGNED NOT NULL; #EOQ
 ALTER TABLE `CubeCart_image_index` ADD `main_img` ENUM('0','1') NOT NULL DEFAULT '0'; #EOQ
 ALTER TABLE `CubeCart_image_index` ADD INDEX (`file_id`); #EOQ
-
-UPDATE `CubeCart_image_index` INNER JOIN `CubeCart_filemanager` ON `CubeCart_image_index`.`img` = CONCAT(`CubeCart_filemanager`.`filepath`,`CubeCart_filemanager`.`filename`) SET `CubeCart_image_index`.`file_id` = `CubeCart_filemanager`.`file_id` WHERE `CubeCart_image_index`.`img` != ''; #EOQ
-
 DROP INDEX `fulltext` ON `CubeCart_inventory`; #EOQ
-
 ALTER TABLE `CubeCart_inventory` DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_inventory` ADD `status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1'; #EOQ
 ALTER TABLE `CubeCart_inventory` CHANGE `productCode` `product_code` VARCHAR(60) NULL DEFAULT NULL COLLATE utf8_unicode_ci; #EOQ

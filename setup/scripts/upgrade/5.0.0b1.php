@@ -134,7 +134,17 @@ if ($filemanager_files) {
 		$db->misc("UPDATE `".$glob['dbprefix']."CubeCart_filemanager` SET `filepath` = ".$new_file_path.", `filename` = '".preg_replace($regex_slash_remove, '_', $file['filename'])."' WHERE `file_id` = '".$file['file_id']."'");
 	}
 }
-unset($product_files, $category_files, $filemanager_files);
+
+$image_indexes = $db->select('CubeCart_image_index', array('img', 'id'));
+if ($image_indexes) {
+	foreach ($image_indexes as $row) {
+		if(!empty($row['img'])) {
+			$db->misc("UPDATE `".$glob['dbprefix']."CubeCart_image_index` SET `img` = '".preg_replace($regex_slash_keep, '_', $row['img'])."' WHERE `id` = '".$row['id']."'");
+		}
+	}
+}
+
+unset($product_files, $category_files, $filemanager_files, $image_indexes);
 
 ## Update FileManager table first
 $fm = new FileManager();
@@ -218,6 +228,7 @@ if ($indexes = $db->select('CubeCart_inventory', array('product_id', 'image'))) 
 		}
 	}
 }
+
 ## Insert email templates
 $GLOBALS['db']->parseSchema(file_get_contents('db/install/email.sql', false));
 

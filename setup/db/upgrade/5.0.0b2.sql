@@ -1,3 +1,6 @@
+UPDATE `CubeCart_image_index` INNER JOIN `CubeCart_filemanager` ON `CubeCart_image_index`.`img` = CONCAT(`CubeCart_filemanager`.`filepath`,`CubeCart_filemanager`.`filename`) SET `CubeCart_image_index`.`file_id` = `CubeCart_filemanager`.`file_id` WHERE `CubeCart_filemanager`.`filepath` IS NOT NULL AND `CubeCart_image_index`.`file_id` = 0; #EOQ
+UPDATE `CubeCart_image_index` INNER JOIN `CubeCart_filemanager` ON `CubeCart_image_index`.`img` = `CubeCart_filemanager`.`filename` SET `CubeCart_image_index`.`file_id` = `CubeCart_filemanager`.`file_id` WHERE `CubeCart_filemanager`.`filepath` IS NULL AND `CubeCart_image_index`.`file_id` = 0; #EOQ
+
 ALTER TABLE `CubeCart_addressbook` ADD `phone` VARCHAR(20) NULL DEFAULT NULL; #EOQ
 
 ALTER TABLE `CubeCart_admin_users` ADD `order_notify` TINYINT(1) UNSIGNED DEFAULT '0'; #EOQ
