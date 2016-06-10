@@ -181,8 +181,6 @@ if ($indexes = $db->select('CubeCart_category', array('cat_id', 'cat_image'))) {
 		$filename = basename($index['cat_image']);
 		$filepath = str_replace($filename, '', $index['cat_image']);
 
-		unset($where);
-
 		if (empty($filepath)) {
 			$where = "`filepath` IS NULL AND `filename` = '$filename'";
 		} else {
@@ -193,6 +191,7 @@ if ($indexes = $db->select('CubeCart_category', array('cat_id', 'cat_image'))) {
 		if ($reference = $db->select('CubeCart_filemanager', 'file_id', $where)) {
 			$db->update('CubeCart_category', array('cat_image' => $reference[0]['file_id']) , array('cat_id' => $index['cat_id']));
 		}
+		unset($where, $reference);
 	}
 }
 
@@ -207,8 +206,6 @@ if ($indexes = $db->select('CubeCart_inventory', array('product_id', 'image'))) 
 		$filename = basename($index['image']);
 		$filepath = str_replace($filename, '', $index['image']);
 
-		unset($where);
-
 		if (empty($filepath)) {
 			$where = "`filepath` IS NULL AND `filename` = '$filename'";
 		} else {
@@ -217,7 +214,7 @@ if ($indexes = $db->select('CubeCart_inventory', array('product_id', 'image'))) 
 		}
 
 		if ($reference = $db->select('CubeCart_filemanager', 'file_id', $where)) {
-			$record = array(
+			$record = array (
 				'file_id'  => $reference[0]['file_id'],
 				'product_id' => $product_id,
 				'main_img'  => '1'
@@ -226,6 +223,7 @@ if ($indexes = $db->select('CubeCart_inventory', array('product_id', 'image'))) 
 				$db->insert('CubeCart_image_index', $record);
 			}
 		}
+		unset($where, $record, $reference);
 	}
 }
 
