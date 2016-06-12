@@ -23,6 +23,8 @@ if(is_array($hash_files)) {
 }
 
 $GLOBALS['main']->addTabControl($lang['navigation']['nav_plugins'], 'plugins');
+$GLOBALS['gui']->addBreadcrumb($lang['navigation']['nav_plugins'], currentPage());
+
 if(isset($_GET['delete']) && $_GET['delete']==1) {
 	$dir = CC_ROOT_DIR.'/modules/'.$_GET['type'].'/'.$_GET['module'];
 	if(file_exists($dir)) {
@@ -206,6 +208,38 @@ foreach ($module_paths as $module_path) {
 	
 	$module_config = $GLOBALS['db']->select('CubeCart_modules','*',array('folder' => $basename, 'module' => (string)$xml->info->type));
 
+	$installed_version = (string)$xml->info->version;
+	$version_check_url = (string)$xml->info->version_check_url;
+
+	if (!empty($version_check_url) && $request = new Request($version_check_url)) {
+		$request->skiplog(true);
+		$request->setMethod('get');
+		$request->cache(true);
+		$request->setSSL(true);
+		$request->setUserAgent('CubeCart');
+		$request->setData(array('plugin_version' => $installed_version));
+		if (($response = $request->send()) !== false) {
+			$current_version = trim($response);
+			if (version_compare($current_version, $installed_version, '>')) {
+				$update_available = true;
+			} else {
+				$update_available = false;
+			}
+		} else {
+			$current_version = $lang['module']['unknown_version'];
+			$update_available = false;
+		}
+	} else {
+		$current_version = $lang['module']['unknown_version'];
+		$update_available = false;
+	}
+
+	if (!empty($xml->info->update_url)) {
+		$update_url = (string)$xml->info->update_url;
+	} else {
+		$update_url = 'https://www.cubecart.com/extensions';
+	}
+
 	$modules[$key] = array(
 		'uid' 				=> (string)$xml->info->uid,
 		'type' 				=> (string)$xml->info->type,
@@ -217,6 +251,10 @@ foreach ($module_paths as $module_path) {
 		'maxVersion' 		=> (string)$xml->info->maxVersion,
 		'creator' 			=> (string)$xml->info->creator,
 		'homepage' 			=> (string)$xml->info->homepage,
+		'version_check_url' => (string)$xml->info->version_check_url,
+		'current_version'   => $current_version,
+		'update_available'  => $update_available,
+		'update_url'        => $update_url,		
 		'block' 			=> (string)$xml->info->block,
 		'basename' 			=> $basename,
 		'config'			=> $module_config[0],

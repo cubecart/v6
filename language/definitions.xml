@@ -850,6 +850,13 @@
     <string name="title_list" introduced="5.0.0"><![CDATA[Customer List]]></string>
   </group>
   <group name="dashboard">
+    <string name="title_plugin_updates_available_tab" introduced="6.0.12"><![CDATA[Plugin Updates]]></string>
+    <string name="title_plugin_updates_available" introduced="6.0.12"><![CDATA[Plugin Updates Available]]></string>
+    <string name="pua_heading_plugin_creator" introduced="6.0.12"><![CDATA[Plugin Creator]]></string>
+    <string name="pua_heading_plugin_name" introduced="6.0.12"><![CDATA[Plugin Name]]></string>
+    <string name="pua_heading_installed_version" introduced="6.0.12"><![CDATA[Installed Version]]></string>
+    <string name="pua_heading_current_version" introduced="6.0.12"><![CDATA[Current Version]]></string> 
+    <string name="update_available" introduced="6.0.12"><![CDATA[Update Available!]]></string> 	
     <string name="quick_tour" introduced="6.0.0"><![CDATA[Quick Tour]]></string>
     <string name="tour_welcome" introduced="6.0.0"><![CDATA[Welcome to your store. Please follow this quick tour to help get you started.]]></string>
     <string name="ok_go" introduced="6.0.0"><![CDATA[Ok, lets go!]]></string>
@@ -1354,6 +1361,10 @@
     <string name="query_box" introduced="5.0.0"><![CDATA[Query Box]]></string>
   </group>
   <group name="module">
+    <string name="installed_version" introduced="6.0.12"><![CDATA[Installed Version]]></string>
+    <string name="current_version" introduced="6.0.12"><![CDATA[Current Version]]></string>
+    <string name="unknown_version" introduced="6.0.12"><![CDATA[Unknown]]></string>
+    <string name="update_available" introduced="6.0.12"><![CDATA[Update Available!]]></string>  	
     <string name="package_fail" introduced="6.0.9"><![CDATA[Error: Failed to obtain package information. Please install via FTP.]]></string>
     <string name="plugin_still_exists" introduced="6.0.0"><![CDATA[Plugin still exists. Please delete manually via FTP or hosting filemanager.]]></string>
     <string name="plugin_deleted_successfully" introduced="6.0.0"><![CDATA[Plugin deleted succesfully.]]></string>
