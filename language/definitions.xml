@@ -544,7 +544,7 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
-    <string name="this_page" introduced="6.0.12"><![CDATA[Info about this page]]></string>
+    <string name="this_page" introduced="6.0.12"><![CDATA[About this page]]></string>
     <string name="tech_support" introduced="6.0.12"><![CDATA[Technical Support]]></string>
     <string name="back" introduced="6.0.11"><![CDATA[Back]]></string>
     <string name="example" introduced="6.0.7"><![CDATA[Example]]></string>
