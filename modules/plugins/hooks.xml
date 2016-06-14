@@ -77,6 +77,7 @@
  <hook trigger="admin.product.coupons.status" deprecated="" />
  <hook trigger="admin.product.import.list" deprecated="" />
  <hook trigger="admin.product.import.format" deprecated="" />
+ <hook trigger="admin.product.table_head_sort" deprecated="" />
  <hook trigger="admin.product.tabs" deprecated="" /> 
  <hook trigger="admin.reports.display" deprecated="" />
  <hook trigger="admin.reports.final" deprecated="" />

@@ -1245,6 +1245,9 @@ if (isset($_GET['action'])) {
 		'updated'   => $GLOBALS['db']->column_sort('updated', $lang['catalogue']['title_last_updated'], 'sort', $current_page, $_GET['sort']),
 		'translations'  => $lang['translate']['title_translations']
 	);
+
+	foreach ($GLOBALS['hooks']->load('admin.product.table_head_sort') as $hook) include $hook;
+
 	$GLOBALS['smarty']->assign('THEAD', $thead_sort);
 
 	// Get inventory

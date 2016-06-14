@@ -430,6 +430,8 @@ if (isset($_GET['action']) && Admin::getInstance()->permissions('customers', CC_
 		'no_orders'  => $GLOBALS['db']->column_sort('order_count', $lang['customer']['order_count'], 'sort', $current_page, $_GET['sort']),
 	);
 
+	foreach ($GLOBALS['hooks']->load('admin.product.table_head_sort') as $hook) include $hook;
+
 	$GLOBALS['smarty']->assign('THEAD', $thead_sort);
 	$key = array_keys($_GET['sort']);
 	$order_by = '`'.$key[0].'` '.$_GET['sort'][$key[0]];

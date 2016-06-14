@@ -62,6 +62,9 @@ if (isset($_GET['order_id'])) {
 		'gateway'   => $GLOBALS['db']->column_sort('gateway', $GLOBALS['language']->orders['gateway_name'], 'sort', $current_page, $_GET['sort']),
 		'date'    => $GLOBALS['db']->column_sort('time', $GLOBALS['language']->common['date'], 'sort', $current_page, $_GET['sort'])
 	);
+
+	foreach ($GLOBALS['hooks']->load('admin.product.table_head_sort') as $hook) include $hook;
+
 	$GLOBALS['smarty']->assign('THEAD', $thead_sort);
 
 	if (($transactions = $GLOBALS['db']->select('CubeCart_transactions', array('DISTINCT' => 'order_id', 'time', 'amount', 'gateway', 'trans_id'), $where, $_GET['sort'], $per_page, $page)) !== false) {
