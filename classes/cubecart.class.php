@@ -2342,8 +2342,8 @@ class Cubecart {
 				}
 				$per_page = 15;
 				$page = (isset($_GET['page'])) ? $_GET['page'] : 1;
-				if (($orders = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id', 'ship_tracking', 'order_date', 'status', 'total', 'basket'), array('customer_id' => $GLOBALS['user']->get('customer_id')), array('cart_order_id' => 'DESC'), $per_page, $page)) !== false) {
-					foreach ($orders as $i => $order) {
+				if (($paginated_orders = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id', 'ship_tracking', 'order_date', 'status', 'total', 'basket'), array('customer_id' => $GLOBALS['user']->get('customer_id')), array('cart_order_id' => 'DESC'), $per_page, $page)) !== false) {
+					foreach ($paginated_orders as $i => $order) {
 						$order['time'] = formatTime($order['order_date']);
 						$status = $order['status'];
 
