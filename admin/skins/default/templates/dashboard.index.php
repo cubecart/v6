@@ -108,6 +108,17 @@
             <input type="hidden" name="token" value="{$SESSION_TOKEN}">
          </form>
       </div>
+      {if is_array($RECENT_EXTENSIONS)}
+         <h2>Recent Marketplace Extensions</h2>
+         <p>Discover more at <a href="?_g=marketplace">https://www.cubecart.com/extensions</a></p>
+         {foreach from=$RECENT_EXTENSIONS item=extension name=extension}
+         <div class="extension">
+            <h4><span>{$extension.price}</span><a href="{$extension.url}" target="_blank">{$extension.name}</a></h4>
+            <a href="{$extension.url}" target="_blank"><img src="{$extension.image}" alt="{$extension.name}" width="150"></a>
+            </div>
+         {/foreach}
+         <div style="clear: left;"></div>
+      {/if}
    </div>
 </div>
 {if isset($ORDERS)}

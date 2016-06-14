@@ -66,6 +66,19 @@ if (stristr($mysql_mode[0]['@@sql_mode'], 'strict')) {
 	$GLOBALS['main']->setACPWarning($lang['setup']['error_strict_mode']);
 }
 
+## Get recent extensions
+$request = new Request('www.cubecart.com', '/extensions/json');
+$request->skiplog(true);
+$request->setMethod('get');
+$request->cache(true);
+$request->setSSL(true);
+$request->setData(array('null' => 0));
+$request->setUserAgent('CubeCart');
+$response = $request->send();
+if($response) {
+	$GLOBALS['smarty']->assign("RECENT_EXTENSIONS", json_decode($response, true));
+}
+
 ## Check current version
 if (!isset($_SESSION['version-check']) && $request = new Request('www.cubecart.com', '/version-check/'.CC_VERSION)) {
 	$request->skiplog(true);
