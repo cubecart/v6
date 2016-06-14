@@ -14,28 +14,16 @@
 // These are in case something goes wrong before we get to debug
 ini_set('display_errors', true);
 
-if (version_compare(PHP_VERSION, '5.4.0') >= 0) {
-	define('CC_PHP_ID', 54);
+if (version_compare(PHP_VERSION, '5.4') >= 0) {
 	error_reporting(E_ALL ^ (E_NOTICE | E_DEPRECATED | E_USER_DEPRECATED));
-} elseif (version_compare(PHP_VERSION, '5.3.0') >= 0) {
-	define('CC_PHP_ID', 53);
-	error_reporting(E_ALL ^ (E_NOTICE | E_DEPRECATED | E_USER_DEPRECATED));
-} elseif (version_compare(PHP_VERSION, '5.2.0') >= 0) {
-	define('CC_PHP_ID', 52);
-	error_reporting(E_ALL ^ E_NOTICE);
 } else {
-	die("You need PHP 5.2 or higher to use CubeCart.");
+	die("You need PHP 5.4 or higher to use CubeCart.");
 }
 
 /************* CUSTOMISED PHP.INI SETTINGS *************/
 
 // This ensures that everyone has the correct php.ini options running
-if (CC_PHP_ID > 52) {
-	ini_set('register_globals', false);  // Attempt to disable regster_globals for security
-	ini_set('register_long_arrays', false); // Disable old-school long arrays (i.e. HTTP_*_VARS)
-	ini_set('magic_quotes_gpc', false);  // Turn off magic quotes
-	ini_set('magic_quotes_runtime', false);
-}
+ini_set('magic_quotes_runtime', false);
 ini_set('short_open_tag', false);   // Disable '<?' style php short tags for xml happiness
 ini_set('asp_tags', false);     // Disable '<%' asp-style tags - anyone using these should be shot
 ini_set('arg_separator.output', '&'); // Set argument separator to & HTML validity

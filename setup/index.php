@@ -247,13 +247,13 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
   // Compatibility Test
   $checks  = array(
     'PHP' => array(
-      'title' => 'PHP 5.2.3+',
-      'status' => version_compare(PHP_VERSION, '5.2.3', '>='),
+      'title' => 'PHP 5.4+',
+      'status' => version_compare(PHP_VERSION, '5.4', '>='),
       'pass' => PHP_VERSION,
       'fail' => PHP_VERSION
     ),
     'MySQL' => array(
-      'title' => 'MySQL 4.1+',
+      'title' => 'MySQL 5.5+',
       'status' => (extension_loaded('mysqli') || extension_loaded('mysql')),
       'pass' => (function_exists('mysqli_get_client_info')) ? mysqli_get_client_info() : mysql_get_client_info(),
       'fail' => (function_exists('mysqli_get_client_info')) ? mysqli_get_client_info() : mysql_get_client_info()

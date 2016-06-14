@@ -66,7 +66,7 @@ class Session {
 		}
 		
 		//Get all the ini settings to save time later
-		$ini = (CC_PHP_ID > 52) ? ini_get_all(null, false) : ini_get_all();
+		$ini = ini_get_all(null, false);
 
 		if ($ini['session.save_handler'] != 'files') {
 			//set default sessions save handler

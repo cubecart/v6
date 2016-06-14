@@ -11,11 +11,6 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  */
 if (!defined('CC_INI_SET')) die('Access Denied');
-//Check PHP version
-if (version_compare(PHP_VERSION, '5.2.3', '<')) {
-	die('<strong>ERROR!</strong><br />CubeCart requires <a href="http://www.php.net">PHP</a> Version 5.2.3 or better. Your server is currently running PHP Version '.PHP_VERSION);
-}
-
 define('ADMIN_CP', false);
 // Include core functions
 require CC_INCLUDES_DIR.'functions.inc.php';
