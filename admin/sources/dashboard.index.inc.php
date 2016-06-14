@@ -313,4 +313,9 @@ $GLOBALS['smarty']->assign('COUNT', $count);
 
 $GLOBALS['main']->addTabControl($lang['common']['search'], 'sidebar');
 
+foreach ($GLOBALS['hooks']->load('admin.dashboard.custom_quick_tasks') as $hook) include $hook;
+if(isset($custom_quick_tasks) && is_array($custom_quick_tasks)) {
+	$GLOBALS['smarty']->assign('CUSTOM_QUICK_TASKS', $custom_quick_tasks);
+}
+
 $page_content = $GLOBALS['smarty']->fetch('templates/dashboard.index.php');
