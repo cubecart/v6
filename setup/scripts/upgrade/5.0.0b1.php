@@ -69,7 +69,7 @@ if ($homepage = $db->select('CubeCart_lang', false, array('identifier' => '/'.$s
 			'doc_lang'  => $_SESSION['setup']['long_lang_identifier'],
 			'doc_home'  => 1,
 			'doc_name'  => $home['title'],
-			'doc_content' => str_replace('images/uploads', 'images/source', $home['copy']),
+			'doc_content' => str_replace(array(CC_ROOT_REL.'images/uploads', 'images/uploads'), 'images/source', $home['copy']),
 		);
 		$db->insert('CubeCart_documents', $record);
 	}
