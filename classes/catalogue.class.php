@@ -527,7 +527,9 @@ class Catalogue {
 		if ($GLOBALS['config']->get('config', 'stock_level')) {
 			$sorters['stock_level'] = $GLOBALS['language']->category['sort_stock'];
 		}
-		#
+		
+		foreach ($GLOBALS['hooks']->load('class.catalogue.product_sort') as $hook) include $hook;
+
 		$directions = array(
 			'DESC' => $GLOBALS['language']->category['sort_high_low'],
 			'ASC' => $GLOBALS['language']->category['sort_low_high'],
