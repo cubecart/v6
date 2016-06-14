@@ -113,7 +113,7 @@
          <p>Discover more at <a href="?_g=marketplace">https://www.cubecart.com/extensions</a></p>
          {foreach from=$RECENT_EXTENSIONS item=extension name=extension}
          <div class="extension">
-            <h4><span>{$extension.price}</span><a href="{$extension.url}" target="_blank">{$extension.name}</a></h4>
+            <h4><span>{$extension.price}</span><a href="{$extension.url}" title="{$extension.name}" target="_blank">{$extension.name|truncate:42:"&hellip;":true}</a></h4>
             <a href="{$extension.url}" target="_blank"><img src="{$extension.image}" alt="{$extension.name}" width="150"></a>
             </div>
          {/foreach}
