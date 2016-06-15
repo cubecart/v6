@@ -833,7 +833,10 @@ class GUI {
 	/**
 	 * Display currency switch box
 	 */
-	private function _displayCurrencySwitch() {		
+	private function _displayCurrencySwitch() {	
+
+		if(!$GLOBALS['smarty']->templateExists('templates/box.currency.php')) return false;
+
 		if (($currencies = $GLOBALS['db']->select('CubeCart_currency', false, array('active' => '1'))) !== false) {
 			if (count($currencies) > 0) {
 				$vars = array();
@@ -858,6 +861,9 @@ class GUI {
 	 * Display document content
 	 */
 	private function _displayDocuments() {
+
+		if(!$GLOBALS['smarty']->templateExists('templates/box.documents.php')) return false;
+
 		$vars = array();
 		if (($docs = $GLOBALS['db']->select('CubeCart_documents', false, array('doc_parent_id' => '0', 'doc_status' => '1', 'navigation_link' => 1), '`doc_order` ASC')) !== false) {
 
@@ -906,6 +912,9 @@ class GUI {
 	 * Display language switch box
 	 */
 	private function _displayLanguageSwitch() {
+
+		if(!$GLOBALS['smarty']->templateExists('templates/box.language.php')) return false;
+
 		$lang_list = $GLOBALS['language']->listLanguages();
 		$enabled = $GLOBALS['config']->get('languages');
 		if (is_array($lang_list)) {
@@ -943,6 +952,9 @@ class GUI {
 	 * Display mailing list box
 	 */
 	private function _displayMailingList() {
+
+		if(!$GLOBALS['smarty']->templateExists('templates/box.newsletter.php')) return false;
+
 		if ($GLOBALS['user']->is()) {
 			$GLOBALS['smarty']->assign('CTRL_SUBSCRIBED', (bool)$GLOBALS['db']->select('CubeCart_newsletter_subscriber', false, array('email' => $GLOBALS['user']->get('email')), false, 1));
 		}
@@ -967,6 +979,9 @@ class GUI {
 	 * Display navigation box
 	 */
 	private function _displayNavigation() {
+
+		if(!$GLOBALS['smarty']->templateExists('templates/box.navigation.php')) return false;
+
 		$cache_id = 'html.'.$this->_skin.'.menu.'.$GLOBALS['language']->current();
 		$serialize = false;
 		if (($content = $GLOBALS['cache']->read($cache_id,$serialize)) == false) {
@@ -1011,6 +1026,8 @@ class GUI {
 	 * Display popular products box
 	 */
 	private function _displayPopularProducts() {
+
+		if(!$GLOBALS['smarty']->templateExists('templates/box.popular.php')) return false;
 
 		if ((int)$GLOBALS['config']->get('config', 'catalogue_popular_products_count') < 1) return false;
 
@@ -1065,6 +1082,8 @@ class GUI {
 	 * Display random products box
 	 */
 	private function _displayRandomProduct($p=0) {
+
+		if(!$GLOBALS['smarty']->templateExists('templates/box.featured.php')) return false;
 
 		foreach ($GLOBALS['hooks']->load('class.gui.display_random_product_pre') as $hook) include $hook;
 
@@ -1137,6 +1156,9 @@ class GUI {
 	 * Display sale items box
 	 */
 	private function _displaySaleItems() {
+
+		if(!$GLOBALS['smarty']->templateExists('templates/box.sale_items.php')) return false;
+
 		if ($GLOBALS['config']->get('config', 'catalogue_sale_mode')=='1') {
 			$sale_sql_group_select = '`G`.`price`-`G`.`sale_price`';
 			$sale_sql_standard_select = '`price`-`sale_price`';
@@ -1248,6 +1270,9 @@ class GUI {
 	 * Display search box
 	 */
 	private function _displaySearchBox() {
+
+		if(!$GLOBALS['smarty']->templateExists('templates/box.search.php')) return false;
+
 		foreach ($GLOBALS['hooks']->load('class.gui.display_search_box') as $hook) include $hook;
 		$GLOBALS['smarty']->assign('SEARCH_URL', $GLOBALS['seo']->buildURL('search'));
 		$GLOBALS['smarty']->assign('SEARCH_FORM', $GLOBALS['smarty']->fetch('templates/box.search.php'));
@@ -1257,6 +1282,9 @@ class GUI {
 	 * Display session box
 	 */
 	private function _displaySessionBox() {
+
+		if(!$GLOBALS['smarty']->templateExists('templates/box.session.php')) return false;
+
 		if ($GLOBALS['user']->is()) {
 			
 			$customer = $GLOBALS['user']->get();
@@ -1283,6 +1311,9 @@ class GUI {
 	 * Display select skin box
 	 */
 	private function _displaySkinSelect() {
+
+		if(!$GLOBALS['smarty']->templateExists('templates/box.skins.php')) return false;
+
 		$skin_setting = $GLOBALS['config']->get('config', 'skin_change');
 		if ($skin_setting == '1' || ($skin_setting == '2' && Admin::getInstance()->is())) {
 			foreach ($this->_skins as $skin => $data) {
@@ -1310,9 +1341,7 @@ class GUI {
 	 */
 	private function _displaySocial() {
 		
-		if(!$GLOBALS['smarty']->templateExists('templates/element.social.php')) {
-			return false;
-		}
+		if(!$GLOBALS['smarty']->templateExists('templates/element.social.php')) return false;
 
 		$vars = array();
 		
@@ -1438,6 +1467,9 @@ class GUI {
 	 * @return string
 	 */
 	private function _makeTree($tree_data) {
+
+		if(!$GLOBALS['smarty']->templateExists('templates/element.navigation_tree.php')) return false;
+		
 		$out = '';
 		if (is_array($tree_data)) {
 			foreach ($tree_data as $branch) {
