@@ -28,11 +28,11 @@
          <td colspan="4">{$LANG.account.download_deleted}</td>
          {else}
          <td>
-            <h4>{$download.name}</h4>
+            <h5>{$download.name}</h5>
             {if $download.active}
-            <a href="{$STORE_URL}/index.php?_a=download&accesskey={$download.accesskey}" title="{$LANG.common.download}"><i class="fa fa-download"> {$download.file_info.filename}</i></a>
+            <a href="{$STORE_URL}/index.php?_a=download&accesskey={$download.accesskey}" title="{$LANG.common.download}"><i class="fa fa-download"></i> {$download.file_info.filename}</a>
             {else}
-            <i class="fa fa-download"> {$download.file_info.filename}</i>
+            <i class="fa fa-download"></i> {$download.file_info.filename}
             {/if}
          </td>
          <td> {if $download.active}{$download.expires}{else}{$LANG.account.download_expired}{/if}</td>
