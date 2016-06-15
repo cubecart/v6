@@ -830,6 +830,8 @@ class User {
 			$array['postcode']  = strtoupper($array['postcode']); // e.g. ab12 34cd to  AB12 34CD
 			$array['hash']  = $address_hash; // e.g. ab12 34cd to  AB12 34CD
 
+			foreach ($GLOBALS['hooks']->load('class.user.saveaddress') as $hook) include $hook;
+
 			if (isset($reset)) {
 				// "There can only be one"
 				$GLOBALS['db']->update('CubeCart_addressbook', $reset, array('customer_id' => $user_id), true);
