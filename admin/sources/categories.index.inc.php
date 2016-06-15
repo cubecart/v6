@@ -204,6 +204,9 @@ if (isset($_POST['visible']) && is_array($_POST['visible'])) {
 }
 
 if (!empty($update) && is_array($update) && Admin::getInstance()->permissions('categories', CC_PERM_EDIT)) {
+
+	foreach ($GLOBALS['hooks']->load('admin.category.list_pre_update') as $hook) include $hook;
+
 	// Put changes into the database
 	$updated = false;
 	foreach ($update as $cat_id => $array) {
