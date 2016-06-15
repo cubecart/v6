@@ -356,6 +356,9 @@ jQuery(document).ready(function() {
                 required: true,
                 email: true
             },
+            validate: {
+                required: true
+            },
             'password[password]': {
                 required: true,
                 minlength: 6

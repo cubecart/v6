@@ -25,7 +25,7 @@
     <string name="download_expired" introduced="5.0.0"><![CDATA[Expired]]></string>
     <string name="download_expires" introduced="5.0.0"><![CDATA[Expiry Date]]></string>
     <string name="download_filename" introduced="6.0.0"><![CDATA[File Name]]></string>
-    <string name="enter_validation_key" introduced="5.0.0"><![CDATA[Please enter your email address and validation key below, then choose a new password.]]></string>
+    <string name="enter_validation_key" introduced="5.0.0"><![CDATA[Please enter your email address and validation key below to set a new password.]]></string>
     <string name="error_address_added" introduced="5.0.0"><![CDATA[Failed to save address.]]></string>
     <string name="error_address_billing" introduced="5.0.0"><![CDATA[A billing address is required before you can proceed.]]></string>
     <string name="error_address_delete" introduced="5.0.0"><![CDATA[Failed to delete address.]]></string>
