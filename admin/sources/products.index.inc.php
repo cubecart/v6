@@ -1201,6 +1201,12 @@ if (isset($_GET['action'])) {
 				$GLOBALS['smarty']->assign('DISPLAY_MATRIX_STOCK_NOTE', true);
 			}
 		}
+		// Check digital download path exists
+		if(!empty($result[0]['digital_path'])) {
+			if(!file_exists($result[0]['digital_path'])) {
+				$GLOBALS['main']->setACPWarning($GLOBALS['language']->filemanager['error_dl_3']." ".$result[0]['digital_path']);
+			}
+		}
 		$GLOBALS['smarty']->assign('PRODUCT', $result[0]);
 
 		if (isset($select_options)) {
