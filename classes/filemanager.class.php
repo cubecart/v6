@@ -24,19 +24,19 @@ class FileManager {
 
 	private $_max_upload_image_size = 358400;
 
-	const FM_FILETYPE_IMG = 1;
-	const FM_FILETYPE_DL = 2;
+	const FM_FILETYPE_IMG 	= 1;
+	const FM_FILETYPE_DL 	= 2;
+
+	const FM_DL_ERROR_EXPIRED 	= 1;
+	const FM_DL_ERROR_MAXDL 	= 2;
+	const FM_DL_ERROR_NOFILE 	= 3;
+	const FM_DL_ERROR_NOPRODUCT = 4;
+	const FM_DL_ERROR_NORECORD 	= 5;
+	const FM_DL_ERROR_PAYMENT 	= 6;
 
 	##############################################
 
 	public function __construct($mode = false, $sub_dir = false) {
-		// Define some constants
-		if (!defined('FM_DL_ERROR_EXPIRED')) define('FM_DL_ERROR_EXPIRED', 1);
-		if (!defined('FM_DL_ERROR_MAXDL'))  define('FM_DL_ERROR_MAXDL', 2);
-		if (!defined('FM_DL_ERROR_NOFILE'))  define('FM_DL_ERROR_NOFILE', 3);
-		if (!defined('FM_DL_ERROR_NOPRODUCT')) define('FM_DL_ERROR_NOPRODUCT', 4);
-		if (!defined('FM_DL_ERROR_NORECORD')) define('FM_DL_ERROR_NORECORD', 5);
-		if (!defined('FM_DL_ERROR_PAYMENT')) define('FM_DL_ERROR_PAYMENT', 6);
 
 		switch ($mode) {
 		case self::FM_FILETYPE_DL:
