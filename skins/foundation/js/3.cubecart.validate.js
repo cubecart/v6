@@ -350,6 +350,35 @@ jQuery(document).ready(function() {
             }
         }
     });
+    $("#password_recovery").validate({
+        rules: {
+            email: {
+                required: true,
+                email: true
+            },
+            'password[password]': {
+                required: true,
+                minlength: 6
+            },
+            'password[passconf]': {
+                equalTo: "#password"
+            }
+        },
+        messages: {
+            email: {
+                required: $('#validate_email').text(),
+                email: $('#validate_email').text()
+            },
+            'password[password]': {
+                required: $('#validate_password').text(),
+                minlength: $('#validate_password_length').text()
+            },
+            'password[passconf]': {
+                required: $('#validate_password_mismatch').text(),
+                equalTo: $('#validate_password_mismatch').text()
+            }
+        }
+    });
     $("#registration_form").validate({
         rules: {
             first_name: {

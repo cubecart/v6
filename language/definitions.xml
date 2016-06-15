@@ -25,7 +25,7 @@
     <string name="download_expired" introduced="5.0.0"><![CDATA[Expired]]></string>
     <string name="download_expires" introduced="5.0.0"><![CDATA[Expiry Date]]></string>
     <string name="download_filename" introduced="6.0.0"><![CDATA[File Name]]></string>
-    <string name="enter_validation_key" introduced="5.0.0"><![CDATA[Please enter your email address and validation key below, then choose a new password]]></string>
+    <string name="enter_validation_key" introduced="5.0.0"><![CDATA[Please enter your email address and validation key below, then choose a new password.]]></string>
     <string name="error_address_added" introduced="5.0.0"><![CDATA[Failed to save address.]]></string>
     <string name="error_address_billing" introduced="5.0.0"><![CDATA[A billing address is required before you can proceed.]]></string>
     <string name="error_address_delete" introduced="5.0.0"><![CDATA[Failed to delete address.]]></string>
@@ -93,7 +93,7 @@
     <string name="update_your_password" introduced="5.0.0"><![CDATA[To change your password please verify your existing one then enter and confirm a new one.]]></string>
     <string name="user_id" introduced="5.0.0"><![CDATA[User ID]]></string>
     <string name="username" introduced="5.0.0"><![CDATA[Username]]></string>
-    <string name="validation_key" introduced="5.0.0"><![CDATA[Validation key]]></string>
+    <string name="validation_key" introduced="5.0.0"><![CDATA[Validation Key]]></string>
     <string name="welcome_back" introduced="5.0.0"><![CDATA[Welcome back, %1$s %2$s]]></string>
     <string name="welcome_back_guest" introduced="5.0.0"><![CDATA[Welcome back, Guest!]]></string>
     <string name="welcome_guest" introduced="5.0.0"><![CDATA[Hi, Guest!]]></string>
