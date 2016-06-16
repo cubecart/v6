@@ -1476,7 +1476,7 @@ class GUI {
 				if (isset($branch['children'])) {
 					$branch['children'] = $this->_makeTree($branch['children']);
 				}
-				$branch['url'] = $GLOBALS['seo']->buildURL('cat', $branch['cat_id'], '&');
+				$branch['url'] = $GLOBALS['seo']->buildURL('cat', $branch['cat_id'], '&', false);
 				$GLOBALS['smarty']->assign('BRANCH', $branch);
 				foreach ($GLOBALS['hooks']->load('class.gui.display_navigation.make_tree') as $hook) include $hook;
 				$out .= $GLOBALS['smarty']->fetch('templates/element.navigation_tree.php');

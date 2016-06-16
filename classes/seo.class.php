@@ -147,18 +147,20 @@ class SEO {
 	 * @param string $amp
 	 * @return string
 	 */
-	public function buildURL($type, $item_id = false, $amp = '&') {
+	public function buildURL($type, $item_id = false, $amp = '&', $absolute = true) {
 		// Some SEO paths are not stored in the database
+		$url = ($absolute) ? $GLOBALS['storeURL'].'/' : $GLOBALS['rootRel'];
+
 		if (!$item_id && in_array($type, $this->_static_sections)) {
 			if (($item = $GLOBALS['db']->select('CubeCart_seo_urls', array('path'), array('type' => $type))) !== false) {
-				return $GLOBALS['storeURL'].'/'.$item[0]['path'].$this->_extension;
+				return $url.$item[0]['path'].$this->_extension;
 			} else {
-				return  $GLOBALS['storeURL'].'/'.$this->setdbPath($type, '', '', false).$this->_extension;
+				return  $url.$this->setdbPath($type, '', '', false).$this->_extension;
 			}
 		} elseif (($item = $GLOBALS['db']->select('CubeCart_seo_urls', array('path'), array('type' => $type, 'item_id' => $item_id))) !== false) {
-			return $GLOBALS['storeURL'].'/'.$item[0]['path'].$this->_extension;
+			return $url.$item[0]['path'].$this->_extension;
 		} else {
-			return  $GLOBALS['storeURL'].'/'.$this->setdbPath($type, $item_id, '', false).$this->_extension;
+			return  $url.$this->setdbPath($type, $item_id, '', false).$this->_extension;
 		}
 	}
 
