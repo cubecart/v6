@@ -541,7 +541,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_option_assign` (
 
 CREATE TABLE IF NOT EXISTS `CubeCart_option_group` (
 	`option_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	`option_name` VARBINARY(30) NOT NULL DEFAULT '',
+	`option_name` VARCHAR(50) NOT NULL DEFAULT '',
 	`option_description` TEXT NOT NULL,
 	`option_type` TINYINT(4) UNSIGNED NOT NULL DEFAULT '0',
 	`option_required` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
