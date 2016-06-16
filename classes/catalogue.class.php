@@ -425,6 +425,7 @@ class Catalogue {
 										'type'   => $value['option_type'],
 										'option_id'  => $value['option_id'],
 										'option_name' => $value['option_name'],
+										'option_description' => $value['option_description'],
 										'required'  => (bool)$value['option_required'],
 										'selected' => isset($selected[$value['assign_id']]) ? true : false
 									);
@@ -476,6 +477,7 @@ class Catalogue {
 								'option_id'  => $option[0]['option_id'],
 								'assign_id'  => $option[0]['assign_id'],
 								'option_name' => $option[0]['option_name'],
+								'option_description' => $option[0]['option_description'],
 								'required'  => (bool)$option[0]['option_required'],
 								'price'   => $price,
 								'decimal_price'   => (string)$decimal_price_sign.$option[0]['option_price'],
@@ -983,7 +985,7 @@ class Catalogue {
 					$mid[] = $assigned['value_id'];
 				}
 			}
-			if (($categories = $GLOBALS['db']->select('CubeCart_option_group', array('option_id', 'option_name', 'option_type', 'option_required', 'priority'), array('option_id' => $top), array('priority' => 'ASC', 'option_name' => 'ASC'))) !== false) {
+			if (($categories = $GLOBALS['db']->select('CubeCart_option_group', false, array('option_id' => $top), array('priority' => 'ASC', 'option_name' => 'ASC'))) !== false) {
 				foreach ($categories as $category) {
 					$array = false;
 					if ($category['option_required']) {
