@@ -39,7 +39,7 @@
 {if $DELIVERY}
 <hr>
 <h4>{$LANG.common.delivery}</h4>
-{if !empty($DELIVERY.date) && $DELIVERY.date!=='0000-00-00'}
+{if !empty($DELIVERY.date)}
 <div class="row">
   <div class="small-6 medium-3 columns">{$LANG.orders.shipping_date}:</div>
   <div class="small-6 medium-9 columns">{$DELIVERY.date}</div>
