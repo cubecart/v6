@@ -459,6 +459,7 @@ class Database_Contoller {
 				'total'   => (int)$total_pages,
 				'var_name'  => $var_name,
 				'view_all'  => (bool)$view_all,
+				'per_page'  => (int)$per_page,
 			);
 			$GLOBALS['smarty']->assign($data);
 			return $GLOBALS['smarty']->fetch('templates/element.paginate.php');
