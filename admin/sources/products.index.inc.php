@@ -905,6 +905,7 @@ if (isset($_GET['action'])) {
 			if (is_array($option_list)) {
 				uasort($option_list, 'cmpmc');
 				foreach ($option_list as $oid => $array) {
+					unset($array['priority']);
 					uasort($array, 'cmpmc');
 					$option_list[$oid] = $array;
 
