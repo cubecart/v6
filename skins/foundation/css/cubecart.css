@@ -266,6 +266,9 @@ form#newsletter_form_box .button {
 span.button {
     cursor: not-allowed;
 }
+button.paypal-button:hover, button.paypal-button:focus, .button.paypal-button:hover, .button.paypal-button:focus {
+    background-color: #fff !important;
+}
 
 /* Small viewport only */
 @media only screen and (max-width: 40em) {
