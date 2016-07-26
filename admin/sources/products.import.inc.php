@@ -291,6 +291,7 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 			$delimiter	= (isset($_POST['delimiter']) && !empty($_POST['delimiter'])) ? $_POST['delimiter'] : ',';
 			## No format map available, so give them a manual assignment form
 			$fields	= array(	# Update for language strings
+				'available'			=> $lang['catalogue']['available_for_purchase'],
 				'status'			=> $lang['common']['status'],
 				'name'				=> $lang['catalogue']['product_name'],
 				'image'				=> $lang['catalogue']['image_comma'],
