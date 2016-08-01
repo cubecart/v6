@@ -868,7 +868,8 @@ class Catalogue {
 
 		$where = $this->outOfStockWhere(array('product_id' => $product_id, 'status' => 1));
 
-		if (isset($order['price']) && $GLOBALS['config']->get('config', 'catalogue_sale_mode')) {
+		if (is_array($order) && isset($order['price']) && $GLOBALS['config']->get('config', 'catalogue_sale_mode')) {
+
 			if (!empty($page) && is_numeric($page)) {
 				$query = 'SELECT *, IF(`sale_price` > 0, `sale_price`, `price`) AS price_sort FROM '.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory WHERE '.$where.' ORDER BY `price_sort` '.$order['price'].' LIMIT '.$per_page.' OFFSET '.(int)($page-1)*$per_page;
 			} else {
