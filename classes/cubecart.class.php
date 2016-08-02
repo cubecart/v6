@@ -2572,6 +2572,7 @@ class Cubecart {
 		if (!empty($customer_data['password'])) {
 			$GLOBALS['smarty']->assign('ACCOUNT_EXISTS', true);
 		}
+		foreach ($GLOBALS['hooks']->load('class.cubecart.profile') as $hook) include $hook;
 		$content = $GLOBALS['smarty']->fetch('templates/content.profile.php');
 		$GLOBALS['smarty']->assign('SECTION_NAME', 'account');
 		$GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
