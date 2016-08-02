@@ -19,7 +19,7 @@
   </ul>
   <section class="top-bar-section">
      <ul class="left">
-        <li class="show-for-medium-up"><a href="{$STORE_URL}" title="{$LANG.common.home}"><i class="fa fa-home"></i></a></li>
+        <li class="show-for-medium-up"><a href="{$ROOT_PATH}" title="{$LANG.common.home}"><i class="fa fa-home"></i></a></li>
         {$NAVIGATION_TREE}
         {if $CTRL_CERTIFICATES && !$CATALOGUE_MODE}
         <li><a href="{$STORE_URL}/gift-certificates.html" title="{$LANG.navigation.giftcerts}">{$LANG.navigation.giftcerts}</a></li>
