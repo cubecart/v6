@@ -677,13 +677,15 @@ if (isset($_GET['action']) && strtolower($_GET['action'])=='clone' && isset($_GE
 			}
 			// Options
 			if ($GLOBALS['config']->get('config', 'product_clone_options')) {
-
+				$clone_matrix = $GLOBALS['config']->get('config', 'product_clone_options_matrix');
 				if (($option_a = $GLOBALS['db']->select('CubeCart_option_assign', false, array('product' => $product_id_parent))) !== false) {
 
 					foreach ($option_a as $row_no => $option_assign) {
 
 						unset($option_assign['assign_id']);
-
+						if (!$clone_matrix && !empty($option_assign['matrix_include'])) {
+							$option_assign['matrix_include'] = 0;
+						}
 						$option_assign['product'] = $product_id;
 						$GLOBALS['db']->insert('CubeCart_option_assign', $option_assign);
 					}
@@ -698,7 +700,7 @@ if (isset($_GET['action']) && strtolower($_GET['action'])=='clone' && isset($_GE
 				}
 
 				// Matrix
-				if ($GLOBALS['config']->get('config', 'product_clone_options_matrix')) {
+				if ($clone_matrix) {
 
 					if (($matrix_a = $GLOBALS['db']->select('CubeCart_option_matrix', false, array('product_id' => $product_id_parent))) !== false) {
 
