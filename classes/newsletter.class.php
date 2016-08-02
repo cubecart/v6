@@ -187,7 +187,7 @@ class Newsletter {
 				'validation' => $this->generateValidation($email),
 			);
 			$GLOBALS['db']->insert('CubeCart_newsletter_subscriber', $record);
-
+			foreach ($GLOBALS['hooks']->load('class.newsletter.subscribe') as $hook) include $hook;
 			return true;
 			
 		}
@@ -205,6 +205,7 @@ class Newsletter {
 		// Unsubscribe the user
 		if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
 			$GLOBALS['db']->delete('CubeCart_newsletter_subscriber', array('email' => $email));
+			foreach ($GLOBALS['hooks']->load('class.newsletter.unsubscribe') as $hook) include $hook;
 			return true;
 		}
 		return false;
