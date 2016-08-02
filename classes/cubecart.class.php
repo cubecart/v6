@@ -1428,6 +1428,7 @@ class Cubecart {
 					$GLOBALS['smarty']->assign('RECAPTCHA', true);
 				}
 			}
+			foreach ($GLOBALS['hooks']->load('class.cubecart.contact.display') as $hook) include $hook;
 			$content = $GLOBALS['smarty']->fetch('templates/content.contact.php');
 			$GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
 		} else {
