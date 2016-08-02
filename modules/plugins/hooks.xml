@@ -102,6 +102,7 @@
  <hook trigger="class.cart.add.pre" deprecated="" />
  <hook trigger="class.cart.add.preredirect" deprecated="" />
  <hook trigger="class.cart.add.save" deprecated="" />
+ <hook trigger="class.cart.add.max_stock" deprecated="" />
  <hook trigger="class.cart.apply_discounts" deprecated="" />
  <hook trigger="class.cart.construct.pre" deprecated="" />
  <hook trigger="class.cart.clear" deprecated="" />

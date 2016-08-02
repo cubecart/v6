@@ -268,6 +268,7 @@ class Cart {
 						}
 
 						if (isset($max_stock) && $max_stock <= 0) {
+							foreach ($GLOBALS['hooks']->load('class.cart.add.max_stock') as $hook) include $hook;
 							if (is_array($optionsArray)) {
 
 								$stock_note = $GLOBALS['session']->has('restock_note') ? $GLOBALS['session']->get('restock_note') : '';
