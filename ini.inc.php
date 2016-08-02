@@ -14,12 +14,6 @@
 // These are in case something goes wrong before we get to debug
 ini_set('display_errors', true);
 
-if (version_compare(PHP_VERSION, '5.4') >= 0) {
-	error_reporting(E_ALL ^ (E_NOTICE | E_DEPRECATED | E_USER_DEPRECATED));
-} else {
-	die("You need PHP 5.4 or higher to use CubeCart.");
-}
-
 /************* CUSTOMISED PHP.INI SETTINGS *************/
 
 // This ensures that everyone has the correct php.ini options running
