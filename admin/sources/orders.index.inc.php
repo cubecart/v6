@@ -93,6 +93,11 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
 	if (isset($_POST['inv']) && is_array($_POST['inv'])) {
 		foreach ($_POST['inv'] as $data) {
 			$data['options_identifier'] = $GLOBALS['catalogue']->defineOptionsIdentifier($data['productOptions']);
+			// Check for matrix entry that may affect product data
+			$matrix = $GLOBALS['db']->select('CubeCart_option_matrix', false, array('product_id' => (int)$data['product_id'], 'options_identifier' => $data['options_identifier']));
+			if ($matrix) {
+				$data['product_code'] = (empty($matrix[0]['product_code']) ? $data['product_code'] : $matrix[0]['product_code']);
+			}
 			$data['options_array'] 		= serialize($data['productOptions']);
 			$data['product_options'] 	= $GLOBALS['order']->serializeOptions($data['productOptions'],$data['product_id']);
 			$GLOBALS['db']->update('CubeCart_order_inventory', $data, array('cart_order_id' => $order_id, 'id' => (int)$data['id']));
