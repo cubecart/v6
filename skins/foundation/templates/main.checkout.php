@@ -96,7 +96,9 @@
             <script src="{$STORE_URL}/{$script|replace:'\\':'/'}" type="text/javascript"></script>
             {/foreach}
             <script>
-               $(document).foundation();
+               {literal}
+               $(document).foundation({equalizer:{equalize_on_stack:true}});
+               {/literal}
             </script>
             {$LIVE_HELP}
             {$DEBUG_INFO}
