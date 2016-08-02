@@ -145,6 +145,11 @@
          {if isset($PRODUCT.discounts)}
          <dd><a href="#quantity_discounts">{$LANG.catalogue.quantity_discounts}</a></dd>
          {/if}
+         {if isset($PRODUCT_TABS_TITLES)}
+            {foreach from=$PRODUCT_TABS_TITLES item=product_tab_title}
+               {$product_tab_title}
+            {/foreach}
+         {/if} 
       </dl>
       <div class="tabs-content">
          {if !empty($PRODUCT.description)}
@@ -205,6 +210,11 @@
                </tbody>
             </table>
          </div>
+         {/if}
+         {if isset($PRODUCT_TABS_CONTENTS)}
+            {foreach from=$PRODUCT_TABS_CONTENTS item=product_tab_content}
+               {$product_tab_content}
+            {/foreach}
          {/if}
       </div>
    </form>
