@@ -1089,7 +1089,7 @@ if (isset($_GET['action'])) {
 		}
 
 		// Stock for product options
-		$options = $GLOBALS['db']->misc('SELECT A.option_id, A.value_id ,V.value_name, G.option_name FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_option_assign` AS `A` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_option_value` AS `V` ON A.value_id = V.value_id INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_option_group` AS `G` ON A.option_id = G.option_id WHERE `product` = '.$product_id.' AND `set_enabled` = 1 AND `matrix_include` = 1 ORDER BY A.option_id, A.value_id ASC');
+		$options = $GLOBALS['db']->misc('SELECT A.option_id, A.value_id ,V.value_name, G.option_name FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_option_assign` AS `A` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_option_value` AS `V` ON A.value_id = V.value_id INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_option_group` AS `G` ON A.option_id = G.option_id WHERE `product` = '.$product_id.' AND `set_enabled` = 1 AND `matrix_include` = 1 ORDER BY A.option_id, V.priority ASC');
 		/*
 			option_id = group name e.g. size
 			value_id = value id e.g. 7
