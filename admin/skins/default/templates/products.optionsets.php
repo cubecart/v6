@@ -13,7 +13,6 @@
   <div id="assign" class="tab_content">
 	<h3>{$LANG.catalogue.title_option_set_assign}</h3>
 	<fieldset><legend>{$LANG.catalogue.title_option_sets}</legend>
-	  <div style="height: 200px; overflow: auto;">
 		{foreach from=$OPTION_SETS item=set}
 		<div>
 		  <span><input type="checkbox" name="set[]" value="{$set.set_id}"></span>
@@ -22,23 +21,18 @@
 		{foreachelse}
 		<div>{$LANG.catalogue.no_option_sets}</div>
 		{/foreach}
-	  </div>
 	</fieldset>
 
 	<fieldset><legend>{$LANG.catalogue.title_products}</legend>
-	  <div style="height: 200px; overflow: auto;">
 		{foreach from=$PRODUCTS item=product}
 		<div>
 		  <span><input type="checkbox" name="product[]" value="{$product.product_id}"></span>
-		  <span style="float: right; margin: 5px 3px; display: inline;">{if !empty($product.product_code)}({$product.product_code}){/if}</span>
-		  {$product.name}
+		  {$product.name} {if !empty($product.product_code)}({$product.product_code}){/if}
 		</div>
 		{foreachelse}
 		<div>{$LANG.catalogue.notify_inv_empty}</div>
 		{/foreach}
-	  </div>
 	</fieldset>
-
   </div>
   
   {include file='templates/element.hook_form_content.php'}
