@@ -470,7 +470,8 @@ class GUI {
 				$files = glob('skins/'.$this->_skin.'/'.'images/'.$default , GLOB_BRACE);
 			}
 			if ($files) {
-				return $GLOBALS['storeURL'].'/'.str_replace(array('//', '/'), '/', $files[0]);
+				//echo str_replace(array('//', '/'), '/', $files[0]);
+				return $GLOBALS['catalogue']->imagePath(str_replace(array('//', '/'), '/', $files[0]), $mode);
 			}
 		}
 		return false;

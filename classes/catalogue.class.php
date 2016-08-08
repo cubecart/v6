@@ -1216,17 +1216,15 @@ class Catalogue {
 			} else {
 				$files = glob('skins/'.$GLOBALS['gui']->getSkin().'/'.'images/'.$default , GLOB_BRACE);
 			}
-			
 			if ($files) {
-				$default_image = $GLOBALS['storeURL'].'/'.$files[0];
+				$source = CC_ROOT_DIR.'/'.$files[0];
 			}
 		} else {
-			$default_image = '';
+			return '';
 		}
-		if (!isset($file) || empty($file)) {
-			return $default_image;
+		if (!isset($source)) {
+			$source = preg_match('#^skins\/#',$file) ? CC_ROOT_DIR.'/'.$file : CC_ROOT_DIR.'/images/source/'.$file;
 		}
-		$source = CC_ROOT_DIR.'/images/source/'.$file;
 		if (!is_dir($source) && file_exists($source)) {
 			if ($mode == 'source') {
 				$folder  = 'source';
@@ -1271,7 +1269,7 @@ class Catalogue {
 			}
 			return $img;
 		} else {
-			return $default_image;
+			return '';
 		}
 	}
 
