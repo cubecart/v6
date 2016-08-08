@@ -47,6 +47,7 @@
 	<image reference="category" maximum="800" quality="80" default="" /><!-- Doesnt need a default -->
 	<image reference="subcategory" maximum="105" quality="80" default="noimage.png" />
 	<image reference="gallery" maximum="50" quality="80" default="noimage.png" />
+	<image reference="checkout" maximum="50" quality="80" default="noimage.png" />
 	<image reference="normal" maximum="300" quality="80" default="noimage.png" />
 	<image reference="enlarge" maximum="600" quality="80" default="" /><!-- Doesnt need a default -->
 	<image reference="tiny" maximum="30" quality="80" default="noimage.png" />

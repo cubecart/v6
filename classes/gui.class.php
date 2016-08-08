@@ -441,6 +441,17 @@ class GUI {
 	 * @return image path/false
 	 */
 	public function getProductImage($product_id = false, $mode = 'small') {
+		
+		// If array take first key that exists (This is for backward compatibility to ensure old skins still work).
+		if(is_array($mode)) {
+			foreach($mode as $mode_name) {
+				if(isset($this->_skin_data['images'][$mode_name])) {
+					$mode = $mode_name;
+					break;
+				}	
+			}
+		}
+
 		if (is_numeric($product_id)) {
 
 			$this->_product_images[$product_id] = isset($this->_product_images[$product_id]) ? $this->_product_images[$product_id] : $GLOBALS['db']->select('CubeCart_image_index', false, array('product_id' => $product_id), array('main_img' => 'DESC'), 1);

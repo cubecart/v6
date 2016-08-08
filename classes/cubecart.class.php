@@ -1532,10 +1532,10 @@ class Cubecart {
 				}
 				// Thumbnail
 				$images = $GLOBALS['db']->select('CubeCart_image_index', false, array('product_id' => $product['product_id']), array('main_img' => 'DESC'), 1);
-				$product['image'] = $GLOBALS['gui']->getProductImage($product['product_id'], 'gallery');
+				$product['image'] = $GLOBALS['gui']->getProductImage($product['product_id'], array('checkout', 'gallery'));
 				if (isset($gc['product_code']) && $product['product_code'] == $gc['product_code']) {
 					if ($gc['image']) {
-						$product['image'] = $GLOBALS['catalogue']->imagePath($gc['image'], 'gallery', 'url');
+						$product['image'] = $GLOBALS['catalogue']->imagePath($gc['image'], array('checkout', 'gallery'), 'url');
 					}
 					$product['link'] = $GLOBALS['seo']->buildURL('certificates');
 				} else {

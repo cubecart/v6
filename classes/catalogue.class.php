@@ -1200,6 +1200,14 @@ class Catalogue {
 
 		$skins = $GLOBALS['gui']->getSkinData();
 		// Fetch a default image, just in case...
+		if(is_array($mode)) {
+			foreach($mode as $mode_name) {
+				if(isset($skins['images'][$mode_name])) {
+					$mode = $mode_name;
+					break;
+				}	
+			}
+		}
 		if ($return_placeholder && isset($skins['images'][$mode])) {
 			$default = (string)$skins['images'][$mode]['default'];
 			
