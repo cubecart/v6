@@ -15,7 +15,7 @@
          <tr>
             <td class="text-center"><a href="{$STORE_URL}/index.php?_a=basket&remove-item={$hash}"><i class="fa fa-trash-o"></i></a></td>
             <td width="120">
-               <a href="{$item.link}" class="th" title="{$item.name}"><img src="{$item.image}" alt="{$item.name}" width="50"></a></td>
+               <a href="{$item.link}" class="th" title="{$item.name}"><img src="{$item.image}" alt="{$item.name}"></a></td>
                <td>
                <a href="{$item.link}"><strong>{$item.name}</strong></a>
                {if $item.options}

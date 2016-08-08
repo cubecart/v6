@@ -7,7 +7,7 @@
             <a href="{$STORE_URL}/index.php?_a=basket&remove-item={$hash}"><i class="fa fa-trash-o"></i></a>
          </div>
          <div class="small-3 columns">
-            <a href="{$item.link}" class="th" title="{$item.name}"><img src="{$item.image}" alt="{$item.name}" width="50"></a>
+            <a href="{$item.link}" class="th" title="{$item.name}"><img src="{$item.image}" alt="{$item.name}"></a>
          </div>
          <div class="small-7 columns text-right">
             <a href="{$item.link}"><strong>{$item.name}</strong></a>
