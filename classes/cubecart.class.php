@@ -2427,8 +2427,15 @@ class Cubecart {
 
 					$GLOBALS['smarty']->assign('SUM', $order);
 					$GLOBALS['smarty']->assign('ORDER', $order);
+				} else {
+					$GLOBALS['gui']->setError($GLOBALS['language']->orders['error_search_result']);	
 				}
 			} else {
+
+				if(isset($_REQUEST['cart_order_id']) && isset($_REQUEST['email'])) {
+					$GLOBALS['gui']->setError($GLOBALS['language']->orders['error_search_result']);
+				}
+
 				// Display a search page
 				$cart_order_id = Order::validOrderId(trim($_GET['cart_order_id'])) ? trim($_GET['cart_order_id']) : '';
 				$GLOBALS['smarty']->assign('ORDER_NUMBER', $cart_order_id);
