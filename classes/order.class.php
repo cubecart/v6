@@ -189,8 +189,8 @@ class Order {
 			$where = array('cart_order_id' => $order_id);
 			if ($GLOBALS['db']->delete('CubeCart_order_summary', $where)) {
 				$deleted = true;
-				
-				// No checking required, because they would be useless without order_sum anyway
+
+				// No checking required, because they would be useless without order summary anyway
 				$GLOBALS['db']->delete('CubeCart_order_inventory', $where);
 				$GLOBALS['db']->delete('CubeCart_downloads', $where);
 				$GLOBALS['db']->delete('CubeCart_order_tax', $where);
