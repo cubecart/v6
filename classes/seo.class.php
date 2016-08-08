@@ -94,6 +94,16 @@ class SEO {
 	##############################################
 
 	public function __construct() {
+
+		// Allow hooks to append to private variables via array_merge
+        // e.g.
+        // Dynamic
+        // $new_dynamic_sections = array('dynamic1', 'dynamic2', 'dynamic3');
+        // $this->_dynamic_sections = array_merge($this->_dynamic_sections, $new_dynamic_sections);
+        // Static
+        // $new_static_sections = array('static1', 'static2', 'static3');
+        // $this->_static_sections = array_merge($this->_static_sections, $new_static_sections);
+        foreach ($GLOBALS['hooks']->load('class.seo.construct') as $hook) include $hook;
 		
 		self::_checkModRewrite();
 
@@ -903,6 +913,10 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
 	 * @return array
 	 */
 	private function _getItemVars($type, $item_id) {
+		
+		// Allow hooks to set SEO items
+        foreach ($GLOBALS['hooks']->load('class.seo.get_item_vars') as $hook) include $hook;
+
 		switch ($type) {
 			/*! Static */
 		case 'search':

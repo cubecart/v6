@@ -209,4 +209,6 @@
  <hook trigger="class.ssl.pages" deprecated="true" />
  <hook trigger="class.ssl.ignored" deprecated="" />
  <hook trigger="class.tax.producttax" deprecated="" />
+ <hook trigger="class.seo.construct" deprecated="" />
+ <hook trigger="class.seo.get_item_vars" deprecated="" />
 </hooks>
