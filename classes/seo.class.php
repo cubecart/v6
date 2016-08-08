@@ -729,7 +729,7 @@ class SEO {
 						$key = 'doc_id';
 						break;
 					}
-					$this->_sitemap_link(array('key' => $key, 'id' => $id), (isset($record['updated']) && !empty($record['updated'])) ? (int)$record['updated'] : time(), $type);
+					$this->_sitemap_link(array('key' => $key, 'id' => $id), $record['updated'], $type);
 				}
 			}
 		}
@@ -1008,7 +1008,11 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
 	 * @param string $type
 	 */
 	private function _sitemap_link($input, $updated = false, $type = false) {
-		$updated = (!$updated) ? time() : $updated;
+
+		$updated =  !$updated ? 'NOW' : $updated;
+
+		$dateTime = new DateTime($updated);
+		$updated = $dateTime->format(DateTime::W3C);
 
 		$store_url = (CC_SSL) ? $GLOBALS['config']->get('config', 'ssl_url') : $GLOBALS['config']->get('config', 'standard_url');
 
@@ -1018,7 +1022,7 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
 
 		$this->_sitemap_xml->startElement('url');
 		$this->_sitemap_xml->setElement('loc',  htmlspecialchars($input['url']), false, false);
-		$this->_sitemap_xml->setElement('lastmod', date('c', $updated), false, false);
+		$this->_sitemap_xml->setElement('lastmod', $updated, false, false);
 		$this->_sitemap_xml->endElement();
 	}
 }
