@@ -1208,7 +1208,8 @@ if (isset($_GET['action'])) {
 		if(!empty($result[0]['digital_path'])) {
 			if(preg_match("/^(http|https|ftp|ftps)/", $result[0]['digital_path'])) {
 				$url_headers = get_headers($result[0]['digital_path']);
-				if(!strstr($url_headers[0], '200')) {
+			
+				if(substr($url_headers[0], 9, 3)>=400) {
 					$GLOBALS['main']->setACPWarning($GLOBALS['language']->filemanager['error_dl_3']." ".$result[0]['digital_path']);
 				}
 			} elseif(!file_exists($result[0]['digital_path'])) {
