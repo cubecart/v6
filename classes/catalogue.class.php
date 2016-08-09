@@ -1266,6 +1266,9 @@ class Catalogue {
 			case 'relative': ## Calculate the relative web path
 				$img = $GLOBALS['rootRel'].'images/'.$folder.'/'.$filename;
 				break;
+			case default:
+    			trigger_error('No image path set', E_USER_NOTICE);
+    			return false;
 			}
 			return $img;
 		} else {
