@@ -25,6 +25,13 @@ jQuery(document).ready(function() {
         return false;
     });
 
+    $(".top-bar label").click(function() {
+        var link = $(this).attr('rel');
+        if (typeof link !== typeof undefined && link !== false) {
+            document.location.href = link;
+        }
+    });
+
     $(".autosubmit select").not('.nosubmit').change(function() {
         $(this).parents(".autosubmit").submit();
     });
