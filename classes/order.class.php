@@ -762,12 +762,24 @@ class Order {
 	 * @param int $status_id
 	 * @return bool
 	 */
-	private function _addHistory($order_id, $status_id) {
+	private function _addHistory($order_id, $status_id, $initiator = '') {
+		
+		if(empty($initiator)) {
+			if(defined('CC_IN_ADMIN') && CC_IN_ADMIN) {
+				$initiator = 'S'; // Staff
+			} elseif($GLOBALS['user']->is() && (isset($_GET['_a']) && $_GET['_a'] == "vieworder") && isset($_GET['cancel'])) {
+				$initiator = 'C'; // Customer
+			} else {
+				$initiator = 'G'; // Gateway
+			}
+		}
+
 		if (!empty($order_id) && !empty($status_id)) {
 			$record = array(
 				'cart_order_id' => $order_id,
 				'updated'  => time(),
-				'status'  => $status_id
+				'status'  => $status_id,
+				'initiator' => $initiator
 			);
 			return (bool)$GLOBALS['db']->insert('CubeCart_order_history', $record);
 		}

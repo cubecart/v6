@@ -217,7 +217,7 @@ if (isset($_GET['action'])) {
 	if (isset($_GET['order_id'])) {
 		$GLOBALS['main']->addTabControl($lang['orders']['tab_history'], 'order_history');
 		/*! Order History */
-		if (($order_history = $GLOBALS['db']->select('CubeCart_order_history', array('status', 'updated'), array('cart_order_id' => $_GET['order_id']), array('updated' => 'DESC'))) !== false) {
+		if (($order_history = $GLOBALS['db']->select('CubeCart_order_history', false, array('cart_order_id' => $_GET['order_id']), array('updated' => 'DESC'))) !== false) {
 			foreach ($order_history as $event) {
 				$event['updated']  = formatTime($event['updated']);
 				$event['status']  = $lang['order_state']['name_'.$event['status']];

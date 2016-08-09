@@ -470,6 +470,7 @@
                <tr>
                   <td width="150">{$LANG.common.status}</td>
                   <td>{$LANG.common.date_time}</td>
+                  <td>{$LANG.common.initiator}</td>
                </tr>
             </thead>
             <tbody>
@@ -478,6 +479,17 @@
                <tr>
                   <td width="200">{$history.status}</td>
                   <td>{$history.updated}</td>
+                  <td>
+                  {if $history.initiator=="U"}
+                     {$LANG.common.unknown}
+                  {elseif $history.initiator=="C"}
+                     {$LANG.orders.title_customer}
+                  {elseif $history.initiator=="S"}
+                     {$LANG.common.staff}
+                  {elseif $history.initiator=="G"}
+                     {$LANG.orders.gateway_name}
+                  {/if}
+                  </td>
                </tr>
                {/foreach}
                {/if}
