@@ -1208,6 +1208,7 @@ class Catalogue {
 				}	
 			}
 		}
+
 		if ($return_placeholder && isset($skins['images'][$mode])) {
 			$default = (string)$skins['images'][$mode]['default'];
 			
@@ -1219,8 +1220,6 @@ class Catalogue {
 			if ($files && !empty($files[0])) {
 				$placeholder_image = $files[0];
 			}
-		} else {
-			return '';
 		}
 
 		if(isset($file) && !empty($file) && !preg_match('/^skins\//',$file)) {
