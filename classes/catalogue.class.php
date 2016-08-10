@@ -1217,13 +1217,13 @@ class Catalogue {
 				$files = glob('skins/'.$GLOBALS['gui']->getSkin().'/'.'images/'.$default , GLOB_BRACE);
 			}
 			if ($files && !empty($files[0])) {
-				$placeholder_image = CC_ROOT_DIR.'/'.$files[0];
+				$placeholder_image = $files[0];
 			}
 		} else {
 			return '';
 		}
 
-		if(isset($file) && !empty($file)) {
+		if(isset($file) && !empty($file) && !preg_match('/^skins\//',$file)) {
 			$source = CC_ROOT_DIR.'/images/source/'.$file;
 		} else {
 			$source = CC_ROOT_DIR.'/'.$placeholder_image;
