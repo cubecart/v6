@@ -1216,15 +1216,19 @@ class Catalogue {
 			} else {
 				$files = glob('skins/'.$GLOBALS['gui']->getSkin().'/'.'images/'.$default , GLOB_BRACE);
 			}
-			if ($files) {
-				$source = CC_ROOT_DIR.'/'.$files[0];
+			if ($files && !empty($files[0])) {
+				$placeholder_image = CC_ROOT_DIR.'/'.$files[0];
 			}
 		} else {
 			return '';
 		}
-		if (!isset($source)) {
-			$source = preg_match('#^skins\/#',$file) ? CC_ROOT_DIR.'/'.$file : CC_ROOT_DIR.'/images/source/'.$file;
+
+		if(isset($file) && !empty($file)) {
+			$source = CC_ROOT_DIR.'/images/source/'.$file;
+		} else {
+			$source = CC_ROOT_DIR.'/'.$placeholder_image;
 		}
+
 		if (!is_dir($source) && file_exists($source)) {
 			if ($mode == 'source') {
 				$folder  = 'source';
@@ -1253,22 +1257,22 @@ class Catalogue {
 			}
 			## Generate the required path
 			switch (strtolower($path)) {
-			case 'filename': ## Calculate the from source folder
-				$img = $filename;
-				break;
-			case 'root':  ## Calculate the absolute filesystem path
-				$img = CC_ROOT_DIR.'/images/'.$folder.'/'.$filename;
-				break;
-			case 'url':   ## Calculate the absolute url
-				$img = $GLOBALS['storeURL'].'/images/'.$folder.'/'.$filename;
-				break;
-			case 'rel':
-			case 'relative': ## Calculate the relative web path
-				$img = $GLOBALS['rootRel'].'images/'.$folder.'/'.$filename;
-				break;
-			default:
-    			trigger_error('No image path set', E_USER_NOTICE);
-    			return false;
+				case 'filename': ## Calculate the from source folder
+					$img = $filename;
+					break;
+				case 'root':  ## Calculate the absolute filesystem path
+					$img = CC_ROOT_DIR.'/images/'.$folder.'/'.$filename;
+					break;
+				case 'url':   ## Calculate the absolute url
+					$img = $GLOBALS['storeURL'].'/images/'.$folder.'/'.$filename;
+					break;
+				case 'rel':
+				case 'relative': ## Calculate the relative web path
+					$img = $GLOBALS['rootRel'].'images/'.$folder.'/'.$filename;
+					break;
+				default:
+	    			trigger_error('No image path set', E_USER_NOTICE);
+	    			return false;
 			}
 			return $img;
 		} else {
