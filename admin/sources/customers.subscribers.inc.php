@@ -43,6 +43,7 @@ if(isset($_POST['subscribers']) && !empty($_POST['subscribers'])) {
 				}
 				$where['status'] = 1;
 				if($GLOBALS['db']->insert('CubeCart_newsletter_subscriber',$where)) {
+					foreach ($GLOBALS['hooks']->load('admin.customer.subscribers.subscribe') as $hook) include $hook;
 					$added = true;
 					$j++;
 				}
@@ -66,6 +67,7 @@ if(isset($_POST['subscribers']) && !empty($_POST['subscribers'])) {
 }
 
 if(isset($_GET['delete']) && is_numeric($_GET['delete'])) {
+	foreach ($GLOBALS['hooks']->load('admin.customer.subscribers.unsubscribe') as $hook) include $hook;
 	if($GLOBALS['db']->delete('CubeCart_newsletter_subscriber',array('subscriber_id'=>(int)$_GET['delete']))) {
 		$GLOBALS['gui']->setNotify($lang['newsletter']['subscriber_removed']);
 	} else {
@@ -78,6 +80,7 @@ if(isset($_POST['rem_subscriber']) && is_array($_POST['rem_subscriber'])) {
 	$removed = false;
 	$i = 0;
 	foreach($_POST['rem_subscriber'] as $key => $value) {
+		foreach ($GLOBALS['hooks']->load('admin.customer.subscribers.unsubscribe') as $hook) include $hook;
 		if($GLOBALS['db']->delete('CubeCart_newsletter_subscriber',array('subscriber_id'=>$key))) {
 			$removed = true;
 			$i++;

@@ -38,6 +38,8 @@
  <hook trigger="admin.customer.tabs" deprecated="" /> 
  <hook trigger="admin.customer.update" deprecated="" />
  <hook trigger="admin.customer.post_process" deprecated="" />
+ <hook trigger="admin.customer.subscribers.subscribe" deprecated="" />
+ <hook trigger="admin.customer.subscribers.unsubscribe" deprecated="" />
  <hook trigger="admin.dashboard.custom_quick_tasks" deprecated="" />
  <hook trigger="admin.dashboard.quick_tasks" deprecated="" />
  <hook trigger="admin.dashboard.stock.post" deprecated="" />
