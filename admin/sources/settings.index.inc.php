@@ -223,6 +223,9 @@ foreach (glob($path.'*', GLOB_MARK) as $folder) {
 	$GLOBALS['smarty']->assign('SKINS_ADMIN', $smarty_data['skins_admin']);
 
 }
+## Get cache method
+$GLOBALS['smarty']->assign('CACHE_METHOD', $GLOBALS['cache']->getCacheSystem());
+
 ## Get Logos
 if (($logos = $GLOBALS['db']->select('CubeCart_logo')) !== false) {
 	foreach ($logos as $logo) {
