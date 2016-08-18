@@ -89,6 +89,10 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
 	// Update/Add customer record
 	if (isset($_POST['customer_id']) && is_numeric($_POST['customer_id'])) {
 		foreach ($GLOBALS['hooks']->load('admin.customer.update') as $hook) include $hook;
+		
+		foreach($customer as $key => $value) {
+			$customer[$key] = filter_var($value, FILTER_SANITIZE_STRING);
+		}
 		if (($GLOBALS['db']->update('CubeCart_customer', $customer, array('customer_id' => $_POST['customer_id']))) !== false) {
 			$customer_updated = true;
 		}
