@@ -1751,6 +1751,10 @@ class Cubecart {
 				$folder = (isset($gateways[0]['plugin']) && $gateways[0]['plugin']) ? 'plugins' : 'gateway';
 				$class_path = CC_ROOT_DIR.'/modules/'.$folder.'/'.$gateways[0]['folder'].'/gateway.class.php';
 
+				if(!file_exists($class_path) && isset($gateways[0]['base_folder'])) {
+					$class_path = CC_ROOT_DIR.'/modules/'.$folder.'/'.$gateways[0]['base_folder'].'/gateway.class.php';
+				}
+
 				if (file_exists($class_path)) {
 					include $class_path;
 					$gateway = new Gateway($module, $this->_basket);
