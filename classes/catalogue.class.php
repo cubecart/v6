@@ -830,9 +830,46 @@ class Catalogue {
 	/**
 	 * See if product option is required
 	 *
-	 * @return bool
+	 * @return bool/array
 	 */
 	public function getOptionRequired() {
+		// If there is only one value for every option assign them 
+		if(isset($_POST['add'])) {
+			$add_options = true;
+			$single_fixed_options = false;
+
+			$assigned_options = $GLOBALS['db']->select('CubeCart_option_assign', false, array('product' => (int)$_POST['add']));
+
+			if($assigned_options) {
+				$single_fixed_options = true;
+				$forced_options = array();
+				foreach($assigned_options as $assigned_option) {
+					
+					if(isset($forced_options[$assigned_option['option_id']])) {
+						$single_fixed_options = false;
+						break;
+					}
+
+					$forced_options[$assigned_option['option_id']] = $assigned_option['assign_id'];
+
+					$group = $GLOBALS['db']->select('CubeCart_option_group', array('option_type', 'option_required'), array('option_id' => $assigned_option['option_id']));
+				
+					if($group[0]['option_required']=="0") {
+						$single_fixed_options = false;
+						break;
+					}
+
+					if($group && in_array($group[0]['option_type'], array(1, 2))) {
+						$single_fixed_options = false;
+						break;
+					}
+				}
+			}
+			if($single_fixed_options && is_array($forced_options) && count($forced_options)>0) {
+				return $forced_options;
+			}
+		}
+
 		return $this->_option_required;
 	}
 

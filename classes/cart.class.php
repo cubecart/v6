@@ -125,17 +125,27 @@ class Cart {
 			if (!isset($_POST['productOptions'])) {
 				if (is_array($_POST['add'])) {
 					foreach ($_POST['add'] as $key => $value) {
-						if ($GLOBALS['catalogue']->getProductOptions($key) && $GLOBALS['catalogue']->getOptionRequired()) {
-							$GLOBALS['gui']->setError($GLOBALS['language']->catalogue['error_option_required']);
-							$this->redirectToProductPage($key);
+						$required_options = $GLOBALS['catalogue']->getOptionRequired();
+						if ($GLOBALS['catalogue']->getProductOptions($key) && $required_options) {
+							if(is_array($required_options)) {
+								$_POST['productOptions'] = $required_options;
+							} else {
+								$GLOBALS['gui']->setError($GLOBALS['language']->catalogue['error_option_required']);
+								$this->redirectToProductPage($key);
+							}
 						}
 					}
 				}
 				if (is_int($_POST['add'])) {
 					$key = (int)$_POST['add'];
-					if ($GLOBALS['catalogue']->getProductOptions($key) && $GLOBALS['catalogue']->getOptionRequired()) {
-						$GLOBALS['gui']->setError($GLOBALS['language']->catalogue['error_option_required']);
-						$this->redirectToProductPage($key);
+					$required_options = $GLOBALS['catalogue']->getOptionRequired();
+					if ($GLOBALS['catalogue']->getProductOptions($key) && $required_options) {
+						if(is_array($required_options)) {
+							$_POST['productOptions'] = $required_options;
+						} else {
+							$GLOBALS['gui']->setError($GLOBALS['language']->catalogue['error_option_required']);
+							$this->redirectToProductPage($key);
+						}
 					}
 				}
 			}
@@ -246,12 +256,19 @@ class Cart {
 				if ($product) {
 					// Check for options
 					$options = $GLOBALS['catalogue']->getProductOptions($product_id);
-					if ($GLOBALS['catalogue']->getOptionRequired() && ($options && empty($optionsArray))) {
+					
+					$required_options = $GLOBALS['catalogue']->getOptionRequired();
+
+					if ($required_options && ($options && empty($optionsArray))) {
 						// Options needed - Redirect to product page
 						// Set GUI_MESSAGE error, then redirect
-						$GLOBALS['gui']->setError($GLOBALS['language']->catalogue['error_option_required']);
-						$this->redirectToProductPage($product_id);
-						return true;
+						if(is_array($required_options)) {
+							$this->add($product_id, $required_options, $quantity);
+						} else {
+							$GLOBALS['gui']->setError($GLOBALS['language']->catalogue['error_option_required']);
+							$this->redirectToProductPage($product_id);
+							return true;
+						}
 					} else {
 
 						// Check required options have a value!
