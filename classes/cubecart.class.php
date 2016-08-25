@@ -1744,6 +1744,10 @@ class Cubecart {
 				}
 				// Auto jump to payment gateway
 				$module = $GLOBALS['config']->get($gateways[0]['folder']);
+				if(!$module) {
+					$module = $GLOBALS['config']->get($gateways[0]['base_folder']);
+				}
+				
 				// Clever exceptions for Gateway Plugins (PayPal Pro, Google Checkout, et al)
 				if (isset($gateways[0]['plugin']) && $gateways[0]['plugin']) {
 					$module = array_merge($gateways[0], $module);
