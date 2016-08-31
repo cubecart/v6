@@ -13,7 +13,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <title>CubeCart&trade; {$VERSION} Installer</title>
-  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta charset="utf-8" />
   <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" type="text/css" href="styles/style.css" media="screen" />
   {if isset($REFRESH)}<meta http-equiv="refresh" content="5" />{/if}
