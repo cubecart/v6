@@ -572,8 +572,8 @@ class Order {
 		} else if (!empty($this->_basket)) {
 				// Order Creation/Updating
 				$this->_saveAddresses();
-				if (isset($this->_basket['cart_order_id']) && !empty($this->_basket['cart_order_id'])) {
-					// Order has already been placed, so we only need to update
+				if (isset($this->_basket['cart_order_id']) && !empty($this->_basket['cart_order_id']) && ($check = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id'), array('cart_order_id' => $this->_basket['cart_order_id'], 'status' => 1), false, false, false, false))) {
+					// Order has already been placed and is still pending, so we only need to update
 					$this->_updateOrder();
 					$update = true;
 				} else {
