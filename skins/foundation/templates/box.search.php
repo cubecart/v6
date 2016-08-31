@@ -9,7 +9,7 @@
  * Email:  sales@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
-<div  id="box-search">
+<div id="box-search">
    <form action="{$STORE_URL}/search.html" id="search_form" method="get">
       <div class="row collapse">
          <div class="small-10 large-11 columns">
