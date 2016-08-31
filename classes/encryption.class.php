@@ -152,12 +152,21 @@ class Encryption {
 	 */
 	public function setEncryptKey() {
 
+		// Older stores used the software license key so lets keep using that if it exists
 		$key = $GLOBALS['config']->get('config', 'license_key');
 
-		if(empty($key)) {
+		// If license_key isn't set and we don't have an "enc_key".. make one
+		if((!$key || empty($key)) && !$GLOBALS['config']->has('config', 'enc_key')) {
 			$key = randomString();
+			$GLOBALS['config']->set('config', 'enc_key', $key);
+		} else {
+			// Get enc_key
+			$key = $GLOBALS['config']->get('config', 'enc_key');
+			if(!$key || empty($key)) {
+				$key = randomString();
+				$GLOBALS['config']->set('config', 'enc_key', $key);
+			}
 		}
-		$GLOBALS['config']->set('config', 'enc_key', $key);
 		return $key;
 	}
 
