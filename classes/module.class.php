@@ -290,7 +290,7 @@ class Module {
 	 * @return string
 	 */
 	public function module_fetch_logo($type, $name, $module_title = '') {
-		$images = glob(CC_ROOT_DIR.'/modules/'.$type.'/'.$name.'/'.'admin/logo.{gif,jpg,png}', GLOB_BRACE);
+		$images = glob(CC_ROOT_DIR.'/modules/'.$type.'/'.$name.'/'.'admin/logo.{gif,jpg,png,svg}', GLOB_BRACE);
 		// $name is the module folder name, $module_title is the title set in the module lang file which is preferable
 		if (is_array($images) && isset($images[0])) {
 			$title = (empty($module_title)) ? $name : $module_title;

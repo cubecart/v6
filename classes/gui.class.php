@@ -1470,7 +1470,7 @@ class GUI {
 		}
 
 		$path = (!empty($style)) ? 'images/'.$style : 'images';
-		$source = glob('skins/'.$skin.'/'.$path.'/'.'logo/default.{gif,jpg,png}', GLOB_BRACE);
+		$source = glob('skins/'.$skin.'/'.$path.'/'.'logo/default.{gif,jpg,png,svg}', GLOB_BRACE);
 		return (!empty($source)) ? $source[0] : null;
 	}
 

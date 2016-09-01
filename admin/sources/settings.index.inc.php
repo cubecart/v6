@@ -32,22 +32,33 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
 		## New logos being uploaded
 		foreach ($_FILES as $logo) {
 			if (file_exists($logo['tmp_name']) && $logo['size'] > 0) {
-				if(preg_match('/^.*\.(jpg|jpeg|png|gif)$/i',$logo['name'])) {
+				if(preg_match('/^.*\.(jpg|jpeg|png|gif|svg)$/i',$logo['name'])) {
 					switch ((int)$logo['error']) {
 						case UPLOAD_ERR_OK:
 							## Upload is okay, so move to the logo directory, and add a database reference
 							$filename = preg_replace('#[^\w\d\.\-]#', '_', $logo['name']);
 							$target  = CC_ROOT_DIR.'/images/logos/'.$filename;
 							move_uploaded_file($logo['tmp_name'], $target);
-							$image  = getimagesize($target, $image_info);
+							
 							$record  = array(
 								'filename' => $filename,
-								'mimetype' => $image['mime'],
-								'width'  => $image[0],
-								'height' => $image[1],
 								'status' => (count($_FILES)==1 && !$existing_logo) ? '1' : '0'
 							);
 
+							if(preg_match('/^.*\.(svg)$/i',$logo['name'])) {
+								$xml = simplexml_load_file($target);
+								$attr = $xml->attributes();
+								$record['mimetype'] = "image/svg+xml";
+								$record['width']  	= $attr->width;
+								$record['height'] 	= $attr->height;
+								
+							} else {
+								$image  = getimagesize($target, $image_info);
+								$record['mimetype'] = $image['mime'];
+								$record['width']  	= $image[0];
+								$record['height'] 	= $image[1];
+							}
+							
 							$GLOBALS['db']->insert('CubeCart_logo', $record);
 							if (!$logo_update) { // prevents x amount of notifications for same thing
 								$GLOBALS['main']->setACPNotify($lang['settings']['notify_logo_upload']);

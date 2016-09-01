@@ -524,7 +524,7 @@ function build_logos($image_name = '')
 {
   global $db;
 
-  $logo_path = empty($image_name) ? 'skins/foundation/images/default/logo/default.png' : 'images/logos/'.$image_name;
+  $logo_path = empty($image_name) ? 'skins/foundation/images/default/logo/default.svg' : 'images/logos/'.$image_name;
 
   $logo_config = array (
     'foundationdefault' => $logo_path,
