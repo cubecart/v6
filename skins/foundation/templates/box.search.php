@@ -9,8 +9,8 @@
  * Email:  sales@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
-<div id="box-search">
-   <form action="{$STORE_URL}/search.html" id="search_form" method="get">
+<div>
+   <form action="{$STORE_URL}/search.html" class="search_form" method="get">
       <div class="row collapse">
          <div class="small-10 large-11 columns">
             <input name="search[keywords]" type="text" class="nomarg" placeholder="{$LANG.search.input_default}" required><small><a href="{$STORE_URL}/search.html">{$LANG.search.advanced}</a></small>
@@ -21,5 +21,5 @@
       </div>
       <input type="hidden" name="_a" value="category">
    </form>
-   <div class="hide" id="validate_search">{$LANG.search.enter_search_term}</div>
+   <div class="hide validate_search">{$LANG.search.enter_search_term}</div>
 </div>

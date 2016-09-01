@@ -306,7 +306,7 @@ jQuery(document).ready(function() {
             },
         }
     });
-    $("#search_form, #small_search_form").validate({
+    $(".search_form, #small_search_form").validate({
         rules: {
             'search[keywords]': {
                 required: true
@@ -314,7 +314,7 @@ jQuery(document).ready(function() {
         },
         messages: {
             'search[keywords]': {
-                required: $('#validate_search').text()
+                required: $('.validate_search').text()
             }
         }
     });
@@ -326,7 +326,7 @@ jQuery(document).ready(function() {
         },
         messages: {
             'search[keywords]': {
-                required: $('#validate_search').text()
+                required: $('.validate_search').text()
             }
         }
     });
