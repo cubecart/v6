@@ -19,7 +19,6 @@
       <link href="{$STORE_URL}/favicon.ico" rel="shortcut icon" type="image/x-icon">
       <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/normalize.css" rel="stylesheet">
       <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/foundation.css" rel="stylesheet">
-      {include file='images/icon-sprites.svg'}
       <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/cubecart.css" rel="stylesheet">
       <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/cubecart.common.css" rel="stylesheet">
       <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/cubecart.helpers.css" rel="stylesheet">
@@ -46,6 +45,7 @@
       {foreach from=$HEAD_JS item=js}{$js}{/foreach}
    </head>
    <body>
+        {include file='images/icon-sprites.svg'}
    	  {if $STORE_OFFLINE}
    	  <div data-alert class="alert-box alert">{$LANG.common.warning_offline}<a href="#" class="close">&times;</a></div>
    	  {/if}
@@ -100,7 +100,7 @@
                   {include file='templates/box.popular.php'}
                   {include file='templates/box.sale_items.php'}
                </div>
-               <a href="#" class="back-to-top"><span class="show-for-small-only"><svg class="icon"><use xlink:href="#icon-angle-up"></use></svg></span><span class="show-for-medium-up"><svg class="icon"><use xlink:href="#icon-angle-up"></use></svg></i> {$LANG.common.top}</span></a>
+               <a href="#" class="back-to-top"><span class="show-for-small-only"><svg class="icon"><use xlink:href="#icon-angle-up"></use></svg></span><span class="show-for-medium-up"><svg class="icon"><use xlink:href="#icon-angle-up"></use></svg> {$LANG.common.top}</span></a>
             </div>
             <footer>
                <div class="row">
