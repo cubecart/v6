@@ -38,7 +38,7 @@
          </div>
          <div class="row">
             <div class="small-12 columns">
-               <button name="submit" type="submit" class="button"><i class="fa fa-sign-in"></i> {$LANG.account.log_in}</button>
+               <button name="submit" type="submit" class="button"><svg class="icon"><use xlink:href="#icon-sign-in"></use></svg> {$LANG.account.log_in}</button>
             </div>
          </div>
          <input type="hidden" name="redir" value="{$REDIRECT_TO}">

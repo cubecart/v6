@@ -19,7 +19,7 @@
       <link href="{$STORE_URL}/favicon.ico" rel="shortcut icon" type="image/x-icon">
       <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/normalize.css" rel="stylesheet">
       <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/foundation.css" rel="stylesheet">
-      <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+      {include file='images/icon-sprites.svg'}
       <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/cubecart.css" rel="stylesheet">
       <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/cubecart.common.css" rel="stylesheet">
       <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/cubecart.helpers.css" rel="stylesheet">
@@ -56,7 +56,7 @@
                <div class="small-8 large-9 columns">
                   <div class="row" id="nav-actions">
                      <div class="small-12 columns">
-                        <div class="right text-center show-for-small"><a class="left-off-canvas-toggle button white tiny" href="#"><i class="fa fa-bars fa-2x"></i></a></div>
+                        <div class="right text-center show-for-small"><a class="left-off-canvas-toggle button white tiny" href="#"><svg class="icon icon-x2"><use xlink:href="#icon-bars"></use></svg></a></div>
                         <div class="right text-right show-for-medium-up">{include file='templates/box.session.php'}</div>
                      </div>
                   </div>

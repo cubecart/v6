@@ -56,8 +56,8 @@
    </div>
    <div class="medium-4 columns show-for-medium-up">
       <dl class="sub-nav right" id="layout_toggle">
-         <dd><a href="#" class="grid_view"><i class="fa fa-th-large"></i></a></dd>
-         <dd class="active"><a href="#" class="list_view"><i class="fa fa-th-list"></i></a></dd>
+         <dd><a href="#" class="grid_view"><svg class="icon"><use xlink:href="#icon-th-large"></use></svg></a></dd>
+         <dd class="active"><a href="#" class="list_view"><svg class="icon"><use xlink:href="#icon-th-list"></use></svg></a></dd>
       </dl>
    </div>
 </div>
@@ -214,7 +214,7 @@
    {* Add "hide-for-small-up" to the class attribute to not display the more button *}
    {if $page!=='all' && ($page < $total)}
    {$params[$var_name] = $page + 1}
-   <a href="{$current}{http_build_query($params)}{$anchor}" data-next-page="{$params[$var_name]}" class="button tiny expand" id="ccScroll-next">{$LANG.common.more} <i class="fa fa-angle-down"></i></a>
+   <a href="{$current}{http_build_query($params)}{$anchor}" data-next-page="{$params[$var_name]}" class="button tiny expand" id="ccScroll-next">{$LANG.common.more} <svg class="icon"><use xlink:href="#icon-angle-down"></use></svg></a>
    {/if}
 </div>
 <div class="hide" id="lang_loading">{$LANG.common.loading}</div>

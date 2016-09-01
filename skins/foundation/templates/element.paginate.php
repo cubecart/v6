@@ -17,7 +17,7 @@
    {/if}
    {if ($page > 1)}
    {$params[$var_name] = $page-1}
-   <li class="arrow"><a href="{$current}{http_build_query($params)}{$anchor}"><i class="fa fa-angle-double-left"></i></a></li>
+   <li class="arrow"><a href="{$current}{http_build_query($params)}{$anchor}"><svg class="icon"><use xlink:href="#icon-angle-double-left"></use></svg></a></li>
    {/if}
    {for $i = 1; $i <= $total; $i++}
    {if ($i < $page - floor($show / 2))}
@@ -40,7 +40,7 @@
    {/if}
    {if ($page < $total)}
    {$params[$var_name] = $page + 1}
-   <li class="arrow"><a href="{$current}{http_build_query($params)}{$anchor}"><i class="fa fa-angle-double-right"></i></a></li>
+   <li class="arrow"><a href="{$current}{http_build_query($params)}{$anchor}"><svg class="icon"><use xlink:href="#icon-angle-double-right"></use></svg></a></li>
    {/if}
    <!-- Replaced with dropdown quantities
    {if ($view_all)}

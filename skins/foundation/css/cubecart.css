@@ -2,6 +2,23 @@ html * {
     font-family: 'Open Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
 }
+
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+.icon-x2 {
+    width: 2em !important;
+    height: 2em !important;
+}
+svg#getEstimateClose {
+    width: 1.4375rem;
+    height: 1.4375rem;
+}
 .pseudo-label {
     font-size: 0.875rem;
     color: #4D4D4D;
@@ -117,7 +134,7 @@ div.alert-box a {
 .social-icons {
     font-size: 30px;
 }
-td .fa-trash-o,td .fa-trash {
+td .icon-trash-o {
     color: #333
 }
 input.quantity {
@@ -232,11 +249,27 @@ a.back-to-top, a.back-to-top:hover, a.back-to-top:active, a.back-to-top:visited 
 textarea#contact_enquiry {
     height: 150px;
 }
-.fa-submit {
-    font-size: 45px;
-    color: #008CBA;
+@-webkit-keyframes spinner
+{
+    from{-webkit-transform:rotate(0deg);}
+    to{-webkit-transform:rotate(360deg);}
 }
-#recaptcha_widget .fa {
+@-moz-keyframes spinner
+{
+    from{-moz-transform:rotate(0deg);}
+    to{-moz-transform:rotate(360deg);}
+}
+@-ms-keyframes spinner
+{
+    from{-ms-transform:rotate(0deg);}
+    to{-ms-transform:rotate(360deg);}
+}
+.icon-submit {
+    font-size: 45px;
+    -webkit-animation: spinner 1s infinite steps(8);
+    animation: spinner 1s infinite steps(8)
+}
+#recaptcha_widget svg.icon {
     font-size: 30px;
     color: #B9B9B9;
     margin: 10px 15px 0 0;

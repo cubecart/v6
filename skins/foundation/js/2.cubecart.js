@@ -35,7 +35,7 @@ jQuery(document).ready(function() {
     $(".autosubmit select").not('.nosubmit').change(function() {
         $(this).parents(".autosubmit").submit();
     });
-    $('i.fa-submit').each(function() {
+    $('svg.icon-submit').each(function() {
         $(this).parents('form').submit();
     });
     $(".category-nav li").each(function(index) {
@@ -236,7 +236,7 @@ jQuery(document).ready(function() {
 
         var product_list = $('.product_list');
         var next_link = $('a#ccScroll-next');
-        var loadingHtml = '<p class="text-center" id="loading"><i class="fa fa-spinner fa-spin thickpad-topbottom"></i> ' + $('#lang_loading').text() + '&hellip;<p>';
+        var loadingHtml = '<p class="text-center" id="loading"><svg class="icon"><use xlink:href="#icon-spinner"></use></svg> ' + $('#lang_loading').text() + '&hellip;<p>';
 
         $(this).after(function() {
             return loadingHtml;

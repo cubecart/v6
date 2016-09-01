@@ -15,12 +15,12 @@
 <nav class="top-bar category-nav" data-topbar="" id="box-navigation">
   <ul class="title-area">
      <li class="name"></li>
-     <li class="toggle-topbar left"><a href="">{$LANG.navigation.title} <i class="fa fa-caret-down"></i></a></li>
+     <li class="toggle-topbar left"><a href="">{$LANG.navigation.title} <svg class="icon"><use xlink:href="#icon-caret-down"></use></svg></a></li>
   </ul>
   <section class="top-bar-section">
      <h5 class="hide">{$LANG.navigation.title}</h5>
      <ul class="left">
-        <li class="show-for-medium-up"><a href="{$ROOT_PATH}" title="{$LANG.common.home}"><i class="fa fa-home"></i></a></li>
+        <li class="show-for-medium-up"><a href="{$ROOT_PATH}" title="{$LANG.common.home}"><svg class="icon"><use xlink:href="#icon-home"></use></svg></a></li>
         {$NAVIGATION_TREE}
         {if $CTRL_CERTIFICATES && !$CATALOGUE_MODE}
         <li><a href="{$STORE_URL}/gift-certificates.html" title="{$LANG.navigation.giftcerts}">{$LANG.navigation.giftcerts}</a></li>

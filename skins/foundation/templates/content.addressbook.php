@@ -33,26 +33,35 @@
             </div>
             <div class="row pad-top">
                <div class="medium-4 columns text-center">
-                  <i class="fa fa-{if $address.billing}check{else}times{/if}"></i>
+                  <svg class="icon"><use xlink:href="#icon-{if $address.billing}check{else}times{/if}"></use></svg>
                </div>
                <div class="medium-4 columns text-center">
-                  <i class="fa fa-{if $address.default}check{else}times{/if}"></i>
+                  <svg class="icon"><use xlink:href="#icon-{if $address.default}check{else}times{/if}"></use></svg>
                </div>
                <div class="medium-4 columns text-center">
-                  <i class="fa fa-check"></i>
+                  <svg class="icon"><use xlink:href="#icon-check"></use></svg>
                </div>
             </div>
          </div>
          <div class="small-6 columns show-for-small-only">
             <div class="row">
                <div>
-                  {$LANG.address.billing_address}<div class="right"><i class="fa fa-{if $address.billing}check{else}times{/if}"></i></div>
+                  {$LANG.address.billing_address}
+                  <div class="right">
+                  <svg class="icon"><use xlink:href="#icon-{if $address.billing}check{else}times{/if}"></use></svg>
+                  </div>
                </div>
                <div>
-                  {$LANG.address.delivery_address} ({$LANG.common.default})<div class="right"><i class="fa fa-{if $address.default}check{else}times{/if}"></i></div>
+                  {$LANG.address.delivery_address} ({$LANG.common.default})
+                  <div class="right">
+                  <svg class="icon"><use xlink:href="#icon-{if $address.default}check{else}times{/if}"></use></svg>
+                  </div>
                </div>
                <div>
-                  {$LANG.address.delivery_address}<div class="right"><i class="fa fa-check"></i></div>
+                  {$LANG.address.delivery_address}
+                  <div class="right">
+                     <svg class="icon"><use xlink:href="#icon-check"></use></svg>
+                  </div>
                </div>
             </div>
          </div>
@@ -64,8 +73,8 @@
    </div>
    {/foreach}
    <div class="clearfix">
-      <div class="right"><button type="submit" class="button alert"><i class="fa fa-trash-o"></i> {$LANG.common.delete_selected}</button></div>
-      <div class="left"><a href="{$STORE_URL}/index.php?_a=addressbook&action=add" class="button"><i class="fa fa-plus"></i> {$LANG.address.address_add}</a></div>
+      <div class="right"><button type="submit" class="button alert"><svg class="icon"><use xlink:href="#icon-trash-o"></use></svg> {$LANG.common.delete_selected}</button></div>
+      <div class="left"><a href="{$STORE_URL}/index.php?_a=addressbook&action=add" class="button"><svg class="icon icon-plus"><use xlink:href="#icon-plus"></use></svg> {$LANG.address.address_add}</a></div>
    </div>
 </form>
 {/if}
@@ -127,7 +136,7 @@
          <input type="hidden" name="address_id" value="{$DATA.address_id}">
          <input type="submit" name="save" value="{$LANG.common.save}" class="button success left">
          <a href="index.php?_a={$REDIR}"class="button alert left">{$LANG.common.cancel}</a>
-         <button type="reset" class="button secondary right"><i class="fa fa-refresh"></i> {$LANG.common.reset}</button>
+         <button type="reset" class="button secondary right"><svg class="icon"><use xlink:href="#icon-refresh"></use></svg> {$LANG.common.reset}</button>
       </div>
    </div>
    <div class="hide" id="validate_field_required">{$LANG.form.field_required}</div>

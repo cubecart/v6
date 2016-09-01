@@ -4,7 +4,7 @@
    <div class="panel" id="basket_item_{$hash}">
       <div class="row">
          <div class="small-1 columns">
-            <a href="{$STORE_URL}/index.php?_a=basket&remove-item={$hash}"><i class="fa fa-trash-o"></i></a>
+            <a href="{$STORE_URL}/index.php?_a=basket&remove-item={$hash}"><svg class="icon"><use xlink:href="#icon-trash-o"></use></svg></a>
          </div>
          <div class="small-3 columns">
             <a href="{$item.link}" class="th" title="{$item.name}"><img src="{$item.image}" alt="{$item.name}"></a>
@@ -26,11 +26,11 @@
       <div class="row">
          <div class="small-6 columns">
             {$LANG.common.quantity_abbreviated}
-            <a href="#" class="quan subtract" rel="{$hash}"><i class="fa fa-minus-circle"></i></a>
+            <a href="#" class="quan subtract" rel="{$hash}"><svg class="icon"><use xlink:href="#icon-minus-circle"></use></svg></a>
             <span class="disp_quan_{$hash}">{$item.quantity}</span>
             <input name="quan[{$hash}]" class="field_small_only" type="hidden" value="{$item.quantity}">
             <span id="original_val_{$hash}" class="hide">{$item.quantity}</span>
-            <a href="#" class="quan add" rel="{$hash}"><i class="fa fa-plus-circle"></i></a>
+            <a href="#" class="quan add" rel="{$hash}"><svg class="icon"><use xlink:href="#icon-plus-circle"></use></svg></a>
          </div>
          <div class="small-6 columns text-right">
             <span class="hide">{$LANG.basket.total}</span>{$item.price_display}
@@ -58,7 +58,8 @@
          {if $ESTIMATE_SHIPPING}
             (<a href="#" onclick="$('#getEstimateSmall').slideToggle();">{$LANG.common.estimated}</a>)
             <div id="getEstimateSmall" class="hide panel callout">
-               <h4><i class="fa fa-times right" id="getEstimateClose" onclick="$('#getEstimateSmall').slideUp();"></i>{$LANG.basket.specify_shipping}</h4>
+               <h4>
+                  <svg class="icon right" id="getEstimateClose" onclick="$('#getEstimateSmall').slideUp();"><use xlink:href="#icon-times"></use></svg>{$LANG.basket.specify_shipping}</h4>
                <div>
                   <label for="estimate_country_small" class="hide-for-small-only">{$LANG.address.country}</label>
                   <select name="estimate[country]" id="estimate_country_small" class="nosubmit country-list field_small_only" rel="estimate_state_small">

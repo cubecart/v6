@@ -34,7 +34,7 @@
             <div class="right total">{$CART_TOTAL}</div>
          </li>
       </ul>
-      <div><a href="{$STORE_URL}/index.php?_a=checkout" class="button success expand nomarg">{if $CONFIG.ssl == 1}<i class="fa fa-lock"></i> {$LANG.basket.basket_secure_checkout}{else}{$LANG.basket.basket_checkout}{/if}</a></div>
+      <div><a href="{$STORE_URL}/index.php?_a=checkout" class="button success expand nomarg">{if $CONFIG.ssl == 1}<svg class="icon"><use xlink:href="#icon-lock"></use></svg> {$LANG.basket.basket_secure_checkout}{else}{$LANG.basket.basket_checkout}{/if}</a></div>
       {if !$IS_USER}
       <div class="thinpad-top"><a href="{$STORE_URL}/index.php?_a=basket" class="button expand nomarg">{$LANG.basket.view_basket}</a></div>
       {/if}

@@ -16,7 +16,7 @@
             <input name="search[keywords]" type="text" class="nomarg" placeholder="{$LANG.search.input_default}" required><small><a href="{$STORE_URL}/search.html">{$LANG.search.advanced}</a></small>
          </div>
          <div class="small-2 large-1 columns">
-            <button class="button postfix nomarg nopad" type="submit" value="{$LANG.common.search}"><i class="fa fa-search"></i></button>
+            <button class="button postfix nomarg nopad" type="submit" value="{$LANG.common.search}"><svg class="icon"><use xlink:href="#icon-search"></use></svg></button>
          </div>
       </div>
       <input type="hidden" name="_a" value="category">

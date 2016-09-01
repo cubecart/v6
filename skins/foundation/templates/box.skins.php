@@ -27,7 +27,7 @@
          </select>
       </div>
       <div class="small-1 columns">
-         <h4><a href="#" class="hide_skin_selector" title="{$LANG.common.close}"><i class="fa fa-times"></i></a></h4>
+         <h4><a href="#" class="hide_skin_selector" title="{$LANG.common.close}"><svg class="icon"><use xlink:href="#icon-times"></use></svg></a></h4>
       </div>
    </div>
    <input type="submit" value="submit" class="hide">

@@ -54,9 +54,9 @@
       {$BILLING.country_name}
       <h3>{$LANG.account.contact_details}</h3>
       <table>
-        <tr><td align="center"><i class="fa fa-envelope"></i></td><td>{$BILLING.first_name} {$BILLING.last_name} &lt;{$USER.email}&gt;</td></tr>
-        <tr><td align="center"><i class="fa fa-phone"></i></td><td>{$USER.phone}</td></tr>
-        {if !empty($USER.mobile)}<tr><td align="center"><i class="fa fa-mobile"></i></td><td>{$USER.mobile}</td></tr>{/if}
+        <tr><td align="center"><svg class="icon"><use xlink:href="#icon-envelope"></use></svg></td><td>{$BILLING.first_name} {$BILLING.last_name} &lt;{$USER.email}&gt;</td></tr>
+        <tr><td align="center"><svg class="icon"><use xlink:href="#icon-phone"></use></svg></td><td>{$USER.phone}</td></tr>
+        {if !empty($USER.mobile)}<tr><td align="center"><svg class="icon"><use xlink:href="#icon-mobile"></use></svg></td><td>{$USER.mobile}</td></tr>{/if}
       </table>
    </div>
    <div class="large-6 columns">
@@ -68,7 +68,7 @@
       {$DELIVERY.town}<br>
       {$DELIVERY.state}, {$DELIVERY.postcode}<br>
       {$DELIVERY.country_name}
-      <div class="pad-top"><a href="#" class="button small show_address_form"><i class="fa fa-reply"></i> {$LANG.form.make_changes}</a></div>
+      <div class="pad-top"><a href="#" class="button small show_address_form"><svg class="icon"><use xlink:href="#icon-reply"></use></svg> {$LANG.form.make_changes}</a></div>
    </div>
 </div>
 <div class="hide" id="checkout_login_form">

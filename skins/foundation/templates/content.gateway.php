@@ -18,7 +18,7 @@
       <li>
          <input name="gateway" type="radio" value="{$gateway.folder}" id="{$gateway.folder}" {$gateway.checked}>
          {if !empty($gateway.help)}
-         <a href="{$gateway.help}" class="info" title="{$LANG.common.information}"><i class="fa fa-info-circle"></i></a>
+         <a href="{$gateway.help}" class="info" title="{$LANG.common.information}"><svg class="icon"><use xlink:href="#icon-info-circle"></use></svg></a>
          {/if}
          <label for="{$gateway.folder}">{$gateway.description}</label>
       </li>
@@ -41,7 +41,7 @@
    {if $TRANSFER.mode == 'automatic'}
    <div class="thickpad-top text-center">
       <p>{$LANG.gateway.transferring}</p>
-      <p><i class="fa fa-spinner fa-6 fa-spin fa-submit"></i></p>
+      <p><svg class="icon icon-submit"><use xlink:href="#icon-spinner"></use></svg></p>
    </div>
    {elseif $TRANSFER.mode == 'manual'}
    <h2>{$LANG.gateway.amount_due}</h2>

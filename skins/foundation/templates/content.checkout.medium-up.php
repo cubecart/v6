@@ -13,7 +13,7 @@
       <tbody>
          {foreach from=$ITEMS key=hash item=item}
          <tr>
-            <td class="text-center"><a href="{$STORE_URL}/index.php?_a=basket&remove-item={$hash}"><i class="fa fa-trash-o"></i></a></td>
+            <td class="text-center"><a href="{$STORE_URL}/index.php?_a=basket&remove-item={$hash}"><svg class="icon icon-trash-o"><use xlink:href="#icon-trash-o"></use></svg></a></td>
             <td width="120">
                <a href="{$item.link}" class="th" title="{$item.name}"><img src="{$item.image}" alt="{$item.name}"></a></td>
                <td>
@@ -66,7 +66,7 @@
                {if $ESTIMATE_SHIPPING}
                (<a href="#" onclick="$('#getEstimate').slideToggle();">{$LANG.common.estimated}</a>)
                <div id="getEstimate" class="hide panel callout">
-                  <h4><i class="fa fa-times right" id="getEstimateClose" onclick="$('#getEstimate').slideUp();"></i>{$LANG.basket.specify_shipping}</h4>
+                  <h4><svg class="icon right" id="getEstimateClose" onclick="$('#getEstimate').slideUp();"><use xlink:href="#icon-times"></use></svg>{$LANG.basket.specify_shipping}</h4>
                   <label for="estimate_country">{$LANG.address.country}</label>
                   <select name="estimate[country]" id="estimate_country"  class="nosubmit country-list" rel="estimate_state">
                      {foreach from=$COUNTRIES item=country}<option value="{$country.numcode}" {$country.selected}>{$country.name}</option>{/foreach}

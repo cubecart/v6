@@ -30,9 +30,9 @@
          <td>
             <h5>{$download.name}</h5>
             {if $download.active}
-            <a href="{$STORE_URL}/index.php?_a=download&accesskey={$download.accesskey}" title="{$LANG.common.download}"><i class="fa fa-download"></i> {$download.file_info.filename}</a>
+            <a href="{$STORE_URL}/index.php?_a=download&accesskey={$download.accesskey}" title="{$LANG.common.download}"><svg class="icon"><use xlink:href="#icon-download"></use></svg> {$download.file_info.filename}</a>
             {else}
-            <i class="fa fa-download"></i> {$download.file_info.filename}
+            <svg class="icon"><use xlink:href="#icon-download"></use></svg> {$download.file_info.filename}
             {/if}
          </td>
          <td> {if $download.active}{$download.expires}{else}{$LANG.account.download_expired}{/if}</td>

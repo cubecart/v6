@@ -30,10 +30,10 @@
          <div class="row">
             <div id="recaptcha_image" class="small-8 columns"></div>
             <div class="small-4 columns">
-            <a href="javascript:Recaptcha.reload()"><i class="fa fa-refresh" title="{$LANG.form.recaptcha_try_diff_img}"></i></a>
-            <span class="recaptcha_only_if_image"><a href="javascript:Recaptcha.switch_type('audio')"><i class="fa fa-volume-up" title="{$LANG.form.recaptcha_get_audio}"></i></a></span>
-         <span class="recaptcha_only_if_audio"><a href="javascript:Recaptcha.switch_type('image')"><i class="fa fa-picture-o" title="{$LANG.form.recaptcha_get_img}"></i></a></span>
-         <span><a href="javascript:Recaptcha.showhelp()"><i class="fa fa-info-circle" title="{$LANG.common.help}"></i></a></span>
+            <a href="javascript:Recaptcha.reload()"><svg class="icon" title="{$LANG.form.recaptcha_try_diff_img}"><use xlink:href="#icon-refresh"></use></svg></a>
+            <span class="recaptcha_only_if_image"><a href="javascript:Recaptcha.switch_type('audio')"><svg class="icon" title="{$LANG.form.recaptcha_get_audio}"><use xlink:href="#icon-volume-up"></use></svg></a></span>
+            <span class="recaptcha_only_if_audio"><a href="javascript:Recaptcha.switch_type('image')"><svg class="icon" title="{$LANG.form.recaptcha_get_img}"><use xlink:href="#icon-picture-o"></use></svg></a></span>
+         <span><a href="javascript:Recaptcha.showhelp()"><svg class="icon" title="{$LANG.common.help}"><use xlink:href="#icon-info-circle"></use></svg></a></span>
             </div>
          </div>
          <div class="recaptcha_only_if_incorrect_sol error">{$LANG.form.recaptcha_incorrect}</div>

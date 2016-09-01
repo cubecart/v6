@@ -19,7 +19,7 @@
       <link href="{$STORE_URL}/favicon.ico" rel="shortcut icon" type="image/x-icon">
       <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/normalize.css" rel="stylesheet">
       <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/foundation.css" rel="stylesheet">
-      <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+      {include file='images/icon-sprites.svg'}
       <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/cubecart.css" rel="stylesheet">
       <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/cubecart.common.css" rel="stylesheet">
       <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/cubecart.helpers.css" rel="stylesheet">
@@ -62,7 +62,7 @@
                   <div class="row" id="nav-actions">
                      <div class="small-12 columns">
                         <div class="right text-center">{include file='templates/box.basket.php'}</div>
-                        <div class="right text-center show-for-small"><a class="left-off-canvas-toggle button white tiny" href="#"><i class="fa fa-bars fa-2x"></i></a> <a class="button white tiny show-small-search" href="#"><i class="fa fa-search fa-2x"></i></a></div>
+                        <div class="right text-center show-for-small"><a class="left-off-canvas-toggle button white tiny" href="#"><svg class="icon icon-x2"><use xlink:href="#icon-bars"></use></svg></a> <a class="button white tiny show-small-search" href="#"><svg class="icon icon-x2"><use xlink:href="#icon-search"></use></svg></a></div>
                         {include file='templates/box.currency.php'}
                         {include file='templates/box.language.php'}
                         {include file='templates/box.session.php'}
@@ -100,7 +100,7 @@
                   {include file='templates/box.popular.php'}
                   {include file='templates/box.sale_items.php'}
                </div>
-               <a href="#" class="back-to-top"><span class="show-for-small-only"><i class="fa fa-angle-up"></i></span><span class="show-for-medium-up"><i class="fa fa-angle-up"></i> {$LANG.common.top}</span></a>
+               <a href="#" class="back-to-top"><span class="show-for-small-only"><svg class="icon"><use xlink:href="#icon-angle-up"></use></svg></span><span class="show-for-medium-up"><svg class="icon"><use xlink:href="#icon-angle-up"></use></svg></i> {$LANG.common.top}</span></a>
             </div>
             <footer>
                <div class="row">

@@ -37,7 +37,7 @@
                <li>
                   <input name="gateway" type="radio" value="{$gateway.folder}" id="{$gateway.folder}" required {$gateway.checked} rel="gateway_error"><label for="{$gateway.folder}">{$gateway.description}</label>
                   {if !empty($gateway.help)}
-                  <a href="{$gateway.help}" class="info" title="{$LANG.common.information}"><i class="fa fa-info-circle"></i></a>
+                  <a href="{$gateway.help}" class="info" title="{$LANG.common.information}"><svg class="icon"><use xlink:href="#icon-info-circle"></use></svg></a>
                   {/if}
                </li>
                {/foreach}
@@ -48,11 +48,11 @@
    </div>
    {/if}
    <div class="clearfix">
-      <div class="show-for-medium-up"><a href="{$STORE_URL}/index.php?_a=basket&empty-basket=true" class="button alert left"><i class="fa fa-trash-o"></i> {$LANG.basket.basket_empty}</a></div>
-      <div class="show-for-medium-up"><button type="submit" name="update" class="button secondary left" value="{$LANG.basket.basket_update}"><i class="fa fa-refresh"></i> {$LANG.basket.basket_update}</button></div>
-      <div class="show-for-small-only"><button type="submit" name="update" class="button secondary left" value="{$LANG.basket.basket_update}"><i class="fa fa-refresh"></i> {$LANG.common.update}</button></div>
+      <div class="show-for-medium-up"><a href="{$STORE_URL}/index.php?_a=basket&empty-basket=true" class="button alert left"><svg class="icon"><use xlink:href="#icon-trash-o"></use></svg> {$LANG.basket.basket_empty}</a></div>
+      <div class="show-for-medium-up"><button type="submit" name="update" class="button secondary left" value="{$LANG.basket.basket_update}"><svg class="icon"><use xlink:href="#icon-refresh"></use></svg> {$LANG.basket.basket_update}</button></div>
+      <div class="show-for-small-only"><button type="submit" name="update" class="button secondary left" value="{$LANG.basket.basket_update}"><svg class="icon"><use xlink:href="#icon-refresh"></use></svg> {$LANG.common.update}</button></div>
       {if $DISABLE_CHECKOUT_BUTTON!==true}
-      <button type="submit" name="proceed" id="checkout_proceed" class="button right">{$CHECKOUT_BUTTON} <i class="fa fa-chevron-right"></i></button>
+      <button type="submit" name="proceed" id="checkout_proceed" class="button right">{$CHECKOUT_BUTTON} <svg class="icon"><use xlink:href="#icon-chevron-right"></use></svg></button>
       {/if}
    </div>
 </form>
