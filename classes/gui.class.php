@@ -1030,6 +1030,8 @@ class GUI {
 
 		foreach ($GLOBALS['hooks']->load('class.gui.display_navigation') as $hook) include $hook;
 
+		// Rel path must be absolute to meet W3C requirememts (URL must not be cached)
+		$content = str_replace('rel="'.CC_ROOT_REL,'rel="'.CC_STORE_URL.'/',$content);
 		//Send it to the main template
 		$GLOBALS['smarty']->assign('CATEGORIES', $content);
 	}

@@ -18,6 +18,7 @@
      <li class="toggle-topbar left"><a href="">{$LANG.navigation.title} <i class="fa fa-caret-down"></i></a></li>
   </ul>
   <section class="top-bar-section">
+     <h5 class="hide">{$LANG.navigation.title}</h5>
      <ul class="left">
         <li class="show-for-medium-up"><a href="{$ROOT_PATH}" title="{$LANG.common.home}"><i class="fa fa-home"></i></a></li>
         {$NAVIGATION_TREE}
