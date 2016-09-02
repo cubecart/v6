@@ -503,16 +503,20 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
     setcookie('delete_setup', true, time()+7200, '/');
     
     //Attempt admin file and folder rename
-    $admin_folder = randomString(16);
+    $admin_folder = 'admin_'.randomString(6);
     $admin_file   = 'admin_'.randomString(6).'.php';
 
+    rename('../admin', '../'.$admin_folder);
+    rename('../admin.php', '../'.$admin_file);
+
     $update_config = false;
-    if(rename('../admin', '../'.$admin_folder)) {
+    if(file_exists('../'.$admin_folder)) {
       $update_config = true;
     } else {
       $admin_folder = 'admin';
     }
-    if(rename('../admin.php', '../'.$admin_file)) {
+
+    if(file_exists('../'.$admin_file)) {
       $update_config = true;
     } else {
       $admin_file   = 'admin.php';
@@ -531,10 +535,9 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
       $config = sprintf("<?php\n%s\n?>", implode("\n", $config));
       ## Backup existing config file, if it exists
       if (file_exists($global_file)) rename($global_file, $global_file.'-'.date('Ymdgis').'.php');
-      if (file_put_contents($global_file, $config));
-      $GLOBALS['smarty']->assign('ADMIN_URL', str_replace('/setup','',CC_STORE_URL).'/'.$admin_file); 
+      if (file_put_contents($global_file, $config)); 
     }
-
+    $GLOBALS['smarty']->assign('ADMIN_URL', str_replace('/setup','',CC_STORE_URL).'/'.$admin_file);
     $GLOBALS['smarty']->assign('SHOW_LINKS', true);
     
     /* Truncate CubeCart_system_error_log table. There are a number of failed SQL queries on upgrade depending
