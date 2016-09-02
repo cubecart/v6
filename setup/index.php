@@ -521,6 +521,11 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
     if($update_config) {
       include('../includes/global.inc.php');
       foreach ($glob as $key => $value) {
+        if($key=='adminFile') {
+          $value = $admin_file;
+        } elseif($key=='adminFolder') {
+          $value = $admin_folder;
+        }
         $config[] = sprintf("\$glob['%s'] = '%s';", $key, addslashes($value));
       }
       $config = sprintf("<?php\n%s\n?>", implode("\n", $config));

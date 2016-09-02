@@ -254,6 +254,7 @@ if (!isset($_SESSION['setup']['permissions'])) {
 				$rates_xml = file_get_contents('data/eurofxref-daily.xml');
 			} else {
 				$request->setData(array('null'=>0)); // setData needs a value to work
+				$request->skiplog(true);
 				$rates_xml = $request->send();
 			}
 
