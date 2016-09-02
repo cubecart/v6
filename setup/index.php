@@ -532,7 +532,8 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
       ## Backup existing config file, if it exists
       if (file_exists($global_file)) rename($global_file, $global_file.'-'.date('Ymdgis').'.php');
       if (file_put_contents($global_file, $config));
-      $GLOBALS['smarty']->assign('ADMIN_FILE_PATH', $admin_file); 
+      $GLOBALS['smarty']->assign('ADMIN_FILE_PATH', $admin_file);
+      $GLOBALS['smarty']->assign('ADMIN_URL', CC_STORE_URL.'/'.$admin_file); 
     }
 
     $GLOBALS['smarty']->assign('SHOW_LINKS', true);

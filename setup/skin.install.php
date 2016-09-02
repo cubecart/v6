@@ -186,7 +186,7 @@
   {if isset($SHOW_LINKS)}
 	  <div>
 		<ul>
-		  <li><a href="../{$ADMIN_FILE_PATH}" target="_blank">{$LANG.setup.link_admin_panel}</a></li>
+		  <li><a href="../{$ADMIN_FILE_PATH}" target="_blank">{$LANG.setup.link_admin_panel}</a><br><strong>{$ADMIN_URL}</strong></li>
 		  <li><a href="../index.php" target="_blank">{$LANG.setup.link_store_front}</a></li>
 		</ul>
 	  </div>
