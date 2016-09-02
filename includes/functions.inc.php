@@ -777,7 +777,7 @@ function randomString($length = 30) {
 		}
 		$pos += 2;
 	}
-	return md5(time().((floor($sum/10)+1)*10-$sum)%10);
+	return substr(md5(time().((floor($sum/10)+1)*10-$sum)%10), 0, $length);
 }
 
 /**
