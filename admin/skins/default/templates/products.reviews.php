@@ -97,9 +97,12 @@
    {/if}
    {if $DISPLAY_FORM}
    <div id="review" class="tab_content">
-      <h3>{$LANG.reviews.title_review_edit}</h3>
+      <h3>{if $FORM_MODE=='edit'}{$LANG.reviews.title_review_edit}{else}{$LANG.catalogue.add_review}{/if}</h3>
       <fieldset>
-         <div><label for="review_name">{$LANG.common.status}</label><span><input type="hidden" class="toggle" name="review[approved]" id="review_approved" value="{$REVIEW.approved}"></span></div>
+         {if $FORM_MODE=='add'}
+         <div><label for="ajax_name">{$LANG.common.product}</label><span><input type="hidden" id="ajax_product_id" name="review[product_id]" rel="product_id"><input type="text" id="ajax_name" placeholder="{$LANG.common.type_to_search}" class="textbox ajax not-empty" rel="product"></span></div>
+         {/if}
+         <div><label for="review_approved">{$LANG.common.status}</label><span><input type="hidden" class="toggle" name="review[approved]" id="review_approved" value="{$REVIEW.approved}"></span></div>
          <div><label for="review_name">{$LANG.common.name}</label><span><input type="text" name="review[name]" id="review_name" value="{$REVIEW.name}" class="textbox"></span></div>
          <div><label for="review_email">{$LANG.common.email}</label><span><input type="text" name="review[email]" id="review_email" value="{$REVIEW.email}" class="textbox"></span></div>
          <div><label for="review_title">{$LANG.documents.document_title}</label><span><input type="text" name="review[title]" id="review_title" value="{$REVIEW.title}" class="textbox"></span></div>

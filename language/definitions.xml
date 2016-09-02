@@ -509,6 +509,7 @@
     <string name="vote_down" introduced="5.0.0"><![CDATA[Vote Down]]></string>
     <string name="vote_up" introduced="5.0.0"><![CDATA[Vote Up]]></string>
     <string name="write_a_review" introduced="5.0.0"><![CDATA[Write a review]]></string>
+    <string name="add_review" introduced="6.1.0"><![CDATA[Add review]]></string>
     <string name="write_review" introduced="5.0.0"><![CDATA[Write Review]]></string>
     <string name="your_email" introduced="5.0.0"><![CDATA[Your Email]]></string>
     <string name="your_name" introduced="5.0.0"><![CDATA[Your Name]]></string>
@@ -1649,8 +1650,10 @@
     <string name="title_reports_from_to" introduced="5.0.0"><![CDATA[Sales report form %1$s to %2$s]]></string>
   </group>
   <group name="reviews">
+    <string name="error_no_product_selected" introduced="6.1.0"><![CDATA[No product selected.]]></string>
     <string name="error_review_delete" introduced="5.0.0"><![CDATA[Failed to delete review.]]></string>
     <string name="error_review_update" introduced="5.0.0"><![CDATA[Failed to update review.]]></string>
+    <string name="error_review_added" introduced="6.1.0"><![CDATA[Failed to add review.]]></string>
     <string name="error_reviews_none" introduced="5.0.0"><![CDATA[No reviews have been made.]]></string>
     <string name="filter_approved" introduced="5.0.0"><![CDATA[Showing approved reviews]]></string>
     <string name="filter_by_product" introduced="5.0.0"><![CDATA[Filter by Product]]></string>
@@ -1658,6 +1661,7 @@
     <string name="notify_review_delete" introduced="5.0.0"><![CDATA[Review successfully deleted.]]></string>
     <string name="notify_review_status" introduced="5.0.0"><![CDATA[Review statuses updated.]]></string>
     <string name="notify_review_update" introduced="5.0.0"><![CDATA[Review successfully updated.]]></string>
+    <string name="notify_review_added" introduced="6.1.0"><![CDATA[Review successfully added.]]></string>
     <string name="title_reviews" introduced="5.0.0"><![CDATA[Product Reviews]]></string>
     <string name="title_bulk_delete" introduced="5.2.5"><![CDATA[Bulk Delete]]></string>
     <string name="bulk_delete_desc" introduced="5.2.5"><![CDATA[To delete multiple reviews at once please enter an ip address and/or email address and click &quot;Submit&quot;. This can't be undone.]]></string>
