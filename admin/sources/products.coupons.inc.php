@@ -54,6 +54,7 @@ if (isset($_POST['coupon']) && is_array($_POST['coupon'])) {
 		'shipping'  => $_POST['coupon']['shipping'],
 		'subtotal'  => $_POST['coupon']['subtotal'],
 		'description' => $_POST['coupon']['description'],
+		'free_shipping' => $_POST['coupon']['free_shipping'],
 		## Temporary reset
 		'discount_percent' => 0,
 		'discount_price' => 0

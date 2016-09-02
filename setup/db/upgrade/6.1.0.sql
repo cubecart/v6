@@ -13,3 +13,4 @@ CREATE TABLE `CubeCart_email_log` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_email_log` ADD PRIMARY KEY (`id`); #EOQ
 ALTER TABLE `CubeCart_email_log` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1; #EOQ 
+ALTER TABLE `CubeCart_coupons` ADD `free_shipping` ENUM('0','1') NOT NULL DEFAULT '0' AFTER `shipping`; #EOQ

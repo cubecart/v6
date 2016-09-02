@@ -253,6 +253,7 @@
     <string name="condition_refurbished" introduced="5.0.0"><![CDATA[Refurbished]]></string>
     <string name="coupon_code" introduced="5.0.0"><![CDATA[Code]]></string>
     <string name="coupon_shipping" introduced="5.0.0"><![CDATA[Discount applies to shipping cost]]></string>
+    <string name="coupon_free_shipping" introduced="6.1.0"><![CDATA[Free shipping]]></string>
     <string name="coupon_subtotal" introduced="5.2.3"><![CDATA[Discount applies to subtotal only]]></string>
     <string name="coupon_no_shipping" introduced="5.1.5"><![CDATA[When specifying products, coupon will NOT apply to shipping.]]></string>
     <string name="coupon_include" introduced="5.1.5"><![CDATA[Coupon applies to ONLY above products]]></string>

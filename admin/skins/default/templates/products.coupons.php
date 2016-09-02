@@ -111,6 +111,7 @@
 	  {/if}
 	  <div><label for="form-minimum">{$LANG.catalogue.minimum_subtotal}</label><span><input type="text" name="coupon[min_subtotal]" id="form-minimum" value="{$COUPON.min_subtotal}" class="textbox number"></span></div>
 	  <div><label for="form-shipping">{$LANG.catalogue.coupon_shipping}</label><span><input type="hidden" name="coupon[shipping]" id="form-shipping" class="toggle" value="{$COUPON.shipping}"></span></div>
+	  <div><label for="form-free_shipping">{$LANG.catalogue.coupon_free_shipping}</label><span><input type="hidden" name="coupon[free_shipping]" id="form-free_shipping" class="toggle" value="{$COUPON.free_shipping}"></span></div>
 	  <input type="hidden" name="coupon[coupon_id]" value="{$COUPON.coupon_id}">
 	</fieldset>
 	<fieldset><legend>{$LANG.catalogue.title_coupon_convert}</legend>
