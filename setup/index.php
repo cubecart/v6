@@ -507,19 +507,19 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
     $adminFile   = 'admin_'.randomString(6).'.php';
     $update_config = false;
 
-    rename('../admin', '../'.$adminFolder);
-    rename('../admin.php', '../'.$adminFile);
+    rename('../'.$glob['adminFolder'], '../'.$adminFolder);
+    rename('../'.$glob['adminFile'], '../'.$adminFile);
     
     if(file_exists('../'.$adminFolder)) {
       $update_config = true;
     } else {
-      $adminFolder = 'admin';
+      $adminFolder = $glob['adminFolder'];
     }
 
     if(file_exists('../'.$adminFile)) {
       $update_config = true;
     } else {
-      $adminFile   = 'admin.php';
+      $adminFile   = $glob['adminFile'];
     }
 
     if($update_config) {
