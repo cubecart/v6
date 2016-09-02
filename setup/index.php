@@ -503,32 +503,31 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
     setcookie('delete_setup', true, time()+7200, '/');
     
     //Attempt admin file and folder rename
-    $admin_folder = 'admin_'.randomString(6);
-    $admin_file   = 'admin_'.randomString(6).'.php';
-
-    rename('../admin', '../'.$admin_folder);
-    rename('../admin.php', '../'.$admin_file);
-
+    $adminFolder = 'admin_'.randomString(6);
+    $adminFile   = 'admin_'.randomString(6).'.php';
     $update_config = false;
-    if(file_exists('../'.$admin_folder)) {
+
+    rename('../admin', '../'.$adminFolder);
+    rename('../admin.php', '../'.$adminFile);
+    
+    if(file_exists('../'.$adminFolder)) {
       $update_config = true;
     } else {
-      $admin_folder = 'admin';
+      $adminFolder = 'admin';
     }
 
-    if(file_exists('../'.$admin_file)) {
+    if(file_exists('../'.$adminFile)) {
       $update_config = true;
     } else {
-      $admin_file   = 'admin.php';
+      $adminFile   = 'admin.php';
     }
 
     if($update_config) {
-      include('../includes/global.inc.php');
       foreach ($glob as $key => $value) {
         if($key=='adminFile') {
-          $value = $admin_file;
+          $value = $adminFile;
         } elseif($key=='adminFolder') {
-          $value = $admin_folder;
+          $value = $adminFolder;
         }
         $config[] = sprintf("\$glob['%s'] = '%s';", $key, addslashes($value));
       }
@@ -537,7 +536,8 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
       if (file_exists($global_file)) rename($global_file, $global_file.'-'.date('Ymdgis').'.php');
       if (file_put_contents($global_file, $config)); 
     }
-    $GLOBALS['smarty']->assign('ADMIN_URL', str_replace('/setup','',CC_STORE_URL).'/'.$admin_file);
+    $GLOBALS['smarty']->assign('ADMIN_URL', str_replace('/setup','',CC_STORE_URL).'/'.$adminFile);
+    $GLOBALS['smarty']->assign('STORE_URL', str_replace('/setup','',CC_STORE_URL).'/');
     $GLOBALS['smarty']->assign('SHOW_LINKS', true);
     
     /* Truncate CubeCart_system_error_log table. There are a number of failed SQL queries on upgrade depending

@@ -14,7 +14,7 @@
 <head>
   <title>CubeCart&trade; {$VERSION} Installer</title>
   <meta charset="utf-8" />
-  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
+  <link href='//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" type="text/css" href="styles/style.css" media="screen" />
   {if isset($REFRESH)}<meta http-equiv="refresh" content="5" />{/if}
 </head>
@@ -185,10 +185,11 @@
 
   {if isset($SHOW_LINKS)}
 	  <div>
-		<ul>
-		  <li><a href="{$ADMIN_URL}" target="_blank">{$LANG.setup.link_admin_panel}</a><br><strong>{$ADMIN_URL}</strong></li>
-		  <li><a href="../index.php" target="_blank">{$LANG.setup.link_store_front}</a></li>
-		</ul>
+		<h4>{$LANG.setup.link_admin_panel}</h4>
+		<a href="{$ADMIN_URL}" target="_blank">{$ADMIN_URL}</a><br>
+		{$LANG.setup.link_admin_panel_note}
+		<h4>{$LANG.setup.link_store_front}</h4>
+		<a href="{$STORE_URL}" target="_blank">{$STORE_URL}</a>
 	  </div>
 	{/if}
 
@@ -200,11 +201,9 @@
 	</div>
   </form>
 </div>
-<div id="footer">
-  eCommerce by <a href="http://www.cubecart.com">CubeCart</a>
-</div>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+<div id="footer">eCommerce by <a href="http://www.cubecart.com">CubeCart</a></div>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
 <script type="text/javascript" src="../js/plugins/jquery.pstrength.js"></script>
 <script type="text/javascript" src="js/install.js"></script>
 </body>
