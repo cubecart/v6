@@ -602,7 +602,13 @@ class Debug {
 	 */
 	private function _writeErrorLog($message, $type) {
 		if(isset($GLOBALS['db']) && $GLOBALS['db']->connected) {
-			$GLOBALS['db']->insert('CubeCart_system_error_log', array('message' => $message, 'time' => time()));
+			$log_days = $GLOBALS['config']->get('config', 'r_system_error');
+	        if(ctype_digit($log_days) &&  $log_days > 0) {
+	        	$GLOBALS['db']->insert('CubeCart_system_error_log', array('message' => $message, 'time' => time()));
+	        	$GLOBALS['db']->delete('CubeCart_system_error_log', 'time < UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL '.$log_days.' DAY))');
+	        } elseif(empty($log_days) || !$log_days) {
+	        	$GLOBALS['db']->insert('CubeCart_system_error_log', array('message' => $message, 'time' => time()));
+	        }
 		} elseif($type == 'Exception' || $type == E_PARSE) {
 			echo $message;
 		}

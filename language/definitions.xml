@@ -545,6 +545,7 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="days" introduced="6.1.0"><![CDATA[Days]]></string>
     <string name="staff" introduced="6.0.13"><![CDATA[Staff]]></string>
     <string name="initiator" introduced="6.0.13"><![CDATA[Initiator]]></string>
     <string name="this_page" introduced="6.0.12"><![CDATA[About this page]]></string>
@@ -1686,6 +1687,9 @@
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
+    <string name="log_retention" introduced="6.1.0"><![CDATA[Log Retention]]></string>
+    <string name="log_retention_desc" introduced="6.1.0"><![CDATA[Leave empty to disable retention]]></string>
+    <string name="admin_activity_log" introduced="6.1.0"><![CDATA[Admin Activity Log]]></string>
     <string name="product_clone_stock" introduced="6.0.12"><![CDATA[Main stock level]]></string>
     <string name="assign_all_products" introduced="6.0.9"><![CDATA[Assign to all products]]></string>
     <string name="notify_tax_class_assigned" introduced="6.0.9"><![CDATA[Tax classes have been assigned to %s products.]]></string>

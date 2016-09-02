@@ -158,7 +158,13 @@ class Request {
 				'result'    	=> $this->mask_cc($result),
 				'error'   		=> $error
 			);
-			$GLOBALS['db']->insert('CubeCart_request_log', $data);
+			$log_days = $GLOBALS['config']->get('config', 'r_request');
+            if(ctype_digit($log_days) &&  $log_days > 0) {
+            	$GLOBALS['db']->insert('CubeCart_request_log', $data);
+            	$GLOBALS['db']->delete('CubeCart_request_log', 'time < DATE_SUB(NOW(), INTERVAL '.$log_days.' DAY)');
+        	} elseif(empty($log_days) || !$log_days) {
+        		$GLOBALS['db']->insert('CubeCart_request_log', $data);
+        	}
 		} else {
 			return false;
 		}
