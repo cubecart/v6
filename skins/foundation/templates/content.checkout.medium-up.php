@@ -95,7 +95,7 @@
          {foreach from=$COUPONS item=coupon}
          <tr>
             <td colspan="4"></td>
-            <td><a href="{$VAL_SELF}&remove_code={$coupon.remove_code}" title="{$LANG.common.remove}">{$coupon.voucher}</a></td>
+            <td>{$coupon.voucher} <a href="{$VAL_SELF}&remove_code={$coupon.remove_code}" title="{$LANG.common.remove}"><svg class="icon remove-coupon"><use xlink:href="#icon-times"></use></svg></a></td>
             <td class="text-right">{$coupon.value}</td>
          </tr>
          {/foreach}

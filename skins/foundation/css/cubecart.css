@@ -302,6 +302,9 @@ span.button {
 button.paypal-button:hover, button.paypal-button:focus, .button.paypal-button:hover, .button.paypal-button:focus {
     background-color: #fff !important;
 }
+svg.remove-coupon {
+  color: #c60f13;  
+}
 
 /* Small viewport only */
 @media only screen and (max-width: 40em) {
