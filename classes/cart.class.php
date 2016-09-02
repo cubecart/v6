@@ -580,8 +580,10 @@ class Cart {
 							'available' => ($coupon['allowed_uses'] > 0) ? $coupon['allowed_uses']-$coupon['count'] : 0,
 							'product' => $coupon['product_id'],
 							'shipping' => (bool)$coupon['shipping'],
+							'free_shipping' => (bool)$coupon['free_shipping'],
 							'subtotal' => (bool)$coupon['subtotal'],
 						);
+						$this->basket['coupon_free_shipping'] = true;
 						return true;
 					} else {
 						$GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_expired']);
@@ -605,6 +607,7 @@ class Cart {
 	public function discountRemove($code) {
 		if ($code && isset($this->basket['coupons'][strtoupper($code)])) {
 			unset($this->basket['coupons'][strtoupper($code)], $this->basket['discount_type']);
+			unset($this->basket['coupon_free_shipping']);
 			$this->save();
 			return true;
 		}
@@ -882,7 +885,16 @@ class Cart {
 	 */
 	public function loadShippingModules() {
 
-		if (($shipping = $GLOBALS['db']->select('CubeCart_modules', array('folder', 'countries'), array('module' => 'shipping', 'status' => '1'))) !== false) {
+		if($this->basket['coupon_free_shipping']==1) {
+			return array (
+			  'Free_Shipping' => array(
+			   		0 => array(
+			      		'name' => $GLOBALS['language']->basket['free_coupon_shipping'],
+			      		'value' => 0
+			    		)
+			  		)
+				);
+		} elseif (($shipping = $GLOBALS['db']->select('CubeCart_modules', array('folder', 'countries'), array('module' => 'shipping', 'status' => '1'))) !== false) {
 
 			$tax_on = ($GLOBALS['config']->get('config', 'basket_tax_by_delivery')) ? 'delivery_address' : 'billing_address';
 
