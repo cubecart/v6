@@ -171,7 +171,13 @@ $default_config_settings = array(
   'fuzzy_time_format' => '%H:%M',
   'feed_access_key' => randomString(12),
   'seo_add_cats'  => '2',
-  'seo_cat_add_cats' => '1'
+  'seo_cat_add_cats' => '1',
+  'r_admin_activity' => '30',
+  'r_admin_error' => '30',
+  'r_email' => '30',
+  'r_request' => '30',
+  'r_staff' => '30',
+  'r_system_error' => '30'
 );
 
 ksort($default_config_settings);
