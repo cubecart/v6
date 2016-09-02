@@ -26,6 +26,7 @@ class Mailer extends PHPMailer {
 
 	private $_html;
 	private $_text;
+	private $_email_content_id;
 	private $_import_new = false;
 
 	protected static $_instance;
@@ -91,6 +92,7 @@ class Mailer extends PHPMailer {
 
 		if (!empty($content_type)) {
 			if (($contents =  $GLOBALS['db']->select('CubeCart_email_content', false, array('content_type' => (string)$content_type, 'language' => $language))) !== false) {
+				$this->_email_content_id = $contents[0]['content_id'];
 				$elements = array(
 					'subject'  => $contents[0]['subject'],
 					'content_html' => $contents[0]['content_html'],
@@ -204,7 +206,20 @@ class Mailer extends PHPMailer {
 			$this->Sender = $GLOBALS['config']->get('config', 'email_address');
 	
 			// Send email
-			return $this->Send();
+			$result = $this->Send();
+            // Log email
+            $email_data = array(
+                'subject' => $this->Subject,
+                'content_html' => $this->_html,
+                'content_text' => $this->_text,
+                'to' => $email,
+                'from' => $this->Sender,
+                'result' => $result,
+                'email_content_id' => $this->_email_content_id
+            );
+            $GLOBALS['db']->insert('CubeCart_email_log', $email_data);
+            $GLOBALS['db']->delete('CubeCart_email_log', 'date < DATE_SUB(NOW(), INTERVAL 45 DAY)');
+            return $result;
 		}
 
 		return false;

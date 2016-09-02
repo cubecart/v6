@@ -346,6 +346,16 @@ if (isset($_POST['emptyTransLogs']) && Admin::getInstance()->permissions('mainte
 	$clear_post = true;
 }
 
+if (isset($_REQUEST['emptyEmailLogs']) && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
+	$GLOBALS['cache']->clear();
+	if ($GLOBALS['db']->truncate(array('CubeCart_email_log'))) {
+		$GLOBALS['main']->setACPNotify($lang['maintain']['notify_logs_email']);
+	} else {
+		$GLOBALS['main']->setACPWarning($lang['maintain']['error_logs_email']);
+	}
+	$clear_post = true;
+}
+
 if (isset($_REQUEST['emptyErrorLogs']) && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
 	$GLOBALS['cache']->clear();
 	if ($GLOBALS['db']->truncate(array('CubeCart_system_error_log', 'CubeCart_admin_error_log'))) {
