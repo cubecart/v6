@@ -2052,7 +2052,7 @@
     <string name="install_drop_tables_explained" introduced="5.0.0"><![CDATA[(Check this if you wish to overwrite existing data.)]]></string>
     <string name="install_fresh" introduced="5.0.0"><![CDATA[Choose this option if you wish to perform a fresh installation of CubeCart.<br><strong style='color: red;'>WARNING</strong>: By proceeding with this option any existing store data may be overwritten!]]></string>
     <string name="licence_agree" introduced="5.0.0"><![CDATA[I agree to to the terms of the software licence.]]></string>
-    <string name="link_admin_panel" introduced="5.0.0"><![CDATA[Admin Control Panel (Please bookmark)]]></string>
+    <string name="link_admin_panel" introduced="5.0.0"><![CDATA[Admin Control Panel]]></string>
     <string name="link_store_front" introduced="5.0.0"><![CDATA[Store Front]]></string>
     <string name="percent_complete" introduced="5.0.0"><![CDATA[%d%% Complete]]></string>
     <string name="title_admin_profile" introduced="5.0.0"><![CDATA[Administrator Profile]]></string>

@@ -503,8 +503,8 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
     setcookie('delete_setup', true, time()+7200, '/');
     
     //Attempt admin file and folder rename
-    $admin_folder = randomString(10);
-    $admin_file   = randomString(6).'.php';
+    $admin_folder = randomString(16);
+    $admin_file   = 'admin_'.randomString(6).'.php';
 
     $update_config = false;
     if(rename('../admin', '../'.$admin_folder)) {
@@ -532,8 +532,7 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
       ## Backup existing config file, if it exists
       if (file_exists($global_file)) rename($global_file, $global_file.'-'.date('Ymdgis').'.php');
       if (file_put_contents($global_file, $config));
-      $GLOBALS['smarty']->assign('ADMIN_FILE_PATH', $admin_file);
-      $GLOBALS['smarty']->assign('ADMIN_URL', CC_STORE_URL.'/'.$admin_file); 
+      $GLOBALS['smarty']->assign('ADMIN_URL', str_replace('/setup','',CC_STORE_URL).'/'.$admin_file); 
     }
 
     $GLOBALS['smarty']->assign('SHOW_LINKS', true);
