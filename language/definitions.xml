@@ -2045,7 +2045,7 @@
     <string name="error_x_is_required" introduced="5.0.0"><![CDATA[%s is required to run CubeCart 6.]]></string>
     <string name="error_x_not_writable" introduced="5.0.0"><![CDATA[%s is not writable.]]></string>
     <string name="install_complete" introduced="5.0.0"><![CDATA[Installation Complete]]></string>
-    <string name="install_complete_note" introduced="5.0.0"><![CDATA[Your store has been successfully installed. You should log in your Admin Control Panel, and configure your store, and add products.]]></string>
+    <string name="install_complete_note" introduced="5.0.0"><![CDATA[Congratulations! Installation is now complete. Please login to the admin side of your store to add inventory, setup shipping quotes and configure how you want to take payments.]]></string>
     <string name="install_cubecart" introduced="5.0.0"><![CDATA[Install CubeCart]]></string>
     <string name="install_cubecart_title" introduced="5.0.0"><![CDATA[Install CubeCart %s]]></string>
     <string name="install_drop_tables" introduced="5.0.0"><![CDATA[Drop Tables]]></string>
