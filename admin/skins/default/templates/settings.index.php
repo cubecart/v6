@@ -398,12 +398,12 @@
       </fieldset>
       <fieldset>
          <legend>{$LANG.settings.log_retention} ({$LANG.settings.log_retention_desc})</legend>
-         <div><label for="r_admin_activity">{$LANG.settings.admin_activity_log}</label><span><input name="config[r_admin_activity]" id="r_admin_activity" type="text" class="textbox" value="{$CONFIG.r_admin_activity}"> {$LANG.common.days}</span></div>
-         <div><label for="r_admin_error">{$LANG.settings.title_admin_error_log}</label><span><input name="config[r_admin_error]" id="r_admin_error" type="text" class="textbox" value="{$CONFIG.r_admin_error}"> {$LANG.common.days}</span></div>
-         <div><label for="r_email">{$LANG.settings.title_email_log}</label><span><input name="config[r_email]" id="r_email" type="text" class="textbox" value="{$CONFIG.r_email}"> {$LANG.common.days}</span></div>
-         <div><label for="r_request">{$LANG.navigation.nav_request_log}</label><span><input name="config[r_request]" id="r_request" type="text" class="textbox" value="{$CONFIG.r_request}"> {$LANG.common.days}</span></div>
-         <div><label for="r_staff">{$LANG.navigation.nav_access_log}</label><span><input name="config[r_staff]" id="r_staff" type="text" class="textbox" value="{$CONFIG.r_staff}"> {$LANG.common.days}</span></div>
-         <div><label for="r_system_error">{$LANG.settings.title_system_error_log}</label><span><input name="config[r_system_error]" id="r_system_error" type="text" class="textbox" value="{$CONFIG.r_system_error}"> {$LANG.common.days}</span></div>
+         <div><label for="r_admin_activity">{$LANG.settings.admin_activity_log}</label><span><input name="config[r_admin_activity]" id="r_admin_activity" type="text" class="textbox number" value="{$CONFIG.r_admin_activity}"> {$LANG.common.days}</span></div>
+         <div><label for="r_admin_error">{$LANG.settings.title_admin_error_log}</label><span><input name="config[r_admin_error]" id="r_admin_error" type="text" class="textbox number" value="{$CONFIG.r_admin_error}"> {$LANG.common.days}</span></div>
+         <div><label for="r_email">{$LANG.settings.title_email_log}</label><span><input name="config[r_email]" id="r_email" type="text" class="textbox number" value="{$CONFIG.r_email}"> {$LANG.common.days}</span></div>
+         <div><label for="r_request">{$LANG.navigation.nav_request_log}</label><span><input name="config[r_request]" id="r_request" type="text" class="textbox number" value="{$CONFIG.r_request}"> {$LANG.common.days}</span></div>
+         <div><label for="r_staff">{$LANG.navigation.nav_access_log}</label><span><input name="config[r_staff]" id="r_staff" type="text" class="textbox number" value="{$CONFIG.r_staff}"> {$LANG.common.days}</span></div>
+         <div><label for="r_system_error">{$LANG.settings.title_system_error_log}</label><span><input name="config[r_system_error]" id="r_system_error" type="text" class="textbox number" value="{$CONFIG.r_system_error}"> {$LANG.common.days}</span></div>
       </fieldset>
       <fieldset>
          <legend>{$LANG.common.other}</legend>
