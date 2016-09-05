@@ -531,7 +531,7 @@
     <string name="checkout" introduced="5.0.0"><![CDATA[Checkout]]></string>
     <string name="secure_checkout" introduced="6.0.0"><![CDATA[Secure Checkout]]></string>
     <string name="error_shipping" introduced="5.0.0"><![CDATA[Unfortunately there are no suitable shipping methods available for your order. This may be because the total weight of your order is too high or we cannot ship to your country. Please contact a member of our staff for any further inquiries.]]></string>
-    <string name="check_shipping" introduced="5.0.0"><![CDATA[New shipping options are available! Please check and continue.]]></string>
+    <string name="check_shipping" introduced="5.0.0"><![CDATA[Available shipping methods have changed. Please check before proceeding.]]></string>
     <string name="error_too_many_added" introduced="5.0.0"><![CDATA[Sorry, you can't buy more than we have. We have automatically reduced your quantity to the maximum available.]]></string>
     <string name="error_voucher_expired" introduced="5.0.0"><![CDATA[Sorry, that voucher has expired.]]></string>
     <string name="error_voucher_none" introduced="5.0.0"><![CDATA[Sorry, that voucher does not exist.]]></string>
