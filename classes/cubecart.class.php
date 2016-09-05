@@ -1574,6 +1574,16 @@ class Cubecart {
 			// Shipping Calculations
 			if (($shipping = $GLOBALS['cart']->loadShippingModules()) !== false) {
 				$offset = 1;
+				
+				if($this->_basket['free_coupon_shipping']==1) {
+					$shipping['Free_Coupon_Shipping'] = array(
+				   		0 => array(
+				      		'name' => $GLOBALS['language']->basket['free_coupon_shipping'],
+				      		'value' => 0
+				    		)
+				  		);
+				}
+
 				foreach ($shipping as $ship_name => $methods) {
 					$label = (!is_numeric($ship_name) && !empty($ship_name)) ? str_replace('_', ' ', $ship_name) : null;
 					foreach ($methods as $data) {
