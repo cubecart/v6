@@ -195,6 +195,7 @@
     <string name="title_administrators" introduced="5.0.0"><![CDATA[Administrators]]></string>
   </group>
   <group name="basket">
+    <string name="continue_shopping" introduced="6.1.0"><![CDATA[Continue Shopping]]></string>
     <string name="free_coupon_shipping" introduced="6.1.0"><![CDATA[Free Shipping from Coupon]]></string>
     <string name="fetch_shipping_rates" introduced="6.0.5"><![CDATA[Fetch Shipping Rates]]></string>
     <string name="specify_shipping" introduced="6.0.5"><![CDATA[Specify your shipping address]]></string>

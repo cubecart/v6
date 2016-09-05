@@ -89,5 +89,8 @@
 {/if}
 {else}
 <h2>{$LANG.checkout.your_basket}</h2>
+<div class="text-center">
 <p class="thickpad-top">{$LANG.basket.basket_is_empty}</p>
+<a href="?" class="button success">{$LANG.basket.continue_shopping}</a>
+</div>
 {/if}
