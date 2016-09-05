@@ -593,10 +593,15 @@ class Cubecart {
 				if(isset($_POST['get-estimate'])) {
 					$_POST['estimate']['postcode'] = empty($_POST['estimate']['postcode']) ? $GLOBALS['config']->get('config', 'store_postcode') : $_POST['estimate']['postcode'];
 					$basket_data['delivery_address'] = $GLOBALS['user']->formatAddress($_POST['estimate'],false,true);
+					
+					$before = md5(serialize($this->_basket['delivery_address']));
 					$this->_basket['delivery_address'] = $basket_data['delivery_address'];
 					$this->_basket['billing_address'] = $basket_data['delivery_address'];
-					$GLOBALS['cart']->save();
-					$GLOBALS['gui']->setNotify($GLOBALS['language']->basket['shipping_address_updated']);
+
+					if($before !== md5(serialize($this->_basket['delivery_address']))) {
+						$GLOBALS['cart']->save();
+						$GLOBALS['gui']->setNotify($GLOBALS['language']->basket['shipping_address_updated']);
+					}
 				}
 
 				// Estimated shipping
