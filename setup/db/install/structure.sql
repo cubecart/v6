@@ -342,7 +342,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_geo_zone` (
 	`abbrev` VARBINARY(4) NOT NULL DEFAULT '',
 	`name` VARBINARY(40) NOT NULL DEFAULT '',
 	PRIMARY KEY (`id`),
-	ADD UNIQUE(`country_id`, `abbrev`)
+	UNIQUE(`country_id`, `abbrev`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_history` (
