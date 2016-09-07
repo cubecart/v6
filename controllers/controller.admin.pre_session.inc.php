@@ -29,9 +29,9 @@ Sanitize::checkToken();
 $GLOBALS['smarty'] = new Smarty();
 $GLOBALS['smarty']->muteExpectedErrors();
 $GLOBALS['smarty']->error_reporting = E_ALL & ~E_NOTICE & ~E_WARNING;
-$GLOBALS['smarty']->compile_dir = CC_SKIN_CACHE_DIR;
-$GLOBALS['smarty']->config_dir = CC_SKIN_CACHE_DIR;
-$GLOBALS['smarty']->cache_dir = CC_SKIN_CACHE_DIR;
+$GLOBALS['smarty']->compile_dir  = CC_SKIN_CACHE_DIR;
+$GLOBALS['smarty']->config_dir  = CC_SKIN_CACHE_DIR;
+$GLOBALS['smarty']->cache_dir  = CC_SKIN_CACHE_DIR;
 //Initialize language
 $GLOBALS['language'] = Language::getInstance();
 //Initialize hooks
@@ -54,8 +54,8 @@ date_default_timezone_set((!empty($tz)) ? $tz : 'UTC');
 $GLOBALS['main'] = ACP::getInstance();
 $lang = $GLOBALS['language']->getLanguageStrings();
 
-$global_template_file['session_true'] = 'main.php';
-$global_template_file['session_false'] = 'login.php';
+$global_template_file['session_true']  = 'main.php';
+$global_template_file['session_false']  = 'login.php';
 
 // hook_tab_content is a place where hooks can specify template includes that
 // define their admin tab content.

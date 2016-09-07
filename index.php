@@ -10,13 +10,13 @@
  * Email:  sales@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  */
-require dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ini.inc.php';
+require dirname(__FILE__).DIRECTORY_SEPARATOR.'ini.inc.php';
 define('CC_IN_ADMIN', false);
 
 header('X-Frame-Options: SAMEORIGIN'); // do not allow iframes
 
 global $config_default;
 
-include CC_ROOT_DIR . CC_DS . 'controllers' . CC_DS . 'controller.index.inc.php';
+include CC_ROOT_DIR.CC_DS.'controllers'.CC_DS.'controller.index.inc.php';
 
-$GLOBALS['smarty']->display('templates/' . $global_template_file);
+$GLOBALS['smarty']->display('templates/'.$global_template_file);

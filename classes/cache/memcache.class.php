@@ -13,7 +13,7 @@
 
 if (!defined('CC_INI_SET')) die('Access Denied');
 
-require CC_ROOT_DIR . '/classes/cache/cache.class.php';
+require CC_ROOT_DIR.'/classes/cache/cache.class.php';
 
 /**
  * Cache specific class
@@ -21,266 +21,253 @@ require CC_ROOT_DIR . '/classes/cache/cache.class.php';
  * @author Al Brookbanks
  * @since 6.0.0
  */
-class Cache extends Cache_Controler
-{
+class Cache extends Cache_Controler {
 
-    ##############################################
+	##############################################
 
-    final protected function __construct()
-    {
+	final protected function __construct() {
+		
+		global $glob;
 
-        global $glob;
+		$this->_mode = 'Memcache';
+		$this->_memcache = new Memcache;
+	
+		$memcache_host = isset($glob['memcache_host']) ? $glob['memcache_host'] : '127.0.0.1';
+		$memcache_post = isset($glob['memcache_post']) ? $glob['memcache_post'] : '11211';
+		if(!$this->_memcache->connect($memcache_host, $memcache_post)) {
+			trigger_error("Couldn't initiate Memcache. Please set 'memcache_host' and 'memcache_port' in the includes/global.inc.php file.", E_USER_WARNING);	
+		}
 
-        $this->_mode = 'Memcache';
-        $this->_memcache = new Memcache;
+		//Run the parent constructor
+		parent::__construct();
+	}
+	
+	public function __destruct() {
+		if($this->_empties_added) $this->write($this->_empties, $this->_empties_id);
+	}
 
-        $memcache_host = isset($glob['memcache_host']) ? $glob['memcache_host'] : '127.0.0.1';
-        $memcache_post = isset($glob['memcache_post']) ? $glob['memcache_post'] : '11211';
-        if (!$this->_memcache->connect($memcache_host, $memcache_post)) {
-            trigger_error("Couldn't initiate Memcache. Please set 'memcache_host' and 'memcache_port' in the includes/global.inc.php file.", E_USER_WARNING);
-        }
+	/**
+	 * Setup the instance (singleton)
+	 *
+	 * @return instance
+	 */
+	public static function getInstance() {
+		if (!(self::$_instance instanceof self)) {
+			self::$_instance = new self();
+		}
 
-        //Run the parent constructor
-        parent::__construct();
-    }
+		return self::$_instance;
+	}
 
-    public function __destruct()
-    {
-        if ($this->_empties_added) $this->write($this->_empties, $this->_empties_id);
-    }
+	//=====[ Public ]=======================================
 
-    /**
-     * Setup the instance (singleton)
-     *
-     * @return instance
-     */
-    public static function getInstance()
-    {
-        if (!(self::$_instance instanceof self)) {
-            self::$_instance = new self();
-        }
+	/**
+	 * Clear the cache
+	 *
+	 * @param string $type Cache type prefix
+	 * @return bool
+	 */
+	public function clear($type = '') {
+		//Get the current cache IDs
+		$this->getIDs();
 
-        return self::$_instance;
-    }
+		if (!empty($type)) {
+			$type = strtolower($type);
+			$len = strlen($type);
+		}
 
-    //=====[ Public ]=======================================
+		$return = true;
+		if (!empty($this->_ids)) {
+			//Loop through each id to delete it
+			foreach ($this->_ids as $id) {
+				//If there is a type we need to only delete that
+				if (!empty($type)) {
+					if (substr($id, 0, $len) == $type) {
+						if (!$this->delete($id)) {
+							$return = false;
+						}
+					}
+				} else {
+					//If no type delete every id
+					if (!$this->delete($id)) {
+						$return = false;
+					}
+				}
+			}
+		}
+		return $return;
+	}
 
-    /**
-     * Clear the cache
-     *
-     * @param string $type Cache type prefix
-     * @return bool
-     */
-    public function clear($type = '')
-    {
-        //Get the current cache IDs
-        $this->getIDs();
+	/**
+	 * Remove a single item of cache
+	 *
+	 * @param string $id Cache identifier
+	 * @return bool
+	 */
+	public function delete($id) {
+	
+		return $this->_memcache->delete($this->_makeName($id));
+	}
 
-        if (!empty($type)) {
-            $type = strtolower($type);
-            $len = strlen($type);
-        }
+	/**
+	 * Check to see if the cache file exists
+	 *
+	 * @param string $id Cache identifier
+	 * @return bool
+	 */
+	public function exists($id) {
+		if(!$this->status) return false;
+		
+		if(!$this->_memcache->get($this->_makeName($id))) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 
-        $return = true;
-        if (!empty($this->_ids)) {
-            //Loop through each id to delete it
-            foreach ($this->_ids as $id) {
-                //If there is a type we need to only delete that
-                if (!empty($type)) {
-                    if (substr($id, 0, $len) == $type) {
-                        if (!$this->delete($id)) {
-                            $return = false;
-                        }
-                    }
-                } else {
-                    //If no type delete every id
-                    if (!$this->delete($id)) {
-                        $return = false;
-                    }
-                }
-            }
-        }
-        return $return;
-    }
+	/**
+	 * Get all the cache ids
+	 *
+	 * @return array
+	 */
+	public function getIDs() {
+		if (empty($this->_ids)) { 
+		    $allSlabs = $this->_memcache->getExtendedStats('slabs'); 
+		    foreach($allSlabs as $server => $slabs) { 
+		        foreach($slabs AS $slabId => $slabMeta) { 
+		            $cdump = $this->_memcache->getExtendedStats('cachedump',(int)$slabId); 
+		            if(is_array($cdump)) {
+			            foreach($cdump AS $keys => $arrVal) { 
+			                if(is_array($arrVal)) {
+			                	foreach($arrVal AS $k => $v) {                    
+			                    	$this->_ids[] = str_replace(array($this->_prefix, $this->_suffix), '', $k);
+			                	} 
+			            	}
+			           	} 
+		       		}
+		        } 
+		    }  
+		}
+		return $this->_ids;
+	}
+	
+	/**
+	 * Get the cached data
+	 *
+	 * @param string $id Cache identifier
+	 * @return data/false
+	 */
+	public function read($id) {
 
-    /**
-     * Remove a single item of cache
-     *
-     * @param string $id Cache identifier
-     * @return bool
-     */
-    public function delete($id)
-    {
+		if(!$this->status) return false;
+		
+		if(preg_match('/^sql\./',$id) && $this->_empties_id!==$id && isset($this->_empties[$id])) {
+			return array('empty' => true, 'data' => $this->_empties[$id]);
+		}
 
-        return $this->_memcache->delete($this->_makeName($id));
-    }
+		//Setup the name of the cache
+		$name = $this->_makeName($id);
 
-    /**
-     * Check to see if the cache file exists
-     *
-     * @param string $id Cache identifier
-     * @return bool
-     */
-    public function exists($id)
-    {
-        if (!$this->status) return false;
+		//Make sure the cache file exists
+		if ($this->_memcache->get($name)) {
+			$contents = $this->_memcache->get($name);
+			if (!empty($contents)) {
+				//Remove base64 & serialization
+				return $contents;
+			}
+		}
 
-        if (!$this->_memcache->get($this->_makeName($id))) {
-            return false;
-        } else {
-            return true;
-        }
-    }
+		return false;
+	}
 
-    /**
-     * Get all the cache ids
-     *
-     * @return array
-     */
-    public function getIDs()
-    {
-        if (empty($this->_ids)) {
-            $allSlabs = $this->_memcache->getExtendedStats('slabs');
-            foreach ($allSlabs as $server => $slabs) {
-                foreach ($slabs AS $slabId => $slabMeta) {
-                    $cdump = $this->_memcache->getExtendedStats('cachedump', (int)$slabId);
-                    if (is_array($cdump)) {
-                        foreach ($cdump AS $keys => $arrVal) {
-                            if (is_array($arrVal)) {
-                                foreach ($arrVal AS $k => $v) {
-                                    $this->_ids[] = str_replace(array($this->_prefix, $this->_suffix), '', $k);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return $this->_ids;
-    }
+	/**
+	 * Calculates the cache usage
+	 *
+	 * @return string
+	 */
+	public function usage() {
+		$stats = $this->_memcache->getStats();
+		if(is_array($stats)) {
+			$output = $this->_printStats($stats);
+			return $output;
+		} else {
+			return "No stats available for memcache.";
+		}
+	}
 
-    /**
-     * Get the cached data
-     *
-     * @param string $id Cache identifier
-     * @return data/false
-     */
-    public function read($id)
-    {
+	/**
+	 * Write cache data
+	 *
+	 * @param mixed $data Data to write to the file
+	 * @param string $id Cache identifier
+	 * @param int $expire Force a time to live
+	 * @return bool
+	 */
+	public function write($data, $id, $expire = '') {
 
-        if (!$this->status) return false;
+		if(!$this->status) return false;
+		
+		if(preg_match('/^sql\./',$id) && $this->_empties_id!==$id && empty($data)) {
+			if(!isset($this->_empties[$id])) {
+				$this->_empties[$id] = $data;
+				$this->_empties_added = true;
+			}
+			return false;
+		}
 
-        if (preg_match('/^sql\./', $id) && $this->_empties_id !== $id && isset($this->_empties[$id])) {
-            return array('empty' => true, 'data' => $this->_empties[$id]);
-        }
+		$name = $this->_makeName($id);
 
-        //Setup the name of the cache
-        $name = $this->_makeName($id);
+		//Write to file
+		if ($this->_memcache->set($name, $data,(!empty($expire) && is_numeric($expire)) ? $expire : $this->_expire)) {
+			return true;
+		}
+		trigger_error('Cache data not written (Memcache).', E_USER_WARNING);
 
-        //Make sure the cache file exists
-        if ($this->_memcache->get($name)) {
-            $contents = $this->_memcache->get($name);
-            if (!empty($contents)) {
-                //Remove base64 & serialization
-                return $contents;
-            }
-        }
+		return false;
+	}
 
-        return false;
-    }
+	//=====[ Private ]=======================================
 
-    /**
-     * Calculates the cache usage
-     *
-     * @return string
-     */
-    public function usage()
-    {
-        $stats = $this->_memcache->getStats();
-        if (is_array($stats)) {
-            $output = $this->_printStats($stats);
-            return $output;
-        } else {
-            return "No stats available for memcache.";
-        }
-    }
+	/**
+	 * Get empty cache queries
+	 */
+	protected function _getEmpties() {
+		$this->_setPrefix();
+		$this->_empties = $this->read($this->_empties_id);
+	}
+	
+	/**
+	 * Return string of stats for output
+	 */
+	private function _printStats($data){ 
+		$output = "";
+		$output .= "<table border='1'><tbody>"; 
+        $output .= "<tr><td>Memcache Server version:</td><td> ".$data["version"]."</td></tr>"; 
+        $output .= "<tr><td>Process id of this server process </td><td>".$data["pid"]."</td></tr>"; 
+        $output .= "<tr><td>Number of seconds this server has been running </td><td>".$data["uptime"]."</td></tr>";
+        $output .= "<tr><td>Accumulated user time for this process </td><td>".$data["rusage_user"]." seconds</td></tr>"; 
+        $output .= "<tr><td>Accumulated system time for this process </td><td>".$data["rusage_system"]." seconds</td></tr>"; 
+        $output .= "<tr><td>Total number of items stored by this server ever since it started </td><td>".$data["total_items"]."</td></tr>"; 
+        $output .= "<tr><td>Number of open connections </td><td>".$data["curr_connections"]."</td></tr>"; 
+        $output .= "<tr><td>Total number of connections opened since the server started running </td><td>".$data["total_connections"]."</td></tr>"; 
+        $output .= "<tr><td>Number of connection structures allocated by the server </td><td>".$data["connection_structures"]."</td></tr>"; 
+        $output .= "<tr><td>Cumulative number of retrieval requests </td><td>".$data["cmd_get"]."</td></tr>"; 
+        $output .= "<tr><td> Cumulative number of storage requests </td><td>".$data["cmd_set"]."</td></tr>"; 
 
-    /**
-     * Write cache data
-     *
-     * @param mixed $data Data to write to the file
-     * @param string $id Cache identifier
-     * @param int $expire Force a time to live
-     * @return bool
-     */
-    public function write($data, $id, $expire = '')
-    {
+        $percCacheHit=((real)$data["get_hits"]/ (real)$data["cmd_get"] *100); 
+        $percCacheHit=round($percCacheHit,3); 
+        $percCacheMiss=100-$percCacheHit; 
 
-        if (!$this->status) return false;
-
-        if (preg_match('/^sql\./', $id) && $this->_empties_id !== $id && empty($data)) {
-            if (!isset($this->_empties[$id])) {
-                $this->_empties[$id] = $data;
-                $this->_empties_added = true;
-            }
-            return false;
-        }
-
-        $name = $this->_makeName($id);
-
-        //Write to file
-        if ($this->_memcache->set($name, $data, (!empty($expire) && is_numeric($expire)) ? $expire : $this->_expire)) {
-            return true;
-        }
-        trigger_error('Cache data not written (Memcache).', E_USER_WARNING);
-
-        return false;
-    }
-
-    //=====[ Private ]=======================================
-
-    /**
-     * Get empty cache queries
-     */
-    protected function _getEmpties()
-    {
-        $this->_setPrefix();
-        $this->_empties = $this->read($this->_empties_id);
-    }
-
-    /**
-     * Return string of stats for output
-     */
-    private function _printStats($data)
-    {
-        $output = "";
-        $output .= "<table border='1'><tbody>";
-        $output .= "<tr><td>Memcache Server version:</td><td> " . $data["version"] . "</td></tr>";
-        $output .= "<tr><td>Process id of this server process </td><td>" . $data["pid"] . "</td></tr>";
-        $output .= "<tr><td>Number of seconds this server has been running </td><td>" . $data["uptime"] . "</td></tr>";
-        $output .= "<tr><td>Accumulated user time for this process </td><td>" . $data["rusage_user"] . " seconds</td></tr>";
-        $output .= "<tr><td>Accumulated system time for this process </td><td>" . $data["rusage_system"] . " seconds</td></tr>";
-        $output .= "<tr><td>Total number of items stored by this server ever since it started </td><td>" . $data["total_items"] . "</td></tr>";
-        $output .= "<tr><td>Number of open connections </td><td>" . $data["curr_connections"] . "</td></tr>";
-        $output .= "<tr><td>Total number of connections opened since the server started running </td><td>" . $data["total_connections"] . "</td></tr>";
-        $output .= "<tr><td>Number of connection structures allocated by the server </td><td>" . $data["connection_structures"] . "</td></tr>";
-        $output .= "<tr><td>Cumulative number of retrieval requests </td><td>" . $data["cmd_get"] . "</td></tr>";
-        $output .= "<tr><td> Cumulative number of storage requests </td><td>" . $data["cmd_set"] . "</td></tr>";
-
-        $percCacheHit = ((real)$data["get_hits"] / (real)$data["cmd_get"] * 100);
-        $percCacheHit = round($percCacheHit, 3);
-        $percCacheMiss = 100 - $percCacheHit;
-
-        $output .= "<tr><td>Number of keys that have been requested and found present </td><td>" . $data["get_hits"] . " ($percCacheHit%)</td></tr>";
-        $output .= "<tr><td>Number of items that have been requested and not found </td><td>" . $data["get_misses"] . " ($percCacheMiss%)</td></tr>";
-        $MBRead = (real)$data["bytes_read"] / (1024 * 1024);
-        $output .= "<tr><td>Total number of bytes read by this server from network </td><td>" . $MBRead . " Mega Bytes</td></tr>";
-        $MBWrite = (real)$data["bytes_written"] / (1024 * 1024);
-        $output .= "<tr><td>Total number of bytes sent by this server to network </td><td>" . $MBWrite . " Mega Bytes</td></tr>";
-        $MBSize = (real)$data["limit_maxbytes"] / (1024 * 1024);
-        $output .= "<tr><td>Number of bytes this server is allowed to use for storage.</td><td>" . $MBSize . " Mega Bytes</td></tr>";
-        $output .= "<tr><td>Number of valid items removed from cache to free memory for new items.</td><td>" . $data["evictions"] . "</td></tr>";
-        $output .= "</tbody></table>";
-        return $output;
+        $output .= "<tr><td>Number of keys that have been requested and found present </td><td>".$data["get_hits"]." ($percCacheHit%)</td></tr>"; 
+        $output .= "<tr><td>Number of items that have been requested and not found </td><td>".$data["get_misses"]." ($percCacheMiss%)</td></tr>"; 
+        $MBRead= (real)$data["bytes_read"]/(1024*1024); 
+        $output .= "<tr><td>Total number of bytes read by this server from network </td><td>".$MBRead." Mega Bytes</td></tr>"; 
+        $MBWrite=(real) $data["bytes_written"]/(1024*1024) ; 
+        $output .= "<tr><td>Total number of bytes sent by this server to network </td><td>".$MBWrite." Mega Bytes</td></tr>"; 
+        $MBSize=(real) $data["limit_maxbytes"]/(1024*1024) ; 
+        $output .= "<tr><td>Number of bytes this server is allowed to use for storage.</td><td>".$MBSize." Mega Bytes</td></tr>"; 
+        $output .= "<tr><td>Number of valid items removed from cache to free memory for new items.</td><td>".$data["evictions"]."</td></tr>"; 
+		$output .= "</tbody></table>"; 
+		return $output;
     }
 }

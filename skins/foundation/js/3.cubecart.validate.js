@@ -1,8 +1,8 @@
 ;
-jQuery(document).ready(function () {
+jQuery(document).ready(function() {
     $.validator.setDefaults({
         errorElement: 'small',
-        errorPlacement: function (error, element) {
+        errorPlacement: function(error, element) {
             if (element.is(":radio") || element.is(":checkbox")) {
                 var errorLocation = element.attr('rel');
                 if ($('#' + errorLocation).length) {
@@ -16,7 +16,7 @@ jQuery(document).ready(function () {
             }
         }
     });
-    $.validator.addMethod("phone", function (phone, element) {
+    $.validator.addMethod("phone", function(phone, element) {
         phone = phone.replace(/\s+/g, "");
         return this.optional(element) || phone.match(/^[0-9-+()]+$/);
     }, $('#validate_phone').text());
@@ -113,7 +113,7 @@ jQuery(document).ready(function () {
                     url: "?_g=ajax_email&source=newsletter",
                     type: "post",
                     data: {
-                        username: function () {
+                        username: function() {
                             return $("#newsletter_email").val();
                         }
                     }
@@ -162,7 +162,7 @@ jQuery(document).ready(function () {
                     url: "?_g=ajax_email",
                     type: "post",
                     data: {
-                        username: function () {
+                        username: function() {
                             return $("#user_email").val();
                         }
                     }
@@ -251,7 +251,7 @@ jQuery(document).ready(function () {
         }
     });
 
-    $("#checkout_form").on("click", '#checkout_register', function () {
+    $("#checkout_form").on("click", '#checkout_register', function() {
         $("#reg_password").rules("add", {
             minlength: 6,
             messages: {
@@ -260,8 +260,8 @@ jQuery(document).ready(function () {
         });
     });
 
-    $("#checkout_form").on("click", '#checkout_login', function () {
-        $("#reg_password").rules("remove", "minlength");
+    $("#checkout_form").on("click", '#checkout_login', function() {
+        $("#reg_password").rules("remove","minlength");
     });
 
     $("#addressbook_form").validate({
@@ -397,7 +397,7 @@ jQuery(document).ready(function () {
                     url: "?_g=ajax_email",
                     type: "post",
                     data: {
-                        username: function () {
+                        username: function() {
                             return $("#email").val();
                         }
                     }
@@ -506,9 +506,8 @@ jQuery(document).ready(function () {
                 equalTo: $('#validate_password_mismatch').text()
             }
         }
-    });
-    /* Reset Form */
-    $('input:reset').click(function () {
+    }); /* Reset Form */
+    $('input:reset').click(function() {
         $(this).parents('form:first').validate().resetForm();
     });
 });

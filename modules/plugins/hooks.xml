@@ -11,206 +11,206 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
 -->
 <hooks version="1.0">
-    <!-- Admin Hooks -->
-    <hook trigger="controller.admin" deprecated=""/>
-    <hook trigger="admin.authenticate.failed_invalid_admin" deprecated=""/>
-    <hook trigger="admin.authenticate.failed_valid_admin" deprecated=""/>
-    <hook trigger="admin.category.addedit_display" deprecated=""/>
-    <hook trigger="admin.category.delete" deprecated=""/>
-    <hook trigger="admin.category.list_pre_update" deprecated=""/>
-    <hook trigger="admin.category.pre_display" deprecated=""/>
-    <hook trigger="admin.category.pre_smarty" deprecated=""/>
-    <hook trigger="admin.category.save.pre_process" deprecated=""/>
-    <hook trigger="admin.category.save.post_process" deprecated=""/>
-    <hook trigger="admin.category.tabs" deprecated=""/>
-    <hook trigger="admin.category.translate.save.pre_process" deprecated=""/>
-    <hook trigger="admin.category.translate.save.post_process" deprecated=""/>
-    <hook trigger="admin.customer.add" deprecated=""/>
-    <hook trigger="admin.customer.delete" deprecated=""/>
-    <hook trigger="admin.customer.group_add" deprecated=""/>
-    <hook trigger="admin.customer.group_edit" deprecated=""/>
-    <hook trigger="admin.customer.group_delete" deprecated=""/>
-    <hook trigger="admin.customer.group_list" deprecated=""/>
-    <hook trigger="admin.customer.group.add" deprecated=""/>
-    <hook trigger="admin.customer.group.delete" deprecated=""/>
-    <hook trigger="admin.customer.group.get" deprecated=""/>
-    <hook trigger="admin.customer.list" deprecated=""/>
-    <hook trigger="admin.customer.tabs" deprecated=""/>
-    <hook trigger="admin.customer.update" deprecated=""/>
-    <hook trigger="admin.customer.post_process" deprecated=""/>
-    <hook trigger="admin.customer.subscribers.subscribe" deprecated=""/>
-    <hook trigger="admin.customer.subscribers.unsubscribe" deprecated=""/>
-    <hook trigger="admin.dashboard.custom_quick_tasks" deprecated=""/>
-    <hook trigger="admin.dashboard.quick_tasks" deprecated=""/>
-    <hook trigger="admin.dashboard.stock.post" deprecated=""/>
-    <hook trigger="admin.dashboard.tabs" deprecated=""/>
-    <hook trigger="admin.documents.delete" deprecated=""/>
-    <hook trigger="admin.documents.email.macros" deprecated=""/>
-    <hook trigger="admin.documents.pre_display" deprecated=""/>
-    <hook trigger="admin.documents.save.pre_process" deprecated=""/>
-    <hook trigger="admin.documents.save.post_process" deprecated=""/>
-    <hook trigger="admin.documents.status" deprecated=""/>
-    <hook trigger="admin.documents.tabs" deprecated=""/>
-    <hook trigger="admin.head_js" deprecated=""/>
-    <hook trigger="admin.head_css" deprecated=""/>
-    <hook trigger="admin.body_js" deprecated=""/>
-    <hook trigger="admin.navigation" deprecated=""/>
-    <hook trigger="admin.order.index.display" deprecated=""/>
-    <hook trigger="admin.order.index.post_display" deprecated=""/>
-    <hook trigger="admin.order.index.post_process" deprecated=""/>
-    <hook trigger="admin.order.index.pre_display" deprecated=""/>
-    <hook trigger="admin.order.index.pre_process" deprecated=""/>
-    <hook trigger="admin.order.index.print" deprecated=""/>
-    <hook trigger="admin.order.index.transaction" deprecated=""/>
-    <hook trigger="admin.product.clone" deprecated=""/>
-    <hook trigger="admin.product.delete" deprecated=""/>
-    <hook trigger="admin.product.export" deprecated=""/>
-    <hook trigger="admin.products.options.types" deprecated=""/>
-    <hook trigger="admin.product.pre_display" deprecated=""/>
-    <hook trigger="admin.product.save.pre_process" deprecated=""/>
-    <hook trigger="admin.product.save.post_process" deprecated=""/>
-    <hook trigger="admin.product.import.image.pre_process" deprecated=""/>
-    <hook trigger="admin.product.manufacturers.delete" deprecated=""/>
-    <hook trigger="admin.product.manufacturer.pre_display" deprecated=""/>
-    <hook trigger="admin.product.manufacturers.save.pre_process" deprecated=""/>
-    <hook trigger="admin.product.manufacturers.save.post_process" deprecated=""/>
-    <hook trigger="admin.product.manufacturer.tabs" deprecated=""/>
-    <hook trigger="admin.product.coupons.delete" deprecated=""/>
-    <hook trigger="admin.product.coupons.pre_display" deprecated=""/>
-    <hook trigger="admin.product.coupons.save.pre_process" deprecated=""/>
-    <hook trigger="admin.product.coupons.save.post_process" deprecated=""/>
-    <hook trigger="admin.product.coupons.status" deprecated=""/>
-    <hook trigger="admin.product.import.list" deprecated=""/>
-    <hook trigger="admin.product.import.format" deprecated=""/>
-    <hook trigger="admin.product.table_head_sort" deprecated=""/>
-    <hook trigger="admin.product.tabs" deprecated=""/>
-    <hook trigger="admin.reports.display" deprecated=""/>
-    <hook trigger="admin.reports.final" deprecated=""/>
-    <hook trigger="admin.reports.order.pre" deprecated=""/>
-    <hook trigger="admin.reports.order.post" deprecated=""/>
-    <hook trigger="admin.reports.order.filter" deprecated=""/>
-    <hook trigger="admin.reports.top" deprecated=""/>
-    <hook trigger="admin.settings.admins.sections" deprecated=""/>
-    <hook trigger="admin.settings.currency.post_process" deprecated=""/>
-    <hook trigger="admin.settings.currency.pre_process" deprecated=""/>
-    <hook trigger="admin.statistics.tabs" deprecated=""/>
-    <hook trigger="admin.tabs" deprecated=""/>
-    <hook trigger="offline" deprecated=""/>
-    <!-- Class Hooks -->
-    <hook trigger="controller.index" deprecated=""/>
-    <hook trigger="class.admin.get_section_id" deprecated=""/>
-    <hook trigger="class.ajax.load" deprecated=""/>
-    <hook trigger="class.ajax.search" deprecated=""/>
-    <hook trigger="class.cart.add.pre" deprecated=""/>
-    <hook trigger="class.cart.add.preredirect" deprecated=""/>
-    <hook trigger="class.cart.add.save" deprecated=""/>
-    <hook trigger="class.cart.add.max_stock" deprecated=""/>
-    <hook trigger="class.cart.apply_discounts" deprecated=""/>
-    <hook trigger="class.cart.construct.pre" deprecated=""/>
-    <hook trigger="class.cart.clear" deprecated=""/>
-    <hook trigger="class.cart.discount_add" deprecated=""/>
-    <hook trigger="class.cart.get" deprecated=""/>
-    <hook trigger="class.cart.get.product_prices" deprecated=""/>
-    <hook trigger="class.cart.load_shipping" deprecated=""/>
-    <hook trigger="class.cart.update" deprecated=""/>
-    <hook trigger="class.catalogue.category_product_list" deprecated=""/>
-    <hook trigger="class.catalogue.category_product_list_return" deprecated=""/>
-    <hook trigger="class.catalogue.product_data" deprecated=""/>
-    <hook trigger="class.catalogue.product_options" deprecated=""/>
-    <hook trigger="class.catalogue.product_sort" deprecated=""/>
-    <hook trigger="class.catalogue.display_product_options" deprecated=""/>
-    <hook trigger="class.catalogue.imagepath" deprecated=""/>
-    <hook trigger="class.catalogue.pre_search" deprecated=""/>
-    <hook trigger="class.catalogue.productassign" deprecated=""/>
-    <hook trigger="class.cubecart.account.list" deprecated=""/>
-    <hook trigger="class.cubecart.addressbook" deprecated=""/>
-    <hook trigger="class.cubecart.pre_basket" deprecated=""/>
-    <hook trigger="class.cubecart.basket" deprecated=""/>
-    <hook trigger="class.cubecart.checkout_progress" deprecated=""/>
-    <hook trigger="class.cubecart.construct" deprecated=""/>
-    <hook trigger="class.cubecart.construct.g_switch" deprecated=""/>
-    <hook trigger="class.cubecart.construct.addressbook" deprecated=""/>
-    <hook trigger="class.cubecart.construct.callback.gateway" deprecated=""/>
-    <hook trigger="class.cubecart.construct.cancel" deprecated=""/>
-    <hook trigger="class.cubecart.construct.certificates" deprecated=""/>
-    <hook trigger="class.cubecart.construct.confirm" deprecated=""/>
-    <hook trigger="class.cubecart.construct.confirm.create_user.created" deprecated=""/>
-    <hook trigger="class.cubecart.construct.download" deprecated=""/>
-    <hook trigger="class.cubecart.construct.gateway" deprecated=""/>
-    <hook trigger="class.cubecart.prerecaptcha.confirm" deprecated=""/>
-    <hook trigger="class.cubecart.construct.logout" deprecated=""/>
-    <hook trigger="class.cubecart.construct.register" deprecated=""/>
-    <hook trigger="class.cubecart.construct.search" deprecated=""/>
-    <hook trigger="class.cubecart.contact" deprecated=""/>
-    <hook trigger="class.cubecart.contact.display" deprecated=""/>
-    <hook trigger="class.cubecart.display_basket" deprecated=""/>
-    <hook trigger="class.cubecart.post_coupon" deprecated=""/>
-    <hook trigger="class.cubecart.pre_display_category" deprecated=""/>
-    <hook trigger="class.cubecart.display_category" deprecated=""/>
-    <hook trigger="class.cubecart.display_content" deprecated=""/>
-    <hook trigger="class.cubecart.display_gateways" deprecated=""/>
-    <hook trigger="class.cubecart.display_checkout_gateways" deprecated=""/>
-    <hook trigger="class.cubecart.display_homepage" deprecated=""/>
-    <hook trigger="class.cubecart.display_product" deprecated=""/>
-    <hook trigger="class.cubecart.display_basket.alternate" deprecated=""/>
-    <hook trigger="class.cubecart.display_basket.related" deprecated=""/>
-    <hook trigger="class.cubecart.document_widgets" deprecated=""/>
-    <hook trigger="class.cubecart.gallery" deprecated=""/>
-    <hook trigger="class.cubecart.login" deprecated=""/>
-    <hook trigger="class.cubecart.order_list" deprecated=""/>
-    <hook trigger="class.cubecart.order_summary" deprecated=""/>
-    <hook trigger="class.cubecart.post_shipping" deprecated=""/>
-    <hook trigger="class.cubecart.product_price" deprecated=""/>
-    <hook trigger="class.cubecart.profile" deprecated=""/>
-    <hook trigger="class.cubecart.print.receipt" deprecated=""/>
-    <hook trigger="class.cubecart.review" deprecated=""/>
-    <hook trigger="class.cubecart.review.insert" deprecated=""/>
-    <hook trigger="class.gui.css" deprecated=""/>
-    <hook trigger="class.gui.head_js" deprecated=""/>
-    <hook trigger="class.gui.body_js" deprecated=""/>
-    <hook trigger="class.gui.display" deprecated=""/>
-    <hook trigger="class.gui.display_side_basket" deprecated=""/>
-    <hook trigger="class.gui.display_currency_switch" deprecated=""/>
-    <hook trigger="class.gui.display_documents" deprecated=""/>
-    <hook trigger="class.gui.documents.list" deprecated=""/>
-    <hook trigger="class.gui.display_language_switch" deprecated=""/>
-    <hook trigger="class.gui.display_mailing_list" deprecated=""/>
-    <hook trigger="class.gui.display_navigation.make_tree" deprecated=""/>
-    <hook trigger="class.gui.display_navigation.pre_cache" deprecated=""/>
-    <hook trigger="class.gui.display_navigation" deprecated=""/>
-    <hook trigger="class.gui.display_popular_products" deprecated=""/>
-    <hook trigger="class.gui.display_random_product" deprecated=""/>
-    <hook trigger="class.gui.display_random_product_pre" deprecated=""/>
-    <hook trigger="class.gui.display_sale_items" deprecated=""/>
-    <hook trigger="class.gui.display_search_box" deprecated=""/>
-    <hook trigger="class.gui.display_skin_select" deprecated=""/>
-    <hook trigger="class.gui.display_session_box" deprecated=""/>
-    <hook trigger="class.gui.display_social" deprecated=""/>
-    <hook trigger="class.gui.javascripts" deprecated=""/>
-    <hook trigger="class.gui.session.list" deprecated=""/>
-    <hook trigger="class.newsletter.subscribe" deprecated=""/>
-    <hook trigger="class.newsletter.unsubscribe" deprecated=""/>
-    <hook trigger="class.order.delete" deprecated=""/>
-    <hook trigger="class.order.manage_stock" deprecated=""/>
-    <hook trigger="class.order.order_summary" deprecated=""/>
-    <hook trigger="class.order.assign_order_details" deprecated=""/>
-    <hook trigger="class.order.get_order_details" deprecated=""/>
-    <hook trigger="class.order.order_status" deprecated=""/>
-    <hook trigger="class.order.place_order" deprecated=""/>
-    <hook trigger="class.order.place_order.basket" deprecated=""/>
-    <hook trigger="class.order.products.add.pre" deprecated=""/>
-    <hook trigger="class.user.load" deprecated=""/>
-    <hook trigger="class.user.load.user" deprecated=""/>
-    <hook trigger="class.user.logout" deprecated=""/>
-    <hook trigger="class.user.get_session_data" deprecated=""/>
-    <hook trigger="class.user.preredirect" deprecated=""/>
-    <hook trigger="class.user.register_user" deprecated=""/>
-    <hook trigger="class.user.register_user.insert" deprecated=""/>
-    <hook trigger="class.user.register_user.inserted" deprecated=""/>
-    <hook trigger="class.user.saveaddress" deprecated=""/>
-    <hook trigger="class.ssl.pages" deprecated="true"/>
-    <hook trigger="class.ssl.ignored" deprecated=""/>
-    <hook trigger="class.tax.producttax" deprecated=""/>
-    <hook trigger="class.seo.construct" deprecated=""/>
-    <hook trigger="class.seo.get_item_vars" deprecated=""/>
+ <!-- Admin Hooks -->
+ <hook trigger="controller.admin" deprecated="" />
+ <hook trigger="admin.authenticate.failed_invalid_admin" deprecated="" />
+ <hook trigger="admin.authenticate.failed_valid_admin" deprecated="" /> 
+ <hook trigger="admin.category.addedit_display" deprecated="" />
+ <hook trigger="admin.category.delete" deprecated="" />
+ <hook trigger="admin.category.list_pre_update" deprecated="" />
+ <hook trigger="admin.category.pre_display" deprecated="" />
+ <hook trigger="admin.category.pre_smarty" deprecated="" />
+ <hook trigger="admin.category.save.pre_process" deprecated="" />
+ <hook trigger="admin.category.save.post_process" deprecated="" />
+ <hook trigger="admin.category.tabs" deprecated="" /> 
+ <hook trigger="admin.category.translate.save.pre_process" deprecated="" />
+ <hook trigger="admin.category.translate.save.post_process" deprecated="" />
+ <hook trigger="admin.customer.add" deprecated="" />
+ <hook trigger="admin.customer.delete" deprecated="" />
+ <hook trigger="admin.customer.group_add" deprecated="" />
+ <hook trigger="admin.customer.group_edit" deprecated="" />
+ <hook trigger="admin.customer.group_delete" deprecated="" />
+ <hook trigger="admin.customer.group_list" deprecated="" />
+ <hook trigger="admin.customer.group.add" deprecated="" />
+ <hook trigger="admin.customer.group.delete" deprecated="" />
+ <hook trigger="admin.customer.group.get" deprecated="" />
+ <hook trigger="admin.customer.list" deprecated="" />
+ <hook trigger="admin.customer.tabs" deprecated="" /> 
+ <hook trigger="admin.customer.update" deprecated="" />
+ <hook trigger="admin.customer.post_process" deprecated="" />
+ <hook trigger="admin.customer.subscribers.subscribe" deprecated="" />
+ <hook trigger="admin.customer.subscribers.unsubscribe" deprecated="" />
+ <hook trigger="admin.dashboard.custom_quick_tasks" deprecated="" />
+ <hook trigger="admin.dashboard.quick_tasks" deprecated="" />
+ <hook trigger="admin.dashboard.stock.post" deprecated="" />
+ <hook trigger="admin.dashboard.tabs" deprecated="" />
+ <hook trigger="admin.documents.delete" deprecated="" />
+ <hook trigger="admin.documents.email.macros" deprecated="" />
+ <hook trigger="admin.documents.pre_display" deprecated="" />
+ <hook trigger="admin.documents.save.pre_process" deprecated="" />
+ <hook trigger="admin.documents.save.post_process" deprecated="" />
+ <hook trigger="admin.documents.status" deprecated="" />
+ <hook trigger="admin.documents.tabs" deprecated="" />
+ <hook trigger="admin.head_js" deprecated="" />
+ <hook trigger="admin.head_css" deprecated="" />
+ <hook trigger="admin.body_js" deprecated="" />
+ <hook trigger="admin.navigation" deprecated="" />
+ <hook trigger="admin.order.index.display" deprecated="" />
+ <hook trigger="admin.order.index.post_display" deprecated="" />
+ <hook trigger="admin.order.index.post_process" deprecated="" />
+ <hook trigger="admin.order.index.pre_display" deprecated="" />
+ <hook trigger="admin.order.index.pre_process" deprecated="" />
+ <hook trigger="admin.order.index.print" deprecated="" />
+ <hook trigger="admin.order.index.transaction" deprecated="" />
+ <hook trigger="admin.product.clone" deprecated="" />
+ <hook trigger="admin.product.delete" deprecated="" />
+ <hook trigger="admin.product.export" deprecated="" />
+ <hook trigger="admin.products.options.types" deprecated="" />
+ <hook trigger="admin.product.pre_display" deprecated="" />
+ <hook trigger="admin.product.save.pre_process" deprecated="" />
+ <hook trigger="admin.product.save.post_process" deprecated="" />
+ <hook trigger="admin.product.import.image.pre_process" deprecated="" />
+ <hook trigger="admin.product.manufacturers.delete" deprecated="" />
+ <hook trigger="admin.product.manufacturer.pre_display" deprecated="" />
+ <hook trigger="admin.product.manufacturers.save.pre_process" deprecated="" />
+ <hook trigger="admin.product.manufacturers.save.post_process" deprecated="" />
+ <hook trigger="admin.product.manufacturer.tabs" deprecated="" /> 
+ <hook trigger="admin.product.coupons.delete" deprecated="" />
+ <hook trigger="admin.product.coupons.pre_display" deprecated="" />
+ <hook trigger="admin.product.coupons.save.pre_process" deprecated="" />
+ <hook trigger="admin.product.coupons.save.post_process" deprecated="" />
+ <hook trigger="admin.product.coupons.status" deprecated="" />
+ <hook trigger="admin.product.import.list" deprecated="" />
+ <hook trigger="admin.product.import.format" deprecated="" />
+ <hook trigger="admin.product.table_head_sort" deprecated="" />
+ <hook trigger="admin.product.tabs" deprecated="" /> 
+ <hook trigger="admin.reports.display" deprecated="" />
+ <hook trigger="admin.reports.final" deprecated="" />
+ <hook trigger="admin.reports.order.pre" deprecated="" />
+ <hook trigger="admin.reports.order.post" deprecated="" />
+ <hook trigger="admin.reports.order.filter" deprecated="" />
+ <hook trigger="admin.reports.top" deprecated="" />
+ <hook trigger="admin.settings.admins.sections" deprecated="" />
+ <hook trigger="admin.settings.currency.post_process" deprecated="" />
+ <hook trigger="admin.settings.currency.pre_process" deprecated="" />
+ <hook trigger="admin.statistics.tabs" deprecated="" />
+ <hook trigger="admin.tabs" deprecated="" />
+ <hook trigger="offline" deprecated="" />
+ <!-- Class Hooks -->
+ <hook trigger="controller.index" deprecated="" />
+ <hook trigger="class.admin.get_section_id" deprecated="" />
+ <hook trigger="class.ajax.load" deprecated="" />
+ <hook trigger="class.ajax.search" deprecated="" />
+ <hook trigger="class.cart.add.pre" deprecated="" />
+ <hook trigger="class.cart.add.preredirect" deprecated="" />
+ <hook trigger="class.cart.add.save" deprecated="" />
+ <hook trigger="class.cart.add.max_stock" deprecated="" />
+ <hook trigger="class.cart.apply_discounts" deprecated="" />
+ <hook trigger="class.cart.construct.pre" deprecated="" />
+ <hook trigger="class.cart.clear" deprecated="" />
+ <hook trigger="class.cart.discount_add" deprecated="" />
+ <hook trigger="class.cart.get" deprecated="" />
+ <hook trigger="class.cart.get.product_prices" deprecated="" />
+ <hook trigger="class.cart.load_shipping" deprecated="" />
+ <hook trigger="class.cart.update" deprecated="" />
+ <hook trigger="class.catalogue.category_product_list" deprecated="" />
+ <hook trigger="class.catalogue.category_product_list_return" deprecated="" />
+ <hook trigger="class.catalogue.product_data" deprecated="" />
+ <hook trigger="class.catalogue.product_options" deprecated="" />
+ <hook trigger="class.catalogue.product_sort" deprecated="" />
+ <hook trigger="class.catalogue.display_product_options" deprecated="" />
+ <hook trigger="class.catalogue.imagepath" deprecated="" />
+ <hook trigger="class.catalogue.pre_search" deprecated="" />
+ <hook trigger="class.catalogue.productassign" deprecated="" />
+ <hook trigger="class.cubecart.account.list" deprecated="" />
+ <hook trigger="class.cubecart.addressbook" deprecated="" />
+ <hook trigger="class.cubecart.pre_basket" deprecated="" />
+ <hook trigger="class.cubecart.basket" deprecated="" />
+ <hook trigger="class.cubecart.checkout_progress" deprecated="" />
+ <hook trigger="class.cubecart.construct" deprecated="" />
+ <hook trigger="class.cubecart.construct.g_switch" deprecated="" />
+ <hook trigger="class.cubecart.construct.addressbook" deprecated="" />
+ <hook trigger="class.cubecart.construct.callback.gateway" deprecated="" />
+ <hook trigger="class.cubecart.construct.cancel" deprecated="" />
+ <hook trigger="class.cubecart.construct.certificates" deprecated="" />
+ <hook trigger="class.cubecart.construct.confirm" deprecated="" />
+ <hook trigger="class.cubecart.construct.confirm.create_user.created" deprecated="" />
+ <hook trigger="class.cubecart.construct.download" deprecated="" />
+ <hook trigger="class.cubecart.construct.gateway" deprecated="" />
+ <hook trigger="class.cubecart.prerecaptcha.confirm" deprecated="" />
+ <hook trigger="class.cubecart.construct.logout" deprecated="" />
+ <hook trigger="class.cubecart.construct.register" deprecated="" />
+ <hook trigger="class.cubecart.construct.search" deprecated="" />
+ <hook trigger="class.cubecart.contact" deprecated="" />
+ <hook trigger="class.cubecart.contact.display" deprecated="" />
+ <hook trigger="class.cubecart.display_basket" deprecated="" />
+ <hook trigger="class.cubecart.post_coupon" deprecated="" />
+ <hook trigger="class.cubecart.pre_display_category" deprecated="" />
+ <hook trigger="class.cubecart.display_category" deprecated="" />
+ <hook trigger="class.cubecart.display_content" deprecated="" />
+ <hook trigger="class.cubecart.display_gateways" deprecated="" />
+ <hook trigger="class.cubecart.display_checkout_gateways" deprecated="" />
+ <hook trigger="class.cubecart.display_homepage" deprecated="" />
+ <hook trigger="class.cubecart.display_product" deprecated="" />
+ <hook trigger="class.cubecart.display_basket.alternate" deprecated="" />
+ <hook trigger="class.cubecart.display_basket.related" deprecated="" />
+ <hook trigger="class.cubecart.document_widgets" deprecated="" />
+ <hook trigger="class.cubecart.gallery" deprecated="" />
+ <hook trigger="class.cubecart.login" deprecated="" />
+ <hook trigger="class.cubecart.order_list" deprecated="" />
+ <hook trigger="class.cubecart.order_summary" deprecated="" />
+ <hook trigger="class.cubecart.post_shipping" deprecated="" />
+ <hook trigger="class.cubecart.product_price" deprecated="" />
+ <hook trigger="class.cubecart.profile" deprecated="" />
+ <hook trigger="class.cubecart.print.receipt" deprecated="" />
+ <hook trigger="class.cubecart.review" deprecated="" />
+ <hook trigger="class.cubecart.review.insert" deprecated="" />
+ <hook trigger="class.gui.css" deprecated="" />
+ <hook trigger="class.gui.head_js" deprecated="" />
+ <hook trigger="class.gui.body_js" deprecated="" />
+ <hook trigger="class.gui.display" deprecated="" />
+ <hook trigger="class.gui.display_side_basket" deprecated="" />
+ <hook trigger="class.gui.display_currency_switch" deprecated="" />
+ <hook trigger="class.gui.display_documents" deprecated="" />
+ <hook trigger="class.gui.documents.list" deprecated="" />
+ <hook trigger="class.gui.display_language_switch" deprecated="" />
+ <hook trigger="class.gui.display_mailing_list" deprecated="" />
+ <hook trigger="class.gui.display_navigation.make_tree" deprecated="" />
+ <hook trigger="class.gui.display_navigation.pre_cache" deprecated="" />
+ <hook trigger="class.gui.display_navigation" deprecated="" />
+ <hook trigger="class.gui.display_popular_products" deprecated="" />
+ <hook trigger="class.gui.display_random_product" deprecated="" />
+ <hook trigger="class.gui.display_random_product_pre" deprecated="" />
+ <hook trigger="class.gui.display_sale_items" deprecated="" />
+ <hook trigger="class.gui.display_search_box" deprecated="" />
+ <hook trigger="class.gui.display_skin_select" deprecated="" />
+ <hook trigger="class.gui.display_session_box" deprecated="" />
+ <hook trigger="class.gui.display_social" deprecated="" />
+ <hook trigger="class.gui.javascripts" deprecated="" />
+ <hook trigger="class.gui.session.list" deprecated="" /> 
+ <hook trigger="class.newsletter.subscribe" deprecated="" />
+ <hook trigger="class.newsletter.unsubscribe" deprecated="" /> 
+ <hook trigger="class.order.delete" deprecated="" />
+ <hook trigger="class.order.manage_stock" deprecated="" />
+ <hook trigger="class.order.order_summary" deprecated="" />
+ <hook trigger="class.order.assign_order_details" deprecated="" />
+ <hook trigger="class.order.get_order_details" deprecated="" />
+ <hook trigger="class.order.order_status" deprecated="" />
+ <hook trigger="class.order.place_order" deprecated="" />
+ <hook trigger="class.order.place_order.basket" deprecated="" />
+ <hook trigger="class.order.products.add.pre" deprecated="" />
+ <hook trigger="class.user.load" deprecated="" />
+ <hook trigger="class.user.load.user" deprecated="" />
+ <hook trigger="class.user.logout" deprecated="" />
+ <hook trigger="class.user.get_session_data" deprecated="" />
+ <hook trigger="class.user.preredirect" deprecated="" />
+ <hook trigger="class.user.register_user" deprecated="" />
+ <hook trigger="class.user.register_user.insert" deprecated="" />
+ <hook trigger="class.user.register_user.inserted" deprecated="" />
+ <hook trigger="class.user.saveaddress" deprecated="" />
+ <hook trigger="class.ssl.pages" deprecated="true" />
+ <hook trigger="class.ssl.ignored" deprecated="" />
+ <hook trigger="class.tax.producttax" deprecated="" />
+ <hook trigger="class.seo.construct" deprecated="" />
+ <hook trigger="class.seo.get_item_vars" deprecated="" />
 </hooks>

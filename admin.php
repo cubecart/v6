@@ -26,26 +26,26 @@ define('CC_IN_ADMIN', true);
 require 'includes/functions.inc.php';
 
 ## Include admin presession controller
-include CC_ROOT_DIR . CC_DS . 'controllers' . CC_DS . 'controller.admin.pre_session.inc.php';
+include CC_ROOT_DIR.CC_DS.'controllers'.CC_DS.'controller.admin.pre_session.inc.php';
 
-$feed_access_key = $GLOBALS['config']->get('config', 'feed_access_key');
+$feed_access_key = $GLOBALS['config']->get('config','feed_access_key');
 $feed_access_key = (!$feed_access_key) ? '' : $feed_access_key;
 
-if (Admin::getInstance()->is() || (isset($_GET['_g']) && $_GET['_g'] == 'products' && $_GET['node'] == 'export' && !empty($_GET['format']) && $_GET['access'] == $feed_access_key && !empty($feed_access_key))) {
-
-    if (version_compare(PHP_VERSION, '5.4') >= 0) {
-        error_reporting(E_ALL ^ (E_NOTICE | E_DEPRECATED | E_USER_DEPRECATED));
-    } else {
-        $GLOBALS['main']->setACPWarning("WARNING: PHP " . PHP_VERSION . " detected. Please upgrade to PHP 5.4 or above.");
-    }
-    include CC_ROOT_DIR . CC_DS . 'controllers' . CC_DS . 'controller.admin.session.true.inc.php';
+if (Admin::getInstance()->is() || (isset($_GET['_g']) && $_GET['_g']=='products' && $_GET['node']=='export' && !empty($_GET['format']) && $_GET['access']==$feed_access_key && !empty($feed_access_key))) {
+	
+	if (version_compare(PHP_VERSION, '5.4') >= 0) {
+		error_reporting(E_ALL ^ (E_NOTICE | E_DEPRECATED | E_USER_DEPRECATED));
+	} else {
+		$GLOBALS['main']->setACPWarning("WARNING: PHP ".PHP_VERSION." detected. Please upgrade to PHP 5.4 or above.");
+	}
+	include CC_ROOT_DIR.CC_DS.'controllers'.CC_DS.'controller.admin.session.true.inc.php';
 } else {
-    include CC_ROOT_DIR . CC_DS . 'controllers' . CC_DS . 'controller.admin.session.false.inc.php';
-    $GLOBALS['smarty']->display('templates/' . $global_template_file['session_false']);
-    exit;
+	include CC_ROOT_DIR.CC_DS.'controllers'.CC_DS.'controller.admin.session.false.inc.php';
+	$GLOBALS['smarty']->display('templates/'.$global_template_file['session_false']);
+	exit;
 }
 // Render the completed page
 if (!isset($suppress_output) || !$suppress_output) {
-    $GLOBALS['gui']->displayCommon();
-    $GLOBALS['smarty']->display('templates/' . $global_template_file['session_true']);
+	$GLOBALS['gui']->displayCommon();
+	$GLOBALS['smarty']->display('templates/'.$global_template_file['session_true']);
 }
