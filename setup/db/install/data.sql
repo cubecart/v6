@@ -306,7 +306,7 @@ INSERT INTO `CubeCart_geo_zone` VALUES(504, 225, 'FIF', 'Fife'); #EOQ
 INSERT INTO `CubeCart_geo_zone` VALUES(505, 225, 'INV', 'Inverness-shire'); #EOQ
 INSERT INTO `CubeCart_geo_zone` VALUES(506, 225, 'KRS', 'Kinross-shire'); #EOQ
 INSERT INTO `CubeCart_geo_zone` VALUES(507, 225, 'KKD', 'Kirkcudbrightshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(508, 225, 'LAN', 'Lanarkshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` VALUES(508, 225, 'LKS', 'Lanarkshire'); #EOQ
 INSERT INTO `CubeCart_geo_zone` VALUES(509, 225, 'MLN', 'Midlothian'); #EOQ
 INSERT INTO `CubeCart_geo_zone` VALUES(510, 225, 'MOR', 'Moray'); #EOQ
 INSERT INTO `CubeCart_geo_zone` VALUES(511, 225, 'NAI', 'Nairnshire'); #EOQ
