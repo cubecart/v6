@@ -13,12 +13,12 @@
 if (!defined('CC_INI_SET')) die('Access Denied');
 
 if (Admin::getInstance()->is()) {
-	Admin::getInstance()->permissions('products', CC_PERM_READ, true);
+    Admin::getInstance()->permissions('products', CC_PERM_READ, true);
 }
 
 global $lang;
 
-$seo  = SEO::getInstance();
+$seo = SEO::getInstance();
 $catalogue = Catalogue::getInstance();
 
 $per_page = (isset($_GET['per_page'])) ? $_GET['per_page'] : 500;
@@ -26,155 +26,156 @@ $page = (isset($_GET['page'])) ? $_GET['page'] : 1;
 //$no_rows = $GLOBALS['db']->numrows('SELECT `product_id` FROM '.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory');
 $no_rows = $GLOBALS['db']->numrows(sprintf('SELECT I.product_id FROM %1$sCubeCart_inventory AS I LEFT JOIN %1$sCubeCart_category AS C ON I.cat_id = C.cat_id WHERE I.status = 1', $GLOBALS['config']->get('config', 'dbprefix')));
 
-function download_parts($format = 'cubecart', $no_rows, $per_page) {
-	$no_pages = ceil($no_rows / $per_page);
-	## If there are no pages (less that per page) we need page 1 for an export
-	$no_pages = ($no_pages) ? $no_pages : 1;
-	$html_out = null;
-	for ($i = 1; $i <= $no_pages; ++$i) {
-		$html_out .= '<a href="?_g=products&node=export&page='.$i.'&per_page='.$per_page.'&format='.$format.'">'.$i.'</a> ';
-	}
-	return $html_out;
+function download_parts($format = 'cubecart', $no_rows, $per_page)
+{
+    $no_pages = ceil($no_rows / $per_page);
+    ## If there are no pages (less that per page) we need page 1 for an export
+    $no_pages = ($no_pages) ? $no_pages : 1;
+    $html_out = null;
+    for ($i = 1; $i <= $no_pages; ++$i) {
+        $html_out .= '<a href="?_g=products&node=export&page=' . $i . '&per_page=' . $per_page . '&format=' . $format . '">' . $i . '</a> ';
+    }
+    return $html_out;
 }
 
 foreach ($GLOBALS['hooks']->load('admin.product.export') as $hook) include $hook;
 
 if (isset($_GET['format']) && !empty($_GET['format'])) {
-	if ($_GET['format'] == 'cubecart') {
-		$query = sprintf('SELECT I.* FROM %1$sCubeCart_inventory AS I INNER JOIN %1$sCubeCart_category_index AS R ON I.product_id = R.product_id LEFT JOIN %1$sCubeCart_category AS C ON R.cat_id = C.cat_id WHERE R.primary = 1 AND I.status = 1 AND C.status =1', $GLOBALS['config']->get('config', 'dbprefix'));
-	} else {
-		$query = sprintf('SELECT I.* FROM %1$sCubeCart_inventory AS I LEFT JOIN %1$sCubeCart_category AS C ON I.cat_id = C.cat_id WHERE I.status = 1 AND C.status = 1', $GLOBALS['config']->get('config', 'dbprefix'));
-	}
+    if ($_GET['format'] == 'cubecart') {
+        $query = sprintf('SELECT I.* FROM %1$sCubeCart_inventory AS I INNER JOIN %1$sCubeCart_category_index AS R ON I.product_id = R.product_id LEFT JOIN %1$sCubeCart_category AS C ON R.cat_id = C.cat_id WHERE R.primary = 1 AND I.status = 1 AND C.status =1', $GLOBALS['config']->get('config', 'dbprefix'));
+    } else {
+        $query = sprintf('SELECT I.* FROM %1$sCubeCart_inventory AS I LEFT JOIN %1$sCubeCart_category AS C ON I.cat_id = C.cat_id WHERE I.status = 1 AND C.status = 1', $GLOBALS['config']->get('config', 'dbprefix'));
+    }
 
-	if ($results = $GLOBALS['db']->query($query, $per_page, $page)) {
-		
-		$header_fields = array('Product Name', 'Status', 'Include in latest products', 'Product Code', 'Weight', 'Description', 'Short Description', 'Price', 'Sale Price', 'Cost Price', 'Tax Class', 'Tax Inclusive', 'Main Image', 'Stock Level', 'Use Stock Level', 'Stock Level Warning', 'Master Category ID', 'Manufacturer', 'UPC Code', 'EAN Code', 'JAN Code', 'ISBN Code', 'Brand', 'MPN Code', 'GTIN Code', 'Meta Title', 'Meta Keywords', 'Meta Description', 'Condition', 'Digital', 'Digital Path (Legacy)');
-		$fields  = array('name', 'status', 'featured', 'product_code', 'product_weight', 'description', 'description_short', 'price', 'sale_price', 'cost_price', 'tax_type', 'tax_inclusive', 'image', 'stock_level', 'use_stock_level', 'stock_warning', 'cat_id', 'manufacturer', 'upc', 'ean', 'jan', 'isbn', 'brand', 'mpn', 'gtin', 'seo_meta_title', 'seo_meta_description', 'seo_meta_keywords', 'condition', 'digital', 'digital_path');
-		$delimiter = ',';
-		$extension = 'csv';
-		$glue  = "\n";
-		$field_wrapper = '"';
-		$field_keys_to_wrap = $fields;
-		$image_path = 'filename';
-		$image_mode = 'source';
+    if ($results = $GLOBALS['db']->query($query, $per_page, $page)) {
 
-		foreach ($GLOBALS['hooks']->load('admin.product.import.format') as $hook) include $hook;
+        $header_fields = array('Product Name', 'Status', 'Include in latest products', 'Product Code', 'Weight', 'Description', 'Short Description', 'Price', 'Sale Price', 'Cost Price', 'Tax Class', 'Tax Inclusive', 'Main Image', 'Stock Level', 'Use Stock Level', 'Stock Level Warning', 'Master Category ID', 'Manufacturer', 'UPC Code', 'EAN Code', 'JAN Code', 'ISBN Code', 'Brand', 'MPN Code', 'GTIN Code', 'Meta Title', 'Meta Keywords', 'Meta Description', 'Condition', 'Digital', 'Digital Path (Legacy)');
+        $fields = array('name', 'status', 'featured', 'product_code', 'product_weight', 'description', 'description_short', 'price', 'sale_price', 'cost_price', 'tax_type', 'tax_inclusive', 'image', 'stock_level', 'use_stock_level', 'stock_warning', 'cat_id', 'manufacturer', 'upc', 'ean', 'jan', 'isbn', 'brand', 'mpn', 'gtin', 'seo_meta_title', 'seo_meta_description', 'seo_meta_keywords', 'condition', 'digital', 'digital_path');
+        $delimiter = ',';
+        $extension = 'csv';
+        $glue = "\n";
+        $field_wrapper = '"';
+        $field_keys_to_wrap = $fields;
+        $image_path = 'filename';
+        $image_mode = 'source';
 
-		foreach ($results as $i => $result) {
-			# strip tags is plain text file CSV should be good to keep but lose two double quotes
-			$stock_level = $GLOBALS['catalogue']->getProductStock($result['product_id']);
-			if ($result['use_stock_level'] && !$GLOBALS['config']->get('config', 'basket_out_of_stock_purchase')) {
-				if ($stock_level <= 0) {
-					$result['availability'] = 'out of stock';
-				} else {
-					$result['availability'] = 'in stock';
-				}
-			} else {
-				$result['availability'] = 'in stock';
-			}
-			if ($extension == 'csv') {
-				$result['name']   = str_replace('"', '""', $result['name']);
-				$result['description'] = str_replace('"', '""', $result['description']);
-			} else {
-				$result['name']   = preg_replace('#[\s]{2,}#', ' ', str_replace(array("&nbsp;", "\t", "\r", "\n", "\0", "\x0B"), '', strip_tags($result['name'])));
-				$result['description'] = preg_replace('#[\s]{2,}#', ' ', str_replace(array("&nbsp;", "\t", "\r", "\n", "\0", "\x0B"), '', strip_tags($result['description'])));
-			}
+        foreach ($GLOBALS['hooks']->load('admin.product.import.format') as $hook) include $hook;
 
-			$result['store_category'] = $GLOBALS['seo']->getDirectory($result['cat_id'], false, ' > ');
-			$result['shopping_com_category'] = $GLOBALS['seo']->getDirectory($result['cat_id'], false, ' -> ');
-			if (isset($result['mpn']) && empty($result['mpn']) && isset($result['gtin']) && empty($result['gtin'])) {
-				$result['identifier_exists'] = 'FALSE';
-			} else {
-				$result['identifier_exists'] = 'TRUE';
-			}
+        foreach ($results as $i => $result) {
+            # strip tags is plain text file CSV should be good to keep but lose two double quotes
+            $stock_level = $GLOBALS['catalogue']->getProductStock($result['product_id']);
+            if ($result['use_stock_level'] && !$GLOBALS['config']->get('config', 'basket_out_of_stock_purchase')) {
+                if ($stock_level <= 0) {
+                    $result['availability'] = 'out of stock';
+                } else {
+                    $result['availability'] = 'in stock';
+                }
+            } else {
+                $result['availability'] = 'in stock';
+            }
+            if ($extension == 'csv') {
+                $result['name'] = str_replace('"', '""', $result['name']);
+                $result['description'] = str_replace('"', '""', $result['description']);
+            } else {
+                $result['name'] = preg_replace('#[\s]{2,}#', ' ', str_replace(array("&nbsp;", "\t", "\r", "\n", "\0", "\x0B"), '', strip_tags($result['name'])));
+                $result['description'] = preg_replace('#[\s]{2,}#', ' ', str_replace(array("&nbsp;", "\t", "\r", "\n", "\0", "\x0B"), '', strip_tags($result['description'])));
+            }
 
-			$result['condition'] = (empty($result['condition'])) ? 'new' : $result['condition'];
+            $result['store_category'] = $GLOBALS['seo']->getDirectory($result['cat_id'], false, ' > ');
+            $result['shopping_com_category'] = $GLOBALS['seo']->getDirectory($result['cat_id'], false, ' -> ');
+            if (isset($result['mpn']) && empty($result['mpn']) && isset($result['gtin']) && empty($result['gtin'])) {
+                $result['identifier_exists'] = 'FALSE';
+            } else {
+                $result['identifier_exists'] = 'TRUE';
+            }
 
-			# Manufacturer
-			if (!empty($result['manufacturer'])) {
-				$result['manufacturer'] = ($manuf = $GLOBALS['db']->select('CubeCart_manufacturers', array('name'), array('id' => (int)$result['manufacturer']))) ? $manuf[0]['name'] : '';
-			} else {
-				$result['manufacturer'] = '';
-			}
+            $result['condition'] = (empty($result['condition'])) ? 'new' : $result['condition'];
 
-			# Price
-			$sale    = Tax::getInstance()->salePrice($result['price'], $result['sale_price'], false);
-			$result['price'] = ($sale > 0 && strtolower($_GET['format']) != 'cubecart') ? $sale : $result['price'];
+            # Manufacturer
+            if (!empty($result['manufacturer'])) {
+                $result['manufacturer'] = ($manuf = $GLOBALS['db']->select('CubeCart_manufacturers', array('name'), array('id' => (int)$result['manufacturer']))) ? $manuf[0]['name'] : '';
+            } else {
+                $result['manufacturer'] = '';
+            }
 
-			$result['price_formatted'] = Tax::getInstance()->priceFormat($result['price'], true);
+            # Price
+            $sale = Tax::getInstance()->salePrice($result['price'], $result['sale_price'], false);
+            $result['price'] = ($sale > 0 && strtolower($_GET['format']) != 'cubecart') ? $sale : $result['price'];
 
-			## Generate Product URL
-			$url = $seo->generatePath($result['product_id'], 'product', 'product_id', true, true);
-			$result['url'] = $seo->fullURL($url, true);
+            $result['price_formatted'] = Tax::getInstance()->priceFormat($result['price'], true);
 
-			## Generate Image URL
-			if (($images = $GLOBALS['db']->select('CubeCart_image_index', array('file_id'), array('main_img' => 1, 'product_id' => $result['product_id']))) !== false) {
-				$result['image'] = $catalogue->imagePath($images[0]['file_id'], $image_mode, $image_path, false);
-			} else {
-				$result['image'] = '';
-			}
+            ## Generate Product URL
+            $url = $seo->generatePath($result['product_id'], 'product', 'product_id', true, true);
+            $result['url'] = $seo->fullURL($url, true);
 
-			$result['currency'] = $GLOBALS['config']->get('config', 'default_currency');
-			//CSV must have double quotes around strings. This is the standard and most spreasheets will behave best this way
-			foreach ($fields as $field) {
-				// format specialist fields e.g. 'price currency' to '9.99 USD'
-				if (stristr($field, " ")) {
-					$exploded_fields = explode(' ', $field);
-					foreach ($exploded_fields as $part_field) {
-						$formatted_field[] = $result[$part_field];
-					}
-					$result[$field] = implode(' ', $formatted_field);
-				}
-				unset($formatted_field, $exploded_fields);
+            ## Generate Image URL
+            if (($images = $GLOBALS['db']->select('CubeCart_image_index', array('file_id'), array('main_img' => 1, 'product_id' => $result['product_id']))) !== false) {
+                $result['image'] = $catalogue->imagePath($images[0]['file_id'], $image_mode, $image_path, false);
+            } else {
+                $result['image'] = '';
+            }
 
-				$data_fields[] = (in_array($field, $field_keys_to_wrap) && isset($result[$field])) ? $field_wrapper.$result[$field].$field_wrapper : $result[$field];
-			}
+            $result['currency'] = $GLOBALS['config']->get('config', 'default_currency');
+            //CSV must have double quotes around strings. This is the standard and most spreasheets will behave best this way
+            foreach ($fields as $field) {
+                // format specialist fields e.g. 'price currency' to '9.99 USD'
+                if (stristr($field, " ")) {
+                    $exploded_fields = explode(' ', $field);
+                    foreach ($exploded_fields as $part_field) {
+                        $formatted_field[] = $result[$part_field];
+                    }
+                    $result[$field] = implode(' ', $formatted_field);
+                }
+                unset($formatted_field, $exploded_fields);
 
-			if (isset($header_fields)) {
-				$output[] = implode($delimiter, $header_fields);
-				unset($header_fields);
-			}
-			$output[] = implode($delimiter, $data_fields);
-			unset($data_fields);
-		}
-		if (isset($output) && !empty($output)) {
-			$filename = $_GET['format'].'_'.date('Ymd').'_'.$_GET['page'].'.'.$extension;
-			$output  = (is_array($output)) ? implode($glue, $output) : $output;
-			$GLOBALS['debug']->supress();
-			if (!isset($_GET['access'])) {
-				deliverFile(false, false, $output, $filename);
-			} else {
-				echo $output;
-			}
-			exit;
-		}
-	} else {
-		$GLOBALS['main']->setACPWarning($lang['category']['no_products']);
-	}
+                $data_fields[] = (in_array($field, $field_keys_to_wrap) && isset($result[$field])) ? $field_wrapper . $result[$field] . $field_wrapper : $result[$field];
+            }
+
+            if (isset($header_fields)) {
+                $output[] = implode($delimiter, $header_fields);
+                unset($header_fields);
+            }
+            $output[] = implode($delimiter, $data_fields);
+            unset($data_fields);
+        }
+        if (isset($output) && !empty($output)) {
+            $filename = $_GET['format'] . '_' . date('Ymd') . '_' . $_GET['page'] . '.' . $extension;
+            $output = (is_array($output)) ? implode($glue, $output) : $output;
+            $GLOBALS['debug']->supress();
+            if (!isset($_GET['access'])) {
+                deliverFile(false, false, $output, $filename);
+            } else {
+                echo $output;
+            }
+            exit;
+        }
+    } else {
+        $GLOBALS['main']->setACPWarning($lang['category']['no_products']);
+    }
 }
 
 $GLOBALS['main']->addTabControl($lang['common']['export'], 'export');
 
-$formats = array ('cubecart'  => 'CubeCart');
+$formats = array('cubecart' => 'CubeCart');
 
 foreach ($GLOBALS['hooks']->load('admin.product.import.list') as $hook) include $hook;
 
-$page_limits = array (
-	50, 100, 250, 500, 1000, 5000, 10000, 25000
+$page_limits = array(
+    50, 100, 250, 500, 1000, 5000, 10000, 25000
 );
 
 foreach ($page_limits as $limit_value) {
-	$limit['selected'] = ($limit_value==$per_page) ? 'selected="selected"' : null;
-	$limit['per_page'] = $limit_value;
-	$smarty_data['limits'][] = $limit;
+    $limit['selected'] = ($limit_value == $per_page) ? 'selected="selected"' : null;
+    $limit['per_page'] = $limit_value;
+    $smarty_data['limits'][] = $limit;
 }
 $GLOBALS['smarty']->assign('LIMITS', $smarty_data['limits']);
 
 foreach ($formats as $format_key => $format_name) {
-	$format['name']  = $format_name;
-	$format['parts']  = download_parts($format_key, $no_rows, $per_page);
-	$format['link']  = $GLOBALS['storeURL'].'/'.$GLOBALS['config']->get('config', 'adminFile')."?_g=products&node=export&page=1&per_page=1000000&format=$format_key&node=export&access=".$GLOBALS['config']->get('config', 'feed_access_key');
-	$smarty_data['formats'][] = $format;
+    $format['name'] = $format_name;
+    $format['parts'] = download_parts($format_key, $no_rows, $per_page);
+    $format['link'] = $GLOBALS['storeURL'] . '/' . $GLOBALS['config']->get('config', 'adminFile') . "?_g=products&node=export&page=1&per_page=1000000&format=$format_key&node=export&access=" . $GLOBALS['config']->get('config', 'feed_access_key');
+    $smarty_data['formats'][] = $format;
 }
 $GLOBALS['smarty']->assign('FORMATS', $smarty_data['formats']);
 
