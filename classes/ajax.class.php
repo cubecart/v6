@@ -191,7 +191,7 @@ class Ajax {
 	public static function SMTPTest() {
 		if (CC_IN_ADMIN) {
 		    @ob_start();
-		    $test_mailer = Mailer::getInstance();
+		    $test_mailer = new Mailer();
 		    $test_mailer->SMTPDebug = 2;
 		    $test_mailer->Debugoutput = "html";
 		    $test_mailer->ClearAddresses();

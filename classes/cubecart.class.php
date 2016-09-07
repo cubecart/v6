@@ -1380,7 +1380,7 @@ class Cubecart {
 				if (!$error) {
 					$email = (isset($contact['email']) && filter_var($contact['email'], FILTER_VALIDATE_EMAIL)) ? $contact['email'] : $GLOBALS['config']->get('config', 'email_address');
 					// Send email to correct department
-					$mailer = Mailer::getInstance();
+					$mailer = new Mailer();
 
 					$department = '';
 					if (isset($_POST['contact']['dept']) && is_array($contact['department'])) {
@@ -2530,7 +2530,7 @@ class Cubecart {
 					foreach ($GLOBALS['hooks']->load('class.cubecart.review.insert') as $hook) include $hook;
 					
 					$GLOBALS['gui']->setNotify($GLOBALS['language']->catalogue['notify_review_submit']);
-					$mail     = Mailer::getInstance();
+					$mail     = new Mailer();
 					$record['link']   = $GLOBALS['storeURL'].'/'.$GLOBALS['config']->get('config', 'adminFile').'?_g=products&node=reviews&edit='.$GLOBALS['db']->insertid();
 					$record['product_name'] = $product['name'];
 					$content    = $mail->loadContent('admin.review_added', $GLOBALS['language']->current(), $record);

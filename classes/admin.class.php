@@ -199,7 +199,7 @@ class Admin {
 				$validation = randomString($this->_validate_key_len);
 				if ($GLOBALS['db']->update('CubeCart_admin_users', array('verify' => $validation), array('admin_id' => (int)$check[0]['admin_id']))) {
 					// Send email
-					$mailer = Mailer::getInstance();
+					$mailer = new Mailer();
 					$data['link'] = $GLOBALS['storeURL'].'/'.$GLOBALS['config']->get('config', 'adminFile').'?_g=recovery&email='.$check[0]['email'].'&validate='.$validation;
 					$data['name'] = $check[0]['name'];
 

@@ -384,7 +384,7 @@ class Order {
 			$this->_getInventory($order_id, true);
 
 			foreach ($GLOBALS['hooks']->load('class.order.order_status') as $hook) include $hook;
-			$mailer = Mailer::getInstance();
+			$mailer = new Mailer();
 			$order_summary = $this->_order_summary;
 
 			$this->getOrderDetails($order_id);
@@ -395,7 +395,7 @@ class Order {
 				// Send email to store admins (yes 1 is a string)
 				if ($GLOBALS['config']->get('config', 'admin_notify_status')=="1" && $this->_email_admin_enabled && $admin_notify = $this->_notifyAdmins()) {
 
-					$admin_mailer = Mailer::getInstance();
+					$admin_mailer = new Mailer();
 
 					$message_id = md5('admin.order_received'.$status_id.$order_id);
 
@@ -429,7 +429,7 @@ class Order {
 
 				// Send email to store admins (2 IS a string) :)
 				if ($GLOBALS['config']->get('config', 'admin_notify_status')=="2" && $this->_email_enabled && $this->_email_admin_enabled && $admin_notify = $this->_notifyAdmins()) {
-					$admin_mailer = Mailer::getInstance();
+					$admin_mailer = new Mailer();
 					
 					$message_id = md5('admin.order_received'.$status_id.$order_id);
 
@@ -532,7 +532,7 @@ class Order {
 			
 			if ((int)$this->_order_summary['status'] == 0) return false; // no order record
 			
-			$mailer = Mailer::getInstance();
+			$mailer = new Mailer();
 			switch ($status_id) {
 			case self::PAYMENT_PENDING:
 				/* $content = $mailer->loadContent('cart.payment_pending', $this->_order_summary['lang'], $this->_order_summary);*/
@@ -868,7 +868,7 @@ class Order {
 					);
 				}
 
-				$mailer = Mailer::getInstance();
+				$mailer = new Mailer();
 				if ($this->_email_enabled && ($contents = $mailer->loadContent('cart.digital_download', $this->_order_summary['lang'], $this->_order_summary))) {
 
 					$storeURL = (CC_SSL) ? $GLOBALS['config']->get('config', 'ssl_url') : $GLOBALS['storeURL'];
@@ -1295,7 +1295,7 @@ class Order {
 	private function _sendCoupon($coupon_id, $data) {
 		if (!empty($coupon_id)) {
 			if (($coupon = $GLOBALS['db']->select('CubeCart_coupons', false, array('coupon_id' => (int)$coupon_id))) !== false) {
-				$mailer = Mailer::getInstance();
+				$mailer = new Mailer();
 				if (isset($coupon[0]['value'])) {
 					$coupon[0]['value'] = Tax::getInstance()->priceFormat($coupon[0]['value']);
 				}

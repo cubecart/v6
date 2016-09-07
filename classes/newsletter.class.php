@@ -32,7 +32,7 @@ class Newsletter {
 	##############################################
 
 	public function __construct() {
-		$this->_mailer = Mailer::getInstance();
+		$this->_mailer = new Mailer();
 	}
 
 	/**
