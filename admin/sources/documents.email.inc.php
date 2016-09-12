@@ -289,13 +289,31 @@ if (isset($_POST['template'])) {
 
 	## Save/Update Template
 	$proceed = true;
+	$redirect = true;
+	$html_error = false;
+
+	try { 
+		$GLOBALS['smarty']->fetch('string:'.$_POST['template']['content_html']);
+	} catch(Exception $e) {
+		$error_message = str_replace('string:','',strip_tags($e->getMessage()));
+   		$GLOBALS['main']->setACPWarning($lang['email']['title_content_html'].': '.$error_message);
+   		$redirect = false;
+   		$html_error = true;
+	}
+	try { 
+		$GLOBALS['smarty']->fetch('string:'.$_POST['template']['content_text']);
+	} catch(Exception $e) { 
+   		$error_message = str_replace('string:','',$e->getMessage());
+   		$GLOBALS['main']->setACPWarning($lang['email']['title_content_text'].': '.$error_message);
+   		$redirect = false; 
+	}
 
 	if(empty($_POST['template']['content_html'])) {
 		$GLOBALS['main']->setACPWarning($lang['email']['error_html_empty']);
 		$proceed = false;
 	}
 
-	if(empty($_POST['template']['content_text']) && !empty($_POST['template']['content_html'])) {
+	if(!$html_error && empty($_POST['template']['content_text']) && !empty($_POST['template']['content_html'])) {
 		$GLOBALS['main']->setACPNotify($lang['email']['error_plain_empty']);
 		$_POST['template']['content_text'] = strip_tags($_POST['template']['content_html']);	
 	}
@@ -316,7 +334,9 @@ if (isset($_POST['template'])) {
 			$template_id  = $GLOBALS['db']->insertid();
 			$GLOBALS['main']->setACPNotify($lang['email']['notify_template_create']);
 		}
-		httpredir(currentPage(null));
+		if($redirect) {
+			httpredir(currentPage(null));
+		}
 	}
 }
 
@@ -325,15 +345,33 @@ if (isset($_POST['content']) && Admin::getInstance()->permissions('documents', C
 	$_POST['content']['content_html'] = str_replace(array('<!--','-->'),'',$GLOBALS['RAW']['POST']['content']['content_html']);
 	$_POST['content']['content_text'] = $GLOBALS['RAW']['POST']['content']['content_text'];
 	
-
 	$proceed = true;
+	$redirect = true;
+	$html_error = false;
+	
+	try { 
+		$GLOBALS['smarty']->fetch('string:'.$_POST['content']['content_html']);
+	} catch(Exception $e) { 
+   		$error_message = str_replace('string:','',strip_tags($e->getMessage()));
+   		$GLOBALS['main']->setACPWarning($lang['email']['title_content_html'].': '.$error_message);
+   		$redirect = false;
+   		$html_error = true;
+	}
+
+	try { 
+		$GLOBALS['smarty']->fetch('string:'.$_POST['content']['content_text']);
+	} catch(Exception $e) { 
+   		$error_message = str_replace('string:','',$e->getMessage());
+   		$GLOBALS['main']->setACPWarning($lang['email']['title_content_text'].': '.$error_message); 
+   		$redirect = false;
+	}
 
 	if(empty($_POST['content']['content_html'])) {
 		$GLOBALS['main']->setACPWarning($lang['email']['error_html_empty']);
 		$proceed = false;
 	}
 
-	if(empty($_POST['content']['content_text']) && !empty($_POST['content']['content_html'])) {
+	if(!$html_error && empty($_POST['content']['content_text']) && !empty($_POST['content']['content_html'])) {
 		$GLOBALS['main']->setACPNotify($lang['email']['error_plain_empty']);
 		$_POST['content']['content_text'] = strip_tags($_POST['content']['content_html']);	
 	}
@@ -344,7 +382,9 @@ if (isset($_POST['content']) && Admin::getInstance()->permissions('documents', C
 			## remove double encoding in repeat regions required to show them in FCK
 			if ($GLOBALS['db']->update('CubeCart_email_content', $_POST['content'], array('content_id' => (int)$_POST['content']['content_id']))) {
 				$GLOBALS['main']->setACPNotify($lang['email']['notify_content_update']);
-				httpredir('?_g=documents&node=email&type=content');
+				if($redirect) {
+					httpredir('?_g=documents&node=email&type=content');
+				}
 			} else {
 				$GLOBALS['main']->setACPWarning($lang['email']['error_content_update']);
 			}
@@ -356,16 +396,22 @@ if (isset($_POST['content']) && Admin::getInstance()->permissions('documents', C
 				} else {
 					if ($GLOBALS['db']->insert('CubeCart_email_content', $_POST['content'])) {
 						$GLOBALS['main']->setACPNotify('Email content saved.');
-						httpredir('?_g=documents&node=email&type=content');
+						if($redirect) {
+							httpredir('?_g=documents&node=email&type=content');
+						}
 					} else {
 						$GLOBALS['main']->setACPWarning($lang['email']['error_content_create']);
-						httpredir(currentPage());
+						if($redirect) {
+							httpredir(currentPage());
+						}
 					}
 				}
 			}
 		}
 	} else {
-		httpredir(currentPage());
+		if($redirect) {
+			httpredir(currentPage());
+		}
 	}
 }
 
