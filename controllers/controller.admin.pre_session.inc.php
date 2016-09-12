@@ -38,10 +38,10 @@ $GLOBALS['language'] = Language::getInstance();
 $GLOBALS['hooks'] = HookLoader::getInstance();
 //Initialize GUI
 $GLOBALS['gui'] = GUI::getInstance(true);
-//Initialize SEO
-$GLOBALS['seo'] = SEO::getInstance();
 //Initialize SSL
 $GLOBALS['ssl'] = SSL::getInstance();
+//Initialize SEO
+$GLOBALS['seo'] = SEO::getInstance();
 //Setup language template
 $GLOBALS['language']->setTemplate();
 //Initialize Catalogue

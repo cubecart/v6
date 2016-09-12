@@ -39,14 +39,14 @@ $GLOBALS['smarty']->debugging = false;
 $GLOBALS['language'] = Language::getInstance();
 //Initialize hooks
 $GLOBALS['hooks'] = HookLoader::getInstance();
+//Initialize SSL
+$GLOBALS['ssl'] = SSL::getInstance();
 //Initialize SEO
 $GLOBALS['seo'] = SEO::getInstance();
 if (isset($_GET['seo_path']) && !empty($_GET['seo_path'])) {
 	$_GET['seo_path'] = preg_replace('/(\/\~[a-z0-9]{1,}\/)/', '', $_GET['seo_path']); // Remove /~username/ from seo_path
 	$GLOBALS['seo']->getItem($_GET['seo_path']);
 }
-//Initialize SSL
-$GLOBALS['ssl'] = SSL::getInstance();
 //Initialize GUI
 $GLOBALS['gui'] = GUI::getInstance();
 //Initialize Taxes
