@@ -216,7 +216,6 @@ class Language {
 	 */
 	public function cloneModuleLanguage($from, $language) {
 		$from = CC_ROOT_DIR.'/'.$from;
-		$language = str_replace('-','_',$language);
 		$to = str_replace('module.definitions.xml', $language.'.xml', $from);
 
 		if(file_exists($from) && !file_exists($to)) {
@@ -238,17 +237,15 @@ class Language {
 				return false;
 			}
 
+			$output .= "\r\n\t\t<group name=\"".(string)$content->group[0]->attributes()->name."\">";
+			
 			foreach($content->group->string as $key) {
-$output .= "
-	<string>
-		<name>".$key."</name>
-		<value><![CDATA[".(string)$key."]]></value>
-		<type>".(string)$content->group[0]->attributes()->name."</type>
-	</string>";
+				$output .= "\r\n\t\t\t<string name=\"".(string)$key->attributes()->name."\"><![CDATA[".$key."]]></string>";
 			}
-$output .= "
-	</translation>
+			
+			$output .= "\r\n\t\t</group>\r\n\t</translation>
 </language>";
+			
 			return file_put_contents($to, $output);
 		}
 	}
