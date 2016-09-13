@@ -759,25 +759,20 @@ function price_sort($x, $y) {
 
 /**
  * Create random string
+ * Credit Jason from xeweb.net
+ * https://www.xeweb.net/2011/02/11/generate-a-random-string-a-z-0-9-in-php/
  *
- * @return string (json)
+ * @return string
  */
 function randomString($length = 30) {
-	while (strlen($hash) < ($length-1)) {
-		$hash .= mt_rand(0,9);
+	$str = "";
+	$characters = array_merge(range('A','Z'), range('a','z'), range('0','9'));
+	$max = count($characters) - 1;
+	for ($i = 0; $i < $length; $i++) {
+		$rand = mt_rand(0, $max);
+		$str .= $characters[$rand];
 	}
-	$sum = $pos = 0;
-	$reversed	= strrev($hash);
-	while ($pos < $length-1) {
-		$odd = $reversed[$pos] * 2;
-		if ($odd > 9) $odd -= 9;
-		$sum += $odd;
-		if ($pos != ($length-2)) {
-			$sum += $reversed[$pos+1];
-		}
-		$pos += 2;
-	}
-	return substr(md5(time().((floor($sum/10)+1)*10-$sum)%10), 0, $length);
+	return $str;
 }
 
 /**
