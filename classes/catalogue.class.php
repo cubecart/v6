@@ -1665,6 +1665,7 @@ class Catalogue {
 
 						$noKeys = count($searchArray);
 						$regexp = '';
+						
 						if($search_mode == 'RLIKE') {
 							$like_prefix = '[[:<:]]';
 							$like_postfix = '[[:>:]].*';
@@ -1678,13 +1679,16 @@ class Catalogue {
 								$regexp .= $like_prefix.$searchArray[$i].$like_postfix;
 							}
 						}
-						$regexp = substr($regexp, 0, strlen($regexp)-2);
+						if($search_mode == 'RLIKE') {
+							$regexp = substr($regexp, 0, strlen($regexp)-2);
+						}
 						$like = " AND (I.name ".$search_mode." '".$regexp."' OR I.description ".$search_mode." '".$regexp."' OR I.product_code ".$search_mode." '".$regexp."')";
 					}
 
 					$q2 = "SELECT I.* FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_category_index` as CI INNER JOIN ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 ".$whereString.$like;
 					$query = $q2.' '.$limit;
-					if (($search = $GLOBALS['db']->query($query)) !== false) {
+					$search = $GLOBALS['db']->query($query);
+					if (count($search)>0) {
 						$count = $GLOBALS['db']->query($q2, false, 0);
 						$this->_category_count  = (int)count($count);
 						$this->_category_products = $search;
