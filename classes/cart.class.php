@@ -997,7 +997,7 @@ class Cart {
 				$basket = serialize($this->basket['contents']);
 				if (empty($old_basket) || $old_basket != $basket) {
 					$old_basket = $basket;
-					if (Database::getInstance()->select('CubeCart_saved_cart', array('basket'), array('customer_id' => $GLOBALS['user']->getId()), false, false, false, false) !== false) {
+					if (Database::getInstance()->select('CubeCart_saved_cart', array('basket'), array('customer_id' => $id), false, false, false, false) !== false) {
 						Database::getInstance()->update('CubeCart_saved_cart', array('basket' => $basket), array('customer_id' => $id));
 					} else {
 						Database::getInstance()->insert('CubeCart_saved_cart', array('customer_id' => $id, 'basket' => $basket));
