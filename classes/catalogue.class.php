@@ -1611,15 +1611,17 @@ class Catalogue {
 
 			if (!empty($joins) || isset($search_data['keywords']) && is_array($indexes) && !empty($search_data['keywords'])) {
 
-				$max_word_len = $GLOBALS['db']->getSearchWordLen();
-				$words = explode(' ', $search_data['keywords']);
-				if (is_array($words)) {
-					$search_str_len = 0;
-					foreach ($words as $word) {
-						$search_str_len = ($search_str_len < strlen($word)) ? strlen($word) : $search_str_len;
+				if($search_mode == 'fulltext') {
+					$max_word_len = $GLOBALS['db']->getSearchWordLen();
+					$words = explode(' ', $search_data['keywords']);
+					if (is_array($words)) {
+						$search_str_len = 0;
+						foreach ($words as $word) {
+							$search_str_len = ($search_str_len < strlen($word)) ? strlen($word) : $search_str_len;
+						}
+					} else {
+						$search_str_len = strlen($search_data['keywords']);
 					}
-				} else {
-					$search_str_len = strlen($search_data['keywords']);
 				}
 
 				if ($search_mode == 'fulltext' && $search_str_len >= $max_word_len) {
