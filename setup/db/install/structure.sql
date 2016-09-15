@@ -585,7 +585,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_history` (
 	`cart_order_id` varchar(18) collate utf8_unicode_ci NOT NULL,
 	`status` tinyint(2) unsigned NOT NULL default '0',
 	`updated` int(10) unsigned NOT NULL default '0',
-	`initiator` varchar(1) NOT NULL DEFAULT 'G',
+	`initiator` char(1) NOT NULL DEFAULT 'G',
   PRIMARY KEY  (`history_id`),
   KEY `cart_order_id` (`cart_order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1; #EOQ

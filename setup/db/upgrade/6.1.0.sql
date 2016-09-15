@@ -1,4 +1,4 @@
-ALTER TABLE `CubeCart_order_history` ADD `initiator` VARCHAR(1) NOT NULL DEFAULT 'G'; #EOQ
+ALTER TABLE `CubeCart_order_history` ADD `initiator` CHAR(1) NOT NULL DEFAULT 'G'; #EOQ
 UPDATE `CubeCart_order_history` SET `initiator` = 'U'; #EOQ
 CREATE TABLE `CubeCart_email_log` (
   `id` int(11) NOT NULL,
