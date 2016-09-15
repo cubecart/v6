@@ -254,12 +254,11 @@ class Session {
 			return false;
 		}
 
-		$eu_countries = array('AT','BE','BG','CY','CZ','DE','DK','EE','ES','FI','FR','GB','GR','HU','IE','IT','LT','LU','LV','MT','NL','PL','PT','RO','SE','SI','SK');
-		$store_country_iso =  getCountryFormat($GLOBALS['config']->get('config', 'store_country'),'numcode', 'iso');
-		if(in_array($store_country_iso, $eu_countries)) {
+		if($GLOBALS['db']->select('CubeCart_geo_country', false, array('numcode' => $GLOBALS['config']->get('config', 'store_country'), 'eu' => '1')) !== false) {
 			return true;
+		} else {
+			return false;
 		}
-		return false;
 	}
 
 	/**
