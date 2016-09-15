@@ -1651,12 +1651,12 @@ class Catalogue {
 						$this->_sort_by_relevance = true;
 						return true;
 					} elseif ($search_mode == 'fulltext') {
-						return $this->searchCatalogue($original_search_data, 1, $per_page, 'like');
+						return $this->searchCatalogue($original_search_data, 1, $per_page, 'RLIKE');
 					}
-
 				} else {
+
 					$this->_sort_by_relevance = false;
-					$rlike = '';
+					$like = '';
 					if (!empty($search_data['keywords'])) {
 						$searchwords = preg_split( '/[\s,]+/', $GLOBALS['db']->sqlSafe($search_data['keywords']));
 						foreach ($searchwords as $word) {
@@ -1665,26 +1665,34 @@ class Catalogue {
 
 						$noKeys = count($searchArray);
 						$regexp = '';
+						if($search_mode == 'RLIKE') {
+							$like_prefix = '[[:<:]]';
+							$like_postfix = '[[:>:]].*';
+						} else {
+							$like_prefix = '%';
+							$like_postfix = '%';
+						}
 						for ($i=0; $i<$noKeys; ++$i) {
 							$ucSearchTerm = strtoupper($searchArray[$i]);
 							if (($ucSearchTerm != 'AND') && ($ucSearchTerm != 'OR')) {
-								$regexp .= '[[:<:]]'.$searchArray[$i].'[[:>:]].*';
+								$regexp .= $like_prefix.$searchArray[$i].$like_postfix;
 							}
 						}
 						$regexp = substr($regexp, 0, strlen($regexp)-2);
-						$rlike = " AND (I.name RLIKE '".$regexp."' OR I.description RLIKE '".$regexp."' OR I.product_code RLIKE '".$regexp."')";
+						$like = " AND (I.name ".$search_mode." '".$regexp."' OR I.description ".$search_mode." '".$regexp."' OR I.product_code ".$search_mode." '".$regexp."')";
 					}
 
-					$q2 = "SELECT I.* FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_category_index` as CI INNER JOIN ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 ".$whereString.$rlike;
+					$q2 = "SELECT I.* FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_category_index` as CI INNER JOIN ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 ".$whereString.$like;
 					$query = $q2.' '.$limit;
 					if (($search = $GLOBALS['db']->query($query)) !== false) {
 						$count = $GLOBALS['db']->query($q2, false, 0);
 						$this->_category_count  = (int)count($count);
 						$this->_category_products = $search;
 						return true;
+					} elseif($search_mode=="RLIKE") {
+						return $this->searchCatalogue($original_search_data, 1, $per_page, 'LIKE');
 					}
 				}
-
 			}
 		} else {
 			if (is_numeric($search_data)) {
