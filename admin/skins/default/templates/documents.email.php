@@ -115,7 +115,7 @@
 	{if $LANGUAGES}
 	<textarea name="content[content_html]" id="content_html" class="textbox fck">{$CONTENT.content_html}</textarea>
   	<h3>{$LANG.email.title_macros}</h3>
-  	<p>{$LANG.email.important}</p>
+  	<p>{$LANG.email.important|escape:'htmlall'}</p>
   	<table>
   		<thead>
   		  <tr>
