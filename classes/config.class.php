@@ -220,11 +220,11 @@ class Config {
 	public function set($config_name, $element, $data, $force_write = false) {
 		//Clean up the config array
 		if (is_array($data) && !empty($element)) {
-			array_walk_recursive($data, create_function('&$s, $k', '$s=stripslashes($s);'));
-			$data = $this->_json_encode($data);
+  			array_walk_recursive($data, function(&$s,$k){return stripslashes($s);});
+  			$data = $this->_json_encode($data);
 		} else if (is_array($data)) {
-				array_walk_recursive($data, create_function('&$s, $k', '$s=stripslashes($s);'));
-			} else {
+  			array_walk_recursive($data, function(&$s,$k){return stripslashes($s);});
+		} else {
 			$data = stripslashes($data);
 		}
 
@@ -263,7 +263,7 @@ class Config {
 	 * @return array
 	 */
 	private function _clean($array) {
-		array_walk_recursive($array, create_function('&$s,$k', '$s=stripslashes($s);'));
+		array_walk_recursive($array, function(&$s,$k){return stripslashes($s);});
 		return $array;
 	}
 

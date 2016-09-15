@@ -1121,7 +1121,7 @@ if (isset($_GET['action'])) {
 		function option_matrix($unique_groups) {
 			$no_groups = count($unique_groups);
 			if ($no_groups <= 1) {
-				return $no_groups ? array_map(create_function('$v', 'return (array($v));'), $unique_groups[0]) : $unique_groups;
+				return $no_groups ? array_map(function($v){return array($v);}, $unique_groups[0]) : $unique_groups;
 			}
 
 			$last_value = array_pop($unique_groups);
