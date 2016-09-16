@@ -157,8 +157,8 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 					if(!isset($product_record['product_code']) || empty($product_record['product_code'])) {
 						$product_record['product_code'] = generate_product_code($product_record['name']);
 					}
-					if(!isset($product_record['featured']) || empty($product_record['featured'])) {
-						$product_record['featured'] = 1;
+					if(!isset($product_record['latest']) || empty($product_record['latest'])) {
+						$product_record['latest'] = 1;
 					}
 					// If no stock level is set we assume no stock control is used
 					if(isset($product_record['use_stock_level']) && ($product_record['use_stock_level']==1 || strtolower($product_record['use_stock_level'])=='true')) {
@@ -311,7 +311,8 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 				'digital_path'		=> $lang['catalogue']['file_path'],
 				'tax_type'			=> $lang['catalogue']['tax_class'],
 				'tax_inclusive'		=> $lang['catalogue']['tax_inclusive'],
-				'featured'			=> $lang['catalogue']['product_latest'],
+				'featured'			=> $lang['catalogue']['product_featured'],
+				'latest'			=> $lang['catalogue']['product_latest'],
 				'seo_path'			=> $lang['settings']['seo_path'],
 				'seo_meta_title'		=> $lang['settings']['seo_meta_title'],
 				'seo_meta_keywords'		=> $lang['settings']['seo_meta_keywords'],

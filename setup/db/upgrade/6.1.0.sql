@@ -1,3 +1,6 @@
+ALTER TABLE `CubeCart_inventory` CHANGE COLUMN `featured` `featured` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT 'Featured product'; #EOQ
+ALTER TABLE `CubeCart_inventory` ADD COLUMN `latest` tinyint(1) unsigned NOT NULL DEFAULT 1 COMMENT 'Included on Homepage' AFTER `featured`; #EOQ
+UPDATE `CubeCart_inventory` SET `latest`=`featured`; #EOQ
 ALTER TABLE `CubeCart_order_history` ADD `initiator` CHAR(1) NOT NULL DEFAULT 'G'; #EOQ
 UPDATE `CubeCart_order_history` SET `initiator` = 'U'; #EOQ
 CREATE TABLE `CubeCart_email_log` (
