@@ -228,7 +228,7 @@ class Ajax {
 			    } else {
 			      $json .= "Test failed to execute. ".$test_mailer->ErrorInfo;
 			    }
-			    return "<div style=\"padding: 10px; width: 450px\">".$json."</div>";
+			    return "<div class=\"mail_modal\">".$json."</div>";
 			} else {
 				$test_mailer = new Mailer();
 			    $test_mailer->ClearAddresses();
@@ -238,7 +238,7 @@ class Ajax {
 			    $test_mailer->AltBody = $altbody;
 			    $test_mailer->Send();
 
-				return "<div style=\"padding: 10px 10px 0 10px; width: 450px\"><h3>Testing ".$method_name."</h3><p>It isn't possible  to get a definitive test result for the &quot;PHP mail() Function&quot; method.</p><p>We have attempted to send a test email to &quot;".$GLOBALS['config']->get('config', 'email_address')."&quot; with the subject of &quot;".$subject."&quot; Please note that it can take ten minutes or even longer for a busy mail server to deliver email. Don't forget to check your spam folder!</p><p>This method can fail if the server hasn't been configured properly and may refuse to send mail from &quot;untrusted&quot; sources such as Hotmail, Yahoo, AOL etc&hellip;. We recommend using an email address from a domain hosted on this server such as sales@".parse_url(CC_STORE_URL, PHP_URL_HOST)." for example and this may need to be setup form within your web hosting account.</p></div>";
+				return "<div class=\"mail_modal\"><h3>Testing ".$method_name."</h3><p>It isn't possible  to get a definitive test result for the &quot;PHP mail() Function&quot; method.</p><p>We have attempted to send a test email to &quot;".$GLOBALS['config']->get('config', 'email_address')."&quot; with the subject of &quot;".$subject."&quot; Please note that it can take ten minutes or even longer for a busy mail server to deliver email. Don't forget to check your spam folder!</p><p>This method can fail if the server hasn't been configured properly and may refuse to send mail from &quot;untrusted&quot; sources such as Hotmail, Yahoo, AOL etc&hellip;. We recommend using an email address from a domain hosted on this server such as sales@".parse_url(CC_STORE_URL, PHP_URL_HOST)." for example and this may need to be setup form within your web hosting account.</p></div>";
 			}
 		}
 		return false;
