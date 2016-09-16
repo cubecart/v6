@@ -569,6 +569,10 @@ class Cubecart {
 		
 		foreach ($GLOBALS['hooks']->load('class.cubecart.addressbook') as $hook) include $hook;
 
+		if(isset($GLOBALS['cart']->basket['contents'])) {
+			$GLOBALS['smarty']->assign('CHECKOUT_BUTTON', true);
+		}
+
 		$content = $GLOBALS['smarty']->fetch('templates/content.addressbook.php');
 		$GLOBALS['smarty']->assign('SECTION_NAME', 'account');
 		$GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
