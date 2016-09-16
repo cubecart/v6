@@ -190,37 +190,33 @@ class Ajax {
 	 */
 	public static function SMTPTest() {
 		if (CC_IN_ADMIN) {
-			if($GLOBALS['config']->get('config', 'email_method')!=="mail") {
-			    @ob_start();
-			    $test_mailer = new Mailer();
-			    $test_mailer->SMTPDebug = 2;
-			    $test_mailer->Debugoutput = "html";
-			    $test_mailer->ClearAddresses();
-			    $test_mailer->Password = $GLOBALS['config']->get('config', 'email_smtp_password');
-			    $test_mailer->AddAddress($GLOBALS['config']->get('config', 'email_address'));
-			    $test_mailer->Subject = "Testing CubeCart";
-			    $test_mailer->Body = "Testing from CubeCart v".CC_VERSION." at ".CC_STORE_URL;
-			    $test_mailer->AltBody = "Testing from CubeCart v".CC_VERSION." at ".CC_STORE_URL;
-			    // Send email
-			    $email_test_send_result = $test_mailer->Send();
-			    $email_test_results = @ob_get_contents();@ob_end_clean();
+		    @ob_start();
+		    $test_mailer = new Mailer();
+		    $test_mailer->SMTPDebug = 2;
+		    $test_mailer->Debugoutput = "html";
+		    $test_mailer->ClearAddresses();
+		    $test_mailer->Password = $GLOBALS['config']->get('config', 'email_smtp_password');
+		    $test_mailer->AddAddress($GLOBALS['config']->get('config', 'email_address'));
+		    $test_mailer->Subject = "Testing CubeCart";
+		    $test_mailer->Body = "Testing from CubeCart v".CC_VERSION." at ".CC_STORE_URL;
+		    $test_mailer->AltBody = "Testing from CubeCart v".CC_VERSION." at ".CC_STORE_URL;
+		    // Send email
+		    $email_test_send_result = $test_mailer->Send();
+		    $email_test_results = @ob_get_contents();@ob_end_clean();
 
-			    if(!empty($email_test_results)) {
-			      $email_test_results_data = array (
-			            'request_url' => 'mailto:'.$GLOBALS['config']->get('config', 'email_address'),
-			            'request' => 'Subject: Testing CubeCart',
-			            'result' => $email_test_results,
-			            'error' => ($email_test_send_result) ? null : "Mailer Failed" ,
-			        );
-			      $GLOBALS['db']->insert('CubeCart_request_log', $email_test_results_data);
-			      $json = $email_test_results;
-			    } else {
-			      $json = "Test failed to execute. ".$test_mailer->ErrorInfo;
-			    }
-			    return $json;
-			} else {
-				return "This tool can't test the &quot;PHP mail() Function&quot; send method. Instead please either place a test order or try the password reset tool.";
-			}
+		    if(!empty($email_test_results)) {
+		      $email_test_results_data = array (
+		            'request_url' => 'mailto:'.$GLOBALS['config']->get('config', 'email_address'),
+		            'request' => 'Subject: Testing CubeCart',
+		            'result' => $email_test_results,
+		            'error' => ($email_test_send_result) ? null : "Mailer Failed" ,
+		        );
+		      $GLOBALS['db']->insert('CubeCart_request_log', $email_test_results_data);
+		      $json = $email_test_results;
+		    } else {
+		      $json = "Test failed to execute. ".$test_mailer->ErrorInfo;
+		    }
+		    return $json;
 		}
 		return false;
 	}

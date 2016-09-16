@@ -1753,7 +1753,6 @@
     <string name="email_disable_alert" introduced="5.0.0"><![CDATA[Disable new order alerts]]></string>
     <string name="email_method" introduced="5.0.0"><![CDATA[Sending Method]]></string>
     <string name="email_method_mail" introduced="5.0.0"><![CDATA[PHP mail() Function]]></string>
-    <string name="smtp_settings" introduced="6.1.0"><![CDATA[SMTP Settings]]></string>
     <string name="email_method_smtp" introduced="5.0.0"><![CDATA[SMTP]]></string>
     <string name="email_method_smtp_ssl" introduced="5.2.13"><![CDATA[SMTP with SSL]]></string>
     <string name="email_method_smtp_tls" introduced="5.2.13"><![CDATA[SMTP with TLS]]></string>
