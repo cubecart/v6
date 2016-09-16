@@ -188,12 +188,22 @@ if ($unsettled_orders) {
 		$customer_type[$customer['customer_id']] = $customer['type'];
 	}
 
+	for ($i = 1; $i <= 6; ++$i) {
+		$smarty_data['order_status'][] = array(
+			'id'  => $i,
+			'selected' => (isset($summary[0]) && isset($summary[0]['status']) && (int)$summary[0]['status'] === $i) ? ' selected="selected"' : '',
+			'string' => $lang['order_state']['name_'.$i],
+		);
+	}
+	$GLOBALS['smarty']->assign('LIST_ORDER_STATUS', $smarty_data['order_status']);
+
 	foreach ($unsettled_orders as $order) {
 		$cart_order_ids[] = "'".$order['cart_order_id']."'";
 		$order['icon'] = $customer_type[$order['customer_id']]==1 ? 'user_registered' : 'user_ghost';
 		$order['date'] = formatTime($order['order_date']);
 		$order['total'] = Tax::getInstance()->priceFormat($order['total']);
 		$order['status'] = $lang['order_state']['name_'.$order['status']];
+		$order['link_print'] = '?_g=orders&print%5B0%5D='.$order['cart_order_id'];
 		$orders[$order['cart_order_id']] = $order;
 	}
 	if (($notes = $GLOBALS['db']->select('CubeCart_order_notes', '`cart_order_id`,`time`,`content`', array('cart_order_id' => $cart_order_ids))) !== false) {

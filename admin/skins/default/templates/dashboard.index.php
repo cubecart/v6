@@ -124,10 +124,12 @@
 {if isset($ORDERS)}
 <div id="orders" class="tab_content">
    <h3>{$LANG.dashboard.title_orders_unsettled}</h3>
+   <form action="?_g=orders&amp;redirect=dashboard" method="post" enctype="multipart/form-data">
    <div>
       <table>
          <thead>
             <tr>
+               <td>&nbsp;</td>
                <td>{$LANG.orders.order_number}</td>
                <td>&nbsp;</td>
                <td>{$LANG.common.name}</td>
@@ -140,6 +142,7 @@
          <tbody>
             {foreach from=$ORDERS item=order}
             <tr>
+               <td align="center"><input type="checkbox" id="" name="multi-order[]" value="{$order.cart_order_id}" class="all-orders"></td>
                <td><a href="?_g=orders&action=edit&order_id={$order.cart_order_id}&source=dashboard">{$order.cart_order_id}</a></td>
                <td>
                   {if $order.icon=='user_registered'}
@@ -159,6 +162,7 @@
                <td>{$order.date}</td>
                <td>{$order.total}</td>
                <td>
+                  <a href="{$order.link_print}" class="print" target="_blank" title="{$LANG.common.print}"><i class="fa fa-print" title="{$LANG.common.print}"></i></a>
                   <a href="?_g=orders&action=edit&order_id={$order.cart_order_id}&source=dashboard" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
                   <a href="?_g=orders&delete={$order.cart_order_id}&source=dashboard" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
                   {if isset($order.notes)}
@@ -168,9 +172,41 @@
             </tr>
             {/foreach}
          </tbody>
+         <tfoot>
+            <tr>
+               <td><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/select_all.gif" alt=""></td>
+               <td><a href="#" class="check-all" rel="all-orders">{$LANG.form.check_uncheck}</a></td>
+               <td colspan="6">
+                  {$LANG.orders.with_selected}:
+                  <select name="multi-status" class="textbox">
+                     <option value="">{$LANG.orders.option_status_no_change}</option>
+                     <optgroup label="{$LANG.orders.change_order_status}">
+                        {foreach from=$LIST_ORDER_STATUS item=status}<option value="{$status.id}"{$status.selected}>{$status.string}</option>{/foreach}
+                     </optgroup>
+                  </select>
+                  {$LANG.common.then}
+                  <select name="multi-action" class="textbox">
+                     <option value="">{$LANG.orders.option_nothing}</option>
+                     <option value="print">{$LANG.orders.option_print}</option>
+                     <option value="delete" style="color: red;">{$LANG.orders.option_delete}</option>
+                  </select>
+                  <input type="submit" value="{$LANG.common.go}" name="go" class="tiny">
+               </td>
+            </tr>
+            <tr>
+               <td colspan="8">
+                  <div class="pagination">
+                     <span>{$LANG.common.total}: {$TOTAL_RESULTS}</span>
+                     {$PAGINATION}&nbsp;
+                  </div>
+               </td>
+            </tr>
+         </tfoot>
       </table>
       <div>{$ORDER_PAGINATION}</div>
    </div>
+   <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+   </form>
 </div>
 {/if}
 {if isset($REVIEWS)}

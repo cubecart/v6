@@ -611,7 +611,11 @@ if (isset($_GET['action'])) {
 		if ($updated) {
 			$GLOBALS['main']->setACPNotify($lang['orders']['notify_orders_status']);
 		}
-		httpredir(currentPage(array('print_hash', 'multi-action'), $add_array));
+		if(isset($_GET['redirect']) && $_GET['redirect'] == 'dashboard' && $_POST['multi-action'] == '') {
+			httpredir('?', 'orders');
+		} else {
+			httpredir(currentPage(array('print_hash', 'multi-action'), $add_array));
+		}
 	} else if (isset($_GET['search'])) {
 
 			// Search by date range
