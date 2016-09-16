@@ -190,33 +190,49 @@ class Ajax {
 	 */
 	public static function SMTPTest() {
 		if (CC_IN_ADMIN) {
-		    @ob_start();
-		    $test_mailer = new Mailer();
-		    $test_mailer->SMTPDebug = 2;
-		    $test_mailer->Debugoutput = "html";
-		    $test_mailer->ClearAddresses();
-		    $test_mailer->Password = $GLOBALS['config']->get('config', 'email_smtp_password');
-		    $test_mailer->AddAddress($GLOBALS['config']->get('config', 'email_address'));
-		    $test_mailer->Subject = "Testing CubeCart";
-		    $test_mailer->Body = "Testing from CubeCart v".CC_VERSION." at ".CC_STORE_URL;
-		    $test_mailer->AltBody = "Testing from CubeCart v".CC_VERSION." at ".CC_STORE_URL;
-		    // Send email
-		    $email_test_send_result = $test_mailer->Send();
-		    $email_test_results = @ob_get_contents();@ob_end_clean();
+			
+			$subject = "Testing CubeCart";
+			$body = "Testing email from CubeCart v".CC_VERSION." at ".CC_STORE_URL;
 
-		    if(!empty($email_test_results)) {
-		      $email_test_results_data = array (
-		            'request_url' => 'mailto:'.$GLOBALS['config']->get('config', 'email_address'),
-		            'request' => 'Subject: Testing CubeCart',
-		            'result' => $email_test_results,
-		            'error' => ($email_test_send_result) ? null : "Mailer Failed" ,
-		        );
-		      $GLOBALS['db']->insert('CubeCart_request_log', $email_test_results_data);
-		      $json = $email_test_results;
-		    } else {
-		      $json = "Test failed to execute. ".$test_mailer->ErrorInfo;
-		    }
-		    return $json;
+			if($GLOBALS['config']->get('config', 'email_method')!=="mail") {
+			    @ob_start();
+			    $test_mailer = new Mailer();
+			    $test_mailer->SMTPDebug = 2;
+			    $test_mailer->Debugoutput = "html";
+			    $test_mailer->ClearAddresses();
+			    $test_mailer->Password = $GLOBALS['config']->get('config', 'email_smtp_password');
+			    $test_mailer->AddAddress($GLOBALS['config']->get('config', 'email_address'));
+			    $test_mailer->Subject = $subject;
+			    $test_mailer->Body = $body;
+			    $test_mailer->AltBody = $body;
+			    // Send email
+			    $email_test_send_result = $test_mailer->Send();
+			    $email_test_results = @ob_get_contents();@ob_end_clean();
+
+			    if(!empty($email_test_results)) {
+			      $email_test_results_data = array (
+			            'request_url' => 'mailto:'.$GLOBALS['config']->get('config', 'email_address'),
+			            'request' => 'Subject: Testing CubeCart',
+			            'result' => $email_test_results,
+			            'error' => ($email_test_send_result) ? null : "Mailer Failed" ,
+			        );
+			      $GLOBALS['db']->insert('CubeCart_request_log', $email_test_results_data);
+			      $json = $email_test_results;
+			    } else {
+			      $json = "Test failed to execute. ".$test_mailer->ErrorInfo;
+			    }
+			    return "<div style=\"padding: 10px; width: 450px\">".$json."</div>";
+			} else {
+				$test_mailer = new Mailer();
+			    $test_mailer->ClearAddresses();
+			    $test_mailer->AddAddress($GLOBALS['config']->get('config', 'email_address'));
+			    $test_mailer->Subject = $subject;
+			    $test_mailer->Body = $body;
+			    $test_mailer->AltBody = $body;
+			    $test_mailer->Send();
+
+				return "<div style=\"padding: 10px 10px 0 10px; width: 450px\"><p>It isn't possible  to get a definitive test result for the &quot;PHP mail() Function&quot; method.</p><p>We have attempted to send a test email to &quot;".$GLOBALS['config']->get('config', 'email_address')."&quot; with the subject of &quot;".$subject."&quot; Please note that it can take ten minutes or even longer for a busy mail server to deliver email. Don't forget to check your spam folder!</p><p>This method can fail if the server hasn't been configured properly and may refuse to send mail from &quot;untrusted&quot; sources such as Hotmail, Yahoo, AOL etc&hellip;. We recommend using an email address from a domain hosted on this server such as sales@".parse_url(CC_STORE_URL, PHP_URL_HOST)." for example and this may need to be setup form within your web hosting account.</p></div>";
+			}
 		}
 		return false;
 	}
