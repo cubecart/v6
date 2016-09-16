@@ -351,6 +351,9 @@
          </div>
          <div><label for="email_name">{$LANG.settings.email_sender_name}</label><span><input name="config[email_name]" id="email_name" type="text" class="textbox" value="{$CONFIG.email_name}"></span></div>
          <div><label for="email_address">{$LANG.settings.email_sender_address}</label><span><input name="config[email_address]" id="email_address" type="text" class="textbox" value="{$CONFIG.email_address}"></span></div>
+      </fieldset>
+      <fieldset>
+         <legend>{$LANG.settings.smtp_settings}</legend>
          <div><label for="email_smtp_host">{$LANG.settings.smtp_host}</label><span><input name="config[email_smtp_host]" id="email_smtp_host" type="text" class="textbox" value="{$CONFIG.email_smtp_host}"></span></div>
          <div><label for="email_smtp_port">{$LANG.settings.smtp_port}</label><span><input name="config[email_smtp_port]" id="email_smtp_port" type="text" class="textbox number" value="{$CONFIG.email_smtp_port}"></span></div>
          <div><label for="email_smtp">{$LANG.settings.smtp_auth}</label><span><select name="config[email_smtp]" id="email_smtp" class="textbox" autocomplete="off">
