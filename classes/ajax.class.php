@@ -191,10 +191,15 @@ class Ajax {
 	public static function SMTPTest() {
 		if (CC_IN_ADMIN) {
 			
-			$subject = "Testing CubeCart";
-			$body = "Testing email from CubeCart v".CC_VERSION." at ".CC_STORE_URL;
+			$method = $GLOBALS['config']->get('config', 'email_method');
+			$methods = array('mail' => $GLOBALS['language']->settings['email_method_mail'], 'smtp' => $GLOBALS['language']->settings['email_method_smtp'], 'smtp_ssl' => $GLOBALS['language']->settings['email_method_smtp_ssl'], 'smtp_tls' => $GLOBALS['language']->settings['email_method_smtp_tls']);
+			$method_name = $methods[$method];
 
-			if($GLOBALS['config']->get('config', 'email_method')!=="mail") {
+			$subject = "Testing ".$method_name;
+			$body = "Testing email sent by &quot;".$method_name."&quot; from CubeCart v".CC_VERSION." at ".CC_STORE_URL.".<br><br>If you are reading this message then you can be sure that email from your store is working.";
+			$altbody = strip_tags($body);
+
+			if($method!=="mail") {
 			    @ob_start();
 			    $test_mailer = new Mailer();
 			    $test_mailer->SMTPDebug = 2;
@@ -204,10 +209,12 @@ class Ajax {
 			    $test_mailer->AddAddress($GLOBALS['config']->get('config', 'email_address'));
 			    $test_mailer->Subject = $subject;
 			    $test_mailer->Body = $body;
-			    $test_mailer->AltBody = $body;
+			    $test_mailer->AltBody = $altbody;
 			    // Send email
 			    $email_test_send_result = $test_mailer->Send();
 			    $email_test_results = @ob_get_contents();@ob_end_clean();
+
+			    $json = "<h3>Testing ".$method_name."</h3>";
 
 			    if(!empty($email_test_results)) {
 			      $email_test_results_data = array (
@@ -217,9 +224,9 @@ class Ajax {
 			            'error' => ($email_test_send_result) ? null : "Mailer Failed" ,
 			        );
 			      $GLOBALS['db']->insert('CubeCart_request_log', $email_test_results_data);
-			      $json = $email_test_results;
+			      $json .= $email_test_results;
 			    } else {
-			      $json = "Test failed to execute. ".$test_mailer->ErrorInfo;
+			      $json .= "Test failed to execute. ".$test_mailer->ErrorInfo;
 			    }
 			    return "<div style=\"padding: 10px; width: 450px\">".$json."</div>";
 			} else {
@@ -228,10 +235,10 @@ class Ajax {
 			    $test_mailer->AddAddress($GLOBALS['config']->get('config', 'email_address'));
 			    $test_mailer->Subject = $subject;
 			    $test_mailer->Body = $body;
-			    $test_mailer->AltBody = $body;
+			    $test_mailer->AltBody = $altbody;
 			    $test_mailer->Send();
 
-				return "<div style=\"padding: 10px 10px 0 10px; width: 450px\"><p>It isn't possible  to get a definitive test result for the &quot;PHP mail() Function&quot; method.</p><p>We have attempted to send a test email to &quot;".$GLOBALS['config']->get('config', 'email_address')."&quot; with the subject of &quot;".$subject."&quot; Please note that it can take ten minutes or even longer for a busy mail server to deliver email. Don't forget to check your spam folder!</p><p>This method can fail if the server hasn't been configured properly and may refuse to send mail from &quot;untrusted&quot; sources such as Hotmail, Yahoo, AOL etc&hellip;. We recommend using an email address from a domain hosted on this server such as sales@".parse_url(CC_STORE_URL, PHP_URL_HOST)." for example and this may need to be setup form within your web hosting account.</p></div>";
+				return "<div style=\"padding: 10px 10px 0 10px; width: 450px\"><h3>Testing ".$method_name."</h3><p>It isn't possible  to get a definitive test result for the &quot;PHP mail() Function&quot; method.</p><p>We have attempted to send a test email to &quot;".$GLOBALS['config']->get('config', 'email_address')."&quot; with the subject of &quot;".$subject."&quot; Please note that it can take ten minutes or even longer for a busy mail server to deliver email. Don't forget to check your spam folder!</p><p>This method can fail if the server hasn't been configured properly and may refuse to send mail from &quot;untrusted&quot; sources such as Hotmail, Yahoo, AOL etc&hellip;. We recommend using an email address from a domain hosted on this server such as sales@".parse_url(CC_STORE_URL, PHP_URL_HOST)." for example and this may need to be setup form within your web hosting account.</p></div>";
 			}
 		}
 		return false;
