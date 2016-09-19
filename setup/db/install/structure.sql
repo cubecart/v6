@@ -310,6 +310,15 @@ CREATE TABLE IF NOT EXISTS `CubeCart_email_template` (
 	PRIMARY KEY (`template_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
+CREATE TABLE `CubeCart_extension_info` (
+  `file_id` int(10) unsigned NOT NULL,
+  `seller_id` int(10) unsigned NOT NULL,
+  `file_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `dir` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `modified` int(11) NOT NULL,
+  PRIMARY KEY (`file_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+
 CREATE TABLE IF NOT EXISTS `CubeCart_filemanager` (
 	`file_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`type` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',

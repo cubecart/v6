@@ -88,13 +88,17 @@ if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 						foreach($files as $file) {
 							if(preg_match('/^email_[a-z]{2}-[A-Z]{2}.xml$/', $file['filename'])) {
 								$import_language = $file['filename'];
+								$install_dir = str_replace('email_','',$file['filename']);
 							}
 
 							$root_path = $destination.'/'.$file['filename'];
 							
 							if(file_exists($root_path) && basename($file['filename'])=="config.xml") {
 								// backup existing
-								$backup = str_replace('config.xml','',$file['filename'])."*";
+								$backup = str_replace('config.xml','',$file['filename'])."*";	
+							}
+							if(basename($file['filename'])=="config.xml") {
+								$install_dir = str_replace(array('/config.xml', CC_ROOT_DIR),'',$root_path);
 							}
 
 							if(file_exists($root_path) && !is_writable($root_path)) {
@@ -129,6 +133,23 @@ if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 								// Attempt email template install
 								if($import_language) {
 									$GLOBALS['language']->importEmail($import_language);
+								}
+
+								if(!empty($install_dir)) {
+									
+									$extension_info = array(
+										'dir' => $install_dir,
+										'file_name' => $data['file_name'],
+										'file_id' => $data['file_id'],
+										'seller_id' => $data['seller_id'],
+										'modified'	=> $data['modified'],
+									);
+
+									if($GLOBALS['db']->select('CubeCart_extension_info', 'file_id', array('file_id' => $extension_info['file_id']))) {
+										$GLOBALS['db']->update('CubeCart_extension_info', $extension_info, array('file_id' => $extension_info['file_id']));
+									} else {
+										$GLOBALS['db']->insert('CubeCart_extension_info', $extension_info);
+									}
 								}
 
 								$GLOBALS['main']->setACPNotify($lang['module']['success_install']);
