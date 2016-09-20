@@ -26,8 +26,7 @@
   </info>
   <translation>
     <group name="address">
-      <string name="state">
-        <![CDATA[County]]></string>
+      <string name="state"><![CDATA[County]]></string>
     </group>
   </translation>
 </language>
