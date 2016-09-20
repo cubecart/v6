@@ -151,6 +151,12 @@ class GUI {
 				$GLOBALS['smarty']->assign('HEAD_JS', $head_js);
 			}
 
+			// <body> JS (Top)
+            foreach ($GLOBALS['hooks']->load('class.gui.body_js_top') as $hook) include $hook;
+            if (isset($body_js_top) && !empty($body_js_top) && is_array($body_js_top)) {
+                $GLOBALS['smarty']->assign('BODY_JS_TOP', $body_js_top);
+            }
+
 			// <body> JS
 			foreach ($GLOBALS['hooks']->load('class.gui.body_js') as $hook) include $hook;
 			if (isset($body_js) && !empty($body_js) && is_array($body_js)) {

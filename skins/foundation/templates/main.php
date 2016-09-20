@@ -45,6 +45,7 @@
       {foreach from=$HEAD_JS item=js}{$js}{/foreach}
    </head>
    <body>
+        {foreach from=$BODY_JS_TOP item=js}{$js}{/foreach}
         {include file='images/icon-sprites.svg'}
    	  {if $STORE_OFFLINE}
    	  <div data-alert class="alert-box alert">{$LANG.common.warning_offline}<a href="#" class="close">&times;</a></div>

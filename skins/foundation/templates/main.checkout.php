@@ -45,6 +45,7 @@
       {foreach from=$HEAD_JS item=js}{$js}{/foreach}
    </head>
    <body>
+      {foreach from=$BODY_JS_TOP item=js}{$js}{/foreach}
       {include file='images/icon-sprites.svg'}
       <div class="off-canvas-wrap" data-offcanvas>
          <div class="inner-wrap">
