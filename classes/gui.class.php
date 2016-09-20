@@ -1099,77 +1099,75 @@ class GUI {
 	}
 
 	/**
-	 * Display random products box
+	 * Display featured products box
 	 */
-	private function _displayRandomProduct($p=0) {
+	private function _displayRandomProduct() {
 
 		if(!$GLOBALS['smarty']->templateExists('templates/box.featured.php')) return false;
 
 		foreach ($GLOBALS['hooks']->load('class.gui.display_random_product_pre') as $hook) include $hook;
 
-		$where = $GLOBALS['catalogue']->outOfStockWhere(array('status' => '1'));
-		// SQL below used to replace RAND which is a monster on resources over 100 products
-		$query   = 'SELECT * FROM  `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory` JOIN (SELECT CEIL(RAND() * (SELECT MAX(`product_id`) FROM  `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory`)) AS  `product_id`) AS  `r` USING (`product_id`) WHERE '.$where;
-		$random_product  = $GLOBALS['db']->misc($query, false);
-
-		if ($random_product) {
-
-			$category_data = $GLOBALS['catalogue']->getCategoryStatusByProductID($random_product[0]['product_id']);
-			$category_status = false;
-			if (is_array($category_data)) {
-				foreach ($category_data as $trash => $data) {
-					if ($data['status'] == 1 && $data['primary'] == 1) {
-						$category_status = true;
-					}
-				}
-			}
-			if (!$category_status) {
-				if ($p<15) {
-					$p++;
-					$this->_displayRandomProduct($p);
-				}
-			} else {
-
-				$image = $this->getProductImage($random_product[0]['product_id']);
-				$product = $random_product[0];
-	
-				$GLOBALS['language']->translateProduct($product);
-	
-				$product['image'] = $image;
-	
-				$product['ctrl_sale'] = (!$GLOBALS['tax']->salePrice($product['price'], $product['sale_price']) || !$GLOBALS['config']->get('config', 'catalogue_sale_mode')) ? false : true;
-	
-	
-				$GLOBALS['catalogue']->getProductPrice($product);
-				$sale = $GLOBALS['tax']->salePrice($product['price'], $product['sale_price']);
-				$product['price_unformatted']  = $product['price'];
-				$product['sale_price_unformatted'] = ($sale) ? $product['sale_price'] : null;
-				$product['price']  = $GLOBALS['tax']->priceFormat($product['price']);
-				$product['sale_price'] = ($sale) ? $GLOBALS['tax']->priceFormat($product['sale_price']) : null;
-	
-				$product['ctrl_purchase'] = true;
-				if ($product['use_stock_level']) {
-					// Get Stock Level
-					$stock_level = $GLOBALS['catalogue']->getProductStock($product['product_id']);
-					if ((int)$stock_level <= 0) {
-						// Out of Stock
-						if (!$GLOBALS['config']->get('config', 'basket_out_of_stock_purchase')) {
-							// Not Allowed
-							$product['ctrl_purchase'] = false;
+		$where = $GLOBALS['catalogue']->outOfStockWhere(array('status' => '1', 'featured' => '1'));
+		$query = 'SELECT `product_id` FROM  `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory` WHERE '.$where;
+		$featured_products  = $GLOBALS['db']->misc($query, false);
+		$n = ($featured_products ? count($featured_products) : 0);
+		if ($n > 0) {
+			$random_product = false;
+			$tries = 0;
+			while (!$random_product && $tries < 15) {
+				$random_id = $featured_products[mt_rand(0, $n - 1)]['product_id'];
+				$category_data = $GLOBALS['catalogue']->getCategoryStatusByProductID($random_id);
+				$category_status = false;
+				if (is_array($category_data)) {
+					foreach ($category_data as $trash => $data) {
+						if ($data['status'] == 1 && $data['primary'] == 1) {
+							$category_status = true;
+							break;
 						}
 					}
 				}
-				$product['url'] = $GLOBALS['seo']->buildURL('prod', $product['product_id']);
-				foreach ($GLOBALS['hooks']->load('class.gui.display_random_product') as $hook) include $hook;
-				$GLOBALS['smarty']->assign('featured', $product);
-				$content = $GLOBALS['smarty']->fetch('templates/box.featured.php');
-				$GLOBALS['smarty']->assign('RANDOM_PROD', $content);
+				if ($category_status) {
+					$random_product = $GLOBALS['db']->select('CubeCart_inventory', false, array('product_id' => $random_id), false, 1);
+				}
+				++$tries;
 			}
-		} elseif ($p<20) { // Math to generate random product might give a product_id that doesn't exist or doen't meet WHERE criteria
-			$p++;
-			$this->_displayRandomProduct($p);
 		}
-		if($random_product) return $product;
+
+		if ($random_product) {
+			$image = $this->getProductImage($random_product[0]['product_id']);
+			$product = $random_product[0];
+
+			$GLOBALS['language']->translateProduct($product);
+
+			$product['image'] = $image;
+
+			$product['ctrl_sale'] = (!$GLOBALS['tax']->salePrice($product['price'], $product['sale_price']) || !$GLOBALS['config']->get('config', 'catalogue_sale_mode')) ? false : true;
+
+			$GLOBALS['catalogue']->getProductPrice($product);
+			$sale = $GLOBALS['tax']->salePrice($product['price'], $product['sale_price']);
+			$product['price_unformatted']  = $product['price'];
+			$product['sale_price_unformatted'] = ($sale) ? $product['sale_price'] : null;
+			$product['price']  = $GLOBALS['tax']->priceFormat($product['price']);
+			$product['sale_price'] = ($sale) ? $GLOBALS['tax']->priceFormat($product['sale_price']) : null;
+
+			$product['ctrl_purchase'] = true;
+			if ($product['use_stock_level']) {
+				// Get Stock Level
+				$stock_level = $GLOBALS['catalogue']->getProductStock($product['product_id']);
+				if ((int)$stock_level <= 0) {
+					// Out of Stock
+					if (!$GLOBALS['config']->get('config', 'basket_out_of_stock_purchase')) {
+						// Not Allowed
+						$product['ctrl_purchase'] = false;
+					}
+				}
+			}
+			$product['url'] = $GLOBALS['seo']->buildURL('prod', $product['product_id']);
+			foreach ($GLOBALS['hooks']->load('class.gui.display_random_product') as $hook) include $hook;
+			$GLOBALS['smarty']->assign('featured', $product);
+			$content = $GLOBALS['smarty']->fetch('templates/box.featured.php');
+			$GLOBALS['smarty']->assign('RANDOM_PROD', $content);
+		}
 	}
 
 	/**

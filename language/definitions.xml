@@ -405,6 +405,7 @@
     <string name="product_details" introduced="5.0.0"><![CDATA[Product Details]]></string>
     <string name="product_description" introduced="5.0.0"><![CDATA[Product Description]]></string>
     <string name="product_doesnt_exist" introduced="5.0.0"><![CDATA[That product couldn't be found.]]></string>
+    <string name="product_featured" introduced="6.0.10"><![CDATA[Include in featured products]]></string>
     <string name="product_id" introduced="5.0.0"><![CDATA[Product Id]]></string>
     <string name="product_info" introduced="5.0.0"><![CDATA[Product Information]]></string>
     <string name="product_latest" introduced="5.0.0"><![CDATA[Include in latest products]]></string>

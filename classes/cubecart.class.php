@@ -90,7 +90,7 @@ class Cubecart {
 
 		$products = array();
 
-		$where = $GLOBALS['catalogue']->outOfStockWhere(array('status' => '1', 'featured' => '1'));
+		$where = $GLOBALS['catalogue']->outOfStockWhere(array('status' => '1', 'latest' => '1'));
 
 		if ($GLOBALS['config']->get('config', 'catalogue_latest_products')) {
 			$latestProducts = $GLOBALS['db']->select('CubeCart_inventory', false, $where, array('date_added' => 'DESC', 'product_id' => 'DESC'), (int)$GLOBALS['config']->get('config', 'catalogue_latest_products_count'));
