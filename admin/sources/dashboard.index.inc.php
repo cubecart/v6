@@ -74,16 +74,23 @@ if (stristr($mysql_mode[0]['@@sql_mode'], 'strict')) {
 }
 
 ## Get recent extensions
-$request = new Request('www.cubecart.com', '/extensions/json');
-$request->skiplog(true);
-$request->setMethod('get');
-$request->cache(true);
-$request->setSSL(true);
-$request->setData(array('null' => 0));
-$request->setUserAgent('CubeCart');
-$response = $request->send();
-if($response) {
-	$GLOBALS['smarty']->assign("RECENT_EXTENSIONS", json_decode($response, true));
+if($GLOBALS['session']->has('recent_extensions')) {
+	$GLOBALS['smarty']->assign("RECENT_EXTENSIONS", $GLOBALS['session']->get('recent_extensions'));
+} else {
+	$request = new Request('www.cubecart.com', '/extensions/json');
+	$request->skiplog(true);
+	$request->setMethod('get');
+	$request->cache(true);
+	$request->setSSL(true);
+	$request->setData(array('null' => 0));
+	$request->setUserAgent('CubeCart');
+
+	$response = $request->send();
+	if($response) {
+		$response = json_decode($response, true);
+		$GLOBALS['session']->set('recent_extensions', $response);
+		$GLOBALS['smarty']->assign("RECENT_EXTENSIONS", $response);
+	}
 }
 
 ## Check current version
@@ -314,40 +321,46 @@ $GLOBALS['smarty']->assign('PLUGIN_TABS', $smarty_data['plugin_tabs']);
 ## Latest News (from RSS)
 if ($GLOBALS['config']->has('config', 'default_rss_feed') && !$GLOBALS['config']->isEmpty('config', 'default_rss_feed') && filter_var($GLOBALS['config']->get('config', 'default_rss_feed'), FILTER_VALIDATE_URL)) {
 
-	$default_rss_feed = $GLOBALS['config']->get('config', 'default_rss_feed');
+	if($GLOBALS['session']->has('rss_news')) {
+		$GLOBALS['smarty']->assign('NEWS', $GLOBALS['session']->get('rss_news'));
+	} else {
 
-	$url = (preg_match('/(act=rssout&id=1|1-cubecart-news-announcements)/', $default_rss_feed)) ? 'https://forums.cubecart.com/forum/1-news-announcements.xml' : $default_rss_feed;
+		$default_rss_feed = $GLOBALS['config']->get('config', 'default_rss_feed');
 
-	$url = parse_url($url);
-	$path = (isset($url['query'])) ? $url['path'].'?'.$url['query'] : $url['path'];
-	$request = new Request($url['host'], $path);
-	$request->cache(true);
-	$request->skiplog(true);
-	$request->setMethod('post');
-	$request->setData('Null');
+		$url = (preg_match('/(act=rssout&id=1|1-cubecart-news-announcements)/', $default_rss_feed)) ? 'https://forums.cubecart.com/forum/1-news-announcements.xml' : $default_rss_feed;
 
-	if (($response = $request->send()) !== false) {
-		try {
-			if (($data = new SimpleXMLElement($response)) !== false) {
-				foreach ($data->channel->children() as $key => $value) {
-					if ($key == 'item') continue;
-					$news[$key] = (string)$value;
-				}
-				if ($data['version'] >= 2) {
-					$i = 1;
-					foreach ($data->channel->item as $item) {
-						$news['items'][] = array(
-							'title'   => (string)$item->title,
-							'link'   => (string)$item->link,
-						);
-						if($i==5) break;
-						$i++;
+		$url = parse_url($url);
+		$path = (isset($url['query'])) ? $url['path'].'?'.$url['query'] : $url['path'];
+		$request = new Request($url['host'], $path);
+		$request->cache(true);
+		$request->skiplog(true);
+		$request->setMethod('post');
+		$request->setData('Null');
+
+		if (($response = $request->send()) !== false) {
+			try {
+				if (($data = new SimpleXMLElement($response)) !== false) {
+					foreach ($data->channel->children() as $key => $value) {
+						if ($key == 'item') continue;
+						$news[$key] = (string)$value;
 					}
+					if ($data['version'] >= 2) {
+						$i = 1;
+						foreach ($data->channel->item as $item) {
+							$news['items'][] = array(
+								'title'   => (string)$item->title,
+								'link'   => (string)$item->link,
+							);
+							if($i==5) break;
+							$i++;
+						}
+					}
+					$GLOBALS['session']->set('rss_news', $news);
+					$GLOBALS['smarty']->assign('NEWS', $news);
 				}
-				$GLOBALS['smarty']->assign('NEWS', $news);
+			} catch (Exception $e) {
+				trigger_error($e->getMessage(), E_USER_WARNING);
 			}
-		} catch (Exception $e) {
-			trigger_error($e->getMessage(), E_USER_WARNING);
 		}
 	}
 }
