@@ -160,6 +160,9 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 					if(!isset($product_record['latest']) || empty($product_record['latest'])) {
 						$product_record['latest'] = 1;
 					}
+					if(!isset($product_record['featured']) || empty($product_record['featured'])) {
+						$product_record['featured'] = 1;
+					}
 					// If no stock level is set we assume no stock control is used
 					if(isset($product_record['use_stock_level']) && ($product_record['use_stock_level']==1 || strtolower($product_record['use_stock_level'])=='true')) {
 						$product_record['use_stock_level'] = 1;

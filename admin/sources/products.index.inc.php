@@ -971,7 +971,7 @@ if (isset($_GET['action'])) {
 			// Breadcrumb
 			$GLOBALS['gui']->addBreadcrumb($lang['catalogue']['product_add'], $_GET);
 			$result[0] = array(
-				'featured' => 0,
+				'featured' => 1,
 				'latest'   => 1,
 				'tax_inclusive'  => 0,
 				'use_stock_level' => 1,
