@@ -314,6 +314,7 @@ CREATE TABLE `CubeCart_extension_info` (
   `file_id` int(10) unsigned NOT NULL,
   `seller_id` int(10) unsigned NOT NULL,
   `file_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `dir` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `modified` int(11) NOT NULL,
   PRIMARY KEY (`file_id`)
