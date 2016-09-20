@@ -93,8 +93,6 @@ if (!$GLOBALS['session']->has('version_check') && $request = new Request('www.cu
 	$request->cache(true);
 	$request->setSSL(true);
 	$request->setUserAgent('CubeCart');
-	$request->customOption(CURLOPT_SSL_VERIFYHOST,0);
-	$request->customOption(CURLOPT_SSL_VERIFYPEER,0);
 	
 	$request_data = array('version' => CC_VERSION);
 
