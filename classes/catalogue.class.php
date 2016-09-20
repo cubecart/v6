@@ -764,7 +764,7 @@ class Catalogue {
 	 * Get specific manufacturer data
 	 *
 	 * @param int $manufacturer_id
-	 * @return array/false
+	 * @return string/false
 	 */
 	public function getManufacturer($manufacturer_id) {
 		if (($manufacturers = $GLOBALS['db']->select('CubeCart_manufacturers', array('name', 'URL'), array('id' => $manufacturer_id))) !== false) {
