@@ -143,6 +143,7 @@ if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 										'file_id' => $data['file_id'],
 										'seller_id' => $data['seller_id'],
 										'modified'	=> $data['modified'],
+										'name'	=> $data['name']
 									);
 
 									if($GLOBALS['db']->select('CubeCart_extension_info', 'file_id', array('file_id' => $extension_info['file_id']))) {
@@ -151,6 +152,8 @@ if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 										$GLOBALS['db']->insert('CubeCart_extension_info', $extension_info);
 									}
 								}
+
+								$GLOBALS['session']->delete('version_check');
 
 								$GLOBALS['main']->setACPNotify($lang['module']['success_install']);
 								

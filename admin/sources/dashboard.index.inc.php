@@ -80,19 +80,46 @@ if($response) {
 }
 
 ## Check current version
-if (!isset($_SESSION['version-check']) && $request = new Request('www.cubecart.com', '/version-check/'.CC_VERSION)) {
+if (!$GLOBALS['session']->has('version_check') && $request = new Request('www.cubecart.com', '/version-check/'.CC_VERSION)) {
 	$request->skiplog(true);
 	$request->setMethod('get');
 	$request->cache(true);
 	$request->setSSL(true);
 	$request->setUserAgent('CubeCart');
-	$request->setData(array('version' => CC_VERSION));
+	
+	$request_data = array('version' => CC_VERSION);
 
-	if (($response = $request->send()) !== false) {
-		if (version_compare(trim($response), CC_VERSION, '>')) {
-			$GLOBALS['main']->setACPWarning(sprintf($lang['dashboard']['error_version_update'], $response, CC_VERSION).' <a href="?_g=maintenance&node=index#upgrade">'.$lang['maintain']['upgrade_now'].'</a>');
+	$extension_versions = $GLOBALS['db']->select('CubeCart_extension_info');
+	if(is_array($extension_versions)) {
+		$extension_check = array();
+		foreach($extension_versions as $v) {
+			if(file_exists(CC_ROOT_DIR.$v['dir'])) {
+				$extension_check[$v['file_id']] = $v['modified'];
+			} else {
+				$GLOBALS['db']->delete('CubeCart_extension_info', array('file_id' => $v['file_id']));
+			}
 		}
-		$_SESSION['version-check'] = true;
+		if(count($extension_check)>0) {
+			$request_data['extensions'] = $extension_check;
+		}
+	}
+
+	$request->setData($request_data);
+	$response = $request->send();
+	
+	if ($response !== false) {
+		
+		$response_array = json_decode($response, true);
+
+		if (version_compare($response_array['version'], CC_VERSION, '>')) {
+			$GLOBALS['main']->setACPWarning(sprintf($lang['dashboard']['error_version_update'], $response_array['version'], CC_VERSION).' <a href="?_g=maintenance&node=index#upgrade">'.$lang['maintain']['upgrade_now'].'</a>');
+		}
+		if(isset($response_array['updates']) && is_array($response_array['updates'])) {
+			$version_check = $response_array['updates'];
+		} else {
+			$version_check = true;
+		}
+		$GLOBALS['session']->set('version_check', $version_check);
 	}
 }
 
@@ -263,6 +290,15 @@ if ($stock_c = $GLOBALS['db']->select($tables, $fields, $where)) {
 	$GLOBALS['smarty']->assign('STOCK_PAGINATION', $GLOBALS['db']->pagination($stock_count, $result_limit, $page, $show = 5, 'stock', 'stock_warnings', $glue = ' ', $view_all = true));
 
 	foreach ($GLOBALS['hooks']->load('admin.dashboard.stock.post') as $hook) include $hook;
+}
+
+if($GLOBALS['session']->has('version_check')) {
+	$extension_updates = $GLOBALS['session']->get('version_check');
+	$extension_updates = $GLOBALS['db']->select('CubeCart_extension_info', false, array('file_id' => array_keys($extension_updates)));
+	if($extension_updates) {
+		$GLOBALS['main']->addTabControl($lang['dashboard']['title_extension_updates'], 'extension_updates', null, null, count($extension_updates));
+		$GLOBALS['smarty']->assign('EXTENSION_UPDATES', $extension_updates);
+	}
 }
 
 foreach ($GLOBALS['hooks']->load('admin.dashboard.tabs') as $hook) include $hook;

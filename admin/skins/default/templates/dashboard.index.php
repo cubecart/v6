@@ -240,6 +240,28 @@
    <div>{$REVIEW_PAGINATION}</div>
 </div>
 {/if}
+{if isset($EXTENSION_UPDATES)}
+<div id="extension_updates" class="tab_content">
+   <h3>{$LANG.dashboard.title_extension_updates}</h3>
+   <p>{$LANG.module.extensions_available_desc}</p>
+   <table>
+      <thead>
+         <tr>
+            <th>{$LANG.common.name}</th>
+            <th>&nbsp;</th>
+         </tr>
+      </thead>
+      <tbody>
+      {foreach from=$EXTENSION_UPDATES item=extension}
+         <tr>
+            <td>{$extension.name}</td>
+            <td><a href="https://www.cubecart.com/extensions/id/{$extension.file_id}" target="_blank">{$LANG.common.update}</a></td>
+         </tr>
+      {/foreach}
+      </tbody>
+   </table>
+</div>
+{/if}
 {if isset($STOCK)}
 <div id="stock_warnings" class="tab_content">
    <h3>{$LANG.dashboard.title_stock_warnings}</h3>

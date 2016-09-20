@@ -549,8 +549,8 @@
   </group>
   <group name="common">
     <string name="days" introduced="6.1.0"><![CDATA[Days]]></string>
-    <string name="staff" introduced="6.0.13"><![CDATA[Staff]]></string>
-    <string name="initiator" introduced="6.0.13"><![CDATA[Initiator]]></string>
+    <string name="staff" introduced="6.1.0"><![CDATA[Staff]]></string>
+    <string name="initiator" introduced="6.1.0"><![CDATA[Initiator]]></string>
     <string name="this_page" introduced="6.0.12"><![CDATA[About this page]]></string>
     <string name="tech_support" introduced="6.0.12"><![CDATA[Technical Support]]></string>
     <string name="back" introduced="6.0.11"><![CDATA[Back]]></string>
@@ -900,6 +900,7 @@
     <string name="tech_version_php" introduced="5.0.0"><![CDATA[PHP Version]]></string>
     <string name="title_admin_cp" introduced="5.0.0"><![CDATA[Admin Control Panel]]></string>
     <string name="title_dashboard" introduced="5.0.0"><![CDATA[Dashboard]]></string>
+    <string name="title_extension_updates" introduced="6.1.0"><![CDATA[Extension Updates]]></string>
     <string name="title_day_of_month" introduced="5.0.0"><![CDATA[Day of the month]]></string>
     <string name="title_error_log" introduced="5.0.0"><![CDATA[Error Log]]></string>
     <string name="title_inventory_data" introduced="5.0.0"><![CDATA[Inventory Data]]></string>
@@ -1236,9 +1237,9 @@
     <string name="title_hook_configure" introduced="5.0.0"><![CDATA[Configure Hook]]></string>
     <string name="title_hook_optional" introduced="5.0.0"><![CDATA[Optional Configuration]]></string>
     <string name="title_hook_required" introduced="5.0.0"><![CDATA[Required Configuration]]></string>
-    <string name="title_plugin" introduced="5.0.0"><![CDATA[Plugin]]></string>
-    <string name="title_plugins" introduced="5.0.0"><![CDATA[Plugins]]></string>
-    <string name="title_plugins_installed" introduced="5.0.0"><![CDATA[Installed Plugins (enabled only)]]></string>
+    <string name="title_plugin" introduced="5.0.0"><![CDATA[Extension]]></string>
+    <string name="title_plugins" introduced="5.0.0"><![CDATA[Extensions]]></string>
+    <string name="title_plugins_installed" introduced="5.0.0"><![CDATA[Installed Extensions (enabled only)]]></string>
     <string name="trigger" introduced="5.0.0"><![CDATA[Trigger]]></string>
     <string name="unique_id" introduced="5.2.0"><![CDATA[Unique ID]]></string>
     <string name="php_code" introduced="5.2.0"><![CDATA[PHP Code]]></string>
@@ -1387,7 +1388,8 @@
     <string name="token_desc" introduced="6.0.0"><![CDATA[Installing anything from the CubeCart Marketplace is a breeze using install tokens. Locate the item you want and click the thunderbolt icon (<i class="fa fa-bolt"></i>) next to the file name. This will generate your install token which can be used here to install/upgrade and downgrade.]]></string>
     <string name="backup_if_exists" introduced="6.0.0"><![CDATA[Backup if already exists]]></string>
     <string name="backup_abort" introduced="6.0.0"><![CDATA[Abort if backup fails]]></string>
-    <string name="available_plugins" introduced="6.0.0"><![CDATA[Available Plugins]]></string>
+    <string name="available_plugins" introduced="6.0.0"><![CDATA[Available Extensions]]></string>
+    <string name="extensions_available_desc" introduced="6.1.0"><![CDATA[Updates are available for the following extensions. Please click the update link and obtain a new token (<i class="fa fa-bolt" aria-hidden="true"></i>). Once you have a new token please upgrade in the &quot;<a href="?_g=plugins">Manage Extensions</a>&quot; section of your admin control panel.]]></string>
     <string name="token" introduced="6.0.0"><![CDATA[Token]]></string>
     <string name="get_file_failed" introduced="6.0.0"><![CDATA[Failed to retrieve file.]]></string>
     <string name="aff_sale" introduced="5.0.0"><![CDATA[Base on]]></string>
@@ -1456,12 +1458,12 @@
     <string name="nav_maintenance" introduced="5.0.0"><![CDATA[Maintenance]]></string>
     <string name="nav_manage_hooks" introduced="5.0.0"><![CDATA[Manage Hooks]]></string>
     <string name="nav_manufacturers" introduced="5.0.0"><![CDATA[Manufacturers]]></string>
-    <string name="nav_modules" introduced="5.0.0"><![CDATA[Plugins]]></string>
+    <string name="nav_modules" introduced="5.0.0"><![CDATA[Extensions]]></string>
     <string name="nav_newsletters" introduced="5.0.0"><![CDATA[Newsletters]]></string>
     <string name="nav_subscribers" introduced="6.0.0"><![CDATA[Mailing List]]></string>
     <string name="nav_orders" introduced="5.0.0"><![CDATA[Orders]]></string>
     <string name="nav_marketplace" introduced="6.0.0"><![CDATA[Marketplace]]></string>
-    <string name="nav_plugins" introduced="5.0.0"><![CDATA[Manage Plugins]]></string>
+    <string name="nav_plugins" introduced="5.0.0"><![CDATA[Manage Extensions]]></string>
     <string name="nav_prod_reviews" introduced="5.0.0"><![CDATA[Reviews]]></string>
     <string name="nav_product_options" introduced="5.0.0"><![CDATA[Product Options]]></string>
     <string name="nav_products" introduced="5.0.0"><![CDATA[Products]]></string>
