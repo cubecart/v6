@@ -18,6 +18,13 @@ global $glob, $lang, $admin_data;
 ## Quick tour
 $GLOBALS['smarty']->assign('QUICK_TOUR', true);
 
+if(isset($_GET['ignore_update']) && $_GET['ignore_update']>0) {
+	$GLOBALS['db']->update('CubeCart_extension_info', array('modified' => time()), array('file_id' => (int)$_GET['ignore_update']));
+	$GLOBALS['main']->setACPNotify($lang['dashboard']['ignore_update']);
+	$GLOBALS['session']->delete('version_check');
+	httpredir(currentPage(array('ignore_update')));
+}
+
 ## Save notes
 if (isset($_POST['notes']['dashboard_notes']) && !empty($_POST['notes']['dashboard_notes'])) {
 	$update = array('dashboard_notes' => $_POST['notes']['dashboard_notes']);
@@ -86,6 +93,8 @@ if (!$GLOBALS['session']->has('version_check') && $request = new Request('www.cu
 	$request->cache(true);
 	$request->setSSL(true);
 	$request->setUserAgent('CubeCart');
+	$request->customOption(CURLOPT_SSL_VERIFYHOST,0);
+	$request->customOption(CURLOPT_SSL_VERIFYPEER,0);
 	
 	$request_data = array('version' => CC_VERSION);
 

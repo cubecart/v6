@@ -248,7 +248,7 @@
       <thead>
          <tr>
             <th>{$LANG.common.name}</th>
-            <th>&nbsp;</th>
+            <th colspan="2">&nbsp;</th>
          </tr>
       </thead>
       <tbody>
@@ -256,6 +256,7 @@
          <tr>
             <td>{$extension.name}</td>
             <td><a href="https://www.cubecart.com/extensions/id/{$extension.file_id}" target="_blank">{$LANG.common.update}</a></td>
+            <td><a href="?ignore_update={$extension.file_id}">{$LANG.common.ignore}</a></td>
          </tr>
       {/foreach}
       </tbody>
