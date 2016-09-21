@@ -37,7 +37,8 @@ $nav_items['inventory']  = array(
 	$lang['navigation']['nav_coupons']   => '?_g=products&node=coupons',
 	$lang['navigation']['nav_manufacturers'] => '?_g=products&node=manufacturers',
 	$lang['navigation']['nav_cat_import']  => '?_g=products&node=import',
-	$lang['navigation']['nav_cat_export']  => '?_g=products&node=export'
+	$lang['navigation']['nav_cat_export']  => '?_g=products&node=export',
+	$lang['catalogue']['title_bulk_prices']  => '?_g=products&node=assign&prices=1'
 );
 
 $nav_items['reporting']  = array(

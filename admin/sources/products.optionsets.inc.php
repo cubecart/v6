@@ -37,7 +37,7 @@ if (isset($_POST['set'])) {
 #############################################
 $GLOBALS['main']->addTabControl($lang['catalogue']['title_product_list'], null, currentPage(array('node')));
 $GLOBALS['main']->addTabControl($lang['catalogue']['product_add'], null, currentPage(array('node'), array('action' => 'add')));
-$GLOBALS['main']->addTabControl($lang['catalogue']['title_category_assign_to'], null, currentPage(null, array('node' => 'assign')));
+$GLOBALS['main']->addTabControl($lang['catalogue']['title_category_assigned'], null, currentPage(null, array('node' => 'assign')));
 $GLOBALS['main']->addTabControl($lang['catalogue']['title_option_set_assign'], 'assign');
 $GLOBALS['gui']->addBreadcrumb($lang['catalogue']['title_option_set_assign'], currentPage());
 

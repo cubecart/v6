@@ -345,7 +345,8 @@
     <string name="no_option_set_attributes" introduced="6.0.5"><![CDATA[No attributes have been assigned.]]></string>
     <string name="no_option_sets_assigned" introduced="6.0.5"><![CDATA[No option sets have been assigned.]]></string>
     <string name="no_taxes_setup" introduced="5.0.0"><![CDATA[No taxs have been setup.]]></string>
-    <string name="notify_assign_update" introduced="5.0.0"><![CDATA[Products have been updated and assigned accordingly.]]></string>
+    <string name="notify_assign_update" introduced="5.0.0"><![CDATA[Products have been assigned accordingly.]]></string>
+    <string name="notify_prices_updates" introduced="6.1.0"><![CDATA[Prices have been updated accordingly.]]></string>
     <string name="notify_certs_none" introduced="5.0.0"><![CDATA[No gift certificates exist.]]></string>
     <string name="notify_coupon_deleted" introduced="5.0.0"><![CDATA[Coupon deleted.]]></string>
     <string name="notify_coupon_create" introduced="5.0.0"><![CDATA[Coupon added.]]></string>
@@ -437,8 +438,10 @@
     <string name="tax_included" introduced="5.0.0"><![CDATA[Tax Included]]></string>
     <string name="tax_inclusive" introduced="5.0.0"><![CDATA[Tax Inclusive]]></string>
     <string name="tax_type" introduced="5.0.0"><![CDATA[Tax Type]]></string>
-    <string name="title_category_assign_to" introduced="5.0.0"><![CDATA[Assign to Category]]></string>
-    <string name="title_category_assigned" introduced="5.0.0"><![CDATA[Category Assignment]]></string>
+    <string name="title_category_assigned" introduced="5.0.0"><![CDATA[Assign to Category]]></string>
+    <string name="category_assign_1" introduced="6.1.0"><![CDATA[1. Select the products you wish to assign into a category.]]></string>
+    <string name="category_assign_2" introduced="6.1.0"><![CDATA[2. Select the categories you wish to assign them to.]]></string>
+    <string name="category_assign_3" introduced="6.1.0"><![CDATA[3. Click &quot;Save&quot;.]]></string>
     <string name="title_coupon_add" introduced="5.0.0"><![CDATA[Add New Coupon]]></string>
     <string name="title_coupon_code" introduced="5.0.0"><![CDATA[Code]]></string>
     <string name="title_coupon_count" introduced="5.0.0"><![CDATA[Times Used]]></string>
@@ -484,6 +487,7 @@
     <string name="title_option_set_add" introduced="5.0.0"><![CDATA[Create new Set]]></string>
     <string name="title_option_set_append" introduced="5.0.0"><![CDATA[Add Attributes to Set]]></string>
     <string name="title_option_set_assign" introduced="5.0.0"><![CDATA[Assign Option Sets]]></string>
+    <string name="title_bulk_prices" introduced="6.1.0"><![CDATA[Bulk Price Change]]></string>
     <string name="title_option_sets" introduced="5.0.0"><![CDATA[Option Sets]]></string>
     <string name="title_options" introduced="5.0.0"><![CDATA[Options]]></string>
     <string name="title_popular" introduced="5.0.0"><![CDATA[Best Sellers]]></string>

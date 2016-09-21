@@ -299,6 +299,16 @@ $(document).ready(function() {
         }
     });
 
+    $("#bulk_price_target").change(function() {
+        if($(this).val()=='categories') {
+            $("#bulk_update_categories").show();
+            $("#bulk_update_products").hide();
+        } else {
+            $("#bulk_update_categories").hide();
+            $("#bulk_update_products").show();
+        }
+    });
+
     $(":input.required").blur(function() {
         $(this).attr("id"), "" == $(this).val().replace(/\s/i, "") ? $(this).addClass("required-error") : $(this).removeClass("required-error")
     }), $("select.certificate-delivery").change(function() {

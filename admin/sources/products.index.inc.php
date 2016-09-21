@@ -1235,7 +1235,7 @@ if (isset($_GET['action'])) {
 	// List all products
 	$GLOBALS['main']->addTabControl($lang['catalogue']['title_product_list'], 'general');
 	$GLOBALS['main']->addTabControl($lang['catalogue']['product_add'], null, currentPage(null, array('action' => 'add')));
-	$GLOBALS['main']->addTabControl($lang['catalogue']['title_category_assign_to'], null, currentPage(null, array('node' => 'assign')));
+	$GLOBALS['main']->addTabControl($lang['catalogue']['title_category_assigned'], null, currentPage(null, array('node' => 'assign')));
 	$GLOBALS['main']->addTabControl($lang['catalogue']['title_option_set_assign'], null, currentPage(null, array('node' => 'optionsets')));
 	$GLOBALS['main']->addTabControl($lang['search']['title_search_products'], 'sidebar');
 

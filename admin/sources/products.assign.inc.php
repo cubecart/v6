@@ -13,8 +13,10 @@
 if (!defined('CC_INI_SET')) die('Access Denied');
 Admin::getInstance()->permissions('products', CC_PERM_READ, true);
 
+$GLOBALS['smarty']->assign('MODE', isset($_GET['prices']) ? 'prices' : 'assign_only');
+
 ### handle post and save
-if (isset($_POST['price'])) {
+if (isset($_POST) && is_array($_POST) && count($_POST)>0) {
 
 	## Assign products to categories
 	if (is_array($_POST['category']) && is_array($_POST['product'])) {
@@ -93,17 +95,27 @@ if (isset($_POST['price'])) {
 			}
 		}
 	}
-	$GLOBALS['main']->setACPNotify($lang['catalogue']['notify_assign_update']);
+	if(isset($_GET['prices'])) {
+		$GLOBALS['main']->setACPNotify($lang['catalogue']['notify_prices_updates']);
+	} else {
+		$GLOBALS['main']->setACPNotify($lang['catalogue']['notify_assign_update']);
+	}
 	httpredir(currentPage());
 } elseif (isset($_POST['price'])) {
 	$GLOBALS['main']->setACPWarning($lang['common']['error_no_change']);
 }
 
-$GLOBALS['main']->addTabControl($lang['catalogue']['title_product_list'], null, currentPage(array('node')));
-$GLOBALS['main']->addTabControl($lang['catalogue']['product_add'], null, currentPage(array('node'), array('action' => 'add')));
-$GLOBALS['main']->addTabControl($lang['catalogue']['title_category_assign_to'], 'assign');
-$GLOBALS['main']->addTabControl($lang['catalogue']['title_option_set_assign'], null, currentPage(null, array('node' => 'optionsets')));
-$GLOBALS['gui']->addBreadcrumb($lang['catalogue']['title_category_assigned'], currentPage());
+if(!isset($_GET['prices'])) {
+	$GLOBALS['main']->addTabControl($lang['catalogue']['title_product_list'], null, currentPage(array('node')));
+	$GLOBALS['main']->addTabControl($lang['catalogue']['product_add'], null, currentPage(array('node'), array('action' => 'add')));
+	$GLOBALS['main']->addTabControl($lang['catalogue']['title_category_assigned'], 'assign');
+	$GLOBALS['main']->addTabControl($lang['catalogue']['title_option_set_assign'], null, currentPage(null, array('node' => 'optionsets')));
+	$GLOBALS['gui']->addBreadcrumb($lang['catalogue']['title_category_assigned'], currentPage());
+} else {
+	$GLOBALS['main']->addTabControl($lang['catalogue']['title_bulk_prices'], 'assign');
+	$GLOBALS['gui']->addBreadcrumb($lang['catalogue']['title_bulk_prices'], currentPage());
+}
+
 
 ## Product list
 if (($products = $GLOBALS['db']->select('CubeCart_inventory', array('product_id', 'name', 'product_code'), false, array('name' => 'ASC'))) !== false) {
