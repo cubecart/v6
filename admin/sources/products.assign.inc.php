@@ -131,7 +131,7 @@ if (($category_array = $GLOBALS['db']->select('CubeCart_category', array('cat_na
 	}
 	natcasesort($cat_list);
 	foreach ($cat_list as $cat_id => $cat_name) {
-		if (empty($cat_name)) continue;
+		if (empty($cat_name) || $cat_id==0) continue;
 		$data = array(
 			'id'  => $cat_id,
 			'name'  => $cat_name,
