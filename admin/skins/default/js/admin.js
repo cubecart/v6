@@ -282,11 +282,21 @@ $(document).ready(function() {
         for (var e in gui_message_json) $("#" + e).addClass("required-error").val("");
     
     $('.url_select').bind('change', function () {
-        var url = $(this).val(); // get selected value
+        var url = $(this).value(); // get selected value
         if (url) { // require a URL
             window.location = url; // redirect
         }
         return false;
+    });
+
+    $("#bulk_price_method").change(function() {
+        if($(this).val()=='percent') {
+            $("#bulk_price_action").hide().attr('disabled', true);
+            $("#bulk_price_percent_symbol").show();
+        } else {
+            $("#bulk_price_action").show().attr('disabled', false);
+            $("#bulk_price_percent_symbol").hide();
+        }
     });
 
     $(":input.required").blur(function() {
