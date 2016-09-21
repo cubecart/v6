@@ -55,10 +55,12 @@
             </select>
             <input type="text" name="price[value]" value="" class="textbox number">
             <select name="price[field]">
-               <option value="all">{$LANG.common.price_standard}, {$LANG.common.price_sale} &amp; {$LANG.common.price_cost}</option>
+               <option value="all">{$LANG.common.price_standard}, {$LANG.common.price_sale}, {$LANG.common.price_cost}, {$LANG.catalogue.quantity_discounts} &amp; {$LANG.catalogue.title_product_options}</option>
                <option value="price">{$LANG.common.price_standard}</option>
                <option value="sale_price">{$LANG.common.price_sale}</option>
                <option value="cost_price">{$LANG.common.price_cost}</option>
+               <option value="quantity_discounts">{$LANG.catalogue.quantity_discounts}</option>
+               <option value="product_options">{$LANG.catalogue.title_product_options}</option>
             </select>
          </div>
       </fieldset>

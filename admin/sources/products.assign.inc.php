@@ -48,20 +48,57 @@ if (isset($_POST['price'])) {
 				$fields = ($_POST['price']['field'] == 'all') ? array('price', 'sale_price', 'cost_price') : array($_POST['price']['field']);
 				
 				foreach($fields as $field) {
-					if (($product = $GLOBALS['db']->select('CubeCart_inventory', array($field), array('product_id' => (int)$product_id))) !== false) {
-						$action	= $_POST['price']['action'];
-						$price	= $product[0][$field];
-						$value	= $_POST['price']['value'];
-						switch (strtolower($_POST['price']['method'])) {
-							case 'percent':
-								$shift	= ($action) ? 1 : 0;
-								$price	= $product[0][$field] * (($value/100)+(int)$shift);
-								break;
-							default:
-								$price	+= ($action) ? $value : $value-($value*2);
+					if(in_array($field, array('price', 'sale_price', 'cost_price'))) {
+						if (($product = $GLOBALS['db']->select('CubeCart_inventory', array($field), array('product_id' => (int)$product_id))) !== false) {
+							$action	= $_POST['price']['action'];
+							$price	= $product[0][$field];
+							$value	= $_POST['price']['value'];
+							switch (strtolower($_POST['price']['method'])) {
+								case 'percent':
+									$shift	= ($action) ? 1 : 0;
+									$price	= $product[0][$field] * (($value/100)+(int)$shift);
+									break;
+								default:
+									$price	+= ($action) ? $value : $value-($value*2);
+							}
+							$record	= array($field	=> $price);
+							$GLOBALS['db']->update('CubeCart_inventory', $record, array('product_id' => (int)$product_id));
 						}
-						$record	= array($field	=> $price);
-						$GLOBALS['db']->update('CubeCart_inventory', $record, array('product_id' => (int)$product_id));
+					} elseif(in_array($field, array('quantity_discounts', 'product_options'))) {
+						
+						switch($field) {
+							case 'quantity_discounts':
+								$table = 'CubeCart_pricing_quantity';
+								$price_column = 'price';
+								$id_column = 'discount_id';
+								$product_id_column = 'product_id';
+							break;
+							case 'product_options':
+								$table = 'CubeCart_option_assign';
+								$price_column = 'option_price';
+								$id_column = 'assign_id';
+								$product_id_column = 'product';
+							break;
+						}
+
+						if (($price_rows = $GLOBALS['db']->select($table, array($price_column,$id_column), array($product_id_column => (int)$product_id))) !== false) {
+							
+							$action	= $_POST['price']['action'];
+							$value	= $_POST['price']['value'];
+
+							foreach($price_rows as $price_row) {
+								$price	= $price_row[$price_column];
+								switch (strtolower($_POST['price']['method'])) {
+									case 'percent':
+										$shift	= ($action) ? 1 : 0;
+										$price	= $price_row[$price_column] * (($value/100)+(int)$shift);
+										break;
+									default:
+										$price	+= ($action) ? $value : $value-($value*2);
+								}
+								$GLOBALS['db']->update($table, array($price_column => $price), array($id_column => (int)$price_row[$id_column]));
+							}
+						}
 					}
 				}
 			}
