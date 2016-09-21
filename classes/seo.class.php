@@ -308,7 +308,8 @@ class SEO {
 			}
 		}
 		$safe_path = SEO::_safeUrl($path);
-		return (($absolute) ? $GLOBALS['storeURL'] . '/' . $safe_path : $safe_path) . (($extension) ? $this->_extension : '');
+		
+		return $this->_getBaseUrl($absolute).$safe_path.(($extension) ? $this->_extension : '');
 	}
 
 	/**
