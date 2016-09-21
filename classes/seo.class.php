@@ -799,22 +799,22 @@ class SEO {
 			$htaccess_path = CC_ROOT_DIR.'/.htaccess';
 			$htaccess_content = '##### START CubeCart .htaccess #####
 
-## File Security
+### File Security ###
 <FilesMatch "\.(htaccess)$">
- Order Allow,Deny
- Deny from all
+  Order Allow,Deny
+  Deny from all
 </FilesMatch>
 
-#### Apache directory listing rules ####
+### Apache directory listing rules ###
 DirectoryIndex index.php index.htm index.html
 IndexIgnore *
 
-#### Rewrite rules for SEO functionality ####
+### Rewrite rules for SEO functionality ###
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase '.CC_ROOT_REL.' 
   
-  ######## START v4 SEO URL BACKWARD COMPATIBILITY ########
+  ##### START v4 SEO URL BACKWARD COMPATIBILITY #####
   RewriteCond %{QUERY_STRING} (.*)$
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule cat_([0-9]+)(\.[a-z]{3,4})?(.*)$ index.php?_a=category&cat_id=$1&%1 [NC]
@@ -834,7 +834,7 @@ IndexIgnore *
   RewriteCond %{QUERY_STRING} (.*)$
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule _saleItems(\.[a-z]+)?(\?.*)?$ index.php?_a=saleitems&%1 [NC,L]
-  ######## END v4 SEO URL BACKWARD COMPATIBILITY ########
+  ##### END v4 SEO URL BACKWARD COMPATIBILITY #####
 
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
@@ -842,9 +842,13 @@ IndexIgnore *
   RewriteRule ^(.*)\.html?$ index.php?seo_path=$1 [L,QSA]
 </IfModule>
 
-## Default store 404 page
+### Default store 404 page ###
 ErrorDocument 404 '.CC_ROOT_REL.'index.php
 
+## Override default 404 error document for missing page resources ##
+<FilesMatch "\.(gif|jpe?g|png|ico|css|js|svg)$">
+  ErrorDocument 404 "<html></html>
+</FilesMatch>
 ##### END CubeCart .htaccess #####';
 
 			if(!file_exists($htaccess_path)) {
