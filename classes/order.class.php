@@ -1228,10 +1228,7 @@ class Order {
 			if ($order_id = $GLOBALS['db']->insert('CubeCart_order_summary', $record)) {
 				// Insert history
 				$this->_addHistory($this->_order_id, 1);
-				if ($GLOBALS['user']->is()) {
-					//If they are a user add an order
-					$GLOBALS['user']->addOrder();
-				}
+				$GLOBALS['user']->addOrder($customer_id);
 			}
 		}
 	}

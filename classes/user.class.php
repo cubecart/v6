@@ -169,11 +169,12 @@ class User {
 
 	/**
 	 * Increment customer order count by 1
+	 *
+	 * @param integer $customer_id
+	 * @return bool
 	 */
-	public function addOrder() {
-		if ($this->is()) {
-			$this->update(array('order_count' => ((int)$this->_user_data['order_count'] + 1)));
-		}
+	public function addOrder($customer_id) {
+		return (bool)$GLOBALS['db']->misc('UPDATE `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_customer` SET `order_count` = `order_count` + 1 WHERE `customer_id` = '.(int)$customer_id);
 	}
 
 	/**
