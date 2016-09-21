@@ -307,6 +307,8 @@ $(document).ready(function() {
             $("#bulk_update_categories").hide();
             $("#bulk_update_products").show();
         }
+        $('input:checkbox').removeAttr('checked');
+        $('.custom-checkbox').removeClass('selected');
     });
 
     $(":input.required").blur(function() {
