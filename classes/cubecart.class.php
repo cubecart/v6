@@ -1672,7 +1672,7 @@ class Cubecart {
 			// Check if new shipping methods are avialble and notify if they are
 			$shipping_hash = md5(serialize($shipping_list));
 			if (isset($GLOBALS['cart']->basket['shipping_hash']) && !empty($GLOBALS['cart']->basket['shipping_hash']) && $shipping_hash!==$GLOBALS['cart']->basket['shipping_hash']) {
-				$GLOBALS['gui']->setNotify($GLOBALS['language']->checkout['check_shipping']);
+				$GLOBALS['gui']->setInfo($GLOBALS['language']->checkout['check_shipping']);
 			}
 			$GLOBALS['cart']->basket['shipping_hash'] = $shipping_hash;
 
