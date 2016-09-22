@@ -196,7 +196,7 @@
   </group>
   <group name="basket">
     <string name="continue_shopping" introduced="6.1.0"><![CDATA[Continue Shopping]]></string>
-    <string name="free_coupon_shipping" introduced="6.1.0"><![CDATA[Free Shipping from Coupon]]></string>
+    <string name="free_coupon_shipping" introduced="6.1.0"><![CDATA[Free Shipping from Promotional Code]]></string>
     <string name="fetch_shipping_rates" introduced="6.0.5"><![CDATA[Fetch Shipping Rates]]></string>
     <string name="specify_shipping" introduced="6.0.5"><![CDATA[Specify your shipping address]]></string>
     <string name="shipping_address_updated" introduced="6.0.5"><![CDATA[Shipping address has been updated.]]></string>
@@ -211,7 +211,7 @@
     <string name="basket_zero_items" introduced="5.0.0"><![CDATA[Your basket has (0) items.]]></string>
     <string name="cancel_order" introduced="5.0.0"><![CDATA[Cancel Order]]></string>
     <string name="complete_payment" introduced="5.0.0"><![CDATA[Complete Payment]]></string>
-    <string name="coupon_add" introduced="5.0.0"><![CDATA[Gift Certificate/Coupon]]></string>
+    <string name="coupon_add" introduced="5.0.0"><![CDATA[Promotion or gift card]]></string>
     <string name="customer_info" introduced="5.0.0"><![CDATA[Customer Information]]></string>
     <string name="order_date" introduced="5.0.0"><![CDATA[Order Date]]></string>
     <string name="order_number" introduced="5.0.0"><![CDATA[Order Number]]></string>
@@ -257,9 +257,9 @@
     <string name="coupon_shipping" introduced="5.0.0"><![CDATA[Discount applies to shipping cost]]></string>
     <string name="free_coupon_shipping" introduced="6.1.0"><![CDATA[Free shipping]]></string>
     <string name="coupon_subtotal" introduced="5.2.3"><![CDATA[Discount applies to subtotal only]]></string>
-    <string name="coupon_no_shipping" introduced="5.1.5"><![CDATA[When specifying products, coupon will NOT apply to shipping.]]></string>
-    <string name="coupon_include" introduced="5.1.5"><![CDATA[Coupon applies to ONLY above products]]></string>
-    <string name="coupon_exclude" introduced="5.1.5"><![CDATA[Coupon applies to all EXCEPT above products]]></string>
+    <string name="coupon_no_shipping" introduced="5.1.5"><![CDATA[When specifying products, promotional code will NOT apply to shipping.]]></string>
+    <string name="coupon_include" introduced="5.1.5"><![CDATA[Promotional code applies to ONLY above products]]></string>
+    <string name="coupon_exclude" introduced="5.1.5"><![CDATA[Promotional code applies to all EXCEPT above products]]></string>
     <string name="customer_reviews" introduced="5.0.0"><![CDATA[Customer Reviews]]></string>
     <string name="delete_option_disabled" introduced="5.0.0"><![CDATA[This option can not be deleted as it is part of an option set. Please disable instead.]]></string>
     <string name="delimiter" introduced="5.0.0"><![CDATA[Delimiter]]></string>
@@ -273,11 +273,11 @@
     <string name="error_category_defaulted" introduced="5.0.0"><![CDATA[No primary category was selected, so one has been automatically assigned.]]></string>
     <string name="error_category_error" introduced="5.0.0"><![CDATA[This category doesn't exist.]]></string>
     <string name="error_rating_required" introduced="6.0.5"><![CDATA[No star rating was specified.]]></string>
-    <string name="error_coupon_delete" introduced="5.0.0"><![CDATA[Failed to delete coupon.]]></string>
+    <string name="error_coupon_delete" introduced="5.0.0"><![CDATA[Failed to delete promotional code.]]></string>
     <string name="error_gc_email" introduced="5.0.0"><![CDATA[Please enter a valid email address for the recipient.]]></string>
-    <string name="error_gc_value" introduced="5.0.0"><![CDATA[Please enter a numeric value for the gift certificate value.]]></string>
-    <string name="error_gc_value_high" introduced="5.0.0"><![CDATA[The Gift Certificate value is too high.]]></string>
-    <string name="error_gc_value_low" introduced="5.0.0"><![CDATA[The Gift Certificate value is too low.]]></string>
+    <string name="error_gc_value" introduced="5.0.0"><![CDATA[Please enter a numeric value for the gift card value.]]></string>
+    <string name="error_gc_value_high" introduced="5.0.0"><![CDATA[The Gift Card value is too high.]]></string>
+    <string name="error_gc_value_low" introduced="5.0.0"><![CDATA[The Gift Card value is too low.]]></string>
     <string name="error_image_defaulted" introduced="5.0.0"><![CDATA[No default image was chosen, so one has been automatically assigned.]]></string>
     <string name="error_import_empty" introduced="5.0.0"><![CDATA[No import data found.]]></string>
     <string name="error_import_invalid" introduced="5.0.0"><![CDATA[Invalid file format. Document must be of plain text content. e.g. *.txt or *.csv]]></string>
@@ -313,9 +313,9 @@
     <string name="file_path_help" introduced="5.0.0"><![CDATA[If a server path/name.ext or a complete URL is specified, this overrides any existing files that have been selected.]]></string>
     <string name="friends_email" introduced="5.0.0"><![CDATA[Friend's Email]]></string>
     <string name="friends_name" introduced="5.0.0"><![CDATA[Friend's Name]]></string>
-    <string name="gift_certificate" introduced="5.0.0"><![CDATA[Gift Certificate]]></string>
-    <string name="gift_certificate_value" introduced="5.0.0"><![CDATA[Gift certificates must have a minimum value of %1$s, and a maximum of %2$s. Please note that it is only possible to purchase a gift certificate in the stores main currency.]]></string>
-    <string name="gift_certificates" introduced="5.0.0"><![CDATA[Gift Certificates]]></string>
+    <string name="gift_certificate" introduced="5.0.0"><![CDATA[Gift Card]]></string>
+    <string name="gift_certificate_value" introduced="5.0.0"><![CDATA[Gift card must have a minimum value of %1$s, and a maximum of %2$s. Please note that it is only possible to purchase a gift card in the stores main currency.]]></string>
+    <string name="gift_certificates" introduced="5.0.0"><![CDATA[Gift Cards]]></string>
     <string name="hover_zoom" introduced="5.0.0"><![CDATA[Hover over image to zoom]]></string>
     <string name="image_excluded" introduced="5.0.0"><![CDATA[Excluded Image]]></string>
     <string name="image_included" introduced="5.0.0"><![CDATA[Included Image]]></string>
@@ -347,11 +347,11 @@
     <string name="no_taxes_setup" introduced="5.0.0"><![CDATA[No taxs have been setup.]]></string>
     <string name="notify_assign_update" introduced="5.0.0"><![CDATA[Products have been assigned accordingly.]]></string>
     <string name="notify_prices_updates" introduced="6.1.0"><![CDATA[Prices have been updated accordingly.]]></string>
-    <string name="notify_certs_none" introduced="5.0.0"><![CDATA[No gift certificates exist.]]></string>
-    <string name="notify_coupon_deleted" introduced="5.0.0"><![CDATA[Coupon deleted.]]></string>
-    <string name="notify_coupon_create" introduced="5.0.0"><![CDATA[Coupon added.]]></string>
-    <string name="notify_coupon_update" introduced="5.0.0"><![CDATA[Coupon updated.]]></string>
-    <string name="notify_coupons_none" introduced="5.0.0"><![CDATA[No coupons exist.]]></string>
+    <string name="notify_certs_none" introduced="5.0.0"><![CDATA[No gift cards exist.]]></string>
+    <string name="notify_coupon_deleted" introduced="5.0.0"><![CDATA[Promotional code deleted.]]></string>
+    <string name="notify_coupon_create" introduced="5.0.0"><![CDATA[Promotional code added.]]></string>
+    <string name="notify_coupon_update" introduced="5.0.0"><![CDATA[Promotional code updated.]]></string>
+    <string name="notify_coupons_none" introduced="5.0.0"><![CDATA[No promotional codes exist.]]></string>
     <string name="notify_import_complete" introduced="5.0.0"><![CDATA[Product import complete.]]></string>
     <string name="notify_import_removed" introduced="5.0.0"><![CDATA[Previous import removed.]]></string>
     <string name="notify_import_removed_fail" introduced="5.0.0"><![CDATA[Failed to remove previous import.]]></string>
@@ -442,20 +442,20 @@
     <string name="category_assign_1" introduced="6.1.0"><![CDATA[1. Select the products you wish to assign into a category.]]></string>
     <string name="category_assign_2" introduced="6.1.0"><![CDATA[2. Select the categories you wish to assign them to.]]></string>
     <string name="category_assign_3" introduced="6.1.0"><![CDATA[3. Click &quot;Save&quot;.]]></string>
-    <string name="title_coupon_add" introduced="5.0.0"><![CDATA[Add New Coupon]]></string>
+    <string name="title_coupon_add" introduced="5.0.0"><![CDATA[Add New Promotional Code]]></string>
     <string name="title_coupon_code" introduced="5.0.0"><![CDATA[Code]]></string>
     <string name="title_coupon_count" introduced="5.0.0"><![CDATA[Times Used]]></string>
-    <string name="title_coupon_create" introduced="5.0.0"><![CDATA[Create Coupon]]></string>
-    <string name="title_coupon_detail" introduced="5.0.0"><![CDATA[Coupon Details]]></string>
-    <string name="title_coupon_edit" introduced="5.0.0"><![CDATA[Edit Coupon]]></string>
+    <string name="title_coupon_create" introduced="5.0.0"><![CDATA[Create Promotional Code]]></string>
+    <string name="title_coupon_detail" introduced="5.0.0"><![CDATA[Code Details]]></string>
+    <string name="title_coupon_edit" introduced="5.0.0"><![CDATA[Edit Promotional Code]]></string>
     <string name="title_coupon_expires" introduced="5.0.0"><![CDATA[Expires]]></string>
-    <string name="title_coupon_limits" introduced="5.0.0"><![CDATA[Coupon Limits]]></string>
-    <string name="title_coupon_convert" introduced="6.0.0"><![CDATA[Gift Certificate Conversion]]></string>
-    <string name="coupon_convert_desc" introduced="6.0.0"><![CDATA[To use a coupon as a gift certificate (keeping a balance for multiple uses) it is possible to do so by assigning an order number to it. It must be a real order number with a status of &quot;Processing&quot; or &quot;Complete&quot;.]]></string>
-    <string name="notify_gc_not_fixed" introduced="6.0.0"><![CDATA[Gift certificates can't have a percentage discount type.]]></string>
+    <string name="title_coupon_limits" introduced="5.0.0"><![CDATA[Promotional Code Limits]]></string>
+    <string name="title_coupon_convert" introduced="6.0.0"><![CDATA[Gift Card Conversion]]></string>
+    <string name="coupon_convert_desc" introduced="6.0.0"><![CDATA[To use a promotional code as a gift card (keeping a balance for multiple uses) it is possible to do so by assigning an order number to it. It must be a real order number with a status of &quot;Processing&quot; or &quot;Complete&quot;.]]></string>
+    <string name="notify_gc_not_fixed" introduced="6.0.0"><![CDATA[Gift cards can't have a percentage discount type.]]></string>
     <string name="title_coupon_products" introduced="5.1.5"><![CDATA[Product List Type]]></string>
-    <string name="title_coupon_value" introduced="5.0.0"><![CDATA[Coupon Value]]></string>
-    <string name="title_coupons" introduced="5.0.0"><![CDATA[Coupons]]></string>
+    <string name="title_coupon_value" introduced="5.0.0"><![CDATA[Promotional Code Value]]></string>
+    <string name="title_coupons" introduced="5.0.0"><![CDATA[Promotional Codes]]></string>
     <string name="title_data_example" introduced="5.0.0"><![CDATA[Example Data]]></string>
     <string name="title_digital" introduced="5.0.0"><![CDATA[Digital]]></string>
     <string name="title_digital_options" introduced="5.0.0"><![CDATA[Digital Options]]></string>
@@ -539,13 +539,13 @@
     <string name="error_shipping" introduced="5.0.0"><![CDATA[Unfortunately there are no suitable shipping methods available for your order. This may be because the total weight of your order is too high or we cannot ship to your country. Please contact a member of our staff for any further inquiries.]]></string>
     <string name="check_shipping" introduced="5.0.0"><![CDATA[Available shipping methods have changed. Please check before proceeding.]]></string>
     <string name="error_too_many_added" introduced="5.0.0"><![CDATA[Sorry, you can't buy more than we have. We have automatically reduced your quantity to the maximum available.]]></string>
-    <string name="voucher_accepted" introduced="6.1.0"><![CDATA[Thank you. That coupon has been accepted and discount applied to your basket.]]></string>
-    <string name="voucher_removed" introduced="6.1.0"><![CDATA[Coupon has been removed from your basket.]]></string>
-    <string name="error_voucher_expired" introduced="5.0.0"><![CDATA[Sorry, that voucher has expired.]]></string>
-    <string name="error_voucher_none" introduced="5.0.0"><![CDATA[Sorry, that voucher does not exist.]]></string>
-    <string name="error_voucher_product" introduced="5.0.0"><![CDATA[Sorry, your basket does not qualify for that coupon.]]></string>
+    <string name="voucher_accepted" introduced="6.1.0"><![CDATA[Thank you. That code has been accepted and discount applied to your basket.]]></string>
+    <string name="voucher_removed" introduced="6.1.0"><![CDATA[Promotional code has been removed from your basket.]]></string>
+    <string name="error_voucher_expired" introduced="5.0.0"><![CDATA[Sorry, that code has expired.]]></string>
+    <string name="error_voucher_none" introduced="5.0.0"><![CDATA[Sorry, that code does not exist.]]></string>
+    <string name="error_voucher_product" introduced="5.0.0"><![CDATA[Sorry, your basket does not qualify for that promotional Code.]]></string>
     <string name="error_item_not_available" introduced="6.0.1"><![CDATA[Sorry, but %s is no longer available and has been removed from your basket.]]></string>
-    <string name="error_voucher_wrong_product" introduced="5.0.0"><![CDATA[Sorry, that voucher is not valid for the items in your basket.]]></string>
+    <string name="error_voucher_wrong_product" introduced="5.0.0"><![CDATA[Sorry, that code is not valid for the items in your basket.]]></string>
     <string name="make_payment" introduced="5.0.0"><![CDATA[A total of <strong>%s</strong> is due for order number <strong>%s</strong>]]></string>
     <string name="pay_now" introduced="5.0.0"><![CDATA[Pay Now]]></string>
     <string name="process_basket" introduced="5.0.0"><![CDATA[Basket]]></string>
@@ -1103,7 +1103,7 @@
     <string name="title_macro_admin_order" introduced="5.0.0"><![CDATA[Admin: Order Received]]></string>
     <string name="title_macro_admin_password" introduced="5.0.0"><![CDATA[Admin: Recover Password]]></string>
     <string name="title_macro_admin_review" introduced="5.0.0"><![CDATA[Admin: Review Added]]></string>
-    <string name="title_macro_cart_certificate" introduced="5.0.0"><![CDATA[Cart: Gift Certificate]]></string>
+    <string name="title_macro_cart_certificate" introduced="5.0.0"><![CDATA[Cart: Gift Card]]></string>
     <string name="title_macro_cart_digital" introduced="5.0.0"><![CDATA[Cart: Digital Download]]></string>
     <string name="title_macro_order_cancelled" introduced="5.0.0"><![CDATA[Cart: Order Cancelled]]></string>
     <string name="title_macro_order_confirmed" introduced="5.0.0"><![CDATA[Cart: Order Confirmed]]></string>
@@ -1433,7 +1433,7 @@
   </group>
   <group name="navigation">
     <string name="error_401" introduced="5.0.0"><![CDATA[You do not have the correct privileges to perform that action.]]></string>
-    <string name="giftcerts" introduced="5.0.0"><![CDATA[Gift Certificates]]></string>
+    <string name="giftcerts" introduced="5.0.0"><![CDATA[Gift Cards]]></string>
     <string name="homepage" introduced="5.0.0"><![CDATA[Homepage]]></string>
     <string name="nav_access_log" introduced="5.0.0"><![CDATA[Staff Access Log]]></string>
     <string name="nav_administrators" introduced="5.0.0"><![CDATA[Administrators]]></string>
@@ -1443,9 +1443,9 @@
     <string name="nav_cat_export" introduced="5.0.0"><![CDATA[Export Catalogue]]></string>
     <string name="nav_cat_import" introduced="5.0.0"><![CDATA[Import Catalogue]]></string>
     <string name="nav_categories" introduced="5.0.0"><![CDATA[Categories]]></string>
-    <string name="nav_certificates" introduced="5.0.0"><![CDATA[Gift Certificates]]></string>
+    <string name="nav_certificates" introduced="5.0.0"><![CDATA[Gift Cards]]></string>
     <string name="nav_contact_form" introduced="5.0.0"><![CDATA[Contact Form]]></string>
-    <string name="nav_coupons" introduced="5.0.0"><![CDATA[Coupons]]></string>
+    <string name="nav_coupons" introduced="5.0.0"><![CDATA[Promotional Codes]]></string>
     <string name="nav_currencies" introduced="5.0.0"><![CDATA[Currencies]]></string>
     <string name="nav_customer_list" introduced="5.0.0"><![CDATA[Customer List]]></string>
     <string name="nav_customers" introduced="5.0.0"><![CDATA[Customers]]></string>
@@ -1590,7 +1590,7 @@
     <string name="error_search_logs" introduced="5.0.0"><![CDATA[No logs found that match &quot;%s&quot;]]></string>
     <string name="error_search_result" introduced="5.0.0"><![CDATA[No orders have been found that match your search criteria.]]></string>
     <string name="error_setup_folder" introduced="5.0.0"><![CDATA[WARNING: The CubeCart setup folder, 'setup/', still exists on your server. It must be deleted immediately, or your store will be at risk.]]></string>
-    <string name="certificate_codes_used" introduced="5.0.0"><![CDATA[Gift Certificates Used:]]></string>
+    <string name="certificate_codes_used" introduced="5.0.0"><![CDATA[Gift Cards Used:]]></string>
     <string name="discount_codes_used" introduced="5.0.0"><![CDATA[Discount Codes Used:]]></string>
     <string name="gateway_name" introduced="5.0.0"><![CDATA[Gateway]]></string>
     <string name="my_order" introduced="5.0.0"><![CDATA[My Order]]></string>
@@ -1797,7 +1797,7 @@
     <string name="expire_pending" introduced="5.0.0"><![CDATA[Time (in seconds) before expiring pending orders]]></string>
     <string name="feed_access_key" introduced="5.1.5"><![CDATA[Product Feed Access Password]]></string>
     <string name="force_completed" introduced="5.2.6"><![CDATA[Force Order Completed Emails]]></string>
-    <string name="gc_images" introduced="5.2.6"><![CDATA[Gift Certificates Image]]></string>
+    <string name="gc_images" introduced="5.2.6"><![CDATA[Gift Cards Image]]></string>
     <string name="gc_settings_legend" introduced="5.0.0"><![CDATA[Settings]]></string>
     <string name="gc_expiry" introduced="5.0.0"><![CDATA[Validity Period (Months)]]></string>
     <string name="gc_type_both" introduced="5.0.0"><![CDATA[Digital and Physical]]></string>
