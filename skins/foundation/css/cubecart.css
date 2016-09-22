@@ -144,6 +144,9 @@ input.quantity {
 input.quantity.checkout {
 	width:50px;
 }
+input#coupon {
+    border-right: none;
+}
 div#nav-actions {
    font-size: 0.8125rem;
 }
