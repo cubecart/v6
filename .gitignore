@@ -1,10 +1,10 @@
 /includes/extra/snippet_*
-includes/extra/sess_*
+/includes/extra/sess_*
 /includes/global.inc.*
-!/includes/global.inc.php-dist
 /includes/extra/importdata.tmp
-/modules/*
+!/includes/global.inc.php-dist
 !/modules/plugins/hooks.xml
+/modules/*
 .DS_Store
 Thumbs.db
 /.htaccess
