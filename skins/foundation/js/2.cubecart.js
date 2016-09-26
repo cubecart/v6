@@ -240,13 +240,14 @@ jQuery(document).ready(function() {
         var loadingHtml = '<p class="text-center" id="loading"><svg class="icon"><use xlink:href="#icon-spinner"></use></svg> ' + $('#lang_loading').text() + '&hellip;<p>';
 
         // Keep history to load on back button
-        if (typeof $.cookie('ccScroll') === 'undefined'){
-            ccScrollHistory = {};
+        if ($.cookie('ccScroll')){
+            var ccScrollHistory = $.parseJSON($.cookie("ccScroll"));
             ccScrollHistory[cat] = page; 
         } else {
-            var ccScrollHistory = $.parseJSON($.cookie("ccScroll"));
-            ccScrollHistory[cat] = page;
+            ccScrollHistory = {};
+            ccScrollHistory[cat] = page;   
         }
+
         $.cookie("ccScroll", JSON.stringify(ccScrollHistory));
 
         $(this).after(function() {
