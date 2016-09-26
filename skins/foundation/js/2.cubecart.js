@@ -228,15 +228,26 @@ jQuery(document).ready(function() {
         return false;
     });
     
-    $("#ccScroll").on( "click", "#ccScroll-next", function(event) {
-        
+    $("#ccScroll").on( "click", ".ccScroll-next", function(event) { 
         event.preventDefault();
         $(this).hide();
         window.location.hash = $(this).attr("data-next-page");
 
+        var cat = parseInt($(this).attr("data-cat"));
+        var page = parseInt($(this).attr("data-next-page"));
         var product_list = $('.product_list');
-        var next_link = $('a#ccScroll-next');
+        var next_link = $('a.ccScroll-next');
         var loadingHtml = '<p class="text-center" id="loading"><svg class="icon"><use xlink:href="#icon-spinner"></use></svg> ' + $('#lang_loading').text() + '&hellip;<p>';
+
+        // Keep history to load on back button
+        if (typeof $.cookie('ccScroll') === 'undefined'){
+            ccScrollHistory = {};
+            ccScrollHistory[cat] = page; 
+        } else {
+            var ccScrollHistory = $.parseJSON($.cookie("ccScroll"));
+            ccScrollHistory[cat] = page;
+        }
+        $.cookie("ccScroll", JSON.stringify(ccScrollHistory));
 
         $(this).after(function() {
             return loadingHtml;
@@ -251,7 +262,7 @@ jQuery(document).ready(function() {
 
                 var page = returned.responseText;
                 var list = $('.product_list li', page);
-                var next = $('a#ccScroll-next', page);
+                var next = $('a.ccScroll-next', page);
                 
                 product_list.append(list);
                 set_product_view(0)
@@ -260,6 +271,24 @@ jQuery(document).ready(function() {
             }
         });
     });
+
+    if($('#ccScrollCat').length > 0) {
+        var cat_pages = parseInt($('#ccScrollCat').text());
+        if ($.cookie('ccScroll')) {
+            var ccScrollHistory = $.parseJSON($.cookie("ccScroll"));
+            if(cat_pages in ccScrollHistory) {
+                console.log('Category '+cat_pages+' exists with '+ccScrollHistory[cat_pages]+' pages.');
+                for (i = 1; i <= ccScrollHistory[cat_pages]; i++) {
+                    (function(i) {
+                        window.setTimeout(function(){
+                            console.log('Loading page '+i);
+                            $('.ccScroll-next:last').trigger("click");
+                        }, i * 1000);
+                    }(i));
+                }
+            }
+        }
+    }
 
     var duration = 500;
     $(window).scroll(function() {

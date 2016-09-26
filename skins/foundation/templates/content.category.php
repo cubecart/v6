@@ -212,9 +212,10 @@
    </div>
    *}
    {* Add "hide-for-small-up" to the class attribute to not display the more button *}
+   <div class="hide" id="ccScrollCat">{$category.cat_id}</div>
    {if $page!=='all' && ($page < $total)}
    {$params[$var_name] = $page + 1}
-   <a href="{$current}{http_build_query($params)}{$anchor}" data-next-page="{$params[$var_name]}" class="button tiny expand" id="ccScroll-next">{$LANG.common.more} <svg class="icon"><use xlink:href="#icon-angle-down"></use></svg></a>
+   <a href="{$current}{http_build_query($params)}{$anchor}" data-next-page="{$params[$var_name]}" data-cat="{$category.cat_id}" class="button tiny expand ccScroll-next">{$LANG.common.more} <svg class="icon"><use xlink:href="#icon-angle-down"></use></svg></a>
    {/if}
 </div>
 <div class="hide" id="lang_loading">{$LANG.common.loading}</div>
