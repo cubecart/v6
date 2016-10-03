@@ -238,7 +238,6 @@ $GLOBALS['gui']->addBreadcrumb($lang['catalogue']['title_product_options'], curr
 
 ## Get all categories (top)
 $sort_group = array('priority' => 'ASC', 'option_type' => 'ASC', 'option_name' => 'ASC');
-$sort = array('priority' => 'ASC');
 if (($categories = $GLOBALS['db']->select('CubeCart_option_group', false, false, $sort_group)) !== false) {
 	foreach ($categories as $option) {
 		$optionArray[$option['option_id']] = array(
@@ -251,7 +250,7 @@ if (($categories = $GLOBALS['db']->select('CubeCart_option_group', false, false,
 		);
 	}
 	## Get all values (middle)
-	$values = $GLOBALS['db']->select('CubeCart_option_value', false, false, $sort);
+	$values = $GLOBALS['db']->select('CubeCart_option_value', false, false, 'IF(priority>0, priority, value_id) ASC');
 	if ($values) {
 		foreach ($values as $value) {
 			if (isset($optionArray[$value['option_id']])) {
