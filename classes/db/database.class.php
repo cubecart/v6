@@ -224,12 +224,17 @@ class Database_Contoller {
 
 		if($compress) {
 			include_once(CC_INCLUDES_DIR.'lib'.CC_DS.'pclzip'.CC_DS.'pclzip.lib.php');
-			$archive = new PclZip($file_name.'.zip');
-			$v_list = $archive->create($file_name);
-			if($v_list == 0) {
-				$GLOBALS['main']->setACPWarning($archive->errorInfo(true));
+			if(file_exists($file_name)) {
+				$archive = new PclZip($file_name.'.zip');
+				$v_list = $archive->create($file_name);
+				if($v_list == 0) {
+					$GLOBALS['main']->setACPWarning($archive->errorInfo(true));
+					$GLOBALS['main']->setACPWarning($GLOBALS['language']->maintain['db_compress_fail']);
+					return true;
+				} else {
+					unlink($file_name);
+				}
 			}
-			unlink($file_name);
 			return file_exists($file_name.'.zip');
 		}
 		return file_exists($file_name);
