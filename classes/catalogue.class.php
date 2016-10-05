@@ -686,7 +686,8 @@ class Catalogue {
 	 * @param int $parent_id
 	 * @return array/false
 	 */
-	public function getCategoryTree($parent_id = 0) {
+	public function getCategoryTree($parent_id = 0, $level = 0) {
+		$level++;
 		if (($categories = $GLOBALS['db']->select('CubeCart_category', array('cat_parent_id', 'cat_id', 'cat_name'), array('cat_parent_id' => $parent_id, 'status' => 1, 'hide' => 0), 'priority, cat_name ASC')) !== false) {
 
 			// Write over with translations
@@ -748,8 +749,9 @@ class Catalogue {
 					$result = array(
 						'name'  => (isset($this->_category_translations[$category['cat_id']]) && !empty($this->_category_translations[$category['cat_id']])) ? $this->_category_translations[$category['cat_id']] : $category['cat_name'],
 						'cat_id' => $category['cat_id'],
+						'cat_level' => $level
 					);
-					if ($GLOBALS['config']->get('config', 'catalogue_expand_tree') && $children = $this->getCategoryTree($category['cat_id'])) {
+					if ($GLOBALS['config']->get('config', 'catalogue_expand_tree') && $children = $this->getCategoryTree($category['cat_id'], $level)) {
 						$result['children'] = $children;
 					}
 					$tree_data[] = $result;
