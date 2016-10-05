@@ -31,6 +31,13 @@ class Session {
 	 * @var int
 	 */
 	private $_session_timeout = 604800;
+
+	/**
+	 * Manage session files
+	 *
+	 * @var bool
+	 */
+	private $_manage_session_files = false;
 	/**
 	 * Is user blocked
 	 *
@@ -319,6 +326,17 @@ class Session {
 		session_unset();
 		session_destroy();
 
+		// Clean up expired sessions
+		if($this->_manage_session_files) {
+			$files = glob(CC_INCLUDES_DIR.'/extra/sess_*');
+	  		$now   = time();
+	  		foreach ($files as $file) {
+	      		if ($now - filemtime($file) >= $this->_session_timeout) {
+	        		unlink($file);
+	        	}
+	        }
+    	}
+
 		$this->_state = 'destroyed';
 
 		return true;
@@ -602,6 +620,7 @@ class Session {
 		$save_path = session_save_path();
 		if(!file_exists($save_path) || !is_writeable($save_path)) {	
 			if(is_writeable(CC_INCLUDES_DIR.'/extra')) {
+				$this->_manage_session_files = true;
 				session_save_path(CC_INCLUDES_DIR.'/extra');
 			} else {
 				die("Error: Failed to create PHP session. It may be possible to fix this by following these steps:
