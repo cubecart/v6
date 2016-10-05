@@ -32,6 +32,7 @@
                <th>{$LANG.common.name_and_desc}</th>
                <th>{$LANG.hooks.version}</th>
                <th>{$LANG.common.type}</th>
+               <th>{$LANG.common.developer}</th>
                <th width="10">&nbsp;</th>
             </tr>
          </thead>
@@ -45,6 +46,7 @@
                <td><a href="{$module.edit_url}">{$module.name}</a><br>{$module.description}</td>
                <td>{$module.version}</td>
                <td>{$module.type|ucfirst}</td>
+               <td>{$module.creator}</td>
                <td nowrap>
                   <a href="{$module.edit_url}" class="edit"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
                   <a href="{$module.delete_url}"  class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
@@ -103,13 +105,19 @@
       <table width="70%">
          <thead>
             <tr>
-               <th>{$LANG.common.name_and_desc}</th>
+               <th width="10">{$LANG.common.status}</th>
+               <th>{$LANG.common.name}</th>
+               <th>{$LANG.common.developer}</th>
+               <th>{$LANG.hooks.version}</th>
             </tr>
          </thead>
          <tbody>
             {foreach from=$SKINS item=skin}
             <tr>
-               <td>{$skin.info.display} - {$skin.info.creator}</td>
+               <td width="10" align="center">{if $CONFIG.skin_folder == $skin.info.name}<i class="fa fa-check" aria-hidden="true"></i>{else}<i class="fa fa-times" aria-hidden="true"></i>{/if}</td>
+               <td>{$skin.info.display}</td>
+               <td>{$skin.info.creator}</td>
+               <td>{$skin.info.version}</td>
             </tr>
             {/foreach}
          </tbody>

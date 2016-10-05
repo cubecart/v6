@@ -9,9 +9,10 @@
 	<type>skin</type>
 	<name><![CDATA[foundation]]></name>
 	<display><![CDATA[Foundation]]></display>
-	<version>1.0</version>
-	<minVersion>6.0.0a</minVersion>
-	<maxVersion>6.0.*</maxVersion>
+	<!-- This skin is versioned within the master package if you use this as a base for a custom skin please replace n/a with a version number for each release in the marketplace. -->
+	<version>n/a</version>
+	<minVersion>6.0.0</minVersion>
+	<maxVersion>6.*.*</maxVersion>
 	<creator>CubeCart Limited</creator>
 	<homepage>http://www.cubecart.com</homepage>
 	<mobile>false</mobile>
