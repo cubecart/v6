@@ -233,6 +233,7 @@
     <string name="your_comments" introduced="5.0.0"><![CDATA[Delivery Notes or Additional Comments]]></string>
   </group>
   <group name="catalogue">
+    <string name="error_js_required" introduced="6.1.0"><![CDATA[JavaScript is required by this website. Please enable this in your browser settings.]]></string>
     <string name="absolute_price" introduced="6.0.7"><![CDATA[Absolute Price]]></string>
     <string name="available_for_purchase" introduced="6.0.0"><![CDATA[Available for purchase]]></string>
   	<string name="added_to_basket" introduced="6.0.0"><![CDATA[Added to Basket]]></string>
@@ -1785,7 +1786,7 @@
     <string name="error_currency_rates_update" introduced="5.0.0"><![CDATA[Failed to update Exchange Rates.]]></string>
     <string name="error_htaccess_create" introduced="5.0.0"><![CDATA[.htaccess file could not be written, please create it manually using an FTP client or web hosting filemanager.]]></string>
     <string name="error_htaccess_update" introduced="5.0.0"><![CDATA[Unable to update .htaccess file, please create it manually using an FTP client or web hosting filemanager.]]></string>
-    <string name="error_js_required" introduced="5.0.0"><![CDATA[To get full Control Panel functionality, you must enable JavaScript in your browser.]]></string>
+    <string name="error_js_required" introduced="5.0.0"><![CDATA[To get full control panel functionality you must enable JavaScript in your browser.]]></string>
     <string name="error_logo_upload" introduced="5.0.0"><![CDATA[Failed to upload logo.]]></string>
     <string name="error_module_install" introduced="5.0.0"><![CDATA[Module was not installed.]]></string>
     <string name="error_settings_update" introduced="5.0.0"><![CDATA[Failed to updated settings.]]></string>

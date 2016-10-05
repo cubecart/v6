@@ -40,3 +40,11 @@
    <a href="#" class="close">&times;</a>
 </div>
 {/if}
+<noscript>
+   <div data-alert class="alert-box alert">
+   <ul class="nomarg no-bullet">
+      <li>{$LANG.catalogue.error_js_required}</li>
+   </ul>
+   <a href="#" class="close">&times;</a>
+</div>
+</noscript>

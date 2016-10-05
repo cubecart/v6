@@ -27,3 +27,12 @@
   {/if}
 </div>
 {/if}
+<noscript>
+	<div id="gui_message">
+		<div class="warnText" title="{$LANG.common.click_to_close}">
+		<ul>
+    		<li>{$LANG.settings.error_js_required}</li>
+    	</ul>
+    	</div>
+    </div>
+</noscript>
