@@ -233,9 +233,11 @@ class Database_Contoller {
 					return true;
 				} else {
 					unlink($file_name);
+					return file_exists($file_name.'.zip');
 				}
+			} else {
+				return false;
 			}
-			return file_exists($file_name.'.zip');
 		}
 		return file_exists($file_name);
 	}
