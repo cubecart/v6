@@ -101,6 +101,7 @@ class Debug {
 			$ip_string = $GLOBALS['config']->get('config', 'debug_ip_addresses');
 			if (!empty($ip_string)) {
 				if (strstr($ip_string, ',')) {
+					$ip_string = preg_replace('/\s+/', '', $ip_string);
 					$ip_addresses = explode(',', $ip_string);
 					if (!in_array(get_ip_address(), $ip_addresses)) {
 						$this->_enabled = false;
