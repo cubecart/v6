@@ -137,7 +137,7 @@ class ACP {
 				'target' => $target,
 				'url'  => preg_replace('/(#.*)$/i', '', $url),
 				'accesskey' => $accesskey,
-				'notify' => $notify_count,
+				'notify' => number_format($notify_count),
 				'a_target' => $a_target
 			);
 			return true;
