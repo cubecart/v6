@@ -235,6 +235,7 @@ jQuery(document).ready(function() {
 
         var cat = parseInt($(this).attr("data-cat"));
         var page = parseInt($(this).attr("data-next-page"));
+        var loc = $(document).scrollTop();
         var product_list = $('.product_list');
         var next_link = $('a.ccScroll-next');
         var loadingHtml = '<p class="text-center" id="loading"><svg class="icon"><use xlink:href="#icon-spinner"></use></svg> ' + $('#lang_loading').text() + '&hellip;<p>';
@@ -242,9 +243,10 @@ jQuery(document).ready(function() {
         // Keep history to load on back button
         if ($.cookie('ccScroll')){
             var ccScrollHistory = $.parseJSON($.cookie("ccScroll"));
+            ccScrollHistory['loc'] = loc; 
             ccScrollHistory[cat] = page; 
         } else {
-            ccScrollHistory = {};
+            ccScrollHistory = {'loc':loc};
             ccScrollHistory[cat] = page;   
         }
 
@@ -278,15 +280,14 @@ jQuery(document).ready(function() {
         if ($.cookie('ccScroll')) {
             var ccScrollHistory = $.parseJSON($.cookie("ccScroll"));
             if(cat_pages in ccScrollHistory) {
-                console.log('Category '+cat_pages+' exists with '+ccScrollHistory[cat_pages]+' pages.');
                 for (i = 1; i <= ccScrollHistory[cat_pages]; i++) {
                     (function(i) {
                         window.setTimeout(function(){
-                            console.log('Loading page '+i);
                             $('.ccScroll-next:last').trigger("click");
                         }, i * 1000);
                     }(i));
                 }
+                $(document).scrollTop(ccScrollHistory['loc']);
             }
         }
     }
