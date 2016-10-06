@@ -233,9 +233,9 @@ jQuery(document).ready(function() {
         $(this).hide();
         window.location.hash = $(this).attr("data-next-page");
 
+        var loc = $(window).scrollTop();
         var cat = parseInt($(this).attr("data-cat"));
         var page = parseInt($(this).attr("data-next-page"));
-        var loc = $(document).scrollTop();
         var product_list = $('.product_list');
         var next_link = $('a.ccScroll-next');
         var loadingHtml = '<p class="text-center" id="loading"><svg class="icon"><use xlink:href="#icon-spinner"></use></svg> ' + $('#lang_loading').text() + '&hellip;<p>';
@@ -243,11 +243,14 @@ jQuery(document).ready(function() {
         // Keep history to load on back button
         if ($.cookie('ccScroll')){
             var ccScrollHistory = $.parseJSON($.cookie("ccScroll"));
-            ccScrollHistory['loc'] = loc; 
             ccScrollHistory[cat] = page; 
         } else {
-            ccScrollHistory = {'loc':loc};
+            ccScrollHistory = {};
             ccScrollHistory[cat] = page;   
+        }
+
+        if(loc>0) {
+            ccScrollHistory['loc'] = loc;
         }
 
         $.cookie("ccScroll", JSON.stringify(ccScrollHistory));
@@ -257,6 +260,7 @@ jQuery(document).ready(function() {
         });
 
         $.ajax({
+            async: false,
             url: $(this).attr('href'),
             cache: true,
             complete: function(returned) {
@@ -279,15 +283,12 @@ jQuery(document).ready(function() {
         var cat_pages = parseInt($('#ccScrollCat').text());
         if ($.cookie('ccScroll')) {
             var ccScrollHistory = $.parseJSON($.cookie("ccScroll"));
+            console.log(ccScrollHistory['loc']);
             if(cat_pages in ccScrollHistory) {
-                for (i = 1; i <= ccScrollHistory[cat_pages]; i++) {
-                    (function(i) {
-                        window.setTimeout(function(){
-                            $('.ccScroll-next:last').trigger("click");
-                        }, i * 1000);
-                    }(i));
+                for (i = 1; i < ccScrollHistory[cat_pages]; i++) {
+                    $('.ccScroll-next:last').trigger("click");
                 }
-                $(document).scrollTop(ccScrollHistory['loc']);
+                $('html, body').animate({ scrollTop: ccScrollHistory['loc'] }, 'slow');
             }
         }
     }
