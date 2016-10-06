@@ -252,8 +252,10 @@ jQuery(document).ready(function() {
         if(loc>0) {
             ccScrollHistory['loc'] = loc;
         }
-
-        $.cookie("ccScroll", JSON.stringify(ccScrollHistory));
+        // Set cookie for 10 mins
+        var date = new Date();
+        date.setTime(date.getTime() + (10 * 60 * 1000));
+        $.cookie("ccScroll", JSON.stringify(ccScrollHistory), {expires: date});
 
         $(this).after(function() {
             return loadingHtml;
