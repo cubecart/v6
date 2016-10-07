@@ -48,23 +48,35 @@ if (!empty($_GET['_g'])) {
 			// Load additional data from XML
 			$config_xml = CC_ROOT_DIR.'/modules/'.$module_type.'/'.$_GET['module'].'/config.xml';
 			
-			$xml   = new SimpleXMLElement(file_get_contents($config_xml));
-			$module_info = array(
-				'name' => (string)$xml->info->name,
-			);
-			
-			$module = array(
-				'type' => strtolower($module_type),
-				'module'=> ($module_type == 'installer') ? '' : $_GET['module'],
-			);
-			$GLOBALS['gui']->addBreadcrumb((isset($_GET['variant']) ? $_GET['variant'] : $module_info['name']), $_GET);
+			if(file_exists($config_xml)) {
+				try {
+					$xml   = new SimpleXMLElement(file_get_contents($config_xml));
+				} catch (Exception $e) {
+					trigger_error($e, E_USER_WARNING);
+				}
 
-			$module_admin = CC_ROOT_DIR.'/modules/'.$module['type'].'/'.$module['module'].'/admin/'.$node.'.inc.php';
-			if (file_exists($module_admin)) {
-				define('MODULE_FORM_ACTION', (defined('VAL_SELF')) ? constant('VAL_SELF') : currentPage());
-				include $module_admin;
+				if(is_object($xml)) {
+					$module_info = array(
+						'name' => (string)$xml->info->name,
+					);
+					
+					$module = array(
+						'type' => strtolower($module_type),
+						'module'=> ($module_type == 'installer') ? '' : $_GET['module'],
+					);
+					$GLOBALS['gui']->addBreadcrumb((isset($_GET['variant']) ? $_GET['variant'] : $module_info['name']), $_GET);
+
+					$module_admin = CC_ROOT_DIR.'/modules/'.$module['type'].'/'.$module['module'].'/admin/'.$node.'.inc.php';
+					if (file_exists($module_admin)) {
+						define('MODULE_FORM_ACTION', (defined('VAL_SELF')) ? constant('VAL_SELF') : currentPage());
+						include $module_admin;
+					} else {
+						trigger_error(sprintf("File '%s' doesn't exist", $module_admin), E_USER_WARNING);
+					}
+				}
 			} else {
-				trigger_error(sprintf("File '%s' doesn't exist", $module_admin), E_USER_WARNING);
+				$GLOBALS['main']->setACPWarning("Extension has mising or corrupt config.xml file.");
+				trigger_error("Extension config.xml file doesn't exist. (".$config_xml.")", E_USER_WARNING);
 			}
 		} 
 		

@@ -222,33 +222,38 @@ $module_paths = glob("modules/*/*/config.xml");
 $i=0;
 $modules = false;
 foreach ($module_paths as $module_path) {
+	try {
+		$xml   = new SimpleXMLElement(file_get_contents($module_path));
+	} catch (Exception $e) {
+		trigger_error($e, E_USER_WARNING);
+	}
+	if(is_object($xml)) {
+		$basename = (string)basename(str_replace('config.xml','', $module_path));
+		$key = trim((string)$xml->info->name.$i);
+		
+		$module_config = $GLOBALS['db']->select('CubeCart_modules','*',array('folder' => $basename, 'module' => (string)$xml->info->type));
 
-	$xml   = new SimpleXMLElement(file_get_contents($module_path));
-	
-	$basename = (string)basename(str_replace('config.xml','', $module_path));
-	$key = trim((string)$xml->info->name.$i);
-	
-	$module_config = $GLOBALS['db']->select('CubeCart_modules','*',array('folder' => $basename, 'module' => (string)$xml->info->type));
+		$modules[$key] = array(
+			'uid' 				=> (string)$xml->info->uid,
+			'type' 				=> (string)$xml->info->type,
+			'mobile_optimized' 	=> (string)$xml->info->mobile_optimized,
+			'name' 				=> str_replace('_',' ',(string)$xml->info->name),
+			'description' 		=> (string)$xml->info->description,
+			'version' 			=> (string)$xml->info->version,
+			'minVersion' 		=> (string)$xml->info->minVersion,
+			'maxVersion' 		=> (string)$xml->info->maxVersion,
+			'creator' 			=> (string)$xml->info->creator,
+			'homepage' 			=> (string)$xml->info->homepage,
+			'block' 			=> (string)$xml->info->block,
+			'basename' 			=> $basename,
+			'config'			=> $module_config[0],
+			'edit_url'			=> '?_g=plugins&type='.(string)$xml->info->type.'&module='.$basename,
+			'delete_url'		=> '?_g=plugins&type='.(string)$xml->info->type.'&module='.$basename.'&delete=1'
 
-	$modules[$key] = array(
-		'uid' 				=> (string)$xml->info->uid,
-		'type' 				=> (string)$xml->info->type,
-		'mobile_optimized' 	=> (string)$xml->info->mobile_optimized,
-		'name' 				=> str_replace('_',' ',(string)$xml->info->name),
-		'description' 		=> (string)$xml->info->description,
-		'version' 			=> (string)$xml->info->version,
-		'minVersion' 		=> (string)$xml->info->minVersion,
-		'maxVersion' 		=> (string)$xml->info->maxVersion,
-		'creator' 			=> (string)$xml->info->creator,
-		'homepage' 			=> (string)$xml->info->homepage,
-		'block' 			=> (string)$xml->info->block,
-		'basename' 			=> $basename,
-		'config'			=> $module_config[0],
-		'edit_url'			=> '?_g=plugins&type='.(string)$xml->info->type.'&module='.$basename,
-		'delete_url'		=> '?_g=plugins&type='.(string)$xml->info->type.'&module='.$basename.'&delete=1'
-
-	);
-	$i++;
+		);
+		$i++;
+		unset($xml);
+	}
 }
 
 if(is_array($modules)) {
