@@ -54,12 +54,14 @@
 	<p>{$LANG.filemanager.file_upload_note}</p>
 	{/if}
 	<div>
-	  <label for="uploader">{$LANG.filemanager.file_upload} ({$LANG.common.max}: {$UPLOAD_LIMIT})</label><span><input name="file" id="uploader" type="file" class="multiple"></span>
+	  <label for="uploader">{$LANG.filemanager.file_upload} ({$LANG.common.max}: {$UPLOAD_LIMIT})</label><span><input name="file" id="uploader" type="file" class="multiple" multiple></span>
 	</div>
   </div>
   <div id="folder" class="tab_content">
 	<h3>{$FILMANAGER_TITLE}</h3>
-	<div><label for="create-dir">{$LANG.filemanager.folder_create}</label><span><input name="fm[create-dir]" id="create-dir" type="text" class="textbox"></span></div>
+	<fieldset><legend>{$LANG.filemanager.folder_create}</legend>
+	<div><label for="create-dir">{$LANG.common.name}</label><span><input name="fm[create-dir]" id="create-dir" type="text" class="textbox"></span></div>
+	</fieldset>
   </div>
   
   {include file='templates/element.hook_form_content.php'}
