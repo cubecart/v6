@@ -1023,3 +1023,6 @@ ul.quick_links li#help_menu ul li:not(:last-child) {
     padding: 10px;
     width: 450px
 }
+.MultiFile-list {
+    margin: 10px 0 0 0; 
+}
