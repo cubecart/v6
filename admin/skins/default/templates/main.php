@@ -14,6 +14,7 @@
       <link rel="stylesheet" type="text/css" href="{$style}?{$VERSION_HASH}" media="screen">
       {/foreach}
       <link rel="stylesheet" type="text/css" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/styles/styles.php?{$VERSION_HASH}" media="screen">
+      <link rel="stylesheet" type="text/css" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/styles/dropzone.css?{$VERSION_HASH}" media="screen">
       {foreach from=$HEAD_JS item=js_src}
       <script type="text/javascript" src="{$js_src}"></script>
       {/foreach}
@@ -34,7 +35,7 @@
             {foreach from=$TABS item=tab}
                <div {if !empty($tab.tab_id)}id="{$tab.tab_id}" {/if}class="tab">
                {if !empty($tab.notify)}<span class="tab_notify">{$tab.notify}</span>{/if}
-               <a href="{$tab.url}{$tab.target}" accesskey="{$tab.accesskey}" target="{$tab.a_target}">{$tab.name}</a>
+               <a href="{$tab.url}{$tab.target}"{if !empty($tab.accesskey)} accesskey="{$tab.accesskey}"{/if} target="{$tab.a_target}">{$tab.name}</a>
             </div>
             {/foreach}
          </div>
@@ -91,6 +92,7 @@
       <!-- Include CKEditor -->
       <script type="text/javascript" src="includes/ckeditor/ckeditor.js"></script>
       <script type="text/javascript" src="includes/ckeditor/adapters/jquery.js"></script>
+      <script src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/dropzone.js"></script>
       <script>
          {literal}
          $(window).load(function() {

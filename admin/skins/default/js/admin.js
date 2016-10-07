@@ -289,6 +289,10 @@ $(document).ready(function() {
         return false;
     });
 
+    if(!$(".tab-selected" ).length) {
+        $(".tab:first").addClass('tab-selected');
+    }
+
     $("#bulk_price_method").change(function() {
         if($(this).val()=='percent') {
             $("#bulk_price_action").hide().attr('disabled', true);
@@ -310,6 +314,8 @@ $(document).ready(function() {
         $('input:checkbox').removeAttr('checked');
         $('.custom-checkbox').removeClass('selected');
     });
+    var cc_dropzone_url = $("div#cc_dropzone_url").text();
+    $("div.cc_dropzone").dropzone({url: cc_dropzone_url, maxFilesize: '0.5'});
 
     $(":input.required").blur(function() {
         $(this).attr("id"), "" == $(this).val().replace(/\s/i, "") ? $(this).addClass("required-error") : $(this).removeClass("required-error")
@@ -513,8 +519,12 @@ $(document).ready(function() {
         }
         $("#previous-tab").val(e), $("input.previous-tab").val(e), window.scrollTo(-81, 0)
     }).on("click", function() {
-        var t = $(this).children("a").attr("href"),
+        var t = $(this).children("a").attr("href");
+        var e = 0;
+        if(t.startsWith("#")) {
             e = $(t).height();
+        }
+
         if ($("#navigation").height() < e && $("#page_content").css('min-height',e + 100 +'px'), "#sidebar" == t) return $("#sidebar_control").click(), !1;
         if (t.match(/^#/)) {
             if (document.location.hash = t, $(".tab").removeClass("tab-selected"), $(this).addClass("tab-selected"), $("div.tab_content").hide(), $(t).show(), window.scrollTo(-81, 0), $("#previous-tab").val(t), $("input.previous-tab").val(t), $("#wikihelp").exists()) {

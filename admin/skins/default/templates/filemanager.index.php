@@ -56,25 +56,33 @@
   <div id="upload" class="tab_content">
 	<h3>{$FILMANAGER_TITLE}</h3>
 	{if $FILMANAGER_MODE == '1'}
-	<p>{$LANG.filemanager.file_upload_note}</p>
-	{/if}
-	<div>
-	  <label for="uploader">{$LANG.filemanager.file_upload} ({$LANG.common.max}: {$UPLOAD_LIMIT})</label><span><input name="file" id="uploader" type="file" class="multiple"></span>
+	<div class="cc_dropzone">
+		<div class="dz-default dz-message"><span>{$LANG.filemanager.file_upload_note}</span></div>
 	</div>
+	<div id="cc_dropzone_url" style="display: none;">{$VAL_SELF}</div>
+	{else}
+	<div>
+	  <label for="uploader">{$LANG.common.max}: {$UPLOAD_LIMIT}</label><span><input name="file" id="uploader" type="file" class="multiple"></span>
+	</div>
+	<div class="form_control">
+		<input type="submit" value="{$LANG.common.save}">
+		<input type="hidden" id="ckfuncnum" value="{$CK_FUNC_NUM}">
+  	</div>
+	{/if}
   </div>
   <div id="folder" class="tab_content">
 	<h3>{$FILMANAGER_TITLE}</h3>
 	<fieldset><legend>{$LANG.filemanager.folder_create}</legend>
 	<div><label for="create-dir">{$LANG.common.name}</label><span><input name="fm[create-dir]" id="create-dir" type="text" class="textbox"></span></div>
 	</fieldset>
+	<div class="form_control">
+		<input type="submit" value="{$LANG.common.save}">
+		<input type="hidden" id="ckfuncnum" value="{$CK_FUNC_NUM}">
+  	</div>
   </div>
   
   {include file='templates/element.hook_form_content.php'}
   
-  <div class="form_control">
-	<input type="submit" value="{$LANG.common.save}">
-	<input type="hidden" id="ckfuncnum" value="{$CK_FUNC_NUM}">
-  </div>
   {/if}
 
   {if isset($mode_form)}
