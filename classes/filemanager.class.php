@@ -54,7 +54,11 @@ class FileManager {
 
 		//Auto-handler: Create Directory
 		if (isset($_POST['fm']['create-dir']) && !empty($_POST['fm']['create-dir'])) {
-			$create = $this->createDirectory($_POST['fm']['create-dir']);
+			if($create = $this->createDirectory($_POST['fm']['create-dir'])) {
+				$GLOBALS['gui']->setNotify($GLOBALS['language']->filemanager['success_create_folder']);
+			} else {
+				$GLOBALS['gui']->setError($GLOBALS['language']->filemanager['error_create_folder']);
+			}
 		}
 		// Auto-handler: image details & cropping
 		if (isset($_POST['file_id']) && is_numeric($_POST['file_id'])) {
@@ -234,6 +238,8 @@ class FileManager {
 
 		if (isset($updated) && $updated === true) {
 			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -695,7 +701,20 @@ class FileManager {
 				);
 				$list_folders[] = $folder;
 			}
+			
 			$GLOBALS['smarty']->assign('FOLDERS', $list_folders);
+		}
+
+		if(isset($_GET['subdir'])) {
+			if(stristr($_GET['subdir'],'/')) {
+				$parts = explode('/',$_GET['subdir']);
+				unset($parts[count($parts)-1]);
+				$subdir = implode('/', $parts);
+				$parent_link = currentPage(null, array('subdir' => $subdir));
+			} else {
+				$parent_link = currentPage(array('subdir'));
+			}
+			$GLOBALS['smarty']->assign('FOLDER_PARENT', $parent_link);
 		}
 
 		$filepath_where  = empty($this->_sub_dir) ? 'IS NULL' : '= \''.str_replace('\\', '/', $this->_sub_dir).'\'';

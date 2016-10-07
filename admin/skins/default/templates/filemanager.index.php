@@ -13,7 +13,12 @@
   {if isset($mode_list)}
   <div id="filemanager" class="tab_content">
 	<h3>{$FILMANAGER_TITLE}</h3>
-	<div style="height: 430px; overflow: auto; padding-right: 5px;">
+	<div class="fm-container-overflow">
+	  {if $FOLDER_PARENT}
+	  <div>
+		<a href="{$FOLDER_PARENT}"><i class="fa fa-arrow-left" aria-hidden="true"></i> Parent Directory</a>
+	  </div>
+	  {/if}
 	  {if isset($FOLDERS)}
 	  {foreach from=$FOLDERS item=folder}
 	  <div>
@@ -44,7 +49,7 @@
 	  </div>
 	  {/foreach}
 	  {else}
-	  <div class="center">{$LANG.filemanager.file_none}</div>
+	  <p class="center">{$LANG.filemanager.file_none}</p>
 	  {/if}
 	</div>
   </div>
@@ -67,7 +72,6 @@
   {include file='templates/element.hook_form_content.php'}
   
   <div class="form_control">
-	<input type="hidden" name="previous-tab" id="previous-tab" value="">
 	<input type="submit" value="{$LANG.common.save}">
 	<input type="hidden" id="ckfuncnum" value="{$CK_FUNC_NUM}">
   </div>

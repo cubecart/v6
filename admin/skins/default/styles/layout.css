@@ -71,6 +71,11 @@ fieldset .custom-checkbox {
 .fm-container {
     height: 420px
 }
+.fm-container-overflow {
+    height: 430px;
+    overflow: auto;
+    padding-right: 5px;
+}
 .fm-filelist {
     height: 400px;
     width: 525px;

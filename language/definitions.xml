@@ -1127,6 +1127,8 @@
     <string name="title_templates" introduced="5.0.0"><![CDATA[Email Templates]]></string>
   </group>
   <group name="filemanager">
+    <string name="success_create_folder" introduced="6.1.0"><![CDATA[Folder created successfully.]]></string>
+    <string name="error_create_folder" introduced="6.1.0"><![CDATA[failed to create folder.]]></string>
     <string name="error_dl_1" introduced="5.0.0"><![CDATA[This download has expired.]]></string>
     <string name="error_dl_2" introduced="5.0.0"><![CDATA[You have downloaded this file the maximum number of times allowed.]]></string>
     <string name="error_dl_3" introduced="5.2.9"><![CDATA[It has not been possible to locate the download file.]]></string>
@@ -1140,9 +1142,9 @@
     <string name="error_file_upload_size" introduced="5.2.6"><![CDATA[%s is over %s. Please upload web optimized images only.]]></string>
     <string name="error_image_missing" introduced="5.0.0"><![CDATA[That image no longer exists. All references to it have been removed.]]></string>
     <string name="error_image_update" introduced="5.0.0"><![CDATA[Failed to edit image.]]></string>
-    <string name="error_list_update" introduced="5.0.0"><![CDATA[Failed to update file list.]]></string>
+    <string name="error_list_update" introduced="5.0.0"><![CDATA[No changes were detected.]]></string>
     <string name="file_name" introduced="5.0.0"><![CDATA[Filename]]></string>
-    <string name="file_none" introduced="5.0.0"><![CDATA[No Files Found]]></string>
+    <string name="file_none" introduced="5.0.0"><![CDATA[No files found in this folder.]]></string>
     <string name="file_subfolder" introduced="5.0.0"><![CDATA[Subfolder]]></string>
     <string name="file_type_dl" introduced="5.0.0"><![CDATA[Download]]></string>
     <string name="file_type_image" introduced="5.0.0"><![CDATA[Image]]></string>

@@ -47,7 +47,7 @@ if (isset($_GET['rebuild']) && Admin::getInstance()->permissions('filemanager', 
 	if ($fm->buildDatabase()) {
 		$GLOBALS['main']->setACPNotify($lang['filemanager']['notify_list_update']);
 	} else {
-		# $GLOBALS['main']->setACPWarning($lang['filemanager']['error_list_update']);
+		$GLOBALS['main']->setACPWarning($lang['filemanager']['error_list_update']);
 	}
 	httpredir(currentPage(array('rebuild')));
 }
@@ -56,7 +56,7 @@ if (Admin::getInstance()->permissions('filemanager', CC_PERM_EDIT) && !empty($_F
 	if ($fm->upload()) {
 		if(count($_FILES)>1) {
 			$GLOBALS['main']->setACPNotify($lang['filemanager']['notify_files_upload']);
-		} else {
+		} elseif($_FILES['file0']['size']>0) {
 			$GLOBALS['main']->setACPNotify($lang['filemanager']['notify_file_upload']);
 		}
 	} else {
