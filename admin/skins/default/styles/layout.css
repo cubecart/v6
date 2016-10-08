@@ -68,13 +68,11 @@ fieldset .custom-checkbox {
 .custom-checkbox.selected {
     background: url(../images/1.png)
 }
+#refresh_images {
+    cursor: pointer;
+}
 .fm-container {
     height: 420px
-}
-.fm-container-overflow {
-    height: 430px;
-    overflow: auto;
-    padding-right: 5px;
 }
 .fm-filelist {
     height: 400px;
@@ -302,7 +300,7 @@ fieldset div.clear {
     margin-top: 7px
 }
 #header .user_info i,
-a {
+a, #refresh_images {
     color: #4f9aaf;
     text-decoration: none
 }

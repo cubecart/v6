@@ -539,6 +539,7 @@
       <img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/star.png" alt="{$LANG.catalogue.image_main}"> - {$LANG.catalogue.image_main}
       <img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/1.png" alt="{$LANG.catalogue.image_included}"> - {$LANG.catalogue.image_included}
       <img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/0.png" alt="{$LANG.catalogue.image_excluded}"> - {$LANG.catalogue.image_excluded}
+      
       <div class="fm-container">
          <div id="image" rel="1" class="fm-filelist"></div>
          <div class="master_image">
@@ -546,10 +547,11 @@
             <img src="{$PRODUCT.master_image}" id="master_image_preview">
          </div>
       </div>
-      <p>{$LANG.filemanager.file_upload_note}</p>
-      <fieldset>
-         <div><label for="uploader">{$LANG.filemanager.file_upload}</label><span><input name="image" id="uploader" type="file" class="multiple"></span></div>
-      </fieldset>
+      <p id="refresh_images"><i class="fa fa-refresh"></i> {$LANG.common.refresh}</p>
+      <div class="cc_dropzone">
+      <div class="dz-default dz-message"><span>{$LANG.filemanager.file_upload_note}</span></div>
+   </div>
+   <div id="cc_dropzone_url" style="display: none;">?_g=filemanager</div>
    </div>
    <div id="digital" class="tab_content">
       <h3>{$LANG.catalogue.title_digital_options}</h3>

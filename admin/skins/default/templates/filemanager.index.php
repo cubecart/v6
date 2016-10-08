@@ -13,7 +13,7 @@
   {if isset($mode_list)}
   <div id="filemanager" class="tab_content">
 	<h3>{$FILMANAGER_TITLE}</h3>
-	<div class="fm-container-overflow">
+	<div>
 	  {if $FOLDER_PARENT}
 	  <div>
 		<a href="{$FOLDER_PARENT}"><i class="fa fa-arrow-left" aria-hidden="true"></i> Parent Directory</a>
