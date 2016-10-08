@@ -62,8 +62,9 @@
 	<div id="cc_dropzone_url" style="display: none;">{$VAL_SELF}</div>
 	{else}
 	<div>
-	  <label for="uploader">{$LANG.common.max}: {$UPLOAD_LIMIT}</label><span><input name="file" id="uploader" type="file" class="multiple"></span>
+	  <span><input name="file" id="uploader" type="file" class="multiple"></span>
 	</div>
+	<p>{$UPLOAD_LIMIT_DESC}</p>
 	<div class="form_control">
 		<input type="submit" value="{$LANG.common.save}">
 		<input type="hidden" id="ckfuncnum" value="{$CK_FUNC_NUM}">

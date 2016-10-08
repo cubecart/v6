@@ -73,7 +73,16 @@ if (Admin::getInstance()->permissions('filemanager', CC_PERM_DELETE) && isset($_
 	}
 	httpredir(currentPage(array('delete')));
 }
-$GLOBALS['smarty']->assign('UPLOAD_LIMIT', ini_get('post_max_size'));
+
+$post_max_size = ini_get('post_max_size');
+$upload_max_filesize = ini_get('upload_max_filesize');
+
+if($post_max_size !== $upload_max_filesize) {
+	$GLOBALS['smarty']->assign('UPLOAD_LIMIT_DESC', sprintf($lang['filemanager']['max_upload_diff'], $post_max_size, $upload_max_filesize));
+} else {
+	$GLOBALS['smarty']->assign('UPLOAD_LIMIT_DESC', sprintf($lang['filemanager']['max_upload_same'], $upload_max_filesize));
+}
+
 if (isset($_GET['fm-edit']) && is_numeric($_GET['fm-edit'])) {
 	$page_content = $fm->editor($_GET['fm-edit']);
 } else {

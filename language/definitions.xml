@@ -1127,6 +1127,8 @@
     <string name="title_templates" introduced="5.0.0"><![CDATA[Email Templates]]></string>
   </group>
   <group name="filemanager">
+    <string name="max_upload_diff" introduced="6.1.0"><![CDATA[Please note that the server configuartion allows a maximum upload of %s with a maximum individual file upload limit of %s.]]></string>
+    <string name="max_upload_same" introduced="6.1.0"><![CDATA[<strong>Upload Limit:</strong> %s]]></string>
     <string name="success_create_folder" introduced="6.1.0"><![CDATA[Folder created successfully.]]></string>
     <string name="error_create_folder" introduced="6.1.0"><![CDATA[failed to create folder.]]></string>
     <string name="error_dl_1" introduced="5.0.0"><![CDATA[This download has expired.]]></string>
