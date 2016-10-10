@@ -1621,7 +1621,6 @@ class Cubecart {
 						);
 						if (isset($this->_basket['shipping']) && $this->_basket['shipping']['offset'] == $offset) {
 							$option['selected'] = ' selected="selected"';
-							// THIS IS CRAZY?! (float)4.30 !== (float)4.30 is returning TRUE?! Convert to string fixes.
 							if ((string)$value['value'] !== (string)$this->_basket['shipping']['value']) {
 								$this->_basket['shipping'] = $value;
 								$GLOBALS['cart']->save();
