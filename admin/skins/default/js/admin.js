@@ -319,11 +319,12 @@ $(document).ready(function() {
     this.on("complete", function (file) {
       if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
         var t = $("#val_admin_file").text();
-        $("div.fm-filelist").fileTree({
+        $("div#image.fm-filelist").fileTree({
             root: "/",
             script: "./" + t,
-            group: $(this).attr("rel"),
-            name: $(this).attr("id")
+            group: '1',
+            name: 'image',
+            unique: false
         });
       }
     });
@@ -515,11 +516,12 @@ $(document).ready(function() {
     }
     $("#refresh_images").click(function() {
         var t = $("#val_admin_file").text();
-        $("div.fm-filelist").fileTree({
+        $("div#image.fm-filelist").fileTree({
             root: "/",
             script: "./" + t,
-            group: $(this).attr("rel"),
-            name: $(this).attr("id")
+            group: '1',
+            name: 'image',
+            unique: false
         });
     });
     $("div.tab").each(function() {
