@@ -375,7 +375,7 @@
         <strong>Claim Code:</strong> {$DATA.code}<br> 
         <strong>Gift Message:</strong> {$DATA.message}</p> 
         <p>-------------------</p> 
-        <p>To reedeem this gift certificate please enter the &quot;Claim Code&quot; above into the text field labeled &quot;Add Gift Certificate or Coupon&quot; during checkout.</p> 
+        <p>To redeem this gift certificate please enter the &quot;Claim Code&quot; above into the text field labeled &quot;Add Gift Certificate or Coupon&quot; during checkout.</p> 
         <p>Why not spend it now?</p>]]></content>
     <content type="text"><![CDATA[Dear {$DATA.name},
         
