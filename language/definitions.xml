@@ -108,7 +108,7 @@
     <string name="your_subscription" introduced="5.0.0"><![CDATA[Newsletter Subscriptions]]></string>
   </group>
   <group name="address">
-    <string name="check_state" introduced="6.1.0"><![CDATA[We seem to have a problem with your address. Please check the value for &quot;County&quot; before proceeding.]]></string>
+    <string name="check_state" introduced="6.1.0"><![CDATA[We seem to have a problem with your address%s. Please check the value for &quot;County&quot; before proceeding.]]></string>
   	<string name="address_not_found" introduced="6.0.0"><![CDATA[Can't find your address?]]></string>
   	<string name="add_address" introduced="6.0.0"><![CDATA[Add Address]]></string>
   	<string name="edit_address" introduced="6.0.0"><![CDATA[Edit Address]]></string>
