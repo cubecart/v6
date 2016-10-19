@@ -449,6 +449,15 @@ class User {
 		}
 
 		$state_field = is_numeric($address['state']) ? 'id' : 'name';
+
+		// Check state
+		$country_id = getCountryFormat($address['country'], 'numcode', 'id');
+		if($_GET['_a']!=='addressbook' && $state_field=='name' && $GLOBALS['db']->select('CubeCart_geo_zone',false, array('country_id' => $country_id))) {
+			$GLOBALS['gui']->setError($GLOBALS['language']->address['check_state']);
+			httpredir("?_a=addressbook&action=edit&address_id=".$address['address_id']);
+			return false;
+		}
+
 		$address['state_id']  = getStateFormat($address['state'], $state_field, 'id');
 		$address['country_id']  = $address['country'];
 		$address['country']   = getCountryFormat($address['country_id']);
