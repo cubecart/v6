@@ -26,7 +26,7 @@ if(isset($_GET['ignore_update']) && $_GET['ignore_update']>0) {
 }
 
 ## Save notes
-if (isset($_POST['notes']['dashboard_notes']) && !empty($_POST['notes']['dashboard_notes'])) {
+if (isset($_POST['notes']['dashboard_notes'])) {
 	$update = array('dashboard_notes' => $_POST['notes']['dashboard_notes']);
 	if ($GLOBALS['db']->update('CubeCart_admin_users', $update, array('admin_id' => Admin::getInstance()->get('admin_id')))) {
 		$GLOBALS['session']->delete('', 'admin_data');
