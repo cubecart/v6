@@ -198,9 +198,6 @@ class Cache extends Cache_Controler {
 	 */
 	public function usage() {
 		$groups = $this->redis_client->info();
-		echo "<pre>";
-		var_dump($groups);
-		echo "</pre>";
 		$output = '<table>';
 		foreach($groups as $group_name => $group_data) {
 			$output .= '<tr><th colspan="2">'.$group_name.'</th></tr>';
