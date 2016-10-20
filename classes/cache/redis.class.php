@@ -197,16 +197,20 @@ class Cache extends Cache_Controler {
 	 * @return string
 	 */
 	public function usage() {
-		return false;
-		$mem = @apc_sma_info();
-		if ($mem) {
-			$mem_size = $mem['num_seg'] * $mem['seg_size'];
-			$mem_avail = $mem['avail_mem'];
-			$mem_used = $mem_size - $mem_avail;
-			return sprintf('Max: %s - Used: %s (%.2F%%) - Available: %s (%.2F%%)', formatBytes($mem_size, true), formatBytes($mem_used, true), ($mem_used * (100 / $mem_size)), formatBytes($mem_avail, true), ($mem_avail * (100 / $mem_size)));
-		} else {
-			return 'APC Statistics are unavailable.';
+		$groups = $this->redis_client->info();
+		echo "<pre>";
+		var_dump($groups);
+		echo "</pre>";
+		$output = '<table>';
+		foreach($groups as $group_name => $group_data) {
+			$output .= '<tr><th colspan="2">'.$group_name.'</th></tr>';
+			foreach($group_data as $key => $value) {
+				$output .= '<tr><td>'.$key.'</td><td>'.$value.'</td></tr>';
+			} 
+			
 		}
+		$output .= '</table>';
+		return $output;
 	}
 
 	/**
