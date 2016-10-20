@@ -25,10 +25,15 @@ class Cache extends Cache_Controler {
 	##############################################
 
 	final protected function __construct() {
+		global $glob;
 		require CC_INCLUDES_DIR."/lib/predis/autoload.php";
 		Predis\Autoloader::register();
 		try {
-			$this->redis_client = new Predis\Client();
+			if(isset($glob['redis_params'])) {
+				$this->redis_client = new Predis\Client($glob['redis_params']);
+			} else {
+				$this->redis_client = new Predis\Client();
+			}
 		} catch(Predis\Connection\ConnectionException $e) {
       		trigger_error($e->getMessage());
       		return ;
