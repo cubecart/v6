@@ -1220,8 +1220,6 @@ class Order {
 		} else {
 			// Insert Summary
 			if ($order_id = $GLOBALS['db']->insert('CubeCart_order_summary', $record)) {
-				// Insert history
-				$this->_addHistory($this->_order_id, 1);
 				$GLOBALS['user']->addOrder($customer_id);
 			}
 		}
