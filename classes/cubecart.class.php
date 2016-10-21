@@ -335,9 +335,11 @@ class Cubecart {
 					// Site Documents
 					if (($document = $this->getDocument($_GET['doc_id'])) !== false) {
 			
+						// Homepage shouldn't load as a document (duplicate content)
 						if($document['doc_home']=='1') {
 							httpredir('index.php', '', false, 301);	
 						}
+						
 						foreach ($GLOBALS['hooks']->load('class.cubecart.document_widgets') as $hook) include $hook;
 						
 						$GLOBALS['gui']->addBreadcrumb($document['doc_name'], currentPage());
