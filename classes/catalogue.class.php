@@ -1345,13 +1345,13 @@ class Catalogue {
 	 */
 	public function productAssign(&$product, $product_view = true) {
 		## Short Description
-		$max_short_desc_len = $GLOBALS['config']->get('config', 'product_precis');
-		$max_short_desc_len = (is_numeric($max_short_desc_len) && $max_short_desc_len > 0) ? $max_short_desc_len : 0;
+		$product_precis = $GLOBALS['config']->get('config', 'product_precis');
+		$product_precis = (is_numeric($product_precis) && $product_precis > 0) ? $product_precis : 0;
 		
 		$short_description = empty($product['description_short']) ? strip_tags($product['description']) : strip_tags($product['description_short']);
 		
-		if($max_short_desc_len>0 && strlen($short_description)>$max_short_desc_len) {
-			$product['description_short'] = substr($short_description, 0, $max_short_desc_len).'&hellip;';
+		if($product_precis>0 && strlen($short_description)>$product_precis) {
+			$product['description_short'] = substr($short_description, 0, $product_precis).'&hellip;';
 		} else {
 			$product['description_short'] = $short_description;
 		}
