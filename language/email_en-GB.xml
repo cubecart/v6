@@ -366,20 +366,19 @@
         If the links above don't work, please try copy and pasting them it into your browser address bar. You can also find access to these files from your the customer area of our website.]]></content>
   </email>
   <email name="cart.gift_certificate">
-    <subject><![CDATA[Your Gift Certificate]]></subject>
+    <subject><![CDATA[Your Gift Card]]></subject>
     <content type="html"><![CDATA[<p>Dear {$DATA.name},</p> 
-        <p>We are please to be sending you this gift certificate which you can use towards the purchase of any item(s) on our website.</p> 
-        <p>Happy shopping!</p> 
+        <p>We are please to be sending you this gift card which you can use towards the purchase of any items on our website.</p> 
         <p><strong>From: </strong>{$DATA.first_name} {$DATA.last_name}<br> 
         <strong>Amount: </strong>{$DATA.value}<br> 
         <strong>Claim Code:</strong> {$DATA.code}<br> 
         <strong>Gift Message:</strong> {$DATA.message}</p> 
         <p>-------------------</p> 
-        <p>To redeem this gift certificate please enter the &quot;Claim Code&quot; above into the text field labeled &quot;Add Gift Certificate or Coupon&quot; during checkout.</p> 
+        <p>To redeem this gift card please enter the &quot;Claim Code&quot; above into the text field labeled &quot;Promotional code or gift card&quot; during checkout.</p> 
         <p>Why not spend it now?</p>]]></content>
     <content type="text"><![CDATA[Dear {$DATA.name},
         
-        We are please to  be sending you this gift certificate which you can use towards the purchase of any item(s) on our website.
+        We are please to  be sending you this gift card which you can use towards the purchase of any item(s) on our website.
         
         Happy shopping!
         
@@ -390,7 +389,7 @@
         
         -------------------
         
-        To reedeem this gift certificate please enter the "Claim Code" above into the text field labeled "Add Gift Certificate or Coupon" during checkout.
+        To reedeem this gift card please enter the "Claim Code" above into the text field labeled "Promotional code or gift card" during checkout.
         
         Why not spend it now?]]></content>
   </email>
