@@ -204,6 +204,13 @@ class Cache extends Cache_Controler {
 		foreach($groups as $group_name => $group_data) {
 			$output .= '<tr><th colspan="2">'.$group_name.'</th></tr>';
 			foreach($group_data as $key => $value) {
+				if(is_array($value)) {
+					$array_value = '';
+					foreach($value as $key => $key_value) {
+						$array_value .= $key.': '.$key_value.'<br>';
+					}
+					$value = $array_value;
+				}
 				$output .= '<tr><td>'.$key.'</td><td>'.$value.'</td></tr>';
 			} 
 			
