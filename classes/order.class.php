@@ -448,13 +448,7 @@ class Order {
 
 			case self::ORDER_COMPLETE:
 				// Check that we have not skipped processing if not already disabled
-				/*
-					if (!$GLOBALS['config']->get('config','no_skip_processing_check') && ($GLOBALS['db']->select('CubeCart_order_history', array('status'), array('cart_order_id' => $order_id, 'status' => 2))) === false) {
-						$this->orderStatus(2, $order_id);
-					}
-					*/
-
-				if ( $GLOBALS['db']->select('CubeCart_order_history', array('status'), array('cart_order_id' => $order_id, 'status' => 2)) === false) {
+				if ($GLOBALS['db']->select('CubeCart_order_history', array('status'), array('cart_order_id' => $order_id, 'status' => 2), false, false, false, false) === false) {
 					if (!$GLOBALS['config']->get('config', 'no_skip_processing_check')) {
 						$this->orderStatus(2, $order_id);
 					} else {
