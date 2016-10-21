@@ -449,10 +449,11 @@ class Order {
 			case self::ORDER_COMPLETE:
 				// Check that we have not skipped processing if not already disabled
 				if ($GLOBALS['db']->select('CubeCart_order_history', array('status'), array('cart_order_id' => $order_id, 'status' => 2), false, false, false, false) === false) {
+					// Force order status to processing first if this status has never been met and settings don't allow it to be skipped
 					if (!$GLOBALS['config']->get('config', 'no_skip_processing_check')) {
 						$this->orderStatus(2, $order_id);
 					} else {
-						// Send digital files when order status hasn't never been processing amd we always skip processing status
+						// Send digital files when order status hasn't never been processing amd we are allowed to skip processing status
 						$this->_digitalDelivery($order_id, $this->_order_summary['email']);
 					}
 				}
