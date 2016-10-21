@@ -381,7 +381,7 @@ class Order {
 
 			// Retrieve order details
 			$this->getSummary($order_id);
-			$this->_getInventory($order_id, true);
+			$this->_getInventory($order_id);
 
 			foreach ($GLOBALS['hooks']->load('class.order.order_status') as $hook) include $hook;
 			$mailer = new Mailer();
@@ -411,7 +411,7 @@ class Order {
 
 			case self::ORDER_PROCESS;
 				$complete = true;
-				$this->_getInventory($order_id, true);
+			
 				// Look for digital items
 				foreach ($this->_order_inventory as $item) {
 					if ($item['digital']) {
@@ -458,10 +458,6 @@ class Order {
 					}
 				}
 
-				// Load up the inventory, if we haven't already
-				if (!isset($complete)) {
-					$this->_getInventory($order_id);
-				}
 				if ($this->_email_enabled) {
 					foreach ($this->_order_inventory as $item) {
 						// Send Gift Certificate
@@ -889,22 +885,11 @@ class Order {
 	 * @param bool $force_db
 	 * @return bool
 	 */
-	private function _getInventory($order_id = null, $force_db = false) {
-		// Returns a list of products from the order
-		if (!$force_db && !empty($this->_basket['contents']) && $this->_basket['cart_order_id'] == $order_id) {
-			foreach ($this->_basket['contents'] as $hash => $item) {
-				$product = ($item['id']>0) ? $GLOBALS['catalogue']->getProductData($item['id']) : $item;
-				$product['quantity'] = $item['quantity']; // Otherwise its wrong!
-				$products[] = $product;
-			}
-			$this->_order_inventory = $products;
-			return $this->_order_inventory;
-		} else {
-			if (!is_null($order_id)) {
-				if (($products = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('cart_order_id' => $order_id))) !== false) {
-					$this->_order_inventory = $products;
-					return $this->_order_inventory;
-				}
+	private function _getInventory($order_id = null) {
+		if (!is_null($order_id)) {
+			if (($products = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('cart_order_id' => $order_id), false, false, false, false)) !== false) {
+				$this->_order_inventory = $products;
+				return $this->_order_inventory;
 			}
 		}
 		return false;
