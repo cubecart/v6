@@ -392,7 +392,7 @@ class Order {
 			switch ($status_id) {
 
 			case self::ORDER_PENDING;
-				// Send email to store admins
+				// Send email to store admins if set for pending status
 				if ($GLOBALS['config']->get('config', 'admin_notify_status')=="1" && $this->_email_admin_enabled && $admin_notify = $this->_notifyAdmins()) {
 
 					$admin_mailer = new Mailer();
@@ -427,7 +427,7 @@ class Order {
 					unset($content);
 				}
 
-				// Send email to store admins (2 IS a string) :)
+				// Send email to store admins if set for processing status
 				if ($GLOBALS['config']->get('config', 'admin_notify_status')=="2" && $this->_email_enabled && $this->_email_admin_enabled && $admin_notify = $this->_notifyAdmins()) {
 					$admin_mailer = new Mailer();
 					
