@@ -1285,13 +1285,14 @@ class Order {
 	 */
 	private function _sendCoupon($coupon_id, $data) {
 		if (!empty($coupon_id)) {
-			if (($coupon = $GLOBALS['db']->select('CubeCart_coupons', false, array('coupon_id' => (int)$coupon_id))) !== false) {
+			if (($coupon = $GLOBALS['db']->select('CubeCart_coupons', false, array('coupon_id' => (int)$coupon_id, 'email_sent' => 0))) !== false) {
 				$mailer = new Mailer();
 				if (isset($coupon[0]['value'])) {
 					$coupon[0]['value'] = Tax::getInstance()->priceFormat($coupon[0]['value']);
 				}
 				$data['storeURL']  = $this->config['storeURL'];
 				if (($content = $mailer->loadContent('cart.gift_certificate', $this->_order_summary['lang'], array_merge($this->_order_summary, $data, $coupon[0]))) !== false) {
+					$GLOBALS['db']->update('CubeCart_coupons', array('email_sent' => 1), array('coupon_id' => (int)$coupon_id));
 					return $mailer->sendEmail($data['email'], $content);
 				}
 			}
