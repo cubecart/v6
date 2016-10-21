@@ -1825,7 +1825,7 @@
     <string name="message_marked_read" introduced="5.0.0"><![CDATA[Message marked as read.]]></string>
     <string name="message_marked_unread" introduced="5.0.0"><![CDATA[Message marked as unread.]]></string>
     <string name="no_admin_affect" introduced="5.1.0"><![CDATA[(Does not affect admin)]]></string>
-    <string name="no_skip_processing_check" introduced="5.0.0"><![CDATA[Don't check skipped order processing email]]></string>
+    <string name="no_skip_processing_check" introduced="5.0.0"><![CDATA[Allow order &quot;Processing&quot; status to be skipped?]]></string>
     <string name="notify_archive_create" introduced="5.0.0"><![CDATA[Archive successfully created.]]></string>
     <string name="notify_archive_delete" introduced="5.0.0"><![CDATA[Archive successfully deleted.]]></string>
     <string name="notify_archive_restore" introduced="5.0.0"><![CDATA[Successfully restored from archive.]]></string>
