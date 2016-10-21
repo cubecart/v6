@@ -750,8 +750,8 @@ class SEO {
 				unlink(CC_ROOT_DIR.'/sitemap.xml.gz');
 			}
 		}
-		if($GLOBALS['config']->get('config', 'offline')=='0') {
-			if (file_put_contents($filename, $mapdata)) {
+		if(file_put_contents($filename, $mapdata)) {
+			if ($GLOBALS['config']->get('config', 'offline')=='0') {
 				// Ping Google
 				$request = new Request('www.google.com', '/webmasters/sitemaps/ping');
 				$request->setMethod('get');
