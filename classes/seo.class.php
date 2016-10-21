@@ -759,6 +759,7 @@ class SEO {
 				$request->send();
 				return true;
 			}
+			return true;
 		}
 		return false;
 	}
