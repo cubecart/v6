@@ -93,7 +93,7 @@
                   <p class="rating-info">{$product.review_info}</p>
                   *}
                   {/if}
-                  {$product.description_short|strip_tags:true}
+                  {$product.description_short}
                </div>
                <div class="small-3 columns">
                   <h3>

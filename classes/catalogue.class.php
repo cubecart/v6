@@ -1347,8 +1347,14 @@ class Catalogue {
 		## Short Description
 		$product_precis = $GLOBALS['config']->get('config', 'product_precis');
 		$product_precis = (is_numeric($product_precis) && $product_precis > 0) ? $product_precis : 0;
-		
-		$short_description = empty($product['description_short']) ? strip_tags($product['description']) : strip_tags($product['description_short']);
+
+		if(empty($product['description_short'])) {
+			$short_description = strip_tags($product['description']);
+		} elseif($product_precis>0 && strlen(strip_tags($product['description_short']))>$product_precis) {
+			$short_description = strip_tags($product['description_short']);
+		} else {
+			$short_description = $product['description_short'];
+		}
 		
 		if($product_precis>0 && strlen($short_description)>$product_precis) {
 			$product['description_short'] = substr($short_description, 0, $product_precis).'&hellip;';
