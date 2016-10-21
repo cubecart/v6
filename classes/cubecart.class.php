@@ -334,7 +334,10 @@ class Cubecart {
 					$GLOBALS['smarty']->assign('SECTION_NAME', 'document');
 					// Site Documents
 					if (($document = $this->getDocument($_GET['doc_id'])) !== false) {
-						
+			
+						if($document['doc_home']=='1') {
+							httpredir('index.php', '', false, 301);	
+						}
 						foreach ($GLOBALS['hooks']->load('class.cubecart.document_widgets') as $hook) include $hook;
 						
 						$GLOBALS['gui']->addBreadcrumb($document['doc_name'], currentPage());
