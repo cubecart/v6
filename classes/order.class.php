@@ -467,7 +467,7 @@ class Order {
 				if (!isset($complete)) {
 					$this->_getInventory($order_id);
 				}
-				if (!$this->_skip_order_complete_email && $this->_email_enabled) {
+				if ($this->_email_enabled) {
 					foreach ($this->_order_inventory as $item) {
 						// Send Gift Certificate
 						if (!empty($item['custom']) && !empty($item['coupon_id'])) {
