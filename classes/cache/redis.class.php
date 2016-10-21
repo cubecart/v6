@@ -29,8 +29,10 @@ class Cache extends Cache_Controler {
 		require CC_INCLUDES_DIR."/lib/predis/autoload.php";
 		Predis\Autoloader::register();
 		try {
-			if(isset($glob['redis_params'])) {
-				$this->redis_client = new Predis\Client($glob['redis_params']);
+			if(isset($glob['redis_sentinels']) && isset($glob['redis_options'])) {
+				$this->redis_client = new Predis\Client($glob['redis_sentinels'], $glob['redis_options']);
+			} elseif(isset($glob['redis_sentinels'])) {
+				$this->redis_client = new Predis\Client($glob['redis_sentinels']);
 			} else {
 				$this->redis_client = new Predis\Client();
 			}
