@@ -311,7 +311,7 @@ class Order {
 	public function getSummary($order_id = null) {
 		// Returns the order summary data
 		$this->_order_id = (is_null($order_id)) ? $this->_order_id : $order_id;
-		$order = $GLOBALS['db']->select('CubeCart_order_summary', false, array('cart_order_id' => $order_id));
+		$order = $GLOBALS['db']->select('CubeCart_order_summary', false, array('cart_order_id' => $order_id), false, false, false, false);
 
 		if ($order) {
 			$this->_order_summary = $order[0];
