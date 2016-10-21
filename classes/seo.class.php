@@ -757,7 +757,6 @@ class SEO {
 				$request->setMethod('get');
 				$request->setData(array('sitemap' => $store_url.'/'.basename($filename)));
 				$request->send();
-				return true;
 			}
 			return true;
 		}
