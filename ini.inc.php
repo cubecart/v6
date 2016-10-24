@@ -32,7 +32,6 @@ if (!ini_get('output_buffering')) {   // Enable Zlib Compression, but only if ou
 }
 ini_set('session.name', 'PHPSESSID');  // Customise the session name here, if you feel PHPSESSID is too insecure
 ini_set('session.auto_start', false);  // We don't want to auto start session on every request - the session class will handle it all
-ini_set('memory_limit', '128M');   // Increase Memory Limit
 
 // Windows/IIS can be a pain in CGI mode - these settings try to alleviate our suffering
 if (stristr(PHP_OS, 'WIN') && stristr($_SERVER['SERVER_SOFTWARE'], 'IIS')) {
