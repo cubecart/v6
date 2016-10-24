@@ -368,7 +368,7 @@
   <email name="cart.gift_certificate">
     <subject><![CDATA[Your Gift Card]]></subject>
     <content type="html"><![CDATA[<p>Dear {$DATA.name},</p> 
-        <p>We are please to be sending you this gift card which you can use towards the purchase of any items on our website.</p> 
+        <p>We are pleased to be sending you this gift card which you can use towards the purchase of any items on our website.</p> 
         <p><strong>From: </strong>{$DATA.first_name} {$DATA.last_name}<br> 
         <strong>Amount: </strong>{$DATA.value}<br> 
         <strong>Claim Code:</strong> {$DATA.code}<br> 
