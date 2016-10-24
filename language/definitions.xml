@@ -2038,7 +2038,8 @@
     <string name="default_product_sort" introduced="5.2.0"><![CDATA[Product List Sorting]]></string>
   </group>
   <group name="setup">
-  	<string name="error_strict_mode" introduced="5.1.5"><![CDATA[WARNING: MySQL is running in &quot;Strict Mode&quot;. This must be disabled for your store to operate correctly.]]></string>
+  	<string name="urls_changed" introduced="6.1.0"><![CDATA[IMPORTANT: For security reasons we have changed your admin login URL.]]></string>
+    <string name="error_strict_mode" introduced="5.1.5"><![CDATA[WARNING: MySQL is running in &quot;Strict Mode&quot;. This must be disabled for your store to operate correctly.]]></string>
     <string name="already_upgraded" introduced="5.0.0"><![CDATA[Your store has already been upgraded. No further action is required.]]></string>
     <string name="button_restart" introduced="5.0.0"><![CDATA[Start Again]]></string>
     <string name="button_retry" introduced="5.0.0"><![CDATA[Try Again]]></string>

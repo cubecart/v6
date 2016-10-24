@@ -182,8 +182,10 @@
 	  <div>{$LANG.setup.upgrade_complete_note}</div>
 	{/if}
   {/if}
-
-  {if isset($SHOW_LINKS)}
+  	{if isset($MODE_COMPLETE_UPGRADE) && isset($SHOW_LINKS)}
+  	<p class="url_change">{$LANG.setup.urls_changed}</p>
+  	{/if}
+  	{if isset($SHOW_LINKS)}
 	  <div>
 		<h4>{$LANG.setup.link_admin_panel}</h4>
 		<a href="{$ADMIN_URL}" target="_blank">{$ADMIN_URL}</a><br>
@@ -192,7 +194,6 @@
 		<a href="{$STORE_URL}" target="_blank">{$STORE_URL}</a>
 	  </div>
 	{/if}
-
 	  <div id="toolbar">
 		{if isset($CONTROLLER.continue)}<span class="continue"><input type="submit" name="proceed" value="{$LANG.common.continue}" /></span>{/if}
 		{if isset($CONTROLLER.retry)}<span class="continue"><input type="submit" name="retry" value="{$LANG.setup.button_retry}" /></span>{/if}

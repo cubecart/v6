@@ -503,42 +503,44 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
     setcookie('delete_setup', true, time()+7200, '/');
     
     //Attempt admin file and folder rename
-    $adminFolder = 'admin_'.randomString(6);
-    $adminFile   = 'admin_'.randomString(6).'.php';
-    $update_config = false;
+    if(file_exists('../admin') || file_exists('../admin.php')) {
+      $adminFolder = 'admin_'.randomString(6);
+      $adminFile   = 'admin_'.randomString(6).'.php';
+      $update_config = false;
 
-    rename('../'.$glob['adminFolder'], '../'.$adminFolder);
-    rename('../'.$glob['adminFile'], '../'.$adminFile);
-    
-    if(file_exists('../'.$adminFolder)) {
-      $update_config = true;
-    } else {
-      $adminFolder = $glob['adminFolder'];
-    }
-
-    if(file_exists('../'.$adminFile)) {
-      $update_config = true;
-    } else {
-      $adminFile   = $glob['adminFile'];
-    }
-
-    if($update_config) {
-      foreach ($glob as $key => $value) {
-        if($key=='adminFile') {
-          $value = $adminFile;
-        } elseif($key=='adminFolder') {
-          $value = $adminFolder;
-        }
-        $config[] = sprintf("\$glob['%s'] = '%s';", $key, addslashes($value));
+      rename('../'.$glob['adminFolder'], '../'.$adminFolder);
+      rename('../'.$glob['adminFile'], '../'.$adminFile);
+      
+      if(file_exists('../'.$adminFolder)) {
+        $update_config = true;
+      } else {
+        $adminFolder = $glob['adminFolder'];
       }
-      $config = sprintf("<?php\n%s\n?>", implode("\n", $config));
-      ## Backup existing config file, if it exists
-      if (file_exists($global_file)) rename($global_file, $global_file.'-'.date('Ymdgis').'.php');
-      if (file_put_contents($global_file, $config)); 
+
+      if(file_exists('../'.$adminFile)) {
+        $update_config = true;
+      } else {
+        $adminFile   = $glob['adminFile'];
+      }
+
+      if($update_config) {
+        foreach ($glob as $key => $value) {
+          if($key=='adminFile') {
+            $value = $adminFile;
+          } elseif($key=='adminFolder') {
+            $value = $adminFolder;
+          }
+          $config[] = sprintf("\$glob['%s'] = '%s';", $key, addslashes($value));
+        }
+        $config = sprintf("<?php\n%s\n?>", implode("\n", $config));
+        ## Backup existing config file, if it exists
+        if (file_exists($global_file)) rename($global_file, $global_file.'-'.date('Ymdgis').'.php');
+        if (file_put_contents($global_file, $config)); 
+      }
+      $GLOBALS['smarty']->assign('ADMIN_URL', str_replace('/setup','',CC_STORE_URL).'/'.$adminFile);
+      $GLOBALS['smarty']->assign('STORE_URL', str_replace('/setup','',CC_STORE_URL).'/');
+      $GLOBALS['smarty']->assign('SHOW_LINKS', true);
     }
-    $GLOBALS['smarty']->assign('ADMIN_URL', str_replace('/setup','',CC_STORE_URL).'/'.$adminFile);
-    $GLOBALS['smarty']->assign('STORE_URL', str_replace('/setup','',CC_STORE_URL).'/');
-    $GLOBALS['smarty']->assign('SHOW_LINKS', true);
     
     /* Truncate CubeCart_system_error_log table. There are a number of failed SQL queries on upgrade depending
      * on to/from version. We need a clean slate to detect operational errors.
