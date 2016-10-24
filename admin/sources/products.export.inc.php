@@ -48,7 +48,7 @@ if (isset($_GET['format']) && !empty($_GET['format'])) {
 
 	if ($results = $GLOBALS['db']->query($query, $per_page, $page)) {
 		
-		$header_fields = array('Product Name', 'Status', 'Include in featured products', 'Include in latest products', 'Product Code', 'Weight', 'Description', 'Short Description', 'Price', 'Sale Price', 'Cost Price', 'Tax Class', 'Tax Inclusive', 'Main Image', 'Stock Level', 'Use Stock Level', 'Stock Level Warning', 'Master Category ID', 'Manufacturer', 'UPC Code', 'EAN Code', 'JAN Code', 'ISBN Code', 'Brand', 'MPN Code', 'GTIN Code', 'Meta Title', 'Meta Keywords', 'Meta Description', 'Condition', 'Digital', 'Digital Path (Legacy)');
+		$header_fields = array('Product Name', 'Status', 'Include in featured products', 'Include in latest products', 'Product Code', 'Weight', 'Description', 'Short Description', 'Price', 'Sale Price', 'Cost Price', 'Tax Class', 'Tax Inclusive', 'Main Image', 'Stock Level', 'Use Stock Level', 'Stock Level Warning', 'Master Category ID', 'Manufacturer', 'UPC Code', 'EAN Code', 'JAN Code', 'ISBN Code', 'Brand', 'MPN Code', 'GTIN Code', 'Meta Title', 'Meta Description', 'Meta Keywords', 'Condition', 'Digital', 'Digital Path (Legacy)');
 		$fields  = array('name', 'status', 'featured', 'latest', 'product_code', 'product_weight', 'description', 'description_short', 'price', 'sale_price', 'cost_price', 'tax_type', 'tax_inclusive', 'image', 'stock_level', 'use_stock_level', 'stock_warning', 'cat_id', 'manufacturer', 'upc', 'ean', 'jan', 'isbn', 'brand', 'mpn', 'gtin', 'seo_meta_title', 'seo_meta_description', 'seo_meta_keywords', 'condition', 'digital', 'digital_path');
 		$delimiter = ',';
 		$extension = 'csv';
