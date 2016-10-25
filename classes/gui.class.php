@@ -126,12 +126,6 @@ class GUI {
 			$GLOBALS['smarty']->template_dir = CC_ROOT_DIR.'/skins/'.$this->_skin.'/';
 			$this->_template_dir = CC_ROOT_DIR.'/skins/'.$this->_skin.'/';
 
-			//Define CDN paths
-			$GLOBALS['smarty']->assign('SKIN_URL', CC_STORE_URL.'/skins/'.$this->_skin.'/');
-			$GLOBALS['smarty']->assign('SKIN_URL_JS', CC_STORE_URL.'/skins/'.$this->_skin.'/js');
-			$GLOBALS['smarty']->assign('SKIN_URL_MEDIA', CC_STORE_URL.'/skins/'.$this->_skin.'/images');
-			$GLOBALS['smarty']->assign('BASE_URL_JS', CC_STORE_URL.'/js');
-
 			//Give smarty the logo
 			$this->_setLogo();
 			if (empty($this->_logo)) {
