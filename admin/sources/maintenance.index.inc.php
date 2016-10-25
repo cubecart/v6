@@ -17,39 +17,6 @@ global $lang;
 
 $pclzip_path = CC_INCLUDES_DIR.'lib/pclzip/pclzip.lib.php';
 
-
-/* Code to organise images into subfolders by first letter. Useful to boost performance of stores with all images in one folder. Tested succesfully on 15,000 image store.
-$image_path = 'images/source/';
-foreach (glob($image_path.'*') as $filename) {
-    if(is_file($filename))
-
-    	$base_name = basename($filename);
-    	$folder_name = substr($base_name,0,1);
-    	$folder_path = $image_path.$folder_name;
-
-    	if(!file_exists($folder_path)) {
-    		mkdir($folder_path);
-    	}
-
-    	rename($filename,$folder_path.'/'.$base_name);
-
-    }
-}
-
-
-$files = $GLOBALS['db']->select('CubeCart_filemanager', '*');
-foreach($files as $file) {
-	$folder = substr($file['filename'], 0, 1);
-	$GLOBALS['db']->update('CubeCart_filemanager', array('filepath' => $folder.'/'), array('file_id' => $file['file_id']));
-}
-
-if ($_SESSION['setup']['complete']==true) {
-	recursiveDelete(CC_ROOT_DIR.'/setup');
-	unlink(CC_ROOT_DIR.'/setup');
-	unset($_SESSION['setup']);
-}
-*/
-
 $version_history = $GLOBALS['db']->select('CubeCart_history', false, false, "`version` DESC");
 
 $GLOBALS['smarty']->assign('VERSIONS', $version_history);
