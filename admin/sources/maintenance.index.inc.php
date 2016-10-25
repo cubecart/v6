@@ -182,20 +182,6 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 			if ($extract == 0) {
 				$GLOBALS['main']->setACPWarning("Error: ".$archive->errorInfo(true));
 				httpredir('?_g=maintenance&node=index#upgrade');
-			} else {
-				## Update admin.php and admin folder names
-				$default_config = array(
-					'adminFolder' => 'admin',
-					'adminFile' => 'admin.php' 
-				);
-				foreach($default_config as $config_key => $config_value) {
-					$default_path = CC_ROOT_DIR.'/'.$config_value;
-					$custom_path = CC_ROOT_DIR.'/'.$glob[$config_key];
-					if(isset($glob[$config_key]) && $glob[$config_key]!==$config_value && file_exists($default_path) && file_exists($custom_path)) {
-						is_dir($default_path) ? recursiveDelete($default_path) : unlink($default_path);
-						rename($default_path, $custom_path);	
-					}
-				}
 			}
 			$error_log = '----- Upgrade log to '.$_GET['upgrade']." (".date("d M Y - H:i:s").") -----\r\n\r\n";
 			## Check the file have been updated
@@ -260,10 +246,11 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 				if (file_exists(CC_ROOT_DIR.'/setup')) {
 					rename(CC_ROOT_DIR.'/setup', CC_ROOT_DIR.'/setup_'.md5(time().$_GET['upgrade']));
 				}
+				$GLOBALS['main']->renameAdmin();
 				$GLOBALS['main']->setACPNotify($lang['maintain']['current_version_restored']);
-				$GLOBALS['cache']->clear();
 				httpredir('?_g=maintenance&node=index#upgrade');
 			} else {
+				$GLOBALS['main']->renameAdmin();
 				httpredir(CC_ROOT_REL.'setup/index.php?autoupdate=1');
 			}
 		}
