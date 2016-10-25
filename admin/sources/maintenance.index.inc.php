@@ -182,6 +182,20 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 			if ($extract == 0) {
 				$GLOBALS['main']->setACPWarning("Error: ".$archive->errorInfo(true));
 				httpredir('?_g=maintenance&node=index#upgrade');
+			} else {
+				## Update admin.php and admin folder names
+				$default_config = array(
+					'adminFolder' => 'admin',
+					'adminFile' => 'admin.php' 
+				);
+				foreach($default_config as $config_key => $config_value) {
+					$default_path = CC_ROOT_DIR.'/'.$config_value;
+					$custom_path = CC_ROOT_DIR.'/'.$glob[$config_key];
+					if(isset($glob[$config_key]) && $glob[$config_key]!==$config_value && file_exists($default_path) && file_exists($custom_path)) {
+						is_dir($default_path) ? recursiveDelete($default_path) : unlink($default_path);
+						rename($default_path, $custom_path);	
+					}
+				}
 			}
 			$error_log = '----- Upgrade log to '.$_GET['upgrade']." (".date("d M Y - H:i:s").") -----\r\n\r\n";
 			## Check the file have been updated
