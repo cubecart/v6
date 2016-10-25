@@ -546,6 +546,10 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
      * on to/from version. We need a clean slate to detect operational errors.
      */
     $db->truncate('CubeCart_system_error_log');
+    include $global_file;
+    if ($_SESSION['setup']['autoupgrade'] && !$update_config) {
+      httpredir('../'.$glob['adminFile'].'?_g=maintenance&node=index#upgrade');
+    }
   }
 }
 

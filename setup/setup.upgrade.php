@@ -288,9 +288,6 @@ if (!isset($_SESSION['setup']['permissions'])) {
 			## Progressive updates completed
 			## Redirect to the 'complete' page
 			$_SESSION['setup']['complete'] = true;
-			if ($_SESSION['setup']['autoupgrade']) {
-				httpredir('../admin.php?_g=maintenance&node=index#upgrade');
-			}
 			httpredir('index.php', 'upgraded');
 		}
 		$GLOBALS['smarty']->assign('LANG_UPGRADE_IN_PROGRESS', sprintf($strings['setup']['upgrade_in_progress'], $current, $version));
