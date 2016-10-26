@@ -3,6 +3,7 @@
 /modules/.gitignore export-ignore
 /images/cache/.gitignore export-ignore
 /images/logos/.gitignore export-ignore
+/images/source/.gitignore export-ignore
 /cache/.gitignore export-ignore
 /files/.gitignore export-ignore
 /backup/.gitignore export-ignore
