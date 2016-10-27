@@ -48,7 +48,7 @@ class Cache extends Cache_Controler {
 	}
 	
 	public function __destruct() {
-		if($this->_empties_added) $this->redis_client->set(serialize($this->_empties), $this->_empties_id);
+		if($this->_empties_added) $this->write($this->_empties, $this->_empties_id);
 	}
 
 	/**
