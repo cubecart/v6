@@ -50,10 +50,10 @@
         <tr>
         <td valign="top" width="50%"><strong>Billing address:</strong><br>
         {$BILLING.first_name} {$BILLING.last_name}<br>
-        {if !empty({$BILLING.company_name})}{$BILLING.company_name}<br>
+        {if !empty($BILLING.company_name)}{$BILLING.company_name}<br>
         {/if}
         {$BILLING.line1}<br>
-        {if !empty({$BILLING.line2})}{$BILLING.line2}<br>
+        {if !empty($BILLING.line2)}{$BILLING.line2}<br>
         {/if}
         {$BILLING.town}<br>
         {$BILLING.state}<br>
@@ -65,9 +65,9 @@
         {$BILLING.email}</td>
         <td valign="top" width="50%"><strong>Shipping address:</strong><br>
         {$SHIPPING.first_name} {$SHIPPING.last_name}<br>
-        {if !empty({$SHIPPING.company_name})}{$SHIPPING.company_name} <br>
+        {if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>
         {/if}{$SHIPPING.line1}<br>
-        {if !empty({$SHIPPING.line2})}{$SHIPPING.line2} <br>
+        {if !empty($SHIPPING.line2)}{$SHIPPING.line2} <br>
         {/if}{$SHIPPING.town}<br>
         {$SHIPPING.state}<br>
         {$SHIPPING.postcode}<br>
@@ -117,7 +117,9 @@
         </tr>
         </tbody>
         </table>
-        <p>{if !empty({$DATA.note_to_customer})}&quot;{$DATA.note_to_customer}&quot;{/if}</p>]]></content>
+        {if !empty($DATA.note_to_customer)}
+        <p>&quot;{$DATA.note_to_customer}&quot;</p>
+        {/if}]]></content>
     <content type="text"><![CDATA[Thank You {$DATA.first_name}!
         
         Your order {$DATA.cart_order_id} has been received which was placed on {$DATA.order_date}. Please keep this email for your records. It is possible to view the status of your order online. 
@@ -127,9 +129,9 @@
         ----------------------------------------------------------------------
         Billing address:
         {$BILLING.first_name} {$BILLING.last_name}
-        {if !empty({$BILLING.company_name})}{$BILLING.company_name}
+        {if !empty($BILLING.company_name)}{$BILLING.company_name}
         {/if}{$BILLING.line1}
-        {if !empty({$BILLING.line2})}{$BILLING.line2}
+        {if !empty($BILLING.line2)}{$BILLING.line2}
         {/if}{$BILLING.town}
         {$BILLING.state}
         {$BILLING.postcode}
@@ -141,9 +143,9 @@
         
         Shipping address:
         {$SHIPPING.first_name} {$SHIPPING.last_name}
-        {if !empty({$SHIPPING.company_name})}{$SHIPPING.company_name}
+        {if !empty($SHIPPING.company_name)}{$SHIPPING.company_name}
         {/if}{$SHIPPING.line1}
-        {if !empty({$SHIPPING.line2})}{$SHIPPING.line2}
+        {if !empty($SHIPPING.line2)}{$SHIPPING.line2}
         {/if}{$SHIPPING.town}
         {$SHIPPING.state}
         {$SHIPPING.postcode}
@@ -171,7 +173,7 @@
         --------------------------
         Order Total: {$DATA.total}
         ==========================
-        {if !empty({$DATA.note_to_customer})}
+        {if !empty($DATA.note_to_customer)}
         "{$DATA.note_to_customer}"{/if}]]></content>
   </email>
   <email name="cart.payment_fraud">
@@ -201,17 +203,17 @@
   </email>
   <email name="admin.order_received">
     <subject><![CDATA[New Order #{$DATA.cart_order_id}]]></subject>
-    <content type="html"><![CDATA[<p>{$DATA.first_name} {$DATA.last_name} {if !empty({$BILLING.company_name})}({$BILLING.company_name}){/if} just placed order number {$DATA.cart_order_id} on {$DATA.order_date}.</p>
+    <content type="html"><![CDATA[<p>{$DATA.first_name} {$DATA.last_name} {if !empty($BILLING.company_name)}({$BILLING.company_name}){/if} just placed order number {$DATA.cart_order_id} on {$DATA.order_date}.</p>
         <p>This order can be managed online by following the link below.</p> 
         <p><a href="{$DATA.link}">{$DATA.link}</a></p>
         <table width="100%">
         <tr>
         <td valign="top" width="50%"><strong>Billing address:</strong><br>
         {$BILLING.first_name} {$BILLING.last_name}<br>
-        {if !empty({$BILLING.company_name})}{$BILLING.company_name}<br>
+        {if !empty($BILLING.company_name)}{$BILLING.company_name}<br>
         {/if}
         {$BILLING.line1}<br>
-        {if !empty({$BILLING.line2})}{$BILLING.line2}<br>
+        {if !empty($BILLING.line2)}{$BILLING.line2}<br>
         {/if}
         {$BILLING.town}<br>
         {$BILLING.state}<br>
@@ -223,9 +225,9 @@
         {$BILLING.email}</td>
         <td valign="top" width="50%"><strong>Shipping address:</strong><br>
         {$SHIPPING.first_name} {$SHIPPING.last_name}<br>
-        {if !empty({$SHIPPING.company_name})}{$SHIPPING.company_name} <br>
+        {if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>
         {/if}{$SHIPPING.line1}<br>
-        {if !empty({$SHIPPING.line2})}{$SHIPPING.line2} <br>
+        {if !empty($SHIPPING.line2)}{$SHIPPING.line2} <br>
         {/if}{$SHIPPING.town}<br>
         {$SHIPPING.state}<br>
         {$SHIPPING.postcode}<br>
@@ -276,7 +278,7 @@
         </tbody>
         
         </table>]]></content>
-    <content type="text"><![CDATA[{$DATA.first_name} {$DATA.last_name} {if !empty({$BILLING.company_name})}({$BILLING.company_name}){/if} just placed order number {$DATA.cart_order_id} on {$DATA.order_date}.
+    <content type="text"><![CDATA[{$DATA.first_name} {$DATA.last_name} {if !empty($BILLING.company_name)}({$BILLING.company_name}){/if} just placed order number {$DATA.cart_order_id} on {$DATA.order_date}.
         
         This order can be managed online by following the link below.
         
@@ -285,9 +287,9 @@
         ----------------------------------------------------------------------
         Billing address:
         {$BILLING.first_name} {$BILLING.last_name}
-        {if !empty({$BILLING.company_name})}{$BILLING.company_name}
+        {if !empty($BILLING.company_name)}{$BILLING.company_name}
         {/if}{$BILLING.line1}
-        {if !empty({$BILLING.line2})}{$BILLING.line2}
+        {if !empty($BILLING.line2)}{$BILLING.line2}
         {/if}{$BILLING.town}
         {$BILLING.state}
         {$BILLING.postcode}
@@ -299,9 +301,9 @@
         
         Shipping address:
         {$SHIPPING.first_name} {$SHIPPING.last_name}
-        {if !empty({$SHIPPING.company_name})}{$SHIPPING.company_name}
+        {if !empty($SHIPPING.company_name)}{$SHIPPING.company_name}
         {/if}{$SHIPPING.line1}
-        {if !empty({$SHIPPING.line2})}{$SHIPPING.line2}
+        {if !empty($SHIPPING.line2)}{$SHIPPING.line2}
         {/if}{$SHIPPING.town}
         {$SHIPPING.state}
         {$SHIPPING.postcode}
