@@ -169,10 +169,8 @@ class Cache extends Cache_Controler {
 		$name = $this->_makeName($id);
 
 		//Make sure the cache file exists
-		if ($this->_memcache->get($name)) {
-			$contents = $this->_memcache->get($name);
+		if ($contents = $this->_memcache->get($name)) {
 			if (!empty($contents)) {
-				//Remove base64 & serialization
 				return $contents;
 			}
 		}
