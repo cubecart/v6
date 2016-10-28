@@ -127,7 +127,7 @@ class Cache extends Cache_Controler {
 		$name = $this->_makeName($id);
 
 		//Try to set the temp variable to the item
-		if (($this->_temp[$name] = $this->redis_client->exists($name)) !== false) {
+		if (($this->_temp[$name] = (bool)$this->redis_client->exists($name)) !== false) {
 			return true;
 		}
 
@@ -159,6 +159,7 @@ class Cache extends Cache_Controler {
 	 * @param string $id Cache identifier
 	 * @return data/false
 	 */
+	
 	public function read($id) {
 
 		if(!$this->status) return false;
@@ -170,24 +171,11 @@ class Cache extends Cache_Controler {
 		//Setup the name of the cache
 		$name = $this->_makeName($id);
 
-		//Try the temp value that is set if exists was called
-		if (isset($this->_temp[$name])) {
-			$contents = $this->_temp[$name];
-			//Unset temp value
-			unset($this->_temp[$name]);
-		} else {
-			//Try to fetch the data from cache
-			$contents = $this->redis_client->get($name);
-			if(is_null($contents)) {
-				return false;
-			} else {
-				return unserialize($contents);
-			}
-		}
-
 		//Make sure the cache file exists
-		if ($contents !== false && !empty($contents)) {
-			return $contents;
+		if ($contents = $this->redis_client->get($name)) {
+			if (!empty($contents)) {
+				return json_decode($contents, true);
+			}
 		}
 
 		return false;
@@ -227,7 +215,7 @@ class Cache extends Cache_Controler {
 	 * @param int $expire Force a time to live
 	 * @return bool
 	 */
-	public function write($data, $id, $expire = '', $serialize = true) {
+	public function write($data, $id, $expire = '') {
 
 		if(!$this->status) return false;
 
@@ -241,15 +229,13 @@ class Cache extends Cache_Controler {
 
 		$name = $this->_makeName($id);
 
-		try {
-			$data = ($serialize) ? serialize($data) : $data;
-		} catch (Exception $e) {
-		    trigger_error($e->getMessage());
+		if(is_array($data) || is_string($data)) {
+			$data = json_encode($data);
+		} else {
 		    return false;
 		}
 
 		$this->redis_client->set($name, $data);
-		$this->redis_client->ttl((!empty($expire) && is_numeric($expire)) ? $expire : $this->_expire);
 		return true;
 	}
 	
@@ -260,11 +246,6 @@ class Cache extends Cache_Controler {
 	 */
 	protected function _getEmpties() {
 		$this->_setPrefix();
-		$data = $this->redis_client->get($this->_empties_id);
-		if(is_null($data)) {
-			$this->_empties = array();
-		} else {
-			$this->_empties = unserialize($data);
-		}
+		$this->_empties = $this->read($this->_empties_id);
 	}
 }
