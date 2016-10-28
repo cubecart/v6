@@ -117,9 +117,7 @@
         </tr>
         </tbody>
         </table>
-        {if !empty({$DATA.note_to_customer})}
-        <p>&quot;{$DATA.note_to_customer}&quot;</p>
-        {/if}]]></content>
+        <p>{if !empty({$DATA.note_to_customer})}&quot;{$DATA.note_to_customer}&quot;{/if}</p>]]></content>
     <content type="text"><![CDATA[Thank You {$DATA.first_name}!
         
         Your order {$DATA.cart_order_id} has been received which was placed on {$DATA.order_date}. Please keep this email for your records. It is possible to view the status of your order online. 
