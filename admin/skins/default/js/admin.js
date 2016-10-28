@@ -1,3 +1,10 @@
+if (!String.prototype.startsWith) {
+  String.prototype.startsWith = function(searchString, position) {
+    position = position || 0;
+    return this.indexOf(searchString, position) === position;
+  };
+}
+
 function updateStriping() {
     $(".list-even,.list-odd").removeClass("list-even list-odd"), $(".list,.reorder-list").find(">div,tbody>tr").hover(function() {
         $(this).addClass("list-hover")
