@@ -16,7 +16,7 @@
 <definitions version="1.0">
   <group name="account">
     <string name="password_updated" introduced="6.0.0"><![CDATA[Your password has been updated.]]></string>
-  	<string name="return_register_form" introduced="6.0.0"><![CDATA[Need to register?]]></string>
+    <string name="return_register_form" introduced="6.0.0"><![CDATA[Need to register?]]></string>
     <string name="already_registered" introduced="5.0.0"><![CDATA[Already registered?]]></string>
     <string name="contact_details" introduced="5.0.0"><![CDATA[Contact Details]]></string>
     <string name="create_account" introduced="5.0.0"><![CDATA[I would like to create an account.]]></string>
@@ -109,12 +109,12 @@
   </group>
   <group name="address">
     <string name="check_state" introduced="6.1.0"><![CDATA[We seem to have a problem with your address%s. Please check the value for &quot;County&quot; before proceeding.]]></string>
-  	<string name="address_not_found" introduced="6.0.0"><![CDATA[Can't find your address?]]></string>
-  	<string name="add_address" introduced="6.0.0"><![CDATA[Add Address]]></string>
-  	<string name="edit_address" introduced="6.0.0"><![CDATA[Edit Address]]></string>
-  	<string name="example_address_description" introduced="6.0.0"><![CDATA[e.g. &quot;Work Address&quot;]]></string>
+    <string name="address_not_found" introduced="6.0.0"><![CDATA[Can't find your address?]]></string>
+    <string name="add_address" introduced="6.0.0"><![CDATA[Add Address]]></string>
+    <string name="edit_address" introduced="6.0.0"><![CDATA[Edit Address]]></string>
+    <string name="example_address_description" introduced="6.0.0"><![CDATA[e.g. &quot;Work Address&quot;]]></string>
     <string name="extra_address" introduced="6.0.0"><![CDATA[Extra Address]]></string>
-  	<string name="address_lookup" introduced="6.0.0"><![CDATA[Start typing a postcode, street or address]]></string>
+    <string name="address_lookup" introduced="6.0.0"><![CDATA[Start typing a postcode, street or address]]></string>
     <string name="add_edit" introduced="5.0.0"><![CDATA[Add/Edit Address]]></string>
     <string name="address_add" introduced="5.0.0"><![CDATA[Add New Address]]></string>
     <string name="address_edit" introduced="5.0.0"><![CDATA[Edit Address]]></string>
@@ -202,7 +202,7 @@
     <string name="specify_shipping" introduced="6.0.5"><![CDATA[Specify your shipping address]]></string>
     <string name="shipping_address_updated" introduced="6.0.5"><![CDATA[Shipping address has been updated.]]></string>
     <string name="your_basket" introduced="6.0.0"><![CDATA[Your Basket]]></string>
-  	<string name="basket" introduced="6.0.0"><![CDATA[Basket]]></string>
+    <string name="basket" introduced="6.0.0"><![CDATA[Basket]]></string>
     <string name="basket_checkout" introduced="5.0.0"><![CDATA[Checkout]]></string>
     <string name="basket_secure_checkout" introduced="6.0.0"><![CDATA[Secure Checkout]]></string>
     <string name="basket_empty" introduced="5.0.0"><![CDATA[Empty Basket]]></string>
@@ -237,7 +237,7 @@
     <string name="error_js_required" introduced="6.1.0"><![CDATA[JavaScript is required by this website. Please enable this in your browser settings.]]></string>
     <string name="absolute_price" introduced="6.0.7"><![CDATA[Absolute Price]]></string>
     <string name="available_for_purchase" introduced="6.0.0"><![CDATA[Available for purchase]]></string>
-  	<string name="added_to_basket" introduced="6.0.0"><![CDATA[Added to Basket]]></string>
+    <string name="added_to_basket" introduced="6.0.0"><![CDATA[Added to Basket]]></string>
     <string name="add_to_basket" introduced="5.0.0"><![CDATA[Add to Basket]]></string>
     <string name="allowed_uses" introduced="5.0.0"><![CDATA[Allowed Uses]]></string>
     <string name="all_sale_items" introduced="5.0.0"><![CDATA[All Sale Items]]></string>
@@ -541,17 +541,9 @@
     <string name="error_shipping" introduced="5.0.0"><![CDATA[Unfortunately there are no suitable shipping methods available for your order. This may be because the total weight of your order is too high or we cannot ship to your country. Please contact a member of our staff for any further inquiries.]]></string>
     <string name="check_shipping" introduced="5.0.0"><![CDATA[Available shipping methods have changed. Please check before proceeding.]]></string>
     <string name="error_too_many_added" introduced="5.0.0"><![CDATA[Sorry, you can't buy more than we have. We have automatically reduced your quantity to the maximum available.]]></string>
-<<<<<<< HEAD
-    <string name="voucher_accepted" introduced="6.1.0"><![CDATA[Thank you. That code has been accepted and discount applied to your basket.]]></string>
-    <string name="voucher_removed" introduced="6.1.0"><![CDATA[Promotional code has been removed from your basket.]]></string>
     <string name="error_voucher_expired" introduced="5.0.0"><![CDATA[Sorry, that code has expired.]]></string>
     <string name="error_voucher_none" introduced="5.0.0"><![CDATA[Sorry, that code does not exist.]]></string>
     <string name="error_voucher_product" introduced="5.0.0"><![CDATA[Sorry, your basket does not qualify for that promotional Code.]]></string>
-=======
-    <string name="error_voucher_expired" introduced="5.0.0"><![CDATA[Sorry, that voucher has expired.]]></string>
-    <string name="error_voucher_none" introduced="5.0.0"><![CDATA[Sorry, that voucher does not exist.]]></string>
-    <string name="error_voucher_product" introduced="5.0.0"><![CDATA[Sorry, your basket does not qualify for that coupon.]]></string>
->>>>>>> parent of 9c122e5... Fixed #1153
     <string name="error_item_not_available" introduced="6.0.1"><![CDATA[Sorry, but %s is no longer available and has been removed from your basket.]]></string>
     <string name="error_voucher_wrong_product" introduced="5.0.0"><![CDATA[Sorry, that code is not valid for the items in your basket.]]></string>
     <string name="make_payment" introduced="5.0.0"><![CDATA[A total of <strong>%s</strong> is due for order number <strong>%s</strong>]]></string>
@@ -592,21 +584,21 @@
     <string name="used" introduced="6.0.0"><![CDATA[Used]]></string>
     <string name="refurbished" introduced="6.0.0"><![CDATA[Refurbished]]></string>
     <string name="logo" introduced="6.0.0"><![CDATA[Logo]]></string>
-  	<string name="reorder" introduced="6.0.0"><![CDATA[Reorder]]></string>
-  	<string name="recommended" introduced="6.0.0"><![CDATA[Recommended]]></string>
-  	<string name="all_pages" introduced="6.0.0"><![CDATA[Force on all pages]]></string>
-  	<string name="some_pages" introduced="6.0.0"><![CDATA[Only on sensitive pages]]></string>
-  	<string name="warning_offline" introduced="6.0.0"><![CDATA[WARNING: This store is closed. Only staff members logged in can view the store whilst it is offline. To view the offline message please <a href="admin.php?_g=logout&r=front">log out</a>.]]></string>
-  	<string name="top" introduced="6.0.0"><![CDATA[Top]]></string>
-  	<string name="loading" introduced="6.0.0"><![CDATA[Loading]]></string>
-  	<string name="signup" introduced="6.0.0"><![CDATA[Signup]]></string>
-  	<string name="follow_us" introduced="6.0.0"><![CDATA[Follow Us]]></string>
-  	<string name="account" introduced="6.0.0"><![CDATA[Account]]></string>
-  	<string name="invoice" introduced="6.0.0"><![CDATA[Invoice]]></string>
-  	<string name="min" introduced="6.0.0"><![CDATA[Min]]></string>
-  	<string name="max" introduced="6.0.0"><![CDATA[Max]]></string>
-  	<string name="from" introduced="6.0.0"><![CDATA[From]]></string>
-  	<string name="to" introduced="6.0.0"><![CDATA[To]]></string>
+    <string name="reorder" introduced="6.0.0"><![CDATA[Reorder]]></string>
+    <string name="recommended" introduced="6.0.0"><![CDATA[Recommended]]></string>
+    <string name="all_pages" introduced="6.0.0"><![CDATA[Force on all pages]]></string>
+    <string name="some_pages" introduced="6.0.0"><![CDATA[Only on sensitive pages]]></string>
+    <string name="warning_offline" introduced="6.0.0"><![CDATA[WARNING: This store is closed. Only staff members logged in can view the store whilst it is offline. To view the offline message please <a href="admin.php?_g=logout&r=front">log out</a>.]]></string>
+    <string name="top" introduced="6.0.0"><![CDATA[Top]]></string>
+    <string name="loading" introduced="6.0.0"><![CDATA[Loading]]></string>
+    <string name="signup" introduced="6.0.0"><![CDATA[Signup]]></string>
+    <string name="follow_us" introduced="6.0.0"><![CDATA[Follow Us]]></string>
+    <string name="account" introduced="6.0.0"><![CDATA[Account]]></string>
+    <string name="invoice" introduced="6.0.0"><![CDATA[Invoice]]></string>
+    <string name="min" introduced="6.0.0"><![CDATA[Min]]></string>
+    <string name="max" introduced="6.0.0"><![CDATA[Max]]></string>
+    <string name="from" introduced="6.0.0"><![CDATA[From]]></string>
+    <string name="to" introduced="6.0.0"><![CDATA[To]]></string>
     <string name="inherit" introduced="5.2.13"><![CDATA[Inherit]]></string>
     <string name="add" introduced="5.0.0"><![CDATA[Add]]></string>
     <string name="add_new" introduced="5.0.0"><![CDATA[Add new]]></string>
@@ -712,7 +704,7 @@
     <string name="other" introduced="5.0.0"><![CDATA[Other]]></string>
     <string name="overview" introduced="5.0.0"><![CDATA[Overview]]></string>
     <string name="percentage" introduced="5.0.0"><![CDATA[Percentage]]></string>
-	<string name="please_select" introduced="5.0.7"><![CDATA[Please Select]]></string>
+    <string name="please_select" introduced="5.0.7"><![CDATA[Please Select]]></string>
     <string name="popularity" introduced="5.1.6"><![CDATA[Popularity]]></string>
     <string name="post" introduced="5.0.0"><![CDATA[Post]]></string>
     <string name="preview" introduced="5.0.0"><![CDATA[Preview]]></string>
@@ -892,7 +884,7 @@
     <string name="tour_6_title" introduced="6.0.0"><![CDATA[Homepage Content]]></string>
     <string name="tour_6" introduced="6.0.0"><![CDATA[Update your homepage with any content you want. Here you can manage a &quot;hero carousel&quot; and add any HTML content you wish.]]></string>
     <string name="tour_end" introduced="6.0.0"><![CDATA[<p>We have only touched the tip of the iceberg but it's enough to get you selling today. Please find a video tour below which goes into a little more detail.</p><p>Have fun and best of luck with your store!</p>]]></string>
-  	<string name="error_version" introduced="5.2.3"><![CDATA[WARNING: Your store appears to be using source code from %s but the database is still at %s.Please complete the upgrade by running the <a href="setup">setup</a> process.]]></string>
+    <string name="error_version" introduced="5.2.3"><![CDATA[WARNING: Your store appears to be using source code from %s but the database is still at %s.Please complete the upgrade by running the <a href="setup">setup</a> process.]]></string>
     <string name="error_global_risk" introduced="5.0.0"><![CDATA[WARNING: Your includes/global.inc.php is currently writable, you should change the file permissions to read only. On Linux or Unix systems it should be CHMOD to 0444.]]></string>
     <string name="error_mysql_root" introduced="5.0.0"><![CDATA[WARNING: You are currently connected to the database using the root account. This is not secure, and should be changed.]]></string>
     <string name="error_caching_disabled" introduced="6.0.0"><![CDATA[WARNING: Caching is disabled. Please enable it in the advanced tab of your stores <a href="?_g=settings#Advanced_Settings">settings</a>.]]></string>
@@ -941,7 +933,7 @@
   <group name="documents">
     <string name="404_title" introduced="6.0.6"><![CDATA[404 - Page Not Found]]></string>
     <string name="404_content" introduced="6.0.6"><![CDATA[Sorry but the page you are looking for could not be found.]]></string>
-  	<string name="smarty_parse" introduced="6.0.0"><![CDATA[Parse Smarty Tags]]></string>
+    <string name="smarty_parse" introduced="6.0.0"><![CDATA[Parse Smarty Tags]]></string>
     <string name="document_contact" introduced="5.0.0"><![CDATA[Contact Us]]></string>
     <string name="document_content" introduced="5.0.0"><![CDATA[Content]]></string>
     <string name="document_create" introduced="5.0.0"><![CDATA[Create Document]]></string>
@@ -1141,9 +1133,9 @@
     <string name="error_dl_1" introduced="5.0.0"><![CDATA[This download has expired.]]></string>
     <string name="error_dl_2" introduced="5.0.0"><![CDATA[You have downloaded this file the maximum number of times allowed.]]></string>
     <string name="error_dl_3" introduced="5.2.9"><![CDATA[It has not been possible to locate the download file.]]></string>
-	<string name="error_dl_4" introduced="5.2.9"><![CDATA[Product is missing or deleted.]]></string>
-	<string name="error_dl_5" introduced="5.2.9"><![CDATA[No record for this download exists]]></string>
-	<string name="error_dl_6" introduced="5.0.0"><![CDATA[Payment must be completed before the file can be downloaded.]]></string>
+    <string name="error_dl_4" introduced="5.2.9"><![CDATA[Product is missing or deleted.]]></string>
+    <string name="error_dl_5" introduced="5.2.9"><![CDATA[No record for this download exists]]></string>
+    <string name="error_dl_6" introduced="5.0.0"><![CDATA[Payment must be completed before the file can be downloaded.]]></string>
     <string name="error_file_delete" introduced="5.0.0"><![CDATA[Failed to delete file.]]></string>
     <string name="error_file_moved" introduced="5.0.0"><![CDATA[Failed to rename/move file.]]></string>
     <string name="error_file_update" introduced="5.0.0"><![CDATA[Failed to update file.]]></string>
@@ -1181,9 +1173,9 @@
     <string name="recaptcha_enter_words" introduced="6.0.6"><![CDATA[Enter the words above:]]></string>
     <string name="recaptcha_enter_numbers" introduced="6.0.6"><![CDATA[Enter the numbers you hear:]]></string>
     <string name="recaptcha_key_not_set" introduced="6.0.6"><![CDATA[reCAPTCHA public and/or private key has not been set!]]></string>
-  	<string name="required" introduced="6.0.0"><![CDATA[(Required)]]></string>
+    <string name="required" introduced="6.0.0"><![CDATA[(Required)]]></string>
     <string name="make_changes" introduced="6.0.0"><![CDATA[Make Changes]]></string>
-  	<string name="field_required" introduced="6.0.0"><![CDATA[This field is required.]]></string>
+    <string name="field_required" introduced="6.0.0"><![CDATA[This field is required.]]></string>
     <string name="action" introduced="5.0.0"><![CDATA[Action]]></string>
     <string name="check_uncheck" introduced="5.0.0"><![CDATA[Check/Uncheck all]]></string>
     <string name="ignore" introduced="5.0.0"><![CDATA[-- Ignore --]]></string>
@@ -1731,7 +1723,7 @@
     <string name="seo_cat_add_cats" introduced="6.0.0"><![CDATA[Add subcategories to category URL path?]]></string>
     <string name="admin_only_skin_select" introduced="6.0.0"><![CDATA[Yes (Logged in admins only)]]></string>
     <string name="all_skin_select" introduced="6.0.0"><![CDATA[Yes (Everyone)]]></string>
-  	<string name="admin_order_status_notification" introduced="5.0.0"><![CDATA[Order status for admin email notifications]]></string>
+    <string name="admin_order_status_notification" introduced="5.0.0"><![CDATA[Order status for admin email notifications]]></string>
     <string name="analyze" introduced="5.0.0"><![CDATA[Analyze]]></string>
     <string name="allowed_zones" introduced="5.0.0"><![CDATA[Allowed Zones]]></string>
     <string name="disabled_zones" introduced="5.0.8"><![CDATA[Disabled Zones]]></string>
@@ -2048,7 +2040,7 @@
     <string name="help_dbsocket" introduced="6.1.1"><![CDATA[This is the database server socket. In most cases it can be left blank.]]></string>
     <string name="db_port" introduced="6.1.1"><![CDATA[Database Port]]></string>
     <string name="db_socket" introduced="6.1.1"><![CDATA[Database Socket]]></string>
-  	<string name="urls_changed" introduced="6.1.0"><![CDATA[IMPORTANT: For security reasons we have changed your admin login URL.]]></string>
+    <string name="urls_changed" introduced="6.1.0"><![CDATA[IMPORTANT: For security reasons we have changed your admin login URL.]]></string>
     <string name="error_strict_mode" introduced="5.1.5"><![CDATA[WARNING: MySQL is running in &quot;Strict Mode&quot;. This must be disabled for your store to operate correctly.]]></string>
     <string name="already_upgraded" introduced="5.0.0"><![CDATA[Your store has already been upgraded. No further action is required.]]></string>
     <string name="button_restart" introduced="5.0.0"><![CDATA[Start Again]]></string>
