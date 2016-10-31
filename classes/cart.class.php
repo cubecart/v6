@@ -588,7 +588,6 @@ class Cart {
 							unset($this->basket['shipping']);
 						}
 						$this->basket['free_coupon_shipping'] = (bool)$coupon['free_shipping'];
-						$GLOBALS['gui']->setNotify($GLOBALS['language']->checkout['voucher_accepted']);
 						return true;
 					} else {
 						$GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_expired']);
@@ -613,7 +612,6 @@ class Cart {
 		if ($code && isset($this->basket['coupons'][strtoupper($code)])) {
 			unset($this->basket['coupons'][strtoupper($code)], $this->basket['discount_type']);
 			unset($this->basket['free_coupon_shipping']);
-			$GLOBALS['gui']->setInfo($GLOBALS['language']->checkout['voucher_removed']);
 			$this->save();
 			return true;
 		}
