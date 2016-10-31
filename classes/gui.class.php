@@ -1022,8 +1022,8 @@ class GUI {
 			}
 
 			$url = array (
-				'saleitems' => $GLOBALS['seo']->buildURL('saleitems'),
-				'certificates' => $GLOBALS['seo']->buildURL('certificates')
+				'saleitems' => $GLOBALS['seo']->buildURL('saleitems',false,'&',false),
+				'certificates' => $GLOBALS['seo']->buildURL('certificates',false,'&',false)
 			);
 			$GLOBALS['smarty']->assign('URL', $url);
 			//Fetch the navigation so we can cache it
