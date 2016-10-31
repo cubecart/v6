@@ -87,20 +87,39 @@ if (!isset($_SESSION['setup']['permissions'])) {
 				}
 			}
 			$mysql_connect = false;
-			// Connection Check - Update for mysqli
+			// Connection Check 
 			if (function_exists('mysqli_connect')) {
-				$connect = mysqli_connect($_POST['global']['dbhost'], $_POST['global']['dbusername'], $_POST['global']['dbpassword'], $_POST['global']['dbdatabase']);
-				if ($connect) {
-					// Database is fine, so continue to next step
-					mysqli_close($connect);
-					$mysql_connect = true;
-				} else {
-					// Incorrect host/user/pass
-					$errors[] = $strings['setup']['error_db_incorrect_something'];
-					unset($_POST['global']['dbhost'], $_POST['global']['dbusername'], $_POST['global']['dbpassword']);
+				
+				$dbport = !empty($_POST['global']['dbport']) ? $_POST['global']['dbport'] : ini_get('mysqli.default_port');
+				$dbsocket = !empty($_POST['global']['dbsocket']) ? $_POST['global']['dbsocket'] : ini_get('mysqli.default_socket');
+				
+				try {
+					$connect_id = new mysqli($_POST['global']['dbhost'], $_POST['global']['dbusername'], $_POST['global']['dbpassword'], $_POST['global']['dbdatabase'], $dbport, $dbsocket);
+
+					mysqli_options($connect_id, MYSQLI_OPT_LOCAL_INFILE, true);
+
+					if ($connect_id->connect_error) {
+						$errors[] = $strings['setup']['error_db_incorrect_something'].' '.$connect_id->connect_error;
+						unset($_POST['global']['dbhost'], $_POST['global']['dbusername'], $_POST['global']['dbpassword'], $_POST['global']['dbport'], $_POST['global']['dbsocket']);
+					} else {
+						$mysql_connect = true;
+						$connect_id->close();
+					}
+
+				} catch (Exception $e ) {
+					$errors[] = $strings['setup']['error_db_incorrect_something'].' '.$e->message;
+					unset($_POST['global']['dbhost'], $_POST['global']['dbusername'], $_POST['global']['dbpassword'], $_POST['global']['dbport'], $_POST['global']['dbsocket']);
 				}
+
 			} else {
-				$connect = mysql_connect($_POST['global']['dbhost'], $_POST['global']['dbusername'], $_POST['global']['dbpassword'], false);
+
+				$dbport = (isset($config['dbport']) && !empty($config['dbport'])) ? $config['dbport'] : ini_get('mysqli.default_port');
+
+				if(!empty($dbport) && is_numeric($dbport)){
+					$dbport = ':'.$dbport;
+				}
+
+				$connect = mysql_connect($_POST['global']['dbhost'].$dbport, $_POST['global']['dbusername'], $_POST['global']['dbpassword'], false);
 				if ($connect) {
 					if (mysql_select_db($_POST['global']['dbdatabase'], $connect)) {
 						// Database is fine, so continue to next step
@@ -108,13 +127,13 @@ if (!isset($_SESSION['setup']['permissions'])) {
 						$mysql_connect = true;
 					} else {
 						// No such database
-						$errors['dbdatabase'] = $strings['setup']['error_db_doesnt_exist'];
+						$errors['dbdatabase'] = $strings['setup']['error_db_doesnt_exist'].' '.mysql_error();
 						unset($_POST['global']['dbdatabase']);
 					}
 				} else {
 					// Incorrect host/user/pass
 					$errors[] = $strings['setup']['error_db_incorrect_something'];
-					unset($_POST['global']['dbhost'], $_POST['global']['dbusername'], $_POST['global']['dbpassword']);
+					unset($_POST['global']['dbhost'], $_POST['global']['dbusername'], $_POST['global']['dbpassword'], $_POST['global']['dbport'], $_POST['global']['dbsocket']);
 				}
 			}
 

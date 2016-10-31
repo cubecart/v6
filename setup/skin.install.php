@@ -109,11 +109,13 @@
 	<h3>{$LANG.setup.title_database_settings}</h3>
 	<fieldset>
 	  <div><label for="form-dbhhost" class="help" rel="" title="{$LANG.setup.help_dbhostname}">{$LANG.setup.db_host}</label><span><input type="text" name="global[dbhost]" id="form-dbhost" value="{$FORM.global.dbhost}" class="textbox required" /></span></div>
+	  <div><label for="form-dbdatabase" class="help" rel="" title="{$LANG.setup.help_dbname}">{$LANG.setup.db_name}</label><span><input type="text" name="global[dbdatabase]" id="form-dbdatabase" value="{$FORM.global.dbdatabase}" class="textbox required" /></span></div>
 	  <div><label for="form-dbusername" class="help" rel="" title="{$LANG.setup.help_dbusername}">{$LANG.account.username}</label><span><input type="text" name="global[dbusername]" id="form-dbusername" value="{$FORM.global.dbusername}" class="textbox required" /></span></div>
 	  <div><label for="form-dbpassword" class="help" rel="" title="{$LANG.setup.help_dbuserpass}">{$LANG.account.password}</label><span><input type="password" autocomplete="off" name="global[dbpassword]" id="form-dbpassword" value="{$FORM.global.dbpassword}" class="textbox" /></span></div>
 	  <div><label for="form-dbpassconf" class="help" rel="" title="{$LANG.setup.help_dbconfirmpass}">{$LANG.account.password_confirm}</label><span><input type="password" autocomplete="off" name="global[dbpassconf]" rel="form-dbpassword" id="form-dbpassconf" value="{$FORM.global.dbpassconf}" class="textbox confirm" /></span></div>
-	  <div><label for="form-dbdatabase" class="help" rel="" title="{$LANG.setup.help_dbname}">{$LANG.setup.db_name}</label><span><input type="text" name="global[dbdatabase]" id="form-dbdatabase" value="{$FORM.global.dbdatabase}" class="textbox required" /></span></div>
 	  <div><label for="form-dbprefix" class="help" rel="" title="{$LANG.setup.help_dbprefix}">{$LANG.setup.db_prefix}</label><span><input type="text" name="global[dbprefix]" id="form-dbprefix" value="{$FORM.global.dbprefix}" class="textbox" /></span></div>
+	  <div><label for="form-dbport" class="help" rel="" title="{$LANG.setup.help_dbport}">{$LANG.setup.db_port} {$LANG.common.optional}</label><span><input type="text" name="global[dbport]" id="form-dbport" value="{$FORM.global.dbport}" class="textbox" /></span></div>
+	  <div><label for="form-dbsocket" class="help" rel="" title="{$LANG.setup.help_dbsocket}">{$LANG.setup.db_socket} {$LANG.common.optional}</label><span><input type="text" name="global[dbsocket]" id="form-dbsocket" value="{$FORM.global.dbsocket}" class="textbox" /></span></div>
 	</fieldset>
 	<h3>{$LANG.setup.title_store_settings}</h3>
 	<fieldset>

@@ -2038,6 +2038,10 @@
     <string name="default_product_sort" introduced="5.2.0"><![CDATA[Product List Sorting]]></string>
   </group>
   <group name="setup">
+    <string name="help_dbport" introduced="6.1.1"><![CDATA[This is the database server port. In most cases this can be left empty. Default value is 3360]]></string>
+    <string name="help_dbsocket" introduced="6.1.1"><![CDATA[This is the database server socket. In most cases it can be left blank.]]></string>
+    <string name="db_port" introduced="6.1.1"><![CDATA[Database Port]]></string>
+    <string name="db_socket" introduced="6.1.1"><![CDATA[Database Socket]]></string>
   	<string name="urls_changed" introduced="6.1.0"><![CDATA[IMPORTANT: For security reasons we have changed your admin login URL.]]></string>
     <string name="error_strict_mode" introduced="5.1.5"><![CDATA[WARNING: MySQL is running in &quot;Strict Mode&quot;. This must be disabled for your store to operate correctly.]]></string>
     <string name="already_upgraded" introduced="5.0.0"><![CDATA[Your store has already been upgraded. No further action is required.]]></string>

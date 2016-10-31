@@ -28,9 +28,12 @@ class Database extends Database_Contoller {
 		$this->_db_engine = 'MySQL';
 
 		$dbport = (isset($config['dbport']) && !empty($config['dbport'])) ? $config['dbport'] : ini_get('mysqli.default_port');
+		if(!empty($dbport) && is_numeric($dbport)){
+			$dbport = ':'.$dbport;
+		}
 
 		//Connect to the db server
-		if (($this->_db_connect_id = mysql_connect($config['dbhost'].':'.$dbport, $config['dbusername'], $config['dbpassword'], false, MYSQL_CLIENT_COMPRESS)) === false) {
+		if (($this->_db_connect_id = mysql_connect($config['dbhost'].$dbport, $config['dbusername'], $config['dbpassword'], false, MYSQL_CLIENT_COMPRESS)) === false) {
 			trigger_error(mysql_error(), E_USER_ERROR);
 		}
 
