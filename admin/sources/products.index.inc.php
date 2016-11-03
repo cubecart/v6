@@ -1207,7 +1207,7 @@ if (isset($_GET['action'])) {
 		}
 		// Check digital download path exists
 		if(!empty($result[0]['digital_path'])) {
-			if(!preg_match("/^(http|https|ftp)/", $result[0]['digital_path'])) {
+			if(!preg_match("/^(http|https|ftp)/", $result[0]['digital_path']) && !file_exists($result[0]['digital_path'])) {
 				$GLOBALS['main']->setACPWarning($GLOBALS['language']->filemanager['error_dl_3']." ".$result[0]['digital_path']);
 			}
 		}
