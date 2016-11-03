@@ -547,9 +547,10 @@ if ($request = new Request('www.cubecart.com', '/version-check/'.CC_VERSION)) {
 	$request->setData(array('version' => CC_VERSION));
 
 	if (($response = $request->send()) !== false) {
-		if (version_compare(trim($response['version']), CC_VERSION, '>')) {
-			$GLOBALS['smarty']->assign('OUT_OF_DATE', sprintf($lang['dashboard']['error_version_update'], $response['version'], CC_VERSION));
-			$GLOBALS['smarty']->assign('LATEST_VERSION', $response['version']);
+		$response_array = json_decode($response, true);
+		if (version_compare(trim($response_array['version']), CC_VERSION, '>')) {
+			$GLOBALS['smarty']->assign('OUT_OF_DATE', sprintf($lang['dashboard']['error_version_update'], $response_array['version'], CC_VERSION));
+			$GLOBALS['smarty']->assign('LATEST_VERSION', $response_array['version']);
 			$GLOBALS['smarty']->assign('UPGRADE_NOW', $lang['maintain']['upgrade_now']);
 			$GLOBALS['smarty']->assign('FORCE', '0');
 		} else {
