@@ -63,7 +63,7 @@ class Language {
 	 */
 	private $_language_strings   = array();
 
-	const LANG_REGEX = '#^([a-z]{2})\-?([A-Z]{2})?$#';
+	const LANG_REGEX = '#^([a-z]{2})\-([A-Z]{2})?$#';
 	const EMAIL_FILE = '#^email_(([a-z]{2})(\-[A-Z]{2})?(\-custom)?)\.[a-z]+(\.gz)?$#';
 
 	/**
