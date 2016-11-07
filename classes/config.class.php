@@ -263,7 +263,7 @@ class Config {
 	 * @return array
 	 */
 	private function _clean($array) {
-		array_walk_recursive($array, function(&$s,$k){return stripslashes($s);});
+		array_walk_recursive($array, function(&$s,$k){return (is_string($s)) ? stripslashes($s) : $s;});
 		return $array;
 	}
 
