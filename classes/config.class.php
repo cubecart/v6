@@ -220,19 +220,19 @@ class Config {
 	public function set($config_name, $element, $data, $force_write = false) {
 		//Clean up the config array
 		if (is_array($data) && !empty($element)) {
-  			array_walk_recursive($data, function(&$s,$k){return stripslashes($s);});
+  			array_walk_recursive($data, function(&$s,$k){return (is_string($s)) ? stripslashes($s) : $s;});
   			$data = $this->_json_encode($data);
 		} else if (is_array($data)) {
-  			array_walk_recursive($data, function(&$s,$k){return stripslashes($s);});
+  			array_walk_recursive($data, function(&$s,$k){return (is_string($s)) ? stripslashes($s) : $s;});
 		} else {
-			$data = stripslashes($data);
+			$data = (is_string($data)) ? stripslashes($data) : $data;
 		}
 
 		/**
 		 * Check to see if the data is the same as it was.
 		 * If it is we dont need to do anything
 		 */
-		if ($this->get($config_name, $element) == $data) {
+		if ($this->has($config_name, $element) && $this->get($config_name, $element) === $data) {
 			return true;
 		}
 
