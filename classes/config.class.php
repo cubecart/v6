@@ -225,7 +225,7 @@ class Config {
 		} else if (is_array($data)) {
   			array_walk_recursive($data, function(&$s,$k){return $this->_stripslashes($s);});
 		} else {
-			$data = return $this->_stripslashes($data);
+			$data = $this->_stripslashes($data);
 		}
 
 		/**
