@@ -1679,7 +1679,7 @@ class Catalogue {
 						return $this->searchCatalogue($original_search_data, 1, $per_page, 'RLIKE');
 					}
 				} else {
-
+					$search_mode = in_array($search_mode, array('RLIKE','LIKE')) ? $search_mode : 'RLIKE'
 					$this->_sort_by_relevance = false;
 					$like = '';
 					if (!empty($search_data['keywords'])) {
