@@ -20,6 +20,11 @@ header('X-Frame-Options: SAMEORIGIN'); // Do NOT allow iframes
 ## Include the ini file (required)
 require 'ini.inc.php';
 
+if(basename(__FILE__)!==$glob['adminFile']) {
+	header('HTTP/1.1 404 Not Found');
+	exit;
+}
+
 define('CC_IN_ADMIN', true);
 
 ## Include core functions
