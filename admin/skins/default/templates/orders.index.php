@@ -181,12 +181,11 @@
                <div>{$LANG.basket.total_sub}:<span>{$OVERVIEW_SUMMARY.subtotal}</span></div>
                <div>{$LANG.basket.total_discount}  {if !empty($OVERVIEW_SUMMARY.percent)}({$OVERVIEW_SUMMARY.percent}){/if}:<span>{$OVERVIEW_SUMMARY.discount}</span></div>
                <div>{$LANG.basket.shipping}:<span>{$OVERVIEW_SUMMARY.shipping}</span></div>
-               {if isset($TAX_SUMMARY)}
                {foreach from=$TAX_SUMMARY item=tax}
                <div>{$tax.tax_name}:<span>{$tax.tax_amount}</span></div>
-               {/foreach}
-               {/if}
+               {foreachelse}
                <div>{$LANG.basket.total_tax}:<span>{$OVERVIEW_SUMMARY.total_tax}</span></div>
+               {/foreach}
                <div><strong>{$LANG.basket.total}:<span>{$OVERVIEW_SUMMARY.total}</span></strong></div>
             </fieldset>
             <fieldset class="other">
