@@ -459,6 +459,9 @@ class Module {
 	 */
 	private function _module_zones() {
 		if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('numcode', 'name'), false, array('name' => 'ASC'))) !== false) {
+			$enabled_countries = array();
+			$disabled_countries = array();
+			
 			$enabled = (!empty($this->_settings['countries'])) ? unserialize($this->_settings['countries']) : false;
 			foreach ($countries as $country) {
 				$options[$country['numcode']] = $country;
