@@ -186,7 +186,7 @@
                <div>{$tax.tax_name}:<span>{$tax.tax_amount}</span></div>
                {/foreach}
                {/if}
-               <div><strong>{$LANG.basket.total_tax}:<span>{$SUMMARY.total_tax}</span></strong></div>
+               <div>{$LANG.basket.total_tax}:<span>{$OVERVIEW_SUMMARY.total_tax}</span></div>
                <div><strong>{$LANG.basket.total}:<span>{$OVERVIEW_SUMMARY.total}</span></strong></div>
             </fieldset>
             <fieldset class="other">
