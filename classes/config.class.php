@@ -146,17 +146,9 @@ class Config {
 		if (isset($this->_config[$config_name])) {
 			//If there is not an element the entire array
 			if (empty($element)) {
-				if($isset) {
-					return true;
-				} else {
-					return $this->_config[$config_name];
-				}
+				return ($isset) ? true : $this->_config[$config_name];
 			} else if (isset($this->_config[$config_name][$element])) {
-				if($isset) {
-					return true;
-				} else {
-					return $this->_config[$config_name][$element];
-				}
+				return ($isset) ? true : $this->_config[$config_name][$element];
 			}
 
 			return false;
