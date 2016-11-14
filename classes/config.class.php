@@ -124,7 +124,7 @@ class Config {
 	 * @return bool
 	 */
 	public function has($config_name, $element) {
-		return ($this->get($config_name, $element)) !== false;
+		return ($this->get($config_name, $element, true)) !== false;
 	}
 
 	/**
@@ -141,14 +141,22 @@ class Config {
 	 *
 	 * @return mixed / false
 	 */
-	public function get($config_name, $element = '') {
+	public function get($config_name, $element = '', $isset = false) {
 		//If there is an config
 		if (isset($this->_config[$config_name])) {
 			//If there is not an element the entire array
 			if (empty($element)) {
-				return $this->_config[$config_name];
+				if($isset) {
+					return true;
+				} else {
+					return $this->_config[$config_name];
+				}
 			} else if (isset($this->_config[$config_name][$element])) {
-				return $this->_config[$config_name][$element];
+				if($isset) {
+					return true;
+				} else {
+					return $this->_config[$config_name][$element];
+				}
 			}
 
 			return false;
@@ -158,7 +166,7 @@ class Config {
 		$this->_fetchConfig($config_name);
 
 		//Return it if found
-		return $this->get($config_name, $element);
+		return $this->get($config_name, $element, $isset);
 	}
 
 	/**
