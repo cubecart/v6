@@ -86,7 +86,11 @@ if (isset($_POST) && is_array($_POST) && count($_POST)>0) {
 									$price	= $price_row[$price_column] * (($value/100)+(int)$shift);
 									break;
 								default:
-									$price	+= ($action) ? $value : $value-($value*2);
+									if($action === '2') {
+										$price	= $value;
+									} else {
+										$price	+= ($action) ? $value : $value-($value*2);
+									}
 							}
 							$GLOBALS['db']->update($table, array($price_column => $price), array($id_column => (int)$price_row[$id_column]));
 						}

@@ -31,6 +31,7 @@
             <select name="price[action]" id="bulk_price_action">
                <option value="0">{$LANG.common.subtract}</option>
                <option value="1">{$LANG.common.add}</option>
+               <option value="2">{$LANG.common.set_to}</option>
             </select>
             <input type="text" name="price[value]" value="" class="textbox number">
             <span id="bulk_price_percent_symbol" style="display:none">%</span>

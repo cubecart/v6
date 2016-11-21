@@ -555,6 +555,7 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="set_to" introduced="6.1.2"><![CDATA[Set to]]></string>
     <string name="developer" introduced="6.1.0"><![CDATA[Developer]]></string>
     <string name="apply" introduced="6.1.0"><![CDATA[Apply]]></string>
     <string name="ignore" introduced="6.1.0"><![CDATA[Ignore]]></string>
