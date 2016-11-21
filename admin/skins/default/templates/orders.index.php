@@ -560,8 +560,8 @@
       </div>
    </div>
    <script type="text/javascript">
-      var county_list	= {$STATE_JSON};<!-- BEGIN: address_json -->
-      {if $ADDRESS_JSON}var addresses		= {$ADDRESS_JSON};<!-- END: address_json -->{/if}
+      var county_list	= {$STATE_JSON};
+      var addresses	= {$ADDRESS_JSON};
    </script>
    {/if}
    <input type="hidden" name="token" value="{$SESSION_TOKEN}">
