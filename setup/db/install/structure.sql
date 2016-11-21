@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_alt_shipping` (
 	`global` SMALLINT(1) NOT NULL,
 	`notes` VARCHAR(255) DEFAULT NULL,
 	`order` INT UNSIGNED DEFAULT '0',
-	KEY `id` (`id`)
+	PRIMARY KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_alt_shipping_prices` (
@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_alt_shipping_prices` (
 	`low` DECIMAL(16,3) NOT NULL DEFAULT '0.000',
 	`high` DECIMAL(16,3) NOT NULL DEFAULT '0.000',
 	`price` DECIMAL(16,2) NOT NULL DEFAULT '0.00',
-	KEY `id` (`id`)
+	PRIMARY KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_blocker` (
@@ -153,7 +153,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_category_language` (
 	`seo_meta_title` TEXT NULL,
 	`seo_meta_description` TEXT NULL,
 	`seo_meta_keywords` TEXT NULL,
-	KEY `id` (`translation_id`),
+	PRIMARY KEY `id` (`translation_id`),
 	KEY `cat_master_id` (`cat_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
@@ -287,7 +287,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_downloads` (
 	`expire` INT UNSIGNED NOT NULL DEFAULT '0',
 	`product_id` INT UNSIGNED NOT NULL DEFAULT '0',
 	`accesskey` VARCHAR(32) NOT NULL,
-	KEY `id` (`digital_id`)
+	PRIMARY KEY `id` (`digital_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_email_content` (
@@ -440,7 +440,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_inventory_language` (
 	`seo_meta_title` TEXT NOT NULL,
 	`seo_meta_description` TEXT NOT NULL,
 	`seo_meta_keywords` TEXT NOT NULL,
-	KEY `id` (`translation_id`),
+	PRIMARY KEY `id` (`translation_id`),
 	FULLTEXT KEY `fulltext` (`name`,`description`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
@@ -484,7 +484,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_modules` (
 	`default` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`countries` TINYTEXT DEFAULT NULL,
 	`position` int(11) NOT NULL DEFAULT '1',
-	KEY `module_id` (`module_id`)
+	PRIMARY KEY `module_id` (`module_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_newsletter` (
