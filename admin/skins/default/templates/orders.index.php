@@ -561,7 +561,7 @@
    </div>
    <script type="text/javascript">
       var county_list	= {$STATE_JSON};
-      var addresses	= {$ADDRESS_JSON};
+      {if $ADDRESS_JSON}var addresses	= {$ADDRESS_JSON};{/if}
    </script>
    {/if}
    <input type="hidden" name="token" value="{$SESSION_TOKEN}">
