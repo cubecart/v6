@@ -289,6 +289,7 @@ $per_page = 20;
 if (isset($_GET['action']) && Admin::getInstance()->permissions('customers', CC_PERM_EDIT)) {
 	
 	if ($_GET['action'] == 'signinas' && isset($_GET['customer_id']) && $_GET['customer_id']) {
+		$GLOBALS['session']->delete('', 'basket');
 		$GLOBALS['db']->update('CubeCart_sessions', array('customer_id' => $_GET['customer_id']), array('session_id' => $GLOBALS['session']->getId()));
 		httpredir('index.php');
 		exit;
