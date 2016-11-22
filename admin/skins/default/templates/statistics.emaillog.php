@@ -28,7 +28,7 @@
 	  <tr>
 	  	<td align="center">{if $log.result==1}<i class="fa fa-check" title="{$LANG.common.yes}"></i>{else}<i class="fa fa-times" title="{$LANG.common.no}"></i>{/if}</td>
 		<td>{$log.subject}</td>
-		<td>{$log.to}</td>
+		<td>{$log.to|replace:',':'<br>'}</td>
 		<td>
 			<a href="#" onclick="{literal}$.colorbox({title:'{/literal}{$log.subject} ({$LANG.common.html}){literal}',width:'90%', height:'90%', html:'<iframe width=\'100%\' height=\'95%\' frameBorder=\'0\' src=\'?_g=xml&amp;function=viewEmail&amp;id={/literal}{$log.id}{literal}&amp;mode=content_html\'></iframe>'}){/literal}">{$LANG.common.html}</a>
 		</td>
