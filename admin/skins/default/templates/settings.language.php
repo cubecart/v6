@@ -144,6 +144,11 @@
          {/if}
       </fieldset>
    </div>
+   {if isset($PLUGIN_TABS)}
+   {foreach from=$PLUGIN_TABS item=tab}
+      {$tab}
+   {/foreach}
+  {/if}
    {include file='templates/element.hook_form_content.php'}
    <div class="form_control">
       <input type="submit" name="export" value="{$LANG.common.export}">
