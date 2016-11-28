@@ -47,8 +47,8 @@
       <h3>{$LANG.translate.title_language_create}</h3>
       <p><strong>{$LANG.common.advanced}</strong>: {$LANG.common.help_required}</p>
       <fieldset>
-         <div><label for="create_title">{$LANG.translate.language_name}</label><span><input id="create_title" type="text" name="create[title]" class="textbox required"></span></div>
-         <div><label for="create_code">{$LANG.translate.language_code}</label><span><input id="create_code" type="text" name="create[code]" class="textbox required"></span></div>
+         <div><label for="create_title">{$LANG.translate.language_name}</label><span><input id="create_title" type="text" name="create[title]" class="textbox required" placeholder="{$LANG.translate.language_name_eg}"></span></div>
+         <div><label for="create_code">{$LANG.translate.language_code}</label><span><input id="create_code" type="text" name="create[code]" class="textbox required" placeholder="{$LANG.translate.language_code_eg}"></span></div>
       </fieldset>
    </div>
    <div id="lang_import" class="tab_content">
