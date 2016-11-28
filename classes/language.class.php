@@ -21,6 +21,12 @@
 class Language {
 
 	/**
+	 * Exported Language File
+	 *
+	 * @var string
+	 */
+	public $exported_lang_file     = '';
+	/**
 	 * Current language
 	 *
 	 * @var string
@@ -265,17 +271,15 @@ class Language {
 				$xml->startElement('info');
 				// Info
 				$xml->setElement('title', $array['title']);
-				$xml->setElement('locale', $array['code'], false, false);
-				$xml->setElement('character_set', 'utf-8');
+				$xml->setElement('code', $array['code'], false, false);
+				$xml->setElement('character_set', 'utf-8', false, false);
 				$xml->setElement('version', '1.0.0', false, false);
 				// Set min/max versions
-				$xml->setElement('minVersion', CC_VERSION, false, false);
-				$xml->setElement('maxVersion', '5.0.*', false, false);
-				// If it has a parent defined
-				if (isset($array['parent']) && !empty($array['parent'])) {
-					$xml->setElement('parent_language', $array['parent']);
-					$xml->setElement('override_parent', 'true', false, false);
-				}
+				$xml->setElement('minVersion', '5.0.0', false, false);
+				$xml->setElement('maxVersion', '6.*.*', false, false);
+				$xml->setElement('default_currency', $array['currency_iso'], false, false);
+				$xml->setElement('text_direction', $array['text_direction'], false, false);
+
 				// Close
 				$xml->endElement();
 				$xml->endElement();
@@ -858,7 +862,7 @@ class Language {
 		if (!empty($language)) {
 			// Load in existing file
 			$source = $path.$language.'.xml';
-			$target = ($replace) ? $source : $path.$language.'-custom.xml';
+			$this->exported_lang_file = ($replace) ? $source : $path.$language.'-custom.xml';
 			$strings = array();
 
 			if (file_exists($source)) {
@@ -907,13 +911,12 @@ class Language {
 				$xml->endElement();
 				if ($compress) {
 					$output = gzencode($xml->getDocument(), 9, FORCE_GZIP);
-					$ext = '.gz';
+					$this->exported_lang_file .= '.gz';
 				} else {
 					$output = $xml->getDocument();
-					$ext = false;
 				}
 
-				return (bool)file_put_contents($target.$ext, $output);
+				return (bool)file_put_contents($this->exported_lang_file, $output);
 			}
 		}
 		return false;

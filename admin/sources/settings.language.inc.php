@@ -66,9 +66,9 @@ if (isset($_POST['export']) && Admin::getInstance()->permissions('settings', CC_
 
 	if ($GLOBALS['language']->saveLanguageXML($_GET['export'], $compress, $replace)) {
 		## Success!
-		$GLOBALS['main']->setACPNotify($lang['email']['notify_export_language']);
+		$GLOBALS['main']->setACPNotify(sprintf($lang['email']['notify_export_language'],$GLOBALS['language']->exported_lang_file));
 	} else {
-		## Epic Fail :(
+		## Fail :(
 		$GLOBALS['main']->setACPWarning($lang['email']['error_export']);
 	}
 	httpredir(currentPage(array('export'), array('language' => $_GET['export'])));
@@ -91,6 +91,7 @@ if (isset($_GET['export'])) {
 
 	$GLOBALS['main']->addTabControl($lang['translate']['merge_db_file'], 'merge');
 	if (function_exists('gzencode')) $GLOBALS['smarty']->assign('COMPRESSION', true);
+	$GLOBALS['smarty']->assign('REPLACE_OPTION', $_GET['export']);
 	$GLOBALS['smarty']->assign('DISPLAY_EXPORT', true);
 
 

@@ -49,17 +49,6 @@
       <fieldset>
          <div><label for="create_title">{$LANG.translate.language_name}</label><span><input id="create_title" type="text" name="create[title]" class="textbox required"></span></div>
          <div><label for="create_code">{$LANG.translate.language_code}</label><span><input id="create_code" type="text" name="create[code]" class="textbox required"></span></div>
-         <div>
-            <label for="create_parent">{$LANG.translate.language_parent}</label>
-            <span>
-               <select id="create_parent" name="create[parent]">
-                  <option value="">{$LANG.form.none}</option>
-                  {foreach from=$LANGUAGES item=language}
-                  <option value="{$language.code}">{$language.title}</option>
-                  {/foreach}
-               </select>
-            </span>
-         </div>
       </fieldset>
    </div>
    <div id="lang_import" class="tab_content">
@@ -75,7 +64,7 @@
       <input type="hidden" name="previous-tab" id="previous-tab" value="">
       <input type="submit" name="save" value="{$LANG.common.save}">
    </div>
-   {elseif !$DISPLAY_EDITOR}
+   {elseif !$DISPLAY_EDITOR && !$DISPLAY_EXPORT}
    <div id="lang_list" class="tab_content">
    <h3>{$LANG.translate.title_languages}</h3>
    <p>{$LANG.translate.error_no_languages}</p>
@@ -135,12 +124,17 @@
    {if isset($DISPLAY_EXPORT)}
    <div class="tab_content" id="merge">
       <h3>{$LANG.translate.merge_db_file}</h3>
-      <p><strong>{$LANG.common.advanced}</strong>: {$LANG.common.help_required}</p>
       <fieldset>
          <legend>{$LANG.catalogue.title_import_options}</legend>
-         <div><input type="checkbox" name="export_opt[replace]" value="1"> {$LANG.translate.replace_original}</div>
+         <div>
+            <label for="export_opt_replace">{$LANG.translate.replace_original} ({$REPLACE_OPTION}.xml)</label>
+            <span><input type="checkbox" name="export_opt[replace]" id="export_opt_replace" value="1"></span>
+         </div>
          {if $COMPRESSION}
-         <div><input type="checkbox" name="export_opt[compress]" value="1"> {$LANG.common.compress_file}</div>
+         <div>
+            <label for="export_opt_compress">{$LANG.common.compress_file}</label>
+            <span><input type="checkbox" name="export_opt[compress]" id="export_opt_compress" value="1"></span>
+         </div>
          {/if}
       </fieldset>
    </div>
