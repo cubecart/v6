@@ -45,7 +45,6 @@
    </div>
    <div id="lang_create" class="tab_content">
       <h3>{$LANG.translate.title_language_create}</h3>
-      <p><strong>{$LANG.common.advanced}</strong>: {$LANG.common.help_required}</p>
       <fieldset>
          <div><label for="create_title">{$LANG.translate.language_name}</label><span><input id="create_title" type="text" name="create[title]" class="textbox required" placeholder="{$LANG.translate.language_name_eg}"></span></div>
          <div><label for="create_code">{$LANG.translate.language_code}</label><span><input id="create_code" type="text" name="create[code]" class="textbox required" placeholder="{$LANG.translate.language_code_eg}"></span></div>
@@ -53,7 +52,6 @@
    </div>
    <div id="lang_import" class="tab_content">
       <h3>{$LANG.translate.title_language_import}</h3>
-      <p><strong>{$LANG.common.advanced}</strong>: {$LANG.common.help_required}</p>
       <fieldset>
          <div><label for="import_overwrite">{$LANG.filemanager.overwrite}</label><span><input id="import_overwrite" type="checkbox" name="import[overwrite]"></span></div>
          <div><label for="import_file">{$LANG.filemanager.file_upload}</label><span><input id="import_file" type="file" name="import[file]" class="textbox"> {$LANG.translate.example_upload}</span></div>
