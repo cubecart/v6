@@ -400,7 +400,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 					$record = array(
 						'file_id'  => (int)$image_id,
 						'product_id' => (int)$product_id,
-						'main_img'  => ($default == (int)$image_id) ? '1' : '0',
+						'main_img'  => ($default == (int)$image_id) ? '1' : '0'
 					);
 					$GLOBALS['db']->insert('CubeCart_image_index', $record);
 				}

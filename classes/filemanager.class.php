@@ -840,7 +840,7 @@ class FileManager {
 							}
 
 							if ($file['error'][$offset] !== UPLOAD_ERR_OK) {
-								$this->uploadError($file['error'][$offset]);
+								$this->_uploadError($file['error'][$offset]);
 								continue;
 							}
 
@@ -866,7 +866,13 @@ class FileManager {
 							);
 
 							if ($GLOBALS['db']->insert('CubeCart_filemanager', $record)) {
-								$file_id[] = $GLOBALS['db']->insertid();
+								$insert_id = $GLOBALS['db']->insertid();
+								$file_id[] = $insert_id;
+								
+								if(isset($_GET['product_id']) && $_GET['product_id']>0) {
+									$this->_assignProduct((int)$_GET['product_id'], $insert_id);
+								}
+
 								move_uploaded_file($tmp_name, $target);
 								chmod($target, chmod_writable());
 							}
@@ -884,7 +890,7 @@ class FileManager {
 						}
 
 						if ($file['error'] !== UPLOAD_ERR_OK) {
-							$this->uploadError($file['error']);
+							$this->_uploadError($file['error']);
 							continue;
 						}
 
@@ -910,7 +916,12 @@ class FileManager {
 						);
 
 						if ($GLOBALS['db']->insert('CubeCart_filemanager', $record)) {
-							$file_id[] = $GLOBALS['db']->insertid();
+							$insert_id = $GLOBALS['db']->insertid();
+							$file_id[] = $insert_id;
+							
+							if(isset($_GET['product_id']) && $_GET['product_id']>0) {
+								$this->_assignProduct((int)$_GET['product_id'], $insert_id);
+							}
 							move_uploaded_file($file['tmp_name'], $target);
 							chmod($target, chmod_writable());
 						}
@@ -925,13 +936,30 @@ class FileManager {
 	}
 
 	/**
+	 * Assign to product
+	 *
+	 * @param int $product_id
+	 * @param int $file_id
+	 *
+	 */
+	private function _assignProduct($product_id, $file_id) {
+		$GLOBALS['db']->update('CubeCart_image_index', array('main_img' => 0), array('product_id' => (int)$_GET['product_id']));
+		$record = array(
+			'file_id'  => (int)$file_id,
+			'product_id' => (int)$product_id,
+			'main_img'  => '1'
+		);
+		$GLOBALS['db']->insert('CubeCart_image_index', $record);
+	}
+
+	/**
 	 * Upload error messages
 	 *
 	 * @param int $error_no
 	 *
 	 * @return false
 	 */
-	private function uploadError($error_no) {
+	private function _uploadError($error_no) {
 		switch ($error_no) {
 		case UPLOAD_ERR_INI_SIZE:
 			$message = 'The uploaded file exceeds the upload_max_filesize directive in php.ini';

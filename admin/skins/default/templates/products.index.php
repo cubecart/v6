@@ -283,7 +283,6 @@
             </table>
          </fieldset>
       </div>
-      {if isset($CUSTOMER_GROUPS)}
       {foreach from=$CUSTOMER_GROUPS item=group}
       <div id="group_{$group.group_id}" class="field_select_target">
          <p>{$group.group_description}</p>
@@ -332,7 +331,6 @@
          </fieldset>
       </div>
       {/foreach}
-      {/if}
    </div>
    <div id="category" class="tab_content">
       <h3>{$LANG.settings.title_categories}</h3>
@@ -465,13 +463,11 @@
          </table>
          <script language="text/javascript">
             var optionJSON = {$OPTIONS_JSON};
-             
          </script>
       </fieldset>
       {if isset($OPTION_SETS)}
       <fieldset>
          <legend>{$LANG.catalogue.title_option_sets}</legend>
-         
          {foreach from=$OPTION_SETS_ENABLED item=set}
          <div>
             <span class="actions">
@@ -551,7 +547,7 @@
       <div class="cc_dropzone">
       <div class="dz-default dz-message"><span>{$LANG.filemanager.file_upload_note}</span></div>
    </div>
-   <div id="cc_dropzone_url" style="display: none;">?_g=filemanager</div>
+   <div id="cc_dropzone_url" style="display: none;">?_g=filemanager&amp;product_id={$PRODUCT.product_id}</div>
    </div>
    <div id="digital" class="tab_content">
       <h3>{$LANG.catalogue.title_digital_options}</h3>
