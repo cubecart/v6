@@ -15,9 +15,10 @@ Admin::getInstance()->permissions('settings', CC_PERM_READ, true);
 
 global $lang;
 
-if (isset($_POST['gc']) && is_array($_POST['gc']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
+$filemanager = new FileManager(FileManager::FM_FILETYPE_IMG);
 
-	$filemanager = new FileManager(FileManager::FM_FILETYPE_IMG);
+if (isset($_POST['gc']) && is_array($_POST['gc']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
+	
 	if (($uploaded = $filemanager->upload()) !== false) {
 		foreach ($uploaded as $file_id) {
 			$_POST['image'][(int)$file_id] = true;
@@ -48,8 +49,6 @@ if (isset($_POST['gc']) && is_array($_POST['gc']) && Admin::getInstance()->permi
 	}
 
 }
-
-$filemanager = new FileManager(FileManager::FM_FILETYPE_IMG);
 
 $GLOBALS['main']->addTabControl($lang['catalogue']['gift_certificates'], 'Certificates');
 $GLOBALS['main']->addTabControl($lang['settings']['title_images'], 'gift_images', null, 'I');
