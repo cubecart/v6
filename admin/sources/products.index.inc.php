@@ -324,16 +324,9 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 				$record[$field] = $value;
 			}
 			$where = array('group_id' => (int)$group_id, 'product_id' => (int)$product_id);
-			if ($GLOBALS['db']->select('CubeCart_pricing_group', array('price_id'), $where)) {
-				if (empty($group['price'])) {
-					$GLOBALS['db']->delete('CubeCart_pricing_group', $where);
-				} else {
-					$GLOBALS['db']->update('CubeCart_pricing_group', $record, $where);
-				}
-			} else {
-				if (empty($group['price'])) continue;
-				$GLOBALS['db']->insert('CubeCart_pricing_group', array_merge($where, $record));
-			}
+			
+			if (empty($group['price'])) continue;
+			$GLOBALS['db']->insert('CubeCart_pricing_group', array_merge($where, $record));
 		}
 		if (($after = $GLOBALS['db']->select('CubeCart_pricing_group', array('group_id', 'product_id', 'price', 'sale_price', 'tax_type', 'tax_inclusive'), array('product_id' => (int)$product_id))) !== false) {
 			$hash_after = md5(serialize($after));
