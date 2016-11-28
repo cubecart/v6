@@ -65,7 +65,7 @@ class FileManager {
 			if (($file = $GLOBALS['db']->select('CubeCart_filemanager', false, array('file_id' => (int)$_POST['file_id']))) !== false) {
 				if (isset($_POST['details'])) {
 
-					if (!$this->filename_is_illegal($_POST['details']['filename'])) {
+					if (!$this->filenameIsIllegal($_POST['details']['filename'])) {
 
 						// Update details
 						$new_location = $current_location = $this->_manage_root.'/'.urldecode($this->_sub_dir);
@@ -489,7 +489,7 @@ class FileManager {
 	 * @return bool
 	 */
 
-	public function filename_is_illegal($file_name) {
+	public function filenameIsIllegal($file_name) {
 		if (preg_match('/(\.sh\.inc\.ini|\.htaccess|\.php|\.phtml|\.php[3-6])$/i', $file_name)) {
 			return true;
 		} else if (preg_match('/\.php\./i', $file_name)) {
@@ -826,7 +826,7 @@ class FileManager {
 			$finfo = (extension_loaded('fileinfo')) ? new finfo(FILEINFO_SYMLINK | FILEINFO_MIME) : false;
 			foreach ($_FILES as $file) {
 
-				if ($this->filename_is_illegal($file['name'])) continue;
+				if ($this->filenameIsIllegal($file['name'])) continue;
 
 				if (is_array($file['tmp_name'])) {
 					foreach ($file['tmp_name'] as $offset => $tmp_name) {
