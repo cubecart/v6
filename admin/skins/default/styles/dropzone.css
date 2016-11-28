@@ -193,8 +193,7 @@
       opacity: 0.5; }
   .cc_dropzone .dz-message {
     font-size: 20px;
-    text-align: center;
-    margin: 2em 0; }
+    text-align: center; }
   .cc_dropzone .dz-preview {
     position: relative;
     display: inline-block;
