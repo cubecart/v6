@@ -306,7 +306,7 @@ jQuery(document).ready(function() {
             },
         }
     });
-    $(".search_form, #small_search_form").validate({
+    $(".search_form").validate({
         rules: {
             'search[keywords]': {
                 required: true
