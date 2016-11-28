@@ -452,7 +452,7 @@ class User {
 
 		// Check state
 		$country_id = getCountryFormat($address['country'], 'numcode', 'id');
-		if($user_defined && !CC_ADMIN && $_GET['_a']!=='addressbook' && ((empty($address['state']) && !empty($address['country'])) || ($GLOBALS['db']->select('CubeCart_geo_zone',false, array($state_field => $address['state']))==false) && $GLOBALS['db']->select('CubeCart_geo_zone',false, array('country_id' => $country_id)))) {
+		if($user_defined && !CC_IN_ADMIN && $_GET['_a']!=='addressbook' && ((empty($address['state']) && !empty($address['country'])) || ($GLOBALS['db']->select('CubeCart_geo_zone',false, array($state_field => $address['state']))==false) && $GLOBALS['db']->select('CubeCart_geo_zone',false, array('country_id' => $country_id)))) {
 			$address_description = empty($address['description']) ? '' : ' (&quot;'.$address['description'].'&quot;)';
 			$GLOBALS['gui']->setError(sprintf($GLOBALS['language']->address['check_state'],$address_description));
 			httpredir("?_a=addressbook&action=edit&address_id=".$address['address_id']);
