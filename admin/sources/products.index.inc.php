@@ -812,6 +812,8 @@ if (isset($_GET['action'])) {
 		
 		if(strstr($google_cats[0], 'Google_Product_Taxonomy_Version')) { unset($google_cats[0]); }
 
+		foreach ($GLOBALS['hooks']->load('admin.product.google_cats') as $hook) include $hook;
+
 		$GLOBALS['smarty']->assign("GOOGLE_CATS", $google_cats);
 
 		$GLOBALS['main']->addTabControl($lang['settings']['tab_seo'], 'seo');
