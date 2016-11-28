@@ -27,6 +27,6 @@
 		  <input type="hidden" name="token" value="{$SESSION_TOKEN}">
 		</form>
 	  </div>
-	  {if isset($SIDEBAR_CONTENT)} {foreach from=$SIDEBAR_CONTENT item=content}<div class="sidebar_content">{$content}</div>{/foreach}{/if}
+	  {foreach from=$SIDEBAR_CONTENT item=content}<div class="sidebar_content">{$content}</div>{/foreach}
 	</div>
 </div>

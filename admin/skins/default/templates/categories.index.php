@@ -26,7 +26,7 @@
 		</tr>
 	  </thead>
 	  <tbody class="reorder-list">
-	  {if isset($CATEGORIES)}
+	  
 	  {foreach from=$CATEGORIES item=category}
 	    <tr>
 	      <td align="center">
@@ -60,12 +60,11 @@
 		    <a href="{$category.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 	      </td>
 	    </tr>
-	    {/foreach}
-	    {else}
+	    {foreachelse}
 	    <tr>
 	      <td colspan="6" align="center"><strong>{$LANG.form.none}</strong></td>
 	    </tr>
-	    {/if}
+	    {/foreach}
 	  </tbody>
     </table>
   </div>
@@ -94,8 +93,8 @@
 	<div class="fm-container">
 	  <div id="image" rel="1" class="fm-filelist unique"></div>
 	</div>
-	<p>{$LANG.filemanager.file_upload_max_size}</p>
-	<div><label for="uploader">{$LANG.filemanager.file_upload}</label> <span><input name="image" id="uploader" type="file"></span></div>
+	<p>{$LANG.filemanager.file_upload_note}</p>
+	<div><label for="uploader">{$LANG.filemanager.file_upload}</label><span><input name="image" id="uploader" type="file"></span></div>
 	{if isset($JSON_IMAGES)}
 	<script type="text/javascript">
 	var file_list = {$JSON_IMAGES}

@@ -29,8 +29,7 @@
             {/if}
          </div>
          <div class="small-7 medium-5 columns">
-            {if is_array($OPTIONS)}
-            {foreach from=$OPTIONS item=option}
+         {foreach from=$OPTIONS item=option}
             {if $option.type == Catalogue::OPTION_RADIO}
             <div class="row">
                <div class="small-12 columns">
@@ -82,8 +81,8 @@
                </div>
             </div>
             {/if}
-            {/foreach}
-            {/if}
+         {/foreach}
+
             {if $PRODUCT.review_score && $CTRL_REVIEW}
             <p itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
                <meta itemprop="ratingValue" content="{$REVIEW_AVERAGE}">
@@ -145,11 +144,9 @@
          {if isset($PRODUCT.discounts)}
          <dd><a href="#quantity_discounts">{$LANG.catalogue.quantity_discounts}</a></dd>
          {/if}
-         {if isset($PRODUCT_TABS_TITLES)}
-            {foreach from=$PRODUCT_TABS_TITLES item=product_tab_title}
-               {$product_tab_title}
-            {/foreach}
-         {/if} 
+         {foreach from=$PRODUCT_TABS_TITLES item=product_tab_title}
+            {$product_tab_title}
+         {/foreach}
       </dl>
       <div class="tabs-content">
          {if !empty($PRODUCT.description)}
