@@ -129,6 +129,7 @@ class Cubecart {
 							$product['review_score'] = round($product_review[0]['Score']/$product_review[0]['Count'], 1);
 						}
 					}
+					$product['description_short'] = $GLOBALS['catalogue']->descriptionShort($product);
 					$products[] = $product;
 				}
 				$GLOBALS['smarty']->assign('LATEST_PRODUCTS', $products);
