@@ -1150,7 +1150,8 @@
     <string name="file_type_dl" introduced="5.0.0"><![CDATA[Download]]></string>
     <string name="file_type_image" introduced="5.0.0"><![CDATA[Image]]></string>
     <string name="file_upload" introduced="5.0.0"><![CDATA[Upload]]></string>
-    <string name="file_upload_note" introduced="5.2.6"><![CDATA[Drop files here to upload.<span><br>(Max 500Kb each)</span>]]></string>
+    <string name="file_upload_note" introduced="5.2.6"><![CDATA[Drop files here to upload.<br>(Max 350Kb each)<br>or<br><span class="button">Select File</span></span>]]></string>
+    <string name="file_upload_max_size" introduced="6.1.2"><![CDATA[Max image upload size 350Kb]]></string>
     <string name="folder_create" introduced="5.0.0"><![CDATA[Create Folder]]></string>
     <string name="notify_db_update" introduced="5.0.0"><![CDATA[Filemanager database successfully rebuilt.]]></string>
     <string name="notify_file_delete" introduced="5.0.0"><![CDATA[File deleted successfully.]]></string>

@@ -22,7 +22,7 @@ class FileManager {
 
 	private $_sendfile = false;
 
-	private $_max_upload_image_size = 600000;
+	private $_max_upload_image_size = 350000;
 
 	const FM_FILETYPE_IMG 	= 1;
 	const FM_FILETYPE_DL 	= 2;
