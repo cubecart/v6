@@ -314,7 +314,7 @@ jQuery(document).ready(function() {
         },
         messages: {
             'search[keywords]': {
-                required: $('.validate_search').text()
+                required: $('.validate_search').first().text()
             }
         }
     });
@@ -326,7 +326,7 @@ jQuery(document).ready(function() {
         },
         messages: {
             'search[keywords]': {
-                required: $('.validate_search').text()
+                required: $('.validate_search').first().text()
             }
         }
     });
