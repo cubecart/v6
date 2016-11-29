@@ -322,7 +322,7 @@ $(document).ready(function() {
         $('.custom-checkbox').removeClass('selected');
     });
     var cc_dropzone_url = $("div#cc_dropzone_url").text();
-    $("div.cc_dropzone").dropzone({url: cc_dropzone_url, maxFilesize: '0.5',init: function () {
+    $("div.cc_dropzone").dropzone({url: cc_dropzone_url, maxFilesize: '0.35',init: function () {
     this.on("complete", function (file) {
       if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
         var t = $("#val_admin_file").text();
