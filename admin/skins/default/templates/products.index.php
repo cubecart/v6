@@ -548,6 +548,7 @@
       <div class="dz-default dz-message"><span>{$LANG.filemanager.file_upload_note}</span></div>
    </div>
    <div id="cc_dropzone_url" style="display: none;">?_g=filemanager&amp;product_id={$PRODUCT.product_id}</div>
+   <div id="val_product_id" style="display: none;">{$PRODUCT.product_id}</div>
    </div>
    <div id="digital" class="tab_content">
       <h3>{$LANG.catalogue.title_digital_options}</h3>
@@ -629,11 +630,6 @@
       <input type="hidden" name="previous-tab" id="previous-tab" value="">
       <input type="submit" value="{$LANG.common.save}"> <input type="submit" name="submit_cont" value="{$LANG.common.save_reload}">
    </div>
-   <script type="text/javascript">
-      {if isset($JSON_IMAGES)}var file_list     = {$JSON_IMAGES};{/if}
-      {if isset($DEFAULT_IMAGE)}var file_default   = {$DEFAULT_IMAGE};{/if}
-       
-   </script>
    {/if}
    {if isset($DISPLAY_TRANSLATE_FORM)}
    <div id="general" class="tab_content">

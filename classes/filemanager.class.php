@@ -767,6 +767,24 @@ class FileManager {
 	}
 
 	/**
+	 * Images assigned to a product
+	 *
+	 * @param string $product_id
+	 * @return array
+	 */
+	public function productImages($product_id) {
+		$images = $GLOBALS['db']->select('CubeCart_image_index', array('file_id', 'main_img'), array('product_id' => (int)$product_id));
+		if($images!==false) {
+			$assigned_images = array();
+			foreach($images as $image) {
+				$assigned_images[$image['file_id']] = ($image['main_img']== '1') ? '2': '1';
+			}
+			return $assigned_images;
+		}
+		return array();
+	}
+
+	/**
 	 * Upgrade file
 	 *
 	 * @param array/string $start
@@ -943,11 +961,19 @@ class FileManager {
 	 *
 	 */
 	private function _assignProduct($product_id, $file_id) {
-		$GLOBALS['db']->update('CubeCart_image_index', array('main_img' => 0), array('product_id' => (int)$_GET['product_id']));
+
+
+		if($GLOBALS['db']->select('CubeCart_image_index', false, array('main_img' => 1, 'product_id' => (int)$_GET['product_id']))!==false) {
+			$main_image = '0';
+		} else {
+			$GLOBALS['db']->update('CubeCart_image_index', array('main_img' => 0), array('product_id' => (int)$_GET['product_id']));
+			$main_image = '1';
+		}
+
 		$record = array(
 			'file_id'  => (int)$file_id,
 			'product_id' => (int)$product_id,
-			'main_img'  => '1'
+			'main_img'  => $main_image
 		);
 		$GLOBALS['db']->insert('CubeCart_image_index', $record);
 	}

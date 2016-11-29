@@ -935,6 +935,7 @@ if (isset($_GET['action'])) {
 				$GLOBALS['smarty']->assign('CUSTOMER_REVIEWS', $smarty_data['customer_reviews']);
 			}
 			## Images & files
+			/*
 			$file_array = array();
 
 			if (($images = $GLOBALS['db']->misc('SELECT I.file_id, I.main_img, F.filepath, F.filename FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_image_index` AS `I` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_filemanager` as `F` ON I.file_id = F.file_id WHERE I.product_id = '.(int)$_GET['product_id'])) !== false) {
@@ -962,6 +963,7 @@ if (isset($_GET['action'])) {
 					$file_array[$result[0]['digital']] = $result[0]['digital'];
 				}
 			}
+			*/
 		} else {
 			// Breadcrumb
 			$GLOBALS['gui']->addBreadcrumb($lang['catalogue']['product_add'], $_GET);
@@ -975,8 +977,6 @@ if (isset($_GET['action'])) {
 			$file_array = array();
 			$default = false;
 		}
-		$GLOBALS['smarty']->assign('JSON_IMAGES', json_encode($file_array));
-		$GLOBALS['smarty']->assign('DEFAULT_IMAGE', (int)$default);
 
 		// Display list of available option sets
 		if (($option_sets = $GLOBALS['db']->select('CubeCart_options_set', false, false, array('set_name' => 'ASC'))) !== false) {

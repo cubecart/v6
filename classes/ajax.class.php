@@ -147,6 +147,11 @@ class Ajax {
 					}
 				}
 
+				$assigned_images = array();
+				if(isset($_GET['product_id']) && $_GET['product_id']) {
+					$assigned_images = $filemanager->productImages($_GET['product_id']);
+				}
+
 				if (($files = $filemanager->listFiles()) !== false) {
 					$catalogue = new Catalogue();
 					foreach ($files as $result) {
@@ -157,18 +162,25 @@ class Ajax {
 							$path = $result['filepath'];
 							$name = $result['filename'];
 						}
+
+						$assigned = '0';
+						if(isset($assigned_images[$result['file_id']])) {
+							$assigned = $assigned_images[$result['file_id']];
+						}
+
 						$json[] = array(
+							'assigned' => $assigned,
 							'type'   => 'file',
 							'path'   => dirname($path).'/',
 							'file'   => basename($result['filename']),
 							'name'   => basename($name),
 							'id'   => $result['file_id'],
 							'description' => $result['description'],
-							'mime'   => $result['mimetype'],
+							'mime'   => $result['mimetype']
 						);
 					}
 				}
-
+				$json['assigned'] = $assigned_images;
 				$data = (isset($json) && is_array($json)) ? $json : false;
 				break;
 			default:
