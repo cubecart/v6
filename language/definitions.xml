@@ -2167,7 +2167,7 @@
     <string name="master_language" introduced="5.0.0"><![CDATA[Master Language File (definitions.xml)]]></string>
     <string name="merge_db_file" introduced="5.0.0"><![CDATA[Merge to file]]></string>
     <string name="notify_strings_update" introduced="5.0.0"><![CDATA[Language strings updated.]]></string>
-    <string name="notify_language_create" introduced="5.0.0"><![CDATA[Language successfully created.]]></string>
+    <string name="notify_language_create" introduced="5.0.0"><![CDATA[Language successfully created. Please now select a phrase group to translate.]]></string>
     <string name="notify_language_delete" introduced="5.0.0"><![CDATA[Language successfully deleted.]]></string>
     <string name="notify_language_import_success" introduced="5.0.0"><![CDATA[Language successfully imported.]]></string>
     <string name="notify_language_status" introduced="5.0.0"><![CDATA[Language status successfully updated.]]></string>
