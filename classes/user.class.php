@@ -575,7 +575,7 @@ class User {
 		if(is_null($customer_id)) {
 			$customer_id = $this->getId();
 		}
-		if(ctype_digit($customer_id)) {
+		if(ctype_digit((string)$customer_id)) {
 			return $GLOBALS['db']->select('CubeCart_customer_membership', false, array('customer_id' => $customer_id));
 		}
 		return false;

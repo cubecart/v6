@@ -178,7 +178,7 @@ class Session {
 			'success'	=> ($login) ? 'Y' : 'N',
 		);
 		$log_days = $GLOBALS['config']->get('config', 'r_staff');
-        if(ctype_digit($log_days) &&  $log_days > 0) {
+        if(ctype_digit((string)$log_days) &&  $log_days > 0) {
         	$GLOBALS['db']->insert('CubeCart_access_log', $record);
         	$GLOBALS['db']->delete('CubeCart_access_log', 'time < UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL '.$log_days.' DAY))');
         } elseif(empty($log_days) || !$log_days) {

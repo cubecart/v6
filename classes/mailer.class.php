@@ -218,7 +218,7 @@ class Mailer extends PHPMailer {
                 'email_content_id' => $this->_email_content_id
             );
             $log_days = $GLOBALS['config']->get('config', 'r_email');
-             if(ctype_digit($log_days) &&  $log_days > 0) {
+             if(ctype_digit((string)$log_days) &&  $log_days > 0) {
             	$GLOBALS['db']->insert('CubeCart_email_log', $email_data);
             	$GLOBALS['db']->delete('CubeCart_email_log', 'date < DATE_SUB(NOW(), INTERVAL '.$log_days.' DAY)');
         	} elseif(empty($log_days) || !$log_days) {

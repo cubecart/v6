@@ -160,7 +160,7 @@ class ACP {
 			);
 			
 			$log_days = $GLOBALS['config']->get('config', 'r_admin_activity');
-            if(ctype_digit($log_days) &&  $log_days > 0) {
+            if(ctype_digit((string)$log_days) &&  $log_days > 0) {
             	$GLOBALS['db']->insert('CubeCart_admin_log', $record);
             	$GLOBALS['db']->delete('CubeCart_admin_log', 'time < UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL '.$log_days.' DAY))');
         	} elseif(empty($log_days) || !$log_days) {
@@ -318,7 +318,7 @@ class ACP {
 			if (!$GLOBALS['db']->select('CubeCart_admin_error_log', 'log_id', array('message' => $message, 'admin_id' => Admin::getInstance()->get('admin_id')))) {
 				
 				$log_days = $GLOBALS['config']->get('config', 'r_admin_error');
-		        if(ctype_digit($log_days) &&  $log_days > 0) {
+		        if(ctype_digit((string)$log_days) &&  $log_days > 0) {
 		        	$GLOBALS['db']->insert('CubeCart_admin_error_log', array('message' => $message, 'admin_id' => Admin::getInstance()->get('admin_id'), 'time' => time()));
 		        	$GLOBALS['db']->delete('CubeCart_admin_error_log', 'time < UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL '.$log_days.' DAY))');
 		        } elseif(empty($log_days) || !$log_days) {

@@ -534,7 +534,7 @@ class Tax {
 	private function _removeSymbol($price) {
 		//Just in case we have a currency symbol
 		if ($price && is_string($price)) {
-			if (!ctype_digit($price{0})) {
+			if (!ctype_digit((string)$price{0})) {
 				$price = substr($price, 1);
 			}
 			$price = (double)$price;
