@@ -149,7 +149,8 @@ class Ajax {
 
 				$assigned_images = array();
 				$assigned_file	 = false;
-				if(isset($_GET['product_id']) && $_GET['product_id']) {
+				
+				if(isset($_GET['product_id'])) {
 					$assigned_images = $filemanager->productImages($_GET['product_id']);
 					$assigned_file = $filemanager->productFile($_GET['product_id']);
 				}
@@ -173,6 +174,7 @@ class Ajax {
 						}
 
 						$json[] = array(
+							'form_field' => $filemanager->form_fields,
 							'assigned' => $assigned,
 							'type'   => 'file',
 							'path'   => dirname($path).'/',

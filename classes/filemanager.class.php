@@ -18,11 +18,12 @@ class FileManager {
 	private $_manage_cache;
 	private $_manage_dir;
 	private $_manage_root;
+	private $_recently_uploaded = array();
 	private $_sub_dir;
-
 	private $_sendfile = false;
-
 	private $_max_upload_image_size = 350000;
+
+	public $form_fields = false;
 
 	const FM_FILETYPE_IMG 	= 1;
 	const FM_FILETYPE_DL 	= 2;
@@ -209,7 +210,7 @@ class FileManager {
 			}
 		}
 
-		// If no default image was chose pick last one and let staff member know!
+		// If no default image was chosen pick last one and let staff member know
 		if (!$default && sizeof($img_add) > 0) {
 			$default = (int)$img_add[0];
 			// Display warning message if more than one image was chosen
@@ -849,6 +850,9 @@ class FileManager {
 	 * @return int/false
 	 */
 	public function productFile($product_id) {
+		if(empty($product_id) || !is_numeric($product_id)) {
+			return false;
+		}
 		$file = $GLOBALS['db']->select('CubeCart_inventory', array('digital'), array('product_id' => (int)$product_id));
 		if($file!==false) {
 			return $file[0]['digital'];
@@ -863,12 +867,23 @@ class FileManager {
 	 * @return array
 	 */
 	public function productImages($product_id) {
-		$images = $GLOBALS['db']->select('CubeCart_image_index', array('file_id', 'main_img'), array('product_id' => (int)$product_id));
-		if($images!==false) {
-			$assigned_images = array();
-			foreach($images as $image) {
-				$assigned_images[$image['file_id']] = ($image['main_img']== '1') ? '2': '1';
+
+		if(!empty($product_id) && $product_id>0) {
+			$images = $GLOBALS['db']->select('CubeCart_image_index', array('file_id', 'main_img'), array('product_id' => (int)$product_id));
+			if($images!==false) {
+				$assigned_images = array();
+				foreach($images as $image) {
+					$assigned_images[$image['file_id']] = ($image['main_img']== '1') ? '2': '1';
+				}
+				return $assigned_images;
 			}
+		} elseif($GLOBALS['session']->has('recently_uploaded')) {
+			$assigned_images = $GLOBALS['session']->get('recently_uploaded');
+			end($assigned_images); // Set last image as main_img
+			$key = key($assigned_images);
+			$assigned_images[$key] = '2';
+			$GLOBALS['session']->delete('recently_uploaded');
+			$this->form_fields = true;
 			return $assigned_images;
 		}
 		return array();
@@ -936,108 +951,56 @@ class FileManager {
 
 				if ($this->filenameIsIllegal($file['name'])) continue;
 
-				if (is_array($file['tmp_name'])) {
-					foreach ($file['tmp_name'] as $offset => $tmp_name) {
-						$gd = new GD($this->_manage_root.'/'.$this->_sub_dir);
-						if (!empty($tmp_name) && is_uploaded_file($tmp_name)) {
+				$gd = new GD($this->_manage_root.'/'.$this->_sub_dir);
+				if (!empty($file['tmp_name']) && is_uploaded_file($file['tmp_name'])) {
 
-
-							if ($this->_mode == self::FM_FILETYPE_IMG && $file['size'][$offset] > $this->_max_upload_image_size) {
-								$GLOBALS['gui']->setError(sprintf($GLOBALS['lang']['filemanager']['error_file_upload_size'], $file['name'][$offset], formatBytes($this->_max_upload_image_size, true, 0)));
-								continue;
-							}
-
-							if ($file['error'][$offset] !== UPLOAD_ERR_OK) {
-								$this->_uploadError($file['error'][$offset]);
-								continue;
-							}
-
-							$target = $target_old = $this->_manage_root.'/'.$this->_sub_dir.$file['name'][$offset];
-							$newfilename = $this->makeFilename($file['name'][$offset]);
-							$oldfilename = $file['name'][$offset];
-
-							if ($newfilename !== $oldfilename) {
-								$target = str_replace($oldfilename, $newfilename, $target);
-							}
-
-							$filepath_record = $this->formatPath(str_replace($this->_manage_root, '', dirname($target)));
-							$filepath_record = empty($filepath_record) ? 'NULL' : $filepath_record;
-							$filepath_record = str_replace(chr(92), "/", $filepath_record);
-
-							$record = array(
-								'type'  => (int)$this->_mode,
-								'filepath' => $filepath_record,
-								'filename' => $newfilename,
-								'filesize' => $file['size'][$offset],
-								'mimetype' => $file['type'][$offset] ? $file['type'][$offset] : $this->getMimeType($tmp_name),
-								'md5hash' => md5_file($tmp_name),
-							);
-
-							if ($GLOBALS['db']->insert('CubeCart_filemanager', $record)) {
-								$insert_id = $GLOBALS['db']->insertid();
-								$file_id[] = $insert_id;
-								
-								if(isset($_GET['product_id']) && $_GET['product_id']>0) {
-									$this->_assignProduct((int)$_GET['product_id'], $insert_id);
-								}
-
-								move_uploaded_file($tmp_name, $target);
-								chmod($target, chmod_writable());
-							}
-
-						}
+					if ($this->_mode == self::FM_FILETYPE_IMG && $file['size'] > $this->_max_upload_image_size) {
+						$GLOBALS['gui']->setError(sprintf($GLOBALS['lang']['filemanager']['error_file_upload_size'], $file['name'], formatBytes($this->_max_upload_image_size, true, 0)));
+						return false;
 					}
-				} else {
 
-					$gd = new GD($this->_manage_root.'/'.$this->_sub_dir);
-					if (!empty($file['tmp_name']) && is_uploaded_file($file['tmp_name'])) {
+					if ($file['error'] !== UPLOAD_ERR_OK) {
+						$this->_uploadError($file['error']);
+						continue;
+					}
 
-						if ($this->_mode == self::FM_FILETYPE_IMG && $file['size'] > $this->_max_upload_image_size) {
-							$GLOBALS['gui']->setError(sprintf($GLOBALS['lang']['filemanager']['error_file_upload_size'], $file['name'], formatBytes($this->_max_upload_image_size, true, 0)));
-							return false;
+					$target = $target_old = $this->_manage_root.'/'.$this->_sub_dir.$file['name'];
+					$newfilename = $this->makeFilename($file['name']);
+					$oldfilename = $file['name'];
+
+					if ($newfilename !== $oldfilename) {
+						$target = str_replace($oldfilename, $newfilename, $target);
+					}
+
+					$filepath_record = $this->formatPath(str_replace($this->_manage_root, '', dirname($target)));
+					$filepath_record = empty($filepath_record) ? 'NULL' : $filepath_record;
+					$filepath_record = str_replace(chr(92), "/", $filepath_record);
+
+					$record = array(
+						'type'  => (int)$this->_mode,
+						'filepath' => $filepath_record,
+						'filename' => $newfilename,
+						'filesize' => $file['size'],
+						'mimetype' => $file['type'] ? $file['type'] : $this->getMimeType($file['tmp_name']),
+						'md5hash' => md5_file($file['tmp_name']),
+					);
+
+					if ($GLOBALS['db']->insert('CubeCart_filemanager', $record)) {
+						$insert_id = $GLOBALS['db']->insertid();
+						$file_id[] = $insert_id;
+						$this->_recently_uploaded[$insert_id] = '1';
+						
+						if(isset($_GET['product_id']) && $_GET['product_id']>0) {
+							$this->_assignProduct((int)$_GET['product_id'], $insert_id);
 						}
-
-						if ($file['error'] !== UPLOAD_ERR_OK) {
-							$this->_uploadError($file['error']);
-							continue;
-						}
-
-						$target = $target_old = $this->_manage_root.'/'.$this->_sub_dir.$file['name'];
-						$newfilename = $this->makeFilename($file['name']);
-						$oldfilename = $file['name'];
-
-						if ($newfilename !== $oldfilename) {
-							$target = str_replace($oldfilename, $newfilename, $target);
-						}
-
-						$filepath_record = $this->formatPath(str_replace($this->_manage_root, '', dirname($target)));
-						$filepath_record = empty($filepath_record) ? 'NULL' : $filepath_record;
-						$filepath_record = str_replace(chr(92), "/", $filepath_record);
-
-						$record = array(
-							'type'  => (int)$this->_mode,
-							'filepath' => $filepath_record,
-							'filename' => $newfilename,
-							'filesize' => $file['size'],
-							'mimetype' => $file['type'] ? $file['type'] : $this->getMimeType($file['tmp_name']),
-							'md5hash' => md5_file($file['tmp_name']),
-						);
-
-						if ($GLOBALS['db']->insert('CubeCart_filemanager', $record)) {
-							$insert_id = $GLOBALS['db']->insertid();
-							$file_id[] = $insert_id;
-							
-							if(isset($_GET['product_id']) && $_GET['product_id']>0) {
-								$this->_assignProduct((int)$_GET['product_id'], $insert_id);
-							}
-							move_uploaded_file($file['tmp_name'], $target);
-							chmod($target, chmod_writable());
-						}
-
-
+						move_uploaded_file($file['tmp_name'], $target);
+						chmod($target, chmod_writable());
 					}
 				}
 			}
+
+			$GLOBALS['session']->set('recently_uploaded', $this->_recently_uploaded);
+
 			return (isset($file_id)) ? $file_id : true;
 		}
 		return false;
