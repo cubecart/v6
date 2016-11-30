@@ -555,6 +555,8 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="read_ltr" introduced="6.1.2"><![CDATA[Left-to-Right]]></string>
+    <string name="read_rtl" introduced="6.1.2"><![CDATA[Right-to-Left]]></string>
     <string name="set_to" introduced="6.1.2"><![CDATA[Set to]]></string>
     <string name="developer" introduced="6.1.0"><![CDATA[Developer]]></string>
     <string name="apply" introduced="6.1.0"><![CDATA[Apply]]></string>
@@ -2146,6 +2148,8 @@
     <string name="display_bots_and_customers" introduced="5.2.6"><![CDATA[Display Webbots &amp; Customers]]></string>
   </group>
   <group name="translate">
+    <string name="language_currency" introduced="6.1.2"><![CDATA[Default Currency Code (<a href="https://en.wikipedia.org/wiki/ISO_4217#Active_codes" target="_blank">ISO-4217</a>)]]></string>
+    <string name="language_direction" introduced="6.1.21"><![CDATA[Reading Direction]]></string>
     <string name="error_no_languages" introduced="6.0.0"><![CDATA[No languages have been found. Please visit the <a href="?_g=marketplace" target="_blank">marketplace</a> to get hold of the ones you want.]]></string>
     <string name="error_language_create" introduced="5.0.0"><![CDATA[Failed to create language.]]></string>
     <string name="error_language_delete" introduced="5.0.0"><![CDATA[Failed to delete language.]]></string>
@@ -2157,7 +2161,7 @@
     <string name="example_upload" introduced="5.0.0"><![CDATA[e.g. pt-BR.xml]]></string>
     <string name="language_group_edit" introduced="5.0.0"><![CDATA[Phrase Group]]></string>
     <string name="language_name" introduced="5.0.0"><![CDATA[Language Name]]></string>
-    <string name="language_code" introduced="5.0.0"><![CDATA[<a href="https://en.wikipedia.org/wiki/Language_localisation" target="_blank">ISO-639</a> Language Code]]></string>
+    <string name="language_code" introduced="5.0.0"><![CDATA[Language Code (<a href="https://en.wikipedia.org/wiki/Language_localisation" target="_blank">ISO-639</a>)]]></string>
     <string name="language_name_eg" introduced="6.1.2"><![CDATA[e.g. Português]]></string>
     <string name="language_code_eg" introduced="6.1.2"><![CDATA[e.g. pt-BR]]></string>
     <string name="master_language" introduced="5.0.0"><![CDATA[Master Language File (definitions.xml)]]></string>
