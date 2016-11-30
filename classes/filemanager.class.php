@@ -998,8 +998,9 @@ class FileManager {
 					}
 				}
 			}
-
-			$GLOBALS['session']->set('recently_uploaded', $this->_recently_uploaded);
+			if(isset($_GET['product_id'])) {
+				$GLOBALS['session']->set('recently_uploaded', $this->_recently_uploaded);
+			}
 
 			return (isset($file_id)) ? $file_id : true;
 		}
