@@ -166,6 +166,82 @@ class FileManager {
 	}
 
 	/**
+	 * Assign products to an image
+	 *
+	 * @param array $image_ids
+	 * @param int $product_id
+	 * @return bool
+	 */
+	public function assignProductImages($image_ids, $product_id) {
+		$old_images = array();
+		$img_add = array();
+		$removed_images = array();
+		// md5 compare of before / after so we know if changes have been made or not
+		if (($before = $GLOBALS['db']->select('CubeCart_image_index', array('product_id', 'file_id', 'main_img'), array('product_id' => (int)$product_id))) !== false) {
+			$hash_before = md5(serialize($before));
+			foreach ($before as $old_img) {
+				$old_images[] = $old_img['file_id'];
+				if ($old_img['main_img'] == 1) {
+					$old_default = $old_img['file_id'];
+				}
+			}
+		}
+
+		foreach ($image_ids as $image_id => $status) {
+			if ($status == 0) {
+				$removed_images[] = $image_id;
+				continue;
+			}
+
+			if ($status == 2) {
+				$default = $image_id;
+			}
+
+			$img_add[] = $image_id;
+		}
+
+		foreach ($old_images as $image_id) {
+			if (!in_array($image_id, $removed_images) && !in_array($image_id, $img_add)) {
+				$img_add[] = $image_id;
+				if (isset($old_default) && $image_id == $old_default && !isset($default)) {
+					$default = $old_default;
+				}
+			}
+		}
+
+		// If no default image was chose pick last one and let staff member know!
+		if (!$default && sizeof($img_add) > 0) {
+			$default = (int)$img_add[0];
+			// Display warning message if more than one image was chosen
+			if (sizeof($img_add) > 1) {
+				$GLOBALS['main']->setACPWarning($lang['catalogue']['error_image_defaulted']);
+			}
+		}
+
+		$GLOBALS['db']->delete('CubeCart_image_index', array('product_id' => (int)$product_id));
+
+		if (isset($img_add) && is_array($img_add)) {
+			foreach ($img_add as $image_id) {
+				if (($image = $GLOBALS['db']->select('CubeCart_filemanager', false, array('file_id' => (int)$image_id))) !== false) {
+					$record = array(
+						'file_id'  => (int)$image_id,
+						'product_id' => (int)$product_id,
+						'main_img'  => ($default == (int)$image_id) ? '1' : '0'
+					);
+					$GLOBALS['db']->insert('CubeCart_image_index', $record);
+				}
+			}
+		}
+
+		// md5 compare of before / after so we know if changes have been made or not
+		if (($after = $GLOBALS['db']->select('CubeCart_image_index', array('product_id', 'file_id', 'main_img'), array('product_id' => (int)$product_id))) !== false) {
+			$hash_after = md5(serialize($after));
+		}
+		if (isset($hash_before, $hash_after) && $hash_before !== $hash_after) return true;
+		return false;	
+	}
+
+	/**
 	 * Build image DB
 	 *
 	 * @param bool $purge
@@ -764,6 +840,20 @@ class FileManager {
 	private function makeFilepath($file) {
 		$path =  str_replace($this->_manage_root, '', dirname($file));
 		return $this->formatPath($path);
+	}
+
+	/**
+	 * File assigned to a product
+	 *
+	 * @param string $product_id
+	 * @return int/false
+	 */
+	public function productFile($product_id) {
+		$file = $GLOBALS['db']->select('CubeCart_inventory', array('digital'), array('product_id' => (int)$product_id));
+		if($file!==false) {
+			return $file[0]['digital'];
+		}
+		return false;
 	}
 
 	/**

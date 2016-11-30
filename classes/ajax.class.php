@@ -148,8 +148,10 @@ class Ajax {
 				}
 
 				$assigned_images = array();
+				$assigned_file	 = false;
 				if(isset($_GET['product_id']) && $_GET['product_id']) {
 					$assigned_images = $filemanager->productImages($_GET['product_id']);
+					$assigned_file = $filemanager->productFile($_GET['product_id']);
 				}
 
 				if (($files = $filemanager->listFiles()) !== false) {
@@ -166,6 +168,8 @@ class Ajax {
 						$assigned = '0';
 						if(isset($assigned_images[$result['file_id']])) {
 							$assigned = $assigned_images[$result['file_id']];
+						} elseif($assigned_file && $assigned_file == $result['file_id']) {
+							$assigned = '1';
 						}
 
 						$json[] = array(

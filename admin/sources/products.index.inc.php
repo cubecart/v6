@@ -340,78 +340,10 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 
 	#############################################
 	// Filemanager - Images
-	if (($uploaded = $filemanager->upload()) !== false && is_array($uploaded)) {
-		foreach ($uploaded as $file_id) {
-			$_POST['image'][(int)$file_id] = true;
-		}
-	}
-
 	if (isset($_POST['image']) && is_array($_POST['image'])) {
-		$old_images = array();
-		$img_add = array();
-		$removed_images = array();
-		// md5 compare of before / after so we know if changes have been made or not
-		if (($before = $GLOBALS['db']->select('CubeCart_image_index', array('product_id', 'file_id', 'main_img'), array('product_id' => (int)$product_id))) !== false) {
-			$hash_before = md5(serialize($before));
-			foreach ($before as $old_img) {
-				$old_images[] = $old_img['file_id'];
-				if ($old_img['main_img'] == 1) {
-					$old_default = $old_img['file_id'];
-				}
-			}
+		if($filemanager->assignProductImages($_POST['image'], $product_id)) {
+			$updated = true;
 		}
-
-		foreach ($_POST['image'] as $image_id => $status) {
-			if ($status == 0) {
-				$removed_images[] = $image_id;
-				continue;
-			}
-
-			if ($status == 2) {
-				$default = $image_id;
-			}
-
-			$img_add[] = $image_id;
-		}
-
-		foreach ($old_images as $image_id) {
-			if (!in_array($image_id, $removed_images) && !in_array($image_id, $img_add)) {
-				$img_add[] = $image_id;
-				if (isset($old_default) && $image_id == $old_default && !isset($default)) {
-					$default = $old_default;
-				}
-			}
-		}
-
-		// If no default image was chose pick last one and let staff member know!
-		if (!$default && sizeof($img_add) > 0) {
-			$default = (int)$img_add[0];
-			// Display warning message if more than one image was chosen
-			if (sizeof($img_add) > 1) {
-				$GLOBALS['main']->setACPWarning($lang['catalogue']['error_image_defaulted']);
-			}
-		}
-
-		$GLOBALS['db']->delete('CubeCart_image_index', array('product_id' => (int)$product_id));
-
-		if (isset($img_add) && is_array($img_add)) {
-			foreach ($img_add as $image_id) {
-				if (($image = $GLOBALS['db']->select('CubeCart_filemanager', false, array('file_id' => (int)$image_id))) !== false) {
-					$record = array(
-						'file_id'  => (int)$image_id,
-						'product_id' => (int)$product_id,
-						'main_img'  => ($default == (int)$image_id) ? '1' : '0'
-					);
-					$GLOBALS['db']->insert('CubeCart_image_index', $record);
-				}
-			}
-		}
-
-		// md5 compare of before / after so we know if changes have been made or not
-		if (($after = $GLOBALS['db']->select('CubeCart_image_index', array('product_id', 'file_id', 'main_img'), array('product_id' => (int)$product_id))) !== false) {
-			$hash_after = md5(serialize($after));
-		}
-		if (isset($hash_before, $hash_after) && $hash_before !== $hash_after) $updated = true;
 	}
 
 	// Reviews
@@ -934,36 +866,7 @@ if (isset($_GET['action'])) {
 				}
 				$GLOBALS['smarty']->assign('CUSTOMER_REVIEWS', $smarty_data['customer_reviews']);
 			}
-			## Images & files
-			/*
-			$file_array = array();
 
-			if (($images = $GLOBALS['db']->misc('SELECT I.file_id, I.main_img, F.filepath, F.filename FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_image_index` AS `I` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_filemanager` as `F` ON I.file_id = F.file_id WHERE I.product_id = '.(int)$_GET['product_id'])) !== false) {
-
-				$update_filemanager = false;
-				foreach ($images as $image) {
-					if ($image['file_id']>0 && !file_exists(CC_ROOT_DIR.'/images/source/'.$image['filepath'].$image['filename'])) {
-						$GLOBALS['db']->delete('CubeCart_image_index', array('file_id' => $image['file_id']));
-						$update_filemanager = true;
-						continue;
-					}
-					$file_array[$image['file_id']] = $image['file_id'];
-					if ($image['main_img'] == '1') {
-						$default = $image['file_id'];
-					}
-				}
-				if ($update_filemanager) {
-					$filemanager->buildDatabase();
-				}
-			} else {
-				$default = 0;
-			}
-			if (!empty($result[0]['digital'])) {
-				if (empty($result[0]['digital_path'])) {
-					$file_array[$result[0]['digital']] = $result[0]['digital'];
-				}
-			}
-			*/
 		} else {
 			// Breadcrumb
 			$GLOBALS['gui']->addBreadcrumb($lang['catalogue']['product_add'], $_GET);
