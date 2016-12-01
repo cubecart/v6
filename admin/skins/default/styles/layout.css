@@ -93,7 +93,6 @@ fieldset .custom-checkbox {
 .fm-container #assigned_toggle {
     text-align: center;
     cursor: pointer;
-    text-transform: capitalize;
     background-color: #fafafa;
 }
 .fm-container #assigned_toggle:hover {

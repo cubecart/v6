@@ -540,7 +540,7 @@
          <div class="loading">{$LANG.common.loading} <i class="fa fa-spinner fa-spin fa-fw"></i></div>
          <div id="image" rel="1" class="fm-filelist"></div>
          <div class="master_image">
-            {$LANG.catalogue.image_main}:<br><br>
+            <span>{$LANG.catalogue.image_main}</span>:<br><br>
             <img src="{$PRODUCT.master_image}" id="master_image_preview">
          </div>
       </div>
