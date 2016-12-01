@@ -537,6 +537,7 @@
       <img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/0.png" alt="{$LANG.catalogue.image_excluded}"> - {$LANG.catalogue.image_excluded}
       
       <div class="fm-container">
+         <div class="loading">{$LANG.common.loading} <i class="fa fa-spinner fa-spin fa-fw"></i></div>
          <div id="image" rel="1" class="fm-filelist"></div>
          <div class="master_image">
             {$LANG.catalogue.image_main}:<br><br>
@@ -553,6 +554,7 @@
    <div id="digital" class="tab_content">
       <h3>{$LANG.catalogue.title_digital_options}</h3>
       <div class="fm-container">
+         <div class="loading">{$LANG.common.loading} <i class="fa fa-spinner fa-spin fa-fw"></i></div>
          <div id="download" rel="2" class="fm-filelist unique"></div>
       </div>
       <fieldset>
