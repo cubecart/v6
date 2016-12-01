@@ -186,7 +186,6 @@ class Ajax {
 						);
 					}
 				}
-				$json['assigned'] = $assigned_images;
 				$data = (isset($json) && is_array($json)) ? $json : false;
 				break;
 			default:

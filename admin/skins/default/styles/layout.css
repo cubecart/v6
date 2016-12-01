@@ -84,6 +84,14 @@ fieldset .custom-checkbox {
     margin: 5px 0;
     float: left
 }
+.fm-container #assigned_toggle {
+    text-align: center;
+    cursor: pointer;
+    text-transform: capitalize;
+}
+.fm-container #assigned_toggle:hover {
+    color: #f3068f;
+}
 #image .fm-container .fm-filelist {
     float: left
 }
