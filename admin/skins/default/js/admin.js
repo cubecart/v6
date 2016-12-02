@@ -317,21 +317,25 @@ $(document).ready(function() {
         $('input:checkbox').removeAttr('checked');
         $('.custom-checkbox').removeClass('selected');
     });
-    var cc_dropzone_url = $("div#cc_dropzone_url").text();
-    $("div.cc_dropzone").dropzone({url: cc_dropzone_url, maxFilesize: '0.35',init: function () {
-    this.on("complete", function (file) {
-      if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
-        var t = $("#val_admin_file").text();
-        $("div#image.fm-filelist").fileTree({
-            root: "/",
-            script: "./" + t,
-            group: '1',
-            name: 'image',
-            unique: false
+    if($("div.cc_dropzone").length) {
+        var cc_dropzone_url = $("div#cc_dropzone_url").text();
+        $("div.cc_dropzone").dropzone({url: cc_dropzone_url, maxFilesize: '0.35',init: function () 
+            {
+                this.on("complete", function (file) {
+                    if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
+                        var t = $("#val_admin_file").text();
+                        $("div#image.fm-filelist").fileTree({
+                            root: "/",
+                            script: "./" + t,
+                            group: '1',
+                            name: 'image',
+                            unique: false
+                        });
+                    }
+                });
+            }
         });
-      }
-    });
-  }});
+    }
 
     $(":input.required").blur(function() {
         $(this).attr("id"), "" == $(this).val().replace(/\s/i, "") ? $(this).addClass("required-error") : $(this).removeClass("required-error")
