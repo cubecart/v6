@@ -41,11 +41,14 @@
    </div>
    <div class="row">
       <div class="small-12 columns">
-         <ul class="small-block-grid-5">
-            {foreach from=$MANUFACTURERS item=manufacturer}
-            <li><input type="checkbox" value="{$manufacturer.id}" id="manufacturer_{$manufacturer.id}" name="search[manufacturer][]" {$manufacturer.selected}><label for="manufacturer_{$manufacturer.id}">{$manufacturer.name}</label></li>
-            {/foreach}
-         </ul>
+         {* Uncomment the following include to show a grid of checkboxes. Manufacturers names should be very short. *}
+         {* include file='templates/element.search.manufacturers.checkbox.grid.php' *}
+
+         {* Uncomment the following include to show a table of checkboxes. Manufacturers names can be very long. *}
+         {* include file='templates/element.search.manufacturers.checkbox.table.php' *}
+
+         {* Uncomment the following include to show a drop-down selector. Manufacturers names can be long and numerous. *}
+         {include file='templates/element.search.manufacturers.select.chosen.php'}
       </div>
    </div>
    {/if}
