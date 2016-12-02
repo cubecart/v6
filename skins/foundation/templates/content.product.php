@@ -29,6 +29,7 @@
             {/if}
          </div>
          <div class="small-7 medium-5 columns">
+         {if is_array($OPTIONS)}		 
          {foreach from=$OPTIONS item=option}
             {if $option.type == Catalogue::OPTION_RADIO}
             <div class="row">
@@ -82,6 +83,7 @@
             </div>
             {/if}
          {/foreach}
+         {/if}
 
             {if $PRODUCT.review_score && $CTRL_REVIEW}
             <p itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
