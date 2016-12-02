@@ -210,7 +210,7 @@ if (isset($_GET['export'])) {
 		if ($GLOBALS['language']->create($_POST['create'])) {
 			$GLOBALS['main']->setACPNotify($lang['translate']['notify_language_create']);
 			## Set status to disabled to begin with
-			$GLOBALS['config']->set('languages', false, array($_POST['create']['code'] => false));
+			$GLOBALS['config']->set('languages', $_POST['create']['code'], "0");
 			httpredir(currentPage(null, array('language' => $_POST['create']['code'])));
 		} else {
 			$GLOBALS['main']->setACPWarning($lang['translate']['error_language_create']);
