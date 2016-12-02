@@ -129,7 +129,7 @@
 <p><a href="{$STORE_URL}/index.php?_a=receipt&cart_order_id={$SUM.cart_order_id}{if !$IS_USER}&email={$SUM.email}{/if}" target="_blank"><svg class="icon"><use xlink:href="#icon-print"></use></svg> {$LANG.confirm.print}</a></p>
 {foreach from=$AFFILIATES item=affiliate}{$affiliate}{/foreach}
 {if $ANALYTICS}
-<!-- Google Analytics for e-commerce -->
+{* Google Analytics for e-commerce *}
 <script type="text/javascript">
    {literal}
    var _gaq = _gaq || [];

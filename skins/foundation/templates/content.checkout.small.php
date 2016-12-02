@@ -1,4 +1,4 @@
-<!-- START SMALL ONLY -->
+{* START SMALL ONLY *}
 <div class="show-for-small-only">
    {foreach from=$ITEMS key=hash item=item}
    <div class="panel" id="basket_item_{$hash}">
@@ -143,4 +143,4 @@
       </tr>
    </table>
 </div>
-<!-- END SMALL ONLY -->
+{* END SMALL ONLY *}

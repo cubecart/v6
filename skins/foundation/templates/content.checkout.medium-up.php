@@ -1,4 +1,4 @@
-<!-- START MEDIUM-UP -->
+{* START MEDIUM-UP *}
 <div class="show-for-medium-up">
    <table class="expand">
       <thead>
@@ -114,4 +114,4 @@
       </tfoot>
    </table>
 </div>
-<!-- END MEDIUM-UP -->
+{* END MEDIUM-UP *}

@@ -42,7 +42,7 @@
    {$params[$var_name] = $page + 1}
    <li class="arrow"><a href="{$current}{http_build_query($params)}{$anchor}"><svg class="icon"><use xlink:href="#icon-angle-double-right"></use></svg></a></li>
    {/if}
-   <!-- Replaced with dropdown quantities
+   {* Replaced with dropdown quantities
    {if ($view_all)}
    {if (strtolower($page) != 'all')}
    {$params[$var_name] = 'all'}
@@ -51,5 +51,5 @@
    <li><strong>[{$LANG.common.view_all}]</strong></li>
    {/if}
    {/if}
-   -->
+   *}
 </ul>
