@@ -1234,14 +1234,18 @@
     };
 
     Dropzone.prototype.uploadFiles = function(files) {
-      var file, formData, handleError, headerName, headerValue, headers, i, input, inputName, inputType, key, method, option, progressObj, response, updateProgress, url, value, xhr, _i, _j, _k, _l, _len, _len1, _len2, _len3, _m, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
+      var subdir, file, formData, handleError, headerName, headerValue, headers, i, input, inputName, inputType, key, method, option, progressObj, response, updateProgress, url, value, xhr, _i, _j, _k, _l, _len, _len1, _len2, _len3, _m, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
+      
+      if($("#val_subdir").length) {
+        subdir = '&subdir='+$("#val_subdir").text();
+      }
       xhr = new XMLHttpRequest();
       for (_i = 0, _len = files.length; _i < _len; _i++) {
         file = files[_i];
         file.xhr = xhr;
       }
       method = resolveOption(this.options.method, files);
-      url = resolveOption(this.options.url, files);
+      url = resolveOption(this.options.url, files)+subdir;
       xhr.open(method, url, true);
       xhr.withCredentials = !!this.options.withCredentials;
       response = null;

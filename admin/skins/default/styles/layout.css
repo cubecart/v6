@@ -1,7 +1,7 @@
 #logo {
     margin: 0 0 0 3px
 }
-span.button, button.button,
+div.button, span.button, button.button,
 input[type=button],
 input[type=submit] {
     display: inline-block;
@@ -24,7 +24,7 @@ input[type=submit] {
     text-shadow: 1px 1px 1px #fff;
     background-color: #e1e1e1;
 }
-span.button:hover,
+div.button:hover, span.button:hover,
 input[type=button]:hover,
 input[type=submit]:hover {
     border: 1px solid #b0b0b0;
@@ -76,6 +76,13 @@ fieldset .custom-checkbox {
     height: 420px;
     position: relative;
 }
+#master_image_block {
+    position: relative; 
+}
+#master_image_block img {
+    max-height: 350px;
+    max-width: 350px;
+}
 .fm-container .loading {
     position: absolute;
     z-index: 99999;
@@ -93,18 +100,26 @@ fieldset .custom-checkbox {
 .fm-container #assigned_toggle {
     text-align: center;
     cursor: pointer;
-    background-color: #fafafa;
-}
-.fm-container #assigned_toggle:hover {
-    color: #f3068f;
+    display: block;
+    width: 50%;
+    margin-left: 25%;
 }
 #image .fm-container .fm-filelist {
     float: left
 }
+#image .fm-container .fm-filelist > ul > li:not(:first-child) {
+    margin-left: 5px;
+}
 #image .fm-container .master_image {
     float: left;
     margin-left: 15px;
-    font-weight: 700
+    font-weight: 700;
+    position: relative;
+}
+#preview_image {
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 .fm-filelist>div {
     padding: 2px;

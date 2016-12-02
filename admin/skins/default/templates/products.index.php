@@ -541,10 +541,13 @@
          <div id="image" rel="1" class="fm-filelist"></div>
          <div class="master_image">
             <span>{$LANG.catalogue.image_main}</span>:<br><br>
-            <img src="{$PRODUCT.master_image}" id="master_image_preview">
+            <div id="master_image_block">
+            <img src="{$PRODUCT.master_image}" id="master_image_preview"><div id="preview_image"><img src="{$PRODUCT.master_image}"></div>
+            </div>
          </div>
       </div>
       <p id="refresh_images"><i class="fa fa-refresh"></i> {$LANG.common.refresh}</p>
+      <p><strong>{$LANG.filemanager.upload_destination}:</strong> /<span id="val_subdir"></span></p>
       <div class="cc_dropzone">
       <div class="dz-default dz-message"><span>{$LANG.filemanager.file_upload_note}</span></div>
    </div>
