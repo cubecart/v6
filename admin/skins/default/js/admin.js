@@ -296,10 +296,6 @@ $(document).ready(function() {
         return false;
     });
 
-    if(!$(".tab-selected" ).length) {
-        $(".tab:first").addClass('tab-selected');
-    }
-
     $("#bulk_price_method").change(function() {
         if($(this).val()=='percent') {
             $("#bulk_price_action").hide().attr('disabled', true);
