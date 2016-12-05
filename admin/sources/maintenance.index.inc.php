@@ -59,7 +59,7 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 			$zip->extractTo(CC_ROOT_DIR);
 			$zip->close();
 
-			$error_log = '-- Restore Log from '.$_GET['restore']." (".date("d M Y - H:i:s").") --\r\n\r\n";
+			$error_log = '### START RESTORE LOG - '.$_GET['restore']." (".date("d M Y - H:i:s").") ###\r\n\r\n";
 
 			$fail = false;
 
@@ -71,7 +71,7 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 					## Open the source file
 					if (($v_file = fopen($file, "rb")) == 0) {
 						$fail = true;
-						$error_log .= "$file - Unable to open file to calculate CRC.\r\n";
+						$error_log .= "$file - Unable to read file to validate CRC integrity.\r\n";
 					}
 
 					## Read the file content
@@ -81,17 +81,22 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 					fclose($v_file);
 
 					if(crc32($v_content) !== $value) {
-						$error_log .= "$file - CRC mismatch.\r\n";
+						$error_log .= "$file - File contents not as expected after extract (CRC mismatch).\r\n";
 						$fail = true;
 					}
 				}
 			}
 
-			$error_log .= "\r\n------------------------------ \r\n\r\n\r\n\r\n\r\n";
+			$error_log .= "\r\n### END RESTORE LOG ### \r\n\r\n\r\n\r\n\r\n";
+			$error_log_file = CC_ROOT_DIR.'/backup/restore_error_log';
+
+			if(file_exists($error_log_file)) {
+				unlink($error_log_file);	
+			}
 
 			if ($fail) {
 				if (!empty($error_log)) {
-					$fp = fopen(CC_ROOT_DIR.'/backup/restore_error_log', 'a+');
+					$fp = fopen($error_log_file, 'w');
 					fwrite($fp, $error_log);
 					fclose($fp);
 				}
