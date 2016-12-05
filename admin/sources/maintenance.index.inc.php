@@ -59,12 +59,15 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 			$zip->extractTo(CC_ROOT_DIR);
 			$zip->close();
 
-			$error_log = '----- Restore Log from '.$_GET['restore']." (".date("d M Y - H:i:s").") -----\r\n\r\n";
+			$error_log = '-- Restore Log from '.$_GET['restore']." (".date("d M Y - H:i:s").") --\r\n\r\n";
 
 			$fail = false;
 
 			foreach ($crc_check as $file => $value) {
-				if (is_file($file)) {
+				
+				if(!file_exists($file)) {
+					$error_log .= "$file - Doesn't exist but was expected after extract.\r\n";
+				} else if (is_file($file)) {
 					## Open the source file
 					if (($v_file = fopen($file, "rb")) == 0) {
 						$fail = true;
@@ -99,7 +102,6 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 				$GLOBALS['cache']->clear();
 				httpredir('?_g=maintenance&node=index#backup');
 			}
-
 		} else {
 			$GLOBALS['main']->setACPWarning($lang['maintain']['files_restore_not_possible']);	
 		}
