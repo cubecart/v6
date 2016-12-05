@@ -1129,6 +1129,10 @@
   </group>
   <group name="filemanager">
     <string name="upload_destination" introduced="6.1.2"><![CDATA[Upload Destination]]></string>
+    <string name="refresh_files" introduced="6.1.2"><![CDATA[Refresh File List]]></string>
+    <string name="show_assigned" introduced="6.1.2"><![CDATA[Show Assigned Images Only]]></string>
+    <string name="show_all" introduced="6.1.2"><![CDATA[Show All Images]]></string>
+    <string name="upload_destination" introduced="6.1.2"><![CDATA[Upload Destination]]></string>
     <string name="max_upload_diff" introduced="6.1.0"><![CDATA[Please note that the server configuartion allows a maximum upload of %s with a maximum individual file upload limit of %s.]]></string>
     <string name="max_upload_same" introduced="6.1.0"><![CDATA[<strong>Upload Limit:</strong> %s]]></string>
     <string name="success_create_folder" introduced="6.1.0"><![CDATA[Folder created successfully.]]></string>
