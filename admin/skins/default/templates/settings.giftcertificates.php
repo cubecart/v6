@@ -24,7 +24,7 @@
 	</select></span></div>
 	<div><label for="weight">{$LANG.settings.gc_weight}</label><span><input type="text" name="gc[weight]" id="weight" value="{$GC.weight}" class="textbox number"></span></div>
 	<div><label for="product-code">{$LANG.catalogue.product_code}</label><span><input type="text" name="gc[product_code]" id="product-code" value="{$GC.product_code}" class="textbox"></span></div>
-	{if isset($list_tax)}
+	{if isset($TAXES)}
 	<div><label for="tax-type">{$LANG.catalogue.tax_type}</label><span><select name="gc[taxType]" id="tax-type" class="textbox">
 	  {foreach from=$TAXES item=tax}<option value="{$tax.id}" {$tax.selected}>{$tax.tax_name}</option>{/foreach}
 	</select></span></div>
