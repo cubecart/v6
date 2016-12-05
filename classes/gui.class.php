@@ -232,7 +232,8 @@ class GUI {
 		$GLOBALS['smarty']->assign('STORE_URL',  $GLOBALS['storeURL']);
 		$GLOBALS['smarty']->assign('ROOT_PATH',  $GLOBALS['rootRel']);
 		$GLOBALS['smarty']->assign('CURRENT_PAGE',  currentPage());
-		$GLOBALS['smarty']->assign('SESSION_TOKEN', $GLOBALS['session']->getToken());
+		define('SESSION_TOKEN', $GLOBALS['session']->getToken());
+		$GLOBALS['smarty']->assign('SESSION_TOKEN', SESSION_TOKEN);
 		$GLOBALS['smarty']->assign('CATALOGUE_MODE', $GLOBALS['config']->get('config', 'catalogue_mode'));
 		$GLOBALS['smarty']->assign('CONFIG', $GLOBALS['config']->get('config'));
 		## Version hash to refresh CSS on each version load (storeURL added to prevent possible version disclosure)

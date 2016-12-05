@@ -521,16 +521,6 @@ $(document).ready(function() {
         var n = $("div.tab_content:first").show().attr("id");
         $("#tab_" + n).addClass("tab-selected")
     }
-    $("#refresh_images").click(function() {
-        var t = $("#val_admin_file").text();
-        $("div#image.fm-filelist").fileTree({
-            root: "/",
-            script: "./" + t,
-            group: '1',
-            name: 'image',
-            unique: false
-        });
-    });
     $("div.tab").each(function() {
         if ("" !== window.location.hash && $(window.location.hash).length > 0) {
             var t = window.location.hash,

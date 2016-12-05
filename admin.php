@@ -49,6 +49,10 @@ if (Admin::getInstance()->is() || (isset($_GET['_g']) && $_GET['_g']=='products'
 	$GLOBALS['smarty']->display('templates/'.$global_template_file['session_false']);
 	exit;
 }
+if(isset($_GET['response']) && $_GET['response'] == 'token') {
+	$GLOBALS['debug']->supress(true);
+	die(SESSION_TOKEN);
+}
 // Render the completed page
 if (!isset($suppress_output) || !$suppress_output) {
 	$GLOBALS['gui']->displayCommon();

@@ -69,12 +69,13 @@ fieldset .custom-checkbox {
 .custom-checkbox.selected {
     background: url(../images/1.png)
 }
-#refresh_images {
+.fm-refresh {
     cursor: pointer;
 }
 .fm-container {
-    height: 420px;
+    height: 489px;
     position: relative;
+    margin-bottom: 30px;
 }
 #master_image_block {
     position: relative; 
@@ -95,7 +96,20 @@ fieldset .custom-checkbox {
     border: 1px solid #c7c7c7;
     padding: 3px;
     margin: 5px 0;
-    float: left
+    float: left;
+    position: relative;
+}
+#fm-actions {
+    position: absolute;
+    bottom: 0px;
+    background-color: #eee;
+    width: 526px;
+    line-height: 25px;
+    padding-left: 5px;
+    border: 1px solid #c7c7c7;
+}
+#fm-actions input {
+    margin: 0 5px;
 }
 .fm-container #assigned_toggle {
     text-align: center;
@@ -104,17 +118,14 @@ fieldset .custom-checkbox {
     width: 50%;
     margin-left: 25%;
 }
-#image .fm-container .fm-filelist {
-    float: left
-}
 #image .fm-container .fm-filelist > ul > li:not(:first-child) {
-    margin-left: 5px;
+    margin-left: 20px;
 }
 #image .fm-container .master_image {
-    float: left;
     margin-left: 15px;
     font-weight: 700;
-    position: relative;
+    position: absolute;
+    left: 525px;
 }
 #preview_image {
     position: absolute;
@@ -329,7 +340,7 @@ fieldset div.clear {
     margin-top: 7px
 }
 #header .user_info i,
-a, #refresh_images {
+a, .fm-refresh {
     color: #4f9aaf;
     text-decoration: none
 }

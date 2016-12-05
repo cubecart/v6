@@ -546,8 +546,6 @@
             </div>
          </div>
       </div>
-      <p id="refresh_images"><i class="fa fa-refresh"></i> {$LANG.common.refresh}</p>
-      <p><strong>{$LANG.filemanager.upload_destination}:</strong> /<span id="val_subdir"></span></p>
       <div class="cc_dropzone">
       <div class="dz-default dz-message"><span>{$LANG.filemanager.file_upload_note}</span></div>
    </div>
