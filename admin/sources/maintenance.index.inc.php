@@ -15,32 +15,27 @@ Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT, true);
 
 global $lang;
 
-$pclzip_path = CC_INCLUDES_DIR.'lib/pclzip/pclzip.lib.php';
-
 $version_history = $GLOBALS['db']->select('CubeCart_history', false, false, "`version` DESC");
 
 $GLOBALS['smarty']->assign('VERSIONS', $version_history);
 
 if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 	$file_path = CC_ROOT_DIR.'/backup/'.basename($_GET['restore']);
-	require_once $pclzip_path;
 
 	if (preg_match('/^database_full/', $_GET['restore'])) { // Restore database
 		if (preg_match('/\.sql.zip$/', $_GET['restore'])) { // unzip first
-			$archive    = new PclZip($file_path);
-			$extract_location  = str_replace('.zip', '', $file_path);
-			$extract  = $archive->extract(PCLZIP_OPT_REPLACE_NEWER);
-			if ($extract == 0) {
-				$GLOBALS['main']->setACPWarning("Error: ".$archive->errorInfo(true));
-				httpredir('?_g=maintenance&node=index#backup');
+			
+			$zip = new ZipArchive;
+			$result = $zip->open($file_path);
+			if ($result === TRUE) {
+				$contents = $zip->getFromName(rtrim($_GET['restore'], '.zip'));
+    			$zip->close();
+			} else {
+				$GLOBALS['main']->setACPWarning("Error reading file ".$_GET['restore']);
+				httpredir('?_g=maintenance&node=index#backup');	
 			}
-		}
-
-		if (isset($extract[0]['filename']) && file_exists($extract[0]['filename'])) {
-			$contents = file_get_contents(CC_ROOT_DIR.'/'.$extract[0]['filename']);
-			unlink($extract[0]['filename']);
 		} else {
-			$contents = file_get_contents($file_path);
+			$contents = file_get_contents($file_path); 
 		}
 
 		if (!empty($contents) && $GLOBALS['db']->parseSchema($contents)) {
@@ -50,77 +45,65 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 		}
 
 	} elseif (preg_match('/^files/', $_GET['restore'])) { // restore archive
-		$archive = new PclZip(CC_ROOT_DIR.'/backup/'.$_GET['restore']);
+		
+		$file_path = CC_ROOT_DIR.'/backup/'.$_GET['restore'];
+		$zip = new ZipArchive;
+		if ($zip->open($file_path) === TRUE) {
+			
+			$crc_check = array();
+			for ($i = 0; $i < $zip->numFiles; $i++) {
+				$stat = $zip->statIndex($i);
+				$crc_check[$stat['name']] = $stat['crc'];
+			}
 
-		## Get file contents to compare filesize afterwards shame we have no md5 but filesize should be ok
-		if (($backup_contents = $archive->listContent()) == 0) {
-			$GLOBALS['main']->setACPWarning("Error: ".$archive->errorInfo(true));
-			httpredir('?_g=maintenance&node=index#backup');
-		}
-		## Do extraction
-		$extract  = $archive->extract(PCLZIP_OPT_PATH, CC_ROOT_DIR, PCLZIP_OPT_REPLACE_NEWER);
-		if ($extract == 0) {
-			$GLOBALS['main']->setACPWarning("Error: ".$archive->errorInfo(true));
-			httpredir('?_g=maintenance&node=index#backup');
-		}
+			$zip->extractTo(CC_ROOT_DIR);
+			$zip->close();
 
-		$error_log = '----- Restore Log from '.$_GET['restore']." (".date("d M Y - H:i:s").") -----\r\n\r\n";
-		## Check the files have been updated
-		$fail_status = array('newer_exist', 'write_protected', 'path_creation_fail', 'write_error', 'read_error', 'invalid_header', 'filename_too_long');
-		if (is_array($extract)) {
-			foreach ($extract as $file) {
-				if (in_array($file['status'], $fail_status)) {
-					$fail = true;
-					$error_log .= $file['stored_filename']." - Extract Status: ".$file['status']."\r\n";
+			$error_log = '----- Restore Log from '.$_GET['restore']." (".date("d M Y - H:i:s").") -----\r\n\r\n";
+
+			$fail = false;
+
+			foreach ($crc_check as $file => $value) {
+				if (is_file($file)) {
+					## Open the source file
+					if (($v_file = fopen($file, "rb")) == 0) {
+						$fail = true;
+						$error_log .= "$file - Unable to open file to calculate CRC.\r\n";
+					}
+
+					## Read the file content
+					$v_content = fread($v_file, filesize($file));
+
+					## Close the file
+					fclose($v_file);
+
+					if(crc32($v_content) !== $value) {
+						$error_log .= "$file - CRC mismatch.\r\n";
+						$fail = true;
+					}
 				}
 			}
-		}
 
-		## Check files MD5 all match as an extra layer
-		$files_after_extract = glob_recursive('*');
-		foreach ($files_after_extract as $file) {
-			if (is_file($file)) {
-				## Open the source file
-				if (($v_file = fopen($file, "rb")) == 0) {
-					$fail = true;
-					$error_log .= "$file - Unable to open file to calculate CRC.\r\n";
+			$error_log .= "\r\n------------------------------ \r\n\r\n\r\n\r\n\r\n";
+
+			if ($fail) {
+				if (!empty($error_log)) {
+					$fp = fopen(CC_ROOT_DIR.'/backup/restore_error_log', 'a+');
+					fwrite($fp, $error_log);
+					fclose($fp);
 				}
-
-				## Read the file content
-				$v_content = fread($v_file, filesize($file));
-
-				## Close the file
-				fclose($v_file);
-
-				## Replace ./ from the start of the filename to match against stores_filename from PCLZIP
-				$crc_after_extract[preg_replace('/^.\//', '', $file)] = crc32($v_content);
+				$GLOBALS['main']->setACPWarning($lang['maintain']['files_restore_fail']);
+				httpredir('?_g=maintenance&node=index#backup');
+			} else {
+				$GLOBALS['main']->setACPNotify($lang['maintain']['files_restore_success']);
+				$GLOBALS['cache']->clear();
+				httpredir('?_g=maintenance&node=index#backup');
 			}
-		}
-		## If filesize of file after extraction doesn't match package contents then it hasn't worked
-		foreach ($backup_contents as $file) {
-			if (file_exists($file['stored_filename']) && isset($crc_after_extract[$file['stored_filename']]) && $file['crc'] !== $crc_after_extract[$file['stored_filename']]) {
-				$fail = true;
-				$error_log .= $file['stored_filename']." of ".$crc_after_extract[$file['stored_filename']]." checksum doesn't match new version of ".$file['crc'].".\r\n";
-			} elseif (!file_exists($file['stored_filename'])) {
-				$error_log .= $file['stored_filename']." doesn't exist.\r\n";
-			}
-		}
-		$error_log .= "\r\n------------------------------ \r\n\r\n\r\n\r\n\r\n";
 
-		if ($fail) {
-			if (!empty($error_log)) {
-				$fp = fopen(CC_ROOT_DIR.'/backup/restore_error_log', 'a+');
-				fwrite($fp, $error_log);
-				fclose($fp);
-			}
-			$GLOBALS['main']->setACPWarning($lang['maintain']['files_restore_fail']);
-			httpredir('?_g=maintenance&node=index#backup');
 		} else {
-			$GLOBALS['main']->setACPNotify($lang['maintain']['files_restore_success']);
-			$GLOBALS['cache']->clear();
-			httpredir('?_g=maintenance&node=index#backup');
+			$GLOBALS['main']->setACPWarning($lang['maintain']['files_restore_not_possible']);	
 		}
-
+		
 	} else {
 		$GLOBALS['main']->setACPWarning($lang['maintain']['files_restore_not_possible']);
 		httpredir('?_g=maintenance&node=index#backup');
@@ -430,33 +413,48 @@ if (!empty($_POST['database'])) {
 
 ########## Backup ##########
 if (isset($_GET['files_backup'])) {
-	set_time_limit(600);
+
 	$GLOBALS['cache']->clear(); // Clear cache to remove unimpoartant data to save space and possible errors
-	include_once $pclzip_path;
-	$destination_filepath = 'backup/files_'.CC_VERSION.'_'.date("dMy-His").'.zip';
-	$archive = new PclZip($destination_filepath);
-
-	$skip_folders = 'backup|cache|images/cache';
-	if(isset($_POST['skip_images']) && $_POST['skip_images']=='1') {
-		$skip_folders .= '|images/source';
-	}
-	if(isset($_POST['skip_downloads']) && $_POST['skip_downloads']=='1') {
-		$skip_folders .= '|files';
-	}
-
-	$backup_list = array();
-	$files = glob_recursive('*');
-	foreach ($files as $file) {
-		$file_match = preg_replace('#^./#','',$file);
-		if($file == 'images' || preg_match('#^('.$skip_folders.')#', $file_match)) continue;
-		$backup_list[] = $file;
-	}
 	
-	$v_list = $archive->create($backup_list);
-	if ($v_list == 0) {
-		@unlink($destination_filepath);
-		$GLOBALS['main']->setACPWarning("Error: ".$archive->errorInfo(true));
+	chdir(CC_ROOT_DIR);
+	$destination = CC_ROOT_DIR.'/backup/files_'.CC_VERSION.'_'.date("dMy-His").'.zip';
+	
+	$zip = new ZipArchive();
+
+	if ($zip->open($destination, ZipArchive::CREATE)!==true) {
+		$GLOBALS['main']->setACPWarning("Error: Backup failed.");
 	} else {
+		$skip_folders = 'backup|cache|images/cache';
+		if(isset($_POST['skip_images']) && $_POST['skip_images']=='1') {
+			$skip_folders .= '|images/source';
+		}
+		if(isset($_POST['skip_downloads']) && $_POST['skip_downloads']=='1') {
+			$skip_folders .= '|files';
+		}
+
+		$files = glob_recursive('*');
+
+		$zip->addEmptyDir('./backup');
+		if(file_exists('./backup/.htaccess')) {
+			$zip->addFile('./backup/.htaccess');
+		}
+		
+		$zip->addEmptyDir('./cache');
+		if(file_exists('./cache/.htaccess')) {
+			$zip->addFile('./cache/.htaccess');
+		}
+		$zip->addEmptyDir('./images/cache');
+
+		foreach ($files as $file) {
+			$file_match = preg_replace('#^./#','',$file);
+			if($file == 'images' || preg_match('#^('.$skip_folders.')#', $file_match)) continue;
+			if(is_dir($file)) {
+				$zip->addEmptyDir($file);
+			} else {
+				$zip->addFile($file);	
+			}
+		}
+		$zip->close();
 		$GLOBALS['main']->setACPNotify($lang['maintain']['files_backup_complete']);
 	}
 	httpredir('?_g=maintenance&node=index#backup');
@@ -470,7 +468,8 @@ if (isset($_POST['backup'])) {
 			$GLOBALS['main']->setACPWarning($lang['maintain']['error_db_backup_conflict']);
 		} else {
 			$full = ($_POST['drop'] && $_POST['structure'] && $_POST['data']) ? '_full' : ''; 
-			$fileName 	= CC_ROOT_DIR.'/backup/database'.$full.'_'.CC_VERSION.'_'.$glob['dbdatabase']."_".date("dMy-His").'.sql';
+			chdir(CC_ROOT_DIR.'/backup');
+			$fileName 	= 'database'.$full.'_'.CC_VERSION.'_'.$glob['dbdatabase']."_".date("dMy-His").'.sql';
 			$all_tables = (isset($_POST['db_3rdparty']) && $_POST['db_3rdparty'] == '1') ? true : false;
 			$write = $GLOBALS['db']->doSQLBackup($_POST['drop'],$_POST['structure'],$_POST['data'], $fileName, $_POST['compress'], $all_tables);
 			if($write) {

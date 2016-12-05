@@ -223,18 +223,21 @@ class Database_Contoller {
 		fclose($fp);
 
 		if($compress) {
-			include_once(CC_INCLUDES_DIR.'lib'.CC_DS.'pclzip'.CC_DS.'pclzip.lib.php');
+			
 			if(file_exists($file_name)) {
-				$archive = new PclZip($file_name.'.zip');
-				$v_list = $archive->create($file_name);
-				if($v_list == 0) {
-					$GLOBALS['main']->setACPWarning($archive->errorInfo(true));
+				
+				$zip = new ZipArchive();
+				$filename = $file_name;
+				if ($zip->open($filename.'.zip', ZipArchive::CREATE)!==true) {
 					$GLOBALS['main']->setACPWarning($GLOBALS['language']->maintain['db_compress_fail']);
-					return true;
+					return false;
 				} else {
+					$zip->addFile($filename);
+					$zip->close();
 					unlink($file_name);
 					return file_exists($file_name.'.zip');
 				}
+
 			} else {
 				return false;
 			}
