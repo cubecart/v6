@@ -1014,7 +1014,7 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
 	 */
 	private function _sitemap_link($input, $updated = false, $type = false) {
 
-		$updated =  !$updated ? 'NOW' : $updated;
+		$updated =  (!$updated || "0000-00-00" == substr($updated,0,10)) ? 'NOW' : $updated;
 
 		$dateTime = new DateTime($updated);
 		$updated = $dateTime->format(DateTime::W3C);
