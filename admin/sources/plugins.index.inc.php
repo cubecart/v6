@@ -69,35 +69,34 @@ if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 			$destination = CC_ROOT_DIR.'/'.$data['path'];
 			if(file_exists($destination)) {
 				if(is_writable($destination)) {
-					$tmp_path = CC_ROOT_DIR.'/cache/'.$data['file_name'];
+					$tmp_path = CC_ROOT_DIR.'/backup/'.$data['file_name'];
 					$fp = fopen($tmp_path, 'w');
 					fwrite($fp, hex2bin($data['file_data']));
 					fclose($fp);
 					if(!file_exists($tmp_path)) {
 						$GLOBALS['main']->setACPWarning($lang['module']['get_file_failed']);
 					}
-					// Read the zip
-					require_once CC_INCLUDES_DIR.'lib/pclzip/pclzip.lib.php';
-					$source = new PclZip($tmp_path);
-					$files = $source->listContent();
-					if(is_array($files)) {
+					$zip = new ZipArchive();
+
+					if($zip->open($tmp_path)===true) {
 						$extract = true;
 						$backup = false;
 						$import_language = false;
 
-						foreach($files as $file) {
-							if(preg_match('/^email_[a-z]{2}-[A-Z]{2}.xml$/', $file['filename'])) {
-								$import_language = $file['filename'];
-								$install_dir = str_replace('email_','',$file['filename']);
+						for ($i = 0; $i < $zip->numFiles; $i++) {
+							$file = $zip->statIndex($i);
+							if(preg_match('/^email_[a-z]{2}-[A-Z]{2}.xml$/', $file['name'])) {
+								$import_language = $file['name'];
+								$install_dir = str_replace('email_','',$file['name']);
 							}
 
-							$root_path = $destination.'/'.$file['filename'];
+							$root_path = $destination.'/'.$file['name'];
 							
-							if(file_exists($root_path) && basename($file['filename'])=="config.xml") {
+							if(file_exists($root_path) && basename($file['name'])=="config.xml") {
 								// backup existing
-								$backup = str_replace('config.xml','',$file['filename'])."*";	
+								$backup = str_replace('config.xml','',$file['name'])."*";	
 							}
-							if(basename($file['filename'])=="config.xml") {
+							if(basename($file['name'])=="config.xml") {
 								$install_dir = str_replace(array('/config.xml', CC_ROOT_DIR),'',$root_path);
 							}
 
@@ -108,62 +107,69 @@ if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 						}
 		
 						if($_POST['backup']=='1' && $backup) {
-							$destination_filepath = CC_ROOT_DIR.'/backup/'.$data['file_name'].'_'.date("dMy-His").'.zip';
-							$archive = new PclZip($destination_filepath);
-							chdir($destination);
-							$files = glob($backup);
-							foreach ($files as $file) {
-								$backup_list[] = $file;
-							}
-							if ($archive->create($backup_list) == 0) {
-								if($_POST['abort']=='1') {
-									$extract = false;
-									$GLOBALS['main']->setACPWarning($lang['module']['exists_not_writable'].' '.$lang['module']['process_aborted']);
+							$destination_filepath = CC_ROOT_DIR.'/backup/'.rtrim($data['file_name'],'.zip').'_'.date("dMy-His").'.zip';
+							$zip2 = new ZipArchive();
+							if ($zip2->open($destination_filepath, ZipArchive::CREATE)===true) {
+								chdir($destination);
+								$files = glob_recursive($backup);
+								foreach ($files as $file) {
+									if(is_dir($file)) {
+										$zip2->addEmptyDir($file);
+									} else {
+										$zip2->addFile($file);	
+									}
+								}
+								$zip2->close();
+								if (file_exists($destination_filepath)) {
+									$GLOBALS['main']->setACPNotify($lang['module']['backup_created']);
 								} else {
-									$GLOBALS['main']->setACPWarning($lang['module']['exists_not_writable']);
+									if($_POST['abort']=='1') {
+										$extract = false;
+										$GLOBALS['main']->setACPWarning($lang['module']['exists_not_writable'].' '.$lang['module']['process_aborted']);
+									} else {
+										$GLOBALS['main']->setACPWarning($lang['module']['exists_not_writable']);
+									}
 								}
 							} else {
-								$GLOBALS['main']->setACPNotify($lang['module']['backup_created']);
+								$GLOBALS['main']->setACPWarning($lang['module']['exists_not_writable']);	
 							}
 						}
 						if($extract) {
-							if ($source->extract(PCLZIP_OPT_PATH, $destination, PCLZIP_OPT_REPLACE_NEWER) == 0) {
-								$GLOBALS['main']->setACPWarning($lang['module']['failed_install']);	
-							} else {
-								// Attempt email template install
-								if($import_language) {
-									$GLOBALS['language']->importEmail($import_language);
-								}
-
-								if(!empty($install_dir)) {
-									
-									$extension_info = array(
-										'dir' => $install_dir,
-										'file_name' => $data['file_name'],
-										'file_id' => $data['file_id'],
-										'seller_id' => $data['seller_id'],
-										'modified'	=> $data['modified'],
-										'name'	=> $data['name']
-									);
-
-									if($GLOBALS['db']->select('CubeCart_extension_info', 'file_id', array('file_id' => $extension_info['file_id']))) {
-										$GLOBALS['db']->update('CubeCart_extension_info', $extension_info, array('file_id' => $extension_info['file_id']));
-									} else {
-										$GLOBALS['db']->insert('CubeCart_extension_info', $extension_info);
-									}
-								}
-
-								$GLOBALS['session']->delete('version_check');
-
-								$GLOBALS['main']->setACPNotify($lang['module']['success_install']);
-								
-								$request = new Request($cc_domain, $cc_conf_path, 80, false, true, 10);
-								$request->setMethod('get');
-								$request->setSSL();
-								$request->setData(array('null'=>0));
-								$request->setUserAgent('CubeCart');
-								$request->skiplog(true);
+							$zip->extractTo($destination);
+							$zip->close();
+							// Attempt email template install
+							if($import_language) {
+								$GLOBALS['language']->importEmail($import_language);
 							}
+
+							if(!empty($install_dir)) {
+								
+								$extension_info = array(
+									'dir' => $install_dir,
+									'file_name' => $data['file_name'],
+									'file_id' => $data['file_id'],
+									'seller_id' => $data['seller_id'],
+									'modified'	=> $data['modified'],
+									'name'	=> $data['name']
+								);
+
+								if($GLOBALS['db']->select('CubeCart_extension_info', 'file_id', array('file_id' => $extension_info['file_id']))) {
+									$GLOBALS['db']->update('CubeCart_extension_info', $extension_info, array('file_id' => $extension_info['file_id']));
+								} else {
+									$GLOBALS['db']->insert('CubeCart_extension_info', $extension_info);
+								}
+							}
+
+							$GLOBALS['session']->delete('version_check');
+
+							$GLOBALS['main']->setACPNotify($lang['module']['success_install']);
+							
+							$request = new Request($cc_domain, $cc_conf_path, 80, false, true, 10);
+							$request->setMethod('get');
+							$request->setSSL();
+							$request->setData(array('null'=>0));
+							$request->setUserAgent('CubeCart');
+							$request->skiplog(true);
 						}
 					} else {
 						$GLOBALS['main']->setACPWarning(sprintf($lang['module']['read_fail'],$data['file_name']));
