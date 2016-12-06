@@ -16,9 +16,10 @@ Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT, true);
 global $lang;
 
 function crc_integrity_check($files, $mode = 'upgrade') {
+	
 	$errors = array();
+	
 	$log_path = CC_ROOT_DIR.'/backup/'.$mode.'_error_log';
-
 	if(file_exists($log_path)) unlink($log_path); 
 
 	foreach ($files as $file => $value) {
@@ -27,7 +28,6 @@ function crc_integrity_check($files, $mode = 'upgrade') {
 		} elseif (is_file($file)) {
 			## Open the source file
 			if (($v_file = fopen($file, "rb")) == 0) {
-				$fail = true;
 				$errors[] = "$file - Unable to read in order to validate integrity.";
 			}
 
@@ -54,8 +54,9 @@ function crc_integrity_check($files, $mode = 'upgrade') {
 		$fp = fopen($log_path, 'w');
 		fwrite($fp, $error_data);
 		fclose($fp);
+	} else {
+		return false;
 	}
-	return $errors;
 }
 
 $version_history = $GLOBALS['db']->select('CubeCart_history', false, false, "`version` DESC");
@@ -104,7 +105,7 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 
 			$errors = crc_integrity_check($crc_check_list, 'restore');
 			
-			if (count($errors>0)) {				
+			if ($errors!===false) {				
 				$GLOBALS['main']->setACPWarning($lang['maintain']['files_restore_fail']);
 				httpredir('?_g=maintenance&node=index#backup');
 			} else {
@@ -168,7 +169,7 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 
 				$errors = crc_integrity_check($crc_check_list, 'upgrade');
 				
-				if (count($errors>0)) {
+				if ($errors!===false) {
 					$GLOBALS['main']->setACPWarning($lang['maintain']['files_upgrade_fail']);
 					httpredir('?_g=maintenance&node=index#upgrade');
 				} elseif ($_POST['force']) {
