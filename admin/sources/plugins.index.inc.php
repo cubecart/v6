@@ -125,13 +125,13 @@ if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 								} else {
 									if($_POST['abort']=='1') {
 										$extract = false;
-										$GLOBALS['main']->setACPWarning($lang['module']['exists_not_writable'].' '.$lang['module']['process_aborted']);
+										$GLOBALS['main']->setACPWarning(sprintf($lang['module']['exists_not_writable'], $destination_filepath).' '.$lang['module']['process_aborted']);
 									} else {
-										$GLOBALS['main']->setACPWarning($lang['module']['exists_not_writable']);
+										$GLOBALS['main']->setACPWarning(sprintf($lang['module']['exists_not_writable'], $destination_filepath));
 									}
 								}
 							} else {
-								$GLOBALS['main']->setACPWarning($lang['module']['exists_not_writable']);	
+								$GLOBALS['main']->setACPWarning(sprintf($lang['module']['exists_not_writable'], $destination_filepath));	
 							}
 						}
 						if($extract) {
