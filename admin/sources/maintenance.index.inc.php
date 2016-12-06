@@ -15,6 +15,49 @@ Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT, true);
 
 global $lang;
 
+function crc_integrity_check($files, $mode = 'upgrade') {
+	$errors = array();
+	$log_path = CC_ROOT_DIR.'/backup/'.$mode.'_error_log';
+
+	if(file_exists($log_path)) unlink($log_path); 
+
+	foreach ($files as $file => $value) {
+		if(!file_exists($file)) {
+			$errors[] = "$file - Missing but expected after extract.";
+		} elseif (is_file($file)) {
+			## Open the source file
+			if (($v_file = fopen($file, "rb")) == 0) {
+				$fail = true;
+				$errors[] = "$file - Unable to read in order to validate integrity.";
+			}
+
+			## Read the file content
+			$v_content = fread($v_file, filesize($file));
+			fclose($v_file);
+
+			if(crc32($v_content) !== $value) {
+				$errors[] = "$file - File contents not as expected.";
+			}
+		}
+	}
+	if(count($errors)>0) {
+		$errors[] = 'Errors were found which may indicate that the source archive has not been extracted successfully.';
+		if($mode=='upgrade') {
+			$errors[] = 'It is recomended that a manual upgrade is performed instead.';	
+		} else {
+			$errors[] = 'It is recomended that a manua restore is performed.';
+		}	
+		$error_data = "### START ".strtoupper($mode)." LOG - (".date("d M Y - H:i:s").")\r\n";
+		$error_data .= implode("\r\n", $errors);
+		$error_data .=  "\r\n### END RESTORE LOG";
+
+		$fp = fopen($log_path, 'w');
+		fwrite($fp, $error_data);
+		fclose($fp);
+	}
+	return $errors;
+}
+
 $version_history = $GLOBALS['db']->select('CubeCart_history', false, false, "`version` DESC");
 
 $GLOBALS['smarty']->assign('VERSIONS', $version_history);
@@ -50,58 +93,18 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 		$zip = new ZipArchive;
 		if ($zip->open($file_path) === true) {
 			
-			$crc_check = array();
+			$crc_check_list = array();
 			for ($i = 0; $i < $zip->numFiles; $i++) {
 				$stat = $zip->statIndex($i);
-				$crc_check[$stat['name']] = $stat['crc'];
+				$crc_check_list[$stat['name']] = $stat['crc'];
 			}
 
 			$zip->extractTo(CC_ROOT_DIR);
 			$zip->close();
 
-			$fail = false;
-			$errors = array(); 
-
-			foreach ($crc_check as $file => $value) {
-				
-				if(!file_exists($file)) {
-					$errors[] = "$file - Doesn't exist but was expected after extract.\r\n";
-				} else if (is_file($file)) {
-					## Open the source file
-					if (($v_file = fopen($file, "rb")) == 0) {
-						$fail = true;
-						$errors[] = "$file - Unable to read file to validate CRC integrity.\r\n";
-					}
-
-					## Read the file content
-					$v_content = fread($v_file, filesize($file));
-
-					## Close the file
-					fclose($v_file);
-
-					if(crc32($v_content) !== $value) {
-						$errors[] = "$file - File contents not as expected after extract (CRC mismatch).\r\n";
-						$fail = true;
-					}
-				}
-			}
-
-			$error_log_file = CC_ROOT_DIR.'/backup/restore_error_log';
-
-			if(file_exists($error_log_file)) {
-				unlink($error_log_file);	
-			}
-
-			if ($fail) {
-
-				$error_data = '### START RESTORE LOG - '.$_GET['restore']." (".date("d M Y - H:i:s").")\r\n";
-				$error_data .= implode("\r\n", $errors);
-				$error_data .=  "\r\n### END RESTORE LOG";
-
-				$fp = fopen($error_log_file, 'w');
-				fwrite($fp, $error_log);
-				fclose($fp);
-				
+			$errors = crc_integrity_check($crc_check_list, 'restore');
+			
+			if (count($errors>0)) {				
 				$GLOBALS['main']->setACPWarning($lang['maintain']['files_restore_fail']);
 				httpredir('?_g=maintenance&node=index#backup');
 			} else {
@@ -135,10 +138,8 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 	}
 
 	if (empty($contents)) {
-
 		$GLOBALS['main']->setACPWarning($lang['maintain']['files_upgrade_download_fail']);
 		httpredir('?_g=maintenance&node=index#upgrade');
-
 	} else {
 
 		if (stristr($contents, 'DOCTYPE') ) {
@@ -156,57 +157,18 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 			$zip = new ZipArchive;
 			if ($zip->open($destination_path) === true) {
 				
-				$crc_check = array();
+				$crc_check_list = array();
 				for ($i = 0; $i < $zip->numFiles; $i++) {
 					$stat = $zip->statIndex($i);
-					$crc_check[$stat['name']] = $stat['crc'];
+					$crc_check_list[$stat['name']] = $stat['crc'];
 				}
 
 				$zip->extractTo(CC_ROOT_DIR);
 				$zip->close();
 
-				$errors = array(); 
-				$fail = false;
-
-				foreach ($crc_check as $file => $value) {
-					
-					if(!file_exists($file)) {
-						$errors[] =  "$file - Doesn't exist but was expected after extract.";
-					} else if (is_file($file)) {
-						## Open the source file
-						if (($v_file = fopen($file, "rb")) == 0) {
-							$fail = true;
-							$errors[] =  "$file - Unable to read file to validate CRC integrity.";
-						}
-
-						## Read the file content
-						$v_content = fread($v_file, filesize($file));
-
-						## Close the file
-						fclose($v_file);
-
-						if(crc32($v_content) !== $value) {
-							$errors[] =  "$file - File contents not as expected after extract (CRC mismatch).";
-							$fail = true;
-						}
-					}
-				}
+				$errors = crc_integrity_check($crc_check_list, 'upgrade');
 				
-				$error_log_file = CC_ROOT_DIR.'/backup/upgrade_error_log';
-
-				if(file_exists($error_log_file)) {
-					unlink($error_log_file);	
-				}
-				if ($fail) {
-					
-					$error_data = '### Upgrade log to '.$_GET['upgrade']." (".date("d M Y - H:i:s").")\r\n";
-					$error_data .= implode("\r\n", $errors);
-					$error_data .=  "\r\n### END UPGRADE LOG ###";
-
-					$fp = fopen(CC_ROOT_DIR.'/backup/upgrade_error_log', 'a+');
-					fwrite($fp, $error_data);
-					fclose($fp);
-					
+				if (count($errors>0)) {
 					$GLOBALS['main']->setACPWarning($lang['maintain']['files_upgrade_fail']);
 					httpredir('?_g=maintenance&node=index#upgrade');
 				} elseif ($_POST['force']) {
@@ -224,7 +186,6 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 					$GLOBALS['main']->renameAdmin();
 					httpredir(CC_ROOT_REL.'setup/index.php?autoupdate=1');
 				}
-
 			} else {
 				$GLOBALS['main']->setACPWarning("Unable to read archive.");
 				httpredir('?_g=maintenance&node=index#upgrade');
