@@ -281,6 +281,12 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
       'status' => extension_loaded('curl'),
       'pass' => $strings['common']['installed'],
       'fail' => $strings['common']['not_installed']
+    ),
+    'Zip' => array(
+      'title' => 'Zip (ZipArchive)',
+      'status' => class_exists('ZipArchive'),
+      'pass' => $strings['common']['installed'],
+      'fail' => $strings['common']['not_installed']
     )
   );
   
