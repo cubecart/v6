@@ -324,7 +324,7 @@ class Tax {
 	 * @param bool $default_currency
 	 * @return string/false
 	 */
-	public function priceFormat($price, $display_null = true, $default_currency = false) {
+	public function priceFormat($price, $display_null = true, $default_currency = false, $override_hide = false) {
 
 		if ($default_currency) {
 			$this->loadCurrencyVars($GLOBALS['config']->get('config', 'default_currency'));
@@ -333,7 +333,8 @@ class Tax {
 		$price = $this->_removeSymbol($price);
 
 		if ($display_null && is_numeric($price)) {
-			if ($GLOBALS['session']->get('hide_prices')) {
+
+			if ($override_hide == false && $GLOBALS['session']->get('hide_prices')) {
 				## Hide the price, but create a string that is representative of the currency formating for the current locale
 				return $this->priceFormatHidden();
 			} else {

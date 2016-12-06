@@ -42,7 +42,6 @@ if (isset($_POST['gc']) && is_array($_POST['gc']) && Admin::getInstance()->permi
 	}
 
 	if ($GLOBALS['config']->set('gift_certs', '', $_POST['gc'])) {
-		
 		$GLOBALS['main']->setACPNotify($lang['settings']['notify_settings_update']);
 	} else {
 		$GLOBALS['main']->setACPWarning($lang['settings']['error_settings_update']);
@@ -71,7 +70,7 @@ if (($taxes = $GLOBALS['db']->select('CubeCart_tax_class')) !== false) {
 $GLOBALS['smarty']->assign('GC', $gc);
 $select_options = array(
 	'delivery' => array(1 => $lang['settings']['gc_type_digital'], 2 => $lang['settings']['gc_type_physical'], 3 => $lang['settings']['gc_type_both']),
-	'status' => array(0 => $lang['common']['disabled'], 1 => $lang['common']['enabled']),
+	'status' => array(0 => $lang['common']['disabled'], 1 => $lang['settings']['enabled_for_all'], 2 => $lang['settings']['enabled_for_logged_in']),
 );
 if (isset($select_options)) {
 	foreach ($select_options as $field => $options) {

@@ -868,10 +868,16 @@ class Cubecart {
 				$GLOBALS['smarty']->assign('POST', $_POST['gc']);
 			}
 		}
-		$GLOBALS['smarty']->assign('LANG_CERT_VALUES', sprintf($GLOBALS['language']->catalogue['gift_certificate_value'], $GLOBALS['tax']->priceFormat($gc['min'], true, true), $GLOBALS['tax']->priceFormat($gc['max'], true, true)));
-		$ctrl_allow_purchase = ($GLOBALS['session']->get('hide_prices')) ? false : true;
 
-		$GLOBALS['smarty']->assign('ctrl_allow_purchase', $ctrl_allow_purchase);
+		if($gc['status']=='2' && !$GLOBALS['user']->is()) {
+			$purchase_enabled = false;
+			$GLOBALS['gui']->setInfo($GLOBALS['language']->customer['login_register']);
+		} else {
+			$purchase_enabled = true;
+		}
+		
+		$GLOBALS['smarty']->assign('LANG_CERT_VALUES', sprintf($GLOBALS['language']->catalogue['gift_certificate_value'], $GLOBALS['tax']->priceFormat($gc['min'], true, true, $purchase_enabled), $GLOBALS['tax']->priceFormat($gc['max'], true, true, $purchase_enabled)));
+		$GLOBALS['smarty']->assign('ctrl_allow_purchase', $purchase_enabled);
 		$GLOBALS['smarty']->assign('GC', $gc);
 		$content = $GLOBALS['smarty']->fetch('templates/content.certificates.php');
 		$GLOBALS['smarty']->assign('SECTION_NAME', 'giftcertificate');

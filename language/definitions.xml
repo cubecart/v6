@@ -831,6 +831,7 @@
     <string name="zone_name" introduced="5.0.0"><![CDATA[Name]]></string>
   </group>
   <group name="customer">
+    <string name="login_register" introduced="6.1.2"><![CDATA[Please login or register to continue.]]></string>
     <string name="signinas" introduced="6.0.0"><![CDATA[Login as %s %s]]></string>
     <string name="customer_type" introduced="5.0.0"><![CDATA[Type]]></string>
     <string name="customer_export" introduced="5.0.0"><![CDATA[Customer Export]]></string>
@@ -1716,6 +1717,8 @@
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
+    <string name="enabled_for_all" introduced="6.1.2"><![CDATA[Enabled for all customers]]></string>
+    <string name="enabled_for_logged_in" introduced="6.1.2"><![CDATA[Enabled for logged in customers only]]></string>
     <string name="log_retention" introduced="6.1.0"><![CDATA[Log Retention]]></string>
     <string name="log_retention_desc" introduced="6.1.0"><![CDATA[Leave empty to disable retention]]></string>
     <string name="admin_activity_log" introduced="6.1.0"><![CDATA[Admin Activity Log]]></string>
