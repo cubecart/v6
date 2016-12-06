@@ -144,6 +144,7 @@
  <hook trigger="class.cubecart.construct.search" deprecated="" />
  <hook trigger="class.cubecart.contact" deprecated="" />
  <hook trigger="class.cubecart.contact.display" deprecated="" />
+ <hook trigger="class.cubecart.contact.mailer" deprecated="" />
  <hook trigger="class.cubecart.display_basket" deprecated="" />
  <hook trigger="class.cubecart.post_coupon" deprecated="" />
  <hook trigger="class.cubecart.pre_display_category" deprecated="" />

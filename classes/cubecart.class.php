@@ -1408,6 +1408,7 @@ class Cubecart {
 					$mailer->addReplyTo($_POST['contact']['email'], strip_tags($_POST['contact']['name']));
 					$mailer->Subject = strip_tags($_POST['contact']['subject']);
 					$mailer->Body  = sprintf($GLOBALS['language']->contact['email_content'], $_POST['contact']['name'], $_POST['contact']['email'], $department, strip_tags($_POST['contact']['enquiry']));
+					foreach ($GLOBALS['hooks']->load('class.cubecart.contact.mailer') as $hook) include $hook;
 					// Send
 					if ($mailer->Send()) {
 						$GLOBALS['gui']->setNotify($GLOBALS['language']->documents['notify_document_contact']);
