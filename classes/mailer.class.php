@@ -125,7 +125,7 @@ class Mailer extends PHPMailer {
 					}
 					$this->_import_new = true;
 					$this->loadContent($content_type, $language, $data);
-				} elseif (isset($match[2]) && strlen($match[2])==5) {
+				} elseif (isset($match[2]) && preg_match(Language::LANG_REGEX, $match[2])) {
 					// Try the parent language, if this is a regional translation (i.e. en-GB)
 					return $this->loadContent($content_type, $match[1], $data);
 				} else if ($language !=  $GLOBALS['config']->get('config', 'default_language')) {
