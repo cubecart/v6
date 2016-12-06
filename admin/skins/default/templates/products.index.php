@@ -549,6 +549,8 @@
       <div class="cc_dropzone">
          <div class="dz-default dz-message"><span>{$LANG.filemanager.file_upload_note}</span></div>
       </div>
+      <div id="cc_dropzone_url" style="display: none;">?_g=filemanager&amp;product_id={$PRODUCT.product_id}</div>
+      <div id="val_product_id" style="display: none;">{$PRODUCT.product_id}</div>
 
       <div id="val_lang_go" style="display: none;">{$LANG.common.go}</div>
       <div id="val_lang_preview" style="display: none;">{$LANG.common.preview}</div>
@@ -560,8 +562,7 @@
       <div id="val_lang_upload_destination" style="display: none;">{$LANG.filemanager.upload_destination}:</div>
       <div id="val_lang_enable" style="display: none;">{$LANG.common.enable}</div>
       <div id="val_lang_disable" style="display: none;">{$LANG.common.disable}</div>
-      <div id="cc_dropzone_url" style="display: none;">?_g=filemanager&amp;product_id={$PRODUCT.product_id}</div>
-      <div id="val_product_id" style="display: none;">{$PRODUCT.product_id}</div>
+        
    </div>
    <div id="digital" class="tab_content">
       <h3>{$LANG.catalogue.title_digital_options}</h3>

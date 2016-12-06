@@ -942,10 +942,6 @@ class FileManager {
 	 * @return int/false
 	 */
 	public function upload($type = false, $thumbnail = false) {
-		
-		if(isset($_GET['subdir']) && !empty($_GET['subdir'])) {
-			$this->_sub_dir  = $this->formatPath($_GET['subdir']);
-		}
 
 		if(!is_writable($this->_manage_root)) return false;
 

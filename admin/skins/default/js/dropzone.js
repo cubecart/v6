@@ -1238,6 +1238,8 @@
       
       if($("#val_subdir").length) {
         subdir = '&subdir='+$("#val_subdir").text();
+      } else {
+        subdir = '';
       }
       xhr = new XMLHttpRequest();
       for (_i = 0, _len = files.length; _i < _len; _i++) {
