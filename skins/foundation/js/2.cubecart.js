@@ -35,7 +35,7 @@ jQuery(document).ready(function() {
     $(".autosubmit select").not('.nosubmit').change(function() {
         $(this).parents(".autosubmit").submit();
     });
-    $('svg.icon-submit').each(function() {
+    $('.icon-submit').each(function() {
         $(this).parents('form').submit();
     });
     $(".category-nav li").each(function(index) {
