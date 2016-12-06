@@ -353,7 +353,6 @@ if (isset($_POST['clearLogs'])) {
 }
 
 ########## Database ##########
-
 if (!empty($_POST['database'])) {
 	if (is_array($_POST['tablename'])) {
 		foreach ($_POST['tablename'] as $value) {
@@ -381,9 +380,14 @@ if (isset($_GET['files_backup'])) {
 	} else {
 		$skip_folders = 'backup|cache|images/cache|includes/extra/sess_';
 		if(isset($_POST['skip_images']) && $_POST['skip_images']=='1') {
+			$zip->addEmptyDir('./images/source');
 			$skip_folders .= '|images/source';
 		}
 		if(isset($_POST['skip_downloads']) && $_POST['skip_downloads']=='1') {
+			$zip->addEmptyDir('./files');
+			if(file_exists('./files/.htaccess')) {
+				$zip->addFile('./files/.htaccess');
+			}
 			$skip_folders .= '|files';
 		}
 
