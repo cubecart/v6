@@ -48,7 +48,7 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 		
 		$file_path = CC_ROOT_DIR.'/backup/'.$_GET['restore'];
 		$zip = new ZipArchive;
-		if ($zip->open($file_path) === TRUE) {
+		if ($zip->open($file_path) === true) {
 			
 			$crc_check = array();
 			for ($i = 0; $i < $zip->numFiles; $i++) {
@@ -59,19 +59,18 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 			$zip->extractTo(CC_ROOT_DIR);
 			$zip->close();
 
-			$error_log = '### START RESTORE LOG - '.$_GET['restore']." (".date("d M Y - H:i:s").") ###\r\n\r\n";
-
 			$fail = false;
+			$errors = array(); 
 
 			foreach ($crc_check as $file => $value) {
 				
 				if(!file_exists($file)) {
-					$error_log .= "$file - Doesn't exist but was expected after extract.\r\n";
+					$errors[] = "$file - Doesn't exist but was expected after extract.\r\n";
 				} else if (is_file($file)) {
 					## Open the source file
 					if (($v_file = fopen($file, "rb")) == 0) {
 						$fail = true;
-						$error_log .= "$file - Unable to read file to validate CRC integrity.\r\n";
+						$errors[] = "$file - Unable to read file to validate CRC integrity.\r\n";
 					}
 
 					## Read the file content
@@ -81,13 +80,12 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 					fclose($v_file);
 
 					if(crc32($v_content) !== $value) {
-						$error_log .= "$file - File contents not as expected after extract (CRC mismatch).\r\n";
+						$errors[] = "$file - File contents not as expected after extract (CRC mismatch).\r\n";
 						$fail = true;
 					}
 				}
 			}
 
-			$error_log .= "\r\n### END RESTORE LOG ### \r\n\r\n\r\n\r\n\r\n";
 			$error_log_file = CC_ROOT_DIR.'/backup/restore_error_log';
 
 			if(file_exists($error_log_file)) {
@@ -95,11 +93,15 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 			}
 
 			if ($fail) {
-				if (!empty($error_log)) {
-					$fp = fopen($error_log_file, 'w');
-					fwrite($fp, $error_log);
-					fclose($fp);
-				}
+
+				$error_data = '### START RESTORE LOG - '.$_GET['restore']." (".date("d M Y - H:i:s").")\r\n";
+				$error_data .= implode("\r\n", $errors);
+				$error_data .=  "\r\n### END RESTORE LOG";
+
+				$fp = fopen($error_log_file, 'w');
+				fwrite($fp, $error_log);
+				fclose($fp);
+				
 				$GLOBALS['main']->setACPWarning($lang['maintain']['files_restore_fail']);
 				httpredir('?_g=maintenance&node=index#backup');
 			} else {
@@ -151,101 +153,84 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 
 		if (file_exists($destination_path)) {
 
-			## Make the new file read/writable which is probably not needed
-			chmod($destination_path, chmod_writable());
+			$zip = new ZipArchive;
+			if ($zip->open($destination_path) === true) {
+				
+				$crc_check = array();
+				for ($i = 0; $i < $zip->numFiles; $i++) {
+					$stat = $zip->statIndex($i);
+					$crc_check[$stat['name']] = $stat['crc'];
+				}
 
-			require_once $pclzip_path;
+				$zip->extractTo(CC_ROOT_DIR);
+				$zip->close();
 
-			$archive = new PclZip($destination_path);
+				$errors = array(); 
+				$fail = false;
 
-			## Get file contents to compare filesize afterwards shame we have no md5 but filesize should be ok
-			if (($package_contents = $archive->listContent()) == 0) {
-				$GLOBALS['main']->setACPWarning("Error: ".$archive->errorInfo(true));
-				httpredir('?_g=maintenance&node=index#upgrade');
-			}
+				foreach ($crc_check as $file => $value) {
+					
+					if(!file_exists($file)) {
+						$errors[] =  "$file - Doesn't exist but was expected after extract.";
+					} else if (is_file($file)) {
+						## Open the source file
+						if (($v_file = fopen($file, "rb")) == 0) {
+							$fail = true;
+							$errors[] =  "$file - Unable to read file to validate CRC integrity.";
+						}
 
+						## Read the file content
+						$v_content = fread($v_file, filesize($file));
 
-			$extract = $archive->extract(PCLZIP_OPT_PATH,
-				CC_ROOT_DIR,
-				PCLZIP_OPT_REPLACE_NEWER);
+						## Close the file
+						fclose($v_file);
 
-			if ($extract == 0) {
-				$GLOBALS['main']->setACPWarning("Error: ".$archive->errorInfo(true));
-				httpredir('?_g=maintenance&node=index#upgrade');
-			}
-			$error_log = '----- Upgrade log to '.$_GET['upgrade']." (".date("d M Y - H:i:s").") -----\r\n\r\n";
-			## Check the file have been updated
-			$fail_status = array('newer_exist', 'write_protected', 'path_creation_fail', 'write_error', 'read_error', 'invalid_header', 'filename_too_long');
-			if (is_array($extract)) {
-				foreach ($extract as $file) {
-					if (in_array($file['status'], $fail_status)) {
-						$fail = true;
-						$error_log .= $file['stored_filename']." - Extract Status: ".$file['status']."\r\n";
+						if(crc32($v_content) !== $value) {
+							$errors[] =  "$file - File contents not as expected after extract (CRC mismatch).";
+							$fail = true;
+						}
 					}
 				}
-			}
+				
+				$error_log_file = CC_ROOT_DIR.'/backup/upgrade_error_log';
 
-			## Check files MD5 all match as an extra layer
-			$files_after_extract = glob_recursive('*');
-			foreach ($files_after_extract as $file) {
-				if (is_file($file)) {
-					## Open the source file
-					if (($v_file = fopen($file, "rb")) == 0) {
-						$fail = true;
-						$error_log .= "$file - Unable to open file to calculate CRC.\r\n";
-					}
-
-					## Read the file content
-					$v_filesize = filesize($file);
-					$v_content = ($v_filesize>0) ? fread($v_file, $v_filesize) : '';
-
-					## Close the file
-					fclose($v_file);
-
-					## Replace ./ from the start of the filename to match against stores_filename from PCLZIP
-					$crc_after_extract[preg_replace('/^.\//', '', $file)] = crc32($v_content);
+				if(file_exists($error_log_file)) {
+					unlink($error_log_file);	
 				}
-			}
-			## If filesize of file after extraction doesn't match package contents then it hasn't worked
-			foreach ($package_contents as $file) {
-				if (file_exists($file['stored_filename']) && isset($crc_after_extract[$file['stored_filename']]) && $file['crc'] !== $crc_after_extract[$file['stored_filename']]) {
+				if ($fail) {
+					
+					$error_data = '### Upgrade log to '.$_GET['upgrade']." (".date("d M Y - H:i:s").")\r\n";
+					$error_data .= implode("\r\n", $errors);
+					$error_data .=  "\r\n### END UPGRADE LOG ###";
 
-					$error_log .= $file['stored_filename']." of ".$crc_after_extract[$file['stored_filename']]." checksum doesn't match new version of ".$file['crc'].".\r\n";
-				} elseif (!file_exists($file['stored_filename'])) {
-					$error_log .= $file['stored_filename']." .\r\n";
-				}
-			}
-			$error_log .= "\r\n------------------------------ \r\n\r\n\r\n\r\n\r\n";
-
-			## Remove the source folder
-			@unlink($destination_path);
-
-			if ($fail) {
-				if (!empty($error_log)) {
 					$fp = fopen(CC_ROOT_DIR.'/backup/upgrade_error_log', 'a+');
-					fwrite($fp, $error_log);
+					fwrite($fp, $error_data);
 					fclose($fp);
+					
+					$GLOBALS['main']->setACPWarning($lang['maintain']['files_upgrade_fail']);
+					httpredir('?_g=maintenance&node=index#upgrade');
+				} elseif ($_POST['force']) {
+					## Try to delete setup folder
+					recursiveDelete(CC_ROOT_DIR.'/setup');
+					unlink(CC_ROOT_DIR.'/setup');
+					## If that fails we try an obscure rename
+					if (file_exists(CC_ROOT_DIR.'/setup')) {
+						rename(CC_ROOT_DIR.'/setup', CC_ROOT_DIR.'/setup_'.md5(time().$_GET['upgrade']));
+					}
+					$GLOBALS['main']->renameAdmin();
+					$GLOBALS['main']->setACPNotify($lang['maintain']['current_version_restored']);
+					httpredir('?_g=maintenance&node=index#upgrade');
+				} else {
+					$GLOBALS['main']->renameAdmin();
+					httpredir(CC_ROOT_REL.'setup/index.php?autoupdate=1');
 				}
-				$GLOBALS['main']->setACPWarning($lang['maintain']['files_upgrade_fail']);
-				httpredir('?_g=maintenance&node=index#upgrade');
-			} elseif ($_POST['force']) {
-				## Try to delete setup folder
-				recursiveDelete(CC_ROOT_DIR.'/setup');
-				unlink(CC_ROOT_DIR.'/setup');
-				## If that fails we try an obscure rename
-				if (file_exists(CC_ROOT_DIR.'/setup')) {
-					rename(CC_ROOT_DIR.'/setup', CC_ROOT_DIR.'/setup_'.md5(time().$_GET['upgrade']));
-				}
-				$GLOBALS['main']->renameAdmin();
-				$GLOBALS['main']->setACPNotify($lang['maintain']['current_version_restored']);
-				httpredir('?_g=maintenance&node=index#upgrade');
-			} else {
-				$GLOBALS['main']->renameAdmin();
-				httpredir(CC_ROOT_REL.'setup/index.php?autoupdate=1');
-			}
-		}
 
-	} // end if $contents
+			} else {
+				$GLOBALS['main']->setACPWarning("Unable to read archive.");
+				httpredir('?_g=maintenance&node=index#upgrade');
+			}			
+		}
+	}
 }
 
 if (isset($_GET['delete'])) {
