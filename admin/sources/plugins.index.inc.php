@@ -108,18 +108,18 @@ if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 		
 						if($_POST['backup']=='1' && $backup) {
 							$destination_filepath = CC_ROOT_DIR.'/backup/'.rtrim($data['file_name'],'.zip').'_'.date("dMy-His").'.zip';
-							$zip2 = new ZipArchive();
-							if ($zip2->open($destination_filepath, ZipArchive::CREATE)===true) {
+							$zip_backup = new ZipArchive();
+							if ($zip_backup->open($destination_filepath, ZipArchive::CREATE)===true) {
 								chdir($destination);
 								$files = glob_recursive($backup);
 								foreach ($files as $file) {
 									if(is_dir($file)) {
-										$zip2->addEmptyDir($file);
+										$zip_backup->addEmptyDir($file);
 									} else {
-										$zip2->addFile($file);	
+										$zip_backup->addFile($file);	
 									}
 								}
-								$zip2->close();
+								$zip_backup->close();
 								if (file_exists($destination_filepath)) {
 									$GLOBALS['main']->setACPNotify($lang['module']['backup_created']);
 								} else {
