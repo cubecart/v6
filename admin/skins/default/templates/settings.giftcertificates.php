@@ -16,8 +16,8 @@
 	<div><label for="status">{$LANG.common.status}</label><span><select name="gc[status]" id="status" class="textbox">
 	  {foreach from=$OPT_STATUS item=option}<option value="{$option.value}" {$option.selected}>{$option.title}</option>{/foreach}
 	</select></span></div>
-	<div><label for="amount-min">{$LANG.settings.gc_value_min}</label><span><input type="text" name="gc[min]" id="amount-min" value="{$GC.min}" class="textbox number"></span></div>
-	<div><label for="amount-max">{$LANG.settings.gc_value_max}</label><span><input type="text" name="gc[max]" id="amount-max" value="{$GC.max}" class="textbox number"></span></div>
+	<div><label for="amount-min">{$LANG.settings.gc_value_min}</label><span><input type="text" name="gc[min]" id="amount-min" value="{$GC.min}" class="textbox number required"></span></div>
+	<div><label for="amount-max">{$LANG.settings.gc_value_max}</label><span><input type="text" name="gc[max]" id="amount-max" value="{$GC.max}" class="textbox number required"></span></div>
 	<div><label for="expires">{$LANG.settings.gc_expiry}</label><span><input type="text" name="gc[expires]" id="expires" value="{$GC.expires}" class="textbox number"> {$LANG.common.blank_for_no_expire}</span></div>
 	<div><label for="delivery">{$LANG.catalogue.delivery_method}</label><span><select name="gc[delivery]" id="delivery" class="textbox">
 	  {foreach from=$OPT_DELIVERY item=option}<option value="{$option.value}" {$option.selected}>{$option.title}</option>{/foreach}
