@@ -41,16 +41,13 @@ function crc_integrity_check($files, $mode = 'upgrade') {
 		}
 	}
 	if(count($errors)>0) {
-		$errors[] = '###';
-		$errors[] = 'Errors were found which may indicate that the source archive has not been extracted successfully';
-		if($mode=='upgrade') {
-			$errors[] = 'It is recomended that a manual upgrade is performed instead';	
-		} else {
-			$errors[] = 'It is recomended that a manua restore is performed';
-		}	
-		$error_data = "### START ".strtoupper($mode)." LOG - (".date("d M Y - H:i:s").")\r\n";
+		$errors[] = '--';
+		$errors[] = 'Errors were found which may indicate that the source archive has not been extracted successfully.';
+		$errors[] = 'It is recommended that a manual '.$mode.' is performed.';	
+			
+		$error_data = "### START ".strtoupper($mode)." LOG - (".date("d M Y - H:i:s").") ###\r\n";
 		$error_data .= implode("\r\n", $errors);
-		$error_data .=  "\r\n### END RESTORE LOG";
+		$error_data .=  "\r\n### END RESTORE LOG ###";
 
 		$fp = fopen($log_path, 'w');
 		fwrite($fp, $error_data);
@@ -382,7 +379,7 @@ if (isset($_GET['files_backup'])) {
 	if ($zip->open($destination, ZipArchive::CREATE)!==true) {
 		$GLOBALS['main']->setACPWarning("Error: Backup failed.");
 	} else {
-		$skip_folders = 'backup|cache|images/cache';
+		$skip_folders = 'backup|cache|images/cache|includes/extra/sess_';
 		if(isset($_POST['skip_images']) && $_POST['skip_images']=='1') {
 			$skip_folders .= '|images/source';
 		}
