@@ -105,7 +105,7 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 
 			$errors = crc_integrity_check($crc_check_list, 'restore');
 			
-			if ($errors!===false) {				
+			if ($errors!==false) {				
 				$GLOBALS['main']->setACPWarning($lang['maintain']['files_restore_fail']);
 				httpredir('?_g=maintenance&node=index#backup');
 			} else {
@@ -169,7 +169,7 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 
 				$errors = crc_integrity_check($crc_check_list, 'upgrade');
 				
-				if ($errors!===false) {
+				if ($errors!==false) {
 					$GLOBALS['main']->setACPWarning($lang['maintain']['files_upgrade_fail']);
 					httpredir('?_g=maintenance&node=index#upgrade');
 				} elseif ($_POST['force']) {
