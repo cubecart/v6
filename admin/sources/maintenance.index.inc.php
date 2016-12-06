@@ -24,11 +24,11 @@ function crc_integrity_check($files, $mode = 'upgrade') {
 
 	foreach ($files as $file => $value) {
 		if(!file_exists($file)) {
-			$errors[] = "$file - Missing but expected after extract.";
+			$errors[] = "$file - Missing but expected after extract";
 		} elseif (is_file($file)) {
 			## Open the source file
 			if (($v_file = fopen($file, "rb")) == 0) {
-				$errors[] = "$file - Unable to read in order to validate integrity.";
+				$errors[] = "$file - Unable to read in order to validate integrity";
 			}
 
 			## Read the file content
@@ -36,16 +36,17 @@ function crc_integrity_check($files, $mode = 'upgrade') {
 			fclose($v_file);
 
 			if(crc32($v_content) !== $value) {
-				$errors[] = "$file - File contents not as expected.";
+				$errors[] = "$file - Content after extract don't match source";
 			}
 		}
 	}
 	if(count($errors)>0) {
-		$errors[] = 'Errors were found which may indicate that the source archive has not been extracted successfully.';
+		$errors[] = '###';
+		$errors[] = 'Errors were found which may indicate that the source archive has not been extracted successfully';
 		if($mode=='upgrade') {
-			$errors[] = 'It is recomended that a manual upgrade is performed instead.';	
+			$errors[] = 'It is recomended that a manual upgrade is performed instead';	
 		} else {
-			$errors[] = 'It is recomended that a manua restore is performed.';
+			$errors[] = 'It is recomended that a manua restore is performed';
 		}	
 		$error_data = "### START ".strtoupper($mode)." LOG - (".date("d M Y - H:i:s").")\r\n";
 		$error_data .= implode("\r\n", $errors);
@@ -197,7 +198,10 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 
 if (isset($_GET['delete'])) {
 	$file = 'backup/'.basename($_GET['delete']);
-	if(file_exists($file) && preg_match('/^.*\.(sql|zip)$/i', $file)) {
+	if(in_array($_GET['delete'], array('restore_error_log','upgrade_error_log'))) {
+		unlink($file);
+		httpredir('?_g=maintenance&node=index#backup');
+	} else if(file_exists($file) && preg_match('/^.*\.(sql|zip)$/i', $file)) {
 		## Generic error message for logs delete specific for backup
 		$message = preg_match('/\_error_log$/', $file) ? $lang['filemanager']['notify_file_delete'] : $lang['maintain']['backup_deleted'];
 		$GLOBALS['main']->setACPWarning($message);
