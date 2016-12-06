@@ -843,6 +843,7 @@ class Cubecart {
 		$GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->catalogue['gift_certificates'], currentPage());
 		if (isset($_POST['gc'])) {
 			// Validate submitted data
+			$_POST['gc']['value'] = str_replace(',', '.', $_POST['gc']['value']);
 			$_POST['gc']['value'] = preg_replace('/[^0-9.]*/', '', $_POST['gc']['value']); // Strip off currency symbols etc...
 			if (!is_numeric($_POST['gc']['value'])) {
 				$GLOBALS['gui']->setError($GLOBALS['language']->catalogue['error_gc_value']);

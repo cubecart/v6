@@ -12,7 +12,7 @@
 <form id="gc_form" action="{$VAL_SELF}" method="post">
   <h2>{$LANG.catalogue.gift_certificates}</h2>
   <p>{$LANG_CERT_VALUES}</p>
-	<div class="row"><div class="small-12 large-8 columns"><label for="gc-value">{$LANG.common.value}</label><input type="text" name="gc[value]" id="gc-value" value="{$POST.value}" placeholder="{$LANG.common.value} {$LANG.form.required}" required></div></div>
+	<div class="row"><div class="small-12 large-8 columns"><label for="gc-value">{$LANG.common.value} ({$CONFIG.default_currency})</label><input type="text" name="gc[value]" id="gc-value" value="{$POST.value}" placeholder="{$LANG.common.value} {$LANG.form.required}" required></div></div>
 	<div class="row"><div class="small-12 large-8 columns">
 	  <label for="gc-method">{$LANG.catalogue.delivery_method}</label>
 		<select name="gc[method]" id="gc-method">
