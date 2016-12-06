@@ -150,51 +150,43 @@ class HookLoader {
 		if (file_exists($file['tmp_name'])) {
 			if ($file['size']>0) {
 				if (in_array($file['type'], array('application/x-zip', 'application/zip'))) {
-
-					require_once CC_INCLUDES_DIR.'lib/pclzip/pclzip.lib.php';
-
-					$archive = new PclZip($file['tmp_name']);
-					$extract  = $archive->extract(PCLZIP_OPT_PATH, CC_ROOT_DIR.'/cache');
-					if ($extract == 0) {
-						trigger_error("Error: ".$archive->errorInfo(true), E_USER_NOTICE);
+					$zip = new ZipArchive;
+					if ($zip->open($file['tmp_name']) === TRUE) {
+						$contents = $zip->getFromIndex(0);
 					} else {
-						$contents = file_get_contents($extract[0]['filename']);
-						if (is_array($extract)) {
-							foreach ($extract as $extracted) {
-								if (file_exists($extracted['filename'])) {
-									unlink($extracted['filename']);
-								}
-							}
-						}
+						trigger_error("Error: Failed to read zip file.", E_USER_NOTICE);
 					}
-
 				} else {
 					$contents = file_get_contents($file['tmp_name']);
 				}
-				try {
-					$xml   = new simpleXMLElement($contents);
-					foreach ($xml->snippets->snippet as $snippet) {
-						$record = array(
-							'author'  => $xml->info->author,
-							'enabled'  => $snippet->enabled,
-							'description' => $snippet->description,
-							'hook_trigger' => $snippet->hook_trigger,
-							'php_code'  => $snippet->php_code,
-							'version'  => $snippet->version,
-							'priority'  => $snippet->priority,
-						);
+				if(empty($contents)) {
+					trigger_error("Error: No content found for code snippet.", E_USER_NOTICE);	
+				} else {
+					try {
+						$xml   = new simpleXMLElement($contents);
+						foreach ($xml->snippets->snippet as $snippet) {
+							$record = array(
+								'author'  => $xml->info->author,
+								'enabled'  => $snippet->enabled,
+								'description' => $snippet->description,
+								'hook_trigger' => $snippet->hook_trigger,
+								'php_code'  => $snippet->php_code,
+								'version'  => $snippet->version,
+								'priority'  => $snippet->priority,
+							);
 
-						if ($GLOBALS['db']->select('CubeCart_code_snippet', array('snippet_id'), array('unique_id' => $snippet->unique_id))) {
-							$GLOBALS['db']->update('CubeCart_code_snippet', $record, array('unique_id' => $snippet->unique_id));
-						} else {
-							$record['unique_id'] = $snippet->unique_id;
-							$GLOBALS['db']->insert('CubeCart_code_snippet', $record);
+							if ($GLOBALS['db']->select('CubeCart_code_snippet', array('snippet_id'), array('unique_id' => $snippet->unique_id))) {
+								$GLOBALS['db']->update('CubeCart_code_snippet', $record, array('unique_id' => $snippet->unique_id));
+							} else {
+								$record['unique_id'] = $snippet->unique_id;
+								$GLOBALS['db']->insert('CubeCart_code_snippet', $record);
+							}
+							$this->delete_snippet_file($snippet->unique_id);
 						}
-						$this->delete_snippet_file($snippet->unique_id);
+						return true;
+					} catch (Exception $e) {
+						trigger_error("Error: Code snippet file does not contains valid XML.", E_USER_NOTICE);
 					}
-					return true;
-				} catch (Exception $e) {
-					trigger_error("Error: Code snippet file does not contains valid XML.", E_USER_NOTICE);
 				}
 			} else {
 				trigger_error("Error: Code snippet import failed as the file is ".$file['size']." bytes in size.", E_USER_NOTICE);

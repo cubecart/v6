@@ -68,8 +68,7 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 		if (preg_match('/\.sql.zip$/', $_GET['restore'])) { // unzip first
 			
 			$zip = new ZipArchive;
-			$result = $zip->open($file_path);
-			if ($result === TRUE) {
+			if ($zip->open($file_path) === TRUE) {
 				$contents = $zip->getFromName(rtrim($_GET['restore'], '.zip'));
     			$zip->close();
 			} else {
