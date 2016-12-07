@@ -87,7 +87,7 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 		
 		$handle = fopen($file_path,"r");
 		$import = false;
-		$GLOBALS['debug']->status(false);
+		$GLOBALS['debug']->status(false); // This prevents memory errors
 		if($handle) {
 			$sql = '';
 		    while(($buffer = fgets($handle)) !== false) {
@@ -96,7 +96,7 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 					if($GLOBALS['db']->parseSchema($sql)) {
 						$import = true;
 					}
-					$sql = '';		          
+					$sql = '';
 		        }
 		    }
 			fclose($handle);

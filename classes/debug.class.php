@@ -173,6 +173,9 @@ class Debug {
 	 * @return bool
 	 */
 	public function debugSQL($type, $message, $cache, $source) {
+		
+		if(!$this->_enabled) return false;
+
 		if (!is_null($type) && !is_null($message) && !empty($message)) {
 			
 			$tag = '';
