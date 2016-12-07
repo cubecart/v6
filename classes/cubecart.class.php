@@ -1606,7 +1606,8 @@ class Cubecart {
 				    		)
 				  		);
 				}
-
+				
+				$offset_matched = false;
 				foreach ($shipping as $ship_name => $methods) {
 					$label = (!is_numeric($ship_name) && !empty($ship_name)) ? str_replace('_', ' ', $ship_name) : null;
 					foreach ($methods as $data) {
@@ -1634,6 +1635,7 @@ class Cubecart {
 							'display' => (isset($data['name'])) ? $GLOBALS['tax']->priceFormat($data['value'], true).$data['name'] : $data['desc']
 						);
 						if (isset($this->_basket['shipping']) && $this->_basket['shipping']['offset'] == $offset) {
+							$offset_matched = true;
 							$option['selected'] = ' selected="selected"';
 							if ((string)$value['value'] !== (string)$this->_basket['shipping']['value']) {
 								$this->_basket['shipping'] = $value;
@@ -1650,7 +1652,7 @@ class Cubecart {
 
 				// Lets try to choose cheapest shipping option
 				// for them if they haven't chosen already
-				if (!isset($this->_basket['shipping']) && !$digital_only) {
+				if ((!isset($this->_basket['shipping']) && !$digital_only) || (!$offset_matched && isset($this->_basket['shipping']['offset']) && !$digital_only)) {
 					foreach ($shipping_values as $value) {
 						if (!isset($cheapest['value']) || $value['value'] < $cheapest['value']) {
 							$cheapest = $value;
@@ -1668,7 +1670,7 @@ class Cubecart {
 					if (isset($this->_basket['digital_only'])) unset($this->_basket['digital_only']); // Digital good removed fix
 				} else if ($digital_only) {
 						$GLOBALS['cart']->set('digital_only', true);
-					}
+				}
 			} else {
 				if ($digital_only || $GLOBALS['config']->get('config', 'allow_no_shipping')) {
 					$GLOBALS['cart']->set('shipping', 0);
