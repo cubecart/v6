@@ -63,27 +63,50 @@ $GLOBALS['smarty']->assign('VERSIONS', $version_history);
 
 if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 
-	ignore_user_abort(true);
-	set_time_limit(0);
+	//ignore_user_abort(true);
+	//set_time_limit(0);
+	ini_set("auto_detect_line_endings", true);
 
 	$file_path = CC_ROOT_DIR.'/backup/'.basename($_GET['restore']);
 
 	if (preg_match('/^database_full/', $_GET['restore'])) { // Restore database
+		$delete_source = false;	
 		if (preg_match('/\.sql.zip$/', $_GET['restore'])) { // unzip first
 			
 			$zip = new ZipArchive;
 			if ($zip->open($file_path) === TRUE) {
-				$contents = $zip->getFromName(rtrim($_GET['restore'], '.zip'));
+				$delete_source = true;
+				$file_path = rtrim($file_path, '.zip');
+				$zip->extractTo(CC_ROOT_DIR.'/backup');
     			$zip->close();
 			} else {
 				$GLOBALS['main']->setACPWarning("Error reading file ".$_GET['restore']);
 				httpredir('?_g=maintenance&node=index#backup');	
 			}
-		} else {
-			$contents = file_get_contents($file_path); 
+		}
+		
+		$handle = fopen($file_path,"r");
+		$import = false;
+		$GLOBALS['debug']->status(false);
+		if($handle) {
+			$sql = '';
+		    while(($buffer = fgets($handle)) !== false) {
+		        $sql .= $buffer;
+		        if(substr(trim($buffer),-4) === '#EOQ'){
+					if($GLOBALS['db']->parseSchema($sql)) {
+						$import = true;
+					}
+					$sql = '';		          
+		        }
+		    }
+			fclose($handle);
+		}
+		
+		if($delete_source) {
+			unlink($file_path);	
 		}
 
-		if (!empty($contents) && $GLOBALS['db']->parseSchema($contents)) {
+		if ($import) {
 			$GLOBALS['main']->setACPNotify($lang['maintain']['db_restored']);
 			$GLOBALS['cache']->clear();
 			httpredir('?_g=maintenance&node=index#backup');
