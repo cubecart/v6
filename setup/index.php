@@ -509,7 +509,7 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
     setcookie('delete_setup', true, time()+7200, '/');
     
     //Attempt admin file and folder rename
-    if(file_exists('../admin') || file_exists('../admin.php')) {
+    if(!isset($_SESSION['setup']['admin_rename']) && (file_exists('../admin') || file_exists('../admin.php'))) {
       $adminFolder = 'admin_'.randomString(6);
       $adminFile   = 'admin_'.randomString(6).'.php';
       $update_config = false;
@@ -530,6 +530,7 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
       }
 
       if($update_config) {
+        $_SESSION['setup']['admin_rename'] = true;
         foreach ($glob as $key => $value) {
           if($key=='adminFile') {
             $value = $adminFile;
