@@ -507,6 +507,14 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
     $GLOBALS['smarty']->assign('MODE_COMPLETE', true);
     // delete setup folder on admin login
     setcookie('delete_setup', true, time()+7200, '/');
+
+    // secure global files
+    $global_files = glob(CC_INCLUDES_DIR.'global.*.php');
+    if(is_array($global_files)) {
+      foreach($global_files as $global_file) {
+        chmod($global_file, 0444);
+      }
+    }
     
     //Attempt admin file and folder rename
     if(!isset($_SESSION['setup']['admin_rename']) && (file_exists('../admin') || file_exists('../admin.php'))) {
