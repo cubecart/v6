@@ -171,18 +171,18 @@ class GD {
 			$file = $this->_gdTargetDir.$filename;
 			imageinterlace($im, true);
 			switch ($this->_gdImageType) {
-			case IMAGETYPE_GIF:
-				$this->_gdImageSource = imagegif($im, $file);
-				break;
-			case IMAGETYPE_JPEG:
-				$this->_gdImageSource = imagejpeg($im, $file, $this->_gdJpegQuality);
-				break;
-			case IMAGETYPE_PNG:
-				imagesavealpha($im, true);
-				$this->_gdImageSource = imagepng($im, $file);
-				break;
-			default:
-				trigger_error(__METHOD__.' - Unknown file type', E_USER_NOTICE);
+				case IMAGETYPE_GIF:
+					$this->_gdImageSource = imagegif($im, $file);
+					break;
+				case IMAGETYPE_JPEG:
+					$this->_gdImageSource = imagejpeg($im, $file, $this->_gdJpegQuality);
+					break;
+				case IMAGETYPE_PNG:
+					imagesavealpha($im, true);
+					$this->_gdImageSource = imagepng($im, $file);
+					break;
+				default:
+					trigger_error(__METHOD__.' - Unknown file type', E_USER_NOTICE);
 				return false;
 			}
 			return true;
