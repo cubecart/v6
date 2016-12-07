@@ -63,8 +63,11 @@ $GLOBALS['smarty']->assign('VERSIONS', $version_history);
 
 if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 
-	//ignore_user_abort(true);
-	//set_time_limit(0);
+	// Prevent user stopping process
+	ignore_user_abort(true);
+	// Set max execution time to three minutes
+	set_time_limit(180);
+	// Make sure line endings can be detected
 	ini_set("auto_detect_line_endings", true);
 
 	$file_path = CC_ROOT_DIR.'/backup/'.basename($_GET['restore']);
@@ -394,8 +397,10 @@ if (!empty($_POST['database'])) {
 ########## Backup ##########
 if (isset($_GET['files_backup'])) {
 
+	// Prevent user stopping process
 	ignore_user_abort(true);
-	set_time_limit(0);
+	// Set max execution time to three minutes
+	set_time_limit(180);
 
 	$GLOBALS['cache']->clear(); // Clear cache to remove unimpoartant data to save space and possible errors
 	
@@ -450,8 +455,10 @@ if (isset($_GET['files_backup'])) {
 
 if (isset($_POST['backup'])) {
 
+	// Prevent user stopping process
 	ignore_user_abort(true);
-	set_time_limit(0);
+	// Set max execution time to three minutes
+	set_time_limit(180);
 
 	if (!$_POST['drop'] && !$_POST['structure'] && !$_POST['data']) {
 		$GLOBALS['main']->setACPWarning($lang['maintain']['error_db_backup_option']);
