@@ -61,6 +61,22 @@ $version_history = $GLOBALS['db']->select('CubeCart_history', false, false, "`ve
 
 $GLOBALS['smarty']->assign('VERSIONS', $version_history);
 
+
+if(isset($_GET['compress']) && !empty($_GET['compress'])) {
+	chdir(CC_ROOT_DIR.'/backup');
+	$file_path = CC_ROOT_DIR.'/backup/'.basename($_GET['compress']);
+	$zip = new ZipArchive;
+	
+	if (file_exists($file_path) && $zip->open($file_path.'.zip', ZipArchive::CREATE)==true) {
+		$zip->addFile($file_path);
+		$zip->close();
+		$GLOBALS['main']->setACPNotify(sprintf($lang['maintain']['file_compressed'], basename($file_path)));
+		httpredir('?_g=maintenance&node=index#backup');	
+	} else {
+		$GLOBALS['main']->setACPWarning("Error reading file ".basename($file_path));
+	}	
+}
+
 if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 
 	// Prevent user stopping process
@@ -230,7 +246,7 @@ if (isset($_GET['delete'])) {
 	} else if(file_exists($file) && preg_match('/^.*\.(sql|zip)$/i', $file)) {
 		## Generic error message for logs delete specific for backup
 		$message = preg_match('/\_error_log$/', $file) ? $lang['filemanager']['notify_file_delete'] : $lang['maintain']['backup_deleted'];
-		$GLOBALS['main']->setACPWarning($message);
+		$GLOBALS['main']->setACPNotify($message);
 		unlink($file);
 		httpredir('?_g=maintenance&node=index#backup');
 	}
@@ -523,12 +539,14 @@ if (count($files)>0) {
 
 	foreach ($sorted_files as $file) {
 		$filename = basename($file);
-		$type = (preg_match('/^database/', $filename)) ? 'database' : 'files';
-		$restore = (preg_match('/^database_full|files/', $filename)) ? '?_g=maintenance&node=index&restore='.$filename.'#backup' : false;
+		$type = preg_match('/^database/', $filename) ? 'database' : 'files';
+		$restore = preg_match('/^database_full|files/', $filename) ? '?_g=maintenance&node=index&restore='.$filename.'#backup' : false;
+		$compress = (preg_match('/.zip$/', $filename) || file_exists($file.'.zip')) ? false : '?_g=maintenance&node=index&compress='.$filename.'#backup';
 		$existing_backups[] = array('filename' => $filename,
 			'delete_link' => '?_g=maintenance&node=index&delete='.$filename.'#backup',
 			'download_link' => '?_g=maintenance&node=index&download='.$filename.'#backup',
 			'restore_link' => $restore,
+			'compress' =>  $compress,
 			'type' => $type,
 			'warning' => ($type=='database') ? $lang['maintain']['restore_db_confirm'] : $lang['maintain']['restore_files_confirm'],
 			'size' => formatBytes(filesize($file), true)

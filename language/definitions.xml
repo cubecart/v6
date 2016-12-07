@@ -1287,6 +1287,7 @@
     <string name="example_code_snippet_xml" introduced="5.2.0"><![CDATA[An example of an import XML feed can be found <a href="docs/examples/code_snippet_import.xml">here</a>. Please use the &quot;Help&quot; link for further information.]]></string>
   </group>
   <group name="maintain">
+    <string name="file_compressed" introduced="6.1.2"><![CDATA[%s compressed successfully.]]></string>
     <string name="latest_version_unknown" introduced="6.0.9"><![CDATA[Failed to look up latest version.]]></string>
     <string name="upgrade_history" introduced="6.0.7"><![CDATA[Upgrade History]]></string>
     <string name="truncate_seo_custom" introduced="6.0.0"><![CDATA[Clear all custom defined SEO URL's]]></string>

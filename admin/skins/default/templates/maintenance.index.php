@@ -107,6 +107,9 @@
 	    {if $backup.restore_link}
 	    <a href="{$backup.restore_link}" class="delete" title="{$backup.warning}"><i class="fa fa-refresh" title="{$LANG.common.restore}"></i></a>
 	    {/if}
+	    {if $backup.compress}
+	    <a href="{$backup.compress}"><i class="fa fa-compress" title="{$LANG.common.compress_file}"></i></a>
+	    {/if}
 	    <a href="{$backup.download_link}"><i class="fa fa-download" title="{$LANG.common.download}"></i></a>
 	    <a href="{$backup.delete_link}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 	  </span>

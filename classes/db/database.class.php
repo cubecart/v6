@@ -662,7 +662,7 @@ class Database_Contoller {
 	 * @param bool $incRows
 	 * @return false
 	 */
-	public function sqldumptable($file_name, $tableData, $dropTables = false, $incStructure = true, $incRows = true, $maxRows = 25, $page = 1) {
+	public function sqldumptable($file_name, $tableData, $dropTables = false, $incStructure = true, $incRows = true, $maxRows = 50, $page = 1) {
 		
 		$fp = fopen($file_name, 'a+');
 		$tabledump = '';
