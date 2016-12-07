@@ -62,6 +62,10 @@ $version_history = $GLOBALS['db']->select('CubeCart_history', false, false, "`ve
 $GLOBALS['smarty']->assign('VERSIONS', $version_history);
 
 if (isset($_GET['restore']) && !empty($_GET['restore'])) {
+
+	ignore_user_abort(true);
+	set_time_limit(0);
+
 	$file_path = CC_ROOT_DIR.'/backup/'.basename($_GET['restore']);
 
 	if (preg_match('/^database_full/', $_GET['restore'])) { // Restore database
@@ -367,6 +371,9 @@ if (!empty($_POST['database'])) {
 ########## Backup ##########
 if (isset($_GET['files_backup'])) {
 
+	ignore_user_abort(true);
+	set_time_limit(0);
+
 	$GLOBALS['cache']->clear(); // Clear cache to remove unimpoartant data to save space and possible errors
 	
 	chdir(CC_ROOT_DIR);
@@ -419,6 +426,10 @@ if (isset($_GET['files_backup'])) {
 }
 
 if (isset($_POST['backup'])) {
+
+	ignore_user_abort(true);
+	set_time_limit(0);
+
 	if (!$_POST['drop'] && !$_POST['structure'] && !$_POST['data']) {
 		$GLOBALS['main']->setACPWarning($lang['maintain']['error_db_backup_option']);
 	} else {
@@ -428,6 +439,9 @@ if (isset($_POST['backup'])) {
 			$full = ($_POST['drop'] && $_POST['structure'] && $_POST['data']) ? '_full' : ''; 
 			chdir(CC_ROOT_DIR.'/backup');
 			$fileName 	= 'database'.$full.'_'.CC_VERSION.'_'.$glob['dbdatabase']."_".date("dMy-His").'.sql';
+			if(file_exists($fileName)) { // Keep file pointer at the start
+				unlink($fileName);	
+			}
 			$all_tables = (isset($_POST['db_3rdparty']) && $_POST['db_3rdparty'] == '1') ? true : false;
 			$write = $GLOBALS['db']->doSQLBackup($_POST['drop'],$_POST['structure'],$_POST['data'], $fileName, $_POST['compress'], $all_tables);
 			if($write) {

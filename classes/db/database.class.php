@@ -209,15 +209,19 @@ class Database_Contoller {
 	 * @return string
 	 */
 	public function doSQLBackup($dropTables = false, $incStructure = true, $incRows = true, $file_name, $compress = false, $all_tables = false) {
-		$data = "-- --------------------------------------------------------\n-- CubeCart SQL Dump\n-- version ".CC_VERSION."\n-- http://www.cubecart.com\n-- \n-- Host: ".$GLOBALS['config']->get('config', 'dbhost')."\n-- Generation Time: ".strftime($GLOBALS['config']->get('config', 'time_format'), time())."\n-- Server version: ".$this->serverVersion()."\n-- PHP Version: ".phpversion()."\n-- \n-- Database: `".$GLOBALS['config']->get('config', 'dbdatabase')."`\n";
+		$open_text = "-- --------------------------------------------------------\n-- CubeCart SQL Dump\n-- version ".CC_VERSION."\n-- http://www.cubecart.com\n-- \n-- Host: ".$GLOBALS['config']->get('config', 'dbhost')."\n-- Generation Time: ".strftime($GLOBALS['config']->get('config', 'time_format'), time())."\n-- Server version: ".$this->serverVersion()."\n-- PHP Version: ".phpversion()."\n-- \n-- Database: `".$GLOBALS['config']->get('config', 'dbdatabase')."`\n";
+		
+		$fp = fopen($file_name, 'w');
+		fwrite($fp, $open_text);
+		fclose($fp);
+
 		$tables = $this->getRows(false, 'CubeCart_' ,$all_tables);
 
-		$fp = fopen($file_name, 'w');
-
 		foreach($tables as $table){
-			set_time_limit(200);
-			$this->sqldumptable($fp, $table, $dropTables, $incStructure, $incRows);
+			$this->sqldumptable($file_name, $table, $dropTables, $incStructure, $incRows);
 		}
+		
+		$fp = fopen($file_name, 'a+');
 		$close_text = "-- --------------------------------------------------------\n-- CubeCart SQL Dump Complete\n-- --------------------------------------------------------";
 		fwrite($fp, $close_text);
 		fclose($fp);
@@ -656,39 +660,50 @@ class Database_Contoller {
 	 * @param bool $dropTables
 	 * @param bool $incStructure
 	 * @param bool $incRows
-	 * @return string
+	 * @return false
 	 */
-	public function sqldumptable($fp, $tableData, $dropTables = false, $incStructure = true, $incRows = true) {
+	public function sqldumptable($file_name, $tableData, $dropTables = false, $incStructure = true, $incRows = true, $maxRows = 25, $page = 1) {
+		
+		$fp = fopen($file_name, 'a+');
 		$tabledump = '';
-		if ($dropTables) {
+		if ($dropTables && $page===1) {
 			fwrite($fp, "-- --------------------------------------------------------\n\nDROP TABLE IF EXISTS `".$tableData['Name']."`; #EOQ\n\n");
 		}
-		if ($incStructure) {
-			$schema		= $this->query('SHOW CREATE TABLE `'.$tableData['Name'].'`');
+		if ($incStructure && $page===1) {
+			$schema	= $this->query('SHOW CREATE TABLE `'.$tableData['Name'].'`');
 			fwrite($fp, "-- --------------------------------------------------------\n\n-- \n-- Table structure for table `".$tableData['Name']."`\n--\n\n");
 			fwrite($fp, $schema[0]['Create Table']); 
 			fwrite($fp, "; #EOQ\n\n");
 		}
 		if ($incRows) {
 			## get data
-			$this->_query = "SELECT * FROM ".$tableData['Name'];
+			$limit = $page>0 ? "LIMIT $maxRows OFFSET ".($page - 1) * $maxRows : "LIMIT $maxRows";
+
+			$this->_query = "SELECT * FROM ".$tableData['Name']." ".$limit;
 			$this->_execute(false);
-			$rows = $this->_result;
-			if($rows) {
-				fwrite($fp, "--\n-- Dumping data for table `".$tableData['Name']."`\n--\n\n");
-				foreach($rows as $row) {
-				fwrite($fp, "INSERT INTO `".$tableData['Name']."` VALUES(");
-				## get each field's data
-				$comma = false;
-					foreach($row as $key => $value) {
-						fwrite($fp, $comma ? ', ' : '');
-						fwrite($fp, $this->sqlSafe($value,true));
-						$comma = true;
-					}
-				fwrite($fp, "); #EOQ\n");
+			
+			if($this->_result) {
+				if($page===1) {
+					fwrite($fp, "--\n-- Dumping data for table `".$tableData['Name']."`\n--\n\n");
 				}
-			} else {
+				foreach($this->_result as $row) {
+					fwrite($fp, "INSERT INTO `".$tableData['Name']."` VALUES(");
+					## get each field's data
+					$comma = false;
+						foreach($row as $key => $value) {
+							fwrite($fp, $comma ? ', ' : '');
+							fwrite($fp, $this->sqlSafe($value,true));
+							$comma = true;
+					}
+					fwrite($fp, "); #EOQ\n");
+				}
+				fclose($fp);
+				$page++;
+				$this->sqldumptable($file_name, $tableData, $dropTables, $incStructure, $incRows, $maxRows, $page);
+				
+			} elseif($page===1) {
 				fwrite($fp, "-- Table `".$tableData['Name']."` has no data\n\n");
+				fclose($fp);
 			}
 		}
 		return false;
