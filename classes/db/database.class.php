@@ -690,10 +690,10 @@ class Database_Contoller {
 					fwrite($fp, "INSERT INTO `".$tableData['Name']."` VALUES(");
 					## get each field's data
 					$comma = false;
-						foreach($row as $key => $value) {
-							fwrite($fp, $comma ? ', ' : '');
-							fwrite($fp, $this->sqlSafe($value,true));
-							$comma = true;
+					foreach($row as $key => $value) {
+						fwrite($fp, $comma ? ', ' : '');
+						fwrite($fp, $this->sqlSafe($value, true));
+						$comma = true;
 					}
 					fwrite($fp, "); #EOQ\n");
 				}

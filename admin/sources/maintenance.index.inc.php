@@ -64,7 +64,7 @@ $GLOBALS['smarty']->assign('VERSIONS', $version_history);
 
 if(isset($_GET['compress']) && !empty($_GET['compress'])) {
 	chdir(CC_ROOT_DIR.'/backup');
-	$file_path = CC_ROOT_DIR.'/backup/'.basename($_GET['compress']);
+	$file_path = './'.basename($_GET['compress']);
 	$zip = new ZipArchive;
 	
 	if (file_exists($file_path) && $zip->open($file_path.'.zip', ZipArchive::CREATE)==true) {
