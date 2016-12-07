@@ -94,8 +94,10 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 			
 			$zip = new ZipArchive;
 			if ($zip->open($file_path) === TRUE) {
-				$delete_source = true;
+
 				$file_path = rtrim($file_path, '.zip');
+				// Only delete if it diesn't exist before
+				$delete_source = file_exists($file_path) ? false : true;
 				$zip->extractTo(CC_ROOT_DIR.'/backup');
     			$zip->close();
 			} else {
@@ -245,7 +247,7 @@ if (isset($_GET['delete'])) {
 		httpredir('?_g=maintenance&node=index#backup');
 	} else if(file_exists($file) && preg_match('/^.*\.(sql|zip)$/i', $file)) {
 		## Generic error message for logs delete specific for backup
-		$message = preg_match('/\_error_log$/', $file) ? $lang['filemanager']['notify_file_delete'] : $lang['maintain']['backup_deleted'];
+		$message = preg_match('/\_error_log$/', $file) ? $lang['filemanager']['notify_file_delete'] : sprintf($lang['maintain']['backup_deleted'], basename($file));
 		$GLOBALS['main']->setACPNotify($message);
 		unlink($file);
 		httpredir('?_g=maintenance&node=index#backup');

@@ -1314,7 +1314,7 @@
     <string name="files_restore_success" introduced="5.1.0"><![CDATA[Files have been restored successfully.]]></string>
     <string name="files_upgrade_fail" introduced="5.1.0"><![CDATA[Upgrade file extraction failed. Please upload the files with an FTP client and then run the setup script.]]></string>
     <string name="files_upgrade_download_fail" introduced="5.1.0"><![CDATA[Failed to download latest version. Please attempt manual upgrade.]]></string>
-    <string name="backup_deleted" introduced="5.1.0"><![CDATA[Backup deleted.]]></string>
+    <string name="backup_deleted" introduced="5.1.0"><![CDATA[%s deleted.]]></string>
     <string name="db_backup_complete" introduced="5.1.0"><![CDATA[Database backup complete.]]></string>
     <string name="db_backup_desc" introduced="5.1.0"><![CDATA[Choose if you want to include the structure and/or data and click backup to create an export of your database. Please note that it is only possible to restore the database if every option is selected aside from compression.]]></string>
     <string name="db_compress_fail" introduced="6.1.0"><![CDATA[It hasn't been possible to compress the SQL backup. Please find uncompressed SQL file instead.]]></string>
