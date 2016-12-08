@@ -635,6 +635,24 @@ div.pagination {
 div.pagination span {
     float: right
 }
+#advanced dl {
+    margin: 0;
+}
+#advanced dt, #advanced dd {
+    float: left;
+    margin: 0;
+}
+#advanced dt {
+    clear:both;
+    width: 20%;
+    text-indent: 5px;
+}
+#advanced dd {
+    width: 80%;
+}
+#advanced  dt:nth-of-type(even), #specs dd:nth-of-type(even), #advanced  dd:nth-of-type(even), #specs dt:nth-of-type(even) {
+    background-color: #edf4f7
+}
 form.note p {
     font-weight: bold;
 }
@@ -781,12 +799,6 @@ input.search {
 .dashboard_content li {
     list-style: none
 }
-dl>dt {
-    font-weight: 700
-}
-dl>dd {
-    margin-left: 15px
-}
 .courier {
     font-family: "Courier New", Courier, monospace
 }
@@ -915,9 +927,6 @@ a.handle {
 }
 #newsletter_send {
     text-align: center
-}
-dl {
-    margin: 3px 0
 }
 .received,
 .request,

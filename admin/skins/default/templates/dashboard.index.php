@@ -306,10 +306,12 @@
          <dl>
             <dt>{$LANG.dashboard.inv_customers}</dt>
             <dd>{$COUNT.customers}</dd>
-            <dt>{$LANG.dashboard.inv_products}</dt>
-            <dd>{$COUNT.products}</dd>
             <dt>{$LANG.dashboard.inv_orders}</dt>
             <dd>{$COUNT.orders}</dd>
+            <dt>{$LANG.dashboard.inv_products}</dt>
+            <dd>{$COUNT.products}</dd>
+            <dt>{$LANG.settings.title_category}</dt>
+            <dd>{$COUNT.categories}</dd>
          </dl>
       </fieldset>
       <fieldset>

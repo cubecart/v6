@@ -367,9 +367,10 @@ if ($GLOBALS['config']->has('config', 'default_rss_feed') && !$GLOBALS['config']
 $GLOBALS['main']->addTabControl($lang['dashboard']['title_store_overview'], 'advanced');
 
 $count = array(
-	'products' => (int)$GLOBALS['db']->count('CubeCart_inventory', 'product_id'),
-	'orders' => (int)$GLOBALS['db']->count('CubeCart_order_summary', 'cart_order_id'),
-	'customers' => (int)$GLOBALS['db']->count('CubeCart_customer', 'customer_id'),
+	'products' => number_format((int)$GLOBALS['db']->count('CubeCart_inventory', 'product_id')),
+	'categories' => number_format((int)$GLOBALS['db']->count('CubeCart_category', 'cat_id')),
+	'orders' => number_format((int)$GLOBALS['db']->count('CubeCart_order_summary', 'cart_order_id')),
+	'customers' => number_format((int)$GLOBALS['db']->count('CubeCart_customer', 'customer_id'))
 );
 
 $tmp1 = 0;
