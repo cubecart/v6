@@ -444,7 +444,7 @@ if (isset($_GET['action'])) {
 		$GLOBALS['main']->addTabControl($lang['common']['notes'], 'order_notes', null, null, $no_notes);
 		if ($notes) {
 			foreach ($notes as $note) {
-				$note['time']  = formatTime($note['time'], false, true);
+				$note['time']  = formatTime($note['time']);
 				$note['author']  = $author[$note['admin_id']];
 				$note['delete']  = currentPage(array('print_hash'), array('delete-note' => $note['note_id']));
 				$note['content'] = strip_tags($note['content']);
