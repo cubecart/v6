@@ -333,7 +333,7 @@ function detectGD() {
  * @return float
  */
 function dirsize($path, &$total) {
-	$path	= (substr($path, -1, 1) == '/') ? $path : $path.'/';
+	$path .= (substr($path, -1) == DIRECTORY_SEPARATOR) ? '' : DIRECTORY_SEPARATOR;
 	if (($files = glob($path.'*')) !== false) {
 		foreach ($files as $file) {
 			if (is_dir($file)) {
@@ -354,7 +354,7 @@ function dirsize($path, &$total) {
  * @param bool $recursive
  */
 function findFiles(&$list, $path = false, $recursive = true) {
-	$path .= (substr($path, -1) == '/') ? '' : '/';
+	$path .= (substr($path, -1) == DIRECTORY_SEPARATOR) ? '' : DIRECTORY_SEPARATOR;
 	if (file_exists($path)) {
 		$files	= glob($path.'*', GLOB_MARK);
 		foreach ($files as $file) {
