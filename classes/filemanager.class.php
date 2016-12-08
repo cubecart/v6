@@ -985,17 +985,23 @@ class FileManager {
 						'md5hash' => md5_file($file['tmp_name']),
 					);
 
-					if ($GLOBALS['db']->insert('CubeCart_filemanager', $record)) {
-						$insert_id = $GLOBALS['db']->insertid();
-						$file_id[] = $insert_id;
-						$this->_recently_uploaded[$insert_id] = '1';
-						
-						if(isset($_GET['product_id']) && $_GET['product_id']>0) {
-							$this->_assignProduct((int)$_GET['product_id'], $insert_id);
-						}
-						move_uploaded_file($file['tmp_name'], $target);
-						chmod($target, chmod_writable());
+					$existing = $GLOBALS['db']->select('CubeCart_filemanager','file_id', array('filepath' => $filepath_record, 'filename' => $newfilename));
+					if($existing!==false && (int)$existing[0]['file_id']>0) {
+						$GLOBALS['db']->update('CubeCart_filemanager', $record, array('file_id' => $existing[0]['file_id']));
+						$fid = $existing[0]['file_id'];
+					} else {
+						$GLOBALS['db']->insert('CubeCart_filemanager', $record);
+						$fid = $GLOBALS['db']->insertid();
 					}
+					
+					$file_id[] = $fid;
+					$this->_recently_uploaded[$fid] = '1';
+					
+					if(isset($_GET['product_id']) && $_GET['product_id']>0) {
+						$this->_assignProduct((int)$_GET['product_id'], $fid);
+					}
+					move_uploaded_file($file['tmp_name'], $target);
+					chmod($target, chmod_writable());
 				}
 			}
 			if(isset($_GET['product_id'])) {

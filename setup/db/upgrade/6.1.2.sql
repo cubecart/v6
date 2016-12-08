@@ -4,3 +4,5 @@ ALTER TABLE `CubeCart_category_language` DROP INDEX `id`, ADD PRIMARY KEY (`tran
 ALTER TABLE `CubeCart_downloads` DROP INDEX `id`, ADD PRIMARY KEY (`digital_id`) USING BTREE;
 ALTER TABLE `CubeCart_inventory_language` DROP INDEX `id`, ADD PRIMARY KEY (`translation_id`) USING BTREE; #EOQ
 ALTER TABLE `CubeCart_modules` DROP INDEX `module_id`, ADD PRIMARY KEY (`module_id`) USING BTREE; #EOQ
+ALTER TABLE `CubeCart_filemanager` ADD INDEX(`filepath`); #EOQ
+ALTER TABLE `CubeCart_filemanager` ADD INDEX(`filename`); #EOQ
