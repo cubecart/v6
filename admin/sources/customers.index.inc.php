@@ -457,7 +457,7 @@ if (isset($_GET['action']) && Admin::getInstance()->permissions('customers', CC_
 			$customer['signinas_url'] = currentPage(array('page'), array('action' => 'signinas', 'customer_id' => $customer['customer_id']));
 			$customer['signinas_name'] = sprintf($lang['customer']['signinas'],$customer['first_name'],$customer['last_name']);
 			$customer['edit'] = currentPage(array('page'), array('action' => 'edit', 'customer_id' => $customer['customer_id']));
-			$customer['delete'] = currentPage(array('page'), array('action' => 'delete', 'customer_id' => $customer['customer_id']));
+			$customer['delete'] = currentPage(false, array('action' => 'delete', 'customer_id' => $customer['customer_id']));
 			$group_membership = $GLOBALS['db']->misc('SELECT `group_name` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_customer_membership` AS M INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_customer_group` AS G WHERE G.`group_id` = M.`group_id` AND M.`customer_id` = '.$customer['customer_id'].';');
 			if (is_array($group_membership)) {
 				foreach ($group_membership as $membership) {
