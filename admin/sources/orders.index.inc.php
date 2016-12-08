@@ -153,6 +153,7 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
 			'admin_id'  => Admin::getInstance()->get('admin_id'),
 			'cart_order_id' => $order_id,
 			'content'  => strip_tags($_POST['note']),
+			'time'  => time()
 		);
 		if ($GLOBALS['db']->insert('CubeCart_order_notes', $note)) {
 			$notes_added = true;
@@ -443,7 +444,7 @@ if (isset($_GET['action'])) {
 		$GLOBALS['main']->addTabControl($lang['common']['notes'], 'order_notes', null, null, $no_notes);
 		if ($notes) {
 			foreach ($notes as $note) {
-				$note['time']  = formatTime(strtotime($note['time']), false, true);
+				$note['time']  = formatTime($note['time'], false, true);
 				$note['author']  = $author[$note['admin_id']];
 				$note['delete']  = currentPage(array('print_hash'), array('delete-note' => $note['note_id']));
 				$note['content'] = strip_tags($note['content']);

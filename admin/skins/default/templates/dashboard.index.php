@@ -136,7 +136,7 @@
                <td nowrap="nowrap">{$LANG.common.status}</td>
                <td>{$LANG.common.date}</td>
                <td>{$LANG.basket.total}</td>
-               <td>&nbsp;</td>
+               <td width="70">&nbsp;</td>
             </tr>
          </thead>
          <tbody>
@@ -161,13 +161,14 @@
                <td>{$order.status}</td>
                <td>{$order.date}</td>
                <td>{$order.total}</td>
-               <td>
+               <td align="right">
+                  {if isset($order.notes)}
+                  <a href="?_g=orders&action=edit&order_id={$order.cart_order_id}&source=dashboard#order_notes" title="{foreach $order.notes as $note}{$note.time} {$note.content}{"\r\n"}{/foreach}"><i class="fa fa-sticky-note" title="{$LANG.common.notes}" aria-hidden="true"></i></a>
+                  {/if}
                   <a href="{$order.link_print}" class="print" target="_blank" title="{$LANG.common.print}"><i class="fa fa-print" title="{$LANG.common.print}"></i></a>
                   <a href="?_g=orders&action=edit&order_id={$order.cart_order_id}&source=dashboard" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
                   <a href="?_g=orders&delete={$order.cart_order_id}&source=dashboard" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
-                  {if isset($order.notes)}
-                  <a href="?_g=orders&action=edit&order_id={$order.cart_order_id}&source=dashboard#order_notes" title="{foreach $order.notes as $note}{$note.time} {$note.content}{"\r\n"}{/foreach}"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/note.png" alt="{$LANG.common.notes}"></a>
-                  {/if}
+                  
                </td>
             </tr>
             {/foreach}

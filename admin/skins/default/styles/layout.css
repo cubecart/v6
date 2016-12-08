@@ -1069,3 +1069,6 @@ ul.quick_links li#help_menu ul li:not(:last-child) {
 .MultiFile-list {
     margin: 10px 0 0 0; 
 }
+.fa-sticky-note {
+    color: #f4db6c;
+}

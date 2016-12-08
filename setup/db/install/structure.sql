@@ -627,11 +627,11 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_inventory` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_order_notes` (
-	`note_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	`admin_id` INT UNSIGNED NOT NULL,
-	`cart_order_id` VARCHAR(18) NOT NULL,
-	`time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`content` TEXT NOT NULL,
+	`note_id` int(10) UNSIGNED NOT NULL,
+	`admin_id` int(10) UNSIGNED NOT NULL,
+	`cart_order_id` varchar(18) COLLATE utf8_unicode_ci NOT NULL,
+	`time` int(11) UNSIGNED NOT NULL,
+	`content` text COLLATE utf8_unicode_ci NOT NULL,
 	PRIMARY KEY (`note_id`),
 	KEY `admin_id` (`admin_id`,`cart_order_id`,`time`),
 	FULLTEXT KEY `content` (`content`)

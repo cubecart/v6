@@ -97,7 +97,7 @@ class Order {
 		if (!empty($order_id) && !empty($note)) {
 			$record = array(
 				'cart_order_id' => $order_id,
-				'time'   => date('Y-m-d H:i:s'),
+				'time'   => time(),
 				'content'  => $note
 			);
 			// Check for duplicates...
