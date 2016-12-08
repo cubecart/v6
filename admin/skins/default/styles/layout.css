@@ -635,40 +635,44 @@ div.pagination {
 div.pagination span {
     float: right
 }
+form.note p {
+    font-weight: bold;
+}
 .note {
     padding: 5px;
     background-color: #fffbf2;
     border: 1px solid #ffe6b8;
     -moz-border-radius: 6px;
     -webkit-border-radius: 6px;
-    font-family: 'Open Sans', sans-serif;
     font-size: 12px;
     z-index: 50;
     margin-bottom: 5px
 }
 .note p {
-    background: url(../images/note.png) left 4px no-repeat;
     border-bottom: 1px solid #ffe6b8;
     font-size: 12px;
     margin: 0 0 4px;
-    padding: 4px 0 10px 20px
+    padding: 5px 0px;
 }
 .note textarea {
     border: 0;
     background-color: #fffbf2;
     width: 99%;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 10px;
+    font-size: 12px;
     padding: 5px;
     height: 60px;
-    overflow: auto
+    overflow: auto;
+    color: #555;
+}
+.note textarea:focus {
+    outline: none;
 }
 .note input[type=submit] {
     background: #e88e22;
-    border: 1px solid #ffe6b8;
+    border: none;
     color: #fff;
-    font-family: 'Open Sans', sans-serif;
-    height: auto!important
+    text-shadow: none;
+    padding: 3px !important;
 }
 .review {
     border-top: 1px dotted #999;
@@ -1070,5 +1074,5 @@ ul.quick_links li#help_menu ul li:not(:last-child) {
     margin: 10px 0 0 0; 
 }
 .fa-sticky-note {
-    color: #f4db6c;
+    color: #ffe6b8;
 }

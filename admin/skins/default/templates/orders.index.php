@@ -446,7 +446,7 @@
             <span class="actions">
             <a href="{$note.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
             </span>
-            <div class="note-header">{if !empty($note.author)}{$LANG.dashboard.note_by} {$note.author} - {/if}{$note.time}</div>
+            <p class="note-header"><i class="fa fa-sticky-note" title="{$LANG.common.notes}" aria-hidden="true"></i> {if !empty($note.author)}{$LANG.dashboard.note_by} {$note.author} - {/if}{$note.time}</p>
             {$note.content|nl2br}
          </div>
          {/foreach}

@@ -103,7 +103,7 @@
       <div>
          <form class="note" action="?" method="post">
             <span class="actions"><input type="submit" value="{$LANG.common.save}" name="notes" class="mini_button"></span>
-            <p>{$LANG.dashboard.title_my_notes}</p>
+            <p><i class="fa fa-sticky-note" title="{$LANG.common.notes}" aria-hidden="true"></i> {$LANG.dashboard.title_my_notes}</p>
             <textarea name="notes[dashboard_notes]">{$DASH_NOTES}</textarea>
             <input type="hidden" name="token" value="{$SESSION_TOKEN}">
          </form>
