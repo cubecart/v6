@@ -819,11 +819,18 @@ class Order {
 		$accesskey = md5($this->_order_id.$product_id.date('cZ@u').mt_rand());
 
 		$expire = ($GLOBALS['config']->get('config', 'download_expire')>0) ? time() + $GLOBALS['config']->get('config', 'download_expire') : 0;
-
+		
+		if(isset($this->_order_summary['customer_id']) && $this->_order_summary['customer_id']>0) {
+			$customer_id = $this->_order_summary['customer_id'];
+		} elseif(isset($GLOBALS['cart']->basket['customer']['customer_id']) && $GLOBALS['cart']->basket['customer']['customer_id'] > 0) {
+			$customer_id = $GLOBALS['cart']->basket['customer']['customer_id'];
+		} else {
+			$customer_id = $GLOBALS['user']->getId();
+		}
 		$record		= array(
-			'cart_order_id' => (isset($this->_order_summary['cart_order_id'])) ? $this->_order_summary['cart_order_id'] : $this->_order_id , // $this->_order_id,
+			'cart_order_id' => (isset($this->_order_summary['cart_order_id'])) ? $this->_order_summary['cart_order_id'] : $this->_order_id,
 			'order_inv_id'	=> $order_inv_id,
-			'customer_id' => (isset($this->_order_summary['customer_id'])) ? $this->_order_summary['customer_id'] : $GLOBALS['user']->getId(), // $GLOBALS['user']->getId(),
+			'customer_id' 	=> $customer_id,
 			'product_id'	=> (int)$product_id,
 			'expire'		=> $expire,
 			'accesskey'		=> $accesskey,
