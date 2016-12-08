@@ -1428,7 +1428,7 @@ class Catalogue {
 			}
 			$product['review_score'] = round($score/$count, 1);
 			if (!$product_view) {
-				$link = currentPage(array('_a', 'cat_id'), null, false).'_a=product&product_id='.$product['product_id'].'#reviews';
+				$GLOBALS['seo']->buildURL('prod', $product['product_id'], '&') . '#reviews';
 			} else {
 				$link = '#reviews';
 			}
