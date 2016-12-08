@@ -672,7 +672,8 @@ form.note p {
     border: none;
     color: #fff;
     text-shadow: none;
-    padding: 3px !important;
+    padding: 3px 9px !important;
+    font-size: 12px !important;
 }
 .review {
     border-top: 1px dotted #999;
