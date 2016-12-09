@@ -85,6 +85,11 @@
          <label for="login-password" class="show-for-medium-up">{$LANG.account.password}</label><input type="password" name="password" id="login-password" placeholder="{$LANG.account.password} {$LANG.form.required}" autocomplete="current-password" required disabled>
       </div>
    </div>
+   <div class="row">
+      <div class="small-12 columns">
+         <p><a href="{$STORE_URL}/index.php?_a=recover">{$LANG.account.forgotten_password}</a></p>
+      </div>
+   </div>
 </div>
 <div id="checkout_register_form"{if !empty($BILLING.line1)} class="hide"{/if}>
    <h2>{$LANG.account.your_details}</h2>
