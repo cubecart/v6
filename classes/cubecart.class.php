@@ -90,24 +90,12 @@ class Cubecart {
 
 		$products = array();
 
-		$where = $GLOBALS['catalogue']->outOfStockWhere(array('status' => '1', 'latest' => '1'));
+		$where = $GLOBALS['catalogue']->outOfStockWhere(array('I.status' => '1', 'I.latest' => '1'));
 
 		if ($GLOBALS['config']->get('config', 'catalogue_latest_products')) {
-			$latestProducts = $GLOBALS['db']->select('CubeCart_inventory', false, $where, array('date_added' => 'DESC', 'product_id' => 'DESC'), (int)$GLOBALS['config']->get('config', 'catalogue_latest_products_count'));
+			$latestProducts = $GLOBALS['db']->select('CubeCart_inventory AS I JOIN CubeCart_category AS C ON C.cat_id=I.cat_id AND C.`status`=1', 'I.*', $where, array('I.date_added' => 'DESC', 'I.product_id' => 'DESC'), (int)$GLOBALS['config']->get('config', 'catalogue_latest_products_count'));
 			if ($latestProducts) {
 				foreach ($latestProducts as $product) {
-					$category_data = $GLOBALS['catalogue']->getCategoryStatusByProductID($product['product_id']);
-					$category_status = false;
-					if (is_array($category_data)) {
-						foreach ($category_data as $trash => $data) {
-							if ($data['status'] == 1) {
-								$category_status = true;
-							}
-						}
-					}
-					if (!$category_status) {
-						continue;
-					}
 					// Product Translation
 					$GLOBALS['language']->translateProduct($product);
 					$product['image'] = $GLOBALS['gui']->getProductImage($product['product_id'], 'small');
