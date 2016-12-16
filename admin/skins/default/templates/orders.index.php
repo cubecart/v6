@@ -365,7 +365,7 @@
                      <input type="text" rel="price" class="textbox number-right lineprice">
                   </td>
                   <td><input type="text" rel="line_price" class="textbox number-right subtotal"></td>
-                  <td align="center"><span class="action"><a href="#" class="remove dynamic" title="{$LANG.common.decision_remove}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
+                  <td align="center" class="action"><a href="#" class="remove dynamic" title="{$LANG.common.decision_remove}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
                </tr>
                <tr>
                   <th colspan="3">{$LANG.basket.total_sub}</th>
