@@ -1555,6 +1555,7 @@
     <string name="cookie_dialogue" introduced="5.0.0"><![CDATA[&quot;%s&quot; uses cookies to improve its website. For more details and how to manage cookies, please see our privacy policy.]]></string>
     <string name="cookie_dialogue_declaration" introduced="5.0.0"><![CDATA[I accept cookies from this site.]]></string>
     <string name="confirm_delete" introduced="5.0.0"><![CDATA[Are you sure you want to delete?]]></string>
+    <string name="confirm_delete_product" introduced="6.1.2"><![CDATA[WARNING: You are about to delete %s - are you sure you want to delete this entire product?]]></string>
     <string name="confirm_revert" introduced="5.0.0"><![CDATA[Are you sure you want to revert?]]></string>
     <string name="confirm_update" introduced="5.0.0"><![CDATA[Are you sure you want to update?]]></string>
     <string name="confirm_continue" introduced="5.1.0"><![CDATA[Are you sure you want to continue?]]></string>
