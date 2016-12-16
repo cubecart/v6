@@ -789,9 +789,10 @@ class Database_Contoller {
 	 *
 	 * @param string $table
 	 * @param array $whereArray
+	 * @param string $label optional table alias used to disambiguate fields
 	 * @return string
 	 */
-	public function where($table, $whereArray = null) {
+	public function where($table, $whereArray = null, $label = false) {
 		if (!empty($whereArray)) {
 			if (is_array($whereArray)) {
 				$allowed = $this->getFields($table);
@@ -849,6 +850,8 @@ class Database_Contoller {
 							unset($or);
 						}
 					} else {
+						// Remove column label so that it can correctly check against table columns
+						$key = (is_string($key) && $label ? preg_replace("/^$label\./", '', $key, 1) : $key);
 						if (is_array($allowed) && in_array($key, $allowed) && !is_numeric($key)) {
 							if (isset($value) && !ctype_alnum($value) || $value=='NULL' || is_null($value) || $value=='NOT NULL') {
 								if (preg_match('#^([<>!~\+\-]=?)(.+)#', $value, $match)) {
@@ -865,7 +868,8 @@ class Database_Contoller {
 								}
 							}
 
-							$full_key = $this->_prefix.$table.".".$key;
+							// Be sure to re-add column identifier if it was given; otherwise, use table name
+							$full_key = ($label ? $label : $this->_prefix.$table).".".$key;
 
 							if (strtoupper($value) == 'NULL' || is_null($value)) {
 								$symbol = 'IS NULL';

@@ -1360,7 +1360,7 @@ class Catalogue {
 	 */
 	public function outOfStockWhere($original = false, $label = false, $force = false) {
 
-		$def = $original ? str_replace('WHERE ', '', $GLOBALS['db']->where('CubeCart_inventory', $original)) : '';
+		$def = $original ? str_replace('WHERE ', '', $GLOBALS['db']->where('CubeCart_inventory', $original, $label)) : '';
 
 		if ($GLOBALS['config']->get('config', 'hide_out_of_stock') && !Admin::getInstance()->is()) {
 			$def .= ($force || $def) ? ' AND' : '';
