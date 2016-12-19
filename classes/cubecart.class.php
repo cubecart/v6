@@ -747,6 +747,7 @@ class Cubecart {
 	private function _category() {
 		// Category
 		$query = array();
+		$search = false;
 		if (isset($_POST['sort'])) {
 			list($field, $order) = explode('|', $_POST['sort']);
 			$query['sort'][$field] = $order;
