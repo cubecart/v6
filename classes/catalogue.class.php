@@ -547,10 +547,12 @@ class Catalogue {
 	 * @return array
 	 */
 	public function displaySort($search = false) {
-		
+		// Default sort order
+		$default = array('field'=>$GLOBALS['config']->get('config', 'product_sort_column'), 'sort'=>$GLOBALS['config']->get('config', 'product_sort_direction'));
 		// Sort
 		if ($search || $this->_sort_by_relevance) {
 			$sorters['Relevance'] = $GLOBALS['language']->common['relevance'];
+			$default['field'] = 'Relevance'; // default search order is always 'Relevance'
 		}
 		$sorters['name']  = $GLOBALS['language']->common['name'];
 		$sorters['date_added'] = $GLOBALS['language']->category['sort_date'];
@@ -573,7 +575,7 @@ class Catalogue {
 				$direction = (isset($GLOBALS['language']->category[strtolower('sort_'.$field.'_'.$order)])) ? $GLOBALS['language']->category[strtolower('sort_'.$field.'_'.$order)] : $direction;
 				$assign = array('name' => $name, 'field' => $field, 'order' => $order, 'direction' => $direction);
 
-				if ((isset($_GET['sort'][$field]) && strtoupper($_GET['sort'][$field]) == $order)  || (!isset($_GET['sort']) && $field==$GLOBALS['config']->get('config', 'product_sort_column') && $order==$GLOBALS['config']->get('config', 'product_sort_direction'))) {
+				if ((isset($_GET['sort'][$field]) && strtoupper($_GET['sort'][$field]) == $order) || (!isset($_GET['sort']) && $field == $default['field'] && $order == $default['sort'])) {
 					$assign['selected'] = 'selected="selected"';
 				} else {
 					$assign['selected'] = '';
@@ -1599,6 +1601,7 @@ class Catalogue {
 				//    $where[] = 'I.manufacturer IN ('.implode(',', '\''.$search_data['manufacturer']).'\')';
 			}
 
+			$order = array();
 			if (isset($_GET['sort']) && is_array($_GET['sort'])) {
 				foreach ($_GET['sort'] as $field => $direction) {
 					$order['field'] = $field;
@@ -1615,6 +1618,14 @@ class Catalogue {
 			} elseif ($search_mode == 'fulltext') {
 				$order['field'] = 'Relevance';
 				$order['sort'] = 'DESC';
+			}
+			// Use store settings for sort order if none designated
+			if (empty($order)) {
+				$order['field'] = $GLOBALS['config']->get('config', 'product_sort_column');
+				$order['sort'] = $GLOBALS['config']->get('config', 'product_sort_direction');
+				if (empty($order['field']) || empty($order['sort'])) {
+					unset($order); // store settings were somehow invalid
+				}
 			}
 			if (empty($search_data['keywords']) && $order['field'] == 'Relevance') {
 				if ($sale_mode == 1) {
