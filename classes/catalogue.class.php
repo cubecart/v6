@@ -235,7 +235,7 @@ class Catalogue {
 		if (!empty($products)) {
 			foreach ($products as $product) {
 				$product = $this->getProductPrice($product);
-				$product['ctrl_stock'] = (!$product['use_stock_level'] || $GLOBALS['config']->get('config', 'basket_out_of_stock_purchase') || ($product['use_stock_level'] && $GLOBALS['catalogue']->getProductStock($product['product_id'], null, true))) ? true : false;
+				$product['ctrl_stock'] = (!$product['use_stock_level'] || $GLOBALS['config']->get('config', 'basket_out_of_stock_purchase') || ($product['use_stock_level'] && $GLOBALS['catalogue']->getProductStock($product['product_id'], null, true) > 0)) ? true : false;
 				$this->productAssign($product, false);
 				$product['url'] = $GLOBALS['seo']->buildURL('prod', $product['product_id'], '&');
 				$vars['products'][] = $product;
