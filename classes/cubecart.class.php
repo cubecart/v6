@@ -949,14 +949,6 @@ class Cubecart {
 				$old_addresses = md5(serialize(array_merge($this->_basket['billing_address'],$this->_basket['delivery_address'])));
 
 				$required_address_fields = array('first_name','last_name','line1','town','country','state','postcode');
-	            foreach($_POST['billing'] as $key => $value) {
-	                if(in_array($key, $required_address_fields) && empty($value)) {
-	                    $errors['billing_address'] = true;
-	                }
-	            }
-	            if(isset($errors['billing_address']) && $errors['billing_address']) {
-	            	$error_messages[] = $GLOBALS['language']->account['error_billing_fields_missing'];
-	            }
 
 				$this->_basket['billing_address'] = array(
 					'user_defined' => true,
@@ -976,6 +968,15 @@ class Cubecart {
 					'country_iso'  => getCountryFormat($_POST['billing']['country'], 'numcode', 'iso'),
 					'country_name' => getCountryFormat($_POST['billing']['country'], 'numcode', 'name')
 				);
+
+				foreach($this->_basket['billing_address'] as $key => $value) {
+	                if(in_array($key, $required_address_fields) && empty($value)) {
+	                    $errors['billing_address'] = true;
+	                }
+	            }
+	            if(isset($errors['billing_address']) && $errors['billing_address']) {
+	            	$error_messages[] = $GLOBALS['language']->account['error_billing_fields_missing'];
+	            }
 
 				if (isset($_POST['delivery']) && !isset($_POST['delivery_is_billing'])) {
 
