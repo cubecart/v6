@@ -320,7 +320,9 @@ if (isset($_GET['action']) && Admin::getInstance()->permissions('customers', CC_
 	$GLOBALS['main']->addTabControl($lang['customer']['title_address'], 'address');
 
 	$no_orders = $GLOBALS['db']->count('CubeCart_order_summary', false, array('customer_id' => (int)$_GET['customer_id']));
+	if(isset($_GET['customer_id']) && $_GET['customer_id'] > 0) {
 	$GLOBALS['main']->addTabControl($lang['settings']['title_orders'], '', '?_g=orders&customer_id='.(int)$_GET['customer_id'], null, $no_orders);
+	}
 
 	if ($_GET['action'] == 'edit' && isset($_GET['customer_id']) && is_numeric($_GET['customer_id'])) {
 		if (($customer = $GLOBALS['db']->select('CubeCart_customer', false, array('customer_id' => (int)$_GET['customer_id']))) !== false) {
