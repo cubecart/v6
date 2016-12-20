@@ -56,9 +56,9 @@ if (is_array($error_log)) {
 			'style'  => $log['read'] ? '' : 'style="font-weight: bold"'
 		);
 	}
+	$GLOBALS['smarty']->assign('ADMIN_ERROR_LOG', $smarty_data['error_log']);
 }
 
-$GLOBALS['smarty']->assign('ADMIN_ERROR_LOG', $smarty_data['error_log']);
 $count = $GLOBALS['db']->count('CubeCart_admin_error_log', 'log_id', array('admin_id' => Admin::getInstance()->get('admin_id')));
 $GLOBALS['smarty']->assign('PAGINATION_ADMIN_ERROR_LOG', $GLOBALS['db']->pagination($count, $per_page, $page, 5, 'page', 'admin_error_log'));
 
