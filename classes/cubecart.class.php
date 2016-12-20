@@ -800,7 +800,7 @@ class Cubecart {
 			httpredir('?'.http_build_query($query, null, '&'));
 		}
 
-		$page = (isset($_REQUEST['page']) && !empty($_GET['page'])) ? $_REQUEST['page'] : 1;
+		$page = (isset($_REQUEST['page']) && !empty($_REQUEST['page'])) ? $_REQUEST['page'] : 1;
 		
 		$catalogue_products_per_page = $GLOBALS['gui']->itemsPerPage();
 
