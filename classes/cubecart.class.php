@@ -748,7 +748,7 @@ class Cubecart {
 		}
 
 		if (isset($_REQUEST['search'])) {
-			if ($_POST['search']) {
+			if (isset($_POST['search'])) {
 				foreach ($_POST['search'] as $key => $value) {
 					$query['search'][$key] = $value;
 				}
