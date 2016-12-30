@@ -1753,7 +1753,7 @@ class Catalogue {
 					}
 
 					$q2 = "SELECT I.* FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_category_index` as CI INNER JOIN ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 ".$whereString.$like;
-					$query = $q2.' '.$limit;
+					$query = $q2.' '.$order_string.' '.$limit;
 					$search = $GLOBALS['db']->query($query);
 					if (count($search)>0) {
 						$count = $GLOBALS['db']->query($q2, false, 0);
