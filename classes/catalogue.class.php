@@ -1773,8 +1773,8 @@ class Catalogue {
 				if (($category = $this->getCategoryData((int)$search_data)) !== false) {
 					if (($products = $this->getCategoryProducts((int)$search_data, $page, $per_page)) !== false) {
 						$this->_category_products = $products;
+						return true;
 					}
-					return true;
 				}
 			} else if (strtolower($search_data) == 'sale') {
 				if (isset($_GET['sort']) && is_array($_GET['sort'])) {
@@ -1798,6 +1798,7 @@ class Catalogue {
 					$count = $GLOBALS['db']->query($q2);
 					$this->_category_count  = (int)count($count);
 					$this->_category_products = $sale;
+					return true;
 				}
 			}
 		}
