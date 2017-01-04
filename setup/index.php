@@ -507,14 +507,6 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
     $GLOBALS['smarty']->assign('MODE_COMPLETE', true);
     // delete setup folder on admin login
     setcookie('delete_setup', true, time()+7200, '/');
-
-    // secure global files
-    $global_files = glob(CC_INCLUDES_DIR.'global.*.php');
-    if(is_array($global_files)) {
-      foreach($global_files as $global_file) {
-        chmod($global_file, 0444);
-      }
-    }
     
     //Attempt admin file and folder rename
     if(!isset($_SESSION['setup']['admin_rename']) && (file_exists('../admin') || file_exists('../admin.php'))) {
@@ -555,6 +547,14 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
       $GLOBALS['smarty']->assign('ADMIN_URL', str_replace('/setup','',CC_STORE_URL).'/'.$adminFile);
       $GLOBALS['smarty']->assign('STORE_URL', str_replace('/setup','',CC_STORE_URL).'/');
       $GLOBALS['smarty']->assign('SHOW_LINKS', true);
+    }
+
+    // secure global files
+    $global_files = glob(CC_INCLUDES_DIR.'global.*.php');
+    if(is_array($global_files)) {
+      foreach($global_files as $global_file) {
+        chmod($global_file, 0444);
+      }
     }
     
     /* Truncate CubeCart_system_error_log table. There are a number of failed SQL queries on upgrade depending
