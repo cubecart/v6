@@ -308,7 +308,8 @@ if ($stock_c = $GLOBALS['db']->select($tables, $fields, $where)) {
 
 if($GLOBALS['session']->has('version_check')) {
 	$extension_updates = $GLOBALS['session']->get('version_check');
-	$extension_updates = $GLOBALS['db']->select('CubeCart_extension_info', false, array('file_id' => array_keys($extension_updates)));
+	$file_ids = (is_array($extension_updates) && !empty($extension_updates) ? array_keys($extension_updates) : array(-1));
+	$extension_updates = $GLOBALS['db']->select('CubeCart_extension_info', false, array('file_id' => $file_ids));
 	if($extension_updates) {
 		$GLOBALS['main']->addTabControl($lang['dashboard']['title_extension_updates'], 'extension_updates', null, null, count($extension_updates));
 		$GLOBALS['smarty']->assign('EXTENSION_UPDATES', $extension_updates);
