@@ -39,6 +39,22 @@ class Catalogue {
 	const OPTION_DATEPICKER = 6;
 	const OPTION_HIDDEN  = 7;
 	const OPTION_FILE  = 8;
+
+	private $_options_selectable = array( // fixed values
+		self::OPTION_SELECT,
+		self::OPTION_RADIO,
+		self::OPTION_CHECKBOX,
+		self::OPTION_HIDDEN,
+	);
+	
+	private $_options_textual = array(
+		self::OPTION_TEXTBOX,
+		self::OPTION_TEXTAREA,
+		self::OPTION_PASSWORD,
+		self::OPTION_DATEPICKER,
+		self::OPTION_FILE,
+	);
+
 	/**
 	 * Class instance
 	 *
@@ -836,7 +852,7 @@ class Catalogue {
 					if($GLOBALS['config']->get('config', 'catalogue_sale_mode') == 2 && $GLOBALS['config']->get('config', 'catalogue_sale_percentage')>0) $assigned[0]['option_price'] = $assigned[0]['option_price'] - ($assigned[0]['option_price'] / 100) * $GLOBALS['config']->get('config', 'catalogue_sale_percentage');
 				}
 				
-				if ($category[0]['option_type'] == 0 || $category[0]['option_type'] == 4) {
+				if (in_array($category[0]['option_type'], $this->_options_selectable)) {
 					// Select
 					if (($value = $GLOBALS['db']->select('CubeCart_option_value', false, array('option_id' => $category[0]['option_id'], 'value_id' => $assigned[0]['value_id']))) !== false) {
 						return array_merge($category[0], $assigned[0], $value[0]);
