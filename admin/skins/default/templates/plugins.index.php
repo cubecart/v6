@@ -28,7 +28,7 @@
       <table width="70%">
          <thead>
             <tr>
-               <th width="10">{$LANG.common.status}</th>
+               <th width="45">{$LANG.common.status}</th>
                <th>{$LANG.common.name_and_desc}</th>
                <th>{$LANG.hooks.version}</th>
                <th>{$LANG.common.type}</th>
@@ -73,7 +73,7 @@
       <table width="70%">
          <thead>
             <tr>
-               <th width="10">{$LANG.common.status}</th>
+               <th width="45">{$LANG.common.status}</th>
                <th>{$LANG.common.name_and_desc}</th>
                <th width="10">&nbsp;</th>
             </tr>
@@ -105,7 +105,7 @@
       <table width="70%">
          <thead>
             <tr>
-               <th width="10">{$LANG.common.status}</th>
+               <th width="50">{$LANG.common.default}</th>
                <th>{$LANG.common.name}</th>
                <th>{$LANG.common.developer}</th>
                <th>{$LANG.hooks.version}</th>
