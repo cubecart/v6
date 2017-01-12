@@ -771,6 +771,11 @@ class Cubecart {
 				}
 				if (!empty($terms)) {
 					foreach ($terms as $term) {
+
+						if($GLOBALS['session']->has($term, $namespace = 'search')) continue;
+						
+						$GLOBALS['session']->set($term, '1', 'search');
+
 						if (($select = $GLOBALS['db']->select('CubeCart_search', array('id', 'hits'), array('searchstr' => strtoupper($term)), false, 1, false, false)) !== false) {
 							$GLOBALS['db']->update('CubeCart_search', array('hits' => $select[0]['hits'] + 1), array('id' => $select[0]['id']), false);
 						} else {
@@ -787,6 +792,7 @@ class Cubecart {
 			}
 			ksort($query);
 			httpredir('?'.http_build_query($query, null, '&'));
+			$GLOBALS['session']->delete('', 'search');
 		}
 
 		$page = (isset($_REQUEST['page']) && !empty($_REQUEST['page'])) ? $_REQUEST['page'] : 1;
