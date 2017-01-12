@@ -1,0 +1,1 @@
+UPDATE `CubeCart_code_snippet` SET `php_code` = TO_BASE64(`php_code`); #EOQ

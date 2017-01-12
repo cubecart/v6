@@ -292,7 +292,7 @@ class HookLoader {
 					if (file_exists($file_name)) {
 						$include[] = $file_name;
 					} else {
-						if (file_put_contents($file_name, $snippet['php_code'])) {
+						if (file_put_contents($file_name, base64_decode($snippet['php_code']))) {
 							$include[] = $file_name;
 						} else {
 							trigger_error("Error: Failed to write code snippet for '".$snippet['description']."'", E_USER_NOTICE);
