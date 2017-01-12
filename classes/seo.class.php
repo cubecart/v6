@@ -387,7 +387,7 @@ class SEO {
 				if ($link) {
 					$this->_cat_path[] = '<a href="'.$GLOBALS['storeURL'].'/index.php?_a=category&cat_id='.(int)$category['cat_id'].'">'.$category['cat_name'].'</a>';
 				} else {
-					$this->_cat_path[] = (empty($category['path']) ? $category['cat_name'] : $category['path']);
+					$this->_cat_path[] = (empty($category['path']) || empty($custom) ? $category['cat_name'] : $category['path']);
 				}
 				if (is_numeric($category['cat_parent_id']) && $category['cat_parent_id'] != 0) {
 					$this->_cat_path[] = $this->getDirectory($category['cat_parent_id'], $link, $glue, $append, $custom, $noLoops);
