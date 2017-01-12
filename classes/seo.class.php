@@ -624,6 +624,7 @@ class SEO {
 	 * @return bool/string
 	 */
 	public function setdbPath($type, $item_id, $path, $bool = true, $show_error = true) {
+		if(!empty($path)) $path = SEO::_safeUrl($path);
 		if (in_array($type, array_merge($this->_dynamic_sections, $this->_static_sections))) {
 
 			$custom = 1;
@@ -641,7 +642,6 @@ class SEO {
 				
 				$custom = 0;
 			}
-			$path = SEO::_safeUrl($path);
 
 			if (empty($path)) {
 				return ($bool) ? false : '';
