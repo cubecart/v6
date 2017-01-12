@@ -1081,19 +1081,19 @@ class Cart {
 					$this->basket['subtotal'] = $this->_subtotal;
 				}
 			}
-			
+			foreach ($GLOBALS['hooks']->load('class.cart.update') as $hook) include $hook;
+			$this->save();
+
+			$this->_applyDiscounts();	
 		}
-		foreach ($GLOBALS['hooks']->load('class.cart.update') as $hook) include $hook;
-		$this->save();
-
-		$this->_applyDiscounts();
-
+		
 		//We need to check the coupons to make sure they are still valid
 		if (isset($this->basket['coupons']) && is_array($this->basket['coupons'])) {
 			foreach ($this->basket['coupons'] as $key => $data) {
 				$this->discountRemove($key);
 				$this->discountAdd($key);
 			}
+			$this->save();
 		}
 
 		//If the cart is empty
