@@ -771,7 +771,7 @@ class Cubecart {
 				}
 				if (!empty($terms)) {
 					foreach ($terms as $term) {
-						if (($select = $GLOBALS['db']->select('CubeCart_search', array('id', 'hits'), array('searchstr' => strtoupper($term)))) !== false) {
+						if (($select = $GLOBALS['db']->select('CubeCart_search', array('id', 'hits'), array('searchstr' => strtoupper($term)), false, 1, false, false)) !== false) {
 							$GLOBALS['db']->update('CubeCart_search', array('hits' => $select[0]['hits'] + 1), array('id' => $select[0]['id']), false);
 						} else {
 							$GLOBALS['db']->insert('CubeCart_search', array('searchstr' => strtoupper($term)));
