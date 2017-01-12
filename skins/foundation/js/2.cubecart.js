@@ -3,6 +3,12 @@ jQuery(document).ready(function() {
 
     var window_loc_hash = window.location.hash;
 
+    if($('a.open-clearing img#img-preview').length) {
+        var ip = $('a.open-clearing img#img-preview');
+        var ip_height = ip.height()+'px';
+        $('a.open-clearing').css({'min-height':ip_height, 'max-height': ip_height});
+    }
+
     if($('.gateway_wrapper .colorbox').length) {
         var colorbox = $('.colorbox');
         var href = colorbox.attr('href');

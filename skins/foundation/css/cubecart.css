@@ -2,7 +2,10 @@ html * {
     font-family: 'Open Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
 }
-
+a.open-clearing {
+    display: block;
+    overflow: hidden;
+}
 .icon {
   display: inline-block;
   width: 1em;
