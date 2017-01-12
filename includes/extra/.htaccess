@@ -1,7 +1,8 @@
 # Session data may be written here if the default 
 # server config has a problem. They need protection.
 # Relates to Session->_start()
+# Code snippets are also stored here and must be protected.
 
-<Files sess_*>
+<FilesMatch "^(sess_|snippet_)">
   deny from all
-</Files>
+</FilesMatch>
