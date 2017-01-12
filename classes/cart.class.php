@@ -1080,9 +1080,9 @@ class Cart {
 					$this->_subtotal += $this->basket['contents'][$hash]['total_price_each'] * $quantity;
 					$this->basket['subtotal'] = $this->_subtotal;
 				}
-			}	
+			}
+			
 		}
-		
 		foreach ($GLOBALS['hooks']->load('class.cart.update') as $hook) include $hook;
 		$this->save();
 
@@ -1123,7 +1123,6 @@ class Cart {
 	 * @return bool
 	 */
 	private function _applyDiscounts() {
-		/* IF BRAIN POWER WAS MEASURED IN DONNER KEBABS THE CODE BELOW WOULD EASILY CONSUME 53 MEGA KEBABS */
 
 		if (isset($this->basket['coupons']) && count($this->basket['coupons'])>0) {
 			$subtotal = $tax_total = 0;
