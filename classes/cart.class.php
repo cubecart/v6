@@ -539,18 +539,35 @@ class Cart {
 					foreach ($qualifying_products as $id) {
 						$product_ids[$id] = true;
 					}
-					foreach ($this->basket['contents'] as $key => $data) {
-						if ($product_ids[$data['id']]) {
-							$proceed = true;
-							break;
+
+					if($incexc == 'include') {
+						// If product IS in qualifying ids coupon is allowed
+						foreach ($this->basket['contents'] as $key => $data) {
+							if ($product_ids[$data['id']]) {
+								$proceed = true;
+								break;
+							}
+						}
+					} elseif($incexc == 'exclude') {
+						$basket_pids = array();
+						foreach ($this->basket['contents'] as $key => $data) {
+							array_push($basket_pids, $data['id']);
+						}
+
+						foreach($basket_pids as $key => $pid) {
+							// If product is NOT in qualifying ids coupon is allowed
+							if(!isset($product_ids[$pid])) {
+								$proceed = true;
+								break;
+							}	
 						}
 					}
-					if (!$proceed && $incexc == 'include') {
+
+					if (!$proceed) {
 						$GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_wrong_product']);
 						return false;
-					} else {
-						$proceed = true;
 					}
+
 				} else {
 					$proceed = true;
 				}
@@ -1063,18 +1080,19 @@ class Cart {
 					$this->_subtotal += $this->basket['contents'][$hash]['total_price_each'] * $quantity;
 					$this->basket['subtotal'] = $this->_subtotal;
 				}
-			}
-			foreach ($GLOBALS['hooks']->load('class.cart.update') as $hook) include $hook;
-			$this->save();
+			}	
+		}
+		
+		foreach ($GLOBALS['hooks']->load('class.cart.update') as $hook) include $hook;
+		$this->save();
 
-			$this->_applyDiscounts();
+		$this->_applyDiscounts();
 
-			//We need to check the coupons to make sure they are still valid
-			if (isset($this->basket['coupons']) && is_array($this->basket['coupons'])) {
-				foreach ($this->basket['coupons'] as $key => $data) {
-					$this->discountRemove($key);
-					$this->discountAdd($key);
-				}
+		//We need to check the coupons to make sure they are still valid
+		if (isset($this->basket['coupons']) && is_array($this->basket['coupons'])) {
+			foreach ($this->basket['coupons'] as $key => $data) {
+				$this->discountRemove($key);
+				$this->discountAdd($key);
 			}
 		}
 
