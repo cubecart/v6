@@ -601,19 +601,7 @@ class Order {
 						} else {
 							$vouchers_used[] = $data['voucher'];
 							// Update usage count
-							$product_data = unserialize($data['product']);
-							if (is_array($product_data) && count($product_data) > 1) {
-								## Per product coupons
-								foreach ($this->_basket['contents'] as $hash => $item) {
-
-									if (!in_array($item['id'], $product_data)) {
-										continue;
-									}
-									$GLOBALS['db']->update('CubeCart_coupons', array('count' => '+'.(int)$item['quantity']), array('code' => $data['voucher']));
-								}
-							} else {
-								$GLOBALS['db']->update('CubeCart_coupons', array('count' => '+1'), array('code' => $data['voucher']));
-							}
+							$GLOBALS['db']->update('CubeCart_coupons', array('count' => '+1'), array('code' => $data['voucher']));
 						}
 					}
 					$note_content = '';
