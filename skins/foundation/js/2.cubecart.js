@@ -5,8 +5,11 @@ jQuery(document).ready(function() {
 
     if($('a.open-clearing img#img-preview').length) {
         var ip = $('a.open-clearing img#img-preview');
-        var ip_height = ip.height()+'px';
-        $('a.open-clearing').css({'min-height':ip_height, 'max-height': ip_height});
+        var ip_height = ip.height();
+        if(ip_height<300) {
+            ip_height = 300;
+        }
+        $('a.open-clearing').css({'min-height':ip_height+'px', 'max-height': ip_height+'px'});
     }
 
     if($('.gateway_wrapper .colorbox').length) {
