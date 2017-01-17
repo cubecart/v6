@@ -620,7 +620,7 @@ if (isset($_GET['action'])) {
 	} else if (isset($_GET['search'])) {
 
 			// Search by date range
-			if (isset($_GET['search']['date']) && is_array($_GET['search']['date']) && (!empty($_GET['search']['date']['form']) || !empty($_GET['search']['date']['to']))) {
+			if (isset($_GET['search']['date']) && is_array($_GET['search']['date']) && (!empty($_GET['search']['date']['from']) || !empty($_GET['search']['date']['to']))) {
 				foreach ($_GET['search']['date'] as $key => $date) {
 					$dates[$key] = (!empty($date)) ? strtotime($date) : null;
 				}
