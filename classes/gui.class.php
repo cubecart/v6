@@ -1050,17 +1050,16 @@ class GUI {
 		if(!$GLOBALS['smarty']->templateExists('templates/box.popular.php')) return false;
 
 		if ((int)$GLOBALS['config']->get('config', 'catalogue_popular_products_count') < 1) return false;
-
+		$limit = (is_numeric($GLOBALS['config']->get('config', 'catalogue_popular_products_count'))) ? $GLOBALS['config']->get('config', 'catalogue_popular_products_count') : 10;
 		switch ((int)$GLOBALS['config']->get('config', 'catalogue_popular_products_source')) {
-		case 1:  // sale-based
-			$limit = (is_numeric($GLOBALS['config']->get('config', 'catalogue_popular_products_count'))) ? $GLOBALS['config']->get('config', 'catalogue_popular_products_count') : 10;
-			$whereStr   = $GLOBALS['catalogue']->outOfStockWhere(false, 'i', true);
-			$query  = "SELECT `oi`.`product_id`, `i`.`name`, `i`.`price`, `i`.`sale_price`, `i`.`tax_type`, `i`.`tax_inclusive`, SUM(`oi`.`quantity`) as `quantity` FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_inventory` as `oi` JOIN `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_inventory` as `i` WHERE `oi`.`product_id` = `i`.`product_id` AND `i`.`status` = 1 $whereStr GROUP BY `oi`.`product_id` ORDER BY `quantity` DESC LIMIT ".$limit.";";
-			$products = $GLOBALS['db']->query($query);
+			case 1:  // sale-based
+				$whereStr   = $GLOBALS['catalogue']->outOfStockWhere(false, 'i', true);
+				$query  = "SELECT `oi`.`product_id`, `i`.`name`, `i`.`price`, `i`.`sale_price`, `i`.`tax_type`, `i`.`tax_inclusive`, SUM(`oi`.`quantity`) as `quantity` FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_inventory` as `oi` JOIN `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_inventory` as `i` WHERE `oi`.`product_id` = `i`.`product_id` AND `i`.`status` = 1 $whereStr GROUP BY `oi`.`product_id` ORDER BY `quantity` DESC LIMIT ".$limit.";";
+				$products = $GLOBALS['db']->query($query);
 			break;
-		default: // view-based
-			$where      = $GLOBALS['catalogue']->outOfStockWhere(array('status' => '1'));
-			$products = $GLOBALS['db']->select('CubeCart_inventory', array('name', 'product_id', 'quantity', 'price', 'sale_price', 'tax_type', 'tax_inclusive'), $where, 'popularity DESC', $GLOBALS['config']->get('config', 'catalogue_popular_products_count'));
+			default: // view-based
+				$where      = $GLOBALS['catalogue']->outOfStockWhere(array('status' => '1'));
+				$products = $GLOBALS['db']->select('CubeCart_inventory', array('name', 'product_id', 'quantity', 'price', 'sale_price', 'tax_type', 'tax_inclusive'), $where, 'popularity DESC', $limit);
 		}
 		if ($products) {
 			foreach ($products as $product) {
