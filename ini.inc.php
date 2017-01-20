@@ -11,6 +11,10 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  */
 
+if (version_compare(PHP_VERSION, '5.4') == -1) {
+	die("PHP ".PHP_VERSION." detected. Please upgrade to any version 5.4 or higher.");
+}
+
 // These are in case something goes wrong before we get to debug
 ini_set('display_errors', true);
 
