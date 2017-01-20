@@ -12,7 +12,7 @@
  */
 
 if (version_compare(PHP_VERSION, '5.4') == -1) {
-	die("PHP ".PHP_VERSION." detected. Please upgrade to any version 5.4 or higher.");
+	die("PHP ".PHP_VERSION." detected. CubeCart requires PHP 5.4 or higher.");
 }
 
 // These are in case something goes wrong before we get to debug
