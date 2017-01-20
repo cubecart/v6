@@ -197,9 +197,9 @@ class Cubecart {
 						echo json_encode($GLOBALS['tax']->priceFormat($_GET['price']));
 					} else if(is_array($_GET['price'])) {
 						$prices = array();
-						foreach($_GET['price'] as $price) {
+						foreach($_GET['price'] as $key => $price) {
 							if(is_numeric($price)) {
-								$prices[] = $GLOBALS['tax']->priceFormat($price);
+								$prices[$key] = $GLOBALS['tax']->priceFormat($price);
 							}
 						}
 						die(json_encode($prices));
