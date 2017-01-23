@@ -377,7 +377,7 @@ class Cubecart {
 
 				case 'plugin':
 					$trigger = 'class.cubecart.display_content';
-					$plugin = $_GET['plugin'];
+					$plugin = preg_replace('#[^a-z0-9\_\-]#iU', '', $_GET['plugin']);
 					$path = 'modules/plugins/'.$plugin.'/'.'hooks/'.$trigger.'.php';
 					if ($GLOBALS['hooks']->is_enabled($trigger, $plugin) && file_exists($path)) {
 						include $path;
@@ -388,7 +388,9 @@ class Cubecart {
 
 				case 'template':
 					if (isset($_GET['type']) && isset($_GET['module'])) {
-						$template = 'modules/'.$_GET['type'].'/'.$_GET['module'].'/skin/inline.php';
+						$module = preg_replace('#[^a-z0-9\_\-]#iU', '', $_GET['module']);
+						$type = preg_replace('#[^a-z0-9\_\-]#iU', '', $_GET['type']);
+						$template = 'modules/'.$type.'/'.$module.'/skin/inline.php';
 						if (file_exists($template)) {
 							$GLOBALS['smarty']->assign('PAGE_CONTENT', file_get_contents($template, false));
 						}
