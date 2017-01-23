@@ -242,7 +242,7 @@ class Cubecart {
 							*/
 							foreach ($GLOBALS['hooks']->load('class.cubecart.construct.callback.gateway') as $hook) include $hook;
 							$folder = (isset($plugin)) ? 'plugins' : 'gateway';
-							$module = $_GET['module'];
+							$module = preg_replace('#[^a-z0-9\_\-]#iU', '', $_GET['module']);
 
 							$class_file = CC_ROOT_DIR.'/modules/'.$folder.'/'.$module.'/'.'gateway.class.php';
 
