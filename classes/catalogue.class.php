@@ -616,7 +616,8 @@ class Catalogue {
 					// Translate
 					$GLOBALS['language']->translateCategory($cat);
 					$products = $this->productCount($cat['cat_id']);
-					if ($products || ($products = $this->productCount($cat['cat_id']) || $GLOBALS['config']->get('config', 'catalogue_show_empty')) !== false) {
+					
+					if ($products || $GLOBALS['config']->get('config', 'catalogue_show_empty') == '1') {
 						$cat['cat_image'] = $this->imagePath($cat['cat_image'], 'subcategory', 'url');
 						$cat['url'] = $GLOBALS['seo']->buildURL('cat', $cat['cat_id'], '&');
 						$cat['products_number'] = $products;
