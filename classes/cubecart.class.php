@@ -794,8 +794,8 @@ class Cubecart {
 			}
 			ksort($query);
 			httpredir('?'.http_build_query($query, null, '&'));
-			$GLOBALS['session']->delete('', 'search');
 		}
+		$GLOBALS['session']->delete('', 'search');
 
 		$page = (isset($_REQUEST['page']) && !empty($_REQUEST['page'])) ? $_REQUEST['page'] : 1;
 		
