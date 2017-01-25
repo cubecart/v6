@@ -125,6 +125,7 @@ class Cubecart {
 			}
 		}
 
+		$GLOBALS['smarty']->assign('CTRL_HIDE_PRICES', $GLOBALS['session']->get('hide_prices'));
 		foreach ($GLOBALS['hooks']->load('class.cubecart.display_homepage') as $hook) include $hook;
 		$content = $GLOBALS['smarty']->fetch('templates/content.homepage.php');
 		$GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
