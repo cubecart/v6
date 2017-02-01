@@ -88,7 +88,7 @@
 	<h3>{$LANG.settings.title_description}</h3>
 	<textarea name="cat[cat_desc]" id="description" class="textbox fck">{$CATEGORY.cat_desc}</textarea>
 	</div>
-	<div id="images" class="tab_content">
+	<div id="cat_images" class="tab_content">
 		<h3>{$LANG.settings.category_images}</h3>
 		<div class="fm-container">
 			<div class="loading">{$LANG.common.loading} <i class="fa fa-spinner fa-spin fa-fw"></i></div>
