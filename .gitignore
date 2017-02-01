@@ -8,3 +8,9 @@
 .DS_Store
 Thumbs.db
 /.htaccess
+*.js[0-9]*
+*.php[0-9]*
+*.css[0-9]*
+*.xml[0-9]*
+*.tpl[0-9]*
+*.txt[0-9]*
