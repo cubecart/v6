@@ -321,6 +321,35 @@ class FileManager {
 	}
 
 	/**
+	 * Images assigned to a category
+	 *
+	 * @param string $cat_id
+	 * @return array
+	 */
+	public function catImages($cat_id) {
+
+		if(!empty($cat_id) && $cat_id>0) {
+			$images = $GLOBALS['db']->select('CubeCart_category', array('cat_image'), array('cat_id' => (int)$cat_id));
+			if($images!==false) {
+				$assigned_images = array();
+				foreach($images as $image) {
+					$assigned_images[$image['cat_image']] = '2';
+				}
+				return $assigned_images;
+			}
+		} elseif($GLOBALS['session']->has('recently_uploaded')) {
+			$assigned_images = $GLOBALS['session']->get('recently_uploaded');
+			end($assigned_images); // Set last image as main_img
+			$key = key($assigned_images);
+			$assigned_images[$key] = '2';
+			$GLOBALS['session']->delete('recently_uploaded');
+			$this->form_fields = true;
+			return $assigned_images;
+		}
+		return array();
+	}
+
+	/**
 	 * Create folder
 	 *
 	 * @param string $new_dir
@@ -1000,11 +1029,14 @@ class FileManager {
 					if(isset($_GET['product_id']) && $_GET['product_id']>0) {
 						$this->_assignProduct((int)$_GET['product_id'], $fid);
 					}
+					if(isset($_GET['cat_id']) && $_GET['cat_id']>0) {
+						$this->_assignCategory((int)$_GET['cat_id'], $fid);
+					}
 					move_uploaded_file($file['tmp_name'], $target);
 					chmod($target, chmod_writable());
 				}
 			}
-			if(isset($_GET['product_id'])) {
+			if(isset($_GET['product_id']) || isset($_GET['cat_id'])) {
 				$GLOBALS['session']->set('recently_uploaded', $this->_recently_uploaded);
 			}
 
@@ -1014,7 +1046,19 @@ class FileManager {
 	}
 
 	/**
-	 * Assign to product
+	 * Assign FileManager file_id to category
+	 *
+	 * @param int $cat_id
+	 * @param int $file_id
+	 *
+	 */
+	private function _assignCategory($cat_id, $file_id) {
+
+		$GLOBALS['db']->update('CubeCart_category', array('cat_img' => (int)$file_id), array('cat_id' => (int)$cat_id));
+	}
+
+	/**
+	 * Assign FileManager file_id to product
 	 *
 	 * @param int $product_id
 	 * @param int $file_id
