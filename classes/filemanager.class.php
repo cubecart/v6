@@ -666,6 +666,15 @@ class FileManager {
 	}
 
 	/**
+	 * Get all directories
+	 *
+	 * @return array
+	 */
+	public function getDirectories() {
+		return $this->_directories;
+	}
+
+	/**
 	 * Get file icon
 	 *
 	 * @param string $mimetype
