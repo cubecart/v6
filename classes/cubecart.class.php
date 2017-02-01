@@ -2262,7 +2262,7 @@ class Cubecart {
 			// Show list of publicly visible newsletters
 			if (($archive = $GLOBALS['db']->select('CubeCart_newsletter', false, array('status' => 1))) !== false) {
 				foreach ($archive as $content) {
-					$content['view'] = currentPage(array('subscribed'), array('newsletter_id' => $content['newsletter_id']));
+					$content['view'] = currentPage(array('subscribed','action'), array('newsletter_id' => $content['newsletter_id']));
 					$content['date_sent'] = formatTime(strtotime($content['date_sent']));
 					$vars['newsletters'][] = $content;
 				}
