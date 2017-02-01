@@ -86,7 +86,7 @@ if($post_max_size !== $upload_max_filesize) {
 if (isset($_GET['fm-edit']) && is_numeric($_GET['fm-edit'])) {
 	$page_content = $fm->editor($_GET['fm-edit']);
 } else {
-	$GLOBALS['main']->addTabControl($lang['filemanager']['tab_files'], false, currentPage());
+	$GLOBALS['main']->addTabControl($lang['filemanager']['tab_files'], false, currentPage(array('subdir')));
 	$GLOBALS['main']->addTabControl($lang['filemanager']['file_upload'], 'upload');
 	$GLOBALS['main']->addTabControl($lang['filemanager']['folder_create'], 'folder');
 	$GLOBALS['main']->addTabControl($lang['filemanager']['tab_rebuild'], false, currentPage(null, array('rebuild' => 'true')));
