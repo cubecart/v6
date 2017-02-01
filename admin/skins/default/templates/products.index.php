@@ -538,7 +538,7 @@
       
       <div class="fm-container">
          <div class="loading">{$LANG.common.loading} <i class="fa fa-spinner fa-spin fa-fw"></i></div>
-         <div id="image" rel="1" class="fm-filelist"></div>
+         <div id="imageset" rel="1" class="fm-filelist"></div>
          <div class="master_image">
             <span>{$LANG.catalogue.image_main}</span>:<br><br>
             <div id="master_image_block">
