@@ -848,6 +848,8 @@ class Catalogue {
 				}
 			} else {
 				$assigned = $GLOBALS['db']->select('CubeCart_option_assign', false, array('assign_id' => (int)$assign_id));
+
+				foreach ($GLOBALS['hooks']->load('class.catalogue.option_data') as $hook) include $hook;
 				
 				if($assigned) {
 					if($GLOBALS['config']->get('config', 'catalogue_sale_mode') == 2 && $GLOBALS['config']->get('config', 'catalogue_sale_percentage')>0) $assigned[0]['option_price'] = $assigned[0]['option_price'] - ($assigned[0]['option_price'] / 100) * $GLOBALS['config']->get('config', 'catalogue_sale_percentage');
