@@ -180,6 +180,7 @@ class Ajax {
 							'form_field' => $filemanager->form_fields,
 							'assigned' => $assigned,
 							'type'   => 'file',
+							'type_id'   => $result['type'],
 							'path'   => dirname($path).'/',
 							'file'   => basename($result['filename']),
 							'name'   => basename($name),
