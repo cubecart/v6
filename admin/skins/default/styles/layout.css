@@ -118,7 +118,8 @@ fieldset .custom-checkbox {
     width: 50%;
     margin-left: 25%;
 }
-.fm-container .fm-filelist > ul > li:not(:first-child) {
+#cat_images .fm-container .fm-filelist > ul > li:not(:first-child),
+#image .fm-container .fm-filelist > ul > li:not(:first-child) {
     margin-left: 20px;
 }
 .fm-container .master_image {
