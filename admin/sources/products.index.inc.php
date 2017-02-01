@@ -340,8 +340,8 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 
 	#############################################
 	// Filemanager - Images
-	if (isset($_POST['image']) && is_array($_POST['image'])) {
-		if($filemanager->assignProductImages($_POST['image'], $product_id)) {
+	if (isset($_POST['imageset']) && is_array($_POST['imageset'])) {
+		if($filemanager->assignProductImages($_POST['imageset'], $product_id)) {
 			$updated = true;
 		}
 	}
