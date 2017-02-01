@@ -336,6 +336,10 @@ if (isset($_GET['action'])) {
 					$cat_display_data[$key] = htmlentities($value, ENT_COMPAT, 'UTF-8');
 				}
 				$cat_display_data['seo_path'] = $GLOBALS['seo']->getdbPath('cat', $cat_display_data['cat_id']);
+				if ($cat_display_data['cat_image']) {
+					$master_image = $GLOBALS['catalogue']->imagePath((int)$cat_display_data['cat_image'],'small', 'url');
+					$cat_display_data['master_image'] = !empty($master_image) ? $master_image : 'images/general/px.gif';
+				}
 
 				$GLOBALS['smarty']->assign('CATEGORY', $cat_display_data);
 			}
@@ -369,10 +373,6 @@ if (isset($_GET['action'])) {
 			}
 
 			// Stuff
-			if (isset($catData['cat_image'])) {
-				$GLOBALS['smarty']->assign('JSON_IMAGES', json_encode(array($catData['cat_image'])));
-			}
-			
 			foreach ($GLOBALS['hooks']->load('admin.category.tabs') as $hook) include $hook;
 			$GLOBALS['smarty']->assign('PLUGIN_TABS', $smarty_data['plugin_tabs']);			
 			
