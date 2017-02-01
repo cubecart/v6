@@ -333,7 +333,7 @@ class FileManager {
 			if($images!==false) {
 				$assigned_images = array();
 				foreach($images as $image) {
-					$assigned_images[$image['cat_image']] = '2';
+					$assigned_images[$image['cat_image']] = '1';
 				}
 				return $assigned_images;
 			}
