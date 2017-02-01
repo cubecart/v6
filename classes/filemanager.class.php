@@ -616,7 +616,7 @@ class FileManager {
 		$search_dir = (!$search_dir) ? $this->_manage_dir : $search_dir;
 		if ($search_dir && file_exists($search_dir)) {
 			$list = glob($search_dir.'/'.'*', GLOB_ONLYDIR);
-			if ($list) {
+			if (is_array($list) && count($list)>0) {
 				foreach ($list as $dir) {
 					if ($this->_mode == self::FM_FILETYPE_IMG && in_array(basename($dir), array('thumbs', 'source', '_vti_cnf'))) continue;
 					$this->_directories[$this->makeFilepath($dir)][] = basename($dir);
