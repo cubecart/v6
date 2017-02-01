@@ -105,7 +105,7 @@
          <tfoot>
             <tr>
                <td width="10">
-                  <span><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/select_all.gif" alt="">
+                  <span><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/select_all.gif" alt=""></span>
                </td>
                <td colspan="11">
                   <a href="#" class="check-all" rel="table">{$LANG.form.check_uncheck}</a>
