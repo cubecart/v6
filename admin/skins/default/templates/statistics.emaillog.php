@@ -36,7 +36,11 @@
 			<a href="#" onclick="{literal}$.colorbox({title:'{/literal}{$log.subject} ({$LANG.common.plain_text}){literal}',width:'90%', height:'90%', html:'<iframe width=\'100%\' height=\'95%\' frameBorder=\'0\' src=\'?_g=xml&amp;function=viewEmail&amp;id={/literal}{$log.id}{literal}&amp;mode=content_text\'></iframe>'}){/literal}">{$LANG.common.plain_text}</a>
 		</td>
 		<td>{$log.date}</td>
-		<td align="center">{if $log.email_content_id>0}<a href="?_g=documents&amp;node=email&amp;type=content&amp;action=edit&amp;content_id={$log.email_content_id}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>{/if}<a href="?_g=customers&q={$log.to}"><i class="fa fa-search" title="{$LANG.search.title_search_customers}"></i></a></td>
+		<td align="left">{if $log.email_content_id>0}<a href="?_g=documents&amp;node=email&amp;type=content&amp;action=edit&amp;content_id={$log.email_content_id}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>{/if}
+		{if !$log.to|strstr:","} 
+		<a href="?_g=customers&q={$log.to}"><i class="fa fa-search" title="{$LANG.search.title_search_customers}"></i></a>
+		{/if}
+		</td>
 		
 	  </tr>
 	  {/foreach}
