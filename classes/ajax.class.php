@@ -136,7 +136,7 @@ class Ajax {
 				$filemanager = new FileManager($_GET['group'], $dir);
 
 				// Directories
-				$dirs = $filemanager->findDirectories(); exit;
+				$dirs = $filemanager->findDirectories();
 				if (is_array($dirs)) {
 					$dir = $filemanager->formatPath($dir);
 					foreach ($dirs[$dir] as $parent => $folder) {
