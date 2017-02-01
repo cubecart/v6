@@ -71,7 +71,7 @@ if (jQuery)(function($){
 						$(c).removeClass('wait').children('ul').slideDown();
 					} else {
 						// AJAX request
-						$.ajax({
+						$.ajaxSetup({
 							complete: function(XMLHttpRequest, textStatus){$('.wait').removeClass('wait');},
 							dataType: 'json',
 							global: false
