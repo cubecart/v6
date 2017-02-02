@@ -170,7 +170,7 @@ class HookLoader {
 								'enabled'  => $snippet->enabled,
 								'description' => $snippet->description,
 								'hook_trigger' => $snippet->hook_trigger,
-								'php_code'  => $snippet->php_code,
+								'php_code'  => base64_encode($snippet->php_code),
 								'version'  => $snippet->version,
 								'priority'  => $snippet->priority,
 							);
