@@ -176,6 +176,11 @@
                   {if $product.options_text}
                   <br>{$product.options_text}
                   {/if}
+                  {if $product.custom}
+                  {foreach from=$product.custom key=k item=v}
+                  <br><strong>{$k}</strong>: {$v}
+                  {/foreach}
+                  {/if}
                </div>
                {/foreach}
                <div>{$LANG.basket.total_sub}:<span>{$OVERVIEW_SUMMARY.subtotal}</span></div>

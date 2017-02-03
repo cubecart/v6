@@ -304,6 +304,32 @@ if (isset($_GET['action'])) {
 					} elseif (!empty($product['product_options'])) {
 						$product['options_text'] = $product['product_options'];
 					}
+
+					$custom_data = array();
+					
+					if(!empty($product['custom'])) {
+						if($custom_data = unserialize($product['custom'])) {
+							if(is_array($custom_data)) {
+								foreach($custom_data as $key => $value) {
+									if($key == 'method') {
+										switch($value) {
+											case 'e':
+												$value = $GLOBALS['language']->common['email'];
+											break;
+											case 'm':
+												$value = $GLOBALS['language']->common['postal'];
+											break;
+										}
+
+									}
+									$custom_data_string[ucwords($key)] = $value;
+								}
+								$product['custom'] = $custom_data_string;
+							}
+						} else {
+							$product['custom'] = '';
+						}
+					}
 				
 					$product['line_price_less_options'] = sprintf("%.2F",$product['line']-Catalogue::getInstance()->getOptionsLinePrice());
 

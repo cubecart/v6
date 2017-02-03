@@ -1053,8 +1053,22 @@ class Order {
 		if (is_array($item)) {
 			if (isset($item['certificate'])) {
 				$gc = $GLOBALS['config']->get('gift_certs');
+				
+				if(isset($item['certificate']['method']) && !empty($item['certificate']['method'])) {
+					switch($item['certificate']['method']) {
+						case 'm':
+							$method = $GLOBALS['language']->common['postal'];
+						break;
+						case 'e':
+							$method = $GLOBALS['language']->common['email'];
+						break;
+						default:
+							$method = '';
+					}
+				}
+
 				$product = array(
-					'name'   => $GLOBALS['language']->catalogue['gift_certificate'],
+					'name'   => $method.' '.$GLOBALS['language']->catalogue['gift_certificate'],
 					'price'   => $item['certificate']['value'],
 					'product_code' => $gc['product_code'],
 					'digital'  => (bool)$item['digital'],
