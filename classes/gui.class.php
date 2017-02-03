@@ -225,10 +225,6 @@ class GUI {
 
 		//Assign common GUI parts
 		$GLOBALS['smarty']->assign('VAL_SELF',  currentPage());
-		$canonical = $GLOBALS['smarty']->getTemplateVars('CANONICAL');
-		if(empty($canonical) && !is_numeric($canonical)) {
-			$GLOBALS['smarty']->assign('CANONICAL', currentPage(array('sort','perpage'), null, false));
-		}
 		$GLOBALS['smarty']->assign('STORE_URL',  $GLOBALS['storeURL']);
 		$GLOBALS['smarty']->assign('ROOT_PATH',  $GLOBALS['rootRel']);
 		$GLOBALS['smarty']->assign('CURRENT_PAGE',  currentPage());
@@ -304,6 +300,16 @@ class GUI {
 		} else {
 			$GLOBALS['smarty']->template_dir = $directory;
 		}
+	}
+
+	/**
+	 * Display output
+	 *
+	 * @param string $file
+	 */
+	public function display($file) {
+		$this->_setCanonical();
+		$GLOBALS['smarty']->display($file);
 	}
 
 	/**
@@ -1500,6 +1506,22 @@ class GUI {
 			}
 		}
 		return $out;
+	}
+
+	/**
+	 * Set canonical
+	 */
+	private function _setCanonical() {
+		$canonical = $GLOBALS['smarty']->getTemplateVars('CANONICAL');
+		if(empty($canonical) && !is_numeric($canonical)) {
+			$excluded = array('sort','perpage');
+			if(is_array($GLOBALS['db']->page_one)) {
+				$excluded = array_merge($excluded, $GLOBALS['db']->page_one);
+			}
+			$GLOBALS['smarty']->assign('CANONICAL', currentPage($excluded, null, false));
+			return true;
+		}
+		return false;
 	}
 
 	/**

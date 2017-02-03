@@ -19,4 +19,4 @@ global $config_default;
 
 include CC_ROOT_DIR.CC_DS.'controllers'.CC_DS.'controller.index.inc.php';
 
-$GLOBALS['smarty']->display('templates/'.$global_template_file);
+$GLOBALS['gui']->display('templates/'.$global_template_file);

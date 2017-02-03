@@ -26,6 +26,13 @@ class Database_Contoller {
 	 * @var bool
 	 */
 	public $connected = false;
+
+	/**
+	 * Array of page one names for canonical skip
+	 *
+	 * @var array
+	 */
+	public $page_one = array();
 	/**
 	 * Allowed exceptions
 	 *
@@ -433,6 +440,11 @@ class Database_Contoller {
 	 * @return string/false
 	 */
 	public function pagination($total_results = false, $per_page = 10, $page = 1, $show = 5, $var_name = 'page', $anchor = false, $glue = ' ', $view_all = true) {
+
+		if($page == 1) {
+			$this->page_one[] = $var_name;
+		}
+
 		if (!$total_results && !is_null($this->_found_rows) && is_numeric($this->_found_rows)) {
 			$total_results = $this->_found_rows;
 		}
