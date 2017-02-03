@@ -1284,6 +1284,8 @@ class Catalogue {
 			if (($result = $GLOBALS['db']->select('CubeCart_filemanager', false, array('file_id' => (int)$input))) !== false) {
 				$file  = $result[0]['filepath'].$result[0]['filename'];
 				$defaults = false;
+			} else {
+				$return_placeholder = true;
 			}
 		} else if (!empty($input)) {
 			$file  = str_replace(array('images/cache/', 'images/uploads/'), '', $input);
@@ -1318,6 +1320,7 @@ class Catalogue {
 			$source = CC_ROOT_DIR.'/images/source/'.$file;
 		} else {
 			$source = CC_ROOT_DIR.'/'.$placeholder_image;
+			$file = $placeholder_image;
 		}
 
 		if (!is_dir($source) && file_exists($source)) {
