@@ -1514,7 +1514,7 @@ class GUI {
 	private function _setCanonical() {
 		$canonical = $GLOBALS['smarty']->getTemplateVars('CANONICAL');
 		if(empty($canonical) && !is_numeric($canonical)) {
-			$excluded = array('sort','perpage');
+			$excluded = array('review','sort','perpage');
 			if(is_array($GLOBALS['db']->page_one)) {
 				$excluded = array_merge($excluded, $GLOBALS['db']->page_one);
 			}
