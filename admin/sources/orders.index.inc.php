@@ -320,7 +320,8 @@ if (isset($_GET['action'])) {
 												$value = $GLOBALS['language']->common['postal'];
 											break;
 										}
-
+									} elseif($key == 'value') {
+										$value = $GLOBALS['tax']->priceFormat($value);
 									}
 									$custom_data_string[ucwords($key)] = $value;
 								}
