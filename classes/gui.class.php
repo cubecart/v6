@@ -982,10 +982,10 @@ class GUI {
 			$newsletter = Newsletter::getInstance();
 			if ($newsletter->subscribe($_POST['subscribe'])) {
 				$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_subscribed']);
-				httpredir(currentPage(null, array('subscribed' => 'true')));
+				httpredir(currentPage());
 			} else {
 				$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_unsubscribed']);
-				httpredir(currentPage(null, array('_a' => 'newsletter', 'subscribed' => 'false')));
+				httpredir(currentPage(null, array('_a' => 'newsletter')));
 			}
 		}
 

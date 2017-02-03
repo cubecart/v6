@@ -29,7 +29,7 @@ if (isset($_POST['cat']) && is_array($_POST['cat']) && Admin::getInstance()->per
 	$filemanager = new FileManager(FileManager::FM_FILETYPE_IMG);
 	if (($uploaded = $filemanager->upload()) !== false && is_array($uploaded)) {
 		foreach ($uploaded as $file_id) {
-			$_POST['image'][(int)$file_id] = true;
+			$_POST['imageset'][(int)$file_id] = true;
 		}
 	}
 	foreach ($_POST['cat'] as $key => $value) {
@@ -45,8 +45,8 @@ if (isset($_POST['cat']) && is_array($_POST['cat']) && Admin::getInstance()->per
 		$cat_id = $_POST['cat']['cat_id'];
 		$old_image = $GLOBALS['db']->select('CubeCart_category', array('cat_image'), array('cat_id' => $_POST['cat']['cat_id']));
 		$_POST['cat']['cat_image'] = $old_image[0]['cat_image'];
-		if (isset($_POST['image']) && is_array($_POST['image'])) {
-			foreach ($_POST['image'] as $image_id => $enabled) {
+		if (isset($_POST['imageset']) && is_array($_POST['imageset'])) {
+			foreach ($_POST['imageset'] as $image_id => $enabled) {
 				if ($enabled == 0) {
 					if ($image_id == $old_image[0]['cat_image']) {
 						$_POST['cat']['cat_image'] = '';
@@ -86,8 +86,8 @@ if (isset($_POST['cat']) && is_array($_POST['cat']) && Admin::getInstance()->per
 		}
 	} else {
 			
-		if (isset($_POST['image']) && is_array($_POST['image'])) {
-			foreach ($_POST['image'] as $image_id => $enabled) {
+		if (isset($_POST['imageset']) && is_array($_POST['imageset'])) {
+			foreach ($_POST['imageset'] as $image_id => $enabled) {
 				if ($enabled == 1) {
 					$_POST['cat']['cat_image'] = (int)$image_id;
 					break; // find and use first enabled image -- there can be only one!
@@ -336,6 +336,10 @@ if (isset($_GET['action'])) {
 					$cat_display_data[$key] = htmlentities($value, ENT_COMPAT, 'UTF-8');
 				}
 				$cat_display_data['seo_path'] = $GLOBALS['seo']->getdbPath('cat', $cat_display_data['cat_id']);
+				if ($cat_display_data['cat_image']) {
+					$master_image = $GLOBALS['catalogue']->imagePath((int)$cat_display_data['cat_image'],'small', 'url');
+					$cat_display_data['master_image'] = !empty($master_image) ? $master_image : 'images/general/px.gif';
+				}
 
 				$GLOBALS['smarty']->assign('CATEGORY', $cat_display_data);
 			}
@@ -369,10 +373,6 @@ if (isset($_GET['action'])) {
 			}
 
 			// Stuff
-			if (isset($catData['cat_image'])) {
-				$GLOBALS['smarty']->assign('JSON_IMAGES', json_encode(array($catData['cat_image'])));
-			}
-			
 			foreach ($GLOBALS['hooks']->load('admin.category.tabs') as $hook) include $hook;
 			$GLOBALS['smarty']->assign('PLUGIN_TABS', $smarty_data['plugin_tabs']);			
 			

@@ -136,8 +136,11 @@ class Ajax {
 				$filemanager = new FileManager($_GET['group'], $dir);
 
 				// Directories
-				if (is_array($dirs = $filemanager->findDirectories())) {
-					foreach ($dirs[$filemanager->formatPath($dir)] as $parent => $folder) {
+				$dirs = $filemanager->getDirectories();
+
+				if (is_array($dirs)) {
+					$dir = $filemanager->formatPath($dir);
+					foreach ($dirs[$dir] as $parent => $folder) {
 						$path = (!empty($dir)) ? '/' : '';
 						$json[] = array(
 							'type' => 'directory',
@@ -150,9 +153,12 @@ class Ajax {
 				$assigned_images = array();
 				$assigned_file	 = false;
 				
-				if(isset($_GET['product_id'])) {
+				if(isset($_GET['product_id']) && !empty($_GET['product_id'])) {
 					$assigned_images = $filemanager->productImages($_GET['product_id']);
 					$assigned_file = $filemanager->productFile($_GET['product_id']);
+				}
+				if(isset($_GET['cat_id']) && !empty($_GET['cat_id'])) {
+					$assigned_images = $filemanager->catImages($_GET['cat_id']);
 				}
 
 				if (($files = $filemanager->listFiles()) !== false) {
@@ -177,6 +183,7 @@ class Ajax {
 							'form_field' => $filemanager->form_fields,
 							'assigned' => $assigned,
 							'type'   => 'file',
+							'type_id'   => $result['type'],
 							'path'   => dirname($path).'/',
 							'file'   => basename($result['filename']),
 							'name'   => basename($name),
