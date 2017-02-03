@@ -461,7 +461,7 @@ class Order {
 				if ($this->_email_enabled) {
 					foreach ($this->_order_inventory as $item) {
 						// Send Gift Certificate
-						if (!empty($item['custom']) && !empty($item['coupon_id'])) {
+						if (!empty($item['custom']) && !empty($item['coupon_id']) && $item['digital']) {
 							$this->_sendCoupon($item['coupon_id'], unserialize($item['custom']));
 						}
 					}

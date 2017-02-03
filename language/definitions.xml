@@ -711,6 +711,7 @@
     <string name="please_select" introduced="5.0.7"><![CDATA[Please Select]]></string>
     <string name="popularity" introduced="5.1.6"><![CDATA[Popularity]]></string>
     <string name="post" introduced="5.0.0"><![CDATA[Post]]></string>
+    <string name="postal" introduced="6.1.5"><![CDATA[Postal]]></string>
     <string name="preview" introduced="5.0.0"><![CDATA[Preview]]></string>
     <string name="price" introduced="5.0.0"><![CDATA[Price]]></string>
     <string name="price_cost" introduced="5.0.9"><![CDATA[Cost Price]]></string>
