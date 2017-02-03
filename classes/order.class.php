@@ -1275,11 +1275,12 @@ class Order {
 					if(($return = $mailer->sendEmail($data['email'], $content)) !== false) {
 						$GLOBALS['db']->update('CubeCart_coupons', array('email_sent' => 1), array('coupon_id' => (int)$coupon_id));
 					} else {
+						$error = 'Failed to send gift card by email. Please check <a href="?_g=settings#Advanced_Settings">email configuration</a>.';
 						if(isset($mailer->ErrorInfo) && !empty($mailer->ErrorInfo)) {
 							trigger_error($mailer->ErrorInfo, E_USER_WARNING);
-							$GLOBALS['gui']->setError('Failed to send gift card by email. Please check the <a href="?_g=settings&node=errorlog#system_error_log">error log</a> and <a href="?_g=settings#Advanced_Settings">email configuration</a>.', true);
+							$GLOBALS['gui']->setError($error.' A specific error message may be found in the <a href="?_g=settings&node=errorlog#system_error_log">error log</a>.', true);
 						} else {
-							$GLOBALS['gui']->setError('Failed to send gift card by email. Please check <a href="?_g=settings#Advanced_Settings">email configuration</a>.', true);
+							$GLOBALS['gui']->setError($error, true);
 						}
 					}
 					return $return;
