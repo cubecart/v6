@@ -1272,7 +1272,17 @@ class Order {
 				$data['storeURL']  = $GLOBALS['storeURL'];
 				if (($content = $mailer->loadContent('cart.gift_certificate', $this->_order_summary['lang'], array_merge($this->_order_summary, $data, $coupon[0]))) !== false) {
 					$GLOBALS['db']->update('CubeCart_coupons', array('email_sent' => 1), array('coupon_id' => (int)$coupon_id));
-					return $mailer->sendEmail($data['email'], $content);
+					if(($return = $mailer->sendEmail($data['email'], $content)) !== false) {
+						$GLOBALS['db']->update('CubeCart_coupons', array('email_sent' => 1), array('coupon_id' => (int)$coupon_id));
+					} else {
+						if(isset($mailer->ErrorInfo) && !empty($mailer->ErrorInfo)) {
+							trigger_error($mailer->ErrorInfo, E_USER_WARNING);
+							$GLOBALS['gui']->setError('Failed to send gift card by email. Please check the <a href="?_g=settings&node=errorlog#system_error_log">error log</a> and <a href="?_g=settings#Advanced_Settings">email configuration</a>.', true);
+						} else {
+							$GLOBALS['gui']->setError('Failed to send gift card by email. Please check <a href="?_g=settings#Advanced_Settings">email configuration</a>.', true);
+						}
+					}
+					return $return;
 				}
 			}
 		}
