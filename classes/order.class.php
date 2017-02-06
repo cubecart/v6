@@ -363,7 +363,8 @@ class Order {
 	 * @return bool
 	 */
 	public function orderStatus($status_id, $order_id, $force = false) {
-		global $glob;
+		
+		foreach ($GLOBALS['hooks']->load('class.order.order_status_start') as $hook) include $hook;
 
 		// Update order status, manage stock, and email if required
 		if (!empty($status_id) && !empty($order_id)) {
@@ -488,6 +489,8 @@ class Order {
 				// Cancelled
 				$content = $mailer->loadContent('cart.order_cancelled', $order_summary['lang'], $this->_order_summary);
 				break;
+			default:
+				foreach ($GLOBALS['hooks']->load('class.order.order_status_switch') as $hook) include $hook;
 			}
 			if ($this->_email_enabled && isset($content)) {
 				$mailer->sendEmail($this->_order_summary['email'], $content);
@@ -506,6 +509,7 @@ class Order {
 				//$status_id = self::ORDER_COMPLETE;
 				$this->orderStatus(3, $order_id);
 			}
+			foreach ($GLOBALS['hooks']->load('class.order.order_status_return') as $hook) include $hook;
 			return true;
 		}
 		return false;
