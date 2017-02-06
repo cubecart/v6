@@ -30,7 +30,7 @@
          </div>
          <div class="row">
             <div class="small-12 columns">
-               <p><a href="{$STORE_URL}/index.php?_a=recover">{$LANG.account.forgotten_password}</a></p>
+               <p><a href="{$URL.recover}">{$LANG.account.forgotten_password}</a></p>
             </div>
          </div>
          <div class="row">
@@ -47,7 +47,7 @@
    <div class="large-6 columns show-for-medium-up">
       <h2>{$LANG.account.register}</h2>
       <p>{$LANG.account.register_welcome}</p>
-      <a href="{$STORE_URL}/register.html" class="button">{$LANG.account.register}</a>
+      <a href="{$URL.register}" class="button">{$LANG.account.register}</a>
    </div>
 </div>
 <div class="hide" id="validate_email">{$LANG.common.error_email_invalid}</div>

@@ -2171,6 +2171,10 @@ class Cubecart {
 			$redir = 'index.php?_a=account';
 		}
 		$GLOBALS['smarty']->assign('REDIRECT_TO', $redir);
+		$GLOBALS['smarty']->assign('URL', array(
+			'register' => $GLOBALS['seo']->buildURL('register'),
+			'recover' => $GLOBALS['seo']->buildURL('recover'))
+		);
 
 		$content = $GLOBALS['smarty']->fetch('templates/content.login.php');
 		$GLOBALS['smarty']->assign('PAGE_CONTENT', $content);

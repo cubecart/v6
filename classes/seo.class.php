@@ -74,7 +74,7 @@ class SEO {
 	 *
 	 * @var array of strings
 	 */
-	private $_static_sections = array('saleitems', 'certificates', 'trackback', 'contact', 'search', 'login', 'register');
+	private $_static_sections = array('recover', 'saleitems', 'certificates', 'trackback', 'contact', 'search', 'login', 'register');
 
 	/**
 	 * Class instance
@@ -925,6 +925,11 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
 
 		switch ($type) {
 			/*! Static */
+		case 'recover':
+			$array = array(
+				'_a' => 'recover'
+			);
+			break;
 		case 'search':
 			$array = array(
 				'_a' => 'search'
