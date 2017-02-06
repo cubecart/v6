@@ -42,7 +42,6 @@ $filemanager = new FileManager(FileManager::FM_FILETYPE_IMG);
 if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PERM_EDIT)) {
 	// Save Product
 	$suppress  = false;
-	// updated acts like a switch so that we know if the product has been changed or not.
 	$inserted = false;
 
 	// Moved below so suppress/updated/inserted can be affected
