@@ -252,6 +252,7 @@ class Catalogue {
 		if (!empty($products)) {
 			foreach ($products as $product) {
 				$product = $this->getProductPrice($product);
+				// ctrl_stock True when a product is considered 'in stock' for purposes of allowing a purchase, either by actually being in stock or via certain settings
 				$product['ctrl_stock'] = (!$product['use_stock_level'] || $GLOBALS['config']->get('config', 'basket_out_of_stock_purchase') || ($product['use_stock_level'] && $GLOBALS['catalogue']->getProductStock($product['product_id'], null, true) > 0)) ? true : false;
 				$this->productAssign($product, false);
 				$product['url'] = $GLOBALS['seo']->buildURL('prod', $product['product_id'], '&');
