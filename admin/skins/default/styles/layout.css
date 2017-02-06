@@ -1099,3 +1099,8 @@ ul.quick_links li#help_menu ul li:not(:last-child) {
 #database .fa-check {
     color: #9aaf4f;
 }
+#database .index_error {
+    background-color: #FF6600;
+    color: #fff;
+    text-indent: 5px; 
+}

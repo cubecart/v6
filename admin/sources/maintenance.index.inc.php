@@ -826,10 +826,11 @@ if (isset($database_result) && $database_result) {
 
 		$index_errors = array();
 		foreach($index_map[strtolower($index['Table'])] as $column => $key) {
+			$table_name = str_replace('cubecart', 'CubeCart', $index['Table']);
 			if(!isset($actual_map[$index['Table']][$column])) {
-				$index_errors[] = "No key type $key set on ".$index['Table'].".".$column;	
+				$index_errors[] = sprintf($lang['maintain']['missing_index'], $table_name.'.'.$column, $key);	
 			} elseif(isset($actual_map[$index['Table']][$column]) && $actual_map[$index['Table']][$column]!==$key) {
-				$index_errors[] = $index['Table'].".".$column.' has a key type '.$actual_map[$index['Table']][$column]." but expecting $key";
+				$index_errors[] = sprintf($lang['maintain']['wrong_index'], $table_name.'.'.$column, $actual_map[$index['Table']][$column],$key);
 			}
 		}
 
