@@ -519,122 +519,122 @@ if (isset($database_result) && $database_result) {
 } elseif (($tables = $GLOBALS['db']->getRows()) !== false) {
 	
 	$index_map = array (
-		'CubeCart_access_log' => array (
+		'cubecart_access_log' => array (
 			'log_id' => 'PRIMARY'
 		),
-		'CubeCart_addressbook' => array (
+		'cubecart_addressbook' => array (
 			'address_id' => 'PRIMARY',
 			'customer_id' => 'KEY'
 		),
-		'CubeCart_admin_log' => array (
+		'cubecart_admin_log' => array (
 			'log_id' => 'PRIMARY',
 			'admin_id' => 'KEY'
 		),
-		'CubeCart_admin_error_log' => array (
+		'cubecart_admin_error_log' => array (
 			'log_id' => 'PRIMARY',
 			'admin_id' => 'KEY'
 		),
-		'CubeCart_admin_users' => array (
+		'cubecart_admin_users' => array (
 			'admin_id' => 'PRIMARY'
 		),
-		'CubeCart_alt_shipping' => array (
+		'cubecart_alt_shipping' => array (
 			'id' => 'PRIMARY'
 		),
-		'CubeCart_alt_shipping_prices' => array (
+		'cubecart_alt_shipping_prices' => array (
 			'id' => 'PRIMARY'
 		),
-		'CubeCart_blocker' => array (
+		'cubecart_blocker' => array (
 			'block_id' => 'PRIMARY',
 			'location' => 'KEY',
 			'last_attempt' => 'KEY'
 		),
-		'CubeCart_category' => array (
+		'cubecart_category' => array (
 			'cat_id' => 'PRIMARY',
 			'cat_parent_id' => 'KEY'
 		),
-		'CubeCart_category_index' => array (
+		'cubecart_category_index' => array (
 			'id' => 'PRIMARY',
 			'cat_id' => 'KEY',
 			'product_id' => 'KEY'
 		),
-		'CubeCart_category_language' => array (
+		'cubecart_category_language' => array (
 			'translation_id' => 'PRIMARY',
 			'cat_id' => 'KEY'
 		),
-		'CubeCart_code_snippet' => array (
+		'cubecart_code_snippet' => array (
 			'snippet_id' => 'PRIMARY',
 			'unique_id' => 'UNIQUE KEY',
 			'hook_trigger' => 'KEY'
 		),
-		'CubeCart_config' => array (
+		'cubecart_config' => array (
 			'name' => 'UNIQUE KEY'
 		),
-		'CubeCart_coupons' => array (
+		'cubecart_coupons' => array (
 			'coupon_id' => 'PRIMARY',
 			'code' => 'UNIQUE KEY'
 		),
-		'CubeCart_currency' => array (
+		'cubecart_currency' => array (
 			'currency_id' => 'PRIMARY',
 			'code' => 'UNIQUE KEY'
 		),
-		'CubeCart_customer' => array (
+		'cubecart_customer' => array (
 			'customer_id' => 'PRIMARY',
 			'email' => 'UNIQUE KEY',
 			'first_name' => 'FULLTEXT',
 			'last_name' => 'FULLTEXT',
 			'email' => 'FULLTEXT'
 		),
-		'CubeCart_customer_group' => array (
+		'cubecart_customer_group' => array (
 			'group_id' => 'PRIMARY'
 		),
-		'CubeCart_customer_membership' => array (
+		'cubecart_customer_membership' => array (
 			'membership_id' => 'PRIMARY',
 			'group_id' => 'KEY',
 			'customer_id' => 'KEY'
 		),
-		'CubeCart_documents' => array (
+		'cubecart_documents' => array (
 			'doc_id' => 'PRIMARY',
 			'doc_parent_id' => 'KEY'
 		),
-		'CubeCart_downloads' => array (
+		'cubecart_downloads' => array (
 			'digital_id' => 'PRIMARY'
 		),
-		'CubeCart_email_content' => array (
+		'cubecart_email_content' => array (
 			'content_id' => 'PRIMARY',
 			'content_type' => 'KEY',
 			'language' => 'KEY'
 		),
-		'CubeCart_email_template' => array (
+		'cubecart_email_template' => array (
 			'template_id' => 'PRIMARY'
 		),
-		'CubeCart_extension_info' => array (
+		'cubecart_extension_info' => array (
 			'file_id' => 'PRIMARY'
 		),
-		'CubeCart_filemanager' => array (
+		'cubecart_filemanager' => array (
 			'file_id' => 'PRIMARY',
 			'filepath' => 'KEY',
 			'filename' => 'KEY'
 		),
-		'CubeCart_geo_country' => array (
+		'cubecart_geo_country' => array (
 			'iso' => 'PRIMARY',
 			'id' => 'KEY',
 			'eu' => 'KEY'
 		),
-		'CubeCart_geo_zone' => array (
+		'cubecart_geo_zone' => array (
 			'id' => 'PRIMARY'
 		),
-		'CubeCart_history' => array (
+		'cubecart_history' => array (
 			'id' => 'PRIMARY'
 		),
-		'CubeCart_hooks' => array (
+		'cubecart_hooks' => array (
 			'hook_id' => 'PRIMARY'
 		),
-		'CubeCart_image_index' => array (
+		'cubecart_image_index' => array (
 			'id' => 'PRIMARY',
 			'file_id' => 'KEY',
 			'product_id' => 'KEY'
 		),
-		'CubeCart_inventory' => array (
+		'cubecart_inventory' => array (
 			'product_id' => 'PRIMARY',
 			'status' => 'KEY',
 			'popularity' => 'KEY',
@@ -642,79 +642,79 @@ if (isset($database_result) && $database_result) {
 			'description' => 'FULLTEXT',
 			'name' => 'FULLTEXT',
 		),
-		'CubeCart_inventory_language' => array (
+		'cubecart_inventory_language' => array (
 			'translation_id' => 'PRIMARY',
 			'name' => 'FULLTEXT',
 			'description' => 'FULLTEXT'
 		),
-		'CubeCart_lang_strings' => array (
+		'cubecart_lang_strings' => array (
 			'string_id' => 'PRIMARY',
 			'language' => 'KEY',
 			'type' => 'KEY',
 			'name' => 'KEY',
 		),
-		'CubeCart_logo' => array (
+		'cubecart_logo' => array (
 			'logo_id' => 'PRIMARY'
 		),
-		'CubeCart_manufacturers' => array (
+		'cubecart_manufacturers' => array (
 			'id' => 'PRIMARY'
 		),
-		'CubeCart_modules' => array (
+		'cubecart_modules' => array (
 			'module_id' => 'PRIMARY'
 		),
-		'CubeCart_newsletter' => array (
+		'cubecart_newsletter' => array (
 			'newsletter_id' => 'PRIMARY'
 		),
-		'CubeCart_newsletter_subscriber' => array (
+		'cubecart_newsletter_subscriber' => array (
 			'subscriber_id' => 'PRIMARY',
 			'customer_id' => 'KEY'
 		),
-		'CubeCart_options_set' => array (
+		'cubecart_options_set' => array (
 			'set_id' => 'PRIMARY'
 		),
-		'CubeCart_options_set_member' => array (
+		'cubecart_options_set_member' => array (
 			'set_member_id' => 'PRIMARY',
 			'set_id' => 'KEY'
 		),
-		'CubeCart_options_set_product' => array (
+		'cubecart_options_set_product' => array (
 			'set_product_id' => 'PRIMARY',
 			'set_id' => 'KEY',
 			'product_id' => 'KEY'
 		),
-		'CubeCart_option_assign' => array (
+		'cubecart_option_assign' => array (
 			'assign_id' => 'PRIMARY',
 			'set_member_id' => 'KEY'
 		),
-		'CubeCart_option_group' => array (
+		'cubecart_option_group' => array (
 			'option_id' => 'PRIMARY'
 		),
-		'CubeCart_option_matrix' => array (
+		'cubecart_option_matrix' => array (
 			'matrix_id' => 'PRIMARY',
 			'product_id' => 'KEY',
 			'options_identifier' => 'KEY'
 		),
-		'CubeCart_option_value' => array (
+		'cubecart_option_value' => array (
 			'value_id' => 'PRIMARY',
 			'option_id' => 'KEY'
 		),
-		'CubeCart_order_history' => array (
+		'cubecart_order_history' => array (
 			'history_id' => 'PRIMARY',
 			'cart_order_id' => 'KEY'
 		),
-		'CubeCart_order_inventory' => array (
+		'cubecart_order_inventory' => array (
 			'id' => 'PRIMARY',
 			'product_id' => 'KEY',
 			'cart_order_id' => 'KEY',
 			'options_identifier' => 'KEY'
 		),
-		'CubeCart_order_notes' => array (
+		'cubecart_order_notes' => array (
 			'note_id' => 'PRIMARY',
 			'admin_id' => 'KEY',
 			'cart_order_id' => 'KEY',
 			'time' => 'KEY',
 			'content' => 'FULLTEXT'
 		),
-		'CubeCart_order_summary' => array (
+		'cubecart_order_summary' => array (
 			'id' => 'PRIMARY',
 			'cart_order_id' => 'UNIQUE KEY',
 			'customer_id' => 'KEY',
@@ -722,25 +722,25 @@ if (isset($database_result) && $database_result) {
 			'email' => 'KEY',
 			'order_date' => 'KEY'
 		),
-		'CubeCart_order_tax' => array (
+		'cubecart_order_tax' => array (
 			'id' => 'PRIMARY',
 			'cart_order_id' => 'KEY'
 		),
-		'CubeCart_permissions' => array (
+		'cubecart_permissions' => array (
 			'permission_id' => 'PRIMARY',
 			'admin_id' => 'KEY',
 			'section_id' => 'KEY'
 		),
-		'CubeCart_pricing_group' => array (
+		'cubecart_pricing_group' => array (
 			'price_id' => 'PRIMARY',
 			'group_id' => 'KEY',
 			'product_id' => 'KEY'
 		),
-		'CubeCart_pricing_quantity' => array (
+		'cubecart_pricing_quantity' => array (
 			'discount_id' => 'PRIMARY',
 			'product_id' => 'KEY'
 		),
-		'CubeCart_reviews' => array (
+		'cubecart_reviews' => array (
 			'id' => 'PRIMARY',
 			'product_id' => 'KEY',
 			'vote_up' => 'KEY',
@@ -751,57 +751,57 @@ if (isset($database_result) && $database_result) {
 			'title' => 'FULLTEXT',
 			'review' => 'FULLTEXT'
 		),
-		'CubeCart_saved_cart' => array (
+		'cubecart_saved_cart' => array (
 			'customer_id' => 'PRIMARY'
 		),
-		'CubeCart_search' => array (
+		'cubecart_search' => array (
 			'id' => 'PRIMARY'
 		),
-		'CubeCart_sessions' => array (
+		'cubecart_sessions' => array (
 			'session_id' => 'PRIMARY',
 			'customer_id' => 'KEY',
 			'session_last' => 'KEY'
 		),
-		'CubeCart_shipping_rates' => array (
+		'cubecart_shipping_rates' => array (
 			'id' => 'PRIMARY'
 		),
-		'CubeCart_shipping_zones' => array (
+		'cubecart_shipping_zones' => array (
 			'id' => 'PRIMARY'
 		),
-		'CubeCart_system_error_log' => array (
+		'cubecart_system_error_log' => array (
 			'log_id' => 'PRIMARY'
 		),
-		'CubeCart_tax_class' => array (
+		'cubecart_tax_class' => array (
 			'id' => 'PRIMARY'
 		),
-		'CubeCart_tax_details' => array (
+		'cubecart_tax_details' => array (
 			'id' => 'PRIMARY',
 			'name' => 'UNIQUE KEY'
 		),
-		'CubeCart_tax_rates' => array (
+		'cubecart_tax_rates' => array (
 			'id' => 'PRIMARY',
 			'type_id' => 'UNIQUE KEY',
 			'details_id' => 'UNIQUE KEY',
 			'country_id' => 'UNIQUE KEY',
 			'county_id' => 'UNIQUE KEY'
 		),
-		'CubeCart_transactions' => array (
+		'cubecart_transactions' => array (
 			'id' => 'PRIMARY',
 			'order_id' => 'KEY',
 			'customer_id' => 'KEY',
 			'time' => 'KEY',
 		),
-		'CubeCart_request_log' => array (
+		'cubecart_request_log' => array (
 			'request_id' => 'PRIMARY'
 		),
-		'CubeCart_seo_urls' => array (
+		'cubecart_seo_urls' => array (
 			'path' => 'PRIMARY',
 			'id' => 'KEY',
 			'type' => 'KEY',
 			'item_id' => 'KEY',
 			'custom' => 'KEY'
 		),
-		'CubeCart_email_log' => array (
+		'cubecart_email_log' => array (
 			'id' => 'PRIMARY'
 		)
 	);
@@ -812,30 +812,38 @@ if (isset($database_result) && $database_result) {
 		$indexes = $GLOBALS['db']->misc("SHOW INDEX FROM `".$table['Name']."`");
 
 		foreach($indexes as $index) {
-			if($index['Non_unique'] == '1') {
-				$key_type = 'UNIQUE KEY';
-				var_dump($index);
-			} else if($index['Column_name']=='PRIMARY') {
+			if($index['Key_name']=='PRIMARY') {
 				$key_type = 'PRIMARY';	
 			} elseif($index['Index_type'] == 'FULLTEXT') {
 				$key_type = 'FULLTEXT';
+			} elseif($index['Non_unique'] == '0') {
+				$key_type = 'UNIQUE KEY'; 
 			} else {
 				$key_type = 'KEY';	
 			}
 			$actual_map[$index['Table']][$index['Column_name']] = $key_type;
 		}
 
-		//var_dump($actual_map);
+		$index_errors = array();
+		foreach($index_map[strtolower($index['Table'])] as $column => $key) {
+			if(!isset($actual_map[$index['Table']][$column])) {
+				$index_errors[] = "No key type $key set on ".$index['Table'].".".$column;	
+			} elseif(isset($actual_map[$index['Table']][$column]) && $actual_map[$index['Table']][$column]!==$key) {
+				$index_errors[] = $index['Table'].".".$column.' has a key type '.$actual_map[$index['Table']][$column]." but expecting $key";
+			}
+		}
 
 		$table['Data_free'] = ($table['Data_free'] > 0) ? formatBytes($table['Data_free'], true) : '-';
 		$table_size   = $table['Data_length']+$table['Index_length'];
 		$data_length  = formatBytes($table_size);
 		$table['Data_length'] = ($table_size>0) ? $data_length['size'].' '.$data_length['suffix'] : '-';
 		$table['Name_Display'] = $GLOBALS['config']->get('config', 'dbdatabase').'.'.$table['Name'];
+		$table['errors'] = count($index_errors)>0 ? implode('<br>', $index_errors) : false;
 		$smarty_data['tables'][] = $table;
 	}
 	$GLOBALS['smarty']->assign('TABLES', $smarty_data['tables']);
 }
+
 
 ## Existing Backups
 $files = glob('{backup/*.sql,backup/*.zip}', GLOB_BRACE);
