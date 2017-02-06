@@ -732,8 +732,9 @@ if (isset($_GET['action'])) {
 
 		foreach ($orders as $order) {
 			$order['name']   = (isset($order['name']) && !empty($order['name'])) ? $order['name'] : sprintf('%s %s %s', $order['title'], $order['first_name'], $order['last_name']);
-
-			$order['icon']   = ($order['type']==2 || empty($order['customer_id'])) ? 'user_ghost' : 'user_registered';
+			$order['icon']   = ($order['type']==2 || empty($order['customer_id'])) ? 'user_ghost' : 'user_registered';// depreciated since 6.1.5
+			$order['type'] = (empty($order['customer_id'])) ? 2 : $order['type'];
+			$order['cust_type'] = array("1" => 'title_key_registered', "2" => 'title_key_unregistered');
 			$order['link_edit']  = currentPage(array('print_hash'), array('action' => 'edit', 'order_id' => $order['cart_order_id']));
 			$order['link_customer'] = ($order['customer_id']) ? "?_g=customers&action=edit&customer_id=".$order['customer_id'] : "#";
 			$order['link_delete'] = currentPage(array('print_hash'), array('delete' => $order['cart_order_id']));

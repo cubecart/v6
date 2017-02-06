@@ -240,7 +240,9 @@ if ($unsettled_orders) {
 
 	foreach ($unsettled_orders as $order) {
 		$cart_order_ids[] = "'".$order['cart_order_id']."'";
-		$order['icon'] = $customer_type[$order['customer_id']]==1 ? 'user_registered' : 'user_ghost';
+		$order['icon'] = $customer_type[$order['customer_id']]==1 ? 'user_registered' : 'user_ghost'; // depreciated since 6.1.5
+		$order['type'] = (empty($customer_type[$order['customer_id']])) ? 2 : $customer_type[$order['customer_id']];
+		$order['cust_type'] = array("1" => 'title_key_registered', "2" => 'title_key_unregistered');
 		$order['date'] = formatTime($order['order_date']);
 		$order['total'] = Tax::getInstance()->priceFormat($order['total']);
 		$order['status'] = $lang['order_state']['name_'.$order['status']];

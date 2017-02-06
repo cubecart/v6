@@ -144,12 +144,10 @@
             <tr>
                <td align="center"><input type="checkbox" id="" name="multi-order[]" value="{$order.cart_order_id}" class="all-orders"></td>
                <td><a href="?_g=orders&action=edit&order_id={$order.cart_order_id}&source=dashboard">{$order.cart_order_id}</a></td>
-               <td>
-                  {if $order.icon=='user_registered'}
-                  <i class="fa fa-user registered" title="{$LANG.customer.title_key_registered}"></i>
-                  {else}
-                  <i class="fa fa-user unregistered" title="{$LANG.customer.title_key_unregistered}"></i>
-                  {/if}
+               <td align="center">
+                  {append "cust_type" "registered" index="1"}
+                  {append "cust_type" "unregistered" index="2"}
+                  <i class="fa fa-user {$cust_type[$order.type]}" title="{$LANG.customer[$order.cust_type[$order.type]]}"></i>
                </td>
                <td>
                   <a href="?_g=customers&action=edit&customer_id={$order.customer_id}">{if empty($order.first_name) && empty($order.last_name)}
