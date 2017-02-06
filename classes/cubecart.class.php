@@ -1383,7 +1383,7 @@ class Cubecart {
 		// Contact Form
 		$contact = $GLOBALS['config']->get('Contact_Form');
 		if ($contact && $contact['status']) {
-			$GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->documents['document_contact'], currentPage());
+			$GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->documents['document_contact'], $GLOBALS['seo']->buildURL('contact'));
 			if (isset($_POST['contact'])) {
 
 				$error = false;
