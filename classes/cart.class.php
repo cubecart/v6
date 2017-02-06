@@ -788,7 +788,6 @@ class Cart {
 					$product['price_display']  = ($product['price_display']+$product['option_price_ignoring_tax'])*$item['quantity'];
 				}
 
-
 				## Update Subtotals
 				if($product['price']<0) $product['price'] = 0;
 				$product['line_price'] = $product['price'];
