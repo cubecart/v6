@@ -43,7 +43,6 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 	// Save Product
 	$suppress  = false;
 	// updated acts like a switch so that we know if the product has been changed or not.
-	$updated = false;
 	$inserted = false;
 
 	// Moved below so suppress/updated/inserted can be affected
@@ -102,7 +101,6 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 		$record['updated'] = date('Y-m-d H:i:s', time());
 		if ($GLOBALS['db']->update('CubeCart_inventory', $record, array('product_id' => $_POST['product_id']), true, 'all')) {
 			$product_id = $_POST['product_id'];
-			$updated = true;
 		}
 
 	} else {
@@ -144,7 +142,6 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 						$GLOBALS['db']->update('CubeCart_option_assign', array('set_member_id' => $member['set_member_id']), $record);
 						unset($record);
 					}
-					$updated = true;
 					$option_update = true;
 				}
 			}
@@ -163,7 +160,6 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 					unset($member_list);
 				}
 				$GLOBALS['db']->delete('CubeCart_options_set_product', array('set_product_id' => (int)$set_product_id));
-				$updated = true;
 				$option_update = true;
 			}
 		}
@@ -172,7 +168,6 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 	if (isset($_POST['option_remove']) && is_array($_POST['option_remove']) && !empty($_POST['option_remove']) && Admin::getInstance()->permissions('products', CC_PERM_DELETE)) {
 		foreach ($_POST['option_remove'] as $assign_id) {
 			$GLOBALS['db']->delete('CubeCart_option_assign', array('assign_id' => (int)$assign_id, 'product' => $product_id));
-			$updated = true;
 		}
 	}
 
@@ -194,12 +189,9 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 				$record['value_id']  = $set_member[0]['value_id'];
 
 				$record['set_member_id']= (int)$set_member_id;
-				if ($GLOBALS['db']->insert('CubeCart_option_assign', $record)) {
-					$updated = true;
-				}
+				$GLOBALS['db']->insert('CubeCart_option_assign', $record);
 			}
 			unset($record);
-			$updated = true;
 		}
 	}
 
@@ -215,7 +207,6 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 			$GLOBALS['db']->update('CubeCart_option_assign', $values, array('assign_id' => $assign_id), true,'all');
 		}
 		unset($values);
-		$updated = true;
 	}
 
 	// Add New Option
@@ -247,9 +238,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 
 			if (!$GLOBALS['db']->query($query)) {
 				if (!$GLOBALS['db']->select('CubeCart_option_assign', array('assign_id'), array('product' => $product_id, 'option_id' => $record['option_id'], 'value_id' => $record['value_id']))) {
-					if ($GLOBALS['db']->insert('CubeCart_option_assign', $record)) {
-						$updated = true;
-					}
+					$GLOBALS['db']->insert('CubeCart_option_assign', $record);
 				}
 			}
 		}
@@ -277,9 +266,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 	// Update
 	if (isset($_POST['discount']) && is_array($_POST['discount'])) {
 		foreach ($_POST['discount'] as $discount_id => $discount_data) {
-			if ($GLOBALS['db']->update('CubeCart_pricing_quantity', $discount_data, array('discount_id' => (int)$discount_id, 'product_id' => $product_id))) {
-				$updated = true;
-			}
+			$GLOBALS['db']->update('CubeCart_pricing_quantity', $discount_data, array('discount_id' => (int)$discount_id, 'product_id' => $product_id));
 		}
 	}
 	// Add
@@ -293,9 +280,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 					'price'   => (float)$discount['price']
 				);
 				if (!$GLOBALS['db']->select('CubeCart_pricing_quantity', array('discount_id'), array('product_id' => $product_id, 'group_id' => (int)$group_id, 'quantity' => (int)$discount['quantity']))) {
-					if ($GLOBALS['db']->insert('CubeCart_pricing_quantity', $record)) {
-						$updated = true;
-					}
+					$GLOBALS['db']->insert('CubeCart_pricing_quantity', $record);
 				}
 			}
 		}
@@ -303,21 +288,15 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 	// Remove
 	if (isset($_POST['discount_delete']) && is_array($_POST['discount_delete']) && Admin::getInstance()->permissions('products', CC_PERM_DELETE)) {
 		foreach ($_POST['discount_delete'] as $discount_id) {
-			if ($GLOBALS['db']->delete('CubeCart_pricing_quantity', array('discount_id' => (int)$discount_id, 'product_id' => $product_id))) {
-				$updated = true;
-			}
+			$GLOBALS['db']->delete('CubeCart_pricing_quantity', array('discount_id' => (int)$discount_id, 'product_id' => $product_id));
 		}
 	}
 
 	#############################################
 	// Pricing by group
 	if (isset($_POST['group']) && is_array($_POST['group'])) {
-		if (($before = $GLOBALS['db']->select('CubeCart_pricing_group', array('group_id', 'product_id', 'price', 'sale_price', 'tax_type', 'tax_inclusive'), array('product_id' => (int)$product_id))) !== false) {
-			$GLOBALS['db']->delete('CubeCart_pricing_group', array('product_id' => (int)$product_id));
-			$hash_before = md5(serialize($before));
-		} else {
-			$hash_before = null;
-		}
+		
+		$GLOBALS['db']->delete('CubeCart_pricing_group', array('product_id' => (int)$product_id));
 		$record = array();
 		foreach ($_POST['group'] as $group_id => $group) {
 			foreach ($group as $field => $value) {
@@ -328,22 +307,12 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 			if (empty($group['price'])) continue;
 			$GLOBALS['db']->insert('CubeCart_pricing_group', array_merge($where, $record));
 		}
-		if (($after = $GLOBALS['db']->select('CubeCart_pricing_group', array('group_id', 'product_id', 'price', 'sale_price', 'tax_type', 'tax_inclusive'), array('product_id' => (int)$product_id))) !== false) {
-			$hash_after = md5(serialize($after));
-		} else {
-			$hash_after = null;
-		}
-		if ($hash_before !== $hash_after) {
-			$updated = true;
-		}
 	}
 
 	#############################################
 	// Filemanager - Images
 	if (isset($_POST['imageset']) && is_array($_POST['imageset'])) {
-		if($filemanager->assignProductImages($_POST['imageset'], $product_id)) {
-			$updated = true;
-		}
+		$filemanager->assignProductImages($_POST['imageset'], $product_id);
 	}
 
 	// Reviews
@@ -356,11 +325,8 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 	// Categories
 	if (isset($_POST['categories']) && is_array($_POST['categories'])) {
 		// md5 compare of before / after so we know if changes have been made or not
-		if (($before = $GLOBALS['db']->select('CubeCart_category_index', array('cat_id', 'product_id', 'primary'), array('product_id' => (int)$product_id))) !== false) {
-			$GLOBALS['db']->delete('CubeCart_category_index', array('product_id' => (int)$product_id));
-			$hash_before = md5(serialize($before));
-		}
-
+		$GLOBALS['db']->delete('CubeCart_category_index', array('product_id' => (int)$product_id));
+		
 		// If they haven't chosen one we can choose the first one which is actually most likely to be top level
 		if (empty($_POST['primary_cat'])) {
 			$cat_post_keys  = array_keys($_POST['categories']);
@@ -380,11 +346,6 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 
 		$GLOBALS['db']->update('CubeCart_inventory', array('cat_id' => $primary_cat), array('product_id' => $product_id));
 
-		// md5 compare of before / after so we know if changes have been made or not
-		if (($after = $GLOBALS['db']->select('CubeCart_category_index', array('cat_id', 'product_id', 'primary'), array('product_id' => (int)$product_id))) !== false) {
-			$hash_after = md5(serialize($after));
-		}
-		if (isset($hash_before, $hash_after) && $hash_before !== $hash_after) $updated = true;
 	}
 	if (!$category_assigned) {
 		$GLOBALS['main']->setACPWarning($lang['catalogue']['no_categories_specified']);
@@ -397,9 +358,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 	if(empty($_POST['seo_path'])) {
 		$GLOBALS['seo']->delete('prod', $product_id);
 	}
-	if ($GLOBALS['seo']->setdbPath('prod', $product_id, $_POST['seo_path'])) {
-		$updated = true;
-	}
+	$GLOBALS['seo']->setdbPath('prod', $product_id, $_POST['seo_path']);
 
 	if (empty($_POST['primary_cat']) && count($_POST['categories'])>1) {
 		$GLOBALS['main']->setACPWarning($lang['catalogue']['title_category_defaulted']);
@@ -408,15 +367,11 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 			$GLOBALS['main']->setACPNotify($lang['catalogue']['notify_product_create']);
 			$_POST['previous-tab'] = ($_POST['submit_cont']) ? $_POST['previous-tab'] : null;
 			$rem_array = array('action');
-	} else if ($updated) {
+	} else {
 		$GLOBALS['main']->setACPNotify($lang['catalogue']['notify_product_update']);
 		if (!isset($option_update)) {
-			//$_POST['previous-tab'] = null;
 			$rem_array = array('action', 'product_id');
 		}
-	} else {
-		$GLOBALS['main']->setACPWarning($lang['catalogue']['error_product_update']);
-		$rem_array = false;
 	}
 
 	foreach ($GLOBALS['hooks']->load('admin.product.save.post_process') as $hook) include $hook;
