@@ -821,12 +821,13 @@ if (isset($database_result) && $database_result) {
 			} else {
 				$key_type = 'KEY';	
 			}
+			$table_name = str_replace($GLOBALS['config']->get('config', 'dbprefix'), '', $index['Table']);
 			$actual_map[$index['Table']][$index['Column_name']] = $key_type;
 		}
 
 		$index_errors = array();
 		foreach($index_map[strtolower($index['Table'])] as $column => $key) {
-			$table_name = str_replace('cubecart', 'CubeCart', $index['Table']);
+			$table_name = $GLOBALS['config']->get('config', 'dbprefix').str_replace('cubecart', 'CubeCart', $index['Table']);
 			if(!isset($actual_map[$index['Table']][$column])) {
 				$index_errors[] = sprintf($lang['maintain']['missing_index'], $table_name.'.'.$column, $key);	
 			} elseif(isset($actual_map[$index['Table']][$column]) && $actual_map[$index['Table']][$column]!==$key) {
