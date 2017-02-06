@@ -1775,7 +1775,7 @@ class Cubecart {
 	}
 
 	/**
-	 * Display gateways (Semi depreciated)
+	 * Display gateways (Semi deprecated)
 	 */
 	private function _displayGateways($name = false) {
 		$where = array('status' => '1');

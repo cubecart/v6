@@ -172,7 +172,7 @@ if (isset($_GET['plugin']) && isset($plugins[(string)$_GET['plugin']]) && !is_nu
 			if (is_dir($plugin_path)) {
 				$hook_name = 'admin.'.basename($plugin_path);
 				$selected = ($hook_data['trigger']==$hook_name) ? ' selected="selected"' : '';
-				$smarty_data['triggers'][] = array('trigger' => $hook_name, 'depreciated' => 0, 'selected' => $selected);
+				$smarty_data['triggers'][] = array('trigger' => $hook_name, 'deprecated' => 0, 'selected' => $selected);
 			}
 		}
 
