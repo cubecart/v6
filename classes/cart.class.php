@@ -791,6 +791,8 @@ class Cart {
 
 				## Update Subtotals
 				$product['line_price'] = $product['price'];
+				if($product['price']<0) $product['price'] = 0;
+				if($product['line_price']<0) $product['line_price'] = 0;
 				$product['price']  = $product['price'] * $item['quantity'];
 
 				$this->_subtotal  += $product['price'];
