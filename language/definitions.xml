@@ -307,7 +307,7 @@
     <string name="error_option_set_delete" introduced="5.0.0"><![CDATA[Unable to delete option set.]]></string>
     <string name="error_product_deleted" introduced="5.0.0"><![CDATA[Failed to delete product(s).]]></string>
     <string name="error_product_search" introduced="5.0.0"><![CDATA[No matching products found.]]></string>
-    <string name="error_product_update" introduced="5.0.0"><![CDATA[Failed to update product.]]></string>
+    <string name="error_product_update" introduced="5.0.0"><![CDATA[No product changes were made.]]></string>
     <string name="error_products_letter" introduced="5.0.0"><![CDATA[No products start with '%s'.]]></string>
     <string name="error_review_submit" introduced="5.0.0"><![CDATA[There was an error submitting your review.]]></string>
     <string name="error_search_no_results" introduced="5.0.0"><![CDATA[No matching products found. Please try again.]]></string>

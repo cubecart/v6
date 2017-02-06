@@ -24,6 +24,7 @@ class Catalogue {
 	private $_category_status_prod_id = array();
 	private $_categoryData;
 	private $_productData;
+	private $_productHash = array();
 	private $_pathElements;
 	private $_category_translations = false;
 	private $_option_required = false;
@@ -1000,6 +1001,34 @@ class Catalogue {
 
 		return false;
 	}
+	/**
+	 * Get product hash identifier
+	 *
+	 * @param int $product_id
+	 * @param int $id
+	 * @return string/false
+	 */
+	public function getProductHash($product_id, $id) {
+		
+		$inventory = $GLOBALS['db']->select('CubeCart_inventory', false, array('product_id' => $product_id));
+		
+		if($inventory == false) return false;
+
+		$data = array(
+			$inventory,
+			$GLOBALS['db']->select('CubeCart_category_index', array('cat_id','primary'), array('product_id' => $product_id)),
+			$GLOBALS['db']->select('CubeCart_option_assign', false, array('product' => $product_id)),
+			$GLOBALS['db']->select('CubeCart_option_matrix', false, array('product_id' => $product_id)),
+			$GLOBALS['db']->select('CubeCart_reviews', false, array('product_id' => $product_id)),
+			$GLOBALS['db']->select('CubeCart_image_index', false, array('product_id' => $product_id)),
+			$GLOBALS['db']->select('CubeCart_pricing_group', false, array('product_id' => $product_id)),
+			$GLOBALS['db']->select('CubeCart_pricing_quantity', false, array('product_id' => $product_id)),
+			$GLOBALS['db']->select('CubeCart_inventory_language', false, array('product_id' => $product_id)),
+			$GLOBALS['db']->select('CubeCart_options_set_product', false, array('product_id' => $product_id)),
+			$GLOBALS['db']->select('CubeCart_seo_urls', false, array('type' => 'prod', 'item_id' => $product_id))
+		);
+		return $this->_productHash[$id] = md5(serialize($data));
+	}
 
 	/**
 	 * Get options for specific product
@@ -1506,6 +1535,21 @@ class Catalogue {
 			}
 		}
 		return (int)$count;
+	}
+
+	/**
+	 * Check two hashes match
+	 *
+	 * @param string $hash1
+	 * @param string $hash2
+	 * @return bool
+	 */
+	public function productHashMatch($hash1, $hash2) {
+		if($this->_productHash[$hash1] === $this->_productHash[$hash2]) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**

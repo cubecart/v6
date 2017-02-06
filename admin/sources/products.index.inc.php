@@ -73,6 +73,9 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 	}
 
 	if (!empty($_POST['product_id']) && is_numeric($_POST['product_id'])) {
+
+		$GLOBALS['catalogue']->getProductHash($_POST['product_id'], "before");
+
 		$old_product_data = $GLOBALS['db']->select('CubeCart_inventory', array('name', 'digital'), array('product_id' => $_POST['product_id']), false, false, false, false);
 
 		$product_id = $_POST['product_id'];
@@ -97,7 +100,6 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 		    	}
 		  	}
 		}
-		$record['updated'] = date('Y-m-d H:i:s', time());
 		if ($GLOBALS['db']->update('CubeCart_inventory', $record, array('product_id' => $_POST['product_id']), true, 'all')) {
 			$product_id = $_POST['product_id'];
 		}
@@ -367,14 +369,20 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 			$_POST['previous-tab'] = ($_POST['submit_cont']) ? $_POST['previous-tab'] : null;
 			$rem_array = array('action');
 	} else {
-		$GLOBALS['main']->setACPNotify($lang['catalogue']['notify_product_update']);
-		if (!isset($option_update)) {
-			$rem_array = array('action', 'product_id');
+		$GLOBALS['catalogue']->getProductHash($_POST['product_id'], "after");
+		if($GLOBALS['catalogue']->productHashMatch('before', 'after')) {
+			$GLOBALS['main']->setACPWarning($lang['catalogue']['error_product_update']);
+			$rem_array = false;
+		} else {
+			$GLOBALS['db']->update('CubeCart_inventory', array('updated' => date('Y-m-d H:i:s', time())), array('product_id' => $product_id));
+			$GLOBALS['main']->setACPNotify($lang['catalogue']['notify_product_update']);
+			if (!isset($option_update)) {
+				$rem_array = array('action', 'product_id');
+			}	
 		}
 	}
 
 	foreach ($GLOBALS['hooks']->load('admin.product.save.post_process') as $hook) include $hook;
-
 	
 	if (isset($_POST['submit_cont'])) {
 		httpredir(currentPage(null, array('action' => 'edit', 'product_id' => (int)$product_id)));
