@@ -803,10 +803,21 @@ if (isset($database_result) && $database_result) {
 		),
 		'cubecart_email_log' => array (
 			'id' => 'PRIMARY'
+		),
+		'CubeCart_order_notes' => array (
+			'note_id' => 'PRIMARY',
+			'admin_id' => 'KEY',
+			'cart_order_id' => 'KEY',
+			'time' => 'KEY',
+			'content' => 'FULLTEXT',
+		),
+		'CubeCart_access_log' => array (
+			'log_id' => 'PRIMARY'
 		)
 	);
-	$actual_map = array();
 
+	$actual_map = array();
+	
 	foreach ($tables as $table) {
 		// Get index and map them
 		$indexes = $GLOBALS['db']->misc("SHOW INDEX FROM `".$table['Name']."`");
