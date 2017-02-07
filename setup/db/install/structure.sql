@@ -486,7 +486,10 @@ CREATE TABLE IF NOT EXISTS `CubeCart_modules` (
 	`default` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`countries` TINYTEXT DEFAULT NULL,
 	`position` int(11) NOT NULL DEFAULT '1',
-	PRIMARY KEY `module_id` (`module_id`)
+	PRIMARY KEY `module_id` (`module_id`),
+	KEY `folder` (`folder`),
+	KEY `status` (`status`),
+	KEY `module` (`module`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_newsletter` (

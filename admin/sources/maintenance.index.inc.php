@@ -651,7 +651,7 @@ if (isset($database_result) && $database_result) {
 			'string_id' => 'PRIMARY',
 			'language' => 'KEY',
 			'type' => 'KEY',
-			'name' => 'KEY',
+			'name' => 'KEY'
 		),
 		'cubecart_logo' => array (
 			'logo_id' => 'PRIMARY'
@@ -660,7 +660,10 @@ if (isset($database_result) && $database_result) {
 			'id' => 'PRIMARY'
 		),
 		'cubecart_modules' => array (
-			'module_id' => 'PRIMARY'
+			'module_id' => 'PRIMARY',
+			'folder' => 'KEY',
+			'status' => 'KEY',
+			'module' => 'KEY'
 		),
 		'cubecart_newsletter' => array (
 			'newsletter_id' => 'PRIMARY'

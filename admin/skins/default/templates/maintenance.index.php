@@ -196,7 +196,7 @@
 	  		<td align="center">{if $table.errors}
 	  			<i class="fa fa-exclamation-triangle" aria-hidden="true" title="{$table.errors}"></i>
 	  		{else}
-	  			<i class="fa fa-check" aria-hidden="true" title="No problems found."></i>
+	  			{$LANG.common.ok}
 	  		{/if}</td>
 	  	  </tr>
 	  	  {if $table.errors}
