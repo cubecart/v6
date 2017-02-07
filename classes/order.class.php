@@ -375,6 +375,7 @@ class Order {
 			// Insert order status if it's changed
 			if ((int)$status_id !== (int)$currentStatus[0]['status'] || $force) {
 				$this->_addHistory($order_id, $status_id);
+				$this->_email_enabled = true;
 			} else { // Don't send out emails already sent!
 				$this->_email_enabled = false;
 				return false;
