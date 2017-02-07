@@ -236,7 +236,18 @@ class SEO {
 			if (($existing = $GLOBALS['db']->select('CubeCart_seo_urls', 'path', array('type' => $type))) !== false) {
 				$path = $existing[0]['path'];
 			} else {
+				/* Force static English SEO paths until we have improved SEO for languages */
+				$current_language = $GLOBALS['language']->current();
+				$reset_language = false;
+				if($current_language!=='en-GB') {
+					$GLOBALS['language']->change('en-GB');
+					$GLOBALS['language']->loadDefinitions('default');
+					$reset_language = true;
+				}
 				$path = (!empty($GLOBALS['language']->navigation['seo_path_'.$type])) ? $GLOBALS['language']->navigation['seo_path_'.$type] : $type;
+				if($reset_language) {
+					$GLOBALS['language']->change($current_language);
+				}
 			}
 
 		} else { /*! Dymanic */
