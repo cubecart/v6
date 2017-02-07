@@ -7,3 +7,5 @@ ALTER TABLE `CubeCart_pricing_quantity` ADD INDEX (`quantity`); #EOQ
 ALTER TABLE `CubeCart_modules` ADD INDEX (`folder`); #EOQ
 ALTER TABLE `CubeCart_modules` ADD INDEX (`status`); #EOQ
 ALTER TABLE `CubeCart_modules` ADD INDEX (`module`); #EOQ
+ALTER TABLE `CubeCart_access_log` ADD INDEX (`time`); #EOQ
+ALTER TABLE `CubeCart_access_log` ADD INDEX (`type`); #EOQ

@@ -520,7 +520,9 @@ if (isset($database_result) && $database_result) {
 	
 	$index_map = array (
 		'cubecart_access_log' => array (
-			'log_id' => 'PRIMARY'
+			'log_id' => 'PRIMARY',
+			'time' => 'KEY',
+			'type' => 'KEY'
 		),
 		'cubecart_addressbook' => array (
 			'address_id' => 'PRIMARY',

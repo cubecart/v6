@@ -9,7 +9,9 @@ CREATE TABLE IF NOT EXISTS `CubeCart_access_log` (
 	`ip_address` VARCHAR(45) NOT NULL COMMENT 'Supports IPv6 addresses',
 	`useragent` TEXT NOT NULL,
 	`success` ENUM('Y','N') NOT NULL,
-	PRIMARY KEY (`log_id`)
+	PRIMARY KEY (`log_id`),
+	KEY `type` (`type`),
+	KEY `time` (`time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_addressbook` (
