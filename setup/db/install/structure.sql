@@ -32,7 +32,10 @@ CREATE TABLE IF NOT EXISTS `CubeCart_addressbook` (
 	`country` SMALLINT(3) UNSIGNED NOT NULL,
 	`hash` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
 	PRIMARY KEY (`address_id`),
-	KEY `customer_id` (`customer_id`)
+	KEY `customer_id` (`customer_id`),
+	KEY `billing` (`billing`),
+	KEY `default` (`default`),
+	KEY `hash` (`hash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_admin_log` (
@@ -42,7 +45,8 @@ CREATE TABLE IF NOT EXISTS `CubeCart_admin_log` (
 	`ip_address` VARCHAR(45) NOT NULL,
 	`description` TEXT NOT NULL,
 	PRIMARY KEY (`log_id`),
-	KEY `admin_id` (`admin_id`)
+	KEY `admin_id` (`admin_id`),
+	KEY `time` (`time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_admin_error_log` (

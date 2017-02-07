@@ -526,11 +526,15 @@ if (isset($database_result) && $database_result) {
 		),
 		'cubecart_addressbook' => array (
 			'address_id' => 'PRIMARY',
-			'customer_id' => 'KEY'
+			'customer_id' => 'KEY',
+			'billing' => 'KEY',
+			'hash' => 'KEY',
+			'default' => 'KEY'
 		),
 		'cubecart_admin_log' => array (
 			'log_id' => 'PRIMARY',
-			'admin_id' => 'KEY'
+			'admin_id' => 'KEY',
+			'time' => 'KEY'
 		),
 		'cubecart_admin_error_log' => array (
 			'log_id' => 'PRIMARY',
