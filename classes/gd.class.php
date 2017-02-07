@@ -99,7 +99,7 @@ class GD {
 					$this->_gdImageSource = imagecreatefromgif($file);
 					break;
 				case IMAGETYPE_JPEG:
-					$this->_jpegMemoryAllocation($file);
+					$this->_allocateMemory($file);
 					if($this->_abort) return false;
 					$this->_gdImageSource = imagecreatefromjpeg($file);
 					break;
@@ -201,10 +201,9 @@ class GD {
 	 * Calculate and set memory for jpeg
 	 * Credit to Karolis Tamutis karolis.t_AT_gmail.com
 	 *
-	 * @param string $path
 	 * @return false
 	 */
-	private function _jpegMemoryAllocation($path) {
+	private function _allocateMemory() {
 		
 		$this->_abort = false;
 		
