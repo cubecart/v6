@@ -13,6 +13,8 @@
 
 class GD {
 
+	private $_abort = false;
+
 	private $_gdImageMax;
 	private $_gdThumbMax;
 	private $_gdJpegQuality;
@@ -98,6 +100,7 @@ class GD {
 					break;
 				case IMAGETYPE_JPEG:
 					$this->_jpegMemoryAllocation($file);
+					if($this->_abort) return false;
 					$this->_gdImageSource = imagecreatefromjpeg($file);
 					break;
 				case IMAGETYPE_PNG:
@@ -162,6 +165,8 @@ class GD {
 	 * @return bool
 	 */
 	public function gdSave($filename, $resize = false, $thumbnail = false) {
+		if($this->_abort) return false;
+
 		// Do we need to resize the file before saving?
 		if ($resize || $this->_gdImageMax) {
 			$this->gdResize(($resize) ? $resize : $this->_gdImageMax);
@@ -197,11 +202,27 @@ class GD {
 	 * Credit to Karolis Tamutis karolis.t_AT_gmail.com
 	 *
 	 * @param string $path
+	 * @return false
 	 */
 	private function _jpegMemoryAllocation($path) {
+		
+		$this->_abort = false;
+		
 		$memoryNeeded = round(($this->_gdImageData[0] * $this->_gdImageData[1] * $this->_gdImageData['bits'] * $this->_gdImageData['channels'] / 8 + Pow(2, 16)) * 1.65);                
 		if (function_exists('memory_get_usage') && memory_get_usage() + $memoryNeeded > (integer) ini_get('memory_limit') * pow(1024, 2)) {                  
-		    ini_set('memory_limit', (integer) ini_get('memory_limit') + ceil(((memory_get_usage() + $memoryNeeded) - (integer) ini_get('memory_limit') * pow(1024, 2)) / pow(1024, 2)) . 'M');
+		    $new_memory_limit = (integer) ini_get('memory_limit') + ceil(((memory_get_usage() + $memoryNeeded) - (integer) ini_get('memory_limit') * pow(1024, 2)) / pow(1024, 2)) . 'M';
+		    // ini_set may be a disabled function 
+		    if(!function_exists('ini_set')) {
+		    	$this->_abort = true;
+		    	return false;
+		    }
+		    // check ini_set works
+		    if(!ini_set('memory_limit', $new_memory_limit)) {
+		    	$this->_abort = true;
+		    	return false;
+		    } else {
+		    	return true;
+		    }
 		}
 	}
 

@@ -1366,12 +1366,17 @@ class Catalogue {
 					$filename = sprintf('%s.%d%s', $match[1], $size, $match[2]);
 					## Find the source
 					$image  = CC_ROOT_DIR.'/images/'.$folder.'/'.$filename;
+					
 					if (!file_exists($image)) {
 						## Check if the target folder exists - if not, create it!
 						if (!file_exists(dirname($image))) mkdir(dirname($image), chmod_writable(), true);
 						## Generate the image
 						$gd  = new GD(dirname($image), $size, (int)$data['quality']);
-						$gd->gdLoadFile($source);
+						if(!$gd->gdLoadFile($source)) {
+							$GLOBALS['gui']->setError(sprintf($GLOBALS['language']->catalogue['gd_memory_error'], $file), true);
+							// Return source instead
+							return $this->imagePath($input, 'source', $path, $return_placeholder);	
+						}
 						$gd->gdSave(basename($image));
 					}
 				} else {

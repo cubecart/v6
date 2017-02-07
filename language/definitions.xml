@@ -236,6 +236,7 @@
     <string name="your_comments" introduced="5.0.0"><![CDATA[Delivery Notes or Additional Comments]]></string>
   </group>
   <group name="catalogue">
+    <string name="gd_memory_error" introduced="6.1.5"><![CDATA[Not enough memory to create thumbnail from `%s`. Please optimise this source image.]]></string>
     <string name="error_js_required" introduced="6.1.0"><![CDATA[JavaScript is required by this website. Please enable this in your browser settings.]]></string>
     <string name="absolute_price" introduced="6.0.7"><![CDATA[Absolute Price]]></string>
     <string name="available_for_purchase" introduced="6.0.0"><![CDATA[Available for purchase]]></string>
