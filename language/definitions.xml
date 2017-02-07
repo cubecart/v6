@@ -609,7 +609,7 @@
     <string name="add_new" introduced="5.0.0"><![CDATA[Add new]]></string>
     <string name="advanced" introduced="5.0.0"><![CDATA[Advanced]]></string>
     <string name="all" introduced="5.0.0"><![CDATA[All]]></string>
-    <string name="all_translated" introduced="5.0.0"><![CDATA[All translations have been done already. Please choose one to edit if you need to make changes.]]></string>
+    <string name="all_translated" introduced="5.0.0"><![CDATA[All translations have been done already for the installed languages. Please choose one to edit if you need to make changes or install an new language pack if you want to offer more language options.]]></string>
     <string name="amount" introduced="5.0.0"><![CDATA[Amount]]></string>
     <string name="any" introduced="5.0.0"><![CDATA[Any]]></string>
     <string name="approved" introduced="5.0.0"><![CDATA[Approved]]></string>
