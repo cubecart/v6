@@ -214,11 +214,13 @@ class GD {
 		    // ini_set may be a disabled function 
 		    if(!function_exists('ini_set')) {
 		    	$this->_abort = true;
+		    	$this->gdClear();
 		    	return false;
 		    }
 		    // check ini_set works
 		    if(!ini_set('memory_limit', $new_memory_limit)) {
 		    	$this->_abort = true;
+		    	$this->gdClear();
 		    	return false;
 		    } else {
 		    	return true;
