@@ -99,7 +99,7 @@ class GD {
 					$this->_gdImageSource = imagecreatefromgif($file);
 					break;
 				case IMAGETYPE_JPEG:
-					$this->_allocateMemory($file);
+					$this->_allocateMemory();
 					if($this->_abort) return false;
 					$this->_gdImageSource = imagecreatefromjpeg($file);
 					break;
