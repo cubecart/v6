@@ -3,7 +3,7 @@
  * CubeCart v6
  * ========================================
  * CubeCart is a registered trade mark of CubeCart Limited
- * Copyright CubeCart Limited 2015. All rights reserved.
+ * Copyright CubeCart Limited 2017. All rights reserved.
  * UK Private Limited Company No. 5323904
  * ========================================
  * Web:   http://www.cubecart.com
@@ -240,6 +240,7 @@ class Cart {
 						'name'   => $optionsArray['name'],
 						'email'   => $optionsArray['email'],
 						'message'  => $optionsArray['message'],
+						'method' => $optionsArray['method']
 					),
 				);
 			}
@@ -750,11 +751,23 @@ class Cart {
 						continue;
 					}
 					$gc = $GLOBALS['config']->get('gift_certs');
+					if(isset($item['certificate']['method']) && !empty($item['certificate']['method'])) {
+						switch($item['certificate']['method']) {
+							case 'm':
+								$method = $GLOBALS['language']->common['postal'];
+							break;
+							case 'e':
+								$method = $GLOBALS['language']->common['email'];
+							break;
+							default:
+								$method = '';
+						}
+					}
 					$product = array(
 						'quantity'  => $item['quantity'],
 						'product_code' => $gc['product_code'],
 						'price'   => $item['certificate']['value'],
-						'name'   => sprintf('%s (%s)', $GLOBALS['language']->catalogue['gift_certificate'], $GLOBALS['tax']->priceFormat($item['certificate']['value'], true)),
+						'name'   => sprintf('%s %s (%s)', $method, $GLOBALS['language']->catalogue['gift_certificate'], $GLOBALS['tax']->priceFormat($item['certificate']['value'], true)),
 						'digital'  => (bool)$item['digital'],
 						'tax_type'  => $gc['taxType'],
 						'tax_inclusive' => true,
@@ -775,8 +788,8 @@ class Cart {
 					$product['price_display']  = ($product['price_display']+$product['option_price_ignoring_tax'])*$item['quantity'];
 				}
 
-
 				## Update Subtotals
+				if($product['price']<0) $product['price'] = 0;
 				$product['line_price'] = $product['price'];
 				$product['price']  = $product['price'] * $item['quantity'];
 

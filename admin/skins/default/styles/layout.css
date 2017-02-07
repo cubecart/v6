@@ -161,7 +161,6 @@ fieldset .custom-checkbox {
 .warnText {
     color: #FFF;
     font-size: 14px;
-    font-weight: 700;
     padding: 2px 2px 2px 30px;
     text-align: left;
     cursor: pointer;
@@ -172,6 +171,13 @@ fieldset .custom-checkbox {
 }
 .warnText {
     background-color: #900
+}
+.infoText a, .warnText a {
+    color: #fff;
+    text-decoration: underline;
+}
+.infoText a:hover, .warnText a:hover {
+    text-decoration: none;
 }
 .infoText:first-child {
     background: url(../images/info-close.gif) 4px no-repeat #1b4271
@@ -1086,4 +1092,15 @@ ul.quick_links li#help_menu ul li:not(:last-child) {
 }
 .fa-sticky-note {
     color: #ffe6b8;
+}
+#database .fa-exclamation-triangle {
+    color: #FF6600;
+}
+#database .fa-check {
+    color: #9aaf4f;
+}
+#database .index_error {
+    background-color: #FF6600;
+    color: #fff;
+    padding-left: 5px; 
 }

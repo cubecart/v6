@@ -3,7 +3,7 @@
  * CubeCart v6
  * ========================================
  * CubeCart is a registered trade mark of CubeCart Limited
- * Copyright CubeCart Limited 2015. All rights reserved.
+ * Copyright CubeCart Limited 2017. All rights reserved.
  * UK Private Limited Company No. 5323904
  * ========================================
  * Web:   http://www.cubecart.com
@@ -363,7 +363,8 @@ class Order {
 	 * @return bool
 	 */
 	public function orderStatus($status_id, $order_id, $force = false) {
-		global $glob;
+		
+		foreach ($GLOBALS['hooks']->load('class.order.order_status_start') as $hook) include $hook;
 
 		// Update order status, manage stock, and email if required
 		if (!empty($status_id) && !empty($order_id)) {
@@ -374,6 +375,7 @@ class Order {
 			// Insert order status if it's changed
 			if ((int)$status_id !== (int)$currentStatus[0]['status'] || $force) {
 				$this->_addHistory($order_id, $status_id);
+				$this->_email_enabled = true;
 			} else { // Don't send out emails already sent!
 				$this->_email_enabled = false;
 				return false;
@@ -391,103 +393,105 @@ class Order {
 
 			switch ($status_id) {
 
-			case self::ORDER_PENDING;
-				// Send email to store admins if set for pending status
-				if ($GLOBALS['config']->get('config', 'admin_notify_status')=="1" && $this->_email_admin_enabled && $admin_notify = $this->_notifyAdmins()) {
+				case self::ORDER_PENDING;
+					// Send email to store admins if set for pending status
+					if ($GLOBALS['config']->get('config', 'admin_notify_status')=="1" && $this->_email_admin_enabled && $admin_notify = $this->_notifyAdmins()) {
 
-					$admin_mailer = new Mailer();
+						$admin_mailer = new Mailer();
 
-					$message_id = md5('admin.order_received'.$status_id.$order_id);
+						$message_id = md5('admin.order_received'.$status_id.$order_id);
 
-					if (!$GLOBALS['session']->has($message_id, 'email') && ($content = $admin_mailer->loadContent('admin.order_received')) !== false) {
-						$this->assignOrderDetails(null, true);
-						$admin_mailer->sendEmail($admin_notify, $content);
-						$GLOBALS['session']->set($message_id, true, 'email');
-						unset($content);
+						if (!$GLOBALS['session']->has($message_id, 'email') && ($content = $admin_mailer->loadContent('admin.order_received')) !== false) {
+							$this->assignOrderDetails(null, true);
+							$admin_mailer->sendEmail($admin_notify, $content);
+							$GLOBALS['session']->set($message_id, true, 'email');
+							unset($content);
+						}
 					}
-				}
 				
 				break;
 
-			case self::ORDER_PROCESS;
-				$complete = true;
-			
-				// Look for digital items
-				foreach ($this->_order_inventory as $item) {
-					if ($item['digital']) {
-						continue;
+				case self::ORDER_PROCESS;
+					$complete = true;
+				
+					// Look for digital items
+					foreach ($this->_order_inventory as $item) {
+						if ($item['digital']) {
+							continue;
+						}
+						$complete = false;
+						break;
 					}
-					$complete = false;
-					break;
-				}
-				// Compose the Order Confirmation email to the customer
-				if ($this->_email_enabled && ($content = $mailer->loadContent('cart.order_confirmation', $order_summary['lang'])) !== false) {
-					$this->assignOrderDetails();
-					$mailer->sendEmail($this->_order_summary['email'], $content);
-					unset($content);
-				}
-
-				// Send email to store admins if set for processing status
-				if ($GLOBALS['config']->get('config', 'admin_notify_status')=="2" && $this->_email_enabled && $this->_email_admin_enabled && $admin_notify = $this->_notifyAdmins()) {
-					$admin_mailer = new Mailer();
-					
-					$message_id = md5('admin.order_received'.$status_id.$order_id);
-
-					if (!$GLOBALS['session']->has($message_id, 'email') && ($content = $admin_mailer->loadContent('admin.order_received')) !== false) {
-						$this->assignOrderDetails(null, true);
-						$admin_mailer->sendEmail($admin_notify, $content);
-						$GLOBALS['session']->set($message_id, true, 'email');
+					// Compose the Order Confirmation email to the customer
+					if ($this->_email_enabled && ($content = $mailer->loadContent('cart.order_confirmation', $order_summary['lang'])) !== false) {
+						$this->assignOrderDetails();
+						$mailer->sendEmail($this->_order_summary['email'], $content);
 						unset($content);
 					}
-				}
 
-				// Send digital files
-				$this->_digitalDelivery($order_id, $this->_order_summary['email']);
+					// Send email to store admins if set for processing status
+					if ($GLOBALS['config']->get('config', 'admin_notify_status')=="2" && $this->_email_enabled && $this->_email_admin_enabled && $admin_notify = $this->_notifyAdmins()) {
+						$admin_mailer = new Mailer();
+						
+						$message_id = md5('admin.order_received'.$status_id.$order_id);
 
-				break;
-
-			case self::ORDER_COMPLETE:
-				// Check that we have not skipped processing if not already disabled
-				if ($GLOBALS['db']->select('CubeCart_order_history', array('status'), array('cart_order_id' => $order_id, 'status' => 2), false, false, false, false) === false) {
-					// Force order status to processing first if this status has never been met and settings don't allow it to be skipped
-					if (!$GLOBALS['config']->get('config', 'no_skip_processing_check')) {
-						$this->orderStatus(2, $order_id);
-					} else {
-						// Send digital files when order status hasn't never been processing amd we are allowed to skip processing status
-						$this->_digitalDelivery($order_id, $this->_order_summary['email']);
-					}
-				}
-
-				if ($this->_email_enabled) {
-					foreach ($this->_order_inventory as $item) {
-						// Send Gift Certificate
-						if (!empty($item['custom']) && !empty($item['coupon_id'])) {
-							$this->_sendCoupon($item['coupon_id'], unserialize($item['custom']));
+						if (!$GLOBALS['session']->has($message_id, 'email') && ($content = $admin_mailer->loadContent('admin.order_received')) !== false) {
+							$this->assignOrderDetails(null, true);
+							$admin_mailer->sendEmail($admin_notify, $content);
+							$GLOBALS['session']->set($message_id, true, 'email');
+							unset($content);
 						}
 					}
-				}
-				/* no need to send this email for digital only orders */
-				if (!$this->_skip_order_complete_email && $this->_email_enabled && ($content = $mailer->loadContent('cart.order_complete', $order_summary['lang'])) !== false) {
-					$this->assignOrderDetails();
-					$mailer->sendEmail($this->_order_summary['email'], $content);
-					unset($content);
-				}
+
+					// Send digital files
+					$this->_digitalDelivery($order_id, $this->_order_summary['email']);
 
 				break;
 
-			case self::ORDER_DECLINED:
-				// Nothing to do, but leave the option here for hooks & such
+				case self::ORDER_COMPLETE:
+					// Check that we have not skipped processing if not already disabled
+					if ($GLOBALS['db']->select('CubeCart_order_history', array('status'), array('cart_order_id' => $order_id, 'status' => 2), false, false, false, false) === false) {
+						// Force order status to processing first if this status has never been met and settings don't allow it to be skipped
+						if (!$GLOBALS['config']->get('config', 'no_skip_processing_check')) {
+							$this->orderStatus(2, $order_id);
+						} else {
+							// Send digital files when order status hasn't never been processing amd we are allowed to skip processing status
+							$this->_digitalDelivery($order_id, $this->_order_summary['email']);
+						}
+					}
+
+					if ($this->_email_enabled) {
+						foreach ($this->_order_inventory as $item) {
+							// Send Gift Certificate
+							if (!empty($item['custom']) && !empty($item['coupon_id']) && $item['digital']) {
+								$this->_sendCoupon($item['coupon_id'], unserialize($item['custom']));
+							}
+						}
+					}
+					/* no need to send this email for digital only orders */
+					if (!$this->_skip_order_complete_email && $this->_email_enabled && ($content = $mailer->loadContent('cart.order_complete', $order_summary['lang'])) !== false) {
+						$this->assignOrderDetails();
+						$mailer->sendEmail($this->_order_summary['email'], $content);
+						unset($content);
+					}
+
 				break;
 
-			case self::ORDER_FAILED:
-				// Email the customer to explain their order failed fraud review
-				$content = $mailer->loadContent('cart.payment_fraud', $order_summary['lang'], $this->_order_summary);
+				case self::ORDER_DECLINED:
+					// Nothing to do, but leave the option here for hooks & such
 				break;
 
-			case self::ORDER_CANCELLED:
-				// Cancelled
-				$content = $mailer->loadContent('cart.order_cancelled', $order_summary['lang'], $this->_order_summary);
+				case self::ORDER_FAILED:
+					// Email the customer to explain their order failed fraud review
+					$content = $mailer->loadContent('cart.payment_fraud', $order_summary['lang'], $this->_order_summary);
 				break;
+
+				case self::ORDER_CANCELLED:
+					// Cancelled
+					$content = $mailer->loadContent('cart.order_cancelled', $order_summary['lang'], $this->_order_summary);
+				break;
+				default:
+					foreach ($GLOBALS['hooks']->load('class.order.order_status_switch') as $hook) include $hook;
 			}
 			if ($this->_email_enabled && isset($content)) {
 				$mailer->sendEmail($this->_order_summary['email'], $content);
@@ -506,6 +510,7 @@ class Order {
 				//$status_id = self::ORDER_COMPLETE;
 				$this->orderStatus(3, $order_id);
 			}
+			foreach ($GLOBALS['hooks']->load('class.order.order_status_return') as $hook) include $hook;
 			return true;
 		}
 		return false;
@@ -563,8 +568,9 @@ class Order {
 		} else if (!empty($this->_basket)) {
 				// Order Creation/Updating
 				$this->_saveAddresses();
-				if (isset($this->_basket['cart_order_id']) && !empty($this->_basket['cart_order_id']) && ($check = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id'), array('cart_order_id' => $this->_basket['cart_order_id'], 'status' => 1), false, false, false, false))) {
-					// Order has already been placed and is still pending, so we only need to update
+
+				if (isset($this->_basket['cart_order_id']) && !empty($this->_basket['cart_order_id']) && $GLOBALS['db']->select('CubeCart_order_summary', array('id'), array('cart_order_id' => $this->_basket['cart_order_id'], 'status' => 1), false, false, false, false) && !$GLOBALS['db']->select('CubeCart_transactions', array('id'), array('order_id' => $this->_basket['cart_order_id']), false, false, false, false)) {
+					// Order has already been placed, is still pending and has no payment transactions so we only need to update
 					$this->_updateOrder();
 					$update = true;
 				} else {
@@ -1053,8 +1059,22 @@ class Order {
 		if (is_array($item)) {
 			if (isset($item['certificate'])) {
 				$gc = $GLOBALS['config']->get('gift_certs');
+				
+				if(isset($item['certificate']['method']) && !empty($item['certificate']['method'])) {
+					switch($item['certificate']['method']) {
+						case 'm':
+							$method = $GLOBALS['language']->common['postal'];
+						break;
+						case 'e':
+							$method = $GLOBALS['language']->common['email'];
+						break;
+						default:
+							$method = '';
+					}
+				}
+
 				$product = array(
-					'name'   => $GLOBALS['language']->catalogue['gift_certificate'],
+					'name'   => $method.' '.$GLOBALS['language']->catalogue['gift_certificate'],
 					'price'   => $item['certificate']['value'],
 					'product_code' => $gc['product_code'],
 					'digital'  => (bool)$item['digital'],
@@ -1272,7 +1292,18 @@ class Order {
 				$data['storeURL']  = $GLOBALS['storeURL'];
 				if (($content = $mailer->loadContent('cart.gift_certificate', $this->_order_summary['lang'], array_merge($this->_order_summary, $data, $coupon[0]))) !== false) {
 					$GLOBALS['db']->update('CubeCart_coupons', array('email_sent' => 1), array('coupon_id' => (int)$coupon_id));
-					return $mailer->sendEmail($data['email'], $content);
+					if(($return = $mailer->sendEmail($data['email'], $content)) !== false) {
+						$GLOBALS['db']->update('CubeCart_coupons', array('email_sent' => 1), array('coupon_id' => (int)$coupon_id));
+					} else {
+						$error = 'Failed to send gift card by email. Please check <a href="?_g=settings#Advanced_Settings">email configuration</a>.';
+						if(isset($mailer->ErrorInfo) && !empty($mailer->ErrorInfo)) {
+							trigger_error($mailer->ErrorInfo, E_USER_WARNING);
+							$GLOBALS['gui']->setError($error.' A specific error message may be found in the <a href="?_g=settings&node=errorlog#system_error_log">error log</a>.', true);
+						} else {
+							$GLOBALS['gui']->setError($error, true);
+						}
+					}
+					return $return;
 				}
 			}
 		}

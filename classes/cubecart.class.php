@@ -3,7 +3,7 @@
  * CubeCart v6
  * ========================================
  * CubeCart is a registered trade mark of CubeCart Limited
- * Copyright CubeCart Limited 2015. All rights reserved.
+ * Copyright CubeCart Limited 2017. All rights reserved.
  * UK Private Limited Company No. 5323904
  * ========================================
  * Web:   http://www.cubecart.com
@@ -109,6 +109,7 @@ class Cubecart {
 					$product['price'] = $GLOBALS['tax']->priceFormat($product['price']);
 					$product['sale_price'] = ($sale) ? $GLOBALS['tax']->priceFormat($product['sale_price']) : null;
 
+					// ctrl_stock True when a product is considered 'in stock' for purposes of allowing a purchase, either by actually being in stock or via certain settings
 					$product['ctrl_stock'] = (!$product['use_stock_level'] || $GLOBALS['config']->get('config', 'basket_out_of_stock_purchase') || ($product['use_stock_level'] && $GLOBALS['catalogue']->getProductStock($product['product_id'], null, true) > 0)) ? true : false;
 					$product['url'] = $GLOBALS['seo']->buildURL('prod', $product['product_id'], '&');
 
@@ -1382,7 +1383,7 @@ class Cubecart {
 		// Contact Form
 		$contact = $GLOBALS['config']->get('Contact_Form');
 		if ($contact && $contact['status']) {
-			$GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->documents['document_contact'], currentPage());
+			$GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->documents['document_contact'], $GLOBALS['seo']->buildURL('contact'));
 			if (isset($_POST['contact'])) {
 
 				$error = false;
@@ -1774,7 +1775,7 @@ class Cubecart {
 	}
 
 	/**
-	 * Display gateways (Semi depreciated)
+	 * Display gateways (Semi deprecated)
 	 */
 	private function _displayGateways($name = false) {
 		$where = array('status' => '1');
@@ -2170,6 +2171,10 @@ class Cubecart {
 			$redir = 'index.php?_a=account';
 		}
 		$GLOBALS['smarty']->assign('REDIRECT_TO', $redir);
+		$GLOBALS['smarty']->assign('URL', array(
+			'register' => $GLOBALS['seo']->buildURL('register'),
+			'recover' => $GLOBALS['seo']->buildURL('recover'))
+		);
 
 		$content = $GLOBALS['smarty']->fetch('templates/content.login.php');
 		$GLOBALS['smarty']->assign('PAGE_CONTENT', $content);

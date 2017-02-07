@@ -3,7 +3,7 @@
  * CubeCart v6
  * ========================================
  * CubeCart is a registered trade mark of CubeCart Limited
- * Copyright CubeCart Limited 2015. All rights reserved.
+ * Copyright CubeCart Limited 2017. All rights reserved.
  * UK Private Limited Company No. 5323904
  * ========================================
  * Web:   http://www.cubecart.com
@@ -19,4 +19,4 @@ global $config_default;
 
 include CC_ROOT_DIR.CC_DS.'controllers'.CC_DS.'controller.index.inc.php';
 
-$GLOBALS['smarty']->display('templates/'.$global_template_file);
+$GLOBALS['gui']->display('templates/'.$global_template_file);

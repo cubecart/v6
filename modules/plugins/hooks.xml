@@ -3,7 +3,7 @@
  * CubeCart v6
  * ========================================
  * CubeCart is a registered trade mark of CubeCart Limited
- * Copyright CubeCart Limited 2015. All rights reserved.
+ * Copyright CubeCart Limited 2017. All rights reserved.
  * UK Private Limited Company No. 5323904
  * ========================================
  * Web:   http://www.cubecart.com
@@ -200,6 +200,9 @@
  <hook trigger="class.order.assign_order_details" deprecated="" />
  <hook trigger="class.order.get_order_details" deprecated="" />
  <hook trigger="class.order.order_status" deprecated="" />
+ <hook trigger="class.order.order_status_start" deprecated="" />
+ <hook trigger="class.order.order_status_switch" deprecated="" />
+ <hook trigger="class.order.order_status_return" deprecated="" />
  <hook trigger="class.order.place_order" deprecated="" />
  <hook trigger="class.order.place_order.basket" deprecated="" />
  <hook trigger="class.order.products.add.pre" deprecated="" />

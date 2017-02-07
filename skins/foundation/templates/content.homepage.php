@@ -2,7 +2,7 @@
  * CubeCart v6
  * ========================================
  * CubeCart is a registered trade mark of CubeCart Limited
- * Copyright CubeCart Limited 2015. All rights reserved.
+ * Copyright CubeCart Limited 2017. All rights reserved.
  * UK Private Limited Company No. 5323904
  * ========================================
  * Web:   http://www.cubecart.com
@@ -55,6 +55,7 @@
                   <input type="submit" value="{$LANG.common.unavailable}" class="button small disabled postfix expand" disabled>
                </div>
             </div>
+            {* ctrl_stock True when a product is considered 'in stock' for purposes of allowing a purchase, either by actually being in stock or via certain settings *}
             {elseif $product.ctrl_stock && !$CATALOGUE_MODE}
             <div class="row collapse marg-top">
                <div class="small-3 columns">

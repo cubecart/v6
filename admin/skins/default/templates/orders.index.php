@@ -2,7 +2,7 @@
  * CubeCart v6
  * ========================================
  * CubeCart is a registered trade mark of CubeCart Limited
- * Copyright CubeCart Limited 2015. All rights reserved.
+ * Copyright CubeCart Limited 2017. All rights reserved.
  * UK Private Limited Company No. 5323904
  * ========================================
  * Web:   http://www.cubecart.com
@@ -33,11 +33,9 @@
                <td align="center"><input type="checkbox" id="" name="multi-order[]" value="{$order.cart_order_id}" class="all-orders"></td>
                <td><a href="{$order.link_edit}">{$order.cart_order_id}</a></td>
                <td align="center">
-                  {if $order.icon=='user_registered'}
-                  <i class="fa fa-user registered" title="{$LANG.customer.title_key_registered}"></i>
-                  {else}
-                  <i class="fa fa-user unregistered" title="{$LANG.customer.title_key_unregistered}"></i>
-                  {/if}
+                  {append "cust_type" "registered" index="1"}
+                  {append "cust_type" "unregistered" index="2"}
+                  <i class="fa fa-user {$cust_type[$order.type]}" title="{$LANG.customer[$order.cust_type[$order.type]]}"></i>
                </td>
                <td>
                {if $order.customer_id}
@@ -175,6 +173,11 @@
                   {/if}
                   {if $product.options_text}
                   <br>{$product.options_text}
+                  {/if}
+                  {if $product.custom}
+                  {foreach from=$product.custom key=k item=v}
+                  <br><strong>{$k}</strong>: {$v}
+                  {/foreach}
                   {/if}
                </div>
                {/foreach}

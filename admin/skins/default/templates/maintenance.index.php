@@ -2,7 +2,7 @@
  * CubeCart v6
  * ========================================
  * CubeCart is a registered trade mark of CubeCart Limited
- * Copyright CubeCart Limited 2015. All rights reserved.
+ * Copyright CubeCart Limited 2017. All rights reserved.
  * UK Private Limited Company No. 5323904
  * ========================================
  * Web:   http://www.cubecart.com
@@ -180,6 +180,7 @@
 	  	    <td>{$LANG.maintain.table_collation}</td>
 	  	    <td>{$LANG.maintain.table_size}</td>
 	  	    <td>{$LANG.maintain.table_overhead}</td>
+	  	    <td>{$LANG.maintain.table_indexes}</td>
 	  	  </tr>
 	  	</thead>
 	  	<tbody>
@@ -192,7 +193,17 @@
 	  		<td>{$table.Collation}</td>
 	  		<td>{$table.Data_length}</td>
 	  		<td>{$table.Data_free}</td>
+	  		<td align="center">{if $table.errors}
+	  			<i class="fa fa-exclamation-triangle" aria-hidden="true" title="{$table.errors}"></i>
+	  		{else}
+	  			{$LANG.common.ok}
+	  		{/if}</td>
 	  	  </tr>
+	  	  {if $table.errors}
+	  	  <tr>
+	  	  <td colspan="8" class="index_error">{$table.errors}</td>
+	  	  </tr>
+	  	  {/if}
 	  	  {/foreach}
 	  	</tbody>
 	  	<tfoot>

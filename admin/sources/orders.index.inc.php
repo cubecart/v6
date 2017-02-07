@@ -3,7 +3,7 @@
  * CubeCart v6
  * ========================================
  * CubeCart is a registered trade mark of CubeCart Limited
- * Copyright CubeCart Limited 2015. All rights reserved.
+ * Copyright CubeCart Limited 2017. All rights reserved.
  * UK Private Limited Company No. 5323904
  * ========================================
  * Web:   http://www.cubecart.com
@@ -303,6 +303,33 @@ if (isset($_GET['action'])) {
 						$product['options_text'] = implode(' ', cc_unserialize($product['product_options']));
 					} elseif (!empty($product['product_options'])) {
 						$product['options_text'] = $product['product_options'];
+					}
+
+					$custom_data = array();
+					
+					if(!empty($product['custom'])) {
+						if($custom_data = unserialize($product['custom'])) {
+							if(is_array($custom_data)) {
+								foreach($custom_data as $key => $value) {
+									if($key == 'method') {
+										switch($value) {
+											case 'e':
+												$value = $GLOBALS['language']->common['email'];
+											break;
+											case 'm':
+												$value = $GLOBALS['language']->common['postal'];
+											break;
+										}
+									} elseif($key == 'value') {
+										$value = $GLOBALS['tax']->priceFormat($value);
+									}
+									$custom_data_string[ucwords($key)] = $value;
+								}
+								$product['custom'] = $custom_data_string;
+							}
+						} else {
+							$product['custom'] = '';
+						}
 					}
 				
 					$product['line_price_less_options'] = sprintf("%.2F",$product['line']-Catalogue::getInstance()->getOptionsLinePrice());
@@ -705,8 +732,9 @@ if (isset($_GET['action'])) {
 
 		foreach ($orders as $order) {
 			$order['name']   = (isset($order['name']) && !empty($order['name'])) ? $order['name'] : sprintf('%s %s %s', $order['title'], $order['first_name'], $order['last_name']);
-
-			$order['icon']   = ($order['type']==2 || empty($order['customer_id'])) ? 'user_ghost' : 'user_registered';
+			$order['icon']   = ($order['type']==2 || empty($order['customer_id'])) ? 'user_ghost' : 'user_registered';// deprecated since 6.1.5
+			$order['type'] = (empty($order['customer_id'])) ? 2 : $order['type'];
+			$order['cust_type'] = array("1" => 'title_key_registered', "2" => 'title_key_unregistered');
 			$order['link_edit']  = currentPage(array('print_hash'), array('action' => 'edit', 'order_id' => $order['cart_order_id']));
 			$order['link_customer'] = ($order['customer_id']) ? "?_g=customers&action=edit&customer_id=".$order['customer_id'] : "#";
 			$order['link_delete'] = currentPage(array('print_hash'), array('delete' => $order['cart_order_id']));

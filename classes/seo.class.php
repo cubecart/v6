@@ -3,7 +3,7 @@
  * CubeCart v6
  * ========================================
  * CubeCart is a registered trade mark of CubeCart Limited
- * Copyright CubeCart Limited 2015. All rights reserved.
+ * Copyright CubeCart Limited 2017. All rights reserved.
  * UK Private Limited Company No. 5323904
  * ========================================
  * Web:   http://www.cubecart.com
@@ -74,7 +74,7 @@ class SEO {
 	 *
 	 * @var array of strings
 	 */
-	private $_static_sections = array('saleitems', 'certificates', 'trackback', 'contact', 'search', 'login', 'register');
+	private $_static_sections = array('recover', 'saleitems', 'certificates', 'trackback', 'contact', 'search', 'login', 'register');
 
 	/**
 	 * Class instance
@@ -236,7 +236,18 @@ class SEO {
 			if (($existing = $GLOBALS['db']->select('CubeCart_seo_urls', 'path', array('type' => $type))) !== false) {
 				$path = $existing[0]['path'];
 			} else {
+				/* Force static English SEO paths until we have improved SEO for languages */
+				$current_language = $GLOBALS['language']->current();
+				$reset_language = false;
+				if($current_language!=='en-GB') {
+					$GLOBALS['language']->change('en-GB');
+					$GLOBALS['language']->loadDefinitions('default');
+					$reset_language = true;
+				}
 				$path = (!empty($GLOBALS['language']->navigation['seo_path_'.$type])) ? $GLOBALS['language']->navigation['seo_path_'.$type] : $type;
+				if($reset_language) {
+					$GLOBALS['language']->change($current_language);
+				}
 			}
 
 		} else { /*! Dymanic */
@@ -599,9 +610,7 @@ class SEO {
 				}
 				return $path;
 			}
-
-		if (preg_match('#^(.*/)?[\w]+.[a-z]+\?_a\=([\w]+)\&(amp;)?([\w\[\]]+)\=([\w\-\_]+)([^"\']*)$#ieS', $path, $match)) {
-			
+		if (preg_match('#^(.*/)?[\w]+.[a-z]+\?_a\=([\w]+)(?:\&(amp;)?([\w\[\]]+)\=([\w\-\_]+)([^"\']*))$#ieS', $path, $match)) {
 			if(in_array($match[2], $this->_static_sections)) {
 				if(!empty($match[4]) && !empty($match[5])) {
 					$match[6] = $match[6].'&'.$match[4].'='.$match[5];
@@ -925,6 +934,11 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
 
 		switch ($type) {
 			/*! Static */
+		case 'recover':
+			$array = array(
+				'_a' => 'recover'
+			);
+			break;
 		case 'search':
 			$array = array(
 				'_a' => 'search'

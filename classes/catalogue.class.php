@@ -3,7 +3,7 @@
  * CubeCart v6
  * ========================================
  * CubeCart is a registered trade mark of CubeCart Limited
- * Copyright CubeCart Limited 2015. All rights reserved.
+ * Copyright CubeCart Limited 2017. All rights reserved.
  * UK Private Limited Company No. 5323904
  * ========================================
  * Web:   http://www.cubecart.com
@@ -24,6 +24,7 @@ class Catalogue {
 	private $_category_status_prod_id = array();
 	private $_categoryData;
 	private $_productData;
+	private $_productHash = array();
 	private $_pathElements;
 	private $_category_translations = false;
 	private $_option_required = false;
@@ -251,6 +252,7 @@ class Catalogue {
 		if (!empty($products)) {
 			foreach ($products as $product) {
 				$product = $this->getProductPrice($product);
+				// ctrl_stock True when a product is considered 'in stock' for purposes of allowing a purchase, either by actually being in stock or via certain settings
 				$product['ctrl_stock'] = (!$product['use_stock_level'] || $GLOBALS['config']->get('config', 'basket_out_of_stock_purchase') || ($product['use_stock_level'] && $GLOBALS['catalogue']->getProductStock($product['product_id'], null, true) > 0)) ? true : false;
 				$this->productAssign($product, false);
 				$product['url'] = $GLOBALS['seo']->buildURL('prod', $product['product_id'], '&');
@@ -1000,6 +1002,34 @@ class Catalogue {
 
 		return false;
 	}
+	/**
+	 * Get product hash identifier
+	 *
+	 * @param int $product_id
+	 * @param int $id
+	 * @return string/false
+	 */
+	public function getProductHash($product_id, $id) {
+		
+		$inventory = $GLOBALS['db']->select('CubeCart_inventory', false, array('product_id' => $product_id));
+		
+		if($inventory == false) return false;
+
+		$data = array(
+			$inventory,
+			$GLOBALS['db']->select('CubeCart_category_index', array('cat_id','primary'), array('product_id' => $product_id)),
+			$GLOBALS['db']->select('CubeCart_option_assign', false, array('product' => $product_id)),
+			$GLOBALS['db']->select('CubeCart_option_matrix', false, array('product_id' => $product_id)),
+			$GLOBALS['db']->select('CubeCart_reviews', false, array('product_id' => $product_id)),
+			$GLOBALS['db']->select('CubeCart_image_index', false, array('product_id' => $product_id)),
+			$GLOBALS['db']->select('CubeCart_pricing_group', false, array('product_id' => $product_id)),
+			$GLOBALS['db']->select('CubeCart_pricing_quantity', false, array('product_id' => $product_id)),
+			$GLOBALS['db']->select('CubeCart_inventory_language', false, array('product_id' => $product_id)),
+			$GLOBALS['db']->select('CubeCart_options_set_product', false, array('product_id' => $product_id)),
+			$GLOBALS['db']->select('CubeCart_seo_urls', false, array('type' => 'prod', 'item_id' => $product_id))
+		);
+		return $this->_productHash[$id] = md5(serialize($data));
+	}
 
 	/**
 	 * Get options for specific product
@@ -1284,6 +1314,8 @@ class Catalogue {
 			if (($result = $GLOBALS['db']->select('CubeCart_filemanager', false, array('file_id' => (int)$input))) !== false) {
 				$file  = $result[0]['filepath'].$result[0]['filename'];
 				$defaults = false;
+			} else {
+				$return_placeholder = true;
 			}
 		} else if (!empty($input)) {
 			$file  = str_replace(array('images/cache/', 'images/uploads/'), '', $input);
@@ -1318,6 +1350,7 @@ class Catalogue {
 			$source = CC_ROOT_DIR.'/images/source/'.$file;
 		} else {
 			$source = CC_ROOT_DIR.'/'.$placeholder_image;
+			$file = $placeholder_image;
 		}
 
 		if (!is_dir($source) && file_exists($source)) {
@@ -1333,12 +1366,17 @@ class Catalogue {
 					$filename = sprintf('%s.%d%s', $match[1], $size, $match[2]);
 					## Find the source
 					$image  = CC_ROOT_DIR.'/images/'.$folder.'/'.$filename;
+					
 					if (!file_exists($image)) {
 						## Check if the target folder exists - if not, create it!
 						if (!file_exists(dirname($image))) mkdir(dirname($image), chmod_writable(), true);
 						## Generate the image
 						$gd  = new GD(dirname($image), $size, (int)$data['quality']);
-						$gd->gdLoadFile($source);
+						if(!$gd->gdLoadFile($source)) {
+							$GLOBALS['gui']->setError(sprintf($GLOBALS['language']->catalogue['gd_memory_error'], $file), true);
+							// Return source instead
+							return $this->imagePath($input, 'source', $path, $return_placeholder);	
+						}
 						$gd->gdSave(basename($image));
 					}
 				} else {
@@ -1503,6 +1541,21 @@ class Catalogue {
 			}
 		}
 		return (int)$count;
+	}
+
+	/**
+	 * Check two hashes match
+	 *
+	 * @param string $hash1
+	 * @param string $hash2
+	 * @return bool
+	 */
+	public function productHashMatch($hash1, $hash2) {
+		if($this->_productHash[$hash1] === $this->_productHash[$hash2]) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**

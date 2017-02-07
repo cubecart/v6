@@ -3,7 +3,7 @@
  * CubeCart v6
  * ========================================
  * CubeCart is a registered trade mark of CubeCart Limited
- * Copyright CubeCart Limited 2015. All rights reserved.
+ * Copyright CubeCart Limited 2017. All rights reserved.
  * UK Private Limited Company No. 5323904
  * ========================================
  * Web:   http://www.cubecart.com
@@ -236,6 +236,7 @@
     <string name="your_comments" introduced="5.0.0"><![CDATA[Delivery Notes or Additional Comments]]></string>
   </group>
   <group name="catalogue">
+    <string name="gd_memory_error" introduced="6.1.5"><![CDATA[Not enough memory to create thumbnail from `%s`. Please optimise this source image.]]></string>
     <string name="error_js_required" introduced="6.1.0"><![CDATA[JavaScript is required by this website. Please enable this in your browser settings.]]></string>
     <string name="absolute_price" introduced="6.0.7"><![CDATA[Absolute Price]]></string>
     <string name="available_for_purchase" introduced="6.0.0"><![CDATA[Available for purchase]]></string>
@@ -307,7 +308,7 @@
     <string name="error_option_set_delete" introduced="5.0.0"><![CDATA[Unable to delete option set.]]></string>
     <string name="error_product_deleted" introduced="5.0.0"><![CDATA[Failed to delete product(s).]]></string>
     <string name="error_product_search" introduced="5.0.0"><![CDATA[No matching products found.]]></string>
-    <string name="error_product_update" introduced="5.0.0"><![CDATA[Failed to update product.]]></string>
+    <string name="error_product_update" introduced="5.0.0"><![CDATA[No product changes were made.]]></string>
     <string name="error_products_letter" introduced="5.0.0"><![CDATA[No products start with '%s'.]]></string>
     <string name="error_review_submit" introduced="5.0.0"><![CDATA[There was an error submitting your review.]]></string>
     <string name="error_search_no_results" introduced="5.0.0"><![CDATA[No matching products found. Please try again.]]></string>
@@ -609,7 +610,7 @@
     <string name="add_new" introduced="5.0.0"><![CDATA[Add new]]></string>
     <string name="advanced" introduced="5.0.0"><![CDATA[Advanced]]></string>
     <string name="all" introduced="5.0.0"><![CDATA[All]]></string>
-    <string name="all_translated" introduced="5.0.0"><![CDATA[All translations have been done already. Please choose one to edit if you need to make changes.]]></string>
+    <string name="all_translated" introduced="5.0.0"><![CDATA[All translations have been done already for the installed languages. Please choose one to edit if you need to make changes or install an new language pack if you want to offer more language options.]]></string>
     <string name="amount" introduced="5.0.0"><![CDATA[Amount]]></string>
     <string name="any" introduced="5.0.0"><![CDATA[Any]]></string>
     <string name="approved" introduced="5.0.0"><![CDATA[Approved]]></string>
@@ -711,6 +712,7 @@
     <string name="please_select" introduced="5.0.7"><![CDATA[Please Select]]></string>
     <string name="popularity" introduced="5.1.6"><![CDATA[Popularity]]></string>
     <string name="post" introduced="5.0.0"><![CDATA[Post]]></string>
+    <string name="postal" introduced="6.1.5"><![CDATA[Postal]]></string>
     <string name="preview" introduced="5.0.0"><![CDATA[Preview]]></string>
     <string name="price" introduced="5.0.0"><![CDATA[Price]]></string>
     <string name="price_cost" introduced="5.0.9"><![CDATA[Cost Price]]></string>
@@ -1289,6 +1291,9 @@
     <string name="example_code_snippet_xml" introduced="5.2.0"><![CDATA[An example of an import XML feed can be found <a href="docs/examples/code_snippet_import.xml">here</a>. Please use the &quot;Help&quot; link for further information.]]></string>
   </group>
   <group name="maintain">
+    <string name="missing_index" introduced="6.1.5"><![CDATA[%s has no key set. Expecting %s.]]></string>
+    <string name="wrong_index" introduced="6.1.5"><![CDATA[%s has a key type %s but expecting %s.]]></string>
+    <string name="table_indexes" introduced="6.1.5"><![CDATA[Indexes]]></string>
     <string name="file_compressed" introduced="6.1.2"><![CDATA[%s compressed successfully.]]></string>
     <string name="latest_version_unknown" introduced="6.0.9"><![CDATA[Failed to look up latest version.]]></string>
     <string name="upgrade_history" introduced="6.0.7"><![CDATA[Upgrade History]]></string>
