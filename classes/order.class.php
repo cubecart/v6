@@ -568,8 +568,14 @@ class Order {
 		} else if (!empty($this->_basket)) {
 				// Order Creation/Updating
 				$this->_saveAddresses();
-				if (isset($this->_basket['cart_order_id']) && !empty($this->_basket['cart_order_id']) && ($check = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id'), array('cart_order_id' => $this->_basket['cart_order_id'], 'status' => 1), false, false, false, false))) {
-					// Order has already been placed and is still pending, so we only need to update
+
+				// Check order status is pending
+				$pending_status = $GLOBALS['db']->select('CubeCart_order_summary', array('id'), array('cart_order_id' => $this->_basket['cart_order_id'], 'status' => 1), false, false, false, false);
+				// Check we have no existing payment transactions for this order
+				$existing_transactions = $GLOBALS['db']->select('CubeCart_transactions', array('id'), array('order_id' => $this->_basket['cart_order_id']), false, false, false, false);
+
+				if (isset($this->_basket['cart_order_id']) && !empty($this->_basket['cart_order_id']) && $pending_status && !$existing_transactions) {
+					// Order has already been placed, is still pending and has no payment transactions so we only need to update
 					$this->_updateOrder();
 					$update = true;
 				} else {
