@@ -733,7 +733,9 @@ CREATE TABLE IF NOT EXISTS `CubeCart_pricing_quantity` (
 	`quantity` INT UNSIGNED NOT NULL,
 	`price` DECIMAL(16,2) NOT NULL,
 	PRIMARY KEY (`discount_id`),
-	KEY `product_id` (`product_id`)
+	KEY `product_id` (`product_id`),
+	KEY `group_id` (`group_id`),
+	KEY `quantity` (`quantity`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_reviews` (

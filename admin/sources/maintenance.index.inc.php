@@ -738,7 +738,9 @@ if (isset($database_result) && $database_result) {
 		),
 		'cubecart_pricing_quantity' => array (
 			'discount_id' => 'PRIMARY',
-			'product_id' => 'KEY'
+			'product_id' => 'KEY',
+			'group_id' => 'KEY',
+			'quantity' => 'KEY'
 		),
 		'cubecart_reviews' => array (
 			'id' => 'PRIMARY',
@@ -817,7 +819,7 @@ if (isset($database_result) && $database_result) {
 	);
 
 	$actual_map = array();
-	
+
 	foreach ($tables as $table) {
 		// Get index and map them
 		$indexes = $GLOBALS['db']->misc("SHOW INDEX FROM `".$table['Name']."`");
