@@ -82,7 +82,6 @@ if($GLOBALS['session']->has('recent_extensions')) {
 	$request->setMethod('get');
 	$request->cache(true);
 	$request->setSSL();
-	$request->setData();
 	$request->setUserAgent('CubeCart');
 
 	$response = $request->send();
@@ -99,7 +98,6 @@ if (!$GLOBALS['session']->has('version_check') && $request = new Request('www.cu
 	$request->setMethod('get');
 	$request->cache(true);
 	$request->setSSL();
-	$request->setData();
 	$request->setUserAgent('CubeCart');
 	
 	$request_data = array('version' => CC_VERSION);
@@ -340,7 +338,6 @@ if ($GLOBALS['config']->has('config', 'default_rss_feed') && !$GLOBALS['config']
 		$request->cache(true);
 		$request->skiplog(true);
 		$request->setMethod('get');
-		$request->setData();
 
 		if (($response = $request->send()) !== false) {
 			try {

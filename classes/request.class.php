@@ -236,6 +236,11 @@ class Request {
 	 */
 	public function send($timeout = null) {
 		
+		// if $_request_hash is still null then setData method hasn't been run
+		if($this->_request_hash === null) {
+			$this->setData();
+		} 
+
 		if (!empty($timeout)) $this->_request_timeout = (int)$timeout;
 
 		if ($this->_request_cache && $GLOBALS['cache']->exists('request.'.$this->_request_hash)) {
