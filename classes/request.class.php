@@ -236,41 +236,41 @@ class Request {
 			if ($this->_request_cache && $GLOBALS['cache']->exists('request.'.$this->_request_hash)) {
 				return $GLOBALS['cache']->read('request.'.$this->_request_hash);
 			} else if ($this->_curl) {
-					## Use cURL
-					if ($this->_request_method == 'post') {
-						$this->_curl_options[CURLOPT_POST] = true;
-						$this->_curl_options[CURLOPT_POSTFIELDS] = $this->_request_body;
-					} else {
-						$this->_request_path .= '?'.$this->_request_body;
-					}
-					if ($this->_send_headers) {
-						$this->_curl_options[CURLOPT_HTTPHEADER] = $this->_request_headers;
-					}
-					$this->_curl_options[CURLOPT_PORT]     = $this->_request_port;
-					$this->_curl_options[CURLOPT_URL]     = $this->_request_protocol.'://'.$this->_request_url.$this->_request_path;
-					$this->_curl_options[CURLOPT_TIMEOUT]    = $this->_request_timeout;
-					$this->_curl_options[CURLOPT_CONNECTTIMEOUT]  = $this->_request_timeout;
-
-					## Some hosts disable curl and curl_exec spits out a warning so we need to supress it and detect if it returns false
-					curl_setopt_array($this->_curl, $this->_curl_options);
-
-					$return = curl_exec($this->_curl);
-					$error = curl_error($this->_curl);
-
-					if (empty($error)) {
-						if ($this->_request_cache) $GLOBALS['cache']->write($return, 'request.'.$this->_request_hash);
-						$this->log($this->_request_body, $return);
-						return $return;
-					} else {
-						$error_no = @curl_errno($this->_curl);
-						if (!$error_no && !$error) {
-							$error_no = "NA";
-							$error = "cURL is installed but may be disabled by the host. cURL exec returns false.";
-						}
-						$error = sprintf('cURL Error (%d): %s', $error_no, $error);
-						$this->log($this->_request_body, $return, $error);
-					}
+				## Use cURL
+				if ($this->_request_method == 'post') {
+					$this->_curl_options[CURLOPT_POST] = true;
+					$this->_curl_options[CURLOPT_POSTFIELDS] = $this->_request_body;
 				} else {
+					$this->_request_path .= '?'.$this->_request_body;
+				}
+				if ($this->_send_headers) {
+					$this->_curl_options[CURLOPT_HTTPHEADER] = $this->_request_headers;
+				}
+				$this->_curl_options[CURLOPT_PORT]     = $this->_request_port;
+				$this->_curl_options[CURLOPT_URL]     = $this->_request_protocol.'://'.$this->_request_url.$this->_request_path;
+				$this->_curl_options[CURLOPT_TIMEOUT]    = $this->_request_timeout;
+				$this->_curl_options[CURLOPT_CONNECTTIMEOUT]  = $this->_request_timeout;
+
+				## Some hosts disable curl and curl_exec spits out a warning so we need to supress it and detect if it returns false
+				curl_setopt_array($this->_curl, $this->_curl_options);
+
+				$return = curl_exec($this->_curl);
+				$error = curl_error($this->_curl);
+
+				if (empty($error)) {
+					if ($this->_request_cache) $GLOBALS['cache']->write($return, 'request.'.$this->_request_hash);
+					$this->log($this->_request_body, $return);
+					return $return;
+				} else {
+					$error_no = @curl_errno($this->_curl);
+					if (!$error_no && !$error) {
+						$error_no = "NA";
+						$error = "cURL is installed but may be disabled by the host. cURL exec returns false.";
+					}
+					$error = sprintf('cURL Error (%d): %s', $error_no, $error);
+					$this->log($this->_request_body, $return, $error);
+				}
+			} else {
 				## Fallback to fsockopen
 				$this->_fp = fsockopen(($this->_proxy_host) ? $this->_proxy_host : $this->_request_url, ($this->_proxy_port) ? $this->_proxy_port : $this->_request_port, $error_no, $error_str, $this->_request_timeout);
 				if (!empty($error_no) || !empty($error_str)) trigger_error(sprintf('fsockopen Error (%d): %s', $error_no, $error_str));
