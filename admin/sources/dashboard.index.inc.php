@@ -81,8 +81,7 @@ if($GLOBALS['session']->has('recent_extensions')) {
 	$request->skiplog(true);
 	$request->setMethod('get');
 	$request->cache(true);
-	$request->setSSL(true);
-	$request->setData(array('null' => 0));
+	$request->setSSL();
 	$request->setUserAgent('CubeCart');
 
 	$response = $request->send();
@@ -98,7 +97,7 @@ if (!$GLOBALS['session']->has('version_check') && $request = new Request('www.cu
 	$request->skiplog(true);
 	$request->setMethod('get');
 	$request->cache(true);
-	$request->setSSL(true);
+	$request->setSSL();
 	$request->setUserAgent('CubeCart');
 	
 	$request_data = array('version' => CC_VERSION);
@@ -335,10 +334,10 @@ if ($GLOBALS['config']->has('config', 'default_rss_feed') && !$GLOBALS['config']
 		$url = parse_url($url);
 		$path = (isset($url['query'])) ? $url['path'].'?'.$url['query'] : $url['path'];
 		$request = new Request($url['host'], $path);
+		$request->setSSL();
 		$request->cache(true);
 		$request->skiplog(true);
-		$request->setMethod('post');
-		$request->setData('Null');
+		$request->setMethod('get');
 
 		if (($response = $request->send()) !== false) {
 			try {

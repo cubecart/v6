@@ -175,7 +175,6 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 	$request = new Request('www.cubecart.com', '/download/'.$_GET['upgrade'].'.zip', 80, false, true, 10);
 	$request->setMethod('get');
 	$request->setSSL();
-	$request->setData(array('null'=>0)); // setData needs a value to work
 	$request->setUserAgent('CubeCart');
 	$request->skiplog(true);
 
@@ -904,7 +903,7 @@ if ($request = new Request('www.cubecart.com', '/version-check/'.CC_VERSION)) {
 	$request->skiplog(true);
 	$request->setMethod('get');
 	$request->cache(true);
-	$request->setSSL(true);
+	$request->setSSL();
 	$request->setUserAgent('CubeCart');
 	$request->setData(array('version' => CC_VERSION));
 
