@@ -691,7 +691,7 @@ if (isset($_GET['action'])) {
 		$request->setMethod('get');
 		$request->skiplog(true);
 		$request->cache(true);
-		$request->setData(array('null'=>true));
+		$request->setData();
 
 		if($response = $request->send()) {
 			$google_cats = explode("\n",$response);

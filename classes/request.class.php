@@ -45,6 +45,7 @@ class Request {
 
 	private $_request_method  = 'post';
 	private $_request_protocol  = 'http';
+	private $_fsock_protocol = 'tcp';
 	private $_request_http_version = '1.0';
 	private $_request_timeout  = 15;
 
@@ -83,6 +84,8 @@ class Request {
 	public function __destruct() {
 		if ($this->_curl) {
 			curl_close($this->_curl);
+		} else {
+			fclose($this->_fp);
 		}
 	}
 
@@ -204,9 +207,11 @@ class Request {
 			if ($this->_request_method == 'post') {
 				$this->_request_headers[] = sprintf('POST %s HTTP/%s', $this->_request_path, $this->_request_http_version);
 				$this->_request_headers[] = 'Content-Type: application/x-www-form-urlencoded';
-				$this->_request_headers[] = 'Content-Length: '.strlen($this->_request_body);
+				if(!empty($this->_request_body)) {
+					$this->_request_headers[] = 'Content-Length: '.strlen($this->_request_body);
+				}
 			} else {
-				$this->_request_headers[] = sprintf('GET %s HTTP/%s', $this->_request_path.'?'.$this->_request_body, $this->_request_http_version);
+				$this->_request_headers[] = sprintf('GET %s HTTP/%s', (!empty($this->_request_body) ? $this->_request_path.'?'.$this->_request_body : $this->_request_path), $this->_request_http_version);
 			}
 			$this->_request_headers[]  = 'Host: '.$this->_request_url;
 			$this->_request_headers[]  = 'Connection: Close';
@@ -230,66 +235,67 @@ class Request {
 	 * @return string/false
 	 */
 	public function send($timeout = null) {
-		if (!empty($this->_request_body)) {
-			if (!empty($timeout)) $this->_request_timeout = (int)$timeout;
+		
+		if (!empty($timeout)) $this->_request_timeout = (int)$timeout;
 
-			if ($this->_request_cache && $GLOBALS['cache']->exists('request.'.$this->_request_hash)) {
-				return $GLOBALS['cache']->read('request.'.$this->_request_hash);
-			} else if ($this->_curl) {
-				## Use cURL
-				if ($this->_request_method == 'post') {
-					$this->_curl_options[CURLOPT_POST] = true;
+		if ($this->_request_cache && $GLOBALS['cache']->exists('request.'.$this->_request_hash)) {
+			return $GLOBALS['cache']->read('request.'.$this->_request_hash);
+		} else if ($this->_curl) {
+			## Use cURL
+			if ($this->_request_method == 'post') {
+				$this->_curl_options[CURLOPT_POST] = true;
+				if(!empty($this->_request_body)) {
 					$this->_curl_options[CURLOPT_POSTFIELDS] = $this->_request_body;
-				} else {
-					$this->_request_path .= '?'.$this->_request_body;
 				}
-				if ($this->_send_headers) {
-					$this->_curl_options[CURLOPT_HTTPHEADER] = $this->_request_headers;
+			} elseif(!empty($this->_request_body)) {
+				$this->_request_path .= '?'.$this->_request_body;
+			}
+			if ($this->_send_headers) {
+				$this->_curl_options[CURLOPT_HTTPHEADER] = $this->_request_headers;
+			}
+			$this->_curl_options[CURLOPT_PORT]     = $this->_request_port;
+			$this->_curl_options[CURLOPT_URL]     = $this->_request_protocol.'://'.$this->_request_url.$this->_request_path;
+			$this->_curl_options[CURLOPT_TIMEOUT]    = $this->_request_timeout;
+			$this->_curl_options[CURLOPT_CONNECTTIMEOUT]  = $this->_request_timeout;
+
+			## Some hosts disable curl and curl_exec spits out a warning so we need to supress it and detect if it returns false
+			curl_setopt_array($this->_curl, $this->_curl_options);
+
+			$return = curl_exec($this->_curl);
+			$error = curl_error($this->_curl);
+
+			if (empty($error)) {
+				if ($this->_request_cache) $GLOBALS['cache']->write($return, 'request.'.$this->_request_hash);
+				$this->log($this->_request_body, $return);
+				return $return;
+			} else {
+				$error_no = @curl_errno($this->_curl);
+				if (!$error_no && !$error) {
+					$error_no = "NA";
+					$error = "cURL is installed but may be disabled by the host. cURL exec returns false.";
 				}
-				$this->_curl_options[CURLOPT_PORT]     = $this->_request_port;
-				$this->_curl_options[CURLOPT_URL]     = $this->_request_protocol.'://'.$this->_request_url.$this->_request_path;
-				$this->_curl_options[CURLOPT_TIMEOUT]    = $this->_request_timeout;
-				$this->_curl_options[CURLOPT_CONNECTTIMEOUT]  = $this->_request_timeout;
+				$error = sprintf('cURL Error (%d): %s', $error_no, $error);
+				$this->log($this->_request_body, $return, $error);
+			}
+		} else {
+			## Fallback to fsockopen
+			$this->_fp = fsockopen(($this->_proxy_host) ? $this->_fsock_protocol.'://'.$this->_proxy_host : $this->_fsock_protocol.'://'.$this->_request_url, ($this->_proxy_port) ? $this->_proxy_port : $this->_request_port, $error_no, $error_str, $this->_request_timeout);
 
-				## Some hosts disable curl and curl_exec spits out a warning so we need to supress it and detect if it returns false
-				curl_setopt_array($this->_curl, $this->_curl_options);
+			if (!empty($error_no) || !empty($error_str)) trigger_error(sprintf('fsockopen Error (%d): %s', $error_no, $error_str));
+			if ($this->_fp) {
+				fwrite($this->_fp, implode("\r\n", $this->_request_headers)."\r\n\r\n".$this->_request_body);
+				$return = "";
+				while (!feof($this->_fp)) {
+					$return .= fread($this->_fp, 8024);
+				}
 
-				$return = curl_exec($this->_curl);
-				$error = curl_error($this->_curl);
-
-				if (empty($error)) {
+				if (!empty($return)) {
+					if (!$this->_request_return_headers) {
+						list($header, $return) = preg_split("/\R\R/", $return, 2);
+					}
 					if ($this->_request_cache) $GLOBALS['cache']->write($return, 'request.'.$this->_request_hash);
 					$this->log($this->_request_body, $return);
 					return $return;
-				} else {
-					$error_no = @curl_errno($this->_curl);
-					if (!$error_no && !$error) {
-						$error_no = "NA";
-						$error = "cURL is installed but may be disabled by the host. cURL exec returns false.";
-					}
-					$error = sprintf('cURL Error (%d): %s', $error_no, $error);
-					$this->log($this->_request_body, $return, $error);
-				}
-			} else {
-				## Fallback to fsockopen
-				$this->_fp = fsockopen(($this->_proxy_host) ? $this->_proxy_host : $this->_request_url, ($this->_proxy_port) ? $this->_proxy_port : $this->_request_port, $error_no, $error_str, $this->_request_timeout);
-				if (!empty($error_no) || !empty($error_str)) trigger_error(sprintf('fsockopen Error (%d): %s', $error_no, $error_str));
-				if ($this->_fp) {
-					fwrite($this->_fp, implode("\r\n", $this->_request_headers)."\r\n\r\n".$this->_request_body);
-					$return = "";
-					while (!feof($this->_fp)) {
-						$return .= fread($this->_fp, 1024);
-					}
-					fclose($this->_fp);
-					if (!empty($return)) {
-						if (!$this->_request_return_headers) {
-							$string = explode("\r\n\r\n", $return);
-							$return = $string[1];
-						}
-						if ($this->_request_cache) $GLOBALS['cache']->write($return, 'request.'.$this->_request_hash);
-						$this->log($this->_request_body, $return);
-						return $return;
-					}
 				}
 			}
 		}
@@ -367,12 +373,13 @@ class Request {
 	 * @param string $password
 	 */
 	public function setSSL($verify_peer = false, $verify_host = false, $cert = null) {
-		$this->_request_protocol = 'https';
+		
 		## Some systems use custom ports, so only redefine it if not already specified e.g. https://dev.psigate.com:7989
 		if ($this->_request_port == 80) {
 			$this->_request_port = 443;
 		}
 		if ($this->_curl) {
+			$this->_request_protocol = 'https';
 			$this->_curl_options[CURLOPT_SSL_VERIFYPEER] = $verify_peer;
 			if (!empty($cert) && file_exists($cert)) {
 				if (is_dir($cert)) {
@@ -382,6 +389,8 @@ class Request {
 				}
 			}
 			$this->_curl_options[CURLOPT_SSL_VERIFYHOST] = $verify_host;
+		} else {
+			$this->_fsock_protocol = 'ssl';	
 		}
 	}
 	
