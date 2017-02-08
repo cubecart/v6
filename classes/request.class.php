@@ -221,9 +221,9 @@ class Request {
 			} elseif (count($this->_add_request_headers)) {
 				$this->_request_headers  = array_merge($this->_request_headers, $this->_add_request_headers);
 			}
-			$this->_request_hash   = md5($this->_request_body.implode('', $this->_request_headers));
+			$this->_request_hash   = md5($this->_request_url.$this->_request_body.implode('', $this->_request_headers));
 		} else {
-			$this->_request_hash   = md5($this->_request_body);
+			$this->_request_hash   = md5($this->_request_url.$this->_request_body);
 		}
 	}
 
