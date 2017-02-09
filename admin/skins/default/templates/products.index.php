@@ -388,7 +388,7 @@
                   <td align="center"><input type="checkbox" name="option_update[{$option.assign_id}][absolute_price]" {if isset($option.absolute_price) && $option.absolute_price == 1}checked="checked"{/if} value="1"></td>
                   <td><span class="editable number" name="option_update[{$option.assign_id}][option_weight]" title="{$LANG.common.click_edit}">{$option.option_weight}</span></td>
                   <td align="center">
-                     {if !$option.set_member_id}<a href="#" name="option_remove" class="remove" rel="{$option.assign_id}" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>{else}<a href="#"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete_disabled.png" title="{$LANG.catalogue.delete_option_disabled}" class="delete_disabled"></a>{/if}
+                     {if !$option.set_member_id}<a href="#" name="option_remove" class="remove" rel="{$option.assign_id}" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>{else}<a href="#"><i class="fa fa-trash disabled" title="{$LANG.catalogue.delete_option_disabled}"></i></a>{/if}
                      <input type="hidden" id="data_{$option.assign_id}" value="{$option.data}">
                   </td>
                </tr>
@@ -401,7 +401,7 @@
                   <td><span class="editable number-right" name="option_create[{$option.set_member_id}][option_price]" title="{$LANG.common.click_edit}">{$option.option_price}</span></td>
                   <td align="center"><input type="checkbox" name="option_create[{$option.set_member_id}][absolute_price]" {if isset($option.absolute_price) && $option.absolute_price == 1}checked="checked"{/if}  value="1"></td>
                   <td><span class="editable number" name="option_create[{$option.set_member_id}][option_weight]" title="{$LANG.common.click_edit}">{$option.option_weight}</span></td>
-                  <td><a href="#"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/delete_disabled.png" title="{$LANG.catalogue.delete_option_disabled}" class="delete_disabled"></a></td>
+                  <td align="center"><a href="#"><i class="fa fa-trash disabled" title="{$LANG.catalogue.delete_option_disabled}"></i></a></td>
                </tr>
                {/if}
                {/foreach}

@@ -968,6 +968,9 @@ table.phrases td.actions {
 .fa-user.unregistered {
     color: red
 }
+.fa-trash.disabled {
+    color: #ccc;
+}
 table#order-builder .textbox {
     width: 100px
 }
