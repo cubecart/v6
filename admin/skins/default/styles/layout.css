@@ -968,8 +968,9 @@ table.phrases td.actions {
 .fa-user.unregistered {
     color: red
 }
-.fa-trash.disabled {
+.fa-trash.disabled, .fa-ban.title_alert {
     color: #ccc;
+    cursor: pointer;
 }
 table#order-builder .textbox {
     width: 100px

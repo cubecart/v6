@@ -791,7 +791,7 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
     var t = $(this).attr("rel"),
         e = $("#data_" + t).val().split("|");
     $("#opt_assign_id").val(t), $("#opt_mid").val(e[0]), $("#opt_price").val(e[1]), $("#opt_weight").val(e[2]), $("#opt_stock").val(e[3]), $(this).parent().parent().remove()
-}), $(".fa-trash.disabled").on("click", function() {
+}), $(".fa-trash.disabled, .title_alert").on("click", function() {
     alert($(this).attr("title"))
 }), $("input#product_code").on("keyup", function() {
     $("input#product_code").val().length > 0 ? $("input#product_code_auto").attr("checked", !1) : $("input#product_code_auto").attr("checked", !0)

@@ -388,20 +388,20 @@
                   <td align="center"><input type="checkbox" name="option_update[{$option.assign_id}][absolute_price]" {if isset($option.absolute_price) && $option.absolute_price == 1}checked="checked"{/if} value="1"></td>
                   <td><span class="editable number" name="option_update[{$option.assign_id}][option_weight]" title="{$LANG.common.click_edit}">{$option.option_weight}</span></td>
                   <td align="center">
-                     {if !$option.set_member_id}<a href="#" name="option_remove" class="remove" rel="{$option.assign_id}" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>{else}<a href="#"><i class="fa fa-trash disabled" title="{$LANG.catalogue.delete_option_disabled}"></i></a>{/if}
+                     {if !$option.set_member_id}<a href="#" name="option_remove" class="remove" rel="{$option.assign_id}" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>{else}<i class="fa fa-trash disabled" title="{$LANG.catalogue.delete_option_disabled}"></i>{/if}
                      <input type="hidden" id="data_{$option.assign_id}" value="{$option.data}">
                   </td>
                </tr>
                {else}
                <tr id="option_member_{$option.set_member_id}">
                   <td align="center"><input type="hidden" id="enable_member_{$option.set_member_id}" name="option_create[{$option.set_member_id}][set_enabled]" value="{$option.set_enabled}" class="toggle"></td>
-                  <td align="center"><input type="checkbox" id="matrix_include_{$option.set_member_id}" name="option_update[{$option.assign_id}][matrix_include]" value="{$option.matrix_include}"></td>
+                  <td align="center"><i class="fa fa-ban title_alert" aria-hidden="true" title="{$LANG.catalogue.options_matrix_block}"></i></td>
                   <td>{$option.display}</td>
                   <td align="center"><input type="checkbox" name="option_create[{$option.set_member_id}][option_negative]" {if isset($option.option_negative) && $option.option_negative == 1}checked="checked"{/if}  value="1"></td>
                   <td><span class="editable number-right" name="option_create[{$option.set_member_id}][option_price]" title="{$LANG.common.click_edit}">{$option.option_price}</span></td>
                   <td align="center"><input type="checkbox" name="option_create[{$option.set_member_id}][absolute_price]" {if isset($option.absolute_price) && $option.absolute_price == 1}checked="checked"{/if}  value="1"></td>
                   <td><span class="editable number" name="option_create[{$option.set_member_id}][option_weight]" title="{$LANG.common.click_edit}">{$option.option_weight}</span></td>
-                  <td align="center"><a href="#"><i class="fa fa-trash disabled" title="{$LANG.catalogue.delete_option_disabled}"></i></a></td>
+                  <td align="center"><i class="fa fa-trash disabled" title="{$LANG.catalogue.delete_option_disabled}"></i></td>
                </tr>
                {/if}
                {/foreach}
