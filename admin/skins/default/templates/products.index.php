@@ -456,7 +456,7 @@
                   <td align="center" class="set_enabled"><input type="checkbox" class="set_enabled" name="option_add[set_enabled][]" value="1"></td>
                   <td align="center" class="matrix_include"><input type="checkbox" name="option_add[matrix_include][]" value="1"></td>
                   <td class="name"><input type="hidden" name="option_add[value][]" value="" disabled="disabled"></td>
-                  <td class="set_name">-</td>
+                  <td class="set_name">{$LANG.common.none}</td>
                   <td class="negative" align="center"><input type="checkbox" name="option_add[negative][]" value="1" disabled="disabled"></td>
                   <td class="price"><input type="hidden" name="option_add[price][]" value="" disabled="disabled"></td>
                   <td class="absolute_price" align="center"><input type="checkbox" name="option_add[absolute_price][]" value="1" disabled="disabled"></td>
