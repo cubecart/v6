@@ -157,7 +157,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 					foreach ($members as $member) {
 						$member_list[] = (int)$member['set_member_id'];
 					}
-					$GLOBALS['db']->update('CubeCart_option_assign', array('set_member_id' => 0), array('set_member_id' => $member_list, 'product' => $product_id));
+					$GLOBALS['db']->delete('CubeCart_option_assign', array('set_member_id' => $member_list, 'product' => $product_id));
 					unset($member_list);
 				}
 				$GLOBALS['db']->delete('CubeCart_options_set_product', array('set_product_id' => (int)$set_product_id));
