@@ -494,6 +494,7 @@
     <string name="title_option_set_assign" introduced="5.0.0"><![CDATA[Assign Option Sets]]></string>
     <string name="title_bulk_prices" introduced="6.1.0"><![CDATA[Bulk Price Change]]></string>
     <string name="title_option_sets" introduced="5.0.0"><![CDATA[Option Sets]]></string>
+    <string name="title_option_set" introduced="6.1.5"><![CDATA[Option Set]]></string>
     <string name="title_options" introduced="5.0.0"><![CDATA[Options]]></string>
     <string name="title_popular" introduced="5.0.0"><![CDATA[Best Sellers]]></string>
     <string name="title_prices_update" introduced="5.0.0"><![CDATA[Update Product Prices]]></string>
@@ -559,6 +560,7 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="none" introduced="6.1.5"><![CDATA[None]]></string>
     <string name="read_ltr" introduced="6.1.2"><![CDATA[Left-to-Right]]></string>
     <string name="read_rtl" introduced="6.1.2"><![CDATA[Right-to-Left]]></string>
     <string name="set_to" introduced="6.1.2"><![CDATA[Set to]]></string>

@@ -367,7 +367,8 @@
                <tr>
                   <td>{$LANG.common.status}</td>
                   <td>{$LANG.catalogue.title_product_options_matrix}</td>
-                  <td>{$LANG.common.type}</td>
+                  <td>{$LANG.common.name}</td>
+                  <td>{$LANG.catalogue.title_option_set}</td>
                   <td>{$LANG.common.negative}</td>
                   <td>{$LANG.common.price}</td>
                   <td>{$LANG.catalogue.absolute_price}</td>
@@ -383,6 +384,7 @@
                   <td align="center"><input type="hidden" id="enable_{$option.assign_id}" name="option_update[{$option.assign_id}][set_enabled]" value="{$option.set_enabled}" class="toggle"></td>
                   <td align="center"><input type="hidden" id="matrix_include_{$option.assign_id}" name="option_update[{$option.assign_id}][matrix_include]" value="{$option.matrix_include}" class="toggle"></td>
                   <td>{$option.display}</td>
+                  <td>{$LANG.common.none}</td>
                   <td align="center"><input type="checkbox" name="option_update[{$option.assign_id}][option_negative]" {if isset($option.option_negative) && $option.option_negative == 1}checked="checked"{/if} value="1"></td>
                   <td><span class="editable number-right" name="option_update[{$option.assign_id}][option_price]" title="{$LANG.common.click_edit}">{$option.option_price}</span></td>
                   <td align="center"><input type="checkbox" name="option_update[{$option.assign_id}][absolute_price]" {if isset($option.absolute_price) && $option.absolute_price == 1}checked="checked"{/if} value="1"></td>
@@ -397,6 +399,7 @@
                   <td align="center"><input type="hidden" id="enable_member_{$option.set_member_id}" name="option_create[{$option.set_member_id}][set_enabled]" value="{$option.set_enabled}" class="toggle"></td>
                   <td align="center"><i class="fa fa-ban title_alert" aria-hidden="true" title="{$LANG.catalogue.options_matrix_block}"></i></td>
                   <td>{$option.display}</td>
+                  <td>{$option.set_name}</td>
                   <td align="center"><input type="checkbox" name="option_create[{$option.set_member_id}][option_negative]" {if isset($option.option_negative) && $option.option_negative == 1}checked="checked"{/if}  value="1"></td>
                   <td><span class="editable number-right" name="option_create[{$option.set_member_id}][option_price]" title="{$LANG.common.click_edit}">{$option.option_price}</span></td>
                   <td align="center"><input type="checkbox" name="option_create[{$option.set_member_id}][absolute_price]" {if isset($option.absolute_price) && $option.absolute_price == 1}checked="checked"{/if}  value="1"></td>
@@ -432,6 +435,7 @@
                         {/if}
                      </select>
                   </td>
+                  <td></td>
                   <td align="center"><input type="checkbox" id="opt_negative" rel="negative" class="checkbox data"></td>
                   <td><input type="text" id="opt_price" rel="price" class="textbox number data"></td>
                   <td align="center"><input type="checkbox" id="opt_absolute_price" rel="absolute_price" class="checkbox data"></td>
@@ -452,6 +456,7 @@
                   <td align="center" class="set_enabled"><input type="checkbox" class="set_enabled" name="option_add[set_enabled][]" value="1"></td>
                   <td align="center" class="matrix_include"><input type="checkbox" name="option_add[matrix_include][]" value="1"></td>
                   <td class="name"><input type="hidden" name="option_add[value][]" value="" disabled="disabled"></td>
+                  <td class="set_name">-</td>
                   <td class="negative" align="center"><input type="checkbox" name="option_add[negative][]" value="1" disabled="disabled"></td>
                   <td class="price"><input type="hidden" name="option_add[price][]" value="" disabled="disabled"></td>
                   <td class="absolute_price" align="center"><input type="checkbox" name="option_add[absolute_price][]" value="1" disabled="disabled"></td>

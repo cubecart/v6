@@ -593,7 +593,7 @@ thead {
 }
 thead td,
 thead th {
-    padding: 0 0 0 5px!important
+    padding: 0 0 0 5px !important
 }
 #filemanager div div:nth-child(even),
 fieldset>div:nth-child(even),
@@ -607,7 +607,7 @@ fieldset .checkbox {
 thead td,
 thead th {
     font-weight: 700;
-    padding: 0 2px;
+    padding: 0 5px !important;
     border-bottom: 1px solid #c5c5c5;
     background-color: #E7E7E7
 }
