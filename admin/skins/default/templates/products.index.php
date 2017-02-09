@@ -186,7 +186,6 @@
          <div><label for="isbn_code">{$LANG.catalogue.product_isbn}</label><span><input name="isbn" id="isbn" class="textbox" type="text" value="{$PRODUCT.isbn}" maxlength="20"></span></div>
          <div><label for="gtin_code">{$LANG.catalogue.product_gtin}</label><span><input name="gtin" id="gtin" class="textbox" type="text" value="{$PRODUCT.gtin}" maxlength="20"></span></div>
          <div><label for="mpn_code">{$LANG.catalogue.product_mpn}</label><span><input name="mpn" id="mpn" class="textbox" type="text" value="{$PRODUCT.mpn}" maxlength="20"></span></div>
-         <!--<div><label for="brand_code">{$LANG.catalogue.product_brand}</label><span><input name="brand" id="brand" class="textbox" type="text" value="{$PRODUCT.brand}" maxlength="20"></span></div>-->
          <div>
             <label for="google_cat_code">{$LANG.catalogue.product_google_category}</label>
             <span>
