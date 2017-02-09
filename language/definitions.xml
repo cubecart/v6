@@ -266,7 +266,7 @@
     <string name="coupon_include" introduced="5.1.5"><![CDATA[Promotional code applies to ONLY above products]]></string>
     <string name="coupon_exclude" introduced="5.1.5"><![CDATA[Promotional code applies to all EXCEPT above products]]></string>
     <string name="customer_reviews" introduced="5.0.0"><![CDATA[Customer Reviews]]></string>
-    <string name="delete_option_disabled" introduced="5.0.0"><![CDATA[This option can not be deleted as it is part of an option set. Please disable instead.]]></string>
+    <string name="delete_option_disabled" introduced="5.0.0"><![CDATA[This option can not be deleted as it is part of an option set. Please disable or remove option set.]]></string>
     <string name="delimiter" introduced="5.0.0"><![CDATA[Delimiter]]></string>
     <string name="delimiter_tab" introduced="5.0.0"><![CDATA[Tab]]></string>
     <string name="delivery_method" introduced="5.0.0"><![CDATA[Delivery Method]]></string>
