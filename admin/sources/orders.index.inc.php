@@ -83,7 +83,7 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
 			$order_inv_id = $GLOBALS['db']->insert('CubeCart_order_inventory', $record);
 
 			if(isset($record['digital']) && $record['digital']) {
-				$GLOBALS['order']->createDownload((int)$data['product_id'], $order_inv_id, $_POST['customer']['customer_id']);
+				$GLOBALS['order']->createDownload((int)$data['product_id'], (int)$order_inv_id, (int)$_POST['customer']['customer_id'], $order_id);
 			}
 
 			unset($record);
