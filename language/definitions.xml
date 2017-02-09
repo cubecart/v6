@@ -504,7 +504,6 @@
     <string name="title_product_list" introduced="5.0.0"><![CDATA[Product List]]></string>
     <string name="title_product_options" introduced="5.0.0"><![CDATA[Product Options]]></string>
     <string name="title_product_options_matrix" introduced="5.2.0"><![CDATA[Options Matrix]]></string>
-    <string name="options_matrix_block" introduced="6.1.5"><![CDATA[It is not possible to add options from options sets into the option matrix unless converted.]]></string>
     <string name="title_product_update" introduced="5.0.0"><![CDATA[Edit Product]]></string>
     <string name="title_products" introduced="5.0.0"><![CDATA[Products]]></string>
     <string name="title_products_assigned" introduced="5.0.0"><![CDATA[Assigned Products]]></string>

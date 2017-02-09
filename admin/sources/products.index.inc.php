@@ -750,7 +750,7 @@ if (isset($_GET['action'])) {
 
 			## Product Options (Sets)
 			$select_types = array(0,4);
-			if (($set_products = $GLOBALS['db']->select('CubeCart_options_set_product AS P INNER JOIN CubeCart_options_set AS S ON S.set_id = P.set_id ', false, array('product_id' => $product_id))) !== false) {
+			if (($set_products = $GLOBALS['db']->misc(sprintf("SELECT * FROM `%1\$sCubeCart_options_set_product` AS `P` INNER JOIN `%1\$sCubeCart_options_set` AS `S` ON `S`.`set_id` = `P`.`set_id` WHERE `P`.`product_id` = $product_id",$GLOBALS['config']->get('config','dbprefix')))) !== false) {
 				foreach ($set_products as $set_product) {
 					if (($members = $GLOBALS['db']->select('CubeCart_options_set_member', false, array('set_id' => $set_product['set_id']))) !== false) {
 						foreach ($members as $member) {
@@ -761,14 +761,16 @@ if (isset($_GET['action'])) {
 									$group['display'] = in_array($group['option_type'], $select_types) ? '<strong>'.$group['option_name'].':</strong> '.$value['value_name'] : $group['option_name'];
 									$option_list[$member['option_id']][$member['value_id']] = array_merge($member, $assign, $group, $value, array('show_disable' => true));
 									$option_list[$assign['option_id']][$assign['value_id']]['from_assigned'] = true;
+									$option_list[$assign['option_id']][$assign['value_id']]['set_name'] = (isset($set_product['set_name']) && !empty($set_product['set_name'])) ? $set_product['set_name'] : $lang['common']['none'];
 								}
 							} else {
 								$group = (isset($group_list[$member['option_id']])) ? $group_list[$member['option_id']] : array();
 								$value = ($member['value_id'] > 0 && isset($value_list[$member['option_id']][$member['value_id']])) ? $value_list[$member['option_id']][$member['value_id']] : array();
 								$group['display'] = in_array($group['option_type'], $select_types) ? '<strong>'.$group['option_name'].':</strong> '.$value['value_name'] : $group['option_name'];
-								$assign = array('set_enabled' => '1', 'option_price' => number_format(0, 2), 'option_weight' => number_format(0, 2), 'set_name' => $set_product['set_name']);
+								$assign = array('set_enabled' => '1', 'option_price' => number_format(0, 2), 'option_weight' => number_format(0, 2));
 
 								$option_list[$member['option_id']][$member['value_id']] = array_merge($member, $group, $value, $assign, array('show_disable' => true));
+								$option_list[$member['option_id']][$member['value_id']] = (isset($set_product['set_name']) && !empty($set_product['set_name'])) ? $set_product['set_name'] : $lang['common']['none'];
 							}
 							$option_list[$member['option_id']]['priority'] = $group['priority'];
 						}
@@ -787,6 +789,7 @@ if (isset($_GET['action'])) {
 					$group['display'] = in_array($group['option_type'], $select_types) ? '<strong>'.$group['option_name'].':</strong> '.$value['value_name'] : $group['option_name'];
 					$option_list[$assign['option_id']][$assign['value_id']] = array_merge($assign, $group, $value, array('show_disable' => false));
 					$option_list[$assign['option_id']][$assign['value_id']]['from_assigned'] = true;
+					$option_list[$assign['option_id']][$assign['value_id']]['set_name'] = $lang['common']['none'];
 					$option_list[$assign['option_id']]['priority'] = $group['priority'];
 				}
 			}

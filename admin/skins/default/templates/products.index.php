@@ -384,7 +384,7 @@
                   <td align="center"><input type="hidden" id="enable_{$option.assign_id}" name="option_update[{$option.assign_id}][set_enabled]" value="{$option.set_enabled}" class="toggle"></td>
                   <td align="center"><input type="hidden" id="matrix_include_{$option.assign_id}" name="option_update[{$option.assign_id}][matrix_include]" value="{$option.matrix_include}" class="toggle"></td>
                   <td>{$option.display}</td>
-                  <td>{$LANG.common.none}</td>
+                  <td>{$option.set_name}</td>
                   <td align="center"><input type="checkbox" name="option_update[{$option.assign_id}][option_negative]" {if isset($option.option_negative) && $option.option_negative == 1}checked="checked"{/if} value="1"></td>
                   <td><span class="editable number-right" name="option_update[{$option.assign_id}][option_price]" title="{$LANG.common.click_edit}">{$option.option_price}</span></td>
                   <td align="center"><input type="checkbox" name="option_update[{$option.assign_id}][absolute_price]" {if isset($option.absolute_price) && $option.absolute_price == 1}checked="checked"{/if} value="1"></td>
