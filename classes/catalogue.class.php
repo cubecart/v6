@@ -460,6 +460,7 @@ class Catalogue {
 			}
 
 			$optionArray = $this->getProductOptions($product_id);
+			$this->_options_line_price = 0; // Reset option line price
 			if (is_array($optionArray)) {
 				ksort($optionArray);
 				foreach ($optionArray as $type => $group) {
