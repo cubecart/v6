@@ -85,12 +85,12 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 	set_time_limit(180);
 	// Make sure line endings can be detected
 	ini_set("auto_detect_line_endings", true);
+	$file_name = basename($_GET['restore']);
+	$file_path = CC_ROOT_DIR.'/backup/'.$file_name;
 
-	$file_path = CC_ROOT_DIR.'/backup/'.basename($_GET['restore']);
-
-	if (preg_match('/^database_full/', $_GET['restore'])) { // Restore database
+	if (preg_match('/^database_full/', $file_name)) { // Restore database
 		$delete_source = false;	
-		if (preg_match('/\.sql.zip$/', $_GET['restore'])) { // unzip first
+		if (preg_match('/\.sql.zip$/', $file_name)) { // unzip first
 			
 			$zip = new ZipArchive;
 			if ($zip->open($file_path) === TRUE) {
@@ -101,7 +101,7 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 				$zip->extractTo(CC_ROOT_DIR.'/backup');
     			$zip->close();
 			} else {
-				$GLOBALS['main']->setACPWarning("Error reading file ".$_GET['restore']);
+				$GLOBALS['main']->setACPWarning("Error reading file ".$file_name);
 				httpredir('?_g=maintenance&node=index#backup');	
 			}
 		}
@@ -133,9 +133,9 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 			httpredir('?_g=maintenance&node=index#backup');
 		}
 
-	} elseif (preg_match('/^files/', $_GET['restore'])) { // restore archive
+	} elseif (preg_match('/^files/', $file_name)) { // restore archive
 		
-		$file_path = CC_ROOT_DIR.'/backup/'.$_GET['restore'];
+		$file_path = CC_ROOT_DIR.'/backup/'.$file_name;
 		$zip = new ZipArchive;
 		if ($zip->open($file_path) === true) {
 			
