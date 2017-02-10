@@ -100,7 +100,7 @@ if (!empty($_GET['_g'])) {
 			if (file_exists($include)) {
 				require $include;
 			} else {
-				$page_content = str_replace(CC_ROOT_DIR,'',$include)." was not found.";
+				$page_content = str_replace(CC_ROOT_DIR,'',$include)." - not found.";
 				trigger_error(sprintf('Unable to load content for %s:%s', $_GET['_g'], $node), E_USER_WARNING);
 			}
 		}
