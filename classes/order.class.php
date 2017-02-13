@@ -408,10 +408,10 @@ class Order {
 							$this->assignOrderDetails(null, true);
 							$admin_mailer->sendEmail($admin_notify, $content);
 							$GLOBALS['session']->set($message_id, true, 'email');
-							unset($content);
 						}
+						unset($content);
 					}
-				
+					
 				break;
 
 				case self::ORDER_PROCESS;
@@ -429,8 +429,8 @@ class Order {
 					if ($this->_email_enabled && ($content = $mailer->loadContent('cart.order_confirmation', $order_summary['lang'])) !== false) {
 						$this->assignOrderDetails();
 						$mailer->sendEmail($this->_order_summary['email'], $content);
-						unset($content);
 					}
+					unset($content);
 
 					// Send email to store admins if set for processing status
 					if ($GLOBALS['config']->get('config', 'admin_notify_status')=="2" && $this->_email_enabled && $this->_email_admin_enabled && $admin_notify = $this->_notifyAdmins()) {
@@ -442,8 +442,8 @@ class Order {
 							$this->assignOrderDetails(null, true);
 							$admin_mailer->sendEmail($admin_notify, $content);
 							$GLOBALS['session']->set($message_id, true, 'email');
-							unset($content);
 						}
+						unset($content);
 					}
 
 					// Send digital files
@@ -475,8 +475,8 @@ class Order {
 					if (!$this->_skip_order_complete_email && $this->_email_enabled && ($content = $mailer->loadContent('cart.order_complete', $order_summary['lang'])) !== false) {
 						$this->assignOrderDetails();
 						$mailer->sendEmail($this->_order_summary['email'], $content);
-						unset($content);
 					}
+					unset($content);
 
 				break;
 
