@@ -147,6 +147,7 @@ class Mailer extends PHPMailer {
 	 * @return bool
 	 */
 	public function sendEmail($email = false, $contents = false, $template_id = false) {
+		foreach ($GLOBALS['hooks']->load('class.mailer.send') as $hook) include $hook;
 		$this->ClearAddresses();
 		if (strstr($email, ',')) {
 			$emails = explode(',', $email);
