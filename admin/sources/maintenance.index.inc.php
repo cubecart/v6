@@ -844,8 +844,9 @@ if (isset($database_result) && $database_result) {
 				$key_type = 'KEY';	
 			}
 			$table_name = $GLOBALS['config']->get('config', 'dbprefix').str_replace('cubecart', 'CubeCart', $index['Table']);
-			if(isset($actual_map[$index['Table']][$index['Column_name']]) && $actual_map[$index['Table']][$index['Column_name']] == $key_type) {
-				$index_errors[] = sprintf($lang['maintain']['duplicate_index'], $table_name.'.'.$index['Column_name'], $key_type);	
+			$duplicate = false;
+			if(isset($actual_map[$index['Table']][$index['Column_name']]) && $actual_map[$index['Table']][$index['Column_name']]==$key_type) {
+				$duplicate = sprintf($lang['maintain']['duplicate_index'], $table_name.'.'.$index['Column_name'], $key_type);	
 			}
 			$actual_map[$index['Table']][$index['Column_name']] = $key_type;
 		}
@@ -857,6 +858,10 @@ if (isset($database_result) && $database_result) {
 			} elseif(isset($actual_map[$index['Table']][$column]) && $actual_map[$index['Table']][$column]!==$key) {
 				$index_errors[] = sprintf($lang['maintain']['wrong_index'], $table_name.'.'.$column, $actual_map[$index['Table']][$column], $key);
 			}
+		}
+
+		if($duplicate !== false) {
+			$index_errors[] = $duplicate;
 		}
 
 		$table['Data_free'] = ($table['Data_free'] > 0) ? formatBytes($table['Data_free'], true) : '-';
