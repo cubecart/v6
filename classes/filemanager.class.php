@@ -262,6 +262,9 @@ class FileManager {
 
 			foreach ($file_array as $key => $file) {
 				if (!is_dir($file)) {
+					// Skip file if it is not an image and we're in image mode
+					if($this->_mode == 1 && !preg_match('/\.(jpeg|jpg|png|gif)$/i', $file)) continue;
+
 					// Skip existing entries, and sources/thumbs
 					if (isset($exists) && in_array(str_replace(array($this->_manage_root.'/', 'source/'), '', $file), $exists)) continue;
 

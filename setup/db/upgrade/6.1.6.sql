@@ -1,0 +1,1 @@
+DELETE FROM `CubeCart_filemanager` WHERE `filename` NOT REGEXP '(jpeg|jpg|gif|png)$' AND `type` = 1; #EOQ
