@@ -250,7 +250,7 @@ if (($categories = $GLOBALS['db']->select('CubeCart_option_group', false, false,
 		);
 	}
 	## Get all values (middle)
-	$values = $GLOBALS['db']->select('CubeCart_option_value', false, false, array('priority' => 'ASC', 'value_name' => 'ASC'));
+	$values = $GLOBALS['db']->select('CubeCart_option_value', false, false, 'IF(priority>0, priority, value_id) ASC');
 	if ($values) {
 		foreach ($values as $value) {
 			if (isset($optionArray[$value['option_id']])) {
