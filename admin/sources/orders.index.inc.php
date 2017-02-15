@@ -359,9 +359,9 @@ if (isset($_GET['action'])) {
 
 			$overview_summary['percent'] = '';
 			if ($overview_summary['discount_type'] == 'p') {
-				$overview_summary['percent'] = number_format(($overview_summary['discount']/$overview_summary['subtotal'])*100) . '%';
+				$overview_summary['percent'] = number_format(($overview_summary['discount']/$overview_summary['subtotal'])*100, 2) . '%';
 			} else if ($overview_summary['discount_type'] == 'pp') {
-					$overview_summary['percent'] = number_format(($overview_summary['discount']/($overview_summary['subtotal']+$overview_summary['discount']))*100) . '%';
+					$overview_summary['percent'] = number_format(($overview_summary['discount']/($overview_summary['subtotal']+$overview_summary['discount']))*100, 2) . '%';
 				}
 
 			$overview_summary['name']  = (isset($summary[0]['name']) && !empty($summary[0]['name'])) ? $summary[0]['name'] : $summary[0]['first_name'].' '.$summary[0]['last_name'];
