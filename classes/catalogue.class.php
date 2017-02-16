@@ -1695,8 +1695,8 @@ class Catalogue {
 				$order['field'] = 'Relevance';
 				$order['sort'] = 'DESC';
 			}
-			// Use store settings for sort order if none designated
-			if (empty($order)) {
+			// Use store settings for sort order if none designated or invalid for current search mode
+			if (empty($order) || (strcasecmp($order['field'], 'relevance') === 0 && strcasecmp($search_mode, 'fulltext') !== 0)) {
 				$order['field'] = $GLOBALS['config']->get('config', 'product_sort_column');
 				$order['sort'] = $GLOBALS['config']->get('config', 'product_sort_direction');
 				if (empty($order['field']) || empty($order['sort'])) {
