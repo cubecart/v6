@@ -263,12 +263,17 @@ class ACP {
 			'adminFile' => 'admin.php' 
 		);
 		foreach($default_config as $config_key => $config_value) {
+			// If set config value doesn't match default and default exists we need to delete old and update to new
 			if($glob[$config_key]!==$config_value && file_exists(CC_ROOT_DIR.'/'.$config_value)) {
-				recursiveDelete(CC_ROOT_DIR.'/'.$glob[$config_key]);
-				rename(CC_ROOT_DIR.'/'.$config_value, CC_ROOT_DIR.'/'.$glob[$config_key]);
-			}
-			if(file_exists(CC_ROOT_DIR.'/'.$config_value)) {
-				$return = false;
+				// If custom value exists delete it and rename the new one to it
+				if(file_exists(CC_ROOT_DIR.'/'.$glob[$config_key])) {
+					recursiveDelete(CC_ROOT_DIR.'/'.$glob[$config_key]);
+					rename(CC_ROOT_DIR.'/'.$config_value, CC_ROOT_DIR.'/'.$glob[$config_key]);
+				}
+				// Check default one no longer exists
+				if(file_exists(CC_ROOT_DIR.'/'.$config_value)) {
+					$return = false;
+				}
 			}
 		}
 		return $return;
