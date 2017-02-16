@@ -224,11 +224,15 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 					if (file_exists(CC_ROOT_DIR.'/setup')) {
 						rename(CC_ROOT_DIR.'/setup', CC_ROOT_DIR.'/setup_'.md5(time().$_GET['upgrade']));
 					}
-					$GLOBALS['main']->renameAdmin();
+					if(!$GLOBALS['main']->renameAdmin()) {
+						$GLOBALS['main']->setACPWarning($lang['maintain']['rename_fail']);
+					}
 					$GLOBALS['main']->setACPNotify($lang['maintain']['current_version_restored']);
 					httpredir('?_g=maintenance&node=index#upgrade');
 				} else {
-					$GLOBALS['main']->renameAdmin();
+					if(!$GLOBALS['main']->renameAdmin()) {
+						$GLOBALS['main']->setACPWarning($lang['maintain']['rename_fail']);
+					}
 					httpredir(CC_ROOT_REL.'setup/index.php?autoupdate=1');
 				}
 			} else {

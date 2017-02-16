@@ -252,22 +252,23 @@ class ACP {
 	 */
 
 	public function renameAdmin() {
-		global $glob;
+		
+		// Include to make sure we have the latest config data
+		include(CC_INCLUDES_DIR.'global.inc.php');
 		
 		$return = true;
-
+		
 		$default_config = array(
 			'adminFolder' => 'admin',
 			'adminFile' => 'admin.php' 
 		);
 		foreach($default_config as $config_key => $config_value) {
-			$default_path = CC_ROOT_DIR.'/'.$config_value;
-			$custom_path = CC_ROOT_DIR.'/'.$glob[$config_key];
-			if(isset($glob[$config_key]) && $glob[$config_key]!==$config_value && file_exists($default_path) && file_exists($custom_path)) {
-				is_dir($default_path) ? recursiveDelete($default_path) : unlink($default_path);
-				if(!rename($default_path, $custom_path)) {
-					$return = false;	
-				}	
+			if($glob[$config_key]!==$config_value && file_exists(CC_ROOT_DIR.'/'.$config_value)) {
+				recursiveDelete(CC_ROOT_DIR.'/'.$glob[$config_key]);
+				rename(CC_ROOT_DIR.'/'.$config_value, CC_ROOT_DIR.'/'.$glob[$config_key]);
+			}
+			if(file_exists(CC_ROOT_DIR.'/'.$config_value)) {
+				$return = false;
 			}
 		}
 		return $return;
