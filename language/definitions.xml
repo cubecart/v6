@@ -1766,6 +1766,10 @@
     <string name="category_name" introduced="5.0.0"><![CDATA[Category Name]]></string>
     <string name="category_parent" introduced="5.0.0"><![CDATA[Parent Category]]></string>
     <string name="catalogue_mode" introduced="5.0.0"><![CDATA[Disable Checkout (Catalogue Mode Only)]]></string>
+    <string name="catalogue_search_mode" introduced="6.1.6"><![CDATA[Search Mode]]></string>
+    <string name="catalogue_search_mode_fulltext" introduced="6.1.6"><![CDATA[Full Text (Sort by relevance, search term must be at least 4 characters)]]></string>
+    <string name="catalogue_search_mode_like" introduced="6.1.6"><![CDATA[Like (Cannot sort by relevance, search term may be any length)]]></string>
+    <string name="catalogue_search_mode_rlike" introduced="6.1.6"><![CDATA[RLike (Cannot sort by relevance, search term may be any length)]]></string>
     <string name="changes_not_made" introduced="5.0.0"><![CDATA[No changes have been made.]]></string>
     <string name="check" introduced="5.0.0"><![CDATA[Check]]></string>
     <string name="cookie_dialogue" introduced="5.0.0"><![CDATA[Enable EU Cookie Compliance]]></string>

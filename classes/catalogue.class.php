@@ -1568,8 +1568,10 @@ class Catalogue {
 	 * @param string $search_mode
 	 * @return bool
 	 */
-	public function searchCatalogue($search_data = null, $page = 1, $per_page = 10, $search_mode = 'fulltext') {
-
+	public function searchCatalogue($search_data = null, $page = 1, $per_page = 10, $search_mode = null) {
+		if ($search_mode === null) {
+			$search_mode = $GLOBALS['config']->get('config', 'catalogue_search_mode');
+		}
 		$per_page = (!is_numeric($per_page) || $per_page < 1) ? 10 : $per_page;
 
 		$original_search_data = $search_data;

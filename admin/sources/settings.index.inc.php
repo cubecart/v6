@@ -333,6 +333,7 @@ $select_options = array(
 	'basket_allow_non_invoice_address' => null,
 	'catalogue_latest_products'   => null,
 	'catalogue_show_empty' => null,
+	'catalogue_search_mode' => array('fulltext'=>$lang['settings']['catalogue_search_mode_fulltext'],'like'=>$lang['settings']['catalogue_search_mode_like'],'rlike'=>$lang['settings']['catalogue_search_mode_rlike']),
 	'email_smtp'   => null,
 	'ssl'     => null,
 	'stock_level'   => null,
