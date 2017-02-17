@@ -156,11 +156,12 @@ if (Admin::getInstance()->permissions('statistics', CC_PERM_READ, false, false))
 	$last_month   = date('m', strtotime("-1 month", mktime(12, 0, 0, $this_month, 15, $this_month)));
 	$last_year    = ($last_month < $this_month) ? $this_year : ($this_year - 1);
 	$last_month_start  = mktime(0, 0, 0, $last_month, '01', $last_year);
+	$last_year_start   = mktime(0, 0, 0, '01', '01', $this_year - 1);
 
-	$last_month_sales  = $GLOBALS['db']->query('SELECT SUM(`total`) as `last_month` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary` WHERE `status` = 3 AND `order_date` > '.$last_month_start.' AND `order_date` < '.$this_month_start.';');
+	$last_month_sales  = $GLOBALS['db']->query('SELECT SUM(`total`) as `last_month` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary` WHERE `status` in(2,3) AND `order_date` > '.$last_month_start.' AND `order_date` < '.$this_month_start.';');
 	$quick_stats['last_month'] = Tax::getInstance()->priceFormat((float)$last_month_sales[0]['last_month']);
 
-	$this_month_sales  = $GLOBALS['db']->query('SELECT SUM(`total`) as `this_month` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary` WHERE `status` = 3 AND `order_date` > '.$this_month_start.';');
+	$this_month_sales  = $GLOBALS['db']->query('SELECT SUM(`total`) as `this_month` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary` WHERE `status` in(2,3) AND `order_date` > '.$this_month_start.';');
 	$quick_stats['this_month'] = Tax::getInstance()->priceFormat((float)$this_month_sales[0]['this_month']);
 
 	$GLOBALS['smarty']->assign('QUICK_STATS', $quick_stats);
@@ -179,7 +180,7 @@ foreach ($GLOBALS['hooks']->load('admin.dashboard.quick_tasks') as $hook) includ
 $GLOBALS['smarty']->assign('QUICK_TASKS', $quick_tasks);
 
 ## Statistics (Google Charts)
-$sales = $GLOBALS['db']->select('CubeCart_order_summary', array('order_date', 'total'), array('order_date' => '>='.mktime(0, 0, 0, date('m', $last_year), 1, date('Y', $last_year)), 'status' => array(3), 'total' => '>0'));
+$sales = $GLOBALS['db']->select('CubeCart_order_summary', array('order_date', 'total'), array('order_date' => '>='.$last_year_start, 'status' => array(2, 3), 'total' => '>0'));
 $data= array();
 if ($sales) { ## Get data to put in chart
 	foreach ($sales as $sale) {
