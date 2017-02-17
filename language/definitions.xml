@@ -1293,7 +1293,6 @@
     <string name="example_code_snippet_xml" introduced="5.2.0"><![CDATA[An example of an import XML feed can be found <a href="docs/examples/code_snippet_import.xml">here</a>. Please use the &quot;Help&quot; link for further information.]]></string>
   </group>
   <group name="maintain">
-    <string name="rename_fail" introduced="6.1.6"><![CDATA[Failed to rename admin.php file and/or admin folder. Please make sure the latest ones are renamed to match the values specified in the includes/global.inc.php. Your store may be running on out dated &quot;legacy&quot; code.]]></string>
     <string name="duplicate_index" introduced="6.1.6"><![CDATA[%s has duplicate %s indexes. One of these could be removed.]]></string>
     <string name="missing_index" introduced="6.1.5"><![CDATA[%s has no key set. Expecting %s.]]></string>
     <string name="wrong_index" introduced="6.1.5"><![CDATA[%s has a key type %s but expecting %s.]]></string>

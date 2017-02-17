@@ -203,9 +203,20 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 			if ($zip->open($destination_path) === true) {
 				
 				$crc_check_list = array();
+
 				for ($i = 0; $i < $zip->numFiles; $i++) {
-					$stat = $zip->statIndex($i);
-					$crc_check_list[$stat['name']] = $stat['crc'];
+					$package_file_name = $zip->getNameIndex($i);
+					if(preg_match("#^admin/#", $package_file_name)) {
+						$custom_file_name = preg_replace("#^admin#", $glob['adminFolder'], $package_file_name);
+						$zip->renameName($package_file_name, $custom_file_name);
+					} elseif($current_file=='admin.php') {
+						$custom_file_name = $glob['adminFile'];
+						$zip->renameName($package_file_name, $custom_file_name);
+					} else {
+						$stat = $zip->statIndex($i);
+						$custom_file_name = $stat['name'];
+					}
+					$crc_check_list[$custom_file_name] = $stat['crc'];
 				}
 
 				$zip->extractTo(CC_ROOT_DIR);
@@ -224,15 +235,9 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 					if (file_exists(CC_ROOT_DIR.'/setup')) {
 						rename(CC_ROOT_DIR.'/setup', CC_ROOT_DIR.'/setup_'.md5(time().$_GET['upgrade']));
 					}
-					if(!$GLOBALS['main']->renameAdmin()) {
-						$GLOBALS['main']->setACPWarning($lang['maintain']['rename_fail']);
-					}
 					$GLOBALS['main']->setACPNotify($lang['maintain']['current_version_restored']);
 					httpredir('?_g=maintenance&node=index#upgrade');
 				} else {
-					if(!$GLOBALS['main']->renameAdmin()) {
-						$GLOBALS['main']->setACPWarning($lang['maintain']['rename_fail']);
-					}
 					httpredir(CC_ROOT_REL.'setup/index.php?autoupdate=1');
 				}
 			} else {

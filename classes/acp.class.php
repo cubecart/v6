@@ -246,40 +246,6 @@ class ACP {
 	}
 
 	/**
-	 * Update admin.php and admin folder names
-	 *
-	 * @return bool
-	 */
-
-	public function renameAdmin() {
-		
-		// Include to make sure we have the latest config data
-		include(CC_INCLUDES_DIR.'global.inc.php');
-		
-		$return = true;
-		
-		$default_config = array(
-			'adminFolder' => 'admin',
-			'adminFile' => 'admin.php' 
-		);
-		foreach($default_config as $config_key => $config_value) {
-			// If set config value doesn't match default and default exists we need to delete old and update to new
-			if($glob[$config_key]!==$config_value && file_exists(CC_ROOT_DIR.'/'.$config_value)) {
-				// If custom value exists delete it and rename the new one to it
-				if(file_exists(CC_ROOT_DIR.'/'.$glob[$config_key])) {
-					recursiveDelete(CC_ROOT_DIR.'/'.$glob[$config_key]);
-					rename(CC_ROOT_DIR.'/'.$config_value, CC_ROOT_DIR.'/'.$glob[$config_key]);
-				}
-				// Check default one no longer exists
-				if(file_exists(CC_ROOT_DIR.'/'.$config_value)) {
-					$return = false;
-				}
-			}
-		}
-		return $return;
-	}
-
-	/**
 	 * Setup admin data
 	 */
 	public function setTemplate() {
