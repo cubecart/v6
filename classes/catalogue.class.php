@@ -1745,7 +1745,12 @@ class Catalogue {
 					}
 				}
 
-				if ($search_mode == 'fulltext' && $search_str_len >= $max_word_len) {
+				if ($search_mode == 'fulltext') {
+
+					if($search_str_len < $max_word_len) {
+						return $this->searchCatalogue($original_search_data, 1, $per_page, 'RLIKE');	
+					}
+
 					switch (true) {
 					case (preg_match('#[\+\-\>\<][\w]+#iu', $search_data['keywords'])):
 						## Switch to bolean mode
