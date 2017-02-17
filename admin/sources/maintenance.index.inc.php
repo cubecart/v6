@@ -205,15 +205,16 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 				$crc_check_list = array();
 
 				for ($i = 0; $i < $zip->numFiles; $i++) {
-					$package_file_name = $zip->getNameIndex($i);
-					if(preg_match("#^admin/#", $package_file_name)) {
-						$custom_file_name = preg_replace("#^admin#", $glob['adminFolder'], $package_file_name);
-						$zip->renameName($package_file_name, $custom_file_name);
+					
+					$stat = $zip->statIndex($i);
+
+					if(preg_match("#^admin/#", $stat['name'])) {
+						$custom_file_name = preg_replace("#^admin#", $glob['adminFolder'], $stat['name']);
+						$zip->renameName($stat['name'], $custom_file_name);
 					} elseif($current_file=='admin.php') {
 						$custom_file_name = $glob['adminFile'];
-						$zip->renameName($package_file_name, $custom_file_name);
+						$zip->renameName($stat['name'], $custom_file_name);
 					} else {
-						$stat = $zip->statIndex($i);
 						$custom_file_name = $stat['name'];
 					}
 					$crc_check_list[$custom_file_name] = $stat['crc'];
