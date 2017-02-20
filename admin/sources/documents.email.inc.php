@@ -489,7 +489,9 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
 																},
         														$data['content_html']
     														);
-
+    		// See GitHub #1511
+			$data['content_text'] = str_replace(array('empty({$','})}'), array('empty($',')}'), $data['content_text']);
+			$data['content_html'] = str_replace(array('empty({$','})}'), array('empty($',')}'), $data['content_html']);
 			$GLOBALS['smarty']->assign('CONTENT', $data);
 
 			if (is_array($email_types[$data['content_type']]['macros'])) {

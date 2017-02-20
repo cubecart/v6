@@ -579,7 +579,8 @@ class Language {
 								$record['language']  = (string)$xml->attributes()->language;
 								$record['subject']  = (string)$email->subject;
 								foreach ($email->content as $content) {
-									$record['content_'.(string)$content->attributes()->type] = trim((string)$content);
+									// See GitHub #1511
+									$record['content_'.(string)$content->attributes()->type] = str_replace(array('empty({$','})}'), array('empty($',')}'), trim((string)$content));
 								}
 								if ($GLOBALS['db']->count('CubeCart_email_content', 'content_id', array('language' => $record['language'], 'content_type' => $record['content_type']))) {
 									$GLOBALS['db']->update('CubeCart_email_content', $record, array('language' => $record['language'], 'content_type' => $record['content_type']));
