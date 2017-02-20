@@ -839,6 +839,9 @@ if (isset($database_result) && $database_result) {
 	$actual_map = array();
 
 	foreach ($tables as $table) {
+		
+		if(!preg_match('/^'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_/i', $table['Name'])) continue;
+
 		// Get index and map them
 		$indexes = $GLOBALS['db']->misc("SHOW INDEX FROM `".$table['Name']."`");
 		$index_errors = array();
@@ -861,12 +864,14 @@ if (isset($database_result) && $database_result) {
 			$actual_map[$index['Table']][$index['Column_name']] = $key_type;
 		}
 		
-		foreach($index_map[strtolower($index['Table'])] as $column => $key) {
-			$table_name = $GLOBALS['config']->get('config', 'dbprefix').str_replace('cubecart', 'CubeCart', $index['Table']);
-			if(!isset($actual_map[$index['Table']][$column])) {
-				$index_errors[] = sprintf($lang['maintain']['missing_index'], $table_name.'.'.$column, $key);	
-			} elseif(isset($actual_map[$index['Table']][$column]) && $actual_map[$index['Table']][$column]!==$key) {
-				$index_errors[] = sprintf($lang['maintain']['wrong_index'], $table_name.'.'.$column, $actual_map[$index['Table']][$column], $key);
+		if(isset($index_map[strtolower($index['Table'])])) {
+			foreach($index_map[strtolower($index['Table'])] as $column => $key) {
+				$table_name = $GLOBALS['config']->get('config', 'dbprefix').str_replace('cubecart', 'CubeCart', $index['Table']);
+				if(!isset($actual_map[$index['Table']][$column])) {
+					$index_errors[] = sprintf($lang['maintain']['missing_index'], $table_name.'.'.$column, $key);	
+				} elseif(isset($actual_map[$index['Table']][$column]) && $actual_map[$index['Table']][$column]!==$key) {
+					$index_errors[] = sprintf($lang['maintain']['wrong_index'], $table_name.'.'.$column, $actual_map[$index['Table']][$column], $key);
+				}
 			}
 		}
 
