@@ -272,7 +272,7 @@ if (isset($_GET['action'])) {
 
 			// Processing/Pending orders are on the dashboard by default otherwise show defined value
 			if ($summary[0]['discount_type']=='p') {
-				$summary[0]['discount_form'] = number_format(($summary[0]['discount']/$summary[0]['subtotal'])*100);
+				$summary[0]['discount_form'] = number_format(($summary[0]['discount']/$summary[0]['subtotal'])*100, 2);
 			} else {
 				$summary[0]['discount_form'] = number_format($summary[0]['discount'], 2);
 			}
