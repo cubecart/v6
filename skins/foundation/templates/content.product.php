@@ -18,7 +18,7 @@
          </div>
       </div>
       <div class="row">
-         <div  class="small-1 medium-1 columns thinpad-right text-center">
+         <div  class="medium-1 columns thinpad-right text-center hide-for-small">
             {if $GALLERY}
             <div id="scrollUp"><svg class="icon"><use xlink:href="#icon-angle-up"></use></svg></div>
             <ul class="clearing-thumbs small-block-grid-1" id="scrollContent" data-clearing>
@@ -29,7 +29,7 @@
             {/if}
             <div id="scrollDown"><svg class="icon"><use xlink:href="#icon-angle-down"></use></svg></div>
          </div>
-         <div class="small-4 medium-6 columns text-center nopad">            
+         <div class="small-5 medium-6 columns text-center nopad">            
             <a href="#" class="open-clearing" data-thumb-index="0"><img src="{$PRODUCT.medium}" alt="{$PRODUCT.name}" id="img-preview"></a>
          </div>
          <div class="small-7 medium-5 columns thinpad-left">
