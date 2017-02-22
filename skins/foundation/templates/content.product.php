@@ -18,7 +18,7 @@
          </div>
       </div>
       <div class="row">
-         <div  class="small-1 medium-1 columns">
+         <div  class="small-1 medium-1 columns thinpad-right">
             {if $GALLERY}
             <ul class="clearing-thumbs small-block-grid-1" data-clearing>
                {foreach from=$GALLERY item=image}
@@ -27,7 +27,7 @@
             </ul>
             {/if}
          </div>
-         <div class="small-4 medium-6 columns text-center">            
+         <div class="small-4 medium-6 columns text-center nopad">            
             <a href="#" class="open-clearing" data-thumb-index="0"><img src="{$PRODUCT.medium}" alt="{$PRODUCT.name}" id="img-preview"></a>
          </div>
          <div class="small-7 medium-5 columns">
