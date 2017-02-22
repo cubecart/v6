@@ -30,7 +30,7 @@
          <div class="small-4 medium-6 columns text-center nopad">            
             <a href="#" class="open-clearing" data-thumb-index="0"><img src="{$PRODUCT.medium}" alt="{$PRODUCT.name}" id="img-preview"></a>
          </div>
-         <div class="small-7 medium-5 columns">
+         <div class="small-7 medium-5 columns thinpad-left">
          {if is_array($OPTIONS)}
          {foreach from=$OPTIONS item=option}
             {if $option.type == Catalogue::OPTION_RADIO}
