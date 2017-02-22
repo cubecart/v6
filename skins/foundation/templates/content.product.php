@@ -18,15 +18,17 @@
          </div>
       </div>
       <div class="row">
-         <div class="small-5 medium-7 columns">            
-            <a href="#" class="open-clearing" data-thumb-index="0"><img src="{$PRODUCT.medium}" alt="{$PRODUCT.name}" id="img-preview"></a>
+         <div  class="small-1 medium-1 columns">
             {if $GALLERY}
-            <ul class="clearing-thumbs small-block-grid-3 medium-block-grid-5 marg-top" data-clearing>
+            <ul class="clearing-thumbs small-block-grid-1" data-clearing>
                {foreach from=$GALLERY item=image}
                <li{if $image@total lt 2} style="display:none"{/if}><a href="{$image.source}" class="th"><img src="{$image.small}" data-image-swap="{$image.medium}" data-caption="{$PRODUCT.name}{if !empty($image.description)}: {/if}{$image.description}" class="image-gallery" alt="{$LANG.catalogue.click_enlarge}"></a></li>
                {/foreach}
             </ul>
             {/if}
+         </div>
+         <div class="small-4 medium-6 columns text-center">            
+            <a href="#" class="open-clearing" data-thumb-index="0"><img src="{$PRODUCT.medium}" alt="{$PRODUCT.name}" id="img-preview"></a>
          </div>
          <div class="small-7 medium-5 columns">
          {if is_array($OPTIONS)}
