@@ -153,7 +153,7 @@ if (Admin::getInstance()->permissions('statistics', CC_PERM_READ, false, false))
 	$this_month   = date('m');
 	$this_month_start  = mktime(0, 0, 0, $this_month, '01', $this_year);
 	## Work out prev month looks silly but should stop -1 month on 1st March returning January (28 Days in Feb)
-	$last_month   = date('m', strtotime("-1 month", mktime(12, 0, 0, $this_month, 15, $this_month)));
+	$last_month   = date('m', strtotime("-1 month", mktime(12, 0, 0, $this_month, 15, $this_year)));
 	$last_year    = ($last_month < $this_month) ? $this_year : ($this_year - 1);
 	$last_month_start  = mktime(0, 0, 0, $last_month, '01', $last_year);
 	$last_year_start   = mktime(0, 0, 0, '01', '01', $this_year - 1);
