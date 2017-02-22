@@ -18,14 +18,16 @@
          </div>
       </div>
       <div class="row">
-         <div  class="small-1 medium-1 columns thinpad-right">
+         <div  class="small-1 medium-1 columns thinpad-right text-center">
             {if $GALLERY}
-            <ul class="clearing-thumbs small-block-grid-1" data-clearing>
+            <div id="scrollUp"><svg class="icon"><use xlink:href="#icon-angle-up"></use></svg></div>
+            <ul class="clearing-thumbs small-block-grid-1" id="scrollContent" data-clearing>
                {foreach from=$GALLERY item=image}
                <li{if $image@total lt 2} style="display:none"{/if}><a href="{$image.source}" class="th"><img src="{$image.small}" data-image-swap="{$image.medium}" data-caption="{$PRODUCT.name}{if !empty($image.description)}: {/if}{$image.description}" class="image-gallery" alt="{$LANG.catalogue.click_enlarge}"></a></li>
                {/foreach}
             </ul>
             {/if}
+            <div id="scrollDown"><svg class="icon"><use xlink:href="#icon-angle-down"></use></svg></div>
          </div>
          <div class="small-4 medium-6 columns text-center nopad">            
             <a href="#" class="open-clearing" data-thumb-index="0"><img src="{$PRODUCT.medium}" alt="{$PRODUCT.name}" id="img-preview"></a>

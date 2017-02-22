@@ -1,6 +1,38 @@
 ;
 jQuery(document).ready(function() {
 
+    var scrolling = false;
+    var scrollArea = document.querySelector('#scrollContent');
+    if(scrollArea.offsetHeight < scrollArea.scrollHeight){
+        $("#scrollDown .icon").show();
+    }
+
+    $("#scrollUp").bind("mouseover", function(event) {
+        scrolling = true;
+        scrollContent("up");
+    }).bind("mouseout", function(event) {
+        scrolling = false;
+    });
+
+    $("#scrollDown").bind("mouseover", function(event) {
+        scrolling = true;
+        $("#scrollUp .icon").show();
+        scrollContent("down");
+    }).bind("mouseout", function(event) {
+        scrolling = false;
+    });
+
+    function scrollContent(direction) {
+        var amount = (direction === "up" ? "-=1px" : "+=1px");
+        $("#scrollContent").animate({
+            scrollTop: amount
+        }, 1, function() {
+            if (scrolling) {
+                scrollContent(direction);
+            }
+        });
+    }
+
     var window_loc_hash = window.location.hash;
 
     if($('.gateway_wrapper .colorbox').length) {

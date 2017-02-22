@@ -334,3 +334,19 @@ svg.remove-coupon {
         min-width: 100px;
     }
 }
+.clearing-thumbs {
+    overflow: hidden;
+    height: 350px;
+}
+.clearing-thumbs a.th:first-child{
+    margin-top: 3px;
+}
+.clearing-thumbs li {
+    padding: 0 0.625rem 0.625rem;
+}
+div#scrollUp, div#scrollDown {
+    height: 16px;
+}
+#scrollUp .icon, #scrollDown .icon {
+    display: none;
+}
