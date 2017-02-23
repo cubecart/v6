@@ -18,19 +18,20 @@
          </div>
       </div>
       <div class="row">
-         <div  class="medium-1 columns thinpad-right text-center hide-for-small">
+         <div  class="medium-1 columns thinpad-right off-canvas-for-small">
             {if $GALLERY}
-            <div id="scrollUp"><svg class="icon"><use xlink:href="#icon-angle-up"></use></svg></div>
+            <div id="scrollUp" class="scroller"><svg class="icon"><use xlink:href="#icon-angle-up"></use></svg></div>
             <ul class="clearing-thumbs small-block-grid-1" id="scrollContent" data-clearing>
                {foreach from=$GALLERY item=image}
                <li{if $image@total lt 2} style="display:none"{/if}><a href="{$image.source}" class="th"><img src="{$image.small}" data-image-swap="{$image.medium}" data-caption="{$PRODUCT.name}{if !empty($image.description)}: {/if}{$image.description}" class="image-gallery" alt="{$LANG.catalogue.click_enlarge}"></a></li>
                {/foreach}
             </ul>
             {/if}
-            <div id="scrollDown"><svg class="icon"><use xlink:href="#icon-angle-down"></use></svg></div>
+            <div id="scrollDown" class="scroller"><svg class="icon"><use xlink:href="#icon-angle-down"></use></svg></div>
          </div>
          <div class="small-5 medium-6 columns text-center nopad">            
             <a href="#" class="open-clearing" data-thumb-index="0"><img src="{$PRODUCT.medium}" alt="{$PRODUCT.name}" id="img-preview"></a>
+            <p class="show-for-small-only">{if $image@total==1}{$LANG.catalogue.tap_enlarge}{else}{$LANG.catalogue.tap_gallery}{/if}</p>
          </div>
          <div class="small-7 medium-5 columns thinpad-left">
          {if is_array($OPTIONS)}

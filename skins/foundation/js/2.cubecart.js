@@ -4,7 +4,7 @@ jQuery(document).ready(function() {
     var scrolling = false;
     var scrollArea = document.querySelector('#scrollContent');
     if(scrollArea.offsetHeight < scrollArea.scrollHeight){
-        $("#scrollDown .icon").show();
+        $(".scroller").show();
     }
 
     $("#scrollUp").bind("mouseover", function(event) {
