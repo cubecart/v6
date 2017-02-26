@@ -194,6 +194,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_coupons` (
 	`discount_price` DECIMAL(16,2) NOT NULL DEFAULT '0.00',
 	`expires` DATE NOT NULL,
 	`allowed_uses` INT UNSIGNED NOT NULL DEFAULT '0',
+	`per_cust` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`min_subtotal` DECIMAL(16,2) UNSIGNED NOT NULL DEFAULT '0.00',
 	`count` INT UNSIGNED NOT NULL DEFAULT '0',
 	`shipping` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
@@ -691,6 +692,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_summary` (
 	`customer_comments` TEXT,
 	`ip_address` VARCHAR(45) NOT NULL COMMENT 'Supports IPv6 addresses',
 	`dashboard` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+	`coupon_code` VARCHAR(25) DEFAULT NULL COMMENT 'Coupon code used',
 	`discount_type` char(1) NOT NULL DEFAULT 'f',
 	`basket` BLOB NULL DEFAULT NULL,
 	`lang` varchar(5) DEFAULT NULL,
@@ -700,6 +702,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_summary` (
 	KEY `customer_id` (`customer_id`),
 	KEY `status` (`status`),
 	KEY `email` (`email`),
+	KEY `coupon_code` (`coupon_code`),
 	KEY `order_date` (`order_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 

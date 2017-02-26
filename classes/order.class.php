@@ -1169,6 +1169,7 @@ class Order {
 			# Prices
 			'subtotal'  => $this->_basket['subtotal'],
 			'discount'  => (isset($this->_basket['discount'])) ? $this->_basket['discount'] : 0,
+			'coupon_code' => (isset($this->_basket['coupons']) && !empty($this->_basket['coupons'])) ? key($this->_basket['coupons']) : '',
 			'discount_type' => (isset($this->_basket['discount_type'])) ? $this->_basket['discount_type'] : '',
 			'total_tax'  => $this->_basket['total_tax'],
 			'total'   => $this->_basket['total'],

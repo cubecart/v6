@@ -510,8 +510,28 @@ class Cart {
 					$GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_expired']);
 					return false;
 				}
-				if ($coupon['allowed_uses'] > 0 && ($coupon['count'] >= $coupon['allowed_uses'])) {
-					// Coupon is no longer valid
+				if ($coupon['per_cust']) {
+					// Coupon limited per customer.
+					// Important that this comes before total allowed_uses as allowed_uses has a different context here.
+					// Determine if this coupon has been used by this customer before.
+					// Determine if the user is logged in.
+					if (!$GLOBALS['user']->is()) { // Do not allow use of this coupon unless logged in.
+						$GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_need_login']);
+						return false;
+					}
+					// Find past valid orders for this customer, looking for use of this coupon code.
+					$times_used_by_this_cust = $GLOBALS['db']->select('CubeCart_order_summary', 'id', array('coupon_code' => $coupon['code'], 'customer_id' => $GLOBALS['user']->getId(), 'status' => array(1,2,3))); // assumed to be logged in
+					$coupon['times_used_by_this_cust'] = ($times_used_by_this_cust !== false) ? count($times_used_by_this_cust) : 0;
+					if ($coupon['times_used_by_this_cust'] >= $coupon['allowed_uses']) {
+						// Coupon has been used it's maximum number of times for this customer.
+						$GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_too_many_uses']);
+						return false;
+					} else {
+						$coupon['valid_for_this_cust'] = $coupon['allowed_uses'] - $coupon['times_used_by_this_cust'];
+					}
+				}
+				if (!$coupon['per_cust'] && $coupon['allowed_uses'] > 0 && ($coupon['count'] >= $coupon['allowed_uses'])) {
+					// Coupon has been used it's maximum number of times.
 					$GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_expired']);
 					return false;
 				}
@@ -595,7 +615,7 @@ class Cart {
 							'gc'  => (!empty($coupon['cart_order_id'])) ? true : false,
 							'type'  => $type,
 							'value'  => $value,
-							'available' => ($coupon['allowed_uses'] > 0) ? $coupon['allowed_uses']-$coupon['count'] : 0,
+							'available' => ( ($coupon['allowed_uses'] > 0) ? (!empty($coupon['valid_for_this_cust']) ? $coupon['valid_for_this_cust'] : ( ($coupon['allowed_uses']-$coupon['count'] > 0) ? $coupon['allowed_uses']-$coupon['count'] : 0 ) ) : 0 ),
 							'product' => $coupon['product_id'],
 							'shipping' => (bool)$coupon['shipping'],
 							'free_shipping' => (bool)$coupon['free_shipping'],

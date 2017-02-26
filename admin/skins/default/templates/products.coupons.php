@@ -32,7 +32,7 @@
 		  <td><a href="{$coupon.link_edit}" class="edit" title="{$LANG.common.edit}">{$coupon.code}</a></td>
 		  <td>{$coupon.value}</td>
 		  <td>{$coupon.expires}</td>
-		  <td align="center">{$coupon.count} / {$coupon.allowed_uses}</td>
+		  <td align="center">{$coupon.count} / {$coupon.allowed_uses}{if $coupon.per_cust} {$LANG.common.each}{/if}</td>
 		  <td>
 			<a href="{$coupon.link_edit}" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
 			<a href="{$coupon.link_delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
@@ -106,6 +106,7 @@
 	<fieldset><legend>{$LANG.catalogue.title_coupon_limits}</legend>
 	  <div><label for="form-expires">{$LANG.catalogue.title_coupon_expires} (YYYY-MM-DD)</label><span><input type="text" name="coupon[expires]" id="form-expires" value="{$COUPON.expires}" class="textbox date number"></span></div>
 	  <div><label for="form-allowed">{$LANG.catalogue.allowed_uses}</label><span><input type="text" name="coupon[allowed_uses]" id="form-allowed" value="{$COUPON.allowed_uses}" class="textbox number"></span></div>
+	  <div><label for="form-per-cust">{$LANG.catalogue.limit_per_cust}</label><span><input type="hidden" name="coupon[per_cust]" id="form-per-cust" class="toggle" value="{$COUPON.per_cust}"></span></div>
 	  {if $DISPLAY_TIMES_USED}
 	  <div><label>{$LANG.catalogue.title_coupon_count}</label><span><input type="text" disabled="disabled" readonly="readonly" class="textbox number" value="{$COUPON.count}"></span></div>
 	  {/if}

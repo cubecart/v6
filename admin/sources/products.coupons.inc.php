@@ -50,6 +50,7 @@ if (isset($_POST['coupon']) && is_array($_POST['coupon'])) {
 		'product_id' => null,
 		'expires'  => $_POST['coupon']['expires'],
 		'allowed_uses' => (int)$_POST['coupon']['allowed_uses'],
+		'per_cust' => $_POST['coupon']['per_cust'],
 		'min_subtotal' => $_POST['coupon']['min_subtotal'],
 		'shipping'  => $_POST['coupon']['shipping'],
 		'subtotal'  => $_POST['coupon']['subtotal'],
