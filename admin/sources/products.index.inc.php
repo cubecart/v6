@@ -21,7 +21,7 @@ if (isset($_POST['search']) && !empty($_POST['search'])) {
 	if (is_numeric($_POST['search']['product_id'])) {
 		httpredir('?_g=products&action=edit&product_id='.$_POST['search']['product_id']);
 	} else {
-		httpredir('?_g=products&q='.$_POST['search']['product']);
+		httpredir('?_g=products&q='.urlencode($_POST['search']['product']));
 	}
 }
 

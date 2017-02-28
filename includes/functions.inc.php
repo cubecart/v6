@@ -639,9 +639,28 @@ function httpredir($destination = '', $anchor = '', $meta_refresh = false, $stat
 		}
 	}
 
+	// Sanitize url and make sure it remains properly encoded; note that it has already been run through urldecode
+	$parts = explode('?', $destination, 2);
+	if (count($parts) > 1) {
+		$destination = "$parts[0]?";
+		$parts = explode('&', $parts[1]);
+		$sanitized = array();
+		foreach ($parts as $part) {
+			$param = explode('=', $part, 2);
+			if (count($param) === 2) {
+				$sanitized[] = urlencode($param[0]).'='.urlencode($param[1]);
+			} elseif (empty($sanitized)) { // invalid pair with no previous query to which to append
+				continue;
+			} else { // invalid pair, assume it's a straggler caused by searching '&'
+				$sanitized[count($sanitized) - 1] .= urlencode('&'.$param[0]);
+			}
+		}
+		$destination .= implode('&', $sanitized);
+	}
+
 	// Redirect - appending the last tab anchor for extra cleverness
 	if (!empty($anchor)) {
-		$destination .= '#'.$anchor;
+		$destination .= '#'.urlencode($anchor);
 	} else if (isset($_POST['previous-tab'])) {
 		$destination	.= (preg_match('/^#/', $_POST['previous-tab'])) ? $_POST['previous-tab'] : '#'.$_POST['previous-tab'];
 	}
