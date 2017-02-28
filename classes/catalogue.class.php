@@ -1678,8 +1678,12 @@ class Catalogue {
 			}
 
 			$order = array();
+			
 			if (isset($_GET['sort']) && is_array($_GET['sort'])) {
 				foreach ($_GET['sort'] as $field => $direction) {
+					if(strtolower($field) == 'relevance' && $search_mode !== 'fulltext') {
+						break;	
+					}
 					$order['field'] = $field;
 					if ($field == 'price') {
 						if ($sale_mode == 1) {
