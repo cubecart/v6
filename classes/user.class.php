@@ -237,7 +237,7 @@ class User {
 			'email'  => $username,
 			'password' => $hash_password,
 		);
-		$user = $GLOBALS['db']->select('CubeCart_customer', array('customer_id', 'email', 'password', 'salt', 'new_password'), $where);
+		$user = $GLOBALS['db']->select('CubeCart_customer', array('language', 'customer_id', 'email', 'password', 'salt', 'new_password'), $where);
 
 		$GLOBALS['session']->blocker($username, $user[0]['customer_id'], (bool)$user, Session::BLOCKER_FRONTEND, $GLOBALS['config']->get('config', 'bfattempts'), $GLOBALS['config']->get('config', 'bftime'));
 		if (!$user) {
@@ -269,6 +269,7 @@ class User {
 				if (!$GLOBALS['session']->blocked()) {
 					// possibly replaceable with session_set_save_handler?
 					$GLOBALS['db']->update('CubeCart_sessions', array('customer_id' => $user[0]['customer_id']), array('session_id' => $GLOBALS['session']->getId()));
+					//$GLOBALS['session']->set('language', $user[0]['language'], 'client');
 					// Load user data
 					$this->_load();
 

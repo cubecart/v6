@@ -407,7 +407,7 @@ class Session {
 	/**
 	 * Get session data from database
 	 *
-	 * @return false/array
+	 * @return false/array/string
 	 */
 	public function getSessionTableData($column = false) {
 		$data = $GLOBALS['db']->select('CubeCart_sessions', $column, array('session_id' => $this->getId()), false, 1, false, false);
