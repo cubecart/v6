@@ -369,10 +369,6 @@ class Session {
 		return $default;
 	}
 
-	public function getBack() {
-		return $this->get('back');
-	}
-
 	/**
 	 * Get session id
 	 *
