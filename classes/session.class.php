@@ -405,6 +405,23 @@ class Session {
 	}
 
 	/**
+	 * Get session data from database
+	 *
+	 * @return false/array
+	 */
+	public function getSessionTableData($column = false) {
+		$data = $GLOBALS['db']->select('CubeCart_sessions', $column, array('session_id' => $this->getId()), false, 1, false, false);
+		if(is_array($data)) {
+			if(count($data[0])==1 && is_string($column)) {
+				return $data[0][$column];
+			} else {
+				return $data[0];
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Create a session token to help top spam
 	 *
 	 * @param bool $new If true, force a new token to be created
