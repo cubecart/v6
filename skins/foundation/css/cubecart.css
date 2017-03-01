@@ -6,6 +6,10 @@ a.open-clearing {
     display: block;
     overflow: hidden;
 }
+.horizontal a.open-clearing #img-preview {
+    max-width: 100%;
+    max-height: 100%;
+}
 .icon {
   display: inline-block;
   width: 1em;
