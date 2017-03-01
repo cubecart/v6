@@ -118,7 +118,7 @@
     <string name="extra_address" introduced="6.0.0"><![CDATA[Extra Address]]></string>
     <string name="address_lookup" introduced="6.0.0"><![CDATA[Start typing a postcode, street or address]]></string>
     <string name="add_edit" introduced="5.0.0"><![CDATA[Add/Edit Address]]></string>
-    <string name="address_add" introduced="5.0.0"><![CDATA[Add New Address]]></string>
+    <string name="address_add" introduced="5.0.0"><![CDATA[Add Address]]></string>
     <string name="address_edit" introduced="5.0.0"><![CDATA[Edit Address]]></string>
     <string name="address_book" introduced="5.0.0"><![CDATA[Address Book]]></string>
     <string name="billing_address" introduced="5.0.0"><![CDATA[Billing Address]]></string>
