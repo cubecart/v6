@@ -806,14 +806,11 @@ class Cubecart {
 		if (isset($_REQUEST['search']) && is_array($_REQUEST['search'])) {
 			if (!$GLOBALS['catalogue']->searchCatalogue($_REQUEST['search'], $page, $catalogue_products_per_page)) {
 				$GLOBALS['catalogue']->setCategory('cat_name', $GLOBALS['language']->navigation['search_results']);
-				$GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->common['search'], 'index.php?_a=search');
-				$GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->navigation['search_results'], currentPage());
-				$GLOBALS['gui']->setError($GLOBALS['language']->catalogue['error_search_no_results']);
 			} else {
 				$GLOBALS['catalogue']->setCategory('cat_name', sprintf($GLOBALS['language']->catalogue['notify_product_search'], htmlspecialchars($_REQUEST['search']['keywords'])));
-				$GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->common['search'], 'index.php?_a=search');
-				$GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->navigation['search_results'], currentPage());
 			}
+			$GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->common['search'], 'index.php?_a=search');
+			$GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->navigation['search_results'], currentPage());
 		} else {
 			$GLOBALS['catalogue']->searchCatalogue($_GET['cat_id'], $page, $catalogue_products_per_page);
 			if ($_GET['cat_id'] == 'sale') {
