@@ -770,7 +770,7 @@ if (isset($_GET['action'])) {
 								$assign = array('set_enabled' => '1', 'option_price' => number_format(0, 2), 'option_weight' => number_format(0, 2));
 
 								$option_list[$member['option_id']][$member['value_id']] = array_merge($member, $group, $value, $assign, array('show_disable' => true));
-								$option_list[$member['option_id']][$member['value_id']] = (isset($set_product['set_name']) && !empty($set_product['set_name'])) ? $set_product['set_name'] : $lang['common']['none'];
+								$option_list[$member['option_id']][$member['value_id']]['set_name'] = (isset($set_product['set_name']) && !empty($set_product['set_name'])) ? $set_product['set_name'] : $lang['common']['none'];
 							}
 							$option_list[$member['option_id']]['priority'] = $group['priority'];
 						}
