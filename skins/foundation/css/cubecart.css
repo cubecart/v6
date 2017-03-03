@@ -341,14 +341,14 @@ svg.remove-coupon {
     #mini-basket {
         min-width: 100px;
     }
-    .clearing-thumbs {
+    .vertical .clearing-thumbs {
         overflow: hidden;
         height: 350px;
     }
-    .clearing-thumbs a.th:first-child{
+    .vertical .clearing-thumbs a.th:first-child{
         margin-top: 3px;
     }
-    .clearing-thumbs li {
+    .vertical .clearing-thumbs li {
         padding: 0 0.625rem 0.625rem;
     }
     .scroller {

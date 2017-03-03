@@ -10,7 +10,7 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
 <div class="row">
-   <div  class="medium-1 columns thinpad-right off-canvas-for-small">
+   <div  class="medium-1 columns thinpad-right off-canvas-for-small vertical">
       {if $GALLERY}
       <div id="scrollUp" class="scroller"><svg class="icon"><use xlink:href="#icon-angle-up"></use></svg></div>
       <ul class="clearing-thumbs small-block-grid-1" id="scrollContent" data-clearing>
