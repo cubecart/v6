@@ -97,7 +97,6 @@ class Cache_Controler {
 	protected function _setPrefix() {
 		if(!isset($GLOBALS['glob']['dbdatabase']) || empty($GLOBALS['glob']['dbdatabase'])) {
 			$this->enable(false);
-			$this->_prefix = '';
 			return false;
 		}
 		$this->_prefix = substr(md5($GLOBALS['glob']['dbdatabase']), 0, 5).'.';
