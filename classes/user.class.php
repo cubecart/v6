@@ -544,7 +544,13 @@ class User {
 	public function getDefaultAddress() {
 		if ($this->is()) {
 			$where['customer_id'] = $this->_user_data['customer_id'];
-			$where['default'] = '1';
+			
+			if ($GLOBALS['config']->get('config', 'basket_allow_non_invoice_address')) {
+				$where['default'] = '1';
+			} else {
+				$where['billing'] = '1';
+			}
+			
 			if (($addresses = $GLOBALS['db']->select('CubeCart_addressbook', false, $where, 'billing DESC', false, false, false)) !== false) {
 				foreach ($addresses as $address) {
 					$addressArray[] = $this->formatAddress($address);
