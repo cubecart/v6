@@ -283,27 +283,28 @@ class Cubecart {
 					httpredir('index.php');
 			}
 		} else if (isset($_GET['_a']) && !empty($_GET['_a'])) {
-				//Clear cart
-				if (isset($_GET['empty-basket'])) {
-					$GLOBALS['cart']->clear();
-					httpredir(currentPage(array('empty-basket'), array('_a' => 'basket')));
-				}
-				switch (strtolower($_GET['_a'])) {
-					/**
-					 * These are hard coded method calls that require variables or special calls
-					 * All others are done by the case default using $this->{$method}() method
-					 * See below
-					 */
+			//Clear cart
+			if (isset($_GET['empty-basket'])) {
+				$GLOBALS['cart']->clear();
+				httpredir(currentPage(array('empty-basket'), array('_a' => 'basket')));
+			}
+			switch (strtolower($_GET['_a'])) {
+				/**
+				 * These are hard coded method calls that require variables or special calls
+				 * All others are done by the case default using $this->{$method}() method
+				 * See below
+				 */
 				case '404':
 					$GLOBALS['smarty']->assign('SECTION_NAME', '404');
 					
 					$this->_404();
-					break;
+				break;
+
 				case 'cancel':
 					$GLOBALS['smarty']->assign('SECTION_NAME', 'checkout');
 					// Cancel payment
 					foreach ($GLOBALS['hooks']->load('class.cubecart.construct.cancel') as $hook) include $hook;
-					break;
+				break;
 
 				case 'checkout':
 				case 'confirm':
@@ -320,7 +321,7 @@ class Cubecart {
 						httpredir('index.php');
 					}
 					$this->_basket(isset($editable) ? $editable : true);
-					break;
+				break;
 
 				case 'document':
 					$GLOBALS['smarty']->assign('SECTION_NAME', 'document');
@@ -343,24 +344,24 @@ class Cubecart {
 						$content = $GLOBALS['smarty']->fetch('templates/content.document.php');
 						$GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
 					}
-					break;
+				break;
 
 				case 'download':
 				case 'downloads':
 					$GLOBALS['smarty']->assign('SECTION_NAME', 'download');
 					$this->_download();
-					break;
+				break;
 
 				case 'saleitems':
 					$GLOBALS['smarty']->assign('SECTION_NAME', 'saleitems');
 					$_GET['cat_id'] = 'sale';
 					$this->_category();
 				break;
+
 				case 'category':
 					$GLOBALS['smarty']->assign('SECTION_NAME', 'category');
 					$this->_category();
-					break;
-
+				break;
 
 				case 'login':
 					if ($GLOBALS['user']->is()) {
@@ -369,13 +370,12 @@ class Cubecart {
 						$GLOBALS['smarty']->assign('SECTION_NAME', 'login');
 						$this->_login();
 					}
-					break;
-
+				break;
 
 				case 'newsletter':
 				case 'unsubscribe':
 					$this->_newsletter();
-					break;
+				break;
 
 				case 'plugin':
 					$trigger = 'class.cubecart.display_content';
@@ -386,7 +386,7 @@ class Cubecart {
 					} else {
 						httpredir('index.php');
 					}
-					break;
+				break;
 
 				case 'template':
 					if (isset($_GET['type']) && isset($_GET['module'])) {
@@ -397,14 +397,14 @@ class Cubecart {
 							$GLOBALS['smarty']->assign('PAGE_CONTENT', file_get_contents($template, false));
 						}
 					}
-					break;
+				break;
 
 				case 'vieworders':
 				case 'vieworder':
 				case 'orderhistory':
 					$GLOBALS['smarty']->assign('SECTION_NAME', 'order');
 					$this->_orders();
-					break;
+				break;
 
 				default:
 					$method = '_'.strtolower($_GET['_a']);
@@ -415,14 +415,11 @@ class Cubecart {
 					}
 					// and/or you can use code from a hook in the plugins folder.
 					foreach ($GLOBALS['hooks']->load('class.cubecart.construct') as $hook) include $hook;
-					break;
-				}
-
-				if(get_class($GLOBALS['smarty']->getVariable('PAGE_CONTENT')) == 'Smarty_Undefined_Variable') {
-					$this->_404();
-				}
-				
-			} else {
+			}
+			if(get_class($GLOBALS['smarty']->getVariable('PAGE_CONTENT')) == 'Smarty_Undefined_Variable') {
+				$this->_404();
+			}
+		} else {
 			$GLOBALS['smarty']->assign('SECTION_NAME', 'home');
 			$this->displayHomePage();
 		}
