@@ -2512,7 +2512,7 @@ class Cubecart {
 				$record['customer_id'] = 0;
 				$record['email']  = $_POST['review']['email'];
 				$record['anon']   = 0;
-				if ($GLOBALS['config']->get('config', 'recaptcha') && !$GLOBALS['session']->isEmpty('error', 'recaptcha')) {
+				if (!$GLOBALS['session']->isEmpty('error', 'recaptcha')) {
 					$GLOBALS['gui']->setError($GLOBALS['session']->get('error', 'recaptcha'));
 					$error = true;
 				}
