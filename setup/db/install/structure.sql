@@ -555,6 +555,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_option_assign` (
 	`value_id` INT UNSIGNED NOT NULL DEFAULT '0',
 	`set_member_id` INT UNSIGNED NOT NULL DEFAULT '0',
 	`set_enabled` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
+	`option_default` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`option_negative` tinyint(1) unsigned NOT NULL DEFAULT '0',
 	`option_price` DECIMAL(16,2) NOT NULL DEFAULT '0.00',
 	`option_weight` DECIMAL(10,3) NOT NULL DEFAULT '0.00',

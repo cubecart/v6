@@ -369,6 +369,7 @@
                   <td>{$LANG.catalogue.title_product_options_matrix}</td>
                   <td>{$LANG.common.name}</td>
                   <td>{$LANG.catalogue.title_option_set}</td>
+                  <td>{$LANG.common.default}</td>
                   <td>{$LANG.common.negative}</td>
                   <td>{$LANG.common.price}</td>
                   <td>{$LANG.catalogue.absolute_price}</td>
@@ -385,6 +386,7 @@
                   <td align="center"><input type="hidden" id="matrix_include_{$option.assign_id}" name="option_update[{$option.assign_id}][matrix_include]" value="{$option.matrix_include}" class="toggle"></td>
                   <td>{$option.display}</td>
                   <td>{$option.set_name}</td>
+                  <td align="center"><input type="checkbox" name="option_update[{$option.assign_id}][option_default]" {if isset($option.option_default) && $option.option_default == 1}checked="checked"{/if} value="1"></td>
                   <td align="center"><input type="checkbox" name="option_update[{$option.assign_id}][option_negative]" {if isset($option.option_negative) && $option.option_negative == 1}checked="checked"{/if} value="1"></td>
                   <td><span class="editable number-right" name="option_update[{$option.assign_id}][option_price]" title="{$LANG.common.click_edit}">{$option.option_price}</span></td>
                   <td align="center"><input type="checkbox" name="option_update[{$option.assign_id}][absolute_price]" {if isset($option.absolute_price) && $option.absolute_price == 1}checked="checked"{/if} value="1"></td>
@@ -400,6 +402,7 @@
                   <td align="center"><input type="hidden" id="matrix_include_{$option.set_member_id}" name="option_create[{$option.set_member_id}][matrix_include]" value="0" class="toggle"></td>
                   <td>{$option.display}</td>
                   <td>{$option.set_name}</td>
+                  <td align="center"><input type="checkbox" name="option_create[{$option.set_member_id}][option_default]" {if isset($option.option_default) && $option.option_default == 1}checked="checked"{/if}  value="1"></td>
                   <td align="center"><input type="checkbox" name="option_create[{$option.set_member_id}][option_negative]" {if isset($option.option_negative) && $option.option_negative == 1}checked="checked"{/if}  value="1"></td>
                   <td><span class="editable number-right" name="option_create[{$option.set_member_id}][option_price]" title="{$LANG.common.click_edit}">{$option.option_price}</span></td>
                   <td align="center"><input type="checkbox" name="option_create[{$option.set_member_id}][absolute_price]" {if isset($option.absolute_price) && $option.absolute_price == 1}checked="checked"{/if}  value="1"></td>
@@ -436,6 +439,7 @@
                      </select>
                   </td>
                   <td></td>
+                  <td align="center"><input type="checkbox" id="opt_default" rel="default" class="checkbox data"></td>
                   <td align="center"><input type="checkbox" id="opt_negative" rel="negative" class="checkbox data"></td>
                   <td><input type="text" id="opt_price" rel="price" class="textbox number data"></td>
                   <td align="center"><input type="checkbox" id="opt_absolute_price" rel="absolute_price" class="checkbox data"></td>
@@ -446,6 +450,7 @@
                   <td class="set_enabled"><input type="hidden" rel=""></td>
                   <td class="matrix_include"><input type="hidden" rel=""></td>
                   <td class="name"><input type="hidden" rel=""></td>
+                  <td class="default"><input type="hidden" rel=""></td>
                   <td class="negative"><input type="hidden" rel=""></td>
                   <td class="price"><input type="hidden" rel=""></td>
                   <td class="absolute_price"><input type="hidden" rel=""></td>
@@ -457,6 +462,7 @@
                   <td align="center" class="matrix_include"><input type="checkbox" name="option_add[matrix_include][]" value="1"></td>
                   <td class="name"><input type="hidden" name="option_add[value][]" value="" disabled="disabled"></td>
                   <td class="set_name">{$LANG.common.none}</td>
+                  <td class="default" align="center"><input type="checkbox" name="option_add[default][]" value="1" disabled="disabled"></td>
                   <td class="negative" align="center"><input type="checkbox" name="option_add[negative][]" value="1" disabled="disabled"></td>
                   <td class="price"><input type="hidden" name="option_add[price][]" value="" disabled="disabled"></td>
                   <td class="absolute_price" align="center"><input type="checkbox" name="option_add[absolute_price][]" value="1" disabled="disabled"></td>
