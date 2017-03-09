@@ -1014,7 +1014,7 @@ class Cubecart {
 					$GLOBALS['gui']->setNotify($GLOBALS['language']->account["notify_address_updated"]);
 				}
 
-				if ($GLOBALS['config']->get('config', 'recaptcha') && !$GLOBALS['session']->get('confirmed', 'recaptcha')) {
+				if ($GLOBALS['gui']->recaptchaRequired()) {
 					if (($message = $GLOBALS['session']->get('error', 'recaptcha')) === false) {
 						//If the error message from recaptcha fails for some reason:
 						$error_messages[] = $GLOBALS['language']->form['verify_human_fail'];
@@ -1148,19 +1148,7 @@ class Cubecart {
 			foreach ($GLOBALS['hooks']->load('class.cubecart.prerecaptcha.confirm') as $hook) include $hook;
 
 			if (!isset($this->_basket['recaptcha'])) {
-				$recaptcha = $GLOBALS['config']->get('config', 'recaptcha');
-				if($recaptcha==2) {
-					$GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
-				} else {
-					$GLOBALS['smarty']->assign('LANG_RECAPTCHA', array(
-						'reload_words'  => sprintf($GLOBALS['language']->recaptcha['reload_words'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('audio')"),
-						'reload_numbers' => sprintf($GLOBALS['language']->recaptcha['reload_numbers'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('image')"),
-					));
-					if ($GLOBALS['config']->get('config', 'recaptcha') && !$GLOBALS['session']->get('confirmed', 'recaptcha')) {
-						$GLOBALS['smarty']->assign('DISPLAY_RECAPTCHA', recaptcha_get_html($GLOBALS['recaptcha_keys']['captcha_public'], $GLOBALS['recaptcha']['error'], CC_SSL));
-						$GLOBALS['smarty']->assign('RECAPTCHA', true);
-					}
-				}
+				$GLOBALS['gui']->recaptchaAssign();
 			}
 			$GLOBALS['smarty']->assign('TERMS_CONDITIONS', (!$GLOBALS['config']->get('config', 'disable_checkout_terms') && $terms = $GLOBALS['db']->select('CubeCart_documents', false, array('doc_terms' => '1'))) ? $GLOBALS['seo']->buildURL('doc', $terms[0]['doc_id'], '&') : false);
 			if (isset($_POST['terms_agree']) && $_POST['terms_agree']==1) {
@@ -1400,7 +1388,7 @@ class Cubecart {
 				}
 
 				// reCAPTCHA, if enabled
-				if ($GLOBALS['config']->get('config', 'recaptcha') && !$GLOBALS['session']->get('confirmed', 'recaptcha')) {
+				if ($GLOBALS['gui']->recaptchaRequired()) {
 					if (($message = $GLOBALS['session']->get('error', 'recaptcha')) === false) {
 						//If the error message from recaptcha fails for some reason:
 						$GLOBALS['gui']->setError($GLOBALS['language']->form['verify_human_fail']);
@@ -1453,18 +1441,8 @@ class Cubecart {
 				$GLOBALS['smarty']->assign('DEPARTMENTS', $vars['departments']);
 			}
 
-			if ($GLOBALS['config']->get('config', 'recaptcha') && !$GLOBALS['session']->get('confirmed', 'recaptcha')) {
-				$recaptcha = $GLOBALS['config']->get('config', 'recaptcha');
-				if($recaptcha==2) {
-					$GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
-				} else {
-					$GLOBALS['smarty']->assign('LANG_RECAPTCHA', array(
-							'reload_words' => sprintf($GLOBALS['language']->recaptcha['reload_words'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('audio')"),
-							'reload_numbers' => sprintf($GLOBALS['language']->recaptcha['reload_numbers'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('image')"),
-						));
-					$GLOBALS['smarty']->assign('DISPLAY_RECAPTCHA', recaptcha_get_html($GLOBALS['recaptcha_keys']['captcha_public'], $GLOBALS['session']->get('error', 'recaptcha'), CC_SSL));
-					$GLOBALS['smarty']->assign('RECAPTCHA', true);
-				}
+			if ($GLOBALS['gui']->recaptchaRequired()) {
+				$GLOBALS['gui']->recaptchaAssign();
 			}
 			foreach ($GLOBALS['hooks']->load('class.cubecart.contact.display') as $hook) include $hook;
 			$content = $GLOBALS['smarty']->fetch('templates/content.contact.php');
@@ -2657,19 +2635,8 @@ class Cubecart {
 	 * @param bool $force
 	 */
 	private function _recaptcha($force = false) {
-		if ($force || (!$GLOBALS['user']->is() && $GLOBALS['config']->get('config', 'recaptcha') && !$GLOBALS['session']->get('confirmed', 'recaptcha'))) {
-			
-			$recaptcha = $GLOBALS['config']->get('config', 'recaptcha');
-			if($recaptcha==2) {
-				$GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
-			} else {
-				$GLOBALS['smarty']->assign('LANG_RECAPTCHA', array(
-						'reload_words'  => sprintf($GLOBALS['language']->recaptcha['reload_words'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('audio')"),
-						'reload_numbers' => sprintf($GLOBALS['language']->recaptcha['reload_numbers'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('image')"),
-					));
-				$GLOBALS['smarty']->assign('DISPLAY_RECAPTCHA', recaptcha_get_html($GLOBALS['recaptcha_keys']['captcha_public'], $GLOBALS['recaptcha']['error'], CC_SSL));
-				$GLOBALS['smarty']->assign('RECAPTCHA', true);
-			}
+		if ($force || (!$GLOBALS['user']->is() && $GLOBALS['gui']->recaptchaRequired())) {
+			$GLOBALS['gui']->recaptchaAssign();
 		}
 	}
 
@@ -2825,18 +2792,8 @@ class Cubecart {
 
 		if (!$GLOBALS['user']->is()) {
 			// Email validation thingy will go here
-			if ($GLOBALS['config']->get('config', 'recaptcha') && !$GLOBALS['session']->get('confirmed', 'recaptcha')) {
-				$recaptcha = $GLOBALS['config']->get('config', 'recaptcha');
-				if($recaptcha==2) {
-					$GLOBALS['smarty']->assign('RECAPTCHA', $recaptcha);
-				} else {
-					$GLOBALS['smarty']->assign('LANG_RECAPTCHA', array(
-							'reload_words'  => sprintf($GLOBALS['language']->recaptcha['reload_words'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('audio')"),
-							'reload_numbers' => sprintf($GLOBALS['language']->recaptcha['reload_numbers'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('image')"),
-						));
-					$GLOBALS['smarty']->assign('DISPLAY_RECAPTCHA', recaptcha_get_html($GLOBALS['recaptcha_keys']['captcha_public'], $GLOBALS['recaptcha']['error'], CC_SSL));
-					$GLOBALS['smarty']->assign('RECAPTCHA', true);
-				}
+			if ($GLOBALS['gui']->recaptchaRequired()) {
+				$GLOBALS['gui']->recaptchaAssign();
 			}
 			$GLOBALS['smarty']->assign('DATA', $_POST);
 			if (($terms = $GLOBALS['db']->select('CubeCart_documents', false, array('doc_terms' => '1'))) !== false) {

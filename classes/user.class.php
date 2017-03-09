@@ -747,7 +747,7 @@ class User {
 			$error['name'] = true;
 		}
 
-		if ($GLOBALS['config']->get('config', 'recaptcha') && !$GLOBALS['session']->get('confirmed', 'recaptcha')) {
+		if ($GLOBALS['gui']->recaptchaRequired()) {
 			if (($message = $GLOBALS['session']->get('error', 'recaptcha')) === false) {
 				//If the error message from recaptcha fails for some reason:
 				$GLOBALS['gui']->setError($GLOBALS['language']->form['verify_human_fail']);

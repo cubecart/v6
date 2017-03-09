@@ -681,6 +681,34 @@ class GUI {
 	}
 
 	/**
+	 * Require Recaptcha Check
+	 */
+	public function recaptchaRequired() {
+		if($GLOBALS['config']->get('config', 'recaptcha') && !$GLOBALS['session']->get('confirmed', 'recaptcha')) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Assign Legacy Recaptcha HTML
+	 */
+	public function recaptchaAssign() {
+		if($GLOBALS['config']->get('config', 'recaptcha')==2) {
+			$GLOBALS['smarty']->assign('RECAPTCHA', 2);
+		} else {
+			$GLOBALS['smarty']->assign('LANG_RECAPTCHA', array(
+				'reload_words'  => sprintf($GLOBALS['language']->recaptcha['reload_words'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('audio')"),
+				'reload_numbers' => sprintf($GLOBALS['language']->recaptcha['reload_numbers'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('image')"),
+			));
+			if ($GLOBALS['gui']->recaptchaRequired()) {
+				$GLOBALS['smarty']->assign('DISPLAY_RECAPTCHA', recaptcha_get_html($GLOBALS['recaptcha_keys']['captcha_public'], $GLOBALS['recaptcha']['error'], CC_SSL));
+				$GLOBALS['smarty']->assign('RECAPTCHA', true);
+			}
+		}
+	}
+
+	/**
 	 * Rebuild logo
 	 */
 	public function rebuildLogos() {

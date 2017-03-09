@@ -62,7 +62,7 @@ $GLOBALS['cart'] = Cart::getInstance();
 
 // Set store timezone - default to UTC
 date_default_timezone_set(($GLOBALS['config']->get('config', 'time_zone')) ? $GLOBALS['config']->get('config', 'time_zone') : 'UTC');
-if ($GLOBALS['config']->get('config', 'recaptcha') && !$GLOBALS['session']->get('confirmed', 'recaptcha')) {
+if ($GLOBALS['gui']->recaptchaRequired()) {
 	
 	$recaptcha['error'] = null;
 	$recaptcha['confirmed'] = false;

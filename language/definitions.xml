@@ -561,6 +561,7 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="not_recommended" introduced="6.1.6"><![CDATA[Not Recommended]]></string>
     <string name="none" introduced="6.1.5"><![CDATA[None]]></string>
     <string name="read_ltr" introduced="6.1.2"><![CDATA[Left-to-Right]]></string>
     <string name="read_rtl" introduced="6.1.2"><![CDATA[Right-to-Left]]></string>
@@ -1900,7 +1901,7 @@
     <string name="proxy_port" introduced="5.0.0"><![CDATA[Proxy Port]]></string>
     <string name="proxy_user" introduced="5.0.0"><![CDATA[Proxy Username]]></string>
     <string name="recaptcha_enable" introduced="5.0.0"><![CDATA[Enable <a href="https://www.google.com/recaptcha/intro/index.html" target="_blank">reCAPTCHA</a>]]></string>
-    <string name="new_recaptcha_note" introduced="6.0.0"><![CDATA[If &quot;New reCAPTCHA&quot; is selected you must obtain a Site Key and Secret Key <a href="https://www.google.com/recaptcha/admin" target="_blank">from Google</a> for it to work.]]></string>
+    <string name="new_recaptcha_note" introduced="6.0.0"><![CDATA[If &quot;reCAPTCHA v2&quot; or &quot;Invisible reCAPTCHA&quot; are selected you must obtain a Site Key and Secret Key <a href="https://www.google.com/recaptcha/admin" target="_blank">from Google</a> for it to work. Please note that if your store has a skin developed prior to CubeCart version 6 v2 and Invisible probably won't work. Please contact support.]]></string>
     <string name="recaptcha_public_key" introduced="6.0.0"><![CDATA[reCAPTCHA Site Key]]></string>
     <string name="recaptcha_secret_key" introduced="6.0.0"><![CDATA[reCAPTCHA Secret Key]]></string>
     <string name="repair" introduced="5.0.0"><![CDATA[Repair]]></string>
