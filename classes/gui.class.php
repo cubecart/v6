@@ -684,6 +684,8 @@ class GUI {
 	 * Require Recaptcha Check
 	 */
 	public function recaptchaRequired() {
+		$version = $GLOBALS['config']->get('config', 'recaptcha');
+		$GLOBALS['smarty']->assign('RECAPTCHA', $version);
 		if($GLOBALS['config']->get('config', 'recaptcha') && !$GLOBALS['session']->get('confirmed', 'recaptcha')) {
 			return true;
 		}
@@ -694,9 +696,7 @@ class GUI {
 	 * Assign Legacy Recaptcha HTML
 	 */
 	public function recaptchaAssign() {
-		if($GLOBALS['config']->get('config', 'recaptcha')==2) {
-			$GLOBALS['smarty']->assign('RECAPTCHA', 2);
-		} else {
+		if($GLOBALS['config']->get('config', 'recaptcha')==1) {
 			$GLOBALS['smarty']->assign('LANG_RECAPTCHA', array(
 				'reload_words'  => sprintf($GLOBALS['language']->recaptcha['reload_words'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('audio')"),
 				'reload_numbers' => sprintf($GLOBALS['language']->recaptcha['reload_numbers'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('image')"),
