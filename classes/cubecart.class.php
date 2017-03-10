@@ -2565,7 +2565,9 @@ class Cubecart {
 			}
 		}
 
-		$this->_recaptcha();
+		if ($GLOBALS['gui']->recaptchaRequired()) {
+			$GLOBALS['gui']->recaptchaAssign();
+		}
 
 		/* Social Bookmarks */
 		$GLOBALS['smarty']->assign('SHARE', $this->_getSocial('product', 'getButtonHTML'));
@@ -2627,17 +2629,6 @@ class Cubecart {
 		$content = $GLOBALS['smarty']->fetch('templates/content.profile.php');
 		$GLOBALS['smarty']->assign('SECTION_NAME', 'account');
 		$GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
-	}
-
-	/**
-	 * Recaptcha
-	 *
-	 * @param bool $force
-	 */
-	private function _recaptcha($force = false) {
-		if ($force || (!$GLOBALS['user']->is() && $GLOBALS['gui']->recaptchaRequired())) {
-			$GLOBALS['gui']->recaptchaAssign();
-		}
 	}
 
 	/**
