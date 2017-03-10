@@ -696,16 +696,15 @@ class GUI {
 	 * Assign Legacy Recaptcha HTML
 	 */
 	public function recaptchaAssign() {
-		
-		if(!$this->recaptchaRequired()) return false;
-
 		if($GLOBALS['config']->get('config', 'recaptcha')==1) {
 			$GLOBALS['smarty']->assign('LANG_RECAPTCHA', array(
 				'reload_words'  => sprintf($GLOBALS['language']->recaptcha['reload_words'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('audio')"),
 				'reload_numbers' => sprintf($GLOBALS['language']->recaptcha['reload_numbers'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('image')"),
 			));
-			$GLOBALS['smarty']->assign('DISPLAY_RECAPTCHA', recaptcha_get_html($GLOBALS['recaptcha_keys']['captcha_public'], $GLOBALS['recaptcha']['error'], CC_SSL));
-			$GLOBALS['smarty']->assign('RECAPTCHA', true);
+			if ($GLOBALS['gui']->recaptchaRequired()) {
+				$GLOBALS['smarty']->assign('DISPLAY_RECAPTCHA', recaptcha_get_html($GLOBALS['recaptcha_keys']['captcha_public'], $GLOBALS['recaptcha']['error'], CC_SSL));
+				$GLOBALS['smarty']->assign('RECAPTCHA', true);
+			}
 		}
 	}
 
