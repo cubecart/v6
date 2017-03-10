@@ -1732,6 +1732,8 @@
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
+    <string name="reCAPTCHA_v2_na" introduced="6.1.6"><![CDATA[Warning: It doesn't look like your current skin is compatible with reCAPTCHA v2.]]></string>
+    <string name="reCAPTCHA_invisible_na" introduced="6.1.6"><![CDATA[Warning: It doesn't look like your current skin is compatible with Invisible reCAPTCHA.]]></string>
     <string name="enabled_for_all" introduced="6.1.2"><![CDATA[Enabled for all customers]]></string>
     <string name="enabled_for_logged_in" introduced="6.1.2"><![CDATA[Enabled for logged in customers only]]></string>
     <string name="log_retention" introduced="6.1.0"><![CDATA[Log Retention]]></string>
@@ -1900,8 +1902,8 @@
     <string name="proxy_pass" introduced="5.0.0"><![CDATA[Proxy Password]]></string>
     <string name="proxy_port" introduced="5.0.0"><![CDATA[Proxy Port]]></string>
     <string name="proxy_user" introduced="5.0.0"><![CDATA[Proxy Username]]></string>
-    <string name="recaptcha_enable" introduced="5.0.0"><![CDATA[Enable <a href="https://www.google.com/recaptcha/intro/index.html" target="_blank">reCAPTCHA</a>]]></string>
-    <string name="new_recaptcha_note" introduced="6.0.0"><![CDATA[* Require a Site Key and Secret Key <a href="https://www.google.com/recaptcha/admin" target="_blank">from Google</a>.<br>Skins developed for CubeCart version 5 are not likely to work with reCAPTCHA v2 or Invisible reCAPTCHA.<br>Skins developed prior to CubeCart version 6.1.6 are not likely to work with Invisible reCAPTCHA. Please contact support for further assistance.]]></string>
+    <string name="recaptcha_enable" introduced="5.0.0"><![CDATA[Enable <a href="https://www.google.com/recaptcha/intro/index.html" target="_blank">Google reCAPTCHA</a>]]></string>
+    <string name="new_recaptcha_note" introduced="6.0.0"><![CDATA[* Require a Site Key and Secret Key <a href="https://www.google.com/recaptcha/admin" target="_blank">from Google</a>.]]></string>
     <string name="recaptcha_public_key" introduced="6.0.0"><![CDATA[reCAPTCHA Site Key]]></string>
     <string name="recaptcha_secret_key" introduced="6.0.0"><![CDATA[reCAPTCHA Secret Key]]></string>
     <string name="repair" introduced="5.0.0"><![CDATA[Repair]]></string>
@@ -2012,7 +2014,7 @@
     <string name="title_system_error_log" introduced="5.0.0"><![CDATA[System Error Log]]></string>
     <string name="title_extra" introduced="5.1.0"><![CDATA[Extra Settings]]></string>
     <string name="title_features" introduced="5.0.0"><![CDATA[Feature Settings]]></string>
-    <string name="title_flood" introduced="5.0.0"><![CDATA[Spam Prevention]]></string>
+    <string name="title_flood" introduced="5.0.0"><![CDATA[Bot Protection]]></string>
     <string name="title_geographical" introduced="5.0.0"><![CDATA[Geographical Settings]]></string>
     <string name="title_hide_out_of_stock" introduced="5.1.0"><![CDATA[Hide out-of-stock product]]></string>
     <string name="title_images" introduced="5.0.0"><![CDATA[Images]]></string>

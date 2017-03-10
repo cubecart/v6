@@ -92,7 +92,14 @@
          </span></div>
          <div><label for="recaptcha_public_key">{$LANG.settings.recaptcha_public_key}</label><span><input name="config[recaptcha_public_key]" id="recaptcha_public_key" class="textbox" value="{$CONFIG.recaptcha_public_key}"></span></div>
          <div><label for="recaptcha_secret_key">{$LANG.settings.recaptcha_secret_key}</label><span><input name="config[recaptcha_secret_key]" id="recaptcha_secret_key" class="textbox" value="{$CONFIG.recaptcha_secret_key}"></span></div>
-         <div class="clear important"><strong>{$LANG.settings.new_recaptcha_note}</strong></div>
+         <div class="clear important"><strong>{$LANG.settings.new_recaptcha_note}</strong>
+            {if !$gr_compatibility.v2}
+            <br><strong>{$LANG.settings.reCAPTCHA_v2_na}</strong>
+            {/if}
+            {if !$gr_compatibility.invisible}
+            <br><strong>{$LANG.settings.reCAPTCHA_invisible_na}</strong>
+            {/if}
+         </div>
       </fieldset>
       <fieldset>
          <legend>{$LANG.common.misc}</legend>

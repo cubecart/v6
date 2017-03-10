@@ -326,7 +326,6 @@ $select_options = array(
 	'catalogue_popular_products_source' => array($lang['settings']['product_popular_views'], $lang['settings']['product_popular_sales']),
 	'basket_tax_by_delivery'   => array($lang['address']['billing_address'], $lang['address']['delivery_address']),
 	'proxy'     => null,
-	'recaptcha'    => array($lang['common']['disabled'], $lang['common']['enabled']),
 	'catalogue_sale_mode' => array($lang['common']['disabled'], $lang['settings']['sales_per_product'], $lang['settings']['sales_percentage']),
 	'recaptcha' => array(0 => $lang['common']['off']." (".$lang['common']['not_recommended'].")", 1 => "reCAPTCHA v1 (".$lang['common']['not_recommended'].")", 2 => "reCAPTCHA v2 *", 3 => 'Invisible reCAPTCHA * ('.$lang['common']['recommended'].')'),
 	'seo_metadata'   => array($lang['settings']['seo_meta_option_disable'], $lang['settings']['seo_meta_option_merge'], $lang['settings']['seo_meta_option_replace']),
@@ -346,6 +345,12 @@ $select_options = array(
 	'seo_add_cats'      => array('0' => $lang['common']['no'], '1' => $lang['settings']['seo_add_cats_top'], '2' => $lang['settings']['seo_add_cats_all']),
 	'seo_cat_add_cats'      => array('1' => $lang['common']['yes'], '0' => $lang['common']['no'])
 );
+$current_skin_path = CC_ROOT_DIR.'/skins/'.$GLOBALS['config']->get('config', 'skin_folder').'/templates/';
+$gr_compatibility = array(
+	'v2' => file_exists($current_skin_path.'content.recaptcha.head.php'),
+	'invisible' => file_exists($current_skin_path.'element.recaptcha.invisible.php')
+);
+$GLOBALS['smarty']->assign('gr_compatibility', $gr_compatibility);
 
 if ($inventory_columns = $GLOBALS['db']->misc('SHOW FULL COLUMNS FROM '.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory')) {
 	$excluded = array('use_stock_level');
