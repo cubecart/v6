@@ -59,7 +59,7 @@
       <div class="show-for-medium-up"><button type="submit" name="update" class="button secondary left" value="{$LANG.basket.basket_update}"><svg class="icon"><use xlink:href="#icon-refresh"></use></svg> {$LANG.basket.basket_update}</button></div>
       <div class="show-for-small-only"><button type="submit" name="update" class="button secondary left" value="{$LANG.basket.basket_update}"><svg class="icon"><use xlink:href="#icon-refresh"></use></svg> {$LANG.common.update}</button></div>
       {if $DISABLE_CHECKOUT_BUTTON!==true}
-      <button type="submit" name="proceed" id="checkout_proceed" class="button right">{$CHECKOUT_BUTTON} <svg class="icon"><use xlink:href="#icon-chevron-right"></use></svg></button>
+      <button type="submit" name="proceed" id="checkout_proceed" class="button right g-recaptcha"{include file='templates/element.recaptcha.invisible.php'}>{$CHECKOUT_BUTTON} <svg class="icon"><use xlink:href="#icon-chevron-right"></use></svg></button>
       {/if}
    </div>
 </form>

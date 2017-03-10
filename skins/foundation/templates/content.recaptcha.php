@@ -9,7 +9,7 @@
  * Email:  sales@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
-{if $RECAPTCHA}
+{if $RECAPTCHA==='1' || $RECAPTCHA==='2'}
 <h3>{$LANG.form.verify_human}</h3>
 <div class="row">
    <div class="medium-8 columns">

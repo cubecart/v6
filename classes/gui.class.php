@@ -96,6 +96,8 @@ class GUI {
 
 	final protected function __construct($admin = false) {
 
+		$this->recaptchaValidate();
+
 		//Get current skins
 		$this->_skins = $this->listSkins();
 
@@ -681,19 +683,7 @@ class GUI {
 	}
 
 	/**
-	 * Require Recaptcha Check
-	 */
-	public function recaptchaRequired() {
-		$version = $GLOBALS['config']->get('config', 'recaptcha');
-		$GLOBALS['smarty']->assign('RECAPTCHA', $version);
-		if($GLOBALS['config']->get('config', 'recaptcha') && !$GLOBALS['session']->get('confirmed', 'recaptcha')) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Assign Legacy Recaptcha HTML
+	 * Assign reCAPTCHA v1 (legacy)
 	 */
 	public function recaptchaAssign() {
 		if($GLOBALS['config']->get('config', 'recaptcha')==1) {
@@ -705,6 +695,64 @@ class GUI {
 				$GLOBALS['smarty']->assign('DISPLAY_RECAPTCHA', recaptcha_get_html($GLOBALS['recaptcha_keys']['captcha_public'], $GLOBALS['recaptcha']['error'], CC_SSL));
 				$GLOBALS['smarty']->assign('RECAPTCHA', true);
 			}
+		}
+	}
+
+	/**
+	 * Do we require Recaptcha check?
+	 */
+	public function recaptchaRequired() {
+		$version = $GLOBALS['config']->get('config', 'recaptcha');
+		$GLOBALS['smarty']->assign('RECAPTCHA', $version);
+		if($GLOBALS['config']->get('config', 'recaptcha') && !$GLOBALS['session']->get('confirmed', 'recaptcha')) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Validate recaptcha response
+	 */
+	public function recaptchaValidate() {
+		if ($this->recaptchaRequired()) {
+			
+			$recaptcha['error'] = null;
+			$recaptcha['confirmed'] = false;
+
+			// for reCAPTCHA v2 and invisible
+			if(isset($_POST['g-recaptcha-response']) && in_array($GLOBALS['config']->get('config', 'recaptcha'), array(2,3))) {
+
+				if(empty($_POST['g-recaptcha-response'])) {
+					$recaptcha['error'] = $GLOBALS['language']->form['verify_human_fail'];
+				} else {
+					$g_data = array(
+						'secret' => $GLOBALS['config']->get('config', 'recaptcha_secret_key'),
+						'response' => $_POST['g-recaptcha-response'],
+						'remoteip' => get_ip_address()
+					);
+					$json = file_get_contents('https://www.google.com/recaptcha/api/siteverify?'.http_build_query($g_data));
+					$g_result = json_decode($json);
+					if($g_result->success) {
+						$recaptcha['confirmed'] = true;
+					} else {
+						$recaptcha['error'] = $GLOBALS['language']->form['verify_human_fail'];
+					}
+				}
+				$GLOBALS['session']->set('', $recaptcha, 'recaptcha');
+			} elseif(isset($_POST['recaptcha_response_field'])) { // for reCAPTCHA v1 
+				require CC_INCLUDES_DIR.'lib/recaptcha/recaptchalib.php';
+				$GLOBALS['recaptcha_keys'] = array('captcha_private' => '6LfT4sASAAAAAKQMCK9w6xmRkkn6sl6ORdnOf83H', 'captcha_public' => '6LfT4sASAAAAAOl71cRz11Fm0erGiqNG8VAfKTHn');
+
+				$resp = recaptcha_check_answer($GLOBALS['recaptcha_keys']['captcha_private'], $_SERVER['REMOTE_ADDR'], $_POST['recaptcha_challenge_field'], $_POST['recaptcha_response_field']);
+				if ($resp->is_valid) {
+					$recaptcha['confirmed'] = true;
+				} else {
+					$recaptcha['error'] = $GLOBALS['language']->form['verify_human_fail'];
+				}
+				$GLOBALS['session']->set('', $recaptcha, 'recaptcha');				
+			}	
+		} elseif (!$GLOBALS['session']->get('confirmed', 'recaptcha')) {
+			$GLOBALS['session']->delete('', 'recaptcha');
 		}
 	}
 
