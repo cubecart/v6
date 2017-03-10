@@ -606,7 +606,7 @@ class Debug {
 	 */
 	private function _writeErrorLog($message, $type) {
 		if(isset($GLOBALS['db']) && $GLOBALS['db']->connected) {
-			$log_days = $GLOBALS['config']->get('config', 'r_system_error');
+			$log_days = method_exists($GLOBALS['config'],'get') ? $GLOBALS['config']->get('config', 'r_system_error') : 30;
 	        if(ctype_digit((string)$log_days) &&  $log_days > 0) {
 	        	$GLOBALS['db']->insert('CubeCart_system_error_log', array('message' => $message, 'time' => time()));
 	        	$GLOBALS['db']->delete('CubeCart_system_error_log', 'time < UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL '.$log_days.' DAY))');
