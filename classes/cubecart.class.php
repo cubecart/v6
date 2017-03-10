@@ -2565,7 +2565,7 @@ class Cubecart {
 			}
 		}
 
-		if ($GLOBALS['gui']->recaptchaRequired()) {
+		if (!$GLOBALS['user']->is() && $GLOBALS['gui']->recaptchaRequired()) {
 			$GLOBALS['gui']->recaptchaAssign();
 		}
 

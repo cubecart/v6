@@ -709,7 +709,7 @@ class GUI {
 	 * Do we require Recaptcha check?
 	 */
 	public function recaptchaRequired() {
-		if(!$GLOBALS['user']->is() && $GLOBALS['config']->get('config', 'recaptcha') && !$GLOBALS['session']->get('confirmed', 'recaptcha')) {
+		if($GLOBALS['config']->get('config', 'recaptcha') && !$GLOBALS['session']->get('confirmed', 'recaptcha')) {
 			$version = $GLOBALS['config']->get('config', 'recaptcha');
 			$GLOBALS['smarty']->assign('RECAPTCHA', $version);
 			return true;
