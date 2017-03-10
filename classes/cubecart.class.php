@@ -1147,7 +1147,7 @@ class Cubecart {
 
 			foreach ($GLOBALS['hooks']->load('class.cubecart.prerecaptcha.confirm') as $hook) include $hook;
 
-			if (!isset($this->_basket['recaptcha'])) {
+			if(!isset($this->_basket['recaptcha'])) {
 				$GLOBALS['gui']->recaptchaAssign();
 			}
 			$GLOBALS['smarty']->assign('TERMS_CONDITIONS', (!$GLOBALS['config']->get('config', 'disable_checkout_terms') && $terms = $GLOBALS['db']->select('CubeCart_documents', false, array('doc_terms' => '1'))) ? $GLOBALS['seo']->buildURL('doc', $terms[0]['doc_id'], '&') : false);
@@ -1441,9 +1441,8 @@ class Cubecart {
 				$GLOBALS['smarty']->assign('DEPARTMENTS', $vars['departments']);
 			}
 
-			if ($GLOBALS['gui']->recaptchaRequired()) {
-				$GLOBALS['gui']->recaptchaAssign();
-			}
+			$GLOBALS['gui']->recaptchaAssign();
+
 			foreach ($GLOBALS['hooks']->load('class.cubecart.contact.display') as $hook) include $hook;
 			$content = $GLOBALS['smarty']->fetch('templates/content.contact.php');
 			$GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
@@ -2792,9 +2791,9 @@ class Cubecart {
 
 		if (!$GLOBALS['user']->is()) {
 			// Email validation thingy will go here
-			if ($GLOBALS['gui']->recaptchaRequired()) {
-				$GLOBALS['gui']->recaptchaAssign();
-			}
+			
+			$GLOBALS['gui']->recaptchaAssign();
+
 			$GLOBALS['smarty']->assign('DATA', $_POST);
 			if (($terms = $GLOBALS['db']->select('CubeCart_documents', false, array('doc_terms' => '1'))) !== false) {
 				$GLOBALS['smarty']->assign('TERMS_CONDITIONS', $GLOBALS['seo']->buildURL('doc', $terms[0]['doc_id'], '&'));
