@@ -9,11 +9,11 @@
  * Email:  sales@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
-{if $RECAPTCHA==='1' || $RECAPTCHA==='2'}
+{if $RECAPTCHA=='1' || $RECAPTCHA=='2'}
 <h3>{$LANG.form.verify_human}</h3>
 <div class="row">
    <div class="medium-8 columns">
-      {if $RECAPTCHA==='2'}
+      {if $RECAPTCHA=='2'}
       {if empty($CONFIG.recaptcha_public_key) || empty($CONFIG.recaptcha_secret_key)}
       <p>{$LANG.form.recaptcha_key_not_set}</p>
       {else}

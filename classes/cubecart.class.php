@@ -2791,7 +2791,7 @@ class Cubecart {
 		}
 
 		if (!$GLOBALS['user']->is()) {
-			// Email validation thingy will go here
+			
 			if ($GLOBALS['gui']->recaptchaRequired()) {
 				$GLOBALS['gui']->recaptchaAssign();
 			}

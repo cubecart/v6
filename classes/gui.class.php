@@ -79,6 +79,12 @@ class GUI {
 	 */
 	private $_template_dir = '';
 	/**
+	 * reCAPTCHA v1 keys
+	 *
+	 * @var string
+	 */
+	private $_reCAPTCHA_keys = array('captcha_private' => '6LfT4sASAAAAAKQMCK9w6xmRkkn6sl6ORdnOf83H', 'captcha_public' => '6LfT4sASAAAAAOl71cRz11Fm0erGiqNG8VAfKTHn');
+	/**
 	 * Postfix string for mobile config variables
 	 *
 	 * @var string
@@ -687,13 +693,14 @@ class GUI {
 	 */
 	public function recaptchaAssign() {
 		if($GLOBALS['config']->get('config', 'recaptcha')==1) {
+			require_once CC_INCLUDES_DIR.'lib/recaptcha/recaptchalib.php';
 			$GLOBALS['smarty']->assign('LANG_RECAPTCHA', array(
 				'reload_words'  => sprintf($GLOBALS['language']->recaptcha['reload_words'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('audio')"),
 				'reload_numbers' => sprintf($GLOBALS['language']->recaptcha['reload_numbers'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('image')"),
 			));
 			if ($GLOBALS['gui']->recaptchaRequired()) {
-				$GLOBALS['smarty']->assign('DISPLAY_RECAPTCHA', recaptcha_get_html($GLOBALS['recaptcha_keys']['captcha_public'], $GLOBALS['recaptcha']['error'], CC_SSL));
-				$GLOBALS['smarty']->assign('RECAPTCHA', true);
+				$GLOBALS['smarty']->assign('DISPLAY_RECAPTCHA', recaptcha_get_html($this->_reCAPTCHA_keys['captcha_public'], $GLOBALS['recaptcha']['error'], CC_SSL));
+				$GLOBALS['smarty']->assign('RECAPTCHA', 1);
 			}
 		}
 	}
@@ -702,9 +709,9 @@ class GUI {
 	 * Do we require Recaptcha check?
 	 */
 	public function recaptchaRequired() {
-		$version = $GLOBALS['config']->get('config', 'recaptcha');
-		$GLOBALS['smarty']->assign('RECAPTCHA', $version);
 		if($GLOBALS['config']->get('config', 'recaptcha') && !$GLOBALS['session']->get('confirmed', 'recaptcha')) {
+			$version = $GLOBALS['config']->get('config', 'recaptcha');
+			$GLOBALS['smarty']->assign('RECAPTCHA', $version);
 			return true;
 		}
 		return false;
@@ -740,10 +747,8 @@ class GUI {
 				}
 				$GLOBALS['session']->set('', $recaptcha, 'recaptcha');
 			} elseif(isset($_POST['recaptcha_response_field'])) { // for reCAPTCHA v1 
-				require CC_INCLUDES_DIR.'lib/recaptcha/recaptchalib.php';
-				$GLOBALS['recaptcha_keys'] = array('captcha_private' => '6LfT4sASAAAAAKQMCK9w6xmRkkn6sl6ORdnOf83H', 'captcha_public' => '6LfT4sASAAAAAOl71cRz11Fm0erGiqNG8VAfKTHn');
-
-				$resp = recaptcha_check_answer($GLOBALS['recaptcha_keys']['captcha_private'], $_SERVER['REMOTE_ADDR'], $_POST['recaptcha_challenge_field'], $_POST['recaptcha_response_field']);
+				require_once CC_INCLUDES_DIR.'lib/recaptcha/recaptchalib.php';
+				$resp = recaptcha_check_answer($this->_reCAPTCHA_keys['captcha_private'], $_SERVER['REMOTE_ADDR'], $_POST['recaptcha_challenge_field'], $_POST['recaptcha_response_field']);
 				if ($resp->is_valid) {
 					$recaptcha['confirmed'] = true;
 				} else {
