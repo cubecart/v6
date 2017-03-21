@@ -256,6 +256,7 @@ class Catalogue {
 				$product['ctrl_stock'] = (!$product['use_stock_level'] || $GLOBALS['config']->get('config', 'basket_out_of_stock_purchase') || ($product['use_stock_level'] && $GLOBALS['catalogue']->getProductStock($product['product_id'], null, true) > 0)) ? true : false;
 				$this->productAssign($product, false);
 				$product['url'] = $GLOBALS['seo']->buildURL('prod', $product['product_id'], '&');
+				$product['options'] = $GLOBALS['catalogue']->getProductOptions($product['product_id']);
 				$vars['products'][] = $product;
 			}
 
@@ -401,6 +402,7 @@ class Catalogue {
 				}
 
 				$product['url'] = $GLOBALS['seo']->buildURL('prod', $product['product_id'], '&');
+				$product['options'] = $GLOBALS['catalogue']->getProductOptions($product['product_id']);
 
 				// Get stock level variations for options
 				if ($product_options && $stock_variations = $GLOBALS['db']->select('CubeCart_option_matrix', 'MAX(stock_level) AS max_stock, MIN(stock_level) AS min_stock', array('product_id' => $product['product_id'], 'use_stock' => 1, 'status' => 1), false, 1)) {
