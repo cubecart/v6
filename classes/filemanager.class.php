@@ -851,6 +851,7 @@ class FileManager {
 				$file['master_filepath']= str_replace(chr(92), "/", $this->_manage_dir.'/'.$file['filepath'].$file['filename']);
 				$file['filepath']   = ($this->_mode == self::FM_FILETYPE_IMG) ? $catalogue->imagePath($file['file_id'], 'medium') : $this->_manage_dir.'/'.$file['filepath'].$file['filename'];
 				$file['select_button'] = (bool)$select_button;
+				$file['filesize'] = formatBytes($file['filesize'], true);
 
 				if ($select_button) $file['master_filepath'] = $GLOBALS['rootRel'].$file['master_filepath']; // Fix the image path added to the FCK editor area
 

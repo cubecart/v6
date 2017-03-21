@@ -37,6 +37,7 @@
 	  {foreach from=$FILES item=file}
 	  <div>
 		<span class="actions">
+		  {$file.filesize}
 		  {if $file.select_button}
 		  <a href="{$file.master_filepath}" class="select"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a>
 		  {else}
