@@ -42,6 +42,7 @@ class Mailer extends PHPMailer {
 		switch ($GLOBALS['config']->get('config', 'email_method')) {
 		case 'smtp':
 		case 'smtp_ssl':
+		case 'smtp_tls':
 			$this->IsSMTP(true);
 			$this->Host = $GLOBALS['config']->get('config', 'email_smtp_host');
 			$this->Port = $GLOBALS['config']->get('config', 'email_smtp_port');
