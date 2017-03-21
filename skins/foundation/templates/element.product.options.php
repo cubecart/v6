@@ -23,7 +23,7 @@
             <div class="pseudo-label">{if empty($option.option_description)}{$option.option_name}{else}{$option.option_description}{/if}{if $option.required} ({$LANG.common.required}){/if}</div>
             <span id="error_option_{$option.option_id}">
                {foreach from=$option.values item=value name=options}
-               <div><input type="radio" name="productOptions[{$option.option_id}]" id="rad_option_{$value.assign_id}" value="{$value.assign_id}" class="nomarg{if $value.absolute_price == '1'} absolute{/if}"{if !$CTRL_HIDE_PRICES} data-price="{$value.decimal_price}"{/if}{if $smarty.foreach.options.first} rel="error_option_{$option.option_id}" {if $option.required}required{/if}{/if}>
+               <div><input type="radio" name="productOptions[{$option.option_id}]" id="rad_option_{$value.assign_id}" value="{$value.assign_id}" class="nomarg{if $value.absolute_price == '1'} absolute{/if}"{if empty($_POST) && !empty($value.option_default)} checked="checked"{/if}{if !$CTRL_HIDE_PRICES} data-price="{$value.decimal_price}"{/if}{if $smarty.foreach.options.first} rel="error_option_{$option.option_id}" {if $option.required}required{/if}{/if}>
                   <label for="rad_option_{$value.assign_id}" class="return">{$value.value_name}{if $value.price} {$value.symbol}{$value.price}{/if}</label>
                </div>
                {/foreach}
@@ -44,7 +44,7 @@
             <select name="productOptions[{$option.option_id}]" id="option_{$option.option_id}" class="nomarg" {if $option.required}required{/if}>
             <option value="">{$LANG.form.please_select}</option>
             {foreach from=$option.values item=value}
-            <option value="{$value.assign_id}"{if $value.absolute_price == '1'}class="absolute"{/if}{if !$CTRL_HIDE_PRICES} data-price="{$value.decimal_price}"{/if}>{$value.value_name}{if $value.price} {$value.symbol}{$value.price}{/if}</option>
+            <option value="{$value.assign_id}"{if $value.absolute_price == '1'}class="absolute"{/if}{if empty($_POST) && !empty($value.option_default)} selected="selected"{/if}{if !$CTRL_HIDE_PRICES} data-price="{$value.decimal_price}"{/if}>{$value.value_name}{if $value.price} {$value.symbol}{$value.price}{/if}</option>
             {/foreach}
             </select>
             {/if}

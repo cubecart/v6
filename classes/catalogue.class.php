@@ -479,6 +479,7 @@ class Catalogue {
 										'option_id'  => $value['option_id'],
 										'option_name' => $value['option_name'],
 										'option_description' => $value['option_description'],
+										'option_default' => (bool)$value['option_default'],
 										'required'  => (bool)$value['option_required'],
 										'selected' => isset($selected[$value['assign_id']]) ? true : false
 									);
@@ -494,6 +495,7 @@ class Catalogue {
 									'symbol'  => ($value['absolute_price']=='1' && $symbol=='+') ? '' : $symbol,
 									'value_id'  => $value['value_id'],
 									'value_name' => $value['value_name'],
+									'option_default' => (bool)$value['option_default'],
 									'selected' => isset($selected[$value['assign_id']]) ? true : false,
 									'absolute_price' => $value['absolute_price']
 								);
@@ -893,7 +895,7 @@ class Catalogue {
 	 * @return bool/array
 	 */
 	public function getOptionRequired() {
-		// If there is only one value for every option assign them 
+		// If there is only one value OR a default value for every option assign them
 		if(isset($_POST['add'])) {
 			$add_options = true;
 			$single_fixed_options = false;
@@ -903,11 +905,26 @@ class Catalogue {
 			if($assigned_options) {
 				$single_fixed_options = true;
 				$forced_options = array();
+				$default_options = array();
+				// First find any default option values
 				foreach($assigned_options as $assigned_option) {
-					
+					// If the store owner set multiple defaults for the same option, only the last one will be used
+					if (!empty($assigned_option['option_default'])) {
+						$default_options[$assigned_option['option_id']] = $assigned_option;
+					}
+				}
+				foreach($assigned_options as $assigned_option) {
+					// Always use the default option value if it exists
+					if (isset($default_options[$assigned_option['option_id']])) {
+						$assigned_option = $default_options[$assigned_option['option_id']];
+					}
 					if(isset($forced_options[$assigned_option['option_id']])) {
-						$single_fixed_options = false;
-						break;
+						if (empty($default_options[$assigned_option['option_id']])) {
+							$single_fixed_options = false;
+							break;
+						} else {
+							continue; // this option was already handled
+						}
 					}
 
 					$forced_options[$assigned_option['option_id']] = $assigned_option['assign_id'];
