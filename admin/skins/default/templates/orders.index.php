@@ -215,7 +215,7 @@
                <div><label>{$LANG.orders.shipping_tracking}</label><span>{$OVERVIEW_SUMMARY.ship_tracking}</span></div>
                {/if}
                {if !empty($OVERVIEW_SUMMARY.gateway)}
-               <div><label>{$LANG.orders.gateway_name}</label><span>{$OVERVIEW_SUMMARY.gateway}</span></div>
+               <div><label>{$LANG.orders.gateway_name}</label><span class="editable number" name="summary[gateway]">{$OVERVIEW_SUMMARY.gateway}</span></div>
                {/if}
             </fieldset>
          </div>
