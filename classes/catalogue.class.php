@@ -1771,7 +1771,7 @@ class Catalogue {
 				if ($search_mode == 'fulltext') {
 
 					if($search_str_len < $max_word_len) {
-						return $this->searchCatalogue($original_search_data, 1, $per_page, 'RLIKE');	
+						return $this->searchCatalogue($original_search_data, 1, $per_page, 'rlike');	
 					}
 
 					switch (true) {
@@ -1802,10 +1802,10 @@ class Catalogue {
 						$this->_sort_by_relevance = true;
 						return true;
 					} elseif ($search_mode == 'fulltext') {
-						return $this->searchCatalogue($original_search_data, 1, $per_page, 'RLIKE');
+						return $this->searchCatalogue($original_search_data, 1, $per_page, 'rlike');
 					}
 				} else {
-					$search_mode = in_array($search_mode, array('RLIKE','LIKE')) ? $search_mode : 'RLIKE';
+					$search_mode = in_array($search_mode, array('rlike','like')) ? $search_mode : 'rlike';
 					$this->_sort_by_relevance = false;
 					$like = '';
 					if (!empty($search_data['keywords'])) {
@@ -1817,9 +1817,9 @@ class Catalogue {
 						$noKeys = count($searchArray);
 						$regexp = '';
 						
-						$search_mode = in_array(strtolower($search_mode), array('rlike','like')) ? $search_mode : 'rlike';
+						$search_mode = in_array($search_mode, array('rlike','like')) ? $search_mode : 'rlike';
 
-						if(strtolower($search_mode) == 'rlike') {
+						if($search_mode == 'rlike') {
 							$like_keyword = "RLIKE";
 							$like_prefix = '[[:<:]]';
 							$like_postfix = '[[:>:]].*';
@@ -1834,7 +1834,7 @@ class Catalogue {
 								$regexp .= $like_prefix.$searchArray[$i].$like_postfix;
 							}
 						}
-						if($search_mode == 'RLIKE') {
+						if($search_mode == 'rlike') {
 							$regexp = substr($regexp, 0, strlen($regexp)-2);
 						}
 						$like = " AND (I.name ".$like_keyword." '".$regexp."' OR I.description ".$like_keyword." '".$regexp."' OR I.product_code ".$like_keyword." '".$regexp."')";
@@ -1848,8 +1848,8 @@ class Catalogue {
 						$this->_category_count  = (int)count($count);
 						$this->_category_products = $search;
 						return true;
-					} elseif($search_mode=="RLIKE") {
-						return $this->searchCatalogue($original_search_data, 1, $per_page, 'LIKE');
+					} elseif($search_mode=="rlike") {
+						return $this->searchCatalogue($original_search_data, 1, $per_page, 'like');
 					}
 				}
 			}
