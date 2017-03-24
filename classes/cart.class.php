@@ -739,6 +739,8 @@ class Cart {
 						$product['options'] = false;
 					}
 
+					$this->basket['contents'][$hash]['digital'] = $product['digital'];
+
 					// Add the total product price inc options etc for payment gateways
 					$this->basket['contents'][$hash]['option_line_price'] = $product['option_line_price'];
 					$this->basket['contents'][$hash]['total_price_each'] = $product['price'];
@@ -1338,5 +1340,8 @@ class Cart {
 			$option['price_display'] .= $GLOBALS['tax']->priceFormat(abs($display_option_tax), true);
 		}
 		$product['product_weight'] += (isset($option['option_weight'])) ? $option['option_weight'] : 0;
+		if($option['option_weight']>0) {
+			$product['digital'] = false;	
+		}
 	}
 }
