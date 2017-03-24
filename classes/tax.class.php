@@ -119,7 +119,6 @@ class Tax {
 						}
 					}
 				}
-				unset($tax_data['inherited']);
 			} else {
 				foreach($taxes as $tax_name => $tax) {
 					$display_taxes[] = array('name' => $tax_name, 'value' => $this->priceFormat($tax['value']));
