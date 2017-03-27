@@ -13,6 +13,9 @@
   {if isset($mode_list)}
   <div id="filemanager" class="tab_content">
 	<h3>{$FILMANAGER_TITLE}</h3>
+	{if $FILMANAGER_MODE == '2'}
+	<p>{$LANG.filemanager.public}</p>
+	{/if}
 	<div>
 	  {if $FOLDER_PARENT}
 	  <div>

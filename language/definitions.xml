@@ -1138,6 +1138,7 @@
     <string name="title_templates" introduced="5.0.0"><![CDATA[Email Templates]]></string>
   </group>
   <group name="filemanager">
+    <string name="public" introduced="6.1.6"><![CDATA[Files uploaded to the files/public folder can be accessed directly via a browser. All others are protected with intent to be sold as digital products.]]></string>
     <string name="upload_destination" introduced="6.1.2"><![CDATA[Upload Destination]]></string>
     <string name="refresh_files" introduced="6.1.2"><![CDATA[Refresh File List]]></string>
     <string name="show_assigned" introduced="6.1.2"><![CDATA[Show Assigned Images Only]]></string>
