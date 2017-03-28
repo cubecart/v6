@@ -119,7 +119,6 @@ class Tax {
 						}
 					}
 				}
-				unset($tax_data['inherited']);
 			} else {
 				foreach($taxes as $tax_name => $tax) {
 					$display_taxes[] = array('name' => $tax_name, 'value' => $this->priceFormat($tax['value']));
@@ -514,7 +513,7 @@ class Tax {
 	 * @return float
 	 */
 	private function _getInheritedTax() {
-		$subtotal = $total_tax = 0;
+		$subtotal = $tax_total = 0;
 		foreach ($GLOBALS['cart']->basket['contents'] as $hash => $item) {
 			if($item['total_price_each']>0) {
 				$subtotal += ($item['total_price_each'] * $item['quantity']);
