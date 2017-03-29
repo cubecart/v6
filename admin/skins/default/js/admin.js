@@ -287,14 +287,6 @@ $(document).ready(function() {
             $(this).attr("rel")
         }), "undefined" != typeof gui_message_json && "object" == typeof gui_message_json)
         for (var e in gui_message_json) $("#" + e).addClass("required-error").val("");
-    
-    $('.url_select').bind('change', function () {
-        var url = $(this).value(); // get selected value
-        if (url) { // require a URL
-            window.location = url; // redirect
-        }
-        return false;
-    });
 
     $("#bulk_price_method").change(function() {
         if($(this).val()=='percent') {
