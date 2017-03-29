@@ -255,6 +255,7 @@ class Cart {
 				$product = $GLOBALS['catalogue']->getProductData($product_id, 1, false, 10, 1, false, $options_identifier_string);
 
 				if ($product) {
+					foreach ($GLOBALS['hooks']->load('class.cart.add.check') as $hook) include $hook;
 					// Check for options
 					$options = $GLOBALS['catalogue']->getProductOptions($product_id);
 					
