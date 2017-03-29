@@ -839,7 +839,7 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
         }), !1
     })
 }), $("#cat_subset").on("change", function() {
-    $location = document.URL.replace(/&?page=[0-9]/, ""), -1 != $location.indexOf("cat_id") && ($location = removeVariableFromURL($location, "cat_id")), "any" != $(this).val() && ($location += "&cat_id=" + $(this).val()), window.location.replace($location)
+    $location = document.URL.replace(/&?page=[0-9]/, ""), -1 != $location.indexOf("cat_id") && ($location = removeVariableFromURL($location, "cat_id")), "any" != $(this).val() && ($location = $(this).val()), window.location.replace($location)
 }), $("select.address-list").on("change", function() {
     var t = $(this).val(),
         e = addresses[t],
