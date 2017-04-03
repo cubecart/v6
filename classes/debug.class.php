@@ -393,7 +393,7 @@ class Debug {
 			break;
 			case E_CORE_WARNING:
 				$type = 'Core Warning';
-				$log = false;
+				$log = (bool)$GLOBALS['config']->get('config', 'debug');
 			break;
 			case E_COMPILE_ERROR:
 				$type = 'Compile Error';
@@ -408,7 +408,7 @@ class Debug {
 			case E_NOTICE:
 			case E_USER_NOTICE:
 				$type = 'Notice';
-				$log = false;
+				$log = (bool)$GLOBALS['config']->get('config', 'debug');
 			break;
 			case E_PARSE:
 				$type = 'Parse Error';
@@ -419,12 +419,12 @@ class Debug {
 			case E_STRICT:
 				$type = 'Strict';
 				$group = 'warn';
-				$log = false;
+				$log = (bool)$GLOBALS['config']->get('config', 'debug');
 				break;
 			case E_WARNING:
 			case E_USER_WARNING:
 				$type = 'Warning';
-				$log = false;
+				$log = (bool)$GLOBALS['config']->get('config', 'debug');
 			break;
 			case 'EXCEPTION':
 				$type = 'Exception';
