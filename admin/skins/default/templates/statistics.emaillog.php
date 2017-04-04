@@ -21,6 +21,7 @@
 		<td colspan="2" align="center">{$LANG.common.read}</td>
 		<td>{$LANG.common.date}</td>
 		<td>{$LANG.common.edit}</td>
+		<td>{$LANG.common.resend}</td>
 	  </tr>
 	</thead>
 	<tbody>
@@ -39,6 +40,7 @@
 		</td>
 		<td>{$log.date}</td>
 		<td align="center">{if $log.email_content_id>0}<a href="?_g=documents&amp;node=email&amp;type=content&amp;action=edit&amp;content_id={$log.email_content_id}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>{/if}</td>
+		<td align="center"><a href="?_g=statistics&node=emaillog&resend={$log.id}"><i class="fa fa-paper-plane" title="{$LANG.common.resend}" aria-hidden="true"></i></i></a></td>
 	  </tr>
 	  {/foreach}
 	</tbody>

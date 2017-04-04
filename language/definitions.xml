@@ -561,6 +561,7 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="resend" introduced="6.1.6"><![CDATA[Resend]]></string>
     <string name="not_recommended" introduced="6.1.6"><![CDATA[Not Recommended]]></string>
     <string name="none" introduced="6.1.5"><![CDATA[None]]></string>
     <string name="read_ltr" introduced="6.1.2"><![CDATA[Left-to-Right]]></string>
@@ -2140,6 +2141,8 @@
     <string name="help_defaultcurrency" introduced="5.0.0"><![CDATA[Please choose your stores default currency.]]></string>
   </group>
   <group name="statistics">
+    <string name="email_resent" introduced="6.1.6"><![CDATA[Email with subject &quot;%s&quot; has been resent to %s.]]></string>
+    <string name="email_not_resent" introduced="6.1.6"><![CDATA[Failed to resend email. Please check your <a href="?_g=settings#Advanced_Settings">settings</a>.]]></string>
     <string name="notify_sales_none" introduced="5.0.0"><![CDATA[No sales have been made.]]></string>
     <string name="notify_searches_none" introduced="6.0.0"><![CDATA[No searches have been made.]]></string>
     <string name="notify_customers_none" introduced="6.0.0"><![CDATA[No customers exist.]]></string>
