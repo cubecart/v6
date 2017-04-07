@@ -386,6 +386,7 @@ class Debug {
 	public function errorLogger($error_no, $error_string, $error_file, $error_line, $error_context = null) {
 
 		$log = true;
+		$can_log = method_exists($GLOBALS['config'],'get') ? (bool)$GLOBALS['config']->get('config', 'debug') : false;
 
 		switch ($error_no) {
 			case E_CORE_ERROR:
@@ -393,7 +394,7 @@ class Debug {
 			break;
 			case E_CORE_WARNING:
 				$type = 'Core Warning';
-				$log = (bool)$GLOBALS['config']->get('config', 'debug');
+				$log = $can_log;
 			break;
 			case E_COMPILE_ERROR:
 				$type = 'Compile Error';
@@ -408,7 +409,7 @@ class Debug {
 			case E_NOTICE:
 			case E_USER_NOTICE:
 				$type = 'Notice';
-				$log = (bool)$GLOBALS['config']->get('config', 'debug');
+				$log = $can_log;
 			break;
 			case E_PARSE:
 				$type = 'Parse Error';
@@ -419,12 +420,12 @@ class Debug {
 			case E_STRICT:
 				$type = 'Strict';
 				$group = 'warn';
-				$log = (bool)$GLOBALS['config']->get('config', 'debug');
+				$log = $can_log;
 				break;
 			case E_WARNING:
 			case E_USER_WARNING:
 				$type = 'Warning';
-				$log = (bool)$GLOBALS['config']->get('config', 'debug');
+				$log = $can_log;
 			break;
 			case 'EXCEPTION':
 				$type = 'Exception';
