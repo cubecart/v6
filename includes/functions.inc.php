@@ -192,6 +192,8 @@ function currentPage($excluded = null, $included = null, $remove_excluded = true
  	$url_path = '';
  	$params = array();
 	$one_time = array('added', 'completed', 'deleted', 'edited', 'failed', 'removed', 'subscribed', 'submitted', 'unsubscribed', 'updated', session_name());
+	// Always remove session token
+	unset($_GET['token']);
 
 	if (isset($GLOBALS['storeURL'], $GLOBALS['rootRel'])) {
 		$url_path = $GLOBALS['storeURL'].str_replace($GLOBALS['rootRel'], '/', htmlentities($_SERVER['PHP_SELF']));
