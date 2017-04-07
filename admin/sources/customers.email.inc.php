@@ -166,8 +166,8 @@ if (isset($_GET['action']) && strtolower($_GET['action']) == 'delete') {
 	if (($contents = $GLOBALS['db']->select('CubeCart_newsletter', false)) !== false) {
 		foreach ($contents as $content) {
 			$content['edit'] = currentPage(null, array('action' => 'edit', 'newsletter_id' => $content['newsletter_id']));
-			$content['send'] = currentPage(null, array('action' => 'send', 'newsletter_id' => $content['newsletter_id']));
-			$content['delete'] = currentPage(null, array('action' => 'delete', 'newsletter_id' => $content['newsletter_id']));
+			$content['send'] = currentPage(null, array('action' => 'send', 'newsletter_id' => $content['newsletter_id'], 'token' => SESSION_TOKEN));
+			$content['delete'] = currentPage(null, array('action' => 'delete', 'newsletter_id' => $content['newsletter_id'], 'token' => SESSION_TOKEN));
 			$smarty_data['newsletters'][] = $content;
 		}
 		$GLOBALS['smarty']->assign('NEWSLETTERS', $smarty_data['newsletters']);

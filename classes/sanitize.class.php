@@ -21,9 +21,41 @@
 class Sanitize {
 
 	/**
-	 * Checks POSTs for valid security token
+	 * Checks GET & POSTs for valid security token
 	 */
 	static public function checkToken() {
+		// Check defined CSRF on speficfied GET
+		if(ADMIN_CP) {
+			global $glob;
+			$csrf_path = CC_ROOT_DIR.'/'.$glob['adminFolder'].'/skins/'.$GLOBALS['config']->get('config', 'admin_skin').'/csrf.inc.php';
+			if(file_exists($csrf_path)) {
+				require_once($csrf_path);
+				if(is_array($csrf_maps))
+				foreach($csrf_maps as $csrf_map) {
+					if(is_array($csrf_map)) {
+						$csrf_check = false;
+						foreach($csrf_map as $key => $value) {
+							if((!$value && isset($_GET[$key])) || (isset($_GET[$key]) && $_GET[$key]==$value)) {
+								$csrf_check = true;	
+							} else {
+								$csrf_check = false;
+								break;	
+							}
+						}
+
+						if($csrf_check) {
+							if (!isset($_GET['token']) || !$GLOBALS['session']->checkToken($_GET['token'])) {
+								//Make a new token just to insure that it doesn't get used again
+								$GLOBALS['session']->getToken(true);
+								self::_stopToken();
+							}
+							break;	
+						}
+					}
+				}
+ 			}
+		}
+
 		if (!empty($_POST)) {
 			//Validate the POST token
 			if (!isset($_POST['token']) || !$GLOBALS['session']->checkToken($_POST['token'])) {
@@ -96,7 +128,7 @@ class Sanitize {
 	 * @return string
 	 */
 	private static function _safety($value) {
-		return filter_var($value, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		return filter_var($value, FILTER_SANITIZE_STRING);
 	}
 
 	/**
@@ -104,12 +136,10 @@ class Sanitize {
 	 * Used when the POST token is not valid
 	 */
 	static private function _stopToken() {
-		if(CC_IN_ADMIN && Admin::getInstance()->is()) {
-			unset($_POST, $_GET);
-			$message = 'Security Alert: Possible Cross-Site Request Forgery (CSRF) or browser back button used.';
-			$gui_message['error'][md5($message)] = $message;
-			$GLOBALS['session']->set('GUI_MESSAGE', $gui_message);
-			trigger_error('Invalid Security Token', E_USER_WARNING);
-		}
+		unset($_POST, $_GET);
+		$message = 'Security Alert: Possible Cross-Site Request Forgery (CSRF) or browser back button used.';
+		$gui_message['error'][md5($message)] = $message;
+		$GLOBALS['session']->set('GUI_MESSAGE', $gui_message);
+		trigger_error('Invalid Security Token', E_USER_WARNING);
 	}
 }

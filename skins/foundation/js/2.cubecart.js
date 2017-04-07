@@ -483,6 +483,9 @@ function add_to_basket(form) {
                 var redir = returned.responseText.split('Redir:');
                 window.location = redir[1];
             } else {
+                var token = $('<div>',{html:returned.responseText}).find('#mini-basket div.session_token').text();
+                $("input[name=token]").val(token);
+
                 $('#mini-basket').replaceWith(returned.responseText);
                 on_canvas_basket_content = $('#mini-basket .box-basket-content').html();
                 $(".right-off-canvas-menu .box-basket-content").html(on_canvas_basket_content);

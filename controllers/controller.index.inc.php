@@ -27,6 +27,10 @@ $GLOBALS['config']->merge('config', '', $config_default);
 $GLOBALS['debug'] = Debug::getInstance();
 //Initialize sessions
 $GLOBALS['session'] = Session::getInstance();
+//Check security token
+if($GLOBALS['config']->get('config', 'csrf')=='1') {
+	Sanitize::checkToken();
+}
 //Initialize Smarty
 $GLOBALS['smarty'] = new Smarty();
 $GLOBALS['smarty']->muteExpectedErrors();

@@ -317,7 +317,11 @@ class GUI {
 	 */
 	public function display($file) {
 		$this->_setCanonical();
-		$GLOBALS['smarty']->display($file);
+		if($GLOBALS['config']->get('config', 'csrf')=='1' || CC_IN_ADMIN) {
+			die(preg_replace('#</form>#i', '<input type="hidden" name="token" value="'.SESSION_TOKEN.'"></form>', $GLOBALS['smarty']->fetch($file)));
+		} else {
+			$GLOBALS['smarty']->display($file);
+		}
 	}
 
 	/**

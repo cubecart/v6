@@ -237,7 +237,7 @@ if (isset($_GET['export'])) {
 				$info['flag'] = 'language/flags/unknown.png';
 			}
 			$info['edit'] = currentPage(null, array('language' => $info['code']));
-			$info['delete'] = currentPage(null, array('delete' => $info['code']));
+			$info['delete'] = currentPage(null, array('delete' => $info['code'], 'token' => SESSION_TOKEN));
 			$info['download'] = currentPage(null, array('download' => $info['code']));
 			$smarty_data['languages'][] = $info;
 		}

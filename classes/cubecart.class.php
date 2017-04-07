@@ -454,8 +454,8 @@ class Cubecart {
 
 		$GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->account['your_account'], 'index.php?_a=account');
 		$GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->account['your_addressbook'], 'index.php?_a=addressbook');
-
-		$_a = isset($_GET['redir']) ? $_GET['redir'] : 'addressbook';
+			
+		$_a = isset($_GET['redir']) ? preg_replace('/[^a-z]/i', '', $_GET['redir']) : 'addressbook';
 
 		$GLOBALS['smarty']->assign('REDIR', $_a);
 

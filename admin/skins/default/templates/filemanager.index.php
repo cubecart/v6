@@ -119,5 +119,5 @@
 	<input type="submit" name="cancel" value="{$LANG.common.cancel}">
   </div>
   {/if}
-  <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+  
 </form>

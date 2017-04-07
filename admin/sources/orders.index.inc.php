@@ -474,7 +474,7 @@ if (isset($_GET['action'])) {
 			foreach ($notes as $note) {
 				$note['time']  = formatTime($note['time']);
 				$note['author']  = $author[$note['admin_id']];
-				$note['delete']  = currentPage(array('print_hash'), array('delete-note' => $note['note_id']));
+				$note['delete']  = currentPage(array('print_hash'), array('delete-note' => $note['note_id'], 'token' => SESSION_TOKEN));
 				$note['content'] = strip_tags($note['content']);
 				$smarty_data['list_notes'][] = $note;
 			}
@@ -738,7 +738,7 @@ if (isset($_GET['action'])) {
 			$order['cust_type'] = array("1" => 'title_key_registered', "2" => 'title_key_unregistered');
 			$order['link_edit']  = currentPage(array('print_hash'), array('action' => 'edit', 'order_id' => $order['cart_order_id']));
 			$order['link_customer'] = ($order['customer_id']) ? "?_g=customers&action=edit&customer_id=".$order['customer_id'] : "#";
-			$order['link_delete'] = currentPage(array('print_hash'), array('delete' => $order['cart_order_id']));
+			$order['link_delete'] = currentPage(array('print_hash'), array('delete' => $order['cart_order_id'], 'token' => SESSION_TOKEN));
 			// Link needs to be an array with one key
 			$order['link_print'] = currentPage(array('print_hash'), array('print[0]' => $order['cart_order_id']));
 			$order['status']  = $lang['order_state']['name_'.$order['status']];

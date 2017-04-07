@@ -451,7 +451,7 @@
       <input id="submit" type="submit" class="button" value="{$LANG.common.save}">
       <input type="hidden" name="previous-tab" id="previous-tab" value="">
    </div>
-   <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+   
 </form>
 <script type="text/javascript">
    {if $VAL_JSON_COUNTY} var county_list = {$VAL_JSON_COUNTY};{/if}

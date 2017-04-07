@@ -230,5 +230,5 @@
 	<input id="previous-tab" type="hidden" value="" name="previous-tab">
 	<input type="submit" value="{$LANG.common.save}">{if isset($DISPLAY_DELETE_LINK)} <a href="{$LINK_DELETE}" class="delete" title="{$LANG.notification.confirm_delete}">{$LANG.common.delete}</a>{/if}
   </div>
-  <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+  
 </form>

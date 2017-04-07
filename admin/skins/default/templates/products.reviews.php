@@ -121,5 +121,5 @@
       <input type="hidden" name="previous-tab" id="previous-tab" value="">
       <input type="submit" value="{$LANG.form.submit}" class="submit">
    </div>
-   <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+   
 </form>

@@ -7,7 +7,7 @@
 		  <input type="text" name="search[keywords]" placeholder="&#xF002; {$LANG.common.type_to_search}" id="customer_id" class="textbox left ajax" rel="user">
 		  <input type="hidden" id="result_customer_id" class="clickSubmit" name="search[customer_id]" value="">
 		  <input type="submit" value="{$LANG.common.go}" class="go_search">
-		  <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+		  
 		</form>
 	  </div>
 	  <div class="sidebar_content">
@@ -16,7 +16,7 @@
 		  <input type="text" name="search[product]" placeholder="&#xF002; {$LANG.common.type_to_search}" id="product" class="textbox left ajax" rel="product">
 		  <input type="submit" value="{$LANG.common.go}" class="go_search">
 		   <input type="hidden" id="result_product" class="clickSubmit" name="search[product_id]" value="">
-		   <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+		   
 		</form>
 	  </div>
 	  <div class="sidebar_content">
@@ -24,7 +24,7 @@
 		  <h4>{$LANG.search.title_search_orders}</h4>
 		  <input type="text" name="search[order_number]" placeholder="&#xF002; {$LANG.common.type_to_search}" id="search_order" class="textbox left">
 		  <input type="submit" value="{$LANG.common.go}" class="go_search">
-		  <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+		  
 		</form>
 	  </div>
 	  {foreach from=$SIDEBAR_CONTENT item=content}<div class="sidebar_content">{$content}</div>{/foreach}

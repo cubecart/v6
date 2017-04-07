@@ -561,6 +561,7 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="invalid_data" introduced="6.1.6"><![CDATA[Invalid data.]]></string>
     <string name="resend" introduced="6.1.6"><![CDATA[Resend]]></string>
     <string name="not_recommended" introduced="6.1.6"><![CDATA[Not Recommended]]></string>
     <string name="none" introduced="6.1.5"><![CDATA[None]]></string>

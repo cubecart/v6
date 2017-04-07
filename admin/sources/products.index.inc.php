@@ -829,7 +829,7 @@ if (isset($_GET['action'])) {
 				$GLOBALS['main']->addTabControl($lang['reviews']['title_reviews'], 'reviews');
 				foreach ($reviews as $review) {
 					$review['date']  = formatTime($review['time']);
-					$review['delete'] = currentPage(false, array('delete_review' => $review['id']));
+					$review['delete'] = currentPage(false, array('delete_review' => $review['id'], 'token' => SESSION_TOKEN));
 					$smarty_data['customer_reviews'][] = $review;
 				}
 				$GLOBALS['smarty']->assign('CUSTOMER_REVIEWS', $smarty_data['customer_reviews']);
@@ -1201,7 +1201,7 @@ if (isset($_GET['action'])) {
 				$result['link_clone'] = currentPage(null, array('action' => 'clone', 'product_id' => $result['product_id']));
 			}
 			$result['link_edit'] = currentPage(null, array('action' => 'edit', 'product_id' => $result['product_id']));
-			$result['link_delete'] = currentPage(null, array('delete' => $result['product_id']));
+			$result['link_delete'] = currentPage(null, array('delete' => $result['product_id'], 'token' => SESSION_TOKEN));
 			$result['type_icon'] = $GLOBALS['config']->get('config', 'adminFolder')."/skins/".$GLOBALS['config']->get('config', 'admin_skin')."/images/prod_type_".(int)(bool)$result['digital'].".png";
 			$result['type_alt']  = $result['digital'] ? $lang['catalogue']['product_type_digital'] : $lang['catalogue']['product_type_tangible'];
 			// Get master category path

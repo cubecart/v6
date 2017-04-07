@@ -30,7 +30,7 @@
             <tr>
                <td><input type="checkbox" name="rem_subscriber[{$subscriber.subscriber_id}]" value="1" class="subscribers"></td>
                <td>{$subscriber.email}</td>
-               <td align="center"><a href="?_g=customers&node=subscribers&delete={$subscriber.subscriber_id}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
+               <td align="center"><a href="?_g=customers&node=subscribers&delete={$subscriber.subscriber_id}&token={$SESSION_TOKEN}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
             </tr>
             {/foreach}
          </tbody>
@@ -66,5 +66,5 @@
       <input type="hidden" name="previous-tab" id="previous-tab" value="">
       <input type="submit" value="{$LANG.common.save}">
    </div>
-   <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+   
 </form>

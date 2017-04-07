@@ -41,7 +41,7 @@ if (Admin::getInstance()->is() || (isset($_GET['_g']) && $_GET['_g']=='products'
 	include CC_ROOT_DIR.CC_DS.'controllers'.CC_DS.'controller.admin.session.true.inc.php';
 } else {
 	include CC_ROOT_DIR.CC_DS.'controllers'.CC_DS.'controller.admin.session.false.inc.php';
-	$GLOBALS['smarty']->display('templates/'.$global_template_file['session_false']);
+	$GLOBALS['gui']->display('templates/'.$global_template_file['session_false']);
 	exit;
 }
 if(isset($_GET['response']) && $_GET['response'] == 'token') {
@@ -51,5 +51,5 @@ if(isset($_GET['response']) && $_GET['response'] == 'token') {
 // Render the completed page
 if (!isset($suppress_output) || !$suppress_output) {
 	$GLOBALS['gui']->displayCommon();
-	$GLOBALS['smarty']->display('templates/'.$global_template_file['session_true']);
+	$GLOBALS['gui']->display('templates/'.$global_template_file['session_true']);
 }

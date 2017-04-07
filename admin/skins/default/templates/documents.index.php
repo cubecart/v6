@@ -106,5 +106,5 @@
 	<input type="submit" value="{$LANG.common.save}">
 	{if $DISPLAY_DELETE}&nbsp; <a href="{$DOCUMENT.link.delete}" class="delete" title="{$LANG.notification.confirm_delete}">{$LANG.documents.document_delete}</a>{/if}
   </div>
-  <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+  
 </form>

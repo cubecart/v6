@@ -138,7 +138,7 @@ if (($country_count = $GLOBALS['db']->select('CubeCart_geo_country', array('name
 
 	if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', false, false, array('name' => 'ASC'), $per_page, $country_page)) !== false) {
 		foreach ($countries as $country) {
-			$country['delete']   = currentPage(null, array('delete' => 'country', 'id' => $country['id']));
+			$country['delete']   = currentPage(null, array('delete' => 'country', 'id' => $country['id'], 'token' => SESSION_TOKEN));
 			$smarty_data['countries'][] = $country;
 		}
 		$GLOBALS['smarty']->assign('COUNTRIES', $smarty_data['countries']);
@@ -154,7 +154,7 @@ if (($zone_count = $GLOBALS['db']->select('CubeCart_geo_zone', array('id'))) !==
 	if (($zones = $GLOBALS['db']->select('CubeCart_geo_zone', false, false, array('country_id' => 'ASC', 'name' => 'ASC'), $per_page, $zone_page)) !== false) {
 		foreach ($zones as $zone) {
 			$zone['country'] = $country_list[$zone['country_id']];
-			$zone['delete']  = currentPage(null, array('delete' => 'zone', 'id' => $zone['id']));
+			$zone['delete']  = currentPage(null, array('delete' => 'zone', 'id' => $zone['id'], 'token' => SESSION_TOKEN));
 			$smarty_data['zones'][] = $zone;
 		}
 		$GLOBALS['smarty']->assign('ZONES', $smarty_data['zones']);

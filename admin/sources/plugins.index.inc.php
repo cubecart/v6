@@ -252,7 +252,7 @@ foreach ($module_paths as $module_path) {
 			'basename' 			=> $basename,
 			'config'			=> $module_config[0],
 			'edit_url'			=> '?_g=plugins&type='.(string)$xml->info->type.'&module='.$basename,
-			'delete_url'		=> '?_g=plugins&type='.(string)$xml->info->type.'&module='.$basename.'&delete=1'
+			'delete_url'		=> '?_g=plugins&type='.(string)$xml->info->type.'&module='.$basename.'&delete=1&token='.SESSION_TOKEN
 
 		);
 		$i++;
@@ -278,7 +278,7 @@ if(is_array($languages_installed)) {
 			'name' 			=> $value['title'],
 			'type' 			=> 'language',
 			'edit_url'		=> '?_g=settings&node=language&language='.$key,
-			'delete_url' 	=> '?_g=settings&node=language&delete='.$key
+			'delete_url' 	=> '?_g=settings&node=language&delete='.$key.'&token='.SESSION_TOKEN
 		);
 		$i++;	
 	}

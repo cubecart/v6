@@ -15,6 +15,6 @@
   <p>{$LANG.catalogue.importing_progress|sprintf:$DATA.imported:$DATA.total}</p>
   <img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/loading.gif" alt="" class="autosubmit">
   <input type="submit" value="submit" name="{$LANG.common.go}">
-  <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+  
   </div>
 </form>

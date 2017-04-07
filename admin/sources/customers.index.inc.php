@@ -368,7 +368,7 @@ if (isset($_GET['action']) && Admin::getInstance()->permissions('customers', CC_
 						$address['country_name'] = getCountryFormat($address['country']);
 						$address['state_name']  = getStateFormat($address['state']);
 						$address['edit']   = currentPage(null, array('address_id' => $address['address_id']));
-						$address['delete']   = currentPage(null, array('delete_addr' => $address['address_id']));
+						$address['delete']   = currentPage(null, array('delete_addr' => $address['address_id'],'token' => SESSION_TOKEN));
 						$address['json']   = json_encode($address);
 						$smarty_data['list_address'][] = $address;
 					}
@@ -459,7 +459,7 @@ if (isset($_GET['action']) && Admin::getInstance()->permissions('customers', CC_
 			$customer['signinas_url'] = currentPage(array('page'), array('action' => 'signinas', 'customer_id' => $customer['customer_id']));
 			$customer['signinas_name'] = sprintf($lang['customer']['signinas'],$customer['first_name'],$customer['last_name']);
 			$customer['edit'] = currentPage(array('page'), array('action' => 'edit', 'customer_id' => $customer['customer_id']));
-			$customer['delete'] = currentPage(false, array('action' => 'delete', 'customer_id' => $customer['customer_id']));
+			$customer['delete'] = currentPage(false, array('action' => 'delete', 'customer_id' => $customer['customer_id'],'token' => SESSION_TOKEN));
 			$group_membership = $GLOBALS['db']->misc('SELECT `group_name` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_customer_membership` AS M INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_customer_group` AS G WHERE G.`group_id` = M.`group_id` AND M.`customer_id` = '.$customer['customer_id'].';');
 			if (is_array($group_membership)) {
 				foreach ($group_membership as $membership) {

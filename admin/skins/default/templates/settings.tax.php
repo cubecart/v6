@@ -16,7 +16,7 @@
          <legend>{$LANG.settings.title_tax_class_current}</legend>
          {foreach from=$TAX_CLASSES item=class}
          <div><input type="text" name="class[{$class.id}][tax_name]" value="{$class.tax_name}" class="textbox">
-            <a href="{$VAL_SELF}&delete_class={$class.id}" class="delete" title="{$LANG.settings.tax_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a> <a href="?_g=settings&node=tax&assign_class={$class.id}#taxclasses" class="delete"  title="{$LANG.notification.confirm_update}">{$LANG.settings.assign_all_products}</a>
+            <a href="{$VAL_SELF}&delete_class={$class.id}&token={$SESSION_TOKEN}" class="delete" title="{$LANG.settings.tax_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a> <a href="?_g=settings&node=tax&assign_class={$class.id}#taxclasses" class="delete"  title="{$LANG.notification.confirm_update}">{$LANG.settings.assign_all_products}</a>
          </div>
          {/foreach}
       </fieldset>
@@ -42,7 +42,7 @@
                <td align="center"><input type="hidden" name="detail[{$detail.id}][status]" id="detail_{$detail.id}" value="{$detail.status}" class="toggle"></td>
                <td><span class="editable" name="detail[{$detail.id}][name]">{$detail.name}</span></td>
                <td><span class="editable" name="detail[{$detail.id}][display]">{$detail.display}</span></td>
-               <td align="center"><a href="{$VAL_SELF}&delete_detail={$detail.id}" class="delete" title="{$LANG.settings.tax_delete}" ><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
+               <td align="center"><a href="{$VAL_SELF}&delete_detail={$detail.id}&token={$SESSION_TOKEN}" class="delete" title="{$LANG.settings.tax_delete}" ><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
             </tr>
             {/foreach}
          </tbody>
@@ -90,7 +90,7 @@
                   <td align="center"><input type="hidden" name="rule[{$rule.id}][goods]" id="goods_{$rule.id}" value="{$rule.goods}" class="toggle"></td>
                   <td align="center"><input type="hidden" name="rule[{$rule.id}][shipping]" id="shipping_{$rule.id}" value="{$rule.shipping}" class="toggle"></td>
                   <td nowrap="nowrap"><input type="text" name="rule[{$rule.id}][tax_percent]" class="textbox number" style="text-align: right;" value="{$rule.tax_percent}"> %</td>
-                  <td align="center"><a href="{$VAL_SELF}&delete_rule={$rule.id}" class="delete" title="{$LANG.notification.confirm_delete}" ><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
+                  <td align="center"><a href="{$VAL_SELF}&delete_rule={$rule.id}&token={$SESSION_TOKEN}" class="delete" title="{$LANG.notification.confirm_delete}" ><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
                </tr>
                {foreachelse}
                <tr>
@@ -155,7 +155,7 @@
       <input type="submit" id="submit" class="button" value="{$LANG.common.save}">
       <input type="hidden" value="{$FORM_HASH}">
       <input type="hidden" name="previous-tab" id="previous-tab" value="">
-      <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+      
    </div>
 </form>
 <script type="text/javascript">

@@ -596,7 +596,7 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
 	if (($templates = $GLOBALS['db']->select('CubeCart_email_template')) !== false) {
 		foreach ($templates as $template) {
 			$template['clone'] = currentPage(null, array('action' => 'clone', 'type' => 'template', 'template_id' => $template['template_id']));
-			$template['delete'] = currentPage(null, array('action' => 'delete', 'type' => 'template', 'template_id' => $template['template_id']));
+			$template['delete'] = currentPage(null, array('action' => 'delete', 'type' => 'template', 'template_id' => $template['template_id'], 'token' => SESSION_TOKEN));
 			$template['edit'] = currentPage(null, array('action' => 'edit', 'type' => 'template', 'template_id' => $template['template_id']));
 			$smarty_data['e_templates'][] = $template;
 		}

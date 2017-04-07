@@ -692,5 +692,5 @@
       <input type="submit" value="{$LANG.common.save}">
    </div>
    {/if}
-   <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+   
 </form>

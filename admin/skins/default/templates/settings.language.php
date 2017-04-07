@@ -156,5 +156,5 @@
       <input type="submit" name="export" value="{$LANG.common.export}">
    </div>
    {/if}
-   <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+   
 </form>

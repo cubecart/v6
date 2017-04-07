@@ -567,5 +567,5 @@
       {if $ADDRESS_JSON}var addresses	= {$ADDRESS_JSON};{/if}
    </script>
    {/if}
-   <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+   
 </form>

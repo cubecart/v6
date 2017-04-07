@@ -402,7 +402,7 @@ if (isset($_GET['action'])) {
 			$category['children'] = currentPage(null, array('parent' => $category['cat_id']));
 			$category['translate'] = currentPage(null, array('action' => 'translate', 'cat_id' => $category['cat_id']));
 			$category['edit']  = currentPage(null, array('action' => 'edit', 'cat_id' => $category['cat_id']));
-			$category['delete']  = currentPage(null, array('delete' => $category['cat_id']));
+			$category['delete']  = currentPage(null, array('delete' => $category['cat_id'], 'token' => SESSION_TOKEN));
 			$children = false;
 			$children = $GLOBALS['db']->count('CubeCart_category', 'cat_id', array('cat_parent_id' => $category['cat_id']));
 			$category['no_children'] = $children;

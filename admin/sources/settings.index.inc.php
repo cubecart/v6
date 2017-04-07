@@ -84,10 +84,16 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
 			}
 		}
 	}
+	$skin_data = $GLOBALS['gui']->getSkinConfig('', $_POST['config']['skin_folder']);
+
+	if(isset($skin_data->info->{'csrf'}) && (string)$skin_data->info->{'csrf'}=='true') {
+		$_POST['config']['csrf'] = '1';
+	} else {
+		$_POST['config']['csrf'] = '0';
+	}
 
 	## Disable "mobile" skin if master skin is responsive
 	if($_POST['config']['disable_mobile_skin']==0 && isset($_POST['config']['skin_folder']) && !empty($_POST['config']['skin_folder'])) {
-		$skin_data = $GLOBALS['gui']->getSkinConfig('', $_POST['config']['skin_folder']);
 		if((string)$skin_data->info->{'responsive'}=='true') {
 			$_POST['config']['disable_mobile_skin'] = '1';
 			$GLOBALS['main']->setACPWarning($lang['settings']['error_mobile_vs_responsive']);

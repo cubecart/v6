@@ -16,7 +16,7 @@
 	<div>
 	  <input type="text" name="search" class="textbox"> <input type="submit" value="{$LANG.common.search}" class="mini_button">
 	</div>
-	<input type="hidden" name="token" value="{$SESSION_TOKEN}">
+	
   </form>
   <table>
 	<thead>
