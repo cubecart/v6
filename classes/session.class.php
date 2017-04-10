@@ -118,8 +118,12 @@ class Session {
 			ini_set('session.use_only_cookies', true);
 		}
 		if (!$ini['session.cookie_httponly']) {
-			// make sure sesison cookies are http ONLY!
+			// make sure session cookies are http ONLY!
 			ini_set('session.cookie_httponly',true);
+		}
+		if (!$ini['session.cookie_secure'] && $GLOBALS['config']->get('config', 'ssl')=='1') {
+			// make sure session cookies are secure if SSL is enabled
+			ini_set('session.cookie_secure',true);
 		}
 		
 		$this->_start();
