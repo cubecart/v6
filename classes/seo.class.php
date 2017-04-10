@@ -819,6 +819,10 @@ class SEO {
 DirectoryIndex index.php index.htm index.html
 IndexIgnore *
 
+<ifModule mod_headers.c>
+  Header always append X-Frame-Options SAMEORIGIN
+</ifModule>
+
 ### Rewrite rules for SEO functionality ###
 <IfModule mod_rewrite.c>
   RewriteEngine On
