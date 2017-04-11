@@ -714,9 +714,7 @@ class GUI {
 	 */
 	public function recaptchaRequired() {
 		if($GLOBALS['config']->get('config', 'recaptcha') && !$GLOBALS['session']->get('confirmed', 'recaptcha')) {
-			// Disable on basket page
-			$version = ($_GET['_a']=='basket') ? 0 : $GLOBALS['config']->get('config', 'recaptcha');
-			$GLOBALS['smarty']->assign('RECAPTCHA', $version);
+			$GLOBALS['smarty']->assign('RECAPTCHA', $GLOBALS['config']->get('config', 'recaptcha'));
 			return true;
 		}
 		return false;
