@@ -115,8 +115,16 @@ jQuery(document).ready(function() {
                     data: {
                         username: function() {
                             return $("#newsletter_email").val();
+                        },
+                        token: function() {
+                            return $("input[name=token]").val();
                         }
-                    }
+                    },
+                    dataFilter: function(data) {
+                        var json = JSON.parse(data);
+                        $("input[name=token]").val(json.token);
+                        return json.result;
+                    },
                 }
             },
         },
@@ -143,6 +151,7 @@ jQuery(document).ready(function() {
             },
         }
     });
+
     $("#checkout_form").validate({
         rules: {
             username: {
@@ -164,8 +173,16 @@ jQuery(document).ready(function() {
                     data: {
                         username: function() {
                             return $("#user_email").val();
+                        },
+                        token: function() {
+                            return $("input[name=token]").val();
                         }
-                    }
+                    },
+                    dataFilter: function(data) {
+                        var json = JSON.parse(data);
+                        $("input[name=token]").val(json.token);
+                        return json.result;
+                    }, 
                 }
             },
             'user[phone]': {
@@ -399,8 +416,16 @@ jQuery(document).ready(function() {
                     data: {
                         username: function() {
                             return $("#email").val();
+                        },
+                        token: function() {
+                            return $("input[name=token]").val();
                         }
-                    }
+                    },
+                    dataFilter: function(data) {
+                        var json = JSON.parse(data);
+                        $("input[name=token]").val(json.token);
+                        return json.result;
+                    },
                 }
             },
             phone: {
