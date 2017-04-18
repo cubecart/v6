@@ -125,6 +125,12 @@ jQuery(document).ready(function() {
                         $("input[name=token]").val(json.token);
                         return json.result;
                     },
+                    beforeSend: function () {
+                        $("#newsletter_email").prop('disabled', true);
+                    },
+                    complete: function () {
+                        $("#newsletter_email").prop('disabled', false);
+                    }
                 }
             },
         },
@@ -182,7 +188,13 @@ jQuery(document).ready(function() {
                         var json = JSON.parse(data);
                         $("input[name=token]").val(json.token);
                         return json.result;
-                    }, 
+                    },
+                    beforeSend: function () {
+                        $("#user_email").prop('disabled', true);
+                    },
+                    complete: function () {
+                        $("#user_email").prop('disabled', false);
+                    } 
                 }
             },
             'user[phone]': {
@@ -426,6 +438,12 @@ jQuery(document).ready(function() {
                         $("input[name=token]").val(json.token);
                         return json.result;
                     },
+                    beforeSend: function () {
+                        $("#email").prop('disabled', true);
+                    },
+                    complete: function () {
+                        $("#email").prop('disabled', false);
+                    }
                 }
             },
             phone: {
