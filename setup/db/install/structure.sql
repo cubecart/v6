@@ -832,7 +832,9 @@ CREATE TABLE IF NOT EXISTS `CubeCart_system_error_log` (
 	`time` int(10) unsigned NOT NULL,
 	`message` text COLLATE utf8_unicode_ci NOT NULL,
 	`read` tinyint(1) unsigned NOT NULL,
-  PRIMARY KEY (`log_id`)
+  PRIMARY KEY (`log_id`),
+  KEY `time` (`time`),
+  KEY `read` (`read`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_tax_class` (

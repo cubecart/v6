@@ -789,7 +789,9 @@ if (isset($database_result) && $database_result) {
 			'id' => 'PRIMARY'
 		),
 		'cubecart_system_error_log' => array (
-			'log_id' => 'PRIMARY'
+			'log_id' => 'PRIMARY',
+			'time' => 'KEY',
+			'read' => 'KEY'
 		),
 		'cubecart_tax_class' => array (
 			'id' => 'PRIMARY'
