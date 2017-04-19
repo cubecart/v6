@@ -137,8 +137,6 @@ class GUI {
 				$GLOBALS['config']->set('config', 'csrf', '0');
 			}
 
-			var_dump($GLOBALS['config']->get('config', 'csrf'));
-
 			//Set smarty to the skin
 			$GLOBALS['smarty']->template_dir = CC_ROOT_DIR.'/skins/'.$this->_skin.'/';
 			$this->_template_dir = CC_ROOT_DIR.'/skins/'.$this->_skin.'/';
