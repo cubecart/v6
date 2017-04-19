@@ -240,7 +240,7 @@ span.flag.flag-DK {background-position: 0 -88px}
 span.flag.flag-PT {background-position: 0 -99px}
 .back-to-top {
 	position: fixed;
-	bottom: 3em;
+	bottom: 4em;
 	right: 0px;
 	text-decoration: none;
 	color: #000 !important;
@@ -314,6 +314,9 @@ button.paypal-button:hover, button.paypal-button:focus, .button.paypal-button:ho
 }
 svg.remove-coupon {
   color: #c60f13;  
+}
+.grecaptcha-badge {
+    z-index: 99999;
 }
 
 /* Small viewport only */
