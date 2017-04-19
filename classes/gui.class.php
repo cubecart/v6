@@ -130,6 +130,15 @@ class GUI {
 			//Setup current skin data
 			$this->_skin_data = $this->_skins[$this->_skin];
 
+			// Make sure CSRF is enabled if skin has it enabled
+			if($this->_skin_data['info']['csrf'] && $GLOBALS['config']->get('config', 'csrf')!=='1') {
+				$GLOBALS['config']->set('config', 'csrf', '1');	
+			} elseif(!$this->_skin_data['info']['csrf'] && $GLOBALS['config']->get('config', 'csrf')=='1') {
+				$GLOBALS['config']->set('config', 'csrf', '0');
+			}
+
+			var_dump($GLOBALS['config']->get('config', 'csrf'));
+
 			//Set smarty to the skin
 			$GLOBALS['smarty']->template_dir = CC_ROOT_DIR.'/skins/'.$this->_skin.'/';
 			$this->_template_dir = CC_ROOT_DIR.'/skins/'.$this->_skin.'/';
@@ -608,7 +617,8 @@ class GUI {
 						'creator'  	=> (string)$data->info->{'creator'},
 						'homepage'  => (string)$data->info->{'homepage'},
 						'mobile'  	=> ((string)$data->info->{'mobile'}=='true') ? true : false,
-						'responsive'=> ((string)$data->info->{'responsive'}=='true') ? true : false
+						'responsive'=> ((string)$data->info->{'responsive'}=='true') ? true : false,
+						'csrf'=> ((string)$data->info->{'csrf'}=='true') ? true : false
 					);
 			
 					if(is_object($data->layout)) {
