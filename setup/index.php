@@ -78,6 +78,7 @@ $domain        = parse_url(CC_STORE_URL);
 $cookie_domain = '.' . str_replace('www.', '', $domain['host']);
 
 $default_config_settings = array(
+  'csrf' => '1',
   'update_main_stock' => '',
   'tax_number' => '',
   'recaptcha_public_key' => '',
