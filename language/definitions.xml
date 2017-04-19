@@ -898,7 +898,7 @@
     <string name="tour_6_title" introduced="6.0.0"><![CDATA[Homepage Content]]></string>
     <string name="tour_6" introduced="6.0.0"><![CDATA[Update your homepage with any content you want. Here you can manage a &quot;hero carousel&quot; and add any HTML content you wish.]]></string>
     <string name="tour_end" introduced="6.0.0"><![CDATA[<p>We have only touched the tip of the iceberg but it's enough to get you selling today. Please find a video tour below which goes into a little more detail.</p><p>Have fun and best of luck with your store!</p>]]></string>
-    <string name="error_version" introduced="5.2.3"><![CDATA[WARNING: Your store appears to be using source code from %s but the database is still at %s.Please complete the upgrade by running the <a href="setup">setup</a> process.]]></string>
+    <string name="error_version" introduced="5.2.3"><![CDATA[WARNING: Your store appears to be using source code from %s but the database is still at %s. Please complete the upgrade by running the <a href="setup">setup</a> process.]]></string>
     <string name="error_global_risk" introduced="5.0.0"><![CDATA[WARNING: Your includes/global.inc.php is currently writable, you should change the file permissions to read only. On Linux or Unix systems it should be CHMOD to 0444.]]></string>
     <string name="error_mysql_root" introduced="5.0.0"><![CDATA[WARNING: You are currently connected to the database using the root account. This is not secure, and should be changed.]]></string>
     <string name="error_caching_disabled" introduced="6.0.0"><![CDATA[WARNING: Caching is disabled. Please enable it in the advanced tab of your stores <a href="?_g=settings#Advanced_Settings">settings</a>.]]></string>
