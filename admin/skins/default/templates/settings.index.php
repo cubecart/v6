@@ -121,7 +121,7 @@
       <h3>{$LANG.settings.title_layout}</h3>
       <fieldset>
          <legend>{$LANG.settings.title_display}</legend>
-          <div><label for="catalogue_products_per_page">{$LANG.settings.product_per_page} (<a href="#" onclick="$('#per_page_note').slideToggle()">Depreciated</a>)</label><span><input name="config[catalogue_products_per_page]" id="catalogue_products_per_page" class="textbox number" value="{$CONFIG.catalogue_products_per_page}"></span></div>
+          <div><label for="catalogue_products_per_page">{$LANG.settings.product_per_page} (<a href="#" onclick="$('#per_page_note').slideToggle()">Deprecated</a>)</label><span><input name="config[catalogue_products_per_page]" id="catalogue_products_per_page" class="textbox number" value="{$CONFIG.catalogue_products_per_page}"></span></div>
          <div><label for="default_product_sort">{$LANG.settings.default_product_sort}</label>
             <span>
             <select name="config[product_sort_column]" id="product_sort_column" class="textbox">

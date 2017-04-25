@@ -251,7 +251,7 @@ class Session {
 	/**
 	 * Have cookied been accepted or not
 	 *
-	 * Depreciated but left for backward compatibility
+	 * Deprecated but left for backward compatibility
 	 *
 	 * @param string $token
 	 * @return bool

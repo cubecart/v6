@@ -853,7 +853,7 @@ function rootHomePath() {
 }
 
 /**
- * Sanitize SEO allowed path (Depreciated since 6.0.7)
+ * Sanitize SEO allowed path (Deprecated since 6.0.7)
  * Use static function SEO::sanitizeSEOPath instead
  *
  * @return string
