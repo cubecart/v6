@@ -748,8 +748,15 @@ class GUI {
 						'response' => $_POST['g-recaptcha-response'],
 						'remoteip' => get_ip_address()
 					);
-					$json = file_get_contents('https://www.google.com/recaptcha/api/siteverify?'.http_build_query($g_data));
-					$g_result = json_decode($json);
+					$request = new Request('www.google.com', '/recaptcha/api/siteverify');
+					$request->setMethod('get');
+					$request->cache(false);
+					$request->setSSL();
+					$request->setData($g_data);
+
+					$response = $request->send();
+					$g_result = json_decode($response);
+					
 					if($g_result->success) {
 						$recaptcha['confirmed'] = true;
 					} else {
