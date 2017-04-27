@@ -635,7 +635,7 @@ class Session {
 	private function _start() {
 
 		$save_path = session_save_path();
-		if(!file_exists($save_path) || !is_writeable($save_path)) {	
+		if(!@is_writeable(session_save_path())) {	
 			if(is_writeable(CC_INCLUDES_DIR.'/extra')) {
 				$this->_manage_session_files = true;
 				session_save_path(CC_INCLUDES_DIR.'/extra');
