@@ -57,8 +57,14 @@ class Sanitize {
 		}
 
 		if (!empty($_POST)) {
+			$csrf_exception = false;
+			// Exception for payment gateways
+			if(!isset($_GET['_a']) && isset($_GET['_g'], $_GET['type'], $_GET['cmd'], $_GET['module']) && in_array($_GET['_g'], array('remote','rm')) && $_GET['type']=='gateway' && in_array($_GET['cmd'], array('call', 'process')) && !empty($_GET['module'])) {
+				$csrf_exception = true;
+			}
+
 			//Validate the POST token
-			if (!isset($_POST['token']) || !$GLOBALS['session']->checkToken($_POST['token'])) {
+			if (!$csrf_exception && (!isset($_POST['token']) || !$GLOBALS['session']->checkToken($_POST['token']))) {
 				//Make a new token just to insure that it doesn't get used again
 				$GLOBALS['session']->getToken(true);
 				self::_stopToken();
