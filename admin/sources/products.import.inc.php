@@ -108,9 +108,9 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 						
 						$image_splits = explode(',',$value);
 					
-							foreach($image_splits as $value) {
+						foreach($image_splits as $value) {
 							
-								$image_name = basename($value);
+							$image_name = basename(trim($value));
 							$image_path = preg_replace('/^[.\/]/', '', dirname($value)); // lose first slash to match DB storage but add end slash
 							if(!empty($image_path)) {
 								$image_path .= '/';
@@ -177,6 +177,7 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 						$cats = explode(',',$product_record['cat_id']);
 						$primary = 1;
 						foreach($cats as $cat) {
+							$cat = trim($cat);
 							if(!is_numeric($cat)) {
 								$existing_cat = $GLOBALS['db']->select('CubeCart_category', array('cat_id'), array('cat_name' => $cat));
 								if($existing_cat && $existing_cat[0]['cat_id']>0) {
