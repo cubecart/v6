@@ -64,6 +64,7 @@ class Sanitize {
 			}
 
 			//Validate the POST token
+			var_dump($csrf_exception); exit;
 			if (!$csrf_exception && (!isset($_POST['token']) || !$GLOBALS['session']->checkToken($_POST['token']))) {
 				//Make a new token just to insure that it doesn't get used again
 				$GLOBALS['session']->getToken(true);
