@@ -294,7 +294,20 @@ $where .= ' OR ';
 $where .= '((I.stock_warning > 0 AND I.stock_level <= I.stock_warning) OR (I.stock_warning <= 0 AND I.stock_level <= '.(int)$GLOBALS['config']->get('config', 'stock_warn_level').'))';
 $where .= ')';
 
-$order_by = 'I.stock_level ASC';
+// Stock Warnings Sort
+if (!isset($_GET['sort']) || !is_array($_GET['sort'])) {
+	$_GET['sort'] = array('stock_level' => 'DESC');
+}
+$current_page = currentPage(array('sort'));
+$thead_sort = array (
+	'stock_level' => $GLOBALS['db']->column_sort('stock_level', $lang['dashboard']['stock_level'], 'sort', $current_page, $_GET['sort'], 'stock_warnings'),
+	'name' => $GLOBALS['db']->column_sort('name', $lang['catalogue']['product_name'], 'sort', $current_page, $_GET['sort'], 'stock_warnings'),
+	'product_code' => $GLOBALS['db']->column_sort('product_code', $lang['catalogue']['product_code'], 'sort', $current_page, $_GET['sort'], 'stock_warnings'),
+);
+
+$GLOBALS['smarty']->assign('THEAD_STOCK', $thead_sort);
+$key = array_keys($_GET['sort']);
+$order_by = 'I.`'.$key[0].'` '.$_GET['sort'][$key[0]];
 
 $result_limit = 20;
 

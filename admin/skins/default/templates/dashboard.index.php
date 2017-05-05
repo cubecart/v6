@@ -268,9 +268,9 @@
    <table width="70%">
       <thead>
          <tr>
-            <th>{$LANG.catalogue.product_name}</th>
-            <th>{$LANG.catalogue.product_code}</th>
-            <th width="65" nowrap="nowrap">{$LANG.dashboard.stock_level}</th>
+            <th>{$THEAD_STOCK.name}</th>
+            <th>{$THEAD_STOCK.product_code}</th>
+            <th width="85" nowrap="nowrap">{$THEAD_STOCK.stock_level}</th>
             <th width="10">&nbsp;</th>
          </tr>
       </thead>
