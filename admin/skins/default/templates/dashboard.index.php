@@ -269,6 +269,7 @@
       <thead>
          <tr>
             <th>{$LANG.catalogue.product_name}</th>
+            <th>{$LANG.catalogue.product_code}</th>
             <th width="65" nowrap="nowrap">{$LANG.dashboard.stock_level}</th>
             <th width="10">&nbsp;</th>
          </tr>
@@ -277,6 +278,7 @@
          {foreach from=$STOCK item=warn}
          <tr>
             <td><a href="?_g=products&action=edit&product_id={$warn.product_id}{if $warn.M_use_stock==1}#Options{/if}">{$warn.name}</a></td>
+            <td>{$warn.product_code}</td>
             <td align="center"  width="65" nowrap="nowrap">{if $warn.M_use_stock==1}{$warn.M_stock_level}{else}{$warn.I_stock_level}{/if}{if $warn.cached_name}
                - {$warn.cached_name}
                {/if}
