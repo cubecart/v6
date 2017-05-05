@@ -212,8 +212,32 @@ $GLOBALS['smarty']->assign('CHART', $chart_data);
 ## Pending Orders Tab
 $page  = (isset($_GET['orders'])) ? $_GET['orders'] : 1;
 $unsettled_count  = $GLOBALS['db']->count('CubeCart_order_summary', 'cart_order_id', array('status' => array(1, 2)));
+
+// Pending Orders Sort
+$order_by = '';
+if (!isset($_GET['sort']) || !is_array($_GET['sort'])) {
+	$_GET['sort'] = array('order_date' => 'ASC');
+}
+$key = array_keys($_GET['sort'])[0];
+$sort = ($_GET['sort'][$key] === 'ASC' ? 'ASC' : 'DESC'); // only allow ASC or DESC sort values
+if (!in_array($key, array('cart_order_id','first_name','status','order_date','total'))) {
+	$order_by = '`dashboard` DESC, `status` DESC, `order_date` ASC';
+}
+
+$current_page = currentPage(array('sort'));
+$thead_sort = array (
+	'cart_order_id' => $GLOBALS['db']->column_sort('cart_order_id', $lang['orders']['order_number'] , 'sort', $current_page, $_GET['sort'], 'orders'),
+	'first_name' => $GLOBALS['db']->column_sort('first_name', $lang['common']['name'], 'sort', $current_page, $_GET['sort'], 'orders'),
+	'status' => $GLOBALS['db']->column_sort('status', $lang['common']['status'], 'sort', $current_page, $_GET['sort'], 'orders'),
+	'order_date' => $GLOBALS['db']->column_sort('order_date', $lang['common']['date'], 'sort', $current_page, $_GET['sort'], 'orders'),
+	'total' => $GLOBALS['db']->column_sort('total', $lang['basket']['total'], 'sort', $current_page, $_GET['sort'], 'orders'),
+);
+
+$GLOBALS['smarty']->assign('THEAD_ORDERS', $thead_sort);
+$order_by = (empty($order_by) ? '`dashboard` DESC, `'.$key.'` '.$sort : $order_by);
+
 $results_per_page = 25;
-$unsettled_orders = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id', 'name', 'first_name', 'last_name', 'order_date', 'customer_id', 'total', 'status'), 'status IN (1,2) OR `dashboard` = 1', '`dashboard` DESC, `status` DESC,`order_date` ASC', $results_per_page, $page);
+$unsettled_orders = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id', 'name', 'first_name', 'last_name', 'order_date', 'customer_id', 'total', 'status'), 'status IN (1,2) OR `dashboard` = 1', $order_by, $results_per_page, $page);
 
 if ($unsettled_orders) {
 	$tax = Tax::getInstance();
@@ -298,6 +322,13 @@ $where .= ')';
 if (!isset($_GET['sort']) || !is_array($_GET['sort'])) {
 	$_GET['sort'] = array('stock_level' => 'DESC');
 }
+$key = array_keys($_GET['sort'])[0];
+$sort = ($_GET['sort'][$key] === 'ASC' ? 'ASC' : 'DESC'); // only allow ASC or DESC sort values
+if (!in_array($key, array('name','stock_level','product_code'))) {
+	$key = 'stock_level';
+	$sort = 'DESC';
+}
+
 $current_page = currentPage(array('sort'));
 $thead_sort = array (
 	'stock_level' => $GLOBALS['db']->column_sort('stock_level', $lang['dashboard']['stock_level'], 'sort', $current_page, $_GET['sort'], 'stock_warnings'),
@@ -306,8 +337,7 @@ $thead_sort = array (
 );
 
 $GLOBALS['smarty']->assign('THEAD_STOCK', $thead_sort);
-$key = array_keys($_GET['sort']);
-$order_by = 'I.`'.$key[0].'` '.$_GET['sort'][$key[0]];
+$order_by = 'I.`'.$key.'` '.$sort;
 
 $result_limit = 20;
 

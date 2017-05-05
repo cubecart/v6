@@ -130,12 +130,12 @@
          <thead>
             <tr>
                <td>&nbsp;</td>
-               <td>{$LANG.orders.order_number}</td>
+               <td>{$THEAD_ORDERS.cart_order_id}</td>
                <td>&nbsp;</td>
-               <td>{$LANG.common.name}</td>
-               <td nowrap="nowrap">{$LANG.common.status}</td>
-               <td>{$LANG.common.date}</td>
-               <td>{$LANG.basket.total}</td>
+               <td>{$THEAD_ORDERS.first_name}</td>
+               <td nowrap="nowrap">{$THEAD_ORDERS.status}</td>
+               <td>{$THEAD_ORDERS.order_date}</td>
+               <td>{$THEAD_ORDERS.total}</td>
                <td width="70">&nbsp;</td>
             </tr>
          </thead>
