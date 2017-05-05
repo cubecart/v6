@@ -1,6 +1,6 @@
 # Contributing
 
-First of all THANK YOU! All contributions be it bug fix, reporting an issue or features request; we greatly appreciate your time and for helping to make CubeCart even better. 
+First of all THANK YOU! All contributions be it bug fix, reporting an issue or features request; we greatly appreciate your time which helps make CubeCart even better. 
 
 ## Feature Requests
 Please note that we close ALL new feature requests. This doesn't mean we won't implement them but it means they may well be opened at a later date and assigned to a miletone.
