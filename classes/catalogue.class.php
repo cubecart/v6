@@ -113,7 +113,12 @@ class Catalogue {
 		if ($this->_category_count) {
 			//Pagination
 			$catalogue_products_per_page = $GLOBALS['gui']->itemsPerPage('products', 'perpage');
-			
+			if (($page * $catalogue_products_per_page) > $this->_category_count) {
+				$new_page = (int)ceil($this->_category_count / $catalogue_products_per_page);
+				if ($new_page < $page) {
+					httpredir(currentPage(null, array('page'=>$new_page)));
+				}
+			}
 			if (($pages = $GLOBALS['db']->pagination($this->_category_count, $catalogue_products_per_page, $page)) !== false) {
 				// Display pagination
 				$GLOBALS['smarty']->assign('PAGINATION', $pages);
