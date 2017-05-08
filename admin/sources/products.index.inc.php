@@ -59,11 +59,6 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 		unset($record['product_code_auto']);
 	}
 
-	foreach ($record as $key => $value) {
-		if (!in_array($key, array('name', 'seo_meta_title', 'seo_meta_description', 'seo_meta_keywords'))) continue;
-		$record[$key] = html_entity_decode($value);
-	}
-
 	//Need to remove these in some cases to stop SQL errors
 	$records = array('product_id', 'product_weight', 'stock_level', 'stock_warning');
 	foreach ($records as $r) {
@@ -1052,10 +1047,6 @@ if (isset($_GET['action'])) {
 
 		// Set status to 1 if not set
 		$result[0]['status'] = !isset($result[0]['status']) ? 1 : $result[0]['status'];
-		foreach ($result[0] as $key => $value) {
-			if (!in_array($key, array('seo_meta_title', 'seo_meta_description', 'seo_meta_keywords'))) continue;
-			$result[0][$key] = htmlentities($value, ENT_COMPAT, 'UTF-8');
-		}
 		$result[0]['auto_code_checked'] = (empty($result[0]['product_code'])) ? 'checked="checked"' : '';
 		$result[0]['seo_path'] = isset($result[0]['product_id']) ? $GLOBALS['seo']->getdbPath('prod', $result[0]['product_id']) : '';
 
