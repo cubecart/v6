@@ -37,6 +37,21 @@ if (isset($_POST['notes']['dashboard_notes'])) {
 	httpredir(currentPage());
 }
 
+## Delete admin folder if it exists and shouldn't
+if($glob['adminFolder']!=='admin' && file_exists(CC_ROOT_DIR.'/admin')) {
+	recursiveDelete(CC_ROOT_DIR.'/admin');
+	if(file_exists(CC_ROOT_DIR.'/admin')) {
+		$GLOBALS['main']->setACPWarning($lang['dashboard']['delete_admin_folder']);	
+	}
+}
+## Delete admin file if it exists and shouldn't
+if($glob['adminFile']!=='admin.php' && file_exists(CC_ROOT_DIR.'/admin.php')) {
+	unlink(CC_ROOT_DIR.'/admin.php');
+	if(file_exists(CC_ROOT_DIR.'/admin.php')) {
+		$GLOBALS['main']->setACPWarning($lang['dashboard']['delete_admin_file']);	
+	}
+}
+
 ## Check if setup folder remains after install/upgrade
 if ($glob['installed'] && file_exists(CC_ROOT_DIR.'/setup')) {
 	## Attempt auto delete as we have just upgraded or installed
