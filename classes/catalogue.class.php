@@ -1821,7 +1821,7 @@ class Catalogue {
 						}
 
 						$noKeys = count($searchArray);
-						$regexp = '';
+						$regexp = $regexp_desc = '';
 						
 						$search_mode = in_array($search_mode, array('rlike','like')) ? $search_mode : 'rlike';
 
@@ -1838,12 +1838,14 @@ class Catalogue {
 							$ucSearchTerm = strtoupper($searchArray[$i]);
 							if (($ucSearchTerm != 'AND') && ($ucSearchTerm != 'OR')) {
 								$regexp .= $like_prefix.$searchArray[$i].$like_postfix;
+								$regexp_desc .= $like_prefix.htmlentities(html_entity_decode($searchArray[$i],ENT_COMPAT,'UTF-8'),ENT_QUOTES,'UTF-8',false).$like_postfix;
 							}
 						}
 						if($search_mode == 'rlike') {
 							$regexp = substr($regexp, 0, strlen($regexp)-2);
+							$regexp_desc = substr($regexp_desc, 0, strlen($regexp_desc)-2);
 						}
-						$like = " AND (I.name ".$like_keyword." '".$regexp."' OR I.description ".$like_keyword." '".$regexp."' OR I.product_code ".$like_keyword." '".$regexp."')";
+						$like = " AND (I.name ".$like_keyword." '".$regexp."' OR I.description ".$like_keyword." '".$regexp_desc."' OR I.product_code ".$like_keyword." '".$regexp."')";
 					}
 
 					$q2 = "SELECT I.* FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_category_index` as CI INNER JOIN ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 ".$whereString.$like;
