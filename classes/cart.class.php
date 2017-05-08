@@ -721,6 +721,7 @@ class Cart {
 										$assign_id = 0;
 									}
 									$value = $GLOBALS['catalogue']->getOptionData((int)$option_id, $assign_id);
+									foreach ($GLOBALS['hooks']->load('class.cart.get.product_option_prices') as $hook) include $hook;
 									if ($value) {
 										Cart::updateProductDataWithOption($product, $value);
 										$value['value_name'] = $option_value;
@@ -730,6 +731,7 @@ class Cart {
 							} else if (is_numeric($option_data)) {
 								// Select option
 								$value = $GLOBALS['catalogue']->getOptionData((int)$option_id, (int)$option_data);
+								foreach ($GLOBALS['hooks']->load('class.cart.get.product_option_prices') as $hook) include $hook;
 								if ($value) {
 									Cart::updateProductDataWithOption($product, $value);
 									$product['options'][] = $value;

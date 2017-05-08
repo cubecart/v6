@@ -116,6 +116,7 @@
  <hook trigger="class.cart.discount_add" deprecated="" />
  <hook trigger="class.cart.get" deprecated="" />
  <hook trigger="class.cart.get.product_prices" deprecated="" />
+ <hook trigger="class.cart.get.product_option_prices" deprecated="" />
  <hook trigger="class.cart.load_shipping" deprecated="" />
  <hook trigger="class.cart.update" deprecated="" />
  <hook trigger="class.catalogue.category_product_list" deprecated="" />

@@ -655,6 +655,7 @@ class Order {
 			foreach ($options as $option_id => $assign_id) {
 				if (!is_array($assign_id)) {
 					if (($value = $GLOBALS['catalogue']->getOptionData((int)$option_id, (int)$assign_id)) !== false) {
+						foreach ($GLOBALS['hooks']->load('class.cart.get.product_option_prices') as $hook) include $hook;
 						$value['price_display'] = '';
 						if (isset($value['option_price']) && $value['option_price']>0) { // record option price but not zero
 							if ($value['option_negative']) {
@@ -677,6 +678,7 @@ class Order {
 						}
 						
 						if (($value = $GLOBALS['catalogue']->getOptionData((int)$option_id, $assign_id)) !== false) {
+							foreach ($GLOBALS['hooks']->load('class.cart.get.product_option_prices') as $hook) include $hook;
 							$value['price_display'] = '';
 							if (isset($value['option_price']) && $value['option_price']>0) { // record option price but not zero
 								if ($value['option_negative']) {
