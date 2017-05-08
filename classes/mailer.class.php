@@ -36,7 +36,7 @@ class Mailer extends PHPMailer {
 	public function __construct() {
 		// Configure PHPMailer variables
 		$this->From   = $GLOBALS['config']->get('config', 'email_address');
-		$this->FromName  = $GLOBALS['config']->get('config', 'email_name');
+		$this->FromName  = html_entity_decode($GLOBALS['config']->get('config', 'email_name'),ENT_QUOTES);
 		$this->CharSet   = 'UTF-8';
 
 		switch ($GLOBALS['config']->get('config', 'email_method')) {
