@@ -382,6 +382,7 @@ class User {
 			} else {
 				$data['registered']  = time();
 				$data['type']    = $type;
+				$data['language']    = $GLOBALS['language']->current();
 
 				$customer_id = $this->_validCustomerId();
 				if($customer_id) {
@@ -781,6 +782,8 @@ class User {
 			foreach($_POST as $key => $value) {
 				$_POST[$key] = filter_var($value, FILTER_SANITIZE_STRING);
 			}
+
+			$_POST['language'] = $GLOBALS['language']->current();
 			
 			if ($existing[0]['type']==2) {
 				$_POST['type'] = 1;
