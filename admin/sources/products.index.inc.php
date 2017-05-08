@@ -1053,7 +1053,7 @@ if (isset($_GET['action'])) {
 		// Set status to 1 if not set
 		$result[0]['status'] = !isset($result[0]['status']) ? 1 : $result[0]['status'];
 		foreach ($result[0] as $key => $value) {
-			if (!in_array($key, array('name', 'seo_meta_title', 'seo_meta_description', 'seo_meta_keywords'))) continue;
+			if (!in_array($key, array('seo_meta_title', 'seo_meta_description', 'seo_meta_keywords'))) continue;
 			$result[0][$key] = htmlentities($value, ENT_COMPAT, 'UTF-8');
 		}
 		$result[0]['auto_code_checked'] = (empty($result[0]['product_code'])) ? 'checked="checked"' : '';
