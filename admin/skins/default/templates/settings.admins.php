@@ -64,7 +64,7 @@
 	  <tbody>
 	  {foreach from=$SECTIONS item=section}
 		<tr>
-		  <td><dl><dt>{$section.name}</dt><dd>{$section.info}</dd></dl></td>
+		  <td><strong>{$section.name}</strong> - {$section.info}</td>
 		  <td align="center"><input type="checkbox" class="read" name="permission[{$section.id}][]" value="1" {$section.read}></td>
 		  <td align="center"><input type="checkbox" class="edit" name="permission[{$section.id}][]" value="2" {$section.edit}></td>
 		  <td align="center"><input type="checkbox" class="delete" name="permission[{$section.id}][]" value="4" {$section.delete}></td>
