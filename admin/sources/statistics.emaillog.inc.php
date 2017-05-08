@@ -11,6 +11,7 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  */
 if (!defined('CC_INI_SET')) die('Access Denied');
+Admin::getInstance()->permissions('statistics', CC_PERM_READ, true);
 
 if(isset($_GET['resend']) && $_GET['resend']>0) {
 	$email_data = $GLOBALS['db']->select('CubeCart_email_log', false, array('id' => (int)$_GET['resend']));
