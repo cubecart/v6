@@ -130,12 +130,12 @@
          <thead>
             <tr>
                <td>&nbsp;</td>
-               <td>{$LANG.orders.order_number}</td>
+               <td>{$THEAD_ORDERS.cart_order_id}</td>
                <td>&nbsp;</td>
-               <td>{$LANG.common.name}</td>
-               <td nowrap="nowrap">{$LANG.common.status}</td>
-               <td>{$LANG.common.date}</td>
-               <td>{$LANG.basket.total}</td>
+               <td>{$THEAD_ORDERS.first_name}</td>
+               <td nowrap="nowrap">{$THEAD_ORDERS.status}</td>
+               <td>{$THEAD_ORDERS.order_date}</td>
+               <td>{$THEAD_ORDERS.total}</td>
                <td width="70">&nbsp;</td>
             </tr>
          </thead>
@@ -268,8 +268,9 @@
    <table width="70%">
       <thead>
          <tr>
-            <th>{$LANG.catalogue.product_name}</th>
-            <th width="65" nowrap="nowrap">{$LANG.dashboard.stock_level}</th>
+            <th>{$THEAD_STOCK.name}</th>
+            <th>{$THEAD_STOCK.product_code}</th>
+            <th width="85" nowrap="nowrap">{$THEAD_STOCK.stock_level}</th>
             <th width="10">&nbsp;</th>
          </tr>
       </thead>
@@ -277,6 +278,7 @@
          {foreach from=$STOCK item=warn}
          <tr>
             <td><a href="?_g=products&action=edit&product_id={$warn.product_id}{if $warn.M_use_stock==1}#Options{/if}">{$warn.name}</a></td>
+            <td>{$warn.product_code}</td>
             <td align="center"  width="65" nowrap="nowrap">{if $warn.M_use_stock==1}{$warn.M_stock_level}{else}{$warn.I_stock_level}{/if}{if $warn.cached_name}
                - {$warn.cached_name}
                {/if}
