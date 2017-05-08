@@ -712,7 +712,7 @@ if (isset($_GET['action'])) {
 		'total'   => $GLOBALS['db']->column_sort('total', $lang['basket']['total'], 'sort', $current_page, $_GET['sort'])
 	);
 
-	foreach ($GLOBALS['hooks']->load('admin.product.table_head_sort') as $hook) include $hook;
+	foreach ($GLOBALS['hooks']->load('admin.order.index.table_head_sort') as $hook) include $hook;
 
 	$GLOBALS['smarty']->assign('THEAD', $thead_sort);
 	// Sort has to be a string in this instance as column 'customer' doesn't exist!!
