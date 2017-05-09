@@ -275,7 +275,7 @@ class Cart {
 
 						// Check required options have a value!
 						$quantity = (is_numeric($quantity) && $quantity > 0) ? $quantity : 1;
-						$stock_level = $GLOBALS['catalogue']->getProductStock($product['product_id'], $options_identifier_string);
+						$stock_level = $GLOBALS['catalogue']->getProductStock($product['product_id'], $options_identifier_string, false, $this->basket['contents'], $quantity);
 
 						// Check stock level
 						if ($product['use_stock_level'] && !$GLOBALS['config']->get('config', 'basket_out_of_stock_purchase')) {

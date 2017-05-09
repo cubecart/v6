@@ -1292,7 +1292,7 @@ class Catalogue {
 	 * @param bool $return_max
 	 * @return array/false
 	 */
-	public function getProductStock($product_id = null, $options_identifier_string = null, $return_max = false) {
+	public function getProductStock($product_id = null, $options_identifier_string = null, $return_max = false, $check_existing = false, $quantity = false) {
 		// Choose option combination specific stock
 		if (is_numeric($product_id) && (!empty($options_identifier_string) || $return_max == true)) {
 
@@ -1315,6 +1315,18 @@ class Catalogue {
 
 		// Fall back to traditional stock check if there are no results for the combination or it is not used
 		if (is_numeric($product_id) && ($products = $GLOBALS['db']->select('CubeCart_inventory', array('stock_level'), array('product_id' => (int)$product_id), false, 1)) !== false) {
+			
+			// Check this product id isn't already in the cart with different options identifier
+			if($check_existing) {
+				if(is_array($check_existing)) {
+					foreach($check_existing as $key => $value) {
+						if($value['id'] == $product_id) {
+							$products[0]['stock_level'] -= 	$quantity;
+						}
+					}
+				}
+			}
+
 			return $products[0]['stock_level'];
 		}
 
