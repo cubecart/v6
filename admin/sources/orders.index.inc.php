@@ -128,7 +128,7 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
 			$GLOBALS['db']->update('CubeCart_order_tax', array('amount' => $amount), array('cart_order_id' => $order_id, 'id' => (int)$tax_id));
 		}
 	}
-	#// Order Summary data
+	// Order Summary data
 	$record = array(
 		'cart_order_id' => $order_id,
 		'dashboard'  => (isset($_POST['dashboard'])) ? (int)$_POST['dashboard'] : false,
@@ -171,6 +171,11 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
 		// Update order status, if set
 		$order->orderStatus($_POST['order']['status'], $order_id, true);
 	} else {
+
+		if($_POST['order']['status']==3 && empty($_POST['summary']['ship_date'])) {
+			$record['ship_date'] = date('Y-m-d');
+		}
+
 		// Update/create summary
 		$update_status = $GLOBALS['db']->update('CubeCart_order_summary', $record, array('cart_order_id' => $order_id), true, array('phone', 'mobile'));
 		// Update order status, if set
