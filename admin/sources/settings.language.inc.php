@@ -123,7 +123,7 @@ if (isset($_GET['export'])) {
 		foreach (glob('modules/*/*/language/module.definitions.xml') as $path) {
 			$GLOBALS['language']->cloneModuleLanguage($path, $_GET['language']);
 			$modules[] = array(
-				'path' => urlencode($path),
+				'path' => $path,
 				'name' => $GLOBALS['language']->getFriendlyModulePath($path),
 				'selected' => (isset($_REQUEST['type']) && $path == $_REQUEST['type']) ? 'selected="selected"' : '',
 			);
