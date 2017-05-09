@@ -1418,8 +1418,8 @@ class Cubecart {
 						$mailer->AddAddress($_POST['contact']['email'], strip_tags($_POST['contact']['name']));
 					}
 					$mailer->addReplyTo($_POST['contact']['email'], strip_tags($_POST['contact']['name']));
-					$mailer->Subject = strip_tags($_POST['contact']['subject']);
-					$mailer->Body  = sprintf($GLOBALS['language']->contact['email_content'], $_POST['contact']['name'], $_POST['contact']['email'], $department, strip_tags($_POST['contact']['enquiry']));
+					$mailer->Subject = html_entity_decode(strip_tags($_POST['contact']['subject']),ENT_QUOTES);
+					$mailer->Body  = sprintf($GLOBALS['language']->contact['email_content'], $_POST['contact']['name'], $_POST['contact']['email'], $department, html_entity_decode(strip_tags($_POST['contact']['enquiry']),ENT_QUOTES));
 					foreach ($GLOBALS['hooks']->load('class.cubecart.contact.mailer') as $hook) include $hook;
 					// Send
 					if ($mailer->Send()) {
