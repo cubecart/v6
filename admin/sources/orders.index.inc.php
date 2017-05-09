@@ -617,6 +617,11 @@ if (isset($_GET['action'])) {
 		foreach ($_POST['multi-order'] as $order_id) {
 			// If multi action variable is numeric we need to update the order status
 			if (!empty($_POST['multi-status'])) {
+				// Update disptach date
+				if((int)$_POST['multi-status']==3) {
+					$GLOBALS['db']->update('CubeCart_order_summary', array('ship_date' => date('Y-m-d')), array('cart_order_id' => $order_id));
+				}
+
 				if ($order->orderStatus((int)$_POST['multi-status'], $order_id)) {
 					$updated = true;
 				}
