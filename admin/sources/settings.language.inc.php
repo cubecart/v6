@@ -124,7 +124,7 @@ if (isset($_GET['export'])) {
 			$GLOBALS['language']->cloneModuleLanguage($path, $_GET['language']);
 			$modules[] = array(
 				'path' => $path,
-				'name' => $GLOBALS['language']->getFriendlyModulePath($path),
+				'name' => str_replace('_', ' ', $GLOBALS['language']->getFriendlyModulePath($path)),
 				'selected' => (isset($_REQUEST['type']) && $path == $_REQUEST['type']) ? 'selected="selected"' : '',
 			);
 		}
