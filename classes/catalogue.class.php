@@ -532,7 +532,7 @@ class Catalogue {
 							
 							$decimal_price_sign = $option[0]['option_negative'] ? '-' : '';
 							
-							$option_list[] = array(
+							$option_list[$option[0]['option_id']] = array(
 								'type'   => $option[0]['option_type'],
 								'option_id'  => $option[0]['option_id'],
 								'assign_id'  => $option[0]['assign_id'],
