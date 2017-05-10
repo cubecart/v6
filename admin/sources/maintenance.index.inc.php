@@ -21,7 +21,7 @@ foreach (glob($image_path.'*') as $filename) {
     if(is_file($filename)) {
 
     	$base_name = basename($filename);
-    	$folder_name = strtolower(substr($base_name,0,1));
+    	$folder_name = strtoupper(substr($base_name,0,1));
     	$folder_path = $image_path.$folder_name;
 
     	if(!file_exists($folder_path)) {
@@ -36,7 +36,7 @@ foreach (glob($image_path.'*') as $filename) {
 
 $files = $GLOBALS['db']->select('CubeCart_filemanager', '*');
 foreach($files as $file) {
-	$folder = strtolower(substr($file['filename'], 0, 1));
+	$folder = strtoupper(substr($file['filename'], 0, 1));
 	$GLOBALS['db']->update('CubeCart_filemanager', array('filepath' => $folder.'/'), array('file_id' => $file['file_id'], 'filepath' => null));
 }
 */
