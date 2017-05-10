@@ -136,7 +136,7 @@
             </select>
          </div>
          {foreach from=$SETS item=set}
-         <fieldset class="field_select_target" id="set_{$set.set_id}" rel="add_options">
+         <fieldset class="field_select_target" style="display:none" id="set_{$set.set_id}" rel="add_options">
             <legend>{$set.set_name} <a href="{$set.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></legend>
                {foreach from=$set.members key=set_id item=members}
                {foreach from=$members item=member}
