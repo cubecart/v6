@@ -218,7 +218,7 @@
    {if $page!=='all' && ($page < $total)}
    {$params[$var_name] = $page + 1}
    <a href="{$current}{http_build_query($params)}{$anchor}" data-next-page="{$params[$var_name]}" data-cat="{$category.cat_id}" class="button tiny expand ccScroll-next">{$LANG.common.more} <svg class="icon"><use xlink:href="#icon-angle-down"></use></svg></a>
-   </div>
    {/if}
+   </div>
 </div>
 <div class="hide" id="lang_loading">{$LANG.common.loading}</div>
