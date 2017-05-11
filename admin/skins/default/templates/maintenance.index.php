@@ -42,7 +42,7 @@
 		<input type="hidden" name="previous-tab" id="previous-tab" value="rebuild">
 		<input type="submit" name="rebuild" value="{$LANG.common.submit}">
 	</div>
-	<input type="hidden" name="token" value="{$SESSION_TOKEN}">
+	
   </form>
 </div>
 <div id="backup" class="tab_content">
@@ -61,7 +61,7 @@
 	</fieldset>
 	<div>
 		<input type="submit" name="backup" class="delete" title="{$LANG.notification.confirm_continue}" value="{$LANG.maintain.tab_backup}">
-		<input type="hidden" name="token" value="{$SESSION_TOKEN}">
+		
 	</div>
   </form>
   <br>
@@ -94,7 +94,7 @@
 		<input type="hidden" name="previous-tab" id="previous-tab" value="backup">
 		<input type="submit" name="backup" value="{$LANG.maintain.tab_backup}">
 	</div>
-	<input type="hidden" name="token" value="{$SESSION_TOKEN}">
+	
   </form>
   <br>
   <h3>{$LANG.maintain.title_existing_backups}</h3>
@@ -137,7 +137,7 @@
   <form action="?_g=maintenance&upgrade={$LATEST_VERSION}#upgrade" method="post">
     <div>
 		<input type="submit" name="backup" class="submit_confirm" title="{$LANG.notification.confirm_continue}" value="{$UPGRADE_NOW}">
-		<input type="hidden" name="token" value="{$SESSION_TOKEN}">
+		
 		<input type="hidden" name="force" value="{$FORCE}">
 	</div>
   </form>
@@ -253,6 +253,6 @@
   	<input type="hidden" name="previous-tab" id="previous-tab" value="database">
   	<input type="submit" name="database" value="{$LANG.common.submit}">
   </div>
-  <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+  
   </form>
 </div>

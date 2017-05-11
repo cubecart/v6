@@ -36,12 +36,13 @@ class Mailer extends PHPMailer {
 	public function __construct() {
 		// Configure PHPMailer variables
 		$this->From   = $GLOBALS['config']->get('config', 'email_address');
-		$this->FromName  = $GLOBALS['config']->get('config', 'email_name');
+		$this->FromName  = html_entity_decode($GLOBALS['config']->get('config', 'email_name'),ENT_QUOTES);
 		$this->CharSet   = 'UTF-8';
 
 		switch ($GLOBALS['config']->get('config', 'email_method')) {
 		case 'smtp':
 		case 'smtp_ssl':
+		case 'smtp_tls':
 			$this->IsSMTP(true);
 			$this->Host = $GLOBALS['config']->get('config', 'email_smtp_host');
 			$this->Port = $GLOBALS['config']->get('config', 'email_smtp_port');
@@ -147,6 +148,7 @@ class Mailer extends PHPMailer {
 	 * @return bool
 	 */
 	public function sendEmail($email = false, $contents = false, $template_id = false) {
+		foreach ($GLOBALS['hooks']->load('class.mailer.send') as $hook) include $hook;
 		$this->ClearAddresses();
 		if (strstr($email, ',')) {
 			$emails = explode(',', $email);

@@ -115,7 +115,21 @@ jQuery(document).ready(function() {
                     data: {
                         username: function() {
                             return $("#newsletter_email").val();
+                        },
+                        token: function() {
+                            return $("input[name=token]").val();
                         }
+                    },
+                    dataFilter: function(data) {
+                        var json = JSON.parse(data);
+                        $("input[name=token]").val(json.token);
+                        return json.result;
+                    },
+                    beforeSend: function () {
+                        $("#newsletter_email").prop('disabled', true);
+                    },
+                    complete: function () {
+                        $("#newsletter_email").prop('disabled', false);
                     }
                 }
             },
@@ -143,6 +157,7 @@ jQuery(document).ready(function() {
             },
         }
     });
+
     $("#checkout_form").validate({
         rules: {
             username: {
@@ -164,8 +179,22 @@ jQuery(document).ready(function() {
                     data: {
                         username: function() {
                             return $("#user_email").val();
+                        },
+                        token: function() {
+                            return $("input[name=token]").val();
                         }
-                    }
+                    },
+                    dataFilter: function(data) {
+                        var json = JSON.parse(data);
+                        $("input[name=token]").val(json.token);
+                        return json.result;
+                    },
+                    beforeSend: function () {
+                        $("#user_email").prop('disabled', true);
+                    },
+                    complete: function () {
+                        $("#user_email").prop('disabled', false);
+                    } 
                 }
             },
             'user[phone]': {
@@ -399,7 +428,21 @@ jQuery(document).ready(function() {
                     data: {
                         username: function() {
                             return $("#email").val();
+                        },
+                        token: function() {
+                            return $("input[name=token]").val();
                         }
+                    },
+                    dataFilter: function(data) {
+                        var json = JSON.parse(data);
+                        $("input[name=token]").val(json.token);
+                        return json.result;
+                    },
+                    beforeSend: function () {
+                        $("#email").prop('disabled', true);
+                    },
+                    complete: function () {
+                        $("#email").prop('disabled', false);
                     }
                 }
             },

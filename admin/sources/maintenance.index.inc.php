@@ -15,6 +15,32 @@ Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT, true);
 
 global $lang;
 
+/* Code to break out images from one massive folder into seperate ones
+$image_path = 'images/source/';
+foreach (glob($image_path.'*') as $filename) {
+    if(is_file($filename)) {
+
+    	$base_name = basename($filename);
+    	$folder_name = strtoupper(substr($base_name,0,1));
+    	$folder_path = $image_path.$folder_name;
+
+    	if(!file_exists($folder_path)) {
+    		mkdir($folder_path);
+    	}
+
+    	rename($filename,$folder_path.'/'.$base_name);
+
+    }
+}
+
+
+$files = $GLOBALS['db']->select('CubeCart_filemanager', '*');
+foreach($files as $file) {
+	$folder = strtoupper(substr($file['filename'], 0, 1));
+	$GLOBALS['db']->update('CubeCart_filemanager', array('filepath' => $folder.'/'), array('file_id' => $file['file_id'], 'filepath' => null));
+}
+*/
+
 function crc_integrity_check($files, $mode = 'upgrade') {
 	
 	$errors = array();
@@ -85,12 +111,12 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 	set_time_limit(180);
 	// Make sure line endings can be detected
 	ini_set("auto_detect_line_endings", true);
+	$file_name = basename($_GET['restore']);
+	$file_path = CC_ROOT_DIR.'/backup/'.$file_name;
 
-	$file_path = CC_ROOT_DIR.'/backup/'.basename($_GET['restore']);
-
-	if (preg_match('/^database_full/', $_GET['restore'])) { // Restore database
+	if (preg_match('/^database_full/', $file_name)) { // Restore database
 		$delete_source = false;	
-		if (preg_match('/\.sql.zip$/', $_GET['restore'])) { // unzip first
+		if (preg_match('/\.sql.zip$/', $file_name)) { // unzip first
 			
 			$zip = new ZipArchive;
 			if ($zip->open($file_path) === TRUE) {
@@ -101,7 +127,7 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 				$zip->extractTo(CC_ROOT_DIR.'/backup');
     			$zip->close();
 			} else {
-				$GLOBALS['main']->setACPWarning("Error reading file ".$_GET['restore']);
+				$GLOBALS['main']->setACPWarning("Error reading file ".$file_name);
 				httpredir('?_g=maintenance&node=index#backup');	
 			}
 		}
@@ -133,9 +159,9 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 			httpredir('?_g=maintenance&node=index#backup');
 		}
 
-	} elseif (preg_match('/^files/', $_GET['restore'])) { // restore archive
+	} elseif (preg_match('/^files/', $file_name)) { // restore archive
 		
-		$file_path = CC_ROOT_DIR.'/backup/'.$_GET['restore'];
+		$file_path = CC_ROOT_DIR.'/backup/'.$file_name;
 		$zip = new ZipArchive;
 		if ($zip->open($file_path) === true) {
 			
@@ -203,9 +229,21 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 			if ($zip->open($destination_path) === true) {
 				
 				$crc_check_list = array();
+
 				for ($i = 0; $i < $zip->numFiles; $i++) {
+					
 					$stat = $zip->statIndex($i);
-					$crc_check_list[$stat['name']] = $stat['crc'];
+
+					if(preg_match("#^admin/#", $stat['name'])) {
+						$custom_file_name = preg_replace("#^admin#", $glob['adminFolder'], $stat['name']);
+						$zip->renameName($stat['name'], $custom_file_name);
+					} elseif($current_file=='admin.php') {
+						$custom_file_name = $glob['adminFile'];
+						$zip->renameName($stat['name'], $custom_file_name);
+					} else {
+						$custom_file_name = $stat['name'];
+					}
+					$crc_check_list[$custom_file_name] = $stat['crc'];
 				}
 
 				$zip->extractTo(CC_ROOT_DIR);
@@ -224,11 +262,9 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 					if (file_exists(CC_ROOT_DIR.'/setup')) {
 						rename(CC_ROOT_DIR.'/setup', CC_ROOT_DIR.'/setup_'.md5(time().$_GET['upgrade']));
 					}
-					$GLOBALS['main']->renameAdmin();
 					$GLOBALS['main']->setACPNotify($lang['maintain']['current_version_restored']);
 					httpredir('?_g=maintenance&node=index#upgrade');
 				} else {
-					$GLOBALS['main']->renameAdmin();
 					httpredir(CC_ROOT_REL.'setup/index.php?autoupdate=1');
 				}
 			} else {
@@ -779,7 +815,9 @@ if (isset($database_result) && $database_result) {
 			'id' => 'PRIMARY'
 		),
 		'cubecart_system_error_log' => array (
-			'log_id' => 'PRIMARY'
+			'log_id' => 'PRIMARY',
+			'time' => 'KEY',
+			'read' => 'KEY'
 		),
 		'cubecart_tax_class' => array (
 			'id' => 'PRIMARY'
@@ -829,8 +867,12 @@ if (isset($database_result) && $database_result) {
 	$actual_map = array();
 
 	foreach ($tables as $table) {
+		
+		if(!preg_match('/^'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_/i', $table['Name'])) continue;
+
 		// Get index and map them
 		$indexes = $GLOBALS['db']->misc("SHOW INDEX FROM `".$table['Name']."`");
+		$index_errors = array();
 
 		foreach($indexes as $index) {
 			if($index['Key_name']=='PRIMARY') {
@@ -842,18 +884,27 @@ if (isset($database_result) && $database_result) {
 			} else {
 				$key_type = 'KEY';	
 			}
-			$table_name = str_replace($GLOBALS['config']->get('config', 'dbprefix'), '', $index['Table']);
+			$table_name = $GLOBALS['config']->get('config', 'dbprefix').str_replace('cubecart', 'CubeCart', $index['Table']);
+			$duplicate = false;
+			if(isset($actual_map[$index['Table']][$index['Column_name']]) && $actual_map[$index['Table']][$index['Column_name']]==$key_type) {
+				$duplicate = sprintf($lang['maintain']['duplicate_index'], $table_name.'.'.$index['Column_name'], $key_type);	
+			}
 			$actual_map[$index['Table']][$index['Column_name']] = $key_type;
 		}
-
-		$index_errors = array();
-		foreach($index_map[strtolower($index['Table'])] as $column => $key) {
-			$table_name = $GLOBALS['config']->get('config', 'dbprefix').str_replace('cubecart', 'CubeCart', $index['Table']);
-			if(!isset($actual_map[$index['Table']][$column])) {
-				$index_errors[] = sprintf($lang['maintain']['missing_index'], $table_name.'.'.$column, $key);	
-			} elseif(isset($actual_map[$index['Table']][$column]) && $actual_map[$index['Table']][$column]!==$key) {
-				$index_errors[] = sprintf($lang['maintain']['wrong_index'], $table_name.'.'.$column, $actual_map[$index['Table']][$column],$key);
+		
+		if(isset($index_map[strtolower($index['Table'])])) {
+			foreach($index_map[strtolower($index['Table'])] as $column => $key) {
+				$table_name = $GLOBALS['config']->get('config', 'dbprefix').str_replace('cubecart', 'CubeCart', $index['Table']);
+				if(!isset($actual_map[$index['Table']][$column])) {
+					$index_errors[] = sprintf($lang['maintain']['missing_index'], $table_name.'.'.$column, $key);	
+				} elseif(isset($actual_map[$index['Table']][$column]) && $actual_map[$index['Table']][$column]!==$key) {
+					$index_errors[] = sprintf($lang['maintain']['wrong_index'], $table_name.'.'.$column, $actual_map[$index['Table']][$column], $key);
+				}
 			}
+		}
+
+		if($duplicate !== false) {
+			$index_errors[] = $duplicate;
 		}
 
 		$table['Data_free'] = ($table['Data_free'] > 0) ? formatBytes($table['Data_free'], true) : '-';

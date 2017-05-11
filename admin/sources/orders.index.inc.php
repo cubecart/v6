@@ -83,7 +83,7 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
 			$order_inv_id = $GLOBALS['db']->insert('CubeCart_order_inventory', $record);
 
 			if(isset($record['digital']) && $record['digital']) {
-				$GLOBALS['order']->createDownload((int)$data['product_id'], $order_inv_id, $_POST['customer']['customer_id']);
+				$GLOBALS['order']->createDownload((int)$data['product_id'], (int)$order_inv_id, (int)$_POST['customer']['customer_id'], $order_id);
 			}
 
 			unset($record);
@@ -128,7 +128,7 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
 			$GLOBALS['db']->update('CubeCart_order_tax', array('amount' => $amount), array('cart_order_id' => $order_id, 'id' => (int)$tax_id));
 		}
 	}
-	#// Order Summary data
+	// Order Summary data
 	$record = array(
 		'cart_order_id' => $order_id,
 		'dashboard'  => (isset($_POST['dashboard'])) ? (int)$_POST['dashboard'] : false,
@@ -171,6 +171,11 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
 		// Update order status, if set
 		$order->orderStatus($_POST['order']['status'], $order_id, true);
 	} else {
+
+		if($_POST['order']['status']==3 && empty($_POST['summary']['ship_date'])) {
+			$record['ship_date'] = date('Y-m-d');
+		}
+
 		// Update/create summary
 		$update_status = $GLOBALS['db']->update('CubeCart_order_summary', $record, array('cart_order_id' => $order_id), true, array('phone', 'mobile'));
 		// Update order status, if set
@@ -267,11 +272,12 @@ if (isset($_GET['action'])) {
 
 			// Make some values frendlier
 			$summary[0]['ship_method']   = str_replace('_', ' ', $summary[0]['ship_method']);
+			$summary[0]['gateway']   = str_replace('_', ' ', $summary[0]['gateway']);
 			$summary[0]['ship_date']   = ((int)(str_replace('-', '', $summary[0]['ship_date'])) > 0) ? $summary[0]['ship_date'] : "";
 
 			// Processing/Pending orders are on the dashboard by default otherwise show defined value
 			if ($summary[0]['discount_type']=='p') {
-				$summary[0]['discount_form'] = number_format(($summary[0]['discount']/$summary[0]['subtotal'])*100);
+				$summary[0]['discount_form'] = number_format(($summary[0]['discount']/$summary[0]['subtotal'])*100, 2);
 			} else {
 				$summary[0]['discount_form'] = number_format($summary[0]['discount'], 2);
 			}
@@ -358,9 +364,9 @@ if (isset($_GET['action'])) {
 
 			$overview_summary['percent'] = '';
 			if ($overview_summary['discount_type'] == 'p') {
-				$overview_summary['percent'] = number_format(($overview_summary['discount']/$overview_summary['subtotal'])*100) . '%';
+				$overview_summary['percent'] = number_format(($overview_summary['discount']/$overview_summary['subtotal'])*100, 2) . '%';
 			} else if ($overview_summary['discount_type'] == 'pp') {
-					$overview_summary['percent'] = number_format(($overview_summary['discount']/($overview_summary['subtotal']+$overview_summary['discount']))*100) . '%';
+					$overview_summary['percent'] = number_format(($overview_summary['discount']/($overview_summary['subtotal']+$overview_summary['discount']))*100, 2) . '%';
 				}
 
 			$overview_summary['name']  = (isset($summary[0]['name']) && !empty($summary[0]['name'])) ? $summary[0]['name'] : $summary[0]['first_name'].' '.$summary[0]['last_name'];
@@ -473,7 +479,7 @@ if (isset($_GET['action'])) {
 			foreach ($notes as $note) {
 				$note['time']  = formatTime($note['time']);
 				$note['author']  = $author[$note['admin_id']];
-				$note['delete']  = currentPage(array('print_hash'), array('delete-note' => $note['note_id']));
+				$note['delete']  = currentPage(array('print_hash'), array('delete-note' => $note['note_id'], 'token' => SESSION_TOKEN));
 				$note['content'] = strip_tags($note['content']);
 				$smarty_data['list_notes'][] = $note;
 			}
@@ -616,6 +622,11 @@ if (isset($_GET['action'])) {
 		foreach ($_POST['multi-order'] as $order_id) {
 			// If multi action variable is numeric we need to update the order status
 			if (!empty($_POST['multi-status'])) {
+				// Update disptach date
+				if((int)$_POST['multi-status']==3) {
+					$GLOBALS['db']->update('CubeCart_order_summary', array('ship_date' => date('Y-m-d')), array('cart_order_id' => $order_id));
+				}
+
 				if ($order->orderStatus((int)$_POST['multi-status'], $order_id)) {
 					$updated = true;
 				}
@@ -711,7 +722,7 @@ if (isset($_GET['action'])) {
 		'total'   => $GLOBALS['db']->column_sort('total', $lang['basket']['total'], 'sort', $current_page, $_GET['sort'])
 	);
 
-	foreach ($GLOBALS['hooks']->load('admin.product.table_head_sort') as $hook) include $hook;
+	foreach ($GLOBALS['hooks']->load('admin.order.index.table_head_sort') as $hook) include $hook;
 
 	$GLOBALS['smarty']->assign('THEAD', $thead_sort);
 	// Sort has to be a string in this instance as column 'customer' doesn't exist!!
@@ -737,7 +748,7 @@ if (isset($_GET['action'])) {
 			$order['cust_type'] = array("1" => 'title_key_registered', "2" => 'title_key_unregistered');
 			$order['link_edit']  = currentPage(array('print_hash'), array('action' => 'edit', 'order_id' => $order['cart_order_id']));
 			$order['link_customer'] = ($order['customer_id']) ? "?_g=customers&action=edit&customer_id=".$order['customer_id'] : "#";
-			$order['link_delete'] = currentPage(array('print_hash'), array('delete' => $order['cart_order_id']));
+			$order['link_delete'] = currentPage(array('print_hash'), array('delete' => $order['cart_order_id'], 'token' => SESSION_TOKEN));
 			// Link needs to be an array with one key
 			$order['link_print'] = currentPage(array('print_hash'), array('print[0]' => $order['cart_order_id']));
 			$order['status']  = $lang['order_state']['name_'.$order['status']];

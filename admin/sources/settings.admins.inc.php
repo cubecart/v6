@@ -249,7 +249,7 @@ if (isset($_GET['action']) && (Admin::getInstance()->superUser() || ((int)$_GET[
 				continue;
 			}
 			if (!$no_delete || $admin['super_user'] == 0) {
-				$admin['link_delete'] = currentPage(null, array('action' => 'delete', 'admin_id' => $admin['admin_id']));
+				$admin['link_delete'] = currentPage(null, array('action' => 'delete', 'admin_id' => $admin['admin_id'], 'token' => SESSION_TOKEN));
 			}
 			$admin['link_edit'] = currentPage(null, array('action' => 'edit', 'admin_id' => $admin['admin_id']));
 			$smarty_data['admins'][] = $admin;

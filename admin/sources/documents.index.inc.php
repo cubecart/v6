@@ -140,7 +140,7 @@ if (isset($_GET['action'])) {
 			}
 			$data = $document[0];
 			$GLOBALS['gui']->addBreadcrumb($data['doc_name'], currentPage());
-			$data['link']['delete'] = currentPage(array('doc_id', 'action'), array('delete' => $data['doc_id']));
+			$data['link']['delete'] = currentPage(array('doc_id', 'action'), array('delete' => $data['doc_id'], 'token' => SESSION_TOKEN));
 			$GLOBALS['smarty']->assign('DISPLAY_DELETE', true);
 
 		}
@@ -199,7 +199,7 @@ if (isset($_GET['action'])) {
 			$document['link'] = array(
 				'translate' => currentPage(null, array('action' => 'translate', 'doc_id' => $document['doc_id'])),
 				'edit'  => currentPage(null, array('action' => 'edit', 'doc_id' => $document['doc_id'])),
-				'delete' => currentPage(null, array('delete' => $document['doc_id']))
+				'delete' => currentPage(null, array('delete' => $document['doc_id'], 'token' => SESSION_TOKEN))
 			);
 			$document['flag']	= file_exists('language/flags/'.$document['doc_lang'].'.png') ? 'language/flags/'.$document['doc_lang'].'.png' : 'language/flags/unknown.png';
 			$document['terms']  = ($document['doc_terms']) ? 'checked="checked"' : '';

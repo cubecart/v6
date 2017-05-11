@@ -113,7 +113,12 @@ class Catalogue {
 		if ($this->_category_count) {
 			//Pagination
 			$catalogue_products_per_page = $GLOBALS['gui']->itemsPerPage('products', 'perpage');
-			
+			if (($page * $catalogue_products_per_page) > $this->_category_count) {
+				$new_page = (int)ceil($this->_category_count / $catalogue_products_per_page);
+				if ($new_page < $page) {
+					httpredir(currentPage(null, array('page'=>$new_page)));
+				}
+			}
 			if (($pages = $GLOBALS['db']->pagination($this->_category_count, $catalogue_products_per_page, $page)) !== false) {
 				// Display pagination
 				$GLOBALS['smarty']->assign('PAGINATION', $pages);
@@ -256,6 +261,7 @@ class Catalogue {
 				$product['ctrl_stock'] = (!$product['use_stock_level'] || $GLOBALS['config']->get('config', 'basket_out_of_stock_purchase') || ($product['use_stock_level'] && $GLOBALS['catalogue']->getProductStock($product['product_id'], null, true) > 0)) ? true : false;
 				$this->productAssign($product, false);
 				$product['url'] = $GLOBALS['seo']->buildURL('prod', $product['product_id'], '&');
+				$product['options'] = $GLOBALS['catalogue']->getProductOptions($product['product_id']);
 				$vars['products'][] = $product;
 			}
 
@@ -401,6 +407,7 @@ class Catalogue {
 				}
 
 				$product['url'] = $GLOBALS['seo']->buildURL('prod', $product['product_id'], '&');
+				$product['options'] = $GLOBALS['catalogue']->getProductOptions($product['product_id']);
 
 				// Get stock level variations for options
 				if ($product_options && $stock_variations = $GLOBALS['db']->select('CubeCart_option_matrix', 'MAX(stock_level) AS max_stock, MIN(stock_level) AS min_stock', array('product_id' => $product['product_id'], 'use_stock' => 1, 'status' => 1), false, 1)) {
@@ -460,6 +467,7 @@ class Catalogue {
 			}
 
 			$optionArray = $this->getProductOptions($product_id);
+			$this->_options_line_price = 0; // Reset option line price
 			if (is_array($optionArray)) {
 				ksort($optionArray);
 				foreach ($optionArray as $type => $group) {
@@ -476,6 +484,7 @@ class Catalogue {
 										'option_id'  => $value['option_id'],
 										'option_name' => $value['option_name'],
 										'option_description' => $value['option_description'],
+										'option_default' => (bool)$value['option_default'],
 										'required'  => (bool)$value['option_required'],
 										'selected' => isset($selected[$value['assign_id']]) ? true : false
 									);
@@ -491,6 +500,7 @@ class Catalogue {
 									'symbol'  => ($value['absolute_price']=='1' && $symbol=='+') ? '' : $symbol,
 									'value_id'  => $value['value_id'],
 									'value_name' => $value['value_name'],
+									'option_default' => (bool)$value['option_default'],
 									'selected' => isset($selected[$value['assign_id']]) ? true : false,
 									'absolute_price' => $value['absolute_price']
 								);
@@ -522,7 +532,7 @@ class Catalogue {
 							
 							$decimal_price_sign = $option[0]['option_negative'] ? '-' : '';
 							
-							$option_list[] = array(
+							$option_list[$option[0]['option_id']] = array(
 								'type'   => $option[0]['option_type'],
 								'option_id'  => $option[0]['option_id'],
 								'assign_id'  => $option[0]['assign_id'],
@@ -890,7 +900,7 @@ class Catalogue {
 	 * @return bool/array
 	 */
 	public function getOptionRequired() {
-		// If there is only one value for every option assign them 
+		// If there is only one value OR a default value for every option assign them
 		if(isset($_POST['add'])) {
 			$add_options = true;
 			$single_fixed_options = false;
@@ -900,11 +910,26 @@ class Catalogue {
 			if($assigned_options) {
 				$single_fixed_options = true;
 				$forced_options = array();
+				$default_options = array();
+				// First find any default option values
 				foreach($assigned_options as $assigned_option) {
-					
+					// If the store owner set multiple defaults for the same option, only the last one will be used
+					if (!empty($assigned_option['option_default'])) {
+						$default_options[$assigned_option['option_id']] = $assigned_option;
+					}
+				}
+				foreach($assigned_options as $assigned_option) {
+					// Always use the default option value if it exists
+					if (isset($default_options[$assigned_option['option_id']])) {
+						$assigned_option = $default_options[$assigned_option['option_id']];
+					}
 					if(isset($forced_options[$assigned_option['option_id']])) {
-						$single_fixed_options = false;
-						break;
+						if (empty($default_options[$assigned_option['option_id']])) {
+							$single_fixed_options = false;
+							break;
+						} else {
+							continue; // this option was already handled
+						}
 					}
 
 					$forced_options[$assigned_option['option_id']] = $assigned_option['assign_id'];
@@ -1267,7 +1292,7 @@ class Catalogue {
 	 * @param bool $return_max
 	 * @return array/false
 	 */
-	public function getProductStock($product_id = null, $options_identifier_string = null, $return_max = false) {
+	public function getProductStock($product_id = null, $options_identifier_string = null, $return_max = false, $check_existing = false, $quantity = false) {
 		// Choose option combination specific stock
 		if (is_numeric($product_id) && (!empty($options_identifier_string) || $return_max == true)) {
 
@@ -1290,6 +1315,18 @@ class Catalogue {
 
 		// Fall back to traditional stock check if there are no results for the combination or it is not used
 		if (is_numeric($product_id) && ($products = $GLOBALS['db']->select('CubeCart_inventory', array('stock_level'), array('product_id' => (int)$product_id), false, 1)) !== false) {
+			
+			// Check this product id isn't already in the cart with different options identifier
+			if($check_existing) {
+				if(is_array($check_existing)) {
+					foreach($check_existing as $key => $value) {
+						if($value['id'] == $product_id) {
+							$products[0]['stock_level'] -= 	$quantity;
+						}
+					}
+				}
+			}
+
 			return $products[0]['stock_level'];
 		}
 
@@ -1677,8 +1714,12 @@ class Catalogue {
 			}
 
 			$order = array();
+			
 			if (isset($_GET['sort']) && is_array($_GET['sort'])) {
 				foreach ($_GET['sort'] as $field => $direction) {
+					if(strtolower($field) == 'relevance' && $search_mode !== 'fulltext') {
+						break;	
+					}
 					$order['field'] = $field;
 					if ($field == 'price') {
 						if ($sale_mode == 1) {
@@ -1744,7 +1785,12 @@ class Catalogue {
 					}
 				}
 
-				if ($search_mode == 'fulltext' && $search_str_len >= $max_word_len) {
+				if ($search_mode == 'fulltext') {
+
+					if($search_str_len < $max_word_len) {
+						return $this->searchCatalogue($original_search_data, 1, $per_page, 'rlike');	
+					}
+
 					switch (true) {
 					case (preg_match('#[\+\-\>\<][\w]+#iu', $search_data['keywords'])):
 						## Switch to bolean mode
@@ -1773,24 +1819,25 @@ class Catalogue {
 						$this->_sort_by_relevance = true;
 						return true;
 					} elseif ($search_mode == 'fulltext') {
-						return $this->searchCatalogue($original_search_data, 1, $per_page, 'RLIKE');
+						return $this->searchCatalogue($original_search_data, 1, $per_page, 'rlike');
 					}
 				} else {
-					$search_mode = in_array($search_mode, array('RLIKE','LIKE')) ? $search_mode : 'RLIKE';
+					$search_mode = in_array($search_mode, array('rlike','like')) ? $search_mode : 'rlike';
 					$this->_sort_by_relevance = false;
 					$like = '';
 					if (!empty($search_data['keywords'])) {
 						$searchwords = preg_split( '/[\s,]+/', $GLOBALS['db']->sqlSafe($search_data['keywords']));
 						foreach ($searchwords as $word) {
+							if(empty($word) && !is_numeric($word)) continue;
 							$searchArray[] = $word;
 						}
 
 						$noKeys = count($searchArray);
-						$regexp = '';
+						$regexp = $regexp_desc = '';
 						
-						$search_mode = in_array(strtolower($search_mode), array('rlike','like')) ? $search_mode : 'rlike';
+						$search_mode = in_array($search_mode, array('rlike','like')) ? $search_mode : 'rlike';
 
-						if(strtolower($search_mode) == 'rlike') {
+						if($search_mode == 'rlike') {
 							$like_keyword = "RLIKE";
 							$like_prefix = '[[:<:]]';
 							$like_postfix = '[[:>:]].*';
@@ -1803,12 +1850,14 @@ class Catalogue {
 							$ucSearchTerm = strtoupper($searchArray[$i]);
 							if (($ucSearchTerm != 'AND') && ($ucSearchTerm != 'OR')) {
 								$regexp .= $like_prefix.$searchArray[$i].$like_postfix;
+								$regexp_desc .= $like_prefix.htmlentities(html_entity_decode($searchArray[$i],ENT_COMPAT,'UTF-8'),ENT_QUOTES,'UTF-8',false).$like_postfix;
 							}
 						}
-						if($search_mode == 'RLIKE') {
+						if($search_mode == 'rlike') {
 							$regexp = substr($regexp, 0, strlen($regexp)-2);
+							$regexp_desc = substr($regexp_desc, 0, strlen($regexp_desc)-2);
 						}
-						$like = " AND (I.name ".$like_keyword." '".$regexp."' OR I.description ".$like_keyword." '".$regexp."' OR I.product_code ".$like_keyword." '".$regexp."')";
+						$like = " AND (I.name ".$like_keyword." '".$regexp."' OR I.description ".$like_keyword." '".$regexp_desc."' OR I.product_code ".$like_keyword." '".$regexp."')";
 					}
 
 					$q2 = "SELECT I.* FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_category_index` as CI INNER JOIN ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 ".$whereString.$like;
@@ -1819,8 +1868,8 @@ class Catalogue {
 						$this->_category_count  = (int)count($count);
 						$this->_category_products = $search;
 						return true;
-					} elseif($search_mode=="RLIKE") {
-						return $this->searchCatalogue($original_search_data, 1, $per_page, 'LIKE');
+					} elseif($search_mode=="rlike") {
+						return $this->searchCatalogue($original_search_data, 1, $per_page, 'like');
 					}
 				}
 			}

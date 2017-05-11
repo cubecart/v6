@@ -69,7 +69,7 @@ function optionAdd(t, e) {
             var c = $(l[i]).attr("rel"),
                 d = "" == $(l[i]).val() ? "0" : $(l[i]).val(),
                 h = $(o).find("." + c).find("input:first");
-            "matrix_include" == c ? h.attr("name", "option_add[" + c + "][" + options_added + "]") : "set_enabled" == c ? (h.removeAttr("disabled"), h.attr("checked", "checked"), h.parent().addClass("selected"), h.val(1), 1 == d && (h.parent().addClass("selected"), h.attr("checked", "checked")), h.attr("name", "option_add[" + c + "][" + options_added + "]")) : "negative" == c ? (h.removeAttr("disabled"), h.attr("name", "option_add[" + c + "][" + options_added + "]")) : "absolute_price" == c ? (h.removeAttr("disabled"), $(l[i]).is(":checked") && (h.parent().addClass("selected"), h.attr("checked", "checked")), h.attr("name", "option_add[" + c + "][" + options_added + "]")) : (d = parseFloat(d, 10).toFixed(2), $(o).find("." + c).append(d).find("input:first").val(parseFloat(d)).removeAttr("disabled")), $(l[i]).val("")
+            "matrix_include" == c ? h.attr("name", "option_add[" + c + "][" + options_added + "]") : "set_enabled" == c ? (h.removeAttr("disabled"), h.attr("checked", "checked"), h.parent().addClass("selected"), h.val(1), 1 == d && (h.parent().addClass("selected"), h.attr("checked", "checked")), h.attr("name", "option_add[" + c + "][" + options_added + "]")) : "default" == c || "negative" == c || "absolute_price" == c ? (h.removeAttr("disabled"), $(l[i]).is(":checked") && (h.parent().addClass("selected"), h.attr("checked", "checked"), $(l[i]).removeAttr("checked").parent().removeClass("selected")), h.attr("name", "option_add[" + c + "][" + options_added + "]")) : (d = parseFloat(d, 10).toFixed(2), $(o).find("." + c).append(d).find("input:first").val(parseFloat(d)).removeAttr("disabled")), $(l[i]).val("")
         }
         $(o).find("a.remove").on("click", function() {
             inlineRemove(this)
@@ -287,14 +287,6 @@ $(document).ready(function() {
             $(this).attr("rel")
         }), "undefined" != typeof gui_message_json && "object" == typeof gui_message_json)
         for (var e in gui_message_json) $("#" + e).addClass("required-error").val("");
-    
-    $('.url_select').bind('change', function () {
-        var url = $(this).value(); // get selected value
-        if (url) { // require a URL
-            window.location = url; // redirect
-        }
-        return false;
-    });
 
     $("#bulk_price_method").change(function() {
         if($(this).val()=='percent') {
@@ -791,7 +783,7 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
     var t = $(this).attr("rel"),
         e = $("#data_" + t).val().split("|");
     $("#opt_assign_id").val(t), $("#opt_mid").val(e[0]), $("#opt_price").val(e[1]), $("#opt_weight").val(e[2]), $("#opt_stock").val(e[3]), $(this).parent().parent().remove()
-}), $(".delete_disabled").on("click", function() {
+}), $(".fa-trash.disabled, .title_alert").on("click", function() {
     alert($(this).attr("title"))
 }), $("input#product_code").on("keyup", function() {
     $("input#product_code").val().length > 0 ? $("input#product_code_auto").attr("checked", !1) : $("input#product_code_auto").attr("checked", !0)
@@ -839,7 +831,7 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
         }), !1
     })
 }), $("#cat_subset").on("change", function() {
-    $location = document.URL.replace(/&?page=[0-9]/, ""), -1 != $location.indexOf("cat_id") && ($location = removeVariableFromURL($location, "cat_id")), "any" != $(this).val() && ($location += "&cat_id=" + $(this).val()), window.location.replace($location)
+    $location = document.URL.replace(/&?page=[0-9]/, ""), -1 != $location.indexOf("cat_id") && ($location = removeVariableFromURL($location, "cat_id")), "any" != $(this).val() && ($location = $(this).val()), window.location.replace($location)
 }), $("select.address-list").on("change", function() {
     var t = $(this).val(),
         e = addresses[t],

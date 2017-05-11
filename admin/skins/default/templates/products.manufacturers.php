@@ -27,7 +27,7 @@
 		  <td>{$manufacturer.name}</td>
 		  <td>
 	    	<a href="?_g=products&node=manufacturers&edit={$manufacturer.id}#add-edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
-	    	<a href="?_g=products&node=manufacturers&delete={$manufacturer.id}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
+	    	<a href="?_g=products&node=manufacturers&delete={$manufacturer.id}&token={$SESSION_TOKEN}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		  </td>
 		</tr>
 		{/foreach}
@@ -73,5 +73,5 @@
 	{/foreach}
   {/if}
   {/if}
-  <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+  
 </form>

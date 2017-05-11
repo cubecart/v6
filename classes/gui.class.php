@@ -79,6 +79,12 @@ class GUI {
 	 */
 	private $_template_dir = '';
 	/**
+	 * reCAPTCHA v1 keys
+	 *
+	 * @var string
+	 */
+	private $_reCAPTCHA_keys = array('captcha_private' => '6LfT4sASAAAAAKQMCK9w6xmRkkn6sl6ORdnOf83H', 'captcha_public' => '6LfT4sASAAAAAOl71cRz11Fm0erGiqNG8VAfKTHn');
+	/**
 	 * Postfix string for mobile config variables
 	 *
 	 * @var string
@@ -95,6 +101,8 @@ class GUI {
 	##############################################
 
 	final protected function __construct($admin = false) {
+
+		$this->recaptchaValidate();
 
 		//Get current skins
 		$this->_skins = $this->listSkins();
@@ -121,6 +129,13 @@ class GUI {
 
 			//Setup current skin data
 			$this->_skin_data = $this->_skins[$this->_skin];
+
+			// Make sure CSRF is enabled if skin has it enabled
+			if($this->_skin_data['info']['csrf'] && $GLOBALS['config']->get('config', 'csrf')!=='1') {
+				$GLOBALS['config']->set('config', 'csrf', '1');	
+			} elseif(!$this->_skin_data['info']['csrf'] && $GLOBALS['config']->get('config', 'csrf')=='1') {
+				$GLOBALS['config']->set('config', 'csrf', '0');
+			}
 
 			//Set smarty to the skin
 			$GLOBALS['smarty']->template_dir = CC_ROOT_DIR.'/skins/'.$this->_skin.'/';
@@ -309,7 +324,11 @@ class GUI {
 	 */
 	public function display($file) {
 		$this->_setCanonical();
-		$GLOBALS['smarty']->display($file);
+		if($GLOBALS['config']->get('config', 'csrf')=='1' || CC_IN_ADMIN) {
+			die(preg_replace('#</form>#i', '<input type="hidden" name="token" value="'.SESSION_TOKEN.'"></form>', $GLOBALS['smarty']->fetch($file)));
+		} else {
+			$GLOBALS['smarty']->display($file);
+		}
 	}
 
 	/**
@@ -596,7 +615,8 @@ class GUI {
 						'creator'  	=> (string)$data->info->{'creator'},
 						'homepage'  => (string)$data->info->{'homepage'},
 						'mobile'  	=> ((string)$data->info->{'mobile'}=='true') ? true : false,
-						'responsive'=> ((string)$data->info->{'responsive'}=='true') ? true : false
+						'responsive'=> ((string)$data->info->{'responsive'}=='true') ? true : false,
+						'csrf'=> ((string)$data->info->{'csrf'}=='true') ? true : false
 					);
 			
 					if(is_object($data->layout)) {
@@ -678,6 +698,85 @@ class GUI {
 			return $page_splits;
 		}
 		return false;		
+	}
+
+	/**
+	 * Assign reCAPTCHA v1 (legacy)
+	 */
+	public function recaptchaAssign() {
+		if($GLOBALS['config']->get('config', 'recaptcha')==1) {
+			require_once CC_INCLUDES_DIR.'lib/recaptcha/recaptchalib.php';
+			$GLOBALS['smarty']->assign('LANG_RECAPTCHA', array(
+				'reload_words'  => sprintf($GLOBALS['language']->recaptcha['reload_words'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('audio')"),
+				'reload_numbers' => sprintf($GLOBALS['language']->recaptcha['reload_numbers'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('image')"),
+			));
+			if ($GLOBALS['gui']->recaptchaRequired()) {
+				$GLOBALS['smarty']->assign('DISPLAY_RECAPTCHA', recaptcha_get_html($this->_reCAPTCHA_keys['captcha_public'], $GLOBALS['recaptcha']['error'], CC_SSL));
+				$GLOBALS['smarty']->assign('RECAPTCHA', 1);
+			}
+		}
+	}
+
+	/**
+	 * Do we require Recaptcha check?
+	 */
+	public function recaptchaRequired() {
+		if($GLOBALS['config']->get('config', 'recaptcha') && !$GLOBALS['session']->get('confirmed', 'recaptcha')) {
+			$GLOBALS['smarty']->assign('RECAPTCHA', $GLOBALS['config']->get('config', 'recaptcha'));
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Validate recaptcha response
+	 */
+	public function recaptchaValidate() {
+		if ($this->recaptchaRequired()) {
+			
+			$recaptcha['error'] = null;
+			$recaptcha['confirmed'] = false;
+
+			// for reCAPTCHA v2 and invisible
+			if(isset($_POST['g-recaptcha-response']) && in_array($GLOBALS['config']->get('config', 'recaptcha'), array(2,3))) {
+
+				if(empty($_POST['g-recaptcha-response'])) {
+					$recaptcha['error'] = $GLOBALS['language']->form['verify_human_fail'];
+				} else {
+					$g_data = array(
+						'secret' => $GLOBALS['config']->get('config', 'recaptcha_secret_key'),
+						'response' => $_POST['g-recaptcha-response'],
+						'remoteip' => get_ip_address()
+					);
+					$request = new Request('www.google.com', '/recaptcha/api/siteverify');
+					$request->setMethod('get');
+					$request->cache(false);
+					$request->setSSL();
+					$request->setData($g_data);
+
+					$response = $request->send();
+					$g_result = json_decode($response);
+					
+					if($g_result->success) {
+						$recaptcha['confirmed'] = true;
+					} else {
+						$recaptcha['error'] = $GLOBALS['language']->form['verify_human_fail'];
+					}
+				}
+				$GLOBALS['session']->set('', $recaptcha, 'recaptcha');
+			} elseif(isset($_POST['recaptcha_response_field'])) { // for reCAPTCHA v1 
+				require_once CC_INCLUDES_DIR.'lib/recaptcha/recaptchalib.php';
+				$resp = recaptcha_check_answer($this->_reCAPTCHA_keys['captcha_private'], $_SERVER['REMOTE_ADDR'], $_POST['recaptcha_challenge_field'], $_POST['recaptcha_response_field']);
+				if ($resp->is_valid) {
+					$recaptcha['confirmed'] = true;
+				} else {
+					$recaptcha['error'] = $GLOBALS['language']->form['verify_human_fail'];
+				}
+				$GLOBALS['session']->set('', $recaptcha, 'recaptcha');				
+			}	
+		} elseif (!$GLOBALS['session']->get('confirmed', 'recaptcha')) {
+			$GLOBALS['session']->delete('', 'recaptcha');
+		}
 	}
 
 	/**

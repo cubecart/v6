@@ -198,7 +198,7 @@
 	<input type="hidden" name="previous-tab" id="previous-tab" value="">
 	<input type="submit" id="cat_save" value="{$LANG.common.save}" class="button">
   </div>
-  <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+  
   {if !empty($CATEGORY.cat_name)}
   <input type="hidden" name="gen_seo" id="gen_seo" value="0">
   <div id="dialog-seo" title="{$LANG.settings.seo_rebuild}" style="display:none;">

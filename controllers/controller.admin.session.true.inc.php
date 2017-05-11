@@ -34,6 +34,7 @@ if (!empty($_GET['_g'])) {
 	$module_type = (isset($_GET['type']) && preg_match("/[a-z]/i", $_GET['type'])) ? $_GET['type'] : '';
 
 	$node = (!empty($_GET['node'])) ? strtolower($_GET['node']) : 'index';
+	$node = preg_replace('/[^a-z0-9_-]/', '', $node);
 	
 	if (!isset($_GET['delete']) && strtolower($_GET['_g']) == 'plugins' && !empty($module_type)) {
 		
@@ -99,6 +100,7 @@ if (!empty($_GET['_g'])) {
 			if (file_exists($include)) {
 				require $include;
 			} else {
+				$page_content = str_replace(CC_ROOT_DIR,'',$include)." - not found.";
 				trigger_error(sprintf('Unable to load content for %s:%s', $_GET['_g'], $node), E_USER_WARNING);
 			}
 		}

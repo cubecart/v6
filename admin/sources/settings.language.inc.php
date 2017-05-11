@@ -123,8 +123,8 @@ if (isset($_GET['export'])) {
 		foreach (glob('modules/*/*/language/module.definitions.xml') as $path) {
 			$GLOBALS['language']->cloneModuleLanguage($path, $_GET['language']);
 			$modules[] = array(
-				'path' => urlencode($path),
-				'name' => $GLOBALS['language']->getFriendlyModulePath($path),
+				'path' => $path,
+				'name' => str_replace('_', ' ', $GLOBALS['language']->getFriendlyModulePath($path)),
 				'selected' => (isset($_REQUEST['type']) && $path == $_REQUEST['type']) ? 'selected="selected"' : '',
 			);
 		}
@@ -237,7 +237,7 @@ if (isset($_GET['export'])) {
 				$info['flag'] = 'language/flags/unknown.png';
 			}
 			$info['edit'] = currentPage(null, array('language' => $info['code']));
-			$info['delete'] = currentPage(null, array('delete' => $info['code']));
+			$info['delete'] = currentPage(null, array('delete' => $info['code'], 'token' => SESSION_TOKEN));
 			$info['download'] = currentPage(null, array('download' => $info['code']));
 			$smarty_data['languages'][] = $info;
 		}

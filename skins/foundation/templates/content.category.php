@@ -105,7 +105,7 @@
                   {if $product.available <= 0}
                   <div class="row collapse">
                      <div class="small-12 columns">
-                        <input type="submit" value="{$LANG.common.unavailable}" class="button small disabled expand marg-top" disabled>
+                        <input type="submit" value="{$LANG.common.unavailable}" class="button small postfix disabled expand marg-top" disabled>
                      </div>
                   </div>
                   {* ctrl_stock True when a product is considered 'in stock' for purposes of allowing a purchase, either by actually being in stock or via certain settings *}
@@ -213,11 +213,12 @@
       </div>
    </div>
    *}
-   {* Add "hide-for-small-up" to the class attribute to not display the more button *}
-   <div class="hide" id="ccScrollCat">{$category.cat_id}</div>
+   {* Add "hide-for-medium-up" to the class attribute to not display the more button *}
+   <div class="hide" id="ccScrollCat">
    {if $page!=='all' && ($page < $total)}
    {$params[$var_name] = $page + 1}
    <a href="{$current}{http_build_query($params)}{$anchor}" data-next-page="{$params[$var_name]}" data-cat="{$category.cat_id}" class="button tiny expand ccScroll-next">{$LANG.common.more} <svg class="icon"><use xlink:href="#icon-angle-down"></use></svg></a>
+   </div>
    {/if}
 </div>
 <div class="hide" id="lang_loading">{$LANG.common.loading}</div>

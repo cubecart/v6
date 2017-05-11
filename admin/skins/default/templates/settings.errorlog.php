@@ -51,7 +51,7 @@
 		  </tfoot>
 		  {/if}
 	  </table>
-  <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+  
   </form>
   <div>{$PAGINATION_ADMIN_ERROR_LOG}</div>
 </div>
@@ -99,7 +99,7 @@
 		  </tfoot>
 		  {/if}
 	  </table>
-  <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+  
   </form>
   <div>{$PAGINATION_SYSTEM_ERROR_LOG}</div>
 </div>

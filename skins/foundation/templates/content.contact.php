@@ -38,7 +38,7 @@
       <div class="small-12 large-8 columns"><label for="contact_enquiry">{$LANG.common.enquiry}</label><textarea name="contact[enquiry]" id="contact_enquiry" placeholder="{$LANG.common.enquiry} {$LANG.form.required}" required>{$MESSAGE.enquiry}</textarea></div>
    </div>
    {include file='templates/content.recaptcha.php'}
-   <input type="submit" class="button" value="{$LANG.documents.send_message}">
+   <input type="submit" class="button g-recaptcha" value="{$LANG.documents.send_message}"{include file='templates/element.recaptcha.invisible.php'}>
 </form>
 <div class="hide" id="validate_email">{$LANG.common.error_email_invalid}</div>
 <div class="hide" id="validate_field_required">{$LANG.form.field_required}</div>

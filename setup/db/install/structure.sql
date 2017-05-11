@@ -556,9 +556,10 @@ CREATE TABLE IF NOT EXISTS `CubeCart_option_assign` (
 	`value_id` INT UNSIGNED NOT NULL DEFAULT '0',
 	`set_member_id` INT UNSIGNED NOT NULL DEFAULT '0',
 	`set_enabled` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
+	`option_default` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`option_negative` tinyint(1) unsigned NOT NULL DEFAULT '0',
 	`option_price` DECIMAL(16,2) NOT NULL DEFAULT '0.00',
-	`option_weight` DECIMAL(10,2) NOT NULL DEFAULT '0.00',
+	`option_weight` DECIMAL(10,3) NOT NULL DEFAULT '0.00',
 	`matrix_include` TINYINT(1) NOT NULL DEFAULT  '0',
 	`absolute_price` enum('0','1') NOT NULL DEFAULT '0',
 	PRIMARY KEY (`assign_id`),
@@ -834,7 +835,9 @@ CREATE TABLE IF NOT EXISTS `CubeCart_system_error_log` (
 	`time` int(10) unsigned NOT NULL,
 	`message` text COLLATE utf8_unicode_ci NOT NULL,
 	`read` tinyint(1) unsigned NOT NULL,
-  PRIMARY KEY (`log_id`)
+  PRIMARY KEY (`log_id`),
+  KEY `time` (`time`),
+  KEY `read` (`read`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_tax_class` (

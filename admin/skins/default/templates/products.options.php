@@ -86,7 +86,7 @@
                      </td>
                      <td><span class="editable" name="edit_attribute[{$key}][value_name]">{$option}</span></td>
                      <td width="10" class="actions">
-                        <a href="?_g=products&node=options&delete=attribute&id={$key}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
+                        <a href="?_g=products&node=options&delete=attribute&id={$key}&token={$SESSION_TOKEN}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
                      </td>
                   </tr>
                   {foreachelse}
@@ -136,7 +136,7 @@
             </select>
          </div>
          {foreach from=$SETS item=set}
-         <fieldset class="field_select_target" id="set_{$set.set_id}" rel="add_options">
+         <fieldset class="field_select_target" style="display:none" id="set_{$set.set_id}" rel="add_options">
             <legend>{$set.set_name} <a href="{$set.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></legend>
                {foreach from=$set.members key=set_id item=members}
                {foreach from=$members item=member}
@@ -189,6 +189,6 @@
          <input type="hidden" name="previous-tab" id="previous-tab" value="">
          <input type="submit" class="button" value="{$LANG.common.save}">
       </div>
-      <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+      
    </form>
 </div>

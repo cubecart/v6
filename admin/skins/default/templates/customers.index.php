@@ -175,7 +175,7 @@
 	  <div><label for="state-list">{$LANG.address.state}</label><span><input type="text" name="address[state]" id="state-list" value="{$ADDRESS.state}" class="textbox"></span></div>
 	  <div><label for="address_postcode">{$LANG.address.postcode}</label><span><input type="text" name="address[postcode]" id="address_postcode" value="{$ADDRESS.postcode}" class="textbox uppercase"></span></div>
 	  <div><label for="billing">{$LANG.address.billing_address}</label><span><input type="hidden" name="address[billing]" id="billing" value="{$ADDRESS.billing}" class="toggle"></div>
-	  <div><label for="default">{$LANG.common.default}</label><span><input type="hidden" name="address[default]" id="default" value="{$ADDRESS.default}" class="toggle"></div>
+	  <div><label for="default">{$LANG.address.default_delivery_address}</label><span><input type="hidden" name="address[default]" id="default" value="{$ADDRESS.default}" class="toggle"></div>
 	  <input type="hidden" name="address[address_id]" value="{$ADDRESS.address_id}">
 	  </fieldset>
 	  {/if}
@@ -245,7 +245,7 @@
 	  <input type="submit" name="save" value="{$LANG.common.save}">
 	</div>
   {/if}
-  <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+  
   </form>
 
   <div style="display: none;">
@@ -271,7 +271,7 @@
 	  <div><label for="edit_state">{$LANG.address.state}</label><span><input type="text" name="address[state][]" id="edit_state" class="textbox add state-list"> *</span></div>
 	  <div><label for="edit_postcode">{$LANG.address.postcode}</label><span><input type="text" name="address[postcode][]" id="edit_postcode" class="textbox add uppercase"> *</span></div>
 	  <div><label for="billing">{$LANG.address.billing_address}</label><span><input type="checkbox" name="address[billing][]" id="billing" class="add" value="1"></span></div>
-	  <div><label for="default">{$LANG.common.default}</label><span><input type="checkbox" name="address[default][]" id="default"  class="add" value="1"></span></div>
+	  <div><label for="default">{$LANG.address.default_delivery_address}</label><span><input type="checkbox" name="address[default][]" id="default"  class="add" value="1"></span></div>
 	  </fieldset>
 	  <input type="hidden" name="add_div_class" value="note">
 	  <input type="button" value="{$LANG.common.add}" class="add" target="address-list" onclick="$.fn.colorbox.close()">

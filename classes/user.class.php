@@ -237,7 +237,7 @@ class User {
 			'email'  => $username,
 			'password' => $hash_password,
 		);
-		$user = $GLOBALS['db']->select('CubeCart_customer', array('customer_id', 'email', 'password', 'salt', 'new_password'), $where);
+		$user = $GLOBALS['db']->select('CubeCart_customer', array('language', 'customer_id', 'email', 'password', 'salt', 'new_password'), $where);
 
 		$GLOBALS['session']->blocker($username, $user[0]['customer_id'], (bool)$user, Session::BLOCKER_FRONTEND, $GLOBALS['config']->get('config', 'bfattempts'), $GLOBALS['config']->get('config', 'bftime'));
 		if (!$user) {
@@ -269,6 +269,7 @@ class User {
 				if (!$GLOBALS['session']->blocked()) {
 					// possibly replaceable with session_set_save_handler?
 					$GLOBALS['db']->update('CubeCart_sessions', array('customer_id' => $user[0]['customer_id']), array('session_id' => $GLOBALS['session']->getId()));
+					$GLOBALS['session']->set('language', $user[0]['language'], 'client');
 					// Load user data
 					$this->_load();
 
@@ -381,6 +382,7 @@ class User {
 			} else {
 				$data['registered']  = time();
 				$data['type']    = $type;
+				$data['language']    = $GLOBALS['language']->current();
 
 				$customer_id = $this->_validCustomerId();
 				if($customer_id) {
@@ -543,7 +545,13 @@ class User {
 	public function getDefaultAddress() {
 		if ($this->is()) {
 			$where['customer_id'] = $this->_user_data['customer_id'];
-			$where['default'] = '1';
+			
+			if ($GLOBALS['config']->get('config', 'basket_allow_non_invoice_address')) {
+				$where['default'] = '1';
+			} else {
+				$where['billing'] = '1';
+			}
+			
 			if (($addresses = $GLOBALS['db']->select('CubeCart_addressbook', false, $where, 'billing DESC', false, false, false)) !== false) {
 				foreach ($addresses as $address) {
 					$addressArray[] = $this->formatAddress($address);
@@ -740,7 +748,7 @@ class User {
 			$error['name'] = true;
 		}
 
-		if ($GLOBALS['config']->get('config', 'recaptcha') && !$GLOBALS['session']->get('confirmed', 'recaptcha')) {
+		if ($GLOBALS['gui']->recaptchaRequired()) {
 			if (($message = $GLOBALS['session']->get('error', 'recaptcha')) === false) {
 				//If the error message from recaptcha fails for some reason:
 				$GLOBALS['gui']->setError($GLOBALS['language']->form['verify_human_fail']);
@@ -774,6 +782,8 @@ class User {
 			foreach($_POST as $key => $value) {
 				$_POST[$key] = filter_var($value, FILTER_SANITIZE_STRING);
 			}
+
+			$_POST['language'] = $GLOBALS['language']->current();
 			
 			if ($existing[0]['type']==2) {
 				$_POST['type'] = 1;

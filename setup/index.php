@@ -78,6 +78,7 @@ $domain        = parse_url(CC_STORE_URL);
 $cookie_domain = '.' . str_replace('www.', '', $domain['host']);
 
 $default_config_settings = array(
+  'csrf' => '1',
   'update_main_stock' => '',
   'tax_number' => '',
   'recaptcha_public_key' => '',
@@ -114,7 +115,7 @@ $default_config_settings = array(
   'seo_metadata' => '1',
   'store_meta_keywords' => '',
   'store_meta_description' => '',
-  'recaptcha' => '1',
+  'recaptcha' => '0',
   'time_format' => '%d %b %Y, %H:%M',
   'time_offset' => '0',
   'time_zone' => 'Europe/London',

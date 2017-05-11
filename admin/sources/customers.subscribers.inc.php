@@ -104,7 +104,7 @@ if(isset($_POST['rem_subscriber']) && is_array($_POST['rem_subscriber'])) {
 }
 
 if($redirect) {
-	httpredir('?_g=customers&node=subscribers#general');
+	httpredir('?_g=customers&node=subscribers','general');
 }
 
 $per_page  = 20;

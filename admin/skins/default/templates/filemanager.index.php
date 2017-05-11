@@ -13,6 +13,9 @@
   {if isset($mode_list)}
   <div id="filemanager" class="tab_content">
 	<h3>{$FILMANAGER_TITLE}</h3>
+	{if $FILMANAGER_MODE == '2'}
+	<p>{$LANG.filemanager.public}</p>
+	{/if}
 	<div>
 	  {if $FOLDER_PARENT}
 	  <div>
@@ -37,6 +40,7 @@
 	  {foreach from=$FILES item=file}
 	  <div>
 		<span class="actions">
+		  {$file.filesize}
 		  {if $file.select_button}
 		  <a href="{$file.master_filepath}" class="select"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a>
 		  {else}
@@ -115,5 +119,5 @@
 	<input type="submit" name="cancel" value="{$LANG.common.cancel}">
   </div>
   {/if}
-  <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+  
 </form>

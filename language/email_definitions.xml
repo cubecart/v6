@@ -378,7 +378,7 @@
         <p>Why not spend it now?</p>]]></content>
     <content type="text"><![CDATA[Dear {$DATA.name},
         
-        We are pleased to  be sending you this gift card which you can use towards the purchase of any item(s) on our website.
+        We are pleased to be sending you this gift card which you can use towards the purchase of any item(s) on our website.
         
         Happy shopping!
         

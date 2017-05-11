@@ -50,5 +50,5 @@
 	<input type="hidden" name="save" value="{$FORM_HASH}">
 	<input type="submit" value="{$LANG.common.save}">
   </div>
-  <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+  
 </form>

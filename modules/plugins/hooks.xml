@@ -35,6 +35,7 @@
  <hook trigger="admin.customer.group.delete" deprecated="" />
  <hook trigger="admin.customer.group.get" deprecated="" />
  <hook trigger="admin.customer.list" deprecated="" />
+ <hook trigger="admin.customer.table_head_sort" deprecated="" />
  <hook trigger="admin.customer.tabs" deprecated="" /> 
  <hook trigger="admin.customer.update" deprecated="" />
  <hook trigger="admin.customer.post_process" deprecated="" />
@@ -61,7 +62,9 @@
  <hook trigger="admin.order.index.pre_display" deprecated="" />
  <hook trigger="admin.order.index.pre_process" deprecated="" />
  <hook trigger="admin.order.index.print" deprecated="" />
+ <hook trigger="admin.order.index.table_head_sort" deprecated="" />
  <hook trigger="admin.order.index.transaction" deprecated="" />
+ <hook trigger="admin.order.transactions.table_head_sort" deprecated="" />
  <hook trigger="admin.product.clone" deprecated="" />
  <hook trigger="admin.product.delete" deprecated="" />
  <hook trigger="admin.product.export" deprecated="" />
@@ -102,6 +105,7 @@
  <hook trigger="class.admin.get_section_id" deprecated="" />
  <hook trigger="class.ajax.load" deprecated="" />
  <hook trigger="class.ajax.search" deprecated="" />
+ <hook trigger="class.cart.add.check" deprecated="" />
  <hook trigger="class.cart.add.pre" deprecated="" />
  <hook trigger="class.cart.add.preredirect" deprecated="" />
  <hook trigger="class.cart.add.save" deprecated="" />
@@ -112,6 +116,7 @@
  <hook trigger="class.cart.discount_add" deprecated="" />
  <hook trigger="class.cart.get" deprecated="" />
  <hook trigger="class.cart.get.product_prices" deprecated="" />
+ <hook trigger="class.cart.get.product_option_prices" deprecated="" />
  <hook trigger="class.cart.load_shipping" deprecated="" />
  <hook trigger="class.cart.update" deprecated="" />
  <hook trigger="class.catalogue.category_product_list" deprecated="" />
@@ -191,7 +196,8 @@
  <hook trigger="class.gui.display_session_box" deprecated="" />
  <hook trigger="class.gui.display_social" deprecated="" />
  <hook trigger="class.gui.javascripts" deprecated="" />
- <hook trigger="class.gui.session.list" deprecated="" /> 
+ <hook trigger="class.gui.session.list" deprecated="" />
+ <hook trigger="class.mailer.send" deprecated="" />
  <hook trigger="class.newsletter.subscribe" deprecated="" />
  <hook trigger="class.newsletter.unsubscribe" deprecated="" /> 
  <hook trigger="class.order.delete" deprecated="" />

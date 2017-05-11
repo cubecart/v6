@@ -17,6 +17,7 @@
 	<homepage>http://www.cubecart.com</homepage>
 	<mobile>false</mobile>
 	<responsive>true</responsive>
+	<csrf>true</csrf>
   </info>
   <layout>
 	<products>

@@ -63,7 +63,7 @@ if (isset($_GET['order_id'])) {
 		'date'    => $GLOBALS['db']->column_sort('time', $GLOBALS['language']->common['date'], 'sort', $current_page, $_GET['sort'])
 	);
 
-	foreach ($GLOBALS['hooks']->load('admin.product.table_head_sort') as $hook) include $hook;
+	foreach ($GLOBALS['hooks']->load('admin.order.transactions.table_head_sort') as $hook) include $hook;
 
 	$GLOBALS['smarty']->assign('THEAD', $thead_sort);
 

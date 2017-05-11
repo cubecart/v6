@@ -262,6 +262,9 @@ class FileManager {
 
 			foreach ($file_array as $key => $file) {
 				if (!is_dir($file)) {
+					// Skip file if it is not an image and we're in image mode
+					if($this->_mode == 1 && !preg_match('/\.(jpeg|jpg|png|gif)$/i', $file)) continue;
+
 					// Skip existing entries, and sources/thumbs
 					if (isset($exists) && in_array(str_replace(array($this->_manage_root.'/', 'source/'), '', $file), $exists)) continue;
 
@@ -428,7 +431,16 @@ class FileManager {
 	 */
 	private function deleteRecursive($directory = null) {
 		$directory = urldecode($directory);
-		$scan = glob($this->_manage_root.'/'.$directory.'/'.'*');
+
+		$valid_base_path = realpath($this->_manage_root);
+		$path = $this->_manage_root.'/'.$directory;
+		$realpath = realpath($path);
+		if ($realpath === false || strpos($realpath, $valid_base_path) !== 0) {
+		    // Abort on potential directory traversal
+		    return false;
+		}
+
+		$scan = glob($path.'/'.'*');
 		if (is_array($scan)) {
 			foreach ($scan as $entry) {
 				$this->_sub_dir = str_replace(array($this->_manage_root.'/', basename($entry)), '', $entry);
@@ -812,7 +824,7 @@ class FileManager {
 				$folder = array(
 					'name'  => $name,
 					'link'  => currentPage(null, array('subdir' => $this->formatPath($this->_sub_dir.$dir, false))),
-					'delete' => (substr($name, 0, 1) !== '.') ? currentPage(null, array('delete' => $this->formatPath($this->_sub_dir.$dir, false))) : null,
+					'delete' => (substr($name, 0, 1) !== '.') ? currentPage(null, array('delete' => $this->formatPath($this->_sub_dir.$dir, false), 'token' => SESSION_TOKEN)) : null,
 				);
 				$list_folders[] = $folder;
 			}
@@ -842,12 +854,13 @@ class FileManager {
 				$file['icon']   = $this->getFileIcon($file['mimetype']);
 				$file['class']   = (preg_match('#^image#', $file['mimetype'])) ? 'class="colorbox"' : '';
 				$file['edit']   = currentPage(null, array('fm-edit' => $file['file_id']));
-				$file['delete']   = currentPage(null, array('delete' => $file['file_id']));
+				$file['delete']   = currentPage(null, array('delete' => $file['file_id'], 'token' => SESSION_TOKEN));
 				$file['random']   = mt_rand();
 				$file['description'] = (!empty($file['description'])) ? $file['description'] : $file['filename'];
 				$file['master_filepath']= str_replace(chr(92), "/", $this->_manage_dir.'/'.$file['filepath'].$file['filename']);
 				$file['filepath']   = ($this->_mode == self::FM_FILETYPE_IMG) ? $catalogue->imagePath($file['file_id'], 'medium') : $this->_manage_dir.'/'.$file['filepath'].$file['filename'];
 				$file['select_button'] = (bool)$select_button;
+				$file['filesize'] = formatBytes($file['filesize'], true);
 
 				if ($select_button) $file['master_filepath'] = $GLOBALS['rootRel'].$file['master_filepath']; // Fix the image path added to the FCK editor area
 

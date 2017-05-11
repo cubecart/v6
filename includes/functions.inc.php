@@ -192,6 +192,11 @@ function currentPage($excluded = null, $included = null, $remove_excluded = true
  	$url_path = '';
  	$params = array();
 	$one_time = array('added', 'completed', 'deleted', 'edited', 'failed', 'removed', 'subscribed', 'submitted', 'unsubscribed', 'updated', session_name());
+	// Always remove session token
+	$get = $_GET;
+	if(isset($get['token'])) {
+		unset($get['token']);
+	}
 
 	if (isset($GLOBALS['storeURL'], $GLOBALS['rootRel'])) {
 		$url_path = $GLOBALS['storeURL'].str_replace($GLOBALS['rootRel'], '/', htmlentities($_SERVER['PHP_SELF']));
@@ -199,8 +204,8 @@ function currentPage($excluded = null, $included = null, $remove_excluded = true
 		$url_path = '';
 	}
 
-	if(is_array($_GET) && count($_GET) > 0) {
-		$params = array_merge($params, $_GET);
+	if(is_array($get) && count($get) > 0) {
+		$params = array_merge($params, $get);
 	}
 
 	if(is_array($included) && count($included) > 0) {
@@ -208,7 +213,7 @@ function currentPage($excluded = null, $included = null, $remove_excluded = true
 	}
 
 	if ($excluded === true) {
-		// Drop *all* $_GET vars, except $protected
+		// Drop *all* $get vars, except $protected
 		$protected	= array('_a');
 		$excluded	= array();
 		if(count($params) > 0) {
@@ -229,7 +234,7 @@ function currentPage($excluded = null, $included = null, $remove_excluded = true
 				if (isset($params[$key])) {
 					unset($params[$key]);
 					if (!CC_IN_ADMIN && $remove_excluded) {
-						unset($_GET[$key]); // fix for other areas that want exclusion
+						unset($get[$key]); // fix for other areas that want exclusion
 					}
 				}
 			}
@@ -241,9 +246,9 @@ function currentPage($excluded = null, $included = null, $remove_excluded = true
 	}
 	
 	if( !isset($GLOBALS['seo']) || !is_object($GLOBALS['seo']) ) return $url_path;
-	// $_GET['seo_path'] should never be set... but if it is this will fix it
-	if(isset($_GET['seo_path']) && !empty($_GET['seo_path'])) {
-		$url_path = SEO::getInstance()->getItem($_GET['seo_path'], true);
+	// $get['seo_path'] should never be set... but if it is this will fix it
+	if(isset($get['seo_path']) && !empty($get['seo_path'])) {
+		$url_path = SEO::getInstance()->getItem($get['seo_path'], true);
 	}
 	return SEO::getInstance()->SEOable($url_path);
 }
@@ -639,9 +644,28 @@ function httpredir($destination = '', $anchor = '', $meta_refresh = false, $stat
 		}
 	}
 
+	// Sanitize url and make sure it remains properly encoded; note that it has already been run through urldecode
+	$parts = explode('?', $destination, 2);
+	if (count($parts) > 1) {
+		$destination = "$parts[0]?";
+		$parts = explode('&', $parts[1]);
+		$sanitized = array();
+		foreach ($parts as $part) {
+			$param = explode('=', $part, 2);
+			if (count($param) === 2) {
+				$sanitized[] = urlencode($param[0]).'='.urlencode($param[1]);
+			} elseif (empty($sanitized)) { // invalid pair with no previous query to which to append
+				continue;
+			} else { // invalid pair, assume it's a straggler caused by searching '&'
+				$sanitized[count($sanitized) - 1] .= urlencode('&'.$param[0]);
+			}
+		}
+		$destination .= implode('&', $sanitized);
+	}
+
 	// Redirect - appending the last tab anchor for extra cleverness
 	if (!empty($anchor)) {
-		$destination .= '#'.$anchor;
+		$destination .= '#'.urlencode($anchor);
 	} else if (isset($_POST['previous-tab'])) {
 		$destination	.= (preg_match('/^#/', $_POST['previous-tab'])) ? $_POST['previous-tab'] : '#'.$_POST['previous-tab'];
 	}
@@ -829,7 +853,7 @@ function rootHomePath() {
 }
 
 /**
- * Sanitize SEO allowed path (Depreciated since 6.0.7)
+ * Sanitize SEO allowed path (Deprecated since 6.0.7)
  * Use static function SEO::sanitizeSEOPath instead
  *
  * @return string

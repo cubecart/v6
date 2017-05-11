@@ -105,5 +105,5 @@
    <div class="form_control">
       <input type="submit" value="{$LANG.common.save}">
    </div>
-   <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+   
 </form>

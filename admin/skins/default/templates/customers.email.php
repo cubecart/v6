@@ -55,7 +55,7 @@
       <input type="hidden" name="previous-tab" id="previous-tab" value="">
       <input type="submit" value="{$LANG.common.save}">
    </div>
-   <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+   
 </form>
 {/if}
 {if isset($DISPLAY_LIST)}
@@ -148,7 +148,7 @@
       <p>{$LANG.email.help_macro}</p>
       <input type="hidden" name="previous-tab" id="previous-tab" value="">
    </div>
-   <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+   
 </form>
 {/if}
 {if isset($DISPLAY_SEND)}

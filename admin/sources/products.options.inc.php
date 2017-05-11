@@ -280,7 +280,7 @@ $GLOBALS['smarty']->assign('OPTION_TYPE_JSON', json_encode($optionTypes));
 if (isset($optionArray) && !empty($optionArray)) {
 	foreach ($optionArray as $option_id => $option) {
 		$option['type_name']= $optionTypes[$option['type']];
-		$option['delete'] = currentPage(null, array('delete' => 'group', 'id' => $option_id));
+		$option['delete'] = currentPage(null, array('delete' => 'group', 'id' => $option_id, 'token' => SESSION_TOKEN));
 		$groups_list[]  = $option;
 		$smarty_data['option_name'][$option_id] = $optionArray[$option_id]['name'];
 	}
@@ -311,7 +311,7 @@ if (($optionsets = $GLOBALS['db']->select('CubeCart_options_set')) !== false) {
 
 			unset($set['members'][$oid]['priority']);
 		}
-		$set['delete'] = currentPage(null, array('delete' => 'set', 'id' => (int)$set['set_id']));
+		$set['delete'] = currentPage(null, array('delete' => 'set', 'id' => (int)$set['set_id'], 'token' => SESSION_TOKEN));
 		$smarty_data['list_sets'][$set_id] = $set;
 	}
 	$GLOBALS['smarty']->assign('SETS', $smarty_data['list_sets']);

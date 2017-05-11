@@ -19,17 +19,20 @@ $add_headers = true;
 
 /* Generate sales reports */
 if (isset($_POST['report'])) {
-	$date_pattern = '/^([0-9]){4}-([0-9]){2}-([0-9]){2}$/';
-	if (!empty($_POST['report']['date']['to']) && !preg_match($date_pattern, $_POST['report']['date']['to'])
-		|| !empty($_POST['report']['date']['from']) && !preg_match($date_pattern, $_POST['report']['date']['from'])
-	) {
-		httpredir('?_g=reports');
-	}
-
 	$report_filter = $_POST['report'];
 } elseif (isset($_GET['report'])) {
 	$report_filter = $_GET['report'];
 }
+
+/* Validate input */
+$date_pattern = '/^([0-9]){4}-([0-9]){2}-([0-9]){2}$/';
+if (!empty($report_filter['date']['to']) && !preg_match($date_pattern, $report_filter['date']['to'])
+	|| !empty($report_filter['date']['from']) && !preg_match($date_pattern, $report_filter['date']['from'])
+) {
+	$GLOBALS['main']->setACPWarning($lang['common']['invalid_data']);
+	httpredir('?_g=reports');
+}
+
 if (!isset($_POST['report']['status']) && !isset($_GET['report']['status'])) {
 	$report_filter['status'] = array (0 => 2, 1 => 3);
 }

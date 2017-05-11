@@ -255,6 +255,7 @@ class Cart {
 				$product = $GLOBALS['catalogue']->getProductData($product_id, 1, false, 10, 1, false, $options_identifier_string);
 
 				if ($product) {
+					foreach ($GLOBALS['hooks']->load('class.cart.add.check') as $hook) include $hook;
 					// Check for options
 					$options = $GLOBALS['catalogue']->getProductOptions($product_id);
 					
@@ -274,7 +275,7 @@ class Cart {
 
 						// Check required options have a value!
 						$quantity = (is_numeric($quantity) && $quantity > 0) ? $quantity : 1;
-						$stock_level = $GLOBALS['catalogue']->getProductStock($product['product_id'], $options_identifier_string);
+						$stock_level = $GLOBALS['catalogue']->getProductStock($product['product_id'], $options_identifier_string, false, $this->basket['contents'], $quantity);
 
 						// Check stock level
 						if ($product['use_stock_level'] && !$GLOBALS['config']->get('config', 'basket_out_of_stock_purchase')) {
@@ -740,6 +741,7 @@ class Cart {
 										$assign_id = 0;
 									}
 									$value = $GLOBALS['catalogue']->getOptionData((int)$option_id, $assign_id);
+									foreach ($GLOBALS['hooks']->load('class.cart.get.product_option_prices') as $hook) include $hook;
 									if ($value) {
 										Cart::updateProductDataWithOption($product, $value);
 										$value['value_name'] = $option_value;
@@ -749,6 +751,7 @@ class Cart {
 							} else if (is_numeric($option_data)) {
 								// Select option
 								$value = $GLOBALS['catalogue']->getOptionData((int)$option_id, (int)$option_data);
+								foreach ($GLOBALS['hooks']->load('class.cart.get.product_option_prices') as $hook) include $hook;
 								if ($value) {
 									Cart::updateProductDataWithOption($product, $value);
 									$product['options'][] = $value;
@@ -758,6 +761,8 @@ class Cart {
 					} else {
 						$product['options'] = false;
 					}
+
+					$this->basket['contents'][$hash]['digital'] = $product['digital'];
 
 					// Add the total product price inc options etc for payment gateways
 					$this->basket['contents'][$hash]['option_line_price'] = $product['option_line_price'];
@@ -1358,5 +1363,8 @@ class Cart {
 			$option['price_display'] .= $GLOBALS['tax']->priceFormat(abs($display_option_tax), true);
 		}
 		$product['product_weight'] += (isset($option['option_weight'])) ? $option['option_weight'] : 0;
+		if($option['option_weight']>0) {
+			$product['digital'] = false;	
+		}
 	}
 }

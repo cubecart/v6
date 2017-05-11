@@ -118,8 +118,12 @@ class Session {
 			ini_set('session.use_only_cookies', true);
 		}
 		if (!$ini['session.cookie_httponly']) {
-			// make sure sesison cookies are http ONLY!
+			// make sure session cookies are http ONLY!
 			ini_set('session.cookie_httponly',true);
+		}
+		if (!$ini['session.cookie_secure'] && $GLOBALS['config']->get('config', 'ssl')=='1') {
+			// make sure session cookies are secure if SSL is enabled
+			ini_set('session.cookie_secure',true);
 		}
 		
 		$this->_start();
@@ -247,7 +251,7 @@ class Session {
 	/**
 	 * Have cookied been accepted or not
 	 *
-	 * Depreciated but left for backward compatibility
+	 * Deprecated but left for backward compatibility
 	 *
 	 * @param string $token
 	 * @return bool
@@ -369,10 +373,6 @@ class Session {
 		return $default;
 	}
 
-	public function getBack() {
-		return $this->get('back');
-	}
-
 	/**
 	 * Get session id
 	 *
@@ -406,6 +406,23 @@ class Session {
 	 */
     public function getState() {
 		return $this->_state;
+	}
+
+	/**
+	 * Get session data from database
+	 *
+	 * @return false/array/string
+	 */
+	public function getSessionTableData($column = false) {
+		$data = $GLOBALS['db']->select('CubeCart_sessions', $column, array('session_id' => $this->getId()), false, 1, false, false);
+		if(is_array($data)) {
+			if(count($data[0])==1 && is_string($column)) {
+				return $data[0][$column];
+			} else {
+				return $data[0];
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -618,7 +635,7 @@ class Session {
 	private function _start() {
 
 		$save_path = session_save_path();
-		if(!file_exists($save_path) || !is_writeable($save_path)) {	
+		if(!@is_writeable(session_save_path())) {	
 			if(is_writeable(CC_INCLUDES_DIR.'/extra')) {
 				$this->_manage_session_files = true;
 				session_save_path(CC_INCLUDES_DIR.'/extra');

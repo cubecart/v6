@@ -40,7 +40,7 @@
             <tr>
                <td width="10"><span class="toggle"><input type="hidden" id="snippet_status_{$snippet.snippet_id}" name="snippet_status[{$snippet.snippet_id}]" value="{$snippet.enabled}" class="toggle"></span></td>
                <td><a href="?_g=settings&node=hooks&snippet={$snippet.snippet_id}#snippets">{$snippet.description}</a></td>
-               <td width="50"><span class="actions"><a href="?_g=settings&node=hooks&snippet={$snippet.snippet_id}#snippets"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a> <a href="?_g=settings&node=hooks&delete_snippet={$snippet.snippet_id}#snippets" class="delete" title="{$LANG.notification.confirm_continue}"><i class="fa fa-trash"></i></a></span></td>
+               <td width="50"><span class="actions"><a href="?_g=settings&node=hooks&snippet={$snippet.snippet_id}#snippets"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a> <a href="?_g=settings&node=hooks&delete_snippet={$snippet.snippet_id}&token={$SESSION_TOKEN}#snippets" class="delete" title="{$LANG.notification.confirm_continue}"><i class="fa fa-trash"></i></a></span></td>
             </tr>
             {foreachelse}
             <tr>
@@ -172,5 +172,5 @@
    {/if}
    {include file='templates/element.hook_form_content.php'}
    <div class="form_control"><input type="submit" value="{$LANG.common.save}"></div>
-   <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+   
 </form>

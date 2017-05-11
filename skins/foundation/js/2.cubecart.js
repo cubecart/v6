@@ -1,18 +1,52 @@
 ;
 jQuery(document).ready(function() {
 
-    var window_loc_hash = window.location.hash;
-
-    if($('a.open-clearing img#img-preview').length) {
-        var ip = $('a.open-clearing img#img-preview');
+    if($('.horizontal a.open-clearing img#img-preview').length) {
+        var ip = $('.horizontal a.open-clearing img#img-preview');
         var ip_height = ip.height();
         var ip_width = ip.width();
         var min_height = ip_width * 0.7;
         if(ip_height<min_height) {
             ip_height = min_height;
         }
-        $('a.open-clearing').css({'min-height':ip_height+'px', 'max-height': ip_height+'px'});
+        $('.horizontal a.open-clearing').css({'min-height':ip_height+'px', 'max-height': ip_height+'px'});
     }
+
+    if($("#scrollContent").length>0) {
+        var scrolling = false;
+        var scrollArea = document.querySelector('#scrollContent');
+        if(scrollArea.offsetHeight < scrollArea.scrollHeight){
+            $(".scroller").show();
+        }
+
+        $("#scrollUp").bind("mouseover", function(event) {
+            scrolling = true;
+            scrollContent("up");
+        }).bind("mouseout", function(event) {
+            scrolling = false;
+        });
+
+        $("#scrollDown").bind("mouseover", function(event) {
+            scrolling = true;
+            $("#scrollUp .icon").show();
+            scrollContent("down");
+        }).bind("mouseout", function(event) {
+            scrolling = false;
+        });
+
+        function scrollContent(direction) {
+            var amount = (direction === "up" ? "-=1px" : "+=1px");
+            $("#scrollContent").animate({
+                scrollTop: amount
+            }, 1, function() {
+                if (scrolling) {
+                    scrollContent(direction);
+                }
+            });
+        }
+    }
+
+    var window_loc_hash = window.location.hash;
 
     if($('.gateway_wrapper .colorbox').length) {
         var colorbox = $('.colorbox');
@@ -449,6 +483,9 @@ function add_to_basket(form) {
                 var redir = returned.responseText.split('Redir:');
                 window.location = redir[1];
             } else {
+                var token = $('<div>',{html:returned.responseText}).find('#mini-basket div.session_token').text();
+                $("input[name=token]").val(token);
+
                 $('#mini-basket').replaceWith(returned.responseText);
                 on_canvas_basket_content = $('#mini-basket .box-basket-content').html();
                 $(".right-off-canvas-menu .box-basket-content").html(on_canvas_basket_content);

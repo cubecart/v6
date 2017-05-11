@@ -91,5 +91,5 @@
 	</fieldset>
 	<div><input type="submit" class="button" value="{$LANG.common.display}"></div>
   </div>
-  <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+  
 </form>

@@ -21,7 +21,7 @@ if (isset($_POST['search']) && !empty($_POST['search'])) {
 	if (is_numeric($_POST['search']['product_id'])) {
 		httpredir('?_g=products&action=edit&product_id='.$_POST['search']['product_id']);
 	} else {
-		httpredir('?_g=products&q='.$_POST['search']['product']);
+		httpredir('?_g=products&q='.urlencode($_POST['search']['product']));
 	}
 }
 
@@ -57,11 +57,6 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 		// Generate a new product code automatically
 		$record['product_code'] = generate_product_code($_POST['name']);
 		unset($record['product_code_auto']);
-	}
-
-	foreach ($record as $key => $value) {
-		if (!in_array($key, array('name', 'seo_meta_title', 'seo_meta_description', 'seo_meta_keywords'))) continue;
-		$record[$key] = html_entity_decode($value);
 	}
 
 	//Need to remove these in some cases to stop SQL errors
@@ -157,7 +152,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 					foreach ($members as $member) {
 						$member_list[] = (int)$member['set_member_id'];
 					}
-					$GLOBALS['db']->update('CubeCart_option_assign', array('set_member_id' => 0), array('set_member_id' => $member_list, 'product' => $product_id));
+					$GLOBALS['db']->delete('CubeCart_option_assign', array('set_member_id' => $member_list, 'product' => $product_id));
 					unset($member_list);
 				}
 				$GLOBALS['db']->delete('CubeCart_options_set_product', array('set_product_id' => (int)$set_product_id));
@@ -199,6 +194,9 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 	// Update existing options - Inline editor
 	if (isset($_POST['option_update']) && is_array($_POST['option_update'])) {
 		foreach ($_POST['option_update'] as $assign_id => $values) {
+			if (!isset($values['option_default'])) {
+				$values['option_default'] = 0;
+			}
 			if (!isset($values['option_negative'])) {
 				$values['option_negative'] = 0;
 			}
@@ -216,6 +214,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 			$record = array(
 				'product'   => $product_id,
 				'option_negative' => (isset($_POST['option_add']['negative'][$offset]) && $_POST['option_add']['negative'][$offset]==1) ? $_POST['option_add']['negative'][$offset] : '0',
+				'option_default' => (isset($_POST['option_add']['default'][$offset]) && $_POST['option_add']['default'][$offset]==1) ? $_POST['option_add']['default'][$offset] : '0',
 				'option_price'  => $_POST['option_add']['price'][$offset],
 				'option_weight'  => $_POST['option_add']['weight'][$offset],
 				'matrix_include'  => $_POST['option_add']['matrix_include'][$offset],
@@ -750,7 +749,7 @@ if (isset($_GET['action'])) {
 
 			## Product Options (Sets)
 			$select_types = array(0,4);
-			if (($set_products = $GLOBALS['db']->select('CubeCart_options_set_product', false, array('product_id' => $product_id))) !== false) {
+			if (($set_products = $GLOBALS['db']->misc(sprintf("SELECT * FROM `%1\$sCubeCart_options_set_product` AS `P` INNER JOIN `%1\$sCubeCart_options_set` AS `S` ON `S`.`set_id` = `P`.`set_id` WHERE `P`.`product_id` = $product_id",$GLOBALS['config']->get('config','dbprefix')))) !== false) {
 				foreach ($set_products as $set_product) {
 					if (($members = $GLOBALS['db']->select('CubeCart_options_set_member', false, array('set_id' => $set_product['set_id']))) !== false) {
 						foreach ($members as $member) {
@@ -761,6 +760,7 @@ if (isset($_GET['action'])) {
 									$group['display'] = in_array($group['option_type'], $select_types) ? '<strong>'.$group['option_name'].':</strong> '.$value['value_name'] : $group['option_name'];
 									$option_list[$member['option_id']][$member['value_id']] = array_merge($member, $assign, $group, $value, array('show_disable' => true));
 									$option_list[$assign['option_id']][$assign['value_id']]['from_assigned'] = true;
+									$option_list[$assign['option_id']][$assign['value_id']]['set_name'] = (isset($set_product['set_name']) && !empty($set_product['set_name'])) ? $set_product['set_name'] : $lang['common']['none'];
 								}
 							} else {
 								$group = (isset($group_list[$member['option_id']])) ? $group_list[$member['option_id']] : array();
@@ -769,6 +769,7 @@ if (isset($_GET['action'])) {
 								$assign = array('set_enabled' => '1', 'option_price' => number_format(0, 2), 'option_weight' => number_format(0, 2));
 
 								$option_list[$member['option_id']][$member['value_id']] = array_merge($member, $group, $value, $assign, array('show_disable' => true));
+								$option_list[$member['option_id']][$member['value_id']]['set_name'] = (isset($set_product['set_name']) && !empty($set_product['set_name'])) ? $set_product['set_name'] : $lang['common']['none'];
 							}
 							$option_list[$member['option_id']]['priority'] = $group['priority'];
 						}
@@ -787,6 +788,7 @@ if (isset($_GET['action'])) {
 					$group['display'] = in_array($group['option_type'], $select_types) ? '<strong>'.$group['option_name'].':</strong> '.$value['value_name'] : $group['option_name'];
 					$option_list[$assign['option_id']][$assign['value_id']] = array_merge($assign, $group, $value, array('show_disable' => false));
 					$option_list[$assign['option_id']][$assign['value_id']]['from_assigned'] = true;
+					$option_list[$assign['option_id']][$assign['value_id']]['set_name'] = $lang['common']['none'];
 					$option_list[$assign['option_id']]['priority'] = $group['priority'];
 				}
 			}
@@ -822,7 +824,7 @@ if (isset($_GET['action'])) {
 				$GLOBALS['main']->addTabControl($lang['reviews']['title_reviews'], 'reviews');
 				foreach ($reviews as $review) {
 					$review['date']  = formatTime($review['time']);
-					$review['delete'] = currentPage(false, array('delete_review' => $review['id']));
+					$review['delete'] = currentPage(false, array('delete_review' => $review['id'], 'token' => SESSION_TOKEN));
 					$smarty_data['customer_reviews'][] = $review;
 				}
 				$GLOBALS['smarty']->assign('CUSTOMER_REVIEWS', $smarty_data['customer_reviews']);
@@ -951,7 +953,7 @@ if (isset($_GET['action'])) {
 		}
 
 		// Stock for product options
-		$options = $GLOBALS['db']->misc('SELECT A.option_id, A.value_id ,V.value_name, G.option_name FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_option_assign` AS `A` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_option_value` AS `V` ON A.value_id = V.value_id INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_option_group` AS `G` ON A.option_id = G.option_id WHERE `product` = '.$product_id.' AND `set_enabled` = 1 AND `matrix_include` = 1 ORDER BY A.option_id, V.priority ASC');
+		$options = $GLOBALS['db']->misc('SELECT A.option_id, A.value_id ,V.value_name, G.option_name FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_option_assign` AS `A` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_option_value` AS `V` ON A.value_id = V.value_id INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_option_group` AS `G` ON A.option_id = G.option_id WHERE `product` = '.$product_id.' AND `set_enabled` = 1 AND `matrix_include` = 1 ORDER BY A.option_id, IF(V.priority>0, V.priority, V.value_id) ASC');
 		/*
 			option_id = group name e.g. size
 			value_id = value id e.g. 7
@@ -1045,10 +1047,6 @@ if (isset($_GET['action'])) {
 
 		// Set status to 1 if not set
 		$result[0]['status'] = !isset($result[0]['status']) ? 1 : $result[0]['status'];
-		foreach ($result[0] as $key => $value) {
-			if (!in_array($key, array('name', 'seo_meta_title', 'seo_meta_description', 'seo_meta_keywords'))) continue;
-			$result[0][$key] = htmlentities($value, ENT_COMPAT, 'UTF-8');
-		}
 		$result[0]['auto_code_checked'] = (empty($result[0]['product_code'])) ? 'checked="checked"' : '';
 		$result[0]['seo_path'] = isset($result[0]['product_id']) ? $GLOBALS['seo']->getdbPath('prod', $result[0]['product_id']) : '';
 
@@ -1194,7 +1192,7 @@ if (isset($_GET['action'])) {
 				$result['link_clone'] = currentPage(null, array('action' => 'clone', 'product_id' => $result['product_id']));
 			}
 			$result['link_edit'] = currentPage(null, array('action' => 'edit', 'product_id' => $result['product_id']));
-			$result['link_delete'] = currentPage(null, array('delete' => $result['product_id']));
+			$result['link_delete'] = currentPage(null, array('delete' => $result['product_id'], 'token' => SESSION_TOKEN));
 			$result['type_icon'] = $GLOBALS['config']->get('config', 'adminFolder')."/skins/".$GLOBALS['config']->get('config', 'admin_skin')."/images/prod_type_".(int)(bool)$result['digital'].".png";
 			$result['type_alt']  = $result['digital'] ? $lang['catalogue']['product_type_digital'] : $lang['catalogue']['product_type_tangible'];
 			// Get master category path

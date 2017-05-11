@@ -35,7 +35,7 @@
             <input type="submit" value="{$LANG.common.go}">
          </fieldset>
       </div>
-      <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+      
    </form>
    <div id="chart1" class="google_chart"></div>
    <div id="chart1-title" style="display:none">{$GRAPH_DATA.1.title}</div>

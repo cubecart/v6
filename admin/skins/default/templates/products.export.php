@@ -33,5 +33,5 @@
 	  </tbody> 
 	</table>
   </div>
-  <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+  
 </form>

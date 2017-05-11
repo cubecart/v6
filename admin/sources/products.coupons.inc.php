@@ -242,7 +242,7 @@ if (isset($_GET['action'])) {
 			}
 			$coupon['value']  = ($coupon['discount_percent'] > 0) ? $coupon['discount_percent'].'%' : Tax::getInstance()->priceFormat($coupon['discount_price']);
 			$coupon['link_edit'] = currentPage(null, array('action' => 'edit', 'coupon_id' => $coupon['coupon_id']));
-			$coupon['link_delete'] = currentPage(null, array('delete' => $coupon['coupon_id']));
+			$coupon['link_delete'] = currentPage(null, array('delete' => $coupon['coupon_id'], 'token'=>SESSION_TOKEN));
 			$smarty_data['list_coupon'][] = $coupon;
 		}
 		$GLOBALS['smarty']->assign('COUPONS', $smarty_data['list_coupon']);

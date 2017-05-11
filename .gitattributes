@@ -8,3 +8,4 @@
 /files/.gitignore export-ignore
 /backup/.gitignore export-ignore
 /README.md export-ignore export-ignore
+/CONTRIBUTING.md export-ignore export-ignore

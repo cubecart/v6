@@ -6,9 +6,9 @@ a.open-clearing {
     display: block;
     overflow: hidden;
 }
-a.open-clearing #img-preview {
-    width: 100%;
-    height: 100%;
+.horizontal a.open-clearing #img-preview {
+    max-width: 100%;
+    max-height: 100%;
 }
 .icon {
   display: inline-block;
@@ -240,7 +240,7 @@ span.flag.flag-DK {background-position: 0 -88px}
 span.flag.flag-PT {background-position: 0 -99px}
 .back-to-top {
 	position: fixed;
-	bottom: 3em;
+	bottom: 4em;
 	right: 0px;
 	text-decoration: none;
 	color: #000 !important;
@@ -315,26 +315,55 @@ button.paypal-button:hover, button.paypal-button:focus, .button.paypal-button:ho
 svg.remove-coupon {
   color: #c60f13;  
 }
+.grecaptcha-badge {
+    z-index: 99999;
+}
 
 /* Small viewport only */
 @media only screen and (max-width: 40em) {
   
-  #colorbox.reveal-modal {
-      min-height:0vh !important;
-      width: 100%;
-  }
-  .small-collapse {
-    padding:0;
-    margin:0;
-    .columns {
-      padding:0;
-      margin:0;
+    #colorbox.reveal-modal {
+        min-height:0vh !important;
+        width: 100%;
     }
-  }
+    .small-collapse {
+        padding:0;
+        margin:0;
+        .columns {
+            padding:0;
+            margin:0;
+        }
+    }
+    .off-canvas-for-small {
+        position: absolute;
+        left: -3000px;
+    }
 }
 /* Medium viewport and above */
 @media only screen and (min-width: 40.0625em) {
     #mini-basket {
         min-width: 100px;
+    }
+    .vertical .clearing-thumbs {
+        overflow: hidden;
+        height: 350px;
+    }
+    .vertical .clearing-thumbs a.th:first-child{
+        margin-top: 3px;
+    }
+    .vertical .clearing-thumbs li {
+        padding: 0 0.625rem 0.625rem;
+    }
+    .scroller {
+        height: 24px;
+        display: none;
+        cursor: pointer;
+        text-align: center;
+    }
+    .scroller .icon {
+        font-size: 24px;
+    }
+    #scrollUp .icon {
+        display: none;  
     }
 }

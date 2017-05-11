@@ -15,57 +15,31 @@
    {foreach from=$ADDRESSES item=address}
    <div class="panel {if $address.billing}callout{/if}">
       <div class="row">
-         <div class="small-4 columns">
-            <a href="?_a=addressbook&action=edit&address_id={$address.address_id}">{$address.description}</a><br>
+         <div class="small-12 columns">
+            <h5><a href="?_a=addressbook&action=edit&address_id={$address.address_id}">{$address.description}</a></h5>
+         </div>
+      </div>
+      <div class="row">
+         <div class="small-6 medium-4 columns">
             {$address.line1},<br/>{if !empty($address.line2)} {$address.line2},<br/>{/if} {$address.town},<br/> {$address.state},<br/> {$address.postcode}<br>{$address.country}
          </div>
-         <div class="small-6 columns show-for-medium-up">
-            <div class="row">
-               <div class="medium-4 columns text-center">
-                  {$LANG.address.billing_address}
-               </div>
-               <div class="medium-4 columns text-center">
-                  {$LANG.address.delivery_address} ({$LANG.common.default})
-               </div>
-               <div class="medium-4 columns text-center">
-                  {$LANG.address.delivery_address}
-               </div>
-            </div>
-            <div class="row pad-top">
-               <div class="medium-4 columns text-center">
-                  <svg class="icon"><use xlink:href="#icon-{if $address.billing}check{else}times{/if}"></use></svg>
-               </div>
-               <div class="medium-4 columns text-center">
-                  <svg class="icon"><use xlink:href="#icon-{if $address.default}check{else}times{/if}"></use></svg>
-               </div>
-               <div class="medium-4 columns text-center">
-                  <svg class="icon"><use xlink:href="#icon-check"></use></svg>
-               </div>
-            </div>
+         <div class="small-6 columns">
+            <table>
+               <tr>
+                  <td>{$LANG.address.billing_address}</td>
+                  <td><svg class="icon"><use xlink:href="#icon-{if $address.billing}check{else}times{/if}"></use></svg></td>
+               </tr>
+               <tr>
+                  <td>{$LANG.address.default_delivery_address}</td>
+                  <td><svg class="icon"><use xlink:href="#icon-{if $address.default}check{else}times{/if}"></use></svg></td>
+               </tr>
+               <tr>
+                  <td>{$LANG.address.delivery_address}</td>
+                  <td><svg class="icon"><use xlink:href="#icon-check"></use></svg></td>
+               </tr>
+            </table>
          </div>
-         <div class="small-6 columns show-for-small-only">
-            <div class="row">
-               <div>
-                  {$LANG.address.billing_address}
-                  <div class="right">
-                  <svg class="icon"><use xlink:href="#icon-{if $address.billing}check{else}times{/if}"></use></svg>
-                  </div>
-               </div>
-               <div>
-                  {$LANG.address.delivery_address} ({$LANG.common.default})
-                  <div class="right">
-                  <svg class="icon"><use xlink:href="#icon-{if $address.default}check{else}times{/if}"></use></svg>
-                  </div>
-               </div>
-               <div>
-                  {$LANG.address.delivery_address}
-                  <div class="right">
-                     <svg class="icon"><use xlink:href="#icon-check"></use></svg>
-                  </div>
-               </div>
-            </div>
-         </div>
-         <div class="small-2 columns text-center">
+         <div class="medium-2 columns text-center">
             <a href="?_a=addressbook&action=edit&address_id={$address.address_id}" class="button tiny expand">{$LANG.common.edit}</a>
             <br><input type="checkbox" name="delete[]" value="{$address.address_id}"{if $address.billing} disabled{/if}>
          </div>
@@ -73,9 +47,9 @@
    </div>
    {/foreach}
    <div class="clearfix">
-      {if $CHECKOUT_BUTTON}<a href="?_a=basket" class="button success right">{if $CONFIG.ssl == 1}{$LANG.basket.basket_secure_checkout}{else}{$LANG.basket.basket_checkout}{/if} <svg class="icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-chevron-right"></use></svg></a>{else}<a href="?" class="button success right">{$LANG.basket.continue_shopping}</a>{/if}
-      <button type="submit" class="button alert right"><svg class="icon"><use xlink:href="#icon-trash-o"></use></svg> {$LANG.common.delete_selected}</button>
-      <div class="left"><a href="{$STORE_URL}/index.php?_a=addressbook&action=add" class="button"><svg class="icon icon-plus"><use xlink:href="#icon-plus"></use></svg> {$LANG.address.address_add}</a></div>
+      <button type="submit" class="button alert right">{$LANG.common.delete_selected}</button>
+      {if $CHECKOUT_BUTTON}<a href="?_a=basket" class="button success right show-for-medium-up">{if $CONFIG.ssl == 1}{$LANG.basket.basket_secure_checkout}{else}{$LANG.basket.basket_checkout}{/if}</a>{else}<a href="?" class="button success right show-for-medium-up">{$LANG.basket.continue_shopping}</a>{/if}
+      <div class="left"><a href="{$STORE_URL}/index.php?_a=addressbook&action=add" class="button">{$LANG.address.address_add}</a></div>
    </div>
 </form>
 {/if}

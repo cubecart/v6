@@ -54,7 +54,7 @@ if (isset($_POST['manufacturer']) && is_array($_POST['manufacturer'])) {
 		}
 	}
 	foreach ($GLOBALS['hooks']->load('admin.product.manufacturers.save.post_process') as $hook) include $hook;
-	httpredir('?_g=products&node=manufacturers#tab_manufacturers');
+	httpredir('?_g=products&node=manufacturers', 'manufacturers');
 }
 $GLOBALS['gui']->addBreadcrumb($lang['catalogue']['title_manufacturer'], currentPage(array('edit')));
 

@@ -132,5 +132,5 @@
 	<input type="hidden" name="previous-tab" id="previous-tab">
 	<input type="submit" name="save" value="{$LANG.common.save}">
   </div>
-  <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+  
 </form>

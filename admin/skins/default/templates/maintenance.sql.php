@@ -21,7 +21,7 @@
 		<input type="submit" value="{$LANG.common.go}">
 	  </div>
 	  </fieldset>
-	  <input type="hidden" name="token" value="{$SESSION_TOKEN}">
+	  
 	</form>
 	<p><strong>{$LANG.common.tip}:</strong> {$LANG.maintain.sql_delimiter}</p>
 	<h4>{$LANG.common.example}:</h4>

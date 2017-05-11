@@ -118,7 +118,7 @@
     <string name="extra_address" introduced="6.0.0"><![CDATA[Extra Address]]></string>
     <string name="address_lookup" introduced="6.0.0"><![CDATA[Start typing a postcode, street or address]]></string>
     <string name="add_edit" introduced="5.0.0"><![CDATA[Add/Edit Address]]></string>
-    <string name="address_add" introduced="5.0.0"><![CDATA[Add New Address]]></string>
+    <string name="address_add" introduced="5.0.0"><![CDATA[Add Address]]></string>
     <string name="address_edit" introduced="5.0.0"><![CDATA[Edit Address]]></string>
     <string name="address_book" introduced="5.0.0"><![CDATA[Address Book]]></string>
     <string name="billing_address" introduced="5.0.0"><![CDATA[Billing Address]]></string>
@@ -236,6 +236,8 @@
     <string name="your_comments" introduced="5.0.0"><![CDATA[Delivery Notes or Additional Comments]]></string>
   </group>
   <group name="catalogue">
+    <string name="tap_gallery" introduced="6.1.6"><![CDATA[Tap for gallery]]></string>
+    <string name="tap_enlarge" introduced="6.1.6"><![CDATA[Tap to enlarge]]></string>
     <string name="gd_memory_error" introduced="6.1.5"><![CDATA[Not enough memory to create thumbnail from `%s`. Please optimise this source image.]]></string>
     <string name="error_js_required" introduced="6.1.0"><![CDATA[JavaScript is required by this website. Please enable this in your browser settings.]]></string>
     <string name="absolute_price" introduced="6.0.7"><![CDATA[Absolute Price]]></string>
@@ -266,7 +268,7 @@
     <string name="coupon_include" introduced="5.1.5"><![CDATA[Promotional code applies to ONLY above products]]></string>
     <string name="coupon_exclude" introduced="5.1.5"><![CDATA[Promotional code applies to all EXCEPT above products]]></string>
     <string name="customer_reviews" introduced="5.0.0"><![CDATA[Customer Reviews]]></string>
-    <string name="delete_option_disabled" introduced="5.0.0"><![CDATA[This option can not be deleted as it is part of an option set. Please disable instead.]]></string>
+    <string name="delete_option_disabled" introduced="5.0.0"><![CDATA[This option can not be deleted as it is part of an option set. Please disable or remove option set.]]></string>
     <string name="delimiter" introduced="5.0.0"><![CDATA[Delimiter]]></string>
     <string name="delimiter_tab" introduced="5.0.0"><![CDATA[Tab]]></string>
     <string name="delivery_method" introduced="5.0.0"><![CDATA[Delivery Method]]></string>
@@ -294,7 +296,7 @@
     <string name="error_manufacturer_update" introduced="5.0.0"><![CDATA[Failed to update manufacturer.]]></string>
     <string name="error_minimum_quantity" introduced="5.2.6"><![CDATA[Minimum quantity to purchase this item is %s!]]></string>
     <string name="error_no_stock_available" introduced="5.2.0"><![CDATA[Sorry but that product is out of stock.]]></string>
-    <string name="error_no_stock_available_options" introduced="5.2.0"><![CDATA[Sorry but the chosen product option combination is out of stock.]]></string>
+    <string name="error_no_stock_available_options" introduced="5.2.0"><![CDATA[Sorry but the chosen product option combination is out of stock or the last of the stock is already in your basket.]]></string>
     <string name="error_option_attrib_create" introduced="5.0.0"><![CDATA[Failed to create attribute.]]></string>
     <string name="error_option_attrib_create_parent" introduced="5.0.0"><![CDATA[Unable to create attribute, as no parent was selected.]]></string>
     <string name="error_option_attrib_delete" introduced="5.0.0"><![CDATA[Failed to delete attribute.]]></string>
@@ -495,6 +497,7 @@
     <string name="title_option_set_assign" introduced="5.0.0"><![CDATA[Assign Option Sets]]></string>
     <string name="title_bulk_prices" introduced="6.1.0"><![CDATA[Bulk Price Change]]></string>
     <string name="title_option_sets" introduced="5.0.0"><![CDATA[Option Sets]]></string>
+    <string name="title_option_set" introduced="6.1.5"><![CDATA[Option Set]]></string>
     <string name="title_options" introduced="5.0.0"><![CDATA[Options]]></string>
     <string name="title_popular" introduced="5.0.0"><![CDATA[Best Sellers]]></string>
     <string name="title_prices_update" introduced="5.0.0"><![CDATA[Update Product Prices]]></string>
@@ -561,6 +564,10 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="invalid_data" introduced="6.1.6"><![CDATA[Invalid data.]]></string>
+    <string name="resend" introduced="6.1.6"><![CDATA[Resend]]></string>
+    <string name="not_recommended" introduced="6.1.6"><![CDATA[Not Recommended]]></string>
+    <string name="none" introduced="6.1.5"><![CDATA[None]]></string>
     <string name="read_ltr" introduced="6.1.2"><![CDATA[Left-to-Right]]></string>
     <string name="read_rtl" introduced="6.1.2"><![CDATA[Right-to-Left]]></string>
     <string name="set_to" introduced="6.1.2"><![CDATA[Set to]]></string>
@@ -883,6 +890,8 @@
     <string name="title_list" introduced="5.0.0"><![CDATA[Customer List]]></string>
   </group>
   <group name="dashboard">
+    <string name="delete_admin_folder" introduced="6.1.8"><![CDATA[WARNING: Please delete the redundant /admin folder from your store directory.]]></string>
+    <string name="delete_admin_file" introduced="6.1.8"><![CDATA[WARNING: Please delete the redundant admin.php file from your store directory.]]></string>
     <string name="ignore_update" introduced="6.1.0"><![CDATA[This update has been ignored however next time an update is released by the develper a notification will be shown again.]]></string>
     <string name="quick_tour" introduced="6.0.0"><![CDATA[Quick Tour]]></string>
     <string name="tour_welcome" introduced="6.0.0"><![CDATA[Welcome to your store. Please follow this quick tour to help get you started.]]></string>
@@ -895,13 +904,13 @@
     <string name="tour_6_title" introduced="6.0.0"><![CDATA[Homepage Content]]></string>
     <string name="tour_6" introduced="6.0.0"><![CDATA[Update your homepage with any content you want. Here you can manage a &quot;hero carousel&quot; and add any HTML content you wish.]]></string>
     <string name="tour_end" introduced="6.0.0"><![CDATA[<p>We have only touched the tip of the iceberg but it's enough to get you selling today. Please find a video tour below which goes into a little more detail.</p><p>Have fun and best of luck with your store!</p>]]></string>
-    <string name="error_version" introduced="5.2.3"><![CDATA[WARNING: Your store appears to be using source code from %s but the database is still at %s.Please complete the upgrade by running the <a href="setup">setup</a> process.]]></string>
+    <string name="error_version" introduced="5.2.3"><![CDATA[WARNING: Your store appears to be using source code from %s but the database is still at %s. Please complete the upgrade by running the <a href="setup">setup</a> process.]]></string>
     <string name="error_global_risk" introduced="5.0.0"><![CDATA[WARNING: Your includes/global.inc.php is currently writable, you should change the file permissions to read only. On Linux or Unix systems it should be CHMOD to 0444.]]></string>
     <string name="error_mysql_root" introduced="5.0.0"><![CDATA[WARNING: You are currently connected to the database using the root account. This is not secure, and should be changed.]]></string>
     <string name="error_caching_disabled" introduced="6.0.0"><![CDATA[WARNING: Caching is disabled. Please enable it in the advanced tab of your stores <a href="?_g=settings#Advanced_Settings">settings</a>.]]></string>
     <string name="error_notes_save" introduced="5.0.0"><![CDATA[Failed to save notes.]]></string>
     <string name="error_setup_folder" introduced="5.0.0"><![CDATA[WARNING: Please delete the setup folder from your store directory, your store may be at risk until you do.]]></string>
-    <string name="error_version_update" introduced="5.0.0"><![CDATA[WARNING: Your store is not up-to-date, v%1$s is available, but you are running v%2$s]]></string>
+    <string name="error_version_update" introduced="5.0.0"><![CDATA[WARNING: Your store is not up-to-date. Version %1$s is available but you are running %2$s.]]></string>
     <string name="inv_customers" introduced="5.0.0"><![CDATA[Customers]]></string>
     <string name="inv_orders" introduced="5.0.0"><![CDATA[Orders]]></string>
     <string name="inv_products" introduced="5.0.0"><![CDATA[Products]]></string>
@@ -1137,6 +1146,7 @@
     <string name="title_templates" introduced="5.0.0"><![CDATA[Email Templates]]></string>
   </group>
   <group name="filemanager">
+    <string name="public" introduced="6.1.6"><![CDATA[Files uploaded to the files/public folder can be accessed directly via a browser. All others are protected with intent to be sold as digital products.]]></string>
     <string name="upload_destination" introduced="6.1.2"><![CDATA[Upload Destination]]></string>
     <string name="refresh_files" introduced="6.1.2"><![CDATA[Refresh File List]]></string>
     <string name="show_assigned" introduced="6.1.2"><![CDATA[Show Assigned Images Only]]></string>
@@ -1295,6 +1305,7 @@
     <string name="example_code_snippet_xml" introduced="5.2.0"><![CDATA[An example of an import XML feed can be found <a href="docs/examples/code_snippet_import.xml">here</a>. Please use the &quot;Help&quot; link for further information.]]></string>
   </group>
   <group name="maintain">
+    <string name="duplicate_index" introduced="6.1.6"><![CDATA[%s has duplicate %s indexes. One of these could be removed.]]></string>
     <string name="missing_index" introduced="6.1.5"><![CDATA[%s has no key set. Expecting %s.]]></string>
     <string name="wrong_index" introduced="6.1.5"><![CDATA[%s has a key type %s but expecting %s.]]></string>
     <string name="table_indexes" introduced="6.1.5"><![CDATA[Indexes]]></string>
@@ -1336,9 +1347,9 @@
     <string name="restore_files_confirm" introduced="5.1.0"><![CDATA[Are you sure you want to restore these files?]]></string>
     <string name="upgrade_now" introduced="5.1.0"><![CDATA[Upgrade Now]]></string>
     <string name="upgrade_to_latest" introduced="5.1.0"><![CDATA[Upgrade to Latest Version]]></string>
-    <string name="upgrade_to_latest_desc" introduced="5.1.0"><![CDATA[Please be sure to create a working backup of both your store database and files before upgrading to the latest version. Once this has been done please click the link below to upgrade to the latest version.]]></string>
-    <string name="latest_installed" introduced="5.1.0"><![CDATA[Your store is currently using the latest version. Please click force upgrade to restore to the default code for this version.]]></string>
-    <string name="force_upgrade" introduced="5.1.0"><![CDATA[Force Upgrade]]></string>
+    <string name="upgrade_to_latest_desc" introduced="5.1.0"><![CDATA[Please be sure to create a working backup of both your database and files before upgrading to the latest version. Once this has been done please click &quot;Upgrade Now&quot; below to upgrade to the latest version. Manual upgrade instructions can be found <a href="https://support.cubecart.com/Knowledgebase/Article/View/228/43/how-do-i-upgrade-from-cubecart-v6-to-latest-v6" target="_blank">here</a>.]]></string>
+    <string name="latest_installed" introduced="5.1.0"><![CDATA[<p>Your store is currently using the latest version and no updates are available.</p><p>It is possible to restore the default code of the current version. This may be useful if you wish to revert any core customisations. Please take a full working backup of the database and files before proceeding.</p>]]></string>
+    <string name="force_upgrade" introduced="5.1.0"><![CDATA[Restore Current Version]]></string>
     <string name="delete_error_log" introduced="5.1.0"><![CDATA[Delete Error Log]]></string>
     <string name="files_restore_not_possible" introduced="5.1.0"><![CDATA[It is not possible to restore that file.]]></string>
     <string name="current_version_restored" introduced="5.1.0"><![CDATA[The current version has been restored.]]></string>
@@ -1730,6 +1741,8 @@
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
+    <string name="reCAPTCHA_v2_na" introduced="6.1.6"><![CDATA[Warning: It doesn't look like your current skin is compatible with reCAPTCHA v2.]]></string>
+    <string name="reCAPTCHA_invisible_na" introduced="6.1.6"><![CDATA[Warning: It doesn't look like your current skin is compatible with Invisible reCAPTCHA.]]></string>
     <string name="enabled_for_all" introduced="6.1.2"><![CDATA[Enabled for all customers]]></string>
     <string name="enabled_for_logged_in" introduced="6.1.2"><![CDATA[Enabled for logged in customers only]]></string>
     <string name="log_retention" introduced="6.1.0"><![CDATA[Log Retention]]></string>
@@ -1898,8 +1911,8 @@
     <string name="proxy_pass" introduced="5.0.0"><![CDATA[Proxy Password]]></string>
     <string name="proxy_port" introduced="5.0.0"><![CDATA[Proxy Port]]></string>
     <string name="proxy_user" introduced="5.0.0"><![CDATA[Proxy Username]]></string>
-    <string name="recaptcha_enable" introduced="5.0.0"><![CDATA[Enable <a href="https://www.google.com/recaptcha/intro/index.html" target="_blank">reCAPTCHA</a>]]></string>
-    <string name="new_recaptcha_note" introduced="6.0.0"><![CDATA[If &quot;New reCAPTCHA&quot; is selected you must obtain a Site Key and Secret Key <a href="https://www.google.com/recaptcha/admin" target="_blank">from Google</a> for it to work.]]></string>
+    <string name="recaptcha_enable" introduced="5.0.0"><![CDATA[Enable <a href="https://www.google.com/recaptcha/intro/index.html" target="_blank">Google reCAPTCHA</a>]]></string>
+    <string name="new_recaptcha_note" introduced="6.0.0"><![CDATA[* Require a Site Key and Secret Key <a href="https://www.google.com/recaptcha/admin" target="_blank">from Google</a>.]]></string>
     <string name="recaptcha_public_key" introduced="6.0.0"><![CDATA[reCAPTCHA Site Key]]></string>
     <string name="recaptcha_secret_key" introduced="6.0.0"><![CDATA[reCAPTCHA Secret Key]]></string>
     <string name="repair" introduced="5.0.0"><![CDATA[Repair]]></string>
@@ -2010,7 +2023,7 @@
     <string name="title_system_error_log" introduced="5.0.0"><![CDATA[System Error Log]]></string>
     <string name="title_extra" introduced="5.1.0"><![CDATA[Extra Settings]]></string>
     <string name="title_features" introduced="5.0.0"><![CDATA[Feature Settings]]></string>
-    <string name="title_flood" introduced="5.0.0"><![CDATA[Spam Prevention]]></string>
+    <string name="title_flood" introduced="5.0.0"><![CDATA[Bot Protection]]></string>
     <string name="title_geographical" introduced="5.0.0"><![CDATA[Geographical Settings]]></string>
     <string name="title_hide_out_of_stock" introduced="5.1.0"><![CDATA[Hide out-of-stock product]]></string>
     <string name="title_images" introduced="5.0.0"><![CDATA[Images]]></string>
@@ -2135,6 +2148,8 @@
     <string name="help_defaultcurrency" introduced="5.0.0"><![CDATA[Please choose your stores default currency.]]></string>
   </group>
   <group name="statistics">
+    <string name="email_resent" introduced="6.1.6"><![CDATA[Email with subject &quot;%s&quot; has been resent to %s.]]></string>
+    <string name="email_not_resent" introduced="6.1.6"><![CDATA[Failed to resend email. Please check your <a href="?_g=settings#Advanced_Settings">settings</a>.]]></string>
     <string name="notify_sales_none" introduced="5.0.0"><![CDATA[No sales have been made.]]></string>
     <string name="notify_searches_none" introduced="6.0.0"><![CDATA[No searches have been made.]]></string>
     <string name="notify_customers_none" introduced="6.0.0"><![CDATA[No customers exist.]]></string>

@@ -18,8 +18,8 @@
     <code>en-GB</code>
     <character_set>utf-8</character_set>
     <version>1.0.0</version>
-    <minVersion>5.0.0a</minVersion>
-    <maxVersion>5.1.*</maxVersion>
+    <minVersion>5.0.0</minVersion>
+    <maxVersion>6.*.*</maxVersion>
     <default_currency>GBP</default_currency>
     <text-direction>ltr</text-direction>
     <override/>

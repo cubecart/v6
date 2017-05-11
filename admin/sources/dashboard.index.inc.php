@@ -37,6 +37,21 @@ if (isset($_POST['notes']['dashboard_notes'])) {
 	httpredir(currentPage());
 }
 
+## Delete admin folder if it exists and shouldn't
+if($glob['adminFolder']!=='admin' && file_exists(CC_ROOT_DIR.'/admin')) {
+	recursiveDelete(CC_ROOT_DIR.'/admin');
+	if(file_exists(CC_ROOT_DIR.'/admin')) {
+		$GLOBALS['main']->setACPWarning($lang['dashboard']['delete_admin_folder']);	
+	}
+}
+## Delete admin file if it exists and shouldn't
+if($glob['adminFile']!=='admin.php' && file_exists(CC_ROOT_DIR.'/admin.php')) {
+	unlink(CC_ROOT_DIR.'/admin.php');
+	if(file_exists(CC_ROOT_DIR.'/admin.php')) {
+		$GLOBALS['main']->setACPWarning($lang['dashboard']['delete_admin_file']);	
+	}
+}
+
 ## Check if setup folder remains after install/upgrade
 if ($glob['installed'] && file_exists(CC_ROOT_DIR.'/setup')) {
 	## Attempt auto delete as we have just upgraded or installed
@@ -153,14 +168,15 @@ if (Admin::getInstance()->permissions('statistics', CC_PERM_READ, false, false))
 	$this_month   = date('m');
 	$this_month_start  = mktime(0, 0, 0, $this_month, '01', $this_year);
 	## Work out prev month looks silly but should stop -1 month on 1st March returning January (28 Days in Feb)
-	$last_month   = date('m', strtotime("-1 month", mktime(12, 0, 0, $this_month, 15, $this_month)));
+	$last_month   = date('m', strtotime("-1 month", mktime(12, 0, 0, $this_month, 15, $this_year)));
 	$last_year    = ($last_month < $this_month) ? $this_year : ($this_year - 1);
 	$last_month_start  = mktime(0, 0, 0, $last_month, '01', $last_year);
+	$last_year_start   = mktime(0, 0, 0, '01', '01', $this_year - 1);
 
-	$last_month_sales  = $GLOBALS['db']->query('SELECT SUM(`total`) as `last_month` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary` WHERE `status` = 3 AND `order_date` > '.$last_month_start.' AND `order_date` < '.$this_month_start.';');
+	$last_month_sales  = $GLOBALS['db']->query('SELECT SUM(`total`) as `last_month` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary` WHERE `status` in(2,3) AND `order_date` > '.$last_month_start.' AND `order_date` < '.$this_month_start.';');
 	$quick_stats['last_month'] = Tax::getInstance()->priceFormat((float)$last_month_sales[0]['last_month']);
 
-	$this_month_sales  = $GLOBALS['db']->query('SELECT SUM(`total`) as `this_month` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary` WHERE `status` = 3 AND `order_date` > '.$this_month_start.';');
+	$this_month_sales  = $GLOBALS['db']->query('SELECT SUM(`total`) as `this_month` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary` WHERE `status` in(2,3) AND `order_date` > '.$this_month_start.';');
 	$quick_stats['this_month'] = Tax::getInstance()->priceFormat((float)$this_month_sales[0]['this_month']);
 
 	$GLOBALS['smarty']->assign('QUICK_STATS', $quick_stats);
@@ -179,7 +195,7 @@ foreach ($GLOBALS['hooks']->load('admin.dashboard.quick_tasks') as $hook) includ
 $GLOBALS['smarty']->assign('QUICK_TASKS', $quick_tasks);
 
 ## Statistics (Google Charts)
-$sales = $GLOBALS['db']->select('CubeCart_order_summary', array('order_date', 'total'), array('order_date' => '>='.mktime(0, 0, 0, date('m', $last_year), 1, date('Y', $last_year)), 'status' => array(3), 'total' => '>0'));
+$sales = $GLOBALS['db']->select('CubeCart_order_summary', array('order_date', 'total'), array('order_date' => '>='.$last_year_start, 'status' => array(2, 3), 'total' => '>0'));
 $data= array();
 if ($sales) { ## Get data to put in chart
 	foreach ($sales as $sale) {
@@ -211,8 +227,32 @@ $GLOBALS['smarty']->assign('CHART', $chart_data);
 ## Pending Orders Tab
 $page  = (isset($_GET['orders'])) ? $_GET['orders'] : 1;
 $unsettled_count  = $GLOBALS['db']->count('CubeCart_order_summary', 'cart_order_id', array('status' => array(1, 2)));
+
+// Pending Orders Sort
+$order_by = '';
+if (!isset($_GET['sort']) || !is_array($_GET['sort'])) {
+	$_GET['sort'] = array('order_date' => 'ASC');
+}
+$key = array_keys($_GET['sort'])[0];
+$sort = ($_GET['sort'][$key] === 'ASC' ? 'ASC' : 'DESC'); // only allow ASC or DESC sort values
+if (!in_array($key, array('cart_order_id','first_name','status','order_date','total'))) {
+	$order_by = '`dashboard` DESC, `status` DESC, `order_date` ASC';
+}
+
+$current_page = currentPage(array('sort'));
+$thead_sort = array (
+	'cart_order_id' => $GLOBALS['db']->column_sort('cart_order_id', $lang['orders']['order_number'] , 'sort', $current_page, $_GET['sort'], 'orders'),
+	'first_name' => $GLOBALS['db']->column_sort('first_name', $lang['common']['name'], 'sort', $current_page, $_GET['sort'], 'orders'),
+	'status' => $GLOBALS['db']->column_sort('status', $lang['common']['status'], 'sort', $current_page, $_GET['sort'], 'orders'),
+	'order_date' => $GLOBALS['db']->column_sort('order_date', $lang['common']['date'], 'sort', $current_page, $_GET['sort'], 'orders'),
+	'total' => $GLOBALS['db']->column_sort('total', $lang['basket']['total'], 'sort', $current_page, $_GET['sort'], 'orders'),
+);
+
+$GLOBALS['smarty']->assign('THEAD_ORDERS', $thead_sort);
+$order_by = (empty($order_by) ? '`dashboard` DESC, `'.$key.'` '.$sort : $order_by);
+
 $results_per_page = 25;
-$unsettled_orders = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id', 'name', 'first_name', 'last_name', 'order_date', 'customer_id', 'total', 'status'), 'status IN (1,2) OR `dashboard` = 1', '`dashboard` DESC, `status` DESC,`order_date` ASC', $results_per_page, $page);
+$unsettled_orders = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id', 'name', 'first_name', 'last_name', 'order_date', 'customer_id', 'total', 'status'), 'status IN (1,2) OR `dashboard` = 1', $order_by, $results_per_page, $page);
 
 if ($unsettled_orders) {
 	$tax = Tax::getInstance();
@@ -283,7 +323,7 @@ $page  = (isset($_GET['stock'])) ? $_GET['stock'] : 1;
 
 $tables = '`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory` AS `I` LEFT JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_option_matrix` AS `M` on `I`.`product_id` = `M`.`product_id`';
 
-$fields = 'I.name ,I.stock_level AS I_stock_level, I.stock_warning AS I_stock_warning, I.product_id, M.stock_level AS M_stock_level, M.use_stock as M_use_stock, M.cached_name';
+$fields = 'I.name, I.product_code, I.stock_level AS I_stock_level, I.stock_warning AS I_stock_warning, I.product_id, M.stock_level AS M_stock_level, M.use_stock as M_use_stock, M.cached_name';
 
 $where = 'use_stock_level = 1';
 $where .= ' AND (';
@@ -293,7 +333,26 @@ $where .= ' OR ';
 $where .= '((I.stock_warning > 0 AND I.stock_level <= I.stock_warning) OR (I.stock_warning <= 0 AND I.stock_level <= '.(int)$GLOBALS['config']->get('config', 'stock_warn_level').'))';
 $where .= ')';
 
-$order_by = 'I.stock_level ASC';
+// Stock Warnings Sort
+if (!isset($_GET['sort']) || !is_array($_GET['sort'])) {
+	$_GET['sort'] = array('stock_level' => 'DESC');
+}
+$key = array_keys($_GET['sort'])[0];
+$sort = ($_GET['sort'][$key] === 'ASC' ? 'ASC' : 'DESC'); // only allow ASC or DESC sort values
+if (!in_array($key, array('name','stock_level','product_code'))) {
+	$key = 'stock_level';
+	$sort = 'DESC';
+}
+
+$current_page = currentPage(array('sort'));
+$thead_sort = array (
+	'stock_level' => $GLOBALS['db']->column_sort('stock_level', $lang['dashboard']['stock_level'], 'sort', $current_page, $_GET['sort'], 'stock_warnings'),
+	'name' => $GLOBALS['db']->column_sort('name', $lang['catalogue']['product_name'], 'sort', $current_page, $_GET['sort'], 'stock_warnings'),
+	'product_code' => $GLOBALS['db']->column_sort('product_code', $lang['catalogue']['product_code'], 'sort', $current_page, $_GET['sort'], 'stock_warnings'),
+);
+
+$GLOBALS['smarty']->assign('THEAD_STOCK', $thead_sort);
+$order_by = 'I.`'.$key.'` '.$sort;
 
 $result_limit = 20;
 
