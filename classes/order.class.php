@@ -238,7 +238,8 @@ class Order {
 		$vars = array();
 		foreach ($this->_order_inventory as $item) {
 			if ($item['product_id']>0) {
-				$product    = array_merge($GLOBALS['catalogue']->getProductData($item['product_id']), $item);
+				$existing_data = $GLOBALS['catalogue']->getProductData($item['product_id']);
+				$product    = is_array($existing_data) ? array_merge($existing_data, $item) : $item;
 				$product['item_price'] = Tax::getInstance()->priceFormat($product['price']);
 				$product['price']   = Tax::getInstance()->priceFormat($product['price']*$product['quantity']);
 				if (!empty($product['product_options']))  $product['product_options'] = implode(' ', unserialize($item['product_options']));
