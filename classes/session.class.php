@@ -100,8 +100,6 @@ class Session {
 			ini_set('session.cookie_path', $GLOBALS['rootRel']);
 		}
 
-		ini_set('session.cookie_httponly',true);
-
 		//If the current session time is longer we will not change anything
 		if ($ini['session.gc_maxlifetime'] < $this->_session_timeout) {
 			ini_set('session.gc_maxlifetime', $this->_session_timeout);
@@ -123,7 +121,7 @@ class Session {
 		}
 		if (!$ini['session.cookie_secure'] && CC_SSL) {
 			// make sure session cookies are secure if SSL is enabled
-			ini_set('session.cookie_secure',true);
+			//ini_set('session.cookie_secure',true);
 		}
 		
 		$this->_start();
