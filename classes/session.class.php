@@ -121,7 +121,7 @@ class Session {
 			// make sure session cookies are http ONLY!
 			ini_set('session.cookie_httponly',true);
 		}
-		if (!$ini['session.cookie_secure'] && $GLOBALS['config']->get('config', 'ssl')=='1') {
+		if (!$ini['session.cookie_secure'] && CC_SSL) {
 			// make sure session cookies are secure if SSL is enabled
 			ini_set('session.cookie_secure',true);
 		}
