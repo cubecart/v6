@@ -143,12 +143,10 @@ class Sanitize {
 	 * Used when the POST token is not valid
 	 */
 	static private function _stopToken() {
-		if(CC_IN_ADMIN && Admin::getInstance()->is()) {
-			unset($_POST, $_GET);
-			$message = 'Security Alert: Possible Cross-Site Request Forgery (CSRF) or browser back button used.';
-			$gui_message['error'][md5($message)] = $message;
-			$GLOBALS['session']->set('GUI_MESSAGE', $gui_message);
-			trigger_error('Invalid Security Token', E_USER_WARNING);
-		}
+		unset($_POST, $_GET);
+		$message = 'Security Alert: Possible Cross-Site Request Forgery (CSRF) or browser back button used.';
+		$gui_message['error'][md5($message)] = $message;
+		$GLOBALS['session']->set('GUI_MESSAGE', $gui_message);
+		trigger_error('Invalid Security Token', E_USER_WARNING);
 	}
 }
