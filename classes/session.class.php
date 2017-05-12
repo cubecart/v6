@@ -121,7 +121,7 @@ class Session {
 		}
 		if (!$ini['session.cookie_secure'] && CC_SSL) {
 			// make sure session cookies are secure if SSL is enabled
-			//ini_set('session.cookie_secure',true);
+			ini_set('session.cookie_secure',true);
 		}
 		
 		$this->_start();
