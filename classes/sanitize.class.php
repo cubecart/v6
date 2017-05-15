@@ -30,26 +30,27 @@ class Sanitize {
 			$csrf_path = CC_ROOT_DIR.'/'.$glob['adminFolder'].'/skins/'.$GLOBALS['config']->get('config', 'admin_skin').'/csrf.inc.php';
 			if(file_exists($csrf_path)) {
 				require_once($csrf_path);
-				if(is_array($csrf_maps))
-				foreach($csrf_maps as $csrf_map) {
-					if(is_array($csrf_map)) {
-						$csrf_check = false;
-						foreach($csrf_map as $key => $value) {
-							if((!$value && isset($_GET[$key])) || (isset($_GET[$key]) && $_GET[$key]==$value)) {
-								$csrf_check = true;	
-							} else {
-								$csrf_check = false;
+				if(is_array($csrf_maps)) {
+					foreach($csrf_maps as $csrf_map) {
+						if(is_array($csrf_map)) {
+							$csrf_check = false;
+							foreach($csrf_map as $key => $value) {
+								if((!$value && isset($_GET[$key])) || (isset($_GET[$key]) && $_GET[$key]==$value)) {
+									$csrf_check = true;	
+								} else {
+									$csrf_check = false;
+									break;	
+								}
+							}
+
+							if($csrf_check) {
+								if (!isset($_GET['token']) || !$GLOBALS['session']->checkToken($_GET['token'])) {
+									//Make a new token just to insure that it doesn't get used again
+									$GLOBALS['session']->getToken(true);
+									self::_stopToken();
+								}
 								break;	
 							}
-						}
-
-						if($csrf_check) {
-							if (!isset($_GET['token']) || !$GLOBALS['session']->checkToken($_GET['token'])) {
-								//Make a new token just to insure that it doesn't get used again
-								$GLOBALS['session']->getToken(true);
-								self::_stopToken();
-							}
-							break;	
 						}
 					}
 				}

@@ -100,8 +100,6 @@ class Session {
 			ini_set('session.cookie_path', $GLOBALS['rootRel']);
 		}
 
-		ini_set('session.cookie_httponly',true);
-
 		//If the current session time is longer we will not change anything
 		if ($ini['session.gc_maxlifetime'] < $this->_session_timeout) {
 			ini_set('session.gc_maxlifetime', $this->_session_timeout);
@@ -121,7 +119,7 @@ class Session {
 			// make sure session cookies are http ONLY!
 			ini_set('session.cookie_httponly',true);
 		}
-		if (!$ini['session.cookie_secure'] && $GLOBALS['config']->get('config', 'ssl')=='1') {
+		if (!$ini['session.cookie_secure'] && CC_SSL) {
 			// make sure session cookies are secure if SSL is enabled
 			ini_set('session.cookie_secure',true);
 		}
@@ -653,7 +651,8 @@ session_save_path(CC_ROOT_DIR.'/sessions');")."</pre>
 			
 		}
 		session_cache_limiter('none');
-		session_name('CCS_'.strtoupper(substr(md5(CC_ROOT_DIR), 0,10)));
+		$session_prefix = CC_SSL ? 'S' : '';
+		session_name('CC'.$session_prefix.'_'.strtoupper(substr(md5(CC_ROOT_DIR), 0,10)));
 		session_start();
 		
 		// Increase session length on each page load. NOT IE however as we all know it is a wingy PITA
