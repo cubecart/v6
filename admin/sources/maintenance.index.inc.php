@@ -97,7 +97,7 @@ if(isset($_GET['compress']) && !empty($_GET['compress'])) {
 		$zip->addFile($file_path);
 		$zip->close();
 		$GLOBALS['main']->setACPNotify(sprintf($lang['maintain']['file_compressed'], basename($file_path)));
-		httpredir('?_g=maintenance&node=index#backup');	
+		httpredir('?_g=maintenance&node=index','backup');	
 	} else {
 		$GLOBALS['main']->setACPWarning("Error reading file ".basename($file_path));
 	}	
@@ -128,7 +128,7 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
     			$zip->close();
 			} else {
 				$GLOBALS['main']->setACPWarning("Error reading file ".$file_name);
-				httpredir('?_g=maintenance&node=index#backup');	
+				httpredir('?_g=maintenance&node=index','backup');	
 			}
 		}
 		
@@ -156,7 +156,7 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 		if ($import) {
 			$GLOBALS['main']->setACPNotify($lang['maintain']['db_restored']);
 			$GLOBALS['cache']->clear();
-			httpredir('?_g=maintenance&node=index#backup');
+			httpredir('?_g=maintenance&node=index','backup');
 		}
 
 	} elseif (preg_match('/^files/', $file_name)) { // restore archive
@@ -178,11 +178,11 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 			
 			if ($errors!==false) {				
 				$GLOBALS['main']->setACPWarning($lang['maintain']['files_restore_fail']);
-				httpredir('?_g=maintenance&node=index#backup');
+				httpredir('?_g=maintenance&node=index','backup');
 			} else {
 				$GLOBALS['main']->setACPNotify($lang['maintain']['files_restore_success']);
 				$GLOBALS['cache']->clear();
-				httpredir('?_g=maintenance&node=index#backup');
+				httpredir('?_g=maintenance&node=index','backup');
 			}
 		} else {
 			$GLOBALS['main']->setACPWarning($lang['maintain']['files_restore_not_possible']);	
@@ -190,7 +190,7 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 		
 	} else {
 		$GLOBALS['main']->setACPWarning($lang['maintain']['files_restore_not_possible']);
-		httpredir('?_g=maintenance&node=index#backup');
+		httpredir('?_g=maintenance&node=index','backup');
 	}
 }
 
@@ -198,24 +198,24 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 
 	$contents = false;
 	## Download the version we want
-	$request = new Request('www.cubecart.com', '/download/'.$_GET['upgrade'].'.zip', 80, false, true, 10);
+	$request = new Request('www.cubecart.com', '/download/'.$_GET['upgrade'].'.zip', 80, false, true, 10);#
 	$request->setMethod('get');
 	$request->setSSL();
 	$request->setUserAgent('CubeCart');
 	$request->skiplog(true);
 
 	if (!$contents = $request->send()) {
-		$contents = file_get_contents('https://www.cubecart.com/download/'.$_GET['upgrade'].'.zip');
+		$contents = file_get_contents('http#s://www.cubecart.com/download/'.$_GET['upgrade'].'.zip');
 	}
 
 	if (empty($contents)) {
 		$GLOBALS['main']->setACPWarning($lang['maintain']['files_upgrade_download_fail']);
-		httpredir('?_g=maintenance&node=index#upgrade');
+		httpredir('?_g=maintenance&node=index','upgrade');
 	} else {
 
 		if (stristr($contents, 'DOCTYPE') ) {
 			$GLOBALS['main']->setACPWarning("Sorry. CubeCart-".$_GET['upgrade'].".zip was not found. Please try again later.");
-			httpredir('?_g=maintenance&node=index#upgrade');
+			httpredir('?_g=maintenance&node=index','upgrade');
 		}
 
 		$destination_path = CC_ROOT_DIR.'/backup/CubeCart-'.$_GET['upgrade'].'.zip';
@@ -253,7 +253,7 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 				
 				if ($errors!==false) {
 					$GLOBALS['main']->setACPWarning($lang['maintain']['files_upgrade_fail']);
-					httpredir('?_g=maintenance&node=index#upgrade');
+					httpredir('?_g=maintenance&node=index','upgrade');
 				} elseif ($_POST['force']) {
 					## Try to delete setup folder
 					recursiveDelete(CC_ROOT_DIR.'/setup');
@@ -263,13 +263,13 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 						rename(CC_ROOT_DIR.'/setup', CC_ROOT_DIR.'/setup_'.md5(time().$_GET['upgrade']));
 					}
 					$GLOBALS['main']->setACPNotify($lang['maintain']['current_version_restored']);
-					httpredir('?_g=maintenance&node=index#upgrade');
+					httpredir('?_g=maintenance&node=index','upgrade');
 				} else {
 					httpredir(CC_ROOT_REL.'setup/index.php?autoupdate=1');
 				}
 			} else {
 				$GLOBALS['main']->setACPWarning("Unable to read archive.");
-				httpredir('?_g=maintenance&node=index#upgrade');
+				httpredir('?_g=maintenance&node=index','upgrade');
 			}			
 		}
 	}
@@ -279,20 +279,20 @@ if (isset($_GET['delete'])) {
 	$file = 'backup/'.basename($_GET['delete']);
 	if(in_array($_GET['delete'], array('restore_error_log','upgrade_error_log'))) {
 		unlink($file);
-		httpredir('?_g=maintenance&node=index#backup');
+		httpredir('?_g=maintenance&node=index','backup');
 	} else if(file_exists($file) && preg_match('/^.*\.(sql|zip)$/i', $file)) {
 		## Generic error message for logs delete specific for backup
 		$message = preg_match('/\_error_log$/', $file) ? $lang['filemanager']['notify_file_delete'] : sprintf($lang['maintain']['backup_deleted'], basename($file));
 		$GLOBALS['main']->setACPNotify($message);
 		unlink($file);
-		httpredir('?_g=maintenance&node=index#backup');
+		httpredir('?_g=maintenance&node=index','backup');
 	}
 }
 if (isset($_GET['download'])) {
 	$file = 'backup/'.basename($_GET['download']);
 	if(file_exists($file)) {
 		deliverFile($file);
-		httpredir('?_g=maintenance&node=index#backup');
+		httpredir('?_g=maintenance&node=index','backup');
 	}
 }
 
@@ -503,7 +503,7 @@ if (isset($_GET['files_backup'])) {
 		$zip->close();
 		$GLOBALS['main']->setACPNotify($lang['maintain']['files_backup_complete']);
 	}
-	httpredir('?_g=maintenance&node=index#backup');
+	httpredir('?_g=maintenance&node=index','backup');
 }
 
 if (isset($_POST['backup'])) {
