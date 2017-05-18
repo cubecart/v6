@@ -564,7 +564,7 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
     $db->truncate('CubeCart_system_error_log');
     include $global_file;
     if ($_SESSION['setup']['autoupgrade'] && !$update_config) {
-      httpredir('../'.$glob['adminFile'].'?_g=maintenance&node=index#upgrade');
+      httpredir('../'.$glob['adminFile'].'?_g=maintenance&node=index', 'upgrade');
     }
   }
 }
