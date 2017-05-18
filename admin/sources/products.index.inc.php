@@ -488,7 +488,7 @@ if (isset($_POST['status']) && is_array($_POST['status']) && Admin::getInstance(
 if (isset($_GET['action']) && strtolower($_GET['action'])=='clone' && isset($_GET['product_id']) && (int)$_GET['product_id']>0 && Admin::getInstance()->permissions('products', CC_PERM_EDIT)) {
 
 	if ($GLOBALS['config']->get('config', 'product_clone')!=1)
-		httpredir(sprintf('%s?_g=settings#Extra', $glob['adminFile']));
+		httpredir(sprintf('%s?_g=settings', $glob['adminFile']), 'Extra');
 
 	$product_id_parent = (int)$_GET['product_id'];
 
