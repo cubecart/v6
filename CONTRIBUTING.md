@@ -3,7 +3,7 @@
 First of all THANK YOU! All contributions be it bug fix, reporting an issue or features request; we greatly appreciate your time which helps make CubeCart even better. 
 
 ## Feature Requests
-Please note that we close ALL new feature requests. This doesn't mean we won't implement them but it means they may well be opened at a later date and assigned to a milestone.
+Please submit feature requests to [http://features.cubecart.com](http://features.cubecart.com).
 
 ## Sponsored Feature Requests
 If you are really keen to see a specific feature and don't want to wait, the great news is that we take bribes! Please contact our sales department via our [helpdesk](https://support.cubecart.com/Tickets/Submit).

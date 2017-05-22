@@ -105,7 +105,7 @@ if (isset($_POST['approve']) && is_array($_POST['approve']) && Admin::getInstanc
 	}
 	## origin variable tells us we need to come back to the dashboard now
 	if (isset($_GET['origin']) && !empty($_GET['origin']) && $_GET['origin']=="dashboard") {
-		httpredir('?#product_reviews');
+		httpredir('?', 'product_reviews');
 	}
 }
 
