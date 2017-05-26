@@ -215,7 +215,7 @@ class Catalogue {
 		}
 		
 		if($substr && $product_precis>0 && strlen($short_description)>$product_precis) {
-			return htmlentities(substr(html_entity_decode($short_description, ENT_COMPAT, 'UTF-8'), 0, $product_precis), ENT_QUOTES, 'UTF-8').'&hellip;';
+			return htmlentities(substr(html_entity_decode($short_description, ENT_QUOTES, 'UTF-8'), 0, $product_precis), ENT_QUOTES, 'UTF-8').'&hellip;';
 		} else {
 			return $short_description;
 		}
