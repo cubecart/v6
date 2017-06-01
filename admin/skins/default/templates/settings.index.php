@@ -132,6 +132,10 @@
             </select>
             </span>
          </div>
+         <div><label for="catalogue_search_mode">{$LANG.settings.catalogue_search_mode}</label><span><select name="config[catalogue_search_mode]" id="catalogue_search_mode" class="textbox">
+            {foreach from=$OPT_CATALOGUE_SEARCH_MODE item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
+            </select></span>
+         </div>
          <div><label for="catalogue_show_empty">{$LANG.settings.category_display_empty}</label><span><select name="config[catalogue_show_empty]" id="catalogue_show_empty" class="textbox">
             {foreach from=$OPT_CATALOGUE_SHOW_EMPTY item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
             </select></span>
