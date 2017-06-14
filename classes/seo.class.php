@@ -743,6 +743,9 @@ class SEO {
 				}
 			}
 		}
+
+		foreach ($GLOBALS['hooks']->load('class.seo.sitemap') as $hook) include $hook;
+		
 		$sitemap = $this->_sitemap_xml->getDocument(true);
 
 		if (function_exists('gzencode')) {
