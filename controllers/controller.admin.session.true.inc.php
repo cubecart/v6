@@ -76,7 +76,7 @@ if (!empty($_GET['_g'])) {
 					}
 				}
 			} else {
-				$GLOBALS['main']->setACPWarning("Extension has mising or corrupt config.xml file.");
+				$GLOBALS['main']->setACPWarning("Extension has missing or corrupt config.xml file.");
 				trigger_error("Extension config.xml file doesn't exist. (".$config_xml.")", E_USER_WARNING);
 			}
 		} 
