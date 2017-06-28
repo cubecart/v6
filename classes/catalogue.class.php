@@ -1219,7 +1219,6 @@ class Catalogue {
 			case 1:
 				if ($product_data['sale_price'] && ($product_data['sale_price'] > 0 && $product_data['sale_price'] != Tax::getInstance()->priceFormatHidden())) {
 					$product_data['price_to_pay'] = $product_data['sale_price'];
-					$product_data['saving'] = $product_data['price'] - $product_data['sale_price'];
 					$product_data['ctrl_sale'] = true;
 				}
 				$sale = true;
@@ -1234,7 +1233,6 @@ class Catalogue {
 
 					$product_data['ctrl_sale'] = ($product_data['sale_price'] > 0 && $product_data['sale_price'] != Tax::getInstance()->priceFormatHidden()) ? true : false;
 					$product_data['price_to_pay'] = $product_data['sale_price'];
-					$product_data['saving'] = $product_data['price'] - $product_data['sale_price'];
 					$sale = true;
 				}
 				break;
