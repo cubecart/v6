@@ -32,4 +32,5 @@ $csrf_maps = array(
 	array('_g'=>'plugins','type'=>false,'module'=>false,'delete'=>'1'), // Delete extension
 	/* END DELETE */
 	array('_g'=>'customers','node'=>'email','action'=>'send','newsletter_id'=>false),
+	array('_g'=>'logout')
 );
