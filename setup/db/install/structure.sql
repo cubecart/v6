@@ -693,7 +693,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_summary` (
 	`ip_address` VARCHAR(45) NOT NULL COMMENT 'Supports IPv6 addresses',
 	`dashboard` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`discount_type` char(1) NOT NULL DEFAULT 'f',
-	`basket` BLOB NULL DEFAULT NULL,
+	`basket` MEDIUMBLOB NULL DEFAULT NULL,
 	`lang` varchar(5) DEFAULT NULL,
 	`note_to_customer` TEXT,
 	PRIMARY KEY (`id`),
