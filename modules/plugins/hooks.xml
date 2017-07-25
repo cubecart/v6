@@ -232,5 +232,6 @@
  <hook trigger="class.tax.producttax" deprecated="" />
  <hook trigger="class.seo.construct" deprecated="" />
  <hook trigger="class.seo.get_item_vars" deprecated="" />
+ <hook trigger="class.seo.getitem.parameters" deprecated="" />
  <hook trigger="class.seo.sitemap" deprecated="" />
 </hooks>

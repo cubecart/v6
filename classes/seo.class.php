@@ -351,6 +351,7 @@ class SEO {
 		if (!empty($path)) {
 			if (($item = $GLOBALS['db']->select('CubeCart_seo_urls', false, array('path' => $path))) !== false) {
 				$item_vars = $this->_getItemVars($item[0]['type'], $item[0]['item_id']);
+				foreach ($GLOBALS['hooks']->load('class.seo.getitem.parameters') as $hook) include $hook;
 				$_GET = (is_array($_GET)) ? array_merge($item_vars, $_GET) : $item_vars;
 				if ($url) {
 					return $GLOBALS['storeURL'].'/index.php?'.http_build_query($_GET);
