@@ -433,6 +433,7 @@ class Catalogue {
 
 			// Output to main GUI
 			foreach ($GLOBALS['hooks']->load('class.cubecart.display_product') as $hook) include $hook;
+			if(isset($contentDefined) && $contentDefined === true){ return true; }
 			$content = $GLOBALS['smarty']->fetch('templates/content.product.php');
 			$GLOBALS['smarty']->assign('SECTION_NAME', 'product');
 			$GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
