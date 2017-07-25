@@ -82,7 +82,7 @@ class Debug {
 		ini_set('display_errors', false);
 
 		// Show ALL errors & notices
-		error_reporting(E_ALL ^ E_NOTICE);
+		error_reporting(E_ALL);
 		ini_set('ignore_repeated_errors', true);
 		ini_set('ignore_repeated_source', true);
 
