@@ -1903,6 +1903,7 @@ class Catalogue {
 					$count = $GLOBALS['db']->query($q2);
 					$this->_category_count  = (int)count($count);
 					$this->_category_products = $sale;
+					foreach ($GLOBALS['hooks']->load('class.catalogue.search_catalogue.sale_items.post') as $hook) include $hook;
 					return true;
 				}
 			}
