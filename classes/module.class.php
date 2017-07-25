@@ -357,7 +357,7 @@ class Module {
 			if(isset($settings['default'])) {
 				$data['default'] = $settings['default'];	
 			}
-			//unset($settings['status'], $settings['default']);
+
 			if ($GLOBALS['config']->set($this->_local_name, '', $settings)) {
 				$updated = true;
 			}
