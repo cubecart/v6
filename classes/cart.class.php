@@ -396,6 +396,7 @@ class Cart {
 						
 						// Jump to basket, or return to product page?
 						$jumpto = ($GLOBALS['config']->get('config', 'basket_jump_to')) ? $GLOBALS['rootRel'].'index.php?_a=basket' : currentPage(null);
+						foreach ($GLOBALS['hooks']->load('class.cart.add.postredirect') as $hook) include $hook;
 						if (isset($_GET['_g']) && $_GET['_g'] == 'ajaxadd' && $GLOBALS['config']->get('config', 'basket_jump_to')) {
 							$GLOBALS['debug']->supress();
 							die($GLOBALS['seo']->rewriteUrls("Redir:".$jumpto, true));
