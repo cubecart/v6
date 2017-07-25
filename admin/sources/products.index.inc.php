@@ -428,7 +428,7 @@ if (isset($_POST['translate']) && isset($_POST['product_id']) && is_numeric($_PO
 	httpredir(currentPage($rem_array, $add_array), 'translate');
 }
 
-if (((isset($_GET['delete']) && !empty($_GET['delete'])) || (isset($_POST['delete']) && is_array($_POST['delete']))) && Admin::getInstance()->permissions('products', CC_PERM_DELETE)) {
+if (((isset($_GET['delete']) && !empty($_GET['delete'])) || (isset($_POST['delete']) && is_array($_POST['delete']) && $_POST['action']=='delete')) && Admin::getInstance()->permissions('products', CC_PERM_DELETE)) {
 	// Delete Product
 	foreach ($GLOBALS['hooks']->load('admin.product.delete') as $hook) include $hook;
 
