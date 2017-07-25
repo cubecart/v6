@@ -201,6 +201,7 @@
  <hook trigger="class.gui.display_social" deprecated="" />
  <hook trigger="class.gui.javascripts" deprecated="" />
  <hook trigger="class.gui.session.list" deprecated="" />
+ <hook trigger="class.mailer.presend" deprecated="" />
  <hook trigger="class.mailer.send" deprecated="" />
  <hook trigger="class.newsletter.subscribe" deprecated="" />
  <hook trigger="class.newsletter.unsubscribe" deprecated="" /> 
