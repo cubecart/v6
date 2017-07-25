@@ -211,6 +211,7 @@
  <hook trigger="class.order.assign_order_details" deprecated="" />
  <hook trigger="class.order.get_order_details" deprecated="" />
  <hook trigger="class.order.order_status" deprecated="" />
+ <hook trigger="class.order.order_status.admin_notify" deprecated="" />
  <hook trigger="class.order.order_status_start" deprecated="" />
  <hook trigger="class.order.order_status_switch" deprecated="" />
  <hook trigger="class.order.order_status_return" deprecated="" />

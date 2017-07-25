@@ -407,6 +407,7 @@ class Order {
 
 						if (!$GLOBALS['session']->has($message_id, 'email') && ($content = $admin_mailer->loadContent('admin.order_received')) !== false) {
 							$this->assignOrderDetails(null, true);
+							foreach ($GLOBALS['hooks']->load('class.order.order_status.admin_notify') as $hook) include $hook;
 							$admin_mailer->sendEmail($admin_notify, $content);
 							$GLOBALS['session']->set($message_id, true, 'email');
 						}
@@ -441,6 +442,7 @@ class Order {
 
 						if (!$GLOBALS['session']->has($message_id, 'email') && ($content = $admin_mailer->loadContent('admin.order_received')) !== false) {
 							$this->assignOrderDetails(null, true);
+							foreach ($GLOBALS['hooks']->load('class.order.order_status.admin_notify') as $hook) include $hook;
 							$admin_mailer->sendEmail($admin_notify, $content);
 							$GLOBALS['session']->set($message_id, true, 'email');
 						}
