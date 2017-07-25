@@ -1143,6 +1143,8 @@ class Cart {
 	 */
 	private function _applyDiscounts() {
 
+		foreach ($GLOBALS['hooks']->load('class.cart.applydiscounts.pre') as $hook) include $hook;
+
 		if (isset($this->basket['coupons']) && count($this->basket['coupons'])>0) {
 			$subtotal = $tax_total = 0;
 			$coupon = false;
