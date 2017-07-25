@@ -45,6 +45,7 @@
  <hook trigger="admin.dashboard.quick_tasks" deprecated="" />
  <hook trigger="admin.dashboard.stock.post" deprecated="" />
  <hook trigger="admin.dashboard.tabs" deprecated="" />
+ <hook trigger="admin.dashboard.unsettled_orders" deprecated="" />
  <hook trigger="admin.documents.delete" deprecated="" />
  <hook trigger="admin.documents.email.macros" deprecated="" />
  <hook trigger="admin.documents.pre_display" deprecated="" />

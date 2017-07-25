@@ -295,6 +295,8 @@ if ($unsettled_orders) {
 		$orders = merge_array($orders, $order_notes);
 	}
 
+	foreach ($GLOBALS['hooks']->load('admin.dashboard.unsettled_orders') as $hook) include $hook;
+	
 	$GLOBALS['smarty']->assign('ORDERS', $orders);
 	$GLOBALS['smarty']->assign('ORDER_PAGINATION', $GLOBALS['db']->pagination($unsettled_count, $results_per_page, $page, $show = 5, 'orders', 'orders', $glue = ' ', $view_all = true));
 }
