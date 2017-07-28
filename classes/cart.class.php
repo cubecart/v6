@@ -1066,6 +1066,12 @@ class Cart {
 		if (isset($_POST['quan']) && is_array($_POST['quan'])) {
 			$this->_subtotal = 0;
 			foreach ($_POST['quan'] as $hash => $quantity) {
+
+				// We can't update an item that doesn't exist or set imcomplete data
+				if(!isset($this->basket['contents'][$hash]['id'])) {
+					continue;
+				}
+
 				if ($quantity <= 0) {
 					unset($this->basket['contents'][$hash]);
 				} else {

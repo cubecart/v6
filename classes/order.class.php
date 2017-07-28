@@ -564,6 +564,14 @@ class Order {
 	 * @return bool
 	 */
 	public function placeOrder($force_order = false) {
+		// Protection against missing data from lost session data
+		// For example a browser page left open past gc_maxlifetime
+		if(!isset($this->_basket['contents'])) {
+			$GLOBALS['gui']->setError($GLOBALS['language']->orders['expired_basket'], true);
+			httpredir('index.php');
+			return false;
+		}
+
 		foreach ($GLOBALS['hooks']->load('class.order.place_order') as $hook) include $hook;
 
 		if ($_GET['retrieve'] && isset($_GET['cart_order_id']) && !empty($_GET['cart_order_id'])) {
