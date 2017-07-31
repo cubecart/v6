@@ -252,14 +252,14 @@
 	<div id="address-form" class="tb-form">
 	  <h3>{$LANG.address.address_add}</h3>
 	  <fieldset>
-	  <div><label for="edit_description">{$LANG.common.description}</label><span><input type="text" name="address[description][]" id="edit_description" class="textbox add display"> *</span></div>
+	  <div><label for="edit_description">{$LANG.common.description}</label><span><input type="text" name="address[description][]" id="edit_description" class="textbox add display" required="required"> *</span></div>
 	  <div><label for="edit_title">{$LANG.user.title}</label><span><input type="text" name="address[title][]" id="edit_title" class="textbox add capitalize"></span></div>
-	  <div><label for="edit_first_name">{$LANG.user.name_first}</label><span><input type="text" name="address[first_name][]" id="edit_first_name" class="textbox add capitalize"> *</span></div>
-	  <div><label for="edit_last_name">{$LANG.user.name_last}</label><span><input type="text" name="address[last_name][]" id="edit_last_name" class="textbox add capitalize"> *</span></div>
+	  <div><label for="edit_first_name">{$LANG.user.name_first}</label><span><input type="text" name="address[first_name][]" id="edit_first_name" class="textbox add capitalize" required="required"> *</span></div>
+	  <div><label for="edit_last_name">{$LANG.user.name_last}</label><span><input type="text" name="address[last_name][]" id="edit_last_name" class="textbox add capitalize" required="required"> *</span></div>
 	  <div><label for="edit_company_name">{$LANG.address.company_name}</label><span><input type="text" name="address[company_name][]" id="edit_company_name" class="textbox add"></span></div>
-	  <div><label for="edit_line1">{$LANG.address.line1}</label><span><input type="text" name="address[line1][]" id="edit_line1" class="textbox add"> *</span></div>
+	  <div><label for="edit_line1">{$LANG.address.line1}</label><span><input type="text" name="address[line1][]" id="edit_line1" class="textbox add" required="required"> *</span></div>
 	  <div><label for="edit_line2">{$LANG.address.line2}</label><span><input type="text" name="address[line2][]" id="edit_line2" class="textbox add"></span></div>
-	  <div><label for="edit_town">{$LANG.address.town}</label><span><input type="text" name="address[town][]" id="edit_town" class="textbox add"> *</span></div>
+	  <div><label for="edit_town">{$LANG.address.town}</label><span><input type="text" name="address[town][]" id="edit_town" class="textbox add" required="required"> *</span></div>
 	  <div>
 		<label for="edit_country">{$LANG.address.country}</label>
 		<span>
@@ -268,13 +268,13 @@
 		  </select>
 		 *</span>
 	  </div>
-	  <div><label for="edit_state">{$LANG.address.state}</label><span><input type="text" name="address[state][]" id="edit_state" class="textbox add state-list"> *</span></div>
-	  <div><label for="edit_postcode">{$LANG.address.postcode}</label><span><input type="text" name="address[postcode][]" id="edit_postcode" class="textbox add uppercase"> *</span></div>
+	  <div><label for="edit_state">{$LANG.address.state}</label><span><input type="text" name="address[state][]" id="edit_state" class="textbox add state-list" required="required"> *</span></div>
+	  <div><label for="edit_postcode">{$LANG.address.postcode}</label><span><input type="text" name="address[postcode][]" id="edit_postcode" class="textbox add uppercase" required="required"> *</span></div>
 	  <div><label for="billing">{$LANG.address.billing_address}</label><span><input type="checkbox" name="address[billing][]" id="billing" class="add" value="1"></span></div>
 	  <div><label for="default">{$LANG.address.default_delivery_address}</label><span><input type="checkbox" name="address[default][]" id="default"  class="add" value="1"></span></div>
 	  </fieldset>
 	  <input type="hidden" name="add_div_class" value="note">
-	  <input type="button" value="{$LANG.common.add}" class="add" target="address-list" onclick="$.fn.colorbox.close()">
+	  <input type="button" value="{$LANG.common.add}" class="add" target="address-list">
 	</div>
 
   </div>
