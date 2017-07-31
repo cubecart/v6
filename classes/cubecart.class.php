@@ -2321,43 +2321,41 @@ class Cubecart {
 					$GLOBALS['smarty']->assign('ORDER', $order);
 					$GLOBALS['session']->delete('ghost_customer_id');
 
-					// Courier Tracking URLs
-					if (!empty($order['ship_method'])) {
-						// Load the module
+
+					if (isset($order['ship_method']) && !empty($order['ship_method'])) {
 						$method = str_replace(' ', '_', $order['ship_method']);
 						$ship_class = CC_ROOT_DIR.'/modules/shipping/'.$method.'/'.'shipping.class.php';
-						if (file_exists($ship_class)) {
-							include $ship_class;
-							if (class_exists($method) && method_exists((string)$method, 'tracking')) {
-								$shipping = new $method(false);
-								$url = $shipping->tracking($order['ship_tracking']);
-								
-								$url = (empty($url) && filter_var($order['ship_tracking'], FILTER_VALIDATE_URL)) ? $order['ship_tracking'] : $url;
-
-								$delivery = array(
-									'url'  => $url,
-									'method' => $order['ship_method'],
-									'product' => $order['ship_product'],
-									'tracking' => $order['ship_tracking'],
-									'date'  => (!empty($order['ship_date']) && $order['ship_date']!=='0000-00-00') ? formatDispatchDate($order['ship_date']) : ''
-								);
-							}
-							unset($ship_class);
-						} else {
+						$ship_class_exists = file_exists($ship_class);
+					} else {
+						$ship_class_exists = false;
+					}
+					
+					if ($ship_class_exists) {
+						include $ship_class;
+						if (class_exists($method) && method_exists((string)$method, 'tracking')) {
+							$shipping = new $method(false);
+							$url = $shipping->tracking($order['ship_tracking']);
+							
+							$url = (empty($url) && filter_var($order['ship_tracking'], FILTER_VALIDATE_URL)) ? $order['ship_tracking'] : $url;
 
 							$delivery = array(
-								'url' => filter_var($order['ship_tracking'], FILTER_VALIDATE_URL) ? $order['ship_tracking'] : '',
+								'url'  => $url,
 								'method' => $order['ship_method'],
 								'product' => $order['ship_product'],
 								'tracking' => $order['ship_tracking'],
 								'date'  => (!empty($order['ship_date']) && $order['ship_date']!=='0000-00-00') ? formatDispatchDate($order['ship_date']) : ''
 							);
 						}
-						if(empty($delivery['date']) && empty($delivery['url']) && empty($delivery['tracking'])) {
-							$delivery = false;
-						}
+						unset($ship_class);
 					} else {
-						$delivery = false;
+
+						$delivery = array(
+							'url' => filter_var($order['ship_tracking'], FILTER_VALIDATE_URL) ? $order['ship_tracking'] : '',
+							'method' => $order['ship_method'],
+							'product' => $order['ship_product'],
+							'tracking' => $order['ship_tracking'],
+							'date'  => (!empty($order['ship_date']) && $order['ship_date']!=='0000-00-00') ? formatDispatchDate($order['ship_date']) : ''
+						);
 					}
 					$GLOBALS['smarty']->assign('DELIVERY', $delivery);
 				} else {
