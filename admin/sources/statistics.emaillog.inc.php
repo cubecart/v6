@@ -20,7 +20,7 @@ if(isset($_GET['resend']) && $_GET['resend']>0) {
 		$mailer = new Mailer();
 
 		$mailer->Subject = $email_data[0]['subject'];
-		$mailer->Body = $email_data[0]['content_html'];
+		$mailer->Body = empty($email_data[0]['content_html']) ? $email_data[0]['content_text'] : $email_data[0]['content_html'];
 		$mailer->AltBody = $email_data[0]['content_text'];
 		$recipients = explode(',', $email_data[0]['to']);
 		foreach($recipients as $recipient) {
