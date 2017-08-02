@@ -1889,12 +1889,16 @@ class Catalogue {
 						break;
 					}
 				} else {
-					$order['price'] = 'ASC';
+					$order['price'] = 'DESC';
 				}
 
 				if(is_array($order)) { 
 					if(key($order) == "price") {
-						$order_string = 'ORDER BY COALESCE(IF(I.sale_price=0.00,I.sale_price), I.price) '.current($order);
+						if($GLOBALS['config']->get('config', 'catalogue_sale_mode') == '1') {
+							$order_string = 'ORDER BY (I.price-I.sale_price) '.current($order);
+						} elseif($GLOBALS['config']->get('config', 'catalogue_sale_mode') == '2' && $GLOBALS['config']->get('config', 'catalogue_sale_percentage'>0)) {
+							$order_string = 'ORDER BY (I.price - (I.price / 100) * '.$GLOBALS['config']->get('config', 'catalogue_sale_percentage').') '.current($order);
+						}
 					} else {
 						$order_string = 'ORDER BY '.key($order).' '.current($order);
 					}
