@@ -538,8 +538,8 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
           } elseif($key=='adminFolder') {
             $value = $adminFolder;
           }
-          $value = is_array($value) ? var_export($value, true) : addslashes($value);
-          $config[] = sprintf("\$glob['%s'] = '%s';", $key, $value);
+          $value = is_array($value) ? var_export($value, true) : "'".addslashes($value)."'";
+          $config[] = sprintf("\$glob['%s'] = %s;", $key, $value);
         }
         $config = sprintf("<?php\n%s\n?>", implode("\n", $config));
         ## Backup existing config file, if it exists

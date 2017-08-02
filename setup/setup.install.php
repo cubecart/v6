@@ -222,8 +222,8 @@ if (!isset($_SESSION['setup']['permissions'])) {
 		## Write config file
 		ksort($_SESSION['setup']['global']);
 		foreach ($_SESSION['setup']['global'] as $key => $value) {
-			$value = is_array($value) ? var_export($value, true) : addslashes($value);
-			$config[] = sprintf("\$glob['%s'] = '%s';", $key, $value);
+			$value = is_array($value) ? var_export($value, true) : "'".addslashes($value)."'";
+			$config[] = sprintf("\$glob['%s'] = %s;", $key, $value);
 		}
 		$config = sprintf("<?php\n%s\n?>", implode("\n", $config));
 		## Backup existing config file, if it exists
