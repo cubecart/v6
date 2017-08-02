@@ -1422,7 +1422,18 @@ class Cubecart {
 					$mailer->Body  = sprintf($GLOBALS['language']->contact['email_content'], $_POST['contact']['name'], $_POST['contact']['email'], $department, html_entity_decode(strip_tags($_POST['contact']['enquiry']),ENT_QUOTES));
 					foreach ($GLOBALS['hooks']->load('class.cubecart.contact.mailer') as $hook) include $hook;
 					// Send
-					if ($mailer->Send()) {
+					$email_sent = $mailer->Send();
+					$email_data = array(
+		                'subject' => $mailer->Subject,
+		                'content_html' => '',
+		                'content_text' => $mailer->Body,
+		                'to' => $email,
+		                'from' => $_POST['contact']['email'],
+		                'result' => $email_sent,
+		                'email_content_id' => ''
+		            );
+					$GLOBALS['db']->insert('CubeCart_email_log', $email_data);
+					if ($email_sent) {
 						$GLOBALS['gui']->setNotify($GLOBALS['language']->documents['notify_document_contact']);
 						httpredir('index.php');
 					} else {
