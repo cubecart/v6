@@ -1899,7 +1899,9 @@ class Catalogue {
 						} elseif($GLOBALS['config']->get('config', 'catalogue_sale_mode') == '2' && $GLOBALS['config']->get('config', 'catalogue_sale_percentage'>0)) {
 							$order_string = 'ORDER BY (I.price - (I.price / 100) * '.$GLOBALS['config']->get('config', 'catalogue_sale_percentage').') '.current($order);
 						}
+						$_GET['sort']['price'] = current($order);
 					} else {
+						$_GET['sort'][key($order)] = current($order);
 						$order_string = 'ORDER BY '.key($order).' '.current($order);
 					}
 				}

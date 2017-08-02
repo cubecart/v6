@@ -742,7 +742,7 @@ class Cubecart {
 		$search = false;
 		if (isset($_POST['sort'])) {
 			list($field, $order) = explode('|', $_POST['sort']);
-			$query['sort'][$field] = $order;
+			$_GET['sort'][$field] = $order;
 			if (isset($_GET['search'])) {
 				foreach ($_GET['search'] as $key => $value) {
 					$query['search'][$key] = $value;
