@@ -1894,7 +1894,7 @@ class Catalogue {
 
 				if(is_array($order)) { 
 					if(key($order) == "price") {
-						$order_string = 'ORDER BY COALESCE(IF(I.sale_price=0.00,NULL,I.sale_price), I.price) '.current($order);
+						$order_string = 'ORDER BY COALESCE(IF(I.sale_price=0.00,I.sale_price), I.price) '.current($order);
 					} else {
 						$order_string = 'ORDER BY '.key($order).' '.current($order);
 					}
