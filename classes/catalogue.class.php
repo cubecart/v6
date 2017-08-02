@@ -1889,11 +1889,15 @@ class Catalogue {
 						break;
 					}
 				} else {
-					$order['name'] = 'ASC';
+					$order['price'] = 'ASC';
 				}
 
 				if(is_array($order)) { 
-					$order_string = 'ORDER BY '.key($order).' '.current($order);
+					if(key($order) == "price") {
+						$order_string = 'ORDER BY COALESCE(IF(I.sale_price=0.00,NULL,I.sale_price), I.price) '.current($order);
+					} else {
+						$order_string = 'ORDER BY '.key($order).' '.current($order);
+					}
 				}
 				
 				$where2 = $this->outOfStockWhere(false, 'I', true);
