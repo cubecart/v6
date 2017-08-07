@@ -139,7 +139,11 @@ class Encryption {
 	 */
 	public function getEncryptKey() {
 		if($GLOBALS['config']->has('config', 'enc_key')) {
-			return $GLOBALS['config']->get('config', 'enc_key');
+			$enc_key = $GLOBALS['config']->get('config', 'enc_key');
+			if(empty($enc_key)) {
+				return $this->setEncryptKey();	
+			}
+			return $enc_key;
 		} else {
 			return $this->setEncryptKey();
 		}
