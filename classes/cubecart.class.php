@@ -1951,9 +1951,8 @@ class Cubecart {
 			$per_page = 20;
 			$where = array('customer_id' => $GLOBALS['user']->getId());
 			if (($downloads = $GLOBALS['db']->select('CubeCart_downloads', false, $where, array('expire' => 'DESC'), $per_page, $page)) !== false) {
-				if (($paginate = $GLOBALS['db']->select('CubeCart_downloads', false, $where)) !== false) {
-					$GLOBALS['smarty']->assign('PAGINATION', $GLOBALS['db']->pagination(count($paginate), $per_page, $page));
-				}
+				
+				$GLOBALS['smarty']->assign('PAGINATION', $GLOBALS['db']->pagination($GLOBALS['db']->getFoundRows(), $per_page, $page));
 				$GLOBALS['smarty']->assign('MAX_DOWNLOADS', (int)$GLOBALS['config']->get('config', 'download_count'));
 				foreach ($downloads as $download) {
 					if (($product = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('id' => $download['order_inv_id']))) !== false) {
