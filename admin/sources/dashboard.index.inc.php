@@ -55,7 +55,7 @@ if($glob['adminFile']!=='admin.php' && file_exists(CC_ROOT_DIR.'/admin.php')) {
 ## Check if setup folder remains after install/upgrade
 if ($glob['installed'] && file_exists(CC_ROOT_DIR.'/setup')) {
 	## Attempt auto delete as we have just upgraded or installed
-	if($_COOKIE['delete_setup']) {
+	if(isset($_COOKIE['delete_setup']) && $_COOKIE['delete_setup']) {
 		recursiveDelete(CC_ROOT_DIR.'/setup');
 		unlink(CC_ROOT_DIR.'/setup');
 		setcookie('delete_setup', '', time()-3600);
