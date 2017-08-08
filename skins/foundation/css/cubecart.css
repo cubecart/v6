@@ -2,6 +2,9 @@ html * {
     font-family: 'Open Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
 }
+address {
+    font-style: normal;
+}
 a.open-clearing {
     display: block;
     overflow: hidden;
