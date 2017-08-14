@@ -18,15 +18,15 @@
    {include file='templates/content.checkout.medium-up.php'}
    {include file='templates/content.checkout.small.php'}
    <div class="row">
-         <div class="small-8 columns text-right">
+         <div class="medium-8 columns text-right">
             {$LANG.basket.coupon_add}
          </div>
-         <div class="small-4 columns">
+         <div class="medium-4 columns">
             <div class="row collapse">
-               <div class="small-9 columns">
+               <div class="small-9 medium-8 columns">
                   <input name="coupon" id="coupon" type="text" maxlength="25">
                </div>
-               <div class="small-3 columns">
+               <div class="small-3 medium-4 columns">
                   <button type="submit" name="update" class="postfix nomarg nopad secondary" value="{$LANG.common.apply}"><svg class="icon"><use xlink:href="#icon-refresh"></use></svg> {$LANG.common.apply}</button>
                </div>
             </div>
