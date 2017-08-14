@@ -519,7 +519,7 @@ class Cart {
 					$GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_expired']);
 					return false;
 				}
-				if ($coupon['min_subtotal'] > 0 && $coupon['min_subtotal'] > $this->basket['subtotal']) {
+				if ((float)$coupon['min_subtotal'] > 0 && $this->basket['subtotal'] < (float)$coupon['min_subtotal']) {
 					// Minimum subtotal for voucher has not been met
 					$GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_product']);
 					return false;
