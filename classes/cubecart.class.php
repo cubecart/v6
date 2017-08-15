@@ -742,7 +742,7 @@ class Cubecart {
 		$search = false;
 		if (isset($_POST['sort'])) {
 			list($field, $order) = explode('|', $_POST['sort']);
-			$query['sort'][$field] = $order;
+			$_GET['sort'][$field] = $order;
 			if (isset($_GET['search'])) {
 				foreach ($_GET['search'] as $key => $value) {
 					$query['search'][$key] = $value;
@@ -1422,7 +1422,18 @@ class Cubecart {
 					$mailer->Body  = sprintf($GLOBALS['language']->contact['email_content'], $_POST['contact']['name'], $_POST['contact']['email'], $department, html_entity_decode(strip_tags($_POST['contact']['enquiry']),ENT_QUOTES));
 					foreach ($GLOBALS['hooks']->load('class.cubecart.contact.mailer') as $hook) include $hook;
 					// Send
-					if ($mailer->Send()) {
+					$email_sent = $mailer->Send();
+					$email_data = array(
+		                'subject' => $mailer->Subject,
+		                'content_html' => '',
+		                'content_text' => $mailer->Body,
+		                'to' => $email,
+		                'from' => $_POST['contact']['email'],
+		                'result' => $email_sent,
+		                'email_content_id' => ''
+		            );
+					$GLOBALS['db']->insert('CubeCart_email_log', $email_data);
+					if ($email_sent) {
 						$GLOBALS['gui']->setNotify($GLOBALS['language']->documents['notify_document_contact']);
 						httpredir('index.php');
 					} else {
@@ -1940,9 +1951,8 @@ class Cubecart {
 			$per_page = 20;
 			$where = array('customer_id' => $GLOBALS['user']->getId());
 			if (($downloads = $GLOBALS['db']->select('CubeCart_downloads', false, $where, array('expire' => 'DESC'), $per_page, $page)) !== false) {
-				if (($paginate = $GLOBALS['db']->select('CubeCart_downloads', false, $where)) !== false) {
-					$GLOBALS['smarty']->assign('PAGINATION', $GLOBALS['db']->pagination(count($paginate), $per_page, $page));
-				}
+				
+				$GLOBALS['smarty']->assign('PAGINATION', $GLOBALS['db']->pagination($GLOBALS['db']->getFoundRows(), $per_page, $page));
 				$GLOBALS['smarty']->assign('MAX_DOWNLOADS', (int)$GLOBALS['config']->get('config', 'download_count'));
 				foreach ($downloads as $download) {
 					if (($product = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('id' => $download['order_inv_id']))) !== false) {
@@ -2321,43 +2331,41 @@ class Cubecart {
 					$GLOBALS['smarty']->assign('ORDER', $order);
 					$GLOBALS['session']->delete('ghost_customer_id');
 
-					// Courier Tracking URLs
-					if (!empty($order['ship_method'])) {
-						// Load the module
+
+					if (isset($order['ship_method']) && !empty($order['ship_method'])) {
 						$method = str_replace(' ', '_', $order['ship_method']);
 						$ship_class = CC_ROOT_DIR.'/modules/shipping/'.$method.'/'.'shipping.class.php';
-						if (file_exists($ship_class)) {
-							include $ship_class;
-							if (class_exists($method) && method_exists((string)$method, 'tracking')) {
-								$shipping = new $method(false);
-								$url = $shipping->tracking($order['ship_tracking']);
-								
-								$url = (empty($url) && filter_var($order['ship_tracking'], FILTER_VALIDATE_URL)) ? $order['ship_tracking'] : $url;
-
-								$delivery = array(
-									'url'  => $url,
-									'method' => $order['ship_method'],
-									'product' => $order['ship_product'],
-									'tracking' => $order['ship_tracking'],
-									'date'  => (!empty($order['ship_date']) && $order['ship_date']!=='0000-00-00') ? formatDispatchDate($order['ship_date']) : ''
-								);
-							}
-							unset($ship_class);
-						} else {
+						$ship_class_exists = file_exists($ship_class);
+					} else {
+						$ship_class_exists = false;
+					}
+					
+					if ($ship_class_exists) {
+						include $ship_class;
+						if (class_exists($method) && method_exists((string)$method, 'tracking')) {
+							$shipping = new $method(false);
+							$url = $shipping->tracking($order['ship_tracking']);
+							
+							$url = (empty($url) && filter_var($order['ship_tracking'], FILTER_VALIDATE_URL)) ? $order['ship_tracking'] : $url;
 
 							$delivery = array(
-								'url' => filter_var($order['ship_tracking'], FILTER_VALIDATE_URL) ? $order['ship_tracking'] : '',
+								'url'  => $url,
 								'method' => $order['ship_method'],
 								'product' => $order['ship_product'],
 								'tracking' => $order['ship_tracking'],
 								'date'  => (!empty($order['ship_date']) && $order['ship_date']!=='0000-00-00') ? formatDispatchDate($order['ship_date']) : ''
 							);
 						}
-						if(empty($delivery['date']) && empty($delivery['url']) && empty($delivery['tracking'])) {
-							$delivery = false;
-						}
+						unset($ship_class);
 					} else {
-						$delivery = false;
+
+						$delivery = array(
+							'url' => filter_var($order['ship_tracking'], FILTER_VALIDATE_URL) ? $order['ship_tracking'] : '',
+							'method' => $order['ship_method'],
+							'product' => $order['ship_product'],
+							'tracking' => $order['ship_tracking'],
+							'date'  => (!empty($order['ship_date']) && $order['ship_date']!=='0000-00-00') ? formatDispatchDate($order['ship_date']) : ''
+						);
 					}
 					$GLOBALS['smarty']->assign('DELIVERY', $delivery);
 				} else {
@@ -2386,10 +2394,9 @@ class Cubecart {
 				}
 				$per_page = 15;
 				$page = (isset($_GET['page'])) ? $_GET['page'] : 1;
-				$order_count = $GLOBALS['db']->select('CubeCart_order_summary', false, array('customer_id' => $GLOBALS['user']->get('customer_id')));
-				$order_count   = count($order_count);
 
 				if (($paginated_orders = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id', 'ship_tracking', 'order_date', 'status', 'total', 'basket'), array('customer_id' => $GLOBALS['user']->get('customer_id')), array('cart_order_id' => 'DESC'), $per_page, $page)) !== false) {
+					$order_count = $GLOBALS['db']->getFoundRows();
 					foreach ($paginated_orders as $i => $order) {
 						$order['time'] = formatTime($order['order_date']);
 						$status = $order['status'];
@@ -2422,6 +2429,7 @@ class Cubecart {
 					}
 					foreach ($GLOBALS['hooks']->load('class.cubecart.order_list') as $hook) include $hook;
 					$GLOBALS['smarty']->assign('ORDERS', $vars['orders']);
+
 					$GLOBALS['smarty']->assign('PAGINATION', $GLOBALS['db']->pagination($order_count, $per_page, $page));
 				}
 			}

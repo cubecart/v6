@@ -62,6 +62,8 @@ class Sanitize {
 			// Exception for payment gateways
 			if(!isset($_GET['_a']) && isset($_GET['_g'], $_GET['type'], $_GET['cmd'], $_GET['module']) && in_array($_GET['_g'], array('remote','rm')) && $_GET['type']=='gateway' && in_array($_GET['cmd'], array('call', 'process')) && !empty($_GET['module'])) {
 				$csrf_exception = true;
+			} else if(isset($_GET['_a']) && $_GET['_a']=='complete' && !isset($_GET['_g'])) {
+				$csrf_exception = true;
 			}
 
 			//Validate the POST token

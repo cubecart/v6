@@ -114,6 +114,7 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
 	}
 
 	$config_new = $_POST['config'];
+	$config_new['enc_key'] =  $config_old['enc_key']; // Keep old encryption key
 	$config_new['offline_content'] = $GLOBALS['RAW']['POST']['config']['offline_content'];
 	$config_new['store_copyright'] = $GLOBALS['RAW']['POST']['config']['store_copyright'];
 

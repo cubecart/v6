@@ -269,7 +269,7 @@ class Request {
 			$return = curl_exec($this->_curl);
 			$error = curl_error($this->_curl);
 
-			if (empty($error)) {
+			if ($return) {
 				if ($this->_request_cache) $GLOBALS['cache']->write($return, 'request.'.$this->_request_hash);
 				$this->log($this->_request_body, $return);
 				return $return;

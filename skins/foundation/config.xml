@@ -8,6 +8,8 @@
 	<uid>foundation-1.0@cubecart.com</uid>
 	<type>skin</type>
 	<name><![CDATA[foundation]]></name>
+	<!-- Please leave this as foundation if your custom skin derives from it -->
+	<original_name><![CDATA[foundation]]></original_name>
 	<display><![CDATA[Foundation]]></display>
 	<!-- This skin is versioned within the master package if you use this as a base for a custom skin please replace n/a with a version number for each release in the marketplace. -->
 	<version>n/a</version>

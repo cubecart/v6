@@ -540,8 +540,7 @@ function grid_view(duration, event) {
     }
     $.when($('.product_list').fadeOut(duration, function() {
         if(Foundation.utils.is_medium_up()) {
-            $('.product_list').removeClass('small-block-grid-1');
-            $('.product_list').addClass('small-block-grid-3');
+            $('.product_list').addClass('medium-block-grid-3');
         }
         $('.grid_view').parent('dd').addClass('active');
         $('.list_view').parent('dd').removeClass('active');
@@ -564,8 +563,7 @@ function list_view(duration, event) {
         event.preventDefault();
     }
     $.when($('.product_list').fadeOut(duration, function() {
-        $('.product_list').removeClass('small-block-grid-3');
-        $('.product_list').addClass('small-block-grid-1');
+        $('.product_list').removeClass('medium-block-grid-3');
         $('.list_view').parent('dd').addClass('active');
         $('.grid_view').parent('dd').removeClass('active');
         $('.product_grid_view').addClass('hide');

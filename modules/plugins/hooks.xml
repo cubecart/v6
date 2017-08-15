@@ -45,6 +45,7 @@
  <hook trigger="admin.dashboard.quick_tasks" deprecated="" />
  <hook trigger="admin.dashboard.stock.post" deprecated="" />
  <hook trigger="admin.dashboard.tabs" deprecated="" />
+ <hook trigger="admin.dashboard.unsettled_orders" deprecated="" />
  <hook trigger="admin.documents.delete" deprecated="" />
  <hook trigger="admin.documents.email.macros" deprecated="" />
  <hook trigger="admin.documents.pre_display" deprecated="" />
@@ -108,8 +109,10 @@
  <hook trigger="class.cart.add.check" deprecated="" />
  <hook trigger="class.cart.add.pre" deprecated="" />
  <hook trigger="class.cart.add.preredirect" deprecated="" />
+ <hook trigger="class.cart.add.postredirect" deprecated="" />
  <hook trigger="class.cart.add.save" deprecated="" />
  <hook trigger="class.cart.add.max_stock" deprecated="" />
+ <hook trigger="class.cart.applydiscounts.pre" deprecated="" />
  <hook trigger="class.cart.apply_discounts" deprecated="" />
  <hook trigger="class.cart.construct.pre" deprecated="" />
  <hook trigger="class.cart.clear" deprecated="" />
@@ -119,6 +122,7 @@
  <hook trigger="class.cart.get.product_option_prices" deprecated="" />
  <hook trigger="class.cart.load_shipping" deprecated="" />
  <hook trigger="class.cart.update" deprecated="" />
+ <hook trigger="class.cart.update.max_stock" deprecated="" />
  <hook trigger="class.catalogue.category_product_list" deprecated="" />
  <hook trigger="class.catalogue.category_product_list_return" deprecated="" />
  <hook trigger="class.catalogue.option_data" deprecated="" />
@@ -129,6 +133,7 @@
  <hook trigger="class.catalogue.imagepath" deprecated="" />
  <hook trigger="class.catalogue.pre_search" deprecated="" />
  <hook trigger="class.catalogue.productassign" deprecated="" />
+ <hook trigger="class.catalogue.search_catalogue.sale_items.post" deprecated="" />
  <hook trigger="class.cubecart.account.list" deprecated="" />
  <hook trigger="class.cubecart.addressbook" deprecated="" />
  <hook trigger="class.cubecart.pre_basket" deprecated="" />
@@ -197,6 +202,7 @@
  <hook trigger="class.gui.display_social" deprecated="" />
  <hook trigger="class.gui.javascripts" deprecated="" />
  <hook trigger="class.gui.session.list" deprecated="" />
+ <hook trigger="class.mailer.presend" deprecated="" />
  <hook trigger="class.mailer.send" deprecated="" />
  <hook trigger="class.newsletter.subscribe" deprecated="" />
  <hook trigger="class.newsletter.unsubscribe" deprecated="" /> 
@@ -206,6 +212,7 @@
  <hook trigger="class.order.assign_order_details" deprecated="" />
  <hook trigger="class.order.get_order_details" deprecated="" />
  <hook trigger="class.order.order_status" deprecated="" />
+ <hook trigger="class.order.order_status.admin_notify" deprecated="" />
  <hook trigger="class.order.order_status_start" deprecated="" />
  <hook trigger="class.order.order_status_switch" deprecated="" />
  <hook trigger="class.order.order_status_return" deprecated="" />
@@ -226,4 +233,6 @@
  <hook trigger="class.tax.producttax" deprecated="" />
  <hook trigger="class.seo.construct" deprecated="" />
  <hook trigger="class.seo.get_item_vars" deprecated="" />
+ <hook trigger="class.seo.getitem.parameters" deprecated="" />
+ <hook trigger="class.seo.sitemap" deprecated="" />
 </hooks>

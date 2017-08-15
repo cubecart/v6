@@ -428,7 +428,7 @@ if (isset($_POST['translate']) && isset($_POST['product_id']) && is_numeric($_PO
 	httpredir(currentPage($rem_array, $add_array), 'translate');
 }
 
-if (((isset($_GET['delete']) && !empty($_GET['delete'])) || (isset($_POST['delete']) && is_array($_POST['delete']))) && Admin::getInstance()->permissions('products', CC_PERM_DELETE)) {
+if (((isset($_GET['delete']) && !empty($_GET['delete'])) || (isset($_POST['delete']) && is_array($_POST['delete']) && $_POST['action']=='delete')) && Admin::getInstance()->permissions('products', CC_PERM_DELETE)) {
 	// Delete Product
 	foreach ($GLOBALS['hooks']->load('admin.product.delete') as $hook) include $hook;
 
@@ -1023,8 +1023,15 @@ if (isset($_GET['action'])) {
 
 		// update cached name
 		if (isset($smarty_data['option_matrix']['all_possible']) && is_array($smarty_data['option_matrix']['all_possible'])) {
+			$pc_postfix = 1;
 			foreach ($smarty_data['option_matrix']['all_possible'] as $option_group) {
-				$GLOBALS['db']->update('CubeCart_option_matrix', array('cached_name' => $option_group['options_values'], 'status' => 1), array('options_identifier' => $option_group['options_identifier'], 'product_id' => $product_id));
+				if($GLOBALS['db']->select('CubeCart_option_matrix', 'matrix_id', array('options_identifier' => $option_group['options_identifier']))) {
+					$GLOBALS['db']->update('CubeCart_option_matrix', array('cached_name' => $option_group['options_values'], 'status' => 1), array('options_identifier' => $option_group['options_identifier'], 'product_id' => $product_id));
+				} else {
+					$GLOBALS['db']->insert('CubeCart_option_matrix', array('cached_name' => $option_group['options_values'], 'status' => 1, 'options_identifier' => $option_group['options_identifier'], 'product_id' => $product_id, 'product_code' => $result[0]['product_code'].'-'.(string)$pc_postfix));
+				}
+				$pc_postfix++;
+				
 			}
 		}
 

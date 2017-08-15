@@ -286,8 +286,10 @@ class Cart {
 							}
 						}
 
+						foreach ($GLOBALS['hooks']->load('class.cart.add.max_stock') as $hook) include $hook;
+						
 						if (isset($max_stock) && $max_stock <= 0) {
-							foreach ($GLOBALS['hooks']->load('class.cart.add.max_stock') as $hook) include $hook;
+							
 							if (is_array($optionsArray)) {
 
 								$stock_note = $GLOBALS['session']->has('restock_note') ? $GLOBALS['session']->get('restock_note') : '';
@@ -394,6 +396,7 @@ class Cart {
 						
 						// Jump to basket, or return to product page?
 						$jumpto = ($GLOBALS['config']->get('config', 'basket_jump_to')) ? $GLOBALS['rootRel'].'index.php?_a=basket' : currentPage(null);
+						foreach ($GLOBALS['hooks']->load('class.cart.add.postredirect') as $hook) include $hook;
 						if (isset($_GET['_g']) && $_GET['_g'] == 'ajaxadd' && $GLOBALS['config']->get('config', 'basket_jump_to')) {
 							$GLOBALS['debug']->supress();
 							die($GLOBALS['seo']->rewriteUrls("Redir:".$jumpto, true));
@@ -516,7 +519,7 @@ class Cart {
 					$GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_expired']);
 					return false;
 				}
-				if ($coupon['min_subtotal'] > 0 && $coupon['min_subtotal'] > $this->basket['subtotal']) {
+				if ((float)$coupon['min_subtotal'] > 0 && $this->basket['subtotal'] < (float)$coupon['min_subtotal']) {
 					// Minimum subtotal for voucher has not been met
 					$GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_product']);
 					return false;
@@ -841,7 +844,7 @@ class Cart {
 			// Apply Discounts
 			$this->_applyDiscounts();
 
-			$this->basket['weight']  = sprintf('%.3F', $this->_weight);
+			$this->basket['weight']  = sprintf('%.4F', $this->_weight);
 			$this->basket['discount'] = sprintf('%.2F', $this->_discount);
 			$this->basket['subtotal'] = sprintf('%.2F', $this->_subtotal);
 			$taxes = $GLOBALS['tax']->fetchTaxAmounts();
@@ -1063,6 +1066,12 @@ class Cart {
 		if (isset($_POST['quan']) && is_array($_POST['quan'])) {
 			$this->_subtotal = 0;
 			foreach ($_POST['quan'] as $hash => $quantity) {
+
+				// We can't update an item that doesn't exist or set imcomplete data
+				if(!isset($this->basket['contents'][$hash]['id'])) {
+					continue;
+				}
+
 				if ($quantity <= 0) {
 					unset($this->basket['contents'][$hash]);
 				} else {
@@ -1078,6 +1087,7 @@ class Cart {
 							$max_stock = $stock_level;
 						}
 					}
+					foreach ($GLOBALS['hooks']->load('class.cart.update.max_stock') as $hook) include $hook;
 					if (isset($max_stock)) {
 						if (isset($max_stock) && $quantity > $max_stock) {
 							if($max_stock <=0) {
@@ -1141,6 +1151,8 @@ class Cart {
 	 * @return bool
 	 */
 	private function _applyDiscounts() {
+
+		foreach ($GLOBALS['hooks']->load('class.cart.applydiscounts.pre') as $hook) include $hook;
 
 		if (isset($this->basket['coupons']) && count($this->basket['coupons'])>0) {
 			$subtotal = $tax_total = 0;

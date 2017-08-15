@@ -45,16 +45,18 @@
   <div class="small-6 medium-9 columns">{$DELIVERY.date}</div>
 </div>
 {/if}
-{if !empty($DELIVERY.url)}
-<div class="row">
-  <div class="small-6 medium-3 columns">{$LANG.orders.shipping_tracking}:</div>
-  <div class="small-6 medium-9 columns"><a href="{$DELIVERY.url}" target="_blank">{$DELIVERY.method}{if !empty($DELIVERY.product)} ({$DELIVERY.product}){/if}</a></div>
-</div>
-{elseif !empty($DELIVERY.tracking)}
+{if !empty($DELIVERY.method)}
 <div class="row">
   <div class="small-6 medium-3 columns">{$LANG.catalogue.delivery_method}:</div>
   <div class="small-6 medium-9 columns">{$DELIVERY.method}{if !empty($DELIVERY.product)} ({$DELIVERY.product}){/if}</div>
 </div>
+{/if}
+{if !empty($DELIVERY.url)}
+<div class="row">
+  <div class="small-6 medium-3 columns">{$LANG.orders.shipping_tracking}:</div>
+  <div class="small-6 medium-9 columns"><a href="{$DELIVERY.url}" target="_blank">{$DELIVERY.tracking}</a></div>
+</div>
+{elseif !empty($DELIVERY.tracking)}
 <div class="row">
   <div class="small-6 medium-3 columns">{$LANG.orders.shipping_tracking}:</div>
   <div class="small-6 medium-9 columns">{$DELIVERY.tracking}</div>

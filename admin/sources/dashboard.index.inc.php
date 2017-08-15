@@ -55,7 +55,7 @@ if($glob['adminFile']!=='admin.php' && file_exists(CC_ROOT_DIR.'/admin.php')) {
 ## Check if setup folder remains after install/upgrade
 if ($glob['installed'] && file_exists(CC_ROOT_DIR.'/setup')) {
 	## Attempt auto delete as we have just upgraded or installed
-	if($_COOKIE['delete_setup']) {
+	if(isset($_COOKIE['delete_setup']) && $_COOKIE['delete_setup']) {
 		recursiveDelete(CC_ROOT_DIR.'/setup');
 		unlink(CC_ROOT_DIR.'/setup');
 		setcookie('delete_setup', '', time()-3600);
@@ -180,6 +180,37 @@ if (Admin::getInstance()->permissions('statistics', CC_PERM_READ, false, false))
 	$quick_stats['this_month'] = Tax::getInstance()->priceFormat((float)$this_month_sales[0]['this_month']);
 
 	$GLOBALS['smarty']->assign('QUICK_STATS', $quick_stats);
+
+	## Statistics (Google Charts)
+	$sales = $GLOBALS['db']->select('CubeCart_order_summary', array('order_date', 'total'), array('order_date' => '>='.$last_year_start, 'status' => array(2, 3), 'total' => '>0'));
+	$data= array();
+	if ($sales) { ## Get data to put in chart
+		foreach ($sales as $sale) {
+			$year = date('Y', $sale['order_date']);
+			$month = date('M', $sale['order_date']);
+			if (isset($data[$year][$month])) {
+				$data[$year][$month] += sprintf('%0.2f', $sale['total']);
+			} else {
+				$data[$year][$month] = sprintf('%0.2f', $sale['total']);
+			}
+		}
+	}
+
+	$this_year = date('Y');
+	$last_year = $this_year - 1;
+
+	$chart_data['data'] = "['Month', '$this_year', '$last_year'],";
+
+	for ($month = 1; $month <= 12; $month++) {
+		$m = date("M", mktime(0, 0, 0, $month, 10));
+		$last_year_month = (isset($data[$last_year][$m]) && $data[$last_year][$m]>0) ? $data[$last_year][$m] : 0;
+		$this_year_month = (isset($data[$this_year][$m]) && $data[$this_year][$m]>0) ? $data[$this_year][$m] : 0;
+		$chart_data['data'] .= "['$m',  $this_year_month, $last_year_month],";
+	}
+
+	$chart_data['title'] = $lang['dashboard']['title_sales_stats'].': '.$last_year.' - '.$this_year;
+	$GLOBALS['smarty']->assign('CHART', $chart_data);
+
 }
 ## Last 5 orders
 if (($last_orders = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id', 'first_name', 'last_name', 'name'), false, array('order_date' => 'DESC'), 5)) !== false) {
@@ -193,36 +224,6 @@ $quick_tasks['today']   = urlencode(date($date_format));
 $quick_tasks['this_weeks'] = urlencode(date($date_format, strtotime("last monday")));
 foreach ($GLOBALS['hooks']->load('admin.dashboard.quick_tasks') as $hook) include $hook;
 $GLOBALS['smarty']->assign('QUICK_TASKS', $quick_tasks);
-
-## Statistics (Google Charts)
-$sales = $GLOBALS['db']->select('CubeCart_order_summary', array('order_date', 'total'), array('order_date' => '>='.$last_year_start, 'status' => array(2, 3), 'total' => '>0'));
-$data= array();
-if ($sales) { ## Get data to put in chart
-	foreach ($sales as $sale) {
-		$year = date('Y', $sale['order_date']);
-		$month = date('M', $sale['order_date']);
-		if (isset($data[$year][$month])) {
-			$data[$year][$month] += sprintf('%0.2f', $sale['total']);
-		} else {
-			$data[$year][$month] = sprintf('%0.2f', $sale['total']);
-		}
-	}
-}
-
-$this_year = date('Y');
-$last_year = $this_year - 1;
-
-$chart_data['data'] = "['Month', '$this_year', '$last_year'],";
-
-for ($month = 1; $month <= 12; $month++) {
-	$m = date("M", mktime(0, 0, 0, $month, 10));
-	$last_year_month = (isset($data[$last_year][$m]) && $data[$last_year][$m]>0) ? $data[$last_year][$m] : 0;
-	$this_year_month = (isset($data[$this_year][$m]) && $data[$this_year][$m]>0) ? $data[$this_year][$m] : 0;
-	$chart_data['data'] .= "['$m',  $this_year_month, $last_year_month],";
-}
-
-$chart_data['title'] = $lang['dashboard']['title_sales_stats'].': '.$last_year.' - '.$this_year;
-$GLOBALS['smarty']->assign('CHART', $chart_data);
 
 ## Pending Orders Tab
 $page  = (isset($_GET['orders'])) ? $_GET['orders'] : 1;
@@ -295,6 +296,8 @@ if ($unsettled_orders) {
 		$orders = merge_array($orders, $order_notes);
 	}
 
+	foreach ($GLOBALS['hooks']->load('admin.dashboard.unsettled_orders') as $hook) include $hook;
+	
 	$GLOBALS['smarty']->assign('ORDERS', $orders);
 	$GLOBALS['smarty']->assign('ORDER_PAGINATION', $GLOBALS['db']->pagination($unsettled_count, $results_per_page, $page, $show = 5, 'orders', 'orders', $glue = ' ', $view_all = true));
 }
@@ -377,7 +380,9 @@ if($GLOBALS['session']->has('version_check')) {
 }
 
 foreach ($GLOBALS['hooks']->load('admin.dashboard.tabs') as $hook) include $hook;
-$GLOBALS['smarty']->assign('PLUGIN_TABS', $smarty_data['plugin_tabs']);
+if(isset($smarty_data['plugin_tabs'])) {
+	$GLOBALS['smarty']->assign('PLUGIN_TABS', $smarty_data['plugin_tabs']);
+}
 
 ## Latest News (from RSS)
 if ($GLOBALS['config']->has('config', 'default_rss_feed') && !$GLOBALS['config']->isEmpty('config', 'default_rss_feed') && filter_var($GLOBALS['config']->get('config', 'default_rss_feed'), FILTER_VALIDATE_URL)) {

@@ -407,6 +407,7 @@ class Order {
 
 						if (!$GLOBALS['session']->has($message_id, 'email') && ($content = $admin_mailer->loadContent('admin.order_received')) !== false) {
 							$this->assignOrderDetails(null, true);
+							foreach ($GLOBALS['hooks']->load('class.order.order_status.admin_notify') as $hook) include $hook;
 							$admin_mailer->sendEmail($admin_notify, $content);
 							$GLOBALS['session']->set($message_id, true, 'email');
 						}
@@ -441,6 +442,7 @@ class Order {
 
 						if (!$GLOBALS['session']->has($message_id, 'email') && ($content = $admin_mailer->loadContent('admin.order_received')) !== false) {
 							$this->assignOrderDetails(null, true);
+							foreach ($GLOBALS['hooks']->load('class.order.order_status.admin_notify') as $hook) include $hook;
 							$admin_mailer->sendEmail($admin_notify, $content);
 							$GLOBALS['session']->set($message_id, true, 'email');
 						}
@@ -562,6 +564,14 @@ class Order {
 	 * @return bool
 	 */
 	public function placeOrder($force_order = false) {
+		// Protection against missing data from lost session data
+		// For example a browser page left open past gc_maxlifetime
+		if(!isset($this->_basket['contents'])) {
+			$GLOBALS['gui']->setError($GLOBALS['language']->orders['expired_basket'], true);
+			httpredir('index.php');
+			return false;
+		}
+
 		foreach ($GLOBALS['hooks']->load('class.order.place_order') as $hook) include $hook;
 
 		if ($_GET['retrieve'] && isset($_GET['cart_order_id']) && !empty($_GET['cart_order_id'])) {

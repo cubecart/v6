@@ -166,7 +166,8 @@ if (!isset($_SESSION['setup']['permissions'])) {
 			## Write new file
 			unset($config, $global['rootDir'], $global['rootRel'], $global['storeURL']);
 			foreach ($global as $key => $value) {
-				$config[] = sprintf("\$glob['%s'] = '%s';", $key, addslashes($value));
+				$value = is_array($value) ? var_export($value, true) : "'".addslashes($value)."'";
+				$config[] = sprintf("\$glob['%s'] = %s;", $key, $value);
 			}
 			$config = sprintf("<?php\n%s\n?>", implode("\n", $config));
 			##ÊBackup existing config file, if it exists
@@ -196,7 +197,8 @@ if (!isset($_SESSION['setup']['permissions'])) {
 			## Write new file
 			unset($config);
 			foreach ($glob as $key => $value) {
-				$config[] = sprintf("\$glob['%s'] = '%s';", $key, addslashes($value));
+				$value = is_array($value) ? var_export($value, true) : "'".addslashes($value)."'";
+				$config[] = sprintf("\$glob['%s'] = %s;", $key, $value);
 			}
 			$config = sprintf("<?php\n%s\n?>", implode("\n", $config));
 			##ÊBackup existing config file, if it exists

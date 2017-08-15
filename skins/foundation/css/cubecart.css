@@ -2,6 +2,9 @@ html * {
     font-family: 'Open Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
 }
+address {
+    font-style: normal;
+}
 a.open-clearing {
     display: block;
     overflow: hidden;
@@ -329,10 +332,6 @@ svg.remove-coupon {
     .small-collapse {
         padding:0;
         margin:0;
-        .columns {
-            padding:0;
-            margin:0;
-        }
     }
     .off-canvas-for-small {
         position: absolute;
