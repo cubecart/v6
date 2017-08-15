@@ -194,7 +194,7 @@ class Debug {
 				$colour = '000';
 			}
 
-			if($type=='error' || preg_match('/CubeCart_system_error_log/',$message)) {
+			if($type=='error' || preg_match('/^INSERT .*CubeCart_system_error_log/',$message)) {
 				$tag = empty($tag) ? 'ERROR' : 'ERROR - '.$tag;
 				$colour = 'FF0000';
 			}
