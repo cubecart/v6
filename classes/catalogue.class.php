@@ -752,7 +752,7 @@ class Catalogue {
 	 */
 	public function getCategoryTree($parent_id = 0, $level = 0) {
 		$level++;
-		if (($categories = $GLOBALS['db']->select('CubeCart_category', array('cat_parent_id', 'cat_id', 'cat_name', 'product_count'), array('cat_parent_id' => $parent_id, 'status' => 1, 'hide' => 0), 'priority, cat_name ASC')) !== false) {
+		if (($categories = $GLOBALS['db']->select('CubeCart_category', array('cat_parent_id', 'cat_id', 'cat_name'), array('cat_parent_id' => $parent_id, 'status' => 1, 'hide' => 0), 'priority, cat_name ASC')) !== false) {
 
 			// Write over with translations
 			if (!$this->_category_translations && ($translations = $GLOBALS['db']->select('CubeCart_category_language', array('cat_id', 'cat_name'), array('language' => $GLOBALS['language']->current()))) !== false) {
@@ -808,7 +808,7 @@ class Catalogue {
 
 				$products = $available_products ? count($available_products) : 0;
 
-				//$children = $GLOBALS['db']->count('CubeCart_category', 'cat_id', array('cat_parent_id' => $category['cat_id'], 'status' => '1'));
+				$children = $GLOBALS['db']->count('CubeCart_category', 'cat_id', array('cat_parent_id' => $category['cat_id'], 'status' => '1'));
 				if (($products> 0 || $GLOBALS['config']->get('config', 'catalogue_show_empty')) || $children) {
 					$result = array(
 						'name'  => (isset($this->_category_translations[$category['cat_id']]) && !empty($this->_category_translations[$category['cat_id']])) ? $this->_category_translations[$category['cat_id']] : $category['cat_name'],

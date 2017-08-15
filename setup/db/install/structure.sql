@@ -136,10 +136,8 @@ CREATE TABLE IF NOT EXISTS `CubeCart_category` (
 	`seo_meta_keywords` TEXT NOT NULL,
 	`priority` SMALLINT(6) UNSIGNED NOT NULL DEFAULT '0',
 	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
-	`product_count` INT UNSIGNED NOT NULL,
 	PRIMARY KEY (`cat_id`),
-	KEY `cat_parent_id` (`cat_parent_id`),
-	KEY `product_count` (`product_count`)
+	KEY `cat_parent_id` (`cat_parent_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_category_index` (

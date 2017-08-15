@@ -325,14 +325,8 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 	// Categories
 	if (isset($_POST['categories']) && is_array($_POST['categories'])) {
 		// md5 compare of before / after so we know if changes have been made or not
-		$existing_indexes = $GLOBALS['db']->select('CubeCart_category_index', 'cat_id', array('product_id' => (int)$product_id));
-		$cat_recount = array(); // Recound only changed categories
-		if(is_array($existing_indexes)) {
-			foreach($existing_indexes as $index) {
-				$cat_recount[(int)$index['cat_id']] = true; 
-			}
-		}
 		$GLOBALS['db']->delete('CubeCart_category_index', array('product_id' => (int)$product_id));
+		
 		// If they haven't chosen one we can choose the first one which is actually most likely to be top level
 		if (empty($_POST['primary_cat'])) {
 			$cat_post_keys  = array_keys($_POST['categories']);
@@ -348,12 +342,8 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 			if ($GLOBALS['db']->insert('CubeCart_category_index', $cat_data)) {
 				$category_assigned = true;
 			}
-			$cat_recount[(int)$value] = true; 
 		}
-		foreach($cat_recount as $cat_id => $bool) {
-			$product_count = $GLOBALS['db']->numrows("SELECT `id` FROM `CubeCart_category_index` WHERE `cat_id` = ".$cat_id);
-			$GLOBALS['db']->update('CubeCart_category', array('product_count' => $product_count), array('cat_id' => $cat_id));	
-		}
+
 		$GLOBALS['db']->update('CubeCart_inventory', array('cat_id' => $primary_cat), array('product_id' => $product_id));
 
 	}

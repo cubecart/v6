@@ -58,8 +58,6 @@ if (isset($_POST['cat']) && is_array($_POST['cat']) && Admin::getInstance()->per
 			}
 		}
 
-		$product_count = $GLOBALS['db']->numrows("SELECT `id` FROM `CubeCart_category_index` WHERE `cat_id` = ".$_POST['cat']['cat_id']);
-		$_POST['cat']['product_count'] = $product_count;
 		if ((!empty($_POST['cat']['cat_name']) && $GLOBALS['db']->update('CubeCart_category', $_POST['cat'], array('cat_id' => $_POST['cat']['cat_id']), true))) {
 			if (isset($_POST['gen_seo']) && $_POST['gen_seo'] == 1) {
 				$GLOBALS['seo']->delete('cat', $cat_id);
