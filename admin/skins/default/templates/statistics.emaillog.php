@@ -34,12 +34,12 @@
 		{/foreach}</td>
 		<td>
 			{if !empty($log.content_html)}
-			<a href="#" onclick="{literal}$.colorbox({title:'{/literal}{$log.subject} ({$LANG.common.html}){literal}',width:'90%', height:'90%', html:'<iframe width=\'100%\' height=\'95%\' frameBorder=\'0\' src=\'?_g=xml&amp;function=viewEmail&amp;id={/literal}{$log.id}{literal}&amp;mode=content_html\'></iframe>'}){/literal}">{$LANG.common.html}</a>
+			<a href="#" onclick="{literal}$.colorbox({title:'{/literal}{$log.subject|escape:'javascript'} ({$LANG.common.html}){literal}',width:'90%', height:'90%', html:'<iframe width=\'100%\' height=\'95%\' frameBorder=\'0\' src=\'?_g=xml&amp;function=viewEmail&amp;id={/literal}{$log.id}{literal}&amp;mode=content_html\'></iframe>'}){/literal}">{$LANG.common.html}</a>
 			{/if}
 		</td>
 		<td>
 			{if !empty($log.content_text)}
-			<a href="#" onclick="{literal}$.colorbox({title:'{/literal}{$log.subject} ({$LANG.common.plain_text}){literal}',width:'90%', height:'90%', html:'<iframe width=\'100%\' height=\'95%\' frameBorder=\'0\' src=\'?_g=xml&amp;function=viewEmail&amp;id={/literal}{$log.id}{literal}&amp;mode=content_text\'></iframe>'}){/literal}">{$LANG.common.plain_text}</a>
+			<a href="#" onclick="{literal}$.colorbox({title:'{/literal}{$log.subject|escape:'javascript'} ({$LANG.common.plain_text}){literal}',width:'90%', height:'90%', html:'<iframe width=\'100%\' height=\'95%\' frameBorder=\'0\' src=\'?_g=xml&amp;function=viewEmail&amp;id={/literal}{$log.id}{literal}&amp;mode=content_text\'></iframe>'}){/literal}">{$LANG.common.plain_text}</a>
 			{/if}
 		</td>
 		<td>{$log.date}</td>
