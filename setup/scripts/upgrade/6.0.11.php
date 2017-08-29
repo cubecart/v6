@@ -1,7 +1,8 @@
 <?php
 $cache_defined = false;
 foreach ($glob as $key => $value) {
-	$cfg[] = sprintf("\$glob['%s'] = '%s';", $key, addslashes($value));
+	$value = is_array($value) ? var_export($value, true) : "'".addslashes($value)."'";
+	$cfg[] = sprintf("\$glob['%s'] = %s;", $key, $value);
 	if($key == 'cache') {
 		$cache_defined = true;
 	}

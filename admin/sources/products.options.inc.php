@@ -316,4 +316,5 @@ if (($optionsets = $GLOBALS['db']->select('CubeCart_options_set')) !== false) {
 	}
 	$GLOBALS['smarty']->assign('SETS', $smarty_data['list_sets']);
 }
+foreach ($GLOBALS['hooks']->load('admin.product.options') as $hook) include $hook;
 $page_content = $GLOBALS['smarty']->fetch('templates/products.options.php');

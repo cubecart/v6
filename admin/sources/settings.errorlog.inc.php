@@ -60,7 +60,7 @@ if (is_array($error_log)) {
 }
 
 $GLOBALS['smarty']->assign('ADMIN_ERROR_LOG', $smarty_data['error_log']);
-$count = $GLOBALS['db']->count('CubeCart_admin_error_log', 'log_id', array('admin_id' => Admin::getInstance()->get('admin_id')));
+$count = $GLOBALS['db']->getFoundRows();
 $GLOBALS['smarty']->assign('PAGINATION_ADMIN_ERROR_LOG', $GLOBALS['db']->pagination($count, $per_page, $page, 5, 'page', 'admin_error_log'));
 
 if (Admin::getInstance()->superUser()) {
@@ -83,7 +83,7 @@ if (Admin::getInstance()->superUser()) {
 		$GLOBALS['smarty']->assign('SYSTEM_ERROR_LOG', $smarty_data['system_error_log']);
 	}
 
-	$count = $GLOBALS['db']->count('CubeCart_system_error_log', 'log_id');
+	$count = $GLOBALS['db']->getFoundRows();
 	$GLOBALS['smarty']->assign('PAGINATION_SYSTEM_ERROR_LOG', $GLOBALS['db']->pagination($count, $per_page, $page, 5, 'page', 'system_error_log'));
 }
 $page_content = $GLOBALS['smarty']->fetch('templates/settings.errorlog.php');

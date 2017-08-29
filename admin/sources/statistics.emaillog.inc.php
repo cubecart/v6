@@ -20,7 +20,7 @@ if(isset($_GET['resend']) && $_GET['resend']>0) {
 		$mailer = new Mailer();
 
 		$mailer->Subject = $email_data[0]['subject'];
-		$mailer->Body = $email_data[0]['content_html'];
+		$mailer->Body = empty($email_data[0]['content_html']) ? $email_data[0]['content_text'] : $email_data[0]['content_html'];
 		$mailer->AltBody = $email_data[0]['content_text'];
 		$recipients = explode(',', $email_data[0]['to']);
 		foreach($recipients as $recipient) {
@@ -48,6 +48,7 @@ $GLOBALS['gui']->addBreadcrumb($lang['settings']['title_email_log'], currentPage
 $per_page = 25;
 $page = (isset($_GET['page'])) ? $_GET['page'] : 1;
 $email_logs = $GLOBALS['db']->select('CubeCart_email_log', false, false, array('date' => 'DESC'), $per_page, $page, false);
+$count = $GLOBALS['db']->getFoundRows();
 if($email_logs!==false) {
 	foreach($email_logs as $row) {
 		$row['to'] = explode(',', $row['to']);
@@ -56,7 +57,6 @@ if($email_logs!==false) {
 }
 
 $GLOBALS['smarty']->assign('EMAIL_LOG', $email_log);
-$count = $GLOBALS['db']->count('CubeCart_email_log', 'id');
 $GLOBALS['smarty']->assign('PAGINATION_EMAIL_LOG', $GLOBALS['db']->pagination($count, $per_page, $page, 5, 'page', 'email_log'));
 
 $page_content = $GLOBALS['smarty']->fetch('templates/statistics.emaillog.php');

@@ -480,8 +480,8 @@ $(document).ready(function() {
         }), $("a.colorbox.address-form").colorbox({
             href: "#address-form",
             inline: !0,
-            innerHeight: "400px",
-            innerWidth: "650px"
+            innerHeight: "685px",
+            innerWidth: "420px"
         }), $("#loading_content").hide(), $("div#progress_bar>img.newsletter").each(function() {
             window.onbeforeunload = function() {
                 return !0
@@ -727,15 +727,31 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
             $(this).val($(this).attr("original"))
         })
     } else {
+
+        var fields_ok = true;
+        $(this).parents("div:first,tr:first").find(".add:input").each(function() {
+            if($(this).attr("required")=='required' && $(this).val()=='') {
+                $(this).addClass('required-error');
+                $(this).click(function(){$(this).removeClass('required-error')});
+                fields_ok = false;  
+            }
+        });
+
+        if(!fields_ok) {
+            return false;
+        }
+
         var o = document.createElement("div"),
             c = document.createElement("span"),
             d = document.createElement("a"),
             h = document.createElement("i");
+    
         $('input[name="add_div_class"]') && $(o).addClass($('input[name="add_div_class"]').val()), $(h).attr({
             "class": "fa fa-trash"
         }), $(d).attr({
             href: "#"
         }).addClass("remove dynamic").append(h), $(c).addClass("actions").append(d), $(this).parents("div:first,tr:first").find(".add:input").each(function() {
+
             if ($(this).hasClass("display")) {
                 "" == $(this).val() && (s = !1);
                 var t = $(this).is("select") ? $(this).find(":selected").text() : "<strong>" + $(this).val() + "</strong>";
@@ -749,7 +765,10 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
                     value: $(this).val()
                 }), $(o).append(e)
             }
-            $(this).val("")
+
+            $.fn.colorbox.close()
+            
+            //$(this).val("")
         }), $(o).prepend(c)
     }
     return 1 == s && e.length > 1 && 1 == $("#" + e).length ? t($(this), $("#" + e), o) : $(i).before(o), $(".update-subtotal input.number").trigger("change"), inline_add_offset++, updateStriping(), $(".dymanic_none").hide(), !1

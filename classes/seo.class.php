@@ -256,8 +256,10 @@ class SEO {
 				case 'category':
 				case 'viewcat':
 					// check its not been made already
-					if (($existing = $GLOBALS['db']->select('CubeCart_seo_urls', 'path', array('type' => 'cat', 'item_id' => $id))) !== false) {
+					$custom = false;
+					if (($existing = $GLOBALS['db']->select('CubeCart_seo_urls', array('path', 'custom'), array('type' => 'cat', 'item_id' => $id))) !== false) {
 						$path = $existing[0]['path'];
+						$custom = (bool)$existing[0]['custom'];
 					} elseif (is_numeric($id) && isset($this->_cat_dirs[$id])) {
 						$path = $this->getDirectory($id);
 					} elseif (!isset($this->_cat_dirs[$id])) {
@@ -270,7 +272,7 @@ class SEO {
 						$path = 'cat'.$id;
 					}
 
-					if($GLOBALS['config']->get('config', 'seo_cat_add_cats') == 0) {
+					if($GLOBALS['config']->get('config', 'seo_cat_add_cats') == 0 && !$custom) {
 						// Get last part of path
 						$cat_parts = explode('/', $path);
 						$path = array_pop($cat_parts);
@@ -351,6 +353,7 @@ class SEO {
 		if (!empty($path)) {
 			if (($item = $GLOBALS['db']->select('CubeCart_seo_urls', false, array('path' => $path))) !== false) {
 				$item_vars = $this->_getItemVars($item[0]['type'], $item[0]['item_id']);
+				foreach ($GLOBALS['hooks']->load('class.seo.getitem.parameters') as $hook) include $hook;
 				$_GET = (is_array($_GET)) ? array_merge($item_vars, $_GET) : $item_vars;
 				if ($url) {
 					return $GLOBALS['storeURL'].'/index.php?'.http_build_query($_GET);
@@ -743,6 +746,9 @@ class SEO {
 				}
 			}
 		}
+
+		foreach ($GLOBALS['hooks']->load('class.seo.sitemap') as $hook) include $hook;
+		
 		$sitemap = $this->_sitemap_xml->getDocument(true);
 
 		if (function_exists('gzencode')) {

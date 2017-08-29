@@ -79,9 +79,9 @@
 		  </span>
 		</div>
 		<div>
-			<label for="date_range">{$LANG.orders.title_order_status}</label>
+			<label for="report_status">{$LANG.orders.title_order_status}</label>
 			<span>
-				<select multiple="multiple" name="report[status][]">
+				<select id="report_status" multiple="multiple" name="report[status][]">
 					{foreach from=$STATUS item=status}
 					<option value="{$status.value}" {$status.selected}>{$status.name}</option>
 					{/foreach}

@@ -76,7 +76,7 @@ if (!empty($_GET['_g'])) {
 					}
 				}
 			} else {
-				$GLOBALS['main']->setACPWarning("Extension has mising or corrupt config.xml file.");
+				$GLOBALS['main']->setACPWarning("Extension has missing or corrupt config.xml file.");
 				trigger_error("Extension config.xml file doesn't exist. (".$config_xml.")", E_USER_WARNING);
 			}
 		} 
@@ -85,6 +85,9 @@ if (!empty($_GET['_g'])) {
 			// Include plugins
 			$GLOBALS['main']->wikiNamespace('Plugins');
 			foreach ($GLOBALS['hooks']->load('admin.'.strtolower($_GET['name'])) as $hook) include $hook;
+		} else if (strtolower($_GET['_g']) == 'plugin' && (!isset($_GET['name']) || empty($_GET['name']))) {
+			httpredir('?_g=plugins');
+			exit;
 		} else if ($_GET['_g'] == '401') {
 			$GLOBALS['gui']->setError($lang['navigation']['error_401']);
 		} else {

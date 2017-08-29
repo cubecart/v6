@@ -352,10 +352,12 @@ class Module {
 			$settings['disabled_countries'] = $this->module_fetch_zones('disabled_zones');
 			$data = array(
 				'status' => $settings['status'],
-				'default' => $settings['default'],
-				'position' => (isset($settings['position']) && $settings['position'] > 0) ? $settings['position'] : 0,
+				'position' => (isset($settings['position']) && $settings['position'] > 0) ? $settings['position'] : 0
 			);
-			//unset($settings['status'], $settings['default']);
+			if(isset($settings['default'])) {
+				$data['default'] = $settings['default'];	
+			}
+
 			if ($GLOBALS['config']->set($this->_local_name, '', $settings)) {
 				$updated = true;
 			}

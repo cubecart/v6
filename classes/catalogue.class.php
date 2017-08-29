@@ -215,7 +215,7 @@ class Catalogue {
 		}
 		
 		if($substr && $product_precis>0 && strlen($short_description)>$product_precis) {
-			return htmlentities(substr(html_entity_decode($short_description, ENT_COMPAT, 'UTF-8'), 0, $product_precis), ENT_QUOTES, 'UTF-8').'&hellip;';
+			return htmlentities(substr(html_entity_decode($short_description, ENT_QUOTES, 'UTF-8'), 0, $product_precis), ENT_QUOTES, 'UTF-8').'&hellip;';
 		} else {
 			return $short_description;
 		}
@@ -433,6 +433,7 @@ class Catalogue {
 
 			// Output to main GUI
 			foreach ($GLOBALS['hooks']->load('class.cubecart.display_product') as $hook) include $hook;
+			if(isset($contentDefined) && $contentDefined === true){ return true; }
 			$content = $GLOBALS['smarty']->fetch('templates/content.product.php');
 			$GLOBALS['smarty']->assign('SECTION_NAME', 'product');
 			$GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
@@ -1888,11 +1889,21 @@ class Catalogue {
 						break;
 					}
 				} else {
-					$order['name'] = 'ASC';
+					$order['price'] = 'DESC';
 				}
 
 				if(is_array($order)) { 
-					$order_string = 'ORDER BY '.key($order).' '.current($order);
+					if(key($order) == "price") {
+						if($GLOBALS['config']->get('config', 'catalogue_sale_mode') == '1') {
+							$order_string = 'ORDER BY (I.price-I.sale_price) '.current($order);
+						} elseif($GLOBALS['config']->get('config', 'catalogue_sale_mode') == '2' && $GLOBALS['config']->get('config', 'catalogue_sale_percentage'>0)) {
+							$order_string = 'ORDER BY (I.price - (I.price / 100) * '.$GLOBALS['config']->get('config', 'catalogue_sale_percentage').') '.current($order);
+						}
+						$_GET['sort']['price'] = current($order);
+					} else {
+						$_GET['sort'][key($order)] = current($order);
+						$order_string = 'ORDER BY '.key($order).' '.current($order);
+					}
 				}
 				
 				$where2 = $this->outOfStockWhere(false, 'I', true);
@@ -1903,6 +1914,7 @@ class Catalogue {
 					$count = $GLOBALS['db']->query($q2);
 					$this->_category_count  = (int)count($count);
 					$this->_category_products = $sale;
+					foreach ($GLOBALS['hooks']->load('class.catalogue.search_catalogue.sale_items.post') as $hook) include $hook;
 					return true;
 				}
 			}

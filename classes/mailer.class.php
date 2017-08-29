@@ -207,6 +207,8 @@ class Mailer extends PHPMailer {
 			}
 			$this->Sender = $GLOBALS['config']->get('config', 'email_address');
 	
+			foreach ($GLOBALS['hooks']->load('class.mailer.presend') as $hook) include $hook;
+
 			// Send email
 			$result = $this->Send();
             // Log email

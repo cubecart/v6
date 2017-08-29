@@ -82,7 +82,7 @@ class Debug {
 		ini_set('display_errors', false);
 
 		// Show ALL errors & notices
-		error_reporting(E_ALL ^ E_NOTICE);
+		error_reporting(E_ALL);
 		ini_set('ignore_repeated_errors', true);
 		ini_set('ignore_repeated_source', true);
 
@@ -194,7 +194,7 @@ class Debug {
 				$colour = '000';
 			}
 
-			if($type=='error' || preg_match('/CubeCart_system_error_log/',$message)) {
+			if($type=='error' || preg_match('/^INSERT .*CubeCart_system_error_log/',$message)) {
 				$tag = empty($tag) ? 'ERROR' : 'ERROR - '.$tag;
 				$colour = 'FF0000';
 			}

@@ -254,7 +254,7 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
   // Compatibility Test
   $checks  = array(
     'PHP' => array(
-      'title' => 'PHP 5.4+',
+      'title' => 'PHP 5.4+ (5.6 Recommended)',
       'status' => version_compare(PHP_VERSION, '5.4', '>='),
       'pass' => PHP_VERSION,
       'fail' => PHP_VERSION
@@ -538,7 +538,8 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
           } elseif($key=='adminFolder') {
             $value = $adminFolder;
           }
-          $config[] = sprintf("\$glob['%s'] = '%s';", $key, addslashes($value));
+          $value = is_array($value) ? var_export($value, true) : "'".addslashes($value)."'";
+          $config[] = sprintf("\$glob['%s'] = %s;", $key, $value);
         }
         $config = sprintf("<?php\n%s\n?>", implode("\n", $config));
         ## Backup existing config file, if it exists

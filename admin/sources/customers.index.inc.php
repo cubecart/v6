@@ -178,7 +178,18 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
 					$address[0][$field] = $content;
 				}
 			}
+
+			$required_fields = array('first_name','last_name','line1','town','country','state','postcode');
+
 			foreach ($address as $offset => $record) {
+				
+				foreach($record as $record_key => $record_value) {
+					if(in_array($record_key, $required_fields) && empty($record_value)) {
+						$GLOBALS['main']->setACPWarning($lang['common']['error_fields_required']);
+						continue 2;
+					}
+				}
+
 				// Format data nicely from mr barney brimstock to Mr Barney Brimstock & Post/Zip code to uppercase
 				$record['title']  = ucwords($record['title']);
 				$record['first_name'] = ucwords($record['first_name']);
