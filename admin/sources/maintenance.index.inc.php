@@ -62,7 +62,7 @@ function crc_integrity_check($files, $mode = 'upgrade') {
 			fclose($v_file);
 
 			if(crc32($v_content) !== $value) {
-				$errors[] = "$file - Content after extract don't match source";
+				$errors[] = "$file - Content after extract doesn't match source";
 			}
 		}
 	}
