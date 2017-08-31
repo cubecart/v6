@@ -631,8 +631,9 @@ class Session {
 	 * Start session
 	 */
 	private function _start() {
-		if(!empty($GLOBALS['config']->get('config','session_save_path')) && file_exists($GLOBALS['config']->get('config','session_save_path'))) {
-			session_save_path($GLOBALS['config']->get('config','session_save_path'));
+		$session_save_path = $GLOBALS['config']->get('config','session_save_path');
+		if(!empty($session_save_path) && file_exists($session_save_path)) {
+			session_save_path($session_save_path);
 		} else if(!@is_writeable(session_save_path())) {	
 			if(is_writeable(CC_INCLUDES_DIR.'/extra')) {
 				$this->_manage_session_files = true;
