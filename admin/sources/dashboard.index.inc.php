@@ -312,7 +312,7 @@ if (($reviews = $GLOBALS['db']->select('CubeCart_reviews', false, array('approve
 		$product   = $GLOBALS['db']->select('CubeCart_inventory', array('name'), array('product_id' => (int)$review['product_id']));
 		$review['product'] = $product[0];
 		$review['date']  = formatTime($review['time']);
-		$review['delete'] = "?_g=products&node=reviews&delete=".(int)$review['id'];
+		$review['delete'] = "?_g=products&node=reviews&delete=".(int)$review['id'].'&token='.SESSION_TOKEN;
 		$review['edit']  = "?_g=products&node=reviews&edit=".(int)$review['id'];
 		$review['stars'] = 5;
 		$review_list[] = $review;
