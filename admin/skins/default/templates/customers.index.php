@@ -10,7 +10,7 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
 <div>
-  <form action="{$VAL_SELF}" method="post">
+  <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
   {if isset($DISPLAY_LIST)}
   <div id="customer-list" class="tab_content">
     <h3>{$LANG.customer.title_list}</h3>
