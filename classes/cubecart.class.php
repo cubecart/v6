@@ -1444,6 +1444,8 @@ class Cubecart {
 
 			// Display form
 			$contact['description'] = base64_decode($contact['description']);
+			$contact['description'] = ($contact['parse']=='1') ? $GLOBALS['smarty']->fetch('string:'.$contact['description']) : $contact['description'];
+
 			$GLOBALS['smarty']->assign('CONTACT', $contact);
 			if (isset($contact['department']) && is_array($contact['department'])) {
 				foreach ($contact['department'] as $key => $dept) {

@@ -16,6 +16,7 @@
 	<fieldset><legend>{$LANG.contact.title_configuration}</legend>
 	  <div><label for="status">{$LANG.common.status}</label><span><input type="hidden" name="contact[status]" id="status" value="{$CONTACT.status}" class="toggle"></span></div>
 	  <div><label for="email">{$LANG.contact.email_override}</label><span><input type="text" name="contact[email]" id="email" value="{$CONTACT.email}" class="textbox"></span></div>
+	  <div><label for="parse">{$LANG.documents.smarty_parse}</label><span><input type="hidden" id="parse" name="contact[parse]" value="{if !isset($CONTACT.parse)}0{else}{$CONTACT.parse}{/if}" class="toggle"></span></div>
 	</fieldset>
 
 	<fieldset><legend>{$LANG.contact.title_departments}</legend>
