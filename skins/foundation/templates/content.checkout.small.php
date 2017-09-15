@@ -1,4 +1,4 @@
-<div class="show-for-small-only">
+<div class="show-for-small-only" id="content_checkout_small">
    {foreach from=$ITEMS key=hash item=item}
    <div class="panel" id="basket_item_{$hash}">
       <div class="row">

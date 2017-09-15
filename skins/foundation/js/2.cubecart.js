@@ -385,9 +385,11 @@ jQuery(document).ready(function() {
     /* We must only show grid view with 1 grid column for medium */
     if(Foundation.utils.is_small_only()) {
         grid_view(0);
+        $('#content_checkout_medium_up').remove();
     }
     if(Foundation.utils.is_medium_up()) {
         $('.field_small_only').attr('disabled', true);
+        $('#content_checkout_small').remove();
     }
 });
 

@@ -1,4 +1,4 @@
-<div class="show-for-medium-up">
+<div class="show-for-medium-up" id="content_checkout_medium_up">
    <table class="expand">
       <thead>
          <tr>
