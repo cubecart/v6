@@ -19,14 +19,14 @@
   </ul>
   <section class="top-bar-section">
      <h5 class="hide">{$LANG.navigation.title}</h5>
-     <ul class="left">
-        <li class="show-for-medium-up"><a href="{$ROOT_PATH}" title="{$LANG.common.home}"><svg class="icon"><use xlink:href="#icon-home"></use></svg></a></li>
+     <ul itemscope itemtype="http://www.schema.org/SiteNavigationElement" class="left">
+        <li itemprop="name" class="show-for-medium-up"><a itemprop="url" href="{$ROOT_PATH}" title="{$LANG.common.home}"><svg class="icon"><use xlink:href="#icon-home"></use></svg></a></li>
         {$NAVIGATION_TREE}
         {if $CTRL_CERTIFICATES && !$CATALOGUE_MODE}
-        <li><a href="{$URL.certificates}" title="{$LANG.navigation.giftcerts}">{$LANG.navigation.giftcerts}</a></li>
+        <li itemprop="name"><a itemprop="url" href="{$URL.certificates}" title="{$LANG.navigation.giftcerts}">{$LANG.navigation.giftcerts}</a></li>
         {/if}
         {if $CTRL_SALE}
-        <li><a href="{$URL.saleitems}" title="{$LANG.navigation.saleitems}">{$LANG.navigation.saleitems}</a></li>
+        <li itemprop="name"><a itemprop="url" href="{$URL.saleitems}" title="{$LANG.navigation.saleitems}">{$LANG.navigation.saleitems}</a></li>
         {/if}
      </ul>
   </section>
