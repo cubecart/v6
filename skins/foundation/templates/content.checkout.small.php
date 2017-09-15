@@ -27,7 +27,7 @@
             {$LANG.common.quantity_abbreviated}
             <a href="#" class="quan subtract" rel="{$hash}"><svg class="icon"><use xlink:href="#icon-minus-circle"></use></svg></a>
             <span class="disp_quan_{$hash}">{$item.quantity}</span>
-            <input name="quan[{$hash}]" maxlength="6" class="field_small_only" type="hidden" value="{$item.quantity}">
+            <input name="quan[{$hash}]" maxlength="6" type="hidden" value="{$item.quantity}">
             <span id="original_val_{$hash}" class="hide">{$item.quantity}</span>
             <a href="#" class="quan add" rel="{$hash}"><svg class="icon"><use xlink:href="#icon-plus-circle"></use></svg></a>
          </div>
@@ -61,20 +61,20 @@
                   <svg class="icon right" id="getEstimateClose" onclick="$('#getEstimateSmall').slideUp();"><use xlink:href="#icon-times"></use></svg>{$LANG.basket.specify_shipping}</h4>
                <div>
                   <label for="estimate_country_small" class="hide-for-small-only">{$LANG.address.country}</label>
-                  <select name="estimate[country]" id="estimate_country_small" class="nosubmit country-list field_small_only" rel="estimate_state_small">
+                  <select name="estimate[country]" id="estimate_country_small" class="nosubmit country-list" rel="estimate_state_small">
                      {foreach from=$COUNTRIES item=country}<option value="{$country.numcode}" {$country.selected}>{$country.name}</option>{/foreach}
                   </select>
                </div>
                <div>
                   <label for="estimate_state_small" class="hide-for-small-only">{$LANG.address.state}</label>
-                  <input type="text" name="estimate[state]" id="estimate_state_small" value="{$ESTIMATES.state}" class="field_small_only" placeholder="{$LANG.address.state}">
+                  <input type="text" name="estimate[state]" id="estimate_state_small" value="{$ESTIMATES.state}" placeholder="{$LANG.address.state}">
                </div>
                <div>
                   <label for="estimate_postcode_small" class="hide-for-small-only">{$LANG.address.postcode}</label>
-                  <input type="text" class="field_small_only" value="{$ESTIMATES.postcode}" placeholder="{$LANG.address.postcode}" id="estimate_postcode_small" name="estimate[postcode]">
+                  <input type="text" value="{$ESTIMATES.postcode}" placeholder="{$LANG.address.postcode}" id="estimate_postcode_small" name="estimate[postcode]">
                </div>
                <div>
-                  <input type="submit" name="get-estimate" class="button expand field_small_only" value="{$LANG.basket.fetch_shipping_rates}">
+                  <input type="submit" name="get-estimate" class="button expand" value="{$LANG.basket.fetch_shipping_rates}">
                </div>
                <script type="text/javascript">
                var county_list = {$STATE_JSON};
@@ -83,7 +83,7 @@
             {/if}
          </td>
          <td>
-            <select name="shipping" class="field_small_only nomarg">
+            <select name="shipping" class="nomarg">
                <option value="">{$LANG.form.please_select}</option>
                {foreach from=$SHIPPING key=group item=methods}
                {if $HIDE_OPTION_GROUPS ne '1'}

@@ -388,7 +388,6 @@ jQuery(document).ready(function() {
         $('#content_checkout_medium_up').remove();
     }
     if(Foundation.utils.is_medium_up()) {
-        $('.field_small_only').attr('disabled', true);
         $('#content_checkout_small').remove();
     }
 });
