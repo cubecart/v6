@@ -119,6 +119,7 @@
 	</fieldset>
 	<h3>{$LANG.setup.title_store_settings}</h3>
 	<fieldset>
+	  <div><label for="form-store_name" rel="">{$LANG.settings.store_name}</label><span><input type="text" name="config[store_name]" id="form-store_name" value="{$FORM.config.store_name}" class="textbox required" /></span></div>
 	  <div>
 		<label for="form-language" class="help" rel="" title="{$LANG.setup.help_defaultlang}">{$LANG.settings.default_language}</label>
 		<span>
