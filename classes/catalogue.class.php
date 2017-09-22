@@ -1013,6 +1013,7 @@ class Catalogue {
 			$count = count($result);
 			$data = array();
 			foreach ($result as $product) {
+				$product['product_weight'] = (float)$product['product_weight'];
 				$GLOBALS['language']->translateProduct($product);
 				$this->getProductPrice($product, $quantity);
 				if (!$category && $count == 1) {
