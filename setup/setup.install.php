@@ -259,9 +259,9 @@ if (!isset($_SESSION['setup']['permissions'])) {
 					'default_language'     => $_SESSION['setup']['config']['default_language'],
 					'default_currency'     => $_SESSION['setup']['config']['default_currency'],
 					'email_address'      => $_SESSION['setup']['admin']['email'],
-					'store_title'      => 'CubeCart',
-					'store_name'      => 'CubeCart',
-					'email_name'      => 'CubeCart',
+					'store_title'      => $_SESSION['setup']['config']['store_name'],
+					'store_name'      => $_SESSION['setup']['config']['store_name'],
+					'email_name'      => $_SESSION['setup']['config']['store_name']
 				)
 			);
 			Config::getInstance($glob)->set('config', '', $config_settings, true);
