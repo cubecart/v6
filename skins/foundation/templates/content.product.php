@@ -85,10 +85,14 @@
                   </tr>
                </thead>
                <tbody>
+                  <tr>
+                     <td class="text-center">1</td>
+                     <td class="text-center">{$PRODUCT.price}</td>
+                  </tr>
                   {foreach from=$PRODUCT.discounts item=discount}
                   <tr>
-                     <td>{$discount.quantity}+</td>
-                     <td>{$discount.price}</td>
+                     <td class="text-center">{$discount.quantity}+</td>
+                     <td class="text-center">{$discount.price}</td>
                   </tr>
                   {/foreach}
                </tbody>
