@@ -466,7 +466,7 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
       } elseif (isset($_SESSION['setup']['long_lang_identifier']) && file_exists('language/' . $_SESSION['setup']['long_lang_identifier'] . '.xml')) {
         $default_language = $_SESSION['setup']['long_lang_identifier'];
       } else {
-        $default_language = 'en-GB';
+        $default_language = isset($_SESSION['setup']['config']['default_language']) ? $_SESSION['setup']['config']['default_language'] : 'en-GB';
       }
       
       ## Redefine the default skin
