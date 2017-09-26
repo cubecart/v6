@@ -329,7 +329,7 @@ class FileManager {
 	 * @param string $cat_id
 	 * @return array
 	 */
-	public function catImages($cat_id = '') {
+	public function catImages($cat_id) {
 
 		if(!empty($cat_id) && $cat_id>0) {
 			$images = $GLOBALS['db']->select('CubeCart_category', array('cat_image'), array('cat_id' => (int)$cat_id));
@@ -344,7 +344,7 @@ class FileManager {
 			$assigned_images = $GLOBALS['session']->get('recently_uploaded');
 			end($assigned_images); // Set last image as main_img
 			$key = key($assigned_images);
-			$assigned_images[$key] = '1';
+			$assigned_images[$key] = '2';
 			$GLOBALS['session']->delete('recently_uploaded');
 			$this->form_fields = true;
 			return $assigned_images;
@@ -1062,7 +1062,7 @@ class FileManager {
 					chmod($target, chmod_writable());
 				}
 			}
-			if(isset($_GET['product_id']) || isset($_GET['cat_id']) || (isset($_GET['_g']) && $_GET['_g']=='categories' && isset($_GET['action']) && $_GET['action'] == 'add')) {
+			if(isset($_GET['product_id']) || isset($_GET['cat_id'])) {
 				$GLOBALS['session']->set('recently_uploaded', $this->_recently_uploaded);
 			}
 
