@@ -415,6 +415,10 @@ class FileManager {
 				$file = $this->_manage_root.'/'.$this->_sub_dir.$result[0]['filename'];
 				if (file_exists($file) && unlink($file) || !file_exists($file)) {
 					if ($GLOBALS['db']->delete('CubeCart_filemanager', array('file_id' => (int)$file_id))) {
+						// Remove associated product indexes
+						$GLOBALS['db']->delete('CubeCart_image_index', array('file_id' => (int)$file_id));
+						// Remove associated category images
+						$GLOBALS['db']->update('CubeCart_category', array('cat_image' => 0), array('cat_image' => (int)$file_id));
 						return true;
 					}
 				}
