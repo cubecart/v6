@@ -329,7 +329,7 @@ class FileManager {
 	 * @param string $cat_id
 	 * @return array
 	 */
-	public function catImages($cat_id) {
+	public function catImages($cat_id = '') {
 
 		if(!empty($cat_id) && $cat_id>0) {
 			$images = $GLOBALS['db']->select('CubeCart_category', array('cat_image'), array('cat_id' => (int)$cat_id));
@@ -344,7 +344,7 @@ class FileManager {
 			$assigned_images = $GLOBALS['session']->get('recently_uploaded');
 			end($assigned_images); // Set last image as main_img
 			$key = key($assigned_images);
-			$assigned_images[$key] = '2';
+			$assigned_images[$key] = '1';
 			$GLOBALS['session']->delete('recently_uploaded');
 			$this->form_fields = true;
 			return $assigned_images;
@@ -1053,16 +1053,16 @@ class FileManager {
 					$this->_recently_uploaded[$fid] = '1';
 					
 					if(isset($_GET['product_id']) && $_GET['product_id']>0) {
-						$this->_assignProduct((int)$_GET['product_id'], $fid);
+						$this->_assignProduct((int)$_GET['product_id'], (int)$fid);
 					}
 					if(isset($_GET['cat_id']) && $_GET['cat_id']>0) {
-						$this->_assignCategory((int)$_GET['cat_id'], $fid);
+						$this->_assignCategory((int)$_GET['cat_id'], (int)$fid);
 					}
 					move_uploaded_file($file['tmp_name'], $target);
 					chmod($target, chmod_writable());
 				}
 			}
-			if(isset($_GET['product_id']) || isset($_GET['cat_id'])) {
+			if(isset($_GET['product_id']) || isset($_GET['cat_id']) || (isset($_GET['_g']) && $_GET['_g']=='categories' && isset($_GET['action']) && $_GET['action'] == 'add')) {
 				$GLOBALS['session']->set('recently_uploaded', $this->_recently_uploaded);
 			}
 
@@ -1079,8 +1079,9 @@ class FileManager {
 	 *
 	 */
 	private function _assignCategory($cat_id, $file_id) {
-
-		$GLOBALS['db']->update('CubeCart_category', array('cat_img' => (int)$file_id), array('cat_id' => (int)$cat_id));
+		
+		$GLOBALS['db']->update('CubeCart_category', array('cat_image' => $file_id), array('cat_id' => $cat_id));
+	
 	}
 
 	/**
@@ -1092,17 +1093,16 @@ class FileManager {
 	 */
 	private function _assignProduct($product_id, $file_id) {
 
-
-		if($GLOBALS['db']->select('CubeCart_image_index', false, array('main_img' => 1, 'product_id' => (int)$_GET['product_id']))!==false) {
+		if($GLOBALS['db']->select('CubeCart_image_index', false, array('main_img' => 1, 'product_id' => $_GET['product_id']))!==false) {
 			$main_image = '0';
 		} else {
-			$GLOBALS['db']->update('CubeCart_image_index', array('main_img' => 0), array('product_id' => (int)$_GET['product_id']));
+			$GLOBALS['db']->update('CubeCart_image_index', array('main_img' => 0), array('product_id' => $_GET['product_id']));
 			$main_image = '1';
 		}
 
 		$record = array(
-			'file_id'  => (int)$file_id,
-			'product_id' => (int)$product_id,
+			'file_id'  => $file_id,
+			'product_id' => $product_id,
 			'main_img'  => $main_image
 		);
 		$GLOBALS['db']->insert('CubeCart_image_index', $record);
