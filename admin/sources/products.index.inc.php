@@ -1001,16 +1001,19 @@ if (isset($_GET['action'])) {
 		if (is_array($option_matrix)) {
 			foreach ($option_matrix as $matrix_values) {
 				foreach ($matrix_values as $matrix_value_id) {
+					$options_nvp[] =  array('name' => $option[$matrix_value_id]['option_group'], 'value' => $option[$matrix_value_id]['option_name']);
+
 					$options_values[] =  '<strong>'.$option[$matrix_value_id]['option_group'].'</strong>: '.$option[$matrix_value_id]['option_name'];
 					$options_identifier[]  =  $option[$matrix_value_id]['option_id'].$option[$matrix_value_id]['value_id'];
 				}
 				$option_identifier_string = md5(implode('', $options_identifier));
 				$smarty_data['option_matrix']['all_possible'][] = array(
 					'options_identifier' => $option_identifier_string,
-					'options_values' => implode(', ', $options_values)
+					'options_values' => implode(', ', $options_values),
+					'cached_array' => json_encode($options_nvp)
 				);
 				$possible[] = $option_identifier_string;
-				unset($options_identifier, $options_values);
+				unset($options_identifier, $options_values, $options_nvp);
 			}
 		}
 
@@ -1026,9 +1029,9 @@ if (isset($_GET['action'])) {
 			$pc_postfix = 1;
 			foreach ($smarty_data['option_matrix']['all_possible'] as $option_group) {
 				if($GLOBALS['db']->select('CubeCart_option_matrix', 'matrix_id', array('options_identifier' => $option_group['options_identifier']))) {
-					$GLOBALS['db']->update('CubeCart_option_matrix', array('cached_name' => $option_group['options_values'], 'status' => 1), array('options_identifier' => $option_group['options_identifier'], 'product_id' => $product_id));
+					$GLOBALS['db']->update('CubeCart_option_matrix', array('cached_array' => $option_group['cached_array'], 'cached_name' => $option_group['options_values'], 'status' => 1), array('options_identifier' => $option_group['options_identifier'], 'product_id' => $product_id));
 				} else {
-					$GLOBALS['db']->insert('CubeCart_option_matrix', array('cached_name' => $option_group['options_values'], 'status' => 1, 'options_identifier' => $option_group['options_identifier'], 'product_id' => $product_id, 'product_code' => $result[0]['product_code'].'-'.(string)$pc_postfix));
+					$GLOBALS['db']->insert('CubeCart_option_matrix', array('cached_array' => $option_group['cached_array'], 'cached_name' => $option_group['options_values'], 'status' => 1, 'options_identifier' => $option_group['options_identifier'], 'product_id' => $product_id, 'product_code' => $result[0]['product_code'].'-'.(string)$pc_postfix));
 				}
 				$pc_postfix++;
 				

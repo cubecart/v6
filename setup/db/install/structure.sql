@@ -580,6 +580,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_option_matrix` (
   `product_id` int(11) unsigned NOT NULL,
   `options_identifier` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `cached_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `cached_array` TEXT COLLATE utf8_unicode_ci DEFAULT NULL,
   `stock_level` int(11) NOT NULL,
   `use_stock` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `product_code` varchar(60) COLLATE utf8_unicode_ci DEFAULT NULL,
