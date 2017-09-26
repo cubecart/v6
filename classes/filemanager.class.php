@@ -342,12 +342,11 @@ class FileManager {
 			}
 		} elseif($GLOBALS['session']->has('recently_uploaded')) {
 			$assigned_images = $GLOBALS['session']->get('recently_uploaded');
-			end($assigned_images); // Set last image as main_img
+			end($assigned_images); // Set last image as selected
 			$key = key($assigned_images);
-			$assigned_images[$key] = '2';
 			$GLOBALS['session']->delete('recently_uploaded');
 			$this->form_fields = true;
-			return $assigned_images;
+			return array($key => '1');
 		}
 		return array();
 	}
