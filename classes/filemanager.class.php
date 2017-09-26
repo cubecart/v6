@@ -1079,9 +1079,7 @@ class FileManager {
 	 *
 	 */
 	private function _assignCategory($cat_id, $file_id) {
-		
 		$GLOBALS['db']->update('CubeCart_category', array('cat_image' => $file_id), array('cat_id' => $cat_id));
-	
 	}
 
 	/**
@@ -1092,6 +1090,7 @@ class FileManager {
 	 *
 	 */
 	private function _assignProduct($product_id, $file_id) {
+
 
 		if($GLOBALS['db']->select('CubeCart_image_index', false, array('main_img' => 1, 'product_id' => $_GET['product_id']))!==false) {
 			$main_image = '0';
