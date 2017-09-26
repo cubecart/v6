@@ -157,7 +157,7 @@ class Ajax {
 					$assigned_images = $filemanager->productImages($_GET['product_id']);
 					$assigned_file = $filemanager->productFile($_GET['product_id']);
 				}
-				if(isset($_GET['cat_id']) && !empty($_GET['cat_id'])) {
+				if(isset($_GET['cat_id'])) {
 					$assigned_images = $filemanager->catImages($_GET['cat_id']);
 				}
 
