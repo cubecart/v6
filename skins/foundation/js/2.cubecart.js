@@ -9,7 +9,7 @@ jQuery(document).ready(function() {
         if(ip_height<min_height) {
             ip_height = min_height;
         }
-        $('.horizontal a.open-clearing').css({'min-height':ip_height+'px', 'max-height': ip_height+'px'});
+        $('.horizontal a.open-clearing img').css({'min-height':ip_height+'px', 'max-height': ip_height+'px'});
     }
 
     if($("#scrollContent").length>0) {
