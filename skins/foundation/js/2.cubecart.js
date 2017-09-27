@@ -2,14 +2,16 @@
 jQuery(document).ready(function() {
 
     if($('a.open-clearing img#img-preview').length) {
-        var ip = $('a.open-clearing img#img-preview');
-        var ip_height = ip.height();
-        var ip_width = ip.width();
-        var min_height = ip_width * 0.7;
-        if(ip_height<min_height) {
-            ip_height = min_height;
-        }
-        $('a.open-clearing img').css({'min-height':ip_height+'px', 'max-height': ip_height+'px'});
+        $('a.open-clearing img#img-preview').load(function() {
+            var ip = $('a.open-clearing img#img-preview');
+            var ip_height = ip.height();
+            var ip_width = ip.width();
+            var min_height = ip_width * 0.7;
+            if(ip_height<min_height) {
+                ip_height = min_height;
+            }
+            $('a.open-clearing img').css({'min-height':ip_height+'px', 'max-height': ip_height+'px'});
+        });
     }
 
     if($("#scrollContent").length>0) {
