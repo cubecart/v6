@@ -534,6 +534,9 @@ function show_address_form() {
 function mini_basket_action() {
     $('#basket-detail, #small-basket-detail').fadeIn('fast', function() {
         $(this).delay(4000).fadeOut('slow');
+        if($('#basket-detail').height()>$(window).height()) {
+            window.location.href = '?_a=basket';
+        }
     });
 }
 
