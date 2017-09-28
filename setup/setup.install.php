@@ -306,7 +306,7 @@ if (!isset($_SESSION['setup']['permissions'])) {
 
 
 			$default_docs = array(
-				0 => array('doc_name' => $strings['setup']['default_doc_title_welcome'], 'doc_content' => $strings['setup']['default_doc_content_welcome'], 'doc_order' => 1, 'doc_lang' => $config['default_language'], 'doc_home' => 1, 'doc_terms' => 0),
+				0 => array('doc_name' => str_replace('CubeCart', $_SESSION['setup']['config']['store_name'], $strings['setup']['default_doc_title_welcome']), 'doc_content' => $strings['setup']['default_doc_content_welcome'], 'doc_order' => 1, 'doc_lang' => $config['default_language'], 'doc_home' => 1, 'doc_terms' => 0),
 				1 => array('doc_name' => $strings['setup']['default_doc_title_about'], 'doc_content' => $strings['setup']['default_doc_content'], 'doc_order' => 2, 'doc_lang' => $config['default_language'], 'doc_home' => 0, 'doc_terms' => 0),
 				2 => array('doc_name' => $strings['setup']['default_doc_title_terms'], 'doc_content' => $strings['setup']['default_doc_content'], 'doc_order' => 3, 'doc_lang' => $config['default_language'], 'doc_home' => 0, 'doc_terms' => 1),
 				3 => array('doc_name' => $strings['setup']['default_doc_title_privacy'], 'doc_content' => $strings['setup']['default_doc_content'], 'doc_order' => 4, 'doc_lang' => $config['default_language'], 'doc_home' => 0, 'doc_terms' => 0),
