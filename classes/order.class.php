@@ -683,23 +683,27 @@ class Order {
 				} else {
 					foreach ($assign_id as $id => $option_value) {
 						$textfield = $GLOBALS['db']->select('CubeCart_option_group', array('option_name', 'option_type'), array('option_id' => $option_id)); // Kill me
-						//var_dump($textfield,in_array($textfield[0]['option_type'], array(1,2)));
 						if($textfield && in_array($textfield[0]['option_type'], array(1,2))) {
 							$option[$id] = $textfield[0]['option_name'].': '.$option_value;	
 						} else {
-							$assign_id = 0;
-						}
-						
-						if (($value = $GLOBALS['catalogue']->getOptionData((int)$option_id, $assign_id)) !== false) {
-							foreach ($GLOBALS['hooks']->load('class.cart.get.product_option_prices') as $hook) include $hook;
-							$value['price_display'] = '';
-							if (isset($value['option_price']) && $value['option_price']>0) { // record option price but not zero
-								if ($value['option_negative']) {
-									//$record['price'] -= $value['option_price'];
-									$value['price_display'] = ' (-';
-								} else {
-									//$record['price'] += $value['option_price'];
-									$value['price_display'] = ' (+';
+							if (($assign_id = $GLOBALS['db']->select('CubeCart_option_assign', array('assign_id'), array('option_id' => (int)$option_id, 'product' => $product_id))) !== false) {
+								$assign_id = (int)$assign_id[0]['assign_id'];
+							} else {
+								$assign_id = 0;
+							}
+							
+							if (($value = $GLOBALS['catalogue']->getOptionData((int)$option_id, $assign_id)) !== false) {
+								foreach ($GLOBALS['hooks']->load('class.cart.get.product_option_prices') as $hook) include $hook;
+								$value['price_display'] = '';
+								if (isset($value['option_price']) && $value['option_price']>0) { // record option price but not zero
+									if ($value['option_negative']) {
+										//$record['price'] -= $value['option_price'];
+										$value['price_display'] = ' (-';
+									} else {
+										//$record['price'] += $value['option_price'];
+										$value['price_display'] = ' (+';
+									}
+									$value['price_display'] .= Tax::getInstance()->priceFormat($value['option_price'], true, true).')';
 								}
 								$option[$assign_id] = $value['option_name'].': '.$option_value.$value['price_display'];
 							}
