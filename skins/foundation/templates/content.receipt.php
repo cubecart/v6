@@ -79,8 +79,8 @@
       <tr>
          <td>
             {$item.name}{if !empty($item.product_code)} ({$item.product_code}){/if}
-            {if !empty($item.options)}
-            <p>{foreach from=$item.options item=option}{$option}<br>{/foreach}</p>
+            {if !empty($item.options)}<br>
+            <small>{foreach from=$item.options item=option}{$option}<br>{/foreach}</small>
             {/if}
          </td>
          <td class="text-center">{$item.price}</td>
