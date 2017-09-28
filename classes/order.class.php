@@ -682,8 +682,10 @@ class Order {
 					}
 				} else {
 					foreach ($assign_id as $id => $option_value) {
-						if (($assign_id = $GLOBALS['db']->select('CubeCart_option_assign', array('assign_id'), array('option_id' => (int)$option_id, 'product' => $product_id))) !== false) {
-							$assign_id = (int)$assign_id[0]['assign_id'];
+						$textfield = $GLOBALS['db']->select('CubeCart_option_group', array('option_name', 'option_type'), array('option_id' => $option_id)); // Kill me
+						//var_dump($textfield,in_array($textfield[0]['option_type'], array(1,2)));
+						if($textfield && in_array($textfield[0]['option_type'], array(1,2))) {
+							$option[$id] = $textfield[0]['option_name'].': '.$option_value;	
 						} else {
 							$assign_id = 0;
 						}
@@ -699,9 +701,8 @@ class Order {
 									//$record['price'] += $value['option_price'];
 									$value['price_display'] = ' (+';
 								}
-								$value['price_display'] .= Tax::getInstance()->priceFormat($value['option_price'], true, true).')';
+								$option[$assign_id] = $value['option_name'].': '.$option_value.$value['price_display'];
 							}
-							$option[$assign_id] = $value['option_name'].': '.$option_value.$value['price_display'];
 						}
 					}
 
