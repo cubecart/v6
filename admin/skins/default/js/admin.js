@@ -488,15 +488,21 @@ $(document).ready(function() {
             namePattern: "$name$i",
             remove: '<i class="fa fa-trash-o"></i>'
         }), $("textarea.fck").each(function() {
+            var fck_lang = 'en';
+            if($("#val_admin_lang").length) {
+                fck_lang = $("#val_admin_lang").text().substr(0,2);
+            }
             if ($(this).hasClass("fck-full")) var t = {
                 path: "includes/ckeditor/",
                 fullPage: !0,
-                selector: "textarea.fck"
+                selector: "textarea.fck",
+                language: fck_lang
             };
             else var t = {
                 path: "includes/ckeditor/",
                 fullPage: !1,
-                selector: "textarea.fck"
+                selector: "textarea.fck",
+                language: fck_lang
             };
             $(this).ckeditor(t)
         }), $("div.fm-filelist").each(function() {

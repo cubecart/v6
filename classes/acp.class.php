@@ -362,6 +362,7 @@ class ACP {
 		if (Admin::getInstance()->is() && is_array($this->_navigation) && !$this->_hide_navigation) {
 			//Try cache first
 			$admin_session_language = Admin::getInstance()->get('language');
+			$GLOBALS['smarty']->assign('val_admin_lang', $admin_session_language);
 			if (($navigation = $GLOBALS['cache']->read('acp.showNavigation.'.$admin_session_language)) === false) {
 				foreach ($this->_navigation as $group => $menu) {
 					$title = $group;

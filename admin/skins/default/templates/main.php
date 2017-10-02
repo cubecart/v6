@@ -52,6 +52,7 @@
       <div style="display: none" id="val_admin_folder">{$SKIN_VARS.admin_folder}</div>
       <div style="display: none" id="val_admin_file">{$SKIN_VARS.admin_file}</div>
       <div style="display: none" id="val_skin_folder">{$SKIN_VARS.skin_folder}</div>
+      <div style="display: none" id="val_admin_lang">{$val_admin_lang}</div>
       <ol id="joyrideTour" style="display: none">
          <li data-button="{$LANG.dashboard.ok_go}">
             <h2>{$LANG.common.hi_casual} {$ADMIN_USER_FIRST_NAME}!</h2>
