@@ -218,10 +218,7 @@ $(document).ready(function() {
                     $(this).val() == t && $(this).val("")
                 })
             }))
-        }), "function" == typeof window.btoa ? $("#php_code").change(function() {
-            var t = window.btoa($(this).val());
-            $("#php_code_base64").val(t)
-        }) : ($("#php_code").prop("disabled", !0), $("#php_code").val("This tool can only be used with recent Firefox, Chrome, Safari or Opera browsers.")), $(":input, :input:hidden").each(function() {
+        }), $(":input, :input:hidden").each(function() {
             $(this).hasClass("original-fix") || $(this).attr("original", $(this).val())
         }).change(function() {
             pageChanged(this)

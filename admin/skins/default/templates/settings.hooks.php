@@ -9,7 +9,7 @@
  * Email:  sales@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
-<form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
+<form action="{$VAL_SELF}" onsubmit="base64_php()" id="hook_form" method="post" enctype="multipart/form-data">
    {if $DISPLAY_PLUGINS}
    <div id="plugins" class="tab_content">
       <h3>{$LANG.hooks.title_plugins_installed}</h3>
@@ -87,10 +87,6 @@
             </span>
          </div>
          <div>
-            <label for="php_code">{$LANG.hooks.php_code}</label>
-            <span><textarea id="php_code" class="required" rows="12" cols="50">{$SNIPPET.php_code}</textarea></span>
-         </div>
-         <div>
             <label for="version">{$LANG.hooks.version}</label>
             <span>
             <input type="text" name="snippet[version]" id="version" class="textbox" value="{$SNIPPET.version}">
@@ -102,8 +98,29 @@
             <input type="text" name="snippet[author]" id="author" class="textbox" value="{$SNIPPET.author}">
             </span>
          </div>
-         <input type="hidden" name="snippet[snippet_id]" id="snippet_id" class="textbox" value="{$SNIPPET.snippet_id}">
+         </fieldset>
+         <fieldset>
+         <legend>{$LANG.hooks.php_code}</legend>
+         <div id="php_code"></div>
          <input type="hidden" name="snippet[php_code]" id="php_code_base64" class="textbox" value="{$SNIPPET.php_code_base64}">
+         <script src="includes/ace/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+         <script>
+            var editor = ace.edit("php_code");
+            var input = document.getElementById('php_code_base64');
+            editor.setOptions({
+                useWrapMode: true,
+                highlightActiveLine: true,
+                showPrintMargin: false,
+                theme: 'ace/theme/github',
+                mode: 'ace/mode/php'
+            });
+            editor.setValue(window.atob("{$SNIPPET.php_code_base64}"));
+            editor.getSession().on("change", function () {
+               input.value = window.btoa(editor.getSession().getValue());
+            });
+         </script>
+         
+         <input type="hidden" name="snippet[snippet_id]" id="snippet_id" class="textbox" value="{$SNIPPET.snippet_id}">
       </fieldset>
       {/if}
    </div>
