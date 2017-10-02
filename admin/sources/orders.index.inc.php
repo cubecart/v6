@@ -100,6 +100,9 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
 			}
 			$data['options_array'] 		= serialize($data['productOptions']);
 			$data['product_options'] 	= $GLOBALS['order']->serializeOptions($data['productOptions'],$data['product_id']);
+			if(is_array($data['custom'])) {
+				$data['custom'] = serialize($data['custom']);	
+			}
 			$GLOBALS['db']->update('CubeCart_order_inventory', $data, array('cart_order_id' => $order_id, 'id' => (int)$data['id']));
 		}
 	}
