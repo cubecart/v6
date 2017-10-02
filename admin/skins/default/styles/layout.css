@@ -1114,4 +1114,6 @@ ul.quick_links li#help_menu ul li:not(:last-child) {
 #php_code {
     height: 300px;
     background: none !important;
+    border-bottom: 1px solid #ccc;
+    border-right: 1px solid #ccc;
 }
