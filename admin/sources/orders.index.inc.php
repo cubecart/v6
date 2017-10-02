@@ -568,6 +568,7 @@ if (isset($_GET['action'])) {
 				$summary['country_d'] = getCountryFormat($summary['country_d']);
 				$summary['order_date'] = formatTime($summary['order_date'], false, true);
 				$summary['ship_date'] = ((int)(str_replace('-', '', $summary['ship_date'])) > 0) ? formatDispatchDate($summary['ship_date']) : '';
+				$summary['weight'] = (float)$summary['weight'];
 
 				if (($notes = $GLOBALS['db']->select('CubeCart_order_notes', false, array('cart_order_id' => $summary['cart_order_id']))) !== false) {
 					foreach ($notes as $key => $note) {
