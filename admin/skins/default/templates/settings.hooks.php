@@ -114,7 +114,7 @@
                 theme: 'ace/theme/github',
                 mode: 'ace/mode/php'
             });
-            editor.setValue(window.atob("{$SNIPPET.php_code_base64}"));
+            editor.setValue(window.atob("{$SNIPPET.php_code_base64}"), 1);
             editor.getSession().on("change", function () {
                input.value = window.btoa(editor.getSession().getValue());
             });
