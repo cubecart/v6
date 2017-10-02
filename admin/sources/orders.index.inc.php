@@ -303,10 +303,9 @@ if (isset($_GET['action'])) {
 					$product['options'] = Catalogue::getInstance()->displayProductOptions($product['product_id'],unserialize($product['options_array']));
 
 					$product['options_array'] = false;
-
 					if (!empty($product['product_options']) && preg_match('/^a:[0-9]/', $product['product_options'])) {
 						$product['options_array'] = cc_unserialize($product['product_options']);
-						$product['options_text'] = implode(' ', cc_unserialize($product['product_options']));
+						$product['options_text'] = implode('<br>', cc_unserialize($product['product_options']));
 					} elseif (!empty($product['product_options'])) {
 						$product['options_text'] = $product['product_options'];
 					}
