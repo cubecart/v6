@@ -162,6 +162,7 @@
                {$OVERVIEW_SUMMARY.state}, {$OVERVIEW_SUMMARY.postcode}<br>
                {$OVERVIEW_SUMMARY.country}
             </fieldset>
+            <p><strong>{$LANG.basket.order_date}:</strong> {$OVERVIEW_SUMMARY.order_date}</p>
             <fieldset id="items">
                <legend>{$LANG.catalogue.title_items}</legend>
                {foreach from=$PRODUCTS item=product}

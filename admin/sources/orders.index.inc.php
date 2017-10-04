@@ -394,6 +394,8 @@ if (isset($_GET['action'])) {
 				$GLOBALS['smarty']->assign('TAX_SUMMARY', $smarty_data['tax_summary']);
 			}
 
+			$overview_summary['order_date']  = formatTime($overview_summary['order_date'], false, true);
+
 			$GLOBALS['smarty']->assign('OVERVIEW_SUMMARY', $overview_summary);
 			// Show the customer comments
 			if (!empty($overview_summary['customer_comments'])) {
