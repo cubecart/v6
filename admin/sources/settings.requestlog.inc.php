@@ -23,6 +23,7 @@ if (Admin::getInstance()->superUser()) {
 	$per_page = 25;
 	$page = (isset($_GET['page'])) ? $_GET['page'] : 1;
 	$request_log = $GLOBALS['db']->select('CubeCart_request_log', '*', false, array('time' => 'DESC'), $per_page, $page, false);
+	$count = $GLOBALS['db']->getFoundRows();
 	if (is_array($request_log)) {
 		foreach ($request_log as $log) {
 			$smarty_data['request_log'][] = array(
@@ -36,7 +37,6 @@ if (Admin::getInstance()->superUser()) {
 	}
 
 	$GLOBALS['smarty']->assign('REQUEST_LOG', $smarty_data['request_log']);
-	$count = $GLOBALS['db']->getFoundRows();
 	$GLOBALS['smarty']->assign('PAGINATION_REQUEST_LOG', $GLOBALS['db']->pagination($count, $per_page, $page, 5, 'page'));
 }
 $page_content = $GLOBALS['smarty']->fetch('templates/settings.requestlog.php');
