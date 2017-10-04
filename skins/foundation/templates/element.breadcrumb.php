@@ -11,10 +11,26 @@
  *}
 <div id="element-breadcrumbs">
    {if $CRUMBS}
-   <ul class="breadcrumbs">
-      <li><a href="{$STORE_URL}"><span class="show-for-small-only"><svg class="icon"><use xlink:href="#icon-home"></use></svg></span><span class="show-for-medium-up">{$LANG.common.home}</span></a></li>
-      {foreach from=$CRUMBS item=crumb}
-      <li><a href="{$crumb.url}">{$crumb.title}</a></li>
+   <ul class="breadcrumbs" itemscope itemtype="http://schema.org/BreadcrumbList">
+      <li itemprop="itemListElement" itemscope
+      itemtype="http://schema.org/ListItem">
+         <a itemprop="item" href="{$STORE_URL}">
+            <span class="show-for-small-only">
+               <svg class="icon"><use xlink:href="#icon-home"></use></svg>
+            </span>
+            <span class="show-for-medium-up" itemprop="name">{$LANG.common.home}</span>
+         </a>
+         <meta itemprop="position" content="1" />
+      </li>
+      {foreach from=$CRUMBS item=crumb name=crumbposition}
+      {assign var="position" value=$smarty.foreach.crumbposition.iteration+1}
+      <li itemprop="itemListElement" itemscope
+      itemtype="http://schema.org/ListItem">
+         <a itemprop="item" href="{$crumb.url}">
+            <span itemprop="name">{$crumb.title}</span>
+         </a>
+         <meta itemprop="position" content="{$position}" />
+      </li>
       {/foreach}
    </ul>
    {else}

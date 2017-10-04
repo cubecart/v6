@@ -37,3 +37,19 @@
 {/if}
 {/foreach}
 {/if}
+{if is_array($product.custom)}
+   {foreach from=$product.custom key=k item=v}
+   {$k}<br>
+   {if $k=='Message'}
+   <textarea name="inv[{$product.id}][custom][{$k}]">{$v}</textarea>
+   {elseif $k=='Method'}
+   <select name="inv[{$product.id}][custom][{$k}]">
+      <option{if $v=='Email'} selected="selected"{/if} value="Email">Email</option>
+      <option{if $v=='Post'} selected="selected"{/if} value="Post">Post</option>
+   </select>
+   {else}
+   <input type="text" name="inv[{$product.id}][custom][{$k}]" class="textbox" value="{$v}">
+   {/if}
+   <br>
+   {/foreach}
+{/if}

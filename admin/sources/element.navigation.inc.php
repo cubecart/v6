@@ -31,7 +31,7 @@ $nav_items['customers']  = array(
 
 $nav_items['inventory']  = array(
 	$lang['navigation']['nav_categories']  => array('address' => '?_g=categories', 'id' => 'nav_categories'),
-	$lang['navigation']['nav_products']   => array('address' => '?_g=products', 'id' => 'nav_products'),
+	$lang['navigation']['nav_products']   => array('address' => '?_g=products&node=index', 'id' => 'nav_products'),
 	$lang['navigation']['nav_prod_reviews']  => '?_g=products&node=reviews',
 	$lang['navigation']['nav_product_options'] => '?_g=products&node=options',
 	$lang['navigation']['nav_coupons']   => '?_g=products&node=coupons',

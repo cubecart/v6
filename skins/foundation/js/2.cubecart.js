@@ -1,15 +1,17 @@
 ;
 jQuery(document).ready(function() {
 
-    if($('.horizontal a.open-clearing img#img-preview').length) {
-        var ip = $('.horizontal a.open-clearing img#img-preview');
-        var ip_height = ip.height();
-        var ip_width = ip.width();
-        var min_height = ip_width * 0.7;
-        if(ip_height<min_height) {
-            ip_height = min_height;
-        }
-        $('.horizontal a.open-clearing').css({'min-height':ip_height+'px', 'max-height': ip_height+'px'});
+    if($('a.open-clearing img#img-preview').length) {
+        $('a.open-clearing img#img-preview').load(function() {
+            var ip = $('a.open-clearing img#img-preview');
+            var ip_height = ip.height();
+            var ip_width = ip.width();
+            var min_height = ip_width * 0.7;
+            if(ip_height<min_height) {
+                ip_height = min_height;
+            }
+            $('a.open-clearing img').css({'min-height':ip_height+'px', 'max-height': ip_height+'px'});
+        });
     }
 
     if($("#scrollContent").length>0) {
@@ -385,9 +387,10 @@ jQuery(document).ready(function() {
     /* We must only show grid view with 1 grid column for medium */
     if(Foundation.utils.is_small_only()) {
         grid_view(0);
+        $('#content_checkout_medium_up').remove();
     }
     if(Foundation.utils.is_medium_up()) {
-        $('.field_small_only').attr('disabled', true);
+        $('#content_checkout_small').remove();
     }
 });
 
@@ -531,6 +534,9 @@ function show_address_form() {
 function mini_basket_action() {
     $('#basket-detail, #small-basket-detail').fadeIn('fast', function() {
         $(this).delay(4000).fadeOut('slow');
+        if($('#basket-detail').height()>$(window).height()) {
+            window.location.href = '?_a=basket';
+        }
     });
 }
 

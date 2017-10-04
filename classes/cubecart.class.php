@@ -1444,6 +1444,8 @@ class Cubecart {
 
 			// Display form
 			$contact['description'] = base64_decode($contact['description']);
+			$contact['description'] = ($contact['parse']=='1') ? $GLOBALS['smarty']->fetch('string:'.$contact['description']) : $contact['description'];
+
 			$GLOBALS['smarty']->assign('CONTACT', $contact);
 			if (isset($contact['department']) && is_array($contact['department'])) {
 				foreach ($contact['department'] as $key => $dept) {
@@ -1713,7 +1715,7 @@ class Cubecart {
 			$checkout_button = (CC_SSL) ? $GLOBALS['language']->checkout['secure_checkout'] : $GLOBALS['language']->checkout['checkout'];
 			$GLOBALS['smarty']->assign('CHECKOUT_BUTTON', $checkout_button);
 			if ($this->_basket['weight'] > 0) {
-				$GLOBALS['smarty']->assign('BASKET_WEIGHT', ($GLOBALS['config']->get('config', 'show_basket_weight')) ? $this->_basket['weight'].strtolower($GLOBALS['config']->get('config', 'product_weight_unit')) : false);
+				$GLOBALS['smarty']->assign('BASKET_WEIGHT', ($GLOBALS['config']->get('config', 'show_basket_weight')) ? (float)$this->_basket['weight'].strtolower($GLOBALS['config']->get('config', 'product_weight_unit')) : false);
 			}
 			
 			$this->_listPaymentOptions($this->_basket['gateway']);

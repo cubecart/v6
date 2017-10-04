@@ -100,6 +100,9 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
 			}
 			$data['options_array'] 		= serialize($data['productOptions']);
 			$data['product_options'] 	= $GLOBALS['order']->serializeOptions($data['productOptions'],$data['product_id']);
+			if(is_array($data['custom'])) {
+				$data['custom'] = serialize($data['custom']);	
+			}
 			$GLOBALS['db']->update('CubeCart_order_inventory', $data, array('cart_order_id' => $order_id, 'id' => (int)$data['id']));
 		}
 	}
@@ -303,10 +306,9 @@ if (isset($_GET['action'])) {
 					$product['options'] = Catalogue::getInstance()->displayProductOptions($product['product_id'],unserialize($product['options_array']));
 
 					$product['options_array'] = false;
-
 					if (!empty($product['product_options']) && preg_match('/^a:[0-9]/', $product['product_options'])) {
 						$product['options_array'] = cc_unserialize($product['product_options']);
-						$product['options_text'] = implode(' ', cc_unserialize($product['product_options']));
+						$product['options_text'] = implode('<br>', cc_unserialize($product['product_options']));
 					} elseif (!empty($product['product_options'])) {
 						$product['options_text'] = $product['product_options'];
 					}
@@ -391,6 +393,8 @@ if (isset($_GET['action'])) {
 				}
 				$GLOBALS['smarty']->assign('TAX_SUMMARY', $smarty_data['tax_summary']);
 			}
+
+			$overview_summary['order_date']  = formatTime($overview_summary['order_date'], false, true);
 
 			$GLOBALS['smarty']->assign('OVERVIEW_SUMMARY', $overview_summary);
 			// Show the customer comments
@@ -566,6 +570,7 @@ if (isset($_GET['action'])) {
 				$summary['country_d'] = getCountryFormat($summary['country_d']);
 				$summary['order_date'] = formatTime($summary['order_date'], false, true);
 				$summary['ship_date'] = ((int)(str_replace('-', '', $summary['ship_date'])) > 0) ? formatDispatchDate($summary['ship_date']) : '';
+				$summary['weight'] = (float)$summary['weight'];
 
 				if (($notes = $GLOBALS['db']->select('CubeCart_order_notes', false, array('cart_order_id' => $summary['cart_order_id']))) !== false) {
 					foreach ($notes as $key => $note) {

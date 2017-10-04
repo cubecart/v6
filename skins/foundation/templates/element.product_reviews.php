@@ -35,7 +35,16 @@
                <meta itemprop="bestRating" content="5">
             </div>
          </div>
-         <blockquote>{if $review.gravatar_exists}<a href="http://gravatar.com/emails/"><img class="th marg-right" src="{$review.gravatar_src}&s=90" align="left"></a>{/if}<span itemprop="description">{$review.review}</span><cite><span itemprop="author">{$review.name}</span> ({$review.date})</cite></blockquote>
+         <div class="row">
+            {if $review.gravatar_exists}
+            <div class="small-3 medium-2 columns">
+               <a href="http://gravatar.com/emails/"><img class="th marg-right" src="{$review.gravatar_src}&s=90" align="left"></a>
+            </div>
+            {/if}
+            <div class="{if $review.gravatar_exists}small-9 medium-10{else}small-12{/if} columns">
+               <blockquote><span itemprop="description">{$review.review}</span><cite><span itemprop="author">{$review.name}</span> ({$review.date})</cite></blockquote>
+            </div>
+         </div>
       </div>
       {/foreach}
       {if isset($PAGINATION)}{$PAGINATION}{/if}

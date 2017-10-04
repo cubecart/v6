@@ -342,12 +342,11 @@ class FileManager {
 			}
 		} elseif($GLOBALS['session']->has('recently_uploaded')) {
 			$assigned_images = $GLOBALS['session']->get('recently_uploaded');
-			end($assigned_images); // Set last image as main_img
+			end($assigned_images); // Set last image as selected
 			$key = key($assigned_images);
-			$assigned_images[$key] = '2';
 			$GLOBALS['session']->delete('recently_uploaded');
 			$this->form_fields = true;
-			return $assigned_images;
+			return array($key => '1');
 		}
 		return array();
 	}
@@ -415,6 +414,10 @@ class FileManager {
 				$file = $this->_manage_root.'/'.$this->_sub_dir.$result[0]['filename'];
 				if (file_exists($file) && unlink($file) || !file_exists($file)) {
 					if ($GLOBALS['db']->delete('CubeCart_filemanager', array('file_id' => (int)$file_id))) {
+						// Remove associated product indexes
+						$GLOBALS['db']->delete('CubeCart_image_index', array('file_id' => (int)$file_id));
+						// Remove associated category images
+						$GLOBALS['db']->update('CubeCart_category', array('cat_image' => 0), array('cat_image' => (int)$file_id));
 						return true;
 					}
 				}
@@ -1049,10 +1052,10 @@ class FileManager {
 					$this->_recently_uploaded[$fid] = '1';
 					
 					if(isset($_GET['product_id']) && $_GET['product_id']>0) {
-						$this->_assignProduct((int)$_GET['product_id'], $fid);
+						$this->_assignProduct((int)$_GET['product_id'], (int)$fid);
 					}
 					if(isset($_GET['cat_id']) && $_GET['cat_id']>0) {
-						$this->_assignCategory((int)$_GET['cat_id'], $fid);
+						$this->_assignCategory((int)$_GET['cat_id'], (int)$fid);
 					}
 					move_uploaded_file($file['tmp_name'], $target);
 					chmod($target, chmod_writable());
@@ -1075,8 +1078,7 @@ class FileManager {
 	 *
 	 */
 	private function _assignCategory($cat_id, $file_id) {
-
-		$GLOBALS['db']->update('CubeCart_category', array('cat_img' => (int)$file_id), array('cat_id' => (int)$cat_id));
+		$GLOBALS['db']->update('CubeCart_category', array('cat_image' => $file_id), array('cat_id' => $cat_id));
 	}
 
 	/**
@@ -1087,18 +1089,16 @@ class FileManager {
 	 *
 	 */
 	private function _assignProduct($product_id, $file_id) {
-
-
-		if($GLOBALS['db']->select('CubeCart_image_index', false, array('main_img' => 1, 'product_id' => (int)$_GET['product_id']))!==false) {
+		if($GLOBALS['db']->select('CubeCart_image_index', false, array('main_img' => 1, 'product_id' => $product_id))!==false) {
 			$main_image = '0';
 		} else {
-			$GLOBALS['db']->update('CubeCart_image_index', array('main_img' => 0), array('product_id' => (int)$_GET['product_id']));
+			$GLOBALS['db']->update('CubeCart_image_index', array('main_img' => 0), array('product_id' => $product_id));
 			$main_image = '1';
 		}
 
 		$record = array(
-			'file_id'  => (int)$file_id,
-			'product_id' => (int)$product_id,
+			'file_id'  => $file_id,
+			'product_id' => $product_id,
 			'main_img'  => $main_image
 		);
 		$GLOBALS['db']->insert('CubeCart_image_index', $record);

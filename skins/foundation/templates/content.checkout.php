@@ -63,15 +63,17 @@
       {/if}
    </div>
 </form>
-{if $CHECKOUTS}
+{if $DISABLE_CHECKOUT_BUTTON!==true}
+   {if $CHECKOUTS}
 <div class="row">
    <div class="small-12 columns text-right">-- {$LANG.common.or} --</div>
 </div>
-{foreach from=$CHECKOUTS item=checkout}
+      {foreach from=$CHECKOUTS item=checkout}
 <div class="row">
    <div class="small-12 columns text-right pad">{$checkout}</div>
 </div>
-{/foreach}
+      {/foreach}
+   {/if}
 {/if}
 {if $RELATED}
 <div class="show-for-medium-up">

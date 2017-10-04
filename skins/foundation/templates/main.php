@@ -58,7 +58,7 @@
             {include file='templates/box.eu_cookie.php'}
             <div class="row marg-top" id="top_header">
                <div class="small-4 large-3 columns">
-                  <a href="{$STORE_URL}" class="main-logo"><img src="{$STORE_LOGO}" alt="{$META_TITLE}"></a>
+                  <a href="{$STORE_URL}" class="main-logo"><img src="{$STORE_LOGO}" alt="{$CONFIG.store_name}"></a>
                </div>
                <div class="small-8 large-9 columns nav-boxes">
                   <div class="row" id="nav-actions">
@@ -144,5 +144,6 @@
             {include file='templates/ccpower.php'}
          </div>
       </div>
+      {include file='templates/element.markup.json-ld.php'}
    </body>
 </html>

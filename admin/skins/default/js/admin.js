@@ -218,10 +218,7 @@ $(document).ready(function() {
                     $(this).val() == t && $(this).val("")
                 })
             }))
-        }), "function" == typeof window.btoa ? $("#php_code").change(function() {
-            var t = window.btoa($(this).val());
-            $("#php_code_base64").val(t)
-        }) : ($("#php_code").prop("disabled", !0), $("#php_code").val("This tool can only be used with recent Firefox, Chrome, Safari or Opera browsers.")), $(":input, :input:hidden").each(function() {
+        }), $(":input, :input:hidden").each(function() {
             $(this).hasClass("original-fix") || $(this).attr("original", $(this).val())
         }).change(function() {
             pageChanged(this)
@@ -491,15 +488,21 @@ $(document).ready(function() {
             namePattern: "$name$i",
             remove: '<i class="fa fa-trash-o"></i>'
         }), $("textarea.fck").each(function() {
+            var fck_lang = 'en';
+            if($("#val_admin_lang").length) {
+                fck_lang = $("#val_admin_lang").text().substr(0,2);
+            }
             if ($(this).hasClass("fck-full")) var t = {
                 path: "includes/ckeditor/",
                 fullPage: !0,
-                selector: "textarea.fck"
+                selector: "textarea.fck",
+                language: fck_lang
             };
             else var t = {
                 path: "includes/ckeditor/",
                 fullPage: !1,
-                selector: "textarea.fck"
+                selector: "textarea.fck",
+                language: fck_lang
             };
             $(this).ckeditor(t)
         }), $("div.fm-filelist").each(function() {

@@ -147,7 +147,7 @@ $default_config_settings = array(
   'catalogue_sale_mode' => '1',
   'catalogue_sale_percentage' => '',
   'catalogue_show_empty' => '1',
-  'product_weight_unit' => 'Lb',
+  'product_weight_unit' => 'Kg',
   'proxy' => '0',
   'proxy_host' => '',
   'proxy_port' => '',
@@ -466,7 +466,7 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
       } elseif (isset($_SESSION['setup']['long_lang_identifier']) && file_exists('language/' . $_SESSION['setup']['long_lang_identifier'] . '.xml')) {
         $default_language = $_SESSION['setup']['long_lang_identifier'];
       } else {
-        $default_language = 'en-GB';
+        $default_language = isset($_SESSION['setup']['config']['default_language']) ? $_SESSION['setup']['config']['default_language'] : 'en-GB';
       }
       
       ## Redefine the default skin

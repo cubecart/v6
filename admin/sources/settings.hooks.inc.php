@@ -40,8 +40,6 @@ if (Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
 	} else {
 		if (isset($_POST['snippet']) && is_array($_POST['snippet'])) {
 
-			//$_POST['snippet']['php_code'] = base64_decode($_POST['snippet']['php_code']);
-
 			$GLOBALS['hooks']->delete_snippet_file($_POST['snippet']['unique_id']);
 
 			if (isset($_POST['snippet']['snippet_id']) && is_numeric($_POST['snippet']['snippet_id'])) {
@@ -248,7 +246,7 @@ if (isset($_GET['plugin']) && isset($plugins[(string)$_GET['plugin']]) && !is_nu
 	}
 
 	if (isset($snippet[0]) && is_array($snippet[0])) {
-		$snippet[0]['php_code_base64'] = base64_encode($snippet[0]['php_code']);
+		$snippet[0]['php_code_base64'] = $snippet[0]['php_code'];
 		$snippet[0]['php_code'] = base64_decode($snippet[0]['php_code']);
 		$GLOBALS['smarty']->assign('SNIPPET', $snippet[0]);
 	}

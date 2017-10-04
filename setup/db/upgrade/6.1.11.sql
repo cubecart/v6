@@ -1,0 +1,2 @@
+ALTER TABLE `CubeCart_order_history` CHANGE `history_id` `history_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT; #EOQ
+ALTER TABLE `CubeCart_option_matrix` ADD `cached_array` TEXT NOT NULL AFTER `cached_name`; #EOQ

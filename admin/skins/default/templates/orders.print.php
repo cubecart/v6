@@ -85,13 +85,16 @@
 		<div><label>{$LANG.orders.shipping_date}</label><span>{$order.ship_date}</span></div>
 		{/if}
 		{if !empty($order.ship_method)}
-		<div><label>{$LANG.orders.shipping_method}</label><span>{$order.ship_method}</span></div>
+		<div><label>{$LANG.orders.shipping_method}</label><span>{$order.ship_method|replace:'_':' '}</span></div>
 		{/if}
 		{if !empty($order.ship_product)}
-		<div><label>{$LANG.orders.shipping_product}</label><span>{$order.ship_product}</span></div>
+		<div><label>{$LANG.orders.shipping_product}</label><span>{$order.ship_product|replace:'_':' '}</span></div>
 		{/if}
 		{if !empty($order.ship_tracking)}
 		<div><label>{$LANG.orders.shipping_tracking}</label><span>{$order.ship_tracking}</span></div>
+		{/if}
+		{if $order.weight>0}
+		<div><label>{$LANG.common.weight}</label><span>{$order.weight}{$CONFIG.product_weight_unit}</span></div>
 		{/if}
 	  </fieldset>
 	  <div id="thanks">{$LANG.orders.title_thanks}</div>

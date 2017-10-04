@@ -83,8 +83,14 @@ function crc_integrity_check($files, $mode = 'upgrade') {
 	}
 }
 
-$version_history = $GLOBALS['db']->select('CubeCart_history', false, false, "`version` DESC");
-
+$versions = $GLOBALS['db']->select('CubeCart_history');
+$version_history = array();
+if($versions){
+	foreach($versions as $version) {
+		$version_history[$version['version']] = $version;
+	}	
+}
+krsort($version_history,SORT_NATURAL);
 $GLOBALS['smarty']->assign('VERSIONS', $version_history);
 
 

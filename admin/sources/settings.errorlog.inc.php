@@ -47,6 +47,7 @@ if (isset($_POST['systemread'])) {
 $per_page = 25;
 $page = (isset($_GET['page'])) ? $_GET['page'] : 1;
 $error_log = $GLOBALS['db']->select('CubeCart_admin_error_log', array('message', 'time', 'log_id', 'read'), array('admin_id'=>Admin::getInstance()->get('admin_id')), array('time' => 'DESC'), $per_page, $page, false);
+$count = $GLOBALS['db']->getFoundRows();
 if (is_array($error_log)) {
 	foreach ($error_log as $log) {
 		$smarty_data['error_log'][] = array(
@@ -60,7 +61,6 @@ if (is_array($error_log)) {
 }
 
 $GLOBALS['smarty']->assign('ADMIN_ERROR_LOG', $smarty_data['error_log']);
-$count = $GLOBALS['db']->getFoundRows();
 $GLOBALS['smarty']->assign('PAGINATION_ADMIN_ERROR_LOG', $GLOBALS['db']->pagination($count, $per_page, $page, 5, 'page', 'admin_error_log'));
 
 if (Admin::getInstance()->superUser()) {
@@ -70,6 +70,7 @@ if (Admin::getInstance()->superUser()) {
 	$per_page = 25;
 	$page = (isset($_GET['page'])) ? $_GET['page'] : 1;
 	$system_error_log = $GLOBALS['db']->select('CubeCart_system_error_log', array('message', 'time', 'log_id', 'read'), false, array('time' => 'DESC'), $per_page, $page, false);
+	$count = $GLOBALS['db']->getFoundRows();
 	if (is_array($system_error_log)) {
 		foreach ($system_error_log as $log) {
 			$smarty_data['system_error_log'][] = array(
@@ -83,7 +84,6 @@ if (Admin::getInstance()->superUser()) {
 		$GLOBALS['smarty']->assign('SYSTEM_ERROR_LOG', $smarty_data['system_error_log']);
 	}
 
-	$count = $GLOBALS['db']->getFoundRows();
 	$GLOBALS['smarty']->assign('PAGINATION_SYSTEM_ERROR_LOG', $GLOBALS['db']->pagination($count, $per_page, $page, 5, 'page', 'system_error_log'));
 }
 $page_content = $GLOBALS['smarty']->fetch('templates/settings.errorlog.php');

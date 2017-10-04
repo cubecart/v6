@@ -1013,6 +1013,7 @@ class Catalogue {
 			$count = count($result);
 			$data = array();
 			foreach ($result as $product) {
+				$product['product_weight'] = (float)$product['product_weight'];
 				$GLOBALS['language']->translateProduct($product);
 				$this->getProductPrice($product, $quantity);
 				if (!$category && $count == 1) {
@@ -1752,7 +1753,7 @@ class Catalogue {
 				}
 			}
 			if (is_array($order)) {
-				$order_string = 'ORDER BY '.$order['field'].' '.$order['sort'];
+				$order_string = 'ORDER BY `'.$order['field'].'` '.$order['sort'];
 			}
 
 			if (isset($search_data['featured'])) {
@@ -1902,7 +1903,7 @@ class Catalogue {
 						$_GET['sort']['price'] = current($order);
 					} else {
 						$_GET['sort'][key($order)] = current($order);
-						$order_string = 'ORDER BY '.key($order).' '.current($order);
+						$order_string = 'ORDER BY `'.key($order).'` '.current($order);
 					}
 				}
 				

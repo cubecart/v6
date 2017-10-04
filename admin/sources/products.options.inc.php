@@ -99,12 +99,15 @@ if (!empty($_POST) && Admin::getInstance()->permissions('products', CC_PERM_EDIT
 	if (isset($_POST['add_attr'])) {
 		$attributes_added = false;
 		foreach ($_POST['add_attr'] as $option_id => $values) {
+			$priority = 1;
 			foreach ($values as $offset => $data) {
 				$record = array(
 					'value_name' => $data['attr_name'],
 					'option_id'  => $option_id,
+					'priority'  => $priority,
 				);
 				if ($GLOBALS['db']->insert('CubeCart_option_value', $record)) {
+					$priority++;
 					$changes = true;
 					$attributes_added = true;
 				}
