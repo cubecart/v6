@@ -187,7 +187,6 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 				httpredir('?_g=maintenance&node=index','backup');
 			} else {
 				$GLOBALS['main']->setACPNotify($lang['maintain']['files_restore_success']);
-				$GLOBALS['cache']->clear();
 				httpredir('?_g=maintenance&node=index','backup');
 			}
 		} else {
@@ -332,7 +331,6 @@ if (isset($_POST['sitemap'])) {
 }
 
 if (isset($_POST['emptyTransLogs']) && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
-	$GLOBALS['cache']->clear();
 	if ($GLOBALS['db']->truncate('CubeCart_transactions')) {
 		$GLOBALS['main']->setACPNotify($lang['maintain']['notify_logs_transaction']);
 	} else {
@@ -342,7 +340,6 @@ if (isset($_POST['emptyTransLogs']) && Admin::getInstance()->permissions('mainte
 }
 
 if (isset($_REQUEST['emptyEmailLogs']) && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
-	$GLOBALS['cache']->clear();
 	if ($GLOBALS['db']->truncate(array('CubeCart_email_log'))) {
 		$GLOBALS['main']->setACPNotify($lang['maintain']['notify_logs_email']);
 	} else {
@@ -352,7 +349,6 @@ if (isset($_REQUEST['emptyEmailLogs']) && Admin::getInstance()->permissions('mai
 }
 
 if (isset($_REQUEST['emptyErrorLogs']) && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
-	$GLOBALS['cache']->clear();
 	if ($GLOBALS['db']->truncate(array('CubeCart_system_error_log', 'CubeCart_admin_error_log'))) {
 		$GLOBALS['main']->setACPNotify($lang['maintain']['notify_logs_error']);
 	} else {
@@ -362,7 +358,6 @@ if (isset($_REQUEST['emptyErrorLogs']) && Admin::getInstance()->permissions('mai
 }
 
 if (isset($_REQUEST['emptyRequestLogs']) && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
-	$GLOBALS['cache']->clear();
 	if ($GLOBALS['db']->truncate('CubeCart_request_log')) {
 		$GLOBALS['main']->setACPNotify($lang['maintain']['notify_logs_request']);
 	} else {
@@ -372,7 +367,6 @@ if (isset($_REQUEST['emptyRequestLogs']) && Admin::getInstance()->permissions('m
 }
 
 if (isset($_POST['clearSearch']) && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
-	$GLOBALS['cache']->clear();
 	if ($GLOBALS['db']->truncate('CubeCart_search')) {
 		$GLOBALS['main']->setACPNotify($lang['maintain']['notify_search_clear']);
 	} else {
@@ -421,7 +415,6 @@ if (isset($_POST['clearImageCache']) && Admin::getInstance()->permissions('maint
 	$clear_post = true;
 }
 if (isset($_POST['prodViews'])) {
-	$GLOBALS['cache']->clear();
 	if ($GLOBALS['db']->update('CubeCart_inventory', array('popularity' => 0), '', true)) {
 		$GLOBALS['main']->setACPNotify($lang['maintain']['notify_reset_product']);
 	} else {
@@ -431,7 +424,6 @@ if (isset($_POST['prodViews'])) {
 }
 
 if (isset($_POST['clearLogs'])) {
-	$GLOBALS['cache']->clear();
 	if ($GLOBALS['db']->truncate(array('CubeCart_admin_log', 'CubeCart_access_log'))) {
 		$GLOBALS['main']->setACPNotify($lang['maintain']['notify_logs_admin']);
 	} else {
@@ -460,8 +452,6 @@ if (isset($_GET['files_backup'])) {
 	ignore_user_abort(true);
 	// Set max execution time to three minutes
 	set_time_limit(180);
-
-	$GLOBALS['cache']->clear(); // Clear cache to remove unimpoartant data to save space and possible errors
 	
 	chdir(CC_ROOT_DIR);
 	$destination = CC_ROOT_DIR.'/backup/files_'.CC_VERSION.'_'.date("dMy-His").'.zip';

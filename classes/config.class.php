@@ -74,21 +74,8 @@ class Config {
 		} else {
 			$this->_config['config'] = $glob;
 		}
-		
-		// Don't allow cache if current domain is not the real one.
-		if(!isset($this->_config['config']['cookie_domain']) || empty($this->_config['config']['cookie_domain'])) {
-			$cache = false;
-		} elseif(!strstr(currentPage(), trim($this->_config['config']['cookie_domain'],'.'))) {
-			$cache = false;
-		} else {
-			$cache = (bool)$this->_config['config']['cache'];
-		}
 
-		$GLOBALS['cache']->enable($cache);
-
-		if(!$cache || (defined('CC_IN_ADMIN') && CC_IN_ADMIN)) {
-			$GLOBALS['cache']->clear();
-		}
+		$GLOBALS['cache']->enable((bool)$this->_config['config']['cache']);
 	}
 
 	public function __destruct() {

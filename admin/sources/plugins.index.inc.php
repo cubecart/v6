@@ -185,7 +185,6 @@ if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 	} else {
 		$GLOBALS['main']->setACPWarning($lang['module']['token_unknown']);
 	}
-	$GLOBALS['cache']->clear();
 	httpredir('?_g=plugins');
 }
 
