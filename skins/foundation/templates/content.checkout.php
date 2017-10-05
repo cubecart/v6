@@ -35,7 +35,7 @@
    
    {if $INCLUDE_CHECKOUT && !$DISABLE_GATEWAYS}
    <div id="payment_method">
-      <h3>{$LANG.gateway.select}</h3>
+      <a href="?" class="right">{$LANG.basket.continue_shopping}</a><h3>{$LANG.gateway.select}</h3>
       <hr>
       <div class="row">
          <div class="small-12 columns">
