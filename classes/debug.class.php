@@ -115,7 +115,7 @@ class Debug {
 		}
 
 		//If its time to clear the cache
-		if (isset($_GET['debug-cache-clear'])) {
+		if (!CC_IN_ADMIN && isset($_GET['debug-cache-clear'])) {
 			$GLOBALS['cache']->clear();
 			$GLOBALS['cache']->tidy();
 			httpredir(currentPage(array('debug-cache-clear')));
@@ -332,7 +332,8 @@ class Debug {
 			$cache->status();
 			$cacheState = $cache->status ? '<span style="color: #008000">'.$cache->status_desc.'</span>' : '<span style="color: #ff0000">'.$cache->status_desc.'</span>';
 
-			$output[] = '<strong>Cache ('.$cache->getCacheSystem().'): '.$cacheState.'</strong><br />'.$cache->usage().' [<a href="'.currentPage(null, array('debug-cache-clear' => 'true')).'">Clear Cache</a>]<hr size="1" />';
+			$clear_cache = CC_IN_ADMIN ? '' : '[<a href="'.currentPage(null, array('debug-cache-clear' => 'true')).'">Clear Cache</a>]';
+			$output[] = '<strong>Cache ('.$cache->getCacheSystem().'): '.$cacheState.'</strong><br />'.$cache->usage().' '.$clear_cache.'<hr size="1" />';
 
 			// Page render timer
 			$output[] = '<strong>Page Load Time</strong>:<br />'.($this->_getTime() - $this->_debug_timer).' seconds';

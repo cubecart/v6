@@ -1,6 +1,21 @@
 #logo {
     margin: 0 0 0 3px
 }
+#clear_cache_master {
+    position: fixed;
+    bottom: 7px;
+    right: 10px;
+    text-align:center;
+    background: #e88e22;
+    color: #fff;
+    border-radius: 5px;
+    line-height: 25px;
+    padding: 0 15px;
+    text-transform: uppercase;
+}
+#clear_cache_master:hover{
+    background: #da8117;    
+}
 div.button, span.button, button.button,
 input[type=button],
 input[type=submit] {

@@ -234,6 +234,7 @@ class GUI {
 			$skin_data['admin_folder']   = $admin_folder;
 			$skin_data['admin_file']   = $admin_file;
 			$skin_data['skin_folder']   = $skin_folder;
+			$skin_data['clear_cache_link']   = currentPage(null, array('clear_cache' => 'true'));
 			$GLOBALS['smarty']->assign('SKIN_VARS', $skin_data);
 			$GLOBALS['smarty']->template_dir = $this->_template_dir = $skindir;
 		}

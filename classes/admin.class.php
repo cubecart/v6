@@ -60,6 +60,7 @@ class Admin {
 	##############################################
 
 	final private function __construct() {
+
 		// Logout requests
 		if (isset($_GET['_g']) && $_GET['_g'] == 'logout') {
 			$this->logout($_GET['r']);

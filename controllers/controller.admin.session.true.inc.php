@@ -11,6 +11,13 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  */
 if (!defined('CC_INI_SET')) die('Access Denied');
+
+if (isset($_GET['clear_cache']) && $_GET['clear_cache'] == 'true') {
+	$GLOBALS['cache']->clear();
+	$GLOBALS['main']->setACPNotify($GLOBALS['language']->maintain['notify_cache_cleared']);
+	httpredir(currentPage(array('clear_cache')));
+}
+
 // Load admin user details
 if (!isset($_GET['_g']) || !in_array(strtolower($_GET['_g']), array('login', 'logout', 'password', 'recovery'))) {
 	$GLOBALS['main']->setTemplate();
