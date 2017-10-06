@@ -321,7 +321,7 @@
     <string name="friends_email" introduced="5.0.0"><![CDATA[Friend's Email]]></string>
     <string name="friends_name" introduced="5.0.0"><![CDATA[Friend's Name]]></string>
     <string name="gift_certificate" introduced="5.0.0"><![CDATA[Gift Card]]></string>
-    <string name="gift_certificate_value" introduced="5.0.0"><![CDATA[Gift card must have a minimum value of %1$s, and a maximum of %2$s. Please note that it is only possible to purchase a gift card in the stores main currency.]]></string>
+    <string name="gift_certificate_value" introduced="5.0.0"><![CDATA[Gift card must have a minimum value of %1$s, and a maximum of %2$s. Please note that it is only possible to purchase a gift card in the store's main currency.]]></string>
     <string name="gift_certificates" introduced="5.0.0"><![CDATA[Gift Cards]]></string>
     <string name="hover_zoom" introduced="5.0.0"><![CDATA[Hover over image to zoom]]></string>
     <string name="image_excluded" introduced="5.0.0"><![CDATA[Excluded Image]]></string>
