@@ -1,21 +1,6 @@
 #logo {
     margin: 0 0 0 3px
 }
-#clear_cache_master {
-    position: fixed;
-    bottom: 7px;
-    right: 10px;
-    text-align:center;
-    background: #e88e22;
-    color: #fff;
-    border-radius: 5px;
-    line-height: 25px;
-    padding: 0 15px;
-    text-transform: uppercase;
-}
-#clear_cache_master:hover{
-    background: #da8117;    
-}
 div.button, span.button, button.button,
 input[type=button],
 input[type=submit] {
@@ -1131,4 +1116,19 @@ ul.quick_links li#help_menu ul li:not(:last-child) {
     background: none !important;
     border-bottom: 1px solid #ccc;
     border-right: 1px solid #ccc;
+}
+#clear_cache_master {
+    text-transform: uppercase;
+}
+#clear_cache_master.clear {
+    background: #e88e22;
+}
+#clear_cache_master.clear a {
+    color: #fff !important;   
+}
+#clear_cache_master.clear a {
+    color: #fff !important;   
+}
+#clear_cache_master.clear:hover {
+    background: #da8117;
 }

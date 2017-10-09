@@ -4,6 +4,7 @@
       {if $QUICK_TOUR}
       <li><a href="#" id="quickTour">{$LANG.dashboard.quick_tour}</a></li>
       {/if}
+      <li id="clear_cache_master"{if $CLEAR_CACHE} class="clear"{/if}><a href="{$SKIN_VARS.clear_cache_link}">{$LANG.maintain.cache_clear}</a></li>
       <li id="help_menu"><i class="fa fa-life-ring" aria-hidden="true"></i> <a href="#">{$LANG.common.help}</a>
          <ul>
             <li><i class="fa fa-book" aria-hidden="true"></i> <a href="{$HELP_URL}" id="wikihelp" class="colorbox wiki">{$LANG.common.this_page}</a></li>

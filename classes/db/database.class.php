@@ -21,6 +21,29 @@
 class Database_Contoller {
 
 	/**
+	 * Tables to ignore cache clear notice. Use controller.admin hook to add to this
+	 *
+	 * @var array
+	 */
+	public $cache_notice_tables_ingore = array(
+		'CubeCart_access_log', 
+		'CubeCart_admin_error_log',
+		'CubeCart_admin_log',
+		'CubeCart_admin_users',
+		'CubeCart_blocker',
+		'CubeCart_email_log',
+		'CubeCart_extension_info',
+		'CubeCart_history',
+		'CubeCart_permissions',
+		'CubeCart_request_log',
+		'CubeCart_saved_cart',
+		'CubeCart_search',
+		'CubeCart_sessions',
+		'CubeCart_system_error_log',
+		'CubeCart_transactions'
+	); 
+
+	/**
 	 * Do we have a connection?
 	 *
 	 * @var bool
@@ -389,8 +412,8 @@ class Database_Contoller {
 				$this->_query = "INSERT INTO `{$this->_prefix}$table` (".implode(',', $fields).') VALUES ('.implode(',', $values).');';
 				$this->_execute(false);
 				$affected = ($this->affected() > 0);
-				if ($purge && $affected) {
-					Cache::getInstance()->clear('SQL');
+				if (CC_IN_ADMIN && $purge && $affected && method_exists($GLOBALS['session'],'set') && !in_array($table, $this->cache_notice_tables_ingore)) {
+					$GLOBALS['session']->set('CLEAR_CACHE', true);
 				}
 				$insert_id = ($this->insertid()) ? $this->insertid() : true;
 				return ($affected) ? $insert_id : false;
@@ -786,9 +809,8 @@ class Database_Contoller {
 				$this->_query = "UPDATE `{$this->_prefix}$table` SET ".implode(',', $set).'  '.$this->where($table, $where).';';
 				$result = $this->_execute(false);
 				$affected = ($this->affected() > 0);
-				if ($purge && $affected) {
-					//Use the instance just in case the globals have already closed up
-					Cache::getInstance()->clear('SQL');
+				if (CC_IN_ADMIN && $purge && $affected && method_exists($GLOBALS['session'],'set') && !in_array($table, $this->cache_notice_tables_ingore)) {
+					$GLOBALS['session']->set('CLEAR_CACHE', true);
 				}
 				return (bool)$result;
 			}

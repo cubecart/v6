@@ -14,6 +14,7 @@ if (!defined('CC_INI_SET')) die('Access Denied');
 
 if (isset($_GET['clear_cache']) && $_GET['clear_cache'] == 'true') {
 	$GLOBALS['cache']->clear();
+	$GLOBALS['session']->delete('CLEAR_CACHE');
 	$GLOBALS['main']->setACPNotify($GLOBALS['language']->maintain['notify_cache_cleared']);
 	httpredir(currentPage(array('clear_cache')));
 }
@@ -132,6 +133,9 @@ if (is_array($nav_sections)) {
 $GLOBALS['main']->showTabs();
 // Navigation
 $GLOBALS['main']->showNavigation();
+// Notify if cache needs to be cleared
+$GLOBALS['smarty']->assign('CLEAR_CACHE', $GLOBALS['session']->has('CLEAR_CACHE'));
+
 // Render main page content
 if (!empty($page_content)) {
 	$GLOBALS['smarty']->assign('DISPLAY_CONTENT', $page_content);

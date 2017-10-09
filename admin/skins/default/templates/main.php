@@ -20,7 +20,6 @@
       {/foreach}
    </head>
    <body>
-      <a id="clear_cache_master" href="{$SKIN_VARS.clear_cache_link}">{$LANG.maintain.cache_clear}</a>
       <div id="header">
          <a href="?"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/logo.cubecart.png" width="158" height="30" id="logo"></a>
          <span class="user_info">{$LANG.settings.title_welcome_back} <a href="?_g=settings&node=admins&action=edit&admin_id={$ADMIN_UID}">{$ADMIN_USER}</a> - <a href="?_g=logout&amp;token={$SESSION_TOKEN}">{$LANG.account.logout} <i class="fa fa-sign-out"></i></a></span>
