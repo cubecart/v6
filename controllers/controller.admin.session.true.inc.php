@@ -92,7 +92,6 @@ if (!empty($_GET['_g'])) {
 	} else if (strtolower($_GET['_g']) == 'plugin' && isset($_GET['name'])) {
 			// Include plugins
 			$GLOBALS['main']->wikiNamespace('Plugins');
-			foreach ($GLOBALS['hooks']->load('admin.'.strtolower($_GET['name'])) as $hook) include $hook;
 		} else if (strtolower($_GET['_g']) == 'plugin' && (!isset($_GET['name']) || empty($_GET['name']))) {
 			httpredir('?_g=plugins');
 			exit;
