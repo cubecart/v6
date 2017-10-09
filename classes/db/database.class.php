@@ -222,8 +222,8 @@ class Database_Contoller {
 		$this->_execute(false);
 		$affected = ($this->affected() > 0);
 
-		if ($purge && $affected) {
-			Cache::getInstance()->clear('SQL');
+		if (CC_IN_ADMIN && $purge && $affected && method_exists($GLOBALS['session'],'set') && !in_array($table, $this->cache_notice_tables_ingore)) {
+			$GLOBALS['session']->set('CLEAR_CACHE', true);
 		}
 
 		return ($affected) ? true : false;
