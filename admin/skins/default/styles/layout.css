@@ -1117,3 +1117,30 @@ ul.quick_links li#help_menu ul li:not(:last-child) {
     border-bottom: 1px solid #ccc;
     border-right: 1px solid #ccc;
 }
+ul.filetree li a {
+    width: 440px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+ul.filetree li ul li a {
+    width: 420px;   
+}
+ul.filetree li ul li ul li a {
+    width: 400px;  
+}
+ul.filetree li ul li ul li ul li a {
+    width: 380px;  
+}
+ul.filetree li ul li ul li ul li ul li a {
+    width: 360px;  
+}
+ul.filetree li ul li ul li ul li ul li ul li a {
+    width: 340px;  
+}
+ul.filetree li ul li ul li ul li ul li ul li ul li a {
+    width: 320px;  
+}
+ul.filetree li ul li ul li ul li ul li ul li ul li ul li a {
+    width: 300px;  
+}
