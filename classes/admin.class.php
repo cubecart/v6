@@ -157,7 +157,7 @@ class Admin {
 	 */
 	public function passwordReset($email, $validation, $password) {
 		if ($GLOBALS['session']->has('recover_login') && filter_var($email, FILTER_VALIDATE_EMAIL) && strlen($validation) == $this->_validate_key_len && !empty($password['new']) && !empty($password['confirm']) && ($password['new'] === $password['confirm'])) {
-			if (($check = $GLOBALS['db']->select('CubeCart_admin_users', array('admin_id', 'username'), array('email' => $email, 'verify' => $validation, 'status' => '1'))) !== false) {
+			if (($check = $GLOBALS['db']->select('CubeCart_admin_users', array('admin_id', 'username'), "`email` = '$email' AND `verify` = '$validation' AND `status` = 1")) !== false) {
 
 				// Remove any blocks
 				$GLOBALS['db']->delete('CubeCart_blocker', array('username' => $email));
@@ -194,7 +194,7 @@ class Admin {
 	 */
 	public function passwordRequest($username, $email) {
 		if (!empty($username) && !empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
-			if (($check = $GLOBALS['db']->select('CubeCart_admin_users', array('admin_id', 'email', 'language', 'name'), array('username' => $username, 'email' => $email, 'status' => '1'))) !== false) {
+			if (($check = $GLOBALS['db']->select('CubeCart_admin_users', array('admin_id', 'email', 'language', 'name'), "`username` = '$username' AND `email` = '$email' AND `status` = 1")) !== false) {
 				// Generate validation key
 				$validation = randomString($this->_validate_key_len);
 				if ($GLOBALS['db']->update('CubeCart_admin_users', array('verify' => $validation), array('admin_id' => (int)$check[0]['admin_id']))) {
