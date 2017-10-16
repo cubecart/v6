@@ -73,6 +73,30 @@
                {/if}{/foreach}
             </select>
          </div>
+         <fieldset>
+            <legend>{$LANG.catalogue.title_option_attribute_add}</legend>
+            <div class="inline-add">
+               <label for="new-value-name">{$LANG.common.name}</label>
+               <span>
+               <input type="text" name="add-value[value_name]" id="new-value-name" rel="attr_name" class="textbox">
+               <a href="#" id="group_target" class="add"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a>
+               </span>
+            </div>
+            <div id="attr_source" class="inline-source">
+               <table width="100%">
+                  <tbody>
+                     <tr>
+                        <td width="10">
+                        </td>
+                        <td name="edit_attribute[{$key}][value_name]"><span rel="attr_name"></span><input type="hidden" rel="attr_name"></td>
+                        <td width="10" class="actions">
+                           <a href="#" class="remove" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </fieldset>
          {foreach from=$GROUPS item=group}
          {if $group.type==0 || $group.type==4}
          <fieldset id="group_{$group.id}" class="field_select_target">
@@ -99,30 +123,6 @@
          </fieldset>
          {/if}
          {/foreach}
-         <fieldset>
-            <legend>{$LANG.catalogue.title_option_attribute_add}</legend>
-            <div class="inline-add">
-               <label for="new-value-name">{$LANG.common.name}</label>
-               <span>
-               <input type="text" name="add-value[value_name]" id="new-value-name" rel="attr_name" class="textbox">
-               <a href="#" id="group_target" class="add"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a>
-               </span>
-            </div>
-            <div id="attr_source" class="inline-source">
-               <table width="100%">
-                  <tbody>
-                     <tr>
-                        <td width="10">
-                        </td>
-                        <td name="edit_attribute[{$key}][value_name]"><span rel="attr_name"></span><input type="hidden" rel="attr_name"></td>
-                        <td width="10" class="actions">
-                           <a href="#" class="remove" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
-                        </td>
-                     </tr>
-                  </tbody>
-               </table>
-            </div>
-         </fieldset>
       </div>
       <div id="sets" class="tab_content">
          <h3>{$LANG.catalogue.title_option_sets}</h3>

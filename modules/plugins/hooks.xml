@@ -58,7 +58,7 @@
  <hook trigger="admin.body_js" deprecated="" />
  <hook trigger="admin.navigation" deprecated="" />
  <hook trigger="admin.order.index.display" deprecated="" />
- <hook trigger="admin.order.index.post_display" deprecated="" />
+ <hook trigger="admin.order.index.list" deprecated="" />
  <hook trigger="admin.order.index.post_process" deprecated="" />
  <hook trigger="admin.order.index.pre_display" deprecated="" />
  <hook trigger="admin.order.index.pre_process" deprecated="" />
@@ -119,6 +119,7 @@
  <hook trigger="class.cart.clear" deprecated="" />
  <hook trigger="class.cart.discount_add" deprecated="" />
  <hook trigger="class.cart.get" deprecated="" />
+ <hook trigger="class.cart.get.fetchtaxes" deprecated="" />
  <hook trigger="class.cart.get.product_prices" deprecated="" />
  <hook trigger="class.cart.get.product_option_prices" deprecated="" />
  <hook trigger="class.cart.load_shipping" deprecated="" />
@@ -146,6 +147,7 @@
  <hook trigger="class.cubecart.construct.callback.gateway" deprecated="" />
  <hook trigger="class.cubecart.construct.cancel" deprecated="" />
  <hook trigger="class.cubecart.construct.certificates" deprecated="" />
+ <hook trigger="class.cubecart.construct.complete" deprecated="" />
  <hook trigger="class.cubecart.construct.confirm" deprecated="" />
  <hook trigger="class.cubecart.construct.confirm.create_user.created" deprecated="" />
  <hook trigger="class.cubecart.construct.download" deprecated="" />
@@ -163,11 +165,9 @@
  <hook trigger="class.cubecart.display_category" deprecated="" />
  <hook trigger="class.cubecart.display_content" deprecated="" />
  <hook trigger="class.cubecart.display_gateways" deprecated="" />
- <hook trigger="class.cubecart.display_checkout_gateways" deprecated="" />
  <hook trigger="class.cubecart.display_homepage" deprecated="" />
  <hook trigger="class.cubecart.display_product" deprecated="" />
  <hook trigger="class.cubecart.display_basket.alternate" deprecated="" />
- <hook trigger="class.cubecart.display_basket.related" deprecated="" />
  <hook trigger="class.cubecart.document_widgets" deprecated="" />
  <hook trigger="class.cubecart.gallery" deprecated="" />
  <hook trigger="class.cubecart.login" deprecated="" />
@@ -223,13 +223,11 @@
  <hook trigger="class.user.load" deprecated="" />
  <hook trigger="class.user.load.user" deprecated="" />
  <hook trigger="class.user.logout" deprecated="" />
- <hook trigger="class.user.get_session_data" deprecated="" />
  <hook trigger="class.user.preredirect" deprecated="" />
  <hook trigger="class.user.register_user" deprecated="" />
  <hook trigger="class.user.register_user.insert" deprecated="" />
  <hook trigger="class.user.register_user.inserted" deprecated="" />
  <hook trigger="class.user.saveaddress" deprecated="" />
- <hook trigger="class.ssl.pages" deprecated="true" />
  <hook trigger="class.ssl.ignored" deprecated="" />
  <hook trigger="class.tax.producttax" deprecated="" />
  <hook trigger="class.seo.construct" deprecated="" />
