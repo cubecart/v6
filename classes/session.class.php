@@ -32,7 +32,7 @@ class Session {
 	 */
 	private $_session_timeout = 604800;
 	/**
-	 * Session token_prefix
+	 * Session token name
 	 *
 	 * @var string
 	 */
