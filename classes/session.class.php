@@ -434,7 +434,7 @@ class Session {
 	}
 
 	/**
-	 * Create a session token to help top spam
+	 * Create a session token to help prevent CSRF
 	 *
 	 * @param bool $new If true, force a new token to be created
 	 * @return string The session token
