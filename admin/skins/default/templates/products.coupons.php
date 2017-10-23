@@ -120,17 +120,7 @@
 	</fieldset>
   </div>
   <div id="edit-products" class="tab_content">
-	<fieldset id="assigned-prods"><legend>{$LANG.catalogue.title_products_assigned}</legend>
-	  	{foreach from=$PRODUCTS item=product}
-		<div>
-		  <span class="actions"><a href="#" class="remove" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></span>
-		  <input type="hidden" name="product[]" value="{$product.product_id}">{$product.name}
-		</div>
-		{foreachelse}
-		<div class="form-none">{$LANG.form.none}</div>
-		{/foreach}
-	</fieldset>
-	<fieldset><legend>{$LANG.catalogue.product_add}</legend>
+  	<fieldset><legend>{$LANG.catalogue.product_add}</legend>
 	  <div>
 		<label for="form-product">{$LANG.common.product}</label>
 		<span>
@@ -143,6 +133,16 @@
 	  </div>
 	  <div><label for="form-subtotal">{$LANG.catalogue.coupon_subtotal}</label><span><input type="hidden" name="coupon[subtotal]" id="form-subtotal" class="toggle" value="{$COUPON.subtotal}"></span></div>
 	  <div>{$LANG.catalogue.coupon_no_shipping}</div>
+	</fieldset>
+	<fieldset id="assigned-prods"><legend>{$LANG.catalogue.title_products_assigned}</legend>
+	  	{foreach from=$PRODUCTS item=product}
+		<div>
+		  <span class="actions"><a href="#" class="remove" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></span>
+		  <input type="hidden" name="product[]" value="{$product.product_id}">{$product.name}
+		</div>
+		{foreachelse}
+		<div class="form-none">{$LANG.form.none}</div>
+		{/foreach}
 	</fieldset>
 	<fieldset><legend>{$LANG.catalogue.title_coupon_products}</legend>
 	  <div>
