@@ -340,7 +340,7 @@ class Session {
 
 		// Clean up expired sessions
 		if($this->_manage_session_files) {
-			$files = glob(CC_INCLUDES_DIR.'/extra/sess_*');
+			$files = glob(CC_INCLUDES_DIR.'extra/sess_*');
 	  		$now   = time();
 	  		foreach ($files as $file) {
 	      		if ($now - filemtime($file) >= $this->_session_timeout) {
@@ -645,9 +645,9 @@ class Session {
 		if(!empty($session_save_path) && file_exists($session_save_path)) {
 			session_save_path($session_save_path);
 		} else if(!@is_writeable(session_save_path())) {	
-			if(is_writeable(CC_INCLUDES_DIR.'/extra')) {
+			if(is_writeable(CC_INCLUDES_DIR.'extra')) {
 				$this->_manage_session_files = true;
-				session_save_path(CC_INCLUDES_DIR.'/extra');
+				session_save_path(CC_INCLUDES_DIR.'extra');
 			} else {
 				die("Error: Failed to create PHP session. It may be possible to fix this by following these steps:
 			<ol>

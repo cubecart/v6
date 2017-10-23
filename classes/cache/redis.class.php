@@ -26,7 +26,7 @@ class Cache extends Cache_Controler {
 
 	final protected function __construct() {
 		global $glob;
-		require CC_INCLUDES_DIR."/lib/predis/autoload.php";
+		require CC_INCLUDES_DIR."lib/predis/autoload.php";
 		Predis\Autoloader::register();
 		try {
 			if(isset($glob['redis_parameters']) && isset($glob['redis_options'])) {
