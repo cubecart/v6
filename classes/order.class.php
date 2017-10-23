@@ -770,6 +770,10 @@ class Order {
 	 */
 	private function _addHistory($order_id, $status_id, $initiator = '') {
 		
+		if(filter_var($status_id, FILTER_VALIDATE_INT, array("options" => array("min_range"=>1))) === false) {
+			return false;
+		}
+
 		if(empty($initiator)) {
 			if(defined('CC_IN_ADMIN') && CC_IN_ADMIN) {
 				$initiator = 'S'; // Staff
@@ -778,6 +782,8 @@ class Order {
 			} else {
 				$initiator = 'G'; // Gateway
 			}
+		} elseif(!preg_match('/^[A-Z]$/', $initiator)) {
+			return false;
 		}
 
 		if (!empty($order_id) && !empty($status_id)) {
