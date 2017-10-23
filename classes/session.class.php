@@ -31,6 +31,12 @@ class Session {
 	 * @var int
 	 */
 	private $_session_timeout = 604800;
+	/**
+	 * Session token_prefix
+	 *
+	 * @var string
+	 */
+	private $_token_name = 'token';
 
 	/**
 	 * Manage session files
@@ -65,6 +71,10 @@ class Session {
 	##############################################
 
 	final private function __construct() {
+
+		if(CC_IN_ADMIN) {
+			$this->_token_name = 'token_acp';
+		}
 
 		if (session_id()) {
 			session_unset();
@@ -243,7 +253,7 @@ class Session {
 	 * @return bool
 	 */
 	public function checkToken($token) {
-		return ($this->get('token') == $token);
+		return ($this->get($this->_token_name) == $token);
 	}
 	 
 	/**
@@ -430,9 +440,9 @@ class Session {
 	 * @return string The session token
 	 */
 	public function getToken($new = false) {
-		if ((($token = $this->get('token')) === false) || $new) {
+		if ((($token = $this->get($this->_token_name)) === false) || $new) {
 			$token = $this->_createToken();
-			$this->set('token', $token);
+			$this->set($this->_token_name, $token);
 		}
 
 		return $token;
