@@ -121,7 +121,6 @@
  <hook trigger="class.cart.discount_add" deprecated="" />
  <hook trigger="class.cart.get" deprecated="" />
  <hook trigger="class.cart.get.fetchtaxes" deprecated="" />
- <hook trigger="class.cart.get.fetchtaxes" deprecated="" />
  <hook trigger="class.cart.get.product_prices" deprecated="" />
  <hook trigger="class.cart.get.product_option_prices" deprecated="" />
  <hook trigger="class.cart.load_shipping" deprecated="" />
@@ -149,7 +148,6 @@
  <hook trigger="class.cubecart.construct.callback.gateway" deprecated="" />
  <hook trigger="class.cubecart.construct.cancel" deprecated="" />
  <hook trigger="class.cubecart.construct.certificates" deprecated="" />
- <hook trigger="class.cubecart.construct.complete" deprecated="" />
  <hook trigger="class.cubecart.construct.complete" deprecated="" />
  <hook trigger="class.cubecart.construct.confirm" deprecated="" />
  <hook trigger="class.cubecart.construct.confirm.create_user.created" deprecated="" />
