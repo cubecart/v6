@@ -593,7 +593,7 @@ class Cart {
 					// Add a coupon to the array
 					$type = ($coupon['discount_percent'] > 0) ? 'percent' : 'fixed';
 					$value = ($coupon['discount_percent'] > 0) ? $coupon['discount_percent'] : $coupon['discount_price'];
-					if ($value>0) {
+					if ($value>0 || (bool)$coupon['free_shipping']) {
 						$this->basket['coupons'][strtoupper($coupon['code'])] = array(
 							'voucher' => $coupon['code'],
 							'gc'  => (!empty($coupon['cart_order_id'])) ? true : false,
