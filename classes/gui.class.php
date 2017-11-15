@@ -1210,10 +1210,7 @@ class GUI {
 		if(!$GLOBALS['smarty']->templateExists('templates/box.featured.php')) return false;
 
 		foreach ($GLOBALS['hooks']->load('class.gui.display_random_product_pre') as $hook) include $hook;
-
-		$where = $GLOBALS['catalogue']->outOfStockWhere(array('status' => '1', 'featured' => '1'));
-		$query = 'SELECT `product_id` FROM  `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory` WHERE '.$where;
-		$featured_products  = $GLOBALS['db']->misc($query, false);
+		$featured_products  = $GLOBALS['db']->select('CubeCart_inventory','product_id', $GLOBALS['catalogue']->outOfStockWhere(array('status' => '1', 'featured' => '1')));
 		$n = ($featured_products ? count($featured_products) : 0);
 		if ($n > 0) {
 			$random_product = false;
