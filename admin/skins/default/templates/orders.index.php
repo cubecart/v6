@@ -483,17 +483,7 @@
                <tr>
                   <td width="200">{$history.status}</td>
                   <td>{$history.updated}</td>
-                  <td>
-                  {if $history.initiator=="U"}
-                     {$LANG.common.unknown}
-                  {elseif $history.initiator=="C"}
-                     {$LANG.orders.title_customer}
-                  {elseif $history.initiator=="S"}
-                     {$LANG.common.staff}
-                  {elseif $history.initiator=="G"}
-                     {$LANG.orders.gateway_name}
-                  {/if}
-                  </td>
+                  <td>{$history.initiator}</td>
                </tr>
                {/foreach}
                {/if}
