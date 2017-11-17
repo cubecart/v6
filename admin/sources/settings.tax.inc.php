@@ -168,7 +168,8 @@ if (($tax_details = $GLOBALS['db']->select('CubeCart_tax_details')) !== false) {
 		} else {
 			$tax_detail['disabled'] = 'selected="selected"';
 		}
-		$tax_detail_array[$tax_detail['id']] = $tax_detail['name'];
+		$tax_detail_name = ($tax_detail['name'] == $tax_detail['display']) ? $tax_detail['display'] : $tax_detail['display'].' ('.$tax_detail['name'].')';
+		$tax_detail_array[$tax_detail['id']] = $tax_detail_name;
 		$smarty_data['tax_details'][] = $tax_detail;
 	}
 	$GLOBALS['smarty']->assign('TAX_DETAILS', $smarty_data['tax_details']);
