@@ -416,6 +416,7 @@ class Catalogue {
 					}
 				}
 				$product['stock_level'] = ($GLOBALS['config']->get('config', 'stock_level')=='1') ? $product['stock_level'] : false;
+				$product['unsuppressed_stock_level'] = $product['stock_level'];
 				$GLOBALS['smarty']->assign('PRODUCT', $product);
 			}
 			if (($category = $GLOBALS['db']->select('CubeCart_category_index', false, array('product_id' => (int)$product['product_id'], 'primary' => 1), array('priority' => 'DESC'), 1)) !== false) {
