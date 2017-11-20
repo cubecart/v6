@@ -1350,6 +1350,13 @@ class Order {
 					$this->_manageStock(self::ORDER_CANCELLED, $order['cart_order_id']);
 					// Cancel the order
 					$GLOBALS['db']->update('CubeCart_order_summary', array('status' => self::ORDER_CANCELLED), array('cart_order_id' => $order['cart_order_id']));
+
+					$log = array(
+						'notes' => 'Order cancelled automatically as it has been left in a pending state longer than allowed. See &quot;Time (in seconds) before expiring pending orders&quot; in the &quot;Features&quot; tab of the stores settings to adjust or disable this time limit.',
+						'order_id' => $order['cart_order_id']
+					);
+					$this->logTransaction($log, true);
+					$this->_addHistory($order['cart_order_id'], self::ORDER_CANCELLED, 'E');
 				}
 			}
 		}
