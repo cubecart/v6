@@ -604,14 +604,14 @@
       <div class="note">
          <span class="actions">
          <input type="hidden" name="review[{$review.id}]" id="review_{$review.id}" value="{$review.approved}" class="toggle">
-         <a href="?_g=reviews&edit={$review.id}" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
+         <a href="?_g=products&node=reviews&edit={$review.id}" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
          <a href="{$review.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
          </span>
          <strong>{$review.title}</strong>
          <div>{$review.review}</div>
          <div class="details">
             <span style="float: right;">
-            {section name=i start=1 loop=5 step=1}
+            {section name=i start=1 loop=6 step=1}
             <input type="radio" class="rating" name="rating_{$review.id}" value="{$smarty.section.i.index}" disabled="disabled" {if $review.rating == $smarty.section.i.index}checked="checked"{/if}>
             {/section}
             </span>
