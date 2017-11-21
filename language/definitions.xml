@@ -2204,6 +2204,7 @@
     <string name="language_code" introduced="5.0.0"><![CDATA[Language Code (<a href="https://en.wikipedia.org/wiki/Language_localisation" target="_blank">ISO-639</a>)]]></string>
     <string name="language_name_eg" introduced="6.1.2"><![CDATA[e.g. Português]]></string>
     <string name="language_code_eg" introduced="6.1.2"><![CDATA[e.g. pt-BR]]></string>
+    <string name="language_code_eg2" introduced="6.1.13"><![CDATA[e.g. BRL]]></string>
     <string name="master_language" introduced="5.0.0"><![CDATA[Master Language File (definitions.xml)]]></string>
     <string name="merge_db_file" introduced="5.0.0"><![CDATA[Merge to file]]></string>
     <string name="notify_strings_update" introduced="5.0.0"><![CDATA[Language strings updated.]]></string>

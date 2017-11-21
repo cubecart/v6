@@ -61,10 +61,8 @@ if (isset($_POST['save']) && isset($_POST['string']) && Admin::getInstance()->pe
 }
 
 if (isset($_POST['export']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
-	$compress = (isset($_POST['export_opt']['compress'])) ? (bool)$_POST['export_opt']['compress'] : false;
 	$replace = (isset($_POST['export_opt']['replace'])) ? (bool)$_POST['export_opt']['replace'] : false;
-
-	if ($GLOBALS['language']->saveLanguageXML($_GET['export'], $compress, $replace)) {
+	if ($GLOBALS['language']->saveLanguageXML($_GET['export'], false, $replace)) {
 		## Success!
 		$GLOBALS['main']->setACPNotify(sprintf($lang['email']['notify_export_language'],$GLOBALS['language']->exported_lang_file));
 	} else {
