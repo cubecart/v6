@@ -98,6 +98,9 @@ class Debug {
 		// Enable debugger
 		if (isset($GLOBALS['config']) && is_object($GLOBALS['config'])) {
 			$this->_enabled = (bool)$GLOBALS['config']->get('config', 'debug');
+			if(!$this->_enabled) {
+				error_reporting(E_ALL ^ (E_NOTICE | E_DEPRECATED | E_USER_DEPRECATED));
+			}
 			$ip_string = $GLOBALS['config']->get('config', 'debug_ip_addresses');
 			if (!empty($ip_string)) {
 				if (strstr($ip_string, ',')) {
