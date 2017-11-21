@@ -242,6 +242,30 @@ class Order {
 				$product    = is_array($existing_data) ? array_merge($existing_data, $item) : $item;
 				$product['item_price'] = Tax::getInstance()->priceFormat($product['price']);
 				$product['price']   = Tax::getInstance()->priceFormat($product['price']*$product['quantity']);
+				$images = array();
+				$skins = $GLOBALS['gui']->getSkinData();
+				if (isset($skins['images'])) {
+					$image_types[] = 'source';
+					foreach ($skins['images'] as $name => $values) {
+						$image_types[] = $name;
+					}
+				}
+				$image_types[] = 'source';
+				if (($gallery = $GLOBALS['db']->select('`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_image_index` AS `i` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_filemanager` AS `f` ON i.file_id = f.file_id', false, 'i.product_id = '.$item['product_id'], 'ORDER BY i.main_img DESC'))) {
+					$duplicates = array();
+					foreach ($gallery as $key => $image) {
+						if (is_array($image_types) && !in_array($image['file_id'], $duplicates)) {
+							$duplicates[] = $image['file_id'];
+							foreach ($image_types as $type) {
+								$image[$type] = $GLOBALS['catalogue']->imagePath($image['file_id'], $type, 'url');
+							}
+							$images[] = $image;
+						}
+					}
+					if(isset($images) && is_array($images) && !empty($images)){
+						$product['images'] = $images;
+					}
+				}
 				if (!empty($product['product_options']))  $product['product_options'] = implode(' ', unserialize($item['product_options']));
 				$vars['products'][] = $product;
 			} else {
