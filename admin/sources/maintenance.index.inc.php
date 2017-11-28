@@ -688,6 +688,7 @@ if (isset($database_result) && $database_result) {
 			'product_code' => 'FULLTEXT',
 			'description' => 'FULLTEXT',
 			'name' => 'FULLTEXT',
+			'featured' => 'KEY'
 		),
 		'cubecart_inventory_language' => array (
 			'translation_id' => 'PRIMARY',
@@ -733,7 +734,9 @@ if (isset($database_result) && $database_result) {
 		),
 		'cubecart_option_assign' => array (
 			'assign_id' => 'PRIMARY',
-			'set_member_id' => 'KEY'
+			'set_member_id' => 'KEY',
+			'product' => 'KEY',
+			'set_enabled' => 'KEY'
 		),
 		'cubecart_option_group' => array (
 			'option_id' => 'PRIMARY'

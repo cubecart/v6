@@ -436,6 +436,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_inventory` (
   PRIMARY KEY (`product_id`),
   KEY `status` (`status`),
   KEY `popularity` (`popularity`),
+  KEY `featured` (`featured`),
   FULLTEXT KEY `fulltext` (`product_code`,`description`,`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1; #EOQ
 
@@ -562,7 +563,9 @@ CREATE TABLE IF NOT EXISTS `CubeCart_option_assign` (
 	`matrix_include` TINYINT(1) NOT NULL DEFAULT  '0',
 	`absolute_price` enum('0','1') NOT NULL DEFAULT '0',
 	PRIMARY KEY (`assign_id`),
-	KEY `set_member_id` (`set_member_id`)
+	KEY `set_member_id` (`set_member_id`),
+	KEY `product` (`product`),
+	KEY `set_enabled` (`set_enabled`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_option_group` (
