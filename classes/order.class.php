@@ -1284,6 +1284,7 @@ class Order {
 	 * @return bool
 	 */
 	private function _retrieveOrder($order_id) {
+		foreach ($GLOBALS['hooks']->load('class.order.retrieveorder') as $hook) include $hook;
 		// Retrieve an order from the database, and put it back into the session
 		if (!empty($order_id)) {
 			// Fetch summary
