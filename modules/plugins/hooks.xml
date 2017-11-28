@@ -67,6 +67,7 @@
  <hook trigger="admin.order.index.table_head_sort" deprecated="" />
  <hook trigger="admin.order.index.transaction" deprecated="" />
  <hook trigger="admin.order.transactions.table_head_sort" deprecated="" />
+ <hook trigger="admin.products.reviews.update" deprecated="" />
  <hook trigger="admin.product.clone" deprecated="" />
  <hook trigger="admin.product.delete" deprecated="" />
  <hook trigger="admin.product.export" deprecated="" />
