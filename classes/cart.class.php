@@ -201,7 +201,7 @@ class Cart {
 	 * @param int $quantity
 	 * @return bool
 	 */
-	public function add($product_id, $optionsArray = null, $quantity = 1) {
+	public function add($product_id, $optionsArray = null, $quantity = 1, $redirect_enabled = true) {
 		foreach ($GLOBALS['hooks']->load('class.cart.add.pre') as $hook) include $hook;
 		// Prevent quantities of less than one or non numerical user input
 		if (!is_numeric($quantity) || $quantity < 1) {
@@ -245,8 +245,10 @@ class Cart {
 				);
 			}
 			$this->save();
-			httpredir(($GLOBALS['config']->get('config', 'basket_jump_to')) ? $GLOBALS['rootRel'].'index.php?_a=basket' : currentPage(null));
-			return true;
+			if($redirect_enabled === true){
+				httpredir(($GLOBALS['config']->get('config', 'basket_jump_to')) ? $GLOBALS['rootRel'].'index.php?_a=basket' : currentPage(null));
+				return true;
+			}
 		} else if (!is_null($product_id) && is_numeric($product_id)) {
 				$proceed = true;
 				
@@ -397,15 +399,15 @@ class Cart {
 						// Jump to basket, or return to product page?
 						$jumpto = ($GLOBALS['config']->get('config', 'basket_jump_to')) ? $GLOBALS['rootRel'].'index.php?_a=basket' : currentPage(null);
 						foreach ($GLOBALS['hooks']->load('class.cart.add.postredirect') as $hook) include $hook;
-						if (isset($_GET['_g']) && $_GET['_g'] == 'ajaxadd' && $GLOBALS['config']->get('config', 'basket_jump_to')) {
+						if (isset($_GET['_g']) && $_GET['_g'] == 'ajaxadd' && $GLOBALS['config']->get('config', 'basket_jump_to') && $redirect_enabled === true) {
 							$GLOBALS['debug']->supress();
 							die($GLOBALS['seo']->rewriteUrls("Redir:".$jumpto, true));
-						} elseif (isset($_GET['_g']) && $_GET['_g'] == 'ajaxadd') {
+						} elseif (isset($_GET['_g']) && $_GET['_g'] == 'ajaxadd' && $redirect_enabled === true) {
 							$GLOBALS['debug']->supress();
 							if ($stock_warning) {
 								die('Redir:'.$GLOBALS['rootRel'].'index.php?_a=basket');
 							}
-						} else {
+						} else if ($redirect_enabled === true) {
 							httpredir($jumpto);
 						}
 
