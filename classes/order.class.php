@@ -588,13 +588,6 @@ class Order {
 	 * @return bool
 	 */
 	public function placeOrder($force_order = false) {
-		// Protection against missing data from lost session data
-		// For example a browser page left open past gc_maxlifetime
-		if(!isset($this->_basket['contents'])) {
-			$GLOBALS['gui']->setError($GLOBALS['language']->orders['expired_basket'], true);
-			httpredir('index.php');
-			return false;
-		}
 
 		foreach ($GLOBALS['hooks']->load('class.order.place_order') as $hook) include $hook;
 
@@ -604,75 +597,82 @@ class Order {
 				httpredir(currentPage(array('cart_order_id', 'retrieve'), array('_a' => 'confirm')));
 			}
 		} else if (!empty($this->_basket)) {
-				// Order Creation/Updating
-				$this->_saveAddresses();
-
-				if (isset($this->_basket['cart_order_id']) && !empty($this->_basket['cart_order_id']) && $GLOBALS['db']->select('CubeCart_order_summary', array('id'), array('cart_order_id' => $this->_basket['cart_order_id'], 'status' => 1), false, false, false, false) && !$GLOBALS['db']->select('CubeCart_transactions', array('id'), array('order_id' => $this->_basket['cart_order_id']), false, false, false, false)) {
-					// Order has already been placed, is still pending and has no payment transactions so we only need to update
-					$this->_updateOrder();
-					$update = true;
-				} else {
-					// Create a new order
-					$this->createOrderId();
-					// Take basket data from session, and insert into database
-					foreach ($this->_basket['contents'] as $key => $item) {
-						$product = $this->_orderAddProduct($item, $key);
-						$this->_basket['contents'][$key] = (is_array($product)) ? array_merge($product, $item) : $item;
-					}
-					$update = false;
-				}
-				// Shipping - calculate taxes (if any)
-				if (isset($this->_basket['shipping']) && is_array($this->_basket['shipping'])) {
-					Tax::getInstance()->productTax($this->_basket['shipping']['value'], (int)$this->_basket['shipping']['tax_id'], false, 0, 'shipping');
-				}
-
-				// Insert Taxes
-				$GLOBALS['db']->delete('CubeCart_order_tax', array('cart_order_id' => $this->_order_id));
-
-				if (is_array($this->_basket['order_taxes'])) {
-					foreach ($this->_basket['order_taxes'] as $order_tax) {
-						$order_tax['cart_order_id'] = $this->_order_id;
-						$GLOBALS['db']->insert('CubeCart_order_tax', $order_tax);
-					}
-				}
-				if (isset($this->_basket['coupons']) && is_array($this->_basket['coupons'])) {
-					$codes_used = array();
-					foreach ($this->_basket['coupons'] as $key => $data) {
-						if ($data['gc']) {
-							// Update gift certificate balance
-							$GLOBALS['db']->update('CubeCart_coupons', array('discount_price' => $data['remainder']), array('code' => $data['voucher']));
-							$certificates_used[] = $data['voucher'];
-						} else {
-							$vouchers_used[] = $data['voucher'];
-							// Update usage count
-							$GLOBALS['db']->update('CubeCart_coupons', array('count' => '+1'), array('code' => $data['voucher']));
-						}
-					}
-					$note_content = '';
-					if (is_array($certificates_used)) {
-						$note_content .= "\r\n".$GLOBALS['language']->orders['certificate_codes_used']."\r\n".implode("\r\n", $certificates_used);
-					}
-					if (is_array($vouchers_used)) {
-						$note_content .= "\r\n".$GLOBALS['language']->orders['discount_codes_used']."\r\n".implode("\r\n", $vouchers_used);
-					}
-					$this->addNote($this->_order_id, $note_content);
-				}
-				// Set order as 'Pending'
-				$this->_basket['order_status'] = constant('ORDER_PENDING');
-				foreach ($GLOBALS['hooks']->load('class.order.place_order.basket') as $hook) include $hook;
-				// Insert/Update the order summary
-				$this->_orderSummary($update, $force_order);
-
-				$this->_manageStock(self::ORDER_PENDING, $this->_basket['cart_order_id']);
-
-				$this->orderStatus(self::ORDER_PENDING, $this->_basket['cart_order_id'], true);
-
-				if ($this->_basket['total'] == 0) {
-					$this->orderStatus(self::ORDER_PROCESS, $this->_basket['cart_order_id']);
-					httpredir(currentPage(null, array('_a' => 'complete')));
-				}
-				return true;
+			// Protection against missing data from lost session data
+			// For example a browser page left open past gc_maxlifetime
+			if(!isset($this->_basket['contents'])) {
+				$GLOBALS['gui']->setError($GLOBALS['language']->orders['expired_basket'], true);
+				httpredir('index.php');
+				return false;
 			}
+			// Order Creation/Updating
+			$this->_saveAddresses();
+
+			if (isset($this->_basket['cart_order_id']) && !empty($this->_basket['cart_order_id']) && $GLOBALS['db']->select('CubeCart_order_summary', array('id'), array('cart_order_id' => $this->_basket['cart_order_id'], 'status' => 1), false, false, false, false) && !$GLOBALS['db']->select('CubeCart_transactions', array('id'), array('order_id' => $this->_basket['cart_order_id']), false, false, false, false)) {
+				// Order has already been placed, is still pending and has no payment transactions so we only need to update
+				$this->_updateOrder();
+				$update = true;
+			} else {
+				// Create a new order
+				$this->createOrderId();
+				// Take basket data from session, and insert into database
+				foreach ($this->_basket['contents'] as $key => $item) {
+					$product = $this->_orderAddProduct($item, $key);
+					$this->_basket['contents'][$key] = (is_array($product)) ? array_merge($product, $item) : $item;
+				}
+				$update = false;
+			}
+			// Shipping - calculate taxes (if any)
+			if (isset($this->_basket['shipping']) && is_array($this->_basket['shipping'])) {
+				Tax::getInstance()->productTax($this->_basket['shipping']['value'], (int)$this->_basket['shipping']['tax_id'], false, 0, 'shipping');
+			}
+
+			// Insert Taxes
+			$GLOBALS['db']->delete('CubeCart_order_tax', array('cart_order_id' => $this->_order_id));
+
+			if (is_array($this->_basket['order_taxes'])) {
+				foreach ($this->_basket['order_taxes'] as $order_tax) {
+					$order_tax['cart_order_id'] = $this->_order_id;
+					$GLOBALS['db']->insert('CubeCart_order_tax', $order_tax);
+				}
+			}
+			if (isset($this->_basket['coupons']) && is_array($this->_basket['coupons'])) {
+				$codes_used = array();
+				foreach ($this->_basket['coupons'] as $key => $data) {
+					if ($data['gc']) {
+						// Update gift certificate balance
+						$GLOBALS['db']->update('CubeCart_coupons', array('discount_price' => $data['remainder']), array('code' => $data['voucher']));
+						$certificates_used[] = $data['voucher'];
+					} else {
+						$vouchers_used[] = $data['voucher'];
+						// Update usage count
+						$GLOBALS['db']->update('CubeCart_coupons', array('count' => '+1'), array('code' => $data['voucher']));
+					}
+				}
+				$note_content = '';
+				if (is_array($certificates_used)) {
+					$note_content .= "\r\n".$GLOBALS['language']->orders['certificate_codes_used']."\r\n".implode("\r\n", $certificates_used);
+				}
+				if (is_array($vouchers_used)) {
+					$note_content .= "\r\n".$GLOBALS['language']->orders['discount_codes_used']."\r\n".implode("\r\n", $vouchers_used);
+				}
+				$this->addNote($this->_order_id, $note_content);
+			}
+			// Set order as 'Pending'
+			$this->_basket['order_status'] = constant('ORDER_PENDING');
+			foreach ($GLOBALS['hooks']->load('class.order.place_order.basket') as $hook) include $hook;
+			// Insert/Update the order summary
+			$this->_orderSummary($update, $force_order);
+
+			$this->_manageStock(self::ORDER_PENDING, $this->_basket['cart_order_id']);
+
+			$this->orderStatus(self::ORDER_PENDING, $this->_basket['cart_order_id'], true);
+
+			if ($this->_basket['total'] == 0) {
+				$this->orderStatus(self::ORDER_PROCESS, $this->_basket['cart_order_id']);
+				httpredir(currentPage(null, array('_a' => 'complete')));
+			}
+			return true;
+		}
 		// Go back to the basket page
 		httpredir(currentPage(array('cart_order_id'), array('_a' => 'basket')));
 		return false;
