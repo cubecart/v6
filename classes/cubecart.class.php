@@ -2764,13 +2764,13 @@ class Cubecart {
 		$GLOBALS['smarty']->assign('SECTION_NAME', 'recovery');
 
 		if (isset($_POST['email']) && isset($_POST['validate']) && isset($_POST['password'])) {
-			$GLOBALS['user']->passwordReset($_POST['email'], $_POST['validate'], $_POST['password']);
+			$GLOBALS['user']->passwordReset((string)$_POST['email'], (string)$_POST['validate'], $_POST['password']);
 		}
-		$email  = (isset($_GET['email'])) ? $_GET['email'] : null;
-		$validate = (isset($_GET['validate'])) ? $_GET['validate'] : null;
+		$email  = (isset($_GET['email'])) ? (string)$_GET['email'] : null;
+		$validate = (isset($_GET['validate'])) ? (string)$_GET['validate'] : null;
 		$GLOBALS['smarty']->assign('DATA', array(
-				'email'  => (isset($_POST['email'])) ? $_POST['email'] : $email,
-				'validate' => (isset($_POST['validate'])) ? $_POST['validate'] : $validate,
+				'email'  => (isset($_POST['email'])) ? (string)$_POST['email'] : $email,
+				'validate' => (isset($_POST['validate'])) ? (string)$_POST['validate'] : $validate,
 			));
 		$content = $GLOBALS['smarty']->fetch('templates/content.recovery.php');
 		$GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
