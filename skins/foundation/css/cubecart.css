@@ -365,4 +365,7 @@ svg.remove-coupon {
     #scrollUp .icon {
         display: none;  
     }
+    #checkout_register_form input[type="checkbox"] + label, #checkout_register_form input[type="radio"] + label {
+        max-width: 580px;
+    }
 }

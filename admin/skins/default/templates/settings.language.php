@@ -48,7 +48,7 @@
       <fieldset>
          <div><label for="create_title">{$LANG.translate.language_name}</label><span><input id="create_title" type="text" name="create[title]" class="textbox required" placeholder="{$LANG.translate.language_name_eg}"></span></div>
          <div><label for="create_code">{$LANG.translate.language_code}</label><span><input id="create_code" type="text" name="create[code]" class="textbox required" placeholder="{$LANG.translate.language_code_eg}"></span></div>
-         <div><label for="create_currency">{$LANG.translate.language_currency}</label><span><input id="create_currency" type="text" name="create[currency_iso]" class="textbox number"></span> {$LANG.translate.language_currency_code_url}</div>
+         <div><label for="create_currency">{$LANG.translate.language_currency}</label><span><input id="create_currency" type="text" name="create[currency_iso]" class="textbox number" placeholder="{$LANG.translate.language_code_eg2}"></span> {$LANG.translate.language_currency_code_url}</div>
          <div>
             <label for="create_direction">{$LANG.translate.language_direction}</label>
             <span>
@@ -138,12 +138,6 @@
             <label for="export_opt_replace">{$LANG.translate.replace_original} ({$REPLACE_OPTION}.xml)</label>
             <span><input type="checkbox" name="export_opt[replace]" id="export_opt_replace" value="1"></span>
          </div>
-         {if $COMPRESSION}
-         <div>
-            <label for="export_opt_compress">{$LANG.common.compress_file}</label>
-            <span><input type="checkbox" name="export_opt[compress]" id="export_opt_compress" value="1"></span>
-         </div>
-         {/if}
       </fieldset>
    </div>
    {if isset($PLUGIN_TABS)}

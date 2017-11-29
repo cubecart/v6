@@ -325,7 +325,7 @@ INSERT INTO `CubeCart_geo_zone` VALUES(523, 225, 'WIG', 'Wigtownshire'); #EOQ
 INSERT INTO `CubeCart_geo_zone` VALUES(524, 225, 'AGY', 'Anglesey'); #EOQ
 INSERT INTO `CubeCart_geo_zone` VALUES(525, 225, 'BRN', 'Brecknockshire'); #EOQ
 INSERT INTO `CubeCart_geo_zone` VALUES(526, 225, 'CAE', 'Caernarfonshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(527, 225, 'CAD', 'Cardiganshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` VALUES(527, 225, 'CAD', 'Ceredigion'); #EOQ
 INSERT INTO `CubeCart_geo_zone` VALUES(528, 225, 'CRR', 'Carmarthenshire'); #EOQ
 INSERT INTO `CubeCart_geo_zone` VALUES(529, 225, 'CLW', 'Clwyd'); #EOQ
 INSERT INTO `CubeCart_geo_zone` VALUES(530, 225, 'DEN', 'Denbighshire'); #EOQ

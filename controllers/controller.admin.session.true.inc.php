@@ -52,11 +52,6 @@ if (!empty($_GET['_g'])) {
 			if(file_exists($config_xml)) {
 				try {
 					$xml   = new SimpleXMLElement(file_get_contents($config_xml));
-				} catch (Exception $e) {
-					trigger_error($e, E_USER_WARNING);
-				}
-
-				if(is_object($xml)) {
 					$module_info = array(
 						'name' => (string)$xml->info->name,
 					);
@@ -74,6 +69,8 @@ if (!empty($_GET['_g'])) {
 					} else {
 						trigger_error(sprintf("File '%s' doesn't exist", $module_admin), E_USER_WARNING);
 					}
+				} catch (Exception $e) {
+					trigger_error($e, E_USER_WARNING);
 				}
 			} else {
 				$GLOBALS['main']->setACPWarning("Extension has missing or corrupt config.xml file.");
@@ -84,6 +81,7 @@ if (!empty($_GET['_g'])) {
 	} else if (strtolower($_GET['_g']) == 'plugin' && isset($_GET['name'])) {
 			// Include plugins
 			$GLOBALS['main']->wikiNamespace('Plugins');
+			foreach ($GLOBALS['hooks']->load('admin.'.strtolower($_GET['name'])) as $hook) include $hook;
 		} else if (strtolower($_GET['_g']) == 'plugin' && (!isset($_GET['name']) || empty($_GET['name']))) {
 			httpredir('?_g=plugins');
 			exit;

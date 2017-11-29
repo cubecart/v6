@@ -31,6 +31,12 @@ class Session {
 	 * @var int
 	 */
 	private $_session_timeout = 604800;
+	/**
+	 * Session token name
+	 *
+	 * @var string
+	 */
+	private $_token_name = 'token';
 
 	/**
 	 * Manage session files
@@ -65,6 +71,10 @@ class Session {
 	##############################################
 
 	final private function __construct() {
+
+		if(CC_IN_ADMIN) {
+			$this->_token_name = 'token_acp';
+		}
 
 		if (session_id()) {
 			session_unset();
@@ -243,7 +253,7 @@ class Session {
 	 * @return bool
 	 */
 	public function checkToken($token) {
-		return ($this->get('token') == $token);
+		return ($this->get($this->_token_name) == $token);
 	}
 	 
 	/**
@@ -330,7 +340,7 @@ class Session {
 
 		// Clean up expired sessions
 		if($this->_manage_session_files) {
-			$files = glob(CC_INCLUDES_DIR.'/extra/sess_*');
+			$files = glob(CC_INCLUDES_DIR.'extra/sess_*');
 	  		$now   = time();
 	  		foreach ($files as $file) {
 	      		if ($now - filemtime($file) >= $this->_session_timeout) {
@@ -424,15 +434,15 @@ class Session {
 	}
 
 	/**
-	 * Create a session token to help top spam
+	 * Create a session token to help prevent CSRF
 	 *
 	 * @param bool $new If true, force a new token to be created
 	 * @return string The session token
 	 */
 	public function getToken($new = false) {
-		if ((($token = $this->get('token')) === false) || $new) {
+		if ((($token = $this->get($this->_token_name)) === false) || $new) {
 			$token = $this->_createToken();
-			$this->set('token', $token);
+			$this->set($this->_token_name, $token);
 		}
 
 		return $token;
@@ -635,9 +645,9 @@ class Session {
 		if(!empty($session_save_path) && file_exists($session_save_path)) {
 			session_save_path($session_save_path);
 		} else if(!@is_writeable(session_save_path())) {	
-			if(is_writeable(CC_INCLUDES_DIR.'/extra')) {
+			if(is_writeable(CC_INCLUDES_DIR.'extra')) {
 				$this->_manage_session_files = true;
-				session_save_path(CC_INCLUDES_DIR.'/extra');
+				session_save_path(CC_INCLUDES_DIR.'extra');
 			} else {
 				die("Error: Failed to create PHP session. It may be possible to fix this by following these steps:
 			<ol>
@@ -653,9 +663,6 @@ session_save_path(CC_ROOT_DIR.'/sessions');")."</pre>
 		}
 		session_cache_limiter('none');
 		$session_prefix = CC_SSL ? 'S' : '';
-		if(ADMIN_CP) {
-			$session_prefix .= '_ACP';	
-		}
 		session_name('CC'.$session_prefix.'_'.strtoupper(substr(md5(CC_ROOT_DIR), 0,10)));
 		session_start();
 		

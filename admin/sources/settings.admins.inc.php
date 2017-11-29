@@ -69,6 +69,11 @@ if (isset($_POST['admin']) && is_array($_POST['admin']) && Admin::getInstance()-
 		}
 		$record['new_password'] = 1;
 		if ($GLOBALS['db']->update('CubeCart_admin_users', $record, array('admin_id' => $_POST['admin_id']))) {
+			$admin_id = Admin::getInstance()->get('admin_id');
+			if($_POST['admin_id']==$admin_id) {
+				$GLOBALS['session']->set('user_language',$record['language'], 'admin');
+				$GLOBALS['session']->set('language',$record['language'], 'admin_data');
+			}
 			$updated = true;
 		}
 		$admin_id = $_POST['admin_id'];

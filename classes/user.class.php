@@ -648,7 +648,7 @@ class User {
 	 */
 	public function passwordRequest($email) {
 		if (!empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
-			if (($check = $GLOBALS['db']->select('CubeCart_customer', false, array('email' => $email, 'type' => 1))) !== false) {
+			if (($check = $GLOBALS['db']->select('CubeCart_customer', false, "`email` = '$email' AND `type` = 1")) !== false) {
 				// Generate validation key
 				$validation = Password::getInstance()->createSalt();
 
@@ -665,6 +665,7 @@ class User {
 					}
 				}
 			}
+			die('fail');
 		}
 		return false;
 	}
@@ -678,7 +679,7 @@ class User {
 	 */
 	public function passwordReset($email, $verification, $password) {
 		if (filter_var($email, FILTER_VALIDATE_EMAIL) && !empty($verification) && !empty($password['password']) && !empty($password['passconf']) && ($password['password'] === $password['passconf'])) {
-			if (($check = $GLOBALS['db']->select('CubeCart_customer', array('customer_id', 'email'), array('email' => $email, 'verify' => $verification))) !== false) {
+			if (($check = $GLOBALS['db']->select('CubeCart_customer', array('customer_id', 'email'), "`email` = '$email' AND `verify` = '$verification'")) !== false) {
 				
 				// Remove any blocks
 				$GLOBALS['db']->delete('CubeCart_blocker', array('username' => $email));
@@ -687,7 +688,7 @@ class User {
 
 				$record = array(
 					'salt'   => $salt,
-					'password'  => Password::getInstance()->getSalted($password['password'], $salt),
+					'password'  => Password::getInstance()->getSalted((string)$password['password'], $salt),
 					'verify'  => null,
 					'new_password' => 1
 				);
@@ -697,7 +698,7 @@ class User {
 					'verify'  => $verification,
 				);
 				if ($GLOBALS['db']->update('CubeCart_customer', $record, $where)) {
-					if ($this->authenticate($check[0]['email'], $password['password'], false, false, false, false)) {
+					if ($this->authenticate($check[0]['email'], (string)$password['password'], false, false, false, false)) {
 						$GLOBALS['gui']->setNotify(($GLOBALS['language']->account['notify_password_recovery_success']));
 						httpredir('?_a=profile');
 					}
