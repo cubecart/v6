@@ -182,6 +182,8 @@ $(document).ready(function() {
         window.scrollTo(-81, 0)
     }, 1);
 
+    $('.chzn-select').chosen({width:"50%",search_contains:true});
+
     var t = !1;
     if (jQuery.debug = function(t) {
             window.console ? console.debug("CubeCart: " + t) : alert(t)
