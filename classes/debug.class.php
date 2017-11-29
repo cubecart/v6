@@ -557,7 +557,7 @@ class Debug {
 			return xdebug_time_index();
 		}
 
-		return microtime(false);
+		return microtime(true);
 	}
 
 	/**
