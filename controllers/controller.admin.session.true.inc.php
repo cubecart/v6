@@ -127,20 +127,6 @@ if (!empty($page_content)) {
 	$GLOBALS['smarty']->assign('DISPLAY_CONTENT', $page_content);
 }
 
-// jQuery UI & Themeroller styles
-$styles = glob('js/{styles}/*.css', GLOB_BRACE);
-if ($styles && is_array($styles)) {
-	$vars = array();
-	foreach ($styles as $style) {
-		if (preg_match('#^ui\.#iuU', basename($style))) {
-			$vars['jquery_styles'][] = str_replace('/', "/", $style);
-		}
-	}
-	if(isset($vars['jquery_styles'])) {
-		$GLOBALS['smarty']->assign('JQUERY_STYLES', $vars['jquery_styles']);
-	}
-}
-
 $body_js = array();
 foreach ($GLOBALS['hooks']->load('admin.body_js') as $hook) include $hook;
 $GLOBALS['smarty']->assign('BODY_JS', $body_js);
