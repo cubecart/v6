@@ -44,6 +44,9 @@ class Ajax {
 		$string = ($_GET['q']) ? $_GET['q'] : '';
 		
 		switch ($_GET['function']) {
+			case 'filesize':
+				$return_data = self::filesize((string)$_GET['path'], 0);
+			break;
 			case 'viewEmail':
 				$return_data = self::viewEmail((int)$_GET['id'], (string)$_GET['mode']);
 			break;
@@ -59,6 +62,16 @@ class Ajax {
 			break;
 		}
 		return $return_data;
+	}
+
+	/**
+	 * Get directory size
+	 *
+	 * @param string $path
+	 * @return data/false
+	 */
+	public static function filesize($path, $total) {
+		return json_encode(dirsize(CC_ROOT_DIR.'/'.$path, $total));
 	}
 
 	/**

@@ -86,7 +86,7 @@ function ajaxSelected(t, e, i) {
                 _g: "xml",
                 type: "address",
                 q: t.id,
-                "function": "search"
+                function: "search"
             }, function(t) {
                 $("select.address-list>option.temporary").remove();
                 for (var e = 0; e < t.length; e++) {
@@ -109,7 +109,7 @@ function ajaxSuggest(t, e, i) {
             _g: "xml",
             type: i,
             q: t,
-            "function": "search"
+            function: "search"
         };
     $.get(a, n, function(t) {
         for (var i = [], a = 0; a < t.length; a++) i.push({
@@ -129,7 +129,7 @@ function ajaxNewsletter(t, e) {
         type: "newsletter",
         q: t,
         page: e,
-        "function": "search"
+        function: "search"
     }, function(i) {
         $("div#progress_bar").css({
             width: i.percent + "%"
@@ -295,6 +295,25 @@ $(document).ready(function() {
             $("#bulk_price_action").show().attr('disabled', false);
             $("#bulk_price_percent_symbol").hide();
         }
+    });
+
+    $(".getFileSize").on("click",function() {
+        var i = $("#val_admin_file").text();
+        var time_out_text = $("#val_time_out_text").text();
+        var parent = $(this).parent();
+        var path = $(this).attr("data-path");
+
+        time_out_text = time_out_text.replace("%s", "30");
+        parent.html('<i class="fa fa-spinner fa-spin fa-fw"></i>');
+        
+        var p = $.getJSON("./" + i, {
+            _g: "xml",
+            path: path,
+            function: "filesize"
+        }, function(r) {
+            parent.html(r);
+        });
+        setTimeout(function(){ parent.html(time_out_text); p.abort(); }, 30000);
     });
 
     $("#bulk_price_target").change(function() {
@@ -719,7 +738,7 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
                     _g: "xml",
                     type: "prod_options",
                     q: i,
-                    "function": "template"
+                    function: "template"
                 },
                 complete: function(e) {
                     t = e.responseText.split("inv[]").join("inv_add[" + (inline_add_offset - 1) + "]"), t = t.split('rel=""').join('rel="' + (inline_add_offset - 1) + '"'), $(o).find("[rel=product_options]").html(t)
@@ -822,7 +841,7 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
     seo = 1 == $("#seo").val() ? "seo_code" : "no_seo_code", $.getJSON("./" + t, {
         _g: "xml",
         type: seo,
-        "function": "get"
+        function: "get"
     }, function(t) {
         $("#htaccess").val(t.content)
     })

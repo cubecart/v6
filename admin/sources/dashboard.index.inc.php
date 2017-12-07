@@ -439,18 +439,13 @@ $count = array(
 	'customers' => number_format((int)$GLOBALS['db']->count('CubeCart_customer', 'customer_id'))
 );
 
-$tmp1 = 0;
-$tmp2 = 0;
-
 $system = array(
 	'cc_version' => CC_VERSION,
 	'cc_build'  => null,
 	'php_version' => PHP_VERSION,
 	'mysql_version' => $GLOBALS['db']->serverVersion(),
 	'server'  => htmlspecialchars($_SERVER['SERVER_SOFTWARE']),
-	'client'  => htmlspecialchars($_SERVER['HTTP_USER_AGENT']),
-	'dir_images' => dirsize(CC_ROOT_DIR.'/images', $tmp1),
-	'dir_files'  => dirsize(CC_ROOT_DIR.'/files', $tmp2),
+	'client'  => htmlspecialchars($_SERVER['HTTP_USER_AGENT'])
 );
 
 $GLOBALS['smarty']->assign('SYS', $system);
