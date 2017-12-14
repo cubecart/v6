@@ -95,6 +95,7 @@ class Cubecart {
 		if ($GLOBALS['config']->get('config', 'catalogue_latest_products')) {
 			$query = sprintf("SELECT I.* FROM `%1\$sCubeCart_inventory` AS I JOIN `%1\$sCubeCart_category` AS C ON C.cat_id=I.cat_id AND C.`status`=1 AND $where ORDER BY I.date_added DESC, I.product_id DESC", $GLOBALS['config']->get('config', 'dbprefix'));
 			$latestProducts = $GLOBALS['db']->query($query, (int)$GLOBALS['config']->get('config', 'catalogue_latest_products_count'));
+			foreach ($GLOBALS['hooks']->load('class.cubecart.latest_products') as $hook) include $hook;
 			if ($latestProducts) {
 				foreach ($latestProducts as $product) {
 					// Product Translation
