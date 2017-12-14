@@ -1397,7 +1397,7 @@ class Cubecart {
 					} else {
 						$GLOBALS['gui']->setError($GLOBALS['session']->get('error', 'recaptcha'));
 					}
-					$error['recaptcha'] = true;
+					$error = true;
 				}
 				if (!$error) {
 					$email = (isset($contact['email']) && filter_var($contact['email'], FILTER_VALIDATE_EMAIL)) ? $contact['email'] : $GLOBALS['config']->get('config', 'email_address');
