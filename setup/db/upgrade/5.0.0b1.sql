@@ -674,8 +674,8 @@ ALTER TABLE `CubeCart_order_summary` ADD KEY ( `order_date` ); #EOQ
 ALTER TABLE `CubeCart_reviews` ADD KEY `product_id` (`product_id`); #EOQ
 ALTER TABLE `CubeCart_reviews` ADD KEY `votes` (`vote_up`,`vote_down`); #EOQ
 ALTER TABLE `CubeCart_reviews` ADD FULLTEXT KEY `fulltext` (`name`,`email`,`title`,`review`); #EOQ
-ALTER TABLE `CubeCart_sessions` KEY `customer_id` (`customer_id`); #EOQ
-ALTER TABLE `CubeCart_sessions` KEY `session_last` (`session_last`); #EOQ
+ALTER TABLE `CubeCart_sessions` ADD KEY `customer_id` (`customer_id`); #EOQ
+ALTER TABLE `CubeCart_sessions` ADD KEY `session_last` (`session_last`); #EOQ
 ALTER TABLE `CubeCart_transactions` ADD KEY `order_id` (`order_id`); #EOQ
 ALTER TABLE `CubeCart_transactions` ADD KEY `time` (`time`); #EOQ
 ALTER TABLE `CubeCart_option_assign` DROP INDEX `product`; #EOQ
