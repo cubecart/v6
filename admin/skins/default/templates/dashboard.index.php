@@ -109,8 +109,8 @@
          </form>
       </div>
       {if is_array($RECENT_EXTENSIONS)}
-         <h2>Recent Marketplace Extensions</h2>
-         <p>Discover more at <a href="?_g=marketplace">https://www.cubecart.com/extensions</a></p>
+         <h2>{$LANG.dashboard.recent_extensions}</h2>
+         <p>{$LANG.dashboard.more_extensions}</p>
          {foreach from=$RECENT_EXTENSIONS item=extension name=extension}
          <div class="extension">
             <h4><span>{$extension.price}</span><a href="{$extension.url}" title="{$extension.name}" target="_blank">{$extension.name|truncate:42:"&hellip;":true}</a></h4>

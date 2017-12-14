@@ -888,6 +888,8 @@
     <string name="title_list" introduced="5.0.0"><![CDATA[Customer List]]></string>
   </group>
   <group name="dashboard">
+    <string name="recent_extensions" introduced="6.1.14"><![CDATA[Recent Marketplace Extensions]]></string>
+    <string name="more_extensions" introduced="6.1.14"><![CDATA[Discover more at <a href="?_g=marketplace">https://www.cubecart.com/extensions</a>]]></string>
     <string name="delete_admin_folder" introduced="6.1.8"><![CDATA[WARNING: Please delete the redundant /admin folder from your store directory.]]></string>
     <string name="delete_admin_file" introduced="6.1.8"><![CDATA[WARNING: Please delete the redundant admin.php file from your store directory.]]></string>
     <string name="ignore_update" introduced="6.1.0"><![CDATA[This update has been ignored however next time an update is released by the develper a notification will be shown again.]]></string>
