@@ -195,7 +195,9 @@ if (isset($_GET['export'])) {
 		}
 	}
 	$GLOBALS['main']->addTabControl($lang['translate']['tab_string_edit'], 'general');
-	$GLOBALS['main']->addTabControl($lang['translate']['merge_db_file'], false, currentPage(array('language'), array('export' => $_GET['language'])));
+	if(!preg_match('/^(modules)/',$_GET['type'])) {
+		$GLOBALS['main']->addTabControl($lang['translate']['merge_db_file'], false, currentPage(array('language'), array('export' => $_GET['language'])));
+	}
 } else {
 	
 	if (!empty($_FILES['import']['tmp_name']['file'])) {
