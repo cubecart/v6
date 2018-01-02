@@ -182,6 +182,7 @@
 	<hook trigger="class.cubecart.print.receipt" deprecated="" />
 	<hook trigger="class.cubecart.review" deprecated="" />
 	<hook trigger="class.cubecart.review.insert" deprecated="" />
+	<hook trigger="class.cubecart.search_catalogue" deprecated="" />
 	<hook trigger="class.gui.css" deprecated="" />
 	<hook trigger="class.gui.head_js" deprecated="" />
 	<hook trigger="class.gui.body_js" deprecated="" />
