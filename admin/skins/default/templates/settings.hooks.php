@@ -9,7 +9,7 @@
  * Email:  sales@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
-<form action="{$VAL_SELF}" onsubmit="base64_php()" id="hook_form" method="post" enctype="multipart/form-data">
+<form action="{$VAL_SELF}" id="hook_form" method="post" enctype="multipart/form-data">
    {if $DISPLAY_PLUGINS}
    <div id="plugins" class="tab_content">
       <h3>{$LANG.hooks.title_plugins_installed}</h3>
