@@ -58,7 +58,6 @@ $nav_items['filemanager'] = array(
 $nav_items['settings']  = array(
 	$lang['navigation']['nav_administrators'] => '?_g=settings&node=admins',
 	$lang['navigation']['nav_settings_store'] => array('address' => '?_g=settings', 'id' => 'nav_settings'),
-	$lang['navigation']['nav_manage_hooks']  => '?_g=settings&node=hooks',
 	$lang['navigation']['nav_certificates']  => '?_g=settings&node=giftCertificates',
 	$lang['navigation']['nav_currencies']  => '?_g=settings&node=currency',
 	$lang['navigation']['nav_taxes']   => '?_g=settings&node=tax',
@@ -73,6 +72,7 @@ $nav_items['modules']  = array(
 
 $nav_items['advanced']  = array(
 	$lang['navigation']['nav_maintenance']  => '?_g=maintenance',
+	$lang['navigation']['nav_manage_hooks']  => '?_g=settings&node=hooks',
 	$lang['navigation']['nav_request_log']  => '?_g=settings&node=requestlog',
 	$lang['navigation']['nav_access_log']  => '?_g=settings&node=logs',
 	$lang['navigation']['nav_error_log']  => '?_g=settings&node=errorlog',
