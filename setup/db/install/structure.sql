@@ -175,7 +175,8 @@ CREATE TABLE IF NOT EXISTS `CubeCart_code_snippet` (
   `priority` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`snippet_id`),
   UNIQUE KEY `unique_id` (`unique_id`),
-  KEY `hook_trigger` (`hook_trigger`)
+  KEY `hook_trigger` (`hook_trigger`),
+  KEY `enabled` (`enabled`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_config` (
@@ -251,7 +252,8 @@ CREATE TABLE IF NOT EXISTS `CubeCart_customer_group` (
 	`group_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`group_name` VARCHAR(150) NOT NULL,
 	`group_description` TEXT NOT NULL,
-	PRIMARY KEY (`group_id`)
+	PRIMARY KEY (`group_id`),
+	KEY (`group_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_customer_membership` (
@@ -281,7 +283,9 @@ CREATE TABLE IF NOT EXISTS `CubeCart_documents` (
 	`navigation_link` tinyint(1) unsigned NOT NULL DEFAULT '1',
 	`doc_parse` tinyint(1) NOT NULL DEFAULT '0',
 	PRIMARY KEY (`doc_id`),
-	KEY `doc_parent_id` (`doc_parent_id`)
+	KEY `doc_parent_id` (`doc_parent_id`),
+	KEY `doc_status` (`doc_status`),
+	KEY `doc_home` (`doc_home`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_downloads` (
@@ -380,7 +384,8 @@ CREATE TABLE IF NOT EXISTS `CubeCart_hooks` (
 	`filepath` TEXT NOT NULL,
 	`priority` INT UNSIGNED NOT NULL DEFAULT '0',
 	PRIMARY KEY (`hook_id`),
-	KEY `trigger` (`trigger`)
+	KEY `trigger` (`trigger`),
+	KEY `enabled` (`enabled`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_image_index` (
@@ -638,7 +643,8 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_inventory` (
 	PRIMARY KEY (`id`),
 	KEY `product_id` (`product_id`),
 	KEY `cart_order_id` (`cart_order_id`),
-	KEY `options_identifier` (`options_identifier`)
+	KEY `options_identifier` (`options_identifier`),
+	KEY `quantity` (`quantity`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_order_notes` (
@@ -737,7 +743,8 @@ CREATE TABLE IF NOT EXISTS `CubeCart_pricing_group` (
 	`tax_inclusive` TINYINT(1) UNSIGNED NOT NULL,
 	PRIMARY KEY (`price_id`),
 	KEY `group_id` (`group_id`),
-	KEY `product_id` (`product_id`)
+	KEY `product_id` (`product_id`),
+	KEY `tax_type` (`tax_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_pricing_quantity` (
@@ -816,7 +823,12 @@ CREATE TABLE IF NOT EXISTS `CubeCart_shipping_rates` (
   `weight_rate` DECIMAL(12,2) NOT NULL DEFAULT '0.00',
   `percent_rate` DECIMAL(12,2) NOT NULL DEFAULT '0.00',
   `item_rate` DECIMAL(12,2) NOT NULL DEFAULT '0.00',
-  PRIMARY KEY `id` (`id`)
+  PRIMARY KEY `id` (`id`),
+  KEY `zone_id` (`zone_id`),
+  KEY `method_name` (`method_name`),
+  KEY `min_weight` (`min_weight`),
+  KEY `max_weight` (`max_weight`),
+  KEY `min_value` (`min_value`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 
@@ -827,7 +839,8 @@ CREATE TABLE IF NOT EXISTS `CubeCart_shipping_zones` (
   `states` TEXT NOT NULL DEFAULT '',
   `postcodes` TEXT NOT NULL DEFAULT '',
   `sort_order` INT NOT NULL DEFAULT '1',
-  PRIMARY KEY `id` (`id`)
+  PRIMARY KEY `id` (`id`),
+  KEY `zone_name` (`zone_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 
@@ -867,7 +880,8 @@ CREATE TABLE IF NOT EXISTS `CubeCart_tax_rates` (
 	`shipping` INT UNSIGNED NOT NULL DEFAULT '0',
 	`active` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	PRIMARY KEY (`id`),
-	UNIQUE KEY `type_id` (`type_id`,`details_id`,`country_id`,`county_id`)
+	UNIQUE KEY `type_id` (`type_id`,`details_id`,`country_id`,`county_id`),
+	KEY `active` (`active`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_transactions` (

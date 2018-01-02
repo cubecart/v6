@@ -611,7 +611,8 @@ if (isset($database_result) && $database_result) {
 		'cubecart_code_snippet' => array (
 			'snippet_id' => 'PRIMARY',
 			'unique_id' => 'UNIQUE KEY',
-			'hook_trigger' => 'KEY'
+			'hook_trigger' => 'KEY',
+			'enabled' => 'KEY'
 		),
 		'cubecart_config' => array (
 			'name' => 'UNIQUE KEY'
@@ -632,7 +633,8 @@ if (isset($database_result) && $database_result) {
 			'email' => 'FULLTEXT'
 		),
 		'cubecart_customer_group' => array (
-			'group_id' => 'PRIMARY'
+			'group_id' => 'PRIMARY',
+			'group_name' => 'KEY'
 		),
 		'cubecart_customer_membership' => array (
 			'membership_id' => 'PRIMARY',
@@ -641,7 +643,9 @@ if (isset($database_result) && $database_result) {
 		),
 		'cubecart_documents' => array (
 			'doc_id' => 'PRIMARY',
-			'doc_parent_id' => 'KEY'
+			'doc_parent_id' => 'KEY',
+			'doc_status' => 'KEY',
+			'doc_home' => 'KEY'
 		),
 		'cubecart_downloads' => array (
 			'digital_id' => 'PRIMARY'
@@ -674,7 +678,8 @@ if (isset($database_result) && $database_result) {
 			'id' => 'PRIMARY'
 		),
 		'cubecart_hooks' => array (
-			'hook_id' => 'PRIMARY'
+			'hook_id' => 'PRIMARY',
+			'enabled' => 'KEY'
 		),
 		'cubecart_image_index' => array (
 			'id' => 'PRIMARY',
@@ -758,7 +763,8 @@ if (isset($database_result) && $database_result) {
 			'id' => 'PRIMARY',
 			'product_id' => 'KEY',
 			'cart_order_id' => 'KEY',
-			'options_identifier' => 'KEY'
+			'options_identifier' => 'KEY',
+			'quantity' => 'KEY'
 		),
 		'cubecart_order_notes' => array (
 			'note_id' => 'PRIMARY',
@@ -787,7 +793,8 @@ if (isset($database_result) && $database_result) {
 		'cubecart_pricing_group' => array (
 			'price_id' => 'PRIMARY',
 			'group_id' => 'KEY',
-			'product_id' => 'KEY'
+			'product_id' => 'KEY',
+			'tax_type' => 'KEY'
 		),
 		'cubecart_pricing_quantity' => array (
 			'discount_id' => 'PRIMARY',
@@ -818,10 +825,16 @@ if (isset($database_result) && $database_result) {
 			'session_last' => 'KEY'
 		),
 		'cubecart_shipping_rates' => array (
-			'id' => 'PRIMARY'
+			'id' => 'PRIMARY',
+			'zone_id' => 'KEY',
+			'method_name' => 'KEY',
+			'min_weight' => 'KEY',
+			'max_weight' => 'KEY',
+			'min_value' => 'KEY'
 		),
 		'cubecart_shipping_zones' => array (
-			'id' => 'PRIMARY'
+			'id' => 'PRIMARY',
+			'zone_name' => 'KEY'
 		),
 		'cubecart_system_error_log' => array (
 			'log_id' => 'PRIMARY',
@@ -840,7 +853,8 @@ if (isset($database_result) && $database_result) {
 			'type_id' => 'UNIQUE KEY',
 			'details_id' => 'UNIQUE KEY',
 			'country_id' => 'UNIQUE KEY',
-			'county_id' => 'UNIQUE KEY'
+			'county_id' => 'UNIQUE KEY',
+			'active' => 'KEY'
 		),
 		'cubecart_transactions' => array (
 			'id' => 'PRIMARY',
