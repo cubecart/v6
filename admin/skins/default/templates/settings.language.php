@@ -9,7 +9,7 @@
 * Email:  sales@cubecart.com
 * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
 *}
-<form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
+<form action="{$VAL_SELF}" id="edit_phrases" method="post" enctype="multipart/form-data">
    {if isset($LANGUAGES)}
    <div id="lang_list" class="tab_content">
       <h3>{$LANG.translate.title_languages}</h3>
@@ -105,13 +105,13 @@
          <table class="phrases">
             {foreach from=$STRINGS item=string}
             <tr id="row_{$string.name}">
-               <td>
+               <td class="phrase_row" rel="string_{$string.name}">
                   <label for="string_{$string.name}">{$string.name}</label>
                   <input type="hidden" id="defined_{$string.name}" value="{$string.defined}">
                   {if $string.multiline}
-                  <textarea id="string_{$string.name}" name="string[{$string.type}][{$string.name}]" class="textbox editable_phrase" rel="{$string.name}">{$string.value}</textarea>
+                  <textarea id="string_{$string.name}" name="string[{$string.type}][{$string.name}]" class="textbox editable_phrase" rel="{$string.name}"{if $string.disabled} disabled="disabled"{/if}>{$string.value}</textarea>
                   {else}
-                  <input type="text" id="string_{$string.name}" name="string[{$string.type}][{$string.name}]" value="{$string.value}" class="textbox editable_phrase" rel="{$string.name}">
+                  <input type="text" id="string_{$string.name}" name="string[{$string.type}][{$string.name}]" value="{$string.value}" class="textbox editable_phrase" rel="{$string.name}"{if $string.disabled} disabled="disabled"{/if}>
                   {/if}
                </td>
                <td class="actions">

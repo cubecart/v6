@@ -30,26 +30,39 @@ if (isset($_GET['download']) && Admin::getInstance()->permissions('settings', CC
 	exit;
 }
 
-if (isset($_POST['save']) && isset($_POST['string']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
+if (isset($_POST['save']) && (isset($_POST['string']) || isset($_POST['delete'])) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
 	## Load all existing language strings
 	$GLOBALS['language']->loadDefinitions($_GET['language']);
 	$base_strings = $GLOBALS['language']->loadLanguageXML($_GET['language']);
 
 	# Save strings to Database
 	$clear = false;
-	foreach ($GLOBALS['RAW']['POST']['string'] as $type => $data) {
-		foreach ($data as $name => $value) {
+	if(is_array($_POST['delete'])) {
+		foreach($_POST['delete'] as $name => $value) {
 			$record = array(
 				'language' => $_GET['language'],
-				'type'  => $type,
+				'type'  => $_GET['type'],
 				'name'  => $name,
 			);
-			$basic = htmlspecialchars($base_strings[$type][$name], ENT_COMPAT, 'UTF-8', false);
-			if ($basic != $value) {
-				$GLOBALS['db']->delete('CubeCart_lang_strings', $record);
-				$record['value'] = htmlspecialchars_decode($value, ENT_COMPAT);
-				$GLOBALS['db']->insert('CubeCart_lang_strings', $record);
-				$clear = true;
+			$GLOBALS['db']->delete('CubeCart_lang_strings', $record);
+		}
+	}
+	
+	if(is_array($_POST['string'])) {
+		foreach ($GLOBALS['RAW']['POST']['string'] as $type => $data) {
+			foreach ($data as $name => $value) {
+				$record = array(
+					'language' => $_GET['language'],
+					'type'  => $type,
+					'name'  => $name,
+				);
+				$basic = htmlspecialchars($base_strings[$type][$name], ENT_COMPAT, 'UTF-8', false);
+				if ($basic != $value) {
+					$GLOBALS['db']->delete('CubeCart_lang_strings', $record);
+					$record['value'] = htmlspecialchars_decode($value, ENT_COMPAT);
+					$GLOBALS['db']->insert('CubeCart_lang_strings', $record);
+					$clear = true;
+				}
 			}
 		}
 	}
@@ -164,7 +177,8 @@ if (isset($_GET['export'])) {
 						'default' => htmlspecialchars($default, ENT_COMPAT, 'UTF-8', false),
 						'value'  => htmlspecialchars($value, ENT_COMPAT, 'UTF-8', false),
 						'defined' => (int)$defined,
-						'multiline' => strstr($value, PHP_EOL) ? true : false
+						'multiline' => strstr($value, PHP_EOL) ? true : false,
+						'disabled' => ($default!==$value) ? false : true,
 					);
 					$smarty_data['strings'][] = $assign;
 				}
