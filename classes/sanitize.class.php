@@ -146,7 +146,7 @@ class Sanitize {
 	 */
 	static private function _stopToken() {
 		unset($_POST, $_GET);
-		$message = 'Security Alert: Possible Cross-Site Request Forgery (CSRF) or browser back button used.';
+		$message = 'Security Alert: Possible Cross-Site Request Forgery (CSRF). Please do not use multiple tabs/windows or the browser back button. <a href="https://support.cubecart.com/Knowledgebase/Article/View/240/45/">Learn more</a>.';
 		$gui_message['error'][md5($message)] = $message;
 		$GLOBALS['session']->set('GUI_MESSAGE', $gui_message);
 		trigger_error('Invalid Security Token', E_USER_WARNING);
