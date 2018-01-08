@@ -1343,7 +1343,7 @@ class Order {
 				}
 				$data['storeURL']  = $GLOBALS['storeURL'];
 				if (($content = $mailer->loadContent('cart.gift_certificate', $this->_order_summary['lang'], array_merge($this->_order_summary, $data, $coupon[0]))) !== false) {
-					$GLOBALS['db']->update('CubeCart_coupons', array('email_sent' => 1), array('coupon_id' => (int)$coupon_id));
+					
 					if(($return = $mailer->sendEmail($data['email'], $content)) !== false) {
 						$GLOBALS['db']->update('CubeCart_coupons', array('email_sent' => 1), array('coupon_id' => (int)$coupon_id));
 					} else {
