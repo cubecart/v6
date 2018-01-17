@@ -1347,8 +1347,6 @@ class Order {
 					if(($return = $mailer->sendEmail($data['email'], $content)) !== false) {
 						$GLOBALS['db']->update('CubeCart_coupons', array('email_sent' => 1), array('coupon_id' => (int)$coupon_id));
 					} else {
-
-						gc_specific_error
 						if(isset($mailer->ErrorInfo) && !empty($mailer->ErrorInfo)) {
 							trigger_error($mailer->ErrorInfo, E_USER_WARNING);
 							$GLOBALS['gui']->setError($GLOBALS['language']->catalogue['gc_failed'].' '.$GLOBALS['language']->catalogue['gc_specific_error'], true);
