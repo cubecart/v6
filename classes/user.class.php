@@ -665,7 +665,6 @@ class User {
 					}
 				}
 			}
-			die('fail');
 		}
 		return false;
 	}
