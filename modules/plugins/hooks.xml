@@ -25,6 +25,7 @@
 	<hook trigger="admin.category.translate.save.pre_process" deprecated="" />
 	<hook trigger="admin.category.translate.save.post_process" deprecated="" />
 	<hook trigger="admin.customer.add" deprecated="" />
+	<hook trigger="admin.customer.customer_list_post" deprecated="" />
 	<hook trigger="admin.customer.delete" deprecated="" />
 	<hook trigger="admin.customer.group_add" deprecated="" />
 	<hook trigger="admin.customer.group_edit" deprecated="" />
@@ -160,6 +161,7 @@
 	<hook trigger="class.cubecart.contact.display" deprecated="" />
 	<hook trigger="class.cubecart.contact.mailer" deprecated="" />
 	<hook trigger="class.cubecart.display_basket" deprecated="" />
+	<hook trigger="class.cubecart.latest_products" deprecated="" />
 	<hook trigger="class.cubecart.post_coupon" deprecated="" />
 	<hook trigger="class.cubecart.pre_display_category" deprecated="" />
 	<hook trigger="class.cubecart.display_category" deprecated="" />
@@ -181,6 +183,8 @@
 	<hook trigger="class.cubecart.print.receipt" deprecated="" />
 	<hook trigger="class.cubecart.review" deprecated="" />
 	<hook trigger="class.cubecart.review.insert" deprecated="" />
+	<hook trigger="class.cubecart.search_catalogue" deprecated="" />
+	<hook trigger="class.filemanager.deliver.download.pre" deprecated="" />
 	<hook trigger="class.gui.css" deprecated="" />
 	<hook trigger="class.gui.head_js" deprecated="" />
 	<hook trigger="class.gui.body_js" deprecated="" />

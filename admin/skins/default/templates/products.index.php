@@ -190,7 +190,7 @@
             <label for="google_cat_code">{$LANG.catalogue.product_google_category}</label>
             <span>
                {if $GOOGLE_CATS}
-               <select name="google_category" id="google_category" class="textbox" style="font-size: 10px;">
+               <select name="google_category" id="google_category" class="chzn-select">
                   <option value="">{$LANG.common.please_select} &hellip;</option>
                   {foreach from=$GOOGLE_CATS item=cat}<option value="{$cat}" {if $cat == $PRODUCT.google_category && !empty($PRODUCT.google_category)}selected="selected"{/if}>{$cat}</option>{/foreach}
                </select>

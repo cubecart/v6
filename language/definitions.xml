@@ -236,6 +236,8 @@
     <string name="your_comments" introduced="5.0.0"><![CDATA[Delivery Notes or Additional Comments]]></string>
   </group>
   <group name="catalogue">
+    <string name="gc_failed" introduced="6.1.14"><![CDATA[Failed to send gift card by email. Please check <a href="?_g=settings#Advanced_Settings">email configuration</a>.]]></string>
+    <string name="gc_specific_error" introduced="6.1.14"><![CDATA[A specific error message may be found in the <a href="?_g=settings&node=errorlog#system_error_log">error log</a>.]]></string>
     <string name="tap_gallery" introduced="6.1.6"><![CDATA[Tap for gallery]]></string>
     <string name="tap_enlarge" introduced="6.1.6"><![CDATA[Tap to enlarge]]></string>
     <string name="gd_memory_error" introduced="6.1.5"><![CDATA[Not enough memory to create thumbnail from `%s`. Please optimise this source image.]]></string>
@@ -561,6 +563,8 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="calculate" introduced="6.1.14"><![CDATA[Calculate]]></string>
+    <string name="error_time_out" introduced="6.1.14"><![CDATA[Time out after %s seconds.]]></string>
     <string name="invalid_data" introduced="6.1.6"><![CDATA[Invalid data.]]></string>
     <string name="resend" introduced="6.1.6"><![CDATA[Resend]]></string>
     <string name="not_recommended" introduced="6.1.6"><![CDATA[Not Recommended]]></string>
@@ -886,6 +890,8 @@
     <string name="title_list" introduced="5.0.0"><![CDATA[Customer List]]></string>
   </group>
   <group name="dashboard">
+    <string name="recent_extensions" introduced="6.1.14"><![CDATA[Recent Marketplace Extensions]]></string>
+    <string name="more_extensions" introduced="6.1.14"><![CDATA[Discover more at <a href="?_g=marketplace">https://www.cubecart.com/extensions</a>]]></string>
     <string name="delete_admin_folder" introduced="6.1.8"><![CDATA[WARNING: Please delete the redundant /admin folder from your store directory.]]></string>
     <string name="delete_admin_file" introduced="6.1.8"><![CDATA[WARNING: Please delete the redundant admin.php file from your store directory.]]></string>
     <string name="ignore_update" introduced="6.1.0"><![CDATA[This update has been ignored however next time an update is released by the develper a notification will be shown again.]]></string>

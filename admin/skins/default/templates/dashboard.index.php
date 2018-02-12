@@ -109,8 +109,8 @@
          </form>
       </div>
       {if is_array($RECENT_EXTENSIONS)}
-         <h2>Recent Marketplace Extensions</h2>
-         <p>Discover more at <a href="?_g=marketplace">https://www.cubecart.com/extensions</a></p>
+         <h2>{$LANG.dashboard.recent_extensions}</h2>
+         <p>{$LANG.dashboard.more_extensions}</p>
          {foreach from=$RECENT_EXTENSIONS item=extension name=extension}
          <div class="extension">
             <h4><span>{$extension.price}</span><a href="{$extension.url}" title="{$extension.name}" target="_blank">{$extension.name|truncate:42:"&hellip;":true}</a></h4>
@@ -324,9 +324,9 @@
             <dt>{$LANG.dashboard.tech_version_mysql}</dt>
             <dd>{$SYS.mysql_version}</dd>
             <dt>{$LANG.dashboard.tech_size_image}</dt>
-            <dd>{$SYS.dir_images}</dd>
+            <dd><a href="#" class="getFileSize" data-path="images">{$LANG.common.calculate}</a></dd>
             <dt>{$LANG.dashboard.tech_size_download}</dt>
-            <dd>{$SYS.dir_files}</dd>
+            <dd><a href="#" class="getFileSize" data-path="files">{$LANG.common.calculate}</a></dd>
             <dt>{$LANG.dashboard.tech_upload_max}</dt>
             <dd>{$PHP.upload_max_filesize.local_value}</dd>
             <dt>{$LANG.dashboard.tech_browser}</dt>
@@ -335,5 +335,6 @@
             <dd>{$SYS.server}</dd>
          </dl>
       </fieldset>
+      <div style="display: none" id="val_time_out_text">{$LANG.common.error_time_out}</div>
    </div>
 </div>

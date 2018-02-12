@@ -289,6 +289,7 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
 		}
 		$send_redirect = true;
 	}
+	foreach ($GLOBALS['hooks']->load('admin.customer.customer_list_post') as $hook) include $hook;
 	if (isset($send_redirect) && $send_redirect) {
 		httpredir(currentPage(array('delete_addr')));
 	}

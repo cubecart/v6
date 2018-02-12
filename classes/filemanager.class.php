@@ -486,6 +486,7 @@ class FileManager {
 					if ($GLOBALS['config']->get('config', 'download_count') > 0 && (int)$download['downloads'] >= $GLOBALS['config']->get('config', 'download_count')) $error = self::FM_DL_ERROR_MAXDL;
 					if (!empty($error)) return false;
 					$data = $this->getFileInfo($download['product_id']);
+					foreach ($GLOBALS['hooks']->load('class.filemanager.deliver.download.pre') as $hook) include $hook;
 					if ($data !== false) {
 						// Deliver file contents
 						if (isset($data['file']) && ($data['is_url'] || file_exists($data['file']))) {

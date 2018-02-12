@@ -47,8 +47,8 @@ ALTER TABLE `CubeCart_admin_log` CHANGE `time` `time` INT UNSIGNED NOT NULL; #EO
 ALTER TABLE `CubeCart_admin_log` CHANGE `ipAddress` `ip_address` VARCHAR(45) NOT NULL; #EOQ
 ALTER TABLE `CubeCart_admin_log` CHANGE `desc` `description` TEXT NOT NULL; #EOQ
 ALTER TABLE `CubeCart_admin_log` DROP `user`; #EOQ
-ALTER TABLE `CubeCart_admin_log` ADD PRIMARY KEY ( `log_id` ) ; #EOQ 
-ALTER TABLE `CubeCart_admin_log` ADD INDEX `admin_id` ( `admin_id` ); #EOQ
+ALTER TABLE `CubeCart_admin_log` ADD PRIMARY KEY (`log_id`) ; #EOQ 
+ALTER TABLE `CubeCart_admin_log` ADD INDEX `admin_id` (`admin_id`); #EOQ
 ALTER TABLE `CubeCart_admin_log` DROP INDEX `id` ; #EOQ
 
 DROP TABLE IF EXISTS `CubeCart_admin_sections`; #EOQ
@@ -70,7 +70,7 @@ ALTER TABLE `CubeCart_admin_users` ADD `dashboard_notes` TEXT NULL DEFAULT NULL;
 ALTER TABLE `CubeCart_admin_users` ADD `order_notify` TINYINT( 1 ) UNSIGNED NULL; #EOQ
 ALTER TABLE `CubeCart_admin_users` CHANGE `name` `name` VARCHAR( 150 ) NOT NULL; #EOQ
 ALTER TABLE `CubeCart_admin_users` CHANGE `username` `username` VARCHAR( 150 ) NOT NULL; #EOQ
-ALTER TABLE `CubeCart_admin_users` DROP INDEX `adminId` , ADD INDEX `admin_id` ( `admin_id` ); #EOQ 
+ALTER TABLE `CubeCart_admin_users` DROP INDEX `adminId` , ADD INDEX `admin_id` (`admin_id`); #EOQ 
 
 UPDATE `CubeCart_admin_users` SET `status` = '1' WHERE 1; #EOQ
 
@@ -99,7 +99,7 @@ ALTER TABLE `CubeCart_category` CHANGE `cat_metatitle` `seo_meta_title` TEXT NOT
 ALTER TABLE `CubeCart_category` CHANGE `cat_metadesc` `seo_meta_description` TEXT NOT NULL; #EOQ
 ALTER TABLE `CubeCart_category` CHANGE `cat_metakeywords` `seo_meta_keywords` TEXT NOT NULL; #EOQ
 ALTER TABLE `CubeCart_category` DROP `noProducts`; #EOQ
-ALTER TABLE `CubeCart_category` DROP INDEX `cat_father_id` , ADD INDEX `cat_parent_id` ( `cat_parent_id` ); #EOQ 
+ALTER TABLE `CubeCart_category` DROP INDEX `cat_father_id` , ADD INDEX `cat_parent_id` (`cat_parent_id`); #EOQ 
 
 ALTER TABLE `CubeCart_cats_idx` RENAME TO `CubeCart_category_index`, DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_category_index` CHANGE `productId` `product_id` INT UNSIGNED NOT NULL DEFAULT '0'; #EOQ
@@ -627,7 +627,7 @@ ALTER TABLE `CubeCart_config` ADD UNIQUE KEY (`name`); #EOQ
 ALTER TABLE `CubeCart_customer` ADD UNIQUE KEY `email` (`email`); #EOQ
 ALTER TABLE `CubeCart_customer` ADD FULLTEXT KEY `fulltext` (`first_name`,`last_name`,`email`); #EOQ
 
-ALTER TABLE `CubeCart_category_index` ADD INDEX ( `product_id` ); #EOQ 
+ALTER TABLE `CubeCart_category_index` ADD INDEX (`product_id`); #EOQ 
 
 ALTER TABLE `CubeCart_alt_shipping` CHANGE `id` `id` INT( 10 ) NOT NULL AUTO_INCREMENT; #EOQ
 
@@ -647,39 +647,39 @@ ALTER TABLE `CubeCart_category_index` CHANGE `cat_id` `cat_id` INT( 10 ) NOT NUL
  
 ALTER TABLE `CubeCart_category_language` ADD `seo_meta_keywords` TEXT NOT NULL; #EOQ 
 
-ALTER TABLE `CubeCart_category_language` ADD INDEX ( `translation_id` ) ; #EOQ  
+ALTER TABLE `CubeCart_category_language` ADD INDEX (`translation_id`) ; #EOQ  
 ALTER TABLE `CubeCart_category_language` DROP PRIMARY KEY ; #EOQ 
 
 ALTER TABLE `CubeCart_coupons` ADD UNIQUE KEY (`code`) ; #EOQ
 ALTER TABLE `CubeCart_currency` ADD UNIQUE KEY (`code`) ; #EOQ
 
-ALTER TABLE `CubeCart_documents` ADD PRIMARY KEY ( `doc_id` ) ; #EOQ
+ALTER TABLE `CubeCart_documents` ADD PRIMARY KEY (`doc_id`) ; #EOQ
 
 ALTER TABLE `CubeCart_documents` DROP KEY `doc_id` ; #EOQ
 
-ALTER TABLE `CubeCart_geo_zone` ADD KEY ( `country_id` ) ; #EOQ
+ALTER TABLE `CubeCart_geo_zone` ADD KEY (`country_id`) ; #EOQ
 
 ALTER TABLE `CubeCart_inventory` DROP INDEX `popularity`; #EOQ
 ALTER TABLE `CubeCart_inventory` DROP INDEX `cat_id`; #EOQ
-ALTER TABLE `CubeCart_inventory_language` ADD KEY ( `translation_id` ); #EOQ
+ALTER TABLE `CubeCart_inventory_language` ADD KEY (`translation_id`); #EOQ
 ALTER TABLE `CubeCart_inventory_language` DROP PRIMARY KEY; #EOQ
 ALTER TABLE `CubeCart_inventory_language` DROP INDEX `prod_master_id`; #EOQ
 ALTER TABLE `CubeCart_options_set_member` DROP `price`; #EOQ
 ALTER TABLE `CubeCart_options_set_member` DROP `weight`; #EOQ 
-ALTER TABLE `CubeCart_option_value` ADD KEY ( `option_id` ); #EOQ
-ALTER TABLE `CubeCart_order_summary` ADD KEY ( `customer_id` ); #EOQ 
-ALTER TABLE `CubeCart_order_summary` ADD KEY ( `status` ); #EOQ
-ALTER TABLE `CubeCart_order_summary` ADD KEY ( `email` ); #EOQ
-ALTER TABLE `CubeCart_order_summary` ADD KEY ( `order_date` ); #EOQ
+ALTER TABLE `CubeCart_option_value` ADD KEY (`option_id`); #EOQ
+ALTER TABLE `CubeCart_order_summary` ADD KEY (`customer_id`); #EOQ 
+ALTER TABLE `CubeCart_order_summary` ADD KEY (`status`); #EOQ
+ALTER TABLE `CubeCart_order_summary` ADD KEY (`email`); #EOQ
+ALTER TABLE `CubeCart_order_summary` ADD KEY (`order_date`); #EOQ
 ALTER TABLE `CubeCart_reviews` ADD KEY `product_id` (`product_id`); #EOQ
 ALTER TABLE `CubeCart_reviews` ADD KEY `votes` (`vote_up`,`vote_down`); #EOQ
 ALTER TABLE `CubeCart_reviews` ADD FULLTEXT KEY `fulltext` (`name`,`email`,`title`,`review`); #EOQ
-ALTER TABLE `CubeCart_sessions` KEY `customer_id` (`customer_id`); #EOQ
-ALTER TABLE `CubeCart_sessions` KEY `session_last` (`session_last`); #EOQ
+ALTER TABLE `CubeCart_sessions` ADD KEY `customer_id` (`customer_id`); #EOQ
+ALTER TABLE `CubeCart_sessions` ADD KEY `session_last` (`session_last`); #EOQ
 ALTER TABLE `CubeCart_transactions` ADD KEY `order_id` (`order_id`); #EOQ
 ALTER TABLE `CubeCart_transactions` ADD KEY `time` (`time`); #EOQ
 ALTER TABLE `CubeCart_option_assign` DROP INDEX `product`; #EOQ
-ALTER TABLE `CubeCart_option_assign` ADD key ( `set_member_id` ); #EOQ  
+ALTER TABLE `CubeCart_option_assign` ADD key (`set_member_id`); #EOQ  
 
 UPDATE `CubeCart_documents` SET  `doc_content` = REPLACE(`doc_content`, 'images/uploads','images/source'); #EOQ
 UPDATE `CubeCart_inventory` SET  `description` = REPLACE(`description`,'images/uploads','images/source'); #EOQ

@@ -145,6 +145,10 @@ jQuery(document).ready(function() {
                 email: $('#validate_email').text(),
                 remote: $('#validate_already_subscribed').text()
             },
+        },
+        submitHandler: function(form) {
+            $("#newsletter_email").prop('disabled', false);
+            form.submit();
         }
     });
     $("#newsletter_form_unsubscribe").validate({
@@ -287,6 +291,10 @@ jQuery(document).ready(function() {
             gateway: {
                 required: $('#validate_gateway_required').text()
             }
+        },
+        submitHandler: function(form) {
+            $("#user_email").prop('disabled', false);
+            form.submit();
         }
     });
 
@@ -510,6 +518,10 @@ jQuery(document).ready(function() {
             terms_agree: {
                 required: $('#validate_terms_agree').text()
             }
+        },
+        submitHandler: function(form) {
+            $("#email").prop('disabled', false);
+            form.submit();
         }
     });
     $("#profile_form").validate({

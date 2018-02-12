@@ -7,9 +7,6 @@
       <link href='//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
       <link rel="stylesheet" type="text/css" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/styles/layout.css?{$VERSION_HASH}" media="screen">
       <link rel="stylesheet" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/styles/font-awesome.min.css?{$VERSION_HASH}">
-      {foreach from=$JQUERY_STYLES item=style}
-      <link rel="stylesheet" type="text/css" href="{$style}?{$VERSION_HASH}" media="screen">
-      {/foreach}
       {foreach from=$HEAD_CSS item=style}
       <link rel="stylesheet" type="text/css" href="{$style}?{$VERSION_HASH}" media="screen">
       {/foreach}

@@ -95,6 +95,7 @@ class Cubecart {
 		if ($GLOBALS['config']->get('config', 'catalogue_latest_products')) {
 			$query = sprintf("SELECT I.* FROM `%1\$sCubeCart_inventory` AS I JOIN `%1\$sCubeCart_category` AS C ON C.cat_id=I.cat_id AND C.`status`=1 AND $where ORDER BY I.date_added DESC, I.product_id DESC", $GLOBALS['config']->get('config', 'dbprefix'));
 			$latestProducts = $GLOBALS['db']->query($query, (int)$GLOBALS['config']->get('config', 'catalogue_latest_products_count'));
+			foreach ($GLOBALS['hooks']->load('class.cubecart.latest_products') as $hook) include $hook;
 			if ($latestProducts) {
 				foreach ($latestProducts as $product) {
 					// Product Translation
@@ -742,7 +743,7 @@ class Cubecart {
 		$search = false;
 		if (isset($_POST['sort'])) {
 			list($field, $order) = explode('|', $_POST['sort']);
-			$_GET['sort'][$field] = $order;
+			$_GET['sort'][$field] = $query['sort'][$field] =  $order;
 			if (isset($_GET['search'])) {
 				foreach ($_GET['search'] as $key => $value) {
 					$query['search'][$key] = $value;
@@ -1397,7 +1398,7 @@ class Cubecart {
 					} else {
 						$GLOBALS['gui']->setError($GLOBALS['session']->get('error', 'recaptcha'));
 					}
-					$error['recaptcha'] = true;
+					$error = true;
 				}
 				if (!$error) {
 					$email = (isset($contact['email']) && filter_var($contact['email'], FILTER_VALIDATE_EMAIL)) ? $contact['email'] : $GLOBALS['config']->get('config', 'email_address');

@@ -379,7 +379,7 @@ class HookLoader {
 			$where['enabled'] = '1';
 		}
 
-		if ($snippets = $GLOBALS['db']->select('CubeCart_code_snippet', array('php_code', 'unique_id', 'description', 'hook_trigger'), $where, array('priority' => 'ASC'))) {
+		if ($snippets = $GLOBALS['db']->select('CubeCart_code_snippet', false, $where, array('priority' => 'ASC'))) {
 			$this->_snippet_list = $snippets;
 			return true;
 		} else {
