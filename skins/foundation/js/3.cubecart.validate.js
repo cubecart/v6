@@ -127,9 +127,14 @@ jQuery(document).ready(function() {
                     },
                     beforeSend: function () {
                         $("#newsletter_email").prop('disabled', true);
+                        $("#newsletter_email").click(function() {
+                            $(this).val('');
+                            $(this).prop('disabled', false);
+                        });
                     },
                     complete: function () {
                         $("#newsletter_email").prop('disabled', false);
+                        $("#newsletter_email").unbind("click");
                     }
                 }
             },
@@ -191,9 +196,14 @@ jQuery(document).ready(function() {
                     },
                     beforeSend: function () {
                         $("#user_email").prop('disabled', true);
+                        $("#user_email").click(function() {
+                            $(this).val('');
+                            $(this).prop('disabled', false);
+                        });
                     },
                     complete: function () {
                         $("#user_email").prop('disabled', false);
+                        $("#user_email").unbind("click");
                     } 
                 }
             },
@@ -440,9 +450,14 @@ jQuery(document).ready(function() {
                     },
                     beforeSend: function () {
                         $("#email").prop('disabled', true);
+                        $("#email").click(function() {
+                            $(this).val('');
+                            $(this).prop('disabled', false);
+                        });
                     },
                     complete: function () {
                         $("#email").prop('disabled', false);
+                        $("#email").unbind("click");
                     }
                 }
             },

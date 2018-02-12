@@ -1588,6 +1588,13 @@
     <string name="notify_success_update" introduced="5.0.0"><![CDATA[%s updated]]></string>
   </group>
   <group name="order_state">
+    <string name="initiator_" introduced="6.1.13"><![CDATA[Not Provided]]></string>
+    <string name="initiator_U" introduced="6.1.13"><![CDATA[Unknown]]></string>
+    <string name="initiator_C" introduced="6.1.13"><![CDATA[Customer]]></string>
+    <string name="initiator_G" introduced="6.1.13"><![CDATA[Gateway]]></string>
+    <string name="initiator_S" introduced="6.1.13"><![CDATA[Staff]]></string>
+    <string name="initiator_E" introduced="6.1.13"><![CDATA[Expired]]></string>
+    <string name="initiator_F" introduced="6.1.13"><![CDATA[Invalid]]></string>
     <string name="desc_1" introduced="5.0.0"><![CDATA[Order has been created and staff members are awaiting payment before any further action will be taken. This order may be automatically cancelled if payment has not been made by a specific time scale.]]></string>
     <string name="desc_2" introduced="5.0.0"><![CDATA[Payment may or may have not cleared or the order hasn't been dealt with yet.]]></string>
     <string name="desc_3" introduced="5.0.0"><![CDATA[Order has been paid for and dispatched. Goods should arrive shortly. Tracking information may be available.]]></string>
@@ -2197,6 +2204,7 @@
     <string name="language_code" introduced="5.0.0"><![CDATA[Language Code (<a href="https://en.wikipedia.org/wiki/Language_localisation" target="_blank">ISO-639</a>)]]></string>
     <string name="language_name_eg" introduced="6.1.2"><![CDATA[e.g. Português]]></string>
     <string name="language_code_eg" introduced="6.1.2"><![CDATA[e.g. pt-BR]]></string>
+    <string name="language_code_eg2" introduced="6.1.13"><![CDATA[e.g. BRL]]></string>
     <string name="master_language" introduced="5.0.0"><![CDATA[Master Language File (definitions.xml)]]></string>
     <string name="merge_db_file" introduced="5.0.0"><![CDATA[Merge to file]]></string>
     <string name="notify_strings_update" introduced="5.0.0"><![CDATA[Language strings updated.]]></string>

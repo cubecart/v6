@@ -60,6 +60,8 @@ if (isset($_POST['review']) && is_array($_POST['review']) && Admin::getInstance(
 		'rating' => (isset($_POST['rating']) && is_numeric($_POST['rating'])) ? (int)$_POST['rating'] : 0,
 	);
 
+	foreach ($GLOBALS['hooks']->load('admin.products.reviews.update') as $hook) include $hook;
+
 	if(is_numeric($_POST['review']['id'])) {
 		if ($GLOBALS['db']->update('CubeCart_reviews', $record, array('id' => (int)$_POST['review']['id']))) {
 			$GLOBALS['main']->setACPNotify($lang['reviews']['notify_review_update']);

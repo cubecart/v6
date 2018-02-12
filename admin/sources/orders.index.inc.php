@@ -230,6 +230,7 @@ if (isset($_GET['action'])) {
 			foreach ($order_history as $event) {
 				$event['updated']  = formatTime($event['updated']);
 				$event['status']  = $lang['order_state']['name_'.$event['status']];
+				$event['initiator'] = $lang['order_state']['initiator_'.$event['initiator']]; // New line for custom initiators
 				$smarty_data['list_history'][] = $event;
 			}
 			$GLOBALS['smarty']->assign('LIST_HISTORY', $smarty_data['list_history']);
