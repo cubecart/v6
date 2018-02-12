@@ -350,7 +350,8 @@ $select_options = array(
 	'product_clone'      => array('0' => $lang['common']['disabled'], '2' => $lang['settings']['product_clone_hide'], '1' => $lang['common']['enabled']),
 	'product_clone_code'    => array('1' => $lang['settings']['product_clone_new_code'], '2' => $lang['settings']['product_clone_old_code']),
 	'seo_add_cats'      => array('0' => $lang['common']['no'], '1' => $lang['settings']['seo_add_cats_top'], '2' => $lang['settings']['seo_add_cats_all']),
-	'seo_cat_add_cats'      => array('1' => $lang['common']['yes'], '0' => $lang['common']['no'])
+	'seo_cat_add_cats'      => array('1' => $lang['common']['yes'], '0' => $lang['common']['no']),
+	'oid_mode'      => array('t' => $lang['orders']['id_traditional'], 'i' => $lang['orders']['id_incremental'])
 );
 $current_skin_path = CC_ROOT_DIR.'/skins/'.$GLOBALS['config']->get('config', 'skin_folder').'/templates/';
 $gr_compatibility = array(

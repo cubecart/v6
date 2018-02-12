@@ -67,11 +67,9 @@
       </fieldset>
       <fieldset>
          <legend>{$LANG.settings.title_orders}</legend>
-         {*
-            <div><label for="email_disable_alert">{$LANG.settings.email_disable_alert}</label><span><select name="config[email_disable_alert]" id="email_disable_alert" class="textbox">
-         {foreach from=$OPT_EMAIL_DISABLE_ALERT item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
+         <div><label for="oid_mode">{$LANG.orders.id_mode}</label><span><select name="config[oid_mode]" id="oid_mode" class="textbox">
+         {foreach from=$OPT_OID_MODE item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
             </select></span></div>
-         *}
          <div><label for="basket_order_expire">{$LANG.settings.expire_pending}</label><span><input name="config[basket_order_expire]" id="basket_order_expire" class="textbox number" value="{$CONFIG.basket_order_expire}"> {$LANG.common.blank_to_disable}</span></div>
       </fieldset>
       <fieldset>

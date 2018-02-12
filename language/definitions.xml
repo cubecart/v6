@@ -1615,6 +1615,9 @@
     <string name="name_6" introduced="5.0.0"><![CDATA[Cancelled]]></string>
   </group>
   <group name="orders">
+    <string name="id_mode" introduced="6.2.0"><![CDATA[Display Style]]></string>
+    <string name="id_traditional" introduced="6.2.0"><![CDATA[Traditional (e.g. YYMMDD-HHMMSS-1234)]]></string>
+    <string name="id_incremental" introduced="6.2.0"><![CDATA[Incremental (e.g. 1, 2, 3, etc)]]></string>
     <string name="expired_basket" introduced="6.1.9"><![CDATA[Sorry but your basket has expired.]]></string>
     <string name="order_not_found" introduced="6.0.0"><![CDATA[Sorry but order %s was not found.]]></string>
     <string name="cancel_by_customer" introduced="5.2.13"><![CDATA[Order cancelled by customer from their account area.]]></string>
