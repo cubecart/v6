@@ -685,7 +685,11 @@ if (isset($_GET['action'])) {
 			} else {
 				// Order ID
 				if (isset($_GET['search']['order_number']) && !empty($_GET['search']['order_number'])) {
-					$where['cart_order_id'] = '~'.$_GET['search']['order_number'];
+					if(ctype_digit($_GET['search']['order_number']) && $GLOBALS['config']->get('config', 'oid_mode')=='i') {
+						$where['id'] = $_GET['search']['order_number'];
+					} else {
+						$where['cart_order_id'] = '~'.$_GET['search']['order_number'];
+					}
 				}
 				// Order Status
 				if (isset($_GET['search']['status']) && is_numeric($_GET['search']['status'])) {

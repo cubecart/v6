@@ -22,7 +22,7 @@
 	  <div class="sidebar_content">
 		<form action="?_g=orders" method="post">
 		  <h4>{$LANG.search.title_search_orders}</h4>
-		  <input type="text" name="search[order_number]" placeholder="&#xF002; {$LANG.common.type_to_search}" id="search_order" class="textbox left">
+		  <input type="text" name="search[order_number]" id="search_order" class="textbox left">
 		  <input type="submit" value="{$LANG.common.go}" class="go_search">
 		  
 		</form>
