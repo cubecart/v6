@@ -25,6 +25,17 @@ if(empty($cookie_domain)) {
 
 if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_PERM_FULL)) {
 	$config_old = $GLOBALS['config']->get('config');
+
+	if($_POST['config']['oid_mode']=='i') {
+		$field_find = 'cart_order_id';
+		$field_replace = 'id';
+	} else {
+		$field_find = 'id';
+		$field_replace = 'cart_order_id';
+	}
+	foreach(array('subject', 'content_html', 'content_text') as $column) {
+		$GLOBALS['db']->misc("UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_email_content` SET `".$column."` = REPLACE(`".$column."`, 'DATA.".$field_find."', 'DATA.".$field_replace."')");
+	}
 	if (!empty($_FILES)) {
 		## Do we already have a logo enabled?
 		$existing_logo = $GLOBALS['db']->select('CubeCart_logo','logo_id', array('status' => 1));

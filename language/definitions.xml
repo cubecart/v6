@@ -1041,7 +1041,8 @@
     <string name="macro_link_product" introduced="5.0.0"><![CDATA[The link to the product.]]></string>
     <string name="macro_link_review" introduced="5.0.0"><![CDATA[The link to manage the review.]]></string>
     <string name="macro_order_discount" introduced="5.0.0"><![CDATA[Discount amount.]]></string>
-    <string name="macro_order_number" introduced="5.0.0"><![CDATA[The order number.]]></string>
+    <string name="macro_order_number_t" introduced="6.1.0"><![CDATA[Order number in traditional format.]]></string>
+    <string name="macro_order_number_i" introduced="6.1.0"><![CDATA[Order number in incremental format.]]></string>
     <string name="macro_order_date" introduced="5.0.0"><![CDATA[The order date.]]></string>
     <string name="macro_order_shipping" introduced="5.0.0"><![CDATA[Shipping amount.]]></string>
     <string name="macro_order_shipping_method" introduced="5.0.0"><![CDATA[Shipping method.]]></string>
