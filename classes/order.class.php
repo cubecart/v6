@@ -119,7 +119,8 @@ class Order {
 	public function assignOrderDetails($values = null, $admin = null) {
 
 		$this->_email_details = (is_null($values)) ? $this->_email_details : $values;
-		$order_id = $this->_email_details['order_summary']['cart_order_id'];
+		$field = $GLOBALS['config']->get('config', 'oid_mode') == 'i' ? '' : 'cart_order_';
+		$order_id = $this->_email_details['order_summary'][$field.'id'];
 		$this->_email_details['order_summary']['link'] = (is_null($admin)) ? $GLOBALS['storeURL'].'/index.php?_a=vieworder&cart_order_id='.$order_id : $GLOBALS['storeURL'].'/'.$GLOBALS['config']->get('config', 'adminFile').'?_g=orders&action=edit&order_id='.$order_id;
 
 		foreach ($GLOBALS['hooks']->load('class.order.assign_order_details') as $hook) include $hook; // custom made details
@@ -778,6 +779,8 @@ class Order {
 	 */
 	public static function validOrderId($order_id) {
 		if(preg_match('#^[0-9]{6}-[0-9]{6}-[0-9]{4}$#i', $order_id)) {
+			return true;
+		} elseif ($GLOBALS['config']->get('config', 'oid_mode')=='i' && ctype_digit($order_id)) {
 			return true;
 		}
 		return false;
