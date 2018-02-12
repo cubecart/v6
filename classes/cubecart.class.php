@@ -2290,7 +2290,7 @@ class Cubecart {
 				if (($orders = $GLOBALS['db']->select('CubeCart_order_summary', false, array('customer_id' => $GLOBALS['user']->get('customer_id'), 'cart_order_id' => $_GET['cart_order_id']))) !== false) {
 					$template = 'templates/content.receipt.php';
 					$order = $orders[0];
-					$GLOBALS['gui']->addBreadcrumb($order['cart_order_id'], currentPage());
+					$GLOBALS['gui']->addBreadcrumb($GLOBALS['config']->get('config','oid_mode') == 'i' ? $order['id'] : $order['cart_order_id'], currentPage());
 					if (($items = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('cart_order_id' => $order['cart_order_id']))) !== false) {
 						foreach ($items as $item) {
 							// Do price formatting
@@ -2398,7 +2398,7 @@ class Cubecart {
 				$per_page = 15;
 				$page = (isset($_GET['page'])) ? $_GET['page'] : 1;
 
-				if (($paginated_orders = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id', 'ship_tracking', 'order_date', 'status', 'total', 'basket'), array('customer_id' => $GLOBALS['user']->get('customer_id')), array('cart_order_id' => 'DESC'), $per_page, $page)) !== false) {
+				if (($paginated_orders = $GLOBALS['db']->select('CubeCart_order_summary', array('id', 'cart_order_id', 'ship_tracking', 'order_date', 'status', 'total', 'basket'), array('customer_id' => $GLOBALS['user']->get('customer_id')), array('cart_order_id' => 'DESC'), $per_page, $page)) !== false) {
 					$order_count = $GLOBALS['db']->getFoundRows();
 					foreach ($paginated_orders as $i => $order) {
 						$order['time'] = formatTime($order['order_date']);

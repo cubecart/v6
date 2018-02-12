@@ -213,7 +213,7 @@ if (Admin::getInstance()->permissions('statistics', CC_PERM_READ, false, false))
 
 }
 ## Last 5 orders
-if (($last_orders = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id', 'first_name', 'last_name', 'name'), false, array('order_date' => 'DESC'), 5)) !== false) {
+if (($last_orders = $GLOBALS['db']->select('CubeCart_order_summary', array('id', 'cart_order_id', 'first_name', 'last_name', 'name'), false, array('order_date' => 'DESC'), 5)) !== false) {
 	$GLOBALS['smarty']->assign('LAST_ORDERS', $last_orders);
 }
 
@@ -229,7 +229,7 @@ $GLOBALS['smarty']->assign('QUICK_TASKS', $quick_tasks);
 $page  = (isset($_GET['orders'])) ? $_GET['orders'] : 1;
 $unsettled_count  = $GLOBALS['db']->count('CubeCart_order_summary', 'cart_order_id', array('status' => array(1, 2)));
 
-// Pending Orders Sort
+## Pending Orders Sort
 $order_by = '';
 if (!isset($_GET['sort']) || !is_array($_GET['sort'])) {
 	$_GET['sort'] = array('order_date' => 'ASC');
@@ -253,7 +253,7 @@ $GLOBALS['smarty']->assign('THEAD_ORDERS', $thead_sort);
 $order_by = (empty($order_by) ? '`dashboard` DESC, `'.$key.'` '.$sort : $order_by);
 
 $results_per_page = 25;
-$unsettled_orders = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id', 'name', 'first_name', 'last_name', 'order_date', 'customer_id', 'total', 'status'), 'status IN (1,2) OR `dashboard` = 1', $order_by, $results_per_page, $page);
+$unsettled_orders = $GLOBALS['db']->select('CubeCart_order_summary', array('id', 'cart_order_id', 'name', 'first_name', 'last_name', 'order_date', 'customer_id', 'total', 'status'), 'status IN (1,2) OR `dashboard` = 1', $order_by, $results_per_page, $page);
 
 if ($unsettled_orders) {
 	$tax = Tax::getInstance();

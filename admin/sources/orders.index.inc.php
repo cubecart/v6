@@ -291,7 +291,7 @@ if (isset($_GET['action'])) {
 				$GLOBALS['smarty']->assign('DISPLAY_DASHBOARD', true);
 			}
 
-			$GLOBALS['gui']->addBreadcrumb($summary[0]['cart_order_id'], currentPage(array('print_hash')));
+			$GLOBALS['gui']->addBreadcrumb($GLOBALS['config']->get('config','oid_mode') == 'i' ? $summary[0]['id'] : $summary[0]['cart_order_id'], currentPage(array('print_hash')));
 			// Load order inventory
 			if (($inventory = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('cart_order_id' => $summary[0]['cart_order_id']))) !== false) {
 				$subtotal = 0;

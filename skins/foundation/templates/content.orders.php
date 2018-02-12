@@ -26,7 +26,7 @@
    <tbody>
       {foreach from=$ORDERS item=order}
       <tr>
-         <td>{$order.time}<br><a href="{$STORE_URL}/index.php?_a=vieworder&cart_order_id={$order.cart_order_id}" title="{$LANG.common.view_details}">{$order.cart_order_id}</a></td>
+         <td>{$order.time}<br><a href="{$STORE_URL}/index.php?_a=vieworder&cart_order_id={$order.cart_order_id}" title="{$LANG.common.view_details}">{if $CONFIG.oid_mode=='i'}{$order.id}{else}{$order.cart_order_id}{/if}</a></td>
          <td>{$order.total}</td>
          <td>{$order.status.text}</td>
          <td width="120">

@@ -54,7 +54,7 @@
                <h4>{$LANG.dashboard.title_last_orders}</h4>
                {if isset($LAST_ORDERS)}
                {foreach from=$LAST_ORDERS item=order}
-               <div><a href="?_g=orders&action=edit&order_id={$order.cart_order_id}">{$order.cart_order_id}</a> - {if empty($order.first_name) && empty($order.last_name)}
+               <div><a href="?_g=orders&action=edit&order_id={$order.cart_order_id}">{if $CONFIG.oid_mode=='i'}{$order.id}{else}{$order.cart_order_id}{/if}</a> - {if empty($order.first_name) && empty($order.last_name)}
                   {$order.name}
                   {else}
                   {$order.first_name} {$order.last_name}
@@ -143,7 +143,7 @@
             {foreach from=$ORDERS item=order}
             <tr>
                <td align="center"><input type="checkbox" id="" name="multi-order[]" value="{$order.cart_order_id}" class="all-orders"></td>
-               <td><a href="?_g=orders&action=edit&order_id={$order.cart_order_id}&source=dashboard">{$order.cart_order_id}</a></td>
+               <td><a href="?_g=orders&action=edit&order_id={$order.cart_order_id}&source=dashboard">{if $CONFIG.oid_mode=='i'}{$order.id}{else}{$order.cart_order_id}{/if}</a></td>
                <td align="center">
                   {append "cust_type" "registered" index="1"}
                   {append "cust_type" "unregistered" index="2"}
