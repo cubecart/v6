@@ -1616,6 +1616,10 @@
     <string name="name_6" introduced="5.0.0"><![CDATA[Cancelled]]></string>
   </group>
   <group name="orders">
+    <string name="oid_prefix" introduced="6.2.0"><![CDATA[Incremental Order Number Prefix]]></string>
+    <string name="oid_postfix" introduced="6.2.0"><![CDATA[Incremental Order Number Postfix]]></string>
+    <string name="oid_zeros" introduced="6.2.0"><![CDATA[Incremental Order Number Leading Zeros]]></string>
+    <string name="oid_start" introduced="6.2.0"><![CDATA[Incremental Order Number Starting ID]]></string>
     <string name="id_mode" introduced="6.2.0"><![CDATA[Display Style]]></string>
     <string name="id_traditional" introduced="6.2.0"><![CDATA[Traditional (e.g. YYMMDD-HHMMSS-1234)]]></string>
     <string name="id_incremental" introduced="6.2.0"><![CDATA[Incremental (e.g. 1, 2, 3, etc)]]></string>
