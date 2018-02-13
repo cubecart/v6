@@ -26,27 +26,32 @@ if(empty($cookie_domain)) {
 if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_PERM_FULL)) {
 	$config_old = $GLOBALS['config']->get('config');
 
-	$oid_prefix = preg_replace('/[^\w]/', '', $_POST['config']['oid_prefix']);
-	$oid_postfix = preg_replace('/[^\w]/', '', $_POST['config']['oid_postfix']);
-	$oid_zeros = ctype_digit($_POST['config']['oid_zeros']) ? $_POST['config']['oid_zeros'] : '0';
-	$oid_start = ctype_digit($_POST['config']['oid_start']) ? $_POST['config']['oid_start'] : '0';
-
-	$concat = "CONCAT('$oid_prefix', LPAD(`id`+$oid_start, CHAR_LENGTH(`id`+$oid_start)+$oid_zeros, 0),'$oid_postfix')";
-
-	$GLOBALS['db']->misc("UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary` SET `custom_oid` = ".$concat);
-	$GLOBALS['db']->misc("DROP TRIGGER IF EXISTS `custom_oid`");
-	$GLOBALS['db']->misc("CREATE TRIGGER `custom_oid` BEFORE INSERT ON `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary` FOR EACH ROW SET NEW.custom_oid = ".str_replace('`id`','LAST_INSERT_ID()', $concat));
-
-	$_POST['config']['oid_col'] = 'id';
-	if($_POST['config']['oid_mode']=='i') {
-		$field_find = 'cart_order_id';
-		$field_replace = 'id';
+	if(empty($_POST['config']['oid_prefix']) && empty($_POST['config']['oid_postfix']) && empty($_POST['config']['oid_zeros']) && empty($_POST['config']['oid_start'])) {
+		$GLOBALS['db']->misc("DROP TRIGGER IF EXISTS `custom_oid`");
+		$_POST['config']['oid_col'] = 'id';
 	} else {
-		$field_find = 'id';
+		$oid_prefix = $_POST['config']['oid_prefix'] = preg_replace('/[^\w-_]/', '', $_POST['config']['oid_prefix']);
+		$oid_postfix = $_POST['config']['oid_postfix'] = preg_replace('/[^-_\w]/', '', $_POST['config']['oid_postfix']);
+		$oid_zeros = $_POST['config']['oid_zeros'] = ctype_digit($_POST['config']['oid_zeros']) ? $_POST['config']['oid_zeros'] : '0';
+		$oid_start = $_POST['config']['oid_start'] = ctype_digit($_POST['config']['oid_start']) ? $_POST['config']['oid_start'] : '0';
+		$concat = "CONCAT('$oid_prefix', LPAD(`id`+$oid_start, CHAR_LENGTH(`id`+$oid_start)+$oid_zeros, 0),'$oid_postfix')";
+		$GLOBALS['db']->misc("UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary` SET `custom_oid` = ".$concat);
+		$GLOBALS['db']->misc("DROP TRIGGER IF EXISTS `custom_oid`");
+		$GLOBALS['db']->misc("CREATE TRIGGER `custom_oid` BEFORE INSERT ON `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary` FOR EACH ROW SET NEW.custom_oid = ".str_replace('`id`','LAST_INSERT_ID()', $concat));
+		$_POST['config']['oid_col'] = 'custom_oid';
+	}
+
+	if($_POST['config']['oid_mode']=='i') {
+		$fields_find = array('cart_order_id');
+		$field_replace = $_POST['config']['oid_col'];
+	} else {
+		$fields_find = array('id', 'custom_oid');
 		$field_replace = 'cart_order_id';
 	}
 	foreach(array('subject', 'content_html', 'content_text') as $column) {
-		$GLOBALS['db']->misc("UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_email_content` SET `".$column."` = REPLACE(`".$column."`, 'DATA.".$field_find."', 'DATA.".$field_replace."')");
+		foreach($fields_find as $field) {
+			$GLOBALS['db']->misc("UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_email_content` SET `".$column."` = REPLACE(`".$column."`, 'DATA.".$field."', 'DATA.".$field_replace."')");
+		}
 	}
 	if (!empty($_FILES)) {
 		## Do we already have a logo enabled?
