@@ -26,14 +26,15 @@ if(empty($cookie_domain)) {
 if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_PERM_FULL)) {
 	$config_old = $GLOBALS['config']->get('config');
 
-	if(empty($_POST['config']['oid_prefix']) && empty($_POST['config']['oid_postfix']) && empty($_POST['config']['oid_zeros']) && empty($_POST['config']['oid_start'])) {
+	$oid_prefix = $_POST['config']['oid_prefix'] = preg_replace('/[^\w-_]/', '', $_POST['config']['oid_prefix']);
+	$oid_postfix = $_POST['config']['oid_postfix'] = preg_replace('/[^-_\w]/', '', $_POST['config']['oid_postfix']);
+	$oid_zeros = $_POST['config']['oid_zeros'] = ctype_digit($_POST['config']['oid_zeros']) ? $_POST['config']['oid_zeros'] : '0';
+	$oid_start = $_POST['config']['oid_start'] = ctype_digit($_POST['config']['oid_start']) ? $_POST['config']['oid_start'] : '0';
+
+	if(empty($oid_prefix) && empty($oid_postfix) && $oid_zeros==='0' && $oid_start==='0') {
 		$GLOBALS['db']->misc("DROP TRIGGER IF EXISTS `custom_oid`");
 		$_POST['config']['oid_col'] = 'id';
 	} else {
-		$oid_prefix = $_POST['config']['oid_prefix'] = preg_replace('/[^\w-_]/', '', $_POST['config']['oid_prefix']);
-		$oid_postfix = $_POST['config']['oid_postfix'] = preg_replace('/[^-_\w]/', '', $_POST['config']['oid_postfix']);
-		$oid_zeros = $_POST['config']['oid_zeros'] = ctype_digit($_POST['config']['oid_zeros']) ? $_POST['config']['oid_zeros'] : '0';
-		$oid_start = $_POST['config']['oid_start'] = ctype_digit($_POST['config']['oid_start']) ? $_POST['config']['oid_start'] : '0';
 		$concat = "CONCAT('$oid_prefix', LPAD(`id`+$oid_start, CHAR_LENGTH(`id`+$oid_start)+$oid_zeros, 0),'$oid_postfix')";
 		$GLOBALS['db']->misc("UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary` SET `custom_oid` = ".$concat);
 		$GLOBALS['db']->misc("DROP TRIGGER IF EXISTS `custom_oid`");
