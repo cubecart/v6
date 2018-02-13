@@ -67,30 +67,36 @@
       </fieldset>
       <fieldset>
          <legend>{$LANG.settings.title_orders}</legend>
-         <div><label for="oid_mode">{$LANG.orders.id_mode}</label><span><select name="config[oid_mode]" id="oid_mode" class="textbox">
+         <div><label for="basket_order_expire">{$LANG.settings.expire_pending}</label><span><input name="config[basket_order_expire]" id="basket_order_expire" class="textbox number" value="{$CONFIG.basket_order_expire}"> {$LANG.common.blank_to_disable}</span></div>
+         <div><label for="oid_mode">{$LANG.orders.id_mode}</label><span><select name="config[oid_mode]" id="oid_mode" class="textbox" onchange="this.value == 'i' ? document.getElementById('i_options').style.display = 'block' :  document.getElementById('i_options').style.display = 'none';">
          {foreach from=$OPT_OID_MODE item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
             </select></span></div>
-         <div><label for="oid_prefix">{$LANG.orders.oid_prefix}</label>
-            <span>
-                  <input name="config[oid_prefix]" id="oid_prefix" class="textbox number" value="{$CONFIG.oid_prefix}">
-            </span>
+         <div{if $CONFIG.oid_mode!=="i"} style="display: none"{/if} id="i_options">
+            <div><label for="oid_prefix">{$LANG.orders.oid_prefix}</label>
+                  <span>
+                        <input name="config[oid_prefix]" id="oid_prefix" class="textbox number" value="{$CONFIG.oid_prefix}">
+                  </span>
+                  <br>{$LANG.orders.oid_prefix_desc}
+            </div>
+            <div><label for="oid_postfix">{$LANG.orders.oid_postfix}</label>
+                  <span>
+                        <input name="config[oid_postfix]" id="oid_postfix" class="textbox number" value="{$CONFIG.oid_postfix}">
+                  </span>
+                  <br>{$LANG.orders.oid_postfix_desc}
+            </div>
+            <div><label for="oid_zeros">{$LANG.orders.oid_zeros}</label>
+                  <span>
+                        <input name="config[oid_zeros]" id="oid_zeros" class="textbox number" value="{$CONFIG.oid_zeros}">
+                  </span>
+                  <br>{$LANG.orders.oid_zeros_desc}
+            </div>
+            <div><label for="oid_start">{$LANG.orders.oid_start}</label>
+                  <span>
+                        <input name="config[oid_start]" id="oid_start" class="textbox number" value="{$CONFIG.oid_start}">
+                  </span>
+                  <br>{$LANG.orders.oid_start_desc}
+            </div>
          </div>
-         <div><label for="oid_postfix">{$LANG.orders.oid_postfix}</label>
-            <span>
-                  <input name="config[oid_postfix]" id="oid_postfix" class="textbox number" value="{$CONFIG.oid_postfix}">
-            </span>
-         </div>
-         <div><label for="oid_zeros">{$LANG.orders.oid_zeros}</label>
-            <span>
-                  <input name="config[oid_zeros]" id="oid_zeros" class="textbox number" value="{$CONFIG.oid_zeros}">
-            </span>
-         </div>
-         <div><label for="oid_start">{$LANG.orders.oid_start}</label>
-            <span>
-                  <input name="config[oid_start]" id="oid_start" class="textbox number" value="{$CONFIG.oid_start}">
-            </span>
-         </div>
-         <div><label for="basket_order_expire">{$LANG.settings.expire_pending}</label><span><input name="config[basket_order_expire]" id="basket_order_expire" class="textbox number" value="{$CONFIG.basket_order_expire}"> {$LANG.common.blank_to_disable}</span></div>
       </fieldset>
       <fieldset>
          <legend>{$LANG.settings.title_sales}</legend>

@@ -31,11 +31,12 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
 	$oid_zeros = $_POST['config']['oid_zeros'] = ctype_digit($_POST['config']['oid_zeros']) ? $_POST['config']['oid_zeros'] : '0';
 	$oid_start = $_POST['config']['oid_start'] = ctype_digit($_POST['config']['oid_start']) ? $_POST['config']['oid_start'] : '0';
 
-	if(empty($oid_prefix) && empty($oid_postfix) && $oid_zeros==='0' && $oid_start==='0') {
+	if(empty($oid_prefix) && empty($oid_postfix) && empty($oid_zeros) && empty($oid_start)) {
 		$GLOBALS['db']->misc("DROP TRIGGER IF EXISTS `custom_oid`");
 		$_POST['config']['oid_col'] = 'id';
 	} else {
-		$concat = "CONCAT('$oid_prefix', LPAD(`id`+$oid_start, CHAR_LENGTH(`id`+$oid_start)+$oid_zeros, 0),'$oid_postfix')";
+		$lpad = empty($oid_zeros) ? "`id`+$oid_start" : "LPAD(`id`+$oid_start, $oid_zeros, 0)";
+		$concat = "CONCAT('$oid_prefix', $lpad,'$oid_postfix')";
 		$GLOBALS['db']->misc("UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary` SET `custom_oid` = ".$concat);
 		$GLOBALS['db']->misc("DROP TRIGGER IF EXISTS `custom_oid`");
 		$GLOBALS['db']->misc("CREATE TRIGGER `custom_oid` BEFORE INSERT ON `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary` FOR EACH ROW SET NEW.custom_oid = ".str_replace('`id`','LAST_INSERT_ID()', $concat));
