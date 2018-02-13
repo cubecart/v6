@@ -292,7 +292,7 @@ if (isset($_GET['action'])) {
 				$GLOBALS['smarty']->assign('DISPLAY_DASHBOARD', true);
 			}
 
-			$GLOBALS['gui']->addBreadcrumb($GLOBALS['config']->get('config','oid_mode') == 'i' ? $summary[0]['id'] : $summary[0]['cart_order_id'], currentPage(array('print_hash')));
+			$GLOBALS['gui']->addBreadcrumb($GLOBALS['config']->get('config','oid_mode') == 'i' ? $summary[0][$GLOBALS['config']->get('config','oid_col')] : $summary[0]['cart_order_id'], currentPage(array('print_hash')));
 			// Load order inventory
 			if (($inventory = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('cart_order_id' => $summary[0]['cart_order_id']))) !== false) {
 				$subtotal = 0;
@@ -685,8 +685,8 @@ if (isset($_GET['action'])) {
 			} else {
 				// Order ID
 				if (isset($_GET['search']['order_number']) && !empty($_GET['search']['order_number'])) {
-					if(ctype_digit($_GET['search']['order_number']) && $GLOBALS['config']->get('config', 'oid_mode')=='i') {
-						$where['id'] = $_GET['search']['order_number'];
+					if($GLOBALS['config']->get('config', 'oid_mode')=='i') {
+						$where[$GLOBALS['config']->get('config','oid_col')] = $_GET['search']['order_number'];
 					} else {
 						$where['cart_order_id'] = '~'.$_GET['search']['order_number'];
 					}

@@ -119,8 +119,8 @@ class Order {
 	public function assignOrderDetails($values = null, $admin = null) {
 
 		$this->_email_details = (is_null($values)) ? $this->_email_details : $values;
-		$field = $GLOBALS['config']->get('config', 'oid_mode') == 'i' ? '' : 'cart_order_';
-		$order_id = $this->_email_details['order_summary'][$field.'id'];
+		$field = $GLOBALS['config']->get('config', 'oid_mode') == 'i' ? $GLOBALS['config']->get('config','oid_col') : 'cart_order_id';
+		$order_id = $this->_email_details['order_summary'][$field];
 		$this->_email_details['order_summary']['link'] = (is_null($admin)) ? $GLOBALS['storeURL'].'/index.php?_a=vieworder&cart_order_id='.$order_id : $GLOBALS['storeURL'].'/'.$GLOBALS['config']->get('config', 'adminFile').'?_g=orders&action=edit&order_id='.$order_id;
 
 		foreach ($GLOBALS['hooks']->load('class.order.assign_order_details') as $hook) include $hook; // custom made details

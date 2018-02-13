@@ -9,7 +9,7 @@
  * Email:  sales@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
-<h2>{$LANG.orders.order_number}: {if $CONFIG.oid_mode=='i'}{$SUM.id}{else}{$SUM.cart_order_id}{/if}</h2>
+<h2>{$LANG.orders.order_number}: {if $CONFIG.oid_mode=='i'}{$SUM.{$CONFIG.oid_col}}{else}{$SUM.cart_order_id}{/if}</h2>
 <div class="order_status marg-top">{$LANG.orders.title_order_status}: <span class="order_status_{$SUM.status}">{$SUM.order_status}</span></div>
 <div><strong>{$LANG.basket.order_date}:</strong> {$SUM.order_date_formatted}</div>
 <hr>
@@ -48,7 +48,7 @@
 {if !empty($DELIVERY.method)}
 <div class="row">
   <div class="small-6 medium-3 columns">{$LANG.catalogue.delivery_method}:</div>
-  <div class="small-6 medium-9 columns">{$DELIVERY.method}{if !empty($DELIVERY.product)} ({$DELIVERY.product}){/if}</div>
+  <div class="small-6 medium-9 columns">{$DELIVERY.method|replace:'_':' '}{if !empty($DELIVERY.product)} ({$DELIVERY.product|replace:'_':' '}){/if}</div>
 </div>
 {/if}
 {if !empty($DELIVERY.url)}

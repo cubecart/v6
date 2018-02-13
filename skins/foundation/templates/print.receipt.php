@@ -49,7 +49,7 @@
             {$order.country}
          </div>
          <div class="small-6 columns text-right thickmarg-topbottom">
-            <strong>{$LANG.common.invoice}: {if $CONFIG.oid_mode=='i'}{$order.id}{else}{$order.cart_order_id}{/if}<br>	
+            <strong>{$LANG.common.invoice}: {if $CONFIG.oid_mode=='i'}{$order.{$CONFIG.oid_col}}{else}{$order.cart_order_id}{/if}<br>	
             {$order.order_date}<br></strong>
             <div class="order_status order_status_{$order.status} marg-top">{$order.order_status}</div>
             <h1>{$order.total}</h1>

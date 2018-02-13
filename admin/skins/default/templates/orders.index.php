@@ -31,7 +31,7 @@
             {foreach from=$ORDER_LIST item=order}
             <tr>
                <td align="center"><input type="checkbox" id="" name="multi-order[]" value="{$order.cart_order_id}" class="all-orders"></td>
-               <td><a href="{$order.link_edit}">{if $CONFIG.oid_mode=='i'}{$order.id}{else}{$order.cart_order_id}{/if}</a></td>
+               <td><a href="{$order.link_edit}">{if $CONFIG.oid_mode=='i'}{$order.{$CONFIG.oid_col}}{else}{$order.cart_order_id}{/if}</a></td>
                <td align="center">
                   {append "cust_type" "registered" index="1"}
                   {append "cust_type" "unregistered" index="2"}
