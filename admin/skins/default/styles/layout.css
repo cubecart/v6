@@ -499,7 +499,8 @@ div.tb-form>h3 {
 div.tab_content fieldset > div {
     clear: left;
     min-height: 23px;
-    padding: 0 0 0 5px
+    padding: 0px;
+    text-indent: 5px;
 }
 .tb-form fieldset label,
 div.tab_content fieldset label {
@@ -598,10 +599,23 @@ thead td,
 thead th {
     padding: 0 0 0 5px !important
 }
+
 #filemanager div div:nth-child(even),
 fieldset>div:nth-child(even),
 tbody tr:nth-child(even) {
     background-color: #edf4f7
+}
+.stripe div {
+    text-indent: 5px !important;
+}
+.stripe div small {
+    margin-left: 5px !important;
+}
+.stripe div:nth-child(odd) {
+    background-color: #edf4f7
+}
+.stripe div:nth-child(even) {
+    background-color: #fff !important
 }
 fieldset .checkbox {
     margin-top: 4px

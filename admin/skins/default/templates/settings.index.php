@@ -71,30 +71,30 @@
          <div><label for="oid_mode">{$LANG.orders.id_mode}</label><span><select name="config[oid_mode]" id="oid_mode" class="textbox" onchange="this.value == 'i' ? document.getElementById('i_options').style.display = 'block' :  document.getElementById('i_options').style.display = 'none';">
          {foreach from=$OPT_OID_MODE item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
             </select></span></div>
-         <div{if $CONFIG.oid_mode!=="i"} style="display: none"{/if} id="i_options">
+         <div{if $CONFIG.oid_mode!=="i"} style="display: none"{/if} id="i_options" class="stripe">
             <div><label for="oid_prefix">{$LANG.orders.oid_prefix}</label>
                   <span>
                         <input name="oid_prefix" id="oid_prefix" class="textbox number" value="{$CONFIG.oid_prefix}">
                   </span>
-                  <br>{$LANG.orders.oid_prefix_desc}
+                  <br><small>{$LANG.orders.oid_prefix_desc}</small>
             </div>
             <div><label for="oid_postfix">{$LANG.orders.oid_postfix}</label>
                   <span>
                         <input name="oid_postfix" id="oid_postfix" class="textbox number" value="{$CONFIG.oid_postfix}">
                   </span>
-                  <br>{$LANG.orders.oid_postfix_desc}
+                  <br><small>{$LANG.orders.oid_postfix_desc}</small>
             </div>
             <div><label for="oid_zeros">{$LANG.orders.oid_zeros}</label>
                   <span>
                         <input name="oid_zeros" id="oid_zeros" class="textbox number" value="{$CONFIG.oid_zeros}">
                   </span>
-                  <br>{$LANG.orders.oid_zeros_desc}
+                  <br><small>{$LANG.orders.oid_zeros_desc}</small>
             </div>
             <div><label for="oid_start">{$LANG.orders.oid_start}</label>
                   <span>
                         <input name="oid_start" id="oid_start" class="textbox number" value="{$CONFIG.oid_start}">
                   </span>
-                  <br>{$LANG.orders.oid_start_desc}
+                  <br><small>{$LANG.orders.oid_start_desc}</small>
             </div>
             <div><label for="smtp_test_url">&nbsp;</label><span>
          <button type="button" class="button tiny" id="smtp_test" onclick="$.colorbox({ href:'{$STORE_URL}/{$SKIN_VARS.admin_file}?_g=xml&amp;function=previewOrderFormat' })">{$LANG.common.test} ({$LANG.common.after_save})</button>
