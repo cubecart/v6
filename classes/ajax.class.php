@@ -53,6 +53,9 @@ class Ajax {
 			case 'SMTPTest':
 				$return_data = self::SMTPTest();
 			break;
+			case 'previewOrderFormat':
+				$return_data = self::previewOrderFormat();
+			break;
 			case 'template':
 				$return_data = self::template($type, $string);
 			break;
@@ -216,6 +219,25 @@ class Ajax {
 				$data = array();
 			}
 			return json_encode($data);
+		}
+		return false;
+	}
+
+	/**
+	 * Preview Order Format 
+	 *
+	 * @return data/false
+	 */
+	public static function previewOrderFormat() {
+		if (CC_IN_ADMIN) {
+			$html_out = "<h3>Preview of next 5 Orders</h3>";
+			$next = $GLOBALS['db']->select('CubeCart_order_summary', 'MAX(`id`) as `max_oid`');
+			$order = Order::getInstance();
+			for ($i = $next[0]['max_oid']; $i <= $next[0]['max_oid']+5; $i++) {
+				$config = $GLOBALS['config']->get('config');
+				$html_out .= $order->setOrderFormat($config['oid_prefix'], $config['oid_postfix'], $config['oid_zeros'], $config['oid_start'], false, false, $i).'<br>';
+			}
+			return "<div class=\"mail_modal\">".$html_out."</div>";
 		}
 		return false;
 	}

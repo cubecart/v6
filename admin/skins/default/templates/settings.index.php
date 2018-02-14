@@ -96,6 +96,8 @@
                   </span>
                   <br>{$LANG.orders.oid_start_desc}
             </div>
+            <div><label for="smtp_test_url">&nbsp;</label><span>
+         <button type="button" class="button tiny" id="smtp_test" onclick="$.colorbox({ href:'{$STORE_URL}/{$SKIN_VARS.admin_file}?_g=xml&amp;function=previewOrderFormat' })">{$LANG.common.test} ({$LANG.common.after_save})</button>
          </div>
       </fieldset>
       <fieldset>

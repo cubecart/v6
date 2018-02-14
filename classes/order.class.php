@@ -745,6 +745,49 @@ class Order {
 	}
 
 	/**
+	 * Set order format
+	 */
+	public function setOrderFormat($oid_prefix, $oid_postfix, $oid_zeros, $oid_start, $set = false, $force_old = false, $oid = 1) {
+
+		$oid_prefix = preg_replace('/[^\w-_]/', '', $oid_prefix);
+		$oid_postfix = preg_replace('/[^-_\w]/', '', $oid_postfix);
+		$oid_zeros = ctype_digit($oid_zeros) ? $oid_zeros : '0';
+		$oid_start = ctype_digit($oid_start) ? $oid_start : '0';
+
+		$lpad = empty($oid_zeros) ? "`id`+$oid_start" : "LPAD(`id`+$oid_start, $oid_zeros, 0)";
+		$concat = "CONCAT('$oid_prefix', $lpad,'$oid_postfix')";
+
+		if($set) {
+			if(empty($oid_prefix) && empty($oid_postfix) && empty($oid_zeros) && empty($oid_start)) {
+				$GLOBALS['db']->misc("DROP TRIGGER IF EXISTS `custom_oid`");
+				$oid_col = 'id';
+			} else {
+				if($force_old){
+					$GLOBALS['db']->misc("UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary` SET `custom_oid` = ".$concat);
+				} else {
+					$GLOBALS['db']->misc("UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary` SET `custom_oid` = `cart_order_id` WHERE `custom_oid` = ''");
+				}
+				$GLOBALS['db']->misc("DROP TRIGGER IF EXISTS `custom_oid`");
+				$GLOBALS['db']->misc("CREATE TRIGGER `custom_oid` BEFORE INSERT ON `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary` FOR EACH ROW SET NEW.custom_oid = ".str_replace('`id`','LAST_INSERT_ID()', $concat));
+				$oid_col = 'custom_oid';
+			}
+			return $GLOBALS['config']->set(
+				'config', array(
+					'oid_prefix' => $oid_prefix,
+					'oid_postfix' => $oid_prefix,
+					'oid_zeros' => $oid_zeros,
+					'oid_zeros' => oid_zeros,
+					'oid_start' => oid_start,
+					'oid_col' => $oid_col
+				)
+			);
+		} elseif(ctype_digit($oid) && $oid>0) {
+			$oid = $GLOBALS['db']->misc("SELECT ".str_replace('`id`', (string)$oid, $concat)." AS `oid`");
+			return $oid[0]['oid'];
+		}
+	}
+
+	/**
 	 * Store transaction data for payment
 	 *
 	 * @param array $transData
