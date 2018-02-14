@@ -234,7 +234,7 @@ class Ajax {
 			$next = $GLOBALS['db']->select('CubeCart_order_summary', 'MAX(`id`) as `max_oid`');
 			$order = Order::getInstance();
 			$config = $GLOBALS['config']->get('config');
-
+			$next[0]['max_oid']++;
 			for ($i = $next[0]['max_oid']; $i <= $next[0]['max_oid']+5; $i++) {
 				$html_out .= $order->setOrderFormat($config['oid_prefix'], $config['oid_postfix'], $config['oid_zeros'], $config['oid_start'], false, false, $i).'<br>';
 			}
