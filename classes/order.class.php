@@ -746,8 +746,16 @@ class Order {
 
 	/**
 	 * Set order format
+	 * @param string $oid_prefix
+	 * @param string $oid_postfix
+	 * @param string $oid_zeros
+	 * @param string $oid_start
+	 * @param bool $set
+	 * @param string $force_past_oids
+	 * @param int $oid
+	 * @return array/string
 	 */
-	public function setOrderFormat($oid_prefix, $oid_postfix, $oid_zeros, $oid_start, $set = false, $force_old = false, $oid = 1) {
+	public function setOrderFormat($oid_prefix, $oid_postfix, $oid_zeros, $oid_start, $set = false, $force_past_oids = false, $oid = 1) {
 
 		$oid_prefix = preg_replace('/[^\w-_]/', '', $oid_prefix);
 		$oid_postfix = preg_replace('/[^-_\w]/', '', $oid_postfix);
@@ -762,25 +770,24 @@ class Order {
 				$GLOBALS['db']->misc("DROP TRIGGER IF EXISTS `custom_oid`");
 				$oid_col = 'id';
 			} else {
-				if($force_old){
+				if($force_past_oids) { // Not currently used
 					$GLOBALS['db']->misc("UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary` SET `custom_oid` = ".$concat);
 				} else {
-					$GLOBALS['db']->misc("UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary` SET `custom_oid` = `cart_order_id` WHERE `custom_oid` = ''");
+					$column = $GLOBALS['config']->get('config', 'oid_mode')=='i' ? 'id' : 'cart_order_id';
+					$GLOBALS['db']->misc("UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary` SET `custom_oid` = `$column` WHERE `custom_oid` = ''");
 				}
 				$GLOBALS['db']->misc("DROP TRIGGER IF EXISTS `custom_oid`");
 				$GLOBALS['db']->misc("CREATE TRIGGER `custom_oid` BEFORE INSERT ON `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary` FOR EACH ROW SET NEW.custom_oid = ".str_replace('`id`','LAST_INSERT_ID()', $concat));
 				$oid_col = 'custom_oid';
 			}
-			return $GLOBALS['config']->set(
-				'config', array(
+			return array(
 					'oid_prefix' => $oid_prefix,
-					'oid_postfix' => $oid_prefix,
+					'oid_postfix' => $oid_postfix,
 					'oid_zeros' => $oid_zeros,
-					'oid_zeros' => oid_zeros,
-					'oid_start' => oid_start,
+					'oid_zeros' => $oid_zeros,
+					'oid_start' => $oid_start,
 					'oid_col' => $oid_col
-				)
-			);
+				);
 		} elseif(ctype_digit($oid)) {
 			$oid = $GLOBALS['db']->misc("SELECT ".str_replace('`id`', (string)$oid, $concat)." AS `oid`");
 			return (string)$oid[0]['oid'];

@@ -27,7 +27,8 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
 	$config_old = $GLOBALS['config']->get('config');
 	if($_POST['config']['oid_mode']=='i') {
 		$order = Order::getInstance();
-		$order->setOrderFormat($_POST['oid_prefix'], $_POST['oid_postfix'], $_POST['oid_zeros'], $_POST['oid_start']);
+		$oid_data = $order->setOrderFormat($_POST['oid_prefix'], $_POST['oid_postfix'], $_POST['oid_zeros'], $_POST['oid_start'], true);
+		$_POST['config'] = array_merge($_POST['config'], $oid_data);
 		$fields_find = array('cart_order_id');
 		$field_replace = $_POST['config']['oid_col'];
 	} else {

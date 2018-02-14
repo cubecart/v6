@@ -712,7 +712,8 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_summary` (
 	KEY `customer_id` (`customer_id`),
 	KEY `status` (`status`),
 	KEY `email` (`email`),
-	KEY `order_date` (`order_date`)
+	KEY `order_date` (`order_date`),
+	KEY `custom_oid` (`custom_oid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_order_tax` (

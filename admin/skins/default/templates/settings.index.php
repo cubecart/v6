@@ -74,25 +74,25 @@
          <div{if $CONFIG.oid_mode!=="i"} style="display: none"{/if} id="i_options">
             <div><label for="oid_prefix">{$LANG.orders.oid_prefix}</label>
                   <span>
-                        <input name="config[oid_prefix]" id="oid_prefix" class="textbox number" value="{$CONFIG.oid_prefix}">
+                        <input name="oid_prefix" id="oid_prefix" class="textbox number" value="{$CONFIG.oid_prefix}">
                   </span>
                   <br>{$LANG.orders.oid_prefix_desc}
             </div>
             <div><label for="oid_postfix">{$LANG.orders.oid_postfix}</label>
                   <span>
-                        <input name="config[oid_postfix]" id="oid_postfix" class="textbox number" value="{$CONFIG.oid_postfix}">
+                        <input name="oid_postfix" id="oid_postfix" class="textbox number" value="{$CONFIG.oid_postfix}">
                   </span>
                   <br>{$LANG.orders.oid_postfix_desc}
             </div>
             <div><label for="oid_zeros">{$LANG.orders.oid_zeros}</label>
                   <span>
-                        <input name="config[oid_zeros]" id="oid_zeros" class="textbox number" value="{$CONFIG.oid_zeros}">
+                        <input name="oid_zeros" id="oid_zeros" class="textbox number" value="{$CONFIG.oid_zeros}">
                   </span>
                   <br>{$LANG.orders.oid_zeros_desc}
             </div>
             <div><label for="oid_start">{$LANG.orders.oid_start}</label>
                   <span>
-                        <input name="config[oid_start]" id="oid_start" class="textbox number" value="{$CONFIG.oid_start}">
+                        <input name="oid_start" id="oid_start" class="textbox number" value="{$CONFIG.oid_start}">
                   </span>
                   <br>{$LANG.orders.oid_start_desc}
             </div>
