@@ -96,8 +96,14 @@
                   </span>
                   <br><small>{$LANG.orders.oid_start_desc}</small>
             </div>
+            <div><label for="oid_force">{$LANG.orders.oid_force}</label>
+                  <span>
+                  <input name="oid_force" id="oid_force" type="hidden" class="toggle" value="0">
+                  </span>
+                  <br><small>{$LANG.orders.oid_force_desc}</small>
+            </div>
             <div><label for="smtp_test_url">&nbsp;</label><span>
-         <button type="button" class="button tiny" id="smtp_test" onclick="$.colorbox({ href:'{$STORE_URL}/{$SKIN_VARS.admin_file}?_g=xml&amp;function=previewOrderFormat' })">{$LANG.common.test} ({$LANG.common.after_save})</button>
+         <button type="button" class="button tiny" id="smtp_test" onclick="$.colorbox({ href:'{$STORE_URL}/{$SKIN_VARS.admin_file}?_g=xml&amp;function=previewOrderFormat' })">{$LANG.common.preview} ({$LANG.common.after_save})</button>
          </div>
       </fieldset>
       <fieldset>
