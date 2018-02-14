@@ -233,8 +233,9 @@ class Ajax {
 			$html_out = "<h3>Preview of next 5 Orders</h3>";
 			$next = $GLOBALS['db']->select('CubeCart_order_summary', 'MAX(`id`) as `max_oid`');
 			$order = Order::getInstance();
+			$config = $GLOBALS['config']->get('config');
+
 			for ($i = $next[0]['max_oid']; $i <= $next[0]['max_oid']+5; $i++) {
-				$config = $GLOBALS['config']->get('config');
 				$html_out .= $order->setOrderFormat($config['oid_prefix'], $config['oid_postfix'], $config['oid_zeros'], $config['oid_start'], false, false, $i).'<br>';
 			}
 			return "<div class=\"mail_modal\">".$html_out."</div>";

@@ -781,9 +781,9 @@ class Order {
 					'oid_col' => $oid_col
 				)
 			);
-		} elseif(ctype_digit($oid) && $oid>0) {
+		} elseif(ctype_digit($oid)) {
 			$oid = $GLOBALS['db']->misc("SELECT ".str_replace('`id`', (string)$oid, $concat)." AS `oid`");
-			return $oid[0]['oid'];
+			return (string)$oid[0]['oid'];
 		}
 	}
 

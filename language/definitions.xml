@@ -1617,12 +1617,12 @@
   </group>
   <group name="orders">
     <string name="oid_prefix" introduced="6.2.0"><![CDATA[Incremental Order Number Prefix]]></string>
-    <string name="oid_postfix" introduced="6.2.0"><![CDATA[Incremental Order Number Postfix]]></string>
+    <string name="oid_postfix" introduced="6.2.0"><![CDATA[Incremental Order Number Suffix]]></string>
     <string name="oid_zeros" introduced="6.2.0"><![CDATA[Incremental Order Number Leading Zeros]]></string>
     <string name="oid_start" introduced="6.2.0"><![CDATA[Incremental Order Number Starting ID]]></string>
     <string name="oid_prefix_desc" introduced="6.2.0"><![CDATA[Note: A value of ABC for order 1 would generate &quot;ABC1&quot;.]]></string>
     <string name="oid_postfix_desc" introduced="6.2.0"><![CDATA[Note: A value of XYZ for order 1 would generate &quot;1XYZ&quot;.]]></string>
-    <string name="oid_zeros_desc" introduced="6.2.0"><![CDATA[Note: For order 1 a value of 6 will generate &quot;000001&quot;, a value of 0 will generate &quot;1&quot;. Caution a value of 2 for order 999 would truncate to &quot;99&quot;!]]></string>
+    <string name="oid_zeros_desc" introduced="6.2.0"><![CDATA[Note: For order 1 a value of 6 will generate &quot;000001&quot;. Set to 0 to disable leading zeros. Caution: A value of 2 for order 999 would truncate to &quot;99&quot;!]]></string>
     <string name="oid_start_desc" introduced="6.2.0"><![CDATA[Note: If set to 1000 your first order will be &quot;1001&quot;.]]></string>
     <string name="id_mode" introduced="6.2.0"><![CDATA[Order Number Format]]></string>
     <string name="id_traditional" introduced="6.2.0"><![CDATA[Traditional (e.g. YYMMDD-HHMMSS-1234)]]></string>
