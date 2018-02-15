@@ -102,9 +102,20 @@
                   </span>
                   <br><small>{$LANG.orders.oid_force_desc}</small>
             </div>
-            <div><label for="smtp_test_url">&nbsp;</label><span>
-         <button type="button" class="button tiny" id="smtp_test" onclick="$.colorbox({ href:'{$STORE_URL}/{$SKIN_VARS.admin_file}?_g=xml&amp;function=previewOrderFormat' })">{$LANG.common.preview} ({$LANG.common.after_save})</button>
-         </div>
+        </div>
+      <div><label for="smtp_test_url">&nbsp;</label><span>
+            <button type="button" class="button tiny" id="smtp_test" onclick="previewOrderFormat()">{$LANG.common.preview}</button>
+            <script>
+            function previewOrderFormat() {
+                  var oid_mode = $('#oid_mode').val();
+                  var oid_prefix = $('#oid_prefix').val();
+                  var oid_postfix = $('#oid_postfix').val();
+                  var oid_zeros = $('#oid_zeros').val();
+                  var oid_start = $('#oid_start').val();
+                  $.colorbox({ href:'{$STORE_URL}/{$SKIN_VARS.admin_file}?_g=xml&function=previewOrderFormat&oid_mode='+oid_mode+'&oid_prefix='+oid_prefix+'&oid_postfix='+oid_postfix+'&oid_zeros='+oid_zeros+'&oid_start='+oid_start})
+            }
+            </script>
+      </div>
       </fieldset>
       <fieldset>
          <legend>{$LANG.settings.title_sales}</legend>

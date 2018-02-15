@@ -231,12 +231,17 @@ class Ajax {
 	public static function previewOrderFormat() {
 		if (CC_IN_ADMIN) {
 			$html_out = "<h3>Preview of next 5 Orders</h3>";
-			$next = $GLOBALS['db']->select('CubeCart_order_summary', 'MAX(`id`) as `max_oid`');
-			$order = Order::getInstance();
-			$config = $GLOBALS['config']->get('config');
-			$next[0]['max_oid']++;
-			for ($i = $next[0]['max_oid']; $i <= $next[0]['max_oid']+5; $i++) {
-				$html_out .= $order->setOrderFormat($config['oid_prefix'], $config['oid_postfix'], $config['oid_zeros'], $config['oid_start'], false, false, $i).'<br>';
+			if($_GET['oid_mode']=='t') {
+				for ($i = 1; $i <= 5; $i++) {
+					$html_out .= date('ymd-His-').rand(1000, 9999)."<br>";
+				}
+			} else {
+				$next = $GLOBALS['db']->select('CubeCart_order_summary', 'MAX(`id`) as `max_oid`');
+				$order = Order::getInstance();
+				$next[0]['max_oid']++;
+				for ($i = $next[0]['max_oid']; $i <= $next[0]['max_oid']+5; $i++) {
+					$html_out .= $order->setOrderFormat($_GET['oid_prefix'], $_GET['oid_postfix'], $_GET['oid_zeros'], $_GET['oid_start'], false, false, $i).'<br>';
+				}
 			}
 			return "<div class=\"mail_modal\">".$html_out."</div>";
 		}
@@ -244,7 +249,7 @@ class Ajax {
 	}
 
 	/**
-	 * Test SMPT 
+	 * Test SMPT
 	 *
 	 * @return data/false
 	 */
