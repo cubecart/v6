@@ -230,12 +230,15 @@ class Ajax {
 	 */
 	public static function previewOrderFormat() {
 		if (CC_IN_ADMIN) {
-			$html_out = "<h3>Preview of next 5 Orders</h3>";
+			
 			if($_GET['oid_mode']=='t') {
+				$html_out = "<h3>Preview of sample next 5 Orders</h3>";
 				for ($i = 1; $i <= 5; $i++) {
 					$html_out .= date('ymd-His-').rand(1000, 9999)."<br>";
 				}
+				$html_out .= "<p>Plese note that the last four digits are random.</p>";
 			} else {
+				$html_out = "<h3>Preview of next 5 Orders</h3>";
 				$next = $GLOBALS['db']->select('CubeCart_order_summary', 'MAX(`id`) as `max_oid`');
 				$order = Order::getInstance();
 				$next[0]['max_oid']++;
