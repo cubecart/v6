@@ -103,8 +103,8 @@
                   <br><small>{$LANG.orders.oid_force_desc}</small>
             </div>
         </div>
-      <div><label for="smtp_test_url">&nbsp;</label><span>
-            <button type="button" class="button tiny" id="smtp_test" onclick="previewOrderFormat()">{$LANG.common.preview}</button>
+      <div><label for="order_format_preview">&nbsp;</label><span>
+            <button type="button" class="button tiny" id="order_format_preview" onclick="previewOrderFormat()">{$LANG.common.preview}</button>
             <script>
             function previewOrderFormat() {
                   var oid_mode = $('#oid_mode').val();
