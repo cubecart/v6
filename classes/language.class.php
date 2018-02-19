@@ -577,14 +577,16 @@ class Language {
 				try {
 					$xml = new simpleXMLElement($data);
 					if ($xml->email) {
+						$traditional_oid_col = 'cart_order_id';
+						$oid_col = $GLOBALS['config']->get('config', 'oid_col');
 						foreach ($xml->email as $email) {
 							if ($email->content) {
 								$record['content_type'] = (string)$email->attributes()->name;
 								$record['language']  = (string)$xml->attributes()->language;
-								$record['subject']  = (string)$email->subject;
+								$record['subject']  = str_replace('DATA.'.$traditional_oid_col,'DATA.'.$oid_col,(string)$email->subject);;
 								foreach ($email->content as $content) {
 									// See GitHub #1511
-									$record['content_'.(string)$content->attributes()->type] = str_replace(array('empty({$','})}'), array('empty($',')}'), trim((string)$content));
+									$record['content_'.(string)$content->attributes()->type] = str_replace(array('empty({$','})}','DATA.'.$traditional_oid_col), array('empty($',')}','DATA.'.$oid_col), trim((string)$content));
 								}
 								if ($GLOBALS['db']->count('CubeCart_email_content', 'content_id', array('language' => $record['language'], 'content_type' => $record['content_type']))) {
 									$GLOBALS['db']->update('CubeCart_email_content', $record, array('language' => $record['language'], 'content_type' => $record['content_type']));
