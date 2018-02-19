@@ -130,48 +130,27 @@
 {/if}
 <p><a href="{$STORE_URL}/index.php?_a=receipt&cart_order_id={$SUM.cart_order_id}{if !$IS_USER}&email={$SUM.email}{/if}" target="_blank"><svg class="icon"><use xlink:href="#icon-print"></use></svg> {$LANG.confirm.print}</a></p>
 {foreach from=$AFFILIATES item=affiliate}{$affiliate}{/foreach}
-{if $ANALYTICS}
-{* Google Analytics for e-commerce *}
-<script type="text/javascript">
-   {literal}
-   var _gaq = _gaq || [];
-   _gaq.push(['_setAccount', '{/literal}{$GA_SUM.google_id}{literal}']);
-   _gaq.push(['_trackPageview']);
-   _gaq.push(['_addTrans',
-     '{/literal}{$GA_SUM.cart_order_id}{literal}',           // order ID - required
-     '{/literal}{$GA_SUM.store_name}{literal}',  // affiliation or store name
-     '{/literal}{$GA_SUM.total}{literal}',          // total - required
-     '{/literal}{$GA_SUM.total_tax}{literal}',           // tax
-     '{/literal}{$GA_SUM.shipping}{literal}',              // shipping
-     '{/literal}{$GA_SUM.town}{literal}',       // city
-     '{/literal}{$GA_SUM.state}{literal}',     // state or province
-     '{/literal}{$GA_SUM.country_iso}{literal}'             // country
-   ]);
-   {/literal}
-   
-    // add item might be called for every item in the shopping cart
-    // where your ecommerce engine loops through each item in the cart and
-    // prints out _addItem for each
-   {foreach from=$GA_ITEMS item=item}
-   {literal}
-   _gaq.push(['_addItem',
-     '{/literal}{$GA_SUM.cart_order_id}{literal}',           // order ID - required
-     '{/literal}{$item.product_code}{literal}',           // SKU/code - required
-     '{/literal}{$item.name}{literal}',        // product name
-     '',   // category or variation
-     '{/literal}{$item.price}{literal}',          // unit price - required
-     '{/literal}{$item.quantity}{literal}'               // quantity - required
-   ]);
-   {/literal}
-   {/foreach}
-   {literal}
-   _gaq.push(['_trackTrans']); //submits transaction to the Analytics servers
-   
-   (function() {
-     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-   })();
-   {/literal}
+{if $ANALYTICS && $GA_SUM}
+<script>
+{literal}(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', '{/literal}{$ANALYTICS}{literal}', 'auto');
+  ga('require', 'ecommerce');
+  ga('ecommerce:addTransaction', {
+    'id': '{/literal}{$GA_SUM.cart_order_id}{literal}',
+    'affiliation': '{/literal}{$GA_SUM.store_name}{literal}',
+    'revenue': '{/literal}{$GA_SUM.total}{literal}',
+    'shipping': '{/literal}{$GA_SUM.shipping}{literal}',
+    'tax': '{/literal}{$GA_SUM.total_tax}{literal}'
+  });
+{/literal}{foreach from=$GA_ITEMS item=item}{literal}ga('ecommerce:addItem', {
+    'id': '{/literal}{$GA_SUM.cart_order_id}{literal}',
+    'name': '{/literal}{$item.name}{literal}',
+    'sku': '{/literal}{$item.product_code}{literal}',
+    'price': '{/literal}{$item.price}{literal}',
+    'quantity': '{/literal}{$item.quantity}{literal}'
+  });{/literal}{/foreach}{literal}  ga('ecommerce:send');{/literal}
 </script>
 {/if}
