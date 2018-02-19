@@ -90,9 +90,9 @@
                   </span>
                   <br><small>{$LANG.orders.oid_zeros_desc}</small>
             </div>
-            <div><label for="oid_start">{$LANG.orders.oid_start}</label>
+            <div><label for="oid_start">{$LANG.orders.oid_start}{if $LOCK_ORDER_NUMBER} (Locked){/if}</label>
                   <span>
-                        <input name="oid_start" id="oid_start" class="textbox number" value="{$CONFIG.oid_start}">
+                        <input name="oid_start" id="oid_start" class="textbox number" value="{$CONFIG.oid_start}"{if $LOCK_ORDER_NUMBER} readonly="readonly"{/if}>
                   </span>
                   <br><small>{$LANG.orders.oid_start_desc}</small>
             </div>

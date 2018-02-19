@@ -32,6 +32,18 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
 		$fields_find = array('cart_order_id');
 		$field_replace = $_POST['config']['oid_col'];
 	} else {
+		$_POST['config'] = array_merge(
+			$_POST['config'],
+			array(
+				'oid_prefix' => $config_old['oid_prefix'],
+				'oid_postfix' => $config_old['oid_postfix'],
+				'oid_zeros' => $config_old['oid_zeros'],
+				'oid_zeros' => $config_old['oid_zeros'],
+				'oid_start' => $config_old['oid_start'],
+				'oid_col' => $config_old['oid_col']
+			)
+		);
+		$_POST['config']['oid_col'] = 'cart_order_id';
 		$fields_find = array('id', 'custom_oid');
 		$field_replace = 'cart_order_id';
 	}
@@ -203,6 +215,10 @@ $GLOBALS['main']->addTabControl($lang['settings']['tab_logos'], 'Logos');
 $GLOBALS['main']->addTabControl($lang['settings']['tab_copyright'], 'Copyright');
 $GLOBALS['main']->addTabControl($lang['settings']['tab_advanced'], 'Advanced_Settings');
 $GLOBALS['main']->addTabControl($lang['settings']['tab_extra'], 'Extra', null, null, false, '_self', 99);
+
+if($GLOBALS['db']->select('CubeCart_order_summary', 'id', "`custom_oid` <> ''", false, 1, false, false)) {
+	$GLOBALS['smarty']->assign('LOCK_ORDER_NUMBER', true);
+}
 
 ## Get Front End skins
 if (($skins = $GLOBALS['gui']->listSkins()) !== false) {
