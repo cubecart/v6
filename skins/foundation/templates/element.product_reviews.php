@@ -42,7 +42,7 @@
             </div>
             {/if}
             <div class="{if $review.gravatar_exists}small-9 medium-10{else}small-12{/if} columns">
-               <blockquote><span itemprop="description">{$review.review}</span><cite><span itemprop="author">{$review.name}</span> ({$review.date})</cite></blockquote>
+               <blockquote><span itemprop="description">{$review.review}</span><cite><span itemprop="author">{$review.name}</span>{if !empty($review.date)} ({$review.date}){/if}</cite></blockquote>
             </div>
          </div>
       </div>
