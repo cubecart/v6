@@ -828,9 +828,9 @@ class Order {
 	 * @return bool
 	 */
 	public static function validOrderId($order_id) {
-		if(preg_match('#^[0-9]{6}-[0-9]{6}-[0-9]{4}$#i', $order_id)) {
+		if($GLOBALS['config']->get('config', 'oid_mode')=='t' && preg_match('#^[0-9]{6}-[0-9]{6}-[0-9]{4}$#i', $order_id)) {
 			return true;
-		} elseif ($GLOBALS['config']->get('config', 'oid_mode')=='i' && ctype_digit($order_id)) {
+		} elseif ($GLOBALS['config']->get('config', 'oid_mode')=='i' && (ctype_digit($order_id) || preg_match('/[\w-_]/', $order_id))) {
 			return true;
 		}
 		return false;

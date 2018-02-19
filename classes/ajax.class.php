@@ -232,7 +232,7 @@ class Ajax {
 		if (CC_IN_ADMIN) {
 			
 			if($_GET['oid_mode']=='t') {
-				$html_out = "<h3>Preview of sample next 5 Orders</h3>";
+				$html_out = "<h3>Preview sample of next 5 Orders</h3>";
 				for ($i = 1; $i <= 5; $i++) {
 					$html_out .= date('ymd-His-').rand(1000, 9999)."<br>";
 				}

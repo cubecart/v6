@@ -2442,7 +2442,7 @@ class Cubecart {
 			if (isset($_REQUEST['cart_order_id']) && isset($_REQUEST['email']) && filter_var($_REQUEST['email'], FILTER_VALIDATE_EMAIL) && Order::validOrderId(trim($_REQUEST['cart_order_id']))) {
 
 				$GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->orders['my_order'], currentPage());
-				$oid_field = ctype_digit($_REQUEST['cart_order_id']) ? 'id' : 'cart_order_id';
+				$oid_field = $GLOBALS['config']->get('config', 'oid_col');
 				if (($orders = $GLOBALS['db']->select('CubeCart_order_summary', false, array('email' => $_REQUEST['email'], $oid_field => $_REQUEST['cart_order_id']))) !== false) {
 					$template = 'templates/content.receipt.php';
 					$order = $orders[0];
