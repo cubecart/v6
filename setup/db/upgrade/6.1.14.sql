@@ -12,3 +12,4 @@ ALTER TABLE `CubeCart_code_snippet` ADD INDEX(`enabled`); #EOQ
 ALTER TABLE `CubeCart_hooks` ADD INDEX(`enabled`); #EOQ
 ALTER TABLE `CubeCart_documents` ADD INDEX(`doc_status`); #EOQ
 ALTER TABLE `CubeCart_documents` ADD INDEX(`doc_home`); #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 225, `name` = 'London', `abbrev` = 'LND'; #EOQ
