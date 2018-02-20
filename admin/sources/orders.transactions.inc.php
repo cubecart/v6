@@ -23,9 +23,10 @@ $per_page = 20;
 $page  = (isset($_GET['page'])) ? $_GET['page'] : 1;
 
 if (isset($_GET['order_id'])) {
-	$GLOBALS['smarty']->assign('TRANSACTION_LOGS_TITLE', sprintf($GLOBALS['lang']['orders']['title_transaction_logs_for_order'], $_GET['order_id']));
-	if (($transactions = $GLOBALS['db']->select('CubeCart_transactions', false, array('order_id' => $_GET['order_id']), array('time' => 'DESC'))) !== false) {
-		$GLOBALS['gui']->addBreadcrumb($transactions[0]['order_id'], currentPage());
+	$oid_col = $GLOBALS['config']->get('config', 'oid_mode') =='i' ?  $GLOBALS['config']->get('config', 'oid_col') : 'order_id';
+	$transactions = $GLOBALS['db']->select('`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_transactions` AS `T` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary` AS `S` ON `T`.`order_id` = `S`.`cart_order_id`', '`T`.*, `S`.`id`, `S`.`custom_oid`', '`T`.`order_id` = "'.$_GET['order_id'].'"', array('time' => 'DESC'));
+	if ($transactions) {
+		$oid = $transactions[0][$oid_col];
 		foreach ($transactions as $transaction) {
 			$transaction['time']  = formatTime($transaction['time']);
 			$transaction['amount']  = Tax::getInstance()->priceFormat($transaction['amount']);
@@ -33,8 +34,15 @@ if (isset($_GET['order_id'])) {
 			$smarty_data['transactions'][] = $transaction;
 		}
 		$GLOBALS['smarty']->assign('ORDER_TRANSACTIONS', $smarty_data['transactions']);
+	} else {
+		if($oid = $GLOBALS['db']->select('CubeCart_order_summary', array('id','custom_oid','cart_order_id'), array('cart_order_id' => $_GET['order_id']))) {
+			$oid = $oid[0][$oid_col];
+		} else {
+			$oid = $_GET['order_id'];
+		}
 	}
-	$GLOBALS['smarty']->assign('DISPLAY_ORDER_TRANSACTIONS', true);
+	$GLOBALS['smarty']->assign('TRANSACTION_LOGS_TITLE', sprintf($GLOBALS['lang']['orders']['title_transaction_logs_for_order'], $oid));
+	$GLOBALS['gui']->addBreadcrumb($oid, currentPage());
 } else {
 	if (isset($_GET['search']) && !empty($_GET['search'])) {
 		if (preg_match('#^[0-9]{6}-[0-9]{6}-[0-9]{4}$#', $_GET['search'])) {

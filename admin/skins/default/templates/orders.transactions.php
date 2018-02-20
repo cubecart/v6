@@ -51,9 +51,10 @@
 </div>
 {/if}
 
-{if $DISPLAY_ORDER_TRANSACTIONS}
+
 <div id="log" class="tab_content">
 <h3>{$TRANSACTION_LOGS_TITLE}</h3>
+	{if $ORDER_TRANSACTIONS}
   <table>
 	<thead>
 	  <tr>
@@ -79,5 +80,7 @@
 	  {/if}
 	</tbody>
   </table>
+	{else}
+	<p>-- {$LANG.common.none} --</p>
+	{/if}
 </div>
-{/if}
