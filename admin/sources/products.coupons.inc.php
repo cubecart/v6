@@ -44,8 +44,6 @@ if (isset($_POST['coupon']) && is_array($_POST['coupon'])) {
 	$coupon_id = (isset($_POST['coupon']['coupon_id'])) ? (int)$_POST['coupon']['coupon_id'] : null;
 
 	$record  = array(
-		# 'status'  => (isset($_POST['coupon']['status'])) ? 1 : 0,
-		# 'archived'  => (isset($_POST['coupon']['archived'])) ? 1 : 0,
 		'code'   => $_POST['coupon']['code'],
 		'product_id' => null,
 		'expires'  => $_POST['coupon']['expires'],
@@ -61,13 +59,15 @@ if (isset($_POST['coupon']) && is_array($_POST['coupon'])) {
 	);
 	$continue = true;
 	if(!empty($_POST['coupon']['cart_order_id'])) {
-		if(!$GLOBALS['db']->select('CubeCart_order_summary', false, array('cart_order_id' => $_POST['coupon']['cart_order_id']))) {
+		$oid_col = $GLOBALS['config']->get('config','oid_mode') == 'i' ? $GLOBALS['config']->get('config','oid_col') : 'cart_order_id';
+		$existing_oid = $GLOBALS['db']->select('CubeCart_order_summary', false, array($oid_col => $_POST['coupon']['cart_order_id']));
+		if(!$existing_oid) {
 			$GLOBALS['main']->setACPWarning(sprintf($lang['orders']['order_not_found'], $_POST['coupon']['cart_order_id']));
 			$_POST['coupon']['cart_order_id'] = null;
 			$continue = false;
 		} else {
 			if($_POST['discount_type']=='fixed') {
-				$record['cart_order_id'] = $_POST['coupon']['cart_order_id'];
+				$record['cart_order_id'] = $existing_oid[0]['cart_order_id']; // Traditional order ID required
 			} else {
 				$GLOBALS['main']->setACPWarning($lang['catalogue']['notify_gc_not_fixed']);
 				$continue = false;
@@ -192,7 +192,7 @@ if (isset($_GET['action'])) {
 	$per_page  = 20;
 	$page_var  = 'gc_page';
 	$page  = (isset($_GET[$page_var])) ? $_GET[$page_var] : 1;
-	$certificates = $GLOBALS['db']->select('CubeCart_coupons', false, '`cart_order_id` IS NOT NULL', $_GET[$certificate_sort_key], $per_page, $page);
+	$certificates = $GLOBALS['db']->select('`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_coupons` AS `C` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary` AS `S` ON `C`.`cart_order_id` = `S`.`cart_order_id`', '`C`.*, `S`.`id`, `S`.`custom_oid`', '`C`.`cart_order_id` IS NOT NULL', $_GET[$certificate_sort_key], $per_page, $page);
 	$pagination = $GLOBALS['db']->pagination(false, $per_page, $page, 5, $page_var, 'certificates');
 	if ($certificates) {
 		foreach ($certificates as $certificate) {
