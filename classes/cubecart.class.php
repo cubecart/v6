@@ -1263,7 +1263,9 @@ class Cubecart {
 				$GLOBALS['user']->setGhostId($order['customer_id']);
 				if (($items = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('cart_order_id' => $this->_basket['cart_order_id']))) !== false) {
 					$GLOBALS['smarty']->assign('GA_ITEMS', $items);
+					$prod_ids = array();
 					foreach ($items as $item) {
+						array_push($prod_ids, $item['product_id']);
 						foreach ($item as $key => $value) {
 							if (!in_array($key, $formatting)) {
 								continue;
@@ -1274,6 +1276,13 @@ class Cubecart {
 						}
 						$item['options'] = unserialize($item['product_options']);
 						$vars['items'][] = $item;
+					}
+					if($cats = $GLOBALS['db']->select('`CubeCart_category_index` AS `I` INNER JOIN `CubeCart_category` AS `C` ON `I`.`cat_id` = `C`.`cat_id`', '`I`.`product_id`, `C`.`cat_name`', '`I`.`product_id` IN ('.implode(',',$prod_ids).') AND `primary` = 1')) {
+						$cat_names = array();
+						foreach($cats as $cat) {
+							$cat_names[$cat['product_id']] = $cat['cat_name'];
+						}
+						$GLOBALS['smarty']->assign('ITEM_CATS', $cat_names);
 					}
 					$GLOBALS['smarty']->assign('ITEMS', $vars['items']);
 				}

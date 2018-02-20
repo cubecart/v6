@@ -150,7 +150,8 @@
     'name': '{/literal}{$item.name}{literal}',
     'sku': '{/literal}{$item.product_code}{literal}',
     'price': '{/literal}{$item.price}{literal}',
-    'quantity': '{/literal}{$item.quantity}{literal}'
+    'quantity': '{/literal}{$item.quantity}{literal}',
+    'category': '{/literal}{$ITEM_CATS.{$item.product_id}}{literal}'
   });{/literal}{/foreach}{literal}  ga('ecommerce:send');{/literal}
 </script>
 {/if}
