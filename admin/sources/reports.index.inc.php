@@ -78,10 +78,10 @@ $GLOBALS['smarty']->assign('REPORT_TITLE', $report_title);
 
 $GLOBALS['main']->addTabControl($lang['reports']['tab_results'], 'results');
 ## Fetch data, and display, and/or provide download
-
+$oid_col = $GLOBALS['config']->get('config', 'oid_mode') =='i' ?  $GLOBALS['config']->get('config', 'oid_col') : 'cart_order_id';
 $fields = array(
 	'order_date', 
-	'cart_order_id',
+	$oid_col,
 	'status',
 	'subtotal',
 	'discount',
