@@ -84,15 +84,15 @@
                   </span>
                   <br><small>{$LANG.orders.oid_postfix_desc}</small>
             </div>
-            <div><label for="oid_zeros">{$LANG.orders.oid_zeros}</label>
+            <div><label for="oid_zeros">{$LANG.orders.oid_zeros}{if $LOCK_ORDER_NUMBER && $CONFIG.oid_zeros>0} ({$LANG.common.min}: {$CONFIG.oid_zeros}){/if}</label>
                   <span>
-                        <input name="oid_zeros" id="oid_zeros" class="textbox number" value="{$CONFIG.oid_zeros}">
+                        <input  type="number" name="oid_zeros" id="oid_zeros" class="textbox number" value="{$CONFIG.oid_zeros}"{if $LOCK_ORDER_NUMBER && $CONFIG.oid_zeros>0} min="{$CONFIG.oid_zeros}"{/if}>
                   </span>
                   <br><small>{$LANG.orders.oid_zeros_desc}</small>
             </div>
-            <div><label for="oid_start">{$LANG.orders.oid_start}{if $LOCK_ORDER_NUMBER} (Locked){/if}</label>
+            <div><label for="oid_start">{$LANG.orders.oid_start}{if $LOCK_ORDER_NUMBER && $CONFIG.oid_start>0} ({$LANG.common.min}: {$CONFIG.oid_start}){/if}</label>
                   <span>
-                        <input name="oid_start" id="oid_start" class="textbox number" value="{$CONFIG.oid_start}"{if $LOCK_ORDER_NUMBER} readonly="readonly"{/if}>
+                        <input  type="number" name="oid_start" id="oid_start" class="textbox number" value="{$CONFIG.oid_start}"{if $LOCK_ORDER_NUMBER && $CONFIG.oid_start>0} min="{$CONFIG.oid_start}"{/if}>
                   </span>
                   <br><small>{$LANG.orders.oid_start_desc}</small>
             </div>
