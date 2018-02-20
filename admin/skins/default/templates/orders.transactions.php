@@ -31,7 +31,7 @@
 	{if isset($ALL_TRANSACTIONS)}
 	  {foreach from=$ALL_TRANSACTIONS item=transaction}
 	  <tr>
-		<td><a href="{$transaction.link}" title="{$LANG.orders.title_transaction_view}">{$transaction.order_id}</a></td>
+		<td><a href="{$transaction.link}" title="{$LANG.orders.title_transaction_view}">{if $CONFIG.oid_mode=='i'}{$transaction.{$CONFIG.oid_col}}{else}{$transaction.order_id}{/if}</a></td>
 		<td>{$transaction.amount}</td>
 		<td>{$transaction.gateway}</td>
 		<td>{$transaction.time}</td>
