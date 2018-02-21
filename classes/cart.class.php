@@ -496,7 +496,7 @@ class Cart {
 	 */
 	public function discountAdd($code) {
 		if (!is_null($code) && !empty($code)) {
-			if (($coupon = $GLOBALS['db']->select('CubeCart_coupons', '*', array('code' => $code, 'status' => '1'))) !== false) {
+			if (($coupon = $GLOBALS['db']->select('CubeCart_coupons', '*', "code = '".preg_replace('/[^\w-_]/', '', $code)."'", 'status' => '1'))) !== false) {
 
 				if (!empty($coupon[0]['cart_order_id'])) {
 					$order = $GLOBALS['db']->select('CubeCart_order_summary', 'status', array('cart_order_id' => $coupon[0]['cart_order_id']));
