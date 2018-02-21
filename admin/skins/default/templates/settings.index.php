@@ -76,13 +76,13 @@
                   <span>
                         <input name="oid_prefix" id="oid_prefix" class="textbox number" value="{$CONFIG.oid_prefix}">
                   </span>
-                  <br><small>{$LANG.orders.oid_prefix_desc}</small>
+                  <br><small>{$LANG.orders.oid_prefix_desc} {$LANG.orders.date_specifiers}</small>
             </div>
             <div><label for="oid_postfix">{$LANG.orders.oid_postfix}</label>
                   <span>
                         <input name="oid_postfix" id="oid_postfix" class="textbox number" value="{$CONFIG.oid_postfix}">
                   </span>
-                  <br><small>{$LANG.orders.oid_postfix_desc}</small>
+                  <br><small>{$LANG.orders.oid_postfix_desc} {$LANG.orders.date_specifiers}</small>
             </div>
             <div><label for="oid_zeros">{$LANG.orders.oid_zeros}{if $LOCK_ORDER_NUMBER && $CONFIG.oid_zeros>0} ({$LANG.common.min}: {$CONFIG.oid_zeros}){/if}</label>
                   <span>

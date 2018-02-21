@@ -757,13 +757,13 @@ class Order {
 	 */
 	public function setOrderFormat($oid_prefix, $oid_postfix, $oid_zeros, $oid_start, $set = false, $force_past_oids = false, $oid = 1) {
 
-		$oid_prefix = preg_replace('/[^\w-_]/', '', $oid_prefix);
-		$oid_postfix = preg_replace('/[^-_\w]/', '', $oid_postfix);
+		$oid_prefix = preg_replace('/[^\w-_]%/', '', $oid_prefix);
+		$oid_postfix = preg_replace('/[^-_\w]%/', '', $oid_postfix);
 		$oid_zeros = ctype_digit($oid_zeros) ? $oid_zeros : '0';
 		$oid_start = ctype_digit($oid_start) ? $oid_start : '0';
 
 		$lpad = empty($oid_zeros) ? "`id`+$oid_start" : "LPAD(`id`+$oid_start, $oid_zeros, 0)";
-		$concat = "CONCAT('$oid_prefix', $lpad,'$oid_postfix')";
+		$concat = "CONCAT(DATE_FORMAT(NOW(), '$oid_prefix'), $lpad, DATE_FORMAT(NOW(), '$oid_postfix'))";
 
 		if($set) {
 			if(empty($oid_prefix) && empty($oid_postfix) && empty($oid_zeros) && empty($oid_start)) {
