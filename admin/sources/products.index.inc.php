@@ -502,7 +502,9 @@ if (isset($_GET['action']) && strtolower($_GET['action'])=='clone' && isset($_GE
 		$record['updated'] = $date_added;
 
 		if ($GLOBALS['config']->get('config', 'product_clone_code') == 1) {
-			$record['product_code'] = generate_product_code($record['name']);
+			$clone_product_code = $record['product_code'] = generate_product_code($record['name']);
+		} else {
+			$clone_product_code = $record['product_code'];
 		}
 
 		if ($GLOBALS['config']->get('config', 'product_clone_main_stock') != 1) {
@@ -587,15 +589,14 @@ if (isset($_GET['action']) && strtolower($_GET['action'])=='clone' && isset($_GE
 
 				// Matrix
 				if ($clone_matrix) {
-
 					if (($matrix_a = $GLOBALS['db']->select('CubeCart_option_matrix', false, array('product_id' => $product_id_parent))) !== false) {
-
+						$pc_postfix = 1;
 						foreach ($matrix_a as $row_no => $matrix_assign) {
-
 							unset($matrix_assign['matrix_id']);
-
 							$matrix_assign['product_id'] = $product_id;
+							$matrix_assign['product_code'] = $clone_product_code.'-'.$pc_postfix;
 							$GLOBALS['db']->insert('CubeCart_option_matrix', $matrix_assign);
+							$pc_postfix++;
 						}
 					}
 				}

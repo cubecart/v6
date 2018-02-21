@@ -44,7 +44,7 @@ if (isset($_POST['coupon']) && is_array($_POST['coupon'])) {
 	$coupon_id = (isset($_POST['coupon']['coupon_id'])) ? (int)$_POST['coupon']['coupon_id'] : null;
 
 	$record  = array(
-		'code'   => $_POST['coupon']['code'],
+		'code'   => preg_replace('/[^\w-_]/', '', $_POST['coupon']['code']),
 		'product_id' => null,
 		'expires'  => $_POST['coupon']['expires'],
 		'allowed_uses' => (int)$_POST['coupon']['allowed_uses'],
