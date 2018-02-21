@@ -139,6 +139,7 @@
 	<hook trigger="class.catalogue.search_catalogue.sale_items.post" deprecated="" />
 	<hook trigger="class.cubecart.account.list" deprecated="" />
 	<hook trigger="class.cubecart.addressbook" deprecated="" />
+	<hook trigger="class.cubecart.addressbook.update" deprecated="" />
 	<hook trigger="class.cubecart.pre_basket" deprecated="" />
 	<hook trigger="class.cubecart.basket" deprecated="" />
 	<hook trigger="class.cubecart.checkout_progress" deprecated="" />
