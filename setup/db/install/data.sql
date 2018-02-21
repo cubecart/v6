@@ -372,6 +372,7 @@ INSERT INTO `CubeCart_geo_zone` SET `country_id` = 225, `name` = 'North Yorkshir
 INSERT INTO `CubeCart_geo_zone` SET `country_id` = 225, `name` = 'South Yorkshire', `abbrev` = 'YSS'; #EOQ
 INSERT INTO `CubeCart_geo_zone` SET `country_id` = 225, `name` = 'West Yorkshire', `abbrev` = 'YSW'; #EOQ
 INSERT INTO `CubeCart_geo_zone` SET `country_id` = 225, `name` = 'East Yorkshire', `abbrev` = 'ERY'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 225, `name` = 'London', `abbrev` = 'LND'; #EOQ
 
 INSERT INTO `CubeCart_geo_country` (`id`, `iso`, `name`, `iso3`, `numcode`) VALUES (1, 'AF', 'Afghanistan', 'AFG', 004); #EOQ
 INSERT INTO `CubeCart_geo_country` (`id`, `iso`, `name`, `iso3`, `numcode`) VALUES (2, 'AL', 'Albania', 'ALB', 008); #EOQ

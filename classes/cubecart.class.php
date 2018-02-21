@@ -483,6 +483,7 @@ class Cubecart {
 				}
 			}
 			// Update address data
+			foreach ($GLOBALS['hooks']->load('class.cubecart.addressbook.update') as $hook) include $hook;
 			if (!$empties && $GLOBALS['user']->saveAddress($_POST)) {
 				$message = ($_POST['address_id']) ? $GLOBALS['language']->account['notify_address_updated'] : $GLOBALS['language']->account['notify_address_added'];
 				$GLOBALS['gui']->setNotify($message);
