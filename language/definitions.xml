@@ -801,7 +801,7 @@
 %s
 ---------------
 
-This email is sent from the stores master email address but it is possible to reply directly to the sender using the reply button on your email software.]]></string>
+This email is sent from the store's master email address but it is possible to reply directly to the sender using the reply button on your email software.]]></string>
     <string name="email_override" introduced="5.0.0"><![CDATA[Form submissions should be sent to]]></string>
     <string name="error_contact_update" introduced="5.0.0"><![CDATA[Unable to update Contact Form settings.]]></string>
     <string name="notify_contact_update" introduced="5.0.0"><![CDATA[Contact Form settings updated.]]></string>
