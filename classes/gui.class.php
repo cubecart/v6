@@ -155,28 +155,24 @@ class GUI {
 			 * The store URL gets appended to the beginning
 			 * ie $css[] = 'skins/test/syles/style.css';
 			 */
+			$css = array();
 			foreach ($GLOBALS['hooks']->load('class.gui.css') as $hook) include $hook;
-			if (isset($css) && !empty($css) && is_array($css)) {
-				$GLOBALS['smarty']->assign('CSS', $css);
-			}
+			$GLOBALS['smarty']->assign('CSS', $css);
 
 			// <head> JS
+			$head_js = array();
 			foreach ($GLOBALS['hooks']->load('class.gui.head_js') as $hook) include $hook;
-			if (isset($head_js) && !empty($head_js) && is_array($head_js)) {
-				$GLOBALS['smarty']->assign('HEAD_JS', $head_js);
-			}
+			$GLOBALS['smarty']->assign('HEAD_JS', $head_js);
 
 			// <body> JS (Top)
+			$body_js_top = array();
             foreach ($GLOBALS['hooks']->load('class.gui.body_js_top') as $hook) include $hook;
-            if (isset($body_js_top) && !empty($body_js_top) && is_array($body_js_top)) {
-                $GLOBALS['smarty']->assign('BODY_JS_TOP', $body_js_top);
-            }
+            $GLOBALS['smarty']->assign('BODY_JS_TOP', );
 
 			// <body> JS
+			$body_js = array();
 			foreach ($GLOBALS['hooks']->load('class.gui.body_js') as $hook) include $hook;
-			if (isset($body_js) && !empty($body_js) && is_array($body_js)) {
-				$GLOBALS['smarty']->assign('BODY_JS', $body_js);
-			}
+			$GLOBALS['smarty']->assign('BODY_JS', $body_js);
 
 			//Put in the javascripts
 			$js = glob('skins/'.$this->_skin.'/'.'{js,scripts}/*.js', GLOB_BRACE);
