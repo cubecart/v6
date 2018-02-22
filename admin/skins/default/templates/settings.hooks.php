@@ -32,14 +32,18 @@
             <tr>
                <th width="10">{$LANG.common.status}</th>
                <th>{$LANG.common.description}</th>
+               <th>{$LANG.hooks.trigger}</th>
+               <th>{$LANG.hooks.priority}</th>
                <th width="50">{$LANG.form.action}</th>
             </tr>
          </thead>
          <tbody>
             {foreach from=$SNIPPETS item=snippet}
             <tr>
-               <td width="10"><span class="toggle"><input type="hidden" id="snippet_status_{$snippet.snippet_id}" name="snippet_status[{$snippet.snippet_id}]" value="{$snippet.enabled}" class="toggle"></span></td>
+               <td  align="center" width="10"><span class="toggle"><input type="hidden" id="snippet_status_{$snippet.snippet_id}" name="snippet_status[{$snippet.snippet_id}]" value="{$snippet.enabled}" class="toggle"></span></td>
                <td><a href="?_g=settings&node=hooks&snippet={$snippet.snippet_id}#snippets">{$snippet.description}</a></td>
+               <td class="courier">{$snippet.hook_trigger}</td>
+               <td>{$snippet.priority}</td>
                <td width="50"><span class="actions"><a href="?_g=settings&node=hooks&snippet={$snippet.snippet_id}#snippets"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a> <a href="?_g=settings&node=hooks&delete_snippet={$snippet.snippet_id}&token={$SESSION_TOKEN}#snippets" class="delete" title="{$LANG.notification.confirm_continue}"><i class="fa fa-trash"></i></a></span></td>
             </tr>
             {foreachelse}
@@ -139,7 +143,8 @@
       <table width="70%">
          <thead>
             <tr>
-               <th colspan="2">{$LANG.hooks.title_hook_available}</th>
+               <th>{$LANG.common.status}</th>
+               <th>{$LANG.hooks.title_hook_available}</th>
                <th>{$LANG.hooks.trigger}</th>
                <th>{$LANG.hooks.priority}</th>
                <th width="50" align="center">{$LANG.form.action}</th>
@@ -148,9 +153,9 @@
          <tbody>
             {foreach from=$HOOKS item=hook}
             <tr>
-                <td width="10"><input type="hidden" name="status[{$hook.hook_id}]" value="{$hook.enabled}" id="status_{$hook.hook_id}" class="toggle"></td>
+                <td  align="center" width="10"><input type="hidden" name="status[{$hook.hook_id}]" value="{$hook.enabled}" id="status_{$hook.hook_id}" class="toggle"></td>
                 <td><a href="{$hook.edit}">{$hook.hook_name}</a></td>
-                <td>{$hook.trigger}</td>
+                <td class="courier">{$hook.trigger}</td>
                 <td align="center">{$hook.priority}</td>
                 <td align="center"><a href="{$hook.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a></td>
             </tr>
@@ -182,7 +187,7 @@
          {/if}
          <div>
             <label for="trigger">{$LANG.hooks.trigger}</label>
-            <span>{$HOOK.trigger}</span>
+            <span class="courier">{$HOOK.trigger}</span>
          </div>
       </fieldset>
       <fieldset>
