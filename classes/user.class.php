@@ -827,11 +827,6 @@ class User {
 
 		$array = array_map('trim', $array);
 
-		$address_hash = md5(serialize($array));
-		if($GLOBALS['db']->select('CubeCart_addressbook',array('address_id'),array('hash' => $address_hash))) {
-			return false;
-		}
-
 		if ($this->is() || $new_user) {
 			if ($array['billing']) {
 				$reset['billing'] = '0';
@@ -844,12 +839,6 @@ class User {
 				$array['default'] = '0';
 			}
 			$user_id = ($new_user) ? $new_user : $this->_user_data['customer_id'];
-			// Format data nicely from mr barney brimstock to Mr Barney Brimstock & Post/Zip code to uppercase
-			$array['title']   = ucwords($array['title']);
-			$array['first_name'] = ucwords($array['first_name']);
-			$array['last_name']  = ucwords($array['last_name']);
-			$array['postcode']  = strtoupper($array['postcode']); // e.g. ab12 34cd to  AB12 34CD
-			$array['hash']  = $address_hash; // e.g. ab12 34cd to  AB12 34CD
 
 			foreach ($GLOBALS['hooks']->load('class.user.saveaddress') as $hook) include $hook;
 
@@ -857,6 +846,27 @@ class User {
 				// "There can only be one"
 				$GLOBALS['db']->update('CubeCart_addressbook', $reset, array('customer_id' => $user_id), true);
 			}
+
+			// Format data nicely from mr barney brimstock to Mr Barney Brimstock & Post/Zip code to uppercase
+			$array['title']   = ucwords($array['title']);
+			$array['first_name'] = ucwords($array['first_name']);
+			$array['last_name']  = ucwords($array['last_name']);
+			$array['postcode']  = strtoupper($array['postcode']); // e.g. ab12 34cd to  AB12 34CD
+
+			$hash_values = '';
+			$checked_keys = array('title', 'first_name', 'last_name', 'company_name', 'line1', 'line2', 'town', 'state', 'postcode', 'country');
+			foreach($array as $key => $value) {
+				if(in_array($key, $checked_keys)) {
+					$hash_values .= $value;
+				}
+			}
+
+			$array['hash'] = md5($hash_values);
+
+			if($result = $GLOBALS['db']->select('CubeCart_addressbook', array('address_id'), array('hash' => $array['hash']))) {
+				return $result[0]['address_id'];
+			}
+
 			if (isset($array['address_id']) && is_numeric($array['address_id'])) {
 				// Update
 				$result = $GLOBALS['db']->update('CubeCart_addressbook', $array, array('address_id' => $array['address_id'], 'customer_id' => $user_id), true);
