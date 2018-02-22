@@ -215,14 +215,14 @@ class HookLoader {
 					foreach ($xml->hooks->hook as $hook) {
 						// Check if the hook already exists
 						$allowed_hooks[] = (string)$hook->attributes()->trigger;
-						$check = $GLOBALS['db']->select('CubeCart_hooks', array('hook_id'), array('plugin' => $plugin, 'trigger' => (string)$hook->attributes()->trigger));
+						$check = $GLOBALS['db']->select('CubeCart_hooks', false, array('plugin' => $plugin, 'trigger' => (string)$hook->attributes()->trigger));
 
 						$record = array(
 							'plugin' => $plugin,
 							'hook_name' => (string)$hook,
-							'trigger' => (string)$hook->attributes()->trigger,
-							'priority' => (int)$hook->attributes()->priority,
-							'filepath' => (string)$hook->file,
+							'trigger' => (isset($check[0]['trigger']) && !empty($check[0]['trigger'])) ? $check[0]['trigger'] : (string)$hook->attributes()->trigger,
+							'priority' => (isset($check[0]['priority']) && !empty($check[0]['priority'])) ? $check[0]['priority'] : (int)$hook->attributes()->priority,
+							'filepath' => (isset($check[0]['filepath']) && !empty($check[0]['filepath'])) ? $check[0]['filepath'] : (string)$hook->file,
 						);
 
 						if ($check) {

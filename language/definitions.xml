@@ -1274,7 +1274,8 @@ This email is sent from the stores master email address but it is possible to re
     <string name="notify_hook_magic" introduced="5.0.0"><![CDATA[New hooks are detected and automatically registered when this page is loaded.]]></string>
     <string name="notify_hook_status" introduced="5.0.0"><![CDATA[Hook statuses updated.]]></string>
     <string name="notify_hook_update" introduced="5.0.0"><![CDATA[Hook successfully updated.]]></string>
-    <string name="path_to_file" introduced="5.0.0"><![CDATA[Path to file]]></string>
+    <string name="path_to_file" introduced="5.0.0"><![CDATA[Path to alternate file]]></string>
+    <string name="path_to_file_desc" introduced="6.1.14"><![CDATA[Default file is %s]]></string>
     <string name="title_hook" introduced="5.0.0"><![CDATA[Hooks]]></string>
     <string name="title_hook_add" introduced="5.0.0"><![CDATA[Add Hook]]></string>
     <string name="title_hook_available" introduced="5.0.0"><![CDATA[Available Hooks]]></string>

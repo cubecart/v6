@@ -79,11 +79,11 @@ if (Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
 		// Validation
 		$error = array();
 		$required = array('trigger', 'hook_name', 'plugin');
+		$_POST['hook']['priority'] = ctype_digit($_POST['hook']['priority']) ?  $_POST['hook']['priority'] : 0;
 		foreach ($_POST['hook'] as $key => $value) {
 			if (in_array($key, $required)) {
 				if (empty($value)) {
 					$error[$key] = $key;
-					unset($_POST['hook'][$key]);
 				}
 			}
 		}
