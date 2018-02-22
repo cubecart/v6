@@ -311,7 +311,7 @@ class Ajax {
 		if (CC_IN_ADMIN) {
 		    $email = $GLOBALS['db']->select('CubeCart_email_log', array($column), array('id' => $id));
 		    if($mode == 'content_text') {
-		    	return '<div style="font-family: \'Courier New\', Courier">'.nl2br($email[0][$column]).'</div>';
+		    	return '<div style="font-family: \'Courier New\', Courier">'.nl2br(htmlentities($email[0][$column],ENT_QUOTES)).'</div>';
 		    } else {
 		    	return $email[0][$column];
 			}
