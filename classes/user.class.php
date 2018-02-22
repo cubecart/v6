@@ -864,7 +864,7 @@ class User {
 			$array['hash'] = md5($hash_values);
 
 			if($result = $GLOBALS['db']->select('CubeCart_addressbook', array('address_id'), array('hash' => $array['hash']))) {
-				return $result[0]['address_id'];
+				$array['address_id'] = $result[0]['address_id'];
 			}
 
 			if (isset($array['address_id']) && is_numeric($array['address_id'])) {
