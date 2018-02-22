@@ -275,12 +275,15 @@ class HookLoader {
 					$this->_plugin_language($hook['plugin']);
 					$hook['filepath'] = (!empty($hook['filepath'])) ? str_replace('/', '/', $hook['filepath']) : 'hooks/'.$trigger.'.php';
 					if (file_exists($this->_hook_dir.'/'.$hook['plugin'].'/'.$hook['filepath']) && $this->_security_check($hook['filepath'])) {
-						$include[] = $this->_hook_dir.'/'.$hook['plugin'].'/'.$hook['filepath'];
+						$include[] =
+							array(
+							'fullpath' => $this->_hook_dir.'/'.$hook['plugin'].'/'.$hook['filepath'],
+							'priority' => (int)$hook['priority'],
+							);
 					} else {
 						trigger_error("Error: Hook '".$hook['plugin'].'/'.$hook['filepath']."' was not found", E_USER_NOTICE);
 					}
 				}
-
 			}
 		}
 
@@ -290,10 +293,18 @@ class HookLoader {
 				if ($snippet['hook_trigger'] == $trigger) {
 					$file_name = $this->_snippet_dir.'/'.$this->_snippet_prefix.md5($snippet['unique_id']).'.php';
 					if (file_exists($file_name)) {
-						$include[] = $file_name;
+						$include[] =
+							array(
+							'fullpath' => $file_name,
+							'priority' => (int)$snippet['priority'],
+							);
 					} else {
-						if (file_put_contents($file_name, base64_decode($snippet['php_code']))) {
-							$include[] = $file_name;
+						if (file_put_contents($file_name, base64_decode($snippet['php_code']) )) {
+							$include[] =
+								array(
+								'fullpath' => $file_name,
+								'priority' => (int)$snippet['priority'],
+								);
 						} else {
 							trigger_error("Error: Failed to write code snippet for '".$snippet['description']."'", E_USER_NOTICE);
 						}
@@ -301,7 +312,14 @@ class HookLoader {
 				}
 			}
 		}
-		return (isset($include) && is_array($include)) ? $include : array();
+
+		$return = [];
+		if (isset($include) && is_array($include)) {
+			// sort $include based on priority
+			uasort($include, 'cmpmc');
+			foreach ($include as $inc) { $return[] = $inc['fullpath']; }
+		}
+		return $return;
 	}
 
 	/**
