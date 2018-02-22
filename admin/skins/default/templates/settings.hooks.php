@@ -119,7 +119,6 @@
                input.value = window.btoa(editor.getSession().getValue());
             });
          </script>
-         
          <input type="hidden" name="snippet[snippet_id]" id="snippet_id" class="textbox" value="{$SNIPPET.snippet_id}">
       </fieldset>
       {/if}
@@ -136,20 +135,31 @@
    {if $DISPLAY_HOOKS}
    <div id="hooks" class="tab_content">
       <h3>{$PLUGIN}</h3>
-      <fieldset>
-         <legend>{$LANG.hooks.title_hook_available}</legend>
-         {foreach from=$HOOKS item=hook}
-         <div>
-            <span class="actions">
-            <a href="{$hook.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
-            </span>
-            <input type="hidden" name="status[{$hook.hook_id}]" value="{$hook.enabled}" id="status_{$hook.hook_id}" class="toggle">
-            <a href="{$hook.edit}">{$hook.hook_name}</a>
-         </div>
-         {foreachelse}
-         <div>{$LANG.hooks.error_hook_none}</div>
-         {/foreach}
-      </fieldset>
+      {if $HOOKS}
+      <table width="70%">
+         <thead>
+            <tr>
+               <th colspan="2">{$LANG.hooks.title_hook_available}</th>
+               <th>{$LANG.hooks.trigger}</th>
+               <th>{$LANG.hooks.priority}</th>
+               <th width="50" align="center">{$LANG.form.action}</th>
+            </tr>
+         </thead>
+         <tbody>
+            {foreach from=$HOOKS item=hook}
+            <tr>
+                <td width="10"><input type="hidden" name="status[{$hook.hook_id}]" value="{$hook.enabled}" id="status_{$hook.hook_id}" class="toggle"></td>
+                <td><a href="{$hook.edit}">{$hook.hook_name}</a></td>
+                <td>{$hook.trigger}</td>
+                <td align="center">{$hook.priority}</td>
+                <td align="center"><a href="{$hook.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a></td>
+            </tr>
+            {/foreach}
+         </tbody>
+        </table>
+        {else}
+        <p>{$LANG.hooks.error_hook_none}</p>
+        {/if}
       <p>{$LANG.hooks.notify_hook_magic}</p>
    </div>
    {/if}
@@ -172,22 +182,20 @@
          {/if}
          <div>
             <label for="trigger">{$LANG.hooks.trigger}</label>
-            <span>
-               <select name="hook[trigger]" id="trigger" class="required">
-                  <option value="">{$LANG.form.please_select}</option>
-                  {foreach from=$TRIGGERS item=trigger}<option value="{$trigger.trigger}"{$trigger.selected}>{$trigger.trigger}</option>{/foreach}
-               </select>
-            </span>
+            <span>{$HOOK.trigger}</span>
          </div>
       </fieldset>
       <fieldset>
          <legend>{$LANG.hooks.title_hook_optional}</legend>
-         <div><label for="filepath">{$LANG.hooks.path_to_file}</label><span><input type="text" name="hook[filepath]" id="filepath" class="textbox" value="{$HOOK.filepath}"></span></div>
+         <div><label for="hook_priority">{$LANG.hooks.priority}</label><span><input type="text" name="hook[priority]" id="hook_priority" class="textbox number" value="{$HOOK.priority}"></span></div>
+         <div>
+            <label for="filepath">{$LANG.hooks.path_to_file}</label><span><input type="text" name="hook[filepath]" id="filepath" class="textbox" value="{$HOOK.filepath}"></span>
+            <br><small>{$LANG.hooks.path_to_file_desc|replace:'%s':$HOOK.trigger}.php</small>
+         </div>
          <input type="hidden" name="hook[hook_id]" value="{$HOOK.hook_id}">
       </fieldset>
    </div>
    {/if}
    {include file='templates/element.hook_form_content.php'}
    <div class="form_control"><input type="submit" value="{$LANG.common.save}"></div>
-   
 </form>
