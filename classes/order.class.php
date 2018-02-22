@@ -694,7 +694,9 @@ class Order {
 						foreach ($GLOBALS['hooks']->load('class.cart.get.product_option_prices') as $hook) include $hook;
 						$value['price_display'] = '';
 						if (isset($value['option_price']) && $value['option_price']>0) { // record option price but not zero
-							if ($value['option_negative']) {
+							if((bool)$value['absolute_price']) {
+								$value['price_display'] = ' (';
+							} elseif ($value['option_negative']) {
 								//$record['price'] -= $value['option_price'];
 								$value['price_display'] = ' (-';
 							} else {
