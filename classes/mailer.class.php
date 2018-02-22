@@ -204,20 +204,23 @@ class Mailer extends PHPMailer {
 
 			if (isset($contents['email'])) {
 				$this->addReplyTo($contents['email'], (isset($contents['from'])) ? $contents['from'] : '');
+				$from = $contents['email'];
+			} else {
+				$from = $GLOBALS['config']->get('config', 'email_address');
 			}
 			$this->Sender = $GLOBALS['config']->get('config', 'email_address');
-	
+
 			foreach ($GLOBALS['hooks']->load('class.mailer.presend') as $hook) include $hook;
 
 			// Send email
 			$result = $this->Send();
-            // Log email
+			// Log email		
             $email_data = array(
                 'subject' => $this->Subject,
                 'content_html' => $this->_html,
                 'content_text' => $this->_text,
                 'to' => $email,
-                'from' => $this->Sender,
+                'from' => $from,
                 'result' => $result,
                 'email_content_id' => $this->_email_content_id
             );

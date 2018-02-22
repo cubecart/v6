@@ -20,17 +20,24 @@ if(isset($_GET['resend']) && $_GET['resend']>0) {
 		$mailer = new Mailer();
 
 		$mailer->Subject = $email_data[0]['subject'];
-		$mailer->Body = empty($email_data[0]['content_html']) ? $email_data[0]['content_text'] : $email_data[0]['content_html'];
-		$mailer->AltBody = $email_data[0]['content_text'];
+
+		if(empty($email_data[0]['content_html'])) {
+			$mailer->IsHTML(false);
+			$mailer->Body = $email_data[0]['content_text'];
+		} else {
+			$mailer->Body = $email_data[0]['content_html'];
+			$mailer->AltBody = $email_data[0]['content_text'];
+		}
+
 		$recipients = explode(',', $email_data[0]['to']);
 		foreach($recipients as $recipient) {
 			$mailer->AddAddress($recipient);
 		}
 		$mailer->Sender = $email_data[0]['from'];
-		
+
 		$email_data[0]['result'] = $mailer->Send();
 		unset($email_data[0]['date'], $email_data[0]['id']);
-		
+
 		if($email_data[0]['result']) {
 			$GLOBALS['main']->setACPNotify(sprintf($lang['statistics']['email_resent'],$mailer->Subject,$email_data[0]['to']));
 		} else {

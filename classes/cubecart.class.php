@@ -1415,7 +1415,7 @@ class Cubecart {
 					// Send email to correct department
 					$mailer = new Mailer();
 
-					$department = '';
+					$department = $GLOBALS['config']->get('config', 'store_name');
 					if (isset($_POST['contact']['dept']) && is_array($contact['department'])) {
 						$key  = (int)$_POST['contact']['dept'];
 						$department = $contact['department'][$key]['name'];
