@@ -797,11 +797,11 @@
     <string name="contact_info" introduced="5.0.0"><![CDATA[It is possible to specify specific departments and email addresses below. On completion a drop down menu will be presented to the customer so that the message can be directed to the appropriate department.]]></string>
     <string name="content_info" introduced="5.0.0"><![CDATA[It is possible to add extra information to the contact section of the store such as phone numbers and postal addresses using the rich text editor below.]]></string>
     <string name="email_content" introduced="5.0.0"><![CDATA[%s <%s> wrote to %s:
-        ---------------
-        %s
-        ---------------
+---------------
+%s
+---------------
 
-        This email is sent from the stores master email address but it is possible to reply directly to the sender using the reply button on your email software.]]></string>
+This email is sent from the stores master email address but it is possible to reply directly to the sender using the reply button on your email software.]]></string>
     <string name="email_override" introduced="5.0.0"><![CDATA[Form submissions should be sent to]]></string>
     <string name="error_contact_update" introduced="5.0.0"><![CDATA[Unable to update Contact Form settings.]]></string>
     <string name="notify_contact_update" introduced="5.0.0"><![CDATA[Contact Form settings updated.]]></string>
