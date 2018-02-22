@@ -532,13 +532,10 @@ class Tax {
 	 * @return float
 	 */
 	private function _removeSymbol($price) {
-		//Just in case we have a currency symbol
+		//Just in case we have a currency symbol, keeps negative sign, hoping not to have scientific notation
 		if ($price && is_string($price)) {
-			if (!ctype_digit((string)$price{0})) {
-				$price = substr($price, 1);
-			}
-			$price = (double)$price;
+		  $price = (double)filter_var($price, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 		}
 		return $price;
-	}
+	  }
 }
