@@ -28,9 +28,14 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
 	if($_POST['config']['oid_mode']=='i') {
 		$order = Order::getInstance();
 		$oid_data = $order->setOrderFormat($_POST['oid_prefix'], $_POST['oid_postfix'], $_POST['oid_zeros'], $_POST['oid_start'], true, (bool)$_POST['oid_force']);
-		$_POST['config'] = array_merge($_POST['config'], $oid_data);
-		$fields_find = array('cart_order_id');
-		$field_replace = $_POST['config']['oid_col'];
+		if(!$oid_data) {
+			$GLOBALS['main']->setACPWarning('Incremental orders not possible because the MySQL user doesn\'t have permission to `CREATE TRIGGER`. Please grant permissions or seek technical support.');
+			$_POST['config']['oid_mode'] = 't';
+		} else {
+			$_POST['config'] = array_merge($_POST['config'], $oid_data);
+			$fields_find = array('cart_order_id');
+			$field_replace = $_POST['config']['oid_col'];
+		}
 	} else {
 		$_POST['config'] = array_merge(
 			$_POST['config'],
@@ -101,7 +106,7 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
 						case UPLOAD_ERR_CANT_WRITE:
 						case UPLOAD_ERR_EXTENSION:
 						default:
-							$GLOBALS['main']->setACPWarning($lang['settings']['error_logo_upload']);
+						$GLOBALS['main']->setACPWarning($lang['settings']['error_logo_upload']);
 							trigger_error('Upload Error! Logo not saved.');
 						break;
 					}
