@@ -765,7 +765,7 @@ class Order {
 		$oid_start = ctype_digit($oid_start) ? $oid_start : '0';
 
 		$lpad = empty($oid_zeros) ? "`id`+$oid_start" : "LPAD(`id`+$oid_start, $oid_zeros, 0)";
-		$concat = "CONCAT(DATE_FORMAT(NOW(), '$oid_prefix'), $lpad, DATE_FORMAT(NOW(), '$oid_postfix'))";
+		$concat = "CONCAT(".$this->_formatConcat($oid_prefix).", $lpad, ".$this->_formatConcat($oid_postfix).")";
 
 		if($set) {
 			if(empty($oid_prefix) && empty($oid_postfix) && empty($oid_zeros) && empty($oid_start)) {
@@ -983,6 +983,22 @@ class Order {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Get order line items only
+	 *
+	 * @param string $string
+	 * @return string
+	 */
+	private function _formatConcat($string) {
+		if(empty($string)) {
+			return "''";
+		} elseif(strstr($string,'%')) {
+			return "DATE_FORMAT(NOW(), '$string')";
+		} else {
+			return "'$string'";
+		}
 	}
 
 	/**
