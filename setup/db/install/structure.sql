@@ -706,7 +706,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_summary` (
 	`basket` MEDIUMBLOB NULL DEFAULT NULL,
 	`lang` varchar(5) DEFAULT NULL,
 	`note_to_customer` TEXT,
-	`custom_oid` varchar(50) DEFAULT ''
+	`custom_oid` varchar(50) DEFAULT '',
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `cart_order_id` (`cart_order_id`),
 	KEY `customer_id` (`customer_id`),

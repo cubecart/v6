@@ -770,7 +770,7 @@ if (isset($database_result) && $database_result) {
 			'status' => 'KEY',
 			'email' => 'KEY',
 			'order_date' => 'KEY',
-			'custom_oid' => 'KEY'
+			'custom_oid' => 'UNIQUE KEY'
 		),
 		'cubecart_order_tax' => array (
 			'id' => 'PRIMARY',
