@@ -228,8 +228,8 @@ class Language {
 		$from = CC_ROOT_DIR.'/'.$from;
 		$to = str_replace('module.definitions.xml', $language.'.xml', $from);
 
-		if(file_exists($from) && !file_exists($to)) {
-			$content = simplexml_load_file($from);
+		if(file_exists($from) && !file_exists($to) && ($content = simplexml_load_file($from)) !== false) {
+			if(!isset($content->group) && !isset($content->group[0]->attributes()->name)) return false;
 
 			$output =  '<?xml version="1.0" encoding="UTF-8" ?>
 <language version="1.0">
