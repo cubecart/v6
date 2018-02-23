@@ -986,15 +986,13 @@ class Order {
 	}
 
 	/**
-	 * Get order line items only
+	 * Format concat string for order format trigger
 	 *
 	 * @param string $string
 	 * @return string
 	 */
 	private function _formatConcat($string) {
-		if(empty($string)) {
-			return "''";
-		} elseif(strstr($string,'%')) {
+		if(strstr($string,'%')) {
 			return "DATE_FORMAT(NOW(), '$string')";
 		} else {
 			return "'$string'";
