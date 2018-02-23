@@ -29,7 +29,7 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
 		$order = Order::getInstance();
 		$oid_data = $order->setOrderFormat($_POST['oid_prefix'], $_POST['oid_postfix'], $_POST['oid_zeros'], $_POST['oid_start'], true, (bool)$_POST['oid_force']);
 		if(!$oid_data) {
-			$GLOBALS['main']->setACPWarning('Incremental orders not possible because the MySQL user doesn\'t have permission to `CREATE TRIGGER`. Please grant permissions or seek technical support.');
+			$GLOBALS['main']->setACPWarning('Incremental orders numbers with formatting can\'t be enabled because the MySQL user doesn\'t have permission to &quot;CREATE TRIGGER&quot;. Please grant permissions or seek technical support.');
 			$_POST['config']['oid_mode'] = 't';
 		} else {
 			$_POST['config'] = array_merge($_POST['config'], $oid_data);

@@ -780,6 +780,7 @@ class Order {
 				}
 				$GLOBALS['db']->misc("DROP TRIGGER IF EXISTS `custom_oid`");
 				$GLOBALS['db']->misc("CREATE TRIGGER `custom_oid` BEFORE INSERT ON `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary` FOR EACH ROW SET NEW.custom_oid = ".str_replace('`id`','LAST_INSERT_ID()', $concat));
+				$oid_col = 'custom_oid';
 				if(!$GLOBALS['db']->misc("SHOW TRIGGERS WHERE `Trigger` LIKE 'custom_oid'")) {
 					return false;
 				}
