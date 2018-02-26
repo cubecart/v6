@@ -34,7 +34,14 @@
 		  <td><span class="editable number" name="country[{$country.id}][iso3]">{$country.iso3}</span></td>
 		  <td><span class="editable number" name="country[{$country.id}][numcode]">{$country.numcode}</span></td>
 		  <td align="center"><input name="country[{$country.id}][eu]" id="{$country.id}_eu" type="hidden" class="toggle" value="{$country.eu}"></td>
-		  <td align="center"><input name="country[{$country.id}][status]" id="{$country.id}_status" type="hidden" class="toggle" value="{$country.status}"></td>
+		  <td align="center">
+			<select name="country[{$country.id}][status]" id="{$country.id}_status">
+				<option value="0"{if $country.status=='0'} selected="selected"{/if}>{$LANG.common.disabled}</option>
+				<option value="1"{if $country.status=='1'} selected="selected"{/if}>{$LANG.common.enabled} (State Required)</option>
+				<option value="2"{if $country.status=='2'} selected="selected"{/if}>{$LANG.common.enabled} (State Optional)</option>
+				<option value="3"{if $country.status=='3'} selected="selected"{/if}>{$LANG.common.enabled} (State Disabled)</option>
+			</select>
+			</td>
 		  <td align="center"><a href="{$country.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
 		</tr>
 	  {/foreach}

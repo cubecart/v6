@@ -353,7 +353,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_geo_country` (
   `iso3` char(3) COLLATE utf8_unicode_ci DEFAULT NULL,
   `numcode` smallint(3) unsigned zerofill DEFAULT NULL,
   `eu` enum('0','1') COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
-  `status` enum('0','1') COLLATE utf8_unicode_ci NOT NULL DEFAULT '1',
+  `status` TINYINT(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT '1',
   PRIMARY KEY (`iso`),
   KEY `id` (`id`),
   KEY `eu` (`eu`)
@@ -364,7 +364,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_geo_zone` (
 	`country_id` SMALLINT(4) UNSIGNED NOT NULL DEFAULT '0',
 	`abbrev` VARBINARY(4) NOT NULL DEFAULT '',
 	`name` VARBINARY(40) NOT NULL DEFAULT '',
-	`status` TINYINT(1) UNSIGNED  NULL  DEFAULT '1',
+	`status` enum('0','1') NOT NULL DEFAULT '1',
 	PRIMARY KEY (`id`),
 	KEY (`status`),
 	UNIQUE(`country_id`, `abbrev`)
