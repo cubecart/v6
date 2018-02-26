@@ -2663,7 +2663,7 @@ class Cubecart {
 
 			$customer_id = $GLOBALS['user']->getId();
 			if (!$customer_id) {
-				$customer_id = $GLOBALS['session']->get('ghost_customer_id');
+				$customer_id = $GLOBALS['user']->getGhostId();
 			}
 			if(isset($_GET['email']) && filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)) {
 				$where =  array(

@@ -563,6 +563,15 @@ class User {
 	}
 
 	/**
+	 * Get customer id for unregistered customers
+	 *
+	 * @return integer/bool
+	 */
+	public function getGhostId() {
+		return $GLOBALS['session']->get('ghost_customer_id');
+	}
+
+	/**
 	 * Get customer_id
 	 * @return customer_id/0
 	 */
