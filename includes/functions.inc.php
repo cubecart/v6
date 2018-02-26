@@ -567,7 +567,7 @@ function get_ip_address() {
  */
 function getStateFormat($input, $match = 'id', $fetch = 'name') {
 	if($match == 'id' && !ctype_digit((string)$input)) return $input;
-	if (($county = $GLOBALS['db']->select('CubeCart_geo_zone', false, array($match => $input))) !== false) {
+	if (($county = $GLOBALS['db']->select('CubeCart_geo_zone', false, array($match => $input, 'status' => 1))) !== false) {
 		return ($fetch == 'abbrev' && empty($county[0][$fetch])) ? $county[0]['name'] : $county[0][$fetch];
 	}
 	return $input;
@@ -902,7 +902,7 @@ function sigfig($value, $figures = 2) {
 function state_json() {
 	## Generate a JSON string for state selector
 	if (($json = $GLOBALS['cache']->read('json.states')) === false) {
-		$counties = $GLOBALS['db']->query('SELECT gc.numcode, gz.id, gz.name FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_geo_zone` AS `gz` LEFT JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_geo_country` AS `gc` ON gc.id=gz.country_id ORDER BY gc.name, gz.name ASC');
+		$counties = $GLOBALS['db']->query('SELECT gc.numcode, gz.id, gz.name FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_geo_zone` AS `gz` LEFT JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_geo_country` AS `gc` ON gc.id=gz.country_id WHERE `gz`.`status` = 1 ORDER BY gc.name, gz.name ASC');
 		$json_array = array();
 		if ($counties) {
 			$current = '';

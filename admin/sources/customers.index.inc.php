@@ -43,7 +43,7 @@ if (isset($_POST['external_report']) && is_array($_POST['external_report'])) {
 	}
 	if (($customers_export = $GLOBALS['db']->select('CubeCart_customer', array('title', 'first_name', 'last_name', 'phone', 'mobile', 'customer_id', 'email'))) !== false) {
 		// Get States Array
-		$zones = $GLOBALS['db']->select('CubeCart_geo_zone', array('id', 'name'));
+		$zones = $GLOBALS['db']->select('CubeCart_geo_zone', array('id', 'name'), array('status' => 1));
 		if ($zones) {
 			foreach ($zones as $zone) {
 				$zone_name[$zone['id']] = $zone['name'];
@@ -361,7 +361,7 @@ if (isset($_GET['action']) && Admin::getInstance()->permissions('customers', CC_
 							$smarty_data['countries'][] = $array;
 						}
 						$GLOBALS['smarty']->assign('COUNTRIESL', $smarty_data['countries']);
-						$counties = $GLOBALS['db']->select('CubeCart_geo_zone');
+						$counties = $GLOBALS['db']->select('CubeCart_geo_zone', false, array('status' => 1));
 						if ($counties) {
 							$jsonArray = array();
 							foreach ($counties as $state) {
@@ -518,7 +518,7 @@ if (!isset($_GET['address_id'])): // avoid states double content by address edit
 			);
 		}
 		$GLOBALS['smarty']->assign('COUNTRIES', $smarty_data['countries']);
-		if (($counties = $GLOBALS['db']->select('CubeCart_geo_zone')) !== false) {
+		if (($counties = $GLOBALS['db']->select('CubeCart_geo_zone', false, array('status' => 1))) !== false) {
 			$id = $country_format = 0;
 			foreach ($counties as $state) {
 				if ($id != $state['country_id']) {

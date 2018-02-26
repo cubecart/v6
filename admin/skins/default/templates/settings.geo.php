@@ -80,17 +80,19 @@
 		  <td>{$LANG.address.country}</td>
 		  <td width="310">{$LANG.country.zone_name}</td>
 		  <td>{$LANG.country.zone_abbrev}</td>
+			<td>{$LANG.common.status}</td>
 		  <td>&nbsp;</td>
 		</tr>
 	  </thead>
 	  <tbody>
 	  {foreach from=$ZONES item=zone}
 		<tr>
-		  <td><input type="checkbox" name="multi_zone[{$zone.id}]" value="1" class="all-zones"></td>
+		<td><input type="checkbox" name="multi_zone[{$zone.id}]" value="1" class="all-zones"></td>
 		  <td>{$zone.country}</td>
 		  <td><span class="editable" name="zone[{$zone.id}][name]">{$zone.name}</span></td>
 		  <td width="110"><span class="editable number" name="zone[{$zone.id}][abbrev]">{$zone.abbrev}</span></td>
-		  <td><a href="{$zone.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
+		  <td align="center"><input type="hidden" name="zone[{$zone.id}][status]" id="zone_status_{$zone.id}" value="{$zone.status}" class="toggle"></td>
+			<td><a href="{$zone.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
 		</tr>
 	  {/foreach}
 	  </tbody>
