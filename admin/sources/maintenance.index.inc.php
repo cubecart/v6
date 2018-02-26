@@ -662,7 +662,8 @@ if (isset($database_result) && $database_result) {
 			'eu' => 'KEY'
 		),
 		'cubecart_geo_zone' => array (
-			'id' => 'PRIMARY'
+			'id' => 'PRIMARY',
+			'status' => 'KEY'
 		),
 		'cubecart_history' => array (
 			'id' => 'PRIMARY'
