@@ -460,7 +460,7 @@ class Module {
 	 * Load module zones
 	 */
 	private function _module_zones() {
-		if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('numcode', 'name'), false, array('name' => 'ASC'))) !== false) {
+		if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('numcode', 'name', 'status'), 'status > 0', array('name' => 'ASC'))) !== false) {
 			$enabled_countries = array();
 			$disabled_countries = array();
 			

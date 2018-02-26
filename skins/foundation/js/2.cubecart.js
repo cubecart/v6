@@ -180,8 +180,28 @@ jQuery(document).ready(function() {
         }
     }).change(function() {
         if (typeof(county_list) == 'object') {
+
+            var zone_status = $('option:selected', this).attr('data-status');
+            var form_id = $(this).closest("form").attr('id');
             var list = county_list[$(this).val()];
             var target = ($(this).attr('rel') && $(this).attr('id') != 'country-list') ? '#' + $(this).attr('rel') : '#state-list';
+
+            switch(zone_status) {
+                case '1': // Required
+                    $(target).rules("add",  {required:true});
+                    $(target+"_wrapper").show();
+                break;
+                case '2': // Optional
+                    $(target).rules("add", {required:false});
+                    $(target+"_wrapper").show();
+                break;
+                case '3': // Hidden
+                    $(target).rules("add",  {required:false});
+                    $(target+"_wrapper").hide();
+                break;
+            }
+            $(form_id).validate();
+
             if (typeof(list) == 'object' && typeof(county_list[$(this).val()]) != 'undefined' && county_list[$(this).val()].length >= 1) {
                 var setting = $(target).val();
                 var select = document.createElement('select');
@@ -200,8 +220,8 @@ jQuery(document).ready(function() {
                     if(list[i].id > 0) {
                         $('select' + target).append($(option).val(list[i].id).text(list[i].name));
                     } else {
-                        $('select' + target).append($(option).val('').text(list[i].name));  
-                    } 
+                        $('select' + target).append($(option).val('').text(list[i].name));
+                    }
                 }
                 if(setting>0) {
                     $('select' + target + ' > option[value=' + setting + ']').attr('selected', 'selected');
@@ -222,7 +242,7 @@ jQuery(document).ready(function() {
             }
         }
     });
-    
+
     $('.show_address_form').click(function() {
         show_address_form();
     });

@@ -902,7 +902,7 @@ function sigfig($value, $figures = 2) {
 function state_json() {
 	## Generate a JSON string for state selector
 	if (($json = $GLOBALS['cache']->read('json.states')) === false) {
-		$counties = $GLOBALS['db']->query('SELECT gc.numcode, gz.id, gz.name FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_geo_zone` AS `gz` LEFT JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_geo_country` AS `gc` ON gc.id=gz.country_id WHERE `gz`.`status` = 1 ORDER BY gc.name, gz.name ASC');
+		$counties = $GLOBALS['db']->query('SELECT `gc`.`numcode`, `gz`.`id`, `gz`.`name` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_geo_zone` AS `gz` LEFT JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_geo_country` AS `gc` ON `gc`.`id`=`gz`.`country_id` WHERE `gc`.`status` IN(1,2) ORDER BY `gc`.`name`, `gz`.`name` ASC');
 		$json_array = array();
 		if ($counties) {
 			$current = '';
