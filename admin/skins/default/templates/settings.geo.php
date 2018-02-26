@@ -37,9 +37,9 @@
 		  <td align="center">
 			<select name="country[{$country.id}][status]" id="{$country.id}_status">
 				<option value="0"{if $country.status=='0'} selected="selected"{/if}>{$LANG.common.disabled}</option>
-				<option value="1"{if $country.status=='1'} selected="selected"{/if}>{$LANG.common.enabled} (State Required)</option>
-				<option value="2"{if $country.status=='2'} selected="selected"{/if}>{$LANG.common.enabled} (State Optional)</option>
-				<option value="3"{if $country.status=='3'} selected="selected"{/if}>{$LANG.common.enabled} (State Disabled)</option>
+				<option value="1"{if $country.status=='1'} selected="selected"{/if}>{$LANG.common.enabled} ({$LANG.address.state} {$LANG.common.required})</option>
+				<option value="2"{if $country.status=='2'} selected="selected"{/if}>{$LANG.common.enabled} ({$LANG.address.state} {$LANG.common.optional|replace:array('(',')'):''})</option>
+				<option value="3"{if $country.status=='3'} selected="selected"{/if}>{$LANG.common.enabled} ({$LANG.address.state} {$LANG.common.disabled})</option>
 			</select>
 			</td>
 		  <td align="center"><a href="{$country.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
@@ -75,6 +75,13 @@
 		  <div><label for="country-iso3">{$LANG.country.country_iso_alpha3}</label><span><input type="text" name="new_country[iso3]" id="country-iso3" class="textbox"></span></div>
 		  <div><label for="country-num">{$LANG.country.country_iso_numeric}</label><span><input type="text" name="new_country[numcode]" id="country-num" class="textbox"></span></div>
 		  <div><label for="country-eu">{$LANG.country.assign_to_eu}</label><span><input name="new_country[eu]" id="country-eu" type="hidden" class="toggle" value="0" /></span></div>
+			<div><label for="country-status">{$LANG.common.status}</label><span><select name="new_country[status]" id="country-status">
+				<option value="0">{$LANG.common.disabled}</option>
+				<option value="1">{$LANG.common.enabled} ({$LANG.address.state} {$LANG.common.required})</option>
+				<option value="2">{$LANG.common.enabled} ({$LANG.address.state} {$LANG.common.optional|replace:array('(',')'):''})</option>
+				<option value="3">{$LANG.common.enabled} ({$LANG.address.state} {$LANG.common.disabled})</option>
+			</select>
+			</div>
 		</fieldset>
 	</div>
 
