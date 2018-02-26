@@ -760,13 +760,18 @@ class GUI {
 					}
 				}
 				$GLOBALS['session']->set('', $recaptcha, 'recaptcha');
-			} elseif(isset($_POST['recaptcha_response_field'])) { // for reCAPTCHA v1 
-				require_once CC_INCLUDES_DIR.'lib/recaptcha/recaptchalib.php';
-				$resp = recaptcha_check_answer($this->_reCAPTCHA_keys['captcha_private'], $_SERVER['REMOTE_ADDR'], $_POST['recaptcha_challenge_field'], $_POST['recaptcha_response_field']);
-				if ($resp->is_valid) {
+			} elseif(isset($_POST['recaptcha_response_field'])) { // for reCAPTCHA v1
+				if(time()>strtotime('2018-03-31')) {
+					$GLOBALS['config']->set('config', 'recaptcha', '0');
 					$recaptcha['confirmed'] = true;
 				} else {
-					$recaptcha['error'] = $GLOBALS['language']->form['verify_human_fail'];
+					require_once CC_INCLUDES_DIR.'lib/recaptcha/recaptchalib.php';
+					$resp = recaptcha_check_answer($this->_reCAPTCHA_keys['captcha_private'], $_SERVER['REMOTE_ADDR'], $_POST['recaptcha_challenge_field'], $_POST['recaptcha_response_field']);
+					if ($resp->is_valid) {
+						$recaptcha['confirmed'] = true;
+					} else {
+						$recaptcha['error'] = $GLOBALS['language']->form['verify_human_fail'];
+					}
 				}
 				$GLOBALS['session']->set('', $recaptcha, 'recaptcha');				
 			}	
