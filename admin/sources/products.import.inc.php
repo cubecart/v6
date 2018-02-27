@@ -330,7 +330,11 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 				'brand'				=> $lang['catalogue']['product_brand'],
 				'gtin'				=> $lang['catalogue']['product_gtin'],
 				'mpn'				=> $lang['catalogue']['product_mpn'],
-				'condition'			=> $lang['catalogue']['condition']
+				'condition'			=> $lang['catalogue']['condition'],
+				'product_width'			=> $lang['catalogue']['product_width'],
+				'product_height'			=> $lang['catalogue']['product_height'],
+				'product_depth'			=> $lang['catalogue']['product_depth'],
+				'dimension_unit'			=> $lang['catalogue']['dimension_unit']
 			);
 			$fp		= fopen($source, 'r');
 			$data	= fgetcsv($fp, null, str_replace('tab', "\t", $delimiter));
