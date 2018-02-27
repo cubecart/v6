@@ -2680,7 +2680,7 @@ class Cubecart {
 				$summary = $summaries[0];
 				if (($products = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('cart_order_id' => $_GET['cart_order_id']))) !== false) {
 					foreach ($products as $item) {
-						$item['price_total'] = $GLOBALS['tax']->priceFormat(sprintf('%.2F', $item['price'] * $item['quantity']), true);
+						$item['price_total'] = $GLOBALS['tax']->priceFormat(sprintf('%.3F', $item['price'] * $item['quantity']), true);
 						$item['price'] = $GLOBALS['tax']->priceFormat($item['price'], true);
 						if (!empty($item['product_options'])) {
 							$options = ($array = unserialize($item['product_options'])) ? $array : explode("\n", $item['product_options']);

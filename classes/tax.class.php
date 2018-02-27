@@ -397,13 +397,13 @@ class Tax {
 
 			if($tax_inclusive) {
 				// if tax inclusive we need to remove tax and flag it as done!
-				$amount = $price - ($price/($percent+1));
+				$amount = sprintf('%.2F',$price - ($price/($percent+1)));
 				if($sum) {
 					$this->_tax_table_inc[$tax_id]		+= $amount;
 					$this->_total_tax_inc				+= $amount;
 				}
 			} else {
-				$amount	= $price * $percent;
+				$amount	= sprintf('%.2F',$price * $percent);
 				if($sum) {
 					if (isset($this->_tax_table_add[$tax_id])) {
 						$this->_tax_table_add[$tax_id]	+= $amount;
@@ -422,7 +422,7 @@ class Tax {
 					switch ($tax_inclusive) {
 						case true:
 							## Already includes tax - but how much?
-							$amount = $price - ($price/(($tax['percent']/100)+1));
+							$amount = sprintf('%.2F',$price - ($price/(($tax['percent']/100)+1)));
 							if($sum) {
 								$this->_tax_table_applied[$tax_id]	= $tax['name'];
 								$this->_tax_table_inc[$tax_id]		+= $amount;
@@ -432,7 +432,7 @@ class Tax {
 						case false:
 						default:
 							## Excludes tax - lets add it
-							$amount	= $price*($tax['percent']/100);
+							$amount	= sprintf('%.2F',$price*($tax['percent']/100));
 							if($sum) {
 								$this->_tax_table_applied[$tax_id]	= $tax['name'];
 								if (isset($this->_tax_table_add[$tax_id])) {
