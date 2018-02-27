@@ -544,6 +544,8 @@
     <string name="sort_stock" introduced="5.0.0"><![CDATA[Stock]]></string>
   </group>
   <group name="checkout">
+    <string name="error_voucher_exceeded" introduced="6.1.14"><![CDATA[Sorry but that code has been used to it's maximum allowance.]]></string>
+    <string name="error_voucher_order_status" introduced="6.1.14"><![CDATA[Sorry but that code can't be used against an order of this status.]]></string>
     <string name="checkout" introduced="5.0.0"><![CDATA[Checkout]]></string>
     <string name="secure_checkout" introduced="6.0.0"><![CDATA[Secure Checkout]]></string>
     <string name="error_shipping" introduced="5.0.0"><![CDATA[Unfortunately there are no suitable shipping methods available for your order. This may be because the total weight of your order is too high or we cannot ship to your country. Please contact a member of our staff for any further inquiries.]]></string>

@@ -513,12 +513,12 @@ class Cart {
 				}
 				if ($order && !in_array($order[0]['status'], array(2, 3))) {
 					// Check order is still valid!
-					$GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_expired']);
+					$GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_order_status']);
 					return false;
 				}
 				if ($coupon['allowed_uses'] > 0 && ($coupon['count'] >= $coupon['allowed_uses'])) {
 					// Coupon is no longer valid
-					$GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_expired']);
+					$GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_exceeded']);
 					return false;
 				}
 				if ((float)$coupon['min_subtotal'] > 0 && $this->basket['subtotal'] < (float)$coupon['min_subtotal']) {
