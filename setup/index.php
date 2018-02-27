@@ -546,7 +546,13 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
         if (file_exists($global_file)) rename($global_file, $global_file.'-'.date('Ymdgis').'.php');
         if (file_put_contents($global_file, $config)); 
       }
-      $GLOBALS['smarty']->assign('ADMIN_URL', str_replace('/setup','',CC_STORE_URL).'/'.$adminFile);
+      $adminURL = str_replace('/setup','',CC_STORE_URL).'/'.$adminFile;
+      if($admins = $db->select('CubeCart_admin_users', false, array('status'=> 1))) {
+        foreach($admins as $admin) {
+          mail($admin['email'],"Store Admin URL Change", "Hi ".$admin['name'].",\r\n\r\nYour store has been upgraded to CubeCart version ".CC_VERSION.".\r\n\r\nFor security reasons the admin URL has been obscured to divert unwanted attention. Please update your bookmark to ".$adminURL);
+        }
+      }
+      $GLOBALS['smarty']->assign('ADMIN_URL', $adminURL);
       $GLOBALS['smarty']->assign('STORE_URL', str_replace('/setup','',CC_STORE_URL).'/');
       $GLOBALS['smarty']->assign('SHOW_LINKS', true);
     }
