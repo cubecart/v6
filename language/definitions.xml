@@ -383,6 +383,7 @@
     <string name="notify_product_create" introduced="5.0.0"><![CDATA[Product successfully created.]]></string>
     <string name="notify_product_delete" introduced="5.0.0"><![CDATA[Product(s) successfully deleted.]]></string>
     <string name="notify_product_search" introduced="5.0.0"><![CDATA[Products found matching '%s']]></string>
+    <string name="notify_product_search_one" introduced="6.2.0"><![CDATA[Just one product was found matching '%s']]></string>
     <string name="notify_product_update" introduced="5.0.0"><![CDATA[Product successfully updated.]]></string>
     <string name="notify_review_submit" introduced="5.0.0"><![CDATA[Thank you. Your review has been submitted for moderation.]]></string>
     <string name="notify_tell_friend" introduced="5.0.0"><![CDATA[Thank you. Your friend has been emailed about this product.]]></string>

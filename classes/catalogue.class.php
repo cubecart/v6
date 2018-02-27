@@ -1822,6 +1822,10 @@ class Catalogue {
 						$this->_category_count  = (int)count($count);
 						$this->_category_products = $search;
 						$this->_sort_by_relevance = true;
+						if(count($this->_category_products)==1 && ctype_digit($this->_category_products[0]['product_id'])) {
+							$GLOBALS['gui']->setNotify(sprintf($GLOBALS['language']->catalogue['notify_product_search_one'], $_REQUEST['search']['keywords']));
+							httpredir('?_a=product&product_id='.$this->_category_products[0]['product_id']);
+						}
 						return true;
 					} elseif ($search_mode == 'fulltext') {
 						return $this->searchCatalogue($original_search_data, 1, $per_page, 'rlike');
@@ -1872,6 +1876,10 @@ class Catalogue {
 						$count = $GLOBALS['db']->query($q2, false, 0);
 						$this->_category_count  = (int)count($count);
 						$this->_category_products = $search;
+						if(count($this->_category_products)==1 && ctype_digit($this->_category_products[0]['product_id'])) {
+							$GLOBALS['gui']->setNotify(sprintf($GLOBALS['language']->catalogue['notify_product_search_one'], $_REQUEST['search']['keywords']));
+							httpredir('?_a=product&product_id='.$this->_category_products[0]['product_id']);
+						}
 						return true;
 					} elseif($search_mode=="rlike") {
 						return $this->searchCatalogue($original_search_data, 1, $per_page, 'like');
