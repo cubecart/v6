@@ -446,7 +446,7 @@ class Tax {
 					}
 				}
 			}
-			return array('amount' => sprintf('%.2F',$amount), 'tax_inclusive' => sprintf('%.2F',$tax_inclusive), 'tax_name' => sprintf('%.2F',$tax_name));
+			return array('amount' => $amount, 'tax_inclusive' => $tax_inclusive, 'tax_name' => $tax_name);
 		}
 		return false;
 	}
