@@ -631,6 +631,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_inventory` (
 	`name` VARCHAR(225) NOT NULL,
 	`quantity` SMALLINT UNSIGNED NOT NULL DEFAULT '0',
 	`price` DECIMAL(16,2) NOT NULL DEFAULT '0.00',
+	`tax` DECIMAL(16,2) NOT NULL DEFAULT '0.00',
 	`cart_order_id` VARCHAR(18) NOT NULL,
 	`product_options` BLOB NULL,
 	`options_array` BLOB NULL,
