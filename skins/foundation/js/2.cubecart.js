@@ -147,6 +147,11 @@ jQuery(document).ready(function() {
         if (typeof(county_list) == 'object') {
             var counties = county_list[$(this).val()];
             var target = ($(this).attr('rel') && $(this).attr('id') != 'country-list') ? '#' + $(this).attr('rel') : '#state-list';
+            var zone_status = $('option:selected', this).attr('data-status');
+            var form_id = $(this).closest("form").attr('id');
+
+            stateRequirements(zone_status, form_id, target, false);
+
             if (typeof(counties) == 'object') {
                 var setting = $(target).val();
                 var select = document.createElement('select');
@@ -180,27 +185,12 @@ jQuery(document).ready(function() {
         }
     }).change(function() {
         if (typeof(county_list) == 'object') {
-
-            var zone_status = $('option:selected', this).attr('data-status');
-            var form_id = $(this).closest("form").attr('id');
             var list = county_list[$(this).val()];
             var target = ($(this).attr('rel') && $(this).attr('id') != 'country-list') ? '#' + $(this).attr('rel') : '#state-list';
+            var zone_status = $('option:selected', this).attr('data-status');
+            var form_id = $(this).closest("form").attr('id');
 
-            switch(zone_status) {
-                case '1': // Required
-                    $(target).rules("add",  {required:true});
-                    $(target+"_wrapper").show();
-                break;
-                case '2': // Optional
-                    $(target).rules("add", {required:false});
-                    $(target+"_wrapper").show();
-                break;
-                case '3': // Hidden
-                    $(target).rules("add",  {required:false});
-                    $(target+"_wrapper").hide();
-                break;
-            }
-            $(form_id).validate();
+            stateRequirements(zone_status, form_id, target, true);
 
             if (typeof(list) == 'object' && typeof(county_list[$(this).val()]) != 'undefined' && county_list[$(this).val()].length >= 1) {
                 var setting = $(target).val();
@@ -637,4 +627,26 @@ function update_quantity(rel, sign) {
         $('#checkout_form').removeAttr("action").attr("action", '#basket_item_' + rel);
     }
     return false;
+}
+var validation_ini = {}
+function stateRequirements(zone_status, form_id, target, change) {
+    var val = false;
+    switch(zone_status) {
+        case '1': // Required
+            val = true;
+            $(target+"_wrapper").show();
+        break;
+        case '2': // Optional
+            $(target+"_wrapper").show();
+        break;
+        case '3': // Hidden
+            $(target+"_wrapper").hide();
+        break;
+    }
+    if(change) {
+        $(target).rules("add",  {required:val});
+        $(form_id).validate();
+    } else {
+        validation_ini[target.substr(1)] = val;
+    }
 }
