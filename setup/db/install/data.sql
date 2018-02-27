@@ -34,338 +34,338 @@ INSERT INTO `CubeCart_currency` (`currency_id`, `name`, `code`, `iso`, `symbol_l
 INSERT INTO `CubeCart_currency` (`currency_id`, `name`, `code`, `iso`, `symbol_left`, `symbol_right`, `value`, `decimal_places`, `updated`, `active`, `symbol_decimal`, `symbol_thousand`) VALUES(30, 'Euro', 'EUR', 978, '€', '', 1.00000, 2, 1421884800, 1, '.', ','); #EOQ
 INSERT INTO `CubeCart_currency` (`currency_id`, `name`, `code`, `iso`, `symbol_left`, `symbol_right`, `value`, `decimal_places`, `updated`, `active`, `symbol_decimal`, `symbol_thousand`) VALUES(31, 'Australian Dollar', 'AUD', 036, '$', '', 1.42990, 2, 1421884800, 1, '.', ','); #EOQ
 
-INSERT INTO `CubeCart_geo_zone` VALUES(1, 226, 'AL', 'Alabama'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(2, 226, 'AK', 'Alaska'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(3, 226, 'AS', 'American Samoa'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(4, 226, 'AZ', 'Arizona'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(5, 226, 'AR', 'Arkansas'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(6, 226, 'AF', 'Armed Forces Africa'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(7, 226, 'AA', 'Armed Forces Americas'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(8, 226, 'AC', 'Armed Forces Canada'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(9, 226, 'AE', 'Armed Forces Europe'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(10, 226, 'AM', 'Armed Forces Middle East'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(11, 226, 'AP', 'Armed Forces Pacific'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(12, 226, 'CA', 'California'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(13, 226, 'CO', 'Colorado'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(14, 226, 'CT', 'Connecticut'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(15, 226, 'DE', 'Delaware'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(16, 226, 'DC', 'District of Columbia'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(17, 226, 'FM', 'Federated States Of Micronesia'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(18, 226, 'FL', 'Florida'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(19, 226, 'GA', 'Georgia'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(20, 226, 'GU', 'Guam'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(21, 226, 'HI', 'Hawaii'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(22, 226, 'ID', 'Idaho'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(23, 226, 'IL', 'Illinois'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(24, 226, 'IN', 'Indiana'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(25, 226, 'IA', 'Iowa'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(26, 226, 'KS', 'Kansas'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(27, 226, 'KY', 'Kentucky'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(28, 226, 'LA', 'Louisiana'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(29, 226, 'ME', 'Maine'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(30, 226, 'MH', 'Marshall Islands'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(31, 226, 'MD', 'Maryland'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(32, 226, 'MA', 'Massachusetts'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(33, 226, 'MI', 'Michigan'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(34, 226, 'MN', 'Minnesota'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(35, 226, 'MS', 'Mississippi'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(36, 226, 'MO', 'Missouri'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(37, 226, 'MT', 'Montana'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(38, 226, 'NE', 'Nebraska'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(39, 226, 'NV', 'Nevada'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(40, 226, 'NH', 'New Hampshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(41, 226, 'NJ', 'New Jersey'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(42, 226, 'NM', 'New Mexico'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(43, 226, 'NY', 'New York'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(44, 226, 'NC', 'North Carolina'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(45, 226, 'ND', 'North Dakota'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(46, 226, 'MP', 'Northern Mariana Islands'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(47, 226, 'OH', 'Ohio'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(48, 226, 'OK', 'Oklahoma'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(49, 226, 'OR', 'Oregon'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(50, 226, 'PW', 'Palau'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(51, 226, 'PA', 'Pennsylvania'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(52, 226, 'PR', 'Puerto Rico'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(53, 226, 'RI', 'Rhode Island'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(54, 226, 'SC', 'South Carolina'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(55, 226, 'SD', 'South Dakota'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(56, 226, 'TN', 'Tennessee'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(57, 226, 'TX', 'Texas'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(58, 226, 'UT', 'Utah'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(59, 226, 'VT', 'Vermont'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(60, 226, 'VI', 'Virgin Islands'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(61, 226, 'VA', 'Virginia'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(62, 226, 'WA', 'Washington'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(63, 226, 'WV', 'West Virginia'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(64, 226, 'WI', 'Wisconsin'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(65, 226, 'WY', 'Wyoming'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(66, 38, 'AB', 'Alberta'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(67, 38, 'BC', 'British Columbia'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(68, 38, 'MB', 'Manitoba'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(69, 38, 'NF', 'Newfoundland'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(70, 38, 'NB', 'New Brunswick'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(71, 38, 'NS', 'Nova Scotia'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(72, 38, 'NT', 'Northwest Territories'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(73, 38, 'NU', 'Nunavut'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(74, 38, 'ON', 'Ontario'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(75, 38, 'PE', 'Prince Edward Island'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(76, 38, 'QC', 'Quebec'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(77, 38, 'SK', 'Saskatchewan'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(78, 38, 'YT', 'Yukon Territory'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(79, 80, 'NDS', 'Niedersachsen'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(80, 80, 'BAW', 'Baden-Württemberg'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(81, 80, 'BAY', 'Bayern'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(82, 80, 'BER', 'Berlin'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(83, 80, 'BRG', 'Brandenburg'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(84, 80, 'BRE', 'Bremen'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(85, 80, 'HAM', 'Hamburg'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(86, 80, 'HES', 'Hessen'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(87, 80, 'MEC', 'Mecklenburg-Vorpommern'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(88, 80, 'NRW', 'Nordrhein-Westfalen'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(89, 80, 'RHE', 'Rheinland-Pfalz'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(90, 80, 'SAR', 'Saarland'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(91, 80, 'SAS', 'Sachsen'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(92, 80, 'SAC', 'Sachsen-Anhalt'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(93, 80, 'SCN', 'Schleswig-Holstein'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(94, 80, 'THE', 'Thüringen'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(95, 14, 'WIE', 'Wien'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(96, 14, 'NO', 'NiederÖsterreich'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(97, 14, 'OO', 'OberÖsterreich'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(98, 14, 'SB', 'Salzburg'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(99, 14, 'KN', 'Kärnten'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(100, 14, 'ST', 'Steiermark'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(101, 14, 'TI', 'Tirol'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(102, 14, 'BL', 'Burgenland'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(103, 14, 'VB', 'Voralberg'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(104, 206, 'AG', 'Aargau'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(105, 206, 'AI', 'Appenzell Innerrhoden'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(106, 206, 'APP', 'Appenzell Ausserrhoden'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(107, 206, 'BE', 'Bern'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(108, 206, 'BLA', 'Basel-Landschaft'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(109, 206, 'BS', 'Basel-Stadt'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(110, 206, 'FR', 'Freiburg'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(111, 206, 'GE', 'Genf'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(112, 206, 'GL', 'Glarus'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(113, 206, 'JUB', 'Graubünden'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(114, 206, 'JU', 'Jura'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(115, 206, 'LU', 'Luzern'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(116, 206, 'NEU', 'Neuenburg'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(117, 206, 'NW', 'Nidwalden'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(118, 206, 'OW', 'Obwalden'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(119, 206, 'SG', 'St. Gallen'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(120, 206, 'SH', 'Schaffhausen'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(121, 206, 'SO', 'Solothurn'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(122, 206, 'SZ', 'Schwyz'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(123, 206, 'TG', 'Thurgau'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(124, 206, 'TE', 'Tessin'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(125, 206, 'UR', 'Uri'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(126, 206, 'VD', 'Waadt'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(127, 206, 'VS', 'Wallis'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(128, 206, 'ZG', 'Zug'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(129, 206, 'ZH', 'Zürich'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(130, 199, 'ACOR', 'A Coruña'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(131, 199, 'ALAV', 'Alava'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(132, 199, 'ALBA', 'Albacete'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(133, 199, 'ALIC', 'Alicante'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(134, 199, 'ALME', 'Almeria'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(135, 199, 'ASTU', 'Asturias'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(136, 199, 'AVIL', 'Avila'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(137, 199, 'BADA', 'Badajoz'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(138, 199, 'BALE', 'Baleares'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(139, 199, 'BARC', 'Barcelona'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(140, 199, 'BURG', 'Burgos'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(141, 199, 'CACE', 'Caceres'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(142, 199, 'CADI', 'Cadiz'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(143, 199, 'CANT', 'Cantabria'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(144, 199, 'CAST', 'Castellon'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(145, 199, 'CEUT', 'Ceuta'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(146, 199, 'CIUD', 'Ciudad Real'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(147, 199, 'CORD', 'Cordoba'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(148, 199, 'CUEN', 'Cuenca'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(149, 199, 'GIRO', 'Girona'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(150, 199, 'GRAN', 'Granada'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(151, 199, 'GUAD', 'Guadalajara'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(152, 199, 'GUIP', 'Guipuzcoa'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(153, 199, 'HUEL', 'Huelva'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(154, 199, 'HUES', 'Huesca'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(155, 199, 'JAEN', 'Jaen'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(156, 199, 'LAR', 'La Rioja'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(157, 199, 'LAS', 'Las Palmas'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(158, 199, 'LEON', 'Leon'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(159, 199, 'LLEI', 'Lleida'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(160, 199, 'LUGO', 'Lugo'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(161, 199, 'MADR', 'Madrid'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(162, 199, 'MALA', 'Malaga'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(163, 199, 'MELI', 'Melilla'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(164, 199, 'MURC', 'Murcia'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(165, 199, 'NAVA', 'Navarra'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(166, 199, 'OURE', 'Ourense'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(167, 199, 'PALE', 'Palencia'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(168, 199, 'PONT', 'Pontevedra'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(169, 199, 'SALA', 'Salamanca'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(170, 199, 'SANT', 'Santa Cruz de Tenerife'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(171, 199, 'SEGO', 'Segovia'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(172, 199, 'SEVI', 'Sevilla'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(173, 199, 'SORI', 'Soria'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(174, 199, 'TARR', 'Tarragona'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(175, 199, 'TERU', 'Teruel'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(176, 199, 'TOLE', 'Toledo'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(177, 199, 'VALE', 'Valencia'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(178, 199, 'VALL', 'Valladolid'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(179, 199, 'VIZC', 'Vizcaya'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(180, 199, 'ZAMO', 'Zamora'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(181, 199, 'ZARA', 'Zaragoza'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(415, 103, 'CW', 'Carlow'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(416, 103, 'CN', 'Cavan'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(417, 103, 'CE', 'Clare'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(418, 103, 'C', 'Cork'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(419, 103, 'DL', 'Donegal'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(420, 103, 'D', 'Dublin'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(421, 103, 'G', 'Galway'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(422, 103, 'KY', 'Kerry'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(423, 103, 'KE', 'Kildare'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(424, 103, 'KK', 'Kilkenny'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(425, 103, 'LS', 'Laoighis'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(426, 103, 'LM', 'Leitrim'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(427, 103, 'LK', 'Limerick'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(428, 103, 'LD', 'Longford'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(429, 103, 'LH', 'Louth'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(430, 103, 'MO', 'Mayo'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(431, 103, 'MH', 'Meath'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(432, 103, 'MN', 'Monaghan'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(433, 103, 'OY', 'Offaly'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(434, 103, 'RN', 'Roscommon'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(435, 103, 'SO', 'Sligo'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(436, 103, 'TA', 'Tipperary'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(437, 103, 'WD', 'Waterford'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(438, 103, 'WH', 'Westmeath'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(439, 103, 'WX', 'Wexford'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(440, 103, 'WW', 'Wicklow'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(441, 225, 'AVN', 'Avon'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(442, 225, 'BDF', 'Bedfordshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(443, 225, 'BRK', 'Berkshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(444, 225, 'BKM', 'Buckinghamshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(445, 225, 'CAM', 'Cambridgeshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(446, 225, 'CHS', 'Cheshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(447, 225, 'CLV', 'Cleveland'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(448, 225, 'CON', 'Cornwall'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(449, 225, 'CUL', 'Cumberland'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(450, 225, 'CMA', 'Cumbria'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(451, 225, 'DBY', 'Derbyshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(452, 225, 'DEV', 'Devon'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(453, 225, 'DOR', 'Dorset'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(454, 225, 'DUR', 'County Durham'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(455, 225, 'ESS', 'Essex'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(456, 225, 'GLS', 'Gloucestershire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(457, 225, 'HAM', 'Hampshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(458, 225, 'HWR', 'Hereford and Worcester'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(459, 225, 'HEF', 'Herefordshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(460, 225, 'HRT', 'Hertfordshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(461, 225, 'HUM', 'Humberside'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(462, 225, 'HUN', 'Huntingdonshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(463, 225, 'IOW', 'Isle of Wight'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(464, 225, 'KEN', 'Kent'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(465, 225, 'LAN', 'Lancashire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(466, 225, 'LEI', 'Leicestershire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(467, 225, 'LIN', 'Lincolnshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(468, 225, 'GTM', 'Greater Manchester'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(469, 225, 'GTL', 'Greater London'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(470, 225, 'MSY', 'Merseyside'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(471, 225, 'MDX', 'Middlesex'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(472, 225, 'NFK', 'Norfolk'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(473, 225, 'NTH', 'Northamptonshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(474, 225, 'NBL', 'Northumberland'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(475, 225, 'NTT', 'Nottinghamshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(476, 225, 'OXF', 'Oxfordshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(477, 225, 'RUT', 'Rutland'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(478, 225, 'SAL', 'Shropshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(479, 225, 'SOM', 'Somerset'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(480, 225, 'STS', 'Staffordshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(481, 225, 'SFK', 'Suffolk'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(482, 225, 'SRY', 'Surrey'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(484, 225, 'TWR', 'Tyne and Wear'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(485, 225, 'WAR', 'Warwickshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(486, 225, 'WMD', 'West Midlands'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(487, 225, 'WES', 'Westmorland'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(488, 225, 'WIL', 'Wiltshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(489, 225, 'WOR', 'Worcestershire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(491, 225, 'ABD', 'Aberdeenshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(492, 225, 'ANS', 'Angus'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(493, 225, 'ARL', 'Argyll'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(494, 225, 'AYR', 'Ayrshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(495, 225, 'BAN', 'Banffshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(496, 225, 'BEW', 'Berwickshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(497, 225, 'BUT', 'Bute'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(498, 225, 'CAI', 'Caithness'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(499, 225, 'CLK', 'Clackmannanshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(500, 225, 'CRO', 'Cromartyshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(501, 225, 'DFS', 'Dumfriesshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(502, 225, 'DNB', 'Dunbartonshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(503, 225, 'ELN', 'East Lothian'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(504, 225, 'FIF', 'Fife'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(505, 225, 'INV', 'Inverness-shire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(506, 225, 'KRS', 'Kinross-shire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(507, 225, 'KKD', 'Kirkcudbrightshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(508, 225, 'LKS', 'Lanarkshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(509, 225, 'MLN', 'Midlothian'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(510, 225, 'MOR', 'Moray'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(511, 225, 'NAI', 'Nairnshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(512, 225, 'OKI', 'Orkney'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(513, 225, 'PEE', 'Peeblesshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(514, 225, 'PER', 'Perthshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(515, 225, 'RFW', 'Renfrewshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(516, 225, 'ROC', 'Ross'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(517, 225, 'ROX', 'Roxburghshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(518, 225, 'SEL', 'Selkirkshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(519, 225, 'SHI', 'Shetland'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(520, 225, 'STI', 'Stirlingshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(521, 225, 'SUT', 'Sutherland'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(522, 225, 'WLN', 'West Lothian'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(523, 225, 'WIG', 'Wigtownshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(524, 225, 'AGY', 'Anglesey'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(525, 225, 'BRN', 'Brecknockshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(526, 225, 'CAE', 'Caernarfonshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(527, 225, 'CAD', 'Ceredigion'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(528, 225, 'CRR', 'Carmarthenshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(529, 225, 'CLW', 'Clwyd'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(530, 225, 'DEN', 'Denbighshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(531, 225, 'DFD', 'Dyfed'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(532, 225, 'FLN', 'Flintshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(533, 225, 'GLA', 'Glamorgan'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(534, 225, 'GNT', 'Gwent'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(535, 225, 'GWN', 'Gwynedd'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(536, 225, 'MER', 'Merionethshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(537, 225, 'MON', 'Monmouthshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(538, 225, 'MGY', 'Montgomeryshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(539, 225, 'PEM', 'Pembrokeshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(540, 225, 'POW', 'Powys'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(541, 225, 'RAD', 'Radnorshire'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(542, 225, 'ANT', 'Antrim'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(543, 225, 'ARM', 'Armagh'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(544, 225, 'LDY', 'Londonderry'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(545, 225, 'DOW', 'Down'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(546, 225, 'FER', 'Fermanagh'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(547, 225, 'TYR', 'Tyrone'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(548, 150, 'DR', 'Drenthe'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(549, 150, 'FL', 'Flevoland'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(550, 150, 'FR', 'Friesland'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(551, 150, 'GLD', 'Gelderland'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(552, 150, 'GR', 'Groningen'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(553, 150, 'LI', 'Limburg'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(554, 150, 'NB', 'Noord-Brabant'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(555, 150, 'NH', 'Noord-Holland'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(556, 150, 'OV', 'Overijssel'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(557, 150, 'UT', 'Utrecht'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(558, 150, 'ZL', 'Zeeland'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(559, 150, 'ZH', 'Zuid-Holland'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(560, 13, 'ACT', 'Australian Capital Territory'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(561, 13, 'NSW', 'New South Wales'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(562, 13, 'NT', 'Northern Territory'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(563, 13, 'QLD', 'Queensland'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(564, 13, 'SA', 'South Australia'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(565, 13, 'TAS', 'Tasmania'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(566, 13, 'VIC', 'Victoria'); #EOQ
-INSERT INTO `CubeCart_geo_zone` VALUES(567, 13, 'WA', 'Western Australia'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(1, 226, 'AL', 'Alabama'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(2, 226, 'AK', 'Alaska'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(3, 226, 'AS', 'American Samoa'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(4, 226, 'AZ', 'Arizona'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(5, 226, 'AR', 'Arkansas'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(6, 226, 'AF', 'Armed Forces Africa'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(7, 226, 'AA', 'Armed Forces Americas'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(8, 226, 'AC', 'Armed Forces Canada'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(9, 226, 'AE', 'Armed Forces Europe'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(10, 226, 'AM', 'Armed Forces Middle East'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(11, 226, 'AP', 'Armed Forces Pacific'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(12, 226, 'CA', 'California'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(13, 226, 'CO', 'Colorado'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(14, 226, 'CT', 'Connecticut'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(15, 226, 'DE', 'Delaware'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(16, 226, 'DC', 'District of Columbia'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(17, 226, 'FM', 'Federated States Of Micronesia'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(18, 226, 'FL', 'Florida'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(19, 226, 'GA', 'Georgia'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(20, 226, 'GU', 'Guam'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(21, 226, 'HI', 'Hawaii'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(22, 226, 'ID', 'Idaho'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(23, 226, 'IL', 'Illinois'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(24, 226, 'IN', 'Indiana'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(25, 226, 'IA', 'Iowa'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(26, 226, 'KS', 'Kansas'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(27, 226, 'KY', 'Kentucky'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(28, 226, 'LA', 'Louisiana'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(29, 226, 'ME', 'Maine'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(30, 226, 'MH', 'Marshall Islands'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(31, 226, 'MD', 'Maryland'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(32, 226, 'MA', 'Massachusetts'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(33, 226, 'MI', 'Michigan'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(34, 226, 'MN', 'Minnesota'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(35, 226, 'MS', 'Mississippi'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(36, 226, 'MO', 'Missouri'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(37, 226, 'MT', 'Montana'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(38, 226, 'NE', 'Nebraska'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(39, 226, 'NV', 'Nevada'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(40, 226, 'NH', 'New Hampshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(41, 226, 'NJ', 'New Jersey'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(42, 226, 'NM', 'New Mexico'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(43, 226, 'NY', 'New York'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(44, 226, 'NC', 'North Carolina'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(45, 226, 'ND', 'North Dakota'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(46, 226, 'MP', 'Northern Mariana Islands'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(47, 226, 'OH', 'Ohio'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(48, 226, 'OK', 'Oklahoma'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(49, 226, 'OR', 'Oregon'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(50, 226, 'PW', 'Palau'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(51, 226, 'PA', 'Pennsylvania'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(52, 226, 'PR', 'Puerto Rico'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(53, 226, 'RI', 'Rhode Island'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(54, 226, 'SC', 'South Carolina'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(55, 226, 'SD', 'South Dakota'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(56, 226, 'TN', 'Tennessee'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(57, 226, 'TX', 'Texas'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(58, 226, 'UT', 'Utah'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(59, 226, 'VT', 'Vermont'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(60, 226, 'VI', 'Virgin Islands'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(61, 226, 'VA', 'Virginia'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(62, 226, 'WA', 'Washington'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(63, 226, 'WV', 'West Virginia'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(64, 226, 'WI', 'Wisconsin'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(65, 226, 'WY', 'Wyoming'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(66, 38, 'AB', 'Alberta'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(67, 38, 'BC', 'British Columbia'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(68, 38, 'MB', 'Manitoba'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(69, 38, 'NF', 'Newfoundland'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(70, 38, 'NB', 'New Brunswick'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(71, 38, 'NS', 'Nova Scotia'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(72, 38, 'NT', 'Northwest Territories'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(73, 38, 'NU', 'Nunavut'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(74, 38, 'ON', 'Ontario'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(75, 38, 'PE', 'Prince Edward Island'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(76, 38, 'QC', 'Quebec'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(77, 38, 'SK', 'Saskatchewan'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(78, 38, 'YT', 'Yukon Territory'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(79, 80, 'NDS', 'Niedersachsen'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(80, 80, 'BAW', 'Baden-Württemberg'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(81, 80, 'BAY', 'Bayern'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(82, 80, 'BER', 'Berlin'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(83, 80, 'BRG', 'Brandenburg'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(84, 80, 'BRE', 'Bremen'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(85, 80, 'HAM', 'Hamburg'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(86, 80, 'HES', 'Hessen'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(87, 80, 'MEC', 'Mecklenburg-Vorpommern'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(88, 80, 'NRW', 'Nordrhein-Westfalen'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(89, 80, 'RHE', 'Rheinland-Pfalz'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(90, 80, 'SAR', 'Saarland'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(91, 80, 'SAS', 'Sachsen'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(92, 80, 'SAC', 'Sachsen-Anhalt'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(93, 80, 'SCN', 'Schleswig-Holstein'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(94, 80, 'THE', 'Thüringen'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(95, 14, 'WIE', 'Wien'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(96, 14, 'NO', 'NiederÖsterreich'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(97, 14, 'OO', 'OberÖsterreich'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(98, 14, 'SB', 'Salzburg'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(99, 14, 'KN', 'Kärnten'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(100, 14, 'ST', 'Steiermark'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(101, 14, 'TI', 'Tirol'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(102, 14, 'BL', 'Burgenland'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(103, 14, 'VB', 'Voralberg'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(104, 206, 'AG', 'Aargau'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(105, 206, 'AI', 'Appenzell Innerrhoden'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(106, 206, 'APP', 'Appenzell Ausserrhoden'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(107, 206, 'BE', 'Bern'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(108, 206, 'BLA', 'Basel-Landschaft'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(109, 206, 'BS', 'Basel-Stadt'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(110, 206, 'FR', 'Freiburg'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(111, 206, 'GE', 'Genf'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(112, 206, 'GL', 'Glarus'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(113, 206, 'JUB', 'Graubünden'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(114, 206, 'JU', 'Jura'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(115, 206, 'LU', 'Luzern'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(116, 206, 'NEU', 'Neuenburg'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(117, 206, 'NW', 'Nidwalden'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(118, 206, 'OW', 'Obwalden'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(119, 206, 'SG', 'St. Gallen'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(120, 206, 'SH', 'Schaffhausen'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(121, 206, 'SO', 'Solothurn'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(122, 206, 'SZ', 'Schwyz'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(123, 206, 'TG', 'Thurgau'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(124, 206, 'TE', 'Tessin'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(125, 206, 'UR', 'Uri'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(126, 206, 'VD', 'Waadt'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(127, 206, 'VS', 'Wallis'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(128, 206, 'ZG', 'Zug'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(129, 206, 'ZH', 'Zürich'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(130, 199, 'ACOR', 'A Coruña'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(131, 199, 'ALAV', 'Alava'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(132, 199, 'ALBA', 'Albacete'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(133, 199, 'ALIC', 'Alicante'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(134, 199, 'ALME', 'Almeria'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(135, 199, 'ASTU', 'Asturias'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(136, 199, 'AVIL', 'Avila'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(137, 199, 'BADA', 'Badajoz'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(138, 199, 'BALE', 'Baleares'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(139, 199, 'BARC', 'Barcelona'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(140, 199, 'BURG', 'Burgos'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(141, 199, 'CACE', 'Caceres'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(142, 199, 'CADI', 'Cadiz'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(143, 199, 'CANT', 'Cantabria'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(144, 199, 'CAST', 'Castellon'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(145, 199, 'CEUT', 'Ceuta'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(146, 199, 'CIUD', 'Ciudad Real'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(147, 199, 'CORD', 'Cordoba'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(148, 199, 'CUEN', 'Cuenca'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(149, 199, 'GIRO', 'Girona'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(150, 199, 'GRAN', 'Granada'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(151, 199, 'GUAD', 'Guadalajara'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(152, 199, 'GUIP', 'Guipuzcoa'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(153, 199, 'HUEL', 'Huelva'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(154, 199, 'HUES', 'Huesca'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(155, 199, 'JAEN', 'Jaen'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(156, 199, 'LAR', 'La Rioja'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(157, 199, 'LAS', 'Las Palmas'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(158, 199, 'LEON', 'Leon'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(159, 199, 'LLEI', 'Lleida'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(160, 199, 'LUGO', 'Lugo'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(161, 199, 'MADR', 'Madrid'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(162, 199, 'MALA', 'Malaga'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(163, 199, 'MELI', 'Melilla'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(164, 199, 'MURC', 'Murcia'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(165, 199, 'NAVA', 'Navarra'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(166, 199, 'OURE', 'Ourense'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(167, 199, 'PALE', 'Palencia'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(168, 199, 'PONT', 'Pontevedra'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(169, 199, 'SALA', 'Salamanca'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(170, 199, 'SANT', 'Santa Cruz de Tenerife'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(171, 199, 'SEGO', 'Segovia'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(172, 199, 'SEVI', 'Sevilla'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(173, 199, 'SORI', 'Soria'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(174, 199, 'TARR', 'Tarragona'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(175, 199, 'TERU', 'Teruel'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(176, 199, 'TOLE', 'Toledo'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(177, 199, 'VALE', 'Valencia'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(178, 199, 'VALL', 'Valladolid'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(179, 199, 'VIZC', 'Vizcaya'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(180, 199, 'ZAMO', 'Zamora'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(181, 199, 'ZARA', 'Zaragoza'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(415, 103, 'CW', 'Carlow'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(416, 103, 'CN', 'Cavan'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(417, 103, 'CE', 'Clare'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(418, 103, 'C', 'Cork'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(419, 103, 'DL', 'Donegal'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(420, 103, 'D', 'Dublin'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(421, 103, 'G', 'Galway'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(422, 103, 'KY', 'Kerry'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(423, 103, 'KE', 'Kildare'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(424, 103, 'KK', 'Kilkenny'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(425, 103, 'LS', 'Laoighis'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(426, 103, 'LM', 'Leitrim'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(427, 103, 'LK', 'Limerick'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(428, 103, 'LD', 'Longford'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(429, 103, 'LH', 'Louth'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(430, 103, 'MO', 'Mayo'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(431, 103, 'MH', 'Meath'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(432, 103, 'MN', 'Monaghan'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(433, 103, 'OY', 'Offaly'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(434, 103, 'RN', 'Roscommon'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(435, 103, 'SO', 'Sligo'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(436, 103, 'TA', 'Tipperary'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(437, 103, 'WD', 'Waterford'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(438, 103, 'WH', 'Westmeath'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(439, 103, 'WX', 'Wexford'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(440, 103, 'WW', 'Wicklow'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(441, 225, 'AVN', 'Avon'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(442, 225, 'BDF', 'Bedfordshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(443, 225, 'BRK', 'Berkshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(444, 225, 'BKM', 'Buckinghamshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(445, 225, 'CAM', 'Cambridgeshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(446, 225, 'CHS', 'Cheshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(447, 225, 'CLV', 'Cleveland'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(448, 225, 'CON', 'Cornwall'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(449, 225, 'CUL', 'Cumberland'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(450, 225, 'CMA', 'Cumbria'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(451, 225, 'DBY', 'Derbyshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(452, 225, 'DEV', 'Devon'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(453, 225, 'DOR', 'Dorset'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(454, 225, 'DUR', 'County Durham'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(455, 225, 'ESS', 'Essex'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(456, 225, 'GLS', 'Gloucestershire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(457, 225, 'HAM', 'Hampshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(458, 225, 'HWR', 'Hereford and Worcester'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(459, 225, 'HEF', 'Herefordshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(460, 225, 'HRT', 'Hertfordshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(461, 225, 'HUM', 'Humberside'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(462, 225, 'HUN', 'Huntingdonshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(463, 225, 'IOW', 'Isle of Wight'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(464, 225, 'KEN', 'Kent'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(465, 225, 'LAN', 'Lancashire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(466, 225, 'LEI', 'Leicestershire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(467, 225, 'LIN', 'Lincolnshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(468, 225, 'GTM', 'Greater Manchester'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(469, 225, 'GTL', 'Greater London'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(470, 225, 'MSY', 'Merseyside'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(471, 225, 'MDX', 'Middlesex'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(472, 225, 'NFK', 'Norfolk'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(473, 225, 'NTH', 'Northamptonshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(474, 225, 'NBL', 'Northumberland'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(475, 225, 'NTT', 'Nottinghamshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(476, 225, 'OXF', 'Oxfordshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(477, 225, 'RUT', 'Rutland'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(478, 225, 'SAL', 'Shropshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(479, 225, 'SOM', 'Somerset'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(480, 225, 'STS', 'Staffordshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(481, 225, 'SFK', 'Suffolk'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(482, 225, 'SRY', 'Surrey'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(484, 225, 'TWR', 'Tyne and Wear'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(485, 225, 'WAR', 'Warwickshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(486, 225, 'WMD', 'West Midlands'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(487, 225, 'WES', 'Westmorland'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(488, 225, 'WIL', 'Wiltshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(489, 225, 'WOR', 'Worcestershire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(491, 225, 'ABD', 'Aberdeenshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(492, 225, 'ANS', 'Angus'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(493, 225, 'ARL', 'Argyll'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(494, 225, 'AYR', 'Ayrshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(495, 225, 'BAN', 'Banffshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(496, 225, 'BEW', 'Berwickshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(497, 225, 'BUT', 'Bute'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(498, 225, 'CAI', 'Caithness'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(499, 225, 'CLK', 'Clackmannanshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(500, 225, 'CRO', 'Cromartyshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(501, 225, 'DFS', 'Dumfriesshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(502, 225, 'DNB', 'Dunbartonshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(503, 225, 'ELN', 'East Lothian'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(504, 225, 'FIF', 'Fife'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(505, 225, 'INV', 'Inverness-shire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(506, 225, 'KRS', 'Kinross-shire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(507, 225, 'KKD', 'Kirkcudbrightshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(508, 225, 'LKS', 'Lanarkshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(509, 225, 'MLN', 'Midlothian'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(510, 225, 'MOR', 'Moray'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(511, 225, 'NAI', 'Nairnshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(512, 225, 'OKI', 'Orkney'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(513, 225, 'PEE', 'Peeblesshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(514, 225, 'PER', 'Perthshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(515, 225, 'RFW', 'Renfrewshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(516, 225, 'ROC', 'Ross'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(517, 225, 'ROX', 'Roxburghshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(518, 225, 'SEL', 'Selkirkshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(519, 225, 'SHI', 'Shetland'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(520, 225, 'STI', 'Stirlingshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(521, 225, 'SUT', 'Sutherland'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(522, 225, 'WLN', 'West Lothian'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(523, 225, 'WIG', 'Wigtownshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(524, 225, 'AGY', 'Anglesey'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(525, 225, 'BRN', 'Brecknockshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(526, 225, 'CAE', 'Caernarfonshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(527, 225, 'CAD', 'Ceredigion'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(528, 225, 'CRR', 'Carmarthenshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(529, 225, 'CLW', 'Clwyd'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(530, 225, 'DEN', 'Denbighshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(531, 225, 'DFD', 'Dyfed'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(532, 225, 'FLN', 'Flintshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(533, 225, 'GLA', 'Glamorgan'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(534, 225, 'GNT', 'Gwent'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(535, 225, 'GWN', 'Gwynedd'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(536, 225, 'MER', 'Merionethshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(537, 225, 'MON', 'Monmouthshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(538, 225, 'MGY', 'Montgomeryshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(539, 225, 'PEM', 'Pembrokeshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(540, 225, 'POW', 'Powys'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(541, 225, 'RAD', 'Radnorshire'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(542, 225, 'ANT', 'Antrim'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(543, 225, 'ARM', 'Armagh'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(544, 225, 'LDY', 'Londonderry'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(545, 225, 'DOW', 'Down'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(546, 225, 'FER', 'Fermanagh'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(547, 225, 'TYR', 'Tyrone'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(548, 150, 'DR', 'Drenthe'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(549, 150, 'FL', 'Flevoland'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(550, 150, 'FR', 'Friesland'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(551, 150, 'GLD', 'Gelderland'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(552, 150, 'GR', 'Groningen'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(553, 150, 'LI', 'Limburg'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(554, 150, 'NB', 'Noord-Brabant'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(555, 150, 'NH', 'Noord-Holland'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(556, 150, 'OV', 'Overijssel'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(557, 150, 'UT', 'Utrecht'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(558, 150, 'ZL', 'Zeeland'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(559, 150, 'ZH', 'Zuid-Holland'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(560, 13, 'ACT', 'Australian Capital Territory'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(561, 13, 'NSW', 'New South Wales'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(562, 13, 'NT', 'Northern Territory'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(563, 13, 'QLD', 'Queensland'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(564, 13, 'SA', 'South Australia'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(565, 13, 'TAS', 'Tasmania'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(566, 13, 'VIC', 'Victoria'); #EOQ
+INSERT INTO `CubeCart_geo_zone` (`id`, `country_id`, `abbrev`, `name`) VALUES(567, 13, 'WA', 'Western Australia'); #EOQ
 INSERT INTO `CubeCart_geo_zone` SET `country_id` = 225, `name` = 'East Sussex', `abbrev` = 'SXE'; #EOQ
 INSERT INTO `CubeCart_geo_zone` SET `country_id` = 225, `name` = 'West Sussex', `abbrev` = 'SXW'; #EOQ
 INSERT INTO `CubeCart_geo_zone` SET `country_id` = 225, `name` = 'North Yorkshire', `abbrev` = 'YSN'; #EOQ
