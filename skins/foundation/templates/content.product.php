@@ -70,6 +70,12 @@
                      <td>{$PRODUCT.product_weight}{$CONFIG.product_weight_unit|lower}</td>
                   </tr>
                   {/if}
+                  {if $PRODUCT.product_width > 0 &&  $PRODUCT.product_height > 0 &&  $PRODUCT.product_depth > 0}
+                  <tr>
+                     <td>{$LANG.common.size}</td>
+                     <td>{floatval($PRODUCT.product_width)}{if $PRODUCT.dimension_unit=='in'}&#8243;{/if} x {floatval($PRODUCT.product_height)}{if $PRODUCT.dimension_unit=='in'}&#8243;{/if} x {floatval($PRODUCT.product_depth)}{if $PRODUCT.dimension_unit=='in'}&#8243;{else} {$PRODUCT.dimension_unit}{/if}</td>
+                  </tr>
+                  {/if}
                </tbody>
             </table>
          </div>

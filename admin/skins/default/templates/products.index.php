@@ -168,6 +168,18 @@
          <div><label for="product_code">{$LANG.catalogue.product_code}</label><span><input name="product_code" id="product_code" class="textbox" type="text" value="{$PRODUCT.product_code}"></span></div>
          <div><label for="product_code_auto">{$LANG.catalogue.product_code_auto}</label><span><input name="product_code_auto" id="product_code_auto" type="hidden" class="toggle" {$PRODUCT.auto_code_checked}> <input name="product_code_old" id="product_code_old" type="hidden" value=""> </span></div>
          <div><label for="product_weight">{$LANG.catalogue.product_weight}</label><span><input name="product_weight" id="product_weight" class="textbox number" type="text" value="{$PRODUCT.product_weight}"></span></div>
+         <div>
+            <label for="dimension_unit">{$LANG.catalogue.dimension_unit}</label>
+            <span>
+                <select name="dimension_unit" id="dimension_unit">
+                    <option{if $PRODUCT.dimension_unit=='cm'} selected='selected'{/if} value="cm">Centimeters (cm)</option>
+                    <option{if $PRODUCT.dimension_unit=='in'} selected='selected'{/if} value="in">Inches (in)</option>
+                </select>
+            </span>
+        </div>
+         <div><label for="product_width">{$LANG.catalogue.product_width}</label><span><input name="product_width" id="product_width" class="textbox number" type="text" value="{$PRODUCT.product_width}"></span></div>
+         <div><label for="product_height">{$LANG.catalogue.product_height}</label><span><input name="product_height" id="product_height" class="textbox number" type="text" value="{$PRODUCT.product_height}"></span></div>
+         <div><label for="product_depth">{$LANG.catalogue.product_depth}</label><span><input name="product_depth" id="product_depth" class="textbox number" type="text" value="{$PRODUCT.product_depth}"></span></div>
          <div><label for="product_featured">{$LANG.catalogue.product_featured}</label><span><input type="hidden" name="featured" id="product_featured" class="toggle" value="{$PRODUCT.featured}"></span></div>
          <div><label for="product_latest">{$LANG.catalogue.product_latest}</label><span><input type="hidden" name="latest" id="product_latest" class="toggle" value="{$PRODUCT.latest}"></span></div>
          <div><label for="available">{$LANG.catalogue.available_for_purchase}</label><span><input type="hidden" name="available" id="available" class="toggle" value="{if isset($PRODUCT.available)}{$PRODUCT.available}{else}1{/if}"></span></div>

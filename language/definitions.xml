@@ -424,6 +424,10 @@
     <string name="product_type_digital" introduced="5.0.0"><![CDATA[Digital]]></string>
     <string name="product_type_tangible" introduced="5.0.0"><![CDATA[Tangible]]></string>
     <string name="product_weight" introduced="5.0.0"><![CDATA[Product Weight]]></string>
+    <string name="product_width" introduced="6.2.0"><![CDATA[Product Width]]></string>
+    <string name="product_height" introduced="6.2.0"><![CDATA[Product Height]]></string>
+    <string name="product_depth" introduced="6.2.0"><![CDATA[Product Depth]]></string>
+    <string name="dimension_unit" introduced="6.2.0"><![CDATA[Dimension Unit]]></string>
     <string name="quantity_discounts" introduced="5.0.0"><![CDATA[Quantity Discounts]]></string>
     <string name="quantity_discounts_explained" introduced="5.0.0"><![CDATA[You can save money on this item when you purchase several at a time. The table below shows the minimum quantities required to benefit from this offer, and how much they'll cost.]]></string>
     <string name="recipient_email" introduced="5.0.0"><![CDATA[Recipient Email]]></string>
@@ -779,6 +783,7 @@
     <string name="weight" introduced="5.0.0"><![CDATA[Weight]]></string>
     <string name="whats_this" introduced="5.0.0"><![CDATA[(What's this?)]]></string>
     <string name="width" introduced="5.0.0"><![CDATA[Width]]></string>
+    <string name="depth" introduced="6.2.0"><![CDATA[Depth]]></string>
     <string name="writable" introduced="5.0.0"><![CDATA[Writable]]></string>
     <string name="yes" introduced="5.0.0"><![CDATA[Yes]]></string>
     <string name="yesterday" introduced="5.0.0"><![CDATA[Yesterday]]></string>
