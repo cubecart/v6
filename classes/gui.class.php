@@ -243,7 +243,9 @@ class GUI {
 		define('SESSION_TOKEN', $GLOBALS['session']->getToken());
 		$GLOBALS['smarty']->assign('SESSION_TOKEN', SESSION_TOKEN);
 		$GLOBALS['smarty']->assign('CATALOGUE_MODE', $GLOBALS['config']->get('config', 'catalogue_mode'));
-		$GLOBALS['smarty']->assign('CONFIG', $GLOBALS['config']->get('config'));
+		$config = $GLOBALS['config']->get('config');
+		$config['store_country_name'] = getCountryFormat($config['store_country']);
+		$GLOBALS['smarty']->assign('CONFIG', $config);
 		## Version hash to refresh CSS on each version load (storeURL added to prevent possible version disclosure)
 		$GLOBALS['smarty']->assign('VERSION_HASH', md5($GLOBALS['storeURL'].CC_VERSION));
 	}

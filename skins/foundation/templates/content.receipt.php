@@ -22,7 +22,7 @@
       {$SUM.line1}<br>
       {if $SUM.line2}{$SUM.line2}<br>{/if}
       {$SUM.town|upper}<br>
-      {if !empty($SUM.state)}{$SUM.state|upper}, {/if}{$SUM.postcode}{if $CONFIG['store_country']!==$SUM['country_id']}<br>
+      {if !empty($SUM.state)}{$SUM.state|upper}, {/if}{$SUM.postcode}{if $CONFIG['store_country_name']!==$SUM['country']}<br>
       {$SUM.country}{/if}
    </div>
    <div class="small-6 columns">
@@ -32,7 +32,7 @@
       {$SUM.line1_d}<br>
       {if $SUM.line2_d}{$SUM.line2_d}<br>{/if}
       {$SUM.town_d|upper}<br>
-      {if !empty($SUM.state_d)}{$SUM.state_d|upper}, {/if}{$SUM.postcode_d}{if $CONFIG['store_country']!==$SUM['country_d']}<br>
+      {if !empty($SUM.state_d)}{$SUM.state_d|upper}, {/if}{$SUM.postcode_d}{if $CONFIG['store_country_name']!==$SUM['country_d']}<br>
       {$SUM.country_d}{/if}
    </div>
 </div>

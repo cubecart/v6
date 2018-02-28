@@ -18,7 +18,7 @@
       {$DATA.line1}<br>
       {if $DATA.line2}{$DATA.line2}<br>{/if}
       {$DATA.town|upper}<br>
-      {if !empty($DATA.state)}{$DATA.state|upper}, {/if}{$DATA.postcode}{if $CONFIG['store_country']!==$DATA['country_id']}<br>
+      {if !empty($DATA.state)}{$DATA.state|upper}, {/if}{$DATA.postcode}{if $CONFIG['store_country_name']!==$DATA['country']}<br>
       {$DATA.country}{/if}
       <div class="pad-top"><a href="{$STORE_URL}/index.php?_a=addressbook&action=edit&address_id={$DATA.address_id}&redir=confirm" class="button tiny secondary">{$LANG.address.address_edit}</a></div>
    </div>

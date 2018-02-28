@@ -26,7 +26,7 @@
             {if !empty($address.line2)} {$address.line2}<br/>{/if}
             {$address.town|upper}<br/>
             {if !empty($address.state)}{$address.state|upper}<br/>{/if}
-            {$address.postcode}{if $CONFIG['store_country']!==$address['country_id']}<br>
+            {$address.postcode}{if $CONFIG['store_country_name']!==$address['country']}<br>
             {$address.country}{/if}
          </div>
          <div class="small-6 columns">
