@@ -21,10 +21,10 @@
       </div>
       <div class="row">
          <div class="small-6 medium-4 columns">
-            {$address.line1},<br/>
-            {if !empty($address.line2)} {$address.line2},<br/>{/if}
-            {$address.town},<br/>
-            {if !empty($address.state)}{$address.state},<br/>{/if}
+            {$address.line1}<br/>
+            {if !empty($address.line2)} {$address.line2}<br/>{/if}
+            {$address.town}<br/>
+            {if !empty($address.state)}{$address.state}<br/>{/if}
             {$address.postcode}<br>
             {$address.country}
          </div>
