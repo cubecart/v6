@@ -88,11 +88,11 @@
          <div class="small-12 large-8 columns">
             <label for="country-list">{$LANG.address.country}</label><select name="country" id="country-list">
             {foreach from=$COUNTRIES item=country}
-            <option value="{$country.numcode}" {$country.selected}>{$country.name}</option>
+            <option value="{$country.numcode}" data-status="{$country.status}" {$country.selected}>{$country.name}</option>
             {/foreach}</select>
          </div>
       </div>
-      <div class="row">
+      <div class="row" id="state-list_wrapper">
          <div class="small-12 large-8 columns"><label for="state-list">{$LANG.address.state}</label><input type="text" name="state" id="state-list" required value="{$DATA.state}" placeholder="{$LANG.address.state} {$LANG.form.required}"></div>
       </div>
       <div class="row">
