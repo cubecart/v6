@@ -637,10 +637,11 @@ var stateRequirements = function(zone_status, form_id, target, change) {
             $(target+"_wrapper").show();
         break;
         case '3': // Hidden
+            $(target).prop('disabled', true);
             $(target+"_wrapper").hide();
+            
         break;
     }
-    console.log(target, zone_status, val);
     if(change) {
         $(target).rules("add",  {required:val});
         $(form_id).validate();

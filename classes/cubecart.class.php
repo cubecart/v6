@@ -474,8 +474,8 @@ class Cubecart {
 					$_POST['description'] = $GLOBALS['language']->address['extra_address'];
 				}
 			}
-			$required_fields = array('first_name','last_name','line1','town','country','state','postcode');
 			$empties = false;
+			$required_fields = $GLOBALS['user']->getRequiredAddressFields($_POST['country']);
 			foreach($_POST as $key => $value) {
 				if(in_array($key, $required_fields) && empty($value)) {
 					$empties = true;
@@ -946,8 +946,6 @@ class Cubecart {
 
 				$old_addresses = md5(serialize(array_merge($this->_basket['billing_address'],$this->_basket['delivery_address'])));
 
-				$required_address_fields = array('first_name','last_name','line1','town','country','state','postcode');
-
 				$this->_basket['billing_address'] = array(
 					'user_defined' => true,
 					'title'   => $_POST['user']['title'],
@@ -966,9 +964,9 @@ class Cubecart {
 					'country_iso'  => getCountryFormat($_POST['billing']['country'], 'numcode', 'iso'),
 					'country_name' => getCountryFormat($_POST['billing']['country'], 'numcode', 'name')
 				);
-
+				$required_billing_fields = $GLOBALS['user']->getRequiredAddressFields($_POST['billing']['country']);
 				foreach($this->_basket['billing_address'] as $key => $value) {
-	                if(in_array($key, $required_address_fields) && empty($value)) {
+	                if(in_array($key, $required_billing_fields) && empty($value)) {
 	                    $errors['billing_address'] = true;
 	                }
 	            }
@@ -977,9 +975,9 @@ class Cubecart {
 	            }
 
 				if (isset($_POST['delivery']) && !isset($_POST['delivery_is_billing'])) {
-
+					$required_delivery_fields = $GLOBALS['user']->getRequiredAddressFields($_POST['delivery']['country']);
 					foreach($_POST['delivery'] as $key => $value) {
-		                if(in_array($key, $required_address_fields) && empty($value)) {
+		                if(in_array($key, $required_delivery_fields) && empty($value)) {
 		                    $errors['delivery_address'] = true;
 		                }
 		            }

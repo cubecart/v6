@@ -599,6 +599,22 @@ class User {
 	}
 
 	/**
+	 * Get required fields for state
+	 * @param int $country_id
+	 * @return array
+	 */
+	public function getRequiredAddressFields($country_id) {
+		$fields = array('first_name','last_name','line1','town','country','postcode');
+		if(ctype_digit($country_id)) {
+			$result = $GLOBALS['db']->select('CubeCart_geo_country', 'status', array('numcode' => $country_id));
+			if($result && $result[0]['status']=='1') {
+				array_push($fields, 'state');
+			}
+		}
+		return $fields;
+	}
+
+	/**
 	 * Is a customer
 	 *
 	 * @param bool $force_login
@@ -857,10 +873,13 @@ class User {
 			}
 
 			// Format data nicely from mr barney brimstock to Mr Barney Brimstock & Post/Zip code to uppercase
-			$array['title']   = ucwords($array['title']);
+			$array['title'] = ucwords($array['title']);
 			$array['first_name'] = ucwords($array['first_name']);
-			$array['last_name']  = ucwords($array['last_name']);
-			$array['postcode']  = strtoupper($array['postcode']); // e.g. ab12 34cd to  AB12 34CD
+			$array['last_name'] = ucwords($array['last_name']);
+			$array['postcode'] = strtoupper($array['postcode']); // e.g. ab12 34cd to  AB12 34CD
+			if(!isset($array['state'])) {
+				$array['state'] = '';
+			}
 
 			$hash_values = '';
 			$checked_keys = array('title', 'first_name', 'last_name', 'company_name', 'line1', 'line2', 'town', 'state', 'postcode', 'country');
