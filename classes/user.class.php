@@ -454,11 +454,14 @@ class User {
 
 		// Check state
 		$country_id = getCountryFormat($address['country'], 'numcode', 'id');
-		if($user_defined && !CC_IN_ADMIN && $_GET['_a']!=='addressbook' && ((empty($address['state']) && !empty($address['country'])) || ($GLOBALS['db']->select('CubeCart_geo_zone',false, array($state_field => $address['state'], 'status' => 1))==false) && $GLOBALS['db']->select('CubeCart_geo_zone',false, array('country_id' => $country_id, 'status' => 1)))) {
-			$address_description = empty($address['description']) ? '' : ' (&quot;'.$address['description'].'&quot;)';
-			$GLOBALS['gui']->setError(sprintf($GLOBALS['language']->address['check_state'],$address_description));
-			httpredir("?_a=addressbook&action=edit&address_id=".$address['address_id']);
-			return false;
+		// Is state required for this country?!
+		if($GLOBALS['db']->select('CubeCart_geo_country', false, array('id' => $country_id, 'status' => 1))) {
+			if($user_defined && !CC_IN_ADMIN && $_GET['_a']!=='addressbook' && ((empty($address['state']) && !empty($address['country'])) || ($GLOBALS['db']->select('CubeCart_geo_zone',false, array($state_field => $address['state'], 'status' => 1))==false) && $GLOBALS['db']->select('CubeCart_geo_zone',false, array('country_id' => $country_id, 'status' => 1)))) {
+				$address_description = empty($address['description']) ? '' : ' (&quot;'.$address['description'].'&quot;)';
+				$GLOBALS['gui']->setError(sprintf($GLOBALS['language']->address['check_state'],$address_description));
+				httpredir("?_a=addressbook&action=edit&address_id=".$address['address_id']);
+				return false;
+			}
 		}
 
 		$address['state_id']  = getStateFormat($address['state'], $state_field, 'id');
