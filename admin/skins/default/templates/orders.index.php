@@ -44,7 +44,7 @@
                   {$order.name}
                {/if}
                </td>
-               <td>{$order.status}</td>
+               <td class="{$order.status_class}">{$order.status}</td>
                <td>{$order.date}</td>
                <td align="right">{$order.prod_total}</td>
                <td align="center">

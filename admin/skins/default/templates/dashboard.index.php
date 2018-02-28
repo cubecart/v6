@@ -156,7 +156,7 @@
                   {$order.first_name} {$order.last_name}
                   {/if}</a>
                </td>
-               <td>{$order.status}</td>
+               <td class="{$order.status_class}">{$order.status}</td>
                <td>{$order.date}</td>
                <td>{$order.total}</td>
                <td align="right">

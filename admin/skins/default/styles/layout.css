@@ -1176,3 +1176,15 @@ ul.filetree li ul li ul li ul li ul li ul li ul li a {
 ul.filetree li ul li ul li ul li ul li ul li ul li ul li a {
     width: 300px;  
 }
+.order_status_1 {
+	color:#008CBA;
+}
+.order_status_2 {
+	color:orange;
+}
+.order_status_3 {
+	color:#43AC6A;
+}
+.order_status_4,.order_status_5,.order_status_6 {
+	color:#F04124;
+}

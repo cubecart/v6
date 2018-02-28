@@ -285,6 +285,7 @@ if ($unsettled_orders) {
 		$order['cust_type'] = array("1" => 'title_key_registered', "2" => 'title_key_unregistered');
 		$order['date'] = formatTime($order['order_date']);
 		$order['total'] = Tax::getInstance()->priceFormat($order['total']);
+		$order['status_class']  = 'order_status_'.$order['status'];
 		$order['status'] = $lang['order_state']['name_'.$order['status']];
 		$order['link_print'] = '?_g=orders&print%5B0%5D='.$order['cart_order_id'];
 		$orders[$order['cart_order_id']] = $order;

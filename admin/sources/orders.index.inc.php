@@ -761,6 +761,7 @@ if (isset($_GET['action'])) {
 			$order['link_delete'] = currentPage(array('print_hash'), array('delete' => $order['cart_order_id'], 'token' => SESSION_TOKEN));
 			// Link needs to be an array with one key
 			$order['link_print'] = currentPage(array('print_hash'), array('print[0]' => $order['cart_order_id']));
+			$order['status_class']  = 'order_status_'.$order['status'];
 			$order['status']  = $lang['order_state']['name_'.$order['status']];
 			$order['date']   = formatTime($order['order_date']);
 			$order['prod_total'] = Tax::getInstance()->priceFormat($order['total']);
