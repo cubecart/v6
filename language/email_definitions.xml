@@ -55,8 +55,8 @@ Order number {$DATA.cart_order_id} has been cancelled.]]></content>
 {$BILLING.line1}<br>
 {if !empty($BILLING.line2)}{$BILLING.line2}<br>
 {/if}
-{$BILLING.town}<br>
-{if !empty($BILLING.state)}{$BILLING.state}<br>{/if}
+{$BILLING.town|upper}<br>
+{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
 {$BILLING.postcode}<br>
 {$BILLING.country}<br>
 {$BILLING.phone}<br>
@@ -68,8 +68,8 @@ Order number {$DATA.cart_order_id} has been cancelled.]]></content>
 {if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>
 {/if}{$SHIPPING.line1}<br>
 {if !empty($SHIPPING.line2)}{$SHIPPING.line2} <br>
-{/if}{$SHIPPING.town}<br>
-{if !empty($SHIPPING.state)}{$SHIPPING.state}<br>{/if}
+{/if}{$SHIPPING.town|upper}<br>
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
 {$SHIPPING.postcode}<br>
 {$SHIPPING.country}</td>
 </tr>
@@ -132,8 +132,8 @@ Billing address:
 {if !empty($BILLING.company_name)}{$BILLING.company_name}
 {/if}{$BILLING.line1}
 {if !empty($BILLING.line2)}{$BILLING.line2}
-{/if}{$BILLING.town}
-{if !empty($BILLING.state)}{$BILLING.state}
+{/if}{$BILLING.town|upper}
+{if !empty($BILLING.state)}{$BILLING.state|upper}
 {/if}{$BILLING.postcode}
 {$BILLING.country}
 {$BILLING.phone}
@@ -146,8 +146,8 @@ Shipping address:
 {if !empty($SHIPPING.company_name)}{$SHIPPING.company_name}
 {/if}{$SHIPPING.line1}
 {if !empty($SHIPPING.line2)}{$SHIPPING.line2}
-{/if}{$SHIPPING.town}
-{if !empty($SHIPPING.state)}{$SHIPPING.state}
+{/if}{$SHIPPING.town|upper}
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}
 {/if}{$SHIPPING.postcode}
 {$SHIPPING.country}
 
@@ -215,8 +215,8 @@ If you require further assistance in resetting your password, please contact us.
 {$BILLING.line1}<br>
 {if !empty($BILLING.line2)}{$BILLING.line2}<br>
 {/if}
-{$BILLING.town}<br>
-{if !empty($BILLING.state)}{$BILLING.state}<br>{/if}
+{$BILLING.town|upper}<br>
+{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
 {$BILLING.postcode}<br>
 {$BILLING.country}<br>
 {$BILLING.phone}<br>
@@ -228,8 +228,8 @@ If you require further assistance in resetting your password, please contact us.
 {if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>
 {/if}{$SHIPPING.line1}<br>
 {if !empty($SHIPPING.line2)}{$SHIPPING.line2} <br>
-{/if}{$SHIPPING.town}<br>
-{if !empty($SHIPPING.state)}{$SHIPPING.state}<br>{/if}
+{/if}{$SHIPPING.town|upper}<br>
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
 {$SHIPPING.postcode}<br>
 {$SHIPPING.country}</td>
 </tr>
@@ -290,8 +290,8 @@ Billing address:
 {if !empty($BILLING.company_name)}{$BILLING.company_name}
 {/if}{$BILLING.line1}
 {if !empty($BILLING.line2)}{$BILLING.line2}
-{/if}{$BILLING.town}
-{if !empty($BILLING.state)}{$BILLING.state}
+{/if}{$BILLING.town|upper}
+{if !empty($BILLING.state)}{$BILLING.state|upper}
 {/if}{$BILLING.postcode}
 {$BILLING.country}
 {$BILLING.phone}
@@ -304,8 +304,8 @@ Shipping address:
 {if !empty($SHIPPING.company_name)}{$SHIPPING.company_name}
 {/if}{$SHIPPING.line1}
 {if !empty($SHIPPING.line2)}{$SHIPPING.line2}
-{/if}{$SHIPPING.town}
-{if !empty($SHIPPING.state)}{$SHIPPING.state}
+{/if}{$SHIPPING.town|upper}
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}
 {/if}{$SHIPPING.postcode}
 {$SHIPPING.country}
 

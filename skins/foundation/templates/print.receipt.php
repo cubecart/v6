@@ -43,8 +43,8 @@
             {$order.title} {$order.first_name} {$order.last_name}<br>
             {$order.line1} <br>
             {if !empty($order.line2)}{$order.line2}<br>{/if}
-            {$order.town}<br>
-            {if !empty($order.state)}{$order.state}<br>{/if}
+            {$order.town|upper}<br>
+            {if !empty($order.state)}{$order.state|upper}<br>{/if}
             {$order.postcode}{if $CONFIG['store_country']!==$address['country_id']}<br>
             {$order.country}{/if}
          </div>

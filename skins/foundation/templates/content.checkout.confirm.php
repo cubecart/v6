@@ -17,8 +17,8 @@
       {if $DATA.company_name}{$DATA.company_name}<br>{/if}
       {$DATA.line1}<br>
       {if $DATA.line2}{$DATA.line2}<br>{/if}
-      {$DATA.town}<br>
-      {if !empty($DATA.state)}{$DATA.state}, {/if}{$DATA.postcode}{if $CONFIG['store_country']!==$DATA['country_id']}<br>
+      {$DATA.town|upper}<br>
+      {if !empty($DATA.state)}{$DATA.state|upper}, {/if}{$DATA.postcode}{if $CONFIG['store_country']!==$DATA['country_id']}<br>
       {$DATA.country}{/if}
       <div class="pad-top"><a href="{$STORE_URL}/index.php?_a=addressbook&action=edit&address_id={$DATA.address_id}&redir=confirm" class="button tiny secondary">{$LANG.address.address_edit}</a></div>
    </div>
@@ -27,7 +27,7 @@
       <h2>{$LANG.address.delivery_address}</h2>
       <select name="delivery_address" style="text-transform:capitalize;">
       {foreach from=$ADDRESSES item=address}
-      <option value="{$address.address_id}" {$address.selected}>{$address.description} ({$address.town}, {$address.postcode})</option>
+      <option value="{$address.address_id}" {$address.selected}>{$address.description} ({$address.town|upper}, {$address.postcode})</option>
       {/foreach}
       </select>
       <div class="pad-top"><a href="{$STORE_URL}/index.php?_a=addressbook&action=add&redir=confirm" class="button tiny secondary">{$LANG.address.address_add}</a></div>
@@ -49,8 +49,8 @@
       {if $BILLING.company_name}{$BILLING.company_name}<br>{/if}
       {$BILLING.line1}<br>
       {if $BILLING.line2}{$BILLING.line2}<br>{/if}
-      {$BILLING.town}<br>
-      {if !empty($BILLING.state)}{$BILLING.state}, {/if}{$BILLING.postcode}<br>
+      {$BILLING.town|upper}<br>
+      {if !empty($BILLING.state)}{$BILLING.state|upper}, {/if}{$BILLING.postcode}<br>
       {$BILLING.country_name}
       <h3>{$LANG.account.contact_details}</h3>
       <table>
@@ -65,8 +65,8 @@
       {if $DELIVERY.company_name}{$DELIVERY.company_name}<br>{/if}
       {$DELIVERY.line1}<br>
       {if $DELIVERY.line2}{$DELIVERY.line2}<br>{/if}
-      {$DELIVERY.town}<br>
-      {if !empty($DELIVERY.state)}{$DELIVERY.state}, {/if}{$DELIVERY.postcode}<br>
+      {$DELIVERY.town|upper}<br>
+      {if !empty($DELIVERY.state)}{$DELIVERY.state|upper}, {/if}{$DELIVERY.postcode}<br>
       {$DELIVERY.country_name}
       <div class="pad-top"><a href="#" class="button small show_address_form"><svg class="icon"><use xlink:href="#icon-reply"></use></svg> {$LANG.form.make_changes}</a></div>
    </div>
@@ -130,7 +130,7 @@
          <div class="small-12 large-8 columns"><label for="addr_line2" class="show-for-medium-up">{$LANG.address.line2}</label><input type="text" name="billing[line2]" id="addr_line2"  value="{$BILLING.line2}" placeholder="{$LANG.address.line2}" autocomplete="address-line2"></div>
       </div>
       <div class="row">
-         <div class="small-12 large-8 columns"><label for="addr_town" class="show-for-medium-up">{$LANG.address.town}</label><input type="text" name="billing[town]" id="addr_town"  required value="{$BILLING.town}" placeholder="{$LANG.address.town} {$LANG.form.required}" autocomplete="address-level2"></div>
+         <div class="small-12 large-8 columns"><label for="addr_town" class="show-for-medium-up">{$LANG.address.town}</label><input type="text" name="billing[town]" id="addr_town"  required value="{$BILLING.town|upper}" placeholder="{$LANG.address.town} {$LANG.form.required}" autocomplete="address-level2"></div>
       </div>
       <div class="row">
          <div class="small-12 large-8 columns"><label for="addr_postcode" class="show-for-medium-up">{$LANG.address.postcode}</label><input type="text" name="billing[postcode]" id="addr_postcode"  class="uppercase required" value="{$BILLING.postcode}" placeholder="{$LANG.address.postcode} {$LANG.form.required}" autocomplete="postal-code"></div>
@@ -145,7 +145,7 @@
          </div>
       </div>
       <div class="row" id="state-list_wrapper">
-         <div class="small-12 large-8 columns"><label for="state-list" class="show-for-medium-up">{$LANG.address.state}</label><input type="text" name="billing[state]" id="state-list" value="{$BILLING.state}" autocomplete="address-line1"></div>
+         <div class="small-12 large-8 columns"><label for="state-list" class="show-for-medium-up">{$LANG.address.state}</label><input type="text" name="billing[state]" id="state-list" value="{$BILLING.state|upper}" autocomplete="address-line1"></div>
       </div>
 </div>
 </address>
@@ -184,7 +184,7 @@
          <div class="small-12 large-8 columns"><label for="del_line2" class="show-for-medium-up">{$LANG.address.line2}</label><input type="text" name="delivery[line2]" id="del_line2"  value="{$DELIVERY.line2}" placeholder="{$LANG.address.line2}" autocomplete="address-line2"></div>
       </div>
       <div class="row">
-         <div class="small-12 large-8 columns"><label for="del_town" class="show-for-medium-up">{$LANG.address.town}</label><input type="text" name="delivery[town]" id="del_town"  required value="{$DELIVERY.town}" placeholder="{$LANG.address.town} {$LANG.form.required}" autocomplete="address-level2"></div>
+         <div class="small-12 large-8 columns"><label for="del_town" class="show-for-medium-up">{$LANG.address.town}</label><input type="text" name="delivery[town]" id="del_town"  required value="{$DELIVERY.town|upper}" placeholder="{$LANG.address.town} {$LANG.form.required}" autocomplete="address-level2"></div>
       </div>
       <div class="row">
          <div class="small-12 large-8 columns"><label for="del_postcode" class="show-for-medium-up">{$LANG.address.postcode}</label><input type="text" name="delivery[postcode]" id="del_postcode"  class="uppercase required" value="{$DELIVERY.postcode}" placeholder="{$LANG.address.postcode} {$LANG.form.required}" autocomplete="postal-code"></div>
@@ -199,7 +199,7 @@
          </div>
       </div>
       <div class="row" id="delivery_state_wrapper">
-         <div class="small-12 large-8 columns"><label for="delivery_state" class="show-for-medium-up">{$LANG.address.state}</label><input type="text" name="delivery[state]" id="delivery_state" value="{$DELIVERY.state}" placeholder="{$LANG.address.state} {$LANG.form.required}" autocomplete="address-level1"></div>
+         <div class="small-12 large-8 columns"><label for="delivery_state" class="show-for-medium-up">{$LANG.address.state}</label><input type="text" name="delivery[state]" id="delivery_state" value="{$DELIVERY.state|upper}" placeholder="{$LANG.address.state} {$LANG.form.required}" autocomplete="address-level1"></div>
       </div>
    </address>
 </div>
