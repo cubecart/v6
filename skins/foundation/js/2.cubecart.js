@@ -1,6 +1,6 @@
 ;
+var validation_ini = {};
 jQuery(document).ready(function() {
-
     if($('a.open-clearing img#img-preview').length) {
         $('a.open-clearing img#img-preview').load(function() {
             var ip = $('a.open-clearing img#img-preview');
@@ -150,7 +150,7 @@ jQuery(document).ready(function() {
             var zone_status = $('option:selected', this).attr('data-status');
             var form_id = $(this).closest("form").attr('id');
 
-            stateRequirements(zone_status, form_id, target, false);
+            validation_ini[target] = stateRequirements(zone_status, form_id, target, false);
 
             if (typeof(counties) == 'object') {
                 var setting = $(target).val();
@@ -158,8 +158,7 @@ jQuery(document).ready(function() {
                 $(target).replaceWith($(select).attr({
                     'name': $(target).attr('name'),
                     'id': $(target).attr('id'),
-                    'class': $(target).attr('class'),
-                    'required': $(target).attr('required')
+                    'class': $(target).attr('class')
                 }));
                 if ($(this).attr('title')) {
                     var option = document.createElement('option');
@@ -173,7 +172,7 @@ jQuery(document).ready(function() {
                         if(counties[i].id>0) {
                             $('select' + target).append($(option).val(counties[i].id).text(counties[i].name));
                         } else {
-                            $('select' + target).append($(option).val('').text(counties[i].name));   
+                            $('select' + target).append($(option).val('').text(counties[i].name));
                         }
                     }
                 }
@@ -190,7 +189,7 @@ jQuery(document).ready(function() {
             var zone_status = $('option:selected', this).attr('data-status');
             var form_id = $(this).closest("form").attr('id');
 
-            stateRequirements(zone_status, form_id, target, true);
+            validation_ini[target] = stateRequirements(zone_status, form_id, target, true);
 
             if (typeof(list) == 'object' && typeof(county_list[$(this).val()]) != 'undefined' && county_list[$(this).val()].length >= 1) {
                 var setting = $(target).val();
@@ -198,8 +197,7 @@ jQuery(document).ready(function() {
                 $(target).replaceWith($(select).attr({
                     'name': $(target).attr('name'),
                     'id': $(target).attr('id'),
-                    'class': $(target).attr('class'),
-                    'required': $(target).attr('required')
+                    'class': $(target).attr('class')
                 }));
                 if ($(this).attr('title')) {
                     var option = document.createElement('option');
@@ -342,7 +340,6 @@ jQuery(document).ready(function() {
         var cat_pages = parseInt($('#ccScrollCat').text());
         if ($.cookie('ccScroll')) {
             var ccScrollHistory = $.parseJSON($.cookie("ccScroll"));
-            console.log(ccScrollHistory['loc']);
             if(cat_pages in ccScrollHistory) {
                 for (i = 1; i < ccScrollHistory[cat_pages]; i++) {
                     $('.ccScroll-next:last').trigger("click");
@@ -628,8 +625,8 @@ function update_quantity(rel, sign) {
     }
     return false;
 }
-var validation_ini = {}
-function stateRequirements(zone_status, form_id, target, change) {
+
+var stateRequirements = function(zone_status, form_id, target, change) {
     var val = false;
     switch(zone_status) {
         case '1': // Required
@@ -643,10 +640,10 @@ function stateRequirements(zone_status, form_id, target, change) {
             $(target+"_wrapper").hide();
         break;
     }
+    console.log(target, zone_status, val);
     if(change) {
         $(target).rules("add",  {required:val});
         $(form_id).validate();
-    } else {
-        validation_ini[target.substr(1)] = val;
     }
-}
+    return val;
+};

@@ -145,7 +145,7 @@
          </div>
       </div>
       <div class="row" id="state-list_wrapper">
-         <div class="small-12 large-8 columns"><label for="state-list" class="show-for-medium-up">{$LANG.address.state}</label><input type="text" name="billing[state]" id="state-list"  required value="{$BILLING.state}" autocomplete="address-line1"></div>
+         <div class="small-12 large-8 columns"><label for="state-list" class="show-for-medium-up">{$LANG.address.state}</label><input type="text" name="billing[state]" id="state-list" value="{$BILLING.state}" autocomplete="address-line1"></div>
       </div>
 </div>
 </address>
@@ -199,7 +199,7 @@
          </div>
       </div>
       <div class="row" id="delivery_state_wrapper">
-         <div class="small-12 large-8 columns"><label for="delivery_state" class="show-for-medium-up">{$LANG.address.state}</label><input type="text" name="delivery[state]" id="delivery_state"  required value="{$DELIVERY.state}" placeholder="{$LANG.address.state} {$LANG.form.required}" autocomplete="address-level1"></div>
+         <div class="small-12 large-8 columns"><label for="delivery_state" class="show-for-medium-up">{$LANG.address.state}</label><input type="text" name="delivery[state]" id="delivery_state" value="{$DELIVERY.state}" placeholder="{$LANG.address.state} {$LANG.form.required}" autocomplete="address-level1"></div>
       </div>
    </address>
 </div>

@@ -228,7 +228,7 @@ jQuery(document).ready(function() {
                 required: true
             },
             'billing[state]': {
-                required: true
+                required: validation_ini['#state_list']
             },
             'billing[postcode]': {
                 required: true
@@ -243,7 +243,7 @@ jQuery(document).ready(function() {
                 required: true
             },
             'delivery[state]': {
-                required: true
+                required: validation_ini['#delivery_state']
             },
             'delivery[postcode]': {
                 required: true
