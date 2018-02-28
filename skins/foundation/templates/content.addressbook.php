@@ -19,14 +19,15 @@
             <h5><a href="?_a=addressbook&action=edit&address_id={$address.address_id}">{$address.description}</a></h5>
          </div>
       </div>
-      <div class="row">
+      <div class="row">{debug}
          <div class="small-6 medium-4 columns">
+            {if !empty($address.title)}{$address.title} {/if}{$address.first_name} {$address.last_name}<br/>
             {$address.line1}<br/>
             {if !empty($address.line2)} {$address.line2}<br/>{/if}
             {$address.town}<br/>
             {if !empty($address.state)}{$address.state}<br/>{/if}
-            {$address.postcode}<br>
-            {$address.country}
+            {$address.postcode}{if $CONFIG['store_country']!==$address['country_id']}<br>
+            {$address.country}{/if}
          </div>
          <div class="small-6 columns">
             <table>

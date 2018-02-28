@@ -30,7 +30,7 @@
             {$STORE.address|nl2br}<br>
             {$STORE.county}<br>
             {$STORE.postcode}<br>
-            {$STORE.country}<br>
+            {$STORE.country}
             <div class="thickpad-top">
             {if !empty($CONFIG.tax_number)}{$LANG.settings.tax_vat_number}: {$CONFIG.tax_number}<br>{/if}
             {$CONFIG.email_address}
@@ -45,8 +45,8 @@
             {if !empty($order.line2)}{$order.line2}<br>{/if}
             {$order.town}<br>
             {if !empty($order.state)}{$order.state}<br>{/if}
-            {$order.postcode}<br>
-            {$order.country}
+            {$order.postcode}{if $CONFIG['store_country']!==$address['country_id']}<br>
+            {$order.country}{/if}
          </div>
          <div class="small-6 columns text-right thickmarg-topbottom">
             <strong>{$LANG.common.invoice}: {if $CONFIG.oid_mode=='i'}{$order.{$CONFIG.oid_col}}{else}{$order.cart_order_id}{/if}<br>	
