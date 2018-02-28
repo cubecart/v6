@@ -44,7 +44,7 @@
             {$order.line1} <br>
             {if !empty($order.line2)}{$order.line2}<br>{/if}
             {$order.town}<br>
-            {$order.state}<br>
+            {if !empty($order.state)}{$order.state}<br>{/if}
             {$order.postcode}<br>
             {$order.country}
          </div>

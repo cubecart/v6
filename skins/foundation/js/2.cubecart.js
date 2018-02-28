@@ -628,6 +628,7 @@ function update_quantity(rel, sign) {
 
 var stateRequirements = function(zone_status, form_id, target, change) {
     var val = false;
+    var disabled = false;
     switch(zone_status) {
         case '1': // Required
             val = true;
@@ -637,11 +638,11 @@ var stateRequirements = function(zone_status, form_id, target, change) {
             $(target+"_wrapper").show();
         break;
         case '3': // Hidden
-            $(target).prop('disabled', true);
+            disabled = true;
             $(target+"_wrapper").hide();
-            
         break;
     }
+    $(target).prop('disabled', disabled);
     if(change) {
         $(target).rules("add",  {required:val});
         $(form_id).validate();

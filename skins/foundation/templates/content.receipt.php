@@ -22,7 +22,7 @@
       {$SUM.line1}<br>
       {if $SUM.line2}{$SUM.line2}<br>{/if}
       {$SUM.town}<br>
-      {$SUM.state}, {$SUM.postcode}<br>
+      {if !empty($SUM.state)}{$SUM.state}, {/if}{$SUM.postcode}<br>
       {$SUM.country}
    </div>
    <div class="small-6 columns">
@@ -32,7 +32,7 @@
       {$SUM.line1_d}<br>
       {if $SUM.line2_d}{$SUM.line2_d}<br>{/if}
       {$SUM.town_d}<br>
-      {$SUM.state_d}, {$SUM.postcode_d}<br>
+      {if !empty($SUM.state_d)}{$SUM.state_d}, {/if}{$SUM.postcode_d}<br>
       {$SUM.country_d}
    </div>
 </div>

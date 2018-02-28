@@ -18,7 +18,7 @@
       {$DATA.line1}<br>
       {if $DATA.line2}{$DATA.line2}<br>{/if}
       {$DATA.town}<br>
-      {$DATA.state}, {$DATA.postcode}<br>
+      {if !empty($DATA.state)}{$DATA.state}, {/if}{$DATA.postcode}<br>
       {$DATA.country}
       <div class="pad-top"><a href="{$STORE_URL}/index.php?_a=addressbook&action=edit&address_id={$DATA.address_id}&redir=confirm" class="button tiny secondary">{$LANG.address.address_edit}</a></div>
    </div>
@@ -27,7 +27,7 @@
       <h2>{$LANG.address.delivery_address}</h2>
       <select name="delivery_address" style="text-transform:capitalize;">
       {foreach from=$ADDRESSES item=address}
-      <option value="{$address.address_id}" {$address.selected}>{$address.description} ({$address.state}, {$address.postcode})</option>
+      <option value="{$address.address_id}" {$address.selected}>{$address.description}{if !empty($address.state)} ({$address.state}{/if}, {$address.postcode})</option>
       {/foreach}
       </select>
       <div class="pad-top"><a href="{$STORE_URL}/index.php?_a=addressbook&action=add&redir=confirm" class="button tiny secondary">{$LANG.address.address_add}</a></div>
@@ -50,7 +50,7 @@
       {$BILLING.line1}<br>
       {if $BILLING.line2}{$BILLING.line2}<br>{/if}
       {$BILLING.town}<br>
-      {$BILLING.state}, {$BILLING.postcode}<br>
+      {if !empty($BILLING.state)}{$BILLING.state}, {/if}{$BILLING.postcode}<br>
       {$BILLING.country_name}
       <h3>{$LANG.account.contact_details}</h3>
       <table>
@@ -66,7 +66,7 @@
       {$DELIVERY.line1}<br>
       {if $DELIVERY.line2}{$DELIVERY.line2}<br>{/if}
       {$DELIVERY.town}<br>
-      {$DELIVERY.state}, {$DELIVERY.postcode}<br>
+      {if !empty($DELIVERY.state)}{$DELIVERY.state}, {/if}{$DELIVERY.postcode}<br>
       {$DELIVERY.country_name}
       <div class="pad-top"><a href="#" class="button small show_address_form"><svg class="icon"><use xlink:href="#icon-reply"></use></svg> {$LANG.form.make_changes}</a></div>
    </div>
