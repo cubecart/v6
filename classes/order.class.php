@@ -1209,12 +1209,12 @@ class Order {
 			} else {
 				$product = $GLOBALS['catalogue']->getProductData($item['id'], 1, false, 10, 1, false, $item['options_identifier']);
 			}
-
 			$record = array(
 				'cart_order_id'  => $this->_order_id,
 				'product_id'  => (int)$item['id'],
 				'quantity'   => $item['quantity'],
 				'price'    => (!isset($item['certificate'])) ? $item['total_price_each'] : $item['certificate']['value'],
+				'tax' => $item['tax_each']['amount'],
 				'product_code'  => (!empty($product['product_code'])) ? $product['product_code'] : $item['product_code'],
 				'name'    => (!empty($product['name'])) ? $product['name'] : $item['name'],
 				'digital'   => (!empty($product['digital']) || !empty($product['digital_path'])) ? 1 : 0,

@@ -243,6 +243,7 @@ class User {
 		if (!$user) {
 			$GLOBALS['gui']->setError($GLOBALS['language']->account['error_login']);
 		} else {
+			$user[0]['language'] = $this->_validLanguage($user[0]['language']);
 			if ($user[0]['new_password'] != 1) {
 				$salt = Password::getInstance()->createSalt();
 				$pass = Password::getInstance()->getSalted($password, $salt);
@@ -1001,11 +1002,12 @@ class User {
 			return;
 		}
 		if ($GLOBALS['session']->session_data['customer_id'] && $result = $GLOBALS['db']->select('CubeCart_customer', false, array('customer_id' => (int)$GLOBALS['session']->session_data['customer_id']), null, 1)) {
+			$result[0]['language'] = $this->_validLanguage($result[0]['language']);
 			$this->_user_data = $result[0];
 			foreach ($GLOBALS['hooks']->load('class.user.load.user') as $hook) include $hook;
 			$this->_logged_in = true;
 			if (!$GLOBALS['session']->has('user_language', 'client')) {
-				$GLOBALS['session']->set('user_language', (isset($result[0]['language']) && preg_match(Language::LANG_REGEX, $result[0]['language'])) ? $result[0]['language'] : $GLOBALS['config']->get('config', 'default_language'), 'client');
+				$GLOBALS['session']->set('user_language', $result[0]['language'], 'client');
 			}
 			if ((empty($this->_user_data['email']) || !filter_var($this->_user_data['email'], FILTER_VALIDATE_EMAIL) || empty($this->_user_data['first_name']) || empty($this->_user_data['last_name'])) && !in_array(strtolower($_GET['_a']), array('profile', 'logout'))) {
 				// Force account details page
@@ -1013,7 +1015,6 @@ class User {
 				httpredir(currentPage(null, array('_a' => 'profile')));
 			}
 		}
-		
 	}
 
 	/**
@@ -1068,5 +1069,26 @@ class User {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Validate users language string
+	 *
+	 * @return string
+	 */
+	private function _validLanguage($language) {
+		$default_language = $GLOBALS['config']->get('config','default_language');
+		if(!preg_match(Language::LANG_REGEX, $language)) {
+			return $default_language;
+		} elseif($language!==$default_language) {
+			if($enabled_languages = $GLOBALS['config']->get('languages')) {
+				if(!in_array($language, $enabled_languages)) {
+					return $default_language;
+				}
+			} else {
+				return $default_language;
+			}
+		}
+		return $language;
 	}
 }
