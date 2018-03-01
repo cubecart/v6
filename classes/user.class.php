@@ -983,7 +983,19 @@ class User {
 			foreach ($GLOBALS['hooks']->load('class.user.load.user') as $hook) include $hook;
 			$this->_logged_in = true;
 			if (!$GLOBALS['session']->has('user_language', 'client')) {
-				$GLOBALS['session']->set('user_language', (isset($result[0]['language']) && preg_match(Language::LANG_REGEX, $result[0]['language'])) ? $result[0]['language'] : $GLOBALS['config']->get('config', 'default_language'), 'client');
+				$default_language = $GLOBALS['config']->get('config','default_language');
+				if(!preg_match(Language::LANG_REGEX, $result[0]['language'])) {
+					$result[0]['language'] = $default_language;
+				} elseif($result[0]['language']!==$default_language) {
+				 	if($enabled_languages = $GLOBALS['config']->get('languages')) {
+				 		if(!in_array($result[0]['language'], $enabled_languages)) {
+							$result[0]['language'] = $default_language;
+				 		}
+				 	} else {
+						$result[0]['language'] = $default_language;
+				 	}
+				 }
+				$GLOBALS['session']->set('user_language', $result[0]['language'], 'client');
 			}
 			if ((empty($this->_user_data['email']) || !filter_var($this->_user_data['email'], FILTER_VALIDATE_EMAIL) || empty($this->_user_data['first_name']) || empty($this->_user_data['last_name'])) && !in_array(strtolower($_GET['_a']), array('profile', 'logout'))) {
 				// Force account details page
@@ -991,7 +1003,6 @@ class User {
 				httpredir(currentPage(null, array('_a' => 'profile')));
 			}
 		}
-		
 	}
 
 	/**

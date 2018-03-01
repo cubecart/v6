@@ -130,9 +130,9 @@ class Mailer extends PHPMailer {
 					// Try the parent language, if this is a regional translation (i.e. en-GB)
 					return $this->loadContent($content_type, $match[1], $data);
 				} else if ($language !=  $GLOBALS['config']->get('config', 'default_language')) {
-						// Try loading the default language content
-						return $this->loadContent($content_type, $GLOBALS['config']->get('config', 'default_language'), $data);
-					}
+					// Try loading the default language content
+					return $this->loadContent($content_type, $GLOBALS['config']->get('config', 'default_language'), $data);
+				}
 			}
 		}
 		return false;
