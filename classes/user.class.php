@@ -243,6 +243,7 @@ class User {
 		if (!$user) {
 			$GLOBALS['gui']->setError($GLOBALS['language']->account['error_login']);
 		} else {
+			$user[0]['language'] = $this->_validLanguage($user[0]['language']);
 			if ($user[0]['new_password'] != 1) {
 				$salt = Password::getInstance()->createSalt();
 				$pass = Password::getInstance()->getSalted($password, $salt);
@@ -979,18 +980,7 @@ class User {
 			return;
 		}
 		if ($GLOBALS['session']->session_data['customer_id'] && $result = $GLOBALS['db']->select('CubeCart_customer', false, array('customer_id' => (int)$GLOBALS['session']->session_data['customer_id']), null, 1)) {
-			$default_language = $GLOBALS['config']->get('config','default_language');
-			if(!preg_match(Language::LANG_REGEX, $result[0]['language'])) {
-				$result[0]['language'] = $default_language;
-			} elseif($result[0]['language']!==$default_language) {
-				if($enabled_languages = $GLOBALS['config']->get('languages')) {
-					if(!in_array($result[0]['language'], $enabled_languages)) {
-						$result[0]['language'] = $default_language;
-					}
-				} else {
-					$result[0]['language'] = $default_language;
-				}
-			}
+			$result[0]['language'] = $this->_validLanguage($result[0]['language']);
 			$this->_user_data = $result[0];
 			foreach ($GLOBALS['hooks']->load('class.user.load.user') as $hook) include $hook;
 			$this->_logged_in = true;
@@ -1057,5 +1047,26 @@ class User {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Validate users language string
+	 *
+	 * @return string
+	 */
+	private function _validLanguage($language) {
+		$default_language = $GLOBALS['config']->get('config','default_language');
+		if(!preg_match(Language::LANG_REGEX, $language)) {
+			return $default_language;
+		} elseif($language!==$default_language) {
+			if($enabled_languages = $GLOBALS['config']->get('languages')) {
+				if(!in_array($language, $enabled_languages)) {
+					return $default_language;
+				}
+			} else {
+				return $default_language;
+			}
+		}
+		return $language;
 	}
 }
