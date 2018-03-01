@@ -1082,7 +1082,9 @@ class User {
 			return $default_language;
 		} elseif($language!==$default_language) {
 			if($enabled_languages = $GLOBALS['config']->get('languages')) {
-				if(!in_array($language, $enabled_languages)) {
+				if(!isset($enabled_languages[$language])) {
+					return $default_language;
+				} elseif($enabled_languages[$language]=='0') {
 					return $default_language;
 				}
 			} else {
