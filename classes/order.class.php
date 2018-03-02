@@ -1340,8 +1340,8 @@ class Order {
 		if (!empty($coupon_id)) {
 			if (($coupon = $GLOBALS['db']->select('CubeCart_coupons', false, array('coupon_id' => (int)$coupon_id, 'email_sent' => 0))) !== false) {
 				$mailer = new Mailer();
-				if (isset($coupon[0]['value'])) {
-					$coupon[0]['value'] = Tax::getInstance()->priceFormat($coupon[0]['value']);
+				if (isset($data['value'])) {
+					$data['value'] = Tax::getInstance()->priceFormat($data['value']);
 				}
 				$data['storeURL']  = $GLOBALS['storeURL'];
 				if (($content = $mailer->loadContent('cart.gift_certificate', $this->_order_summary['lang'], array_merge($this->_order_summary, $data, $coupon[0]))) !== false) {
