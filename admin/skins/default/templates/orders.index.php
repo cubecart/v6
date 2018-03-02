@@ -259,7 +259,7 @@
                </select>
                </span>
             </div>
-            <div><label for="sum_state">{$LANG.address.state}</label><span><input type="text" id="sum_state" name="customer[state]" value="{$SUMMARY.state}" class="textbox billing state-list required"></span></div>
+            <div><label for="sum_state">{$LANG.address.state}</label><span><input type="text" id="sum_state" name="customer[state]" value="{$SUMMARY.state}" class="textbox billing state-list"></span></div>
             <div><label for="sum_postcode">{$LANG.address.postcode}</label><span><input type="text" id="sum_postcode" name="customer[postcode]" value="{$SUMMARY.postcode}" class="textbox billing"></span></div>
          </fieldset>
          <fieldset>
@@ -300,7 +300,7 @@
                </select>
                </span>
             </div>
-            <div><label for="d_sum_state">{$LANG.address.state}</label><span><input type="text" id="d_sum_state" name="customer[state_d]" value="{$SUMMARY.state_d}" class="textbox state-list required"></span></div>
+            <div><label for="d_sum_state">{$LANG.address.state}</label><span><input type="text" id="d_sum_state" name="customer[state_d]" value="{$SUMMARY.state_d}" class="textbox state-list"></span></div>
             <div><label for="d_sum_postcode">{$LANG.address.postcode}</label><span><input type="text" id="d_sum_postcode" name="customer[postcode_d]" value="{$SUMMARY.postcode_d}" class="textbox required"></span></div>
          </fieldset>
          <fieldset>

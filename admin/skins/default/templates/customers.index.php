@@ -268,7 +268,7 @@
 		  </select>
 		 *</span>
 	  </div>
-	  <div><label for="edit_state">{$LANG.address.state}</label><span><input type="text" name="address[state][]" id="edit_state" class="textbox add state-list" required="required"> *</span></div>
+	  <div><label for="edit_state">{$LANG.address.state}</label><span><input type="text" name="address[state][]" id="edit_state" class="textbox add state-list"> *</span></div>
 	  <div><label for="edit_postcode">{$LANG.address.postcode}</label><span><input type="text" name="address[postcode][]" id="edit_postcode" class="textbox add uppercase" required="required"> *</span></div>
 	  <div><label for="billing">{$LANG.address.billing_address}</label><span><input type="checkbox" name="address[billing][]" id="billing" class="add" value="1"></span></div>
 	  <div><label for="default">{$LANG.address.default_delivery_address}</label><span><input type="checkbox" name="address[default][]" id="default"  class="add" value="1"></span></div>

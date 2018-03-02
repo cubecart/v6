@@ -908,7 +908,7 @@ function state_json() {
 			$current = '';
 			foreach ($counties as $state) {
 				if ($current != $state['numcode']) {
-					$json_array[$state['numcode']][] = array('id' => '0', 'name' => '-- '.$GLOBALS['language']->common['please_select'].' --');
+					$json_array[$state['numcode']][] = array('id' => '0', 'name' => '-- '.(CC_IN_ADMIN ? $GLOBALS['language']->common['none'] : $GLOBALS['language']->common['please_select']).' --');
 					$current = $state['numcode'];
 				}
 //				$json_array[$state['numcode']][] = array('id' => $state['id'], 'name' => utf8_encode($state['name'])); // data already utf-8

@@ -19,7 +19,7 @@
             <h5><a href="?_a=addressbook&action=edit&address_id={$address.address_id}">{$address.description}</a></h5>
          </div>
       </div>
-      <div class="row">{debug}
+      <div class="row">
          <div class="small-6 medium-4 columns">
             {if !empty($address.title)}{$address.title} {/if}{$address.first_name} {$address.last_name}<br/>
             {$address.line1}<br/>
