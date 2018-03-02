@@ -321,6 +321,10 @@ class Language {
 			$path = appendDS($path);
 		}
 		if (!empty($code) && preg_match(self::LANG_REGEX, $code)) {
+			$default_language = $GLOBALS['config']->get('config', 'default_language');
+			// Correct customer preference
+			$GLOBALS['db']->update('CubeCart_customer', array('language' => $default_language), array('language' => $code));
+			
 			// Purge database
 			$GLOBALS['db']->delete('CubeCart_lang_strings', array('language' => $code));
 			$GLOBALS['db']->delete('CubeCart_email_content', array('language' => $code));
