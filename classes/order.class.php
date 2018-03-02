@@ -473,6 +473,15 @@ class Order {
 						unset($content);
 					}
 
+					if ($this->_email_enabled) {
+						foreach ($this->_order_inventory as $item) {
+							// Send Gift Certificate
+							if (!empty($item['custom']) && !empty($item['coupon_id']) && $item['digital']) {
+								$this->_sendCoupon($item['coupon_id'], unserialize($item['custom']));
+							}
+						}
+					}
+					
 					// Send digital files
 					$this->_digitalDelivery($order_id, $this->_order_summary['email']);
 
@@ -490,14 +499,6 @@ class Order {
 						}
 					}
 
-					if ($this->_email_enabled) {
-						foreach ($this->_order_inventory as $item) {
-							// Send Gift Certificate
-							if (!empty($item['custom']) && !empty($item['coupon_id']) && $item['digital']) {
-								$this->_sendCoupon($item['coupon_id'], unserialize($item['custom']));
-							}
-						}
-					}
 					/* no need to send this email for digital only orders */
 					if (!$this->_skip_order_complete_email && $this->_email_enabled && ($content = $mailer->loadContent('cart.order_complete', $order_summary['lang'])) !== false) {
 						$this->assignOrderDetails();
