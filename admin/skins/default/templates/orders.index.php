@@ -177,7 +177,7 @@
                   {/if}
                   {if $product.custom}
                   {foreach from=$product.custom key=k item=v}
-                  <br>{$k}: {$v}
+                  <br>{$k|capitalize}: {$v}
                   {/foreach}
                   {/if}
                </div>

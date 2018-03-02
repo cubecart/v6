@@ -474,6 +474,15 @@ class Order {
 						unset($content);
 					}
 
+					if ($this->_email_enabled) {
+						foreach ($this->_order_inventory as $item) {
+							// Send Gift Certificate
+							if (!empty($item['custom']) && !empty($item['coupon_id']) && $item['digital']) {
+								$this->_sendCoupon($item['coupon_id'], unserialize($item['custom']));
+							}
+						}
+					}
+					
 					// Send digital files
 					$this->_digitalDelivery($order_id, $this->_order_summary['email']);
 
@@ -491,14 +500,6 @@ class Order {
 						}
 					}
 
-					if ($this->_email_enabled) {
-						foreach ($this->_order_inventory as $item) {
-							// Send Gift Certificate
-							if (!empty($item['custom']) && !empty($item['coupon_id']) && $item['digital']) {
-								$this->_sendCoupon($item['coupon_id'], unserialize($item['custom']));
-							}
-						}
-					}
 					/* no need to send this email for digital only orders */
 					if (!$this->_skip_order_complete_email && $this->_email_enabled && ($content = $mailer->loadContent('cart.order_complete', $order_summary['lang'])) !== false) {
 						$this->assignOrderDetails();
@@ -1411,8 +1412,8 @@ class Order {
 		if (!empty($coupon_id)) {
 			if (($coupon = $GLOBALS['db']->select('CubeCart_coupons', false, array('coupon_id' => (int)$coupon_id, 'email_sent' => 0))) !== false) {
 				$mailer = new Mailer();
-				if (isset($coupon[0]['value'])) {
-					$coupon[0]['value'] = Tax::getInstance()->priceFormat($coupon[0]['value']);
+				if (isset($data['value'])) {
+					$data['value'] = Tax::getInstance()->priceFormat($data['value']);
 				}
 				$data['storeURL']  = $GLOBALS['storeURL'];
 				if (($content = $mailer->loadContent('cart.gift_certificate', $this->_order_summary['lang'], array_merge($this->_order_summary, $data, $coupon[0]))) !== false) {

@@ -332,7 +332,7 @@ if (isset($_GET['action'])) {
 									} elseif($key == 'value') {
 										$value = $GLOBALS['tax']->priceFormat($value);
 									}
-									$custom_data_string[ucwords($key)] = $value;
+									$custom_data_string[$key] = $value;
 								}
 								$product['custom'] = $custom_data_string;
 							}
