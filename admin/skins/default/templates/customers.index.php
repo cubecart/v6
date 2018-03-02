@@ -193,7 +193,7 @@
 		  <strong>{$address.description}</strong> - {$address.title} {$address.first_name} {$address.last_name}
 		  {if !empty({$address.company_name})}({$address.company_name}){/if}
 		  <br>
-		  {$address.line1}, {if !empty($address.line2)}{$address.line2}, {/if}{$address.town}, {$address.state_name}, {$address.postcode}, {$address.country_name}
+		  {$address.line1}, {if !empty($address.line2)}{$address.line2}, {/if}{$address.town|upper}, {if !empty($address.state_name)}{$address.state_name|upper}, {/if}{$address.postcode}, {$address.country_name}
 		</div>
 		{/foreach}
 		{else}

@@ -27,11 +27,16 @@
 	  		{if !empty($order.company_name_d)}{$order.company_name_d}<br>{/if}
 	  		{$order.line1_d} <br>
 	  		{if !empty($order.line2_d)}{$order.line2_d}<br>{/if}
-	  		{$order.town_d}<br>
-	  		{$order.state_d}, {$order.postcode_d}<br>
-	  		{$order.country_d}
+	  		{$order.town_d|upper}<br>
+	  		{if !empty($order.state_d)}{$order.state_d|upper}, {/if}{$order.postcode_d}{if $CONFIG.store_country_name!==$order.country_d}<br>
+	  		{$order.country_d}{/if}
 		  </div>
-		  <div class="sender">{$LANG.address.return_address}<br>{$STORE.address}, {$STORE.county}, {$STORE.postcode} {$STORE.country}</div>
+		  <div class="sender">
+				{if !empty($STORE.address)}{$LANG.address.return_address}<br>{$STORE.address},{/if}
+				{if !empty($STORE.county)}{$STORE.county|upper},{/if}
+				{if !empty($STORE.postcode)}{$STORE.postcode}{/if}
+				{if $CONFIG.store_country_name!==$order.country_d}{$STORE.country}{/if}
+			</div>
 		</div>
 		<div id="storeLabel">
 		  <img src="{$STORE_LOGO}" alt="">

@@ -179,7 +179,7 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
 				}
 			}
 
-			$required_fields = array('first_name','last_name','line1','town','country','state','postcode');
+			$required_fields = array('first_name','last_name','line1','town','country','postcode');
 
 			foreach ($address as $offset => $record) {
 				
@@ -361,14 +361,7 @@ if (isset($_GET['action']) && Admin::getInstance()->permissions('customers', CC_
 							$smarty_data['countries'][] = $array;
 						}
 						$GLOBALS['smarty']->assign('COUNTRIESL', $smarty_data['countries']);
-						$counties = $GLOBALS['db']->select('CubeCart_geo_zone', false, array('status' => 1));
-						if ($counties) {
-							$jsonArray = array();
-							foreach ($counties as $state) {
-								$jsonArray[getCountryFormat($state['country_id'], 'id', 'numcode')][] = array('id' => $state['id'], 'name' => $state['name']);
-							}
-							$GLOBALS['smarty']->assign('JSON_STATE', json_encode($jsonArray));
-						}
+						$GLOBALS['smarty']->assign('JSON_STATE', state_json());
 					}
 					$GLOBALS['smarty']->assign('ADDRESS', $address[0]);
 				}
@@ -518,17 +511,7 @@ if (!isset($_GET['address_id'])): // avoid states double content by address edit
 			);
 		}
 		$GLOBALS['smarty']->assign('COUNTRIES', $smarty_data['countries']);
-		if (($counties = $GLOBALS['db']->select('CubeCart_geo_zone', false, array('status' => 1))) !== false) {
-			$id = $country_format = 0;
-			foreach ($counties as $state) {
-				if ($id != $state['country_id']) {
-					$id = $state['country_id'];
-					$country_format = getCountryFormat($state['country_id'], 'id', 'numcode');
-				}
-				$jsonArray[$country_format][] = array('id' => $state['id'], 'name' => $state['name']);
-			}
-			$GLOBALS['smarty']->assign('JSON_STATE', json_encode($jsonArray));
-		}
+		$GLOBALS['smarty']->assign('JSON_STATE', state_json());
 	}
 endif;
 $page_content = $GLOBALS['smarty']->fetch('templates/customers.index.php');

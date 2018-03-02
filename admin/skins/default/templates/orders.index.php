@@ -148,8 +148,8 @@
                {if !empty($OVERVIEW_SUMMARY.company_name_d)}{$OVERVIEW_SUMMARY.company_name_d}<br>{/if}
                {$OVERVIEW_SUMMARY.line1_d}<br>
                {if !empty($OVERVIEW_SUMMARY.line2_d)}{$OVERVIEW_SUMMARY.line2_d}<br>{/if}
-               {$OVERVIEW_SUMMARY.town_d}<br>
-               {$OVERVIEW_SUMMARY.state_d}, {$OVERVIEW_SUMMARY.postcode_d}<br>
+               {$OVERVIEW_SUMMARY.town_d|upper}<br>
+               {if !empty($OVERVIEW_SUMMARY.state_d)}{$OVERVIEW_SUMMARY.state_d|upper}, {/if}{$OVERVIEW_SUMMARY.postcode_d}<br>
                {$OVERVIEW_SUMMARY.country_d}
             </fieldset>
             <fieldset class="order_address">
@@ -158,8 +158,8 @@
                {if !empty($OVERVIEW_SUMMARY.company_name)}{$OVERVIEW_SUMMARY.company_name}<br>{/if}
                {$OVERVIEW_SUMMARY.line1}<br>
                {if !empty($OVERVIEW_SUMMARY.line2)}{$OVERVIEW_SUMMARY.line2}<br>{/if}
-               {$OVERVIEW_SUMMARY.town}<br>
-               {$OVERVIEW_SUMMARY.state}, {$OVERVIEW_SUMMARY.postcode}<br>
+               {$OVERVIEW_SUMMARY.town|upper}<br>
+               {if !empty($OVERVIEW_SUMMARY.state)}{$OVERVIEW_SUMMARY.state|upper}, {/if}{$OVERVIEW_SUMMARY.postcode}<br>
                {$OVERVIEW_SUMMARY.country}
             </fieldset>
             <p><strong>{$LANG.basket.order_date}:</strong> {$OVERVIEW_SUMMARY.order_date}</p>
