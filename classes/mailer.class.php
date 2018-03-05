@@ -88,7 +88,7 @@ class Mailer extends PHPMailer {
 	 */
 	public function loadContent($content_type, $language = null, $data = false) {
 
-		$language = (!empty($language) && preg_match(Language::LANG_REGEX, $language, $match)) ? $language : $GLOBALS['language']->current();
+		$language = preg_match(Language::LANG_REGEX, $language) ? $language : $GLOBALS['language']->current();
 		$language = ($language == 'en') ? 'en-GB' : $language;
 
 		if (!empty($content_type)) {
@@ -125,11 +125,8 @@ class Mailer extends PHPMailer {
 						}
 					}
 					$this->_import_new = true;
-					$this->loadContent($content_type, $language, $data);
-				} elseif (isset($match[2]) && preg_match(Language::LANG_REGEX, $match[2])) {
-					// Try the parent language, if this is a regional translation (i.e. en-GB)
-					return $this->loadContent($content_type, $match[1], $data);
-				} else if ($language !=  $GLOBALS['config']->get('config', 'default_language')) {
+					return $this->loadContent($content_type, $language, $data);
+				} else {
 					// Try loading the default language content
 					return $this->loadContent($content_type, $GLOBALS['config']->get('config', 'default_language'), $data);
 				}
