@@ -176,8 +176,19 @@ class Newsletter {
 	 */
 	public function subscribe($email = false, $customer_id = null) {
 		// Subscribe, generate validation email, and send
-		if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+		$skin_data = GUI::getInstance()->getSkinData('newsletter_recaptcha');
+		$error = false;
+		if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			$GLOBALS['gui']->setError(sprintf($GLOBALS['language']->newsletter['email_invalid'],$email));
+			$error = true;
+		} elseif($skin_data['info']['newsletter_recaptcha'] && GUI::getInstance()->recaptchaRequired() && $GLOBALS['session']->get('error', 'recaptcha')) {
+			$GLOBALS['gui']->setError($GLOBALS['session']->get('error', 'recaptcha'));
+			$error = true;
+		}
 
+		if($error) {
+			httpredir(currentPage());
+		} else {
 			$GLOBALS['db']->delete('CubeCart_newsletter_subscriber', array('email' => strtolower($email)));
 
 			$record = array(
@@ -189,9 +200,7 @@ class Newsletter {
 			$GLOBALS['db']->insert('CubeCart_newsletter_subscriber', $record);
 			foreach ($GLOBALS['hooks']->load('class.newsletter.subscribe') as $hook) include $hook;
 			return true;
-			
 		}
-		$GLOBALS['gui']->setError($GLOBALS['language']->newsletter['email_invalid']);
 		return false;
 	}
 

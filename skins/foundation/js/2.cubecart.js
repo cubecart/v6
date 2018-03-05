@@ -391,6 +391,10 @@ jQuery(document).ready(function() {
         });
     }
 
+    $("#newsletter_email").focus(function() {
+        $("#newsletter_recaptcha").slideDown();
+    });
+
     /* We must only show grid view with 1 grid column for medium */
     if(Foundation.utils.is_small_only()) {
         grid_view(0);

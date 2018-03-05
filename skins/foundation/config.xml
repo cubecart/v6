@@ -20,6 +20,7 @@
 	<mobile>false</mobile>
 	<responsive>true</responsive>
 	<csrf>true</csrf>
+	<newsletter_recaptcha>true</newsletter_recaptcha>
   </info>
   <layout>
 	<products>

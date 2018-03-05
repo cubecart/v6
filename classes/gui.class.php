@@ -615,7 +615,8 @@ class GUI {
 						'homepage'  => (string)$data->info->{'homepage'},
 						'mobile'  	=> ((string)$data->info->{'mobile'}=='true') ? true : false,
 						'responsive'=> ((string)$data->info->{'responsive'}=='true') ? true : false,
-						'csrf'=> ((string)$data->info->{'csrf'}=='true') ? true : false
+						'csrf'=> ((string)$data->info->{'csrf'}=='true') ? true : false,
+						'newsletter_recaptcha'=> ((string)$data->info->{'newsletter_recaptcha'}=='true') ? true : false
 					);
 			
 					if(is_object($data->layout)) {
