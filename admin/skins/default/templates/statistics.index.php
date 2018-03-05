@@ -176,7 +176,7 @@
          {foreach from=$BEST_CUSTOMERS item=customer}
          <tr>
             <td align="center">{$customer.key}</td>
-            <td><a href="?_g=customers&node=index&action=edit&customer_id={$customer.customer_id}">{$customer.last_name}, {$customer.first_name}</a></td>
+            <td><a href="?_g=customers&node=index&action=edit&customer_id={$customer.customer_id}">{$customer.last_name|capitalize}, {$customer.first_name|capitalize}</a></td>
             <td>{$customer.expenditure}</td>
             <td>{$customer.percent}</td>
          </tr>

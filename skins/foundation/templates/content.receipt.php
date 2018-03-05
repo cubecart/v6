@@ -17,10 +17,10 @@
 <div class="row">
    <div class="small-6 columns">
       <strong>{$LANG.address.billing_address}</strong><br>
-      {$SUM.title} {$SUM.first_name} {$SUM.last_name}<br>
+      {$SUM.title} {$SUM.first_name|capitalize} {$SUM.last_name|capitalize}<br>
       {if $SUM.company_name}{$SUM.company_name}<br>{/if}
-      {$SUM.line1}<br>
-      {if $SUM.line2}{$SUM.line2}<br>{/if}
+      {$SUM.line1|capitalize}<br>
+      {if $SUM.line2|capitalize}{$SUM.line2|capitalize}<br>{/if}
       {$SUM.town|upper}<br>
       {if !empty($SUM.state)}{$SUM.state|upper}, {/if}{$SUM.postcode}{if $CONFIG['store_country_name']!==$SUM['country']}<br>
       {$SUM.country}{/if}
@@ -29,8 +29,8 @@
       <strong>{$LANG.address.delivery_address}</strong><br>
       {$SUM.title_d} {$SUM.first_name_d} {$SUM.last_name_d}<br>
       {if $SUM.company_name_d}{$SUM.company_name_d}<br>{/if}
-      {$SUM.line1_d}<br>
-      {if $SUM.line2_d}{$SUM.line2_d}<br>{/if}
+      {$SUM.line1_d|capitalize}<br>
+      {if $SUM.line2_d|capitalize}{$SUM.line2_d|capitalize}<br>{/if}
       {$SUM.town_d|upper}<br>
       {if !empty($SUM.state_d)}{$SUM.state_d|upper}, {/if}{$SUM.postcode_d}{if $CONFIG['store_country_name']!==$SUM['country_d']}<br>
       {$SUM.country_d}{/if}

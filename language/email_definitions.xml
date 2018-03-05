@@ -27,33 +27,33 @@ If the link above doesn't work, please copy and paste it into your browser addre
   </email>
   <email name="cart.order_complete">
     <subject><![CDATA[Order Complete]]></subject>
-    <content type="html"><![CDATA[<p>Hi {$DATA.first_name},</p>
+    <content type="html"><![CDATA[<p>Hi {$DATA.first_name|capitalize},</p>
 <p>We are pleased to say that order number {$DATA.cart_order_id} is complete. If you have ordered physical goods they should arrive shortly.</p>]]></content>
-    <content type="text"><![CDATA[Hi {$DATA.first_name},
+    <content type="text"><![CDATA[Hi {$DATA.first_name|capitalize},
 
 We are pleased to say that order number {$DATA.cart_order_id} is complete. If you have ordered physical goods they should arrive shortly.]]></content>
   </email>
   <email name="cart.order_cancelled">
     <subject><![CDATA[Order Cancelled]]></subject>
-    <content type="html"><![CDATA[<p>Hi {$DATA.first_name},</p>
+    <content type="html"><![CDATA[<p>Hi {$DATA.first_name|capitalize},</p>
 <p>Order number {$DATA.cart_order_id} has been cancelled.</p>]]></content>
-    <content type="text"><![CDATA[Hi {$DATA.first_name},
+    <content type="text"><![CDATA[Hi {$DATA.first_name|capitalize},
 
 Order number {$DATA.cart_order_id} has been cancelled.]]></content>
   </email>
   <email name="cart.order_confirmation">
     <subject><![CDATA[Order Confirmation #{$DATA.cart_order_id}]]></subject>
-    <content type="html"><![CDATA[<p>Thank You {$DATA.first_name}!</p>
+    <content type="html"><![CDATA[<p>Thank You {$DATA.first_name|capitalize}!</p>
 <p>Your order {$DATA.cart_order_id} has been received which was placed on {$DATA.order_date}. Please keep this email for your records. It is possible to view the status of your order online.</p> 
 <p><a href="{$DATA.link}">{$DATA.link}</a></p>
 <table width="100%">
 <tr>
 <td valign="top" width="50%"><strong>Billing address:</strong><br>
-{$BILLING.first_name} {$BILLING.last_name}<br>
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
 {if !empty($BILLING.company_name)}{$BILLING.company_name}<br>
 {/if}
-{$BILLING.line1}<br>
-{if !empty($BILLING.line2)}{$BILLING.line2}<br>
+{$BILLING.line1|capitalize}<br>
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>
 {/if}
 {$BILLING.town|upper}<br>
 {if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
@@ -64,10 +64,10 @@ Order number {$DATA.cart_order_id} has been cancelled.]]></content>
 <strong>Email:</strong><br>
 {$BILLING.email}</td>
 <td valign="top" width="50%"><strong>Shipping address:</strong><br>
-{$SHIPPING.first_name} {$SHIPPING.last_name}<br>
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>
 {if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>
-{/if}{$SHIPPING.line1}<br>
-{if !empty($SHIPPING.line2)}{$SHIPPING.line2} <br>
+{/if}{$SHIPPING.line1|capitalize}<br>
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize} <br>
 {/if}{$SHIPPING.town|upper}<br>
 {if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
 {$SHIPPING.postcode}<br>
@@ -120,7 +120,7 @@ Order number {$DATA.cart_order_id} has been cancelled.]]></content>
 {if !empty($DATA.note_to_customer)}
 <p>&quot;{$DATA.note_to_customer}&quot;</p>
 {/if}]]></content>
-    <content type="text"><![CDATA[Thank You {$DATA.first_name}!
+    <content type="text"><![CDATA[Thank You {$DATA.first_name|capitalize}!
 
 Your order {$DATA.cart_order_id} has been received which was placed on {$DATA.order_date}. Please keep this email for your records. It is possible to view the status of your order online. 
 
@@ -128,10 +128,10 @@ Your order {$DATA.cart_order_id} has been received which was placed on {$DATA.or
 
 ----------------------------------------------------------------------
 Billing address:
-{$BILLING.first_name} {$BILLING.last_name}
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}
 {if !empty($BILLING.company_name)}{$BILLING.company_name}
-{/if}{$BILLING.line1}
-{if !empty($BILLING.line2)}{$BILLING.line2}
+{/if}{$BILLING.line1|capitalize}
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}
 {/if}{$BILLING.town|upper}
 {if !empty($BILLING.state)}{$BILLING.state|upper}
 {/if}{$BILLING.postcode}
@@ -142,10 +142,10 @@ Email:
 {$BILLING.email}
 
 Shipping address:
-{$SHIPPING.first_name} {$SHIPPING.last_name}
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}
 {if !empty($SHIPPING.company_name)}{$SHIPPING.company_name}
-{/if}{$SHIPPING.line1}
-{if !empty($SHIPPING.line2)}{$SHIPPING.line2}
+{/if}{$SHIPPING.line1|capitalize}
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize}
 {/if}{$SHIPPING.town|upper}
 {if !empty($SHIPPING.state)}{$SHIPPING.state|upper}
 {/if}{$SHIPPING.postcode}
@@ -178,22 +178,22 @@ Order Total: {$DATA.total}
   </email>
   <email name="cart.payment_fraud">
     <subject><![CDATA[Order Problem]]></subject>
-    <content type="html"><![CDATA[<p>Hi {$DATA.first_name},</p>
+    <content type="html"><![CDATA[<p>Hi {$DATA.first_name|capitalize},</p>
 <p>We are very sorry but we have not been able to accept the payment for order {$DATA.cart_order_id}. Please feel free to contact a member of staff if you have any questions.</p>]]></content>
-    <content type="text"><![CDATA[Hi {$DATA.first_name},
+    <content type="text"><![CDATA[Hi {$DATA.first_name|capitalize},
 
 We are very sorry but we have not been able to accept the payment for order {$DATA.cart_order_id}. Please feel free to contact a member of staff if you have any questions.]]></content>
   </email>
   <email name="account.password_recovery">
     <subject><![CDATA[Password Recovery]]></subject>
-    <content type="html"><![CDATA[<p>Dear {$DATA.first_name} {$DATA.last_name},<br>
+    <content type="html"><![CDATA[<p>Dear {$DATA.first_name|capitalize} {$DATA.last_name|capitalize},<br>
 <br>
 To reset your password, please click on the link below or copy and paste the address onto your web browser's address window. Once you're on the web page, you will be instructed to enter and confirm your new password.<br> 
 <br>
 <a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br>
 <br>
 If you require further assistance in resetting your password, please contact us.</p>]]></content>
-    <content type="text"><![CDATA[Hi {$DATA.first_name},
+    <content type="text"><![CDATA[Hi {$DATA.first_name|capitalize},
 
 To reset your password, please click on the link below or copy and paste the address onto your web browser's address window. Once you're on the web page, you will be instructed to enter and confirm your new password.
 
@@ -203,17 +203,17 @@ If you require further assistance in resetting your password, please contact us.
   </email>
   <email name="admin.order_received">
     <subject><![CDATA[New Order #{$DATA.cart_order_id}]]></subject>
-    <content type="html"><![CDATA[<p>{$DATA.first_name} {$DATA.last_name} {if !empty($BILLING.company_name)}({$BILLING.company_name}){/if} just placed order number {$DATA.cart_order_id} on {$DATA.order_date}.</p>
+    <content type="html"><![CDATA[<p>{$DATA.first_name|capitalize} {$DATA.last_name|capitalize} {if !empty($BILLING.company_name)}({$BILLING.company_name}){/if} just placed order number {$DATA.cart_order_id} on {$DATA.order_date}.</p>
 <p>This order can be managed online by following the link below.</p>
 <p><a href="{$DATA.link}">{$DATA.link}</a></p>
 <table width="100%">
 <tr>
 <td valign="top" width="50%"><strong>Billing address:</strong><br>
-{$BILLING.first_name} {$BILLING.last_name}<br>
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
 {if !empty($BILLING.company_name)}{$BILLING.company_name}<br>
 {/if}
-{$BILLING.line1}<br>
-{if !empty($BILLING.line2)}{$BILLING.line2}<br>
+{$BILLING.line1|capitalize}<br>
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>
 {/if}
 {$BILLING.town|upper}<br>
 {if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
@@ -224,10 +224,10 @@ If you require further assistance in resetting your password, please contact us.
 <strong>Email:</strong><br>
 {$BILLING.email}</td>
 <td valign="top" width="50%"><strong>Shipping address:</strong><br>
-{$SHIPPING.first_name} {$SHIPPING.last_name}<br>
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>
 {if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>
-{/if}{$SHIPPING.line1}<br>
-{if !empty($SHIPPING.line2)}{$SHIPPING.line2} <br>
+{/if}{$SHIPPING.line1|capitalize}<br>
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize} <br>
 {/if}{$SHIPPING.town|upper}<br>
 {if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
 {$SHIPPING.postcode}<br>
@@ -278,7 +278,7 @@ If you require further assistance in resetting your password, please contact us.
 </tbody>
 
 </table>]]></content>
-    <content type="text"><![CDATA[{$DATA.first_name} {$DATA.last_name} {if !empty($BILLING.company_name)}({$BILLING.company_name}){/if} just placed order number {$DATA.cart_order_id} on {$DATA.order_date}.
+    <content type="text"><![CDATA[{$DATA.first_name|capitalize} {$DATA.last_name|capitalize} {if !empty($BILLING.company_name)}({$BILLING.company_name}){/if} just placed order number {$DATA.cart_order_id} on {$DATA.order_date}.
 
 This order can be managed online by following the link below.
 
@@ -286,10 +286,10 @@ This order can be managed online by following the link below.
 
 ----------------------------------------------------------------------
 Billing address:
-{$BILLING.first_name} {$BILLING.last_name}
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}
 {if !empty($BILLING.company_name)}{$BILLING.company_name}
-{/if}{$BILLING.line1}
-{if !empty($BILLING.line2)}{$BILLING.line2}
+{/if}{$BILLING.line1|capitalize}
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}
 {/if}{$BILLING.town|upper}
 {if !empty($BILLING.state)}{$BILLING.state|upper}
 {/if}{$BILLING.postcode}
@@ -300,10 +300,10 @@ Email:
 {$BILLING.email}
 
 Shipping address:
-{$SHIPPING.first_name} {$SHIPPING.last_name}
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}
 {if !empty($SHIPPING.company_name)}{$SHIPPING.company_name}
-{/if}{$SHIPPING.line1}
-{if !empty($SHIPPING.line2)}{$SHIPPING.line2}
+{/if}{$SHIPPING.line1|capitalize}
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize}
 {/if}{$SHIPPING.town|upper}
 {if !empty($SHIPPING.state)}{$SHIPPING.state|upper}
 {/if}{$SHIPPING.postcode}
@@ -346,7 +346,7 @@ Review Text:
   </email>
   <email name="cart.digital_download">
     <subject><![CDATA[Your Purchased Downloads]]></subject>
-    <content type="html"><![CDATA[<p>Hi {$DATA.first_name},</p>
+    <content type="html"><![CDATA[<p>Hi {$DATA.first_name|capitalize},</p>
 <p>Your digital files are now ready for download. Please use the links provided below to access them below:</p>
 {foreach from=$DOWNLOADS item=download}
 <p><strong>{$download.name}:</strong> (Link expires on {$download.expire}<strong>)</strong><br>
@@ -354,7 +354,7 @@ Review Text:
 {/foreach}
 <p>If the links above don't work, please try copy and pasting them it into your browser address bar. You can also find access to these files from your the customer area of our website.</p> 
 <p>&nbsp;</p>]]></content>
-    <content type="text"><![CDATA[Hi {$DATA.first_name},
+    <content type="text"><![CDATA[Hi {$DATA.first_name|capitalize},
 
 Your digital files are now ready for download. Please use the links provided below to access them below:
 
@@ -369,7 +369,7 @@ If the links above don't work, please try copy and pasting them it into your bro
     <subject><![CDATA[Your Gift Card]]></subject>
     <content type="html"><![CDATA[<p>Dear {$DATA.name},</p>
 <p>We are pleased to be sending you this gift card which you can use towards the purchase of any items on our website.</p>
-<p><strong>From: </strong>{$DATA.first_name} {$DATA.last_name}<br>
+<p><strong>From: </strong>{$DATA.first_name|capitalize} {$DATA.last_name|capitalize}<br>
 <strong>Amount: </strong>{$DATA.value}<br>
 <strong>Claim Code:</strong> {$DATA.code}<br>
 <strong>Gift Message:</strong> {$DATA.message}</p>
@@ -382,7 +382,7 @@ We are pleased to be sending you this gift card which you can use towards the pu
 
 Happy shopping!
 
-From: {$DATA.first_name} {$DATA.last_name}
+From: {$DATA.first_name|capitalize} {$DATA.last_name|capitalize}
 Amount: {$DATA.value}
 Claim Code: {$DATA.code}
 Gift Message: {$DATA.message}
@@ -410,9 +410,9 @@ Product Link: {$DATA.link}
   </email>
   <email name="cart.payment_received">
     <subject><![CDATA[Thank you for your payment!]]></subject>
-    <content type="html"><![CDATA[<p>Hi {$DATA.first_name},</p>
+    <content type="html"><![CDATA[<p>Hi {$DATA.first_name|capitalize},</p>
 <p>Thank you. We have received a payment of {$DATA.total} for order number {$DATA.cart_order_id}.</p>]]></content>
-    <content type="text"><![CDATA[Hi {$DATA.first_name},
+    <content type="text"><![CDATA[Hi {$DATA.first_name|capitalize},
 
 Thank you. We have received a payment of {$DATA.total} for order number {$DATA.cart_order_id}.]]></content>
   </email>

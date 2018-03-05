@@ -21,9 +21,9 @@
       </div>
       <div class="row">
          <div class="small-6 medium-4 columns">
-            {if !empty($address.title)}{$address.title} {/if}{$address.first_name} {$address.last_name}<br/>
-            {$address.line1}<br/>
-            {if !empty($address.line2)} {$address.line2}<br/>{/if}
+            {if !empty($address.title)}{$address.title|capitalize} {/if}{$address.first_name|capitalize} {$address.last_name|capitalize}<br/>
+            {$address.line1|capitalize}<br/>
+            {if !empty($address.line2)} {$address.line2|capitalize}<br/>{/if}
             {$address.town|upper}<br/>
             {if !empty($address.state)}{$address.state|upper}<br/>{/if}
             {$address.postcode}{if $CONFIG['store_country_name']!==$address['country']}<br>
@@ -69,23 +69,23 @@
       <div class="small-12 large-8 columns"><label for="addr_title">{$LANG.user.title}</label><input type="text" name="title" id="addr_title" value="{$DATA.title}" placeholder="{$LANG.user.title}"></div>
    </div>
    <div class="row">
-      <div class="small-12 large-8 columns"><label for="addr_first_name">{$LANG.user.name_first}</label><input type="text" name="first_name" id="addr_first_name" value="{$DATA.first_name}" required placeholder="{$LANG.user.name_first} {$LANG.form.required}"></div>
+      <div class="small-12 large-8 columns"><label for="addr_first_name">{$LANG.user.name_first}</label><input type="text" name="first_name" id="addr_first_name" value="{$DATA.first_name|capitalize}" required placeholder="{$LANG.user.name_first} {$LANG.form.required}"></div>
    </div>
    <div class="row">
-      <div class="small-12 large-8 columns"><label for="addr_last_name">{$LANG.user.name_last}</label><input type="text" name="last_name" id="addr_last_name" value="{$DATA.last_name}" required placeholder="{$LANG.user.name_last} {$LANG.form.required}"></div>
+      <div class="small-12 large-8 columns"><label for="addr_last_name">{$LANG.user.name_last}</label><input type="text" name="last_name" id="addr_last_name" value="{$DATA.last_name|capitalize}" required placeholder="{$LANG.user.name_last} {$LANG.form.required}"></div>
    </div>
    <div class="row">
       <div class="small-12 large-8 columns"><label for="addr_company_name">{$LANG.address.company_name}</label><input type="text" name="company_name" id="addr_company_name" value="{$DATA.company_name}" placeholder="{$LANG.address.company_name}"></div>
    </div>
    <address>
       <div class="row">
-         <div class="small-12 large-8 columns"><label for="addr_line1">{$LANG.address.line1} </label><input type="text" name="line1" id="addr_line1" value="{$DATA.line1}" required placeholder="{if $ADDRESS_LOOKUP}{$LANG.address.address_lookup}{else}{$LANG.address.line1} {$LANG.form.required}{/if}" autocomplete="off" autocorrect="off" class="address_lookup">
+         <div class="small-12 large-8 columns"><label for="addr_line1">{$LANG.address.line1} </label><input type="text" name="line1" id="addr_line1" value="{$DATA.line1|capitalize}" required placeholder="{if $ADDRESS_LOOKUP}{$LANG.address.address_lookup}{else}{$LANG.address.line1} {$LANG.form.required}{/if}" autocomplete="off" autocorrect="off" class="address_lookup">
          </div>
       </div>
       {if $ADDRESS_LOOKUP}<p id="lookup_fail"><a href="#">{$LANG.address.address_not_found}</a></p>{/if}
       <div{if $ADDRESS_LOOKUP} class="hide"{/if} id="address_form">
       <div class="row">
-         <div class="small-12 large-8 columns"><label for="addr_line2">{$LANG.address.line2}</label><input type="text" name="line2" id="addr_line2" value="{$DATA.line2}" placeholder="{$LANG.address.line2}"></div>
+         <div class="small-12 large-8 columns"><label for="addr_line2">{$LANG.address.line2}</label><input type="text" name="line2" id="addr_line2" value="{$DATA.line2|capitalize}" placeholder="{$LANG.address.line2}"></div>
       </div>
       <div class="row">
          <div class="small-12 large-8 columns"><label for="addr_town">{$LANG.address.town}</label><input type="text" name="town" id="addr_town" value="{$DATA.town|upper}" required placeholder="{$LANG.address.town} {$LANG.form.required}"></div>

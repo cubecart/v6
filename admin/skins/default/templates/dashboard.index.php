@@ -57,7 +57,7 @@
                <div><a href="?_g=orders&action=edit&order_id={$order.cart_order_id}">{if $CONFIG.oid_mode=='i'}{$order.{$CONFIG.oid_col}}{else}{$order.cart_order_id}{/if}</a> - {if empty($order.first_name) && empty($order.last_name)}
                   {$order.name}
                   {else}
-                  {$order.first_name} {$order.last_name}
+                  {$order.first_name|capitalize} {$order.last_name|capitalize}
                   {/if}
                </div>
                {/foreach}
@@ -132,7 +132,7 @@
                <td>&nbsp;</td>
                <td>{$THEAD_ORDERS.cart_order_id}</td>
                <td>&nbsp;</td>
-               <td>{$THEAD_ORDERS.first_name}</td>
+               <td>{$THEAD_ORDERS.first_name|capitalize}</td>
                <td nowrap="nowrap">{$THEAD_ORDERS.status}</td>
                <td>{$THEAD_ORDERS.order_date}</td>
                <td>{$THEAD_ORDERS.total}</td>
@@ -153,7 +153,7 @@
                   <a href="?_g=customers&action=edit&customer_id={$order.customer_id}">{if empty($order.first_name) && empty($order.last_name)}
                   {$order.name}
                   {else}
-                  {$order.first_name} {$order.last_name}
+                  {$order.first_name|capitalize} {$order.last_name|capitalize}
                   {/if}</a>
                </td>
                <td class="{$order.status_class}">{$order.status}</td>

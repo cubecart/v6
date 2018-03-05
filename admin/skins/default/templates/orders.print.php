@@ -25,8 +25,8 @@
 		  <div>
 		  	{if !empty($order.name_d) && empty($order.last_name_d)}{$order.name_d}{else}{$order.title_d} {$order.first_name_d} {$order.last_name_d}{/if}<br>
 	  		{if !empty($order.company_name_d)}{$order.company_name_d}<br>{/if}
-	  		{$order.line1_d} <br>
-	  		{if !empty($order.line2_d)}{$order.line2_d}<br>{/if}
+	  		{$order.line1_d|capitalize} <br>
+	  		{if !empty($order.line2_d)}{$order.line2_d|capitalize}<br>{/if}
 	  		{$order.town_d|upper}<br>
 	  		{if !empty($order.state_d)}{$order.state_d|upper}, {/if}{$order.postcode_d}{if $CONFIG.store_country_name!==$order.country_d}<br>
 	  		{$order.country_d}{/if}

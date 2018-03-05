@@ -11,7 +11,7 @@
  *}
 <div class="right text-right show-for-medium-up" id="box-session">
    {if $IS_USER}
-   <a href="#" data-dropdown="session" class="button white small">{$CUSTOMER.first_name} {$CUSTOMER.last_name} <svg class="icon"><use xlink:href="#icon-caret-down"></use></svg></a><br>
+   <a href="#" data-dropdown="session" class="button white small">{$CUSTOMER.first_name|capitalize} {$CUSTOMER.last_name|capitalize} <svg class="icon"><use xlink:href="#icon-caret-down"></use></svg></a><br>
    <ul id="session" data-dropdown-content class="f-dropdown">
       <li class="text-left"><a href="{$STORE_URL}/index.php?_a=profile" title="{$LANG.account.your_details}">{$LANG.account.your_details}</a></li>
       <li class="text-left"><a href="{$STORE_URL}/index.php?_a=vieworder" title="{$LANG.account.your_orders}">{$LANG.account.your_orders}</a></li>

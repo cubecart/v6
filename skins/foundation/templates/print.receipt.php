@@ -40,9 +40,9 @@
       <div class="row">
          <div class="small-6 columns thickmarg-topbottom">
             {if !empty($order.company_name)}<strong>{$order.company_name}</strong><br>{/if}
-            {$order.title} {$order.first_name} {$order.last_name}<br>
-            {$order.line1} <br>
-            {if !empty($order.line2)}{$order.line2}<br>{/if}
+            {$order.title} {$order.first_name|capitalize} {$order.last_name|capitalize}<br>
+            {$order.line1|capitalize} <br>
+            {if !empty($order.line2)}{$order.line2|capitalize}<br>{/if}
             {$order.town|upper}<br>
             {if !empty($order.state)}{$order.state|upper}<br>{/if}
             {$order.postcode}{if $CONFIG['store_country']!==$address['country_id']}<br>

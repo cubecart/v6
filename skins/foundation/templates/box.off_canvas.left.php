@@ -12,7 +12,7 @@
 <aside class="left-off-canvas-menu">
    <ul class="off-canvas-list">
       {if $IS_USER}
-      <li><label>{$CUSTOMER.first_name} {$CUSTOMER.last_name}</label></li>
+      <li><label>{$CUSTOMER.first_name|capitalize} {$CUSTOMER.last_name|capitalize}</label></li>
       <li><a href="{$STORE_URL}/index.php?_a=profile" title="{$LANG.account.your_details}">{$LANG.account.your_details}</a></li>
       <li><a href="{$STORE_URL}/index.php?_a=vieworder" title="{$LANG.account.your_orders}">{$LANG.account.your_orders}</a></li>
       <li><a href="{$STORE_URL}/index.php?_a=addressbook" title="{$LANG.account.your_addressbook}">{$LANG.account.your_addressbook}</a></li>
