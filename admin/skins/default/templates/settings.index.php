@@ -68,31 +68,31 @@
       <fieldset>
          <legend>{$LANG.settings.title_orders}</legend>
          <div><label for="basket_order_expire">{$LANG.settings.expire_pending}</label><span><input name="config[basket_order_expire]" id="basket_order_expire" class="textbox number" value="{$CONFIG.basket_order_expire}"> {$LANG.common.blank_to_disable}</span></div>
-         <div><label for="oid_mode">{$LANG.orders.id_mode}</label><span><select name="config[oid_mode]" id="oid_mode" class="textbox" onchange="this.value == 'i' ? document.getElementById('i_options').style.display = 'block' :  document.getElementById('i_options').style.display = 'none';">
+         <div><label for="oid_mode">{$LANG.orders.id_mode}</label><span><select name="config[oid_mode]" id="oid_mode" class="textbox preview_order" onchange="this.value == 'i' ? document.getElementById('i_options').style.display = 'block' :  document.getElementById('i_options').style.display = 'none';">
          {foreach from=$OPT_OID_MODE item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
             </select></span></div>
          <div{if $CONFIG.oid_mode!=="i"} style="display: none"{/if} id="i_options" class="stripe">
             <div><label for="oid_prefix">{$LANG.orders.oid_prefix}</label>
                   <span>
-                        <input name="oid_prefix" id="oid_prefix" class="textbox number" value="{$CONFIG.oid_prefix}">
+                        <input name="oid_prefix" id="oid_prefix" class="textbox number preview_order" value="{$CONFIG.oid_prefix}">
                   </span>
                   <br><small>{$LANG.orders.oid_prefix_desc} {$LANG.orders.date_specifiers}</small>
             </div>
             <div><label for="oid_postfix">{$LANG.orders.oid_postfix}</label>
                   <span>
-                        <input name="oid_postfix" id="oid_postfix" class="textbox number" value="{$CONFIG.oid_postfix}">
+                        <input name="oid_postfix" id="oid_postfix" class="textbox number preview_order" value="{$CONFIG.oid_postfix}">
                   </span>
                   <br><small>{$LANG.orders.oid_postfix_desc} {$LANG.orders.date_specifiers}</small>
             </div>
             <div><label for="oid_zeros">{$LANG.orders.oid_zeros}{if $LOCK_ORDER_NUMBER && $CONFIG.oid_zeros>0} ({$LANG.common.min}: {$CONFIG.oid_zeros}){/if}</label>
                   <span>
-                        <input  type="number" name="oid_zeros" id="oid_zeros" class="textbox number" value="{$CONFIG.oid_zeros}"{if $LOCK_ORDER_NUMBER && $CONFIG.oid_zeros>0} min="{$CONFIG.oid_zeros}"{/if}>
+                        <input  type="number" name="oid_zeros" id="oid_zeros" class="textbox number preview_order" value="{$CONFIG.oid_zeros}"{if $LOCK_ORDER_NUMBER && $CONFIG.oid_zeros>0} min="{$CONFIG.oid_zeros}"{/if}>
                   </span>
                   <br><small>{$LANG.orders.oid_zeros_desc}</small>
             </div>
             <div><label for="oid_start">{$LANG.orders.oid_start}{if $LOCK_ORDER_NUMBER && $CONFIG.oid_start>0} ({$LANG.common.min}: {$CONFIG.oid_start}){/if}</label>
                   <span>
-                        <input  type="number" name="oid_start" id="oid_start" class="textbox number" value="{$CONFIG.oid_start}"{if $LOCK_ORDER_NUMBER && $CONFIG.oid_start>0} min="{$CONFIG.oid_start}"{/if}>
+                        <input  type="number" name="oid_start" id="oid_start" class="textbox number preview_order" value="{$CONFIG.oid_start}"{if $LOCK_ORDER_NUMBER && $CONFIG.oid_start>0} min="{$CONFIG.oid_start}"{/if}>
                   </span>
                   <br><small>{$LANG.orders.oid_start_desc}</small>
             </div>
@@ -107,12 +107,11 @@
             <button type="button" class="button tiny" id="order_format_preview" onclick="previewOrderFormat()">{$LANG.common.preview}</button>
             <script>
             function previewOrderFormat() {
-                  var oid_mode = $('#oid_mode').val();
-                  var oid_prefix = $('#oid_prefix').val();
-                  var oid_postfix = $('#oid_postfix').val();
-                  var oid_zeros = $('#oid_zeros').val();
-                  var oid_start = $('#oid_start').val();
-                  $.colorbox({ href:'{$STORE_URL}/{$SKIN_VARS.admin_file}?_g=xml&function=previewOrderFormat&oid_mode='+oid_mode+'&oid_prefix='+oid_prefix+'&oid_postfix='+oid_postfix+'&oid_zeros='+oid_zeros+'&oid_start='+oid_start})
+                  var qstring = '';
+                  $(".preview_order").each(function() {
+                        qstring += '&'+this.id+'='+encodeURI(this.value);
+                  });
+                  $.colorbox({ href:'{$STORE_URL}/{$SKIN_VARS.admin_file}?_g=xml&function=previewOrderFormat'+qstring})
             }
             </script>
       </div>
@@ -395,23 +394,31 @@
       <h3>{$LANG.settings.title_advanced}</h3>
       <fieldset>
          <legend>{$LANG.common.email}</legend>
-         <div><label for="email_method">{$LANG.settings.email_method}</label><span><select name="config[email_method]" id="email_method" class="textbox">
+         <div><label for="email_method">{$LANG.settings.email_method}</label><span><select name="config[email_method]" id="email_method" class="textbox preview_email">
             {foreach from=$OPT_EMAIL_METHOD item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
             </select></span>
          </div>
-         <div><label for="email_name">{$LANG.settings.email_sender_name}</label><span><input name="config[email_name]" id="email_name" type="text" class="textbox" value="{$CONFIG.email_name}"></span></div>
-         <div><label for="email_address">{$LANG.settings.email_sender_address}</label><span><input name="config[email_address]" id="email_address" type="text" class="textbox" value="{$CONFIG.email_address}"></span></div>
-         <div><label for="email_smtp_host">{$LANG.settings.smtp_host}</label><span><input name="config[email_smtp_host]" id="email_smtp_host" type="text" class="textbox" value="{$CONFIG.email_smtp_host}"></span></div>
-         <div><label for="email_smtp_port">{$LANG.settings.smtp_port}</label><span><input name="config[email_smtp_port]" id="email_smtp_port" type="text" class="textbox number" value="{$CONFIG.email_smtp_port}"></span></div>
-         <div><label for="email_smtp">{$LANG.settings.smtp_auth}</label><span><select name="config[email_smtp]" id="email_smtp" class="textbox" autocomplete="off">
+         <div><label for="email_name">{$LANG.settings.email_sender_name}</label><span><input name="config[email_name]" id="email_name" type="text" class="textbox preview_email" value="{$CONFIG.email_name}"></span></div>
+         <div><label for="email_address">{$LANG.settings.email_sender_address}</label><span><input name="config[email_address]" id="email_address" type="text" class="textbox preview_email" value="{$CONFIG.email_address}"></span></div>
+         <div><label for="email_smtp_host">{$LANG.settings.smtp_host}</label><span><input name="config[email_smtp_host]" id="email_smtp_host" type="text" class="textbox preview_email" value="{$CONFIG.email_smtp_host}"></span></div>
+         <div><label for="email_smtp_port">{$LANG.settings.smtp_port}</label><span><input name="config[email_smtp_port]" id="email_smtp_port" type="text" class="textbox number preview_email" value="{$CONFIG.email_smtp_port}"></span></div>
+         <div><label for="email_smtp">{$LANG.settings.smtp_auth}</label><span><select name="config[email_smtp]" id="email_smtp" class="textbox preview_email" autocomplete="off">
             {foreach from=$OPT_EMAIL_SMTP item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
             </select></span>
          </div>
-         <div><label for="email_smtp_user">{$LANG.settings.smtp_user}</label><span><input name="config[email_smtp_user]" id="email_smtp_user" type="text" class="textbox" value="{$CONFIG.email_smtp_user}" autocomplete="off"></span></div>
-         <div><label for="email_smtp_password">{$LANG.settings.smtp_pass}</label><span><input name="config[email_smtp_password]" id="email_smtp_password" type="password" class="textbox" value="{$CONFIG.email_smtp_password|escape:'html'}" autocomplete="off"></span></div>
+         <div><label for="email_smtp_user">{$LANG.settings.smtp_user}</label><span><input name="config[email_smtp_user]" id="email_smtp_user" type="text" class="textbox preview_email" value="{$CONFIG.email_smtp_user}" autocomplete="off"></span></div>
+         <div><label for="email_smtp_password">{$LANG.settings.smtp_pass}</label><span><input name="config[email_smtp_password]" id="email_smtp_password" type="password" class="textbox preview_email" value="{$CONFIG.email_smtp_password|escape:'html'}" autocomplete="off"></span></div>
          <div><label for="smtp_test_url">&nbsp;</label><span>
-         <button type="button" class="button tiny" id="smtp_test" onclick="$.colorbox({ href:'{$STORE_URL}/{$SKIN_VARS.admin_file}?_g=xml&amp;function=SMTPTest' })">{$LANG.common.test} ({$LANG.common.after_save})</button>
-</span></div>
+         <button type="button" class="button tiny" id="smtp_test" onclick="previewEmailSettings()">{$LANG.common.test}</button></span></div>
+         <script>
+            function previewEmailSettings() {
+                  var qstring = '';
+                  $(".preview_email").each(function() {
+                        qstring += '&'+this.id+'='+encodeURI(this.value);
+                  });
+                  $.colorbox({ href:'{$STORE_URL}/{$SKIN_VARS.admin_file}?_g=xml&function=SMTPTest'+qstring})
+            }
+         </script>
       </fieldset>
       <fieldset>
          <legend>{$LANG.settings.title_performance}</legend>
