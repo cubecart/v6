@@ -824,20 +824,13 @@ class User {
 			}
 
 			foreach ($GLOBALS['hooks']->load('class.user.register_user.inserted') as $hook) include $hook;
-			// Send welcome email
-			if (($user = $GLOBALS['db']->select('CubeCart_customer', false, array('customer_id' => (int)$insert))) !== false) {
-				if (isset($_POST['mailing_list'])) {
-					$subscribe = array(
-						'customer_id' => $user[0]['customer_id'],
-						'status'  => 1,
-						'email'   => $user[0]['email'],
-					);
-					$GLOBALS['db']->insert('CubeCart_newsletter_subscriber', $subscribe);
-				}
+
+			if (isset($_POST['mailing_list'])) {
+				$newsletter = Newsletter::getInstance();
+				$newsletter->subscribe($_POST['email'], $insert);
 			}
-			if (!$GLOBALS['config']->get('config', 'email_confimation')) {
-				$this->authenticate($_POST['email'], $_POST['passconf']);
-			}
+
+			$this->authenticate($_POST['email'], $_POST['passconf']);
 
 			return true;
 		}
