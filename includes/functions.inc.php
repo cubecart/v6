@@ -911,7 +911,7 @@ function state_json() {
 					$json_array[$state['numcode']][] = array('id' => '0', 'name' => '-- '.$GLOBALS['language']->common['please_select'].' --');
 					$current = $state['numcode'];
 				}
-				$json_array[$state['numcode']][] = array('id' => $state['id'], 'name' => htmlentities($state['name'], ENT_QUOTES)); // Fixes GitHub #1893
+				$json_array[$state['numcode']][] = array('id' => $state['id'], 'name' => html_entity_decode($state['name'], ENT_QUOTES)); // Fixes GitHub #1893
 			}
 
 			$json = json_encode($json_array);
