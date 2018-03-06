@@ -714,7 +714,9 @@ if (isset($database_result) && $database_result) {
 		),
 		'cubecart_newsletter_subscriber' => array (
 			'subscriber_id' => 'PRIMARY',
-			'customer_id' => 'KEY'
+			'customer_id' => 'KEY',
+			'status' => 'KEY',
+			'double_opt' => 'KEY'
 		),
 		'cubecart_options_set' => array (
 			'set_id' => 'PRIMARY'

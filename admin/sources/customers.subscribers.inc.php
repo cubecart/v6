@@ -26,33 +26,37 @@ if(isset($_POST['email_filter'])) {
 }
 
 if(isset($_POST['subscribers']) && !empty($_POST['subscribers'])) {
-	
+
 	$added = false;
 	$j = 0;
-	
+
 	$emails = preg_replace( '/\s+/', '', $_POST['subscribers']);
 	$emails = explode(',',$emails);
 	foreach($emails as $email) {
 		if(filter_var($email, FILTER_VALIDATE_EMAIL)) {
-			if(!$GLOBALS['db']->select('CubeCart_newsletter_subscriber','subscriber_id',array('email'=>$email))) {			
-				$where = array('email'=>$email);
-				if($existing_customer = $GLOBALS['db']->select('CubeCart_customer','customer_id',array('email'=>$email))) {
+			$email = strtolower($email);
+			if(!$GLOBALS['db']->select('CubeCart_newsletter_subscriber', 'subscriber_id', array('email' => $email))) {
+				$where = array('email' => $email);
+				if($existing_customer = $GLOBALS['db']->select('CubeCart_customer', 'customer_id', array('email' => $email))) {
 					if($existing_customer[0]['customer_id']>0) {
 						$where['customer_id'] = $existing_customer[0]['customer_id'];
 					}
 				}
 				$where['status'] = 1;
-				if($GLOBALS['db']->insert('CubeCart_newsletter_subscriber',$where)) {
+				$where['imported'] = 1;
+				$where['ip_address'] = get_ip_address();
+				$where['date'] = date('c');
+				if($GLOBALS['db']->insert('CubeCart_newsletter_subscriber', $where)) {
 					foreach ($GLOBALS['hooks']->load('admin.customer.subscribers.subscribe') as $hook) include $hook;
 					$added = true;
 					$j++;
 				}
 			}
 		} elseif(!empty($email)) {
-			$GLOBALS['gui']->setError(sprintf($lang['newsletter']['email_invalid'],$email));		
-		} 			
+			$GLOBALS['gui']->setError(sprintf($lang['newsletter']['email_invalid'],$email));
+		}
 	}
-	
+
 	if($added) {
 		if($j==1) { 
 			$GLOBALS['gui']->setNotify($lang['newsletter']['subscriber_added']);

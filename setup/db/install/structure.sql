@@ -525,13 +525,19 @@ CREATE TABLE IF NOT EXISTS `CubeCart_newsletter` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_newsletter_subscriber` (
-	`subscriber_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	`customer_id` INT UNSIGNED DEFAULT NULL,
-	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
-	`email` VARCHAR(254) NOT NULL,
-	`validation` VARCHAR(50) DEFAULT NULL,
+	`subscriber_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+	`customer_id` int(10) unsigned DEFAULT '0',
+	`status` tinyint(1) unsigned NOT NULL DEFAULT '0',
+	`email` varchar(254) COLLATE utf8_unicode_ci NOT NULL,
+	`validation` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+	`ip_address` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+	`date` datetime DEFAULT NULL,
+	`imported` tinyint(1) DEFAULT '0',
+	`double_opt` tinyint(1) DEFAULT '0',
 	PRIMARY KEY (`subscriber_id`),
-	KEY `customer_id` (`customer_id`)
+	KEY `customer_id` (`customer_id`),
+	KEY `double_opt` (`double_opt`),
+	KEY `status` (`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_options_set` (

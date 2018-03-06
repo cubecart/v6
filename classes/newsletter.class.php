@@ -73,7 +73,7 @@ class Newsletter {
 	 */
 	private function generateValidation($email) {
 		// Generate a validation key for the specified email address
-		$string = sprintf('%s@%s', crypt($email), date('U.u'));
+		$string = sprintf('%s@%s', crypt($email, (string)time()), date('U.u'));
 		return md5($string);
 	}
 
@@ -196,6 +196,8 @@ class Newsletter {
 				'email'   => $email,
 				'customer_id'   => $customer_id,
 				'validation' => $this->generateValidation($email),
+				'ip_address' => get_ip_address(),
+				'date' => date('c')
 			);
 			$GLOBALS['db']->insert('CubeCart_newsletter_subscriber', $record);
 			foreach ($GLOBALS['hooks']->load('class.newsletter.subscribe') as $hook) include $hook;
