@@ -1090,7 +1090,7 @@ class GUI {
 
 		if (isset($_POST['subscribe'])) {
 			$newsletter = Newsletter::getInstance();
-			if ($newsletter->subscribe($_POST['subscribe'])) {
+			if ($newsletter->subscribe($_POST['subscribe'], $GLOBALS['user']->getId())) {
 				$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_subscribed']);
 				httpredir(currentPage());
 			} else {

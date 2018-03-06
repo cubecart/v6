@@ -1159,7 +1159,7 @@ class Cubecart {
 			if(isset($_POST['mailing_list']) && $_POST['mailing_list']==1) {
 				$this->_basket['mailing_list'] = true;
 				$newsletter = Newsletter::getInstance();
-				$newsletter->subscribe($this->_basket['customer']['email']);
+				$newsletter->subscribe($this->_basket['customer']['email'], (int)$user_id);
 			}
 			$GLOBALS['smarty']->assign('REGISTER_CHECKED', (isset($this->_basket['register']) && $this->_basket['register']) ? 'checked="checked"' : '');
 			$GLOBALS['smarty']->assign('TERMS_CONDITIONS_CHECKED', (isset($this->_basket['terms_agree']) && $this->_basket['terms_agree']) ? 'checked="checked"' : '');
@@ -2204,7 +2204,7 @@ class Cubecart {
 			}
 		} else {
 			if (isset($_POST['subscribe'])) {
-				if ($newsletter->subscribe($_POST['subscribe'])) {
+				if ($newsletter->subscribe($_POST['subscribe'], $GLOBALS['user']->getId())) {
 					$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_subscribed']);
 					httpredir('?_a=unsubscribe');
 				} else if ($GLOBALS['user']->is()) {
