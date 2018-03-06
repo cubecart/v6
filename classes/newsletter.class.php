@@ -175,7 +175,6 @@ class Newsletter {
 	 * @return bool
 	 */
 	public function subscribe($email = false, $customer_id = null) {
-		// Subscribe, generate validation email, and send
 		$skin_data = GUI::getInstance()->getSkinData('newsletter_recaptcha');
 		$error = false;
 		if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -189,7 +188,8 @@ class Newsletter {
 		if($error) {
 			httpredir(currentPage());
 		} else {
-			$GLOBALS['db']->delete('CubeCart_newsletter_subscriber', array('email' => strtolower($email)));
+			$email = strtolower($email);
+			$GLOBALS['db']->delete('CubeCart_newsletter_subscriber', array('email' => $email));
 
 			$record = array(
 				'status'  => true,
