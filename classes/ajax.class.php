@@ -270,6 +270,8 @@ class Ajax {
 			    $test_mailer->SMTPDebug = 2;
 			    $test_mailer->Debugoutput = "html";
 				$test_mailer->ClearAddresses();
+				$test_mailer->From   = $_GET['email_address'];
+				$test_mailer->FromName  = html_entity_decode($_GET['email_name'],ENT_QUOTES);
 				$test_mailer->Host = $_GET['email_smtp_host'];
 				$test_mailer->Port = $_GET['email_smtp_port'];
 				if($_GET['email_method']=='smtp_ssl') {
