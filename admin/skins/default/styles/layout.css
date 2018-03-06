@@ -979,11 +979,13 @@ table.phrases td.actions {
     color: #555;
     padding: 2px
 }
+.fa-check,
 .fa-plus-circle,
 .fa-refresh,
 .fa-user.registered {
     color: #9aaf4f
 }
+.fa-times,
 .fa-trash,
 .fa-user.unregistered {
     color: red

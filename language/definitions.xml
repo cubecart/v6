@@ -1548,6 +1548,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title" introduced="5.0.0"><![CDATA[Shop by Category]]></string>
   </group>
   <group name="newsletter">
+    <string name="double_opt_in" introduced="5.0.0"><![CDATA[Double Opt-In]]></string>
     <string name="click_to_subscribe" introduced="5.0.0"><![CDATA[Click here to subscribe.]]></string>
     <string name="click_to_unsubscribe" introduced="5.0.0"><![CDATA[Click here to unsubscribe.]]></string>
     <string name="customer_is_subscribed" introduced="5.0.0"><![CDATA[You are subscribed to receive our newsletter.]]></string>
