@@ -210,14 +210,17 @@ class Newsletter {
 	 * @param string $email
 	 * @return bool
 	 */
-	public function unsubscribe($email = false) {
+	public function unsubscribe($email = false, $customer_id = false) {
 		// Unsubscribe the user
+		$removed = false;
 		if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-			$GLOBALS['db']->delete('CubeCart_newsletter_subscriber', array('email' => $email));
+			$removed = $GLOBALS['db']->delete('CubeCart_newsletter_subscriber', array('email' => $email));
 			foreach ($GLOBALS['hooks']->load('class.newsletter.unsubscribe') as $hook) include $hook;
-			return true;
 		}
-		return false;
+		if(ctype_digit($customer_id) && $customer_id > 0) {
+			$removed = $GLOBALS['db']->delete('CubeCart_newsletter_subscriber', array('customer_id' => $customer_id));
+		}
+		return $removed;
 	}
 
 	/**

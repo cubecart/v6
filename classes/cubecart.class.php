@@ -2237,15 +2237,15 @@ class Cubecart {
 
 			if ($GLOBALS['user']->is()) {
 				if (isset($_GET['action'])) {
+					$newsletter = Newsletter::getInstance();
 					switch (strtolower($_GET['action'])) {
 					case 'subscribe':
-						$GLOBALS['db']->insert('CubeCart_newsletter_subscriber', array('customer_id' => $GLOBALS['user']->get('customer_id'), 'email' => $GLOBALS['user']->get('email'), 'status' => '1'));
+					$newsletter->subscribe($GLOBALS['user']->get('email'), $GLOBALS['user']->get('customer_id'));
 						foreach ($GLOBALS['hooks']->load('class.newsletter.subscribe') as $hook) include $hook;
 						$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_subscribed']);
 						break;
 					case 'unsubscribe':
-						$GLOBALS['db']->delete('CubeCart_newsletter_subscriber', array('customer_id' => $GLOBALS['user']->get('customer_id')));
-						$GLOBALS['db']->delete('CubeCart_newsletter_subscriber', array('email' => $GLOBALS['user']->get('email')));
+						$newsletter->unsubscribe($GLOBALS['user']->get('email'), $GLOBALS['user']->get('customer_id'));
 						foreach ($GLOBALS['hooks']->load('class.newsletter.unsubscribe') as $hook) include $hook;
 						$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_unsubscribed']);
 						break;
