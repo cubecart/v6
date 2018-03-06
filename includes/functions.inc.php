@@ -911,8 +911,7 @@ function state_json() {
 					$json_array[$state['numcode']][] = array('id' => '', 'name' => '-- '.(CC_IN_ADMIN ? $GLOBALS['language']->common['none'] : $GLOBALS['language']->common['please_select']).' --');
 					$current = $state['numcode'];
 				}
-//				$json_array[$state['numcode']][] = array('id' => $state['id'], 'name' => utf8_encode($state['name'])); // data already utf-8
-				$json_array[$state['numcode']][] = array('id' => $state['id'], 'name' => $state['name']);
+				$json_array[$state['numcode']][] = array('id' => $state['id'], 'name' => htmlentities($state['name'], ENT_QUOTES)); // Fixes GitHub #1893
 			}
 
 			$json = json_encode($json_array);
