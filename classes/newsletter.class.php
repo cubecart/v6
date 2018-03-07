@@ -203,7 +203,8 @@ class Newsletter {
 			if((bool)$GLOBALS['config']->get('config', 'dbl_opt')) {
 				$mailer = new Mailer();
 				if (($content = $mailer->loadContent('newsletter.verify_email', $GLOBALS['language']->current())) !== false) {
-					$mailer->sendEmail(array('email' => $email, 'link' => CC_STORE_URL.'?nv='.$record['validation']), $content);
+					$GLOBALS['smarty']->assign('DATA', array('email' => $email, 'link' => CC_STORE_URL.'?nv='.$record['validation']));
+					$mailer->sendEmail($email, $content);
 				}
 				$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_subscribed'].' '.$GLOBALS['language']->newsletter['notify_subscribed_opt_in']);
 			} else {
