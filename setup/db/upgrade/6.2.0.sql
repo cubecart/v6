@@ -14,3 +14,4 @@ ALTER TABLE `CubeCart_newsletter_subscriber` ADD `double_opt` TINYINT(1) DEFAULT
 ALTER TABLE `CubeCart_newsletter_subscriber` CHANGE `customer_id` `customer_id` INT(10)  UNSIGNED  NULL  DEFAULT '0'; #EOQ
 ALTER TABLE `CubeCart_newsletter_subscriber` ADD INDEX (`double_opt`); #EOQ
 ALTER TABLE `CubeCart_newsletter_subscriber` ADD INDEX (`status`); #EOQ
+UPDATE `CubeCart_geo_country` SET `status` = 2 WHERE `iso` NOT IN('AR', 'BR', 'CA', 'CN', 'ID', 'IN', 'JP', 'MX', 'TH', 'US'); #EOQ
