@@ -200,6 +200,13 @@ class Newsletter {
 				'date' => date('c')
 			);
 			$GLOBALS['db']->insert('CubeCart_newsletter_subscriber', $record);
+			if((bool)$GLOBALS['config']->get('config', 'dbl_opt')) {
+				$mailer = new Mailer();
+				if (($content = $mailer->loadContent('newsletter.verify_email', $GLOBALS['language']->current())) !== false) {
+					$mailer->sendEmail(array('email' => $email, 'link' => CC_STORE_URL.'?nv='.$record['validation']), $content);
+				}
+			}
+
 			foreach ($GLOBALS['hooks']->load('class.newsletter.subscribe') as $hook) include $hook;
 			return true;
 		}

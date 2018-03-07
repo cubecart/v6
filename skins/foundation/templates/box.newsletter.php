@@ -23,14 +23,19 @@
       <div class="hide">{$LANG.newsletter.enter_email_signup}</div>
       <div class="row collapse">
          <div class="small-8 columns"><input name="subscribe" id="newsletter_email" type="text" size="18" maxlength="250" title="{$LANG.newsletter.subscribe}" placeholder="{$LANG.common.eg} joe@example.com"/></div>
-         <div class="small-4 columns"><input type="submit" class="button postfix g-recaptcha" value="{$LANG.newsletter.subscribe}"></div>
+         <div class="small-4 columns">
+            <input type="submit" class="button postfix g-recaptcha" id="subscribe_button" value="{$LANG.newsletter.subscribe}">
+            <input type="hidden" name="force_unsubscribe" id="force_unsubscribe" value="0">
+         </div>
       </div>
       <div class="hide" id="newsletter_recaptcha">
       {include file='templates/content.recaptcha.php'}
       </div>
    </form>
    <div class="hide" id="validate_email">{$LANG.common.error_email_invalid}</div>
-   <div class="hide" id="validate_already_subscribed">{$LANG.newsletter.notify_already_subscribed}</div>
+   <div class="hide" id="validate_already_subscribed">{$LANG.newsletter.notify_already_subscribed} {$LANG.newsletter.continue_to_unsubscribe}</div>
+   <div class="hide" id="validate_subscribe">{$LANG.newsletter.subscribe}</div>
+   <div class="hide" id="validate_unsubscribe">{$LANG.newsletter.unsubscribe}</div>
    {/if}
 </div>
 {/if}
