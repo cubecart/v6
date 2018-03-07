@@ -50,7 +50,7 @@ if (stristr(PHP_OS, 'WIN') && stristr($_SERVER['SERVER_SOFTWARE'], 'IIS')) {
 }
 
 /************* CUBECART SPECIFIC SETTINGS *************/
-define('CC_VERSION', '6.1.13');     // Version Number
+define('CC_VERSION', '6.1.14');     // Version Number
 define('CC_INI_SET', true);      // Stop includes and the like from being executed on their own
 define('CC_DS', DIRECTORY_SEPARATOR);   // Deprecated but kept for backward compatibility
 define('CC_PS', PATH_SEPARATOR);
