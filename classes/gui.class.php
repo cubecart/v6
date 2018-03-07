@@ -1092,12 +1092,9 @@ class GUI {
 			$newsletter = Newsletter::getInstance();
 			if(isset($_POST['force_unsubscribe']) && $_POST['force_unsubscribe']=='1') {
 				$newsletter->unsubscribe($_POST['subscribe'], $GLOBALS['user']->getId());
-				$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_unsubscribed']);
 			} elseif ($newsletter->subscribe($_POST['subscribe'], $GLOBALS['user']->getId())) {
-				$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_subscribed']);
 				httpredir(currentPage());
 			} else {
-				$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_unsubscribed']);
 				httpredir(currentPage(null, array('_a' => 'newsletter')));
 			}
 		}

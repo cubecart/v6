@@ -2205,13 +2205,11 @@ class Cubecart {
 		} else {
 			if (isset($_POST['subscribe'])) {
 				if ($newsletter->subscribe($_POST['subscribe'], $GLOBALS['user']->getId())) {
-					$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_subscribed']);
 					httpredir('?_a=unsubscribe');
 				} else if ($GLOBALS['user']->is()) {
 						$GLOBALS['gui']->setError($GLOBALS['language']->common['error_email_invalid']);
 					} else {
 					if ($newsletter->unsubscribe($_POST['subscribe'])) {
-						$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_unsubscribed']);
 						httpredir('?_a=newsletter');
 					} else {
 						$GLOBALS['gui']->setError($GLOBALS['language']->common['error_email_invalid']);
@@ -2222,7 +2220,6 @@ class Cubecart {
 
 			if (isset($_REQUEST['unsubscribe']) && filter_var($_REQUEST['unsubscribe'], FILTER_VALIDATE_EMAIL)) {
 				if ($newsletter->unsubscribe($_REQUEST['unsubscribe'])) {
-					$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_unsubscribed']);
 					httpredir('?_a=newsletter');
 				}
 			}
@@ -2242,12 +2239,10 @@ class Cubecart {
 					case 'subscribe':
 					$newsletter->subscribe($GLOBALS['user']->get('email'), $GLOBALS['user']->get('customer_id'));
 						foreach ($GLOBALS['hooks']->load('class.newsletter.subscribe') as $hook) include $hook;
-						$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_subscribed']);
 						break;
 					case 'unsubscribe':
 						$newsletter->unsubscribe($GLOBALS['user']->get('email'), $GLOBALS['user']->get('customer_id'));
 						foreach ($GLOBALS['hooks']->load('class.newsletter.unsubscribe') as $hook) include $hook;
-						$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_unsubscribed']);
 						break;
 					}
 

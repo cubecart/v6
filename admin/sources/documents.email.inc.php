@@ -24,6 +24,13 @@ $email_types = array(
 			'{$DATA.reset_link}'  => $lang['email']['macro_link_password'],
 		),
 	),
+	'newsletter.verify_email' => array(
+		'description' => $lang['email']['title_macro_user_newsletter'],
+		'macros' => array(
+			'{$DATA.email}' => $lang['common']['email'],
+			'{$DATA.link}'  => $lang['email']['macro_link_verify']
+		),
+	),
 	'admin.order_received' => array(
 		'description' => $lang['email']['title_macro_admin_order'],
 		'macros' => array(

@@ -1049,6 +1049,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="macro_link_password" introduced="5.0.0"><![CDATA[The link to set a new password.]]></string>
     <string name="macro_link_product" introduced="5.0.0"><![CDATA[The link to the product.]]></string>
     <string name="macro_link_review" introduced="5.0.0"><![CDATA[The link to manage the review.]]></string>
+    <string name="macro_link_verify" introduced="6.2.0"><![CDATA[Verification link]]></string>
     <string name="macro_order_discount" introduced="5.0.0"><![CDATA[Discount amount.]]></string>
     <string name="macro_order_number_t" introduced="6.1.0"><![CDATA[Order number in traditional format.]]></string>
     <string name="macro_order_number_i" introduced="6.1.0"><![CDATA[Order number in incremental format.]]></string>
@@ -1146,6 +1147,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_macro_order_payment" introduced="5.0.0"><![CDATA[Cart: Payment Received]]></string>
     <string name="title_macro_tell_friend" introduced="5.0.0"><![CDATA[Catalogue: Tell a Friend]]></string>
     <string name="title_macro_user_password" introduced="5.0.0"><![CDATA[User: Recover Password]]></string>
+    <string name="title_macro_user_newsletter" introduced="6.1.0"><![CDATA[User: Verify Newsletter Subscription]]></string>
     <string name="title_macros" introduced="5.0.0"><![CDATA[Available Macros]]></string>
     <string name="title_news_create" introduced="5.0.0"><![CDATA[Create Newsletter]]></string>
     <string name="title_newsletters" introduced="5.0.0"><![CDATA[Newsletters]]></string>
@@ -1566,6 +1568,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="no_archived_newsletters" introduced="5.0.0"><![CDATA[There are no archived newsletters right now.]]></string>
     <string name="notify_email_verified" introduced="5.0.0"><![CDATA[Your email address has been verified.]]></string>
     <string name="notify_subscribed" introduced="5.0.0"><![CDATA[Your email address has been added to our mailing list.]]></string>
+    <string name="notify_subscribed_opt_in" introduced="6.2.0"><![CDATA[Please check your email account to verify your subscription.]]></string>
     <string name="notify_unsubscribed" introduced="5.0.0"><![CDATA[Your email address has been removed from our mailing list.]]></string>
     <string name="notify_already_subscribed" introduced="6.0.0"><![CDATA[Email address already subscribed.]]></string>
     <string name="subscribe" introduced="5.0.0"><![CDATA[Subscribe]]></string>

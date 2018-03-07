@@ -205,6 +205,9 @@ class Newsletter {
 				if (($content = $mailer->loadContent('newsletter.verify_email', $GLOBALS['language']->current())) !== false) {
 					$mailer->sendEmail(array('email' => $email, 'link' => CC_STORE_URL.'?nv='.$record['validation']), $content);
 				}
+				$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_subscribed'].' '.$GLOBALS['language']->newsletter['notify_subscribed_opt_in']);
+			} else {
+				$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_subscribed']);
 			}
 
 			foreach ($GLOBALS['hooks']->load('class.newsletter.subscribe') as $hook) include $hook;
@@ -228,6 +231,9 @@ class Newsletter {
 		}
 		if(ctype_digit($customer_id) && $customer_id > 0) {
 			$removed = $GLOBALS['db']->delete('CubeCart_newsletter_subscriber', array('customer_id' => $customer_id));
+		}
+		if($removed) {
+			$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_unsubscribed']);
 		}
 		return $removed;
 	}
