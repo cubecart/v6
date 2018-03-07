@@ -154,7 +154,6 @@
          <div><label for="catalogue_mode">{$LANG.settings.catalogue_mode}</label><span><input name="config[catalogue_mode]" id="catalogue_mode" type="hidden" class="toggle" value="{$CONFIG.catalogue_mode}"></span></div>
          <div><label for="allow_no_shipping">{$LANG.settings.allow_no_shipping}</label><span><input name="config[allow_no_shipping]" id="allow_no_shipping" type="hidden" class="toggle" value="{$CONFIG.allow_no_shipping}"></span></div>
          <div><label for="disable_shipping_groups">{$LANG.settings.disable_shipping_groups}</label><span><input name="config[disable_shipping_groups]" id="disable_shipping_groups" type="hidden" class="toggle" value="{$CONFIG.disable_shipping_groups}"></span></div>
-         <div><label for="cookie_dialogue">{$LANG.settings.cookie_dialogue}</label><span><input name="config[cookie_dialogue]" id="cookie_dialogue" type="hidden" class="toggle" value="{$CONFIG.cookie_dialogue}"></span></div>
          <div><label for="force_completed">{$LANG.settings.force_completed}</label><span><input name="config[force_completed]" id="force_completed" type="hidden" class="toggle" value="{$CONFIG.force_completed}"></span></div>
          <div><label for="disable_estimates">{$LANG.settings.disable_estimates}</label><span><input name="config[disable_estimates]" id="disable_estimates" type="hidden" class="toggle" value="{$CONFIG.disable_estimates}"></span></div>
       </fieldset>
@@ -492,6 +491,11 @@
          </div>
          <div><label for="product_clone_translations">{$LANG.settings.product_clone_translations}</label><span><input name="config[product_clone_translations]" id="product_clone_translations" type="hidden" class="toggle" value="{$CONFIG.product_clone_translations}"></span></div>
          <div><label for="product_clone_redirect">{$LANG.settings.product_clone_redirect}</label><span><input name="config[product_clone_redirect]" id="product_clone_redirect" type="hidden" class="toggle" value="{$CONFIG.product_clone_redirect}"></span></div>
+      </fieldset>
+      <fieldset>
+         <legend>{$LANG.settings.gdpr}</legend>
+         <div><label for="dbl_opt">{$LANG.settings.dbl_opt}</label><span><input name="config[dbl_opt]" id="dbl_opt" type="hidden" class="toggle" value="{$CONFIG.dbl_opt}"></span></div>
+         <div><label for="cookie_dialogue">{$LANG.settings.cookie_dialogue}</label><span><input name="config[cookie_dialogue]" id="cookie_dialogue" type="hidden" class="toggle" value="{$CONFIG.cookie_dialogue}"></span></div>
       </fieldset>
    </div>
    {include file='templates/element.hook_form_content.php'}
