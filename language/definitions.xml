@@ -1208,6 +1208,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_image_crop" introduced="5.0.0"><![CDATA[Crop Image]]></string>
   </group>
   <group name="form">
+    <string name="create_report" introduced="6.2.0"><![CDATA[Create Report]]></string>
     <string name="recaptcha_try_diff_img" introduced="6.0.6"><![CDATA[Try a different image]]></string>
     <string name="recaptcha_get_audio" introduced="6.0.6"><![CDATA[Get an audio CAPTCHA]]></string>
     <string name="recaptcha_get_img" introduced="6.0.6"><![CDATA[Get an image CAPTCHA]]></string>
@@ -1769,7 +1770,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_review_search" introduced="5.0.0"><![CDATA[Search Reviews]]></string>
   </group>
   <group name="search">
-    <string name="title_gdpr_report" introduced="6.1.0"><![CDATA[GDPR Report]]></string>
+    <string name="title_gdpr_report" introduced="6.2.0"><![CDATA[GDPR Report]]></string>
+    <string name="gdpr_report_desc" introduced="6.2.0"><![CDATA[This tool can be used to search for all stored information in the database against an email address. It is necessary to meet European Union General Data Protection Regulation (GDPR) requirements.]]></string>
     <string name="advanced" introduced="5.0.0"><![CDATA[Advanced Search]]></string>
     <string name="date_range" introduced="5.0.0"><![CDATA[Date Range]]></string>
     <string name="featured_only" introduced="5.0.0"><![CDATA[Featured Products Only]]></string>

@@ -27,6 +27,7 @@
 	<hook trigger="admin.customer.add" deprecated="" />
 	<hook trigger="admin.customer.customer_list_post" deprecated="" />
 	<hook trigger="admin.customer.delete" deprecated="" />
+	<hook trigger="admin.customer.gdpr.list" deprecated="" />
 	<hook trigger="admin.customer.group_add" deprecated="" />
 	<hook trigger="admin.customer.group_edit" deprecated="" />
 	<hook trigger="admin.customer.group_delete" deprecated="" />
