@@ -22,6 +22,8 @@ if(isset($_POST['email']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
     $data['subscribers'] = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', false, array('email' => $_POST['email']));
     // Reviews
     $data['reviews'] = $GLOBALS['db']->select('CubeCart_reviews', false, array('email' => $_POST['email']));
+    // Email Log
+    $data['email'] = $GLOBALS['db']->select('CubeCart_email_log', false, array('to' => $_POST['email']));
     foreach ($GLOBALS['hooks']->load('admin.customer.gdpr.list') as $hook) include $hook;
     foreach($data as $key => $row) {
         echo "<h1>$key</h1>";
