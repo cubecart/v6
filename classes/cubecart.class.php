@@ -2188,10 +2188,22 @@ class Cubecart {
 	 * Newsletter
 	 */
 	private function _newsletter() {
+		
+		$newsletter = Newsletter::getInstance();
+		
+		if(isset($_GET['do']) && !empty($_GET['do'])) {
+			if($newsletter->doubleOptIn($_GET['do'])) {
+				$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['double_opt_in_success']);
+			} else {
+				$GLOBALS['gui']->setError($GLOBALS['language']->newsletter['double_opt_in_fail']);
+			}
+			httpredir(currentPage(array('newsletter_id', 'do', '_a')));
+		}
+
 		// Newsletters
 		$GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->account['your_account'], 'index.php?_a=account');
 		$GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->newsletter['newsletters'], '?_a=newsletter');
-		$newsletter = Newsletter::getInstance();
+		
 		// Display Newsletter archive
 		if (isset($_GET['newsletter_id']) && is_numeric($_GET['newsletter_id'])) {
 			// Show a newsletter from the archive

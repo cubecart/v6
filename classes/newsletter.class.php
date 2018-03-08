@@ -203,7 +203,7 @@ class Newsletter {
 			if((bool)$GLOBALS['config']->get('config', 'dbl_opt')) {
 				$mailer = new Mailer();
 				if (($content = $mailer->loadContent('newsletter.verify_email', $GLOBALS['language']->current())) !== false) {
-					$GLOBALS['smarty']->assign('DATA', array('email' => $email, 'link' => CC_STORE_URL.'?nv='.$record['validation']));
+					$GLOBALS['smarty']->assign('DATA', array('email' => $email, 'link' => CC_STORE_URL.'?_a=newsletter&do='.$record['validation']));
 					$mailer->sendEmail($email, $content);
 				}
 				$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_subscribed'].' '.$GLOBALS['language']->newsletter['notify_subscribed_opt_in']);
@@ -240,17 +240,17 @@ class Newsletter {
 	}
 
 	/**
-	 * Verify newsletter subscription
+	 * Double opt in newsletter subscription
 	 *
 	 * @param string $validation
 	 * @return bool
 	 */
-	public function verify($validation = false) {
+	public function doubleOptIn($validation = false) {
 		// Verify the validation email
 		if (!empty($validation)) {
-			$validate = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', array('subscriber_id', 'email'), array('validation' => $validation));
+			$validate = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', array('subscriber_id'), array('validation' => $validation));
 			if ($validate) {
-				$GLOBALS['db']->update('CubeCart_newsletter_subscriber', array('status' => '1'), array('subscriber_id' => $validate[0]['subscriber_id']));
+				$GLOBALS['db']->update('CubeCart_newsletter_subscriber', array('double_opt' => '1'), array('subscriber_id' => $validate[0]['subscriber_id']));
 				return true;
 			}
 		}

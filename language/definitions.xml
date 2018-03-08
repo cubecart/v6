@@ -1551,6 +1551,8 @@ This email is sent from the store's master email address but it is possible to r
   </group>
   <group name="newsletter">
     <string name="double_opt_in" introduced="6.2.0"><![CDATA[Double Opt-In]]></string>
+    <string name="double_opt_in_success" introduced="6.2.0"><![CDATA[Thank you for confirming your email address.]]></string>
+    <string name="double_opt_in_fail" introduced="6.2.0"><![CDATA[Sorry but we have not able to validate your email address.]]></string>
     <string name="continue_to_unsubscribe" introduced="6.2.0"><![CDATA[Continue if you wish to unsubscribe.]]></string>
     <string name="click_to_subscribe" introduced="5.0.0"><![CDATA[Click here to subscribe.]]></string>
     <string name="click_to_unsubscribe" introduced="5.0.0"><![CDATA[Click here to unsubscribe.]]></string>
