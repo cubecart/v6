@@ -129,8 +129,12 @@ class Newsletter {
 					ini_set('ignore_user_abort', true);
 					// Send to all subscribers
 					$limit = 20;
-					$total = (int)$GLOBALS['db']->count('CubeCart_newsletter_subscriber', 'status', array('status' => '1'));
-					if (($subscribers = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', array('email'), array('status' => '1'), false, $limit, $cycle)) !== false) {
+					$where = array('status' => '1');
+					if($content['dbl_opt']==1) {
+						$where['dbl_opt'] = 1;
+					}
+					$total = (int)$GLOBALS['db']->count('CubeCart_newsletter_subscriber', 'status', $where);
+					if (($subscribers = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', array('email'), $where, false, $limit, $cycle)) !== false) {
 						foreach ($subscribers as $subscriber) {
 							if (filter_var($subscriber['email'], FILTER_VALIDATE_EMAIL)) {
 								$content = array(
@@ -206,7 +210,7 @@ class Newsletter {
 					$GLOBALS['smarty']->assign('DATA', array('email' => $email, 'link' => CC_STORE_URL.'?_a=newsletter&do='.$record['validation']));
 					$mailer->sendEmail($email, $content);
 				}
-				$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_subscribed'].' '.$GLOBALS['language']->newsletter['notify_subscribed_opt_in']);
+				$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_subscribed_opt_in']);
 			} else {
 				$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_subscribed']);
 			}
@@ -250,7 +254,7 @@ class Newsletter {
 		if (!empty($validation)) {
 			$validate = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', array('subscriber_id'), array('validation' => $validation));
 			if ($validate) {
-				$GLOBALS['db']->update('CubeCart_newsletter_subscriber', array('double_opt' => '1'), array('subscriber_id' => $validate[0]['subscriber_id']));
+				$GLOBALS['db']->update('CubeCart_newsletter_subscriber', array('dbl_opt' => '1', 'date' => time('c'), 'ip_address' => get_ip_address()), array('subscriber_id' => $validate[0]['subscriber_id']));
 				return true;
 			}
 		}

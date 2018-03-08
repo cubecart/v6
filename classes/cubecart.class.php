@@ -2193,9 +2193,9 @@ class Cubecart {
 		
 		if(isset($_GET['do']) && !empty($_GET['do'])) {
 			if($newsletter->doubleOptIn($_GET['do'])) {
-				$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['double_opt_in_success']);
+				$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['dbl_opt_in_success']);
 			} else {
-				$GLOBALS['gui']->setError($GLOBALS['language']->newsletter['double_opt_in_fail']);
+				$GLOBALS['gui']->setError($GLOBALS['language']->newsletter['dbl_opt_in_fail']);
 			}
 			httpredir(currentPage(array('newsletter_id', 'do', '_a')));
 		}

@@ -533,10 +533,10 @@ CREATE TABLE IF NOT EXISTS `CubeCart_newsletter_subscriber` (
 	`ip_address` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
 	`date` datetime DEFAULT NULL,
 	`imported` tinyint(1) DEFAULT '0',
-	`double_opt` tinyint(1) DEFAULT '0',
+	`dbl_opt` tinyint(1) DEFAULT '0',
 	PRIMARY KEY (`subscriber_id`),
 	KEY `customer_id` (`customer_id`),
-	KEY `double_opt` (`double_opt`),
+	KEY `dbl_opt` (`dbl_opt`),
 	KEY `status` (`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 

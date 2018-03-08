@@ -26,7 +26,7 @@
             <th>{$LANG.common.ip_address}</th>
             <th>{$LANG.common.date}</th>
             <th>{$LANG.catalogue.imported}</th>
-            <th>{$LANG.newsletter.double_opt_in}</th>
+            <th>{$LANG.newsletter.dbl_opt_in}</th>
             <th></th>
          </thead>
          <tbody>
@@ -37,7 +37,7 @@
                <td align="center">{$subscriber.ip_address}</td>
                <td align="center">{$subscriber.date}</td>
                <td align="center">{if $subscriber.imported}<i class="fa fa-check"></i>{else}<i class="fa fa-times"></i>{/if}</td>
-               <td align="center">{if $subscriber.double_opt}<i class="fa fa-check"></i>{else}<i class="fa fa-times"></i>{/if}</td>
+               <td align="center">{if $subscriber.dbl_opt}<i class="fa fa-check"></i>{else}<i class="fa fa-times"></i>{/if}</td>
                <td align="center"><a href="?_g=customers&node=subscribers&delete={$subscriber.subscriber_id}&token={$SESSION_TOKEN}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
             </tr>
             {/foreach}

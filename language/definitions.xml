@@ -998,6 +998,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_documents" introduced="5.0.0"><![CDATA[Site Documents]]></string>
   </group>
   <group name="email">
+    <string name="news_dbl_opt_only" introduced="6.2.0"><![CDATA[Send to double opt-in only]]></string>
     <string name="error_no_subject" introduced="6.0.3"><![CDATA[Please enter the newsletter subject.]]></string>
     <string name="error_no_message" introduced="6.0.3"><![CDATA[Please enter the newsletter content.]]></string>
     <string name="install_master_lang" introduced="6.0.0"><![CDATA[Your store currently only has one master language. Before the email contents can be translated the master language file must be installed from our <a href="?_g=marketplace">extensions marketplace</a>.]]></string>
@@ -1550,9 +1551,9 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title" introduced="5.0.0"><![CDATA[Shop by Category]]></string>
   </group>
   <group name="newsletter">
-    <string name="double_opt_in" introduced="6.2.0"><![CDATA[Double Opt-In]]></string>
-    <string name="double_opt_in_success" introduced="6.2.0"><![CDATA[Thank you for confirming your email address.]]></string>
-    <string name="double_opt_in_fail" introduced="6.2.0"><![CDATA[Sorry but we have not able to validate your email address.]]></string>
+    <string name="dbl_opt_in" introduced="6.2.0"><![CDATA[Double Opt-In]]></string>
+    <string name="dbl_opt_in_success" introduced="6.2.0"><![CDATA[Thank you for confirming your email address you are now subscribed to our mailing list.]]></string>
+    <string name="dbl_opt_in_fail" introduced="6.2.0"><![CDATA[Sorry but we have not able to validate your email address.]]></string>
     <string name="continue_to_unsubscribe" introduced="6.2.0"><![CDATA[Continue if you wish to unsubscribe.]]></string>
     <string name="click_to_subscribe" introduced="5.0.0"><![CDATA[Click here to subscribe.]]></string>
     <string name="click_to_unsubscribe" introduced="5.0.0"><![CDATA[Click here to unsubscribe.]]></string>
@@ -1570,7 +1571,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="no_archived_newsletters" introduced="5.0.0"><![CDATA[There are no archived newsletters right now.]]></string>
     <string name="notify_email_verified" introduced="5.0.0"><![CDATA[Your email address has been verified.]]></string>
     <string name="notify_subscribed" introduced="5.0.0"><![CDATA[Your email address has been added to our mailing list.]]></string>
-    <string name="notify_subscribed_opt_in" introduced="6.2.0"><![CDATA[Please check your email account to verify your subscription.]]></string>
+    <string name="notify_subscribed_opt_in" introduced="6.2.0"><![CDATA[Thank you. Please check your email account to confirm your subscription.]]></string>
     <string name="notify_unsubscribed" introduced="5.0.0"><![CDATA[Your email address has been removed from our mailing list.]]></string>
     <string name="notify_already_subscribed" introduced="6.0.0"><![CDATA[Email address already subscribed.]]></string>
     <string name="subscribe" introduced="5.0.0"><![CDATA[Subscribe]]></string>
