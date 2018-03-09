@@ -1259,7 +1259,7 @@ class Cubecart {
 			$formatting  = array('discount', 'price', 'shipping', 'subtotal', 'total', 'total_tax');
 			$empty_basket = true;
 			# Get the order details, and display a receipt
-			if (($orders = $GLOBALS['db']->select('CubeCart_order_summary', false, array('cart_order_id' => $this->_basket['cart_order_id']))) !== false) {
+			if (($orders = $GLOBALS['db']->select('CubeCart_order_summary', false, array('cart_order_id' => $this->_basket['cart_order_id']), false, false, false, false)) !== false) {
 				$order = $orders[0];
 				$GLOBALS['user']->setGhostId($order['customer_id']);
 				if (($items = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('cart_order_id' => $this->_basket['cart_order_id']))) !== false) {
