@@ -1746,7 +1746,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="sales_data" introduced="5.0.0"><![CDATA[Sales Data]]></string>
     <string name="tab_results" introduced="5.0.0"><![CDATA[Results]]></string>
     <string name="title_reports_from" introduced="5.0.0"><![CDATA[Sales report from %s]]></string>
-    <string name="title_reports_from_to" introduced="5.0.0"><![CDATA[Sales report form %1$s to %2$s]]></string>
+    <string name="title_reports_from_to" introduced="5.0.0"><![CDATA[Sales Report from %1$s to %2$s]]></string>
   </group>
   <group name="reviews">
     <string name="error_no_product_selected" introduced="6.1.0"><![CDATA[No product selected.]]></string>
