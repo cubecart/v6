@@ -16,3 +16,4 @@ ALTER TABLE `CubeCart_newsletter_subscriber` ADD INDEX (`dbl_opt`); #EOQ
 ALTER TABLE `CubeCart_newsletter_subscriber` ADD INDEX (`status`); #EOQ
 UPDATE `CubeCart_geo_country` SET `status` = 2 WHERE `iso` NOT IN('AR', 'BR', 'CA', 'CN', 'ID', 'IN', 'JP', 'MX', 'TH', 'US'); #EOQ
 ALTER TABLE `CubeCart_newsletter` ADD `dbl_opt` enum('0','1') NOT NULL DEFAULT '0'; #EOQ
+ALTER TABLE `CubeCart_email_log` ADD `fail_reason` TEXT  NULL; #EOQ

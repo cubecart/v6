@@ -211,7 +211,7 @@ class Mailer extends PHPMailer {
 
 			// Send email
 			$result = $this->Send();
-			// Log email		
+			// Log email
             $email_data = array(
                 'subject' => $this->Subject,
                 'content_html' => $this->_html,
@@ -219,7 +219,8 @@ class Mailer extends PHPMailer {
                 'to' => $email,
                 'from' => $from,
                 'result' => $result,
-                'email_content_id' => $this->_email_content_id
+				'email_content_id' => $this->_email_content_id,
+				'fail_reason' => (isset($this->ErrorInfo) && !empty($this->ErrorInfo)) ? htmlentities($this->ErrorInfo, ENT_QUOTES) : ''
             );
             $log_days = $GLOBALS['config']->get('config', 'r_email');
              if(ctype_digit((string)$log_days) &&  $log_days > 0) {

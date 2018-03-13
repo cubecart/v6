@@ -50,6 +50,11 @@
 		<td align="center">{if $log.email_content_id>0}<a href="?_g=documents&amp;node=email&amp;type=content&amp;action=edit&amp;content_id={$log.email_content_id}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>{/if}</td>
 		<td align="center"><a href="?_g=statistics&node=emaillog&resend={$log.id}"><i class="fa fa-paper-plane" title="{$LANG.common.resend}" aria-hidden="true"></i></i></a></td>
 	  </tr>
+		{if !empty($log.fail_reason)}
+		<tr>
+			<td class="row_error" colspan="9">{$log.fail_reason}</td>
+		</tr>
+		{/if}
 	  {/foreach}
 	</tbody>
   </table>

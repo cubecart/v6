@@ -201,7 +201,7 @@
 	  	  </tr>
 	  	  {if $table.errors}
 	  	  <tr>
-	  	  <td colspan="8" class="index_error">{$table.errors}</td>
+	  	  <td colspan="8" class="row_warn">{$table.errors}</td>
 	  	  </tr>
 	  	  {/if}
 	  	  {/foreach}
