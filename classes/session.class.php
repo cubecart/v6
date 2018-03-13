@@ -253,6 +253,10 @@ class Session {
 	 * @return bool
 	 */
 	public function checkToken($token) {
+		// Continue without error of no security token is set
+		if(!$this->get($this->_token_name)) {
+			return true;
+		}
 		return ($this->get($this->_token_name) == $token);
 	}
 	 
