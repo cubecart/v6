@@ -670,7 +670,10 @@ session_save_path(CC_ROOT_DIR.'/sessions');")."</pre>
 		if($this->_http_user_agent()!=='IEX') {
 			$this->set_cookie(session_name(),session_id(),time()+$this->_session_timeout);
 		}
-		
+
+		if(!$this->get($this->_token_name)) {
+			$this->getToken(true);
+		}
 	}
 
 	/**
