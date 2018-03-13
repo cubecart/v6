@@ -406,7 +406,7 @@ input.textbox[disabled] {
     color: #000!important
 }
 .phrases input.textbox[disabled] {
-    background-color: #e8e8e8;
+    background-color: #e8e8e8!important;
     border: 1px solid #a6a6a6;
     margin: 2px 0;
     min-height: 15px;
