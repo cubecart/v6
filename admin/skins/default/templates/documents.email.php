@@ -113,7 +113,7 @@
   <div id="email_html" class="tab_content">
     <h3>{$LANG.email.title_content_html}</h3>
 	{if $LANGUAGES}
-	<textarea name="content[content_html]" id="content_html" class="textbox fck">{$CONTENT.content_html}</textarea>
+	<textarea name="content[content_html]" id="content_html" class="textbox fck fck-full">{$CONTENT.content_html}</textarea>
   	<h3>{$LANG.email.title_macros}</h3>
   	<p>{$LANG.email.important|escape:'htmlall'}</p>
   	<table>
@@ -175,7 +175,7 @@
   </div>
   <div id="email_html" class="tab_content">
     <h3>{$LANG.email.title_content_html}</h3>
-	<textarea name="template[content_html]" id="template_html" class="textbox fck fck-full">{$TEMPLATE.content_html}</textarea>
+	<textarea name="template[content_html]" id="template_html" class="textbox fck fck-full" data-fck-height="450">{$TEMPLATE.content_html}</textarea>
   	<h3>{$LANG.email.title_macros}</h3>
   	<table>
   		<thead>
@@ -199,7 +199,7 @@
   </div>
   <div id="email_text" class="tab_content">
     <h3>{$LANG.email.title_content_text}</h3>
-	<textarea name="template[content_text]" id="template_text" class="textbox" style="width: 100%; height: 480px">{$TEMPLATE.content_text}</textarea>
+	<textarea name="template[content_text]" id="template_text" class="textbox" style="height: 550px; width: 100%">{$TEMPLATE.content_text}</textarea>
   	<h3>{$LANG.email.title_macros}</h3>
   	<table>
   		<thead>

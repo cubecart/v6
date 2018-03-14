@@ -525,6 +525,12 @@ $(document).ready(function() {
                 selector: "textarea.fck",
                 language: fck_lang
             };
+            if ($(this).hasClass("fck-source")) {
+                t.startupMode = 'source';
+            }
+            if ($(this).attr("data-fck-height")) {
+                t.height = $(this).attr("data-fck-height");
+            }
             $(this).ckeditor(t)
         }), $("div.fm-filelist").each(function() {
             var t = $("#val_admin_file").text();

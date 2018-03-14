@@ -14,9 +14,166 @@
 <head>
   <title>{$PAGE_TITLE}</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <link rel="stylesheet" href="../{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/styles/print.css" media="screen,print">
+  <style media="screen,print">
+		html,
+		body {
+				margin: 0;
+				padding: 0;
+				font-family: Verdana, Arial, Helvetica, sans-serif;
+				font-size: .9em;
+				border: 0;
+		}
+		hr {
+				height: 1px;
+				border: 0;
+				color: #000;
+				background-color: #000;
+		}
+		#info {
+				display: none;
+				visibility: hidden;
+		}
+		#header {
+				padding-bottom: 7px;
+				border-bottom: 1px solid #666;
+				background-repeat: no-repeat;
+				background-position: top left;
+				overflow: visible;
+		}
+		#printLabel {
+				width: 80mm;
+				height: 50mm;
+				float: right;
+				padding: 4mm;
+				z-index: 100;
+		}
+		.sender {
+				border-top: 1px solid #ccc;
+				margin-top: 20px;
+				padding-top: 4px;
+				font-size: .7em;
+		}
+		#storeLabel {
+				width: 80mm;
+				height: 50mm;
+				padding-top: 4mm;
+				overflow: hidden;
+				z-index: -1;
+		}
+		#storeLabel h3 {
+				text-align: center;
+				margin: 0;
+				padding: 0;
+		}
+		div.info {
+				margin: 10px 0 30px;
+		}
+		span.orderid {
+				width: 230px;
+				float: right;
+		}
+		div.product {
+				padding: 5px 0;
+				clear: both;
+				border-bottom: 1px dashed #e7e7e7;
+		}
+		span.price {
+				float: right;
+				font-weight: bold;
+		}
+		span.options {
+				font-style: italic;
+		}
+		#totals {
+				margin-top: 5px;
+		}
+		#totals div.total {
+				text-align: right;
+		}
+		fieldset {
+				border: 1px solid #c7c7c7;
+				padding: 5px;
+				margin: 10px 30px 0 0;
+				-moz-border-radius: 6px;
+				-webkit-border-radius: 6px;
+				font-size: 10px;
+		}
+		fieldset>legend {
+				padding: 0 7px;
+				font-weight: bold;
+		}
+		.other {
+				width: 400px;
+		}
+		.other label {
+				float: left;
+				width: 180px;
+				margin: 0;
+				padding: 0;
+		}
+		#thanks {
+				margin-top: 20px;
+				text-align: center;
+				font-weight: bold;
+		}
+		#footer {
+				margin: 10px 0 0;
+				padding-top: 5px;
+				border-top: 1px solid #666;
+				text-align: center;
+				font-size: .8em;
+		}
+		#footer p {
+				margin: 0;
+		}
+		.page-break {
+				page-break-after: always;
+		}
+		#storeLabel img {
+				max-width: 100%!important;
+				display: block;
+		}
+		a.noprint {
+				margin: 3px 0 0 3px;
+				display: inline-block;
+				font-size: 12px;
+				text-decoration: none!important;
+				font-family: 'Open Sans', sans-serif;
+				padding: 8px 12px;
+				border-radius: 3px;
+				-moz-border-radius: 3px;
+				box-shadow: inset 0 0 2px #fff;
+				-o-box-shadow: inset 0 0 2px #fff;
+				-webkit-box-shadow: inset 0 0 2px #fff;
+				-moz-box-shadow: inset 0 0 2px #fff;
+				color: #444;
+				border: 1px solid #d0d0d0;
+				background-image: -moz-linear-gradient(#ededed, #e1e1e1);
+				background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#e1e1e1), to(#ededed));
+				background-image: -webkit-linear-gradient(#ededed, #e1e1e1);
+				background-image: -o-linear-gradient(#ededed, #e1e1e1);
+				text-shadow: 1px 1px 1px #fff;
+				background-color: #e1e1e1;
+		}
+		a.noprint:hover {
+				border: 1px solid #b0b0b0;
+				background-image: -moz-linear-gradient(#e1e1e1, #ededed);
+				background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ededed), to(#e1e1e1));
+				background-image: -webkit-linear-gradient(#e1e1e1, #ededed);
+				background-image: -o-linear-gradient(#e1e1e1, #ededed);
+				background-color: #ededed
+		}
+		@media print
+		{
+				.noprint, .noprint *
+				{
+						display: none !important;
+				}
+		}
+	</style>
 </head>
-<body onload="window.print();">
+<body>
+<a href="../{$SKIN_VARS.admin_file}?_g=documents&node=invoice" class="noprint">CUSTOMISE LAYOUT</a>
   {if isset($ORDER_LIST)}
   {foreach from=$ORDER_LIST item=order}
   <div class="page-break">
@@ -127,5 +284,8 @@
   {/if}
   {/foreach}
   {/if}
+	<script>
+	setTimeout(function(){ window.print(); }, 2000);
+	</script>
 </body>
 </html>
