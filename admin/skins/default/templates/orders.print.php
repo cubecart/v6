@@ -250,7 +250,7 @@
 	  </fieldset>
 	  <div id="thanks">{$LANG.orders.title_thanks}</div>
 	  <div id="footer">
-		<p>{$STORE.address}, {$STORE.county}, {$STORE.postcode} {$STORE.country}</p>
+		<p>{$STORE.address}, {if !empty($STORE.county)}{$STORE.county}, {/if}{if !empty($STORE.postcode)}{$STORE.postcode} {/if}{if !empty($STORE.country)}{$STORE.country}{/if}</p>
 	  </div>
   </div>
   {if !empty($order.notes)}
