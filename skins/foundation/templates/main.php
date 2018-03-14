@@ -16,13 +16,13 @@
       <meta charset="{$CHARACTER_SET}">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link href="{$CANONICAL}" rel="canonical">
-      <link href="{$STORE_URL}/favicon.ico" rel="shortcut icon" type="image/x-icon">
-      {assign var=css_input value=['skins/foundation/css/normalize.css','skins/foundation/css/foundation.css','skins/foundation/css/cubecart.css','skins/foundation/css/cubecart.common.css','skins/foundation/css/cubecart.helpers.css','skins/foundation/css/jquery.bxslider.css','skins/foundation/css/jquery.bxslider.css','skins/foundation/css/jquery.chosen.min.css']}
+      <link href="{$ROOT_PATH}/favicon.ico" rel="shortcut icon" type="image/x-icon">
       <link href="//fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type='text/css'>
+      {assign var=css_input value=['skins/foundation/css/normalize.css','skins/foundation/css/foundation.css','skins/foundation/css/cubecart.css','skins/foundation/css/cubecart.common.css','skins/foundation/css/cubecart.helpers.css','skins/foundation/css/jquery.bxslider.css','skins/foundation/css/jquery.bxslider.css','skins/foundation/css/jquery.chosen.min.css']}
       {foreach from=$CSS key=css_keys item=css_files}
       {$css_input[] = $css_files}
       {/foreach}
-      {combine input=$css_input output='cache/css.foundation.css' age='30' debug=false}
+      {combine input=$css_input output='cache/css.foundation.css' age='604800' debug=false}
       <meta name="description" content="{if isset($META_DESCRIPTION)}{$META_DESCRIPTION}{/if}">
       <meta name="keywords" content="{if isset($META_KEYWORDS)}{$META_KEYWORDS}{/if}">
       <meta name="robots" content="index, follow">
@@ -32,8 +32,8 @@
       <meta property="og:url" content="{$VAL_SELF}">
       {/if}
       {include file='templates/content.recaptcha.head.php'}
-      <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/modernizr.min.js"></script>
-      <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.js"></script>
+      <script src="{$ROOT_PATH}/skins/{$SKIN_FOLDER}/js/vendor/modernizr.min.js"></script>
+      <script src="{$ROOT_PATH}/skins/{$SKIN_FOLDER}/js/vendor/jquery.js"></script>
       {include file='templates/element.google_analytics.php'}
       {foreach from=$HEAD_JS item=js}{$js}{/foreach}
    </head>
@@ -50,7 +50,7 @@
             {include file='templates/box.eu_cookie.php'}
             <div class="row marg-top" id="top_header">
                <div class="small-4 large-3 columns">
-                  <a href="{$STORE_URL}" class="main-logo"><img src="{$STORE_LOGO}" alt="{$CONFIG.store_name}"></a>
+                  <a href="{$ROOT_PATH}" class="main-logo"><img src="{$STORE_LOGO}" alt="{$CONFIG.store_name}"></a>
                </div>
                <div class="small-8 large-9 columns nav-boxes">
                   <div class="row" id="nav-actions">
@@ -113,14 +113,14 @@
                   </div>
                </div>
             </footer>
-            <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.rating.min.js" type="text/javascript"></script>
-            <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.validate.min.js" type="text/javascript"></script>
-            <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.cookie.min.js" type="text/javascript"></script>
-            <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.bxslider.min.js" type="text/javascript"></script>
-            <script src="{$STORE_URL}/skins/{$SKIN_FOLDER}/js/vendor/jquery.chosen.min.js" type="text/javascript"></script>
+            <script src="{$ROOT_PATH}/skins/{$SKIN_FOLDER}/js/vendor/jquery.rating.min.js" type="text/javascript"></script>
+            <script src="{$ROOT_PATH}/skins/{$SKIN_FOLDER}/js/vendor/jquery.validate.min.js" type="text/javascript"></script>
+            <script src="{$ROOT_PATH}/skins/{$SKIN_FOLDER}/js/vendor/jquery.cookie.min.js" type="text/javascript"></script>
+            <script src="{$ROOT_PATH}/skins/{$SKIN_FOLDER}/js/vendor/jquery.bxslider.min.js" type="text/javascript"></script>
+            <script src="{$ROOT_PATH}/skins/{$SKIN_FOLDER}/js/vendor/jquery.chosen.min.js" type="text/javascript"></script>
             {foreach from=$BODY_JS item=js}{$js}{/foreach}
             {foreach from=$JS_SCRIPTS key=k item=script}
-            <script src="{$STORE_URL}/{$script|replace:'\\':'/'}" type="text/javascript"></script>
+            <script src="{$ROOT_PATH}/{$script|replace:'\\':'/'}" type="text/javascript"></script>
             {/foreach}
             <script>
                {literal}

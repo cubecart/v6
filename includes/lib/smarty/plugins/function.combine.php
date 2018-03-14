@@ -9,8 +9,8 @@
 /**
  * Smarty combine function plugin
  *
- * Type:    function<br>
- * Name:    combine<br>
+ * Type:    function
+ * Name:    combine
  * Date:    September 5, 2015
  * Purpose: Combine content from several JS or CSS files into one
  * Input:   string to count
