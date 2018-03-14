@@ -17,20 +17,12 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link href="{$CANONICAL}" rel="canonical">
       <link href="{$STORE_URL}/favicon.ico" rel="shortcut icon" type="image/x-icon">
-      <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/normalize.css" rel="stylesheet">
-      <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/foundation.css" rel="stylesheet">
-      <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/cubecart.css" rel="stylesheet">
-      <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/cubecart.common.css" rel="stylesheet">
-      <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/cubecart.helpers.css" rel="stylesheet">
-      {if !empty($SKIN_SUBSET)}
-      <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/cubecart.{$SKIN_SUBSET}.css" rel="stylesheet">
-      {/if}
-      <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/jquery.bxslider.css" rel="stylesheet">
-      <link href="{$STORE_URL}/skins/{$SKIN_FOLDER}/css/jquery.chosen.min.css" rel="stylesheet">
+      {assign var=css_input value=['skins/foundation/css/normalize.css','skins/foundation/css/foundation.css','skins/foundation/css/cubecart.css','skins/foundation/css/cubecart.common.css','skins/foundation/css/cubecart.helpers.css','skins/foundation/css/jquery.bxslider.css','skins/foundation/css/jquery.bxslider.css','skins/foundation/css/jquery.chosen.min.css']}
       <link href="//fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type='text/css'>
       {foreach from=$CSS key=css_keys item=css_files}
-      <link href="{$STORE_URL}/{$css_files}" rel="stylesheet" type="text/css" media="screen">
+      {$css_input[] = $css_files}
       {/foreach}
+      {combine input=$css_input output='cache/css.foundation.css' age='30' debug=false}
       <meta name="description" content="{if isset($META_DESCRIPTION)}{$META_DESCRIPTION}{/if}">
       <meta name="keywords" content="{if isset($META_KEYWORDS)}{$META_KEYWORDS}{/if}">
       <meta name="robots" content="index, follow">
