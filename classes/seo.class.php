@@ -808,6 +808,11 @@ class SEO {
 			$htaccess_path = CC_ROOT_DIR.'/.htaccess';
 			$htaccess_content = '##### START CubeCart .htaccess #####
 
+### GZIP Compression ###
+<ifmodule mod_deflate.c>
+	AddOutputFilterByType DEFLATE text/text text/html text/plain text/xml text/css application/x-javascript application/javascript
+</ifmodule>
+
 ### File Security ###
 <FilesMatch "\.(htaccess)$">
   Order Allow,Deny
