@@ -321,7 +321,7 @@ class SEO {
 			}
 		}
 		$safe_path = SEO::_safeUrl($path);
-		
+
 		return $this->_getBaseUrl($absolute).$safe_path.(($extension) ? $this->_extension : '');
 	}
 
@@ -434,9 +434,9 @@ class SEO {
 					$description[] = $this->_meta_data['description'];
 					$description[] = $GLOBALS['config']->get('config', 'store_meta_description');
 				} else if ($this->_meta_data['description']) {
-					$description = $this->_meta_data['description'];				
+					$description = $this->_meta_data['description'];
 				} else {
-					$description = $GLOBALS['config']->get('config', 'store_meta_description');					
+					$description = $GLOBALS['config']->get('config', 'store_meta_description');
 				}
 				break;
 			case self::TAGS_REPLACE:
@@ -542,7 +542,7 @@ class SEO {
 			if (!empty($fragment)) {
 				$append[] = '#'. $fragment;
 			}
-			
+
 			if (is_array($append)) {
 				return implode('', $append);
 			}
@@ -567,7 +567,7 @@ class SEO {
 	 */
 	public function rewriteUrls($html, $absolute = false) {
 		$this->_rewrite_url_absolute  = $absolute;
-		
+
 		$search 	= '#(href|action)=["\'](.*/)?[\w]+.[a-z]+\?_a\=([\w]+)\&(amp;)?([\w]+)\=([\w\-\_]+)([^"\']*)["\']#Si';
 		$rule1 		= preg_replace_callback($search, array(&$this, '_callbackRule1'), $html);
 
@@ -644,7 +644,7 @@ class SEO {
 				}
 				// try to generate
 				$path = $this->generatePath($item_id, $type);
-				
+
 				$custom = 0;
 			}
 
@@ -741,7 +741,7 @@ class SEO {
 		}
 
 		foreach ($GLOBALS['hooks']->load('class.seo.sitemap') as $hook) include $hook;
-		
+
 		$sitemap = $this->_sitemap_xml->getDocument(true);
 
 		if (function_exists('gzencode')) {
@@ -798,7 +798,7 @@ class SEO {
 	 * @return bool
 	 */
 	private static function _checkModRewrite() {
-		
+
 		$cache_id = 'seo_check';
 
 		if(!isset($GLOBALS['cache']) || !is_object($GLOBALS['cache']) || $GLOBALS['cache']->read($cache_id)) {
@@ -830,8 +830,8 @@ IndexIgnore *
 ### Rewrite rules for SEO functionality ###
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteBase '.CC_ROOT_REL.' 
-  
+  RewriteBase '.CC_ROOT_REL.'
+
   ##### START v4 SEO URL BACKWARD COMPATIBILITY #####
   RewriteCond %{QUERY_STRING} (.*)$
   RewriteCond %{REQUEST_FILENAME} !-f
