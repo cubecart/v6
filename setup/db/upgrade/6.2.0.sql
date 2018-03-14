@@ -17,3 +17,11 @@ ALTER TABLE `CubeCart_newsletter_subscriber` ADD INDEX (`status`); #EOQ
 UPDATE `CubeCart_geo_country` SET `status` = 2 WHERE `iso` NOT IN('AR', 'BR', 'CA', 'CN', 'ID', 'IN', 'JP', 'MX', 'TH', 'US'); #EOQ
 ALTER TABLE `CubeCart_newsletter` ADD `dbl_opt` enum('0','1') NOT NULL DEFAULT '0'; #EOQ
 ALTER TABLE `CubeCart_email_log` ADD `fail_reason` TEXT  NULL; #EOQ
+CREATE TABLE `CubeCart_invoice_template` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `content` text COLLATE utf8_unicode_ci,
+  `date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `hash` varchar(35) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `hash` (`hash`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ

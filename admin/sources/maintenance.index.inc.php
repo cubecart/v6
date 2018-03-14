@@ -869,15 +869,19 @@ if (isset($database_result) && $database_result) {
 		'cubecart_email_log' => array (
 			'id' => 'PRIMARY'
 		),
-		'CubeCart_order_notes' => array (
+		'cubecart_order_notes' => array (
 			'note_id' => 'PRIMARY',
 			'admin_id' => 'KEY',
 			'cart_order_id' => 'KEY',
 			'time' => 'KEY',
 			'content' => 'FULLTEXT',
 		),
-		'CubeCart_access_log' => array (
+		'cubecart_access_log' => array (
 			'log_id' => 'PRIMARY'
+		),
+		'cubecart_invoice_template' => array (
+			'id' => 'PRIMARY',
+			'hash' => 'KEY',
 		)
 	);
 

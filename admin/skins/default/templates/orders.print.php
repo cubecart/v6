@@ -1,14 +1,3 @@
-{*
- * CubeCart v6
- * ========================================
- * CubeCart is a registered trade mark of CubeCart Limited
- * Copyright CubeCart Limited 2017. All rights reserved.
- * UK Private Limited Company No. 5323904
- * ========================================
- * Web:   http://www.cubecart.com
- * Email:  sales@cubecart.com
- * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
- *}
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -173,7 +162,7 @@
 	</style>
 </head>
 <body>
-<a href="../{$SKIN_VARS.admin_file}?_g=documents&node=invoice" class="noprint">CUSTOMISE LAYOUT</a>
+<a href="../{$SKIN_VARS.admin_file}?_g=documents&node=invoice" class="noprint">{$LANG.common.customise_layout|upper}</a>
   {if isset($ORDER_LIST)}
   {foreach from=$ORDER_LIST item=order}
   <div class="page-break">

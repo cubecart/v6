@@ -570,6 +570,7 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="customise_layout" introduced="6.2.0"><![CDATA[Customise Layout]]></string>
     <string name="locked" introduced="6.2.0"><![CDATA[Locked]]></string>
     <string name="calculate" introduced="6.1.14"><![CDATA[Calculate]]></string>
     <string name="error_time_out" introduced="6.1.14"><![CDATA[Time out after %s seconds.]]></string>

@@ -595,9 +595,15 @@ if (isset($_GET['action'])) {
 			);
 
 			foreach ($GLOBALS['hooks']->load('admin.order.index.print') as $hook) include $hook;
-			
+
 			// Parse
-			$template = $GLOBALS['smarty']->fetch('templates/orders.print.php');
+			$invoice_template = $GLOBALS['db']->select('CubeCart_invoice_template', array('hash', 'content'), false, 'id DESC', 1);
+			if($invoice_template && !empty($invoice_template[0]['content'])) {
+				$fetch_source = 'string:'.$invoice_template[0]['content'];
+			} else {
+				$fetch_source = 'templates/orders.print.php';
+			}
+			$template = $GLOBALS['smarty']->fetch($fetch_source);
 
 			$print_hash = md5(implode('{@}', $summaries[0]));
 

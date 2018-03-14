@@ -12,7 +12,7 @@
 <form action="{$VAL_SELF}" method="post">
   <div id="general" class="tab_content">
 		<h3>{$LANG.orders.invoice_editor}</h3>
-		<textarea name="contact[description]" id="invoice_html" class="textbox fck fck-full fck-source" data-fck-height="800">{$INVOICE_HTML}</textarea>
+		<textarea name="content" id="invoice_html" class="textbox fck fck-full fck-source" data-fck-height="800">{$INVOICE_HTML}</textarea>
   </div>
   <div class="form_control">
 		<input type="hidden" name="previous-tab" id="previous-tab" value="">
