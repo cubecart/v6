@@ -755,6 +755,7 @@
     <string name="request" introduced="5.0.0"><![CDATA[Request Sent]]></string>
     <string name="reset" introduced="5.0.0"><![CDATA[Reset]]></string>
     <string name="restore" introduced="5.0.0"><![CDATA[Restore]]></string>
+    <string name="restore_default" introduced="6.2.0"><![CDATA[Restore to default]]></string>
     <string name="revert" introduced="5.0.0"><![CDATA[Revert]]></string>
     <string name="save" introduced="5.0.0"><![CDATA[Save]]></string>
     <string name="save_reload" introduced="5.0.0"><![CDATA[Save &amp; Reload]]></string>
@@ -1600,6 +1601,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="confirm_delete" introduced="5.0.0"><![CDATA[Are you sure you want to delete?]]></string>
     <string name="confirm_delete_product" introduced="6.1.2"><![CDATA[WARNING: You are about to delete %s - are you sure you want to delete this entire product?]]></string>
     <string name="confirm_revert" introduced="5.0.0"><![CDATA[Are you sure you want to revert?]]></string>
+    <string name="confirm_restore" introduced="5.0.0"><![CDATA[Are you sure you want to restore?]]></string>
     <string name="confirm_update" introduced="5.0.0"><![CDATA[Are you sure you want to update?]]></string>
     <string name="confirm_continue" introduced="5.1.0"><![CDATA[Are you sure you want to continue?]]></string>
     <string name="created" introduced="5.0.0"><![CDATA[Thanks, your account has been created.]]></string>
@@ -1914,10 +1916,12 @@ This email is sent from the store's master email address but it is possible to r
     <string name="notify_archive_create" introduced="5.0.0"><![CDATA[Archive successfully created.]]></string>
     <string name="notify_archive_delete" introduced="5.0.0"><![CDATA[Archive successfully deleted.]]></string>
     <string name="notify_archive_restore" introduced="5.0.0"><![CDATA[Successfully restored from archive.]]></string>
+    <string name="notify_default_restore" introduced="5.0.0"><![CDATA[Successfully restored default.]]></string>
     <string name="notify_category_create" introduced="5.0.0"><![CDATA[Category successfully created.]]></string>
     <string name="notify_category_delete" introduced="5.0.0"><![CDATA[Category successfully deleted.]]></string>
     <string name="notify_category_status" introduced="5.0.0"><![CDATA[Categories status and display order saved.]]></string>
     <string name="notify_category_update" introduced="5.0.0"><![CDATA[Category successfully updated.]]></string>
+    <string name="notify_invoice_updated" introduced="5.0.0"><![CDATA[Invoice template has been successfully updated.]]></string>
     <string name="notify_currency_add" introduced="5.0.0"><![CDATA[Currency added.]]></string>
     <string name="notify_currency_delete" introduced="5.0.0"><![CDATA[Currency %s deleted.]]></string>
     <string name="notify_currency_rates_update" introduced="5.0.0"><![CDATA[Exchange rates updated.]]></string>

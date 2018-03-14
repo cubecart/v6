@@ -15,13 +15,28 @@ Admin::getInstance()->permissions('documents', CC_PERM_EDIT, true);
 global $lang;
 
 $current = $GLOBALS['db']->select('CubeCart_invoice_template', array('hash', 'content'), false, 'id DESC', 1);
+$filename = CC_ROOT_DIR.'/'.$GLOBALS['config']->get('config', 'adminFolder').'/skins/'.$GLOBALS['config']->get('config', 'admin_skin').'/templates/orders.print.php';
+$handle = fopen($filename, "rb");
+$default = fread($handle, filesize($filename));
 
-if(isset($GLOBALS['RAW']['POST']['content']) && !empty($GLOBALS['RAW']['POST']['content'])) {
+$updated = false;
+
+if(isset($_GET['restore']) && $_GET['restore']==1) {
+	if($GLOBALS['db']->insert('CubeCart_invoice_template', array('content' => $default, 'hash' => md5($default)))){
+		$GLOBALS['main']->setACPNotify($lang['settings']['notify_default_restore']);
+	}
+	$updated = true;
+} else if(isset($GLOBALS['RAW']['POST']['content']) && !empty($GLOBALS['RAW']['POST']['content'])) {
 	$hash = md5($GLOBALS['RAW']['POST']['content']);
 	if(!$current || $current[0]['hash']!==$hash) {
 		$GLOBALS['db']->insert('CubeCart_invoice_template', array('content' => $GLOBALS['RAW']['POST']['content'], 'hash' => $hash));
 		$current[0]['content'] = $GLOBALS['RAW']['POST']['content'];
 	}
+	$GLOBALS['main']->setACPNotify($lang['settings']['notify_invoice_updated']);
+	$updated = true;
+}
+if($updated == true) {
+	httpredir('?_g=documents&node=invoice');
 }
 
 $GLOBALS['main']->addTabControl($lang['orders']['invoice_editor'], 'general');
@@ -30,9 +45,7 @@ $GLOBALS['gui']->addBreadcrumb($lang['orders']['invoice_editor'], currentPage())
 if($current && !empty($current[0]['content'])) {
 	$content = $current[0]['content'];
 } else {
-	$filename = CC_ROOT_DIR.'/'.$GLOBALS['config']->get('config', 'adminFolder').'/skins/'.$GLOBALS['config']->get('config', 'admin_skin').'/templates/orders.print.php';
-	$handle = fopen($filename, "rb");
-	$content = fread($handle, filesize($filename));
+	$content = $default;
 }
 $GLOBALS['smarty']->assign('INVOICE_HTML', $content);
 
