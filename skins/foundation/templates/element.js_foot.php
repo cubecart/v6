@@ -1,8 +1,8 @@
 {assign var=js_foot value=[ 'skins/{$SKIN_FOLDER}/js/vendor/jquery.rating.min.js',
-                            'skins/{$SKIN_FOLDER}/js/vendor/jquery.validate.min.js',
-                            'skins/{$SKIN_FOLDER}/js/vendor/jquery.cookie.min.js',
-                            'skins/{$SKIN_FOLDER}/js/vendor/jquery.bxslider.min.js',
-                            'skins/{$SKIN_FOLDER}/js/vendor/jquery.chosen.min.js']}
+                            'skins/{$SKIN_FOLDER}/js/vendor/jquery.validate.js',
+                            'skins/{$SKIN_FOLDER}/js/vendor/jquery.cookie.js',
+                            'skins/{$SKIN_FOLDER}/js/vendor/jquery.bxslider.js',
+                            'skins/{$SKIN_FOLDER}/js/vendor/jquery.chosen.js']}
 {foreach from=$BODY_JS item=js}
     {$js_foot[] = $js}
 {/foreach}

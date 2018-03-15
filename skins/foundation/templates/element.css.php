@@ -6,7 +6,7 @@
                                 'skins/{$SKIN_FOLDER}/css/cubecart.helpers.css',
                                 'skins/{$SKIN_FOLDER}/css/jquery.bxslider.css',
                                 'skins/{$SKIN_FOLDER}/css/jquery.bxslider.css',
-                                'skins/{$SKIN_FOLDER}/css/jquery.chosen.min.css']}
+                                'skins/{$SKIN_FOLDER}/css/jquery.chosen.css']}
 {foreach from=$CSS key=css_keys item=css_files}
     {$css_input[] = $css_files}
 {/foreach}

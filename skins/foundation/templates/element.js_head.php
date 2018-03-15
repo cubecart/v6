@@ -1,4 +1,4 @@
-{assign var=js_head value=[ 'skins/{$SKIN_FOLDER}/js/vendor/modernizr.min.js',
+{assign var=js_head value=[ 'skins/{$SKIN_FOLDER}/js/vendor/modernizr.js',
                             'skins/{$SKIN_FOLDER}/js/vendor/jquery.js']}
 {foreach from=$HEAD_JS item=js}
     {$js_head[] = $js}
