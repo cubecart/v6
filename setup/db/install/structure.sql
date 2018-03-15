@@ -592,7 +592,8 @@ CREATE TABLE IF NOT EXISTS `CubeCart_option_group` (
 	`option_type` TINYINT(4) UNSIGNED NOT NULL DEFAULT '0',
 	`option_required` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`priority` INT(10) UNSIGNED NOT NULL DEFAULT '0',
-	PRIMARY KEY (`option_id`)
+	PRIMARY KEY (`option_id`),
+	UNIQUE KEY `option_name` (`option_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_option_matrix` (

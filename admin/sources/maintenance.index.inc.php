@@ -737,7 +737,8 @@ if (isset($database_result) && $database_result) {
 			'set_enabled' => 'KEY'
 		),
 		'cubecart_option_group' => array (
-			'option_id' => 'PRIMARY'
+			'option_id' => 'PRIMARY',
+			'option_name' => 'UNIQUE KEY'
 		),
 		'cubecart_option_matrix' => array (
 			'matrix_id' => 'PRIMARY',
