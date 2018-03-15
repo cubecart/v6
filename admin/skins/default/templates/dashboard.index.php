@@ -113,8 +113,8 @@
          <p>{$LANG.dashboard.more_extensions}</p>
          {foreach from=$RECENT_EXTENSIONS item=extension name=extension}
          <div class="extension">
-            <h4><span>{$extension.price}</span><a href="{$extension.url}" title="{$extension.name}" target="_blank">{$extension.name|truncate:42:"&hellip;":true}</a></h4>
-            <a href="{$extension.url}" target="_blank"><img src="{$extension.image}" alt="{$extension.name}" width="150"></a>
+            <h4><span>{$extension.price}</span><a href="?_g=marketplace&eurl={$extension.url|escape:'url'}" title="{$extension.name}" target="_blank">{$extension.name|truncate:42:"&hellip;":true}</a></h4>
+            <a href="?_g=marketplace&eurl={$extension.url|escape:'url'}" target="_blank"><img src="{$extension.image}" alt="{$extension.name}" width="150"></a>
             </div>
          {/foreach}
          <div style="clear: left;"></div>

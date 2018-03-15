@@ -16,4 +16,9 @@ global $lang, $glob;
 $hash = randomString();
 $file = CC_ROOT_DIR.'/files/hash.'.$hash.'.php';
 $fp = fopen($file, 'w'); fwrite($fp, '<?php echo "'.$hash.'"; unlink("'.$file.'"); ?>'); fclose($fp);
-httpredir('https://www.cubecart.com/store/auth/?hash='.$hash.'&amp;url='.urlencode(CC_STORE_URL));
+$url = 'https://www.cubecart.com/store/auth/?hash='.$hash.'&amp;url='.urlencode(CC_STORE_URL);
+if(isset($_GET['eurl']) && !empty($_GET['eurl'])) {
+    $url_parts = parse_url($_GET['eurl']);
+    $url .= '&amp;eurl='.urlencode($url_parts['path']);
+}
+httpredir($url);
