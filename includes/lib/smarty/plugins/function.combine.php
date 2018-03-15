@@ -29,6 +29,12 @@ function smarty_function_combine($params, &$smarty)
     require_once dirname(__FILE__) . '/minify/JSmin.php';
     require_once dirname(__FILE__) . '/minify/CSSmin.php';
 
+    $skin_folder = (string)$smarty->tpl_vars["SKIN_FOLDER"]->value;
+    $skin_subset = (string)$smarty->tpl_vars["SKIN_SUBSET"]->value;
+    foreach(array('input','output') as $key) {
+        $params[$key] = str_replace(array('{$SKIN_SUBSET}','{$SKIN_FOLDER}'), array($skin_subset, $skin_folder), $params[$key]);
+    }
+
     /**
      * Build combined file
      *

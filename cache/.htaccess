@@ -3,6 +3,9 @@ Deny from all
   Allow from all
 </Files>
 <Files css.*.css>
-  allow from all
+  Allow from all
+</Files>
+<Files js*.js>
+  Allow from all
 </Files>
 

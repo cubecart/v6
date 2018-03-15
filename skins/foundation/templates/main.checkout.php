@@ -11,31 +11,15 @@
  *}
 <!DOCTYPE html>
 <html class="no-js" xmlns="http://www.w3.org/1999/xhtml" dir="{$TEXT_DIRECTION}" lang="{$HTML_LANG}">
-   <head>
+    <head>
       <title>{$META_TITLE}</title>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      {include file='templates/element.meta.php'}
       <link href="{$CANONICAL}" rel="canonical">
       <link href="{$ROOT_PATH}/favicon.ico" rel="shortcut icon" type="image/x-icon">
-      <link href="//fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type='text/css'>
-      {assign var=css_input value=['skins/foundation/css/normalize.css','skins/foundation/css/foundation.css','skins/foundation/css/cubecart.css','skins/foundation/css/cubecart.common.css','skins/foundation/css/cubecart.helpers.css','skins/foundation/css/jquery.bxslider.css','skins/foundation/css/jquery.bxslider.css','skins/foundation/css/jquery.chosen.min.css']}
-      {foreach from=$CSS key=css_keys item=css_files}
-      {$css_input[] = $css_files}
-      {/foreach}
-      {combine input=$css_input output='cache/css.foundation.css' age='604800' debug=false}
-      <meta name="description" content="{if isset($META_DESCRIPTION)}{$META_DESCRIPTION}{/if}">
-      <meta name="keywords" content="{if isset($META_KEYWORDS)}{$META_KEYWORDS}{/if}">
-      <meta name="robots" content="index, follow">
-      <meta name="generator" content="cubecart">
-      {if $FBOG}
-      <meta property="og:image" content="{$PRODUCT.thumbnail}">
-      <meta property="og:url" content="{$VAL_SELF}">
-      {/if}
+      {include file='templates/element.css.php'}
       {include file='templates/content.recaptcha.head.php'}
-      <script src="{$ROOT_PATH}/skins/{$SKIN_FOLDER}/js/vendor/modernizr.min.js"></script>
-      <script src="{$ROOT_PATH}/skins/{$SKIN_FOLDER}/js/vendor/jquery.js"></script>
       {include file='templates/element.google_analytics.php'}
-      {foreach from=$HEAD_JS item=js}{$js}{/foreach}
+      {include file='templates/element.js_head.php'}
    </head>
    <body>
       {foreach from=$BODY_JS_TOP item=js}{$js}{/foreach}
@@ -82,18 +66,7 @@
                   </div>
                </div>
             </footer>
-            <script src="{$ROOT_PATH}/skins/{$SKIN_FOLDER}/js/vendor/jquery.rating.min.js" type="text/javascript"></script>
-            <script src="{$ROOT_PATH}/skins/{$SKIN_FOLDER}/js/vendor/jquery.validate.min.js" type="text/javascript"></script>
-            <script src="{$ROOT_PATH}/skins/{$SKIN_FOLDER}/js/vendor/jquery.cookie.min.js" type="text/javascript"></script>
-            {foreach from=$BODY_JS item=js}{$js}{/foreach}
-            {foreach from=$JS_SCRIPTS key=k item=script}
-            <script src="{$ROOT_PATH}/{$script|replace:'\\':'/'}" type="text/javascript"></script>
-            {/foreach}
-            <script>
-               {literal}
-               $(document).foundation({equalizer:{equalize_on_stack:true}});
-               {/literal}
-            </script>
+            {include file='templates/element.js_foot.php'}
             {$LIVE_HELP}
             {$DEBUG_INFO}
             {$SKIN_SELECT}
