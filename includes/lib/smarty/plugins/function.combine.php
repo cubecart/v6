@@ -56,9 +56,9 @@ function smarty_function_combine($params, &$smarty)
                 $output_filename = '';
                 foreach ($filelist as $file) {
                     if ($params['type'] == 'js') {
-                        $output_filename .= '<script type="text/javascript" src="' . CC_STORE_URL . $file['name'].'" charset="utf-8"></script>' . "\n";
+                        $output_filename .= '<script type="text/javascript" src="' . CC_ROOT_REL . $file['name'].'" charset="utf-8"></script>' . "\n";
                     } elseif ($params['type'] == 'css') {
-                        $output_filename .= '<link type="text/css" rel="stylesheet" href="' . CC_STORE_URL . $file['name'] . '" />' . "\n";
+                        $output_filename .= '<link type="text/css" rel="stylesheet" href="' . CC_ROOT_REL . $file['name'] . '" />' . "\n";
                     }
                 }
 
