@@ -55,7 +55,7 @@
       <tr>
          <td width="10%" nowrap="nowrap">{$LANG.basket.shipping}
          {if $ESTIMATE_SHIPPING}
-            (<a href="#" onclick="$('#getEstimateSmall').slideToggle();">{$LANG.common.estimated}</a>)
+            (<a href="#" onclick="$('#getEstimateSmall').slideToggle();">{$LANG.common.refine_estimate}</a>)
             <div id="getEstimateSmall" class="hide panel callout">
                <h4>
                   <svg class="icon right" id="getEstimateClose" onclick="$('#getEstimateSmall').slideUp();"><use xlink:href="#icon-times"></use></svg>{$LANG.basket.specify_shipping}</h4>
