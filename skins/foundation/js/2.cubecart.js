@@ -515,7 +515,6 @@ function checkout_form_toggle(register) {
     if (register) {
         $("#checkout_login_form").hide();
         $("#checkout_register_form").slideDown();
-        $("#payment_method").slideDown();
         $("#reg_password").prop('disabled', false);
         $("#login-username").prop('disabled', true);
         $("#login-password").prop('disabled', true);
@@ -523,7 +522,6 @@ function checkout_form_toggle(register) {
     } else {
         $("#checkout_login_form").slideDown();
         $("#checkout_register_form").hide();
-        $("#payment_method").hide();
         $("#reg_password").prop('disabled', true);
         $("#login-username").prop('disabled', false);
         $("#login-password").prop('disabled', false);
