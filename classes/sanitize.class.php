@@ -36,10 +36,10 @@ class Sanitize {
 							$csrf_check = false;
 							foreach($csrf_map as $key => $value) {
 								if((!$value && isset($_GET[$key])) || (isset($_GET[$key]) && $_GET[$key]==$value)) {
-									$csrf_check = true;	
+									$csrf_check = true;
 								} else {
 									$csrf_check = false;
-									break;	
+									break;
 								}
 							}
 
@@ -49,7 +49,7 @@ class Sanitize {
 									$GLOBALS['session']->getToken(true);
 									self::_stopToken();
 								}
-								break;	
+								break;
 							}
 						}
 					}
@@ -81,14 +81,14 @@ class Sanitize {
 	 * Clean all the global varaibles
 	 */
 	static public function cleanGlobals() {
-		
+
 		$GLOBALS['RAW'] = array(
 			'GET' 		=> $_GET,
 			'POST' 		=> $_POST,
 			'COOKIE' 	=> $_COOKIE,
 			'REQUEST' 	=> $_REQUEST
 		);
-		
+
 		self::_clean($_GET);
 		self::_clean($_POST);
 		self::_clean($_COOKIE);
