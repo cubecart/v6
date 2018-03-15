@@ -9,11 +9,13 @@
  * Email:  sales@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
-<div class="row">
+{if {$DOCUMENT.hide_title==0}}
+ <div class="row">
    <div class="small-12 columns">
       <h2>{$DOCUMENT.doc_name}</h2>
    </div>
 </div>
+{/if}
 <div class="row">
    <div class="small-12 columns">{$DOCUMENT.doc_content}</div>
 </div>

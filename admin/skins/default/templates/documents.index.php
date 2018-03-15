@@ -36,7 +36,7 @@
 			<input type="hidden" id="status-{$document.doc_id}" name="status[{$document.doc_id}]" value="{$document.doc_status}" class="toggle">
 		  </td>
 		  <td align="center"><img src="{$document.flag}"></td>
-		  <td><a href="{$document.link.edit}">{$document.doc_name}</a></td>
+		  <td><a href="{$document.link.edit}"{if $document.hide_title==1} class="line-through"{/if}>{$document.doc_name}</a></td>
 		  <td align="center" nowrap="nowrap">
 			{if isset($document.translations)}
 			{foreach from=$document.translations item=translation}
@@ -67,7 +67,8 @@
 	  <div><label for="doc-lang">{$LANG.common.language}</label><span><select name="document[doc_lang]" id="doc-lang" class="textbox">
 		{foreach from=$LANGUAGES item=language}<option value="{$language.code}"{$language.selected}>{$language.title}</option>{/foreach}
 	  </select></span></div>
-	  <div><label for="doc-status">{$LANG.common.status}</label><span><input type="hidden" id="doc_status" name="document[doc_status]" value="{$DOCUMENT.doc_status}" class="toggle"></span></div>
+		<div><label for="doc-status">{$LANG.common.status}</label><span><input type="hidden" id="doc_status" name="document[doc_status]" value="{$DOCUMENT.doc_status}" class="toggle"></span></div>
+		<div><label for="doc-hide_title">{$LANG.documents.hide_title}</label><span><input type="hidden" id="doc-hide_title" name="document[hide_title]" value="{$DOCUMENT.hide_title}" class="toggle"></span></div>
 	  <div><label for="doc-url">{$LANG.documents.document_url}</label><span><input type="text" name="document[doc_url]" id="doc-url" value="{$DOCUMENT.doc_url}" class="textbox"></span></div>
 	  <div><label for="doc-url-openin">{$LANG.documents.document_url_open}</label><span><select name="document[doc_url_openin]" id="doc-url-openin" class="textbox">
 		{foreach from=$TARGETS item=target}<option value="{$target.value}"{$target.selected}>{$target.title}</option>{/foreach}

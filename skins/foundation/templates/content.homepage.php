@@ -11,8 +11,8 @@
  *}
 {if isset($DOCUMENT)}
 <div id="content_homepage">
-   <h1>{$DOCUMENT.title}</h1>
-   {$DOCUMENT.content}
+    {if $DOCUMENT.hide_title==0}<h1>{$DOCUMENT.title}</h1>{/if}
+    {$DOCUMENT.content}
 </div>
 {/if}
 {if $LATEST_PRODUCTS}

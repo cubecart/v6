@@ -25,3 +25,4 @@ CREATE TABLE `CubeCart_invoice_template` (
   PRIMARY KEY (`id`),
   KEY `hash` (`hash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+ALTER TABLE `CubeCart_documents` ADD `hide_title` ENUM('0', '1')  DEFAULT '0'; #EOQ

@@ -1200,3 +1200,6 @@ ul.filetree li ul li ul li ul li ul li ul li ul li ul li a {
 .order_status_4,.order_status_5,.order_status_6 {
 	color:#F04124;
 }
+.line-through {
+    text-decoration: line-through;
+}
