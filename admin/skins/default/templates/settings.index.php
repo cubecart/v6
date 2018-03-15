@@ -317,7 +317,7 @@
             </td>
             <td>
                <input type="hidden" class="default-style" value="{$logo.style}">
-               <select id="" name="logo[{$logo.logo_id}][skin]" class="textbox select-skin">
+               <select id="logo_{$logo.logo_id}_skin" name="logo[{$logo.logo_id}][skin]" class="textbox select-skin">
                   <optgroup label="Skins">
                      <option value="">{$LANG.settings.logo_all_skins}</option>
                      {foreach from=$SKINS_ALL item=skin}
@@ -329,7 +329,7 @@
                      {/foreach}
                   </optgroup>
                </select>
-               <select id="" name="logo[{$logo.logo_id}][style]" class="textbox select-style">
+               <select id="logo_{$logo.logo_id}_style" name="logo[{$logo.logo_id}][style]" class="textbox select-style">
                   <option value="">{$LANG.settings.logo_all_styles}</option>
                </select>
                
