@@ -27,13 +27,23 @@ if(isset($_GET['restore']) && $_GET['restore']==1) {
 	}
 	$updated = true;
 } else if(isset($GLOBALS['RAW']['POST']['content']) && !empty($GLOBALS['RAW']['POST']['content'])) {
-	$hash = md5($GLOBALS['RAW']['POST']['content']);
-	if(!$current || $current[0]['hash']!==$hash) {
-		$GLOBALS['db']->insert('CubeCart_invoice_template', array('content' => $GLOBALS['RAW']['POST']['content'], 'hash' => $hash));
-		$current[0]['content'] = $GLOBALS['RAW']['POST']['content'];
+	$syntax_error = false;
+	try {
+		$GLOBALS['smarty']->fetch('string:'.$GLOBALS['RAW']['POST']['content']);
+	} catch(Exception $e) {
+   		$GLOBALS['main']->setACPWarning(str_replace('string:','',htmlentities($e->getMessage(),ENT_QUOTES)));
+   		$syntax_error = true;
 	}
-	$GLOBALS['main']->setACPNotify($lang['settings']['notify_invoice_updated']);
-	$updated = true;
+
+	if(!$syntax_error) {
+		$hash = md5($GLOBALS['RAW']['POST']['content']);
+		if(!$current || $current[0]['hash']!==$hash) {
+			$GLOBALS['db']->insert('CubeCart_invoice_template', array('content' => $GLOBALS['RAW']['POST']['content'], 'hash' => $hash));
+			$current[0]['content'] = $GLOBALS['RAW']['POST']['content'];
+		}
+		$GLOBALS['main']->setACPNotify($lang['settings']['notify_invoice_updated']);
+		$updated = true;
+	}
 }
 if($updated == true) {
 	httpredir('?_g=documents&node=invoice');

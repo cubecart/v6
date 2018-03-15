@@ -308,7 +308,7 @@ if (isset($_POST['template'])) {
 	try { 
 		$GLOBALS['smarty']->fetch('string:'.$_POST['template']['content_html']);
 	} catch(Exception $e) {
-		$error_message = str_replace('string:','',strip_tags($e->getMessage()));
+		$error_message = str_replace('string:','',htmlentities($e->getMessage(),ENT_QUOTES));
    		$GLOBALS['main']->setACPWarning($lang['email']['title_content_html'].': '.$error_message);
    		$redirect = false;
    		$html_error = true;
