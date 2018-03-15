@@ -1,9 +1,13 @@
-{assign var=js_foot value=['skins/{$SKIN_FOLDER}/js/vendor/jquery.rating.min.js','skins/{$SKIN_FOLDER}/js/vendor/jquery.validate.min.js','skins/{$SKIN_FOLDER}/js/vendor/jquery.cookie.min.js','skins/{$SKIN_FOLDER}/js/vendor/jquery.bxslider.min.js','skins/{$SKIN_FOLDER}/js/vendor/jquery.chosen.min.js']}
+{assign var=js_foot value=[ 'skins/{$SKIN_FOLDER}/js/vendor/jquery.rating.min.js',
+                            'skins/{$SKIN_FOLDER}/js/vendor/jquery.validate.min.js',
+                            'skins/{$SKIN_FOLDER}/js/vendor/jquery.cookie.min.js',
+                            'skins/{$SKIN_FOLDER}/js/vendor/jquery.bxslider.min.js',
+                            'skins/{$SKIN_FOLDER}/js/vendor/jquery.chosen.min.js']}
 {foreach from=$BODY_JS item=js}
-{$js_foot[] = $js}
+    {$js_foot[] = $js}
 {/foreach}
 {foreach from=$JS_SCRIPTS key=k item=script}
-{$js_foot[] = $script}
+    {$js_foot[] = $script}
 {/foreach}
 {combine input=$js_foot output='cache/js_foot.{$SKIN_FOLDER}.js' age='604800' debug=false}
 <script>
