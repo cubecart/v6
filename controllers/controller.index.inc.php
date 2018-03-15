@@ -39,8 +39,10 @@ $GLOBALS['smarty']->compile_dir  = CC_SKIN_CACHE_DIR;
 $GLOBALS['smarty']->config_dir   = CC_SKIN_CACHE_DIR;
 $GLOBALS['smarty']->cache_dir    = CC_SKIN_CACHE_DIR;
 $GLOBALS['smarty']->debugging = false;
-include(CC_INCLUDES_DIR.'lib/smarty/filters/HTMLMinify.smarty.php');
-$GLOBALS['smarty']->registerFilter("output", "minify_html");
+if(!(bool)$GLOBALS['config']->get('config', 'debug')) {
+	include(CC_INCLUDES_DIR.'lib/smarty/filters/HTMLMinify.smarty.php');
+	$GLOBALS['smarty']->registerFilter("output", "minify_html");
+}
 //Initialize language
 $GLOBALS['language'] = Language::getInstance();
 //Initialize hooks
