@@ -110,9 +110,9 @@ class Module {
 			$this->_module_classes();
 			if (isset($_POST['module']['status']) && is_array($_POST['module'])) {
 				// Automatically handle module save requests
-				$this->_info['name'] ? $this->_info['name'] : $this->_settings['folder'];
+				$this->_info['name'] = $this->_info['name'] ?: $this->_settings['folder'];
 				$this->_info['name'] = str_replace('_',' ', $this->_info['name']);
-				
+
 				$this->_enumerateRawVars();
 				foreach($this->_rawvarsout as $key => $key_name) $_POST['module'][$key_name] = $GLOBALS['RAW']['POST']['module'][$key_name];
 				if ($this->module_settings_save($_POST['module'])) {
