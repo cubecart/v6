@@ -744,6 +744,9 @@ function moduleVersion($min = false, $max = false) {
 function offline() {
 	## Check if store should be offline or not
 	if ($GLOBALS['config']->get('config', 'offline')) {
+		header('HTTP/1.1 503 Service Temporarily Unavailable');
+		header('Status: 503 Service Temporarily Unavailable');
+		header('Retry-After: 3600');
 		## Only show offline content if no admin session or admin is not allowed to view store front
 		if (!Admin::getInstance()->is()) {
 			$offlineContent = stripslashes($GLOBALS['config']->get('config', 'offline_content')); // No needs to base64_decode as the main config is already plain since 5.1.1

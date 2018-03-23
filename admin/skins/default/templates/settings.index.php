@@ -328,7 +328,7 @@
       </fieldset>
       <fieldset>
          <legend>{$LANG.settings.offline_message}</legend>
-         <textarea name="config[offline_content]" id="offline_content" class="textbox fck">{$CONFIG.offline_content}</textarea>
+         <textarea name="config[offline_content]" id="offline_content" class="textbox fck fck-full">{$CONFIG.offline_content}</textarea>
       </fieldset>
    </div>
    <div id="Logos" class="tab_content">
