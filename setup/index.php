@@ -164,7 +164,7 @@ $default_config_settings = array(
   'stock_change_time' => '1',
   'stock_level' => '0',
   'offline' => '0',
-  'offline_content' => '<div style="font-family: georgia,serif; text-align: center;"><p style="font-size: 18px;">Store is currently offline.</p><p style="font-size: 14px;">Please visit again soon.</p></div>',
+  'offline_content' => '<html><head><title>Store Offline</title></head><body><p>We are offline right now. Please visit again soon.</p></body></html>',
   'product_sort_column' => 'name',
   'product_sort_direction' => 'ASC',
   'bftime' => '600',
