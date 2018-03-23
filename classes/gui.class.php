@@ -706,7 +706,7 @@ class GUI {
 				'reload_words'  => sprintf($GLOBALS['language']->recaptcha['reload_words'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('audio')"),
 				'reload_numbers' => sprintf($GLOBALS['language']->recaptcha['reload_numbers'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('image')"),
 			));
-			if ($GLOBALS['gui']->recaptchaRequired()) {
+			if ($this->recaptchaRequired()) {
 				$GLOBALS['smarty']->assign('DISPLAY_RECAPTCHA', recaptcha_get_html($this->_reCAPTCHA_keys['captcha_public'], $GLOBALS['recaptcha']['error'], CC_SSL));
 				$GLOBALS['smarty']->assign('RECAPTCHA', 1);
 			}
@@ -1087,10 +1087,10 @@ class GUI {
 		if (isset($_POST['subscribe'])) {
 			$newsletter = Newsletter::getInstance();
 			if ($newsletter->subscribe($_POST['subscribe'])) {
-				$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_subscribed']);
+				$this->setNotify($GLOBALS['language']->newsletter['notify_subscribed']);
 				httpredir(currentPage());
 			} else {
-				$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_unsubscribed']);
+				$this->setNotify($GLOBALS['language']->newsletter['notify_unsubscribed']);
 				httpredir(currentPage(null, array('_a' => 'newsletter')));
 			}
 		}
