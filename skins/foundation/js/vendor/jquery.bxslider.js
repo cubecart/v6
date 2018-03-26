@@ -1105,7 +1105,7 @@
           slider.touch.start.x = touchPoints[0].pageX;
           slider.touch.start.y = touchPoints[0].pageY;
   
-          if (slider.viewport.get(0).setPointerCapture) {
+          if (slider.viewport.get(0).setPointerCapture && orig.pointerId) {
             slider.pointerId = orig.pointerId;
             slider.viewport.get(0).setPointerCapture(slider.pointerId);
           }
