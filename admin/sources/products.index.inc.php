@@ -1227,6 +1227,7 @@ if (isset($_GET['action'])) {
 			$result['updated']  = $updated_time ? $updated_time : $lang['common']['unknown'];
 			$smarty_data['products'][] = $result;
 		}
+		foreach ($GLOBALS['hooks']->load('admin.product.products_list') as $hook) include $hook;
 		$GLOBALS['smarty']->assign('PRODUCTS', $smarty_data['products']);
 		$GLOBALS['smarty']->assign('PAGINATION', $pagination);
 	} else {
