@@ -69,7 +69,7 @@ if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 			$destination = CC_ROOT_DIR.'/'.$data['path'];
 			if(file_exists($destination)) {
 				if(is_writable($destination)) {
-					$tmp_path = CC_ROOT_DIR.'/backup/'.$data['file_name'];
+					$tmp_path = CC_BACKUP_DIR.$data['file_name'];
 					$fp = fopen($tmp_path, 'w');
 					fwrite($fp, hex2bin($data['file_data']));
 					fclose($fp);
@@ -107,7 +107,7 @@ if(isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 						}
 		
 						if($_POST['backup']=='1' && $backup) {
-							$destination_filepath = CC_ROOT_DIR.'/backup/'.rtrim($data['file_name'],'.zip').'_'.date("dMy-His").'.zip';
+							$destination_filepath = CC_BACKUP_DIR.rtrim($data['file_name'],'.zip').'_'.date("dMy-His").'.zip';
 							$zip_backup = new ZipArchive();
 							if ($zip_backup->open($destination_filepath, ZipArchive::CREATE)===true) {
 								chdir($destination);
