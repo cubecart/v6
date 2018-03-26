@@ -605,7 +605,7 @@ if (isset($_GET['action'])) {
 			$filename = 'print.'.$print_hash.'.php';
 
 			if (file_put_contents(CC_FILES_DIR.$filename, $template.$cleanup)) {
-				httpredir($GLOBALS['storeURL'].'/files/'.$filename);
+				httpredir($GLOBALS['storeURL'].'/'.basename(CC_FILES_DIR).'/'.$filename);
 			} else {
 				$GLOBALS['main']->setACPWarning($lang['orders']['error_print_generate']);
 				httpredir(currentPage(array('print')));

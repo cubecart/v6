@@ -477,11 +477,12 @@ if (isset($_GET['files_backup'])) {
 			$skip_folders .= '|images/source';
 		}
 		if(isset($_POST['skip_downloads']) && $_POST['skip_downloads']=='1') {
-			$zip->addEmptyDir('./files');
-			if(file_exists('./files/.htaccess')) {
-				$zip->addFile('./files/.htaccess');
+			$files_folder = basename(CC_FILES_DIR);
+			$zip->addEmptyDir('./'.$files_folder);
+			if(file_exists('./'.$files_folder.'/.htaccess')) {
+				$zip->addFile('./'.$files_folder.'/.htaccess');
 			}
-			$skip_folders .= '|files';
+			$skip_folders .= '|'.$files_folder;
 		}
 
 		$files = glob_recursive('*');

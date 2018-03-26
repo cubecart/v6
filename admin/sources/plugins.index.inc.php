@@ -16,7 +16,7 @@ Admin::getInstance()->permissions('settings', CC_PERM_READ, true);
 global $lang, $glob;
 
 ## Delete any remnant hash verification files
-$hash_files = glob(CC_ROOT_DIR.'/files/hash.*.php');
+$hash_files = glob(CC_ROOT_DIR.'/'.basename(CC_FILES_DIR).'/hash.*.php');
 if(is_array($hash_files)) {
 	foreach($hash_files as $file) {
 		unlink($file);
