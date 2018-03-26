@@ -550,7 +550,7 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
       if($admins = $db->select('CubeCart_admin_users', false, array('status'=> 1))) {
         $headers = 'From: nobody@'.parse_url(CC_STORE_URL, PHP_URL_HOST);
         foreach($admins as $admin) {
-          mail($admin['email'],"Store Admin URL", "Hi ".$admin['name'].",\r\n\r\nYour store has been setup to CubeCart version ".CC_VERSION.".\r\n\r\nFor security reasons the administrator URL has been obscured to divert any possible unwanted attention. Please set your bookmark to ".$adminURL."\r\n\r\n\r\nThis email was sent automatically by the CubeCart setup tool.", $headers);
+          mail($admin['email'],"Store Admin URL", "Hi ".html_entity_decode($admin['name'], ENT_QUOTES).",\r\n\r\nYour store has been setup to CubeCart version ".CC_VERSION.".\r\n\r\nFor security reasons the administrator URL has been obscured to divert any possible unwanted attention. Please set your bookmark to ".$adminURL."\r\n\r\n\r\nThis email was sent automatically by the CubeCart setup tool.", $headers);
         }
       }
       $GLOBALS['smarty']->assign('ADMIN_URL', $adminURL);
