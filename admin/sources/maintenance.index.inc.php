@@ -45,7 +45,7 @@ function crc_integrity_check($files, $mode = 'upgrade') {
 	
 	$errors = array();
 	
-	$log_path = CC_ROOT_DIR.'/backup/'.$mode.'_error_log';
+	$log_path = CC_BACKUP_DIR.$mode.'_error_log';
 	if(file_exists($log_path)) unlink($log_path); 
 
 	foreach ($files as $file => $value) {
@@ -95,7 +95,7 @@ $GLOBALS['smarty']->assign('VERSIONS', $version_history);
 
 
 if(isset($_GET['compress']) && !empty($_GET['compress'])) {
-	chdir(CC_ROOT_DIR.'/backup');
+	chdir(CC_BACKUP_DIR);
 	$file_path = './'.basename($_GET['compress']);
 	$zip = new ZipArchive;
 	
@@ -118,7 +118,7 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 	// Make sure line endings can be detected
 	ini_set("auto_detect_line_endings", true);
 	$file_name = basename($_GET['restore']);
-	$file_path = CC_ROOT_DIR.'/backup/'.$file_name;
+	$file_path = CC_BACKUP_DIR.$file_name;
 
 	if (preg_match('/^database_full/', $file_name)) { // Restore database
 		$delete_source = false;	
@@ -130,7 +130,7 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 				$file_path = rtrim($file_path, '.zip');
 				// Only delete if it diesn't exist before
 				$delete_source = file_exists($file_path) ? false : true;
-				$zip->extractTo(CC_ROOT_DIR.'/backup');
+				$zip->extractTo(CC_BACKUP_DIR);
     			$zip->close();
 			} else {
 				$GLOBALS['main']->setACPWarning("Error reading file ".$file_name);
@@ -167,7 +167,7 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 
 	} elseif (preg_match('/^files/', $file_name)) { // restore archive
 		
-		$file_path = CC_ROOT_DIR.'/backup/'.$file_name;
+		$file_path = CC_BACKUP_DIR.$file_name;
 		$zip = new ZipArchive;
 		if ($zip->open($file_path) === true) {
 			
@@ -223,7 +223,7 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 			httpredir('?_g=maintenance&node=index','upgrade');
 		}
 
-		$destination_path = CC_ROOT_DIR.'/backup/CubeCart-'.$_GET['upgrade'].'.zip';
+		$destination_path = CC_BACKUP_DIR.'CubeCart-'.$_GET['upgrade'].'.zip';
 		$fp = fopen($destination_path, 'w');
 		fwrite($fp, $contents);
 		fclose($fp);
@@ -454,36 +454,43 @@ if (isset($_GET['files_backup'])) {
 	set_time_limit(180);
 	
 	chdir(CC_ROOT_DIR);
-	$destination = CC_ROOT_DIR.'/backup/files_'.CC_VERSION.'_'.date("dMy-His").'.zip';
-	
+	$destination = CC_BACKUP_DIR.'files_'.CC_VERSION.'_'.date("dMy-His").'.zip';
+
 	$zip = new ZipArchive();
 
 	if ($zip->open($destination, ZipArchive::CREATE)!==true) {
 		$GLOBALS['main']->setACPWarning("Error: Backup failed.");
 	} else {
-		$skip_folders = 'backup|cache|images/cache|includes/extra/sess_';
+
+		$cache_folder = basename(CC_CACHE_DIR);
+		$backup_folder = basename(CC_BACKUP_DIR);
+		$files_folder = basename(CC_FILES_DIR);
+
+		$skip_folders = $backup_folder.'|'.$cache_folder.'|images/cache|includes/extra/sess_';
 		if(isset($_POST['skip_images']) && $_POST['skip_images']=='1') {
 			$zip->addEmptyDir('./images/source');
 			$skip_folders .= '|images/source';
 		}
 		if(isset($_POST['skip_downloads']) && $_POST['skip_downloads']=='1') {
-			$zip->addEmptyDir('./files');
-			if(file_exists('./files/.htaccess')) {
-				$zip->addFile('./files/.htaccess');
+
+			$zip->addEmptyDir('./'.$files_folder);
+			if(file_exists('./'.$files_folder.'/.htaccess')) {
+				$zip->addFile('./'.$files_folder.'/.htaccess');
 			}
-			$skip_folders .= '|files';
+			$skip_folders .= '|'.$files_folder;
 		}
 
 		$files = glob_recursive('*');
 
-		$zip->addEmptyDir('./backup');
-		if(file_exists('./backup/.htaccess')) {
-			$zip->addFile('./backup/.htaccess');
+
+		$zip->addEmptyDir('./'.$backup_folder);
+		if(file_exists('./'.$backup_folder.'/.htaccess')) {
+			$zip->addFile('./'.$backup_folder.'/.htaccess');
 		}
-		
-		$zip->addEmptyDir('./cache');
-		if(file_exists('./cache/.htaccess')) {
-			$zip->addFile('./cache/.htaccess');
+
+		$zip->addEmptyDir('./'.$cache_folder);
+		if(file_exists('./'.$cache_folder.'/.htaccess')) {
+			$zip->addFile('./'.$cache_folder.'/.htaccess');
 		}
 		$zip->addEmptyDir('./images/cache');
 
@@ -493,7 +500,7 @@ if (isset($_GET['files_backup'])) {
 			if(is_dir($file)) {
 				$zip->addEmptyDir($file);
 			} else {
-				$zip->addFile($file);	
+				$zip->addFile($file);
 			}
 		}
 		$zip->close();
@@ -516,7 +523,7 @@ if (isset($_POST['backup'])) {
 			$GLOBALS['main']->setACPWarning($lang['maintain']['error_db_backup_conflict']);
 		} else {
 			$full = ($_POST['drop'] && $_POST['structure'] && $_POST['data']) ? '_full' : ''; 
-			chdir(CC_ROOT_DIR.'/backup');
+			chdir(CC_BACKUP_DIR);
 			$fileName 	= 'database'.$full.'_'.CC_VERSION.'_'.$glob['dbdatabase']."_".date("dMy-His").'.sql';
 			if(file_exists($fileName)) { // Keep file pointer at the start
 				unlink($fileName);	
@@ -1000,15 +1007,15 @@ if ($request = new Request('www.cubecart.com', '/version-check/'.CC_VERSION)) {
 	}
 }
 
-if (file_exists(CC_ROOT_DIR.'/backup/restore_error_log')) {
-	$contents = file_get_contents(CC_ROOT_DIR.'/backup/restore_error_log');
+if (file_exists(CC_BACKUP_DIR.'restore_error_log')) {
+	$contents = file_get_contents(CC_BACKUP_DIR.'restore_error_log');
 	if (!empty($contents)) {
 		$GLOBALS['smarty']->assign('RESTORE_ERROR_LOG', $contents);
 	}
 }
 
-if (file_exists(CC_ROOT_DIR.'/backup/upgrade_error_log')) {
-	$contents = file_get_contents(CC_ROOT_DIR.'/backup/upgrade_error_log');
+if (file_exists(CC_BACKUP_DIR.'upgrade_error_log')) {
+	$contents = file_get_contents(CC_BACKUP_DIR.'upgrade_error_log');
 	if (!empty($contents)) {
 		$GLOBALS['smarty']->assign('UPGRADE_ERROR_LOG', $contents);
 	}

@@ -65,6 +65,7 @@ define('CC_ROOT_DIR', realpath(dirname(__FILE__))); // Set Root Directory
 
 define('CC_CACHE_DIR', CC_ROOT_DIR.'/cache/');
 define('CC_FILES_DIR', CC_ROOT_DIR.'/files/');
+define('CC_BACKUP_DIR', CC_ROOT_DIR.'/backup/');
 define('CC_SKIN_CACHE_DIR', CC_CACHE_DIR.'skin/');
 
 define('CC_CLASSES_DIR', CC_ROOT_DIR.'/classes/');
