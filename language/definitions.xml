@@ -1002,6 +1002,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_documents" introduced="5.0.0"><![CDATA[Site Documents]]></string>
   </group>
   <group name="email">
+    <string name="customer_comments" introduced="6.2.0"><![CDATA[Customer comments]]></string>
     <string name="news_dbl_opt_only" introduced="6.2.0"><![CDATA[Send to double opt-in only]]></string>
     <string name="error_no_subject" introduced="6.0.3"><![CDATA[Please enter the newsletter subject.]]></string>
     <string name="error_no_message" introduced="6.0.3"><![CDATA[Please enter the newsletter content.]]></string>
