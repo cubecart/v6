@@ -162,7 +162,10 @@
                {if !empty($OVERVIEW_SUMMARY.state)}{$OVERVIEW_SUMMARY.state|upper}, {/if}{$OVERVIEW_SUMMARY.postcode}<br>
                {$OVERVIEW_SUMMARY.country}
             </fieldset>
-            <p><strong>{$LANG.basket.order_date}:</strong> {$OVERVIEW_SUMMARY.order_date}</p>
+            <p>
+                <strong>{$LANG.basket.order_date}:</strong> {$OVERVIEW_SUMMARY.order_date}
+                {if !empty($OVERVIEW_SUMMARY.currency)}<br><strong>{$LANG.catalogue.guide_currency}:</strong> {$OVERVIEW_SUMMARY.currency}{/if}
+            </p>
             <fieldset id="items">
                <legend>{$LANG.catalogue.title_items}</legend>
                {foreach from=$PRODUCTS item=product}

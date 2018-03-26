@@ -1331,7 +1331,8 @@ class Order {
 			'country_d'  => $this->_basket['delivery_address']['country_id'],
 			'basket'  => serialize($this->_basket),
 			'lang'   => $GLOBALS['language']->current(),
-			'ip_address' => get_ip_address()
+			'ip_address' => get_ip_address(),
+			'currency' => $GLOBALS['session']->get('currency', 'client')
 		);
 
 		foreach ($GLOBALS['hooks']->load('class.order.order_summary') as $hook) include $hook;
