@@ -72,6 +72,8 @@ class Sanitize {
 				$GLOBALS['session']->getToken(true);
 				self::_stopToken();
 			}
+			//Make a new token
+			$GLOBALS['session']->getToken(true);
 		}
 	}
 

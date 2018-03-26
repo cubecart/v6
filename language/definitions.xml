@@ -384,6 +384,7 @@
     <string name="notify_product_create" introduced="5.0.0"><![CDATA[Product successfully created.]]></string>
     <string name="notify_product_delete" introduced="5.0.0"><![CDATA[Product(s) successfully deleted.]]></string>
     <string name="notify_product_search" introduced="5.0.0"><![CDATA[Products found matching '%s']]></string>
+    <string name="notify_product_search_one" introduced="6.2.0"><![CDATA[Just one product was found matching '%s']]></string>
     <string name="notify_product_update" introduced="5.0.0"><![CDATA[Product successfully updated.]]></string>
     <string name="notify_review_submit" introduced="5.0.0"><![CDATA[Thank you. Your review has been submitted for moderation.]]></string>
     <string name="notify_tell_friend" introduced="5.0.0"><![CDATA[Thank you. Your friend has been emailed about this product.]]></string>
@@ -425,6 +426,10 @@
     <string name="product_type_digital" introduced="5.0.0"><![CDATA[Digital]]></string>
     <string name="product_type_tangible" introduced="5.0.0"><![CDATA[Tangible]]></string>
     <string name="product_weight" introduced="5.0.0"><![CDATA[Product Weight]]></string>
+    <string name="product_width" introduced="6.2.0"><![CDATA[Product Width]]></string>
+    <string name="product_height" introduced="6.2.0"><![CDATA[Product Height]]></string>
+    <string name="product_depth" introduced="6.2.0"><![CDATA[Product Depth]]></string>
+    <string name="dimension_unit" introduced="6.2.0"><![CDATA[Dimension Unit]]></string>
     <string name="quantity_discounts" introduced="5.0.0"><![CDATA[Quantity Discounts]]></string>
     <string name="quantity_discounts_explained" introduced="5.0.0"><![CDATA[You can save money on this item when you purchase several at a time. The table below shows the minimum quantities required to benefit from this offer, and how much they'll cost.]]></string>
     <string name="recipient_email" introduced="5.0.0"><![CDATA[Recipient Email]]></string>
@@ -566,6 +571,8 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="customise_layout" introduced="6.2.0"><![CDATA[Customise Layout]]></string>
+    <string name="locked" introduced="6.2.0"><![CDATA[Locked]]></string>
     <string name="calculate" introduced="6.1.14"><![CDATA[Calculate]]></string>
     <string name="error_time_out" introduced="6.1.14"><![CDATA[Time out after %s seconds.]]></string>
     <string name="invalid_data" introduced="6.1.6"><![CDATA[Invalid data.]]></string>
@@ -750,6 +757,7 @@
     <string name="request" introduced="5.0.0"><![CDATA[Request Sent]]></string>
     <string name="reset" introduced="5.0.0"><![CDATA[Reset]]></string>
     <string name="restore" introduced="5.0.0"><![CDATA[Restore]]></string>
+    <string name="restore_default" introduced="6.2.0"><![CDATA[Restore to default]]></string>
     <string name="revert" introduced="5.0.0"><![CDATA[Revert]]></string>
     <string name="save" introduced="5.0.0"><![CDATA[Save]]></string>
     <string name="save_reload" introduced="5.0.0"><![CDATA[Save &amp; Reload]]></string>
@@ -782,6 +790,7 @@
     <string name="weight" introduced="5.0.0"><![CDATA[Weight]]></string>
     <string name="whats_this" introduced="5.0.0"><![CDATA[(What's this?)]]></string>
     <string name="width" introduced="5.0.0"><![CDATA[Width]]></string>
+    <string name="depth" introduced="6.2.0"><![CDATA[Depth]]></string>
     <string name="writable" introduced="5.0.0"><![CDATA[Writable]]></string>
     <string name="yes" introduced="5.0.0"><![CDATA[Yes]]></string>
     <string name="yesterday" introduced="5.0.0"><![CDATA[Yesterday]]></string>
@@ -957,6 +966,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_technical_data" introduced="5.0.0"><![CDATA[Technical Details]]></string>
   </group>
   <group name="documents">
+    <string name="hide_title" introduced="6.2.0"><![CDATA[Hide Title]]></string>
     <string name="404_title" introduced="6.0.6"><![CDATA[404 - Page Not Found]]></string>
     <string name="404_content" introduced="6.0.6"><![CDATA[Sorry but the page you are looking for could not be found.]]></string>
     <string name="smarty_parse" introduced="6.0.0"><![CDATA[Parse Smarty Tags]]></string>
@@ -993,6 +1003,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_documents" introduced="5.0.0"><![CDATA[Site Documents]]></string>
   </group>
   <group name="email">
+    <string name="customer_comments" introduced="6.2.0"><![CDATA[Customer comments]]></string>
+    <string name="news_dbl_opt_only" introduced="6.2.0"><![CDATA[Send to double opt-in only]]></string>
     <string name="error_no_subject" introduced="6.0.3"><![CDATA[Please enter the newsletter subject.]]></string>
     <string name="error_no_message" introduced="6.0.3"><![CDATA[Please enter the newsletter content.]]></string>
     <string name="install_master_lang" introduced="6.0.0"><![CDATA[Your store currently only has one master language. Before the email contents can be translated the master language file must be installed from our <a href="?_g=marketplace">extensions marketplace</a>.]]></string>
@@ -1044,6 +1056,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="macro_link_password" introduced="5.0.0"><![CDATA[The link to set a new password.]]></string>
     <string name="macro_link_product" introduced="5.0.0"><![CDATA[The link to the product.]]></string>
     <string name="macro_link_review" introduced="5.0.0"><![CDATA[The link to manage the review.]]></string>
+    <string name="macro_link_verify" introduced="6.2.0"><![CDATA[Verification link]]></string>
     <string name="macro_order_discount" introduced="5.0.0"><![CDATA[Discount amount.]]></string>
     <string name="macro_order_number_t" introduced="6.1.0"><![CDATA[Order number in traditional format.]]></string>
     <string name="macro_order_number_i" introduced="6.1.0"><![CDATA[Order number in incremental format.]]></string>
@@ -1201,6 +1214,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_image_crop" introduced="5.0.0"><![CDATA[Crop Image]]></string>
   </group>
   <group name="form">
+    <string name="create_report" introduced="6.2.0"><![CDATA[Create Report]]></string>
     <string name="recaptcha_try_diff_img" introduced="6.0.6"><![CDATA[Try a different image]]></string>
     <string name="recaptcha_get_audio" introduced="6.0.6"><![CDATA[Get an audio CAPTCHA]]></string>
     <string name="recaptcha_get_img" introduced="6.0.6"><![CDATA[Get an image CAPTCHA]]></string>
@@ -1544,6 +1558,10 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title" introduced="5.0.0"><![CDATA[Shop by Category]]></string>
   </group>
   <group name="newsletter">
+    <string name="dbl_opt_in" introduced="6.2.0"><![CDATA[Double Opt-In]]></string>
+    <string name="dbl_opt_in_success" introduced="6.2.0"><![CDATA[Thank you for confirming your email address you are now subscribed to our mailing list.]]></string>
+    <string name="dbl_opt_in_fail" introduced="6.2.0"><![CDATA[Sorry but we have not able to validate your email address.]]></string>
+    <string name="continue_to_unsubscribe" introduced="6.2.0"><![CDATA[Continue if you wish to unsubscribe.]]></string>
     <string name="click_to_subscribe" introduced="5.0.0"><![CDATA[Click here to subscribe.]]></string>
     <string name="click_to_unsubscribe" introduced="5.0.0"><![CDATA[Click here to unsubscribe.]]></string>
     <string name="customer_is_subscribed" introduced="5.0.0"><![CDATA[You are subscribed to receive our newsletter.]]></string>
@@ -1560,6 +1578,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="no_archived_newsletters" introduced="5.0.0"><![CDATA[There are no archived newsletters right now.]]></string>
     <string name="notify_email_verified" introduced="5.0.0"><![CDATA[Your email address has been verified.]]></string>
     <string name="notify_subscribed" introduced="5.0.0"><![CDATA[Your email address has been added to our mailing list.]]></string>
+    <string name="notify_subscribed_opt_in" introduced="6.2.0"><![CDATA[Thank you. Please check your email account to confirm your subscription.]]></string>
     <string name="notify_unsubscribed" introduced="5.0.0"><![CDATA[Your email address has been removed from our mailing list.]]></string>
     <string name="notify_already_subscribed" introduced="6.0.0"><![CDATA[Email address already subscribed.]]></string>
     <string name="subscribe" introduced="5.0.0"><![CDATA[Subscribe]]></string>
@@ -1623,6 +1642,21 @@ This email is sent from the store's master email address but it is possible to r
     <string name="name_6" introduced="5.0.0"><![CDATA[Cancelled]]></string>
   </group>
   <group name="orders">
+    <string name="invoice_editor" introduced="6.2.0"><![CDATA[Invoice Editor]]></string>
+    <string name="date_specifiers" introduced="6.2.0"><![CDATA[<a href="https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_date-format" target="_blank">Date specifiers</a> allowed.]]></string>
+    <string name="oid_prefix" introduced="6.2.0"><![CDATA[Order Number Prefix]]></string>
+    <string name="oid_postfix" introduced="6.2.0"><![CDATA[Order Number Suffix]]></string>
+    <string name="oid_zeros" introduced="6.2.0"><![CDATA[Leading Zeros]]></string>
+    <string name="oid_start" introduced="6.2.0"><![CDATA[Increment Increase]]></string>
+    <string name="oid_force" introduced="6.2.0"><![CDATA[Apply format to all past orders]]></string>
+    <string name="oid_prefix_desc" introduced="6.2.0"><![CDATA[Note: A value of ABC for order 1 would generate &quot;ABC1&quot;.]]></string>
+    <string name="oid_postfix_desc" introduced="6.2.0"><![CDATA[Note: A value of XYZ for order 1 would generate &quot;1XYZ&quot;.]]></string>
+    <string name="oid_zeros_desc" introduced="6.2.0"><![CDATA[Note: For order 1 a value of 6 will generate &quot;000001&quot;. Set to 0 to disable leading zeros. Caution: A value of 2 for order 999 would truncate to &quot;99&quot;!]]></string>
+    <string name="oid_start_desc" introduced="6.2.0"><![CDATA[Note: If set to 1000 your first order will be &quot;1001&quot;. If you already have for example 36 orders in the system the next order id will be 1037.]]></string>
+    <string name="oid_force_desc" introduced="6.2.0"><![CDATA[Note: Takes effect after save. Warning this can't be undone!]]></string>
+    <string name="id_mode" introduced="6.2.0"><![CDATA[Order Number Format]]></string>
+    <string name="id_traditional" introduced="6.2.0"><![CDATA[Traditional (e.g. YYMMDD-HHMMSS-1234)]]></string>
+    <string name="id_incremental" introduced="6.2.0"><![CDATA[Incremental (e.g. 1, 2, 3, etc)]]></string>
     <string name="expired_basket" introduced="6.1.9"><![CDATA[Sorry but your basket has expired.]]></string>
     <string name="order_not_found" introduced="6.0.0"><![CDATA[Sorry but order %s was not found.]]></string>
     <string name="cancel_by_customer" introduced="5.2.13"><![CDATA[Order cancelled by customer from their account area.]]></string>
@@ -1744,6 +1778,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_review_search" introduced="5.0.0"><![CDATA[Search Reviews]]></string>
   </group>
   <group name="search">
+    <string name="title_gdpr_report" introduced="6.2.0"><![CDATA[GDPR Report]]></string>
+    <string name="gdpr_report_desc" introduced="6.2.0"><![CDATA[This tool can be used to search for all stored information in the database against an email address. It is necessary to meet European Union General Data Protection Regulation (GDPR) requirements.]]></string>
     <string name="advanced" introduced="5.0.0"><![CDATA[Advanced Search]]></string>
     <string name="date_range" introduced="5.0.0"><![CDATA[Date Range]]></string>
     <string name="featured_only" introduced="5.0.0"><![CDATA[Featured Products Only]]></string>
@@ -1759,6 +1795,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
+    <string name="gdpr" introduced="6.2.0"><![CDATA[General Data Protection Regulation (GDPR)]]></string>
+    <string name="dbl_opt" introduced="6.2.0"><![CDATA[Marketing Double Opt-In]]></string>
     <string name="reCAPTCHA_v2_na" introduced="6.1.6"><![CDATA[Warning: It doesn't look like your current skin is compatible with reCAPTCHA v2.]]></string>
     <string name="reCAPTCHA_invisible_na" introduced="6.1.6"><![CDATA[Warning: It doesn't look like your current skin is compatible with Invisible reCAPTCHA.]]></string>
     <string name="enabled_for_all" introduced="6.1.2"><![CDATA[Enabled for all customers]]></string>
