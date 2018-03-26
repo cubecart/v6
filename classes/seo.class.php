@@ -250,7 +250,7 @@ class SEO {
 				}
 			}
 
-		} else { /*! Dymanic */
+		} else { /*! Dynamic */
 			switch ($type) {
 				case 'cat':
 				case 'category':
@@ -967,7 +967,7 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
 				'_a' => 'certificates'
 			);
 			break;
-			/*! Dymanic */
+			/*! Dynamic */
 		case 'cat':
 			$array = array(
 				'_a' => 'category',
