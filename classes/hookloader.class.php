@@ -266,7 +266,11 @@ class HookLoader {
 	 * @return array
 	 */
 	public function load($trigger) {
-		if ($this->_enabled && !empty($trigger) && !empty($this->_hook_list)) {
+		$return = array();
+
+		if($GLOBALS['config']->get('config','safe_mode')===true) return $return;
+
+		if ($GLOBALS['config']->get('config','safe_mode')!=='hooks' && $this->_enabled && !empty($trigger) && !empty($this->_hook_list)) {
 			// Find all registered hooks
 			if (is_array($this->_hook_list) && isset($this->_hook_list[$trigger]) && !empty($this->_hook_list[$trigger])) {
 				// Load hooks for plugins
@@ -288,7 +292,7 @@ class HookLoader {
 		}
 
 		// Load hook for code snippets
-		if ($this->_snippet_list) {
+		if ($GLOBALS['config']->get('config','safe_mode')!=='snippets' && $this->_snippet_list) {
 			foreach ($this->_snippet_list as $snippet) {
 				if ($snippet['hook_trigger'] == $trigger) {
 					$file_name = $this->_snippet_dir.'/'.$this->_snippet_prefix.md5($snippet['unique_id']).'.php';
@@ -313,7 +317,6 @@ class HookLoader {
 			}
 		}
 
-		$return = [];
 		if (isset($include) && is_array($include)) {
 			// sort $include based on priority
 			uasort($include, 'cmpmc');
