@@ -29,10 +29,8 @@ function smarty_function_combine($params, &$smarty)
     require_once dirname(__FILE__) . '/minify/JSmin.php';
     require_once dirname(__FILE__) . '/minify/CSSmin.php';
 
-    $skin_folder = (string)$smarty->tpl_vars["SKIN_FOLDER"]->value;
-    $skin_subset = (string)$smarty->tpl_vars["SKIN_SUBSET"]->value;
     foreach(array('input','output') as $key) {
-        $params[$key] = str_replace(array('{$SKIN_SUBSET}','{$SKIN_FOLDER}'), array($skin_subset, $skin_folder), $params[$key]);
+        $params[$key] = str_replace(array('{$SKIN_SUBSET}','{$SKIN_FOLDER}'), array((string)$smarty->tpl_vars["SKIN_SUBSET"]->value, (string)$smarty->tpl_vars["SKIN_FOLDER"]->value), $params[$key]);
     }
 
     /**
@@ -43,6 +41,7 @@ function smarty_function_combine($params, &$smarty)
     if ( ! function_exists('smarty_build_combine')) {
         function smarty_build_combine($params)
         {
+            global $smarty;
             $filelist = array();
             $lastest_mtime = 0;
 
@@ -94,17 +93,15 @@ function smarty_function_combine($params, &$smarty)
 
                 if (flock($fh, LOCK_EX)) {
                     foreach ($filelist as $file) {
-                        $min = '';
-
+                        $min = file_get_contents(CC_ROOT_DIR . '/' . $file['name']);
+                        $min = str_replace('../images/', CC_ROOT_REL.'skins/'.(string)$smarty->tpl_vars["SKIN_FOLDER"]->value.'/images/', $min);
                         if ($params['type'] == 'js') {
-                            $min = JSMin::minify(file_get_contents(CC_ROOT_DIR . '/' . $file['name']));
+                            $min = JSMin::minify($min);
                         } elseif ($params['type'] == 'css') {
-                            $min = CSSMin::minify(file_get_contents(CC_ROOT_DIR . '/' . $file['name']));
+                            $min = CSSMin::minify($min);
                         } else {
                             fputs($fh, PHP_EOL . PHP_EOL . '/* ' . $file['name'] . ' @ ' . date('c', $file['time']) . ' */' . PHP_EOL . PHP_EOL);
-                            $min = file_get_contents(CC_ROOT_DIR . '/' . $file['name']);
                         }
-
                         fputs($fh, $min);
                     }
 
