@@ -19,7 +19,7 @@ global $lang;
 $cookie_domain 	= $GLOBALS['config']->get('config','cookie_domain');
 if(empty($cookie_domain)) {
 	$domain = parse_url(CC_STORE_URL);
-	$cookie_domain = '.'.str_replace('www.','',$domain['host']);
+	$cookie_domain =  strpos($domain['host'],'.') ? '.'.str_replace('www.','',$domain['host']) : '';
 	$GLOBALS['config']->set('config','cookie_domain',$cookie_domain);
 }
 
