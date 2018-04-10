@@ -102,9 +102,9 @@ class Session {
 		if ($ini['session.gc_divisor'] != 100) {
 			ini_set('session.gc_divisor', 100);
 		}
-		$cookie_domain = $GLOBALS['config']->get('config', 'cookie_domain');
-		if(!empty($cookie_domain) && strstr($GLOBALS['storeURL'],ltrim($cookie_domain,'.'))) {
-			ini_set('session.cookie_domain',$cookie_domain);
+		$cookie_domain = ltrim($GLOBALS['config']->get('config', 'cookie_domain'), '.');
+		if(!empty($cookie_domain) && strstr($GLOBALS['storeURL'],$cookie_domain) && strpos($cookie_domain,'.')) {
+			ini_set('session.cookie_domain','.'.$cookie_domain);
 		}
 		if (!$ini['session.cookie_path']) {
 			ini_set('session.cookie_path', $GLOBALS['rootRel']);
