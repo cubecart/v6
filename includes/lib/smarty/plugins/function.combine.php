@@ -178,8 +178,10 @@ function smarty_function_combine($params, &$smarty)
     $params['type'] = $ext;
 
     if ( ! isset($params['output'])) {
-        $params['output'] = dirname($params['input'][0]) . '/combined.' . $ext;
+        trigger_error('CSS / JS output paremeter required for combine!', E_USER_NOTICE);
     }
+
+    $params['output'] = str_replace('cache/','cache/'.$GLOBALS['cache']->getCachePrefix(),$params['output']);
 
     if ( ! isset($params['age'])) {
         $params['age'] = 3600;

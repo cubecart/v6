@@ -123,6 +123,15 @@ class Cache_Controler {
 	}
 
 	/**
+	 * Get cache prefix
+	 *
+	 * @return string Cache system
+	 */
+	public final function getCachePrefix() {
+		return $this->_prefix;
+	}
+
+	/**
 	 * Set cache expire time
 	 *
 	 * @param int $expire One day

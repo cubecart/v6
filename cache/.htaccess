@@ -2,10 +2,10 @@ Deny from all
 <Files cache.image.*.png>
   Allow from all
 </Files>
-<Files css.*.css>
+<Files *.css.*.css>
   Allow from all
 </Files>
-<Files js*.js>
+<Files *.js*.js>
   Allow from all
 </Files>
 
