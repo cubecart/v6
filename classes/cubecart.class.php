@@ -1324,7 +1324,7 @@ class Cubecart {
 				$order['order_date_formatted'] = formatTime($order['order_date'], false, true);
 
 				foreach ($GLOBALS['hooks']->load('class.cubecart.order_summary') as $hook) include $hook;
-
+				$order['basket'] = unserialize($order['basket']);
 				$GLOBALS['smarty']->assign('SUM', $order);
 
 				switch ($order['status']) {
@@ -2345,7 +2345,7 @@ class Cubecart {
 					$order['order_date_formatted'] = formatTime($order['order_date'], false, true);
 
 					foreach ($GLOBALS['hooks']->load('class.cubecart.order_summary') as $hook) include $hook;
-
+					$order['basket'] = unserialize($order['basket']);
 					$GLOBALS['smarty']->assign('SUM', $order);
 					$GLOBALS['smarty']->assign('ORDER', $order);
 					$GLOBALS['session']->delete('ghost_customer_id');
@@ -2496,7 +2496,7 @@ class Cubecart {
 					$order['order_date_formatted'] = formatTime($order['order_date'], false, true);
 
 					foreach ($GLOBALS['hooks']->load('class.cubecart.order_summary') as $hook) include $hook;
-
+					$order['basket'] = unserialize($order['basket']);
 					$GLOBALS['smarty']->assign('SUM', $order);
 					$GLOBALS['smarty']->assign('ORDER', $order);
 				} else {
