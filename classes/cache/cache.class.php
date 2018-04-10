@@ -125,7 +125,7 @@ class Cache_Controler {
 	/**
 	 * Get cache prefix
 	 *
-	 * @return string Cache system
+	 * @return string Cache prefix
 	 */
 	public final function getCachePrefix() {
 		return $this->_prefix;
