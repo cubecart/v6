@@ -53,7 +53,7 @@
    <div class="row">
       <div class="small-12 large-8 columns clearfix">
       	  <input type="hidden" name="register" value="1">
-           <input type="submit" name="register" value="{$LANG.account.register}" class="g-recaptcha button"{include file='templates/element.recaptcha.invisible.php'}>
+           <input type="submit" name="register" value="{$LANG.account.register}" id="register_submit" class="g-recaptcha button">
 	      <button type="reset" class="button secondary right"><svg class="icon"><use xlink:href="#icon-refresh"></use></svg> {$LANG.common.reset}</button>
       </div>
    </div>

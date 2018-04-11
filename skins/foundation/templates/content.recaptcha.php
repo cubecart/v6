@@ -19,7 +19,7 @@
         <div class="g-recaptcha" id="RecaptchaField{$ga_fid}"></div>
         <script type="text/javascript">
         {literal}
-        var CaptchaCallback = function() {
+        var reCaptchaCallback = function() {
             var gr_exists = document.getElementById("RecaptchaField");
             if(gr_exists){
                 grecaptcha.render('RecaptchaField', {'sitekey' : '{/literal}{$CONFIG.recaptcha_public_key}{literal}'});

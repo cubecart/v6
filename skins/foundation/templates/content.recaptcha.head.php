@@ -1,10 +1,18 @@
 {if $RECAPTCHA}
-<script src="https://www.google.com/recaptcha/api.js{if $RECAPTCHA=='2'}?onload=CaptchaCallback&render=explicit{/if}" async defer></script>
+<script src="https://www.google.com/recaptcha/api.js?onload=reCaptchaCallback&render=explicit" async defer></script>
 {/if}
 {if $RECAPTCHA=='3'}
 <script>
-function recaptchaSubmit(token) {
-    $('.g-recaptcha').closest("form").submit();
-}
+var reCaptchaCallback = function() {
+        $(".g-recaptcha" ).each(function() {
+            var el = $(this);
+            grecaptcha.render($(el).attr('id'), {
+                'sitekey' : '{$CONFIG.recaptcha_public_key}',
+                'callback' : function(token) {
+                    $(el).parent().submit();
+                }
+            });
+        });
+    };
 </script>
 {/if}
