@@ -29,7 +29,7 @@
          </div>
       </div>
       <div class="hide" id="newsletter_recaptcha">
-      {include file='templates/content.recaptcha.php'}
+      {include file='templates/content.recaptcha.php' ga_fid="Newsletter"}
       </div>
    </form>
    <div class="hide" id="validate_email">{$LANG.common.error_email_invalid}</div>
