@@ -1,5 +1,5 @@
 {if $RECAPTCHA}
-<script src="https://www.google.com/recaptcha/api.js?onload=CaptchaCallback&render=explicit" async defer></script>
+<script src="https://www.google.com/recaptcha/api.js{if $RECAPTCHA=='2'}?onload=CaptchaCallback&render=explicit{/if}" async defer></script>
 {/if}
 {if $RECAPTCHA=='3'}
 <script>

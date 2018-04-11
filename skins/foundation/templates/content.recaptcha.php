@@ -20,7 +20,10 @@
         <script type="text/javascript">
         {literal}
         var CaptchaCallback = function() {
-            grecaptcha.render('RecaptchaField', {'sitekey' : '{/literal}{$CONFIG.recaptcha_public_key}{literal}'});
+            var gr_exists = document.getElementById("RecaptchaField");
+            if(gr_exists){
+                grecaptcha.render('RecaptchaField', {'sitekey' : '{/literal}{$CONFIG.recaptcha_public_key}{literal}'});
+            }
             {/literal}{if $ga_fid}{literal}grecaptcha.render('RecaptchaField{/literal}{$ga_fid}{literal}', {'sitekey' : '{/literal}{$CONFIG.recaptcha_public_key}{literal}'});{/literal}{/if}{literal}
         };
         {/literal}
