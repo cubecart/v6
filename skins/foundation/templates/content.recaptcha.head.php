@@ -1,4 +1,4 @@
-{if $RECAPTCHA=='2' || $RECAPTCHA=='3'}
+{if $RECAPTCHA}
 <script src="https://www.google.com/recaptcha/api.js?onload=CaptchaCallback&render=explicit" async defer></script>
 {/if}
 {if $RECAPTCHA=='3'}

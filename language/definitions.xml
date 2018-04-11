@@ -1970,7 +1970,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="proxy_port" introduced="5.0.0"><![CDATA[Proxy Port]]></string>
     <string name="proxy_user" introduced="5.0.0"><![CDATA[Proxy Username]]></string>
     <string name="recaptcha_enable" introduced="5.0.0"><![CDATA[Enable <a href="https://www.google.com/recaptcha/intro/index.html" target="_blank">Google reCAPTCHA</a>]]></string>
-    <string name="new_recaptcha_note" introduced="6.0.0"><![CDATA[* Require a Site Key and Secret Key <a href="https://www.google.com/recaptcha/admin" target="_blank">from Google</a>.]]></string>
+    <string name="new_recaptcha_note" introduced="6.0.0"><![CDATA[Site Key and Secret Key need to obtained <a href="https://www.google.com/recaptcha/admin" target="_blank">from Google</a>.]]></string>
     <string name="recaptcha_public_key" introduced="6.0.0"><![CDATA[reCAPTCHA Site Key]]></string>
     <string name="recaptcha_secret_key" introduced="6.0.0"><![CDATA[reCAPTCHA Secret Key]]></string>
     <string name="repair" introduced="5.0.0"><![CDATA[Repair]]></string>
