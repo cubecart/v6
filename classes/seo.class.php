@@ -816,11 +816,6 @@ class SEO {
 ### Files Expiration ###
 <IfModule mod_expires.c>
     ExpiresActive On
-    ExpiresByType image/png "access 7 days"
-    ExpiresByType image/gif "access 7 days"
-    ExpiresByType image/jpeg "access 7 days"
-    ExpiresByType text/javascript "access 7 days"
-    ExpiresByType text/css "access 7 days"
     ExpiresByType text/html "access 0 seconds"
     ExpiresDefault "access 7 days"
 </IfModule>
