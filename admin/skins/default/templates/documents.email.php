@@ -24,10 +24,10 @@
 		{foreach from=$EMAIL_CONTENTS item=content}
 		<tr>
 		  <td><strong>{$content.type}</strong></td>
-		  <td align="center">
+		  <td align="center" class="language_list">
 		  	{if isset($content.translations)}
 			{foreach from=$content.translations item=translation}
-			<a href="{$translation.edit}"><img src="language/flags/{$translation.language}.png" alt="{$translation.language}"></a>
+			<a href="{$translation.edit}"><img src="language/flags/{$translation.language}.png" alt="{$translation.language}" class="flag"></a>
 			{/foreach}
 			{else}
 			{$LANG.translate.trans_none}

@@ -85,9 +85,9 @@
                   {formatTime(strtotime($product.updated))}
                   {/if}
                </td>
-               <td align="center">
+               <td align="center" class="language_list">
                   {foreach from=$product.translations item=translation}
-                  <a href="{$translation.link}"><img src="language/flags/{$translation.language}.png" alt="{$translation.language}"></a>
+                  <a href="{$translation.link}"><img src="language/flags/{$translation.language}.png" alt="{$translation.language}" class="flag"></a>
                   {/foreach}
                </td>
                <td align="center"><input type="hidden" name="status[{$product.product_id}]" id="status_{$product.product_id}" value="{$product.status}" class="toggle"></td>

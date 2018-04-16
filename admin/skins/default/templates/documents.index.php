@@ -40,7 +40,7 @@
 		  <td align="center" nowrap="nowrap">
 			{if isset($document.translations)}
 			{foreach from=$document.translations item=translation}
-			<a href="{$translation.link.edit}"><img src="language/flags/{$translation.doc_lang}.png" alt="{$translation.doc_lang}" title="{$translation.doc_lang}"></a>
+			<a href="{$translation.link.edit}" class="language_list"><img src="language/flags/{$translation.doc_lang}.png" alt="{$translation.doc_lang}" title="{$translation.doc_lang}" class="flag"></a>
 			{/foreach}
 			{/if}
 		  </td>

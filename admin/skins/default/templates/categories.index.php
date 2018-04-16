@@ -49,9 +49,9 @@
 		    {$category.cat_name}
 		    {/if}
 	      </td>
-	      <td align="center">
+	      <td align="center" class="language_list">
 	    	{foreach from=$category.translations item=translation}
-	  	    <a href="{$translation.edit}"><img src="language/flags/{$translation.language}.png" alt="{$translation.language}" title="{$translation.language}"></a>
+	  	    <a href="{$translation.edit}"><img src="language/flags/{$translation.language}.png" alt="{$translation.language}" title="{$translation.language}" class="flag"></a>
 	  	    {/foreach}
 	      </td>
 	      <td>

@@ -1203,3 +1203,6 @@ ul.filetree li ul li ul li ul li ul li ul li ul li ul li a {
 .line-through {
     text-decoration: line-through;
 }
+.language_list .flag {
+    margin: 1px;
+}
