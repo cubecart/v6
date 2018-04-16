@@ -290,7 +290,7 @@ textarea#contact_enquiry {
 form.add_to_basket input, form.add_to_basket button {
     margin: 0 !important;
 }
-#nav-actions button.small, #nav-actions .button.small, .panel button.small, .panel .button.small {
+#nav-actions button.small, #nav-actions .button.small, .panel button.small, .panel .button.small, .product_wrapper .button.small {
     padding: 0 !important;
 }
 #getEstimateSmall {
