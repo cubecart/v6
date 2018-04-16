@@ -77,8 +77,21 @@ class Cache extends Cache_Controler {
 			$prefix = '*';
 		}
 
-		//Loop through each cache file
-		$files = glob($this->_cache_path.$this->_prefix.$prefix.$this->_suffix, GLOB_NOSORT);
+		//Loop through each cache file to delete
+		$files = array();
+
+		$cache_files = glob($this->_cache_path.$this->_prefix.$prefix.$this->_suffix, GLOB_NOSORT);
+		if(is_array($cache_files)) $files = array_merge($files, $cache_files);
+
+		$css_files = glob($this->_cache_path.$this->_prefix.$prefix.'.css', GLOB_NOSORT);
+		if(is_array($css_files)) $files = array_merge($files, $css_files);
+
+		$js_files = glob($this->_cache_path.$this->_prefix.$prefix.'.js', GLOB_NOSORT);
+		if(is_array($js_files)) $files = array_merge($files, $js_files);
+
+		$skin_files = glob($this->_cache_path.'skin/*', GLOB_NOSORT);
+		if(is_array($skin_files)) $files = array_merge($files, $skin_files);
+
 		if (is_array($files)) {
 			foreach ($files as $file) {
 				if(file_exists($file)) {
