@@ -75,7 +75,7 @@ $installed = false;
 $restart   = true;
 
 $domain        = parse_url(CC_STORE_URL);
-$cookie_domain = '.' . str_replace('www.', '', $domain['host']);
+$cookie_domain = strpos($domain['host'],'.') ? '.'.str_replace('www.', '', $domain['host']) : '';
 
 $default_config_settings = array(
   'csrf' => '1',
