@@ -148,10 +148,10 @@ class Cache_Controler {
 	 * @return bool
 	 */
 	public function status() {
-		if(defined('ADMIN_CP') && ADMIN_CP) {
-			$this->status_desc = 'Always Disabled in ACP';
+		if(defined('ADMIN_CP') && ADMIN_CP || defined('SKIP_DB_SETUP') && SKIP_DB_SETUP) {
+			$this->status_desc = 'Always Disabled in ACP or Setup';
 			$this->status = false;
-		} else { 
+		} else {
 			$this->status_desc = $this->status ? 'Enabled' : 'Disabled';
 		}
 		return $this->status;
