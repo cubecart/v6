@@ -40,6 +40,7 @@ $GLOBALS['smarty']->config_dir   = CC_SKIN_CACHE_DIR;
 $GLOBALS['smarty']->cache_dir    = CC_SKIN_CACHE_DIR;
 $GLOBALS['smarty']->debugging = false;
 if(!(bool)$GLOBALS['config']->get('config', 'debug')) {
+	define('HTML_MINIFY_URL_ENABLED', false);
 	include(CC_INCLUDES_DIR.'lib/smarty/filters/HTMLMinify.smarty.php');
 	$GLOBALS['smarty']->registerFilter("output", "minify_html");
 }
