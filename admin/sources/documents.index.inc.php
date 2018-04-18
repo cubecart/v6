@@ -194,6 +194,9 @@ if (isset($_GET['action'])) {
 					$translation['link'] = array(
 						'edit' => currentPage(null, array('action' => 'edit', 'doc_id' => $translation['doc_id'])),
 					);
+					if(empty($translation['doc_lang'])) {
+						$translation['doc_lang'] = 'unknown';
+					}
 					$document['translations'][] = $translation;
 				}
 			}
