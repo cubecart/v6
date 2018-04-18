@@ -137,6 +137,13 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
 	## Set default currency to have an exchange rate of 1
 	$GLOBALS['db']->update('CubeCart_currency',array('value' => 1), array('code' => $_POST['config']['default_currency']));
 
+	## If language has changed
+	$existing_defaults = $GLOBALS['db']->select('CubeCart_documents', 'doc_lang', array('doc_parent_id' => 0), false, 1);
+	if($existing_defaults[0]['doc_lang'] !== $config_new['default_language']) {
+		$GLOBALS['db']->update('CubeCart_documents', array('doc_lang' => $config_new['default_language']), array('doc_parent_id' => 0));
+		$GLOBALS['db']->update('CubeCart_documents', array('doc_lang' => ''), 'doc_parent_id > 0');
+	}
+
 	$updated = ($GLOBALS['config']->set('config', '', $config_new)) ? true : false;
 
 	if ((isset($updated) && $updated) || isset($logo_update)) {
