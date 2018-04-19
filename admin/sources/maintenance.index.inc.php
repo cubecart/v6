@@ -125,7 +125,7 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 		if (preg_match('/\.sql.zip$/', $file_name)) { // unzip first
 			
 			$zip = new ZipArchive;
-			if ($zip->open($file_path, ZipArchive::OVERWRITE) === TRUE) {
+			if ($zip->open($file_path) === TRUE) {
 
 				$file_path = rtrim($file_path, '.zip');
 				// Only delete if it diesn't exist before
@@ -169,7 +169,7 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 		
 		$file_path = CC_BACKUP_DIR.$file_name;
 		$zip = new ZipArchive;
-		if ($zip->open($file_path, ZipArchive::OVERWRITE) === true) {
+		if ($zip->open($file_path) === true) {
 			
 			$crc_check_list = array();
 			for ($i = 0; $i < $zip->numFiles; $i++) {
@@ -231,7 +231,7 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 		if (file_exists($destination_path)) {
 
 			$zip = new ZipArchive;
-			if ($zip->open($destination_path, ZipArchive::OVERWRITE) === true) {
+			if ($zip->open($destination_path) === true) {
 				
 				$crc_check_list = array();
 
