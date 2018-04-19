@@ -243,7 +243,7 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 					if(preg_match("#^admin/#", $stat['name'])) {
 						$custom_file_name = preg_replace("#^admin#", $glob['adminFolder'], $stat['name']);
 						$zip->renameName($stat['name'], $custom_file_name);
-					} elseif($current_file=='admin.php') {
+					} elseif($stat['name']=='admin.php') {
 						$custom_file_name = $glob['adminFile'];
 						$zip->renameName($stat['name'], $custom_file_name);
 					} else {
