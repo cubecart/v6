@@ -582,7 +582,7 @@ class Language {
 					$xml = new simpleXMLElement($data);
 					if ($xml->email) {
 						$traditional_oid_col = 'cart_order_id';
-						$config_oid_col = defined('SKIP_DB_SETUP') ? $traditional_oid_col : $GLOBALS['config']->get('config', 'oid_col');
+						$config_oid_col = defined('CC_IN_SETUP') ? $traditional_oid_col : $GLOBALS['config']->get('config', 'oid_col');
 						$oid_col = empty($config_oid_col) ? $traditional_oid_col : $config_oid_col;
 						foreach ($xml->email as $email) {
 							if(!empty($content_type) && $content_type !== (string)$email->attributes()->name) continue;

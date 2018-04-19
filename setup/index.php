@@ -15,7 +15,7 @@ require_once CC_INCLUDES_DIR . 'functions.inc.php';
 
 @ini_set('memory_limit', '512M');
 @set_time_limit('600');
-define('SKIP_DB_SETUP', true);
+define('CC_IN_SETUP', true);
 define('CC_IN_ADMIN', false);
 
 /*! Check cache folder is writable! */

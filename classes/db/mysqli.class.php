@@ -236,7 +236,7 @@ class Database extends Database_Contoller {
 
 		@mysqli_query($this->_db_connect_id, "SET SESSION sql_mode = ''");
 
-		if (defined('SKIP_DB_SETUP') && SKIP_DB_SETUP) {
+		if (defined('CC_IN_SETUP') && CC_IN_SETUP) {
 			// check MySQL Strict mode on upgrade/install
 			$mysql_mode = $this->misc('SELECT @@sql_mode;');
 			if (stristr($mysql_mode[0]['@@sql_mode'], 'strict')) {
