@@ -241,10 +241,8 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 
 					if(preg_match("#^admin/#", $stat['name'])) {
 						$custom_file_name = preg_replace("#^admin#", $glob['adminFolder'], $stat['name']);
-						$zip->renameName($stat['name'], $custom_file_name);
 					} elseif($stat['name']=='admin.php') {
 						$custom_file_name = $glob['adminFile'];
-						$zip->renameName($stat['name'], $custom_file_name);
 					} else {
 						$custom_file_name = $stat['name'];
 					}
@@ -253,6 +251,14 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 
 				$zip->extractTo(CC_ROOT_DIR);
 				$zip->close();
+
+				$suffix = '-'.(string)time();
+				rename(CC_ROOT_DIR.'/'.$glob['adminFolder'], CC_ROOT_DIR.'/'.$glob['adminFolder'].$suffix);
+				rename(CC_ROOT_DIR.'/'.$glob['adminFile'], CC_ROOT_DIR.'/'.$glob['adminFile'].$suffix);
+				rename(CC_ROOT_DIR.'/admin', CC_ROOT_DIR.'/'.$glob['adminFolder']);
+				rename(CC_ROOT_DIR.'/admin.php', CC_ROOT_DIR.'/'.$glob['adminFile']);
+				unlink(CC_ROOT_DIR.'/'.$glob['adminFile'].$suffix);
+				recursiveDelete(CC_ROOT_DIR.'/'.$glob['adminFolder'].$suffix);
 
 				$errors = crc_integrity_check($crc_check_list, 'upgrade');
 				
