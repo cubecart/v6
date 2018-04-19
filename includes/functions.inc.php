@@ -810,7 +810,7 @@ function randomString($length = 30) {
  */
 function recursiveDelete($path) {
 	if (is_dir($path)) {
-		$files	= glob($path.'/'.'*');
+		$files	= glob($path.'/*');
 		foreach ($files as $file) {
 			if (is_dir($file)) {
 				recursiveDelete($file);
