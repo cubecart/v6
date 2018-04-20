@@ -269,10 +269,9 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
 				} elseif ($_POST['force']) {
 					## Try to delete setup folder
 					recursiveDelete(CC_ROOT_DIR.'/setup');
-					unlink(CC_ROOT_DIR.'/setup');
 					## If that fails we try an obscure rename
 					if (file_exists(CC_ROOT_DIR.'/setup')) {
-						rename(CC_ROOT_DIR.'/setup', CC_ROOT_DIR.'/setup_'.md5(time().$_GET['upgrade']));
+						rename(CC_ROOT_DIR.'/setup', CC_ROOT_DIR.'/setup'.$suffix);
 					}
 					$GLOBALS['main']->setACPNotify($lang['maintain']['current_version_restored']);
 					httpredir('?_g=maintenance&node=index','upgrade');
