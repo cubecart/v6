@@ -291,7 +291,7 @@ if (isset($_GET['delete'])) {
 		unlink($file);
 		switch($_GET['delete']) {
 			case 'upgrade_error_log':
-			$anchor = 'upgrade';
+				$anchor = 'upgrade';
 			break;
 			case 'restore_error_log':
 				$anchor = 'backup';
