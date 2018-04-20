@@ -994,7 +994,7 @@ class User {
 		if (!isset($GLOBALS['session']->session_data['customer_id']) || $GLOBALS['session']->session_data['customer_id'] == '0') {
 			return;
 		}
-		if ($GLOBALS['session']->session_data['customer_id'] && $result = $GLOBALS['db']->select('CubeCart_customer', false, array('customer_id' => (int)$GLOBALS['session']->session_data['customer_id']), null, 1)) {
+		if ($GLOBALS['session']->session_data['customer_id'] && $result = $GLOBALS['db']->select('CubeCart_customer', false, array('customer_id' => (int)$GLOBALS['session']->session_data['customer_id']), false, 1, false, false)) {
 			$result[0]['language'] = $this->_validLanguage($result[0]['language']);
 			$this->_user_data = $result[0];
 			foreach ($GLOBALS['hooks']->load('class.user.load.user') as $hook) include $hook;
