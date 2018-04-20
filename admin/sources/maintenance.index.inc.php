@@ -290,7 +290,15 @@ if (isset($_GET['delete'])) {
 	$file = 'backup/'.basename($_GET['delete']);
 	if(in_array($_GET['delete'], array('restore_error_log','upgrade_error_log'))) {
 		unlink($file);
-		httpredir('?_g=maintenance&node=index','backup');
+		switch($_GET['delete']) {
+			case 'upgrade_error_log':
+			$anchor = 'upgrade';
+			break;
+			case 'restore_error_log':
+				$anchor = 'backup';
+			break;
+		}
+		httpredir('?_g=maintenance&node=index', $anchor);
 	} else if(file_exists($file) && preg_match('/^.*\.(sql|zip)$/i', $file)) {
 		## Generic error message for logs delete specific for backup
 		$message = preg_match('/\_error_log$/', $file) ? $lang['filemanager']['notify_file_delete'] : sprintf($lang['maintain']['backup_deleted'], basename($file));
