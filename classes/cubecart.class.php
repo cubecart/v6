@@ -221,11 +221,10 @@ class Cubecart {
 					}
 
 					if ($result) {
-						$response = ($GLOBALS['config']->get('config', 'csrf')=='1') ? array('result' => false, 'token' => SESSION_TOKEN): false;
-						die(json_encode($response));
+						die(json_encode(false));
 					} else {
-						$response = ($GLOBALS['config']->get('config', 'csrf')=='1') ? array('result' => true, 'token' => SESSION_TOKEN): true;
-						die(json_encode($response));
+						$response = ($GLOBALS['config']->get('config', 'csrf')=='1') ? array('result' => true) : true;
+						die(json_encode(true));
 					}
 					break;
 				case 'ajaxadd':

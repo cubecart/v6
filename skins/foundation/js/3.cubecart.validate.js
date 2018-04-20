@@ -121,9 +121,8 @@ jQuery(document).ready(function() {
                         }
                     },
                     dataFilter: function(data) {
-                        var json = JSON.parse(data);
-                        $("input[name=token]").val(json.token);
-                        if(json.result) {
+                        var result = JSON.parse(data);
+                        if(result) {
                             $("#subscribe_button").val($('#validate_subscribe').text());
                             $("#force_unsubscribe").val('0');
                         } else {
@@ -190,9 +189,7 @@ jQuery(document).ready(function() {
                         }
                     },
                     dataFilter: function(data) {
-                        var json = JSON.parse(data);
-                        $("input[name=token]").val(json.token);
-                        return json.result;
+                        return JSON.parse(data);
                     }
                 }
             },
@@ -436,9 +433,7 @@ jQuery(document).ready(function() {
                         }
                     },
                     dataFilter: function(data) {
-                        var json = JSON.parse(data);
-                        $("input[name=token]").val(json.token);
-                        return json.result;
+                        return JSON.parse(data);
                     }
                 }
             },
