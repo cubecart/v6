@@ -193,7 +193,7 @@ class User {
 		$password = (string)$password;
 
 		//Check we are not upgrading an unregistered account
-		if($unregistered = $GLOBALS['db']->select('CubeCart_customer', array('customer_id'), array('type' => 2, 'email' => $username, 'status' => true))) {
+		if($unregistered = $GLOBALS['db']->select('CubeCart_customer', array('customer_id'), array('type' => 2, 'email' => $username, 'status' => true), false, 1, false, false)) {
 			$record = array(
 				'type' => 1,
 				'new_password' => 0,
@@ -205,7 +205,7 @@ class User {
 
 		$hash_password = '';
 		//Get customer_id, password, and salt for the user
-		if (($user = $GLOBALS['db']->select('CubeCart_customer', array('customer_id', 'password', 'salt', 'new_password'), array('type' => 1, 'email' => $username, 'status' => true))) !== false) {
+		if (($user = $GLOBALS['db']->select('CubeCart_customer', array('customer_id', 'password', 'salt', 'new_password'), array('type' => 1, 'email' => $username, 'status' => true), false, 1, false, false)) !== false) {
 			//If there is no salt we need to make it
 			if (empty($user[0]['salt'])) {
 				//Get the salt
@@ -237,7 +237,7 @@ class User {
 			'email'  => $username,
 			'password' => $hash_password,
 		);
-		$user = $GLOBALS['db']->select('CubeCart_customer', array('language', 'customer_id', 'email', 'password', 'salt', 'new_password'), $where);
+		$user = $GLOBALS['db']->select('CubeCart_customer', array('language', 'customer_id', 'email', 'password', 'salt', 'new_password'), $where, false, 1, false, false);
 
 		$GLOBALS['session']->blocker($username, $user[0]['customer_id'], (bool)$user, Session::BLOCKER_FRONTEND, $GLOBALS['config']->get('config', 'bfattempts'), $GLOBALS['config']->get('config', 'bftime'));
 		if (!$user) {
@@ -677,14 +677,12 @@ class User {
 	 */
 	public function passwordRequest($email) {
 		if (!empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
-			if (($check = $GLOBALS['db']->select('CubeCart_customer', false, "`email` = '$email' AND `type` = 1")) !== false) {
+			if (($check = $GLOBALS['db']->select('CubeCart_customer', false, "`email` = '$email' AND `type` = 1", false, 1, false, false)) !== false) {
 				// Generate validation key
 				$validation = Password::getInstance()->createSalt();
-
 				if (($GLOBALS['db']->update('CubeCart_customer', array('verify' => $validation), array('customer_id' => (int)$check[0]['customer_id']))) !== false) {
-
 					// Send email
-					if (($user = $GLOBALS['db']->select('CubeCart_customer', false, array('customer_id' => (int)$check[0]['customer_id']))) !== false) {
+					if (($user = $GLOBALS['db']->select('CubeCart_customer', false, array('customer_id' => (int)$check[0]['customer_id']), false, 1, false, false)) !== false) {
 						$mailer = new Mailer();
 						$link['reset_link'] = CC_STORE_URL.'/index.php?_a=recovery&validate='.$validation;
 						$data = array_merge($user[0], $link);
@@ -707,8 +705,7 @@ class User {
 	 */
 	public function passwordReset($email, $verification, $password) {
 		if (filter_var($email, FILTER_VALIDATE_EMAIL) && !empty($verification) && !empty($password['password']) && !empty($password['passconf']) && ($password['password'] === $password['passconf'])) {
-			if (($check = $GLOBALS['db']->select('CubeCart_customer', array('customer_id', 'email'), "`email` = '$email' AND `verify` = '$verification'")) !== false) {
-				
+			if (($check = $GLOBALS['db']->select('CubeCart_customer', array('customer_id', 'email'), "`email` = '$email' AND `verify` = '$verification'", false, 1, false, false)) !== false) {
 				// Remove any blocks
 				$GLOBALS['db']->delete('CubeCart_blocker', array('username' => $email));
 
