@@ -821,7 +821,7 @@ class Order {
 	public function updateSummary($order_id, $dataArray) {
 		## Add notes, update status, gateway, shipping date, courier tracking url
 		if (!empty($dataArray) && is_array($dataArray)) {
-			if($dataArray['status']!='1') $dataArray['offline_capture'] = ''; // GitHub #1886
+			if(!in_array($dataArray['status'], array('1','2'))) $dataArray['offline_capture'] = ''; // GitHub #1886
 			$GLOBALS['db']->update('CubeCart_order_summary', $dataArray, array('cart_order_id' => $order_id));
 			return true;
 		}
