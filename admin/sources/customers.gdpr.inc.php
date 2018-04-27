@@ -14,6 +14,8 @@ if (!defined('CC_INI_SET')) die('Access Denied');
 Admin::getInstance()->permissions('customers', CC_PERM_READ, true);
 if(isset($_POST['email']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
     $data = array();
+    // Subscription consent Log
+    $data['consent'] = $GLOBALS['db']->select('CubeCart_newsletter_subscriber_log', false, array('email' => $_POST['email']));
     // Customer Account
     $data['customers'] = $GLOBALS['db']->select('CubeCart_customer', false, array('email' => $_POST['email']));
     // Orders
