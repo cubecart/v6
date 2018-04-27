@@ -13,6 +13,7 @@
 if (!defined('CC_INI_SET')) die('Access Denied');
 Admin::getInstance()->permissions('customers', CC_PERM_READ, true);
 if(isset($_POST['email']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+    echo "<html><head><title>GDPR Report - ".$_POST['email']."</title></head><body>";
     $data = array();
     // Subscription consent Log
     $data['consent'] = $GLOBALS['db']->select('CubeCart_newsletter_subscriber_log', false, array('email' => $_POST['email']));
@@ -47,6 +48,7 @@ if(isset($_POST['email']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
             echo "No data";
         }
     }
+    echo "</body></html>";
     exit;
 }
 $GLOBALS['main']->addTabControl($lang['search']['title_gdpr_report'], 'general');
