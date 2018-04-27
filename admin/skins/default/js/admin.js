@@ -394,7 +394,9 @@ $(document).ready(function() {
                     var n = document.createElement("option");
                     $("select" + e).append($(n).val(t[s].id).text(t[s].name))
                 }
-                $("select" + e + " > option[value=" + i + "]").attr("selected", "selected")
+                if(i) {
+                    $("select" + e + " > option[value=" + i + "]").attr("selected", "selected");
+                }
             } else {
                 var r = document.createElement("input"),
                     o = $(r).attr({
