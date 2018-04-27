@@ -122,7 +122,7 @@ class Newsletter {
 				if ($test) {
 					// Send test email only
 					if (filter_var($test, FILTER_VALIDATE_EMAIL)) {
-						$this->_subscriberLog($test, 'Test newsletter "'.$contents[0]['subject'].'" ('.$contents[0]['template_id'].') sent.');
+						$this->_subscriberLog($test, 'Test newsletter with subject "'.$contents[0]['subject'].'" (ID #'.$contents[0]['template_id'].') sent.');
 						$this->_mailer->sendEmail($test, $content, $contents[0]['template_id']);
 						return true;
 					}
@@ -143,7 +143,7 @@ class Newsletter {
 									'content_html' => $content['content_html'],
 									'content_text' => $content['content_text'],
 								);
-								$this->_subscriberLog($test, 'Newsletter "'.$contents[0]['subject'].'" ('.$contents[0]['template_id'].') sent.');
+								$this->_subscriberLog($subscriber['email'], 'Newsletter with subject "'.$contents[0]['subject'].'" (ID #'.$contents[0]['template_id'].') sent.');
 								$this->_mailer->sendEmail($subscriber['email'], $content, $contents[0]['template_id']);
 							} else {
 								// Flag for deletion
