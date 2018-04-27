@@ -13,10 +13,12 @@
    <div id="general" class="tab_content">
       <h3>{$LANG.navigation.nav_subscribers}</h3>
       <fieldset>
-         <legend>{$LANG.common.filter}</legend>
-         <label class="narrow">{$LANG.statistics.search_term}</label>
-         <input type="text" name="email_filter" value="{$EMAIL_FILTER}">
-         <input type="submit" name="submit" class="tiny" value="{$LANG.common.go}">
+            <legend>{$LANG.common.filter}</legend>
+            <div>
+                  <label class="narrow">{$LANG.statistics.search_term}</label>
+                  <input type="text" name="email_filter" value="{$EMAIL_FILTER}">
+                  <input type="submit" name="submit" class="tiny" value="{$LANG.common.go}">
+            </div>
       </fieldset>
       {if $SUBSCRIBERS}
       <table>
@@ -60,7 +62,13 @@
       {else}
       <div>{$LANG.form.none}</div>
       {/if}
-      
+      <fieldset>
+            <legend>Email History</legend>
+            <div><label class="narrow">{$LANG.user.email}</label>
+            <input type="text" name="email_history" id="email_history" value="{$EMAIL_FILTER}">
+            <input type="button" name="submit" onclick="$.colorbox({ href:'{$STORE_URL}/{$SKIN_VARS.admin_file}?_g=xml&function=subscriber_log&email='+$('#email_history').val()})" class="tiny" value="{$LANG.common.go}">
+            </div>
+      </fieldset>
    </div>
    <div id="import" class="tab_content">
    <h3>{$LANG.newsletter.import_subscribers}</h3>

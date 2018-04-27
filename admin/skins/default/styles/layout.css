@@ -35,6 +35,7 @@ input[type=submit]:hover {
     background-color: #ededed
 }
 input[type=submit].tiny,
+input[type=button].tiny,
 button.tiny {
     padding: 2px 4px!important
 }
