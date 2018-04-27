@@ -541,6 +541,15 @@ CREATE TABLE IF NOT EXISTS `CubeCart_newsletter_subscriber` (
 	KEY `status` (`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
+CREATE TABLE `CubeCart_newsletter_subscriber_log` (
+	`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+	`email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+	`log` text COLLATE utf8_unicode_ci,
+	`date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`),
+	KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+
 CREATE TABLE IF NOT EXISTS `CubeCart_options_set` (
 	`set_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`set_name` TEXT NOT NULL,

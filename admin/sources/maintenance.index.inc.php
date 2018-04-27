@@ -738,6 +738,10 @@ if (isset($database_result) && $database_result) {
 			'status' => 'KEY',
 			'dbl_opt' => 'KEY'
 		),
+		'CubeCart_newsletter_subscriber_log' => array (
+			'id' => 'PRIMARY',
+			'email' => 'KEY'
+		),
 		'cubecart_options_set' => array (
 			'set_id' => 'PRIMARY'
 		),
