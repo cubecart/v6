@@ -212,7 +212,7 @@ class Newsletter {
 					$GLOBALS['smarty']->assign('DATA', array('email' => $email, 'link' => CC_STORE_URL.'?_a=newsletter&do='.$record['validation']));
 					$mailer->sendEmail($email, $content);
 				}
-				$this->_subscriberLog($email, 'Subscribed pending double opt-in verification.');
+				$this->_subscriberLog($email, 'Subscribed pending double opt-in verification');
 				$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_subscribed_opt_in']);
 			} else {
 				$this->_subscriberLog($email, 'Subscribed without double opt-in.');
@@ -260,7 +260,7 @@ class Newsletter {
 			$validate = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', array('subscriber_id', 'email'), array('validation' => $validation), false, 1, false, false);
 			if ($validate) {
 				$this->_subscriberLog($validate[0]['email'], 'Double opt-in verified');
-				$GLOBALS['db']->update('CubeCart_newsletter_subscriber', array('dbl_opt' => '1', 'date' => time('c'), 'ip_address' => get_ip_address()), array('subscriber_id' => $validate[0]['subscriber_id']));
+				$GLOBALS['db']->update('CubeCart_newsletter_subscriber', array('dbl_opt' => '1', 'ip_address' => get_ip_address()), array('subscriber_id' => $validate[0]['subscriber_id']));
 				return true;
 			}
 		}
@@ -276,7 +276,7 @@ class Newsletter {
 	 */
 	private function _subscriberLog($email, $log) {
 		if (filter_var($email, FILTER_VALIDATE_EMAIL) && !empty($log)) {
-			return $GLOBALS['db']->insert('CubeCart_newsletter_subscriber_log', array('email' => $email, 'log' => $log));
+			return $GLOBALS['db']->insert('CubeCart_newsletter_subscriber_log', array('email' => $email, 'log' => $log, 'ip_address' => get_ip_address()));
 		}
 		return false;
 	}

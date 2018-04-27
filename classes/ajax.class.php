@@ -336,7 +336,7 @@ class Ajax {
 				$html_out = "<h3>Log for ".$_GET['email']."</h3>";
 				if($logs = $GLOBALS['db']->select('CubeCart_newsletter_subscriber_log', false, array('email' => $_GET['email']))) {
 					foreach($logs as $log) {
-						$html_out .= $log['date'].' - '.$log['log'].'<br>';
+						$html_out .= '<strong>'.$log['date'].' - '.$log['ip_address'].'</strong><br>'.$log['log'].'<br>';
 					}
 				} else {
 					$html_out .= "<p>No logs found.</p>";
