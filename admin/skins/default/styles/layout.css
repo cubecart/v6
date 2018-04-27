@@ -1207,3 +1207,9 @@ ul.filetree li ul li ul li ul li ul li ul li ul li ul li a {
 .language_list .flag {
     margin: 1px;
 }
+.width_30 {
+    width: 30%;
+}
+.width_50 {
+    width: 50%;
+}

@@ -12,7 +12,7 @@
 <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
    <div id="general" class="tab_content">
       <h3>{$LANG.navigation.nav_subscribers}</h3>
-      <fieldset>
+      <fieldset class="width_30">
             <legend>{$LANG.common.filter}</legend>
             <div>
                   <label class="narrow">{$LANG.statistics.search_term}</label>
@@ -62,7 +62,7 @@
       {else}
       <div>{$LANG.form.none}</div>
       {/if}
-      <fieldset>
+      <fieldset class="width_30">
             <legend>Email History</legend>
             <div><label class="narrow">{$LANG.user.email}</label>
             <input type="text" name="email_history" id="email_history" value="{$EMAIL_FILTER}">
