@@ -17,6 +17,14 @@ global $lang;
 
 $redirect = false;
 
+if(isset($_GET['delete_log']) && !empty($_GET['delete_log'])) {
+	if($redirect = $GLOBALS['db']->delete('CubeCart_newsletter_subscriber_log', array('email' => $_GET['delete_log']))) {
+		$GLOBALS['gui']->setNotify($lang['newsletter']['log_delete_success']);
+	} else {
+		$GLOBALS['gui']->setError($lang['newsletter']['log_delete_fail']);
+	}
+}
+
 if(isset($_POST['email_filter'])) {
 	if(empty($_POST['email_filter'])) {
 		$GLOBALS['session']->delete('email_filter');

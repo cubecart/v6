@@ -338,6 +338,7 @@ class Ajax {
 					foreach($logs as $log) {
 						$html_out .= '<strong>'.$log['date'].' - '.$log['ip_address'].'</strong><br>'.$log['log'].'<br>';
 					}
+					$html_out .= '<p style="text-align:center"><a href="?_g=customers&node=subscribers&delete_log='.urlencode($_GET['email']).'" class="delete">Delete Log</a></p>';
 				} else {
 					$html_out .= "<p>No logs found.</p>";
 				}

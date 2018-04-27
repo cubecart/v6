@@ -1558,6 +1558,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title" introduced="5.0.0"><![CDATA[Shop by Category]]></string>
   </group>
   <group name="newsletter">
+    <string name="log_delete_success" introduced="6.2.1"><![CDATA[Log deleted for that email address.]]></string>
+    <string name="log_delete_fail" introduced="6.2.1"><![CDATA[failed to deleted log for that email address.]]></string>
     <string name="dbl_opt_in" introduced="6.2.0"><![CDATA[Double Opt-In]]></string>
     <string name="dbl_opt_in_success" introduced="6.2.0"><![CDATA[Thank you for confirming your email address you are now subscribed to our mailing list.]]></string>
     <string name="dbl_opt_in_fail" introduced="6.2.0"><![CDATA[Sorry but we have not able to validate your email address.]]></string>
