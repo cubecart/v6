@@ -54,10 +54,13 @@ class Ajax {
 				$return_data = self::SMTPTest();
 			break;
 			case 'previewOrderFormat':
-				$return_data = self::previewOrderFormat();
+			$return_data = self::previewOrderFormat();
 			break;
 			case 'template':
 				$return_data = self::template($type, $string);
+			break;
+			case 'subscriber_log':
+				$return_data = self::subscriberLog();
 			break;
 			case 'search':
 			default:
@@ -318,6 +321,30 @@ class Ajax {
 
 				return "<div class=\"mail_modal\"><h3>Testing ".$method_name."</h3><p>It isn't possible  to get a definitive test result for the &quot;PHP mail() Function&quot; method.</p><p>We have attempted to send a test email to &quot;".$_GET['email_address']."&quot; with the subject of &quot;".$subject."&quot; Please note that it can take ten minutes or even longer for a busy mail server to deliver email. Don't forget to check your spam folder!</p><p>This method can fail if the server hasn't been configured properly and may refuse to send mail from &quot;untrusted&quot; sources such as Hotmail, Yahoo, AOL etc&hellip;. We recommend using an email address from a domain hosted on this server such as sales@".parse_url(CC_STORE_URL, PHP_URL_HOST)." for example and this may need to be setup form within your web hosting account.</p></div>";
 			}
+		}
+		return false;
+	}
+
+	/**
+	 * Subscriber consent log
+	 *
+	 * @return data/false
+	 */
+	public static function subscriberLog() {
+		if (CC_IN_ADMIN) {
+			if (filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)) {
+				$html_out = "<h3>Log for ".$_GET['email']."</h3>";
+				if($logs = $GLOBALS['db']->select('CubeCart_newsletter_subscriber_log', false, array('email' => $_GET['email']))) {
+					foreach($logs as $log) {
+						$html_out .= $log['date'].' - '.$log['log'].'<br>';
+					}
+				} else {
+					$html_out .= "<p>No logs found.</p>";
+				}
+			} else {
+				$html_out .= "<p>Invalid email</p>";
+			}
+			return "<div class=\"mail_modal\">".$html_out."</div>";
 		}
 		return false;
 	}

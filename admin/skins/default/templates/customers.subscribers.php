@@ -38,7 +38,7 @@
                <td align="center">{$subscriber.date}</td>
                <td align="center">{if $subscriber.imported}<i class="fa fa-check"></i>{else}<i class="fa fa-times"></i>{/if}</td>
                <td align="center">{if $subscriber.dbl_opt}<i class="fa fa-check"></i>{else}<i class="fa fa-times"></i>{/if}</td>
-               <td align="center"><a href="?_g=customers&node=subscribers&delete={$subscriber.subscriber_id}&token={$SESSION_TOKEN}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
+               <td align="center"><a href="#" onclick="$.colorbox({ href:'{$STORE_URL}/{$SKIN_VARS.admin_file}?_g=xml&function=subscriber_log&email={$subscriber.email}'})">Log</a> <a href="?_g=customers&node=subscribers&delete={$subscriber.subscriber_id}&token={$SESSION_TOKEN}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
             </tr>
             {/foreach}
          </tbody>
