@@ -156,7 +156,7 @@
 <div class="tab_content" id="newsletter_send">
    <div id="progress_wrapper">
       <input type="hidden" id="newsletter_id" value="{$NEWSLETTER_ID}">
-      <div id="progress_bar"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/loading.gif" alt="" class="newsletter"></div>
+      <div id="progress_bar"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/loading.gif" style="display: none" alt="" class="newsletter"></div>
    </div>
    <div id="progress_bar_percent"></div>
    <p><a href="?_g=customers&node=email" class="delete" title="{$LANG.email.confirm_cancel}">{$LANG.email.news_cancel}</a></p>

@@ -124,7 +124,7 @@ if (isset($_GET['action']) && strtolower($_GET['action']) == 'delete') {
 	httpredir(currentPage(array('newsletter_id', 'action')));
 } elseif (isset($_GET['action']) && strtolower($_GET['action']) == 'send') {
 	if (isset($_GET['newsletter_id']) && is_numeric($_GET['newsletter_id'])) {
-		$GLOBALS['main']->setACPNotify($lang['email']['notify_news_sent']);
+		$GLOBALS['main']->addTabControl($lang['email']['title_sending'], 'newsletter_send');
 		$GLOBALS['gui']->addBreadcrumb($lang['email']['title_sending'], currentPage());
 		$GLOBALS['smarty']->assign('NEWSLETTER_ID', (int)$_GET['newsletter_id']);
 	}

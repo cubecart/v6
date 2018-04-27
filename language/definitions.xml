@@ -571,6 +571,7 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="log" introduced="6.2.1"><![CDATA[Log]]></string>
     <string name="customise_layout" introduced="6.2.0"><![CDATA[Customise Layout]]></string>
     <string name="locked" introduced="6.2.0"><![CDATA[Locked]]></string>
     <string name="calculate" introduced="6.1.14"><![CDATA[Calculate]]></string>
@@ -1558,6 +1559,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title" introduced="5.0.0"><![CDATA[Shop by Category]]></string>
   </group>
   <group name="newsletter">
+    <string name="log_search" introduced="6.2.1"><![CDATA[Search Email Log]]></string>
+    <string name="delete_single_optin" introduced="6.2.1"><![CDATA[Delete all subscribers without double Opt-In status.]]></string>
     <string name="log_delete_success" introduced="6.2.1"><![CDATA[Log deleted for that email address.]]></string>
     <string name="log_delete_fail" introduced="6.2.1"><![CDATA[failed to deleted log for that email address.]]></string>
     <string name="dbl_opt_in" introduced="6.2.0"><![CDATA[Double Opt-In]]></string>

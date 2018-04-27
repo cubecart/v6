@@ -40,7 +40,7 @@
                <td align="center">{$subscriber.date}</td>
                <td align="center">{if $subscriber.imported}<i class="fa fa-check"></i>{else}<i class="fa fa-times"></i>{/if}</td>
                <td align="center">{if $subscriber.dbl_opt}<i class="fa fa-check"></i>{else}<i class="fa fa-times"></i>{/if}</td>
-               <td align="center"><a href="#" onclick="$.colorbox({ href:'{$STORE_URL}/{$SKIN_VARS.admin_file}?_g=xml&function=subscriber_log&email={$subscriber.email|escape:'url'}'})">Log</a> <a href="?_g=customers&node=subscribers&delete={$subscriber.subscriber_id}&token={$SESSION_TOKEN}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
+               <td align="center"><a href="#" onclick="$.colorbox({ href:'{$STORE_URL}/{$SKIN_VARS.admin_file}?_g=xml&function=subscriber_log&email={$subscriber.email|escape:'url'}'})">{$LANG.common.log}</a> <a href="?_g=customers&node=subscribers&delete={$subscriber.subscriber_id}&token={$SESSION_TOKEN}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
             </tr>
             {/foreach}
          </tbody>
@@ -63,7 +63,7 @@
       <div>{$LANG.form.none}</div>
       {/if}
       <fieldset class="width_30">
-            <legend>Email History</legend>
+            <legend>{$LANG.newsletter.log_search}</legend>
             <div><label class="narrow">{$LANG.user.email}</label>
             <input type="text" name="email_history" id="email_history" value="{$EMAIL_FILTER}">
             <input type="button" name="submit" onclick="$.colorbox({ href:'{$STORE_URL}/{$SKIN_VARS.admin_file}?_g=xml&function=subscriber_log&email='+$('#email_history').val()})" class="tiny" value="{$LANG.common.go}">
@@ -81,6 +81,7 @@
       <input type="hidden" name="newsletter[newsletter_id]" value="{$NEWSLETTER.newsletter_id}">
       <input type="hidden" name="previous-tab" id="previous-tab" value="">
       <input type="submit" value="{$LANG.common.save}">
+      <a href="?_g=customers&node=subscribers&del_single_opt=1" title="{$LANG.notification.confirm_continue}" class="delete">{$LANG.newsletter.delete_single_optin}</a>
    </div>
    
 </form>

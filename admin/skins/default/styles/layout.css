@@ -946,8 +946,8 @@ a.handle {
 }
 #progress_wrapper {
     border: 1px solid #999;
-    margin: 10px auto;
-    width: 208px
+    margin: 100px auto 10px auto;
+    width: 350px
 }
 #progress_bar {
     background-color: #91d475;
@@ -955,7 +955,8 @@ a.handle {
     overflow: hidden;
     padding: 3px 0;
     text-align: center;
-    width: 0
+    width: 0;
+    height: 10px;
 }
 #newsletter_send {
     text-align: center
