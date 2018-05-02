@@ -7,3 +7,4 @@ CREATE TABLE `CubeCart_newsletter_subscriber_log` (
 	PRIMARY KEY (`id`),
 	KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+ALTER TABLE `CubeCart_order_summary` ADD KEY (`custom_oid`); #EOQ

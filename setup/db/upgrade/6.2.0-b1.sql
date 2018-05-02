@@ -1,5 +1,4 @@
 ALTER TABLE `CubeCart_order_summary` ADD `custom_oid` VARCHAR(50) NOT NULL DEFAULT ''; #EOQ
-ALTER TABLE `CubeCart_order_summary` ADD UNIQUE (`custom_oid`); #EOQ
 ALTER TABLE `CubeCart_geo_zone` ADD `status` enum('0','1') NOT NULL DEFAULT '1'; #EOQ
 ALTER TABLE `CubeCart_geo_zone` ADD INDEX (`status`); #EOQ
 ALTER TABLE `CubeCart_geo_country` CHANGE `status` `status` TINYINT(1)  NOT NULL  DEFAULT '1'; #EOQ
