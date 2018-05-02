@@ -110,7 +110,11 @@ class Mailer extends PHPMailer {
 					return $elements;
 				}
 			} else {
-				if($default) {
+				if($panic) { // Content type doesn't exist for any language
+					trigger_error('Email content for '.$content_type.' doesn\'t exist in any lamguage.');
+					return false;
+				} else if($default) {
+					trigger_error('Email content for '.$content_type.' doesn\'t exist in default lamguage.');
 					return $this->loadContent($content_type, $GLOBALS['config']->get('config', 'default_language'), $data, true, true);
 				}
 				// No results!
