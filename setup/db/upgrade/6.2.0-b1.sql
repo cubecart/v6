@@ -3,7 +3,7 @@ ALTER TABLE `CubeCart_geo_zone` ADD `status` enum('0','1') NOT NULL DEFAULT '1';
 ALTER TABLE `CubeCart_geo_zone` ADD INDEX (`status`); #EOQ
 ALTER TABLE `CubeCart_geo_country` CHANGE `status` `status` TINYINT(1)  NOT NULL  DEFAULT '1'; #EOQ
 UPDATE `CubeCart_geo_country` SET `status` = `status` - 1; #EOQ
-UPDATE `CubeCart_geo_country` SET `status` = 2 WHERE `iso` NOT IN('AR', 'BR', 'CA', 'CN', 'ID', 'IN', 'JP', 'MX', 'TH', 'US'); #EOQ
+UPDATE `CubeCart_geo_country` SET `status` = 2 WHERE `iso` NOT IN('AR', 'BR', 'CA', 'CN', 'ID', 'IN', 'JP', 'MX', 'TH', 'US') AND `status` = 1; #EOQ
 ALTER TABLE `CubeCart_inventory` ADD `product_width` DECIMAL(10,4) DEFAULT NULL COMMENT 'Product Width'; #EOQ
 ALTER TABLE `CubeCart_inventory` ADD `product_height` DECIMAL(10,4) DEFAULT NULL COMMENT 'Product Height'; #EOQ
 ALTER TABLE `CubeCart_inventory` ADD `product_depth` DECIMAL(10,4) DEFAULT NULL COMMENT 'Product Depth'; #EOQ
