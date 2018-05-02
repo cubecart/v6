@@ -114,6 +114,11 @@
       </fieldset>
       <input type="submit" value="{$LANG.common.search}">
    </div>
+   <div id="gdpr" class="tab_content">
+   <h3>{$LANG.search.gdpr_tools}</h3>
+   <p>Delete all orders older than <input type="text" value="" class="number-center" name="month_purge"> months.</p>
+   <p><input type="submit" class="delete submit_confirm" title="{$LANG.notification.confirm_continue}" value="{$LANG.common.go}"></p>
+   </div>
    {/if}
    {if isset($DISPLAY_FORM)}
    <div>

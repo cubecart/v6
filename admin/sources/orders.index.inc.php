@@ -22,6 +22,15 @@ if(isset($_GET['order_id']) && !preg_match('#^[0-9]{6}-[0-9]{6}-[0-9]{4}$#i', $_
 	}
 }
 
+if(isset($_POST['month_purge']) && $_POST['month_purge']>0) {
+	if($purge_oids = $GLOBALS['db']->select('CubeCart_order_summary', "cart_order_id", "`order_date` < ".strtotime("-".$_POST['month_purge']." months"))) {
+		foreach($purge_oids as $purge_oid) {
+			$_POST['multi-order'][] = $purge_oid['cart_order_id'];
+		}
+		$_POST['multi-action'] = 'delete';
+	}
+}
+
 if (isset($_POST['search']) && !is_array($_POST['multi-order'])) {
 	httpredir('?_g=orders&'.http_build_query($_POST));
 }
@@ -661,9 +670,17 @@ if (isset($_GET['action'])) {
 		}
 		if ($_POST['multi-action'] == 'delete') {
 			if ($deleted) {
-				$GLOBALS['main']->setACPNotify($lang['orders']['notify_orders_delete']);
+				if(isset($_POST['month_purge'])) {
+					$GLOBALS['main']->setACPNotify($lang['orders']['notify_orders_purged']);
+				} else {
+					$GLOBALS['main']->setACPNotify($lang['orders']['notify_orders_delete']);
+				}
 			} else {
-				$GLOBALS['main']->setACPWarning($lang['orders']['error_orders_delete']);
+				if(isset($_POST['month_purge'])) {
+					$GLOBALS['main']->setACPWarning($lang['orders']['error_orders_purged']);
+				} else {
+					$GLOBALS['main']->setACPWarning($lang['orders']['error_orders_delete']);
+				}
 			}
 		}
 		if ($updated) {
@@ -729,6 +746,7 @@ if (isset($_GET['action'])) {
 	$GLOBALS['main']->addTabControl($lang['orders']['tab_orders_overview'], 'orders', null, 'O');
 	$GLOBALS['main']->addTabControl($lang['orders']['tab_orders_search'], 'search', null, 'S');
 	$GLOBALS['main']->addTabControl($lang['orders']['tab_orders_create'], null, currentPage(array('print_hash'), array('action' => 'add')), 'N');
+	$GLOBALS['main']->addTabControl($lang['search']['gdpr_tools'], 'gdpr');
 
 	$page = (isset($_GET['page'])) ? $_GET['page'] : 1;
 	$per_page = 20;
@@ -783,7 +801,7 @@ if (isset($_GET['action'])) {
 		}
 		$GLOBALS['smarty']->assign('ORDER_LIST', $smarty_data['list_orders']);
 
-	} else if (isset($_GET['search'])) {
+	} else if (isset($_GET['search']) && !empty($_POST['month_purge'])) {
 			# No orders found
 			$GLOBALS['main']->setACPWarning($lang['orders']['error_search_result']);
 		}

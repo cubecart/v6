@@ -452,6 +452,10 @@ optgroup>option {
     width: 100px!important;
     text-align: right
 }
+.tab_content .number-center {
+    width: 100px!important;
+    text-align: center
+}
 div.tab {
     position: relative;
     height: 26px;

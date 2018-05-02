@@ -1648,6 +1648,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="name_6" introduced="5.0.0"><![CDATA[Cancelled]]></string>
   </group>
   <group name="orders">
+    <string name="notify_orders_purged" introduced="6.2.1"><![CDATA[Orders matching that criteria have been deleted.]]></string>
+    <string name="error_orders_purged" introduced="6.2.1"><![CDATA[No orders have been deleted.]]></string>
     <string name="invoice_editor" introduced="6.2.0"><![CDATA[Invoice Editor]]></string>
     <string name="date_specifiers" introduced="6.2.0"><![CDATA[<a href="https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_date-format" target="_blank">Date specifiers</a> allowed.]]></string>
     <string name="oid_prefix" introduced="6.2.0"><![CDATA[Order Number Prefix]]></string>
