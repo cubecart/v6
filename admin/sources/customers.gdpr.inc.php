@@ -12,6 +12,10 @@
  */
 if (!defined('CC_INI_SET')) die('Access Denied');
 Admin::getInstance()->permissions('customers', CC_PERM_READ, true);
+if(isset($_POST['purge'])) {
+    $GLOBALS['db']->misc('DELETE `CubeCart_customer`.* FROM `CubeCart_customer` LEFT JOIN `CubeCart_order_summary` ON `CubeCart_order_summary`.`customer_id` = `CubeCart_customer`.`customer_id` WHERE `CubeCart_order_summary`.`customer_id` IS NULL');
+    $GLOBALS['main']->setACPNotify($lang['customer']['no_order_purge']);
+}
 if(isset($_POST['email']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
     echo "<html><head><title>GDPR Report - ".$_POST['email']."</title></head><body>";
     $data = array();
@@ -51,5 +55,5 @@ if(isset($_POST['email']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
     echo "</body></html>";
     exit;
 }
-$GLOBALS['main']->addTabControl($lang['search']['title_gdpr_report'], 'general');
+$GLOBALS['main']->addTabControl($lang['search']['gdpr_tools'], 'general');
 $page_content = $GLOBALS['smarty']->fetch('templates/customers.gdpr.php');

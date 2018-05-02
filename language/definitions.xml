@@ -860,6 +860,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="zone_name" introduced="5.0.0"><![CDATA[Name]]></string>
   </group>
   <group name="customer">
+    <string name="no_order_purge" introduced="6.1.2"><![CDATA[Customers without any orders have been deleted.]]></string>
     <string name="login_register" introduced="6.1.2"><![CDATA[Please login or register to continue.]]></string>
     <string name="signinas" introduced="6.0.0"><![CDATA[Login as %s %s]]></string>
     <string name="customer_type" introduced="5.0.0"><![CDATA[Type]]></string>
@@ -1783,6 +1784,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_review_search" introduced="5.0.0"><![CDATA[Search Reviews]]></string>
   </group>
   <group name="search">
+    <string name="gdpr_tools" introduced="6.2.0"><![CDATA[GDPR Tools]]></string>
     <string name="title_gdpr_report" introduced="6.2.0"><![CDATA[GDPR Report]]></string>
     <string name="gdpr_report_desc" introduced="6.2.0"><![CDATA[This tool can be used to search for all stored information in the database against an email address. It is necessary to meet European Union General Data Protection Regulation (GDPR) requirements.]]></string>
     <string name="advanced" introduced="5.0.0"><![CDATA[Advanced Search]]></string>

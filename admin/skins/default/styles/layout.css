@@ -34,6 +34,13 @@ input[type=submit]:hover {
     background-image: -o-linear-gradient(#e1e1e1, #ededed);
     background-color: #ededed
 }
+div.button.delete, span.button.delete, button.button.delete,
+input[type=button].delete,
+input[type=submit].delete {
+    border-color: #FF0000 !important;
+    color: #FF0000 !important;
+    font-weight: bold;
+}
 input[type=submit].tiny,
 input[type=button].tiny,
 button.tiny {
