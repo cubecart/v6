@@ -1,7 +1,7 @@
 #logo {
     margin: 0 0 0 3px
 }
-div.button, span.button, button.button,
+a.button, div.button, span.button, button.button,
 input[type=button],
 input[type=submit] {
     display: inline-block;
@@ -24,7 +24,7 @@ input[type=submit] {
     text-shadow: 1px 1px 1px #fff;
     background-color: #e1e1e1;
 }
-div.button:hover, span.button:hover,
+a.button:hover, div.button:hover, span.button:hover,
 input[type=button]:hover,
 input[type=submit]:hover {
     border: 1px solid #b0b0b0;
@@ -34,7 +34,7 @@ input[type=submit]:hover {
     background-image: -o-linear-gradient(#e1e1e1, #ededed);
     background-color: #ededed
 }
-div.button.delete, span.button.delete, button.button.delete,
+a.button, div.button.delete, span.button.delete, button.button.delete,
 input[type=button].delete,
 input[type=submit].delete {
     border-color: #FF0000 !important;

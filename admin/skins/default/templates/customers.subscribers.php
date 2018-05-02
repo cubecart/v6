@@ -71,17 +71,18 @@
       </fieldset>
    </div>
    <div id="import" class="tab_content">
-   <h3>{$LANG.newsletter.import_subscribers}</h3>
-   <fieldset>
-         <legend>{$LANG.newsletter.import_subscribers}</legend>
-         <div><label for="emails">{$LANG.newsletter.email_list}</label><br><textarea name="subscribers" class="textbox" placeholder="{$LANG.newsletter.email_list_placeholder}"></textarea></div>
+      <h3>{$LANG.newsletter.import_subscribers}</h3>
+      <fieldset>
+            <legend>{$LANG.newsletter.import_subscribers}</legend>
+            <div><label for="emails">{$LANG.newsletter.email_list}</label><br><textarea name="subscribers" class="textbox" placeholder="{$LANG.newsletter.email_list_placeholder}"></textarea></div>
       </fieldset>
+      <div class="form_control">
+            <input type="hidden" name="previous-tab" id="previous-tab" value="">
+            <input type="submit" value="{$LANG.common.go}">
+      </div>
    </div>
-   <div class="form_control">
-      <input type="hidden" name="newsletter[newsletter_id]" value="{$NEWSLETTER.newsletter_id}">
-      <input type="hidden" name="previous-tab" id="previous-tab" value="">
-      <input type="submit" value="{$LANG.common.save}">
-      <a href="?_g=customers&node=subscribers&del_single_opt=1" title="{$LANG.notification.confirm_continue}" class="delete">{$LANG.newsletter.delete_single_optin}</a>
+   <div id="gdpr" class="tab_content">
+      <h3>{$LANG.search.gdpr_tools}</h3>
+      <a href="?_g=customers&node=subscribers&del_single_opt=1" title="{$LANG.notification.confirm_continue}" class="button delete">{$LANG.newsletter.delete_single_optin}</a>
    </div>
-   
 </form>

@@ -150,4 +150,5 @@ $GLOBALS['smarty']->assign('SUBSCRIBERS', $subscribers);
 $GLOBALS['gui']->addBreadcrumb($lang['navigation']['nav_subscribers']);
 $GLOBALS['main']->addTabControl($lang['navigation']['nav_subscribers'], 'general');
 $GLOBALS['main']->addTabControl($lang['newsletter']['import_subscribers'], 'import');
+$GLOBALS['main']->addTabControl($lang['search']['gdpr_tools'], 'gdpr');
 $page_content = $GLOBALS['smarty']->fetch('templates/customers.subscribers.php');

@@ -1561,7 +1561,7 @@ This email is sent from the store's master email address but it is possible to r
   </group>
   <group name="newsletter">
     <string name="log_search" introduced="6.2.1"><![CDATA[Search Email Log]]></string>
-    <string name="delete_single_optin" introduced="6.2.1"><![CDATA[Delete all subscribers without double Opt-In status.]]></string>
+    <string name="delete_single_optin" introduced="6.2.1"><![CDATA[Delete all subscribers without double Opt-In status]]></string>
     <string name="log_delete_success" introduced="6.2.1"><![CDATA[Log deleted for that email address.]]></string>
     <string name="log_delete_fail" introduced="6.2.1"><![CDATA[failed to deleted log for that email address.]]></string>
     <string name="dbl_opt_in" introduced="6.2.0"><![CDATA[Double Opt-In]]></string>
@@ -1786,7 +1786,7 @@ This email is sent from the store's master email address but it is possible to r
   <group name="search">
     <string name="gdpr_tools" introduced="6.2.0"><![CDATA[GDPR Tools]]></string>
     <string name="title_gdpr_report" introduced="6.2.0"><![CDATA[GDPR Report]]></string>
-    <string name="gdpr_report_desc" introduced="6.2.0"><![CDATA[This tool can be used to search for all stored information in the database against an email address. It is necessary to meet European Union General Data Protection Regulation (GDPR) requirements.]]></string>
+    <string name="gdpr_report_desc" introduced="6.2.0"><![CDATA[This tool can be used to search for all information stored in the database against an email address.]]></string>
     <string name="advanced" introduced="5.0.0"><![CDATA[Advanced Search]]></string>
     <string name="date_range" introduced="5.0.0"><![CDATA[Date Range]]></string>
     <string name="featured_only" introduced="5.0.0"><![CDATA[Featured Products Only]]></string>
