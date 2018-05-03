@@ -9,5 +9,5 @@ CREATE TABLE `CubeCart_newsletter_subscriber_log` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_order_summary` ADD KEY (`custom_oid`); #EOQ
 UPDATE `CubeCart_geo_country` SET `status` = 1 WHERE `iso` IN('AR', 'BR', 'CA', 'CN', 'ID', 'IN', 'JP', 'MX', 'TH', 'US') AND `status` = 2; #EOQ
-ALTER TABLE `CubeCart_order_summary` DROP INDEX `custom_oid`;
-ALTER TABLE `CubeCart_order_summary` ADD INDEX (`custom_oid`);
+ALTER TABLE `CubeCart_order_summary` DROP INDEX `custom_oid`; #EOQ
+ALTER TABLE `CubeCart_order_summary` ADD INDEX (`custom_oid`); #EOQ
