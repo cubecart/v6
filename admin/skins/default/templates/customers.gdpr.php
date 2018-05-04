@@ -27,8 +27,8 @@
     <hr>
     <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
         <p>
-            <input type="hidden" name="purge" value="1">
-            <input type="submit" class="delete submit_confirm" value="DELETE CUSTOMERS WITHOUT ORDERS" title="{$LANG.notification.confirm_continue}" name="search">
+            <input type="hidden" name="no_order_purge" value="1">
+            <input type="submit" class="delete submit_confirm uppercase" value="{$LANG.customer.delete_no_order}" title="{$LANG.notification.confirm_continue}" name="search">
         </p>
     </form>
 </div>
