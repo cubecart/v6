@@ -15,6 +15,12 @@ Admin::getInstance()->permissions('customers', CC_PERM_READ, true);
 if(isset($_POST['purge'])) {
     $GLOBALS['db']->misc('DELETE `CubeCart_customer`.* FROM `CubeCart_customer` LEFT JOIN `CubeCart_order_summary` ON `CubeCart_order_summary`.`customer_id` = `CubeCart_customer`.`customer_id` WHERE `CubeCart_order_summary`.`customer_id` IS NULL');
     $GLOBALS['main']->setACPNotify($lang['customer']['no_order_purge']);
+    httpredir('?_g=customers');
+}
+if(isset($_POST['customer_purge']) && ctype_digit($_POST['customer_purge'])) {
+    $GLOBALS['db']->delete('CubeCart_customer', "`registered` < ".strtotime("-".(string)$_POST['customer_purge']." month"));
+    $GLOBALS['main']->setACPNotify(sprintf($lang['customer']['purge_success'],$_POST['customer_purge']));
+    httpredir('?_g=customers');
 }
 if(isset($_POST['email']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
     echo "<html><head><title>GDPR Report - ".$_POST['email']."</title></head><body>";

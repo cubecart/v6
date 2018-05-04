@@ -860,6 +860,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="zone_name" introduced="5.0.0"><![CDATA[Name]]></string>
   </group>
   <group name="customer">
+    <string name="delete_older_than" introduced="6.1.2"><![CDATA[Delete all customers older than %s months.]]></string>
+    <string name="purge_success" introduced="6.1.2"><![CDATA[Customers registered more than %s months ago have been deleted.]]></string>
     <string name="no_order_purge" introduced="6.1.2"><![CDATA[Customers without any orders have been deleted.]]></string>
     <string name="login_register" introduced="6.1.2"><![CDATA[Please login or register to continue.]]></string>
     <string name="signinas" introduced="6.0.0"><![CDATA[Login as %s %s]]></string>
@@ -1648,7 +1650,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="name_6" introduced="5.0.0"><![CDATA[Cancelled]]></string>
   </group>
   <group name="orders">
-    <string name="notify_orders_purged" introduced="6.2.1"><![CDATA[Orders matching that criteria have been deleted.]]></string>
+    <string name="delete_older_than" introduced="6.2.1"><![CDATA[Delete orders older than %s months.]]></string>
+    <string name="notify_orders_purged" introduced="6.2.1"><![CDATA[Orders placed over %s months ago have been deleted.]]></string>
     <string name="error_orders_purged" introduced="6.2.1"><![CDATA[No orders have been deleted.]]></string>
     <string name="invoice_editor" introduced="6.2.0"><![CDATA[Invoice Editor]]></string>
     <string name="date_specifiers" introduced="6.2.0"><![CDATA[<a href="https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_date-format" target="_blank">Date specifiers</a> allowed.]]></string>

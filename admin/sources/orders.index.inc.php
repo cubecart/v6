@@ -22,8 +22,8 @@ if(isset($_GET['order_id']) && !preg_match('#^[0-9]{6}-[0-9]{6}-[0-9]{4}$#i', $_
 	}
 }
 
-if(isset($_POST['month_purge']) && $_POST['month_purge']>0) {
-	if($purge_oids = $GLOBALS['db']->select('CubeCart_order_summary', "cart_order_id", "`order_date` < ".strtotime("-".$_POST['month_purge']." months"))) {
+if(isset($_POST['month_purge']) && ctype_digit($_POST['month_purge'])) {
+	if($purge_oids = $GLOBALS['db']->select('CubeCart_order_summary', "cart_order_id", "`order_date` < ".strtotime("-".(string)$_POST['month_purge']." month"))) {
 		foreach($purge_oids as $purge_oid) {
 			$_POST['multi-order'][] = $purge_oid['cart_order_id'];
 		}
@@ -671,7 +671,7 @@ if (isset($_GET['action'])) {
 		if ($_POST['multi-action'] == 'delete') {
 			if ($deleted) {
 				if(isset($_POST['month_purge'])) {
-					$GLOBALS['main']->setACPNotify($lang['orders']['notify_orders_purged']);
+					$GLOBALS['main']->setACPNotify(sprintf($lang['orders']['notify_orders_purged'],$_POST['month_purge']));
 				} else {
 					$GLOBALS['main']->setACPNotify($lang['orders']['notify_orders_delete']);
 				}
