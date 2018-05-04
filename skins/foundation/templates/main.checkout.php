@@ -15,7 +15,7 @@
       <title>{$META_TITLE}</title>
       {include file='templates/element.meta.php'}
       <link href="{$CANONICAL}" rel="canonical">
-      <link href="{$ROOT_PATH}/favicon.ico" rel="shortcut icon" type="image/x-icon">
+      <link href="{$ROOT_PATH}favicon.ico" rel="shortcut icon" type="image/x-icon">
       {include file='templates/element.css.php'}
       {include file='templates/content.recaptcha.head.php'}
       {include file='templates/element.google_analytics.php'}
