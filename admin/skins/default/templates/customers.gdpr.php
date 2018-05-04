@@ -22,7 +22,7 @@
         </form>
     <hr>
     <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
-        <p>{$LANG.customer.delete_older_than|replace:'%s':'<input type="text" value="" class="number-center" name="customer_purge">'} <input type="submit" class="delete submit_confirm tiny" title="{$LANG.notification.confirm_continue}" value="{$LANG.common.go}"></p>
+        <p>{$LANG.customer.delete_older_than|replace:'%s':'<input type="number" min="1" value="" class="number-center" name="customer_purge">'} <input type="submit" class="delete submit_confirm tiny" title="{$LANG.notification.confirm_continue}" value="{$LANG.common.go}"></p>
     </form>
     <hr>
     <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
