@@ -31,4 +31,11 @@
             <input type="submit" class="delete submit_confirm uppercase" value="{$LANG.customer.delete_no_order}" title="{$LANG.notification.confirm_continue}" name="search">
         </p>
     </form>
+    <hr>
+    <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
+        <p>
+            <input type="hidden" name="delete_guests" value="1">
+            <input type="submit" class="delete submit_confirm uppercase" value="{$LANG.customer.delete_guests}" title="{$LANG.notification.confirm_continue}" name="search">
+        </p>
+    </form>
 </div>

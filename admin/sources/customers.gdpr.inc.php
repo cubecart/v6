@@ -30,7 +30,7 @@ if(isset($_POST['customer_purge']) && ctype_digit($_POST['customer_purge'])) {
 
 ## Delete customers with no orders
 if(isset($_POST['no_order_purge'])) {
-    if($purge_customers = $GLOBALS['db']->misc('SELECT DISTINCT `CubeCart_customer`.`customer_id` FROM `CubeCart_customer` LEFT JOIN `CubeCart_order_summary` ON `CubeCart_order_summary`.`customer_id` = `CubeCart_customer`.`customer_id` WHERE `CubeCart_order_summary`.`customer_id` IS NULL')) {
+    if($purge_customers = $GLOBALS['db']->misc('SELECT DISTINCT `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_customer`.`customer_id` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_customer` LEFT JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary` ON `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary`.`customer_id` = `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_customer`.`customer_id` WHERE `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary`.`customer_id` IS NULL')) {
         foreach($purge_customers as $purge_customer) {
             $del_cid[] = $purge_customer['customer_id'];
         }
@@ -39,6 +39,20 @@ if(isset($_POST['no_order_purge'])) {
         $GLOBALS['main']->setACPNotify(sprintf($lang['customer']['no_order_purge']));
     } else {
         $GLOBALS['main']->setACPWarning($lang['customer']['purge_fail']);
+    }
+}
+
+## Delete guest accounts
+if(isset($_POST['delete_guests'])) {
+    if($purge_customers = $GLOBALS['db']->select('CubeCart_customer', 'customer_id', array('type' => 2))) {
+        foreach($purge_customers as $purge_customer) {
+            $del_cid[] = $purge_customer['customer_id'];
+        }
+    }
+    if(count($del_cid) > 0) {
+        $GLOBALS['main']->setACPNotify(sprintf($lang['customer']['delete_guests_success']));
+    } else {
+        $GLOBALS['main']->setACPWarning($lang['customer']['delete_guests_fail']);
     }
 }
 

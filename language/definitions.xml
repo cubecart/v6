@@ -860,6 +860,9 @@ This email is sent from the store's master email address but it is possible to r
     <string name="zone_name" introduced="5.0.0"><![CDATA[Name]]></string>
   </group>
   <group name="customer">
+    <string name="delete_guests" introduced="6.1.2"><![CDATA[Delete all guest accounts]]></string>
+    <string name="delete_guests_success" introduced="6.1.2"><![CDATA[All guest accounts have been deleted.]]></string>
+    <string name="delete_guests_fail" introduced="6.1.2"><![CDATA[No guest accounts were deleted.]]></string>
     <string name="delete_no_order" introduced="6.1.2"><![CDATA[Delete all customers without orders]]></string>
     <string name="delete_older_than" introduced="6.1.2"><![CDATA[Delete all customers with orders older than %s months.]]></string>
     <string name="purge_success" introduced="6.1.2"><![CDATA[Customers with orders olders placed over %s months ago have been deleted.]]></string>
