@@ -1277,7 +1277,7 @@ class Cubecart {
 						$item['options'] = unserialize($item['product_options']);
 						$vars['items'][] = $item;
 					}
-					if($cats = $GLOBALS['db']->select('`CubeCart_category_index` AS `I` INNER JOIN `CubeCart_category` AS `C` ON `I`.`cat_id` = `C`.`cat_id`', '`I`.`product_id`, `C`.`cat_name`', '`I`.`product_id` IN ('.implode(',',$prod_ids).') AND `primary` = 1')) {
+					if($cats = $GLOBALS['db']->select('`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_category_index` AS `I` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_category` AS `C` ON `I`.`cat_id` = `C`.`cat_id`', '`I`.`product_id`, `C`.`cat_name`', '`I`.`product_id` IN ('.implode(',',$prod_ids).') AND `primary` = 1')) {
 						$cat_names = array();
 						foreach($cats as $cat) {
 							$cat_names[$cat['product_id']] = $cat['cat_name'];
