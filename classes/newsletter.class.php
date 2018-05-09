@@ -181,7 +181,7 @@ class Newsletter {
 	 * @return bool
 	 */
 	public function subscribe($email = false, $customer_id = null) {
-		if($GLOBALS['config']->get('config', 'dbl_opt')=='1' && $GLOBALS['session']->has('dbl_opted')) return false;
+		if($GLOBALS['config']->get('config', 'dbl_opt')=='1' && $GLOBALS['session']->has('dbl_opted') && $GLOBALS['session']->get('dbl_opted')==$email) return false;
 		$skin_data = GUI::getInstance()->getSkinData('newsletter_recaptcha');
 		$error = false;
 		if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -213,7 +213,7 @@ class Newsletter {
 				if (($content = $mailer->loadContent('newsletter.verify_email', $GLOBALS['language']->current())) !== false) {
 					$GLOBALS['smarty']->assign('DATA', array('email' => $email, 'link' => CC_STORE_URL.'?_a=newsletter&do='.$record['validation']));
 					$mailer->sendEmail($email, $content);
-					$GLOBALS['session']->set('dbl_opted', true);
+					$GLOBALS['session']->set('dbl_opted', $email);
 				}
 				$this->_subscriberLog($email, 'Subscribed pending double opt-in verification');
 				if($notification) $GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_subscribed_opt_in']);
