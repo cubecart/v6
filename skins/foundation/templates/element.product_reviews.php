@@ -87,7 +87,7 @@
             {include file='templates/content.recaptcha.php'}
          </div>
          <div class="clearfix">
-            <input type="submit" value="{$LANG.catalogue.submit_review}" id="review_submit" class="g-recaptcha button">
+            <input type="submit" value="{$LANG.catalogue.submit_review}" data-form-id="review_form" id="review_submit" class="g-recaptcha button">
             <input type="button" value="{$LANG.common.cancel}" class="button secondary right review_hide">
          </div>
       </form>

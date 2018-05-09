@@ -9,7 +9,11 @@ var reCaptchaCallback = function() {
             grecaptcha.render($(el).attr('id'), {
                 'sitekey' : '{$CONFIG.recaptcha_public_key}',
                 'callback' : function(token) {
-                    $(el).parent().submit();
+                    if($(el).attr("data-form-id")){
+                        $('#'+$(el).attr("data-form-id")).submit();
+                    } else {
+                        $(el).parent().submit();
+                    }
                 }
             });
         });
