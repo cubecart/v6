@@ -11,13 +11,13 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  */
 if (!defined('CC_INI_SET')) die('Access Denied');
-Admin::getInstance()->permissions('settings', CC_PERM_READ, true);
+Admin::getInstance()->permissions('maintenance', CC_PERM_READ, true);
 
 global $lang;
 
 $GLOBALS['gui']->addBreadcrumb($lang['hooks']['title_hook'], currentPage(array('action', 'hook_id', 'plugin')));
 
-if (Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
+if (Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT)) {
 
 	$snippet_redirect = false;
 
