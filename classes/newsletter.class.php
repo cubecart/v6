@@ -181,6 +181,7 @@ class Newsletter {
 	 * @return bool
 	 */
 	public function subscribe($email = false, $customer_id = null) {
+		if($GLOBALS['config']->get('config', 'dbl_opt')=='1' && $GLOBALS['session']->has('dbl_opted')) return false;
 		$skin_data = GUI::getInstance()->getSkinData('newsletter_recaptcha');
 		$error = false;
 		if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -206,17 +207,19 @@ class Newsletter {
 				'date' => date('c')
 			);
 			$GLOBALS['db']->insert('CubeCart_newsletter_subscriber', $record);
+			$notification = in_array($_GET['_a'], array('confirm','checkout','basket')) ? false : true;
 			if((bool)$GLOBALS['config']->get('config', 'dbl_opt')) {
 				$mailer = new Mailer();
 				if (($content = $mailer->loadContent('newsletter.verify_email', $GLOBALS['language']->current())) !== false) {
 					$GLOBALS['smarty']->assign('DATA', array('email' => $email, 'link' => CC_STORE_URL.'?_a=newsletter&do='.$record['validation']));
 					$mailer->sendEmail($email, $content);
+					$GLOBALS['session']->set('dbl_opted', true);
 				}
 				$this->_subscriberLog($email, 'Subscribed pending double opt-in verification');
-				$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_subscribed_opt_in']);
+				if($notification) $GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_subscribed_opt_in']);
 			} else {
 				$this->_subscriberLog($email, 'Subscribed without double opt-in.');
-				$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_subscribed']);
+				if($notification) $GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_subscribed']);
 			}
 
 			foreach ($GLOBALS['hooks']->load('class.newsletter.subscribe') as $hook) include $hook;
