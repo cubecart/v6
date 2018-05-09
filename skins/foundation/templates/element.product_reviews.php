@@ -84,7 +84,7 @@
             <div class="row">
                <div class="small-12 columns"><label for="rev_review" class="return">{$LANG.catalogue.review}</label><textarea id="rev_review" name="review[review]" placeholder="{$LANG.catalogue.review} {$LANG.form.required}" required>{$WRITE.review}</textarea></div>
             </div>
-            {include file='templates/content.recaptcha.php'}
+            {include file='templates/content.recaptcha.php' ga_fid="Review"}
          </div>
          <div class="clearfix">
             <input type="submit" value="{$LANG.catalogue.submit_review}" id="review_submit" class="g-recaptcha button">
