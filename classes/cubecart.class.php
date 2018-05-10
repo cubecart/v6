@@ -2265,7 +2265,11 @@ class Cubecart {
 						'subscribe' => $GLOBALS['storeURL'].'/index.php?_a=newsletter&action=subscribe',
 						'unsubscribe' => $GLOBALS['storeURL'].'/index.php?_a=newsletter&action=unsubscribe')
 				);
-				$GLOBALS['smarty']->assign('SUBSCRIBED', (bool)$GLOBALS['db']->select('CubeCart_newsletter_subscriber', false, array('email' => $GLOBALS['user']->get('email')), false, false, false, false));
+				$where = array('email' => $GLOBALS['user']->get('email'));
+				if((bool)$GLOBALS['config']->get('config', 'dbl_opt')) {
+					$where[dbl_opt] = '1';
+				}
+				$GLOBALS['smarty']->assign('SUBSCRIBED', (bool)$GLOBALS['db']->select('CubeCart_newsletter_subscriber', false, $where, false, 1, false, false));
 			}
 			// Show list of publicly visible newsletters
 			if (($archive = $GLOBALS['db']->select('CubeCart_newsletter', false, array('status' => 1))) !== false) {

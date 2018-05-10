@@ -1085,7 +1085,11 @@ class GUI {
 		if(!$GLOBALS['smarty']->templateExists('templates/box.newsletter.php')) return false;
 
 		if ($GLOBALS['user']->is()) {
-			$GLOBALS['smarty']->assign('CTRL_SUBSCRIBED', (bool)$GLOBALS['db']->select('CubeCart_newsletter_subscriber', false, array('email' => $GLOBALS['user']->get('email')), false, 1));
+			$where = array('email' => $GLOBALS['user']->get('email'));
+			if((bool)$GLOBALS['config']->get('config', 'dbl_opt')) {
+				$where[dbl_opt] = '1';
+			}
+			$GLOBALS['smarty']->assign('CTRL_SUBSCRIBED', (bool)$GLOBALS['db']->select('CubeCart_newsletter_subscriber', false, $where, false, 1, false, true));
 		}
 
 		if (isset($_POST['subscribe'])) {
