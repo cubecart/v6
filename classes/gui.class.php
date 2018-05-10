@@ -1087,7 +1087,7 @@ class GUI {
 		if ($GLOBALS['user']->is()) {
 			$where = array('email' => $GLOBALS['user']->get('email'));
 			if((bool)$GLOBALS['config']->get('config', 'dbl_opt')) {
-				$where[dbl_opt] = '1';
+				$where['dbl_opt'] = '1';
 			}
 			$GLOBALS['smarty']->assign('CTRL_SUBSCRIBED', (bool)$GLOBALS['db']->select('CubeCart_newsletter_subscriber', false, $where, false, 1, false, true));
 		}
