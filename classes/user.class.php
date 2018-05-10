@@ -885,7 +885,7 @@ class User {
 
 			$array['hash'] = md5($hash_values);
 
-			if($result = $GLOBALS['db']->select('CubeCart_addressbook', array('address_id'), array('hash' => $array['hash']))) {
+			if($result = $GLOBALS['db']->select('CubeCart_addressbook', array('address_id'), array('hash' => $array['hash']), false, 1, false, false)) {
 				$array['address_id'] = $result[0]['address_id'];
 			}
 
