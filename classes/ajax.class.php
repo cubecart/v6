@@ -267,7 +267,7 @@ class Ajax {
 			$body = "Testing email sent by &quot;".$method_name."&quot; from CubeCart v".CC_VERSION." at ".CC_STORE_URL.".<br><br>If you are reading this message then you can be sure that email from your store is working.";
 			$altbody = strip_tags($body);
 
-			if($method!=="mail") {
+			if($_GET['email_method']!=="mail") {
 			    @ob_start();
 			    $test_mailer = new Mailer();
 			    $test_mailer->SMTPDebug = 2;
