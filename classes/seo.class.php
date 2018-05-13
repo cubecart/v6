@@ -651,11 +651,11 @@ class SEO {
 			if (empty($path)) {
 				return ($bool) ? false : '';
 			}
-			if (($existing = $GLOBALS['db']->select('CubeCart_seo_urls', 'id', array('type' => $type, 'item_id' => $item_id))) !== false) {
+			if (($existing = $GLOBALS['db']->select('CubeCart_seo_urls', 'id', array('type' => $type, 'item_id' => $item_id), false, 1, false, false)) !== false) {
 				$GLOBALS['db']->update('CubeCart_seo_urls', array('type' => $type, 'item_id' => $item_id, 'path' => $path, 'custom' => $custom), array('id' => $existing[0]['id']));
 			} else {
-				//Check for dup path
-				if (!$GLOBALS['db']->select('CubeCart_seo_urls', false, array('path' => $path))) {
+				// Check for duplicate path
+				if (!$GLOBALS['db']->select('CubeCart_seo_urls', false, array('path' => $path), false, 1, false, false)) {
 					$GLOBALS['db']->insert('CubeCart_seo_urls', array('type' => $type, 'item_id' => $item_id, 'path' => $path, 'custom' => $custom));
 				} else {
 					// Force unique path is it's already taken
