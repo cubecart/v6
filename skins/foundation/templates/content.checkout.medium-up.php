@@ -71,7 +71,7 @@
                      {foreach from=$COUNTRIES item=country}<option value="{$country.numcode}" {$country.selected}>{$country.name}</option>{/foreach}
                   </select>
                   <label for="estimate_state">{$LANG.address.state}</label>
-                  <input type="text" name="estimate[state]" id="estimate_state" value="{$ESTIMATES.state|upper}" placeholder="{$LANG.address.state}">
+                  <input type="text" name="estimate[state]" id="estimate_state" value="{$ESTIMATES.state}" placeholder="{$LANG.address.state}">
                   <label for="estimate_postcode">{$LANG.address.postcode}</label>
                   <input type="text" value="{$ESTIMATES.postcode}" id="estimate_postcode" placeholder="{$LANG.address.postcode}" name="estimate[postcode]">
                   <input type="submit" name="get-estimate" class="button expand" value="{$LANG.basket.fetch_shipping_rates}">
