@@ -166,7 +166,7 @@ jQuery(document).ready(function() {
                 }
                 for (i in counties) {
                     var option = document.createElement('option');
-                    if (setting == counties[i].name || setting == counties[i].id) {
+                    if (setting.toLowerCase() == counties[i].name.toLowerCase() || setting == counties[i].id) {
                         $('select' + target).append($(option).val(counties[i].id).text(counties[i].name).attr('selected', 'selected'));
                     } else {
                         if(counties[i].id>0) {
