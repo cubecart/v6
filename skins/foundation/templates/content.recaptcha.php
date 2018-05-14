@@ -10,7 +10,6 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
 {if $RECAPTCHA=='2'}
-<h3>{$LANG.form.verify_human}</h3>
 <div class="row">
    <div class="medium-8 columns">
         {if empty($CONFIG.recaptcha_public_key) || empty($CONFIG.recaptcha_secret_key)}
