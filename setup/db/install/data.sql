@@ -373,6 +373,136 @@ INSERT INTO `CubeCart_geo_zone` SET `country_id` = 225, `name` = 'South Yorkshir
 INSERT INTO `CubeCart_geo_zone` SET `country_id` = 225, `name` = 'West Yorkshire', `abbrev` = 'YSW'; #EOQ
 INSERT INTO `CubeCart_geo_zone` SET `country_id` = 225, `name` = 'East Yorkshire', `abbrev` = 'ERY'; #EOQ
 INSERT INTO `CubeCart_geo_zone` SET `country_id` = 225, `name` = 'London', `abbrev` = 'LND'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 10, `name` = 'Catamarca', `abbrev` = 'CT'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 10, `name` = 'Chaco', `abbrev` = 'CC'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 10, `name` = 'Chubut', `abbrev` = 'CH'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 10, `name` = 'Ciudad de Buenos Aires', `abbrev` = 'DF'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 10, `name` = 'Corrientes', `abbrev` = 'CN'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 10, `name` = 'Córdoba', `abbrev` = 'CB'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 10, `name` = 'Entre Ríos', `abbrev` = 'ER'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 10, `name` = 'Formosa', `abbrev` = 'FM'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 10, `name` = 'Jujuy', `abbrev` = 'JY'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 10, `name` = 'La Pampa', `abbrev` = 'LP'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 10, `name` = 'La Rioja', `abbrev` = 'LR'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 10, `name` = 'Mendoza', `abbrev` = 'MZ'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 10, `name` = 'Misiones', `abbrev` = 'MN'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 10, `name` = 'Neuquén', `abbrev` = 'NQ'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 10, `name` = 'Río Negro', `abbrev` = 'RN'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 10, `name` = 'Salta', `abbrev` = 'SA'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 10, `name` = 'San Juan', `abbrev` = 'SJ'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 10, `name` = 'San Luis', `abbrev` = 'SL'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 10, `name` = 'Santa Cruz', `abbrev` = 'SC'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 10, `name` = 'Santa Fe', `abbrev` = 'SF'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 10, `name` = 'Santiago del Estero', `abbrev` = 'SE'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 10, `name` = 'Tierra del Fuego', `abbrev` = 'TF'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 10, `name` = 'Tucumán', `abbrev` = 'TM'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 30, `name` = 'Acre', `abbrev` = 'AC'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 30, `name` = 'Alagoas', `abbrev` = 'AL'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 30, `name` = 'Amapá', `abbrev` = 'AP'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 30, `name` = 'Amazonas', `abbrev` = 'AM'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 30, `name` = 'Bahia', `abbrev` = 'BA'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 30, `name` = 'Ceará', `abbrev` = 'CE'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 30, `name` = 'Distrito Federal', `abbrev` = 'DF'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 30, `name` = 'Espírito Santo', `abbrev` = 'ES'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 30, `name` = 'Goiás', `abbrev` = 'GO'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 30, `name` = 'Maranhão', `abbrev` = 'MA'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 30, `name` = 'Mato Grosso', `abbrev` = 'MT'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 30, `name` = 'Mato Grosso do Sul', `abbrev` = 'MS'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 30, `name` = 'Minas Gerais', `abbrev` = 'MG'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 30, `name` = 'Paraná', `abbrev` = 'PR'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 30, `name` = 'Paraíba', `abbrev` = 'PB'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 30, `name` = 'Pará', `abbrev` = 'PA'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 30, `name` = 'Pemambuco', `abbrev` = 'PE'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 30, `name` = 'Piauí', `abbrev` = 'PI'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 30, `name` = 'Rio Grande do Norte', `abbrev` = 'RN'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 30, `name` = 'Rio Grande do Sul', `abbrev` = 'RS'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 30, `name` = 'Rio de Janeiro', `abbrev` = 'RJ'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 30, `name` = 'Rondônia', `abbrev` = 'RO'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 30, `name` = 'Roraima', `abbrev` = 'RR'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 30, `name` = 'Santa Catarina', `abbrev` = 'SC'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 30, `name` = 'Sergipe', `abbrev` = 'SE'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 30, `name` = 'São Paulo', `abbrev` = 'SP'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 30, `name` = 'Tocatins', `abbrev` = 'TO'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Andaman and Nicobar Islands', `abbrev` = 'INAN'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Andhra Pradesh', `abbrev` = 'INAP'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Arunachal Pradesh', `abbrev` = 'INAR'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Assam', `abbrev` = 'INAS'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Bihar', `abbrev` = 'INBR'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Chandigarh', `abbrev` = 'INCH'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Chhattisgarh', `abbrev` = 'INCT'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Dadra and Nagar Haveli', `abbrev` = 'INDN'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Daman and Diu', `abbrev` = 'INDD'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Delhi', `abbrev` = 'INDL'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Goa', `abbrev` = 'INGA'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Gujarat', `abbrev` = 'INGJ'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Haryana', `abbrev` = 'INHR'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Himachal Pradesh', `abbrev` = 'INHP'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Jammu and Kashmir', `abbrev` = 'INJK'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Jharkhand', `abbrev` = 'INJH'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Karnataka', `abbrev` = 'INKA'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Kerala', `abbrev` = 'INKL'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Lakshadweep', `abbrev` = 'INLD'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Madhya Pradesh', `abbrev` = 'INMP'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Maharashtra', `abbrev` = 'INMH'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Manipur', `abbrev` = 'INMN'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Meghalaya', `abbrev` = 'INML'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Mizoram', `abbrev` = 'INMZ'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Nagaland', `abbrev` = 'INNL'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Odisha', `abbrev` = 'INOR'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Puducherry', `abbrev` = 'INPY'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Punjab', `abbrev` = 'INPB'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Rajasthan', `abbrev` = 'INRJ'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Sikkim', `abbrev` = 'INSK'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Tamil Nadu', `abbrev` = 'INTN'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Telangana', `abbrev` = 'INTG'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Tripura', `abbrev` = 'INTR'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Uttar Pradesh', `abbrev` = 'INUP'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'West Bengal', `abbrev` = 'INWB'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Aichi', `abbrev` = 'AI'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Akita', `abbrev` = 'AK'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Aomori', `abbrev` = 'AO'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Chiba', `abbrev` = 'CH'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Ehime', `abbrev` = 'EH'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Fukui', `abbrev` = 'FI'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Fukuoka', `abbrev` = 'FA'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Gifu', `abbrev` = 'GI'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Gunma', `abbrev` = 'GU'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Hiroshima', `abbrev` = 'HI'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Hokkaido', `abbrev` = 'HO'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Hyogo', `abbrev` = 'HY'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Ibaraki', `abbrev` = 'IB'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Ishikawa', `abbrev` = 'IS'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Iwate', `abbrev` = 'IW'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Kagawa', `abbrev` = 'KAG'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Kanagawa', `abbrev` = 'KAN'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Kochi', `abbrev` = 'KO'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Kumamoto', `abbrev` = 'KU'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Kyoto', `abbrev` = 'KY'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Mie', `abbrev` = 'MIE'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Miyagi', `abbrev` = 'MIGI'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Miyazaki', `abbrev` = 'MIKI'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Nagano', `abbrev` = 'NAO'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Nagasaki', `abbrev` = 'NAKI'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Nara', `abbrev` = 'NARA'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Niigata', `abbrev` = 'NI'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Oita', `abbrev` = 'OI'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Okayama', `abbrev` = 'OKA'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Okinawa', `abbrev` = 'OKI'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Osaka', `abbrev` = 'OS'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Saga', `abbrev` = 'SAGA'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Saitama', `abbrev` = 'SAIT'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Shiga', `abbrev` = 'SHGA'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Shimane', `abbrev` = 'SHNE'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Shizuoka', `abbrev` = 'SHKA'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Tochigi', `abbrev` = 'TOCH'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Tokushima', `abbrev` = 'TOKU'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Tokyo', `abbrev` = 'TOKY'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Tottori', `abbrev` = 'TOTT'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Toyama', `abbrev` = 'TOY'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Wakayama', `abbrev` = 'WAK'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Yamagata', `abbrev` = 'YATA'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Yamaguchi', `abbrev` = 'YAGU'; #EOQ
+INSERT INTO `CubeCart_geo_zone` SET `country_id` = 99, `name` = 'Yamanashi', `abbrev` = 'YANA'; #EOQ
 
 INSERT INTO `CubeCart_geo_country` (`id`, `iso`, `name`, `iso3`, `numcode`) VALUES (1, 'AF', 'Afghanistan', 'AFG', 004); #EOQ
 INSERT INTO `CubeCart_geo_country` (`id`, `iso`, `name`, `iso3`, `numcode`) VALUES (2, 'AL', 'Albania', 'ALB', 008); #EOQ
