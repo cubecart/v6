@@ -88,69 +88,6 @@
    <p>{$LANG.email.news_none}</p>
    {/if}
 </div>
-<form action="{$VAL_SELF}" method="post" enctype="multipart/form-data" target="_self">
-   <div id="export_mailing_list" class="tab_content">
-      <h3>{$LANG.email.title_export}</h3>
-      <fieldset>
-         <legend>{$LANG.email.title_export_settings}</legend>
-         <div>
-            <label for="format">{$LANG.email.export_format}</label>
-            <span>
-               <input type="text" name="maillist_format" id="format" class="textbox" value="{$EMAIL_ADDRESS}" title="{literal}e.g. {$EMAIL_ADDRESS} <{$FULL_NAME_SHORT}>{/literal}">
-               <select name="maillist_extension">
-                  <option value="txt">.txt</option>
-                  <option value="csv">.csv</option>
-               </select>
-               <input type="submit" class="tiny" id="mailing_list_export" value="{$LANG.common.export}">
-            </span>
-         </div>
-      </fieldset>
-      <table>
-         <thead>
-            <tr>
-               <td>{$LANG.email.email_macro}</td>
-               <td>{$LANG.email.email_macro_available}</td>
-               <td>{$LANG.common.description}</td>
-            </tr>
-         </thead>
-         <tbody>
-            <tr>
-               <td>{literal}{$EMAIL_ADDRESS}{/literal}</td>
-               <td align="center"><i class="fa fa-check" alt="{$LANG.common.yes}"></i></td>
-               <td>{$LANG.user.email_address} {$LANG.email.example_email}</td>
-            </tr>
-            <tr>
-               <td>{literal}{$FULL_NAME_LONG}{/literal}</td>
-               <td align="center"><i class="fa fa-times" alt="{$LANG.common.no}"></i></td>
-               <td>{$LANG.user.fullname_long} {$LANG.email.example_fullname_long}</td>
-            </tr>
-            <tr>
-               <td>{literal}{$FULL_NAME_SHORT}{/literal}</td>
-               <td align="center"><i class="fa fa-times" alt="{$LANG.common.no}"></i></td>
-               <td>{$LANG.user.fullname_short} {$LANG.email.example_fullname_short}</td>
-            </tr>
-            <tr>
-               <td>{literal}{$TITLE}{/literal}</td>
-               <td align="center"><i class="fa fa-times" alt="{$LANG.common.no}"></i></td>
-               <td>{$LANG.user.title} {$LANG.email.example_title}</td>
-            </tr>
-            <tr>
-               <td>{literal}{$FIRST_NAME}{/literal}</td>
-               <td align="center"><i class="fa fa-times" alt="{$LANG.common.no}"></i></td>
-               <td>{$LANG.user.name_first} {$LANG.email.example_name_first}</td>
-            </tr>
-            <tr>
-               <td>{literal}{$LAST_NAME}{/literal}</td>
-               <td align="center"><i class="fa fa-times" alt="{$LANG.common.no}"></i></td>
-               <td>{$LANG.user.name_first} {$LANG.email.example_name_last}</td>
-            </tr>
-         </tbody>
-      </table>
-      <p>{$LANG.email.help_macro}</p>
-      <input type="hidden" name="previous-tab" id="previous-tab" value="">
-   </div>
-   
-</form>
 {/if}
 {if isset($DISPLAY_SEND)}
 <div class="tab_content" id="newsletter_send">

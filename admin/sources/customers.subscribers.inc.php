@@ -15,6 +15,69 @@ Admin::getInstance()->permissions('customers', CC_PERM_READ, true);
 
 global $lang;
 
+if (isset($GLOBALS['RAW']['POST']['maillist_format'])) {
+	if (empty($GLOBALS['RAW']['POST']['maillist_format'])) {
+		$GLOBALS['RAW']['POST']['maillist_format'] = '{$EMAIL_ADDRESS}';
+	}
+	if (($maillist = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', array('customer_id', 'email'), array('status' => 1))) !== false) {
+		// Set initial variables
+		$file_data = null;
+		$find  = array (
+			'{$EMAIL_ADDRESS}',
+			'{$FULL_NAME_LONG}',
+			'{$FULL_NAME_SHORT}',
+			'{$TITLE}',
+			'{$FIRST_NAME}',
+			'{$LAST_NAME}'
+		);
+		// Loop through
+		foreach ($maillist as $member) {
+			if ($member['customer_id']) {
+				$customer = $GLOBALS['db']->select('CubeCart_customer', array('title', 'first_name', 'last_name'), array('customer_id' => $member['customer_id']));
+				if ($customer) {
+					$member = array_merge($member, $customer[0]);
+					if (!empty($member['title'])) {
+						$long_name[]  = $member['title'];
+					}
+					if (!empty($member['first_name'])) {
+						$long_name[]  = $member['first_name'];
+						$short_name[]  = $member['first_name'];
+					}
+					if (!empty($member['last_name'])) {
+						$long_name[]  = $member['last_name'];
+						$short_name[]  = $member['last_name'];
+					}
+					$member['long_name'] = implode(' ', $long_name);
+					$member['short_name'] = implode(' ', $short_name);
+				}
+			}
+
+			$replace  = array(
+				$member['email'],
+				$member['long_name'],
+				$member['short_name'],
+				$member['title'],
+				$member['first_name'],
+				$member['last_name']
+			);
+			/* Start Fixing Bug 2884 */
+			if ($_POST['maillist_extension']=="txt") {
+				$file_data .= str_replace($find, $replace, $GLOBALS['RAW']['POST']['maillist_format']).",";
+			}else {
+				$file_data .= str_replace($find, $replace, $GLOBALS['RAW']['POST']['maillist_format'])."\n";
+			}
+			/* End Fixing Bug 2884 */
+			unset($customer, $replace, $member, $long_name, $short_name);
+		}
+		$GLOBALS['debug']->supress(true);
+		$file_data = preg_replace('#\{.*?\}#s', '', $file_data); 
+		deliverFile(false, false, $file_data, $lang['email']['export_filename'].'.'.$_POST['maillist_extension']);
+		exit;
+	} else {
+		$GLOBALS['main']->setACPWarning($lang['email']['error_news_export_empty']);
+	}
+}
+
 $redirect = false;
 
 if(isset($_GET['del_single_opt'])) {
@@ -150,5 +213,6 @@ $GLOBALS['smarty']->assign('SUBSCRIBERS', $subscribers);
 $GLOBALS['gui']->addBreadcrumb($lang['navigation']['nav_subscribers']);
 $GLOBALS['main']->addTabControl($lang['navigation']['nav_subscribers'], 'general');
 $GLOBALS['main']->addTabControl($lang['newsletter']['import_subscribers'], 'import');
+$GLOBALS['main']->addTabControl($lang['email']['title_list_export'], 'export_mailing_list');
 $GLOBALS['main']->addTabControl($lang['search']['gdpr_tools'], 'gdpr');
 $page_content = $GLOBALS['smarty']->fetch('templates/customers.subscribers.php');
