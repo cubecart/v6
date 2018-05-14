@@ -287,13 +287,21 @@ $(document).ready(function() {
         }), "undefined" != typeof gui_message_json && "object" == typeof gui_message_json)
         for (var e in gui_message_json) $("#" + e).addClass("required-error").val("");
 
-    $("#bulk_price_method").change(function() {
-        if($(this).val()=='percent') {
-            $("#bulk_price_action").hide().attr('disabled', true);
-            $("#bulk_price_percent_symbol").show();
+        $("#bulk_price_method").change(function() {
+            if($(this).val()=='percent') {
+                $("#bulk_price_action").hide().attr('disabled', true);
+                $("#bulk_price_percent_symbol").show();
+            } else {
+                $("#bulk_price_action").show().attr('disabled', false);
+                $("#bulk_price_percent_symbol").hide();
+            }
+        });
+
+    $("#email_method").change(function() {
+        if($(this).val()=='mail') {
+            $("#smtp_settings").slideUp();
         } else {
-            $("#bulk_price_action").show().attr('disabled', false);
-            $("#bulk_price_percent_symbol").hide();
+            $("#smtp_settings").slideDown();
         }
     });
 

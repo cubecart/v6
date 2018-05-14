@@ -633,6 +633,12 @@ tbody tr:nth-child(even) {
 .stripe div:nth-child(even) {
     background-color: #fff !important
 }
+.stripe_reverse div:nth-child(odd) {
+    background-color: #fff !important
+}
+.stripe_reverse div:nth-child(even) {
+    background-color: #edf4f7 !important
+}
 fieldset .checkbox {
     margin-top: 4px
 }
@@ -1041,9 +1047,6 @@ div#content .powered {
 .google_chart {
     width: 100%;
     height: 500px
-}
-.nostripe {
-    background-color: #fff
 }
 .nostripe {
     background: none!important
