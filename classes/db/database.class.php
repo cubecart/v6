@@ -221,7 +221,7 @@ class Database_Contoller {
 		$this->_query = "DELETE FROM `{$this->_prefix}$table` ".$this->where($table, $where)." $limit;";
 		$this->_execute(false);
 		$affected = ($this->affected() > 0);
-		$this->_clearCacheNotice($purge, $affected);
+		$this->_clearCacheNotice($purge, $affected, $table);
 		return ($affected) ? true : false;
 	}
 
@@ -408,7 +408,7 @@ class Database_Contoller {
 				$this->_query = "INSERT INTO `{$this->_prefix}$table` (".implode(',', $fields).') VALUES ('.implode(',', $values).');';
 				$this->_execute(false);
 				$affected = ($this->affected() > 0);
-				$this->_clearCacheNotice($purge, $affected);
+				$this->_clearCacheNotice($purge, $affected, $table);
 				$insert_id = ($this->insertid()) ? $this->insertid() : true;
 				return ($affected) ? $insert_id : false;
 			}
@@ -803,7 +803,7 @@ class Database_Contoller {
 				$this->_query = "UPDATE `{$this->_prefix}$table` SET ".implode(',', $set).'  '.$this->where($table, $where).';';
 				$result = $this->_execute(false);
 				$affected = ($this->affected() > 0);
-				$this->_clearCacheNotice($purge, $affected);
+				$this->_clearCacheNotice($purge, $affected, $table);
 				return (bool)$result;
 			}
 		}
@@ -929,7 +929,7 @@ class Database_Contoller {
 	/**
 	 * Do we need to recommend a cache clear?
 	 */
-	private function _clearCacheNotice($purge, $affected) {
+	private function _clearCacheNotice($purge, $affected, $table) {
 		if (CC_IN_ADMIN && $purge && $affected && method_exists($GLOBALS['session'],'set') && !in_array($table, $this->cache_notice_tables_ingore)) {
 			$GLOBALS['session']->set('CLEAR_CACHE', true);
 		}
