@@ -197,8 +197,11 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
 				$record['postcode']  = strtoupper($record['postcode']);
 
 				// set all to non-default first so this becomes default!
-				if ($record['default']) {
+				if ($record['default']=='1') {
 					$GLOBALS['db']->update('CubeCart_addressbook', array('default' => '0'), array('customer_id' => $customer_id, 'billing' => (string)$record['billing']));
+				}
+				if ($record['billing']=='1') {
+					$GLOBALS['db']->update('CubeCart_addressbook', array('billing' => '0'), array('customer_id' => $customer_id));
 				}
 
 				if (isset($record['address_id']) && !empty($record['address_id'])) {
