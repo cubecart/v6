@@ -1224,12 +1224,6 @@ This email is sent from the store's master email address but it is possible to r
   </group>
   <group name="form">
     <string name="create_report" introduced="6.2.0"><![CDATA[Create Report]]></string>
-    <string name="recaptcha_try_diff_img" introduced="6.0.6"><![CDATA[Try a different image]]></string>
-    <string name="recaptcha_get_audio" introduced="6.0.6"><![CDATA[Get an audio CAPTCHA]]></string>
-    <string name="recaptcha_get_img" introduced="6.0.6"><![CDATA[Get an image CAPTCHA]]></string>
-    <string name="recaptcha_incorrect" introduced="6.0.6"><![CDATA[Incorrect please try again]]></string>
-    <string name="recaptcha_enter_words" introduced="6.0.6"><![CDATA[Enter the words above:]]></string>
-    <string name="recaptcha_enter_numbers" introduced="6.0.6"><![CDATA[Enter the numbers you hear:]]></string>
     <string name="recaptcha_key_not_set" introduced="6.0.6"><![CDATA[reCAPTCHA public and/or private key has not been set!]]></string>
     <string name="required" introduced="6.0.0"><![CDATA[(Required)]]></string>
     <string name="make_changes" introduced="6.0.0"><![CDATA[Make Changes]]></string>
