@@ -15,6 +15,11 @@ Admin::getInstance()->permissions('customers', CC_PERM_READ, true);
 
 global $lang;
 
+if(isset($_GET['reset']) && !empty($_GET['reset'])) {
+	$GLOBALS['session']->delete('email_filter');
+	httpredir('?_g=customers&node=subscribers');
+}
+
 if (isset($GLOBALS['RAW']['POST']['maillist_format'])) {
 	if (empty($GLOBALS['RAW']['POST']['maillist_format'])) {
 		$GLOBALS['RAW']['POST']['maillist_format'] = '{$EMAIL_ADDRESS}';

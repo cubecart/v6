@@ -18,6 +18,7 @@
                   <label class="narrow">{$LANG.statistics.search_term}</label>
                   <input type="text" name="email_filter" value="{$EMAIL_FILTER}">
                   <input type="submit" name="submit" class="tiny" value="{$LANG.common.go}">
+                  <a href="?_g=customers&node=subscribers&reset=1">{$LANG.common.reset}</a>
             </div>
       </fieldset>
       {if $SUBSCRIBERS}
