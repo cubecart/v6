@@ -60,4 +60,8 @@
 	<image reference="medium" maximum="500" quality="80" default="noimage.png" />
 	<image reference="large" maximum="600" quality="80" default="" /><!-- Doesnt need a default -->
   </images>
+	<!-- Use this to add custom variables into the skin which can be found in the smarty SKIN_CUSTOM array -->
+	<custom>
+		<recaptcha_badge_position>bottomright</recaptcha_badge_position><!-- Invisible Recaptcha Badge Position: bottomright, bottomleft or inline -->
+	</custom>
 </skin>

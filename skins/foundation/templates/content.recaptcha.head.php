@@ -7,8 +7,9 @@ var reCaptchaCallback = function() {
         $(".g-recaptcha" ).each(function() {
             var el = $(this);
             grecaptcha.render($(el).attr('id'), {
-                'sitekey' : '{$CONFIG.recaptcha_public_key}',
-                'callback' : function(token) {
+                'sitekey': '{$CONFIG.recaptcha_public_key}',
+                'badge': '{$SKIN_CUSTOM.recaptcha_badge_position}',
+                'callback': function(token) {
                     if($(el).attr("data-form-id")){
                         $('#'+$(el).attr("data-form-id")).submit();
                     } else {
