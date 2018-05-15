@@ -65,7 +65,7 @@
       <fieldset class="width_30">
             <legend>{$LANG.newsletter.log_search}</legend>
             <div><label class="narrow">{$LANG.user.email}</label>
-            <input type="text" name="email_history" id="email_history" value="{$EMAIL_FILTER}">
+            <input type="text" name="email_history" id="email_history" value="">
             <input type="button" name="submit" onclick="$.colorbox({ href:'{$STORE_URL}/{$SKIN_VARS.admin_file}?_g=xml&function=subscriber_log&email='+$('#email_history').val()})" class="tiny" value="{$LANG.common.go}">
             </div>
       </fieldset>
