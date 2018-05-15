@@ -1166,7 +1166,7 @@ ul.quick_links li#help_menu ul li:not(:last-child) {
     text-transform: uppercase;
 }
 #clear_cache_master.clear {
-    background: #e88e22;
+    background: #ffa500;
 }
 #clear_cache_master.clear a {
     color: #fff !important;   
@@ -1175,7 +1175,7 @@ ul.quick_links li#help_menu ul li:not(:last-child) {
     color: #fff !important;   
 }
 #clear_cache_master.clear:hover {
-    background: #da8117;
+    background: #ffb733;
 }
 ul.filetree li a {
     width: 440px;
