@@ -1587,6 +1587,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="notify_subscribed" introduced="5.0.0"><![CDATA[Your email address has been added to our mailing list.]]></string>
     <string name="notify_subscribed_opt_in" introduced="6.2.0"><![CDATA[Thank you. Please check your email account to confirm your subscription.]]></string>
     <string name="notify_unsubscribed" introduced="5.0.0"><![CDATA[Your email address has been removed from our mailing list.]]></string>
+    <string name="notify_not_subscribed" introduced="6.2.1"><![CDATA[That email address is not subscribed to our mailing list.]]></string>
     <string name="notify_already_subscribed" introduced="6.0.0"><![CDATA[Email address already subscribed.]]></string>
     <string name="subscribe" introduced="5.0.0"><![CDATA[Subscribe]]></string>
     <string name="unsubscribe" introduced="6.0.0"><![CDATA[Unsubscribe]]></string>

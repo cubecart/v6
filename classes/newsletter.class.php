@@ -248,6 +248,8 @@ class Newsletter {
 		if($removed) {
 			$this->_subscriberLog($email, 'Removed from mailing list');
 			$GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_unsubscribed']);
+		} else {
+			$GLOBALS['gui']->setError($GLOBALS['language']->newsletter['notify_not_subscribed']);
 		}
 		return $removed;
 	}
