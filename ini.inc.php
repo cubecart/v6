@@ -15,7 +15,8 @@ if (version_compare(PHP_VERSION, '5.4') == -1) {
 	die("PHP ".PHP_VERSION." detected. CubeCart requires PHP 5.4 or higher.");
 }
 
-// These are in case something goes wrong before we get to debug
+// Display important errors before debug class is initialised
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
 ini_set('display_errors', true);
 
 /************* CUSTOMISED PHP.INI SETTINGS *************/
