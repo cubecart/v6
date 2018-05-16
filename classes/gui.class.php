@@ -79,12 +79,6 @@ class GUI {
 	 */
 	private $_template_dir = '';
 	/**
-	 * reCAPTCHA v1 keys
-	 *
-	 * @var string
-	 */
-	private $_reCAPTCHA_keys = array('captcha_private' => '6LfT4sASAAAAAKQMCK9w6xmRkkn6sl6ORdnOf83H', 'captcha_public' => '6LfT4sASAAAAAOl71cRz11Fm0erGiqNG8VAfKTHn');
-	/**
 	 * Postfix string for mobile config variables
 	 *
 	 * @var string
@@ -701,23 +695,6 @@ class GUI {
 	}
 
 	/**
-	 * Assign reCAPTCHA v1 (legacy)
-	 */
-	public function recaptchaAssign() {
-		if($GLOBALS['config']->get('config', 'recaptcha')==1) {
-			require_once CC_INCLUDES_DIR.'lib/recaptcha/recaptchalib.php';
-			$GLOBALS['smarty']->assign('LANG_RECAPTCHA', array(
-				'reload_words'  => sprintf($GLOBALS['language']->recaptcha['reload_words'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('audio')"),
-				'reload_numbers' => sprintf($GLOBALS['language']->recaptcha['reload_numbers'], 'javascript:Recaptcha.reload()', "javascript:Recaptcha.switch_type('image')"),
-			));
-			if ($this->recaptchaRequired()) {
-				$GLOBALS['smarty']->assign('DISPLAY_RECAPTCHA', recaptcha_get_html($this->_reCAPTCHA_keys['captcha_public'], $GLOBALS['recaptcha']['error'], CC_SSL));
-				$GLOBALS['smarty']->assign('RECAPTCHA', 1);
-			}
-		}
-	}
-
-	/**
 	 * Do we require Recaptcha check?
 	 */
 	public function recaptchaRequired() {
@@ -737,48 +714,31 @@ class GUI {
 			$recaptcha['error'] = null;
 			$recaptcha['confirmed'] = false;
 
-			// for reCAPTCHA v2 and invisible
-			if(isset($_POST['g-recaptcha-response']) && in_array($GLOBALS['config']->get('config', 'recaptcha'), array(2,3))) {
+			if(empty($_POST['g-recaptcha-response'])) {
+				$recaptcha['error'] = $GLOBALS['language']->form['verify_human_fail'];
+			} else {
+				$g_data = array(
+					'secret' => $GLOBALS['config']->get('config', 'recaptcha_secret_key'),
+					'response' => $_POST['g-recaptcha-response'],
+					'remoteip' => get_ip_address()
+				);
+				$request = new Request('www.google.com', '/recaptcha/api/siteverify');
+				$request->setMethod('get');
+				$request->cache(false);
+				$request->setSSL();
+				$request->setData($g_data);
 
-				if(empty($_POST['g-recaptcha-response'])) {
-					$recaptcha['error'] = $GLOBALS['language']->form['verify_human_fail'];
-				} else {
-					$g_data = array(
-						'secret' => $GLOBALS['config']->get('config', 'recaptcha_secret_key'),
-						'response' => $_POST['g-recaptcha-response'],
-						'remoteip' => get_ip_address()
-					);
-					$request = new Request('www.google.com', '/recaptcha/api/siteverify');
-					$request->setMethod('get');
-					$request->cache(false);
-					$request->setSSL();
-					$request->setData($g_data);
-
-					$response = $request->send();
-					$g_result = json_decode($response);
-					
-					if($g_result->success) {
-						$recaptcha['confirmed'] = true;
-					} else {
-						$recaptcha['error'] = $GLOBALS['language']->form['verify_human_fail'];
-					}
-				}
-				$GLOBALS['session']->set('', $recaptcha, 'recaptcha');
-			} elseif(isset($_POST['recaptcha_response_field'])) { // for reCAPTCHA v1
-				if(time()>strtotime('2018-03-31')) {
-					$GLOBALS['config']->set('config', 'recaptcha', '0');
+				$response = $request->send();
+				$g_result = json_decode($response);
+				
+				if($g_result->success) {
 					$recaptcha['confirmed'] = true;
 				} else {
-					require_once CC_INCLUDES_DIR.'lib/recaptcha/recaptchalib.php';
-					$resp = recaptcha_check_answer($this->_reCAPTCHA_keys['captcha_private'], $_SERVER['REMOTE_ADDR'], $_POST['recaptcha_challenge_field'], $_POST['recaptcha_response_field']);
-					if ($resp->is_valid) {
-						$recaptcha['confirmed'] = true;
-					} else {
-						$recaptcha['error'] = $GLOBALS['language']->form['verify_human_fail'];
-					}
+					$recaptcha['error'] = $GLOBALS['language']->form['verify_human_fail'];
 				}
-				$GLOBALS['session']->set('', $recaptcha, 'recaptcha');				
-			}	
+			}
+			$GLOBALS['session']->set('', $recaptcha, 'recaptcha');
+
 		} elseif (!$GLOBALS['session']->get('confirmed', 'recaptcha')) {
 			$GLOBALS['session']->delete('', 'recaptcha');
 		}

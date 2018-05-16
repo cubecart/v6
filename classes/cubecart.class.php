@@ -1150,9 +1150,6 @@ class Cubecart {
 
 			foreach ($GLOBALS['hooks']->load('class.cubecart.prerecaptcha.confirm') as $hook) include $hook;
 
-			if (!isset($this->_basket['recaptcha'])) {
-				$GLOBALS['gui']->recaptchaAssign();
-			}
 			$GLOBALS['smarty']->assign('TERMS_CONDITIONS', (!$GLOBALS['config']->get('config', 'disable_checkout_terms') && $terms = $GLOBALS['db']->select('CubeCart_documents', false, array('doc_terms' => '1'))) ? $GLOBALS['seo']->buildURL('doc', $terms[0]['doc_id'], '&') : false);
 			if (isset($_POST['terms_agree']) && $_POST['terms_agree']==1) {
 				$this->_basket['terms_agree'] = true;
@@ -1466,9 +1463,6 @@ class Cubecart {
 				$GLOBALS['smarty']->assign('DEPARTMENTS', $vars['departments']);
 			}
 
-			if ($GLOBALS['gui']->recaptchaRequired()) {
-				$GLOBALS['gui']->recaptchaAssign();
-			}
 			foreach ($GLOBALS['hooks']->load('class.cubecart.contact.display') as $hook) include $hook;
 			$content = $GLOBALS['smarty']->fetch('templates/content.contact.php');
 			$GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
@@ -2599,10 +2593,6 @@ class Cubecart {
 			}
 		}
 
-		if (!$GLOBALS['user']->is() && $GLOBALS['gui']->recaptchaRequired()) {
-			$GLOBALS['gui']->recaptchaAssign();
-		}
-
 		/* Social Bookmarks */
 		$GLOBALS['smarty']->assign('SHARE', $this->_getSocial('product', 'getButtonHTML'));
 		/* Social Comments */
@@ -2816,10 +2806,7 @@ class Cubecart {
 		}
 
 		if (!$GLOBALS['user']->is()) {
-			
-			if ($GLOBALS['gui']->recaptchaRequired()) {
-				$GLOBALS['gui']->recaptchaAssign();
-			}
+
 			$GLOBALS['smarty']->assign('DATA', $_POST);
 			if (($terms = $GLOBALS['db']->select('CubeCart_documents', false, array('doc_terms' => '1'))) !== false) {
 				$GLOBALS['smarty']->assign('TERMS_CONDITIONS', $GLOBALS['seo']->buildURL('doc', $terms[0]['doc_id'], '&'));
