@@ -14,8 +14,8 @@
    <div class="small-12 columns">
       <h2>{$LANG.notification.cookie_switch}</h2>
       <ul class="button-group">
-        <li><input type="submit" class="eu_cookie_button button tiny secondary jsalert" name="accept_cookies_submit" value="{$LANG.common.accept}" data-alert-text="{$LANG.notification.cookies_accepted}"></li>
-        <li><input type="submit" class="eu_cookie_button button tiny alert jsalert" name="decline_cookies_accept" value="{$LANG.common.block}" data-alert-text="{$LANG.notification.cookies_blocked}"></li> 
+        <li><input type="button" class="eu_cookie_button button tiny secondary jsalert" name="accept_cookies_submit" value="{$LANG.common.accept}" data-alert-text="{$LANG.notification.cookies_accepted}"></li>
+        <li><input type="button" class="eu_cookie_button button tiny alert jsalert" name="decline_cookies_accept" value="{$LANG.common.block}" data-alert-text="{$LANG.notification.cookies_blocked}"></li> 
       </ul>
     </div>
 </div>
