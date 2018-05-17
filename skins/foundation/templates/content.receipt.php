@@ -130,7 +130,7 @@
 {/if}
 <p><a href="{$STORE_URL}/index.php?_a=receipt&cart_order_id={$SUM.cart_order_id}{if !$IS_USER}&email={$SUM.email}{/if}" target="_blank"><svg class="icon"><use xlink:href="#icon-print"></use></svg> {$LANG.confirm.print}</a></p>
 {foreach from=$AFFILIATES item=affiliate}{$affiliate}{/foreach}
-{if $ANALYTICS && $GA_SUM}
+{if (!isset($smarty.cookies.accept_cookies) || $smarty.cookies.accept_cookies===true) && $ANALYTICS && $GA_SUM}
 <script>
 {literal}(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

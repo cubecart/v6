@@ -271,7 +271,7 @@ class Session {
 	public function cookiesBlocked() {
 	
 		// Check cookies exists for verified and if so return value
-		if(isset($_COOKIE['accept_cookies'])) {
+		if(isset($_COOKIE['accept_cookies']) && $_COOKIE['accept_cookies']===false) {
 			return false;
 		} elseif(!$GLOBALS['config']->get('config', 'cookie_dialogue')) {
 			return false;
@@ -565,7 +565,19 @@ class Session {
 	}
 
 	//=====[ Private ]=======================================
-	
+	/**
+	 * Block all non-essential cookies
+	 */
+	private function _blockDeniedCookies() {
+		if(isset($_COOKIE['accept_cookies']) && $_COOKIE['accept_cookies']===false) {
+			foreach($_COOKIE as $k => $v) {
+				if(!in_array($k, array('accept_cookies', session_name()))) {
+					setcookie($k, "", time() - 3600);
+				}
+			}
+		}
+	}
+
 	/**
 	 * Close a session
 	 *
@@ -669,6 +681,7 @@ session_save_path(CC_ROOT_DIR.'/sessions');")."</pre>
 		$session_prefix = CC_SSL ? 'S' : '';
 		session_name('CC'.$session_prefix.'_'.strtoupper(substr(md5(CC_ROOT_DIR), 0,10)));
 		session_start();
+		$this->_blockDeniedCookies();
 		
 		// Increase session length on each page load. NOT IE however.
 		if($this->_http_user_agent()!=='IEX') {
