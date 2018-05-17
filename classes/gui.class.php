@@ -908,10 +908,19 @@ class GUI {
 		}
 		if (Config::getInstance()->get('config', 'cookie_dialogue') && !isset($_COOKIE['accept_cookies'])) {
 			if($privacy = $GLOBALS['db']->select('CubeCart_documents', 'doc_id', array('doc_privacy' => '1'))) {
-				$GLOBALS['smarty']->assign('COOKIE_PRIVACY_LINK', $GLOBALS['seo']->buildURL('doc', $privacy[0]['doc_id']));
+				$dialogue = str_replace(array('%s','%PRIVACY_URL%'), array($GLOBALS['config']->get('config', 'store_name'), $GLOBALS['seo']->buildURL('doc', $privacy[0]['doc_id'])), $GLOBALS['language']->notification['cookie_dialogue']);
 			} else {
-				$GLOBALS['smarty']->assign('COOKIE_PRIVACY_LINK', false);
+				$dialogue = str_replace(array('%s'), array($GLOBALS['config']->get('config', 'store_name'), $GLOBALS['language']->notification['cookie_dialogue']));
+				$dialogue = preg_replace('/<\/?a[^>]*>/','', $dialogue);
 			}
+			$GLOBALS['smarty']->assign('COOKIE_DIALOGUE_TEXT', $dialogue);
+			$consent_log = array(
+				'ip_address' => get_ip_address(),
+				'session_id' => $GLOBALS['session']->getId(),
+				'customer_id' => $GLOBALS['user']->getId(),
+				'log' => $dialogue
+			);
+			$GLOBALS['db']->insert('CubeCart_cookie_consent', $consent_log);
 			$GLOBALS['smarty']->assign('COOKIE_DIALOGUE', true);
 		} else {
 			$GLOBALS['smarty']->assign('COOKIE_DIALOGUE', false);

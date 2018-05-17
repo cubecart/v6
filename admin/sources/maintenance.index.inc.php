@@ -655,7 +655,14 @@ if (isset($database_result) && $database_result) {
 			'doc_id' => 'PRIMARY',
 			'doc_parent_id' => 'KEY',
 			'doc_status' => 'KEY',
-			'doc_home' => 'KEY'
+			'doc_home' => 'KEY',
+			'doc_privacy' => 'KEY'
+		),
+		'cubecart_cookie_consent' => array (
+			'id' => 'PRIMARY',
+			'session_id' => 'KEY',
+			'customer_id' => 'KEY',
+			'ip_address' => 'KEY'
 		),
 		'cubecart_downloads' => array (
 			'digital_id' => 'PRIMARY'

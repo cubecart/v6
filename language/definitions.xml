@@ -571,6 +571,7 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="block" introduced="6.2.1"><![CDATA[Block]]></string>
     <string name="accept" introduced="6.2.1"><![CDATA[Accept]]></string>
     <string name="decline" introduced="6.2.1"><![CDATA[Decline]]></string>
     <string name="log" introduced="6.2.1"><![CDATA[Log]]></string>

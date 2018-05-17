@@ -978,3 +978,15 @@ CREATE TABLE `CubeCart_invoice_template` (
   PRIMARY KEY (`id`),
   KEY `hash` (`hash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+
+CREATE TABLE `CubeCart_cookie_consent` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `ip_address` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `session_id` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `customer_id` int(11) DEFAULT NULL,
+  `log` text DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `ip_address` (`ip_address`),
+  KEY `session_id` (`session_id`),
+  KEY `customer_id` (`customer_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
