@@ -949,70 +949,70 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
 
 		switch ($type) {
 			/*! Static */
-		case 'recover':
-			$array = array(
-				'_a' => 'recover'
-			);
+			case 'recover':
+				$array = array(
+					'_a' => 'recover'
+				);
 			break;
-		case 'search':
-			$array = array(
-				'_a' => 'search'
-			);
+			case 'search':
+				$array = array(
+					'_a' => 'search'
+				);
 			break;
-		case 'contact':
-			$array = array(
-				'_a' => 'contact'
-			);
+			case 'contact':
+				$array = array(
+					'_a' => 'contact'
+				);
 			break;
-		case 'saleitems':
-			$array = array(
-				'_a' => 'saleitems'
-			);
+			case 'saleitems':
+				$array = array(
+					'_a' => 'saleitems'
+				);
 			break;
-		case 'certificates':
-			$array = array(
-				'_a' => 'certificates'
-			);
+			case 'certificates':
+				$array = array(
+					'_a' => 'certificates'
+				);
 			break;
 			/*! Dynamic */
-		case 'cat':
-			$array = array(
-				'_a' => 'category',
-				'cat_id' => $item_id
-			);
+			case 'cat':
+				$array = array(
+					'_a' => 'category',
+					'cat_id' => $item_id
+				);
 			break;
-		case 'doc':
-			$array = array(
-				'_a' => 'document',
-				'doc_id' => $item_id
-			);
+			case 'doc':
+				$array = array(
+					'_a' => 'document',
+					'doc_id' => $item_id
+				);
 			break;
 
-		case 'prod':
-			$array = array(
-				'_a' => 'product',
-				'product_id' => $item_id
-			);
+			case 'prod':
+				$array = array(
+					'_a' => 'product',
+					'product_id' => $item_id
+				);
 			break;
-		case 'certificates':
-			$array = array(
-				'_a' => 'certificates',
-			);
+			case 'certificates':
+				$array = array(
+					'_a' => 'certificates',
+				);
 			break;
-		case 'basket':
-			$array = array(
-				'_a' => 'basket',
-			);
+			case 'basket':
+				$array = array(
+					'_a' => 'basket',
+				);
 			break;
-		case 'login':
-			$array = array(
-				'_a' => 'login'
-			);
+			case 'login':
+				$array = array(
+					'_a' => 'login'
+				);
 			break;
-		case 'register':
-			$array = array(
-				'_a' => 'register'
-			);
+			case 'register':
+				$array = array(
+					'_a' => 'register'
+				);
 			break;
 		}
 		$this->_a = $array['_a'];
