@@ -670,7 +670,7 @@ session_save_path(CC_ROOT_DIR.'/sessions');")."</pre>
 		session_name('CC'.$session_prefix.'_'.strtoupper(substr(md5(CC_ROOT_DIR), 0,10)));
 		session_start();
 		
-		// Increase session length on each page load. NOT IE however as we all know it is a wingy PITA
+		// Increase session length on each page load. NOT IE however.
 		if($this->_http_user_agent()!=='IEX') {
 			$this->set_cookie(session_name(),session_id(),time()+$this->_session_timeout);
 		}

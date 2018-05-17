@@ -272,6 +272,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_documents` (
 	`doc_order` INT UNSIGNED NOT NULL DEFAULT '0',
 	`doc_terms` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`doc_home` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+	`doc_privacy` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`doc_lang` VARCHAR(5) NOT NULL,
 	`doc_name` VARCHAR(200) NOT NULL,
 	`doc_content` MEDIUMTEXT NOT NULL,
@@ -286,7 +287,8 @@ CREATE TABLE IF NOT EXISTS `CubeCart_documents` (
 	PRIMARY KEY (`doc_id`),
 	KEY `doc_parent_id` (`doc_parent_id`),
 	KEY `doc_status` (`doc_status`),
-	KEY `doc_home` (`doc_home`)
+	KEY `doc_home` (`doc_home`),
+	KEY `doc_privacy` (`doc_privacy`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_downloads` (

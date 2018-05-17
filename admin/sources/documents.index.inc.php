@@ -50,29 +50,32 @@ if (isset($_POST['document']) && Admin::getInstance()->permissions('documents', 
 	httpredir(currentPage($rem_array));
 }
 
-if (isset($_POST['terms']) || isset($_POST['home']) || isset($_POST['order']) || isset($_POST['status'])) {
+if (isset($_POST['privacy']) ||isset($_POST['terms']) || isset($_POST['home']) || isset($_POST['order']) || isset($_POST['status'])) {
 	if (Admin::getInstance()->permissions('documents', CC_PERM_EDIT)) {
 		foreach ($GLOBALS['hooks']->load('admin.documents.status') as $hook) include $hook;
 		$updated = false;
-		## Set document as terms & conditions
-		if (isset($_POST['terms']) && is_numeric($_POST['terms'])) {
-			$document = $GLOBALS['db']->select('CubeCart_documents', array('doc_name'), array('doc_id' => $_POST['terms']));
-			if ($GLOBALS['db']->update('CubeCart_documents', array('doc_terms' => 1), array('doc_id' => (int)$_POST['terms'], 'doc_parent_id' => 0), true)) {
-				$GLOBALS['main']->setACPNotify($lang['documents']['notify_document_terms']);
-				$updated = true;
-			}
-			$GLOBALS['db']->update('CubeCart_documents', array('doc_terms' => 0), 'doc_id <> '.(int)$_POST['terms'], true);
+		$docs = array();
+		if (isset($_POST['privacy']) && ctype_digit($_POST['privacy'])) { ## Set document as privacy
+			$docs[] = array('key' => 'privacy', 'id' => $_POST['privacy']);
+		}
+		if (isset($_POST['terms']) && ctype_digit($_POST['terms'])) { ## Set document as terms & conditions
+			$docs[] = array('key' => 'terms', 'id' => $_POST['terms']);
+		}
+		if (isset($_POST['home']) && ctype_digit($_POST['home'])) { ## Set doument as homepage
+			$docs[] = array('key' => 'home', 'id' => $_POST['home']);
+		}
 
-		}
-		## Set doument as homepage
-		if (isset($_POST['home']) && is_numeric($_POST['home'])) {
-			$document = $GLOBALS['db']->select('CubeCart_documents', array('doc_name'), array('doc_id' => (int)$_POST['home']));
-			if ($GLOBALS['db']->update('CubeCart_documents', array('doc_home' => 1), array('doc_id' => (int)$_POST['home'], 'doc_parent_id' => 0), true)) {
-				$GLOBALS['main']->setACPNotify($lang['documents']['notify_document_homepage']);
-				$updated = true;
+		if(count($docs)>0) {
+			foreach($docs as $doc) {
+				$document = $GLOBALS['db']->select('CubeCart_documents', array('doc_name'), array('doc_id' => $doc['id']));
+				if ($GLOBALS['db']->update('CubeCart_documents', array('doc_'.$doc['key'] => 1), array('doc_id' => $doc['id'], 'doc_parent_id' => 0), true)) {
+					$GLOBALS['main']->setACPNotify($lang['documents']['notify_document_'.$doc['key']]);
+					$updated = true;
+				}
+				$GLOBALS['db']->update('CubeCart_documents', array('doc_'.$doc['key'] => 0), 'doc_id <> '.$doc['id']);
 			}
-			$GLOBALS['db']->update('CubeCart_documents', array('doc_home' => 0), 'doc_id <> '.(int)$_POST['home'], true);
 		}
+
 		## Set document ordering
 		if (isset($_POST['order']) && is_array($_POST['order'])) {
 			$order_updated = false;
@@ -208,6 +211,7 @@ if (isset($_GET['action'])) {
 			$document['flag']	= file_exists('language/flags/'.$document['doc_lang'].'.png') ? 'language/flags/'.$document['doc_lang'].'.png' : 'language/flags/unknown.png';
 			$document['terms']  = ($document['doc_terms']) ? 'checked="checked"' : '';
 			$document['homepage'] = ($document['doc_home']) ? 'checked="checked"' : '';
+			$document['privacy'] = ($document['doc_privacy']) ? 'checked="checked"' : '';
 			$smarty_data['documents'][] = $document;
 		}
 		$GLOBALS['smarty']->assign('DOCUMENTS', $smarty_data['documents']);

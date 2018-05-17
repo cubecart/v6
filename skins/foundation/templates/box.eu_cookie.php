@@ -12,12 +12,16 @@
 {if $COOKIE_DIALOGUE}
 <div class="row" id="eu_cookie_dialogue">
    <form action="{$VAL_SELF}" class="marg" method="POST">
-      <div class="small-10 columns">
-         {$LANG.notification.cookie_dialogue|replace:'%s':{$CONFIG.store_name}}
+      <div class="small-9 columns">
+      {assign "find" array('%s', '%PRIVACY_URL%')}
+      {assign "replace" array({$CONFIG.store_name}, {$COOKIE_PRIVACY_LINK})}
+      {$LANG.notification.cookie_dialogue|replace:$find:$replace}
       </div>
-      <div class="small-2 columns">
-         <input type="submit" class="button tiny secondary right" name="accept_cookies_submit" id="eu_cookie_button" value="{$LANG.common.close}">
-         <input type="hidden" name="accept_cookies" value="1">
+      <div class="small-3 columns">
+        <ul class="button-group right">
+          <li><input type="submit" class="eu_cookie_button button tiny secondary" name="accept_cookies_submit" value="{$LANG.common.accept}"></li>
+          <li><input type="submit" class="eu_cookie_button button tiny alert" name="decline_cookies_accept" value="{$LANG.common.decline}"></li> 
+        </ul>
       </div>
    </form>
 </div>

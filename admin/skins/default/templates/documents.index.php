@@ -23,6 +23,7 @@
 		  <td>{$LANG.translate.title_translations}</td>
 		  <td>{$LANG.documents.document_terms}</td>
 		  <td>{$LANG.documents.document_homepage}</td>
+			<td>{$LANG.documents.document_privacy}</td>
 		  <td>&nbsp;</td>
 		</tr>
 	  </thead>
@@ -46,6 +47,7 @@
 		  </td>
 		  <td align="center"><input type="radio" name="terms" value="{$document.doc_id}" {$document.terms}></td>
 		  <td align="center"><input type="radio" name="home" value="{$document.doc_id}" {$document.homepage}></td>
+			<td align="center"><input type="radio" name="privacy" value="{$document.doc_id}" {$document.privacy}></td>
 		  <td align="center">
 			<a href="{$document.link.translate}" title="{$LANG.translate.trans_add}"><i class="fa fa-plus-circle" title="{$LANG.translate.trans_add}"></i></a>
 			<a href="{$document.link.edit}" title="{$LANG.common.edit}" class="edit"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>

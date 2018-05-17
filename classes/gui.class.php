@@ -902,15 +902,16 @@ class GUI {
 
 		//If there is a session id already unset and destory it
 		if (isset($_POST['accept_cookies_submit'])) {
-			// set cookie for ten years
-			if (isset($_POST['accept_cookies'])) {
-				$GLOBALS['session']->set_cookie('accept_cookies', true, time()+315569260);
-				httpredir();
-			} else {
-				$GLOBALS['smarty']->assign('COOKIE_DIALOGUE_FAIL', true);
-			}
+			$accept = (isset($_POST['accept_cookies'])) ? true : false;
+			$GLOBALS['session']->set_cookie('accept_cookies', true, time()+31536000);
+			httpredir();
 		}
 		if (Config::getInstance()->get('config', 'cookie_dialogue') && !isset($_COOKIE['accept_cookies'])) {
+			if($privacy = $GLOBALS['db']->select('CubeCart_documents', 'doc_id', array('doc_privacy' => '1'))) {
+				$GLOBALS['smarty']->assign('COOKIE_PRIVACY_LINK', $GLOBALS['seo']->buildURL('doc', $privacy[0]['doc_id']));
+			} else {
+				$GLOBALS['smarty']->assign('COOKIE_PRIVACY_LINK', false);
+			}
 			$GLOBALS['smarty']->assign('COOKIE_DIALOGUE', true);
 		} else {
 			$GLOBALS['smarty']->assign('COOKIE_DIALOGUE', false);

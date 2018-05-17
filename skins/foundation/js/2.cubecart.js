@@ -64,10 +64,14 @@ jQuery(document).ready(function() {
             $('#colorbox').foundation('reveal', 'open');
         });
     }
-    $("#eu_cookie_button").click(function() {
+    $(".eu_cookie_button").click(function(e) {
+        var accept = false;
+        if($(this).attr('name')=='accept_cookies_submit') {
+            accept = true;
+        }
         $('#eu_cookie_dialogue').slideUp();
-        $.cookie('accept_cookies', 1, {
-            expires: 730
+        $.cookie('accept_cookies', accept, {
+            expires: 365
         });
         return false;
     });
