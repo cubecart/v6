@@ -948,7 +948,7 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
         foreach ($GLOBALS['hooks']->load('class.seo.get_item_vars') as $hook) include $hook;
 
 		switch ($type) {
-			/*! Static */
+			/* Static */
 			case 'recover':
 				$array = array(
 					'_a' => 'recover'
@@ -974,26 +974,6 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
 					'_a' => 'certificates'
 				);
 			break;
-			/*! Dynamic */
-			case 'cat':
-				$array = array(
-					'_a' => 'category',
-					'cat_id' => $item_id
-				);
-			break;
-			case 'doc':
-				$array = array(
-					'_a' => 'document',
-					'doc_id' => $item_id
-				);
-			break;
-
-			case 'prod':
-				$array = array(
-					'_a' => 'product',
-					'product_id' => $item_id
-				);
-			break;
 			case 'certificates':
 				$array = array(
 					'_a' => 'certificates',
@@ -1014,8 +994,31 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
 					'_a' => 'register'
 				);
 			break;
+			/* Dynamic */
+			case 'cat':
+				$array = array(
+					'_a' => 'category',
+					'cat_id' => $item_id
+				);
+			break;
+			case 'doc':
+				$array = array(
+					'_a' => 'document',
+					'doc_id' => $item_id
+				);
+			break;
+			case 'prod':
+				$array = array(
+					'_a' => 'product',
+					'product_id' => $item_id
+				);
+			break;
+			default:
+				$array = array();
 		}
-		$this->_a = $array['_a'];
+		if(isset($array['_a'])) {
+			$this->_a = $array['_a'];
+		}
 		return $array;
 	}
 
