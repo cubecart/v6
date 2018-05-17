@@ -9,7 +9,6 @@
  * Email:  sales@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
- {debug}
 {if $COOKIE_DIALOGUE}
 <div class="row" id="eu_cookie_dialogue">
    <form action="{$VAL_SELF}" class="marg" method="POST">

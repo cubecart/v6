@@ -918,7 +918,8 @@ class GUI {
 				'ip_address' => get_ip_address(),
 				'session_id' => $GLOBALS['session']->getId(),
 				'customer_id' => $GLOBALS['user']->getId(),
-				'log' => $dialogue
+				'log' => $dialogue,
+				'time' => time()
 			);
 			$GLOBALS['db']->insert('CubeCart_cookie_consent', $consent_log);
 			$GLOBALS['smarty']->assign('COOKIE_DIALOGUE', true);

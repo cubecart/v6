@@ -76,6 +76,10 @@ jQuery(document).ready(function() {
         }
         $('#eu_cookie_dialogue').slideUp();
         $.cookie('accept_cookies', accept, {expires: 365});
+        $.ajax({
+            url: '?_g=ajax_cookie_consent&accept='+(accept ? '1' : '0'),
+            cache: false
+        });
         return false;
     });
 
