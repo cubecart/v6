@@ -19,7 +19,7 @@ CREATE TABLE `CubeCart_cookie_consent` (
   `session_id` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `customer_id` int(11) DEFAULT NULL,
   `log` text DEFAULT NULL,
-  `time` int(10) unsigned DEFAULT NULL,
+  `time` INT UNSIGNED NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `ip_address` (`ip_address`),
   KEY `session_id` (`session_id`),

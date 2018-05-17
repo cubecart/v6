@@ -74,6 +74,9 @@ jQuery(document).ready(function() {
         if($(this).attr('name')=='accept_cookies_submit') {
             accept = true;
         }
+        if($(this).attr('data-alert-text')) {
+            alert($(this).attr('data-alert-text'));
+        }
         $('#eu_cookie_dialogue').slideUp();
         $.cookie('accept_cookies', accept, {expires: 365});
         $.ajax({
