@@ -945,6 +945,7 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
 	private function _getItemVars($type, $item_id) {
 		
 		// Allow hooks to set SEO items
+		$array = array();
         foreach ($GLOBALS['hooks']->load('class.seo.get_item_vars') as $hook) include $hook;
 
 		switch ($type) {
@@ -1013,8 +1014,6 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
 					'product_id' => $item_id
 				);
 			break;
-			default:
-				$array = array();
 		}
 		if(isset($array['_a'])) {
 			$this->_a = $array['_a'];
