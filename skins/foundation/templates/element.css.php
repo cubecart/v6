@@ -12,4 +12,4 @@
 {if !empty($SKIN_SUBSET)}
     {$css_input[] = 'skins/{$SKIN_FOLDER}/css/cubecart.{$SKIN_SUBSET}.css'}
 {/if}
-{combine input=$css_input output='cache/css.{$SKIN_FOLDER}.css' age='604800' debug=false}
+{combine input=$css_input output='cache/css.{$SKIN_FOLDER}.css' age='604800' debug=$CONFIG.debug||!$CONFIG.cache}
