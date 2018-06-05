@@ -76,7 +76,7 @@
                      <td>{floatval($PRODUCT.product_width)}{if $PRODUCT.dimension_unit=='in'}&#8243;{else}{$PRODUCT.dimension_unit}{/if}</td>
                   </tr>
                   {/if}
-                  {if $PRODUCT.product_height}
+                  {if $PRODUCT.product_height > 0}
                   <tr>
                      <td>{$LANG.common.height}</td>
                      <td>{floatval($PRODUCT.product_height)}{if $PRODUCT.dimension_unit=='in'}&#8243;{else}{$PRODUCT.dimension_unit}{/if}</td>
