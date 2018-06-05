@@ -21,7 +21,7 @@
 </div>
 {/if}
 {if isset($SUBCATS) && $SUBCATS}
-<ul class="medium-block-grid-6 text-center{if $CONFIG.catalogue_expand_tree ==1} show-for-medium-up{else} small-block-grid-3{/if}" data-equalizer>
+<ul class="medium-block-grid-6 text-center small-block-grid-3" data-equalizer>
    {foreach from=$SUBCATS item=subcat}
    <li data-equalizer-watch>
       <a href="{$subcat.url}" title="{$subcat.cat_name}">
