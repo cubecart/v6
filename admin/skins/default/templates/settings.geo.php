@@ -53,8 +53,10 @@
   	  	    <select name="multi_country_action">
   	  	   	  <option value="">{$LANG.form.with_selected}</option>
   	  	      <option value="delete">{$LANG.common.delete}</option>
-  	  	      <option value="enable">{$LANG.common.enable}</option>
-  	  	      <option value="disable">{$LANG.common.disable}</option>
+  	  	      <option value="1">{$LANG.common.enabled} ({$LANG.address.state} {$LANG.common.required})</option>
+							<option value="2">{$LANG.common.enabled} ({$LANG.address.state} {$LANG.common.optional|replace:array('(',')'):''})</option>
+							<option value="3">{$LANG.common.enabled} ({$LANG.address.state} {$LANG.common.disabled})</option>
+  	  	      <option value="0">{$LANG.common.disable}</option>
   	  	    </select>
   	  	    <input type="submit" value="{$LANG.common.go}" name="go" class="tiny">
   	  	  </td>
