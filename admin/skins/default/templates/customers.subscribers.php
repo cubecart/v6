@@ -91,13 +91,21 @@
             <div>
                   <label for="format">{$LANG.email.export_format}</label>
                   <span>
-                  <input type="text" name="maillist_format" id="format" class="textbox" value="{$EMAIL_ADDRESS}" title="{literal}e.g. {$EMAIL_ADDRESS} <{$FULL_NAME_SHORT}>{/literal}">
-                  <select name="maillist_extension">
-                        <option value="txt">.txt</option>
-                        <option value="csv">.csv</option>
-                  </select>
-                  <input type="submit" class="tiny" id="mailing_list_export" value="{$LANG.common.export}">
+                        <input type="text" name="maillist_format" id="format" class="textbox" value="{$EMAIL_ADDRESS}" title="{literal}e.g. {$EMAIL_ADDRESS} <{$FULL_NAME_SHORT}>{/literal}">
+                        <select name="maillist_extension">
+                              <option value="txt">.txt</option>
+                              <option value="csv">.csv</option>
+                        </select>
                   </span>
+            </div>
+            <div>
+                  <label for="dbl_opt">{$LANG.newsletter.dbl_opt_in_only}</label>
+                  <span>
+                  <input type="checkbox" name="export_dbl_opt" value="1"{if $CONFIG.dbl_opt=='1'} checked="checked"{/if}>
+                  </span>
+            </div>
+            <div>
+                  <input type="submit" class="tiny" id="mailing_list_export" value="{$LANG.common.export}">
             </div>
             </fieldset>
             <table>

@@ -24,7 +24,11 @@ if (isset($GLOBALS['RAW']['POST']['maillist_format'])) {
 	if (empty($GLOBALS['RAW']['POST']['maillist_format'])) {
 		$GLOBALS['RAW']['POST']['maillist_format'] = '{$EMAIL_ADDRESS}';
 	}
-	if (($maillist = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', array('customer_id', 'email'), array('status' => 1))) !== false) {
+	$where = array('status' => 1);
+	if(isset($_POST['export_dbl_opt']) && $_POST['export_dbl_opt']=='1') {
+		$where['dbl_opt'] = 1;
+	}
+	if (($maillist = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', array('customer_id', 'email'), $where)) !== false) {
 		// Set initial variables
 		$file_data = null;
 		$find  = array (
@@ -66,16 +70,14 @@ if (isset($GLOBALS['RAW']['POST']['maillist_format'])) {
 				$member['last_name']
 			);
 			/* Start Fixing Bug 2884 */
-			if ($_POST['maillist_extension']=="txt") {
-				$file_data .= str_replace($find, $replace, $GLOBALS['RAW']['POST']['maillist_format']).",";
-			}else {
-				$file_data .= str_replace($find, $replace, $GLOBALS['RAW']['POST']['maillist_format'])."\n";
-			}
+			$sep = $_POST['maillist_extension']=="txt" ? "," : "\n";
+			$file_data .= str_replace($find, $replace, $GLOBALS['RAW']['POST']['maillist_format']).$sep;
 			/* End Fixing Bug 2884 */
 			unset($customer, $replace, $member, $long_name, $short_name);
 		}
 		$GLOBALS['debug']->supress(true);
 		$file_data = preg_replace('#\{.*?\}#s', '', $file_data); 
+		$file_data = rtrim($file_data, $sep);
 		deliverFile(false, false, $file_data, $lang['email']['export_filename'].'.'.$_POST['maillist_extension']);
 		exit;
 	} else {
