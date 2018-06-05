@@ -1308,7 +1308,7 @@ class Catalogue {
 				$rows = array('stock_level', 'restock_note');
 				$where = array('product_id' => (int)$product_id, 'options_identifier' => $options_identifier_string, 'status' => 1, 'use_stock' => 1);
 			}
-			$products_matrix = $GLOBALS['db']->select('CubeCart_option_matrix', $rows, $where);
+			$products_matrix = $GLOBALS['db']->select('CubeCart_option_matrix', $rows, $where, false, 1, false, false);
 			if (is_numeric($products_matrix[0]['stock_level'])) {
 				if (!empty($products_matrix[0]['restock_note'])) {
 					$GLOBALS['session']->set('restock_note', $products_matrix[0]['restock_note']);
@@ -1319,7 +1319,7 @@ class Catalogue {
 		}
 
 		// Fall back to traditional stock check if there are no results for the combination or it is not used
-		if (is_numeric($product_id) && ($products = $GLOBALS['db']->select('CubeCart_inventory', array('stock_level'), array('product_id' => (int)$product_id), false, 1)) !== false) {
+		if (is_numeric($product_id) && ($products = $GLOBALS['db']->select('CubeCart_inventory', array('stock_level'), array('product_id' => (int)$product_id), false, 1, false, false)) !== false) {
 			
 			// Check this product id isn't already in the cart with different options identifier
 			if($check_existing) {
