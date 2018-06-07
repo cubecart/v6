@@ -1084,6 +1084,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="macro_product_name" introduced="5.0.0"><![CDATA[Product name.]]></string>
     <string name="macro_product_price" introduced="5.0.0"><![CDATA[Product price.]]></string>
     <string name="macro_product_quantity" introduced="5.0.0"><![CDATA[Product quantity]]></string>
+    <string name="macro_product_options" introduced="6.2.1"><![CDATA[Product options]]></string>
     <string name="macro_review_copy" introduced="5.0.0"><![CDATA[The content of the review.]]></string>
     <string name="macro_review_name" introduced="5.0.0"><![CDATA[Reviewer's name.]]></string>
     <string name="macro_sender_message" introduced="5.0.0"><![CDATA[The sender's message.]]></string>
