@@ -175,7 +175,7 @@
   </div>
   <div id="email_html" class="tab_content">
     <h3>{$LANG.email.title_content_html}</h3>
-	<textarea name="template[content_html]" id="template_html" class="textbox fck fck-full" data-fck-height="450">{$TEMPLATE.content_html}</textarea>
+	<textarea name="template[content_html]" id="template_html" class="fck fck-full" data-fck-height="450">{$TEMPLATE.content_html}</textarea>
   	<h3>{$LANG.email.title_macros}</h3>
   	<table>
   		<thead>
