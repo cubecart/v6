@@ -1756,7 +1756,8 @@ class Catalogue {
 				}
 			}
 			if (is_array($order)) {
-				$order_string = 'ORDER BY `'.$order['field'].'` '.$order['sort'];
+				$field_format = preg_match('/\s/', $order['field']) ? $order['field'] : '`'.$order['field'].'`';
+				$order_string = 'ORDER BY '.$field_format.' '.$order['sort'];
 			}
 
 			if (isset($search_data['featured'])) {
