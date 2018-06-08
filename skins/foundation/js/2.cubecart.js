@@ -297,9 +297,10 @@ jQuery(document).ready(function() {
         return false;
     });
     
-    $("#ccScroll").on( "click", ".ccScroll-next", function(event) { 
+    $("#ccScroll").on( "click", ".ccScroll-next", function(event) {
         event.preventDefault();
         $(this).hide();
+        $("#loading").show();
         window.location.hash = $(this).attr("data-next-page");
 
         var loc = $(window).scrollTop();
@@ -307,15 +308,14 @@ jQuery(document).ready(function() {
         var page = parseInt($(this).attr("data-next-page"));
         var product_list = $('.product_list');
         var next_link = $('a.ccScroll-next');
-        var loadingHtml = '<p class="text-center" id="loading"><svg class="icon"><use xlink:href="#icon-spinner"></use></svg> ' + $('#lang_loading').text() + '&hellip;<p>';
 
         // Keep history to load on back button
         if ($.cookie('ccScroll')){
             var ccScrollHistory = $.parseJSON($.cookie("ccScroll"));
-            ccScrollHistory[cat] = page; 
+            ccScrollHistory[cat] = page;
         } else {
             ccScrollHistory = {};
-            ccScrollHistory[cat] = page;   
+            ccScrollHistory[cat] = page;
         }
 
         if(loc>0) {
@@ -326,26 +326,21 @@ jQuery(document).ready(function() {
         date.setTime(date.getTime() + (10 * 60 * 1000));
         $.cookie("ccScroll", JSON.stringify(ccScrollHistory), {expires: date});
 
-        $(this).after(function() {
-            return loadingHtml;
-        });
-
         $.ajax({
-            async: false,
+            //async: false,
             url: $(this).attr('href'),
-            cache: true,
+            cache: false,
             complete: function(returned) {
-                
-                $('p#loading').hide();
-
                 var page = returned.responseText;
                 var list = $('.product_list li', page);
                 var next = $('a.ccScroll-next', page);
-                
-                product_list.append(list);
-                set_product_view(0)
-                $(next_link).replaceWith(next);
-                init_add_to_basket();
+                setTimeout(function(){
+                    product_list.append(list);
+                    set_product_view(0)
+                    $(next_link).replaceWith(next);
+                    init_add_to_basket();
+                    $("#loading").hide();
+                }, 1000);
             }
         });
     });
