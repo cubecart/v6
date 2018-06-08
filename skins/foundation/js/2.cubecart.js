@@ -340,7 +340,7 @@ jQuery(document).ready(function() {
                     $(next_link).replaceWith(next);
                     init_add_to_basket();
                     $("#loading").hide();
-                }, 1000);
+                }, 1500);
             }
         });
     });
