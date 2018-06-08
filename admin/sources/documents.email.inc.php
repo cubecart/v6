@@ -289,13 +289,10 @@ if (isset($_POST['import']) && !empty($_POST['import'])) {
 		}
 	}
 
-if (isset($_POST['template_default']) && is_array($_POST['template_default']) && Admin::getInstance()->permissions('documents', CC_PERM_EDIT)) {
-	$GLOBALS['db']->update('CubeCart_email_template', array('template_default' => '0'), '1');
-	foreach ($_POST['template_default'] as $template_id => $status) {
-		if ($status != 1) continue;
-		$GLOBALS['db']->update('CubeCart_email_template', array('template_default' => (int)$status), array('template_id' => (int)$template_id));
-		break;
-	}
+if (isset($_POST['template_default']) && ctype_digit($_POST['template_default']) && Admin::getInstance()->permissions('documents', CC_PERM_EDIT)) {
+	$GLOBALS['db']->update('CubeCart_email_template', array('template_default' => '0'));
+	$GLOBALS['db']->update('CubeCart_email_template', array('template_default' => '1'), array('template_id' => (int)$_POST['template_default']));
+
 	## Update default template
 	$GLOBALS['main']->setACPNotify($lang['email']['notify_template_default']);
 	httpredir(currentPage());
