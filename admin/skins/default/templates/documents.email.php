@@ -113,7 +113,7 @@
   <div id="email_html" class="tab_content">
     <h3>{$LANG.email.title_content_html}</h3>
 	{if $LANGUAGES}
-	<textarea name="content[content_html]" id="content_html" class="textbox fck fck-full">{$CONTENT.content_html}</textarea>
+	<textarea name="content[content_html]" id="content_html" class="fck">{$CONTENT.content_html}</textarea>
   	<h3>{$LANG.email.title_macros}</h3>
   	<p>{$LANG.email.important|escape:'htmlall'}</p>
   	<table>
