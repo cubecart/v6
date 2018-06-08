@@ -327,9 +327,9 @@ jQuery(document).ready(function() {
         $.cookie("ccScroll", JSON.stringify(ccScrollHistory), {expires: date});
 
         $.ajax({
-            //async: false,
+            async: false,
             url: $(this).attr('href'),
-            cache: false,
+            cache: true,
             complete: function(returned) {
                 var page = returned.responseText;
                 var list = $('.product_list li', page);
