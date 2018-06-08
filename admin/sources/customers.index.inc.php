@@ -338,6 +338,9 @@ if (isset($_GET['action']) && Admin::getInstance()->permissions('customers', CC_
 	if(isset($_GET['customer_id']) && $_GET['customer_id'] > 0) {
 	$GLOBALS['main']->addTabControl($lang['settings']['title_orders'], '', '?_g=orders&customer_id='.(int)$_GET['customer_id'], null, $no_orders);
 	}
+	$GLOBALS['main']->addTabControl($lang['customer']['cookie_consent'], 'consent');
+	$cookie_consent = $GLOBALS['db']->select('CubeCart_cookie_consent', false, array('customer_id' => (int)$_GET['customer_id']));
+	$GLOBALS['smarty']->assign('COOKIE_CONSENT', $cookie_consent);
 
 	if ($_GET['action'] == 'edit' && isset($_GET['customer_id']) && is_numeric($_GET['customer_id'])) {
 		if (($customer = $GLOBALS['db']->select('CubeCart_customer', false, array('customer_id' => (int)$_GET['customer_id']))) !== false) {
