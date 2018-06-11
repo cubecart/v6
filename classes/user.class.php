@@ -877,7 +877,7 @@ class User {
 			}
 
 			$hash_values = '';
-			$checked_keys = array('title', 'first_name', 'last_name', 'company_name', 'line1', 'line2', 'town', 'state', 'postcode', 'country');
+			$checked_keys = array('billing', 'title', 'first_name', 'last_name', 'company_name', 'line1', 'line2', 'town', 'state', 'postcode', 'country');
 			foreach($array as $key => $value) {
 				if(in_array($key, $checked_keys)) {
 					$hash_values .= $value;
