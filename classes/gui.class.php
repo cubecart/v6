@@ -900,6 +900,8 @@ class GUI {
 	 */
 	private function _displayCookieDialogue() {
 
+		if(CC_IN_ADMIN) return false;
+
 		//If there is a session id already unset and destory it
 		if (isset($_POST['accept_cookies_submit'])) {
 			$accept = (isset($_POST['accept_cookies'])) ? true : false;
