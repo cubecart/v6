@@ -258,6 +258,7 @@ class Mailer extends PHPMailer {
 		if (is_string($contents)) {
 			return $GLOBALS['smarty']->fetch('string:'.$content);
 		} elseif (is_array($contents)) {
+			$out = array();
 			foreach ($contents as $key => $content) {
 				$out[$key] = $GLOBALS['smarty']->fetch('string:'.$content);
 			}
