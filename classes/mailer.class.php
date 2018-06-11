@@ -255,12 +255,15 @@ class Mailer extends PHPMailer {
 	 * @return string
 	 */
 	private function _parseContents($contents) {
-		if (is_array($contents)) {
+		if (is_string($contents)) {
+			return $GLOBALS['smarty']->fetch('string:'.$content);
+		} elseif (is_array($contents)) {
 			foreach ($contents as $key => $content) {
 				$out[$key] = $GLOBALS['smarty']->fetch('string:'.$content);
 			}
+			return $out;
 		}
-		return $out;
+		return false;
 	}
 
 	/**
