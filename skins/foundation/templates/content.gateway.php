@@ -41,7 +41,7 @@
    {if $TRANSFER.mode == 'automatic'}
    <div class="thickpad-top text-center">
       <p>{$LANG.gateway.transferring}</p>
-      <p><svg class="icon icon-submit"><use xlink:href="#icon-spinner"></use></svg></p>
+      <p><svg class="icon-x3 icon-submit"><use xlink:href="#icon-spinner"></use></svg></p>
    </div>
    {elseif $TRANSFER.mode == 'manual'}
    <h2>{$LANG.gateway.amount_due}</h2>
