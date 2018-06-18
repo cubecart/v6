@@ -975,11 +975,6 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
 					'_a' => 'certificates'
 				);
 			break;
-			case 'certificates':
-				$array = array(
-					'_a' => 'certificates',
-				);
-			break;
 			case 'basket':
 				$array = array(
 					'_a' => 'basket',
