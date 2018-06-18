@@ -670,13 +670,13 @@ if (isset($_GET['action'])) {
 		}
 		if ($_POST['multi-action'] == 'delete') {
 			if ($deleted) {
-				if(isset($_POST['month_purge'])) {
+				if(isset($_POST['month_purge']) && ctype_digit($_POST['month_purge'])>0) {
 					$GLOBALS['main']->setACPNotify(sprintf($lang['orders']['notify_orders_purged'],$_POST['month_purge']));
 				} else {
 					$GLOBALS['main']->setACPNotify($lang['orders']['notify_orders_delete']);
 				}
 			} else {
-				if(isset($_POST['month_purge'])) {
+				if(isset($_POST['month_purge']) && ctype_digit($_POST['month_purge'])>0) {
 					$GLOBALS['main']->setACPWarning($lang['orders']['error_orders_purged']);
 				} else {
 					$GLOBALS['main']->setACPWarning($lang['orders']['error_orders_delete']);
