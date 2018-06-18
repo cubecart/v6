@@ -75,8 +75,12 @@ if (isset($_GET['order_id'])) {
 	foreach ($GLOBALS['hooks']->load('admin.order.transactions.table_head_sort') as $hook) include $hook;
 
 	$GLOBALS['smarty']->assign('THEAD', $thead_sort);
+	foreach($_GET['sort'] as $key => $value) {
+		$sort = "`T`.`$key` $value";
+		break;
+	}
 
-	if (($transactions = $GLOBALS['db']->select($table_join, "DISTINCT `T`.`order_id`, `T`.`time`, `T`.`amount`, `T`.`gateway`, `T`.`trans_id`, `S`.`id`, `S`.`custom_oid`, `S`.`cart_order_id`", $where, $_GET['sort'], $per_page, $page)) !== false) {
+	if (($transactions = $GLOBALS['db']->select($table_join, "DISTINCT `T`.`order_id`, `T`.`time`, `T`.`amount`, `T`.`gateway`, `T`.`trans_id`, `S`.`id`, `S`.`custom_oid`, `S`.`cart_order_id`", $where, $sort, $per_page, $page)) !== false) {
 		if (isset($_GET['search']) && !empty($_GET['search'])) {
 			$GLOBALS['main']->setACPNotify(sprintf($GLOBALS['language']->orders['notify_search_logs'], $_GET['search']));
 		}
