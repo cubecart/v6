@@ -27,7 +27,7 @@
             {$LANG.common.quantity_abbreviated}
             <a href="#" class="quan subtract" rel="{$hash}"><svg class="icon"><use xlink:href="#icon-minus-circle"></use></svg></a>
             <span class="disp_quan_{$hash}">{$item.quantity}</span>
-            <input name="quan[{$hash}]" maxlength="6" type="hidden" value="{$item.quantity}">
+            <input name="quan[{$hash}]" maxlength="3" type="hidden" value="{$item.quantity}">
             <span id="original_val_{$hash}" class="hide">{$item.quantity}</span>
             <a href="#" class="quan add" rel="{$hash}"><svg class="icon"><use xlink:href="#icon-plus-circle"></use></svg></a>
          </div>

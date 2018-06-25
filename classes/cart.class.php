@@ -204,7 +204,7 @@ class Cart {
 	public function add($product_id, $optionsArray = null, $quantity = 1, $redirect_enabled = true) {
 		foreach ($GLOBALS['hooks']->load('class.cart.add.pre') as $hook) include $hook;
 		// Prevent quantities of less than one or non numerical user input
-		if (!is_numeric($quantity) || $quantity < 1) {
+		if (!is_numeric($quantity) || $quantity < 1 || $quantity > 999) {
 			$quantity = 1;
 		}
 

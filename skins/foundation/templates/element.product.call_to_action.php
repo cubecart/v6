@@ -33,7 +33,7 @@
    </div>
    {else}
    <div class="medium-2 columns show-for-medium-up">
-      <input type="text" name="quantity" value="1" maxlength="6" class="quantity required text-center">
+      <input type="text" name="quantity" value="1" maxlength="3" class="quantity required text-center">
       <input type="hidden" name="add" value="{$PRODUCT.product_id}">
    </div>
    <div  class="small-12 medium-10 columns">
