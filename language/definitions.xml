@@ -1615,6 +1615,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="subscribers_not_added" introduced="6.0.0"><![CDATA[No subscribers were added.]]></string>
   </group>
   <group name="notification">
+    <string name="confirm_delete_file" introduced="6.2.2"><![CDATA[Are you sure you want to delete '%s'?]]></string>
     <string name="cookies_blocked" introduced="6.2.1"><![CDATA[Non-essential cookies have been blocked.]]></string>
     <string name="cookies_accepted" introduced="6.2.1"><![CDATA[All cookies have been allowed.]]></string>
     <string name="cookie_switch" introduced="6.2.1"><![CDATA[Cookie Switch]]></string>
