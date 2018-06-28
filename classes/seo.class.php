@@ -700,7 +700,7 @@ class SEO {
 		$this->_sitemap_xml->startElement('urlset', array('xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9'));
 
 		// Generate Standard records
-		$store_url = (CC_SSL) ? $GLOBALS['config']->get('config', 'ssl_url') : $GLOBALS['config']->get('config', 'standard_url');
+		$store_url = $GLOBALS['config']->get('config', 'ssl')=='1' ? $GLOBALS['config']->get('config', 'ssl_url') : $GLOBALS['config']->get('config', 'standard_url');
 
 		$this->_sitemap_link(array('url' => $store_url.'/index.php'));
 		# Sale Items
@@ -1046,7 +1046,7 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
 		$dateTime = new DateTime($updated);
 		$updated = $dateTime->format(DateTime::W3C);
 
-		$store_url = (CC_SSL) ? $GLOBALS['config']->get('config', 'ssl_url') : $GLOBALS['config']->get('config', 'standard_url');
+		$store_url = $GLOBALS['config']->get('config', 'ssl')=='1' ? $GLOBALS['config']->get('config', 'ssl_url') : $GLOBALS['config']->get('config', 'standard_url');
 
 		if (!isset($input['url']) && !empty($type)) {
 			$input['url'] = $store_url.'/'.$this->generatePath($input['id'], $type, '', false, true);
