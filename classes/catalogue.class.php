@@ -1794,7 +1794,7 @@ class Catalogue {
 				if ($search_mode == 'fulltext') {
 
 					if($search_str_len < $max_word_len) {
-						return $this->searchCatalogue($original_search_data, 1, $per_page, 'rlike');	
+						return $this->searchCatalogue($original_search_data, $page, $per_page, 'rlike');	
 					}
 
 					switch (true) {
