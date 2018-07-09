@@ -24,6 +24,7 @@ if(is_array($hash_files)) {
 }
 
 $GLOBALS['main']->addTabControl($lang['navigation']['nav_plugins'], 'plugins');
+$GLOBALS['gui']->addBreadcrumb($lang['navigation']['nav_modules'], '?_g=plugins', true);
 if(isset($_GET['delete']) && $_GET['delete']==1) {
 	$dir = CC_ROOT_DIR.'/modules/'.$_GET['type'].'/'.$_GET['module'];
 	if(file_exists($dir)) {
