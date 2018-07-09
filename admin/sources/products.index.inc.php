@@ -25,7 +25,7 @@ if (isset($_POST['search']) && !empty($_POST['search'])) {
 	}
 }
 
-if (isset($_GET['char']) && strlen($_GET['char'])>1) {
+if (isset($_GET['char']) && strlen($_GET['char'])>1 && $_GET['char']!=='0-9') {
 	httpredir(currentPage(array('char')));	
 }
 
@@ -1135,7 +1135,7 @@ if (isset($_GET['action'])) {
 		$where  =  "`name` REGEXP '^[".$_GET['char']."]'";
 	} else if (isset($_GET['q']) && !empty($_GET['q'])) {
 			$where = "(`name` LIKE '%".$_GET['q']."%' OR `product_code` LIKE '%".$_GET['q']."%')";
-		} else {
+	} else {
 		$where = false;
 	}
 
