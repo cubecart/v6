@@ -46,6 +46,7 @@
          {if isset($SHIPPING)}
          <tr>
             <td colspan="4">
+               {if !isset($free_coupon_shipping)}
                {$LANG.basket.shipping_select}:
                <select name="shipping">
                   <option value="">{$LANG.form.please_select}</option>
@@ -60,6 +61,7 @@
                   {/if}
                   {/foreach}
                </select>
+               {/if}
             </td>
             <td>{$LANG.basket.shipping}
                {if $ESTIMATE_SHIPPING}

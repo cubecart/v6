@@ -1624,6 +1624,7 @@ class Cubecart {
 				$offset = 1;
 				
 				if($this->_basket['free_coupon_shipping']==1) {
+					$GLOBALS['smarty']->assign('free_coupon_shipping', (bool)$this->_basket['free_coupon_shipping']);
 					$shipping['Free_Coupon_Shipping'] = array(
 				   		0 => array(
 				      		'name' => $GLOBALS['language']->basket['free_coupon_shipping'],
@@ -1687,7 +1688,9 @@ class Cubecart {
 						$GLOBALS['cart']->set('shipping', $cheapest);
 						if (!isset($this->_basket['min_shipping_set'])) {
 							$GLOBALS['cart']->set('min_shipping_set', true);
-							httpredir(currentPage());
+							if(!isset($this->_basket['free_coupon_shipping'])) {
+								httpredir(currentPage());
+							}
 						}
 					} else if (!$GLOBALS['config']->get('config', 'allow_no_shipping')) {
 							trigger_error('Shipping not setup or allow no shipping not enabled', E_USER_WARNING);
@@ -1724,7 +1727,7 @@ class Cubecart {
 			if (!$digital_only && $shipping) {
 				$GLOBALS['smarty']->assign('SHIPPING', $shipping_list);
 			}
-			
+
 			$GLOBALS['smarty']->assign('SUBTOTAL', $GLOBALS['tax']->priceFormat($GLOBALS['cart']->getSubTotal()));
 
 			$GLOBALS['tax']->displayTaxes();

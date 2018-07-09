@@ -609,7 +609,7 @@ class Cart {
 						);
 						if((bool)$coupon['free_shipping']) {
 							// Unset shipping so that free shipping is selected
-							unset($this->basket['shipping']);
+							unset($this->basket['shipping'], $this->basket['min_shipping_set']);
 						}
 						$this->basket['free_coupon_shipping'] = (bool)$coupon['free_shipping'];
 						return true;
@@ -635,6 +635,9 @@ class Cart {
 	public function discountRemove($code) {
 		if ($code && isset($this->basket['coupons'][strtoupper($code)])) {
 			unset($this->basket['coupons'][strtoupper($code)], $this->basket['discount_type']);
+			if($this->basket['free_coupon_shipping']==1) {
+				unset($this->basket['shipping']);
+			}
 			unset($this->basket['free_coupon_shipping']);
 			$this->save();
 			return true;
