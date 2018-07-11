@@ -131,7 +131,6 @@
 		  <a href="#" target="assigned-prods" class="add"><i class="fa fa-plus-circle" style="display: none" id="add-button" title="{$LANG.common.add}"></i></a>
 		</span>
 	  </div>
-	  <div><label for="form-subtotal">{$LANG.catalogue.coupon_subtotal}</label><span><input type="hidden" name="coupon[subtotal]" id="form-subtotal" class="toggle" value="{$COUPON.subtotal}"></span></div>
 	  <div>{$LANG.catalogue.coupon_no_shipping}</div>
 	</fieldset>
 	<fieldset id="assigned-prods"><legend>{$LANG.catalogue.title_products_assigned}</legend>

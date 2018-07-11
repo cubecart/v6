@@ -604,8 +604,7 @@ class Cart {
 							'available' => ($coupon['allowed_uses'] > 0) ? $coupon['allowed_uses']-$coupon['count'] : 0,
 							'product' => $coupon['product_id'],
 							'shipping' => (bool)$coupon['shipping'],
-							'free_shipping' => (bool)$coupon['free_shipping'],
-							'subtotal' => (bool)$coupon['subtotal'],
+							'free_shipping' => (bool)$coupon['free_shipping']
 						);
 						if((bool)$coupon['free_shipping']) {
 							// Unset shipping so that free shipping is selected
