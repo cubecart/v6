@@ -39,6 +39,12 @@ class Encryption {
 	 */
 	private $_key  = null;
 	/**
+	 * Encryption method
+	 *
+	 * @var string
+	 */
+	private $_method  = 'mcrypt';
+	/**
 	 * Encryption mode
 	 *
 	 * @var string
@@ -60,11 +66,14 @@ class Encryption {
 
 	##############################################
 
-	final protected function __construct() { }
+	final protected function __construct() {
+		// Default to mcrypt for existing data from older versions
+		$this->_method = function_exists('mcrypt_encrypt') ? 'mcrypt' : 'openssl';
+	}
 
 	public function __destruct() {
 		//If there is a mcrypt module close it
-		if (isset($this->_td)) {
+		if ($this->_method=='mcrypt' && isset($this->_td)) {
 			mcrypt_module_close($this->_td);
 		}
 	}
@@ -93,13 +102,17 @@ class Encryption {
 	 */
 	public function decrypt($data) {
 		if (!empty($data)) {
-			return mcrypt_decrypt($this->_cipher, $this->_key, base64_decode($data), $this->_mode, $this->_iv);
+			if($this->_method=='mcrypt') {
+				return mcrypt_decrypt($this->_cipher, $this->_key, base64_decode($data), $this->_mode, $this->_iv);
+			} else {
+				return openssl_decrypt($data, $this->_cipher, $this->_key, 0, $this->_iv);
+			}
 		}
 		return false;
 	}
 
 	/**
-     * Decrypt CC3/CC4 data 
+     * Decrypt CC3/CC4 data
      *
      * @param string $data
      * @param string $cart_order_id
@@ -127,7 +140,11 @@ class Encryption {
 	 */
 	public function encrypt($data) {
 		if (!empty($data)) {
-			return base64_encode(mcrypt_encrypt($this->_cipher, $this->_key, $data, $this->_mode, $this->_iv));
+			if($this->_method=='mcrypt') {
+				return base64_encode(mcrypt_encrypt($this->_cipher, $this->_key, $data, $this->_mode, $this->_iv));
+			} else {
+				return openssl_encrypt($data, $this->_cipher, $this->_key, 0, $this->_iv);
+			}
 		}
 		return false;
 	}
@@ -182,15 +199,26 @@ class Encryption {
 	 * @param string $cipher
 	 * @param string $mode
 	 */
-	public function setup($key = '', $iv = '', $cipher = MCRYPT_RIJNDAEL_256, $mode = MCRYPT_MODE_CBC) {
-		$key   = (!empty($key)) ? $key : $this->getEncryptKey();
-		$iv    = (!empty($iv)) ? $iv : $this->getEncryptKey();
+	public function setup($key = '', $iv = '', $cipher = '', $mode = '', $method = '') {
 
-		$this->_cipher = $cipher;
-		$this->_mode = $mode;
+		$key = (!empty($key)) ? $key : $this->getEncryptKey();
+		if(in_array($method, array('openssl', 'mcrypt'))) {
+			$this->_method = $method;
+		}
 
-		$this->_td  = mcrypt_module_open($this->_cipher, '', $this->_mode, '');
-		$this->_iv  = substr(md5($iv), 0, mcrypt_enc_get_iv_size($this->_td));
-		$this->_key  = substr(md5($key), 0, mcrypt_enc_get_key_size($this->_td));
+		if($this->_method=='mcrypt') {
+			$iv = (!empty($iv)) ? $iv : $this->getEncryptKey();
+			$this->_cipher = empty($cipher) ? MCRYPT_RIJNDAEL_256 : $cipher;
+			$this->_mode = empty($mode) ? MCRYPT_MODE_CBC : $mode;
+			$this->_td  = mcrypt_module_open($this->_cipher, '', $this->_mode, '');
+			$this->_iv  = substr(md5($iv), 0, mcrypt_enc_get_iv_size($this->_td));
+			$this->_key  = substr(md5($key), 0, mcrypt_enc_get_key_size($this->_td));
+		} else {
+			$this->_key = $key;
+			$this->_cipher = empty($cipher) ? 'AES-128-CBC' : $cipher;;
+			$this->_mode = $this->_td  = ''; // Not used with openssl
+			$ivlen = openssl_cipher_iv_length($this->_cipher);
+			$this->_iv = openssl_random_pseudo_bytes($ivlen);
+		}
 	}
 }
