@@ -32,7 +32,11 @@
          <dd><a href="#quantity_discounts">{$LANG.catalogue.quantity_discounts}</a></dd>
          {/if}
          {foreach from=$PRODUCT_TABS_TITLES item=product_tab_title}
-            {$product_tab_title}
+            {if isset($product_tab_title.content_id) && isset($product_tab_title.title)}
+         <dd><a href="#{$product_tab_title.content_id}">{$product_tab_title.title}</a></dd>
+            {else}
+         {$product_tab_title}
+            {/if}
          {/foreach}
       </dl>
       <div class="tabs-content">
@@ -117,11 +121,13 @@
             </table>
          </div>
          {/if}
-         {if isset($PRODUCT_TABS_CONTENTS)}
-            {foreach from=$PRODUCT_TABS_CONTENTS item=product_tab_content}
-               {$product_tab_content}
-            {/foreach}
-         {/if}
+        {foreach from=$PRODUCT_TABS_CONTENTS item=product_tab_content}
+            {if isset($product_tab_content.content_id) && isset($product_tab_content.content)}
+        <div class="content" id="{$product_tab_content.content_id}">{$product_tab_content.content}</div>
+            {else}
+        {$product_tab_content}
+            {/if}
+        {/foreach}
       </div>
    </form>
    {if $SHARE}
