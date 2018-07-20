@@ -529,6 +529,8 @@ class Cart {
 
 				$proceed = false;
 
+				foreach ($GLOBALS['hooks']->load('class.cart.discount_preadd') as $hook) include $hook;
+
 				if (!empty($coupon['product_id'])) {
                     $qualifying_products = unserialize($coupon['product_id']);
 
