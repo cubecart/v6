@@ -1151,6 +1151,7 @@ if (isset($_GET['action'])) {
 		}
 	}
 
+	foreach ($GLOBALS['hooks']->load('admin.product.products_list.where_filter') as $hook) include $hook;
 	if (($where === false || strlen($where) > 0) && ($results = $GLOBALS['db']->select('CubeCart_inventory', false, $where, $_GET['sort'], $per_page, $page)) !== false) {
 		$pagination = $GLOBALS['db']->pagination(false, $per_page, $page, 9);
 		// Find fist letters to sort products by
