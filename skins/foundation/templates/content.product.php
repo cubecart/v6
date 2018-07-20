@@ -123,7 +123,7 @@
          {/if}
         {foreach from=$PRODUCT_TABS_CONTENTS item=product_tab_content}
             {if isset($product_tab_content.content_id) && isset($product_tab_content.content)}
-        <div class="content" id="{$product_tab_content.content_id}">{$product_tab_content.content}</div>
+        <div class="{if !empty($product_tab_content.content_class)}{$product_tab_content.content_class}{else}content{/if}" id="{$product_tab_content.content_id}">{$product_tab_content.content}</div>
             {else}
         {$product_tab_content}
             {/if}
