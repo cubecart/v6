@@ -317,7 +317,7 @@ if (isset($_GET['bots']) && $_GET['bots']=='false') {
 	$GLOBALS['smarty']->assign('BOTS', true);
 }
 
-$query  = sprintf("SELECT S.*, C.first_name, C.last_name FROM %1\$sCubeCart_sessions AS S LEFT JOIN %1\$sCubeCart_customer AS C ON S.customer_id = C.customer_id WHERE ".$filter."S.session_last>".$timeLimit." ORDER BY S.session_last DESC", $glob['dbprefix']);
+$query  = sprintf("SELECT S.*, C.first_name, C.last_name FROM %1\$sCubeCart_sessions AS S LEFT JOIN %1\$sCubeCart_customer AS C ON S.customer_id = C.customer_id WHERE S.acp = 0 AND ".$filter."S.session_last>".$timeLimit." ORDER BY S.session_last DESC", $glob['dbprefix']);
 if (($results = $GLOBALS['db']->query($query)) !== false) {
 	$GLOBALS['main']->addTabControl($lang['statistics']['title_customers_active'], 'stats_online', false, false, count($results));
 	$smarty_data['users_online'] = array();

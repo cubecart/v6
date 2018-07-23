@@ -848,7 +848,8 @@ if (isset($database_result) && $database_result) {
 		'cubecart_sessions' => array (
 			'session_id' => 'PRIMARY',
 			'customer_id' => 'KEY',
-			'session_last' => 'KEY'
+			'session_last' => 'KEY',
+			'acp' => 'KEY'
 		),
 		'cubecart_shipping_rates' => array (
 			'id' => 'PRIMARY',

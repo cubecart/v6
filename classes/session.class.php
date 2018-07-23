@@ -578,7 +578,8 @@ class Session {
 
 		$record = array(
 			'location'		=> currentPage(),
-			'session_last'	=> $this->get('session_last', 'client', '')
+			'session_last'	=> $this->get('session_last', 'client', ''),
+			'acp'		=> ADMIN_CP
 		);
 		
 		//Use the instance because the global might be gone already
@@ -694,7 +695,8 @@ session_save_path(CC_ROOT_DIR.'/sessions');")."</pre>
 				'session_id'	=> $this->getId(),
 				'session_last'	=> time(),
 				'session_start'	=> time(),
-				'useragent'		=> $this->_http_user_agent()
+				'useragent'		=> $this->_http_user_agent(),
+				'acp'		=> ADMIN_CP
 			);
 			$GLOBALS['db']->insert('CubeCart_sessions', $record, false);
 			$this->set('ip_address', $ip, 'client');

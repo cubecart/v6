@@ -834,9 +834,11 @@ CREATE TABLE IF NOT EXISTS `CubeCart_sessions` (
 	`location` VARBINARY(255) DEFAULT NULL,
 	`ip_address` VARCHAR(45) DEFAULT NULL COMMENT 'Supports IPv6 addresses',
 	`useragent` TEXT NULL,
+	`acp` TINYINT(1) DEFAULT 0,
 	PRIMARY KEY (`session_id`),
 	KEY `customer_id` (`customer_id`),
-	KEY `session_last` (`session_last`)
+	KEY `session_last` (`session_last`),
+	KEY `acp` (`acp`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_shipping_rates` (
