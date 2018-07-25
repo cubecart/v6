@@ -1042,7 +1042,7 @@ class Order {
 			foreach ($items as $item) {
 
 				// Check stock on options first
-				if (!empty($item['options_identifier']) && $options_stock = $GLOBALS['db']->select('CubeCart_option_matrix', array('stock_level', 'matrix_id'), array('product_id' => (int)$item['product_id'], 'options_identifier' => $item['options_identifier'], 'status' => 1, 'use_stock' => 1))) {
+				if (!empty($item['options_identifier']) && $options_stock = $GLOBALS['db']->select('CubeCart_option_matrix', array('stock_level', 'matrix_id'), array('product_id' => (int)$item['product_id'], 'options_identifier' => $item['options_identifier'], 'status' => 1, 'use_stock' => 1), false, false, false, false)) {
 
 					$stock = $options_stock[0]['stock_level'];
 
@@ -1145,7 +1145,7 @@ class Order {
 				$matrix_prods = array_unique($matrix_prod);
 
 				foreach ($matrix_prods as $prod_id) {
-					$options_stock = $GLOBALS['db']->select('CubeCart_option_matrix', 'SUM(stock_level) AS stock', array('product_id' => (int)$prod_id, 'status' => 1, 'use_stock' => 1));
+					$options_stock = $GLOBALS['db']->select('CubeCart_option_matrix', 'SUM(stock_level) AS stock', array('product_id' => (int)$prod_id, 'status' => 1, 'use_stock' => 1), false, false, false, false);
 					$GLOBALS['db']->update('CubeCart_inventory', array('stock_level' => $options_stock[0]['stock']), array('product_id' => (int)$prod_id));
 				}
 			}

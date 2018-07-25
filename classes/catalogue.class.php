@@ -410,7 +410,7 @@ class Catalogue {
 				$product['options'] = $GLOBALS['catalogue']->getProductOptions($product['product_id']);
 
 				// Get stock level variations for options
-				if ($product_options && $stock_variations = $GLOBALS['db']->select('CubeCart_option_matrix', 'MAX(stock_level) AS max_stock, MIN(stock_level) AS min_stock', array('product_id' => $product['product_id'], 'use_stock' => 1, 'status' => 1), false, 1)) {
+				if ($product_options && $stock_variations = $GLOBALS['db']->select('CubeCart_option_matrix', 'MAX(stock_level) AS max_stock, MIN(stock_level) AS min_stock', array('product_id' => $product['product_id'], 'use_stock' => 1, 'status' => 1), false, 1, false, false)) {
 					if (is_numeric($stock_variations[0]['min_stock']) && is_numeric($stock_variations[0]['max_stock'])) {
 						$product['stock_level'] =  ($stock_variations[0]['min_stock'] == $stock_variations[0]['max_stock']) ? $stock_variations[0]['max_stock'] : $stock_variations[0]['min_stock'].' - '.$stock_variations[0]['max_stock'];
 					}
@@ -773,7 +773,7 @@ class Catalogue {
 					$in_stock = array();
 					foreach($available_products as $key => $product) {
 						if($product['use_stock_level']=='1') {
-							if($options = $GLOBALS['db']->select('CubeCart_option_matrix', array('stock_level', 'use_stock'), array('product_id' => $product['product_id'], 'status' => 1))) {
+							if($options = $GLOBALS['db']->select('CubeCart_option_matrix', array('stock_level', 'use_stock'), array('product_id' => $product['product_id'], 'status' => 1), false, false, false, false)) {
 
 								$oos_combos = array();
 								foreach($options as $option) {
@@ -1002,7 +1002,7 @@ class Catalogue {
 		}
 
 		// Get product option specific data
-		$products_matrix_data = $GLOBALS['db']->select('CubeCart_option_matrix', array('stock_level' , 'product_code', 'upc', 'jan', 'isbn', 'image'), array('product_id' => (int)$product_id, 'options_identifier' => $options_identifier, 'status' => 1));
+		$products_matrix_data = $GLOBALS['db']->select('CubeCart_option_matrix', array('stock_level' , 'product_code', 'upc', 'jan', 'isbn', 'image'), array('product_id' => (int)$product_id, 'options_identifier' => $options_identifier, 'status' => 1), false, false, false, false);
 		if ($products_matrix_data) {
 			foreach ($products_matrix_data[0] as $key => $value) {
 				if (!is_null($value) && !empty($value)) {
