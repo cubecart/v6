@@ -313,15 +313,24 @@ $(document).ready(function() {
 
         time_out_text = time_out_text.replace("%s", "30");
         parent.html('<i class="fa fa-spinner fa-spin fa-fw"></i>');
-        
-        var p = $.getJSON("./" + i, {
-            _g: "xml",
-            path: path,
-            function: "filesize"
-        }, function(r) {
-            parent.html(r);
+
+        $.ajax({
+            dataType: "json",
+            url: "./" + i,
+            data: {
+                _g: "xml",
+                path: path,
+                function: "filesize"
+            },
+            success: function(r) {
+                parent.html(r);
+            },
+            timeout: 30000
+        }).fail( function(xhr, status ) {
+            if(status == "timeout") {
+                parent.html(time_out_text);
+            }
         });
-        setTimeout(function(){ parent.html(time_out_text); p.abort(); }, 30000);
     });
 
     $("#bulk_price_target").change(function() {
