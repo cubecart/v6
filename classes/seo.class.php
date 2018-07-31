@@ -87,7 +87,7 @@ class SEO {
 	const TAGS_MERGE = 1;
 	const TAGS_REPLACE = 2;
 
-	const PCRE_REQUEST_URI = '(.*/)?[\w]+.[a-z]+\?_a\=([\w]+)\&(amp;)?([\w]+)\=([\w\-\_]+)([^"\']*)';
+	const PCRE_REQUEST_URI = '(.*/)?[\w\-\_]+.[a-z]+\?_a\=([\w]+)\&(amp;)?([\w]+)\=([\w\-\_]+)([^"\']*)';
 
 	public $_a = '';
 
