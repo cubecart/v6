@@ -1918,10 +1918,14 @@ class Catalogue {
 						$order_string = 'ORDER BY `'.key($order).'` '.current($order);
 					}
 				}
-				
-				$where2 = $this->outOfStockWhere(false, 'I', true);
-				$whereString = 'IF (G.sale_price IS NULL, I.sale_price, G.sale_price) > 0'.$where2;
-				$query = sprintf("SELECT I.* FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND %2\$s %3\$s %4\$s", $GLOBALS['config']->get('config', 'dbprefix'), $whereString, $order_string, $limit);
+				if($GLOBALS['config']->get('config', 'catalogue_sale_mode') == '1') {
+					$where2 = $this->outOfStockWhere(false, 'I', true);
+					$whereString = 'IF (G.sale_price IS NULL, I.sale_price, G.sale_price) > 0'.$where2;
+					$query = sprintf("SELECT I.* FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND %2\$s %3\$s %4\$s", $GLOBALS['config']->get('config', 'dbprefix'), $whereString, $order_string, $limit);
+				} elseif($GLOBALS['config']->get('config', 'catalogue_sale_mode') == '2') {
+					$decimal_percent = $GLOBALS['config']->get('config', 'catalogue_sale_percentage')/100;
+					$query = sprintf("SELECT I.* FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, price*%4\$s as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 %2\$s %3\$s", $GLOBALS['config']->get('config', 'dbprefix'), $order_string, $limit, $decimal_percent);
+				}
 				foreach ($GLOBALS['hooks']->load('class.cubecart.search_catalogue') as $hook) include $hook;
 				if (($sale = $GLOBALS['db']->query($query)) !== false) {
 					$q2 = sprintf("SELECT I.* FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND %2\$s %3\$s", $GLOBALS['config']->get('config', 'dbprefix'), $whereString, $order_string);
