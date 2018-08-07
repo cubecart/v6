@@ -72,6 +72,7 @@
 	<hook trigger="admin.product.clone" deprecated="" />
 	<hook trigger="admin.product.delete" deprecated="" />
 	<hook trigger="admin.product.export" deprecated="" />
+	<hook trigger="admin.product.products_list.where_filter" deprecated="" />
 	<hook trigger="admin.products.options.types" deprecated="" />
 	<hook trigger="admin.product.google_cats" deprecated="" />
 	<hook trigger="admin.product.pre_display" deprecated="" />
@@ -121,6 +122,7 @@
 	<hook trigger="class.cart.construct.pre" deprecated="" />
 	<hook trigger="class.cart.clear" deprecated="" />
 	<hook trigger="class.cart.discount_add" deprecated="" />
+	<hook trigger="class.cart.discount_preadd" deprecated="" />
 	<hook trigger="class.cart.get" deprecated="" />
 	<hook trigger="class.cart.get.fetchtaxes" deprecated="" />
 	<hook trigger="class.cart.get.product_prices" deprecated="" />
