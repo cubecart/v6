@@ -221,7 +221,7 @@ class Database extends Database_Contoller {
 			}
 
 			//Cache the result if needed
-			$this->_writeCache($this->_result, $this->_query);
+			if ($cache) $this->_writeCache($this->_result, $this->_query);
 			 
 			return (!$this->_sqlDebug($cache, false)) ? true : false;
 		}
