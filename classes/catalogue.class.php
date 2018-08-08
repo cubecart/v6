@@ -1925,6 +1925,8 @@ class Catalogue {
 				} elseif($GLOBALS['config']->get('config', 'catalogue_sale_mode') == '2') {
 					$decimal_percent = $GLOBALS['config']->get('config', 'catalogue_sale_percentage')/100;
 					$query = sprintf("SELECT I.* FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, price*%4\$s as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 %2\$s %3\$s", $GLOBALS['config']->get('config', 'dbprefix'), $order_string, $limit, $decimal_percent);
+				} else {
+					return false;
 				}
 				foreach ($GLOBALS['hooks']->load('class.cubecart.search_catalogue') as $hook) include $hook;
 				if (($sale = $GLOBALS['db']->query($query)) !== false) {
