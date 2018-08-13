@@ -1573,13 +1573,15 @@ class Catalogue {
 	 * @param int $cat_id
 	 * @return int
 	 */
-	public function productCount($cat_id) {
+	public function productCount($cat_id, $inc_children = true) {
 		$products = $GLOBALS['db']->select('CubeCart_category_index', array('id'), array('cat_id' => $cat_id));
 		$count  = ($products) ? count($products) : 0;
-		$children = $GLOBALS['db']->select('CubeCart_category', array('cat_id'), array('cat_parent_id' => (int)$cat_id));
-		if ($children) {
-			foreach ($children as $child) {
-				$count += $this->productCount($child['cat_id']);
+		if($inc_children) {
+			$children = $GLOBALS['db']->select('CubeCart_category', array('cat_id'), array('cat_parent_id' => (int)$cat_id));
+			if ($children) {
+				foreach ($children as $child) {
+					$count += $this->productCount($child['cat_id']);
+				}
 			}
 		}
 		return (int)$count;
