@@ -18,186 +18,198 @@
  * @author Al Brookbanks
  * @since 5.0.0
  */
-class Cache_Controler {
-	/**
-	 * Public status
-	 *
-	 * @var @string
-	 */
-	public $status_desc = '';
-	/**
-	 * Public status
-	 *
-	 * @var @bool
-	 */
-	public $status = false;
-	/**
-	 * Make sure the cache doesn't get cleared more than once
-	 *
-	 * @var bool
-	 */
-	protected $_cleared = false;
-	/**
-	 * Cache expire
-	 *
-	 * @var int
-	 */
-	protected $_expire  = 86400;
-	/**
-	 * Cache IDs
-	 *
-	 * @var array
-	 */
-	protected $_ids   = array();
-	/**
-	 * Cache mode/type
-	 *
-	 * @var string
-	 */
-	protected $_mode  = 'None';
-	/**
-	 * Cache prefix
-	 *
-	 * @var string
-	 */
-	protected $_prefix  = '';
-	/**
-	 * File name suffix
-	 *
-	 * @var string
-	 */
-	protected $_suffix  = '.cache';
-	protected $_empties_id = 'sql.empties';
-	protected $_empties = array();
-	protected $_empties_added = false;
-	/**
-	 * Temp variable to hold the cache read for exists function
-	 *
-	 * @var mixed
-	 */
-	protected $_temp  = null;
+class Cache_Controler
+{
+    /**
+     * Public status
+     *
+     * @var @string
+     */
+    public $status_desc = '';
+    /**
+     * Public status
+     *
+     * @var @bool
+     */
+    public $status = false;
+    /**
+     * Make sure the cache doesn't get cleared more than once
+     *
+     * @var bool
+     */
+    protected $_cleared = false;
+    /**
+     * Cache expire
+     *
+     * @var int
+     */
+    protected $_expire  = 86400;
+    /**
+     * Cache IDs
+     *
+     * @var array
+     */
+    protected $_ids   = array();
+    /**
+     * Cache mode/type
+     *
+     * @var string
+     */
+    protected $_mode  = 'None';
+    /**
+     * Cache prefix
+     *
+     * @var string
+     */
+    protected $_prefix  = '';
+    /**
+     * File name suffix
+     *
+     * @var string
+     */
+    protected $_suffix  = '.cache';
+    protected $_empties_id = 'sql.empties';
+    protected $_empties = array();
+    protected $_empties_added = false;
+    /**
+     * Temp variable to hold the cache read for exists function
+     *
+     * @var mixed
+     */
+    protected $_temp  = null;
 
-	/**
-	 * Class instance
-	 *
-	 * @var instance
-	 */
-	protected static $_instance;
-	
-	protected $_dupes = array();
+    /**
+     * Class instance
+     *
+     * @var instance
+     */
+    protected static $_instance;
+    
+    protected $_dupes = array();
 
-	##############################################
+    ##############################################
 
-	protected function __construct() {
-		$this->_setPrefix();
-	}
+    protected function __construct()
+    {
+        $this->_setPrefix();
+    }
 
-	//=====[ Public ]=======================================
-	
-	protected function _setPrefix() {
-		if(!isset($GLOBALS['glob']['dbdatabase']) || empty($GLOBALS['glob']['dbdatabase'])) {
-			$this->enable(false);
-			return false;
-		}
-		$this->_prefix = substr(md5($GLOBALS['glob']['dbdatabase']), 0, 5).'.';
-	}
+    //=====[ Public ]=======================================
+    
+    protected function _setPrefix()
+    {
+        if (!isset($GLOBALS['glob']['dbdatabase']) || empty($GLOBALS['glob']['dbdatabase'])) {
+            $this->enable(false);
+            return false;
+        }
+        $this->_prefix = substr(md5($GLOBALS['glob']['dbdatabase']), 0, 5).'.';
+    }
 
-	/**
-	 * Enable/Disable cache
-	 *
-	 * @param bool $enable
-	 */
-	public function enable($enable = true) {
-		$this->status = $enable;
-		$this->status();
-		if($enable) $this->_getEmpties();
-	}
+    /**
+     * Enable/Disable cache
+     *
+     * @param bool $enable
+     */
+    public function enable($enable = true)
+    {
+        $this->status = $enable;
+        $this->status();
+        if ($enable) {
+            $this->_getEmpties();
+        }
+    }
 
-	/**
-	 * Get the current cache type
-	 *
-	 * @return string Cache system
-	 */
-	public final function getCacheSystem() {
-		return $this->_mode;
-	}
+    /**
+     * Get the current cache type
+     *
+     * @return string Cache system
+     */
+    final public function getCacheSystem()
+    {
+        return $this->_mode;
+    }
 
-	/**
-	 * Get cache prefix
-	 *
-	 * @return string Cache prefix
-	 */
-	public final function getCachePrefix() {
-		return $this->_prefix;
-	}
+    /**
+     * Get cache prefix
+     *
+     * @return string Cache prefix
+     */
+    final public function getCachePrefix()
+    {
+        return $this->_prefix;
+    }
 
-	/**
-	 * Set cache expire time
-	 *
-	 * @param int $expire One day
-	 */
-	public function setExpire($expire = 86400) {
-		if (is_numeric($expire)) {
-			$this->_expire = $expire;
-		}
-	}
+    /**
+     * Set cache expire time
+     *
+     * @param int $expire One day
+     */
+    public function setExpire($expire = 86400)
+    {
+        if (is_numeric($expire)) {
+            $this->_expire = $expire;
+        }
+    }
 
-	/**
-	 * Return cache status
-	 *
-	 * @return bool
-	 */
-	public function status() {
-		if(defined('ADMIN_CP') && ADMIN_CP || defined('CC_IN_SETUP') && CC_IN_SETUP) {
-			$this->status_desc = 'Always Disabled in ACP or Setup';
-			$this->status = false;
-		} else {
-			$this->status_desc = $this->status ? 'Enabled' : 'Disabled';
-		}
-		return $this->status;
-	}
+    /**
+     * Return cache status
+     *
+     * @return bool
+     */
+    public function status()
+    {
+        if (defined('ADMIN_CP') && ADMIN_CP || defined('CC_IN_SETUP') && CC_IN_SETUP) {
+            $this->status_desc = 'Always Disabled in ACP or Setup';
+            $this->status = false;
+        } else {
+            $this->status_desc = $this->status ? 'Enabled' : 'Disabled';
+        }
+        return $this->status;
+    }
 
-	/**
-	 * Tidy the cache folder
-	 *
-	 * @return bool
-	 */
-	public function tidy() {
-		//Loop through the cache folder
-		if (($files = glob(CC_CACHE_DIR.'*', GLOB_NOSORT)) !== false) {
-			foreach ($files as $file) {
-				//Delete any file that is not a cache file
-				if (substr($file, -6) !== '.cache' && $file !== '.htaccess' && $file !== 'index.php') {
-					@unlink($file);
-				}
-			}
-		}
+    /**
+     * Tidy the cache folder
+     *
+     * @return bool
+     */
+    public function tidy()
+    {
+        //Loop through the cache folder
+        if (($files = glob(CC_CACHE_DIR.'*', GLOB_NOSORT)) !== false) {
+            foreach ($files as $file) {
+                //Delete any file that is not a cache file
+                if (substr($file, -6) !== '.cache' && $file !== '.htaccess' && $file !== 'index.php') {
+                    @unlink($file);
+                }
+            }
+        }
 
-		//Loop through the cache/skin folder
-		if (($files = glob(CC_SKIN_CACHE_DIR.'*', GLOB_NOSORT)) !== false) {
-			/**
-			 * Delete any files
-			 *
-			 * We are doing it this way because smarty class may not be loaded
-			 * so this will be quicker and safer
-			 */
-			foreach ($files as $file) {
-				@unlink($file);
-			}
-		}
-		clearstatcache();
-		return true;
-	}
+        //Loop through the cache/skin folder
+        if (($files = glob(CC_SKIN_CACHE_DIR.'*', GLOB_NOSORT)) !== false) {
+            /**
+             * Delete any files
+             *
+             * We are doing it this way because smarty class may not be loaded
+             * so this will be quicker and safer
+             */
+            foreach ($files as $file) {
+                @unlink($file);
+            }
+        }
+        clearstatcache();
+        return true;
+    }
 
-	//=====[ Private ]=======================================
+    //=====[ Private ]=======================================
 
-	/**
-	 * Make the cache name key
-	 *
-	 * @param string $id
-	 * @return string
-	 */
-	protected function _makeName($id) {
-		return $this->_prefix.$id.$this->_suffix;
-	}
+    /**
+     * Make the cache name key
+     *
+     * @param string $id
+     * @return string
+     */
+    protected function _makeName($id)
+    {
+        return $this->_prefix.$id.$this->_suffix;
+    }
 }

@@ -11,4 +11,3 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  */
 phpinfo();
-?>

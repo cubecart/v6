@@ -18,107 +18,113 @@
  * @author Al Brookbanks
  * @since 5.0.0
  */
-class Encryption {
+class Encryption
+{
 
-	/**
-	 * Encryption cipher
-	 *
-	 * @var string
-	 */
-	private $_cipher = null;
-	/**
-	 * Initialisation for encryption
-	 *
-	 * @var string
-	 */
-	private $_iv  = null;
-	/**
-	 * Encryption key
-	 *
-	 * @var string
-	 */
-	private $_key  = null;
-	/**
-	 * Encryption method
-	 *
-	 * @var string
-	 */
-	private $_method  = 'mcrypt';
-	/**
-	 * Encryption mode
-	 *
-	 * @var string
-	 */
-	private $_mode  = null;
-	/**
-	 * Encryption handler
-	 *
-	 * @var resource
-	 */
-	private $_td  = null;
+    /**
+     * Encryption cipher
+     *
+     * @var string
+     */
+    private $_cipher = null;
+    /**
+     * Initialisation for encryption
+     *
+     * @var string
+     */
+    private $_iv  = null;
+    /**
+     * Encryption key
+     *
+     * @var string
+     */
+    private $_key  = null;
+    /**
+     * Encryption method
+     *
+     * @var string
+     */
+    private $_method  = 'mcrypt';
+    /**
+     * Encryption mode
+     *
+     * @var string
+     */
+    private $_mode  = null;
+    /**
+     * Encryption handler
+     *
+     * @var resource
+     */
+    private $_td  = null;
 
-	/**
-	 * Class instance
-	 *
-	 * @var instance
-	 */
-	protected static $_instance;
+    /**
+     * Class instance
+     *
+     * @var instance
+     */
+    protected static $_instance;
 
-	##############################################
+    ##############################################
 
-	final protected function __construct() {
-		// Default to mcrypt for existing data from older versions
-		$this->_method = function_exists('mcrypt_encrypt') ? 'mcrypt' : 'openssl';
-	}
+    final protected function __construct()
+    {
+        // Default to mcrypt for existing data from older versions
+        $this->_method = function_exists('mcrypt_encrypt') ? 'mcrypt' : 'openssl';
+    }
 
-	public function __destruct() {
-		//If there is a mcrypt module close it
-		if ($this->_method=='mcrypt' && isset($this->_td)) {
-			mcrypt_module_close($this->_td);
-		}
-	}
+    public function __destruct()
+    {
+        //If there is a mcrypt module close it
+        if ($this->_method=='mcrypt' && isset($this->_td)) {
+            mcrypt_module_close($this->_td);
+        }
+    }
 
-	/**
-	 * Setup the instance (singleton)
-	 *
-	 * @return Encryption
-	 */
-	public static function getInstance() {
-		if (!(self::$_instance instanceof self)) {
-			self::$_instance = new self();
-		}
-		self::$_instance->setup();
+    /**
+     * Setup the instance (singleton)
+     *
+     * @return Encryption
+     */
+    public static function getInstance()
+    {
+        if (!(self::$_instance instanceof self)) {
+            self::$_instance = new self();
+        }
+        self::$_instance->setup();
 
-		return self::$_instance;
-	}
+        return self::$_instance;
+    }
 
-	//=====[ Public ]=======================================
+    //=====[ Public ]=======================================
 
-	/**
-	 * Decrypt data
-	 *
-	 * @param string $data
-	 * @return string/false
-	 */
-	public function decrypt($data) {
-		if (!empty($data)) {
-			if($this->_method=='mcrypt') {
-				return mcrypt_decrypt($this->_cipher, $this->_key, base64_decode($data), $this->_mode, $this->_iv);
-			} else {
-				return openssl_decrypt($data, $this->_cipher, $this->_key, 0, $this->_iv);
-			}
-		}
-		return false;
-	}
+    /**
+     * Decrypt data
+     *
+     * @param string $data
+     * @return string/false
+     */
+    public function decrypt($data)
+    {
+        if (!empty($data)) {
+            if ($this->_method=='mcrypt') {
+                return mcrypt_decrypt($this->_cipher, $this->_key, base64_decode($data), $this->_mode, $this->_iv);
+            } else {
+                return openssl_decrypt($data, $this->_cipher, $this->_key, 0, $this->_iv);
+            }
+        }
+        return false;
+    }
 
-	/**
+    /**
      * Decrypt CC3/CC4 data
      *
      * @param string $data
      * @param string $cart_order_id
      * @return string/false
      */
-    public function decryptDepreciated($data, $cart_order_id) {
+    public function decryptDepreciated($data, $cart_order_id)
+    {
         $keyArray = array($cart_order_id);
         $this->_td_old  = mcrypt_module_open(MCRYPT_RIJNDAEL_256, '', 'ecb', '');
         $this->_iv_old  = mcrypt_create_iv(mcrypt_enc_get_iv_size($this->_td_old), MCRYPT_RAND);
@@ -132,93 +138,97 @@ class Encryption {
         }
     }
 
-	/**
-	 * Encrypt data
-	 *
-	 * @param string $data
-	 * @return bool
-	 */
-	public function encrypt($data) {
-		if (!empty($data)) {
-			if($this->_method=='mcrypt') {
-				return base64_encode(mcrypt_encrypt($this->_cipher, $this->_key, $data, $this->_mode, $this->_iv));
-			} else {
-				return openssl_encrypt($data, $this->_cipher, $this->_key, 0, $this->_iv);
-			}
-		}
-		return false;
-	}
+    /**
+     * Encrypt data
+     *
+     * @param string $data
+     * @return bool
+     */
+    public function encrypt($data)
+    {
+        if (!empty($data)) {
+            if ($this->_method=='mcrypt') {
+                return base64_encode(mcrypt_encrypt($this->_cipher, $this->_key, $data, $this->_mode, $this->_iv));
+            } else {
+                return openssl_encrypt($data, $this->_cipher, $this->_key, 0, $this->_iv);
+            }
+        }
+        return false;
+    }
 
-	/**
-	 * Get encryption key
-	 *
-	 * @return string
-	 */
-	public function getEncryptKey() {
-		if($GLOBALS['config']->has('config', 'enc_key')) {
-			$enc_key = $GLOBALS['config']->get('config', 'enc_key');
-			if(empty($enc_key)) {
-				return $this->setEncryptKey();	
-			}
-			return $enc_key;
-		} else {
-			return $this->setEncryptKey();
-		}
-	}
+    /**
+     * Get encryption key
+     *
+     * @return string
+     */
+    public function getEncryptKey()
+    {
+        if ($GLOBALS['config']->has('config', 'enc_key')) {
+            $enc_key = $GLOBALS['config']->get('config', 'enc_key');
+            if (empty($enc_key)) {
+                return $this->setEncryptKey();
+            }
+            return $enc_key;
+        } else {
+            return $this->setEncryptKey();
+        }
+    }
 
-	/**
-	 * Set encryption key
-	 *
-	 * @return string
-	 */
-	public function setEncryptKey() {
+    /**
+     * Set encryption key
+     *
+     * @return string
+     */
+    public function setEncryptKey()
+    {
 
-		// Older stores used the software license key so lets keep using that if it exists
-		$key = $GLOBALS['config']->get('config', 'license_key');
+        // Older stores used the software license key so lets keep using that if it exists
+        $key = $GLOBALS['config']->get('config', 'license_key');
 
-		// If license_key isn't set and we don't have an "enc_key".. make one
-		if((!$key || empty($key)) && !$GLOBALS['config']->has('config', 'enc_key')) {
-			$key = randomString();
-			$GLOBALS['config']->set('config', 'enc_key', $key);
-		} else {
-			// Get enc_key
-			$key = $GLOBALS['config']->get('config', 'enc_key');
-			if(!$key || empty($key)) {
-				$key = randomString();
-				$GLOBALS['config']->set('config', 'enc_key', $key);
-			}
-		}
-		return $key;
-	}
+        // If license_key isn't set and we don't have an "enc_key".. make one
+        if ((!$key || empty($key)) && !$GLOBALS['config']->has('config', 'enc_key')) {
+            $key = randomString();
+            $GLOBALS['config']->set('config', 'enc_key', $key);
+        } else {
+            // Get enc_key
+            $key = $GLOBALS['config']->get('config', 'enc_key');
+            if (!$key || empty($key)) {
+                $key = randomString();
+                $GLOBALS['config']->set('config', 'enc_key', $key);
+            }
+        }
+        return $key;
+    }
 
-	/**
-	 * Setup encryption
-	 *
-	 * @param string $key
-	 * @param string $iv
-	 * @param string $cipher
-	 * @param string $mode
-	 */
-	public function setup($key = '', $iv = '', $cipher = '', $mode = '', $method = '') {
+    /**
+     * Setup encryption
+     *
+     * @param string $key
+     * @param string $iv
+     * @param string $cipher
+     * @param string $mode
+     */
+    public function setup($key = '', $iv = '', $cipher = '', $mode = '', $method = '')
+    {
+        $key = (!empty($key)) ? $key : $this->getEncryptKey();
+        if (in_array($method, array('openssl', 'mcrypt'))) {
+            $this->_method = $method;
+        }
 
-		$key = (!empty($key)) ? $key : $this->getEncryptKey();
-		if(in_array($method, array('openssl', 'mcrypt'))) {
-			$this->_method = $method;
-		}
-
-		if($this->_method=='mcrypt') {
-			$iv = (!empty($iv)) ? $iv : $this->getEncryptKey();
-			$this->_cipher = empty($cipher) ? MCRYPT_RIJNDAEL_256 : $cipher;
-			$this->_mode = empty($mode) ? MCRYPT_MODE_CBC : $mode;
-			$this->_td  = mcrypt_module_open($this->_cipher, '', $this->_mode, '');
-			$this->_iv  = substr(md5($iv), 0, mcrypt_enc_get_iv_size($this->_td));
-			$this->_key  = substr(md5($key), 0, mcrypt_enc_get_key_size($this->_td));
-		} else {
-			$this->_key = $key;
-			$this->_cipher = empty($cipher) ? 'AES-128-CBC' : $cipher;;
-			$this->_mode = $this->_td  = ''; // Not used with openssl
-			$ivlen = openssl_cipher_iv_length($this->_cipher);
-			$this->_iv = openssl_random_pseudo_bytes($ivlen);
-		}
-	}
+        if ($this->_method=='mcrypt') {
+            $iv = (!empty($iv)) ? $iv : $this->getEncryptKey();
+            $this->_cipher = empty($cipher) ? MCRYPT_RIJNDAEL_256 : $cipher;
+            $this->_mode = empty($mode) ? MCRYPT_MODE_CBC : $mode;
+            $this->_td  = mcrypt_module_open($this->_cipher, '', $this->_mode, '');
+            $this->_iv  = substr(md5($iv), 0, mcrypt_enc_get_iv_size($this->_td));
+            $this->_key  = substr(md5($key), 0, mcrypt_enc_get_key_size($this->_td));
+        } else {
+            $this->_key = $key;
+            $this->_cipher = empty($cipher) ? 'AES-128-CBC' : $cipher;
+            ;
+            $this->_mode = $this->_td  = ''; // Not used with openssl
+            $ivlen = openssl_cipher_iv_length($this->_cipher);
+            $this->_iv = openssl_random_pseudo_bytes($ivlen);
+        }
+    }
 }

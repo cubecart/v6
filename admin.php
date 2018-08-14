@@ -20,9 +20,9 @@ header('X-Frame-Options: SAMEORIGIN'); // Do NOT allow iframes
 ## Include the ini file (required)
 require 'ini.inc.php';
 
-if(basename(__FILE__)!==$glob['adminFile']) {
-	header('HTTP/1.1 404 Not Found');
-	exit;
+if (basename(__FILE__)!==$glob['adminFile']) {
+    header('HTTP/1.1 404 Not Found');
+    exit;
 }
 
 define('CC_IN_ADMIN', true);
@@ -33,23 +33,23 @@ require 'includes/functions.inc.php';
 ## Include admin presession controller
 include CC_ROOT_DIR.CC_DS.'controllers'.CC_DS.'controller.admin.pre_session.inc.php';
 
-$feed_access_key = $GLOBALS['config']->get('config','feed_access_key');
+$feed_access_key = $GLOBALS['config']->get('config', 'feed_access_key');
 $feed_access_key = (!$feed_access_key) ? '' : $feed_access_key;
 
 if (Admin::getInstance()->is() || (isset($_GET['_g']) && $_GET['_g']=='products' && $_GET['node']=='export' && !empty($_GET['format']) && $_GET['access']==$feed_access_key && !empty($feed_access_key))) {
-	error_reporting(E_ALL ^ (E_NOTICE | E_DEPRECATED | E_USER_DEPRECATED));
-	include CC_ROOT_DIR.CC_DS.'controllers'.CC_DS.'controller.admin.session.true.inc.php';
+    error_reporting(E_ALL ^ (E_NOTICE | E_DEPRECATED | E_USER_DEPRECATED));
+    include CC_ROOT_DIR.CC_DS.'controllers'.CC_DS.'controller.admin.session.true.inc.php';
 } else {
-	include CC_ROOT_DIR.CC_DS.'controllers'.CC_DS.'controller.admin.session.false.inc.php';
-	$GLOBALS['gui']->display('templates/'.$global_template_file['session_false']);
-	exit;
+    include CC_ROOT_DIR.CC_DS.'controllers'.CC_DS.'controller.admin.session.false.inc.php';
+    $GLOBALS['gui']->display('templates/'.$global_template_file['session_false']);
+    exit;
 }
-if(isset($_GET['response']) && $_GET['response'] == 'token') {
-	$GLOBALS['debug']->supress(true);
-	die(SESSION_TOKEN);
+if (isset($_GET['response']) && $_GET['response'] == 'token') {
+    $GLOBALS['debug']->supress(true);
+    die(SESSION_TOKEN);
 }
 // Render the completed page
 if (!isset($suppress_output) || !$suppress_output) {
-	$GLOBALS['gui']->displayCommon();
-	$GLOBALS['gui']->display('templates/'.$global_template_file['session_true']);
+    $GLOBALS['gui']->displayCommon();
+    $GLOBALS['gui']->display('templates/'.$global_template_file['session_true']);
 }

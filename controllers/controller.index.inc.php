@@ -10,7 +10,9 @@
  * Email:  sales@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  */
-if (!defined('CC_INI_SET')) die('Access Denied');
+if (!defined('CC_INI_SET')) {
+    die('Access Denied');
+}
 define('ADMIN_CP', false);
 // Include core functions
 require CC_INCLUDES_DIR.'functions.inc.php';
@@ -28,8 +30,8 @@ $GLOBALS['debug'] = Debug::getInstance();
 //Initialize sessions
 $GLOBALS['session'] = Session::getInstance();
 //Check security token
-if($GLOBALS['config']->get('config', 'csrf')=='1') {
-	Sanitize::checkToken();
+if ($GLOBALS['config']->get('config', 'csrf')=='1') {
+    Sanitize::checkToken();
 }
 //Initialize Smarty
 $GLOBALS['smarty'] = new Smarty();
@@ -39,10 +41,10 @@ $GLOBALS['smarty']->compile_dir  = CC_SKIN_CACHE_DIR;
 $GLOBALS['smarty']->config_dir   = CC_SKIN_CACHE_DIR;
 $GLOBALS['smarty']->cache_dir    = CC_SKIN_CACHE_DIR;
 $GLOBALS['smarty']->debugging = false;
-if(!(bool)$GLOBALS['config']->get('config', 'debug')) {
-	define('HTML_MINIFY_URL_ENABLED', false);
-	include(CC_INCLUDES_DIR.'lib/smarty/filters/HTMLMinify.smarty.php');
-	$GLOBALS['smarty']->registerFilter("output", "minify_html");
+if (!(bool)$GLOBALS['config']->get('config', 'debug')) {
+    define('HTML_MINIFY_URL_ENABLED', false);
+    include(CC_INCLUDES_DIR.'lib/smarty/filters/HTMLMinify.smarty.php');
+    $GLOBALS['smarty']->registerFilter("output", "minify_html");
 }
 //Initialize language
 $GLOBALS['language'] = Language::getInstance();
@@ -53,8 +55,8 @@ $GLOBALS['ssl'] = SSL::getInstance();
 //Initialize SEO
 $GLOBALS['seo'] = SEO::getInstance();
 if (isset($_GET['seo_path']) && !empty($_GET['seo_path'])) {
-	$_GET['seo_path'] = preg_replace('/(\/\~[a-z0-9]{1,}\/)/', '', $_GET['seo_path']); // Remove /~username/ from seo_path
-	$GLOBALS['seo']->getItem($_GET['seo_path']);
+    $_GET['seo_path'] = preg_replace('/(\/\~[a-z0-9]{1,}\/)/', '', $_GET['seo_path']); // Remove /~username/ from seo_path
+    $GLOBALS['seo']->getItem($_GET['seo_path']);
 }
 //Initialize GUI
 $GLOBALS['gui'] = GUI::getInstance();
@@ -74,7 +76,9 @@ date_default_timezone_set(($GLOBALS['config']->get('config', 'time_zone')) ? $GL
 $_GET['_a']  = (isset($_GET['_a'])) ? $_GET['_a'] : null;
 $_REQUEST['_a'] = (isset($_REQUEST['_a'])) ? $_REQUEST['_a'] : null;
 
-foreach ($GLOBALS['hooks']->load('controller.index') as $hook) include $hook;
+foreach ($GLOBALS['hooks']->load('controller.index') as $hook) {
+    include $hook;
+}
 
 $GLOBALS['language']->setTemplate();
 $GLOBALS['cubecart']->loadPage();

@@ -12,328 +12,330 @@
  */
 ##### INSTALL #####
 if (!isset($_SESSION['setup']['permissions'])) {
-	$step = 4;
-	$_SESSION['setup']['config_update'] = true;
-	## Stage 3: Permissions Check
-	if (!file_exists($global_file)) touch($global_file);
-	$targets = array(
-		'backup/',
-		'cache/',
-		'cache/skin/',
-		'files/',
-		'images/',
-		'images/cache/',
-		'images/logos/',
-		'images/source/',
-		'includes/',
-		'includes/extra/',
-		'language/',
-	);
-	if (file_exists(CC_ROOT_DIR.'/includes/globals.inc.php')) {
-		$targets[] = 'includes/global.inc.php';
-	}
-	if (file_exists(CC_ROOT_DIR.'/images/uploads')) $targets[] = 'images/uploads/';
-	sort($targets);
-	$permissions = true;
-	foreach ($targets as $target) {
-		$target = str_replace('/', '/', $target);
-		$perm_status = true;
-		if (!is_writable(CC_ROOT_DIR.'/'.$target)) {
-			## Attempt to chmod
-			if (!chmod(CC_ROOT_DIR.'/'.$target, chmod_writable())) {
-				$perm_status = false;
-				$permissions = false;
-				$errors[] = sprintf($strings['setup']['error_x_not_writable'], $target);
-			}
-		}
-		$GLOBALS['smarty']->append('PERMISSIONS', array('name' => $target, 'status' => (bool)$perm_status));
-	}
-	if (!$permissions) {
-		$proceed = false;
-		$retry  = true;
-	} else {
-		$GLOBALS['smarty']->assign('PERMS_PASS', true);
-	}
-	$GLOBALS['smarty']->assign('MODE_PERMS', true);
+    $step = 4;
+    $_SESSION['setup']['config_update'] = true;
+    ## Stage 3: Permissions Check
+    if (!file_exists($global_file)) {
+        touch($global_file);
+    }
+    $targets = array(
+        'backup/',
+        'cache/',
+        'cache/skin/',
+        'files/',
+        'images/',
+        'images/cache/',
+        'images/logos/',
+        'images/source/',
+        'includes/',
+        'includes/extra/',
+        'language/',
+    );
+    if (file_exists(CC_ROOT_DIR.'/includes/globals.inc.php')) {
+        $targets[] = 'includes/global.inc.php';
+    }
+    if (file_exists(CC_ROOT_DIR.'/images/uploads')) {
+        $targets[] = 'images/uploads/';
+    }
+    sort($targets);
+    $permissions = true;
+    foreach ($targets as $target) {
+        $target = str_replace('/', '/', $target);
+        $perm_status = true;
+        if (!is_writable(CC_ROOT_DIR.'/'.$target)) {
+            ## Attempt to chmod
+            if (!chmod(CC_ROOT_DIR.'/'.$target, chmod_writable())) {
+                $perm_status = false;
+                $permissions = false;
+                $errors[] = sprintf($strings['setup']['error_x_not_writable'], $target);
+            }
+        }
+        $GLOBALS['smarty']->append('PERMISSIONS', array('name' => $target, 'status' => (bool)$perm_status));
+    }
+    if (!$permissions) {
+        $proceed = false;
+        $retry  = true;
+    } else {
+        $GLOBALS['smarty']->assign('PERMS_PASS', true);
+    }
+    $GLOBALS['smarty']->assign('MODE_PERMS', true);
 } else {
-	// Stage 4: Server Details input
-	$step = 5;
-	if (!isset($_SESSION['setup']['global']) || !isset($_SESSION['setup']['progress'])) {
-		if (isset($_POST['global']) && isset($_POST['admin'])) {
-			// Validation
-			$validated = true;
-			$required = array('dbhost', 'dbusername', 'dbdatabase');
-			foreach ($_POST['global'] as $key => $value) {
-				if (in_array($key, $required) && empty($value)) {
-					$validated  = false;
-					unset($_POST[$key]);
-				}
-			}
+    // Stage 4: Server Details input
+    $step = 5;
+    if (!isset($_SESSION['setup']['global']) || !isset($_SESSION['setup']['progress'])) {
+        if (isset($_POST['global']) && isset($_POST['admin'])) {
+            // Validation
+            $validated = true;
+            $required = array('dbhost', 'dbusername', 'dbdatabase');
+            foreach ($_POST['global'] as $key => $value) {
+                if (in_array($key, $required) && empty($value)) {
+                    $validated  = false;
+                    unset($_POST[$key]);
+                }
+            }
 
-			if ($_POST['global']['dbpassword'] !== $_POST['global']['dbpassconf']) {
-				unset($_POST['global']['dbpassword'], $_POST['global']['dbpassconf']);
-				$errors['dbpass'] = $strings['setup']['error_db_password_mismatch'];
-			}
-			// Validate admin array
-			$required = array('username', 'email', 'name', 'password');
-			if ($_POST['admin']['password'] !== $_POST['admin']['passconf']) {
-				$errors['password'] = $strings['setup']['error_admin_password_mismatch'];
-				unset($_POST['admin']['password'], $_POST['admin']['passconf']);
-			}
-			foreach ($_POST['admin'] as $key => $value) {
-				if (in_array($key, $required) && empty($value)) {
-					$validated = false;
-					unset($_POST[$key]);
-				}
-			}
-			$mysql_connect = false;
-			// Connection Check 
-			if (function_exists('mysqli_connect')) {
-				
-				$dbport = !empty($_POST['global']['dbport']) ? $_POST['global']['dbport'] : ini_get('mysqli.default_port');
-				$dbsocket = !empty($_POST['global']['dbsocket']) ? $_POST['global']['dbsocket'] : ini_get('mysqli.default_socket');
-				
-				try {
-					$connect_id = new mysqli($_POST['global']['dbhost'], $_POST['global']['dbusername'], $_POST['global']['dbpassword'], $_POST['global']['dbdatabase'], $dbport, $dbsocket);
+            if ($_POST['global']['dbpassword'] !== $_POST['global']['dbpassconf']) {
+                unset($_POST['global']['dbpassword'], $_POST['global']['dbpassconf']);
+                $errors['dbpass'] = $strings['setup']['error_db_password_mismatch'];
+            }
+            // Validate admin array
+            $required = array('username', 'email', 'name', 'password');
+            if ($_POST['admin']['password'] !== $_POST['admin']['passconf']) {
+                $errors['password'] = $strings['setup']['error_admin_password_mismatch'];
+                unset($_POST['admin']['password'], $_POST['admin']['passconf']);
+            }
+            foreach ($_POST['admin'] as $key => $value) {
+                if (in_array($key, $required) && empty($value)) {
+                    $validated = false;
+                    unset($_POST[$key]);
+                }
+            }
+            $mysql_connect = false;
+            // Connection Check
+            if (function_exists('mysqli_connect')) {
+                $dbport = !empty($_POST['global']['dbport']) ? $_POST['global']['dbport'] : ini_get('mysqli.default_port');
+                $dbsocket = !empty($_POST['global']['dbsocket']) ? $_POST['global']['dbsocket'] : ini_get('mysqli.default_socket');
+                
+                try {
+                    $connect_id = new mysqli($_POST['global']['dbhost'], $_POST['global']['dbusername'], $_POST['global']['dbpassword'], $_POST['global']['dbdatabase'], $dbport, $dbsocket);
 
-					mysqli_options($connect_id, MYSQLI_OPT_LOCAL_INFILE, true);
+                    mysqli_options($connect_id, MYSQLI_OPT_LOCAL_INFILE, true);
 
-					if ($connect_id->connect_error) {
-						$errors[] = $strings['setup']['error_db_incorrect_something'].' '.$connect_id->connect_error;
-						unset($_POST['global']['dbhost'], $_POST['global']['dbusername'], $_POST['global']['dbpassword'], $_POST['global']['dbport'], $_POST['global']['dbsocket']);
-					} else {
-						$mysql_connect = true;
-						$connect_id->close();
-					}
+                    if ($connect_id->connect_error) {
+                        $errors[] = $strings['setup']['error_db_incorrect_something'].' '.$connect_id->connect_error;
+                        unset($_POST['global']['dbhost'], $_POST['global']['dbusername'], $_POST['global']['dbpassword'], $_POST['global']['dbport'], $_POST['global']['dbsocket']);
+                    } else {
+                        $mysql_connect = true;
+                        $connect_id->close();
+                    }
+                } catch (Exception $e) {
+                    $errors[] = $strings['setup']['error_db_incorrect_something'].' '.$e->message;
+                    unset($_POST['global']['dbhost'], $_POST['global']['dbusername'], $_POST['global']['dbpassword'], $_POST['global']['dbport'], $_POST['global']['dbsocket']);
+                }
+            } else {
+                $dbport = (isset($config['dbport']) && !empty($config['dbport'])) ? $config['dbport'] : ini_get('mysqli.default_port');
 
-				} catch (Exception $e ) {
-					$errors[] = $strings['setup']['error_db_incorrect_something'].' '.$e->message;
-					unset($_POST['global']['dbhost'], $_POST['global']['dbusername'], $_POST['global']['dbpassword'], $_POST['global']['dbport'], $_POST['global']['dbsocket']);
-				}
+                if (!empty($dbport) && is_numeric($dbport)) {
+                    $dbport = ':'.$dbport;
+                }
 
-			} else {
+                $connect = mysql_connect($_POST['global']['dbhost'].$dbport, $_POST['global']['dbusername'], $_POST['global']['dbpassword'], false);
+                if ($connect) {
+                    if (mysql_select_db($_POST['global']['dbdatabase'], $connect)) {
+                        // Database is fine, so continue to next step
+                        mysql_close($connect);
+                        $mysql_connect = true;
+                    } else {
+                        // No such database
+                        $errors['dbdatabase'] = $strings['setup']['error_db_doesnt_exist'].' '.mysql_error();
+                        unset($_POST['global']['dbdatabase']);
+                    }
+                } else {
+                    // Incorrect host/user/pass
+                    $errors[] = $strings['setup']['error_db_incorrect_something'];
+                    unset($_POST['global']['dbhost'], $_POST['global']['dbusername'], $_POST['global']['dbpassword'], $_POST['global']['dbport'], $_POST['global']['dbsocket']);
+                }
+            }
 
-				$dbport = (isset($config['dbport']) && !empty($config['dbport'])) ? $config['dbport'] : ini_get('mysqli.default_port');
+            if ($validated && $mysql_connect) {
+                // Set session variables, then proceed
+                unset($_POST['global']['dbpassconf'], $_POST['admin']['passconf']);
 
-				if(!empty($dbport) && is_numeric($dbport)){
-					$dbport = ':'.$dbport;
-				}
+                $_SESSION['setup']['progress'] = true;
+                $_SESSION['setup']['droptable'] = (isset($_POST['drop'])) ? true : false;
 
-				$connect = mysql_connect($_POST['global']['dbhost'].$dbport, $_POST['global']['dbusername'], $_POST['global']['dbpassword'], false);
-				if ($connect) {
-					if (mysql_select_db($_POST['global']['dbdatabase'], $connect)) {
-						// Database is fine, so continue to next step
-						mysql_close($connect);
-						$mysql_connect = true;
-					} else {
-						// No such database
-						$errors['dbdatabase'] = $strings['setup']['error_db_doesnt_exist'].' '.mysql_error();
-						unset($_POST['global']['dbdatabase']);
-					}
-				} else {
-					// Incorrect host/user/pass
-					$errors[] = $strings['setup']['error_db_incorrect_something'];
-					unset($_POST['global']['dbhost'], $_POST['global']['dbusername'], $_POST['global']['dbpassword'], $_POST['global']['dbport'], $_POST['global']['dbsocket']);
-				}
-			}
+                $global = array(
+                    'installed'  => true,
+                    'adminFolder' => 'admin',
+                    'adminFile'  => 'admin.php',
+                    'cache'  => 'file'
+                );
+                $_SESSION['setup']['global'] = array_merge($_POST['global'], $global);
+                $_SESSION['setup']['config'] = $_POST['config'];
+                $salt = Password::getInstance()->createSalt();
+                $_SESSION['setup']['admin']  = array_merge($_POST['admin'], array(
+                        'order_notify' => 1,
+                        'super_user' => 1,
+                        'status'  => 1,
+                        'salt'   => $salt,
+                        'language'  => $_POST['config']['default_language'],
+                        'password'  => Password::getInstance()->getSalted($_POST['admin']['password'], $salt),
+                    ));
+                httpredir('index.php');
+            }
+            $GLOBALS['smarty']->assign('FORM', $_POST);
+        }
 
-			if ($validated && $mysql_connect) {
-				// Set session variables, then proceed
-				unset($_POST['global']['dbpassconf'], $_POST['admin']['passconf']);
-
-				$_SESSION['setup']['progress'] = true;
-				$_SESSION['setup']['droptable'] = (isset($_POST['drop'])) ? true : false;
-
-				$global = array(
-					'installed'  => true,
-					'adminFolder' => 'admin',
-					'adminFile'  => 'admin.php',
-					'cache'  => 'file'
-				);
-				$_SESSION['setup']['global'] = array_merge($_POST['global'], $global);
-				$_SESSION['setup']['config'] = $_POST['config'];
-				$salt = Password::getInstance()->createSalt();
-				$_SESSION['setup']['admin']  = array_merge($_POST['admin'], array(
-						'order_notify' => 1,
-						'super_user' => 1,
-						'status'  => 1,
-						'salt'   => $salt,
-						'language'  => $_POST['config']['default_language'],
-						'password'  => Password::getInstance()->getSalted($_POST['admin']['password'], $salt),
-					));
-				httpredir('index.php');
-			}
-			$GLOBALS['smarty']->assign('FORM', $_POST);
-		}
-
-		$currencies = array(
-			'USD' => 'US Dollar',
-			'GBP' => 'British Pound',
-			'EUR' => 'Euro',
-			#####
-			'AUD' => 'Australian Dollar',
-			'BGN' => 'Bulgarian Lev',
-			'BRL' => 'Brazilian Real',
-			'CAD' => 'Canadian Dollar',
-			'CHF' => 'Swiss Franc',
-			'CNY' => 'Chinese Yuan',
-			'CZK' => 'Czech Koruna',
-			'DKK' => 'Danish Krone',
-			'EEK' => 'Estonian Kroon',
-			'HKD' => 'Hong Kong Dollar',
-			'HRK' => 'Croatian Kuna',
-			'HUF' => 'Hungarian Forint',
-			'IDR' => 'Indonesian Rupiah',
-			'INR' => 'Indian Rupee',
-			'JPY' => 'Japanese Yen',
-			'KRW' => 'South Korean Won',
-			'LTL' => 'Lithuanian Litas',
-			'LVL' => 'Latvian Lat',
-			'MXN' => 'Mexican Peso',
-			'MYR' => 'Malaysian Ringgit',
-			'NOK' => 'Norwegian Krone',
-			'NZD' => 'New Zealand Dollar',
-			'PHP' => 'Philippine Peso',
-			'PLN' => 'Polish Zloty',
-			'RON' => 'Romanian Leu',
-			'RUB' => 'Russian Ruble',
-			'SEK' => 'Swedish Krona',
-			'SGD' => 'Singapore Dollar',
-			'THB' => 'Thai Baht',
-			'TRY' => 'Turkish Lira',
-			'ZAR' => 'South African Rand'
-		);
-		foreach ($currencies as $code => $name) {
-			$selected = (isset($_POST['config']['default_currency']) && $_POST['config']['default_currency'] == $code) ? ' selected="selected"' : '';
-			$list_currency[] = array('code' => $code, 'selected' => $selected, 'name' => (!empty($name))?$name:$code);
-		}
-		$GLOBALS['smarty']->assign('CURRENCIES', $list_currency);
+        $currencies = array(
+            'USD' => 'US Dollar',
+            'GBP' => 'British Pound',
+            'EUR' => 'Euro',
+            #####
+            'AUD' => 'Australian Dollar',
+            'BGN' => 'Bulgarian Lev',
+            'BRL' => 'Brazilian Real',
+            'CAD' => 'Canadian Dollar',
+            'CHF' => 'Swiss Franc',
+            'CNY' => 'Chinese Yuan',
+            'CZK' => 'Czech Koruna',
+            'DKK' => 'Danish Krone',
+            'EEK' => 'Estonian Kroon',
+            'HKD' => 'Hong Kong Dollar',
+            'HRK' => 'Croatian Kuna',
+            'HUF' => 'Hungarian Forint',
+            'IDR' => 'Indonesian Rupiah',
+            'INR' => 'Indian Rupee',
+            'JPY' => 'Japanese Yen',
+            'KRW' => 'South Korean Won',
+            'LTL' => 'Lithuanian Litas',
+            'LVL' => 'Latvian Lat',
+            'MXN' => 'Mexican Peso',
+            'MYR' => 'Malaysian Ringgit',
+            'NOK' => 'Norwegian Krone',
+            'NZD' => 'New Zealand Dollar',
+            'PHP' => 'Philippine Peso',
+            'PLN' => 'Polish Zloty',
+            'RON' => 'Romanian Leu',
+            'RUB' => 'Russian Ruble',
+            'SEK' => 'Swedish Krona',
+            'SGD' => 'Singapore Dollar',
+            'THB' => 'Thai Baht',
+            'TRY' => 'Turkish Lira',
+            'ZAR' => 'South African Rand'
+        );
+        foreach ($currencies as $code => $name) {
+            $selected = (isset($_POST['config']['default_currency']) && $_POST['config']['default_currency'] == $code) ? ' selected="selected"' : '';
+            $list_currency[] = array('code' => $code, 'selected' => $selected, 'name' => (!empty($name))?$name:$code);
+        }
+        $GLOBALS['smarty']->assign('CURRENCIES', $list_currency);
 
 
-		foreach ($languages as $option) {
-			$selected = (isset($_POST['config']['default_language']) && $_POST['config']['default_language'] == $option['code']) ? ' selected="selected"' : '';
-			$list_langs[] = array('title' => $option['title'], 'selected' => $selected, 'code' => $option['code']);
-		}
-		$GLOBALS['smarty']->assign('LANGUAGES', $list_langs);
+        foreach ($languages as $option) {
+            $selected = (isset($_POST['config']['default_language']) && $_POST['config']['default_language'] == $option['code']) ? ' selected="selected"' : '';
+            $list_langs[] = array('title' => $option['title'], 'selected' => $selected, 'code' => $option['code']);
+        }
+        $GLOBALS['smarty']->assign('LANGUAGES', $list_langs);
+    } else {
+        ## Stage 5: Actual installation
+        ## Write config file
+        ksort($_SESSION['setup']['global']);
+        foreach ($_SESSION['setup']['global'] as $key => $value) {
+            $value = is_array($value) ? var_export($value, true) : "'".addslashes($value)."'";
+            $config[] = sprintf("\$glob['%s'] = %s;", $key, $value);
+        }
+        $config = sprintf("<?php\n%s\n?>", implode("\n", $config));
+        ## Backup existing config file, if it exists
+        if (file_exists($global_file)) {
+            rename($global_file, $global_file.'-'.date('Ymdgis').'.php');
+        }
+
+        if (file_put_contents($global_file, $config)) {
+            unset($config);
+            ## Install database
+            include $global_file;
+            $GLOBALS['config'] = $glob;
+            $GLOBALS['db'] = Database::getInstance($GLOBALS['config']);
+
+            $GLOBALS['db']->misc('ALTER DATABASE `'.$GLOBALS['config']['dbdatabase'].'` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;');
+
+            if ($_SESSION['setup']['droptable']) {
+                $GLOBALS['db']->parseSchema(file_get_contents($setup_path.'db/install/table_drop.sql', false));
+                unset($_SESSION['setup']['droptable']);
+                # httpredir('index.php');
+            }
+            ## Create tables
+            $GLOBALS['db']->parseSchema(file_get_contents($setup_path.'db/install/structure.sql', false));
+            ## Insert basic data
+            $GLOBALS['db']->parseSchema(file_get_contents($setup_path.'db/install/data.sql', false));
+            ## Insert example product/category
+            # if (isset($_SESSION['setup']['examples'])) {
+            $GLOBALS['db']->parseSchema(file_get_contents($setup_path.'db/install/examples.sql', false));
+            # }
+            ## Insert Email Contents & Templates
+            $GLOBALS['db']->parseSchema(file_get_contents($setup_path.'db/install/email.sql', false));
+            
+            $config_settings = array_merge(
+                $default_config_settings,
+                array(
+                    'default_language'     => $_SESSION['setup']['config']['default_language'],
+                    'default_currency'     => $_SESSION['setup']['config']['default_currency'],
+                    'email_address'      => $_SESSION['setup']['admin']['email'],
+                    'store_title'      => $_SESSION['setup']['config']['store_name'],
+                    'store_name'      => $_SESSION['setup']['config']['store_name'],
+                    'email_name'      => $_SESSION['setup']['config']['store_name']
+                )
+            );
+            Config::getInstance($glob)->set('config', '', $config_settings, true);
+            $GLOBALS['config'] = array_merge($GLOBALS['config'], $config_settings);
+            // Create admin user
+            $GLOBALS['db']->insert('CubeCart_admin_users', $_SESSION['setup']['admin']);
+            // Set the current exchange rates
+            if (!$request = new Request('www.ecb.europa.eu', '/stats/eurofxref/eurofxref-daily.xml')) {
+                // if fail fall back to our outdated copy locally
+                $rates_xml = file_get_contents('data/eurofxref-daily.xml');
+            } else {
+                $request->setMethod('get');
+                $request->skiplog(true);
+                $rates_xml = $request->send();
+            }
+
+            // If this fails fall back to original file_get_contents
+            if (empty($rates_xml)) {
+                $rates_xml = file_get_contents('http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml');
+            }
+
+            try {
+                $xml = new SimpleXMLElement($rates_xml);
+                if ($xml) {
+                    // Magically update all the exchange rates with the latest ECB data
+                    foreach ($xml->Cube->Cube->Cube as $currency) {
+                        $rate = $currency->attributes();
+                        $fx[(string)$rate['currency']] = (float)$rate['rate'];
+                    }
+                    $fx['EUR'] = 1;
+                    $updated = strtotime((string)$xml->Cube->Cube->attributes()->time);
+                    // Get the divisor
+                    $base  = (1/$fx[$config['default_currency']]);
+                    $active_currencies = array_merge(array('AUD', 'CAD', 'EUR', 'GBP', 'JPY', 'USD'), array($config['default_currency']));
+                    foreach ($fx as $code => $rate) {
+                        $value = ($base/(1/$rate));
+                        $active_currency = in_array($code, $active_currencies) ? true : false;
+                        $GLOBALS['db']->update('CubeCart_currency', array('value' => $value, 'lastUpdated' => $updated, 'active' => $active_currency), array('code' => $code), true);
+                    }
+                }
+            } catch (Exception $e) {
+                trigger_error('Error parsing ECB Exchange Rates.', E_USER_WARNING);
+            }
 
 
-	} else {
-		## Stage 5: Actual installation
-		## Write config file
-		ksort($_SESSION['setup']['global']);
-		foreach ($_SESSION['setup']['global'] as $key => $value) {
-			$value = is_array($value) ? var_export($value, true) : "'".addslashes($value)."'";
-			$config[] = sprintf("\$glob['%s'] = %s;", $key, $value);
-		}
-		$config = sprintf("<?php\n%s\n?>", implode("\n", $config));
-		## Backup existing config file, if it exists
-		if (file_exists($global_file)) rename($global_file, $global_file.'-'.date('Ymdgis').'.php');
+            $default_docs = array(
+                0 => array('doc_name' => str_replace('CubeCart', $_SESSION['setup']['config']['store_name'], $strings['setup']['default_doc_title_welcome']), 'doc_content' => $strings['setup']['default_doc_content_welcome'], 'doc_order' => 1, 'doc_lang' => $config['default_language'], 'doc_home' => 1, 'doc_terms' => 0, 'doc_privacy' => 0),
+                1 => array('doc_name' => $strings['setup']['default_doc_title_about'], 'doc_content' => $strings['setup']['default_doc_content'], 'doc_order' => 2, 'doc_lang' => $config['default_language'], 'doc_home' => 0, 'doc_terms' => 0, 'doc_privacy' => 0),
+                2 => array('doc_name' => $strings['setup']['default_doc_title_terms'], 'doc_content' => $strings['setup']['default_doc_content'], 'doc_order' => 3, 'doc_lang' => $config['default_language'], 'doc_home' => 0, 'doc_terms' => 1, 'doc_privacy' => 0),
+                3 => array('doc_name' => $strings['setup']['default_doc_title_privacy'], 'doc_content' => $strings['setup']['default_doc_content'], 'doc_order' => 4, 'doc_lang' => $config['default_language'], 'doc_home' => 0, 'doc_terms' => 0, 'doc_privacy' => 1),
+                4 => array('doc_name' => $strings['setup']['default_doc_title_returns'], 'doc_content' => $strings['setup']['default_doc_content'], 'doc_order' => 5, 'doc_lang' => $config['default_language'], 'doc_home' => 0, 'doc_terms' => 0, 'doc_privacy' => 0)
+            );
+            foreach ($default_docs as $default_doc) {
+                $GLOBALS['db']->insert('CubeCart_documents', $default_doc);
+            }
+            $contact_form = base64_encode(json_encode(array('status' => 1, 'email' => $_SESSION['setup']['admin']['email'],'description' => '')));
+            $GLOBALS['db']->insert('CubeCart_config', array('name' => 'Contact_Form', 'array' => $contact_form));
 
-		if (file_put_contents($global_file, $config)) {
-			unset($config);
-			## Install database
-			include $global_file;
-			$GLOBALS['config'] = $glob;
-			$GLOBALS['db'] = Database::getInstance($GLOBALS['config']);
+            // Install email templates based on all languages
+            if (is_array($languages)) {
+                foreach ($languages as $code => $lang) {
+                    $language->importEmail('email_'.$code.'.xml');
+                }
+            }
 
-			$GLOBALS['db']->misc('ALTER DATABASE `'.$GLOBALS['config']['dbdatabase'].'` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;');
+            // Set version number
+            $GLOBALS['db']->insert('CubeCart_history', array('version' => CC_VERSION, 'time' => time()));
 
-			if ($_SESSION['setup']['droptable']) {
-				$GLOBALS['db']->parseSchema(file_get_contents($setup_path.'db/install/table_drop.sql', false));
-				unset($_SESSION['setup']['droptable']);
-				# httpredir('index.php');
-			}
-			## Create tables
-			$GLOBALS['db']->parseSchema(file_get_contents($setup_path.'db/install/structure.sql', false));
-			## Insert basic data
-			$GLOBALS['db']->parseSchema(file_get_contents($setup_path.'db/install/data.sql', false));
-			## Insert example product/category
-			# if (isset($_SESSION['setup']['examples'])) {
-			$GLOBALS['db']->parseSchema(file_get_contents($setup_path.'db/install/examples.sql', false));
-			# }
-			## Insert Email Contents & Templates
-			$GLOBALS['db']->parseSchema(file_get_contents($setup_path.'db/install/email.sql', false));
-			
-			$config_settings = array_merge($default_config_settings,
-				array(
-					'default_language'     => $_SESSION['setup']['config']['default_language'],
-					'default_currency'     => $_SESSION['setup']['config']['default_currency'],
-					'email_address'      => $_SESSION['setup']['admin']['email'],
-					'store_title'      => $_SESSION['setup']['config']['store_name'],
-					'store_name'      => $_SESSION['setup']['config']['store_name'],
-					'email_name'      => $_SESSION['setup']['config']['store_name']
-				)
-			);
-			Config::getInstance($glob)->set('config', '', $config_settings, true);
-			$GLOBALS['config'] = array_merge($GLOBALS['config'], $config_settings);
-			// Create admin user
-			$GLOBALS['db']->insert('CubeCart_admin_users', $_SESSION['setup']['admin']);
-			// Set the current exchange rates
-			if (!$request = new Request('www.ecb.europa.eu', '/stats/eurofxref/eurofxref-daily.xml')) {
-				// if fail fall back to our outdated copy locally
-				$rates_xml = file_get_contents('data/eurofxref-daily.xml');
-			} else {
-				$request->setMethod('get');
-				$request->skiplog(true);
-				$rates_xml = $request->send();
-			}
+            build_logos();
 
-			// If this fails fall back to original file_get_contents
-			if (empty($rates_xml)) {
-				$rates_xml = file_get_contents('http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml');
-			}
-
-			try {
-				$xml = new SimpleXMLElement($rates_xml);
-				if ($xml) {
-					// Magically update all the exchange rates with the latest ECB data
-					foreach ($xml->Cube->Cube->Cube as $currency) {
-						$rate = $currency->attributes();
-						$fx[(string)$rate['currency']] = (float)$rate['rate'];
-					}
-					$fx['EUR'] = 1;
-					$updated = strtotime((string)$xml->Cube->Cube->attributes()->time);
-					// Get the divisor
-					$base  = (1/$fx[$config['default_currency']]);
-					$active_currencies = array_merge(array('AUD', 'CAD', 'EUR', 'GBP', 'JPY', 'USD'), array($config['default_currency']));
-					foreach ($fx as $code => $rate) {
-						$value = ($base/(1/$rate));
-						$active_currency = in_array($code, $active_currencies) ? true : false;
-						$GLOBALS['db']->update('CubeCart_currency', array('value' => $value, 'lastUpdated' => $updated, 'active' => $active_currency), array('code' => $code), true);
-					}
-				}
-			} catch (Exception $e) {trigger_error('Error parsing ECB Exchange Rates.', E_USER_WARNING);}
-
-
-			$default_docs = array(
-				0 => array('doc_name' => str_replace('CubeCart', $_SESSION['setup']['config']['store_name'], $strings['setup']['default_doc_title_welcome']), 'doc_content' => $strings['setup']['default_doc_content_welcome'], 'doc_order' => 1, 'doc_lang' => $config['default_language'], 'doc_home' => 1, 'doc_terms' => 0, 'doc_privacy' => 0),
-				1 => array('doc_name' => $strings['setup']['default_doc_title_about'], 'doc_content' => $strings['setup']['default_doc_content'], 'doc_order' => 2, 'doc_lang' => $config['default_language'], 'doc_home' => 0, 'doc_terms' => 0, 'doc_privacy' => 0),
-				2 => array('doc_name' => $strings['setup']['default_doc_title_terms'], 'doc_content' => $strings['setup']['default_doc_content'], 'doc_order' => 3, 'doc_lang' => $config['default_language'], 'doc_home' => 0, 'doc_terms' => 1, 'doc_privacy' => 0),
-				3 => array('doc_name' => $strings['setup']['default_doc_title_privacy'], 'doc_content' => $strings['setup']['default_doc_content'], 'doc_order' => 4, 'doc_lang' => $config['default_language'], 'doc_home' => 0, 'doc_terms' => 0, 'doc_privacy' => 1),
-				4 => array('doc_name' => $strings['setup']['default_doc_title_returns'], 'doc_content' => $strings['setup']['default_doc_content'], 'doc_order' => 5, 'doc_lang' => $config['default_language'], 'doc_home' => 0, 'doc_terms' => 0, 'doc_privacy' => 0)
-			);
-			foreach ($default_docs as $default_doc) {
-				$GLOBALS['db']->insert('CubeCart_documents', $default_doc);
-			}
-			$contact_form = base64_encode(json_encode(array('status' => 1, 'email' => $_SESSION['setup']['admin']['email'],'description' => '')));
-			$GLOBALS['db']->insert('CubeCart_config', array('name' => 'Contact_Form', 'array' => $contact_form));
-
-			// Install email templates based on all languages
-			if (is_array($languages)) {
-				foreach ($languages as $code => $lang) {
-					$language->importEmail('email_'.$code.'.xml');
-				}
-			}
-
-			// Set version number
-			$GLOBALS['db']->insert('CubeCart_history', array('version' => CC_VERSION, 'time' => time()));
-
-			build_logos();
-
-			$_SESSION['setup']['complete'] = true;
-			httpredir('index.php');
-		}
-
-	}
-	$GLOBALS['smarty']->assign('MODE_INSTALL', true);
+            $_SESSION['setup']['complete'] = true;
+            httpredir('index.php');
+        }
+    }
+    $GLOBALS['smarty']->assign('MODE_INSTALL', true);
 }

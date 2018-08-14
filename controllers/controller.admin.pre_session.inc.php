@@ -10,7 +10,9 @@
  * Email:  sales@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  */
-if (!defined('CC_INI_SET')) die('Access Denied');
+if (!defined('CC_INI_SET')) {
+    die('Access Denied');
+}
 global $glob;
 define('ADMIN_CP', true);
 // Initialize Cache
@@ -61,4 +63,6 @@ $global_template_file['session_false']  = 'login.php';
 // define their admin tab content.
 $GLOBALS['hook_tab_content'] = array();
 
-foreach ($GLOBALS['hooks']->load('controller.admin') as $hook) include $hook;
+foreach ($GLOBALS['hooks']->load('controller.admin') as $hook) {
+    include $hook;
+}
