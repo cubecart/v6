@@ -1061,7 +1061,7 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
     private static function _safeUrl($url)
     {
         $url = trim($url);
-        $url = mb_strtolower($url);
+        $url = function_exists('mb_strtolower') ? mb_strtolower($url) : strtolower($url);
         $url = preg_replace("/\.\w{2,4}$/", '', $url);
         $url = str_replace(' ', '-', html_entity_decode($url, ENT_QUOTES));
         $url = preg_replace('#[^\w\-_/]#iuU', '-', str_replace('/', '/', $url));
