@@ -447,8 +447,12 @@ if (!empty($_POST['database'])) {
         foreach ($_POST['tablename'] as $value) {
             $tableList[] = sprintf('`%s`', $value);
         }
+        if(in_array($_POST['action'], array('OPTIMIZE','REPAIR','CHECK','ANALYZE'))) {
         $database_result = $GLOBALS['db']->query(sprintf("%s TABLE %s;", $_POST['action'], implode(',', $tableList)));
         $GLOBALS['main']->setACPNotify(sprintf($lang['maintain']['notify_db_action'], $_POST['action']));
+        } else {
+            die('Action not allowed.');
+        }
     } else {
         $GLOBALS['main']->setACPWarning($lang['maintain']['db_none_selected']);
     }
