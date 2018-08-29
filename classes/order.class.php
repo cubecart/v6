@@ -1567,7 +1567,9 @@ class Order
             foreach ($this->_basket['contents'] as $hash => $item) {
                 $basket_items[] = $hash;
                 if (is_array($stored_items[$hash]) && $stored_items[$hash]['quantity']!==$item['quantity']) {
-                    $GLOBALS['db']->update('CubeCart_order_inventory', array('quantity' => $item['quantity']), array('id' => $stored_items[$hash]['id'], 'cart_order_id' => $this->_order_id));
+                    $record = array('quantity' => $item['quantity']);
+                    foreach ($GLOBALS['hooks']->load('class.order.products.update.pre') as $hook) include $hook;
+                    $GLOBALS['db']->update('CubeCart_order_inventory', $record, array('id' => $stored_items[$hash]['id'], 'cart_order_id' => $this->_order_id));
                 } elseif (!isset($stored_items[$hash])) {
                     $product = $this->_orderAddProduct($item, $hash);
                     $this->_basket['contents'][$hash] = (is_array($product)) ? array_merge($product, $item) : $item;

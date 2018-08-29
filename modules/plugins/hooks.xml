@@ -231,6 +231,7 @@
 	<hook trigger="class.order.place_order" deprecated="" />
 	<hook trigger="class.order.place_order.basket" deprecated="" />
 	<hook trigger="class.order.products.add.pre" deprecated="" />
+	<hook trigger="class.order.products.update.pre" deprecated="" />
 	<hook trigger="class.order.retrieveorder" deprecated="" />
 	<hook trigger="class.user.load" deprecated="" />
 	<hook trigger="class.user.load.user" deprecated="" />
