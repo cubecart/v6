@@ -239,7 +239,7 @@ class Mailer extends PHPMailer
                 'from' => $from,
                 'result' => $result,
                 'email_content_id' => $this->_email_content_id,
-                'fail_reason' => (isset($this->ErrorInfo) && !empty($this->ErrorInfo)) ? htmlentities($this->ErrorInfo, ENT_QUOTES) : ''
+                'fail_reason' => !empty($this->ErrorInfo) ? htmlentities($this->ErrorInfo, ENT_QUOTES) : ''
             );
             $log_days = $GLOBALS['config']->get('config', 'r_email');
             if (ctype_digit((string)$log_days) &&  $log_days > 0) {
