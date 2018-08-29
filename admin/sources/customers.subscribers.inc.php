@@ -214,15 +214,16 @@ if ($GLOBALS['session']->has('email_filter') && $email_filter = $GLOBALS['sessio
 } else {
     $where = false;
 }
-$subscriber_count = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', false, $where);
-$count   = count($subscriber_count);
-if ($count > $per_page) {
-    $GLOBALS['smarty']->assign('PAGINATION', $GLOBALS['db']->pagination($count, $per_page, $page, 9, 'page', 'subscribers'));
+if($subscriber_count = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', false, $where)) {
+    $count   = count($subscriber_count);
+    if ($count > $per_page) {
+        $GLOBALS['smarty']->assign('PAGINATION', $GLOBALS['db']->pagination($count, $per_page, $page, 9, 'page', 'subscribers'));
+    }
+
+    $subscribers = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', false, $where, array('email' => 'ASC'), $per_page, $page);
+
+    $GLOBALS['smarty']->assign('SUBSCRIBERS', $subscribers);
 }
-
-$subscribers = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', false, $where, array('email' => 'ASC'), $per_page, $page);
-
-$GLOBALS['smarty']->assign('SUBSCRIBERS', $subscribers);
 
 $GLOBALS['gui']->addBreadcrumb($lang['navigation']['nav_subscribers']);
 $GLOBALS['main']->addTabControl($lang['navigation']['nav_subscribers'], 'general');
