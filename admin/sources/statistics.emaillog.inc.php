@@ -45,7 +45,7 @@ if (isset($_GET['resend']) && $_GET['resend']>0) {
         } else {
             $GLOBALS['main']->setACPWarning($lang['statistics']['email_not_resent']);
         }
-
+        $email_data[0]['fail_reason'] = (isset($mailer->ErrorInfo) && !empty($mailer->ErrorInfo)) ? htmlentities($mailer->ErrorInfo, ENT_QUOTES) : '';
         $GLOBALS['db']->insert('CubeCart_email_log', $email_data[0]);
         httpredir(currentPage(array('resend')));
     }
