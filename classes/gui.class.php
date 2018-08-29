@@ -945,7 +945,7 @@ class GUI
             if ($privacy = $GLOBALS['db']->select('CubeCart_documents', 'doc_id', array('doc_privacy' => '1'))) {
                 $dialogue = str_replace(array('%s','%PRIVACY_URL%'), array($GLOBALS['config']->get('config', 'store_name'), $GLOBALS['seo']->buildURL('doc', $privacy[0]['doc_id'])), $GLOBALS['language']->notification['cookie_dialogue']);
             } else {
-                $dialogue = str_replace('%s', $GLOBALS['config']->get('config', 'store_name', $GLOBALS['language']->notification['cookie_dialogue']));
+                $dialogue = str_replace('%s', $GLOBALS['config']->get('config', 'store_name'), $GLOBALS['language']->notification['cookie_dialogue']);
                 $dialogue = preg_replace('/<\/?a[^>]*>/', '', $dialogue);
             }
             $GLOBALS['smarty']->assign('COOKIE_DIALOGUE_TEXT', $dialogue);
