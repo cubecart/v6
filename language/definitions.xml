@@ -930,6 +930,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="tour_5" introduced="6.0.0"><![CDATA[Configure your chosen shipping rate calculator and payment integration from the plugins area.]]></string>
     <string name="tour_6_title" introduced="6.0.0"><![CDATA[Homepage Content]]></string>
     <string name="tour_6" introduced="6.0.0"><![CDATA[Update your homepage with any content you want. Here you can manage a &quot;hero carousel&quot; and add any HTML content you wish.]]></string>
+     <string name="tour_7_title" introduced="6.2.3"><![CDATA[Clear Cache]]></string>
+    <string name="tour_7" introduced="6.2.3"><![CDATA[Changes made via the admin control panel may not show on the front end until the cache is cleared.]]></string>
     <string name="tour_end" introduced="6.0.0"><![CDATA[<p>We have only touched the tip of the iceberg but it's enough to get you selling today. Please find a video tour below which goes into a little more detail.</p><p>Have fun and best of luck with your store!</p>]]></string>
     <string name="error_version" introduced="5.2.3"><![CDATA[WARNING: Your store appears to be using source code from %s but the database is still at %s. Please complete the upgrade by running the <a href="setup">setup</a> process.]]></string>
     <string name="error_global_risk" introduced="5.0.0"><![CDATA[WARNING: Your includes/global.inc.php is currently writable, you should change the file permissions to read only. On Linux or Unix systems it should be CHMOD to 0444.]]></string>
