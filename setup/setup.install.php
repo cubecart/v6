@@ -276,12 +276,13 @@ if (!isset($_SESSION['setup']['permissions'])) {
             } else {
                 $request->setMethod('get');
                 $request->skiplog(true);
+                $request->setSSL();
                 $rates_xml = $request->send();
             }
 
             // If this fails fall back to original file_get_contents
             if (empty($rates_xml)) {
-                $rates_xml = file_get_contents('http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml');
+                $rates_xml = file_get_contents('https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml');
             }
 
             try {

@@ -29,11 +29,12 @@ if (isset($_POST['autoupdate']) && Admin::getInstance()->permissions('settings',
     ## European Central Bank
     if (($request = new Request('www.ecb.europa.eu', '/stats/eurofxref/eurofxref-daily.xml')) !== false) {
         $request->setMethod('get');
+        $request->setSSL();
         $rates_xml = $request->send();
 
         // If this fails fall back to original file_get_contents, if that failes we have tried all we can
         if (empty($rates_xml)) {
-            $rates_xml = file_get_contents('http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml');
+            $rates_xml = file_get_contents('https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml');
         }
 
         if (!empty($rates_xml)) {
