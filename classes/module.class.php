@@ -124,7 +124,6 @@ class Module
                 } else {
                     $GLOBALS['main']->setACPWarning(sprintf($GLOBALS['language']->notification['error_module_settings'], $this->_info['name']));
                 }
-                $this->_module_data($path, $local_name);
                 // Install hooks if required
                 if ($_POST['module']['status']) {
                     $GLOBALS['hooks']->install($this->_module_name);
