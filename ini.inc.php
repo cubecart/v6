@@ -16,7 +16,7 @@ if (version_compare(PHP_VERSION, '5.4') == -1) {
 }
 
 // Display important errors before debug class is initialised
-error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING & ~E_DEPRECATED & ~E_USER_DEPRECATED);
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
 ini_set('display_errors', true);
 
 /************* CUSTOMISED PHP.INI SETTINGS *************/
