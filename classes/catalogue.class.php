@@ -400,7 +400,7 @@ class Catalogue
                         $review['date']  = formatTime($review['time']);
                         $review['date_schema'] = formatTime($review['time'], '%G-%m-%d', true);
                         $review['gravatar'] = md5(strtolower(trim($review['email'])));
-                        $review['gravatar_src'] = 'http://www.gravatar.com/avatar/'.$review['gravatar'].'?d=404&r=g';
+                        $review['gravatar_src'] = 'https://www.gravatar.com/avatar/'.$review['gravatar'].'?d=404&r=g';
                         $headers = get_headers($review['gravatar_src']);
                         $review['gravatar_exists'] = strstr($headers[0], '200') ? true : false;
                         $vars[] = $review;
