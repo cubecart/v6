@@ -203,7 +203,7 @@ if (isset($_GET['action'])) {
 } else {
     $GLOBALS['main']->addTabControl($lang['common']['overview'], 'overview');
     $GLOBALS['main']->addTabControl($lang['documents']['document_create'], null, currentPage(array('doc_id'), array('action' => 'add')));
-    $GLOBALS['main']->addTabControl($lang['orders']['invoice_editor'], '_blank', '?_g=documents&node=invoice');
+    $GLOBALS['main']->addTabControl($lang['orders']['invoice_editor'], '', '?_g=documents&node=invoice');
     ## List all documents
     if (($documents = $GLOBALS['db']->select('CubeCart_documents', false, array('doc_parent_id' => 0), array('doc_order' => 'ASC'))) !== false) {
         foreach ($documents as $document) {
