@@ -167,7 +167,7 @@ if (isset($_GET['action']) && (Admin::getInstance()->superUser() || ((int)$_GET[
     if ($_GET['action'] == 'edit' && isset($_GET['admin_id']) && is_numeric($_GET['admin_id'])) {
         $GLOBALS['smarty']->assign('ADD_EDIT_ADMIN', $lang['admins']['title_admin_edit']);
         if (($admin = $GLOBALS['db']->select('CubeCart_admin_users', false, array('admin_id' => (int)$_GET['admin_id']))) !== false) {
-            if (!$admin[0]['super_user']) {
+            if (!$admin[0]['super_user'] && (bool)Admin::getInstance()->superUser()) {
                 $GLOBALS['main']->addTabControl($lang['admins']['permission'], 'permissions');
             }
 

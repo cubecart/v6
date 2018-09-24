@@ -51,6 +51,7 @@
   </div>
 
   <div id="permissions" class="tab_content">
+	{if $IS_SUPER && isset($ADMIN.super_user)}
   <h3>{$LANG.admins.permission}</h3>
 	<table>
 	  <thead>
@@ -80,6 +81,9 @@
 		</tr>
 	  </tfoot>
 	</table>
+	{else}
+
+	{/if}
   </div>
   {else}
   <div id="admins" class="tab_content list">
