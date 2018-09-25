@@ -151,14 +151,15 @@ if (isset($_GET['action'])) {
 
         $GLOBALS['smarty']->assign('ADD_EDIT_DOCUMENT', $_GET['action'] == 'translate' ? $lang['documents']['document_translate'] : $lang['documents']['document_edit']);
         if (($document = $GLOBALS['db']->select('CubeCart_documents', false, array('doc_id' => (int)$_GET['doc_id']))) !== false) {
+            $data = $document[0];
             if (strtolower($_GET['action']) == 'translate') {
                 $document[0]['doc_parent_id'] = $document[0]['doc_id'];
-                unset($document[0]['doc_id']);
+                unset($data['doc_id']);
+            } else {
+                $data['link']['delete'] = currentPage(array('doc_id', 'action'), array('delete' => $data['doc_id'], 'token' => SESSION_TOKEN));
+                $GLOBALS['smarty']->assign('DISPLAY_DELETE', true);
             }
-            $data = $document[0];
             $GLOBALS['gui']->addBreadcrumb($data['doc_name'], currentPage());
-            $data['link']['delete'] = currentPage(array('doc_id', 'action'), array('delete' => $data['doc_id'], 'token' => SESSION_TOKEN));
-            $GLOBALS['smarty']->assign('DISPLAY_DELETE', true);
         }
     } else {
         $GLOBALS['smarty']->assign('ADD_EDIT_DOCUMENT', $lang['documents']['document_create']);
