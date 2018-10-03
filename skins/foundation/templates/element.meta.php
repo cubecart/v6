@@ -4,11 +4,8 @@
 <meta name="keywords" content="{if isset($META_KEYWORDS)}{$META_KEYWORDS}{/if}">
 <meta name="robots" content="index, follow">
 <meta name="generator" content="cubecart">
-{if $FBOG}
-<meta property="og:image" content="{$PRODUCT.thumbnail}">
-<meta property="og:url" content="{$VAL_SELF}">
-{/if}
-<link rel="alternate" hreflang="x-default" href="{$STORE_URL}/index.php?set_language={$CONFIG.default_language}" />
+{if $FBOG}<meta property="og:image" content="{$PRODUCT.thumbnail}">
+<meta property="og:url" content="{$VAL_SELF}">{/if}
+{if $LANGUAGES}<link rel="alternate" hreflang="x-default" href="{$STORE_URL}/index.php?set_language={$CONFIG.default_language}" />
 {foreach from=$LANGUAGES item=language}
-<link rel="alternate" href="{$language.url}" hreflang="{$language.code}">
-{/foreach}
+<link rel="alternate" href="{$language.url}" hreflang="{$language.code}">{/foreach}{/if}
