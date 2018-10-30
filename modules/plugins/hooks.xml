@@ -190,6 +190,7 @@
 	<hook trigger="class.cubecart.review.insert" deprecated="" />
 	<hook trigger="class.cubecart.search_catalogue" deprecated="" />
 	<hook trigger="class.filemanager.deliver.download.pre" deprecated="" />
+	<hook trigger="class.filemanager.upload" deprecated="" />
 	<hook trigger="class.gui.css" deprecated="" />
 	<hook trigger="class.gui.head_js" deprecated="" />
 	<hook trigger="class.gui.body_js" deprecated="" />

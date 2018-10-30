@@ -1117,6 +1117,7 @@ class FileManager
                         $this->_assignCategory((int)$_GET['cat_id'], (int)$fid);
                     }
                     move_uploaded_file($file['tmp_name'], $target);
+                    foreach ($GLOBALS['hooks']->load('class.filemanager.upload') as $hook) include $hook;
                     chmod($target, chmod_writable());
                 }
             }
