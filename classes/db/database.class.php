@@ -496,14 +496,16 @@ class Database_Contoller
             }
             $anchor = ($anchor) ? "#$anchor" : '';
 
-            if ($page >= $show - 1) {
-                $params[$var_name] = 1;
-            }
-            if ($page > 1) {
-                $params[$var_name] = $page - 1;
-            }
-            if ($page < (int)$total_pages) {
-                $params[$var_name] = $page + 1;
+            if(ctype_digit($page)) {
+                if ($page >= $show - 1) {
+                    $params[$var_name] = 1;
+                }
+                if ($page > 1) {
+                    $params[$var_name] = $page - 1;
+                }
+                if ($page < (int)$total_pages) {
+                    $params[$var_name] = $page + 1;
+                }
             }
 
             $data = array(
