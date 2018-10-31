@@ -181,31 +181,44 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
                     if (isset($product_record['cat_id']) && !empty($product_record['cat_id'])) {
                         $cats = explode(',', $product_record['cat_id']);
                         $primary = 1;
-                        foreach ($cats as $cat) {
-                            $cat = trim($cat);
-                            if (!is_numeric($cat)) {
-                                $existing_cat = $GLOBALS['db']->select('CubeCart_category', array('cat_id'), array('cat_name' => $cat));
-                                if ($existing_cat && $existing_cat[0]['cat_id']>0) {
-                                    $cat = $existing_cat[0]['cat_id'];
-                                } else {
-                                    $GLOBALS['db']->insert('CubeCart_category', array('cat_name' => $cat));
-                                    $cat = $GLOBALS['db']->insertid();
-                                }
-                            }
+                        foreach($cats as $cat) {
+							$cat = trim($cat);
+							if(!is_numeric($cat)) {
+								$breadcrumbs = explode("/", $cat);
+								$cat = 0;
+								if(!empty($breadcrumbs[0])) {
+									foreach($breadcrumbs as $key => $breadcrumb) {
+										$breadcrumb = trim($breadcrumb);
+										if($key===0) {
+											if($existing = $GLOBALS['db']->select('CubeCart_category', array('cat_id'), array('cat_name' => $breadcrumb, 'cat_parent_id' => $cat), false, false, false, false)) {
+												$cat = $existing[0]['cat_id'];
+											} else {
+												$cat = $GLOBALS['db']->insert('CubeCart_category', array('cat_name' => $breadcrumb, 'cat_parent_id' => $cat));
+											}
+										} else {
+											if($existing = $GLOBALS['db']->select('CubeCart_category', array('cat_id'), array('cat_name' => $breadcrumb, 'cat_parent_id' => $cat), false, false, false, false)) {
+												$cat = $existing[0]['cat_id'];
+											} else {
+												$cat = $GLOBALS['db']->insert('CubeCart_category', array('cat_name' => $breadcrumb, 'cat_parent_id' => $cat));
+											}
+										}
+									}
+								}
+							}
 
-                            if (is_numeric($cat) && $cat>0) {
-                                $category_record = array(
-                                    'product_id' => $product_id,
-                                    'cat_id'  => $cat,
-                                    'primary'  => $primary
-                                );
-                                if ($primary==1) {
-                                    $primary_category = $cat;
-                                }
-                                $primary = 0;
-                                $GLOBALS['db']->insert('CubeCart_category_index', $category_record);
-                            }
-                        }
+							if(is_numeric($cat) && $cat>0) {
+								$category_record = array (
+									'product_id' => $product_id,
+									'cat_id'  => $cat,
+									'primary'  => $primary
+								);
+								if($primary==1) { 
+									$primary_category = $cat;
+								}
+								$primary = 0;
+								$GLOBALS['db']->insert('CubeCart_category_index', $category_record);
+							}
+						}
                         $product_record['cat_id'] = $primary_category;
                     }
                     if (is_array($images)) {
