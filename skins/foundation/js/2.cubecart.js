@@ -65,10 +65,6 @@ jQuery(document).ready(function() {
         });
     }
 
-    // We have shown the warning next page is accepted unless decline is submit
-    if(!$.cookie('accept_cookies')) {
-        $.cookie('accept_cookies', true);
-    }
     $(".eu_cookie_button").click(function(e) {
         var accept = false;
         if($(this).attr('name')=='accept_cookies_submit') {
