@@ -1,5 +1,4 @@
 /includes/extra/snippet_*
-/includes/extra/sess_*
 /includes/global.inc.*
 /includes/extra/importdata.tmp
 !/includes/global.inc.php-dist

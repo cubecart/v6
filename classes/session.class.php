@@ -38,13 +38,6 @@ class Session
      * @var string
      */
     private $_token_name = 'token';
-
-    /**
-     * Manage session files
-     *
-     * @var bool
-     */
-    private $_manage_session_files = false;
     /**
      * Is user blocked
      *
@@ -350,17 +343,6 @@ class Session
         //Destory it
         session_unset();
         session_destroy();
-
-        // Clean up expired sessions
-        if ($this->_manage_session_files) {
-            $files = glob(CC_INCLUDES_DIR.'extra/sess_*');
-            $now   = time();
-            foreach ($files as $file) {
-                if ($now - filemtime($file) >= $this->_session_timeout) {
-                    unlink($file);
-                }
-            }
-        }
 
         $this->_state = 'destroyed';
 
@@ -675,21 +657,6 @@ class Session
         $session_save_path = $GLOBALS['config']->get('config', 'session_save_path');
         if (!empty($session_save_path) && file_exists($session_save_path)) {
             session_save_path($session_save_path);
-        } elseif (!@is_writeable(session_save_path())) {
-            if (is_writeable(CC_INCLUDES_DIR.'extra')) {
-                $this->_manage_session_files = true;
-                session_save_path(CC_INCLUDES_DIR.'extra');
-            } else {
-                die("Error: Failed to create PHP session. It may be possible to fix this by following these steps:
-			<ol>
-				<li>Create a folder in the root directory of your store called &quot;sessions&quot;</li>
-				<li>Create a file in the root folder of your store called &quot;ini-custom.inc.php&quot;</li>
-				<li>Add the following code to this file and save the changes.
-				<pre>".htmlspecialchars("<?php
-session_save_path(CC_ROOT_DIR.'/sessions');")."</pre>
-				</li>
-			</ol>Once that has been done refresh this page.");
-            }
         }
         session_cache_limiter('none');
         $session_prefix = CC_SSL ? 'S' : '';
