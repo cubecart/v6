@@ -812,7 +812,7 @@ class Cart
                         'name'   => sprintf('%s %s (%s)', $method, $GLOBALS['language']->catalogue['gift_certificate'], $GLOBALS['tax']->priceFormat($item['certificate']['value'], true)),
                         'digital'  => (bool)$item['digital'],
                         'tax_type'  => $gc['taxType'],
-                        'tax_inclusive' => true,
+                        'tax_inclusive' => 0,
                         'options'  => array(),
                         'option_price_ignoring_tax' => 0,
                     );
