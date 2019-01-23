@@ -425,7 +425,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_inventory` (
   `product_width` decimal(10,4) DEFAULT NULL COMMENT 'Product Width',
   `product_height` decimal(10,4) DEFAULT NULL COMMENT 'Product Height',
   `product_depth` decimal(10,4) DEFAULT NULL COMMENT 'Product Depth',
-  `dimension_unit` VARCHAR(2) DEFAULT NULL COMMENT 'Product Dimension Unit',
+  `dimension_unit` VARCHAR(2) DEFAULT 'cm' COMMENT 'Product Dimension Unit',
   `tax_type` int(10) unsigned DEFAULT NULL COMMENT 'Tax Type',
   `tax_inclusive` tinyint(1) unsigned DEFAULT '0' COMMENT 'Price inclusive of tax',
   `featured` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT 'Featured product',
