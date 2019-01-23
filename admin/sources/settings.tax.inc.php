@@ -147,7 +147,7 @@ if ($redirect) {
 
 ###############################################################
 ## Get countries
-if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('numcode', 'name'))) !== false) {
+if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('numcode', 'name'), '`status` > 0', array('name' => 'ASC'))) !== false) {
     $GLOBALS['smarty']->assign('COUNTRIES', $countries);
     ## Get counties
     $GLOBALS['smarty']->assign('VAL_JSON_COUNTY', state_json());
