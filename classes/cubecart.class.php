@@ -697,6 +697,7 @@ class Cubecart
             if (isset($_POST['coupon']) && !empty($_POST['coupon'])) {
                 $GLOBALS['cart']->discountAdd($_POST['coupon']);
             }
+            foreach ($GLOBALS['hooks']->load('class.cubecart.post_discount_add') as $hook) include $hook;
             $GLOBALS['cart']->save();
             httpredir(currentPage());
         }
