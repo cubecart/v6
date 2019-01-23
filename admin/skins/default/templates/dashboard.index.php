@@ -41,13 +41,12 @@
                <ul>
                   {foreach from=$CUSTOM_QUICK_TASKS key=k item=task}
                   <li><a href="{$task.url}">{$task.name}</a></li>
-                  {foreachelse}
+                  {/foreach}
                   <li><a href="?_g=reports&report[date][from]={$QUICK_TASKS.today}&report[date][to]={$QUICK_TASKS.today}">{$LANG.dashboard.task_orders_view_day}</a></li>
                   <li><a href="?_g=reports&report[date][from]={$QUICK_TASKS.this_weeks}&report[date][to]={$QUICK_TASKS.today}">{$LANG.dashboard.task_orders_view_week}</a></li>
                   <li><a href="?_g=reports">{$LANG.dashboard.task_orders_view_month}</a></li>
                   <li><a href="?_g=products&action=add">{$LANG.catalogue.product_add}</a></li>
                   <li><a href="?_g=categories&action=add">{$LANG.catalogue.category_add}</a></li>
-                  {/foreach}
                </ul>
             </td>
             <td valign="top" nowrap="nowrap" width="25%">
