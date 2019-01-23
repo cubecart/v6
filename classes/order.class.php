@@ -717,6 +717,7 @@ class Order
             }
             // Insert/Update the order summary
             $this->_orderSummary($update, $force_order);
+            foreach ($GLOBALS['hooks']->load('class.order.place_order.postbasket') as $hook) include $hook;
 
             $this->_manageStock(self::ORDER_PENDING, $this->_basket['cart_order_id']);
 
