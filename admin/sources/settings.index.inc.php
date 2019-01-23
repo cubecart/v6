@@ -377,7 +377,7 @@ $select_options = array(
     'basket_tax_by_delivery'   => array($lang['address']['billing_address'], $lang['address']['delivery_address']),
     'proxy'     => null,
     'catalogue_sale_mode' => array($lang['common']['disabled'], $lang['settings']['sales_per_product'], $lang['settings']['sales_percentage']),
-    'recaptcha' => array(0 => $lang['common']['off']." (".$lang['common']['not_recommended'].")", 2 => "reCAPTCHA v2", 3 => "Invisible reCAPTCHA (".$lang['common']['recommended'].")"),
+    'recaptcha' => array(0 => $lang['common']['off']." (".$lang['common']['not_recommended'].")", 2 => "reCaptcha v2 - Checkbox", 3 => "reCaptcha v2 - Invisible (".$lang['common']['recommended'].")"),
     'seo_metadata'   => array($lang['settings']['seo_meta_option_disable'], $lang['settings']['seo_meta_option_merge'], $lang['settings']['seo_meta_option_replace']),
     'basket_allow_non_invoice_address' => null,
     'catalogue_latest_products'   => null,
