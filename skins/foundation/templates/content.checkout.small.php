@@ -83,6 +83,7 @@
             {/if}
          </td>
          <td>
+            {if !isset($free_coupon_shipping)}
             <select name="shipping" class="nomarg">
                <option value="">{$LANG.form.please_select}</option>
                {foreach from=$SHIPPING key=group item=methods}
@@ -96,6 +97,7 @@
                {/if}
                {/foreach}
             </select>
+            {/if}
          </td>
          <td width="10%" class="text-right">
             {$SHIPPING_VALUE}
