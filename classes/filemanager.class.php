@@ -487,7 +487,7 @@ class FileManager
     public function deliverDownload($access_key = false, &$error = null)
     {
         if ($this->_mode == self::FM_FILETYPE_DL && $access_key) {
-            if (($downloads = $GLOBALS['db']->select('CubeCart_downloads', false, array('accesskey' => $access_key))) !== false) {
+            if (($downloads = $GLOBALS['db']->select('CubeCart_downloads', false, array('accesskey' => $access_key), false, false, false, false)) !== false) {
                 $download = $downloads[0];
                 if (($summary = $GLOBALS['db']->select('CubeCart_order_summary', false, array('cart_order_id' => $download['cart_order_id']))) !== false) {
                     // Order/Download Validation
