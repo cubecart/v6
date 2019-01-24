@@ -133,6 +133,9 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
         }
     }
 
+    $dmu = (($_POST['config']['product_weight_unit']=='Lb') ? 'in' : 'cm');
+    $GLOBALS['db']->misc("ALTER TABLE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_inventory` CHANGE `dimension_unit` `dimension_unit` VARCHAR(2) NULL DEFAULT '$dmu'");
+
     if (isset($_POST['logo']) && is_array($_POST['logo'])) {
         foreach ($_POST['logo'] as $logo_id => $logo) {
             if ($logo['status']) {
