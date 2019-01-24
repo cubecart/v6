@@ -55,7 +55,7 @@ if (isset($_GET['rebuild']) && Admin::getInstance()->permissions('filemanager', 
     httpredir(currentPage(array('rebuild')));
 }
 
-if (Admin::getInstance()->permissions('filemanager', CC_PERM_EDIT) && !empty($_FILES)) {
+if (!empty($_FILES) && Admin::getInstance()->permissions('filemanager', CC_PERM_EDIT)) {
     if ($fm->upload()) {
         if (count($_FILES)>1) {
             $GLOBALS['main']->setACPNotify($lang['filemanager']['notify_files_upload']);
@@ -68,7 +68,7 @@ if (Admin::getInstance()->permissions('filemanager', CC_PERM_EDIT) && !empty($_F
     httpredir(currentPage());
 }
 
-if (Admin::getInstance()->permissions('filemanager', CC_PERM_DELETE) && isset($_GET['delete'])) {
+if (isset($_GET['delete']) && Admin::getInstance()->permissions('filemanager', CC_PERM_DELETE)) {
     if ($fm->delete($_GET['delete'])) {
         $GLOBALS['main']->setACPNotify($lang['filemanager']['notify_file_delete']);
     } else {
