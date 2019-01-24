@@ -465,11 +465,18 @@ $GLOBALS['smarty']->assign('COUNT', $count);
 
 $GLOBALS['main']->addTabControl($lang['common']['search'], 'sidebar');
 
-foreach ($GLOBALS['hooks']->load('admin.dashboard.custom_quick_tasks') as $hook) {
-    include $hook;
-}
+foreach ($GLOBALS['hooks']->load('admin.dashboard.custom_quick_tasks') as $hook) { include $hook; }
 if (isset($custom_quick_tasks) && is_array($custom_quick_tasks)) {
     $GLOBALS['smarty']->assign('CUSTOM_QUICK_TASKS', $custom_quick_tasks);
 }
+$default_quick_tasks = array(
+    '?_g=reports&report[date][from]='.$quick_tasks['today'].'&report[date][to]='.$quick_tasks['today'] => $lang['dashboard']['task_orders_view_day'],
+    '?_g=reports&report[date][from]='.$quick_tasks['this_weeks'].'&report[date][to]='.$quick_tasks['today'] => $lang['dashboard']['task_orders_view_week'],
+    '?_g=reports' => $lang['dashboard']['task_orders_view_month'],
+    '?_g=products&action=add' => $lang['catalogue']['product_add'],
+    '?_g=categories&action=add' => $lang['catalogue']['category_add']
+);
+foreach ($GLOBALS['hooks']->load('admin.dashboard.default_quick_tasks') as $hook) { include $hook; }
+$GLOBALS['smarty']->assign('DEFAULT_QUICK_TASKS', $default_quick_tasks);
 
 $page_content = $GLOBALS['smarty']->fetch('templates/dashboard.index.php');
