@@ -166,25 +166,21 @@ class Request
         if (!$this->_log) {
             return false;
         }
-        if (!empty($request)) {
-            $data = array(
-                'request_url'  	=> $this->_request_protocol.'://'.$this->_request_url.$this->_request_path,
-                'request'  		=> $this->mask_cc($request),
-                'result'    	=> $this->mask_cc($result),
-                'error'   		=> $error
-            );
-            $log_days = $GLOBALS['config']->get('config', 'r_request');
-            if (ctype_digit((string)$log_days) &&  $log_days > 0) {
-                $GLOBALS['db']->insert('CubeCart_request_log', $data);
-                $GLOBALS['db']->delete('CubeCart_request_log', 'time < DATE_SUB(NOW(), INTERVAL '.$log_days.' DAY)');
-            } elseif (empty($log_days) || !$log_days) {
-                $GLOBALS['db']->insert('CubeCart_request_log', $data);
-            }
-        } else {
-            return false;
+        $data = array(
+            'request_url'  	=> $this->_request_protocol.'://'.$this->_request_url.$this->_request_path,
+            'request' => (!empty($request)) ? $this->mask_cc($request) : "No Data",
+            'result'    	=> $this->mask_cc($result),
+            'error'   		=> $error
+        );
+        $log_days = $GLOBALS['config']->get('config', 'r_request');
+        if (ctype_digit((string)$log_days) &&  $log_days > 0) {
+            $GLOBALS['db']->insert('CubeCart_request_log', $data);
+            $GLOBALS['db']->delete('CubeCart_request_log', 'time < DATE_SUB(NOW(), INTERVAL '.$log_days.' DAY)');
+        } elseif (empty($log_days) || !$log_days) {
+            $GLOBALS['db']->insert('CubeCart_request_log', $data);
         }
     }
-    
+
     /**
      * Mask credit card from request
      *
