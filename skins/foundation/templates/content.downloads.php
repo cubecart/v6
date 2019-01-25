@@ -32,7 +32,7 @@
             {if $download.active}
             <a href="{$STORE_URL}/index.php?_a=download&accesskey={$download.accesskey}" title="{$LANG.common.download}"><svg class="icon"><use xlink:href="#icon-download"></use></svg> {$download.file_info.filename}</a>
             {else}
-            <svg class="icon"><use xlink:href="#icon-download"></use></svg> {$download.file_info.filename}
+            <svg class="icon"><use xlink:href="#icon-download"></use></svg> <del>{$download.file_info.filename}</del>
             {/if}
          </td>
          <td> {if $download.active}{$download.expires}{else}{$LANG.account.download_expired}{/if}</td>
