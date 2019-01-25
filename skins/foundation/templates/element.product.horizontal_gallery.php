@@ -10,8 +10,8 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
 <div class="row">
-   <div class="small-5 medium-7 columns horizontal">            
-      <a href="#" class="open-clearing" data-thumb-index="0"><img src="{$PRODUCT.medium}" alt="{$PRODUCT.name}" id="img-preview"></a>
+   <div class="small-5 medium-7 columns horizontal">
+      <div id="open-clearing-wrapper"><a href="#" class="open-clearing" data-thumb-index="0"><img src="{$PRODUCT.medium}" alt="{$PRODUCT.name}" id="img-preview"></a></div>
       {if $GALLERY}
       <ul class="clearing-thumbs small-block-grid-3 medium-block-grid-5 marg-top" data-clearing>
          {foreach from=$GALLERY item=image}
