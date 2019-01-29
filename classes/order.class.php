@@ -1284,6 +1284,7 @@ class Order
                 'cart_order_id'  => $this->_order_id,
                 'product_id'  => (int)$item['id'],
                 'quantity'   => $item['quantity'],
+                'cost_price'   => number_format((float)$item['cost_price'], 2, '.', ''),
                 'price'    => (!isset($item['certificate'])) ? $item['total_price_each'] : $item['certificate']['value'],
                 'tax' => $item['tax_each']['amount'],
                 'product_code'  => (!empty($product['product_code'])) ? $product['product_code'] : $item['product_code'],

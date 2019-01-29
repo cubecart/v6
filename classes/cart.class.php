@@ -782,6 +782,7 @@ class Cart
                     $this->basket['contents'][$hash]['digital'] = $product['digital'];
 
                     // Add the total product price inc options etc for payment gateways
+                    $this->basket['contents'][$hash]['cost_price'] = round($product['cost_price']*$item['quantity'],2);
                     $this->basket['contents'][$hash]['option_line_price'] = $product['option_line_price'];
                     $this->basket['contents'][$hash]['total_price_each'] = $product['price'];
                     $this->basket['contents'][$hash]['description']   = substr(strip_tags($product['description']), 0, 255);
