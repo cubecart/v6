@@ -84,7 +84,7 @@
 
   <div id="article" class="tab_content">
 	<h3>{$ADD_EDIT_DOCUMENT}</h3>
-	<textarea name="document[doc_content]" id="doc-content" class="textbox fck">{$DOCUMENT.doc_content}</textarea>
+	<textarea name="document[doc_content]" id="doc-content" class="textbox fck">{$DOCUMENT.doc_content|escape:"html"}</textarea>
   </div>
 
   <div id="seo" class="tab_content">

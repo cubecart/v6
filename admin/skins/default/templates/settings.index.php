@@ -328,7 +328,7 @@
       </fieldset>
       <fieldset>
          <legend>{$LANG.settings.offline_message}</legend>
-         <textarea name="config[offline_content]" id="offline_content" class="textbox fck fck-full">{$CONFIG.offline_content}</textarea>
+         <textarea name="config[offline_content]" id="offline_content" class="textbox fck fck-full">{$CONFIG.offline_content|escape:"html"}</textarea>
       </fieldset>
    </div>
    <div id="Logos" class="tab_content">
@@ -471,7 +471,7 @@
    <div id="Copyright" class="tab_content">
       <h3>{$LANG.settings.title_copyright}</h3>
       <fieldset>
-         <div><span><textarea name="config[store_copyright]" id="copyright_content" class="textbox fck">{$CONFIG.store_copyright}</textarea></span></div>
+         <div><span><textarea name="config[store_copyright]" id="copyright_content" class="textbox fck">{$CONFIG.store_copyright|escape:"html"}</textarea></span></div>
       </fieldset>
    </div>
    <div id="Extra" class="tab_content">

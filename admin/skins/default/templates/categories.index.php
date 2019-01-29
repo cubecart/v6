@@ -87,7 +87,7 @@
   </div>
   <div id="cat_description" class="tab_content">
 	<h3>{$LANG.settings.title_description}</h3>
-	<textarea name="cat[cat_desc]" id="description" class="textbox fck">{$CATEGORY.cat_desc}</textarea>
+	<textarea name="cat[cat_desc]" id="description" class="textbox fck">{$CATEGORY.cat_desc|escape:"html"}</textarea>
 	</div>
 	<div id="cat_images" class="tab_content">
 		<h3>{$LANG.settings.category_images}</h3>
@@ -178,7 +178,7 @@
 	</fieldset>
   </div>
   <div id="description" class="tab_content">
-	<textarea name="translate[cat_desc]" class="textbox fck">{$TRANS.cat_desc}</textarea>
+	<textarea name="translate[cat_desc]" class="textbox fck">{$TRANS.cat_desc|escape:"html"}</textarea>
   </div>
   <div id="seo" class="tab_content">
   <h3>{$LANG.settings.title_seo}</h3>

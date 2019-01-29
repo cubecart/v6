@@ -218,7 +218,7 @@
       <textarea name="description" class="textbox fck">{$PRODUCT.description}</textarea>
       <br>
       <h3>{$LANG.common.description_short} {$LANG.common.optional}</h3>
-      <textarea name="description_short" id="description_short" class="textbox fck" type="text">{$PRODUCT.description_short}</textarea>
+      <textarea name="description_short" id="description_short" class="textbox fck" type="text">{$PRODUCT.description_short|escape:"html"}</textarea>
    </div>
    <div id="pricing" class="tab_content">
       <h3>{$LANG.catalogue.title_pricing}</h3>
@@ -681,10 +681,10 @@
    </div>
    <div id="description" class="tab_content">
       <h3>{$LANG.translate.title_translate}</h3>
-      <textarea name="translate[description]" class="textbox fck">{$TRANS.description}</textarea>
+      <textarea name="translate[description]" class="textbox fck">{$TRANS.description|escape:"html"}</textarea>
       <br>
       <h3>{$LANG.translate.title_translate_short}</h3>
-      <textarea name="translate[description_short]" class="textbox fck">{$TRANS.description_short}</textarea>
+      <textarea name="translate[description_short]" class="textbox fck">{$TRANS.description_short|escape:"html"}</textarea>
    </div>
    <div id="seo" class="tab_content">
       <h3>{$LANG.settings.title_seo}</h3>

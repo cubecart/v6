@@ -41,7 +41,7 @@
   <div id="pagecontent" class="tab_content">
   <h3>{$LANG.contact.title_content}</h3>
 	<p>{$LANG.contact.content_info}</p>
-	<textarea name="contact[description]" id="description" class="textbox fck">{$CONTACT.description}</textarea>
+	<textarea name="contact[description]" id="description" class="textbox fck">{$CONTACT.description|escape:"html"}</textarea>
   </div>
   
   {include file='templates/element.hook_form_content.php'}

@@ -36,7 +36,7 @@
    <div id="email_html" class="tab_content">
       <h3>{$LANG.email.title_content_html}</h3>
       <p>{$LANG.email.help_content_html}</p>
-      <textarea name="newsletter[content_html]" id="content_html" class="textbox fck">{$NEWSLETTER.content_html}</textarea>
+      <textarea name="newsletter[content_html]" id="content_html" class="textbox fck">{$NEWSLETTER.content_html|escape:"html"}</textarea>
    </div>
    <div id="email_text" class="tab_content">
       <h3>{$LANG.email.title_content_text}</h3>
