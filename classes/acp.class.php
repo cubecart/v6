@@ -289,18 +289,6 @@ class ACP
     }
 
     /**
-     * Set admin warning message
-     *
-     * @param string $message
-     */
-    public function warnMessage($message)
-    {
-        $GLOBALS['gui']->setInfo($message);
-        // Add record to admin log
-        $this->adminLog($message);
-    }
-
-    /**
      * Set admin success message
      * AN ALIAS TO A BADLY NAMED METHOD (setACPNotify)
      *
