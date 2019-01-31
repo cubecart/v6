@@ -1152,6 +1152,7 @@ class Cart
                             if ($max_stock <=0) {
                                 $GLOBALS['gui']->setError(sprintf($GLOBALS['language']->checkout['error_item_not_available'], $this->basket['contents'][$hash]['name']));
                                 $this->remove($hash);
+                                continue;
                             } else {
                                 $GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_too_many_added']);
                                 $quantity = $max_stock;
