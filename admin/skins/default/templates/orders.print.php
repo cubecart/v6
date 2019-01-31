@@ -203,9 +203,9 @@
 		<span class="price">{$item.price}</span>{$item.quantity} &times; {$item.name} {if !empty($item.product_code)}({$item.product_code}){/if}
 		{if isset($item.options)}
 		<ul>
-		{foreach from=$item.options item=option}
+		<!--{foreach from=$item.options item=option}-->
 		<li>{$option}</li>
-		{/foreach}
+		<!--{/foreach}-->
 		</ul>
 		{/if}
 	  </div>
