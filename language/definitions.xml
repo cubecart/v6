@@ -1960,6 +1960,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="notify_logo_upload" introduced="5.0.0"><![CDATA[Logo uploaded.]]></string>
     <string name="notify_module_install" introduced="5.0.0"><![CDATA[Module successfully installed.]]></string>
     <string name="notify_settings_update" introduced="5.0.0"><![CDATA[Settings updated.]]></string>
+    <string name="currency_changed" introduced="6.2.3"><![CDATA[Default currency has changed. It may be a good idea to check your <a href="?_g=settings&node=currency">exchange rates</a>.]]></string>
     <string name="notify_tax_class_add" introduced="5.0.0"><![CDATA[Tax Class added.]]></string>
     <string name="notify_tax_class_delete" introduced="5.0.0"><![CDATA[Tax Class deleted.]]></string>
     <string name="notify_tax_detail_add" introduced="5.0.0"><![CDATA[Tax Detail added.]]></string>

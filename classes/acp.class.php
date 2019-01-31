@@ -278,7 +278,7 @@ class ACP
     }
 
     /**
-     * Set admin warning
+     * Set admin notice
      *
      * @param string $message
      */
