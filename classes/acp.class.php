@@ -278,7 +278,42 @@ class ACP
     }
 
     /**
-     * Set admin notice
+     * Set admin error message
+     * AN ALIAS TO A BADLY NAMED METHOD (setACPWarning)
+     *
+     * @param string $message
+     */
+    public function errorMessage($message, $show_once = false, $display = true)
+    {
+        $this->setACPWarning($message, $show_once, $display);
+    }
+
+    /**
+     * Set admin warning message
+     *
+     * @param string $message
+     */
+    public function warnMessage($message)
+    {
+        $GLOBALS['gui']->setInfo($message);
+        // Add record to admin log
+        $this->adminLog($message);
+    }
+
+    /**
+     * Set admin success message
+     * AN ALIAS TO A BADLY NAMED METHOD (setACPNotify)
+     *
+     * @param string $message
+     */
+    public function successMessage($message)
+    {
+        $this->setACPNotify($message);
+    }
+
+    /**
+     * Set admin success notice
+     * LEFT FOR BACKWARD COMPATIBILITY
      *
      * @param string $message
      */
@@ -290,7 +325,8 @@ class ACP
     }
 
     /**
-     * Set admin warning
+     * Set admin error notice
+     * LEFT FOR BACKWARD COMPATIBILITY
      *
      * @param string $message
      */

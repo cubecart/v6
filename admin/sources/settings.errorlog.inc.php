@@ -29,9 +29,9 @@ if (isset($_POST['adminread'])) {
         }
     }
     if ($changed) {
-        $GLOBALS['main']->setACPNotify($_POST['admin_error_status'] ? $lang['settings']['message_marked_read'] : $lang['settings']['message_marked_unread']);
+        $GLOBALS['main']->successMessage($_POST['admin_error_status'] ? $lang['settings']['message_marked_read'] : $lang['settings']['message_marked_unread']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['settings']['changes_not_made']);
+        $GLOBALS['main']->errorMessage($lang['settings']['changes_not_made']);
     }
 }
 
@@ -44,9 +44,9 @@ if (isset($_POST['systemread'])) {
         }
     }
     if ($changed) {
-        $GLOBALS['main']->setACPNotify($_POST['system_error_status'] ? $lang['settings']['message_marked_read'] : $lang['settings']['message_marked_unread']);
+        $GLOBALS['main']->successMessage($_POST['system_error_status'] ? $lang['settings']['message_marked_read'] : $lang['settings']['message_marked_unread']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['settings']['changes_not_made']);
+        $GLOBALS['main']->errorMessage($lang['settings']['changes_not_made']);
     }
 }
 

@@ -33,9 +33,9 @@ if (isset($_POST['contact']) && is_array($_POST['contact'])) {
     }
     $data['description'] = base64_encode(stripslashes($GLOBALS['RAW']['POST']['contact']['description']));
     if ($GLOBALS['config']->set('Contact_Form', '', $data)) {
-        $GLOBALS['main']->setACPNotify($lang['contact']['notify_contact_update']);
+        $GLOBALS['main']->successMessage($lang['contact']['notify_contact_update']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['contact']['error_contact_update']);
+        $GLOBALS['main']->errorMessage($lang['contact']['error_contact_update']);
     }
     httpredir(currentPage());
 }

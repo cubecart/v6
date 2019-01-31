@@ -107,13 +107,13 @@ if (isset($_POST) && is_array($_POST) && count($_POST)>0) {
         }
     }
     if (isset($_GET['prices'])) {
-        $GLOBALS['main']->setACPNotify($lang['catalogue']['notify_prices_updates']);
+        $GLOBALS['main']->successMessage($lang['catalogue']['notify_prices_updates']);
     } else {
-        $GLOBALS['main']->setACPNotify($lang['catalogue']['notify_assign_update']);
+        $GLOBALS['main']->successMessage($lang['catalogue']['notify_assign_update']);
     }
     httpredir(currentPage());
 } elseif (isset($_POST['price'])) {
-    $GLOBALS['main']->setACPWarning($lang['common']['error_no_change']);
+    $GLOBALS['main']->errorMessage($lang['common']['error_no_change']);
 }
 
 if (!isset($_GET['prices'])) {

@@ -36,15 +36,15 @@ if (isset($_GET['delete']) && $_GET['delete']==1) {
         $GLOBALS['db']->delete('CubeCart_hooks', array('plugin' => $_GET['module']));
        
         if (file_exists($dir)) {
-            $GLOBALS['main']->setACPWarning($lang['module']['plugin_still_exists']);
+            $GLOBALS['main']->errorMessage($lang['module']['plugin_still_exists']);
         } else {
-            $GLOBALS['main']->setACPNotify($lang['module']['plugin_deleted_successfully']);
+            $GLOBALS['main']->successMessage($lang['module']['plugin_deleted_successfully']);
         }
     } else {
         $GLOBALS['db']->delete('CubeCart_config', array('name' => $_GET['module']));
         $GLOBALS['db']->delete('CubeCart_modules', array('folder' => $_GET['module']));
         $GLOBALS['db']->delete('CubeCart_hooks', array('plugin' => $_GET['module']));
-        $GLOBALS['main']->setACPNotify($lang['module']['plugin_deleted_already']);
+        $GLOBALS['main']->successMessage($lang['module']['plugin_deleted_already']);
     }
     httpredir('?_g=plugins');
 }
@@ -77,7 +77,7 @@ if (isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
                     fwrite($fp, hex2bin($data['file_data']));
                     fclose($fp);
                     if (!file_exists($tmp_path)) {
-                        $GLOBALS['main']->setACPWarning($lang['module']['get_file_failed']);
+                        $GLOBALS['main']->errorMessage($lang['module']['get_file_failed']);
                     }
                     $zip = new ZipArchive();
 
@@ -104,7 +104,7 @@ if (isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
                             }
 
                             if (file_exists($root_path) && !is_writable($root_path)) {
-                                $GLOBALS['main']->setACPWarning(sprintf($lang['module']['exists_not_writable'], $root_path));
+                                $GLOBALS['main']->errorMessage(sprintf($lang['module']['exists_not_writable'], $root_path));
                                 $extract = false;
                             }
                         }
@@ -124,17 +124,17 @@ if (isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
                                 }
                                 $zip_backup->close();
                                 if (file_exists($destination_filepath)) {
-                                    $GLOBALS['main']->setACPNotify($lang['module']['backup_created']);
+                                    $GLOBALS['main']->successMessage($lang['module']['backup_created']);
                                 } else {
                                     if ($_POST['abort']=='1') {
                                         $extract = false;
-                                        $GLOBALS['main']->setACPWarning(sprintf($lang['module']['exists_not_writable'], $destination_filepath).' '.$lang['module']['process_aborted']);
+                                        $GLOBALS['main']->errorMessage(sprintf($lang['module']['exists_not_writable'], $destination_filepath).' '.$lang['module']['process_aborted']);
                                     } else {
-                                        $GLOBALS['main']->setACPWarning(sprintf($lang['module']['exists_not_writable'], $destination_filepath));
+                                        $GLOBALS['main']->errorMessage(sprintf($lang['module']['exists_not_writable'], $destination_filepath));
                                     }
                                 }
                             } else {
-                                $GLOBALS['main']->setACPWarning(sprintf($lang['module']['exists_not_writable'], $destination_filepath));
+                                $GLOBALS['main']->errorMessage(sprintf($lang['module']['exists_not_writable'], $destination_filepath));
                             }
                         }
                         if ($extract) {
@@ -164,7 +164,7 @@ if (isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
 
                             $GLOBALS['session']->delete('version_check');
 
-                            $GLOBALS['main']->setACPNotify($lang['module']['success_install']);
+                            $GLOBALS['main']->successMessage($lang['module']['success_install']);
                             
                             $request = new Request($cc_domain, $cc_conf_path, 80, false, true, 10);
                             $request->setMethod('get');
@@ -173,19 +173,19 @@ if (isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
                             $request->skiplog(true);
                         }
                     } else {
-                        $GLOBALS['main']->setACPWarning(sprintf($lang['module']['read_fail'], $data['file_name']));
+                        $GLOBALS['main']->errorMessage(sprintf($lang['module']['read_fail'], $data['file_name']));
                     }
                 } else {
-                    $GLOBALS['main']->setACPWarning(sprintf($lang['module']['not_writable'], $destination));
+                    $GLOBALS['main']->errorMessage(sprintf($lang['module']['not_writable'], $destination));
                 }
             } else {
-                $GLOBALS['main']->setACPWarning(sprintf($lang['module']['not_exist'], $destination));
+                $GLOBALS['main']->errorMessage(sprintf($lang['module']['not_exist'], $destination));
             }
         } else {
-            $GLOBALS['main']->setACPWarning($lang['module']['package_fail']);
+            $GLOBALS['main']->errorMessage($lang['module']['package_fail']);
         }
     } else {
-        $GLOBALS['main']->setACPWarning($lang['module']['token_unknown']);
+        $GLOBALS['main']->errorMessage($lang['module']['token_unknown']);
     }
     httpredir('?_g=plugins');
 }

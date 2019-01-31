@@ -83,7 +83,7 @@ if (isset($GLOBALS['RAW']['POST']['maillist_format'])) {
         deliverFile(false, false, $file_data, $lang['email']['export_filename'].'.'.$_POST['maillist_extension']);
         exit;
     } else {
-        $GLOBALS['main']->setACPWarning($lang['email']['error_news_export_empty']);
+        $GLOBALS['main']->errorMessage($lang['email']['error_news_export_empty']);
     }
 }
 

@@ -27,9 +27,9 @@ $anchor  = false;
 
 if (isset($_GET['assign_class']) && $_GET['assign_class']>0) {
     if ($no_assigned = $GLOBALS['db']->update('CubeCart_inventory', array('tax_type' => (int)$_GET['assign_class']))) {
-        $GLOBALS['main']->setACPNotify(sprintf($lang['settings']['notify_tax_class_assigned'], $no_assigned));
+        $GLOBALS['main']->successMessage(sprintf($lang['settings']['notify_tax_class_assigned'], $no_assigned));
     } else {
-        $GLOBALS['main']->setACPWarning($lang['settings']['notify_tax_class_not_assigned']);
+        $GLOBALS['main']->errorMessage($lang['settings']['notify_tax_class_not_assigned']);
     }
     $redirect = true;
 }
@@ -47,9 +47,9 @@ if (isset($_POST['class']) && is_array($_POST['class']) && Admin::getInstance()-
 ## Add Tax Class
 if (isset($_POST['addclass']) && is_array($_POST['addclass']) && !empty($_POST['addclass']['tax_name']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
     if ($GLOBALS['db']->insert('CubeCart_tax_class', $_POST['addclass'])) {
-        $GLOBALS['main']->setACPNotify($lang['settings']['notify_tax_class_add']);
+        $GLOBALS['main']->successMessage($lang['settings']['notify_tax_class_add']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['settings']['error_tax_class_add']);
+        $GLOBALS['main']->errorMessage($lang['settings']['error_tax_class_add']);
     }
     $redirect = true;
 }
@@ -58,9 +58,9 @@ if (isset($_GET['delete_class']) && !empty($_GET['delete_class']) && Admin::getI
     ## Remove dependancies
     $GLOBALS['db']->delete('CubeCart_tax_rates', array('type_id' => $_GET['delete_class']));
     if ($GLOBALS['db']->delete('CubeCart_tax_class', array('id' => (int)$_GET['delete_class']))) {
-        $GLOBALS['main']->setACPNotify($lang['settings']['notify_tax_class_delete']);
+        $GLOBALS['main']->successMessage($lang['settings']['notify_tax_class_delete']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['settings']['error_tax_class_delete']);
+        $GLOBALS['main']->errorMessage($lang['settings']['error_tax_class_delete']);
     }
     $redirect = true;
     $anchor = 'taxclasses';
@@ -79,9 +79,9 @@ if (isset($_POST['detail']) && is_array($_POST['detail']) && Admin::getInstance(
 ## Add Tax Detail
 if (isset($_POST['adddetail']) && is_array($_POST['adddetail']) && !empty($_POST['adddetail']['name']) && !empty($_POST['adddetail']['display']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
     if ($GLOBALS['db']->insert('CubeCart_tax_details', $_POST['adddetail'])) {
-        $GLOBALS['main']->setACPNotify($lang['settings']['notify_tax_detail_add']);
+        $GLOBALS['main']->successMessage($lang['settings']['notify_tax_detail_add']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['settings']['error_tax_detail_add']);
+        $GLOBALS['main']->errorMessage($lang['settings']['error_tax_detail_add']);
     }
     $redirect = true;
 }
@@ -90,9 +90,9 @@ if (isset($_GET['delete_detail']) && !empty($_GET['delete_detail']) && Admin::ge
     ## Delete dependancies
     $GLOBALS['db']->delete('CubeCart_tax_rates', array('details_id' => $_GET['delete_detail']));
     if ($GLOBALS['db']->delete('CubeCart_tax_details', array('id' => (int)$_GET['delete_detail']))) {
-        $GLOBALS['main']->setACPNotify($lang['settings']['notify_tax_detail_delete']);
+        $GLOBALS['main']->successMessage($lang['settings']['notify_tax_detail_delete']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['settings']['error_tax_detail_delete']);
+        $GLOBALS['main']->errorMessage($lang['settings']['error_tax_detail_delete']);
     }
     $redirect = true;
     $anchor = 'taxdetails';
@@ -116,13 +116,13 @@ if (isset($_POST['addrule']) && is_array($_POST['addrule']) && is_numeric($_POST
             $_POST['addrule']['country_id'] = $country['numcode'];
             $_POST['addrule']['county_id'] = 0;
             $GLOBALS['db']->insert('CubeCart_tax_rates', $_POST['addrule']);
-            $GLOBALS['main']->setACPNotify($lang['settings']['notify_tax_rule_add']);
+            $GLOBALS['main']->successMessage($lang['settings']['notify_tax_rule_add']);
         }
     } else {
         if ($GLOBALS['db']->insert('CubeCart_tax_rates', $_POST['addrule'])) {
-            $GLOBALS['main']->setACPNotify($lang['settings']['notify_tax_rule_add']);
+            $GLOBALS['main']->successMessage($lang['settings']['notify_tax_rule_add']);
         } else {
-            $GLOBALS['main']->setACPWarning($lang['settings']['error_tax_rule_add']);
+            $GLOBALS['main']->errorMessage($lang['settings']['error_tax_rule_add']);
         }
     }
     $redirect = true;
@@ -130,16 +130,16 @@ if (isset($_POST['addrule']) && is_array($_POST['addrule']) && is_numeric($_POST
 ## Delete Tax Rule
 if (isset($_GET['delete_rule']) && !empty($_GET['delete_rule']) && Admin::getInstance()->permissions('settings', CC_PERM_DELETE)) {
     if ($GLOBALS['db']->delete('CubeCart_tax_rates', array('id' => (int)$_GET['delete_rule']))) {
-        $GLOBALS['main']->setACPNotify($lang['settings']['notify_tax_rule_delete']);
+        $GLOBALS['main']->successMessage($lang['settings']['notify_tax_rule_delete']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['settings']['error_tax_rule_delete']);
+        $GLOBALS['main']->errorMessage($lang['settings']['error_tax_rule_delete']);
     }
     $redirect = true;
     $anchor = 'taxrules';
 }
 if ($updated) {
     ## Generic message as a few things can be updated at once
-    $GLOBALS['main']->setACPNotify($lang['settings']['notify_tax_updated']);
+    $GLOBALS['main']->successMessage($lang['settings']['notify_tax_updated']);
 }
 if ($redirect) {
     httpredir(currentPage(array('delete_class', 'delete_detail', 'delete_rule', 'assign_class')), $anchor);

@@ -22,7 +22,7 @@ $GLOBALS['smarty']->assign('QUICK_TOUR', true);
 
 if (isset($_GET['ignore_update']) && $_GET['ignore_update']>0) {
     $GLOBALS['db']->update('CubeCart_extension_info', array('modified' => time()), array('file_id' => (int)$_GET['ignore_update']));
-    $GLOBALS['main']->setACPNotify($lang['dashboard']['ignore_update']);
+    $GLOBALS['main']->successMessage($lang['dashboard']['ignore_update']);
     $GLOBALS['session']->delete('version_check');
     httpredir(currentPage(array('ignore_update')));
 }
@@ -32,9 +32,9 @@ if (isset($_POST['notes']['dashboard_notes'])) {
     $update = array('dashboard_notes' => $_POST['notes']['dashboard_notes']);
     if ($GLOBALS['db']->update('CubeCart_admin_users', $update, array('admin_id' => Admin::getInstance()->get('admin_id')))) {
         $GLOBALS['session']->delete('', 'admin_data');
-        $GLOBALS['main']->setACPNotify($lang['dashboard']['notice_notes_save']);
+        $GLOBALS['main']->successMessage($lang['dashboard']['notice_notes_save']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['dashboard']['error_notes_save']);
+        $GLOBALS['main']->errorMessage($lang['dashboard']['error_notes_save']);
     }
     httpredir(currentPage());
 }
@@ -43,14 +43,14 @@ if (isset($_POST['notes']['dashboard_notes'])) {
 if ($glob['adminFolder']!=='admin' && file_exists(CC_ROOT_DIR.'/admin')) {
     recursiveDelete(CC_ROOT_DIR.'/admin');
     if (file_exists(CC_ROOT_DIR.'/admin')) {
-        $GLOBALS['main']->setACPWarning($lang['dashboard']['delete_admin_folder']);
+        $GLOBALS['main']->errorMessage($lang['dashboard']['delete_admin_folder']);
     }
 }
 ## Delete admin file if it exists and shouldn't
 if ($glob['adminFile']!=='admin.php' && file_exists(CC_ROOT_DIR.'/admin.php')) {
     unlink(CC_ROOT_DIR.'/admin.php');
     if (file_exists(CC_ROOT_DIR.'/admin.php')) {
-        $GLOBALS['main']->setACPWarning($lang['dashboard']['delete_admin_file']);
+        $GLOBALS['main']->errorMessage($lang['dashboard']['delete_admin_file']);
     }
 }
 
@@ -65,29 +65,29 @@ if ($glob['installed'] && file_exists(CC_ROOT_DIR.'/setup')) {
 
     $history = $GLOBALS['db']->misc('SELECT `version` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_history` ORDER BY `time` DESC LIMIT 1');
     if (version_compare(CC_VERSION, $history[0]['version'], '>')) {
-        $GLOBALS['main']->setACPWarning(sprintf($lang['dashboard']['error_version'], CC_VERSION, $history[0]['version']));
+        $GLOBALS['main']->errorMessage(sprintf($lang['dashboard']['error_version'], CC_VERSION, $history[0]['version']));
     } elseif (file_exists(CC_ROOT_DIR.'/setup')) {
-        $GLOBALS['main']->setACPWarning($lang['dashboard']['error_setup_folder']);
+        $GLOBALS['main']->errorMessage($lang['dashboard']['error_setup_folder']);
     }
 }
 ## Are they using the mysql root user?
 if ($glob['dbusername'] == 'root' && !(bool)$GLOBALS['config']->get('config', 'debug')) {
-    $GLOBALS['main']->setACPWarning($lang['dashboard']['error_mysql_root'], true, false);
+    $GLOBALS['main']->errorMessage($lang['dashboard']['error_mysql_root'], true, false);
 }
 ## Is caching disabled
 if (!(bool)$GLOBALS['config']->get('config', 'cache')) {
-    $GLOBALS['main']->setACPWarning($lang['dashboard']['error_caching_disabled']);
+    $GLOBALS['main']->errorMessage($lang['dashboard']['error_caching_disabled']);
 }
 ## Windows only - Is global.inc.php writable?
 if (substr(PHP_OS, 0, 3) !== 'WIN' && is_writable('includes/global.inc.php')) {
     if (!chmod('includes/global.inc.php', 0444)) {
-        $GLOBALS['main']->setACPWarning($lang['dashboard']['error_global_risk']);
+        $GLOBALS['main']->errorMessage($lang['dashboard']['error_global_risk']);
     }
 }
 
 $mysql_mode = $GLOBALS['db']->misc('SELECT @@sql_mode;');
 if (stristr($mysql_mode[0]['@@sql_mode'], 'strict')) {
-    $GLOBALS['main']->setACPWarning($lang['setup']['error_strict_mode']);
+    $GLOBALS['main']->errorMessage($lang['setup']['error_strict_mode']);
 }
 
 ## Get recent extensions
@@ -141,7 +141,7 @@ if (!$GLOBALS['session']->has('version_check') && $request = new Request('www.cu
         $response_array = json_decode($response, true);
 
         if (version_compare($response_array['version'], CC_VERSION, '>')) {
-            $GLOBALS['main']->setACPWarning(sprintf($lang['dashboard']['error_version_update'], $response_array['version'], CC_VERSION).' <a href="?_g=maintenance&node=index#upgrade">'.$lang['maintain']['upgrade_now'].'</a>');
+            $GLOBALS['main']->errorMessage(sprintf($lang['dashboard']['error_version_update'], $response_array['version'], CC_VERSION).' <a href="?_g=maintenance&node=index#upgrade">'.$lang['maintain']['upgrade_now'].'</a>');
         }
         if (isset($response_array['updates']) && is_array($response_array['updates'])) {
             $version_check = $response_array['updates'];

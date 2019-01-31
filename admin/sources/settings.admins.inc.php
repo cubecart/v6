@@ -45,7 +45,7 @@ if (isset($_POST['admin']) && is_array($_POST['admin']) && Admin::getInstance()-
 
     ## Validate email
     if (!filter_var($_POST['admin']['email'], FILTER_VALIDATE_EMAIL)) {
-        $GLOBALS['main']->setACPWarning($lang['common']['error_email_invalid']);
+        $GLOBALS['main']->errorMessage($lang['common']['error_email_invalid']);
         unset($_POST['admin']['email']);
     }
 
@@ -86,10 +86,10 @@ if (isset($_POST['admin']) && is_array($_POST['admin']) && Admin::getInstance()-
             if ($GLOBALS['db']->insert('CubeCart_admin_users', $record)) {
                 $admin_id = $GLOBALS['db']->insertid();
                 $added = true;
-                $GLOBALS['main']->setACPNotify($lang['admins']['notify_admin_create']);
+                $GLOBALS['main']->successMessage($lang['admins']['notify_admin_create']);
             } else {
                 ## no name added as it may be empty
-                $GLOBALS['main']->setACPWarning($lang['common']['error_admin_create']);
+                $GLOBALS['main']->errorMessage($lang['common']['error_admin_create']);
             }
         }
     }
@@ -115,10 +115,10 @@ if (isset($_POST['admin']) && is_array($_POST['admin']) && Admin::getInstance()-
     if ($added) {
         httpredir(currentPage(array('action')));
     } elseif ($updated) {
-        $GLOBALS['main']->setACPNotify($lang['admins']['notify_admin_update']);
+        $GLOBALS['main']->successMessage($lang['admins']['notify_admin_update']);
         httpredir(currentPage(array('action', 'admin_id')));
     } else {
-        $GLOBALS['main']->setACPWarning($lang['common']['error_no_changes']);
+        $GLOBALS['main']->errorMessage($lang['common']['error_no_changes']);
     }
 }
 
@@ -132,9 +132,9 @@ if (isset($_POST['status']) && is_array($_POST['status']) && Admin::getInstance(
         }
     }
     if ($updated) {
-        $GLOBALS['main']->setACPNotify($lang['admins']['notify_admin_batch_update']);
+        $GLOBALS['main']->successMessage($lang['admins']['notify_admin_batch_update']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['admins']['error_admin_batch_update']);
+        $GLOBALS['main']->errorMessage($lang['admins']['error_admin_batch_update']);
     }
     httpredir(currentPage());
 }
@@ -146,18 +146,18 @@ if (isset($_GET['action']) && (Admin::getInstance()->superUser() || ((int)$_GET[
         //If there only one super then don't allow deleting
         if ($admin_user = $GLOBALS['db']->select('CubeCart_admin_users', false, array('admin_id' => (int)$_GET['admin_id']))) {
             if ($GLOBALS['db']->delete('CubeCart_admin_users', array('admin_id' => (int)$admin_user[0]['admin_id']))) {
-                $GLOBALS['main']->setACPNotify(sprintf($lang['admins']['notify_admin_delete'], $admin_user[0]['username']));
+                $GLOBALS['main']->successMessage(sprintf($lang['admins']['notify_admin_delete'], $admin_user[0]['username']));
             } else {
-                $GLOBALS['main']->setACPWarning($lang['admins']['error_admin_delete']);
+                $GLOBALS['main']->errorMessage($lang['admins']['error_admin_delete']);
             }
         } else {
-            $GLOBALS['main']->setACPWarning($lang['admins']['error_admin_exists']);
+            $GLOBALS['main']->errorMessage($lang['admins']['error_admin_exists']);
         }
         httpredir(currentPage(array('action', 'admin_id')));
     }
     if ($_GET['action'] == 'unlink' && isset($_GET['admin_id']) && is_numeric($_GET['admin_id'])) {
         $GLOBALS['db']->update('CubeCart_admin_users', array('customer_id' => null), array('admin_id' => (int)$_GET['admin_id']));
-        $GLOBALS['main']->setACPNotify($lang['admins']['notify_admin_unlinked']);
+        $GLOBALS['main']->successMessage($lang['admins']['notify_admin_unlinked']);
         httpredir(currentPage(null, array('action' => 'edit')));
     }
     ##
@@ -192,7 +192,7 @@ if (isset($_GET['action']) && (Admin::getInstance()->superUser() || ((int)$_GET[
             }
             $GLOBALS['main']->addTabControl($lang['admins']['tab_overview'], 'overview');
         } else {
-            $GLOBALS['main']->setACPWarning($lang['admins']['error_admin_exists']);
+            $GLOBALS['main']->errorMessage($lang['admins']['error_admin_exists']);
             httpredir(currentPage(array('action', 'admin_id')));
         }
     } else {

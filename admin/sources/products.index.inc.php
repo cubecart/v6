@@ -351,7 +351,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
         $GLOBALS['db']->update('CubeCart_inventory', array('cat_id' => $primary_cat), array('product_id' => $product_id));
     }
     if (!$category_assigned) {
-        $GLOBALS['main']->setACPWarning($lang['catalogue']['no_categories_specified']);
+        $GLOBALS['main']->errorMessage($lang['catalogue']['no_categories_specified']);
     }
 
     // SEO
@@ -364,20 +364,20 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
     $GLOBALS['seo']->setdbPath('prod', $product_id, $_POST['seo_path']);
 
     if (empty($_POST['primary_cat']) && count($_POST['categories'])>1) {
-        $GLOBALS['main']->setACPWarning($lang['catalogue']['title_category_defaulted']);
+        $GLOBALS['main']->errorMessage($lang['catalogue']['title_category_defaulted']);
         $rem_array = false;
     } elseif ($inserted) {
-        $GLOBALS['main']->setACPNotify($lang['catalogue']['notify_product_create']);
+        $GLOBALS['main']->successMessage($lang['catalogue']['notify_product_create']);
         $_POST['previous-tab'] = ($_POST['submit_cont']) ? $_POST['previous-tab'] : null;
         $rem_array = array('action');
     } else {
         $GLOBALS['catalogue']->getProductHash($_POST['product_id'], "after");
         if ($GLOBALS['catalogue']->productHashMatch('before', 'after')) {
-            $GLOBALS['main']->setACPWarning($lang['catalogue']['error_product_update']);
+            $GLOBALS['main']->errorMessage($lang['catalogue']['error_product_update']);
             $rem_array = false;
         } else {
             $GLOBALS['db']->update('CubeCart_inventory', array('updated' => date('Y-m-d H:i:s', time())), array('product_id' => $product_id));
-            $GLOBALS['main']->setACPNotify($lang['catalogue']['notify_product_update']);
+            $GLOBALS['main']->successMessage($lang['catalogue']['notify_product_update']);
             if (!isset($option_update)) {
                 $rem_array = array('action', 'product_id');
             }
@@ -408,22 +408,22 @@ if (isset($_POST['translate']) && isset($_POST['product_id']) && is_numeric($_PO
     // Insert/Update translation
     if (!empty($_POST['translation_id']) && is_numeric($_POST['translation_id'])) {
         if ($GLOBALS['db']->update('CubeCart_inventory_language', $_POST['translate'], array('translation_id' => (int)$_POST['translation_id'], 'product_id' => (int)$_POST['product_id']))) {
-            $GLOBALS['main']->setACPNotify($lang['translate']['notify_translation_update']);
+            $GLOBALS['main']->successMessage($lang['translate']['notify_translation_update']);
             $rem_array = array('translation_id');
             $add_array = array('action' => 'edit');
         } else {
-            $GLOBALS['main']->setACPWarning($lang['translate']['error_translation_update']);
+            $GLOBALS['main']->errorMessage($lang['translate']['error_translation_update']);
             $rem_array = false;
             $add_array = false;
         }
     } else {
         $_POST['translate']['product_id'] = $_POST['product_id'];
         if ($GLOBALS['db']->insert('CubeCart_inventory_language', $_POST['translate'])) {
-            $GLOBALS['main']->setACPNotify($lang['translate']['notify_translation_create']);
+            $GLOBALS['main']->successMessage($lang['translate']['notify_translation_create']);
             $rem_array = array('translation_id');
             $add_array = array('action' => 'edit');
         } else {
-            $GLOBALS['main']->setACPWarning($lang['translate']['error_translation_create']);
+            $GLOBALS['main']->errorMessage($lang['translate']['error_translation_create']);
             $rem_array = false;
             $add_array = false;
         }
@@ -471,9 +471,9 @@ if (((isset($_GET['delete']) && !empty($_GET['delete'])) || (isset($_POST['delet
     }
 
     if (!$deleted) {
-        $GLOBALS['main']->setACPWarning($lang['catalogue']['error_product_delete']);
+        $GLOBALS['main']->errorMessage($lang['catalogue']['error_product_delete']);
     } else {
-        $GLOBALS['main']->setACPNotify($lang['catalogue']['notify_product_delete']);
+        $GLOBALS['main']->successMessage($lang['catalogue']['notify_product_delete']);
     }
     if (isset($_GET['dashboard'])) {
         httpredir('?', 'stock_warnings');
@@ -614,7 +614,7 @@ if (isset($_GET['action']) && strtolower($_GET['action'])=='clone' && isset($_GE
     httpredir(currentPage(array('action', 'product_id')));
 } elseif ($GLOBALS['session']->has('cloned', 'extra')) {
     $GLOBALS['session']->delete('cloned', 'extra');
-    $GLOBALS['main']->setACPNotify($lang['catalogue']['notify_product_create']);
+    $GLOBALS['main']->successMessage($lang['catalogue']['notify_product_create']);
 }
 #########################################################
 
@@ -641,7 +641,7 @@ if (isset($_GET['action'])) {
 
             // Check to see if translation space is available
         if (!isset($_GET['translation_id']) && $GLOBALS['language']->fullyTranslated('product', (int)$_GET['product_id'])) {
-            $GLOBALS['main']->setACPWarning($lang['common']['all_translated']);
+            $GLOBALS['main']->errorMessage($lang['common']['all_translated']);
             httpredir('?_g=products');
         }
 
@@ -1085,7 +1085,7 @@ if (isset($_GET['action'])) {
         // Check digital download path exists
         if (!empty($result[0]['digital_path'])) {
             if (!preg_match("/^(http|https|ftp)/", $result[0]['digital_path']) && !file_exists($result[0]['digital_path'])) {
-                $GLOBALS['main']->setACPWarning($GLOBALS['language']->filemanager['error_dl_3']." ".$result[0]['digital_path']);
+                $GLOBALS['main']->errorMessage($GLOBALS['language']->filemanager['error_dl_3']." ".$result[0]['digital_path']);
             }
         }
         $GLOBALS['smarty']->assign('PRODUCT', $result[0]);
@@ -1201,9 +1201,9 @@ if (isset($_GET['action'])) {
         $GLOBALS['smarty']->assign('SORT_CHARACTERS', $smarty_data['sort_characters']);
 
         if (isset($_GET['q']) && !empty($_GET['q'])) {
-            $GLOBALS['main']->setACPNotify(sprintf($lang['catalogue']['notify_product_search'], $_GET['q']));
+            $GLOBALS['main']->successMessage(sprintf($lang['catalogue']['notify_product_search'], $_GET['q']));
         } elseif (isset($_GET['char']) && !empty($_GET['char'])) {
-            $GLOBALS['main']->setACPNotify(sprintf($lang['catalogue']['notify_product_search'], $_GET['char']));
+            $GLOBALS['main']->successMessage(sprintf($lang['catalogue']['notify_product_search'], $_GET['char']));
         }
 
         $catalogue = Catalogue::getInstance();
@@ -1255,9 +1255,9 @@ if (isset($_GET['action'])) {
         $GLOBALS['smarty']->assign('PAGINATION', $pagination);
     } else {
         if (isset($_GET['q']) && !empty($_GET['q'])) {
-            $GLOBALS['main']->setACPWarning(sprintf($lang['catalogue']['error_product_search'], $_GET['q']));
+            $GLOBALS['main']->errorMessage(sprintf($lang['catalogue']['error_product_search'], $_GET['q']));
         } elseif (isset($_GET['char']) && !empty($_GET['char'])) {
-            $GLOBALS['main']->setACPWarning(sprintf($lang['catalogue']['error_products_letter'], $_GET['char']));
+            $GLOBALS['main']->errorMessage(sprintf($lang['catalogue']['error_products_letter'], $_GET['char']));
         }
     }
     $GLOBALS['smarty']->assign('DISPLAY_PRODUCT_LIST', true);

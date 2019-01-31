@@ -109,7 +109,7 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
         $customer['registered'] = time();
         foreach ($customer as $field => $value) {
             if ($field == 'email' && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
-                $GLOBALS['main']->setACPWarning($lang['common']['error_email_invalid']);
+                $GLOBALS['main']->errorMessage($lang['common']['error_email_invalid']);
                 $error = true;
             }
             if (in_array($field, $required) && empty($value)) {
@@ -196,7 +196,7 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
             foreach ($address as $offset => $record) {
                 foreach ($record as $record_key => $record_value) {
                     if (in_array($record_key, $required_fields) && empty($record_value)) {
-                        $GLOBALS['main']->setACPWarning($lang['common']['error_fields_required']);
+                        $GLOBALS['main']->errorMessage($lang['common']['error_fields_required']);
                         continue 2;
                     }
                 }
@@ -233,16 +233,16 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
     }
 
     if ($customer_added) {
-        $GLOBALS['main']->setACPNotify($lang['customer']['notify_customer_create']);
+        $GLOBALS['main']->successMessage($lang['customer']['notify_customer_create']);
         $variable_rem_fields = array('action');
     } elseif ($customer_not_added) {
-        $GLOBALS['main']->setACPWarning($lang['customer']['error_customer_create']);
+        $GLOBALS['main']->errorMessage($lang['customer']['error_customer_create']);
     } elseif ($customer_updated) {
-        $GLOBALS['main']->setACPNotify($lang['customer']['notify_customer_update']);
+        $GLOBALS['main']->successMessage($lang['customer']['notify_customer_update']);
         // Lose get vars to return to customer list
         $variable_rem_fields = array();
     } else {
-        $GLOBALS['main']->setACPWarning($lang['customer']['error_customer_update']);
+        $GLOBALS['main']->errorMessage($lang['customer']['error_customer_update']);
     }
 
     $fixed_rem_fields = array('address_id');
@@ -263,7 +263,7 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
                 }
                 if (isset($record)) {
                     $GLOBALS['db']->update('CubeCart_customer_group', $record, array('group_id' => (int)$group_id));
-                    $GLOBALS['main']->setACPNotify($lang['customer']['notify_customer_groups']);
+                    $GLOBALS['main']->successMessage($lang['customer']['notify_customer_groups']);
                     unset($record);
                 }
             }
@@ -276,7 +276,7 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
                 include $hook;
             }
             if (($GLOBALS['db']->insert('CubeCart_customer_group', $_POST['group_add'])) !== false) {
-                $GLOBALS['main']->setACPNotify($lang['customer']['notify_groups_create']);
+                $GLOBALS['main']->successMessage($lang['customer']['notify_groups_create']);
             }
             $send_redirect = true;
         }
@@ -292,23 +292,23 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
                 $GLOBALS['db']->delete('CubeCart_pricing_group', array('group_id' => (int)$group_id));
             }
         }
-        $GLOBALS['main']->setACPNotify($lang['customer']['notify_groups_delete']);
+        $GLOBALS['main']->successMessage($lang['customer']['notify_groups_delete']);
         $send_redirect = true;
     }
     if (isset($_POST['status']) && is_array($_POST['status']) && Admin::getInstance()->permissions('customers', CC_PERM_EDIT)) {
         foreach ($_POST['status'] as $customer_id => $status) {
             $result = $GLOBALS['db']->update('CubeCart_customer', array('status' => (int)$status), array('customer_id' => (int)$customer_id));
             if ($result) {
-                $GLOBALS['main']->setACPNotify($lang['customer']['notify_customer_status']);
+                $GLOBALS['main']->successMessage($lang['customer']['notify_customer_status']);
             }
         }
         $send_redirect = true;
     }
     if (isset($_GET['delete_addr']) && isset($_GET['customer_id']) && is_numeric($_GET['delete_addr'])) {
         if ($GLOBALS['db']->delete('CubeCart_addressbook', array('address_id' => (int)$_GET['delete_addr'], 'customer_id' => (int)$_GET['customer_id']))) {
-            $GLOBALS['main']->setACPNotify($lang['customer']['notify_address_delete']);
+            $GLOBALS['main']->successMessage($lang['customer']['notify_address_delete']);
         } else {
-            $GLOBALS['main']->setACPWarning($lang['customer']['error_address_delete']);
+            $GLOBALS['main']->errorMessage($lang['customer']['error_address_delete']);
         }
         $send_redirect = true;
     }
@@ -341,15 +341,15 @@ if (isset($_GET['action']) && Admin::getInstance()->permissions('customers', CC_
                     foreach ($GLOBALS['hooks']->load('admin.customer.delete') as $hook) {
                         include $hook;
                     }
-                    $GLOBALS['main']->setACPNotify($lang['customer']['notify_customer_delete']);
+                    $GLOBALS['main']->successMessage($lang['customer']['notify_customer_delete']);
                 } else {
-                    $GLOBALS['main']->setACPWarning($lang['customer']['error_customer_delete']);
+                    $GLOBALS['main']->errorMessage($lang['customer']['error_customer_delete']);
                 }
             } else {
-                $GLOBALS['main']->setACPWarning($lang['customer']['error_customer_delete_orders']);
+                $GLOBALS['main']->errorMessage($lang['customer']['error_customer_delete_orders']);
             }
         } else {
-            $GLOBALS['main']->setACPWarning($lang['customer']['error_customer_found']);
+            $GLOBALS['main']->errorMessage($lang['customer']['error_customer_found']);
         }
         httpredir(currentPage(array('action', 'customer_id')));
     }
@@ -489,7 +489,7 @@ if (isset($_GET['action']) && Admin::getInstance()->permissions('customers', CC_
 
     if (($customers = $GLOBALS['db']->select('CubeCart_customer', '*, CONCAT(`last_name`, `first_name`) AS `customer`', $where, $order_by, $per_page, $page)) !== false) {
         if (isset($_GET['q']) && !empty($_GET['q'])) {
-            $GLOBALS['main']->setACPNotify(sprintf($lang['customer']['notify_customer_matching_x'], $_GET['q']));
+            $GLOBALS['main']->successMessage(sprintf($lang['customer']['notify_customer_matching_x'], $_GET['q']));
         }
         foreach ($customers as $customer) {
             $orders = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id'), array('customer_id' => $customer['customer_id']));
@@ -514,7 +514,7 @@ if (isset($_GET['action']) && Admin::getInstance()->permissions('customers', CC_
         }
         $GLOBALS['smarty']->assign('CUSTOMERS', $customer_list);
     } elseif (isset($_GET['q'])) {
-        $GLOBALS['main']->setACPWarning(sprintf($lang['customer']['error_customer_matching_x'], $_GET['q']));
+        $GLOBALS['main']->errorMessage(sprintf($lang['customer']['error_customer_matching_x'], $_GET['q']));
     }
     // Get external module export code
     // Start classes for external reports

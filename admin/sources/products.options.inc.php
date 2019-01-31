@@ -29,7 +29,7 @@ if (!empty($_POST) && Admin::getInstance()->permissions('products', CC_PERM_EDIT
             }
         }
         if ($updated) {
-            $GLOBALS['main']->setACPNotify($lang['catalogue']['notify_option_group_update']);
+            $GLOBALS['main']->successMessage($lang['catalogue']['notify_option_group_update']);
         }
     }
 
@@ -43,7 +43,7 @@ if (!empty($_POST) && Admin::getInstance()->permissions('products', CC_PERM_EDIT
             }
         }
         if ($updated) {
-            $GLOBALS['main']->setACPNotify($lang['catalogue']['notify_option_attrib_update']);
+            $GLOBALS['main']->successMessage($lang['catalogue']['notify_option_attrib_update']);
         }
     }
 
@@ -68,7 +68,7 @@ if (!empty($_POST) && Admin::getInstance()->permissions('products', CC_PERM_EDIT
             }
         }
         if ($added) {
-            $GLOBALS['main']->setACPNotify($lang['catalogue']['notify_option_group_attrib_added']);
+            $GLOBALS['main']->successMessage($lang['catalogue']['notify_option_group_attrib_added']);
         }
     }
     ## Remove options from a set
@@ -81,19 +81,19 @@ if (!empty($_POST) && Admin::getInstance()->permissions('products', CC_PERM_EDIT
             }
         }
         if ($deleted) {
-            $GLOBALS['main']->setACPNotify($lang['catalogue']['notify_option_group_attrib_delete']);
+            $GLOBALS['main']->successMessage($lang['catalogue']['notify_option_group_attrib_delete']);
         } else {
-            $GLOBALS['main']->setACPWarning($lang['catalogue']['error_option_group_attrib_delete']);
+            $GLOBALS['main']->errorMessage($lang['catalogue']['error_option_group_attrib_delete']);
         }
     }
 
     ## Group
     if (isset($_POST['add-group']) && !empty($_POST['add-group']['option_name'])) {
         if ($GLOBALS['db']->insert('CubeCart_option_group', $_POST['add-group'])) {
-            $GLOBALS['main']->setACPNotify($lang['catalogue']['notify_option_group_create']);
+            $GLOBALS['main']->successMessage($lang['catalogue']['notify_option_group_create']);
             $changes = true;
         } else {
-            $GLOBALS['main']->setACPWarning($lang['catalogue']['error_option_group_create']);
+            $GLOBALS['main']->errorMessage($lang['catalogue']['error_option_group_create']);
         }
     }
     ## Value
@@ -114,19 +114,19 @@ if (!empty($_POST) && Admin::getInstance()->permissions('products', CC_PERM_EDIT
                 }
             }
             if ($attributes_added) {
-                $GLOBALS['main']->setACPNotify($lang['catalogue']['notify_option_attrib_create']);
+                $GLOBALS['main']->successMessage($lang['catalogue']['notify_option_attrib_create']);
             } else {
-                $GLOBALS['main']->setACPWarning($lang['catalogue']['error_option_attrib_create']);
+                $GLOBALS['main']->errorMessage($lang['catalogue']['error_option_attrib_create']);
             }
         }
     }
     ## Create Set
     if (isset($_POST['set_create']) && !empty($_POST['set_create']['set_name'])) {
         if ($GLOBALS['db']->insert('CubeCart_options_set', $_POST['set_create'])) {
-            $GLOBALS['main']->setACPNotify($lang['catalogue']['notify_option_set_create']);
+            $GLOBALS['main']->successMessage($lang['catalogue']['notify_option_set_create']);
             $changes = true;
         } else {
-            $GLOBALS['main']->setACPWarning($lang['catalogue']['error_option_set_create']);
+            $GLOBALS['main']->errorMessage($lang['catalogue']['error_option_set_create']);
         }
     }
     // Set/Update option priority
@@ -149,7 +149,7 @@ if (!empty($_POST) && Admin::getInstance()->permissions('products', CC_PERM_EDIT
         }
     }
     if (!$changes) {
-        $GLOBALS['main']->setACPWarning($lang['catalogue']['error_option_no_change']);
+        $GLOBALS['main']->errorMessage($lang['catalogue']['error_option_no_change']);
     }
     httpredir(currentPage());
 }
@@ -165,9 +165,9 @@ if (isset($_GET['delete']) && is_numeric($_GET['id']) && Admin::getInstance()->p
 
         ## remove itself
         if ($GLOBALS['db']->delete('CubeCart_option_group', array('option_id' => $_GET['id']))) {
-            $GLOBALS['main']->setACPNotify($lang['catalogue']['notify_option_group_delete']);
+            $GLOBALS['main']->successMessage($lang['catalogue']['notify_option_group_delete']);
         } else {
-            $GLOBALS['main']->setACPWarning($lang['catalogue']['error_option_group_delete']);
+            $GLOBALS['main']->errorMessage($lang['catalogue']['error_option_group_delete']);
         }
         $anchor = 'groups';
         break;
@@ -177,9 +177,9 @@ if (isset($_GET['delete']) && is_numeric($_GET['id']) && Admin::getInstance()->p
         $GLOBALS['db']->delete('CubeCart_option_assign', array('value_id' => $_GET['id']));
         ## remove itself
         if ($GLOBALS['db']->delete('CubeCart_option_value', array('value_id' => $_GET['id']))) {
-            $GLOBALS['main']->setACPNotify($lang['catalogue']['notify_option_attrib_delete']);
+            $GLOBALS['main']->successMessage($lang['catalogue']['notify_option_attrib_delete']);
         } else {
-            $GLOBALS['main']->setACPWarning($lang['catalogue']['error_option_attrib_delete']);
+            $GLOBALS['main']->errorMessage($lang['catalogue']['error_option_attrib_delete']);
         }
         $anchor = 'attributes';
         break;
@@ -195,9 +195,9 @@ if (isset($_GET['delete']) && is_numeric($_GET['id']) && Admin::getInstance()->p
         $GLOBALS['db']->delete('CubeCart_options_set_product', array('set_id' => $_GET['id']));
         ## remove itself
         if ($GLOBALS['db']->delete('CubeCart_options_set', array('set_id' => $_GET['id']))) {
-            $GLOBALS['main']->setACPNotify($lang['catalogue']['notify_option_set_delete']);
+            $GLOBALS['main']->successMessage($lang['catalogue']['notify_option_set_delete']);
         } else {
-            $GLOBALS['main']->setACPWarning($lang['catalogue']['error_option_set_delete']);
+            $GLOBALS['main']->errorMessage($lang['catalogue']['error_option_set_delete']);
         }
 
         $anchor = 'sets';
@@ -216,7 +216,7 @@ if (isset($_POST['group']) && Admin::getInstance()->permissions('products', CC_P
         }
     }
     if ($updated) {
-        $GLOBALS['main']->setACPNotify($lang['catalogue']['notify_option_group_update']);
+        $GLOBALS['main']->successMessage($lang['catalogue']['notify_option_group_update']);
     }
     httpredir(currentPage(), 'groups');
 }
@@ -226,7 +226,7 @@ if (isset($_POST['value']) && Admin::getInstance()->permissions('products', CC_P
         #  $GLOBALS['db']->update('CubeCart_option_group', array('option_name' => $name), array('option_id' => $id));
         # }
     }
-    $GLOBALS['main']->setACPNotify($lang['catalogue']['notify_option_attrib_update']);
+    $GLOBALS['main']->successMessage($lang['catalogue']['notify_option_attrib_update']);
     httpredir(currentPage(), 'attributes');
 }
 

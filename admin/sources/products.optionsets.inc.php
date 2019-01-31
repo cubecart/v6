@@ -29,9 +29,9 @@ if (isset($_POST['set'])) {
         }
     }
     if ($updated) {
-        $GLOBALS['main']->setACPNotify($lang['catalogue']['notify_option_sets_updated']);
+        $GLOBALS['main']->successMessage($lang['catalogue']['notify_option_sets_updated']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['catalogue']['notify_option_sets_already_assigned']);
+        $GLOBALS['main']->errorMessage($lang['catalogue']['notify_option_sets_already_assigned']);
     }
     httpredir(currentPage());
 }

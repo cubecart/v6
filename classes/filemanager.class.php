@@ -217,7 +217,7 @@ class FileManager
             $default = (int)$img_add[0];
             // Display warning message if more than one image was chosen
             if (sizeof($img_add) > 1) {
-                $GLOBALS['main']->setACPWarning($lang['catalogue']['error_image_defaulted']);
+                $GLOBALS['main']->errorMessage($lang['catalogue']['error_image_defaulted']);
             }
         }
 

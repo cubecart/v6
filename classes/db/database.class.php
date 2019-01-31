@@ -265,7 +265,7 @@ class Database_Contoller
                 $zip = new ZipArchive();
                 $filename = $file_name;
                 if ($zip->open($filename.'.zip', ZipArchive::CREATE)!==true) {
-                    $GLOBALS['main']->setACPWarning($GLOBALS['language']->maintain['db_compress_fail']);
+                    $GLOBALS['main']->errorMessage($GLOBALS['language']->maintain['db_compress_fail']);
                     return false;
                 } else {
                     $zip->addFile($filename);

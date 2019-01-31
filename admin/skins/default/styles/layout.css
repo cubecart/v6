@@ -165,8 +165,8 @@ fieldset .custom-checkbox {
 .preauth-wrapper #gui_message {
     margin: 0
 }
-.infoText,
-.warnText {
+#gui_message .success,
+#gui_message .error {
     color: #FFF;
     font-size: 14px;
     padding: 2px 2px 2px 30px;
@@ -174,26 +174,26 @@ fieldset .custom-checkbox {
     cursor: pointer;
     min-height: 16px
 }
-.warnText:first-child {
+#gui_message .error:first-child {
     background: url(../images/warn-close.gif) 4px no-repeat #900
 }
-.warnText {
+#gui_message .error {
     background-color: #900
 }
-.infoText a, .warnText a {
+#gui_message .success a, #gui_message .error a {
     color: #fff;
     text-decoration: underline;
 }
-.infoText a:hover, .warnText a:hover {
+#gui_message .success a:hover, #gui_message .error a:hover {
     text-decoration: none;
 }
-.infoText:first-child {
+#gui_message .success:first-child {
     background: url(../images/info-close.gif) 4px no-repeat #1b4271
 }
-.infoText {
+#gui_message .success {
     background-color: #1b4271
 }
-.warnText ul {
+#gui_message .error ul {
     list-style-type: none;
     padding: 1px 0;
     margin: 0;

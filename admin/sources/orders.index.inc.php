@@ -39,24 +39,24 @@ if (isset($_POST['search']) && !is_array($_POST['multi-order'])) {
 
 if (isset($_GET['reset_id']) && $_GET['reset_id']>0 && Admin::getInstance()->permissions('orders', CC_PERM_EDIT)) {
     $GLOBALS['db']->update('CubeCart_downloads', array('downloads' => 0, 'expire' => (time() + $GLOBALS['config']->get('config', 'download_expire'))), array('order_inv_id' => (int)$_GET['reset_id']));
-    $GLOBALS['main']->setACPNotify($lang['orders']['notify_order_update']);
+    $GLOBALS['main']->successMessage($lang['orders']['notify_order_update']);
     httpredir(currentPage(array('reset_id')));
 }
 
 if (isset($_GET['delete_card']) && $_GET['delete_card'] && Admin::getInstance()->permissions('orders', CC_PERM_EDIT)) {
     if ($order->deleteCard($_GET['order_id'])) {
-        $GLOBALS['main']->setACPNotify($lang['orders']['notify_card_delete']);
+        $GLOBALS['main']->successMessage($lang['orders']['notify_card_delete']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['orders']['error_card_delete']);
+        $GLOBALS['main']->errorMessage($lang['orders']['error_card_delete']);
     }
     httpredir(currentPage(array('delete_card')));
 }
 
 if (isset($_GET['delete']) && !empty($_GET['delete']) && Admin::getInstance()->permissions('orders', CC_PERM_DELETE)) {
     if ($order->deleteOrder($_GET['delete'])) {
-        $GLOBALS['main']->setACPNotify($lang['orders']['notify_order_delete']);
+        $GLOBALS['main']->successMessage($lang['orders']['notify_order_delete']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['orders']['error_order_delete']);
+        $GLOBALS['main']->errorMessage($lang['orders']['error_order_delete']);
     }
     if (isset($_GET['source']) && $_GET['source']=='dashboard') {
         httpredir($glob['adminFile'], 'orders');
@@ -187,9 +187,9 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
         // Create order record
         $record['order_date'] = time();
         if ($GLOBALS['db']->insert('CubeCart_order_summary', $record)) {
-            $GLOBALS['main']->setACPNotify($lang['orders']['notify_order_create']);
+            $GLOBALS['main']->successMessage($lang['orders']['notify_order_create']);
         } else {
-            $GLOBALS['main']->setACPWarning($lang['orders']['error_order_create']);
+            $GLOBALS['main']->errorMessage($lang['orders']['error_order_create']);
         }
         // Update order status, if set
         $order->orderStatus($_POST['order']['status'], $order_id, true);
@@ -205,9 +205,9 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
         $order_status = $order->orderStatus($_POST['order']['status'], $order_id);
 
         if ($update_status || $order_status || $notes_added) {
-            $GLOBALS['main']->setACPNotify($lang['orders']['notify_order_update']);
+            $GLOBALS['main']->successMessage($lang['orders']['notify_order_update']);
         } else {
-            $GLOBALS['main']->setACPWarning($lang['orders']['error_order_update']);
+            $GLOBALS['main']->errorMessage($lang['orders']['error_order_update']);
         }
     }
 
@@ -649,11 +649,11 @@ if (isset($_GET['action'])) {
         if (file_put_contents(CC_FILES_DIR.$filename, $template.$cleanup)) {
             httpredir($GLOBALS['storeURL'].'/'.basename(CC_FILES_DIR).'/'.$filename);
         } else {
-            $GLOBALS['main']->setACPWarning($lang['orders']['error_print_generate']);
+            $GLOBALS['main']->errorMessage($lang['orders']['error_print_generate']);
             httpredir(currentPage(array('print')));
         }
     } else {
-        $GLOBALS['main']->setACPWarning($lang['orders']['order_not_found']);
+        $GLOBALS['main']->errorMessage($lang['orders']['order_not_found']);
         httpredir(currentPage(array('print')));
     }
 } else {
@@ -693,20 +693,20 @@ if (isset($_GET['action'])) {
         if ($_POST['multi-action'] == 'delete') {
             if ($deleted) {
                 if (isset($_POST['month_purge']) && ctype_digit($_POST['month_purge'])>0) {
-                    $GLOBALS['main']->setACPNotify(sprintf($lang['orders']['notify_orders_purged'], $_POST['month_purge']));
+                    $GLOBALS['main']->successMessage(sprintf($lang['orders']['notify_orders_purged'], $_POST['month_purge']));
                 } else {
-                    $GLOBALS['main']->setACPNotify($lang['orders']['notify_orders_delete']);
+                    $GLOBALS['main']->successMessage($lang['orders']['notify_orders_delete']);
                 }
             } else {
                 if (isset($_POST['month_purge']) && ctype_digit($_POST['month_purge'])>0) {
-                    $GLOBALS['main']->setACPWarning($lang['orders']['error_orders_purged']);
+                    $GLOBALS['main']->errorMessage($lang['orders']['error_orders_purged']);
                 } else {
-                    $GLOBALS['main']->setACPWarning($lang['orders']['error_orders_delete']);
+                    $GLOBALS['main']->errorMessage($lang['orders']['error_orders_delete']);
                 }
             }
         }
         if ($updated) {
-            $GLOBALS['main']->setACPNotify($lang['orders']['notify_orders_status']);
+            $GLOBALS['main']->successMessage($lang['orders']['notify_orders_status']);
         }
         if (isset($_GET['redirect']) && $_GET['redirect'] == 'dashboard' && $_POST['multi-action'] == '') {
             httpredir('?', 'orders');
@@ -799,10 +799,10 @@ if (isset($_GET['action'])) {
         $GLOBALS['smarty']->assign('PAGINATION', $GLOBALS['db']->pagination(false, $per_page, $page, 9));
 
         if (isset($_GET['customer_id'])) {
-            $GLOBALS['main']->setACPNotify(sprintf($lang['orders']['notify_orders_by'], $orders[0]['first_name'], $orders[0]['last_name']));
+            $GLOBALS['main']->successMessage(sprintf($lang['orders']['notify_orders_by'], $orders[0]['first_name'], $orders[0]['last_name']));
         }
         if (isset($_GET['search'])) {
-            $GLOBALS['main']->setACPNotify($lang['orders']['notify_search_result']);
+            $GLOBALS['main']->successMessage($lang['orders']['notify_search_result']);
         }
 
         foreach ($orders as $order) {
@@ -825,7 +825,7 @@ if (isset($_GET['action'])) {
         $GLOBALS['smarty']->assign('ORDER_LIST', $smarty_data['list_orders']);
     } elseif (isset($_GET['search']) && !empty($_POST['month_purge'])) {
         # No orders found
-        $GLOBALS['main']->setACPWarning($lang['orders']['error_search_result']);
+        $GLOBALS['main']->errorMessage($lang['orders']['error_search_result']);
     }
     $GLOBALS['smarty']->assign('DISPLAY_ORDER_LIST', true);
     // Hook

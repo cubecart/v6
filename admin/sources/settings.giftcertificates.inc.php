@@ -42,9 +42,9 @@ if (isset($_POST['gc']) && is_array($_POST['gc']) && Admin::getInstance()->permi
     }
 
     if ($GLOBALS['config']->set('gift_certs', '', $_POST['gc'])) {
-        $GLOBALS['main']->setACPNotify($lang['settings']['notify_settings_update']);
+        $GLOBALS['main']->successMessage($lang['settings']['notify_settings_update']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['settings']['error_settings_update']);
+        $GLOBALS['main']->errorMessage($lang['settings']['error_settings_update']);
     }
 }
 

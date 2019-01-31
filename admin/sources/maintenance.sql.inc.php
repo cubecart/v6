@@ -25,15 +25,15 @@ if (isset($_POST['execute'])) {
             $GLOBALS['db']->query(stripslashes($_POST['query']), false);
         }
         if ($GLOBALS['db']->error()) {
-            $GLOBALS['main']->setACPWarning($GLOBALS['db']->errorInfo());
+            $GLOBALS['main']->errorMessage($GLOBALS['db']->errorInfo());
         } else {
-            $GLOBALS['main']->setACPNotify($lang['maintain']['affected_rows'].': '.(int)$GLOBALS['db']->affected());
+            $GLOBALS['main']->successMessage($lang['maintain']['affected_rows'].': '.(int)$GLOBALS['db']->affected());
         }
     } else {
-        $GLOBALS['main']->setACPWarning($lang['maintain']['no_query_entered']);
+        $GLOBALS['main']->errorMessage($lang['maintain']['no_query_entered']);
     }
 } else {
-    $GLOBALS['main']->setACPWarning($lang['maintain']['expert_use_only']);
+    $GLOBALS['main']->errorMessage($lang['maintain']['expert_use_only']);
 }
 
 $GLOBALS['main']->addTabControl($lang['maintain']['tab_query_sql'], 'general');

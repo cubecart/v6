@@ -31,7 +31,7 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
         $order = Order::getInstance();
         $oid_data = $order->setOrderFormat($_POST['oid_prefix'], $_POST['oid_postfix'], $_POST['oid_zeros'], $_POST['oid_start'], true, (bool)$_POST['oid_force']);
         if (!$oid_data) {
-            $GLOBALS['main']->setACPWarning('Incremental orders numbers with formatting can\'t be enabled because the MySQL user doesn\'t have permission to &quot;CREATE TRIGGER&quot;. Please grant permissions or seek technical support.');
+            $GLOBALS['main']->errorMessage('Incremental orders numbers with formatting can\'t be enabled because the MySQL user doesn\'t have permission to &quot;CREATE TRIGGER&quot;. Please grant permissions or seek technical support.');
             $_POST['config']['oid_mode'] = 't';
         } else {
             $_POST['config'] = array_merge($_POST['config'], $oid_data);
@@ -94,7 +94,7 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
                             
                             $GLOBALS['db']->insert('CubeCart_logo', $record);
                             if (!$logo_update) { // prevents x amount of notifications for same thing
-                                $GLOBALS['main']->setACPNotify($lang['settings']['notify_logo_upload']);
+                                $GLOBALS['main']->successMessage($lang['settings']['notify_logo_upload']);
                             }
                             $logo_update = true;
 
@@ -107,12 +107,12 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
                         case UPLOAD_ERR_CANT_WRITE:
                         case UPLOAD_ERR_EXTENSION:
                         default:
-                        $GLOBALS['main']->setACPWarning($lang['settings']['error_logo_upload']);
+                        $GLOBALS['main']->errorMessage($lang['settings']['error_logo_upload']);
                             trigger_error('Upload Error! Logo not saved.');
                         break;
                     }
                 } else {
-                    $GLOBALS['main']->setACPWarning($lang['settings']['error_logo_upload']);
+                    $GLOBALS['main']->errorMessage($lang['settings']['error_logo_upload']);
                 }
             }
         }
@@ -129,7 +129,7 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
     if ($_POST['config']['disable_mobile_skin']==0 && isset($_POST['config']['skin_folder']) && !empty($_POST['config']['skin_folder'])) {
         if ((string)$skin_data->info->{'responsive'}=='true') {
             $_POST['config']['disable_mobile_skin'] = '1';
-            $GLOBALS['main']->setACPWarning($lang['settings']['error_mobile_vs_responsive']);
+            $GLOBALS['main']->errorMessage($lang['settings']['error_mobile_vs_responsive']);
         }
     }
 
@@ -151,7 +151,7 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
 
     $config_new = $_POST['config'];
     if($config_old['default_currency']!==$config_new['default_currency']) {
-        $GLOBALS['main']->setACPNotify($lang['settings']['currency_changed']);
+        $GLOBALS['main']->successMessage($lang['settings']['currency_changed']);
     }
     $config_new['enc_key'] =  $config_old['enc_key']; // Keep old encryption key
     $config_new['offline_content'] = $GLOBALS['RAW']['POST']['config']['offline_content'];
@@ -187,9 +187,9 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
     $updated = ($GLOBALS['config']->set('config', '', $config_new)) ? true : false;
 
     if ((isset($updated) && $updated) || isset($logo_update)) {
-        $GLOBALS['main']->setACPNotify($lang['settings']['notify_settings_update']);
+        $GLOBALS['main']->successMessage($lang['settings']['notify_settings_update']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['settings']['error_settings_update']);
+        $GLOBALS['main']->errorMessage($lang['settings']['error_settings_update']);
     }
     
     httpredir(currentPage());
@@ -211,7 +211,7 @@ if (isset($_GET['logo']) && isset($_GET['logo_id'])) {
                     }
                 }
                 $GLOBALS['db']->delete('CubeCart_logo', array('logo_id' => $logo[0]['logo_id']));
-                $GLOBALS['main']->setACPNotify('Logo removed');
+                $GLOBALS['main']->successMessage('Logo removed');
             }
             break;
         }

@@ -257,7 +257,7 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
         
         $page_content = $GLOBALS['smarty']->fetch('templates/products.importing.php');
     } else {
-        $GLOBALS['main']->setACPNotify($lang['catalogue']['notify_import_complete']);
+        $GLOBALS['main']->successMessage($lang['catalogue']['notify_import_complete']);
         $GLOBALS['session']->delete('', 'import');
         httpredir('?_g=products&node=import');
     }
@@ -279,9 +279,9 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
                     $GLOBALS['db']->delete('CubeCart_seo_urls', array('type' => 'prod', 'item_id' => $product['product_id']));
                 }
                 $GLOBALS['db']->delete('CubeCart_inventory', array('date_added' => (string)$revert));
-                $GLOBALS['main']->setACPNotify($lang['catalogue']['notify_import_removed']);
+                $GLOBALS['main']->successMessage($lang['catalogue']['notify_import_removed']);
             } else {
-                $GLOBALS['main']->setACPWarning($lang['catalogue']['notify_import_removed_fail']);
+                $GLOBALS['main']->errorMessage($lang['catalogue']['notify_import_removed_fail']);
             }
         }
         httpredir(currentPage());
@@ -372,12 +372,12 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 
             $smarty_data['map']	= '';
         } else {
-            $GLOBALS['main']->setACPWarning($lang['catalogue']['error_import_empty']);
+            $GLOBALS['main']->errorMessage($lang['catalogue']['error_import_empty']);
             httpredir(currentPage());
         }
         $GLOBALS['smarty']->assign('DISPLAY_CONFIRMATION', true);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['catalogue']['error_import_upload']);
+        $GLOBALS['main']->errorMessage($lang['catalogue']['error_import_upload']);
         httpredir(currentPage());
     }
     $page_content = $GLOBALS['smarty']->fetch('templates/products.import.php');

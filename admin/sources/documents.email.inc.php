@@ -255,7 +255,7 @@ $GLOBALS['gui']->addBreadcrumb($lang['email']['title_email'], currentPage(array(
 
 if (isset($_POST['import']) && !empty($_POST['import'])) {
     if (preg_match(Language::EMAIL_FILE, $_POST['import']) && $GLOBALS['language']->importEmail($_POST['import'])) {
-        $GLOBALS['main']->setACPNotify($lang['email']['notify_import']);
+        $GLOBALS['main']->successMessage($lang['email']['notify_import']);
         httpredir(currentPage());
     }
 } elseif (isset($_POST['export']) && !empty($_POST['export'])) {
@@ -282,12 +282,12 @@ if (isset($_POST['import']) && !empty($_POST['import'])) {
                 $file = $file.'.gz';
             }
             if (file_put_contents($file, $data)) {
-                $GLOBALS['main']->setACPNotify($lang['email']['notify_export']);
+                $GLOBALS['main']->successMessage($lang['email']['notify_export']);
             } else {
-                $GLOBALS['main']->setACPWarning($lang['email']['error_export']);
+                $GLOBALS['main']->errorMessage($lang['email']['error_export']);
             }
         } else {
-            $GLOBALS['main']->setACPWarning($lang['email']['error_export']);
+            $GLOBALS['main']->errorMessage($lang['email']['error_export']);
         }
         httpredir(currentPage());
     }
@@ -298,7 +298,7 @@ if (isset($_POST['template_default']) && ctype_digit($_POST['template_default'])
     $GLOBALS['db']->update('CubeCart_email_template', array('template_default' => '1'), array('template_id' => (int)$_POST['template_default']));
 
     ## Update default template
-    $GLOBALS['main']->setACPNotify($lang['email']['notify_template_default']);
+    $GLOBALS['main']->successMessage($lang['email']['notify_template_default']);
     httpredir(currentPage());
 }
 
@@ -315,7 +315,7 @@ if (isset($_POST['template'])) {
         $GLOBALS['smarty']->fetch('string:'.$_POST['template']['content_html']);
     } catch (Exception $e) {
         $error_message = str_replace('string:', '', htmlentities($e->getMessage(), ENT_QUOTES));
-        $GLOBALS['main']->setACPWarning($lang['email']['title_content_html'].': '.$error_message);
+        $GLOBALS['main']->errorMessage($lang['email']['title_content_html'].': '.$error_message);
         $redirect = false;
         $html_error = true;
     }
@@ -323,23 +323,23 @@ if (isset($_POST['template'])) {
         $GLOBALS['smarty']->fetch('string:'.$_POST['template']['content_text']);
     } catch (Exception $e) {
         $error_message = str_replace('string:', '', $e->getMessage());
-        $GLOBALS['main']->setACPWarning($lang['email']['title_content_text'].': '.$error_message);
+        $GLOBALS['main']->errorMessage($lang['email']['title_content_text'].': '.$error_message);
         $redirect = false;
     }
 
     if (empty($_POST['template']['content_html'])) {
-        $GLOBALS['main']->setACPWarning($lang['email']['error_html_empty']);
+        $GLOBALS['main']->errorMessage($lang['email']['error_html_empty']);
         $proceed = false;
     }
 
     if (!$html_error && empty($_POST['template']['content_text']) && !empty($_POST['template']['content_html'])) {
-        $GLOBALS['main']->setACPNotify($lang['email']['error_plain_empty']);
+        $GLOBALS['main']->successMessage($lang['email']['error_plain_empty']);
         $_POST['template']['content_text'] = strip_tags($_POST['template']['content_html']);
     }
 
     foreach (array('content_html', 'content_text') as $key) {
         if (!preg_match("/{$EMAIL_CONTENT}/", $_POST['template'][$key])) {
-            $GLOBALS['main']->setACPWarning($lang['email']['error_macro_content']);
+            $GLOBALS['main']->errorMessage($lang['email']['error_macro_content']);
             $proceed = false;
         }
     }
@@ -347,11 +347,11 @@ if (isset($_POST['template'])) {
     if ($proceed && Admin::getInstance()->permissions('documents', CC_PERM_EDIT)) {
         if (isset($_POST['template']['template_id']) && is_numeric($_POST['template']['template_id'])) {
             $GLOBALS['db']->update('CubeCart_email_template', $_POST['template'], array('template_id' => (int)$_POST['template']['template_id']));
-            $GLOBALS['main']->setACPNotify($lang['email']['notify_template_update']);
+            $GLOBALS['main']->successMessage($lang['email']['notify_template_update']);
         } else {
             $GLOBALS['db']->insert('CubeCart_email_template', $_POST['template']);
             $template_id  = $GLOBALS['db']->insertid();
-            $GLOBALS['main']->setACPNotify($lang['email']['notify_template_create']);
+            $GLOBALS['main']->successMessage($lang['email']['notify_template_create']);
         }
         if ($redirect) {
             httpredir(currentPage(null));
@@ -371,7 +371,7 @@ if (isset($_POST['content']) && Admin::getInstance()->permissions('documents', C
         $GLOBALS['smarty']->fetch('string:'.$_POST['content']['content_html']);
     } catch (Exception $e) {
         $error_message = str_replace('string:', '', strip_tags($e->getMessage()));
-        $GLOBALS['main']->setACPWarning($lang['email']['title_content_html'].': '.$error_message);
+        $GLOBALS['main']->errorMessage($lang['email']['title_content_html'].': '.$error_message);
         $redirect = false;
         $html_error = true;
     }
@@ -380,17 +380,17 @@ if (isset($_POST['content']) && Admin::getInstance()->permissions('documents', C
         $GLOBALS['smarty']->fetch('string:'.$_POST['content']['content_text']);
     } catch (Exception $e) {
         $error_message = str_replace('string:', '', $e->getMessage());
-        $GLOBALS['main']->setACPWarning($lang['email']['title_content_text'].': '.$error_message);
+        $GLOBALS['main']->errorMessage($lang['email']['title_content_text'].': '.$error_message);
         $redirect = false;
     }
 
     if (empty($_POST['content']['content_html'])) {
-        $GLOBALS['main']->setACPWarning($lang['email']['error_html_empty']);
+        $GLOBALS['main']->errorMessage($lang['email']['error_html_empty']);
         $proceed = false;
     }
 
     if (!$html_error && empty($_POST['content']['content_text']) && !empty($_POST['content']['content_html'])) {
-        $GLOBALS['main']->setACPNotify($lang['email']['error_plain_empty']);
+        $GLOBALS['main']->successMessage($lang['email']['error_plain_empty']);
         $_POST['content']['content_text'] = strip_tags($_POST['content']['content_html']);
     }
 
@@ -399,12 +399,12 @@ if (isset($_POST['content']) && Admin::getInstance()->permissions('documents', C
         if (isset($_POST['content']['content_id']) && !empty($_POST['content']['content_id'])) {
             ## remove double encoding in repeat regions required to show them in FCK
             if ($GLOBALS['db']->update('CubeCart_email_content', $_POST['content'], array('content_id' => (int)$_POST['content']['content_id']))) {
-                $GLOBALS['main']->setACPNotify($lang['email']['notify_content_update']);
+                $GLOBALS['main']->successMessage($lang['email']['notify_content_update']);
                 if ($redirect) {
                     httpredir('?_g=documents&node=email&type=content');
                 }
             } else {
-                $GLOBALS['main']->setACPWarning($lang['email']['error_content_update']);
+                $GLOBALS['main']->errorMessage($lang['email']['error_content_update']);
             }
         } else {
             if (!empty($_POST['content']['content_type']) && !empty($_POST['content']['language'])) {
@@ -413,12 +413,12 @@ if (isset($_POST['content']) && Admin::getInstance()->permissions('documents', C
                     # $GLOBALS['db']->update('CubeCart_email_content', $_POST['content'], array('content_id' => (int)$check[0]['content_id']));
                 } else {
                     if ($GLOBALS['db']->insert('CubeCart_email_content', $_POST['content'])) {
-                        $GLOBALS['main']->setACPNotify('Email content saved.');
+                        $GLOBALS['main']->successMessage('Email content saved.');
                         if ($redirect) {
                             httpredir('?_g=documents&node=email&type=content');
                         }
                     } else {
-                        $GLOBALS['main']->setACPWarning($lang['email']['error_content_create']);
+                        $GLOBALS['main']->errorMessage($lang['email']['error_content_create']);
                         if ($redirect) {
                             httpredir(currentPage());
                         }
@@ -449,13 +449,13 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
 
                 if ($count>1) {
                     if ($GLOBALS['db']->delete('CubeCart_email_content', array('content_id' => (int)$_GET['content_id']))) {
-                        $GLOBALS['main']->setACPNotify($lang['email']['notify_content_delete']);
+                        $GLOBALS['main']->successMessage($lang['email']['notify_content_delete']);
                         httpredir(currentPage(array('action', 'content_id', 'type')));
                     } else {
-                        $GLOBALS['main']->setACPWarning($lang['email']['error_content_delete']);
+                        $GLOBALS['main']->errorMessage($lang['email']['error_content_delete']);
                     }
                 } else {
-                    $GLOBALS['main']->setACPWarning($lang['email']['error_content_single']);
+                    $GLOBALS['main']->errorMessage($lang['email']['error_content_single']);
                     httpredir('?_g=documents&node=email&type=content');
                 }
             }

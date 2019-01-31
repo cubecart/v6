@@ -86,7 +86,7 @@ if (isset($_GET['order_id'])) {
 
     if (($transactions = $GLOBALS['db']->select($table_join, "DISTINCT `T`.`order_id`, `T`.`time`, `T`.`amount`, `T`.`gateway`, `T`.`trans_id`, `S`.`id`, `S`.`custom_oid`, `S`.`cart_order_id`", $where, $sort, $per_page, $page)) !== false) {
         if (isset($_GET['search']) && !empty($_GET['search'])) {
-            $GLOBALS['main']->setACPNotify(sprintf($GLOBALS['language']->orders['notify_search_logs'], $_GET['search']));
+            $GLOBALS['main']->successMessage(sprintf($GLOBALS['language']->orders['notify_search_logs'], $_GET['search']));
         }
         foreach ($transactions as $transaction) {
             if (!empty($transaction['order_id'])) {

@@ -28,24 +28,24 @@ if (isset($_POST['newsletter']) && !empty($_POST['newsletter'])) {
 
     if (empty($_POST['newsletter']['subject'])) {
         $proceed = false;
-        $GLOBALS['main']->setACPWarning($lang['email']['error_no_subject']);
+        $GLOBALS['main']->errorMessage($lang['email']['error_no_subject']);
     }
     if (empty($_POST['newsletter']['content_html']) && empty($_POST['newsletter']['content_text'])) {
         $proceed = false;
-        $GLOBALS['main']->setACPWarning($lang['email']['error_no_message']);
+        $GLOBALS['main']->errorMessage($lang['email']['error_no_message']);
     }
     if ($proceed) {
         $_POST['newsletter']['content_html'] = $GLOBALS['RAW']['POST']['newsletter']['content_html'];
         if ($newsletter->saveNewsletter($_POST['newsletter'])) {
             $redirect = true;
             $_POST['newsletter']['newsletter_id'] = (!empty($_POST['newsletter']['newsletter_id'])) ? $_POST['newsletter']['newsletter_id'] : $newsletter->_newsletter_id;
-            $GLOBALS['main']->setACPNotify($lang['email']['notify_news_save']);
+            $GLOBALS['main']->successMessage($lang['email']['notify_news_save']);
         } else {
-            $GLOBALS['main']->setACPWarning($lang['email']['error_news_save']);
+            $GLOBALS['main']->errorMessage($lang['email']['error_news_save']);
         }
         if (isset($_POST['newsletter']['test_email']) && !empty($_POST['newsletter']['test_email'])) {
             if ($newsletter->sendNewsletter($_POST['newsletter']['newsletter_id'], false, $_POST['newsletter']['test_email'])) {
-                $GLOBALS['main']->setACPNotify($lang['email']['notify_news_test_sent']);
+                $GLOBALS['main']->successMessage($lang['email']['notify_news_test_sent']);
             }
         }
         if ($redirect) {
@@ -56,9 +56,9 @@ if (isset($_POST['newsletter']) && !empty($_POST['newsletter'])) {
 
 if (isset($_GET['action']) && strtolower($_GET['action']) == 'delete') {
     if (Admin::getInstance()->permissions('customers', CC_PERM_DELETE) && $newsletter->deleteNewsletter($_GET['newsletter_id'])) {
-        $GLOBALS['main']->setACPNotify($lang['email']['notify_news_delete']);
+        $GLOBALS['main']->successMessage($lang['email']['notify_news_delete']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['email']['error_news_delete']);
+        $GLOBALS['main']->errorMessage($lang['email']['error_news_delete']);
     }
     httpredir(currentPage(array('newsletter_id', 'action')));
 } elseif (isset($_GET['action']) && strtolower($_GET['action']) == 'send') {

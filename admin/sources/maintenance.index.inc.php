@@ -106,10 +106,10 @@ if (isset($_GET['compress']) && !empty($_GET['compress'])) {
     if (file_exists($file_path) && $zip->open($file_path.'.zip', ZipArchive::CREATE)==true) {
         $zip->addFile($file_path);
         $zip->close();
-        $GLOBALS['main']->setACPNotify(sprintf($lang['maintain']['file_compressed'], basename($file_path)));
+        $GLOBALS['main']->successMessage(sprintf($lang['maintain']['file_compressed'], basename($file_path)));
         httpredir('?_g=maintenance&node=index', 'backup');
     } else {
-        $GLOBALS['main']->setACPWarning("Error reading file ".basename($file_path));
+        $GLOBALS['main']->errorMessage("Error reading file ".basename($file_path));
     }
 }
 
@@ -136,7 +136,7 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
                 $zip->extractTo(CC_BACKUP_DIR);
                 $zip->close();
             } else {
-                $GLOBALS['main']->setACPWarning("Error reading file ".$file_name);
+                $GLOBALS['main']->errorMessage("Error reading file ".$file_name);
                 httpredir('?_g=maintenance&node=index', 'backup');
             }
         }
@@ -163,7 +163,7 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
         }
 
         if ($import) {
-            $GLOBALS['main']->setACPNotify($lang['maintain']['db_restored']);
+            $GLOBALS['main']->successMessage($lang['maintain']['db_restored']);
             $GLOBALS['cache']->clear();
             httpredir('?_g=maintenance&node=index', 'backup');
         }
@@ -184,17 +184,17 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
             $errors = crc_integrity_check($crc_check_list, 'restore');
             
             if ($errors!==false) {
-                $GLOBALS['main']->setACPWarning($lang['maintain']['files_restore_fail']);
+                $GLOBALS['main']->errorMessage($lang['maintain']['files_restore_fail']);
                 httpredir('?_g=maintenance&node=index', 'backup');
             } else {
-                $GLOBALS['main']->setACPNotify($lang['maintain']['files_restore_success']);
+                $GLOBALS['main']->successMessage($lang['maintain']['files_restore_success']);
                 httpredir('?_g=maintenance&node=index', 'backup');
             }
         } else {
-            $GLOBALS['main']->setACPWarning($lang['maintain']['files_restore_not_possible']);
+            $GLOBALS['main']->errorMessage($lang['maintain']['files_restore_not_possible']);
         }
     } else {
-        $GLOBALS['main']->setACPWarning($lang['maintain']['files_restore_not_possible']);
+        $GLOBALS['main']->errorMessage($lang['maintain']['files_restore_not_possible']);
         httpredir('?_g=maintenance&node=index', 'backup');
     }
 }
@@ -213,11 +213,11 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
     }
 
     if (empty($contents)) {
-        $GLOBALS['main']->setACPWarning($lang['maintain']['files_upgrade_download_fail']);
+        $GLOBALS['main']->errorMessage($lang['maintain']['files_upgrade_download_fail']);
         httpredir('?_g=maintenance&node=index', 'upgrade');
     } else {
         if (stristr($contents, 'DOCTYPE')) {
-            $GLOBALS['main']->setACPWarning("Sorry. CubeCart-".$_GET['upgrade'].".zip was not found. Please try again later.");
+            $GLOBALS['main']->errorMessage("Sorry. CubeCart-".$_GET['upgrade'].".zip was not found. Please try again later.");
             httpredir('?_g=maintenance&node=index', 'upgrade');
         }
 
@@ -258,7 +258,7 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
                 $errors = crc_integrity_check($crc_check_list, 'upgrade');
                 
                 if ($errors!==false) {
-                    $GLOBALS['main']->setACPWarning($lang['maintain']['files_upgrade_fail']);
+                    $GLOBALS['main']->errorMessage($lang['maintain']['files_upgrade_fail']);
                     httpredir('?_g=maintenance&node=index', 'upgrade');
                 } elseif ($_POST['force']) {
                     ## Try to delete setup folder
@@ -267,13 +267,13 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
                     if (file_exists(CC_ROOT_DIR.'/setup')) {
                         rename(CC_ROOT_DIR.'/setup', CC_ROOT_DIR.'/setup'.$suffix);
                     }
-                    $GLOBALS['main']->setACPNotify($lang['maintain']['current_version_restored']);
+                    $GLOBALS['main']->successMessage($lang['maintain']['current_version_restored']);
                     httpredir('?_g=maintenance&node=index', 'upgrade');
                 } else {
                     httpredir(CC_ROOT_REL.'setup/index.php?autoupdate=1');
                 }
             } else {
-                $GLOBALS['main']->setACPWarning("Unable to read archive.");
+                $GLOBALS['main']->errorMessage("Unable to read archive.");
                 httpredir('?_g=maintenance&node=index', 'upgrade');
             }
         }
@@ -296,7 +296,7 @@ if (isset($_GET['delete'])) {
     } elseif (file_exists($file) && preg_match('/^.*\.(sql|zip)$/i', $file)) {
         ## Generic error message for logs delete specific for backup
         $message = preg_match('/\_error_log$/', $file) ? $lang['filemanager']['notify_file_delete'] : sprintf($lang['maintain']['backup_deleted'], basename($file));
-        $GLOBALS['main']->setACPNotify($message);
+        $GLOBALS['main']->successMessage($message);
         unlink($file);
         httpredir('?_g=maintenance&node=index', 'backup');
     }
@@ -314,71 +314,71 @@ $clear_post = false;
 
 if (isset($_POST['truncate_seo_custom'])) {
     if ($GLOBALS['db']->delete('CubeCart_seo_urls', array('custom' => 1))) {
-        $GLOBALS['main']->setACPNotify($lang['maintain']['seo_urls_emptied']);
+        $GLOBALS['main']->successMessage($lang['maintain']['seo_urls_emptied']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['maintain']['seo_urls_not_emptied']);
+        $GLOBALS['main']->errorMessage($lang['maintain']['seo_urls_not_emptied']);
     }
     $clear_post = true;
 }
 if (isset($_POST['truncate_seo_auto'])) {
     if ($GLOBALS['db']->delete('CubeCart_seo_urls', array('custom' => 0))) {
-        $GLOBALS['main']->setACPNotify($lang['maintain']['seo_urls_emptied']);
+        $GLOBALS['main']->successMessage($lang['maintain']['seo_urls_emptied']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['maintain']['seo_urls_not_emptied']);
+        $GLOBALS['main']->errorMessage($lang['maintain']['seo_urls_not_emptied']);
     }
     $clear_post = true;
 }
 
 if (isset($_POST['sitemap'])) {
     if ($GLOBALS['seo']->sitemap()) {
-        $GLOBALS['main']->setACPNotify($lang['maintain']['notify_sitemap']);
+        $GLOBALS['main']->successMessage($lang['maintain']['notify_sitemap']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['maintain']['notify_sitemap_fail']);
+        $GLOBALS['main']->errorMessage($lang['maintain']['notify_sitemap_fail']);
     }
     $clear_post = true;
 }
 
 if (isset($_POST['emptyTransLogs']) && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
     if ($GLOBALS['db']->truncate('CubeCart_transactions')) {
-        $GLOBALS['main']->setACPNotify($lang['maintain']['notify_logs_transaction']);
+        $GLOBALS['main']->successMessage($lang['maintain']['notify_logs_transaction']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['maintain']['error_logs_transaction']);
+        $GLOBALS['main']->errorMessage($lang['maintain']['error_logs_transaction']);
     }
     $clear_post = true;
 }
 
 if (isset($_REQUEST['emptyEmailLogs']) && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
     if ($GLOBALS['db']->truncate(array('CubeCart_email_log'))) {
-        $GLOBALS['main']->setACPNotify($lang['maintain']['notify_logs_email']);
+        $GLOBALS['main']->successMessage($lang['maintain']['notify_logs_email']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['maintain']['error_logs_email']);
+        $GLOBALS['main']->errorMessage($lang['maintain']['error_logs_email']);
     }
     $clear_post = true;
 }
 
 if (isset($_REQUEST['emptyErrorLogs']) && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
     if ($GLOBALS['db']->truncate(array('CubeCart_system_error_log', 'CubeCart_admin_error_log'))) {
-        $GLOBALS['main']->setACPNotify($lang['maintain']['notify_logs_error']);
+        $GLOBALS['main']->successMessage($lang['maintain']['notify_logs_error']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['maintain']['error_logs_error']);
+        $GLOBALS['main']->errorMessage($lang['maintain']['error_logs_error']);
     }
     $clear_post = true;
 }
 
 if (isset($_REQUEST['emptyRequestLogs']) && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
     if ($GLOBALS['db']->truncate('CubeCart_request_log')) {
-        $GLOBALS['main']->setACPNotify($lang['maintain']['notify_logs_request']);
+        $GLOBALS['main']->successMessage($lang['maintain']['notify_logs_request']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['maintain']['error_logs_request']);
+        $GLOBALS['main']->errorMessage($lang['maintain']['error_logs_request']);
     }
     $clear_post = true;
 }
 
 if (isset($_POST['clearSearch']) && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
     if ($GLOBALS['db']->truncate('CubeCart_search')) {
-        $GLOBALS['main']->setACPNotify($lang['maintain']['notify_search_clear']);
+        $GLOBALS['main']->successMessage($lang['maintain']['notify_search_clear']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['maintain']['error_search_clear']);
+        $GLOBALS['main']->errorMessage($lang['maintain']['error_search_clear']);
     }
     $clear_post = true;
 }
@@ -386,19 +386,19 @@ if (isset($_POST['clearSearch']) && Admin::getInstance()->permissions('maintenan
 if (isset($_POST['clearCache']) && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
     $GLOBALS['cache']->clear();
     $GLOBALS['cache']->tidy();
-    $GLOBALS['main']->setACPNotify($lang['maintain']['notify_cache_cleared']);
+    $GLOBALS['main']->successMessage($lang['maintain']['notify_cache_cleared']);
     $clear_post = true;
 }
 
 if (isset($_POST['clearSQLCache']) && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
     $GLOBALS['cache']->clear('sql');
-    $GLOBALS['main']->setACPNotify($lang['maintain']['notify_cache_cleared']);
+    $GLOBALS['main']->successMessage($lang['maintain']['notify_cache_cleared']);
     $clear_post = true;
 }
 
 if (isset($_POST['clearLangCache']) && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
     $GLOBALS['cache']->clear('lang');
-    $GLOBALS['main']->setACPNotify($lang['maintain']['notify_cache_cleared']);
+    $GLOBALS['main']->successMessage($lang['maintain']['notify_cache_cleared']);
     $clear_post = true;
 }
 
@@ -420,23 +420,23 @@ if (isset($_POST['clearImageCache']) && Admin::getInstance()->permissions('maint
     }
     ## recursively delete the contents of the images/cache folder
     cleanImagecache();
-    $GLOBALS['main']->setACPNotify($lang['maintain']['notify_cache_image']);
+    $GLOBALS['main']->successMessage($lang['maintain']['notify_cache_image']);
     $clear_post = true;
 }
 if (isset($_POST['prodViews'])) {
     if ($GLOBALS['db']->update('CubeCart_inventory', array('popularity' => 0), '', true)) {
-        $GLOBALS['main']->setACPNotify($lang['maintain']['notify_reset_product']);
+        $GLOBALS['main']->successMessage($lang['maintain']['notify_reset_product']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['maintain']['error_reset_product']);
+        $GLOBALS['main']->errorMessage($lang['maintain']['error_reset_product']);
     }
     $clear_post = true;
 }
 
 if (isset($_POST['clearLogs'])) {
     if ($GLOBALS['db']->truncate(array('CubeCart_admin_log', 'CubeCart_access_log'))) {
-        $GLOBALS['main']->setACPNotify($lang['maintain']['notify_logs_admin']);
+        $GLOBALS['main']->successMessage($lang['maintain']['notify_logs_admin']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['maintain']['error_logs_admin']);
+        $GLOBALS['main']->errorMessage($lang['maintain']['error_logs_admin']);
     }
     $clear_post = true;
 }
@@ -449,12 +449,12 @@ if (!empty($_POST['database'])) {
         }
         if(in_array($_POST['action'], array('OPTIMIZE','REPAIR','CHECK','ANALYZE'))) {
         $database_result = $GLOBALS['db']->query(sprintf("%s TABLE %s;", $_POST['action'], implode(',', $tableList)));
-        $GLOBALS['main']->setACPNotify(sprintf($lang['maintain']['notify_db_action'], $_POST['action']));
+        $GLOBALS['main']->successMessage(sprintf($lang['maintain']['notify_db_action'], $_POST['action']));
         } else {
             die('Action not allowed.');
         }
     } else {
-        $GLOBALS['main']->setACPWarning($lang['maintain']['db_none_selected']);
+        $GLOBALS['main']->errorMessage($lang['maintain']['db_none_selected']);
     }
 }
 
@@ -472,7 +472,7 @@ if (isset($_GET['files_backup'])) {
     $zip = new ZipArchive();
 
     if ($zip->open($destination, ZipArchive::CREATE)!==true) {
-        $GLOBALS['main']->setACPWarning("Error: Backup failed.");
+        $GLOBALS['main']->errorMessage("Error: Backup failed.");
     } else {
         $cache_folder = basename(CC_CACHE_DIR);
         $backup_folder = basename(CC_BACKUP_DIR);
@@ -517,7 +517,7 @@ if (isset($_GET['files_backup'])) {
             }
         }
         $zip->close();
-        $GLOBALS['main']->setACPNotify($lang['maintain']['files_backup_complete']);
+        $GLOBALS['main']->successMessage($lang['maintain']['files_backup_complete']);
     }
     httpredir('?_g=maintenance&node=index', 'backup');
 }
@@ -530,10 +530,10 @@ if (isset($_POST['backup'])) {
     set_time_limit(180);
 
     if (!$_POST['drop'] && !$_POST['structure'] && !$_POST['data']) {
-        $GLOBALS['main']->setACPWarning($lang['maintain']['error_db_backup_option']);
+        $GLOBALS['main']->errorMessage($lang['maintain']['error_db_backup_option']);
     } else {
         if ($_POST['drop'] && !$_POST['structure']) {
-            $GLOBALS['main']->setACPWarning($lang['maintain']['error_db_backup_conflict']);
+            $GLOBALS['main']->errorMessage($lang['maintain']['error_db_backup_conflict']);
         } else {
             $full = ($_POST['drop'] && $_POST['structure'] && $_POST['data']) ? '_full' : '';
             chdir(CC_BACKUP_DIR);
@@ -544,9 +544,9 @@ if (isset($_POST['backup'])) {
             $all_tables = (isset($_POST['db_3rdparty']) && $_POST['db_3rdparty'] == '1') ? true : false;
             $write = $GLOBALS['db']->doSQLBackup($_POST['drop'], $_POST['structure'], $_POST['data'], $fileName, $_POST['compress'], $all_tables);
             if ($write) {
-                $GLOBALS['main']->setACPNotify($lang['maintain']['db_backup_complete']);
+                $GLOBALS['main']->successMessage($lang['maintain']['db_backup_complete']);
             } else {
-                $GLOBALS['main']->setACPWarning($lang['maintain']['db_backup_failed']);
+                $GLOBALS['main']->errorMessage($lang['maintain']['db_backup_failed']);
             }
         }
         $clear_post = true;
@@ -1020,7 +1020,7 @@ if ($request = new Request('www.cubecart.com', '/version-check/'.CC_VERSION)) {
         $GLOBALS['smarty']->assign('LATEST_VERSION', $lang['common']['unknown']);
         $GLOBALS['smarty']->assign('UPGRADE_NOW', $lang['maintain']['force_upgrade']);
         $GLOBALS['smarty']->assign('FORCE', '1');
-        $GLOBALS['main']->setACPNotify($lang['maintain']['latest_version_unknown']);
+        $GLOBALS['main']->successMessage($lang['maintain']['latest_version_unknown']);
     }
 }
 

@@ -17,7 +17,7 @@ if (!defined('CC_INI_SET')) {
 if (isset($_GET['clear_cache']) && $_GET['clear_cache'] == 'true') {
     $GLOBALS['cache']->clear();
     $GLOBALS['session']->delete('CLEAR_CACHE');
-    $GLOBALS['main']->setACPNotify($GLOBALS['language']->maintain['notify_cache_cleared']);
+    $GLOBALS['main']->successMessage($GLOBALS['language']->maintain['notify_cache_cleared']);
     httpredir(currentPage(array('clear_cache')));
 }
 
@@ -81,7 +81,7 @@ if (!empty($_GET['_g'])) {
                     trigger_error($e, E_USER_WARNING);
                 }
             } else {
-                $GLOBALS['main']->setACPWarning("Extension has missing or corrupt config.xml file.");
+                $GLOBALS['main']->errorMessage("Extension has missing or corrupt config.xml file.");
                 trigger_error("Extension config.xml file doesn't exist. (".$config_xml.")", E_USER_WARNING);
             }
         }

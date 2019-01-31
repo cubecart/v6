@@ -20,9 +20,9 @@ global $lang;
 if (isset($_GET['delete']) && Admin::getInstance()->permissions('settings', CC_PERM_DELETE)) {
     ## Purge database
     if ($GLOBALS['language']->deleteLanguage($_GET['delete'])) {
-        $GLOBALS['main']->setACPNotify($lang['translate']['notify_language_delete']);
+        $GLOBALS['main']->successMessage($lang['translate']['notify_language_delete']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['translate']['error_language_delete']);
+        $GLOBALS['main']->errorMessage($lang['translate']['error_language_delete']);
     }
     httpredir(currentPage(array('delete')));
 }
@@ -71,7 +71,7 @@ if (isset($_POST['save']) && (isset($_POST['string']) || isset($_POST['delete'])
     if ($clear) {
         $GLOBALS['cache']->clear('lang');
     }
-    $GLOBALS['main']->setACPNotify($lang['translate']['notify_strings_update']);
+    $GLOBALS['main']->successMessage($lang['translate']['notify_strings_update']);
     httpredir(currentPage());
 }
 
@@ -79,10 +79,10 @@ if (isset($_POST['export']) && Admin::getInstance()->permissions('settings', CC_
     $replace = (isset($_POST['export_opt']['replace'])) ? (bool)$_POST['export_opt']['replace'] : false;
     if ($GLOBALS['language']->saveLanguageXML($_GET['export'], false, $replace)) {
         ## Success!
-        $GLOBALS['main']->setACPNotify(sprintf($lang['email']['notify_export_language'], $GLOBALS['language']->exported_lang_file));
+        $GLOBALS['main']->successMessage(sprintf($lang['email']['notify_export_language'], $GLOBALS['language']->exported_lang_file));
     } else {
         ## Fail :(
-        $GLOBALS['main']->setACPWarning($lang['email']['error_export']);
+        $GLOBALS['main']->errorMessage($lang['email']['error_export']);
     }
     httpredir(currentPage(array('export'), array('language' => $_GET['export'])));
 }
@@ -217,24 +217,24 @@ if (isset($_GET['export'])) {
 } else {
     if (!empty($_FILES['import']['tmp_name']['file'])) {
         if ($GLOBALS['language']->importLanguage($_FILES['import'], $_POST['import']['overwrite'])) {
-            $GLOBALS['main']->setACPNotify($lang['translate']['notify_language_import_success']);
+            $GLOBALS['main']->successMessage($lang['translate']['notify_language_import_success']);
         } else {
-            $GLOBALS['main']->setACPWarning($lang['translate']['error_language_import_failed']);
+            $GLOBALS['main']->errorMessage($lang['translate']['error_language_import_failed']);
         }
     } elseif (isset($_POST['create']) && !empty($_POST['create']['code'])) {
         if ($GLOBALS['language']->create($_POST['create'])) {
-            $GLOBALS['main']->setACPNotify($lang['translate']['notify_language_create']);
+            $GLOBALS['main']->successMessage($lang['translate']['notify_language_create']);
             ## Set status to disabled to begin with
             $GLOBALS['config']->set('languages', $_POST['create']['code'], "0");
             httpredir(currentPage(null, array('language' => $_POST['create']['code'])));
         } else {
-            $GLOBALS['main']->setACPWarning($lang['translate']['error_language_create']);
+            $GLOBALS['main']->errorMessage($lang['translate']['error_language_create']);
         }
     } elseif (isset($_POST['status']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
         if ($GLOBALS['config']->set('languages', false, $_POST['status'])) {
-            $GLOBALS['main']->setACPNotify($lang['translate']['notify_language_status']);
+            $GLOBALS['main']->successMessage($lang['translate']['notify_language_status']);
         } else {
-            $GLOBALS['main']->setACPWarning($lang['translate']['error_language_status']);
+            $GLOBALS['main']->errorMessage($lang['translate']['error_language_status']);
         }
         httpredir(currentPage());
     }

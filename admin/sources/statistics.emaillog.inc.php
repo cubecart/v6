@@ -41,9 +41,9 @@ if (isset($_GET['resend']) && $_GET['resend']>0) {
         unset($email_data[0]['date'], $email_data[0]['id']);
 
         if ($email_data[0]['result']) {
-            $GLOBALS['main']->setACPNotify(sprintf($lang['statistics']['email_resent'], $mailer->Subject, $email_data[0]['to']));
+            $GLOBALS['main']->successMessage(sprintf($lang['statistics']['email_resent'], $mailer->Subject, $email_data[0]['to']));
         } else {
-            $GLOBALS['main']->setACPWarning($lang['statistics']['email_not_resent']);
+            $GLOBALS['main']->errorMessage($lang['statistics']['email_not_resent']);
         }
         $email_data[0]['fail_reason'] = !empty($mailer->ErrorInfo) ? htmlentities($mailer->ErrorInfo, ENT_QUOTES) : '';
         $GLOBALS['db']->insert('CubeCart_email_log', $email_data[0]);

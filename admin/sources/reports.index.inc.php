@@ -31,7 +31,7 @@ $date_pattern = '/^([0-9]){4}-([0-9]){2}-([0-9]){2}$/';
 if (!empty($report_filter['date']['to']) && !preg_match($date_pattern, $report_filter['date']['to'])
     || !empty($report_filter['date']['from']) && !preg_match($date_pattern, $report_filter['date']['from'])
 ) {
-    $GLOBALS['main']->setACPWarning($lang['common']['invalid_data']);
+    $GLOBALS['main']->errorMessage($lang['common']['invalid_data']);
     httpredir('?_g=reports');
 }
 

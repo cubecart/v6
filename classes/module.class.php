@@ -120,9 +120,9 @@ class Module
                     $_POST['module'][$key_name] = $GLOBALS['RAW']['POST']['module'][$key_name];
                 }
                 if ($this->module_settings_save($_POST['module'])) {
-                    $GLOBALS['main']->setACPNotify(sprintf($GLOBALS['language']->notification['notify_module_settings'], $this->_info['name']));
+                    $GLOBALS['main']->successMessage(sprintf($GLOBALS['language']->notification['notify_module_settings'], $this->_info['name']));
                 } else {
-                    $GLOBALS['main']->setACPWarning(sprintf($GLOBALS['language']->notification['error_module_settings'], $this->_info['name']));
+                    $GLOBALS['main']->errorMessage(sprintf($GLOBALS['language']->notification['error_module_settings'], $this->_info['name']));
                 }
                 // Install hooks if required
                 if ($_POST['module']['status']) {

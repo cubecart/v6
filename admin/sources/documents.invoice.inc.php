@@ -25,7 +25,7 @@ $updated = false;
 
 if (isset($_GET['restore']) && $_GET['restore']==1) {
     if ($GLOBALS['db']->insert('CubeCart_invoice_template', array('content' => $default, 'hash' => md5($default)))) {
-        $GLOBALS['main']->setACPNotify($lang['settings']['notify_default_restore']);
+        $GLOBALS['main']->successMessage($lang['settings']['notify_default_restore']);
     }
     $updated = true;
 } elseif (isset($GLOBALS['RAW']['POST']['content']) && !empty($GLOBALS['RAW']['POST']['content'])) {
@@ -33,7 +33,7 @@ if (isset($_GET['restore']) && $_GET['restore']==1) {
     try {
         $GLOBALS['smarty']->fetch('string:'.$GLOBALS['RAW']['POST']['content']);
     } catch (Exception $e) {
-        $GLOBALS['main']->setACPWarning(str_replace('string:', '', htmlentities($e->getMessage(), ENT_QUOTES)));
+        $GLOBALS['main']->errorMessage(str_replace('string:', '', htmlentities($e->getMessage(), ENT_QUOTES)));
         $syntax_error = true;
     }
 
@@ -43,7 +43,7 @@ if (isset($_GET['restore']) && $_GET['restore']==1) {
             $GLOBALS['db']->insert('CubeCart_invoice_template', array('content' => $GLOBALS['RAW']['POST']['content'], 'hash' => $hash));
             $current[0]['content'] = $GLOBALS['RAW']['POST']['content'];
         }
-        $GLOBALS['main']->setACPNotify($lang['settings']['notify_invoice_updated']);
+        $GLOBALS['main']->successMessage($lang['settings']['notify_invoice_updated']);
         $updated = true;
     }
 }

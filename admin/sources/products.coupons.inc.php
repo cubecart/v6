@@ -20,9 +20,9 @@ global $lang;
 ## Delete Coupon
 if (isset($_GET['delete']) && is_numeric($_GET['delete']) && Admin::getInstance()->permissions('products', CC_PERM_DELETE)) {
     if ($GLOBALS['db']->delete('CubeCart_coupons', array('coupon_id' => (int)$_GET['delete']))) {
-        $GLOBALS['main']->setACPNotify($lang['catalogue']['notify_coupon_deleted']);
+        $GLOBALS['main']->successMessage($lang['catalogue']['notify_coupon_deleted']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['catalogue']['error_coupon_delete']);
+        $GLOBALS['main']->errorMessage($lang['catalogue']['error_coupon_delete']);
     }
     foreach ($GLOBALS['hooks']->load('admin.product.coupons.delete') as $hook) {
         include $hook;
@@ -35,7 +35,7 @@ if (isset($_POST['status']) && is_array($_POST['status'])) {
     foreach ($_POST['status'] as $id => $status) {
         $GLOBALS['db']->update('CubeCart_coupons', array('status' => $status), array('coupon_id' => $id));
     }
-    $GLOBALS['main']->setACPNotify($lang['catalogue']['notify_coupon_update']);
+    $GLOBALS['main']->successMessage($lang['catalogue']['notify_coupon_update']);
     foreach ($GLOBALS['hooks']->load('admin.product.coupons.status') as $hook) {
         include $hook;
     }
@@ -69,14 +69,14 @@ if (isset($_POST['coupon']) && is_array($_POST['coupon'])) {
         $oid_col = $GLOBALS['config']->get('config', 'oid_mode') == 'i' ? $GLOBALS['config']->get('config', 'oid_col') : 'cart_order_id';
         $existing_oid = $GLOBALS['db']->select('CubeCart_order_summary', false, array($oid_col => $_POST['coupon']['cart_order_id']));
         if (!$existing_oid) {
-            $GLOBALS['main']->setACPWarning(sprintf($lang['orders']['order_not_found'], $_POST['coupon']['cart_order_id']));
+            $GLOBALS['main']->errorMessage(sprintf($lang['orders']['order_not_found'], $_POST['coupon']['cart_order_id']));
             $_POST['coupon']['cart_order_id'] = null;
             $continue = false;
         } else {
             if ($_POST['discount_type']=='fixed') {
                 $record['cart_order_id'] = $existing_oid[0]['cart_order_id']; // Traditional order ID required
             } else {
-                $GLOBALS['main']->setACPWarning($lang['catalogue']['notify_gc_not_fixed']);
+                $GLOBALS['main']->errorMessage($lang['catalogue']['notify_gc_not_fixed']);
                 $continue = false;
             }
         }
@@ -102,11 +102,11 @@ if (isset($_POST['coupon']) && is_array($_POST['coupon'])) {
 
         if (!empty($coupon_id) && is_numeric($coupon_id)) {
             if ($GLOBALS['db']->update('CubeCart_coupons', $record, array('coupon_id' => (int)$coupon_id))) {
-                $GLOBALS['main']->setACPNotify($lang['catalogue']['notify_coupon_update']);
+                $GLOBALS['main']->successMessage($lang['catalogue']['notify_coupon_update']);
             }
         } else {
             if ($GLOBALS['db']->insert('CubeCart_coupons', $record)) {
-                $GLOBALS['main']->setACPNotify($lang['catalogue']['notify_coupon_create']);
+                $GLOBALS['main']->successMessage($lang['catalogue']['notify_coupon_create']);
             }
         }
     }

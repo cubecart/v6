@@ -48,9 +48,9 @@ $fm  = new FileManager($mode, $subdir);
 
 if (isset($_GET['rebuild']) && Admin::getInstance()->permissions('filemanager', CC_PERM_EDIT)) {
     if ($fm->buildDatabase()) {
-        $GLOBALS['main']->setACPNotify($lang['filemanager']['notify_list_update']);
+        $GLOBALS['main']->successMessage($lang['filemanager']['notify_list_update']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['filemanager']['error_list_update']);
+        $GLOBALS['main']->errorMessage($lang['filemanager']['error_list_update']);
     }
     httpredir(currentPage(array('rebuild')));
 }
@@ -58,21 +58,21 @@ if (isset($_GET['rebuild']) && Admin::getInstance()->permissions('filemanager', 
 if (!empty($_FILES) && Admin::getInstance()->permissions('filemanager', CC_PERM_EDIT)) {
     if ($fm->upload()) {
         if (count($_FILES)>1) {
-            $GLOBALS['main']->setACPNotify($lang['filemanager']['notify_files_upload']);
+            $GLOBALS['main']->successMessage($lang['filemanager']['notify_files_upload']);
         } elseif ($_FILES['file0']['size']>0) {
-            $GLOBALS['main']->setACPNotify($lang['filemanager']['notify_file_upload']);
+            $GLOBALS['main']->successMessage($lang['filemanager']['notify_file_upload']);
         }
     } else {
-        $GLOBALS['main']->setACPWarning($lang['filemanager']['error_file_upload']);
+        $GLOBALS['main']->errorMessage($lang['filemanager']['error_file_upload']);
     }
     httpredir(currentPage());
 }
 
 if (isset($_GET['delete']) && Admin::getInstance()->permissions('filemanager', CC_PERM_DELETE)) {
     if ($fm->delete($_GET['delete'])) {
-        $GLOBALS['main']->setACPNotify($lang['filemanager']['notify_file_delete']);
+        $GLOBALS['main']->successMessage($lang['filemanager']['notify_file_delete']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['filemanager']['error_file_delete']);
+        $GLOBALS['main']->errorMessage($lang['filemanager']['error_file_delete']);
     }
     httpredir(currentPage(array('delete')));
 }

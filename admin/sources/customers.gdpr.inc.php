@@ -24,9 +24,9 @@ if (isset($_POST['customer_purge']) && ctype_digit($_POST['customer_purge'])) {
         }
     }
     if (count($del_cid) > 0) {
-        $GLOBALS['main']->setACPNotify(sprintf($lang['customer']['purge_success'], $_POST['customer_purge']));
+        $GLOBALS['main']->successMessage(sprintf($lang['customer']['purge_success'], $_POST['customer_purge']));
     } else {
-        $GLOBALS['main']->setACPWarning($lang['customer']['purge_fail']);
+        $GLOBALS['main']->errorMessage($lang['customer']['purge_fail']);
     }
 }
 
@@ -38,9 +38,9 @@ if (isset($_POST['no_order_purge'])) {
         }
     }
     if (count($del_cid) > 0) {
-        $GLOBALS['main']->setACPNotify(sprintf($lang['customer']['no_order_purge']));
+        $GLOBALS['main']->successMessage(sprintf($lang['customer']['no_order_purge']));
     } else {
-        $GLOBALS['main']->setACPWarning($lang['customer']['purge_fail']);
+        $GLOBALS['main']->errorMessage($lang['customer']['purge_fail']);
     }
 }
 
@@ -52,9 +52,9 @@ if (isset($_POST['delete_guests'])) {
         }
     }
     if (count($del_cid) > 0) {
-        $GLOBALS['main']->setACPNotify(sprintf($lang['customer']['delete_guests_success']));
+        $GLOBALS['main']->successMessage(sprintf($lang['customer']['delete_guests_success']));
     } else {
-        $GLOBALS['main']->setACPWarning($lang['customer']['delete_guests_fail']);
+        $GLOBALS['main']->errorMessage($lang['customer']['delete_guests_fail']);
     }
 }
 

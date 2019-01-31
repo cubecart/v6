@@ -37,10 +37,10 @@ if (isset($_POST['multi_country_action'])  && Admin::getInstance()->permissions(
                 }
             }
             if ($_POST['multi_country_action']=='delete') {
-                $GLOBALS['main']->setACPNotify($lang['country']['notify_country_delete']);
+                $GLOBALS['main']->successMessage($lang['country']['notify_country_delete']);
             }
         } else {
-            $GLOBALS['main']->setACPWarning($lang['country']['error_country_delete_multi']);
+            $GLOBALS['main']->errorMessage($lang['country']['error_country_delete_multi']);
         }
         httpredir(currentPage());
     }
@@ -51,9 +51,9 @@ if (isset($_POST['multi_zone_action']) && !empty($_POST['multi_zone_action']) &&
         foreach ($_POST['multi_zone'] as $zone => $value) {
             $GLOBALS['db']->delete('CubeCart_geo_zone', array('id' => $zone));
         }
-        $GLOBALS['main']->setACPNotify($lang['country']['notify_zone_delete']);
+        $GLOBALS['main']->successMessage($lang['country']['notify_zone_delete']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['country']['error_zone_delete_multi']);
+        $GLOBALS['main']->errorMessage($lang['country']['error_zone_delete_multi']);
     }
     httpredir(currentPage());
 }
@@ -68,9 +68,9 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('settings', CC_PE
             }
         }
         if ($updated) {
-            $GLOBALS['main']->setACPNotify($lang['country']['notify_country_update']);
+            $GLOBALS['main']->successMessage($lang['country']['notify_country_update']);
         } else {
-            $GLOBALS['main']->setACPWarning($lang['country']['error_country_update']);
+            $GLOBALS['main']->errorMessage($lang['country']['error_country_update']);
         }
     }
     ## Update existing Zone
@@ -82,25 +82,25 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('settings', CC_PE
             }
         }
         if ($updated) {
-            $GLOBALS['main']->setACPNotify($lang['country']['notify_zone_update']);
+            $GLOBALS['main']->successMessage($lang['country']['notify_zone_update']);
         } else {
-            $GLOBALS['main']->setACPWarning($lang['country']['error_zone_update']);
+            $GLOBALS['main']->errorMessage($lang['country']['error_zone_update']);
         }
     }
     ## Add new Country
     if (isset($_POST['new_country']) && !empty($_POST['new_country']['name'])) {
         if ($GLOBALS['db']->insert('CubeCart_geo_country', $_POST['new_country'])) {
-            $GLOBALS['main']->setACPNotify($lang['country']['notify_country_create']);
+            $GLOBALS['main']->successMessage($lang['country']['notify_country_create']);
         } else {
-            $GLOBALS['main']->setACPWarning($lang['country']['error_country_create']);
+            $GLOBALS['main']->errorMessage($lang['country']['error_country_create']);
         }
     }
     ## Add new Zone
     if (isset($_POST['new_zone']) && !empty($_POST['new_zone']['name']) && !empty($_POST['new_zone']['country_id'])) {
         if ($GLOBALS['db']->insert('CubeCart_geo_zone', $_POST['new_zone'])) {
-            $GLOBALS['main']->setACPNotify($lang['country']['notify_zone_create']);
+            $GLOBALS['main']->successMessage($lang['country']['notify_zone_create']);
         } else {
-            $GLOBALS['main']->setACPWarning($lang['country']['error_zone_create']);
+            $GLOBALS['main']->errorMessage($lang['country']['error_zone_create']);
         }
     }
     httpredir(currentPage());
@@ -110,11 +110,11 @@ if (isset($_GET['delete']) && isset($_GET['id']) && is_numeric($_GET['id']) && A
     switch (strtolower($_GET['delete'])) {
     case 'country':
         $GLOBALS['db']->delete('CubeCart_geo_country', array('id' => $_GET['id']));
-        $GLOBALS['main']->setACPNotify($lang['country']['notify_country_delete']);
+        $GLOBALS['main']->successMessage($lang['country']['notify_country_delete']);
         break;
     case 'zone':
         $GLOBALS['db']->delete('CubeCart_geo_zone', array('id' => $_GET['id']));
-        $GLOBALS['main']->setACPNotify($lang['country']['notify_zone_delete']);
+        $GLOBALS['main']->successMessage($lang['country']['notify_zone_delete']);
         break;
     }
     httpredir(currentPage(array('delete', 'id')));

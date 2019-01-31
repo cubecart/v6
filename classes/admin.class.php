@@ -279,7 +279,7 @@ class Admin
         }
         // Unauthorized - do we redirect, or just return false?
         if ($message) {
-            $GLOBALS['main']->setACPWarning($GLOBALS['language']->notification['error_privileges']);
+            $GLOBALS['main']->errorMessage($GLOBALS['language']->notification['error_privileges']);
         }
         if ($halt) {
             httpredir($GLOBALS['rootRel'].$GLOBALS['config']->get('config', 'adminFile')."?_g=401");

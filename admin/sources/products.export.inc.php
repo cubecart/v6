@@ -155,7 +155,7 @@ if (isset($_GET['format']) && !empty($_GET['format'])) {
             exit;
         }
     } else {
-        $GLOBALS['main']->setACPWarning($lang['category']['no_products']);
+        $GLOBALS['main']->errorMessage($lang['category']['no_products']);
     }
 }
 

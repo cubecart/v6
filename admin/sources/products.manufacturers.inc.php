@@ -21,9 +21,9 @@ global $lang;
 ## Delete Manufacturer
 if (isset($_GET['delete']) && is_numeric($_GET['delete']) && Admin::getInstance()->permissions('products', CC_PERM_DELETE)) {
     if ($GLOBALS['db']->delete('CubeCart_manufacturers', array('id' => (int)$_GET['delete']))) {
-        $GLOBALS['main']->setACPNotify($lang['catalogue']['notify_manufacturer_delete']);
+        $GLOBALS['main']->successMessage($lang['catalogue']['notify_manufacturer_delete']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['catalogue']['error_manufacturer_delete']);
+        $GLOBALS['main']->errorMessage($lang['catalogue']['error_manufacturer_delete']);
     }
     foreach ($GLOBALS['hooks']->load('admin.product.manufacturers.delete') as $hook) {
         include $hook;
@@ -44,19 +44,19 @@ if (isset($_POST['manufacturer']) && is_array($_POST['manufacturer'])) {
     }
     if (isset($_GET['edit']) && is_numeric($_GET['edit'])) {
         if ($GLOBALS['db']->update('CubeCart_manufacturers', $_POST['manufacturer'], array('id' => (int)$_GET['edit']))) {
-            $GLOBALS['main']->setACPNotify($lang['catalogue']['notify_manufacturer_update']);
+            $GLOBALS['main']->successMessage($lang['catalogue']['notify_manufacturer_update']);
         } else {
-            $GLOBALS['main']->setACPWarning($lang['catalogue']['error_manufacturer_update']);
+            $GLOBALS['main']->errorMessage($lang['catalogue']['error_manufacturer_update']);
         }
     } elseif(isset($_POST['manufacturer']['name']) && !empty($_POST['manufacturer']['name'])) {
         if (!$GLOBALS['db']->select('CubeCart_manufacturers', array('id'), array('name' => $_POST['manufacturer']['name']))) {
             if ($GLOBALS['db']->insert('CubeCart_manufacturers', $_POST['manufacturer'])) {
-                $GLOBALS['main']->setACPNotify($lang['catalogue']['notify_manufacturer_create']);
+                $GLOBALS['main']->successMessage($lang['catalogue']['notify_manufacturer_create']);
             } else {
-                $GLOBALS['main']->setACPWarning($lang['catalogue']['error_manufacturer_create']);
+                $GLOBALS['main']->errorMessage($lang['catalogue']['error_manufacturer_create']);
             }
         } else {
-            $GLOBALS['main']->setACPWarning($lang['catalogue']['error_manufacturer_create']);
+            $GLOBALS['main']->errorMessage($lang['catalogue']['error_manufacturer_create']);
         }
     }
     foreach ($GLOBALS['hooks']->load('admin.product.manufacturers.save.post_process') as $hook) {
@@ -76,7 +76,7 @@ if (isset($_GET['edit']) && is_numeric($_GET['edit'])) {
     if (($manufacturers = $GLOBALS['db']->select('CubeCart_manufacturers', array('name', 'id', 'URL'), array('id' => (int)$_GET['edit']))) !== false) {
         $GLOBALS['smarty']->assign('EDIT', $manufacturers[0]);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['catalogue']['error_manufacturer_found']);
+        $GLOBALS['main']->errorMessage($lang['catalogue']['error_manufacturer_found']);
         httpredir(currentPage(array('edit')));
     }
     

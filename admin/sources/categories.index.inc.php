@@ -69,10 +69,10 @@ if (isset($_POST['cat']) && is_array($_POST['cat']) && Admin::getInstance()->per
                 $GLOBALS['seo']->rebuildCategoryList();
                 $GLOBALS['seo']->setdbPath('cat', $cat_id, '', false, false);
             }
-            $GLOBALS['main']->setACPNotify($lang['settings']['notify_category_update']);
+            $GLOBALS['main']->successMessage($lang['settings']['notify_category_update']);
             $keys_remove = array('action', 'cat_id');
         } elseif (!isset($_POST['seo_path'])) {
-            $GLOBALS['main']->setACPWarning($lang['settings']['error_category_update']);
+            $GLOBALS['main']->errorMessage($lang['settings']['error_category_update']);
             $redirect = false;
         }
 
@@ -103,10 +103,10 @@ if (isset($_POST['cat']) && is_array($_POST['cat']) && Admin::getInstance()->per
             $cat_id = $GLOBALS['db']->insertid();
             $path = empty($_POST['seo_path']) ? $_POST['cat']['cat_name'] : $_POST['seo_path'];
             $GLOBALS['seo']->setdbPath('cat', $cat_id, $path);
-            $GLOBALS['main']->setACPNotify($lang['settings']['notify_category_create']);
+            $GLOBALS['main']->successMessage($lang['settings']['notify_category_create']);
             $keys_remove = array('action', 'cat_id');
         } else {
-            $GLOBALS['main']->setACPWarning($lang['settings']['error_category_create']);
+            $GLOBALS['main']->errorMessage($lang['settings']['error_category_create']);
             $redirect = false;
         }
     }
@@ -134,15 +134,15 @@ if (isset($_GET['delete']) && is_numeric($_GET['delete']) && Admin::getInstance(
         if (!$products = $GLOBALS['db']->select('CubeCart_category_index', array('id'), array('cat_id' => (int)$_GET['delete']))) {
             if ($GLOBALS['db']->delete('CubeCart_category', array('cat_id' => (int)$_GET['delete']))) {
                 $GLOBALS['seo']->delete('cat', $_GET['delete']);
-                $GLOBALS['main']->setACPNotify($lang['settings']['notify_category_delete']);
+                $GLOBALS['main']->successMessage($lang['settings']['notify_category_delete']);
             } else {
-                $GLOBALS['main']->setACPWarning($lang['settings']['error_category_delete']);
+                $GLOBALS['main']->errorMessage($lang['settings']['error_category_delete']);
             }
         } else {
-            $GLOBALS['main']->setACPWarning($lang['settings']['error_category_delete_prod']);
+            $GLOBALS['main']->errorMessage($lang['settings']['error_category_delete_prod']);
         }
     } else {
-        $GLOBALS['main']->setACPWarning($lang['settings']['error_category_delete_cats']);
+        $GLOBALS['main']->errorMessage($lang['settings']['error_category_delete_cats']);
     }
     
     httpredir(currentPage(array('delete')));
@@ -169,18 +169,18 @@ if (isset($_POST['translate']) && isset($_POST['cat_id']) && is_numeric($_POST['
 
     if (!empty($_POST['translation_id']) && is_numeric($_POST['translation_id']) && Admin::getInstance()->permissions('categories', CC_PERM_EDIT)) {
         if ($GLOBALS['db']->update('CubeCart_category_language', $_POST['translate'], array('translation_id' => (int)$_POST['translation_id'], 'cat_id' => (int)$_POST['cat_id']))) {
-            $GLOBALS['main']->setACPNotify($lang['translate']['notify_translation_update']);
+            $GLOBALS['main']->successMessage($lang['translate']['notify_translation_update']);
             $remarray = array('action', 'cat_id', 'translation_id');
         } else {
-            $GLOBALS['main']->setACPWarning($lang['translate']['error_translation_update']);
+            $GLOBALS['main']->errorMessage($lang['translate']['error_translation_update']);
         }
     } else {
         $_POST['translate']['cat_id'] = $_POST['cat_id'];
         if ($GLOBALS['db']->insert('CubeCart_category_language', $_POST['translate'])) {
-            $GLOBALS['main']->setACPNotify($lang['translate']['notify_translation_create']);
+            $GLOBALS['main']->successMessage($lang['translate']['notify_translation_create']);
             $remarray = array('action', 'cat_id', 'translation_id');
         } else {
-            $GLOBALS['main']->setACPWarning($lang['translate']['error_translation_create']);
+            $GLOBALS['main']->errorMessage($lang['translate']['error_translation_create']);
         }
     }
 
@@ -227,9 +227,9 @@ if (!empty($update) && is_array($update) && Admin::getInstance()->permissions('c
         }
     }
     if ($updated) {
-        $GLOBALS['main']->setACPNotify($lang['settings']['notify_category_status']);
+        $GLOBALS['main']->successMessage($lang['settings']['notify_category_status']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['settings']['error_category_status']);
+        $GLOBALS['main']->errorMessage($lang['settings']['error_category_status']);
     }
     
     httpredir(currentPage());
@@ -259,9 +259,9 @@ if (isset($_GET['action'])) {
     if (strtolower($_GET['action']) == 'delete') {
         if (isset($_GET['translation_id']) && is_numeric($_GET['translation_id'])) {
             if (Admin::getInstance()->permissions('categories', CC_PERM_DELETE) && $GLOBALS['db']->delete('CubeCart_category_language', array('translation_id' => (int)$_GET['translation_id'], 'cat_id' => (int)$_GET['cat_id']))) {
-                $GLOBALS['main']->setACPNotify($lang['translate']['notify_translation_delete']);
+                $GLOBALS['main']->successMessage($lang['translate']['notify_translation_delete']);
             } else {
-                $GLOBALS['main']->setACPWarning($lang['translate']['error_translation_delete']);
+                $GLOBALS['main']->errorMessage($lang['translate']['error_translation_delete']);
             }
         }
         httpredir(currentPage(array('translation_id'), array('action' =>'edit')), 'cat_translate');
@@ -269,7 +269,7 @@ if (isset($_GET['action'])) {
 
             // Check to see if translation space is available
         if (!isset($_GET['translation_id']) && $GLOBALS['language']->fullyTranslated('category', (int)$_GET['cat_id'])) {
-            $GLOBALS['main']->setACPWarning($lang['common']['all_translated']);
+            $GLOBALS['main']->errorMessage($lang['common']['all_translated']);
             httpredir('?_g=categories');
         }
 

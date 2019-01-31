@@ -34,19 +34,19 @@ if (isset($_POST['document']) && Admin::getInstance()->permissions('documents', 
                 $GLOBALS['seo']->delete('doc', $_POST['document']['doc_id']);
             }
             $GLOBALS['seo']->setdbPath('doc', $_POST['document']['doc_id'], $_POST['seo_path'], true, true);
-            $GLOBALS['main']->setACPNotify($lang['documents']['notify_document_update']);
+            $GLOBALS['main']->successMessage($lang['documents']['notify_document_update']);
             $rem_array = array('action');
         } else {
-            $GLOBALS['main']->setACPWarning($lang['documents']['error_document_update']);
+            $GLOBALS['main']->errorMessage($lang['documents']['error_document_update']);
         }
     } else {
         if ($GLOBALS['db']->insert('CubeCart_documents', $_POST['document'])) {
             $doc_id = $GLOBALS['db']->insertid();
             $GLOBALS['seo']->setdbPath('doc', $doc_id, $_POST['seo_path']);
-            $GLOBALS['main']->setACPNotify($lang['documents']['notify_document_create']);
+            $GLOBALS['main']->successMessage($lang['documents']['notify_document_create']);
             $rem_array = array('action');
         } else {
-            $GLOBALS['main']->setACPWarning($lang['documents']['error_document_create']);
+            $GLOBALS['main']->errorMessage($lang['documents']['error_document_create']);
         }
     }
     foreach ($GLOBALS['hooks']->load('admin.documents.save.post_process') as $hook) {
@@ -76,7 +76,7 @@ if (isset($_POST['privacy']) ||isset($_POST['terms']) || isset($_POST['home']) |
             foreach ($docs as $doc) {
                 $document = $GLOBALS['db']->select('CubeCart_documents', array('doc_name'), array('doc_id' => $doc['id']));
                 if ($GLOBALS['db']->update('CubeCart_documents', array('doc_'.$doc['key'] => 1), array('doc_id' => $doc['id'], 'doc_parent_id' => 0), true)) {
-                    $GLOBALS['main']->setACPNotify($lang['documents']['notify_document_'.$doc['key']]);
+                    $GLOBALS['main']->successMessage($lang['documents']['notify_document_'.$doc['key']]);
                     $updated = true;
                 }
                 $GLOBALS['db']->update('CubeCart_documents', array('doc_'.$doc['key'] => 0), 'doc_id <> '.$doc['id']);
@@ -92,7 +92,7 @@ if (isset($_POST['privacy']) ||isset($_POST['terms']) || isset($_POST['home']) |
                 }
             }
             if ($order_updated) {
-                $GLOBALS['main']->setACPNotify($lang['documents']['notify_document_arrange']);
+                $GLOBALS['main']->successMessage($lang['documents']['notify_document_arrange']);
             }
         }
         ## Set document statuses
@@ -104,12 +104,12 @@ if (isset($_POST['privacy']) ||isset($_POST['terms']) || isset($_POST['home']) |
                 }
             }
             if ($status_updated) {
-                $GLOBALS['main']->setACPNotify($lang['documents']['notify_document_status']);
+                $GLOBALS['main']->successMessage($lang['documents']['notify_document_status']);
             }
         }
         ## If no changes have been made let administrator know
         if (!$updated && !$status_updated && !$order_updated) {
-            $GLOBALS['main']->setACPWarning($lang['common']['notify_no_changes']);
+            $GLOBALS['main']->errorMessage($lang['common']['notify_no_changes']);
         }
         httpredir(currentPage());
     }
@@ -125,9 +125,9 @@ if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
         $GLOBALS['db']->delete('CubeCart_documents', array('doc_parent_id' => $_GET['delete']));
         $GLOBALS['db']->delete('CubeCart_documents', array('doc_id' => $_GET['delete']));
         $GLOBALS['seo']->delete('doc', $_GET['delete']);
-        $GLOBALS['main']->setACPNotify($lang['documents']['notify_document_delete']);
+        $GLOBALS['main']->successMessage($lang['documents']['notify_document_delete']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['documents']['error_document_delete']);
+        $GLOBALS['main']->errorMessage($lang['documents']['error_document_delete']);
     }
     httpredir(currentPage(array('delete')));
 }
@@ -145,7 +145,7 @@ if (isset($_GET['action'])) {
 
         // Check to see if translation space is available
         if ($_GET['action'] == 'translate' && $GLOBALS['language']->fullyTranslated('document', $_GET['doc_id'])) {
-            $GLOBALS['main']->setACPWarning($lang['common']['all_translated']);
+            $GLOBALS['main']->errorMessage($lang['common']['all_translated']);
             httpredir('?_g=documents');
         }
 

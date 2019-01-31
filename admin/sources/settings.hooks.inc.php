@@ -32,9 +32,9 @@ if (Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT)) {
 
     if (!empty($_FILES['code_snippet_import']['tmp_name'])) {
         if ($GLOBALS['hooks']->import_code_snippets($_FILES['code_snippet_import'])) {
-            $GLOBALS['main']->setACPNotify($lang['hooks']['notify_snippet_imported']);
+            $GLOBALS['main']->successMessage($lang['hooks']['notify_snippet_imported']);
         } else {
-            $GLOBALS['main']->setACPWarning($lang['hooks']['notify_snippet_import_failed']);
+            $GLOBALS['main']->errorMessage($lang['hooks']['notify_snippet_import_failed']);
         }
         $snippet_redirect = true;
     } else {
@@ -43,14 +43,14 @@ if (Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT)) {
 
             if (isset($_POST['snippet']['snippet_id']) && is_numeric($_POST['snippet']['snippet_id'])) {
                 if ($GLOBALS['db']->update('CubeCart_code_snippet', $_POST['snippet'], array('snippet_id' => (int)$_POST['snippet']['snippet_id']))) {
-                    $GLOBALS['main']->setACPNotify($lang['hooks']['notify_snippet_updated']);
+                    $GLOBALS['main']->successMessage($lang['hooks']['notify_snippet_updated']);
                 }
             } else {
                 if ($GLOBALS['db']->select('CubeCart_code_snippet', array('snippet_id'), array('unique_id' => $_POST['snippet']['unique_id']))) {
-                    $GLOBALS['main']->setACPWarning($lang['hooks']['notify_snippet_not_added']);
+                    $GLOBALS['main']->errorMessage($lang['hooks']['notify_snippet_not_added']);
                 } else {
                     if ($GLOBALS['db']->insert('CubeCart_code_snippet', $_POST['snippet'])==true) {
-                        $GLOBALS['main']->setACPNotify($lang['hooks']['notify_snippet_added']);
+                        $GLOBALS['main']->successMessage($lang['hooks']['notify_snippet_added']);
                         $snippet_redirect = true;
                     } else {
                         $GLOBALS['main']->setACPWarn($lang['hooks']['notify_snippet_not_added']);
@@ -63,7 +63,7 @@ if (Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT)) {
     if (isset($_GET['delete_snippet']) && is_numeric($_GET['delete_snippet'])) {
         if ($GLOBALS['db']->delete('CubeCart_code_snippet', array('snippet_id' => (int)$_GET['delete_snippet']))) {
             $GLOBALS['hooks']->delete_snippet_file($_GET['delete_snippet']);
-            $GLOBALS['main']->setACPNotify($lang['hooks']['notify_snippet_deleted']);
+            $GLOBALS['main']->successMessage($lang['hooks']['notify_snippet_deleted']);
             $snippet_redirect = true;
         }
     }
@@ -89,22 +89,22 @@ if (Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT)) {
         if (empty($error)) {
             if (isset($_POST['hook']['hook_id']) && is_numeric($_POST['hook']['hook_id'])) {
                 if ($GLOBALS['db']->update('CubeCart_hooks', $_POST['hook'], array('hook_id' => $_POST['hook']['hook_id']))) {
-                    $GLOBALS['main']->setACPNotify($lang['hooks']['notify_hook_update']);
+                    $GLOBALS['main']->successMessage($lang['hooks']['notify_hook_update']);
                     httpredir(currentPage(array('action', 'hook_id')));
                 } else {
-                    $GLOBALS['main']->setACPWarning($lang['hooks']['error_hook_update']);
+                    $GLOBALS['main']->errorMessage($lang['hooks']['error_hook_update']);
                 }
             } else {
                 if ($GLOBALS['db']->insert('CubeCart_hooks', $_POST['hook'])) {
-                    $GLOBALS['main']->setACPNotify($lang['hooks']['notify_hook_create']);
+                    $GLOBALS['main']->successMessage($lang['hooks']['notify_hook_create']);
                     httpredir(currentPage(array('action', 'hook_id')));
                 } else {
-                    $GLOBALS['main']->setACPWarning($lang['hooks']['error_hook_create']);
+                    $GLOBALS['main']->errorMessage($lang['hooks']['error_hook_create']);
                     $GLOBALS['smarty']->assign('HOOK', $_POST['hook']);
                 }
             }
         } else {
-            $GLOBALS['main']->setACPWarning($lang['hooks']['error_hook_create']);
+            $GLOBALS['main']->errorMessage($lang['hooks']['error_hook_create']);
             $GLOBALS['smarty']->assign('HOOK', $_POST['hook']);
         }
     }
@@ -117,9 +117,9 @@ if (Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT)) {
             }
         }
         if ($updated) {
-            $GLOBALS['main']->setACPNotify($lang['hooks']['notify_hook_status']);
+            $GLOBALS['main']->successMessage($lang['hooks']['notify_hook_status']);
         } else {
-            $GLOBALS['main']->setACPWarning($lang['hooks']['error_hook_status']);
+            $GLOBALS['main']->errorMessage($lang['hooks']['error_hook_status']);
         }
         httpredir(currentPage());
     }
@@ -189,7 +189,7 @@ if (isset($_GET['plugin']) && isset($plugins[(string)$_GET['plugin']]) && !is_nu
                     $GLOBALS['smarty']->assign('TRIGGERS', $smarty_data['triggers']);
                 }
             } catch (Exception $e) {
-                $GLOBALS['main']->setACPWarning($lang['hooks']['error_plugin_config']);
+                $GLOBALS['main']->errorMessage($lang['hooks']['error_plugin_config']);
             }
         }
         $GLOBALS['smarty']->assign('DISPLAY_FORM', true);
@@ -267,7 +267,7 @@ if (isset($_GET['plugin']) && isset($plugins[(string)$_GET['plugin']]) && !is_nu
                 $GLOBALS['smarty']->assign('TRIGGERS', $smarty_data['triggers']);
             }
         } catch (Exception $e) {
-            $GLOBALS['main']->setACPWarning($lang['hooks']['error_plugin_config']);
+            $GLOBALS['main']->errorMessage($lang['hooks']['error_plugin_config']);
         }
     }
 }

@@ -21,9 +21,9 @@ global $lang;
 ## Delete review
 if (isset($_GET['delete']) && is_numeric($_GET['delete']) && Admin::getInstance()->permissions('reviews', CC_PERM_DELETE)) {
     if ($GLOBALS['db']->delete('CubeCart_reviews', array('id' => (int)$_GET['delete']))) {
-        $GLOBALS['main']->setACPNotify($lang['reviews']['notify_review_delete']);
+        $GLOBALS['main']->successMessage($lang['reviews']['notify_review_delete']);
     } else {
-        $GLOBALS['main']->setACPWarning($lang['reviews']['error_review_delete']);
+        $GLOBALS['main']->errorMessage($lang['reviews']['error_review_delete']);
     }
     httpredir(currentPage(array('delete')));
 }
@@ -31,7 +31,7 @@ if (isset($_GET['delete']) && is_numeric($_GET['delete']) && Admin::getInstance(
 ## Bulk delete reviews
 if (!empty($_POST['delete']['email'])) {
     if ($GLOBALS['db']->delete('CubeCart_reviews', array('email' => $_POST['delete']['email']))) {
-        $GLOBALS['main']->setACPNotify($lang['reviews']['notify_review_deleted']);
+        $GLOBALS['main']->successMessage($lang['reviews']['notify_review_deleted']);
     }
 }
 if (isset($_POST['multi-status']) && isset($_POST['go'])) {
@@ -39,7 +39,7 @@ if (isset($_POST['multi-status']) && isset($_POST['go'])) {
         case 'delete':
             if (!empty($_POST['delete']['individual'])) {
                 if ($GLOBALS['db']->delete('CubeCart_reviews', array('id' => array_keys($_POST['delete']['individual'])))) {
-                    $GLOBALS['main']->setACPNotify($lang['reviews']['notify_review_deleted']);
+                    $GLOBALS['main']->successMessage($lang['reviews']['notify_review_deleted']);
                 }
             }
         break;
@@ -47,7 +47,7 @@ if (isset($_POST['multi-status']) && isset($_POST['go'])) {
 }
 if (!empty($_POST['delete']['ip_address'])) {
     if ($GLOBALS['db']->delete('CubeCart_reviews', array('ip_address' => $_POST['delete']['ip_address']))) {
-        $GLOBALS['main']->setACPNotify($lang['reviews']['notify_review_deleted']);
+        $GLOBALS['main']->successMessage($lang['reviews']['notify_review_deleted']);
     }
 }
 
@@ -68,10 +68,10 @@ if (isset($_POST['review']) && is_array($_POST['review']) && Admin::getInstance(
 
     if (is_numeric($_POST['review']['id'])) {
         if ($GLOBALS['db']->update('CubeCart_reviews', $record, array('id' => (int)$_POST['review']['id']))) {
-            $GLOBALS['main']->setACPNotify($lang['reviews']['notify_review_update']);
+            $GLOBALS['main']->successMessage($lang['reviews']['notify_review_update']);
             $rem_array = array('edit');
         } else {
-            $GLOBALS['main']->setACPWarning($lang['reviews']['error_review_update']);
+            $GLOBALS['main']->errorMessage($lang['reviews']['error_review_update']);
             $rem_array = false;
         }
     } else {
@@ -81,16 +81,16 @@ if (isset($_POST['review']) && is_array($_POST['review']) && Admin::getInstance(
         
         if (!empty($_POST['review']['product_id']) && is_numeric($_POST['review']['product_id'])) {
             if ($GLOBALS['db']->insert('CubeCart_reviews', $record)) {
-                $GLOBALS['main']->setACPNotify($lang['reviews']['notify_review_added']);
+                $GLOBALS['main']->successMessage($lang['reviews']['notify_review_added']);
                 $rem_array = array('edit');
             } else {
-                $GLOBALS['main']->setACPWarning($lang['reviews']['error_review_added']);
+                $GLOBALS['main']->errorMessage($lang['reviews']['error_review_added']);
                 $rem_array = false;
             }
         } else {
             $no_redirect = true;
             $GLOBALS['smarty']->assign('REVIEW', $record);
-            $GLOBALS['main']->setACPWarning($lang['reviews']['error_no_product_selected']);
+            $GLOBALS['main']->errorMessage($lang['reviews']['error_no_product_selected']);
         }
     }
     if (!isset($no_redirect)) {
@@ -107,7 +107,7 @@ if (isset($_POST['approve']) && is_array($_POST['approve']) && Admin::getInstanc
     }
     $after = md5(serialize($GLOBALS['db']->select('CubeCart_reviews', 'approved')));
     if ($before !== $after) {
-        $GLOBALS['main']->setACPNotify($lang['reviews']['notify_review_status']);
+        $GLOBALS['main']->successMessage($lang['reviews']['notify_review_status']);
     }
     ## origin variable tells us we need to come back to the dashboard now
     if (isset($_GET['origin']) && !empty($_GET['origin']) && $_GET['origin']=="dashboard") {
@@ -128,7 +128,7 @@ if (isset($_POST['filter']) && !empty($_POST['filter'])) {
         } else {
             $review_types = $lang['reviews']['filter_unapproved'];
         }
-        $GLOBALS['main']->setACPNotify($review_types);
+        $GLOBALS['main']->successMessage($review_types);
         $append['approved'] = $_POST['filter']['approved'];
     } else {
         $rem_array  = array('approved');
@@ -138,7 +138,7 @@ if (isset($_POST['filter']) && !empty($_POST['filter'])) {
         $append['product_id'] = $_POST['filter']['product_id'];
         $anchor = 'reviews';
     } elseif (isset($_POST['filter']['product_string']) && !empty($_POST['filter']['product_string'])) {
-        $GLOBALS['main']->setACPWarning($lang['catalogue']['error_search_no_results']);
+        $GLOBALS['main']->errorMessage($lang['catalogue']['error_search_no_results']);
         $anchor = 'search';
     }
     ## If not empty keywords append that too
@@ -216,7 +216,7 @@ if (isset($_GET['edit']) && is_numeric($_GET['edit']) && Admin::getInstance()->p
     }
 
     if (!$reviews && isset($product) && $product) {
-        $GLOBALS['main']->setACPWarning($lang['reviews']['error_reviews_none']);
+        $GLOBALS['main']->errorMessage($lang['reviews']['error_reviews_none']);
         httpredir(currentPage(array('product_id')), 'search');
     }
 
