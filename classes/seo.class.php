@@ -863,6 +863,7 @@ IndexIgnore *
 
 <ifModule mod_headers.c>
   Header always append X-Frame-Options SAMEORIGIN
+  Header set X-Content-Type-Options nosniff
 </ifModule>
 
 ### Rewrite rules for SEO functionality ###
