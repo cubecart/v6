@@ -37,7 +37,7 @@ class SSL
     public function __construct()
     {
         if ($GLOBALS['config']->get('config', 'ssl') && !ADMIN_CP) {
-            header("Strict-Transport-Security:max-age=31536000;preload");
+            header("Strict-Transport-Security:max-age=31536000");
             if (!CC_SSL && !in_array($_GET['_g'], $this->_ignored_pages)) {
                 $current_url = currentPage();
                 $current_url = preg_replace('#^http://#', 'https://', $current_url);
