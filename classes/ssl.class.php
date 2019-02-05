@@ -36,26 +36,23 @@ class SSL
 
     public function __construct()
     {
-        if ($GLOBALS['config']->get('config', 'ssl') && !ADMIN_CP) {
-            header("Strict-Transport-Security:max-age=31536000");
-            if (!CC_SSL && !in_array($_GET['_g'], $this->_ignored_pages)) {
-                $current_url = currentPage();
-                $current_url = preg_replace('#^http://#', 'https://', $current_url);
-
-                $ssl_url = $GLOBALS['config']->get('config', 'ssl_url');
-
-                if (preg_match('#^'.$ssl_url.'#', $current_url)) { // Make sure the domain for SSL is expected
-                    httpredir($current_url, '', false, 301);
-                } else { // If not we try to make it based on what we have
-                    $url_parts = parse_url($current_url);
-
-                    $url_parts['path'] = str_replace($GLOBALS['config']->get('config', 'ssl_path'), '/', $url_parts['path']);
-                    $ssl_url .= (!empty($url_parts['path'])) ? $url_parts['path'] : '';
-                    $ssl_url .= (!empty($url_parts['query'])) ? '?'.$url_parts['query'] : '';
-                    $anchor = (!empty($url_parts['fragment'])) ? '#'.$url_parts['fragment'] : '';
-
-                    httpredir($ssl_url, $anchor, false, 301);
-                }
+        if ($GLOBALS['config']->get('config', 'ssl') && !ADMIN_CP && !CC_SSL && !in_array($_GET['_g'], $this->_ignored_pages)) {
+            $current_url = currentPage();
+            $current_url = preg_replace('#^http://#', 'https://', $current_url);
+            
+            $ssl_url = $GLOBALS['config']->get('config', 'ssl_url');
+            
+            if (preg_match('#^'.$ssl_url.'#', $current_url)) { // Make sure the domain for SSL is expected
+                httpredir($current_url, '', false, 301);
+            } else { // If not we try to make it based on what we have
+                $url_parts = parse_url($current_url);
+                
+                $url_parts['path'] = str_replace($GLOBALS['config']->get('config', 'ssl_path'), '/', $url_parts['path']);
+                $ssl_url .= (!empty($url_parts['path'])) ? $url_parts['path'] : '';
+                $ssl_url .= (!empty($url_parts['query'])) ? '?'.$url_parts['query'] : '';
+                $anchor = (!empty($url_parts['fragment'])) ? '#'.$url_parts['fragment'] : '';
+                
+                httpredir($ssl_url, $anchor, false, 301);
             }
         }
     }
