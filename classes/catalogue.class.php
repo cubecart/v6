@@ -1827,8 +1827,8 @@ class Catalogue
                 $where[] = "I.featured = '1'";
             }
             // Only look for items that are in stock
-            if (isset($search_data['inStock']) || $GLOBALS['config']->get('config', 'hide_out_of_stock')) {
-                $where[] = "((I.use_stock_level = '0') OR (I.use_stock_level = '1' AND I.stock_level > 0))";
+            if (isset($search_data['inStock'])) {
+                $where[] = $this->outOfStockWhere();
             }
 
             $whereString = (isset($where) && is_array($where)) ? implode(' AND ', $where) : '';
