@@ -1139,7 +1139,6 @@ class Order
                         break;
                     case self::ORDER_DECLINED:
                     case self::ORDER_FAILED:
-                        break;
                     case self::ORDER_CANCELLED:
                         ## Restore stock
                         if ($item['stock_updated']) {
