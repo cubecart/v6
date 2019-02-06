@@ -284,7 +284,7 @@ class Tax
             $this->_country_id = $country_id;
 
             // Fetch new vars
-            $query = "SELECT SQL_CACHE T.tax_name AS type_name, D.display, D.name, R.id, R.type_id, R.tax_percent, R.goods, R.shipping, R.county_id FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_tax_rates AS R, ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_tax_details AS D, ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_tax_class AS T, ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_geo_country AS C WHERE D.id = R.details_id AND C.numcode = R.country_id AND R.type_id = T.id AND D.status = 1 AND R.active = 1 AND R.country_id = ".$country_id;
+            $query = "SELECT T.tax_name AS type_name, D.display, D.name, R.id, R.type_id, R.tax_percent, R.goods, R.shipping, R.county_id FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_tax_rates AS R, ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_tax_details AS D, ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_tax_class AS T, ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_geo_country AS C WHERE D.id = R.details_id AND C.numcode = R.country_id AND R.type_id = T.id AND D.status = 1 AND R.active = 1 AND R.country_id = ".$country_id;
             $taxes = $GLOBALS['db']->query($query);
             if (is_array($taxes)) {
                 foreach ($taxes as $i => $tax_group) {
