@@ -18,7 +18,7 @@ Admin::getInstance()->permissions('settings', CC_PERM_READ, true);
 global $lang;
 
 ## Delete Coupon
-if (isset($_GET['delete']) && is_numeric($_GET['delete']) && Admin::getInstance()->permissions('products', CC_PERM_DELETE)) {
+if (isset($_GET['delete']) && is_numeric($_GET['delete']) && Admin::getInstance()->permissions('settings', CC_PERM_DELETE)) {
     if ($GLOBALS['db']->delete('CubeCart_coupons', array('coupon_id' => (int)$_GET['delete']))) {
         $GLOBALS['main']->successMessage($lang['catalogue']['notify_coupon_deleted']);
     } else {
