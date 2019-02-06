@@ -805,6 +805,7 @@
     <string name="order_pending" introduced="5.2.6"><![CDATA[Many thanks for your order! The order status is currently pending but it will automatically update to processing once payment is confirmed. Normally this is automated and will happen within the hour but please do contact us if you require more information.]]></string>
     <string name="order_processing" introduced="5.2.6"><![CDATA[Many thanks for your order! Payment has been received and your order is now being processed.]]></string>
     <string name="order_complete" introduced="5.2.6"><![CDATA[Many thanks for your order! Payment has been received and your order is now complete.]]></string>
+    <string name="free_order_complete" introduced="6.2.3"><![CDATA[Many thanks for your order!]]></string>
     <string name="order_failed" introduced="5.2.6"><![CDATA[Unfortunately payment was unsuccessful. You can use the link below to attempt a new purchase or please contact a member of staff for further assistance.]]></string>
     <string name="order_cancelled" introduced="5.2.6"><![CDATA[Your order has been cancelled. Please contact a member of staff if you require further assistance. Alternatively we hope to see you again in the future.]]></string>
   </group>

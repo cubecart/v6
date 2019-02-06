@@ -1409,7 +1409,11 @@ class Cubecart
                     $GLOBALS['gui']->setNotify($GLOBALS['language']->confirm['order_processing']);
                     break;
                 case self::ORDER_COMPLETE:
-                    $GLOBALS['gui']->setNotify($GLOBALS['language']->confirm['order_complete']);
+                    if((int)preg_replace('/[^0-9]/', '', $order['total'])==0) {
+                        $GLOBALS['gui']->setNotify($GLOBALS['language']->confirm['free_order_complete']);
+                    } else {
+                        $GLOBALS['gui']->setNotify($GLOBALS['language']->confirm['order_complete']);
+                    }
                     break;
                 case self::ORDER_DECLINED:
                 case self::ORDER_FAILED:
