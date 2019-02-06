@@ -899,6 +899,9 @@ class Cart
             if ($this->_total < 0) {
                 $this->_total = 0;
             }
+            if($this->_total == 0) {
+                $GLOBALS['smarty']->assign('DISABLE_GATEWAYS', true);
+            }
             $this->basket['total'] = sprintf('%.2F', $this->_total);
 
             foreach ($GLOBALS['hooks']->load('class.cart.get') as $hook) {
