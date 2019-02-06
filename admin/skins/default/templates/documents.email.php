@@ -34,7 +34,9 @@
 			{/if}
 		  </td>
 		  <td width="30" align="center">
+			{if $content.translate!==false}
 			<a href="{$content.translate}" title="{$LANG.translate.trans_add}"><i class="fa fa-plus-circle" title="{$LANG.translate.trans_add}"></i></a>
+			{/if}
 		  </td>
 		</tr>
 		{/foreach}

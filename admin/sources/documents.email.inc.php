@@ -410,7 +410,8 @@ if (isset($_POST['content']) && Admin::getInstance()->permissions('documents', C
             if (!empty($_POST['content']['content_type']) && !empty($_POST['content']['language'])) {
                 $check = $GLOBALS['db']->select('CubeCart_email_content', array('content_id'), array('content_type' => $_POST['content']['content_type'], 'language' => $_POST['content']['language']));
                 if ($check) {
-                    # $GLOBALS['db']->update('CubeCart_email_content', $_POST['content'], array('content_id' => (int)$check[0]['content_id']));
+                    $GLOBALS['main']->errorMessage($lang['email']['error_content_create_exists']);
+                    httpredir('?_g=documents&node=email&type=content&action=edit&content_id='.$check[0]['content_id']);
                 } else {
                     if ($GLOBALS['db']->insert('CubeCart_email_content', $_POST['content'])) {
                         $GLOBALS['main']->successMessage('Email content saved.');
@@ -596,19 +597,23 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
     $GLOBALS['main']->addTabControl($lang['common']['import'], 'email_import');
     // List Contents
     if (is_array($email_types)) {
+        $lang_list = $GLOBALS['language']->listLanguages();
+        $max_translations = count($lang_list);
         foreach ($email_types as $key => $values) {
             $translations = $GLOBALS['db']->select('CubeCart_email_content', array('content_id', 'language'), array('content_type' => $key), array('language' => 'ASC'));
             if ($translations) {
                 // check language is installed
+                $enabled_translations = 0;
                 foreach ($translations as $translation) {
                     // Check the translation exists otherwise it's redundant
                     if (file_exists(CC_ROOT_DIR.'/language/'.$translation['language'].'.xml')) {
+                        $enabled_translations++;
                         $translation['edit'] = currentPage(null, array('type' => 'content', 'action' => 'edit', 'content_id' => $translation['content_id']));
                         $content['translations'][] = $translation;
                     }
                 }
             }
-            $content['translate'] = currentPage(null, array('type' => 'content', 'action' => 'add', 'content_type' => $key));
+            $content['translate'] = ($enabled_translations == $max_translations) ? false : currentPage(null, array('type' => 'content', 'action' => 'add', 'content_type' => $key));
             $content['type']  = $values['description'];
             $smarty_data['e_contents'][] = $content;
             unset($content);

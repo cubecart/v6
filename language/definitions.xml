@@ -1032,6 +1032,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="email_type" introduced="5.0.0"><![CDATA[Email Type]]></string>
     <string name="empty_equals_default" introduced="5.0.0"><![CDATA[If left empty stores default taken.]]></string>
     <string name="error_content_create" introduced="5.0.0"><![CDATA[Failed to save email content.]]></string>
+    <string name="error_content_create_exists" introduced="6.2.3"><![CDATA[Failed to create email content as it already exists.]]></string>
     <string name="error_content_delete" introduced="5.0.0"><![CDATA[Failed to delete email content.]]></string>
     <string name="error_content_single" introduced="5.0.0"><![CDATA[It is not possible to delete the only translation of an email content.]]></string>
     <string name="error_content_update" introduced="5.0.0"><![CDATA[Failed to update email content.]]></string>
