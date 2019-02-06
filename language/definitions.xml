@@ -462,7 +462,7 @@
     <string name="title_coupon_create" introduced="5.0.0"><![CDATA[Create Promotional Code]]></string>
     <string name="title_coupon_detail" introduced="5.0.0"><![CDATA[Code Details]]></string>
     <string name="title_coupon_edit" introduced="5.0.0"><![CDATA[Edit Promotional Code]]></string>
-    <string name="title_coupon_expires" introduced="5.0.0"><![CDATA[Expires]]></string>
+    <string name="title_coupon_expires" introduced="5.0.0"><![CDATA[Expiry Time]]></string>
     <string name="title_coupon_limits" introduced="5.0.0"><![CDATA[Promotional Code Limits]]></string>
     <string name="title_coupon_convert" introduced="6.0.0"><![CDATA[Gift Card Conversion]]></string>
     <string name="coupon_convert_desc" introduced="6.0.0"><![CDATA[To use a promotional code as a gift card (keeping a balance for multiple uses) it is possible to do so by assigning an order number to it. It must be a real order number with a status of &quot;Processing&quot; or &quot;Complete&quot;.]]></string>

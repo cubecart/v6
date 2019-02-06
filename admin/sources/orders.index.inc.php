@@ -38,7 +38,9 @@ if (isset($_POST['search']) && !is_array($_POST['multi-order'])) {
 }
 
 if (isset($_GET['reset_id']) && $_GET['reset_id']>0 && Admin::getInstance()->permissions('orders', CC_PERM_EDIT)) {
-    $GLOBALS['db']->update('CubeCart_downloads', array('downloads' => 0, 'expire' => (time() + $GLOBALS['config']->get('config', 'download_expire'))), array('order_inv_id' => (int)$_GET['reset_id']));
+    $download_expire = $GLOBALS['config']->get('config', 'download_expire');
+    $new_time = ($download_expire > 0) ? time()+(int)$download_expire : 0;
+    $GLOBALS['db']->update('CubeCart_downloads', array('downloads' => 0, 'expire' => $new_time), array('order_inv_id' => (int)$_GET['reset_id']));
     $GLOBALS['main']->successMessage($lang['orders']['notify_order_update']);
     httpredir(currentPage(array('reset_id')));
 }
@@ -371,8 +373,8 @@ if (isset($_GET['action'])) {
                         if ($digital_data && !empty($digital_data[0]['accesskey'])) {
                             $product['accesskey'] = $digital_data[0]['accesskey'];
                             $product['downloads'] = $digital_data[0]['downloads'];
-                            $product['expire'] = formatTime($digital_data[0]['expire']);
-                            $product['expired'] = ($digital_data[0]['downloads'] >= $GLOBALS['config']->get('config', 'download_count') || time() > $digital_data[0]['expire']) ? true : false;
+                            $product['expire'] = ($digital_data[0]['expire']==0) ? $GLOBALS['language']->common['never'] : formatTime($digital_data[0]['expire']);
+                            $product['expired'] = ($digital_data[0]['downloads'] >= $GLOBALS['config']->get('config', 'download_count') || (time() > $digital_data[0]['expire'] && $digital_data[0]['expire']>0)) ? true : false;
                         } else {
                             $product['accesskey'] = false;
                         }
