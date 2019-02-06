@@ -149,6 +149,17 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
         $GLOBALS['gui']->rebuildLogos();
     }
 
+    if($_POST['download_update_existing']=='1' && $_POST['config']['download_expire']!==$_POST['download_expire_old']) {
+        if(in_array($_POST['config']['download_expire'], array('0',''))) {
+            $GLOBALS['db']->update('CubeCart_downloads', array('expire' => 0));
+        } else if($_POST['config']['download_expire']>0) {
+            $new_expiry = ($_POST['download_expire_old']=='0') ? time()+$_POST['config']['download_expire'] : $_POST['config']['download_expire'];
+            $old_expiry = $_POST['download_expire_old'];
+            $query = 'UPDATE `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_downloads` SET `expire` = `expire` + '.(string)$new_expiry.' - '.(string)$old_expiry;
+            $GLOBALS['db']->misc($query);
+        }
+    }
+
     $config_new = $_POST['config'];
     if($config_old['default_currency']!==$config_new['default_currency']) {
         $GLOBALS['main']->successMessage($lang['settings']['currency_changed']);

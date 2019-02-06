@@ -462,7 +462,7 @@
     <string name="title_coupon_create" introduced="5.0.0"><![CDATA[Create Promotional Code]]></string>
     <string name="title_coupon_detail" introduced="5.0.0"><![CDATA[Code Details]]></string>
     <string name="title_coupon_edit" introduced="5.0.0"><![CDATA[Edit Promotional Code]]></string>
-    <string name="title_coupon_expires" introduced="5.0.0"><![CDATA[Expiry Time]]></string>
+    <string name="title_coupon_expires" introduced="5.0.0"><![CDATA[Expires]]></string>
     <string name="title_coupon_limits" introduced="5.0.0"><![CDATA[Promotional Code Limits]]></string>
     <string name="title_coupon_convert" introduced="6.0.0"><![CDATA[Gift Card Conversion]]></string>
     <string name="coupon_convert_desc" introduced="6.0.0"><![CDATA[To use a promotional code as a gift card (keeping a balance for multiple uses) it is possible to do so by assigning an order number to it. It must be a real order number with a status of &quot;Processing&quot; or &quot;Complete&quot;.]]></string>
@@ -1883,6 +1883,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="digital_attempts" introduced="5.0.0"><![CDATA[Maximum download attempts]]></string>
     <string name="digital_custom_root" introduced="5.0.0"><![CDATA[Custom root file path]]></string>
     <string name="digital_expiry" introduced="5.0.0"><![CDATA[Download expiry time (in seconds)]]></string>
+    <string name="download_update_existing" introduced="5.0.0"><![CDATA[Update expiry time for existing downloads]]></string>
     <string name="disable_checkout_terms" introduced="5.0.0"><![CDATA[Disable terms &amp; conditions checkbox on checkout]]></string>
     <string name="disable_mobile_skin" introduced="5.1.1"><![CDATA[Disable mobile skin]]></string>
     <string name="dispatch_to_non_invoice" introduced="5.0.0"><![CDATA[Allow delivery to non-invoice address]]></string>

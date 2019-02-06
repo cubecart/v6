@@ -256,6 +256,7 @@
       <fieldset>
          <legend>{$LANG.settings.title_digital}</legend>
          <div><label for="download_expire">{$LANG.settings.digital_expiry}</label><span><input name="config[download_expire]" id="download_expire" type="text" class="textbox number" value="{$CONFIG.download_expire}"> {$LANG.common.blank_to_disable}</span></div>
+         <div><label for="download_update_existing">{$LANG.settings.download_update_existing}</label><span><input name="download_update_existing" id="download_update_existing" type="hidden" class="toggle" value="0"><input name="download_expire_old" type="hidden" value="{$CONFIG.download_expire}"></span></div>
          <div><label for="download_count">{$LANG.settings.digital_attempts}</label><span><input name="config[download_count]" id="download_count" type="text" class="textbox number" value="{$CONFIG.download_count}"> {$LANG.common.blank_to_disable}</span></div>
       </fieldset>
       <fieldset>
