@@ -189,12 +189,10 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
     $GLOBALS['db']->update('CubeCart_currency', array('value' => 1), array('code' => $_POST['config']['default_currency']));
 
     ## If language has changed (Upadted from https://github.com/cubecart/v6/issues/2162)
-    $existing_defaults = $GLOBALS['db']->select('CubeCart_documents', 'doc_lang', array('doc_parent_id' => 0), false, 1);
-    if($existing_defaults[0]['doc_lang'] !== $config_new['default_language']) {
-        $wasLang = $config_old['default_language'];
-        $nowLang = $config_new['default_language'];
+    $wasLang = $config_old['default_language'];
+    $nowLang = $config_new['default_language'];
+    if($wasLang !== $nowLang) {
         $make_child = 0;
-
         $docs = $GLOBALS['db']->select('CubeCart_documents',false,array('doc_lang' => $wasLang, 'doc_parent_id' => 0));
         if($docs){
             foreach($docs as $doc){
@@ -213,9 +211,9 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
                         $GLOBALS['db']->update('CubeCart_documents', array('doc_parent_id' => $make_parent), array('doc_id' => $make_child));
                     }
                 }
+                unset($to_have_new_parent, $make_parent, $make_child);
             }
         }
-        $GLOBALS['db']->update('CubeCart_documents', array('doc_lang' => $nowLang), array('doc_parent_id' => 0));
     }
 
     $updated = ($GLOBALS['config']->set('config', '', $config_new)) ? true : false;

@@ -153,7 +153,7 @@ if (isset($_GET['action'])) {
         if (($document = $GLOBALS['db']->select('CubeCart_documents', false, array('doc_id' => (int)$_GET['doc_id']))) !== false) {
             $data = $document[0];
             if (strtolower($_GET['action']) == 'translate') {
-                $document[0]['doc_parent_id'] = $document[0]['doc_id'];
+                $data['doc_parent_id'] = $document[0]['doc_parent_id'] = $document[0]['doc_id'];
                 unset($data['doc_id']);
             } else {
                 $data['link']['delete'] = currentPage(array('doc_id', 'action'), array('delete' => $data['doc_id'], 'token' => SESSION_TOKEN));
