@@ -88,7 +88,7 @@ jQuery(document).ready(function() {
         }
     });
 
-    $(".autosubmit select").not('.nosubmit').change(function() {
+    $(".autosubmit select, .autosubmit input[type=radio]").not('.nosubmit').change(function() {
         $(this).parents(".autosubmit").submit();
     });
     $('.icon-submit').each(function() {
@@ -403,9 +403,11 @@ jQuery(document).ready(function() {
     if(Foundation.utils.is_small_only()) {
         grid_view(0);
         $('#content_checkout_medium_up').remove();
+        $("[checked]").prop("checked",true);
     }
     if(Foundation.utils.is_medium_up()) {
         $('#content_checkout_small').remove();
+        $("[checked]").prop("checked",true);
     }
 });
 
