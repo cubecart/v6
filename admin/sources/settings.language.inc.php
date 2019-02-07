@@ -231,7 +231,16 @@ if (isset($_GET['export'])) {
             $GLOBALS['main']->errorMessage($lang['translate']['error_language_create']);
         }
     } elseif (isset($_POST['status']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
-        if ($GLOBALS['config']->set('languages', false, $_POST['status'])) {
+        // We don't allow the default language to be disabled
+        $default_lang = $GLOBALS['config']->get('config', 'default_language');
+        $before = $GLOBALS['config']->set('languages', false, $_POST['status']);
+        if($_POST['status'][$default_lang]=='0') {
+            $_POST['status'][$default_lang] = '1';
+            $GLOBALS['main']->errorMessage(sprintf($lang['translate']['error_lang_status_fixed'],$default_lang));
+        }
+        $GLOBALS['config']->set('languages', false, $_POST['status']);
+        $after = $GLOBALS['config']->set('languages', false, $_POST['status']);
+        if (md5($before) !== md5($after)) {
             $GLOBALS['main']->successMessage($lang['translate']['notify_language_status']);
         } else {
             $GLOBALS['main']->errorMessage($lang['translate']['error_language_status']);

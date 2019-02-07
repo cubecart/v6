@@ -2279,6 +2279,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="error_language_delete" introduced="5.0.0"><![CDATA[Failed to delete language.]]></string>
     <string name="error_language_import_failed" introduced="5.0.0"><![CDATA[Failed to import language.]]></string>
     <string name="error_language_status" introduced="5.0.0"><![CDATA[Failed to update language status.]]></string>
+    <string name="error_lang_status_fixed" introduced="6.2.3"><![CDATA[%s can't be disabled or deleted as it is the default language used for the store. Please change it first in the stores settings.]]></string>
     <string name="error_translation_create" introduced="5.0.0"><![CDATA[Failed to create translation.]]></string>
     <string name="error_translation_delete" introduced="5.0.0"><![CDATA[Failed to delete translation.]]></string>
     <string name="error_translation_update" introduced="5.0.0"><![CDATA[Failed to update translation.]]></string>
