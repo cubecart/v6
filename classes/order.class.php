@@ -491,8 +491,8 @@ class Order
                         break;
                     }
                     // Compose the Order Confirmation email to the customer
-                    $already_semt = $GLOBALS['config']->get('Print_Order_Form', 'confirmation_email')=='1' ? true : false;
-                    if (!$already_semt && $this->_email_enabled && ($content = $mailer->loadContent('cart.order_confirmation', $order_summary['lang'])) !== false) {
+                    $already_sent = $GLOBALS['config']->get('Print_Order_Form', 'confirmation_email')=='1' ? true : false;
+                    if (!$already_sent && $this->_email_enabled && ($content = $mailer->loadContent('cart.order_confirmation', $order_summary['lang'])) !== false) {
                         $this->assignOrderDetails();
                         $mailer->sendEmail($this->_order_summary['email'], $content);
                     }
