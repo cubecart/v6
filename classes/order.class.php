@@ -1279,6 +1279,7 @@ class Order
             } else {
                 $product = $GLOBALS['catalogue']->getProductData($item['id'], 1, false, 10, 1, false, $item['options_identifier']);
             }
+
             $record = array(
                 'cart_order_id'  => $this->_order_id,
                 'product_id'  => (int)$item['id'],
@@ -1286,6 +1287,7 @@ class Order
                 'cost_price'   => number_format((float)$item['cost_price'], 2, '.', ''),
                 'price'    => (!isset($item['certificate'])) ? $item['total_price_each'] : $item['certificate']['value'],
                 'tax' => $item['tax_each']['amount'],
+                'tax_percent' => $item['tax_each']['tax_percent'],
                 'product_code'  => (!empty($product['product_code'])) ? $product['product_code'] : $item['product_code'],
                 'name'    => (!empty($product['name'])) ? $product['name'] : $item['name'],
                 'digital'   => (!empty($product['digital']) || !empty($product['digital_path'])) ? 1 : 0,
@@ -1297,11 +1299,13 @@ class Order
                 'product_options' => $this->serializeOptions($item['options'], $item['id'])
             );
 
+
             foreach ($GLOBALS['hooks']->load('class.order.products.add.pre') as $hook) {
                 include $hook;
             }
 
             $insert_id = $GLOBALS['db']->insert('CubeCart_order_inventory', $record);
+
             // Taxes
             $tax_on = ($GLOBALS['config']->get('config', 'basket_tax_by_delivery')) ? 'delivery_address' : 'billing_address';
             $tax_state_id = is_numeric($this->_basket[$tax_on]['state_id']) ? $this->_basket[$tax_on]['state_id'] : getStateFormat($this->_basket[$tax_on]['state_id'], 'name', 'id');

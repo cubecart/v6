@@ -427,12 +427,13 @@ class Tax
                     $this->_total_tax_add				+= $amount;
                 }
             }
-            return array('amount' => $amount, 'tax_inclusive' => $tax_inclusive, 'tax_name' => 'inherited');
+            return array('amount' => $amount, 'tax_inclusive' => $tax_inclusive, 'tax_name' => 'inherited', 'tax_percent' => $percent);
         }
         if (is_array($this->_tax_table) && !empty($this->_tax_table)) {
             foreach ($this->_tax_table as $tax_id => $tax) {
                 if ($tax[$type] && $tax['type'] == $tax_type && in_array($tax['county_id'], array($state, 0))) {
                     $tax_name = $tax['name'];
+                    $percent = $tax['percent'];
                     switch ($tax_inclusive) {
                         case true:
                             ## Already includes tax - but how much?
@@ -460,7 +461,7 @@ class Tax
                     }
                 }
             }
-            return array('amount' => $amount, 'tax_inclusive' => $tax_inclusive, 'tax_name' => $tax_name);
+            return array('amount' => $amount, 'tax_inclusive' => $tax_inclusive, 'tax_name' => $tax_name, 'tax_percent' => $percent);
         }
         return false;
     }
