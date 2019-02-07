@@ -1379,6 +1379,8 @@ class Order
             'weight' => $this->_basket['weight'],
             'ship_product' => $this->_basket['shipping']['product'],
             'shipping'  => ($this->_basket['shipping']['value']>0) ? $this->_basket['shipping']['value'] : '0.00',
+            'shipping_tax'  => $this->_basket['shipping']['tax']['amount'],
+            'shipping_tax_rate'  => $this->_basket['shipping']['tax']['tax_percent'],
             # Misc
             'phone'   => $phone,
             'mobile'   => $mobile,

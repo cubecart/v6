@@ -696,6 +696,8 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_summary` (
 	`subtotal` DECIMAL(16,2) NOT NULL DEFAULT '0.00',
 	`discount` DECIMAL(16,2) NOT NULL DEFAULT '0.00',
 	`shipping` DECIMAL(16,2) NOT NULL DEFAULT '0.00',
+	`shipping_tax` decimal(16,2) NOT NULL DEFAULT '0.00',
+  	`shipping_tax_rate` decimal(7,4) NOT NULL DEFAULT '0.0000',
 	`total_tax` DECIMAL(16,2) NOT NULL DEFAULT '0.00',
 	`total` DECIMAL(16,2) NOT NULL DEFAULT '0.00',
 	`offline_capture` BLOB NULL,
