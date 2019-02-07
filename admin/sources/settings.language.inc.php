@@ -19,7 +19,9 @@ global $lang;
 
 if (isset($_GET['delete']) && Admin::getInstance()->permissions('settings', CC_PERM_DELETE)) {
     ## Purge database
-    if ($GLOBALS['language']->deleteLanguage($_GET['delete'])) {
+    if($_GET['delete']==$GLOBALS['config']->get('config', 'default_language')) {
+        $GLOBALS['main']->errorMessage(sprintf($lang['translate']['error_lang_status_fixed'],$_GET['delete']));
+    } else if ($GLOBALS['language']->deleteLanguage($_GET['delete'])) {
         $GLOBALS['main']->successMessage($lang['translate']['notify_language_delete']);
     } else {
         $GLOBALS['main']->errorMessage($lang['translate']['error_language_delete']);
