@@ -691,7 +691,9 @@
       <fieldset>
          <legend>{$LANG.settings.title_seo_meta_data}</legend>
          <div><label for="seo_meta_title">{$LANG.settings.seo_meta_title}</label><span><input name="translate[seo_meta_title]" id="seo_meta_title" class="textbox" type="text" value="{$TRANS.seo_meta_title}"></span></div>
-         <div><label for="seo_path">{$LANG.settings.seo_path}</label><span><input name="seo_path" id="seo_path" class="textbox" type="text" value="{$TRANS.seo_path}"></span></div>
+         {* Left for future development
+            <div><label for="seo_path">{$LANG.settings.seo_path}</label><span><input name="seo_path" id="seo_path" class="textbox" type="text" value="{$TRANS.seo_path}"></span></div>
+         *}
          <div><label for="seo_meta_keywords">{$LANG.settings.seo_meta_keywords}</label><span><textarea name="translate[seo_meta_keywords]" id="seo_meta_keywords" class="textbox">{$TRANS.seo_meta_keywords}</textarea></span></div>
          <div><label for="seo_meta_description">{$LANG.settings.seo_meta_description}</label><span><textarea name="translate[seo_meta_description]" id="prod_seo_description" class="textbox">{$TRANS.seo_meta_description}</textarea></span></div>
       </fieldset>

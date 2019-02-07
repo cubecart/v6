@@ -638,8 +638,7 @@ if (isset($_GET['action'])) {
             httpredir(currentPage(array('translation_id'), array('action' => 'edit')), 'translate');
         }
     } elseif (strtolower($_GET['action']) == 'translate' && isset($_GET['product_id'])) {
-
-            // Check to see if translation space is available
+        // Check to see if translation space is available
         if (!isset($_GET['translation_id']) && $GLOBALS['language']->fullyTranslated('product', (int)$_GET['product_id'])) {
             $GLOBALS['main']->errorMessage($lang['common']['all_translated']);
             httpredir('?_g=products');
@@ -649,6 +648,7 @@ if (isset($_GET['action'])) {
             $GLOBALS['gui']->addBreadcrumb($product[0]['name'], currentPage(array('translate_id'), array('action' => 'edit')));
         }
         $GLOBALS['gui']->addBreadcrumb($lang['translate']['title_translate'], currentPage());
+        $GLOBALS['main']->addTabControl($lang['settings']['tab_seo'], 'seo');
 
         if (isset($_GET['translation_id'])) {
             $translation = $GLOBALS['db']->select('CubeCart_inventory_language', false, array('translation_id' => (int)$_GET['translation_id'], 'product_id' => (int)$_GET['product_id']), array('language' => 'ASC'));
