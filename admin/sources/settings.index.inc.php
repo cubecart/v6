@@ -193,10 +193,10 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
     $nowLang = $config_new['default_language'];
     if($wasLang !== $nowLang) {
         $make_child = 0;
-        $docs = $GLOBALS['db']->select('CubeCart_documents',false,array('doc_lang' => $wasLang, 'doc_parent_id' => 0));
+        $docs = $GLOBALS['db']->select('CubeCart_documents', false, array('doc_lang' => $wasLang, 'doc_parent_id' => 0));
         if($docs){
             foreach($docs as $doc){
-                $children = $GLOBALS['db']->select('CubeCart_documents', array('doc_id', 'doc_lang'), array('doc_parent_id' => $doc['doc_id']));
+                $children = $GLOBALS['db']->select('CubeCart_documents', false, array('doc_parent_id' => $doc['doc_id']));
                 if($children){
                     foreach($children as $child){
                         $to_have_new_parent[] = $child['doc_id'];
