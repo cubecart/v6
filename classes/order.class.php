@@ -491,6 +491,7 @@ class Order
                         break;
                     }
                     // Compose the Order Confirmation email to the customer
+                    $this->_email_enabled = $GLOBALS['config']->get('Print_Order_Form', 'confirmation_email')=='1' ? false : true;
                     if ($this->_email_enabled && ($content = $mailer->loadContent('cart.order_confirmation', $order_summary['lang'])) !== false) {
                         $this->assignOrderDetails();
                         $mailer->sendEmail($this->_order_summary['email'], $content);
