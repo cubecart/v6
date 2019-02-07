@@ -48,7 +48,7 @@ if (isset($_GET['autoupdate']) && $_GET['autoupdate']) {
 $GLOBALS['cache'] = Cache::getInstance();
 if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
     $GLOBALS['cache']->clear();
-  
+
     // Remove cached skins
     $skin_cached = glob(CC_CACHE_DIR . 'skin/*.*');
     if ($skin_cached) {
@@ -57,7 +57,7 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
         }
         unset($skin_cached);
     }
-  
+
     // Remove all other cache
     $cached = glob(CC_CACHE_DIR . '*.*');
     if ($cached) {
@@ -291,7 +291,7 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
       'fail' => $strings['common']['not_installed']
     )
   );
-  
+
     $GLOBALS['smarty']->assign('CHECKS', $checks);
     $GLOBALS['smarty']->assign('MODE_COMPAT', true);
 } else {
@@ -328,7 +328,7 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
         // Upgrade Main Configuration
         include $global_file;
         $GLOBALS['db'] = Database::getInstance($glob);
-    
+
         // Move to scripts folder?
         $config_string = $db->select('CubeCart_config', array(
       'array'
@@ -336,7 +336,7 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
       'name' => 'config'
     ));
         $main_config   = json_decode(base64_decode($config_string[0]['array']), true);
-    
+
         if ($_SESSION['setup']['config_update'] && is_array($main_config)) {
             // Remove unused keys
             $dead_keys = array(
@@ -430,7 +430,7 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
         'timezone' => 'time_zone',
         'floodControl' => 'recaptcha'
       );
-      
+
             ## Remap store country from id to numcode
             if (isset($main_config['siteCountry']) && $main_config['siteCountry'] > 0) {
                 $country                    = $db->select('CubeCart_geo_country', array(
@@ -440,7 +440,7 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
         ));
                 $main_config['siteCountry'] = $country[0]['numcode'];
             }
-      
+
             ## Parse
             $new_config = array();
             foreach ($main_config as $key => $value) {
@@ -454,7 +454,7 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
                     }
                 }
             }
-      
+
             if ($new_config['recaptcha'] == 'recaptcha') {
                 $new_config['recaptcha'] = true;
             }
@@ -473,7 +473,7 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
             if (!file_exists('language/' . $default_language . '.xml')) {
                 $default_language = 'en-GB';
             }
-      
+
             ## Redefine the default skin
             $reset      = array(
         'skin_folder' => 'foundation',
@@ -489,7 +489,7 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
       );
             $new_config = array_merge($defaults, $new_config);
             ksort($new_config);
-      
+
             // Write new config to database
             $db->update('CubeCart_config', array(
         'array' => base64_encode(json_encode($new_config))
@@ -513,7 +513,7 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
         $GLOBALS['smarty']->assign('MODE_COMPLETE', true);
         // delete setup folder on admin login
         setcookie('delete_setup', true, time()+7200, '/');
-    
+
         //Attempt admin file and folder rename
         if (!isset($_SESSION['setup']['admin_rename']) && (file_exists('../admin') || file_exists('../admin.php'))) {
             $adminFolder = 'admin_'.randomString(6);
@@ -522,7 +522,7 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
 
             rename('../'.$glob['adminFolder'], '../'.$adminFolder);
             rename('../'.$glob['adminFile'], '../'.$adminFile);
-      
+
             if (file_exists('../'.$adminFolder)) {
                 $update_config = true;
             } else {
@@ -572,7 +572,7 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
                 chmod($global_file, 0444);
             }
         }
-    
+
         /* Truncate CubeCart_system_error_log table. There are a number of failed SQL queries on upgrade depending
          * on to/from version. We need a clean slate to detect operational errors.
          */
@@ -611,7 +611,7 @@ function build_logos($image_name = '')
     'emails' => $logo_path,
     'invoices' => $logo_path
   );
-  
+
     $db->insert('CubeCart_config', array(
     'name' => 'logos',
     'array' => base64_encode(json_encode($logo_config))
