@@ -343,6 +343,19 @@ class User
         return false;
     }
 
+    public function addressCompare($address1, $address2) {
+        $allowed_keys = array('line1','line2','town','postcode','state_id','state','state_abbrev','country','country_id','country_iso','country_name');
+        $address1_filtered = array();
+        foreach($address1 as $key => $value) {
+            if(in_array($key, $allowed_keys)) $address1_filtered[$key] = $value;
+        }
+        $address2_filtered = array();
+        foreach($address2 as $key => $value) {
+            if(in_array($key, $allowed_keys)) $address2_filtered[$key] = $value;
+        }
+        return md5(serialize(array_merge($address1_filtered, $address2_filtered)));
+    }
+
     /**
      * Change a user password
      *
