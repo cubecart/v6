@@ -490,8 +490,15 @@ class Order
                         $complete = false;
                         break;
                     }
+                    $already_sent = false;
+                    if(!empty($order_summary['gateway']) && file_exists(CC_ROOT_DIR.'/modules/gateway/'.$order_summary['gateway'].'/gateway.class.php')) {
+                        require_once(CC_ROOT_DIR.'/modules/gateway/'.$order_summary['gateway'].'/gateway.class.php');
+                        $gateway = new Gateway($GLOBALS['config']->get($order_summary['gateway']));
+                        if(method_exists($gateway, 'processingEmail')) {
+                            $already_sent = $gateway->processingEmail($order_summary['cart_order_id']);
+                        }
+                    }
                     // Compose the Order Confirmation email to the customer
-                    $already_sent = $GLOBALS['config']->get('Print_Order_Form', 'confirmation_email')=='1' ? true : false;
                     if (!$already_sent && $this->_email_enabled && ($content = $mailer->loadContent('cart.order_confirmation', $order_summary['lang'])) !== false) {
                         $this->assignOrderDetails();
                         $mailer->sendEmail($this->_order_summary['email'], $content);
