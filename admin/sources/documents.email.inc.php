@@ -600,7 +600,7 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
         $lang_list = $GLOBALS['language']->listLanguages();
         $max_translations = count($lang_list);
         foreach ($email_types as $key => $values) {
-            $translations = $GLOBALS['db']->select('CubeCart_email_content', array('content_id', 'language'), array('content_type' => $key), array('language' => 'ASC'));
+            $translations = $GLOBALS['db']->select('CubeCart_email_content', array('description','content_id', 'language'), array('content_type' => $key), array('language' => 'ASC'));
             if ($translations) {
                 // check language is installed
                 $enabled_translations = 0;
@@ -610,6 +610,9 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
                         $enabled_translations++;
                         $translation['edit'] = currentPage(null, array('type' => 'content', 'action' => 'edit', 'content_id' => $translation['content_id']));
                         $content['translations'][] = $translation;
+                    }
+                    if(empty($translation['description']) || $translation['description']!==$key) {
+                        $GLOBALS['db']->update('CubeCart_email_content', array('description' => $values['description']), array('content_type' => $key));
                     }
                 }
             }

@@ -5,3 +5,4 @@ ALTER TABLE `CubeCart_order_inventory` ADD `cost_price` DECIMAL(16,2) NOT NULL A
 ALTER TABLE `CubeCart_order_inventory` ADD `tax_percent` DECIMAL(7,4 ) NOT NULL DEFAULT '0.0000' AFTER `tax`; #EOQ
 ALTER TABLE `CubeCart_order_summary` ADD `shipping_tax` DECIMAL(16,2) NOT NULL DEFAULT '0.00' AFTER `shipping`; #EOQ
 ALTER TABLE `CubeCart_order_summary` ADD `shipping_tax_rate` DECIMAL(7,4) NOT NULL DEFAULT '0.0000' AFTER `shipping_tax`; #EOQ
+ALTER TABLE `CubeCart_email_content` ADD `description` VARCHAR(255) NOT NULL DEFAULT '' AFTER `content_id`; #EOQ

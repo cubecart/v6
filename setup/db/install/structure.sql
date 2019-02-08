@@ -305,6 +305,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_downloads` (
 
 CREATE TABLE IF NOT EXISTS `CubeCart_email_content` (
 	`content_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`description` VARCHAR(255) NOT NULL DEFAULT '',
 	`content_type` VARCHAR(70) NOT NULL,
 	`language` VARCHAR(5) NOT NULL,
 	`subject` VARCHAR(250) NOT NULL,
