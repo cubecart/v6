@@ -1005,7 +1005,8 @@ class Cubecart
                 // Handle user data, and put into the basket array
                 $this->_basket['customer'] = $_POST['user'];
 
-                $old_addresses = md5(serialize(array_merge($this->_basket['billing_address'], $this->_basket['delivery_address'])));
+                $intersect_keys = array('line1','line2','town','postcode','state_id','state','state_abbrev','country','country_id','country_iso','country_name');
+				$old_addresses = md5(serialize(array_merge(array_intersect($intersect_keys, $this->_basket['billing_address']),array_intersect($intersect_keys, $this->_basket['delivery_address']))));
 
                 $this->_basket['billing_address'] = array(
                     'user_defined' => true,
@@ -1070,7 +1071,7 @@ class Cubecart
 
                 $this->_basket['delivery_address']['is_billing'] = (isset($_POST['delivery_is_billing'])) ? true : false;
 
-                $new_addresses = md5(serialize(array_merge($this->_basket['billing_address'], $this->_basket['delivery_address'])));
+                $new_addresses = md5(serialize(array_merge(array_intersect($intersect_keys, $this->_basket['billing_address']),array_intersect($intersect_keys, $this->_basket['delivery_address']))));
 
                 if ($new_addresses!==$old_addresses) {
                     // Set notice to prevent proceed to payment screen
