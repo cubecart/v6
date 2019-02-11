@@ -347,13 +347,13 @@ class User
         $allowed_keys = array('line1','line2','town','postcode','state_id','state','state_abbrev','country','country_id','country_iso','country_name');
         $address1_filtered = array();
         foreach($address1 as $key => $value) {
-            if(in_array($key, $allowed_keys)) $address1_filtered[$key] = $value;
+            if(in_array($key, $allowed_keys)) $address1_filtered[$key] = strtolower($value);
         }
         $address2_filtered = array();
         foreach($address2 as $key => $value) {
-            if(in_array($key, $allowed_keys)) $address2_filtered[$key] = $value;
+            if(in_array($key, $allowed_keys)) $address2_filtered[$key] = strtolower($value);
         }
-        return md5(serialize(array_merge($address1_filtered, $address2_filtered)));
+        return md5(serialize($address1_filtered).serialize($address2_filtered));
     }
 
     /**
