@@ -13,7 +13,10 @@
 if (!defined('CC_INI_SET')) {
     die('Access Denied');
 }
-require 'phpMailer/PHPMailerAutoload.php';
+
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
+require 'PHPMailer/src/Exception.php';
 
 /**
  * Language controller
@@ -22,7 +25,7 @@ require 'phpMailer/PHPMailerAutoload.php';
  * @since 5.0.0
  */
 
-class Mailer extends PHPMailer
+class Mailer extends PHPMailer\PHPMailer\PHPMailer
 {
     private $_debugger;
 
