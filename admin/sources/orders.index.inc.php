@@ -282,7 +282,8 @@ if (isset($_GET['action'])) {
         }
         if (is_array($tax_by_country)) {
             foreach ($tax_by_country as $numcode => $taxes) {
-                $country = getCountryFormat($numcode);
+                $county = ($taxes[0]['county_id']>0) ? getStateFormat($taxes[0]['county_id']) : 'All';
+                $country = getCountryFormat($numcode).' ('.$county.')';
                 $smarty_data['select_tax'][$country] = $taxes;
             }
             $GLOBALS['smarty']->assign('SELECT_TAX', $smarty_data['select_tax']);
