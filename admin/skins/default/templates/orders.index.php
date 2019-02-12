@@ -414,7 +414,7 @@
                </tr>
                <tr class="inline-add">
                   <th colspan="3">
-                     <select class="textbox not-empty" rel="tax_id">
+                     <select class="not-empty" rel="tax_id">
                         <option value="">{$LANG.form.please_select}</option>
                         {if isset($SELECT_TAX)}
                         {foreach from=$SELECT_TAX item=country key=taxes}
