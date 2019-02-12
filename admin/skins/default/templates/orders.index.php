@@ -354,7 +354,7 @@
                   <td align="right">
                      <input type="text" name="inv[{$product.id}][price]" id="{$product.id}_price" class="textbox number-right lineprice original-fix" original="{$product.line_price_less_options}" value="{$product.line}">
                   </td>
-                  <td align="right"><input type="text" name="inv[{$product.id}][line_price]" class="textbox number-right subtotal" value="{$product.price_total}"></td>
+                  <td align="right"><input type="text" name="inv[{$product.id}][line_price]" class="textbox number-right subtotal goods" value="{$product.price_total}"></td>
                   <td align="center"><a href="#{$product.id}" class="remove" title="{$LANG.notification.confirm_delete}" name="inv_remove" rel="{$PRODUCT.id}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
                </tr>
                {/foreach}
@@ -395,7 +395,7 @@
                </tr>
                <tr class="update-subtotal">
                   <th colspan="3">{$LANG.basket.shipping}</th>
-                  <td><input type="text" id="shipping" name="summary[shipping]" class="textbox number-right lineprice" value="{$SUMMARY.shipping}"></td>
+                  <td><input type="text" id="shipping" name="summary[shipping]" class="textbox number-right lineprice shipping" value="{$SUMMARY.shipping}"></td>
                   <td>&nbsp;</td>
                </tr>
                {if isset($LIST_TAXES)}
@@ -414,13 +414,13 @@
                </tr>
                <tr class="inline-add">
                   <th colspan="3">
-                     <select class="not-empty" rel="tax_id">
+                     <select class="not-empty tax-chooser" rel="tax_id">
                         <option value="">{$LANG.form.please_select}</option>
                         {if isset($SELECT_TAX)}
                         {foreach from=$SELECT_TAX item=country key=taxes}
                         <optgroup label="{$taxes}">
                            {foreach from=$country item=tax}
-                           <option value="{$tax.id}">{$tax.type_name}: {$tax.display}</option>
+                           <option value="{$tax.id}" data-percent="{$tax.tax_percent}" data-shipping="{$tax.shipping}" data-goods="{$tax.goods}">{$tax.type_name}: {$tax.display}</option>
                            {/foreach}
                         </optgroup>
                         {/foreach}
