@@ -12,7 +12,7 @@
 {if $IS_USER}
 <h2>{$LANG.account.your_downloads}</h2>
 {$PAGINATION}
-<table>
+<table class="show-for-medium-up">
    <thead>
       <tr>
          <td>{$LANG.account.download_filename}</td>
@@ -47,6 +47,32 @@
       {/foreach}
    </tbody>
 </table>
+<div class="show-for-small-only">
+<hr>
+{foreach from=$DOWNLOADS item=download}
+      <div>
+         {if $download.deleted}
+         {$LANG.account.download_deleted}
+         {else}
+         
+            <h5>{$download.name}</h5>
+            {if $download.active}
+            <a href="{$STORE_URL}/index.php?_a=download&accesskey={$download.accesskey}" title="{$LANG.common.download}"><svg class="icon"><use xlink:href="#icon-download"></use></svg> {$download.file_info.filename}</a>
+            {else}
+            <svg class="icon"><use xlink:href="#icon-download"></use></svg> <del>{$download.file_info.filename}</del>
+            {/if}
+         <br>{$LANG.account.download_expires}: {if $download.active}{$download.expires}{else}{$LANG.account.download_expired}{/if}<br>{$LANG.account.download_count}: {$download.downloads}/{$MAX_DOWNLOADS}
+         <div class="row">
+         <div class="small-6 columns"><a href="{$STORE_URL}/index.php?_a=vieworder&cart_order_id={$download.cart_order_id}" class="button tiny expand thinmarg-bottom" title="{$LANG.common.view_details}">{$LANG.common.view_details}</a></div>
+         <div class="small-6 columns">
+            {if $download.active}<a href="{$STORE_URL}/index.php?_a=download&accesskey={$download.accesskey}" class="button tiny expand" title="{$LANG.common.view_details}">{$LANG.common.download}</a>{/if}</div></div>
+         {/if}
+         </div>
+         <hr>
+      {foreachelse}
+      <div>{$LANG.notification.no_downloads_available}</div>
+      {/foreach}
+</div>
 {$PAGINATION}
 {else}
 <form action="{$VAL_SELF}" method="post">
