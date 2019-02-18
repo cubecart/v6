@@ -356,7 +356,7 @@ $(document).ready(function() {
                                 root: "/",
                                 script: "./" + t,
                                 group: '1',
-                                name: 'image',
+                                name: 'imageset',
                                 unique: false
                             });
                         }
