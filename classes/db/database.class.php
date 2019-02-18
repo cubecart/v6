@@ -568,6 +568,7 @@ class Database_Contoller
      */
     public function query($query, $maxRows = false, $page = 0, $cache = true)
     {
+        if(empty($query)) { return false;}
         // For old fashioned 'hand written' queries
         $limit = '';
 
