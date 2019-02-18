@@ -169,7 +169,7 @@ if (isset($_GET['action'])) {
     }
     $GLOBALS['smarty']->assign('DISCOUNTS', $smarty_data['discounts']);
 
-    $incexc_choices = array('include' => 'coupon_include', 'exclude' => 'coupon_exclude');
+    $incexc_choices = array('include' => 'coupon_include', 'exclude' => 'coupon_exclude', 'shipping_only' => 'coupon_shipping_only');
     foreach ($incexc_choices as $index => $incexc_type) {
         $smarty_data['incexc'][] = array(
             'index'  => $index,

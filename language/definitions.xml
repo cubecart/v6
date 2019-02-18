@@ -269,6 +269,7 @@
     <string name="coupon_no_shipping" introduced="5.1.5"><![CDATA[When specifying products, promotional code will NOT apply to shipping.]]></string>
     <string name="coupon_include" introduced="5.1.5"><![CDATA[Promotional code applies to ONLY above products]]></string>
     <string name="coupon_exclude" introduced="5.1.5"><![CDATA[Promotional code applies to all EXCEPT above products]]></string>
+    <string name="coupon_shipping_only" introduced="6.2.3"><![CDATA[Promotional code excludes all products]]></string>
     <string name="customer_reviews" introduced="5.0.0"><![CDATA[Customer Reviews]]></string>
     <string name="delete_option_disabled" introduced="5.0.0"><![CDATA[This option can not be deleted as it is part of an option set. Please disable or remove option set.]]></string>
     <string name="delimiter" introduced="5.0.0"><![CDATA[Delimiter]]></string>

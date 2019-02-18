@@ -564,7 +564,7 @@ class Cart
                     }
                 }
 
-                if (is_array($qualifying_products) && count($qualifying_products)>0) {
+                if ($incexc!=='shipping_only' && is_array($qualifying_products) && count($qualifying_products)>0) {
                     foreach ($qualifying_products as $id) {
                         $product_ids[$id] = true;
                     }
@@ -1238,16 +1238,18 @@ class Cart
                         $product_count = 0;
                     }
             
-                    foreach ($this->basket['contents'] as $hash => $item) {
-                        if ($product_count==0 || $incexc == 'include' && in_array($item['id'], $products) || $incexc == 'exclude' && !in_array($item['id'], $products)) {
-                            if ($item['total_price_each']>0) {
-                                $subtotal += ($item['total_price_each'] * $item['quantity']);
+                    if($incexc!=='shipping_only') {
+                        foreach ($this->basket['contents'] as $hash => $item) {
+                            if ($product_count==0 || $incexc == 'include' && in_array($item['id'], $products) || $incexc == 'exclude' && !in_array($item['id'], $products)) {
+                                if ($item['total_price_each']>0) {
+                                    $subtotal += ($item['total_price_each'] * $item['quantity']);
+                                }
+                                if ($item['tax_each']['amount']>0) {
+                                    $tax_total += $item['tax_each']['amount'];
+                                }
+                            } elseif ($item['total_price_each']>0) { // excluded items CAN be used against gift certificates!!
+                                $excluded_products[$hash] = $item;
                             }
-                            if ($item['tax_each']['amount']>0) {
-                                $tax_total += $item['tax_each']['amount'];
-                            }
-                        } elseif ($item['total_price_each']>0) { // excluded items CAN be used against gift certificates!!
-                            $excluded_products[$hash] = $item;
                         }
                     }
             
