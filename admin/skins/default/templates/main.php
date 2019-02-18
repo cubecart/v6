@@ -50,44 +50,7 @@
       <div style="display: none" id="val_admin_file">{$SKIN_VARS.admin_file}</div>
       <div style="display: none" id="val_skin_folder">{$SKIN_VARS.skin_folder}</div>
       <div style="display: none" id="val_admin_lang">{$val_admin_lang}</div>
-      <ol id="joyrideTour" style="display: none">
-         <li data-button="{$LANG.dashboard.ok_go}">
-            <h2>{$LANG.common.hi_casual} {$ADMIN_USER_FIRST_NAME}!</h2>
-            <p>{$LANG.dashboard.tour_welcome}</p>
-         </li>
-         <li data-id="nav_settings">
-            <h2>1. {$LANG.navigation.nav_settings_store}</h2>
-            <p>{$LANG.dashboard.tour_1}</p>
-         </li>
-         <li data-id="nav_categories">
-            <h2>2. {$LANG.navigation.nav_categories}</h2>
-            <p>{$LANG.dashboard.tour_2}</p>
-         </li>
-         <li data-id="nav_products">
-            <h2>3. {$LANG.navigation.nav_products}</h2>
-            <p>{$LANG.dashboard.tour_3}</p>
-         </li>
-         <li data-id="nav_marketplace">
-            <h2>4. {$LANG.navigation.nav_marketplace}</h2>
-            <p>{$LANG.dashboard.tour_4}</p>
-         </li>
-         <li data-id="nav_plugins">
-            <h2>5. {$LANG.navigation.nav_plugins}</h2>
-            <p>{$LANG.dashboard.tour_5}</p>
-         </li>
-         <li data-id="nav_docs">
-         <h2>6. {$LANG.dashboard.tour_6_title}</h2>
-            <p>{$LANG.dashboard.tour_6}</p>
-         </li>
-         <li data-id="clear_cache_master">
-            <h2>7. {$LANG.dashboard.tour_7_title}</h2>
-            <p>{$LANG.dashboard.tour_7}</p>
-         </li>
-         <li class="joyride_tour_end" data-button="{$LANG.common.close}">
-            <h2>{$LANG.common.thats_it}</h2>
-            {$LANG.dashboard.tour_end}
-         </li>
-      </ol>
+      {include file='templates/element.welcome_tour.php'}
       <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/jquery-1.11.2.min.js"></script>
       <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/jquery-ui-1.11.2.min.js"></script>
       <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/plugins.php?{$VERSION_HASH}"></script>
