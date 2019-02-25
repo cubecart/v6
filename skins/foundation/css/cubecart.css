@@ -203,6 +203,13 @@ ul.item_options {
 .skin_selector h4, .skin_selector h4 a {
     color: #fff;
 }
+#language-switch {
+    margin-top: 9px;
+}
+#language-switch li img {
+    padding-bottom: 2px;
+    margin-right: 5px;
+}
 #currency_menu, #language_menu {
 	position: absolute; 
 	z-index: 100; 
@@ -229,22 +236,6 @@ ul.item_options {
     padding-left: 0px;
     padding-right: 0px;
 }
-span.flag {
-    display: inline-block;
-	width: 16px;
-	height: 11px;
-	background:url(../images/sprite_flags.png) no-repeat
-}
-span.flag.flag-DE {background-position: 0 0}
-span.flag.flag-ES {background-position: 0 -11px}
-span.flag.flag-FR {background-position: 0 -22px}
-span.flag.flag-GB {background-position: 0 -33px}
-span.flag.flag-IL {background-position: 0 -44px}
-span.flag.flag-NL {background-position: 0 -55px}
-span.flag.flag-US {background-position: 0 -66px}
-span.flag.flag-TR {background-position: 0 -77px}
-span.flag.flag-DK {background-position: 0 -88px}
-span.flag.flag-PT {background-position: 0 -99px}
 .back-to-top {
 	position: fixed;
 	bottom: 4em;
