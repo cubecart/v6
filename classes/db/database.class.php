@@ -72,7 +72,7 @@ class Database_Contoller
     /**
      * Cache block functions
      *
-     * @var bool
+     * @var string (pipe separated)
      */
     protected $_cache_block_functions   = 'UNIX_TIMESTAMP()|NOW()';
 
