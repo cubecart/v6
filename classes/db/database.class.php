@@ -69,6 +69,12 @@ class Database_Contoller
      * @var bool
      */
     protected $_cached   = false;
+    /**
+     * Cache block functions
+     *
+     * @var bool
+     */
+    protected $_cache_block_functions   = 'UNIX_TIMESTAMP()|NOW()';
 
     /**
      * DB connection

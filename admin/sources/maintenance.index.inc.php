@@ -708,6 +708,7 @@ if (isset($database_result) && $database_result) {
         'cubecart_inventory' => array(
             'product_id' => 'PRIMARY',
             'status' => 'KEY',
+            'live_from' => 'KEY',
             'popularity' => 'KEY',
             'product_code' => 'FULLTEXT',
             'description' => 'FULLTEXT',

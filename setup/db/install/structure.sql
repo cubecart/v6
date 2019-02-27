@@ -407,6 +407,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_image_index` (
 CREATE TABLE IF NOT EXISTS `CubeCart_inventory` (
   `product_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Product ID',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT 'Status',
+  `live_from` int(11) NOT NULL DEFAULT '0',
   `product_code` varchar(60) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Product Code',
   `quantity` int(11) NOT NULL DEFAULT '1' COMMENT 'Quantity',
   `description` text COLLATE utf8_unicode_ci COMMENT 'Description',
@@ -450,6 +451,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_inventory` (
   `minimum_quantity` INT( 10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`product_id`),
   KEY `status` (`status`),
+  KEY `live_from` (`live_from`),
   KEY `popularity` (`popularity`),
   KEY `featured` (`featured`),
   FULLTEXT KEY `fulltext` (`product_code`,`description`,`name`)

@@ -1517,6 +1517,7 @@ class Catalogue
     public function outOfStockWhere($original = false, $label = false, $force = false)
     {
         $def = $original ? str_replace('WHERE ', '', $GLOBALS['db']->where('CubeCart_inventory', $original, $label)) : '';
+        $def .= ' AND `live_from` < UNIX_TIMESTAMP()';
 
         if ($GLOBALS['config']->get('config', 'hide_out_of_stock') && !Admin::getInstance()->is()) {
             $def .= ($force || $def) ? ' AND' : '';
@@ -1880,11 +1881,11 @@ class Catalogue
                     $match = sprintf("MATCH (%s) AGAINST('%s' %s)", implode(',', $indexes), $words, $mode);
                     $match_val = '0.5';
 
-                    $query = sprintf("SELECT I.*, %2\$s AS Relevance FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND (%2\$s) >= %4\$s %3\$s %5\$s %6\$s", $GLOBALS['config']->get('config', 'dbprefix'), $match, $whereString, $match_val, $order_string, $limit);
+                    $query = sprintf("SELECT I.*, %2\$s AS Relevance FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND I.live_from < UNIX_TIMESTAMP() AND (%2\$s) >= %4\$s %3\$s %5\$s %6\$s", $GLOBALS['config']->get('config', 'dbprefix'), $match, $whereString, $match_val, $order_string, $limit);
                     
                     if ($search = $GLOBALS['db']->query($query)) {
-                        $q2 = sprintf("SELECT COUNT(I.product_id) as count, %2\$s AS Relevance FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND (%2\$s) >= %4\$s %3\$s GROUP BY I.product_id %5\$s", $GLOBALS['config']->get('config', 'dbprefix'), $match, $whereString, $match_val, $order_string);
-                        $count = $GLOBALS['db']->query($q2, false, 0);
+                        $q2 = sprintf("SELECT COUNT(I.product_id) as count, %2\$s AS Relevance FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND I.live_from < UNIX_TIMESTAMP() AND (%2\$s) >= %4\$s %3\$s GROUP BY I.product_id %5\$s", $GLOBALS['config']->get('config', 'dbprefix'), $match, $whereString, $match_val, $order_string);
+                        $count = $GLOBALS['db']->query($q2);
                         $this->_category_count  = (int)count($count);
                         $this->_category_products = $search;
                         $this->_sort_by_relevance = true;
@@ -1937,11 +1938,11 @@ class Catalogue
                         $like = " AND (I.name ".$like_keyword." '".$regexp."' OR I.description ".$like_keyword." '".$regexp_desc."' OR I.product_code ".$like_keyword." '".$regexp."')";
                     }
 
-                    $q2 = "SELECT I.* FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_category_index` as CI INNER JOIN ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 ".$whereString.$like;
+                    $q2 = "SELECT I.* FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_category_index` as CI INNER JOIN ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND I.live_from < UNIX_TIMESTAMP() ".$whereString.$like;
                     $query = $q2.' '.$order_string.' '.$limit;
                     $search = $GLOBALS['db']->query($query);
                     if (count($search)>0) {
-                        $count = $GLOBALS['db']->query($q2, false, 0);
+                        $count = $GLOBALS['db']->query($q2);
                         $this->_category_count  = (int)count($count);
                         $this->_category_products = $search;
                         if (count($this->_category_products)==1 && ctype_digit($this->_category_products[0]['product_id'])) {

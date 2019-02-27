@@ -196,8 +196,10 @@ class Database extends Database_Contoller
      */
     protected function _execute($cache = true, $fetch = true)
     {
+        $cache = $cache && preg_match('#\b('.$this->_cache_block_functions.')\b#', $this->_query) ?: false;
+
         $this->_found_rows = null;
-        
+
         if (!empty($this->_query)) {
             $this->_result = array();
             // Don't read from cache in admin CP but write only for front end
