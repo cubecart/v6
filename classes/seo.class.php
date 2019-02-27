@@ -108,7 +108,7 @@ class SEO
         foreach ($GLOBALS['hooks']->load('class.seo.construct') as $hook) {
             include $hook;
         }
-        
+
         self::_checkModRewrite();
 
         // Build an array of ALL categories
@@ -118,6 +118,10 @@ class SEO
             if (!in_array($match[2], $this->_ignored)) {
                 //Generate SEO URL
                 $seo_url = html_entity_decode($this->generatePath($match[5], $match[2], $match[4], true, true));
+                if(isset($match[6]) && $match[6][0]=='&'){  
+                    $match[6][0]='?';
+                    $seo_url.=$match[6];
+                }
                 //If the SEO URL != to the current URL
                 if (str_replace($GLOBALS['rootRel'], '', $_SERVER['REQUEST_URI']) != $seo_url) {
                     //Push the user to that URL
