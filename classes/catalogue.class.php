@@ -794,7 +794,7 @@ class Catalogue
             }
 
             foreach ($categories as $category) {
-                $sql = 'SELECT C.`product_id`, I.`use_stock_level` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_category_index` AS C INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory` AS I ON I.`product_id` = C.`product_id` WHERE C.cat_id = '.$category['cat_id'].' AND I.status = 1  AND `I.live_from` < UNIX_TIMESTAMP()';
+                $sql = 'SELECT C.`product_id`, I.`use_stock_level` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_category_index` AS C INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory` AS I ON I.`product_id` = C.`product_id` WHERE C.cat_id = '.$category['cat_id'].' AND I.status = 1';
                 $available_products = $GLOBALS['db']->misc($sql);
 
                 if ($available_products && $GLOBALS['config']->get('config', 'hide_out_of_stock')) {
