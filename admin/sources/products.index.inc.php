@@ -921,7 +921,7 @@ if (isset($_GET['action'])) {
         $categoryArray = $GLOBALS['db']->select('CubeCart_category', array('cat_name', 'cat_parent_id', 'cat_id'));
 
         if ($categoryArray) {
-            $cat_ist[] = '/';
+            $cat_list[] = '/';
             $seo = SEO::getInstance();
             foreach ($categoryArray as $category) {
                 if ($category['cat_parent_id'] == $category['cat_id']) {
