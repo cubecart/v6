@@ -324,7 +324,7 @@ class Module
 
         foreach ($_POST[$label] as $zone) {
             if (!empty($zone)) {
-                $zones[] = $zone;
+                $zones[$zone] = $zone;
             }
         }
         return (isset($zones)) ? serialize($zones) : '';
