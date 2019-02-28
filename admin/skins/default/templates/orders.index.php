@@ -207,6 +207,7 @@
                <div><label>{$LANG.address.mobile}</label><span>{$OVERVIEW_SUMMARY.mobile}</span></div>
                {/if}
                <div><label>{$LANG.common.ip_address}</label><span>{$OVERVIEW_SUMMARY.ip_address}</span></div>
+               <div><label>{$LANG.common.language}</label><span><img src="language/flags/{$OVERVIEW_SUMMARY.lang}.png" title="{$OVERVIEW_SUMMARY.lang}"></span></div>
             </fieldset>
             <fieldset class="other">
                <legend>{$LANG.orders.title_shipping}</legend>
