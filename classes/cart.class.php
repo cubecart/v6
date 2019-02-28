@@ -260,7 +260,7 @@ class Cart
             }
         } elseif (!is_null($product_id) && is_numeric($product_id)) {
             $proceed = true;
-                
+
             $options_identifier_string = $GLOBALS['catalogue']->defineOptionsIdentifier($optionsArray);
 
             $product = $GLOBALS['catalogue']->getProductData($product_id, 1, false, 10, 1, false, $options_identifier_string);
@@ -271,7 +271,7 @@ class Cart
                 }
                 // Check for options
                 $options = $GLOBALS['catalogue']->getProductOptions($product_id);
-                    
+
                 $required_options = $GLOBALS['catalogue']->getOptionRequired();
 
                 if ($required_options && ($options && empty($optionsArray))) {
@@ -302,7 +302,7 @@ class Cart
                     foreach ($GLOBALS['hooks']->load('class.cart.add.max_stock') as $hook) {
                         include $hook;
                     }
-                        
+
                     if (isset($max_stock) && $max_stock <= 0) {
                         if (is_array($optionsArray)) {
                             $stock_note = $GLOBALS['session']->has('restock_note') ? $GLOBALS['session']->get('restock_note') : '';
@@ -404,11 +404,11 @@ class Cart
 
                     //Save before the jump
                     $this->save();
-                        
+
                     foreach ($GLOBALS['hooks']->load('class.cart.add.preredirect') as $hook) {
                         include $hook;
                     }
-                        
+
                     // Jump to basket, or return to product page?
                     $jumpto = ($GLOBALS['config']->get('config', 'basket_jump_to')) ? $GLOBALS['rootRel'].'index.php?_a=basket' : currentPage(null);
                     foreach ($GLOBALS['hooks']->load('class.cart.add.postredirect') as $hook) {
@@ -614,7 +614,7 @@ class Cart
                             }
                         }
                     }
-                    
+
                     // Add a coupon to the array
                     $type = ($coupon['discount_percent'] > 0) ? 'percent' : 'fixed';
                     $value = ($coupon['discount_percent'] > 0) ? $coupon['discount_percent'] : $coupon['discount_price'];
@@ -684,7 +684,7 @@ class Cart
             $this->_discount = $this->_subtotal = $this->_total_tax_add = $this->_weight = 0;
             // Include inline shipping maths for Per Category Shipping
             $ship_by_cat = $GLOBALS['config']->get('Per_Category');
-            
+
             $sbc_path = CC_ROOT_DIR.'/modules/shipping/Per_Category/line.inc.php';
             if (file_exists($sbc_path) && isset($ship_by_cat['status']) && $ship_by_cat['status']) {
                 require_once $sbc_path;
@@ -719,7 +719,7 @@ class Cart
                     foreach ($GLOBALS['hooks']->load('class.cart.get.product_prices') as $hook) {
                         include $hook;
                     }
-                    
+
                     if (!$product) {
                         // Warn that the product has been removed
                         if (!empty($item['name'])) {
@@ -1182,7 +1182,7 @@ class Cart
 
             $this->_applyDiscounts();
         }
-        
+
         //We need to check the coupons to make sure they are still valid
         if (isset($this->basket['coupons']) && is_array($this->basket['coupons'])) {
             foreach ($this->basket['coupons'] as $key => $data) {
@@ -1240,7 +1240,7 @@ class Cart
                     } else {
                         $product_count = 0;
                     }
-            
+
                     if($incexc!=='shipping_only') {
                         foreach ($this->basket['contents'] as $hash => $item) {
                             if ($product_count==0 || $incexc == 'include' && in_array($item['id'], $products) || $incexc == 'exclude' && !in_array($item['id'], $products)) {
@@ -1255,7 +1255,7 @@ class Cart
                             }
                         }
                     }
-            
+
                     if ($data['shipping'] && $this->basket['shipping']['value']>0) {
                         $subtotal += $this->basket['shipping']['value'];
                         if ($this->basket['shipping']['tax']['amount']>0) {
@@ -1290,7 +1290,7 @@ class Cart
                     }
                 }
             }
-            
+
             if (!$coupon) {
                 foreach ($this->basket['contents'] as $hash => $item) {
                     if ($item['total_price_each']>0) {
@@ -1300,14 +1300,14 @@ class Cart
                         $tax_total += $item['tax_each']['amount'];
                     }
                 }
-        
+
                 if ($this->basket['shipping']['value']>0) {
                     $subtotal += $this->basket['shipping']['value'];
                     if ($this->basket['shipping']['tax']['amount']>0) {
                         $tax_total += $this->basket['shipping']['tax']['amount'];
                     }
                 }
-            
+
                 $ave_tax_rate = ($tax_total / $subtotal);
             } else {
                 if ((is_array($excluded_products) || is_array($excluded_shipping))) {
@@ -1335,7 +1335,7 @@ class Cart
                     $subtotal += $excluded_subtotal;
                 }
             }
-            
+
             // GIFT CERTS SECOND!!
             foreach ($this->basket['coupons'] as $key => $data) {
                 if ($data['gc'] && $subtotal==0) {
