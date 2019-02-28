@@ -140,6 +140,16 @@ class Cache_Controler
     }
 
     /**
+     * Get cache expiry
+     *
+     * @return string Cache expiry
+     */
+    final public function getCacheExpire()
+    {
+        return time()+$this->_expire;
+    }
+
+    /**
      * Set cache expire time
      *
      * @param int $expire One day
