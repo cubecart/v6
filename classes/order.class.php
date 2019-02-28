@@ -249,6 +249,7 @@ class Order
     public function getOrderDetails($order_id)
     {
         $order_summary = $this->getSummary($order_id);
+        $this->_getInventory($order_id);
 
         $hide_prices = $GLOBALS['session']->has('hide_prices') ? $GLOBALS['session']->get('hide_prices') : false;
         $GLOBALS['session']->set('hide_prices', false);
@@ -431,11 +432,11 @@ class Order
         // Update order status, manage stock, and email if required
         if (!empty($status_id) && !empty($order_id)) {
             $currentStatus = $GLOBALS['db']->select('CubeCart_order_summary', array('status'), array('cart_order_id' => $order_id), false, false, false, false);
-            
+
             if ((int)$currentStatus[0]['status'] == 0) {
                 return false;
             } // no order record
-            
+
             // Insert order status if it's changed
             if ((int)$status_id !== (int)$currentStatus[0]['status'] || $force) {
                 $this->_addHistory($order_id, $status_id);
@@ -446,16 +447,13 @@ class Order
             }
 
             // Retrieve order details
-            $this->getSummary($order_id);
-            $this->_getInventory($order_id);
+            $this->getOrderDetails($order_id);
 
             foreach ($GLOBALS['hooks']->load('class.order.order_status') as $hook) {
                 include $hook;
             }
             $mailer = new Mailer();
             $order_summary = $this->_order_summary;
-
-            $this->getOrderDetails($order_id);
 
             switch ($status_id) {
 
@@ -476,12 +474,12 @@ class Order
                         }
                         unset($content);
                     }
-                    
+
                 break;
 
                 case self::ORDER_PROCESS:
                     $complete = true;
-                
+
                     // Look for digital items
                     foreach ($this->_order_inventory as $item) {
                         if ($item['digital']) {
@@ -508,7 +506,7 @@ class Order
                     // Send email to store admins if set for processing status
                     if ($GLOBALS['config']->get('config', 'admin_notify_status')=="2" && $this->_email_enabled && $this->_email_admin_enabled && $admin_notify = $this->_notifyAdmins()) {
                         $admin_mailer = new Mailer();
-                        
+
                         $message_id = md5('admin.order_received'.$status_id.$order_id);
 
                         if (!$GLOBALS['session']->has($message_id, 'email') && ($content = $admin_mailer->loadContent('admin.order_received')) !== false) {
@@ -530,7 +528,7 @@ class Order
                             }
                         }
                     }
-                    
+
                     // Send digital files
                     $this->_digitalDelivery($order_id, $this->_order_summary['email']);
 
@@ -612,11 +610,11 @@ class Order
     {
         if (!empty($status_id) && !empty($order_id)) {
             $this->getSummary($order_id);
-            
+
             if ((int)$this->_order_summary['status'] == 0) {
                 return false;
             } // no order record
-            
+
             $mailer = new Mailer();
             switch ($status_id) {
             case self::PAYMENT_PENDING:
@@ -784,7 +782,7 @@ class Order
                             } else {
                                 $assign_id = 0;
                             }
-                            
+
                             if (($value = $GLOBALS['catalogue']->getOptionData((int)$option_id, $assign_id)) !== false) {
                                 foreach ($GLOBALS['hooks']->load('class.cart.get.product_option_prices') as $hook) {
                                     include $hook;
@@ -998,7 +996,7 @@ class Order
         $accesskey = md5($this->_order_id.$product_id.date('cZ@u').mt_rand());
 
         $expire = ($GLOBALS['config']->get('config', 'download_expire')>0) ? time() + $GLOBALS['config']->get('config', 'download_expire') : 0;
-        
+
         if (isset($this->_order_summary['customer_id']) && $this->_order_summary['customer_id']>0) {
             $customer_id = $this->_order_summary['customer_id'];
         } elseif (isset($GLOBALS['cart']->basket['customer']['customer_id']) && $GLOBALS['cart']->basket['customer']['customer_id'] > 0) {
@@ -1261,7 +1259,7 @@ class Order
         if (is_array($item)) {
             if (isset($item['certificate'])) {
                 $gc = $GLOBALS['config']->get('gift_certs');
-                
+
                 if (isset($item['certificate']['method']) && !empty($item['certificate']['method'])) {
                     switch ($item['certificate']['method']) {
                         case 'm':
