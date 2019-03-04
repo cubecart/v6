@@ -366,7 +366,7 @@
                   <td><input type="text" class="textbox number quantity" rel="product_quantity" value="1"></td>
                   <td><input type="hidden" id="ajax_product_id" rel="product_id"><input type="text" id="ajax_name" placeholder="{$LANG.common.type_to_search}" class="textbox ajax not-empty" rel="product"></td>
                   <td><input type="text" id="ajax_price" class="textbox number-right lineprice" rel="price" value="0.00"></td>
-                  <td  align="right"><input type="text" rel="line_price" class="textbox number-right subtotal" value="0.00"></td>
+                  <td  align="right"><input type="text" rel="line_price" class="textbox number-right subtotal goods" value="0.00"></td>
                   <td align="center" class="action"><a href="#" title="{$LANG.common.add}" class="add" target="inventory-list"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a></td>
                </tr>
                <!-- Source for inline adding -->
@@ -376,7 +376,7 @@
                   <td>
                      <input type="text" rel="price" class="textbox number-right lineprice">
                   </td>
-                  <td><input type="text" rel="line_price" class="textbox number-right subtotal"></td>
+                  <td><input type="text" rel="line_price" class="textbox number-right subtotal goods"></td>
                   <td align="center" class="action"><a href="#" class="remove dynamic" title="{$LANG.common.decision_remove}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
                </tr>
                <tr>
