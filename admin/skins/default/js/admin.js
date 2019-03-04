@@ -950,3 +950,27 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
 }), $("a.refresh").on("click", function() {
     return $(".update-subtotal input.number").trigger("change"), !1
 });
+/* Work in progress relating to #2097
+$('#order-builder').on('change', '.tax-chooser', function() {
+    var goods_items = $(".goods");
+    var tax_percent = parseFloat($(this).find(':selected').attr('data-percent'))/100;
+    var goods = $(this).find(':selected').attr('data-goods');
+    var shipping = $(this).find(':selected').attr('data-shipping');
+    var total_tax = 0;
+    if(goods=='1') {
+        for(var i = 0; i < goods_items.length; i++){
+            var item = parseFloat($(goods_items[i]).val());
+            if(item>0) {
+                total_tax += item*tax_percent;
+            }
+        };
+    }
+    if(shipping=='1') {
+        var shipping_total = parseFloat($(".shipping").val())*tax_percent;
+        if(shipping_total>0) {
+            total_tax += shipping_total*tax_percent;
+        }
+    }
+    $(".tax").val(total_tax.toFixed(2));
+});
+*/
