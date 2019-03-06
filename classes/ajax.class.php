@@ -189,7 +189,7 @@ class Ajax
                 }
 
                 if (($files = $filemanager->listFiles()) !== false) {
-                    $catalogue = new Catalogue();
+                    $catalogue = $GLOBALS['catalogue']->getInstance();
                     foreach ($files as $result) {
                         if ($filemanager->getMode() == FileManager::FM_FILETYPE_IMG) {
                             $fetch = $catalogue->imagePath($result['file_id'], 'medium');

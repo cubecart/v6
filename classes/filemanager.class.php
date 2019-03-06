@@ -896,7 +896,7 @@ class FileManager
         $where = '`disabled` = 0 AND `type` = '.(int)$this->_mode.' AND `filepath` '.$filepath_where;
 
         if (($files = $GLOBALS['db']->select('CubeCart_filemanager', false, $where, array('filename' => 'ASC'))) !== false) {
-            $catalogue = new Catalogue();
+            $catalogue = $GLOBALS['catalogue']->getInstance();
             $GLOBALS['smarty']->assign('ROOT_REL', $GLOBALS['rootRel']);
             foreach ($files as $key => $file) {
                 $file['icon']   = $this->getFileIcon($file['mimetype']);
