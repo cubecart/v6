@@ -110,7 +110,8 @@ class Encryption
             if ($this->_method=='mcrypt') {
                 return mcrypt_decrypt($this->_cipher, $this->_key, base64_decode($data), $this->_mode, $this->_iv);
             } else {
-                return openssl_decrypt($data, $this->_cipher, $this->_key, 0, $this->_iv);
+                $data_parts = explode(':iv:', $data);
+				return openssl_decrypt($data_parts[1], $this->_cipher, $this->_key, 0, $data_parts[0]);
             }
         }
         return false;
@@ -150,7 +151,7 @@ class Encryption
             if ($this->_method=='mcrypt') {
                 return base64_encode(mcrypt_encrypt($this->_cipher, $this->_key, $data, $this->_mode, $this->_iv));
             } else {
-                return openssl_encrypt($data, $this->_cipher, $this->_key, 0, $this->_iv);
+                return $this->_iv.':iv:'.openssl_encrypt($data, $this->_cipher, $this->_key, 0, $this->_iv);
             }
         }
         return false;
