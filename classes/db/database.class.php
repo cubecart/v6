@@ -495,7 +495,7 @@ class Database_Contoller
         if ($total_pages > 1) {
             // Get the current query string variables
             $url_elements = parse_url(html_entity_decode($_SERVER['REQUEST_URI']));
-            $params = false;
+            $params = array();
             if (isset($url_elements['query']) && !empty($url_elements['query'])) {
                 parse_str($url_elements['query'], $params);
                 unset($params[$var_name], $params['print_hash']);
