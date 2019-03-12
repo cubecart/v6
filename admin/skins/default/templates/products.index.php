@@ -13,7 +13,6 @@
    {if isset($DISPLAY_PRODUCT_LIST)}
    <div id="general" class="tab_content">
       <h3>{$LANG.catalogue.title_product_inventory}</h3>
-      {if isset($PRODUCTS)}
       <table width="100%">
          <tr>
             <td align="right">
@@ -27,6 +26,7 @@
             </td>
          </tr>
       </table>
+      {if isset($PRODUCTS)}
       <table width="100%">
          <tr>
             {foreach from=$SORT_CHARACTERS item=character}
