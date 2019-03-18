@@ -255,7 +255,7 @@ $GLOBALS['smarty']->assign('THEAD_ORDERS', $thead_sort);
 $order_by = (empty($order_by) ? '`dashboard` DESC, `'.$key.'` '.$sort : $order_by);
 
 $results_per_page = 25;
-$unsettled_orders = $GLOBALS['db']->select('CubeCart_order_summary', array('custom_oid', 'id', 'cart_order_id', 'name', 'first_name', 'last_name', 'order_date', 'customer_id', 'total', 'status'), 'status IN (1,2) OR `dashboard` = 1', $order_by, $results_per_page, $page);
+$unsettled_orders = $GLOBALS['db']->select('CubeCart_order_summary', array('custom_oid', 'id', 'cart_order_id', 'first_name', 'last_name', 'order_date', 'customer_id', 'total', 'status'), 'status IN (1,2) OR `dashboard` = 1', $order_by, $results_per_page, $page);
 
 if ($unsettled_orders) {
     $tax = Tax::getInstance();
