@@ -129,7 +129,7 @@
                <td>&nbsp;</td>
                <td>{$THEAD_ORDERS.cart_order_id}</td>
                <td>&nbsp;</td>
-               <td>{$THEAD_ORDERS.first_name|capitalize}</td>
+               <td>{$THEAD_ORDERS.first_name}</td>
                <td nowrap="nowrap">{$THEAD_ORDERS.status}</td>
                <td>{$THEAD_ORDERS.order_date}</td>
                <td>{$THEAD_ORDERS.total}</td>
