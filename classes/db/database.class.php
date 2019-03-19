@@ -491,11 +491,10 @@ class Database_Contoller
         $glue = (!$glue) ? ' ' : $glue;
         // Lets do some maths...
         $total_pages = $per_page ? ceil($total_results/$per_page) : 0;
-
+        $params = array();
         if ($total_pages > 1) {
             // Get the current query string variables
             $url_elements = parse_url(html_entity_decode($_SERVER['REQUEST_URI']));
-            $params = array();
             if (isset($url_elements['query']) && !empty($url_elements['query'])) {
                 parse_str($url_elements['query'], $params);
                 unset($params[$var_name], $params['print_hash']);
