@@ -240,7 +240,8 @@ if (isset($_GET['export'])) {
             $_POST['status'][$default_lang] = '1';
             $GLOBALS['main']->errorMessage(sprintf($lang['translate']['error_lang_status_fixed'],$default_lang));
         }
-        $after = $GLOBALS['config']->set('languages', false, $_POST['status']);
+        $GLOBALS['config']->set('languages', false, $_POST['status']);
+        $after = $GLOBALS['config']->get('config', 'default_language');
         if (md5($before) !== md5($after)) {
             $GLOBALS['main']->successMessage($lang['translate']['notify_language_status']);
         } else {
