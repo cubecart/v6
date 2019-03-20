@@ -206,7 +206,9 @@ if (isset($_GET['action']) && (Admin::getInstance()->superUser() || ((int)$_GET[
     $GLOBALS['smarty']->assign('DISPLAY_FORM', true);
     $languages = $GLOBALS['language']->listLanguages();
     $comparitor = (isset($admin[0]['language'])) ? $admin[0]['language'] : $GLOBALS['config']->get('config', 'default_language');
+    $enabled = $GLOBALS['config']->get('languages');
     foreach ($languages as $details) {
+        if (isset($enabled[$details['code']]) && !$enabled[$details['code']]) continue;
         $details['selected'] = ($comparitor == $details['code']) ? ' selected="selected"' : '';
         $smarty_data['languages'][] = $details;
     }
