@@ -1117,7 +1117,7 @@ class Cubecart
 
                 if (!isset($errors)) {
                     // Create the user account
-                    $_POST['user']['password'] = (isset($_POST['register']) && $_POST['register']==1) ? md5($_POST['password']) : md5(time().$SERVER['HTTP_USER_AGENT'].$_SERVER['REMOTE_ADDR']);
+                    $_POST['user']['password'] = (isset($_POST['register']) && $_POST['register']==1) ? md5($_POST['password']) : md5(time().$_SERVER['HTTP_USER_AGENT'].$_SERVER['REMOTE_ADDR']);
                     $type = (isset($_POST['register']) && $_POST['register']==1) ? 1 : 2;
                     $user_id = $GLOBALS['user']->createUser($_POST['user'], false, $type);
                     $this->_basket['customer']['customer_id'] = $user_id;
