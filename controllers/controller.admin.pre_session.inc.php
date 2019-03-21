@@ -21,7 +21,11 @@ $GLOBALS['cache'] = Cache::getInstance();
 $GLOBALS['db'] = Database::getInstance($glob);
 // Initialize Config class
 $GLOBALS['config'] = Config::getInstance($glob);
-@$GLOBALS['db']->misc("SET @@time_zone = '".$GLOBALS['config']->get('config', 'time_zone')."'");
+$time_zone = $GLOBALS['config']->get('config', 'time_zone');
+if($time_zone!=='Off') {
+    $GLOBALS['db']->misc("SET @@time_zone = '".$time_zone."'");
+    date_default_timezone_set($time_zone);
+}
 // Initialize debug
 $GLOBALS['debug'] = Debug::getInstance();
 // Initialize sessions
@@ -49,10 +53,6 @@ $GLOBALS['seo'] = SEO::getInstance();
 $GLOBALS['language']->setTemplate();
 //Initialize Catalogue
 $GLOBALS['catalogue'] = Catalogue::getInstance();
-
-// Define the default timezone
-$tz = $GLOBALS['config']->get('config', 'time_zone');
-date_default_timezone_set((!empty($tz)) ? $tz : 'UTC');
 
 $GLOBALS['main'] = ACP::getInstance();
 $lang = $GLOBALS['language']->getLanguageStrings();

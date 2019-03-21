@@ -380,6 +380,10 @@ if (class_exists('DateTimeZone')) {
             //Try to guess at the time zone
             $current_timezone = date_default_timezone_get();
         }
+        $smarty_data['timezones'][] = array(
+            'zone'  => $lang['common']['off'],
+            'selected' => ($current_timezone == '') ? ' selected="selected"' : '',
+        );
         foreach ($timezones as $timezone) {
             $smarty_data['timezones'][] = array(
                 'zone'  => $timezone,
