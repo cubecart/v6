@@ -21,7 +21,7 @@ $GLOBALS['cache'] = Cache::getInstance();
 $GLOBALS['db'] = Database::getInstance($glob);
 // Initialize Config class
 $GLOBALS['config'] = Config::getInstance($glob);
-$GLOBALS['db']->misc("SET @@time_zone = '".$GLOBALS['config']->get('config', 'time_zone')."'");
+@$GLOBALS['db']->misc("SET @@time_zone = '".$GLOBALS['config']->get('config', 'time_zone')."'");
 // Initialize debug
 $GLOBALS['debug'] = Debug::getInstance();
 // Initialize sessions

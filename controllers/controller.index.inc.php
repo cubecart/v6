@@ -22,7 +22,7 @@ $GLOBALS['cache'] = Cache::getInstance();
 $GLOBALS['db'] = Database::getInstance($glob);
 // Initialise Config class
 $GLOBALS['config'] = Config::getInstance($glob);
-$GLOBALS['db']->misc("SET @@time_zone = '".$GLOBALS['config']->get('config', 'time_zone')."'");
+@$GLOBALS['db']->misc("SET @@time_zone = '".$GLOBALS['config']->get('config', 'time_zone')."'");
 //We will not need this anymore
 unset($glob);
 $GLOBALS['config']->merge('config', '', $config_default);
