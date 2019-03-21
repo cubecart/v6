@@ -132,6 +132,10 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
             $GLOBALS['main']->errorMessage($lang['settings']['error_mobile_vs_responsive']);
         }
     }
+    
+    if (!preg_match('#^([a-z\s_]+)/([a-z\s_]+)$|^UTC$#i', $_POST['config']['time_zone'])) {
+        $_POST['config']['time_zone'] = '';
+    }
 
     $dmu = (($_POST['config']['product_weight_unit']=='Lb') ? 'in' : 'cm');
     $GLOBALS['db']->misc("ALTER TABLE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_inventory` CHANGE `dimension_unit` `dimension_unit` VARCHAR(2) NULL DEFAULT '$dmu'");
@@ -376,12 +380,8 @@ if (class_exists('DateTimeZone')) {
     if (isset($timezones)) {
         natsort($timezones);
         $current_timezone = $GLOBALS['config']->get('config', 'time_zone');
-        if (empty($current_timezone)) {
-            //Try to guess at the time zone
-            $current_timezone = date_default_timezone_get();
-        }
         $smarty_data['timezones'][] = array(
-            'zone'  => $lang['common']['off'],
+            'zone'  => $lang['common']['disabled'],
             'selected' => ($current_timezone == '') ? ' selected="selected"' : '',
         );
         foreach ($timezones as $timezone) {
