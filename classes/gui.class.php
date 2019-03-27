@@ -1748,7 +1748,7 @@ class GUI
             $GLOBALS['config']->set('config', 'skin_folder'.$this->_skin_config_postfix, $this->_skin);
         }
 
-        if (($custom = $GLOBALS['cache']->read('skin.custom')) === false && file_exists(CC_ROOT_DIR.'/skins/'.$this->_skin.'/'.'config.xml')) {
+        if (($custom = $GLOBALS['cache']->read('skin.'.$this->_skin.'.custom')) === false && file_exists(CC_ROOT_DIR.'/skins/'.$this->_skin.'/'.'config.xml')) {
             $xml = $this->getSkinConfig('', $this->_skin);
             $custom = array();
             if (isset($xml->custom)) {
@@ -1756,7 +1756,7 @@ class GUI
                     $custom[$element->getName()] = (string)$element;
                 }
             }
-            $GLOBALS['cache']->write($custom, 'skin.custom');
+            $GLOBALS['cache']->write($custom, 'skin.'.$this->_skin.'.custom');
         }
 
         $GLOBALS['smarty']->assign('SKIN_CUSTOM', $custom);
