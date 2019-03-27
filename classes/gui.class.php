@@ -676,6 +676,9 @@ class GUI
                         }
                     }
                 }
+                foreach ($GLOBALS['hooks']->load('class.gui.skin_data') as $hook) {
+                    include $hook;
+                }
             }
             
             if (isset($skins)) {
