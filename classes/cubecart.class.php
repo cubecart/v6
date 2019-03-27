@@ -2030,6 +2030,7 @@ class Cubecart
      */
     private function _404()
     {
+        foreach ($GLOBALS['hooks']->load('class.cubecart.404') as $hook) include $hook;
         header("HTTP/1.0 404 Not Found");
         $template = 'templates/content.404.php';
         

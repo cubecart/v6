@@ -142,6 +142,7 @@
 	<hook trigger="class.catalogue.pre_search" deprecated="" />
 	<hook trigger="class.catalogue.productassign" deprecated="" />
 	<hook trigger="class.catalogue.search_catalogue.sale_items.post" deprecated="" />
+	<hook trigger="class.cubecart.404" deprecated="" />
 	<hook trigger="class.cubecart.account.list" deprecated="" />
 	<hook trigger="class.cubecart.addressbook" deprecated="" />
 	<hook trigger="class.cubecart.addressbook.update" deprecated="" />
