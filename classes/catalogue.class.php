@@ -2012,8 +2012,8 @@ class Catalogue
                 }
                 if (($sale = $GLOBALS['db']->query($query)) !== false) {
                     $q2 = sprintf("SELECT SQL_CALC_FOUND_ROWS I.* FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND %2\$s %3\$s", $GLOBALS['config']->get('config', 'dbprefix'), $whereString, $order_string);
-                    $count = $GLOBALS['db']->misc('SELECT FOUND_ROWS() as Count', false);
-                    $this->_category_count = (int)$count[0]['Count'];
+                    $count = $GLOBALS['db']->query($q2);
+                    $this->_category_count  = (int)count($count);
                     $this->_category_products = $sale;
                     foreach ($GLOBALS['hooks']->load('class.catalogue.search_catalogue.sale_items.post') as $hook) {
                         include $hook;
