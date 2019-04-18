@@ -63,6 +63,7 @@ $where = sprintf('order_date >= %d AND order_date <= %d', $dates['from'], $dates
 ## Status filtering
 if (isset($report_filter['status']) && is_array($report_filter['status'])) {
     foreach ($report_filter['status'] as $value) {
+        if(!ctype_digit($value)) continue;
         $select_status[$value] = true;
         $status[] = $value;
     }
