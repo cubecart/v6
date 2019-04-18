@@ -95,11 +95,13 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
         foreach ($GLOBALS['hooks']->load('admin.customer.update') as $hook) {
             include $hook;
         }
-        
         foreach ($customer as $key => $value) {
             $customer[$key] = filter_var($value, FILTER_SANITIZE_STRING);
         }
-        if (($GLOBALS['db']->update('CubeCart_customer', $customer, array('customer_id' => $_POST['customer_id']))) !== false) {
+        $email_check = $GLOBALS['db']->select('CubeCart_customer', array('customer_id'), array('email' => $customer['email']));
+        if($email_check && $email_check[0]['customer_id']!==$_POST['customer_id']) {
+            $customer_updated = false;
+        } elseif (($GLOBALS['db']->update('CubeCart_customer', $customer, array('customer_id' => $_POST['customer_id']))) !== false) {
             $customer_updated = true;
         }
         $customer_id = $_POST['customer_id'];
