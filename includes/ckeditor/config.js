@@ -5,7 +5,7 @@
 
 CKEDITOR.editorConfig = function( config ) {
 	config.filebrowserBrowseUrl = document.location.pathname+'?_g=filemanager&mode=fck';
-	config.protectedSource.push(/{[\s\S]*?}/g);
+	config.protectedSource.push(/{\S*?.*\S}/g);
 	config.extraPlugins = 'showprotected';
 	config.filebrowserWindowHeight  = 500;
 	config.filebrowserWindowWidth  = 650;
