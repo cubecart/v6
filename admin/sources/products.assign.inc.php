@@ -39,8 +39,8 @@ if (isset($_POST) && is_array($_POST) && count($_POST)>0) {
 
     if ($_POST['price']['what']=='products') {
         $product_ids = $_POST['product'];
-    } else {
-        if ($category_products = $GLOBALS['db']->select('CubeCart_category_index', array('DISTINCT' => 'product_id'), array('cat_id' => $_POST['category']))) {
+    } elseif(ctype_digit($_POST['category'])) {
+        if ($category_products = $GLOBALS['db']->select('CubeCart_category_index', array('DISTINCT' => 'product_id'), array('cat_id' => (int)$_POST['category']))) {
             foreach ($category_products as $category_product) {
                 $product_ids[] = $category_product['product_id'];
             }
