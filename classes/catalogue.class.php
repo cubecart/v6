@@ -578,7 +578,7 @@ class Catalogue
                             } else {
                                 if ($option[0]['option_price']>0 && $option[0]['option_negative'] == 0) {
                                     $this->_options_line_price +=  $option[0]['option_price'];
-                                } elseif ($value['option_price']>0) {
+                                } elseif ($option[0]['option_price']>0) {
                                     $this->_options_line_price -=  $option[0]['option_price'];
                                 }
                             }
