@@ -825,7 +825,7 @@ class Order
     public function setOrderFormat($oid_prefix, $oid_postfix, $oid_zeros, $oid_start, $set = false, $force_past_oids = false, $oid = 1)
     {
         $oid_prefix = preg_replace('/[^\w\-\_]%/', '', $oid_prefix);
-        $oid_postfix = preg_replace('/[^-_\w]%/', '', $oid_postfix);
+        $oid_postfix = preg_replace('/[^\-\_\w]%/', '', $oid_postfix);
         $oid_zeros = ctype_digit($oid_zeros) ? $oid_zeros : '0';
         $oid_start = ctype_digit($oid_start) ? $oid_start : '0';
 
