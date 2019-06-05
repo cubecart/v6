@@ -379,7 +379,7 @@ if (isset($_GET['action']) && Admin::getInstance()->permissions('customers', CC_
             if (isset($_GET['address_id']) && is_numeric($_GET['address_id'])) {
                 if (($address = $GLOBALS['db']->select('CubeCart_addressbook', false, array('customer_id' => $customer_id, 'address_id' => (int)$_GET['address_id']))) !== false) {
                     $GLOBALS['gui']->addBreadcrumb($address[0]['description'], currentPage());
-                    if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('id', 'numcode', 'name'))) !== false) {
+                    if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('id', 'numcode', 'name'), false, array('name' => 'ASC'))) !== false) {
                         $smarty_data = array();
                         foreach ($countries as $country) {
                             $array = array(
