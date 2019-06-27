@@ -1899,7 +1899,6 @@ class Catalogue
                         $this->_category_products = $search;
                         $this->_sort_by_relevance = true;
                         if (count($this->_category_products)==1 && ctype_digit($this->_category_products[0]['product_id']) && $_SERVER['HTTP_X_REQUESTED_WITH']!=='XMLHttpRequest') {
-                            var_dump($_SERVER); exit;
                             $GLOBALS['gui']->setNotify(sprintf($GLOBALS['language']->catalogue['notify_product_search_one'], $_REQUEST['search']['keywords']));
                             httpredir('?_a=product&product_id='.$this->_category_products[0]['product_id']);
                         }
