@@ -1,0 +1,1 @@
+ALTER TABLE `CubeCart_inventory` CHANGE `stock_warning` `stock_warning` INT(10) NOT NULL DEFAULT '0' COMMENT 'Main Stock Warning level'; #EOQ

@@ -419,7 +419,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_inventory` (
   `cat_id` int(10) unsigned DEFAULT '0' COMMENT 'Main Category ID',
   `popularity` int(10) unsigned DEFAULT '0' COMMENT 'Popularity',
   `stock_level` int(11) DEFAULT '0' COMMENT 'Main Stock Level',
-  `stock_warning` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Main Stock Warning level',
+  `stock_warning` int(10) NOT NULL DEFAULT '0' COMMENT 'Main Stock Warning level',
   `use_stock_level` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT 'Use Stock Control',
   `digital` int(4) unsigned NOT NULL DEFAULT '0' COMMENT 'Is Digital?',
   `digital_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Digital Path',

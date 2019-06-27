@@ -80,7 +80,7 @@ ALTER TABLE `CubeCart_inventory` CHANGE `name` `name` VARCHAR(250) CHARACTER SET
 ALTER TABLE `CubeCart_inventory` CHANGE `cat_id` `cat_id` INT(10) UNSIGNED NULL DEFAULT '0' COMMENT 'Main Category ID'; #EOQ 
 ALTER TABLE `CubeCart_inventory` CHANGE `popularity` `popularity` INT(10) UNSIGNED NULL DEFAULT '0' COMMENT 'Popularity'; #EOQ 
 ALTER TABLE `CubeCart_inventory` CHANGE `stock_level` `stock_level` INT(11) NULL DEFAULT '0' COMMENT 'Main Stock Level'; #EOQ 
-ALTER TABLE `CubeCart_inventory` CHANGE `stock_warning` `stock_warning` INT(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Main Stock Warning level'; #EOQ 
+ALTER TABLE `CubeCart_inventory` CHANGE `stock_warning` `stock_warning` INT(10) NOT NULL DEFAULT '0' COMMENT 'Main Stock Warning level'; #EOQ 
 ALTER TABLE `CubeCart_inventory` CHANGE `use_stock_level` `use_stock_level` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1' COMMENT 'Use Stock Control'; #EOQ 
 ALTER TABLE `CubeCart_inventory` CHANGE `digital` `digital` INT(4) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Is Digital?'; #EOQ 
 ALTER TABLE `CubeCart_inventory` CHANGE `digital_path` `digital_path` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT 'Digital Path'; #EOQ 

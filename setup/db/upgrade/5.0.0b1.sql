@@ -317,7 +317,7 @@ ALTER TABLE `CubeCart_inventory` DROP `noImages`; #EOQ
 ALTER TABLE `CubeCart_inventory` CHANGE `price` `price` DECIMAL(16,2) NOT NULL DEFAULT '0.00'; #EOQ
 ALTER TABLE `CubeCart_inventory` CHANGE `sale_price` `sale_price` DECIMAL(16,2) NOT NULL DEFAULT '0.00'; #EOQ
 ALTER TABLE `CubeCart_inventory` CHANGE `name` `name` VARCHAR(250) DEFAULT NULL COLLATE utf8_unicode_ci; #EOQ
-ALTER TABLE `CubeCart_inventory` CHANGE `stockWarn` `stock_warning` INT UNSIGNED NOT NULL DEFAULT '0'; #EOQ
+ALTER TABLE `CubeCart_inventory` CHANGE `stockWarn` `stock_warning` INT NOT NULL DEFAULT '0'; #EOQ
 ALTER TABLE `CubeCart_inventory` CHANGE `useStockLevel` `use_stock_level` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1'; #EOQ
 ALTER TABLE `CubeCart_inventory` CHANGE `digital` `digital` INT(4) UNSIGNED NOT NULL DEFAULT '0'; #EOQ
 ALTER TABLE `CubeCart_inventory` CHANGE `digitalDir` `digital_path` VARCHAR(255) NULL DEFAULT NULL; #EOQ
