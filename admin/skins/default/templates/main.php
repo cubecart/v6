@@ -89,5 +89,10 @@
       {foreach from=$BODY_JS item=js_src}
       <script type="text/javascript" src="{$js_src}"></script>
       {/foreach}
+      {if $READ_ONLY_PERMISSION}
+      <script>
+         $('form input[type="submit"], a.delete').remove();
+      </script>
+      {/if}
    </body>
 </html>
