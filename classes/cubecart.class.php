@@ -450,7 +450,7 @@ class Cubecart
                         include $hook;
                     }
             }
-            if (get_class($GLOBALS['smarty']->getVariable('PAGE_CONTENT')) == 'Smarty_Undefined_Variable') {
+            if ($GLOBALS['smarty']->getTemplateVars('PAGE_CONTENT') === null) {
                 $this->_404();
             }
         } else {
