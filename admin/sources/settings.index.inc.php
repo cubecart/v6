@@ -177,7 +177,7 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
     if (substr($config_new['standard_url'], 0, 7) !=="http://") {
         $config_new['standard_url'] = 'http://'.$config_new['standard_url'];
     }
-    if (!filter_var($config_new['standard_url'], FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED)) {
+    if (!filter_var($config_new['standard_url'], FILTER_VALIDATE_URL)) {
         $config_new['standard_url'] = CC_STORE_URL;
     }
     // Added for backward compatibility as these old values may be used in extensions

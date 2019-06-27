@@ -782,7 +782,7 @@ class FileManager
                 return $data;
             }
         } else {
-            if (filter_var($product[0]['digital_path'], FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED)) {
+            if (filter_var($product[0]['digital_path'], FILTER_VALIDATE_URL)) {
                 $data = array(
                     'mimetype' => 'application/octet-stream',
                     'filename' => basename($product[0]['digital_path']),
