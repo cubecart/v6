@@ -36,7 +36,7 @@
             {foreach from=$SUBSCRIBERS item=subscriber}
             <tr>
                <td><input type="checkbox" name="rem_subscriber[{$subscriber.subscriber_id}]" value="1" class="subscribers"></td>
-               <td>{$subscriber.email}</td>
+               <td>{if $subscriber.customer_id > 0}<a href="?_g=customers&action=edit&customer_id={$subscriber.customer_id}">{$subscriber.email}</a>{else}{$subscriber.email}{/if}</td>
                <td align="center">{$subscriber.ip_address}</td>
                <td align="center">{$subscriber.date}</td>
                <td align="center">{if $subscriber.imported}<i class="fa fa-check"></i>{else}<i class="fa fa-times"></i>{/if}</td>
