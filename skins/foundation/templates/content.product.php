@@ -92,6 +92,12 @@
                      <td>{floatval($PRODUCT.product_depth)}{if $PRODUCT.dimension_unit=='in'}&#8243;{else}{$PRODUCT.dimension_unit}{/if}</td>
                   </tr>
                   {/if}
+                  {if $PRODUCT.digital > 0}
+                  <tr>
+                     <td>{$LANG.catalogue.product_type_digital}</td>
+                     <td>{$LANG.common.download}</td>
+                  </tr>
+                  {/if}
                </tbody>
             </table>
          </div>
