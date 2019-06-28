@@ -1833,7 +1833,7 @@ class Catalogue
             }
 
             if (isset($search_data['featured'])) {
-                $where[] = "I.featured = '1'";
+                $where[] = "AND I.featured = '1'";
             }
             // Only look for items that are in stock
             if (isset($search_data['inStock'])) {
