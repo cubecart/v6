@@ -1841,9 +1841,7 @@ class Catalogue
             }
 
             $whereString = (isset($where) && is_array($where)) ? implode(' AND ', $where) : '';
-            if (!empty($whereString)) {
-                $whereString = ' AND '.$whereString;
-            }
+            
             $whereString .= $this->_where_live_from;
 
             $joinString = (isset($joins) && is_array($joins)) ? implode(' JOIN ', $joins) : '';
