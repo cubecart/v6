@@ -70,7 +70,14 @@ class Encryption
     final protected function __construct()
     {
         // Default to mcrypt for existing data from older versions
-        $this->_method = function_exists('mcrypt_encrypt') ? 'mcrypt' : 'openssl';
+        if(function_exists('mcrypt_encrypt')) {
+            $this->_method = 'mcrypt';
+        } elseif(function_exists('openssl_encrypt')) {
+            $this->_method = 'openssl';
+        } else {
+            $this->_method = false; 
+        }
+
     }
 
     public function __destruct()
@@ -176,6 +183,16 @@ class Encryption
         } else {
             return $this->setEncryptKey();
         }
+    }
+    
+    /**
+     * Get encryption method
+     *
+     * @return string/false
+     */
+    public function getEncryptionMethod()
+    {
+        return $this->_method;
     }
 
     /**
