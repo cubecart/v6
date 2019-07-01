@@ -91,7 +91,7 @@
       {/foreach}
       {if $READ_ONLY_PERMISSION}
       <script>
-         $('form .form_control input[type="submit"], a.delete').remove();
+         $('form .form_control input[type="submit"], a.delete, input[type="submit"].delete').remove();
       </script>
       {/if}
    </body>
