@@ -26,7 +26,7 @@
 		  <tr>
 			<td><input type="checkbox" name="adminread[]" value="{$log.log_id}" class="error"></td>
 			<td {$log.style}>{$log.time}</td>
-			<td {$log.style}>{$log.message}</td>
+			<td {$log.style}>{$log.message|escape}</td>
 		  </tr>
 		{foreachelse}
 		  <tr>
@@ -74,7 +74,7 @@
 		  <tr>
 			<td><input type="checkbox" name="systemread[]" value="{$syslog.log_id}" class="systemerror"></td>
 			<td {$syslog.style}>{$syslog.time}</td>
-			<td {$syslog.style}>{$syslog.message}</td>
+			<td {$syslog.style}>{$syslog.message|escape}</td>
 		  </tr>
 		{foreachelse}
 		  <tr>
