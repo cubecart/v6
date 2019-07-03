@@ -533,15 +533,18 @@ class User
      */
     public static function getEmailAddressParts($input)
     {
-        preg_match('#\<(.*?)\>#', $input, $match);
         if (filter_var($input, FILTER_VALIDATE_EMAIL)) {
             $email = $input;
-        } else if(filter_var($match[1], FILTER_VALIDATE_EMAIL)) {
-            $email = $match[1];
+            $name = $input;
         } else {
-            return false;
+            preg_match('#\<(.*?)\>#', $input, $match);
+            if(filter_var($match[1], FILTER_VALIDATE_EMAIL)) {
+                $email = $match[1];
+                $name = trim(strip_tags($input));
+            } else {
+                return false;
+            }
         }
-        $name = trim(strip_tags($input));
         return array('name' => $name, 'email' => $email);
     }
 
