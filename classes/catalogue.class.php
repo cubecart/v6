@@ -1840,8 +1840,7 @@ class Catalogue
                 $where[] = $this->outOfStockWhere();
             }
 
-            $whereString = (isset($where) && is_array($where)) ? implode(' AND ', $where) : '';
-            
+            $whereString = (isset($where) && is_array($where)) ? implode(' ', $where) : '';
             $whereString .= $this->_where_live_from;
 
             $joinString = (isset($joins) && is_array($joins)) ? implode(' JOIN ', $joins) : '';
