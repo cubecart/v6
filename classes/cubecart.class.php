@@ -1504,8 +1504,10 @@ class Cubecart
                     // Load content, assign variables
                     $mailer->IsHTML(false);
                     $mailer->AddAddress($email, $department);
+                    $from_name = strip_tags($_POST['contact']['name']);
+                    $from_email = $_POST['contact']['email'];
                     if (isset($_POST['contact']['cc'])) {
-                        $mailer->AddAddress($_POST['contact']['email'], strip_tags($_POST['contact']['name']));
+                        $mailer->AddAddress($from_email, $from_name);
                     }
                     $mailer->addReplyTo($_POST['contact']['email'], strip_tags($_POST['contact']['name']));
                     $mailer->Subject = html_entity_decode(strip_tags($_POST['contact']['subject']), ENT_QUOTES);
@@ -1519,8 +1521,8 @@ class Cubecart
                         'subject' => $mailer->Subject,
                         'content_html' => '',
                         'content_text' => $mailer->Body,
-                        'to' => $email,
-                        'from' => $_POST['contact']['email'],
+                        'to' => "$department <$email>",
+                        'from' => "$from_name <$from_email",
                         'result' => $email_sent,
                         'email_content_id' => ''
                     );

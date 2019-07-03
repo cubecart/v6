@@ -30,11 +30,11 @@
 	  <tr>
 	  	<td align="center">{if $log.result==1}<i class="fa fa-check" title="{$LANG.common.yes}"></i>{else}<i class="fa fa-times" title="{$LANG.common.no}"></i>{/if}</td>
 		<td>{$log.subject}</td>
-		<td>{foreach from=$log.to item=email}
-			<a href="?_g=customers&q={$email}" title="{$LANG.search.title_search_customers}">{$email}</a><br>
+		<td>{foreach from=$log.to_email item=to}
+			<a href="?_g=customers&q={$to.email}" title="{$LANG.search.title_search_customers}">{$to.name}</a><br>
 		{/foreach}</td>
 		<td>
-			<a href="?_g=customers&q={$log.from}" title="{$LANG.search.title_search_customers}">{$log.from}</a><br>
+			<a href="?_g=customers&q={$log.from_email}" title="{$LANG.search.title_search_customers}">{$log.from}</a><br>
 		</td>
 		<td>
 			{if !empty($log.content_html)}

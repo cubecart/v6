@@ -33,15 +33,18 @@ if (isset($_GET['resend']) && $_GET['resend']>0) {
 
         $recipients = explode(',', $email_data[0]['to']);
         foreach ($recipients as $recipient) {
-            $mailer->AddAddress($recipient);
+            $recipient = User::getEmailAddressParts($recipient);
+            $mailer->AddAddress($recipient['email']);
         }
-        $mailer->Sender = $email_data[0]['from'];
-
+    
+        $from = User::getEmailAddressParts($email_data[0]['from']);
+        $mailer->Sender = $from['email'];
+        
         $email_data[0]['result'] = $mailer->Send();
         unset($email_data[0]['date'], $email_data[0]['id']);
 
         if ($email_data[0]['result']) {
-            $GLOBALS['main']->successMessage(sprintf($lang['statistics']['email_resent'], $mailer->Subject, $email_data[0]['to']));
+            $GLOBALS['main']->successMessage(sprintf($lang['statistics']['email_resent'], $mailer->Subject, htmlspecialchars($email_data[0]['to'])));
         } else {
             $GLOBALS['main']->errorMessage($lang['statistics']['email_not_resent']);
         }
@@ -59,9 +62,22 @@ $page = (isset($_GET['page'])) ? $_GET['page'] : 1;
 $email_logs = $GLOBALS['db']->select('CubeCart_email_log', false, false, array('date' => 'DESC'), $per_page, $page, false);
 $count = $GLOBALS['db']->getFoundRows();
 if ($email_logs!==false) {
+    $row['to_email'] = array();
     foreach ($email_logs as $row) {
         $row['to'] = explode(',', $row['to']);
-        $email_log[] = $row;
+        foreach($row['to'] as $value) {
+            if($to = User::getEmailAddressParts($value)) {
+                $row['to_email'][] = array(
+                    'email' => $to['email'],
+                    'name' => $to['name']
+                );
+            }
+        }
+        if($from = User::getEmailAddressParts($row['from'])) {
+            $row['from_name'] = $from['name'];
+            $row['from_email'] = $from['email'];
+            $email_log[] = $row;
+        }
     }
 }
 

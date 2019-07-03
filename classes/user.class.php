@@ -526,6 +526,26 @@ class User
     }
 
     /**
+     * Convert John Smith <john.smith@example.org> to array of parts
+     *
+     * @param string $input
+     * @return false/array
+     */
+    public static function getEmailAddressParts($input)
+    {
+        preg_match('#\<(.*?)\>#', $input, $match);
+        if (filter_var($input, FILTER_VALIDATE_EMAIL)) {
+            $email = $input;
+        } else if(filter_var($match[1], FILTER_VALIDATE_EMAIL)) {
+            $email = $match[1];
+        } else {
+            return false;
+        }
+        $name = trim(strip_tags($input));
+        return array('name' => $name, 'email' => $email);
+    }
+
+    /**
      * Get address information
      *
      * @param int $address_id
