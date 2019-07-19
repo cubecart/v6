@@ -1611,7 +1611,7 @@ class Catalogue
         if ($product_view) {
             // Price by quantity
             $user = (array)$GLOBALS['user']->get();
-            if (isset($user['customer_id']) && ($memberships = $GLOBALS['db']->select('CubeCart_customer_membership', array('group_id'), array('customer_id' => (int)$user['customer_id']))) !== false) {
+            if (($memberships = $GLOBALS['user']->getMemberships()) !== false) {
                 foreach ($memberships as $membership) {
                     $group_id[] = $membership['group_id'];
                 }
@@ -1708,7 +1708,7 @@ class Catalogue
         }
         $user = (array)$GLOBALS['user']->get();
         $group_id = 'WHERE group_id = 0';
-        if (isset($user['customer_id']) && ($memberships = $GLOBALS['db']->select('CubeCart_customer_membership', array('group_id'), array('customer_id' => (int)$user['customer_id']))) !== false) {
+        if (($memberships = $GLOBALS['user']->getMemberships()) !== false) {
             $group_id = 'WHERE ';
             foreach ($memberships as $membership) {
                 $group_id .= 'group_id = '.$membership['group_id'].' OR ';
