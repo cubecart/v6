@@ -55,7 +55,7 @@ class FileManager
         $this->_sub_dir  = ($sub_dir) ? $this->formatPath($sub_dir) : null;
 
         //Auto-handler: Create Directory
-        if (isset($_POST['fm']['create-dir']) && !empty($_POST['fm']['create-dir'])) {
+        if (isset($_POST['fm']['create-dir']) && $_POST['fm']['create-dir']!=='') {
             if ($create = $this->createDirectory($_POST['fm']['create-dir'])) {
                 $GLOBALS['gui']->setNotify($GLOBALS['language']->filemanager['success_create_folder']);
             } else {
@@ -365,9 +365,9 @@ class FileManager
      * @param string $new_dir
      * @return bool
      */
-    private function createDirectory($new_dir = false)
+    private function createDirectory($new_dir = '')
     {
-        if (!empty($new_dir)) {
+        if ($new_dir !== '') {
             $create = $this->formatName($new_dir);
             $path = $this->_manage_root.'/'.$this->_sub_dir.$create;
             if (!file_exists($path)) {
@@ -659,10 +659,10 @@ class FileManager
      *
      * @return string/false
      */
-    public function findDirectories($search_dir = false, $i = 0)
+    public function findDirectories($search_dir = '', $i = 0)
     {
-        $search_dir = (!$search_dir) ? $this->_manage_dir : $search_dir;
-        if ($search_dir && file_exists($search_dir)) {
+        $search_dir = ($search_dir==='') ? $this->_manage_dir : $search_dir;
+        if (file_exists($search_dir)) {
             $list = glob($search_dir.'/'.'*', GLOB_ONLYDIR);
             if (is_array($list) && count($list)>0) {
                 foreach ($list as $dir) {
