@@ -547,44 +547,20 @@ function getCountryFormat($input, $match = 'numcode', $fetch = 'name')
  */
 function get_ip_address()
 {
-    //Try the apache headers if possible since they can't be spoofed as easily
-    $headers = array();
-    if (function_exists('apache_request_headers')) {
-        $headers = apache_request_headers();
-    }
-
-    //If not
-    if (!isset($headers['X-Forwarded-For']) || empty($headers['X-Forwarded-For']) || strtolower($_SERVER['X-Forwarded-For']) == 'unknown') {
-        //Try the other possible locations
-        if (isset($_SERVER['HTTP_X_CLUSTER_CLIENT_IP']) && !empty($_SERVER['HTTP_X_CLUSTER_CLIENT_IP']) && strtolower($_SERVER['HTTP_X_CLUSTER_CLIENT_IP']) != 'unknown') {
-            $address = $_SERVER['HTTP_X_CLUSTER_CLIENT_IP'];
-        } elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && !empty($_SERVER['HTTP_X_FORWARDED_FOR']) && strtolower($_SERVER['HTTP_X_FORWARDED_FOR']) != 'unknown') {
-            $address = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        } elseif (isset($_SERVER['HTTP_CLIENT_IP'])&& !empty($_SERVER['HTTP_CLIENT_IP']) && strtolower($_SERVER['HTTP_X_FORWARDED_FOR']) != 'unknown') {
-            $address = $_SERVER['HTTP_CLIENT_IP'];
-        } elseif (isset($_SERVER['REMOTE_ADDR'])&& !empty($_SERVER['REMOTE_ADDR']) && strtolower($_SERVER['REMOTE_ADDR']) != 'unknown') {
-            $address = $_SERVER['REMOTE_ADDR'];
-        } else {
-            $address = '';
-        }
-    } else {
-        $address = $headers['X-Forwarded-For'];
-    }
-
-    // Remove port if it exists
-    $parts = explode(':', $address);
-    $address = (empty($parts[0])) ? $address : $parts[0];
-    // Remove second IP
-    unset($parts);
-    $parts = explode(',', $address);
-    $address = trim((empty($parts[0])) ? $address : $parts[0]);
+    $ip = getenv('HTTP_CLIENT_IP')?:
+    getenv('HTTP_X_FORWARDED_FOR')?:
+    getenv('HTTP_X_FORWARDED')?:
+    getenv('HTTP_FORWARDED_FOR')?:
+    getenv('HTTP_FORWARDED')?:
+    getenv('REMOTE_ADDR');
 
     //Try to validate the IP
-    if ((filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) === false && (filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) === false) {
+    if ((filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) === false && (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) === false)
+    {
         return false;
     }
 
-    return $address;
+    return $ip;
 }
 
 /**
