@@ -1909,6 +1909,7 @@ class Catalogue
                     $like = '';
                     if (!empty($search_data['keywords'])) {
                         $searchwords = preg_split('/[\s,]+/', $GLOBALS['db']->sqlSafe($search_data['keywords']));
+                        $searchArray = array();
                         foreach ($searchwords as $word) {
                             if (empty($word) && !is_numeric($word)) {
                                 continue;
