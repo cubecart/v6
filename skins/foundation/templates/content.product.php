@@ -115,7 +115,7 @@
                <tbody>
                   <tr>
                      <td class="text-center">1</td>
-                     <td class="text-center">{$PRODUCT.price}</td>
+                     <td class="text-center">{if $PRODUCT.ctrl_sale}{$PRODUCT.sale_price}{else}{$PRODUCT.price}{/if}</td>
                   </tr>
                   {foreach from=$PRODUCT.discounts item=discount}
                   <tr>
