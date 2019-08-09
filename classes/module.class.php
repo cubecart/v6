@@ -130,6 +130,8 @@ class Module
                 } else {
                     $GLOBALS['hooks']->uninstall($this->_module_name);
                 }
+                // Reload package data after save
+                $this->_module_data($path, $local_name);
             }
             // Add default tab
             $GLOBALS['main']->addTabControl($GLOBALS['language']->common['general'], $_GET['module']);
