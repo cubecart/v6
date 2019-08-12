@@ -36,7 +36,7 @@ function updateAddressValues(t, e, i) {
             $("#" + t + "_" + e).val($(this).val());
             return;
         }
-    }).first().attr("selected", "selected"), $("#" + t + "_" + e).trigger("change"), "INPUT" == $("#" + t + "_state").tagName ? $("#" + t + "_state").val(i.state) : $("#" + t + "_state option").filter(function() {
+    }).first().attr("selected", "selected"), $("#" + t + "_" + e).trigger("change"), !$("#" + t + "_state").is("select") ? $("#" + t + "_state").val(i.state) : $("#" + t + "_state option").filter(function() {
         if(i.state == $(this).text()) {
             $("#" + t + "_" + "state").val($(this).val());
             return;
