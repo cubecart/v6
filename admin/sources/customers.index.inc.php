@@ -541,7 +541,7 @@ if (isset($_GET['action']) && Admin::getInstance()->permissions('customers', CC_
 
 if (!isset($_GET['address_id'])): // avoid states double content by address edit
 
-    if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('id', 'numcode', 'name'))) !== false) {
+    if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('id', 'numcode', 'name'), false, array('name' => 'ASC'))) !== false) {
         $store_country = $GLOBALS['config']->get('config', 'store_country');
         foreach ($countries as $country) {
             $smarty_data['countries'][] = array(
