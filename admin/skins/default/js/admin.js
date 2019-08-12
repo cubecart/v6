@@ -32,9 +32,15 @@ function removeVariableFromURL(t, e) {
 
 function updateAddressValues(t, e, i) {
     "country" == e ? ($("#" + t + "_" + e + " option").filter(function() {
-        return $(this).html() == i[e]
-    }).first().attr("selected", "selected"), $("#" + t + "_" + e).trigger("change"), "INPUT" == $("#" + t + "_state").get(0).tagName ? $("#" + t + "_state").val(i.state) : $("#" + t + "_state option").filter(function() {
-        return $(this).html() == i.state
+        if($(this).text()==i[e]) {
+            $("#" + t + "_" + e).val($(this).val());
+            return;
+        }
+    }).first().attr("selected", "selected"), $("#" + t + "_" + e).trigger("change"), "INPUT" == $("#" + t + "_state").tagName ? $("#" + t + "_state").val(i.state) : $("#" + t + "_state option").filter(function() {
+        if(i.state == $(this).text()) {
+            $("#" + t + "_" + "state").val($(this).val());
+            return;
+        }
     }).attr("selected", "selected")) : "state" != e && $("#" + t + "_" + e).val(i[e])
 }
 
