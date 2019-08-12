@@ -530,7 +530,7 @@ if (isset($_GET['action'])) {
         );
     }
     $GLOBALS['smarty']->assign('LIST_ORDER_STATUS', $smarty_data['order_status']);
-    if (($countries = $GLOBALS['db']->select('CubeCart_geo_country')) !== false) {
+    if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', false, false, array('name' => 'ASC'))) !== false) {
         $store_country = $GLOBALS['config']->get('config', 'store_country');
         foreach ($countries as $country) {
             $country['is_billing'] = (isset($summary[0]) && isset($summary[0]['country']) && $country['numcode'] == $summary[0]['country']) ? ' selected="selected"' : '';
