@@ -16,7 +16,11 @@
   {foreach from=$PRODUCTS item=product}
 	<li>
 	  <a href="{$product.url}" title="{$product.name} ({if {$product.saving}}{$LANG.catalogue.saving} {$product.saving}{/if})">{$product.name}</a><br>
-	  <span class="old_price">{$product.price}</span> <span class="sale_price">{$product.sale_price}</span>
+	  {if empty($product.sale_price)}
+    {$product.price}
+    {else}
+    <span class="old_price">{$product.price}</span> <span class="sale_price">{$product.sale_price}</span>
+    {/if}
 	</li>
   {/foreach}
   </ul>
