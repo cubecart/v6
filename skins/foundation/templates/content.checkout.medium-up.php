@@ -70,10 +70,12 @@
                   <h4><svg class="icon right" id="getEstimateClose" onclick="$('#getEstimate').slideUp();"><use xlink:href="#icon-times"></use></svg>{$LANG.basket.specify_shipping}</h4>
                   <label for="estimate_country">{$LANG.address.country}</label>
                   <select name="estimate[country]" id="estimate_country"  class="nosubmit country-list" rel="estimate_state">
-                     {foreach from=$COUNTRIES item=country}<option value="{$country.numcode}" {$country.selected}>{$country.name}</option>{/foreach}
+                     {foreach from=$COUNTRIES item=country}<option value="{$country.numcode}" data-status="{$country.status}" {$country.selected}>{$country.name}</option>{/foreach}
                   </select>
-                  <label for="estimate_state">{$LANG.address.state}</label>
-                  <input type="text" name="estimate[state]" id="estimate_state" value="{$ESTIMATES.state}" placeholder="{$LANG.address.state}">
+                  <div id="estimate_state_wrapper">
+                     <label for="estimate_state">{$LANG.address.state}</label>
+                     <input type="text" name="estimate[state]" id="estimate_state" value="{$ESTIMATES.state}" placeholder="{$LANG.address.state}">
+                  </div>
                   <label for="estimate_postcode">{$LANG.address.postcode}</label>
                   <input type="text" value="{$ESTIMATES.postcode}" id="estimate_postcode" placeholder="{$LANG.address.postcode}" name="estimate[postcode]">
                   <input type="submit" name="get-estimate" class="button expand" value="{$LANG.basket.fetch_shipping_rates}">

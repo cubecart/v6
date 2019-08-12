@@ -62,10 +62,10 @@
                <div>
                   <label for="estimate_country_small" class="hide-for-small-only">{$LANG.address.country}</label>
                   <select name="estimate[country]" id="estimate_country_small" class="nosubmit country-list" rel="estimate_state_small">
-                     {foreach from=$COUNTRIES item=country}<option value="{$country.numcode}" {$country.selected}>{$country.name}</option>{/foreach}
+                     {foreach from=$COUNTRIES item=country}<option value="{$country.numcode}" data-status="{$country.status}" {$country.selected}>{$country.name}</option>{/foreach}
                   </select>
                </div>
-               <div>
+               <div id="estimate_state_small_wrapper">
                   <label for="estimate_state_small" class="hide-for-small-only">{$LANG.address.state}</label>
                   <input type="text" name="estimate[state]" id="estimate_state_small" value="{$ESTIMATES.state}" placeholder="{$LANG.address.state}">
                </div>
