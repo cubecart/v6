@@ -1330,6 +1330,7 @@ class Catalogue
                         if (!$sale || ((double)$product_data['sale_price'] == 0) || ($sale && $product_data['sale_price'] > $price)) {
                             $product_data['price'] = $price;
                             $product_data['sale_price'] = $price;
+                            $product_data['price_to_pay'] = $price;
                         }
                         break;
                     }
