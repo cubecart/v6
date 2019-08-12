@@ -293,7 +293,9 @@ jQuery(document).ready(function() {
         }
         return false;
     });
-    
+    $(".search_input").click(function(event) {
+        $.removeCookie('ccScroll', null);
+    });
     $("#ccScroll").on( "click", ".ccScroll-next", function(event) {
         event.preventDefault();
         $(this).hide();

@@ -13,7 +13,7 @@
    <form action="{$STORE_URL}/search.html" class="search_form" method="get">
       <div class="row collapse">
          <div class="small-10 large-11 columns">
-            <input name="search[keywords]" type="text" class="nomarg" placeholder="{$LANG.search.input_default}" required><small><a href="{$STORE_URL}/search.html">{$LANG.search.advanced}</a></small>
+            <input name="search[keywords]" type="text" class="search_input nomarg" placeholder="{$LANG.search.input_default}" required><small><a href="{$STORE_URL}/search.html">{$LANG.search.advanced}</a></small>
          </div>
          <div class="small-2 large-1 columns">
             <button class="button postfix nomarg nopad" type="submit" value="{$LANG.common.search}"><svg class="icon"><use xlink:href="#icon-search"></use></svg></button>

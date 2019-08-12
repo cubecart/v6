@@ -13,7 +13,7 @@
    <h2>{$LANG.search.advanced}</h2>
    <div class="row">
       <div class="small-8 columns"><label for="keywords">{$LANG.search.keywords}</label>
-      <input type="text" name="search[keywords]" placeholder="{$LANG.search.keywords}" id="keywords" required>
+      <input type="text" name="search[keywords]" placeholder="{$LANG.search.keywords}" class="search_input" id="keywords" required>
       </div>
    </div>
    <div class="row">
