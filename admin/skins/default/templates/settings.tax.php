@@ -159,5 +159,5 @@
    </div>
 </form>
 <script type="text/javascript">
-   var county_list = {$VAL_JSON_COUNTY};
+   var county_list = {if !empty($VAL_JSON_COUNTY)}{$VAL_JSON_COUNTY}{else}false{/if};
 </script>

@@ -562,7 +562,7 @@
       </div>
    </div>
    <script type="text/javascript">
-      var county_list	= {$STATE_JSON};
+      var county_list	= {if !empty($STATE_JSON)}{$STATE_JSON}{else}false{/if};
       {if $ADDRESS_JSON}var addresses	= {$ADDRESS_JSON};{/if}
    </script>
    {/if}

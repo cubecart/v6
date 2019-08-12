@@ -205,7 +205,7 @@
 </div>
 {/if}
 <script type="text/javascript">
-   var county_list = {$STATE_JSON};
+   var county_list = {if !empty($STATE_JSON)}{$STATE_JSON}{else}false{/if};
 </script>
 <div class="row">
    <div class="small-12 large-8 columns"><input type="checkbox" name="register" id="show-reg" value="1" {$REGISTER_CHECKED}><label for="show-reg">{$LANG.account.create_account}</label></div>

@@ -78,7 +78,7 @@
                   <input type="text" value="{$ESTIMATES.postcode}" id="estimate_postcode" placeholder="{$LANG.address.postcode}" name="estimate[postcode]">
                   <input type="submit" name="get-estimate" class="button expand" value="{$LANG.basket.fetch_shipping_rates}">
                   <script type="text/javascript">
-                  var county_list = {$STATE_JSON};
+                  var county_list = {if !empty($STATE_JSON)}{$STATE_JSON}{else}false{/if};
                   </script>
                </div>
                {/if}

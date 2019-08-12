@@ -305,6 +305,6 @@
 
   </div>
   <script type="text/javascript">
-	var county_list = {$JSON_STATE}
+	var county_list = {if !empty($JSON_STATE)}{$JSON_STATE}{else}false{/if};
   </script>
 </div>

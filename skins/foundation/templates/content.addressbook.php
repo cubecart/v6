@@ -123,6 +123,6 @@
    <div class="hide" id="validate_field_required">{$LANG.form.field_required}</div>
 </form>
 <script type="text/javascript">
-   var county_list = {$VAL_JSON_STATE}
+   var county_list = {if !empty($VAL_JSON_STATE)}{$VAL_JSON_STATE}{else}false{/if};
 </script>
 {/if}

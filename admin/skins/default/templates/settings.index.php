@@ -511,6 +511,6 @@
    
 </form>
 <script type="text/javascript">
-   {if $VAL_JSON_COUNTY} var county_list = {$VAL_JSON_COUNTY};{/if}
+   var county_list = {if !empty($VAL_JSON_COUNTY)}{$VAL_JSON_COUNTY}{else}false{/if};
    {if $JSON_STYLES}var json_skins	= {$JSON_STYLES};{/if}
 </script>
