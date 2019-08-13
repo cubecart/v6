@@ -882,7 +882,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="customer_export" introduced="5.0.0"><![CDATA[Customer Export]]></string>
     <string name="date_registered" introduced="5.0.0"><![CDATA[Date Registered]]></string>
     <string name="error_address_delete" introduced="5.0.0"><![CDATA[Failed to delete address.]]></string>
-    <string name="error_customer_create" introduced="5.0.0"><![CDATA[Failed to add customer. Please make sure first name, last name and email address are not empty and that the email address is not already in use.]]></string>
+    <string name="error_customer_create" introduced="5.0.0"><![CDATA[Failed to add customer.]]></string>
+    <string name="error_customer_create_empty_fields" introduced="6.2.6"><![CDATA[Please make sure first name, last name and email address are not empty.]]></string>
     <string name="error_customer_delete" introduced="5.0.0"><![CDATA[Failed to delete customer.]]></string>
     <string name="error_customer_delete_orders" introduced="5.0.0"><![CDATA[Customer can not be deleted, as they have placed orders.]]></string>
     <string name="error_customer_found" introduced="5.0.0"><![CDATA[That customer could not be found.]]></string>

@@ -114,14 +114,14 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
             if ($field == 'email' && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
                 $GLOBALS['main']->errorMessage($lang['common']['error_email_invalid']);
                 $error = true;
-            }
-            if (in_array($field, $required) && empty($value)) {
+            } elseif($GLOBALS['db']->select('CubeCart_customer', array('customer_id'), array('email' => $customer['email']))) {
+                $GLOBALS['main']->errorMessage($lang['account']['error_email_in_use']);
                 $error = true;
             }
-        }
-        // Check email is not already in use!
-        if ($GLOBALS['db']->select('CubeCart_customer', array('customer_id'), array('email' => $customer['email']))) {
-            $error = true;
+            if (in_array($field, $required) && empty($value)) {
+                $GLOBALS['main']->errorMessage($lang['account']['error_customer_create_empty_fields']);
+                $error = true;
+            }
         }
 
         foreach ($GLOBALS['hooks']->load('admin.customer.add') as $hook) {
