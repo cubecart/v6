@@ -22,14 +22,14 @@ $filemanager = new FileManager(FileManager::FM_FILETYPE_IMG);
 if (isset($_POST['gc']) && is_array($_POST['gc']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
     if (($uploaded = $filemanager->upload()) !== false) {
         foreach ($uploaded as $file_id) {
-            $_POST['image'][(int)$file_id] = true;
+            $_POST['imageset'][(int)$file_id] = true;
         }
     }
 
-    if (isset($_POST['image']) && is_array($_POST['image'])) {
+    if (isset($_POST['imageset']) && is_array($_POST['imageset'])) {
         $gc = $GLOBALS['config']->get('gift_certs');
 
-        foreach ($_POST['image'] as $image_id => $enabled) {
+        foreach ($_POST['imageset'] as $image_id => $enabled) {
             if ($enabled == 0) {
                 if ($image_id == $gc['image']) {
                     $_POST['gc']['image'] = '';
@@ -54,8 +54,9 @@ $GLOBALS['main']->addTabControl($lang['settings']['title_images'], 'gift_images'
 $GLOBALS['gui']->addBreadcrumb($lang['catalogue']['gift_certificates'], $_GET);
 
 $gc = $GLOBALS['config']->get('gift_certs');
-
 if (isset($gc['image'])) {
+    $master_image = $GLOBALS['catalogue']->imagePath((int)$gc['image'], 'small', 'url');
+    $gc['master_image'] = !empty($master_image) ? $master_image : 'images/general/px.gif';
     $GLOBALS['smarty']->assign('JSON_IMAGES', json_encode(array($gc['image'])));
 }
 

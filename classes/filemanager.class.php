@@ -358,6 +358,26 @@ class FileManager
         }
         return array();
     }
+    
+    /**
+     * Get unique assigned image info
+     *
+     * @param string $id (of image)
+     * @return array
+     */
+    public function uniqueImage($id)
+    {       
+        if ($GLOBALS['session']->has('recently_uploaded')) {
+            $assigned_images = $GLOBALS['session']->get('recently_uploaded');
+            end($assigned_images); // Set last image as selected
+            $key = key($assigned_images);
+            $GLOBALS['session']->delete('recently_uploaded');
+            $this->form_fields = true;
+            return array($key => '1');
+        } else {
+            return array($id => 1);
+        }
+    }
 
     /**
      * Create folder
@@ -1115,6 +1135,9 @@ class FileManager
                     }
                     if (isset($_GET['cat_id']) && $_GET['cat_id']>0) {
                         $this->_assignCategory((int)$_GET['cat_id'], (int)$fid);
+                    }
+                    if (isset($_GET['gc']) && $_GET['gc']==1) {
+                        $GLOBALS['config']->set('gift_certs', 'image', (int)$fid);
                     }
                     move_uploaded_file($file['tmp_name'], $target);
                     foreach ($GLOBALS['hooks']->load('class.filemanager.upload') as $hook) include $hook;

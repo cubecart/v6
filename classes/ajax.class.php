@@ -187,6 +187,9 @@ class Ajax
                 if (isset($_GET['cat_id'])) {
                     $assigned_images = $filemanager->catImages($_GET['cat_id']);
                 }
+                if (isset($_GET['unique_image'])) {
+                    $assigned_images = $filemanager->uniqueImage($_GET['unique_image']);
+                }
 
                 if (($files = $filemanager->listFiles()) !== false) {
                     $catalogue = $GLOBALS['catalogue']->getInstance();

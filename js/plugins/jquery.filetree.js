@@ -243,10 +243,6 @@ if (jQuery)(function($){
 			default:
 				
 				if (is_unique) $('.fm-container input.toggle').val('0').change();
-				
-				/* Code form Redux causing other bug removed for now
-				if (is_unique) $('.fm-container input.toggle[value="1"], .fm-container input.toggle[value="2"]').val('0').change();
-				*/
 				var new_value = '1';
 				break;
 		}
