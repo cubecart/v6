@@ -888,7 +888,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="error_customer_found" introduced="5.0.0"><![CDATA[That customer could not be found.]]></string>
     <string name="error_customer_matching_x" introduced="5.0.0"><![CDATA[No customers found matching '%s']]></string>
     <string name="error_customer_status" introduced="5.0.0"><![CDATA[Failed to update customer status.]]></string>
-    <string name="error_customer_update" introduced="5.0.0"><![CDATA[Failed to update customer. Please check the email address is not already in use with a different account.]]></string>
+    <string name="error_customer_update" introduced="5.0.0"><![CDATA[Failed to update customer.]]></string>
     <string name="error_groups_create" introduced="5.0.0"><![CDATA[Failed to create customer group.]]></string>
     <string name="error_groups_delete" introduced="5.0.0"><![CDATA[Failed to delete customer group.]]></string>
     <string name="error_groups_update" introduced="5.0.0"><![CDATA[Failed to update customer group.]]></string>

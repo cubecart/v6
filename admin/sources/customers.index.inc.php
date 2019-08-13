@@ -100,6 +100,7 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
         }
         $email_check = $GLOBALS['db']->select('CubeCart_customer', array('customer_id'), array('email' => $customer['email']));
         if($email_check && $email_check[0]['customer_id']!==$_POST['customer_id']) {
+            $GLOBALS['main']->errorMessage($lang['account']['error_email_in_use']);
             $customer_updated = false;
         } elseif (($GLOBALS['db']->update('CubeCart_customer', $customer, array('customer_id' => $_POST['customer_id']))) !== false) {
             $customer_updated = true;
