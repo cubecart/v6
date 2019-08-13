@@ -42,6 +42,13 @@ class GUI
      * @var array
      */
     public $_product_images = array();
+    
+    /**
+     * Do we have any sale items?
+     *
+     * @var bool
+     */
+    private $_sale_items = false;
 
     /**
      * Current skin
@@ -354,7 +361,6 @@ class GUI
                     $this->displaySideBasket();
                 }
             }
-            $this->_displayNavigation();
             $this->_displaySearchBox();
             $this->_displaySaleItems();
             $this->_displayMailingList();
@@ -363,6 +369,7 @@ class GUI
             $this->_displayPopularProducts();
             $this->_displaySkinSelect();
             $this->_displaySocial();
+            $this->_displayNavigation();
             /*! display common hooks */
             foreach ($GLOBALS['hooks']->load('class.gui.display') as $hook) {
                 include $hook;
@@ -1154,7 +1161,7 @@ class GUI
             $GLOBALS['smarty']->assign('NAVIGATION_TREE', $navigation_tree);
 
             //Check for sales
-            $GLOBALS['smarty']->assign('CTRL_SALE', $GLOBALS['config']->get('config', 'catalogue_sale_mode'));
+            $GLOBALS['smarty']->assign('CTRL_SALE', $this->_sale_items);
 
             //Check for gift certs
             if (in_array($GLOBALS['config']->get('gift_certs', 'status'), array('1', '2'))) {
@@ -1439,6 +1446,8 @@ class GUI
         $GLOBALS['smarty']->assign('SALE_ITEMS_URL', $GLOBALS['seo']->buildURL('saleitems'));
         $content = $GLOBALS['smarty']->fetch('templates/box.sale_items.php');
         $GLOBALS['smarty']->assign('SALE_ITEMS', $content);
+        if(count($vars)>0) $this->_sale_items = true;
+        
     }
 
     /**
