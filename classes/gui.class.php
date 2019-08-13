@@ -1442,11 +1442,15 @@ class GUI
         foreach ($GLOBALS['hooks']->load('class.gui.display_sale_items') as $hook) {
             include $hook;
         }
-        $GLOBALS['smarty']->assign('PRODUCTS', $vars);
-        $GLOBALS['smarty']->assign('SALE_ITEMS_URL', $GLOBALS['seo']->buildURL('saleitems'));
-        $content = $GLOBALS['smarty']->fetch('templates/box.sale_items.php');
-        $GLOBALS['smarty']->assign('SALE_ITEMS', $content);
-        if(count($vars)>0) $this->_sale_items = true;
+        if(count($vars)>0) {
+            $GLOBALS['smarty']->assign('PRODUCTS', $vars);
+            $GLOBALS['smarty']->assign('SALE_ITEMS_URL', $GLOBALS['seo']->buildURL('saleitems'));
+            $content = $GLOBALS['smarty']->fetch('templates/box.sale_items.php');
+            $GLOBALS['smarty']->assign('SALE_ITEMS', $content);
+            $this->_sale_items = true;
+            return true;
+        }
+        return false;
         
     }
 
