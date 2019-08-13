@@ -18,7 +18,7 @@ Admin::getInstance()->permissions('products', CC_PERM_READ, true);
 $GLOBALS['smarty']->assign('MODE', isset($_GET['prices']) ? 'prices' : 'assign_only');
 
 ### handle post and save
-if (isset($_POST) && is_array($_POST) && count($_POST)>0) {
+if (Admin::getInstance()->permissions('products', CC_PERM_EDIT, true) && isset($_POST) && is_array($_POST) && count($_POST)>0) {
 
     ## Assign products to categories
     $products_assigned = false;
