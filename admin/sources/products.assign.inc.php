@@ -21,6 +21,7 @@ $GLOBALS['smarty']->assign('MODE', isset($_GET['prices']) ? 'prices' : 'assign_o
 if (isset($_POST) && is_array($_POST) && count($_POST)>0) {
 
     ## Assign products to categories
+    $products_assigned = false;
     if (is_array($_POST['category']) && is_array($_POST['product'])) {
         foreach ($_POST['product'] as $product_id) {
             if (!is_numeric($product_id) || !is_array($_POST['category'])) {
@@ -32,7 +33,9 @@ if (isset($_POST) && is_array($_POST) && count($_POST)>0) {
                 if (!is_numeric($category_id)) {
                     continue;
                 }
-                $GLOBALS['db']->insert('CubeCart_category_index', array('cat_id' => (int)$category_id, 'product_id' => (int)$product_id));
+                if($GLOBALS['db']->insert('CubeCart_category_index', array('cat_id' => (int)$category_id, 'product_id' => (int)$product_id))){
+                    $products_assigned = true;
+                }
             }
         }
     }
@@ -48,6 +51,7 @@ if (isset($_POST) && is_array($_POST) && count($_POST)>0) {
     }
 
     if (is_array($product_ids) && isset($_POST['price']) && is_array($_POST['price']) && Admin::getInstance()->permissions('products', CC_PERM_EDIT)) {
+        $prices_updated = false;
         if (!empty($_POST['price']['value']) && is_numeric($_POST['price']['value'])) {
             ## Update prices by x amount/percent
             foreach ($product_ids as $product_id) {
@@ -99,21 +103,25 @@ if (isset($_POST) && is_array($_POST) && count($_POST)>0) {
                                         $price	+= ($action) ? $value : $value-($value*2);
                                     }
                             }
-                            $GLOBALS['db']->update($table, array($price_column => $price), array($id_column => (int)$price_row[$id_column]));
+                            if($GLOBALS['db']->update($table, array($price_column => $price), array($id_column => (int)$price_row[$id_column]))) {
+                                $prices_updated = true;
+                            }
                         }
                     }
                 }
             }
         }
     }
-    if (isset($_GET['prices'])) {
+    if (isset($_GET['prices']) && $prices_updated) {
         $GLOBALS['main']->successMessage($lang['catalogue']['notify_prices_updates']);
-    } else {
+    } elseif($products_assigned) {
         $GLOBALS['main']->successMessage($lang['catalogue']['notify_assign_update']);
+    } else {
+        $GLOBALS['main']->errorMessage($lang['common']['error_no_changes']);
     }
     httpredir(currentPage());
 } elseif (isset($_POST['price'])) {
-    $GLOBALS['main']->errorMessage($lang['common']['error_no_change']);
+    $GLOBALS['main']->errorMessage($lang['common']['error_no_changes']);
 }
 
 if (!isset($_GET['prices'])) {
