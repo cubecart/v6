@@ -414,6 +414,7 @@ class User
                     $data['customer_id']  = $customer_id;
                 }
                 $customer_id = $GLOBALS['db']->insert('CubeCart_customer', $data);
+                if($type==2) $this->setGhostId($customer_id);
             }
             if ($login) {
                 // Automatically log 'em in
