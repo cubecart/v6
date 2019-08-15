@@ -1760,7 +1760,7 @@ class Cubecart
                 // for them if they haven't chosen already
                 if ((!isset($this->_basket['shipping']) && !$digital_only) || (!$offset_matched && isset($this->_basket['shipping']['offset']) && !$digital_only)) {
                     foreach ($shipping_values as $value) {
-                        if (!isset($cheapest['value']) || $value['value'] < $cheapest['value']) {
+                        if (!isset($cheapest) || $value['value'] < $cheapest) {
                             $cheapest = $value;
                         }
                     }
