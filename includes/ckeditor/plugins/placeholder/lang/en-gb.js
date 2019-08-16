@@ -4,9 +4,9 @@
  */
 
 CKEDITOR.plugins.setLang( 'placeholder', 'en-gb', {
-	title: 'Placeholder Properties',
-	toolbar: 'Placeholder',
-	name: 'Placeholder Name',
+	title: 'Macro Properties',
+	toolbar: 'Macro',
+	name: 'Macro (Exclude curly braces)',
 	invalidName: 'The placeholder can not be empty and can not contain any of the following characters: [, ], <, >',
 	pathName: 'placeholder'
 } );

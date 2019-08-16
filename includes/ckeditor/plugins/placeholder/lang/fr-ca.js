@@ -6,7 +6,7 @@
 CKEDITOR.plugins.setLang( 'placeholder', 'fr-ca', {
 	title: 'Propriétés de l\'espace réservé',
 	toolbar: 'Créer un espace réservé',
-	name: 'Placeholder Name', // MISSING
+	name: 'Macro (Exclude curly braces)', // MISSING
 	invalidName: 'The placeholder can not be empty and can not contain any of following characters: [, ], <, >', // MISSING
 	pathName: 'placeholder' // MISSING
 } );
