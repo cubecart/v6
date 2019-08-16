@@ -44,7 +44,7 @@
 
 				init: function() {
 					// Note that placeholder markup characters are stripped for the name.
-					this.setData( 'name', this.element.getText().slice( 2, -2 ) );
+					this.setData( 'name', this.element.getText().slice( 1, -1 ) );
 				},
 
 				data: function() {
