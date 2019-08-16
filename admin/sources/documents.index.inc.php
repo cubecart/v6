@@ -27,7 +27,7 @@ if (isset($_POST['document']) && Admin::getInstance()->permissions('documents', 
     }
     ## Do the database magic
     $rem_array = null;
-    $_POST['document']['doc_content'] = $GLOBALS['RAW']['POST']['document']['doc_content'];
+    $_POST['document']['doc_content'] = GUI::toSmartySyntax($GLOBALS['RAW']['POST']['document']['doc_content']);
     if (isset($_POST['document']['doc_id']) && is_numeric($_POST['document']['doc_id'])) {
         if ($GLOBALS['db']->update('CubeCart_documents', $_POST['document'], array('doc_id' => $_POST['document']['doc_id']), true)) {
             if (empty($_POST['seo_path'])) {
@@ -195,6 +195,7 @@ if (isset($_GET['action'])) {
     if (!isset($data['navigation_link'])) {
         $data['navigation_link'] = 1;
     }
+    $data['doc_content'] = GUI::toPlaceholderSyntax($data['doc_content']);
     $GLOBALS['smarty']->assign('DOCUMENT', $data);
     foreach ($GLOBALS['hooks']->load('admin.documents.tabs') as $hook) {
         include $hook;

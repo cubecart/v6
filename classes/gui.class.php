@@ -897,6 +897,25 @@ class GUI
         $this->_errorMessage('info', $message);
     }
 
+    /**
+     * Swap Smarty Syntax for Placeholder
+     *
+     * @param string $text
+     */
+    public static function toPlaceholderSyntax($text) 
+    {
+        return str_replace(array('{$','}'), array('[[$',']]'), $text);
+    }
+    /**
+     * Swap Placeholder for Smarty Syntax
+     *
+     * @param string $text
+     */
+    public static function toSmartySyntax($text) 
+    {
+        return str_replace(array('[[$',']]'), array('{$','}'), $text);
+    }
+
     //=====[ Private ]=======================================
 
     /**
