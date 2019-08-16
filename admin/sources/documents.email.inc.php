@@ -21,228 +21,228 @@ $email_types = array(
     'account.password_recovery' => array(
         'description' => $lang['email']['title_macro_user_password'],
         'macros' => array(
-            '[[$DATA.first_name]]' => $lang['email']['macro_first_name'],
-            '[[$DATA.last_name]]'  => $lang['email']['macro_last_name'],
-            '[[$DATA.reset_link]]'  => $lang['email']['macro_link_password'],
+            '{$DATA.first_name}' => $lang['email']['macro_first_name'],
+            '{$DATA.last_name}'  => $lang['email']['macro_last_name'],
+            '{$DATA.reset_link}'  => $lang['email']['macro_link_password'],
         ),
     ),
     'newsletter.verify_email' => array(
         'description' => $lang['email']['title_macro_user_newsletter'],
         'macros' => array(
-            '[[$DATA.email]]' => $lang['common']['email'],
-            '[[$DATA.link]]'  => $lang['email']['macro_link_verify']
+            '{$DATA.email}' => $lang['common']['email'],
+            '{$DATA.link}'  => $lang['email']['macro_link_verify']
         ),
     ),
     'admin.order_received' => array(
         'description' => $lang['email']['title_macro_admin_order'],
         'macros' => array(
-            '[[$SHIPPING.first_name]]'  => $lang['email']['macro_first_name_d'],
-            '[[$SHIPPING.last_name]]'  => $lang['email']['macro_last_name_d'],
-            '[[$SHIPPING.company_name]]'  => $lang['email']['macro_company_name_d'],
-            '[[$SHIPPING.line1]]'   => $lang['email']['macro_line1_d'],
-            '[[$SHIPPING.line2]]'   => $lang['email']['macro_line2_d'],
-            '[[$SHIPPING.town]]'    => $lang['email']['macro_town_d'],
-            '[[$SHIPPING.state]]'   => $lang['email']['macro_state_d'],
-            '[[$SHIPPING.postcode]]'   => $lang['email']['macro_postcode_d'],
-            '[[$SHIPPING.country]]'   => $lang['email']['macro_country_d'],
-            '[[$BILLING.first_name]]'  => $lang['email']['macro_first_name'],
-            '[[$BILLING.last_name]]'  => $lang['email']['macro_first_name'],
-            '[[$BILLING.company_name]]'  => $lang['email']['macro_company_name'],
-            '[[$BILLING.line1]]'    => $lang['email']['macro_line1'],
-            '[[$BILLING.line2]]'    => $lang['email']['macro_line2'],
-            '[[$BILLING.town]]'    => $lang['email']['macro_town'],
-            '[[$BILLING.state]]'    => $lang['email']['macro_state'],
-            '[[$BILLING.postcode]]'   => $lang['email']['macro_postcode'],
-            '[[$BILLING.country]]'   => $lang['email']['macro_country'],
-            '[[$BILLING.phone]]'    => $lang['email']['macro_phone'],
-            '[[$BILLING.email]]'    => $lang['email']['macro_email'],
-            '[[$DATA.cart_order_id]]'  => $lang['email']['macro_order_number_t'],
-            '[[$DATA.id]]'  => $lang['email']['macro_order_number_i'],
-            '[[$DATA.order_date]]'   => $lang['email']['macro_order_date'],
-            '[[$DATA.ship_method]]'  => $lang['email']['macro_order_shipping_method'],
-            '[[$DATA.shipping]]'   => $lang['email']['macro_order_shipping'],
-            '[[$DATA.discount]]'   => $lang['email']['macro_order_discount'],
-            '[[$DATA.subtotal]]'   => $lang['email']['macro_order_subtotal'],
-            '[[$DATA.total]]'    => $lang['email']['macro_order_total'],
-            '[[$DATA.link]]'    => $lang['email']['macro_link_order'],
-            '[[$DATA.gateway]]'   => $lang['email']['macro_gateway'],
-            '[[$DATA.customer_comments]]' => $lang['email']['customer_comments'],
-            '[[$product.name]]'   => $lang['email']['macro_product_name'],
-            '[[$product.product_code]]' => $lang['email']['macro_product_code'],
-            '[[$product.quantity]]'  => $lang['email']['macro_product_quantity'],
-            '[[$product.price]]'   => $lang['email']['macro_product_price'],
-            '[[$product.product_options]]' => $lang['email']['macro_product_options'],
-            '[[$tax.tax_name]]'   => $lang['email']['macro_tax_name'],
-            '[[$tax.tax_percent]]'  => $lang['email']['macro_tax_rate'],
-            '[[$tax.tax_amount]]'   => $lang['email']['macro_tax_amount']
+            '{$SHIPPING.first_name}'  => $lang['email']['macro_first_name_d'],
+            '{$SHIPPING.last_name}'  => $lang['email']['macro_last_name_d'],
+            '{$SHIPPING.company_name}'  => $lang['email']['macro_company_name_d'],
+            '{$SHIPPING.line1}'   => $lang['email']['macro_line1_d'],
+            '{$SHIPPING.line2}'   => $lang['email']['macro_line2_d'],
+            '{$SHIPPING.town}'    => $lang['email']['macro_town_d'],
+            '{$SHIPPING.state}'   => $lang['email']['macro_state_d'],
+            '{$SHIPPING.postcode}'   => $lang['email']['macro_postcode_d'],
+            '{$SHIPPING.country}'   => $lang['email']['macro_country_d'],
+            '{$BILLING.first_name}'  => $lang['email']['macro_first_name'],
+            '{$BILLING.last_name}'  => $lang['email']['macro_first_name'],
+            '{$BILLING.company_name}'  => $lang['email']['macro_company_name'],
+            '{$BILLING.line1}'    => $lang['email']['macro_line1'],
+            '{$BILLING.line2}'    => $lang['email']['macro_line2'],
+            '{$BILLING.town}'    => $lang['email']['macro_town'],
+            '{$BILLING.state}'    => $lang['email']['macro_state'],
+            '{$BILLING.postcode}'   => $lang['email']['macro_postcode'],
+            '{$BILLING.country}'   => $lang['email']['macro_country'],
+            '{$BILLING.phone}'    => $lang['email']['macro_phone'],
+            '{$BILLING.email}'    => $lang['email']['macro_email'],
+            '{$DATA.cart_order_id}'  => $lang['email']['macro_order_number_t'],
+            '{$DATA.id}'  => $lang['email']['macro_order_number_i'],
+            '{$DATA.order_date}'   => $lang['email']['macro_order_date'],
+            '{$DATA.ship_method}'  => $lang['email']['macro_order_shipping_method'],
+            '{$DATA.shipping}'   => $lang['email']['macro_order_shipping'],
+            '{$DATA.discount}'   => $lang['email']['macro_order_discount'],
+            '{$DATA.subtotal}'   => $lang['email']['macro_order_subtotal'],
+            '{$DATA.total}'    => $lang['email']['macro_order_total'],
+            '{$DATA.link}'    => $lang['email']['macro_link_order'],
+            '{$DATA.gateway}'   => $lang['email']['macro_gateway'],
+            '{$DATA.customer_comments}' => $lang['email']['customer_comments'],
+            '{$product.name}'   => $lang['email']['macro_product_name'],
+            '{$product.product_code}' => $lang['email']['macro_product_code'],
+            '{$product.quantity}'  => $lang['email']['macro_product_quantity'],
+            '{$product.price}'   => $lang['email']['macro_product_price'],
+            '{$product.product_options}' => $lang['email']['macro_product_options'],
+            '{$tax.tax_name}'   => $lang['email']['macro_tax_name'],
+            '{$tax.tax_percent}'  => $lang['email']['macro_tax_rate'],
+            '{$tax.tax_amount}'   => $lang['email']['macro_tax_amount']
 
         ),
     ),
     'admin.password_recovery' => array(
         'description' => $lang['email']['title_macro_admin_password'],
         'macros' => array(
-            '[[$DATA.name]]' => $lang['email']['macro_admin_name'],
-            '[[$DATA.link]]' => $lang['email']['macro_link_password'],
+            '{$DATA.name}' => $lang['email']['macro_admin_name'],
+            '{$DATA.link}' => $lang['email']['macro_link_password'],
         ),
     ),
     'admin.review_added' => array(
         'description' => $lang['email']['title_macro_admin_review'],
         'macros' => array(
-            '[[$DATA.name]]' => $lang['email']['macro_review_name'],
-            '[[$DATA.product_name]]' => $lang['email']['macro_product_name'],
-            '[[$DATA.link]]' => $lang['email']['macro_link_review'],
-            '[[$DATA.review]]' => $lang['email']['macro_review_copy'],
+            '{$DATA.name}' => $lang['email']['macro_review_name'],
+            '{$DATA.product_name}' => $lang['email']['macro_product_name'],
+            '{$DATA.link}' => $lang['email']['macro_link_review'],
+            '{$DATA.review}' => $lang['email']['macro_review_copy'],
         ),
     ),
     'cart.digital_download' => array(
         'description' => $lang['email']['title_macro_cart_digital'],
         'macros' => array(
-            '[[$DATA.first_name]]' => $lang['email']['macro_first_name'],
-            '[[$DATA.last_name]]' => $lang['email']['macro_last_name'],
-            '[[$download.name]]' => $lang['email']['macro_product_name'],
-            '[[$download.expire]]' => $lang['email']['macro_download_expire'],
-            '[[$download.url]]'  => $lang['email']['macro_link_download'],
+            '{$DATA.first_name}' => $lang['email']['macro_first_name'],
+            '{$DATA.last_name}' => $lang['email']['macro_last_name'],
+            '{$download.name}' => $lang['email']['macro_product_name'],
+            '{$download.expire}' => $lang['email']['macro_download_expire'],
+            '{$download.url}'  => $lang['email']['macro_link_download'],
         ),
     ),
     'cart.gift_certificate' => array(
         'description' => $lang['email']['title_macro_cart_certificate'],
         'macros' => array(
-            '[[$DATA.name]]'  => $lang['email']['macro_cert_recipient'],
-            '[[$DATA.first_name]]' => $lang['email']['macro_sender_name_first'],
-            '[[$DATA.last_name]]'  => $lang['email']['macro_sender_name_last'],
-            '[[$DATA.value]]'  => $lang['email']['macro_cert_value'],
-            '[[$DATA.code]]'  => $lang['email']['macro_cert_code'],
-            '[[$DATA.message]]' => $lang['email']['macro_sender_message'],
+            '{$DATA.name}'  => $lang['email']['macro_cert_recipient'],
+            '{$DATA.first_name}' => $lang['email']['macro_sender_name_first'],
+            '{$DATA.last_name}'  => $lang['email']['macro_sender_name_last'],
+            '{$DATA.value}'  => $lang['email']['macro_cert_value'],
+            '{$DATA.code}'  => $lang['email']['macro_cert_code'],
+            '{$DATA.message}' => $lang['email']['macro_sender_message'],
         ),
     ),
     'cart.order_cancelled' => array(
         'description' => $lang['email']['title_macro_order_cancelled'],
         'macros' => array(
-            '[[$DATA.first_name]]' => $lang['email']['macro_first_name'],
-            '[[$DATA.last_name]]' => $lang['email']['macro_last_name'],
-            '[[$DATA.cart_order_id]]'  => $lang['email']['macro_order_number_t'],
-            '[[$DATA.id]]'  => $lang['email']['macro_order_number_i']
+            '{$DATA.first_name}' => $lang['email']['macro_first_name'],
+            '{$DATA.last_name}' => $lang['email']['macro_last_name'],
+            '{$DATA.cart_order_id}'  => $lang['email']['macro_order_number_t'],
+            '{$DATA.id}'  => $lang['email']['macro_order_number_i']
         ),
     ),
     'cart.order_confirmation' => array(
         'description' => $lang['email']['title_macro_order_confirmed'],
         'macros' => array(
-            '[[$SHIPPING.first_name]]' => $lang['email']['macro_first_name_d'],
-            '[[$SHIPPING.last_name]]' => $lang['email']['macro_last_name_d'],
-            '[[$SHIPPING.company_name]]' => $lang['email']['macro_company_name_d'],
-            '[[$SHIPPING.line1]]' => $lang['email']['macro_line1_d'],
-            '[[$SHIPPING.line2]]' => $lang['email']['macro_line2_d'],
-            '[[$SHIPPING.town]]' => $lang['email']['macro_town_d'],
-            '[[$SHIPPING.state]]' => $lang['email']['macro_state_d'],
-            '[[$SHIPPING.postcode]]' => $lang['email']['macro_postcode_d'],
-            '[[$SHIPPING.country]]' => $lang['email']['macro_country_d'],
-            '[[$BILLING.first_name]]' => $lang['email']['macro_first_name'],
-            '[[$BILLING.last_name]]' => $lang['email']['macro_first_name'],
-            '[[$BILLING.company_name]]' => $lang['email']['macro_company_name'],
-            '[[$BILLING.line1]]' => $lang['email']['macro_line1'],
-            '[[$BILLING.line2]]' => $lang['email']['macro_line2'],
-            '[[$BILLING.town]]' => $lang['email']['macro_town'],
-            '[[$BILLING.state]]' => $lang['email']['macro_state'],
-            '[[$BILLING.postcode]]' => $lang['email']['macro_postcode'],
-            '[[$BILLING.country]]' => $lang['email']['macro_country'],
-            '[[$BILLING.phone]]' => $lang['email']['macro_phone'],
-            '[[$BILLING.email]]' => $lang['email']['macro_email'],
-            '[[$DATA.cart_order_id]]'  => $lang['email']['macro_order_number_t'],
-            '[[$DATA.id]]'  => $lang['email']['macro_order_number_i'],
-            '[[$DATA.order_date]]' => $lang['email']['macro_order_date'],
-            '[[$DATA.ship_method]]'=> $lang['email']['macro_order_shipping_method'],
-            '[[$DATA.shipping]]' => $lang['email']['macro_order_shipping'],
-            '[[$DATA.discount]]' => $lang['email']['macro_order_discount'],
-            '[[$DATA.subtotal]]' => $lang['email']['macro_order_subtotal'],
-            '[[$DATA.total]]'  => $lang['email']['macro_order_total'],
-            '[[$DATA.link]]'  => $lang['email']['macro_link_order'],
-            '[[$DATA.gateway]]' => $lang['email']['macro_gateway'],
-            '[[$DATA.customer_comments]]' => $lang['email']['customer_comments'],
-            '[[$product.name]]'  => $lang['email']['macro_product_name'],
-            '[[$product.product_code]]' => $lang['email']['macro_product_code'],
-            '[[$product.quantity]]' => $lang['email']['macro_product_quantity'],
-            '[[$product.price]]'  => $lang['email']['macro_product_price'],
-            '[[$product.product_options]]' => $lang['email']['macro_product_options'],
-            '[[$tax.tax_name]]' => $lang['email']['macro_tax_name'],
-            '[[$tax.tax_percent]]' => $lang['email']['macro_tax_rate'],
-            '[[$tax.tax_amount]]' => $lang['email']['macro_tax_amount']
+            '{$SHIPPING.first_name}' => $lang['email']['macro_first_name_d'],
+            '{$SHIPPING.last_name}' => $lang['email']['macro_last_name_d'],
+            '{$SHIPPING.company_name}' => $lang['email']['macro_company_name_d'],
+            '{$SHIPPING.line1}' => $lang['email']['macro_line1_d'],
+            '{$SHIPPING.line2}' => $lang['email']['macro_line2_d'],
+            '{$SHIPPING.town}' => $lang['email']['macro_town_d'],
+            '{$SHIPPING.state}' => $lang['email']['macro_state_d'],
+            '{$SHIPPING.postcode}' => $lang['email']['macro_postcode_d'],
+            '{$SHIPPING.country}' => $lang['email']['macro_country_d'],
+            '{$BILLING.first_name}' => $lang['email']['macro_first_name'],
+            '{$BILLING.last_name}' => $lang['email']['macro_first_name'],
+            '{$BILLING.company_name}' => $lang['email']['macro_company_name'],
+            '{$BILLING.line1}' => $lang['email']['macro_line1'],
+            '{$BILLING.line2}' => $lang['email']['macro_line2'],
+            '{$BILLING.town}' => $lang['email']['macro_town'],
+            '{$BILLING.state}' => $lang['email']['macro_state'],
+            '{$BILLING.postcode}' => $lang['email']['macro_postcode'],
+            '{$BILLING.country}' => $lang['email']['macro_country'],
+            '{$BILLING.phone}' => $lang['email']['macro_phone'],
+            '{$BILLING.email}' => $lang['email']['macro_email'],
+            '{$DATA.cart_order_id}'  => $lang['email']['macro_order_number_t'],
+            '{$DATA.id}'  => $lang['email']['macro_order_number_i'],
+            '{$DATA.order_date}' => $lang['email']['macro_order_date'],
+            '{$DATA.ship_method}'=> $lang['email']['macro_order_shipping_method'],
+            '{$DATA.shipping}' => $lang['email']['macro_order_shipping'],
+            '{$DATA.discount}' => $lang['email']['macro_order_discount'],
+            '{$DATA.subtotal}' => $lang['email']['macro_order_subtotal'],
+            '{$DATA.total}'  => $lang['email']['macro_order_total'],
+            '{$DATA.link}'  => $lang['email']['macro_link_order'],
+            '{$DATA.gateway}' => $lang['email']['macro_gateway'],
+            '{$DATA.customer_comments}' => $lang['email']['customer_comments'],
+            '{$product.name}'  => $lang['email']['macro_product_name'],
+            '{$product.product_code}' => $lang['email']['macro_product_code'],
+            '{$product.quantity}' => $lang['email']['macro_product_quantity'],
+            '{$product.price}'  => $lang['email']['macro_product_price'],
+            '{$product.product_options}' => $lang['email']['macro_product_options'],
+            '{$tax.tax_name}' => $lang['email']['macro_tax_name'],
+            '{$tax.tax_percent}' => $lang['email']['macro_tax_rate'],
+            '{$tax.tax_amount}' => $lang['email']['macro_tax_amount']
         ),
     ),
     'cart.order_complete' => array(
         'description' => $lang['email']['title_macro_order_dispatched'],
         'macros' => array(
-            '[[$SHIPPING.first_name]]' => $lang['email']['macro_first_name_d'],
-            '[[$SHIPPING.last_name]]' => $lang['email']['macro_last_name_d'],
-            '[[$SHIPPING.company_name]]' => $lang['email']['macro_company_name_d'],
-            '[[$SHIPPING.line1]]' => $lang['email']['macro_line1_d'],
-            '[[$SHIPPING.line2]]' => $lang['email']['macro_line2_d'],
-            '[[$SHIPPING.town]]' => $lang['email']['macro_town_d'],
-            '[[$SHIPPING.state]]' => $lang['email']['macro_state_d'],
-            '[[$SHIPPING.postcode]]' => $lang['email']['macro_postcode_d'],
-            '[[$SHIPPING.country]]' => $lang['email']['macro_country_d'],
-            '[[$BILLING.first_name]]' => $lang['email']['macro_first_name'],
-            '[[$BILLING.last_name]]' => $lang['email']['macro_first_name'],
-            '[[$BILLING.company_name]]' => $lang['email']['macro_company_name'],
-            '[[$BILLING.line1]]' => $lang['email']['macro_line1'],
-            '[[$BILLING.line2]]' => $lang['email']['macro_line2'],
-            '[[$BILLING.town]]' => $lang['email']['macro_town'],
-            '[[$BILLING.state]]' => $lang['email']['macro_state'],
-            '[[$BILLING.postcode]]' => $lang['email']['macro_postcode'],
-            '[[$BILLING.country]]' => $lang['email']['macro_country'],
-            '[[$BILLING.phone]]' => $lang['email']['macro_phone'],
-            '[[$BILLING.email]]' => $lang['email']['macro_email'],
-            '[[$DATA.cart_order_id]]'  => $lang['email']['macro_order_number_t'],
-            '[[$DATA.id]]'  => $lang['email']['macro_order_number_i'],
-            '[[$DATA.order_date]]' => $lang['email']['macro_order_date'],
-            '[[$DATA.ship_method]]'=> $lang['email']['macro_order_shipping_method'],
-            '[[$DATA.shipping]]' => $lang['email']['macro_order_shipping'],
-            '[[$DATA.discount]]' => $lang['email']['macro_order_discount'],
-            '[[$DATA.subtotal]]' => $lang['email']['macro_order_subtotal'],
-            '[[$DATA.total]]'  => $lang['email']['macro_order_total'],
-            '[[$DATA.link]]'  => $lang['email']['macro_link_order'],
-            '[[$DATA.gateway]]' => $lang['email']['macro_gateway'],
-            '[[$DATA.ship_tracking]]'  => $lang['email']['macro_ship_tracking'],
-            '[[$DATA.ship_date]]'  => $lang['email']['macro_ship_date'],
-            '[[$DATA.first_name]]' => $lang['email']['macro_first_name'], // back compatibility help
-            '[[$DATA.last_name]]' => $lang['email']['macro_first_name'], // back compatibility help
-            '[[$DATA.customer_comments]]' => $lang['email']['customer_comments'],
-            '[[$product.name]]'  => $lang['email']['macro_product_name'],
-            '[[$product.product_code]]' => $lang['email']['macro_product_code'],
-            '[[$product.quantity]]' => $lang['email']['macro_product_quantity'],
-            '[[$product.price]]'  => $lang['email']['macro_product_price'],
-            '[[$product.product_options]]' => $lang['email']['macro_product_options'],
-            '[[$tax.tax_name]]' => $lang['email']['macro_tax_name'],
-            '[[$tax.tax_percent]]' => $lang['email']['macro_tax_rate'],
-            '[[$tax.tax_amount]]' => $lang['email']['macro_tax_amount']
+            '{$SHIPPING.first_name}' => $lang['email']['macro_first_name_d'],
+            '{$SHIPPING.last_name}' => $lang['email']['macro_last_name_d'],
+            '{$SHIPPING.company_name}' => $lang['email']['macro_company_name_d'],
+            '{$SHIPPING.line1}' => $lang['email']['macro_line1_d'],
+            '{$SHIPPING.line2}' => $lang['email']['macro_line2_d'],
+            '{$SHIPPING.town}' => $lang['email']['macro_town_d'],
+            '{$SHIPPING.state}' => $lang['email']['macro_state_d'],
+            '{$SHIPPING.postcode}' => $lang['email']['macro_postcode_d'],
+            '{$SHIPPING.country}' => $lang['email']['macro_country_d'],
+            '{$BILLING.first_name}' => $lang['email']['macro_first_name'],
+            '{$BILLING.last_name}' => $lang['email']['macro_first_name'],
+            '{$BILLING.company_name}' => $lang['email']['macro_company_name'],
+            '{$BILLING.line1}' => $lang['email']['macro_line1'],
+            '{$BILLING.line2}' => $lang['email']['macro_line2'],
+            '{$BILLING.town}' => $lang['email']['macro_town'],
+            '{$BILLING.state}' => $lang['email']['macro_state'],
+            '{$BILLING.postcode}' => $lang['email']['macro_postcode'],
+            '{$BILLING.country}' => $lang['email']['macro_country'],
+            '{$BILLING.phone}' => $lang['email']['macro_phone'],
+            '{$BILLING.email}' => $lang['email']['macro_email'],
+            '{$DATA.cart_order_id}'  => $lang['email']['macro_order_number_t'],
+            '{$DATA.id}'  => $lang['email']['macro_order_number_i'],
+            '{$DATA.order_date}' => $lang['email']['macro_order_date'],
+            '{$DATA.ship_method}'=> $lang['email']['macro_order_shipping_method'],
+            '{$DATA.shipping}' => $lang['email']['macro_order_shipping'],
+            '{$DATA.discount}' => $lang['email']['macro_order_discount'],
+            '{$DATA.subtotal}' => $lang['email']['macro_order_subtotal'],
+            '{$DATA.total}'  => $lang['email']['macro_order_total'],
+            '{$DATA.link}'  => $lang['email']['macro_link_order'],
+            '{$DATA.gateway}' => $lang['email']['macro_gateway'],
+            '{$DATA.ship_tracking}'  => $lang['email']['macro_ship_tracking'],
+            '{$DATA.ship_date}'  => $lang['email']['macro_ship_date'],
+            '{$DATA.first_name}' => $lang['email']['macro_first_name'], // back compatibility help
+            '{$DATA.last_name}' => $lang['email']['macro_first_name'], // back compatibility help
+            '{$DATA.customer_comments}' => $lang['email']['customer_comments'],
+            '{$product.name}'  => $lang['email']['macro_product_name'],
+            '{$product.product_code}' => $lang['email']['macro_product_code'],
+            '{$product.quantity}' => $lang['email']['macro_product_quantity'],
+            '{$product.price}'  => $lang['email']['macro_product_price'],
+            '{$product.product_options}' => $lang['email']['macro_product_options'],
+            '{$tax.tax_name}' => $lang['email']['macro_tax_name'],
+            '{$tax.tax_percent}' => $lang['email']['macro_tax_rate'],
+            '{$tax.tax_amount}' => $lang['email']['macro_tax_amount']
         ),
     ),
     'cart.payment_fraud' => array(
         'description' => $lang['email']['title_macro_order_fraud'],
         'macros' => array(
-            '[[$DATA.first_name]]' => $lang['email']['macro_first_name'],
-            '[[$DATA.last_name]]' => $lang['email']['macro_last_name'],
-            '[[$DATA.cart_order_id]]'  => $lang['email']['macro_order_number_t'],
-            '[[$DATA.id]]'  => $lang['email']['macro_order_number_i']
+            '{$DATA.first_name}' => $lang['email']['macro_first_name'],
+            '{$DATA.last_name}' => $lang['email']['macro_last_name'],
+            '{$DATA.cart_order_id}'  => $lang['email']['macro_order_number_t'],
+            '{$DATA.id}'  => $lang['email']['macro_order_number_i']
         ),
     ),
     'cart.payment_received' => array(
         'description' => $lang['email']['title_macro_order_payment'],
         'macros' => array(
-            '[[$DATA.first_name]]'  => $lang['email']['macro_first_name'],
-            '[[$DATA.last_name]]'  => $lang['email']['macro_last_name'],
-            '[[$DATA.cart_order_id]]'  => $lang['email']['macro_order_number_t'],
-            '[[$DATA.id]]'  => $lang['email']['macro_order_number_i'],
-            '[[$DATA.total]]'   => $lang['email']['macro_payment_amount'],
+            '{$DATA.first_name}'  => $lang['email']['macro_first_name'],
+            '{$DATA.last_name}'  => $lang['email']['macro_last_name'],
+            '{$DATA.cart_order_id}'  => $lang['email']['macro_order_number_t'],
+            '{$DATA.id}'  => $lang['email']['macro_order_number_i'],
+            '{$DATA.total}'   => $lang['email']['macro_payment_amount'],
         ),
     ),
     'catalogue.tell_friend' => array(
         'description' => $lang['email']['title_macro_tell_friend'],
         'macros'  => array(
-            '[[$DATA.to]]'  => $lang['email']['macro_tell_friend'],
-            '[[$DATA.from]]' => $lang['email']['macro_sender_name'],
-            '[[$DATA.name]]' => $lang['email']['macro_product_name'],
-            '[[$DATA.link]]' => $lang['email']['macro_link_product'],
-            '[[$DATA.message]]'=> $lang['email']['macro_tell_message'],
+            '{$DATA.to}'  => $lang['email']['macro_tell_friend'],
+            '{$DATA.from}' => $lang['email']['macro_sender_name'],
+            '{$DATA.name}' => $lang['email']['macro_product_name'],
+            '{$DATA.link}' => $lang['email']['macro_link_product'],
+            '{$DATA.message}'=> $lang['email']['macro_tell_message'],
         ),
     ),
 );
@@ -303,8 +303,8 @@ if (isset($_POST['template_default']) && ctype_digit($_POST['template_default'])
 }
 
 if (isset($_POST['template'])) {
-    $_POST['template']['content_html'] = GUI::toSmartySyntax($GLOBALS['RAW']['POST']['template']['content_html']);
-    $_POST['template']['content_text'] = GUI::toSmartySyntax($GLOBALS['RAW']['POST']['template']['content_text']);
+    $_POST['template']['content_html'] = $GLOBALS['RAW']['POST']['template']['content_html'];
+    $_POST['template']['content_text'] = $GLOBALS['RAW']['POST']['template']['content_text'];
 
     ## Save/Update Template
     $proceed = true;
@@ -360,8 +360,8 @@ if (isset($_POST['template'])) {
 }
 
 if (isset($_POST['content']) && Admin::getInstance()->permissions('documents', CC_PERM_EDIT)) {
-    $_POST['content']['content_html'] = GUI::toSmartySyntax(str_replace(array('<!--','-->'), '', $GLOBALS['RAW']['POST']['content']['content_html']));
-    $_POST['content']['content_text'] = GUI::toSmartySyntax($GLOBALS['RAW']['POST']['content']['content_text']);
+    $_POST['content']['content_html'] = str_replace(array('<!--','-->'), '', $GLOBALS['RAW']['POST']['content']['content_html']);
+    $_POST['content']['content_text'] = $GLOBALS['RAW']['POST']['content']['content_text'];
     
     $proceed = true;
     $redirect = true;
@@ -510,8 +510,8 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
                                                                 $data['content_html']
                                                             );
             // See GitHub #1511
-            $data['content_text'] = GUI::toPlaceholderSyntax(str_replace(array('empty({$','})}'), array('empty($',')}'), $data['content_text']));
-            $data['content_html'] = GUI::toPlaceholderSyntax(str_replace(array('empty({$','})}'), array('empty($',')}'), $data['content_html']));
+            $data['content_text'] = str_replace(array('empty({$','})}'), array('empty($',')}'), $data['content_text']);
+            $data['content_html'] = str_replace(array('empty({$','})}'), array('empty($',')}'), $data['content_html']);
             $GLOBALS['smarty']->assign('CONTENT', $data);
 
             if (is_array($email_types[$data['content_type']]['macros'])) {
@@ -565,16 +565,14 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
                 $page_title = $lang['email']['title_template_create'];
             }
             $GLOBALS['smarty']->assign('ADD_EDIT_TEMPLATE', $page_title);
-            $data['content_html'] = GUI::toPlaceholderSyntax($data['content_html']);
-            $data['content_text'] = GUI::toPlaceholderSyntax($data['content_text']);
             $GLOBALS['smarty']->assign('TEMPLATE', $data);
 
             $macros = array(
-                array('name' => '[[$EMAIL_CONTENT]]', 'description' => $lang['email']['macro_template_content'], 'required' => 'Yes'),
-                array('name' => '[[$DATA.logoURL]]', 'description' => $lang['email']['macro_template_store_logo'], 'required' => 'No'),
-                array('name' => '[[$DATA.store_name]]', 'description' => $lang['email']['macro_template_store_name'], 'required' => 'No'),
-                array('name' => '[[$DATA.storeURL]]', 'description' => $lang['email']['macro_template_store_url'], 'required' => 'No'),
-                array('name' => '[[$DATA.unsubscribeURL]]', 'description' => $lang['email']['macro_template_unsubscribe'], 'required' => 'No'),
+                array('name' => '{$EMAIL_CONTENT}', 'description' => $lang['email']['macro_template_content'], 'required' => 'Yes'),
+                array('name' => '{$DATA.logoURL}', 'description' => $lang['email']['macro_template_store_logo'], 'required' => 'No'),
+                array('name' => '{$DATA.store_name}', 'description' => $lang['email']['macro_template_store_name'], 'required' => 'No'),
+                array('name' => '{$DATA.storeURL}', 'description' => $lang['email']['macro_template_store_url'], 'required' => 'No'),
+                array('name' => '{$DATA.unsubscribeURL}', 'description' => $lang['email']['macro_template_unsubscribe'], 'required' => 'No'),
             );
             $GLOBALS['smarty']->assign('TEMPLATE_MACROS', $macros);
             $GLOBALS['smarty']->assign('DISPLAY_TEMPLATE_FORM', true);
