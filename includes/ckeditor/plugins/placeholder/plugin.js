@@ -36,10 +36,10 @@
 				pathName: lang.pathName,
 				// We need to have wrapping element, otherwise there are issues in
 				// add dialog.
-				template: '<span class="cke_placeholder">[[]]</span>',
+				template: '<span class="cke_placeholder">{}</span>',
 
 				downcast: function() {
-					return new CKEDITOR.htmlParser.text( '[[' + this.data.name + ']]' );
+					return new CKEDITOR.htmlParser.text( '{' + this.data.name + '}' );
 				},
 
 				init: function() {
@@ -48,7 +48,7 @@
 				},
 
 				data: function() {
-					this.element.setText( '[[' + this.data.name + ']]' );
+					this.element.setText( '{' + this.data.name + '}' );
 				},
 
 				getLabel: function() {
@@ -65,7 +65,7 @@
 		},
 
 		afterInit: function( editor ) {
-			var placeholderReplaceRegex = /\[\[([^\[\]])+\]\]/g;
+			var placeholderReplaceRegex = /\{([^\{\}])+\}/g;
 
 			editor.dataProcessor.dataFilter.addRules( {
 				text: function( text, node ) {
