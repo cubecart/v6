@@ -672,7 +672,7 @@ class SEO
     }
 
     /**
-     * Set all meta data
+     * Set all metadata
      *
      * @param array $meta_data
      * @return bool

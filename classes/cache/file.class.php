@@ -254,7 +254,7 @@ class Cache extends Cache_Controler
 
         $name = $this->_makeName($id);
         
-        //Create the meta data for the file
+        //Create the metadata for the file
         $meta = array(
             'time'  => time(),
             'expire' => (!empty($expire) && is_numeric($expire)) ? $expire : $this->_expire,
