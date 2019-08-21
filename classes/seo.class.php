@@ -206,7 +206,6 @@ class SEO
     public function displayMetaData()
     {
         $GLOBALS['smarty']->assign('META_DESCRIPTION', $this->meta_description());
-        $GLOBALS['smarty']->assign('META_KEYWORDS', $this->meta_keywords());
         $GLOBALS['smarty']->assign('META_TITLE', $this->meta_title());
     }
 
@@ -472,35 +471,6 @@ class SEO
     }
 
     /**
-     * Make Meta keywords
-     *
-     * @param string $glue
-     * @return string
-     */
-    public function meta_keywords($glue = ',')
-    {
-        if ($GLOBALS['config']->has('config', 'seo_metadata') && $GLOBALS['config']->get('config', 'seo_metadata') && !empty($this->_meta_data['keywords'])) {
-            switch ((int)$GLOBALS['config']->get('config', 'seo_metadata')) {
-            case self::TAGS_MERGE:
-                if (!empty($this->_meta_data['keywords'])) {
-                    $keywords[]	= $this->_meta_data['keywords'];
-                }
-                $store_meta_keywords = $GLOBALS['config']->get('config', 'store_meta_keywords');
-                if (!empty($store_meta_keywords)) {
-                    $keywords[]	= $store_meta_keywords;
-                }
-                break;
-            case self::TAGS_REPLACE:
-                $keywords = $this->_meta_data['keywords'];
-                break;
-            }
-            return (is_array($keywords)) ? implode($glue, $keywords) : $keywords;
-        } else {
-            return $GLOBALS['config']->get('config', 'store_meta_keywords');
-        }
-    }
-
-    /**
      * Make Meta title
      *
      * @param string $glue
@@ -710,7 +680,7 @@ class SEO
     public function set_meta_data($meta_data)
     {
         if (!empty($meta_data) && is_array($meta_data)) {
-            $default = array('name' => '', 'path' => '', 'title' => '', 'description' => '', 'keywords' => '');
+            $default = array('name' => '', 'path' => '', 'title' => '', 'description' => '');
             $meta_data = array_merge($default, $this->_meta_data, $meta_data);
             foreach ($meta_data as $key => $value) {
                 $this->_meta_data[$key] = $value;

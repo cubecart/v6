@@ -999,7 +999,7 @@ class Language
     {
         if (!empty($category)) {
             if ($this->_language != $GLOBALS['config']->get('config', 'default_language')) {
-                if (($translation = $GLOBALS['db']->select('CubeCart_category_language', array('cat_name', 'cat_desc', 'seo_meta_title', 'seo_meta_description', 'seo_meta_keywords'), array('cat_id' => $category['cat_id'], 'language' => $this->_language))) !== false) {
+                if (($translation = $GLOBALS['db']->select('CubeCart_category_language', array('cat_name', 'cat_desc', 'seo_meta_title', 'seo_meta_description'), array('cat_id' => $category['cat_id'], 'language' => $this->_language))) !== false) {
                     $category = array_merge($category, $translation[0]);
                 }
             }
@@ -1018,7 +1018,7 @@ class Language
     {
         if (!empty($document)) {
             if ($this->_language != $GLOBALS['config']->get('config', 'default_language')) {
-                if (($translation = $GLOBALS['db']->select('CubeCart_documents', array('doc_id', 'doc_name', 'doc_content', 'doc_url', 'doc_url_openin', 'seo_meta_title', 'seo_meta_description', 'seo_meta_keywords'), array('doc_parent_id' => $document['doc_id'], 'doc_lang' => $this->_language))) !== false) {
+                if (($translation = $GLOBALS['db']->select('CubeCart_documents', array('doc_id', 'doc_name', 'doc_content', 'doc_url', 'doc_url_openin', 'seo_meta_title', 'seo_meta_description'), array('doc_parent_id' => $document['doc_id'], 'doc_lang' => $this->_language))) !== false) {
                     $document = array_merge($document, $translation[0]);
                 }
             }

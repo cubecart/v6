@@ -2024,7 +2024,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="seo_htaccess_install" introduced="5.0.0"><![CDATA[Install .htaccess]]></string>
     <string name="seo_meta_behaviour" introduced="5.0.0"><![CDATA[Product, Category & Document Meta Data]]></string>
     <string name="seo_meta_description" introduced="5.0.0"><![CDATA[Meta Description]]></string>
-    <string name="seo_meta_keywords" introduced="5.0.0"><![CDATA[Meta Keywords]]></string>
     <string name="seo_meta_option_disable" introduced="5.0.0"><![CDATA[Disabled (Use global meta data only)]]></string>
     <string name="seo_meta_option_merge" introduced="5.0.0"><![CDATA[Merge with global meta data (Recommended)]]></string>
     <string name="seo_meta_option_replace" introduced="5.0.0"><![CDATA[Replace global meta data]]></string>

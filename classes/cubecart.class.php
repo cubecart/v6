@@ -181,7 +181,6 @@ class Cubecart
                     'name'   => $contents['doc_name'],
                     'path'   => null,
                     'description' => $contents['seo_meta_description'],
-                    'keywords'  => $contents['seo_meta_keywords'],
                     'title'   => $contents['seo_meta_title'],
                 );
 

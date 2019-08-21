@@ -338,7 +338,6 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
                 'latest'			=> $lang['catalogue']['product_latest'],
                 'seo_path'			=> $lang['settings']['seo_path'],
                 'seo_meta_title'		=> $lang['settings']['seo_meta_title'],
-                'seo_meta_keywords'		=> $lang['settings']['seo_meta_keywords'],
                 'seo_meta_description'	=> $lang['settings']['seo_meta_description'],
                 'condition'			=> $lang['catalogue']['condition'],
                 'upc'				=> $lang['catalogue']['product_upc'],

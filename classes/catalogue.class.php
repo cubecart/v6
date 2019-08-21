@@ -264,7 +264,6 @@ class Catalogue
                 'name'   => (isset($catData['cat_name'])) ? $catData['cat_name'] : '',
                 'path'   => null,
                 'description' => (isset($catData['seo_meta_description'])) ? $catData['seo_meta_description'] : '',
-                'keywords'  => (isset($catData['seo_meta_keywords'])) ? $catData['seo_meta_keywords'] : '',
                 'title'   => (isset($catData['seo_meta_title'])) ? $catData['seo_meta_title'] : '',
             );
             $GLOBALS['seo']->set_meta_data($meta_data);
@@ -331,7 +330,6 @@ class Catalogue
                     'name'   => $product['name'],
                     'path'   => null,
                     'description' => $product['seo_meta_description'],
-                    'keywords'  => $product['seo_meta_keywords'],
                     'title'   => $product['seo_meta_title'],
                 );
                 $GLOBALS['seo']->set_meta_data($meta_data);

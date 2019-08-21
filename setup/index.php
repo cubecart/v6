@@ -114,7 +114,6 @@ $default_config_settings = array(
   'default_rss_feed' => 'https://forums.cubecart.com/forum/1-news-announcements.xml',
   'email_method' => 'mail',
   'seo_metadata' => '1',
-  'store_meta_keywords' => '',
   'store_meta_description' => '',
   'recaptcha' => '0',
   'time_format' => '%d %b %Y, %H:%M',

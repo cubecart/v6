@@ -537,7 +537,7 @@ if (isset($_GET['action']) && strtolower($_GET['action'])=='clone' && isset($_GE
                 }
             }
             // Translations
-            if ($GLOBALS['config']->get('config', 'product_clone_translations') && ($translations_i = $GLOBALS['db']->select('CubeCart_inventory_language', array('language', 'name', 'description', 'seo_meta_title', 'seo_meta_description', 'seo_meta_keywords', 'seo_custom_url'), array('product_id' => $product_id_parent))) !== false) {
+            if ($GLOBALS['config']->get('config', 'product_clone_translations') && ($translations_i = $GLOBALS['db']->select('CubeCart_inventory_language', array('language', 'name', 'description', 'seo_meta_title', 'seo_meta_description', 'seo_custom_url'), array('product_id' => $product_id_parent))) !== false) {
                 foreach ($translations_i as $row_no => $translation) {
                     $translation['product_id'] = $product_id;
                     $GLOBALS['db']->insert('CubeCart_inventory_language', $translation);
