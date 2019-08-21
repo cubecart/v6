@@ -103,6 +103,49 @@ jQuery(document).ready(function() {
             }
         }
     });
+    $("#newsletter_exit").validate({
+        onkeyup: false,
+        rules: {
+            subscribe: {
+                required: true,
+                email: true,
+                remote: {
+                    url: "?_g=ajax_email&source=newsletter",
+                    type: "post",
+                    data: {
+                        username: function() {
+                            return $("#newsletter_email_exit").val();
+                        },
+                        token: function() {
+                            return $("input[name=token]").val();
+                        }
+                    },
+                    dataFilter: function(data) {
+                        var json = JSON.parse(data);
+                        if(json.result) {
+                            $("#subscribe_button_exit").val($('#validate_subscribe_exit').text());
+                            $("#force_unsubscribe_exit").val('0');
+                        } else {
+                            alert($('#validate_already_subscribed_exit').text());
+                            $("#subscribe_button_exit").val($('#validate_unsubscribe_exit').text());
+                            $("#force_unsubscribe_exit").val('1');
+                        }
+                        return true;
+                    }
+                }
+            },
+        },
+        messages: {
+            subscribe: {
+                required: $('#validate_email_exit').text(),
+                email: $('#validate_email_exit').text(),
+                remote: $('#validate_already_subscribed_exit').text()
+            },
+        },
+        submitHandler: function(form) {
+            form.submit();
+        }
+    });
     $("#newsletter_form, #newsletter_form_box").validate({
         onkeyup: false,
         rules: {

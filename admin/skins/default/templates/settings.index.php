@@ -144,6 +144,10 @@
          </div>
       </fieldset>
       <fieldset>
+         <legend>{$LANG.navigation.nav_subscribers}</legend>
+         <div><label for="exit_modal">{$LANG.settings.enable_exit_modal}</label><span><input name="config[exit_modal]" id="exit_modal" type="hidden" class="toggle" value="{$CONFIG.exit_modal}"></span></div>
+      </fieldset>
+      <fieldset>
          <legend>{$LANG.common.misc}</legend>
          <div><label for="admin_notify_status">{$LANG.settings.admin_order_status_notification}</label><span><select name="config[admin_notify_status]" id="admin_notify_status" class="textbox">
             {foreach from=$OPT_ADMIN_NOTIFY_STATUS item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
