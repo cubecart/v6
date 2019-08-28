@@ -308,13 +308,9 @@ class User
 
                         //If there is a redirect
                         if (!empty($redir)) {
-                            if (preg_match('#^http#iU', $redir)) {
-                                // Prevent phishing attacks, or anything untoward, unless it's redirecting back to this store
-                                if ((substr($redir, 0, strlen(CC_STORE_URL)) == CC_STORE_URL) || (substr($redir, 0, strlen($GLOBALS['config']->get('config', 'ssl_url'))) == $GLOBALS['config']->get('config', 'ssl_url'))) {
-                                    // All good, proceed
-                                } else {
-                                    trigger_error("Possible Phishing attack - Redirection to '".$redir."' is not allowed.", E_USER_ERROR);
-                                }
+                            // Prevent phishing attacks, or anything untoward, unless it's redirecting back to this store
+                            if(!$GLOBALS['ssl']->validRedirect($redir)) {
+                               trigger_error("Possible Phishing attack - Redirection to '".$redir."' is not allowed.", E_USER_ERROR);
                             }
                         } else {
                             $remove = array('redir');

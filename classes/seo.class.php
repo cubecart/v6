@@ -701,17 +701,14 @@ class SEO
         $this->_sitemap_xml = new XML();
         $this->_sitemap_xml->startElement('urlset', array('xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9'));
 
-        // Generate Standard records
-        $store_url = $GLOBALS['config']->get('config', 'ssl')=='1' ? $GLOBALS['config']->get('config', 'ssl_url') : $GLOBALS['config']->get('config', 'standard_url');
-
-        $this->_sitemap_link(array('url' => $store_url.'/index.php'));
+        $this->_sitemap_link(array('url' => $GLOBALS['storeURL'].'/index.php'));
         # Sale Items
         if ($GLOBALS['config']->get('config', 'catalogue_sale_mode')!=='0' && $GLOBALS['config']->get('config', 'catalogue_sale_mode')!=='2') {
-            $this->_sitemap_link(array('url' => $store_url.'/index.php?_a=saleitems'));
+            $this->_sitemap_link(array('url' => $GLOBALS['storeURL'].'/index.php?_a=saleitems'));
         }
         # Gift Certificates
         if ($GLOBALS['config']->get('gift_certs', 'status')=='1') {
-            $this->_sitemap_link(array('url' => $store_url.'/index.php?_a=certificates'));
+            $this->_sitemap_link(array('url' => $GLOBALS['storeURL'].'/index.php?_a=certificates'));
         }
 
         $queryArray = array(
@@ -767,7 +764,7 @@ class SEO
                 // Ping Google
                 $request = new Request('www.google.com', '/webmasters/sitemaps/ping');
                 $request->setMethod('get');
-                $request->setData(array('sitemap' => $store_url.'/'.basename($filename)));
+                $request->setData(array('sitemap' => $GLOBALS['storeURL'].'/'.basename($filename)));
                 $request->send();
             }
             return true;
@@ -1057,10 +1054,8 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
         $dateTime = new DateTime($updated);
         $updated = $dateTime->format(DateTime::W3C);
 
-        $store_url = $GLOBALS['config']->get('config', 'ssl')=='1' ? $GLOBALS['config']->get('config', 'ssl_url') : $GLOBALS['config']->get('config', 'standard_url');
-
         if (!isset($input['url']) && !empty($type)) {
-            $input['url'] = $store_url.'/'.$this->generatePath($input['id'], $type, '', false, true);
+            $input['url'] = $GLOBALS['storeURL'].'/'.$this->generatePath($input['id'], $type, '', false, true);
         }
 
         $this->_sitemap_xml->startElement('url');

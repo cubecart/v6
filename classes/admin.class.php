@@ -433,19 +433,15 @@ class Admin
                 }
 
                 if (!empty($redir)) {
-                    if (preg_match('#^http#iU', $redir)) {
-                        // Prevent phishing attacks, or anything untoward, unless it's redirecting back to this store
-                        if ((substr($redir, 0, strlen(CC_STORE_URL)) == CC_STORE_URL) || (substr($redir, 0, strlen($GLOBALS['config']->get('config', 'ssl_url'))) == $GLOBALS['config']->get('config', 'ssl_url'))) {
-                            // All good, proceed
-                        } else {
-                            trigger_error(sprintf("Possible Phishing attack - Redirection to '%s' is not allowed.", $redir));
-                            $redir = '';
-                            if ($GLOBALS['session']->has('back') && $redir == $GLOBALS['session']->get('back')) {
-                                $GLOBALS['session']->delete('back');
-                            }
-                            if ($GLOBALS['session']->has('redir') && $redir == $GLOBALS['session']->get('redir')) {
-                                $GLOBALS['session']->delete('redir');
-                            }
+                    // Prevent phishing attacks, or anything untoward, unless it's redirecting back to this store
+                    if(!$GLOBALS['ssl']->validRedirect($redir)) {
+                        trigger_error(sprintf("Possible Phishing attack - Redirection to '%s' is not allowed.", $redir));
+                        $redir = '';
+                        if ($GLOBALS['session']->has('back') && $redir == $GLOBALS['session']->get('back')) {
+                            $GLOBALS['session']->delete('back');
+                        }
+                        if ($GLOBALS['session']->has('redir') && $redir == $GLOBALS['session']->get('redir')) {
+                            $GLOBALS['session']->delete('redir');
                         }
                     }
                 }
