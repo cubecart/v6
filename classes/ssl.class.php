@@ -111,7 +111,7 @@ class SSL
     /**
      * Validate redirect
      *
-     * @param bool $default
+     * @param string $redir
      * @return bool
      */
     public function validRedirect($redir)
