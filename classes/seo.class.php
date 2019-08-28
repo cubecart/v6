@@ -76,6 +76,12 @@ class SEO
      * @var array of strings
      */
     private $_static_sections = array('recover', 'saleitems', 'certificates', 'trackback', 'contact', 'search', 'login', 'register');
+    /**
+     * SSL URL
+     *
+     * @var string
+     */
+    private $_sitemap_base_url = '';
 
     /**
      * Class instance
@@ -108,6 +114,8 @@ class SEO
         foreach ($GLOBALS['hooks']->load('class.seo.construct') as $hook) {
             include $hook;
         }
+
+        $this->_sitemap_base_url = $GLOBALS['config']->get('config', 'ssl')=='1' ? preg_replace('#^http://#', 'https://', $GLOBALS['config']->get('config', 'standard_url')) : $GLOBALS['config']->get('config', 'standard_url');
 
         self::_checkModRewrite();
 
@@ -701,14 +709,14 @@ class SEO
         $this->_sitemap_xml = new XML();
         $this->_sitemap_xml->startElement('urlset', array('xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9'));
 
-        $this->_sitemap_link(array('url' => $GLOBALS['storeURL'].'/index.php'));
+        $this->_sitemap_link(array('url' => $this->_sitemap_base_url.'/index.php'));
         # Sale Items
         if ($GLOBALS['config']->get('config', 'catalogue_sale_mode')!=='0' && $GLOBALS['config']->get('config', 'catalogue_sale_mode')!=='2') {
-            $this->_sitemap_link(array('url' => $GLOBALS['storeURL'].'/index.php?_a=saleitems'));
+            $this->_sitemap_link(array('url' => $this->_sitemap_base_url.'/index.php?_a=saleitems'));
         }
         # Gift Certificates
         if ($GLOBALS['config']->get('gift_certs', 'status')=='1') {
-            $this->_sitemap_link(array('url' => $GLOBALS['storeURL'].'/index.php?_a=certificates'));
+            $this->_sitemap_link(array('url' => $this->_sitemap_base_url.'/index.php?_a=certificates'));
         }
 
         $queryArray = array(
@@ -764,7 +772,7 @@ class SEO
                 // Ping Google
                 $request = new Request('www.google.com', '/webmasters/sitemaps/ping');
                 $request->setMethod('get');
-                $request->setData(array('sitemap' => $GLOBALS['storeURL'].'/'.basename($filename)));
+                $request->setData(array('sitemap' => $this->_sitemap_base_url.'/'.basename($filename)));
                 $request->send();
             }
             return true;
@@ -1055,7 +1063,7 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
         $updated = $dateTime->format(DateTime::W3C);
 
         if (!isset($input['url']) && !empty($type)) {
-            $input['url'] = $GLOBALS['storeURL'].'/'.$this->generatePath($input['id'], $type, '', false, true);
+            $input['url'] = $this->_sitemap_base_url.'/'.$this->generatePath($input['id'], $type, '', false, true);
         }
 
         $this->_sitemap_xml->startElement('url');
