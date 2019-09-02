@@ -1521,7 +1521,7 @@ class Cubecart
                         'content_html' => '',
                         'content_text' => $mailer->Body,
                         'to' => "$department <$email>",
-                        'from' => "$from_name <$from_email",
+                        'from' => "$from_name <$from_email>",
                         'result' => $email_sent,
                         'email_content_id' => ''
                     );
