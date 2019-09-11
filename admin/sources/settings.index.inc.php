@@ -66,7 +66,7 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
         ## New logos being uploaded
         foreach ($_FILES as $logo) {
             if (file_exists($logo['tmp_name']) && $logo['size'] > 0) {
-                if (preg_match('/^.*\.(jpg|jpeg|png|gif|svg)$/i', $logo['name'])) {
+                if (preg_match('/^.*\.(jpg|jpeg|png|gif|svg|webp)$/i', $logo['name'])) {
                     switch ((int)$logo['error']) {
                         case UPLOAD_ERR_OK:
                             ## Upload is okay, so move to the logo directory, and add a database reference

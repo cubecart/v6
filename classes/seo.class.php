@@ -881,7 +881,7 @@ IndexIgnore *
 ErrorDocument 404 '.CC_ROOT_REL.'index.php
 
 ## Override default 404 error document for missing page resources ##
-<FilesMatch "\.(gif|jpe?g|png|ico|css|js|svg)$">
+<FilesMatch "\.(gif|jpe?g|png|ico|css|js|svg|webp)$">
   ErrorDocument 404 "<html></html>
 </FilesMatch>
 ##### END CubeCart .htaccess #####';

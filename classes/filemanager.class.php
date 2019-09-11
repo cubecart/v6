@@ -267,7 +267,7 @@ class FileManager
             foreach ($file_array as $key => $file) {
                 if (!is_dir($file)) {
                     // Skip file if it is not an image and we're in image mode
-                    if ($this->_mode == 1 && !preg_match('/\.(jpeg|jpg|png|gif)$/i', $file)) {
+                    if ($this->_mode == 1 && !preg_match('/\.(jpeg|jpg|png|gif|webp)$/i', $file)) {
                         continue;
                     }
 

@@ -2007,7 +2007,7 @@ class Cubecart
                         continue;
                     }
 
-                    if (preg_match('#\.(gif|jpg|png|jpeg)$#i', strtolower($module['desc']))) {
+                    if (preg_match('#\.(gif|jpg|png|jpeg|webp)$#i', strtolower($module['desc']))) {
                         $gateway['description'] = sprintf('<img src="%s" border="0" title="" alt="" />', $module['desc']);
                     } elseif (!empty($module['desc'])) {
                         $gateway['description'] = $module['desc'];
@@ -2246,7 +2246,7 @@ class Cubecart
                 continue;
             }
 
-            if (preg_match('#\.(gif|jpg|png|jpeg)$#i', strtolower($module['desc']))) {
+            if (preg_match('#\.(gif|jpg|png|jpeg|webp)$#i', strtolower($module['desc']))) {
                 $gateway['description'] = sprintf('<img src="%s" border="0" title="" alt="" />', $module['desc']);
             } elseif (!empty($module['desc'])) {
                 $gateway['description'] = $module['desc'];

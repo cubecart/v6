@@ -114,6 +114,10 @@ class GD
                     $this->_gdImageSource = imagecreatefrompng($file);
                     imagesavealpha($this->_gdImageSource, true);
                     break;
+                case IMAGETYPE_WEBP:
+                    $this->_gdImageSource = imagecreatefromwebp($file);
+                    break;
+                break;
                 default:
                     return false;
             }
@@ -196,6 +200,9 @@ class GD
                 case IMAGETYPE_PNG:
                     imagesavealpha($im, true);
                     $this->_gdImageSource = imagepng($im, $file);
+                    break;
+                case IMAGETYPE_WEBP:
+                    $this->_gdImageSource = imagewebp($im, $file, $this->_gdJpegQuality);
                     break;
                 default:
                     trigger_error(__METHOD__.' - Unknown file type', E_USER_NOTICE);
