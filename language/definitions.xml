@@ -865,6 +865,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="zone_abbrev" introduced="5.0.0"><![CDATA[Abbreviation]]></string>
     <string name="zone_country" introduced="5.0.0"><![CDATA[Zone Country]]></string>
     <string name="zone_name" introduced="5.0.0"><![CDATA[Name]]></string>
+    <string name="zone" introduced="6.2.7"><![CDATA[Zone]]></string>
   </group>
   <group name="customer">
     <string name="cookie_consent" introduced="6.2.1"><![CDATA[Cookie Consent]]></string>

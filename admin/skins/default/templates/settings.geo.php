@@ -37,9 +37,9 @@
 		  <td align="center">
 			<select name="country[{$country.id}][status]" id="{$country.id}_status">
 				<option value="0"{if $country.status=='0'} selected="selected"{/if}>{$LANG.common.disabled}</option>
-				<option value="1"{if $country.status=='1'} selected="selected"{/if}>{$LANG.common.enabled} ({$LANG.address.state} {$LANG.common.required})</option>
-				<option value="2"{if $country.status=='2'} selected="selected"{/if}>{$LANG.common.enabled} ({$LANG.address.state} {$LANG.common.optional|replace:array('(',')'):''})</option>
-				<option value="3"{if $country.status=='3'} selected="selected"{/if}>{$LANG.common.enabled} ({$LANG.address.state} {$LANG.common.disabled})</option>
+				<option value="1"{if $country.status=='1'} selected="selected"{/if}>{$LANG.common.enabled} ({$LANG.country.zone} {$LANG.common.required})</option>
+				<option value="2"{if $country.status=='2'} selected="selected"{/if}>{$LANG.common.enabled} ({$LANG.country.zone} {$LANG.common.optional|replace:array('(',')'):''})</option>
+				<option value="3"{if $country.status=='3'} selected="selected"{/if}>{$LANG.common.enabled} ({$LANG.country.zone} {$LANG.common.disabled})</option>
 			</select>
 			</td>
 		  <td align="center"><a href="{$country.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
@@ -53,9 +53,9 @@
   	  	    <select name="multi_country_action">
   	  	   	  <option value="">{$LANG.form.with_selected}</option>
   	  	      <option value="delete">{$LANG.common.delete}</option>
-  	  	      <option value="1">{$LANG.common.enabled} ({$LANG.address.state} {$LANG.common.required})</option>
-							<option value="2">{$LANG.common.enabled} ({$LANG.address.state} {$LANG.common.optional|replace:array('(',')'):''})</option>
-							<option value="3">{$LANG.common.enabled} ({$LANG.address.state} {$LANG.common.disabled})</option>
+  	  	      <option value="1">{$LANG.common.enabled} ({$LANG.country.zone} {$LANG.common.required})</option>
+							<option value="2">{$LANG.common.enabled} ({$LANG.country.zone} {$LANG.common.optional|replace:array('(',')'):''})</option>
+							<option value="3">{$LANG.common.enabled} ({$LANG.country.zone} {$LANG.common.disabled})</option>
   	  	      <option value="0">{$LANG.common.disable}</option>
   	  	    </select>
   	  	    <input type="submit" value="{$LANG.common.go}" name="go" class="tiny">
@@ -79,9 +79,9 @@
 		  <div><label for="country-eu">{$LANG.country.assign_to_eu}</label><span><input name="new_country[eu]" id="country-eu" type="hidden" class="toggle" value="0" /></span></div>
 			<div><label for="country-status">{$LANG.common.status}</label><span><select name="new_country[status]" id="country-status">
 				<option value="0">{$LANG.common.disabled}</option>
-				<option value="1">{$LANG.common.enabled} ({$LANG.address.state} {$LANG.common.required})</option>
-				<option value="2">{$LANG.common.enabled} ({$LANG.address.state} {$LANG.common.optional|replace:array('(',')'):''})</option>
-				<option value="3">{$LANG.common.enabled} ({$LANG.address.state} {$LANG.common.disabled})</option>
+				<option value="1">{$LANG.common.enabled} ({$LANG.country.zone} {$LANG.common.required})</option>
+				<option value="2">{$LANG.common.enabled} ({$LANG.country.zone} {$LANG.common.optional|replace:array('(',')'):''})</option>
+				<option value="3">{$LANG.common.enabled} ({$LANG.country.zone} {$LANG.common.disabled})</option>
 			</select>
 			</div>
 		</fieldset>
