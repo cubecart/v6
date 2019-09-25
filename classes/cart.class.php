@@ -1147,12 +1147,10 @@ class Cart
                         } else {
                             $max_stock = $stock_level;
                         }
-                    }
-                    foreach ($GLOBALS['hooks']->load('class.cart.update.max_stock') as $hook) {
-                        include $hook;
-                    }
-                    if (isset($max_stock)) {
-                        if (isset($max_stock) && $quantity > $max_stock) {
+                        foreach ($GLOBALS['hooks']->load('class.cart.update.max_stock') as $hook) {
+                            include $hook;
+                        }
+                        if ($quantity > $max_stock) {
                             if ($max_stock <=0) {
                                 $GLOBALS['gui']->setError(sprintf($GLOBALS['language']->checkout['error_item_not_available'], $this->basket['contents'][$hash]['name']));
                                 $this->remove($hash);
