@@ -1839,6 +1839,15 @@ class Catalogue
                 $where[] = $this->outOfStockWhere();
             }
 
+            if(!isset($search_data['manufacturer']) && $manufacturers  = $GLOBALS['db']->select('CubeCart_manufacturers', array('id'), "`name` LIKE '%%'")) {
+                $ids = array();
+                foreach($manufacturers as $manufacturer) {
+                    $ids[] = $manufacturer['id'];
+                }
+                $manufacturers = implode(',',$ids);
+                $where[] = "OR `I`.`manufacturer` IN($manufacturers)";
+            }
+
             $whereString = (isset($where) && is_array($where)) ? implode(' ', $where) : '';
             $whereString .= $this->_where_live_from;
 
@@ -1958,27 +1967,6 @@ class Catalogue
                         return true;
                     } elseif ($search_mode=="rlike") {
                         return $this->searchCatalogue($original_search_data, 1, $per_page, 'like');
-                    }
-                    if($manufacturers  = $GLOBALS['db']->select('CubeCart_manufacturers', array('id'), "`name` $like_keyword '$regexp'")) {
-                        $ids = array();
-                        foreach($manufacturers as $manufacturer) {
-                            $ids[] = $manufacturer['id'];
-                        }
-                        $manufacturers = implode(',',$ids);
-                  
-                        $q3 = "SELECT I.* FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_category_index` as CI INNER JOIN ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 ".$whereString." AND `manufacturer` IN ($manufacturers)";
-                        $query = $q3.' '.$order_string.' '.$limit;
-                        $search = $GLOBALS['db']->query($query);
-                        if (count($search)>0) {
-                            $count = $GLOBALS['db']->query($q3);
-                            $this->_category_count  = (int)count($count);
-                            $this->_category_products = $search;
-                            if (count($this->_category_products)==1 && ctype_digit($this->_category_products[0]['product_id']) && $_SERVER['HTTP_X_REQUESTED_WITH']!=='XMLHttpRequest') {
-                                $GLOBALS['gui']->setNotify(sprintf($GLOBALS['language']->catalogue['notify_product_search_one'], $_REQUEST['search']['keywords']));
-                                httpredir('?_a=product&product_id='.$this->_category_products[0]['product_id']);
-                            }
-                            return true;
-                        }
                     }
                 }
             }
