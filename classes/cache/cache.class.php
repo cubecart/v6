@@ -213,6 +213,38 @@ class Cache_Controler
     //=====[ Private ]=======================================
 
     /**
+     * Clear skin cache
+     *
+     * @param string $id
+     * @return string
+     */
+    protected function _clearFileCache($prefix, $files = array())
+    {
+        $css_files = glob($this->_cache_path.$this->_prefix.$prefix.'.css', GLOB_NOSORT);
+        if (is_array($css_files)) {
+            $files = array_merge($files, $css_files);
+        }
+
+        $js_files = glob($this->_cache_path.$this->_prefix.$prefix.'.js', GLOB_NOSORT);
+        if (is_array($js_files)) {
+            $files = array_merge($files, $js_files);
+        }
+
+        $skin_files = glob($this->_cache_path.'skin/*', GLOB_NOSORT);
+        if (is_array($skin_files)) {
+            $files = array_merge($files, $skin_files);
+        }
+
+        if (is_array($files)) {
+            foreach ($files as $file) {
+                if (file_exists($file)) {
+                    @unlink($file);
+                }
+            }
+        }   
+    }
+
+    /**
      * Make the cache name key
      *
      * @param string $id

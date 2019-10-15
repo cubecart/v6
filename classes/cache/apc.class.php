@@ -100,6 +100,7 @@ class Cache extends Cache_Controler
         } else {
             @apc_clear_cache('user');
         }
+        $this->_clearFileCache($prefix);
 
         return $return;
     }
