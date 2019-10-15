@@ -1191,7 +1191,7 @@ class Cart
         }
 
         //If the cart is empty
-        if (count($this->basket['contents']) == 0) {
+        if (isset($this->basket['contents']) && is_array($this->basket['contents']) && count($this->basket['contents']) == 0) {
             $this->clear();
         }
     }
