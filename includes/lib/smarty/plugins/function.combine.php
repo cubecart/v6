@@ -132,14 +132,18 @@ function smarty_function_combine($params, &$smarty)
                 $last_mtime = file_get_contents(CC_ROOT_DIR . '/' . $params['cache_file_name']);
             }
 
-            $output_filename = CC_ROOT_REL.preg_replace('/\.(js|css)$/i', date('_YmdHis.', $last_mtime) . '$1', $params['output']);
-
-            if ($params['type'] == 'js') {
-                echo '<script type="text/javascript" src="' . $output_filename . '" charset="utf-8"></script>';
-            } elseif ($params['type'] == 'css') {
-                echo '<link type="text/css" rel="stylesheet" href="' . $output_filename . '" />';
+            $output_filename = preg_replace('/\.(js|css)$/i', date('_YmdHis.', $last_mtime) . '$1', $params['output']);
+            if(file_exists(CC_ROOT_DIR . '/' . $output_filename)) {
+                if ($params['type'] == 'js') {
+                    echo '<script type="text/javascript" src="' . CC_ROOT_REL . $output_filename . '" charset="utf-8"></script>';
+                } elseif ($params['type'] == 'css') {
+                    echo '<link type="text/css" rel="stylesheet" href="' . CC_ROOT_REL . $output_filename . '" />';
+                } else {
+                    echo $output_filename;
+                }
             } else {
-                echo $output_filename;
+                unlink(CC_ROOT_DIR . '/' . $params['cache_file_name']);
+                smarty_build_combine($params);
             }
         }
     }
