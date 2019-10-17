@@ -1448,7 +1448,7 @@ class Catalogue
             }
         }
 
-        if (isset($file) && !empty($file) && !preg_match('/^skins\//', $file) && file_exists($source)) {
+        if (isset($file) && !empty($file) && !preg_match('/^skins\//', $file) && file_exists(CC_ROOT_DIR.'/images/source/'.$file)) {
             $source = CC_ROOT_DIR.'/images/source/'.$file;
         } else {
             $source = CC_ROOT_DIR.'/'.$placeholder_image;
