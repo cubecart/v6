@@ -235,6 +235,11 @@ class Cache_Controler
             $files = array_merge($files, $skin_files);
         }
 
+        $code_snippets = glob(CC_ROOT_DIR.'/includes/extra/snippet_*.php', GLOB_NOSORT);
+        if (is_array($code_snippets)) {
+            $files = array_merge($files, $code_snippets);
+        }
+
         if (is_array($files)) {
             foreach ($files as $file) {
                 if (file_exists($file)) {
