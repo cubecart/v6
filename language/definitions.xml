@@ -444,6 +444,7 @@
     <string name="review_anon" introduced="5.0.0"><![CDATA[Anonymous]]></string>
     <string name="review_info" introduced="5.0.0"><![CDATA[%1$s average, based on <a href="%3$s">%2$s reviews</a>]]></string>
     <string name="review_title" introduced="5.0.0"><![CDATA[Review Title]]></string>
+    <string name="reviews_no_gravatar" introduced="6.2.7"><![CDATA[Enabled (Gravatar Disabled)]]></string>
     <string name="saving" introduced="5.0.0"><![CDATA[Save]]></string>
     <string name="set_assign" introduced="5.0.0"><![CDATA[Assign Option Set]]></string>
     <string name="stock_available" introduced="5.0.0"><![CDATA[In stock]]></string>

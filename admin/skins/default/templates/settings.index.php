@@ -63,7 +63,13 @@
       </fieldset>
       <fieldset>
          <legend>{$LANG.navigation.nav_prod_reviews}</legend>
-         <div><label for="enable_reviews">{$LANG.settings.enable_reviews}</label><span><input name="config[enable_reviews]" id="enable_reviews" type="hidden" class="toggle" value="{$CONFIG.enable_reviews}"></span></div>
+         <div><label for="enable_reviews">{$LANG.settings.enable_reviews}</label><span>
+         <select name="config[enable_reviews]">
+         <option value="0"{if $CONFIG.enable_reviews=='0'} selected="selected"{/if}>{$LANG.common.disabled}</option>
+         <option value="1"{if $CONFIG.enable_reviews=='1'} selected="selected"{/if}>{$LANG.common.enabled}</option>
+         <option value="2"{if $CONFIG.enable_reviews=='2'} selected="selected"{/if}>{$LANG.catalogue.reviews_no_gravatar}</option>
+         </select>
+         </span></div>
       </fieldset>
       <fieldset>
          <legend>{$LANG.settings.title_orders}</legend>

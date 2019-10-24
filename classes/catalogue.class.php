@@ -407,10 +407,14 @@ class Catalogue
                         }
                         $review['date']  = formatTime($review['time']);
                         $review['date_schema'] = formatTime($review['time'], '%G-%m-%d', true);
-                        $review['gravatar'] = md5(strtolower(trim($review['email'])));
-                        $review['gravatar_src'] = 'https://www.gravatar.com/avatar/'.$review['gravatar'].'?d=404&r=g';
-                        $headers = get_headers($review['gravatar_src']);
-                        $review['gravatar_exists'] = strstr($headers[0], '200') ? true : false;
+                        if($GLOBALS['config']->get('config', 'enable_reviews')==='1') {
+                            $review['gravatar'] = md5(strtolower(trim($review['email'])));
+                            $review['gravatar_src'] = 'https://www.gravatar.com/avatar/'.$review['gravatar'].'?d=404&r=g';
+                            $headers = get_headers($review['gravatar_src']);
+                            $review['gravatar_exists'] = strstr($headers[0], '200') ? true : false;
+                        } else {
+                            $review['gravatar_exists'] = false;
+                        }
                         $vars[] = $review;
                     }
                     $GLOBALS['smarty']->assign('REVIEWS', $vars);
