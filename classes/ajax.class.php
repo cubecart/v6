@@ -274,33 +274,33 @@ class Ajax
     {
         if (CC_IN_ADMIN) {
             $methods = array('mail' => $GLOBALS['language']->settings['email_method_mail'], 'smtp' => $GLOBALS['language']->settings['email_method_smtp'], 'smtp_ssl' => $GLOBALS['language']->settings['email_method_smtp_ssl'], 'smtp_tls' => $GLOBALS['language']->settings['email_method_smtp_tls']);
-            $method_name = $methods[$_GET['email_method']];
+            $method_name = $methods[$GLOBALS['RAW']['POST']['email_method']];
 
             $subject = "Testing ".$method_name;
             $body = "Testing email sent by &quot;".$method_name."&quot; from CubeCart v".CC_VERSION." at ".CC_STORE_URL.".<br><br>If you are reading this message then you can be sure that email from your store is working.";
             $altbody = strip_tags($body);
 
-            if ($_GET['email_method']!=="mail") {
+            if ($GLOBALS['RAW']['POST']['email_method']!=="mail") {
                 @ob_start();
                 $test_mailer = new Mailer();
                 $test_mailer->SMTPDebug = 2;
                 $test_mailer->Debugoutput = "html";
                 $test_mailer->ClearAddresses();
-                $test_mailer->From   = $_GET['email_address'];
-                $test_mailer->FromName  = html_entity_decode($_GET['email_name'], ENT_QUOTES);
-                $test_mailer->Host = $_GET['email_smtp_host'];
-                $test_mailer->Port = $_GET['email_smtp_port'];
-                if ($_GET['email_method']=='smtp_ssl') {
+                $test_mailer->From   = $GLOBALS['RAW']['POST']['email_address'];
+                $test_mailer->FromName  = html_entity_decode($GLOBALS['RAW']['POST']['email_name'], ENT_QUOTES);
+                $test_mailer->Host = $GLOBALS['RAW']['POST']['email_smtp_host'];
+                $test_mailer->Port = $GLOBALS['RAW']['POST']['email_smtp_port'];
+                if ($GLOBALS['RAW']['POST']['email_method']=='smtp_ssl') {
                     $test_mailer->SMTPSecure = 'ssl';
-                } elseif ($_GET['email_method']=='smtp_tls') {
+                } elseif ($GLOBALS['RAW']['POST']['email_method']=='smtp_tls') {
                     $test_mailer->SMTPSecure = 'tls';
                 }
-                if ($_GET['email_smtp']=='1') {
+                if ($GLOBALS['RAW']['POST']['email_smtp']=='1') {
                     $test_mailer->SMTPAuth = true;
-                    $test_mailer->Username= $_GET['email_smtp_user'];
-                    $test_mailer->Password = $_GET['email_smtp_password'];
+                    $test_mailer->Username= $GLOBALS['RAW']['POST']['email_smtp_user'];
+                    $test_mailer->Password = $GLOBALS['RAW']['POST']['email_smtp_password'];
                 }
-                $test_mailer->AddAddress($_GET['email_address']);
+                $test_mailer->AddAddress($GLOBALS['RAW']['POST']['email_address']);
                 $test_mailer->Subject = $subject;
                 $test_mailer->Body = $body;
                 $test_mailer->AltBody = $altbody;
@@ -313,7 +313,7 @@ class Ajax
 
                 if (!empty($email_test_results)) {
                     $email_test_results_data = array(
-                        'request_url' => 'mailto:'.$_GET['email_address'],
+                        'request_url' => 'mailto:'.$GLOBALS['RAW']['POST']['email_address'],
                         'request' => 'Subject: Testing CubeCart',
                         'result' => $email_test_results,
                         'error' => ($email_test_send_result) ? null : "Mailer Failed" ,
@@ -327,13 +327,13 @@ class Ajax
             } else {
                 $test_mailer = new Mailer();
                 $test_mailer->ClearAddresses();
-                $test_mailer->AddAddress($_GET['email_address']);
+                $test_mailer->AddAddress($GLOBALS['RAW']['POST']['email_address']);
                 $test_mailer->Subject = $subject;
                 $test_mailer->Body = $body;
                 $test_mailer->AltBody = $altbody;
                 $test_mailer->Send();
 
-                return "<div class=\"mail_modal\"><h3>Testing ".$method_name."</h3><p>It isn't possible  to get a definitive test result for the &quot;PHP mail() Function&quot; method.</p><p>We have attempted to send a test email to &quot;".$_GET['email_address']."&quot; with the subject of &quot;".$subject."&quot; Please note that it can take ten minutes or even longer for a busy mail server to deliver email. Don't forget to check your spam folder!</p><p>This method can fail if the server hasn't been configured properly and may refuse to send mail from &quot;untrusted&quot; sources such as Hotmail, Yahoo, AOL etc&hellip;. We recommend using an email address from a domain hosted on this server such as sales@".parse_url(CC_STORE_URL, PHP_URL_HOST)." for example and this may need to be setup form within your web hosting account.</p></div>";
+                return "<div class=\"mail_modal\"><h3>Testing ".$method_name."</h3><p>It isn't possible  to get a definitive test result for the &quot;PHP mail() Function&quot; method.</p><p>We have attempted to send a test email to &quot;".$GLOBALS['RAW']['POST']['email_address']."&quot; with the subject of &quot;".$subject."&quot; Please note that it can take ten minutes or even longer for a busy mail server to deliver email. Don't forget to check your spam folder!</p><p>This method can fail if the server hasn't been configured properly and may refuse to send mail from &quot;untrusted&quot; sources such as Hotmail, Yahoo, AOL etc&hellip;. We recommend using an email address from a domain hosted on this server such as sales@".parse_url(CC_STORE_URL, PHP_URL_HOST)." for example and this may need to be setup form within your web hosting account.</p></div>";
             }
         }
         return false;

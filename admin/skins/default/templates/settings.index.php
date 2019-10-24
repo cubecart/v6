@@ -415,15 +415,26 @@
          </div>
          <div class="nostripe"><label for="smtp_test_url">&nbsp;</label><span>
          <button type="button" class="button tiny" id="smtp_test" onclick="previewEmailSettings()">{$LANG.common.test}</button></span></div>
+         {literal}
          <script>
             function previewEmailSettings() {
-                  var qstring = '';
-                  $(".preview_email").each(function() {
-                        qstring += '&'+this.id+'='+encodeURI(this.value);
-                  });
-                  $.colorbox({ href:'{$STORE_URL}/{$SKIN_VARS.admin_file}?_g=xml&function=SMTPTest'+qstring})
+               var requestData = {};
+               $(".preview_email").each(function() {
+                  requestData[this.id] = this.value;
+               });
+               requestData['token'] = {/literal}'{$SESSION_TOKEN}'{literal};
+               $.ajax({
+                  type: 'post',
+                  url: "?_g=xml&function=SMTPTest",
+                  data: requestData,
+                  dataType: "text",
+                  success: function(responseData) {
+                     $.colorbox({html:responseData})
+                  }
+               });
             }
          </script>
+         {/literal}
       </fieldset>
       <fieldset>
          <legend>{$LANG.settings.title_performance}</legend>
