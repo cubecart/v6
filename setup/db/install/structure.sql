@@ -438,7 +438,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_inventory` (
   `brand` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Brand',
   `google_category` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Google Cat',
   `gtin` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'GTIN Code',
-  `mpn` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'MPN Code',
+  `mpn` varchar(70) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'MPN Code',
   `date_added` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Date Added',
   `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Last Updated',
   `manufacturer` int(10) unsigned DEFAULT NULL COMMENT 'Manufacturer ID',
