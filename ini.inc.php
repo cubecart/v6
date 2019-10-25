@@ -83,6 +83,13 @@ if (file_exists(CC_ROOT_DIR.'/ssl-custom.inc.php')) {
     ## Detect if SSL is enabled
     if (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS'])!== 'off' && ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == true) || $_SERVER['SERVER_PORT'] == 443) {
         define('CC_SSL', true);
+    } else if (isset($_SERVER['HTTP_CF_VISITOR'])) { // Cloudflair specific
+        $cf_visitor = json_decode($_SERVER['HTTP_CF_VISITOR']);
+        if (isset($cf_visitor->scheme) && $cf_visitor->scheme == 'https') {
+            define('CC_SSL', true);
+        } else {
+            define('CC_SSL', false);   
+        }
     } else {
         define('CC_SSL', false);
     }
