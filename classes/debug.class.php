@@ -207,7 +207,7 @@ class Debug
                 $tag = empty($tag) ? 'ERROR' : 'ERROR - '.$tag;
                 $colour = 'FF0000';
             }
-            $this->_sql[$type][] = '<span style="color:#'.$colour.'">'.htmlentities(strip_tags($message).' ['.$tag.']', ENT_COMPAT, 'UTF-8').'</span>';
+            $this->_sql[$type][] = '<span style="color:#'.$colour.'">'.htmlentities($message.' ['.$tag.']', ENT_COMPAT, 'UTF-8').'</span>';
             return true;
         }
 
