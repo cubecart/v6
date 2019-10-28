@@ -103,6 +103,7 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
             $GLOBALS['main']->errorMessage($lang['account']['error_email_in_use']);
             $customer_updated = false;
         } elseif (($GLOBALS['db']->update('CubeCart_customer', $customer, array('customer_id' => $_POST['customer_id']))) !== false) {
+            if((int)$customer['status']===0) $GLOBALS['db']->delete('CubeCart_sessions', array('customer_id' => (int)$_POST['customer_id']));
             $customer_updated = true;
         }
         $customer_id = $_POST['customer_id'];
@@ -300,6 +301,8 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
     }
     if (isset($_POST['status']) && is_array($_POST['status']) && Admin::getInstance()->permissions('customers', CC_PERM_EDIT)) {
         foreach ($_POST['status'] as $customer_id => $status) {
+            // Delete any active session
+            if((int)$status===0) $GLOBALS['db']->delete('CubeCart_sessions', array('customer_id' => (int)$customer_id));
             $result = $GLOBALS['db']->update('CubeCart_customer', array('status' => (int)$status), array('customer_id' => (int)$customer_id));
             if ($result) {
                 $GLOBALS['main']->successMessage($lang['customer']['notify_customer_status']);
