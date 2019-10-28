@@ -320,7 +320,7 @@ if (isset($_GET['action'])) {
             if (($category = $GLOBALS['db']->select('CubeCart_category', false, array('cat_id' => (int)$_GET['cat_id']))) !== false) {
                 $catData = $category[0];
                 $category[0]['visible'] = $category[0]['hide'] ? 0 : 1;
-                $GLOBALS['gui']->addBreadcrumb($category[0]['cat_name']);
+                $GLOBALS['gui']->addBreadcrumb($category[0]['cat_name'], currentPage());
                 // Translations
                 $GLOBALS['main']->addTabControl($lang['translate']['title_translate'], 'cat_translate', null, 'T');
                 if (($translations = $GLOBALS['db']->select('CubeCart_category_language', array('translation_id', 'language', 'cat_name'), array('cat_id' => $category[0]['cat_id']), array('language' => 'ASC'))) !== false) {
