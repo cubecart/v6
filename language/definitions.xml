@@ -575,6 +575,7 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="cheapest" introduced="6.2.7"><![CDATA[Cheapest]]></string>
     <string name="block" introduced="6.2.1"><![CDATA[Block]]></string>
     <string name="accept" introduced="6.2.1"><![CDATA[Accept]]></string>
     <string name="decline" introduced="6.2.1"><![CDATA[Decline]]></string>
@@ -1831,6 +1832,9 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
+    <string name="cheapest_not_free" introduced="6.2.7"><![CDATA[Cheapest but not free]]></string>
+    <string name="most_expensive" introduced="6.2.7"><![CDATA[Most expensive]]></string>
+    <string name="shipping_defaults" introduced="6.2.7"><![CDATA[Default Shipping Selection]]></string>
     <string name="enable_exit_modal" introduced="6.2.6"><![CDATA[Enable exit modal newsletter signup]]></string>
     <string name="gdpr" introduced="6.2.0"><![CDATA[General Data Protection Regulation (GDPR)]]></string>
     <string name="dbl_opt" introduced="6.2.0"><![CDATA[Marketing Double Opt-In]]></string>

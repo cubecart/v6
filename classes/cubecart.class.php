@@ -1758,15 +1758,24 @@ class Cubecart
                 // Lets try to choose cheapest shipping option
                 // for them if they haven't chosen already
                 if ((!isset($this->_basket['shipping']) && !$digital_only) || (!$offset_matched && isset($this->_basket['shipping']['offset']) && !$digital_only)) {
+                    $shipping_defaults = $GLOBALS['config']->get('config', 'shipping_defaults');
                     foreach ($shipping_values as $value) {
-                        if (!isset($cheapest) || $value['value'] < $cheapest['value']) {
-                            $cheapest = $value;
+                        switch($shipping_defaults) {
+                            case '1': // Cheapest > 0
+                            if ((!isset($default_shipping) || $value['value'] < $default_shipping['value']) && $value['value']>0) { $default_shipping = $value; }
+                            break;
+                            case '2': // Most expensive
+                            if (!isset($default_shipping) || $value['value'] > $default_shipping['value']) { $default_shipping = $value; }
+                            break;
+                            default: // Cheapest
+                            if (!isset($default_shipping) || $value['value'] < $default_shipping['value']) { $default_shipping = $value; }
                         }
+                        
                     }
-                    if (!empty($cheapest)) {
-                        $GLOBALS['cart']->set('shipping', $cheapest);
-                        if (!isset($this->_basket['min_shipping_set'])) {
-                            $GLOBALS['cart']->set('min_shipping_set', true);
+                    if (!empty($default_shipping)) {
+                        $GLOBALS['cart']->set('shipping', $default_shipping);
+                        if (!isset($this->_basket['default_shipping_set'])) {
+                            $GLOBALS['cart']->set('default_shipping_set', true);
                             if (!isset($this->_basket['free_coupon_shipping'])) {
                                 httpredir(currentPage());
                             }
@@ -1788,7 +1797,7 @@ class Cubecart
                     } #gift card purchased only
                 } else {
                     trigger_error('Shipping not setup or allow no shipping not enabled', E_USER_WARNING);
-                    unset($GLOBALS['cart']->basket['shipping'], $GLOBALS['cart']->basket['min_shipping_set']); // past 5.0.9
+                    unset($GLOBALS['cart']->basket['shipping'], $GLOBALS['cart']->basket['default_shipping_set']); // past 5.0.9
                 }
                 $shipping_list = false;
             }

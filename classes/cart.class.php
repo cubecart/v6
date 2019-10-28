@@ -631,7 +631,7 @@ class Cart
                         );
                         if ((bool)$coupon['free_shipping']) {
                             // Unset shipping so that free shipping is selected
-                            unset($this->basket['shipping'], $this->basket['min_shipping_set']);
+                            unset($this->basket['shipping'], $this->basket['default_shipping_set']);
                         }
                         $this->basket['free_coupon_shipping'] = (bool)$coupon['free_shipping'];
                         return true;
