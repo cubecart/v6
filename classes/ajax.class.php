@@ -167,13 +167,15 @@ class Ajax
 
                 if (is_array($dirs)) {
                     $dir = $filemanager->formatPath($dir);
-                    foreach ($dirs[$dir] as $parent => $folder) {
-                        $path = (!empty($dir)) ? '/' : '';
-                        $json[] = array(
-                            'type' => 'directory',
-                            'path' => urldecode($dir.basename($folder).'/'),
-                            'name' => basename($folder),
-                        );
+                    if(is_array($dir)) {
+                        foreach ($dirs[$dir] as $parent => $folder) {
+                            $path = (!empty($dir)) ? '/' : '';
+                            $json[] = array(
+                                'type' => 'directory',
+                                'path' => urldecode($dir.basename($folder).'/'),
+                                'name' => basename($folder),
+                            );
+                        }
                     }
                 }
 
