@@ -17,32 +17,6 @@ Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT, true);
 
 global $lang;
 
-/* Code to break out images from one massive folder into seperate ones
-$image_path = 'images/source/';
-foreach (glob($image_path.'*') as $filename) {
-    if(is_file($filename)) {
-
-        $base_name = basename($filename);
-        $folder_name = strtoupper(substr($base_name,0,1));
-        $folder_path = $image_path.$folder_name;
-
-        if(!file_exists($folder_path)) {
-            mkdir($folder_path);
-        }
-
-        rename($filename,$folder_path.'/'.$base_name);
-
-    }
-}
-
-
-$files = $GLOBALS['db']->select('CubeCart_filemanager', '*');
-foreach($files as $file) {
-    $folder = strtoupper(substr($file['filename'], 0, 1));
-    $GLOBALS['db']->update('CubeCart_filemanager', array('filepath' => $folder.'/'), array('file_id' => $file['file_id'], 'filepath' => null));
-}
-*/
-
 function crc_integrity_check($files, $mode = 'upgrade')
 {
     $errors = array();
