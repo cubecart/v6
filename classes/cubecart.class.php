@@ -1763,7 +1763,7 @@ class Cubecart
                         if (!isset($default_shipping)) { $default_shipping = $value; } // Make sure we have a shipping value
                         switch($shipping_defaults) {
                             case '1': // Cheapest > 0
-                            if ($value['value'] < $default_shipping['value'] && $value['value']>0) { $default_shipping = $value; }
+                            if (($value['value'] < $default_shipping['value'] || $default_shipping['value']==0) && $value['value']>0) { $default_shipping = $value; }
                             break;
                             case '2': // Most expensive
                             if ($value['value'] > $default_shipping['value']) { $default_shipping = $value; }
