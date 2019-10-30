@@ -1760,15 +1760,16 @@ class Cubecart
                 if ((!isset($this->_basket['shipping']) && !$digital_only) || (!$offset_matched && isset($this->_basket['shipping']['offset']) && !$digital_only)) {
                     $shipping_defaults = $GLOBALS['config']->get('config', 'shipping_defaults');
                     foreach ($shipping_values as $value) {
+                        if (!isset($default_shipping)) { $default_shipping = $value; } // Make sure we have a shipping value
                         switch($shipping_defaults) {
                             case '1': // Cheapest > 0
-                            if ((!isset($default_shipping) || $value['value'] < $default_shipping['value']) && $value['value']>0) { $default_shipping = $value; }
+                            if ($value['value'] < $default_shipping['value'] && $value['value']>0) { $default_shipping = $value; }
                             break;
                             case '2': // Most expensive
-                            if (!isset($default_shipping) || $value['value'] > $default_shipping['value']) { $default_shipping = $value; }
+                            if ($value['value'] > $default_shipping['value']) { $default_shipping = $value; }
                             break;
                             default: // Cheapest
-                            if (!isset($default_shipping) || $value['value'] < $default_shipping['value']) { $default_shipping = $value; }
+                            if ($value['value'] < $default_shipping['value']) { $default_shipping = $value; }
                         }
                         
                     }
