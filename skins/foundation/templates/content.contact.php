@@ -18,6 +18,11 @@
    <div class="row">
       <div class="small-12 large-8 columns"><label for="contact_email">{$LANG.common.email}</label><input type="text" name="contact[email]" id="contact_email" value="{$MESSAGE.email}" placeholder="{$LANG.common.email} {$LANG.form.required}"></div>
    </div>
+   {if $CONTACT.phone}
+   <div class="row">
+      <div class="small-12 large-8 columns"><label for="contact_email">{$LANG.address.phone}</label><input type="text" name="contact[phone]" id="contact_phone" value="{$MESSAGE.phone}" placeholder="{$LANG.address.phone}{if $CONTACT.phone=='2'} {$LANG.form.required}{/if}"{if $CONTACT.phone=='2'} required="required"{/if}></div>
+   </div>
+   {/if}
    {if isset($DEPARTMENTS)}
    <div class="row">
       <div class="small-12 large-8 columns">
@@ -42,3 +47,4 @@
 </form>
 <div class="hide" id="validate_email">{$LANG.common.error_email_invalid}</div>
 <div class="hide" id="validate_field_required">{$LANG.form.field_required}</div>
+<div class="hide" id="validate_phone">{$LANG.account.error_valid_phone}</div>

@@ -80,12 +80,18 @@ jQuery(document).ready(function() {
             'contact[email]': {
                 required: true,
                 email: true
+            },
+            'contact[phone]': {
+                phone: true
             }
         },
         messages: {
             'contact[email]': {
                 required: $('#validate_email').text(),
                 email: $('#validate_email').text()
+            },
+            'contact[phone]': {
+                phone: $('#validate_phone').text()
             }
         }
     });
