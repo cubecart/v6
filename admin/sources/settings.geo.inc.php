@@ -19,28 +19,27 @@ global $lang;
 
 $GLOBALS['gui']->addBreadcrumb($lang['country']['bread_geo']);
 
-if (isset($_POST['multi_country_action'])  && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
-    if (is_array($_POST['multi_country_action']) && count($_POST['multi_country']) > 0) {
-        if (is_array($_POST['multi_country'])) {
-            foreach ($_POST['multi_country'] as $country => $value) {
-                switch ($_POST['multi_country_action']) {
-                    case 'delete':
-                        $GLOBALS['db']->delete('CubeCart_geo_country', array('id' => $country));
-                        $GLOBALS['db']->delete('CubeCart_geo_zone', array('country_id' => $country));
-                    break;
-                    case '0':
-                    case '1':
-                    case '2':
-                    case '3':
-                        $GLOBALS['db']->update('CubeCart_geo_country', array('status' => (int)$_POST['multi_country_action']), array('id' => $country));
-                    break;
-                }
+if (isset($_POST['multi_country_action']) && is_array($_POST['multi_country'])  && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
+    if (count($_POST['multi_country']) > 0) {
+        foreach ($_POST['multi_country'] as $country => $value) {
+            switch ($_POST['multi_country_action']) {
+                case 'delete':
+                    if($GLOBALS['db']->delete('CubeCart_geo_country', array('id' => $country))) {
+                        $GLOBALS['main']->successMessage($lang['country']['notify_country_delete']);
+                    }
+                    $GLOBALS['db']->delete('CubeCart_geo_zone', array('country_id' => $country));
+                break;
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                    if($GLOBALS['db']->update('CubeCart_geo_country', array('status' => (int)$_POST['multi_country_action']), array('id' => $country))) {
+                        $GLOBALS['main']->successMessage($lang['country']['notify_country_status_changed']);
+                    }
+                break;
+                default:
+                    $GLOBALS['main']->errorMessage($lang['form']['error_no_action_selected']);
             }
-            if ($_POST['multi_country_action']=='delete') {
-                $GLOBALS['main']->successMessage($lang['country']['notify_country_delete']);
-            }
-        } else {
-            $GLOBALS['main']->errorMessage($lang['country']['error_country_delete_multi']);
         }
         httpredir(currentPage());
     }

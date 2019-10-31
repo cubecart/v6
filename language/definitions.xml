@@ -834,6 +834,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_departments" introduced="5.0.0"><![CDATA[Departments (optional)]]></string>
   </group>
   <group name="country">
+    <string name="notify_country_status_changed" introduced="5.2.13"><![CDATA[Country status updated.]]></string>
     <string name="eu" introduced="5.2.13"><![CDATA[European Union]]></string>
     <string name="eu_short" introduced="5.2.13"><![CDATA[EU]]></string>
     <string name="assign_to_eu" introduced="5.2.13"><![CDATA[Assign to European Union?]]></string>
@@ -844,7 +845,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="country_name" introduced="5.0.0"><![CDATA[Country Name]]></string>
     <string name="error_country_create" introduced="5.0.0"><![CDATA[Failed to add country.]]></string>
     <string name="error_country_delete" introduced="5.0.0"><![CDATA[Failed to delete country.]]></string>
-    <string name="error_country_delete_multi" introduced="5.0.0"><![CDATA[No countries were selected for deletion.]]></string>
     <string name="error_zone_create" introduced="5.0.0"><![CDATA[Failed to add zone.]]></string>
     <string name="error_zone_delete" introduced="5.0.0"><![CDATA[Failed to delete zone.]]></string>
     <string name="error_zone_delete_multi" introduced="5.0.0"><![CDATA[No zones were selected for deletion.]]></string>
@@ -1241,6 +1241,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_image_crop" introduced="5.0.0"><![CDATA[Crop Image]]></string>
   </group>
   <group name="form">
+    <string name="error_no_action_selected" introduced="6.2.7"><![CDATA[No action was selected.]]></string>
     <string name="create_report" introduced="6.2.0"><![CDATA[Create Report]]></string>
     <string name="recaptcha_key_not_set" introduced="6.0.6"><![CDATA[reCAPTCHA public and/or private key has not been set!]]></string>
     <string name="required" introduced="6.0.0"><![CDATA[(Required)]]></string>
