@@ -20,7 +20,7 @@ global $lang;
 $GLOBALS['gui']->addBreadcrumb($lang['country']['bread_geo']);
 
 if (isset($_POST['multi_country_action'])  && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
-    if (count($_POST['multi_country']) > 0) {
+    if (is_array($_POST['multi_country_action']) && count($_POST['multi_country']) > 0) {
         if (is_array($_POST['multi_country'])) {
             foreach ($_POST['multi_country'] as $country => $value) {
                 switch ($_POST['multi_country_action']) {
