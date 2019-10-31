@@ -845,11 +845,9 @@ This email is sent from the store's master email address but it is possible to r
     <string name="error_country_create" introduced="5.0.0"><![CDATA[Failed to add country.]]></string>
     <string name="error_country_delete" introduced="5.0.0"><![CDATA[Failed to delete country.]]></string>
     <string name="error_country_delete_multi" introduced="5.0.0"><![CDATA[No countries were selected for deletion.]]></string>
-    <string name="error_country_update" introduced="5.0.0"><![CDATA[Failed to update country.]]></string>
     <string name="error_zone_create" introduced="5.0.0"><![CDATA[Failed to add zone.]]></string>
     <string name="error_zone_delete" introduced="5.0.0"><![CDATA[Failed to delete zone.]]></string>
     <string name="error_zone_delete_multi" introduced="5.0.0"><![CDATA[No zones were selected for deletion.]]></string>
-    <string name="error_zone_update" introduced="5.0.0"><![CDATA[Failed to update zone.]]></string>
     <string name="notify_country_create" introduced="5.0.0"><![CDATA[Country successfully added.]]></string>
     <string name="notify_country_delete" introduced="5.0.0"><![CDATA[Country successfully deleted.]]></string>
     <string name="notify_country_update" introduced="5.0.0"><![CDATA[Country successfully updated.]]></string>

@@ -145,6 +145,23 @@ class Database_Contoller
     //=====[ Public ]=======================================
 
     /**
+     * Get table checksum
+     *
+     * @param string $table
+     *
+     * @return string/false
+     */
+    public function checksum($table) {
+        $this->_query = "CHECKSUM TABLE `{$_this->_prefix}$table`;";
+        $this->_execute();
+        if(isset($this->_result[0]['Checksum'])) {
+            return $this->_result[0]['Checksum'];
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Display column sort
      *
      * @param string $column_name

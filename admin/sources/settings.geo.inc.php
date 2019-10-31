@@ -61,30 +61,22 @@ if (isset($_POST['multi_zone_action']) && !empty($_POST['multi_zone_action']) &&
 if (isset($_POST['save']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
     ## Update existing Country
     if (isset($_POST['country']) && is_array($_POST['country'])) {
-        $updated = false;
+        $checksum = $GLOBALS['db']->checksum('CubeCart_geo_country');
         foreach ($_POST['country'] as $id => $data) {
-            if ($GLOBALS['db']->update('CubeCart_geo_country', $data, array('id' => $id), true)) {
-                $updated = true;
-            }
+            $GLOBALS['db']->update('CubeCart_geo_country', $data, array('id' => $id), true);
         }
-        if ($updated) {
+        if ($checksum!==$GLOBALS['db']->checksum('CubeCart_geo_country')) {
             $GLOBALS['main']->successMessage($lang['country']['notify_country_update']);
-        } else {
-            $GLOBALS['main']->errorMessage($lang['country']['error_country_update']);
         }
     }
     ## Update existing Zone
     if (isset($_POST['zone']) && is_array($_POST['zone'])) {
-        $updated = false;
+        $checksum = $GLOBALS['db']->checksum('CubeCart_geo_zone');
         foreach ($_POST['zone'] as $id => $data) {
-            if ($GLOBALS['db']->update('CubeCart_geo_zone', $data, array('id' => $id), true)) {
-                $updated = true;
-            }
+           $GLOBALS['db']->update('CubeCart_geo_zone', $data, array('id' => $id), true);
         }
-        if ($updated) {
+        if ($checksum!==$GLOBALS['db']->checksum('CubeCart_geo_zone')) {
             $GLOBALS['main']->successMessage($lang['country']['notify_zone_update']);
-        } else {
-            $GLOBALS['main']->errorMessage($lang['country']['error_zone_update']);
         }
     }
     ## Add new Country
