@@ -11,7 +11,9 @@
  *}
 <div id="admin_error_log" class="tab_content">
   <h3>{$LANG.settings.title_error_log}</h3>
-  <p>[<a href="?_g=maintenance&clearLogs=true">{$LANG.maintain.logs_error}</a>]</p>
+  {if $ADMIN_ERROR_LOG}
+  <p>[<a href="?_g=maintenance&clearLogs=true&redir=viewlog">{$LANG.maintain.logs_error}</a>]</p>
+  {/if}
   <form action="{$VAL_SELF}#admin_error_log" method="post" enctype="multipart/form-data">
 	  <table>
 		<thead>
@@ -57,8 +59,9 @@
 </div>
 <div id="system_error_log" class="tab_content">
   <h3>{$LANG.settings.title_system_error_log}</h3>
-
-  <p>[<a href="?_g=maintenance&emptyErrorLogs=true">{$LANG.maintain.logs_error}</a>]</p>
+  {if $SYSTEM_ERROR_LOG}
+  <p>[<a href="?_g=maintenance&emptyErrorLogs=true&redir=viewlog">{$LANG.maintain.logs_error}</a>]</p>
+  {/if}
   
   <form action="{$VAL_SELF}#system_error_log" method="post" enctype="multipart/form-data">
 	  <table>
