@@ -31,7 +31,7 @@
 			  <strong>{$LANG.common.request} {if $log.is_curl==='1'}(cURL){elseif $log.is_curl==='0'}(fsock){/if} - {$log.request_url}</strong>
 			  {$log.request}
 			</div>
-			{if $log.error}
+			{if $log.error && !is_bool($log.error)}
 			<div class="request">
 			  <strong>Error:</strong>
 			  {$log.error}
