@@ -28,6 +28,15 @@ if (Admin::getInstance()->superUser()) {
     $count = $GLOBALS['db']->getFoundRows();
     if (is_array($request_log)) {
         foreach ($request_log as $log) {
+            $error_code_fd = substr($log['response_code'],0,1);
+            if(!empty($log['error'])) {
+                $error = htmlspecialchars($log['error']);
+            } elseif($log['response_code']>0 && in_array($error_code_fd, array('4', '5'))) {
+                $error = true;
+            } else {
+                $error = false;
+            }
+
             $smarty_data['request_log'][] = array(
                 'time'    => formatTime(strtotime($log['time'])),
                 'request'   => htmlspecialchars($log['request']),
@@ -36,7 +45,7 @@ if (Admin::getInstance()->superUser()) {
                 'response_code_description'   => Request::getResponseCodeDescription($log['response_code']),
                 'is_curl'   => $log['is_curl'],
                 'request_url' => $log['request_url'],
-                'error' => empty($log['error']) ? false : htmlspecialchars($log['error'])
+                'error' => $error
             );
         }
     }
