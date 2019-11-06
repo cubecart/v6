@@ -640,7 +640,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_option_value` (
 
 CREATE TABLE IF NOT EXISTS `CubeCart_order_history` (
 	`history_id` int(10) unsigned NOT NULL auto_increment,
-	`cart_order_id` varchar(18) collate utf8_unicode_ci NOT NULL,
+	`cart_order_id` varchar(18) NOT NULL,
 	`status` tinyint(2) unsigned NOT NULL default '0',
 	`updated` int(10) unsigned NOT NULL default '0',
 	`initiator` char(1) NOT NULL DEFAULT 'G',
