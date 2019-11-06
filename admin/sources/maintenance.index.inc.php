@@ -354,6 +354,7 @@ if (isset($_REQUEST['emptyRequestLogs']) && Admin::getInstance()->permissions('m
         $GLOBALS['main']->errorMessage($lang['maintain']['error_logs_request']);
     }
     $clear_post = true;
+    if(isset($_GET['redir']) && $_GET['redir']=='viewlog') httpredir('?_g=settings&node=requestlog'); exit;
 }
 
 if (isset($_POST['clearSearch']) && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {

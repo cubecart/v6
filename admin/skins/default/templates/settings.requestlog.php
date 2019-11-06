@@ -11,6 +11,9 @@
  *}
 <div id="request_log" class="tab_content">
   <h3>{$LANG.navigation.nav_request_log}</h3>
+  {if $REQUEST_LOG}
+  <p>[<a href="?_g=maintenance&emptyRequestLogs=true&redir=viewlog">{$LANG.maintain.logs_request}</a>]</p>
+  {/if}
   <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
 	  <table>
 		<thead>
@@ -25,7 +28,7 @@
 			<td valign="top" nowrap="nowrap">{$log.time}</td>
 			<td>
 			<div class="request">
-			  <strong>{$LANG.common.request} - {$log.request_url}</strong>
+			  <strong>{$LANG.common.request} {if $log.is_curl==='1'}(cURL){elseif $log.is_curl==='0'}(fsock){/if} - {$log.request_url}</strong>
 			  {$log.request}
 			</div>
 			{if $log.error}
@@ -35,7 +38,7 @@
 			</div>
 			{/if}
 			<div class="received">
-			  <strong>{$LANG.common.received}</strong>
+			  <strong>{$LANG.common.received}{if !empty($log.response_code)} ({$log.response_code} - {$log.response_code_description}){/if}</strong>
 			  {$log.result}
 			</div>
 			</td>

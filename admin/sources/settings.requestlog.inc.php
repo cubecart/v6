@@ -32,6 +32,9 @@ if (Admin::getInstance()->superUser()) {
                 'time'    => formatTime(strtotime($log['time'])),
                 'request'   => htmlspecialchars($log['request']),
                 'result'   => htmlspecialchars($log['result']),
+                'response_code'   => $log['response_code'],
+                'response_code_description'   => Request::getResponseCodeDescription($log['response_code']),
+                'is_curl'   => $log['is_curl'],
                 'request_url' => $log['request_url'],
                 'error' => empty($log['error']) ? false : htmlspecialchars($log['error'])
             );
