@@ -117,7 +117,6 @@ class GD
                 case IMAGETYPE_WEBP:
                     $this->_gdImageSource = imagecreatefromwebp($file);
                     break;
-                break;
                 default:
                     return false;
             }
