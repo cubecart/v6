@@ -15,11 +15,30 @@
       {foreach from=$HEAD_JS item=js_src}
       <script type="text/javascript" src="{$js_src}"></script>
       {/foreach}
+<script type="text/javascript">
+{literal}
+window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
+d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
+_.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");
+$.src="https://v2.zopim.com/?2zg8JeryZ6qTz93mglrw2llJid6J2QEu";z.t=+new Date;$.
+type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
+{/literal}
+
+$zopim(function() {
+   {if $CONFIG.hide_chat=="1"}
+   $zopim.livechat.hideAll();
+   {else}
+   $zopim.livechat.button.show();
+   $zopim.livechat.setName(document.getElementById("admin_id").textContent);
+{/if}
+});
+
+</script>
    </head>
    <body>
       <div id="header">
          <a href="?"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/logo.cubecart.png" width="158" height="30" id="logo"></a>
-         <span class="user_info">{$LANG.settings.title_welcome_back} <a href="?_g=settings&node=admins&action=edit&admin_id={$ADMIN_UID}">{$ADMIN_USER}</a> - <a href="?_g=logout&amp;token={$SESSION_TOKEN}">{$LANG.account.logout} <i class="fa fa-sign-out"></i></a></span>
+         <span class="user_info">{$LANG.settings.title_welcome_back} <a href="?_g=settings&node=admins&action=edit&admin_id={$ADMIN_UID}" id="admin_id">{$ADMIN_USER}</a> - <a href="?_g=logout&amp;token={$SESSION_TOKEN}">{$LANG.account.logout} <i class="fa fa-sign-out"></i></a></span>
       </div>
       <div id="wrapper">
          <div id="navigation">

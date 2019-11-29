@@ -492,6 +492,7 @@
       <fieldset>
          <legend>{$LANG.common.other}</legend>
          <div><label for="feed_access_key">{$LANG.settings.feed_access_key}</label><span><input name="config[feed_access_key]" id="feed_access_key" type="text" class="textbox" value="{$CONFIG.feed_access_key}"></span></div>
+         <div><label for="hide_chat">{$LANG.settings.hide_chat}</label><span><input name="config[hide_chat]" id="chat" type="hidden" class="toggle" value="{$CONFIG.hide_chat}"></span></div>
       </fieldset>
    </div>
    <div id="Copyright" class="tab_content">
