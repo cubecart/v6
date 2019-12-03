@@ -11,8 +11,8 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  */
 
-if (version_compare(PHP_VERSION, '5.4') == -1) {
-    die("PHP ".PHP_VERSION." detected. CubeCart requires PHP 5.4 or higher.");
+if (version_compare(PHP_VERSION, '5.5') == -1) {
+    die("PHP ".PHP_VERSION." detected. CubeCart requires PHP 5.5 or higher.");
 }
 
 // Display important errors before debug class is initialised

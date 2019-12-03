@@ -255,7 +255,7 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
     $checks  = array(
     'PHP' => array(
       'title' => 'PHP 5.4+ (7.2 Recommended)',
-      'status' => version_compare(PHP_VERSION, '5.4', '>='),
+      'status' => version_compare(PHP_VERSION, '5.5', '>='),
       'pass' => PHP_VERSION,
       'fail' => PHP_VERSION
     ),
