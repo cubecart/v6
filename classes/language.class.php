@@ -116,6 +116,9 @@ class Language
         } else {
             $this->_language = 'en-GB';
         }
+        if($this->_language !== $GLOBALS['config']->get('config', 'default_language')) {
+            header("X-Robots-Tag: noindex");
+        }
         $GLOBALS['smarty']->assign("CURRENT_LANGUAGE", $this->_language);
         $this->loadLang();
     }

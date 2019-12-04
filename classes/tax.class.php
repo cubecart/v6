@@ -265,6 +265,9 @@ class Tax
                 $code = $GLOBALS['config']->get('config', 'default_currency');
             }
         }
+        if($code !== $GLOBALS['config']->get('config', 'default_currency')) {
+            header("X-Robots-Tag: noindex");
+        }
         if (($result = $GLOBALS['db']->select('CubeCart_currency', '*', array('code' => $code))) !== false) {
             $this->_currency_vars = $result[0];
             return true;
