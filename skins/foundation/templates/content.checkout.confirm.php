@@ -24,6 +24,14 @@
    </div>
    <div class="large-6 columns">
       {if $CTRL_DELIVERY}
+         {assign var=CTRL_DELIVERY value=false}
+         {foreach from=$ITEMS key=hash item=item}
+            {if $item.digital=='0'}
+               {assign var=CTRL_DELIVERY value=true}
+            {/if}
+         {/foreach}
+      {/if}
+      {if $CTRL_DELIVERY}
       <h2>{$LANG.address.delivery_address}</h2>
       <select name="delivery_address" style="text-transform:capitalize;">
       {foreach from=$ADDRESSES item=address}
@@ -159,7 +167,15 @@
       <input type="checkbox" id="mailing_list" name="mailing_list" value="1" {$MAILING_LIST_SUBSCRIBE}><label for="mailing_list">{$LANG.account.register_mailing}</label>
    </div>
 </div>
-{if $ALLOW_DELIVERY_ADDRESS}
+{assign var=CTRL_DELIVERY value=false}
+{foreach from=$ITEMS key=hash item=item}
+   {if $item.digital=='0'}
+      {assign var=CTRL_DELIVERY value=true}
+   {/if}
+{/foreach}
+{if !$CTRL_DELIVERY}
+<input type="hidden" name="delivery_is_billing" id="delivery_is_billing" value="1">
+{else if $ALLOW_DELIVERY_ADDRESS}
 <div class="row">
    <div class="small-12 large-8 columns"><input type="checkbox" name="delivery_is_billing" id="delivery_is_billing" {$DELIVERY_CHECKED}><label for="delivery_is_billing">{$LANG.address.delivery_is_billing}</label></div>
 </div>
