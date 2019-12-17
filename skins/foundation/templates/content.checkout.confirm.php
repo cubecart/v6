@@ -68,6 +68,13 @@
       </table>
    </div>
    <div class="large-6 columns">
+   {assign var=CTRL_DELIVERY value=false}
+      {foreach from=$ITEMS key=hash item=item}
+         {if $item.digital=='0'}
+            {assign var=CTRL_DELIVERY value=true}
+         {/if}
+      {/foreach}
+      {if $CTRL_DELIVERY}
       <h2>{$LANG.address.delivery_address}</h2>
       {$DELIVERY.title} {$DELIVERY.first_name|capitalize} {$DELIVERY.last_name|capitalize}<br>
       {if $DELIVERY.company_name}{$DELIVERY.company_name}<br>{/if}
@@ -77,6 +84,7 @@
       {if !empty($DELIVERY.state)}{$DELIVERY.state|upper}, {/if}{$DELIVERY.postcode}<br>
       {$DELIVERY.country_name}
       <div class="pad-top"><a href="#" class="button small show_address_form"><svg class="icon"><use xlink:href="#icon-reply"></use></svg> {$LANG.form.make_changes}</a></div>
+      {/if}
    </div>
 </div>
 <div class="hide" id="checkout_login_form">
