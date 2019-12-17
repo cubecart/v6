@@ -1073,7 +1073,8 @@ class Cubecart
 
                 if ($new_addresses!==$old_addresses) {
                     // Set notice to prevent proceed to payment screen
-                    $GLOBALS['gui']->setNotify($GLOBALS['language']->account["notify_address_updated"]);
+                    $message = $GLOBALS['cart']->basket['digital_only'] ? $GLOBALS['language']->checkout['confirm_billing'] : $GLOBALS['language']->account["notify_address_updated"];
+                    $GLOBALS['gui']->setNotify($message);
                 }
 
                 if ($GLOBALS['gui']->recaptchaRequired()) {
@@ -1813,7 +1814,7 @@ class Cubecart
 
             // Check if new shipping methods are avialble and notify if they are
             $shipping_hash = md5(serialize($shipping_list));
-            if (isset($GLOBALS['cart']->basket['shipping_hash']) && !empty($GLOBALS['cart']->basket['shipping_hash']) && $shipping_hash!==$GLOBALS['cart']->basket['shipping_hash']) {
+            if (isset($GLOBALS['cart']->basket['shipping_hash']) && !empty($GLOBALS['cart']->basket['shipping_hash']) && $shipping_hash!==$GLOBALS['cart']->basket['shipping_hash']){
                 $GLOBALS['gui']->setNotify($GLOBALS['language']->checkout['check_shipping']);
             }
             $GLOBALS['cart']->basket['shipping_hash'] = $shipping_hash;

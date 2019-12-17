@@ -554,6 +554,7 @@
     <string name="sort_stock" introduced="5.0.0"><![CDATA[Stock]]></string>
   </group>
   <group name="checkout">
+    <string name="confirm_billing" introduced="6.2.8"><![CDATA[Please confirm your billing address is correct before proceeding.]]></string>
     <string name="error_voucher_exceeded" introduced="6.1.14"><![CDATA[Sorry but that code has been used to it's maximum allowance.]]></string>
     <string name="error_voucher_order_status" introduced="6.1.14"><![CDATA[Sorry but that code can't be used against an order of this status.]]></string>
     <string name="checkout" introduced="5.0.0"><![CDATA[Checkout]]></string>
