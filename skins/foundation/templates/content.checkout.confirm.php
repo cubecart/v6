@@ -106,6 +106,11 @@
          <p><a href="{$STORE_URL}/index.php?_a=recover">{$LANG.account.forgotten_password}</a></p>
       </div>
    </div>
+   <div class="row">
+      <div class="small-12 columns">
+      <button type="submit" name="proceed" id="checkout_login_btn" class="button g-recaptcha">{$LANG.account.login}</button>
+      </div>
+   </div>
 </div>
 <div id="checkout_register_form"{if !empty($BILLING.line1)} class="hide"{/if}>
    <h2>{$LANG.account.your_details}</h2>

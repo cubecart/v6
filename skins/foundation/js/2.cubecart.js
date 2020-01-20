@@ -525,6 +525,7 @@ function checkout_form_toggle(register) {
         $("#reg_password").prop('disabled', false);
         $("#login-username").prop('disabled', true);
         $("#login-password").prop('disabled', true);
+        $("#checkout_login_btn").prop('disabled', true);
         $('#checkout_form').removeAttr("action").attr("action", '#register');
     } else {
         $("#checkout_login_form").slideDown();
@@ -532,6 +533,7 @@ function checkout_form_toggle(register) {
         $("#reg_password").prop('disabled', true);
         $("#login-username").prop('disabled', false);
         $("#login-password").prop('disabled', false);
+        $("#checkout_login_btn").prop('disabled', false);
         $('#checkout_form').removeAttr("action").attr("action", '#login');
     }
 }
