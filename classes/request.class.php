@@ -393,7 +393,7 @@ class Request
                     $error_no = "NA";
                     $error = "cURL is installed but may be disabled by the host. cURL exec returns false.";
                 }
-                $error = sprintf('cURL Error (%d): %s', $error_no, $error);
+                $error = sprintf('cURL Error (%s): %s', $error_no, $error);
                 $this->log($this->_request_body, $return, $error);
             }
         } else {
