@@ -54,7 +54,7 @@
       </div>
    </div>
    {/if}
-   {if isset($ALTERNATE_TERMS) && $ALTERNATE_TERMS=='0'}
+   {if $TERMS_CONDITIONS && isset($ALTERNATE_TERMS) && $ALTERNATE_TERMS=='0'}
    <p class="text-right"><label for="reg_terms">{$LANG.account.register_terms_agree_link|replace:'%s':{$TERMS_CONDITIONS}} <input type="checkbox" id="reg_terms" name="terms_agree" value="1" rel="error_terms_agree"></label></p>
    {/if}
    <div class="clearfix">
