@@ -70,6 +70,12 @@ class Debug
      */
     private $_xdebug  = false;
     /**
+     * Debug collect sections flag
+     *
+     * @var bool
+     */
+    public $stream_into_session = true;
+    /**
      * Class instance
      *
      * @var instance
@@ -142,7 +148,11 @@ class Debug
 
     public function __destruct()
     {
-        $this->display();
+        if ($this->stream_into_session) {
+            $GLOBALS['session']->set('debug_spool', array($this->display(true)));
+        } else {
+            $this->display();
+        }
         restore_error_handler();
         restore_exception_handler();
     }
@@ -358,7 +368,9 @@ class Debug
             if ($return) {
                 return $content;
             } else {
-                echo $content;
+                $has_debug_spool = $GLOBALS['session']->has('debug_spool');
+                echo implode(($has_debug_spool) ? $GLOBALS['session']->get('debug_spool') : array()).$content;
+                $GLOBALS['session']->set('debug_spool',null);
             }
         }
     }
@@ -588,6 +600,7 @@ class Debug
     {
         $output = '';
         foreach ($variable as $key => $value) {
+            if ((string)$key == 'debug_spool') continue;
             if (is_array($value)) {
                 $output .= '<div style="margin-left: '.$left.'px;">\''.$key.'\' => '.$this->_makeExport($value, ($left + 8)).'</div>';
             } else {
