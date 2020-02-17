@@ -841,7 +841,7 @@ class Order
                     $GLOBALS['db']->misc("UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary` SET `custom_oid` = ".$concat);
                 } else {
                     $column = $GLOBALS['config']->get('config', 'oid_mode')=='i' ? 'id' : 'cart_order_id';
-                    $GLOBALS['db']->misc("UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary` SET `custom_oid` = `$column` WHERE `custom_oid` = ''");
+                    $GLOBALS['db']->misc("UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary` SET `custom_oid` = `$column` WHERE `custom_oid` = '' OR `custom_oid` = null");
                 }
                 $GLOBALS['db']->misc("DROP TRIGGER IF EXISTS `custom_oid`");
                 $GLOBALS['db']->misc("CREATE TRIGGER `custom_oid` BEFORE INSERT ON `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary` FOR EACH ROW SET NEW.custom_oid = ".str_replace('`id`', 'LAST_INSERT_ID()', $concat));
