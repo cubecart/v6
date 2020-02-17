@@ -854,7 +854,6 @@ class Order
                     'oid_prefix' => $oid_prefix,
                     'oid_postfix' => $oid_postfix,
                     'oid_zeros' => $oid_zeros,
-                    'oid_zeros' => $oid_zeros,
                     'oid_start' => $oid_start,
                     'oid_col' => $oid_col
                 );
