@@ -1365,7 +1365,7 @@ class Order
         $this->_basket['billing_address']['email'] = $email;
         $this->_basket['billing_address']['phone'] = $phone;
         $GLOBALS['cart']->save();
-
+        $currency = $GLOBALS['session']->get('currency', 'client');
         $record = array(
             ## Order Details
             'cart_order_id' => $this->_order_id,
@@ -1415,7 +1415,7 @@ class Order
             'basket'  => serialize($this->_basket),
             'lang'   => $GLOBALS['language']->current(),
             'ip_address' => get_ip_address(),
-            'currency' => $GLOBALS['session']->get('currency', 'client')
+            'currency' => empty($currency) ? $GLOBALS['config']->get('config', 'default_currency') : $currency
         );
 
         foreach ($GLOBALS['hooks']->load('class.order.order_summary') as $hook) {
