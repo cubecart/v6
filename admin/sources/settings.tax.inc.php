@@ -188,4 +188,7 @@ if (($tax_rules = $GLOBALS['db']->select('CubeCart_tax_rates')) !== false) {
     }
     $GLOBALS['smarty']->assign('TAX_RULES', $smarty_data['tax_rules']);
 }
+foreach ($GLOBALS['hooks']->load('admin.settings.tax.pre_smarty') as $hook) {
+	include $hook;
+}
 $page_content = $GLOBALS['smarty']->fetch('templates/settings.tax.php');

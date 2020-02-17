@@ -106,6 +106,7 @@
 	<hook trigger="admin.settings.admins.sections" deprecated="" />
 	<hook trigger="admin.settings.currency.post_process" deprecated="" />
 	<hook trigger="admin.settings.currency.pre_process" deprecated="" />
+	<hook trigger="admin.settings.tax.pre_smarty" deprecated="" />
 	<hook trigger="admin.statistics.tabs" deprecated="" />
 	<hook trigger="admin.tabs" deprecated="" />
 	<hook trigger="offline" deprecated="" />
