@@ -929,18 +929,20 @@ This email is sent from the store's master email address but it is possible to r
     <string name="delete_admin_file" introduced="6.1.8"><![CDATA[WARNING: Please delete the redundant admin.php file from your store directory.]]></string>
     <string name="ignore_update" introduced="6.1.0"><![CDATA[This update has been ignored however next time an update is released by the develper a notification will be shown again.]]></string>
     <string name="quick_tour" introduced="6.0.0"><![CDATA[Quick Tour]]></string>
-    <string name="tour_welcome" introduced="6.0.0"><![CDATA[Welcome to your store. Please follow this quick tour to help get you started.]]></string>
-    <string name="ok_go" introduced="6.0.0"><![CDATA[Ok, lets go!]]></string>
+    <string name="tour_welcome" introduced="6.0.0"><![CDATA[Your CubeCart powered store is ready to be populated and configured to take sales.]]></string>
+    <string name="ok_go" introduced="6.0.0"><![CDATA[Start Quick Tour &raquo;]]></string>
     <string name="tour_1" introduced="6.0.0"><![CDATA[Define some basic information here such as your store name &amp; address, main currency and upload a logo.]]></string>
-    <string name="tour_2" introduced="6.0.0"><![CDATA[Create the category structure for your product inventory. There are no limits to how many you can have or how many levels your subcategories can go.]]></string>
-    <string name="tour_3" introduced="6.0.0"><![CDATA[Add a few digital or physical products whilst assigning them to one or more categories.]]></string>
-    <string name="tour_4" introduced="6.0.0"><![CDATA[Select a free shipping rate calculator and payment integration from the CubeCart Marketplace. There are a huge amount to choose from including FedEx, PayPal etc&hellip;]]></string>
-    <string name="tour_5" introduced="6.0.0"><![CDATA[Configure your chosen shipping rate calculator and payment integration from the plugins area.]]></string>
+    <string name="tour_2" introduced="6.0.0"><![CDATA[Create the category structure for your product inventory.]]></string>
+    <string name="tour_3" introduced="6.0.0"><![CDATA[Add digital or physical products and assign them to categories.]]></string>
+    <string name="tour_4" introduced="6.0.0"><![CDATA[Visit our marketplace to find hundreds of other extensions such as Stripe, FedEx, Olark etc&hellip;]]></string>
+    <string name="tour_5" introduced="6.0.0"><![CDATA[Connect PayPal to take payments instantly and configure your shipping rates.]]></string>
     <string name="tour_6_title" introduced="6.0.0"><![CDATA[Homepage Content]]></string>
-    <string name="tour_6" introduced="6.0.0"><![CDATA[Update your homepage with any content you want. Here you can manage a &quot;hero carousel&quot; and add any HTML content you wish.]]></string>
+    <string name="tour_6" introduced="6.0.0"><![CDATA[Update your homepage with rich, vibrant content.]]></string>
      <string name="tour_7_title" introduced="6.2.3"><![CDATA[Clear Cache]]></string>
     <string name="tour_7" introduced="6.2.3"><![CDATA[Changes made via the admin control panel may not show on the front end until the cache is cleared.]]></string>
-    <string name="tour_end" introduced="6.0.0"><![CDATA[<p>We have only touched the tip of the iceberg but it's enough to get you selling today. Please find a video tour below which goes into a little more detail.</p><p>Have fun and best of luck with your store!</p>]]></string>
+    <string name="tour_8_title" introduced="6.2.9"><![CDATA[Help is here!]]></string>
+    <string name="tour_8" introduced="6.2.9"><![CDATA[Official support is available direct from our developers. Alternatively we have a thriving community of merchants willing to help.]]></string>
+    <string name="tour_end" introduced="6.0.0"><![CDATA[<p>We have only touched the tip of the iceberg but it's enough to get you selling today. Please find a video tour below which goes into a little more detail.</p><p>Thank you for choosing CubeCart.</p>]]></string>
     <string name="error_version" introduced="5.2.3"><![CDATA[WARNING: Your store appears to be using source code from %s but the database is still at %s. Please complete the upgrade by running the <a href="setup">setup</a> process.]]></string>
     <string name="error_global_risk" introduced="5.0.0"><![CDATA[WARNING: Your includes/global.inc.php is currently writable, you should change the file permissions to read only. On Linux or Unix systems it should be CHMOD to 0444.]]></string>
     <string name="error_mysql_root" introduced="5.0.0"><![CDATA[WARNING: You are currently connected to the database using the root account. This is not secure, and should be changed.]]></string>
