@@ -17,6 +17,82 @@ Admin::getInstance()->permissions('maintenance', CC_PERM_READ, true);
 
 global $lang, $glob;
 
+$default_apps = array(
+    'gateway' => '1|452',
+    'shipping' => '1|44'
+);
+
+foreach($default_apps as $extension_type => $token) {
+
+    if($GLOBALS['config']->has('default_apps', $token) || $GLOBALS['db']->select('CubeCart_modules', false, array('module' => $extension_type))) {
+        $GLOBALS['config']->set('default_apps', $token, 1); continue;
+    }
+
+    $request = new Request('www.cubecart.com', '/extensions/token/'.$token.'/get', 443, false, true, 10);
+    $request->setMethod('get');
+    $request->setSSL();
+    $request->setUserAgent('CubeCart');
+    $request->skiplog(true);
+
+    $json = $request->send();
+    $data = json_decode($json, true);
+
+    $destination = CC_ROOT_DIR.'/'.$data['path'];
+    $tmp_path = CC_BACKUP_DIR.$data['file_name'];
+    $fp = fopen($tmp_path, 'w');
+    fwrite($fp, hex2bin($data['file_data']));
+    fclose($fp);
+
+    $zip = new ZipArchive();
+    $zip->open($tmp_path);
+
+    $root_path = $destination.'/'.$file['name'];
+    for ($i = 0; $i < $zip->numFiles; $i++) {
+        $file = $zip->statIndex($i);
+        if (basename($file['name'])=="config.xml") {
+            $install_dir = str_replace(array('/config.xml', CC_ROOT_DIR), '', $root_path);
+            break;
+        }
+    }
+
+    if($zip->extractTo($destination)) {
+        $extension_info = array(
+            'dir' => $install_dir,
+            'file_name' => $data['file_name'],
+            'file_id' => $data['file_id'],
+            'seller_id' => $data['seller_id'],
+            'modified'	=> $data['modified'],
+            'name'	=> $data['name']
+        );
+        // Required for extension updates
+        $GLOBALS['db']->insert('CubeCart_extension_info', $extension_info);
+        $GLOBALS['config']->set('default_apps', $token, 1);
+    }
+    $zip->close();
+
+    unlink($tmp_path);
+    if($data['file_id']==44) {
+        // Free Shipping to get us started
+        $config_data = array(
+            "module_id" => "7",
+            "module" => "shipping",
+            "folder" =>  "All_In_One_Shipping",
+            "status" =>  "1",
+            "default" =>  "0",
+            "position" =>  "0",
+            "range_weight" =>  "1",
+            "tax" =>  "999999",
+            "multiple_zones" =>  "first",
+            "debug" =>  "0",
+            "use_flat" =>  "1",
+            "cc5_data" => 1
+        );
+        $GLOBALS['config']->set("All_In_One_Shipping", '', $config_data);
+        $GLOBALS['db']->insert('CubeCart_shipping_rates', array('method_name' => 'Free Shipping', 'max_weight' => 9999, 'item_rate' => 0));
+        $GLOBALS['db']->insert('CubeCart_modules', array('module' => 'shipping', 'folder' => "All_In_One_Shipping", 'status' => 1, 'default' => 1));
+    }
+}
+
 ## Delete any remnant hash verification files
 $hash_files = glob(CC_ROOT_DIR.'/'.basename(CC_FILES_DIR).'/hash.*.php');
 if (is_array($hash_files)) {
