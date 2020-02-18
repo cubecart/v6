@@ -929,8 +929,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="delete_admin_file" introduced="6.1.8"><![CDATA[WARNING: Please delete the redundant admin.php file from your store directory.]]></string>
     <string name="ignore_update" introduced="6.1.0"><![CDATA[This update has been ignored however next time an update is released by the develper a notification will be shown again.]]></string>
     <string name="quick_tour" introduced="6.0.0"><![CDATA[Quick Tour]]></string>
-    <string name="tour_welcome" introduced="6.0.0"><![CDATA[Your CubeCart powered store is ready to be populated and configured to take sales.]]></string>
-    <string name="ok_go" introduced="6.0.0"><![CDATA[Start Quick Tour &raquo;]]></string>
+    <string name="tour_welcome" introduced="6.0.0"><![CDATA[Welcome to your store. Please follow this quick tour to help get you started.]]></string>
+    <string name="ok_go" introduced="6.0.0"><![CDATA[Ok, lets go!]]></string>
     <string name="tour_1" introduced="6.0.0"><![CDATA[Define some basic information here such as your store name &amp; address, main currency and upload a logo.]]></string>
     <string name="tour_2" introduced="6.0.0"><![CDATA[Create the category structure for your product inventory.]]></string>
     <string name="tour_3" introduced="6.0.0"><![CDATA[Add digital or physical products and assign them to categories.]]></string>
