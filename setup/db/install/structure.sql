@@ -992,8 +992,11 @@ CREATE TABLE `CubeCart_cookie_consent` (
   `customer_id` int(11) DEFAULT NULL,
   `log` text DEFAULT NULL,
   `time` INT UNSIGNED NOT NULL DEFAULT '0',
+  `log_hash` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `url_shown` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `ip_address` (`ip_address`),
   KEY `session_id` (`session_id`),
-  KEY `customer_id` (`customer_id`)
+  KEY `customer_id` (`customer_id`),
+  KEY `log_hash` (`log_hash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ

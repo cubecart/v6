@@ -960,14 +960,19 @@ class GUI
                 $dialogue = preg_replace('/<\/?a[^>]*>/', '', $dialogue);
             }
             $GLOBALS['smarty']->assign('COOKIE_DIALOGUE_TEXT', $dialogue);
-            $consent_log = array(
-                'ip_address' => get_ip_address(),
-                'session_id' => $GLOBALS['session']->getId(),
-                'customer_id' => $GLOBALS['user']->getId(),
-                'log' => $dialogue,
-                'time' => time()
-            );
-            $GLOBALS['db']->insert('CubeCart_cookie_consent', $consent_log);
+            $log_hash = md5($dialogue);
+            if(!$GLOBALS['db']->select('CubeCart_cookie_consent', false, array('log_hash' => $log_hash, 'session_id' => $GLOBALS['session']->getId()), false, 1, false, false)) {
+                $consent_log = array(
+                    'ip_address' => get_ip_address(),
+                    'session_id' => $GLOBALS['session']->getId(),
+                    'customer_id' => $GLOBALS['user']->getId(),
+                    'log' => $dialogue,
+                    'log_hash' => $log_hash,
+                    'url_shown' => currentPage(),
+                    'time' => time()
+                );
+                $GLOBALS['db']->insert('CubeCart_cookie_consent', $consent_log);
+            }
             $GLOBALS['smarty']->assign('COOKIE_DIALOGUE', true);
         } else {
             $GLOBALS['smarty']->assign('COOKIE_DIALOGUE', false);

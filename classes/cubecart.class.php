@@ -203,11 +203,14 @@ class Cubecart
         if (isset($_GET['_g']) && !empty($_GET['_g'])) {
             switch (strtolower($_GET['_g'])) {
                 case 'ajax_cookie_consent':
+                    $dialogue = ($_GET['accept']==1) ? 'Accepted chosen.' : 'Blocked chosen.';
                     $consent_log = array(
                         'ip_address' => get_ip_address(),
                         'session_id' => $GLOBALS['session']->getId(),
                         'customer_id' => $GLOBALS['user']->getId(),
-                        'log' => ($_GET['accept']==1) ? 'Accepted chosen.' : 'Blocked chosen.',
+                        'log' => $dialogue,
+                        'log_hash' => md5($dialogue),
+                        'url_shown' => currentPage(),
                         'time' => time()
                     );
                     $GLOBALS['db']->insert('CubeCart_cookie_consent', $consent_log);

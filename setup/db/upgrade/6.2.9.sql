@@ -1,0 +1,2 @@
+ALTER TABLE `CubeCart_cookie_consent` ADD `log_hash` VARCHAR(32) NOT NULL AFTER `time`, ADD `url_shown` VARCHAR(255) NOT NULL AFTER `log_hash`; #EOQ
+ALTER TABLE `CubeCart_cookie_consent` ADD INDEX(`log_hash`); #EOQ
