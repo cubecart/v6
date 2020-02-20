@@ -25,7 +25,9 @@ require CC_ROOT_DIR.'/classes/cache/cache.class.php';
  */
 class Cache extends Cache_Controler
 {
-
+    private $_memcache_host = '127.0.0.1';
+    private $_memcache_port = '11211';
+    
     ##############################################
 
     final protected function __construct()
@@ -35,9 +37,9 @@ class Cache extends Cache_Controler
         $this->_mode = 'Memcache';
         $this->_memcache = new Memcache;
     
-        $memcache_host = isset($glob['memcache_host']) ? $glob['memcache_host'] : '127.0.0.1';
-        $memcache_post = isset($glob['memcache_post']) ? $glob['memcache_post'] : '11211';
-        if (!$this->_memcache->connect($memcache_host, $memcache_post)) {
+        $this->_memcache_host = isset($glob['memcache_host']) ? $glob['memcache_host'] : $this->_memcache_host;
+        $this->_memcache_port = isset($glob['memcache_post']) ? $glob['memcache_post'] : $this->_memcache_port;
+        if (!$this->_memcache->connect($this->_memcache_host, $this->_memcache_port)) {
             trigger_error("Couldn't initiate Memcache. Please set 'memcache_host' and 'memcache_port' in the includes/global.inc.php file.", E_USER_WARNING);
         }
 
@@ -191,6 +193,23 @@ class Cache extends Cache_Controler
         }
 
         return false;
+    }
+
+    /**
+     * Get session save handler
+     *
+     * @return string
+     */
+    public function session_save_handler() {
+        return 'memcache';
+    }
+    /**
+     * Get session save path
+     *
+     * @return string
+     */
+    public function session_save_path() {
+        return 'tcp://'.$this->_memcache_host.':'.$this->_memcache_port;
     }
 
     /**

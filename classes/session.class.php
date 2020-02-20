@@ -21,6 +21,18 @@
 class Session
 {
     /**
+     * Get session save handler
+     *
+     * @var string
+     */
+    private $_save_handler = 'files';
+    /**
+     * Get session save path
+     *
+     * @var string
+     */
+    private $_save_path = '';
+    /**
      * Current session status
      *
      * @var string
@@ -78,10 +90,13 @@ class Session
         
         //Get all the ini settings to save time later
         $ini = ini_get_all(null, false);
+        
+        $this->_save_handler = Cache::getInstance()->session_save_handler();
+        $this->_save_path = Cache::getInstance()->session_save_path();
 
-        if ($ini['session.save_handler'] != 'files') {
-            //set default sessions save handler
-            ini_set('session.save_handler', 'files');
+        ini_set('session.save_handler', $this->_save_handler);
+        if($this->_save_handler!=='files') {
+            ini_set('session.save_path', $this->_save_path);
         }
 
         if ($ini['session.use_trans_sid'] != '0') {
@@ -654,9 +669,13 @@ class Session
      */
     private function _start()
     {
-        $session_save_path = $GLOBALS['config']->get('config', 'session_save_path');
-        if (!empty($session_save_path) && file_exists($session_save_path)) {
-            session_save_path($session_save_path);
+        if($this->_save_handler!=='files') {
+            session_save_path($this->_save_path);
+        } else {
+            $session_save_path = $GLOBALS['config']->get('config', 'session_save_path');
+            if (!empty($session_save_path) && file_exists($session_save_path)) {
+                session_save_path($session_save_path);
+            }
         }
         session_cache_limiter('none');
         $session_prefix = CC_SSL ? 'S' : '';

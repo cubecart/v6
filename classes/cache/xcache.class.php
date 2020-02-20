@@ -179,6 +179,23 @@ class Cache extends Cache_Controler
     }
 
     /**
+     * Get session save handler
+     *
+     * @return string
+     */
+    public function session_save_handler() {
+        return 'files'; // for now
+    }
+    /**
+     * Get session save path
+     *
+     * @return string
+     */
+    public function session_save_path() {
+        return '';
+    }
+
+    /**
      * Calculates the cache usage
      *
      * @return string
