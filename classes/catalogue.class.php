@@ -1733,22 +1733,22 @@ class Catalogue
                 if (!empty($search_data['priceMin']) && is_numeric($search_data['priceMin'])) {
                     $price = round($GLOBALS['tax']->priceConvertFX($search_data['priceMin'])/1.05, 3);
                     if ($sale_mode == 1) {
-                        $where[] = 'IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price) >= '.$price.', IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price) >= '.$price.')';
+                        $where[] = 'AND (IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price) >= '.$price.', IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price) >= '.$price.'))';
                     } elseif ($sale_mode == 2) {
-                        $where[] = 'IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) >= '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) >= '.$price.')';
+                        $where[] = 'AND (IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) >= '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) >= '.$price.'))';
                     } else {
-                        $where[] = 'IF (G.price IS NULL, I.price >= '.$price.', G.price >= '.$price.')';
+                        $where[] = 'AND (IF (G.price IS NULL, I.price >= '.$price.', G.price >= '.$price.'))';
                     }
                 }
 
                 if (!empty($search_data['priceMax']) && is_numeric($search_data['priceMax'])) {
                     $price = round($GLOBALS['tax']->priceConvertFX($search_data['priceMax'])*1.05, 3);
                     if ($sale_mode == 1) {
-                        $where[] = 'IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price) <= '.$price.', IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price) <= '.$price.')';
+                        $where[] = 'AND (IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price) <= '.$price.', IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price) <= '.$price.'))';
                     } elseif ($sale_mode == 2) {
-                        $where[] = 'IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) <= '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) <= '.$price.')';
+                        $where[] = 'AND (IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) <= '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) <= '.$price.'))';
                     } else {
-                        $where[] = 'IF (G.price IS NULL, I.price <= '.$price.', G.price <= '.$price.')';
+                        $where[] = 'AND (IF (G.price IS NULL, I.price <= '.$price.', G.price <= '.$price.'))';
                     }
                 }
             } else {
@@ -1758,31 +1758,31 @@ class Catalogue
                     $search_data['priceMax'] == $search_data['priceMin']) {
                     $price = round($GLOBALS['tax']->priceConvertFX($search_data['priceMin']), 3);
                     if ($sale_mode == 1) {
-                        $where[] = 'IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price) = '.$price.', IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price) = '.$price.')';
+                        $where[] = 'AND (IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price) = '.$price.', IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price) = '.$price.'))';
                     } elseif ($sale_mode == 2) {
-                        $where[] = 'IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) = '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) = '.$price.')';
+                        $where[] = 'AND (IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) = '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) = '.$price.'))';
                     } else {
-                        $where[] = 'IF (G.price IS NULL, I.price = '.$price.', G.price = '.$price.')';
+                        $where[] = 'AND (IF (G.price IS NULL, I.price = '.$price.', G.price = '.$price.'))';
                     }
                 } else {
                     if (!empty($search_data['priceMin']) && is_numeric($search_data['priceMin'])) {
                         $price = round($GLOBALS['tax']->priceConvertFX($search_data['priceMin']), 3);
                         if ($sale_mode == 1) {
-                            $where[] = 'IF (G.product_id IS NULL, IF (I.sale_price = 0, I.price, I.sale_price) >= '.$price.', IF (G.sale_price = 0, G.price, G.sale_price) >= '.$price.')';
+                            $where[] = 'AND (IF (G.product_id IS NULL, IF (I.sale_price = 0, I.price, I.sale_price) >= '.$price.', IF (G.sale_price = 0, G.price, G.sale_price) >= '.$price.'))';
                         } elseif ($sale_mode == 2) {
-                            $where[] = 'IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) >= '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) >= '.$price.')';
+                            $where[] = 'AND (IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) >= '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) >= '.$price.'))';
                         } else {
-                            $where[] = 'IF (G.price IS NULL, I.price >= '.$price.', G.price >= '.$price.')';
+                            $where[] = 'AND (IF (G.price IS NULL, I.price >= '.$price.', G.price >= '.$price.'))';
                         }
                     }
                     if (!empty($search_data['priceMax']) && is_numeric($search_data['priceMax'])) {
                         $price = round($GLOBALS['tax']->priceConvertFX($search_data['priceMax']), 3);
                         if ($sale_mode == 1) {
-                            $where[] = 'IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price) <= '.$price.', IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price) <= '.$price.')';
+                            $where[] = 'AND (IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price) <= '.$price.', IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price) <= '.$price.'))';
                         } elseif ($sale_mode == 2) {
-                            $where[] = 'IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) <= '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) <= '.$price.')';
+                            $where[] = 'AND (IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) <= '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) <= '.$price.'))';
                         } else {
-                            $where[] = 'IF (G.price IS NULL, I.price <= '.$price.', G.price <= '.$price.')';
+                            $where[] = 'AND (IF (G.price IS NULL, I.price <= '.$price.', G.price <= '.$price.'))';
                         }
                     }
                 }
