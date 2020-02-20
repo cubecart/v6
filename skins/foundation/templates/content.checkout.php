@@ -55,7 +55,7 @@
    </div>
    {/if}
    {if $TERMS_CONDITIONS && isset($ALTERNATE_TERMS) && $ALTERNATE_TERMS=='0'}
-   <p class="text-right"><label for="reg_terms">{$LANG.account.register_terms_agree_link|replace:'%s':{$TERMS_CONDITIONS}} <input type="checkbox" id="reg_terms" target="_blank" name="terms_agree" value="1" rel="error_terms_agree"></label></p>
+   <p class="text-right"><label for="reg_terms">{$LANG.account.register_terms_agree_link|replace:'%s':{$TERMS_CONDITIONS}} <input type="checkbox" id="reg_terms" name="terms_agree" value="1" rel="error_terms_agree"></label></p>
    {/if}
    <div class="clearfix">
       <div class="show-for-medium-up"><a href="{$STORE_URL}/index.php?_a=basket&empty-basket=true" class="button alert left"><svg class="icon"><use xlink:href="#icon-trash-o"></use></svg> {$LANG.basket.basket_empty}</a></div>

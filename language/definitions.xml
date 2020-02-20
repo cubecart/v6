@@ -85,7 +85,7 @@
     <string name="want_to_signup" introduced="6.0.0"><![CDATA[Want to signup?]]></string>
     <string name="register_here" introduced="6.0.0"><![CDATA[Register here]]></string>
     <string name="register_terms_agree" introduced="5.0.0"><![CDATA[I agree to the Terms &amp; Conditions.]]></string>
-    <string name="register_terms_agree_link" introduced="6.0.0"><![CDATA[I agree to the <a href="%s">Terms &amp; Conditions</a>.]]></string>
+    <string name="register_terms_agree_link" introduced="6.0.0"><![CDATA[I agree to the <a href="%s" target="_blank" title="Opens in new window">Terms &amp; Conditions</a>.]]></string>
     <string name="remember_me" introduced="5.0.0"><![CDATA[Remember Me?]]></string>
     <string name="share" introduced="5.0.0"><![CDATA[Share]]></string>
     <string name="title_acp" introduced="5.0.0"><![CDATA[Admin Control Panel]]></string>

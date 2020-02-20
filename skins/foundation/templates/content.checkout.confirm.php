@@ -172,7 +172,7 @@
 </address>
 {if $TERMS_CONDITIONS}
 <div class="row">
-   <div class="small-12 large-8 columns"><span id="error_terms_agree"><input type="checkbox" id="reg_terms" target="_blank" name="terms_agree" value="1" {$TERMS_CONDITIONS_CHECKED} rel="error_terms_agree"><label for="reg_terms">{$LANG.account.register_terms_agree_link|replace:'%s':{$TERMS_CONDITIONS}}</label></span></div>
+   <div class="small-12 large-8 columns"><span id="error_terms_agree"><input type="checkbox" id="reg_terms" name="terms_agree" value="1" {$TERMS_CONDITIONS_CHECKED} rel="error_terms_agree"><label for="reg_terms">{$LANG.account.register_terms_agree_link|replace:'%s':{$TERMS_CONDITIONS}}</label></span></div>
 </div>
 {/if}
 <div class="row">
