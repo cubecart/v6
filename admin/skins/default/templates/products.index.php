@@ -212,6 +212,19 @@
                {/if}
             </span>
          </div>
+         {if $EXTERNAL_CATS}
+         {foreach from=$EXTERNAL_CATS key=k item=v}
+         <div>
+            <label for="category_{$k}">{$k|ucfirst}</label>
+            <span>
+               <select name="category_{$k}" id="category_{$k}" class="textbox" style="font-size: 10px;">
+                  <option value="">{$LANG.common.please_select} &hellip;</option>
+                  {foreach from=$v key=cat_key item=cat_path}<option value="{$cat_path}"{if $PRODUCT["category_$k"] == $cat_path} selected="selected"{/if}>{$cat_path}</option>{/foreach}
+               </select>
+            </span>
+         </div>
+         {/foreach}
+         {/if}
       </fieldset>
    </div>
    <div id="description" class="tab_content">
