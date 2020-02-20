@@ -17,6 +17,13 @@ Admin::getInstance()->permissions('filemanager', CC_PERM_READ, true);
 
 global $lang;
 
+if(isset($_GET['download_file']) && !empty($_GET['download_file'])) {
+    $file = CC_ROOT_DIR.'/'.base64_decode($_GET['download_file']);
+    if(file_exists($file)) { // It really should exist
+        deliverFile($file);
+    }
+}
+
 if (isset($_POST['cancel'])) {
     httpredir(currentPage(array('fm-edit')));
 }

@@ -49,7 +49,7 @@
 		  {/if}
 		</span>
 		<img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/{$file.icon}.png" alt="{$file.mimetype}">
-		<a href="{$file.filepath}?{$file.random}" {$file.class} title="{$file.description}" target="_self">{$file.filename}</a>
+		<a href="{if $file.class}{$file.filepath}?{$file.random}{else}?_g=filemanager&download_file={$file.filepath|base64_encode}{/if}" {$file.class} title="{$file.description}" target="_self">{$file.filename}</a>
 	  </div>
 	  {/foreach}
 	  {else}
