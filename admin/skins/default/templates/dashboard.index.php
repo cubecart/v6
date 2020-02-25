@@ -102,7 +102,6 @@
             <span class="actions"><input type="submit" value="{$LANG.common.save}" name="notes" class="mini_button"></span>
             <p><i class="fa fa-sticky-note" title="{$LANG.common.notes}" aria-hidden="true"></i> {$LANG.dashboard.title_my_notes}</p>
             <textarea name="notes[dashboard_notes]">{$DASH_NOTES}</textarea>
-            
          </form>
       </div>
       {if is_array($RECENT_EXTENSIONS)}
