@@ -152,7 +152,7 @@ class Database_Contoller
      * @return string/false
      */
     public function checksum($table) {
-        $this->_query = "CHECKSUM TABLE `{$_this->_prefix}$table`;";
+        $this->_query = "CHECKSUM TABLE `{$this->_prefix}$table`;";
         $this->_execute();
         if(isset($this->_result[0]['Checksum'])) {
             return $this->_result[0]['Checksum'];
