@@ -1424,6 +1424,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="notify_search_clear" introduced="6.0.8"><![CDATA[Search has been cleared.]]></string>
     <string name="error_search_clear" introduced="6.0.8"><![CDATA[Failed to clear search.]]></string>
     <string name="notify_cache_image" introduced="5.0.0"><![CDATA[Image cache has been cleared.]]></string>
+    <string name="notify_failed_to_delete" introduced="6.2.9"><![CDATA[Failed to delete `%s`.]]></string>
     <string name="notify_cache_cleared" introduced="5.0.0"><![CDATA[Cache has been cleared.]]></string>
     <string name="notify_copyright" introduced="5.0.0"><![CDATA[Copyright key has been removed.]]></string>
     <string name="notify_db_action" introduced="5.0.0"><![CDATA[Action `%s TABLE` has been performed successfully.]]></string>

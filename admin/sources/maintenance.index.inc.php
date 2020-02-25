@@ -386,24 +386,35 @@ if (isset($_POST['clearLangCache']) && Admin::getInstance()->permissions('mainte
 }
 
 if (isset($_POST['clearImageCache']) && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
-    function cleanImageCache($path = null)
+    function cleanImageCache($path = null, $failed = array())
     {
-        $path = (isset($path) && is_dir($path)) ? $path : CC_ROOT_DIR.'/images/cache'.'/';
+        $path = (isset($path) && is_dir($path)) ? $path : CC_ROOT_DIR.'/images/cache/';
         $scan = glob($path.'*', GLOB_MARK);
         if (is_array($scan) && !empty($scan)) {
             foreach ($scan as $result) {
                 if (is_dir($result)) {
                     cleanImageCache($result);
-                    rmdir($result);
+                    if(!rmdir($result)) {
+                        $failed[] = str_replace(CC_ROOT_DIR.'/images/cache/','',$result);
+                    }
                 } else {
-                    unlink($result);
+                    if(!unlink($result)) {
+                        $failed[] = str_replace(CC_ROOT_DIR.'/images/cache/','',$result);
+                    }
                 }
             }
         }
+        return count(glob(CC_ROOT_DIR.'/images/cache/'.'*', GLOB_MARK)) > 0 ? $failed : true;
     }
     ## recursively delete the contents of the images/cache folder
-    cleanImagecache();
-    $GLOBALS['main']->successMessage($lang['maintain']['notify_cache_image']);
+    $clearImageCache = cleanImagecache();
+    if($clearImageCache===true) {
+        $GLOBALS['main']->successMessage($lang['maintain']['notify_cache_image']);
+    } else if(is_array($clearImageCache)) {
+        foreach($clearImageCache as $file) {
+            $GLOBALS['main']->errorMessage(sprintf($lang['maintain']['notify_failed_to_delete'], $file));
+        }
+    }
     $clear_post = true;
 }
 if (isset($_POST['prodViews'])) {
