@@ -89,17 +89,41 @@ if (isset($_POST['email']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)
     foreach ($GLOBALS['hooks']->load('admin.customer.gdpr.list') as $hook) {
         include $hook;
     }
-    foreach ($data as $key => $row) {
-        echo "<h1>$key</h1>";
-        if (is_array($row)) {
+    $excluded = array(
+        'customers.new_password',
+        'customers.password',
+        'customers.salt',
+        'customers.verify',
+        'customers.status',
+        'customers.type',
+        'orders.offline_capture',
+        'orders.basket',
+        'orders.dashboard',
+        'orders.discount_type',
+        'subscribers.validation',
+        'subscribers.subscriber_id',
+        'subscribers.customer_id',
+        'subscribers.status',
+        'subscribers.imported',
+        'subscribers.dbl_opt',
+        'email.email_content_id',
+        'email.fail_reason',
+        'email.result',
+        'email.id'
+    );
+    foreach ($data as $type => $data) {
+        echo "<h1>$type</h1>";
+        if (is_array($data)) {
             echo '<table cellspacing="0" cellpadding="3" border="1"><thead><tr>';
-            foreach ($row[0] as $key => $value) {
-                echo "<th>".$key."</th>";
+            foreach ($data[0] as $col_name => $value) {
+                if(in_array($type.'.'.$col_name, $excluded)) continue;
+                echo "<th>".$col_name."</th>";
             }
             echo "</tr></thead><tbody>";
-            foreach ($row as $key => $value) {
+            foreach ($data as $k => $value) {
                 echo "<tr>";
                 foreach ($value as $col => $v) {
+                    if(in_array($type.'.'.$col, $excluded)) continue;
                     echo "<td>".$v."</td>";
                 }
                 echo "</tr>";
