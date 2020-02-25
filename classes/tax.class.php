@@ -430,7 +430,7 @@ class Tax
                     $this->_total_tax_add				+= $amount;
                 }
             }
-            return array('amount' => $amount, 'tax_inclusive' => $tax_inclusive, 'tax_name' => 'inherited', 'tax_percent' => $percent);
+            return array('tax_id' => $tax_id, 'amount' => $amount, 'tax_inclusive' => $tax_inclusive, 'tax_name' => 'inherited', 'tax_percent' => $percent);
         }
         if (is_array($this->_tax_table) && !empty($this->_tax_table)) {
             foreach ($this->_tax_table as $tax_id => $tax) {
@@ -464,7 +464,7 @@ class Tax
                     }
                 }
             }
-            return array('amount' => $amount, 'tax_inclusive' => $tax_inclusive, 'tax_name' => $tax_name, 'tax_percent' => $percent);
+            return array('tax_id' => $tax_id, 'amount' => $amount, 'tax_inclusive' => $tax_inclusive, 'tax_name' => $tax_name, 'tax_percent' => $percent);
         }
         return false;
     }
