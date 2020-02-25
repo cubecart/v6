@@ -137,7 +137,10 @@ function ajaxNewsletter(t, e) {
         page: e,
         function: "search"
     }, function(i) {
-        if (typeof i.error !== 'undefined') return false;
+        if (typeof i.error !== 'undefined' && i.error=='true') {
+            window.location.href = '?_g=customers&node=email';
+            return false;
+        }
         $("div#progress_bar").css({
             width: i.percent + "%"
         }), $("div#progress_bar_percent").text(Math.round(i.percent) + "%"), 100 == i.percent || "true" == i.complete ? (window.onbeforeunload = null, setTimeout(function(){ window.location = "?_g=customers&node=email"; }, 2000)) : ajaxNewsletter(t, e + 1)

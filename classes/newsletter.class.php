@@ -141,6 +141,9 @@ class Newsletter
                         $where['dbl_opt'] = 1;
                     }
                     $total = (int)$GLOBALS['db']->count('CubeCart_newsletter_subscriber', 'status', $where);
+                    if($total==0 && $cycle==1) {
+                        $GLOBALS['gui']->setError($GLOBALS['language']->newsletter['no_subscribers']);
+                    }
                     if (($subscribers = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', array('email'), $where, false, $limit, $cycle)) !== false) {
                         foreach ($subscribers as $subscriber) {
                             if (filter_var($subscriber['email'], FILTER_VALIDATE_EMAIL)) {
