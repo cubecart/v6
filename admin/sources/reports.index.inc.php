@@ -86,6 +86,7 @@ $oid_col = $GLOBALS['config']->get('config', 'oid_mode') =='i' ?  $GLOBALS['conf
 $fields = array(
     'order_date',
     $oid_col,
+    'cart_order_id',
     'status',
     'subtotal',
     'discount',
