@@ -705,7 +705,7 @@ class Database_Contoller
 
         $this->_execute($cache);
 
-        if (count($this->_result) >= 1 && is_array($this->_result)) {
+        if (is_array($this->_result) && count($this->_result) >= 1) {
             foreach ($this->_result as $row) {
                 $output[] = $row;
             }
