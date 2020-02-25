@@ -219,12 +219,12 @@ class Config
         //Clean up the config array
         if (is_array($data) && !empty($element)) {
             array_walk_recursive($data, function (&$s, $k) {
-                return $this->_stripslashes($s);
+                $s = $this->_stripslashes($s);
             });
             $data = $this->_json_encode($data);
         } elseif (is_array($data)) {
             array_walk_recursive($data, function (&$s, $k) {
-                return $this->_stripslashes($s);
+                $s = $this->_stripslashes($s);
             });
         } else {
             $data = $this->_stripslashes($data);
