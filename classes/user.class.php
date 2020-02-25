@@ -644,9 +644,12 @@ class User
      */
     public function getMemberships($customer_id = null)
     {
+        if($customer_id === 0) return false;
+
         if (is_null($customer_id)) {
             $customer_id = $this->getId();
         }
+        
         if (ctype_digit((string)$customer_id)) {
             return $GLOBALS['db']->select('CubeCart_customer_membership', false, array('customer_id' => $customer_id));
         }
