@@ -68,7 +68,7 @@
 		  <td>{$certificate.code}</td>
 		  <td>{$certificate.value}</td>
 		  <td>{$certificate.expires}</td>
-		  <td><a href="?_g=orders&action=edit&order_id={$certificate.cart_order_id}">{if $CONFIG.oid_mode=='i'}{$certificate.{$CONFIG.oid_col}}{else}{$certificate.cart_order_id}{/if}</a></td>
+		  <td><a href="?_g=orders&action=edit&order_id={$certificate.cart_order_id}">{$certificate.display_oid}</a></td>
 		</tr>
 		{/foreach}
 		{else}

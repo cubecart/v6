@@ -208,6 +208,8 @@ if (isset($_GET['action'])) {
     $certificates = $GLOBALS['db']->select('`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_coupons` AS `C` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary` AS `S` ON `C`.`cart_order_id` = `S`.`cart_order_id`', '`C`.*, `S`.`id`, `S`.`custom_oid`', '`C`.`cart_order_id` IS NOT NULL', $_GET[$certificate_sort_key], $per_page, $page);
     $pagination = $GLOBALS['db']->pagination(false, $per_page, $page, 5, $page_var, 'certificates');
     if ($certificates) {
+        $config_oid_col = $GLOBALS['config']->get('config','oid_col');
+        $config_oid_mode = $GLOBALS['config']->get('config','oid_mode');
         foreach ($certificates as $certificate) {
             $certificate['expires'] = ($certificate['expires']>0) ? formatTime(strtotime($certificate['expires'])) : $GLOBALS['lang']['common']['never'];
             if ($certificate['allowed_uses'] == 0) {
@@ -219,6 +221,8 @@ if (isset($_GET['action'])) {
 
             $certificate['link_edit'] = currentPage(null, array('action' => 'edit', 'coupon_id' => $certificate['coupon_id']));
             $certificate['link_delete'] = currentPage(null, array('delete' => $certificate['coupon_id']));
+
+            $certificate['display_oid'] = ($config_oid_mode=='i' && !empty($certificate[$config_oid_col])) ? $certificate[$config_oid_col] : $certificate['cart_order_id'];
             $smarty_data['list_cert'][] = $certificate;
         }
         $GLOBALS['smarty']->assign('CERTIFICATES', $smarty_data['list_cert']);
