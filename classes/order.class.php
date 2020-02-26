@@ -1560,6 +1560,7 @@ class Order
         // Add new items to the order, as long as its only 'Pending'
         if (!isset($this->_basket['order_status']) || $this->_basket['order_status'] < self::ORDER_PROCESS) {
             $order_items = $GLOBALS['db']->select('CubeCart_order_inventory', array('id', 'digital', 'hash', 'quantity'), array('cart_order_id' => $this->_order_id), false, false, false, false);
+            $digital = array();
             if ($order_items) {
                 foreach ($order_items as $order_item) {
                     $stored_items[$order_item['hash']] = array(

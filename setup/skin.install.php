@@ -30,7 +30,7 @@
 	  </form>
 	</div>
   </div>
-  <div id="promo">	  
+  <div id="promo">  
   Setup a hosted CubeCart store instantly at <a href="https://hosted.cubecart.com" target="_blank">https://hosted.cubecart.com</a></div>
   {if isset($PROGRESS)}
   <div id="progress">
