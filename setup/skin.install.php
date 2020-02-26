@@ -200,7 +200,7 @@
 	  </div>
 	{/if}
 	  <div id="toolbar">
-		{if isset($CONTROLLER.continue)}<span class="continue"><input type="submit" name="proceed" value="{$LANG.common.continue}" /></span>{/if}
+		{if isset($CONTROLLER.continue)}<span class="continue"><input type="submit" name="proceed" value="{$LANG.common.continue} &raquo;" /></span>{/if}
 		{if isset($CONTROLLER.retry)}<span class="continue"><input type="submit" name="retry" value="{$LANG.setup.button_retry}" /></span>{/if}
 		{if isset($CONTROLLER.restart)}<span class="cancel"><input type="submit" name="cancel" value="{$LANG.setup.button_restart}" class="cancel" /></span>{/if}
 	  </div>

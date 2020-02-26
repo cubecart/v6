@@ -290,9 +290,25 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
       'fail' => $strings['common']['not_installed']
     )
   );
-
-    $GLOBALS['smarty']->assign('CHECKS', $checks);
-    $GLOBALS['smarty']->assign('MODE_COMPAT', true);
+  $status = true;
+  foreach($checks as $check_type => $data) {
+    foreach($data as $key => $value) {
+        if($key=='status') {
+            if(!$value) {
+                $status = false;
+                break;
+            }
+        }
+    }
+  }
+  if(!$status) {
+    $errors[] = 'Hosting not compatible. Please rectify or setup a hosted CubeCart store instantly at <a href="https://hosted.cubecart.com" target="_blank">https://hosted.cubecart.com</a>.';
+    $retry = true;
+    $proceed = false;
+  }
+  
+  $GLOBALS['smarty']->assign('CHECKS', $checks);
+  $GLOBALS['smarty']->assign('MODE_COMPAT', true);
 } else {
     if (!isset($_SESSION['setup']['method'])) {
         $step = 2;
