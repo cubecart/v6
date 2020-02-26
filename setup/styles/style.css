@@ -84,8 +84,18 @@ html {
 #content {
     background-color: #FFF;
     padding: 20px;
+    border-radius: 3px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px
+}
+#promo {
+    background-color: #edffed;
+    padding: 20px;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    font-size: 14px;
 }
 #toolbar {
     margin-top: 20px;
