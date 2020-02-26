@@ -1,6 +1,9 @@
 <div id="breadcrumbs">
    <div class="inner">
       <ul class="quick_links">
+      {if !isset($CONFIG.cid)}
+      <li><i class="fa fa-server" aria-hidden="true"></i> <a href="https://hosted.cubecart.com/offer" target="_blank">Official CubeCart Hosting Offer</a></li>
+      {/if}
       {if $QUICK_TOUR}
       <li><a href="#" id="quickTour">{$LANG.dashboard.quick_tour}</a></li>
       {/if}
