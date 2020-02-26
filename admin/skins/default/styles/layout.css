@@ -1117,6 +1117,9 @@ ul.quick_links li#help_menu ul li:not(:last-child) {
     text-decoration: none;
     color: #000
 }
+#dashboard .extension-container {
+    max-width: 1200px;
+}
 #dashboard .extension {
     float: left;
     width: 150px;
