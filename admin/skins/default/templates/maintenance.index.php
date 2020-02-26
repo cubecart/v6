@@ -47,6 +47,10 @@
   </form>
 </div>
 <div id="backup" class="tab_content">
+  {if !isset($CONFIG.cid)}
+  <h3>Automated Backups</h3>
+  <p>Looking for automated hourly backups or your files and database? Visit <a href="https://hosted.cubecart.com" target="_blank">https://hosted.cubecart.com</a>.</p>
+  {/if}
   <h3>{$LANG.maintain.title_files_backup}</h3>
   <form action="?_g=maintenance&node=index&files_backup=1#backup" method="post">
 	<p>{$LANG.maintain.files_backup_desc}</p>
@@ -61,7 +65,7 @@
 	  </div>
 	</fieldset>
 	<div>
-		<input type="submit" name="backup" class="delete" title="{$LANG.notification.confirm_continue}" value="{$LANG.maintain.tab_backup}">
+		<input type="submit" name="backup" value="{$LANG.maintain.tab_backup}">
 		
 	</div>
   </form>
