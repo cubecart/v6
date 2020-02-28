@@ -74,6 +74,7 @@
 	<hook trigger="admin.product.clone" deprecated="" />
 	<hook trigger="admin.product.delete" deprecated="" />
 	<hook trigger="admin.product.export" deprecated="" />
+	<hook trigger="admin.product.export.method" deprecated="" />
 	<hook trigger="admin.product.products_list.where_filter" deprecated="" />
 	<hook trigger="admin.products.options.types" deprecated="" />
 	<hook trigger="admin.product.google_cats" deprecated="" />

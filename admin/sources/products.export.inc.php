@@ -150,7 +150,15 @@ if (isset($_GET['format']) && !empty($_GET['format'])) {
             if (!isset($_GET['access'])) {
                 deliverFile(false, false, $output, $filename);
             } else {
-                echo $output;
+                $method = $path = '';
+				foreach ($GLOBALS['hooks']->load('admin.product.export.method') as $hook) include $hook;
+				if($method == 'write' && !empty($path)) {
+					$fp = fopen($path, 'w');
+					fwrite($fp, $output);
+					fclose($fp);	
+				} else {
+					echo $output;
+				}
             }
             exit;
         }
