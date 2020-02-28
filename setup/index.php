@@ -254,7 +254,7 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
     // Compatibility Test
     $checks  = array(
     'PHP' => array(
-      'title' => 'PHP 5.4+ (7.2 Recommended)',
+      'title' => 'PHP 5.4+ (7.3 Recommended)',
       'status' => version_compare(PHP_VERSION, '5.5', '>='),
       'pass' => PHP_VERSION,
       'fail' => PHP_VERSION
@@ -286,6 +286,12 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
     'Zip' => array(
       'title' => 'Zip (ZipArchive)',
       'status' => class_exists('ZipArchive'),
+      'pass' => $strings['common']['installed'],
+      'fail' => $strings['common']['not_installed']
+    ),
+    'mbstring' => array(
+      'title' => 'mbstring (Multibyte String)',
+      'status' => extension_loaded('mbstring'),
       'pass' => $strings['common']['installed'],
       'fail' => $strings['common']['not_installed']
     )
