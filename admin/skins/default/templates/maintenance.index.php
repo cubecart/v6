@@ -49,7 +49,7 @@
 <div id="backup" class="tab_content">
   {if !isset($CONFIG.cid)}
   <h3>Automated Backups</h3>
-  <p>Looking for automated hourly backups or your files and database? Visit <a href="https://hosted.cubecart.com" target="_blank">https://hosted.cubecart.com</a>.</p>
+  <p>Looking for automated hourly backups of your files and database? Visit <a href="https://hosted.cubecart.com" target="_blank">https://hosted.cubecart.com</a>.</p>
   {/if}
   <h3>{$LANG.maintain.title_files_backup}</h3>
   <form action="?_g=maintenance&node=index&files_backup=1#backup" method="post">
