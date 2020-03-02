@@ -1839,6 +1839,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
+    <string name="use_server_time" introduced="6.2.9"><![CDATA[Use default server time (%s)]]></string>
     <string name="hide_chat" introduced="6.2.9"><![CDATA[Hide CubeCart Live Chat]]></string>
     <string name="cheapest_not_free" introduced="6.2.7"><![CDATA[Cheapest but not free]]></string>
     <string name="most_expensive" introduced="6.2.7"><![CDATA[Most expensive]]></string>
