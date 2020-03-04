@@ -19,14 +19,14 @@
 		<thead>
 		  <tr>
 			<td nowrap="nowrap" width="75">{$LANG.common.date}</td>
-			<td width="90%">&nbsp;</td>
+			<td width="100%">&nbsp;</td>
 		  </tr>
 		</thead>
 		<tbody>
 		{foreach from=$REQUEST_LOG item=log}
 		  <tr {if $log.error}class="request_error"{/if}>
 			<td valign="top" nowrap="nowrap" width="75">{$log.time}</td>
-			<td width="90%">
+			<td width="100%">
 			<div class="request">
 			  <strong>{$LANG.common.request} {if $log.is_curl==='1'}(cURL){elseif $log.is_curl==='0'}(fsock){/if} - {$log.request_url}</strong>
 			  {$log.request}
