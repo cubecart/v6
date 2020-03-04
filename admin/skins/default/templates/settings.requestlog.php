@@ -15,18 +15,18 @@
   <p>[<a href="?_g=maintenance&emptyRequestLogs=true&redir=viewlog">{$LANG.maintain.logs_request}</a>]</p>
   {/if}
   <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
-	  <table>
+	  <table class="fixed" width="100%">
 		<thead>
 		  <tr>
-			<td nowrap="nowrap">{$LANG.common.date}</td>
-			<td>&nbsp;</td>
+			<td nowrap="nowrap" width="75">{$LANG.common.date}</td>
+			<td width="90%">&nbsp;</td>
 		  </tr>
 		</thead>
 		<tbody>
 		{foreach from=$REQUEST_LOG item=log}
 		  <tr {if $log.error}class="request_error"{/if}>
-			<td valign="top" nowrap="nowrap">{$log.time}</td>
-			<td>
+			<td valign="top" nowrap="nowrap" width="75">{$log.time}</td>
+			<td width="90%">
 			<div class="request">
 			  <strong>{$LANG.common.request} {if $log.is_curl==='1'}(cURL){elseif $log.is_curl==='0'}(fsock){/if} - {$log.request_url}</strong>
 			  {$log.request}

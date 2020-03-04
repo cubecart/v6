@@ -982,10 +982,14 @@ a.handle {
 #newsletter_send {
     text-align: center
 }
+table.fixed {
+    table-layout: fixed;
+}
 .received,
 .request,
 .request_error {
-    font-family: "Courier New", Courier, monospace
+    font-family: "Courier New", Courier, monospace;
+    overflow-wrap: break-word
 }
 #request_log tr.request_error {
     background: #fff2f2;
