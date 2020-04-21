@@ -18,7 +18,7 @@ jQuery(document).ready(function() {
     });
     $.validator.addMethod("phone", function(phone, element) {
         phone = phone.replace(/\s+/g, "");
-        return this.optional(element) || phone.match(/^[0-9-+()]+$/);
+        return this.optional(element) || phone.match(/^[0-9-+().]+$/);
     }, $('#validate_phone').text());
     $.extend(jQuery.validator.messages, {
         required: $('#validate_field_required').text()
