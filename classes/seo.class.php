@@ -182,11 +182,17 @@ class SEO
 
         if (!$item_id && in_array($type, $this->_static_sections)) {
             if (($item = $GLOBALS['db']->select('CubeCart_seo_urls', array('path'), array('type' => $type))) !== false) {
+                foreach ($GLOBALS['hooks']->load('class.seo.buildurl.static_sections') as $hook) {
+                    include $hook;
+                } 
                 return $url.$item[0]['path'].$this->_extension;
             } else {
                 return  $url.$this->setdbPath($type, '', '', false).$this->_extension;
             }
         } elseif (($item = $GLOBALS['db']->select('CubeCart_seo_urls', array('path'), array('type' => $type, 'item_id' => $item_id))) !== false) {
+            foreach ($GLOBALS['hooks']->load('class.seo.buildurl.dynamic_url') as $hook) {
+                include $hook;
+            }
             return $url.$item[0]['path'].$this->_extension;
         } else {
             return  $url.$this->setdbPath($type, $item_id, '', false).$this->_extension;
