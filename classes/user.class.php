@@ -180,7 +180,7 @@ class User
      */
     public function addOrder($customer_id)
     {
-        return (bool)$GLOBALS['db']->misc('UPDATE `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_customer` SET `order_count` = `order_count` + 1 WHERE `customer_id` = '.(int)$customer_id);
+        return (bool)$GLOBALS['db']->misc('UPDATE `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_customer` SET `order_count` = `order_count` + 1 WHERE `customer_id` = '.(int)$customer_id, false);
     }
 
     /**
