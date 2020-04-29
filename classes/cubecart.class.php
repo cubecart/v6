@@ -2299,7 +2299,7 @@ class Cubecart
         }
         $GLOBALS['smarty']->assign('LOGIN_HTML', $login_html);
 
-        if (!isset($redir) && is_array($GLOBALS['cart']->basket['contents'])) {
+        if (!isset($redir) && is_array($GLOBALS['cart']->basket) && is_array($GLOBALS['cart']->basket['contents'])) {
             $redir = 'index.php?_a=basket';
         } elseif (!isset($redir)) {
             $redir = 'index.php?_a=account';

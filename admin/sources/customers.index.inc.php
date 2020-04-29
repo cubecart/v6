@@ -533,6 +533,7 @@ if (isset($_GET['action']) && Admin::getInstance()->permissions('customers', CC_
     // Get external module export code
     // Start classes for external reports
     if (($module = $GLOBALS['db']->select('CubeCart_modules', 'folder', array('module' => 'external', 'status' => '1'))) !== false) {
+        $smarty_data = array();
         foreach ($module as $module_data) {
             if (file_exists(CC_ROOT_DIR.'/modules/external/'.$module_data['folder'])) {
                 $module_data['description'] = ucfirst($module_data['folder']);

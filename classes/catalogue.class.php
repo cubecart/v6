@@ -1314,7 +1314,7 @@ class Catalogue
                 // Ok so we need to get quantity for other items with same product ID for quantity discounts.
                 // e.g. 1 x Blue Widget + 2 x Red Widget
                 $original_quantity = $quantity;
-                if (is_array($GLOBALS['cart']->basket['contents'])) {
+                if (is_array($GLOBALS['cart']->basket) && is_array($GLOBALS['cart']->basket['contents'])) {
                     $quantity = 0;
                     foreach ($GLOBALS['cart']->basket['contents'] as $hash => $item) {
                         if ($item['id']==$product_id) {
@@ -1371,12 +1371,13 @@ class Catalogue
                 $rows = array('stock_level', 'restock_note');
                 $where = array('product_id' => (int)$product_id, 'options_identifier' => $options_identifier_string, 'status' => 1, 'use_stock' => 1);
             }
-            $products_matrix = $GLOBALS['db']->select('CubeCart_option_matrix', $rows, $where, false, 1, false, false);
-            if (is_numeric($products_matrix[0]['stock_level'])) {
-                if (!empty($products_matrix[0]['restock_note'])) {
-                    $GLOBALS['session']->set('restock_note', $products_matrix[0]['restock_note']);
+            if($products_matrix = $GLOBALS['db']->select('CubeCart_option_matrix', $rows, $where, false, 1, false, false)) {
+                if (is_numeric($products_matrix[0]['stock_level'])) {
+                    if (!empty($products_matrix[0]['restock_note'])) {
+                        $GLOBALS['session']->set('restock_note', $products_matrix[0]['restock_note']);
+                    }
+                    return $products_matrix[0]['stock_level'];
                 }
-                return $products_matrix[0]['stock_level'];
             }
         }
 
