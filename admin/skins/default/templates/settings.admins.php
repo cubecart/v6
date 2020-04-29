@@ -46,8 +46,10 @@
   </div>
 
   <div id="overview" class="tab_content">
-	<div><label for="admin-logins">{$LANG.admins.login_count}</label><span><input type="text" id="admin-logins" class="textbox number" name="admin[logins]" value="{$ADMIN.logins}"></span></div>
-	<div><label>{$LANG.admins.login_last}</label><span>{$ADMIN.last_login}</span></div>
+  	<fieldset><legend>{$LANG.common.details}</legend>
+		<div><label for="admin-logins">{$LANG.admins.login_count}</label><span><input type="text" id="admin-logins" class="textbox number" name="admin[logins]" value="{$ADMIN.logins}"></span></div>
+		<div><label>{$LANG.admins.login_last}</label><span>{$ADMIN.last_login}</span></div>
+	</fieldset>
   </div>
 
   <div id="permissions" class="tab_content">
