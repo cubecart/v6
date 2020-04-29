@@ -41,6 +41,11 @@ if (isset($_POST['gc']) && is_array($_POST['gc']) && Admin::getInstance()->permi
         }
     }
 
+    if(is_numeric($_POST['gc']['product_code'])) {
+        $_POST['gc']['product_code'] = 'GC'.$_POST['gc']['product_code'];
+        $GLOBALS['main']->errorMessage(sprintf($lang['catalogue']['gc_not_numeric'], $_POST['gc']['product_code']));
+    }
+
     if ($GLOBALS['config']->set('gift_certs', '', $_POST['gc'])) {
         $GLOBALS['main']->successMessage($lang['settings']['notify_settings_update']);
     } else {

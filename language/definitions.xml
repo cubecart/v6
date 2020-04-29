@@ -236,6 +236,7 @@
     <string name="your_comments" introduced="5.0.0"><![CDATA[Delivery Notes or Additional Comments]]></string>
   </group>
   <group name="catalogue">
+    <string name="gc_not_numeric" introduced="6.2.10"><![CDATA[Product code can not be numeric. Changed to &quot;%s&quot;.]]></string>
     <string name="live_from" introduced="6.2.3"><![CDATA[List from (Leave empty to list now)]]></string>
     <string name="live_from_eg" introduced="6.2.3"><![CDATA[e.g. 10 September 2020 14:00:00]]></string>
     <string name="live_time_invalid" introduced="6.2.3"><![CDATA[The listing time specified wasn't accepted. Please try again.]]></string>
