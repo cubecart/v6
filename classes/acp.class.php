@@ -133,7 +133,7 @@ class ACP
      * @param string $notify_count
      * @return bool
      */
-    public function addTabControl($name, $target = '', $url = null, $accesskey = null, $notify_count = false, $a_target = '_self', $priority = null)
+    public function addTabControl($name, $target = '', $url = null, $accesskey = null, $notify_count = false, $a_target = '_self', $priority = null, $onclick = '')
     {
         if (!empty($name)) {
             $url = (!empty($url) && is_array($url)) ? currentPage(null, $url) : $url;
@@ -144,7 +144,8 @@ class ACP
                 'url'  => preg_replace('/(#.*)$/i', '', $url),
                 'accesskey' => $accesskey,
                 'notify' => number_format((float)$notify_count),
-                'a_target' => $a_target
+                'a_target' => $a_target,
+                'onclick' => $onclick
             );
             return true;
         }

@@ -51,7 +51,7 @@ $zopim(function() {
             {foreach from=$TABS item=tab}
                <div {if !empty($tab.tab_id)}id="{$tab.tab_id}" {/if}class="tab">
                {if !empty($tab.notify)}<span class="tab_notify">{$tab.notify}</span>{/if}
-               <a href="{$tab.url}{$tab.target}"{if !empty($tab.accesskey)} accesskey="{$tab.accesskey}"{/if} target="{$tab.a_target}">{$tab.name}</a>
+               <a href="{$tab.url}{$tab.target}"{if !empty($tab.accesskey)} accesskey="{$tab.accesskey}"{/if}{if !empty($tab.onclick)} onclick="{$tab.onclick}"{/if} target="{$tab.a_target}">{$tab.name}</a>
             </div>
             {/foreach}
          </div>

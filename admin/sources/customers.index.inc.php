@@ -372,8 +372,14 @@ if (isset($_GET['action']) && Admin::getInstance()->permissions('customers', CC_
             $GLOBALS['smarty']->assign('COOKIE_CONSENT', $cookie_consent);
 
             $customer = $customer[0];
-
-            $GLOBALS['main']->addTabControl('<i class="fa fa-sign-in"></i> '.sprintf($lang['customer']['signinas'], $customer['first_name'], $customer['last_name']), '', currentPage('', array('action' => 'signinas', 'customer_id' => $customer['customer_id'])), null, false, '_blank');
+            if(!CC_SSL && $GLOBALS['config']->get('config', 'ssl')=='1') {
+                $url = '#';
+                $onclick = "javascript:alert('".$lang['customer']['signin_ssl']."');return false;";
+            } else {
+                $url = currentPage('', array('action' => 'signinas', 'customer_id' => $customer['customer_id']));
+                $onclick = '';
+            }
+             $GLOBALS['main']->addTabControl('<i class="fa fa-sign-in"></i> '.sprintf($lang['customer']['signinas'], $customer['first_name'], $customer['last_name']), '', $url, null, false, '_blank',null, $onclick);
 
             $customer_id = (int)$customer['customer_id'];
             $GLOBALS['smarty']->assign('ADD_EDIT_CUSTOMER', $lang['customer']['title_customer_edit']);
@@ -497,11 +503,13 @@ if (isset($_GET['action']) && Admin::getInstance()->permissions('customers', CC_
         if (isset($_GET['q']) && !empty($_GET['q'])) {
             $GLOBALS['main']->successMessage(sprintf($lang['customer']['notify_customer_matching_x'], $_GET['q']));
         }
+        $signinas = !CC_SSL && $GLOBALS['config']->get('config', 'ssl')=='1' ? true : false;
         foreach ($customers as $customer) {
             $orders = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id'), array('customer_id' => $customer['customer_id']));
             $customer['order_count'] = ($orders) ? count($orders) : 0;
             $customer['registered'] = formatTime($customer['registered']);
-            $customer['signinas_url'] = currentPage(array('page'), array('action' => 'signinas', 'customer_id' => $customer['customer_id']));
+            $customer['signinas_url'] = ($signinas) ? "#" : currentPage(array('page'), array('action' => 'signinas', 'customer_id' => $customer['customer_id']));
+            $customer['signinas_onclick'] = ($signinas) ? "javascript:alert('".$lang['customer']['signin_ssl']."');return false;" : '';
             $customer['signinas_name'] = sprintf($lang['customer']['signinas'], $customer['first_name'], $customer['last_name']);
             $customer['edit'] = currentPage(array('page'), array('action' => 'edit', 'customer_id' => $customer['customer_id']));
             $customer['delete'] = currentPage(false, array('action' => 'delete', 'customer_id' => $customer['customer_id'],'token' => SESSION_TOKEN));

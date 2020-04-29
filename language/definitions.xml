@@ -880,6 +880,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="no_order_purge" introduced="6.2.1"><![CDATA[Customers without any orders have been deleted.]]></string>
     <string name="login_register" introduced="6.1.2"><![CDATA[Please login or register to continue.]]></string>
     <string name="signinas" introduced="6.0.0"><![CDATA[Login as %s %s]]></string>
+    <string name="signin_ssl" introduced="6.2.10"><![CDATA[Please login to the admin control panel under SSL to sign in as a customer.]]></string>
     <string name="customer_type" introduced="5.0.0"><![CDATA[Type]]></string>
     <string name="customer_export" introduced="5.0.0"><![CDATA[Customer Export]]></string>
     <string name="date_registered" introduced="5.0.0"><![CDATA[Date Registered]]></string>
