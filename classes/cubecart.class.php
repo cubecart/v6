@@ -1402,6 +1402,11 @@ class Cubecart
                     include $hook;
                 }
                 $order['basket'] = unserialize($order['basket']);
+
+                if ($order['discount']>0) {
+                    $GLOBALS['smarty']->assign('DISCOUNT', true);
+                }
+
                 $GLOBALS['smarty']->assign('SUM', $order);
 
                 switch ($order['status']) {
