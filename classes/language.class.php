@@ -713,7 +713,7 @@ class Language
                         //Get the file extension
                         $ext = strtolower(substr(strrchr($file, '.'), 1));
                         //Make sure the headers for gz are there first
-                        if ($ext == 'gz' && $xml{0} == 'x' && $xml{1} == "\x9c") {
+                        if ($ext == 'gz' && $xml[0] == 'x' && $xml[1] == "\x9c") {
                             if (($gz = gzuncompress($xml)) !== false) {
                                 $xml = $gz;
                                 unset($gz);

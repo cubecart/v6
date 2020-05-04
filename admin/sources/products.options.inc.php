@@ -52,7 +52,7 @@ if (!empty($_POST) && Admin::getInstance()->permissions('products', CC_PERM_EDIT
         $set_id = (int)$_POST['set_id'];
         $added = false;
         foreach ($_POST['add_to_set'] as $value) {
-            if ($value{0} == 'g') {
+            if ($value[0] == 'g') {
                 $value = substr($value, 1);
                 list($option, $value) = explode('-', $value);
             } else {
