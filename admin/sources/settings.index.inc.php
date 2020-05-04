@@ -54,9 +54,11 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
         $fields_find = array('id', 'custom_oid');
         $field_replace = 'cart_order_id';
     }
-    foreach (array('subject', 'content_html', 'content_text') as $column) {
-        foreach ($fields_find as $field) {
-            $GLOBALS['db']->misc("UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_email_content` SET `".$column."` = REPLACE(`".$column."`, 'DATA.".$field."', 'DATA.".$field_replace."')");
+    if(is_array($fields_find)) {
+        foreach (array('subject', 'content_html', 'content_text') as $column) {
+            foreach ($fields_find as $field) {
+                $GLOBALS['db']->misc("UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_email_content` SET `".$column."` = REPLACE(`".$column."`, 'DATA.".$field."', 'DATA.".$field_replace."')");
+            }
         }
     }
     if (!empty($_FILES)) {
