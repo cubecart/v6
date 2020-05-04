@@ -264,7 +264,7 @@ if ($unsettled_orders) {
     foreach ($unsettled_orders as $order) {
         $customer_ids[$order['customer_id']] = true;
     }
-    $customers_in = implode(array_keys($customer_ids), ',');
+    $customers_in = implode(',', array_keys($customer_ids));
     
     $customers = $GLOBALS['db']->select('CubeCart_customer', array('type','customer_id'), 'customer_id IN ('.$customers_in.')');
     foreach ($customers as $customer) {
