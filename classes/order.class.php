@@ -76,9 +76,11 @@ class Order
         }
 
         // Load the cart class
-        $this->_basket = &$GLOBALS['cart']->basket;
-        if (isset($this->_basket['cart_order_id'])) {
-            $this->_order_id = $this->_basket['cart_order_id'];
+        if(isset($GLOBALS['cart'])) {
+            $this->_basket = &$GLOBALS['cart']->basket;
+            if (isset($this->_basket['cart_order_id'])) {
+                $this->_order_id = $this->_basket['cart_order_id'];
+            }
         }
         // Expire old orders
         $this->_tidyOrders();
