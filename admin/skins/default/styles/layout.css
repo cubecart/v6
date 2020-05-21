@@ -1172,6 +1172,7 @@ ul.quick_links li#help_menu ul li:not(:last-child) {
     background: none !important;
     border-bottom: 1px solid #ccc;
     border-right: 1px solid #ccc;
+    text-indent:0 !important;
 }
 #clear_cache_master {
     text-transform: uppercase;

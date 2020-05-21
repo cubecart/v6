@@ -111,8 +111,8 @@
          <script>
             var editor = ace.edit("php_code");
             var input = document.getElementById('php_code_base64');
+            editor.session.setUseWrapMode(true);
             editor.setOptions({
-                useWrapMode: true,
                 highlightActiveLine: true,
                 showPrintMargin: false,
                 theme: 'ace/theme/github',
