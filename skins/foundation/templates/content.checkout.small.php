@@ -122,7 +122,7 @@
          <td width="10%" class="text-right">
             {$coupon.value}
          </td>
-         </td>
+         </tr>
          {/foreach}
          {if isset($DISCOUNT)}
       <tr>
