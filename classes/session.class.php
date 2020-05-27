@@ -90,8 +90,11 @@ class Session
         
         //Get all the ini settings to save time later
         $ini = ini_get_all(null, false);
-        
-        $this->_save_handler = Cache::getInstance()->session_save_handler();
+        if($GLOBALS['config']->has('config', 'session_save_handler')) {
+            $this->_save_handler = $GLOBALS['config']->get('config', 'session_save_handler');
+        } else {
+            $this->_save_handler = Cache::getInstance()->session_save_handler();
+        }
         $this->_save_path = Cache::getInstance()->session_save_path();
 
         ini_set('session.save_handler', $this->_save_handler);
