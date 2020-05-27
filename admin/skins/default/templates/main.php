@@ -108,10 +108,5 @@ $zopim(function() {
       {foreach from=$BODY_JS item=js_src}
       <script type="text/javascript" src="{$js_src}"></script>
       {/foreach}
-      {if $READ_ONLY_PERMISSION}
-      <script>
-         $('form .form_control input[type="submit"], a.delete, input[type="submit"].delete').remove();
-      </script>
-      {/if}
    </body>
 </html>

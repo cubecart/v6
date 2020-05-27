@@ -240,8 +240,6 @@ class Admin
         // Are they a Superuser? If so, they get automatic authorization
         if ($this->superUser()) {
             return true;
-        } elseif($GLOBALS['db']->select('CubeCart_permissions', 'level', array('level' => 1, 'admin_id' => $this->_admin_data['admin_id']))) {
-            $GLOBALS['smarty']->assign('READ_ONLY_PERMISSION', true);
         }
         // Lets update permissions to handle an array sections
         if (is_array($sections)) {
