@@ -270,6 +270,7 @@
     <string name="coupon_code" introduced="5.0.0"><![CDATA[Code]]></string>
     <string name="coupon_shipping" introduced="5.0.0"><![CDATA[Discount applies to shipping cost]]></string>
     <string name="free_coupon_shipping" introduced="6.1.0"><![CDATA[Free shipping]]></string>
+    <string name="coupon_per_customer" introduced="6.2.10"><![CDATA[Maximum uses per customer (Leave empty for unlimited)]]></string>
     <string name="coupon_no_shipping" introduced="5.1.5"><![CDATA[When specifying products, promotional code will NOT apply to shipping.]]></string>
     <string name="coupon_include" introduced="5.1.5"><![CDATA[Promotional code applies to ONLY above products]]></string>
     <string name="coupon_exclude" introduced="5.1.5"><![CDATA[Promotional code applies to all EXCEPT above products]]></string>

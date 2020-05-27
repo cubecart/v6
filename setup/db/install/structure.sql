@@ -203,6 +203,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_coupons` (
 	`description` text NOT NULL,
 	`cart_order_id` VARCHAR(18) DEFAULT NULL,
 	`email_sent` enum('0','1') NOT NULL DEFAULT '0',
+	`coupon_per_customer` INT(10) UNSIGNED NULL DEFAULT NULL,
 	PRIMARY KEY (`coupon_id`),
 	UNIQUE KEY `code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
@@ -1004,4 +1005,16 @@ CREATE TABLE `CubeCart_cookie_consent` (
   KEY `session_id` (`session_id`),
   KEY `customer_id` (`customer_id`),
   KEY `log_hash` (`log_hash`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+
+CREATE TABLE `CubeCart_customer_coupon` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `customer_id` int(10) UNSIGNED NOT NULL,
+  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `coupon` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `used` int(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `customer_id` (`customer_id`),
+  KEY `email` (`email`),
+  KEY `coupon` (`coupon`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
