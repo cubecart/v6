@@ -202,7 +202,7 @@ class Cache extends Cache_Controler
      * @return string
      */
     public function session_save_handler() {
-        return 'files'; // for now
+        return 'file'; // for now
     }
     /**
      * Get session save path
