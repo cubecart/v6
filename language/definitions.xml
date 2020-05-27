@@ -1421,6 +1421,9 @@ This email is sent from the store's master email address but it is possible to r
     <string name="logs_transaction" introduced="5.0.0"><![CDATA[Clear transaction logs]]></string>
     <string name="clear_search" introduced="6.0.8"><![CDATA[Clear search log]]></string>
     <string name="clear_cookie_consent" introduced="6.2.7"><![CDATA[Clear cookie consent log]]></string>
+    <string name="clear_sessions" introduced="6.2.10"><![CDATA[Clear all session data]]></string>
+    <string name="sessions_cleared" introduced="6.2.10"><![CDATA[Session data has been cleared.]]></string>
+    <string name="sessions_not_cleared" introduced="6.2.10"><![CDATA[Failed to clear session data.]]></string>
     <string name="cookie_consent_cleared" introduced="6.2.7"><![CDATA[Cookie consent log cleared]]></string>
     <string name="cookie_consent_not_cleared" introduced="6.2.7"><![CDATA[Failed to clear cookie consent log cleared]]></string>
     <string name="notify_search_clear" introduced="6.0.8"><![CDATA[Search has been cleared.]]></string>

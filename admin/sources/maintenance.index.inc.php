@@ -285,6 +285,14 @@ if (isset($_GET['download'])) {
 
 ########## Rebuild ##########
 $clear_post = false;
+if (isset($_POST['clear_sessions'])) {
+    if ($GLOBALS['db']->truncate('CubeCart_sessions')) {
+        $GLOBALS['main']->successMessage($lang['maintain']['sessions_cleared']);
+    } else {
+        $GLOBALS['main']->errorMessage($lang['maintain']['sessions_not_cleared']);
+    }
+    $clear_post = true;
+}
 if (isset($_POST['clearCookieConsent'])) {
     if ($GLOBALS['db']->truncate('CubeCart_cookie_consent')) {
         $GLOBALS['main']->successMessage($lang['maintain']['cookie_consent_cleared']);
