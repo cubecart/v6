@@ -707,6 +707,15 @@ class Order
                         $vouchers_used[] = $data['voucher'];
                         // Update usage count
                         $GLOBALS['db']->update('CubeCart_coupons', array('count' => '+1'), array('code' => $data['voucher']));
+                        
+                        $customer_id = isset($this->_basket['customer']['customer_id']) ? $this->_basket['customer']['customer_id'] : $this->_basket['billing_address']['customer_id'];
+                        $email = isset($this->_basket['customer']['email']) ? $this->_basket['customer']['email'] : $GLOBALS['user']->get('email');
+                        
+                        if($GLOBALS['db']->select('CubeCart_customer_coupon', '*', array('customer_id' => $customer_id), false, false, false, false)) {
+                            $GLOBALS['db']->update('CubeCart_customer_coupon', array('used' => '+1'), array('customer_id' => $customer_id, 'email' => $email, 'coupon' => $data['voucher']));
+                        } else {
+                            $GLOBALS['db']->insert('CubeCart_customer_coupon', array('coupon' => $data['voucher'],'used' => 1, 'customer_id' => $customer_id, 'email' => $email));
+                        }
                     }
                 }
                 $note_content = '';
