@@ -33,7 +33,7 @@ if (Admin::getInstance()->permissions('products', CC_PERM_EDIT, true) && isset($
                 if (!is_numeric($category_id)) {
                     continue;
                 }
-                if($GLOBALS['db']->insert('CubeCart_category_index', array('cat_id' => (int)$category_id, 'product_id' => (int)$product_id))){
+                if($GLOBALS['db']->insert('CubeCart_category_index', array('cat_id' => (int)$category_id, 'product_id' => (int)$product_id, 'primary' => 1))){
                     $products_assigned = true;
                 }
             }
