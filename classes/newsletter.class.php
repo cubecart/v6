@@ -200,7 +200,7 @@ class Newsletter
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $GLOBALS['gui']->setError(sprintf($GLOBALS['language']->newsletter['email_invalid'], $email));
             $error = true;
-        } elseif ($skin_data['info']['newsletter_recaptcha'] && GUI::getInstance()->recaptchaRequired() && $GLOBALS['session']->get('error', 'recaptcha')) {
+        } elseif (!$GLOBALS['user']->is() && $skin_data['info']['newsletter_recaptcha'] && GUI::getInstance()->recaptchaRequired() && $GLOBALS['session']->get('error', 'recaptcha')) {
             $GLOBALS['gui']->setError($GLOBALS['session']->get('error', 'recaptcha'));
             $error = true;
         }
