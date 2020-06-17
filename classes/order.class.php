@@ -912,10 +912,10 @@ class Order
      * @param string $order_id
      * @return bool
      */
-    public static function validOrderId($order_id)
+    public static function validOrderId($order_id, $traditional = false)
     {
         $oid_mode = $GLOBALS['config']->get('config', 'oid_mode');
-        if (($oid_mode=='t' || !$oid_mode) && preg_match('#^[0-9]{6}-[0-9]{6}-[0-9]{4}$#i', $order_id)) {
+        if (($oid_mode=='t' || !$oid_mode || $traditional) && preg_match('#^[0-9]{6}-[0-9]{6}-[0-9]{4}$#i', $order_id)) {
             return true;
         } elseif ($oid_mode=='i' && (ctype_digit($order_id) || preg_match('/[\w-\_]/', $order_id))) {
             return true;
