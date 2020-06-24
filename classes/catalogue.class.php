@@ -2035,14 +2035,14 @@ class Catalogue
     }
 
     /**
-     * Set category id/name
+     * Set category cat_data_key/cat_data_value
      *
-     * @param string $id
-     * @param string $name
+     * @param string $cat_data_key
+     * @param string $cat_data_value
      */
-    public function setCategory($id, $name)
+    public function setCategory($cat_data_key, $cat_data_value)
     {
-        $this->_categoryData[$id] = $name;
+        $this->_categoryData[$cat_data_key] = $cat_data_value;
     }
 
     //=====[ Private ]=======================================
