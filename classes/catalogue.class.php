@@ -1894,7 +1894,7 @@ class Catalogue
                         $mode = 'IN BOOLEAN MODE';
                         break;
                     }
-                    $words = preg_replace('/[^\p{Greek}a-zA-Z0-9\s]+/u', '', $search_data['keywords']);
+                    $words = preg_replace('/[^\p{Greek}a-zA-Z0-9\-\s]+/u', '', $search_data['keywords']);
                     $words = $GLOBALS['db']->sqlSafe($words);
                     // Score matching string
                     $match = sprintf("MATCH (%s) AGAINST('%s' %s)", implode(',', $indexes), $words, $mode);
