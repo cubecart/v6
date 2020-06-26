@@ -127,6 +127,7 @@ class Debug
 
         //If its time to clear the cache
         if (!CC_IN_ADMIN && isset($_GET['debug-cache-clear'])) {
+            $this->stream_into_session = false;
             $GLOBALS['cache']->clear();
             $GLOBALS['cache']->tidy();
             httpredir(currentPage(array('debug-cache-clear')));
@@ -368,9 +369,9 @@ class Debug
             if ($return) {
                 return $content;
             } else {
-                $has_debug_spool = $GLOBALS['session']->has('debug_spool');
+                $has_debug_spool = (is_object($GLOBALS['session']) && $GLOBALS['session']->has('debug_spool'));
                 echo implode(($has_debug_spool) ? $GLOBALS['session']->get('debug_spool') : array()).$content;
-                $GLOBALS['session']->set('debug_spool',null);
+                if ($has_debug_spool) $GLOBALS['session']->set('debug_spool',null);
             }
         }
     }
