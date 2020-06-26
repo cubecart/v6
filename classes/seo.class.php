@@ -932,8 +932,7 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
     {
         $language = Session::getInstance()->has('language', 'client') ? Session::getInstance()->get('language', 'client') : Language::getInstance()->current();
         if ($rebuild || ($this->_cat_dirs = Cache::getInstance()->read('seo.category.list.'.$language)) === false) {
-            //   if (($results = $GLOBALS['db']->select('CubeCart_category', array('cat_id', 'cat_name', 'cat_parent_id'), array('hide' => '0'), array('cat_id' => 'DESC'))) !== false) {
-            $query = sprintf("SELECT C.cat_id, C.cat_name, C.cat_parent_id, S.path FROM `%1\$sCubeCart_category` as C LEFT JOIN `%1\$sCubeCart_seo_urls` as S ON S.item_id=C.cat_id AND S.type='cat' AND S.custom='1' ORDER BY C.cat_id DESC", $GLOBALS['config']->get('config', 'dbprefix'));
+            $query = sprintf("SELECT C.cat_id, C.cat_name, C.cat_parent_id, S.path FROM `%1\$sCubeCart_category` as C LEFT JOIN `%1\$sCubeCart_seo_urls` as S ON S.item_id=C.cat_id WHERE S.type='cat' AND S.custom='1' ORDER BY C.cat_id DESC", $GLOBALS['config']->get('config', 'dbprefix'));
             if (($results = $GLOBALS['db']->query($query)) !== false) {
                 foreach ($results as $result) {
                     $this->_cat_dirs[$result['cat_id']] = $result;
