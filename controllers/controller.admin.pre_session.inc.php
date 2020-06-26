@@ -23,7 +23,7 @@ $GLOBALS['db'] = Database::getInstance($glob);
 $GLOBALS['config'] = Config::getInstance($glob);
 $time_zone = $GLOBALS['config']->get('config', 'time_zone');
 if(!empty($time_zone)) {
-    $GLOBALS['db']->misc("SET @@time_zone = '".$time_zone."'");
+    $GLOBALS['db']->misc("SET @@time_zone = '".$time_zone."'", false);
     date_default_timezone_set($time_zone);
 }
 // Initialize debug
