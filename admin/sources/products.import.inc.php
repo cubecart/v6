@@ -53,7 +53,7 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
     if (isset($_POST['map']) && is_array($_POST['map'])) {
         $GLOBALS['session']->set('map', $_POST['map'], 'import');
         
-        $delimiter	= (isset($_POST['delimiter']) && !empty($delimiter)) ? $_POST['delimiter'] : ',';
+        $delimiter	= (isset($_POST['delimiter']) && !empty($_POST['delimiter'])) ? $_POST['delimiter'] : ',';
         $GLOBALS['session']->set('delimiter', $delimiter, 'import');
         
         $has_header	= (isset($_POST['option']['headers'])) ? true : false;
