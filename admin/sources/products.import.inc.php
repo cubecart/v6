@@ -293,6 +293,9 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 
         $rowCount = 0;
         $fileCount = 1;
+        ## Display interstitial page before actually importing, either displaying example data from source, or a means to map the CSV to the database columns
+        $delimiter	= (isset($_POST['delimiter']) && !empty($_POST['delimiter'])) ? $_POST['delimiter'] : ',';
+
         while (!feof($in)) {
             if (($rowCount % $splitSize) == 0) {
                 if ($rowCount > 0) {
@@ -300,9 +303,9 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
                 }
                 $out = fopen($outputFile . $fileCount++ . '.tmp', 'w');
             }
-            $data = fgetcsv($in);
+            $data = fgetcsv($in, 0, $delimiter);
             if ($data) {
-                fputcsv($out, $data);
+                fputcsv($out, $data, $delimiter);
             }
             $rowCount++;
         }
@@ -310,8 +313,6 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
         fclose($in);
         fclose($out);
 
-        ## Display interstitial page before actually importing, either displaying example data from source, or a means to map the CSV to the database columns
-        $delimiter	= (isset($_POST['delimiter']) && !empty($_POST['delimiter'])) ? $_POST['delimiter'] : ',';
         ## No format map available, so give them a manual assignment form
             $fields	= array(	# Update for language strings
                 'available'			=> $lang['catalogue']['available_for_purchase'],
