@@ -149,9 +149,12 @@ class Cache extends Cache_Controler
     {
         if (empty($this->_ids)) {
             $keys = $this->_memcached->getAllKeys();
+            $len = strlen($this->_prefix);
             if (is_array($keys)) {
                 foreach ($keys as $key) {
-                    $this->_ids[] = str_replace(array($this->_prefix, $this->_suffix), '', $key);
+                    if(substr($key, 0, $len) === $this->_prefix) {
+                        $this->_ids[] = str_replace(array($this->_prefix, $this->_suffix), '', $key);
+                    }
                 }
             }
         }

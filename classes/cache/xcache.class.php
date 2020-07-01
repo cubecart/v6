@@ -134,10 +134,12 @@ class Cache extends Cache_Controler
         if (empty($this->_ids)) {
             for ($i = 0, $count = xcache_count(XC_TYPE_VAR); $i < $count; ++$i) {
                 $entries = xcache_list(XC_TYPE_VAR, $i);
-
+                $len = strlen($this->_prefix);
                 if (is_array($entries['cache_list'])) {
                     foreach ($entries['cache_list'] as $entry) {
-                        $this->_ids[] = str_replace(array($this->_prefix, $this->_suffix), '', $entry['name']);
+                        if(substr($entry['name'], 0, $len) === $this->_prefix) {
+                            $this->_ids[] = str_replace(array($this->_prefix, $this->_suffix), '', $entry['name']);
+                        }
                     }
                 }
             }

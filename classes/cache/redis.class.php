@@ -155,10 +155,12 @@ class Cache extends Cache_Controler
     {
         if (empty($this->_ids)) {
             $info = $this->redis_client->keys('*');
-
+            $len = strlen($this->_prefix);
             if (!empty($info) && is_array($info)) {
                 foreach ($info as $item) {
-                    $this->_ids[] = str_replace(array($this->_prefix, $this->_suffix), '', $item);
+                    if(substr($item, 0, $len) === $this->_prefix) {
+                        $this->_ids[] = str_replace(array($this->_prefix, $this->_suffix), '', $item);
+                    }
                 }
             }
         }

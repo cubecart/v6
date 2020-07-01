@@ -147,6 +147,7 @@ class Cache extends Cache_Controler
     public function getIDs()
     {
         if (empty($this->_ids)) {
+            $len = strlen($this->_prefix);
             $allSlabs = $this->_memcache->getExtendedStats('slabs');
             foreach ($allSlabs as $server => $slabs) {
                 foreach ($slabs as $slabId => $slabMeta) {
@@ -155,7 +156,9 @@ class Cache extends Cache_Controler
                         foreach ($cdump as $keys => $arrVal) {
                             if (is_array($arrVal)) {
                                 foreach ($arrVal as $k => $v) {
-                                    $this->_ids[] = str_replace(array($this->_prefix, $this->_suffix), '', $k);
+                                    if(substr($k, 0, $len) === $this->_prefix) {
+                                        $this->_ids[] = str_replace(array($this->_prefix, $this->_suffix), '', $k);
+                                    }
                                 }
                             }
                         }
