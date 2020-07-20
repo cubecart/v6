@@ -255,6 +255,8 @@
 	<hook trigger="class.ssl.ignored" deprecated="" />
 	<hook trigger="class.tax.producttax" deprecated="" />
 	<hook trigger="class.seo.construct" deprecated="" />
+	<hook trigger="class.seo.buildurl.static_sections" deprecated="" />
+	<hook trigger="class.seo.buildurl.dynamic_url" deprecated="" />
 	<hook trigger="class.seo.get_item_vars" deprecated="" />
 	<hook trigger="class.seo.getitem.parameters" deprecated="" />
 	<hook trigger="class.seo.sitemap" deprecated="" />
