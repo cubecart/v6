@@ -1609,7 +1609,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="customer_not_subscribed" introduced="5.0.0"><![CDATA[You are not subscribed to our newsletter.]]></string>
     <string name="customer_subscribed" introduced="5.0.0"><![CDATA[Subscribed to newsletter?]]></string>
     <string name="email_subscribed" introduced="5.0.0"><![CDATA[Your email address has been subscribed to our mailing list.]]></string>
-    <string name="email_invalid" introduced="5.0.0"><![CDATA[The email address entered was not valid.]]></string>
     <string name="enter_email_signup" introduced="5.0.0"><![CDATA[Enter your e-mail address to receive our newsletter]]></string>
     <string name="enter_email_subscribe_unsubscribe" introduced="5.0.0"><![CDATA[Please enter your email address below to subscribe or to be removed from our mailing list.]]></string>
     <string name="error_email_verified" introduced="5.0.0"><![CDATA[There was an error verifying your email address.]]></string>
