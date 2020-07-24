@@ -1035,7 +1035,7 @@ if (isset($_GET['action'])) {
         }
 
         if (is_array($possible)) {
-            $delete_query = "UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_option_matrix` SET `status` = 0 WHERE `product_id` = $product_id AND `options_identifier` NOT IN ('".implode("','", $possible)."')";
+            $delete_query = "DELETE FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_option_matrix` WHERE `product_id` = $product_id AND `options_identifier` NOT IN ('".implode("','", $possible)."')";
             $GLOBALS['db']->misc($delete_query);
         } else {
             $GLOBALS['db']->update('CubeCart_option_matrix', array('status'=>0), array('product_id'=>$product_id));
@@ -1046,9 +1046,7 @@ if (isset($_GET['action'])) {
             $pc_postfix = 1;
             foreach ($smarty_data['option_matrix']['all_possible'] as $option_group) {
                 if ($mdata = $GLOBALS['db']->select('CubeCart_option_matrix', array('matrix_id', 'cached_array', 'cached_name'), array('options_identifier' => $option_group['options_identifier'], 'product_id' => $product_id))) {
-                    if($mdata[0]['cached_array'] != $option_group['cached_array'] || $mdata[0]['cached_name'] != $option_group['options_values']){
-                        $GLOBALS['db']->update('CubeCart_option_matrix', array('cached_array' => $option_group['cached_array'], 'cached_name' => $option_group['options_values'], 'status' => 1), array('options_identifier' => $option_group['options_identifier'], 'product_id' => $product_id));
-                    }
+                    $GLOBALS['db']->update('CubeCart_option_matrix', array('cached_array' => $option_group['cached_array'], 'cached_name' => $option_group['options_values'], 'status' => 1), array('options_identifier' => $option_group['options_identifier'], 'product_id' => $product_id));
                 } else {
                     $GLOBALS['db']->insert('CubeCart_option_matrix', array('cached_array' => $option_group['cached_array'], 'cached_name' => $option_group['options_values'], 'status' => 1, 'options_identifier' => $option_group['options_identifier'], 'product_id' => $product_id, 'product_code' => $result[0]['product_code'].'-'.(string)$pc_postfix));
                 }
