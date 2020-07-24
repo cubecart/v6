@@ -1035,11 +1035,12 @@ if (isset($_GET['action'])) {
         }
 
         if (is_array($possible)) {
-            $delete_query = "DELETE FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_option_matrix` WHERE `product_id` = $product_id AND `options_identifier` NOT IN ('".implode("','", $possible)."')";
+            $delete_query = "UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_option_matrix` SET `status` = 0 WHERE `product_id` = $product_id AND `options_identifier` NOT IN ('".implode("','", $possible)."')";
             $GLOBALS['db']->misc($delete_query);
         } else {
-            $GLOBALS['db']->delete('CubeCart_option_matrix', array('product_id' = >$product_id));
+            $GLOBALS['db']->update('CubeCart_option_matrix', array('status'=>0), array('product_id'=>$product_id));
         }
+        $GLOBALS['db']->delete('CubeCart_option_matrix', '`status` = 0 AND `timestamp` < DATE_SUB(NOW(), INTERVAL 3 DAY)');
 
         // update cached name
         if (isset($smarty_data['option_matrix']['all_possible']) && is_array($smarty_data['option_matrix']['all_possible'])) {

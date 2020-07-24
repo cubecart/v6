@@ -13,3 +13,5 @@ CREATE TABLE `CubeCart_customer_coupon` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_option_matrix` ADD INDEX(`status`); #EOQ
 DELETE FROM `CubeCart_option_matrix` WHERE `status` = 0; #EOQ
+ALTER TABLE `CubeCart_option_matrix` ADD `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP; #EOQ
+ALTER TABLE `CubeCart_option_matrix` ADD INDEX(`timestamp`); #EOQ
