@@ -1038,7 +1038,7 @@ if (isset($_GET['action'])) {
             $delete_query = "DELETE FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_option_matrix` WHERE `product_id` = $product_id AND `options_identifier` NOT IN ('".implode("','", $possible)."')";
             $GLOBALS['db']->misc($delete_query);
         } else {
-            $GLOBALS['db']->update('CubeCart_option_matrix', array('status'=>0), array('product_id'=>$product_id));
+            $GLOBALS['db']->delete('CubeCart_option_matrix', array('product_id' = >$product_id));
         }
 
         // update cached name
