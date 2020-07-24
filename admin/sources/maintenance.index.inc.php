@@ -779,7 +779,8 @@ if (isset($database_result) && $database_result) {
         'cubecart_option_matrix' => array(
             'matrix_id' => 'PRIMARY',
             'product_id' => 'KEY',
-            'options_identifier' => 'KEY'
+            'options_identifier' => 'KEY',
+            'status' => 'KEY'
         ),
         'cubecart_option_value' => array(
             'value_id' => 'PRIMARY',
