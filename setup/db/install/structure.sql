@@ -631,7 +631,8 @@ CREATE TABLE IF NOT EXISTS `CubeCart_option_matrix` (
   `restock_note` varchar(255) NOT NULL,
   PRIMARY KEY (`matrix_id`),
   KEY `product_id` (`product_id`),
-  KEY `options_identifier` (`options_identifier`)
+  KEY `options_identifier` (`options_identifier`),
+  KEY `status` (`status`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 
