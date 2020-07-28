@@ -141,6 +141,10 @@ class Session
             // make sure session cookies are http ONLY!
             ini_set('session.cookie_httponly', true);
         }
+        if (empty($ini['session.cookie_samesite'])) {
+            // make sure session cookies are samesite
+            ini_set('session.cookie_samesite', 'None');
+        }
         if (!$ini['session.cookie_secure'] && CC_SSL) {
             // make sure session cookies are secure if SSL is enabled
             ini_set('session.cookie_secure', true);
@@ -578,10 +582,11 @@ class Session
      * @param integer $expire
      * @return bool
      */
-    public function set_cookie($name, $value, $expire)
+    public function set_cookie($name, $value, $expire, $options = array())
     {
         $params = session_get_cookie_params();
-        return setcookie($name, $value, $expire, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+        $params = array_merge($params, $options); // Allow overwrite for specific cookies
+        return setcookie($name, $value, 'expires='.$expire.';path='.$params['path'].';domain='.$params['domain'].';secure='.$params['secure'].';httponly='.$params['httponly'].';samesite='.$params['samesite']);
     }
 
     //=====[ Private ]=======================================

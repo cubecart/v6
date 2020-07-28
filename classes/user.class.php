@@ -271,7 +271,7 @@ class User
                  * The password cookie is not stored to make stores more secure
                  */
                 if ($remember || $from_cookie) {
-                    setcookie('username', $user[0]['email'], time() + (3600*24*30));
+                    $GLOBALS['session']->set_cookie('username', $user[0]['email'], time() + (3600*24*30));
                 }
                 if (!$GLOBALS['session']->blocked()) {
                     // possibly replaceable with session_set_save_handler?
@@ -721,7 +721,7 @@ class User
 
         if (isset($_COOKIE['username'])) {
             // Unset the 'Remember Me' cookies
-            setcookie('username', '', time()-3600);
+            $GLOBALS['session']->set_cookie('username', '', time()-3600);
         }
         //Destory the session
         $GLOBALS['session']->destroy();
