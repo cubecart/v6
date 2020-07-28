@@ -504,7 +504,7 @@ class SEO
         if ((int)$GLOBALS['config']->get('config', 'seo_metadata')!==self::TAGS_REPLACE && $GLOBALS['config']->get('config', 'store_title')!=='') {
             $title[69] = $GLOBALS['config']->get('config', 'store_title');
         }
-        if (is_array($title)) {
+        if (isset($title) && is_array($title)) {
             ksort($title);
             return implode($glue, $title);
         } else {

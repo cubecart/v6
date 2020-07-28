@@ -1225,6 +1225,7 @@ class GUI
                 $products = $GLOBALS['db']->select('CubeCart_inventory', array('name', 'product_id', 'quantity', 'price', 'sale_price', 'tax_type', 'tax_inclusive'), $where, 'popularity DESC', $limit);
         }
         if ($products) {
+            $vars = array();
             foreach ($products as $product) {
                 $category_data = $GLOBALS['catalogue']->getCategoryStatusByProductID($product['product_id']);
                 $category_status = false;

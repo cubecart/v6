@@ -98,7 +98,7 @@ class Session
         $this->_save_path = Cache::getInstance()->session_save_path();
 
         ini_set('session.save_handler', $this->_save_handler);
-        if($this->_save_handler!=='file') {
+        if($this->_save_handler!=='files') {
             ini_set('session.save_path', $this->_save_path);
         }
 
