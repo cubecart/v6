@@ -56,14 +56,14 @@
                   {include file='templates/box.search.php'}
                </div>
             </div>
-            <div class="row">
-               <div class="small-12 columns small-collapse">
+            <div class="row small-collapse">
+               <div class="small-12 columns">
                   {include file='templates/box.navigation.php'}
                   <div class="hide" id="val_lang_back">{$LANG.common.back}</div>
                </div>
             </div>
-            <div class="row">
-               <div class="small-12 columns small-collapse">
+            <div class="row small-collapse">
+               <div class="small-12 columns">
                   {include file='templates/element.breadcrumb.php'} 
                </div>
             </div>

@@ -41,8 +41,8 @@
                   </div>
                </div>
             </div>
-            <div class="row {$SECTION_NAME}_wrapper">
-               <div class="small-12 large-12 columns small-collapse">
+            <div class="row {$SECTION_NAME}_wrapper small-collapse">
+               <div class="small-12 large-12 columns">
                	{include file='templates/box.progress.php'}
                </div>
                <div class="small-12 large-12 columns">
