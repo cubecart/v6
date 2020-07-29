@@ -150,7 +150,7 @@ class Debug
     public function __destruct()
     {
         if ($this->stream_into_session) {
-            $GLOBALS['session']->set('debug_spool', array($this->display(true)));
+            Session::getInstance()->set('debug_spool', array($this->display(true)));
         } else {
             $this->display();
         }

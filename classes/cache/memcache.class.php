@@ -294,17 +294,17 @@ class Cache extends Cache_Controler
         $output .= "<tr><td>Cumulative number of retrieval requests </td><td>".$data["cmd_get"]."</td></tr>";
         $output .= "<tr><td> Cumulative number of storage requests </td><td>".$data["cmd_set"]."</td></tr>";
 
-        $percCacheHit=((real)$data["get_hits"]/ (real)$data["cmd_get"] *100);
+        $percCacheHit=((float)$data["get_hits"]/ (float)$data["cmd_get"] *100);
         $percCacheHit=round($percCacheHit, 3);
         $percCacheMiss=100-$percCacheHit;
 
         $output .= "<tr><td>Number of keys that have been requested and found present </td><td>".$data["get_hits"]." ($percCacheHit%)</td></tr>";
         $output .= "<tr><td>Number of items that have been requested and not found </td><td>".$data["get_misses"]." ($percCacheMiss%)</td></tr>";
-        $MBRead= (real)$data["bytes_read"]/(1024*1024);
+        $MBRead= (float)$data["bytes_read"]/(1024*1024);
         $output .= "<tr><td>Total number of bytes read by this server from network </td><td>".$MBRead." Mega Bytes</td></tr>";
-        $MBWrite=(real) $data["bytes_written"]/(1024*1024) ;
+        $MBWrite=(float) $data["bytes_written"]/(1024*1024) ;
         $output .= "<tr><td>Total number of bytes sent by this server to network </td><td>".$MBWrite." Mega Bytes</td></tr>";
-        $MBSize=(real) $data["limit_maxbytes"]/(1024*1024) ;
+        $MBSize=(float) $data["limit_maxbytes"]/(1024*1024) ;
         $output .= "<tr><td>Number of bytes this server is allowed to use for storage.</td><td>".$MBSize." Mega Bytes</td></tr>";
         $output .= "<tr><td>Number of valid items removed from cache to free memory for new items.</td><td>".$data["evictions"]."</td></tr>";
         $output .= "</tbody></table>";
