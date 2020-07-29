@@ -584,7 +584,7 @@ class Session
     {
         $params = session_get_cookie_params();
         $params = array_merge($params, $options); // Allow overwrite for specific cookies
-        if($name==session_name()) {
+        if(isset($_COOKIE[$name])) {
             return setcookie($name, $value, $expire, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
         }
         return setcookie($name, $value, 'expires='.$expire.';path='.$params['path'].';domain='.$params['domain'].';secure='.$params['secure'].';httponly='.$params['httponly'].';samesite='.$params['samesite']);
