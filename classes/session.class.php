@@ -118,9 +118,7 @@ class Session
         if (!empty($cookie_domain) && strstr($GLOBALS['storeURL'], $cookie_domain) && strpos($cookie_domain, '.')) {
             ini_set('session.cookie_domain', '.'.$cookie_domain);
         }
-        if (!$ini['session.cookie_path']) {
-            ini_set('session.cookie_path', $GLOBALS['rootRel']);
-        }
+        ini_set('session.cookie_path', substr($GLOBALS['rootRel'],0,-1));
 
         //If the current session time is longer we will not change anything
         if ($ini['session.gc_maxlifetime'] < $this->_session_timeout) {
@@ -586,6 +584,9 @@ class Session
     {
         $params = session_get_cookie_params();
         $params = array_merge($params, $options); // Allow overwrite for specific cookies
+        if($name==session_name()) {
+            return setcookie($name, $value, $expire, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+        }
         return setcookie($name, $value, 'expires='.$expire.';path='.$params['path'].';domain='.$params['domain'].';secure='.$params['secure'].';httponly='.$params['httponly'].';samesite='.$params['samesite']);
     }
 
@@ -691,7 +692,7 @@ class Session
         session_start();
         
         // Increase session length on each page load. NOT IE however.
-        if ($this->_http_user_agent()!=='IEX') {
+        if (isset($_COOKIE[session_name()]) && $this->_http_user_agent()!=='IEX') {
             $this->set_cookie(session_name(), session_id(), time()+$this->_session_timeout);
         }
     }
