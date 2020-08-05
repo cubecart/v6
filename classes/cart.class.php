@@ -1137,12 +1137,13 @@ class Cart
     /**
      * Update basket
      */
-    public function update()
+    public function update($verify = array())
     {
         // Update basket values and such - possibly to the database too
-        if (isset($_POST['quan']) && is_array($_POST['quan'])) {
+        $quantities = isset($_POST['quan']) && is_array($_POST['quan']) ? $_POST['quan'] : $verify;
+        if (count($quantities) > 0) {
             $this->_subtotal = 0;
-            foreach ($_POST['quan'] as $hash => $quantity) {
+            foreach ($quantities as $hash => $quantity) {
 
                 // We can't update an item that doesn't exist or set imcomplete data
                 if (!isset($this->basket['contents'][$hash]['id'])) {
@@ -1167,6 +1168,7 @@ class Cart
                             include $hook;
                         }
                         if ($quantity > $max_stock) {
+                            if(count($verify)>0) $GLOBALS['gui']->setError($GLOBALS['language']->checkout['stock_availability_changed']);
                             if ($max_stock <=0) {
                                 $GLOBALS['gui']->setError(sprintf($GLOBALS['language']->checkout['error_item_not_available'], $this->basket['contents'][$hash]['name']));
                                 $this->remove($hash);
@@ -1445,5 +1447,17 @@ class Cart
         if ($option['option_weight']>0) {
             $product['digital'] = false;
         }
+    }
+
+    public function verifyBasket() {
+        if(isset($_POST['quan'])) return false;
+        if(isset($this->basket['contents'])) {
+            $verify = array();
+            foreach($this->basket['contents'] as $hash => $item_data) {
+                $verify[$hash] = $item_data['quantity'];
+            }
+            $this->update($verify);
+        }
+        return;
     }
 }

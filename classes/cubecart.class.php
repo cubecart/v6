@@ -632,8 +632,9 @@ class Cubecart
         }
 
         $this->_checkoutProcess();
+        $GLOBALS['cart']->verifyBasket();
         $this->_basket =& $GLOBALS['cart']->basket;
-
+        
         if ($_GET['_a'] == 'basket' && $this->_basket['billing_address']['user_defined']) {
             httpredir('index.php?_a=confirm');
         }
@@ -946,7 +947,6 @@ class Cubecart
      */
     private function _checkout()
     {
-
         // Update basket if we need to!
         $GLOBALS['cart']->update();
 

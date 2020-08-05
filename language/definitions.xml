@@ -556,6 +556,7 @@
     <string name="sort_stock" introduced="5.0.0"><![CDATA[Stock]]></string>
   </group>
   <group name="checkout">
+    <string name="stock_availability_changed" introduced="6.2.10"><![CDATA[Items added to your basket are no longer available.]]></string>
     <string name="confirm_billing" introduced="6.2.8"><![CDATA[Please confirm your billing address is correct before proceeding.]]></string>
     <string name="error_voucher_exceeded" introduced="6.1.14"><![CDATA[Sorry but that code has been used to it's maximum allowance.]]></string>
     <string name="error_voucher_order_status" introduced="6.1.14"><![CDATA[Sorry, but this gift certificate is invalid at this time.]]></string>
