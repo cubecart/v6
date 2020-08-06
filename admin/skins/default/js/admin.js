@@ -179,11 +179,12 @@ function productOptionPrices(t) {
         i = +e.attr("original"),
         a = "";
     return $("span[rel=" + t + "] select").each(function() {
-        option_price = $(this).find("option:selected").attr("rel"), option_price && (a = option_price.substr(0, 1), value = +option_price.substr(1), value > 0 && ("+" == a ? i = +i + +value : "-" == a && (i = +i - +value)))
-    }), $("span[rel=" + t + "] input, span[rel=" + t + "] textarea").each(function() {
+        option_price = $(this).find("option:selected").attr("rel");
+        option_price && (a = option_price.substr(0, 1), value = +option_price.substr(1), value > 0 && ("+"==a?i=+i+ +value:"-"==a?i-=value:i=parseFloat(option_price)));
+    }),$("span[rel=" + t + "] input, span[rel=" + t + "] textarea").each(function() {
         var t = $(this).val(),
             e = $(this).attr("rel");
-        "" != t && e && (a = e.substr(0, 1), value = +e.substr(1), value > 0 && ("+" == a ? i = +i + +value : "-" == a && (i = +i - +value)))
+        "" != t && e && (a = e.substr(0, 1), value = +e.substr(1), value > 0 && ("+"==a?i=+i+ +value:"-"==a?i-=value:i=parseFloat(option_price)))
     }), e.val(i.toFixed(2)), $(".update-subtotal input.number").trigger("change"), !1
 }
 $(document).ready(function() {
