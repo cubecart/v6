@@ -32,6 +32,7 @@ class Catalogue
     private $_options_line_price = 0;
     private $_sort_by_relevance = false;
     private $_where_live_from = '';
+    private $_product_data = array();
 
     const OPTION_SELECT     = 0;
     const OPTION_TEXTBOX    = 1;
@@ -498,6 +499,9 @@ class Catalogue
             $optionArray = $this->getProductOptions($product_id);
             $this->_options_line_price = 0; // Reset option line price
             if (is_array($optionArray)) {
+                if(!isset($this->_product_data[$product_id])) {
+                    $this->_product_data[$product_id] = $this->getProductData($product_id);
+                }
                 ksort($optionArray);
                 foreach ($optionArray as $type => $group) {
                     switch ($type) {
@@ -536,7 +540,7 @@ class Catalogue
                                 
                                 if (isset($selected[$value['assign_id']]) && $selected[$value['assign_id']] > 0) {
                                     if ($value['absolute_price']=='1') {
-                                        $this->_options_line_price =  $value['option_price'];
+                                        $this->_options_line_price +=  $value['option_price'] - $this->_product_data[$product_id]['price_to_pay'];
                                     } else {
                                         if ($value['option_price']>0 && $value['option_negative'] == 0) {
                                             $this->_options_line_price +=  $value['option_price'];
@@ -576,7 +580,7 @@ class Catalogue
                             );
                             
                             if ($option[0]['absolute_price']=='1') {
-                                $this->_options_line_price =  $option[0]['option_price'];
+                                $this->_options_line_price =  +$option[0]['option_price'] - $this->_product_data[$product_id]['price_to_pay'];
                             } else {
                                 if ($option[0]['option_price']>0 && $option[0]['option_negative'] == 0) {
                                     $this->_options_line_price +=  $option[0]['option_price'];
