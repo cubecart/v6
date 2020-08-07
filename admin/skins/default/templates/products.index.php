@@ -398,7 +398,7 @@
                   <td>{$LANG.common.default}</td>
                   <td>{$LANG.common.negative}</td>
                   <td>{$LANG.common.price}</td>
-                  <td>{$LANG.catalogue.absolute_price}</td>
+                  <td>{$LANG.catalogue.absolute_price} *</td>
                   <td>{$LANG.common.weight}</td>
                   <td width="20">&nbsp;</td>
                </tr>
@@ -500,6 +500,7 @@
          <script language="text/javascript">
             var optionJSON = {$OPTIONS_JSON};
          </script>
+         <div>* {$LANG.catalogue.absolute_price_explained}</div>
       </fieldset>
       {if isset($OPTION_SETS)}
       <fieldset>

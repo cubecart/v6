@@ -236,6 +236,7 @@
     <string name="your_comments" introduced="5.0.0"><![CDATA[Delivery Notes or Additional Comments]]></string>
   </group>
   <group name="catalogue">
+    <string name="absolute_price_explained" introduced="6.1.10"><![CDATA[Only one option group can have absolute pricing. An option with absolute price will override the price set in the &quot;Pricing&quot; tab. We recommend setting the product price to the lowest option price combination under these circumstances.]]></string>
     <string name="gc_not_numeric" introduced="6.2.10"><![CDATA[Product code for gift certificate cannot be numeric. Changed to &quot;%s&quot;.]]></string>
     <string name="live_from" introduced="6.2.3"><![CDATA[List from (Leave empty to list now)]]></string>
     <string name="live_from_eg" introduced="6.2.3"><![CDATA[e.g. 10 September 2020 14:00:00]]></string>
