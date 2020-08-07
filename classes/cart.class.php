@@ -1430,15 +1430,14 @@ class Cart
             }
             $price_value = $option['option_price'] * (isset($option['option_negative']) && $option['option_negative'] ? -1 : 1);
             $display_option_tax *= (isset($option['option_negative']) && $option['option_negative'] ? -1 : 1);
+            $product['price'] += $price_value;
+            $product['option_line_price'] += $price_value;
+            $product['option_price_ignoring_tax'] += $display_option_tax;
             if ($option['absolute_price']) {
-                $product['price'] = $price_value;
-                $product['option_line_price'] = $price_value;
-                $product['option_price_ignoring_tax'] = $display_option_tax;
+                $product['price'] -= $product['price_to_pay'];
+                $product['option_line_price'] -= $product['price_to_pay'];
                 $product['absolute_price'] = true;
             } else {
-                $product['price'] += $price_value;
-                $product['option_line_price'] += $price_value;
-                $product['option_price_ignoring_tax'] += $display_option_tax;
                 $option['price_display'] = ($price_value < 0 ? '-' : '+');
             }
             $option['price_display'] .= $GLOBALS['tax']->priceFormat(abs($display_option_tax), true);
