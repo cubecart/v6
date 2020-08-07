@@ -431,8 +431,6 @@ function price_inc_options() {
     var total = 0;
     var ptp = parseFloat($('#ptp').attr("data-price"));
     var fbp = parseFloat($('#fbp').attr("data-price"));
-    var ptp_original = ptp;
-    var fbp_original = fbp;
     var parts = action.split("?");
     
     if (parts.length > 1) {
@@ -443,22 +441,28 @@ function price_inc_options() {
     action += '_g=ajax_price_format&price[0]=';
 
     $("[name^=productOptions]").each(function () {
-        
         if($(this).is('input:radio') && $(this).is(':checked')) {
-            if($(this).hasClass('absolute')) { total = ptp = 0; absolute = true; }
+            if($(this).hasClass('absolute')) {
+                total -= ptp;
+            }
             total += parseFloat($(this).attr("data-price"));
-        } else if ($(this).is('select') && $(this).val()) {
-            if($("option:selected", this).hasClass('absolute')) { total = ptp = 0; absolute = true; }
-            total += parseFloat($(this).find("option:selected").attr("data-price"));
-        } else if (($(this).is('textarea') || $(this).is('input:text')) && $(this).val() !== '') {
-            if($(this).hasClass('absolute')) { total = ptp = 0; absolute = true; }
-            total += parseFloat($(this).attr("data-price"));
+            } else if ($(this).is('select') && $(this).val()) {
+                if($("option:selected", this).hasClass('absolute')) { 
+                    total -= ptp;
+                }
+                total += parseFloat($(this).find("option:selected").attr("data-price"));
+            } else if (($(this).is('textarea') || $(this).is('input:text')) && $(this).val() !== '') {
+                if($(this).hasClass('absolute')) {
+                    total -= ptp;
+                }
+                total += parseFloat($(this).attr("data-price"));
+            }
         }
-    });
-    ptp = (absolute ? total : ptp + total);
+    );
+    ptp = ptp + total;
 
     if($('#fbp').length > 0) {
-        fbp = (absolute ? total : fbp + total);
+        fbp = fbp + total;
         $.ajax({
             url: action + ptp + '&price[1]='+ fbp,
             cache: true,
