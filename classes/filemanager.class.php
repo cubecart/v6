@@ -427,7 +427,7 @@ class FileManager
      * @param int $file_id
      * @return bool
      */
-    private function deleteFile($file_id = null)
+    public function deleteFile($file_id = null)
     {
         if (!is_null($file_id) && is_numeric($file_id)) {
             if (($result = $GLOBALS['db']->select('CubeCart_filemanager', false, array('file_id' => (int)$file_id))) !== false) {
