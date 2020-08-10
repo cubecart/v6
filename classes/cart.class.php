@@ -348,7 +348,7 @@ class Cart
                             // Add options to the basket item
 
                             foreach ($optionsArray as $option_id => $option_value) {
-                                $required = $GLOBALS['db']->select('CubeCart_option_group', array('option_required', 'option_type'), array('option_id' => (int)$option_id));
+                                $required = $GLOBALS['db']->select('CubeCart_option_group', array('option_type', 'option_required'), array('option_id' => (int)$option_id));
                                 $require = ($required) ? (bool)$required[0]['option_required'] : false;
                                 $add_option = true;
                                 if (is_array($option_value)) {
