@@ -816,7 +816,7 @@ class Order
                 }
             }
             if (is_array($option)) {
-                return serialize($option);
+                return base64_encode(serialize($option));
             }
         }
         return '';
