@@ -273,7 +273,7 @@ $(document).ready(function() {
             $(this).is("a") && t.preventDefault();
             var e = $(this).attr("rel"),
                 i = $("input[type=checkbox]." + e);
-            i.prop("checked", !i.prop("checked"))
+            i.prop("checked", this.checked)
         }), $("select.auto_submit").each(function() {
             $(this).hasClass("show_submit") || $(this).parents("form:first").find("input:submit").hide()
         }).change(function() {
