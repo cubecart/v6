@@ -626,6 +626,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_option_matrix` (
   `ean` varchar(20) DEFAULT NULL,
   `jan` varchar(20) DEFAULT NULL,
   `isbn` varchar(20) DEFAULT NULL,
+  `gtin` varchar(20) DEFAULT NULL,
   `image` int(11) DEFAULT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `restock_note` varchar(255) NOT NULL,

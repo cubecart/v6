@@ -542,6 +542,7 @@
                <th>{$LANG.catalogue.product_ean}</th>
                <th>{$LANG.catalogue.product_jan}</th>
                <th>{$LANG.catalogue.product_isbn}</th>
+               <th>{$LANG.catalogue.product_gtin}</th>
                <th>{$LANG.catalogue.restock_note}</th>
             </tr>
          </thead>
@@ -556,6 +557,7 @@
                <td><input type="text" name="option_matrix[{$row.options_identifier}][ean]" class="textbox number" value="{$OPTIONS_MATRIX.existing.{$row.options_identifier}.ean}"></td>
                <td><input type="text" name="option_matrix[{$row.options_identifier}][jan]" class="textbox number" value="{$OPTIONS_MATRIX.existing.{$row.options_identifier}.jan}"></td>
                <td><input type="text" name="option_matrix[{$row.options_identifier}][isbn]" class="textbox number" value="{$OPTIONS_MATRIX.existing.{$row.options_identifier}.isbn}"></td>
+               <td><input type="text" name="option_matrix[{$row.options_identifier}][gtin]" class="textbox number" value="{$OPTIONS_MATRIX.existing.{$row.options_identifier}.gtin}"></td>
                <td><input type="text" name="option_matrix[{$row.options_identifier}][restock_note]" class="textbox number" value="{$OPTIONS_MATRIX.existing.{$row.options_identifier}.restock_note}" maxlength="255" ></td>
             </tr>
             {foreachelse} 
