@@ -50,7 +50,7 @@
             {/if}
          </div>
       </div>
-      {else}
+      {elseif $option.type == Catalogue::OPTION_TEXTBOX ||$option.type == Catalogue::OPTION_TEXTAREA }
       <div class="row">
          <div class="small-12 columns">
             <label for="option_{$option.option_id}" class="return">{if empty($option.option_description)}{$option.option_name}{else}{$option.option_description}{/if}{if $option.price} {$option.symbol}{$option.price}{/if}{if $option.required} ({$LANG.common.required}){/if}</label>
@@ -61,6 +61,8 @@
             {/if}
          </div>
       </div>
+      {else}
+         {if $OTHER_CHOOSERS}{include file='templates/element.product.other_choosers.php'}{/if} 
       {/if}
    {/foreach}
 {/if}
