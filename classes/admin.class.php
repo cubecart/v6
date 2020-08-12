@@ -244,7 +244,7 @@ class Admin
         // Lets update permissions to handle an array sections
         if (is_array($sections)) {
             foreach ($sections as $section) {
-                $departments[] = (!is_numeric($section)) ? $this->getSectionId($section) : (int)$section;
+                $departments[] = (!is_numeric($section)) ? $this->_getSectionId($section) : (int)$section;
             }
         } else {
             // Get integers for section and permission level
