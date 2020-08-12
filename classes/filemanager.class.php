@@ -914,7 +914,7 @@ class FileManager
 
         $filepath_where  = empty($this->_sub_dir) ? 'IS NULL' : '= \''.str_replace('\\', '/', $this->_sub_dir).'\'';
         $where = '`disabled` = 0 AND `type` = '.(int)$this->_mode.' AND `filepath` '.$filepath_where;
-
+        $GLOBALS['smarty']->assign('FM_SIZE', isset($_COOKIE['fm_size']) ? 'fm-item-'.$_COOKIE['fm_size'] : 'fm-item-medium');
         if (($files = $GLOBALS['db']->select('CubeCart_filemanager', false, $where, array('filename' => 'ASC'))) !== false) {
             $catalogue = $GLOBALS['catalogue']->getInstance();
             $GLOBALS['smarty']->assign('ROOT_REL', $GLOBALS['rootRel']);

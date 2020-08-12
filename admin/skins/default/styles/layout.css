@@ -624,6 +624,12 @@ fieldset>div:nth-child(even),
 tbody tr:nth-child(even) {
     background-color: #edf4f7
 }
+#filemanager div div.fm-item:nth-child(odd) {
+    background-color: #edf4f7
+}
+#filemanager div div.folder {
+    background-color: #fff !important;
+}
 .stripe div {
     text-indent: 5px !important;
 }
@@ -1238,4 +1244,94 @@ ul.filetree li ul li ul li ul li ul li ul li ul li ul li a {
 }
 .width_50 {
     width: 50%;
+}
+.fm-item {
+    float: left;
+    margin: 5px 5px 30px 5px;
+    position: relative;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: none !important;
+}
+.fm-item .actions {
+    background: rgba(255,255,255, 0.7);
+    color: #444;
+    padding-left: 2px;
+    bottom: 0px;
+    position: absolute;
+    height: 18px;
+    font-size: 12px;
+    line-height: 18px;
+    display: block;
+    width: inherit;
+}
+.fm-item .actions i.fa {
+    color: #444;
+}
+.fm-item > a {
+    background: rgba(255, 255, 255, 0.75);
+    color: #444;
+    bottom: -16px;
+    position: absolute;
+    height: 16px;
+    font-size: 10px;
+    line-height: 16px;
+    width: inherit;
+    overflow-x: hidden;
+}
+.fm-item-small > a {
+    font-size: 8px;
+}
+.folder .actions {
+    background: none !important;
+}
+.folder .actions i.fa {
+    color: #444;
+}
+.fm-item-xlarge {
+    width: 500px;
+    height: 500px;
+}
+.fm-item-large {
+    width: 300px;
+    height: 300px;
+}
+.fm-item-medium {
+    width: 150px;
+    height: 150px;
+}
+.fm-item-small {
+    width: 100px;
+    height: 100px;
+}
+#filemanager .toggle {
+    float: right;
+}
+#filemanager .toggle span {
+    display: inline-block;
+    margin: 2px;
+    background-color: #444;
+    cursor: pointer;
+}
+#filemanager .toggle span:hover {
+    background-color: #f3068f;
+}
+#filemanager .toggle span.active {
+    background-color: #4F9AAF;
+}
+#filemanager .toggle span.xlarge {
+    width: 16px;
+    height: 16px;
+}
+#filemanager .toggle span.large {
+    width: 14px;
+    height: 14px;
+}
+#filemanager .toggle span.medium {
+    width: 12px;
+    height: 12px;
+}
+#filemanager .toggle span.small {
+    width:10px;
+    height:10px;
 }

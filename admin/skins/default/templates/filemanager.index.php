@@ -12,11 +12,11 @@
 <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
   {if isset($mode_list)}
   <div id="filemanager" class="tab_content">
-	<h3>{$FILMANAGER_TITLE}</h3>
+	<h3>{if $FILMANAGER_MODE == '1'}<span class="toggle"><span class="small"></span><span class="medium"></span><span class="large"></span><span class="xlarge"></span></span>{/if}{$FILMANAGER_TITLE}</h3>
 	{if $FILMANAGER_MODE == '2'}
 	<p>{$LANG.filemanager.public}</p>
 	{/if}
-	<div>
+	<div id="fm-wrapper" style="overflow:hidden;">
 	  {if $FOLDER_PARENT}
 	  <div>
 		<a href="{$FOLDER_PARENT}"><i class="fa fa-arrow-left" aria-hidden="true"></i> Parent Directory</a>
@@ -24,13 +24,14 @@
 	  {/if}
 	  {if isset($FOLDERS)}
 	  {foreach from=$FOLDERS item=folder}
-	  <div>
+	  <div {if $FILMANAGER_MODE == '1'}class="fm-item folder {$FM_SIZE}" style="background-image:url('admin/skins/default/images/folder_large.png');background-size: contain;"{/if}>
+	  {if $FILMANAGER_MODE == '1'}<a href="{$folder.link}" style="width: inherit; height: inherit; position: absolute; top: 0; background: none"></a>{/if}
 		<span class="actions">
 		{if NOT is_null($folder.delete)}
-		<a href="{$folder.delete}" class="delete" title="{$LANG.notification.confirm_delete_file|replace:'%s':$folder.name}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
+		<a href="{$folder.delete}" class="delete right" title="{$LANG.notification.confirm_delete_file|replace:'%s':$folder.name}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		{/if}
 		</span>
-		<img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/folder.png" alt="{$folder.name}">
+		{if $FILMANAGER_MODE == '2'}<img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/folder.png" alt="{$folder.name}">{/if}
 		<a href="{$folder.link}">{$folder.name}</a>
 	  </div>
 	  {/foreach}
@@ -38,17 +39,18 @@
 
 	  {if isset($FILES)}
 	  {foreach from=$FILES item=file}
-	  <div>
-		<span class="actions">
+	  <div {if $FILMANAGER_MODE == '1'}class="fm-item {$FM_SIZE}" style="background-image:url({$file.filepath});background-size: contain;"{/if}>
+	  {if $FILMANAGER_MODE == '1'}<a href="{$file.filepath}?{$file.random}" style="width: inherit; height: inherit; position: absolute; top: 0; background: none" {$file.class} title="{$file.description}" target="_self"></a>{/if}
+	 	 <span class="actions">
 		  {$file.filesize}
 		  {if $file.select_button}
 		  <a href="{$file.master_filepath}" class="select"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a>
 		  {else}
-		  <a href="{$file.edit}" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
-		  <a href="{$file.delete}" class="delete" title="{$LANG.notification.confirm_delete_file|replace:'%s':$file.filename}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
+		  <a href="{$file.delete}" class="delete right" title="{$LANG.notification.confirm_delete_file|replace:'%s':$file.filename}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
+		  <a href="{$file.edit}" class="edit right" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
 		  {/if}
 		</span>
-		<img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/{$file.icon}.png" alt="{$file.mimetype}">
+		{if $FILMANAGER_MODE == '2'}<img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/{$file.icon}.png" alt="{$file.mimetype}">{/if}
 		<a href="{if $file.class}{$file.filepath}?{$file.random}{else}?_g=filemanager&download_file={$file.filepath|base64_encode}{/if}" {$file.class} title="{$file.description}" target="_self">{$file.filename}</a>
 	  </div>
 	  {/foreach}
