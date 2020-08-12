@@ -1355,7 +1355,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="notify_snippet_imported" introduced="5.2.0"><![CDATA[Code imported successfully]]></string>
     <string name="notify_snippet_import_failed" introduced="5.2.0"><![CDATA[Failed to import code]]></string>
     <string name="author" introduced="5.2.0"><![CDATA[Author]]></string>
-    <string name="example_code_snippet_xml" introduced="5.2.0"><![CDATA[An example of an import XML feed can be found <a href="docs/examples/code_snippet_import.xml">here</a>. Please use the &quot;Help&quot; link for further information.]]></string>
+    <string name="example_code_snippet_xml" introduced="5.2.0"><![CDATA[An example of an import XML feed can be found <a href="docs/examples/code_snippet_import.php" target="blank">here</a>. Please use the &quot;Help&quot; link for further information.]]></string>
   </group>
   <group name="maintain">
     <string name="duplicate_index" introduced="6.1.6"><![CDATA[%s has duplicate %s indexes. One of these could be removed.]]></string>
