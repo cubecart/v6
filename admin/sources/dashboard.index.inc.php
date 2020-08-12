@@ -266,9 +266,11 @@ if ($unsettled_orders) {
     }
     $customers_in = implode(',', array_keys($customer_ids));
     
-    $customers = $GLOBALS['db']->select('CubeCart_customer', array('type','customer_id'), 'customer_id IN ('.$customers_in.')');
-    foreach ($customers as $customer) {
-        $customer_type[$customer['customer_id']] = $customer['type'];
+    $customer_type = array();
+    if($customers = $GLOBALS['db']->select('CubeCart_customer', array('type','customer_id'), 'customer_id IN ('.$customers_in.')')) {
+        foreach ($customers as $customer) {
+            $customer_type[$customer['customer_id']] = $customer['type'];
+        }
     }
 
     for ($i = 1; $i <= 6; ++$i) {
