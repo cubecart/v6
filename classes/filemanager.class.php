@@ -920,7 +920,7 @@ class FileManager
             $GLOBALS['smarty']->assign('ROOT_REL', $GLOBALS['rootRel']);
             foreach ($files as $key => $file) {
                 $file['icon']   = $this->getFileIcon($file['mimetype']);
-                $file['class']   = (preg_match('#^image#', $file['mimetype'])) ? 'class="colorbox"' : '';
+                $file['class']   = (preg_match('#^image#', $file['mimetype'])) ? 'colorbox' : '';
                 $file['edit']   = currentPage(null, array('fm-edit' => $file['file_id']));
                 $file['delete']   = currentPage(null, array('delete' => $file['file_id'], 'token' => SESSION_TOKEN));
                 $file['random']   = mt_rand();

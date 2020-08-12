@@ -1245,6 +1245,9 @@ ul.filetree li ul li ul li ul li ul li ul li ul li ul li a {
 .width_50 {
     width: 50%;
 }
+#filemanager p.clear {
+    clear: both;
+}
 .fm-item {
     float: left;
     margin: 5px 5px 30px 5px;
@@ -1252,6 +1255,16 @@ ul.filetree li ul li ul li ul li ul li ul li ul li ul li a {
     background-repeat: no-repeat;
     background-position: center;
     background-color: none !important;
+    
+}
+.fm-item .thumbnail {
+    text-align: center;
+    width: inherit;
+    height: inherit;
+    position: absolute;
+    top: 0;
+    background: none;
+    overflow: hidden;
 }
 .fm-item .actions {
     background: rgba(255,255,255, 0.7);
@@ -1267,6 +1280,9 @@ ul.filetree li ul li ul li ul li ul li ul li ul li ul li a {
 }
 .fm-item .actions i.fa {
     color: #444;
+}
+.fm-item img {
+    height: inherit;
 }
 .fm-item > a {
     background: rgba(255, 255, 255, 0.75);

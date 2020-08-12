@@ -24,8 +24,8 @@
 	  {/if}
 	  {if isset($FOLDERS)}
 	  {foreach from=$FOLDERS item=folder}
-	  <div {if $FILMANAGER_MODE == '1'}class="fm-item folder {$FM_SIZE}" style="background-image:url('admin/skins/default/images/folder_large.png');background-size: contain;"{/if}>
-	  {if $FILMANAGER_MODE == '1'}<a href="{$folder.link}" style="width: inherit; height: inherit; position: absolute; top: 0; background: none"></a>{/if}
+	  <div {if $FILMANAGER_MODE == '1'}class="fm-item folder {$FM_SIZE}"{/if}>
+	  {if $FILMANAGER_MODE == '1'}<a href="{$folder.link}" class="thumbnail"><img src="admin/skins/default/images/folder_large.png"/></a>{/if}
 		<span class="actions">
 		{if NOT is_null($folder.delete)}
 		<a href="{$folder.delete}" class="delete right" title="{$LANG.notification.confirm_delete_file|replace:'%s':$folder.name}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
@@ -39,8 +39,8 @@
 
 	  {if isset($FILES)}
 	  {foreach from=$FILES item=file}
-	  <div {if $FILMANAGER_MODE == '1'}class="fm-item {$FM_SIZE}" style="background-image:url({$file.filepath});background-size: contain;"{/if}>
-	  {if $FILMANAGER_MODE == '1'}<a href="{$file.filepath}?{$file.random}" style="width: inherit; height: inherit; position: absolute; top: 0; background: none" {$file.class} title="{$file.description}" target="_self"></a>{/if}
+	  <div {if $FILMANAGER_MODE == '1'}class="fm-item {$FM_SIZE}"{/if}>
+	  {if $FILMANAGER_MODE == '1'}<a href="{$file.filepath}?{$file.random}" class="{$file.class} thumbnail" title="{$file.description}" target="_self"><img class="lazyload" data-src="{$file.filepath}" src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs="></a>{/if}
 	 	 <span class="actions">
 		  {$file.filesize}
 		  {if $file.select_button}
@@ -51,11 +51,11 @@
 		  {/if}
 		</span>
 		{if $FILMANAGER_MODE == '2'}<img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/{$file.icon}.png" alt="{$file.mimetype}">{/if}
-		<a href="{if $file.class}{$file.filepath}?{$file.random}{else}?_g=filemanager&download_file={$file.filepath|base64_encode}{/if}" {$file.class} title="{$file.description}" target="_self">{$file.filename}</a>
+		<a href="{if $file.class}{$file.filepath}?{$file.random}{else}?_g=filemanager&download_file={$file.filepath|base64_encode}{/if}" class="{$file.class}" title="{$file.description}" target="_self">{$file.filename}</a>
 	  </div>
 	  {/foreach}
 	  {else}
-	  <p class="center">{$LANG.filemanager.file_none}</p>
+	  <p class="center clear">{$LANG.filemanager.file_none}</p>
 	  {/if}
 	</div>
   </div>

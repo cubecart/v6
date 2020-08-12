@@ -752,6 +752,7 @@ $(document).ready(function() {
     } else {
         $("#filemanager .toggle span."+fm_size).addClass("active");
     }
+    lazyload();
 });
 var new_option = 0,
     data = !1;
