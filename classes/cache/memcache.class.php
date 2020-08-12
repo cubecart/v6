@@ -204,7 +204,8 @@ class Cache extends Cache_Controler
      * @return string
      */
     public function session_save_handler() {
-        return 'memcache';
+        //return 'memcache'; GitHub #2572
+        return 'files';
     }
     /**
      * Get session save path
