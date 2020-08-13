@@ -1035,7 +1035,7 @@ class Order
     private function _digitalDelivery($order_id, $email)
     {
         if (!empty($order_id) && !empty($email)) {
-            if (($digital = $GLOBALS['db']->select('CubeCart_downloads', array('digital_id', 'accesskey', 'order_inv_id'), array('cart_order_id' => $order_id))) !== false) {
+            if (($digital = $GLOBALS['db']->select('CubeCart_downloads', array('digital_id', 'accesskey', 'order_inv_id'), array('cart_order_id' => $order_id), false, false, false, false)) !== false) {
                 foreach ($digital as $offset => $download) {
                     // Get product name
                     $product = $GLOBALS['db']->select('CubeCart_order_inventory', array('name'), array('id' => $download['order_inv_id']));
