@@ -296,7 +296,11 @@ class Order
                         $product['images'] = $images;
                     }
                 }
-                if (!empty($product['product_options'])) {
+                if(unserialize($product['product_options']) !== false) {
+                    $product['product_options'] = implode(' ', unserialize($item['product_options']));
+                } else if (unserialize(base64_decode($product['product_options'])) !== false) {
+                    $product['product_options'] = implode(' ', unserialize(base64_decode($item['product_options'])));
+                } else {
                     $product['product_options'] = implode(' ', unserialize($item['product_options']));
                 }
                 $vars['products'][] = $product;
