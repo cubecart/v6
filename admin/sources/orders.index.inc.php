@@ -337,13 +337,13 @@ if (isset($_GET['action'])) {
                         if(cc_unserialize($product['product_options']) !== false) {
                             $product['options_array'] = cc_unserialize($product['product_options']);
                             $product['options_text'] = implode('<br>', cc_unserialize($product['product_options']));
-                        }else if(cc_unserialize(base64_decode($product['product_options'])) !== false){
+                        } else if(cc_unserialize(base64_decode($product['product_options'])) !== false) {
                             $product['options_array'] = cc_unserialize(base64_decode($product['product_options']));
                             $product['options_text'] = implode('<br>', cc_unserialize(base64_decode($product['product_options'])));
-                        }else{
+                        } else {
                             $product['options_text'] = $product['product_options'];
-                     
-
+                        }
+                    }
                     $custom_data = array();
                     
                     if (!empty($product['custom'])) {
@@ -571,9 +571,9 @@ if (isset($_GET['action'])) {
                     if (!empty($item['product_options'])) {
                         if(cc_unserialize($item['product_options']) !== false) {
                             $options = $array = cc_unserialize($item['product_options']);
-                        }else if(cc_unserialize(base64_decode($item['product_options'])) !== false) {
+                        } else if(cc_unserialize(base64_decode($item['product_options'])) !== false) {
                             $options = cc_unserialize(base64_decode($item['product_options']));
-                        }else{
+                        } else {
                             $options = explode("\n", $item['product_options']);
                         }
                         foreach ($options as $option) {
