@@ -389,7 +389,7 @@ jQuery(document).ready(function() {
 			}
 			
 			$.ajax({
-				url: action + '_g=ajaxadd',
+				url: action + '_g=ajaxadd&t=' + new Date().getTime(),
 				type: 'POST',
 				cache: false,
 				data: add,
