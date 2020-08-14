@@ -565,6 +565,27 @@ class Cart
                     include $hook;
                 }
 
+                $include = array();
+
+                // Check manufacturer is allowed
+                if (!empty($coupon['manufacturer_id'])) {
+                    $qualifying_manufacturers = unserialize($coupon['manufacturer_id']);
+                    if(count($qualifying_manufacturers)>0) {
+                        $proceed = false;
+                        $qualifying_manufacturers = array_flip($qualifying_manufacturers);
+                        foreach ($this->basket['contents'] as $key => $data) {
+                            $m_id = $GLOBALS['db']->select('CubeCart_inventory', 'manufacturer', array('product_id' => $data['id']));
+                            if(isset($qualifying_manufacturers[$m_id[0]['manufacturer']])) {
+                                $proceed = true;
+                                $include[$data['id']] = true;
+                            }
+                        }
+                        if(!$proceed) {
+                            $GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_manufacturer']);
+                        }
+                    }
+                }
+
                 if (!empty($coupon['product_id'])) {
                     $qualifying_products = unserialize($coupon['product_id']);
 
@@ -586,26 +607,21 @@ class Cart
                         // If product IS in qualifying ids coupon is allowed
                         foreach ($this->basket['contents'] as $key => $data) {
                             if ($product_ids[$data['id']]) {
+                                $include[$data['id']] = true;
                                 $proceed = true;
-                                break;
                             }
                         }
                     } elseif ($incexc == 'exclude') {
-                        $basket_pids = array();
                         foreach ($this->basket['contents'] as $key => $data) {
-                            array_push($basket_pids, $data['id']);
-                        }
-
-                        foreach ($basket_pids as $key => $pid) {
-                            // If product is NOT in qualifying ids coupon is allowed
-                            if (!isset($product_ids[$pid])) {
+                            if ($product_ids[$data['id']] && isset($include[$data['id']])) {
+                                unset($include[$data['id']]);
+                            } else {
                                 $proceed = true;
-                                break;
                             }
                         }
                     }
 
-                    if (!$proceed) {
+                    if (!$proceed || count($include)==0) {
                         $GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_wrong_product']);
                         return false;
                     }
@@ -638,7 +654,8 @@ class Cart
                             'type'  => $type,
                             'value'  => $value,
                             'available' => ($coupon['allowed_uses'] > 0) ? $coupon['allowed_uses']-$coupon['count'] : 0,
-                            'product' => $coupon['product_id'],
+                            'include' => $include,
+                            'shipping_only' => $incexc == 'shipping_only' ? true : false,
                             'shipping' => (bool)$coupon['shipping'],
                             'free_shipping' => (bool)$coupon['free_shipping']
                         );
@@ -1249,17 +1266,11 @@ class Cart
                 if (!$data['gc']) {
                     $coupon = true;
 
-                    if (!empty($data['product'])) {
-                        $products = unserialize($data['product']);
-                        $incexc = array_shift($products);
-                        $product_count = count($products);
-                    } else {
-                        $product_count = 0;
-                    }
+                    $all = (count($data['include']) == 0) ? true : false;
 
-                    if($incexc!=='shipping_only') {
+                    if(!$data['shipping_only']) {
                         foreach ($this->basket['contents'] as $hash => $item) {
-                            if ($product_count==0 || $incexc == 'include' && in_array($item['id'], $products) || $incexc == 'exclude' && !in_array($item['id'], $products)) {
+                            if ($all || isset($data['include'][$item['id']])) {
                                 if ($item['total_price_each']>0) {
                                     $subtotal += ($item['total_price_each'] * $item['quantity']);
                                 }
