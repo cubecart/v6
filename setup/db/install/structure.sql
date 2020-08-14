@@ -191,6 +191,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_coupons` (
 	`archived` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
 	`code` VARCHAR(25) NOT NULL,
 	`product_id` TEXT NOT NULL,
+	`manufacturer_id` TEXT NOT NULL,
 	`discount_percent` DECIMAL(5,2) NOT NULL DEFAULT '0.00',
 	`discount_price` DECIMAL(16,2) NOT NULL DEFAULT '0.00',
 	`expires` DATE NOT NULL,

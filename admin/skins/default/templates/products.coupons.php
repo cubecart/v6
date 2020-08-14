@@ -113,6 +113,16 @@
 	  <div><label for="form-shipping">{$LANG.catalogue.coupon_shipping}</label><span><input type="hidden" name="coupon[shipping]" id="form-shipping" class="toggle" value="{$COUPON.shipping}"></span></div>
 	  <div><label for="form-free_shipping">{$LANG.catalogue.free_coupon_shipping}</label><span><input type="hidden" name="coupon[free_shipping]" id="form-free_shipping" class="toggle" value="{$COUPON.free_shipping}"></span></div>
 	  <div><label for="form-per_customer">{$LANG.catalogue.coupon_per_customer}</label><span><input type="text" name="coupon[coupon_per_customer]" id="form-coupon_per_customer" class="textbox number" value="{$COUPON.coupon_per_customer}"></span></div>
+	  <div>
+	  	<label for="form-manufacturer">{$LANG.catalogue.manufacturer_limit}</label>
+		<span>
+			<select name="coupon[manufacturer][]" id="form-manufacturer" data-placeholder="{$LANG.catalogue.choose_manufacturers}" multiple class="chzn-select">
+				{foreach from=$MANUFACTURERS item=manufacturer}
+				<option value="{$manufacturer.id}"{if $manufacturer.selected} selected="selected"{/if}>{$manufacturer.name}</option>
+				{/foreach}
+			</select>
+		</span>
+	  </div>
 	  <input type="hidden" name="coupon[coupon_id]" value="{$COUPON.coupon_id}">
 	</fieldset>
 	<fieldset><legend>{$LANG.catalogue.title_coupon_convert}</legend>

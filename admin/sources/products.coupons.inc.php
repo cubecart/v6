@@ -54,6 +54,7 @@ if (isset($_POST['coupon']) && is_array($_POST['coupon'])) {
     $record  = array(
         'code'   => preg_replace('/[^\w\-\_]/u', '', $_POST['coupon']['code']),
         'product_id' => null,
+        'manufacturer_id' => serialize($_POST['coupon']['manufacturer']),
         'expires'  => $_POST['coupon']['expires'],
         'allowed_uses' => (int)$_POST['coupon']['allowed_uses'],
         'min_subtotal' => $_POST['coupon']['min_subtotal'],
@@ -177,6 +178,15 @@ if (isset($_GET['action'])) {
             'selected' => ($incexc == $index) ? 'selected="selected"' : '',
             'title'  => $lang['catalogue'][$incexc_type]
         );
+    }
+    // List Manufacturers
+    if (($manufacturers = $GLOBALS['db']->select('CubeCart_manufacturers', false, false, array('name' => 'ASC'))) !== false) {
+        $manufacturer_assigned = array_flip(unserialize($coupon[0]['manufacturer_id']));
+        foreach ($manufacturers as $manufacturer) {
+            $manufacturer['selected'] = isset($manufacturer_assigned[$manufacturer['id']]) ? true : false;
+            $smarty_data['list_manufacturers'][] = $manufacturer;
+        }
+        $GLOBALS['smarty']->assign('MANUFACTURERS', $smarty_data['list_manufacturers']);
     }
     $GLOBALS['smarty']->assign('INCEXC', $smarty_data['incexc']);
 
