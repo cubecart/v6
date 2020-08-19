@@ -422,7 +422,7 @@
                   </select></span>
             </div>
             <div><label for="email_smtp_user">{$LANG.settings.smtp_user}</label><span><input name="config[email_smtp_user]" id="email_smtp_user" type="text" class="textbox preview_email" value="{$CONFIG.email_smtp_user}" autocomplete="off"></span></div>
-            <div><label for="email_smtp_password">{$LANG.settings.smtp_pass}</label><span><input name="config[email_smtp_password]" id="email_smtp_password" type="password" class="textbox preview_email" value="{$CONFIG.email_smtp_password|escape:'html'}" autocomplete="off"></span></div>
+            <div><label for="email_smtp_password">{$LANG.settings.smtp_pass}</label><span><input name="config[email_smtp_password]" id="email_smtp_password" type="password" class="textbox preview_email" value="{$CONFIG.email_smtp_password|escape:'html'}" onfocus="this.removeAttribute('readonly');" readonly autocomplete="off"></span></div>
          </div>
          <div class="nostripe"><label for="smtp_test_url">&nbsp;</label><span>
          <button type="button" class="button tiny" id="smtp_test" onclick="previewEmailSettings()">{$LANG.common.test}</button></span></div>
