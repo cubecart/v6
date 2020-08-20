@@ -309,10 +309,18 @@ $(document).ready(function() {
         });
 
     $("#email_method").change(function() {
-        if($(this).val()=='mail') {
-            $("#smtp_settings").slideUp();
-        } else {
-            $("#smtp_settings").slideDown();
+        switch($(this).val()) {
+            case 'mail':
+                $("#smtp_settings").slideUp();
+                $("#sendgrid").slideUp();
+              break;
+            case 'sendgrid':
+                $("#smtp_settings").slideUp();
+                $("#sendgrid").slideDown();
+              break;
+            default:
+                $("#smtp_settings").slideDown();
+                $("#sendgrid").slideUp();
         }
     });
 

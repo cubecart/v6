@@ -33,6 +33,9 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
     private $_text;
     private $_email_content_id;
     private $_import_new = false;
+    private $_sendgrid = false;
+    private $_sendgrid_key = '';
+    private $_method = '';
 
     protected static $_instance;
 
@@ -44,28 +47,34 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
         $this->From   = $GLOBALS['config']->get('config', 'email_address');
         $this->FromName  = html_entity_decode($GLOBALS['config']->get('config', 'email_name'), ENT_QUOTES);
         $this->CharSet   = 'UTF-8';
-
-        switch ($GLOBALS['config']->get('config', 'email_method')) {
-        case 'smtp':
-        case 'smtp_ssl':
-        case 'smtp_tls':
-            $this->IsSMTP(true);
-            $this->Host = $GLOBALS['config']->get('config', 'email_smtp_host');
-            $this->Port = $GLOBALS['config']->get('config', 'email_smtp_port');
-            if ($GLOBALS['config']->get('config', 'email_method')=='smtp_ssl') {
-                $this->SMTPSecure = 'ssl';
-            } elseif ($GLOBALS['config']->get('config', 'email_method')=='smtp_tls') {
-                $this->SMTPSecure = 'tls';
-            }
-            if ($GLOBALS['config']->get('config', 'email_smtp')) {
-                $this->SMTPAuth = true;
-                $this->Username = $GLOBALS['config']->get('config', 'email_smtp_user');
-                $this->Password = $GLOBALS['config']->get('config', 'email_smtp_password');
-            }
+        $this->_method = $GLOBALS['config']->get('config', 'email_method');
+        $this->_method = 'sendgrid';
+        switch ($this->_method) {
+            case 'sendgrid':
+                require_once CC_ROOT_DIR.'/classes/sendgrid/sendgrid-php.php';
+                $this->_sendgrid_key = $GLOBALS['config']->get('config', 'sendgrid_key');
+                $this->_sendgrid = new \SendGrid\Mail\Mail();
             break;
-        case 'mail':
-        default:
-            $this->IsMail(true);
+            case 'smtp':
+            case 'smtp_ssl':
+            case 'smtp_tls':
+                $this->IsSMTP(true);
+                $this->Host = $GLOBALS['config']->get('config', 'email_smtp_host');
+                $this->Port = $GLOBALS['config']->get('config', 'email_smtp_port');
+                if ($GLOBALS['config']->get('config', 'email_method')=='smtp_ssl') {
+                    $this->SMTPSecure = 'ssl';
+                } elseif ($GLOBALS['config']->get('config', 'email_method')=='smtp_tls') {
+                    $this->SMTPSecure = 'tls';
+                }
+                if ($GLOBALS['config']->get('config', 'email_smtp')) {
+                    $this->SMTPAuth = true;
+                    $this->Username = $GLOBALS['config']->get('config', 'email_smtp_user');
+                    $this->Password = $GLOBALS['config']->get('config', 'email_smtp_password');
+                }
+                break;
+            case 'mail':
+            default:
+                $this->IsMail(true);
         }
     }
 
@@ -167,15 +176,18 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
             include $hook;
         }
         $this->ClearAddresses();
+        $send_grid_to = array();
         if (strstr($email, ',')) {
             $emails = explode(',', $email);
             foreach ($emails as $mail) {
                 if (filter_var($mail, FILTER_VALIDATE_EMAIL)) {
+                    $send_grid_to[] = $mail;
                     $this->AddAddress($mail);
                 }
             }
             $email_param = '';
         } elseif (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $send_grid_to[] = $email;
             $this->AddAddress($email, (isset($contents['to'])) ? $contents['to'] : '');
             $email_param = '&amp;unsubscribe='.urlencode($email);
         } else {
@@ -232,7 +244,24 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
             }
 
             // Send email
-            $result = $this->Send();
+            if($this->_method=='sendgrid') {
+                $this->_sendgrid->setFrom($this->From, $this->FromName);
+                $this->_sendgrid->setSubject($this->Subject);
+                foreach($send_grid_to as $t) {
+                    $this->_sendgrid->addTo($t);
+                }
+                $this->_sendgrid->addContent("text/plain", $this->_text);
+                $this->_sendgrid->addContent("text/html", $this->_html);
+                $sendgrid = new \SendGrid();
+                try {
+                    $response = $sendgrid->send($this->_sendgrid);
+                    $result =  in_array($response->statusCode(), array(200, 202)) ? true : false;
+                } catch (Exception $e) {
+                    $this->ErrorInfo = $e->getMessage();
+                }
+            } else {
+                $result = $this->Send();
+            }
             // Log email
             $email_data = array(
                 'subject' => $this->Subject,

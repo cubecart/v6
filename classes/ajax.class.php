@@ -273,14 +273,40 @@ class Ajax
     public static function SMTPTest()
     {
         if (CC_IN_ADMIN) {
-            $methods = array('mail' => $GLOBALS['language']->settings['email_method_mail'], 'smtp' => $GLOBALS['language']->settings['email_method_smtp'], 'smtp_ssl' => $GLOBALS['language']->settings['email_method_smtp_ssl'], 'smtp_tls' => $GLOBALS['language']->settings['email_method_smtp_tls']);
+            $methods = array('mail' => $GLOBALS['language']->settings['email_method_mail'], 'smtp' => $GLOBALS['language']->settings['email_method_smtp'], 'smtp_ssl' => $GLOBALS['language']->settings['email_method_smtp_ssl'], 'smtp_tls' => $GLOBALS['language']->settings['email_method_smtp_tls'], 'sendgrid' => 'SendGrid');
             $method_name = $methods[$GLOBALS['RAW']['POST']['email_method']];
 
             $subject = "Testing ".$method_name;
             $body = "Testing email sent by &quot;".$method_name."&quot; from CubeCart v".CC_VERSION." at ".CC_STORE_URL.".<br><br>If you are reading this message then you can be sure that email from your store is working.";
             $altbody = strip_tags($body);
+            $test_success = false;
+            if($GLOBALS['RAW']['POST']['email_method']=="sendgrid") {
+                require_once CC_ROOT_DIR.'/classes/sendgrid/sendgrid-php.php';
+                $email = new \SendGrid\Mail\Mail(); 
+                $email->setFrom($GLOBALS['RAW']['POST']['email_address'], html_entity_decode($GLOBALS['RAW']['POST']['email_name'], ENT_QUOTES));
+                $email->setSubject($subject);
+                $email->addTo($GLOBALS['RAW']['POST']['email_address'], html_entity_decode($GLOBALS['RAW']['POST']['email_name'], ENT_QUOTES));
+                $email->addContent("text/plain", $altbody);
+                $email->addContent("text/html", $body);
+                $sendgrid = new \SendGrid($GLOBALS['RAW']['POST']['sendgrid_key']);
+                $json = "<h3>Testing ".$method_name." - {{RESULT}}</h3>";
+                try {
+                    $response = $sendgrid->send($email);
+                    $json .= '<strong>Response Code:</strong> '.$response->statusCode()."<br>";
+                    $json .= '<strong>Response Headers:</strong><br>';
+                    foreach($response->headers() as $h) {
+                        $json .= $h . "<br>";
+                    }
+                    $json .= $response->body()."<br>";
+                    if(substr($response->statusCode(), 0, 1)=='2') {
+                        $test_success = true;
+                    }
+                } catch (Exception $e) {
+                    $json .= $e->getMessage();
+                }
+                return "<div class=\"mail_modal\">".str_replace('{{RESULT}}', $test_success ? 'Success' : 'Fail', $json)."</div>";
 
-            if ($GLOBALS['RAW']['POST']['email_method']!=="mail") {
+            } else if ($GLOBALS['RAW']['POST']['email_method']!=="mail") {
                 @ob_start();
                 $test_mailer = new Mailer();
                 $test_mailer->SMTPDebug = 2;
@@ -305,25 +331,25 @@ class Ajax
                 $test_mailer->Body = $body;
                 $test_mailer->AltBody = $altbody;
                 // Send email
-                $email_test_send_result = $test_mailer->Send();
+                $test_success = $test_mailer->Send();
                 $email_test_results = @ob_get_contents();
                 @ob_end_clean();
 
-                $json = "<h3>Testing ".$method_name."</h3>";
+                $json = "<h3>Testing ".$method_name." - {{RESULT}}</h3>";
 
                 if (!empty($email_test_results)) {
                     $email_test_results_data = array(
                         'request_url' => 'mailto:'.$GLOBALS['RAW']['POST']['email_address'],
                         'request' => 'Subject: Testing CubeCart',
                         'result' => $email_test_results,
-                        'error' => ($email_test_send_result) ? null : "Mailer Failed" ,
+                        'error' => ($test_success) ? null : "Mailer Failed" ,
                     );
                     $GLOBALS['db']->insert('CubeCart_request_log', $email_test_results_data);
                     $json .= $email_test_results;
                 } else {
                     $json .= "Test failed to execute. ".$test_mailer->ErrorInfo;
                 }
-                return "<div class=\"mail_modal\">".$json."</div>";
+                return "<div class=\"mail_modal\">".str_replace('{{RESULT}}', $test_success ? 'Success' : 'Fail', $json)."</div>";
             } else {
                 $test_mailer = new Mailer();
                 $test_mailer->ClearAddresses();

@@ -417,7 +417,7 @@ $select_options = array(
     'skin_change'   => array($lang['common']['no'], $lang['settings']['all_skin_select'], $lang['settings']['admin_only_skin_select']),
     'debug'     => array($lang['common']['disabled'], $lang['common']['enabled']),
     'catalogue_hide_prices' => null,
-    'email_method'			=> array('mail' => $lang['settings']['email_method_mail'], 'smtp' => $lang['settings']['email_method_smtp'], 'smtp_ssl' => $lang['settings']['email_method_smtp_ssl'].' ('.$lang['common']['recommended'].')', 'smtp_tls' => $lang['settings']['email_method_smtp_tls'].' ('.$lang['common']['recommended'].')'),
+    'email_method'			=> array('mail' => $lang['settings']['email_method_mail'], 'smtp' => $lang['settings']['email_method_smtp'], 'smtp_ssl' => $lang['settings']['email_method_smtp_ssl'].' ('.$lang['common']['recommended'].')', 'smtp_tls' => $lang['settings']['email_method_smtp_tls'].' ('.$lang['common']['recommended'].')', 'sendgrid' => 'SendGrid'),
     'offline'    => null,
     'basket_out_of_stock_purchase'  => null,
     'catalogue_popular_products_source' => array($lang['settings']['product_popular_views'], $lang['settings']['product_popular_sales']),
