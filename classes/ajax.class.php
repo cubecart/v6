@@ -282,16 +282,16 @@ class Ajax
             $test_success = false;
             if($GLOBALS['RAW']['POST']['email_method']=="sendgrid") {
                 require_once CC_ROOT_DIR.'/classes/sendgrid/sendgrid-php.php';
-                $email = new \SendGrid\Mail\Mail(); 
-                $email->setFrom($GLOBALS['RAW']['POST']['email_address'], html_entity_decode($GLOBALS['RAW']['POST']['email_name'], ENT_QUOTES));
-                $email->setSubject($subject);
-                $email->addTo($GLOBALS['RAW']['POST']['email_address'], html_entity_decode($GLOBALS['RAW']['POST']['email_name'], ENT_QUOTES));
-                $email->addContent("text/plain", $altbody);
-                $email->addContent("text/html", $body);
+                $test_mailer = new \SendGrid\Mail\Mail(); 
+                $test_mailer->setFrom($GLOBALS['RAW']['POST']['email_address'], html_entity_decode($GLOBALS['RAW']['POST']['email_name'], ENT_QUOTES));
+                $test_mailer->setSubject($subject);
+                $test_mailer->addTo($GLOBALS['RAW']['POST']['email_address'], html_entity_decode($GLOBALS['RAW']['POST']['email_name'], ENT_QUOTES));
+                $test_mailer->addContent("text/plain", $altbody);
+                $test_mailer->addContent("text/html", $body);
                 $sendgrid = new \SendGrid($GLOBALS['RAW']['POST']['sendgrid_key']);
                 $json = "<h3>Testing ".$method_name." - {{RESULT}}</h3>";
                 try {
-                    $response = $sendgrid->send($email);
+                    $response = $sendgrid->send($test_mailer);
                     $json .= '<strong>Response Code:</strong> '.$response->statusCode()."<br>";
                     $json .= '<strong>Response Headers:</strong><br>';
                     foreach($response->headers() as $h) {
@@ -332,20 +332,20 @@ class Ajax
                 $test_mailer->AltBody = $altbody;
                 // Send email
                 $test_success = $test_mailer->Send();
-                $email_test_results = @ob_get_contents();
+                $test_mailer_test_results = @ob_get_contents();
                 @ob_end_clean();
 
                 $json = "<h3>Testing ".$method_name." - {{RESULT}}</h3>";
 
-                if (!empty($email_test_results)) {
-                    $email_test_results_data = array(
+                if (!empty($test_mailer_test_results)) {
+                    $test_mailer_test_results_data = array(
                         'request_url' => 'mailto:'.$GLOBALS['RAW']['POST']['email_address'],
                         'request' => 'Subject: Testing CubeCart',
-                        'result' => $email_test_results,
+                        'result' => $test_mailer_test_results,
                         'error' => ($test_success) ? null : "Mailer Failed" ,
                     );
-                    $GLOBALS['db']->insert('CubeCart_request_log', $email_test_results_data);
-                    $json .= $email_test_results;
+                    $GLOBALS['db']->insert('CubeCart_request_log', $test_mailer_test_results_data);
+                    $json .= $test_mailer_test_results;
                 } else {
                     $json .= "Test failed to execute. ".$test_mailer->ErrorInfo;
                 }
@@ -421,11 +421,11 @@ class Ajax
         $column = ($mode == 'content_text') ? 'content_text' : 'content_html';
 
         if (CC_IN_ADMIN) {
-            $email = $GLOBALS['db']->select('CubeCart_email_log', array($column), array('id' => $id));
+            $test_mailer = $GLOBALS['db']->select('CubeCart_email_log', array($column), array('id' => $id));
             if ($mode == 'content_text') {
-                return '<div style="font-family: \'Courier New\', Courier">'.nl2br(htmlentities($email[0][$column], ENT_QUOTES)).'</div>';
+                return '<div style="font-family: \'Courier New\', Courier">'.nl2br(htmlentities($test_mailer[0][$column], ENT_QUOTES)).'</div>';
             } else {
-                return $email[0][$column];
+                return $test_mailer[0][$column];
             }
         }
         return false;
