@@ -24,7 +24,6 @@
                   {/foreach}
                </ul>
                {/if}
-               <p>
             </td>
             <td>{$item.line_price_display}</td>
             <td>
