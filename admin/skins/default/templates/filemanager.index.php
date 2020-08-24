@@ -25,7 +25,7 @@
 	  {if isset($FOLDERS)}
 	  {foreach from=$FOLDERS item=folder}
 	  <div {if $FILMANAGER_MODE == '1'}class="fm-item folder {$FM_SIZE}"{/if}>
-	  {if $FILMANAGER_MODE == '1'}<a href="{$folder.link}" class="thumbnail"><img src="admin/skins/default/images/folder_large.png"/></a>{/if}
+	  {if $FILMANAGER_MODE == '1'}<a href="{$folder.link}" class="thumbnail"><img src="{$SKIN_VARS.admin_folder}/skins/default/images/folder_large.png"/></a>{/if}
 		<span class="actions">
 		{if NOT is_null($folder.delete)}
 		<a href="{$folder.delete}" class="delete right" title="{$LANG.notification.confirm_delete_file|replace:'%s':$folder.name}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
