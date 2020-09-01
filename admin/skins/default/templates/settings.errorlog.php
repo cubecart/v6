@@ -77,7 +77,10 @@
 		  <tr>
 			<td><input type="checkbox" name="systemread[]" value="{$syslog.log_id}" class="systemerror"></td>
 			<td {$syslog.style}>{$syslog.time}</td>
-			<td {$syslog.style}>{$syslog.message|escape}</td>
+			<td {$syslog.style}>
+				{$syslog.message|escape}{if !empty($syslog.url)}<br>
+				<a href="{$syslog.url}">{$syslog.url}</a>{/if}
+			</td>
 		  </tr>
 		{foreachelse}
 		  <tr>

@@ -252,7 +252,7 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
                 }
                 $this->_sendgrid->addContent("text/plain", $this->_text);
                 $this->_sendgrid->addContent("text/html", $this->_html);
-                $sendgrid = new \SendGrid();
+                $sendgrid = new \SendGrid($this->_sendgrid_key);
                 try {
                     $response = $sendgrid->send($this->_sendgrid);
                     $result =  in_array($response->statusCode(), array(200, 202)) ? true : false;

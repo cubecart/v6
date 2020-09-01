@@ -78,13 +78,14 @@ if (Admin::getInstance()->superUser()) {
     //System errors
     $per_page = 25;
     $page = (isset($_GET['page'])) ? $_GET['page'] : 1;
-    $system_error_log = $GLOBALS['db']->select('CubeCart_system_error_log', array('message', 'time', 'log_id', 'read'), false, array('time' => 'DESC'), $per_page, $page, false);
+    $system_error_log = $GLOBALS['db']->select('CubeCart_system_error_log', false, false, array('time' => 'DESC'), $per_page, $page, false);
     $count = $GLOBALS['db']->getFoundRows();
     if (is_array($system_error_log)) {
         foreach ($system_error_log as $log) {
             $smarty_data['system_error_log'][] = array(
                 'time'   => formatTime($log['time']),
                 'message'  => $log['message'],
+                'url'  => $log['url'],
                 'read'   => $log['read'],
                 'log_id' => $log['log_id'],
                 'style'  => ($log['read'] == '1') ? '' : 'style="font-weight: bold"'

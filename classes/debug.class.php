@@ -643,13 +643,14 @@ class Debug
      */
     private function _writeErrorLog($message, $type)
     {
+        $url = (CC_SSL ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         if (isset($GLOBALS['db']) && $GLOBALS['db']->connected) {
             $log_days = method_exists($GLOBALS['config'], 'get') ? $GLOBALS['config']->get('config', 'r_system_error') : 30;
             if (ctype_digit((string)$log_days) &&  $log_days > 0) {
-                $GLOBALS['db']->insert('CubeCart_system_error_log', array('message' => $message, 'time' => time()));
+                $GLOBALS['db']->insert('CubeCart_system_error_log', array('message' => $message, 'url' => $url, 'time' => time()));
                 $GLOBALS['db']->delete('CubeCart_system_error_log', 'time < UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL '.$log_days.' DAY))');
             } elseif (empty($log_days) || !$log_days) {
-                $GLOBALS['db']->insert('CubeCart_system_error_log', array('message' => $message, 'time' => time()));
+                $GLOBALS['db']->insert('CubeCart_system_error_log', array('message' => $message, 'url' => $url, 'time' => time()));
             }
         } elseif ($type == 'Exception' || $type == E_PARSE) {
             echo $message;

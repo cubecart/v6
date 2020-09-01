@@ -18,3 +18,4 @@ ALTER TABLE `CubeCart_option_matrix` ADD INDEX(`timestamp`); #EOQ
 ALTER TABLE `CubeCart_option_matrix` ADD `gtin` VARCHAR(20) NULL AFTER `isbn`; #EOQ
 ALTER TABLE `CubeCart_inventory` CHANGE `tax_type` `tax_type` INT(10) NOT NULL; #EOQ
 ALTER TABLE `CubeCart_coupons` ADD `manufacturer_id` TEXT NOT NULL AFTER `product_id`; #EOQ
+ALTER TABLE `CubeCart_system_error_log` ADD `url` VARCHAR(255) NOT NULL AFTER `message`; #EOQ
