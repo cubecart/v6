@@ -75,11 +75,19 @@ if (!empty($_FILES) && Admin::getInstance()->permissions('filemanager', CC_PERM_
     httpredir(currentPage());
 }
 
-if (isset($_GET['delete']) && Admin::getInstance()->permissions('filemanager', CC_PERM_DELETE)) {
-    if ($fm->delete($_GET['delete'])) {
-        $GLOBALS['main']->successMessage($lang['filemanager']['notify_file_delete']);
+if (isset($_GET['delete']) || isset($_POST['multi_delete']) && Admin::getInstance()->permissions('filemanager', CC_PERM_DELETE)) {
+    if(isset($_GET['delete'])) {
+        $items = array($_GET['delete']);
     } else {
-        $GLOBALS['main']->errorMessage($lang['filemanager']['error_file_delete']);
+        $items = $_POST['multi_delete'];
+    }
+    $plural = count($items) > 1 ? 's' : '';
+    foreach($items as $item) {
+        if ($fm->delete($item)) {
+            $GLOBALS['main']->successMessage($lang['filemanager']['notify_file'.$plural.'_delete']);
+        } else {
+            $GLOBALS['main']->errorMessage($lang['filemanager']['error_file'.$plural.'_delete']);
+        }
     }
     httpredir(currentPage(array('delete')));
 }

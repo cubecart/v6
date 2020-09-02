@@ -28,6 +28,7 @@
 	  {if $FILMANAGER_MODE == '1'}<a href="{$folder.link}" class="thumbnail"><img src="{$SKIN_VARS.admin_folder}/skins/default/images/folder_large.png"/></a>{/if}
 		<span class="actions">
 		{if NOT is_null($folder.delete)}
+		<input type="checkbox" value="{$folder.value}" name="multi_delete[]">
 		<a href="{$folder.delete}" class="delete right" title="{$LANG.notification.confirm_delete_file|replace:'%s':$folder.name}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		{/if}
 		</span>
@@ -42,7 +43,7 @@
 	  <div {if $FILMANAGER_MODE == '1'}class="fm-item {$FM_SIZE}"{/if}>
 	  {if $FILMANAGER_MODE == '1'}<a href="{$file.filepath}?{$file.random}" class="{$file.class} thumbnail" title="{$file.description}" target="_self"><img class="lazyload" data-src="{$file.filepath}" src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs="></a>{/if}
 	 	 <span class="actions">
-		  {$file.filesize}
+		  <input type="checkbox" value="{$file.value}" name="multi_delete[]"> {$file.filesize}
 		  {if $file.select_button}
 		  <a href="{$file.master_filepath}" class="select"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a>
 		  {else}
@@ -58,6 +59,11 @@
 	  <p class="center clear">{$LANG.filemanager.file_none}</p>
 	  {/if}
 	</div>
+	<div class="form_control">
+	<hr>
+		<input type="submit" class="delete submit_confirm" title="{$LANG.notification.confirm_delete}" value="{$LANG.common.delete_selected}">
+		<input type="hidden" id="ckfuncnum" value="{$CK_FUNC_NUM}">
+  	</div>
   </div>
   <div id="upload" class="tab_content">
 	<h3>{$FILMANAGER_TITLE}</h3>

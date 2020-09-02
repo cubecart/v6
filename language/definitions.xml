@@ -1224,6 +1224,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="error_dl_5" introduced="5.2.9"><![CDATA[No record for this download exists]]></string>
     <string name="error_dl_6" introduced="5.0.0"><![CDATA[Payment must be completed before the file can be downloaded.]]></string>
     <string name="error_file_delete" introduced="5.0.0"><![CDATA[Failed to delete file.]]></string>
+    <string name="error_files_delete" introduced="6.1.10"><![CDATA[Failed to delete files.]]></string>
     <string name="error_file_moved" introduced="5.0.0"><![CDATA[Failed to rename/move file.]]></string>
     <string name="error_file_update" introduced="5.0.0"><![CDATA[Failed to update file.]]></string>
     <string name="error_file_upload" introduced="5.0.0"><![CDATA[File upload failed.]]></string>
@@ -1242,6 +1243,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="folder_create" introduced="5.0.0"><![CDATA[Create Folder]]></string>
     <string name="notify_db_update" introduced="5.0.0"><![CDATA[Filemanager database successfully rebuilt.]]></string>
     <string name="notify_file_delete" introduced="5.0.0"><![CDATA[File deleted successfully.]]></string>
+    <string name="notify_files_delete" introduced="6.2.10"><![CDATA[Files deleted successfully.]]></string>
     <string name="notify_file_upload" introduced="5.0.0"><![CDATA[File uploaded successfully.]]></string>
     <string name="notify_files_upload" introduced="6.0.0"><![CDATA[Files uploaded successfully.]]></string>
     <string name="notify_image_update" introduced="5.0.0"><![CDATA[Image edited successfully.]]></string>

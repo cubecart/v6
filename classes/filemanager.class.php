@@ -889,10 +889,12 @@ class FileManager
                     continue;
                 }
                 $name = $this->makeFilename($dir);
+                $path = $this->formatPath($this->_sub_dir.$dir, false);
                 $folder = array(
                     'name'  => $name,
-                    'link'  => currentPage(null, array('subdir' => $this->formatPath($this->_sub_dir.$dir, false))),
-                    'delete' => (substr($name, 0, 1) !== '.') ? currentPage(null, array('delete' => $this->formatPath($this->_sub_dir.$dir, false), 'token' => SESSION_TOKEN)) : null,
+                    'link'  => currentPage(null, array('subdir' => $path)),
+                    'delete' => (substr($name, 0, 1) !== '.') ? currentPage(null, array('delete' => $path, 'token' => SESSION_TOKEN)) : null,
+                    'value' => (substr($name, 0, 1) !== '.') ? $path : null,
                 );
                 $list_folders[] = $folder;
             }
@@ -923,6 +925,7 @@ class FileManager
                 $file['class']   = (preg_match('#^image#', $file['mimetype'])) ? 'colorbox' : '';
                 $file['edit']   = currentPage(null, array('fm-edit' => $file['file_id']));
                 $file['delete']   = currentPage(null, array('delete' => $file['file_id'], 'token' => SESSION_TOKEN));
+                $file['value']   = $file['file_id'];
                 $file['random']   = mt_rand();
                 $file['description'] = (!empty($file['description'])) ? $file['description'] : $file['filename'];
                 $file['master_filepath']= str_replace(chr(92), "/", $this->_manage_dir.'/'.$file['filepath'].$file['filename']);
