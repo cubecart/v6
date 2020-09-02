@@ -130,7 +130,6 @@ if (isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
     $json 	= false;
     $cc_domain = 'www.cubecart.com';
     $cc_get_path 	= '/extensions/token/'.$token.'/get';
-    $cc_conf_path 	= '/extensions/token/'.$token.'/confirm';
     
     $request = new Request($cc_domain, $cc_get_path, 443, false, true, 10);
     $request->setMethod('get');
@@ -241,12 +240,6 @@ if (isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
                             $GLOBALS['session']->delete('version_check');
 
                             $GLOBALS['main']->successMessage($lang['module']['success_install']);
-                            
-                            $request = new Request($cc_domain, $cc_conf_path, 80, false, true, 10);
-                            $request->setMethod('get');
-                            $request->setSSL();
-                            $request->setUserAgent('CubeCart');
-                            $request->skiplog(true);
                         }
                     } else {
                         $GLOBALS['main']->errorMessage(sprintf($lang['module']['read_fail'], $data['file_name']));
