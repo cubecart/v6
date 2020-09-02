@@ -77,9 +77,10 @@
 		  <tr>
 			<td><input type="checkbox" name="systemread[]" value="{$syslog.log_id}" class="systemerror"></td>
 			<td {$syslog.style}>{$syslog.time}</td>
-			<td {$syslog.style}>
+			<td {$syslog.style} class="tooltip">
 				{$syslog.message|escape}{if !empty($syslog.url)}<br>
 				<a href="{$syslog.url}">{$syslog.url}</a>{/if}
+				{if !empty($syslog.backtrace)}<span class="tooltiptext">{$syslog.backtrace}</span>{/if}
 			</td>
 		  </tr>
 		{foreachelse}

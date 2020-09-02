@@ -86,6 +86,7 @@ if (Admin::getInstance()->superUser()) {
                 'time'   => formatTime($log['time']),
                 'message'  => $log['message'],
                 'url'  => $log['url'],
+                'backtrace'  => nl2br($log['backtrace']),
                 'read'   => $log['read'],
                 'log_id' => $log['log_id'],
                 'style'  => ($log['read'] == '1') ? '' : 'style="font-weight: bold"'

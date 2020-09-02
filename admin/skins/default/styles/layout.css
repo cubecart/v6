@@ -1351,3 +1351,21 @@ ul.filetree li ul li ul li ul li ul li ul li ul li ul li a {
     width:10px;
     height:10px;
 }
+.tooltip {
+    position: relative;
+}  
+.tooltip .tooltiptext {
+    visibility: hidden;
+    background-color: black;
+    color: #fff;
+    text-align: left;
+    padding: 6px;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+    font-family: "Courier New", Courier, monospace;
+    display: block;
+}
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}

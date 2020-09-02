@@ -894,6 +894,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_system_error_log` (
 	`time` int(10) unsigned NOT NULL,
 	`message` text NOT NULL,
 	`url` varchar(255) NOT NULL,
+	`backtrace` TEXT NOT NULL,
 	`read` tinyint(1) unsigned NOT NULL,
   PRIMARY KEY (`log_id`),
   KEY `time` (`time`),

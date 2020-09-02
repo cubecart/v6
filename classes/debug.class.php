@@ -467,7 +467,13 @@ class Debug
         $this->_errors[] = $error;
 
         if ($log) {
-            $this->_writeErrorLog($error, $type);
+            $backtrace = debug_backtrace();
+            array_shift($backtrace);
+            ob_start();
+            array_walk($backtrace, create_function('$a,$b','print "{$a[\'function\']}()(".basename($a[\'file\']).":{$a[\'line\']});\r\n";'));
+            $backtrace = ob_get_contents();
+            ob_end_clean();
+            $this->_writeErrorLog($error, $type, $backtrace);
         }
 
         return false;
@@ -641,16 +647,16 @@ class Debug
      *
      * @param string $message
      */
-    private function _writeErrorLog($message, $type)
+    private function _writeErrorLog($message, $type, $backtrace = '')
     {
         $url = (CC_SSL ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         if (isset($GLOBALS['db']) && $GLOBALS['db']->connected) {
             $log_days = method_exists($GLOBALS['config'], 'get') ? $GLOBALS['config']->get('config', 'r_system_error') : 30;
             if (ctype_digit((string)$log_days) &&  $log_days > 0) {
-                $GLOBALS['db']->insert('CubeCart_system_error_log', array('message' => $message, 'url' => $url, 'time' => time()));
+                $GLOBALS['db']->insert('CubeCart_system_error_log', array('message' => $message, 'url' => $url, 'backtrace' => $backtrace, 'time' => time()));
                 $GLOBALS['db']->delete('CubeCart_system_error_log', 'time < UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL '.$log_days.' DAY))');
             } elseif (empty($log_days) || !$log_days) {
-                $GLOBALS['db']->insert('CubeCart_system_error_log', array('message' => $message, 'url' => $url, 'time' => time()));
+                $GLOBALS['db']->insert('CubeCart_system_error_log', array('message' => $message, 'url' => $url, 'backtrace' => $backtrace, 'time' => time()));
             }
         } elseif ($type == 'Exception' || $type == E_PARSE) {
             echo $message;
