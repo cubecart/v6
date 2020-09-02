@@ -470,7 +470,7 @@ class Debug
             $backtrace = debug_backtrace();
             array_shift($backtrace);
             ob_start();
-            array_walk($backtrace, function($a,$b){ if(!empty($a['line'])) {print $a['function']."() (".basename($a['file']).":".$a['line'].")\n";}});
+            array_walk($backtrace, function($a){ if(!empty($a['line'])) {print $a['function']."() (".basename($a['file']).":".$a['line'].")\n";}});
             $backtrace = ob_get_contents();
             ob_end_clean();
             $this->_writeErrorLog($error, $type, $backtrace);
