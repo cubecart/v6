@@ -46,9 +46,9 @@ foreach($default_apps as $extension_type => $token) {
     $zip = new ZipArchive();
     $zip->open($tmp_path);
 
-    $root_path = $destination.'/'.$file['name'];
     for ($i = 0; $i < $zip->numFiles; $i++) {
         $file = $zip->statIndex($i);
+        $root_path = $destination.'/'.$file['name'];
         if (basename($file['name'])=="config.xml") {
             $install_dir = str_replace(array('/config.xml', CC_ROOT_DIR), '', $root_path);
             break;
