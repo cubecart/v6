@@ -451,4 +451,7 @@ if (isset($_GET['action'])) {
     $GLOBALS['smarty']->assign('LIST_CATEGORIES', true);
     $GLOBALS['smarty']->assign('CATEGORIES', $category_list);
 }
+if($GLOBALS['config']->get('config', 'catalogue_show_empty')=='0' && (int)$GLOBALS['session']->get('logins','admin_data') <= 3) {
+    $GLOBALS['main']->successMessage($lang['catalogue']['empty_notice']);
+}
 $page_content = $GLOBALS['smarty']->fetch('templates/categories.index.php');

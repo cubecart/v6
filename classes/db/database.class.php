@@ -978,6 +978,9 @@ class Database_Contoller
     private function _clearCacheNotice($purge, $affected, $table)
     {
         if (CC_IN_ADMIN && $purge && $affected && method_exists($GLOBALS['session'], 'set') && !in_array($table, $this->cache_notice_tables_ingore)) {
+            if((int)$GLOBALS['session']->get('logins','admin_data') <= 3) {
+                $GLOBALS['main']->successMessage($GLOBALS['language']->dashboard['cache_reminder']);
+            }
             $GLOBALS['session']->set('CLEAR_CACHE', true);
         }
     }

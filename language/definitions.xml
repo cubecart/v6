@@ -236,6 +236,7 @@
     <string name="your_comments" introduced="5.0.0"><![CDATA[Delivery Notes or Additional Comments]]></string>
   </group>
   <group name="catalogue">
+    <string name="empty_notice" introduced="6.2.10"><![CDATA[Note: Categories will only show on the front end when products have been assigned. This can be changed in your <a href="?_g=settings#Layout">settings</a>.]]></string>
     <string name="manufacturer_limit" introduced="6.2.10"><![CDATA[Limit to manufacturer]]></string>
     <string name="choose_manufacturers" introduced="6.2.10"><![CDATA[Choose manufacturers&hellip;]]></string>
     <string name="absolute_price_explained" introduced="6.1.10"><![CDATA[Only one option group can have absolute pricing. An option with absolute price will override the price set in the &quot;Pricing&quot; tab. We recommend setting the product price to the lowest option price combination under these circumstances.]]></string>
@@ -931,6 +932,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_list" introduced="5.0.0"><![CDATA[Customer List]]></string>
   </group>
   <group name="dashboard">
+    <string name="cache_reminder" introduced="6.2.10"><![CDATA[Please note that changes won't show on the front end until the &quot;Clear Cache&quot; button is clicked. This annoying but important message will only show on your first few sessions.]]></string>
     <string name="recent_extensions" introduced="6.1.14"><![CDATA[Recent Marketplace Extensions]]></string>
     <string name="more_extensions" introduced="6.1.14"><![CDATA[Discover more at <a href="?_g=marketplace">https://www.cubecart.com/extensions</a>]]></string>
     <string name="delete_admin_folder" introduced="6.1.8"><![CDATA[WARNING: Please delete the redundant /admin folder from your store directory.]]></string>
