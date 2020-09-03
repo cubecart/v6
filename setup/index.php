@@ -176,9 +176,9 @@ $default_config_settings = array(
   'r_admin_activity' => '30',
   'r_admin_error' => '30',
   'r_email' => '30',
-  'r_request' => '30',
+  'r_request' => '14',
   'r_staff' => '30',
-  'r_system_error' => '30'
+  'r_system_error' => '7'
 );
 
 ksort($default_config_settings);
