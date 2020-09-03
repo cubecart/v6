@@ -194,7 +194,7 @@ class Catalogue
                 // Update product code & stock based on options matrix
 
                 $options_identifier_string = '';
-                if (is_array($option_identifiers)) {
+                if (!empty($option_identifiers) && is_array($option_identifiers)) {
                     foreach ($option_identifiers as $option_identifier) {
                         $options_identifier_string .= $option_identifier['option_id'].$option_identifier['value_id'];
                     }
