@@ -19,6 +19,7 @@ class GD
     private $_gdThumbMax;
     private $_gdJpegQuality;
     private $_gdTargetDir;
+    private $_gdWebpSupport;
 
     private $_gdImageData;
     private $_gdImageType;
@@ -38,6 +39,7 @@ class GD
         $this->_gdTargetDir  = $targetDir;
         $this->_gdImageMax  = $maxImage;
         $this->_gdJpegQuality = $jpegQuality;
+        $this->_gdWebpSupport = function_exists('imagecreatefromwebp');
     }
 
     //=====[ Public ]=======================================
@@ -115,7 +117,7 @@ class GD
                     imagesavealpha($this->_gdImageSource, true);
                     break;
                 case IMAGETYPE_WEBP:
-                    if(function_exists('imagecreatefromwebp')) {
+                    if($this->_gdWebpSupport) {
                         $this->_gdImageSource = imagecreatefromwebp($file);
                     } else {
                         return false;
@@ -205,7 +207,7 @@ class GD
                     $this->_gdImageSource = imagepng($im, $file);
                     break;
                 case IMAGETYPE_WEBP:
-                    if(function_exists('imagewebp')) {
+                    if($this->_gdWebpSupport) {
                         $this->_gdImageSource = imagewebp($im, $file, $this->_gdJpegQuality);
                     } else {
                         return false;
