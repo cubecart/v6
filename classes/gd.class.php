@@ -115,7 +115,11 @@ class GD
                     imagesavealpha($this->_gdImageSource, true);
                     break;
                 case IMAGETYPE_WEBP:
-                    $this->_gdImageSource = imagecreatefromwebp($file);
+                    if(function_exists('imagecreatefromwebp')) {
+                        $this->_gdImageSource = imagecreatefromwebp($file);
+                    } else {
+                        return false;
+                    }
                     break;
                 default:
                     return false;
@@ -201,7 +205,11 @@ class GD
                     $this->_gdImageSource = imagepng($im, $file);
                     break;
                 case IMAGETYPE_WEBP:
-                    $this->_gdImageSource = imagewebp($im, $file, $this->_gdJpegQuality);
+                    if(function_exists('imagewebp')) {
+                        $this->_gdImageSource = imagewebp($im, $file, $this->_gdJpegQuality);
+                    } else {
+                        return false;
+                    }
                     break;
                 default:
                     trigger_error(__METHOD__.' - Unknown file type', E_USER_NOTICE);
