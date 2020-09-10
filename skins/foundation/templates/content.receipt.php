@@ -24,6 +24,7 @@
       {$SUM.town|upper}<br>
       {if !empty($SUM.state)}{$SUM.state|upper}, {/if}{$SUM.postcode}{if $CONFIG['store_country_name']!==$SUM['country']}<br>
       {$SUM.country}{/if}
+      {if !empty($SUM.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SUM.w3w}">{$SUM.w3w}</a></div>{/if}
    </div>
    <div class="small-6 columns">
       <strong>{$LANG.address.delivery_address}</strong><br>
@@ -34,6 +35,7 @@
       {$SUM.town_d|upper}<br>
       {if !empty($SUM.state_d)}{$SUM.state_d|upper}, {/if}{$SUM.postcode_d}{if $CONFIG['store_country_name']!==$SUM['country_d']}<br>
       {$SUM.country_d}{/if}
+      {if !empty($SUM.w3w_d)}<div class="w3w">///<a href="https://what3words.com/{$SUM.w3w_d}">{$SUM.w3w_d}</a></div>{/if}
    </div>
 </div>
 {if $DELIVERY}

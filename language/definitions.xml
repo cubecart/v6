@@ -584,6 +584,7 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="learn_more" introduced="6.2.10"><![CDATA[Learn more]]></string>
     <string name="cheapest" introduced="6.2.7"><![CDATA[Cheapest]]></string>
     <string name="block" introduced="6.2.1"><![CDATA[Block]]></string>
     <string name="accept" introduced="6.2.1"><![CDATA[Accept]]></string>
@@ -1854,6 +1855,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
+    <string name="w3w_api_key" introduced="5.2.10"><![CDATA[API Key (Enter to enable)]]></string>
     <string name="sendgrid_key" introduced="6.2.10"><![CDATA[SendGrid API Key]]></string>
     <string name="use_server_time" introduced="6.2.9"><![CDATA[Use default server time (%s)]]></string>
     <string name="hide_chat" introduced="6.2.9"><![CDATA[Hide CubeCart Live Chat]]></string>
@@ -1974,7 +1976,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="gc_value_min" introduced="5.0.0"><![CDATA[Minimum Value]]></string>
     <string name="gc_weight" introduced="5.0.0"><![CDATA[Weight (Of physical certificates)]]></string>
     <string name="google_analytics" introduced="5.0.0"><![CDATA[Google Analytics]]></string>
-    <string name="google_analytics_id" introduced="5.0.0"><![CDATA[Google Analytics ID]]></string>
+    <string name="google_analytics_id" introduced="5.0.0"><![CDATA[Google Analytics (Enter to enable)]]></string>
     <string name="hide_prices" introduced="5.0.0"><![CDATA[Hide prices until logged in]]></string>
     <string name="htaccess_error" introduced="5.0.0"><![CDATA[(This can not be set to yes until the .htaccess file exists in the stores root folder.)]]></string>
     <string name="logo_all_skins" introduced="5.0.0"><![CDATA[All Skins]]></string>

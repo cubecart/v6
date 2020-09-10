@@ -1385,3 +1385,11 @@ ul.filetree li ul li ul li ul li ul li ul li ul li ul li a {
 .tooltip:hover .tooltiptext {
     visibility: visible;
 }
+.w3w {
+    color: #E11F26;
+    display: block;
+}
+.w3w a {
+    color: #333333;
+    text-decoration: none;
+}

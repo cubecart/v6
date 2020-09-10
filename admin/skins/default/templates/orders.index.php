@@ -155,6 +155,7 @@
                {$OVERVIEW_SUMMARY.town_d|upper}<br>
                {if !empty($OVERVIEW_SUMMARY.state_d)}{$OVERVIEW_SUMMARY.state_d|upper}, {/if}{$OVERVIEW_SUMMARY.postcode_d}<br>
                {$OVERVIEW_SUMMARY.country_d}
+               {if !empty($OVERVIEW_SUMMARY.w3w_d)}<span class="w3w">///<a href="https://what3words.com/{$OVERVIEW_SUMMARY.w3w_d}" target="_blank">{$OVERVIEW_SUMMARY.w3w_d}</a></span>{/if}
             </fieldset>
             <fieldset class="order_address">
                <legend>{$LANG.address.billing_address}</legend>
@@ -165,6 +166,7 @@
                {$OVERVIEW_SUMMARY.town|upper}<br>
                {if !empty($OVERVIEW_SUMMARY.state)}{$OVERVIEW_SUMMARY.state|upper}, {/if}{$OVERVIEW_SUMMARY.postcode}<br>
                {$OVERVIEW_SUMMARY.country}
+               {if !empty($OVERVIEW_SUMMARY.w3w)}<span class="w3w">///<a href="https://what3words.com/{$OVERVIEW_SUMMARY.w3w}" target="_blank">{$OVERVIEW_SUMMARY.w3w}</a></span>{/if}
             </fieldset>
             <p>
                 <strong>{$LANG.basket.order_date}:</strong> {$OVERVIEW_SUMMARY.order_date}
@@ -269,6 +271,7 @@
             </div>
             <div><label for="sum_state">{$LANG.address.state}</label><span><input type="text" id="sum_state" name="customer[state]" value="{$SUMMARY.state}" class="textbox billing state-list"></span></div>
             <div><label for="sum_postcode">{$LANG.address.postcode}</label><span><input type="text" id="sum_postcode" name="customer[postcode]" value="{$SUMMARY.postcode}" class="textbox billing"></span></div>
+            {if !empty($CONFIG.w3w)}<div><label for="w3w">what3words</label><span><input type="text" id="sum_w3w" name="customer[w3w]" value="{$SUMMARY.w3w}" class="textbox billing"></span></div>{/if}
          </fieldset>
          <fieldset>
             <legend>{$LANG.account.contact_details}</legend>
@@ -310,6 +313,7 @@
             </div>
             <div><label for="d_sum_state">{$LANG.address.state}</label><span><input type="text" id="d_sum_state" name="customer[state_d]" value="{$SUMMARY.state_d}" class="textbox state-list"></span></div>
             <div><label for="d_sum_postcode">{$LANG.address.postcode}</label><span><input type="text" id="d_sum_postcode" name="customer[postcode_d]" value="{$SUMMARY.postcode_d}" class="textbox required"></span></div>
+            {if !empty($CONFIG.w3w)}<div><label for="w3w_d">what3words</label><span><input type="text" id="sum_w3w_d" name="customer[w3w_d]" value="{$SUMMARY.w3w_d}" class="textbox billing"></span></div>{/if}
          </fieldset>
          <fieldset>
             <legend>{$LANG.orders.title_shipping}</legend>

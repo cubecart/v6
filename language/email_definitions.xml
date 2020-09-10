@@ -58,7 +58,7 @@ Order number {$DATA.cart_order_id} has been cancelled.]]></content>
 {$BILLING.town|upper}<br>
 {if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
 {$BILLING.postcode}<br>
-{$BILLING.country}<br>
+{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}<br>
 {$BILLING.phone}<br>
 <br>
 <strong>Email:</strong><br>
@@ -71,7 +71,7 @@ Order number {$DATA.cart_order_id} has been cancelled.]]></content>
 {/if}{$SHIPPING.town|upper}<br>
 {if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
 {$SHIPPING.postcode}<br>
-{$SHIPPING.country}</td>
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
 </tr>
 </table>
 <table border="0" cellpadding="3" cellspacing="0" width="100%">
@@ -135,7 +135,8 @@ Billing address:
 {/if}{$BILLING.town|upper}
 {if !empty($BILLING.state)}{$BILLING.state|upper}
 {/if}{$BILLING.postcode}
-{$BILLING.country}
+{$BILLING.country}{if !empty($BILLING.w3w)}
+///{$BILLING.w3w}{/if}
 {$BILLING.phone}
 
 Email:
@@ -149,7 +150,8 @@ Shipping address:
 {/if}{$SHIPPING.town|upper}
 {if !empty($SHIPPING.state)}{$SHIPPING.state|upper}
 {/if}{$SHIPPING.postcode}
-{$SHIPPING.country}
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}
+///{$SHIPPING.w3w}{/if}
 
 ----------------------------------------------------------------------
 Items in Your Order
@@ -216,9 +218,9 @@ If you require further assistance in resetting your password, please contact us.
 {if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>
 {/if}
 {$BILLING.town|upper}<br>
-{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
+{if !empty($BILLING.state)}{$BaILLING.state|upper}<br>{/if}
 {$BILLING.postcode}<br>
-{$BILLING.country}<br>
+{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}<br>
 {$BILLING.phone}<br>
 <br>
 <strong>Email:</strong><br>
@@ -231,7 +233,7 @@ If you require further assistance in resetting your password, please contact us.
 {/if}{$SHIPPING.town|upper}<br>
 {if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
 {$SHIPPING.postcode}<br>
-{$SHIPPING.country}</td>
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
 </tr>
 </table>
 <table border="0" cellpadding="3" cellspacing="0" width="100%">
@@ -293,7 +295,8 @@ Billing address:
 {/if}{$BILLING.town|upper}
 {if !empty($BILLING.state)}{$BILLING.state|upper}
 {/if}{$BILLING.postcode}
-{$BILLING.country}
+{$BILLING.country}{if !empty($BILLING.w3w)}
+///{$BILLING.w3w}{/if}
 {$BILLING.phone}
 
 Email:
@@ -307,7 +310,8 @@ Shipping address:
 {/if}{$SHIPPING.town|upper}
 {if !empty($SHIPPING.state)}{$SHIPPING.state|upper}
 {/if}{$SHIPPING.postcode}
-{$SHIPPING.country}
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}
+///{$SHIPPING.w3w}{/if}
 
 ----------------------------------------------------------------------
 Items in Your Order

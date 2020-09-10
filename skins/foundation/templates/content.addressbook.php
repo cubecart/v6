@@ -104,6 +104,23 @@
       <div class="row">
          <div class="small-12 large-8 columns"><label for="addr_postcode">{$LANG.address.postcode}</label><input type="text" name="postcode" id="addr_postcode" value="{$DATA.postcode}" required placeholder="{$LANG.address.postcode} {$LANG.form.required}"></div>
       </div>
+      {if !empty($CONFIG.w3w)}
+      <div class="row">
+         <div class="small-12 columns">
+            <label for="w3w">what3words address (optional)</label>
+            <what3words-autosuggest id="w3w_as" debug="true" validate="false" />
+            <input type="hidden" name="w3w" id="w3w" value="{$DATA.w3w}" />
+            {literal}<script>
+               const w3w_as = document.getElementById("w3w_as");
+               w3w_as.addEventListener("select", function(value) {
+                  document.getElementById("w3w").value = value.detail;
+               });
+               {/literal}
+               w3w_as.value="{$DATA.w3w}";
+            </script>
+         </div>
+      </div>
+      {/if}
       </div>
    </address>
    <div class="row">

@@ -20,3 +20,11 @@ ALTER TABLE `CubeCart_inventory` CHANGE `tax_type` `tax_type` INT(10) NOT NULL; 
 ALTER TABLE `CubeCart_coupons` ADD `manufacturer_id` TEXT NOT NULL AFTER `product_id`; #EOQ
 ALTER TABLE `CubeCart_system_error_log` ADD `url` VARCHAR(255) NOT NULL AFTER `message`; #EOQ
 ALTER TABLE `CubeCart_system_error_log` ADD `backtrace` TEXT NOT NULL AFTER `url`; #EOQ
+ALTER TABLE `CubeCart_addressbook` ADD `w3w` VARCHAR(255) NOT NULL AFTER `country`; #EOQ
+ALTER TABLE `CubeCart_order_summary` ADD `w3w_d` VARCHAR(255) NOT NULL AFTER `country_d`; #EOQ
+ALTER TABLE `CubeCart_order_summary` ADD `w3w` VARCHAR(255) NOT NULL AFTER `country`; #EOQ
+UPDATE `CubeCart_email_content` SET `content_html` = REPLACE(`content_html`,'{$BILLING.country}','{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}'); #EOQ
+UPDATE `CubeCart_email_content` SET `content_html` = REPLACE(`content_html`,'{$SHIPPING.country}','{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}'); #EOQ
+UPDATE `CubeCart_email_content` SET `content_text` = REPLACE(`content_text`,'{$BILLING.country}','{$BILLING.country}{if !empty($BILLING.w3w)}\n///{$BILLING.w3w}\n{/if}'); #EOQ
+UPDATE `CubeCart_email_content` SET `content_text` = REPLACE(`content_text`,'{$SHIPPING.country}','{$SHIPPING.country}{if !empty($SHIPPING.w3w)}\n///{$SHIPPING.w3w}\n{/if}'); #EOQ
+UPDATE `CubeCart_email_template` SET `content_html` = REPLACE(`content_html`,'</style>','.w3w{\r\ncolor: #E11F26;\r\ndisplay: block\r\n}.w3w a{\r\ncolor: #333333;\r\ntext-decoration: none\r\n}\r\n</style>'); #EOQ

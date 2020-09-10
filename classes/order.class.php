@@ -333,7 +333,8 @@ class Order
             'postcode'   => $order_summary['postcode'],
             'country'   => getCountryFormat($order_summary['country']),
             'phone'   => $order_summary['phone'],
-            'email'   => $order_summary['email']
+            'email'   => $order_summary['email'],
+            'w3w'   => $order_summary['w3w']
         );
         $shipping = array(
             'first_name'  => $order_summary['first_name_d'],
@@ -344,7 +345,8 @@ class Order
             'town'    => $order_summary['town_d'],
             'state'   => getStateFormat($order_summary['state_d']),
             'postcode'   => $order_summary['postcode_d'],
-            'country'   => getCountryFormat($order_summary['country_d'])
+            'country'   => getCountryFormat($order_summary['country_d']),
+            'w3w'   => $order_summary['w3w_d']
         );
 
         // Format data
@@ -1415,6 +1417,7 @@ class Order
             'state'   => $this->_basket['billing_address']['state_id'],
             'postcode'  => $this->_basket['billing_address']['postcode'],
             'country'  => $this->_basket['billing_address']['country_id'],
+            'w3w'  => $this->_basket['billing_address']['w3w'],
             ## Delivery Details
             'title_d'  => $this->_basket['delivery_address']['title'],
             'first_name_d' => $this->_basket['delivery_address']['first_name'],
@@ -1426,6 +1429,7 @@ class Order
             'state_d'  => $this->_basket['delivery_address']['state_id'],
             'postcode_d' => $this->_basket['delivery_address']['postcode'],
             'country_d'  => $this->_basket['delivery_address']['country_id'],
+            'w3w_d'  => $this->_basket['delivery_address']['w3w'],
             'basket'  => serialize($this->_basket),
             'lang'   => $GLOBALS['language']->current(),
             'ip_address' => get_ip_address(),

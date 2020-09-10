@@ -168,6 +168,22 @@
       <div class="row" id="state-list_wrapper">
          <div class="small-12 large-8 columns"><label for="state-list" class="show-for-medium-up">{$LANG.address.state}</label><input type="text" name="billing[state]" id="state-list" value="{$BILLING.state|upper}" autocomplete="address-line1"></div>
       </div>
+      {if !empty($CONFIG.w3w)}
+      <div class="row">
+         <div class="small-12 columns">
+            <label for="w3w">what3words address (optional)</label>
+            <what3words-autosuggest id="w3w_as_billing" />
+            <input type="hidden" name="billing[w3w]" id="w3w_billing" value="" />
+            {literal}<script>
+               const w3w_as_billing = document.getElementById("w3w_as_billing");
+               w3w_as_billing.addEventListener("select", function(value) {
+                  document.getElementById("w3w_billing").value = value.detail;
+               });
+               w3w_as_billing.value='{/literal}{$BILLING.w3w}{literal}';
+            </script>{/literal}
+         </div>
+      </div>
+      {/if}
 </div>
 </address>
 {if $TERMS_CONDITIONS}
@@ -230,6 +246,22 @@
       <div class="row" id="delivery_state_wrapper">
          <div class="small-12 large-8 columns"><label for="delivery_state" class="show-for-medium-up">{$LANG.address.state}</label><input type="text" name="delivery[state]" id="delivery_state" value="{$DELIVERY.state|upper}" placeholder="{$LANG.address.state} {$LANG.form.required}" autocomplete="address-level1"></div>
       </div>
+      {if !empty($CONFIG.w3w)}
+      <div class="row">
+         <div class="small-12 columns">
+            <label for="w3w">what3words address (optional)</label>
+            <what3words-autosuggest id="w3w_as_delivery" />
+            <input type="hidden" name="delivery[w3w]" id="w3w_delivery" value="" />
+            {literal}<script>
+               const w3w_as_delivery = document.getElementById("w3w_as_delivery");
+               w3w_as_delivery.addEventListener("select", function(value) {
+                  document.getElementById("w3w_delivery").value = value.detail;
+               });
+               w3w_as_delivery.value='{/literal}{$DELIVERY.w3w}{literal}';
+            </script>{/literal}
+         </div>
+      </div>
+      {/if}
    </address>
 </div>
 {/if}
@@ -253,7 +285,6 @@
 {/if}
 <label for="delivery_comments" class="return"><strong>{$LANG.basket.your_comments}</strong></label>
 <textarea name="comments" id="delivery_comments">{$VAL_CUSTOMER_COMMENTS}</textarea>
-
 <div class="hide" id="validate_required">{$LANG.form.required}</div>
 <div class="hide" id="validate_field_required">{$LANG.form.field_required}</div>
 <div class="hide" id="validate_email">{$LANG.common.error_email_invalid}</div>

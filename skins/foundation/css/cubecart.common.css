@@ -14,3 +14,11 @@
 .order_status_4,.order_status_5,.order_status_6 {
 	color:#F04124;
 }
+.w3w {
+    color: #E11F26;
+    display: block;
+}
+.w3w a {
+	color: #333333;
+	text-decoration: none;
+}

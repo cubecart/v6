@@ -1025,7 +1025,8 @@ class Cubecart
                     'country'   => $_POST['billing']['country'],
                     'country_id'  => $_POST['billing']['country'],
                     'country_iso'  => getCountryFormat($_POST['billing']['country'], 'numcode', 'iso'),
-                    'country_name' => getCountryFormat($_POST['billing']['country'], 'numcode', 'name')
+                    'country_name' => getCountryFormat($_POST['billing']['country'], 'numcode', 'name'),
+                    'w3w' => $_POST['billing']['w3w']
                 );
                 $required_billing_fields = $GLOBALS['user']->getRequiredAddressFields($_POST['billing']['country']);
                 foreach ($this->_basket['billing_address'] as $key => $value) {
@@ -1064,7 +1065,8 @@ class Cubecart
                         'country'   => $_POST['delivery']['country'],
                         'country_id'  => $_POST['delivery']['country'],
                         'country_iso'  => getCountryFormat($_POST['delivery']['country'], 'numcode', 'iso'),
-                        'country_name' => getCountryFormat($_POST['delivery']['country'], 'numcode', 'name')
+                        'country_name' => getCountryFormat($_POST['delivery']['country'], 'numcode', 'name'),
+                        'w3w' => $_POST['delivery']['w3w']
                     );
                 } else {
                     $this->_basket['delivery_address'] = $this->_basket['billing_address'];
