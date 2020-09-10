@@ -51,6 +51,9 @@ class Ajax
             case 'filesize':
                 $return_data = self::filesize((string)$_GET['path'], 0);
             break;
+            case 'fmSearch':
+                $return_data = self::fmSearch();
+            break;
             case 'viewEmail':
                 $return_data = self::viewEmail((int)$_GET['id'], (string)$_GET['mode']);
             break;
@@ -263,6 +266,36 @@ class Ajax
             return "<div class=\"mail_modal\">".$html_out."</div>";
         }
         return false;
+    }
+
+    /**
+     * Search for image/digital download
+     *
+     * @return data/false
+     */
+    public function fmSearch() {
+        if (CC_IN_ADMIN) {
+            $term = $_POST['term'];
+            if(strlen($term)>=3) {
+                $mode = $_POST['mode']=='digital' ? 'digital' : 'images';
+                $path = $_POST['mode']=='digital' ? CC_ROOT_DIR.'/files' : CC_ROOT_DIR.'/images/source';
+                $files = fmSearchList($path, $term);
+                $output = '';
+                foreach($files as $file) {
+                    $file = str_replace($path.'/','',$file);
+                    $subdir = urlencode(ltrim(dirname($file),'/'));
+                    $output .= "<li><a href=\"?_g=filemanager&subdir=$subdir&mode=$mode\">$file</a></li>";
+                }
+                if(empty($output)) {
+                    $output = "<p>No matches found.</p>";
+                } else {
+                    $output = "<ul>$output</ul>";
+                }
+            } else {
+                $output = "<p>Search terms should be a minimum of three charachters.</p>";
+            }
+            return "<div class=\"mail_modal\"><h3>Search Result for '".$_POST['term']."'</h3>$output</div>";
+        }
     }
 
     /**
