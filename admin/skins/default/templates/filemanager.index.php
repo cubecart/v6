@@ -29,7 +29,7 @@
 		<span class="actions">
 		{if NOT is_null($folder.delete)}
 		<input type="checkbox" value="{$folder.value}" name="multi_delete[]">
-		<a href="{$folder.delete}" class="delete right" title="{$LANG.notification.confirm_delete_file|replace:'%s':$folder.name}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
+		<a href="{$folder.delete}" class="delete right" title="{$LANG.notification.confirm_delete_folder|replace:'%s':$folder.name}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		{/if}
 		</span>
 		{if $FILMANAGER_MODE == '2'}<img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/folder.png" alt="{$folder.name}">{/if}
