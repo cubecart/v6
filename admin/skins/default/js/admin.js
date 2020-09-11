@@ -208,7 +208,6 @@ $(document).ready(function() {
     setTimeout(function() {
         window.scrollTo(-81, 0);
         if($(".fm-item.hilighted").length) {
-            console.log($('.fm-item.hilighted').offset().top);
             $('html, body').animate({
                 scrollTop: $('.fm-item.hilighted').offset().top
             }, 'slow');
