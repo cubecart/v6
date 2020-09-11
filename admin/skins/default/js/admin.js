@@ -206,11 +206,16 @@ function fmSearch(mode, term, token) {
 $(document).ready(function() {
 
     setTimeout(function() {
-        window.scrollTo(-81, 0)
+        window.scrollTo(-81, 0);
+        if($(".fm-item.hilighted").length) {
+            console.log($('.fm-item.hilighted').offset().top);
+            $('html, body').animate({
+                scrollTop: $('.fm-item.hilighted').offset().top
+            }, 'slow');
+        }
     }, 1);
 
     $('.chzn-select').chosen({width:"50%",search_contains:true});
-
     var t = !1;
     if (jQuery.debug = function(t) {
             window.console ? console.debug("CubeCart: " + t) : alert(t)

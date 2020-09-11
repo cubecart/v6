@@ -1273,6 +1273,10 @@ ul.filetree li ul li ul li ul li ul li ul li ul li ul li a {
     background-color: none !important;
     
 }
+.fm-item.hilighted {
+    border: 5px solid red;
+    margin: 0px 0px 25px 0px !important;
+}
 .fm-item .thumbnail {
     text-align: center;
     width: inherit;
@@ -1285,7 +1289,6 @@ ul.filetree li ul li ul li ul li ul li ul li ul li ul li a {
 .fm-item .actions {
     background: rgba(255,255,255, 0.7);
     color: #444;
-    padding-left: 2px;
     bottom: 0px;
     position: absolute;
     height: 18px;
@@ -1301,7 +1304,6 @@ ul.filetree li ul li ul li ul li ul li ul li ul li ul li a {
     height: inherit;
 }
 .fm-item > a {
-    background: rgba(255, 255, 255, 0.75);
     color: #444;
     bottom: -16px;
     position: absolute;
