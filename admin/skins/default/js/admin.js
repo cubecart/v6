@@ -187,6 +187,22 @@ function productOptionPrices(t) {
         "" != t && e && (a = e.substr(0, 1), value = +e.substr(1), value > 0 && ("+"==a?i=+i+ +value:"-"==a?i-=value:i+=parseFloat(option_price)-i))
     }), e.val(i.toFixed(2)), $(".update-subtotal input.number").trigger("change"), !1
 }
+function fmSearch(mode, term, token) {
+    if(term.length==0) return false;
+    var requestData = {};
+    requestData['mode'] = mode;
+    requestData['term'] = term;
+    requestData['token'] = token;
+    $.ajax({
+       type: 'post',
+       url: "?_g=xml&function=fmSearch",
+       data: requestData,
+       dataType: "text",
+       success: function(responseData) {
+          $.colorbox({html:responseData})
+       }
+    });
+ }
 $(document).ready(function() {
 
     setTimeout(function() {
@@ -323,6 +339,13 @@ $(document).ready(function() {
                 $("#sendgrid").slideUp();
         }
     });
+
+    $("#fm-search-button").click(function() {
+        var mode = $(this).attr("data-mode");
+        var term = $('#fm-search-term').val();
+        var token = $('.cc_session_token').val();
+        return fmSearch(mode, term, token);    
+    }),
 
     $(".getFileSize").on("click",function() {
         var i = $("#val_admin_file").text();

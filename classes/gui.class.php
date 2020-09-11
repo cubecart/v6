@@ -339,7 +339,7 @@ class GUI
         $this->_setCanonical();
         $GLOBALS['debug']->stream_into_session = false;
         if ($GLOBALS['config']->get('config', 'csrf')=='1' || CC_IN_ADMIN) {
-            die(preg_replace('#</form>#i', '<input type="hidden" name="token" value="'.SESSION_TOKEN.'"></form>', $GLOBALS['smarty']->fetch($file)));
+            die(preg_replace('#</form>#i', '<input type="hidden" name="token" class="cc_session_token" value="'.SESSION_TOKEN.'"></form>', $GLOBALS['smarty']->fetch($file)));
         } else {
             $GLOBALS['smarty']->display($file);
         }
