@@ -344,6 +344,7 @@ $(document).ready(function() {
         var mode = $(this).attr("data-mode");
         var term = $('#fm-search-term').val();
         var token = $('.cc_session_token').val();
+        $('#fm-search-term').val('');
         return fmSearch(mode, term, token);    
     }),
 

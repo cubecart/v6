@@ -287,14 +287,14 @@ class Ajax
                     $output .= "<li><a href=\"?_g=filemanager&subdir=$subdir&mode=$mode\">$file</a></li>";
                 }
                 if(empty($output)) {
-                    $output = "<p>No matches found.</p>";
+                    $output = "<p>".$GLOBALS['language']->common['error_no_results']."</p>";
                 } else {
                     $output = "<ul>$output</ul>";
                 }
             } else {
-                $output = "<p>Search terms should be a minimum of three charachters.</p>";
+                $output = "<p>".$GLOBALS['language']->filemanager['min_three_char']."</p>";
             }
-            return "<div class=\"mail_modal\"><h3>Search Result for '".$_POST['term']."'</h3>$output</div>";
+            return "<div class=\"mail_modal\"><h3>".sprintf($GLOBALS['language']->filemanager['search_result'], $_POST['term'])."</h3>$output</div>";
         }
     }
 
