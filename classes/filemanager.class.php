@@ -932,7 +932,7 @@ class FileManager
                 $file['filepath']   = ($this->_mode == self::FM_FILETYPE_IMG) ? $catalogue->imagePath($file['file_id'], 'medium') : $this->_manage_dir.'/'.$file['filepath'].$file['filename'];
                 $file['select_button'] = (bool)$select_button;
                 $file['filesize'] = formatBytes($file['filesize'], true);
-                $file['file_id'] = 'file_'.md5($file['filename']);
+                $file['file_name_hash'] = 'file_'.md5($file['filename']);
 
                 if ($select_button) {
                     $file['master_filepath'] = $GLOBALS['rootRel'].$file['master_filepath'];
