@@ -42,7 +42,7 @@
 
 	  {if isset($FILES)}
 	  {foreach from=$FILES item=file}
-	  <div {if $FILMANAGER_MODE == '1'}class="fm-item {$FM_SIZE}{if $file.file_name_hash==$FILE_ID} hilighted{/if}"{/if} id="{$file.file_name_hash}">
+	  <div {if $FILMANAGER_MODE == '1'}class="fm-item {$FM_SIZE}{if $file.file_name_hash==$HILIGHTED_FILE} hilighted{/if}"{/if} id="{$file.file_name_hash}">
 	  {if $FILMANAGER_MODE == '1'}<a href="{$file.filepath}?{$file.random}" class="{$file.class} thumbnail" title="{$file.description}" target="_self"><img class="lazyload" data-src="{$file.filepath}" src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs="></a>{/if}
 	 	 <span class="actions">
 		  <input type="checkbox" value="{$file.value}" name="multi_delete[]"> {$file.filesize}

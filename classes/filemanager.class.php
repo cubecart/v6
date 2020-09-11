@@ -941,7 +941,7 @@ class FileManager
                 $list_files[$key] = $file;
             }
             if(isset($_GET['file_id'])) {
-                $GLOBALS['smarty']->assign('FILE_ID', $_GET['file_id']);
+                $GLOBALS['smarty']->assign('HILIGHTED_FILE', $_GET['file_id']);
             }
             $GLOBALS['smarty']->assign('FILES', $list_files);
             return $list_files;
