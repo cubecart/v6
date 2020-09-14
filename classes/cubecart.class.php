@@ -2473,7 +2473,13 @@ class Cubecart
                             // Do price formatting
                             $item['price_total'] = $GLOBALS['tax']->priceFormat(($item['price'] * $item['quantity']), true);
                             $item['price'] = $GLOBALS['tax']->priceFormat($item['price']);
-                            $item['options'] = unserialize($item['product_options']);
+                            if(unserialize($item['product_options']) !== false) {
+                                $item['options'] = implode(' ', unserialize($item['product_options']));
+                            } else if (unserialize(base64_decode($item['product_options'])) !== false) {
+                                $item['options'] = implode(' ', unserialize(base64_decode($item['product_options'])));
+                            } else {
+                                $item['options'] = implode(' ', unserialize($item['product_options']));
+                            }
                             $vars['items'][] = $item;
                         }
                         $GLOBALS['smarty']->assign('ITEMS', $vars['items']);
@@ -2853,15 +2859,12 @@ class Cubecart
                     foreach ($products as $item) {
                         $item['price_total'] = $GLOBALS['tax']->priceFormat(sprintf('%.2F', $item['price'] * $item['quantity']), true);
                         $item['price'] = $GLOBALS['tax']->priceFormat($item['price'], true);
-                        if (!empty($item['product_options'])) {
-                            $options = ($array = unserialize($item['product_options'])) ? $array : explode("\n", $item['product_options']);
-                            foreach ($options as $option) {
-                                $value = trim($option);
-                                if (empty($value)) {
-                                    continue;
-                                }
-                                $item['options'][] = $option;
-                            }
+                        if(unserialize($item['product_options']) !== false) {
+                            $item['options'] = implode(' ', unserialize($item['product_options']));
+                        } else if (unserialize(base64_decode($item['product_options'])) !== false) {
+                            $item['options'] = implode(' ', unserialize(base64_decode($item['product_options'])));
+                        } else {
+                            $item['options'] = implode(' ', unserialize($item['product_options']));
                         }
                         $summary['items'][] = $item;
                     }
