@@ -285,7 +285,7 @@ class Ajax
                     $file = str_replace($path.'/','',$file);
                     $subdir = urlencode(ltrim(dirname($file),'/'));
                     $anchor = md5(urlencode(basename($file)));
-                    $output .= "<li><a href=\"?_g=filemanager&subdir=$subdir&mode=$mode&t=".time()."&file_id=file_$anchor\">$file</a></li>";
+                    $output .= "<li><a href=\"?_g=filemanager&subdir=$subdir&mode=$mode&".time()."&file_id=file_$anchor\">$file</a></li>";
                 }
                 if(empty($output)) {
                     $output = "<p>".$GLOBALS['language']->common['error_no_results']."</p>";
