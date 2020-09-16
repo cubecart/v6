@@ -108,7 +108,7 @@
       <div class="row">
          <div class="small-12 columns">
             <label for="w3w">what3words address (optional)</label>
-            <what3words-autosuggest id="w3w_as" debug="true" validate="false" />
+            <what3words-autosuggest id="w3w_as" value="{$DATA.w3w}" debug="true" validate="false" />
             <input type="hidden" name="w3w" id="w3w" value="{$DATA.w3w}" />
             {literal}<script>
                const w3w_as = document.getElementById("w3w_as");
@@ -116,7 +116,6 @@
                   document.getElementById("w3w").value = value.detail;
                });
                {/literal}
-               w3w_as.value="{$DATA.w3w}";
             </script>
          </div>
       </div>
