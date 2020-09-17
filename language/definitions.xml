@@ -1857,7 +1857,13 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
-    <string name="w3w_api_key" introduced="5.2.10"><![CDATA[API Key (Enter to enable)]]></string>
+    <string name="error_notice_desc" introduced="6.2.10"><![CDATA[Notice Error - These are unlikely to cause operatinal problems and can be thought of as best practice recommendations. Action is not required.]]></string>
+    <string name="error_warning_desc" introduced="6.2.10"><![CDATA[Warning Error - These are unlikely to cause operational problems now but there is a problem, one that is likely to cause bigger issues in the future. Action is recommended.]]></string>
+    <string name="error_parse_desc" introduced="6.2.10"><![CDATA[Parse Error - These are caused by misused or missing symbols in a syntax. Action is required.]]></string>
+    <string name="error_fatal_desc" introduced="6.2.10"><![CDATA[Fatal Error - These are are classified as critical errors. Action is required.]]></string>
+    <string name="error_exception_desc" introduced="6.2.10"><![CDATA[Exception Error - These are are classified as critical errors. Action is required.]]></string>
+    <string name="error_general_desc" introduced="6.2.10"><![CDATA[Note: Your store should only log notice and warning errors if it is in <a href="?_g=settings#Advanced_Settings">debug mode</a>.]]></string>
+    <string name="w3w_api_key" introduced="6.2.10"><![CDATA[API Key (Enter to enable)]]></string>
     <string name="sendgrid_key" introduced="6.2.10"><![CDATA[SendGrid API Key]]></string>
     <string name="use_server_time" introduced="6.2.9"><![CDATA[Use default server time (%s)]]></string>
     <string name="hide_chat" introduced="6.2.9"><![CDATA[Hide CubeCart Live Chat]]></string>

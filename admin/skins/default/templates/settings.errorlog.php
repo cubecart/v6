@@ -59,6 +59,14 @@
 </div>
 <div id="system_error_log" class="tab_content">
   <h3>{$LANG.settings.title_system_error_log}</h3>
+  <ul class="severity">
+  	<li class="yellow">{$LANG.settings.error_notice_desc}</li>
+  	<li class="orange">{$LANG.settings.error_warning_desc}</li>
+  	<li class="red">{$LANG.settings.error_parse_desc}</li>
+  	<li class="red">{$LANG.settings.error_fatal_desc}</li>
+	<li class="red">{$LANG.settings.error_exception_desc}</li>
+  </ul>
+  <p>{$LANG.settings.error_general_desc}</p>
   {if $SYSTEM_ERROR_LOG}
   <p>[<a href="?_g=maintenance&emptyErrorLogs=true&redir=viewlog">{$LANG.maintain.logs_error}</a>]</p>
   {/if}

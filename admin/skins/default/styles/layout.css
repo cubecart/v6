@@ -1395,3 +1395,26 @@ ul.filetree li ul li ul li ul li ul li ul li ul li ul li a {
     color: #333333;
     text-decoration: none;
 }
+.severity {
+    color: #FFF;
+    font-weight: bold;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.severity li {
+    padding: 3px;
+}
+.severity .green {
+    background-color: green;
+}
+.severity .yellow {
+    background-color: yellow;
+    color: #737373;
+}
+.severity .orange {
+    background-color: orange;
+}
+.severity .red {
+    background-color: red;
+}

@@ -309,6 +309,12 @@ if ($unsettled_orders) {
     $GLOBALS['smarty']->assign('ORDER_PAGINATION', $GLOBALS['db']->pagination($unsettled_count, $results_per_page, $page, $show = 5, 'orders', 'orders', $glue = ' ', $view_all = true));
 }
 
+## Error Log Tab
+$system_errors = (int)$GLOBALS['db']->count('CubeCart_system_error_log', 'log_id');
+if($system_errors>0) {
+    $GLOBALS['main']->addTabControl($lang['dashboard']['title_error_log'], 'system_error_log', '?_g=settings&node=errorlog', null, $system_errors);
+}
+
 ## Product Reviews Tab
 $page  = (isset($_GET['reviews'])) ? $_GET['reviews'] : 1;
 if (($reviews = $GLOBALS['db']->select('CubeCart_reviews', false, array('approved' => '0'), false, 25, $page)) !== false) {
