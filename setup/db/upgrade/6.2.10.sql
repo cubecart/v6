@@ -28,3 +28,5 @@ UPDATE `CubeCart_email_content` SET `content_html` = REPLACE(`content_html`,'{$S
 UPDATE `CubeCart_email_content` SET `content_text` = REPLACE(`content_text`,'{$BILLING.country}','{$BILLING.country}{if !empty($BILLING.w3w)}\n///{$BILLING.w3w}\n{/if}'); #EOQ
 UPDATE `CubeCart_email_content` SET `content_text` = REPLACE(`content_text`,'{$SHIPPING.country}','{$SHIPPING.country}{if !empty($SHIPPING.w3w)}\n///{$SHIPPING.w3w}\n{/if}'); #EOQ
 UPDATE `CubeCart_email_template` SET `content_html` = REPLACE(`content_html`,'</style>','.w3w{\r\ncolor: #E11F26;\r\ndisplay: block\r\n}.w3w a{\r\ncolor: #333333;\r\ntext-decoration: none\r\n}\r\n</style>'); #EOQ
+UPDATE `CubeCart_invoice_template` SET `content` = REPLACE(`content`,'</style>','.w3w{\r\ncolor: #E11F26;\r\ndisplay: block\r\n}.w3w a{\r\ncolor: #333333;\r\ntext-decoration: none\r\n}\r\n</style>'); #EOQ
+UPDATE `CubeCart_invoice_template` SET `content` = REPLACE(`content`,'{$order.country_d}{/if}','{$order.country_d}{/if}{if !empty($order.w3w_d)}<br><div class="w3w">///<a href="https://what3words.com/{$order.w3w_d}">{$order.w3w_d}</a></div>{/if}'); #EOQ

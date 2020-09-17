@@ -152,6 +152,14 @@
 				background-image: -o-linear-gradient(#e1e1e1, #ededed);
 				background-color: #ededed
 		}
+		.w3w {
+    		color: #E11F26;
+    		display: block;
+		}
+		.w3w a {
+    		color: #333333;
+    		text-decoration: none;
+		}
 		@media print
 		{
 				.noprint, .noprint *
@@ -175,7 +183,9 @@
 	  		{if !empty($order.line2_d)}{$order.line2_d|capitalize}<br>{/if}
 	  		{$order.town_d|upper}<br>
 	  		{if !empty($order.state_d)}{$order.state_d|upper}, {/if}{$order.postcode_d}{if $CONFIG.store_country_name!==$order.country_d}<br>
-	  		{$order.country_d}{/if}
+			  {$order.country_d}{/if}
+			{if !empty($order.w3w_d)}<br>
+			<div class="w3w">///<a href="https://what3words.com/{$order.w3w_d}">{$order.w3w_d}</a></div>{/if}
 		  </div>
 		  <div class="sender">
 				{if !empty($STORE.address)}{$LANG.address.return_address}<br>{$STORE.address},{/if}
