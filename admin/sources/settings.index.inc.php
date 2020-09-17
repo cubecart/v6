@@ -450,6 +450,7 @@ $gr_compatibility = array(
     'invisible' => file_exists($current_skin_path.'element.recaptcha.invisible.php')
 );
 $GLOBALS['smarty']->assign('gr_compatibility', $gr_compatibility);
+$GLOBALS['smarty']->assign('w3w_compatibility', file_exists($current_skin_path.'element.w3w.php'));
 
 if ($inventory_columns = $GLOBALS['db']->misc('SHOW FULL COLUMNS FROM '.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory')) {
     $excluded = array('use_stock_level');
