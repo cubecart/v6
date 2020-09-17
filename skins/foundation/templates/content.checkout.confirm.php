@@ -172,14 +172,7 @@
       <div class="row">
          <div class="small-12 columns">
             <label for="w3w">what3words address (optional)</label>
-            <what3words-autosuggest id="w3w_as_billing" />
-            <input type="hidden" name="billing[w3w]" id="w3w_billing" value="{$BILLING.w3w}" />
-            {literal}<script>
-               const w3w_as_billing = document.getElementById("w3w_as_billing");
-               w3w_as_billing.addEventListener("select", function(value) {
-                  document.getElementById("w3w_billing").value = value.detail;
-               });
-            </script>{/literal}
+            {include file='templates/element.w3w.php' value="{$BILLING.w3w}" as_id="w3w_as_billing" input_id="w3w_billing" input_name="billing[w3w]"}
          </div>
       </div>
       {/if}
@@ -249,14 +242,7 @@
       <div class="row">
          <div class="small-12 columns">
             <label for="w3w">what3words address (optional)</label>
-            <what3words-autosuggest id="w3w_as_delivery" />
-            <input type="hidden" name="delivery[w3w]" id="w3w_delivery" value="{$DELIVERY.w3w}" />
-            {literal}<script>
-               const w3w_as_delivery = document.getElementById("w3w_as_delivery");
-               w3w_as_delivery.addEventListener("select", function(value) {
-                  document.getElementById("w3w_delivery").value = value.detail;
-               });
-            </script>{/literal}
+            {include file='templates/element.w3w.php' value="{$DELIVERY.w3w}" as_id="w3w_as_delivery" input_id="w3w_delivery" input_name="delivery[w3w]"}
          </div>
       </div>
       {/if}

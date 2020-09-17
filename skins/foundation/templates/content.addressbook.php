@@ -108,15 +108,7 @@
       <div class="row">
          <div class="small-12 columns">
             <label for="w3w">what3words address (optional)</label>
-            <what3words-autosuggest id="w3w_as" value="{$DATA.w3w}" debug="true" validate="false" />
-            <input type="hidden" name="w3w" id="w3w" value="{$DATA.w3w}" />
-            {literal}<script>
-               const w3w_as = document.getElementById("w3w_as");
-               w3w_as.addEventListener("select", function(value) {
-                  document.getElementById("w3w").value = value.detail;
-               });
-               {/literal}
-            </script>
+            {include file='templates/element.w3w.php' value="{$DATA.w3w}" as_id="w3w_as" input_id="w3w" input_name="w3w"}
          </div>
       </div>
       {/if}
