@@ -62,7 +62,7 @@
          <div><label for="google_analytics">{$LANG.settings.google_analytics_id}</label><span><input name="config[google_analytics]" id="google_analytics" type="text" class="textbox" value="{$CONFIG.google_analytics}"></span></div>
       </fieldset>
       <fieldset>
-         <legend>what3words - <a href="https://what3words.com/products/ecommerce-plugins/" target="_blank">{$LANG.common.learn_more}</a></legend>
+         <legend>{$LANG.address.w3w} - <a href="https://what3words.com/products/ecommerce-plugins/" target="_blank">{$LANG.common.learn_more}</a></legend>
          <div><label for="w3w">{$LANG.settings.w3w_api_key}</label><span><input name="config[w3w]" id="w3w" type="text" class="textbox" value="{$CONFIG.w3w}"></span></div>
          {if !$w3w_compatibility}
          <p><strong>{$LANG.settings.w3w_na}</strong></p>
