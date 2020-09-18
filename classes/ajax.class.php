@@ -276,7 +276,7 @@ class Ajax
     public function fmSearch() {
         if (CC_IN_ADMIN) {
             $term = $_POST['term'];
-            if(strlen($term)>=3) {
+            if(strlen($term)>=2) {
                 $mode = $_POST['mode']=='digital' ? 'digital' : 'images';
                 $path = $_POST['mode']=='digital' ? CC_ROOT_DIR.'/files' : CC_ROOT_DIR.'/images/source';
                 $files = fmSearchList($path, $term);
@@ -293,7 +293,7 @@ class Ajax
                     $output = "<ul>$output</ul>";
                 }
             } else {
-                $output = "<p>".$GLOBALS['language']->filemanager['min_three_char']."</p>";
+                $output = "<p>".$GLOBALS['language']->filemanager['min_two_char']."</p>";
             }
             return "<div class=\"mail_modal\"><h3>".sprintf($GLOBALS['language']->filemanager['search_result'], $_POST['term'])."</h3>$output</div>";
         }
