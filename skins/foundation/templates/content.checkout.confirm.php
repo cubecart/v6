@@ -171,7 +171,7 @@
       {if !empty($CONFIG.w3w)}
       <div class="row">
          <div class="small-12 columns">
-            <label for="w3w">what3words address (optional)</label>
+            <label for="w3w">{$LANG.address.w3w_address} {$LANG.common.optional}</label>
             {include file='templates/element.w3w.php' value="{$BILLING.w3w}" as_id="w3w_as_billing" input_id="w3w_billing" input_name="billing[w3w]"}
          </div>
       </div>
@@ -241,7 +241,7 @@
       {if !empty($CONFIG.w3w)}
       <div class="row">
          <div class="small-12 columns">
-            <label for="w3w">what3words address (optional)</label>
+            <label for="w3w">{$LANG.address.w3w_address} {$LANG.common.optional}</label>
             {include file='templates/element.w3w.php' value="{$DELIVERY.w3w}" as_id="w3w_as_delivery" input_id="w3w_delivery" input_name="delivery[w3w]"}
          </div>
       </div>
