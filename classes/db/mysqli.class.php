@@ -235,8 +235,8 @@ class Database extends Database_Contoller
             }
 
             //Cache the result if needed
-            if ($cache) {
-                $this->_writeCache($this->_result, $this->_query);
+            if ($cache && ($this->_writeCache($this->_result, $this->_query)) === false) {
+                $cache = false; // Query not cached for some reason. Check error log and cache status.
             }
              
             return (!$this->_sqlDebug($cache, false)) ? true : false;
