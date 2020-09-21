@@ -302,6 +302,7 @@
          </div>
          <div><label for="hide_out_of_stock">{$LANG.settings.title_hide_out_of_stock}</label><span><input name="config[hide_out_of_stock]" id="hide_out_of_stock" type="hidden" class="toggle" value="{$CONFIG.hide_out_of_stock}"></span>&nbsp;{$LANG.settings.no_admin_affect}</div>
          <div><label for="update_main_stock">{$LANG.settings.update_main_stock}</label><span><input name="config[update_main_stock]" id="update_main_stock" type="hidden" class="toggle" value="{$CONFIG.update_main_stock}"></span>&nbsp;{$LANG.settings.matrix_in_use}</div>
+         <div><label for="image_delete">{$LANG.settings.image_delete}</label><span><input name="config[image_delete]" id="image_delete" type="hidden" class="toggle" value="{$CONFIG.image_delete}"></span></div>
       </fieldset>
    </div>
    <div id="Search_Engines" class="tab_content">

@@ -450,6 +450,12 @@ if (((isset($_GET['delete']) && !empty($_GET['delete'])) || (isset($_POST['delet
     $deleted = false;
     foreach ($delete_array as $delete_id) {
         if ($GLOBALS['db']->delete('CubeCart_inventory', array('product_id' => $delete_id))) {
+            if($GLOBALS['config']->get('config', 'image_delete')==="1") {
+                $product_images = $GLOBALS['db']->select('CubeCart_image_index', false, array('product_id' => $delete_id));
+                foreach($product_images as $image) {
+                    $filemanager->deleteFile($image['file_id']);
+                }
+            }
             // Delete category index
             $GLOBALS['db']->delete('CubeCart_category_index', array('product_id' => $delete_id));
             // Delete product options
