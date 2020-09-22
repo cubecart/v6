@@ -273,7 +273,7 @@ class Ajax
      *
      * @return data/false
      */
-    public function fmSearch() {
+    public static function fmSearch() {
         if (CC_IN_ADMIN) {
             $term = $_POST['term'];
             if(strlen($term)>=2) {
