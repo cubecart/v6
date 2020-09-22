@@ -282,15 +282,20 @@ class Ajax
                 $files = fmSearchList($path, $term);
                 $output = '';
                 foreach($files as $file) {
+                    if($mode == 'images') {
+                        $preview = '<div><img src="'.str_replace(CC_ROOT_DIR, CC_ROOT_REL, $file).'" /></div>';
+                    } else {
+                        $preview = '';
+                    }
                     $file = str_replace($path.'/','',$file);
                     $subdir = urlencode(ltrim(dirname($file),'/'));
                     $anchor = md5(urlencode(basename($file)));
-                    $output .= "<li><a href=\"?_g=filemanager&subdir=$subdir&mode=$mode&".time()."&file_id=file_$anchor\">$file</a></li>";
+                    $output .= "<li><a href=\"?_g=filemanager&subdir=$subdir&mode=$mode&".time()."&file_id=file_$anchor\">$preview $file</a></li>";
                 }
                 if(empty($output)) {
                     $output = "<p>".$GLOBALS['language']->common['error_no_results']."</p>";
                 } else {
-                    $output = "<ul>$output</ul>";
+                    $output = "<ul class=\"fmsearch_$mode\">$output</ul>";
                 }
             } else {
                 $output = "<p>".$GLOBALS['language']->filemanager['min_two_char']."</p>";

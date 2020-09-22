@@ -199,7 +199,7 @@ function fmSearch(mode, term, token) {
        data: requestData,
        dataType: "text",
        success: function(responseData) {
-          $.colorbox({html:responseData})
+          $.colorbox({html:responseData,width:860,height:600})
        }
     });
  }
