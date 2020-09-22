@@ -624,6 +624,7 @@
          <div><label for="seo_meta_description">{$LANG.settings.seo_meta_description}</label><span><textarea name="seo_meta_description" id="seo_meta_description" class="textbox">{$PRODUCT.seo_meta_description}</textarea></span></div>
       </fieldset>
       <p>* {$LANG.settings.seo_path_auto}</p>
+      {include file='templates/element.redirects.php'}
    </div>
    <div id="reviews" class="tab_content">
       <h3>{$LANG.catalogue.customer_reviews}</h3>

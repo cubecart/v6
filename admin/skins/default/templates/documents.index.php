@@ -95,6 +95,7 @@
 	  <div><label for="seo_meta_description">{$LANG.settings.seo_meta_description}</label><span><textarea name="document[seo_meta_description]" id="seo_meta_description" class="textbox">{$DOCUMENT.seo_meta_description}</textarea></span></div>
 	</fieldset>
 	<p>* {$LANG.settings.seo_path_auto}</p>
+	{include file='templates/element.redirects.php'}
   </div>
   {/if}
   {if isset($PLUGIN_TABS)}

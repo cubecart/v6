@@ -970,11 +970,13 @@ CREATE TABLE IF NOT EXISTS `CubeCart_seo_urls` (
   `type` varchar(45) NOT NULL,
   `item_id` int(25) unsigned DEFAULT NULL,
   `custom` enum('0','1') NOT NULL DEFAULT '0',
+  `redirect` enum('0','301','302') COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   PRIMARY KEY (`path`),
   KEY `id` (`id`),
   KEY `type` (`type`),
   KEY `item_id` (`item_id`),
-  KEY `custom` (`custom`)
+  KEY `custom` (`custom`),
+  KEY `redirect` (`redirect`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_email_log` (

@@ -586,6 +586,13 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="path" introduced="6.4.0"><![CDATA[Path]]></string>
+    <string name="destination" introduced="6.4.0"><![CDATA[Destination]]></string>
+    <string name="object" introduced="6.4.0"><![CDATA[Object]]></string>
+    <string name="object_id" introduced="6.4.0"><![CDATA[Object ID]]></string>
+    <string name="status_code" introduced="6.4.0"><![CDATA[Status Code]]></string>
+    <string name="document" introduced="6.4.0"><![CDATA[Document]]></string>
+    <string name="category" introduced="6.4.0"><![CDATA[Category]]></string>
     <string name="learn_more" introduced="6.4.0"><![CDATA[Learn more]]></string>
     <string name="cheapest" introduced="6.2.7"><![CDATA[Cheapest]]></string>
     <string name="block" introduced="6.2.1"><![CDATA[Block]]></string>
@@ -1654,6 +1661,9 @@ This email is sent from the store's master email address but it is possible to r
     <string name="subscribers_not_added" introduced="6.0.0"><![CDATA[No subscribers were added.]]></string>
   </group>
   <group name="notification">
+    <string name="notify_success_add_redirect" introduced="6.4.0"><![CDATA[Redirect added successfully.]]></string>
+    <string name="notify_fail_add_redirect" introduced="6.4.0"><![CDATA[Failed to add redirect. Please check it isn't already in use.]]></string>
+    <string name="notify_object_not_found" introduced="6.4.0"><![CDATA[Target product, category or document not found.]]></string>
     <string name="confirm_delete_folder" introduced="6.4.0"><![CDATA[Are you sure you want to delete the folder '%s'?\n\nWARNING: All files contained within it will be deleted permanently!]]></string>
     <string name="confirm_delete_file" introduced="6.2.2"><![CDATA[Are you sure you want to delete '%s'?]]></string>
     <string name="cookies_blocked" introduced="6.2.1"><![CDATA[Non-essential cookies have been blocked.]]></string>
@@ -1859,6 +1869,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
+    <string name="redirects" introduced="6.4.0"><![CDATA[Redirects]]></string>
     <string name="image_delete" introduced="6.4.0"><![CDATA[Delete associated images with product delete]]></string>
     <string name="w3w_na" introduced="6.4.0"><![CDATA[Warning: It doesn't look like your current skin is compatible with whats3words.]]></string>
     <string name="error_notice_desc" introduced="6.4.0"><![CDATA[Notice Error - These are unlikely to cause operatinal problems and can be thought of as best practice recommendations. Action is not required.]]></string>
@@ -1894,6 +1905,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="seo_add_cats_top" introduced="6.0.0"><![CDATA[Top level category only]]></string>
     <string name="seo_add_cats_all" introduced="6.0.0"><![CDATA[Top level and all subcategories]]></string>
     <string name="seo_cat_add_cats" introduced="6.0.0"><![CDATA[Add subcategories to category URL path?]]></string>
+    <string name="seo_ext" introduced="6.4.0"><![CDATA[SEO URL Extension]]></string>
     <string name="admin_only_skin_select" introduced="6.0.0"><![CDATA[Yes (Logged in admins only)]]></string>
     <string name="all_skin_select" introduced="6.0.0"><![CDATA[Yes (Everyone)]]></string>
     <string name="admin_order_status_notification" introduced="5.0.0"><![CDATA[Order status for admin email notifications]]></string>

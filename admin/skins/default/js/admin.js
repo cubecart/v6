@@ -24,6 +24,22 @@ function pageChanged(t) {
     }
 }
 
+function getSEODestination() {
+    var item_id = $("#item_id").val();
+    var type = $("#type").val();
+    var a = $("#val_admin_file").text();
+    $.getJSON("./" + a, {
+        _g: "xml",
+        item_id: item_id,
+        type: type,
+        function: "seopath"
+    }, function(t) {
+        if(t.length) {
+            $('#destination').html(t);
+        }
+    });
+}
+
 function removeVariableFromURL(t, e) {
     var i = String(t),
         a = new RegExp("\\?" + e + "=[^&]*&?", "gi");

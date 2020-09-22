@@ -362,9 +362,6 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
     if (substr($_POST['seo_path'], 0, 1) == '/' || substr($_POST['seo_path'], 0, 1) == '\\') {
         $_POST['seo_path'] = substr($_POST['seo_path'], 1);
     }
-    if (empty($_POST['seo_path'])) {
-        $GLOBALS['seo']->delete('prod', $product_id);
-    }
     $GLOBALS['seo']->setdbPath('prod', $product_id, $_POST['seo_path']);
 
     if (empty($_POST['primary_cat']) && count($_POST['categories'])>1) {
@@ -718,6 +715,7 @@ if (isset($_GET['action'])) {
         $GLOBALS['smarty']->assign("GOOGLE_CATS", $google_cats);
 
         $GLOBALS['main']->addTabControl($lang['settings']['tab_seo'], 'seo');
+        $GLOBALS['smarty']->assign("REDIRECTS", $GLOBALS['seo']->getRedirects('prod', $_GET['product_id']));
 
         // Generate list of groups and values
         if (($groups = $GLOBALS['db']->select('CubeCart_option_group', false, false, array('priority'=>'ASC'))) !== false) {

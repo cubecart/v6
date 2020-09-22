@@ -125,6 +125,7 @@
 	  <div><label for="seo_meta_description">{$LANG.settings.seo_meta_description}</label><span><textarea name="cat[seo_meta_description]" id="seo_meta_description" class="textbox">{$CATEGORY.seo_meta_description}</textarea></span></div>
 	</fieldset>
 	<p>* {$LANG.settings.seo_path_auto}</p>
+	{include file='templates/element.redirects.php'}
   </div>
 	{if isset($DISPLAY_SHIPPING)}
   <div id="cat_shipping" class="tab_content">

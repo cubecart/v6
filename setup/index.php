@@ -178,7 +178,8 @@ $default_config_settings = array(
   'r_email' => '30',
   'r_request' => '14',
   'r_staff' => '30',
-  'r_system_error' => '7'
+  'r_system_error' => '7',
+  'seo_ext' => ''
 );
 
 ksort($default_config_settings);

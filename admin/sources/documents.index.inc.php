@@ -30,9 +30,6 @@ if (isset($_POST['document']) && Admin::getInstance()->permissions('documents', 
     $_POST['document']['doc_content'] = $GLOBALS['RAW']['POST']['document']['doc_content'];
     if (isset($_POST['document']['doc_id']) && is_numeric($_POST['document']['doc_id'])) {
         if ($GLOBALS['db']->update('CubeCart_documents', $_POST['document'], array('doc_id' => $_POST['document']['doc_id']), true)) {
-            if (empty($_POST['seo_path'])) {
-                $GLOBALS['seo']->delete('doc', $_POST['document']['doc_id']);
-            }
             $GLOBALS['seo']->setdbPath('doc', $_POST['document']['doc_id'], $_POST['seo_path'], true, true);
             $GLOBALS['main']->successMessage($lang['documents']['notify_document_update']);
             $rem_array = array('action');
@@ -141,6 +138,7 @@ if (isset($_GET['action'])) {
     $GLOBALS['main']->addTabControl($lang['common']['general'], 'general');
     $GLOBALS['main']->addTabControl($lang['documents']['tab_content'], 'article');
     $GLOBALS['main']->addTabControl($lang['settings']['tab_seo'], 'seo');
+    $GLOBALS['smarty']->assign("REDIRECTS", $GLOBALS['seo']->getRedirects('doc', $_GET['doc_id']));
     if (strtolower($_GET['action']) == ('edit' || 'translate') && isset($_GET['doc_id']) && is_numeric($_GET['doc_id'])) {
 
         // Check to see if translation space is available

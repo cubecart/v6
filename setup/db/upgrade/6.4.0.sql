@@ -3,14 +3,14 @@ ALTER TABLE `CubeCart_coupons` ADD `coupon_per_customer` INT(10) UNSIGNED NULL D
 CREATE TABLE `CubeCart_customer_coupon` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `customer_id` int(10) UNSIGNED NOT NULL,
-  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `coupon` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `coupon` varchar(255) NOT NULL,
   `used` int(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`id`),
   KEY `customer_id` (`customer_id`),
   KEY `email` (`email`),
   KEY `coupon` (`coupon`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB; #EOQ
 ALTER TABLE `CubeCart_option_matrix` ADD INDEX(`status`); #EOQ
 DELETE FROM `CubeCart_option_matrix` WHERE `status` = 0; #EOQ
 ALTER TABLE `CubeCart_option_matrix` ADD `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP; #EOQ
@@ -30,3 +30,6 @@ UPDATE `CubeCart_email_content` SET `content_text` = REPLACE(`content_text`,'{$S
 UPDATE `CubeCart_email_template` SET `content_html` = REPLACE(`content_html`,'</style>','.w3w{\r\ncolor: #E11F26;\r\ndisplay: block\r\n}.w3w a{\r\ncolor: #333333;\r\ntext-decoration: none\r\n}\r\n</style>'); #EOQ
 UPDATE `CubeCart_invoice_template` SET `content` = REPLACE(`content`,'</style>','.w3w{\r\ncolor: #E11F26;\r\ndisplay: block\r\n}.w3w a{\r\ncolor: #333333;\r\ntext-decoration: none\r\n}\r\n</style>'); #EOQ
 UPDATE `CubeCart_invoice_template` SET `content` = REPLACE(`content`,'{$order.country_d}{/if}','{$order.country_d}{/if}{if !empty($order.w3w_d)}<br><div class="w3w">///<a href="https://what3words.com/{$order.w3w_d}">{$order.w3w_d}</a></div>{/if}'); #EOQ
+ALTER TABLE `CubeCart_seo_urls` ADD `redirect` enum('0','301','302') NOT NULL DEFAULT '0' AFTER `custom`; #EOQ
+ALTER TABLE `CubeCart_seo_urls` ADD INDEX(`redirect`); #EOQ
+UPDATE `CubeCart_seo_urls` SET `path` = CONCAT(`path`,'.html'); #EOQ

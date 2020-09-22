@@ -75,6 +75,7 @@ $nav_items['modules']  = array(
 $nav_items['advanced']  = array(
     $lang['navigation']['nav_maintenance']  => '?_g=maintenance',
     $lang['navigation']['nav_manage_hooks']  => '?_g=settings&node=hooks',
+    $lang['settings']['redirects']  => '?_g=settings&node=redirects',
     $lang['navigation']['nav_request_log']  => '?_g=settings&node=requestlog',
     $lang['navigation']['nav_access_log']  => '?_g=settings&node=logs',
     $lang['navigation']['nav_error_log']  => '?_g=settings&node=errorlog',

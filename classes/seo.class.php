@@ -43,7 +43,7 @@ class SEO
      *
      * @var string
      */
-    private $_extension   = '.html';
+    private $_extension   = '';
     /**
      * Ignored URL sections
      *
@@ -119,6 +119,8 @@ class SEO
 
         self::_checkModRewrite();
 
+        $this->_extension = $GLOBALS['config']->get('config', 'seo_ext');
+
         // Build an array of ALL categories
         $this->_getCategoryList();
         //If URL is an SEO
@@ -185,7 +187,7 @@ class SEO
                 foreach ($GLOBALS['hooks']->load('class.seo.buildurl.static_sections') as $hook) {
                     include $hook;
                 } 
-                return $url.$item[0]['path'].$this->_extension;
+                return $url.$item[0]['path'];
             } else {
                 return  $url.$this->setdbPath($type, '', '', false).$this->_extension;
             }
@@ -193,9 +195,9 @@ class SEO
             foreach ($GLOBALS['hooks']->load('class.seo.buildurl.dynamic_url') as $hook) {
                 include $hook;
             }
-            return $url.$item[0]['path'].$this->_extension;
+            return $url.$item[0]['path'];
         } else {
-            return  $url.$this->setdbPath($type, $item_id, '', false).$this->_extension;
+            return  $url.$this->setdbPath($type, $item_id, '', false);
         }
     }
 
@@ -347,6 +349,10 @@ class SEO
             }
         }
         $safe_path = SEO::_safeUrl($path);
+        // Only add extension is its not already there!
+        if($this->hasExtension($safe_path)) {
+            $extension = false;
+        }
 
         return $this->_getBaseUrl($absolute).$safe_path.(($extension) ? $this->_extension : '');
     }
@@ -360,7 +366,7 @@ class SEO
      */
     public function getdbPath($type, $item_id)
     {
-        if (($item = $GLOBALS['db']->select('CubeCart_seo_urls', array('path'), array('type' => $type, 'item_id' => $item_id))) !== false) {
+        if (($item = $GLOBALS['db']->select('CubeCart_seo_urls', array('path'), array('type' => $type, 'item_id' => $item_id, 'redirect' => 0))) !== false) {
             return $item[0]['path'];
         } else {
             return '';
@@ -382,6 +388,9 @@ class SEO
 
         if (!empty($path)) {
             if (($item = $GLOBALS['db']->select('CubeCart_seo_urls', false, array('path' => $path))) !== false) {
+                if(in_array($item[0]['redirect'],array('301','302'))) {
+                    httpredir($GLOBALS['storeURL'].'/'.$this->getdbPath($item[0]['type'], $item[0]['item_id']), '', false, (int)$item[0]['redirect']);
+                }
                 $item_vars = $this->_getItemVars($item[0]['type'], $item[0]['item_id']);
                 foreach ($GLOBALS['hooks']->load('class.seo.getitem.parameters') as $hook) {
                     include $hook;
@@ -398,6 +407,30 @@ class SEO
         } else {
             httpredir('index.php');
         }
+    }
+
+    /**
+     * Get items redirects
+     *
+     * @param string $type
+     * @param string $item_id
+     */
+    public function getRedirects($type, $item_id)
+    {
+        if(ctype_digit($item_id) && !empty($type)) {
+            return $GLOBALS['db']->select('CubeCart_seo_urls', false, array('type'=> $type, 'item_id' => $item_id, 'redirect' => '> 0'));
+        }
+        return false;
+    }
+
+    /**
+     * Check path has extension already or not
+     *
+     * @param string $path
+     * @return bool
+     */
+    public function hasExtension($path) {
+        return substr_compare($path, $this->_extension, strlen($path)-strlen($this->_extension), strlen($this->_extension)) === 0;
     }
 
     /**
@@ -640,12 +673,18 @@ class SEO
      * @param bool $show_error
      * @return bool/string
      */
-    public function setdbPath($type, $item_id, $path, $bool = true, $show_error = true)
+    public function setdbPath($type, $item_id, $path, $bool = true, $show_error = true, $status_code = 0)
     {
         if (!empty($path)) {
             $path = SEO::_safeUrl($path);
         }
-        if (in_array($type, array_merge($this->_dynamic_sections, $this->_static_sections))) {
+        if($status_code!==0) {
+            if($GLOBALS['db']->count('CubeCart_seo_urls', 'id', "`path` = '$path'") > 0) {
+                return false;
+            } else {
+                return $GLOBALS['db']->insert('CubeCart_seo_urls', array('type' => $type, 'item_id' => $item_id, 'path' => $path, 'custom' => 1, 'redirect' => $status_code));
+            }
+        } elseif (in_array($type, array_merge($this->_dynamic_sections, $this->_static_sections))) {
             $custom = 1;
 
             // if path is empty or already taken generate one
@@ -657,7 +696,7 @@ class SEO
                     }
                 }
                 // try to generate
-                $path = $this->generatePath($item_id, $type);
+                $path = $this->generatePath($item_id, $type, null, false, true);
 
                 $custom = 0;
             }
@@ -665,8 +704,21 @@ class SEO
             if (empty($path)) {
                 return ($bool) ? false : '';
             }
-            if (($existing = $GLOBALS['db']->select('CubeCart_seo_urls', 'id', array('type' => $type, 'item_id' => $item_id), false, 1, false, false)) !== false) {
-                $GLOBALS['db']->update('CubeCart_seo_urls', array('type' => $type, 'item_id' => $item_id, 'path' => $path, 'custom' => $custom), array('id' => $existing[0]['id']));
+            $existing = $GLOBALS['db']->select('CubeCart_seo_urls', array('id', 'path'), array('type' => $type, 'item_id' => $item_id), false, false, false, false);
+            if ($existing) {
+                $match = false;
+                foreach($existing as $e) {
+                    if($e['path']==$path) {
+                        $match = true;
+                        $GLOBALS['db']->update('CubeCart_seo_urls', array('redirect' => 0), array('id' => $e['id']));
+                        echo "matched";
+                    } else {
+                        $GLOBALS['db']->update('CubeCart_seo_urls', array('redirect' => 1), array('id' => $e['id']));
+                    }
+                }
+                if(!$match) {
+                    $GLOBALS['db']->insert('CubeCart_seo_urls', array('redirect' => 0, 'type' => $type, 'item_id' => $item_id, 'path' => $path, 'custom' => $custom));
+                }
             } else {
                 // Check for duplicate path
                 if (!$GLOBALS['db']->select('CubeCart_seo_urls', false, array('path' => $path), false, 1, false, false)) {
@@ -880,7 +932,7 @@ IndexIgnore *
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_URI} !=/favicon.ico
-  RewriteRule ^(.*)\.html?$ index.php?seo_path=$1 [L,QSA]
+  RewriteRule ^(.*)?$ index.php?seo_path=$1 [L,QSA]
 </IfModule>
 
 ### Default store 404 page ###
@@ -1046,9 +1098,8 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
     {
         $url = trim($url);
         $url = function_exists('mb_strtolower') ? mb_strtolower($url) : strtolower($url);
-        $url = preg_replace("/\.\w{2,4}$/", '', $url);
         $url = str_replace(' ', '-', html_entity_decode($url, ENT_QUOTES));
-        $url = preg_replace('#[^\w\-_/]#iuU', '-', str_replace('/', '/', $url));
+        $url = preg_replace('#[^\w\-._/]#iuU', '-', str_replace('/', '/', $url));
         $url = preg_replace(array('#/{2,}#iu', '#-{2,}#'), array('/', '-'), $url);
         return trim($url, '-');
     }
