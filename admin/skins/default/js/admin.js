@@ -293,7 +293,13 @@ $(document).ready(function() {
             $(this).is("a") && t.preventDefault();
             var e = $(this).attr("rel"),
                 i = $("input[type=checkbox]." + e);
-            i.prop("checked", this.checked)
+                s;
+            if(this.checked) {
+                s = this.checked;
+            } else {
+                s = !i.prop("checked");
+            }
+            i.prop("checked", s)
         }), $("select.auto_submit").each(function() {
             $(this).hasClass("show_submit") || $(this).parents("form:first").find("input:submit").hide()
         }).change(function() {
