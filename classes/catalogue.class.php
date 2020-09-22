@@ -857,7 +857,8 @@ class Catalogue
                     $result = array(
                         'name'  => (isset($this->_category_translations[$category['cat_id']]) && !empty($this->_category_translations[$category['cat_id']])) ? $this->_category_translations[$category['cat_id']] : $category['cat_name'],
                         'cat_id' => $category['cat_id'],
-                        'cat_level' => $level
+                        'cat_level' => $level,
+                        'product_count' => $products
                     );
                     if ($GLOBALS['config']->get('config', 'catalogue_expand_tree') && $children = $this->getCategoryTree($category['cat_id'], $level)) {
                         $result['children'] = $children;
@@ -866,7 +867,6 @@ class Catalogue
                 }
             }
         }
-
         return (isset($tree_data)) ? $tree_data : false;
     }
 
