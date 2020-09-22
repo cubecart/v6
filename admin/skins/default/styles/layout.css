@@ -1377,16 +1377,16 @@ ul.fmsearch_images {
     padding: 0;
 }
 ul.fmsearch_images li {
-    margin-bottom: 5px;
+    margin-bottom: 15px;
     text-align: center;
 }
 ul.fmsearch_images li div:hover {
     background-color: #edf4f7;
+    border: 1px solid #ccc;
 }
-ul.fmsearch_images div {
-    width: 153px;
-    height: 170px;
+ul.fmsearch_images li div {
     padding: 5px;
+    border: 1px solid #fff;  
 }
 ul.fmsearch_images img {
     max-width: 150px;
