@@ -39,8 +39,8 @@
                </td>
                <td>
                <select name="redirect">
-                     <option value="301">301</option>
-                     <option value="302">302</option>
+                     <option value="301">301 - {$LANG.common.permanent}</option>
+                     <option value="302">302 - {$LANG.common.temporary}</option>
                   </select>
                </td>
                <td align="center"><input id="submit" type="submit" class="tiny button" value="{$LANG.common.add}"></td>

@@ -586,6 +586,8 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="permanent" introduced="6.4.0"><![CDATA[Permanent]]></string>
+    <string name="temporary" introduced="6.4.0"><![CDATA[Temporary]]></string>
     <string name="path" introduced="6.4.0"><![CDATA[Path]]></string>
     <string name="destination" introduced="6.4.0"><![CDATA[Destination]]></string>
     <string name="object" introduced="6.4.0"><![CDATA[Object]]></string>
