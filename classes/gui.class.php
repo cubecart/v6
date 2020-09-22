@@ -1188,7 +1188,20 @@ class GUI
             $content = $GLOBALS['smarty']->fetch('templates/box.navigation.php');
             $content = str_replace('/index.php/', '/', $content);
             
-            $GLOBALS['cache']->write($content, $cache_id, '', $serialize);
+            // Prevent cache if domain seems wrong
+            $url_parts = parse_url($GLOBALS['config']->get('config', 'standard_url'));
+            $cache = false;
+            if($url_parts) {
+                $defined_host = trim($url_parts['host'], 'www.');
+                $url_parts = parse_url($GLOBALS['storeURL']);
+                if($url_parts) {
+                    $detected_host = trim($url_parts['host'], 'www.');
+                    if($defined_host===$detected_host) {
+                        $cache = true;
+                    }
+                }
+            }
+            if($cache) $GLOBALS['cache']->write($content, $cache_id, '', $serialize);
         }
 
         foreach ($GLOBALS['hooks']->load('class.gui.display_navigation') as $hook) {
