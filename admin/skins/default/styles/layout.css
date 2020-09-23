@@ -1383,7 +1383,7 @@ ul.fmsearch_images li {
     margin-bottom: 15px;
     text-align: center;
 }
-ul.fmsearch_images li div:hover {
+ul.fmsearch_images li.show div:hover {
     background-color: #edf4f7;
     border: 1px solid #ccc;
 }

@@ -1221,7 +1221,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_templates" introduced="5.0.0"><![CDATA[Email Templates]]></string>
   </group>
   <group name="filemanager">
-    <string name="min_two_char" introduced="6.4.0"><![CDATA[Search term should be a minimum of two charachters.]]></string>
+    <string name="search_location" introduced="6.4.0"><![CDATA[Search for image loction]]></string>
+    <string name="min_three_char" introduced="6.4.0"><![CDATA[Search term should be a minimum of three charachters.]]></string>
     <string name="search_result" introduced="6.4.0"><![CDATA[Image Search Result for '%s']]></string>
     <string name="public" introduced="6.1.6"><![CDATA[Files uploaded to the files/public folder can be accessed directly via a browser. All others are protected with intent to be sold as digital products.]]></string>
     <string name="upload_destination" introduced="6.1.2"><![CDATA[Upload Destination]]></string>

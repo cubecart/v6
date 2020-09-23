@@ -368,6 +368,7 @@ $(document).ready(function() {
 
     $("#fm-search-button").click(function() {
         var mode = $(this).attr("data-mode");
+        var action = $(this).attr("data-action");
         var term = $('#fm-search-term').val();
         var token = $('.cc_session_token').val();
         $('#fm-search-term').val('');
@@ -389,7 +390,8 @@ $(document).ready(function() {
             data: {
                 _g: "xml",
                 path: path,
-                function: "filesize"
+                function: "filesize",
+                action: "action"
             },
             success: function(r) {
                 parent.html(r);

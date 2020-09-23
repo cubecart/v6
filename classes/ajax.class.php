@@ -291,8 +291,9 @@ class Ajax
     public static function fmSearch() {
         if (CC_IN_ADMIN) {
             $term = $_POST['term'];
-            if(strlen($term)>=2) {
+            if(strlen($term)>=3) {
                 $mode = $_POST['mode']=='digital' ? 'digital' : 'images';
+                $action = $_POST['action']=='show' ? 'show' : 'location';
                 $path = $_POST['mode']=='digital' ? CC_ROOT_DIR.'/files' : CC_ROOT_DIR.'/images/source';
                 $files = fmSearchList($path, $term);
                 $output = '';
@@ -305,7 +306,12 @@ class Ajax
                     $file = str_replace($path.'/','',$file);
                     $subdir = urlencode(ltrim(dirname($file),'/'));
                     $anchor = md5(urlencode(basename($file)));
-                    $output .= "<li><a href=\"?_g=filemanager&subdir=$subdir&mode=$mode&".time()."&file_id=file_$anchor\">$preview $file</a></li>";
+                    if($action=='show') {
+                        $output .= "<li class=\"show\"><a href=\"?_g=filemanager&subdir=$subdir&mode=$mode&".time()."&file_id=file_$anchor\">$preview $file</a></li>";
+                    } else {
+                        $output .= "<li>$preview $file</li>";
+                    }
+                    
                 }
                 if(empty($output)) {
                     $output = "<p>".$GLOBALS['language']->common['error_no_results']."</p>";

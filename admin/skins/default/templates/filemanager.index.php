@@ -13,7 +13,7 @@
   {if isset($mode_list)}
   <div id="filemanager" class="tab_content">
 	<h3>{if $FILMANAGER_MODE == '1'}<span class="toggle"><span class="small"></span><span class="medium"></span><span class="large"></span><span class="xlarge"></span></span>{/if}{$FILMANAGER_TITLE}</h3>
-	{if $FILMANAGER_MODE == '1'}<input type="text" name="fm-search-term" id="fm-search-term" placeholder="{$LANG.common.search}..."><button type="button" class="button tiny" id="fm-search-button" data-mode="{if $FILMANAGER_MODE == '1'}images{else}digital{/if}">{$LANG.common.go}</button>
+	{if $FILMANAGER_MODE == '1'}<input type="text" name="fm-search-term" id="fm-search-term" placeholder="{$LANG.common.search}..."><button type="button" class="button tiny" id="fm-search-button" data-mode="{if $FILMANAGER_MODE == '1'}images{else}digital{/if}" data-action="show">{$LANG.common.go}</button>
 	<hr>{/if}
 	{if $FILMANAGER_MODE == '2'}
 	<p>{$LANG.filemanager.public}</p>
