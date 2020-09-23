@@ -1148,6 +1148,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="macro_state_d" introduced="5.0.0"><![CDATA[Shipping address state]]></string>
     <string name="macro_postcode_d" introduced="5.0.0"><![CDATA[Shipping address postcode]]></string>
     <string name="macro_country_d" introduced="5.0.0"><![CDATA[Shipping address country]]></string>
+    <string name="macro_w3w_d" introduced="6.4.0"><![CDATA[Shipping address what3words]]></string>
     <string name="macro_first_name" introduced="5.0.0"><![CDATA[Billing address first name]]></string>
     <string name="macro_last_name" introduced="5.0.0"><![CDATA[Billing address last name]]></string>
     <string name="macro_company_name" introduced="5.0.0"><![CDATA[Billing address companyname]]></string>
@@ -1157,6 +1158,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="macro_state" introduced="5.0.0"><![CDATA[Billing address state]]></string>
     <string name="macro_postcode" introduced="5.0.0"><![CDATA[Billing address postcode]]></string>
     <string name="macro_country" introduced="5.0.0"><![CDATA[Billing address country]]></string>
+    <string name="macro_w3w" introduced="6.4.0"><![CDATA[Billing address what3words]]></string>
     <string name="macro_phone" introduced="5.0.0"><![CDATA[Billing address phone]]></string>
     <string name="macro_email" introduced="5.0.0"><![CDATA[Billing email]]></string>
     <string name="news_cancel" introduced="5.0.0"><![CDATA[Cancel Send]]></string>
