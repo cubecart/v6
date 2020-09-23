@@ -13,12 +13,12 @@
   {if isset($mode_list)}
   <div id="filemanager" class="tab_content">
 	<h3>{if $FILMANAGER_MODE == '1'}<span class="toggle"><span class="small"></span><span class="medium"></span><span class="large"></span><span class="xlarge"></span></span>{/if}{$FILMANAGER_TITLE}</h3>
-	<input type="text" name="fm-search-term" id="fm-search-term" placeholder="{$LANG.common.search}..."><button type="button" class="button tiny" id="fm-search-button" data-mode="{if $FILMANAGER_MODE == '1'}images{else}digital{/if}">{$LANG.common.go}</button>
-	<hr>
+	{if $FILMANAGER_MODE == '1'}<input type="text" name="fm-search-term" id="fm-search-term" placeholder="{$LANG.common.search}..."><button type="button" class="button tiny" id="fm-search-button" data-mode="{if $FILMANAGER_MODE == '1'}images{else}digital{/if}">{$LANG.common.go}</button>
+	<hr>{/if}
 	{if $FILMANAGER_MODE == '2'}
 	<p>{$LANG.filemanager.public}</p>
 	{/if}
-	<div id="fm-wrapper" style="overflow:hidden;">
+	<div id="fm-wrapper" class="{if $FILMANAGER_MODE == '1'}images{else}digital{/if}" style="overflow:hidden;">
 	  {if $FOLDER_PARENT}
 	  <div>
 		<a href="{$FOLDER_PARENT}"><i class="fa fa-arrow-left" aria-hidden="true"></i> Parent Directory</a>
@@ -45,7 +45,7 @@
 	  <div {if $FILMANAGER_MODE == '1'}class="fm-item {$FM_SIZE}{if $file.file_name_hash==$HILIGHTED_FILE} hilighted{/if}"{/if} id="{$file.file_name_hash}">
 	  {if $FILMANAGER_MODE == '1'}<a href="{$file.filepath}?{$file.random}" class="{$file.class} thumbnail" title="{$file.description}" target="_self"><img class="lazyload" data-src="{$file.filepath}" src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs="></a>{/if}
 	 	 <span class="actions">
-		  <input type="checkbox" value="{$file.value}" class="multi_delete" name="multi_delete[]"> {$file.filesize}
+		  <input type="checkbox" value="{$file.value}" class="multi_delete right" name="multi_delete[]"> {$file.filesize}
 		  {if $file.select_button}
 		  <a href="{$file.master_filepath}" class="select"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a>
 		  {else}
