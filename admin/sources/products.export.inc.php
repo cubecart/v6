@@ -110,7 +110,7 @@ if (isset($_GET['format']) && !empty($_GET['format'])) {
             $result['price_formatted'] = Tax::getInstance()->priceFormat($result['price'], true);
 
             ## Generate Product URL
-            $url = $seo->generatePath($result['product_id'], 'product', 'product_id', true, true);
+            $url = $seo->generatePath($result['product_id'], 'product', 'product_id', true);
             $result['url'] = $seo->fullURL($url, true);
 
             ## Generate Image URL

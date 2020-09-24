@@ -127,7 +127,7 @@ class SEO
         if (preg_match('#^'.self::PCRE_REQUEST_URI.'$#Sui', $_SERVER['REQUEST_URI'], $match)) {
             if (!in_array($match[2], $this->_ignored)) {
                 //Generate SEO URL
-                $seo_url = html_entity_decode($this->generatePath($match[5], $match[2], $match[4], true, true));
+                $seo_url = html_entity_decode($this->generatePath($match[5], $match[2], $match[4], true));
                 if(isset($match[6]) && $match[6][0]=='&'){  
                     $match[6][0]='?';
                     $seo_url.=$match[6];
@@ -254,7 +254,7 @@ class SEO
      * @param string $extension
      * @return string
      */
-    public function generatePath($id = null, $type = null, $key = null, $absolute = false, $extension = false)
+    public function generatePath($id = null, $type = null, $key = null, $absolute = false)
     {
         $prefix  = '';
         $type   = strtolower($type);
@@ -296,6 +296,11 @@ class SEO
                         $GLOBALS['cache']->delete('seo.category.list');
                         $this->_getCategoryList();
                         $path = $this->getDirectory($id);
+                        // If try from cache fails... 
+                        if(empty($path)) {
+                            $this->_getCategoryList(true, true);
+                            $path = $this->getDirectory($id);
+                        }
                     } else {
                         // last panic resort which shouldn't happen
                         $path = 'cat'.$id;
@@ -348,13 +353,8 @@ class SEO
                     return $this->_url;
             }
         }
-        $safe_path = SEO::_safeUrl($path);
-        // Only add extension is its not already there!
-        if($this->hasExtension($safe_path)) {
-            $extension = false;
-        }
-
-        return $this->_getBaseUrl($absolute).$safe_path.(($extension) ? $this->_extension : '');
+        $path = SEO::_safeUrl($path);
+        return $this->_getBaseUrl($absolute).$this->_handleExtension($path);
     }
 
     /**
@@ -421,16 +421,6 @@ class SEO
             return $GLOBALS['db']->select('CubeCart_seo_urls', false, array('type'=> $type, 'item_id' => $item_id, 'redirect' => '> 0'));
         }
         return false;
-    }
-
-    /**
-     * Check path has extension already or not
-     *
-     * @param string $path
-     * @return bool
-     */
-    public function hasExtension($path) {
-        return substr_compare($path, $this->_extension, strlen($path)-strlen($this->_extension), strlen($this->_extension)) === 0;
     }
 
     /**
@@ -657,7 +647,7 @@ class SEO
                     $match[6] = $match[6].'&'.$match[4].'='.$match[5];
                 }
             }
-            return $this->generatePath($match[5], $match[2], $match[4], true, true).$this->queryString($match[6]);
+            return $this->generatePath($match[5], $match[2], $match[4], true).$this->queryString($match[6]);
         } else {
             return $path;
         }
@@ -682,7 +672,7 @@ class SEO
             if($GLOBALS['db']->count('CubeCart_seo_urls', 'id', "`path` = '$path'") > 0) {
                 return false;
             } else {
-                return $GLOBALS['db']->insert('CubeCart_seo_urls', array('type' => $type, 'item_id' => $item_id, 'path' => $path, 'custom' => 1, 'redirect' => $status_code));
+                return $GLOBALS['db']->insert('CubeCart_seo_urls', array('type' => $type, 'item_id' => $item_id, 'path' => $this->_handleExtension($path), 'custom' => 1, 'redirect' => $status_code));
             }
         } elseif (in_array($type, array_merge($this->_dynamic_sections, $this->_static_sections))) {
             $custom = 1;
@@ -696,7 +686,7 @@ class SEO
                     }
                 }
                 // try to generate
-                $path = $this->generatePath($item_id, $type, null, false, true);
+                $path = $this->generatePath($item_id, $type, null, false);
 
                 $custom = 0;
             }
@@ -717,16 +707,16 @@ class SEO
                     }
                 }
                 if(!$match) {
-                    $GLOBALS['db']->insert('CubeCart_seo_urls', array('redirect' => 0, 'type' => $type, 'item_id' => $item_id, 'path' => $path, 'custom' => $custom));
+                    $GLOBALS['db']->insert('CubeCart_seo_urls', array('redirect' => 0, 'type' => $type, 'item_id' => $item_id, 'path' => $this->_handleExtension($path), 'custom' => $custom));
                 }
             } else {
                 // Check for duplicate path
                 if (!$GLOBALS['db']->select('CubeCart_seo_urls', false, array('path' => $path), false, 1, false, false)) {
-                    $GLOBALS['db']->insert('CubeCart_seo_urls', array('type' => $type, 'item_id' => $item_id, 'path' => $path, 'custom' => $custom));
+                    $GLOBALS['db']->insert('CubeCart_seo_urls', array('type' => $type, 'item_id' => $item_id, 'path' => $this->_handleExtension($path), 'custom' => $custom));
                 } else {
                     // Force unique path is it's already taken
                     $unique_id = substr($type, 0, 1).$item_id;
-                    $GLOBALS['db']->insert('CubeCart_seo_urls', array('type' => $type, 'item_id' => $item_id, 'path' => $path.'-'.$unique_id, 'custom' => $custom));
+                    $GLOBALS['db']->insert('CubeCart_seo_urls', array('type' => $type, 'item_id' => $item_id, 'path' => $this->_handleExtension($path, '-'.$unique_id), 'custom' => $custom));
                     $GLOBALS['gui']->setError($GLOBALS['language']->settings['seo_path_taken'], true);
                 }
             }
@@ -980,11 +970,15 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
      *
      * @param bool $rebuild
      */
-    private function _getCategoryList($rebuild = false)
+    private function _getCategoryList($rebuild = false, $skip_seo_path = false)
     {
         $language = Session::getInstance()->has('language', 'client') ? Session::getInstance()->get('language', 'client') : Language::getInstance()->current();
         if ($rebuild || ($this->_cat_dirs = Cache::getInstance()->read('seo.category.list.'.$language)) === false) {
-            $query = sprintf("SELECT C.cat_id, C.cat_name, C.cat_parent_id, S.path FROM `%1\$sCubeCart_category` as C LEFT JOIN `%1\$sCubeCart_seo_urls` as S ON S.item_id=C.cat_id WHERE S.type='cat' ORDER BY C.cat_id DESC", $GLOBALS['config']->get('config', 'dbprefix'));
+            if($skip_seo_path) {
+                $query = sprintf("SELECT cat_id, cat_name, cat_parent_id FROM `%1\$sCubeCart_category` ORDER BY cat_id DESC", $GLOBALS['config']->get('config', 'dbprefix'));
+            } else {
+                $query = sprintf("SELECT C.cat_id, C.cat_name, C.cat_parent_id, S.path FROM `%1\$sCubeCart_category` as C LEFT JOIN `%1\$sCubeCart_seo_urls` as S ON S.item_id=C.cat_id WHERE S.type='cat' ORDER BY C.cat_id DESC", $GLOBALS['config']->get('config', 'dbprefix'));
+            }
             if (($results = $GLOBALS['db']->query($query)) !== false) {
                 foreach ($results as $result) {
                     $this->_cat_dirs[$result['cat_id']] = $result;
@@ -996,8 +990,9 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
                         $this->_cat_dirs[$translation['cat_id']]['cat_name'] = $translation['cat_name'];
                     }
                 }
-
-                if (!empty($this->_cat_dirs)) {
+                if($skip_seo_path) {
+                    $this->_getCategoryList(true);
+                } else if (!empty($this->_cat_dirs)) {
                     $GLOBALS['cache']->write($this->_cat_dirs, 'seo.category.list.'.$language);
                 }
             }
@@ -1091,6 +1086,17 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
     /**
      * Is URL safe?
      *
+     * @param string $path
+     * @param string $uid
+     * @return string $path
+     */
+    private function _handleExtension($path, $uid = '') {
+        return $path = str_replace('.html', '', $path).$uid.$this->_extension;
+    }
+
+    /**
+     * Is URL safe?
+     *
      * @param string $url
      * @return bool
      */
@@ -1119,7 +1125,7 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
         $updated = $dateTime->format(DateTime::W3C);
 
         if (!isset($input['url']) && !empty($type)) {
-            $input['url'] = $this->_sitemap_base_url.'/'.$this->generatePath($input['id'], $type, '', false, true);
+            $input['url'] = $this->_sitemap_base_url.'/'.$this->generatePath($input['id'], $type, '', false);
         }
 
         $this->_sitemap_xml->startElement('url');
