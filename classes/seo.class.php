@@ -1091,7 +1091,8 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
      * @return string $path
      */
     private function _handleExtension($path, $uid = '') {
-        return $path = str_replace('.html', '', $path).$uid.$this->_extension;
+        $extension = preg_match('/\.html$/', $path) ?  '.html' : $this->_extension;
+        return $path = str_replace('.html', '', $path).$uid.$extension;
     }
 
     /**
