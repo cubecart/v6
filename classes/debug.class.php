@@ -149,7 +149,7 @@ class Debug
 
     public function __destruct()
     {
-        if ($this->stream_into_session) {
+        if (!defined('CC_IN_SETUP') && $this->stream_into_session) {
             Session::getInstance()->set('debug_spool', array($this->display(true)));
         } else {
             $this->display();
