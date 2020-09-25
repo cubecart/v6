@@ -6,5 +6,5 @@ $db->update('CubeCart_config', array('array' => base64_encode(json_encode(array_
 
 $htaccess_path = CC_ROOT_DIR.'/.htaccess';
 $content = file_get_contents($htaccess_path);
-$content = str_replace('^(.*)\.html?$', '^(.*)?$', $content);
+$content = str_replace('^(.*)\.html?', '^(.*)?', $content);
 file_put_contents($htaccess_path, $content);
