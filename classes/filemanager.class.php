@@ -24,6 +24,9 @@ class FileManager
     private $_sendfile = false;
     private $_max_upload_image_size = 350000;
 
+    private $_streamable_audio = array('wav','aif','m4a','caf','flac','mp3','aac','m4a', 'm4b','m4p','m4v','m4r','wma','ogg');
+    private $_streamable_video = array('3gp','3g2','asf','wmv','divx','f4v','flv','mkv','mk3d','mp4','mpg','mpeg','ts','m2ts','ogg','mov','qt','rmvb');
+
     public $form_fields = false;
 
     const FM_FILETYPE_IMG 	= 1;
@@ -98,6 +101,8 @@ class FileManager
                             }
                         }
                         $record['description'] = strip_tags($_POST['details']['description']);
+                        $record['title'] = $_POST['details']['title'];
+                        $record['stream'] = $_POST['details']['stream'];
 
                         $update = false;
                         foreach ($record as $k => $v) {
@@ -633,6 +638,8 @@ class FileManager
                     if ($file[0]['type'] == self::FM_FILETYPE_IMG) {
                         $GLOBALS['main']->addTabControl($GLOBALS['language']->filemanager['tab_crop'], 'fm-cropper');
                         $GLOBALS['smarty']->assign('SHOW_CROP', true);
+                    } else {
+                        $GLOBALS['smarty']->assign('STREAMABLE', $this->_streamable($file[0]['filename']));
                     }
                     $GLOBALS['smarty']->assign('mode_form', true);
                     return $GLOBALS['smarty']->fetch('templates/filemanager.index.php');
@@ -1194,6 +1201,11 @@ class FileManager
             'main_img'  => $main_image
         );
         $GLOBALS['db']->insert('CubeCart_image_index', $record);
+    }
+
+    private function _streamable($filename) {
+        $ext = pathinfo($filename, PATHINFO_EXTENSION);
+        return in_array($ext, array_merge($this->_streamable_audio, $this->_streamable_video));
     }
 
     /**

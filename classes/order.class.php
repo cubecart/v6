@@ -1041,7 +1041,7 @@ class Order
     private function _digitalDelivery($order_id, $email)
     {
         if (!empty($order_id) && !empty($email)) {
-            if (($digital = $GLOBALS['db']->select('CubeCart_downloads', array('digital_id', 'accesskey', 'order_inv_id'), array('cart_order_id' => $order_id), false, false, false, false)) !== false) {
+            if (($digital = $GLOBALS['db']->select('CubeCart_downloads', false, array('cart_order_id' => $order_id), false, false, false, false)) !== false) {
                 foreach ($digital as $offset => $download) {
                     // Get product name
                     $product = $GLOBALS['db']->select('CubeCart_order_inventory', array('name'), array('id' => $download['order_inv_id']));
@@ -1053,7 +1053,10 @@ class Order
                         $expire = 0;
                     }
                     $GLOBALS['db']->update('CubeCart_downloads', array('expire' => $expire), array('digital_id' => $download['digital_id']));
+                    $filemanager = new FileManager();
+                    $data = $filemanager->getFileInfo($download['product_id']);
                     $dkeys[] = array(
+                        'stream' => $data['stream'],
                         'accesskey' => $download['accesskey'],
                         'name'  => $product[0]['name'],
                         'expire'    => ($expire > 0) ? formatTime($expire, false, true) : $GLOBALS['language']->common['never']
@@ -1063,7 +1066,8 @@ class Order
                 $mailer = new Mailer();
                 if ($this->_email_enabled && ($contents = $mailer->loadContent('cart.digital_download', $this->_order_summary['lang'], $this->_order_summary))) {
                     foreach ($dkeys as $dkey) {
-                        $download['url']  = $GLOBALS['storeURL'].'/index.php?_a=download&accesskey='.$dkey['accesskey'];
+                        $download['url']  = $GLOBALS['storeURL'].'/index.php?_a=download&accesskey='.$dkey['accesskey'].'&stream='.(string)$dkey['stream'];
+                        $download['stream']  = $dkey['stream'];
                         $download['name']  = $dkey['name'];
                         $download['expire'] = $dkey['expire'];
                         $downloads[] = $download;

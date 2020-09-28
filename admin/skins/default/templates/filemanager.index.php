@@ -111,7 +111,11 @@
 	  {if isset($DIRS)}{foreach from=$DIRS item=dir}<option value="{$dir.path}"{$dir.selected}>{$dir.path}</option>{/foreach}{/if}
 	</select>
 	</span></div>
+	{if $STREAMABLE}
+	<div><label for="stream">{$LANG.filemanager.stream}</label><span><input type="hidden" name="details[stream]" id="stream" value="{$FILE.stream}" class="toggle"></span></div>
+	<div><label for="title">{$LANG.filemanager.title}</label><span><input type="text" id="title" name="details[title]" class="textbox" value="{$FILE.title}"></span></div>
 	<div><label for="description">{$LANG.common.description}</label><span><textarea name="details[description]" id="description" class="textbox">{$FILE.description}</textarea></span></div>
+	{/if}
 	</fieldset>
   </div>
   {if isset($SHOW_CROP)}

@@ -2079,11 +2079,15 @@ class Cubecart
             include $hook;
         }
 
-        $filemanager = new FileManager(FileManager::FM_FILETYPE_DL);
         if (isset($_REQUEST['accesskey']) && !empty($_REQUEST['accesskey'])) {
             // Supress the debugger output
             $GLOBALS['debug']->supress();
-            if ($filemanager->deliverDownload($_REQUEST['accesskey'], $error)) {
+            $filemanager = new FileManager(FileManager::FM_FILETYPE_DL);
+
+            var_dump($_GET); exit;
+            if($_GET['stream']=='1') {
+                echo "stream"; exit;
+            } else if ($filemanager->deliverDownload($_REQUEST['accesskey'], $error)) {
                 exit;
             } else {
                 if (!empty($error)) {

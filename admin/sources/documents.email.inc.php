@@ -104,6 +104,7 @@ $email_types = array(
             '{$download.name}' => $lang['email']['macro_product_name'],
             '{$download.expire}' => $lang['email']['macro_download_expire'],
             '{$download.url}'  => $lang['email']['macro_link_download'],
+            '{$download.stream}'  => $lang['email']['macro_stream']
         ),
     ),
     'cart.gift_certificate' => array(
