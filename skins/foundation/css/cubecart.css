@@ -254,6 +254,10 @@ a.back-to-top, a.back-to-top:hover, a.back-to-top:active, a.back-to-top:visited 
 	background-color: #fff;
 	color: #666;
 }
+.button.trans {
+	background-color: transparent;
+	color: #666;
+}
 textarea#contact_enquiry {
     height: 150px;
 }

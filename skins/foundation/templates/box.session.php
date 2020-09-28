@@ -11,7 +11,7 @@
  *}
 <div class="right text-right show-for-medium-up" id="box-session">
    {if $IS_USER}
-   <a href="#" data-dropdown="session" class="button white small">{$CUSTOMER.first_name|capitalize} {$CUSTOMER.last_name|capitalize} <svg class="icon"><use xlink:href="#icon-caret-down"></use></svg></a><br>
+   <a href="#" data-dropdown="session" class="button trans small">{$CUSTOMER.first_name|capitalize} {$CUSTOMER.last_name|capitalize} <svg class="icon"><use xlink:href="#icon-caret-down"></use></svg></a><br>
    <ul id="session" data-dropdown-content class="f-dropdown">
       <li class="text-left"><a href="{$STORE_URL}/index.php?_a=profile" title="{$LANG.account.your_details}">{$LANG.account.your_details}</a></li>
       <li class="text-left"><a href="{$STORE_URL}/index.php?_a=vieworder" title="{$LANG.account.your_orders}">{$LANG.account.your_orders}</a></li>
@@ -25,6 +25,6 @@
       <li class="text-left"><a href="{$STORE_URL}/index.php?_a=logout" title="{$LANG.account.logout}">{$LANG.account.logout}</a></li>
    </ul>
    {else}
-   <a href="{$STORE_URL}/login.html" class="button white small nopad-sides">{$LANG.account.login}</a> / <a href="{$STORE_URL}/register.html" class="button white small nopad-sides">{$LANG.account.register}</a>
+   <a href="{$STORE_URL}/login.html" class="button trans small nopad-sides">{$LANG.account.login}</a> / <a href="{$STORE_URL}/register.html" class="button trans small nopad-sides">{$LANG.account.register}</a>
    {/if}
 </div>
