@@ -25,7 +25,7 @@
         <div class="row">
             <div class="small-12 columns">
                 <h1>{$DATA.title}</h1>
-                <p>{$DATA.description}</p>
+                <p>{$DATA.description|nl2br}</p>
                 <{$TYPE} width="100%" controls autoplay>
                     <source src="{$STREAM_URL}" type="{$DATA.mimetype}">
                 </{$TYPE}>

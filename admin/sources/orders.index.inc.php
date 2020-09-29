@@ -321,6 +321,7 @@ if (isset($_GET['action'])) {
             // Load order inventory
             if (($inventory = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('cart_order_id' => $summary[0]['cart_order_id']))) !== false) {
                 $subtotal = 0;
+                $filemanager = new FileManager(FileManager::FM_FILETYPE_DL);
                 foreach ($inventory as $product) {
                     $subtotal += ($product['price']*$product['quantity']);
                     $product['line'] = $product['price'];
@@ -376,8 +377,10 @@ if (isset($_GET['action'])) {
                     if ($product['digital']) {
                         $digital_data = $GLOBALS['db']->select('CubeCart_downloads', array('accesskey', 'downloads', 'expire'), array('cart_order_id' => $summary[0]['cart_order_id'], 'product_id' => $product['product_id'], 'customer_id' => $summary[0]['customer_id']));
                         if ($digital_data && !empty($digital_data[0]['accesskey'])) {
+                            $file_info = $filemanager->getFileInfo($product['product_id']);
                             $product['accesskey'] = $digital_data[0]['accesskey'];
                             $product['downloads'] = $digital_data[0]['downloads'];
+                            $product['stream'] = $file_info['stream'];
                             $product['expire'] = ($digital_data[0]['expire']==0) ? $GLOBALS['language']->common['never'] : formatTime($digital_data[0]['expire']);
                             $product['expired'] = ($digital_data[0]['downloads'] >= $GLOBALS['config']->get('config', 'download_count') || (time() > $digital_data[0]['expire'] && $digital_data[0]['expire']>0)) ? true : false;
                         } else {
