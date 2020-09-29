@@ -24,9 +24,6 @@ class FileManager
     private $_sendfile = false;
     private $_max_upload_image_size = 350000;
 
-    private $_streamable_audio = array('wav','aif','m4a','caf','flac','mp3','aac','m4a', 'm4b','m4p','m4v','m4r','wma','ogg');
-    private $_streamable_video = array('3gp','3g2','asf','wmv','divx','f4v','flv','mkv','mk3d','mp4','mpg','mpeg','ts','m2ts','ogg','mov','qt','rmvb');
-
     public $form_fields = false;
 
     const FM_FILETYPE_IMG 	= 1;
@@ -697,7 +694,7 @@ class FileManager
                         $GLOBALS['main']->addTabControl($GLOBALS['language']->filemanager['tab_crop'], 'fm-cropper');
                         $GLOBALS['smarty']->assign('SHOW_CROP', true);
                     } else {
-                        $GLOBALS['smarty']->assign('STREAMABLE', $this->_streamable($file[0]['filename']));
+                        $GLOBALS['smarty']->assign('STREAMABLE', $this->_streamable($file[0]['mimetype']));
                     }
                     $GLOBALS['smarty']->assign('mode_form', true);
                     return $GLOBALS['smarty']->fetch('templates/filemanager.index.php');
@@ -1261,9 +1258,9 @@ class FileManager
         $GLOBALS['db']->insert('CubeCart_image_index', $record);
     }
 
-    private function _streamable($filename) {
-        $ext = pathinfo($filename, PATHINFO_EXTENSION);
-        return in_array($ext, array_merge($this->_streamable_audio, $this->_streamable_video));
+    private function _streamable($mimetype) {
+        $mime_parts = explode('/', $mimetype);
+        return in_array($mime_parts[0], array('video', 'audio'));
     }
 
     /**
