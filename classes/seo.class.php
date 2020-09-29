@@ -50,7 +50,7 @@ class SEO
      * @var array of strings
      */
     private $_ignored   = array(
-        'account', 'addressbook', 'basket', 'checkout', 'complete', 'confirm', 'downloads', 'gateway', 'logout', 'profile', 'receipt', 'recover', 'recovery', 'remote', 'vieworder', 'plugin', 'unsubscribe'
+        'account', 'addressbook', 'basket', 'checkout', 'complete', 'confirm', 'download', 'downloads', 'gateway', 'logout', 'profile', 'receipt', 'recover', 'recovery', 'remote', 'vieworder', 'plugin', 'unsubscribe'
     );
     /**
      * Rewrite URL Absolute?
