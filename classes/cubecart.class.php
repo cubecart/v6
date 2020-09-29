@@ -2078,12 +2078,10 @@ class Cubecart
         foreach ($GLOBALS['hooks']->load('class.cubecart.construct.download') as $hook) {
             include $hook;
         }
-
+        $filemanager = new FileManager(FileManager::FM_FILETYPE_DL);
         if (isset($_REQUEST['accesskey']) && !empty($_REQUEST['accesskey'])) {
             // Supress the debugger output
             $GLOBALS['debug']->supress();
-            $filemanager = new FileManager(FileManager::FM_FILETYPE_DL);
-
             if($_GET['s']=='1') {
                 $data = $filemanager->deliverDownload($_REQUEST['accesskey'], $error, true);
                 $mime_parts = explode('/', $data['mimetype']);

@@ -30,7 +30,7 @@
          <td>
             <h5>{$download.name}</h5>
             {if $download.active}
-            <a href="{$STORE_URL}/index.php?_a=download&accesskey={$download.accesskey}" title="{$LANG.common.download}"><svg class="icon"><use xlink:href="#icon-download"></use></svg> {$download.file_info.filename}</a>
+            <a href="{$STORE_URL}/index.php?_a=download&s={$download.file_info.stream}&accesskey={$download.accesskey}" title="{$LANG.common.download}"><svg class="icon"><use xlink:href="#icon-download"></use></svg> {$download.file_info.filename}</a>
             {else}
             <svg class="icon"><use xlink:href="#icon-download"></use></svg> <del>{$download.file_info.filename}</del>
             {/if}
@@ -38,7 +38,7 @@
          <td> {if $download.active}{$download.expires}{else}{$LANG.account.download_expired}{/if}</td>
          <td class="text-center">{$download.downloads}/{$MAX_DOWNLOADS}</td>
          <td width="120"><a href="{$STORE_URL}/index.php?_a=vieworder&cart_order_id={$download.cart_order_id}" class="button tiny expand thinmarg-bottom" title="{$LANG.common.view_details}">{$LANG.common.view_details}</a>
-            {if $download.active}<a href="{$STORE_URL}/index.php?_a=download&accesskey={$download.accesskey}" class="button tiny expand" title="{$LANG.common.view_details}">{$LANG.common.download}</a>{/if}
+            {if $download.active}<a href="{$STORE_URL}/index.php?_a=download&s={$download.file_info.stream}&accesskey={$download.accesskey}" class="button tiny expand" title="{$LANG.common.view_details}">{$LANG.common.download}</a>{/if}
          </td>
          {/if}
       </tr>
@@ -62,7 +62,7 @@
                <tr>
                   <td colspan="2">
                   {if $download.active}
-                     <a href="{$STORE_URL}/index.php?_a=download&accesskey={$download.accesskey}" title="{$LANG.common.download}"><svg class="icon"><use xlink:href="#icon-download"></use></svg> {$download.file_info.filename}</a>
+                     <a href="{$STORE_URL}/index.php?_a=download&s={$download.file_info.stream}&accesskey={$download.accesskey}" title="{$LANG.common.download}"><svg class="icon"><use xlink:href="#icon-download"></use></svg> {$download.file_info.filename}</a>
                   {else}
                      <svg class="icon"><use xlink:href="#icon-download"></use></svg> <del>{$download.file_info.filename}</del>
                   {/if}
@@ -78,7 +78,7 @@
                </tr>
                <tr>
                   <td width="50%"><a href="{$STORE_URL}/index.php?_a=vieworder&cart_order_id={$download.cart_order_id}" class="button tiny expand nomarg" title="{$LANG.common.view_details}">{$LANG.common.view_details}</a></td>
-                  <td width="50%">{if $download.active}<a href="{$STORE_URL}/index.php?_a=download&accesskey={$download.accesskey}" class="button tiny expand nomarg" title="{$LANG.common.view_details}">{$LANG.common.download}</a>{/if}</td>
+                  <td width="50%">{if $download.active}<a href="{$STORE_URL}/index.php?_a=download&s={$download.file_info.stream}&accesskey={$download.accesskey}" class="button tiny expand nomarg" title="{$LANG.common.view_details}">{$LANG.common.download}</a>{/if}</td>
                </tr>
             </tbody>
          </table>
