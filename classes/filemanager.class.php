@@ -826,30 +826,51 @@ class FileManager
      */
     private function getFileIcon($mimetype = false)
     {
-        if (preg_match('#^image#i', $mimetype)) {
+        $mimeParts = $this->mimeParts($mimetype);
+        if ($mimeParts['type']=='image') {
             return 'image';
         } else {
-            switch ($mimetype) {
-            case 'application/x-gzip':
-            case 'application/x-gtar':
-            case 'application/x-tar':
-            case 'application/x-zip':
-            case 'application/zip':
-                $icon = 'page_archive';
-                break;
-            case 'video/mpeg':
-            case 'video/quicktime':
-            case 'video/x-msvideo':
-                $icon = 'video';
-                break;
-            case 'application/msword':
-                $icon = 'page_word';
-                break;
-            case 'application/vnd.ms-excel':
-                $icon = 'page_excel';
-                break;
-            default:
-                $icon = 'page_generic';
+            if($mimeParts['type']=='video') {
+                $icon = 'page_video';
+            } else if ($mimeParts['type']=='audio') {
+                $icon = 'page_audio';
+            } else {
+                switch ($mimetype) {
+                    case 'application/x-bzip':
+                    case 'application/x-bzip2':
+                    case 'application/gzip':
+                    case 'application/vnd.rar':
+                    case 'application/x-7z-compressed':
+                    case 'application/x-gzip':
+                    case 'application/x-gtar':
+                    case 'application/x-tar':
+                    case 'application/x-zip':
+                    case 'application/x-zip-compressed':
+                    case 'application/zip':
+                        $icon = 'page_archive';
+                    break;
+                    case 'application/pdf':
+                        $icon = 'page_pdf';
+                    break;
+                    case 'application/msword':
+                    case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+                    case 'application/vnd.openxmlformats-officedocument.wordprocessingml.template':
+                        $icon = 'page_word';
+                        break;
+                    case 'application/vnd.ms-excel':
+                    case 'application/msexcel':
+                    case 'application/x-msexcel':
+                    case 'application/x-ms-excel':
+                    case 'application/x-excel':
+                    case 'application/x-dos_ms_excel':
+                    case 'application/xls':
+                    case 'application/x-xls':
+                    case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+                        $icon = 'page_excel';
+                        break;
+                    default:
+                        $icon = 'page_generic';
+                }
             }
             return $icon;
         }
