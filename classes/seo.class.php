@@ -128,7 +128,7 @@ class SEO
             if (!in_array($match[2], $this->_ignored)) {
                 //Generate SEO URL
                 $seo_url = html_entity_decode($this->generatePath($match[5], $match[2], $match[4], true));
-                if(isset($match[6]) && $match[6][0]=='&'){  
+                if(!empty($match[6]) && $match[6][0]=='&'){ 
                     $match[6][0]='?';
                     $seo_url.=$match[6];
                 }
