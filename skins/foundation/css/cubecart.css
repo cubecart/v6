@@ -320,6 +320,12 @@ svg.remove-coupon {
 .grecaptcha-badge {
     z-index: 99999;
 }
+body.stream {
+    background-color: #000;
+}
+body.stream h1, body.stream h2, body.stream h3, body.stream p {
+    color: #fff;
+}
 
 /* Small viewport only */
 @media only screen and (max-width: 40em) {

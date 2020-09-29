@@ -1066,7 +1066,7 @@ class Order
                 $mailer = new Mailer();
                 if ($this->_email_enabled && ($contents = $mailer->loadContent('cart.digital_download', $this->_order_summary['lang'], $this->_order_summary))) {
                     foreach ($dkeys as $dkey) {
-                        $download['url']  = $GLOBALS['storeURL'].'/index.php?_a=download&accesskey='.$dkey['accesskey'].'&stream='.(string)$dkey['stream'];
+                        $download['url']  = $GLOBALS['storeURL'].'/index.php?_a=download&s='.(string)$dkey['stream'].'&accesskey='.$dkey['accesskey'];
                         $download['stream']  = $dkey['stream'];
                         $download['name']  = $dkey['name'];
                         $download['expire'] = $dkey['expire'];

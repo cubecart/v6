@@ -509,7 +509,7 @@ class FileManager
      * @param string $error
      * @return bool
      */
-    public function deliverDownload($access_key = false, &$error = null)
+    public function deliverDownload($access_key = false, &$error = null, $stream = false)
     {
         if ($this->_mode == self::FM_FILETYPE_DL && $access_key) {
             if (($downloads = $GLOBALS['db']->select('CubeCart_downloads', false, array('accesskey' => $access_key), false, false, false, false)) !== false) {
@@ -535,13 +535,71 @@ class FileManager
                     foreach ($GLOBALS['hooks']->load('class.filemanager.deliver.download.pre') as $hook) {
                         include $hook;
                     }
-                    if ($data !== false) {
+                    if($stream) {
+                        return $data;
+                    } else if ($data !== false) {
                         // Deliver file contents
                         if (isset($data['file']) && ($data['is_url'] || file_exists($data['file']))) {
                             if ($data['is_url']) {
                                 $GLOBALS['db']->update('CubeCart_downloads', array('downloads' => $download['downloads']+1), array('digital_id' => $download['digital_id']));
                                 httpredir($data['file']);
                                 return true;
+                            } else if($data['stream']=='1') {
+                                $fp = @fopen($data['file'], 'rb');
+
+                                $size = filesize($data['file']);
+                                $length = $size;
+                                $start = 0;
+                                $end = $size - 1;
+
+                                header('Content-type: '.$data['mimetype']);
+                                header("Accept-Ranges: bytes");
+                                if (isset($_SERVER['HTTP_RANGE'])) {
+                                    $c_start = $start;
+                                    $c_end = $end;
+
+                                    list(, $range) = explode('=', $_SERVER['HTTP_RANGE'], 2);
+                                    if (strpos($range, ',') !== false) {
+                                        header('HTTP/1.1 416 Requested Range Not Satisfiable');
+                                        header("Content-Range: bytes $start-$end/$size");
+                                        exit;
+                                    }
+                                    if ($range == '-') {
+                                        $c_start = $size - substr($range, 1);
+                                    } else {
+                                        $range = explode('-', $range);
+                                        $c_start = $range[0];
+                                        $c_end = (isset($range[1]) && is_numeric($range[1])) ? $range[1] : $size;
+                                    }
+                                    $c_end = ($c_end > $end) ? $end : $c_end;
+                                    if ($c_start > $c_end || $c_start > $size - 1 || $c_end >= $size) {
+                                        header('HTTP/1.1 416 Requested Range Not Satisfiable');
+                                        header("Content-Range: bytes $start-$end/$size");
+                                        exit;
+                                    }
+                                    $start = $c_start;
+                                    $end = $c_end;
+                                    $length = $end - $start + 1;
+                                    fseek($fp, $start);
+                                    header('HTTP/1.1 206 Partial Content');
+                                }
+                                header("Content-Range: bytes $start-$end/$size");
+                                header("Content-Length: " . $length);
+
+                                $buffer = 1024 * 8;
+                                while (!feof($fp) && ($p = ftell($fp)) <= $end) {
+
+                                    if ($p + $buffer > $end) {
+                                        $buffer = $end - $p + 1;
+                                    }
+                                    set_time_limit(0);
+                                    echo fread($fp, $buffer);
+                                    flush();
+                                }
+
+                                fclose($fp);
+                                exit();
+            
                             } else {
                                 ob_end_clean();
                                 if (!is_file($data['file']) or connection_status()!=0) {
