@@ -1372,6 +1372,12 @@ ul.filetree li ul li ul li ul li ul li ul li ul li ul li a {
 #filemanager .digital .custom-checkbox {
     float: right;
 }
+#filemanager .digital {
+    font-size: 14px;
+}
+#filemanager .fa-folder {
+    color: #72a7cf;
+}
 ul.fmsearch_images {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
