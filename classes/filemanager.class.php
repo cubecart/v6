@@ -1262,8 +1262,16 @@ class FileManager
     }
 
     private function _streamable($mimetype) {
+        $mime_parts = $this->mimeParts($mimetype);
+        return in_array($mime_parts['type'], array('video', 'audio'));
+    }
+
+    function mimeParts($mimetype) {
         $mime_parts = explode('/', $mimetype);
-        return in_array($mime_parts[0], array('video', 'audio'));
+        return array(
+            'type' => $mime_parts[0],
+            'subtype' => $mime_parts[1]
+        );
     }
 
     /**

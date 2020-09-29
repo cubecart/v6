@@ -2109,6 +2109,12 @@ class Cubecart
                 foreach ($downloads as $download) {
                     if (($product = $GLOBALS['db']->select('`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_inventory` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary` ON `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_inventory`.`cart_order_id` = `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary`.`cart_order_id`', '`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_inventory`.*, `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary`.`status`', array('id' => $download['order_inv_id']), false, 1, false, false)) !== false) {
                         $download['file_info'] = $filemanager->getFileInfo($download['product_id']);
+                        if($download['file_info']['stream']==1) {
+                            $type = $filemanager->mimeParts($download['file_info']['mimetype']);
+                            $download['action'] = $type['type']=='video' ? $GLOBALS['language']->common['watch'] : $GLOBALS['language']->common['listen'];
+                        } else {
+                            $download['action'] = $GLOBALS['language']->common['download'];    
+                        }
                         $download['expires'] = ($download['expire'] > 0) ? formatTime($download['expire']) : $GLOBALS['language']->common['never'];
                         $download['active'] = (!in_array($product[0]['status'],array(2,3)) || $download['expire'] > 0 && $download['expire'] < time() || (int)$download['downloads'] >= $GLOBALS['config']->get('config', 'download_count') && $GLOBALS['config']->get('config', 'download_count') > 0) ? false : true;
                         $download['deleted'] = false;
