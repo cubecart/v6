@@ -2087,7 +2087,7 @@ class Cubecart
             if($_GET['s']=='1') {
                 $data = $filemanager->deliverDownload($_REQUEST['accesskey'], $error, true);
                 $mime_parts = explode('/', $data['mimetype']);
-                $GLOBALS['smarty']->assign('STREAM_URL', '?_a=download&accesskey=4b4dd3c679af6cc4bf41495185b032a3');
+                $GLOBALS['smarty']->assign('STREAM_URL', '?_a=download&accesskey='.$_REQUEST['accesskey']);
                 $GLOBALS['smarty']->assign('DATA', $data);
                 $GLOBALS['smarty']->assign('TYPE', $mime_parts[0]);
                 $GLOBALS['gui']->display('templates/main.stream.php');
