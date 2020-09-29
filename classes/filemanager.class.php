@@ -608,8 +608,14 @@ class FileManager
 
                                 header("Expires: ".gmdate("D, d M Y H:i:s", mktime(date("H")+2, date("i"), date("s"), date("m"), date("d"), date("Y")))." GMT");
                                 header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT");
-                                header('Content-Disposition: attachment; filename="'.basename($data['file']).'"');
-                                header("Content-Type: application/octet-stream");
+                                $mimeParts = $this->mimeParts($data['mimetype']);
+                                if($mimeParts['type']=='application' && $mimeParts['subtype']=='pdf') {
+                                    header('Content-Disposition: inline; filename="'.basename($data['file']).'"');
+                                    header("Content-Type: ".$mimeParts['type']."/".$mimeParts['subtype']."");
+                                } else {
+                                    header('Content-Disposition: attachment; filename="'.basename($data['file']).'"');
+                                    header("Content-Type: application/octet-stream");
+                                }
                                 header("Content-Transfer-Encoding: binary");
                                 ## IE 7 Fix
                                 header('Vary: User-Agent');
