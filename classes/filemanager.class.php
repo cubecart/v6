@@ -542,6 +542,9 @@ class FileManager
                                 httpredir($data['file']);
                                 return true;
                             } else if($data['stream']=='1') {
+                                
+                                $GLOBALS['db']->update('CubeCart_downloads', array('downloads' => $download['downloads']+1), array('digital_id' => $download['digital_id']));
+                                
                                 $fp = @fopen($data['file'], 'rb');
 
                                 $size = filesize($data['file']);
