@@ -34,7 +34,7 @@
 		<a href="{$folder.delete}" class="delete right" title="{$LANG.notification.confirm_delete_folder|replace:'%s':$folder.name}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		{/if}
 		</span>
-		{if $FILMANAGER_MODE == '2'}<img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/folder.png" alt="{$folder.name}">{/if}
+		{if $FILMANAGER_MODE == '2'}<i class="fa fa-folder" aria-hidden="true" alt="{$folder.name}"></i>{/if}
 		<a href="{$folder.link}">{$folder.name}</a>
 	  </div>
 	  {/foreach}
@@ -53,7 +53,7 @@
 		  <a href="{$file.edit}" class="edit right" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
 		  {/if}
 		</span>
-		{if $FILMANAGER_MODE == '2'}<img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/{$file.icon}.png" alt="{$file.mimetype}">{/if}
+		{if $FILMANAGER_MODE == '2'}<i class="fa fa-{$file.icon}" aria-hidden="true" alt="{$file.mimetype}"></i>{/if}
 		<a href="{if $file.class}{$file.filepath}?{$file.random}{else}?_g=filemanager&download_file={$file.filepath|base64_encode}{/if}" class="{$file.class}" title="{$file.description}" target="_self">{$file.filename}</a>
 	  </div>
 	  {/foreach}

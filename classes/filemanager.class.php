@@ -831,9 +831,9 @@ class FileManager
             return 'image';
         } else {
             if($mimeParts['type']=='video') {
-                $icon = 'page_video';
+                $icon = 'file-video-o';
             } else if ($mimeParts['type']=='audio') {
-                $icon = 'page_audio';
+                $icon = 'file-audio-o';
             } else {
                 switch ($mimetype) {
                     case 'application/x-bzip':
@@ -847,15 +847,15 @@ class FileManager
                     case 'application/x-zip':
                     case 'application/x-zip-compressed':
                     case 'application/zip':
-                        $icon = 'page_archive';
+                        $icon = 'file-archive-o';
                     break;
                     case 'application/pdf':
-                        $icon = 'page_pdf';
+                        $icon = 'file-pdf-o';
                     break;
                     case 'application/msword':
                     case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
                     case 'application/vnd.openxmlformats-officedocument.wordprocessingml.template':
-                        $icon = 'page_word';
+                        $icon = 'file-word-o';
                         break;
                     case 'application/vnd.ms-excel':
                     case 'application/msexcel':
@@ -866,10 +866,10 @@ class FileManager
                     case 'application/xls':
                     case 'application/x-xls':
                     case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
-                        $icon = 'page_excel';
+                        $icon = 'file-excel-o';
                         break;
                     default:
-                        $icon = 'page_generic';
+                        $icon = 'file-o';
                 }
             }
             return $icon;
