@@ -31,5 +31,6 @@
                 </{$TYPE}>
             </div>
         </div>
+        {$STREAM_HOOK}
     </body>
 </html>

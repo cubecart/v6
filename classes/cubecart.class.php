@@ -2088,6 +2088,7 @@ class Cubecart
                 $GLOBALS['smarty']->assign('STREAM_URL', '?_a=download&accesskey='.$_REQUEST['accesskey']);
                 $GLOBALS['smarty']->assign('DATA', $data);
                 $GLOBALS['smarty']->assign('TYPE', $mime_parts['type']);
+                foreach ($GLOBALS['hooks']->load('class.cubecart.stream') as $hook) include $hook;
                 $GLOBALS['gui']->display('templates/main.stream.php');
             } else if ($filemanager->deliverDownload($_REQUEST['accesskey'], $error)) {
                 exit;
