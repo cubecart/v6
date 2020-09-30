@@ -349,7 +349,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_filemanager` (
 	`md5hash` VARCHAR(32) NOT NULL,
 	`title` varchar(255) NOT NULL,
 	`description` TEXT NOT NULL,
-	`stream` enum('0','1') NOT NULL DEFAULT '0'
+SQL	`stream` enum('0','1') NOT NULL DEFAULT '0',
 	PRIMARY KEY (`file_id`),
 	KEY (`filepath`),
 	KEY (`filename`)
