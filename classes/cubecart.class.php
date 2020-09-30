@@ -2079,7 +2079,7 @@ class Cubecart
             include $hook;
         }
         $filemanager = new FileManager(FileManager::FM_FILETYPE_DL);
-        if (isset($_REQUEST['accesskey']) && !empty($_REQUEST['accesskey'] && preg_match('/^[a-f0-9]{32}$/i', $_REQUEST['accesskey'])) {
+        if (isset($_REQUEST['accesskey']) && !empty($_REQUEST['accesskey']) && preg_match('/^[a-f0-9]{32}$/i', $_REQUEST['accesskey'])) {
             // Supress the debugger output
             $GLOBALS['debug']->supress();
             if($_GET['s']=='1') {
