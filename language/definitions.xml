@@ -1235,7 +1235,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="show_assigned" introduced="6.1.2"><![CDATA[Show Assigned Images Only]]></string>
     <string name="show_all" introduced="6.1.2"><![CDATA[Show All Images]]></string>
     <string name="upload_destination" introduced="6.1.2"><![CDATA[Upload Destination]]></string>
-    <string name="max_upload_diff" introduced="6.1.0"><![CDATA[Please note that the server configuartion allows a maximum upload of %s with a maximum individual file upload limit of %s.]]></string>
+    <string name="max_upload_diff" introduced="6.1.0"><![CDATA[Please note that the server configuartion allows a maximum upload of %s with a maximum individual file upload limit of %s.<br>Larger files can be uploaded to the ./files folder via FTP and will show once &quot;Update File List&quot; is clicked.]]></string>
     <string name="max_upload_same" introduced="6.1.0"><![CDATA[<strong>Upload Limit:</strong> %s]]></string>
     <string name="success_create_folder" introduced="6.1.0"><![CDATA[Folder created successfully.]]></string>
     <string name="error_create_folder" introduced="6.1.0"><![CDATA[failed to create folder.]]></string>
