@@ -299,7 +299,7 @@ class Ajax
                 $output = '';
                 foreach($files as $file) {
                     if($mode == 'images') {
-                        $preview = '<div><img src="'.str_replace(CC_ROOT_DIR, CC_ROOT_REL, $file).'" /></div>';
+                        $preview = '<div><img src="'.str_replace(CC_ROOT_DIR.'/', CC_ROOT_REL, $file).'" /></div>';
                     } else {
                         $preview = '';
                     }
