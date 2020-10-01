@@ -139,7 +139,7 @@ class Session
             // make sure session cookies are http ONLY!
             ini_set('session.cookie_httponly', true);
         }
-        if (empty($ini['session.cookie_samesite'])) {
+        if (CC_SSL && empty($ini['session.cookie_samesite'])) {
             // make sure session cookies are samesite
             ini_set('session.cookie_samesite', 'None');
         }
