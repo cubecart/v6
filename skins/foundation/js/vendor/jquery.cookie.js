@@ -64,12 +64,16 @@
 				t.setTime(+t + days * 864e+5);
 			}
 			var secure = ('https:' == document.location.protocol ? '; secure' : '');
+			var samesite = '';
+			if(secure) {
+				samesite = options.samesite  ? '; SameSite=' + options.samesite : '; SameSite=None';
+			}
 			return (document.cookie = [
 				encode(key), '=', stringifyCookieValue(value),
 				options.expires	? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
 				options.path    ? '; path=' + options.path : '',
 				options.domain  ? '; domain=' + options.domain : '',
-				options.samesite  ? '; SameSite=' + options.samesite : '; SameSite=None',
+				samesite,
 				options.secure  ? '; secure' : secure
 			].join(''));
 		}

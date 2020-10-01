@@ -587,7 +587,8 @@ class Session
         if(isset($_COOKIE[$name])) {
             return setcookie($name, $value, $expire, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
         }
-        return setcookie($name, $value, 'expires='.$expire.';path='.$params['path'].';domain='.$params['domain'].';secure='.$params['secure'].';httponly='.$params['httponly'].';samesite='.$params['samesite']);
+        $same_site = CC_SSL ? 'samesite='.$params['samesite'] : '';
+        return setcookie($name, $value, 'expires='.$expire.';path='.$params['path'].';domain='.$params['domain'].';secure='.$params['secure'].';httponly='.$params['httponly'].';'.$same_site);
     }
 
     //=====[ Private ]=======================================
