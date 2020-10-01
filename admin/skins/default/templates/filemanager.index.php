@@ -61,12 +61,14 @@
 	  <p class="center clear">{$LANG.filemanager.file_none}</p>
 	  {/if}
 	</div>
+	{if isset($FILES)}
 	<div class="form_control">
 	<a href="#" class="check-all" rel="multi_delete">{$LANG.form.check_uncheck}</a>
 	<hr>
 		<input type="submit" class="delete submit_confirm" title="{$LANG.notification.confirm_delete}" value="{$LANG.common.delete_selected}">
 		<input type="hidden" id="ckfuncnum" value="{$CK_FUNC_NUM}">
   	</div>
+	{/if}
   </div>
   <div id="upload" class="tab_content">
 	<h3>{$FILMANAGER_TITLE}</h3>
