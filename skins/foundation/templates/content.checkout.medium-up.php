@@ -20,7 +20,7 @@
                {if $item.options}
                <ul class="no-bullet item_options">
                   {foreach from=$item.options item=option}
-                  <li><strong>{if empty($option.option_description)}{$option.option_name}{else}{$option.option_description}{/if}</strong>: {$option.value_name|truncate:45:"&hellip;":true}{if !empty($option.price_display)} ({$option.price_display}){/if}</li>
+                  <li><strong>{$option.option_name}</strong>: {$option.value_name|truncate:45:"&hellip;":true}{if !empty($option.price_display)} ({$option.price_display}){/if}</li>
                   {/foreach}
                </ul>
                {/if}
