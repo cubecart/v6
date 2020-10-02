@@ -583,7 +583,21 @@
             <div id="master_image_block">
             <img src="{$PRODUCT.master_image}" id="master_image_preview"><div id="preview_image"><img src="{$PRODUCT.master_image}"></div>
             </div>
+            {if $GALLERY_JSON}
+            <div id="gallery_json">
+               <p>Other includes images:</p>
+               <ul>{foreach $GALLERY_JSON|json_decode:true as $gallery_image}
+                  {if $gallery_image@index > 0}
+                  <li id="file_id_{$gallery_image.file_id}">
+                     <img src="images/source/{$gallery_image.filepath}{$gallery_image.filename}" title="{$gallery_image.filepath}{$gallery_image.filename}" />
+                  </li>
+                  {/if}
+                  {/foreach}
+               </ul>
+               </div>
+            {/if}
          </div>
+         
       </div>
       <div class="cc_dropzone">
          <div class="dz-default dz-message"><span>{$LANG.filemanager.file_upload_note}</span></div>

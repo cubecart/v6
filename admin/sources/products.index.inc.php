@@ -1083,6 +1083,13 @@ if (isset($_GET['action'])) {
 
         $master_image = isset($_GET['product_id']) ? $GLOBALS['gui']->getProductImage((int)$_GET['product_id']) : '';
         $result[0]['master_image'] =  !empty($master_image) ? $master_image : 'images/general/px.gif';
+        
+        if (($gallery = $GLOBALS['db']->select('`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_image_index` AS `i` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_filemanager` AS `f` ON i.file_id = f.file_id', false, 'i.product_id = '.$product_id, 'ORDER BY i.main_img DESC'))) {
+            foreach ($gallery as $key => $image) {
+                $json['image_'.$image['id']] = $image;
+            }
+            $GLOBALS['smarty']->assign('GALLERY_JSON', json_encode($json));
+        }
 
         // Update global stock level when matrix stock level in use
         if ($GLOBALS['config']->get('config', 'update_main_stock')) {

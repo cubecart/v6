@@ -1423,3 +1423,17 @@ ul.fmsearch_images img {
 .severity .red {
     background-color: red;
 }
+#gallery_json ul {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+#gallery_json ul li {
+    padding: 2px;
+}
+#gallery_json ul li img {
+    max-width: 100px;
+    max-height: 100px;
+}
