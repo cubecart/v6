@@ -86,11 +86,13 @@ fieldset .custom-checkbox {
     margin-bottom: 30px;
 }
 #master_image_block {
-    position: relative; 
+    position: relative;
+    width: 200px;
+    height: 200px; 
 }
 #master_image_block img {
-    max-height: 350px;
-    max-width: 350px;
+    max-height: 200px;
+    max-width: 200px;
 }
 .fm-container .loading {
     position: absolute;
@@ -152,7 +154,8 @@ fieldset .custom-checkbox {
 }
 .fm-preview {
     margin-left: 15px;
-    width: 400px;
+    max-width: 200px;
+    max-height: 200px;
     text-align: right;
     display: inline
 }

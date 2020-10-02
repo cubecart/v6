@@ -579,16 +579,16 @@
          <div class="loading">{$LANG.common.loading} <i class="fa fa-spinner fa-spin fa-fw"></i></div>
          <div id="imageset" rel="1" class="fm-filelist"></div>
          <div class="master_image">
-            <span>{$LANG.catalogue.image_main}</span>:<br><br>
+            <span>{$LANG.catalogue.image_main}</span><br><br>
             <div id="master_image_block">
             <img src="{$PRODUCT.master_image}" id="master_image_preview"><div id="preview_image"><img src="{$PRODUCT.master_image}"></div>
             </div>
             {if $GALLERY_JSON}
             <div id="gallery_json">
-               <p>Other includes images:</p>
+               <p>Other includes images</p>
                <ul>{foreach $GALLERY_JSON|json_decode:true as $gallery_image}
                   {if $gallery_image@index > 0}
-                  <li id="file_id_{$gallery_image.file_id}">
+                  <li id="gallery_imageset_{$gallery_image.file_id}">
                      <img src="images/source/{$gallery_image.filepath}{$gallery_image.filename}" title="{$gallery_image.filepath}{$gallery_image.filename}" />
                   </li>
                   {/if}
