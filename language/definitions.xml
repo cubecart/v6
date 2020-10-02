@@ -2220,13 +2220,13 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_tax_detail" introduced="5.0.0"><![CDATA[Tax Details]]></string>
     <string name="title_tax_detail_add" introduced="5.0.0"><![CDATA[Add Tax Detail]]></string>
     <string name="title_tax_detail_current" introduced="5.0.0"><![CDATA[Current Tax Details]]></string>
-    <string name="title_tax_lang" introduced="5.0.0"><![CDATA[Tax, Language, and Currency]]></string>
+    <string name="title_tax_lang" introduced="5.0.0"><![CDATA[Locale Settings]]></string>
     <string name="title_tax_rule" introduced="5.0.0"><![CDATA[Tax Rules]]></string>
     <string name="title_tax_rule_add" introduced="5.0.0"><![CDATA[Add Tax Rule]]></string>
     <string name="title_tax_rule_current" introduced="5.0.0"><![CDATA[Current Tax Rules]]></string>
     <string name="title_time_date" introduced="5.0.0"><![CDATA[Time &amp; Date]]></string>
     <string name="title_welcome_back" introduced="5.0.0"><![CDATA[Welcome back]]></string>
-    <string name="weight_unit" introduced="5.0.0"><![CDATA[Weight Unit]]></string>
+    <string name="weight_unit" introduced="5.0.0"><![CDATA[Default Weight Unit]]></string>
     <string name="current_value" introduced="5.0.0"><![CDATA[Current Value]]></string>
     <string name="new_value" introduced="5.0.0"><![CDATA[New Value]]></string>
     <string name="weight_unit_kg" introduced="5.0.0"><![CDATA[Metric (kg)]]></string>
