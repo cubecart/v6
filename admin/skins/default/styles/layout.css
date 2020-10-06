@@ -630,6 +630,9 @@ tbody tr:nth-child(even) {
 #filemanager div div.fm-item:nth-child(odd) {
     background-color: #edf4f7
 }
+#filemanager div div:hover {
+    background-color: #f7f5ed;
+}
 #filemanager div div.folder {
     background-color: #fff !important;
 }
