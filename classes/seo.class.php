@@ -629,15 +629,15 @@ class SEO
     public function SEOable($path)
     {
         $path = preg_replace('@index.php$@', '', $path); // remove index.php if last chars in URL
-
+        $seo_ext = $GLOBALS['config']->get('config', 'seo_ext'); 
         if (strpos($path, 'index.php?_a=category&search') !== false) {
-            $path = str_replace('index.php?', 'search.html?', $path);
+            $path = str_replace('index.php?', 'search'.$seo_ext.'?', $path);
             return $path;
         } elseif (($pos = strpos($path, 'index.php?_a=search')) !== false) {
             if (strlen($path) == $pos + 19) {
-                $path = str_replace('index.php?_a=search', 'search.html', $path);
+                $path = str_replace('index.php?_a=search', 'search'.$seo_ext, $path);
             } else {
-                $path = str_replace('index.php?_a=search&', 'search.html?', $path);
+                $path = str_replace('index.php?_a=search&', 'search'.$seo_ext.'?', $path);
             }
             return $path;
         }
