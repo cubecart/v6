@@ -36,5 +36,5 @@ UPDATE `CubeCart_seo_urls` SET `path` = CONCAT(`path`,'.html'); #EOQ
 ALTER TABLE `CubeCart_filemanager` ADD `title` VARCHAR(255) NOT NULL AFTER `md5hash`; #EOQ
 ALTER TABLE `CubeCart_filemanager` ADD `stream` ENUM('0','1') NOT NULL DEFAULT '0' AFTER `description`; #EOQ
 INSERT INTO `CubeCart_seo_urls` (`path`, `type`,`item_id`) VALUES ('login', 'login', 0); #EOQ
-INSERT INTO `CubeCart_seo_urls` (`path`, `type`,`ietm_id`) VALUES ('register', 'register', 0); #EOQ
-INSERT INTO `CubeCart_seo_urls` (`path`, `type`,`ietm_id`) VALUES ('search', 'search', 0); #EOQ
+INSERT INTO `CubeCart_seo_urls` (`path`, `type`,`item_id`) VALUES ('register', 'register', 0); #EOQ
+INSERT INTO `CubeCart_seo_urls` (`path`, `type`,`item_id`) VALUES ('search', 'search', 0); #EOQ
