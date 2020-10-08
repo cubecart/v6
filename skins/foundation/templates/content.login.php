@@ -12,7 +12,7 @@
 <div class="row">
    <div class="large-6 columns">
       <form action="{$VAL_SELF}" id="login_form" method="post">
-         <p class="show-for-small-only">{$LANG.account.want_to_signup} <a href="{$STORE_URL}/register.html">{$LANG.account.register_here}</a></p>
+         <p class="show-for-small-only">{$LANG.account.want_to_signup} <a href="{$STORE_URL}/register{$CONFIG.seo_ext}">{$LANG.account.register_here}</a></p>
          <h2>{$LANG.account.login}</h2>
          {foreach from=$LOGIN_HTML item=html}
          {$html}

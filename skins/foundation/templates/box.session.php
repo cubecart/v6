@@ -25,6 +25,6 @@
       <li class="text-left"><a href="{$STORE_URL}/index.php?_a=logout" title="{$LANG.account.logout}">{$LANG.account.logout}</a></li>
    </ul>
    {else}
-   <a href="{$STORE_URL}/login.html" class="button trans small nopad-sides">{$LANG.account.login}</a> / <a href="{$STORE_URL}/register.html" class="button trans small nopad-sides">{$LANG.account.register}</a>
+   <a href="{$STORE_URL}/login{$CONFIG.seo_ext}" class="button trans small nopad-sides">{$LANG.account.login}</a> / <a href="{$STORE_URL}/register{$CONFIG.seo_ext}" class="button trans small nopad-sides">{$LANG.account.register}</a>
    {/if}
 </div>
