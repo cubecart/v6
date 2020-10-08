@@ -436,8 +436,13 @@
             <div><label for="email_smtp_user">{$LANG.settings.smtp_user}</label><span><input name="config[email_smtp_user]" id="email_smtp_user" type="text" class="textbox preview_email" value="{$CONFIG.email_smtp_user}" autocomplete="off"></span></div>
             <div><label for="email_smtp_password">{$LANG.settings.smtp_pass}</label><span><input name="config[email_smtp_password]" id="email_smtp_password" type="password" class="textbox preview_email" value="{$CONFIG.email_smtp_password|escape:'html'}" onfocus="this.removeAttribute('readonly');" readonly autocomplete="off"></span></div>
          </div>
-         <div id="sendgrid" class="stripe stripe_reverse"{if $CONFIG.email_method=='mail' || $CONFIG.email_method=='SMTP' || $CONFIG.email_method==''} style="display: none"{/if}>
-            <div><label for="sendgrid_key">{$LANG.settings.sendgrid_key}</label><span><input name="config[sendgrid_key]" id="sendgrid_key" type="text" class="textbox preview_email" value="{$CONFIG.sendgrid_key}"></span></div>
+         <div id="sendgrid" class="stripe stripe_reverse"{if 
+         $CONFIG.email_method=='mail' || 
+         $CONFIG.email_method=='smtp' || 
+         $CONFIG.email_method=='smtp_ssl' || 
+         $CONFIG.email_method=='smtp_tls' || 
+         $CONFIG.email_method==''} style="display: none"{/if}>
+         <div><label for="sendgrid_key">{$LANG.settings.sendgrid_key}</label><span><input name="config[sendgrid_key]" id="sendgrid_key" type="text" class="textbox preview_email" value="{$CONFIG.sendgrid_key}"></span></div>
          </div>
          <div class="nostripe"><label for="smtp_test_url">&nbsp;</label><span>
          <button type="button" class="button tiny" id="smtp_test" onclick="previewEmailSettings()">{$LANG.common.test}</button></span></div>

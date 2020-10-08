@@ -48,7 +48,6 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
         $this->FromName  = html_entity_decode($GLOBALS['config']->get('config', 'email_name'), ENT_QUOTES);
         $this->CharSet   = 'UTF-8';
         $this->_method = $GLOBALS['config']->get('config', 'email_method');
-        $this->_method = 'sendgrid';
         switch ($this->_method) {
             case 'sendgrid':
                 require_once CC_ROOT_DIR.'/classes/sendgrid/sendgrid-php.php';
@@ -71,7 +70,7 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
                     $this->Username = $GLOBALS['config']->get('config', 'email_smtp_user');
                     $this->Password = $GLOBALS['config']->get('config', 'email_smtp_password');
                 }
-                break;
+            break;
             case 'mail':
             default:
                 $this->IsMail(true);
