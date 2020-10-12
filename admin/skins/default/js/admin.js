@@ -26,7 +26,7 @@ function pageChanged(t) {
 
 function getSEODestination() {
     var item_id = $("#item_id").val();
-    var type = $("#type").val();
+    var type = $("#redirect_type").val();
     var a = $("#val_admin_file").text();
     $.getJSON("./" + a, {
         _g: "xml",
