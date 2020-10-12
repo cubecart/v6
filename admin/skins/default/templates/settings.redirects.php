@@ -17,8 +17,8 @@
          <tr>
                <th>{$LANG.common.path}</th>
                <th>{$LANG.common.destination}</th>
-               <th>{$LANG.common.object}</th>
-               <th>{$LANG.common.object_id}</th>
+               <th>{$LANG.common.page}</th>
+               <th>{$LANG.common.item_id}</th>
                <th>{$LANG.common.status_code}</th>
                <th>{$LANG.form.action}</th>
             </tr>
@@ -29,18 +29,22 @@
                <td id="destination"></td>
                <td>
                   <select name="type" id="redirect_type">
-                     <option value="prod" data-static="false">{$LANG.common.product}</option>
-                     <option value="cat" data-static="false">{$LANG.common.category}</option>
-                     <option value="doc" data-static="false">{$LANG.common.document}</option>
-                     <option value="saleitems" data-static="true">{$LANG.navigation.saleitems}</option>
-                     <option value="certificates" data-static="true">{$LANG.catalogue.gift_certificates}</option>
-                     <option value="contact" data-static="true">{$LANG.documents.document_contact}</option>
-                     <option value="search" data-static="true">{$LANG.common.search}</option>
-                     <option value="login" data-static="true">{$LANG.account.login}</option>
-                     <option value="register" data-static="true">{$LANG.account.register}</option>
+                     <optgroup label="Dynamic Pages">
+                        <option value="cat" data-static="false">{$LANG.common.category}</option>
+                        <option value="doc" data-static="false">{$LANG.common.document}</option>
+                        <option value="prod" data-static="false">{$LANG.common.product}</option>
+                     </optgroup>
+                     <optgroup label="Static Pages">
+                        <option value="certificates" data-static="true">{$LANG.catalogue.gift_certificates}</option>
+                        <option value="contact" data-static="true">{$LANG.documents.document_contact}</option>
+                        <option value="login" data-static="true">{$LANG.account.login}</option>
+                        <option value="register" data-static="true">{$LANG.account.register}</option>
+                        <option value="saleitems" data-static="true">{$LANG.navigation.saleitems}</option>
+                        <option value="search" data-static="true">{$LANG.common.search}</option>
+                     </optgroup>
                   </select>
                </td>
-               <td>
+               <td width="110">
                   <input type="number" name="item_id" id="item_id" class="textbox number required" onkeyup="getSEODestination()">
                </td>
                <td>

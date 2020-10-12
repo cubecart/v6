@@ -586,6 +586,8 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="page" introduced="6.4.0"><![CDATA[Page]]></string>
+    <string name="item_id" introduced="6.4.0"><![CDATA[Item ID]]></string>
     <string name="watch" introduced="6.4.0"><![CDATA[Watch]]></string>
     <string name="listen" introduced="6.4.0"><![CDATA[Listen]]></string>
     <string name="permanent" introduced="6.4.0"><![CDATA[Permanent]]></string>
