@@ -55,6 +55,7 @@ if (isset($_POST['gc']) && is_array($_POST['gc']) && Admin::getInstance()->permi
 
 $GLOBALS['main']->addTabControl($lang['catalogue']['gift_certificates'], 'Certificates');
 $GLOBALS['main']->addTabControl($lang['settings']['title_images'], 'gift_images', null, 'I');
+$GLOBALS['main']->addTabControl($lang['settings']['tab_seo'], 'seo');
 
 $GLOBALS['gui']->addBreadcrumb($lang['catalogue']['gift_certificates'], $_GET);
 

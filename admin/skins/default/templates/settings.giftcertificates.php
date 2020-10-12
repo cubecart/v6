@@ -60,6 +60,13 @@
 	<div id="val_lang_enable" style="display: none;">{$LANG.common.enable}</div>
 	<div id="val_lang_disable" style="display: none;">{$LANG.common.disable}</div>
   </div>
+  <div id="seo" class="tab_content">
+	<h3>{$LANG.settings.title_seo}</h3>
+	<fieldset><legend>{$LANG.settings.title_seo_meta_data}</legend>
+	  <div><label for="seo_meta_title">{$LANG.settings.seo_meta_title}</label><span><input type="text" name="gc[seo_meta_title]" id="seo_meta_title" value="{$GC.seo_meta_title}" class="textbox"></span></div>
+	  <div><label for="seo_meta_description">{$LANG.settings.seo_meta_description}</label><span><textarea name="gc[seo_meta_description]" id="seo_meta_description" class="textbox">{$GC.seo_meta_description}</textarea></span></div>
+	</fieldset>
+  </div>
   {include file='templates/element.hook_form_content.php'}
   
   <div class="form_control">

@@ -896,6 +896,11 @@ class Cubecart
         if (!$gc['status']) {
             httpredir('index.php');
         }
+        $meta_data = array(
+            'description' => $gc['seo_meta_description'],
+            'title'   => $gc['seo_meta_title'],
+        );
+        $GLOBALS['seo']->set_meta_data($meta_data);
 
         $error = false;
         $GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->catalogue['gift_certificates'], currentPage());

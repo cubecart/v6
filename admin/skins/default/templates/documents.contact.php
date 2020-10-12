@@ -58,8 +58,6 @@
 	  <div><label for="seo_meta_title">{$LANG.settings.seo_meta_title}</label><span><input type="text" name="contact[seo_meta_title]" id="seo_meta_title" value="{$CONTACT.seo_meta_title}" class="textbox"></span></div>
 	  <div><label for="seo_meta_description">{$LANG.settings.seo_meta_description}</label><span><textarea name="contact[seo_meta_description]" id="seo_meta_description" class="textbox">{$CONTACT.seo_meta_description}</textarea></span></div>
 	</fieldset>
-	<p>* {$LANG.settings.seo_path_auto}</p>
-	{include file='templates/element.redirects.php'}
   </div>
   
   {include file='templates/element.hook_form_content.php'}
