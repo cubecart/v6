@@ -54,7 +54,23 @@ if (isset($_GET['delete']) && ctype_digit($_GET['delete']) && Admin::getInstance
     } else {
         $GLOBALS['main']->errorMessage($lang['notification']['notify_seo_url_not_deleted']);
     }
-    httpredir(currentPage(array()));
+    $redirect = currentPage(array('delete'));
+    if(isset($_GET['item_id']) && isset($_GET['type'])) {
+        switch($_GET['type']) {
+            case "prod":
+                $redirect = '?_g=products&node=index&action=edit&product_id='.$_GET['item_id'];
+            break;
+            case "cat":
+                $redirect = '?_g=categories&action=edit&cat_id='.$_GET['item_id'];
+            break;
+            case "doc":
+                $redirect = '?_g=documents&action=edit&doc_id='.$_GET['item_id'];
+            break;
+        }
+        httpredir($redirect, 'seo');
+    } else {
+        httpredir($redirect);
+    } 
 }
 
 $page  = (isset($_GET['page'])) ? $_GET['page'] : 1;
