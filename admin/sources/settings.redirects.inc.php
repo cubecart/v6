@@ -22,7 +22,7 @@ $GLOBALS['main']->addTabControl($lang['settings']['redirects'], 'redirects');
 
 if (Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
 
-    if(isset($_POST['path']) && !empty($_POST['path']) && isset($_POST['item_id']) && !empty($_POST['item_id']) && ctype_digit($_POST['item_id'])) {
+    if(isset($_POST['path']) && !empty($_POST['path'])) {
         // Check product, category, doc exists
         $exists = false;
         switch($_POST['type']) {
@@ -34,6 +34,10 @@ if (Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
             break;
             case 'doc':
                 $exists = $GLOBALS['db']->select('CubeCart_category', false, array('doc_id' => (int)$_POST['item_id']));
+            break;
+            default: // Catch static sections
+                $exists = true;
+                $_POST['item_id'] = 0;
         }
         if($exists) {
             if($GLOBALS['seo']->setdbPath($_POST['type'], (int)$_POST['item_id'], $_POST['path'], true, false, $_POST['redirect'])) {

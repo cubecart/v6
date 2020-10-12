@@ -349,6 +349,16 @@ $(document).ready(function() {
                 $("#bulk_price_percent_symbol").hide();
             }
         });
+    
+    $("#redirect_type").change(function() {
+        var static = $('option:selected', this).attr("data-static");
+        $("#item_id").value = '';
+        if(static=='true') {
+            $("#item_id").hide();
+        } else {
+            $("#item_id").show();
+        }
+    });
 
     $("#email_method").change(function() {
         switch($(this).val()) {

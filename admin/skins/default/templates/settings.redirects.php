@@ -28,10 +28,16 @@
                <td><input type="text" name="path" class="textbox required"></td>
                <td id="destination"></td>
                <td>
-                  <select name="type" id="type">
-                     <option value="prod">{$LANG.common.product}</option>
-                     <option value="cat">{$LANG.common.category}</option>
-                     <option value="doc">{$LANG.common.document}</option>
+                  <select name="type" id="redirect_type">
+                     <option value="prod" data-static="false">{$LANG.common.product}</option>
+                     <option value="cat" data-static="false">{$LANG.common.category}</option>
+                     <option value="doc" data-static="false">{$LANG.common.document}</option>
+                     <option value="saleitems" data-static="true">{$LANG.navigation.saleitems}</option>
+                     <option value="certificates" data-static="true">{$LANG.catalogue.gift_certificates}</option>
+                     <option value="contact" data-static="true">{$LANG.documents.document_contact}</option>
+                     <option value="search" data-static="true">{$LANG.common.search}</option>
+                     <option value="login" data-static="true">{$LANG.account.login}</option>
+                     <option value="register" data-static="true">{$LANG.account.register}</option>
                   </select>
                </td>
                <td>
@@ -49,20 +55,32 @@
             <tr>
                <td>{$redirect.path}</td>
                <td>{$redirect.destination}</td>
-               <td align="center">
+               <td>
                {if $redirect.type=='prod'}
-               {$LANG.common.product}
+                  {$LANG.common.product}
                {elseif $redirect.type=='cat'}
-               {$LANG.common.category}
+                  {$LANG.common.category}
                {elseif $redirect.type=='doc'}
-               {$LANG.common.document}
+                  {$LANG.common.document}
+               {elseif $redirect.type=='saleitems'}
+                  {$LANG.navigation.saleitems}
+               {elseif $redirect.type=='certificates'}
+                  {$LANG.catalogue.gift_certificates}
+               {elseif $redirect.type=='contact'}
+                  {$LANG.documents.document_contact}
+               {elseif $redirect.type=='search'}
+                  {$LANG.common.search}
+               {elseif $redirect.type=='login'}
+                  {$LANG.account.login}
+               {elseif $redirect.type=='register'}
+                  {$LANG.account.register}
                {/if}
                </td>
                <td align="center">
                {if empty($redirect.item_id)}
-               {$lang.common.na}
+                  -
                {else}
-               {$redirect.item_id}
+                  {$redirect.item_id}
                {/if}</td>
                <td align="center">{$redirect.redirect}</td>
                <td align="center"><a href="?_g=settings&node=redirects&delete={$redirect.id}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></td>
