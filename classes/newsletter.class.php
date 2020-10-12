@@ -128,8 +128,9 @@ class Newsletter
                 if ($test) {
                     // Send test email only
                     if (filter_var($test, FILTER_VALIDATE_EMAIL)) {
-                        $this->_subscriberLog($test, 'Test newsletter with subject "'.$contents[0]['subject'].'" (ID #'.$contents[0]['template_id'].') sent.');
-                        $this->_mailer->sendEmail($test, $content, $contents[0]['template_id']);
+                        if($this->_mailer->sendEmail($test, $content, $contents[0]['template_id'])) {
+                            $this->_subscriberLog($test, 'Test newsletter with subject "'.$contents[0]['subject'].'" (ID #'.$contents[0]['template_id'].') sent.');
+                        }
                         return true;
                     }
                 } else {
@@ -152,8 +153,9 @@ class Newsletter
                                     'content_html' => $content['content_html'],
                                     'content_text' => $content['content_text'],
                                 );
-                                $this->_subscriberLog($subscriber['email'], 'Newsletter with subject "'.$contents[0]['subject'].'" (ID #'.$contents[0]['template_id'].') sent.');
-                                $this->_mailer->sendEmail($subscriber['email'], $content, $contents[0]['template_id']);
+                                if($this->_mailer->sendEmail($subscriber['email'], $content, $contents[0]['template_id'])) {
+                                    $this->_subscriberLog($subscriber['email'], 'Newsletter with subject "'.$contents[0]['subject'].'" (ID #'.$contents[0]['template_id'].') sent.');
+                                }
                             } else {
                                 // Flag for deletion
                                 $GLOBALS['db']->update('CubeCart_newsletter_subscriber', array('status' => '9'), array('email' => $subscriber['email']));
