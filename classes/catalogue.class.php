@@ -1794,8 +1794,7 @@ class Catalogue
             }
             // Manufacturer
             if (isset($search_data['manufacturer']) && is_array($search_data['manufacturer']) && count($search_data['manufacturer'])>0) {
-                $where[] = 'I.manufacturer IN ('.implode(',', $this->get_int_array($search_data['manufacturer'])).')';
-                //    $where[] = 'I.manufacturer IN ('.implode(',', '\''.$search_data['manufacturer']).'\')';
+                $where[] = 'AND I.manufacturer IN ('.implode(',', $this->get_int_array($search_data['manufacturer'])).')';
             }
 
             $order = array();
