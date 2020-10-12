@@ -52,6 +52,15 @@
 	<p>{$LANG.contact.content_info}</p>
 	<textarea name="contact[description]" id="description" class="textbox fck">{$CONTACT.description|escape:"html"}</textarea>
   </div>
+  <div id="seo" class="tab_content">
+	<h3>{$LANG.settings.title_seo}</h3>
+	<fieldset><legend>{$LANG.settings.title_seo_meta_data}</legend>
+	  <div><label for="seo_meta_title">{$LANG.settings.seo_meta_title}</label><span><input type="text" name="contact[seo_meta_title]" id="seo_meta_title" value="{$CONTACT.seo_meta_title}" class="textbox"></span></div>
+	  <div><label for="seo_meta_description">{$LANG.settings.seo_meta_description}</label><span><textarea name="contact[seo_meta_description]" id="seo_meta_description" class="textbox">{$CONTACT.seo_meta_description}</textarea></span></div>
+	</fieldset>
+	<p>* {$LANG.settings.seo_path_auto}</p>
+	{include file='templates/element.redirects.php'}
+  </div>
   
   {include file='templates/element.hook_form_content.php'}
   

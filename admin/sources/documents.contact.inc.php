@@ -43,6 +43,7 @@ if (isset($_POST['contact']) && is_array($_POST['contact'])) {
 $GLOBALS['gui']->addBreadcrumb($lang['contact']['contact_form']);
 $GLOBALS['main']->addTabControl($lang['common']['general'], 'general');
 $GLOBALS['main']->addTabControl($lang['documents']['tab_content'], 'pagecontent');
+$GLOBALS['main']->addTabControl($lang['settings']['tab_seo'], 'seo');
 if (isset($contact['department']) && is_array($contact['department'])) {
     $GLOBALS['smarty']->assign('DEPARTMENTS', $contact['department']);
 }
