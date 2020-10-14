@@ -108,7 +108,7 @@
       <div class="row">
          <div class="small-12 columns">
             <label for="w3w">{$LANG.address.w3w_address} {$LANG.common.optional}</label>
-            {include file='templates/element.w3w.php' value="{$DATA.w3w}" as_id="w3w_as" input_id="w3w" input_name="w3w"}
+            {include file='templates/element.w3w.php' value="{$DATA.w3w}" as_id="w3w_as" input_id="w3w" input_name="w3w" country_id="country-list"}
          </div>
       </div>
       {/if}

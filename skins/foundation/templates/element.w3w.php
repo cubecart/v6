@@ -12,6 +12,12 @@
 <what3words-autosuggest id="{$as_id}" value="{$value}" />
 <input type="hidden" name="{$input_name}" id="{$input_id}" value="{$value}" />
 <script>
+var clip_to_country = $("#{$country_id} option:selected").attr('data-iso');
+$('#{$as_id}').attr("clip-to-country", clip_to_country);
+$("#{$country_id}").change(function() {
+    clip_to_country = $('option:selected', this).attr('data-iso');
+    $('#{$as_id}').attr("clip-to-country", clip_to_country);
+});
 const {$as_id} = document.getElementById("{$as_id}");
 {$as_id}.addEventListener("select", function(value) {
     document.getElementById("{$input_id}").value = value.detail;

@@ -160,7 +160,7 @@
          <div class="small-12 large-8 columns"><label for="country-list" class="show-for-medium-up">{$LANG.address.country}</label>
             <select name="billing[country]" class="nosubmit" rel="state-list" id="country-list" autocomplete="country-name">
             {foreach from=$COUNTRIES item=country}
-            <option value="{$country.numcode}" data-status="{$country.status}" {$country.selected}>{$country.name}</option>
+            <option value="{$country.numcode}" data-status="{$country.status}" data-iso="{$country.iso}" {$country.selected}>{$country.name}</option>
             {/foreach}
             </select>
          </div>
@@ -172,7 +172,7 @@
       <div class="row">
          <div class="small-12 columns">
             <label for="w3w">{$LANG.address.w3w_address} {$LANG.common.optional}</label>
-            {include file='templates/element.w3w.php' value="{$BILLING.w3w}" as_id="w3w_as_billing" input_id="w3w_billing" input_name="billing[w3w]"}
+            {include file='templates/element.w3w.php' value="{$BILLING.w3w}" as_id="w3w_as_billing" input_id="w3w_billing" input_name="billing[w3w]" country_id="country-list"}
          </div>
       </div>
       {/if}
@@ -230,7 +230,7 @@
          <div class="small-12 large-8 columns"><label for="delivery_country" class="show-for-medium-up">{$LANG.address.country}</label>
             <select name="delivery[country]" id="delivery_country"  class="nosubmit country-list" rel="delivery_state" autocomplete="country-name">
             {foreach from=$COUNTRIES item=country}
-            <option value="{$country.numcode}" data-status="{$country.status}" {$country.selected_d}>{$country.name}</option>
+            <option value="{$country.numcode}" data-status="{$country.status}" data-iso="{$country.iso}" {$country.selected_d}>{$country.name}</option>
             {/foreach}
             </select>
          </div>
@@ -242,7 +242,7 @@
       <div class="row">
          <div class="small-12 columns">
             <label for="w3w">{$LANG.address.w3w_address} {$LANG.common.optional}</label>
-            {include file='templates/element.w3w.php' value="{$DELIVERY.w3w}" as_id="w3w_as_delivery" input_id="w3w_delivery" input_name="delivery[w3w]"}
+            {include file='templates/element.w3w.php' value="{$DELIVERY.w3w}" as_id="w3w_as_delivery" input_id="w3w_delivery" input_name="delivery[w3w]" country_id="delivery_country"}
          </div>
       </div>
       {/if}

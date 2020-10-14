@@ -579,7 +579,7 @@ class Cubecart
                             'default'  => (!is_array($addresses)) ? 'checked="checked"' : '',
                         ));
                 }
-                if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('numcode', 'name', 'status'), 'status > 0', array('name'=>'ASC'))) !== false) {
+                if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', false, 'status > 0', array('name'=>'ASC'))) !== false) {
                     if (!isset($address['country'])) {
                         $address['country'] = $GLOBALS['config']->get('config', 'store_country');
                     }
@@ -656,7 +656,7 @@ class Cubecart
                 }
 
                 // Estimated shipping
-                if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('numcode', 'name', 'status'), 'status > 0', array('name' => 'ASC'))) !== false) {
+                if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', false, 'status > 0', array('name' => 'ASC'))) !== false) {
                     foreach ($countries as $country) {
                         $country['selected'] = '';
 
@@ -1201,7 +1201,7 @@ class Cubecart
             }
 
             // Parse page elements
-            if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('numcode', 'name', 'status'), 'status > 0', array('name' => 'ASC'))) !== false) {
+            if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', false, 'status > 0', array('name' => 'ASC'))) !== false) {
                 foreach ($countries as $country) {
                     $country['selected'] = '';
                     if (isset($this->_basket['billing_address']['country_id']) && !empty($this->_basket['billing_address']['country_id'])) {
