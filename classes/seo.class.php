@@ -437,6 +437,9 @@ class SEO
     public function getDirectory($cat_id, $link = false, $glue = '/', $append = false, $custom = true, &$noLoops = array())
     {
         if (is_numeric($cat_id)) {
+            if(!$this->_cat_dirs) {
+                $this->_getCategoryList(true, true);
+            }
             $category = (isset($this->_cat_dirs[$cat_id])) ? $this->_cat_dirs[$cat_id] : false;
             if (!empty($category)) {
 
