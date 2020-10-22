@@ -667,7 +667,9 @@ $(document).ready(function() {
         if(t.startsWith("#")) {
             e = $(t).height();
         }
-
+        var cc = $('#clear_cache_master a').attr('href');
+        var ccp = cc.split("#");
+        $('#clear_cache_master a').attr('href', ccp[0] + t);
         if ($("#navigation").height() < e && $("#page_content").css('min-height',e + 100 +'px'), "#sidebar" == t) return $("#sidebar_control").click(), !1;
         if (t.match(/^#/)) {
             if (document.location.hash = t, $(".tab").removeClass("tab-selected"), $(this).addClass("tab-selected"), $("div.tab_content").hide(), $(t).show(), window.scrollTo(-81, 0), $("#previous-tab").val(t), $("input.previous-tab").val(t), $("#wikihelp").exists()) {
