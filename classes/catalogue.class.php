@@ -580,7 +580,7 @@ class Catalogue
                             );
                             
                             if ($option[0]['absolute_price']=='1') {
-                                $this->_options_line_price =  +$option[0]['option_price'] - $this->_product_data[$product_id]['price_to_pay'];
+                                $this->_options_line_price += ($option[0]['option_price'] - $this->_product_data[$product_id]['price_to_pay']);
                             } else {
                                 if ($option[0]['option_price']>0 && $option[0]['option_negative'] == 0) {
                                     $this->_options_line_price +=  $option[0]['option_price'];
