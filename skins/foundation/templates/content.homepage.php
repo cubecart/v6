@@ -59,7 +59,7 @@
             {elseif $product.ctrl_stock && !$CATALOGUE_MODE}
             <div class="row collapse marg-top">
                <div class="small-3 columns">
-                  <input type="text" name="quantity" maxlength="3" value="1" class="quantity required text-center">
+                  <input type="number" name="quantity" maxlength="3" value="{$product.minimum_quantity}" min="{$product.minimum_quantity}" class="quantity required text-center">
                </div>
                <div class="small-9 columns ">
                   <button type="submit" value="{$LANG.catalogue.add_to_basket}" class="button small postfix">{$LANG.catalogue.add_to_basket}</button>

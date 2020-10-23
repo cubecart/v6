@@ -17,7 +17,6 @@
    <span id="ptp"{if !$CTRL_HIDE_PRICES} data-price="{$PRODUCT.price_to_pay}"{/if}>{$PRODUCT.price}</span>
 {/if}
 </h3>
-
 {if isset($PRODUCT.discounts)}
 <p>(<a href="#quantity_discounts">{$LANG.catalogue.bulk_discount}</a>)</p>
 {/if}
@@ -33,13 +32,16 @@
    </div>
    {else}
    <div class="medium-2 columns show-for-medium-up">
-      <input type="text" name="quantity" value="1" maxlength="3" class="quantity required text-center">
+      <input type="number" name="quantity" value="{$PRODUCT.minimum_quantity}" min="{$PRODUCT.minimum_quantity}" maxlength="3" class="quantity required text-center">
       <input type="hidden" name="add" value="{$PRODUCT.product_id}">
    </div>
    <div  class="small-12 medium-10 columns">
       <link itemprop="availability" href="http://schema.org/InStock" />
       <button type="submit" value="{$LANG.catalogue.add_to_basket}" class="button postfix">{$LANG.catalogue.add_to_basket}</button>
    </div>
+   {if $PRODUCT.minimum_quantity>1}
+   <small>{$LANG.catalogue.min_purchase_quantity|replace:'%s':$PRODUCT.minimum_quantity}</small>
+{/if}
    {/if}
 </div>
 {else}
