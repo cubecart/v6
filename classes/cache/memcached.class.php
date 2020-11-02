@@ -277,14 +277,17 @@ class Cache extends Cache_Controler
     private function _printStats($server, $data)
     {
         $output = '';
-        
         $output .= "<table border='1'>";
         $output .= "<thead><tr><th colspan='2'>Server: ".$server."</th></tr></thead>";
         $output .= "<tbody><tr><td>Memcache Server version:</td><td> ".$data["version"]."</td></tr>";
         $output .= "<tr><td>Process id of this server process </td><td>".$data["pid"]."</td></tr>";
         $output .= "<tr><td>Number of seconds this server has been running </td><td>".$data["uptime"]."</td></tr>";
-        $output .= "<tr><td>Accumulated user time for this process </td><td>".$data["rusage_user_seconds"]." seconds</td></tr>";
-        $output .= "<tr><td>Accumulated system time for this process </td><td>".$data["rusage_system_seconds"]." seconds</td></tr>";
+        if(!empty($data["rusage_user_seconds"])) {
+            $output .= "<tr><td>Accumulated user time for this process </td><td>".$data["rusage_user_seconds"]." seconds</td></tr>";
+        }
+        if(!empty($data["rusage_system_seconds"])) {
+            $output .= "<tr><td>Accumulated system time for this process </td><td>".$data["rusage_system_seconds"]." seconds</td></tr>";
+        }
         $output .= "<tr><td>Total number of items stored by this server ever since it started </td><td>".$data["total_items"]."</td></tr>";
         $output .= "<tr><td>Number of open connections </td><td>".$data["curr_connections"]."</td></tr>";
         $output .= "<tr><td>Total number of connections opened since the server started running </td><td>".$data["total_connections"]."</td></tr>";
