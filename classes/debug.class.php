@@ -199,6 +199,7 @@ class Debug
 
         if (!is_null($type) && !is_null($message) && !empty($message)) {
             $tag = '';
+            settype($message,'array');
 
             if ($cache && $source) { // Request from cache and taken from cache
                 $tag = 'CACHE READ';
@@ -214,11 +215,11 @@ class Debug
                 $colour = '000';
             }
 
-            if ($type=='error' || preg_match('/^INSERT .*CubeCart_system_error_log/', $message)) {
+            if ($type=='error' || preg_match('/^INSERT .*CubeCart_system_error_log/', $message[0])) {
                 $tag = empty($tag) ? 'ERROR' : 'ERROR - '.$tag;
                 $colour = 'FF0000';
             }
-            $this->_sql[$type][] = '<span style="color:#'.$colour.'">'.htmlentities($message.' ['.$tag.']', ENT_COMPAT, 'UTF-8').'</span>';
+            $this->_sql[$type][] = '<span style="color:#'.$colour.'">Hack: '.str_pad($this->_getTime(),16,'0').(isset($message[1])?' --- Duration: '.$message[1]:'').' ['.$tag.']'.((!$cache&&!$source)?'':' --- Key: sql.'.md5($message[0])).'<br />'.htmlentities($message[0], ENT_COMPAT, 'UTF-8').'</span>';
             return true;
         }
 
@@ -298,12 +299,13 @@ class Debug
 
                 if (!empty($this->_sql['query'])) {
                     $output[] = '<strong>Queries ('.count($this->_sql['query']).')</strong>:<br />';
-
+                    $output[] = '<table>';
                     foreach ($this->_sql['query'] as $index => $query) {
                         if (!empty($query)) {
-                            $output[] = '[<strong>'.($index + 1).'</strong>] '.$query.'<br />';
+                            $output[] = '<tr><td style="text-align:right;padding:2px;"><strong>'.($index + 1).'</strong></td><td style="padding:2px;">'.$query.'</td></tr>';
                         }
                     }
+                    $output[] = '</table>';
                 }
                 if (!empty($this->_sql['error'])) {
                     $output[] = '<strong>Errors</strong>:<br />';

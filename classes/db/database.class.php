@@ -1021,7 +1021,7 @@ class Database_Contoller
     protected function _sqlDebug($cache, $source)
     {
         if (isset($GLOBALS['debug']) && $GLOBALS['debug'] instanceof Debug) {
-            $message = "{$this->_query} -- ({$this->_query_time} sec)";
+            $message = array($this->_query, round($this->_query_time *1000 *1000) . " &micro;s");
             $GLOBALS['debug']->debugSQL('query', $message, $cache, $source);
             $this->_error = ($this->error()) ? $this->error().': '.$this->errorInfo() : false;
             $GLOBALS['debug']->debugSQL('error', $this->_error, $cache, $source);
