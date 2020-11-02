@@ -238,6 +238,7 @@
     <string name="your_comments" introduced="5.0.0"><![CDATA[Delivery Notes or Additional Comments]]></string>
   </group>
   <group name="catalogue">
+    <string name="other_inc_images" introduced="6.4.0"><![CDATA[Other included images]]></string>
     <string name="min_purchase_quantity" introduced="6.4.0"><![CDATA[Minimum purchase quantity is %s.]]></string>
     <string name="empty_notice" introduced="6.4.0"><![CDATA[Note: Categories will only show on the front end when products have been assigned. This can be changed in your <a href="?_g=settings#Layout">settings</a>.]]></string>
     <string name="manufacturer_limit" introduced="6.4.0"><![CDATA[Limit to manufacturer]]></string>

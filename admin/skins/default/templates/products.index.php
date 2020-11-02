@@ -585,7 +585,7 @@
             </div>
             {if $GALLERY_JSON}
             <div id="gallery_json">
-               <p>Other includes images</p>
+               <p>{$LANG.catalogue.other_inc_images}</p>
                <ul>{foreach $GALLERY_JSON|json_decode:true as $gallery_image}
                   {if $gallery_image@index > 0}
                   <li id="gallery_imageset_{$gallery_image.file_id}">
