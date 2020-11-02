@@ -1353,7 +1353,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="error_plugin_none" introduced="5.0.0"><![CDATA[There are no installed/enabled plugins.]]></string>
     <string name="name" introduced="5.0.0"><![CDATA[Hook Name]]></string>
     <string name="notify_hook_create" introduced="5.0.0"><![CDATA[Hook successfully added.]]></string>
-    <string name="notify_hook_magic" introduced="5.0.0"><![CDATA[New hooks are detected and automatically registered when this page is loaded.]]></string>
+    <string name="notify_hook_magic" introduced="5.0.0"><![CDATA[Hooks added to and removed from the plugin's config.xml file were detected and have been automatically registered/unregistered.]]></string>
     <string name="notify_hook_status" introduced="5.0.0"><![CDATA[Hook statuses updated.]]></string>
     <string name="notify_hook_update" introduced="5.0.0"><![CDATA[Hook successfully updated.]]></string>
     <string name="path_to_file" introduced="5.0.0"><![CDATA[Path to alternate file]]></string>
