@@ -286,27 +286,37 @@ class Cache extends Cache_Controler
         $output .= "<tr><td>Memcache Server version:</td><td> ".$data["version"]."</td></tr>";
         $output .= "<tr><td>Process id of this server process </td><td>".$data["pid"]."</td></tr>";
         $output .= "<tr><td>Number of seconds this server has been running </td><td>".$data["uptime"]."</td></tr>";
-        $output .= "<tr><td>Accumulated user time for this process </td><td>".$data["rusage_user"]." seconds</td></tr>";
-        $output .= "<tr><td>Accumulated system time for this process </td><td>".$data["rusage_system"]." seconds</td></tr>";
+        if($data["rusage_user"]) {
+            $output .= "<tr><td>Accumulated user time for this process </td><td>".$data["rusage_user"]." seconds</td></tr>";
+        }
+        if($data["rusage_system"]) {
+            $output .= "<tr><td>Accumulated system time for this process </td><td>".$data["rusage_system"]." seconds</td></tr>";
+        }
         $output .= "<tr><td>Total number of items stored by this server ever since it started </td><td>".$data["total_items"]."</td></tr>";
         $output .= "<tr><td>Number of open connections </td><td>".$data["curr_connections"]."</td></tr>";
         $output .= "<tr><td>Total number of connections opened since the server started running </td><td>".$data["total_connections"]."</td></tr>";
         $output .= "<tr><td>Number of connection structures allocated by the server </td><td>".$data["connection_structures"]."</td></tr>";
         $output .= "<tr><td>Cumulative number of retrieval requests </td><td>".$data["cmd_get"]."</td></tr>";
         $output .= "<tr><td> Cumulative number of storage requests </td><td>".$data["cmd_set"]."</td></tr>";
-
-        $percCacheHit=((float)$data["get_hits"]/ (float)$data["cmd_get"] *100);
-        $percCacheHit=round($percCacheHit, 3);
-        $percCacheMiss=100-$percCacheHit;
-
-        $output .= "<tr><td>Number of keys that have been requested and found present </td><td>".$data["get_hits"]." ($percCacheHit%)</td></tr>";
-        $output .= "<tr><td>Number of items that have been requested and not found </td><td>".$data["get_misses"]." ($percCacheMiss%)</td></tr>";
-        $MBRead= (float)$data["bytes_read"]/(1024*1024);
-        $output .= "<tr><td>Total number of bytes read by this server from network </td><td>".$MBRead." MiB</td></tr>";
-        $MBWrite=(float) $data["bytes_written"]/(1024*1024) ;
-        $output .= "<tr><td>Total number of bytes sent by this server to network </td><td>".$MBWrite." MiB</td></tr>";
-        $MBSize=(float) $data["limit_maxbytes"]/(1024*1024) ;
-        $output .= "<tr><td>Number of bytes this server is allowed to use for storage.</td><td>".$MBSize." MiB</td></tr>";
+        if($data["cmd_get"] > 0) { 
+            $percCacheHit = ((float)$data["get_hits"] / (float)$data["cmd_get"] * 100);
+            $percCacheHit = round($percCacheHit, 3);
+            $percCacheMiss = 100 - $percCacheHit;
+            $output .= "<tr><td>Number of keys that have been requested and found present </td><td>".$data["get_hits"]." ($percCacheHit%)</td></tr>";
+            $output .= "<tr><td>Number of items that have been requested and not found </td><td>".$data["get_misses"]." ($percCacheMiss%)</td></tr>";
+        }
+        if($data["bytes_read"] > 0) {
+            $MBRead = (float)$data["bytes_read"] / (1024 * 1024);
+            $output .= "<tr><td>Total number of bytes read by this server from network </td><td>".$MBRead." MiB</td></tr>";
+        }
+        if($data["bytes_written"] > 0) {
+            $MBWrite =(float) $data["bytes_written"] / (1024 * 1024) ;
+            $output .= "<tr><td>Total number of bytes sent by this server to network </td><td>".$MBWrite." MiB</td></tr>";
+        }
+        if($data["limit_maxbytes"] > 0) {
+            $MBSize = (float)$data["limit_maxbytes"] / (1024 * 1024) ;
+            $output .= "<tr><td>Number of bytes this server is allowed to use for storage.</td><td>".$MBSize." MiB</td></tr>";
+        }
         $output .= "<tr><td>Number of valid items removed from cache to free memory for new items.</td><td>".$data["evictions"]."</td></tr>";
         $output .= "</tbody></table>";
         return $output;
