@@ -11,7 +11,7 @@
  *}
 <div class="row">
    <div  class="medium-1 columns thinpad-right off-canvas-for-small vertical">
-      {if $GALLERY}
+      {if count($GALLERY) > 1}
       <div id="scrollUp" class="scroller"><svg class="icon"><use xlink:href="#icon-angle-up"></use></svg></div>
       <ul class="clearing-thumbs small-block-grid-1" id="scrollContent" data-clearing>
          {foreach from=$GALLERY item=image}
