@@ -119,7 +119,11 @@ class SEO
 
         self::_checkModRewrite();
 
-        $this->_extension = $GLOBALS['config']->get('config', 'seo_ext');
+        $GLOBALS['config']->has('config', 'seo_ext') {
+            $this->_extension = $GLOBALS['config']->get('config', 'seo_ext');
+        } else {
+            $this->_extension = '.html';
+        }
 
         // Build an array of ALL categories
         $this->_getCategoryList();
