@@ -119,7 +119,7 @@ class SEO
 
         self::_checkModRewrite();
 
-        $GLOBALS['config']->has('config', 'seo_ext') {
+        if($GLOBALS['config']->has('config', 'seo_ext')) {
             $this->_extension = $GLOBALS['config']->get('config', 'seo_ext');
         } else {
             $this->_extension = '.html';
