@@ -22,6 +22,7 @@
         {include file='templates/element.js_head.php'}
     </head>
     <body class="stream">
+        {if $DATA}
         <div class="row">
             <div class="small-12 columns">
                 <h1>{$DATA.title}</h1>
@@ -32,5 +33,12 @@
             </div>
         </div>
         {$STREAM_HOOK}
+        {else}
+        <div class="row">
+            <div class="small-12 columns">
+                <p class="text-center thickpad">{$LANG.filemanager.media_expired}</p>
+            </div>
+        </div>
+        {/if}
     </body>
 </html>
