@@ -672,6 +672,11 @@ class SEO
      */
     public function setdbPath($type, $item_id, $path, $bool = true, $show_error = true, $status_code = 0)
     {
+        // Check dynamic $type has an valid $item_id
+        if(in_array($type, $this->_dynamic_sections) && (int)$item_id <= 0) {
+            return false;
+        }
+
         if (!empty($path)) {
             $path = SEO::_safeUrl($path);
         }
