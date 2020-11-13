@@ -340,7 +340,8 @@ $page  = (isset($_GET['stock'])) ? $_GET['stock'] : 1;
 $tables = '`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory` AS `I` LEFT JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_option_matrix` AS `M` on `I`.`product_id` = `M`.`product_id`';
 
 $fields = 'I.name, I.product_code, I.stock_level AS I_stock_level, I.stock_warning AS I_stock_warning, I.product_id, M.stock_level AS M_stock_level, M.use_stock as M_use_stock, M.cached_name';
-$condition = $GLOBALS['config']->get('config', 'stock_warn_type') == '1' ? 'I.stock_warning' : $GLOBALS['config']->get('config', 'stock_warn_level');
+$stock_warn_level = ((int)$GLOBALS['config']->get('config', 'stock_warn_level')>0) ? $GLOBALS['config']->get('config', 'stock_warn_level') : '0';
+$condition = $GLOBALS['config']->get('config', 'stock_warn_type') == '1' ? 'I.stock_warning' : $stock_warn_level;
 $where = "use_stock_level = 1 AND ((M.status = 1 AND M.use_stock = 1 AND M.stock_level <= $condition) OR (I.stock_level <= $condition))";
 // Stock Warnings Sort
 if (!isset($_GET['sort']) || !is_array($_GET['sort'])) {
