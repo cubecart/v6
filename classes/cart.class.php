@@ -530,7 +530,7 @@ class Cart
                 
                 if($coupon['coupon_per_customer']>0) {
                     if (!empty($customer_id) || !empty($email)) {
-                        $usage = $GLOBALS['db']->select('CubeCart_customer_coupon', array('used'), "`email` = '$email' OR `customer_id` =  $customer_id", false, 1, false, false);
+                        $usage = $GLOBALS['db']->select('CubeCart_customer_coupon', array('used'), "`email` = '$email' OR `customer_id` =  ".(int)$customer_id, false, 1, false, false);
                         if($usage && $usage[0]['used']>= $coupon['coupon_per_customer']) {
                             // Coupon is no longer valid
                             $GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_exceeded']);
