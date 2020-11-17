@@ -352,7 +352,10 @@ if (isset($_REQUEST['emptyErrorLogs']) && Admin::getInstance()->permissions('mai
         $GLOBALS['main']->errorMessage($lang['maintain']['error_logs_error']);
     }
     $clear_post = true;
-    if(isset($_GET['redir']) && $_GET['redir']=='viewlog') httpredir('?_g=settings&node=errorlog','system_error_log'); exit;
+    if(isset($_GET['redir']) && $_GET['redir']=='viewlog') {
+        httpredir('?_g=settings&node=errorlog','system_error_log');
+        exit;
+    }
 }
 
 if (isset($_REQUEST['emptyRequestLogs']) && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
@@ -362,7 +365,10 @@ if (isset($_REQUEST['emptyRequestLogs']) && Admin::getInstance()->permissions('m
         $GLOBALS['main']->errorMessage($lang['maintain']['error_logs_request']);
     }
     $clear_post = true;
-    if(isset($_GET['redir']) && $_GET['redir']=='viewlog') httpredir('?_g=settings&node=requestlog'); exit;
+    if(isset($_GET['redir']) && $_GET['redir']=='viewlog') {
+        httpredir('?_g=settings&node=requestlog');
+        exit;
+    }
 }
 
 if (isset($_POST['clearSearch']) && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
@@ -441,7 +447,10 @@ if (isset($_REQUEST['clearLogs'])) {
         $GLOBALS['main']->errorMessage($lang['maintain']['error_logs_admin']);
     }
     $clear_post = true;
-    if(isset($_GET['redir']) && $_GET['redir']=='viewlog') httpredir('?_g=settings&node=errorlog'); exit;
+    if(isset($_GET['redir']) && $_GET['redir']=='viewlog') {
+        httpredir('?_g=settings&node=errorlog');
+        exit;
+    }
 }
 
 ########## Database ##########
@@ -558,6 +567,7 @@ if (isset($_POST['backup'])) {
 
 if ($clear_post) {
     httpredir(currentPage(array('clearLogs', 'emptyErrorLogs')));
+    exit;
 }
 
 ########## Tabs ##########
