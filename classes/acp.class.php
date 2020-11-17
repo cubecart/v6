@@ -295,9 +295,9 @@ class ACP
      *
      * @param string $message
      */
-    public function successMessage($message)
+    public function successMessage($message, $adminLog = true)
     {
-        $this->setACPNotify($message);
+        $this->setACPNotify($message, $log);
     }
 
     /**
@@ -306,11 +306,13 @@ class ACP
      *
      * @param string $message
      */
-    public function setACPNotify($message)
+    public function setACPNotify($message, $adminLog = true)
     {
         $GLOBALS['gui']->setNotify($message);
         // Add record to admin log
-        $this->adminLog($message);
+        if($log) {
+            $this->adminLog($message);
+        }
     }
 
     /**

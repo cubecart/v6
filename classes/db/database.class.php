@@ -979,7 +979,7 @@ class Database_Contoller
     {
         if (CC_IN_ADMIN && $purge && $affected && method_exists($GLOBALS['session'], 'set') && !in_array($table, $this->cache_notice_tables_ingore)) {
             if((int)$GLOBALS['session']->get('logins','admin_data') <= 3) {
-                $GLOBALS['main']->successMessage($GLOBALS['language']->dashboard['cache_reminder']);
+                $GLOBALS['main']->successMessage($GLOBALS['language']->dashboard['cache_reminder'], false);
             }
             $GLOBALS['session']->set('CLEAR_CACHE', true);
         }
