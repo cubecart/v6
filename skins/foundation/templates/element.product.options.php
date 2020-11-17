@@ -61,8 +61,8 @@
             {/if}
          </div>
       </div>
-      {else}
-         {if $OTHER_CHOOSERS}{include file='templates/element.product.other_choosers.php'}{/if} 
+      {elseif $OTHER_CHOOSERS}
+         {include file='templates/element.product.other_choosers.php'}
       {/if}
    {/foreach}
 {/if}
