@@ -443,8 +443,8 @@ class Database_Contoller
                 $this->_query = "INSERT INTO `{$this->_prefix}$table` (".implode(',', $fields).') VALUES ('.implode(',', $values).');';
                 $this->_execute(false);
                 $affected = ($this->affected() > 0);
-                $this->_clearCacheNotice($purge, $affected, $table);
                 $insert_id = ($this->insertid()) ? $this->insertid() : true;
+                $this->_clearCacheNotice($purge, $affected, $table);
                 return ($affected) ? $insert_id : false;
             }
         }
