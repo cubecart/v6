@@ -613,9 +613,12 @@ class Cart
                         }
                     } elseif ($incexc == 'exclude') {
                         foreach ($this->basket['contents'] as $key => $data) {
-                            if ($product_ids[$data['id']] && isset($include[$data['id']])) {
+                            if (isset($qualifying_manufacturers) && $product_ids[$data['id']] && isset($include[$data['id']])) {
                                 unset($include[$data['id']]);
+                            } elseif($product_ids[$data['id']]) {
+                                continue;
                             } else {
+                                $include[$data['id']] = true;
                                 $proceed = true;
                             }
                         }
