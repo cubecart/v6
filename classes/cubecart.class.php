@@ -1670,7 +1670,7 @@ class Cubecart
             $gc = $GLOBALS['config']->get('gift_certs');
             $digital_only = true;
             foreach ($contents as $hash => $product) {
-                if ($product['product_id']) {
+                if ((int)$product['product_id']>0) {
                     $product_list[] = $product['product_id']; // Certificate ID is NULL
                 }
                 $product['line_price_display'] = $GLOBALS['tax']->priceFormat($product['line_price']);
