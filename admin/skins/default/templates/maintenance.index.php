@@ -134,6 +134,9 @@
 
 <div id="upgrade" class="tab_content">
   <h3>{$LANG.maintain.upgrade_to_latest}</h3>
+  {if $CONFIG.auto_upgrade_disabled}
+	<p>{$LANG.maintain.auto_upgrade_disabled|replace:'{$EMAIL}':$CONFIG.auto_upgrade_disabled}</p>
+  {else}
   {if $OUT_OF_DATE}
   <p><strong>{$OUT_OF_DATE}</strong></p>
   <p>{$LANG.maintain.upgrade_to_latest_desc}</p>
@@ -147,6 +150,7 @@
 		<input type="hidden" name="force" value="{$FORCE}">
 	</div>
   </form>
+  {/if}
   {if $UPGRADE_ERROR_LOG}
   <h3>{$LANG.dashboard.title_error_log}</h3>
   <div><textarea rows="10" cols="70">{$UPGRADE_ERROR_LOG}</textarea></div>

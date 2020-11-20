@@ -23,4 +23,5 @@ $glob['adminFile'] 		= 'admin.php';	// Change this if you have changed the admin
 $glob['cache'] 			= 'file';		// Cache in use can be (apc, file, memcache, memcached, redis, xcache) 
 $glob['session_save_path'] = '';		// Set your own session save path (please note that a shell script may be required for garbage collection) https://stackoverflow.com/questions/654310/cleanup-php-session-files
 $glob['safe_mode'] = false;		        // Set to true to disable hooks and code snippets, 'hooks' to disable code hooks and 'snippets' to disable code snippets
+$glob['auto_upgrade_disabled'] = false;  // Set to an email address or false. Entering an email will disable the auto upgrade too with a message about who to contact
 ?>
