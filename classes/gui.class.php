@@ -1222,57 +1222,63 @@ class GUI
         if (!$GLOBALS['smarty']->templateExists('templates/box.popular.php')) {
             return false;
         }
-
-        if ((int)$GLOBALS['config']->get('config', 'catalogue_popular_products_count') < 1) {
-            return false;
-        }
-        $limit = (is_numeric($GLOBALS['config']->get('config', 'catalogue_popular_products_count'))) ? $GLOBALS['config']->get('config', 'catalogue_popular_products_count') : 10;
-        switch ((int)$GLOBALS['config']->get('config', 'catalogue_popular_products_source')) {
-            case 1:  // sale-based
-                $whereStr   = $GLOBALS['catalogue']->outOfStockWhere(false, 'i', true);
-                $query  = "SELECT `oi`.`product_id`, `i`.`name`, `i`.`price`, `i`.`sale_price`, `i`.`tax_type`, `i`.`tax_inclusive`, SUM(`oi`.`quantity`) as `quantity` FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_inventory` as `oi` JOIN `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_inventory` as `i` WHERE `oi`.`product_id` = `i`.`product_id` AND `i`.`status` = 1 $whereStr GROUP BY `oi`.`product_id` ORDER BY `quantity` DESC LIMIT ".$limit.";";
-                $products = $GLOBALS['db']->query($query);
-            break;
-            default: // view-based
-                $where      = $GLOBALS['catalogue']->outOfStockWhere(array('status' => '1'));
-                $products = $GLOBALS['db']->select('CubeCart_inventory', array('name', 'product_id', 'quantity', 'price', 'sale_price', 'tax_type', 'tax_inclusive'), $where, 'popularity DESC', $limit);
-        }
-        if ($products) {
-            $vars = array();
-            foreach ($products as $product) {
-                $category_data = $GLOBALS['catalogue']->getCategoryStatusByProductID($product['product_id']);
-                $category_status = false;
-                if (is_array($category_data)) {
-                    foreach ($category_data as $trash => $data) {
-                        if ($data['status'] == 1) {
-                            $category_status = true;
+        $cache_id = 'html.'.$this->_skin.'.popular_products.'.$GLOBALS['language']->current();
+        $serialize = false;
+        if (($content = $GLOBALS['cache']->read($cache_id, $serialize)) == false) {
+            $GLOBALS['smarty']->assign('POPULAR_PRODUCTS', $content);
+        } else {
+            if ((int)$GLOBALS['config']->get('config', 'catalogue_popular_products_count') < 1) {
+                return false;
+            }
+            $limit = (is_numeric($GLOBALS['config']->get('config', 'catalogue_popular_products_count'))) ? $GLOBALS['config']->get('config', 'catalogue_popular_products_count') : 10;
+            switch ((int)$GLOBALS['config']->get('config', 'catalogue_popular_products_source')) {
+                case 1:  // sale-based
+                    $whereStr   = $GLOBALS['catalogue']->outOfStockWhere(false, 'i', true);
+                    $query  = "SELECT `oi`.`product_id`, `i`.`name`, `i`.`price`, `i`.`sale_price`, `i`.`tax_type`, `i`.`tax_inclusive`, SUM(`oi`.`quantity`) as `quantity` FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_inventory` as `oi` JOIN `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_inventory` as `i` WHERE `oi`.`product_id` = `i`.`product_id` AND `i`.`status` = 1 $whereStr GROUP BY `oi`.`product_id` ORDER BY `quantity` DESC LIMIT ".$limit.";";
+                    $products = $GLOBALS['db']->query($query);
+                break;
+                default: // view-based
+                    $where      = $GLOBALS['catalogue']->outOfStockWhere(array('status' => '1'));
+                    $products = $GLOBALS['db']->select('CubeCart_inventory', array('name', 'product_id', 'quantity', 'price', 'sale_price', 'tax_type', 'tax_inclusive'), $where, 'popularity DESC', $limit);
+            }
+            if ($products) {
+                $vars = array();
+                foreach ($products as $product) {
+                    $category_data = $GLOBALS['catalogue']->getCategoryStatusByProductID($product['product_id']);
+                    $category_status = false;
+                    if (is_array($category_data)) {
+                        foreach ($category_data as $trash => $data) {
+                            if ($data['status'] == 1) {
+                                $category_status = true;
+                            }
                         }
                     }
+                    if (!$category_status) {
+                        continue;
+                    }
+
+                    $GLOBALS['language']->translateProduct($product);
+                    $product['url'] = $GLOBALS['seo']->buildURL('prod', $product['product_id']);
+
+                    $product['ctrl_sale'] = (!$GLOBALS['tax']->salePrice($product['price'], $product['sale_price']) || !$GLOBALS['config']->get('config', 'catalogue_sale_mode')) ? false : true;
+
+                    $GLOBALS['catalogue']->getProductPrice($product);
+                    $sale = $GLOBALS['tax']->salePrice($product['price'], $product['sale_price']);
+                    $product['price_unformatted'] = $product['price'];
+                    $product['sale_price_unformatted'] = ($sale) ? $product['sale_price'] : null;
+                    $product['price'] = $GLOBALS['tax']->priceFormat($product['price']);
+                    $product['sale_price'] = ($sale) ? $GLOBALS['tax']->priceFormat($product['sale_price']) : null;
+                    $product['image'] = $this->getProductImage($product['product_id']);
+                    $vars[] = $product;
                 }
-                if (!$category_status) {
-                    continue;
+                foreach ($GLOBALS['hooks']->load('class.gui.display_popular_products') as $hook) {
+                    include $hook;
                 }
-
-                $GLOBALS['language']->translateProduct($product);
-                $product['url'] = $GLOBALS['seo']->buildURL('prod', $product['product_id']);
-
-                $product['ctrl_sale'] = (!$GLOBALS['tax']->salePrice($product['price'], $product['sale_price']) || !$GLOBALS['config']->get('config', 'catalogue_sale_mode')) ? false : true;
-
-                $GLOBALS['catalogue']->getProductPrice($product);
-                $sale = $GLOBALS['tax']->salePrice($product['price'], $product['sale_price']);
-                $product['price_unformatted'] = $product['price'];
-                $product['sale_price_unformatted'] = ($sale) ? $product['sale_price'] : null;
-                $product['price'] = $GLOBALS['tax']->priceFormat($product['price']);
-                $product['sale_price'] = ($sale) ? $GLOBALS['tax']->priceFormat($product['sale_price']) : null;
-                $product['image'] = $this->getProductImage($product['product_id']);
-                $vars[] = $product;
+                $GLOBALS['smarty']->assign('POPULAR', $vars);
+                $content = $GLOBALS['smarty']->fetch('templates/box.popular.php');    
+                $GLOBALS['cache']->write($content, $cache_id, '', $serialize);
+                $GLOBALS['smarty']->assign('POPULAR_PRODUCTS', $content);
             }
-            foreach ($GLOBALS['hooks']->load('class.gui.display_popular_products') as $hook) {
-                include $hook;
-            }
-            $GLOBALS['smarty']->assign('POPULAR', $vars);
-            $content = $GLOBALS['smarty']->fetch('templates/box.popular.php');
-            $GLOBALS['smarty']->assign('POPULAR_PRODUCTS', $content);
         }
     }
 
