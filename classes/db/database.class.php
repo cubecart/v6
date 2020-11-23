@@ -750,7 +750,7 @@ class Database_Contoller
             ## get data
             $limit = $page>0 ? "LIMIT $maxRows OFFSET ".($page - 1) * $maxRows : "LIMIT $maxRows";
 
-            $this->_query = "SELECT * FROM ".$tableData['Name']." ".$limit;
+            $this->_query = "SELECT * FROM `".$tableData['Name']."` ".$limit;
             $this->_execute(false);
             
             if ($this->_result) {
