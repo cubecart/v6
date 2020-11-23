@@ -358,7 +358,8 @@ class SEO
             }
         }
         $path = SEO::_safeUrl($path);
-        return $this->_getBaseUrl($absolute).$this->_handleExtension($path);
+        // If path exists without .html but setting has .html enabled we mustn't add it!
+        return $existing ? $this->_getBaseUrl($absolute).$path : $this->_getBaseUrl($absolute).$this->_handleExtension($path);
     }
 
     /**
