@@ -131,7 +131,7 @@ class Session
             $this->_session_domain = '.'.$cookie_domain;
             ini_set('session.cookie_domain', $this->_session_domain);
         }
-        $this->_session_path = substr($GLOBALS['rootRel'],0,-1);
+        $this->_session_path = $GLOBALS['rootRel'] == '/' ? $GLOBALS['rootRel'] : substr($GLOBALS['rootRel'],0,-1);
         ini_set('session.cookie_path', $this->_session_path);
 
         //If the current session time is longer we will not change anything
@@ -601,8 +601,8 @@ class Session
 
         $attributes = '';
         $attributes .= ';Expires='.strftime('%a, %d %b %Y %H:%M:%S GMT', $expires);
-        $attributes .= ';Domain='.$params['domain'];
-        $attributes .= ';Path='.$params['path'];
+        $attributes .= ';Domain='.$this->_session_domain;
+        $attributes .= ';Path='.$this->_session_path;
         if(CC_SSL) {
             $attributes .= ';SameSite='.$params['samesite'];
             $attributes .= ';Secure';
@@ -610,6 +610,7 @@ class Session
         if($params['httponly']) {
             $attributes .= ';HttpOnly';
         }
+        // Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
         header('Set-Cookie: '.$name.'='.$value.$attributes);
     }
 
