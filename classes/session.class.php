@@ -599,8 +599,9 @@ class Session
         $params = session_get_cookie_params();
         $params = array_merge($params, $options); // Allow overwrite for specific cookies    
 
+        $date = new Datetime(strftime('%c',$expires));
         $attributes = '';
-        $attributes .= ';Expires='.strftime('%a, %d %b %Y %H:%M:%S GMT', $expires);
+        $attributes .= ';Expires='.$date->format(DateTime::COOKIE);
         $attributes .= ';Domain='.$this->_session_domain;
         $attributes .= ';Path='.$this->_session_path;
         if(CC_SSL) {
