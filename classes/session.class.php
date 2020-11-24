@@ -45,6 +45,18 @@ class Session
      */
     private $_session_timeout = 604800;
     /**
+     * Session path
+     *
+     * @var string
+     */
+    private $_session_path = '';
+    /**
+     * Session domain
+     *
+     * @var string
+     */
+    private $_session_domain = '';
+    /**
      * Session token name
      *
      * @var string
@@ -116,9 +128,11 @@ class Session
         }
         $cookie_domain = ltrim($GLOBALS['config']->get('config', 'cookie_domain'), '.');
         if (!empty($cookie_domain) && strstr($GLOBALS['storeURL'], $cookie_domain) && strpos($cookie_domain, '.')) {
-            ini_set('session.cookie_domain', '.'.$cookie_domain);
+            $this->_session_domain = '.'.$cookie_domain;
+            ini_set('session.cookie_domain', $this->_session_domain);
         }
-        ini_set('session.cookie_path', substr($GLOBALS['rootRel'],0,-1));
+        $this->_session_path = substr($GLOBALS['rootRel'],0,-1);
+        ini_set('session.cookie_path', $this->_session_path);
 
         //If the current session time is longer we will not change anything
         if ($ini['session.gc_maxlifetime'] < $this->_session_timeout) {
@@ -580,15 +594,23 @@ class Session
      * @param integer $expire
      * @return bool
      */
-    public function set_cookie($name, $value, $expire, $options = array())
+    public function set_cookie($name, $value, $expires, $options = array())
     {
         $params = session_get_cookie_params();
-        $params = array_merge($params, $options); // Allow overwrite for specific cookies
-        if(isset($_COOKIE[$name])) {
-            return setcookie($name, $value, $expire, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+        $params = array_merge($params, $options); // Allow overwrite for specific cookies    
+
+        $attributes = '';
+        $attributes .= ';Expires='.strftime('%a, %d %b %Y %H:%M:%S GMT', $expires);
+        $attributes .= ';Domain='.$params['domain'];
+        $attributes .= ';Path='.$params['path'];
+        if(CC_SSL) {
+            $attributes .= ';SameSite='.$params['samesite'];
+            $attributes .= ';Secure';
         }
-        $same_site = CC_SSL ? 'samesite='.$params['samesite'] : '';
-        return setcookie($name, $value, 'expires='.$expire.';path='.$params['path'].';domain='.$params['domain'].';secure='.$params['secure'].';httponly='.$params['httponly'].';'.$same_site);
+        if($params['httponly']) {
+            $attributes .= ';HttpOnly';
+        }
+        header('Set-Cookie: '.$name.'='.$value.$attributes);
     }
 
     //=====[ Private ]=======================================
@@ -692,8 +714,8 @@ class Session
         session_name('CC'.$session_prefix.'_'.strtoupper(substr(md5(CC_ROOT_DIR), 0, 10)));
         session_start();
         
-        // Increase session length on each page load. NOT IE however.
-        if (isset($_COOKIE[session_name()]) && $this->_http_user_agent()!=='IEX') {
+        // Increase session length on each page load.
+        if (isset($_COOKIE[session_name()])) {
             $this->set_cookie(session_name(), session_id(), time()+$this->_session_timeout);
         }
     }
