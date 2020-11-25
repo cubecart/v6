@@ -213,7 +213,7 @@ if (isset($_GET['export'])) {
         }
     }
     $GLOBALS['main']->addTabControl($lang['translate']['tab_string_edit'], 'general');
-    if (!preg_match('/^(modules)/', $_GET['type'])) {
+    if (!preg_match('/^(modules)/', $_REQUEST['type'])) {
         $GLOBALS['main']->addTabControl($lang['translate']['merge_db_file'], false, currentPage(array('language'), array('export' => $_GET['language'])));
     }
 } else {
