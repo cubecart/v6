@@ -2766,14 +2766,14 @@ class Cubecart
             }
 
             if (!$error) {
-                if (($GLOBALS['db']->insert('CubeCart_reviews', $record)) !== false) {
+                if (($review_id = $GLOBALS['db']->insert('CubeCart_reviews', $record)) !== false) {
                     foreach ($GLOBALS['hooks']->load('class.cubecart.review.insert') as $hook) {
                         include $hook;
                     }
                     
                     $GLOBALS['gui']->setNotify($GLOBALS['language']->catalogue['notify_review_submit']);
                     $mail     = new Mailer();
-                    $record['link']   = $GLOBALS['storeURL'].'/'.$GLOBALS['config']->get('config', 'adminFile').'?_g=products&node=reviews&edit='.$GLOBALS['db']->insertid();
+                    $record['link']   = $GLOBALS['storeURL'].'/'.$GLOBALS['config']->get('config', 'adminFile').'?_g=products&node=reviews&edit='.$review_id;
                     $record['product_name'] = $product['name'];
                     $content    = $mail->loadContent('admin.review_added', $GLOBALS['language']->current(), $record);
                     if (!empty($content)) {
