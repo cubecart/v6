@@ -458,10 +458,10 @@ class Database_Contoller
      * @param string $query
      * @return bool
      */
-    public function misc($query, $cache = true)
+    public function misc($query, $cache = true, $log = true)
     {
         $this->_query = $query;
-        $this->_execute($cache);
+        $this->_execute($cache, true, $log);
         return $this->_result;
     }
 

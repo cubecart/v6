@@ -194,7 +194,7 @@ class Database extends Database_Contoller
      * @param string $fetch
      * @return bool
      */
-    protected function _execute($cache = true, $fetch = true)
+    protected function _execute($cache = true, $fetch = true, $log = true)
     {
         $cache = $cache && preg_match('#\b('.$this->_cache_block_functions.')\b#', $this->_query) ?: false;
 
@@ -235,7 +235,7 @@ class Database extends Database_Contoller
             $this->_stopTimer();
 
             //If there is an error and its not because of system error
-            if ($this->error() && (strpos($this->errorInfo(), 'CubeCart_system_error_log') !== false)) {
+            if ($log && $this->error() && (strpos($this->errorInfo(), 'CubeCart_system_error_log') !== false)) {
                 $this->_logError();
             }
 
