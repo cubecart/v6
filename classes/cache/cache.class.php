@@ -33,6 +33,12 @@ class Cache_Controler
      */
     public $status = false;
     /**
+     * Set the cache path
+     *
+     * @var string
+     */
+    protected $_cache_path = '';
+    /**
      * Make sure the cache doesn't get cleared more than once
      *
      * @var bool
@@ -92,6 +98,9 @@ class Cache_Controler
     protected function __construct()
     {
         $this->_setPrefix();
+        if (!$this->setPath()) {
+            return;
+        }
     }
 
     //=====[ Public ]=======================================
@@ -162,6 +171,34 @@ class Cache_Controler
     }
 
     /**
+     * Set cache path to some where else
+     *
+     * @param string $path
+     */
+    public function setPath($path = '')
+    {
+        if (empty($path)) {
+            $path = CC_ROOT_DIR.'/cache'.'/';
+        } else {
+            $ds = substr($path, -1);
+            if ($ds != '/' && $ds != '\\') {
+                $path .= '/';
+            }
+        }
+
+        clearstatcache(); // Clear cached results
+
+        if (is_dir($path) && file_exists($path) && is_writable($path)) {
+            $this->_cache_path = $path;
+        } else {
+            trigger_error('Could not change cache path ('.$path.')', E_USER_WARNING);
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Return cache status
      *
      * @return bool
@@ -220,12 +257,12 @@ class Cache_Controler
      */
     protected function _clearFileCache($prefix, $files = array())
     {
-        $css_files = glob($this->_cache_path.$this->_prefix.$prefix.'.css', GLOB_NOSORT);
+        $css_files = glob($this->_cache_path.$this->_prefix.$prefix.'*.css*', GLOB_NOSORT);
         if (is_array($css_files)) {
             $files = array_merge($files, $css_files);
         }
 
-        $js_files = glob($this->_cache_path.$this->_prefix.$prefix.'.js', GLOB_NOSORT);
+        $js_files = glob($this->_cache_path.$this->_prefix.$prefix.'*.js*', GLOB_NOSORT);
         if (is_array($js_files)) {
             $files = array_merge($files, $js_files);
         }
@@ -239,7 +276,7 @@ class Cache_Controler
         if (is_array($code_snippets)) {
             $files = array_merge($files, $code_snippets);
         }
-
+        
         if (is_array($files)) {
             foreach ($files as $file) {
                 if (file_exists($file)) {

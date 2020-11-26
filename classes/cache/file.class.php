@@ -30,7 +30,6 @@ class Cache extends Cache_Controler
      *
      * @var string
      */
-    protected $_cache_path = '';
     protected $_page_cache_usage = 0;
     protected $_file_data_split = "\n-- CubeCart Cache Split --\n";
 
@@ -38,10 +37,6 @@ class Cache extends Cache_Controler
 
     final protected function __construct()
     {
-        if (!$this->setPath()) {
-            return;
-        }
-
         $this->_mode = 'File';
         
         //Run the parent constructor
@@ -261,35 +256,6 @@ class Cache extends Cache_Controler
         }
         trigger_error('Cache data not written.', E_USER_WARNING);
         return false;
-    }
-    
-    
-    /**
-     * Set cache path to some where else
-     *
-     * @param string $path
-     */
-    public function setPath($path = '')
-    {
-        if (empty($path)) {
-            $path = CC_ROOT_DIR.'/cache'.'/';
-        } else {
-            $ds = substr($path, -1);
-            if ($ds != '/' && $ds != '\\') {
-                $path .= '/';
-            }
-        }
-
-        clearstatcache(); // Clear cached results
-
-        if (is_dir($path) && file_exists($path) && is_writable($path)) {
-            $this->_cache_path = $path;
-        } else {
-            trigger_error('Could not change cache path ('.$path.')', E_USER_WARNING);
-            return false;
-        }
-
-        return true;
     }
 
     /**
