@@ -1138,7 +1138,11 @@ class User
             if ($customers && $customers[0]['Auto_increment'] > 0) {
                 // Are there existing customers orders with higher customer id than next customer id?
                 if ($orders[0]['max_id'] >= $customers[0]['Auto_increment']) {
-                    return $orders[0]['max_id']+1;
+                    // Finally be sure proposed ID isn't in use
+                    $id = $orders[0]['max_id']+1;
+                    if($GLOBALS['db']->select('CubeCart_customer', false, array('customer_id' => $id), false, 1, false, false) == false) {
+                        return $id;
+                    }
                 }
             }
         }
