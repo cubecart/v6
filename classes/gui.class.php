@@ -1222,14 +1222,16 @@ class GUI
         if (!$GLOBALS['smarty']->templateExists('templates/box.popular.php')) {
             return false;
         }
-        $cache_id = 'html.'.$this->_skin.'.popular_products.'.$GLOBALS['language']->current();
-        $serialize = false;
-        if (($content = $GLOBALS['cache']->read($cache_id, $serialize)) == false) {
+        if ((int)$GLOBALS['config']->get('config', 'catalogue_popular_products_count') < 1) {
+            return false;
+        }
+        $cache_id = 'popular_products.'.$GLOBALS['language']->current();
+        $vars = $GLOBALS['cache']->read($cache_id);
+        if($vars && is_array($vars)) {
+            $GLOBALS['smarty']->assign('POPULAR', $vars);
+            $content = $GLOBALS['smarty']->fetch('templates/box.popular.php');    
             $GLOBALS['smarty']->assign('POPULAR_PRODUCTS', $content);
-        } else {
-            if ((int)$GLOBALS['config']->get('config', 'catalogue_popular_products_count') < 1) {
-                return false;
-            }
+        } elseif($vars !=='none') {
             $limit = (is_numeric($GLOBALS['config']->get('config', 'catalogue_popular_products_count'))) ? $GLOBALS['config']->get('config', 'catalogue_popular_products_count') : 10;
             switch ((int)$GLOBALS['config']->get('config', 'catalogue_popular_products_source')) {
                 case 1:  // sale-based
@@ -1271,14 +1273,16 @@ class GUI
                     $product['image'] = $this->getProductImage($product['product_id']);
                     $vars[] = $product;
                 }
-                foreach ($GLOBALS['hooks']->load('class.gui.display_popular_products') as $hook) {
-                    include $hook;
-                }
-                $GLOBALS['smarty']->assign('POPULAR', $vars);
-                $content = $GLOBALS['smarty']->fetch('templates/box.popular.php');    
-                $GLOBALS['cache']->write($content, $cache_id, '', $serialize);
-                $GLOBALS['smarty']->assign('POPULAR_PRODUCTS', $content);
+            } else {
+                $vars = 'none';
             }
+            foreach ($GLOBALS['hooks']->load('class.gui.display_popular_products') as $hook) {
+                include $hook;
+            }
+            $GLOBALS['cache']->write($vars, $cache_id);
+            $GLOBALS['smarty']->assign('POPULAR', $vars);
+            $content = $GLOBALS['smarty']->fetch('templates/box.popular.php');    
+            $GLOBALS['smarty']->assign('POPULAR_PRODUCTS', $content);
         }
     }
 
