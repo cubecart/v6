@@ -189,6 +189,7 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
         // Create order record
         $record['order_date'] = time();
         if ($GLOBALS['db']->insert('CubeCart_order_summary', $record)) {
+            $order->setOrderCustomID($record['cart_order_id']);
             $GLOBALS['main']->successMessage($lang['orders']['notify_order_create']);
         } else {
             $GLOBALS['main']->errorMessage($lang['orders']['error_order_create']);

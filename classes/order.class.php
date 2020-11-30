@@ -829,6 +829,27 @@ class Order
     }
 
     /**
+     * Set custom order id
+     * @param string $cart_order_id
+     * @return boolean
+     */
+    public function setOrderCustomID($cart_order_id, $column = 'cart_order_id') {
+        if(empty($cart_order_id)) {
+            return false;
+        }
+        $concat_params = $GLOBALS['config']->get('order','oid_concat');
+        if($concat_params) {
+            $concat_params = base64_decode($concat_params);
+            if(empty($concat_params)) {
+                return false;
+            } else {
+                return $GLOBALS['db']->misc("UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary` SET `custom_oid` = CONCAT($concat_params) WHERE `$column` = '$cart_order_id';");
+            }
+        }
+        return false;
+    }
+
+    /**
      * Set order format
      * @param string $oid_prefix
      * @param string $oid_postfix
@@ -847,7 +868,9 @@ class Order
         $oid_start = ctype_digit($oid_start) ? $oid_start : '0';
 
         $lpad = empty($oid_zeros) ? "`id`+$oid_start" : "LPAD(`id`+$oid_start, $oid_zeros, 0)";
-        $concat = "CONCAT(".$this->_formatConcat($oid_prefix).", $lpad, ".$this->_formatConcat($oid_postfix).")";
+        $concat_params = $this->_formatConcat($oid_prefix).", $lpad, ".$this->_formatConcat($oid_postfix);
+        $concat = "CONCAT(".$concat_params.")";
+        $GLOBALS['config']->set('order','oid_concat', base64_encode($concat_params));
 
         if ($set) {
             if (empty($oid_prefix) && empty($oid_postfix) && empty($oid_zeros) && empty($oid_start)) {
@@ -861,11 +884,7 @@ class Order
                     $GLOBALS['db']->misc("UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary` SET `custom_oid` = `$column` WHERE `custom_oid` = '' OR `custom_oid` = null");
                 }
                 $GLOBALS['db']->misc("DROP TRIGGER IF EXISTS `custom_oid`");
-                $GLOBALS['db']->misc("CREATE TRIGGER `custom_oid` BEFORE INSERT ON `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary` FOR EACH ROW SET NEW.custom_oid = ".str_replace('`id`', 'LAST_INSERT_ID()', $concat));
                 $oid_col = 'custom_oid';
-                if (!$GLOBALS['db']->misc("SHOW TRIGGERS WHERE `Trigger` LIKE 'custom_oid'")) {
-                    return false;
-                }
             }
             return array(
                     'oid_prefix' => $oid_prefix,
@@ -1454,6 +1473,7 @@ class Order
         } else {
             // Insert Summary
             if ($order_id = $GLOBALS['db']->insert('CubeCart_order_summary', $record)) {
+                $this->setOrderCustomID($this->_basket['cart_order_id']);
                 $GLOBALS['user']->addOrder($customer_id);
             }
         }
