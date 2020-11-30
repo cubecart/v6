@@ -342,7 +342,7 @@ if (isset($_GET['action'])) {
             }
         }
 
-        $cat_display_data = (isset($_POST['cat'])) ? $_POST['cat'] : (isset($category[0])) ? $category[0] : '';
+        $cat_display_data = (isset($_POST['cat'])) ? $_POST['cat'] : ((isset($category[0]))? $category[0] : '');
         if (is_array($cat_display_data)) {
             foreach ($cat_display_data as $key => $value) {
                 if (!in_array($key, array('cat_name'))) {
