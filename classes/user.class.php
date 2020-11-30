@@ -1128,6 +1128,8 @@ class User
      */
     private function _validCustomerId()
     {
+        return false;
+        /* Kept for hiistorical purposes
         $customers = $GLOBALS['db']->misc("SHOW TABLE STATUS LIKE '".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_customer'", false);
         
         $orders = $GLOBALS['db']->misc("SELECT MAX(`customer_id`) as `max_id` FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary`", false);
@@ -1147,6 +1149,7 @@ class User
             }
         }
         return false;
+        */
     }
 
     /**
