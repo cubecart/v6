@@ -824,7 +824,7 @@ input.save-changes {
     padding: 10px 5px
 }
 .sidebar_content .textbox {
-    font-family: FontAwesome;
+    font-family: 'Open Sans', sans-serif, FontAwesome;
     font-style: normal;
     font-weight: 400;
     text-decoration: inherit;
@@ -835,7 +835,7 @@ input.save-changes {
     font-size: 12px
 }
 input.search {
-    font-family: FontAwesome;
+    font-family: 'Open Sans', sans-serif, FontAwesome;
     font-style: normal;
     font-weight: 400;
     text-decoration: inherit;
