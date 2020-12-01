@@ -113,7 +113,7 @@ if (isset($_GET['export'])) {
 } elseif (isset($_GET['language'])) {
 
     //Security against ../ or ./
-    if (isset($_REQUEST['type']) && $_REQUEST['type']{0} == '.') {
+    if (isset($_REQUEST['type']) && $_REQUEST['type'][0] == '.') {
         die();
     }
 
