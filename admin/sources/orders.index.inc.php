@@ -122,9 +122,8 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
             }
             $data['options_array'] 		= serialize($data['productOptions']);
             $data['product_options'] 	= $GLOBALS['order']->serializeOptions($data['productOptions'], $data['product_id']);
-            if (is_array($data['custom'])) {
-                $data['custom'] = serialize($data['custom']);
-            }
+            $data['custom'] = serialize($data['custom']);
+    
             $GLOBALS['db']->update('CubeCart_order_inventory', $data, array('cart_order_id' => $order_id, 'id' => (int)$data['id']));
         }
     }
@@ -334,18 +333,10 @@ if (isset($_GET['action'])) {
 
                     $product['options'] = Catalogue::getInstance()->displayProductOptions($product['product_id'], unserialize($product['options_array']));
 
-                    $product['options_array'] = false;
-                    if (!empty($product['product_options'])) {
-                        if(cc_unserialize($product['product_options']) !== false) {
-                            $product['options_array'] = cc_unserialize($product['product_options']);
-                            $product['options_text'] = implode('<br>', cc_unserialize($product['product_options']));
-                        } else if(cc_unserialize(base64_decode($product['product_options'])) !== false) {
-                            $product['options_array'] = cc_unserialize(base64_decode($product['product_options']));
-                            $product['options_text'] = implode('<br>', cc_unserialize(base64_decode($product['product_options'])));
-                        } else {
-                            $product['options_text'] = $product['product_options'];
-                        }
-                    }
+                    $options_array = $order->unSerializeOptions($product['product_options']);
+                    $product['options_array'] = $options_array;
+                    $product['options_text'] = implode('<br>', $options_array);
+                    
                     $custom_data = array();
                     
                     if (!empty($product['custom'])) {
@@ -572,22 +563,17 @@ if (isset($_GET['action'])) {
                     $item['raw'] = $item;
                     $item['item_price'] = Tax::getInstance()->priceFormat($item['price'], true);
                     $item['price'] = Tax::getInstance()->priceFormat(($item['price']*$item['quantity']), true);
-                    if (!empty($item['product_options'])) {
-                        if(cc_unserialize($item['product_options']) !== false) {
-                            $options = $array = cc_unserialize($item['product_options']);
-                        } else if(cc_unserialize(base64_decode($item['product_options'])) !== false) {
-                            $options = cc_unserialize(base64_decode($item['product_options']));
-                        } else {
-                            $options = explode("\n", $item['product_options']);
+                    
+                    $options = $order->unSerializeOptions($item['product_options']);
+                    foreach ($options as $option) {
+                        $value = trim($option);
+                        if (empty($value)) {
+                            continue;
                         }
-                        foreach ($options as $option) {
-                            $value = trim($option);
-                            if (empty($value)) {
-                                continue;
-                            }
-                            $item['options'][] = $option;
-                        }
+                        $item['options'][] = $option;
                     }
+
+
                     $summary['items'][] = $item;
                 }
             }

@@ -1356,7 +1356,7 @@ class Cubecart
                             }
                             $item[$key] = $GLOBALS['tax']->priceFormat($value);
                         }
-                        $item['options'] = unserialize($item['product_options']);
+                        $item['options'] = Order::getInstance()->unSerializeOptions($item['product_options']);
                         $vars['items'][] = $item;
                     }
                     if ($cats = $GLOBALS['db']->select('`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_category_index` AS `I` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_category` AS `C` ON `I`.`cat_id` = `C`.`cat_id`', '`I`.`product_id`, `C`.`cat_name`', '`I`.`product_id` IN ('.implode(',', $prod_ids).') AND `primary` = 1')) {
@@ -2496,13 +2496,8 @@ class Cubecart
                             // Do price formatting
                             $item['price_total'] = $GLOBALS['tax']->priceFormat(($item['price'] * $item['quantity']), true);
                             $item['price'] = $GLOBALS['tax']->priceFormat($item['price']);
-                            if(unserialize($item['product_options']) !== false) {
-                                $item['options'] = implode(' ', unserialize($item['product_options']));
-                            } else if (unserialize(base64_decode($item['product_options'])) !== false) {
-                                $item['options'] = implode(' ', unserialize(base64_decode($item['product_options'])));
-                            } else {
-                                $item['options'] = implode(' ', unserialize($item['product_options']));
-                            }
+                            $options = Order::getInstance()->unSerializeOptions($item['product_options']);
+                            $item['options'] = implode(' ', $options);
                             $vars['items'][] = $item;
                         }
                         $GLOBALS['smarty']->assign('ITEMS', $vars['items']);
@@ -2661,7 +2656,7 @@ class Cubecart
                             // Do price formatting
                             $item['price_total'] = $GLOBALS['tax']->priceFormat(($item['price'] * $item['quantity']), true);
                             $item['price'] = $GLOBALS['tax']->priceFormat($item['price']);
-                            $item['options'] = unserialize($item['product_options']);
+                            $item['options'] = Order::getInstance()->unSerializeOptions($item['product_options']);
                             $vars['items'][] = $item;
                         }
                         $GLOBALS['smarty']->assign('ITEMS', $vars['items']);
@@ -2882,13 +2877,8 @@ class Cubecart
                     foreach ($products as $item) {
                         $item['price_total'] = $GLOBALS['tax']->priceFormat(sprintf('%.2F', $item['price'] * $item['quantity']), true);
                         $item['price'] = $GLOBALS['tax']->priceFormat($item['price'], true);
-                        if(unserialize($item['product_options']) !== false) {
-                            $item['options'] = implode(' ', unserialize($item['product_options']));
-                        } else if (unserialize(base64_decode($item['product_options'])) !== false) {
-                            $item['options'] = implode(' ', unserialize(base64_decode($item['product_options'])));
-                        } else {
-                            $item['options'] = implode(' ', unserialize($item['product_options']));
-                        }
+                        $options = Order::getInstance()->unSerializeOptions($item['product_options']);
+                        $item['options'] = implode(' ', $options);
                         $summary['items'][] = $item;
                     }
                 }

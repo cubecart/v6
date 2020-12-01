@@ -296,13 +296,8 @@ class Order
                         $product['images'] = $images;
                     }
                 }
-                if(unserialize($product['product_options']) !== false) {
-                    $product['product_options'] = implode(' ', unserialize($item['product_options']));
-                } else if (unserialize(base64_decode($product['product_options'])) !== false) {
-                    $product['product_options'] = implode(' ', unserialize(base64_decode($item['product_options'])));
-                } else {
-                    $product['product_options'] = implode(' ', unserialize($item['product_options']));
-                }
+                $options = $this->unSerializeOptions($item['product_options']);
+                $product['product_options'] = implode(' ', $options);
                 $vars['products'][] = $product;
             } else {
                 $item['price'] = Tax::getInstance()->priceFormat($item['price']);
@@ -755,6 +750,24 @@ class Order
         // Go back to the basket page
         httpredir(currentPage(array('cart_order_id'), array('_a' => 'basket')));
         return false;
+    }
+
+    /**
+     * Unserialized array of product options
+     *
+     * @param string $option_string
+     * @return array
+     */
+    public function unSerializeOptions($option_string) {
+        if(empty($option_string)) {
+            return array();
+        } else if(($array = cc_unserialize($option_string)) !== false) {
+            return $array;
+        } else if (($array = cc_unserialize(base64_decode($option_string))) !== false) {
+            return $array;
+        } else {
+            return explode("\n", $option_string);
+        }  
     }
 
     /**
