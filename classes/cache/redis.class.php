@@ -109,7 +109,7 @@ class Cache extends Cache_Controler
                 }
             }
         }
-        $this->_clearFileCache($prefix);
+        $this->_clearFileCache();
         return $return;
     }
 
