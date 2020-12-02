@@ -80,13 +80,7 @@ class Cache extends Cache_Controler
         } else {
             $prefix = '*';
         }
-        //Loop through each cache file to delete
-        $files = array();
-        $cache_files = glob($this->_cache_path.$this->_prefix.$prefix.$this->_suffix, GLOB_NOSORT);
-        if (is_array($cache_files)) {
-            $files = array_merge($files, $cache_files);
-        }
-        $this->_clearFileCache($prefix, $files);
+        $this->_clearFileCache($prefix);
         clearstatcache();
         return true;
     }

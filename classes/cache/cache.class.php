@@ -257,12 +257,16 @@ class Cache_Controler
      */
     protected function _clearFileCache($prefix, $files = array())
     {
-        $css_files = glob($this->_cache_path.$this->_prefix.$prefix.'*.css*', GLOB_NOSORT);
+        $cache_files = glob($this->_cache_path.$this->_prefix.$prefix.$this->_suffix, GLOB_NOSORT);
+        if (is_array($cache_files)) {
+            $files = array_merge($files, $cache_files);
+        }
+        $css_files = glob($this->_cache_path.$this->_prefix.$prefix.'*.css', GLOB_NOSORT);
         if (is_array($css_files)) {
             $files = array_merge($files, $css_files);
         }
 
-        $js_files = glob($this->_cache_path.$this->_prefix.$prefix.'*.js*', GLOB_NOSORT);
+        $js_files = glob($this->_cache_path.$this->_prefix.$prefix.'*.js', GLOB_NOSORT);
         if (is_array($js_files)) {
             $files = array_merge($files, $js_files);
         }
