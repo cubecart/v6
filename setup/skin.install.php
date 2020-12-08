@@ -110,7 +110,7 @@
   {if isset($MODE_INSTALL)}
 	<h3>{$LANG.setup.title_database_settings}</h3>
 	<fieldset>
-	  <div><label for="form-dbhhost" class="help" rel="" title="{$LANG.setup.help_dbhostname}">{$LANG.setup.db_host}</label><span><input type="text" name="global[dbhost]" id="form-dbhost" value="{$FORM.global.dbhost}" class="textbox required" /></span></div>
+	  <div><label for="form-dbhost" class="help" rel="" title="{$LANG.setup.help_dbhostname}">{$LANG.setup.db_host}</label><span><input type="text" name="global[dbhost]" id="form-dbhost" value="{$FORM.global.dbhost}" class="textbox required" /></span></div>
 	  <div><label for="form-dbdatabase" class="help" rel="" title="{$LANG.setup.help_dbname}">{$LANG.setup.db_name}</label><span><input type="text" name="global[dbdatabase]" id="form-dbdatabase" value="{$FORM.global.dbdatabase}" class="textbox required" /></span></div>
 	  <div><label for="form-dbusername" class="help" rel="" title="{$LANG.setup.help_dbusername}">{$LANG.account.username}</label><span><input type="text" name="global[dbusername]" id="form-dbusername" value="{$FORM.global.dbusername}" class="textbox required" /></span></div>
 	  <div><label for="form-dbpassword" class="help" rel="" title="{$LANG.setup.help_dbuserpass}">{$LANG.account.password}</label><span><input type="password" autocomplete="off" name="global[dbpassword]" id="form-dbpassword" value="{$FORM.global.dbpassword}" class="textbox" /></span></div>
