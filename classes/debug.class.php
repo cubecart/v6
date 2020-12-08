@@ -302,7 +302,7 @@ class Debug
                     $output[] = '<table>';
                     foreach ($this->_sql['query'] as $index => $query) {
                         if (!empty($query)) {
-                            $output[] = '<tr><td style="text-align:right;padding:2px;"><strong>'.($index + 1).'</strong></td><td style="padding:2px;">'.$query.'</td></tr>';
+                            $output[] = '<tr><td style="text-align:right;padding:2px;"><strong>'.($index + 1).'</strong></td><td style="text-align:left;padding:2px;">'.$query.'</td></tr>';
                         }
                     }
                     $output[] = '</table>';
