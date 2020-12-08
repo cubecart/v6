@@ -339,8 +339,7 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
         $GLOBALS['smarty']->assign('MODE_LICENCE', true);
     } elseif (!isset($_SESSION['setup']['complete'])) {
         if (in_array($_SESSION['setup']['method'], array(
-      'install' => 'upgrade'
-    ))) {
+            'install', 'upgrade'))) {
             require_once 'setup.' . $_SESSION['setup']['method'] . '.php';
         } else {
             require_once 'setup.install.php';
