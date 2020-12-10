@@ -1,3 +1,2 @@
 ## Default store 404 page
-
-ErrorDocument 404 "<html></html>"
+ErrorDocument 404 "<html></html>
