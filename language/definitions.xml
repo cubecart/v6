@@ -955,7 +955,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="more_extensions" introduced="6.1.14"><![CDATA[Discover more at <a href="?_g=marketplace">https://www.cubecart.com/extensions</a>]]></string>
     <string name="delete_admin_folder" introduced="6.1.8"><![CDATA[WARNING: Please delete the redundant /admin folder from your store directory.]]></string>
     <string name="delete_admin_file" introduced="6.1.8"><![CDATA[WARNING: Please delete the redundant admin.php file from your store directory.]]></string>
-    <string name="ignore_update" introduced="6.1.0"><![CDATA[This update has been ignored however next time an update is released by the develper a notification will be shown again.]]></string>
+    <string name="ignore_update" introduced="6.1.0"><![CDATA[This update has been ignored. Next time an update is released by the developer a notification will be shown again.]]></string>
     <string name="quick_tour" introduced="6.0.0"><![CDATA[Quick Tour]]></string>
     <string name="tour_welcome" introduced="6.0.0"><![CDATA[Welcome to your store. Please follow this quick tour to help get you started.]]></string>
     <string name="ok_go" introduced="6.0.0"><![CDATA[Ok, lets go!]]></string>
