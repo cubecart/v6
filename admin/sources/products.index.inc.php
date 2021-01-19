@@ -852,8 +852,6 @@ if (isset($_GET['action'])) {
                 'use_stock_level' => 1,
             );
             $result[0] = array_merge($result[0], $_POST);
-            $file_array = array();
-            $default = false;
         }
 
         // Display list of available option sets
