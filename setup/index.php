@@ -533,8 +533,15 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
     }
         $GLOBALS['smarty']->assign('MODE_COMPLETE', true);
         // delete setup folder on admin login
-        $same_site = CC_SSL ? 'SameSite=None' : '';
-        setcookie('delete_setup', true, time()+7200, "/;$same_site");
+        $date = new Datetime(strftime('%c',time()+7200));
+        $attributes = '';
+        $attributes .= ';Expires='.$date->format(DateTime::COOKIE);
+        if(CC_SSL) {
+            $attributes .= ';SameSite=None';
+            $attributes .= ';Secure';
+        }
+        $attributes .= ';HttpOnly';
+        header('Set-Cookie: delete_setup=1'.$attributes);
 
         //Attempt admin file and folder rename
         if (!isset($_SESSION['setup']['admin_rename']) && (file_exists('../admin') || file_exists('../admin.php'))) {
