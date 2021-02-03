@@ -748,10 +748,6 @@ class Session
             $this->set('useragent', $this->_http_user_agent(), 'client');
         } else {
             $this->session_data = $current[0];
-            if ($current[0]['useragent'] !== $this->_http_user_agent()) {
-                $this->destroy();
-                trigger_error('Stored session data did not match DB record. Session aborted as possible session hijack. Old IP Address: \''.$current[0]['ip_address'].'\' New IP Address: \''.$ip.'\' Old User Agent: \''.$current[0]['useragent'].'\' New User Agent: \''.$this->_http_user_agent().'\'', E_USER_WARNING);
-            }
             $this->set('ip_address', $current[0]['ip_address'], 'client');
             $this->set('useragent', $current[0]['useragent'], 'client');
         }
