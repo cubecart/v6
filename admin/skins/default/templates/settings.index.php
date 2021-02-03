@@ -495,7 +495,7 @@
          <div><label for="time_offset">{$LANG.settings.time_utc_offset}</label><span><input name="config[time_offset]" id="time_offset" type="text" class="textbox number" value="{$CONFIG.time_offset}"></span></div>
          {if isset($TIMEZONES)}
          <div><label for="time_zone">{$LANG.settings.time_zone}</label><span><select name="config[time_zone]" id="time_zone" type="text" class="textbox">
-            {foreach from=$TIMEZONES item=timezone}<option value="{$timezone.zone}"{$timezone.selected}>{$timezone.zone}</option>{/foreach}
+            {foreach from=$TIMEZONES item=timezone}<option value="{$timezone.value}"{$timezone.selected}>{$timezone.zone}</option>{/foreach}
             </select></span>
          </div>
          {/if}
