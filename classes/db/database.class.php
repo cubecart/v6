@@ -706,9 +706,7 @@ class Database_Contoller
         $this->_execute($cache);
 
         if (is_array($this->_result) && count($this->_result) >= 1) {
-            foreach ($this->_result as $row) {
-                $output[] = $row;
-            }
+            $output = $this->_result;
             // Added cleverness for auto pagination, without running a second query
             if (!is_null($calc_rows)) {
                 $count_query = 'SELECT FOUND_ROWS() as Count;';
