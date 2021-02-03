@@ -117,7 +117,7 @@ class SSL
     public function validRedirect($redir)
     {
         if (preg_match('#^http#iU', $redir)) {
-            $standard_domain = preg_replace("#^https?://|www.#", "", $GLOBALS['config']->get('config', 'standard_url'));
+            $standard_domain = preg_replace("#^https?://|^www.#", "", $GLOBALS['config']->get('config', 'standard_url'));
             return stristr($redir, $standard_domain);
         }
         return true;
