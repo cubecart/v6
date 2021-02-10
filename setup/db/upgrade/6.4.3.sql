@@ -1,0 +1,1 @@
+UPDATE `CubeCart_geo_country` SET `eu` = '0' WHERE `iso` = 'GB'; #EOQ
