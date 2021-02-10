@@ -765,6 +765,10 @@ class Order
             return $array;
         } else if (($array = cc_unserialize(base64_decode($option_string))) !== false) {
             return $array;
+        } else if(($array = unserialize($option_string)) !== false) {
+            return $array;
+        } else if (($array = unserialize(base64_decode($option_string))) !== false) {
+            return $array;
         } else {
             return explode("\n", $option_string);
         }  
