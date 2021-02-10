@@ -362,6 +362,9 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
     if (substr($_POST['seo_path'], 0, 1) == '/' || substr($_POST['seo_path'], 0, 1) == '\\') {
         $_POST['seo_path'] = substr($_POST['seo_path'], 1);
     }
+    if(empty($_POST['seo_path'])) {
+        $GLOBALS['seo']->unsetdbPath('prod', $product_id);
+    }
     $GLOBALS['seo']->setdbPath('prod', $product_id, $_POST['seo_path']);
 
     if (empty($_POST['primary_cat']) && count($_POST['categories'])>1) {

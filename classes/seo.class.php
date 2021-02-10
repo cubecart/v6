@@ -841,6 +841,18 @@ class SEO
         return false;
     }
 
+    /**
+     * Unset a DB path
+     *
+     * @param string $type
+     * @param int $item_id
+     * @return bool
+     */
+    public function unsetdbPath($type, $item_id) 
+    {
+        return $GLOBALS['db']->update('CubeCart_seo_urls', array('redirect' => 301), array('type' => $type, 'item_id' => $item_id, 'redirect' => 0));
+    }
+
     //=====[ Private ]=======================================
 
     /**
