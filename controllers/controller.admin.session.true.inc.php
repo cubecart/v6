@@ -17,7 +17,7 @@ if (!defined('CC_INI_SET')) {
 if (isset($_GET['clear_cache']) && $_GET['clear_cache'] == 'true') {
     $GLOBALS['cache']->clear();
     $GLOBALS['session']->delete('CLEAR_CACHE');
-    $GLOBALS['main']->successMessage($GLOBALS['language']->maintain['notify_cache_cleared']);
+    $GLOBALS['main']->successMessage($GLOBALS['language']->maintain['notify_cache_cleared'], false);
     httpredir(currentPage(array('clear_cache')));
 }
 
