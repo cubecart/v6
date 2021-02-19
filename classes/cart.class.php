@@ -1052,10 +1052,10 @@ class Cart
                         }
 
                         if (class_exists($module['folder']) && method_exists((string)$module['folder'], 'calculate')) {
-                            $shipping  = new $module['folder']($basket_data);
-                            $packages  = $shipping->calculate();
+                            $shippingClass[$module['folder']] = new $module['folder']($basket_data);
+                            $packages = $shippingClass[$module['folder']]->calculate();
                             // $group_name will overwrite the folder name to make the shipping group on the dropdown configurable
-                            $group_name = method_exists($shipping, 'groupName') ? $shipping->groupName() : $module['folder'];
+                            $group_name = method_exists($shippingClass[$module['folder']], 'groupName') ? $shippingClass[$module['folder']]->groupName() : $module['folder'];
                             if ($packages) {
                                 uasort($packages, 'price_sort');
                                 // work out tax amount on shipping
