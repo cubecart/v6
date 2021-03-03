@@ -1782,7 +1782,7 @@ class Cubecart
 
                 // Lets try to choose cheapest shipping option
                 // for them if they haven't chosen already
-                if ((!isset($this->_basket['shipping']) && !$digital_only) || (!$offset_matched && isset($this->_basket['shipping']['offset']) && !$digital_only)) {
+                if (((!isset($this->_basket['shipping']) || $this->_basket['shipping']===0) && !$digital_only) || (!$offset_matched && isset($this->_basket['shipping']['offset']) && !$digital_only)) {
                     $shipping_defaults = $GLOBALS['config']->get('config', 'shipping_defaults');
                     foreach ($shipping_values as $value) {
                         if (!isset($default_shipping)) { $default_shipping = $value; } // Make sure we have a shipping value
