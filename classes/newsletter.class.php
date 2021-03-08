@@ -95,8 +95,7 @@ class Newsletter
                 $result = $GLOBALS['db']->update('CubeCart_newsletter', $newsletter, array('newsletter_id' => $newsletter['newsletter_id']));
                 $this->_newsletter_id = $newsletter['newsletter_id'];
             } else {
-                $result = $GLOBALS['db']->insert('CubeCart_newsletter', $newsletter);
-                $this->_newsletter_id = $GLOBALS['db']->insertid();
+                $this->_newsletter_id = $result = $GLOBALS['db']->insert('CubeCart_newsletter', $newsletter);
             }
         }
         return $result;

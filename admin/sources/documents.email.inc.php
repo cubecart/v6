@@ -356,8 +356,7 @@ if (isset($_POST['template'])) {
             $GLOBALS['db']->update('CubeCart_email_template', $_POST['template'], array('template_id' => (int)$_POST['template']['template_id']));
             $GLOBALS['main']->successMessage($lang['email']['notify_template_update']);
         } else {
-            $GLOBALS['db']->insert('CubeCart_email_template', $_POST['template']);
-            $template_id  = $GLOBALS['db']->insertid();
+            $template_id  = $GLOBALS['db']->insert('CubeCart_email_template', $_POST['template']);
             $GLOBALS['main']->successMessage($lang['email']['notify_template_create']);
         }
         if ($redirect) {

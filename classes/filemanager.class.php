@@ -1222,8 +1222,7 @@ class FileManager
                         $GLOBALS['db']->update('CubeCart_filemanager', $record, array('file_id' => $existing[0]['file_id']));
                         $fid = $existing[0]['file_id'];
                     } else {
-                        $GLOBALS['db']->insert('CubeCart_filemanager', $record);
-                        $fid = $GLOBALS['db']->insertid();
+                        $fid = $GLOBALS['db']->insert('CubeCart_filemanager', $record);
                     }
                     
                     $file_id[] = $fid;

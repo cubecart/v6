@@ -40,8 +40,7 @@ if (isset($_POST['document']) && Admin::getInstance()->permissions('documents', 
             $GLOBALS['main']->errorMessage($lang['documents']['error_document_update']);
         }
     } else {
-        if ($GLOBALS['db']->insert('CubeCart_documents', $_POST['document'])) {
-            $doc_id = $GLOBALS['db']->insertid();
+        if ($doc_id = $GLOBALS['db']->insert('CubeCart_documents', $_POST['document'])) {
             $GLOBALS['seo']->setdbPath('doc', $doc_id, $_POST['seo_path']);
             $GLOBALS['main']->successMessage($lang['documents']['notify_document_create']);
             $rem_array = array('action');

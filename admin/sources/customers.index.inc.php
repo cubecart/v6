@@ -130,9 +130,8 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
         }
 
         if (!isset($error)) {
-            if (($GLOBALS['db']->insert('CubeCart_customer', $customer)) !== false) {
+            if (($customer_id = $GLOBALS['db']->insert('CubeCart_customer', $customer)) !== false) {
                 $customer_added = true;
-                $customer_id = $GLOBALS['db']->insertid();
             } else {
                 $customer_not_added = true;
             }

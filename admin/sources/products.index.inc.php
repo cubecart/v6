@@ -122,8 +122,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
         $date_added = date('Y-m-d H:i:s', time());
         $record['date_added'] = $date_added;
         $record['updated'] = $date_added;
-        if ($GLOBALS['db']->insert('CubeCart_inventory', $record)) {
-            $product_id = $GLOBALS['db']->insertid();
+        if ($product_id = $GLOBALS['db']->insert('CubeCart_inventory', $record)) {
             $inserted = true;
         }
     }
@@ -528,10 +527,7 @@ if (isset($_GET['action']) && strtolower($_GET['action'])=='clone' && isset($_GE
 
         unset($record['product_id'], $record['popularity']);
 
-        if ($GLOBALS['db']->insert('CubeCart_inventory', $record)) {
-            $product_id = $GLOBALS['db']->insertid();
-            $product_id = (int)$product_id;
-        }
+        $product_id = $GLOBALS['db']->insert('CubeCart_inventory', $record);
 
         if ($product_id && $product_id_parent) {
 

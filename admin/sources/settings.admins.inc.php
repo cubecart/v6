@@ -83,8 +83,7 @@ if (isset($_POST['admin']) && is_array($_POST['admin']) && Admin::getInstance()-
             $record['salt']  = Password::getInstance()->createSalt();
             $record['password'] = Password::getInstance()->getSalted($record['password'], $record['salt']);
             $record['status'] = 1;
-            if ($GLOBALS['db']->insert('CubeCart_admin_users', $record)) {
-                $admin_id = $GLOBALS['db']->insertid();
+            if ($admin_id = $GLOBALS['db']->insert('CubeCart_admin_users', $record)) {
                 $added = true;
                 $GLOBALS['main']->successMessage($lang['admins']['notify_admin_create']);
             } else {

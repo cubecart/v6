@@ -100,9 +100,7 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
                             $value	= $manufacturer[0]['id'];
                         } else {
                             ## Insert new manufacturer?
-                            if ($GLOBALS['db']->insert('CubeCart_manufacturers', array('name' => $value))) {
-                                $value	= (int)$GLOBALS['db']->insertid();
-                            }
+                            $value = $GLOBALS['db']->insert('CubeCart_manufacturers', array('name' => $value));
                         }
                     } elseif ($field_name == 'image' && !empty($value) && !is_numeric($value)) {
                         foreach ($GLOBALS['hooks']->load('admin.product.import.image.pre_process') as $hook) {
@@ -136,8 +134,8 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
                                     $filesize = ($filesize > 0)? $filesize : 0;
                                 }
 
-                                if ($GLOBALS['db']->insert('CubeCart_filemanager', array('type' => 1, 'filepath' => empty($image_path) ? 'NULL' : $image_path, 'filename' => $image_name, 'filesize' => $filesize, 'mimetype' => $mime, 'md5hash' => md5($root_image_path)))) {
-                                    $images[]	= $GLOBALS['db']->insertid();
+                                if ($image_id = $GLOBALS['db']->insert('CubeCart_filemanager', array('type' => 1, 'filepath' => empty($image_path) ? 'NULL' : $image_path, 'filename' => $image_name, 'filesize' => $filesize, 'mimetype' => $mime, 'md5hash' => md5($root_image_path)))) {
+                                    $images[] = $image_id;
                                 }
                             } else {
                                 $images[] = $image[0]['file_id'];
@@ -173,11 +171,10 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
                         $product_record['use_stock_level'] = 0;
                     }
 
-                    if ($GLOBALS['db']->insert('CubeCart_inventory', $product_record)) {
+                    if ($product_id = $GLOBALS['db']->insert('CubeCart_inventory', $product_record)) {
                         $insert++;
                     }
                     // Insert primary category
-                    $product_id = $GLOBALS['db']->insertid();
                     if (isset($product_record['cat_id']) && !empty($product_record['cat_id'])) {
                         $cats = explode(',', $product_record['cat_id']);
                         $primary = 1;
