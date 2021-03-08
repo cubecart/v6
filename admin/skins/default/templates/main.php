@@ -70,8 +70,8 @@ $zopim(function() {
       <div style="display: none" id="val_skin_folder">{$SKIN_VARS.skin_folder}</div>
       <div style="display: none" id="val_admin_lang">{$val_admin_lang}</div>
       {include file='templates/element.welcome_tour.php'}
-      <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/jquery-1.11.2.min.js"></script>
-      <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/jquery-ui-1.11.2.min.js"></script>
+      <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/jquery.min.js"></script>
+      <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/jquery-ui.min.js"></script>
       <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/plugins.php?{$VERSION_HASH}"></script>
       <!-- Include CKEditor -->
       <script type="text/javascript" src="includes/ckeditor/ckeditor.js"></script>
