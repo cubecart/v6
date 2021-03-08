@@ -629,7 +629,7 @@ class Session
         }
 
         $record = array(
-            'location'		=> currentPage(),
+            'location' => currentPage() . (strpos(currentPage(),"_a=404")!==false ? "<br /><strike>".$_SERVER['REQUEST_URI']."</strike>" : ""),
             'session_last'	=> $this->get('session_last', 'client', ''),
             'acp'		=> ADMIN_CP
         );

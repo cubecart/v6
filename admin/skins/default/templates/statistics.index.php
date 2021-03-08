@@ -231,7 +231,7 @@
                [<a href="http://whois.domaintools.com/{$user.ip_address}" target="_blank">{$user.ip_address}</a>]
                {/if}
             </td>
-            <td>{$user.location} <a href="{$user.location}" target="_blank">&raquo;</a></td>
+            <td>{$user.location}{if $user.location|strpos:"_a=404" === false} <a href="{$user.location}" target="_blank">&raquo;</a>{/if}</td>
             <td align="center">{$user.session_start}</td>
             <td align="center"  >{$user.session_last}</td>
             <td>{$user.session_length}</td>
