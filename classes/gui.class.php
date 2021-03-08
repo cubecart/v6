@@ -1473,7 +1473,10 @@ class GUI
             include $hook;
         }
         if(count($vars)>0) {
-            $GLOBALS['smarty']->assign('PRODUCTS', $vars);
+            if($this->_skin !== "founation") {
+                $GLOBALS['smarty']->assign('PRODUCTS', $vars);
+            }
+            $GLOBALS['smarty']->assign('SALE_PRODUCTS', $vars);
             $GLOBALS['smarty']->assign('SALE_ITEMS_URL', $GLOBALS['seo']->buildURL('saleitems'));
             $content = $GLOBALS['smarty']->fetch('templates/box.sale_items.php');
             $GLOBALS['smarty']->assign('SALE_ITEMS', $content);
