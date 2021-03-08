@@ -30,11 +30,11 @@
 	  {if $FILMANAGER_MODE == '1'}<a href="{$folder.link}" class="thumbnail"><img src="{$SKIN_VARS.admin_folder}/skins/default/images/folder_large.png"/></a>{/if}
 		<span class="actions">
 		{if NOT is_null($folder.delete)}
-		<input type="checkbox" value="{$folder.value}" class="multi_delete" name="multi_delete[]">
+		{if $FILMANAGER_MODE == '1'}<input type="checkbox" value="{$folder.value}" class="multi_delete" name="multi_delete[]">{/if}
 		<a href="{$folder.delete}" class="delete right" title="{$LANG.notification.confirm_delete_folder|replace:'%s':$folder.name}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		{/if}
 		</span>
-		{if $FILMANAGER_MODE == '2'}<i class="fa fa-folder" aria-hidden="true" alt="{$folder.name}"></i>{/if}
+		{if $FILMANAGER_MODE == '2'}<input type="checkbox" value="{$folder.value}" class="multi_delete" name="multi_delete[]"> <i class="fa fa-folder" aria-hidden="true" alt="{$folder.name}"></i>{/if}
 		<a href="{$folder.link}">{$folder.name}</a>
 	  </div>
 	  {/foreach}
@@ -45,7 +45,7 @@
 	  <div {if $FILMANAGER_MODE == '1'}class="fm-item {$FM_SIZE}{if $file.file_name_hash==$HILIGHTED_FILE} hilighted{/if}"{/if} id="{$file.file_name_hash}">
 	  {if $FILMANAGER_MODE == '1'}<a href="{$file.master_filepath}?{$file.random}" class="{$file.class} thumbnail" title="{$file.description}" target="_self"><img class="lazyload" data-src="{$file.filepath}" src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs="></a>{/if}
 	 	 <span class="actions">
-		  <input type="checkbox" value="{$file.value}" class="multi_delete right" name="multi_delete[]"> {$file.filesize}
+		  {if $FILMANAGER_MODE == '1'}<input type="checkbox" value="{$file.value}" class="multi_delete right" name="multi_delete[]"> {/if}{$file.filesize}
 		  {if $file.select_button}
 		  <a href="{$file.master_filepath}" class="select"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a>
 		  {else}
@@ -53,7 +53,7 @@
 		  <a href="{$file.edit}" class="edit right" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
 		  {/if}
 		</span>
-		{if $FILMANAGER_MODE == '2'}<i class="fa fa-{$file.icon}" aria-hidden="true" alt="{$file.mimetype}"></i>{/if}
+		{if $FILMANAGER_MODE == '2'}<input type="checkbox" value="{$file.value}" class="multi_delete" name="multi_delete[]"> <i class="fa fa-{$file.icon}" aria-hidden="true" alt="{$file.mimetype}"></i>{/if}
 		<a href="{if $file.class}{$file.filepath}?{$file.random}{else}?_g=filemanager&download_file={$file.filepath|base64_encode}{/if}" class="{$file.class}" title="{$file.description}" target="_self">{$file.filename}</a>
 	  </div>
 	  {/foreach}
@@ -63,7 +63,7 @@
 	</div>
 	{if isset($FILES)}
 	<div class="form_control">
-	<a href="#" class="check-all" rel="multi_delete">{$LANG.form.check_uncheck}</a>
+	<img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/select_all.gif" alt=""> <a href="#" class="check-all" rel="multi_delete">{$LANG.form.check_uncheck}</a>
 	<hr>
 		<input type="submit" class="delete submit_confirm" title="{$LANG.notification.confirm_delete}" value="{$LANG.common.delete_selected}">
 		<input type="hidden" id="ckfuncnum" value="{$CK_FUNC_NUM}">

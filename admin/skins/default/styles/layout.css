@@ -636,6 +636,9 @@ tbody tr:nth-child(even) {
 #filemanager div div.folder {
     background-color: #fff !important;
 }
+#filemanager hr {
+    margin: 1em 0
+}
 .stripe div {
     text-indent: 5px !important;
 }
@@ -1347,9 +1350,6 @@ ul.quick_links li#help_menu ul li:not(:last-child) {
 #filemanager .toggle span.small {
     width:10px;
     height:10px;
-}
-#filemanager .digital .custom-checkbox {
-    float: right;
 }
 #filemanager .digital {
     font-size: 14px;
