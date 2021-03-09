@@ -571,9 +571,9 @@
    </div>
    <div id="image" class="tab_content">
       <h3>{$LANG.settings.title_images}</h3>
-      <img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/star.png" alt="{$LANG.catalogue.image_main}"> - {$LANG.catalogue.image_main}
-      <img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/1.png" alt="{$LANG.catalogue.image_included}"> - {$LANG.catalogue.image_included}
-      <img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/0.png" alt="{$LANG.catalogue.image_excluded}"> - {$LANG.catalogue.image_excluded}
+      <img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/star_fmcheckbox.png" alt="{$LANG.catalogue.image_main}"> - {$LANG.catalogue.image_main}
+      <img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/1_fmcheckbox.png" alt="{$LANG.catalogue.image_included}"> - {$LANG.catalogue.image_included}
+      <img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/0_fmcheckbox.png" alt="{$LANG.catalogue.image_excluded}"> - {$LANG.catalogue.image_excluded}
       <p><input type="text" name="fm-search-term" id="fm-search-term" placeholder="{$LANG.filemanager.search_location}..."><button type="button" class="button tiny" id="fm-search-button" data-mode="images" data-action="location">{$LANG.common.go}</button></p>
       <div class="fm-container">
          <div class="loading">{$LANG.common.loading} <i class="fa fa-spinner fa-spin fa-fw"></i></div>
