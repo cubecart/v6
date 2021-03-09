@@ -230,6 +230,54 @@ $(document).ready(function() {
         }
     }, 1);
 
+    var lang = {
+        disable:        $("#val_lang_disable").length ? $("#val_lang_disable").text() : 'Disable',
+        enable:         $("#val_lang_enable").length ? $("#val_lang_enable").text() : 'Enable'
+    }
+
+    var config = {
+        skin_folder:    $("#val_skin_folder").length ? $("#val_skin_folder").text() : 'default',
+        admin_folder:   $("#val_admin_folder").length ? $("#val_admin_folder").text() : 'admin',
+        admin_file:     $("#val_admin_file").length ? $("#val_admin_file").text() : 'admin.php' 
+    }
+
+    var image_icon_path  = config.admin_folder + "/skins/" + config.skin_folder + "/images/";
+
+    $("input.toggle:hidden").each(function() {
+        var c = ($(this).val() == "1") ? "1" : "0";
+        var d = document.createElement("img");
+        d.src = image_icon_path + c + "_checkbox.png";
+        if (c == "1") {
+            d.alt = d.title = lang.disable
+        } else {
+            d.alt = d.title = lang.enable
+        }
+        $(d).addClass("checkbox");
+        $(d).addClass("cbs");
+        if ($(this).hasClass("unique")) {
+            $(d).addClass("unique")
+        }
+        $(d).attr("rel", "#" + $(this).attr("id"));
+        $(this).after(d)
+    });
+
+    $("#content_body").on("click", "img.cbs", function() {
+        var e = $(this).attr("rel");
+        switch ($(e).val()) {
+            case "1":
+                var value_old = '1';
+                var value_new = '0';
+                break;
+            default:
+                var value_old = '0';
+                var value_new = '1';
+                break
+        }
+        var new_src = $(this).attr('src').replace(value_old+'_checkbox.png',value_new+'_checkbox.png');
+        $(this).attr({src: new_src});
+        $(e).val(value_new)
+    })
+
     $('.chzn-select').chosen({width:"50%",search_contains:true});
     var t = !1;
     if (jQuery.debug = function(t) {
