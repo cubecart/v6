@@ -159,9 +159,9 @@
          <div><label for="condition">{$LANG.catalogue.condition}</label>
             <span>
             <select name="condition" id="condition" class="textbox" type="text">
-            <option value="new" {if $PRODUCT.condition == 'new'}selected="selected"{/if}>{$LANG.catalogue.condition_new}</option>
-            <option value="used" {if $PRODUCT.condition == 'used'}selected="selected"{/if}>{$LANG.catalogue.condition_used}</option>
-            <option value="refurbished" {if $PRODUCT.condition == 'refurbished'}selected="selected"{/if}>{$LANG.catalogue.condition_refurbished}</option>
+            {foreach from=$CONDITIONS item=condition}
+               <option value="{$condition@key}"{if $PRODUCT.condition == $condition@key} selected="selected"{/if}>{$condition}</option>
+            {/foreach}
             </select>
             </span>
          </div>

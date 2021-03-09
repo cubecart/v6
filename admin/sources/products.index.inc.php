@@ -626,6 +626,14 @@ if (isset($_GET['action']) && strtolower($_GET['action'])=='clone' && isset($_GE
 
 $page_title = (isset($_GET['action']) && strtolower($_GET['action']) == 'edit') ? $lang['catalogue']['title_product_update'] : $lang['catalogue']['title_product_create'];
 
+// List Conditions
+$smarty_data['list_conditions'] = array (
+    'new' => $lang['catalogue']['condition_new'],
+    'used' => $lang['catalogue']['condition_used'],
+    'refurbished' => $lang['catalogue']['condition_refurbished'],
+  );
+$GLOBALS['smarty']->assign('CONDITIONS', $smarty_data['list_conditions']);
+
 foreach ($GLOBALS['hooks']->load('admin.product.pre_display') as $hook) {
     include $hook;
 }
