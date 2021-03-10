@@ -761,7 +761,7 @@ class Database_Contoller
                     $comma = false;
                     foreach ($row as $key => $value) {
                         fwrite($fp, $comma ? ', ' : '');
-                        fwrite($fp, $this->sqlSafe($value, true));
+                        fwrite($fp, is_null($value) ? 'NULL' : $this->sqlSafe($value, true));
                         $comma = true;
                     }
                     fwrite($fp, "); #EOQ\n");
@@ -786,7 +786,7 @@ class Database_Contoller
     public function strip_slashes($input)
     {
         // Strip slashes, unless it's serialized data
-        if (!preg_match('#^\w:\d+:\{(.+)\}$#su', $input)) {
+        if (!preg_match('#^\w:\d+:\{(.+)\}$#su', $input) && !is_null($input)) {
             $input = stripslashes($input);
         }
 
