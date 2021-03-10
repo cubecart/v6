@@ -424,7 +424,11 @@ class Catalogue
                                 $request->cache(true);
                                 $request->customOption(CURLOPT_NOBODY, true);
                                 $request->setSSL();
-                                $review['gravatar_exists'] = $request->send() ? true : false;
+                                ob_start();
+                                $request->send();
+                                $result = ob_get_contents();
+                                ob_end_clean();
+                                $review['gravatar_exists'] = $result ? true : false;
                             }
                         } else {
                             $review['gravatar_exists'] = false;
