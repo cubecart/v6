@@ -418,7 +418,7 @@ class Catalogue
                             $request = new Request($gravatar_url, $gravatar_path, 443, true, false, 3, true);
                             $request->skiplog(true);
                             $request->setMethod('get');
-                            $request->cache(true);
+                            $request->cacheBool(true);
                             $request->setSSL();
                             $review['gravatar_exists'] = $request->send() ? true : false;
                         } else {

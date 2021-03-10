@@ -34,6 +34,7 @@ class Request
     private $_send_headers   = true;
 
     private $_request_cache   = false;
+    private $_request_cache_bool   = false;
     private $_request_hash   = null;
 
     private $_request_headers  = false;
@@ -132,6 +133,19 @@ class Request
         if (!is_null($status)) {
             $this->_request_cache = (bool)$status;
         }
+        return $this->_request_cache;
+    }
+
+    /**
+     * Cache bool instead of full request
+     *
+     * @param bool $status
+     * @return bool
+     */
+    public function cacheBool($status = null)
+    {
+        $this->cache($status);
+        $this->_request_cache_bool = true;
         return $this->_request_cache;
     }
 
@@ -383,7 +397,7 @@ class Request
             
             if ($return || in_array($this->server_response_code, $this->_success_responses)) { // A server doesb't always return a response body!
                 if ($this->_request_cache) {
-                    $GLOBALS['cache']->write($return, 'request.'.$this->_request_hash);
+                    $GLOBALS['cache']->write($this->_request_cache_bool ? true : $return, 'request.'.$this->_request_hash);
                 }
                 $this->log($this->_request_body, $return);
                 return $return;
@@ -415,7 +429,7 @@ class Request
                         list($header, $return) = preg_split("/\R\R/", $return, 2);
                     }
                     if ($this->_request_cache) {
-                        $GLOBALS['cache']->write($return, 'request.'.$this->_request_hash);
+                        $GLOBALS['cache']->write($this->_request_cache_bool ? true : $return, 'request.'.$this->_request_hash);
                     }
                     $this->log($this->_request_body, $return);
                     return $return;
