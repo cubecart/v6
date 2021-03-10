@@ -254,23 +254,22 @@ $(document).ready(function() {
         }
         $(d).addClass("checkbox");
         $(d).addClass("cbs");
-        if ($(this).hasClass("unique")) {
-            $(d).addClass("unique")
-        }
         $(d).attr("rel", "#" + $(this).attr("id"));
         $(this).after(d)
     });
 
     $("#content_body").on("click", "img.cbs", function() {
         var e = $(this).attr("rel");
+        console.log(e);
+        console.log($(e).val());
         switch ($(e).val()) {
             case "1":
-                var value_old = '1';
-                var value_new = '0';
-                break;
-            default:
                 var value_old = '0';
                 var value_new = '1';
+                break;
+            default:
+                var value_old = '1';
+                var value_new = '0';
                 break
         }
         var new_src = $(this).attr('src').replace(value_old+'_checkbox.png',value_new+'_checkbox.png');
