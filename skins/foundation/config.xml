@@ -21,6 +21,7 @@
 	<responsive>true</responsive>
 	<csrf>true</csrf>
 	<newsletter_recaptcha>true</newsletter_recaptcha>
+	<gravatar_ajax>true</gravatar_ajax>
   </info>
   <layout>
 	<products>

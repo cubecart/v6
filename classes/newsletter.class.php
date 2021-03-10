@@ -196,7 +196,7 @@ class Newsletter
         if ($checkout && $GLOBALS['config']->get('config', 'dbl_opt')=='1' && $GLOBALS['session']->has('dbl_opted') && $GLOBALS['session']->get('dbl_opted')==$email) {
             return false;
         }
-        $skin_data = GUI::getInstance()->getSkinData('newsletter_recaptcha');
+        $skin_data = GUI::getInstance()->getSkinData();
         $error = false;
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $GLOBALS['gui']->setError(sprintf($GLOBALS['language']->newsletter['email_invalid'], $email));

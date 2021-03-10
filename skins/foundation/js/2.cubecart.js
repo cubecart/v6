@@ -1,6 +1,19 @@
 ;
 var validation_ini = {};
 jQuery(document).ready(function() {
+	$('#element-reviews .review_row').each(function() {
+		var gravatar_id = $(this).attr('rel');
+		var img_url = 'https://gravatar.com/avatar/'+gravatar_id+'?s=90';
+        $.ajax({
+            url:img_url,
+            type:"HEAD",
+            crossDomain:true,
+            success:function(){
+                $('#g_'+gravatar_id).attr("src", img_url);
+            }
+        });
+	});
+
     if($('a.open-clearing img#img-preview').length) {
         $('a.open-clearing img#img-preview').load(function() {
             var ip = $('a.open-clearing img#img-preview');
