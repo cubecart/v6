@@ -35,7 +35,7 @@
     <string name="error_address_updated" introduced="5.0.0"><![CDATA[Failed to update address. Please make sure all required fields are completed.]]></string>
     <string name="error_details_updated" introduced="5.0.0"><![CDATA[Your details have not been updated.]]></string>
     <string name="error_details_wrong" introduced="5.0.0"><![CDATA[Incorrect details, please try again.]]></string>
-    <string name="error_email_in_use" introduced="5.0.0"><![CDATA[That email address is already being used.]]></string>
+    <string name="error_email_in_use" introduced="5.0.0"><![CDATA[There is already an account assigned to that email address. Please login.]]></string>
     <string name="error_login" introduced="5.0.0"><![CDATA[Invalid username or password]]></string>
     <string name="error_pass_length" introduced="6.0.0"><![CDATA[Your password is less than six characters in length. We strongly recommend that you <a href="?_a=profile">change it</a>.]]></string>
     <string name="error_name_required" introduced="5.0.0"><![CDATA[We need to know your name.]]></string>
