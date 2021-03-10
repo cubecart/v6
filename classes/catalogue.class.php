@@ -410,9 +410,17 @@ class Catalogue
                         $review['date_schema'] = formatTime($review['time'], '%G-%m-%d', true);
                         if($GLOBALS['config']->get('config', 'enable_reviews')==='1') {
                             $review['gravatar'] = md5(strtolower(trim($review['email'])));
-                            $review['gravatar_src'] = 'https://www.gravatar.com/avatar/'.$review['gravatar'].'?d=404&r=g';
+                            $gravatar_url = 'gravatar.com';
+                            $gravatar_path = '/avatar/'.$review['gravatar'].'?d=404&r=g';
+                            $review['gravatar_src'] = 'https://'.$gravatar_url.$gravatar_path;
                             $headers = get_headers($review['gravatar_src']);
-                            $review['gravatar_exists'] = strstr($headers[0], '200') ? true : false;
+              
+                            $request = new Request($gravatar_url, $gravatar_path, 443, true, false, 3, true);
+                            $request->skiplog(true);
+                            $request->setMethod('get');
+                            $request->cache(true);
+                            $request->setSSL();
+                            $review['gravatar_exists'] = $request->send() ? true : false;
                         } else {
                             $review['gravatar_exists'] = false;
                         }
