@@ -658,11 +658,13 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
     }
     // Exporter
     if (($export = $GLOBALS['db']->select('CubeCart_email_content', array('DISTINCT' => 'language'))) !== false) {
+        
         foreach ($export as $row) {
             $distinct[$row['language']] = $row['language'];
         }
+        ksort($distinct);
         if ($distinct) {
-            $GLOBALS['smarty']->assign('EMAIL_EXPORTS', ksort($distinct));
+            $GLOBALS['smarty']->assign('EMAIL_EXPORTS', $distinct);
         }
     }
     $GLOBALS['smarty']->assign('DISPLAY_EMAIL_LIST', true);
