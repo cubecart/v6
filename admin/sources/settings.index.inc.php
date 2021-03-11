@@ -383,9 +383,7 @@ if (class_exists('DateTimeZone')) {
         natsort($timezones);
         $current_timezone = $GLOBALS['config']->get('config', 'time_zone');
         $default_timezone = ini_get('date.timezone');
-        if(empty($default_timezone)) {
-            $default_timezone = 'UTC'; // If not set PHP will take UTC
-        }
+        $current_timezone = empty($current_timezone) ? (empty($default_timezone) ? 'UTC' : $default_timezone) : $current_timezone;
         foreach ($timezones as $timezone) {
             $smarty_data['timezones'][] = array(
                 'value'  => $timezone,
