@@ -1015,7 +1015,7 @@ class Cart
      */
     public function loadShippingModules()
     {
-        if (($shipping = $GLOBALS['db']->select('CubeCart_modules', array('folder', 'countries'), array('module' => 'shipping', 'status' => '1'))) !== false) {
+        if (($shipping = $GLOBALS['db']->select('CubeCart_modules', array('folder', 'countries'), array('module' => 'shipping', 'status' => '1'), array('position' => 'asc'))) !== false) {
             $tax_on = ($GLOBALS['config']->get('config', 'basket_tax_by_delivery')) ? 'delivery_address' : 'billing_address';
 
             // Fetch the basket data
