@@ -62,7 +62,11 @@ if (isset($_GET['rebuild']) && Admin::getInstance()->permissions('filemanager', 
     httpredir(currentPage(array('rebuild')));
 }
 
-if (!empty($_FILES) && Admin::getInstance()->permissions('filemanager', CC_PERM_EDIT)) {
+if(isset($_FILES['file0']) && $_FILES['file0']['size']==0) {
+    unset($_FILES);
+}
+
+if ((!empty($_FILES)) && Admin::getInstance()->permissions('filemanager', CC_PERM_EDIT)) {
     if ($fm->upload()) {
         if (count($_FILES)>1) {
             $GLOBALS['main']->successMessage($lang['filemanager']['notify_files_upload']);
