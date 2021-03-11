@@ -658,7 +658,6 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
     }
     // Exporter
     if (($export = $GLOBALS['db']->select('CubeCart_email_content', array('DISTINCT' => 'language'))) !== false) {
-        
         foreach ($export as $row) {
             $distinct[$row['language']] = $row['language'];
         }
