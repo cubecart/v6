@@ -17,7 +17,7 @@ if (version_compare(PHP_VERSION, '5.5') == -1) {
 
 // Display important errors before debug class is initialised
 error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
-ini_set('display_errors', true);
+ini_set('display_errors', false);
 ini_set('memory_limit', '256M');
 
 /************* CUSTOMISED PHP.INI SETTINGS *************/
