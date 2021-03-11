@@ -413,7 +413,7 @@ class Debug
     public function errorLogger($error_no, $error_string, $error_file, $error_line, $error_context = null)
     {
         $log = true;
-        $can_log = method_exists($GLOBALS['config'], 'get') ? (bool)$GLOBALS['config']->get('config', 'debug') : false;
+        $can_log = (isset($GLOBALS['config']) && is_object($GLOBALS['config']) && method_exists($GLOBALS['config'], 'get')) ? (bool)$GLOBALS['config']->get('config', 'debug') : false;
 
         switch ($error_no) {
             case E_CORE_ERROR:
