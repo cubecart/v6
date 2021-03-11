@@ -136,6 +136,7 @@ class FileManager
                                     }
                                 }
                             }
+                            $this->deleteCachedImages($source);
                             $GLOBALS['gui']->setNotify($GLOBALS['language']->filemanager['notify_image_update']);
                         } else {
                             $GLOBALS['gui']->setError($GLOBALS['language']->filemanager['error_image_update']);
@@ -422,6 +423,30 @@ class FileManager
         }
         return false;
     }
+
+    /**
+     * Delete cached images
+     *
+     * @param string $source
+     * @return count
+     */
+    public function deleteCachedImages($source) {
+        $cache_path = str_replace('/images/source/', '/images/cache/', $source);
+        $ext = pathinfo($cache_path, PATHINFO_EXTENSION);
+        $strlen = strlen($ext)*-1;
+        $cache_path = substr($cache_path, 0, $strlen);
+        $cache_path = $cache_path.'*.'.$ext;
+        $i=0;
+        if (($caches = glob($cache_path, GLOB_BRACE)) !== false) {
+            foreach ($caches as $cached) {
+                if(unlink($cached)) {
+                    $i++;
+                }
+            }
+        }
+        return $i;
+    }
+    
 
     /**
      * Delete file
