@@ -386,11 +386,6 @@ if (class_exists('DateTimeZone')) {
         if(empty($default_timezone)) {
             $default_timezone = 'UTC'; // If not set PHP will take UTC
         }
-        $smarty_data['timezones'][] = array(
-            'value'  => '',
-            'zone'  => sprintf($lang['settings']['use_server_time'], $default_timezone),
-            'selected' => ($current_timezone == '') ? ' selected="selected"' : '',
-        );
         foreach ($timezones as $timezone) {
             $smarty_data['timezones'][] = array(
                 'value'  => $timezone,
