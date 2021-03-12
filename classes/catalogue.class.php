@@ -1870,7 +1870,7 @@ class Catalogue
                     $ids[] = $manufacturer['id'];
                 }
                 $manufacturers = implode(',',$ids);
-                $where[] = "OR `I`.`manufacturer` IN($manufacturers)";
+                $where[] = "AND `I`.`manufacturer` IN($manufacturers)";
             }
 
             $whereString = (isset($where) && is_array($where)) ? implode(' ', $where) : '';
