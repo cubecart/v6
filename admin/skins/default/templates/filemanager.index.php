@@ -61,7 +61,7 @@
 	  <p class="center clear">{$LANG.filemanager.file_none}</p>
 	  {/if}
 	</div>
-	{if isset($FILES)}
+	{if isset($FILES) || isset($FOLDERS)}
 	<div class="form_control">
 	<img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/select_all.gif" alt=""> <a href="#" class="check-all" rel="multi_delete">{$LANG.form.check_uncheck}</a>
 	<hr>
