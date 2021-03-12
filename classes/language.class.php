@@ -901,7 +901,7 @@ class Language
      * @param string $path
      * @return bool
      */
-    public function saveLanguageXML($language, $compress = false, $replace, $path = CC_LANGUAGE_DIR)
+    public function saveLanguageXML($language, $compress = false, $replace = false, $path = CC_LANGUAGE_DIR)
     {
         if (!$this->_checkPath($path)) {
             trigger_error('Invalid language path '.$path, E_USER_ERROR);
