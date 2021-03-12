@@ -346,13 +346,19 @@ jQuery(document).ready(function() {
                 var page = returned.responseText;
                 var list = $('.product_list li', page);
                 var next = $('a.ccScroll-next', page);
+                $('.product_list li').removeClass("newTop");
+                $(list[0]).addClass('newTop');
                 setTimeout(function(){
                     product_list.append(list);
                     set_product_view(0)
                     $(next_link).replaceWith(next);
                     init_add_to_basket();
                     $("#loading").hide();
+                    $('html, body').animate({
+                        scrollTop: $("li.newTop").offset().top
+                    }, 500);
                 }, 1500);
+                
             }
         });
     });
