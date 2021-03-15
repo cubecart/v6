@@ -327,6 +327,13 @@ body.stream h1, body.stream h2, body.stream h3, body.stream p {
     color: #fff;
 }
 
+@media only screen and (max-width: 52.0625em) {
+    #checkout_actions .button {
+        padding-left:0.3125em;
+        padding-right:0.3125em;
+    }
+}
+
 /* Small viewport only */
 @media only screen and (max-width: 40em) {
   
