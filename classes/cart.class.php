@@ -457,10 +457,18 @@ class Cart
     {
         $data = $GLOBALS['catalogue']->getProductData($productID);
         $min_q = (int)$data['minimum_quantity'];
+        $max_q = (int)$data['maximum_quantity'];
 
         if ($min_q && $min_q > $quantity) {
             $GLOBALS['gui']->setError(sprintf($GLOBALS['language']->catalogue['error_minimum_quantity'], $min_q));
 
+            if ($redirect) {
+                $this->redirectToProductPage($productID);
+            }
+        }
+        if ($max_q && $max_q < $quantity) {
+            $GLOBALS['gui']->setError(sprintf($GLOBALS['language']->catalogue['error_maximum_quantity'], $max_q));
+        
             if ($redirect) {
                 $this->redirectToProductPage($productID);
             }

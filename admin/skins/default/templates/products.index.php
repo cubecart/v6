@@ -266,6 +266,7 @@
             </div>
             <div><label for="tax_inclusive">{$LANG.catalogue.tax_included}</label><span><input type="hidden" name="tax_inclusive" id="tax_inclusive" class="toggle" value="{$PRODUCT.tax_inclusive}"></span></div>
             <div><label for="minimum_quantity">{$LANG.catalogue.minimum_quantity}</label><span><input name="minimum_quantity" id="minimum_quantity" class="textbox number-right" type="text" value="{$PRODUCT.minimum_quantity}"></span></div>
+            <div><label for="maximum_quantity">{$LANG.catalogue.maximum_quantity}</label><span><input name="maximum_quantity" id="maximum_quantity" class="textbox number-right" type="text" value="{$PRODUCT.maximum_quantity}">&nbsp;{$LANG.common.blank_to_disable}</span></div>
          </fieldset>
          <fieldset>
             <table>

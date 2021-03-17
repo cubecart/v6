@@ -32,16 +32,15 @@
    </div>
    {else}
    <div class="medium-2 columns show-for-medium-up">
-      <input type="number" name="quantity" value="{$PRODUCT.minimum_quantity}" min="{$PRODUCT.minimum_quantity}" maxlength="3" class="quantity required text-center">
+   <input type="number" name="quantity" value="{$PRODUCT.minimum_quantity}" min="{$PRODUCT.minimum_quantity}"{if $PRODUCT.maximum_quantity gte $PRODUCT.minimum_quantity}max="{$PRODUCT.maximum_quantity}"{/if} maxlength="3" class="quantity required text-center">
       <input type="hidden" name="add" value="{$PRODUCT.product_id}">
    </div>
    <div  class="small-12 medium-10 columns">
       <link itemprop="availability" href="http://schema.org/InStock" />
       <button type="submit" value="{$LANG.catalogue.add_to_basket}" class="button postfix">{$LANG.catalogue.add_to_basket}</button>
    </div>
-   {if $PRODUCT.minimum_quantity>1}
-   <small>{$LANG.catalogue.min_purchase_quantity|replace:'%s':$PRODUCT.minimum_quantity}</small>
-{/if}
+   {if $PRODUCT.minimum_quantity>1}<div><small>{$LANG.catalogue.min_purchase_quantity|replace:'%s':$PRODUCT.minimum_quantity}</small></div>{/if}
+   {if $PRODUCT.maximum_quantity gte $PRODUCT.minimum_quantity}<div><small>{$LANG.catalogue.max_purchase_quantity|replace:'%s':$PRODUCT.maximum_quantity}</small></div>{/if}
    {/if}
 </div>
 {else}
