@@ -44,10 +44,10 @@
 		</div>
 		
 	</div>
-	<div class="cc_dropzone">
+	<div class="dropzone">
 		<div class="dz-default dz-message"><span>{$LANG.filemanager.file_upload_note}</span></div>
 	</div>
-	<div id="cc_dropzone_url" style="display: none;">?_g=filemanager&amp;gc=1</div>
+	<div id="dropzone_url" style="display: none;">?_g=filemanager&amp;gc=1</div>
 	<div id="val_unique_image" style="display: none;">{$GC.image}</div>
 	<div id="val_lang_go" style="display: none;">{$LANG.common.go}</div>
 	<div id="val_lang_preview" style="display: none;">{$LANG.common.preview}</div>

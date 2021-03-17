@@ -599,10 +599,10 @@
          </div>
          
       </div>
-      <div class="cc_dropzone">
+      <div class="dropzone">
          <div class="dz-default dz-message"><span>{$LANG.filemanager.file_upload_note}</span></div>
       </div>
-      <div id="cc_dropzone_url" style="display: none;">?_g=filemanager&amp;product_id={$PRODUCT.product_id}</div>
+      <div id="dropzone_url" style="display: none;">?_g=filemanager&amp;product_id={$PRODUCT.product_id}</div>
       <div id="val_product_id" style="display: none;">{$PRODUCT.product_id}</div>
 
       <div id="val_lang_go" style="display: none;">{$LANG.common.go}</div>

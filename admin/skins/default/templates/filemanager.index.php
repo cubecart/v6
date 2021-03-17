@@ -73,10 +73,10 @@
   <div id="upload" class="tab_content">
 	<h3>{$FILMANAGER_TITLE}</h3>
 	{if $FILMANAGER_MODE == '1'}
-	<div class="cc_dropzone">
+	<div class="dropzone">
 		<div class="dz-default dz-message"><span>{$LANG.filemanager.file_upload_note}</span></div>
 	</div>
-	<div id="cc_dropzone_url" style="display: none;">{$VAL_SELF}</div>
+	<div id="dropzone_url" style="display: none;">{$VAL_SELF}</div>
 	{else}
 	<div>
 	  <span><input name="file" id="uploader" type="file" class="multiple"></span>

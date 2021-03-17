@@ -472,9 +472,10 @@ $(document).ready(function() {
         $('input:checkbox').removeAttr('checked');
         $('.custom-checkbox').removeClass('selected');
     });
-    if($("div.cc_dropzone").length) {
-        var cc_dropzone_url = $("div#cc_dropzone_url").text();
-        $("div.cc_dropzone").dropzone({url: cc_dropzone_url, maxFilesize: '0.35', init: function () {
+    if($("div.dropzone").length) {
+        Dropzone.autoDiscover = false;
+        var dropzone_url = $("div#dropzone_url").text();
+        $("div.dropzone").dropzone({url: dropzone_url, maxFilesize: '0.35', acceptedFiles: 'image/gif,image/jpeg,image/png,image/webp', init: function () {
                 this.on("complete", function (file) {
                     if($("div#imageset.fm-filelist").length) {
                         if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
@@ -489,8 +490,15 @@ $(document).ready(function() {
                         }
                     }
                 });
+                this.on("processing", function(file) {
+                    var subdir = '';
+                    if($("#val_subdir").length) {
+                        subdir = '&subdir='+$("#val_subdir").text();
+                    }   
+                    this.options.url = dropzone_url+subdir;
+                });
             }
-        });
+        });        
     }
 
     $(":input.required").blur(function() {
