@@ -11,9 +11,9 @@
       <link rel="stylesheet" type="text/css" href="{$style}?{$VERSION_HASH}" media="screen">
       {/foreach}
       <link rel="stylesheet" type="text/css" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/styles/styles.php?{$VERSION_HASH}" media="screen">
-      <link rel="stylesheet" type="text/css" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/styles/dropzone.css?{$VERSION_HASH}" media="screen">
+      <link rel="stylesheet" type="text/css" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/styles/dropzone.css" media="screen">
       {foreach from=$HEAD_JS item=js_src}
-      <script type="text/javascript" src="{$js_src}"></script>
+      <script type="text/javascript" src="{$js_src}?{$VERSION_HASH}"></script>
       {/foreach}
 <script type="text/javascript">
 {literal}
@@ -70,13 +70,13 @@ $zopim(function() {
       <div style="display: none" id="val_skin_folder">{$SKIN_VARS.skin_folder}</div>
       <div style="display: none" id="val_admin_lang">{$val_admin_lang}</div>
       {include file='templates/element.welcome_tour.php'}
-      <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/jquery.min.js"></script>
-      <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/jquery-ui.min.js"></script>
+      <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/jquery.min.js?{$VERSION_HASH}"></script>
+      <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/jquery-ui.min.js?{$VERSION_HASH}"></script>
       <script type="text/javascript" src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/plugins.php?{$VERSION_HASH}"></script>
       <!-- Include CKEditor -->
-      <script type="text/javascript" src="includes/ckeditor/ckeditor.js"></script>
-      <script type="text/javascript" src="includes/ckeditor/adapters/jquery.js"></script>
-      <script src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/dropzone.js"></script>
+      <script type="text/javascript" src="includes/ckeditor/ckeditor.js?{$VERSION_HASH}"></script>
+      <script type="text/javascript" src="includes/ckeditor/adapters/jquery.js?{$VERSION_HASH}"></script>
+      <script src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/js/dropzone.js?{$VERSION_HASH}"></script>
       <script>
          {literal}
          $(window).load(function() {
@@ -103,10 +103,10 @@ $zopim(function() {
       </script>
       {/if}
       {foreach from=$EXTRA_JS item=js_src}
-      <script type="text/javascript" src="{$js_src}"></script>
+      <script type="text/javascript" src="{$js_src}?{$VERSION_HASH}"></script>
       {/foreach}
       {foreach from=$BODY_JS item=js_src}
-      <script type="text/javascript" src="{$js_src}"></script>
+      <script type="text/javascript" src="{$js_src}?{$VERSION_HASH}"></script>
       {/foreach}
    </body>
 </html>
