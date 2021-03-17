@@ -946,7 +946,7 @@ IndexIgnore *
 
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteCond %{REQUEST_URI} !=/favicon.ico
+  RewriteCond %{REQUEST_URI} !='.CC_ROOT_REL.'favicon.ico
   RewriteRule ^(.*)?$ index.php?seo_path=$1 [L,QSA]
 </IfModule>
 
