@@ -495,7 +495,7 @@ $(document).ready(function() {
                     if($("#val_subdir").length) {
                         subdir = '&subdir='+$("#val_subdir").text();
                     }   
-                    this.options.url += subdir;
+                    this.options.url = dropzone_url+subdir;
                 });
             }
         });        
