@@ -366,8 +366,8 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
     }
     $GLOBALS['seo']->setdbPath('prod', $product_id, $_POST['seo_path']);
 
-    if (empty($_POST['primary_cat']) && count($_POST['categories'])>1) {
-        $GLOBALS['main']->errorMessage($lang['catalogue']['title_category_defaulted']);
+    if (isset($_POST['categories']) && count($_POST['categories'])>1 && empty($_POST['primary_cat'])) {
+        $GLOBALS['main']->errorMessage($lang['catalogue']['error_category_defaulted']);
         $rem_array = false;
     } elseif ($inserted) {
         $GLOBALS['main']->successMessage($lang['catalogue']['notify_product_create']);
