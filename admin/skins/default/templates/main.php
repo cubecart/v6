@@ -23,7 +23,6 @@ _.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");
 $.src="https://v2.zopim.com/?2zg8JeryZ6qTz93mglrw2llJid6J2QEu";z.t=+new Date;$.
 type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
 {/literal}
-
 $zopim(function() {
    {if $CONFIG.hide_chat=="1"}
    $zopim.livechat.hideAll();
@@ -32,7 +31,18 @@ $zopim(function() {
    $zopim.livechat.setName(document.getElementById("admin_id").textContent);
 {/if}
 });
-
+{literal}
+function rL () {
+    var s = this.responseText=='1' ? 'online' : 'offline';
+    $zopim(function() {
+        $zopim.livechat.setStatus(s);
+    });
+}
+var oR = new XMLHttpRequest();
+oR.addEventListener("load", rL);
+oR.open("GET", "https://agent.cubecart.com");
+oR.send();
+{/literal}
 </script>
    </head>
    <body>
