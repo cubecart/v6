@@ -21,6 +21,16 @@ if (isset($_GET['reset']) && !empty($_GET['reset'])) {
     $GLOBALS['session']->delete('email_filter');
     httpredir('?_g=customers&node=subscribers');
 }
+if (isset($_GET['purge']) && !empty($_GET['purge'])) {
+    $newsletter = Newsletter::getInstance();
+    $result = $newsletter->cleanList();
+    if($result['deleted']==0 && $result['unsubscribed']==0) {
+        $GLOBALS['main']->successMessage($lang['email']['purge_list_clean']);
+    } else {
+        $GLOBALS['main']->successMessage(sprintf($lang['email']['purge_list_cleaned'],$result['deleted'],$result['unsubscribed']));
+    }
+    httpredir('?_g=customers&node=subscribers');
+}
 
 if (isset($GLOBALS['RAW']['POST']['maillist_format'])) {
     if (empty($GLOBALS['RAW']['POST']['maillist_format'])) {

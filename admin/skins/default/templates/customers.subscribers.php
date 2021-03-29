@@ -70,6 +70,7 @@
             <input type="button" name="submit" onclick="$.colorbox({ href:'{$STORE_URL}/{$SKIN_VARS.admin_file}?_g=xml&function=subscriber_log&email='+$('#email_history').val()})" class="tiny" value="{$LANG.common.go}">
             </div>
       </fieldset>
+      <a href="?_g=customers&node=subscribers&purge=1" class="button delete" title="{$LANG.email.confirm_purge}">{$LANG.email.purge}</a>
    </div>
    <div id="import" class="tab_content">
       <h3>{$LANG.newsletter.import_subscribers}</h3>

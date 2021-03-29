@@ -24,6 +24,7 @@ class Newsletter
 
     private $_html;
     private $_text;
+    private $_validated_domain = array();
 
     public $_newsletter_id;
 
@@ -48,6 +49,30 @@ class Newsletter
         }
 
         return self::$_instance;
+    }
+
+    /**
+     * Clean up mailing list
+     *
+     * @return array('deleted' => int, 'unsubscribed' => int);
+     */
+    public function cleanList() {
+        $rows = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', array('subscriber_id','email'));
+        $return = array('deleted' => 0, 'unsubscribed' => 0);
+        if($rows) {
+            foreach($rows as $row) {
+                if($this->validateEmail($row['email'])==2) {
+                    if($GLOBALS['db']->delete('CubeCart_newsletter_subscriber', array('subscriber_id' => $row['subscriber_id']))) {
+                        $return['deleted']++;
+                    }
+                } else if($this->validateEmail($row['email'])===false) {
+                    if($GLOBALS['db']->update('CubeCart_newsletter_subscriber', array('status' => 0), array('subscriber_id' => $row['subscriber_id']))) {
+                        $return['unsubscribed']++;
+                    }
+                }
+            }
+        }
+        return $return;
     }
 
     //=====[ Public ]=======================================
@@ -294,6 +319,24 @@ class Newsletter
             }
         }
         return false;
+    }
+
+    /** 
+     * Validate email address and MX record
+     *
+     * @param string $email
+     * @return 0, 1, 2
+     */
+    public function validateEmail($email) {
+        if(filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            list($user, $domain) = explode('@', $email);
+            if(!isset($this->_validated_domain[$domain])) {
+                return $this->_validated_domain[$domain] = (int)checkdnsrr($domain, 'MX');
+            }
+            return $this->_validated_domain[$domain];
+        }
+        return 2;
+        
     }
 
     /**
