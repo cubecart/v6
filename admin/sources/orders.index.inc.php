@@ -172,6 +172,7 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
     }
 
     $record = array_merge($customer_data, $_POST['summary'], $record);
+    $record['ship_tracking'] = preg_replace('/\s+/', '', $record['ship_tracking']);
 
     // Add a new note, if there's any content
     if (!empty($_POST['note'])) {
