@@ -101,6 +101,7 @@ if (isset($_POST['cat']) && is_array($_POST['cat']) && Admin::getInstance()->per
         if (!empty($_POST['cat']['cat_name']) && $cat_id = $GLOBALS['db']->insert('CubeCart_category', $_POST['cat'])) {
             $path = empty($_POST['seo_path']) ? $_POST['cat']['cat_name'] : $_POST['seo_path'];
             $GLOBALS['seo']->setdbPath('cat', $cat_id, $path);
+            $GLOBALS['seo']->rebuildCategoryList();
             $GLOBALS['main']->successMessage($lang['settings']['notify_category_create']);
             $keys_remove = array('action', 'cat_id');
         } else {
