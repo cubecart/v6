@@ -1083,7 +1083,7 @@ if (isset($_GET['action'])) {
 
         // Set status to 1 if not set
         $result[0]['status'] = !isset($result[0]['status']) ? 1 : $result[0]['status'];
-        $result[0]['auto_code_checked'] = (empty($result[0]['product_code'])) ? 'checked="checked"' : '';
+        $result[0]['auto_code_checked'] = (empty($result[0]['product_code'])) ? '1' : '0';
         $result[0]['seo_path'] = isset($result[0]['product_id']) ? $GLOBALS['seo']->getdbPath('prod', $result[0]['product_id']) : '';
 
         $master_image = isset($_GET['product_id']) ? $GLOBALS['gui']->getProductImage((int)$_GET['product_id']) : '';

@@ -241,6 +241,8 @@ $(document).ready(function() {
         admin_file:     $("#val_admin_file").length ? $("#val_admin_file").text() : 'admin.php' 
     }
 
+    $("input#product_code").val().length > 0 ? $("input#product_code_auto").val('0') : $("input#product_code_auto").val('1'); $("input#product_code_auto").change();
+
     var image_icon_path  = config.admin_folder + "/skins/" + config.skin_folder + "/images/";
 
     $("input.toggle:hidden").each(function() {
