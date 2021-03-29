@@ -70,7 +70,7 @@ class Language
      */
     private $_language_strings   = array();
     /**
-     * Language strings
+     * Language strings definitions
      *
      * @var array
      */
@@ -1092,7 +1092,7 @@ class Language
             foreach ($files as $file) {
                 if (substr($file, -3) == '.gz') {
                     // Extract GZipped content
-                    $xml_data = gzuncompress(simplexml_load_file($file.'.gz'));
+                    $xml_data = simplexml_load_file(gzuncompress($file.'.gz'));
                 } else {
                     $xml_data = simplexml_load_file($file);
                 }
