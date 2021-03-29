@@ -1256,10 +1256,10 @@ class FileManager
                     if (isset($_GET['product_id']) && $_GET['product_id']>0) {
                         $this->_assignProduct((int)$_GET['product_id'], (int)$fid);
                     }
-                    if (isset($_GET['cat_id']) && $_GET['cat_id']>0) {
+                    if ($this->_mode == self::FM_FILETYPE_IMG && isset($_GET['cat_id']) && $_GET['cat_id']>0) {
                         $this->_assignCategory((int)$_GET['cat_id'], (int)$fid);
                     }
-                    if (isset($_GET['gc']) && $_GET['gc']==1) {
+                    if ($this->_mode == self::FM_FILETYPE_IMG && isset($_GET['gc']) && $_GET['gc']==1) {
                         $GLOBALS['config']->set('gift_certs', 'image', (int)$fid);
                     }
                     move_uploaded_file($file['tmp_name'], $target);
@@ -1297,19 +1297,23 @@ class FileManager
      */
     private function _assignProduct($product_id, $file_id)
     {
-        if ($GLOBALS['db']->select('CubeCart_image_index', false, array('main_img' => 1, 'product_id' => $product_id))!==false) {
-            $main_image = '0';
-        } else {
-            $GLOBALS['db']->update('CubeCart_image_index', array('main_img' => 0), array('product_id' => $product_id));
-            $main_image = '1';
-        }
+        if ($this->_mode == self::FM_FILETYPE_IMG) {
+            if ($GLOBALS['db']->select('CubeCart_image_index', false, array('main_img' => 1, 'product_id' => $product_id))!==false) {
+                $main_image = '0';
+            } else {
+                $GLOBALS['db']->update('CubeCart_image_index', array('main_img' => 0), array('product_id' => $product_id));
+                $main_image = '1';
+            }
 
-        $record = array(
-            'file_id'  => $file_id,
-            'product_id' => $product_id,
-            'main_img'  => $main_image
-        );
-        $GLOBALS['db']->insert('CubeCart_image_index', $record);
+            $record = array(
+                'file_id'  => $file_id,
+                'product_id' => $product_id,
+                'main_img'  => $main_image
+            );
+            $GLOBALS['db']->insert('CubeCart_image_index', $record);
+        } else {
+            $GLOBALS['db']->update('CubeCart_inventory', array('digital' => $file_id), array('product_id' => $product_id));
+        }
     }
 
     private function _streamable($mimetype) {
