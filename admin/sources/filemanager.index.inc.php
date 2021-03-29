@@ -70,7 +70,7 @@ if ((!empty($_FILES)) && Admin::getInstance()->permissions('filemanager', CC_PER
     if ($fm->upload()) {
         if (count($_FILES)>1) {
             $GLOBALS['main']->successMessage($lang['filemanager']['notify_files_upload']);
-        } elseif ($_FILES['file0']['size']>0) {
+        } elseif ( (isset($_FILES['file0']) && $_FILES['file0']['size']>0) || (isset($_FILES['file']) && $_FILES['file']['size']>0) ) {
             $GLOBALS['main']->successMessage($lang['filemanager']['notify_file_upload']);
         }
     } else {
