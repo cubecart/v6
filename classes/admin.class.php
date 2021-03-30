@@ -401,7 +401,7 @@ class Admin
                             $newdata['blockTime'] = 0;
                         } else {
                             // Display Blocked message
-                            $GLOBALS['gui']->setError(sprintf($GLOBALS['language']->account['error_login_block']($GLOBALS['config']->get('config', 'bftime') / 60)));
+                            $GLOBALS['gui']->setError(sprintf($GLOBALS['language']->account['error_login_block'],($GLOBALS['config']->get('config', 'bftime') / 60)));
                             $this->_blocked = true;
                         }
                         if (isset($newdata)) {
