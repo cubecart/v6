@@ -758,6 +758,7 @@ if (isset($database_result) && $database_result) {
             'subscriber_id' => 'PRIMARY',
             'customer_id' => 'KEY',
             'status' => 'KEY',
+            'email' => 'KEY',
             'dbl_opt' => 'KEY'
         ),
         'cubecart_newsletter_subscriber_log' => array(

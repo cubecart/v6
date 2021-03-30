@@ -548,6 +548,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_newsletter_subscriber` (
 	`dbl_opt` tinyint(1) DEFAULT '0',
 	PRIMARY KEY (`subscriber_id`),
 	KEY `customer_id` (`customer_id`),
+	KEY `email` (`email`),
 	KEY `dbl_opt` (`dbl_opt`),
 	KEY `status` (`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
