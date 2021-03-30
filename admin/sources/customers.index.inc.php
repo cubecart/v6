@@ -145,7 +145,7 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
         // Update / Insert newsletter subscription
         $GLOBALS['db']->delete('CubeCart_newsletter_subscriber', '`customer_id` = '.$customer_id.' OR `email` = \''.$customer['email'].'\'');
         if (isset($customer['subscription_status']) && $customer['subscription_status']) {
-            $GLOBALS['db']->insert('CubeCart_newsletter_subscriber', array('customer_id' => $customer_id, 'status' => 1, 'email' => $customer['email']));
+            $GLOBALS['db']->insert('CubeCart_newsletter_subscriber', array('customer_id' => $customer_id, 'status' => 1, 'dbl_opt' => $customer['subscription_status']=='2' ? '1' : '0', 'email' => $customer['email']));
         }
 
         // Delete Group membership
