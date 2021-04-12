@@ -192,7 +192,6 @@
             <tr>
                <td colspan="8">
                   <div class="pagination">
-                     <span>{$LANG.common.total}: {$TOTAL_RESULTS}</span>
                      {$PAGINATION}&nbsp;
                   </div>
                </td>
