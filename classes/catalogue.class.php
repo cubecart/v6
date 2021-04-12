@@ -68,7 +68,8 @@ class Catalogue
 
     final protected function __construct()
     {
-        if($pre_release = $GLOBALS['db']->select('CubeCart_inventory', 'MIN(`live_from`) AS `next_time`', '`live_from` > UNIX_TIMESTAMP()', false, 1, false, false)) {
+        $pre_release = $GLOBALS['db']->select('CubeCart_inventory', 'MIN(`live_from`) AS `next_time`', '`live_from` > UNIX_TIMESTAMP()', false, 1, false, false);
+        if(!is_null($pre_release[0]['next_time'])) {
             $this->_where_live_from = ' AND `live_from` < UNIX_TIMESTAMP() ';
         }
     }
