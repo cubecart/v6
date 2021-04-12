@@ -11,8 +11,12 @@
  *}
 <div class="row">
    <div class="small-5 medium-7 columns horizontal">
-      <div id="open-clearing-wrapper"><a href="#" class="open-clearing" data-thumb-index="0"><img src="{$PRODUCT.medium}" alt="{$PRODUCT.name}" id="img-preview"></a></div>
-      {if $GALLERY}
+      {if count($GALLERY) > 1}
+         <a href="#" class="open-clearing" data-thumb-index="0"><img src="{$PRODUCT.medium}" alt="{$PRODUCT.name}" id="img-preview"></a>
+      {else}
+         <div data-clearing><a href="{$image.source}"><img src="{$PRODUCT.medium}"></a></div>
+      {/if}
+      {if count($GALLERY) > 1}
       <ul class="clearing-thumbs small-block-grid-3 medium-block-grid-5 marg-top" data-clearing>
          {foreach from=$GALLERY item=image}
          <li{if $image@total lt 2} style="display:none"{/if}><a href="{$image.source}" class="th"><img src="{$image.small}" data-image-swap="{$image.medium}" data-caption="{$PRODUCT.name}{if !empty($image.description)}: {/if}{$image.description}" class="image-gallery" alt="{$LANG.catalogue.click_enlarge}"></a></li>

@@ -10,8 +10,8 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
 <div class="row">
+   {if count($GALLERY) > 1}
    <div  class="medium-1 columns thinpad-right off-canvas-for-small vertical">
-      {if count($GALLERY) > 1}
       <div id="scrollUp" class="scroller"><svg class="icon"><use xlink:href="#icon-angle-up"></use></svg></div>
       <ul class="clearing-thumbs small-block-grid-1" id="scrollContent" data-clearing>
          {foreach from=$GALLERY item=image}
@@ -19,10 +19,14 @@
          {/foreach}
       </ul>
       <div id="scrollDown" class="scroller"><svg class="icon"><use xlink:href="#icon-angle-down"></use></svg></div>
-      {/if}
    </div>
-   <div class="small-5 medium-6 columns text-center nopad">            
-      <a href="#" class="open-clearing" data-thumb-index="0"><img src="{$PRODUCT.medium}" alt="{$PRODUCT.name}" id="img-preview"></a>
+   {/if}
+   <div class="small-5 medium-{if count($GALLERY) > 1}6{else}7{/if} columns text-center nopad">            
+      {if count($GALLERY) > 1}
+         <a href="#" class="open-clearing" data-thumb-index="0"><img src="{$PRODUCT.medium}" alt="{$PRODUCT.name}" id="img-preview"></a>
+      {else}
+         <div data-clearing><a href="{$image.source}"><img src="{$PRODUCT.medium}"></a></div>
+      {/if}
       <p class="show-for-small-only">{if $image@total==1}{$LANG.catalogue.tap_enlarge}{else}{$LANG.catalogue.tap_gallery}{/if}</p>
    </div>
    <div class="small-7 medium-5 columns thinpad-left">
