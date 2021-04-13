@@ -17,6 +17,31 @@ Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT, true);
 
 global $lang;
 
+function imagesToFolders() {
+    $image_path = 'images/source/';
+    $image_path_dest = $image_path.'a-z/';
+    mkdir($image_path_dest);
+    if(file_exists($image_path_dest)) {
+        foreach (glob($image_path.'*') as $filename) {
+            if(is_file($filename)) {
+                $base_name = basename($filename);
+                $folder_name = strtoupper(substr($base_name,0,1));
+                $folder_path = $image_path_dest.$folder_name;
+                if(!file_exists($folder_path)) {
+                    mkdir($folder_path);
+                }
+                echo $filename.' to '.$folder_path.'/'.$base_name.'<br>';
+                rename($filename,$folder_path.'/'.$base_name);
+            }
+        }
+        $files = $GLOBALS['db']->select('CubeCart_filemanager', false,array('filepath' => null));
+        foreach($files as $file) {
+            $folder = strtoupper(substr($file['filename'], 0, 1));
+            $GLOBALS['db']->update('CubeCart_filemanager', array('filepath' => 'a-z/'.$folder.'/'), array('file_id' => $file['file_id'], 'filepath' => null));
+        }
+    }
+}
+
 function crc_integrity_check($files, $mode = 'upgrade')
 {
     $errors = array();
