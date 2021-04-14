@@ -1063,7 +1063,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="purge_list_clean" introduced="6.4.3"><![CDATA[No changes were made. Your list seems healthy.]]></string>
     <string name="purge_list_cleaned" introduced="6.4.3"><![CDATA[Invalid addresses removed: %s, Invalid Domains removed: %s.]]></string>
     <string name="purge" introduced="6.4.3"><![CDATA[Clean-up Mailing List]]></string>
-    <string name="confirm_purge" introduced="6.4.3"><![CDATA[This will delete any email accounts with invalid format or unsubscribe dominans that are not expecting to recieve email. Are you sure you want to continue?]]></string>
+    <string name="confirm_purge" introduced="6.4.3"><![CDATA[This will delete any subscribers with an invalid email address or unsubscribe domains that are not expecting to recieve email (no MX records found). Are you sure you want to continue?]]></string>
     <string name="macro_stream" introduced="6.4.0"><![CDATA[Does the file download or stream?]]></string>
     <string name="exit_title" introduced="6.2.0"><![CDATA[Wait&hellip;]]></string>
     <string name="exit_copy" introduced="6.2.0"><![CDATA[Before you go, be sure to sign up to our newsletter for exclusive offers and promotions!]]></string>
