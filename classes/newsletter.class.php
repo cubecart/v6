@@ -310,7 +310,7 @@ class Newsletter
      */
     public function unsubscribeHeader($email)
     {
-        $this->_mailer->addCustomHeader("List-Unsubscribe","<mailto:".$this->_mailer->From."?subject=Unsubscribe>,<".$GLOBALS['storeURL']."/index.php?_a=unsubscribe&unsubscribe=".urlencode($email).">");
+        $this->_mailer->addCustomHeader("List-Unsubscribe","<mailto: ".$this->_mailer->From."?subject=Unsubscribe>, <".$GLOBALS['storeURL']."/index.php?_a=unsubscribe&unsubscribe=".urlencode($email).">");
         $this->_mailer->addCustomHeader("List-Unsubscribe-Post","List-Unsubscribe=One-Click");
     }
 
