@@ -1031,15 +1031,6 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
     e.length > 0 ? ($("input#product_code_old").val(e), $("input#product_code").val("")) : $("input#product_code").val(t)
 }), $("#gui_message").on("click", function() {
     $(this).slideUp()
-}), $("#seo").on("change", function() {
-    var t = $("#val_admin_file").text();
-    seo = 1 == $("#seo").val() ? "seo_code" : "no_seo_code", $.getJSON("./" + t, {
-        _g: "xml",
-        type: seo,
-        function: "get"
-    }, function(t) {
-        $("#htaccess").val(t.content)
-    })
 }), $("#cat_general").on("change", "#cat_name", function() {
     $("#cat_general").on("click", "#cat_save", function() {
         return $("#dialog-seo").dialog({
