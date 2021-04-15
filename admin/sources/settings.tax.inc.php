@@ -26,7 +26,8 @@ $redirect  = false;
 $anchor  = false;
 
 if (isset($_GET['assign_class']) && $_GET['assign_class']>0) {
-    if ($no_assigned = $GLOBALS['db']->update('CubeCart_inventory', array('tax_type' => (int)$_GET['assign_class']))) {
+    if ($GLOBALS['db']->update('CubeCart_inventory', array('tax_type' => (int)$_GET['assign_class']))) {
+        $no_assigned = $GLOBALS['db']->affected();
         $GLOBALS['main']->successMessage(sprintf($lang['settings']['notify_tax_class_assigned'], $no_assigned));
     } else {
         $GLOBALS['main']->errorMessage($lang['settings']['notify_tax_class_not_assigned']);
