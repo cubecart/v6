@@ -15,7 +15,6 @@ if (!defined('CC_INI_SET')) {
 }
 Admin::getInstance()->permissions('filemanager', CC_PERM_READ, true);
 
-global $lang;
 
 if(isset($_GET['download_file']) && !empty($_GET['download_file'])) {
     $file = CC_ROOT_DIR.'/'.base64_decode($_GET['download_file']);

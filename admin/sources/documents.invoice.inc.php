@@ -14,7 +14,6 @@ if (!defined('CC_INI_SET')) {
     die('Access Denied');
 }
 Admin::getInstance()->permissions('documents', CC_PERM_EDIT, true);
-global $lang;
 
 $current = $GLOBALS['db']->select('CubeCart_invoice_template', array('hash', 'content'), false, 'id DESC', 1);
 $filename = CC_ROOT_DIR.'/'.$GLOBALS['config']->get('config', 'adminFolder').'/skins/'.$GLOBALS['config']->get('config', 'admin_skin').'/templates/orders.print.php';

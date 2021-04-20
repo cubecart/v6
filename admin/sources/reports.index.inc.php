@@ -15,7 +15,6 @@ if (!defined('CC_INI_SET')) {
 }
 Admin::getInstance()->permissions('statistics', CC_PERM_READ, true);
 
-global $lang;
 
 $add_headers = true;
 

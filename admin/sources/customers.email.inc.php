@@ -15,7 +15,6 @@ if (!defined('CC_INI_SET')) {
 }
 Admin::getInstance()->permissions('customers', CC_PERM_READ, true);
 
-global $lang;
 
 $GLOBALS['gui']->addBreadcrumb($lang['email']['title_newsletters'], currentPage(array('action', 'newsletter_id')));
 

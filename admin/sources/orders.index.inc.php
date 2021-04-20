@@ -15,7 +15,6 @@ if (!defined('CC_INI_SET')) {
 }
 Admin::getInstance()->permissions('orders', CC_PERM_READ, true);
 $order = Order::getInstance();
-global $lang;
 
 // Correct OID format
 if (isset($_GET['order_id']) && !preg_match('#^[0-9]{6}-[0-9]{6}-[0-9]{4}$#i', $_GET['order_id'])) {

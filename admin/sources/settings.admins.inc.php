@@ -23,7 +23,6 @@ if (isset($_GET['tour_shown']) && is_numeric($_GET['tour_shown'])) {
 
 Admin::getInstance()->permissions('users', CC_PERM_READ, true);
 
-global $lang;
 
 $count = $GLOBALS['db']->query('SELECT COUNT(`admin_id`) as count from `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_admin_users` WHERE `super_user` = 1');
 $count = $count[0]['count'];

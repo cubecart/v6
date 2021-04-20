@@ -15,7 +15,6 @@ if (!defined('CC_INI_SET')) {
 }
 Admin::getInstance()->permissions('settings', CC_PERM_READ, true);
 
-global $lang;
 $count_unread = $GLOBALS['db']->count('CubeCart_admin_error_log', 'log_id', array('read' => '0'));
 $GLOBALS['main']->addTabControl($lang['settings']['title_admin_error_log'], 'admin_error_log', null, null, $count_unread);
 $GLOBALS['gui']->addBreadcrumb($lang['settings']['title_admin_error_log'], currentPage());

@@ -15,7 +15,6 @@ if (!defined('CC_INI_SET')) {
 }
 Admin::getInstance()->permissions('products', CC_PERM_EDIT, true);
 
-global $lang;
 
 $dir 			= CC_ROOT_DIR.CC_DS.'includes'.CC_DS.'extra'.CC_DS;
 $source			= $dir.'importdata.tmp';

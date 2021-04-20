@@ -15,7 +15,6 @@ if (!defined('CC_INI_SET')) {
 }
 Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT, true);
 
-global $lang;
 
 function imagesToFolders() {
     $image_path = 'images/source/';

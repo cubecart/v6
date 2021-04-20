@@ -15,7 +15,6 @@ if (!defined('CC_INI_SET')) {
 }
 Admin::getInstance()->permissions('settings', CC_PERM_READ, true);
 
-global $lang;
 
 if (isset($_GET['delete']) && Admin::getInstance()->permissions('settings', CC_PERM_DELETE)) {
     ## Purge database

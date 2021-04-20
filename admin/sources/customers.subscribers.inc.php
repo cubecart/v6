@@ -15,7 +15,6 @@ if (!defined('CC_INI_SET')) {
 }
 Admin::getInstance()->permissions('customers', CC_PERM_READ, true);
 
-global $lang;
 
 if (isset($_GET['reset']) && !empty($_GET['reset'])) {
     $GLOBALS['session']->delete('email_filter');

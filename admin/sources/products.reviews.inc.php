@@ -16,7 +16,6 @@ if (!defined('CC_INI_SET')) {
 }
 Admin::getInstance()->permissions('reviews', CC_PERM_READ, true);
 
-global $lang;
 
 ## Delete review
 if (isset($_GET['delete']) && is_numeric($_GET['delete']) && Admin::getInstance()->permissions('reviews', CC_PERM_DELETE)) {

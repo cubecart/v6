@@ -15,7 +15,6 @@ if (!defined('CC_INI_SET')) {
 }
 Admin::getInstance()->permissions('settings', CC_PERM_READ, true);
 
-global $lang;
 
 $GLOBALS['main']->addTabControl($lang['navigation']['nav_request_log'], 'request_log');
 $GLOBALS['gui']->addBreadcrumb($lang['navigation']['nav_request_log'], currentPage());

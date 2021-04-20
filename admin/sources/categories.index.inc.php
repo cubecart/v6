@@ -16,7 +16,6 @@ if (!defined('CC_INI_SET')) {
 }
 Admin::getInstance()->permissions('categories', CC_PERM_READ, true);
 
-global $lang;
 
 ###########################################
 ## Update/Insert a category

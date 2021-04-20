@@ -18,7 +18,6 @@ if (Admin::getInstance()->is()) {
     Admin::getInstance()->permissions('products', CC_PERM_READ, true);
 }
 
-global $lang;
 
 $seo  = SEO::getInstance();
 $catalogue = Catalogue::getInstance();

@@ -15,7 +15,6 @@ if (!defined('CC_INI_SET')) {
 }
 Admin::getInstance()->permissions('products', CC_PERM_READ, true);
 
-global $lang;
 
 if (!empty($_POST) && Admin::getInstance()->permissions('products', CC_PERM_EDIT)) {
     $changes = false;

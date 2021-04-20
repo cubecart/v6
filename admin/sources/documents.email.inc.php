@@ -15,7 +15,6 @@ if (!defined('CC_INI_SET')) {
 }
 Admin::getInstance()->permissions('documents', CC_PERM_READ, true);
 
-global $lang;
 
 $email_types = array(
     'account.password_recovery' => array(

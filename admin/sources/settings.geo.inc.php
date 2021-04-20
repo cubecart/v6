@@ -15,7 +15,6 @@ if (!defined('CC_INI_SET')) {
 }
 Admin::getInstance()->permissions('settings', CC_PERM_READ, true);
 
-global $lang;
 
 $GLOBALS['gui']->addBreadcrumb($lang['country']['bread_geo']);
 

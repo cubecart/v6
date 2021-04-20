@@ -16,7 +16,6 @@ if (!defined('CC_INI_SET')) {
 
 Admin::getInstance()->permissions('settings', CC_PERM_READ, true);
 
-global $lang;
 
 $cookie_domain 	= $GLOBALS['config']->get('config', 'cookie_domain');
 if (empty($cookie_domain)) {

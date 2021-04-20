@@ -15,7 +15,6 @@ if (!defined('CC_INI_SET')) {
 }
 Admin::getInstance()->permissions('documents', CC_PERM_READ, true);
 
-global $lang;
 
 if (isset($_POST['document']) && Admin::getInstance()->permissions('documents', CC_PERM_EDIT)) {
     foreach ($GLOBALS['hooks']->load('admin.documents.save.pre_process') as $hook) {

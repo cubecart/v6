@@ -16,7 +16,6 @@ if (!defined('CC_INI_SET')) {
 }
 Admin::getInstance()->permissions('products', CC_PERM_READ, true);
 
-global $lang;
 
 #########################################################
 if (isset($_POST['search']) && !empty($_POST['search'])) {

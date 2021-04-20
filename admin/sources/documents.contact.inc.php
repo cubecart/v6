@@ -14,7 +14,6 @@ if (!defined('CC_INI_SET')) {
     die('Access Denied');
 }
 Admin::getInstance()->permissions('documents', CC_PERM_EDIT, true);
-global $lang;
 $contact = $GLOBALS['config']->get('Contact_Form');
 if (isset($_POST['contact']) && is_array($_POST['contact'])) {
     $data = $_POST['contact'];

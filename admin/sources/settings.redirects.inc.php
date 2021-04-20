@@ -15,7 +15,6 @@ if (!defined('CC_INI_SET')) {
 }
 Admin::getInstance()->permissions('settings', CC_PERM_READ, true);
 
-global $lang;
 
 $GLOBALS['gui']->addBreadcrumb($lang['settings']['redirects'], currentPage());
 $GLOBALS['main']->addTabControl($lang['settings']['redirects'], 'redirects');
