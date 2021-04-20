@@ -15,6 +15,11 @@ if (!defined('CC_INI_SET')) {
 }
 Admin::getInstance()->permissions('statistics', CC_PERM_READ, true);
 
+if (isset($_GET['reset']) && !empty($_GET['reset'])) {
+    $GLOBALS['session']->delete('email_filter');
+    httpredir('?_g=statistics&node=emaillog');
+}
+
 if (isset($_GET['resend']) && $_GET['resend']>0) {
     $email_data = $GLOBALS['db']->select('CubeCart_email_log', false, array('id' => (int)$_GET['resend']));
 
@@ -54,12 +59,31 @@ if (isset($_GET['resend']) && $_GET['resend']>0) {
     }
 }
 
+if (isset($_POST['email_filter'])) {
+    if (empty($_POST['email_filter'])) {
+        $GLOBALS['session']->delete('email_filter');
+    } elseif (preg_match('/[a-z0-9\._-]/i', $_POST['email_filter'])) {
+        $GLOBALS['session']->set('email_filter', $_POST['email_filter']);
+    }
+}
+
 $GLOBALS['main']->addTabControl($lang['settings']['title_email_log'], 'email_log');
 $GLOBALS['gui']->addBreadcrumb($lang['settings']['title_email_log'], currentPage());
 
+if ($GLOBALS['session']->has('email_filter') && $email_filter = $GLOBALS['session']->get('email_filter')) {
+    $GLOBALS['smarty']->assign('EMAIL_FILTER', $email_filter);
+    if (filter_var($email_filter, FILTER_VALIDATE_EMAIL)) {
+        $where = array('to' => $email_filter);
+    } else {
+        $where = "`to` LIKE '%$email_filter%'";
+    }
+} else {
+    $where = false;
+}
+
 $per_page = 25;
 $page = (isset($_GET['page'])) ? $_GET['page'] : 1;
-$email_logs = $GLOBALS['db']->select('CubeCart_email_log', false, false, array('date' => 'DESC'), $per_page, $page, false);
+$email_logs = $GLOBALS['db']->select('CubeCart_email_log', false, $where, array('date' => 'DESC'), $per_page, $page, false);
 $count = $GLOBALS['db']->getFoundRows();
 if ($email_logs!==false) {
     $row['to_email'] = array();
