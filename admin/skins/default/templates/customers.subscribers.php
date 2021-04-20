@@ -92,7 +92,7 @@
             <div>
                   <label for="format">{$LANG.email.export_format}</label>
                   <span>
-                        <input type="text" name="maillist_format" id="format" class="textbox" value="{$EMAIL_ADDRESS}" title="{literal}e.g. {$EMAIL_ADDRESS} <{$FULL_NAME_SHORT}>{/literal}">
+                  <input style="width:335px;" type="text" name="maillist_format" id="format" class="textbox" value="" title="{literal}e.g. &quot;{$FULL_NAME_SHORT}&quot; &lt;{$EMAIL_ADDRESS}&gt;{/literal}">
                         <select name="maillist_extension">
                               <option value="txt">.txt</option>
                               <option value="csv">.csv</option>
