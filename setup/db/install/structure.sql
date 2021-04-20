@@ -996,6 +996,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_email_log` (
   `fail_reason` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_email_log` ADD PRIMARY KEY (`id`); #EOQ
+ALTER TABLE `CubeCart_email_log` ADD INDEX(`to`); #EOQ
 ALTER TABLE `CubeCart_email_log` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1; #EOQ
 
 CREATE TABLE `CubeCart_invoice_template` (

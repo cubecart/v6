@@ -944,11 +944,12 @@ if (isset($database_result) && $database_result) {
             'redirect' => 'KEY'
         ),
         'cubecart_email_log' => array(
-            'id' => 'PRIMARY'
+            'id' => 'PRIMARY',
+            'to' => 'KEY'
         ),
         'cubecart_invoice_template' => array(
             'id' => 'PRIMARY',
-            'hash' => 'KEY',
+            'hash' => 'KEY'
         )
     );
 
