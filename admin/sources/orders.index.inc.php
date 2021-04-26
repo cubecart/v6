@@ -742,7 +742,7 @@ if (isset($_GET['action'])) {
             // Order ID
             if (isset($_GET['search']['order_number']) && !empty($_GET['search']['order_number'])) {
                 if ($GLOBALS['config']->get('config', 'oid_mode')=='i') {
-                    $where[$GLOBALS['config']->get('config', 'oid_col')] = $_GET['search']['order_number'];
+                    $where[$GLOBALS['config']->get('config', 'oid_col')] = '~'.$_GET['search']['order_number'];
                 } else {
                     $where['cart_order_id'] = '~'.$_GET['search']['order_number'];
                 }
