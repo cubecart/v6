@@ -29,7 +29,7 @@ $table_join = '`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_transa
 if (isset($_GET['order_id'])) {
     $transactions = $GLOBALS['db']->select($table_join, '`T`.*, `S`.`id`, `S`.`custom_oid`', '`T`.`order_id` = "'.$_GET['order_id'].'"', array('time' => 'DESC'));
     if ($transactions) {
-        $oid = $transactions[0][$oid_col];
+        $oid = $transactions[0][$oid_col] ? $transactions[0][$oid_col] : $transactions[0]['order_id'];
         foreach ($transactions as $transaction) {
             $transaction['time']  = formatTime($transaction['time']);
             $transaction['amount']  = Tax::getInstance()->priceFormat($transaction['amount']);
