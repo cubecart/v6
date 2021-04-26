@@ -742,6 +742,7 @@ if (isset($_GET['action'])) {
             // Order ID
             if (isset($_GET['search']['order_number']) && !empty($_GET['search']['order_number'])) {
                 if ($GLOBALS['config']->get('config', 'oid_mode')=='i') {
+                    $incremental = true;
                     $where[$GLOBALS['config']->get('config', 'oid_col')] = '~'.trim($_GET['search']['order_number']);
                 } else {
                     $where['cart_order_id'] = '~'.trim($_GET['search']['order_number']);
@@ -798,7 +799,14 @@ if (isset($_GET['action'])) {
     // Sort has to be a string in this instance as column 'customer' doesn't exist!!
     $key   = array_keys($_GET['sort']);
     $order_by  = '`'.$key[0].'` '.$_GET['sort'][$key[0]];
-    $orders  = $GLOBALS['db']->select(sprintf('`%1$sCubeCart_order_summary` LEFT JOIN `%1$sCubeCart_customer` ON %1$sCubeCart_order_summary.customer_id = %1$sCubeCart_customer.customer_id', $GLOBALS['config']->get('config', 'dbprefix')), sprintf('%1$sCubeCart_order_summary.*, %1$sCubeCart_customer.type, CONCAT(%1$sCubeCart_order_summary.last_name, %1$sCubeCart_order_summary.first_name) AS `customer`, %1$sCubeCart_order_summary.status', $GLOBALS['config']->get('config', 'dbprefix')), $where, $order_by, $per_page, $page);
+    $table_join = sprintf('`%1$sCubeCart_order_summary` LEFT JOIN `%1$sCubeCart_customer` ON %1$sCubeCart_order_summary.customer_id = %1$sCubeCart_customer.customer_id', $GLOBALS['config']->get('config', 'dbprefix'));
+    $cols = sprintf('%1$sCubeCart_order_summary.*, %1$sCubeCart_customer.type, CONCAT(%1$sCubeCart_order_summary.last_name, %1$sCubeCart_order_summary.first_name) AS `customer`, %1$sCubeCart_order_summary.status', $GLOBALS['config']->get('config', 'dbprefix'));
+    $orders  = $GLOBALS['db']->select($table_join, $cols, $where, $order_by, $per_page, $page);
+    if(!$orders && isset($incremental) && $incremental==true) {
+        unset($where[$GLOBALS['config']->get('config', 'oid_col')]);
+        $where['cart_order_id'] = '~'.trim($_GET['search']['order_number']);
+        $orders  = $GLOBALS['db']->select($table_join, $cols, $where, $order_by, $per_page, $page);
+    }
 
     if ($orders) {
         $GLOBALS['smarty']->assign('PAGINATION', $GLOBALS['db']->pagination(false, $per_page, $page, 9));
