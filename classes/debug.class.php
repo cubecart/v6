@@ -262,7 +262,10 @@ class Debug
         }
 
         if ($this->_display && $this->_enabled) {
-            $output[] = "<div style='font-family: \"Courier New\",Courier,monospace;font-size: 10px;border-top: 5px dashed silver;color: #000;background-color: #E7E7E7; clear: both'>";
+            $output[] = "<div style='font-family: \"Courier New\",Courier,monospace;font-size: 10px;border-top: 5px dashed silver;color: #000;background-color: #E7E7E7; clear: both; padding: 5px;'>";
+            $output[] = "<h2>Debug Output</h2>";
+            $output[] = "<div>This can be disabled via &quot;Store Settings&quot; &raquo; &quot;Advanced&quot; (Tab) &raquo; &quot;Enable Debugging&quot;.</div>";
+            $output[] = "<hr/>";
 
             // Display the PHP errors
             $output[] = '<strong>PHP</strong>:<br />'.htmlspecialchars(strip_tags($this->_errorDisplay())).'<hr size="1" />';
@@ -302,7 +305,7 @@ class Debug
                     $output[] = '<table>';
                     foreach ($this->_sql['query'] as $index => $query) {
                         if (!empty($query)) {
-                            $output[] = '<tr><td style="text-align:right;padding:2px;"><strong>'.($index + 1).'</strong></td><td style="text-align:left;padding:2px;">'.$query.'</td></tr>';
+                            $output[] = '<tr><td style="text-align:right;padding:5px"><strong>'.($index + 1).'.</strong></td><td style="text-align:left;padding:5px">'.$query.'</td></tr>';
                         }
                     }
                     $output[] = '</table>';
