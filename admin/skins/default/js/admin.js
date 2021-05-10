@@ -263,8 +263,6 @@ $(document).ready(function() {
 
     $("#content_body").on("click", "img.cbs", function() {
         var e = $(this).attr("rel");
-        console.log(e);
-        console.log($(e).val());
         switch ($(e).val()) {
             case "1":
                 var value_old = '0';
