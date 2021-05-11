@@ -125,6 +125,25 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
     } else {
         $_POST['config']['csrf'] = '0';
     }
+    if(isset($_POST['config']['w3w_status']) && $_POST['config']['w3w_status']==1 && empty($_POST['config']['w3w'])) {
+        $request = new Request('accountsapi.what3words.com', '/partner/v1/application?key=PKNNHD3FJC1D');
+        $request->cache(false);
+        $request->setMethod('POST');
+        $request->customHeaders('Content-Type: application/json');
+        $request->setData(json_encode(array('name' => $_POST['config']['store_name'], 'description' => CC_STORE_URL.' powered by CubeCart')));
+        $request->setSSL();
+        if($response = $request->send()) {
+            $response = json_decode($response, true);
+            $_POST['config']['w3w_status'] = '1';
+            $_POST['config']['w3w'] = $response['api_key'];
+        } else {
+            $_POST['config']['w3w_status'] = '0';
+            $_POST['config']['w3w'] = '';
+        }
+    } else if(isset($_POST['config']['w3w_status']) && $_POST['config']['w3w_status']==0) {
+        $_POST['config']['w3w_status'] = '0';
+        $_POST['config']['w3w'] = '';
+    }
 
     ## Disable "mobile" skin if master skin is responsive
     if ($_POST['config']['disable_mobile_skin']==0 && isset($_POST['config']['skin_folder']) && !empty($_POST['config']['skin_folder'])) {

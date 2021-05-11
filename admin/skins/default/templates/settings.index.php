@@ -67,10 +67,11 @@
       </fieldset>
       <fieldset>
          <legend>{$LANG.address.w3w} - <a href="https://what3words.com/business/ecommerce/" target="_blank">{$LANG.common.learn_more}</a></legend>
-         <div><label for="w3w">{$LANG.settings.w3w_api_key}</label><span><input name="config[w3w]" id="w3w" type="text" class="textbox" value="{$CONFIG.w3w}"></span></div>
+         <div><label for="w3w">{$LANG.settings.w3w_status}</label><span><input name="config[w3w_status]" id="w3w_status" type="hidden" class="toggle" value="{$CONFIG.w3w_status}"></span></div>
          {if !$w3w_compatibility}
          <p><strong>{$LANG.settings.w3w_na}</strong></p>
          {/if}
+         <input name="config[w3w]" id="w3w" type="hidden" value="{$CONFIG.w3w}">
       </fieldset>
       <fieldset>
          <legend>{$LANG.navigation.nav_prod_reviews}</legend>
@@ -543,7 +544,14 @@
       </fieldset>
       <fieldset>
          <legend>{$LANG.settings.gdpr}</legend>
-         <div><label for="dbl_opt">{$LANG.settings.dbl_opt}</label><span><input name="config[dbl_opt]" id="dbl_opt" type="hidden" class="toggle" value="{$CONFIG.dbl_opt}"></span></div>
+         <div><label for="dbl_opt">{$LANG.settings.dbl_opt}</label><span>
+         {if isset($CONFIG.subscribe_mode_lax) && $CONFIG.subscribe_mode=='1'}
+            <input name="config[dbl_opt]" id="dbl_opt" type="hidden" class="toggle" value="{$CONFIG.dbl_opt}">
+         {else}
+            <input name="config[dbl_opt]" id="dbl_opt" type="hidden" value="1">
+            <img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/1_checkbox.png">
+         {/if}
+         </span></div>
          <div><label for="cookie_dialogue">{$LANG.settings.cookie_dialogue}</label><span><input name="config[cookie_dialogue]" id="cookie_dialogue" type="hidden" class="toggle" value="{$CONFIG.cookie_dialogue}"></span></div>
       </fieldset>
    </div>

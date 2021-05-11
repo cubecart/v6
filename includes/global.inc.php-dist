@@ -24,4 +24,5 @@ $glob['cache'] 			= 'file';		// Cache in use can be (apc, file, memcache, memcac
 $glob['session_save_path'] = '';		// Set your own session save path (please note that a shell script may be required for garbage collection) https://stackoverflow.com/questions/654310/cleanup-php-session-files
 $glob['safe_mode'] = false;		        // Set to true to disable hooks and code snippets, 'hooks' to disable code hooks and 'snippets' to disable code snippets
 $glob['auto_upgrade_disabled'] = false;  // Set to an email address or false. Entering an email will disable the auto upgrade too with a message about who to contact
+$glob['subscribe_mode_lax'] = '0';  // Set to 1 to enable lax newsletter subscribe mode. This will allow double opt in to be disabled.
 ?>

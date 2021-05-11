@@ -1901,7 +1901,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="error_fatal_desc" introduced="6.4.0"><![CDATA[Fatal Error - These are are classified as critical errors. Action is required.]]></string>
     <string name="error_exception_desc" introduced="6.4.0"><![CDATA[Exception Error - These are are classified as critical errors. Action is required.]]></string>
     <string name="error_general_desc" introduced="6.4.0"><![CDATA[Note: Your store should only log notice and warning errors if it is in <a href="?_g=settings#Advanced_Settings">debug mode</a>.]]></string>
-    <string name="w3w_api_key" introduced="6.4.0"><![CDATA[API Key (Enter to enable)]]></string>
+    <string name="w3w_status" introduced="6.4.0"><![CDATA[Enable]]></string>
     <string name="sendgrid_key" introduced="6.4.0"><![CDATA[SendGrid API Key]]></string>
     <string name="hide_chat" introduced="6.2.9"><![CDATA[Hide CubeCart Live Chat]]></string>
     <string name="cheapest_not_free" introduced="6.2.7"><![CDATA[Cheapest but not free]]></string>
