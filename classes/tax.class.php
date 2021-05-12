@@ -22,12 +22,12 @@ class Tax
 {
     public $_tax_country;
 
-    public $_tax_table_add = false;
-    public $_tax_table_inc = false;
-    public $_tax_table_applied = false;
-    public $_tax_table = false;
+    public $_tax_table_add = array();
+    public $_tax_table_inc = array();
+    public $_tax_table_applied = array();
+    public $_tax_table = array();
 
-    public $_currency_vars = false;
+    public $_currency_vars = array();
 
     public $_total_tax_add = 0;
     public $_total_tax_inc = 0;
@@ -505,10 +505,10 @@ class Tax
     public function taxReset()
     {
         // Reset tax vars
-        $this->_tax_table   = false;
-        $this->_tax_table_add  = false;
-        $this->_tax_table_inc  = false;
-        $this->_tax_table_applied = false;
+        $this->_tax_table   = array();
+        $this->_tax_table_add  = array();
+        $this->_tax_table_inc  = array();
+        $this->_tax_table_applied = array();
         $this->_total_tax_add  = 0;
         $this->_total_tax_inc  = 0;
     }
