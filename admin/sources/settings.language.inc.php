@@ -140,8 +140,9 @@ if (isset($_GET['export'])) {
         }
         $GLOBALS['smarty']->assign('MODULES', $modules);
     }
-
+    $GLOBALS['smarty']->assign('SHOW_SEARCH', true);
     if (isset($_REQUEST['type']) && !empty($_REQUEST['type'])) { // The group name or module has been chosen. Load and retrieve the appropriate definitions, strings, and customizations for this language.
+        $GLOBALS['smarty']->assign('SHOW_SEARCH', false);
         if (file_exists($_REQUEST['type']) && stripos($_REQUEST['type'], "modules")!==false) {
             $breadcrumb  = $GLOBALS['language']->getFriendlyModulePath($_REQUEST['type']);
             $basename   = basename($_REQUEST['type']);
@@ -160,13 +161,18 @@ if (isset($_GET['export'])) {
             $custom  = $GLOBALS['language']->getCustom($type, $_GET['language']);
         }
 
-        $GLOBALS['gui']->addBreadcrumb($breadcrumb, currentPage());
+        $GLOBALS['gui']->addBreadcrumb($breadcrumb, currentPage(array('key')));
 
         $GLOBALS['smarty']->assign('STRING_TYPE', ucfirst($breadcrumb));
         ## Load all strings for this section
         if (($definitions = $GLOBALS['language']->getDefinitions($_REQUEST['type'])) !== false) {
+            if(isset($_GET['key'])) {
+                $GLOBALS['smarty']->assign('SECTIONS', false);
+                $GLOBALS['smarty']->assign('BACK', currentPage(array('key','type')));
+            }
             if (!empty($definitions)) {
                 foreach ($definitions as $name => $data) {
+                    if(isset($_GET['key']) && $_GET['key']!==$name) continue;
                     $default = (isset($strings[$name])) ? $strings[$name] : $data['value'];
                     $defined = (isset($strings[$name]) || isset($custom[$name])) ? true : false;
                     $value = (isset($custom[$name])) ? $custom[$name] : $default;
@@ -225,6 +231,7 @@ if (isset($_GET['export'])) {
             unset($mark);
         }
         $GLOBALS['smarty']->assign("SEARCH_PHRASE", $GLOBALS['RAW']['POST']['lang_groups_search_phrase']);
+        $GLOBALS['smarty']->assign("SEARCH_LANG", $_GET['language']);
         $GLOBALS['smarty']->assign("SEARCH_HITS", isset($search_hits) ? $search_hits : array());
     }
     $GLOBALS['main']->addTabControl($lang['translate']['tab_string_edit'], 'general');

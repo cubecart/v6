@@ -81,35 +81,36 @@
    {if $DISPLAY_EDITOR}
    <div class="tab_content" id="general">
       <h3>{$LANG.translate.tab_string_edit}</h3>
-      <fieldset>
-         <legend>Search this language for a phrase that contains...</legend>
-         <div><input type="text" class="textbox" name="lang_groups_search_phrase" value="{$SEARCH_PHRASE}" /> <input type="submit" value="{$LANG.common.go}" name="go" class="update tiny"></div>
-      </fieldset>
-      {if isset($SEARCH_HITS)}
-      <p>Found these phrases among these groups...</p>
-      <table style="border-collapse: collapse;border: 1px solid #c5c5c5">
-         <tr>
-            <th class="thead" style="text-align: left">Phrase Group</th>
-            <th class="thead" style="text-align: left">Key</th>
-            <th class="thead" style="text-align: left">Phrase</th>
-         </tr>
-      {foreach from=$SEARCH_HITS item=hit key=group}
-         {if !empty($SEARCH_HITS[$group])}
-            {foreach $hit as $desc}
-            <tr{if $desc@last} style="border-bottom: 1px solid #c5c5c5"{/if}>
-               {if $desc@first}
-            <td valign="top" rowspan="{$SEARCH_HITS[$group]|count}" class="thead"  style="border-right: 1px solid #c5c5c5" width="100px">{$group|capitalize}</td>
-               {/if}
-            <td width="150px" valign="top">{$desc@key}</td>
-            <td>{$desc}</td>
-         </tr>
-            {/foreach}
+      {if $SHOW_SEARCH}
+         <fieldset>
+            <legend>Search this language for a phrase that contains...</legend>
+            <div><input type="text" class="textbox" name="lang_groups_search_phrase" value="{$SEARCH_PHRASE}" /> <input type="submit" value="{$LANG.common.go}" name="go" class="update tiny"></div>
+         </fieldset>
+         {if isset($SEARCH_HITS)}
+         <p>Found these phrases among these groups...</p>
+         <table style="border-collapse: collapse;border: 1px solid #c5c5c5">
+            <tr>
+               <th class="thead" style="text-align: left">Phrase Group</th>
+               <th class="thead" style="text-align: left">Key</th>
+               <th class="thead" style="text-align: left">Phrase</th>
+            </tr>
+         {foreach from=$SEARCH_HITS item=hit key=group}
+            {if !empty($SEARCH_HITS[$group])}
+               {foreach $hit as $desc}
+               <tr{if $desc@last} style="border-bottom: 1px solid #c5c5c5"{/if}>
+                  {if $desc@first}
+               <td valign="top" rowspan="{$SEARCH_HITS[$group]|count}" class="thead"  style="border-right: 1px solid #c5c5c5" width="100px">{$group|capitalize}</td>
+                  {/if}
+               <td width="150px" valign="top"><a href="?_g=settings&node=language&language={$SEARCH_LANG}&type={$group}&key={$desc@key}">{$desc@key}</a></td>
+               <td>{$desc}</td>
+            </tr>
+               {/foreach}
+            {/if}
+         {foreachelse}
+            <tr><td colspan="3">No results for &quot;{$SEARCH_PHRASE}&quot; found.</td></tr>
+         {/foreach}
+         </table>
          {/if}
-      {foreachelse}
-         <tr><td colspan="3">Did not find anything.</td></tr>
-      {/foreach}
-      </table>
-
       {/if}
       {if $SECTIONS}
       <fieldset>
@@ -128,6 +129,9 @@
             </select>
          </div>
       </fieldset>
+      {/if}
+      {if isset($BACK)}
+      <a href="{$BACK}">&laquo; {$LANG.common.back}</a>
       {/if}
       {if isset($STRINGS)}
       <fieldset>
