@@ -1059,10 +1059,9 @@ class Catalogue
         $where = $this->outOfStockWhere(array('product_id' => $product_id, 'status' => 1));
 
         if (is_array($order) && isset($order['price']) && $GLOBALS['config']->get('config', 'catalogue_sale_mode')) {
+            $query = 'SELECT *, IF(`sale_price`> 0 AND `sale_price` < `price`,`sale_price`,`price`) AS `price_sort` FROM '.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory WHERE '.$where.' ORDER BY `price_sort` '.$order['price'];
             if (!empty($page) && is_numeric($page)) {
-                $query = 'SELECT *, IF(`sale_price` > 0, `sale_price`, `price`) AS price_sort FROM '.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory WHERE '.$where.' ORDER BY `price_sort` '.$order['price'].' LIMIT '.$per_page.' OFFSET '.(int)($page-1)*$per_page;
-            } else {
-                $query = 'SELECT *, IF(`sale_price` > 0, `sale_price`, `price`) AS price_sort FROM '.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory WHERE '.$where.' ORDER BY `price_sort` '.$order['price'];
+                $query = $query.' LIMIT '.$per_page.' OFFSET '.(int)($page-1)*$per_page;
             }
             $result = $GLOBALS['db']->query($query);
         } else {

@@ -471,6 +471,7 @@ if ($inventory_columns = $GLOBALS['db']->misc('SHOW FULL COLUMNS FROM '.$GLOBALS
     $select_options[]['product_sort_column'] = array();
     foreach ($inventory_columns as $inventory_column) {
         if (!in_array($inventory_column['Field'], $excluded)) {
+            $inventory_column['Comment'] = ($inventory_column['Field']=='price') ? $lang['common']['price'] : $inventory_column['Comment'];
             $select_options['product_sort_column'][$inventory_column['Field']] = (empty($inventory_column['Comment'])) ? $inventory_column['Field'] : $inventory_column['Comment'];
         }
     }
