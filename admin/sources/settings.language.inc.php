@@ -88,10 +88,6 @@ if (isset($_POST['export']) && Admin::getInstance()->permissions('settings', CC_
     httpredir(currentPage(array('export'), array('language' => $_GET['export'])));
 }
 
-if (isset($_POST['type'])) {
-    httpredir(currentPage(null, array('type' => $_POST['type'])));
-}
-
 $GLOBALS['gui']->addBreadcrumb($lang['translate']['title_languages']);
 
 if (isset($_GET['export'])) {
@@ -145,7 +141,7 @@ if (isset($_GET['export'])) {
         $GLOBALS['smarty']->assign('MODULES', $modules);
     }
 
-    if (isset($_REQUEST['type'])) {
+    if (isset($_REQUEST['type']) && !empty($_REQUEST['type'])) { // The group name or module has been chosen. Load and retrieve the appropriate definitions, strings, and customizations for this language.
         if (file_exists($_REQUEST['type']) && stripos($_REQUEST['type'], "modules")!==false) {
             $breadcrumb  = $GLOBALS['language']->getFriendlyModulePath($_REQUEST['type']);
             $basename   = basename($_REQUEST['type']);
@@ -210,6 +206,26 @@ if (isset($_GET['export'])) {
             }
             $GLOBALS['smarty']->assign('STRINGS', $smarty_data['strings']);
         }
+    } elseif (isset($_POST['lang_groups_search_phrase']) && !empty($_POST['lang_groups_search_phrase'])) { // We have a language to search through.
+        $language_strings_to_search = $GLOBALS['language']->getLanguageStrings();
+        unset($language_strings_to_search['_language_strings_def']); // Do not want this group - it has array of arrays instead of array of strings.
+        foreach ($language_strings_to_search as $keySearchGroup => $arrSearchPhrases) {
+            $search_hits[$keySearchGroup] = array_filter($arrSearchPhrases, function($v) { return stripos($v, $GLOBALS['RAW']['POST']['lang_groups_search_phrase']) !== false; }); // Filter for simple matches.
+            if (empty($search_hits[$keySearchGroup])) unset($search_hits[$keySearchGroup]); // No matches? Do not keep this array element.
+        }
+        
+        if(is_array($search_hits)) {
+            $mark = array();
+            foreach($search_hits as $g => $a) {
+                foreach($a as $k => $v) {
+                    $mark[$g][$k] = preg_replace("/(".$GLOBALS['RAW']['POST']['lang_groups_search_phrase'].")/i", "<mark>$1</mark>", $v);
+                }
+            }
+            $search_hits = $mark;
+            unset($mark);
+        }
+        $GLOBALS['smarty']->assign("SEARCH_PHRASE", $GLOBALS['RAW']['POST']['lang_groups_search_phrase']);
+        $GLOBALS['smarty']->assign("SEARCH_HITS", isset($search_hits) ? $search_hits : array());
     }
     $GLOBALS['main']->addTabControl($lang['translate']['tab_string_edit'], 'general');
     if (!preg_match('/^(modules)/', $_REQUEST['type'])) {
