@@ -80,19 +80,19 @@
    {/if}
    {if $DISPLAY_EDITOR}
    <div class="tab_content" id="general">
-      <h3>{$LANG.translate.tab_string_edit}</h3>
+      <h3>{$EDIT_TITLE}</h3>
       {if $SHOW_SEARCH}
          <fieldset>
-            <legend>Search this language for a phrase that contains...</legend>
-            <div><input type="text" class="textbox" name="lang_groups_search_phrase" value="{$SEARCH_PHRASE}" /> <input type="submit" value="{$LANG.common.go}" name="go" class="update tiny"></div>
+            <legend>{$LANG.translate.search_phrases}</legend>
+            <div><input type="text" class="textbox" name="lang_groups_search_phrase" value="{$SEARCH_PHRASE}" /> <input type="submit" value="{$LANG.common.go}" name="go" class="update tiny">{if !empty($SEARCH_PHRASE)} <a href="?_g=settings&node=language&language={$SEARCH_LANG}">{$LANG.common.reset}</a>{/if}</div>
          </fieldset>
-         {if isset($SEARCH_HITS)}
-         <p>Found these phrases among these groups...</p>
+         {if isset($SEARCH_HITS) && count($SEARCH_HITS)>0}
+         <p>{$LANG.translate.phrases_found}</p>
          <table style="border-collapse: collapse;border: 1px solid #c5c5c5">
             <tr>
-               <th class="thead" style="text-align: left">Phrase Group</th>
-               <th class="thead" style="text-align: left">Key</th>
-               <th class="thead" style="text-align: left">Phrase</th>
+               <th class="thead" style="text-align: left">{$LANG.translate.language_group_edit}</th>
+               <th class="thead" style="text-align: left">{$LANG.common.key}</th>
+               <th class="thead" style="text-align: left">{$LANG.common.phrase}</th>
             </tr>
          {foreach from=$SEARCH_HITS item=hit key=group}
             {if !empty($SEARCH_HITS[$group])}
@@ -106,10 +106,10 @@
             </tr>
                {/foreach}
             {/if}
-         {foreachelse}
-            <tr><td colspan="3">No results for &quot;{$SEARCH_PHRASE}&quot; found.</td></tr>
          {/foreach}
          </table>
+         {elseif isset($SEARCH_HITS)}
+         <p>{$LANG.translate.no_phrases_found|replace:'%s':$SEARCH_PHRASE}</p>
          {/if}
       {/if}
       {if $SECTIONS}

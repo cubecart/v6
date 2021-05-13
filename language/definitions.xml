@@ -591,6 +591,8 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="phrase" introduced="6.4.3"><![CDATA[Phrase]]></string>
+    <string name="key" introduced="6.4.3"><![CDATA[Key]]></string>
     <string name="page" introduced="6.4.0"><![CDATA[Page]]></string>
     <string name="item_id" introduced="6.4.0"><![CDATA[Item ID]]></string>
     <string name="watch" introduced="6.4.0"><![CDATA[Watch]]></string>
@@ -2358,6 +2360,9 @@ This email is sent from the store's master email address but it is possible to r
     <string name="display_bots_and_customers" introduced="5.2.6"><![CDATA[Display Webbots &amp; Customers]]></string>
   </group>
   <group name="translate">
+    <string name="no_phrases_found" introduced="6.4.3"><![CDATA[No phrases found containing &quot;%s&quot;.]]></string>
+    <string name="phrases_found" introduced="6.4.3"><![CDATA[Found these phrases among these groups&hellip;]]></string>
+    <string name="search_phrases" introduced="6.4.3"><![CDATA[Search this language for a phrase that contains&hellip;]]></string>
     <string name="language_currency" introduced="6.1.2"><![CDATA[Default Currency Code (<a href="https://en.wikipedia.org/wiki/ISO_4217#Active_codes" target="_blank">ISO-4217</a>)]]></string>
     <string name="language_direction" introduced="6.1.21"><![CDATA[Reading Direction]]></string>
     <string name="error_no_languages" introduced="6.0.0"><![CDATA[No languages have been found. Please visit the <a href="?_g=marketplace" target="_blank">marketplace</a> to get hold of the ones you want.]]></string>
@@ -2426,7 +2431,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="replace_original" introduced="5.0.0"><![CDATA[Write over original language file]]></string>
     <string name="tab_group_create" introduced="5.0.0"><![CDATA[Create Phrase Group]]></string>
     <string name="tab_string_create" introduced="5.0.0"><![CDATA[Create New Phrase]]></string>
-    <string name="tab_string_edit" introduced="5.0.0"><![CDATA[Edit Phrases]]></string>
+    <string name="tab_edit_phrases" introduced="5.0.0"><![CDATA[Edit Phrases]]></string>
+    <string name="tab_edit_phrase" introduced="6.4.3"><![CDATA[Edit Phrase]]></string>
     <string name="title_language_create" introduced="5.0.0"><![CDATA[Create Language]]></string>
     <string name="title_language_import" introduced="5.0.0"><![CDATA[Import Language]]></string>
     <string name="title_languages" introduced="5.0.0"><![CDATA[Languages]]></string>
