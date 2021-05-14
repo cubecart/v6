@@ -221,15 +221,20 @@ if (isset($_GET['export'])) {
         }
         
         if(is_array($search_hits)) {
-            $mark = array();
+            $mark = $phrase_group_name = $phrase_group_title = array();
             foreach($search_hits as $g => $a) {
                 foreach($a as $k => $v) {
                     $mark[$g][$k] = preg_replace("/(".$GLOBALS['RAW']['POST']['lang_groups_search_phrase'].")/i", "<mark>$1</mark>", $v);
+                    $group_name_split = explode("-",$lang['translate']['phrase_group_'.$g]);
+                    $phrase_group_name[$g] = trim($group_name_split[0]);
+                    $phrase_group_title[$g] = trim($group_name_split[1]);
                 }
             }
             $search_hits = $mark;
             unset($mark);
         }
+        $GLOBALS['smarty']->assign("SEARCH_PHRASE_GROUPS", $phrase_group_name);
+        $GLOBALS['smarty']->assign("SEARCH_PHRASE_TITLES", $phrase_group_title);
         $GLOBALS['smarty']->assign("SEARCH_PHRASE", $GLOBALS['RAW']['POST']['lang_groups_search_phrase']);
         $GLOBALS['smarty']->assign("SEARCH_LANG", $_GET['language']);
         $GLOBALS['smarty']->assign("SEARCH_HITS", isset($search_hits) ? $search_hits : array());
