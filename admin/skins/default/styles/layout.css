@@ -621,7 +621,6 @@ thead td,
 thead th {
     padding: 0 0 0 5px !important
 }
-
 #filemanager div div:nth-child(even),
 fieldset>div:nth-child(even),
 tbody tr:nth-child(even) {
@@ -660,6 +659,10 @@ tbody tr:nth-child(even) {
 fieldset .checkbox {
     margin-top: 4px
 }
+table.collapsed {
+    border-collapse: collapse;
+    border: 1px solid #c5c5c5
+}
 .thead,
 thead td,
 thead th {
@@ -667,6 +670,9 @@ thead th {
     padding: 0 5px !important;
     border-bottom: 1px solid #c5c5c5;
     background-color: #E7E7E7
+}
+.thead.vertical {
+    border-right: 1px solid #c5c5c5;
 }
 tbody td {
     height: 25px
@@ -1442,4 +1448,10 @@ ul.fmsearch_images img {
 #gallery_json ul li img {
     max-width: 100px;
     max-height: 100px;
+}
+.text-left {
+    text-align: left!important
+}
+.text-right {
+    text-align: right!important
 }

@@ -88,18 +88,18 @@
          </fieldset>
          {if isset($SEARCH_HITS) && count($SEARCH_HITS)>0}
          <p>{$LANG.translate.phrases_found}</p>
-         <table style="border-collapse: collapse;border: 1px solid #c5c5c5">
+         <table class="collapsed">
             <tr>
-               <th class="thead" style="text-align: left">{$LANG.translate.language_group_edit}</th>
-               <th class="thead" style="text-align: left">{$LANG.common.key}</th>
-               <th class="thead" style="text-align: left">{$LANG.common.phrase}</th>
+               <th class="thead text-left" nowrap="nowrap">{$LANG.translate.language_group_edit}</th>
+               <th class="thead text-left">{$LANG.common.key}</th>
+               <th class="thead text-left">{$LANG.common.phrase}</th>
             </tr>
          {foreach from=$SEARCH_HITS item=hit key=group}
             {if !empty($SEARCH_HITS[$group])}
                {foreach $hit as $desc}
                <tr{if $desc@last} style="border-bottom: 1px solid #c5c5c5"{/if}>
                   {if $desc@first}
-               <td valign="top" rowspan="{$SEARCH_HITS[$group]|count}" class="thead"  style="border-right: 1px solid #c5c5c5" width="100px" title="{$SEARCH_PHRASE_TITLES[$group]}">{$SEARCH_PHRASE_GROUPS[$group]}</td>
+               <td valign="top" rowspan="{$SEARCH_HITS[$group]|count}" class="thead vertical" title="{$SEARCH_PHRASE_TITLES[$group]}">{$SEARCH_PHRASE_GROUPS[$group]}</td>
                   {/if}
                <td width="150px" valign="top"><a href="?_g=settings&node=language&language={$SEARCH_LANG}&type={$group}&key={$desc@key}">{$desc@key}</a></td>
                <td>{$desc}</td>
