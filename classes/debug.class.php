@@ -38,7 +38,7 @@ class Debug
      *
      * @var bool
      */
-    private $_display  = true;
+    private $_display  = false;
     /**
      * Enabled/disabled
      *
