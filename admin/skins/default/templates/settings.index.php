@@ -482,7 +482,6 @@
       <fieldset>
          <legend>{$LANG.settings.elasticsearch}</legend>
          <div><label for="elasticsearch">{$LANG.common.enable}</label><span><input name="config[elasticsearch]" id="elasticsearch" type="hidden" class="toggle" value="{$CONFIG.elasticsearch}"></span></div>
-         <input name="config[w3w]" id="w3w" type="hidden" value="{$CONFIG.w3w}">
       </fieldset>
       <fieldset>
          <legend>{$LANG.settings.title_proxy}</legend>
