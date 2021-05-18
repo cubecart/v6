@@ -125,6 +125,13 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
     } else {
         $_POST['config']['csrf'] = '0';
     }
+    if(isset($_POST['config']['elasticsearch']) && $_POST['config']['elasticsearch']==1) {
+        $es_test = new ElasticsearchHandler;
+        if(!$es_test->connect(true)) {
+            $_POST['config']['elasticsearch'] = '0';
+            $GLOBALS['main']->errorMessage($lang['settings']['no_elasticsearch']);
+        }
+    }
     if(isset($_POST['config']['w3w_status']) && $_POST['config']['w3w_status']==1 && empty($_POST['config']['w3w'])) {
         $request = new Request('accountsapi.what3words.com', '/partner/v1/application?key=PKNNHD3FJC1D');
         $request->cache(false);

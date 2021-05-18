@@ -27,12 +27,57 @@ require 'elasticsearch/autoload.php';
 class ElasticsearchHandler
 {
     private $_client = '';
+    private $_routing_id = '';
+    private $_hosts = array('localhost:9200');
 
     public function __construct()
     {
+        global $glob;
         $status = $GLOBALS['config']->get('config', 'elasticsearch');
         if($status == '1') {
-            $this->_client = ClientBuilder::create()->build();
+            if (isset($glob['elasticsearch_hosts']) && is_array($glob['elasticsearch_hosts'])) {
+                $this->_hosts = $glob['elasticsearch_hosts'];
+            }
+            $this->_client = $this->connect();
+            $this->_routing_id = $this->_generateRoutingId();
         }
+    }
+    public function addIndex($id, $body, $index = 'product') {
+        $params = [
+            'index'     => $index,
+            'id'        => $id,
+            'routing'   => $this->_routing_id,
+            'body'      => $body
+        ];
+        return $this->_client->index($params);
+    }
+    public function connect($test = false) {
+        $this->_client = ClientBuilder::create()->setHosts($this->_hosts)->build();
+        if($test) {
+            try {
+                $index = bin2hex(openssl_random_pseudo_bytes(10));
+                $result = $this->addIndex($index, array('test'=>1));
+                if(isset($result['result']) == 'created') {
+                    $this->deleteIndex($index);
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (Exception $e) {
+                return false;
+            }
+            
+        }
+    }
+    public function deleteIndex($id, $index = 'product') {
+        $params = [
+            'index'     => $index,
+            'id'        => $id,
+            'routing'   => $this->_routing_id
+        ];
+        return $this->_client->delete($params);
+    } 
+    private function _generateRoutingId() {
+        return CC_ROOT_DIR;
     }
 }
