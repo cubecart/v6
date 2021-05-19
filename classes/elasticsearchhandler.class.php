@@ -49,7 +49,11 @@ class ElasticsearchHandler
             'routing'   => $this->_routing_id,
             'body'      => $body
         ];
-        return $this->_client->index($params);
+        try {
+            return $this->_client->index($params);
+        } catch (Exception $e) {
+            return false;
+        }
     }
     public function connect($test = false) {
         $this->_client = ClientBuilder::create()->setHosts($this->_hosts)->build();
@@ -75,7 +79,11 @@ class ElasticsearchHandler
             'id'        => $id,
             'routing'   => $this->_routing_id
         ];
-        return $this->_client->delete($params);
+        try {
+            return $this->_client->delete($params);
+        } catch (Exception $e) {
+            return false;
+        }
     } 
     private function _generateRoutingId() {
         return CC_ROOT_DIR;

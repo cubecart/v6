@@ -386,6 +386,29 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
         }
     }
 
+    $es = new ElasticsearchHandler;
+    $es->deleteIndex($product_id);
+    $es_data = $GLOBALS['catalogue']->getProductPrice($product_id);
+    $es_body = array(
+        'name'          => $es_data['name'],
+        'description'   => $es_data['description'],
+        'price_to_pay'  => $es_data['price_to_pay'],
+        'category'      => $seo->getDirectory((int)$_POST['primary_cat'], false, ' ', false, false),
+        'manufacturer'  => $GLOBALS['catalogue']->getManufacturer($es_data['manufacturer']),
+        'featured'      => $es_data['featured'],
+        'stock_level'  =>   $GLOBALS['catalogue']->getProductStock($product_id),
+        'product_codes' => array(
+            'sku'   => $es_data['product_code'],
+            'upc'   => $es_data['upc'],
+            'ean'   => $es_data['ean'],
+            'jan'   => $es_data['jan'],
+            'isbn'  => $es_data['isbn'],
+            'gtin'  => $es_data['gtin'],
+            'mpn'   => $es_data['mpn']
+        )
+    );
+    $es->addIndex($product_id, $es_body);
+
     foreach ($GLOBALS['hooks']->load('admin.product.save.post_process') as $hook) {
         include $hook;
     }

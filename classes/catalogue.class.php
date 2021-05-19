@@ -1273,6 +1273,13 @@ class Catalogue
      */
     public function getProductPrice(&$product_data, $quantity = 1, $retail_only = false)
     {
+        if(is_numeric($product_data)) {
+            $product_data = $GLOBALS['db']->select('CubeCart_inventory', false, array('product_id' => $product_data));
+            if($product_data) {
+                $product_data = $product_data[0];
+                unset($product_data[0]);
+            }
+        }
         if (isset($product_data['product_id']) && is_numeric($product_data['product_id'])) {
             $product_id = (int)$product_data['product_id'];
             $group_id = 0;
