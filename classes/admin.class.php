@@ -349,6 +349,7 @@ class Admin
             if ($result) {
                 if (!$GLOBALS['session']->blocked()) {
                     $this->_logged_in = true;
+                    $GLOBALS['session']->regenerateSessionId();
                     $update = array(
                         'blockTime'  => 0,
                         'browser'  => htmlspecialchars($_SERVER['HTTP_USER_AGENT']),
