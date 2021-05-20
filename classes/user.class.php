@@ -275,6 +275,7 @@ class User
                 }
                 if (!$GLOBALS['session']->blocked()) {
                     // possibly replaceable with session_set_save_handler?
+                    $GLOBALS['session']->regenerateSessionId();
                     $GLOBALS['db']->update('CubeCart_sessions', array('customer_id' => $user[0]['customer_id']), array('session_id' => $GLOBALS['session']->getId()));
                     $GLOBALS['db']->update('CubeCart_cookie_consent', array('customer_id' => $user[0]['customer_id']), array('session_id' => $GLOBALS['session']->getId()));
                     $GLOBALS['session']->set('language', $user[0]['language'], 'client');

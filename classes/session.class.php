@@ -528,6 +528,13 @@ class Session
         return empty($_SESSION[$namespace][$name]);
     }
 
+    public function regenerateSessionId() {
+        $old_session = $this->getId();
+        session_regenerate_id();
+        Database::getInstance()->update('CubeCart_sessions', array('session_id' => $this->getId()), array('session_id' => $old_session), false);
+        $this->set_cookie(session_name(), session_id(), time()+$this->_session_timeout);
+    }
+
     /**
      * Set a session value to something
      *
