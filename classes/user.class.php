@@ -148,7 +148,7 @@ class User
                 Newsletter::getInstance()->subscribe($this->get('email'), $this->getId());
             }
 
-            $this->isBot();
+            $GLOBALS['smarty']->assign('IS_BOT', $this->isBot());
         }
     }
 
