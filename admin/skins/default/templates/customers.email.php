@@ -18,7 +18,7 @@
          <div><label for="sender_name">{$LANG.email.news_sender_name}</label><span><input type="text" name="newsletter[sender_name]" id="sender_name" class="textbox" value="{$NEWSLETTER.sender_name}"> ({$LANG.email.empty_equals_default})</span></div>
          <div><label for="sender_email">{$LANG.email.news_sender_email}</label><span><input type="text" name="newsletter[sender_email]" id="sender_email" class="textbox" value="{$NEWSLETTER.sender_email}"> ({$LANG.email.empty_equals_default})</span></div>
          <div><label for="dbl_opt">{$LANG.email.news_dbl_opt_only}</label><span>
-            {if isset($CONFIG.subscribe_mode_lax) && $CONFIG.subscribe_mode=='1'}
+            {if isset($CONFIG.subscribe_mode_lax) && $CONFIG.subscribe_mode_lax=='1'}
                <input type="hidden" id="dbl_opt" name="newsletter[dbl_opt]" class="toggle" value="{if !isset($NEWSLETTER.dbl_opt)}{$CONFIG.dbl_opt}{else}{$NEWSLETTER.dbl_opt}{/if}">
             {else}
                <input name=newsletter[dbl_opt]" id="dbl_opt" type="hidden" value="1">
