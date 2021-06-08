@@ -101,7 +101,7 @@ class Tax
     {
         // Display applied taxes
         $GLOBALS['cart']->set('order_taxes', false);
-        if (is_array($this->_tax_table_applied)) {
+        if (!empty($this->_tax_table_applied)) {
             foreach ($this->_tax_table_applied as $tax_id => $tax_name) {
                 $taxes[$tax_name]['value']+= (float)($this->_tax_table_inc[$tax_id]+$this->_tax_table_add[$tax_id])*$this->_adjust_tax;
                 $taxes[$tax_name]['tax_id']= $tax_id;

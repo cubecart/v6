@@ -509,7 +509,7 @@ function formatTime($timestamp, $format = false, $static = false)
 }
 
 /**
- * Format time
+ * Generate Product Code
  *
  * @param string $product_name
  * @param bool $cat_id

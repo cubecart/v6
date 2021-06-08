@@ -41,7 +41,7 @@
                <a href="http://gravatar.com/emails/"><img class="th marg-right" id="g_{$review.gravatar}" src="" align="left"></a>
             </div>
             {/if}
-            <div class="{if $review.gravatar_exists}small-9 medium-10{else}small-12 columns{/if} review_copy">
+            <div class="{if $review.gravatar_exists}small-9 medium-10{else}small-12{/if} columns review_copy">
                <blockquote><span itemprop="description">{$review.review}</span><cite><span itemprop="author">{$review.name}</span>{if !empty($review.date)} ({$review.date}){/if}</cite></blockquote>
             </div>
          </div>

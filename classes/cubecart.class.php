@@ -122,7 +122,7 @@ class Cubecart
 
                     $GLOBALS['smarty']->assign('CTRL_REVIEW', (bool)$GLOBALS['config']->get('config', 'enable_reviews'));
                     if (($product_review = $GLOBALS['db']->select('CubeCart_reviews', 'SUM(`rating`) AS Score, COUNT(`id`) as Count', array('approved' => 1, 'product_id' => $product['product_id']))) !== false) {
-                        if ($product_review[0]['Score'] !== "") {
+                        if (!empty($product_review[0]['Count'])) {
                             $product['review_score'] = round($product_review[0]['Score']/$product_review[0]['Count'], 1);
                         }
                     }
