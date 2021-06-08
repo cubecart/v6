@@ -2490,7 +2490,7 @@ class Cubecart
                 if (($orders = $GLOBALS['db']->select('CubeCart_order_summary', false, array('customer_id' => $GLOBALS['user']->get('customer_id'), 'cart_order_id' => $_GET['cart_order_id']), false, 1, false, false)) !== false) {
                     $template = 'templates/content.receipt.php';
                     $order = $orders[0];
-                    $GLOBALS['gui']->addBreadcrumb($GLOBALS['config']->get('config', 'oid_mode') == 'i' ? $order[$GLOBALS['config']->get('config', 'oid_col')] : $order['cart_order_id'], currentPage());
+                    $GLOBALS['gui']->addBreadcrumb(($GLOBALS['config']->get('config', 'oid_mode') == 'i' && !empty($order[$GLOBALS['config']->get('config', 'oid_col')])) ? $order[$GLOBALS['config']->get('config', 'oid_col')] : $order['cart_order_id'], currentPage());
                     if (($items = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('cart_order_id' => $order['cart_order_id']))) !== false) {
                         foreach ($items as $item) {
                             // Do price formatting
