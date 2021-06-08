@@ -549,7 +549,7 @@
       <fieldset>
          <legend>{$LANG.settings.gdpr}</legend>
          <div><label for="dbl_opt">{$LANG.settings.dbl_opt}</label><span>
-         {if isset($CONFIG.subscribe_mode_lax) && $CONFIG.subscribe_mode=='1'}
+         {if isset($CONFIG.subscribe_mode_lax) && $CONFIG.subscribe_mode_lax=='1'}
             <input name="config[dbl_opt]" id="dbl_opt" type="hidden" class="toggle" value="{$CONFIG.dbl_opt}">
          {else}
             <input name="config[dbl_opt]" id="dbl_opt" type="hidden" value="1">
