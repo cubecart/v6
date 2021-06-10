@@ -1475,6 +1475,9 @@ class Order
             'ip_address' => get_ip_address(),
             'currency' => empty($currency) ? $GLOBALS['config']->get('config', 'default_currency') : $currency
         );
+        if(!empty($this->_basket['gateway'])) {
+            $record['gateway'] = $this->_basket['gateway'];
+        }
 
         foreach ($GLOBALS['hooks']->load('class.order.order_summary') as $hook) {
             include $hook;
