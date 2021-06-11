@@ -1514,6 +1514,11 @@ class Catalogue
                     return false;
                 }
             }
+            // panic for corrupt cached images
+            if(filesize($image)===0) {
+                $folder = 'source';
+                $filename = $file;
+            }
             ## Generate the required path
             switch (strtolower($path)) {
                 case 'filename': ## Calculate the from source folder
