@@ -158,19 +158,11 @@
                <select name="add_to_set[]" class="multi" multiple="multiple" style="width: 200px; height:200px">
                   <option value="">{$LANG.form.please_select}</option>
                   {foreach from=$GROUPS item=group}
-                  {if $group.type == 0}
                   <optgroup label="{$group.name}">
                      {foreach from=$group.options key=value_id item=value_name}
                      <option value="g{$group.id}-{$value_id}">{$value_name}</option>
                      {/foreach}
                   </optgroup>
-                  {else if $group.type == 4}
-                  <optgroup label="{$group.name}">
-                     {foreach from=$group.options key=value_id item=value_name}
-                     <option value="g{$group.id}-{$value_id}">{$value_name}</option>
-                     {/foreach}
-                  </optgroup>
-                  {else}
                   <option value="{$group.id}">{$group.name}</option>
                   {/if}
                   {/foreach}
