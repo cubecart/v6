@@ -413,33 +413,28 @@ function fmSearchList($dir, $term, &$output = array()) {
 }
 
 /**
- * Format a byte number
+ * Format a bytes to human readable
  *
- * @param float $bytes
+ * @param float $size
  * @param bool $implode
- * @return array
+ * @param int $precision
+ * @return string/array
  */
-function formatBytes($bytes = 0, $implode = false, $decimal_places = 2)
+function formatBytes($size = 0, $implode = false, $precision = 2)
 {
-    $size = $bytes / 1024;
-    $ext = 'bytes';
-    if ($size < 1024) {
-        $size = number_format($size, $decimal_places);
-        $ext  = 'KB';
-    } else {
-        if ($size / 1024 < 1024) {
-            $size = number_format($size / 1024, $decimal_places);
-            $ext  = 'MB';
-        } elseif ($size / 1024 / 1024 < 1024) {
-            $size = number_format($size / 1024 / 1024, $decimal_places);
-            $ext  = 'GB';
-        }
+    $units = array('B','kB','MB','GB','TB','PB','EB','ZB','YB');
+    $step = 1024;
+    $i = 0;
+    while (($size / $step) > 0.9) {
+        $size = $size / $step;
+        $i++;
     }
+    $size = round($size, $precision);
     if ($implode) {
-        return $size.' '.$ext;
+        return $size.''.$units[$i];
     }
 
-    return array('size' => $size, 'suffix' => $ext);
+    return array('size' => $size, 'suffix' => $units[$i]);
 }
 
 /**
