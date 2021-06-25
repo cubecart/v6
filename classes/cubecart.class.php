@@ -830,7 +830,7 @@ class Cubecart
                 }
                 if (!empty($terms)) {
                     foreach ($terms as $term) {
-                        if ($GLOBALS['session']->has($term, $namespace = 'search')) {
+                        if ($GLOBALS['session']->has($term, 'search')) {
                             continue;
                         }
                         
