@@ -2791,7 +2791,7 @@ class Cubecart
         /* Social Comments */
         $GLOBALS['smarty']->assign('COMMENTS', $this->_getSocial('product', 'getCommunityHTML'));
 
-        $GLOBALS['catalogue']->displayProduct((int)$_GET['product_id'], true);
+        $GLOBALS['catalogue']->displayProduct((int)$_GET['product_id'], !$GLOBALS['user']->isBot());
     }
 
     /**
