@@ -1,0 +1,1 @@
+ALTER TABLE `CubeCart_customer`  ADD COLUMN `notes` TEXT NULL DEFAULT NULL; #EOQ
