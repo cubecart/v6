@@ -137,6 +137,7 @@
 		    </select>
 		  </span>
 		</div>
+		<div><label for="cust-notes">{$LANG.common.notes} ({$LANG.common.private})</label><span><textarea name="customer[notes]" id="cust-notes" class="textbox">{$CUSTOMER.notes}</textarea></span></div>
 	  </fieldset>
 	  <fieldset><legend>{$LANG.account.contact_details}</legend>
 		<div><label for="cust-email">{$LANG.common.email}</label><span><input type="text" name="customer[email]" id="cust-email" value="{$CUSTOMER.email}" class="textbox"></span></div>
