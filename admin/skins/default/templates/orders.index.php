@@ -124,6 +124,9 @@
       <div id="order_summary" class="tab_content" style="width: 660px;">
          <h3>{$LANG.orders.title_order_summary}</h3>
          <p><a href="?_g=orders&node=index&print[]={$SUMMARY.cart_order_id}" class="print" target="_blank"><i class="fa fa-print" title="{$LANG.common.print}"></i></a></p>
+         {if $CUSTOMER_NOTES}
+            <p>&quot;{$CUSTOMER_NOTES}&quot;</p>
+         {/if}
          <fieldset>
             <legend>{$LANG.orders.title_status_change}</legend>
             <div><label for="o_status">{$LANG.orders.title_order_status}</label><span><select name="order[status]" id="o_status">
@@ -210,6 +213,7 @@
                {/if}
                <div><label>{$LANG.common.ip_address}</label><span>{$OVERVIEW_SUMMARY.ip_address}</span></div>
                <div><label>{$LANG.common.language}</label><span><img src="language/flags/{$OVERVIEW_SUMMARY.lang}.png" title="{$OVERVIEW_SUMMARY.lang}"></span></div>
+               
             </fieldset>
             <fieldset class="other">
                <legend>{$LANG.orders.title_shipping}</legend>
