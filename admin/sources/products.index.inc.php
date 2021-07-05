@@ -1190,6 +1190,16 @@ if (isset($_GET['action'])) {
         }
     }
 
+    if (isset($_GET['status_filter']) && is_numeric($_GET['status_filter'])) {
+        if (!$where) {
+            $where = '';
+        } else {
+            $where .= ' AND ';
+        }
+        $where .= '`status` = '.(int)$_GET['status_filter'];
+        $GLOBALS['smarty']->assign('STATUS_FILTER', $_GET['status_filter']);
+    }
+
     foreach ($GLOBALS['hooks']->load('admin.product.products_list.where_filter') as $hook) {
         include $hook;
     }
