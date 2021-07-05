@@ -95,6 +95,14 @@ if (isset($_GET['format']) && !empty($_GET['format'])) {
 
             $result['condition'] = (empty($result['condition'])) ? 'new' : $result['condition'];
 
+            if($cats = $GLOBALS['db']->select('CubeCart_category_index', array('cat_id'), array('product_id' => $result['product_id']), array('primary' => 'DESC'))) {
+                $cat_ids = array();
+                foreach($cats as $cat) {
+                    array_push($cat_ids, $cat['cat_id']);
+                }
+                $result['cat_id'] = implode(',',$cat_ids);
+            }
+            
             # Manufacturer
             if (!empty($result['manufacturer'])) {
                 $result['manufacturer'] = ($manuf = $GLOBALS['db']->select('CubeCart_manufacturers', array('name'), array('id' => (int)$result['manufacturer']))) ? $manuf[0]['name'] : '';
