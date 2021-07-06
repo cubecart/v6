@@ -13,6 +13,11 @@
 require_once preg_replace('/setup/', '', realpath(dirname(__FILE__))) . 'ini.inc.php';
 require_once CC_INCLUDES_DIR . 'functions.inc.php';
 
+$error_log_path = ini_get('error_log');
+if(!strstr($error_log_path, '/')) {
+    ini_set('error_log', '../'.$error_log_path);
+}
+
 @ini_set('memory_limit', '512M');
 @set_time_limit('600');
 define('CC_IN_SETUP', true);
