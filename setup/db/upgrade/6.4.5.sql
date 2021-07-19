@@ -1,0 +1,1 @@
+ALTER TABLE `CubeCart_filemanager` CHANGE `filesize` `filesize` BIGINT UNSIGNED NOT NULL;
