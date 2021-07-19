@@ -345,7 +345,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_filemanager` (
 	`disabled` TINYINT(1) NOT NULL DEFAULT '0',
 	`filepath` varchar(255) COLLATE utf8_bin default NULL,
 	`filename` VARCHAR(255) COLLATE utf8_bin NOT NULL,
-	`filesize` INT UNSIGNED NOT NULL,
+	`filesize` BIGINT UNSIGNED NOT NULL,
 	`mimetype` VARCHAR(50) NOT NULL,
 	`md5hash` VARCHAR(32) NOT NULL,
 	`title` varchar(255) NOT NULL,

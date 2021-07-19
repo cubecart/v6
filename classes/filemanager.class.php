@@ -23,6 +23,7 @@ class FileManager
     private $_sub_dir;
     private $_sendfile = false;
     private $_max_upload_image_size = 350000;
+    private $_md5_filesize_limit = 10485760;
 
     public $form_fields = false;
 
@@ -295,13 +296,15 @@ class FileManager
                     $filepath_record = empty($filepath_record) ? 'NULL' : $filepath_record;
                     $filepath_record = str_replace(chr(92), "/", $filepath_record);
 
+                    $filesize = filesize($file);
+
                     $record = array(
                         'type'  => (int)$this->_mode,
                         'filepath' => $filepath_record,
                         'filename' => $newfilename,
-                        'filesize' => filesize($file),
+                        'filesize' => $filesize,
                         'mimetype' => $this->getMimeType($file),
-                        'md5hash' => md5_file($file),
+                        'md5hash' => $this->md5file($file, $filesize),
                     );
 
                     // Hash comparison check
@@ -924,19 +927,20 @@ class FileManager
                     'mimetype' => 'application/octet-stream',
                     'filename' => basename($product[0]['digital_path']),
                     'filesize' => null,
-                    'md5hash' => md5($product[0]['digital_path']),
+                    'md5hash' => '',
                     'is_url' => true,
                     'file'  => $product[0]['digital_path'],
                     'url'  => parse_url($product[0]['digital_path'])
                 );
                 return $data;
             } elseif (file_exists($product[0]['digital_path'])) {
+                $filesize = filesize($product[0]['digital_path']);
                 $data = array(
                         'mimetype' => 'application/octet-stream',
                         'filename' => basename($product[0]['digital_path']),
                         'filepath' => dirname($product[0]['digital_path']),
-                        'filesize' => filesize($product[0]['digital_path']),
-                        'md5hash' => md5_file($product[0]['digital_path']),
+                        'filesize' => $filesize,
+                        'md5hash' => $this->md5file($product[0]['digital_path'], $filesize),
                         'is_url' => false
                     );
                 $data['file'] = $product[0]['digital_path'];
@@ -1090,6 +1094,13 @@ class FileManager
         return $this->formatPath($path);
     }
 
+    private function md5file($file, $size, $force = false) {
+        if($force || $size <= $this->_md5_filesize_limit) {
+            return md5_file($file);
+        }
+        return '';
+    }
+
     /**
      * File assigned to a product
      *
@@ -1239,7 +1250,7 @@ class FileManager
                         'filename' => $newfilename,
                         'filesize' => $file['size'],
                         'mimetype' => $file['type'] ? $file['type'] : $this->getMimeType($file['tmp_name']),
-                        'md5hash' => md5_file($file['tmp_name']),
+                        'md5hash' => $this->md5file($file['tmp_name'], $file['size'], true),
                     );
 
                     $existing = $GLOBALS['db']->select('CubeCart_filemanager', 'file_id', array('filepath' => $filepath_record, 'filename' => $newfilename));
