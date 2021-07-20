@@ -436,7 +436,7 @@ class Order
         if (!empty($status_id) && !empty($order_id)) {
             $currentStatus = $GLOBALS['db']->select('CubeCart_order_summary', array('status'), array('cart_order_id' => $order_id), false, false, false, false);
 
-            if ((int)$currentStatus[0]['status'] == 0) {
+            if (!$currentStatus || (int)$currentStatus[0]['status'] == 0) {
                 return false;
             } // no order record
 
