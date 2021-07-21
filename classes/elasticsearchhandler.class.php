@@ -38,7 +38,7 @@ class ElasticsearchHandler
             if (isset($glob['elasticsearch_hosts']) && is_array($glob['elasticsearch_hosts'])) {
                 $this->_hosts = $glob['elasticsearch_hosts'];
             }
-            $this->_client = $this->connect();
+            $this->connect();
             $this->_routing_id = $this->_generateRoutingId();
         }
     }
@@ -84,7 +84,15 @@ class ElasticsearchHandler
         } catch (Exception $e) {
             return false;
         }
-    } 
+    }
+    public function search($body, $index = 'product') {
+        $params = [
+            'index' => $index,
+            'body'  => $body
+        ];
+        
+        return $this->_client->search($params);
+    }
     private function _generateRoutingId() {
         return CC_ROOT_DIR;
     }

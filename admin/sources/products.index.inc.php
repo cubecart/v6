@@ -388,7 +388,8 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
 
     $es = new ElasticsearchHandler;
     $es->deleteIndex($product_id);
-    $es_data = $GLOBALS['catalogue']->getProductPrice($product_id);
+    $es_data = $product_id;
+    $es_data = $GLOBALS['catalogue']->getProductPrice($es_data);
     $es_body = array(
         'name'          => $es_data['name'],
         'description'   => $es_data['description'],
@@ -408,6 +409,10 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
         )
     );
     $es->addIndex($product_id, $es_body);
+    $result = $es->search(['query' => ['match' => ['name' => 'Test Product']]]);
+    echo "<pre>";
+    var_dump($result); exit;
+    echo "</pre>";
 
     foreach ($GLOBALS['hooks']->load('admin.product.save.post_process') as $hook) {
         include $hook;
