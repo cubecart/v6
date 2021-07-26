@@ -85,10 +85,42 @@ class ElasticsearchHandler
             return false;
         }
     }
+    public function rebuild($cycle) {
+        
+        ini_set('ignore_user_abort', true);
+        
+        $limit = 20;
+        $where = array('status' => 1);
+        $total = (int)$GLOBALS['db']->count('CubeCart_inventory', 'status', $where);
+        if($total==0 && $cycle==1) {
+            $GLOBALS['gui']->setError('No produts to index.');
+        }
+        if (($products = $GLOBALS['db']->select('CubeCart_inventory', false, $where, false, $limit, $cycle)) !== false) {
+            foreach ($products as $product) {
+                // INDEX HERE
+            }
+            $sent_to = $limit * $cycle;
+            if ($total > $sent_to) {
+                $data = array(
+                    'count'  => $sent_to,
+                    'total'  => $total,
+                    'percent' => ($sent_to/$total)*100,
+                );
+                return $data;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        } 
+    }
     public function search($body, $index = 'product') {
+        
+        echo json_encode($body);
+        echo "<hr>";
         $params = [
             'index' => $index,
-            'body'  => $body
+            'body'  => json_encode($body)
         ];
         
         return $this->_client->search($params);

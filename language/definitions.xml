@@ -591,6 +591,7 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="rebuild" introduced="6.5.0"><![CDATA[Rebuild]]></string>
     <string name="private" introduced="6.4.4"><![CDATA[Private]]></string>
     <string name="phrase" introduced="6.4.3"><![CDATA[Phrase]]></string>
     <string name="key" introduced="6.4.3"><![CDATA[Key]]></string>
@@ -1402,6 +1403,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="example_code_snippet_xml" introduced="5.2.0"><![CDATA[An example of an import XML feed can be found <a href="docs/examples/code_snippet_import.php" target="blank">here</a>. Please use the &quot;Help&quot; link for further information.]]></string>
   </group>
   <group name="maintain">
+    <string name="rebuild_elasticsearch" introduced="6.5.0"><![CDATA[Clear and rebuild the Elasticsearch engine.]]></string>
     <string name="auto_upgrade_disabled" introduced="6.4.2"><![CDATA[This tool is disabled in order to prevent customisations from being overwritten. Please contact <a href="mailto:{$EMAIL}">{$EMAIL}</a> for support.]]></string>
     <string name="duplicate_index" introduced="6.1.6"><![CDATA[%s has duplicate %s indexes. One of these could be removed.]]></string>
     <string name="missing_index" introduced="6.1.5"><![CDATA[%s has no key set. Expecting %s.]]></string>
@@ -1496,6 +1498,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="sitemap" introduced="5.0.0"><![CDATA[Rebuild Sitemap]]></string>
     <string name="tab_backup" introduced="5.0.0"><![CDATA[Backup]]></string>
     <string name="tab_db" introduced="5.0.0"><![CDATA[Database]]></string>
+    <string name="tab_elasticsearch" introduced="6.5.0"><![CDATA[Elasticsearch]]></string>
     <string name="tab_rebuild" introduced="5.0.0"><![CDATA[Rebuild]]></string>
     <string name="tab_query_sql" introduced="5.0.0"><![CDATA[Query Database (Advanced)]]></string>
     <string name="table_name" introduced="5.0.0"><![CDATA[Table]]></string>
