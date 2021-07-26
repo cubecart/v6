@@ -87,7 +87,7 @@ class Debug
     final protected function __construct()
     {
         // Turn error reporting off as it is displayed in debugger mode only!
-        ini_set('display_errors', true);
+        ini_set('display_errors', false);
 
         // Show ALL errors & notices
         error_reporting(E_ALL);
