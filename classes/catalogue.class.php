@@ -1718,6 +1718,7 @@ class Catalogue
      */
     public function searchCatalogue($search_data = null, $page = 1, $per_page = 10, $search_mode = 'fulltext')
     {
+
         $per_page = (!is_numeric($per_page) || $per_page < 1) ? 10 : $per_page;
 
         $original_search_data = $search_data;
@@ -1736,18 +1737,6 @@ class Catalogue
             $es = new ElasticsearchHandler;
             
             $body = array(
-                        /*
-                        'query' => array(
-                            'bool' => array(
-                                'must' => array(
-                                    'multi_match' => array(
-                                        'query' =>  $search_data['keywords'],
-                                        'fields' => array("name", "description", "product_codes.*", "manufacturer", "category")
-                                    )
-                                )
-                            )
-                        )
-                        */
                         'query' => array(
                             'constant_score' => array(
                                 'filter' => array(
@@ -1764,6 +1753,7 @@ class Catalogue
                             )
                         )
                     );
+            
             if(isset($search_data['priceMin']) && !empty($search_data['priceMin'])) {
                 $body['query']['constant_score']['filter']['bool']['must'][0]['range']['price_to_pay']['gte'] = (!empty($search_data['priceVary'])) ? round($GLOBALS['tax']->priceConvertFX($search_data['priceMin'])/1.05, 3) : (float)$search_data['priceMin'];
             }
@@ -1779,13 +1769,18 @@ class Catalogue
                     $body['query']['constant_score']['filter']['bool']['must']['terms']['manufacturer'] = $manufacturers;
                 }
             }
-            echo "<pre>";
-            var_dump($body);
-            echo "<hr>";
-            $result = $es->search($body);
             
-            var_dump($result);
-            exit;
+            $result = $es->search($body, $page, $per_page);
+            $pids = array();
+        
+            if($result) {
+                foreach($result["hits"]["hits"] as $hit) {
+                    array_push($pids,$hit['_id']);
+                }
+            }
+            $this->_category_count  = $result["hits"]["total"]["value"];
+            $this->_category_products = $GLOBALS['db']->select('CubeCart_inventory', false, array('product_id' => $pids));
+            $this->_sort_by_relevance = true;
         } else {
             $where = array();
             $joins = array();
@@ -1990,6 +1985,7 @@ class Catalogue
                         $query = sprintf("SELECT I.*, %2\$s AS Relevance FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND (%2\$s) >= %4\$s %3\$s %5\$s %6\$s", $GLOBALS['config']->get('config', 'dbprefix'), $match, $whereString, $match_val, $order_string, $limit);
                         
                         if ($search = $GLOBALS['db']->query($query)) {
+                            var_dump($search);
                             $q2 = sprintf("SELECT COUNT(I.product_id) as count, %2\$s AS Relevance FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND (%2\$s) >= %4\$s %3\$s GROUP BY I.product_id %5\$s", $GLOBALS['config']->get('config', 'dbprefix'), $match, $whereString, $match_val, $order_string);
                             $count = $GLOBALS['db']->query($q2);
                             $this->_category_count  = (int)count($count);

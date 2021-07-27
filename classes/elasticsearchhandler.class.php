@@ -125,7 +125,6 @@ class ElasticsearchHandler
     public function rebuild($cycle) {
         
         ini_set('ignore_user_abort', true);
-        $es = new ElasticsearchHandler;
         if($cycle == 1) {
             $this->deleteAll();
         }
@@ -139,8 +138,8 @@ class ElasticsearchHandler
         if (($products = $GLOBALS['db']->select('CubeCart_inventory', false, $where, false, $limit, $cycle)) !== false) {
             foreach ($products as $product) {
                 $es_data = $GLOBALS['catalogue']->getProductPrice($product);
-                $es_body = $es->indexBody($product['product_id'], $es_data);
-                $es->addIndex($product['product_id'], $es_body);
+                $es_body = $this->indexBody($product['product_id'], $es_data);
+                $this->addIndex($product['product_id'], $es_body);
             }
             $sent_to = $limit * $cycle;
             if ($total > $sent_to) {
@@ -157,15 +156,12 @@ class ElasticsearchHandler
             return false;
         } 
     }
-    public function search($body, $index = 'product') {
-        
-        echo json_encode($body);
-        echo "<hr>";
+    public function search($body, $from, $size, $index = 'product') {
+        $from = ($from-1)*$size;
         $params = [
             'index' => $index,
-            'body'  => json_encode($body)
+            'body'  => json_encode(array_merge(array('from' => $from, 'size' => $size),$body))
         ];
-        
         return $this->_client->search($params);
     }
     private function _generateRoutingId() {
