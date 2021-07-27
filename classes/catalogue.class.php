@@ -1736,37 +1736,94 @@ class Catalogue
         if($GLOBALS['config']->get('config', 'elasticsearch')=='1') {
             $es = new ElasticsearchHandler;
             
-            $body = array(
-                        'query' => array(
-                            'constant_score' => array(
-                                'filter' => array(
-                                    'bool' => array(
-                                        'should' =>   array(
-                                                    array('term' => array('name' => $search_data['keywords'])),
-                                                    array('term' => array('description' => $search_data['keywords'])),
-                                                    array('term' => array('product_codes.*' => $search_data['keywords'])),
-                                                    array('term' => array('manufacturer' => $search_data['keywords'])),
-                                                    array('term' => array('manufacturer' => $search_data['keywords']))
+            $body = array (
+                'query' => 
+                array (
+                    'bool' => 
+                    array (
+                    'must' => 
+                        array ( 
+                            array (
+                            'bool' => 
+                                array (
+                                    'should' => 
+                                    array ( 
+                                        array (
+                                            'match' => 
+                                            array (
+                                                'name' => $search_data['keywords']
+                                            )
+                                        ), 
+                                        array (
+                                            'match' => 
+                                            array (
+                                                'description' => $search_data['keywords']
+                                            )
+                                        ),
+                                        array (
+                                            'match' => 
+                                            array (
+                                                'product_codes.*' => $search_data['keywords']
+                                            )
+                                        ),
+                                        array (
+                                            'match' => 
+                                            array (
+                                                'manufacturer' => $search_data['keywords']
+                                            )
                                         )
                                     )
                                 )
                             )
                         )
-                    );
+                    )
+                )
+            );
             
+            $price_range = array(); 
             if(isset($search_data['priceMin']) && !empty($search_data['priceMin'])) {
-                $body['query']['constant_score']['filter']['bool']['must'][0]['range']['price_to_pay']['gte'] = (!empty($search_data['priceVary'])) ? round($GLOBALS['tax']->priceConvertFX($search_data['priceMin'])/1.05, 3) : (float)$search_data['priceMin'];
+                $price_range[] =   array (
+                        'range' => 
+                        array (
+                            'price_to_pay' => 
+                            array (
+                                'gte' => ((!empty($search_data['priceVary'])) ? round($GLOBALS['tax']->priceConvertFX($search_data['priceMin'])/1.05, 3) : (float)$search_data['priceMin'])
+                            )
+                        )
+                );
             }
+
             if(isset($search_data['priceMax']) && !empty($search_data['priceMax'])) {
-                $body['query']['constant_score']['filter']['bool']['must'][0]['range']['price_to_pay']['lte'] = (!empty($search_data['priceVary'])) ? round($GLOBALS['tax']->priceConvertFX($search_data['priceMax'])*1.05, 3) : (float)$search_data['priceMax'];
+                $price_range[] =   array (
+                    'range' => 
+                    array (
+                        'price_to_pay' => 
+                        array (
+                            'lte' => ((!empty($search_data['priceVary'])) ? round($GLOBALS['tax']->priceConvertFX($search_data['priceMax'])*1.05, 3) : (float)$search_data['priceMax'])
+                        )
+                    )
+                );
             }
+            if(!empty($price_range)) {
+                $body['query']['bool']['must'][]['bool']['must'] = $price_range;
+            }
+    
             if(isset($search_data['manufacturer']) && is_array($search_data['manufacturer'])) {
                 $manufacturers = array();
                 foreach($search_data['manufacturer'] as $mid) {
                     array_push($manufacturers, $this->getManufacturer($mid));
                 }
-                if(!empty($manufacturers)) {
-                    $body['query']['constant_score']['filter']['bool']['must']['terms']['manufacturer'] = $manufacturers;
+                if(is_array($manufacturers)) {
+                    $m = array();
+                    foreach($manufacturers as $manufacturer) {
+                        $m[] = array (
+                            'match' => 
+                            array (
+                                'manufacturer' => $manufacturer
+                            )
+                        );
+                    }
+                    $body['query']['bool']['must'][]['bool']['must'] = $m;
                 }
             }
             
