@@ -73,6 +73,20 @@ class ElasticsearchHandler
             
         }
     }
+
+    public function deleteAll($index = 'product') {
+        $params = [
+            'index' => $index,
+            'routing' => $this->_routing_id,
+            'body' => [
+                'query' => [
+                    'match_all' => (object)[] // defined empty object is a required workaround 
+                ]
+            ]
+        ];
+        return $this->_client->deleteByQuery($params);
+    }
+
     public function deleteIndex($id, $index = 'product') {
         $params = [
             'index'     => $index,
@@ -85,10 +99,37 @@ class ElasticsearchHandler
             return false;
         }
     }
+
+    public function indexBody($product_id, $es_data) {
+        $seo = SEO::getInstance();
+        return array(
+            'name'          => $es_data['name'],
+            'description'   => $es_data['description'],
+            'price_to_pay'  => (float)$es_data['price_to_pay'],
+            'category'      => $seo->getDirectory((int)$_POST['primary_cat'], false, ' ', false, false),
+            'manufacturer'  => $GLOBALS['catalogue']->getManufacturer($es_data['manufacturer']),
+            'featured'      => $es_data['featured'],
+            'stock_level'  =>   $GLOBALS['catalogue']->getProductStock($product_id),
+            'product_codes' => array(
+                'sku'   => $es_data['product_code'],
+                'upc'   => $es_data['upc'],
+                'ean'   => $es_data['ean'],
+                'jan'   => $es_data['jan'],
+                'isbn'  => $es_data['isbn'],
+                'gtin'  => $es_data['gtin'],
+                'mpn'   => $es_data['mpn']
+            )
+        );
+    }
+
     public function rebuild($cycle) {
         
         ini_set('ignore_user_abort', true);
-        
+        $es = new ElasticsearchHandler;
+        if($cycle == 1) {
+            $this->deleteAll();
+        }
+
         $limit = 20;
         $where = array('status' => 1);
         $total = (int)$GLOBALS['db']->count('CubeCart_inventory', 'status', $where);
@@ -97,7 +138,9 @@ class ElasticsearchHandler
         }
         if (($products = $GLOBALS['db']->select('CubeCart_inventory', false, $where, false, $limit, $cycle)) !== false) {
             foreach ($products as $product) {
-                // INDEX HERE
+                $es_data = $GLOBALS['catalogue']->getProductPrice($product);
+                $es_body = $es->indexBody($product['product_id'], $es_data);
+                $es->addIndex($product['product_id'], $es_body);
             }
             $sent_to = $limit * $cycle;
             if ($total > $sent_to) {
