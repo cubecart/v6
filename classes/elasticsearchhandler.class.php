@@ -159,7 +159,6 @@ class ElasticsearchHandler
     public function search($body, $from, $size, $index = 'product') {
         $from = ($from-1)*$size;
         $body = json_encode(array_merge(array('from' => $from, 'size' => $size),$body));
-        echo $body;
         $params = [
             'index' => $index,
             'body'  => $body
