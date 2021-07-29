@@ -1763,7 +1763,43 @@ class Catalogue
                                         array (
                                             'match' => 
                                             array (
-                                                'product_codes.*' => $search_data['keywords']
+                                                'product_codes.sku' => $search_data['keywords']
+                                            )
+                                        ),
+                                        array (
+                                            'match' => 
+                                            array (
+                                                'product_codes.upc' => $search_data['keywords']
+                                            )
+                                        ),
+                                        array (
+                                            'match' => 
+                                            array (
+                                                'product_codes.ean' => $search_data['keywords']
+                                            )
+                                        ),
+                                        array (
+                                            'match' => 
+                                            array (
+                                                'product_codes.jan' => $search_data['keywords']
+                                            )
+                                        ),
+                                        array (
+                                            'match' => 
+                                            array (
+                                                'product_codes.isbn' => $search_data['keywords']
+                                            )
+                                        ),
+                                        array (
+                                            'match' => 
+                                            array (
+                                                'product_codes.gtin' => $search_data['keywords']
+                                            )
+                                        ),
+                                        array (
+                                            'match' => 
+                                            array (
+                                                'product_codes.mpn' => $search_data['keywords']
                                             )
                                         ),
                                         array (
@@ -1781,7 +1817,7 @@ class Catalogue
             );
             
             $price_range = array(); 
-            if(isset($search_data['priceMin']) && !empty($search_data['priceMin'])) {
+            if(isset($search_data['priceMin']) && is_numeric($search_data['priceMin'])) {
                 $price_range[] =   array (
                         'range' => 
                         array (
@@ -1793,7 +1829,7 @@ class Catalogue
                 );
             }
 
-            if(isset($search_data['priceMax']) && !empty($search_data['priceMax'])) {
+            if(isset($search_data['priceMax']) && is_numeric($search_data['priceMax'])) {
                 $price_range[] =   array (
                     'range' => 
                     array (
@@ -1804,6 +1840,7 @@ class Catalogue
                     )
                 );
             }
+            
             if(!empty($price_range)) {
                 $body['query']['bool']['must'][]['bool']['must'] = $price_range;
             }
@@ -1825,6 +1862,29 @@ class Catalogue
                     }
                     $body['query']['bool']['must'][]['bool']['must'] = $m;
                 }
+            }
+
+            if(isset($search_data['featured']) && !empty($search_data['featured'])) {
+                $body['query']['bool']['must'][]['bool']['must'][] = array (
+                        'term' => 
+                        array (
+                            'featured' => array(
+                                'value' => 1
+                            )
+                        )
+                    );
+            }
+
+            if(isset($search_data['inStock']) && !empty($search_data['inStock'])) {
+                $body['query']['bool']['must'][]['bool']['must'][] = array (
+                    'range' => 
+                        array (
+                            'stock_level' => 
+                            array (
+                                'gt' => 0
+                            )
+                        )
+                    ); 
             }
             
             $result = $es->search($body, $page, $per_page);

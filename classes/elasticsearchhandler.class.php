@@ -108,8 +108,8 @@ class ElasticsearchHandler
             'price_to_pay'  => (float)$es_data['price_to_pay'],
             'category'      => $seo->getDirectory((int)$_POST['primary_cat'], false, ' ', false, false),
             'manufacturer'  => $GLOBALS['catalogue']->getManufacturer($es_data['manufacturer']),
-            'featured'      => $es_data['featured'],
-            'stock_level'  =>   $GLOBALS['catalogue']->getProductStock($product_id),
+            'featured'      => (int)$es_data['featured'],
+            'stock_level'  => $GLOBALS['catalogue']->getProductStock($product_id),
             'product_codes' => array(
                 'sku'   => $es_data['product_code'],
                 'upc'   => $es_data['upc'],
@@ -158,9 +158,11 @@ class ElasticsearchHandler
     }
     public function search($body, $from, $size, $index = 'product') {
         $from = ($from-1)*$size;
+        $body = json_encode(array_merge(array('from' => $from, 'size' => $size),$body));
+        echo $body;
         $params = [
             'index' => $index,
-            'body'  => json_encode(array_merge(array('from' => $from, 'size' => $size),$body))
+            'body'  => $body
         ];
         return $this->_client->search($params);
     }
