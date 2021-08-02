@@ -51,7 +51,7 @@ if (isset($_GET['format']) && !empty($_GET['format'])) {
     }
 
     if ($results = $GLOBALS['db']->query($query, $per_page, $page)) {
-        $header_fields = array('Product Name', 'Status', 'Include in featured products', 'Include in latest products', 'Product Code', 'Weight', 'Description', 'Short Description', 'Price', 'Sale Price', 'Cost Price', 'Tax Class', 'Tax Inclusive', 'Main Image', 'Stock Level', 'Use Stock Level', 'Stock Level Warning', 'Master Category ID', 'Manufacturer', 'UPC Code', 'EAN Code', 'JAN Code', 'ISBN Code', 'Brand', 'MPN Code', 'GTIN Code', 'Meta Title', 'Meta Description', 'Condition', 'Digital', 'Digital Path (Legacy)', 'Product Width', 'Product Height', 'Product Depth', 'Dimension Unit');
+        $header_fields = array('Product Name', 'Status', 'Include in featured products', 'Include in latest products', 'Product Code', 'Weight', 'Description', 'Short Description', 'Price', 'Sale Price', 'Cost Price', 'Tax Class', 'Tax Inclusive', 'Images', 'Stock Level', 'Use Stock Level', 'Stock Level Warning', 'Master Category ID', 'Manufacturer', 'UPC Code', 'EAN Code', 'JAN Code', 'ISBN Code', 'Brand', 'MPN Code', 'GTIN Code', 'Meta Title', 'Meta Description', 'Condition', 'Digital', 'Digital Path (Legacy)', 'Product Width', 'Product Height', 'Product Depth', 'Dimension Unit');
         $fields  = array('name', 'status', 'featured', 'latest', 'product_code', 'product_weight', 'description', 'description_short', 'price', 'sale_price', 'cost_price', 'tax_type', 'tax_inclusive', 'image', 'stock_level', 'use_stock_level', 'stock_warning', 'cat_id', 'manufacturer', 'upc', 'ean', 'jan', 'isbn', 'brand', 'mpn', 'gtin', 'seo_meta_title', 'seo_meta_description', 'condition', 'digital', 'digital_path', 'product_width', 'product_height', 'product_depth', 'dimension_unit');
         $delimiter = ',';
         $extension = 'csv';
@@ -121,8 +121,12 @@ if (isset($_GET['format']) && !empty($_GET['format'])) {
             $result['url'] = $seo->fullURL($url, true);
 
             ## Generate Image URL
-            if (($images = $GLOBALS['db']->select('CubeCart_image_index', array('file_id'), array('main_img' => 1, 'product_id' => $result['product_id']))) !== false) {
-                $result['image'] = $catalogue->imagePath($images[0]['file_id'], $image_mode, $image_path, false);
+            if (($images = $GLOBALS['db']->select('CubeCart_image_index', array('file_id'), array('product_id' => $result['product_id']), array('main_img' => 'DESC'))) !== false) {
+                $image_array = array();
+                foreach($images as $image) {
+                    array_push($image_array, $catalogue->imagePath($image['file_id'], $image_mode, $image_path, false));
+                }
+                $result['image'] = implode(',',$image_array);
             } else {
                 $result['image'] = '';
             }

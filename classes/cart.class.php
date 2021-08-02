@@ -286,9 +286,9 @@ class Cart
                     }
                 } else {
 
-                        // Check required options have a value!
+                    // Check required options have a value!
                     $quantity = (is_numeric($quantity) && $quantity > 0) ? $quantity : 1;
-                    $stock_level = $GLOBALS['catalogue']->getProductStock($product['product_id'], $options_identifier_string, false, $this->basket['contents'], $quantity);
+                    $stock_level = $GLOBALS['catalogue']->getProductStock($product['product_id'], $options_identifier_string, false, ((isset($this->basket['contents']) && is_array($this->basket['contents'])) ? $this->basket['contents'] : false), $quantity);
 
                     // Check stock level
                     if ($product['use_stock_level'] && !$GLOBALS['config']->get('config', 'basket_out_of_stock_purchase')) {
