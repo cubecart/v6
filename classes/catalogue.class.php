@@ -546,7 +546,7 @@ class Catalogue
 
                                 $option_list[$value['option_id']]['values'][] = array(
                                     'assign_id'  => $value['assign_id'],
-                                    'decimal_price'   => (string)$decimal_price_sign.$value['option_price'],
+                                    'decimal_price'   => ($value['option_price'] > 0 ? (string)$decimal_price_sign.$value['option_price'] : '0.00'),
                                     'price'   => (isset($value['option_price']) && $value['option_price']!=0) ? Tax::getInstance()->priceFormat($value['option_price'], true) : false,
                                     'symbol'  => ($value['absolute_price']=='1' && $symbol=='+') ? '' : $symbol,
                                     'value_id'  => $value['value_id'],
