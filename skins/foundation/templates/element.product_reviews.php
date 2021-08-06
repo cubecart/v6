@@ -35,10 +35,10 @@
                <meta itemprop="bestRating" content="5">
             </div>
          </div>
-         <div class="row review_row" rel="{$review.gravatar}">
+         <div class="row review_row" rel="{$review.id}_{$review.gravatar}">
             {if $review.gravatar_exists}
             <div class="small-3 medium-2 columns gravatar">
-               <a href="http://gravatar.com/emails/"><img class="th marg-right" id="g_{$review.gravatar}" src="" align="left"></a>
+               <a href="http://gravatar.com/emails/"><img class="th marg-right" id="{$review.id}_{$review.gravatar}" src="" align="left"></a>
             </div>
             {/if}
             <div class="{if $review.gravatar_exists}small-9 medium-10{else}small-12{/if} columns review_copy">

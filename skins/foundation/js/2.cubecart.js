@@ -2,14 +2,16 @@
 var validation_ini = {};
 jQuery(document).ready(function() {
 	$('#element-reviews .review_row').each(function() {
-		var gravatar_id = $(this).attr('rel');
-		var img_url = 'https://gravatar.com/avatar/'+gravatar_id+'?s=90';
+        var avatar_id = $(this).attr('rel');
+        var g_parts = avatar_id.split("_"); 
+		var img_url = 'https://gravatar.com/avatar/'+g_parts[1]+'?s=90';
         $.ajax({
             url:img_url,
             type:"HEAD",
             crossDomain:true,
             success:function(){
-                $('#g_'+gravatar_id).attr("src", img_url);
+                console.log(avatar_id,'success');
+                $('#'+avatar_id).attr("src", img_url);
             }
         });
 	});
