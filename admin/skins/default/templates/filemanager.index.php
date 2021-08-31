@@ -124,6 +124,7 @@
   <div id="fm-cropper" class="tab_content">
 	<h3>{$LANG.filemanager.title_image_crop}</h3>
 	<img id="resize" src="{$FILE.filepath}{$FILE.filename}?{$FILE.random}" alt="" class="cropper">
+	<div class="dimensions hidden center"><span class="width">150</span> x <span class="height">150</span> px</div>
   </div>
   {/if}
   

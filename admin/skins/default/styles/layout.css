@@ -1252,6 +1252,10 @@ ul.quick_links li#help_menu ul li:not(:last-child) {
 #filemanager p.clear {
     clear: both;
 }
+#fm-cropper .dimensions {
+    font-family: 'Courier New', monospace;
+    text-align: center;
+}
 .fm-item {
     float: left;
     margin: 5px 5px 30px 5px;
