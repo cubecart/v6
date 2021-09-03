@@ -113,7 +113,7 @@
                   {elseif $product.ctrl_stock && !$CATALOGUE_MODE}
                   <div class="row collapse">
                      <div class="small-4 columns">
-                        <input type="text" name="quantity" value="{$product.minimum_quantity}" maxlength="3" class="quantity text-center">
+                        <input type="text" name="quantity" value="{$product.minimum_quantity|default:'1'}" maxlength="3" class="quantity text-center">
                      </div>
                      <div class="small-8 columns">
                         <button type="submit" value="{$LANG.catalogue.add_to_basket}" class="button small postfix">{$LANG.catalogue.add_to_basket}</button>
@@ -172,7 +172,7 @@
                {elseif $product.ctrl_stock && !$CATALOGUE_MODE}
                <div class="row collapse marg-top">
                   <div class="small-3 columns">
-                     <input type="number" name="quantity" value="{$product.minimum_quantity}" min="{$product.minimum_quantity}" maxlength="3" class="quantity text-center" disabled>
+                     <input type="number" name="quantity" value="{$product.minimum_quantity|default:'1'}" min="{$product.minimum_quantity}" maxlength="3" class="quantity text-center" disabled>
                   </div>
                   <div class="small-9 columns ">
                      <button type="submit" value="{$LANG.catalogue.add_to_basket}" class="button small postfix">{$LANG.catalogue.add_to_basket}</button>
