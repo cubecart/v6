@@ -106,7 +106,7 @@ if (isset($_POST['coupon']) && is_array($_POST['coupon'])) {
                 $GLOBALS['main']->successMessage($lang['catalogue']['notify_coupon_update']);
             }
         } else {
-            if ($GLOBALS['db']->insert('CubeCart_coupons', $record)) {
+            if ($coupon_id = $GLOBALS['db']->insert('CubeCart_coupons', $record)) {
                 $GLOBALS['main']->successMessage($lang['catalogue']['notify_coupon_create']);
             }
         }
