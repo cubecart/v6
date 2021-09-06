@@ -936,14 +936,14 @@ class Catalogue
                     }
                 }
                 
-                if (in_array($category[0]['option_type'], $this->_options_selectable)) {
+                if (is_array($assigned) && in_array($category[0]['option_type'], $this->_options_selectable)) {
                     // Select
                     if (($value = $GLOBALS['db']->select('CubeCart_option_value', false, array('option_id' => $category[0]['option_id'], 'value_id' => $assigned[0]['value_id']))) !== false) {
                         return array_merge($category[0], $assigned[0], $value[0]);
                     }
                 } else {
                     // Text
-                    if (isset($assigned[0])) {
+                    if (is_array($assigned) && isset($assigned[0])) {
                         return array_merge($category[0], $assigned[0]);
                     } else {
                         return $category[0];
