@@ -20,6 +20,7 @@
  */
 class Catalogue
 {
+    private $_elasticsearch  = true;
     private $_category_count  = 0;
     private $_category_products  = 0;
     private $_category_status_prod_id = array();
@@ -1733,7 +1734,7 @@ class Catalogue
             CI for CubeCart_category_index
             C for CubeCart_category
         */
-        if($GLOBALS['config']->get('config', 'elasticsearch')=='1') {
+        if($this->_elasticsearch == true && $GLOBALS['config']->get('config', 'elasticsearch')=='1') {
             $es = new ElasticsearchHandler;
             
             $body = array (
@@ -1896,8 +1897,14 @@ class Catalogue
                 }
             }
             $this->_category_count  = $result["hits"]["total"]["value"];
-            $this->_category_products = $GLOBALS['db']->select('CubeCart_inventory', false, array('product_id' => $pids));
-            $this->_sort_by_relevance = true;
+            if(!empty($pids)) {
+                $this->_category_products = $GLOBALS['db']->select('CubeCart_inventory', false, array('product_id' => $pids));
+                $this->_sort_by_relevance = true;
+            } else {
+                $this->_elasticsearch = false;
+                return $this->searchCatalogue($original_search_data, 1, $per_page, 'fulltext');  
+            }
+            
         } else {
             $where = array();
             $joins = array();
