@@ -25,7 +25,7 @@
       {if count($GALLERY) > 1}
          <a href="#" class="open-clearing" data-thumb-index="0"><img src="{$PRODUCT.medium}" alt="{$PRODUCT.name}" id="img-preview"></a>
       {else}
-         <div data-clearing><a href="{$image.source}"><img src="{$PRODUCT.medium}"></a></div>
+         <div data-clearing><a href="{$PRODUCT.source}"><img src="{$PRODUCT.medium}"></a></div>
       {/if}
       <p class="show-for-small-only">{if $image@total==1}{$LANG.catalogue.tap_enlarge}{else}{$LANG.catalogue.tap_gallery}{/if}</p>
    </div>
