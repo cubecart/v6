@@ -12,7 +12,7 @@
 <div>
    <form action="{$STORE_URL}/search{$CONFIG.seo_ext}" class="search_form" method="get">
       <div class="row collapse">
-         <div class="small-10 large-11 columns">
+         <div class="small-10 large-11 columns search_container">
             <input name="search[keywords]" type="text" class="search_input nomarg" id="sayt" autocomplete="off" placeholder="{$LANG.search.input_default}" required><small><a href="{$STORE_URL}/search{$CONFIG.seo_ext}">{$LANG.search.advanced}</a></small>
          </div>
          <div class="small-2 large-1 columns">

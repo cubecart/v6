@@ -326,7 +326,23 @@ body.stream {
 body.stream h1, body.stream h2, body.stream h3, body.stream p {
     color: #fff;
 }
-
+#search_container {
+    position: relative;
+}
+#sayt_results {
+    list-style-type: none;
+    margin: 0;
+    position: absolute;
+    z-index: 999999;
+    width: 100%;
+}
+#sayt_results li {
+    background-color: #ffffff;
+    border-right: 1px solid #cccccc;
+    border-left: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+    padding: 0.5rem;
+}
 @media only screen and (max-width: 52.0625em) {
     #checkout_actions .button {
         padding-left:0.3125em;
