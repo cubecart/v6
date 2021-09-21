@@ -343,6 +343,11 @@ body.stream h1, body.stream h2, body.stream h3, body.stream p {
     border-bottom: 1px solid #cccccc;
     padding: 0.5rem;
 }
+#sayt_results li img {
+    max-height: 60px;
+    max-width: 60px;
+    margin-right: 0.5rem;
+}
 @media only screen and (max-width: 52.0625em) {
     #checkout_actions .button {
         padding-left:0.3125em;

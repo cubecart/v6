@@ -311,17 +311,16 @@ jQuery(document).ready(function() {
     $(".search_input").click(function(event) {
         $.removeCookie('ccScroll', null);
     });
-    $("#sayt").keyup(function() {
+    $(".search_input").keyup(function() {
         var sayt = $(this);
         var search_term = sayt.val();
         var token = $('.cc_session_token').val();
-        
+        $('<ul id="sayt_results">').insertAfter(sayt);
         if(search_term.length==0) {
             if($('#sayt_results').length) {
                 $('#sayt_results').remove();
             }
         } else if (search_term.length==1) {
-            $('<ul id="sayt_results">').insertAfter(sayt);
             $('#sayt_results li').remove();
             $('#sayt_results').append('<li class="status">Keep typing&hellip;</li>');
         } else if (search_term.length > 2) {
@@ -334,9 +333,8 @@ jQuery(document).ready(function() {
                     if(Array.isArray(products)) {
                         $('#sayt_results li').remove();
                         for(var k in products) {
-                            console.log(k, products[k],search_term);
                             var regexp = new RegExp('('+search_term+')', 'gi');
-                            $("#sayt_results").append("<li><a href='?_a=product&product_id="+products[k]['product_id']+"'>"+products[k]['name'].replace(regexp, "<strong>"+search_term+"</strong>")+"</a></li>");
+                            $("#sayt_results").append("<li><a href='?_a=product&product_id="+products[k]['product_id']+"'><img src=\""+products[k]['thumbnail']+"\" title=\""+products[k]['name']+"\">"+products[k]['name'].replace(regexp, "<strong>"+search_term+"</strong>")+"</a></li>");
                         }
                     } else {
                         $('#sayt_results li').remove();

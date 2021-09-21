@@ -312,7 +312,7 @@ class Catalogue
             include $hook;
         }
         if(isset($_GET['json']) && $_GET['json'] =='1') {
-            die(json_encode($products));
+            die(json_encode($vars['products']));
         } else {
             $content = $GLOBALS['smarty']->fetch('templates/content.category.php');
             $GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
