@@ -311,8 +311,12 @@ class Catalogue
         foreach ($GLOBALS['hooks']->load('class.cubecart.display_category') as $hook) {
             include $hook;
         }
-        $content = $GLOBALS['smarty']->fetch('templates/content.category.php');
-        $GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
+        if(isset($_GET['json']) && $_GET['json'] =='1') {
+            die(json_encode($products));
+        } else {
+            $content = $GLOBALS['smarty']->fetch('templates/content.category.php');
+            $GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
+        }
 
         return true;
     }
@@ -2109,7 +2113,6 @@ class Catalogue
                         $query = sprintf("SELECT I.*, %2\$s AS Relevance FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND (%2\$s) >= %4\$s %3\$s %5\$s %6\$s", $GLOBALS['config']->get('config', 'dbprefix'), $match, $whereString, $match_val, $order_string, $limit);
                         
                         if ($search = $GLOBALS['db']->query($query)) {
-                            var_dump($search);
                             $q2 = sprintf("SELECT COUNT(I.product_id) as count, %2\$s AS Relevance FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND (%2\$s) >= %4\$s %3\$s GROUP BY I.product_id %5\$s", $GLOBALS['config']->get('config', 'dbprefix'), $match, $whereString, $match_val, $order_string);
                             $count = $GLOBALS['db']->query($q2);
                             $this->_category_count  = (int)count($count);

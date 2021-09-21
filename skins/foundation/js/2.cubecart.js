@@ -311,6 +311,44 @@ jQuery(document).ready(function() {
     $(".search_input").click(function(event) {
         $.removeCookie('ccScroll', null);
     });
+    $("#sayt").keyup(function() {
+        var sayt = $(this);
+        var search_term = sayt.val();
+        var token = $('.cc_session_token').val();
+        
+        if(search_term.length==0) {
+            if($('#sayt_results').length) {
+                $('#sayt_results').remove();
+            }
+        } else if (search_term.length==1) {
+            $('<ul id="sayt_results">').insertAfter(sayt);
+            $('#sayt_results li').remove();
+            $('#sayt_results').append('<li class="status">Keep typing&hellip;</li>');
+        } else if (search_term.length > 2) {
+            $.ajax({
+                async: false,
+                url: '?search%5Bkeywords%5D='+search_term+'&_a=category&json=1&token='+token,
+                cache: true,
+                complete: function(response) {
+                    var products = $.parseJSON(response.responseText);
+                    if(Array.isArray(products)) {
+                        $('#sayt_results li').remove();
+                        for(var k in products) {
+                            console.log(k, products[k],search_term);
+                            var regexp = new RegExp('('+search_term+')', 'gi');
+                            $("#sayt_results").append("<li><a href='?_a=product&product_id="+products[k]['product_id']+"'>"+products[k]['name'].replace(regexp, "<strong>"+search_term+"</strong>")+"</a></li>");
+                        }
+                    } else {
+                        $('#sayt_results li').remove();
+                        $('#sayt_results').append('<li class="status">No results found</li>');
+                    }
+                }
+            });
+        } else {
+            $('#sayt_results li').remove();
+            $('#sayt_results').append('<li class="status">Keep typing&hellip;</li>');
+        }
+    });
     $("#ccScroll").on( "click", ".ccScroll-next", function(event) {
         event.preventDefault();
         $(this).hide();
