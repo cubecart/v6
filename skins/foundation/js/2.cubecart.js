@@ -311,23 +311,43 @@ jQuery(document).ready(function() {
     $(".search_input").click(function(event) {
         $.removeCookie('ccScroll', null);
     });
-    $(".search_input").keyup(function() {
-        var sayt = $(this);
+    $(".search_input").keyup(input_delay(function (e) {
+        sayt();
+    }, 500));
+
+    function input_delay(callback, ms) {
+        var timer = 0;
+        return function() {
+            var context = this, args = arguments;
+            clearTimeout(timer);
+            timer = setTimeout(function () {
+                callback.apply(context, args);
+            }, ms || 0);
+        };
+    }
+    
+    function sayt() {
+        var sayt = $(".search_input");
         var search_term = sayt.val();
         var token = $('.cc_session_token').val();
-        $('<ul id="sayt_results">').insertAfter(sayt);
+        if(!$('#sayt_results').length) {
+            $('<ul id="sayt_results">').insertAfter(sayt);
+        }
         if(search_term.length==0) {
             if($('#sayt_results').length) {
                 $('#sayt_results').remove();
             }
-        } else if (search_term.length==1) {
-            $('#sayt_results li').remove();
-            $('#sayt_results').append('<li class="status">Keep typing&hellip;</li>');
-        } else if (search_term.length > 2) {
+            $('.search_form button').html('<svg class="icon"><use xlink:href="#icon-search"></use></svg>');
+        } else {
             $.ajax({
-                async: false,
+                async: true,
                 url: '?search%5Bkeywords%5D='+search_term+'&_a=category&json=1&token='+token,
                 cache: true,
+                beforeSend: function() {
+                    $('#sayt_results li').remove();
+                    //('<li class="status"> searching</li>');
+                    $('.search_form button').html('<svg class="icon icon-submit"><use xlink:href="#icon-spinner"></use></svg>');
+                },
                 complete: function(response) {
                     var products = $.parseJSON(response.responseText);
                     if(Array.isArray(products)) {
@@ -340,13 +360,11 @@ jQuery(document).ready(function() {
                         $('#sayt_results li').remove();
                         $('#sayt_results').append('<li class="status">No results found</li>');
                     }
+                    $('.search_form button').html('<svg class="icon"><use xlink:href="#icon-search"></use></svg>');
                 }
             });
-        } else {
-            $('#sayt_results li').remove();
-            $('#sayt_results').append('<li class="status">Keep typing&hellip;</li>');
         }
-    });
+    }
     $("#ccScroll").on( "click", ".ccScroll-next", function(event) {
         event.preventDefault();
         $(this).hide();
