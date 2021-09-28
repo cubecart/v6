@@ -17,7 +17,7 @@
    <span id="ptp"{if !$CTRL_HIDE_PRICES} data-price="{$PRODUCT.price_to_pay}"{/if}>{$PRODUCT.price}</span>
 {/if}
 </h3>
-{if isset($PRODUCT.discounts)}
+{if !empty($PRODUCT.discounts)}
 <p>(<a href="#quantity_discounts">{$LANG.catalogue.bulk_discount}</a>)</p>
 {/if}
 
