@@ -334,9 +334,7 @@ jQuery(document).ready(function() {
             $('<ul id="sayt_results">').insertAfter(sayt);
         }
         if(search_term.length==0) {
-            if($('#sayt_results').length) {
-                $('#sayt_results').remove();
-            }
+            $('#sayt_results li').remove();
             $('.search_form button').html('<svg class="icon"><use xlink:href="#icon-search"></use></svg>');
         } else {
             $.ajax({
@@ -344,20 +342,18 @@ jQuery(document).ready(function() {
                 url: '?search%5Bkeywords%5D='+search_term+'&_a=category&json=1&token='+token,
                 cache: true,
                 beforeSend: function() {
-                    $('#sayt_results li').remove();
-                    //('<li class="status"> searching</li>');
+                    
                     $('.search_form button').html('<svg class="icon icon-submit"><use xlink:href="#icon-spinner"></use></svg>');
                 },
                 complete: function(response) {
+                    $('#sayt_results li').remove();
                     var products = $.parseJSON(response.responseText);
                     if(Array.isArray(products)) {
-                        $('#sayt_results li').remove();
                         for(var k in products) {
                             var regexp = new RegExp('('+search_term+')', 'gi');
                             $("#sayt_results").append("<li><a href='?_a=product&product_id="+products[k]['product_id']+"'><img src=\""+products[k]['thumbnail']+"\" title=\""+products[k]['name']+"\">"+products[k]['name'].replace(regexp, "<strong>"+search_term+"</strong>")+"</a></li>");
                         }
                     } else {
-                        $('#sayt_results li').remove();
                         $('#sayt_results').append('<li class="status">No results found</li>');
                     }
                     $('.search_form button').html('<svg class="icon"><use xlink:href="#icon-search"></use></svg>');
