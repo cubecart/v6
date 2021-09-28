@@ -28,7 +28,7 @@
          <dd class="active"><a href="#product_info">{$LANG.catalogue.product_info}</a></dd>
          {/if}
          <dd><a href="#product_spec">{$LANG.common.specification}</a></dd>
-         {if isset($PRODUCT.discounts)}
+         {if !empty($PRODUCT.discounts)}
          <dd><a href="#quantity_discounts">{$LANG.catalogue.quantity_discounts}</a></dd>
          {/if}
          {foreach from=$PRODUCT_TABS_TITLES item=product_tab_title}
