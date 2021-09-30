@@ -10,7 +10,7 @@ if(!empty($_GET['q'])) {
             $o[] = array(
                 'product_id' => $p['_id'],
                 'name' => $p["_source"]["name"],
-                'thumbnail' => ''
+                'thumbnail' => $p["_source"]["thumbnail"]
             );
         }
     }
