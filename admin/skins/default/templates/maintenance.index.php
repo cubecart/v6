@@ -269,6 +269,22 @@
 <div id="elasticsearch" class="tab_content">
   <h3>{$LANG.maintain.tab_elasticsearch}</h3>
   <p>{$LANG.maintain.rebuild_elasticsearch}</p>
+  <p>
+  	<table width="200">
+		<thead>
+			<tr>
+				<th>Count</th>
+				<th>Size</th>
+  			</tr>
+  		</thead>
+  		<tbody>
+			<tr>
+				<td id="es_count" class="text-center">{$ES_STATS.count}</td>
+				<td id="es_size" class="text-center">{$ES_STATS.size}</td>
+  			</tr>
+  		</tbody>
+  	</table>
+  </p>
   <div id="progress_wrapper" style="display:none">
       <div id="progress_bar"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/loading.gif" style="display: none" alt="" class="elasticsearch"></div>
    </div>

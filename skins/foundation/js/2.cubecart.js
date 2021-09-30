@@ -308,12 +308,16 @@ jQuery(document).ready(function() {
         }
         return false;
     });
-    $(".search_input").click(function(event) {
+
+    var sayt = $(".search_input");
+
+    sayt.click(function(event) {
         $.removeCookie('ccScroll', null);
     });
-    $(".search_input").keyup(input_delay(function (e) {
-        sayt();
-    }, 500));
+    var keyDelay = sayt.hasClass("es") ? 0 : 500;
+    sayt.keyup(input_delay(function (e) {
+        saytGo();
+    }, keyDelay));
 
     function input_delay(callback, ms) {
         var timer = 0;
@@ -326,8 +330,7 @@ jQuery(document).ready(function() {
         };
     }
     
-    function sayt() {
-        var sayt = $(".search_input");
+    function saytGo() {
         var search_term = sayt.val();
         var token = $('.cc_session_token').val();
         if(!$('#sayt_results').length) {
@@ -337,7 +340,7 @@ jQuery(document).ready(function() {
             $('#sayt_results li').remove();
             $('.search_form button').html('<svg class="icon"><use xlink:href="#icon-search"></use></svg>');
         } else {
-            var url = sayt.hasClass("es") ? 'index.php?_e=es&q='+search_term : '?search%5Bkeywords%5D='+search_term+'&_a=category&json=1&token='+token;
+            var url = sayt.hasClass("es") ? '?_e=es&q='+search_term : '?search%5Bkeywords%5D='+search_term+'&_a=category&json=1&token='+token;
             $.ajax({
                 async: true,
                 url: url,

@@ -388,8 +388,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
     if($GLOBALS['config']->get('config', 'elasticsearch')=='1') {
         $es = new ElasticsearchHandler;
         $es->deleteIndex($product_id);
-        $es_body = $es->indexBody($product_id);
-        $es->addIndex($product_id, $es_body);
+        $es->addIndex($product_id);
     }
 
     foreach ($GLOBALS['hooks']->load('admin.product.save.post_process') as $hook) {

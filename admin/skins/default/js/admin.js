@@ -155,9 +155,18 @@ function ajaxElasticSearch(e) {
             window.location.href = '?_g=maintenance#elasticsearch';
             return false;
         }
+        $("#es_count").html(i.es_count);
+        $("#es_size").html(i.es_size);
         $("div#progress_bar").css({
             width: i.percent + "%"
-        }), $("div#progress_bar_percent").text(Math.round(i.percent) + "%"), 100 == i.percent || "true" == i.complete ? (window.onbeforeunload = null, setTimeout(function(){}, 2000)) : ajaxElasticSearch(e + 1)
+        });
+        $("div#progress_bar_percent").text(Math.round(i.percent) + "%");
+        if(100 == i.percent || "true" == i.complete) {
+            window.onbeforeunload = null;
+            setTimeout(function(){}, 2000);
+        } else {
+            ajaxElasticSearch(e + 1);
+        }
     })
 }
 

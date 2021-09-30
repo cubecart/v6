@@ -29,7 +29,8 @@ class ElasticsearchHandler
     private $_client = '';
     private $_routing_id = '';
     private $_hosts = array('localhost:9200');
-    private $_body = array();
+    private $_search_body = array();
+    private $_index_body = array();
 
     public function __construct()
     {
@@ -40,23 +41,29 @@ class ElasticsearchHandler
         $this->connect();
         $this->_routing_id = $this->_generateRoutingId();
     }
-    public function addIndex($id, $body, $index = 'product') {
+    public function addIndex($id, $body = array(), $index = 'product') {
+        if(!empty($body)) {
+            $this->_index_body = $body;
+        } else {
+            $this->_indexBody($id);
+        }
         $params = [
             'index'     => $index,
             'id'        => $id,
             'routing'   => $this->_routing_id,
-            'body'      => $body
+            'body'      => $this->_index_body
         ];
         try {
             return $this->_client->index($params);
         } catch (Exception $e) {
+            trigger_error($e->getMessage(), E_USER_NOTICE);
             return false;
         }
     }
 
 
     public function body($search_data) {
-        $this->_body = array (
+        $this->_search_body = array (
             'query' => 
             array (
                 'bool' => 
@@ -162,7 +169,7 @@ class ElasticsearchHandler
         }
         
         if(!empty($price_range)) {
-            $this->_body['query']['bool']['must'][]['bool']['must'] = $price_range;
+            $this->_search_body['query']['bool']['must'][]['bool']['must'] = $price_range;
         }
 
         if(isset($search_data['manufacturer']) && is_array($search_data['manufacturer'])) {
@@ -180,12 +187,12 @@ class ElasticsearchHandler
                         )
                     );
                 }
-                $this->_body['query']['bool']['must'][]['bool']['must'] = $m;
+                $this->_search_body['query']['bool']['must'][]['bool']['must'] = $m;
             }
         }
 
         if(isset($search_data['featured']) && !empty($search_data['featured'])) {
-            $this->_body['query']['bool']['must'][]['bool']['must'][] = array (
+            $this->_search_body['query']['bool']['must'][]['bool']['must'][] = array (
                     'term' => 
                     array (
                         'featured' => array(
@@ -196,7 +203,7 @@ class ElasticsearchHandler
         }
 
         if(isset($search_data['inStock']) && !empty($search_data['inStock'])) {
-            $this->_body['query']['bool']['must'][]['bool']['must'][] = array (
+            $this->_search_body['query']['bool']['must'][]['bool']['must'][] = array (
                 'range' => 
                     array (
                         'stock_level' => 
@@ -213,7 +220,7 @@ class ElasticsearchHandler
         if($test) {
             try {
                 $index = bin2hex(openssl_random_pseudo_bytes(10));
-                $result = $this->addIndex($index, array('test'=>1));
+                $result = $this->addIndex($index, array('test' => 1));
                 if(isset($result['result']) == 'created') {
                     $this->deleteIndex($index);
                     return true;
@@ -253,18 +260,24 @@ class ElasticsearchHandler
         }
     }
 
-    public function indexBody($product_id) {
+    public function getStats($index = 'product') {
+        $stats = $this->_client->cat()->indices(array('index'=>$index));
+        return array('size' => $stats[0]['store.size'], 'count' => $stats[0]['docs.count']);
+    }
+
+    public function _indexBody($product_id) {
         $es_data = $GLOBALS['catalogue']->getProductPrice($product_id);
+        $cat = $GLOBALS['db']->select('CubeCart_category_index', array('cat_id'), array('product_id' => $es_data['product_id'], 'primary' => 1));
         $seo = SEO::getInstance();
-        return array(
-            'name'          => $es_data['name'],
-            'description'   => $es_data['description'],
+        $this->_index_body = array(
+            'name'          => (string)$es_data['name'],
+            'description'   => (string)$es_data['description'],
             'price_to_pay'  => (float)$es_data['price_to_pay'],
-            'category'      => $seo->getDirectory((int)$_POST['primary_cat'], false, ' ', false, false),
-            'manufacturer'  => $GLOBALS['catalogue']->getManufacturer($es_data['manufacturer']),
+            'category'      => (string)$seo->getDirectory((int)$cat[0]['cat_id'], false, ' ', false, false),
+            'manufacturer'  => (string)$GLOBALS['catalogue']->getManufacturer($es_data['manufacturer']),
             'featured'      => (int)$es_data['featured'],
-            'stock_level'   => $GLOBALS['catalogue']->getProductStock($product_id),
-            'thumbnail'     => $GLOBALS['gui']->getProductImage($product_id, 'thumbnail'),
+            'stock_level'   => (int)$GLOBALS['catalogue']->getProductStock($es_data['product_id']),
+            'thumbnail'     => (string)$GLOBALS['gui']->getProductImage($es_data['product_id'], 'thumbnail'),
             'product_codes' => array(
                 'sku'   => $es_data['product_code'],
                 'upc'   => $es_data['upc'],
@@ -292,15 +305,20 @@ class ElasticsearchHandler
         }
         if (($products = $GLOBALS['db']->select('CubeCart_inventory', array('product_id'), $where, false, $limit, $cycle)) !== false) {
             foreach ($products as $product) {
-                $es_body = $this->indexBody($product['product_id']);
-                $this->addIndex($product['product_id'], $es_body);
+                $this->addIndex($product['product_id']);
             }
             $sent_to = $limit * $cycle;
             if ($total > $sent_to) {
+                $percent = ($sent_to/$total)*100;
+                //if ($percent % 10 == 0) {
+                    $stats = $this->getStats();
+                //}
                 $data = array(
                     'count'  => $sent_to,
                     'total'  => $total,
-                    'percent' => ($sent_to/$total)*100,
+                    'percent' => $percent,
+                    'es_count' => $stats['count'],
+                    'es_size' => $stats['size']
                 );
                 return $data;
             } else {
@@ -314,7 +332,7 @@ class ElasticsearchHandler
         $from = ($from-1)*$size;
         $params = [
             'index' => $index,
-            'body'  => json_encode(array_merge(array('from' => $from, 'size' => $size),$this->_body))
+            'body'  => json_encode(array_merge(array('from' => $from, 'size' => $size),$this->_search_body))
         ];
         return $this->_client->search($params);
     }

@@ -5,7 +5,7 @@ if(!empty($_GET['q'])) {
     $es = new ElasticsearchHandler;
     $es->body(array('keywords' => $_GET['q']));
 
-    if($result = $es->search(1, 20)) {
+    if($result = $es->search(1, 15)) {
         foreach($result["hits"]["hits"] as $p) {
             $o[] = array(
                 'product_id' => $p['_id'],

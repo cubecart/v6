@@ -601,6 +601,8 @@ $GLOBALS['main']->addTabControl($lang['common']['upgrade'], 'upgrade');
 $GLOBALS['main']->addTabControl($lang['maintain']['tab_db'], 'database');
 if($GLOBALS['config']->get('config', 'elasticsearch')=='1') {
     $GLOBALS['main']->addTabControl($lang['maintain']['tab_elasticsearch'], 'elasticsearch');
+    $es = new ElasticsearchHandler;
+    $GLOBALS['smarty']->assign('ES_STATS', $es->getStats());
 }
 $GLOBALS['main']->addTabControl($lang['maintain']['tab_query_sql'], 'general', '?_g=maintenance&node=sql');
 

@@ -341,7 +341,7 @@ body.stream h1, body.stream h2, body.stream h3, body.stream p {
     border-right: 1px solid #cccccc;
     border-left: 1px solid #cccccc;
     border-bottom: 1px solid #cccccc;
-    padding: 0.5rem;
+    padding: 0.25rem;
     color: #222222;
 }
 #sayt_results li a:hover {
@@ -350,7 +350,7 @@ body.stream h1, body.stream h2, body.stream h3, body.stream p {
 #sayt_results li img {
     max-height: 60px;
     max-width: 60px;
-    margin-right: 0.5rem;
+    margin-right: 0.25rem;
 }
 .search_form button svg {
     font-size: 14px;
