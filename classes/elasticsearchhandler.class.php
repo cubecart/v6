@@ -31,6 +31,7 @@ class ElasticsearchHandler
     private $_hosts = array('localhost:9200');
     private $_search_body = array();
     private $_index_body = array();
+    private $_index = 'product';
 
     public function __construct()
     {
@@ -41,14 +42,15 @@ class ElasticsearchHandler
         $this->connect();
         $this->_routing_id = $this->_generateRoutingId();
     }
-    public function addIndex($id, $body = array(), $index = 'product') {
+
+    public function addIndex($id, $body = array()) {
         if(!empty($body)) {
             $this->_index_body = $body;
         } else {
             $this->_indexBody($id);
         }
         $params = [
-            'index'     => $index,
+            'index'     => $this->_index,
             'id'        => $id,
             'routing'   => $this->_routing_id,
             'body'      => $this->_index_body
@@ -61,6 +63,23 @@ class ElasticsearchHandler
         }
     }
 
+    // https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/updating_documents.html
+    public function updateIndex($id, $field = 'stock_level') {
+        switch($field) {
+            case 'stock_level':
+                $body = array('stock_level'   => (int)$GLOBALS['catalogue']->getProductStock($id));
+            break;
+            default:
+                return false;
+        }
+        $params = array(
+            'index' => $this->_index,
+            'id'    => $id,
+            'routing'   => $this->_routing_id,
+            'body'  => $body
+        );
+        return $this->_client->update($params);   
+    }
 
     public function body($search_data) {
         $this->_search_body = array (
@@ -219,10 +238,10 @@ class ElasticsearchHandler
         $this->_client = ClientBuilder::create()->setHosts($this->_hosts)->build();
         if($test) {
             try {
-                $index = bin2hex(openssl_random_pseudo_bytes(10));
-                $result = $this->addIndex($index, array('test' => 1));
+                $id = bin2hex(openssl_random_pseudo_bytes(10));
+                $result = $this->addIndex($id, array('test' => 1));
                 if(isset($result['result']) == 'created') {
-                    $this->deleteIndex($index);
+                    $this->deleteIndex($id);
                     return true;
                 } else {
                     return false;
@@ -234,9 +253,9 @@ class ElasticsearchHandler
         }
     }
 
-    public function deleteAll($index = 'product') {
+    public function deleteAll() {
         $params = [
-            'index' => $index,
+            'index' => $this->_index,
             'routing' => $this->_routing_id,
             'body' => [
                 'query' => [
@@ -247,9 +266,9 @@ class ElasticsearchHandler
         return $this->_client->deleteByQuery($params);
     }
 
-    public function deleteIndex($id, $index = 'product') {
+    public function deleteIndex($id) {
         $params = [
-            'index'     => $index,
+            'index'     => $this->_index,
             'id'        => $id,
             'routing'   => $this->_routing_id
         ];
@@ -260,8 +279,8 @@ class ElasticsearchHandler
         }
     }
 
-    public function getStats($index = 'product') {
-        $stats = $this->_client->cat()->indices(array('index'=>$index));
+    public function getStats() {
+        $stats = $this->_client->cat()->indices(array('index' => $this->_index));
         return array('size' => $stats[0]['store.size'], 'count' => $stats[0]['docs.count']);
     }
 
@@ -328,10 +347,10 @@ class ElasticsearchHandler
             return false;
         } 
     }
-    public function search($from, $size, $index = 'product') {
+    public function search($from, $size) {
         $from = ($from-1)*$size;
         $params = [
-            'index' => $index,
+            'index' => $this->_index,
             'body'  => json_encode(array_merge(array('from' => $from, 'size' => $size),$this->_search_body))
         ];
         return $this->_client->search($params);
