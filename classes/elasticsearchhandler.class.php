@@ -29,18 +29,16 @@ class ElasticsearchHandler
     private $_client = '';
     private $_routing_id = '';
     private $_hosts = array('localhost:9200');
+    private $_body = array();
 
     public function __construct()
     {
         global $glob;
-        $status = $GLOBALS['config']->get('config', 'elasticsearch');
-        if($status == '1') {
-            if (isset($glob['elasticsearch_hosts']) && is_array($glob['elasticsearch_hosts'])) {
-                $this->_hosts = $glob['elasticsearch_hosts'];
-            }
-            $this->connect();
-            $this->_routing_id = $this->_generateRoutingId();
+        if (isset($glob['elasticsearch_hosts']) && is_array($glob['elasticsearch_hosts'])) {
+            $this->_hosts = $glob['elasticsearch_hosts'];
         }
+        $this->connect();
+        $this->_routing_id = $this->_generateRoutingId();
     }
     public function addIndex($id, $body, $index = 'product') {
         $params = [
@@ -55,6 +53,161 @@ class ElasticsearchHandler
             return false;
         }
     }
+
+
+    public function body($search_data) {
+        $this->_body = array (
+            'query' => 
+            array (
+                'bool' => 
+                array (
+                'must' => 
+                    array ( 
+                        array (
+                        'bool' => 
+                            array (
+                                'should' => 
+                                array ( 
+                                    array (
+                                        'match' => 
+                                        array (
+                                            'name' => $search_data['keywords']
+                                        )
+                                    ), 
+                                    array (
+                                        'match' => 
+                                        array (
+                                            'description' => $search_data['keywords']
+                                        )
+                                    ),
+                                    array (
+                                        'match' => 
+                                        array (
+                                            'product_codes.sku' => $search_data['keywords']
+                                        )
+                                    ),
+                                    array (
+                                        'match' => 
+                                        array (
+                                            'product_codes.upc' => $search_data['keywords']
+                                        )
+                                    ),
+                                    array (
+                                        'match' => 
+                                        array (
+                                            'product_codes.ean' => $search_data['keywords']
+                                        )
+                                    ),
+                                    array (
+                                        'match' => 
+                                        array (
+                                            'product_codes.jan' => $search_data['keywords']
+                                        )
+                                    ),
+                                    array (
+                                        'match' => 
+                                        array (
+                                            'product_codes.isbn' => $search_data['keywords']
+                                        )
+                                    ),
+                                    array (
+                                        'match' => 
+                                        array (
+                                            'product_codes.gtin' => $search_data['keywords']
+                                        )
+                                    ),
+                                    array (
+                                        'match' => 
+                                        array (
+                                            'product_codes.mpn' => $search_data['keywords']
+                                        )
+                                    ),
+                                    array (
+                                        'match' => 
+                                        array (
+                                            'manufacturer' => $search_data['keywords']
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        );
+        
+        $price_range = array(); 
+        if(isset($search_data['priceMin']) && is_numeric($search_data['priceMin'])) {
+            $price_range[] =   array (
+                    'range' => 
+                    array (
+                        'price_to_pay' => 
+                        array (
+                            'gte' => ((!empty($search_data['priceVary'])) ? round($GLOBALS['tax']->priceConvertFX($search_data['priceMin'])/1.05, 3) : (float)$search_data['priceMin'])
+                        )
+                    )
+            );
+        }
+
+        if(isset($search_data['priceMax']) && is_numeric($search_data['priceMax'])) {
+            $price_range[] =   array (
+                'range' => 
+                array (
+                    'price_to_pay' => 
+                    array (
+                        'lte' => ((!empty($search_data['priceVary'])) ? round($GLOBALS['tax']->priceConvertFX($search_data['priceMax'])*1.05, 3) : (float)$search_data['priceMax'])
+                    )
+                )
+            );
+        }
+        
+        if(!empty($price_range)) {
+            $this->_body['query']['bool']['must'][]['bool']['must'] = $price_range;
+        }
+
+        if(isset($search_data['manufacturer']) && is_array($search_data['manufacturer'])) {
+            $manufacturers = array();
+            foreach($search_data['manufacturer'] as $mid) {
+                array_push($manufacturers, $GLOBALS['catalogue']->getManufacturer($mid));
+            }
+            if(is_array($manufacturers)) {
+                $m = array();
+                foreach($manufacturers as $manufacturer) {
+                    $m[] = array (
+                        'match' => 
+                        array (
+                            'manufacturer' => $manufacturer
+                        )
+                    );
+                }
+                $this->_body['query']['bool']['must'][]['bool']['must'] = $m;
+            }
+        }
+
+        if(isset($search_data['featured']) && !empty($search_data['featured'])) {
+            $this->_body['query']['bool']['must'][]['bool']['must'][] = array (
+                    'term' => 
+                    array (
+                        'featured' => array(
+                            'value' => 1
+                        )
+                    )
+                );
+        }
+
+        if(isset($search_data['inStock']) && !empty($search_data['inStock'])) {
+            $this->_body['query']['bool']['must'][]['bool']['must'][] = array (
+                'range' => 
+                    array (
+                        'stock_level' => 
+                        array (
+                            'gt' => 0
+                        )
+                    )
+                ); 
+        }
+    }
+
     public function connect($test = false) {
         $this->_client = ClientBuilder::create()->setHosts($this->_hosts)->build();
         if($test) {
@@ -109,7 +262,8 @@ class ElasticsearchHandler
             'category'      => $seo->getDirectory((int)$_POST['primary_cat'], false, ' ', false, false),
             'manufacturer'  => $GLOBALS['catalogue']->getManufacturer($es_data['manufacturer']),
             'featured'      => (int)$es_data['featured'],
-            'stock_level'  => $GLOBALS['catalogue']->getProductStock($product_id),
+            'stock_level'   => $GLOBALS['catalogue']->getProductStock($product_id),
+            'thumbnail'     => $GLOBALS['gui']->getProductImage($product_id, 'thumbnail'),
             'product_codes' => array(
                 'sku'   => $es_data['product_code'],
                 'upc'   => $es_data['upc'],
@@ -156,12 +310,11 @@ class ElasticsearchHandler
             return false;
         } 
     }
-    public function search($body, $from, $size, $index = 'product') {
+    public function search($from, $size, $index = 'product') {
         $from = ($from-1)*$size;
-        $body = json_encode(array_merge(array('from' => $from, 'size' => $size),$body));
         $params = [
             'index' => $index,
-            'body'  => $body
+            'body'  => json_encode(array_merge(array('from' => $from, 'size' => $size),$this->_body))
         ];
         return $this->_client->search($params);
     }

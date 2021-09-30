@@ -337,12 +337,12 @@ jQuery(document).ready(function() {
             $('#sayt_results li').remove();
             $('.search_form button').html('<svg class="icon"><use xlink:href="#icon-search"></use></svg>');
         } else {
+            var url = sayt.hasClass("es") ? 'index.php?_e=es&q='+search_term : '?search%5Bkeywords%5D='+search_term+'&_a=category&json=1&token='+token;
             $.ajax({
                 async: true,
-                url: '?search%5Bkeywords%5D='+search_term+'&_a=category&json=1&token='+token,
+                url: url,
                 cache: true,
                 beforeSend: function() {
-                    
                     $('.search_form button').html('<svg class="icon icon-submit"><use xlink:href="#icon-spinner"></use></svg>');
                 },
                 complete: function(response) {
