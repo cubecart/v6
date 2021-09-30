@@ -253,7 +253,8 @@ class ElasticsearchHandler
         }
     }
 
-    public function indexBody($product_id, $es_data) {
+    public function indexBody($product_id) {
+        $es_data = $GLOBALS['catalogue']->getProductPrice($product_id);
         $seo = SEO::getInstance();
         return array(
             'name'          => $es_data['name'],
@@ -289,10 +290,9 @@ class ElasticsearchHandler
         if($total==0 && $cycle==1) {
             $GLOBALS['gui']->setError('No produts to index.');
         }
-        if (($products = $GLOBALS['db']->select('CubeCart_inventory', false, $where, false, $limit, $cycle)) !== false) {
+        if (($products = $GLOBALS['db']->select('CubeCart_inventory', array('product_id'), $where, false, $limit, $cycle)) !== false) {
             foreach ($products as $product) {
-                $es_data = $GLOBALS['catalogue']->getProductPrice($product);
-                $es_body = $this->indexBody($product['product_id'], $es_data);
+                $es_body = $this->indexBody($product['product_id']);
                 $this->addIndex($product['product_id'], $es_body);
             }
             $sent_to = $limit * $cycle;
