@@ -342,7 +342,8 @@ jQuery(document).ready(function() {
                 $('.search_form button').html('<svg class="icon"><use xlink:href="#icon-search"></use></svg>');
             }
         } else {
-            var url = sayt.hasClass("es") ? '?_e=es&q='+search_term : '?search%5Bkeywords%5D='+search_term+'&_a=category&json=1&token='+token;
+            var amount = sayt.attr("data-amount");
+            var url = sayt.hasClass("es") ? '?_e=es&q='+search_term+'&a='+amount : '?search%5Bkeywords%5D='+search_term+'&_a=category&json=1&token='+token;
             $.ajax({
                 async: true,
                 url: url,
@@ -358,7 +359,8 @@ jQuery(document).ready(function() {
                     if(Array.isArray(products)) {
                         for(var k in products) {
                             var regexp = new RegExp('('+search_term+')', 'gi');
-                            $("#sayt_results").append("<li><a href='?_a=product&product_id="+products[k]['product_id']+"'><img src=\""+products[k]['thumbnail']+"\" title=\""+products[k]['name']+"\">"+products[k]['name'].replace(regexp, "<strong>"+search_term+"</strong>")+"</a></li>");
+                            var image = (sayt.attr("data-image")=='true') ? "<img src=\""+products[k]['thumbnail']+"\" title=\""+products[k]['name']+"\">" : '';
+                            $("#sayt_results").append("<li><a href='?_a=product&product_id="+products[k]['product_id']+"'>"+image+products[k]['name'].replace(regexp, "<strong>"+search_term+"</strong>")+"</a></li>");
                         }
                     } else {
                         $('#sayt_results').append('<li class="status">No results found</li>');
