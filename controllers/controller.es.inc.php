@@ -3,7 +3,7 @@ $o = array();
 if(!empty($_GET['q'])) {
     require_once(CC_ROOT_DIR.'/classes/elasticsearchhandler.class.php');
     $es = new ElasticsearchHandler;
-    $es->body(array('keywords' => $_GET['q']));
+    $es->query(array('keywords' => $_GET['q']));
 
     if($result = $es->search(1, 15)) {
         foreach($result["hits"]["hits"] as $p) {

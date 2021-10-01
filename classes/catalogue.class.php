@@ -1740,7 +1740,7 @@ class Catalogue
         */
         if($this->_elasticsearch == true && $GLOBALS['config']->get('config', 'elasticsearch')=='1') {
             $es = new ElasticsearchHandler;
-            $es->body($search_data);
+            $es->query($search_data);
             $result = $es->search($page, $per_page);
             $pids = array();
         

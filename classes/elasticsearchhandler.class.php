@@ -63,25 +63,70 @@ class ElasticsearchHandler
         }
     }
 
-    // https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/updating_documents.html
-    public function updateIndex($id, $field = 'stock_level') {
-        switch($field) {
-            case 'stock_level':
-                $body = array('stock_level'   => (int)$GLOBALS['catalogue']->getProductStock($id));
-            break;
-            default:
+    public function connect($test = false) {
+        $this->_client = ClientBuilder::create()->setHosts($this->_hosts)->build();
+        if($test) {
+            try {
+                $id = bin2hex(openssl_random_pseudo_bytes(10));
+                $result = $this->addIndex($id, array('test' => 1));
+                if(isset($result['result']) == 'created') {
+                    $this->deleteIndex($id);
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (Exception $e) {
                 return false;
+            }
+            
         }
-        $params = array(
-            'index' => $this->_index,
-            'id'    => $id,
-            'routing'   => $this->_routing_id,
-            'body'  => $body
-        );
-        return $this->_client->update($params);   
     }
 
-    public function body($search_data) {
+    public function deleteAll() {
+        $params = [
+            'index' => $this->_index,
+            'routing' => $this->_routing_id,
+            'body' => [
+                'query' => [
+                    'match_all' => (object)[] // defined empty object is a required workaround 
+                ]
+            ]
+        ];
+        return $this->_client->deleteByQuery($params);
+    }
+
+    public function deleteIndex($id) {
+        $params = [
+            'index'     => $this->_index,
+            'id'        => $id,
+            'routing'   => $this->_routing_id
+        ];
+        try {
+            return $this->_client->delete($params);
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    public function exists($id) {
+        $params = [
+            'index'     => $this->_index,
+            'id'        => $id,
+            'routing'   => $this->_routing_id
+        ];
+        try {
+            return $this->_client->exists($params);
+        } catch (Exception $e) {
+            return false;
+        } 
+    }
+
+    public function getStats() {
+        $stats = $this->_client->cat()->indices(array('index' => $this->_index));
+        return array('size' => $stats[0]['store.size'], 'count' => $stats[0]['docs.count']);
+    }
+
+    public function query($search_data) {
         $this->_search_body = array (
             'query' => 
             array (
@@ -234,81 +279,6 @@ class ElasticsearchHandler
         }
     }
 
-    public function connect($test = false) {
-        $this->_client = ClientBuilder::create()->setHosts($this->_hosts)->build();
-        if($test) {
-            try {
-                $id = bin2hex(openssl_random_pseudo_bytes(10));
-                $result = $this->addIndex($id, array('test' => 1));
-                if(isset($result['result']) == 'created') {
-                    $this->deleteIndex($id);
-                    return true;
-                } else {
-                    return false;
-                }
-            } catch (Exception $e) {
-                return false;
-            }
-            
-        }
-    }
-
-    public function deleteAll() {
-        $params = [
-            'index' => $this->_index,
-            'routing' => $this->_routing_id,
-            'body' => [
-                'query' => [
-                    'match_all' => (object)[] // defined empty object is a required workaround 
-                ]
-            ]
-        ];
-        return $this->_client->deleteByQuery($params);
-    }
-
-    public function deleteIndex($id) {
-        $params = [
-            'index'     => $this->_index,
-            'id'        => $id,
-            'routing'   => $this->_routing_id
-        ];
-        try {
-            return $this->_client->delete($params);
-        } catch (Exception $e) {
-            return false;
-        }
-    }
-
-    public function getStats() {
-        $stats = $this->_client->cat()->indices(array('index' => $this->_index));
-        return array('size' => $stats[0]['store.size'], 'count' => $stats[0]['docs.count']);
-    }
-
-    public function _indexBody($product_id) {
-        $es_data = $GLOBALS['catalogue']->getProductPrice($product_id);
-        $cat = $GLOBALS['db']->select('CubeCart_category_index', array('cat_id'), array('product_id' => $es_data['product_id'], 'primary' => 1));
-        $seo = SEO::getInstance();
-        $this->_index_body = array(
-            'name'          => (string)$es_data['name'],
-            'description'   => (string)$es_data['description'],
-            'price_to_pay'  => (float)$es_data['price_to_pay'],
-            'category'      => (string)$seo->getDirectory((int)$cat[0]['cat_id'], false, ' ', false, false),
-            'manufacturer'  => (string)$GLOBALS['catalogue']->getManufacturer($es_data['manufacturer']),
-            'featured'      => (int)$es_data['featured'],
-            'stock_level'   => (int)$GLOBALS['catalogue']->getProductStock($es_data['product_id']),
-            'thumbnail'     => (string)$GLOBALS['gui']->getProductImage($es_data['product_id'], 'thumbnail'),
-            'product_codes' => array(
-                'sku'   => $es_data['product_code'],
-                'upc'   => $es_data['upc'],
-                'ean'   => $es_data['ean'],
-                'jan'   => $es_data['jan'],
-                'isbn'  => $es_data['isbn'],
-                'gtin'  => $es_data['gtin'],
-                'mpn'   => $es_data['mpn']
-            )
-        );
-    }
-
     public function rebuild($cycle) {
         
         ini_set('ignore_user_abort', true);
@@ -336,7 +306,7 @@ class ElasticsearchHandler
                     'count'  => $sent_to,
                     'total'  => $total,
                     'percent' => $percent,
-                    'es_count' => $stats['count'],
+                    'es_count' => number_format($stats['count']),
                     'es_size' => $stats['size']
                 );
                 return $data;
@@ -347,6 +317,7 @@ class ElasticsearchHandler
             return false;
         } 
     }
+    
     public function search($from, $size) {
         $from = ($from-1)*$size;
         $params = [
@@ -355,7 +326,50 @@ class ElasticsearchHandler
         ];
         return $this->_client->search($params);
     }
+
+    public function updateIndex($id, $field = '') {
+        switch($field) {
+            case 'stock_level':
+                $this->_index_body = array('stock_level'   => (int)$GLOBALS['catalogue']->getProductStock($id));
+            break;
+            default:
+                $this->_indexBody($id);
+        }
+        $params = array(
+            'index' => $this->_index,
+            'id'    => $id,
+            'routing'   => $this->_routing_id,
+            'body'  => array('doc' => $this->_index_body)
+        );
+        return $this->_client->update($params);   
+    }
+    
     private function _generateRoutingId() {
         return CC_ROOT_DIR;
+    }
+
+    public function _indexBody($product_id) {
+        $es_data = $GLOBALS['catalogue']->getProductPrice($product_id);
+        $cat = $GLOBALS['db']->select('CubeCart_category_index', array('cat_id'), array('product_id' => $es_data['product_id'], 'primary' => 1));
+        $seo = SEO::getInstance();
+        $this->_index_body = array(
+            'name'          => (string)$es_data['name'],
+            'description'   => (string)$es_data['description'],
+            'price_to_pay'  => (float)$es_data['price_to_pay'],
+            'category'      => (string)$seo->getDirectory((int)$cat[0]['cat_id'], false, ' ', false, false),
+            'manufacturer'  => (string)$GLOBALS['catalogue']->getManufacturer($es_data['manufacturer']),
+            'featured'      => (int)$es_data['featured'],
+            'stock_level'   => (int)$GLOBALS['catalogue']->getProductStock($es_data['product_id']),
+            'thumbnail'     => (string)$GLOBALS['gui']->getProductImage($es_data['product_id'], 'thumbnail'),
+            'product_codes' => array(
+                'sku'   => $es_data['product_code'],
+                'upc'   => $es_data['upc'],
+                'ean'   => $es_data['ean'],
+                'jan'   => $es_data['jan'],
+                'isbn'  => $es_data['isbn'],
+                'gtin'  => $es_data['gtin'],
+                'mpn'   => $es_data['mpn']
+            )
+        );
     }
 }
