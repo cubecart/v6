@@ -482,6 +482,12 @@ if (((isset($_GET['delete']) && !empty($_GET['delete'])) || (isset($_POST['delet
             $GLOBALS['db']->delete('CubeCart_options_set_product', array('product_id' => $delete_id));
             // Delete SEO value
             $GLOBALS['seo']->delete('prod', $delete_id);
+            if($GLOBALS['config']->get('config', 'elasticsearch')=='1') {
+                $es = new ElasticsearchHandler;
+                if($es->exists($product_id)){
+                    $es->deleteIndex($product_id);
+                }
+            }
             $deleted = true;
         }
     }
