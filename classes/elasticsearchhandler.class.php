@@ -27,11 +27,10 @@ require 'elasticsearch/autoload.php';
 class ElasticsearchHandler
 {
     private $_client = '';
-    private $_routing_id = '';
     private $_hosts = array('localhost:9200');
     private $_search_body = array();
     private $_index_body = array();
-    private $_index = 'product';
+    private $_index = '';
 
     public function __construct()
     {
@@ -40,7 +39,7 @@ class ElasticsearchHandler
             $this->_hosts = $glob['elasticsearch_hosts'];
         }
         $this->connect();
-        $this->_routing_id = $this->_generateRoutingId();
+        $this->_index = $glob['dbdatabase'];
     }
 
     public function addIndex($id, $body = array()) {
@@ -52,7 +51,6 @@ class ElasticsearchHandler
         $params = [
             'index'     => $this->_index,
             'id'        => $id,
-            'routing'   => $this->_routing_id,
             'body'      => $this->_index_body
         ];
         try {
@@ -85,21 +83,23 @@ class ElasticsearchHandler
     public function deleteAll() {
         $params = [
             'index' => $this->_index,
-            'routing' => $this->_routing_id,
             'body' => [
                 'query' => [
                     'match_all' => (object)[] // defined empty object is a required workaround 
                 ]
             ]
         ];
-        return $this->_client->deleteByQuery($params);
+        try {
+            return $this->_client->deleteByQuery($params);
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     public function deleteIndex($id) {
         $params = [
             'index'     => $this->_index,
             'id'        => $id,
-            'routing'   => $this->_routing_id
         ];
         try {
             return $this->_client->delete($params);
@@ -108,12 +108,8 @@ class ElasticsearchHandler
         }
     }
 
-    public function exists($id) {
-        $params = [
-            'index'     => $this->_index,
-            'id'        => $id,
-            'routing'   => $this->_routing_id
-        ];
+    public function exists($id = '') {
+        $params = ['index' => $this->_index, 'id' => $id];
         try {
             return $this->_client->exists($params);
         } catch (Exception $e) {
@@ -122,8 +118,20 @@ class ElasticsearchHandler
     }
 
     public function getStats() {
-        $stats = $this->_client->cat()->indices(array('index' => $this->_index));
-        return array('size' => $stats[0]['store.size'], 'count' => $stats[0]['docs.count']);
+        try {
+            $stats = $this->_client->cat()->indices(array('index' => $this->_index));
+            return array('size' => $stats[0]['store.size'], 'count' => $stats[0]['docs.count']);
+        } catch (Exception $e) {
+            $error = $e->getMessage();
+            $error = json_decode($error,true);
+            if($error['error']['type'] == 'index_not_found_exception') {
+                $GLOBALS['gui']->setError('Elasticsearch has no indicies. Please rebuild.');    
+            } else {
+                $GLOBALS['gui']->setError($error['error']['reason']); 
+            }
+            return array('size' => '0b', 'count' => '0');
+        } 
+        
     }
 
     public function query($search_data) {
@@ -299,9 +307,7 @@ class ElasticsearchHandler
             $sent_to = $limit * $cycle;
             if ($total > $sent_to) {
                 $percent = ($sent_to/$total)*100;
-                //if ($percent % 10 == 0) {
-                    $stats = $this->getStats();
-                //}
+                $stats = $this->getStats();
                 $data = array(
                     'count'  => $sent_to,
                     'total'  => $total,
@@ -338,14 +344,9 @@ class ElasticsearchHandler
         $params = array(
             'index' => $this->_index,
             'id'    => $id,
-            'routing'   => $this->_routing_id,
             'body'  => array('doc' => $this->_index_body)
         );
         return $this->_client->update($params);   
-    }
-    
-    private function _generateRoutingId() {
-        return CC_ROOT_DIR;
     }
 
     public function _indexBody($product_id) {
@@ -362,13 +363,13 @@ class ElasticsearchHandler
             'stock_level'   => (int)$GLOBALS['catalogue']->getProductStock($es_data['product_id']),
             'thumbnail'     => (string)$GLOBALS['gui']->getProductImage($es_data['product_id'], 'thumbnail'),
             'product_codes' => array(
-                'sku'   => $es_data['product_code'],
-                'upc'   => $es_data['upc'],
-                'ean'   => $es_data['ean'],
-                'jan'   => $es_data['jan'],
-                'isbn'  => $es_data['isbn'],
-                'gtin'  => $es_data['gtin'],
-                'mpn'   => $es_data['mpn']
+                'sku'   => (string)$es_data['product_code'],
+                'upc'   => (string)$es_data['upc'],
+                'ean'   => (string)$es_data['ean'],
+                'jan'   => (string)$es_data['jan'],
+                'isbn'  => (string)$es_data['isbn'],
+                'gtin'  => (string)$es_data['gtin'],
+                'mpn'   => (string)$es_data['mpn']
             )
         );
     }

@@ -273,8 +273,8 @@
   	<table width="200">
 		<thead>
 			<tr>
-				<th>Count</th>
-				<th>Size</th>
+				<th class="text-center">{$LANG.common.count}</th>
+				<th class="text-center">{$LANG.common.size}</th>
   			</tr>
   		</thead>
   		<tbody>
@@ -289,5 +289,5 @@
       <div id="progress_bar"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/loading.gif" style="display: none" alt="" class="elasticsearch"></div>
    </div>
    <div id="progress_bar_percent"></div>
-  <input type="submit" value="{$LANG.common.rebuild}" id="rebuild_elastic"></button>
+  <input type="submit" value="{if $ES_STATS.count == 0}{$LANG.common.build}{else}{$LANG.common.rebuild}{/if}" id="rebuild_elastic"></button>
 </div>

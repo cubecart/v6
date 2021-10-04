@@ -591,6 +591,8 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="count" introduced="6.5.0"><![CDATA[Count]]></string>
+    <string name="build" introduced="6.5.0"><![CDATA[Build]]></string>
     <string name="rebuild" introduced="6.5.0"><![CDATA[Rebuild]]></string>
     <string name="private" introduced="6.4.4"><![CDATA[Private]]></string>
     <string name="phrase" introduced="6.4.3"><![CDATA[Phrase]]></string>

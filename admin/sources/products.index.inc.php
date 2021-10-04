@@ -484,8 +484,8 @@ if (((isset($_GET['delete']) && !empty($_GET['delete'])) || (isset($_POST['delet
             $GLOBALS['seo']->delete('prod', $delete_id);
             if($GLOBALS['config']->get('config', 'elasticsearch')=='1') {
                 $es = new ElasticsearchHandler;
-                if($es->exists($product_id)){
-                    $es->deleteIndex($product_id);
+                if($es->exists($delete_id)) {
+                    $es->deleteIndex($delete_id);
                 }
             }
             $deleted = true;

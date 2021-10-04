@@ -155,8 +155,10 @@ function ajaxElasticSearch(e) {
             window.location.href = '?_g=maintenance#elasticsearch';
             return false;
         }
-        $("#es_count").html(i.es_count);
-        $("#es_size").html(i.es_size);
+        if(i.es_count !== false && i.es_size !== false) {
+            $("#es_count").html(i.es_count);
+            $("#es_size").html(i.es_size);
+        }
         $("div#progress_bar").css({
             width: i.percent + "%"
         });
@@ -290,6 +292,8 @@ $(document).ready(function() {
     $("#content_body").on("click", "#rebuild_elastic", function() {
         $(this).hide();
         $('#progress_wrapper').css("display", "block");
+        $("#es_count").html('-');
+        $("#es_size").html('-');
         ajaxElasticSearch(1);
     });
 
