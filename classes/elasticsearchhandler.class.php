@@ -31,6 +31,7 @@ class ElasticsearchHandler
     private $_search_body = array();
     private $_index_body = array();
     private $_index = '';
+    private $_marker = array();
 
     public function __construct()
     {
@@ -294,7 +295,7 @@ class ElasticsearchHandler
             $this->deleteAll();
         }
 
-        $limit = 20;
+        $limit = 25;
         $where = array('status' => 1);
         $total = (int)$GLOBALS['db']->count('CubeCart_inventory', 'status', $where);
         if($total==0 && $cycle==1) {
@@ -307,7 +308,14 @@ class ElasticsearchHandler
             $sent_to = $limit * $cycle;
             if ($total > $sent_to) {
                 $percent = ($sent_to/$total)*100;
-                $stats = $this->getStats();
+                
+                if($percent % 10 == 0 && !isset($this->marker[$percent])) {
+                    $this->marker[$percent] = true;
+                    $stats = $this->getStats();
+                } else {
+                    $stats = array('count' => false, 'size' => false);
+                }
+                
                 $data = array(
                     'count'  => $sent_to,
                     'total'  => $total,

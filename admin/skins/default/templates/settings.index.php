@@ -482,6 +482,7 @@
       <fieldset>
          <legend>{$LANG.settings.elasticsearch}</legend>
          <div><label for="elasticsearch">{$LANG.common.enable}</label><span><input name="config[elasticsearch]" id="elasticsearch" type="hidden" class="toggle" value="{$CONFIG.elasticsearch}"></span></div>
+         <div class="clear important"><strong>IMPORTANT: After enabling Elasticsearch you must build your search index <a href="?_g=maintenance#elasticsearch">here</a>.</strong></div>
       </fieldset>
       <fieldset>
          <legend>{$LANG.settings.title_proxy}</legend>
