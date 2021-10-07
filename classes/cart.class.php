@@ -1032,6 +1032,12 @@ class Cart
                 $basket_data['delivery_address'] = $GLOBALS['user']->formatAddress('', false);
                 $this->basket['delivery_address'] = $basket_data['delivery_address'];
             }
+            // Is this delivery address allowed?
+            $country_status = $GLOBALS['db']->select('CubeCart_geo_country', array('status'), array('iso' => $basket_data['delivery_address']['country_iso']));
+            $block = false;
+            if(!$country_status || $country_status[0]['status']=='0') {
+                $block = true;
+            }
             if (!isset($basket_data['billing_address'])) {
                 $basket_data['billing_address'] = $GLOBALS['user']->formatAddress('', false);
                 $this->basket['billing_address'] = $basket_data['billing_address'];
@@ -1041,7 +1047,7 @@ class Cart
                     unset($basket_data['contents'][$hash]);
                 }
             }
-            if (!empty($basket_data['contents'])) {
+            if (!empty($basket_data['contents']) && $block == false) {
                 foreach ($shipping as $module) {
                     $module['countries'] = Config::getInstance()->get($module['folder'], 'countries');
                     $countries = (!empty($module['countries'])) ? unserialize($module['countries']) : false;
