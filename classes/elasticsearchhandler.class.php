@@ -136,6 +136,9 @@ class ElasticsearchHandler
     }
 
     public function query($search_data) {
+        
+        if(!isset($search_data['keywords'])) return false;
+
         $this->_search_body = array (
             'query' => 
             array (
