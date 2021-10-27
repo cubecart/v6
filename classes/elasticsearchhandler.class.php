@@ -32,6 +32,7 @@ class ElasticsearchHandler
     private $_index_body = array();
     private $_index = '';
     private $_marker = array();
+    private $_debug = true;
 
     public function __construct()
     {
@@ -138,7 +139,7 @@ class ElasticsearchHandler
     public function query($search_data) {
         
         if(!isset($search_data['keywords'])) return false;
-
+        $es_keywords = $search_data['keywords'];
         $this->_search_body = array (
             'query' => 
             array (
@@ -154,61 +155,61 @@ class ElasticsearchHandler
                                     array (
                                         'match' => 
                                         array (
-                                            'name' => $search_data['keywords']
+                                            'name' => array('query' => $es_keywords, 'boost' => 6)
                                         )
                                     ), 
                                     array (
                                         'match' => 
                                         array (
-                                            'description' => $search_data['keywords']
+                                            'description' => array('query' => $es_keywords, 'boost' => 11)
                                         )
                                     ),
                                     array (
                                         'match' => 
                                         array (
-                                            'product_codes.sku' => $search_data['keywords']
+                                            'product_codes.sku' => array('query' => $es_keywords, 'boost' => 2)
                                         )
                                     ),
                                     array (
                                         'match' => 
                                         array (
-                                            'product_codes.upc' => $search_data['keywords']
+                                            'product_codes.upc' => array('query' => $es_keywords, 'boost' => 2)
                                         )
                                     ),
                                     array (
                                         'match' => 
                                         array (
-                                            'product_codes.ean' => $search_data['keywords']
+                                            'product_codes.ean' => array('query' => $es_keywords, 'boost' => 2)
                                         )
                                     ),
                                     array (
                                         'match' => 
                                         array (
-                                            'product_codes.jan' => $search_data['keywords']
+                                            'product_codes.jan' => array('query' => $es_keywords, 'boost' => 2)
                                         )
                                     ),
                                     array (
                                         'match' => 
                                         array (
-                                            'product_codes.isbn' => $search_data['keywords']
+                                            'product_codes.isbn' => array('query' => $es_keywords, 'boost' => 2)
                                         )
                                     ),
                                     array (
                                         'match' => 
                                         array (
-                                            'product_codes.gtin' => $search_data['keywords']
+                                            'product_codes.gtin' => array('query' => $es_keywords, 'boost' => 2)
                                         )
                                     ),
                                     array (
                                         'match' => 
                                         array (
-                                            'product_codes.mpn' => $search_data['keywords']
+                                            'product_codes.mpn' => array('query' => $es_keywords, 'boost' => 2)
                                         )
                                     ),
                                     array (
                                         'match' => 
                                         array (
-                                            'manufacturer' => $search_data['keywords']
+                                            'manufacturer' => array('query' => $es_keywords, 'boost' => 6)
                                         )
                                     )
                                 )
@@ -341,7 +342,18 @@ class ElasticsearchHandler
             'index' => $this->_index,
             'body'  => json_encode(array_merge(array('from' => $from, 'size' => $size),$this->_search_body))
         ];
-        return $this->_client->search($params);
+        
+        $response = $this->_client->search($params);
+        if($this->_debug) {
+            $fp = fopen('elastic_debug_'.date('Ymd').'.txt', 'a+');
+            fwrite($fp, "\r\nRequest:\r\n");
+            fwrite($fp, print_r($params, true));
+            fwrite($fp, "\r\nResponse:\r\n");
+            fwrite($fp, print_r($response, true));
+            fwrite($fp, "\r\n######################################\r\n");
+            fclose($fp);
+        }
+        return $response;
     }
 
     public function updateIndex($id, $field = '') {

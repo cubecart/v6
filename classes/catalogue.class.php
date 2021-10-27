@@ -1738,7 +1738,7 @@ class Catalogue
             CI for CubeCart_category_index
             C for CubeCart_category
         */
-        if($this->_elasticsearch == true && $GLOBALS['config']->get('config', 'elasticsearch')=='1') {
+        if(is_array($search_data) && $this->_elasticsearch == true && $GLOBALS['config']->get('config', 'elasticsearch')=='1') {
             $es = new ElasticsearchHandler;
             $es->query($search_data);
             $result = $es->search($page, $per_page);
