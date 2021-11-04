@@ -56,6 +56,9 @@ class ElasticsearchHandler
             'body'      => $this->_index_body
         ];
         try {
+            if(!$this->indexExists()) {
+                $this->createWholeIndex();
+            }
             return $this->_client->index($params);
         } catch (Exception $e) {
             trigger_error($e->getMessage(), E_USER_NOTICE);
@@ -65,6 +68,7 @@ class ElasticsearchHandler
 
     public function connect($test = false) {
         $this->_client = ClientBuilder::create()->setHosts($this->_hosts)->build();
+
         if($test) {
             try {
                 $id = bin2hex(openssl_random_pseudo_bytes(10));
@@ -82,20 +86,52 @@ class ElasticsearchHandler
         }
     }
 
-    public function deleteAll() {
+    public function createWholeIndex() {
         $params = [
             'index' => $this->_index,
             'body' => [
-                'query' => [
-                    'match_all' => (object)[] // defined empty object is a required workaround 
+                'settings' => [
+                    'analysis' => [
+                        'analyzer' => [
+                            'autocomplete' => [
+                                'tokenizer' => 'autocomplete',
+                                'filter' => ['lowercase']
+                            ],
+                            'autocomplete_search' => ['tokenizer' => 'lowercase']
+                      ],
+                      'tokenizer' => [
+                            'autocomplete' => [
+                                'type' => 'edge_ngram',
+                                'min_gram' => 2,
+                                'max_gram' => 15,
+                                'token_chars' => ['letter','digit','custom'],
+                                'custom_token_chars' => '-_.'
+                            ]
+                        ]
+                    ]
+                ],
+                'mappings' => [
+                    'properties' => [
+                        'name' => [
+                            'type' => 'text',
+                            'analyzer' => 'autocomplete',
+                            'search_analyzer' => 'autocomplete_search'
+                        ],
+                        'product_codes.sku' => [
+                            'type' => 'text',
+                            'analyzer' => 'autocomplete',
+                            'search_analyzer' => 'autocomplete_search'
+                        ]
+                    ]
                 ]
             ]
         ];
-        try {
-            return $this->_client->deleteByQuery($params);
-        } catch (Exception $e) {
-            return false;
-        }
+        return $this->_client->indices()->create($params);    
+    }
+
+    public function deleteWholeIndex() {
+        $params = ['index' => $this->_index];
+        return $this->_client->indices()->delete($params);
     }
 
     public function deleteIndex($id) {
@@ -134,6 +170,11 @@ class ElasticsearchHandler
             return array('size' => '0b', 'count' => '0');
         } 
         
+    }
+
+    public function indexExists() {
+        $params = ['index' => $this->_index];
+        return $this->_client->indices()->exists($params);
     }
 
     public function query($search_data) {
@@ -296,7 +337,10 @@ class ElasticsearchHandler
         
         ini_set('ignore_user_abort', true);
         if($cycle == 1) {
-            $this->deleteAll();
+            if($this->indexExists()) {
+                $this->deleteWholeIndex();
+            }
+            $this->createWholeIndex();
         }
 
         $limit = 25;
