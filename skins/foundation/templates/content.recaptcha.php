@@ -12,22 +12,18 @@
 {if $RECAPTCHA=='2'}
 <div class="row">
    <div class="medium-8 columns">
-        {if empty($CONFIG.recaptcha_public_key) || empty($CONFIG.recaptcha_secret_key)}
-        <p>{$LANG.form.recaptcha_key_not_set}</p>
-        {else}
         <div class="g-recaptcha" id="RecaptchaField{$ga_fid}"></div>
         <script type="text/javascript">
         {literal}
         var reCaptchaCallback = function() {
             var gr_exists = document.getElementById("RecaptchaField");
             if(gr_exists){
-                grecaptcha.render('RecaptchaField', {'sitekey' : '{/literal}{$CONFIG.recaptcha_public_key}{literal}'});
+                grecaptcha.render('RecaptchaField', {'sitekey' : '{/literal}{if empty($CONFIG.recaptcha_public_key)}6LdEQRMdAAAAAJkDyPLs0pD2V6EoWf-XDpggiNNp{else}{$CONFIG.recaptcha_public_key}{/if}{literal}'});
             }
-            {/literal}{if $ga_fid}{literal}grecaptcha.render('RecaptchaField{/literal}{$ga_fid}{literal}', {'sitekey' : '{/literal}{$CONFIG.recaptcha_public_key}{literal}'});{/literal}{/if}{literal}
+            {/literal}{if $ga_fid}{literal}grecaptcha.render('RecaptchaField{/literal}{$ga_fid}{literal}', {'sitekey' : '{/literal}{if empty($CONFIG.recaptcha_public_key)}6LdEQRMdAAAAAJkDyPLs0pD2V6EoWf-XDpggiNNp{else}{$CONFIG.recaptcha_public_key}{/if}{literal}'});{/literal}{/if}{literal}
         };
         {/literal}
         </script>
-        {/if}
     </div>
 </div>
 {/if}

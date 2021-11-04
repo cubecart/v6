@@ -150,9 +150,9 @@
             {foreach from=$OPT_RECAPTCHA item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
             </select>
          </span></div>
-         <div><label for="recaptcha_public_key">{$LANG.settings.recaptcha_public_key}</label><span><input name="config[recaptcha_public_key]" id="recaptcha_public_key" class="textbox" value="{$CONFIG.recaptcha_public_key}"></span></div>
-         <div><label for="recaptcha_secret_key">{$LANG.settings.recaptcha_secret_key}</label><span><input name="config[recaptcha_secret_key]" id="recaptcha_secret_key" class="textbox" value="{$CONFIG.recaptcha_secret_key}"></span></div>
-         <div class="clear important"><strong>{$LANG.settings.new_recaptcha_note}</strong>
+         <div><label for="recaptcha_public_key">{$LANG.settings.recaptcha_public_key} {$LANG.common.optional}</label><span><input name="config[recaptcha_public_key]" id="recaptcha_public_key" class="textbox" value="{$CONFIG.recaptcha_public_key}"></span></div>
+         <div><label for="recaptcha_secret_key">{$LANG.settings.recaptcha_secret_key} {$LANG.common.optional}</label><span><input name="config[recaptcha_secret_key]" id="recaptcha_secret_key" class="textbox" value="{$CONFIG.recaptcha_secret_key}"></span></div>
+         <div class="clear">{$LANG.settings.new_recaptcha_note}
             {if !$gr_compatibility.v2}
             <br><strong>{$LANG.settings.reCAPTCHA_v2_na}</strong>
             {/if}

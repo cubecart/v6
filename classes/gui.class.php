@@ -751,8 +751,9 @@ class GUI
             if (empty($_POST['g-recaptcha-response'])) {
                 $recaptcha['error'] = $GLOBALS['language']->form['verify_human_fail'];
             } else {
+                $g_secret_key = $GLOBALS['config']->get('config', 'recaptcha_secret_key');
                 $g_data = array(
-                    'secret' => $GLOBALS['config']->get('config', 'recaptcha_secret_key'),
+                    'secret' => empty($g_secret_key) ? '6LdEQRMdAAAAABwYI7L0aDoSga9TJZqmNgUqsTFa' : $g_secret_key,
                     'response' => $_POST['g-recaptcha-response'],
                     'remoteip' => get_ip_address()
                 );
