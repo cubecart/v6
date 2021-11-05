@@ -1219,7 +1219,7 @@ class Order
                         $GLOBALS['db']->update('CubeCart_order_inventory', array('stock_updated' => (int)$update), array('id' => $item['id'], 'cart_order_id' => $order_id));
                         // Sort index
                         if(isset($es)) {
-                            $es->updateIndex($item['product_id'], 'stock_level');
+                            $es->update($item['product_id'], 'stock_level');
                         }
                         // Unset variables
                         unset($stock, $update);
@@ -1271,7 +1271,7 @@ class Order
                         $GLOBALS['db']->update('CubeCart_order_inventory', array('stock_updated' => (int)$update), array('id' => $item['id'], 'cart_order_id' => $order_id));
                         // Sort index
                         if(isset($es)) {
-                            $es->updateIndex($item['product_id'], 'stock_level');
+                            $es->update($item['product_id'], 'stock_level');
                         }
                         // Unset variables
                         unset($stock, $update);
@@ -1286,7 +1286,7 @@ class Order
                     $GLOBALS['db']->update('CubeCart_inventory', array('stock_level' => $options_stock[0]['stock']), array('product_id' => (int)$prod_id));
                     // Update index
                     if(isset($es)) {
-                        $es->updateIndex($prod_id, 'stock_level');
+                        $es->update($prod_id, 'stock_level');
                     }
                 }
             }

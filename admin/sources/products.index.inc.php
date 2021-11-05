@@ -388,9 +388,9 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
     if($GLOBALS['config']->get('config', 'elasticsearch')=='1') {
         $es = new ElasticsearchHandler;
         if($es->exists($product_id)){
-            $es->updateIndex($product_id);
+            $es->update($product_id);
         } else {
-            $es->addIndex($product_id);
+            $es->add($product_id);
         }
     }
 
@@ -485,7 +485,7 @@ if (((isset($_GET['delete']) && !empty($_GET['delete'])) || (isset($_POST['delet
             if($GLOBALS['config']->get('config', 'elasticsearch')=='1') {
                 $es = new ElasticsearchHandler;
                 if($es->exists($delete_id)) {
-                    $es->deleteIndex($delete_id);
+                    $es->delete($delete_id);
                 }
             }
             $deleted = true;

@@ -44,8 +44,10 @@ class ElasticsearchHandler
         $this->connect();
         $this->_index = $glob['dbdatabase'];
     }
-
-    public function addIndex($id, $body = array()) {
+    /**
+     * Add product to index
+     */
+    public function add($id, $body = array()) {
         if(!empty($body)) {
             $this->_index_body = $body;
         } else {
@@ -58,7 +60,7 @@ class ElasticsearchHandler
         ];
         try {
             if(!$this->indexExists()) {
-                $this->createWholeIndex();
+                $this->createIndex();
             }
             return $this->_client->index($params);
         } catch (Exception $e) {
@@ -66,16 +68,18 @@ class ElasticsearchHandler
             return false;
         }
     }
-
+    /**
+     * Establish connection to ES
+     */
     public function connect($test = false) {
         $this->_client = ClientBuilder::create()->setHosts($this->_hosts)->build();
 
         if($test) {
             try {
                 $id = bin2hex(openssl_random_pseudo_bytes(10));
-                $result = $this->addIndex($id, array('test' => 1));
+                $result = $this->add($id, array('test' => 1));
                 if(isset($result['result']) == 'created') {
-                    $this->deleteIndex($id);
+                    $this->delete($id);
                     return true;
                 } else {
                     return false;
@@ -86,8 +90,10 @@ class ElasticsearchHandler
             
         }
     }
-
-    public function createWholeIndex() {
+    /**
+     * Create index
+     */
+    public function createIndex() {
         $params = [
             'index' => $this->_index,
             'body' => [
@@ -152,13 +158,19 @@ class ElasticsearchHandler
         ];
         return $this->_client->indices()->create($params);    
     }
-
-    public function deleteWholeIndex() {
+    
+    /**
+     * Delete index
+     */
+    public function deleteIndex() {
         $params = ['index' => $this->_index];
         return $this->_client->indices()->delete($params);
     }
 
-    public function deleteIndex($id) {
+    /**
+     * Delete product from index
+     */
+    public function delete($id) {
         $params = [
             'index'     => $this->_index,
             'id'        => $id,
@@ -169,7 +181,10 @@ class ElasticsearchHandler
             return false;
         }
     }
-
+    
+    /**
+     * Check product exists in index
+     */
     public function exists($id = '') {
         $params = ['index' => $this->_index, 'id' => $id];
         try {
@@ -179,6 +194,9 @@ class ElasticsearchHandler
         } 
     }
 
+    /**
+     * Get stats about index
+     */
     public function getStats() {
         try {
             $stats = $this->_client->cat()->indices(array('index' => $this->_index));
@@ -196,11 +214,17 @@ class ElasticsearchHandler
         
     }
 
+    /**
+     * Check index exists
+     */
     public function indexExists() {
         $params = ['index' => $this->_index];
         return $this->_client->indices()->exists($params);
     }
 
+    /**
+     * Create search query to execute later
+     */
     public function query($search_data) {
         
         if(!isset($search_data['keywords'])) return false;
@@ -357,14 +381,16 @@ class ElasticsearchHandler
         }
     }
 
+    /**
+     * Rebuild index
+     */
     public function rebuild($cycle) {
-        
         ini_set('ignore_user_abort', true);
         if($cycle == 1) {
             if($this->indexExists()) {
-                $this->deleteWholeIndex();
+                $this->deleteIndex();
             }
-            $this->createWholeIndex();
+            $this->createIndex();
         }
 
         $limit = 25;
@@ -375,7 +401,7 @@ class ElasticsearchHandler
         }
         if (($products = $GLOBALS['db']->select('CubeCart_inventory', array('product_id'), $where, false, $limit, $cycle)) !== false) {
             foreach ($products as $product) {
-                $this->addIndex($product['product_id']);
+                $this->add($product['product_id']);
             }
             $sent_to = $limit * $cycle;
             if ($total > $sent_to) {
@@ -404,6 +430,9 @@ class ElasticsearchHandler
         } 
     }
     
+    /**
+     * Execute search query
+     */
     public function search($from, $size) {
         $from = ($from-1)*$size;
         $params = [
@@ -415,7 +444,10 @@ class ElasticsearchHandler
         return $response;
     }
 
-    public function updateIndex($id, $field = '') {
+    /**
+     * Update product in index
+     */
+    public function update($id, $field = '') {
         switch($field) {
             case 'stock_level':
                 $this->_index_body = array('stock_level'   => (int)$GLOBALS['catalogue']->getProductStock($id));
@@ -431,6 +463,9 @@ class ElasticsearchHandler
         return $this->_client->update($params);   
     }
 
+    /**
+     * Create body for product to be indexed
+     */
     public function _indexBody($product_id) {
         $es_data = $GLOBALS['catalogue']->getProductPrice($product_id);
         $cat = $GLOBALS['db']->select('CubeCart_category_index', array('cat_id'), array('product_id' => $es_data['product_id'], 'primary' => 1));
