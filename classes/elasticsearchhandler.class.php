@@ -98,15 +98,38 @@ class ElasticsearchHandler
                                 'tokenizer' => 'autocomplete',
                                 'filter' => ['lowercase']
                             ],
-                            'autocomplete_search' => ['tokenizer' => 'lowercase']
-                      ],
-                      'tokenizer' => [
+                            'autocomplete_search' => ['tokenizer' => 'lowercase'],
+                            'default' => [
+                                'type' => 'custom',
+                                'tokenizer' => 'default_tokenizer',
+                                'filter' => ['lowercase','keyword_repeat','default_stemmer','unique_stem'],'char_filter' => ['default_char_filter']
+                            ]
+                        ],
+                        'tokenizer' => [
                             'autocomplete' => [
                                 'type' => 'edge_ngram',
                                 'min_gram' => 2,
                                 'max_gram' => 15,
                                 'token_chars' => ['letter','digit','custom'],
                                 'custom_token_chars' => '-_.'
+                            ],
+                            'default_tokenizer' => [
+                                'type' => 'standard'
+                            ]
+                        ],
+                        'filter' => [
+                            'default_stemmer' => [
+                                'type' => 'stemmer',
+                                'language' => 'english'
+                            ],
+                            'unique_stem' => [
+                                'type' => 'unique',
+                                'only_on_same_position' => true
+                            ]
+                        ],
+                        'char_filter' => [
+                            'default_char_filter' => [
+                                'type' => 'html_strip'
                             ]
                         ]
                     ]
