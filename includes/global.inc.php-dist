@@ -25,4 +25,5 @@ $glob['session_save_path'] = '';		// Set your own session save path (please note
 $glob['safe_mode'] = false;		        // Set to true to disable hooks and code snippets, 'hooks' to disable code hooks and 'snippets' to disable code snippets
 $glob['auto_upgrade_disabled'] = false;  // Set to an email address or false. Entering an email will disable the auto upgrade too with a message about who to contact
 $glob['subscribe_mode_lax'] = '0';  // Set to 1 to enable lax newsletter subscribe mode. This will allow double opt in to be disabled.
+$glob['elasticsearch_hosts'] = array('https://user:pass@127.0.0.1:9200'); // URL can specify protocol, auth string, domain/ip and port or just ip & port.
 ?>

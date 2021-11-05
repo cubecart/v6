@@ -27,12 +27,13 @@ require 'elasticsearch/autoload.php';
 class ElasticsearchHandler
 {
     private $_client = '';
-    private $_hosts = array('localhost:9200');
+    // The host(s) can be set in the includes/global.inc.php file as for example 
+    // $glob['elasticsearch_hosts'] = array('https://user:pass@127.0.0.1:9200');
+    private $_hosts = array('127.0.0.1:9200'); 
     private $_search_body = array();
     private $_index_body = array();
     private $_index = '';
     private $_marker = array();
-    private $_debug = true;
 
     public function __construct()
     {
@@ -388,15 +389,6 @@ class ElasticsearchHandler
         ];
         
         $response = $this->_client->search($params);
-        if($this->_debug) {
-            $fp = fopen('elastic_debug_'.date('Ymd').'.txt', 'a+');
-            fwrite($fp, "\r\nRequest:\r\n");
-            fwrite($fp, print_r($params, true));
-            fwrite($fp, "\r\nResponse:\r\n");
-            fwrite($fp, print_r($response, true));
-            fwrite($fp, "\r\n######################################\r\n");
-            fclose($fp);
-        }
         return $response;
     }
 
