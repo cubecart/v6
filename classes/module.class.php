@@ -489,10 +489,8 @@ class Module
             
             $enabled = (!empty($this->_settings['countries'])) ? unserialize($this->_settings['countries']) : false;
             foreach ($countries as $country) {
-                if(isset()) {
-                    $options[$country['numcode']] = $country;
-                    $all_countries[] = $country;
-                }
+                $options[$country['numcode']] = $country;
+                $all_countries[] = $country;
             }
 
             $GLOBALS['smarty']->assign('ALL_COUNTRIES', $all_countries);
