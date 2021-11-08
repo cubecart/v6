@@ -489,15 +489,19 @@ class Module
             
             $enabled = (!empty($this->_settings['countries'])) ? unserialize($this->_settings['countries']) : false;
             foreach ($countries as $country) {
-                $options[$country['numcode']] = $country;
-                $all_countries[] = $country;
+                if(isset()) {
+                    $options[$country['numcode']] = $country;
+                    $all_countries[] = $country;
+                }
             }
 
             $GLOBALS['smarty']->assign('ALL_COUNTRIES', $all_countries);
             if (is_array($enabled)) {
                 sort($enabled);
                 foreach ($enabled as $country) {
-                    $enabled_countries[] = $options[$country];
+                    if(isset($options[$country]) && !empty($options[$country])) {
+                        $enabled_countries[] = $options[$country];
+                    }
                 }
                 $GLOBALS['smarty']->assign('ENABLED_COUNTRIES', $enabled_countries);
             }
@@ -512,7 +516,9 @@ class Module
             if (is_array($disabled)) {
                 sort($disabled);
                 foreach ($disabled as $country) {
-                    $disabled_countries[] = $options[$country];
+                    if(isset($options[$country]) && !empty($options[$country])) {
+                        $disabled_countries[] = $options[$country];
+                    }
                 }
                 $GLOBALS['smarty']->assign('DISABLED_COUNTRIES', $disabled_countries);
             }
