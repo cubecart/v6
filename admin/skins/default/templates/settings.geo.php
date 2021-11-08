@@ -33,8 +33,8 @@
 		  <td><span class="editable number" name="country[{$country.id}][iso]">{$country.iso}</span></td>
 		  <td><span class="editable number" name="country[{$country.id}][iso3]">{$country.iso3}</span></td>
 		  <td><span class="editable number" name="country[{$country.id}][numcode]">{$country.numcode}</span></td>
-		  <td align="center"><input name="country[{$country.id}][eu]" id="{$country.id}_eu" type="hidden" class="toggle" value="{$country.eu}"></td>
-		  <td align="center">
+		  <td style="text-align:center"><input name="country[{$country.id}][eu]" id="{$country.id}_eu" type="hidden" class="toggle" value="{$country.eu}"></td>
+		  <td style="text-align:center">
 			<select name="country[{$country.id}][status]" id="{$country.id}_status">
 				<option value="0"{if $country.status=='0'} selected="selected"{/if}>{$LANG.common.disabled}</option>
 				<option value="1"{if $country.status=='1'} selected="selected"{/if}>{$LANG.common.enabled} ({$LANG.country.zone} {$LANG.common.required})</option>
@@ -42,7 +42,7 @@
 				<option value="3"{if $country.status=='3'} selected="selected"{/if}>{$LANG.common.enabled} ({$LANG.country.zone} {$LANG.common.disabled})</option>
 			</select>
 			</td>
-		  <td align="center"><a href="{$country.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
+		  <td style="text-align:center"><a href="{$country.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
 		</tr>
 	  {/foreach}
   	  <tfoot>
@@ -107,7 +107,7 @@
 		  <td>{$zone.country}</td>
 		  <td><span class="editable" name="zone[{$zone.id}][name]">{$zone.name}</span></td>
 		  <td width="110"><span class="editable number" name="zone[{$zone.id}][abbrev]">{$zone.abbrev}</span></td>
-		  <td align="center"><input type="hidden" name="zone[{$zone.id}][status]" id="zone_status_{$zone.id}" value="{$zone.status}" class="toggle"></td>
+		  <td style="text-align:center"><input type="hidden" name="zone[{$zone.id}][status]" id="zone_status_{$zone.id}" value="{$zone.status}" class="toggle"></td>
 			<td><a href="{$zone.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
 		</tr>
 	  {/foreach}

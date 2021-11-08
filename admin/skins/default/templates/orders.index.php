@@ -30,9 +30,9 @@
          <tbody>
             {foreach from=$ORDER_LIST item=order}
             <tr>
-               <td align="center"><input type="checkbox" name="multi-order[]" value="{$order.cart_order_id}" class="all-orders"></td>
+               <td style="text-align:center"><input type="checkbox" name="multi-order[]" value="{$order.cart_order_id}" class="all-orders"></td>
                <td><a href="{$order.link_edit}">{if $CONFIG.oid_mode=='i'}{$order.{$CONFIG.oid_col}}{else}{$order.cart_order_id}{/if}</a></td>
-               <td align="center">
+               <td style="text-align:center">
                   {append "cust_type" "registered" index="1"}
                   {append "cust_type" "unregistered" index="2"}
                   <i class="fa fa-user {$cust_type[$order.type]}" title="{$LANG.customer[$order.cust_type[$order.type]]}"></i>
@@ -46,8 +46,8 @@
                </td>
                <td class="{$order.status_class}">{$order.status}</td>
                <td>{$order.date}</td>
-               <td align="right">{$order.prod_total}</td>
-               <td align="center">
+               <td style="text-align:right">{$order.prod_total}</td>
+               <td style="text-align:center">
                   <a href="{$order.link_print}" class="print" target="_blank" title="{$LANG.common.print}"><i class="fa fa-print" title="{$LANG.common.print}"></i></a>
                   <a href="{$order.link_edit}" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
                   <a href="{$order.link_delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
@@ -360,11 +360,11 @@
                      <span class="editable" name="inv[{$product.id}][name]">{$product.name}</span>
                      {include file='templates/element.product_options.php'}
                   </td>
-                  <td align="right">
+                  <td style="text-align:right">
                      <input type="text" name="inv[{$product.id}][price]" id="{$product.id}_price" class="textbox number-right lineprice original-fix" original="{$product.line_price_less_options}" value="{$product.line}">
                   </td>
-                  <td align="right"><input type="text" name="inv[{$product.id}][line_price]" class="textbox number-right subtotal goods" value="{$product.price_total}"></td>
-                  <td align="center"><a href="#{$product.id}" class="remove" title="{$LANG.notification.confirm_delete}" name="inv_remove" rel="{$PRODUCT.id}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
+                  <td style="text-align:right"><input type="text" name="inv[{$product.id}][line_price]" class="textbox number-right subtotal goods" value="{$product.price_total}"></td>
+                  <td style="text-align:center"><a href="#{$product.id}" class="remove" title="{$LANG.notification.confirm_delete}" name="inv_remove" rel="{$PRODUCT.id}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
                </tr>
                {/foreach}
                {/if}
@@ -375,7 +375,7 @@
                   <td><input type="hidden" id="ajax_product_id" rel="product_id"><input type="text" id="ajax_name" placeholder="{$LANG.common.type_to_search}" class="textbox ajax not-empty" rel="product"></td>
                   <td><input type="text" id="ajax_price" class="textbox number-right lineprice" rel="price" value="0.00"></td>
                   <td  align="right"><input type="text" rel="line_price" class="textbox number-right subtotal goods" value="0.00"></td>
-                  <td align="center" class="action"><a href="#" title="{$LANG.common.add}" class="add" target="inventory-list"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a></td>
+                  <td style="text-align:center" class="action"><a href="#" title="{$LANG.common.add}" class="add" target="inventory-list"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a></td>
                </tr>
                <!-- Source for inline adding -->
                <tr class="update-subtotal inline-source" name="inv_add">
@@ -385,7 +385,7 @@
                      <input type="text" rel="price" class="textbox number-right lineprice">
                   </td>
                   <td><input type="text" rel="line_price" class="textbox number-right subtotal goods"></td>
-                  <td align="center" class="action"><a href="#" class="remove dynamic" title="{$LANG.common.decision_remove}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
+                  <td style="text-align:center" class="action"><a href="#" class="remove dynamic" title="{$LANG.common.decision_remove}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
                </tr>
                <tr>
                   <th colspan="3">{$LANG.basket.total_sub}</th>
@@ -437,13 +437,13 @@
                      </select>
                   </th>
                   <td><input type="text" rel="amount" class="textbox number-right tax not-empty" ></td>
-                  <td align="center"><a href="#" class="add" target="tax-list"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a></td>
+                  <td style="text-align:center"><a href="#" class="add" target="tax-list"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a></td>
                </tr>
                <!-- Source for inline adding -->
                <tr class="update-subtotal inline-source" name="tax_add">
                   <th colspan="3"><input type="hidden" rel="tax_id"><span rel="tax_id"></span></th>
                   <td><input type="text" rel="amount" class="textbox number-right tax"></td>
-                  <td align="center"><a href="#" class="remove dynamic" title=""><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
+                  <td style="text-align:center"><a href="#" class="remove dynamic" title=""><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
                </tr>
                <tr>
                   <th colspan="3">{$LANG.basket.total_tax}</th>
@@ -454,7 +454,7 @@
                <tr>
                   <th colspan="3">{$LANG.basket.total}</th>
                   <td><input type="text" id="total" name="summary[total]" class="textbox number-right" value="{$SUMMARY.total}"></td>
-                  <td align="center"><a href="#" class="refresh"><i class="fa fa-refresh" title="{$LANG.common.refresh}"></i></a></td>
+                  <td style="text-align:center"><a href="#" class="refresh"><i class="fa fa-refresh" title="{$LANG.common.refresh}"></i></a></td>
                </tr>
             </tfoot>
          </table>
@@ -527,13 +527,13 @@
                {foreach from=$TRANSACTIONS item=transaction}
                <tr>
                   <td>{$transaction.trans_id}</td>
-                  <td align="center">{$transaction.status}</td>
-                  <td align="center">{$transaction.amount}</td>
-                  <td align="center">{$transaction.gateway}</td>
-                  <td align="center">{$transaction.time}</td>
+                  <td style="text-align:center">{$transaction.status}</td>
+                  <td style="text-align:center">{$transaction.amount}</td>
+                  <td style="text-align:center">{$transaction.gateway}</td>
+                  <td style="text-align:center">{$transaction.time}</td>
                   <td>{$transaction.notes}</td>
                   {if isset($DISPLAY_ACTIONS)}
-                  <td align="center">
+                  <td style="text-align:center">
                      {foreach from=$transaction.actions item=action}
                      <a href="{$action.url}" title="{$action.title}" class="delete"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/{$action.icon}" alt="{$action.title}"></a>
                      {/foreach}

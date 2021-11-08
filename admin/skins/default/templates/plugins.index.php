@@ -39,7 +39,7 @@
          <tbody>
             {foreach from=$MODULES item=module}
             <tr>
-               <td align="center">
+               <td style="text-align:center">
                   <input type="hidden" id="status_{$module.basename}" name="status[{$module.basename}]" value="{$module.config.status}" class="toggle">
                   <input type="hidden" name="type[{$module.basename}]" value="{$module.type}" />
                </td>
@@ -81,7 +81,7 @@
          <tbody>
             {foreach from=$LANGUAGES item=module}
             <tr>
-               <td align="center">
+               <td style="text-align:center">
                   <input type="hidden" name="status[{$module.lang_code}]" id="status_{$module.lang_code}" value="{$module.status}" class="toggle">
                </td>
                <td><a href="{$module.edit_url}">{$module.name}</a></td>

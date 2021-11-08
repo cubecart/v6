@@ -53,7 +53,7 @@
                      <option value="302">302 - {$LANG.common.temporary}</option>
                   </select>
                </td>
-               <td align="center"><input id="submit" type="submit" class="tiny button" value="{$LANG.common.add}"></td>
+               <td style="text-align:center"><input id="submit" type="submit" class="tiny button" value="{$LANG.common.add}"></td>
             </tr>
             {foreach $REDIRECTS item=redirect}
             <tr>
@@ -80,14 +80,14 @@
                   {$LANG.account.register}
                {/if}
                </td>
-               <td align="center">
+               <td style="text-align:center">
                {if empty($redirect.item_id)}
                   -
                {else}
                   {$redirect.item_id}
                {/if}</td>
-               <td align="center">{$redirect.redirect}</td>
-               <td align="center"><a href="?_g=settings&node=redirects&delete={$redirect.id}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></td>
+               <td style="text-align:center">{$redirect.redirect}</td>
+               <td style="text-align:center"><a href="?_g=settings&node=redirects&delete={$redirect.id}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></td>
             </tr>
             {foreachelse}
             <tr>

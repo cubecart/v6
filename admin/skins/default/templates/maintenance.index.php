@@ -203,7 +203,7 @@
 	  		<td>{$table.Collation}</td>
 	  		<td>{$table.Data_length}</td>
 	  		<td>{$table.Data_free}</td>
-	  		<td align="center">{if $table.errors}
+	  		<td style="text-align:center">{if $table.errors}
 	  			<i class="fa fa-exclamation-triangle" aria-hidden="true" title="{$table.errors}"></i>
 	  		{else}
 	  			{$LANG.common.ok}

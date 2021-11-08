@@ -39,7 +39,7 @@
 	<tbody>
 	{foreach from=$EMAIL_LOG item=log}
 	  <tr>
-	  	<td align="center">{if $log.result==1}<i class="fa fa-check" title="{$LANG.common.yes}"></i>{else}<i class="fa fa-times" title="{$LANG.common.no}"></i>{/if}</td>
+	  	<td style="text-align:center">{if $log.result==1}<i class="fa fa-check" title="{$LANG.common.yes}"></i>{else}<i class="fa fa-times" title="{$LANG.common.no}"></i>{/if}</td>
 		<td>{$log.subject}</td>
 		<td>{foreach from=$log.to_email item=to}
 			<a href="?_g=customers&q={$to.email}" title="{$LANG.search.title_search_customers}">{$to.name}</a><br>
@@ -58,8 +58,8 @@
 			{/if}
 		</td>
 		<td>{$log.date}</td>
-		<td align="center">{if $log.email_content_id>0}<a href="?_g=documents&amp;node=email&amp;type=content&amp;action=edit&amp;content_id={$log.email_content_id}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>{/if}</td>
-		<td align="center"><a href="?_g=statistics&node=emaillog&resend={$log.id}"><i class="fa fa-paper-plane" title="{$LANG.common.resend}" aria-hidden="true"></i></i></a></td>
+		<td style="text-align:center">{if $log.email_content_id>0}<a href="?_g=documents&amp;node=email&amp;type=content&amp;action=edit&amp;content_id={$log.email_content_id}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>{/if}</td>
+		<td style="text-align:center"><a href="?_g=statistics&node=emaillog&resend={$log.id}"><i class="fa fa-paper-plane" title="{$LANG.common.resend}" aria-hidden="true"></i></i></a></td>
 	  </tr>
 		{if !empty($log.fail_reason)}
 		<tr>

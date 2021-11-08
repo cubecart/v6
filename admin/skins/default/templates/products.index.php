@@ -42,7 +42,7 @@
       <table width="100%">
          <tr>
             {foreach from=$SORT_CHARACTERS item=character}
-            <td align="center"><a href="{$character.link}">{$character.char}</a></td>
+            <td style="text-align:center"><a href="{$character.link}">{$character.char}</a></td>
             {/foreach}
             <td width="1%"><a href="{$SORT_CHARS_RESET_LINK}">{$LANG.common.any}</a></td>
          </tr>
@@ -66,21 +66,21 @@
          <tbody>
             {foreach from=$PRODUCTS item=product}
             <tr>
-               <td align="center" width="10"><input type="checkbox" name="delete[]" id="{$product.product_id}" value="{$product.product_id}" class="table"></td>
+               <td style="text-align:center" width="10"><input type="checkbox" name="delete[]" id="{$product.product_id}" value="{$product.product_id}" class="table"></td>
                <td><a href="{$product.link_edit}">{$product.name}</a>
                   {if isset($product.category)}
                   <br>
                   <span class="light-category">{$product.category}</span>
                   {/if}
                </td>
-               <td align="center">
+               <td style="text-align:center">
                   {if $product.digital}
                   <i class="fa fa-download" title="{$product.type_alt}"></i>
                   {else}
                   <i class="fa fa-archive" title="{$product.type_alt}"></i>
                   {/if}
                </td>
-               <td align="center">
+               <td style="text-align:center">
                   {if !empty($product.image_path_tiny)}
                   <a href="{$product.image_path_large}" class="colorbox" title="{$product.name}" target="_blank"><img src="{$product.image_path_tiny}" style="max-width: 30px; max-height: 30px" alt="{$product.name}"></a>
                   {elseif !empty($product.image_path_large)}
@@ -89,7 +89,7 @@
                </td>
                <td>{$product.product_code}</td>
                <td>{$product.price}</td>
-               <td align="center">{$product.stock_level}</td>
+               <td style="text-align:center">{$product.stock_level}</td>
                <td>
                   {if $product.updated == '0000-00-00 00:00:00'}
                   {$LANG.common.unknown}
@@ -97,13 +97,13 @@
                   {formatTime(strtotime($product.updated))}
                   {/if}
                </td>
-               <td align="center" class="language_list">
+               <td style="text-align:center" class="language_list">
                   {foreach from=$product.translations item=translation}
                   <a href="{$translation.link}"><img src="language/flags/{$translation.language}.png" alt="{$translation.language}" class="flag"></a>
                   {/foreach}
                </td>
-               <td align="center"><input type="hidden" name="status[{$product.product_id}]" id="status_{$product.product_id}" value="{$product.status}" class="toggle"></td>
-               <td align="center">
+               <td style="text-align:center"><input type="hidden" name="status[{$product.product_id}]" id="status_{$product.product_id}" value="{$product.status}" class="toggle"></td>
+               <td style="text-align:center">
                   {if isset($product.link_clone)}
                   <a href="{$product.link_clone}" title="{$LANG.common.clone}" alt="{$LANG.common.clone}"><i class="fa fa-files-o" title="{$LANG.common.clone}"></i></a>
                   {/if}
@@ -383,8 +383,8 @@
          <tbody>
             {foreach from=$CATEGORIES item=category}
             <tr>
-               <td align="center"><input type="radio" name="primary_cat" class="check-primary" value="{$category.id}" rel="cat_{$category.id}"{$category.primary}></td>
-               <td align="center"><input type="checkbox" id="cat_{$category.id}" name="categories[{$category.id}]" value="{$category.id}" class="check_cat" {$category.selected}></td>
+               <td style="text-align:center"><input type="radio" name="primary_cat" class="check-primary" value="{$category.id}" rel="cat_{$category.id}"{$category.primary}></td>
+               <td style="text-align:center"><input type="checkbox" id="cat_{$category.id}" name="categories[{$category.id}]" value="{$category.id}" class="check_cat" {$category.selected}></td>
                <td>{$category.name}</td>
             </tr>
             {/foreach}
@@ -392,7 +392,7 @@
          <tfoot>
             <tr>
                <td>&nbsp;</td>
-               <td align="center"><input type="checkbox" class="check-all" rel="check_cat"></td>
+               <td style="text-align:center"><input type="checkbox" class="check-all" rel="check_cat"></td>
                <td><strong>{$LANG.form.check_uncheck}</strong></td>
             </tr>
          </tfoot>
@@ -421,32 +421,32 @@
                {foreach from=$options item=option}
                {if $option.from_assigned}
                <tr id="option_{$option.assign_id}">
-                  <td align="center"><input type="hidden" id="enable_{$option.assign_id}" name="option_update[{$option.assign_id}][set_enabled]" value="{$option.set_enabled}" class="toggle"></td>
-                  <td align="center"><input type="hidden" id="matrix_include_{$option.assign_id}" name="option_update[{$option.assign_id}][matrix_include]" value="{$option.matrix_include}" class="toggle"></td>
+                  <td style="text-align:center"><input type="hidden" id="enable_{$option.assign_id}" name="option_update[{$option.assign_id}][set_enabled]" value="{$option.set_enabled}" class="toggle"></td>
+                  <td style="text-align:center"><input type="hidden" id="matrix_include_{$option.assign_id}" name="option_update[{$option.assign_id}][matrix_include]" value="{$option.matrix_include}" class="toggle"></td>
                   <td>{$option.display}</td>
                   <td>{$option.set_name}</td>
-                  <td align="center"><input type="checkbox" name="option_update[{$option.assign_id}][option_default]" {if isset($option.option_default) && $option.option_default == 1}checked="checked"{/if} value="1"></td>
-                  <td align="center"><input type="checkbox" name="option_update[{$option.assign_id}][option_negative]" {if isset($option.option_negative) && $option.option_negative == 1}checked="checked"{/if} value="1"></td>
+                  <td style="text-align:center"><input type="checkbox" name="option_update[{$option.assign_id}][option_default]" {if isset($option.option_default) && $option.option_default == 1}checked="checked"{/if} value="1"></td>
+                  <td style="text-align:center"><input type="checkbox" name="option_update[{$option.assign_id}][option_negative]" {if isset($option.option_negative) && $option.option_negative == 1}checked="checked"{/if} value="1"></td>
                   <td><span class="editable number-right" name="option_update[{$option.assign_id}][option_price]" title="{$LANG.common.click_edit}">{$option.option_price}</span></td>
-                  <td align="center"><input type="checkbox" name="option_update[{$option.assign_id}][absolute_price]" {if isset($option.absolute_price) && $option.absolute_price == 1}checked="checked"{/if} value="1"></td>
+                  <td style="text-align:center"><input type="checkbox" name="option_update[{$option.assign_id}][absolute_price]" {if isset($option.absolute_price) && $option.absolute_price == 1}checked="checked"{/if} value="1"></td>
                   <td><span class="editable number" name="option_update[{$option.assign_id}][option_weight]" title="{$LANG.common.click_edit}">{$option.option_weight}</span></td>
-                  <td align="center">
+                  <td style="text-align:center">
                      {if !$option.set_member_id}<a href="#" name="option_remove" class="remove" rel="{$option.assign_id}" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>{else}<i class="fa fa-trash disabled" title="{$LANG.catalogue.delete_option_disabled}"></i>{/if}
                      <input type="hidden" id="data_{$option.assign_id}" value="{$option.data}">
                   </td>
                </tr>
                {else}
                <tr id="option_member_{$option.set_member_id}">
-                  <td align="center"><input type="hidden" id="enable_member_{$option.set_member_id}" name="option_create[{$option.set_member_id}][set_enabled]" value="{$option.set_enabled}" class="toggle"></td>
-                  <td align="center"><input type="hidden" id="matrix_include_{$option.set_member_id}" name="option_create[{$option.set_member_id}][matrix_include]" value="0" class="toggle"></td>
+                  <td style="text-align:center"><input type="hidden" id="enable_member_{$option.set_member_id}" name="option_create[{$option.set_member_id}][set_enabled]" value="{$option.set_enabled}" class="toggle"></td>
+                  <td style="text-align:center"><input type="hidden" id="matrix_include_{$option.set_member_id}" name="option_create[{$option.set_member_id}][matrix_include]" value="0" class="toggle"></td>
                   <td>{$option.display}</td>
                   <td>{$option.set_name}</td>
-                  <td align="center"><input type="checkbox" name="option_create[{$option.set_member_id}][option_default]" {if isset($option.option_default) && $option.option_default == 1}checked="checked"{/if}  value="1"></td>
-                  <td align="center"><input type="checkbox" name="option_create[{$option.set_member_id}][option_negative]" {if isset($option.option_negative) && $option.option_negative == 1}checked="checked"{/if}  value="1"></td>
+                  <td style="text-align:center"><input type="checkbox" name="option_create[{$option.set_member_id}][option_default]" {if isset($option.option_default) && $option.option_default == 1}checked="checked"{/if}  value="1"></td>
+                  <td style="text-align:center"><input type="checkbox" name="option_create[{$option.set_member_id}][option_negative]" {if isset($option.option_negative) && $option.option_negative == 1}checked="checked"{/if}  value="1"></td>
                   <td><span class="editable number-right" name="option_create[{$option.set_member_id}][option_price]" title="{$LANG.common.click_edit}">{$option.option_price}</span></td>
-                  <td align="center"><input type="checkbox" name="option_create[{$option.set_member_id}][absolute_price]" {if isset($option.absolute_price) && $option.absolute_price == 1}checked="checked"{/if}  value="1"></td>
+                  <td style="text-align:center"><input type="checkbox" name="option_create[{$option.set_member_id}][absolute_price]" {if isset($option.absolute_price) && $option.absolute_price == 1}checked="checked"{/if}  value="1"></td>
                   <td><span class="editable number" name="option_create[{$option.set_member_id}][option_weight]" title="{$LANG.common.click_edit}">{$option.option_weight}</span></td>
-                  <td align="center"><i class="fa fa-trash disabled" title="{$LANG.catalogue.delete_option_disabled}"></i></td>
+                  <td style="text-align:center"><i class="fa fa-trash disabled" title="{$LANG.catalogue.delete_option_disabled}"></i></td>
                </tr>
                {/if}
                {/foreach}
@@ -478,12 +478,12 @@
                      </select>
                   </td>
                   <td></td>
-                  <td align="center"><input type="checkbox" id="opt_default" rel="default" class="checkbox data"></td>
-                  <td align="center"><input type="checkbox" id="opt_negative" rel="negative" class="checkbox data"></td>
+                  <td style="text-align:center"><input type="checkbox" id="opt_default" rel="default" class="checkbox data"></td>
+                  <td style="text-align:center"><input type="checkbox" id="opt_negative" rel="negative" class="checkbox data"></td>
                   <td><input type="text" id="opt_price" rel="price" class="textbox number data"></td>
-                  <td align="center"><input type="checkbox" id="opt_absolute_price" rel="absolute_price" class="checkbox data"></td>
+                  <td style="text-align:center"><input type="checkbox" id="opt_absolute_price" rel="absolute_price" class="checkbox data"></td>
                   <td><input type="text" id="opt_weight" rel="weight" class="textbox number data"></td>
-                  <td align="center"><a href="#" onclick="optionAdd('option_template', 'options_added'); return false;"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a></td>
+                  <td style="text-align:center"><a href="#" onclick="optionAdd('option_template', 'options_added'); return false;"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a></td>
                </tr>
                <tr class="inline-source">
                   <td class="set_enabled"><input type="hidden" rel=""></td>
@@ -494,11 +494,11 @@
                   <td class="price"><input type="hidden" rel=""></td>
                   <td class="absolute_price"><input type="hidden" rel=""></td>
                   <td class="weight"><input type="hidden" rel=""></td>
-                  <td align="center"><a href="#" class="remove dynamic"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
+                  <td style="text-align:center"><a href="#" class="remove dynamic"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
                </tr>
                <tr id="option_template" class="dynamic">
-                  <td align="center" class="set_enabled"><input type="checkbox" class="set_enabled" name="option_add[set_enabled][]" value="1"></td>
-                  <td align="center" class="matrix_include"><input type="checkbox" name="option_add[matrix_include][]" value="1"></td>
+                  <td style="text-align:center" class="set_enabled"><input type="checkbox" class="set_enabled" name="option_add[set_enabled][]" value="1"></td>
+                  <td style="text-align:center" class="matrix_include"><input type="checkbox" name="option_add[matrix_include][]" value="1"></td>
                   <td class="name"><input type="hidden" name="option_add[value][]" value="" disabled="disabled"></td>
                   <td class="set_name">{$LANG.common.none}</td>
                   <td class="default" align="center"><input type="checkbox" name="option_add[default][]" value="1" disabled="disabled"></td>
@@ -506,7 +506,7 @@
                   <td class="price"><input type="hidden" name="option_add[price][]" value="" disabled="disabled"></td>
                   <td class="absolute_price" align="center"><input type="checkbox" name="option_add[absolute_price][]" value="1" disabled="disabled"></td>
                   <td class="weight"><input type="hidden" name="option_add[weight][]" value="" disabled="disabled"></td>
-                  <td align="center"><a href="#" class="remove" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
+                  <td style="text-align:center"><a href="#" class="remove" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
                </tr>
             </tfoot>
          </table>
@@ -563,7 +563,7 @@
             {foreach from=$OPTIONS_MATRIX.all_possible item=row}
             <tr>
                <td>{$row.options_values}</td>
-               <td align="center"><input type="hidden" id="use_stock_{$row.options_identifier}" name="option_matrix[{$row.options_identifier}][use_stock]" value="{$OPTIONS_MATRIX.existing.{$row.options_identifier}.use_stock}" class="toggle"></td>
+               <td style="text-align:center"><input type="hidden" id="use_stock_{$row.options_identifier}" name="option_matrix[{$row.options_identifier}][use_stock]" value="{$OPTIONS_MATRIX.existing.{$row.options_identifier}.use_stock}" class="toggle"></td>
                <td><input type="text" name="option_matrix[{$row.options_identifier}][stock_level]" class="textbox number" value="{$OPTIONS_MATRIX.existing.{$row.options_identifier}.stock_level}"></td>
                <td><input type="text" name="option_matrix[{$row.options_identifier}][product_code]" class="textbox number" value="{$OPTIONS_MATRIX.existing.{$row.options_identifier}.product_code}"></td>
                <td><input type="text" name="option_matrix[{$row.options_identifier}][upc]" class="textbox number" value="{$OPTIONS_MATRIX.existing.{$row.options_identifier}.upc}"></td>

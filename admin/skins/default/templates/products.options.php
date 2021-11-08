@@ -27,18 +27,18 @@
             <tbody class="reorder-list">
                {foreach from=$GROUPS item=group}
                <tr>
-                  <td align="center"><a href="#" class="handle"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/updown.gif" title="{$LANG.ui.drag_reorder}"></a>
+                  <td style="text-align:center"><a href="#" class="handle"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/updown.gif" title="{$LANG.ui.drag_reorder}"></a>
                      <input type="hidden" name="group_priority[]" value="{$group.id}">
                   </td>
-                  <td align="center"><input type="hidden" name="edit_group[{$group.id}][option_required]" id="status_{$group.id}" value="{$group.required}" class="toggle"></td>
+                  <td style="text-align:center"><input type="hidden" name="edit_group[{$group.id}][option_required]" id="status_{$group.id}" value="{$group.required}" class="toggle"></td>
                   <td><span class="editable" name="edit_group[{$group.id}][option_name]">{$group.name}</span></td>
                   <td><span class="editable select" name="edit_group[{$group.id}][option_type]">{$group.type_name}</span></td>
                   <td><span class="editable" name="edit_group[{$group.id}][option_description]">{$group.description}</span>&nbsp;</td>
-                  <td align="center"><a href="{$group.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
+                  <td style="text-align:center"><a href="{$group.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
                </tr>
                {foreachelse}
                <tr>
-                  <td align="center" colspan="6">{$LANG.catalogue.no_option_groups}</td>
+                  <td style="text-align:center" colspan="6">{$LANG.catalogue.no_option_groups}</td>
                </tr>
                {/foreach}
             </tbody>

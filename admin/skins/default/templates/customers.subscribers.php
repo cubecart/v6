@@ -37,11 +37,11 @@
             <tr>
                <td><input type="checkbox" name="rem_subscriber[{$subscriber.subscriber_id}]" value="1" class="subscribers"></td>
                <td>{if $subscriber.customer_id > 0}<a href="?_g=customers&action=edit&customer_id={$subscriber.customer_id}">{$subscriber.email}</a>{else}{$subscriber.email}{/if}</td>
-               <td align="center">{$subscriber.ip_address}</td>
-               <td align="center">{$subscriber.date}</td>
-               <td align="center">{if $subscriber.imported}<i class="fa fa-check"></i>{else}<i class="fa fa-times"></i>{/if}</td>
-               <td align="center">{if $subscriber.dbl_opt}<i class="fa fa-check"></i>{else}<i class="fa fa-times"></i>{/if}</td>
-               <td align="center"><a href="#" onclick="$.colorbox({ href:'{$STORE_URL}/{$SKIN_VARS.admin_file}?_g=xml&function=subscriber_log&email={$subscriber.email|escape:'url'}'})">{$LANG.common.log}</a> <a href="?_g=customers&node=subscribers&delete={$subscriber.subscriber_id}&token={$SESSION_TOKEN}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
+               <td style="text-align:center">{$subscriber.ip_address}</td>
+               <td style="text-align:center">{$subscriber.date}</td>
+               <td style="text-align:center">{if $subscriber.imported}<i class="fa fa-check"></i>{else}<i class="fa fa-times"></i>{/if}</td>
+               <td style="text-align:center">{if $subscriber.dbl_opt}<i class="fa fa-check"></i>{else}<i class="fa fa-times"></i>{/if}</td>
+               <td style="text-align:center"><a href="#" onclick="$.colorbox({ href:'{$STORE_URL}/{$SKIN_VARS.admin_file}?_g=xml&function=subscriber_log&email={$subscriber.email|escape:'url'}'})">{$LANG.common.log}</a> <a href="?_g=customers&node=subscribers&delete={$subscriber.subscriber_id}&token={$SESSION_TOKEN}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
             </tr>
             {/foreach}
          </tbody>
@@ -120,32 +120,32 @@
             <tbody>
                   <tr>
                   <td>{literal}{$EMAIL_ADDRESS}{/literal}</td>
-                  <td align="center"><i class="fa fa-check" alt="{$LANG.common.yes}"></i></td>
+                  <td style="text-align:center"><i class="fa fa-check" alt="{$LANG.common.yes}"></i></td>
                   <td>{$LANG.user.email_address} {$LANG.email.example_email}</td>
                   </tr>
                   <tr>
                   <td>{literal}{$FULL_NAME_LONG}{/literal}</td>
-                  <td align="center"><i class="fa fa-times" alt="{$LANG.common.no}"></i></td>
+                  <td style="text-align:center"><i class="fa fa-times" alt="{$LANG.common.no}"></i></td>
                   <td>{$LANG.user.fullname_long} {$LANG.email.example_fullname_long}</td>
                   </tr>
                   <tr>
                   <td>{literal}{$FULL_NAME_SHORT}{/literal}</td>
-                  <td align="center"><i class="fa fa-times" alt="{$LANG.common.no}"></i></td>
+                  <td style="text-align:center"><i class="fa fa-times" alt="{$LANG.common.no}"></i></td>
                   <td>{$LANG.user.fullname_short} {$LANG.email.example_fullname_short}</td>
                   </tr>
                   <tr>
                   <td>{literal}{$TITLE}{/literal}</td>
-                  <td align="center"><i class="fa fa-times" alt="{$LANG.common.no}"></i></td>
+                  <td style="text-align:center"><i class="fa fa-times" alt="{$LANG.common.no}"></i></td>
                   <td>{$LANG.user.title} {$LANG.email.example_title}</td>
                   </tr>
                   <tr>
                   <td>{literal}{$FIRST_NAME}{/literal}</td>
-                  <td align="center"><i class="fa fa-times" alt="{$LANG.common.no}"></i></td>
+                  <td style="text-align:center"><i class="fa fa-times" alt="{$LANG.common.no}"></i></td>
                   <td>{$LANG.user.name_first} {$LANG.email.example_name_first}</td>
                   </tr>
                   <tr>
                   <td>{literal}{$LAST_NAME}{/literal}</td>
-                  <td align="center"><i class="fa fa-times" alt="{$LANG.common.no}"></i></td>
+                  <td style="text-align:center"><i class="fa fa-times" alt="{$LANG.common.no}"></i></td>
                   <td>{$LANG.user.name_first} {$LANG.email.example_name_last}</td>
                   </tr>
             </tbody>

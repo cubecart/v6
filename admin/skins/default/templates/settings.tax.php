@@ -40,10 +40,10 @@
          <tbody>
             {foreach from=$TAX_DETAILS item=detail}
             <tr>
-               <td align="center"><input type="hidden" name="detail[{$detail.id}][status]" id="detail_{$detail.id}" value="{$detail.status}" class="toggle"></td>
+               <td style="text-align:center"><input type="hidden" name="detail[{$detail.id}][status]" id="detail_{$detail.id}" value="{$detail.status}" class="toggle"></td>
                <td><span class="editable" name="detail[{$detail.id}][name]">{$detail.name}</span></td>
                <td><span class="editable" name="detail[{$detail.id}][display]">{$detail.display}</span></td>
-               <td align="center"><a href="{$VAL_SELF}&delete_detail={$detail.id}&token={$SESSION_TOKEN}" class="delete" title="{$LANG.settings.tax_delete}" ><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
+               <td style="text-align:center"><a href="{$VAL_SELF}&delete_detail={$detail.id}&token={$SESSION_TOKEN}" class="delete" title="{$LANG.settings.tax_delete}" ><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
             </tr>
             {/foreach}
          </tbody>
@@ -83,19 +83,19 @@
             <tbody>
                {foreach from=$TAX_RULES item=rule}
                <tr>
-                  <td align="center"><input type="hidden" name="rule[{$rule.id}][active]" id="rule_{$rule.id}" value="{$rule.active}" class="toggle"></td>
+                  <td style="text-align:center"><input type="hidden" name="rule[{$rule.id}][active]" id="rule_{$rule.id}" value="{$rule.active}" class="toggle"></td>
                   <td>{$rule.class}</td>
                   <td>{$rule.detail}</td>
                   <td>{$rule.country}</td>
                   <td>{$rule.state}</td>
-                  <td align="center"><input type="hidden" name="rule[{$rule.id}][goods]" id="goods_{$rule.id}" value="{$rule.goods}" class="toggle"></td>
-                  <td align="center"><input type="hidden" name="rule[{$rule.id}][shipping]" id="shipping_{$rule.id}" value="{$rule.shipping}" class="toggle"></td>
+                  <td style="text-align:center"><input type="hidden" name="rule[{$rule.id}][goods]" id="goods_{$rule.id}" value="{$rule.goods}" class="toggle"></td>
+                  <td style="text-align:center"><input type="hidden" name="rule[{$rule.id}][shipping]" id="shipping_{$rule.id}" value="{$rule.shipping}" class="toggle"></td>
                   <td nowrap="nowrap"><input type="text" name="rule[{$rule.id}][tax_percent]" class="textbox number" style="text-align: right;" value="{$rule.tax_percent}"> %</td>
-                  <td align="center"><a href="{$VAL_SELF}&delete_rule={$rule.id}&token={$SESSION_TOKEN}" class="delete" title="{$LANG.notification.confirm_delete}" ><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
+                  <td style="text-align:center"><a href="{$VAL_SELF}&delete_rule={$rule.id}&token={$SESSION_TOKEN}" class="delete" title="{$LANG.notification.confirm_delete}" ><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
                </tr>
                {foreachelse}
                <tr>
-                  <td align="center" colspan="9">{$LANG.form.none}</td>
+                  <td style="text-align:center" colspan="9">{$LANG.form.none}</td>
                </tr>
                {/foreach}
             </tbody>

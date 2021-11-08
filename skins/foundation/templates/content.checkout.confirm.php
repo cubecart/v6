@@ -62,9 +62,9 @@
       {$BILLING.country_name}
       <h3>{$LANG.account.contact_details}</h3>
       <table>
-        <tr><td align="center"><svg class="icon"><use xlink:href="#icon-envelope"></use></svg></td><td>{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize} &lt;{$USER.email}&gt;</td></tr>
-        <tr><td align="center"><svg class="icon"><use xlink:href="#icon-phone"></use></svg></td><td>{$USER.phone}</td></tr>
-        {if !empty($USER.mobile)}<tr><td align="center"><svg class="icon"><use xlink:href="#icon-mobile"></use></svg></td><td>{$USER.mobile}</td></tr>{/if}
+        <tr><td style="text-align:center"><svg class="icon"><use xlink:href="#icon-envelope"></use></svg></td><td>{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize} &lt;{$USER.email}&gt;</td></tr>
+        <tr><td style="text-align:center"><svg class="icon"><use xlink:href="#icon-phone"></use></svg></td><td>{$USER.phone}</td></tr>
+        {if !empty($USER.mobile)}<tr><td style="text-align:center"><svg class="icon"><use xlink:href="#icon-mobile"></use></svg></td><td>{$USER.mobile}</td></tr>{/if}
       </table>
    </div>
    <div class="large-6 columns">

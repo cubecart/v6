@@ -29,17 +29,17 @@
 	  
 	  {foreach from=$CATEGORIES item=category}
 	    <tr>
-	      <td align="center">
+	      <td style="text-align:center">
 	        <strong>{$category.cat_id}</strong>
 	      </td>
-	      <td align="center">
+	      <td style="text-align:center">
 	        <a href="#" class="handle"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/updown.gif" title="{$LANG.ui.drag_reorder}"></a>
 	        <input type="hidden" name="order[]" value="{$category.cat_id}">
 	      </td>
-	      <td align="center">
+	      <td style="text-align:center">
 	        <input type="hidden" name="visible[{$category.cat_id}]" id="catv_{$category.cat_id}" value="{$category.visible}" class="toggle">
 	      </td>
-	      <td align="center">
+	      <td style="text-align:center">
 	        <input type="hidden" name="status[{$category.cat_id}]" id="cat_{$category.cat_id}" value="{$category.status}" class="toggle">
 	      </td>
 	      <td>
@@ -49,7 +49,7 @@
 		    {$category.cat_name}
 		    {/if}
 	      </td>
-	      <td align="center" class="language_list">
+	      <td style="text-align:center" class="language_list">
 	    	{foreach from=$category.translations item=translation}
 	  	    <a href="{$translation.edit}"><img src="language/flags/{$translation.language}.png" alt="{$translation.language}" title="{$translation.language}" class="flag"></a>
 	  	    {/foreach}

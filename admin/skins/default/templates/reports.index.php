@@ -32,16 +32,16 @@
 		{foreach from=$REPORT_DATE item=data}
 		<tr>{$data.value}
 		  <td nowrap="nowrap"><a href="?_g=orders&action=edit&order_id={$data.cart_order_id}">{if $CONFIG.oid_mode=='i'}{$data.{$CONFIG.oid_col}}{else}{$data.cart_order_id}{/if}</a></td>
-		  <td align="right">{$data.subtotal}</td>
-		  <td align="right">{$data.discount}</td>
-		  <td align="right">{$data.shipping}</td>
-		  <td align="right">{$data.total_tax}</td>
-		  <td align="right">{$data.total}</td>
-		  <td align="left"><a href="?_g=customers&action=edit&customer_id={$data.customer_id}">{$data.first_name|capitalize} {$data.last_name|capitalize}</a></td>
+		  <td style="text-align:right">{$data.subtotal}</td>
+		  <td style="text-align:right">{$data.discount}</td>
+		  <td style="text-align:right">{$data.shipping}</td>
+		  <td style="text-align:right">{$data.total_tax}</td>
+		  <td style="text-align:right">{$data.total}</td>
+		  <td style="text-align:left"><a href="?_g=customers&action=edit&customer_id={$data.customer_id}">{$data.first_name|capitalize} {$data.last_name|capitalize}</a></td>
 		  <td>{$data.country}</td>
 		  <td>{$data.state}</td>
 		  <td>{$data.status}</td>
-		  <td align="center">{$data.date}</td>
+		  <td style="text-align:center">{$data.date}</td>
 		</tr>
 		{foreachelse}
 		<tr><td colspan="11" align="center"><strong>{$LANG.common.error_no_results}</strong></td></tr>
@@ -49,13 +49,13 @@
 	  </tbody>
 	  <tfoot>
 		<tr class="foot" style="font-weight: bold;">
-		  <td align="right">{$TALLY.orders} {if $TALLY.orders==1}{$LANG.customer.order_count_single}{else}{$LANG.customer.order_count}{/if}</td>
-		  <td align="right">{$TALLY.subtotal}</td>
-		  <td align="right">{$TALLY.discount}</td>
-		  <td align="right">{$TALLY.shipping}</td>
-		  <td align="right">{$TALLY.total_tax}</td>
-		  <td align="right">{$TALLY.total}</td>
-		  <td align="center" colspan="6">&nbsp;</td>
+		  <td style="text-align:right">{$TALLY.orders} {if $TALLY.orders==1}{$LANG.customer.order_count_single}{else}{$LANG.customer.order_count}{/if}</td>
+		  <td style="text-align:right">{$TALLY.subtotal}</td>
+		  <td style="text-align:right">{$TALLY.discount}</td>
+		  <td style="text-align:right">{$TALLY.shipping}</td>
+		  <td style="text-align:right">{$TALLY.total_tax}</td>
+		  <td style="text-align:right">{$TALLY.total}</td>
+		  <td style="text-align:center" colspan="6">&nbsp;</td>
 		</tr>
 	  </tfoot>
 	</table>

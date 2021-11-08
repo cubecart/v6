@@ -28,11 +28,11 @@
 	  <tbody>
 		{foreach from=$COUPONS item=coupon}
 		<tr>
-		  <td align="center"><input type="hidden" id="status_{$coupon.coupon_id}" name="status[{$coupon.coupon_id}]" value="{$coupon.status}" class="toggle"></td>
+		  <td style="text-align:center"><input type="hidden" id="status_{$coupon.coupon_id}" name="status[{$coupon.coupon_id}]" value="{$coupon.status}" class="toggle"></td>
 		  <td><a href="{$coupon.link_edit}" class="edit" title="{$LANG.common.edit}">{$coupon.code}</a></td>
 		  <td>{$coupon.value}</td>
 		  <td>{$coupon.expires}</td>
-		  <td align="center">{$coupon.count} / {$coupon.allowed_uses}</td>
+		  <td style="text-align:center">{$coupon.count} / {$coupon.allowed_uses}</td>
 		  <td>
 			<a href="{$coupon.link_edit}" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
 			<a href="{$coupon.link_delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
@@ -40,7 +40,7 @@
 		</tr>
 		{foreachelse}
 		<tr>
-		  <td align="center" colspan="6">{$LANG.catalogue.notify_coupons_none}</td>
+		  <td style="text-align:center" colspan="6">{$LANG.catalogue.notify_coupons_none}</td>
 		</tr>
 		{/foreach}
 	  </tbody>
@@ -64,7 +64,7 @@
 		{if isset($CERTIFICATES)}
 		{foreach from=$CERTIFICATES item=certificate}
 		<tr>
-		  <td align="center"><input type="hidden" id="status_{$certificate.coupon_id}" name="status[{$certificate.coupon_id}]" value="{$certificate.status}" class="toggle"></td>
+		  <td style="text-align:center"><input type="hidden" id="status_{$certificate.coupon_id}" name="status[{$certificate.coupon_id}]" value="{$certificate.status}" class="toggle"></td>
 		  <td>{$certificate.code}</td>
 		  <td>{$certificate.value}</td>
 		  <td>{$certificate.expires}</td>
@@ -73,7 +73,7 @@
 		{/foreach}
 		{else}
 		<tr>
-		  <td align="center" colspan="5">{$LANG.catalogue.notify_certs_none}</td>
+		  <td style="text-align:center" colspan="5">{$LANG.catalogue.notify_certs_none}</td>
 		</tr>
 		{/if}
 	  </tbody>

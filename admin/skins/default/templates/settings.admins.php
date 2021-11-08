@@ -68,18 +68,18 @@
 	  {foreach from=$SECTIONS item=section}
 		<tr>
 		  <td><strong>{$section.name}</strong> - {$section.info}</td>
-		  <td align="center"><input type="checkbox" class="read" name="permission[{$section.id}][]" value="1" {$section.read}></td>
-		  <td align="center"><input type="checkbox" class="edit" name="permission[{$section.id}][]" value="2" {$section.edit}></td>
-		  <td align="center"><input type="checkbox" class="delete" name="permission[{$section.id}][]" value="4" {$section.delete}></td>
+		  <td style="text-align:center"><input type="checkbox" class="read" name="permission[{$section.id}][]" value="1" {$section.read}></td>
+		  <td style="text-align:center"><input type="checkbox" class="edit" name="permission[{$section.id}][]" value="2" {$section.edit}></td>
+		  <td style="text-align:center"><input type="checkbox" class="delete" name="permission[{$section.id}][]" value="4" {$section.delete}></td>
 		</tr>
 	  {/foreach}
 	  </tbody>
 	  <tfoot>
 		<tr>
-		  <td align="right">{$LANG.admins.permission_all}</td>
-		  <td align="center"><input type="checkbox" class="check-all" rel="read"></td>
-		  <td align="center"><input type="checkbox" class="check-all" rel="edit"></td>
-		  <td align="center"><input type="checkbox" class="check-all" rel="delete"></td>
+		  <td style="text-align:right">{$LANG.admins.permission_all}</td>
+		  <td style="text-align:center"><input type="checkbox" class="check-all" rel="read"></td>
+		  <td style="text-align:center"><input type="checkbox" class="check-all" rel="edit"></td>
+		  <td style="text-align:center"><input type="checkbox" class="check-all" rel="delete"></td>
 		</tr>
 	  </tfoot>
 	</table>

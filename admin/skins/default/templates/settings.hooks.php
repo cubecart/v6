@@ -156,8 +156,8 @@
                 <td  align="center" width="10"><input type="hidden" name="status[{$hook.hook_id}]" value="{$hook.enabled}" id="status_{$hook.hook_id}" class="toggle"></td>
                 <td><a href="{$hook.edit}">{$hook.hook_name}</a></td>
                 <td class="courier">{$hook.trigger}</td>
-                <td align="center">{$hook.priority}</td>
-                <td align="center"><a href="{$hook.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a></td>
+                <td style="text-align:center">{$hook.priority}</td>
+                <td style="text-align:center"><a href="{$hook.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a></td>
             </tr>
             {/foreach}
          </tbody>

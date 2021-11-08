@@ -23,8 +23,8 @@
 	{foreach $REDIRECTS item=redirect}
 		<tr>
 			<td>{$redirect.path}</td>
-			<td align="center">{$redirect.redirect}</td>
-			<td align="center"><a href="?_g=settings&node=redirects&delete={$redirect.id}&item_id={$redirect.item_id}&type={$redirect.type}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></td>
+			<td style="text-align:center">{$redirect.redirect}</td>
+			<td style="text-align:center"><a href="?_g=settings&node=redirects&delete={$redirect.id}&item_id={$redirect.item_id}&type={$redirect.type}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></td>
 		</tr>
 	{/foreach}
 	</tbody>

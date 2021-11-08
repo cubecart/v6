@@ -30,7 +30,7 @@
          </tr>
          {foreach from=$LANGUAGES item=language}
          <tr>
-            <td align="center"><input type="hidden" name="status[{$language.code}]" id="status_{$language.code}" value="{$language.status}" class="toggle"></td>
+            <td style="text-align:center"><input type="hidden" name="status[{$language.code}]" id="status_{$language.code}" value="{$language.status}" class="toggle"></td>
             <td><img src="{$language.flag}" alt="{$language.title}"></td>
             <td><a href="{$language.edit}">{$language.title}</a></td>
             <td class="actions">

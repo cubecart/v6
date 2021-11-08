@@ -70,16 +70,16 @@
                      <th align="center" width="50%" class="nostripe">{$LANG.dashboard.title_sales_average}</th>
                   </tr>
                   <tr>
-                     <td align="center" width="50%" class="nostripe">{$QUICK_STATS.total_sales}</td>
-                     <td align="center" width="50%" class="nostripe">{$QUICK_STATS.ave_order}</td>
+                     <td style="text-align:center" width="50%" class="nostripe">{$QUICK_STATS.total_sales}</td>
+                     <td style="text-align:center" width="50%" class="nostripe">{$QUICK_STATS.ave_order}</td>
                   </tr>
                   <tr>
                      <th align="center" width="50%" class="nostripe">{$LANG.dashboard.title_month_this}</th>
                      <th align="center" width="50%" class="nostripe">{$LANG.dashboard.title_month_last}</th>
                   </tr>
                   <tr>
-                     <td align="center" width="50%" class="nostripe">{$QUICK_STATS.this_month}</td>
-                     <td align="center" width="50%" class="nostripe">{$QUICK_STATS.last_month}</td>
+                     <td style="text-align:center" width="50%" class="nostripe">{$QUICK_STATS.this_month}</td>
+                     <td style="text-align:center" width="50%" class="nostripe">{$QUICK_STATS.last_month}</td>
                   </tr>
                </table>
             </td>
@@ -139,9 +139,9 @@
          <tbody>
             {foreach from=$ORDERS item=order}
             <tr>
-               <td align="center"><input type="checkbox" id="" name="multi-order[]" value="{$order.cart_order_id}" class="all-orders"></td>
+               <td style="text-align:center"><input type="checkbox" id="" name="multi-order[]" value="{$order.cart_order_id}" class="all-orders"></td>
                <td><a href="?_g=orders&action=edit&order_id={$order.cart_order_id}&source=dashboard">{if $CONFIG.oid_mode=='i'}{$order.{$CONFIG.oid_col}}{else}{$order.cart_order_id}{/if}</a></td>
-               <td align="center">
+               <td style="text-align:center">
                   {append "cust_type" "registered" index="1"}
                   {append "cust_type" "unregistered" index="2"}
                   <i class="fa fa-user {$cust_type[$order.type]}" title="{$LANG.customer[$order.cust_type[$order.type]]}"></i>
@@ -156,7 +156,7 @@
                <td class="{$order.status_class}">{$order.status}</td>
                <td>{$order.date}</td>
                <td>{$order.total}</td>
-               <td align="right">
+               <td style="text-align:right">
                   {if isset($order.notes)}
                   <a href="?_g=orders&action=edit&order_id={$order.cart_order_id}&source=dashboard#order_notes" title="{foreach $order.notes as $note}{$note.time} {$note.content}{"\r\n"}{/foreach}"><i class="fa fa-sticky-note" title="{$LANG.common.notes}" aria-hidden="true"></i></a>
                   {/if}
@@ -275,7 +275,7 @@
          <tr>
             <td><a href="?_g=products&action=edit&product_id={$warn.product_id}{if $warn.M_use_stock==1}#Options{/if}">{$warn.name}</a></td>
             <td>{$warn.product_code}</td>
-            <td align="center"  width="65" nowrap="nowrap">{if $warn.M_use_stock==1}{$warn.M_stock_level}{else}{$warn.I_stock_level}{/if}{if $warn.cached_name}
+            <td style="text-align:center"  width="65" nowrap="nowrap">{if $warn.M_use_stock==1}{$warn.M_stock_level}{else}{$warn.I_stock_level}{/if}{if $warn.cached_name}
                - {$warn.cached_name}
                {/if}
             </td>

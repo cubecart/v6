@@ -34,8 +34,8 @@
 	  <tbody>
 		{foreach from=$CUSTOMERS item=customer}
 		<tr>
-		  <td align="center"><input type="hidden" name="status[{$customer.customer_id}]" id="status_{$customer.customer_id}" value="{$customer.status}" class="toggle"></td>
-		  <td align="center">
+		  <td style="text-align:center"><input type="hidden" name="status[{$customer.customer_id}]" id="status_{$customer.customer_id}" value="{$customer.status}" class="toggle"></td>
+		  <td style="text-align:center">
 		  	{if $customer.type==1}
 		  	<i class="fa fa-user registered" title="{$LANG.customer.title_key_registered}"></i>
 		  	{elseif $customer.type==2}
@@ -45,14 +45,14 @@
 		  <td><a href="{$customer.edit}">{$customer.last_name}, {$customer.first_name}</a> {if !empty($customer.groups)}({$customer.groups}){/if}</td>
 		  <td>{$customer.email}</td>
 		  <td>{$customer.registered}</td>
-		  <td align="center">
+		  <td style="text-align:center">
 		  {if $customer.order_count>0}
 		  	<a href="?_g=orders&customer_id={$customer.customer_id}">{$customer.order_count}</a>
 		  {else}
 		  	{$customer.order_count}
 		  {/if}
 		  </td>
-		  <td align="center">
+		  <td style="text-align:center">
 		  	<a href="{$customer.signinas_url}" target="_blank" onclick="{$customer.signinas_onclick}"><i class="fa fa-sign-in" title="{$customer.signinas_name}"></i></a>
 			<a href="{$customer.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
 			<a href="{$customer.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>

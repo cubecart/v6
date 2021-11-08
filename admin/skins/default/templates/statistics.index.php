@@ -109,7 +109,7 @@
       <tbody>
          {foreach from=$PRODUCT_VIEWS item=view}
          <tr>
-            <td align="center">{$view.key}</td>
+            <td style="text-align:center">{$view.key}</td>
             <td>{$view.name}</td>
             <td>{$view.popularity}</td>
             <td>{$view.percent}</td>
@@ -140,7 +140,7 @@
       <tbody>
          {foreach from=$SEARCH_TERMS item=term}
          <tr>
-            <td align="center">{$term.key}</td>
+            <td style="text-align:center">{$term.key}</td>
             <td>{$term.searchstr}</td>
             <td>{$term.hits}</td>
             <td>{$term.percent}</td>
@@ -175,7 +175,7 @@
       <tbody>
          {foreach from=$BEST_CUSTOMERS item=customer}
          <tr>
-            <td align="center">{$customer.key}</td>
+            <td style="text-align:center">{$customer.key}</td>
             <td><a href="?_g=customers&node=index&action=edit&customer_id={$customer.customer_id}">{$customer.last_name|capitalize}, {$customer.first_name|capitalize}</a></td>
             <td>{$customer.expenditure}</td>
             <td>{$customer.percent}</td>
@@ -217,7 +217,7 @@
       <tbody>
          {foreach from=$USERS_ONLINE item=user}
          <tr>
-            <td align="center"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/{$user.is_admin}.png"></td>
+            <td style="text-align:center"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/{$user.is_admin}.png"></td>
             <td>
                <strong>
                {if !empty($user.customer_id)}
@@ -232,8 +232,8 @@
                {/if}
             </td>
             <td>{$user.location}{if $user.location|strpos:"_a=404" === false} <a href="{$user.location}" target="_blank">&raquo;</a>{/if}</td>
-            <td align="center">{$user.session_start}</td>
-            <td align="center"  >{$user.session_last}</td>
+            <td style="text-align:center">{$user.session_start}</td>
+            <td style="text-align:center"  >{$user.session_last}</td>
             <td>{$user.session_length}</td>
          </tr>
          {/foreach}

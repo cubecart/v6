@@ -70,10 +70,10 @@
 	  {if $ORDER_TRANSACTIONS}{foreach from=$ORDER_TRANSACTIONS item=transaction}
 	  <tr>
 		<td><!--<a href="{$transaction.link}">{$transaction.order_id}</a><br>-->{$transaction.trans_id}</td>
-		<td align="center">{$transaction.status}</td>
-		<td align="center">{$transaction.amount}</td>
-		<td align="center">{$transaction.gateway}</td>
-		<td align="center">{$transaction.time}</td>
+		<td style="text-align:center">{$transaction.status}</td>
+		<td style="text-align:center">{$transaction.amount}</td>
+		<td style="text-align:center">{$transaction.gateway}</td>
+		<td style="text-align:center">{$transaction.time}</td>
 		<td>{$transaction.notes}</td>
 	  </tr>
 	  {/foreach}

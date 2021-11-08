@@ -24,7 +24,7 @@
 		{foreach from=$EMAIL_CONTENTS item=content}
 		<tr>
 		  <td><strong>{$content.type}</strong></td>
-		  <td align="center" class="language_list">
+		  <td style="text-align:center" class="language_list">
 		  	{if isset($content.translations)}
 			{foreach from=$content.translations item=translation}
 			<a href="{$translation.edit}"><img src="language/flags/{$translation.language}.png" alt="{$translation.language}" class="flag"></a>
@@ -56,7 +56,7 @@
 		</tr>
 	  {foreach from=$EMAIL_TEMPLATES item=template}
 	  <tr>
-		<td align="center">
+		<td style="text-align:center">
 			<input type="radio" name="template_default" id="template_default_{$template.template_id}" value="{$template.template_id}"{if $template.template_default==1} checked="checked"{/if}>
 		</td>
 		<td><a href="{$template.edit}">{$template.title}</a></td>
@@ -200,7 +200,7 @@
   		  <tr>
   			<td>{$macro.name}</td>
   			<td>{$macro.description}</td>
-  			<td align="center">{$macro.required}</td>
+  			<td style="text-align:center">{$macro.required}</td>
   		  </tr>
   		  {/foreach}
   		</tbody>
@@ -223,7 +223,7 @@
   		  <tr>
   			<td>{$macro.name}</td>
   			<td>{$macro.description}</td>
-  			<td align="center">{$macro.required}</td>
+  			<td style="text-align:center">{$macro.required}</td>
   		  </tr>
   		  {/foreach}
   		</tbody>

@@ -31,24 +31,24 @@
 	  {if isset($DOCUMENTS)}
 	  {foreach from=$DOCUMENTS item=document}
 		<tr>
-		  <td align="center"><a href="#" class="handle"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/updown.gif" title="{$LANG.ui.drag_reorder}"></a></td>
-		  <td align="center">
+		  <td style="text-align:center"><a href="#" class="handle"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/updown.gif" title="{$LANG.ui.drag_reorder}"></a></td>
+		  <td style="text-align:center">
 			<input type="hidden" name="order[]" value="{$document.doc_id}">
 			<input type="hidden" id="status-{$document.doc_id}" name="status[{$document.doc_id}]" value="{$document.doc_status}" class="toggle">
 		  </td>
-		  <td align="center"><img src="{$document.flag}"></td>
+		  <td style="text-align:center"><img src="{$document.flag}"></td>
 		  <td><a href="{$document.link.edit}"{if $document.hide_title==1} class="line-through"{/if}>{$document.doc_name}</a></td>
-		  <td align="center" nowrap="nowrap">
+		  <td style="text-align:center" nowrap="nowrap">
 			{if isset($document.translations)}
 			{foreach from=$document.translations item=translation}
 			<a href="{$translation.link.edit}" class="language_list"><img src="language/flags/{$translation.doc_lang}.png" alt="{$translation.doc_lang}" title="{$translation.doc_lang}" class="flag"></a>
 			{/foreach}
 			{/if}
 		  </td>
-		  <td align="center"><input type="radio" name="terms" value="{$document.doc_id}" {$document.terms}></td>
-		  <td align="center"><input type="radio" name="home" value="{$document.doc_id}" {$document.homepage}></td>
-			<td align="center"><input type="radio" name="privacy" value="{$document.doc_id}" {$document.privacy}></td>
-		  <td align="center">
+		  <td style="text-align:center"><input type="radio" name="terms" value="{$document.doc_id}" {$document.terms}></td>
+		  <td style="text-align:center"><input type="radio" name="home" value="{$document.doc_id}" {$document.homepage}></td>
+			<td style="text-align:center"><input type="radio" name="privacy" value="{$document.doc_id}" {$document.privacy}></td>
+		  <td style="text-align:center">
 			<a href="{$document.link.translate}" title="{$LANG.translate.trans_add}"><i class="fa fa-plus-circle" title="{$LANG.translate.trans_add}"></i></a>
 			<a href="{$document.link.edit}" title="{$LANG.common.edit}" class="edit"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
 			<a href="{$document.link.delete}" title="{$LANG.notification.confirm_delete}" class="delete"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
