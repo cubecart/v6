@@ -261,6 +261,14 @@ $(document).ready(function() {
         $(this).after(d)
     });
 
+    $('#submit_multi').on("click",function() {
+        if($('select[name="multi-action"]').val() == 'delete') {
+            if(!confirm($(this).attr("data-confirm"))) {
+                return false;
+            }          
+        }
+    });
+    
     $("#content_body").on("click", "img.cbs", function() {
         var e = $(this).attr("rel");
         switch ($(e).val()) {

@@ -73,7 +73,7 @@
                      <option value="print">{$LANG.orders.option_print}</option>
                      <option value="delete" style="color: red;">{$LANG.orders.option_delete}</option>
                   </select>
-                  <input type="submit" value="{$LANG.common.go}" name="go" class="tiny">
+                  <input type="submit" value="{$LANG.common.go}" name="go" data-confirm="{$LANG.notification.confirm_delete}" id="submit_multi" class="tiny">
                </td>
             </tr>
             <tr>
