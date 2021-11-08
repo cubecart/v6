@@ -117,6 +117,7 @@
                      </div>
                      <div class="small-8 columns">
                         <button type="submit" value="{$LANG.catalogue.add_to_basket}" class="button small postfix">{$LANG.catalogue.add_to_basket}</button>
+                        <input type="hidden" name="add" value="{$product.product_id}">
                      </div>
                   </div>
                   {elseif !$CATALOGUE_MODE}
