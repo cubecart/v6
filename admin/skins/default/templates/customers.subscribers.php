@@ -45,7 +45,7 @@
             </tr>
             {/foreach}
          </tbody>
-         <tfooter>
+         <tfoot>
             <tr>
                <td><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/select_all.gif" alt=""></td>
                <td>
@@ -57,7 +57,7 @@
                   <input type="submit" value="{$LANG.common.go}" name="go" class="tiny">
                </td>
             </tr>
-         </tfooter>
+         </tfoot>
       </table>
       <p>{$PAGINATION}</p>
       {else}
