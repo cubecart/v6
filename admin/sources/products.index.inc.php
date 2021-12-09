@@ -630,6 +630,7 @@ $smarty_data['list_conditions'] = array (
     'new' => $lang['catalogue']['condition_new'],
     'used' => $lang['catalogue']['condition_used'],
     'refurbished' => $lang['catalogue']['condition_refurbished'],
+    'damaged' => $lang['catalogue']['condition_damaged']
   );
 $GLOBALS['smarty']->assign('CONDITIONS', $smarty_data['list_conditions']);
 

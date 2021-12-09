@@ -278,6 +278,7 @@
     <string name="condition_new" introduced="5.0.0"><![CDATA[New]]></string>
     <string name="condition_used" introduced="5.0.0"><![CDATA[Used]]></string>
     <string name="condition_refurbished" introduced="5.0.0"><![CDATA[Refurbished]]></string>
+    <string name="condition_damaged" introduced="5.4.5"><![CDATA[Damaged]]></string>
     <string name="coupon_code" introduced="5.0.0"><![CDATA[Code]]></string>
     <string name="coupon_shipping" introduced="5.0.0"><![CDATA[Discount applies to shipping cost]]></string>
     <string name="free_coupon_shipping" introduced="6.1.0"><![CDATA[Free shipping]]></string>

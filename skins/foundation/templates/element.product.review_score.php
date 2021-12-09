@@ -10,11 +10,7 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
 {if $PRODUCT.review_score && $CTRL_REVIEW}
-<p itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
-   <meta itemprop="ratingValue" content="{$REVIEW_AVERAGE}">
-   <meta itemprop="reviewCount" content="{$REVIEW_COUNT}">
-   <meta itemprop="bestRating" content="5"/>
-   <meta itemprop="worstRating" content="0"/>
+<p>
    {for $i = 1; $i <= 5; $i++}
    {if $PRODUCT.review_score >= $i}
    <img src="{$STORE_URL}/skins/{$SKIN_FOLDER}/images/star.png" alt="">

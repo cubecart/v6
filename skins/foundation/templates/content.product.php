@@ -10,11 +10,11 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
 {if isset($PRODUCT) && $PRODUCT}
-<div itemscope itemtype="http://schema.org/Product">
+<div>
    <form action="{$VAL_SELF}" method="post" class="add_to_basket">
       <div class="row">
          <div class="small-12 columns">
-            <h1 itemprop="name">{$PRODUCT.name}</h1>
+            <h1>{$PRODUCT.name}</h1>
          </div>
       </div>
       {*
@@ -41,7 +41,7 @@
       </dl>
       <div class="tabs-content">
          {if !empty($PRODUCT.description)}
-         <div class="content active" id="product_info" itemprop="description">
+         <div class="content active" id="product_info">
             {$PRODUCT.description}
          </div>
          {/if}

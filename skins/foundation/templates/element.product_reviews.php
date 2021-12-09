@@ -16,13 +16,12 @@
       {if $REVIEWS}
       <div class="pagination_top"><span class="pagination">{if isset($PAGINATION)}{$PAGINATION}{/if}</span>{$LANG.catalogue.average_rating}: <strong>{$REVIEW_AVERAGE}</strong></div>
       {foreach from=$REVIEWS item=review}
-      <div class="panel" itemprop="review" itemscope itemtype="http://schema.org/Review">
-         <meta itemprop="datePublished" content="{$review.date_schema}">
+      <div class="panel">
          <div class="row">
             <div class="medium-9 columns">
                <h3>{$review.title}</h3>
             </div>
-            <div class="medium-3 columns text-right" itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+            <div class="medium-3 columns text-right">
                {for $i = 1; $i <= 5; $i++}
                {if $i <= $review.rating}
                <img src="{$STORE_URL}/skins/{$SKIN_FOLDER}/images/star.png" alt="{$i}">
@@ -30,9 +29,6 @@
                <img src="{$STORE_URL}/skins/{$SKIN_FOLDER}/images/star_off.png" alt="{$i}">
                {/if}
                {/for}
-               <meta itemprop="worstRating" content="0">
-               <meta itemprop="ratingValue" content="{$review.rating}">
-               <meta itemprop="bestRating" content="5">
             </div>
          </div>
          <div class="row review_row" rel="{$review.id}_{$review.gravatar}">
@@ -42,7 +38,7 @@
             </div>
             {/if}
             <div class="{if $review.gravatar_exists}small-9 medium-10{else}small-12{/if} columns review_copy">
-            <blockquote><span itemprop="description">{$review.review}</span><cite><span itemprop="author" itemscope itemtype="https://schema.org/Person"><span itemprop="name">{$review.name}</span></span>{if !empty($review.date)} ({$review.date}){/if}</cite></blockquote>
+            <blockquote>{$review.review}<cite>{$review.name}{if !empty($review.date)} ({$review.date}){/if}</cite></blockquote>
             </div>
          </div>
       </div>
