@@ -67,8 +67,9 @@ if ($error_log && is_array($error_log)) {
     }
     $admin_error_log = $smarty_data['error_log'];
 }
-
-$GLOBALS['smarty']->assign('ADMIN_ERROR_LOG', $admin_error_log);
+if($admin_error_log) {
+    $GLOBALS['smarty']->assign('ADMIN_ERROR_LOG', $admin_error_log);
+}
 $GLOBALS['smarty']->assign('PAGINATION_ADMIN_ERROR_LOG', $GLOBALS['db']->pagination($count, $per_page, $page, 5, 'page', 'admin_error_log'));
 
 if (Admin::getInstance()->superUser()) {
