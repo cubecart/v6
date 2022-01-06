@@ -1595,13 +1595,6 @@ class GUI
                 'icon'	=> 'flickr'
             );
         }
-        if (!empty($config['google_plus'])) {
-            $vars[] = array(
-                'url' => (filter_var($config['google_plus'], FILTER_VALIDATE_URL)) ? $config['google_plus'] : 'https://plus.google.com/'.$config['google_plus'],
-                'name' => 'Google+',
-                'icon'	=> 'google-plus-square'
-            );
-        }
         if (!empty($config['instagram'])) {
             $vars[] = array(
                 'url' => (filter_var($config['instagram'], FILTER_VALIDATE_URL)) ? $config['instagram'] : 'http://www.instagram.com/'.$config['instagram'],
