@@ -116,6 +116,7 @@ if (!$GLOBALS['session']->has('version_check') && $request = new Request('www.cu
     $request->cache(true);
     $request->setSSL();
     $request->setUserAgent('CubeCart');
+    $request->customHeaders('CC-Referer: '.CC_STORE_URL);
     
     $request_data = array('version' => CC_VERSION);
 
@@ -123,8 +124,12 @@ if (!$GLOBALS['session']->has('version_check') && $request = new Request('www.cu
     if (is_array($extension_versions)) {
         $extension_check = array();
         foreach ($extension_versions as $v) {
+            $parts = explode('/',$v['dir']);
+            $status = $GLOBALS['db']->select('CubeCart_modules', array('status'), array('module' => $parts[2], 'folder' => $parts[3]));
             if (file_exists(CC_ROOT_DIR.$v['dir'])) {
-                $extension_check[$v['file_id']] = $v['modified'];
+                if($status[0]['status']=='1') {
+                    $extension_check[$v['file_id']] = $v['modified'];
+                }
             } else {
                 $GLOBALS['db']->delete('CubeCart_extension_info', array('file_id' => $v['file_id']));
             }
