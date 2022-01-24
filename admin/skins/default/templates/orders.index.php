@@ -123,7 +123,8 @@
    <div>
       <div id="order_summary" class="tab_content" style="width: 660px;">
          <h3>{$LANG.orders.title_order_summary}</h3>
-         <p><a href="?_g=orders&node=index&print[]={$SUMMARY.cart_order_id}" class="print" target="_blank"><i class="fa fa-print" title="{$LANG.common.print}"></i></a></p>
+         {include file='templates/orders.paypal-tooltip.php'}
+         <p><a href="?_g=orders&node=index&print[]={$SUMMARY.cart_order_id}" class="print" target="_blank"><i class="fa fa-print" title="{$LANG.common.print}"></i> {$LANG.common.print}</a></p>
          {if $CUSTOMER_NOTES}
             <p>&quot;{$CUSTOMER_NOTES}&quot;</p>
          {/if}
