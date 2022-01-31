@@ -35,13 +35,13 @@
       <h2>{$LANG.account.password_change}</h2>
       <p>{$LANG.account.update_your_password}</p>
       <div class="row">
-         <div class="small-12 large-8 columns"><label for="passold" class="show-for-medium-up">{$LANG.user.password_current}</label><input type="password" autocomplete="off" name="passold" id="passold" placeholder="{$LANG.user.password_current}"></div>
+         <div class="small-12 large-8 columns"><label for="passold" class="show-for-medium-up">{$LANG.user.password_current}</label><input type="password" maxlength="64" autocomplete="off" name="passold" id="passold" placeholder="{$LANG.user.password_current}"></div>
       </div>
       <div class="row">
-         <div class="small-12 large-8 columns"><label for="passnew" class="show-for-medium-up">{$LANG.user.password_new}</label><input type="password" autocomplete="off" name="passnew" id="passnew" placeholder="{$LANG.user.password_new}"></div>
+         <div class="small-12 large-8 columns"><label for="passnew" class="show-for-medium-up">{$LANG.user.password_new}</label><input type="password" maxlength="64" autocomplete="off" name="passnew" id="passnew" placeholder="{$LANG.user.password_new}"></div>
       </div>
       <div class="row">
-         <div class="small-12 large-8 columns"><label for="passconf" class="show-for-medium-up">{$LANG.user.password_confirm}</label><input type="password" autocomplete="off" name="passconf" id="passconf" placeholder="{$LANG.user.password_confirm}"></div>
+         <div class="small-12 large-8 columns"><label for="passconf" class="show-for-medium-up">{$LANG.user.password_confirm}</label><input type="password" maxlength="64" autocomplete="off" name="passconf" id="passconf" placeholder="{$LANG.user.password_confirm}"></div>
       </div>
       {/if}
       <div class="row">
@@ -59,3 +59,4 @@
 <div class="hide" id="validate_mobile">{$LANG.account.error_valid_mobile_phone}</div>
 <div class="hide" id="validate_password_mismatch">{$LANG.account.error_password_mismatch}</div>
 <div class="hide" id="validate_password_length">{$LANG.account.error_password_length}</div>
+<div class="hide" id="validate_password_length_max">{$LANG.account.error_password_length_max}</div>

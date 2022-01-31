@@ -34,10 +34,10 @@
       <div class="small-12 large-8 columns"><label for="mobile" class="show-for-medium-up">{$LANG.address.mobile}</label><input type="text" name="mobile" id="mobile"  value="{$DATA.mobile}" placeholder="{$LANG.address.mobile}"></div>
    </div>
    <div class="row">
-      <div class="small-12 large-8 columns"><label for="password" class="show-for-medium-up">{$LANG.account.password}</label><input type="password" autocomplete="off" name="password" id="password" placeholder="{$LANG.account.password} {$LANG.form.required}" required ></div>
+      <div class="small-12 large-8 columns"><label for="password" class="show-for-medium-up">{$LANG.account.password}</label><input type="password" maxlength="64" autocomplete="off" name="password" id="password" placeholder="{$LANG.account.password} {$LANG.form.required}" required ></div>
    </div>
    <div class="row">
-      <div class="small-12 large-8 columns"><label for="passconf" class="show-for-medium-up">{$LANG.account.password_confirm}</label><input type="password" autocomplete="off" name="passconf" id="passconf" placeholder="{$LANG.account.password_confirm}  {$LANG.form.required}" required ></div>
+      <div class="small-12 large-8 columns"><label for="passconf" class="show-for-medium-up">{$LANG.account.password_confirm}</label><input type="password" maxlength="64" autocomplete="off" name="passconf" id="passconf" placeholder="{$LANG.account.password_confirm}  {$LANG.form.required}" required ></div>
    </div>
    {include file='templates/content.recaptcha.php'}
    {if $TERMS_CONDITIONS}
@@ -65,6 +65,7 @@
 <div class="hide" id="validate_terms_agree">{$LANG.account.error_terms_agree}</div>
 <div class="hide" id="validate_password">{$LANG.account.error_password_empty}</div>
 <div class="hide" id="validate_password_length">{$LANG.account.error_password_length}</div>
+<div class="hide" id="validate_password_length_max">{$LANG.account.error_password_length_max}</div>
 <div class="hide" id="validate_password_mismatch">{$LANG.account.error_password_mismatch}</div>
 <div class="hide" id="validate_phone">{$LANG.account.error_valid_phone}</div>
 <div class="hide" id="validate_mobile">{$LANG.account.error_valid_mobile_phone}</div>

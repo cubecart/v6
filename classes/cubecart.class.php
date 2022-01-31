@@ -1113,6 +1113,14 @@ class Cubecart
                     $errors['password'] = true;
                     $error_messages[] = $GLOBALS['language']->account['error_password_mismatch'];
                 }
+                if (isset($_POST['register']) && $_POST['register']==1 && strlen($_POST['password']) < 6) {
+                    $errors['password'] = true;
+                    $error_messages[] = $GLOBALS['language']->account['error_password_length'];
+                }
+                if (isset($_POST['register']) && $_POST['register']==1 && strlen($_POST['password']) > 64) {
+                    $errors['password'] = true;
+                    $error_messages[] = $GLOBALS['language']->account['error_password_length_max'];
+                }
                 if (preg_match("/[a-z]/i", $_POST['user']['phone'])) {
                     $errors['phone'] = true;
                     $error_messages[] = $GLOBALS['language']->account['error_valid_phone'];

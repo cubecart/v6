@@ -25,7 +25,7 @@
          </div>
          <div class="row">
             <div class="small-12 columns">
-               <label for="login-password" class="show-for-medium-up">{$LANG.account.password}</label><input type="password" autocomplete="off" name="password" id="login-password" placeholder="{$LANG.account.password} {$LANG.form.required}" required>
+               <label for="login-password" class="show-for-medium-up">{$LANG.account.password}</label><input type="password" maxlength="64" autocomplete="off" name="password" id="login-password" placeholder="{$LANG.account.password} {$LANG.form.required}" required>
             </div>
          </div>
          <div class="row">
@@ -52,3 +52,4 @@
 </div>
 <div class="hide" id="validate_email">{$LANG.common.error_email_invalid}</div>
 <div class="hide" id="empty_password">{$LANG.account.error_password_empty}</div>
+<div class="hide" id="validate_password_length_max">{$LANG.account.error_password_length_max}</div>

@@ -361,7 +361,21 @@ class User
     public function changePassword()
     {
         //If everything lines up
-        if (Password::getInstance()->getSalted($_POST['passold'], $this->_user_data['salt']) == $this->_user_data['password'] && $_POST['passnew'] === $_POST['passconf']) {
+        if (Password::getInstance()->getSalted($_POST['passold'], $this->_user_data['salt']) == $this->_user_data['password']) {
+            
+            if ($_POST['passnew'] !== $_POST['passconf']) {
+                $GLOBALS['gui']->setError($GLOBALS['language']->account['error_password_mismatch']);
+                return false;
+            }
+            if (strlen($_POST['passnew']) < 6) {
+                $GLOBALS['gui']->setError($GLOBALS['language']->account['error_password_length']);
+                return false;
+            }
+            if (strlen($_POST['passnew']) > 64) {
+                $GLOBALS['gui']->setError($GLOBALS['language']->account['error_password_length_max']);
+                return false;
+            }
+            
             //Change it
             $record = array('password' => Password::getInstance()->getSalted($_POST['passnew'], $this->_user_data['salt']));
             if ($GLOBALS['db']->update('CubeCart_customer', $record, array('customer_id' => (int)$this->_user_data['customer_id']), true)) {
@@ -369,11 +383,12 @@ class User
                 return true;
             } else {
                 $GLOBALS['gui']->setError($GLOBALS['language']->account['error_password_update']);
+                return false;
             }
         } else {
             $GLOBALS['gui']->setError($GLOBALS['language']->account['error_password_update_mismatch']);
+            return false;
         }
-
         return false;
     }
 
@@ -768,6 +783,15 @@ class User
     public function passwordReset($email, $verification, $password)
     {
         if (filter_var($email, FILTER_VALIDATE_EMAIL) && !empty($verification) && !empty($password['password']) && !empty($password['passconf']) && ($password['password'] === $password['passconf'])) {
+            
+            if (strlen($password['password']) < 6) {
+                $GLOBALS['gui']->setError($GLOBALS['language']->account['error_password_length']);
+                return false;
+            }
+            if (strlen($password['password']) > 64) {
+                $GLOBALS['gui']->setError($GLOBALS['language']->account['error_password_length_max']);
+                return false;
+            }
             if (($check = $GLOBALS['db']->select('CubeCart_customer', array('customer_id', 'email'), "`email` = '$email' AND `verify` = '$verification'", false, 1, false, false)) !== false) {
                 // Remove any blocks
                 $GLOBALS['db']->delete('CubeCart_blocker', array('username' => $email));
@@ -828,6 +852,14 @@ class User
         if (!empty($_POST['password'])) {
             if ($_POST['password'] !== $_POST['passconf']) {
                 $GLOBALS['gui']->setError($GLOBALS['language']->account['error_password_mismatch']);
+                $error['pass'] = true;
+            }
+            if (strlen($_POST['password']) < 6) {
+                $GLOBALS['gui']->setError($GLOBALS['language']->account['error_password_length']);
+                $error['pass'] = true;
+            }
+            if (strlen($_POST['password']) > 64) {
+                $GLOBALS['gui']->setError($GLOBALS['language']->account['error_password_length_max']);
                 $error['pass'] = true;
             }
         } else {

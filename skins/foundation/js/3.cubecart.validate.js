@@ -281,7 +281,9 @@ jQuery(document).ready(function() {
                 required: true
             },
             password: {
-                required: true
+                required: true,
+                minlength: 6,
+                maxlength: 64
             },
             passconf: {
                 equalTo: "#reg_password"
@@ -332,14 +334,16 @@ jQuery(document).ready(function() {
     $("#checkout_form").on("click", '#checkout_register', function() {
         $("#reg_password").rules("add", {
             minlength: 6,
+            maxlength: 64,
             messages: {
-                minlength: $('#validate_password_length').text()
+                minlength: $('#validate_password_length').text(),
+                maxlength: $('#validate_password_length_max').text()
             }
         });
     });
 
     $("#checkout_form").on("click", '#checkout_login', function() {
-        $("#reg_password").rules("remove","minlength");
+        $("#reg_password").rules("remove","minlength","maxlength");
     });
 
     $("#addressbook_form").validate({
@@ -415,7 +419,8 @@ jQuery(document).ready(function() {
                 email: true
             },
             password: {
-                required: true
+                required: true,
+                maxlength: 64
             }
         },
         messages: {
@@ -424,7 +429,8 @@ jQuery(document).ready(function() {
                 email: $('#validate_email').text()
             },
             password: {
-                required: $('#empty_password').text()
+                required: $('#empty_password').text(),
+                maxlength: $('#validate_password_length_max').text()
             }
         }
     });
@@ -439,7 +445,8 @@ jQuery(document).ready(function() {
             },
             'password[password]': {
                 required: true,
-                minlength: 6
+                minlength: 6,
+                maxlength: 64
             },
             'password[passconf]': {
                 equalTo: "#password"
@@ -452,7 +459,8 @@ jQuery(document).ready(function() {
             },
             'password[password]': {
                 required: $('#validate_password').text(),
-                minlength: $('#validate_password_length').text()
+                minlength: $('#validate_password_length').text(),
+                maxlength: $('#validate_password_length_max').text()
             },
             'password[passconf]': {
                 required: $('#validate_password_mismatch').text(),
@@ -498,7 +506,8 @@ jQuery(document).ready(function() {
             },
             password: {
                 required: true,
-                minlength: 6
+                minlength: 6,
+                maxlength: 64
             },
             passconf: {
                 equalTo: "#password"
@@ -528,7 +537,8 @@ jQuery(document).ready(function() {
             },
             password: {
                 required: $('#validate_password').text(),
-                minlength: $('#validate_password_length').text()
+                minlength: $('#validate_password_length').text(),
+                maxlength: $('#validate_password_length_max').text()
             },
             passconf: {
                 required: $('#validate_password_mismatch').text(),
@@ -564,6 +574,7 @@ jQuery(document).ready(function() {
             },
             passnew: {
                 minlength: 6,
+                maxlength: 64,
             },
             passconf: {
                 equalTo: "#passnew",
@@ -588,7 +599,8 @@ jQuery(document).ready(function() {
                 phone: $('#validate_mobile').text()
             },
             passnew: {
-                minlength: $('#validate_password_length').text()
+                minlength: $('#validate_password_length').text(),
+                maxlength: $('#validate_password_length_max').text()
             },
             passconf: {
                 equalTo: $('#validate_password_mismatch').text()

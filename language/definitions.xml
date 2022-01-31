@@ -43,6 +43,7 @@
     <string name="error_lastname_required" introduced="6.0.0"><![CDATA[Please enter your last name.]]></string>
     <string name="error_password_empty" introduced="5.0.0"><![CDATA[Please enter a password.]]></string>
     <string name="error_password_length" introduced="6.0.0"><![CDATA[Please enter at least 6 characters for your password.]]></string>
+    <string name="error_password_length_max" introduced="6.0.0"><![CDATA[Password must be less than 64 characters long.]]></string>
     <string name="error_password_mismatch" introduced="5.0.0"><![CDATA[Your passwords do not match.]]></string>
     <string name="error_password_recovery" introduced="5.0.0"><![CDATA[Email not sent. Please check your email address, and try again.]]></string>
     <string name="error_password_recover" introduced="5.0.0"><![CDATA[Failed to update your password. Please check the email address and validation key are correct and verify the new password matches.]]></string>

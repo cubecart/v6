@@ -98,7 +98,7 @@
    </div>
    <div class="row">
       <div class="small-12 large-6 columns">
-         <label for="login-password" class="show-for-medium-up">{$LANG.account.password}</label><input type="password" name="password" id="login-password" placeholder="{$LANG.account.password} {$LANG.form.required}" autocomplete="current-password" required disabled>
+         <label for="login-password" class="show-for-medium-up">{$LANG.account.password}</label><input type="password" maxlength="64" name="password" id="login-password" placeholder="{$LANG.account.password} {$LANG.form.required}" autocomplete="current-password" required disabled>
       </div>
    </div>
    <div class="row">
@@ -258,10 +258,10 @@
 <div id="account-reg">
    <h3>{$LANG.account.password}</h3>
    <div class="row">
-      <div class="small-12 large-8 columns"><label for="reg_password" class="show-for-medium-up">{$LANG.account.password}</label><input type="password" autocomplete="off" name="password" id="reg_password"  required  placeholder="{$LANG.account.password} {$LANG.form.required}" autocomplete="new-password"></div>
+      <div class="small-12 large-8 columns"><label for="reg_password" class="show-for-medium-up">{$LANG.account.password}</label><input type="password" maxlength="64" autocomplete="off" name="password" id="reg_password"  required  placeholder="{$LANG.account.password} {$LANG.form.required}" autocomplete="new-password"></div>
    </div>
    <div class="row">
-      <div class="small-12 large-8 columns"><label for="reg_passconf" class="show-for-medium-up">{$LANG.user.password_confirm}</label><input type="password" autocomplete="off" name="passconf" id="reg_passconf"  required  placeholder="{$LANG.user.password_confirm} {$LANG.form.required}" autocomplete="new-password"></div>
+      <div class="small-12 large-8 columns"><label for="reg_passconf" class="show-for-medium-up">{$LANG.user.password_confirm}</label><input type="password" maxlength="64" autocomplete="off" name="passconf" id="reg_passconf"  required  placeholder="{$LANG.user.password_confirm} {$LANG.form.required}" autocomplete="new-password"></div>
    </div>
 </div>
 {include file='templates/content.recaptcha.php'}
@@ -277,5 +277,6 @@
 <div class="hide" id="validate_mobile">{$LANG.account.error_valid_mobile_phone}</div>
 <div class="hide" id="validate_password">{$LANG.account.error_password_empty}</div>
 <div class="hide" id="validate_password_length">{$LANG.account.error_password_length}</div>
+<div class="hide" id="validate_password_length_max">{$LANG.account.error_password_length_max}</div>
 <div class="hide" id="validate_password_mismatch">{$LANG.account.error_password_mismatch}</div>
 <div class="hide" id="validate_terms_agree">{$LANG.account.error_terms_agree}</div>
