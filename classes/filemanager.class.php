@@ -51,6 +51,8 @@ class FileManager
             $this->_manage_root = CC_ROOT_DIR.'/images/source';
             $this->_manage_cache = CC_ROOT_DIR.'/images/cache';
         }
+    
+        $this->_setUploadLimit();
         $this->_mode  = (int)$mode;
         $this->_manage_dir = str_replace(CC_ROOT_DIR.'/', '', $this->_manage_root);
         $this->_sub_dir  = ($sub_dir) ? $this->formatPath($sub_dir) : null;
@@ -1324,6 +1326,28 @@ class FileManager
             $GLOBALS['db']->insert('CubeCart_image_index', $record);
         } else {
             $GLOBALS['db']->update('CubeCart_inventory', array('digital' => $file_id), array('product_id' => $product_id));
+        }
+    }
+
+    private function _setUploadLimit()
+    {
+        $size_str = ini_get('upload_max_filesize');
+        switch (substr($size_str, -1))
+        {
+            case 'M':
+            case 'm':
+                $this->_max_upload_image_size = (int)$size_str * 1048576;
+            break;
+            case 'K':
+            case 'k':
+                $this->_max_upload_image_size = (int)$size_str * 1024;
+            break;
+            case 'G':
+            case 'g':
+                $this->_max_upload_image_size = (int)$size_str * 1073741824;
+            break;
+            default: //2M PHP default
+                $this->_max_upload_image_size = 2 * 1048576;
         }
     }
 
