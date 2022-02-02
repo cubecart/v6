@@ -484,7 +484,7 @@ $(document).ready(function() {
     if($("div.dropzone").length) {
         Dropzone.autoDiscover = false;
         var dropzone_url = $("div#dropzone_url").text();
-        $("div.dropzone").dropzone({url: dropzone_url, resizeWidth: '1200', resizeMimeType: 'image/jpeg', acceptedFiles: 'image/gif,image/jpeg,image/png,image/webp', renameFile: function (file) {
+        $("div.dropzone").dropzone({url: dropzone_url, resizeWidth: 2000, resizeMimeType: 'image/jpeg', acceptedFiles: 'image/gif,image/jpeg,image/png,image/webp', renameFile: function (file) {
             return file.name.substr(0, file.name.lastIndexOf(".")) + ".jpg";
         }, init: function () {
                 this.on("complete", function (file) {
