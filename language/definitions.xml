@@ -282,7 +282,8 @@
     <string name="condition_damaged" introduced="5.4.5"><![CDATA[Damaged]]></string>
     <string name="coupon_code" introduced="5.0.0"><![CDATA[Code]]></string>
     <string name="coupon_shipping" introduced="5.0.0"><![CDATA[Discount applies to shipping cost]]></string>
-    <string name="free_coupon_shipping" introduced="6.1.0"><![CDATA[Free shipping]]></string>
+    <string name="free_coupon_shipping" introduced="6.1.0"><![CDATA[Coupon makes shipping free of charge]]></string>
+    <string name="free_shipping_excluded" introduced="6.4.5"><![CDATA[Disallow coupon when shipping is free]]></string>
     <string name="coupon_per_customer" introduced="6.4.0"><![CDATA[Maximum uses per customer (Leave empty for unlimited)]]></string>
     <string name="coupon_no_shipping" introduced="5.1.5"><![CDATA[When specifying products, promotional code will NOT apply to shipping.]]></string>
     <string name="coupon_include" introduced="5.1.5"><![CDATA[Promotional code applies to ONLY above products]]></string>
@@ -483,7 +484,7 @@
     <string name="title_coupon_detail" introduced="5.0.0"><![CDATA[Code Details]]></string>
     <string name="title_coupon_edit" introduced="5.0.0"><![CDATA[Edit Promotional Code]]></string>
     <string name="title_coupon_expires" introduced="5.0.0"><![CDATA[Expires]]></string>
-    <string name="title_coupon_limits" introduced="5.0.0"><![CDATA[Promotional Code Limits]]></string>
+    <string name="title_coupon_limits" introduced="5.0.0"><![CDATA[Promotional Code Limits &amp; Settings]]></string>
     <string name="title_coupon_convert" introduced="6.0.0"><![CDATA[Gift Card Conversion]]></string>
     <string name="coupon_convert_desc" introduced="6.0.0"><![CDATA[To use a promotional code as a gift card (keeping a balance for multiple uses) it is possible to do so by assigning an order number to it. It must be a real order number with a status of &quot;Processing&quot; or &quot;Complete&quot;.]]></string>
     <string name="notify_gc_not_fixed" introduced="6.0.0"><![CDATA[Gift cards can't have a percentage discount type.]]></string>
@@ -569,6 +570,7 @@
     <string name="sort_stock" introduced="5.0.0"><![CDATA[Stock]]></string>
   </group>
   <group name="checkout">
+    <string name="error_voucher_free_shipping" introduced="6.4.0"><![CDATA[Sorry but that voucher can't be used when shipping is free of charge.]]></string>
     <string name="error_voucher_manufacturer" introduced="6.4.0"><![CDATA[Sorry but that voucher is manufacturer specific.]]></string>
     <string name="stock_availability_changed" introduced="6.4.0"><![CDATA[Items added to your basket are no longer available.]]></string>
     <string name="confirm_billing" introduced="6.2.8"><![CDATA[Please confirm your billing address is correct before proceeding.]]></string>

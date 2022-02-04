@@ -546,6 +546,11 @@ class Cart
                         }
                     }
                 }
+                if ($coupon['free_shipping_excluded']=='1' && floatval($this->basket['shipping']['value'])==0) {
+                    // Minimum subtotal for voucher has not been met
+                    $GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_free_shipping']);
+                    return false;
+                }
                 if ($coupon['expires']!=='0000-00-00' && (strtotime($coupon['expires']) < time())) {
                     // Coupon is no longer valid
                     $GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_expired']);

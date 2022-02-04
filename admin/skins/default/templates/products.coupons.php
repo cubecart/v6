@@ -112,6 +112,7 @@
 	  <div><label for="form-minimum">{$LANG.catalogue.minimum_subtotal}</label><span><input type="text" name="coupon[min_subtotal]" id="form-minimum" value="{$COUPON.min_subtotal}" class="textbox number"></span></div>
 	  <div><label for="form-shipping">{$LANG.catalogue.coupon_shipping}</label><span><input type="hidden" name="coupon[shipping]" id="form-shipping" class="toggle" value="{$COUPON.shipping}"></span></div>
 	  <div><label for="form-free_shipping">{$LANG.catalogue.free_coupon_shipping}</label><span><input type="hidden" name="coupon[free_shipping]" id="form-free_shipping" class="toggle" value="{$COUPON.free_shipping}"></span></div>
+	  <div><label for="form-free_shipping_excluded">{$LANG.catalogue.free_shipping_excluded}</label><span><input type="hidden" name="coupon[free_shipping_excluded]" id="form-free_shipping_excluded" class="toggle" value="{$COUPON.free_shipping_excluded}"></span></div>
 	  <div><label for="form-per_customer">{$LANG.catalogue.coupon_per_customer}</label><span><input type="text" name="coupon[coupon_per_customer]" id="form-coupon_per_customer" class="textbox number" value="{$COUPON.coupon_per_customer}"></span></div>
 	  <div>
 	  	<label for="form-manufacturer">{$LANG.catalogue.manufacturer_limit}</label>
