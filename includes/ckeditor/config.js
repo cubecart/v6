@@ -10,10 +10,11 @@ CKEDITOR.editorConfig = function( config ) {
 	config.filebrowserWindowHeight  = 500;
 	config.filebrowserWindowWidth  = 650;
 	config.allowedContent = true;
+	config.disableNativeSpellChecker = false;
 	config.toolbarGroups = [
 		{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
 		{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
-		{ name: 'editing', groups: [ 'find', 'selection', 'spellchecker', 'editing' ] },
+		{ name: 'editing', groups: [ 'find', 'selection', 'editing' ] },
 		{ name: 'forms', groups: [ 'forms' ] },
 		'/',
 		{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
