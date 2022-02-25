@@ -606,7 +606,8 @@ class Session
         $params = session_get_cookie_params();
         $params = array_merge($params, $options); // Allow overwrite for specific cookies    
 
-        $date = new Datetime(strftime('%c',$expires));
+        $date = new Datetime();
+        $date->setTimestamp($expires);
         $attributes = '';
         $attributes .= ';Expires='.$date->format(DateTime::COOKIE);
         $attributes .= ';Domain='.$this->_session_domain;
