@@ -9,8 +9,9 @@
  * Email:  sales@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
-<what3words-autosuggest id="{$as_id}" value="{$value}" />
-<input type="hidden" name="{$input_name}" id="{$input_id}" value="{$value}" />
+<what3words-autosuggest api_key="{$CONFIG.w3w}" id="{$as_id}" value="{$value}">
+<input type="text" name="{$input_name}" id="{$input_id}" value="{$value}" />
+</what3words-autosuggest>
 <script>
 var clip_to_country = $("#{$country_id} option:selected").attr('data-iso');
 $('#{$as_id}').attr("clip-to-country", clip_to_country);

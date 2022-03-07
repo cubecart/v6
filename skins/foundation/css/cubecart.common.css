@@ -22,3 +22,64 @@
 	color: #333333;
 	text-decoration: none;
 }
+.what3words-autosuggest-item {
+    background: #ebebeb !important;
+    padding: 0px !important;
+    box-shadow: none !important;
+  }
+  .what3words-autosuggest-item .match {
+    background: #fcfcfc !important;
+    box-shadow: none !important;
+  }
+  .what3words-autosuggest-item:hover {
+    background: #f9f9f9 !important;
+    box-shadow: none !important;
+  }
+  .what3words-autosuggest-item .active,
+  .what3words-autosuggest-item:active {
+    background: #fc9fc9 !important;
+    box-shadow: none !important;
+  }
+  .what3words-autosuggest-address {
+    height: auto !important;
+    font-weight: inherit !important;
+    font-size: inherit !important;
+    line-height: inherit !important;
+    color: inherit !important;
+  }
+  .what3words-autosuggest-address > .what3words-autosuggest-words {
+    width: auto !important;
+    white-space: inherit !important;
+    overflow: inherit !important;
+    text-overflow: inherit !important;
+  }
+  .what3words-autosuggest-nearest-place {
+    padding: 0px 0px 0px 18px !important;
+  }
+  .what3words-autosuggest-nearest-place-text {
+  }
+  .what3words-autosuggest-nearest-place-text > div:first-child {
+    font-size: inherit !important;
+    line-height: inherit !important;
+    color: inherit !important;
+    text-overflow: inherit !important;
+  }
+  .what3words-autosuggest-nearest-place-distance {
+    font-weight: inherit !important;
+    font-size: inherit !important;
+    line-height: inherit !important;
+  }
+  .what3words-autosuggest-error-wrapper {
+    z-index: inherit !important;
+  }
+  .what3words-autosuggest-error {
+    top: 0px !important;
+    border: 0px !important;
+    background: #555 !important;
+  }
+  .what3words-autosuggest-message {
+    padding: 0px !important;
+    color: inherit !important;
+    font-size: inherit !important;
+    line-height: inherit !important;
+  }
