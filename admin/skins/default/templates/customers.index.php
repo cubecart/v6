@@ -22,6 +22,7 @@
 	<table width="100%">
 	  <thead>
 		<tr>
+		  <td width="32">&nbsp;</td>
 		  <td>{$THEAD.status}</td>
 		  <td>{$THEAD.type}</td>
 		  <td>{$THEAD.customer}</td>
@@ -34,6 +35,7 @@
 	  <tbody>
 		{foreach from=$CUSTOMERS item=customer}
 		<tr>
+		  <td align="center"><input type="checkbox" name="multi-customer[]" id="selected_{$customer.customer_id}" value="{$customer.customer_id}" class="all-customers"></td>
 		  <td style="text-align:center"><input type="hidden" name="status[{$customer.customer_id}]" id="status_{$customer.customer_id}" value="{$customer.status}" class="toggle"></td>
 		  <td style="text-align:center">
 		  	{if $customer.type==1}
@@ -66,7 +68,18 @@
 	  </tbody>
 	  <tfoot>
 	    <tr>
-	      <td colspan="7">
+		    <td><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/select_all.gif" alt=""></td>
+		    <td colspan="2"><a href="#" class="check-all" rel="all-customers">{$LANG.form.check_uncheck}</a></td>
+		    <td colspan="5">{$LANG.orders.with_selected}:
+		      <select name="multi-action" class="textbox">
+		        <option value="">{$LANG.orders.option_nothing}</option>
+		        <option value="delete" style="color: red;">delete customer</option>
+		      </select>
+		      <input type="submit" value="{$LANG.common.go}" name="go" class="tiny">
+		    </td>
+	    </tr>
+	    <tr>
+	      <td colspan="8">
 		  	<div class="pagination">
 			  	<span>{$LANG.common.total}: {$TOTAL_RESULTS}</span>
 			  	{$PAGINATION}&nbsp;

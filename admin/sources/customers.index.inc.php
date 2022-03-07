@@ -250,7 +250,7 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
     $fixed_rem_fields = array('address_id');
     $rem_fields = is_array($variable_rem_fields) ? array_merge($fixed_rem_fields, $variable_rem_fields) : $fixed_rem_fields;
     httpredir(currentPage($rem_fields));
-} else {
+} elseif (!isset($_POST['multi-action']) || empty($_POST['multi-action'])) {
     if (isset($_POST['group_edit']) && Admin::getInstance()->permissions('customers', CC_PERM_EDIT)) {
         if (!empty($_POST['group_edit']) && is_array($_POST['group_edit'])) {
             foreach ($_POST['group_edit'] as $group_id => $data) {
@@ -327,7 +327,7 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
 ######################################
 $per_page = 20;
 
-if (isset($_GET['action']) && Admin::getInstance()->permissions('customers', CC_PERM_EDIT)) {
+if ( (isset($_GET['action']) || isset($_POST['multi-action'])) && Admin::getInstance()->permissions('customers', CC_PERM_EDIT)) {
     if ($_GET['action'] == 'signinas' && isset($_GET['customer_id']) && $_GET['customer_id']) {
         $GLOBALS['session']->delete('', 'basket');
         $GLOBALS['db']->update('CubeCart_sessions', array('customer_id' => $_GET['customer_id']), array('session_id' => $GLOBALS['session']->getId()));
@@ -335,25 +335,46 @@ if (isset($_GET['action']) && Admin::getInstance()->permissions('customers', CC_
         exit;
     }
 
-    if ($_GET['action'] == 'delete' && isset($_GET['customer_id']) && Admin::getInstance()->permissions('customers', CC_PERM_DELETE)) {
-        if (($customer = $GLOBALS['db']->select('CubeCart_customer', array('customer_id'), array('customer_id' => (int)$_GET['customer_id']))) !== false) {
-            if (!$GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id'), array('customer_id' => $customer[0]['customer_id']))) {
-                if (($GLOBALS['db']->delete('CubeCart_customer', array('customer_id' => $customer[0]['customer_id']))) !== false) {
-                    $GLOBALS['db']->delete('CubeCart_addressbook', array('customer_id' => $customer[0]['customer_id']));
-                    $GLOBALS['db']->delete('CubeCart_customer_membership', array('customer_id' => $customer[0]['customer_id']));
-                    $GLOBALS['db']->delete('CubeCart_newsletter_subscriber', array('customer_id' => $customer[0]['customer_id']));
-                    foreach ($GLOBALS['hooks']->load('admin.customer.delete') as $hook) {
-                        include $hook;
-                    }
-                    $GLOBALS['main']->successMessage($lang['customer']['notify_customer_delete']);
-                } else {
-                    $GLOBALS['main']->errorMessage($lang['customer']['error_customer_delete']);
-                }
-            } else {
-                $GLOBALS['main']->errorMessage($lang['customer']['error_customer_delete_orders']);
+    if ( (($_GET['action'] == 'delete' && isset($_GET['customer_id']) ) || ($_POST['multi-action'] == 'delete' && !empty($_POST['multi-customer']))) && Admin::getInstance()->permissions('customers', CC_PERM_DELETE) ) {
+        if (!empty($_POST['multi-customer']) ) {
+            foreach ($_POST['multi-customer'] as $list_item) {
+                $customer_list[] = (int)$list_item;
             }
         } else {
-            $GLOBALS['main']->errorMessage($lang['customer']['error_customer_found']);
+            $customer_list[] = (int)$_GET['customer_id'];
+        }
+        $notify_deleted = false;
+        $error_deleted = false;
+        $error_deleted_orders = false;
+        if (isset($customer_list) && ($customer = $GLOBALS['db']->select('CubeCart_customer', array('customer_id'), array('customer_id' => $customer_list))) !== false) {
+            for ($i=0, $max=count($customer); $i < $max; ++$i) {
+                if (!$GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id'), array('customer_id' => $customer[$i]['customer_id']))) {
+                    if (($GLOBALS['db']->delete('CubeCart_customer', array('customer_id' => $customer[$i]['customer_id']))) !== false) {
+                        $GLOBALS['db']->delete('CubeCart_addressbook', array('customer_id' => $customer[$i]['customer_id']));
+                        $GLOBALS['db']->delete('CubeCart_customer_membership', array('customer_id' => $customer[$i]['customer_id']));
+                        $GLOBALS['db']->delete('CubeCart_newsletter_subscriber', array('customer_id' => $customer[$i]['customer_id']));
+                        foreach ($GLOBALS['hooks']->load('admin.customer.delete') as $hook) {
+                            include $hook;
+                        }
+                        if (!$notify_deleted) {
+                            $GLOBALS['main']->setACPNotify("Some or all selected ".$lang['customer']['notify_customer_delete']);
+                            $notify_deleted = true;
+                        }
+                    } else {
+                        if (!$error_deleted) {
+                            $GLOBALS['main']->setACPWarning("Some or all selected ".$lang['customer']['error_customer_delete']);
+                            $error_deleted = true;
+                        }
+                    }
+                } else {
+                    if (!$error_deleted_orders) {
+                        $GLOBALS['main']->setACPWarning("Some or all selected ".$lang['customer']['error_customer_delete_orders']);
+                        $error_deleted_orders = true;
+                    }
+                }
+            }
+        } else {
+            $GLOBALS['main']->setACPWarning($lang['customer']['error_customer_found']);
         }
         httpredir(currentPage(array('action', 'customer_id')));
     }
