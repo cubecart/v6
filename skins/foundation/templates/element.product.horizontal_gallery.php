@@ -19,7 +19,7 @@
       {if count($GALLERY) > 1}
       <ul class="clearing-thumbs small-block-grid-3 medium-block-grid-5 marg-top" data-clearing>
          {foreach from=$GALLERY item=image}
-         <li{if $image@total lt 2} style="display:none"{/if}><a href="{$image.source}" class="th"><img src="{$image.small}" data-image-swap="{$image.medium}" data-caption="{$PRODUCT.name}{if !empty($image.description)}: {/if}{$image.description}" class="image-gallery" alt="{$LANG.catalogue.click_enlarge}"></a></li>
+         <li><a href="{$image.source}" class="th"><img src="{$image.small}" data-image-swap="{$image.medium}" data-caption="{$PRODUCT.name}{if !empty($image.description)}: {/if}{$image.description}" class="image-gallery" alt="{$LANG.catalogue.click_enlarge}"></a></li>
          {/foreach}
       </ul>
       {/if}
