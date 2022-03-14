@@ -1,6 +1,10 @@
 ;
 var validation_ini = {};
 jQuery(document).ready(function() {
+
+    $('.nopaste').on("cut copy paste",function(e) {
+        e.preventDefault();
+    });
 	$('#element-reviews .review_row').each(function() {
         var avatar_id = $(this).attr('rel');
         var g_parts = avatar_id.split("_"); 

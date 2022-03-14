@@ -27,7 +27,7 @@
       </div>
       {if $CONFIG.emailconf=='1'}
       <div class="row">
-         <div class="small-12 large-8 columns"><label for="emailconf" class="show-for-medium-up">{$LANG.account.email_confirm}</label><input type="text" name="emailconf" id="emailconf" placeholder="{$LANG.account.email_confirm}  {$LANG.form.required}" required ></div>
+         <div class="small-12 large-8 columns"><label for="emailconf" class="show-for-medium-up">{$LANG.account.email_confirm}</label><input type="text" name="emailconf" id="emailconf" class="nopaste" placeholder="{$LANG.account.email_confirm}  {$LANG.form.required}" required ></div>
       </div>
       {/if}
       <div class="row">
