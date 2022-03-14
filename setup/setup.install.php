@@ -109,7 +109,7 @@ if (!isset($_SESSION['setup']['permissions'])) {
                         $connect_id->close();
                     }
                 } catch (Exception $e) {
-                    $errors[] = $strings['setup']['error_db_incorrect_something'].' '.$e->message;
+                    $errors[] = $strings['setup']['error_db_incorrect_something'].' '.$e->getMessage;
                     unset($_POST['global']['dbhost'], $_POST['global']['dbusername'], $_POST['global']['dbpassword'], $_POST['global']['dbport'], $_POST['global']['dbsocket']);
                 }
             } else {
