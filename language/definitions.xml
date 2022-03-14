@@ -45,6 +45,7 @@
     <string name="error_password_length" introduced="6.0.0"><![CDATA[Please enter at least 6 characters for your password.]]></string>
     <string name="error_password_length_max" introduced="6.0.0"><![CDATA[Password must be less than 64 characters long.]]></string>
     <string name="error_password_mismatch" introduced="5.0.0"><![CDATA[Your passwords do not match.]]></string>
+    <string name="error_email_mismatch" introduced="6.4.5"><![CDATA[Please check your email address matches.]]></string>
     <string name="error_password_recovery" introduced="5.0.0"><![CDATA[Email not sent. Please check your email address, and try again.]]></string>
     <string name="error_password_recover" introduced="5.0.0"><![CDATA[Failed to update your password. Please check the email address and validation key are correct and verify the new password matches.]]></string>
     <string name="error_password_update" introduced="5.0.0"><![CDATA[Failed to update your password.]]></string>
@@ -75,6 +76,7 @@
     <string name="password" introduced="5.0.0"><![CDATA[Password]]></string>
     <string name="password_change" introduced="5.0.0"><![CDATA[Change Password]]></string>
     <string name="password_confirm" introduced="5.0.0"><![CDATA[Confirm Password]]></string>
+    <string name="email_confirm" introduced="6.4.5"><![CDATA[Confirm Email]]></string>
     <string name="password_strength" introduced="5.0.0"><![CDATA[Password Strength]]></string>
     <string name="recover_password" introduced="5.0.0"><![CDATA[Recover Password]]></string>
     <string name="recover_password_text" introduced="5.0.0"><![CDATA[If you have forgotten your password, put your email in the box below and we'll send instructions to regain access]]></string>
@@ -1899,6 +1901,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
+    <string name="emailconf" introduced="6.4.5"><![CDATA[Require email address confirmaton (double entry)]]></string>
     <string name="redirects" introduced="6.4.0"><![CDATA[Redirects]]></string>
     <string name="image_delete" introduced="6.4.0"><![CDATA[Delete associated images with product delete]]></string>
     <string name="w3w_na" introduced="6.4.0"><![CDATA[Warning: It doesn't look like your current skin is compatible with whats3words.]]></string>

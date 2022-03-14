@@ -128,6 +128,11 @@
    <div class="row">
       <div class="small-12 large-8 columns"><label for="user_email" class="show-for-medium-up">{$LANG.common.email}</label><input type="text" name="user[email]" id="user_email" required value="{$USER.email}" placeholder="{$LANG.common.email}  {$LANG.form.required}" autocomplete="email"></div>
    </div>
+   {if $CONFIG.emailconf=='1'}
+   <div class="row">
+      <div class="small-12 large-8 columns"><label for="emailconf" class="show-for-medium-up">{$LANG.account.email_confirm}</label><input type="text" name="emailconf" id="emailconf" placeholder="{$LANG.account.email_confirm}  {$LANG.form.required}" required ></div>
+   </div>
+   {/if}
    <div class="row">
       <div class="small-12 large-8 columns"><label for="user_phone" class="show-for-medium-up">{$LANG.address.phone}</label><input type="text" name="user[phone]" id="user_phone" required value="{$USER.phone}" placeholder="{$LANG.address.phone}  {$LANG.form.required}" autocomplete="tel"></div>
    </div>
@@ -279,4 +284,6 @@
 <div class="hide" id="validate_password_length">{$LANG.account.error_password_length}</div>
 <div class="hide" id="validate_password_length_max">{$LANG.account.error_password_length_max}</div>
 <div class="hide" id="validate_password_mismatch">{$LANG.account.error_password_mismatch}</div>
+{if $CONFIG.emailconf=='1'}<div class="hide" id="validate_email_mismatch">{$LANG.account.error_email_mismatch}</div>
+{/if}
 <div class="hide" id="validate_terms_agree">{$LANG.account.error_terms_agree}</div>

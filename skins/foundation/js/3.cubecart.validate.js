@@ -288,6 +288,9 @@ jQuery(document).ready(function() {
             passconf: {
                 equalTo: "#reg_password"
             },
+            emailconf: {
+                equalTo: "#user_email"
+            },
             terms_agree: {
                 required: true
             },
@@ -318,6 +321,9 @@ jQuery(document).ready(function() {
             passconf: {
                 required: $('#validate_password_mismatch').text(),
                 equalTo: $('#validate_password_mismatch').text()
+            },
+            emailconf: {
+                equalTo: $('#validate_email_mismatch').text()
             },
             terms_agree: {
                 required: $('#validate_terms_agree').text()
@@ -496,6 +502,9 @@ jQuery(document).ready(function() {
                     }
                 }
             },
+            emailconf: {
+                equalTo: "#email"
+            },
             phone: {
                 required: true,
                 phone: true
@@ -527,6 +536,9 @@ jQuery(document).ready(function() {
                 required: $('#validate_email').text(),
                 email: $('#validate_email').text(),
                 remote: $('#validate_email_in_use').text()
+            },
+            emailconf: {
+                equalTo: $('#validate_email_mismatch').text()
             },
             phone: {
                 required: $('#validate_phone').text(),
@@ -578,6 +590,9 @@ jQuery(document).ready(function() {
             },
             passconf: {
                 equalTo: "#passnew",
+            },
+            emailconf: {
+                equalTo: "#acc_email"
             }
         },
         messages: {
@@ -604,6 +619,9 @@ jQuery(document).ready(function() {
             },
             passconf: {
                 equalTo: $('#validate_password_mismatch').text()
+            },
+            emailconf: {
+                equalTo: $('#validate_email_mismatch').text()
             }
         }
     }); /* Reset Form */
