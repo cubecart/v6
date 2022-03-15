@@ -15,10 +15,6 @@ if (!defined('CC_INI_SET')) {
 }
 Admin::getInstance()->permissions('settings', CC_PERM_READ, true);
 
-$count_unread = $GLOBALS['db']->count('CubeCart_admin_error_log', 'log_id', array('read' => '0'));
-$GLOBALS['main']->addTabControl($lang['settings']['title_admin_error_log'], 'admin_error_log', null, null, $count_unread);
-$GLOBALS['gui']->addBreadcrumb($lang['settings']['title_admin_error_log'], currentPage());
-
 if (isset($_POST['adminread'])) {
     $changed = false;
     foreach ($_POST['adminread'] as $log_id) {
@@ -48,6 +44,10 @@ if (isset($_POST['systemread'])) {
         $GLOBALS['main']->errorMessage($lang['settings']['changes_not_made']);
     }
 }
+
+$count_unread = $GLOBALS['db']->count('CubeCart_admin_error_log', 'log_id', array('read' => '0'));
+$GLOBALS['main']->addTabControl($lang['settings']['title_admin_error_log'], 'admin_error_log', null, null, $count_unread);
+$GLOBALS['gui']->addBreadcrumb($lang['settings']['title_admin_error_log'], currentPage());
 
 $per_page = 25;
 $page = (isset($_GET['page'])) ? $_GET['page'] : 1;
