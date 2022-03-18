@@ -169,7 +169,7 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
      * @param int $template_id
      * @return bool
      */
-    public function sendEmail($email = false, $contents = false, $template_id = false)
+    public function sendEmail($email = false, $contents = array(), $template_id = false)
     {
         foreach ($GLOBALS['hooks']->load('class.mailer.send') as $hook) {
             include $hook;
@@ -214,11 +214,11 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
                         switch ($key) {
                             case 'content_html':
                                 $this->_html = $template['content_html'];
-                                break;
+                            break;
                             case 'content_text':
                                 $this->_text = $template['content_text'];
-                                break;
-                            }
+                            break;
+                        }
                     }
                 }
             } else {
