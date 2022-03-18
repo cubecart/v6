@@ -1,10 +1,13 @@
+# CubeCart
 /includes/extra/snippet_*
 /includes/global.inc.*
 /includes/extra/importdata.tmp
 !/includes/global.inc.php-dist
 !/modules/plugins/hooks.xml
 /modules/*
+/.htaccess
+
+# OS General
 .DS_Store
 Thumbs.db
-/.htaccess
-._.DS_Store
+._*
