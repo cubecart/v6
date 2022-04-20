@@ -872,6 +872,11 @@ class User
             $error['name'] = true;
         }
 
+        if(isset($_POST['first_name']) && isset($_POST['last_name']) && !empty($_POST['first_name']) && !empty($_POST['last_name']) && $_POST['first_name']==$_POST['last_name']) {
+            $GLOBALS['gui']->setError($GLOBALS['language']->account['error_name_same']);
+            $error['same_name'] = true;
+        }
+
         if ($GLOBALS['gui']->recaptchaRequired()) {
             if (($message = $GLOBALS['session']->get('error', 'recaptcha')) === false) {
                 //If the error message from recaptcha fails for some reason:

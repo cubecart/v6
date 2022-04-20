@@ -15,6 +15,7 @@
 -->
 <definitions version="1.0">
   <group name="account">
+    <string name="error_name_same" introduced="6.4.5"><![CDATA[First and last names are the same.]]></string>
     <string name="error_billing_fields_missing" introduced="6.1.2"><![CDATA[Required billing address fields are missing.]]></string>
     <string name="error_delivery_fields_missing" introduced="6.1.2"><![CDATA[Required delivery address fields are missing.]]></string>
     <string name="password_updated" introduced="6.0.0"><![CDATA[Your password has been updated.]]></string>
