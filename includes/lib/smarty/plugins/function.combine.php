@@ -17,7 +17,7 @@
  * Example: {combine input=$array_of_files_to_combine output=$path_to_output_file age=$seconds_to_try_recombine_file}
  *
  * @author Gorochov Ivan <dead23angel at gmail dot com>
- * @version 1.0
+ * @version 1.2 (Customised for CubeCart)
  * @param array
  * @param string
  * @param int
@@ -89,16 +89,16 @@ function smarty_function_combine($params, &$smarty)
                     mkdir($dirname, 0755, true);
                 }
 
-                $fh = fopen(CC_ROOT_DIR . '/' . $output_filename, 'a+');
+                $fh = fopen(CC_ROOT_DIR . '/' . $output_filename, 'w');
 
                 if (flock($fh, LOCK_EX)) {
                     foreach ($filelist as $file) {
                         $min = file_get_contents(CC_ROOT_DIR . '/' . $file['name']);
                         $min = str_replace('../images/', CC_ROOT_REL.'skins/'.(string)$smarty->tpl_vars["SKIN_FOLDER"]->value.'/images/', $min);
                         if ($params['type'] == 'js') {
-                            $min = JSMin::minify($min);
+                            $min = JSMin::minify($min).";";
                         } elseif ($params['type'] == 'css') {
-                            $min = CSSMin::minify($min);
+                            $min = CSSMin::minify(preg_replace('/url\\(((?>["\']?))(?!(\\/|http(s)?:|data:|#))(.*?)\\1\\)/', 'url("' . $dirname . '/$4")', $min));
                         } else {
                             fputs($fh, PHP_EOL . PHP_EOL . '/* ' . $file['name'] . ' @ ' . date('c', $file['time']) . ' */' . PHP_EOL . PHP_EOL);
                         }
