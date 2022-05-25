@@ -1032,7 +1032,15 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
 }), $(".fa-trash.disabled, .title_alert").on("click", function() {
     alert($(this).attr("title"))
 }), $("input#product_code").on("keyup", function() {
-    $("input#product_code").val().length > 0 ? $("input#product_code_auto").attr("checked", !1) : $("input#product_code_auto").attr("checked", !0)
+    var n = '1';
+    var o = '0';
+    if($("input#product_code").val().length > 0) { 
+        n = '0';
+        o = '1';
+    }
+    $("input#product_code_auto").val(n);
+    var new_src = $("img[rel$='product_code_auto']").attr('src').replace(o + '_checkbox.png', n + '_checkbox.png');
+    $("img[rel$='product_code_auto']").attr({src: new_src});
 }), $("input#product_code_auto").on("click", function() {
     var t = $("input#product_code_old").val(),
         e = $("input#product_code").val();
