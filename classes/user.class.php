@@ -245,7 +245,7 @@ class User
         );
         $user = $GLOBALS['db']->select('CubeCart_customer', array('language', 'customer_id', 'email', 'password', 'salt', 'new_password'), $where, false, 1, false, false);
 
-        $GLOBALS['session']->blocker($username, $user[0]['customer_id'], (bool)$user, Session::BLOCKER_FRONTEND, $GLOBALS['config']->get('config', 'bfattempts'), $GLOBALS['config']->get('config', 'bftime'));
+        $GLOBALS['session']->blocker($username, (is_array($user)) ? $user[0]['customer_id'] : 0, (bool)$user, Session::BLOCKER_FRONTEND, $GLOBALS['config']->get('config', 'bfattempts'), $GLOBALS['config']->get('config', 'bftime'));
         if (!$user) {
             $GLOBALS['gui']->setError($GLOBALS['language']->account['error_login']);
         } else {
