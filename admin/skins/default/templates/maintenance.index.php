@@ -169,7 +169,7 @@
   	{foreach from=$VERSIONS item=version}
   		<tr>
   		  <td>{$version.version}</td>
-  		  <td>{$version.time|date_format:"%A, %e %B %Y"}</td>
+  		  <td>{$version.time}</td>
   		</tr>
   	{/foreach} 
   	</tbody>

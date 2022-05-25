@@ -89,6 +89,7 @@ $versions = $GLOBALS['db']->select('CubeCart_history');
 $version_history = array();
 if ($versions) {
     foreach ($versions as $version) {
+        $version['time'] = formatTime($version['time']);
         $version_history[$version['version']] = $version;
     }
 }
