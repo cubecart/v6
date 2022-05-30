@@ -2281,36 +2281,41 @@ class Cubecart
         }
         
         // List all available and enabled payment gateways
-        foreach ($gateways as $gateway) {
-            $gateway_path  = CC_ROOT_DIR.'/modules/gateway/'.$gateway['folder'].'/gateway.class.php';
-            $plugin_path  = CC_ROOT_DIR.'/modules/plugins/'.$gateway['base_folder'].'/gateway.class.php';
+        if($gateways) {
+            $gateway_list = array();
+            foreach ($gateways as $gateway) {
+                $gateway_path  = CC_ROOT_DIR.'/modules/gateway/'.$gateway['folder'].'/gateway.class.php';
+                $plugin_path  = CC_ROOT_DIR.'/modules/plugins/'.$gateway['base_folder'].'/gateway.class.php';
 
-            if (!file_exists($gateway_path) && !file_exists($plugin_path)) {
-                continue;
+                if (!file_exists($gateway_path) && !file_exists($plugin_path)) {
+                    continue;
+                }
+                $module = (isset($gateway['plugin']) && $gateway['plugin']) ? $gateway : $GLOBALS['config']->get($gateway['folder']);
+
+                $countries = (!empty($module['countries'])) ? unserialize($module['countries']) : false;
+                $disabled_countries = (!empty($module['disabled_countries'])) ? unserialize($module['disabled_countries']) : false;
+
+                // Check module isn't set for mobile / main only!
+                if (isset($module['scope']) && !empty($module['scope']) && ($module['scope']=='main' && $GLOBALS['gui']->mobile) || ($module['scope']=='mobile' && !$GLOBALS['gui']->mobile)) {
+                    continue;
+                }
+
+                if (is_array($countries) && !in_array($GLOBALS['cart']->basket['delivery_address']['country_id'], $countries) || is_array($disabled_countries) && in_array($GLOBALS['cart']->basket['delivery_address']['country_id'], $disabled_countries)) {
+                    continue;
+                }
+
+                if (preg_match('#\.(gif|jpg|png|jpeg|webp)$#i', strtolower($module['desc']))) {
+                    $gateway['description'] = sprintf('<img src="%s" border="0" title="" alt="" />', $module['desc']);
+                } elseif (!empty($module['desc'])) {
+                    $gateway['description'] = $module['desc'];
+                } else {
+                    $gateway['description'] = $gateway['folder'];
+                }
+                $gateway['checked'] = ((isset($gateway['default']) && $gateway['default'] && $selected_gateway=='') || ($selected_gateway == $gateway['folder']) || count($gateways)==1) ? 'checked="checked"' : '';
+                $gateway_list[] = $gateway;
             }
-            $module = (isset($gateway['plugin']) && $gateway['plugin']) ? $gateway : $GLOBALS['config']->get($gateway['folder']);
-
-            $countries = (!empty($module['countries'])) ? unserialize($module['countries']) : false;
-            $disabled_countries = (!empty($module['disabled_countries'])) ? unserialize($module['disabled_countries']) : false;
-
-            // Check module isn't set for mobile / main only!
-            if (isset($module['scope']) && !empty($module['scope']) && ($module['scope']=='main' && $GLOBALS['gui']->mobile) || ($module['scope']=='mobile' && !$GLOBALS['gui']->mobile)) {
-                continue;
-            }
-
-            if (is_array($countries) && !in_array($GLOBALS['cart']->basket['delivery_address']['country_id'], $countries) || is_array($disabled_countries) && in_array($GLOBALS['cart']->basket['delivery_address']['country_id'], $disabled_countries)) {
-                continue;
-            }
-
-            if (preg_match('#\.(gif|jpg|png|jpeg|webp)$#i', strtolower($module['desc']))) {
-                $gateway['description'] = sprintf('<img src="%s" border="0" title="" alt="" />', $module['desc']);
-            } elseif (!empty($module['desc'])) {
-                $gateway['description'] = $module['desc'];
-            } else {
-                $gateway['description'] = $gateway['folder'];
-            }
-            $gateway['checked'] = ((isset($gateway['default']) && $gateway['default'] && $selected_gateway=='') || ($selected_gateway == $gateway['folder']) || count($gateways)==1) ? 'checked="checked"' : '';
-            $gateway_list[] = $gateway;
+        } else {
+            $gateway_list = false;
         }
         $GLOBALS['smarty']->assign('GATEWAYS', $gateway_list);
     }
