@@ -173,7 +173,7 @@ class Database_Contoller
      * @param string $anchor
      * @return string
      */
-    public function column_sort($column_name, $display_text, $order_by = 'sort', $current_page, $current_sort = false, $anchor = false)
+    public function column_sort($column_name, $display_text, $order_by = 'sort', $current_page = '', $current_sort = false, $anchor = false)
     {
         $link   = "$current_page&{$order_by}[$column_name]=";
 
@@ -265,7 +265,7 @@ class Database_Contoller
      *
      * @return string
      */
-    public function doSQLBackup($dropTables = false, $incStructure = true, $incRows = true, $file_name, $compress = false, $all_tables = false)
+    public function doSQLBackup($dropTables = false, $incStructure = true, $incRows = true, $file_name = '', $compress = false, $all_tables = false)
     {
         $open_text = "-- --------------------------------------------------------\n-- CubeCart SQL Dump\n-- version ".CC_VERSION."\n-- http://www.cubecart.com\n-- \n-- Host: ".$GLOBALS['config']->get('config', 'dbhost')."\n-- Generation Time: ".strftime($GLOBALS['config']->get('config', 'time_format'), time())."\n-- Server version: ".$this->serverVersion()."\n-- PHP Version: ".phpversion()."\n-- \n-- Database: `".$GLOBALS['config']->get('config', 'dbdatabase')."`\n";
         

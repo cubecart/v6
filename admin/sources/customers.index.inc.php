@@ -95,7 +95,7 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
             include $hook;
         }
         foreach ($customer as $key => $value) {
-            $customer[$key] = filter_var($value, FILTER_SANITIZE_STRING);
+            $customer[$key] = htmlspecialchars($value);
         }
         $email_check = $GLOBALS['db']->select('CubeCart_customer', array('customer_id'), array('email' => $customer['email']));
         if($email_check && $email_check[0]['customer_id']!==$_POST['customer_id']) {

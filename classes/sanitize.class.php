@@ -139,7 +139,7 @@ class Sanitize
      */
     private static function _safety($value)
     {
-        return filter_var(html_entity_decode($value), FILTER_SANITIZE_STRING);
+        return htmlspecialchars(html_entity_decode($value));
     }
 
     /**

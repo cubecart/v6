@@ -104,7 +104,7 @@ $script_path = trim(dirname($script_name));
 $script_path = str_replace('\\', '/', $script_path);
 $script_path = preg_replace('#[\\\\/]{2,}#', '/', $script_path);
 $url = (CC_SSL ? 'https://' : 'http://') . $server_name . $script_path;
-$url = filter_var($url, FILTER_SANITIZE_STRING);
+$url = htmlspecialchars($url);
 // Remove index.php/anything
 if (strstr($url, '/index.php')) {
     $url = substr($url, 0, strpos($url, '/index.php'));
