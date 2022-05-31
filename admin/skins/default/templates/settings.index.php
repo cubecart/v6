@@ -490,9 +490,11 @@
       </fieldset>
       <fieldset>
          <legend>{$LANG.settings.title_time_date}</legend>
+         {*
          <div><label for="fuzzy_time_format">{$LANG.settings.fuzzy_time_format}</label><span><input name="config[fuzzy_time_format]" id="fuzzy_time_format" type="text" class="textbox" value="{$CONFIG.fuzzy_time_format}"> PHP <a href="http://www.php.net/strftime" target="_blank">strftime</a></span></div>
          <div><label for="time_format">{$LANG.settings.time_format}</label><span><input name="config[time_format]" id="time_format" type="text" class="textbox" value="{$CONFIG.time_format}"> PHP <a href="http://www.php.net/strftime" target="_blank">strftime</a></span></div>
          <div><label for="dispatch_date_format">{$LANG.settings.dispatch_date_format}</label><span><input name="config[dispatch_date_format]" id="dispatch_date_format" type="text" class="textbox" value="{if ($CONFIG.dispatch_date_format)}{$CONFIG.dispatch_date_format}{else}%b %d %Y{/if}"> PHP <a href="http://www.php.net/strftime" target="_blank">strftime</a></span></div>
+         *}
          <div><label for="time_offset">{$LANG.settings.time_utc_offset}</label><span><input name="config[time_offset]" id="time_offset" type="text" class="textbox number" value="{$CONFIG.time_offset}"></span></div>
          {if isset($TIMEZONES)}
          <div><label for="time_zone">{$LANG.settings.time_zone}</label><span><select name="config[time_zone]" id="time_zone" type="text" class="textbox">

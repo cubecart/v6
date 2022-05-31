@@ -277,7 +277,7 @@ function currentPage($excluded = null, $included = null, $remove_excluded = true
  */
 function custom_urlencode($item, $key, $one_time_keys)
 {
-    $item = urlencode(html_entity_decode(stripslashes($item)));
+    $item = is_null($item) ? '' : urlencode(html_entity_decode(stripslashes($item)));
     return $item;
 }
 
@@ -444,7 +444,7 @@ function formatBytes($size = 0, $implode = false, $precision = 2)
  * @param bool $format
  * @return string/false
  */
-function formatDispatchDate($date, $format = '%b %d %Y')
+function formatDispatchDate($date, $format = 'M d Y')
 {
     if (empty($date)) {
         return false;
@@ -452,9 +452,9 @@ function formatDispatchDate($date, $format = '%b %d %Y')
 
     $seconds = strtotime($date);
 
-    $format = $GLOBALS['config']->get('config', 'dispatch_date_format') ? $GLOBALS['config']->get('config', 'dispatch_date_format') : $format;
+    //$format = $GLOBALS['config']->get('config', 'dispatch_date_format') ? $GLOBALS['config']->get('config', 'dispatch_date_format') : $format;
 
-    return strftime($format, $seconds);
+    return date($format, $seconds);
 }
 
 /**
@@ -485,18 +485,18 @@ function formatTime($timestamp, $format = false, $static = false)
         $seconds = $timestamp;
     }
     $fuzzy = true;
-    if (!$date_today	= strftime('%D', time())) {
+    if (!$date_today = date('d-m-Y', time())) {
         $fuzzy = false;
     }
-    $date = strftime('%D', $seconds);
-    $fuzzy_time = $GLOBALS['config']->get('config', 'fuzzy_time_format');
+    $date = date('d-m-Y', $seconds);
+    //$fuzzy_time = $GLOBALS['config']->get('config', 'fuzzy_time_format');
     if (empty($fuzzy_time)) {
-        $fuzzy_time = '%H:%M';
+        $fuzzy_time = 'H:i';
     }
-    $time = strftime($fuzzy_time, $seconds);
+    $time = date($fuzzy_time, $seconds);
     if ($fuzzy && !$static && $date_today == $date) { ## Today
         return $GLOBALS['language']->common['today'].", ".$time;
-    } elseif ($fuzzy && !$static && strftime("%D", strtotime('yesterday')) == $date) { ## Yesterday
+    } elseif ($fuzzy && !$static && date('d-m-Y', strtotime('yesterday')) == $date) { ## Yesterday
         return $GLOBALS['language']->common['yesterday'].", ".$time;
     } else {
         return strftime($format, $seconds);

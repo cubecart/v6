@@ -31,7 +31,7 @@ class Cart
      *
      * @var array
      */
-    public $basket_data   = false;
+    public $basket_data   = array();
     /**
      * Digital basket
      *

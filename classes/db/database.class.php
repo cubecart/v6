@@ -924,8 +924,8 @@ class Database_Contoller
                         // Remove column label so that it can correctly check against table columns
                         $key = (is_string($key) && $label ? preg_replace("/^$label\./", '', $key, 1) : $key);
                         if (is_array($allowed) && in_array($key, $allowed) && !is_numeric($key)) {
-                            if (isset($value) && !ctype_alnum($value) || $value=='NULL' || is_null($value) || $value=='NOT NULL') {
-                                if (preg_match('#^([<>!~\+\-]=?)(.+)#', $value, $match)) {
+                            if (isset($value) && !ctype_alnum((string)$value) || $value=='NULL' || is_null($value) || $value=='NOT NULL') {
+                                if (preg_match('#^([<>!~\+\-]=?)(.+)#', (string)$value, $match)) {
                                     switch ($match[1]) {
                                     case '~':
                                         // Fuzzy searching
@@ -942,7 +942,7 @@ class Database_Contoller
                             // Be sure to re-add column identifier if it was given; otherwise, use table name
                             $full_key = ($label ? $label : $this->_prefix.$table).".".$key;
 
-                            if (strtoupper($value) == 'NULL' || is_null($value)) {
+                            if (strtoupper((string)$value) == 'NULL' || is_null($value)) {
                                 $symbol = 'IS NULL';
                                 //$where[] = "`$key` $symbol";
                                 $where[] = "$full_key $symbol";
