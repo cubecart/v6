@@ -462,7 +462,7 @@ class GUI
      * @param string $file_name
      * @return string
      */
-    public function getCustomModuleSkin($type = 'gateway', $dirname, $file_name)
+    public function getCustomModuleSkin($type = 'gateway', $dirname = '', $file_name = '')
     {
         $root_path  = CC_ROOT_DIR.'/skins/'.$GLOBALS['config']->get('config', 'skin_folder').'/'.'templates/modules/'.$type.'/'.basename($dirname);
         return file_exists($root_path.'/'.$file_name) ? $root_path : $dirname.'/'.'skin';
@@ -625,6 +625,7 @@ class GUI
         if (($skins = $GLOBALS['cache']->read('info.skins.list')) !== false) {
             return $skins;
         } else {
+            $skins = array();
             foreach (glob(CC_ROOT_DIR.'/skins/*/config.xml') as $data_file) {
                 $data = $this->getSkinConfig($data_file);
                                 

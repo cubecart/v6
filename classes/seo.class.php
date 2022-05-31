@@ -25,7 +25,7 @@ class SEO
      *
      * @var array of strings
      */
-    private $_cat_dirs   = null;
+    private $_cat_dirs   = array();
     /**
      * Category paths
      *
@@ -999,6 +999,7 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
     {
         $language = Session::getInstance()->has('language', 'client') ? Session::getInstance()->get('language', 'client') : Language::getInstance()->current();
         if ($rebuild || ($this->_cat_dirs = Cache::getInstance()->read('seo.category.list.'.$language)) === false) {
+            $this->_cat_dirs = array();
             if($skip_seo_path) {
                 $query = sprintf("SELECT cat_id, cat_name, cat_parent_id FROM `%1\$sCubeCart_category` ORDER BY cat_id DESC", $GLOBALS['config']->get('config', 'dbprefix'));
             } else {

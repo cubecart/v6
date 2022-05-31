@@ -137,11 +137,12 @@ class ACP
     {
         if (!empty($name)) {
             $url = (!empty($url) && is_array($url)) ? currentPage(null, $url) : $url;
+            $url = is_null($url) ? '' : preg_replace('/(#.*)$/i', '', $url);
             $priority = $this->_setTabPriority($priority);
             $this->_tabs[$this->_tab_key_prefix.$priority] = array(
                 'name'  => $name,
                 'target' => $target,
-                'url'  => preg_replace('/(#.*)$/i', '', $url),
+                'url'  => $url,
                 'accesskey' => $accesskey,
                 'notify' => number_format((float)$notify_count),
                 'a_target' => $a_target,
@@ -409,6 +410,7 @@ class ACP
             $admin_session_language = Admin::getInstance()->get('language');
             $GLOBALS['smarty']->assign('val_admin_lang', $admin_session_language);
             if (($navigation = $GLOBALS['cache']->read('acp.showNavigation.'.$admin_session_language)) === false) {
+                $navigation = array();
                 foreach ($this->_navigation as $group => $menu) {
                     $title = $group;
                     $group = str_replace(' ', '_', $group);
