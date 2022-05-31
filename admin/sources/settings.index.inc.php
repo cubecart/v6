@@ -206,7 +206,7 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
     $config_new['ssl_path'] = $domain_parts['path'].'/';
 
     if (empty($config_new['time_format'])) {
-        $config_new['time_format'] = '%Y-%m-%d %H:%M';
+        $config_new['time_format'] = 'Y-m-d H:i';
     }
 
     ## Set default currency to have an exchange rate of 1
@@ -448,7 +448,7 @@ $select_options = array(
     'stock_change_time'  => array(1 => $lang['settings']['stock_reduce_process'], 0 => $lang['settings']['stock_reduce_complete'], 2 => $lang['settings']['stock_reduce_pending']),
     'stock_warn_type'  => array($lang['settings']['stock_warning_method_global'], $lang['settings']['stock_warning_method_product']),
     'product_weight_unit' => array('Lb' => $lang['settings']['weight_unit_lb'], 'Kg' => $lang['settings']['weight_unit_kg']),
-    'time_format'   => '%Y-%m-%d %H:%M',
+    'time_format'   => 'Y-m-d H:i',
     'product_sort_direction' => array('ASC' => 'ASC', 'DESC' => 'DESC'),
     'product_clone'      => array('0' => $lang['common']['disabled'], '2' => $lang['settings']['product_clone_hide'], '1' => $lang['common']['enabled']),
     'product_clone_code'    => array('1' => $lang['settings']['product_clone_new_code'], '2' => $lang['settings']['product_clone_old_code']),

@@ -452,7 +452,7 @@ function formatDispatchDate($date, $format = 'M d Y')
 
     $seconds = strtotime($date);
 
-    //$format = $GLOBALS['config']->get('config', 'dispatch_date_format') ? $GLOBALS['config']->get('config', 'dispatch_date_format') : $format;
+    $format = $GLOBALS['config']->get('config', 'dispatch_date_format') ? $GLOBALS['config']->get('config', 'dispatch_date_format') : $format;
 
     return date($format, $seconds);
 }
@@ -499,7 +499,7 @@ function formatTime($timestamp, $format = false, $static = false)
     } elseif ($fuzzy && !$static && date('d-m-Y', strtotime('yesterday')) == $date) { ## Yesterday
         return $GLOBALS['language']->common['yesterday'].", ".$time;
     } else {
-        return strftime($format, $seconds);
+        return date($format, $seconds);
     }
 }
 
