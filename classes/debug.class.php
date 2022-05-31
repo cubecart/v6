@@ -656,7 +656,7 @@ class Debug
     {
         $url = (CC_SSL ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         if (isset($GLOBALS['db']) && $GLOBALS['db']->connected) {
-            $log_days = method_exists($GLOBALS['config'], 'get') ? $GLOBALS['config']->get('config', 'r_system_error') : 7;
+            $log_days = (is_object($GLOBALS['config']) && method_exists($GLOBALS['config'], 'get')) ? $GLOBALS['config']->get('config', 'r_system_error') : 7;
             if (ctype_digit((string)$log_days) &&  $log_days > 0) {
                 $GLOBALS['db']->insert('CubeCart_system_error_log', array('message' => $message, 'url' => $url, 'backtrace' => $backtrace, 'time' => time()));
                 $GLOBALS['db']->delete('CubeCart_system_error_log', 'time < UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL '.$log_days.' DAY))');

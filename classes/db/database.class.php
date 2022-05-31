@@ -136,6 +136,7 @@ class Database_Contoller
 
     protected function __construct()
     {
+        mysqli_report(MYSQLI_REPORT_ALL ^ MYSQLI_REPORT_STRICT);
     }
 
     public function __destruct()
@@ -975,7 +976,7 @@ class Database_Contoller
      */
     private function _clearCacheNotice($purge, $affected, $table)
     {
-        if (CC_IN_ADMIN && $purge && $affected && method_exists($GLOBALS['session'], 'set') && !in_array($table, $this->cache_notice_tables_ingore)) {
+        if (CC_IN_ADMIN && $purge && $affected && is_object($GLOBALS['session']) && method_exists($GLOBALS['session'], 'set') && !in_array($table, $this->cache_notice_tables_ingore)) {
             if((int)$GLOBALS['session']->get('logins','admin_data') <= 3) {
                 $GLOBALS['main']->successMessage($GLOBALS['language']->dashboard['cache_reminder'], false);
             }

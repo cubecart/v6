@@ -222,7 +222,7 @@ class Database extends Database_Contoller
                 } else {
                     $this->_found_rows = $result->num_rows;
                     while ($row = $result->fetch_assoc()) {
-                        $this->_result[] = array_map(array(&$this, 'strip_slashes'), $row);
+                        $this->_result[] = $row;
                     }
                     $result->close();
                 }

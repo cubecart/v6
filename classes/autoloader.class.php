@@ -66,7 +66,8 @@ class Autoloader
 
         //If its a DB class use the db method
         if ($class == 'Database') {
-            return self::autoload_db();
+            include CC_ROOT_DIR.'/classes/db/mysqli.class.php';
+            return true;
         }
 
         //If its smarty we need to use the smarty loader
@@ -122,37 +123,6 @@ class Autoloader
         include CC_ROOT_DIR.'/classes/cache/file.class.php';
         return true;
     }
-
-    /**
-     * Autoload the correct DB class
-     *
-     * @return bool
-     */
-    public static function autoload_db()
-    {
-        global $glob;
-
-        //If the configuration has a DB try to load that one first
-        if (isset($glob['db']) && !empty($glob['db'])) {
-            if (file_exists(CC_ROOT_DIR.'/classes/db/'.$glob['db'].'.class.php')) {
-                include CC_ROOT_DIR.'/classes/db/'.$glob['db'].'.class.php';
-                return true;
-            }
-        }
-
-        //We will do mysqli if loaded
-        if (function_exists('mysqli_connect')) {
-            include CC_ROOT_DIR.'/classes/db/mysqli.class.php';
-            return true;
-        } else {
-            include CC_ROOT_DIR.'/classes/db/mysql.class.php';
-            return true;
-        }
-
-        return false;
-    }
-
-    
 
     /**
      * Register autoload function
