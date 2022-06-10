@@ -538,7 +538,7 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
     }
         $GLOBALS['smarty']->assign('MODE_COMPLETE', true);
         // delete setup folder on admin login
-        $date = new Datetime(strftime('%c',time()+7200));
+        $date = new Datetime(date('r',time()+7200));
         $attributes = '';
         $attributes .= ';Expires='.$date->format(DateTime::COOKIE);
         if(CC_SSL) {

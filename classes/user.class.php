@@ -410,7 +410,7 @@ class User
             $data = array_map('trim', $data);
 
             foreach ($data as $key => $value) {
-                $data[$key] = htmlspecialchars($value);
+                $data[$key] = htmlspecialchars(html_entity_decode($value));
             }
 
             if ($existing = $GLOBALS['db']->select('CubeCart_customer', 'customer_id', array('email' => $data['email']), false, 1, false, false)) {
@@ -913,7 +913,7 @@ class User
             }
             
             foreach ($_POST as $key => $value) {
-                $_POST[$key] = htmlspecialchars($value);
+                $_POST[$key] = htmlspecialchars(html_entity_decode($value));
             }
 
             $_POST['language'] = $GLOBALS['language']->current();

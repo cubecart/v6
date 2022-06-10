@@ -267,7 +267,7 @@ class Database_Contoller
      */
     public function doSQLBackup($dropTables = false, $incStructure = true, $incRows = true, $file_name = '', $compress = false, $all_tables = false)
     {
-        $open_text = "-- --------------------------------------------------------\n-- CubeCart SQL Dump\n-- version ".CC_VERSION."\n-- http://www.cubecart.com\n-- \n-- Host: ".$GLOBALS['config']->get('config', 'dbhost')."\n-- Generation Time: ".strftime($GLOBALS['config']->get('config', 'time_format'), time())."\n-- Server version: ".$this->serverVersion()."\n-- PHP Version: ".phpversion()."\n-- \n-- Database: `".$GLOBALS['config']->get('config', 'dbdatabase')."`\n";
+        $open_text = "-- --------------------------------------------------------\n-- CubeCart SQL Dump\n-- version ".CC_VERSION."\n-- http://www.cubecart.com\n-- \n-- Host: ".$GLOBALS['config']->get('config', 'dbhost')."\n-- Generation Time: ".date($GLOBALS['config']->get('config', 'time_format'), time())."\n-- Server version: ".$this->serverVersion()."\n-- PHP Version: ".phpversion()."\n-- \n-- Database: `".$GLOBALS['config']->get('config', 'dbdatabase')."`\n";
         
         $fp = fopen($file_name, 'w');
         fwrite($fp, $open_text);
@@ -519,7 +519,7 @@ class Database_Contoller
             }
             $anchor = ($anchor) ? "#$anchor" : '';
 
-            if(ctype_digit($page)) {
+            if(ctype_digit((string)$page)) {
                 if ($page >= $show - 1) {
                     $params[$var_name] = 1;
                 }
@@ -665,7 +665,7 @@ class Database_Contoller
         if ($order) {
             if (is_array($order)) {
                 foreach ($order as $field => $sort) {
-                    if (is_array($allowed)) {
+                    if (isset($allowed) && is_array($allowed)) {
                         if (in_array($field, $allowed)) {
                             $orderArray[] = "`$field` ".$this->sqlSafe($sort);
                         }
@@ -787,7 +787,7 @@ class Database_Contoller
     public function strip_slashes($input)
     {
         // Strip slashes, unless it's serialized data
-        if (!preg_match('#^\w:\d+:\{(.+)\}$#su', $input) && !is_null($input)) {
+        if (!is_null($input) && !preg_match('#^\w:\d+:\{(.+)\}$#su', $input)) {
             $input = stripslashes($input);
         }
 
@@ -871,8 +871,8 @@ class Database_Contoller
                     if (is_array($value)) {
                         foreach ($value as $val) {
                             if (in_array($val, $allowed) && !is_numeric($val) || preg_match('/CONCAT/', $val)) {
-                                if (isset($key[0]) && !ctype_alnum($key[0]) || $key[0]=='NULL' || is_null($key[0]) || $key[0]=='NOT NULL') {
-                                    if (preg_match('#^([<>!~\+\-]=?)(.+)#', $key, $match)) {
+                                if (isset($key[0]) && !ctype_alnum((string)$key[0]) || $key[0]=='NULL' || is_null($key[0]) || $key[0]=='NOT NULL') {
+                                    if (preg_match('#^([<>!~\+\-]=?)(.+)#', (string)$key, $match)) {
                                         switch ($match[1]) {
                                         case '~':
                                             // Fuzzy searching
@@ -888,7 +888,7 @@ class Database_Contoller
                                 
                                 $val_ = preg_match('/CONCAT/', $val) ? $val : "`$val`";
 
-                                if (strtoupper($key[0]) == 'NULL' || is_null($key[0])) {
+                                if (strtoupper((string)$key[0]) == 'NULL' || is_null($key[0])) {
                                     $symbol = 'IS NULL';
                                     $where[] = "$val_ $symbol";
                                 } elseif (strtoupper($key[0])=='NOT NULL') {

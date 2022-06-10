@@ -203,7 +203,7 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
     // Added for backward compatibility as these old values may be used in extensions
     $config_new['ssl_url'] = preg_replace('#^http://#', 'https://', $config_new['standard_url']);
     $domain_parts = parse_url($config_new['standard_url']);
-    $config_new['ssl_path'] = $domain_parts['path'].'/';
+    $config_new['ssl_path'] = ($domain_parts['path'] ?? '').'/';
 
     if (empty($config_new['time_format'])) {
         $config_new['time_format'] = 'Y-m-d H:i';

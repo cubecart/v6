@@ -25,7 +25,7 @@ class Cart
      *
      * @var array
      */
-    public $basket    = null;
+    public $basket    = array();
     /**
      * Basket data
      *
@@ -902,7 +902,7 @@ class Cart
                 }
 
                 $this->basket['contents'][$hash]['tax_each'] = $product_tax;
-                $this->basket['contents'][$hash]['option_absolute_price'] = (bool)$product['absolute_price'];
+                $this->basket['contents'][$hash]['option_absolute_price'] = isset($product['absolute_price'])?true:false;
 
                 // Calculate Line Shipping Price if enabled
                 if (isset($ship_by_cat['status']) && $ship_by_cat['status']) {
@@ -1080,7 +1080,7 @@ class Cart
                                 // work out tax amount on shipping
                                 foreach ($packages as $package) {
                                     $package['value'] = sprintf('%.2F', $package['value']);
-                                    $packages_with_tax[] = array_merge($package, array('tax' => $GLOBALS['tax']->productTax($package['value'], $package['tax_id'], $package['tax_inclusive'], $this->basket[$tax_on]['state_id'], 'shipping', false)));
+                                    $packages_with_tax[] = array_merge($package, array('tax' => $GLOBALS['tax']->productTax($package['value'], $package['tax_id'], $package['tax_inclusive']??false, $this->basket[$tax_on]['state_id'], 'shipping', false)));
                                 }
 
                                 $shipArray[$group_name]	= $packages_with_tax;

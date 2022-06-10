@@ -41,7 +41,7 @@ if ($GLOBALS['config']->get('config', 'csrf')=='1') {
 }
 //Initialize Smarty
 $GLOBALS['smarty'] = new Smarty();
-$GLOBALS['smarty']->muteExpectedErrors();
+$GLOBALS['smarty']->muteUndefinedOrNullWarnings();
 $GLOBALS['smarty']->error_reporting = E_ALL & ~E_NOTICE & ~E_WARNING;
 $GLOBALS['smarty']->compile_dir  = CC_SKIN_CACHE_DIR;
 $GLOBALS['smarty']->config_dir   = CC_SKIN_CACHE_DIR;
@@ -79,7 +79,6 @@ $GLOBALS['cart'] = Cart::getInstance();
 
 // Set store timezone - default to UTC
 date_default_timezone_set(($GLOBALS['config']->get('config', 'time_zone')) ? $GLOBALS['config']->get('config', 'time_zone') : 'UTC');
-$_GET['_a']  = (isset($_GET['_a'])) ? $_GET['_a'] : null;
 $_REQUEST['_a'] = (isset($_REQUEST['_a'])) ? $_REQUEST['_a'] : null;
 
 foreach ($GLOBALS['hooks']->load('controller.index') as $hook) {
@@ -93,6 +92,6 @@ $GLOBALS['gui']->displayCommon();
 $checkout_pages = array('confirm', 'basket', 'gateway', 'cart','checkout');
 
 
-$global_template_file = (in_array($_GET['_a'], $checkout_pages) && file_exists(CC_ROOT_DIR.'/skins/'.$GLOBALS['gui']->getSkin().'/templates/main.checkout.php')) ? 'main.checkout.php' : 'main.php';
+$global_template_file = (isset($_GET['_a']) && in_array($_GET['_a'], $checkout_pages) && file_exists(CC_ROOT_DIR.'/skins/'.$GLOBALS['gui']->getSkin().'/templates/main.checkout.php')) ? 'main.checkout.php' : 'main.php';
 
 offline();

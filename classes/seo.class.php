@@ -998,7 +998,7 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
     private function _getCategoryList($rebuild = false, $skip_seo_path = false)
     {
         $language = Session::getInstance()->has('language', 'client') ? Session::getInstance()->get('language', 'client') : Language::getInstance()->current();
-        if ($rebuild || ($this->_cat_dirs = Cache::getInstance()->read('seo.category.list.'.$language)) === false) {
+        if ($rebuild || ($this->_cat_dirs = (Cache::getInstance()->read('seo.category.list.'.$language))?:array())) {
             $this->_cat_dirs = array();
             if($skip_seo_path) {
                 $query = sprintf("SELECT cat_id, cat_name, cat_parent_id FROM `%1\$sCubeCart_category` ORDER BY cat_id DESC", $GLOBALS['config']->get('config', 'dbprefix'));

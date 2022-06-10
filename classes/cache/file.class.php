@@ -280,6 +280,6 @@ class Cache extends Cache_Controler
     protected function _getEmpties()
     {
         $this->_setPrefix();
-        $this->_empties = $this->read($this->_empties_id);
+        $this->_empties = ($this->read($this->_empties_id))?:array();
     }
 }

@@ -25,7 +25,6 @@ ini_set('magic_quotes_runtime', false);
 ini_set('short_open_tag', false);   // Disable '<?' style php short tags for xml happiness
 ini_set('asp_tags', false);     // Disable '<%' asp-style tags - anyone using these should be shot
 ini_set('arg_separator.output', '&'); // Set argument separator to & HTML validity
-ini_set('auto_detect_line_endings', true); // Automatically detect line endings - Good for Mac OS X
 ini_set('allow_url_include', false);  // Disable URL includes
 ini_set('default_charset', 'UTF-8');  // Set default charset as 'UTF-8'
 ini_set('default_mimetype', 'text/html'); // Set default mimetype as 'text/html'
@@ -104,7 +103,7 @@ $script_path = trim(dirname($script_name));
 $script_path = str_replace('\\', '/', $script_path);
 $script_path = preg_replace('#[\\\\/]{2,}#', '/', $script_path);
 $url = (CC_SSL ? 'https://' : 'http://') . $server_name . $script_path;
-$url = htmlspecialchars($url);
+$url = htmlspecialchars(html_entity_decode($url));
 // Remove index.php/anything
 if (strstr($url, '/index.php')) {
     $url = substr($url, 0, strpos($url, '/index.php'));

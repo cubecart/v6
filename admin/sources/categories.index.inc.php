@@ -390,7 +390,7 @@ if (isset($_GET['action'])) {
         foreach ($GLOBALS['hooks']->load('admin.category.tabs') as $hook) {
             include $hook;
         }
-        $GLOBALS['smarty']->assign('PLUGIN_TABS', $smarty_data['plugin_tabs']);
+        $GLOBALS['smarty']->assign('PLUGIN_TABS', $smarty_data['plugin_tabs'] ?? false);
             
         $GLOBALS['smarty']->assign('SELECT_CATEGORIES', $select_categories);
         $GLOBALS['smarty']->assign('MODE_ADDEDIT', true);

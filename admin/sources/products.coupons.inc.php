@@ -181,7 +181,7 @@ if (isset($_GET['action'])) {
     }
     // List Manufacturers
     if (($manufacturers = $GLOBALS['db']->select('CubeCart_manufacturers', false, false, array('name' => 'ASC'))) !== false) {
-        $manufacturer_assigned = array_flip(unserialize($coupon[0]['manufacturer_id']));
+        if (is_array(unserialize($coupon[0]['manufacturer_id']))) $manufacturer_assigned = array_flip(unserialize($coupon[0]['manufacturer_id']));
         foreach ($manufacturers as $manufacturer) {
             $manufacturer['selected'] = isset($manufacturer_assigned[$manufacturer['id']]) ? true : false;
             $smarty_data['list_manufacturers'][] = $manufacturer;
@@ -261,7 +261,7 @@ if (isset($_GET['action'])) {
     $pagination = $GLOBALS['db']->pagination(false, $per_page, $page, 5, $page_var, 'coupons');
     if ($coupons) {
         foreach ($coupons as $coupon) {
-            $coupon['expires'] = ($coupon['expires']>0) ? formatTime(strtotime($coupon['expires'])) : $GLOBALS['lang']['common']['never'];
+            $coupon['expires'] = (strcmp($coupon['expires'], "1") > 0) ? formatTime(strtotime($coupon['expires'])) : $GLOBALS['lang']['common']['never'];
             if ($coupon['allowed_uses'] == 0) {
                 $coupon['allowed_uses'] = '&infin;';
             } else {

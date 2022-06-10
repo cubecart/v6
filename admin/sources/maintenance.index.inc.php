@@ -118,8 +118,6 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
     ignore_user_abort(true);
     // Set max execution time to three minutes
     set_time_limit(180);
-    // Make sure line endings can be detected
-    ini_set("auto_detect_line_endings", true);
     $file_name = basename($_GET['restore']);
     $file_path = CC_BACKUP_DIR.$file_name;
 
@@ -1011,7 +1009,7 @@ if (isset($database_result) && $database_result) {
 
 ## Existing Backups
 $files = glob('{backup/*.sql,backup/*.zip}', GLOB_BRACE);
-
+$existing_backups = array();
 if (count($files)>0) {
     foreach ($files as $file) {
         $sorted_files[filemtime($file)] = $file;

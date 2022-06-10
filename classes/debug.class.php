@@ -616,7 +616,7 @@ class Debug
             if (is_array($value)) {
                 $output .= '<div style="margin-left: '.$left.'px;">\''.$key.'\' => '.$this->_makeExport($value, ($left + 8)).'</div>';
             } else {
-                $output .= '<div style="margin-left: '.$left.'px;">\''.$key.'\' => '.nl2br(htmlspecialchars($value)).'</div>';
+                $output .= '<div style="margin-left: '.$left.'px;">\''.$key.'\' => '.nl2br(htmlspecialchars((string)$value, ENT_NOQUOTES)).'</div>';
             }
         }
 

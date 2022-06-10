@@ -27,7 +27,7 @@ class Catalogue
     private $_productData;
     private $_productHash = array();
     private $_pathElements;
-    private $_category_translations = false;
+    private $_category_translations = array();
     private $_option_required = false;
     private $_options_line_price = 0;
     private $_sort_by_relevance = false;
@@ -127,7 +127,7 @@ class Catalogue
         if ($this->_category_count) {
             //Pagination
             $catalogue_products_per_page = $GLOBALS['gui']->itemsPerPage('products', 'perpage');
-            if(ctype_digit($page)) {
+            if(ctype_digit((string)$page)) {
                 if (($page * $catalogue_products_per_page) > $this->_category_count) {
                     $new_page = (int)ceil($this->_category_count / $catalogue_products_per_page);
                     if ($new_page < $page) {
@@ -265,8 +265,8 @@ class Catalogue
             $meta_data = array(
                 'name'   => (isset($catData['cat_name'])) ? $catData['cat_name'] : '',
                 'path'   => null,
-                'description' => (isset($catData['seo_meta_description'])) ? $catData['seo_meta_description'] : '',
-                'title'   => (isset($catData['seo_meta_title'])) ? $catData['seo_meta_title'] : '',
+                'description' => $catData['seo_meta_description'] ?? '',
+                'title'   => $catData['seo_meta_title'] ?? ''
             );
             $GLOBALS['seo']->set_meta_data($meta_data);
         } elseif ($_GET['_a'] !== 'saleitems') {
@@ -331,8 +331,8 @@ class Catalogue
                 $meta_data = array(
                     'name'   => $product['name'],
                     'path'   => null,
-                    'description' => $product['seo_meta_description'],
-                    'title'   => $product['seo_meta_title'],
+                    'description' => $product['seo_meta_description'] ?? '',
+                    'title'   => $product['seo_meta_title'] ?? ''
                 );
                 $GLOBALS['seo']->set_meta_data($meta_data);
 
@@ -359,7 +359,7 @@ class Catalogue
                 }
 
                 // Display gallery
-                $GLOBALS['smarty']->assign('GALLERY', $this->_productGallery($product['product_id']));
+                $GLOBALS['smarty']->assign('GALLERY', ($this->_productGallery($product['product_id'])) ?: array());
                 $product_options = $this->displayProductOptions($product['product_id']);
                 $GLOBALS['smarty']->assign('OPTIONS', $product_options);
 
@@ -409,7 +409,7 @@ class Catalogue
                             $review['name'] = $GLOBALS['language']->catalogue['review_anon'];
                         }
                         $review['date']  = formatTime($review['time']);
-                        $review['date_schema'] = formatTime($review['time'], '%Y-%m-%d', true);
+                        $review['date_schema'] = formatTime($review['time'], 'o-m-d', true);
                         if($GLOBALS['config']->get('config', 'enable_reviews')==='1') {
                             $review['gravatar'] = md5(strtolower(trim($review['email'])));
                             if($skin_data['info']['gravatar_ajax']) {
@@ -1460,7 +1460,7 @@ class Catalogue
                 }
             }
         }
-
+        $placeholder_image = '';
         if ($return_placeholder && isset($skins['images'][$mode])) {
             $default = (string)$skins['images'][$mode]['default'];
             
@@ -2129,7 +2129,7 @@ class Catalogue
         }
         $GLOBALS['smarty']->assign('GALLERY_JSON', "''");
 
-        return false;
+        return array();
     }
 
     /**

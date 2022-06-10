@@ -186,8 +186,6 @@ function cmpmc($a, $b)
         $a = $a['priority'];
 
         return $a<$b ? -1 : ($a>$b ? 1 : 0);
-    } else {
-        return false;
     }
 }
 
@@ -277,7 +275,7 @@ function currentPage($excluded = null, $included = null, $remove_excluded = true
  */
 function custom_urlencode($item, $key, $one_time_keys)
 {
-    $item = is_null($item) ? '' : urlencode(html_entity_decode(stripslashes($item)));
+    if (!is_null($item)) $item = urlencode(html_entity_decode(stripslashes($item)));
     return $item;
 }
 

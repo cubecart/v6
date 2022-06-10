@@ -358,7 +358,7 @@ class GUI
                 $this->_displayLanguageSwitch();
                 $this->_displayCurrencySwitch();
                 $this->_displaySessionBox();
-                if (!in_array($_GET['_a'], array('basket', 'cart', 'complete', 'checkout', 'confirm', 'gateway')) && !$GLOBALS['config']->get('config', 'catalogue_mode')) {
+                if (isset($_GET['_a']) && !in_array($_GET['_a'], array('basket', 'cart', 'complete', 'checkout', 'confirm', 'gateway')) && !$GLOBALS['config']->get('config', 'catalogue_mode')) {
                     $this->displaySideBasket();
                 }
             }
@@ -622,7 +622,7 @@ class GUI
      */
     public function listSkins()
     {
-        if (($skins = $GLOBALS['cache']->read('info.skins.list')) !== false) {
+        if ($skins = ($GLOBALS['cache']->read('info.skins.list'))?:array()) {
             return $skins;
         } else {
             $skins = array();

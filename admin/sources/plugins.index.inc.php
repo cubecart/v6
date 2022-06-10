@@ -294,7 +294,7 @@ if (isset($_POST['status'])) {
 
 $module_paths = glob("modules/*/*/config.xml");
 $i=0;
-$modules = false;
+$modules = array();
 foreach ($module_paths as $module_path) {
     try {
         $xml   = new SimpleXMLElement(file_get_contents($module_path));
@@ -320,7 +320,7 @@ foreach ($module_paths as $module_path) {
             'homepage' 			=> (string)$xml->info->homepage,
             'block' 			=> (string)$xml->info->block,
             'basename' 			=> $basename,
-            'config'			=> $module_config[0],
+            'config'			=> (is_array($module_config)) ? $module_config[0] : array('status' => 0),
             'edit_url'			=> '?_g=plugins&type='.(string)$xml->info->type.'&module='.$basename,
             'delete_url'		=> '?_g=plugins&type='.(string)$xml->info->type.'&module='.$basename.'&delete=1&token='.SESSION_TOKEN
 
