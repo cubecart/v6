@@ -27,7 +27,7 @@ $page = (isset($_GET['page'])) ? $_GET['page'] : 1;
 //$no_rows = $GLOBALS['db']->numrows('SELECT `product_id` FROM '.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory');
 $no_rows = $GLOBALS['db']->numrows(sprintf('SELECT I.product_id FROM %1$sCubeCart_inventory AS I LEFT JOIN %1$sCubeCart_category AS C ON I.cat_id = C.cat_id WHERE I.status = 1', $GLOBALS['config']->get('config', 'dbprefix')));
 
-function download_parts($format = 'cubecart', $no_rows, $per_page)
+function download_parts($format = 'cubecart', $no_rows = '', $per_page = '')
 {
     $no_pages = ceil($no_rows / $per_page);
     ## If there are no pages (less that per page) we need page 1 for an export

@@ -821,7 +821,7 @@ class FileManager
      */
     public function formatPath($path, $slash = true)
     {
-        $path = preg_replace('#[\\\/]{2,}#', '/', urldecode($path));
+        $path = preg_replace('#[\\\/]{2,}#', '/', (string)urldecode($path));
         if ($path == '.' || $path == '..') {
             return null;
         }
