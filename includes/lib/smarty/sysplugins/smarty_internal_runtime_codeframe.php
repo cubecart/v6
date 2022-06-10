@@ -45,10 +45,10 @@ class Smarty_Internal_Runtime_CodeFrame
             $properties[ 'cache_lifetime' ] = $_template->cache_lifetime;
         }
         $output = sprintf(
-            "<?php\n/* Smarty version %s, created on %s\n  from '%s' */\n\n",
+			"<?php\n/* Smarty version %s, created on %s\n  from '%s' */\n\n",
             $properties[ 'version' ],
-            date("Y-m-d H:i:s"),
-            str_replace('*/', '* /', $_template->source->filepath)
+	        date("Y-m-d H:i:s"),
+	        str_replace('*/', '* /', $_template->source->filepath)
         );
         $output .= "/* @var Smarty_Internal_Template \$_smarty_tpl */\n";
         $dec = "\$_smarty_tpl->_decodeProperties(\$_smarty_tpl, " . var_export($properties, true) . ',' .
