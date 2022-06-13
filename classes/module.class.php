@@ -452,8 +452,10 @@ class Module
         if (file_exists($this->_path.'/'.$this->_package_xml)) {
             $xml = new SimpleXMLElement(file_get_contents($this->_path.'/'.$this->_package_xml, true));
             ## Parse and handle XML data
-            foreach ((array)$xml->info as $key => $value) {
-                $this->_info[$key] = (string)$value;
+            if(isset($xml->info) && is_array($xml->info)) {
+                foreach ($xml->info as $key => $value) {
+                    $this->_info[$key] = (string)$value;
+                }
             }
             //$this->_module_name = (isset($this->_info['folder']) && !empty($this->_info['folder'])) ? $this->_info['folder'] : str_replace(' ', '_', $this->_info['name']);
         } elseif (file_exists($this->_path.'/'.$this->_package_file)) {

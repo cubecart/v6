@@ -1968,7 +1968,7 @@ class Cubecart
                         // Update Order Summary with gateway name
                         $GLOBALS['db']->update('CubeCart_order_summary', array('gateway' => $gateways[0]['folder']), array('cart_order_id' => $this->_basket['cart_order_id']));
 
-                        switch (strtolower($transfer['submit'])) {
+                        switch (strtolower((string)$transfer['submit'])) {
                         case 'iframe':
                             $transfer['mode'] = 'iframe';
                             if (method_exists($gateway, 'iframeURL')) {

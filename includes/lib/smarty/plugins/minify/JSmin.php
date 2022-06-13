@@ -312,7 +312,7 @@ class JSMin
                 $c = null;
             }
         }
-        if (ord($c) >= self::ORD_SPACE || $c === "\n" || $c === null) {
+        if (ord((string)$c) >= self::ORD_SPACE || $c === "\n" || $c === null) {
             return $c;
         }
         if ($c === "\r") {
