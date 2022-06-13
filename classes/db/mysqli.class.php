@@ -171,7 +171,7 @@ class Database extends Database_Contoller
      */
     public function sqlSafe($value, $quote = false)
     {
-        $value = $this->_db_connect_id->escape_string(stripslashes($value));
+        $value = $this->_db_connect_id->escape_string(stripslashes((string)$value));
 
         return (!$quote || is_null($value)) ? $value : "'$value'";
     }
