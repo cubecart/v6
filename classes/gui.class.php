@@ -358,7 +358,7 @@ class GUI
                 $this->_displayLanguageSwitch();
                 $this->_displayCurrencySwitch();
                 $this->_displaySessionBox();
-                if (isset($_GET['_a']) && !in_array($_GET['_a'], array('basket', 'cart', 'complete', 'checkout', 'confirm', 'gateway')) && !$GLOBALS['config']->get('config', 'catalogue_mode')) {
+                if (!isset($_GET['_a']) || !in_array($_GET['_a'], array('basket', 'cart', 'complete', 'checkout', 'confirm', 'gateway')) && !$GLOBALS['config']->get('config', 'catalogue_mode')) {
                     $this->displaySideBasket();
                 }
             }
