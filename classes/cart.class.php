@@ -732,7 +732,7 @@ class Cart
             $ship_by_cat = $GLOBALS['config']->get('Per_Category');
 
             $sbc_path = CC_ROOT_DIR.'/modules/shipping/Per_Category/line.inc.php';
-            if (file_exists($sbc_path) && isset($ship_by_cat['status']) && $ship_by_cat['status']) {
+            if (isset($this->basket['delivery_address']) && file_exists($sbc_path) && isset($ship_by_cat['status']) && $ship_by_cat['status']) {
                 require_once $sbc_path;
                 $line_shipping = new Per_Category_Line($ship_by_cat, $this->basket);
             } else {
