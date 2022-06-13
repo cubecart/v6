@@ -1509,16 +1509,17 @@ class Catalogue
                         }
                         $gd->gdSave(basename($image));
                     }
+                    // panic for corrupt cached images
+                    if(filesize($image)===0) {
+                        $folder = 'source';
+                        $filename = $file;
+                    }
                 } else {
                     trigger_error('No image mode set', E_USER_NOTICE);
                     return false;
                 }
             }
-            // panic for corrupt cached images
-            if(filesize($image)===0) {
-                $folder = 'source';
-                $filename = $file;
-            }
+
             ## Generate the required path
             switch (strtolower($path)) {
                 case 'filename': ## Calculate the from source folder
