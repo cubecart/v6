@@ -505,7 +505,7 @@ class Cart
      */
     public function clear()
     {
-        $this->basket = null;
+        $this->basket = array();
         $GLOBALS['session']->delete('', 'basket');
 
         $GLOBALS['db']->delete('CubeCart_saved_cart', array('customer_id' => $GLOBALS['user']->getId()));
