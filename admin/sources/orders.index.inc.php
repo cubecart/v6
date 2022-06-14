@@ -17,7 +17,7 @@ Admin::getInstance()->permissions('orders', CC_PERM_READ, true);
 $order = Order::getInstance();
 
 // Correct OID format
-if (isset($_GET['order_id']) && !preg_match('#^[0-9]{6}-[0-9]{6}-[0-9]{4}$#i', $_GET['order_id'])) {
+if (isset($_GET['order_id']) && !preg_match(Order::TRADITIONAL_ORDER_FORMAT, $_GET['order_id'])) {
     if ($std_oid = $GLOBALS['db']->select('CubeCart_order_summary', 'cart_order_id', array($GLOBALS['config']->get('config', 'oid_col') => $_GET['order_id']))) {
         $_GET['order_id'] = $std_oid[0]['cart_order_id'];
     }

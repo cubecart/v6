@@ -68,7 +68,7 @@ if (isset($_POST['coupon']) && is_array($_POST['coupon'])) {
     );
     $continue = true;
     if (!empty($_POST['coupon']['cart_order_id'])) {
-        if(preg_match('/^[0-9]{6}-[0-9]{6}-[0-9]{4}$/i', $order_id)) {
+        if(preg_match(Order::TRADITIONAL_ORDER_FORMAT, $_POST['coupon']['cart_order_id'])) {
             $oid_col = 'cart_order_id';
         } else {
             $oid_col = 'custom_oid';

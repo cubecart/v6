@@ -50,6 +50,8 @@ class Order
     const PAYMENT_FAILED = 5;
     const PAYMENT_CANCEL = 6;
 
+    const TRADITIONAL_ORDER_FORMAT = '/^[0-9]{6}-[0-9]{6}-[0-9]{4}$/i';
+
     ##############################################
 
     public function __construct()
@@ -957,7 +959,7 @@ class Order
     public static function validOrderId($order_id, $traditional = false)
     {
         $oid_mode = $GLOBALS['config']->get('config', 'oid_mode');
-        if (preg_match('/^[0-9]{6}-[0-9]{6}-[0-9]{4}$/i', $order_id)) {
+        if (preg_match(self::TRADITIONAL_ORDER_FORMAT, $order_id)) {
             return true;
         } elseif ($oid_mode=='i' && (ctype_digit($order_id) || preg_match('/[-\w\_]+/', $order_id))) {
             return true;
