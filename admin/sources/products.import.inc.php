@@ -61,8 +61,8 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
 
     if ($GLOBALS['session']->has('map', 'import')) {
         ## Use the user defined mapping
-        foreach ($GLOBALS['session']->get('map', 'import') as $col => $value) {
-            $map[$column++]	= (string)$value;
+        foreach ($GLOBALS['session']->get('map', 'import') as $col => $v) {
+            $map[$column++]	= (string)$v;
         }
         $delimiter	= $GLOBALS['session']->get('delimiter', 'import');
         $has_header	= $GLOBALS['session']->get('headers', 'import');
@@ -108,9 +108,9 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
                         
                         $image_splits = explode(',', $value);
                     
-                        foreach ($image_splits as $value) {
-                            $image_name = basename(trim($value));
-                            $image_path = preg_replace('/^(\.\/|\/)/', '', dirname($value)); // lose first slash to match DB storage but add end slash
+                        foreach ($image_splits as $image_split) {
+                            $image_name = basename(trim($image_split));
+                            $image_path = preg_replace('/^(\.\/|\/)/', '', dirname($image_split)); // lose first slash to match DB storage but add end slash
                             if (!empty($image_path)) {
                                 $image_path .= '/';
                             }
