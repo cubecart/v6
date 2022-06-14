@@ -1931,7 +1931,9 @@ class Cubecart
         } else {
             $where['module'] = 'gateway';
         }
-        $gateways = $GLOBALS['db']->select('CubeCart_modules', false, $where, array('position' => 'ASC'));
+        if($gateways = $GLOBALS['db']->select('CubeCart_modules', false, $where, array('position' => 'ASC')) == false) {
+            $gateways = array();
+        }
         // Gateway hooks
         foreach ($GLOBALS['hooks']->load('class.cubecart.display_gateways') as $hook) {
             include $hook;
@@ -2275,7 +2277,9 @@ class Cubecart
      */
     private function _listPaymentOptions($selected_gateway = '')
     {
-        $gateways = $GLOBALS['db']->select('CubeCart_modules', false, array('module' => 'gateway', 'status' => '1'), array('position' => 'ASC'));
+        if($gateways = $GLOBALS['db']->select('CubeCart_modules', false, array('module' => 'gateway', 'status' => '1'), array('position' => 'ASC')) == false ) {
+            $gateways = array();
+        }
         // Gateway hooks
         foreach ($GLOBALS['hooks']->load('class.cubecart.display_gateways') as $hook) {
             include $hook;
