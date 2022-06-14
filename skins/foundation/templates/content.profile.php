@@ -40,7 +40,7 @@
       <h2>{$LANG.account.password_change}</h2>
       <p>{$LANG.account.update_your_password}</p>
       <div class="row">
-         <div class="small-12 large-8 columns"><label for="passold" class="show-for-medium-up">{$LANG.user.password_current}</label><input type="password" maxlength="64" autocomplete="off" name="passold" id="passold" placeholder="{$LANG.user.password_current}"></div>
+         <div class="small-12 large-8 columns"><label for="passold" class="show-for-medium-up">{$LANG.user.password_current}</label><input type="password" maxlength="64" autocomplete="off" name="passold" id="passold" onkeyup="{literal}if(this.value.length == 64){alert('{/literal}{$LANG.user.password_too_long}{literal}')}{/literal}" placeholder="{$LANG.user.password_current}"></div>
       </div>
       <div class="row">
          <div class="small-12 large-8 columns"><label for="passnew" class="show-for-medium-up">{$LANG.user.password_new}</label><input type="password" maxlength="64" autocomplete="off" name="passnew" id="passnew" placeholder="{$LANG.user.password_new}"></div>

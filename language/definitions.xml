@@ -2467,5 +2467,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="password_current" introduced="5.0.0"><![CDATA[Current password]]></string>
     <string name="password_new" introduced="5.0.0"><![CDATA[New password]]></string>
     <string name="title" introduced="5.0.0"><![CDATA[Title]]></string>
+    <string name="password_too_long" introduced="6.4.6"><![CDATA[If your old password was longer than 64 characters please logout and use the password reset tool.]]></string>
   </group>
 </definitions>
