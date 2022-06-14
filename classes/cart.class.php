@@ -339,11 +339,14 @@ class Cart
                             $quantity = $max_stock;
                             $stock_warning = true;
                         }
+                        if(!$this->basket) {
+                            $this->basket = array();
+                        }
                         $this->basket['contents'][$hash] = array(
-                                'id'  => $product_id,
-                                'quantity' => $quantity,
-                                'digital' => $product['digital'],
-                            );
+                            'id'  => $product_id,
+                            'quantity' => $quantity,
+                            'digital' => $product['digital'],
+                        );
                         if ($options && !empty($optionsArray)) {
                             // Add options to the basket item
 
