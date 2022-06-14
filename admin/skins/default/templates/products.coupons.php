@@ -127,7 +127,7 @@
 	  <input type="hidden" name="coupon[coupon_id]" value="{$COUPON.coupon_id}">
 	</fieldset>
 	<fieldset><legend>{$LANG.catalogue.title_coupon_convert}</legend>
-	  <div><label for="form-expires">{$LANG.orders.order_number}</label><span><input type="text" name="coupon[cart_order_id]" id="form-expires" value="{$COUPON.cart_order_id}" class="textbox"></span></div>
+	  <div><label for="cart_order_id">{$LANG.orders.order_number}</label><span><input type="text" name="coupon[cart_order_id]" id="cart_order_id" value="{$COUPON.cart_order_id}" class="textbox"></span></div>
 	  <div class="clear">{$LANG.catalogue.coupon_convert_desc}</div>
 	</fieldset>
   </div>

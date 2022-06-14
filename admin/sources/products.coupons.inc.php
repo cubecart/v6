@@ -68,7 +68,11 @@ if (isset($_POST['coupon']) && is_array($_POST['coupon'])) {
     );
     $continue = true;
     if (!empty($_POST['coupon']['cart_order_id'])) {
-        $oid_col = $GLOBALS['config']->get('config', 'oid_mode') == 'i' ? $GLOBALS['config']->get('config', 'oid_col') : 'cart_order_id';
+        if(preg_match('/^[0-9]{6}-[0-9]{6}-[0-9]{4}$/i', $order_id)) {
+            $oid_col = 'cart_order_id';
+        } else {
+            $oid_col = 'custom_oid';
+        }
         $existing_oid = $GLOBALS['db']->select('CubeCart_order_summary', false, array($oid_col => $_POST['coupon']['cart_order_id']));
         if (!$existing_oid) {
             $GLOBALS['main']->errorMessage(sprintf($lang['orders']['order_not_found'], $_POST['coupon']['cart_order_id']));
