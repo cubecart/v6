@@ -14,7 +14,6 @@ jQuery(document).ready(function() {
             type:"HEAD",
             crossDomain:true,
             success:function(){
-                console.log(avatar_id,'success');
                 $('#'+avatar_id).attr("src", img_url);
             }
         });
