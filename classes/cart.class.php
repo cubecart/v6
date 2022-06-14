@@ -586,7 +586,7 @@ class Cart
                 // Check manufacturer is allowed
                 if (!empty($coupon['manufacturer_id'])) {
                     $qualifying_manufacturers = unserialize($coupon['manufacturer_id']);
-                    if(count($qualifying_manufacturers)>0) {
+                    if(is_array($qualifying_manufacturers) && count($qualifying_manufacturers)>0) {
                         $proceed = false;
                         $qualifying_manufacturers = array_flip($qualifying_manufacturers);
                         foreach ($this->basket['contents'] as $key => $data) {
