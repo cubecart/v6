@@ -166,7 +166,7 @@ class Smarty extends Smarty_Internal_TemplateBase
      * The date format to be used internally
      * (accepts date() and strftime())
      */
-    public static $_DATE_FORMAT = '%b %e, %Y';
+    public static $_DATE_FORMAT = 'M j, Y';
 
     /**
      * Flag denoting if PCRE should run in UTF-8 mode

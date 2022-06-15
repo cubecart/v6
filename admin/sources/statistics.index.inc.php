@@ -301,7 +301,7 @@ if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
     $GLOBALS['smarty']->assign('PAGINATION_BEST', $GLOBALS['db']->pagination($numrows, $per_page, $page, 5, 'page_customers', 'stats_best_customers', ' ', false));
     unset($results, $result, $divider);
 }
-
+$smarty_data['plugin_tabs'] = array();
 foreach ($GLOBALS['hooks']->load('admin.statistics.tabs') as $hook) {
     include $hook;
 }

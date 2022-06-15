@@ -549,7 +549,7 @@ class Cart
                         }
                     }
                 }
-                if ($coupon['free_shipping_excluded']=='1' && floatval($this->basket['shipping']['value'])==0) {
+                if ($coupon['free_shipping_excluded']=='1' && (!isset($this->basket['shipping']) || floatval($this->basket['shipping']['value'])==0)) {
                     // Minimum subtotal for voucher has not been met
                     $GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_free_shipping']);
                     return false;
@@ -896,7 +896,7 @@ class Cart
                 $this->basket_data[$hash] = $product;
 
                 // Calculate Taxes
-                $tax_state_id = is_numeric($this->basket[$tax_on]['state_id']) ? $this->basket[$tax_on]['state_id'] : getStateFormat($this->basket[$tax_on]['state_id'], 'name', 'id');
+                if (isset($this->basket[$tax_on])) $tax_state_id = is_numeric($this->basket[$tax_on]['state_id']) ? $this->basket[$tax_on]['state_id'] : getStateFormat($this->basket[$tax_on]['state_id'], 'name', 'id');
 
                 if (isset($tax_state_id)) {
                     $product_tax =  $GLOBALS['tax']->productTax($product['price'], (int)$product['tax_type'], (bool)$product['tax_inclusive'], $tax_state_id);
@@ -1308,12 +1308,12 @@ class Cart
                         }
                     }
 
-                    if ($data['shipping'] && $this->basket['shipping']['value']>0) {
+                    if (isset($this->basket['shipping']) && $data['shipping'] && $this->basket['shipping']['value']>0) {
                         $subtotal += $this->basket['shipping']['value'];
                         if ($this->basket['shipping']['tax']['amount']>0) {
                             $tax_total += $this->basket['shipping']['tax']['amount'];
                         }
-                    } elseif ($this->basket['shipping']['value']>0) {
+                    } elseif (isset($this->basket['shipping']) && $this->basket['shipping']['value']>0) {
                         $excluded_shipping = $this->basket['shipping'];
                     }
 
@@ -1353,7 +1353,7 @@ class Cart
                     }
                 }
 
-                if ($this->basket['shipping']['value']>0) {
+                if (isset($this->basket['shipping']) && $this->basket['shipping']['value']>0) {
                     $subtotal += $this->basket['shipping']['value'];
                     if ($this->basket['shipping']['tax']['amount']>0) {
                         $tax_total += $this->basket['shipping']['tax']['amount'];
