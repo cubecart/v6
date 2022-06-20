@@ -931,7 +931,8 @@ if (isset($database_result) && $database_result) {
             'time' => 'KEY',
         ),
         'cubecart_request_log' => array(
-            'request_id' => 'PRIMARY'
+            'request_id' => 'PRIMARY',
+            'time' => 'KEY'
         ),
         'cubecart_seo_urls' => array(
             'path' => 'PRIMARY',

@@ -1,0 +1,1 @@
+TABLE `CubeCart_request_log` ADD INDEX(`time`); #EOQ

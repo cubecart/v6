@@ -966,7 +966,8 @@ CREATE TABLE IF NOT EXISTS `CubeCart_request_log` (
   	`is_curl` enum('1','0') DEFAULT NULL,
 	`error` blob NOT NULL,
 	`time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`request_id`)
+  PRIMARY KEY (`request_id`),
+  KEY `time` (`time`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_seo_urls` (
