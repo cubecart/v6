@@ -723,7 +723,8 @@ if (isset($database_result) && $database_result) {
         'cubecart_geo_country' => array(
             'iso' => 'PRIMARY',
             'id' => 'KEY',
-            'eu' => 'KEY'
+            'eu' => 'KEY',
+            'numcode' => 'KEY'
         ),
         'cubecart_geo_zone' => array(
             'id' => 'PRIMARY',
