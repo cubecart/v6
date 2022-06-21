@@ -221,6 +221,7 @@ class Database extends Database_Contoller
                     $this->_result = $result;
                 } else {
                     $this->_found_rows = $result->num_rows;
+                    $this->_result = array();
                     while ($row = $result->fetch_assoc()) {
                         $this->_result[] = $row;
                     }
