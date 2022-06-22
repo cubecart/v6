@@ -443,7 +443,7 @@ class HookLoader
             $where['enabled'] = '1';
         }
 
-        if (($hooks = $GLOBALS['db']->select('CubeCart_hooks', false, $where, 'priority ASC')) !== false) {
+        if (($hooks = $GLOBALS['db']->select('CubeCart_hooks', false, $where, array('priority' => 'ASC'))) !== false) {
             foreach ($hooks as $hook) {
                 $this->_security_check($hook['filepath']);
                 $this->_plugin_name($hook['plugin']);
