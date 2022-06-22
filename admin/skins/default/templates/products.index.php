@@ -594,18 +594,19 @@
          <div class="master_image">
             <span>{$LANG.catalogue.image_main}</span><br><br>
             <div id="master_image_block">
-            <img src="{$PRODUCT.master_image}" id="master_image_preview"><div id="preview_image"><img src="{$PRODUCT.master_image}"></div>
+               <img src="{$PRODUCT.master_image}" id="master_image_preview" {foreach $GALLERY_ARRAY as $gallery_image}{if $gallery_image.main_img eq "1"}title="{$gallery_image.filepath}{$gallery_image.filename}"{break}{/if}{/foreach}>
             </div>
-            {if $GALLERY_JSON}
+            {if !empty($GALLERY_ARRAY) && count($GALLERY_ARRAY)>1}
             <div id="gallery_json">
                <p>{$LANG.catalogue.other_inc_images}</p>
-               <ul>{foreach $GALLERY_JSON|json_decode:true as $gallery_image}
+               <ul>{foreach $GALLERY_ARRAY as $gallery_image}
                   {if $gallery_image@index > 0}
                   <li id="gallery_imageset_{$gallery_image.file_id}">
                      <img src="images/source/{$gallery_image.filepath}{$gallery_image.filename}" title="{$gallery_image.filepath}{$gallery_image.filename}" />
                   </li>
                   {/if}
                   {/foreach}
+                  {if $gallery_image@index == 0}{$LANG.common.none}{/if}
                </ul>
                </div>
             {/if}
