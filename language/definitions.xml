@@ -1326,7 +1326,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="with_selected" introduced="5.0.0"><![CDATA[-- With Selected --]]></string>
   </group>
   <group name="gateway">
-    <string name="none_defined" introduced="6.0.9"><![CDATA[No payment methods have been defined. Please contact the merchant for assistance.]]></string>
+    <string name="none_defined" introduced="6.0.9"><![CDATA[No payment methods have been defined for your region. Please contact the merchant for assistance.]]></string>
     <string name="amount_due" introduced="5.0.0"><![CDATA[Amount Due]]></string>
     <string name="bank_account_name" introduced="5.0.0"><![CDATA[Account Name]]></string>
     <string name="bank_account_no" introduced="5.0.0"><![CDATA[Account Number]]></string>
