@@ -349,6 +349,15 @@ body.stream h1, body.stream h2, body.stream h3, body.stream p {
         position: absolute;
         left: -3000px;
     }
+    #checkout_actions svg.icon {
+        margin: 0px 10px 0px 10px;
+    }
+    #checkout_proceed svg.icon {
+        margin: 3px 5px 0 5px;
+    }
+    #checkout_actions #checkout_proceed.button {
+        padding: 15px;
+    }
 }
 /* Medium viewport and above */
 @media only screen and (min-width: 40.0625em) {
@@ -379,5 +388,11 @@ body.stream h1, body.stream h2, body.stream h3, body.stream p {
     }
     #checkout_register_form input[type="checkbox"] + label, #checkout_register_form input[type="radio"] + label {
         max-width: 580px;
+    }
+    #checkout_actions svg.icon {
+        margin: 3px 5px 0 0;
+    }
+    #checkout_proceed svg.icon {
+        margin: 3px 5px 0 5px;
     }
 }

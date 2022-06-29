@@ -58,12 +58,11 @@
    <p class="text-right"><label for="reg_terms">{$LANG.account.register_terms_agree_link|replace:'%s':{$TERMS_CONDITIONS}} <input type="checkbox" id="reg_terms" name="terms_agree" value="1" rel="error_terms_agree"></label></p>
    {/if}
    <div class="clearfix" id="checkout_actions">
-      <div class="show-for-medium-up"><a href="{$STORE_URL}/index.php" class="button left"><svg class="icon"><use xlink:href="#icon-home"></use></svg> {$LANG.basket.continue_shopping}</a></div>
-      <div class="show-for-medium-up"><a href="{$STORE_URL}/index.php?_a=basket&empty-basket=true" class="button alert left"><svg class="icon"><use xlink:href="#icon-trash-o"></use></svg> {$LANG.basket.basket_empty}</a></div>
-      <div class="show-for-medium-up"><button type="submit" name="update" class="button secondary left" value="{$LANG.basket.basket_update}"><svg class="icon"><use xlink:href="#icon-refresh"></use></svg> {$LANG.basket.basket_update}</button></div>
-      <div class="show-for-small-only"><button type="submit" name="update" class="button secondary left" value="{$LANG.basket.basket_update}"><svg class="icon"><use xlink:href="#icon-refresh"></use></svg> {$LANG.common.update}</button></div>
+      <div><a href="{$STORE_URL}/index.php" class="button left"><svg class="icon"><use xlink:href="#icon-home"></use></svg><span class="show-for-medium-up right">{$LANG.basket.continue_shopping}</span></a></div>
+      <div><a href="{$STORE_URL}/index.php?_a=basket&empty-basket=true" class="button alert left"><svg class="icon"><use xlink:href="#icon-trash-o"></use></svg><span class="show-for-medium-up right">{$LANG.basket.basket_empty}</span></a></div>
+      <div><button type="submit" name="update" class="button secondary left" value="{$LANG.basket.basket_update}"><svg class="icon"><use xlink:href="#icon-refresh"></use></svg><span class="show-for-medium-up right">{$LANG.basket.basket_update}</span></button></div>
       {if $DISABLE_CHECKOUT_BUTTON!==true}
-      <button type="submit" name="proceed" id="checkout_proceed" class="button success right g-recaptcha">{$CHECKOUT_BUTTON} <svg class="icon"><use xlink:href="#icon-chevron-right"></use></svg></button>
+      <button type="submit" name="proceed" id="checkout_proceed" class="button success right g-recaptcha"><svg class="icon"><use xlink:href="#icon-chevron-right"></use></svg><span class="left">{$CHECKOUT_BUTTON}</span></button>
       {/if}
    </div>
 </form>
