@@ -237,6 +237,10 @@
 	  	  </tr>
 	  	</tfoot>
 	  </table>
+	  <div>
+  		<input type="hidden" name="previous-tab" id="previous-tab" value="database">
+  		<input type="submit" name="database" value="{$LANG.common.submit}">
+  	  </div>
 	  {elseif $TABLES_AFTER}
 	  <table width="650">
   		<thead>
@@ -257,12 +261,8 @@
 	  	{/foreach}
 	  	</tbody>
 	  </table>
+	  <p><a href="?_g=maintenance" class="button">&laquo; {$LANG.common.back}</a></p>
 	  {/if}
   </fieldset>
-  <div>
-  	<input type="hidden" name="previous-tab" id="previous-tab" value="database">
-  	<input type="submit" name="database" value="{$LANG.common.submit}">
-  </div>
-  
   </form>
 </div>
