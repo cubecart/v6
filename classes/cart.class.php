@@ -554,6 +554,11 @@ class Cart
                     $GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_free_shipping']);
                     return false;
                 }
+                if ($coupon['starts']!=='0000-00-00' && (strtotime($coupon['starts']) > time())) {
+                    // Coupon is not yet valid
+                    $GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_not_ready']);
+                    return false;
+                }
                 if ($coupon['expires']!=='0000-00-00' && (strtotime($coupon['expires']) < time())) {
                     // Coupon is no longer valid
                     $GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_expired']);

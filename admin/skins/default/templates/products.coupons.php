@@ -20,6 +20,7 @@
 		  <td>{$THEAD_COUPON.status}</td>
 		  <td>{$THEAD_COUPON.code}</td>
 		  <td>{$THEAD_COUPON.value}</td>
+		  <td>{$THEAD_COUPON.starts}</td>
 		  <td>{$THEAD_COUPON.expires}</td>
 		  <td>{$THEAD_COUPON.time_used}</td>
 		  <td>&nbsp;</td>
@@ -31,6 +32,7 @@
 		  <td style="text-align:center"><input type="hidden" id="status_{$coupon.coupon_id}" name="status[{$coupon.coupon_id}]" value="{$coupon.status}" class="toggle"></td>
 		  <td><a href="{$coupon.link_edit}" class="edit" title="{$LANG.common.edit}">{$coupon.code}</a></td>
 		  <td>{$coupon.value}</td>
+		  <td>{$coupon.starts}</td>
 		  <td>{$coupon.expires}</td>
 		  <td style="text-align:center">{$coupon.count} / {$coupon.allowed_uses}</td>
 		  <td>
@@ -87,7 +89,7 @@
   <div id="edit-coupon" class="tab_content">
 	<h3>{$LEGEND}</h3>
 	<fieldset><legend>{$LANG.catalogue.title_coupon_detail}</legend>
-	  <div><label for="form-code">{$LANG.catalogue.coupon_code}</label><span><input type="text" name="coupon[code]" id="form-code" value="{$COUPON.code}" class="textbox"></span></div>
+	  <div><label for="form-code">{$LANG.catalogue.coupon_code}</label><span><input type="text" name="coupon[code]" id="form-code" value="{$COUPON.code}" class="textbox required"></span></div>
 	  <div><label for="form-description">{$LANG.common.description}</label><span><textarea name="coupon[description]" id="form-description" class="textbox">{$COUPON.description}</textarea></span></div>
 	</fieldset>
 	<fieldset><legend>{$LANG.catalogue.title_coupon_value}</legend>
@@ -104,7 +106,8 @@
 	  <div><label for="form-value">{$LANG.catalogue.discount_value}</label><span><input type="text" name="discount_value" id="form-value" value="{$COUPON.discount_value}" class="textbox number"></span></div>
 	</fieldset>
 	<fieldset><legend>{$LANG.catalogue.title_coupon_limits}</legend>
-	  <div><label for="form-expires">{$LANG.catalogue.title_coupon_expires} (YYYY-MM-DD)</label><span><input type="text" name="coupon[expires]" id="form-expires" value="{$COUPON.expires}" class="textbox date number"></span></div>
+	  <div><label for="form-starts">{$LANG.catalogue.title_coupon_starts} (YYYY-MM-DD)</label><span><input type="text" name="coupon[starts]" id="form-starts" value="{if $COUPON.starts=='0000-00-00'}{else}{$COUPON.starts}{/if}" class="textbox date number"></span></div>
+	  <div><label for="form-expires">{$LANG.catalogue.title_coupon_expires} (YYYY-MM-DD)</label><span><input type="text" name="coupon[expires]" id="form-expires" value="{if $COUPON.expires=='0000-00-00'}{else}{$COUPON.expires}{/if}" class="textbox date number"></span></div>
 	  <div><label for="form-allowed">{$LANG.catalogue.allowed_uses}</label><span><input type="text" name="coupon[allowed_uses]" id="form-allowed" value="{$COUPON.allowed_uses}" class="textbox number"></span></div>
 	  {if $DISPLAY_TIMES_USED}
 	  <div><label>{$LANG.catalogue.title_coupon_count}</label><span><input type="text" disabled="disabled" readonly="readonly" class="textbox number" value="{$COUPON.count}"></span></div>

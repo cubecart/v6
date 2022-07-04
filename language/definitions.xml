@@ -487,6 +487,7 @@
     <string name="title_coupon_detail" introduced="5.0.0"><![CDATA[Code Details]]></string>
     <string name="title_coupon_edit" introduced="5.0.0"><![CDATA[Edit Promotional Code]]></string>
     <string name="title_coupon_expires" introduced="5.0.0"><![CDATA[Expires]]></string>
+    <string name="title_coupon_starts" introduced="6.4.6"><![CDATA[Starts]]></string>
     <string name="title_coupon_limits" introduced="5.0.0"><![CDATA[Promotional Code Limits &amp; Settings]]></string>
     <string name="title_coupon_convert" introduced="6.0.0"><![CDATA[Gift Card Conversion]]></string>
     <string name="coupon_convert_desc" introduced="6.0.0"><![CDATA[To use a promotional code as a gift card (keeping a balance for multiple uses) it is possible to do so by assigning an order number to it. It must be a real order number with a status of &quot;Processing&quot; or &quot;Complete&quot;.]]></string>
@@ -584,6 +585,7 @@
     <string name="error_shipping" introduced="5.0.0"><![CDATA[Unfortunately there are no suitable shipping methods available for your order. This may be because the total weight of your order is too high or we cannot ship to your country. Please contact a member of our staff for any further inquiries.]]></string>
     <string name="check_shipping" introduced="5.0.0"><![CDATA[Available shipping methods have changed. Please check before proceeding.]]></string>
     <string name="error_too_many_added" introduced="5.0.0"><![CDATA[Sorry, you can't buy more than we have. We have automatically reduced your quantity to the maximum available.]]></string>
+    <string name="error_voucher_not_ready" introduced="6.4.6"><![CDATA[Sorry, that code is not yet available.]]></string>
     <string name="error_voucher_expired" introduced="5.0.0"><![CDATA[Sorry, that code has expired.]]></string>
     <string name="error_voucher_none" introduced="5.0.0"><![CDATA[Sorry, that code does not exist.]]></string>
     <string name="error_voucher_product" introduced="5.0.0"><![CDATA[Sorry, your basket does not qualify for that promotional code.]]></string>

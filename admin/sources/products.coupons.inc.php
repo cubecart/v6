@@ -54,6 +54,7 @@ if (isset($_POST['coupon']) && is_array($_POST['coupon'])) {
         'code'   => preg_replace('/[^\w\-\_]/u', '', $_POST['coupon']['code']),
         'product_id' => null,
         'manufacturer_id' => serialize($_POST['coupon']['manufacturer']),
+        'starts'  => $_POST['coupon']['starts'],
         'expires'  => $_POST['coupon']['expires'],
         'allowed_uses' => (int)$_POST['coupon']['allowed_uses'],
         'min_subtotal' => $_POST['coupon']['min_subtotal'],
@@ -252,6 +253,7 @@ if (isset($_GET['action'])) {
         'status'  => $GLOBALS['db']->column_sort('status', $lang['common']['status'], $coupon_sort_key, $current_page, $_GET[$coupon_sort_key], 'coupons'),
         'code'   => $GLOBALS['db']->column_sort('code', $lang['catalogue']['title_coupon_code'], $coupon_sort_key, $current_page, $_GET[$coupon_sort_key], 'coupons'),
         'value'  => $GLOBALS['db']->column_sort('discount_price', $lang['catalogue']['discount_value'], $coupon_sort_key, $current_page, $_GET[$coupon_sort_key], 'coupons'),
+        'starts'  => $GLOBALS['db']->column_sort('starts', $lang['catalogue']['title_coupon_starts'], $coupon_sort_key, $current_page, $_GET[$coupon_sort_key], 'coupons'),
         'expires'  => $GLOBALS['db']->column_sort('expires', $lang['catalogue']['title_coupon_expires'], $coupon_sort_key, $current_page, $_GET[$coupon_sort_key], 'coupons'),
         'time_used' => $GLOBALS['db']->column_sort('count', $lang['catalogue']['title_coupon_count'], $coupon_sort_key, $current_page, $_GET[$coupon_sort_key], 'coupons'),
     );
@@ -266,6 +268,7 @@ if (isset($_GET['action'])) {
     if ($coupons) {
         foreach ($coupons as $coupon) {
             $coupon['expires'] = (strcmp($coupon['expires'], "1") > 0) ? formatTime(strtotime($coupon['expires'])) : $GLOBALS['lang']['common']['never'];
+            $coupon['starts'] = (strcmp($coupon['starts'], "1") > 0) ? formatTime(strtotime($coupon['starts'])) : '-';
             if ($coupon['allowed_uses'] == 0) {
                 $coupon['allowed_uses'] = '&infin;';
             } else {
