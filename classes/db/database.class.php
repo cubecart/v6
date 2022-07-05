@@ -136,7 +136,7 @@ class Database_Contoller
 
     protected function __construct()
     {
-        mysqli_report(MYSQLI_REPORT_ALL ^ MYSQLI_REPORT_STRICT);
+        mysqli_report(MYSQLI_REPORT_ALL ^ MYSQLI_REPORT_STRICT ^ MYSQLI_REPORT_INDEX);
     }
 
     public function __destruct()
