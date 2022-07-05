@@ -717,7 +717,7 @@ if (isset($_GET['action'])) {
             include $hook;
         }
         if(is_array($external_categories)) {
-			$GLOBALS['smarty']->assign("EXTERNAL_CATS", $external_categories);
+			$GLOBALS['smarty']->assign("EXTERNAL_CATS", $external_categories ?? false);
 		}
         $GLOBALS['smarty']->assign("GOOGLE_CATS", $google_cats);
 
