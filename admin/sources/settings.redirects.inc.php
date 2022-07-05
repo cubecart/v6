@@ -78,11 +78,10 @@ if (isset($_GET['delete']) && ctype_digit($_GET['delete']) && Admin::getInstance
 
 $page  = (isset($_GET['page'])) ? $_GET['page'] : 1;
 $per_page = 100;
-
+$redirect_dataset = array();
 if($redirects =  $GLOBALS['db']->select('CubeCart_seo_urls', false, "`redirect` IN ('301', '302')", false, $per_page, $page)) {
     $total = $GLOBALS['db']->count('CubeCart_seo_urls', false, "`redirect` IN ('301', '302')");
     $GLOBALS['smarty']->assign('PAGINATION', $GLOBALS['db']->pagination($total, $per_page, $page));
-    $redirect_dataset = array();
     foreach($redirects as $redirect) {
         $redirect['destination'] = $GLOBALS['seo']->getdbPath($redirect['type'], $redirect['item_id']);
         $redirect_dataset[] = $redirect;

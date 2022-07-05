@@ -65,7 +65,8 @@ class Admin
 
         // Logout requests
         if (isset($_GET['_g']) && $_GET['_g'] == 'logout') {
-            $this->logout($_GET['r']);
+            $redirect = (isset($_GET['r']) && !empty($_GET['r'])) ? $_GET['r'] : '';
+            $this->logout($redirect);
         }
 
         // Ensure the ACP is only ever using the default currency
