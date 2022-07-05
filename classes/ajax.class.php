@@ -46,8 +46,8 @@ class Ajax
         //Get the correct function/method
         $type = (isset($_GET['type'])) ? $_GET['type'] : '';
         $string = ($_GET['q']) ? $_GET['q'] : '';
-        
-        switch ($_GET['function']) {
+        $function = (isset($_GET['function']) && !empty($_GET['function'])) ? $_GET['function'] : 'search';
+        switch ($function) {
             case 'filesize':
                 $return_data = self::filesize((string)$_GET['path'], 0);
             break;
