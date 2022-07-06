@@ -214,13 +214,19 @@ if (isset($_GET['export'])) {
         }
     } elseif (isset($_POST['lang_groups_search_phrase']) && !empty($_POST['lang_groups_search_phrase'])) { // We have a language to search through.
         $language_strings_to_search = $GLOBALS['language']->getLanguageStrings();
+        $search_hits = array();
         unset($language_strings_to_search['_language_strings_def']); // Do not want this group - it has array of arrays instead of array of strings.
         foreach ($language_strings_to_search as $keySearchGroup => $arrSearchPhrases) {
             $search_hits[$keySearchGroup] = array_filter($arrSearchPhrases, function($v) { return stripos($v, $GLOBALS['RAW']['POST']['lang_groups_search_phrase']) !== false; }); // Filter for simple matches.
             if (empty($search_hits[$keySearchGroup])) unset($search_hits[$keySearchGroup]); // No matches? Do not keep this array element.
         }
-        
-        if(is_array($search_hits)) {
+        if($db_strings = $GLOBALS['db']->select('CubeCart_lang_strings', false, array('language' => $_GET['language'], 'value' => '~'.$GLOBALS['RAW']['POST']['lang_groups_search_phrase']))) {
+            foreach($db_strings as $s) {
+                $search_hits[$s['type']][$s['name']] = $s['value'];
+            }
+            
+        }
+        if(!empty($search_hits)) {
             $mark = $phrase_group_name = $phrase_group_title = array();
             foreach($search_hits as $g => $a) {
                 foreach($a as $k => $v) {
