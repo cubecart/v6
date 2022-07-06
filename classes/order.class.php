@@ -428,7 +428,7 @@ class Order
      * @param bool $force
      * @return bool
      */
-    public function orderStatus($status_id, $order_id, $force = false)
+    public function orderStatus($status_id, $order_id, $force = false, $send_email = true)
     {
         foreach ($GLOBALS['hooks']->load('class.order.order_status_start') as $hook) {
             include $hook;
@@ -449,6 +449,10 @@ class Order
             } else { // Don't send out emails already sent!
                 $this->_email_enabled = false;
                 return false;
+            }
+
+            if(!$send_email) {
+                $this->_email_enabled = false;
             }
 
             // Retrieve order details

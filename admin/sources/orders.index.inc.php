@@ -185,7 +185,7 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
             $notes_added = true;
         }
     }
-
+    $send_email = (isset($_POST['skip_email']) && $_POST['skip_email'] == '1') ? false : true;
     if (empty($_POST['cart_order_id'])) {
         // Create order record
         $record['order_date'] = time();
@@ -196,7 +196,7 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
             $GLOBALS['main']->errorMessage($lang['orders']['error_order_create']);
         }
         // Update order status, if set
-        $order->orderStatus($_POST['order']['status'], $order_id, true);
+        $order->orderStatus($_POST['order']['status'], $order_id, true, $send_email);
     } else {
         if ($_POST['order']['status']==3 && empty($_POST['summary']['ship_date'])) {
             $record['ship_date'] = date('Y-m-d');
@@ -205,8 +205,7 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
         // Update/create summary
         $update_status = $GLOBALS['db']->update('CubeCart_order_summary', $record, array('cart_order_id' => $order_id), true, array('phone', 'mobile'));
         // Update order status, if set
-        //$order_status = $order->orderStatus($_POST['order']['status'], $order_id, true);
-        $order_status = $order->orderStatus($_POST['order']['status'], $order_id);
+        $order_status = $order->orderStatus($_POST['order']['status'], $order_id, false, $send_email);
 
         if ($update_status || $order_status || $notes_added) {
             $GLOBALS['main']->successMessage($lang['orders']['notify_order_update']);

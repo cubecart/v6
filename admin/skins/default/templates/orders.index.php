@@ -134,6 +134,10 @@
                {foreach from=$LIST_ORDER_STATUS item=status}<option value="{$status.id}"{$status.selected}>{$status.string}</option>{/foreach}
                </select></span>
             </div>
+            <div>
+               <label for="skip_email">{$LANG.orders.skip_email_notification}</label>
+               <span><input type="hidden" name="skip_email" id="skip_email" class="toggle" value="0"></span>
+            </div>
             {if isset($DISPLAY_DASHBOARD)}
             <div>
                <label for="dashboard">{$LANG.orders.dashboard_show}</label>
