@@ -951,6 +951,17 @@ class GUI
         //If there is a session id already unset and destory it
         if (isset($_POST['accept_cookies_submit'])) {
             $accept = (isset($_POST['accept_cookies'])) ? true : false;
+            $dialogue = ($accept) ? 'Accepted chosen.' : 'Blocked chosen.';
+            $consent_log = array(
+                'ip_address' => get_ip_address(),
+                'session_id' => $GLOBALS['session']->getId(),
+                'customer_id' => $GLOBALS['user']->getId(),
+                'log' => $dialogue,
+                'log_hash' => md5($dialogue),
+                'url_shown' => currentPage(),
+                'time' => time()
+            );
+            $GLOBALS['db']->insert('CubeCart_cookie_consent', $consent_log);
             $GLOBALS['session']->set_cookie('accept_cookies', true, time()+31536000);
             httpredir();
         }
