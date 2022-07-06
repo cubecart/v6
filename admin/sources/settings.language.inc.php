@@ -165,53 +165,51 @@ if (isset($_GET['export'])) {
 
         $GLOBALS['smarty']->assign('STRING_TYPE', ucfirst($breadcrumb));
         ## Load all strings for this section
-        if (($definitions = $GLOBALS['language']->getDefinitions($_REQUEST['type'])) !== false) {
-            if(isset($_GET['key'])) {
-                $GLOBALS['smarty']->assign('SECTIONS', false);
-                $GLOBALS['smarty']->assign('BACK', currentPage(array('key','type')));
-            }
-            if (!empty($definitions)) {
-                foreach ($definitions as $name => $data) {
-                    if(isset($_GET['key']) && $_GET['key']!==$name) continue;
-                    $default = (isset($strings[$name])) ? $strings[$name] : $data['value'];
-                    $defined = (isset($strings[$name]) || isset($custom[$name])) ? true : false;
-                    $value = (isset($custom[$name])) ? $custom[$name] : $default;
-                    $assign = array(
-                        'name'  => $name,
-                        'type'  => $type,
-                        'default' => htmlspecialchars($default, ENT_COMPAT, 'UTF-8', false),
-                        'value'  => htmlspecialchars($value, ENT_COMPAT, 'UTF-8', false),
-                        'defined' => (int)$defined,
-                        'multiline' => strstr($value, PHP_EOL) ? true : false,
-                        'disabled' => ($default!==$value) ? false : true,
-                    );
-                    $smarty_data['strings'][] = $assign;
-                }
-            } else {
-                // add-on language files
-                foreach ($strings as $name => $data) {
-                    $default = (isset($strings[$name])) ? $strings[$name] : $data['value'];
-                    $defined = (isset($strings[$name]) || isset($custom[$name])) ? true : false;
-                    $value = (isset($custom[$name])) ? $custom[$name] : $default;
-                    $assign = array(
-                        'name'  	=> $name,
-                        'type'  	=> $type,
-                        'default' 	=> htmlspecialchars($default, ENT_COMPAT, 'UTF-8', false),
-                        'value'  	=> htmlspecialchars($value, ENT_COMPAT, 'UTF-8', false),
-                        'defined' 	=> (int)$defined,
-                        'multiline' => strstr($value, PHP_EOL) ? true : false
-                    );
-                    $smarty_data['strings'][] = $assign;
-                }
-            }
-            if (!empty($custom)) {
-                ## For custom strings that aren't listed in the definitions file
-                foreach ($custom as $name => $value) {
-                    continue;
-                }
-            }
-            $GLOBALS['smarty']->assign('STRINGS', $smarty_data['strings']);
+        if(isset($_GET['key'])) {
+            $GLOBALS['smarty']->assign('SECTIONS', false);
+            $GLOBALS['smarty']->assign('BACK', currentPage(array('key','type')));
         }
+        if (!empty($definitions)) {
+            foreach ($definitions as $name => $data) {
+                if(isset($_GET['key']) && $_GET['key']!==$name) continue;
+                $default = (isset($strings[$name])) ? $strings[$name] : $data['value'];
+                $defined = (isset($strings[$name]) || isset($custom[$name])) ? true : false;
+                $value = (isset($custom[$name])) ? $custom[$name] : $default;
+                $assign = array(
+                    'name'  => $name,
+                    'type'  => $type,
+                    'default' => htmlspecialchars($default, ENT_COMPAT, 'UTF-8', false),
+                    'value'  => htmlspecialchars($value, ENT_COMPAT, 'UTF-8', false),
+                    'defined' => (int)$defined,
+                    'multiline' => strstr($value, PHP_EOL) ? true : false,
+                    'disabled' => ($default!==$value) ? false : true,
+                );
+                $smarty_data['strings'][] = $assign;
+            }
+        } else {
+            // add-on language files
+            foreach ($strings as $name => $data) {
+                $default = (isset($strings[$name])) ? $strings[$name] : $data['value'];
+                $defined = (isset($strings[$name]) || isset($custom[$name])) ? true : false;
+                $value = (isset($custom[$name])) ? $custom[$name] : $default;
+                $assign = array(
+                    'name'  	=> $name,
+                    'type'  	=> $type,
+                    'default' 	=> htmlspecialchars($default, ENT_COMPAT, 'UTF-8', false),
+                    'value'  	=> htmlspecialchars($value, ENT_COMPAT, 'UTF-8', false),
+                    'defined' 	=> (int)$defined,
+                    'multiline' => strstr($value, PHP_EOL) ? true : false
+                );
+                $smarty_data['strings'][] = $assign;
+            }
+        }
+        if (!empty($custom)) {
+            ## For custom strings that aren't listed in the definitions file
+            foreach ($custom as $name => $value) {
+                continue;
+            }
+        }
+        $GLOBALS['smarty']->assign('STRINGS', $smarty_data['strings']);
     } elseif (isset($_POST['lang_groups_search_phrase']) && !empty($_POST['lang_groups_search_phrase'])) { // We have a language to search through.
         $language_strings_to_search = $GLOBALS['language']->getLanguageStrings();
         $search_hits = array();
