@@ -362,8 +362,9 @@ jQuery(document).ready(function() {
                     $('html, body').animate({
                         scrollTop: $("li.newTop").offset().top
                     }, 500);
+                    var local = {catId: cat, html: $('#ccScroll').html()};
+                    localStorage.setItem('category', JSON.stringify(local));
                 }, 1500);
-                
             }
         });
     });
@@ -372,9 +373,21 @@ jQuery(document).ready(function() {
         var cat_pages = parseInt($('#ccScrollCat').text());
         if ($.cookie('ccScroll')) {
             var ccScrollHistory = $.parseJSON($.cookie("ccScroll"));
+            var query = true;
             if(cat_pages in ccScrollHistory) {
-                for (i = 1; i < ccScrollHistory[cat_pages]; i++) {
-                    $('.ccScroll-next:last').trigger("click");
+                if(localStorage.hasOwnProperty('category')) {
+                    var cat = localStorage.getItem('category');
+                    cat = JSON.parse(cat);
+                    if(cat.catId==cat_pages) {
+                        query = false;
+                    }
+                }
+                if(query) {
+                    for (i = 1; i < ccScrollHistory[cat_pages]; i++) {
+                        $('.ccScroll-next:last').trigger("click");
+                    }
+                } else {
+                    $('#ccScroll').html(cat.html);
                 }
                 $('html, body').animate({ scrollTop: ccScrollHistory['loc'] }, 'slow');
             }
