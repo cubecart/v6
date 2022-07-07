@@ -200,7 +200,7 @@
 	  </div>
 
 	  <div class="info">
-		<span class="orderid"><strong>{$LANG.common.order_id}</strong> &nbsp; {if $CONFIG.oid_mode=='i'}{$order.{$CONFIG.oid_col}}{else}{$order.cart_order_id}{/if}</span>
+		<span class="orderid"><strong>{$LANG.common.order_id}</strong> &nbsp; {$order.{$CONFIG.oid_col}|default:$order.order_id}</span>
 		<strong>{$LANG.orders.title_receipt_for}</strong> {$order.order_date}
 	  </div>
 

@@ -9,7 +9,7 @@
  * Email:  sales@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
-<h2>{$LANG.orders.order_number}: {if $CONFIG.oid_mode=='i'}{$SUM.{$CONFIG.oid_col}}{else}{$SUM.cart_order_id}{/if}</h2>
+<h2>{$LANG.orders.order_number}: {$SUM.{$CONFIG.oid_col}|default:$SUM.order_id}</h2>
 <div class="order_status marg-top">{$LANG.orders.title_order_status}: <span class="order_status_{$SUM.status}">{$SUM.order_status}</span></div>
 <div><strong>{$LANG.basket.order_date}:</strong> {$SUM.order_date_formatted}</div>
 <hr>

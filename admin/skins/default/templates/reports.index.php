@@ -31,7 +31,7 @@
 	  <tbody>
 		{foreach from=$REPORT_DATE item=data}
 		<tr>{$data.value}
-		  <td nowrap="nowrap"><a href="?_g=orders&action=edit&order_id={$data.cart_order_id}">{if $CONFIG.oid_mode=='i'}{$data.{$CONFIG.oid_col}}{else}{$data.cart_order_id}{/if}</a></td>
+		  <td nowrap="nowrap"><a href="?_g=orders&action=edit&order_id={$data.cart_order_id}" title="{$LANG.common.edit}">{$data.{$CONFIG.oid_col}|default:$data.order_id}</a></td>
 		  <td style="text-align:right">{$data.subtotal}</td>
 		  <td style="text-align:right">{$data.discount}</td>
 		  <td style="text-align:right">{$data.shipping}</td>
