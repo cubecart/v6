@@ -759,7 +759,7 @@ class Language
             $path = appendDS($path);
         }
         // Load basic language string data into a multi-dimensional array
-        if ((isset($GLOBALS['cache']) && !empty($GLOBALS['cache'])) && ($GLOBALS['cache']->exists($name.'.definitions') && is_array($GLOBALS['cache']->read($name.'.definitions')))
+        if ((isset($GLOBALS['cache']) && is_object($GLOBALS['cache'])) && ($GLOBALS['cache']->exists($name.'.definitions') && is_array($GLOBALS['cache']->read($name.'.definitions')))
             && ($GLOBALS['cache']->exists($name.'.definition_data') && is_array($GLOBALS['cache']->read($name.'.definition_data')))) {
             $this->_language_definitions = $GLOBALS['cache']->read($name.'.definitions');
             $this->_language_definition_data = $GLOBALS['cache']->read($name.'.definition_data');
@@ -841,7 +841,10 @@ class Language
         if ($path !== CC_LANGUAGE_DIR) {
             $path = appendDS($path);
         }
-        if ($GLOBALS['cache']->exists('lang.'.$name.'.xml.'.$language) && $GLOBALS['cache']->exists('lang.info.'.$language)) {
+        $cache_name_info = 'lang.info.'.$language;
+        $cache_name_strings = 'lang.info.'.$language;
+        if ((isset($GLOBALS['cache']) && is_object($GLOBALS['cache'])) 
+            && ($GLOBALS['cache']->exists($cache_name_strings) && $GLOBALS['cache']->exists($cache_name_info) && is_array($GLOBALS['cache']->read($cache_name_strings)) && is_array($GLOBALS['cache']->read($cache_name_info)))) {
             $strings = $GLOBALS['cache']->read('lang.'.$name.'.xml.'.$language);
             $this->_language_data = $GLOBALS['cache']->read('lang.info.'.$language);
         } else {
