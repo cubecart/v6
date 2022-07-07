@@ -689,7 +689,7 @@ class Database_Contoller
 
         if (is_numeric($maxRows)) {
             $calc_rows = 'SQL_CALC_FOUND_ROWS';
-            if ($page>0) {
+            if (is_numeric($page) && $page>0) {
                 $limit = "LIMIT $maxRows OFFSET ".($page - 1) * $maxRows;
             } else {
                 if (strtolower($page) == 'all') {
