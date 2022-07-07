@@ -16,11 +16,11 @@
          <div class="small-12 columns">
             {* If we only have one required option replace with hidden field *}
             {if $option.required && count($option.values)===1}
-            <label for="option_{$option.option_id}" class="return">{if empty($option.option_description)}{$option.option_name}{else}{$option.option_description}{/if}</label>
+            <label for="option_{$option.option_id}" class="return">{$option.option_name}</label>
             {$option.values.0.value_name}{if $option.values.0.price} {$option.values.0.symbol}{$option.values.0.price}{/if}
             <input type="hidden" name="productOptions[{$option.option_id}]" id="option_{$option.option_id}" value="{$option.values.0.assign_id}"{if !$CTRL_HIDE_PRICES} data-price="{$option.values.0.decimal_price}"{/if}>
             {else}
-            <div class="pseudo-label">{if empty($option.option_description)}{$option.option_name}{else}{$option.option_description}{/if}{if $option.required} ({$LANG.common.required}){/if}</div>
+            <div class="pseudo-label">{$option.option_name}{if $option.required} ({$LANG.common.required}){/if}</div>
             <span id="error_option_{$option.option_id}">
                {foreach from=$option.values item=value name=options}
                <div><input type="radio" name="productOptions[{$option.option_id}]" id="rad_option_{$value.assign_id}" value="{$value.assign_id}" class="nomarg{if $value.absolute_price == '1'} absolute{/if}"{if empty($_POST) && !empty($value.option_default)} checked="checked"{/if}{if !$CTRL_HIDE_PRICES} data-price="{$value.decimal_price}"{/if}{if $smarty.foreach.options.first} rel="error_option_{$option.option_id}" {if $option.required}required{/if}{/if}>
@@ -36,11 +36,11 @@
          <div class="small-12 columns">
             {* If we only have one required option replace with hidden field *}
             {if $option.required && count($option.values)===1}
-            <label for="option_{$option.option_id}" class="return">{if empty($option.option_description)}{$option.option_name}{else}{$option.option_description}{/if}</label>
+            <label for="option_{$option.option_id}" class="return">{$option.option_name}</label>
             {$option.values.0.value_name}{if $option.values.0.price} {$option.values.0.symbol}{$option.values.0.price}{/if}
             <input type="hidden" name="productOptions[{$option.option_id}]" id="option_{$option.option_id}" value="{$option.values.0.assign_id}"{if !$CTRL_HIDE_PRICES} data-price="{$option.values.0.decimal_price}"{/if}>
             {else}
-            <label for="option_{$option.option_id}" class="return">{if empty($option.option_description)}{$option.option_name}{else}{$option.option_description}{/if}{if $option.required} ({$LANG.common.required}){/if}</label>
+            <label for="option_{$option.option_id}" class="return">{$option.option_name}{if $option.required} ({$LANG.common.required}){/if}</label>
             <select name="productOptions[{$option.option_id}]" id="option_{$option.option_id}" class="nomarg" {if $option.required}required{/if}>
             <option value="">{$LANG.form.please_select}</option>
             {foreach from=$option.values item=value}
@@ -53,7 +53,7 @@
       {elseif $option.type == Catalogue::OPTION_TEXTBOX ||$option.type == Catalogue::OPTION_TEXTAREA }
       <div class="row">
          <div class="small-12 columns">
-            <label for="option_{$option.option_id}" class="return">{if empty($option.option_description)}{$option.option_name}{else}{$option.option_description}{/if}{if $option.price} {$option.symbol}{$option.price}{/if}{if $option.required} ({$LANG.common.required}){/if}</label>
+            <label for="option_{$option.option_id}" class="return">{$option.option_name}{if $option.price} {$option.symbol}{$option.price}{/if}{if $option.required} ({$LANG.common.required}){/if}</label>
             {if $option.type == Catalogue::OPTION_TEXTBOX}
             <input type="text" name="productOptions[{$option.option_id}][{$option.assign_id}]" id="option_{$option.option_id}"{if $option.absolute_price == '1'} class="absolute"{/if}{if !$CTRL_HIDE_PRICES} data-price="{$option.decimal_price}"{/if} {if $option.required}required{/if}>
             {elseif $option.type == Catalogue::OPTION_TEXTAREA}
