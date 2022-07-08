@@ -252,6 +252,7 @@ class Cart
                         'method' => $optionsArray['method']
                     ),
                 );
+                $GLOBALS['gui']->setNotify($GLOBALS['language']->catalogue['success_gc_added']);
             }
             $this->save();
             if ($redirect_enabled === true) {

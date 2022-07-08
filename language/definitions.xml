@@ -242,6 +242,7 @@
     <string name="your_comments" introduced="5.0.0"><![CDATA[Delivery Notes or Additional Comments]]></string>
   </group>
   <group name="catalogue">
+    <string name="success_gc_added"><![CDATA[Gift Card has been added to your basket.]]></string>
     <string name="error_maximum_quantity"><![CDATA[Maximum quantity allowed for this item is %s!]]></string>
     <string name="max_purchase_quantity"><![CDATA[Maximum purchase quantity is %s.]]></string>
     <string name="maximum_quantity"><![CDATA[Maximum Quantity Purchase]]></string>
