@@ -438,7 +438,7 @@
                {else}
                <tr id="option_member_{$option.set_member_id}">
                   <td style="text-align:center"><input type="hidden" id="enable_member_{$option.set_member_id}" name="option_create[{$option.set_member_id}][set_enabled]" value="{$option.set_enabled}" class="toggle"></td>
-                  <td style="text-align:center"><input type="hidden" id="matrix_include_{$option.set_member_id}" name="option_create[{$option.set_member_id}][matrix_include]" value="0" class="toggle"></td>
+                  <td style="text-align:center"><input type="hidden" id="matrix_include_member_{$option.set_member_id}" name="option_create[{$option.set_member_id}][matrix_include]" value="0" class="toggle"></td>
                   <td>{$option.display}</td>
                   <td>{$option.set_name}</td>
                   <td style="text-align:center"><input type="checkbox" name="option_create[{$option.set_member_id}][option_default]" {if isset($option.option_default) && $option.option_default == 1}checked="checked"{/if}  value="1"></td>
