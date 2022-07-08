@@ -113,6 +113,7 @@ if (isset($_POST['cat']) && is_array($_POST['cat']) && Admin::getInstance()->per
         include $hook;
     }
 
+    updateCatsWithHierPosition();
     
     if ($redirect) {
         httpredir(currentPage($keys_remove, $keys_add));
