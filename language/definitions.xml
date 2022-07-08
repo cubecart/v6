@@ -1905,6 +1905,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
+    <string name="clone_settings" introduced="6.4.6"><![CDATA[Before we clone for the first time please configure what you do and don't want to clone each time.]]></string>
     <string name="emailconf" introduced="6.4.5"><![CDATA[Require email address confirmaton (double entry)]]></string>
     <string name="redirects" introduced="6.4.0"><![CDATA[Redirects]]></string>
     <string name="image_delete" introduced="6.4.0"><![CDATA[Delete associated images with product delete]]></string>
