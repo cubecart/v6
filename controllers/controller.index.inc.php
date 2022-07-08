@@ -76,6 +76,7 @@ $GLOBALS['cubecart'] = Cubecart::getInstance();
 $GLOBALS['user'] = User::getInstance();
 //Initialize cart
 $GLOBALS['cart'] = Cart::getInstance();
+$GLOBALS['cart']->init();
 
 // Set store timezone - default to UTC
 date_default_timezone_set(($GLOBALS['config']->get('config', 'time_zone')) ? $GLOBALS['config']->get('config', 'time_zone') : 'UTC');
