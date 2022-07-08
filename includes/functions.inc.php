@@ -983,26 +983,3 @@ function version_clean($version)
 {
     return substr($version, 0, strpos($version, '-'));
 }
-
-/**
- * Set category depth
- *
- * @param int $cat_id
- * @param int $position
- */
-function updateCatsWithHierPosition($cat_id = 0, $position = 0){
-    if($cat_id == 0){
-        $GLOBALS['db']->update('CubeCart_category', array('cat_hier_position' => 0));
-        $cats = $GLOBALS['db']->select('CubeCart_category', array('cat_id'), array('cat_parent_id' => 0), array('priority' => 'ASC'));
-    }else{
-        $cats = $GLOBALS['db']->select('CubeCart_category', array('cat_id'), array('cat_parent_id' => $cat_id), array('priority' => 'ASC'));
-    }
-    if(isset($cats) && is_array($cats) && !empty($cats)){
-        foreach($cats as $cat){
-            if($position > 0){
-                $GLOBALS['db']->update('CubeCart_category', array('cat_hier_position' => $position), array('cat_id' => $cat['cat_id']));
-            }
-            updateCatsWithHierPosition($cat['cat_id'], ($position+1));
-        }
-    }
-}
