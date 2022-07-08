@@ -1287,7 +1287,7 @@ class Cart
             include $hook;
         }
 
-        if (isset($this->basket['coupons']) && count($this->basket['coupons'])>0) {
+        if (isset($this->basket['coupons']) && is_array($this->basket['coupons']) && count($this->basket['coupons'])>0) {
             $subtotal = $tax_total = 0;
             $coupon = false;
 
