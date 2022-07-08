@@ -91,8 +91,8 @@ class Cart
 
     ##############################################
 
-    final protected function __construct()
-    {
+    final protected function __construct() { }
+    public function init() {
         foreach ($GLOBALS['hooks']->load('class.cart.construct.pre') as $hook) {
             include $hook;
         }
