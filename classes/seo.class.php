@@ -1155,6 +1155,8 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
             $input['url'] = $this->_sitemap_base_url.'/'.$this->generatePath($input['id'], $type, '', false);
         }
 
+        $input['url'] = stristr($input['url'],$this->_sitemap_base_url) ? $input['url'] : $this->_sitemap_base_url.$input['url'];
+
         $this->_sitemap_xml->startElement('url');
         $this->_sitemap_xml->setElement('loc', htmlspecialchars($input['url']), false, false);
         $this->_sitemap_xml->setElement('lastmod', $updated, false, false);
