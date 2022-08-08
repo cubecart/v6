@@ -575,6 +575,7 @@
     <string name="sort_stock" introduced="5.0.0"><![CDATA[Stock]]></string>
   </group>
   <group name="checkout">
+    <string name="error_voucher_used_already" introduced="6.4.6"><![CDATA[Sorry, but that code has been used to it's maximum <em>per-user</em> allowance.]]></string>
     <string name="error_voucher_free_shipping" introduced="6.4.0"><![CDATA[Sorry but that voucher can't be used when shipping is free of charge.]]></string>
     <string name="error_voucher_manufacturer" introduced="6.4.0"><![CDATA[Sorry but that voucher is manufacturer specific.]]></string>
     <string name="stock_availability_changed" introduced="6.4.0"><![CDATA[Items added to your basket are no longer available.]]></string>
