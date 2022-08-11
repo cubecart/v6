@@ -1196,10 +1196,10 @@ class Cubecart
             if (isset($this->_basket['customer'])) {
                 $GLOBALS['smarty']->assign('USER', $this->_basket['customer']);
             }
-            if ((isset($this->_basket['billing_address']) && $this->_basket['billing_address']['user_defined']) || $this->_basket['billing_address']['estimate']) {
+            if ((isset($this->_basket['billing_address']) && ($this->_basket['billing_address']['user_defined']) || $this->_basket['billing_address']['estimate'])) {
                 $GLOBALS['smarty']->assign('BILLING', $this->_basket['billing_address']);
             }
-            if (isset($this->_basket['delivery_address']) && $this->_basket['delivery_address']['user_defined'] || $this->_basket['delivery_address']['estimate']) {
+            if (isset($this->_basket['delivery_address']) && ($this->_basket['delivery_address']['user_defined'] || $this->_basket['delivery_address']['estimate'])) {
                 $GLOBALS['smarty']->assign('DELIVERY', $this->_basket['delivery_address']);
             }
 
