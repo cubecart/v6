@@ -1931,7 +1931,7 @@ class Cubecart
         } else {
             $where['module'] = 'gateway';
         }
-        if($gateways = $GLOBALS['db']->select('CubeCart_modules', false, $where, array('position' => 'ASC')) == false) {
+        if(($gateways = $GLOBALS['db']->select('CubeCart_modules', false, $where, array('position' => 'ASC'))) === false) {
             $gateways = array();
         }
         // Gateway hooks
@@ -2277,7 +2277,7 @@ class Cubecart
      */
     private function _listPaymentOptions($selected_gateway = '')
     {
-        if($gateways = $GLOBALS['db']->select('CubeCart_modules', false, array('module' => 'gateway', 'status' => '1'), array('position' => 'ASC')) == false ) {
+        if(($gateways = $GLOBALS['db']->select('CubeCart_modules', false, array('module' => 'gateway', 'status' => '1'), array('position' => 'ASC'))) === false ) {
             $gateways = array();
         }
         // Gateway hooks
