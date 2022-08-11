@@ -260,8 +260,8 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
     // Compatibility Test
     $checks  = array(
     'PHP' => array(
-      'title' => 'PHP 5.4+ (7.3 Recommended)',
-      'status' => version_compare(PHP_VERSION, '5.5', '>='),
+      'title' => 'PHP 7.1+ (8.1 Recommended)',
+      'status' => version_compare(PHP_VERSION, '7.1', '>='),
       'pass' => PHP_VERSION,
       'fail' => PHP_VERSION
     ),
