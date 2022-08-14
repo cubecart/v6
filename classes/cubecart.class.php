@@ -2277,7 +2277,8 @@ class Cubecart
      */
     private function _listPaymentOptions($selected_gateway = '')
     {
-        if(($gateways = $GLOBALS['db']->select('CubeCart_modules', false, array('module' => 'gateway', 'status' => '1'), array('position' => 'ASC'))) === false ) {
+        $gateways = $GLOBALS['db']->select('CubeCart_modules', false, array('module' => 'gateway', 'status' => '1'), array('position' => 'ASC'));
+        if(!$gateways) {
             $gateways = array();
         }
         // Gateway hooks
@@ -2286,7 +2287,7 @@ class Cubecart
         }
         
         // List all available and enabled payment gateways
-        if($gateways) {
+        if(is_array($gateways) && !empty($gateways)) {
             $gateway_list = array();
             foreach ($gateways as $gateway) {
                 $gateway_path  = CC_ROOT_DIR.'/modules/gateway/'.$gateway['folder'].'/gateway.class.php';
