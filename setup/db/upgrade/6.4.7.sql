@@ -1,0 +1,1 @@
+DELETE FROM `CubeCart_modules` WHERE `module` = ''; #EOQ

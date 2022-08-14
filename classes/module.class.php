@@ -38,7 +38,7 @@ class Module
      *
      * @var array
      */
-    private $_info   = false;
+    private $_info   = array();
     /**
      * Module local name
      *
@@ -450,11 +450,14 @@ class Module
         }
         // Load package configuration data
         if (file_exists($this->_path.'/'.$this->_package_xml)) {
-            $xml = new SimpleXMLElement(file_get_contents($this->_path.'/'.$this->_package_xml, true));
-            ## Parse and handle XML data
-            if(isset($xml->info) && is_array($xml->info)) {
-                foreach ($xml->info as $key => $value) {
-                    $this->_info[$key] = (string)$value;
+            $xml = new SimpleXMLElement($this->_path.'/'.$this->_package_xml, LIBXML_NOCDATA, true);
+            if(isset($xml->info)) {
+                $config_array = json_decode(json_encode($xml->info), true);
+                ## Parse and handle XML data
+                if(is_array($config_array)) {
+                    foreach ($config_array as $key => $value) {
+                        $this->_info[$key] = (string)$value;
+                    }
                 }
             }
             //$this->_module_name = (isset($this->_info['folder']) && !empty($this->_info['folder'])) ? $this->_info['folder'] : str_replace(' ', '_', $this->_info['name']);
