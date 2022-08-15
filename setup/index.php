@@ -267,9 +267,9 @@ if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
     ),
     'MySQL' => array(
       'title' => 'MySQL 5.5+',
-      'status' => (extension_loaded('mysqli') || extension_loaded('mysql')),
-      'pass' => (function_exists('mysqli_get_client_info')) ? mysqli_get_client_info() : mysql_get_client_info(),
-      'fail' => (function_exists('mysqli_get_client_info')) ? mysqli_get_client_info() : mysql_get_client_info()
+      'status' => extension_loaded('mysqli'),
+      'pass' => (function_exists('mysqli_get_client_info')) ? mysqli_get_client_info() : "Bad database extension",
+      'fail' => "PHP mysqli extension not installed"
     ),
     'GD' => array(
       'title' => 'GD Image Library',
