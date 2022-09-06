@@ -1229,12 +1229,10 @@ class Cart
                     }
                     $this->basket['contents'][$hash]['quantity'] = (int)$quantity; // or ceil($quantity);
                     $product_data['product_id'] = (int)$this->basket['contents'][$hash]['id'];
-                    if($this->basket['contents'][$hash]['option_absolute_price']) {
-                        $this->basket['contents'][$hash]['total_price_each'] = $this->basket['contents'][$hash]['option_line_price'];
-                    } else {
-                        $pprice = $product['ctrl_sale'] ? $product['sale_price'] : $product['price'];
-                        $this->basket['contents'][$hash]['total_price_each'] = ($pprice+$this->basket['contents'][$hash]['option_line_price']);
-                    }
+                    
+                    $pprice = $product['ctrl_sale'] ? $product['sale_price'] : $product['price'];
+                    $this->basket['contents'][$hash]['total_price_each'] = ($pprice+$this->basket['contents'][$hash]['option_line_price']);
+                    
                     $this->_subtotal += $this->basket['contents'][$hash]['total_price_each'] * $quantity;
                     $this->basket['subtotal'] = $this->_subtotal;
                 }
