@@ -833,8 +833,7 @@ class Database_Contoller
             $allowed = $this->getFields($table);
             foreach ($record as $field => $value) {
                 if (in_array($field, $allowed) && !is_numeric($field)) {
-                    $number = substr($value, 1);
-                    if ($skip_math_fields!== 'all' && !in_array($field, $skip_math_fields) && isset($value[0]) && is_numeric($number) && ($value[0] == '+' || $value[0] == '-')) {
+                    if (($number = substr((string)$value, 1)) && is_numeric($number) && $skip_math_fields!== 'all' && !in_array($field, $skip_math_fields) && isset($value[0]) && ($value[0] == '+' || $value[0] == '-')) {
                         $set[] = "`$field` = `$field` {$value[0]} ".$number;
                     } else {
                         $value = (in_array($value, $this->_allowed_exceptions, true)) ? $value : $this->sqlSafe($value, true);
