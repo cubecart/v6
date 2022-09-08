@@ -1,4 +1,4 @@
-{if $SUMMARY.gateway|stristr:"paypal"}         
+{if $SUMMARY.gateway|stristr:"paypal" && $SUMMARY.gateway!== 'paypal commerce'}   
 <style>
 .ppcp-container {
 display: flex;
