@@ -1,4 +1,4 @@
-{if $SUMMARY.gateway=='PayPal'}         
+{if $SUMMARY.gateway|stristr:"paypal"}         
 <style>
 .ppcp-container {
 display: flex;
@@ -32,16 +32,18 @@ font-size: 14px;
 <div class="ppcp-container">
     <div class="flex-child monogram"></div>
     <div class="flex-child message">
-        <a href="#" onmouseover="$('#pp_expand').slideDown()">Did you know? PayPal Standard has now been superseded by PayPal Commerce.</a></a>
+        <a href="#" onmouseover="$('#pp_expand').slideDown()">Upgrade Available: This order was paid for with an outdated PayPal integration.</a></a>
         <div style="display: none;" id="pp_expand">
+            <p>We recommend upgrading to our free PayPal Commerce extension.</p>
             <ul>
                 <li>Higher conversions with PayPal Express Checkout in context flow.</li>
+                <li>Customers can pay directly form the product detail page.</li>
                 <li>Take secure card payments with advanced 3D secure compliance.</li>
                 <li>Attract more sales with PayPal's BNPL product, Pay Later.</li>
                 <li>Customizable checkout flow with the most relevant payment methods presented to customers (PayPal, Pay Later, Card Brands and Local Payment Methods).</li>
             </ul>
             <a href="#" style="float: right" onclick="$('#pp_expand').slideUp()" title="Close"><i class="fa fa-times" aria-hidden="true"></i></a>
-            <a href="https://www.cubecart.com/extensions/plugins/paypal-commerce" class="pp_go" target="_blank">Learn more and upgrade today</a>
+            <a href="https://www.cubecart.com/banner/go/32" class="pp_go" target="_blank">Learn more and upgrade today</a>
         </div>
     </div>
 </div>
