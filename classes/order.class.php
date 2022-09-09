@@ -355,7 +355,7 @@ class Order
         $values['order_summary'] = $order_summary;
         $values['billing']       = $billing;
         $values['shipping']      = $shipping;
-        $values['taxes']         = $vars['taxes'];
+        $values['taxes']         = isset($vars['taxes']) ? $vars['taxes'] : array();
         $values['products']      = $vars['products'];
 
         foreach ($GLOBALS['hooks']->load('class.order.get_order_details') as $hook) {
@@ -594,7 +594,7 @@ class Order
             $this->_manageStock($status_id, $order_id);
 
             // Set status to complete if it is digital only
-            if ($complete) {
+            if (isset($complete) && $complete) {
                 if ($GLOBALS['config']->get('config', 'force_completed')!="1") {
                     $this->_skip_order_complete_email = true;
                 }

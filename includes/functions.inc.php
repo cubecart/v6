@@ -118,7 +118,7 @@ function cc_unserialize($data)
 {
     $data = html_entity_decode($data, ENT_QUOTES, 'UTF-8');
     $data = preg_replace_callback('!s:(\d+):"(.*?)";!', 'cc_unserialize_callback', $data);
-    $data = unserialize($data);
+    $data = @unserialize($data);
     return $data;
 }
 
