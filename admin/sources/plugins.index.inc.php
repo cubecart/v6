@@ -17,14 +17,18 @@ Admin::getInstance()->permissions('maintenance', CC_PERM_READ, true);
 
 global $lang, $glob;
 
-$default_apps = array(
-    'gateway' => '1|452',
-    'shipping' => '1|44'
-);
+if(isset($_GET['install']) && is_array($_GET['install'])) {
+    $apps = array($_GET['install']['type'] => '1|'.(string)$_GET['install']['id']);
+} else {
+    $apps = array(
+        'gateway' => '1|452',
+        'shipping' => '1|44'
+    );
+}
 
-foreach($default_apps as $extension_type => $token) {
+foreach($apps as $extension_type => $token) {
 
-    if($GLOBALS['config']->has('default_apps', $token) || $GLOBALS['db']->select('CubeCart_modules', false, array('module' => $extension_type))) {
+    if(!isset($_GET['install']) && ($GLOBALS['config']->has('default_apps', $token) || $GLOBALS['db']->select('CubeCart_modules', false, array('module' => $extension_type)))) {
         $GLOBALS['config']->set('default_apps', $token, 1); continue;
     }
 
@@ -66,11 +70,20 @@ foreach($default_apps as $extension_type => $token) {
         );
         // Required for extension updates
         $GLOBALS['db']->insert('CubeCart_extension_info', $extension_info);
-        $GLOBALS['config']->set('default_apps', $token, 1);
+        if(!isset($_GET['install'])) {
+            $GLOBALS['config']->set('default_apps', $token, 1);
+        }
     }
     $zip->close();
 
     unlink($tmp_path);
+    if(isset($_GET['install'])) {
+        if(isset($_GET['install']['msg'])) {
+            $GLOBALS['main']->successMessage(htmlspecialchars($_GET['install']['msg']));
+        }
+        httpredir('?_g=plugins&type='.$_GET['install']['type'].'&module='.basename($extension_info['dir']));
+        exit;
+    }
     if($data['file_id']==44) {
         // Free Shipping to get us started
         $config_data = array(

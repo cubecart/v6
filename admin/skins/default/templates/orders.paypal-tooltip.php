@@ -43,7 +43,7 @@ font-size: 14px;
                 <li>Customizable checkout flow with the most relevant payment methods presented to customers (PayPal, Pay Later, Card Brands and Local Payment Methods).</li>
             </ul>
             <a href="#" style="float: right" onclick="$('#pp_expand').slideUp()" title="Close"><i class="fa fa-times" aria-hidden="true"></i></a>
-            <a href="https://www.cubecart.com/banner/go/32" class="pp_go" target="_blank">Learn more and upgrade today</a>
+            <a href="https://www.cubecart.com/banner/go/32" class="pp_go" target="_blank">Learn more</a> or <a href="?_g=plugins&install[type]=plugins&install[id]=452&install[msg]=Please+connect+your+existing+PayPal+account+to+upgrade+to+PayPal+Commerce." class="pp_go" target="_self">upgrade now</a>
         </div>
     </div>
 </div>
