@@ -243,8 +243,8 @@
       <thead>
          <tr>
             <th>{$LANG.common.name}</th>
-            <th>Auto Upgrade</th>
-            <th>Manual Upgrade</th>
+            <th>{$LANG.common.auto}</th>
+            <th>{$LANG.common.manual}</th>
             <th>{$LANG.common.ignore}</th>
          </tr>
       </thead>

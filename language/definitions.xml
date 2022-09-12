@@ -602,6 +602,8 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="auto" introduced="6.4.4"><![CDATA[Auto]]></string>
+    <string name="manual" introduced="6.4.3"><![CDATA[Manual]]></string>
     <string name="private" introduced="6.4.4"><![CDATA[Private]]></string>
     <string name="phrase" introduced="6.4.3"><![CDATA[Phrase]]></string>
     <string name="key" introduced="6.4.3"><![CDATA[Key]]></string>
