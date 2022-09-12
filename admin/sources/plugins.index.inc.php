@@ -18,7 +18,12 @@ Admin::getInstance()->permissions('maintenance', CC_PERM_READ, true);
 global $lang, $glob;
 
 if(isset($_GET['install']) && is_array($_GET['install'])) {
-    $apps = array($_GET['install']['type'] => '1|'.(string)$_GET['install']['id']);
+    if($_GET['install']['seller_id']=='1' || ($_GET['install']['seller_id']!=='1' && $GLOBALS['db']->select('CubeCart_extension_info', false, array('seller_id' => (int)$_GET['install']['seller_id'], 'file_id' => (int)$_GET['install']['id'])))) {
+        $apps = array($_GET['install']['type'] => (string)$_GET['install']['seller_id'].'|'.(string)$_GET['install']['id']);
+    } else {
+        $apps = array();
+    }
+    
 } else {
     $apps = array(
         'gateway' => '1|452',
@@ -80,9 +85,14 @@ foreach($apps as $extension_type => $token) {
     if(isset($_GET['install'])) {
         if(isset($_GET['install']['msg'])) {
             $GLOBALS['main']->successMessage(htmlspecialchars($_GET['install']['msg']));
+            httpredir('?_g=plugins&type='.$_GET['install']['type'].'&module='.basename($extension_info['dir']));
+            exit;
+        } else {
+            $GLOBALS['session']->delete('version_check');
+            $GLOBALS['main']->successMessage('Extension has been upgraded to the latest version.');
+            httpredir('?');
+            exit;
         }
-        httpredir('?_g=plugins&type='.$_GET['install']['type'].'&module='.basename($extension_info['dir']));
-        exit;
     }
     if($data['file_id']==44) {
         // Free Shipping to get us started

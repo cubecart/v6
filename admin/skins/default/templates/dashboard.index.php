@@ -243,14 +243,21 @@
       <thead>
          <tr>
             <th>{$LANG.common.name}</th>
-            <th colspan="2">&nbsp;</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
          </tr>
       </thead>
       <tbody>
       {foreach from=$EXTENSION_UPDATES item=extension}
          <tr>
             <td>{$extension.name}</td>
-            <td><a href="https://www.cubecart.com/extensions/id/{$extension.file_id}" target="_blank">{$LANG.common.update}</a></td>
+            <td>
+            {if $extension.auto_upgrade}
+               <a href="?_g=plugins&install[type]=plugins&install[id]={$extension.file_id}&install[seller_id]={$extension.seller_id}">{$LANG.common.auto_upgrade}</a>
+            {else}
+               <a href="https://www.cubecart.com/extensions/id/{$extension.file_id}" target="_blank">{$LANG.common.manual_upgrade}</a>
+            {/if}
+            </td>
             <td><a href="?ignore_update={$extension.file_id}">{$LANG.common.ignore}</a></td>
          </tr>
       {/foreach}

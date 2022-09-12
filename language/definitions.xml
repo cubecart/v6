@@ -835,6 +835,8 @@
     <string name="unknown" introduced="5.0.0"><![CDATA[Unknown]]></string>
     <string name="update" introduced="5.0.0"><![CDATA[Update]]></string>
     <string name="upgrade" introduced="5.1.0"><![CDATA[Upgrade]]></string>
+    <string name="manual_upgrade" introduced="6.4.8"><![CDATA[Get Upgrade via Marketplace]]></string>
+    <string name="auto_upgrade" introduced="6.4.8"><![CDATA[Auto Upgrade Now]]></string>
     <string name="url" introduced="5.0.0"><![CDATA[URL]]></string>
     <string name="value" introduced="5.0.0"><![CDATA[Value]]></string>
     <string name="view_all" introduced="5.0.0"><![CDATA[View All]]></string>
