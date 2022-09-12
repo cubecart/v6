@@ -243,22 +243,26 @@
       <thead>
          <tr>
             <th>{$LANG.common.name}</th>
-            <th>&nbsp;</th>
-            <th>&nbsp;</th>
+            <th>Auto Upgrade</th>
+            <th>Manual Upgrade</th>
+            <th>{$LANG.common.ignore}</th>
          </tr>
       </thead>
       <tbody>
       {foreach from=$EXTENSION_UPDATES item=extension}
          <tr>
             <td>{$extension.name}</td>
-            <td>
+            <td class="text-center">
             {if $extension.auto_upgrade}
-               <a href="?_g=plugins&install[type]=plugins&install[id]={$extension.file_id}&install[seller_id]={$extension.seller_id}">{$LANG.common.auto_upgrade}</a>
+               <a href="?_g=plugins&install[type]=plugins&install[id]={$extension.file_id}&install[seller_id]={$extension.seller_id}" title="{$LANG.common.auto_upgrade}"><i class="fa fa-bolt"></i></a>
             {else}
-               <a href="https://www.cubecart.com/extensions/id/{$extension.file_id}" target="_blank">{$LANG.common.manual_upgrade}</a>
+               <i class="fa fa-ban" title="{$LANG.common.auto_upgrade_na}"></i>
             {/if}
             </td>
-            <td><a href="?ignore_update={$extension.file_id}">{$LANG.common.ignore}</a></td>
+            <td class="text-center">
+               <a href="https://www.cubecart.com/extensions/id/{$extension.file_id}" target="_blank" title="{$LANG.common.manual_upgrade}"><i class="fa fa-download"></i></a>
+            </td>
+            <td class="text-center"><a href="?ignore_update={$extension.file_id}" title="{$LANG.common.ignore}"><i class="fa fa-remove"></i></a></td>
          </tr>
       {/foreach}
       </tbody>

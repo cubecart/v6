@@ -1044,6 +1044,9 @@ table.phrases td.actions {
     color: #ccc;
     cursor: pointer;
 }
+table td.text-center {
+    text-align: center
+}
 table#order-builder .textbox {
     width: 100px
 }
