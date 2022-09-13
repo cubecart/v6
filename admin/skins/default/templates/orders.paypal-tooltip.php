@@ -1,10 +1,10 @@
 {if $SUMMARY.gateway|stristr:"paypal" && $SUMMARY.gateway!== 'paypal commerce'}   
 <style>
 .ppcp-container {
-display: flex;
+    display: flex;
 }
 .ppcp-container a, .fa-times {
-color: #fff;
+    color: #fff;
 }
 .pp_cta {
     margin: 25px 0px 10px 25px
@@ -22,20 +22,20 @@ a.pp_upgrade_now {
     margin-left: 10px;
 }
 .flex-child {
-flex: 1;
+    flex: 1;
 }  
 .ppcp-container .monogram {
-width:55px;
-flex: 0 0 55px;
-background-image: url({$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/PP_Monogram.png);
-background-position: center;
-background-repeat: no-repeat;
+    width:55px;
+    flex: 0 0 55px;
+    background-image: url({$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/PP_Monogram.png);
+    background-position: center;
+    background-repeat: no-repeat;
 }
 .ppcp-container .message {
-background-color: #003087;
-color: #ffffff;
-padding: 15px;
-font-size: 14px;
+        background-color: #003087;
+    color: #ffffff;
+    padding: 15px;
+    font-size: 14px;
 }
 </style>
 <div class="ppcp-container">
