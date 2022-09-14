@@ -146,7 +146,7 @@ if (!$GLOBALS['session']->has('version_check') && $request = new Request('www.cu
         $response_array = json_decode($response, true);
 
         if (version_compare($response_array['version'], CC_VERSION, '>')) {
-            $GLOBALS['main']->errorMessage(sprintf($lang['dashboard']['error_version_update'], $response_array['version'], CC_VERSION).' <a href="?_g=maintenance&node=index#upgrade">'.$lang['maintain']['upgrade_now'].'</a>');
+            $GLOBALS['main']->errorMessage(sprintf($lang['dashboard']['error_version_update'], $response_array['version'], CC_VERSION).' <a href="https://support.cubecart.com/hc/en-gb/articles/360003794198-How-do-I-upgrade-from-CubeCart-v6-to-latest-v6-" target="_blank">'.$lang['maintain']['upgrade_now'].'</a>');
         }
         if (isset($response_array['updates']) && is_array($response_array['updates'])) {
             $version_check = $response_array['updates'];
