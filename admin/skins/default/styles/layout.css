@@ -1426,6 +1426,13 @@ ul.fmsearch_images img {
     padding: 0;
     margin: 0;
 }
+.severity a {
+    color: #737373;
+    text-decoration: underline;
+}
+.severity a:hover {
+    text-decoration: none;
+}
 .severity li {
     padding: 3px;
 }
