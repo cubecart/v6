@@ -51,7 +51,7 @@
   {if !isset($CONFIG.cid)}
   <h3>Automated Backups</h3>
   	<ul class="severity">
-  		<li class="orange"><strong>Disclaimer:</strong> These backup tools are constrained by resource limitations of PHP which can be low. A backup may fail so please check file integrity after the process has completed. If possible we recommend taking a full backup via your web hosting control panel instead.</li>
+  		<li class="orange"><strong>Disclaimer:</strong><br>These backup tools are constrained by resource limitations of PHP which can be low. A backup may fail so please check file integrity after the process has completed. If possible we recommend taking a full backup via your web hosting control panel instead.</li>
   	</ul>
   	<p>Official CubeCart hosting comes with automated hourly backups. Visit <a href="https://hosted.cubecart.com" target="_blank">https://hosted.cubecart.com</a> for more information. We offer a <a href="https://support.cubecart.com/hc/en-gb/articles/360004746498-How-do-I-transfer-my-existing-CubeCart-store-to-your-hosting-service-" target="_blank">free migration service</a>.</p>
   {/if}
@@ -138,7 +138,7 @@
 <div id="upgrade" class="tab_content">
   <h3>{$LANG.maintain.upgrade_to_latest}</h3>
   <ul class="severity">
-  		<li class="orange"><strong>Disclaimer:</strong> Please use this tool at your own risk. This upgrade tool may fail if the web server isn't able to write to file or if PHP hasn't got enough resources to complete the task. Please also note that any core code customisation will be overwritten. Other more reliable upgrade methods are available. <a href="https://support.cubecart.com/hc/en-gb/articles/360003794198-How-do-I-upgrade-from-CubeCart-v6-to-latest-v6-" target="_blank">Upgrade Documentation</a></li>
+  		<li class="orange"><strong>Disclaimer:</strong><br>Please use this tool at your own risk. This upgrade tool may fail if the web server isn't able to write to file or if PHP hasn't got enough resources to complete the task. Please also note that any core code customisation will be overwritten. Other more reliable upgrade methods are available. <a href="https://support.cubecart.com/hc/en-gb/articles/360003794198-How-do-I-upgrade-from-CubeCart-v6-to-latest-v6-" target="_blank">Upgrade Documentation</a></li>
   	</ul>
   {if $CONFIG.auto_upgrade_disabled}
 	<p>{$LANG.maintain.auto_upgrade_disabled|replace:'{$EMAIL}':$CONFIG.auto_upgrade_disabled}</p>
