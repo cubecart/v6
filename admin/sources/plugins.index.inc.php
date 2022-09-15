@@ -43,87 +43,100 @@ foreach($apps as $extension_type => $token) {
     $request->setUserAgent('CubeCart');
     $request->skiplog(true);
 
-    $json = $request->send();
-    $data = json_decode($json, true);
+    if($json = $request->send()) {
+        $data = json_decode($json, true);
+        
+        if(is_array($data) && isset($data['path'])) {
 
-    $destination = CC_ROOT_DIR.'/'.$data['path'];
-    $tmp_path = CC_BACKUP_DIR.$data['file_name'];
-    $fp = fopen($tmp_path, 'w');
-    fwrite($fp, hex2bin($data['file_data']));
-    fclose($fp);
+            $destination = CC_ROOT_DIR.'/'.$data['path'];
+            $tmp_path = CC_BACKUP_DIR.$data['file_name'];
+            $fp = fopen($tmp_path, 'w');
+            fwrite($fp, hex2bin($data['file_data']));
+            fclose($fp);
 
-    $zip = new ZipArchive();
-    $zip->open($tmp_path);
+            $zip = new ZipArchive();
+            $zip->open($tmp_path);
 
-    for ($i = 0; $i < $zip->numFiles; $i++) {
-        $file = $zip->statIndex($i);
-        $root_path = $destination.'/'.$file['name'];
-        if (basename($file['name'])=="config.xml") {
-            $install_dir = str_replace(array('/config.xml', CC_ROOT_DIR), '', $root_path);
-            break;
-        }
-    }
+            for ($i = 0; $i < $zip->numFiles; $i++) {
+                $file = $zip->statIndex($i);
+                $root_path = $destination.'/'.$file['name'];
+                if (basename($file['name'])=="config.xml") {
+                    $install_dir = str_replace(array('/config.xml', CC_ROOT_DIR), '', $root_path);
+                    break;
+                }
+            }
 
-    if($zip->extractTo($destination)) {
-        $extension_info = array(
-            'dir' => $install_dir,
-            'file_name' => $data['file_name'],
-            'file_id' => $data['file_id'],
-            'seller_id' => $data['seller_id'],
-            'modified'	=> $data['modified'],
-            'name'	=> $data['name'],
-            'keep_current' => 1 // Extraction worked so we expect it to work next time. Let's keep it up to date.
-        );
-        // Required for extension updates
-        if($GLOBALS['db']->select('CubeCart_extension_info', false, array('file_id' => $data['file_id'], 'seller_id' => $data['seller_id']))) {
-            unset($extension_info['file_id'], $extension_info['seller_id']);
-            $GLOBALS['db']->update('CubeCart_extension_info', $extension_info, array('file_id' => $data['file_id'], 'seller_id' => $data['seller_id']));
-        } else {      
-            $GLOBALS['db']->insert('CubeCart_extension_info', $extension_info);
-        }
+            if($zip->extractTo($destination)) {
+                $extension_info = array(
+                    'dir' => $install_dir,
+                    'file_name' => $data['file_name'],
+                    'file_id' => $data['file_id'],
+                    'seller_id' => $data['seller_id'],
+                    'modified'	=> $data['modified'],
+                    'name'	=> $data['name'],
+                    'keep_current' => 1 // Extraction worked so we expect it to work next time. Let's keep it up to date.
+                );
+                // Required for extension updates
+                if($GLOBALS['db']->select('CubeCart_extension_info', false, array('file_id' => $data['file_id'], 'seller_id' => $data['seller_id']))) {
+                    unset($extension_info['file_id'], $extension_info['seller_id']);
+                    $GLOBALS['db']->update('CubeCart_extension_info', $extension_info, array('file_id' => $data['file_id'], 'seller_id' => $data['seller_id']));
+                } else {      
+                    $GLOBALS['db']->insert('CubeCart_extension_info', $extension_info);
+                }
 
-        if(isset($_GET['install'])) {
-            if(isset($_GET['install']['msg'])) {
-                $GLOBALS['main']->successMessage(htmlspecialchars($_GET['install']['msg']));
-                httpredir('?_g=plugins&type='.$_GET['install']['type'].'&module='.basename($extension_info['dir']));
-                exit;
-            } else {
-                $GLOBALS['session']->delete('version_check');
-                $GLOBALS['main']->successMessage(htmlspecialchars($data['name']).' has been upgraded to the latest version.');
+                if(isset($_GET['install'])) {
+                    if(isset($_GET['install']['msg'])) {
+                        $GLOBALS['main']->successMessage(htmlspecialchars($_GET['install']['msg']));
+                        httpredir('?_g=plugins&type='.$_GET['install']['type'].'&module='.basename($extension_info['dir']));
+                        exit;
+                    } else {
+                        $GLOBALS['session']->delete('version_check');
+                        $GLOBALS['main']->successMessage(htmlspecialchars($data['name']).' has been upgraded to the latest version.');
+                        httpredir('?');
+                        exit;
+                    }
+                } else {
+                    $GLOBALS['config']->set('default_apps', $token, 1);
+                }
+                if(!isset($_GET['install']) && $data['file_id']==44) {
+                    // Free Shipping to get us started
+                    $config_data = array(
+                        "module_id" => "7",
+                        "module" => "shipping",
+                        "folder" =>  "All_In_One_Shipping",
+                        "status" =>  "1",
+                        "default" =>  "0",
+                        "position" =>  "0",
+                        "range_weight" =>  "1",
+                        "tax" =>  "999999",
+                        "multiple_zones" =>  "first",
+                        "debug" =>  "0",
+                        "use_flat" =>  "1",
+                        "cc5_data" => 1
+                    );
+                    $GLOBALS['config']->set("All_In_One_Shipping", '', $config_data);
+                    $GLOBALS['db']->insert('CubeCart_shipping_rates', array('method_name' => 'Free Shipping', 'max_weight' => 9999, 'item_rate' => 0));
+                    $GLOBALS['db']->insert('CubeCart_modules', array('module' => 'shipping', 'folder' => "All_In_One_Shipping", 'status' => 1, 'default' => 1));
+                }
+            } elseif(isset($_GET['install'])) {
+                $GLOBALS['db']->update('CubeCart_extension_info', array('keep_current' => 0), array('file_id' => $data['file_id'], 'seller_id' => $data['seller_id']));
+                $GLOBALS['main']->errorMessage('Auto upgrade failed. Please update manually.');
                 httpredir('?');
                 exit;
             }
+            $zip->close();
+            if(file_exists($tmp_path)) {
+                unlink($tmp_path);
+            }
         } else {
-            $GLOBALS['config']->set('default_apps', $token, 1);
+            $GLOBALS['main']->errorMessage('Failed to retrieve extension data.'); 
+            httpredir('?_g=plugins');
+            exit; 
         }
-        if(!isset($_GET['install']) && $data['file_id']==44) {
-            // Free Shipping to get us started
-            $config_data = array(
-                "module_id" => "7",
-                "module" => "shipping",
-                "folder" =>  "All_In_One_Shipping",
-                "status" =>  "1",
-                "default" =>  "0",
-                "position" =>  "0",
-                "range_weight" =>  "1",
-                "tax" =>  "999999",
-                "multiple_zones" =>  "first",
-                "debug" =>  "0",
-                "use_flat" =>  "1",
-                "cc5_data" => 1
-            );
-            $GLOBALS['config']->set("All_In_One_Shipping", '', $config_data);
-            $GLOBALS['db']->insert('CubeCart_shipping_rates', array('method_name' => 'Free Shipping', 'max_weight' => 9999, 'item_rate' => 0));
-            $GLOBALS['db']->insert('CubeCart_modules', array('module' => 'shipping', 'folder' => "All_In_One_Shipping", 'status' => 1, 'default' => 1));
-        }
-    } elseif(isset($_GET['install'])) {
-        $GLOBALS['main']->errorMessage('Auto upgrade failed. Please update manually.');
-        httpredir('?');
-        exit;
-    }
-    $zip->close();
-    if(file_exists($tmp_path)) {
-        unlink($tmp_path);
+    } else {
+        $GLOBALS['main']->errorMessage('Failed to connect to extension server.'); 
+        httpredir('?_g=plugins');
+        exit;   
     }
 }
 
