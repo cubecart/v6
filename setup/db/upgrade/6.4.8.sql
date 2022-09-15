@@ -1,0 +1,1 @@
+ALTER TABLE `CubeCart_extension_info` ADD INDEX(`seller_id`); #EOQ

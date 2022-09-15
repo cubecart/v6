@@ -338,7 +338,8 @@ CREATE TABLE IF NOT EXISTS `CubeCart_extension_info` (
   `name` varchar(255) NOT NULL,
   `dir` varchar(255) NOT NULL,
   `modified` int(11) NOT NULL,
-  PRIMARY KEY (`file_id`)
+  PRIMARY KEY (`file_id`),
+  KEY (`seller_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_filemanager` (

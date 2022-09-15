@@ -713,7 +713,8 @@ if (isset($database_result) && $database_result) {
             'template_id' => 'PRIMARY'
         ),
         'cubecart_extension_info' => array(
-            'file_id' => 'PRIMARY'
+            'file_id' => 'PRIMARY',
+            'seller_id' => 'key'
         ),
         'cubecart_filemanager' => array(
             'file_id' => 'PRIMARY',
