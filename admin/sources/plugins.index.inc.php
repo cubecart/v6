@@ -74,12 +74,18 @@ foreach($apps as $extension_type => $token) {
             'name'	=> $data['name']
         );
         // Required for extension updates
-        $GLOBALS['db']->insert('CubeCart_extension_info', $extension_info);
+        if($GLOBALS['db']->select('CubeCart_extension_info', false, array('file_id' => $data['file_id'], 'seller_id' => $data['seller_id']))) {
+            unset($extension_info['file_id'], $extension_info['seller_id']);
+            $GLOBALS['db']->update('CubeCart_extension_info', $extension_info, array('file_id' => $data['file_id'], 'seller_id' => $data['seller_id']));
+        } else {      
+            $GLOBALS['db']->insert('CubeCart_extension_info', $extension_info);
+        }
         if(!isset($_GET['install'])) {
             $GLOBALS['config']->set('default_apps', $token, 1);
         }
     }
     $zip->close();
+    touch($install_dir);
 
     unlink($tmp_path);
     if(isset($_GET['install'])) {
