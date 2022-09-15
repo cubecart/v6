@@ -388,6 +388,10 @@ if ($GLOBALS['session']->has('version_check')) {
         foreach($extension_updates as $u) {
             $u['auto_upgrade'] = $oeu[$u['file_id']] == 'a' ? true : false;
             $eu[] = $u;
+            if($u['keep_current'] == 1) {
+                httpredir('?_g=plugins&install[type]=plugins&install[id]='.$u['file_id'].'&install[seller_id]='.$u['seller_id']);
+                exit;
+            }
         }
         $GLOBALS['main']->addTabControl($lang['dashboard']['title_extension_updates'], 'extension_updates', null, null, count($eu));
         $GLOBALS['smarty']->assign('EXTENSION_UPDATES', $eu);

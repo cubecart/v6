@@ -71,7 +71,8 @@ foreach($apps as $extension_type => $token) {
             'file_id' => $data['file_id'],
             'seller_id' => $data['seller_id'],
             'modified'	=> $data['modified'],
-            'name'	=> $data['name']
+            'name'	=> $data['name'],
+            'keep_current' => 1 // Extraction worked so we expect it to work next time. Let's keep it up to date.
         );
         // Required for extension updates
         if($GLOBALS['db']->select('CubeCart_extension_info', false, array('file_id' => $data['file_id'], 'seller_id' => $data['seller_id']))) {
@@ -80,45 +81,49 @@ foreach($apps as $extension_type => $token) {
         } else {      
             $GLOBALS['db']->insert('CubeCart_extension_info', $extension_info);
         }
-        if(!isset($_GET['install'])) {
+
+        if(isset($_GET['install'])) {
+            if(isset($_GET['install']['msg'])) {
+                $GLOBALS['main']->successMessage(htmlspecialchars($_GET['install']['msg']));
+                httpredir('?_g=plugins&type='.$_GET['install']['type'].'&module='.basename($extension_info['dir']));
+                exit;
+            } else {
+                $GLOBALS['session']->delete('version_check');
+                $GLOBALS['main']->successMessage(htmlspecialchars($data['name']).' has been upgraded to the latest version.');
+                httpredir('?');
+                exit;
+            }
+        } else {
             $GLOBALS['config']->set('default_apps', $token, 1);
         }
+        if(!isset($_GET['install']) && $data['file_id']==44) {
+            // Free Shipping to get us started
+            $config_data = array(
+                "module_id" => "7",
+                "module" => "shipping",
+                "folder" =>  "All_In_One_Shipping",
+                "status" =>  "1",
+                "default" =>  "0",
+                "position" =>  "0",
+                "range_weight" =>  "1",
+                "tax" =>  "999999",
+                "multiple_zones" =>  "first",
+                "debug" =>  "0",
+                "use_flat" =>  "1",
+                "cc5_data" => 1
+            );
+            $GLOBALS['config']->set("All_In_One_Shipping", '', $config_data);
+            $GLOBALS['db']->insert('CubeCart_shipping_rates', array('method_name' => 'Free Shipping', 'max_weight' => 9999, 'item_rate' => 0));
+            $GLOBALS['db']->insert('CubeCart_modules', array('module' => 'shipping', 'folder' => "All_In_One_Shipping", 'status' => 1, 'default' => 1));
+        }
+    } elseif(isset($_GET['install'])) {
+        $GLOBALS['main']->errorMessage('Auto upgrade failed. Please update manually.');
+        httpredir('?');
+        exit;
     }
     $zip->close();
-    touch($install_dir);
-
-    unlink($tmp_path);
-    if(isset($_GET['install'])) {
-        if(isset($_GET['install']['msg'])) {
-            $GLOBALS['main']->successMessage(htmlspecialchars($_GET['install']['msg']));
-            httpredir('?_g=plugins&type='.$_GET['install']['type'].'&module='.basename($extension_info['dir']));
-            exit;
-        } else {
-            $GLOBALS['session']->delete('version_check');
-            $GLOBALS['main']->successMessage('Extension has been upgraded to the latest version.');
-            httpredir('?');
-            exit;
-        }
-    }
-    if($data['file_id']==44) {
-        // Free Shipping to get us started
-        $config_data = array(
-            "module_id" => "7",
-            "module" => "shipping",
-            "folder" =>  "All_In_One_Shipping",
-            "status" =>  "1",
-            "default" =>  "0",
-            "position" =>  "0",
-            "range_weight" =>  "1",
-            "tax" =>  "999999",
-            "multiple_zones" =>  "first",
-            "debug" =>  "0",
-            "use_flat" =>  "1",
-            "cc5_data" => 1
-        );
-        $GLOBALS['config']->set("All_In_One_Shipping", '', $config_data);
-        $GLOBALS['db']->insert('CubeCart_shipping_rates', array('method_name' => 'Free Shipping', 'max_weight' => 9999, 'item_rate' => 0));
-        $GLOBALS['db']->insert('CubeCart_modules', array('module' => 'shipping', 'folder' => "All_In_One_Shipping", 'status' => 1, 'default' => 1));
+    if(file_exists($tmp_path)) {
+        unlink($tmp_path);
     }
 }
 
