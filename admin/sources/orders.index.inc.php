@@ -304,7 +304,7 @@ if (isset($_GET['action'])) {
             // Make some values frendlier
             $summary[0]['ship_method']   = str_replace('_', ' ', $summary[0]['ship_method']);
             $summary[0]['gateway']   = str_replace('_', ' ', $summary[0]['gateway']);
-            $summary[0]['ship_date']   = ((int)(str_replace('-', '', $summary[0]['ship_date'])) > 0) ? $summary[0]['ship_date'] : "";
+            $summary[0]['ship_date']   = ((int)(str_replace('-', '', $summary[0]['ship_date']?:"0")) > 0) ? $summary[0]['ship_date'] : "";
 
             // Processing/Pending orders are on the dashboard by default otherwise show defined value
             if ($summary[0]['discount_type']=='p') {
