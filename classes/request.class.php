@@ -81,7 +81,7 @@ class Request
             $this->_curl_options[CURLOPT_HEADER]    = $this->_request_return_headers;
             $this->_curl_options[CURLOPT_RETURNTRANSFER]  = $this->_request_return;
             $this->_curl_options[CURLOPT_VERBOSE]    = false;
-            $this->_curl_options[CURLOPT_FAILONERROR]   = true;
+            //$this->_curl_options[CURLOPT_FAILONERROR]   = true;
         }
     }
 
