@@ -61,18 +61,6 @@
    <div id="Features" class="tab_content">
       <h3>{$LANG.settings.title_features}</h3>
       <fieldset>
-         <legend>{$LANG.settings.google_analytics} - <a href="https://analytics.google.com/" target="_blank">{$LANG.common.learn_more}</a></legend>
-         <div><label for="google_analytics">{$LANG.settings.google_analytics_id}</label><span><input name="config[google_analytics]" id="google_analytics" type="text" class="textbox" value="{$CONFIG.google_analytics}"></span></div>
-      </fieldset>
-      <fieldset>
-         <legend>{$LANG.address.w3w} - <a href="https://what3words.com/business/ecommerce/" target="_blank">{$LANG.common.learn_more}</a></legend>
-         <div><label for="w3w">{$LANG.settings.w3w_status}</label><span><input name="config[w3w_status]" id="w3w_status" type="hidden" class="toggle" value="{$CONFIG.w3w_status}"></span></div>
-         {if !$w3w_compatibility}
-         <p><strong>{$LANG.settings.w3w_na}</strong></p>
-         {/if}
-         <input name="config[w3w]" id="w3w" type="hidden" value="{$CONFIG.w3w}">
-      </fieldset>
-      <fieldset>
          <legend>{$LANG.navigation.nav_prod_reviews}</legend>
          <div><label for="enable_reviews">{$LANG.settings.enable_reviews}</label><span>
          <select name="config[enable_reviews]">
@@ -165,6 +153,14 @@
          <div><label for="exit_modal">{$LANG.settings.enable_exit_modal}</label><span><input name="config[exit_modal]" id="exit_modal" type="hidden" class="toggle" value="{$CONFIG.exit_modal}"></span></div>
       </fieldset>
       <fieldset>
+         <legend>{$LANG.address.w3w} - <a href="https://what3words.com/business/ecommerce/" target="_blank">{$LANG.common.learn_more}</a></legend>
+         <div><label for="w3w">{$LANG.settings.w3w_status}</label><span><input name="config[w3w_status]" id="w3w_status" type="hidden" class="toggle" value="{$CONFIG.w3w_status}"></span></div>
+         {if !$w3w_compatibility}
+         <p><strong>{$LANG.settings.w3w_na}</strong></p>
+         {/if}
+         <input name="config[w3w]" id="w3w" type="hidden" value="{$CONFIG.w3w}">
+      </fieldset>
+      <fieldset>
          <legend>{$LANG.common.misc}</legend>
          <div><label for="admin_notify_status">{$LANG.settings.admin_order_status_notification}</label><span><select name="config[admin_notify_status]" id="admin_notify_status" class="textbox">
             {foreach from=$OPT_ADMIN_NOTIFY_STATUS item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
@@ -184,6 +180,10 @@
          <div><label for="disable_estimates">{$LANG.settings.disable_estimates}</label><span><input name="config[disable_estimates]" id="disable_estimates" type="hidden" class="toggle" value="{$CONFIG.disable_estimates}"></span></div>
          <div><label for="basket_allow_non_invoice_address">{$LANG.settings.dispatch_to_non_invoice}</label><span><input name="config[basket_allow_non_invoice_address]" id="basket_allow_non_invoice_address" type="hidden" class="toggle" value="{$CONFIG.basket_allow_non_invoice_address}"></span></div>
          <div><label for="emailconf">{$LANG.settings.emailconf}</label><span><input name="config[emailconf]" id="emailconf" type="hidden" class="toggle" value="{$CONFIG.emailconf}"></span></div>
+      </fieldset>
+      <fieldset>
+         <legend>{$LANG.settings.google_analytics} - <a href="https://www.cubecart.com/extensions/plugins/google-analytics-for-ecommerce" target="_blank">Get the Google Analytics 4 Extension</a></legend>
+         <div><label for="google_analytics">{$LANG.settings.google_analytics_id}</label><span><input name="config[google_analytics]" id="google_analytics" class="textbox" placeholder="UA-" value="{$CONFIG.google_analytics}"></span></div>
       </fieldset>
    </div>
    <div id="Layout" class="tab_content">

@@ -1,3 +1,4 @@
+{* DEPRECATED: Please use https://www.cubecart.com/extensions/plugins/google-analytics-for-ecommerce instead *}
 {if isset($smarty.cookies.accept_cookies) && $smarty.cookies.accept_cookies=='true'}
 {literal}<script>
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
