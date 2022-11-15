@@ -25,7 +25,7 @@ if (isset($_POST['autoupdate']) && Admin::getInstance()->permissions('settings',
         include $hook;
     }
     $cron = new Cron();
-    if($cron->updateExchangeRates()) {
+    if(!empty($cron->updateExchangeRates())) {
         $GLOBALS['main']->successMessage($lang['settings']['notify_currency_rates_update']);
     } else {
         $GLOBALS['main']->successMessage($lang['settings']['notify_currency_rates_update_fail']);

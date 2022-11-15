@@ -3,6 +3,7 @@ class Cron
 {
     public function updateExchangeRates() {
         ## European Central Bank
+        $output = array();
         if (($request = new Request('www.ecb.europa.eu', '/stats/eurofxref/eurofxref-daily.xml')) !== false) {
             $request->setMethod('get');
             $request->setSSL();
@@ -25,14 +26,15 @@ class Cron
                 $base  = (1/$fx[strtoupper($GLOBALS['config']->get('config', 'default_currency'))]);
                 foreach ($fx as $code => $rate) {
                     $value = ($base/(1/$rate));
+                    $output[] = array(
+                        'currency' => $code,
+                        'rate' => $value,
+                        'time' => $updated
+                    );
                     $GLOBALS['db']->update('CubeCart_currency', array('value' => $value, 'updated' => $updated), array('code' => $code), true);
                 }
-                return true;
-            } else {
-                return false;
             }
-        } else {
-            return false;
         }
+        return $output;
     }
 }
