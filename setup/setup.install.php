@@ -270,44 +270,9 @@ if (!isset($_SESSION['setup']['permissions'])) {
             // Create admin user
             $GLOBALS['db']->insert('CubeCart_admin_users', $_SESSION['setup']['admin']);
             // Set the current exchange rates
-            if (!$request = new Request('www.ecb.europa.eu', '/stats/eurofxref/eurofxref-daily.xml')) {
-                // if fail fall back to our outdated copy locally
-                $rates_xml = file_get_contents('data/eurofxref-daily.xml');
-            } else {
-                $request->setMethod('get');
-                $request->skiplog(true);
-                $request->setSSL();
-                $rates_xml = $request->send();
             }
-
-            // If this fails fall back to original file_get_contents
-            if (empty($rates_xml)) {
-                $rates_xml = file_get_contents('https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml');
-            }
-
-            try {
-                $xml = new SimpleXMLElement($rates_xml);
-                if ($xml) {
-                    // Magically update all the exchange rates with the latest ECB data
-                    foreach ($xml->Cube->Cube->Cube as $currency) {
-                        $rate = $currency->attributes();
-                        $fx[(string)$rate['currency']] = (float)$rate['rate'];
-                    }
-                    $fx['EUR'] = 1;
-                    $updated = strtotime((string)$xml->Cube->Cube->attributes()->time);
-                    // Get the divisor
-                    $base  = (1/$fx[$config['default_currency']]);
-                    $active_currencies = array_merge(array('AUD', 'CAD', 'EUR', 'GBP', 'JPY', 'USD'), array($config['default_currency']));
-                    foreach ($fx as $code => $rate) {
-                        $value = ($base/(1/$rate));
-                        $active_currency = in_array($code, $active_currencies) ? true : false;
-                        $GLOBALS['db']->update('CubeCart_currency', array('value' => $value, 'lastUpdated' => $updated, 'active' => $active_currency), array('code' => $code), true);
-                    }
-                }
-            } catch (Exception $e) {
-                trigger_error('Error parsing ECB Exchange Rates.', E_USER_WARNING);
-            }
-
+            $cron = new Cron();
+            $cron->updateExchangeRates();
 
             $default_docs = array(
                 0 => array('doc_name' => str_replace('CubeCart', $_SESSION['setup']['config']['store_name'], $strings['setup']['default_doc_title_welcome']), 'doc_content' => $strings['setup']['default_doc_content_welcome'], 'doc_order' => 1, 'doc_lang' => $config['default_language'], 'doc_home' => 1, 'doc_terms' => 0, 'doc_privacy' => 0),
