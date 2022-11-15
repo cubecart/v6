@@ -14,7 +14,7 @@
    <h3>{$LANG.catalogue.title_feature}</h3>
    <div class="text-center">
       <a class="th" href="{$featured.url}" title="{$featured.name}">
-         <img src="{$featured.image}" alt="{$featured.name}">
+      <img src="{$featured.image}" alt="{if isset($featured.image_tags.alt) && !empty($featured.image_tags.alt)}{$featured.image_tags.alt}{else}{$featured.name}{/if}"{if isset($featured.image_tags.title)} title="{$featured.image_tags.title}"{/if}>
       </a>
    </div>
    <h4><a href="{$featured.url}" title="{$featured.name}">{$featured.name}</a></h4>

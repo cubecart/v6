@@ -15,7 +15,7 @@
       <div id="scrollUp" class="scroller"><svg class="icon"><use xlink:href="#icon-angle-up"></use></svg></div>
       <ul class="clearing-thumbs small-block-grid-1" id="scrollContent" data-clearing>
          {foreach from=$GALLERY item=image}
-         <li><a href="{$image.source}" class="th"><img src="{$image.small}" data-image-swap="{$image.medium}" data-caption="{$PRODUCT.name}{if !empty($image.description)}: {/if}{$image.description}" class="image-gallery" alt="{$LANG.catalogue.click_enlarge}"></a></li>
+         <li><a href="{$image.source}" class="th"><img src="{$image.small}" data-image-swap="{$image.medium}" data-caption="{$PRODUCT.name}{if !empty($image.description)}: {/if}{$image.description}" class="image-gallery" alt="{if isset($image.image_tags.alt) && !empty($image.image_tags.alt)}{$image.image_tags.alt}{else}{$image.name}{/if} - {$LANG.catalogue.click_enlarge}"{if isset($image.image_tags.title)} title="{$image.image_tags.title}"{/if}></a></li>
          {/foreach}
       </ul>
       <div id="scrollDown" class="scroller"><svg class="icon"><use xlink:href="#icon-angle-down"></use></svg></div>
@@ -23,10 +23,10 @@
    {/if}
    <div class="small-5 medium-{if is_array($GALLERY) && count($GALLERY) > 1}6{else}7{/if} columns text-center nopad">            
       {if is_array($GALLERY) && count($GALLERY) > 1}
-         <a href="#" class="open-clearing" data-thumb-index="0"><img src="{$PRODUCT.medium}" alt="{$PRODUCT.name}" id="img-preview"></a>
+         <a href="#" class="open-clearing" data-thumb-index="0"><img src="{$PRODUCT.medium}" alt="{if isset($PRODUCT.image_tags.medium.alt) && !empty($PRODUCT.image_tags.medium.alt)}{$PRODUCT.image_tags.medium.alt}{else}{$PRODUCT.name}{/if}"{if isset($PRODUCT.image_tags.medium.title)} title="{$PRODUCT.image_tags.medium.title}"{/if} id="img-preview"></a>
          <p class="show-for-small-only">{$LANG.catalogue.tap_gallery}</p>
       {else}
-         <div data-clearing><a href="{$PRODUCT.source}"><img src="{$PRODUCT.medium}"></a></div>
+         <div data-clearing><a href="{$PRODUCT.source}"><img src="{$PRODUCT.medium}" alt="{if isset($PRODUCT.image_tags.medium.alt) && !empty($PRODUCT.image_tags.medium.alt)}{$PRODUCT.image_tags.medium.alt}{else}{$PRODUCT.name}{/if}"{if isset($PRODUCT.image_tags.medium.title)} title="{$PRODUCT.image_tags.medium.title}"{/if}></a></div>
          <p class="show-for-small-only">{$LANG.catalogue.tap_enlarge}</p>
       {/if}
    </div>

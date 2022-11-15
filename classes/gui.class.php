@@ -1342,6 +1342,9 @@ class GUI
             $GLOBALS['language']->translateProduct($product);
 
             $product['image'] = $image;
+            if(isset($GLOBALS['catalogue']->image_tags[$image])) {
+                $product['image_tags'] = $GLOBALS['catalogue']->image_tags[$image];
+            }
 
             $product['ctrl_sale'] = (!$GLOBALS['tax']->salePrice($product['price'], $product['sale_price']) || !$GLOBALS['config']->get('config', 'catalogue_sale_mode')) ? false : true;
 

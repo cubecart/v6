@@ -77,7 +77,14 @@ class FileManager
                         $new_subdir  = $this->_sub_dir;
 
                         if ($file[0]['filename'] != $_POST['details']['filename']) {
-                            $new_filename = $this->formatName($_POST['details']['filename']);
+                            $old = pathinfo($file[0]['filename']);
+                            $new = pathinfo($_POST['details']['filename']);
+                            // We can't allow extension change
+                            $new_filename = $_POST['details']['filename'];
+                            if(!isset($new['extension']) || $new['extension']!==$old['extension']) {
+                                $new_filename = $new['basename'].'.'.$old['extension'];
+                            }
+                            $new_filename = $this->formatName($new_filename);
                         }
                         if (isset($_POST['details']['move']) && !empty($_POST['details']['move'])) {
                             $move_to = $this->_manage_root.'/'.$this->formatPath($_POST['details']['move']);
@@ -103,6 +110,7 @@ class FileManager
                         $record['description'] = strip_tags($_POST['details']['description']);
                         $record['title'] = $_POST['details']['title'];
                         $record['stream'] = $_POST['details']['stream'];
+                        $record['alt'] = $_POST['details']['alt'];
 
                         $update = false;
                         foreach ($record as $k => $v) {
@@ -111,9 +119,13 @@ class FileManager
                             }
                         }
                         if ($update) {
-                            if (!$GLOBALS['db']->update('CubeCart_filemanager', $record, array('file_id' => (int)$_POST['file_id']))) {
+                            if ($GLOBALS['db']->update('CubeCart_filemanager', $record, array('file_id' => (int)$_POST['file_id']))) {
+                                $GLOBALS['gui']->setNotify($GLOBALS['language']->filemanager['notice_file_updated']);
+                            } else {
                                 $GLOBALS['gui']->setError($GLOBALS['language']->filemanager['error_file_update']);
                             }
+                        } else {
+                            $GLOBALS['gui']->setError($GLOBALS['language']->filemanager['error_file_not_changed']);
                         }
                     } else {
                         $GLOBALS['gui']->setError($GLOBALS['language']->filemanager['error_file_update']);

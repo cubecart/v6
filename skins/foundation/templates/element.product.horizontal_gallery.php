@@ -12,14 +12,14 @@
 <div class="row">
    <div class="small-5 medium-7 columns horizontal">
       {if count($GALLERY) > 1}
-         <a href="#" class="open-clearing" data-thumb-index="0"><img src="{$PRODUCT.medium}" alt="{$PRODUCT.name}" id="img-preview"></a>
+         <a href="#" class="open-clearing" data-thumb-index="0"><img src="{$PRODUCT.medium}" alt="{if isset($PRODUCT.image_tags.medium.alt) && !empty($PRODUCT.image_tags.medium.alt)}{$PRODUCT.image_tags.medium.alt}{else}{$PRODUCT.name}{/if}"{if isset($PRODUCT.image_tags.medium.title)} title="{$PRODUCT.image_tags.medium.title}"{/if} id="img-preview"></a>
       {else}
-         <div data-clearing><a href="{$PRODUCT.source}"><img src="{$PRODUCT.medium}"></a></div>
+         <div data-clearing><a href="{$PRODUCT.source}"><img src="{$PRODUCT.medium}" alt="{if isset($PRODUCT.image_tags.medium.alt) && !empty($PRODUCT.image_tags.medium.alt)}{$PRODUCT.image_tags.medium.alt}{else}{$PRODUCT.name}{/if}"{if isset($PRODUCT.image_tags.medium.title)} title="{$PRODUCT.image_tags.medium.title}"{/if}></a></div>
       {/if}
       {if count($GALLERY) > 1}
       <ul class="clearing-thumbs small-block-grid-3 medium-block-grid-5 marg-top" data-clearing>
          {foreach from=$GALLERY item=image}
-         <li><a href="{$image.source}" class="th"><img src="{$image.small}" data-image-swap="{$image.medium}" data-caption="{$PRODUCT.name}{if !empty($image.description)}: {/if}{$image.description}" class="image-gallery" alt="{$LANG.catalogue.click_enlarge}"></a></li>
+         <li><a href="{$image.source}" class="th"><img src="{$image.small}" data-image-swap="{$image.medium}" data-caption="{$PRODUCT.name}{if !empty($image.description)}: {/if}{$image.description}" class="image-gallery" alt="{if isset($image.image_tags.alt) && !empty($image.image_tags.alt)}{$image.image_tags.alt}{else}{$image.name}{/if} - {$LANG.catalogue.click_enlarge}"{if isset($image.image_tags.title))} title="{$image.image_tags.title}"{/if}></a></li>
          {/foreach}
       </ul>
       {/if}

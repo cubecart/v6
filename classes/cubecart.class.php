@@ -107,6 +107,10 @@ class Cubecart
                     // Product Translation
                     $GLOBALS['language']->translateProduct($product);
                     $product['image'] = $GLOBALS['gui']->getProductImage($product['product_id'], 'small');
+                    if(isset($GLOBALS['catalogue']->image_tags[$product['image']])) {
+                        $product['image_tags'] = $GLOBALS['catalogue']->image_tags[$product['image']];
+                    }
+                    
                     $product['ctrl_sale'] = (!$GLOBALS['tax']->salePrice($product['price'], $product['sale_price']) || !$GLOBALS['config']->get('config', 'catalogue_sale_mode')) ? false : true;
 
                     $GLOBALS['catalogue']->getProductPrice($product);

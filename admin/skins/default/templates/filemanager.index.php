@@ -107,27 +107,56 @@
   <div id="fm-details" class="tab_content">
 	<h3>{$LANG.filemanager.title_file_edit}</h3>
 	<fieldset>
-	<div><label for="filename">{$LANG.filemanager.file_name}</label><span><input type="text" id="filename" name="details[filename]" class="textbox" value="{$FILE.filename}"></span></div>
-	<div><label for="move">{$LANG.filemanager.file_subfolder}</label><span><select name="details[move]" id="move" class="textbox">
-	  <option value="">{$LANG.form.please_select}</option>
-	  {if isset($DIRS)}{foreach from=$DIRS item=dir}<option value="{$dir.path}"{$dir.selected}>{$dir.path}</option>{/foreach}{/if}
-	</select>
-	</span></div>
+	<div>
+		<label for="filename">{$LANG.filemanager.file_name}</label>
+		<span><input type="text" id="filename" name="details[filename]" class="textbox" value="{$FILE.filename}"></span>
+	</div>
+	<div>
+		<label for="move">{$LANG.filemanager.file_subfolder}</label>
+		<span>
+			<select name="details[move]" id="move" class="textbox">
+	  			<option value="">{$LANG.form.please_select}</option>
+			</select>
+		</span>
+	</div>
+	{if $FILE.type == 1}
+	<div>
+		<label for="alt">{$LANG.filemanager.alt}</label>
+		<span>
+			<input type="text" id="alt" name="details[alt]" class="textbox" value="{$FILE.alt}">
+		</span>
+	</div>
+	{/if}
+	<div>
+		<label for="title">{$LANG.filemanager.title}</label>
+		<span>
+			<input type="text" id="title" name="details[title]" class="textbox" value="{$FILE.title}">
+		</span>
+	</div>
 	{if $STREAMABLE}
-	<div><label for="stream">{$LANG.filemanager.stream}</label><span><input type="hidden" name="details[stream]" id="stream" value="{$FILE.stream}" class="toggle"></span></div>
-	<div><label for="title">{$LANG.filemanager.title}</label><span><input type="text" id="title" name="details[title]" class="textbox" value="{$FILE.title}"></span></div>
-	<div><label for="description">{$LANG.common.description}</label><span><textarea name="details[description]" id="description" class="textbox">{$FILE.description}</textarea></span></div>
+	<div>
+		<label for="description">{$LANG.common.description}</label>
+		<span>
+			<textarea name="details[description]" id="description" class="textbox">{$FILE.description}</textarea>
+		</span>
+	</div>
+	<div>
+		<label for="stream">{$LANG.filemanager.stream}</label>
+		<span>
+			<input type="hidden" name="details[stream]" id="stream" value="{$FILE.stream}" class="toggle">
+		</span>
+	</div>
 	{/if}
 	</fieldset>
   </div>
   {if isset($SHOW_CROP)}
-  <div id="fm-cropper" class="tab_content">
-	<h3>{$LANG.filemanager.title_image_crop}</h3>
-	<img id="resize" src="{$FILE.filepath}{$FILE.filename}?{$FILE.random}" alt="" class="cropper">
-	<div class="dimensions hidden center"><span class="width">150</span> x <span class="height">150</span> px</div>
-  </div>
+	<div id="fm-cropper" class="tab_content">
+		<h3>{$LANG.filemanager.title_image_crop}</h3>
+		<img id="resize" src="{$FILE.filepath}{$FILE.filename}?{$FILE.random}" alt="" class="cropper">
+		<div class="dimensions hidden center"><span class="width">150</span> x <span class="height">150</span> px</div>
+  	</div>
   {/if}
-  
+
   {include file='templates/element.hook_form_content.php'}
   
   <div class="form_control">
@@ -136,6 +165,9 @@
 	<input type="submit" value="{$LANG.common.save}">
 	<input type="submit" name="cancel" value="{$LANG.common.cancel}">
   </div>
+  {if $FILE.type == 1}
+		<img src="{$FILE.filepath}{$FILE.filename}" alt="{$FILE.alt}" title="{$FILE.title}" style="max-width: 100%" />
+	{/if}
   {/if}
   
 </form>

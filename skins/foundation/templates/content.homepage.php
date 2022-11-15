@@ -24,7 +24,7 @@
          <form action="{$VAL_SELF}" method="post" class="panel add_to_basket">
             <div data-equalizer-watch>
                <div class="text-center">
-                  <a class="th" href="{$product.url}" title="{$product.name}"><img src="{$product.image}" alt="{$product.name}"></a>
+                  <a class="th" href="{$product.url}"><img src="{$product.image}" alt="{if isset($product.image_tags.alt) && !empty($product.image_tags.alt)}{$product.image_tags.alt}{else}{$product.name}{/if}"{if isset($product.image_tags.title)} title="{$product.image_tags.title}"{/if}></a>
                </div>
                <h3><a href="{$product.url}" title="{$product.name}">{$product.name|truncate:38:"&hellip;"}</a></h3>
                {if $product.review_score && $CTRL_REVIEW}
