@@ -270,7 +270,6 @@ if (!isset($_SESSION['setup']['permissions'])) {
             // Create admin user
             $GLOBALS['db']->insert('CubeCart_admin_users', $_SESSION['setup']['admin']);
             // Set the current exchange rates
-            }
             $cron = new Cron();
             $cron->updateExchangeRates();
 
