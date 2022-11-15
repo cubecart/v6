@@ -1292,6 +1292,10 @@ class Catalogue
                 }
             }
 
+            foreach ($GLOBALS['hooks']->load('class.cubecart.product_postgroup_price') as $hook) {
+                include $hook;
+            }
+
             //Are we in sale mode?
             $sale = false;
             $product_data['ctrl_sale'] = false;
