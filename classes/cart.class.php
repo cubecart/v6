@@ -1227,6 +1227,9 @@ class Cart
                             }
                         }
                     }
+                    foreach ($GLOBALS['hooks']->load('class.cart.update.post_max_stock') as $hook){
+                        include $hook;
+                    }
                     $this->basket['contents'][$hash]['quantity'] = (int)$quantity; // or ceil($quantity);
                     $product_data['product_id'] = (int)$this->basket['contents'][$hash]['id'];
                     

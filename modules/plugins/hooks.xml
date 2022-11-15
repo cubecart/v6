@@ -134,6 +134,7 @@
 	<hook trigger="class.cart.load_shipping" deprecated="" />
 	<hook trigger="class.cart.update" deprecated="" />
 	<hook trigger="class.cart.update.max_stock" deprecated="" />
+	<hook trigger="class.cart.update.post_max_stock" deprecated="" />
 	<hook trigger="class.catalogue.category_product_list" deprecated="" />
 	<hook trigger="class.catalogue.category_product_list_return" deprecated="" />
 	<hook trigger="class.catalogue.option_data" deprecated="" />
