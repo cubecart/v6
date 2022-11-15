@@ -39,7 +39,7 @@
 		<div class="master_image">
 			<span>{$LANG.catalogue.image_main}</span>:<br><br>
 			<div id="master_image_block">
-				<img src="{$CATEGORY.master_image}" id="master_image_preview"><div id="preview_image"><img src="{$GC.master_image}"></div>
+				<img src="{$GC.master_image}" id="master_image_preview"><div id="preview_image"><img src="{$GC.master_image}"></div>
 			</div>
 		</div>
 		
