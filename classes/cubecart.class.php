@@ -259,55 +259,71 @@ class Cubecart
                     die($sideBasket);
                     break;
                 case 'rm':
-                case 'remote':
-                    $GLOBALS['debug']->supress();
-                    $mod_type = (isset($_GET['mod_type'])) ? $_GET['mod_type'] : $_GET['type'];
-                    if (!empty($mod_type)) {
-                        switch (strtolower($mod_type)) {
-                        case 'plugins':
-                        case 'gateway':
-                            /* Important Notice!
-                            Please be careful with this hook that you don't always force $plugin to 'plugin'.
-                            This will stop other normal gateways working. Wrap your code in a condition to
-                            make sure that it only ever executed when needed.
-                            */
-                            foreach ($GLOBALS['hooks']->load('class.cubecart.construct.callback.gateway') as $hook) {
-                                include $hook;
-                            }
-                            $folder = (isset($plugin)) ? 'plugins' : 'gateway';
-                            $module = preg_replace('#[^a-z0-9\_\-]#iU', '', $_GET['module']);
-
-                            $class_file = CC_ROOT_DIR.'/modules/'.$folder.'/'.$module.'/'.'gateway.class.php';
-
-                            if (file_exists($class_file)) {
-                                include $class_file;
-                                $gateway = new Gateway($GLOBALS['config']->get($module));
-                                $command = (isset($_GET['cmd'])) ? strtolower($_GET['cmd']) : null;
-                                if (!empty($command)) {
-                                    # if (method_exists($gateway, $command)) $gateway->{$command}();
-                                    switch ($_GET['cmd']) {
-                                    case 'call':
-                                        if (method_exists($gateway, 'call')) {
-                                            $gateway->call();
+                    case 'remote':
+                        $GLOBALS['debug']->supress();
+                        $mod_type = (isset($_GET['mod_type'])) ? $_GET['mod_type'] : $_GET['type'];
+                        if (!empty($mod_type)) {
+                            switch (strtolower($mod_type)) {
+                            case 'plugins':
+                            case 'gateway':
+                                /* Important Notice!
+                                Please be careful with this hook that you don't always force $plugin to 'plugin'.
+                                This will stop other normal gateways working. Wrap your code in a condition to
+                                make sure that it only ever executed when needed.
+                                */
+                                foreach ($GLOBALS['hooks']->load('class.cubecart.construct.callback.gateway') as $hook) {
+                                    include $hook;
+                                }
+                                $folder = (isset($plugin)) ? 'plugins' : 'gateway';
+                                $module = preg_replace('#[^a-z0-9\_\-]#iU', '', $_GET['module']);
+    
+                                $class_file = CC_ROOT_DIR.'/modules/'.$folder.'/'.$module.'/'.'gateway.class.php';
+    
+                                if (file_exists($class_file)) {
+                                    include $class_file;
+                                    $gateway = new Gateway($GLOBALS['config']->get($module));
+                                    $command = (isset($_GET['cmd'])) ? strtolower($_GET['cmd']) : null;
+                                    if (!empty($command)) {
+                                        # if (method_exists($gateway, $command)) $gateway->{$command}();
+                                        switch ($_GET['cmd']) {
+                                        case 'call':
+                                            if (method_exists($gateway, 'call')) {
+                                                $gateway->call();
+                                            }
+                                            exit;
+                                            break;
+                                        case 'process':
+                                            if (method_exists($gateway, 'process')) {
+                                                $gateway->process();
+                                            }
+                                            break;
                                         }
-                                        exit;
-                                        break;
-                                    case 'process':
-                                        if (method_exists($gateway, 'process')) {
-                                            $gateway->process();
-                                        }
-                                        break;
                                     }
                                 }
+                                break;
+                            default:
+                                httpredir('index.php');
                             }
-                            break;
-                        default:
+                        } else {
                             httpredir('index.php');
                         }
-                    } else {
-                        httpredir('index.php');
-                    }
-                    break;
+                        break;
+                    case 'cron':
+                        $method = preg_replace('/([^a-z]+)/i', '', $_GET['_m']);
+                        if(empty($method)) {
+                            header('HTTP/1.0 403 Forbidden');
+                            exit;
+                        }
+                        $GLOBALS['debug']->supress();
+                        $cron = new Cron();
+                        $method = preg_replace('/([^a-z]+)/i', '', $_GET['_m']);
+                        if(method_exists($cron, $method)) {
+                            $cron->$method();
+                        } else {
+                            header('HTTP/1.0 403 Forbidden');
+                        }
+                        exit;
+                        break;
                 default:
                     foreach ($GLOBALS['hooks']->load('class.cubecart.construct.g_switch') as $hook) {
                         include $hook;
