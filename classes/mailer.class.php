@@ -296,11 +296,11 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
     private function _parseContents($contents)
     {
         if (is_string($contents)) {
-            return $GLOBALS['smarty']->fetch('string:'.$contents);
+            return $this->_cleanseContents($GLOBALS['smarty']->fetch('string:'.$contents));
         } elseif (is_array($contents)) {
             $out = array();
             foreach ($contents as $key => $content) {
-                $out[$key] = $GLOBALS['smarty']->fetch('string:'.$content);
+                $out[$key] = $this->_cleanseContents($GLOBALS['smarty']->fetch('string:'.$content));
             }
             return $out;
         }
@@ -325,5 +325,15 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
             }
         }
         return $out;
+    }
+
+    /**
+     * Remove unwanted tags
+     *
+     * @param string $string
+     * @return string
+     */
+    private function _cleanseContents($string) {
+        return preg_replace('#<script(.*?)>(.*?)</script>#is', '', $string);
     }
 }
