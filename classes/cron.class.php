@@ -36,4 +36,7 @@ class Cron
         }
         return $output;
     }
+    public function clearCache() {
+        return $GLOBALS['cache']->clear();
+    }
 }
