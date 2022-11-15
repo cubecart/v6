@@ -689,6 +689,7 @@ class Catalogue
                     
                     if ($products || $GLOBALS['config']->get('config', 'catalogue_show_empty') == '1') {
                         $cat['cat_image'] = $this->imagePath($cat['cat_image'], 'subcategory', 'url');
+                        $cat['image_tags'] = $GLOBALS['catalogue']->image_tags[$cat['cat_image']];
                         $cat['url'] = $GLOBALS['seo']->buildURL('cat', $cat['cat_id'], '&');
                         $cat['products_number'] = $products;
                         $return[] = $cat;

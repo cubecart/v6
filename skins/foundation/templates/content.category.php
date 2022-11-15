@@ -25,7 +25,7 @@
    {foreach from=$SUBCATS item=subcat}
    <li data-equalizer-watch>
       <a href="{$subcat.url}" title="{$subcat.cat_name}">
-        <img class="th" src="{$subcat.cat_image}" alt="{$subcat.cat_name}">
+        <img class="th" src="{$subcat.cat_image}" alt="{isset($subcat.image_tags.alt)}{$subcat.image_tags.alt}{else}{$subcat.cat_name}{/if}"{if isset($subcat.image_tags.title)} title="{$subcat.image_tags.title}"{/if}>
       </a>
       <br>
       <a href="{$subcat.url}" title="{$subcat.cat_name}"><small>{$subcat.cat_name}</small></a>
