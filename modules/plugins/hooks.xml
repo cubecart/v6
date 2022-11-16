@@ -11,6 +11,7 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
 -->
 <hooks version="1.0">
+	<hook trigger="cron" deprecated="" />
 	<hook trigger="controller.admin" deprecated="" />
 	<hook trigger="admin.authenticate.failed_invalid_admin" deprecated="" />
 	<hook trigger="admin.authenticate.failed_valid_admin" deprecated="" />

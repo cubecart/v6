@@ -522,6 +522,31 @@
          <div><span><textarea name="config[store_copyright]" id="copyright_content" class="textbox fck">{$CONFIG.store_copyright|escape:"html"}</textarea></span></div>
       </fieldset>
    </div>
+   <div id="Scheduled_Tasks" class="tab_content">
+      <h3>{$LANG.settings.tab_cron}</h3>
+      <p>{$LANG.settings.cron_desc}</p>
+      <fieldset>
+         <legend>{$LANG.settings.title_cron}</legend>
+         <div><label for="currency">{$LANG.settings.cron_currency}</label><span>{$STORE_URL}?_g=cron&_m=updateExchangeRates</span></div>
+         <div><label for="cache">{$LANG.settings.cron_cache}</label><span>{$STORE_URL}?_g=cron&_m=clearCache</span></div>
+         <div><label for="snippet">{$LANG.settings.cron_snippet} *</label><span>{$STORE_URL}?_g=cron&_m=runSnippets</span></div>
+      </fieldset>
+      <p>* {$LANG.settings.scheduled_snippet}</p>
+   </div>
+   <div id="Offline" class="tab_content">
+      <h3>{$LANG.settings.title_offline}</h3>
+      <fieldset>
+         <legend>{$LANG.settings.title_offline}</legend>
+         <div><label for="offline">{$LANG.settings.offline_enable}</label><span><select name="config[offline]" id="offline" class="textbox">
+            {foreach from=$OPT_OFFLINE item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
+            </select></span>
+         </div>
+      </fieldset>
+      <fieldset>
+         <legend>{$LANG.settings.offline_message}</legend>
+         <textarea name="config[offline_content]" id="offline_content" class="textbox fck fck-full">{$CONFIG.offline_content|escape:"html"}</textarea>
+      </fieldset>
+   </div>
    <div id="Extra" class="tab_content">
       <h3>{$LANG.settings.title_extra}</h3>
       <fieldset>

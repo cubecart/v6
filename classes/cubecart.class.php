@@ -318,7 +318,7 @@ class Cubecart
                         $cron = new Cron();
                         $method = preg_replace('/([^a-z]+)/i', '', $_GET['_m']);
                         if(method_exists($cron, $method)) {
-                            echo json_encode($cron->$method());
+                            $cron->$method();
                         } else {
                             header('HTTP/1.0 403 Forbidden');
                         }

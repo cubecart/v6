@@ -289,6 +289,7 @@ $GLOBALS['main']->addTabControl($lang['settings']['tab_offline'], 'Offline');
 $GLOBALS['main']->addTabControl($lang['settings']['tab_logos'], 'Logos');
 $GLOBALS['main']->addTabControl($lang['settings']['tab_copyright'], 'Copyright');
 $GLOBALS['main']->addTabControl($lang['settings']['tab_advanced'], 'Advanced_Settings');
+$GLOBALS['main']->addTabControl($lang['settings']['tab_cron'], 'Scheduled_Tasks', null, null, false, '_self', 98);
 $GLOBALS['main']->addTabControl($lang['settings']['tab_extra'], 'Extra', null, null, false, '_self', 99);
 
 if ($GLOBALS['db']->select('CubeCart_order_summary', 'id', "`custom_oid` <> ''", false, 1, false, false)) {

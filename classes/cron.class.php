@@ -34,9 +34,14 @@ class Cron
                 }
             }
         }
-        return $output;
+        echo json_encode($output);
     }
     public function clearCache() {
         return $GLOBALS['cache']->clear();
+    }
+    public function runSnippets() {
+        foreach ($GLOBALS['hooks']->load('cron') as $hook) {
+            include $hook;
+        }
     }
 }
