@@ -580,7 +580,11 @@ class Catalogue
                         foreach ($group as $key => $option) {
                             $price = (isset($option[0]['option_price']) && $option[0]['option_price']>0) ? Tax::getInstance()->priceFormat($option[0]['option_price']) : false;
                             $symbol = (isset($option[0]['option_price']) && $option[0]['option_negative'] == 0) ? '+' : '-';
-                            $description = trim(str_replace(array($option[0]['option_name'].':','('.$symbol.$price.')'), '', $selected[$option[0]['assign_id']]));
+                            if(isset($selected[$option[0]['assign_id']]) && !empty($selected[$option[0]['assign_id']])) {
+                                $description = trim(str_replace(array($option[0]['option_name'].':','('.$symbol.$price.')'), '', $selected[$option[0]['assign_id']]));
+                            } else {
+                                $description = '';   
+                            }
                             
                             $decimal_price_sign = $option[0]['option_negative'] ? '-' : '';
                             
