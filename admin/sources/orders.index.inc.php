@@ -171,7 +171,6 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
     }
 
     $record = array_merge($customer_data, $_POST['summary'], $record);
-    $record['ship_tracking'] = preg_replace('/\s+/', '', $record['ship_tracking']);
 
     // Add a new note, if there's any content
     if (!empty($_POST['note'])) {
@@ -424,6 +423,7 @@ if (isset($_GET['action'])) {
             }
 
             $overview_summary['order_date']  = formatTime($overview_summary['order_date'], false, true);
+            $overview_summary['ship_tracking']  = parseUrlToLink($overview_summary['ship_tracking']);
 
             $GLOBALS['smarty']->assign('OVERVIEW_SUMMARY', $overview_summary);
             // Show the customer comments
@@ -610,6 +610,7 @@ if (isset($_GET['action'])) {
             $summary['order_date'] = formatTime($summary['order_date'], false, true);
             $summary['ship_date'] = ((int)(str_replace('-', '', $summary['ship_date'])) > 0) ? formatDispatchDate($summary['ship_date']) : '';
             $summary['weight'] = (float)$summary['weight'];
+            $summary['ship_tracking']  = parseUrlToLink($summary['ship_tracking']);
 
             if (($notes = $GLOBALS['db']->select('CubeCart_order_notes', false, array('cart_order_id' => $summary['cart_order_id']))) !== false) {
                 foreach ($notes as $key => $note) {

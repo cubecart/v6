@@ -141,6 +141,9 @@ class Order
         $field = $GLOBALS['config']->get('config', 'oid_mode') == 'i' ? $GLOBALS['config']->get('config', 'oid_col') : 'cart_order_id';
         $order_id = $this->_email_details['order_summary'][$field];
         $this->_email_details['order_summary']['link'] = (is_null($admin)) ? $GLOBALS['storeURL'].'/index.php?_a=vieworder&cart_order_id='.$order_id : $GLOBALS['storeURL'].'/'.$GLOBALS['config']->get('config', 'adminFile').'?_g=orders&action=edit&order_id='.$order_id;
+        if(!empty($this->_email_details['order_summary']['ship_tracking'])) {
+            $this->_email_details['order_summary']['ship_tracking'] = nl2br(parseUrlToLink($this->_email_details['order_summary']['ship_tracking']));
+        }
 
         foreach ($GLOBALS['hooks']->load('class.order.assign_order_details') as $hook) {
             include $hook;

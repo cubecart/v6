@@ -1835,7 +1835,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="shipping_product" introduced="6.0.0"><![CDATA[Shipping Product]]></string>
     <string name="shipping_product_eg" introduced="6.0.0"><![CDATA[e.g. Next Day]]></string>
     <string name="shipping_tracking" introduced="5.0.0"><![CDATA[Delivery Tracking]]></string>
-    <string name="shipping_url_or_code" introduced="6.0.0"><![CDATA[(URL or Code)]]></string>
+    <string name="shipping_url_or_code" introduced="6.0.0"><![CDATA[One URL or code per line]]></string>
     <string name="tab_billing" introduced="5.0.0"><![CDATA[Billing]]></string>
     <string name="tab_delivery" introduced="5.0.0"><![CDATA[Delivery]]></string>
     <string name="tab_history" introduced="5.0.0"><![CDATA[History]]></string>

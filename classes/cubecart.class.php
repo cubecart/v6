@@ -2611,6 +2611,9 @@ class Cubecart
                             'date'  => (!empty($order['ship_date']) && $order['ship_date']!=='0000-00-00') ? formatDispatchDate($order['ship_date']) : ''
                         );
                     }
+                    if(!$delivery['url']) { // We may have multiple to parse
+                        $delivery['tracking'] = parseUrlToLink($delivery['tracking']);
+                    }
                     $GLOBALS['smarty']->assign('DELIVERY', $delivery);
                 } else {
                     httpredir(currentPage(array('cart_order_id')));

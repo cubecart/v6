@@ -28,10 +28,14 @@ If the link above doesn't work, please copy and paste it into your browser addre
   <email name="cart.order_complete">
     <subject><![CDATA[Order Complete]]></subject>
     <content type="html"><![CDATA[<p>Hi {$DATA.first_name|capitalize},</p>
-<p>We are pleased to say that order number {$DATA.cart_order_id} is complete. If you have ordered physical goods they should arrive shortly.</p>]]></content>
+<p>We are pleased to say that order number {$DATA.cart_order_id} is complete. If you have ordered physical goods they should arrive shortly.</p>{if !empty($DATA.ship_tracking)}<p>Track your order:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
     <content type="text"><![CDATA[Hi {$DATA.first_name|capitalize},
 
-We are pleased to say that order number {$DATA.cart_order_id} is complete. If you have ordered physical goods they should arrive shortly.]]></content>
+We are pleased to say that order number {$DATA.cart_order_id} is complete. If you have ordered physical goods they should arrive shortly.
+{if !empty($DATA.ship_tracking)}
+Track your order:
+{$DATA.ship_tracking}
+{/if}]]></content>
   </email>
   <email name="cart.order_cancelled">
     <subject><![CDATA[Order Cancelled]]></subject>
@@ -43,7 +47,7 @@ Order number {$DATA.cart_order_id} has been cancelled.]]></content>
   </email>
   <email name="cart.order_confirmation">
     <subject><![CDATA[Order Confirmation #{$DATA.cart_order_id}]]></subject>
-    <content type="html"><![CDATA[<p>Thank You {$DATA.first_name|capitalize}!</p>
+    <content type="html"><![CDATA[<p>Thanks {$DATA.first_name|capitalize}!</p>
 <p>Your order {$DATA.cart_order_id} has been received which was placed on {$DATA.order_date}. Please keep this email for your records. It is possible to view the status of your order online.</p> 
 <p><a href="{$DATA.link}">{$DATA.link}</a></p>
 <table width="100%">

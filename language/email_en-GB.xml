@@ -28,10 +28,14 @@ If the link above doesn't work, please copy and paste it into your browser addre
   <email name="cart.order_complete">
     <subject><![CDATA[Order Complete]]></subject>
     <content type="html"><![CDATA[<p>Hi {$DATA.first_name|capitalize},</p>
-<p>We are pleased to say that order number {$DATA.cart_order_id} is complete. If you have ordered physical goods they should arrive shortly.</p>]]></content>
+<p>We are pleased to say that order number {$DATA.cart_order_id} is complete. If you have ordered physical goods they should arrive shortly.</p>{if !empty($DATA.ship_tracking)}<p>Track your order:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
     <content type="text"><![CDATA[Hi {$DATA.first_name|capitalize},
 
-We are pleased to say that order number {$DATA.cart_order_id} is complete. If you have ordered physical goods they should arrive shortly.]]></content>
+We are pleased to say that order number {$DATA.cart_order_id} is complete. If you have ordered physical goods they should arrive shortly.
+{if !empty($DATA.ship_tracking)}
+Track your order:
+{$DATA.ship_tracking}
+{/if}]]></content>
   </email>
   <email name="cart.order_cancelled">
     <subject><![CDATA[Order Cancelled]]></subject>

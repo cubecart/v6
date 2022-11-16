@@ -726,7 +726,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_summary` (
 	`weight` DECIMAL(16,4) NOT NULL DEFAULT '0.0000',
 	`ship_product` VARCHAR(100) DEFAULT NULL,
 	`ship_date` date DEFAULT NULL,
-	`ship_tracking` VARCHAR(100) DEFAULT NULL,
+	`ship_tracking` TEXT DEFAULT NULL,
 	`gateway` VARCHAR(100) NOT NULL,
 	`title` VARCHAR(100) NULL,
 	`first_name` VARCHAR(100) NOT NULL,

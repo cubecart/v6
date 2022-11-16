@@ -232,7 +232,7 @@
                <div><label>{$LANG.orders.shipping_product}</label><span>{$OVERVIEW_SUMMARY.ship_product}</span></div>
                {/if}
                {if !empty($OVERVIEW_SUMMARY.ship_tracking)}
-               <div><label>{$LANG.orders.shipping_tracking}</label><span>{$OVERVIEW_SUMMARY.ship_tracking}</span></div>
+               <div><label>{$LANG.orders.shipping_tracking}</label><span>{$OVERVIEW_SUMMARY.ship_tracking|nl2br}</span></div>
                {/if}
                {if !empty($OVERVIEW_SUMMARY.gateway)}
                <div><label>{$LANG.orders.gateway_name}</label><span class="editable number" name="summary[gateway]">{$OVERVIEW_SUMMARY.gateway}</span></div>
@@ -329,7 +329,7 @@
             <div><label for="sum_ship_date">{$LANG.orders.shipping_date}</label><span><input type="text" id="sum_ship_date" name="summary[ship_date]" value="{$SUMMARY.ship_date}" class="textbox date"></span></div>
             <div><label for="sum_ship_method">{$LANG.orders.shipping_method}</label><span><input type="text" id="sum_ship_method" name="summary[ship_method]" placeholder="{$LANG.orders.shipping_method_eg}" value="{$SUMMARY.ship_method}" class="textbox"></span></div>
             <div><label for="sum_ship_product">{$LANG.orders.shipping_product}</label><span><input type="text" id="sum_ship_product" name="summary[ship_product]" placeholder="{$LANG.orders.shipping_product_eg}" value="{$SUMMARY.ship_product}" class="textbox"></span></div>
-            <div><label for="sum_ship_tracking">{$LANG.orders.shipping_tracking} {$LANG.orders.shipping_url_or_code}</label><span><input type="text" id="sum_ship_tracking" name="summary[ship_tracking]" value="{$SUMMARY.ship_tracking}" class="textbox"></span></div>
+            <div><label for="sum_ship_tracking">{$LANG.orders.shipping_tracking}</label><span><textarea id="sum_ship_tracking" name="summary[ship_tracking]" class="textbox" placeholder="{$LANG.orders.shipping_url_or_code}">{$SUMMARY.ship_tracking}</textarea></span></div>
             <div><label for="sum_weight">{$LANG.common.weight} ({$WEIGHT_UNIT})</label><span><input type="text" id="sum_weight" name="summary[weight]" value="{$SUMMARY.weight}" class="textbox"></span></div>
          </fieldset>
       </div>
