@@ -819,8 +819,19 @@ if (isset($_GET['action'])) {
         if (isset($_GET['search'])) {
             $GLOBALS['main']->successMessage($lang['orders']['notify_search_result']);
         }
+        $oids = array();
+        foreach ($orders as $order) {
+            array_push($oids, $order['cart_order_id']);
+        }
+        $has_notes = array();
+        if($notes = $GLOBALS['db']->select('CubeCart_order_notes', array('cart_order_id', array('cart_order_id' => $oids)))) {
+            foreach($notes as $note) {
+                $has_notes[$note['cart_order_id']] = true;
+            }
+        }
 
         foreach ($orders as $order) {
+            $order['has_notes'] = isset($has_notes[$order['cart_order_id']]) ? true : false;
             $order['name']   = (isset($order['name']) && !empty($order['name'])) ? $order['name'] : sprintf('%s %s %s', $order['title'], $order['first_name'], $order['last_name']);
             $order['icon']   = ($order['type']==2 || empty($order['customer_id'])) ? 'user_ghost' : 'user_registered';// deprecated since 6.1.5
             $order['type'] = (empty($order['customer_id'])) ? 2 : $order['type'];
@@ -837,6 +848,7 @@ if (isset($_GET['action'])) {
 
             $smarty_data['list_orders'][] = $order;
         }
+        var_dump();
         $GLOBALS['smarty']->assign('ORDER_LIST', $smarty_data['list_orders']);
     } elseif (isset($_GET['search']) && !empty($_POST['month_purge'])) {
         # No orders found
