@@ -1921,7 +1921,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="cron_desc" introduced="6.4.8"><![CDATA[Scheduled task (or cron jobs) can be used to automate built in or custom tasks. Please seek support from your web hosting provider concerning how to setup a sheduled task.]]></string>
     <string name="cron_cache" introduced="6.4.8"><![CDATA[Clear Cache]]></string>
     <string name="cron_snippet" introduced="6.4.8"><![CDATA[Custom Code Snippet]]></string>
-    <string name="scheduled_snippet" introduced="6.4.8"><![CDATA[Executes <a href="?_g=settings&node=hooks#snippets">code snippets</a> that have their event trigger set to &quot;cron&quot;.]]></string>
+    <string name="scheduled_snippet" introduced="6.4.8"><![CDATA[Execute <a href="?_g=settings&node=hooks#snippets">code snippets</a> that have their event trigger set to &quot;cron&quot;.]]></string>
     <string name="clone_settings" introduced="6.4.6"><![CDATA[Before we clone for the first time please configure what you do and don't want to clone each time.]]></string>
     <string name="emailconf" introduced="6.4.5"><![CDATA[Require email address confirmaton (double entry)]]></string>
     <string name="redirects" introduced="6.4.0"><![CDATA[Redirects]]></string>
