@@ -2111,7 +2111,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="product_popular_source" introduced="5.0.0"><![CDATA[Source data for popular products]]></string>
     <string name="product_popular_views" introduced="5.0.0"><![CDATA[Product Views]]></string>
     <string name="product_popular_sales" introduced="5.0.0"><![CDATA[Product Sales]]></string>
-    <string name="product_precis" introduced="5.0.0"><![CDATA[Max Short Description Length]]></string>
+    <string name="product_precis" introduced="5.0.0"><![CDATA[Maximum Short Description Length]]></string>
     <string name="proxy_enable" introduced="5.0.0"><![CDATA[Does this server use a proxy?]]></string>
     <string name="proxy_host" introduced="5.0.0"><![CDATA[Proxy Host]]></string>
     <string name="proxy_pass" introduced="5.0.0"><![CDATA[Proxy Password]]></string>
