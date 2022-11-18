@@ -10,9 +10,14 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
 <form id="gc_form" action="{$VAL_SELF}" method="post">
-  <h2>{$LANG.catalogue.gift_certificates}</h2>
-  <p>{$LANG_CERT_VALUES}</p>
+	<h2>{$LANG.catalogue.gift_certificates}</h2>
+  	<p>{$LANG_CERT_VALUES}</p>
+  	<div class="row">
+		<div class="small-12"><img src="{$GC.image}"  alt="{if isset($GC.image_tags.alt)}{$GC.image_tags.alt}{else}{$LANG.catalogue.gift_certificates}{/if}"{if isset($GC.image_tags.title)} title="{$GC.image_tags.title}"{/if} /></div>
+	</div>
 	<div class="row"><div class="small-12 large-8 columns"><label for="gc-value">{$LANG.common.value} ({$CONFIG.default_currency})</label><input type="text" name="gc[value]" id="gc-value" value="{$POST.value}" placeholder="{$LANG.common.value} {$LANG.form.required}" required></div></div>
+	{if !empty($GC.image)}
+	{/if}
 	<div class="row"><div class="small-12 large-8 columns">
 	  <label for="gc-method">{$LANG.catalogue.delivery_method}</label>
 		<select name="gc[method]" id="gc-method">
