@@ -480,7 +480,8 @@ CREATE TABLE IF NOT EXISTS `CubeCart_inventory_language` (
 	`seo_meta_description` TEXT NOT NULL,
 	`seo_meta_keywords` TEXT NOT NULL,
 	PRIMARY KEY `translation_id` (`translation_id`),
-	FULLTEXT KEY `fulltext` (`name`,`description`)
+	FULLTEXT KEY `fulltext` (`name`,`description`),
+	KEY `language` (`language`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_lang_strings` (

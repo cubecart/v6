@@ -756,7 +756,8 @@ if (isset($database_result) && $database_result) {
         'cubecart_inventory_language' => array(
             'translation_id' => 'PRIMARY',
             'name' => 'FULLTEXT',
-            'description' => 'FULLTEXT'
+            'description' => 'FULLTEXT',
+            'language' => 'KEY'
         ),
         'cubecart_lang_strings' => array(
             'string_id' => 'PRIMARY',
