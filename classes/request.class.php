@@ -78,6 +78,7 @@ class Request
         $this->_request_cache   = (bool)$cache;
 
         if ($this->_curl) {
+            $this->_curl_options[CURLOPT_HTTPHEADER] = array('User-Agent: CubeCart/'.CC_VERSION);
             $this->_curl_options[CURLOPT_HEADER]    = $this->_request_return_headers;
             $this->_curl_options[CURLOPT_RETURNTRANSFER]  = $this->_request_return;
             $this->_curl_options[CURLOPT_VERBOSE]    = false;
