@@ -633,12 +633,15 @@ class Debug
     private function _makeExportString($name, $variable)
     {
         $output = '';
+        $output = '<strong>'.$name.'</strong>:<br />';
 
-        if (!empty($variable)) {
-            $output = '<strong>'.$name.'</strong>:<br />';
+        $values = $this->_makeExport($variable);
+        if(empty($values)) {
+            $output .= 'Empty';
+        } else {
             $output .= $this->_makeExport($variable);
-            $output .= '<hr size="1" />';
         }
+        $output .= '<hr size="1" />';
 
         if (!empty($output)) {
             return $output;
