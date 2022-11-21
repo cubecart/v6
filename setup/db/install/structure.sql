@@ -297,6 +297,14 @@ CREATE TABLE IF NOT EXISTS `CubeCart_documents` (
 	KEY `doc_privacy` (`doc_privacy`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
+CREATE TABLE `CubeCart_domains` (
+	`id` int UNSIGNED NOT NULL,
+	`language` varchar(5) NOT NULL,
+	`domain` varchar(255) NOT NULL,
+	PRIMARY KEY (`id`),
+	KEY `language` (`language`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+
 CREATE TABLE IF NOT EXISTS `CubeCart_downloads` (
 	`digital_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`order_inv_id` INT UNSIGNED NOT NULL,

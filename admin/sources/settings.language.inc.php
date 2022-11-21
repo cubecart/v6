@@ -266,6 +266,16 @@ if (isset($_GET['export'])) {
             $GLOBALS['main']->errorMessage($lang['translate']['error_language_create']);
         }
     } elseif (isset($_POST['status']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
+        if(is_array($_POST['domain'])) {
+            foreach($_POST['domain'] as $language => $domain) {
+                if($GLOBALS['db']->select('CubeCart_domains', false, array('language' => $language))) {
+                    $GLOBALS['db']->update('CubeCart_domains', array('domain' => $domain), array('language' => $language));
+                } else {
+                    $GLOBALS['db']->insert('CubeCart_domains', array('domain' => $domain, 'language' => $language));
+                }
+            }
+        }
+
         // We don't allow the default language to be disabled
         $default_lang = $GLOBALS['config']->get('config', 'default_language');
         $before = $GLOBALS['config']->set('languages', false, $_POST['status']);
@@ -287,6 +297,8 @@ if (isset($_GET['export'])) {
     $GLOBALS['main']->addTabControl($lang['translate']['title_languages'], 'lang_list');
     
     ## List available language files
+    $url_parts = parse_url(CC_STORE_URL);
+    $domain = ltrim($url_parts['host'],'www.');
     if (($languageList = $GLOBALS['language']->listLanguages()) !== false) {
         foreach ($languageList as $code => $info) {
             $info['status'] = (isset($enabled[$code])) ? (int)$enabled[$code] : 1;
@@ -298,12 +310,15 @@ if (isset($_GET['export'])) {
             $info['edit'] = currentPage(null, array('language' => $info['code']));
             $info['delete'] = currentPage(null, array('delete' => $info['code'], 'token' => SESSION_TOKEN));
             $info['download'] = currentPage(null, array('download' => $info['code']));
+            $subdomain = ($GLOBALS['config']->get('config', 'default_language') == $info['code']) ? 'www' : substr($info['code'],0,2);
+            $info['placeholder'] = $subdomain.'.'.$domain;
             $smarty_data['languages'][] = $info;
         }
         $GLOBALS['main']->addTabControl($lang['translate']['title_language_create'], 'lang_create');
         $GLOBALS['main']->addTabControl($lang['translate']['title_language_import'], 'lang_import');
         $GLOBALS['smarty']->assign('LANGUAGES', $smarty_data['languages']);
     }
+    $GLOBALS['smarty']->assign('DOCUMENT_ROOT', $_SERVER['DOCUMENT_ROOT']);
 }
 
 $page_content = $GLOBALS['smarty']->fetch('templates/settings.language.php');

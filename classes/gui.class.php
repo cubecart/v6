@@ -1104,16 +1104,25 @@ class GUI
             }
             if (count($lang_list) > 1) {
                 foreach ($lang_list as $language) {
+                    $url = '';
+                    if(!empty($language['domain'])) {
+                        $url = currentPage();
+                        $url = parse_url($url);
+                        $language['url'] = $url['scheme'].'://'.$language['domain'].$url['path'];
+                    } else {
+                        $language['url'] = currentPage(null, array('set_language' => $language['code']));
+                    }
                     if ($GLOBALS['language']->current() == $language['code']) {
                         $language['selected'] = 'selected="selected"';
                         $current_language = $language;
+                        $GLOBALS['smarty']->assign('X_DEFAULT', $language['url']);
                     } else {
                         $language['selected'] = '';
                     }
-                    $language['url'] = currentPage(null, array('set_language' => $language['code']));
                     $language['css'] = ($language['selected']) ? 'current' : '';
                     $languages[] = $language;
                 }
+                
                 foreach ($GLOBALS['hooks']->load('class.gui.display_language_switch') as $hook) {
                     include $hook;
                 }

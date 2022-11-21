@@ -90,7 +90,21 @@ class Language
 
     final protected function __construct()
     {
-        if (isset($GLOBALS['session'])) {
+        if($cache && $GLOBALS['cache']->exists('lang.domain.list')) {
+            $d = $GLOBALS['cache']->read('lang.domain.list');
+        } else {
+            if($domains = $GLOBALS['db']->select('CubeCart_domains')) {
+                foreach($domains as $domain) {
+                    $d[$domain['domain']] = $domain['language'];
+                }
+            }
+            $GLOBALS['cache']->write($d, 'lang.domain.list');
+        }
+        $url = parse_url(CC_STORE_URL);
+
+        if(isset($d[$url['host']]) && !empty($d[$url['host']])) {
+            $this->_language = $d[$url['host']];
+        } else if (isset($GLOBALS['session'])) {
             //If the language is trying to be changed try to change it
             if (((isset($_POST['set_language']) && ($switch = $_POST['set_language']) || isset($_GET['set_language']) && ($switch = $_GET['set_language']))) && $this->_valid($switch)) {
                 $customer_id = (int)$GLOBALS['session']->getSessionTableData('customer_id');
@@ -706,6 +720,12 @@ class Language
         } else {
             //Get all langauge files
             if (($files = glob(CC_LANGUAGE_DIR.'*.{xml,gz}', GLOB_BRACE)) !== false) {
+                $d = array();
+                if($domains = $GLOBALS['db']->select('CubeCart_domains')) {
+                    foreach($domains as $domain) {
+                        $d[$domain['language']] = $domain['domain'];
+                    }
+                }
                 $list = array();
                 foreach ($files as $file) {
                     // Get the language code from the filename
@@ -727,8 +747,10 @@ class Language
                         }
                         $data = new simpleXMLElement($xml);
                         foreach ((array)$data->info as $key => $value) {
-                            $list[trim((string)$data->info->code)][trim((string)$key)] = trim((string)$value);
+                            $c = trim((string)$data->info->code);
+                            $list[$c][trim((string)$key)] = trim((string)$value);
                         }
+                        $list[$c]['domain'] = (isset($d[$c]) && !empty($d[$c])) ? $d[$c] : '';
                         unset($data, $xml);
                     }
                 }

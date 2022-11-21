@@ -18,6 +18,7 @@
          <tr>
             <th>{$LANG.common.status}</th>
             <th colspan="2">{$LANG.common.language}</th>
+            <th>{$LANG.common.domain} *</th>
             <th>{$LANG.form.action}</th>
          </tr>
          </thead>
@@ -26,6 +27,7 @@
             <td></td>
             <td><img src="language/flags/globe.png" alt="{$LANG.translate.master_language}"></td>
             <td>{$LANG.translate.master_language}</td>
+            <td>&nbsp;</td>
             <td class="actions"><a href="?_g=settings&node=language&download=definitions" title="{$LANG.common.download}"><i class="fa fa-download" title="{$LANG.common.download}"></i></a></td>
          </tr>
          {foreach from=$LANGUAGES item=language}
@@ -33,6 +35,7 @@
             <td style="text-align:center"><input type="hidden" name="status[{$language.code}]" id="status_{$language.code}" value="{$language.status}" class="toggle"></td>
             <td><img src="{$language.flag}" alt="{$language.title}"></td>
             <td><a href="{$language.edit}">{$language.title}</a></td>
+            <td><input type="text" class="textbox" name="domain[{$language.code}]" style="max-width: 240px" placeholder="e.g. {$language.placeholder}" value="{$language.domain}"></td>
             <td class="actions">
                <a href="{$language.download}" title="{$LANG.common.download}"><i class="fa fa-download" title="{$LANG.common.download}"></i></a>
                <a href="{$language.edit}" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
@@ -42,6 +45,7 @@
          {/foreach}
          </tbody>
          </table>
+         <p>* {$LANG.settings.domain_doc_root}</p>
    </div>
    <div id="lang_create" class="tab_content">
       <h3>{$LANG.translate.title_language_create}</h3>
