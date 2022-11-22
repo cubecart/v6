@@ -1115,7 +1115,6 @@ class GUI
                     if ($GLOBALS['language']->current() == $language['code']) {
                         $language['selected'] = 'selected="selected"';
                         $current_language = $language;
-                        $GLOBALS['smarty']->assign('X_DEFAULT', $language['url']);
                     } else {
                         $language['selected'] = '';
                     }

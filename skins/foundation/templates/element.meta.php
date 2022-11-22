@@ -6,8 +6,7 @@
 {if $FBOG}<meta property="og:image" content="{$PRODUCT.thumbnail}">
 <meta property="og:url" content="{$VAL_SELF}">{/if}
 {if $LANGUAGES}
-<link rel="alternate" href="{$X_DEFAULT}" hreflang="x-default">
 {foreach from=$LANGUAGES item=language}
-<link rel="alternate" href="{$language.url}" hreflang="{$language.code}">
+<link rel="alternate" href="{$language.url}" hreflang="{if $language.code==$CONFIG.default_language}x-default{else}{$language.code}{/if}">
 {/foreach}
 {/if}
