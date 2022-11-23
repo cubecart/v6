@@ -103,7 +103,7 @@ class Tax
         $GLOBALS['cart']->set('order_taxes', false);
         if (!empty($this->_tax_table_applied)) {
             foreach ($this->_tax_table_applied as $tax_id => $tax_name) {
-                $taxes[$tax_name]['value']+= (float)($this->_tax_table_inc[$tax_id]+$this->_tax_table_add[$tax_id])*$this->_adjust_tax;
+                $taxes[$tax_name]['value'] = $taxes[$tax_name]['value']??0 + (float)($this->_tax_table_inc[$tax_id]??0+$this->_tax_table_add[$tax_id]??0)*$this->_adjust_tax;
                 $taxes[$tax_name]['tax_id']= $tax_id;
             }
 

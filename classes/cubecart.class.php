@@ -1771,7 +1771,7 @@ class Cubecart
                 foreach ($shipping as $ship_name => $methods) {
                     $label = (!is_numeric($ship_name) && !empty($ship_name)) ? str_replace('_', ' ', $ship_name) : null;
                     foreach ($methods as $data) {
-                        if ($data['tax_inclusive']) {
+                        if (isset($data['tax_inclusive']) && (bool)$data['tax_inclusive']) {
                             $GLOBALS['tax']->inclusiveTaxRemove($data['value'], $data['tax_id']);
                         }
                         
