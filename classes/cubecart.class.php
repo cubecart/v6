@@ -1511,6 +1511,9 @@ class Cubecart
             if (isset($_POST['contact'])) {
                 $error = false;
                 $required = array('email', 'name', 'subject', 'enquiry');
+                if($contact['phone']=='2') {
+                    array_push($required, 'phone');
+                }
                 
                 foreach ($GLOBALS['hooks']->load('class.cubecart.contact') as $hook) {
                     include $hook;
