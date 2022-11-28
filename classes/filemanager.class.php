@@ -1269,7 +1269,7 @@ class FileManager
                         'md5hash' => $this->md5file($file['tmp_name'], $file['size'], true),
                     );
 
-                    $existing = $GLOBALS['db']->select('CubeCart_filemanager', 'file_id', array('filepath' => $filepath_record, 'filename' => $newfilename));
+                    $existing = $GLOBALS['db']->select('CubeCart_filemanager', 'file_id', array('filepath' => $filepath_record, 'filename' => $newfilename, 'type' => (int)$this->_mode));
                     if ($existing!==false && (int)$existing[0]['file_id']>0) {
                         $GLOBALS['db']->update('CubeCart_filemanager', $record, array('file_id' => $existing[0]['file_id']));
                         $fid = $existing[0]['file_id'];
