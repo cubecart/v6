@@ -594,7 +594,7 @@
          <div class="master_image">
             <span>{$LANG.catalogue.image_main}</span><br><br>
             <div id="master_image_block">
-               <img src="{$PRODUCT.master_image}" id="master_image_preview" {foreach $GALLERY_ARRAY as $gallery_image}{if $gallery_image.main_img eq "1"}title="{$gallery_image.filepath}{$gallery_image.filename}"{break}{/if}{/foreach}><div id="preview_image"><img src="{$PRODUCT.master_image}"></div>
+               <img src="{$PRODUCT.master_image}" id="master_image_preview" {foreach $GALLERY_ARRAY as $gallery_image}{if $gallery_image.main_img eq "1"}title="{$gallery_image.filepath}{$gallery_image.filename}"{break}{/if}{/foreach}>
             </div>
             {if !empty($GALLERY_ARRAY) && count($GALLERY_ARRAY)>1}
             <div id="gallery_json">
