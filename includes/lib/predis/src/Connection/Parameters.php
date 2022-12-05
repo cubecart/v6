@@ -20,30 +20,40 @@ namespace Predis\Connection;
  */
 class Parameters implements ParametersInterface
 {
-    private $parameters;
-
-    private static $defaults = array(
+    protected static $defaults = array(
         'scheme' => 'tcp',
         'host' => '127.0.0.1',
         'port' => 6379,
     );
 
     /**
+     * Set of connection paramaters already filtered
+     * for NULL or 0-length string values.
+     * 
+     * @var array
+     */
+    protected $parameters;
+
+    /**
      * @param array $parameters Named array of connection parameters.
      */
     public function __construct(array $parameters = array())
     {
-        $this->parameters = $this->filter($parameters) + $this->getDefaults();
+        $this->parameters = $this->filter($parameters + static::$defaults);
     }
 
     /**
-     * Returns some default parameters with their values.
+     * Filters parameters removing entries with NULL or 0-length string values.
+     *
+     * @params array $parameters Array of parameters to be filtered
      *
      * @return array
      */
-    protected function getDefaults()
+    protected function filter(array $parameters)
     {
-        return self::$defaults;
+        return array_filter($parameters, function ($value) {
+            return $value !== null && $value !== '';
+        });
     }
 
     /**
@@ -109,8 +119,17 @@ class Parameters implements ParametersInterface
         }
 
         if (stripos($uri, 'redis') === 0) {
+            if (isset($parsed['user'])) {
+                if (strlen($parsed['user'])) {
+                    $parsed['username'] = $parsed['user'];
+                }
+                unset($parsed['user']);
+            }
+
             if (isset($parsed['pass'])) {
-                $parsed['password'] = $parsed['pass'];
+                if (strlen($parsed['pass'])) {
+                    $parsed['password'] = $parsed['pass'];
+                }
                 unset($parsed['pass']);
             }
 
@@ -129,15 +148,11 @@ class Parameters implements ParametersInterface
     }
 
     /**
-     * Validates and converts each value of the connection parameters array.
-     *
-     * @param array $parameters Connection parameters.
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    protected function filter(array $parameters)
+    public function toArray()
     {
-        return $parameters ?: array();
+        return $this->parameters;
     }
 
     /**
@@ -161,9 +176,17 @@ class Parameters implements ParametersInterface
     /**
      * {@inheritdoc}
      */
-    public function toArray()
+    public function __toString()
     {
-        return $this->parameters;
+        if ($this->scheme === 'unix') {
+            return "$this->scheme:$this->path";
+        }
+
+        if (filter_var($this->host, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+            return "$this->scheme://[$this->host]:$this->port";
+        }
+
+        return "$this->scheme://$this->host:$this->port";
     }
 
     /**

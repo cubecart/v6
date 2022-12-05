@@ -11,16 +11,15 @@
 
 namespace Predis\Configuration;
 
+use Predis\Command\Processor\ProcessorInterface;
 /**
- * Interface defining a container for client options.
- *
- * @property-read mixed aggregate   Custom connection aggregator.
- * @property-read mixed cluster     Aggregate connection for clustering.
- * @property-read mixed connections Connection factory.
- * @property-read mixed exceptions  Toggles exceptions in client for -ERR responses.
- * @property-read mixed prefix      Key prefixing strategy using the given prefix.
- * @property-read mixed profile     Server profile.
- * @property-read mixed replication Aggregate connection for replication.
+ * @property-read callable                    $aggregate   Custom aggregate connection initializer
+ * @property-read callable                    $cluster     Aggregate connection initializer for clustering
+ * @property-read Connection\FactoryInterface $connections Connection factory for creating new connections
+ * @property-read bool                        $exceptions  Toggles exceptions in client for -ERR responses
+ * @property-read ProcessorInterface          $prefix      Key prefixing strategy using the supplied string as prefix
+ * @property-read Command\FactoryInterface    $commands    Command factory for creating Redis commands
+ * @property-read callable                    $replication Aggregate connection initializer for replication
  *
  * @author Daniele Alessandri <suppakilla@gmail.com>
  */
@@ -29,7 +28,7 @@ interface OptionsInterface
     /**
      * Returns the default value for the given option.
      *
-     * @param string $option Name of the option.
+     * @param string $option Name of the option
      *
      * @return mixed|null
      */
@@ -38,7 +37,7 @@ interface OptionsInterface
     /**
      * Checks if the given option has been set by the user upon initialization.
      *
-     * @param string $option Name of the option.
+     * @param string $option Name of the option
      *
      * @return bool
      */
@@ -47,7 +46,7 @@ interface OptionsInterface
     /**
      * Checks if the given option has been set and does not evaluate to NULL.
      *
-     * @param string $option Name of the option.
+     * @param string $option Name of the option
      *
      * @return bool
      */
@@ -56,7 +55,7 @@ interface OptionsInterface
     /**
      * Returns the value of the given option.
      *
-     * @param string $option Name of the option.
+     * @param string $option Name of the option
      *
      * @return mixed|null
      */
