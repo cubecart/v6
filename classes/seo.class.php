@@ -711,16 +711,18 @@ class SEO
             if ($existing) {
                 $match = false;
                 $path = $this->_handleExtension($path);
-                foreach($existing as $e) {
-                    if($e['path']==$path) {
-                        $match = true;
-                        $GLOBALS['db']->update('CubeCart_seo_urls', array('redirect' => 0), array('id' => $e['id']));
-                    } else {
-                        $GLOBALS['db']->update('CubeCart_seo_urls', array('redirect' => 301), array('id' => $e['id']));
+                if($path !== $this->_extension) {
+                    foreach($existing as $e) {
+                        if($e['path']==$path) {
+                            $match = true;
+                            $GLOBALS['db']->update('CubeCart_seo_urls', array('redirect' => 0), array('id' => $e['id']));
+                        } else {
+                            $GLOBALS['db']->update('CubeCart_seo_urls', array('redirect' => 301), array('id' => $e['id']));
+                        }
                     }
-                }
-                if(!$match) {
-                    $GLOBALS['db']->insert('CubeCart_seo_urls', array('redirect' => 0, 'type' => $type, 'item_id' => $item_id, 'path' => $path, 'custom' => $custom));
+                    if(!$match) {
+                        $GLOBALS['db']->insert('CubeCart_seo_urls', array('redirect' => 0, 'type' => $type, 'item_id' => $item_id, 'path' => $path, 'custom' => $custom));
+                    }
                 }
             } else {
                 // Check for duplicate path
