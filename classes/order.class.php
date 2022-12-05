@@ -501,13 +501,19 @@ class Order
                         break;
                     }
                     $already_sent = false;
+                    $cart_is_phantom = false;
                     if(!empty($order_summary['gateway']) && file_exists(CC_ROOT_DIR.'/modules/gateway/'.$order_summary['gateway'].'/gateway.class.php')) {
                         require_once(CC_ROOT_DIR.'/modules/gateway/'.$order_summary['gateway'].'/gateway.class.php');
                         $gateway = new Gateway($GLOBALS['config']->get($order_summary['gateway']));
                         if(method_exists($gateway, 'processingEmail')) {
+                            if (!isset($GLOBALS['cart'])) {
+                                $GLOBALS['cart'] = (object) array('basket' => array()); // phantom object to prevent PHP 8 getting upset about calls in the gateway construct to $GLOBALS['cart']
+                                $cart_is_phantom = true;
+                              }
                             $already_sent = $gateway->processingEmail($order_summary['cart_order_id']);
                         }
                     }
+                    if ($cart_is_phantom) unset($GLOBALS['cart']);
                     // Compose the Order Confirmation email to the customer
                     if (!$already_sent && $this->_email_enabled && ($content = $mailer->loadContent('cart.order_confirmation', $order_summary['lang'])) !== false) {
                         $this->assignOrderDetails();
