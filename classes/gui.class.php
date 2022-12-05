@@ -1246,6 +1246,7 @@ class GUI
         if ((int)$GLOBALS['config']->get('config', 'catalogue_popular_products_count') < 1) {
             return false;
         }
+        /*
         $cache_id = 'popular_products.'.$GLOBALS['language']->current();
         $vars = $GLOBALS['cache']->read($cache_id);
         if($vars && is_array($vars)) {
@@ -1253,6 +1254,7 @@ class GUI
             $content = $GLOBALS['smarty']->fetch('templates/box.popular.php');    
             $GLOBALS['smarty']->assign('POPULAR_PRODUCTS', $content);
         } elseif($vars !=='none') {
+        */
             $limit = (is_numeric($GLOBALS['config']->get('config', 'catalogue_popular_products_count'))) ? $GLOBALS['config']->get('config', 'catalogue_popular_products_count') : 10;
             switch ((int)$GLOBALS['config']->get('config', 'catalogue_popular_products_source')) {
                 case 1:  // sale-based
@@ -1304,7 +1306,7 @@ class GUI
             $GLOBALS['smarty']->assign('POPULAR', $vars);
             $content = $GLOBALS['smarty']->fetch('templates/box.popular.php');    
             $GLOBALS['smarty']->assign('POPULAR_PRODUCTS', $content);
-        }
+        /*}*/
     }
 
     /**
