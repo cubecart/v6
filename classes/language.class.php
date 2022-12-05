@@ -864,11 +864,12 @@ class Language
             $path = appendDS($path);
         }
         $cache_name_info = 'lang.info.'.$language;
-        $cache_name_strings = 'lang.info.'.$language;
+        $cache_name_strings = 'lang.'.$name.'.xml.'.$language;
+
         if ((isset($GLOBALS['cache']) && is_object($GLOBALS['cache'])) 
             && ($GLOBALS['cache']->exists($cache_name_strings) && $GLOBALS['cache']->exists($cache_name_info) && is_array($GLOBALS['cache']->read($cache_name_strings)) && is_array($GLOBALS['cache']->read($cache_name_info)))) {
-            $strings = $GLOBALS['cache']->read('lang.'.$name.'.xml.'.$language);
-            $this->_language_data = $GLOBALS['cache']->read('lang.info.'.$language);
+            $strings = $GLOBALS['cache']->read($cache_name_strings);
+            $this->_language_data = $GLOBALS['cache']->read($cache_name_info);
         } else {
             $strings = array();
             $data = $this->_extractXML($path.$language);
@@ -879,7 +880,7 @@ class Language
                         foreach ((array)$xml->info as $key => $value) {
                             $lang_data[$key] = (string)$value;
                         }
-                        $GLOBALS['cache']->write($lang_data, 'lang.info.'.(string)$xml->info->code);
+                        $GLOBALS['cache']->write($lang_data, $cache_name_info);
                         $this->_language_data = $lang_data;
                     }
                     switch (floor((float)$xml->attributes()->version)) {
@@ -912,7 +913,7 @@ class Language
 
             unset($custom, $data, $string, $xml);
             if (!empty($this->_language_strings)) {
-                $GLOBALS['cache']->write($strings, 'lang.'.$name.'.xml.'.$language);
+                $GLOBALS['cache']->write($strings, $cache_name_strings);
             }
         }
 
