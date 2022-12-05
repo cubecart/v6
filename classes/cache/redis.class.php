@@ -271,8 +271,10 @@ class Cache extends Cache_Controler
             return false;
         }
 
-        $this->redis_client->set($name, $data);
-        return true;
+        if($this->redis_client->set($name, $data)=='OK') {
+            return true;
+        }
+        return false;
     }
     
     //=====[ Private ]=======================================
