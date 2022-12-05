@@ -40,6 +40,7 @@
       {if !$IS_USER}
       <div class="thinpad-top"><a href="{$STORE_URL}/index.php?_a=basket" class="button expand nomarg">{$LANG.basket.view_basket}</a></div>
       {/if}
+      <div class="thinpad-top"><a href="{$STORE_URL}/index.php?_a=basket&empty-basket=true" class="grey">{$LANG.basket.basket_empty}</a></div>
       {else}
       <p class="pad-top text-center">{$LANG.basket.basket_is_empty}</p>
       {/if}
