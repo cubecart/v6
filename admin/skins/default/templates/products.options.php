@@ -140,6 +140,7 @@
       </div>
       <div id="sets" class="tab_content">
          <h3>{$LANG.catalogue.title_option_sets}</h3>
+         <p>{$LANG.catalogue.title_option_set_add_desc}</p>
          {if $SETS}
          <div>
             <select name="set_id" id="" rel="set_" class="field_select">

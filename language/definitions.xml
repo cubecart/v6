@@ -376,7 +376,7 @@
     <string name="no_categories_specified" introduced="5.0.0"><![CDATA[No categories have been assigned to this product.]]></string>
     <string name="no_option_groups" introduced="5.0.0"><![CDATA[No option groups exist.]]></string>
     <string name="no_option_sets" introduced="5.2.0b1"><![CDATA[No option sets exist.]]></string>
-    <string name="no_option_set_attributes" introduced="6.0.5"><![CDATA[No attributes have been assigned.]]></string>
+    <string name="no_option_set_attributes" introduced="6.0.5"><![CDATA[No attributes have been assigned. Please select from the list below and save.]]></string>
     <string name="no_option_sets_assigned" introduced="6.0.5"><![CDATA[No option sets have been assigned.]]></string>
     <string name="no_taxes_setup" introduced="5.0.0"><![CDATA[No taxs have been setup.]]></string>
     <string name="notify_assign_update" introduced="5.0.0"><![CDATA[Products have been assigned accordingly.]]></string>
@@ -526,6 +526,7 @@
     <string name="title_option_group_add" introduced="5.0.0"><![CDATA[Add new group]]></string>
     <string name="title_option_groups" introduced="5.0.0"><![CDATA[Option Groups]]></string>
     <string name="title_option_set_add" introduced="5.0.0"><![CDATA[Create new Set]]></string>
+    <string name="title_option_set_add_desc" introduced="5.0.0"><![CDATA[An option set allows you to create a set of options that can be assigned to products in one go instead of having to assign one by one. This is especially useful if you have products sharing like options. After creating a new set it will be possible to choose the options to assign to that option set.]]></string>
     <string name="title_option_set_append" introduced="5.0.0"><![CDATA[Add Attributes to Set]]></string>
     <string name="title_option_set_assign" introduced="5.0.0"><![CDATA[Assign Option Sets]]></string>
     <string name="title_bulk_prices" introduced="6.1.0"><![CDATA[Bulk Price Change]]></string>
