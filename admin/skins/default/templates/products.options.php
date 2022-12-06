@@ -45,8 +45,8 @@
          </table>
          <fieldset>
             <legend>{$LANG.catalogue.title_option_group_add}</legend>
-            <div><label for="new-group-name">{$LANG.catalogue.option_group_name}</label><span><input type="text" name="add-group[option_name]" id="new-group-name" class="textbox"></span></div>
-            <div><label for="new-group-description">{$LANG.common.description}</label><span><input type="text" name="add-group[option_description]" id="new-group-description" class="textbox"></span></div>
+            <div><label for="new-group-name">{$LANG.catalogue.option_group_name}</label><span><input type="text" name="add-group[option_name]" id="new-group-name" class="textbox" placeholder="{$LANG.common.eg_size}"></span></div>
+            <div><label for="new-group-description">{$LANG.common.description} {$LANG.common.optional}</label><span><input type="text" name="add-group[option_description]" id="new-group-description" class="textbox"></span></div>
             <div>
                <label for="new-group-type">{$LANG.catalogue.option_group_type}</label>
                <span>
@@ -61,24 +61,29 @@
          </fieldset>
          <script type="text/javascript">
             {if isset($OPTION_TYPE_JSON)}var select_data = {$OPTION_TYPE_JSON}{/if}
-             
          </script>
+         <div class="form_control">
+            <input type="submit" class="button" value="{$LANG.common.save}">
+         </div>
       </div>
       <div id="attributes" class="tab_content">
          <h3>{$LANG.catalogue.title_option_attributes}</h3>
          <div>
+            {assign var=attribute_groups value=0}
             <select name="add-value[option_id]" id="select_group_id" rel="group_" class="field_select">
                {foreach from=$GROUPS item=group}{if $group.type==0 || $group.type==4}
+               {assign var=attribute_groups value=$attribute_groups+1}
                <option value="{$group.id}">{$group.name}</option>
                {/if}{/foreach}
             </select>
          </div>
+         {if $attribute_groups > 0}
          <fieldset>
             <legend>{$LANG.catalogue.title_option_attribute_add}</legend>
             <div class="inline-add">
                <label for="new-value-name">{$LANG.common.name}</label>
                <span>
-               <input type="text" name="add-value[value_name]" id="new-value-name" rel="attr_name" class="textbox">
+               <input type="text" name="add-value[value_name]" id="new-value-name" rel="attr_name" class="textbox" placeholder="{$LANG.common.eg_large}">
                <a href="#" id="group_target" class="add"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a>
                </span>
             </div>
@@ -123,6 +128,15 @@
          </fieldset>
          {/if}
          {/foreach}
+         <div class="form_control">
+            <input type="submit" class="button" value="{$LANG.common.save}">
+         </div>
+         {else}
+         <script>
+            document.getElementById("select_group_id").style.display = "none";
+         </script>
+         <p>{$LANG.catalogue.no_suitable_attribute}</p> 
+         {/if}
       </div>
       <div id="sets" class="tab_content">
          <h3>{$LANG.catalogue.title_option_sets}</h3>
@@ -183,12 +197,13 @@
             <div><label for="new-set-name">{$LANG.common.name}</label><span><input type="text" name="set_create[set_name]" id="new-set-name" class="textbox"></span></div>
             <div><label for="new-set-desc">{$LANG.common.description}</label><span><input type="text" name="set_create[set_description]" id="new-set-desc" class="textbox"></span></div>
          </fieldset>
+         <div class="form_control">
+            <input type="submit" class="button" value="{$LANG.common.save}">
+         </div>
       </div>
       {include file='templates/element.hook_form_content.php'}
-      <div class="form_control">
-         <input type="hidden" name="previous-tab" id="previous-tab" value="">
-         <input type="submit" class="button" value="{$LANG.common.save}">
-      </div>
+      
+      <input type="hidden" name="previous-tab" id="previous-tab" value="">
       
    </form>
 </div>

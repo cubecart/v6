@@ -242,6 +242,7 @@
     <string name="your_comments" introduced="5.0.0"><![CDATA[Delivery Notes or Additional Comments]]></string>
   </group>
   <group name="catalogue">
+    <string name="no_suitable_attribute" introduced="6.4.8"><![CDATA[Option attributes (e.g. Large, Small) can only be created when we have one or more option groups (e.g. Size) of type dropdown list or radio.]]></string>
     <string name="success_gc_added"><![CDATA[Gift Card has been added to your basket.]]></string>
     <string name="error_maximum_quantity"><![CDATA[Maximum quantity allowed for this item is %s!]]></string>
     <string name="max_purchase_quantity"><![CDATA[Maximum purchase quantity is %s.]]></string>
@@ -411,7 +412,7 @@
     <string name="notify_product_update" introduced="5.0.0"><![CDATA[Product successfully updated.]]></string>
     <string name="notify_review_submit" introduced="5.0.0"><![CDATA[Thank you. Your review has been submitted for moderation.]]></string>
     <string name="notify_tell_friend" introduced="5.0.0"><![CDATA[Thank you. Your friend has been emailed about this product.]]></string>
-    <string name="option_attributes_none" introduced="5.0.0"><![CDATA[No attributes have been added to this option.]]></string>
+    <string name="option_attributes_none" introduced="5.0.0"><![CDATA[No attributes have been added to this option group yet. Please do so above using the green + icon to add and save on completion.]]></string>
     <string name="option_group_name" introduced="5.0.0"><![CDATA[Group Name]]></string>
     <string name="option_group_type" introduced="5.0.0"><![CDATA[Group Type]]></string>
     <string name="option_type_checkbox" introduced="6.0.0"><![CDATA[Checkbox]]></string>
@@ -602,6 +603,8 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="eg_size" introduced="6.4.8"><![CDATA[e.g. Size]]></string>
+    <string name="eg_large" introduced="6.4.8"><![CDATA[e.g. Large]]></string>
     <string name="domain" introduced="6.4.8"><![CDATA[Domain]]></string>
     <string name="auto" introduced="6.4.4"><![CDATA[Auto]]></string>
     <string name="manual" introduced="6.4.3"><![CDATA[Manual]]></string>
