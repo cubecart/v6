@@ -217,6 +217,9 @@ class Order
      */
     public function deleteOrder($order_id)
     {
+        if((int)$GLOBALS['config']->get('config', 'stock_change_time') == 2) {
+            $this->_manageStock(self::ORDER_CANCELLED, $order_id);
+        }
         // Delete the order from the system
         $deleted = false;
         if (!empty($order_id)) {
