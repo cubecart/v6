@@ -1,7 +1,5 @@
-{if $RECAPTCHA}
-<script src="https://www.google.com/recaptcha/api.js?onload=reCaptchaCallback&render=explicit" async defer></script>
-{/if}
 {if $RECAPTCHA=='3'}
+<script src="https://www.google.com/recaptcha/api.js?onload=reCaptchaCallback&render=explicit" async defer></script>
 <script>
 var reCaptchaCallback = function() {
         $(".g-recaptcha" ).each(function() {
