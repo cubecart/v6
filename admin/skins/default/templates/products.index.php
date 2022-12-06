@@ -52,8 +52,9 @@
             <tr>
                <th nowrap="nowrap">&nbsp;</th>
                <th nowrap="nowrap">{$THEAD.name}</th>
-               <th nowrap="nowrap">{$THEAD.digital}</th>
                <th nowrap="nowrap">{$THEAD.image}</th>
+               <th nowrap="nowrap">{$THEAD.product_id}</th>
+               <th nowrap="nowrap">{$THEAD.digital}</th>
                <th nowrap="nowrap">{$THEAD.product_code}</th>
                <th nowrap="nowrap">{$THEAD.price}</th>
                <th nowrap="nowrap">{$THEAD.stock_level}</th>
@@ -74,17 +75,18 @@
                   {/if}
                </td>
                <td style="text-align:center">
-                  {if $product.digital}
-                  <i class="fa fa-download" title="{$product.type_alt}"></i>
-                  {else}
-                  <i class="fa fa-archive" title="{$product.type_alt}"></i>
-                  {/if}
-               </td>
-               <td style="text-align:center">
                   {if !empty($product.image_path_tiny)}
                   <a href="{$product.image_path_large}" class="colorbox" title="{$product.name}" target="_blank"><img src="{$product.image_path_tiny}" style="max-width: 30px; max-height: 30px" alt="{$product.name}"></a>
                   {elseif !empty($product.image_path_large)}
                   <a href="{$product.image_path_large}" class="colorbox" title="{$product.name}" target="_blank"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/image.png" alt="{$product.name}"></a>
+                  {/if}
+               </td>
+               <td style="text-align:center">{$product.product_id}</td>
+               <td style="text-align:center">
+                  {if $product.digital}
+                  <i class="fa fa-download" title="{$product.type_alt}"></i>
+                  {else}
+                  <i class="fa fa-archive" title="{$product.type_alt}"></i>
                   {/if}
                </td>
                <td>{$product.product_code}</td>

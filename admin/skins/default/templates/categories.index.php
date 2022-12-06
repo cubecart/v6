@@ -16,7 +16,7 @@
 	<table>
 	  <thead>
 		<tr>
-		  <td width="15" align="center">{$LANG.settings.category_id}</td>
+		  <td align="center">{$LANG.settings.item_id}</td>
 		  <td>{$LANG.common.arrange}</td>
 		  <td>{$LANG.common.visible}</td>
 		  <td>{$LANG.common.status}</td>

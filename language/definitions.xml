@@ -1920,6 +1920,9 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
+    <string name="item_id" introduced="6.4.8"><![CDATA[Item ID]]></string>
+    <string name="redirect_from" introduced="6.4.8"><![CDATA[Redirect from Path]]></string>
+    <string name="redirect_to" introduced="6.4.8"><![CDATA[Redirect to Destination]]></string>
     <string name="domain_doc_root" introduced="6.4.8"><![CDATA[Please ensure that your subdomain is configured in your web hosting account. All subdomains must have the same document root.]]></string>
     <string name="tab_cron" introduced="6.4.8"><![CDATA[Scheduled Tasks]]></string>
     <string name="title_cron" introduced="6.4.8"><![CDATA[Available Tasks]]></string>

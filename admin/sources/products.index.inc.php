@@ -1154,6 +1154,7 @@ if (isset($_GET['action'])) {
         $_GET['sort'] = array('updated' => 'DESC');
     }
     $thead_sort = array(
+        'product_id'   => $GLOBALS['db']->column_sort('product_id', $lang['settings']['item_id'], 'sort', $current_page, $_GET['sort']),
         'status'   => $GLOBALS['db']->column_sort('status', $lang['common']['status'], 'sort', $current_page, $_GET['sort']),
         'digital'   => $GLOBALS['db']->column_sort('digital', $lang['common']['type'], 'sort', $current_page, $_GET['sort']),
         'image'   => $lang['catalogue']['title_image'],

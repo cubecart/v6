@@ -1469,3 +1469,13 @@ ul.fmsearch_images img {
 .text-right {
     text-align: right!important
 }
+#item_id::-webkit-outer-spin-button,
+#item_id::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+#item_id[type=number] {
+  -moz-appearance: textfield;
+}

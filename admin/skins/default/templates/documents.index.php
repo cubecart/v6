@@ -18,6 +18,7 @@
 		<tr>
 		  <td>{$LANG.common.arrange}</td>
 		  <td>{$LANG.common.status}</td>
+		  <td>{$LANG.settings.item_id}</td>
 		  <td>{$LANG.documents.language_primary}</td>
 		  <td width="200">{$LANG.documents.document_title}</td>
 		  <td>{$LANG.translate.title_translations}</td>
@@ -36,6 +37,7 @@
 			<input type="hidden" name="order[]" value="{$document.doc_id}">
 			<input type="hidden" id="status-{$document.doc_id}" name="status[{$document.doc_id}]" value="{$document.doc_status}" class="toggle">
 		  </td>
+		  <td style="text-align:center">{$document.doc_id}</td>
 		  <td style="text-align:center"><img src="{$document.flag}"></td>
 		  <td><a href="{$document.link.edit}"{if $document.hide_title==1} class="line-through"{/if}>{$document.doc_name}</a></td>
 		  <td style="text-align:center" nowrap="nowrap">

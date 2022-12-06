@@ -14,19 +14,24 @@
       <h3>{$LANG.settings.redirects}</h3>
       <table>
          <thead>
-         <tr>
-               <th>{$LANG.common.path}</th>
-               <th>{$LANG.common.destination}</th>
-               <th>{$LANG.common.page}</th>
-               <th>{$LANG.common.item_id}</th>
-               <th>{$LANG.common.status_code}</th>
+            <tr>
                <th>{$LANG.form.action}</th>
+               <th>{$LANG.common.status_code}</th>
+               <th>{$LANG.common.page}</th>
+               <th>{$LANG.settings.redirect_from}</th>
+               <th>{$LANG.common.item_id}</th>
+               <th>{$LANG.settings.redirect_to}</th>
             </tr>
          </thead>
          <tbody>
             <tr>
-               <td><input type="text" name="path" class="textbox required"></td>
-               <td id="destination"></td>
+               <td style="text-align:center"><input id="submit" type="submit" class="tiny button" value="{$LANG.common.add}"></td>
+               <td>
+               <select name="redirect">
+                     <option value="301">301 - {$LANG.common.permanent}</option>
+                     <option value="302">302 - {$LANG.common.temporary}</option>
+                  </select>
+               </td>
                <td>
                   <select name="type" id="redirect_type">
                      <optgroup label="Dynamic Pages">
@@ -44,21 +49,16 @@
                      </optgroup>
                   </select>
                </td>
+               <td><input type="text" name="path" class="textbox required"></td>
                <td width="110">
-                  <input type="number" name="item_id" id="item_id" class="textbox number required" onkeyup="getSEODestination()">
-               </td>
-               <td>
-               <select name="redirect">
-                     <option value="301">301 - {$LANG.common.permanent}</option>
-                     <option value="302">302 - {$LANG.common.temporary}</option>
-                  </select>
-               </td>
-               <td style="text-align:center"><input id="submit" type="submit" class="tiny button" value="{$LANG.common.add}"></td>
+                  <input type="number" name="item_id" id="item_id"  min="1" class="textbox number required" onkeyup="getSEODestination()">
+               </td> 
+               <td id="destination"></td>  
             </tr>
             {foreach $REDIRECTS item=redirect}
             <tr>
-               <td>{$redirect.path}</td>
-               <td>{$redirect.destination}</td>
+               <td style="text-align:center"><a href="?_g=settings&node=redirects&delete={$redirect.id}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></td>
+               <td style="text-align:center">{$redirect.redirect}</td>
                <td>
                {if $redirect.type=='prod'}
                   {$LANG.common.product}
@@ -80,14 +80,14 @@
                   {$LANG.account.register}
                {/if}
                </td>
+               <td>{$redirect.path}</td>
                <td style="text-align:center">
                {if empty($redirect.item_id)}
                   -
                {else}
                   {$redirect.item_id}
                {/if}</td>
-               <td style="text-align:center">{$redirect.redirect}</td>
-               <td style="text-align:center"><a href="?_g=settings&node=redirects&delete={$redirect.id}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></td>
+               <td>{$redirect.destination}</td>
             </tr>
             {foreachelse}
             <tr>
