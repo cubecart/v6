@@ -62,7 +62,7 @@ class Language
      *
      * @var array
      */
-    private $_language_groups   = false;
+    private $_language_groups   = array();
     /**
      * Language strings
      *
