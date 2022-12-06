@@ -302,6 +302,8 @@ if (($optionsets = $GLOBALS['db']->select('CubeCart_options_set')) !== false) {
                 $set_data[$set['set_id']]['members'][$set_value['option_id']]['priority'] = $optionArray[$set_value['option_id']]['priority'];
                 $set_data[$set['set_id']]['members'][$set_value['option_id']][$set_value['value_id']]['priority'] = $optionArray[$set_value['option_id']]['values_priority'][$set_value['value_id']];
             }
+        } else {
+            $set_data[$set['set_id']]['members'] = array();
         }
     }
     foreach ($set_data as $set_id => $set) {
