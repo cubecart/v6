@@ -31,6 +31,7 @@ class Cache extends Cache_Controler
      * @var string
      */
     protected $_page_cache_usage = 0;
+    protected $_page_cache_file_count = 0;
     protected $_file_data_split = "\n-- CubeCart Cache Split --\n";
 
     ##############################################
@@ -165,6 +166,7 @@ class Cache extends Cache_Controler
             if (file_exists($file)) {
                 $contents = @file_get_contents($file, false);
                 $this->_page_cache_usage += filesize($file);
+                $this->_page_cache_file_count++;
                 //If there is no newline then the file isn't valid
                 if (strpos($contents, $this->_file_data_split) === false) {
                     @unlink($file);
@@ -260,8 +262,10 @@ class Cache extends Cache_Controler
     public function usage()
     {
         $cache_size = 0;
+        $cache_files = 0;
         foreach (glob($this->_cache_path.'*', GLOB_NOSORT) as $file) {
             $cache_size += filesize($file);
+            $cache_files++;
         }
         return 'Cache Used: '.(
           ($cache_size > 0)
@@ -269,7 +273,7 @@ class Cache extends Cache_Controler
              formatBytes($cache_size, true) .
              ' ('.number_format((($this->_page_cache_usage/$cache_size) * 100), 2).'%)'
           : '0%'
-        );
+        )."<br>Hits: ".$this->_page_cache_file_count.' / '.$cache_files;
     }
 
     //=====[ Private ]=======================================
