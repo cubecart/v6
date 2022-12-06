@@ -616,9 +616,7 @@ class Catalogue
                         break;
                     }
                 }
-                if(is_array($option_list)) {
-                    uasort($option_list, 'cmpmc'); // sort groups
-                }
+                uasort($option_list, 'cmpmc'); // sort groups
                 foreach ($GLOBALS['hooks']->load('class.catalogue.display_product_options') as $hook) {
                     include $hook;
                 }
@@ -1256,10 +1254,8 @@ class Catalogue
             foreach ($option_array as $type => $option_list) {
                 if (is_array($option_list)) {
                     foreach ($option_list as $oid => $array) {
-                        if(is_array($array)){
-                            uasort($array, 'cmpmc');
-                            $option_array[$type][$oid] = $array;
-                        }
+                        uasort($array, 'cmpmc');
+                        $option_array[$type][$oid] = $array;
                     }
                 }
             }

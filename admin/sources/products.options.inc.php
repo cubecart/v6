@@ -305,14 +305,12 @@ if (($optionsets = $GLOBALS['db']->select('CubeCart_options_set')) !== false) {
         }
     }
     foreach ($set_data as $set_id => $set) {
-        
-        if(!is_array($set['members'])) continue;
         uasort($set['members'], 'cmpmc');
 
         foreach ($set['members'] as $oid => $array) {
-            
+            uasort($array, 'cmpmc');
+
             if (is_array($array)) {
-                uasort($array, 'cmpmc');
                 $set['members'][$oid] = $array;
             }
 
