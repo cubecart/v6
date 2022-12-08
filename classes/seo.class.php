@@ -728,6 +728,9 @@ class SEO
                 // Check for duplicate path
                 if (!$GLOBALS['db']->select('CubeCart_seo_urls', false, array('path' => $path), false, 1, false, false)) {
                     $GLOBALS['db']->insert('CubeCart_seo_urls', array('type' => $type, 'item_id' => $item_id, 'path' => $this->_handleExtension($path), 'custom' => $custom));
+                    if($this->_extension = '' && in_array($type, $this->_static_sections)) { // Backward compatibility 
+                        $GLOBALS['db']->insert('CubeCart_seo_urls', array('type' => $type, 'item_id' => $item_id, 'path' => $this->_handleExtension($path).'.html', 'redirect' => 301));
+                    }
                 } else {
                     // Force unique path is it's already taken
                     $unique_id = substr($type, 0, 1).$item_id;
