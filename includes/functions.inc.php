@@ -261,6 +261,8 @@ function currentPage($excluded = null, $included = null, $remove_excluded = true
     // $get['seo_path'] should never be set... but if it is this will fix it
     if (isset($get['seo_path']) && !empty($get['seo_path'])) {
         $url_path = SEO::getInstance()->getItem($get['seo_path'], true);
+    } else if(isset($get['seo_path'])) {
+        unset($get['seo_path']);
     }
     return SEO::getInstance()->SEOable($url_path);
 }
