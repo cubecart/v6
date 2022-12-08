@@ -648,8 +648,13 @@ $(document).ready(function() {
             $("#" + t).parent().addClass("selected"), $("#" + t + ":checkbox").attr("checked", "checked")
         }), $("#quickTour").on("click", function() {
             $("#navigation .submenu").show(), $("#joyrideTour").joyride()
-        }), $("#rule-eu").click(function() {
-            $("#country-region").toggle("slow", function() {})
+        }), $("#rule-eu, #rule-rest").click(function(e) {
+            if($('#rule-rest').closest('div').hasClass('selected') || $('#rule-eu').closest('div').hasClass('selected')) {
+                $("#country-region").show();
+            } else {
+                $("#country-region").hide();
+            }
+            
         }), $("a.colorbox.wiki").bind("cbox_complete", function() {
             window.scrollTo(0, 0)
         }).colorbox({

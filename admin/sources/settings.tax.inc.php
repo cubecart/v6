@@ -120,6 +120,9 @@ if (isset($_POST['addrule']) && is_array($_POST['addrule']) && is_numeric($_POST
             $GLOBALS['main']->successMessage($lang['settings']['notify_tax_rule_add']);
         }
     } else {
+        if($_POST['addrule']['rest']==1) {
+            $_POST['addrule']['country_id'] = '999';
+        }
         if ($GLOBALS['db']->insert('CubeCart_tax_rates', $_POST['addrule'])) {
             $GLOBALS['main']->successMessage($lang['settings']['notify_tax_rule_add']);
         } else {

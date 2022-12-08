@@ -542,6 +542,9 @@ function generate_product_code($product_name, $cat_id = false)
  */
 function getCountryFormat($input, $match = 'numcode', $fetch = 'name')
 {
+    if($input == 999 && $match == 'numcode') {
+        return $GLOBALS['language']->country['rest_of_world'];
+    }
     if (($match == 'id' || $match == 'numcode') && !ctype_digit((string)$input)) {
         return $input;
     }

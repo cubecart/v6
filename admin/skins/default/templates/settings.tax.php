@@ -127,6 +127,10 @@
             <input type="checkbox" name="addrule[eu]" id="rule-eu" value="1" />
             </span>
          </div>
+         <div><label for="rule-eu">{$LANG.country.assign_to_rest}</label><span>
+            <input type="checkbox" name="addrule[rest]" id="rule-rest" value="1" />
+            </span>
+         </div>
          <div id="country-region">
             <div><label for="country-list">{$LANG.address.country}</label><span><select name="addrule[country_id]" id="country-list" class="textbox no-custom-zone" title="{$LANG.common.regions_all}">
                {foreach from=$COUNTRIES item=country}<option value="{$country.numcode}" {if $country.numcode == $CONFIG.store_country}selected="selected"{/if}>{$country.name}</option>{/foreach}

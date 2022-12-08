@@ -888,10 +888,12 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_departments" introduced="5.0.0"><![CDATA[Departments (optional)]]></string>
   </group>
   <group name="country">
+    <string name="assign_to_rest" introduced="6.4.8"><![CDATA[Assign to Rest of World]]></string>
+    <string name="rest_of_world" introduced="6.4.8"><![CDATA[Rest of World]]></string>
     <string name="notify_country_status_changed" introduced="5.2.13"><![CDATA[Country status updated.]]></string>
     <string name="eu" introduced="5.2.13"><![CDATA[European Union]]></string>
     <string name="eu_short" introduced="5.2.13"><![CDATA[EU]]></string>
-    <string name="assign_to_eu" introduced="5.2.13"><![CDATA[Assign to European Union?]]></string>
+    <string name="assign_to_eu" introduced="5.2.13"><![CDATA[Assign to European Union]]></string>
     <string name="bread_geo" introduced="5.0.0"><![CDATA[Countries &amp; Zones]]></string>
     <string name="country_iso_alpha2" introduced="5.0.0"><![CDATA[ISO Alpha-2]]></string>
     <string name="country_iso_alpha3" introduced="5.0.0"><![CDATA[ISO Alpha-3]]></string>
