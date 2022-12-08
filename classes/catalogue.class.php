@@ -2009,7 +2009,7 @@ class Catalogue
                     
                     $query = $q2.' '.$order_string.' '.$limit;
                     $search = $GLOBALS['db']->query($query);
-                    if (count($search)>0) {
+                    if (is_array($search) && count($search)>0) {
                         $count = $GLOBALS['db']->query($q2);
                         $this->_category_count  = (int)count($count);
                         $this->_category_products = $search;
