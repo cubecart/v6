@@ -1479,3 +1479,14 @@ ul.fmsearch_images img {
 #item_id[type=number] {
   -moz-appearance: textfield;
 }
+
+.ace_email_editor {
+    text-indent: 0!important;
+    width: 100%;
+    height: 450px;
+    border: 1px solid #a6a6a6;
+}
+
+#preview_email_template {
+    margin: 10px 0 10px 0;
+}

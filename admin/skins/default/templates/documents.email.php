@@ -122,7 +122,21 @@
   <div id="email_html" class="tab_content">
     <h3>{$LANG.email.title_content_html}</h3>
 	{if $LANGUAGES}
-	<textarea name="content[content_html]" id="content_html" class="fck">{$CONTENT.content_html|escape:"html"}</textarea>
+	<div id="template_html" class="ace_email_editor"></div>
+	<input type="hidden" name="content[content_html]" id="content_html" class="textbox">
+	<script src="includes/ace/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		var input = document.getElementById('content_html');
+		var editor = ace.edit("template_html");
+		editor.session.setUseWrapMode(true);
+		editor.setOptions({ highlightActiveLine:true, showPrintMargin:false, theme:'ace/theme/github', mode: 'ace/mode/smarty' });
+		editor.setValue(`{$CONTENT.content_html|escape:'quotes'}`, 1);
+		editor.getSession().on("change", function () { input.value = editor.getSession().getValue(); });
+	</script>
+	<button type="button" class="button" id="preview_email_template" onclick="previewEmailTemplate()">{$LANG.common.test}</button></span>
+	<script>
+		function previewEmailTemplate() { $.colorbox({ html:function(){ return editor.getSession().getValue(); } }) };
+	</script>
   	<h3>{$LANG.email.title_macros}</h3>
   	<p>{$LANG.email.important|escape:'htmlall'}</p>
   	<table>
@@ -184,7 +198,21 @@
   </div>
   <div id="email_html" class="tab_content">
     <h3>{$LANG.email.title_content_html}</h3>
-	<textarea name="template[content_html]" id="template_html" class="fck fck-full" data-fck-height="450">{$TEMPLATE.content_html|escape:"html"}</textarea>
+	<div id="template_html" class="ace_email_editor"></div>
+	<input type="hidden" name="template[content_html]" id="template_content_html" class="textbox">
+	<script src="includes/ace/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		var input = document.getElementById('template_content_html');
+		var editor = ace.edit("template_html");
+		editor.session.setUseWrapMode(true);
+		editor.setOptions({ highlightActiveLine:true, showPrintMargin:false, theme:'ace/theme/github', mode: 'ace/mode/smarty' });
+		editor.setValue(`{$TEMPLATE.content_html|escape:'quotes'}`, 1);
+		editor.getSession().on("change", function () { input.value = editor.getSession().getValue(); });
+	</script>
+	<button type="button" class="button" id="preview_email_template" onclick="previewEmailTemplate()">{$LANG.common.test}</button></span>
+	<script>
+		function previewEmailTemplate() { $.colorbox({ html:function(){ return editor.getSession().getValue(); } }) };
+	</script>
   	<h3>{$LANG.email.title_macros}</h3>
   	<table>
   		<thead>
