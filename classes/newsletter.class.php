@@ -285,14 +285,13 @@ class Newsletter
     {
         // Unsubscribe the user
         $removed = false;
-        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        if (ctype_digit($customer_id) && $customer_id > 0) {
+            $removed = $GLOBALS['db']->delete('CubeCart_newsletter_subscriber', array('customer_id' => $customer_id));
+        } else if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $removed = $GLOBALS['db']->delete('CubeCart_newsletter_subscriber', array('email' => $email));
             foreach ($GLOBALS['hooks']->load('class.newsletter.unsubscribe') as $hook) {
                 include $hook;
             }
-        }
-        if (ctype_digit($customer_id) && $customer_id > 0) {
-            $removed = $GLOBALS['db']->delete('CubeCart_newsletter_subscriber', array('customer_id' => $customer_id));
         }
         if ($removed) {
             $this->_subscriberLog($email, 'Removed from mailing list');
