@@ -1427,7 +1427,11 @@ class Cubecart
                 $order['country_d'] = getCountryFormat($order['country_d']);
 
                 $order['order_status'] = $GLOBALS['language']->order_state['name_'.$order['status']];
-
+                
+                if ($order['discount']>0) {
+                    $GLOBALS['smarty']->assign('DISCOUNT', true);
+                }
+                
                 foreach ($order as $key => $value) {
                     if (!in_array($key, $formatting)) {
                         continue;
@@ -1441,9 +1445,7 @@ class Cubecart
                 }
                 $order['basket'] = unserialize($order['basket']);
 
-                if ($order['discount']>0) {
-                    $GLOBALS['smarty']->assign('DISCOUNT', true);
-                }
+                
 
                 $GLOBALS['smarty']->assign('SUM', $order);
 
