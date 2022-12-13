@@ -122,6 +122,14 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
             $data['options_array'] 		= serialize($data['productOptions']);
             $data['product_options'] 	= $GLOBALS['order']->serializeOptions($data['productOptions'], $data['product_id']);
             if (is_array($data['custom'])) {
+                if(isset($data['custom']['method']) && $data['custom']['method']==$GLOBALS['language']->common['email']) {
+                    $data['custom']['method'] = 'e'; 
+                } else if(isset($data['custom']['method']) && $data['custom']['method']==$GLOBALS['language']->common['postal']) {
+                    $data['custom']['method'] = 'm'; 
+                }
+                if(isset($data['custom']['value'])) {
+                    $data['custom']['value'] = filter_var($data['custom']['value'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                }
                 $data['custom'] = serialize($data['custom']);
             }
     
