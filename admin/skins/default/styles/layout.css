@@ -1490,3 +1490,6 @@ ul.fmsearch_images img {
 #preview_email_template {
     margin: 10px 0 10px 0;
 }
+.editable_phrase {
+    cursor: text;
+}
