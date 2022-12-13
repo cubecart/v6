@@ -1412,7 +1412,7 @@ class GUI
         }
         // Hide out-of-stock
         $sale_sql_standard_where = $GLOBALS['catalogue']->outOfStockWhere($sale_sql_standard_where);
-        $sale_sql_group_where    = $GLOBALS['catalogue']->outOfStockWhere($sale_sql_group_where, 'G');
+        $sale_sql_group_where    = $GLOBALS['catalogue']->outOfStockWhere($sale_sql_group_where, 'I');
 
         // Check for group pricing
         if (($memberships = $GLOBALS['user']->getMemberships()) !== false) {
