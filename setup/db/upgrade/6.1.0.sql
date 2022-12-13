@@ -28,5 +28,4 @@ CREATE TABLE `CubeCart_extension_info` (
   `modified` int(11) NOT NULL,
   PRIMARY KEY (`file_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
-UPDATE `CubeCart_customer` SET `order_count` = (SELECT COUNT(`id`) FROM `CubeCart_order_summary` WHERE `CubeCart_order_summary`.`customer_id` = `CubeCart_customer`.`customer_id`); #EOQ
 ALTER TABLE `CubeCart_coupons`  ADD `email_sent` ENUM('0','1') NOT NULL DEFAULT '0'; #EOQ
