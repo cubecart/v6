@@ -686,11 +686,10 @@ class Database_Contoller
         }
 
         $limit  = null;
-        $calc_rows = null;
-        $sql_cache = null;
+        $calc_rows = false;
 
         if (is_numeric($maxRows)) {
-            $calc_rows = 'SQL_CALC_FOUND_ROWS';
+            $calc_rows = true;
             if (is_numeric($page) && $page>0) {
                 $limit = "LIMIT $maxRows OFFSET ".($page - 1) * $maxRows;
             } else {
@@ -703,21 +702,21 @@ class Database_Contoller
         }
         $group = (isset($group_by) && is_array($group_by)) ? 'GROUP BY '.implode(',', $group_by) : '';
         
-        $parent_query = "SELECT $sql_cache $calc_rows $distinct ".implode(', ', $cols)." FROM $wrapper{$prefix}$table$wrapper ".$this->where($table_where, $where)." $group $orderString $limit;";
+        $parent_query = "SELECT $distinct ".implode(', ', $cols)." FROM $wrapper{$prefix}$table$wrapper ".$this->where($table_where, $where)." $group $orderString $limit;";
         $this->_query = $parent_query;
 
         $this->_execute($cache);
 
         if (is_array($this->_result) && count($this->_result) >= 1) {
             $output = $this->_result;
-            // Added cleverness for auto pagination, without running a second query
-            if (!is_null($calc_rows)) {
-                $count_query = 'SELECT FOUND_ROWS() as Count;';
-                if ($count = $this->_getCached($parent_query.$count_query)) {
+            if ($calc_rows) {
+                $count_query = "SELECT $distinct COUNT(*) AS `Count` FROM $wrapper{$prefix}$table$wrapper ".$this->where($table_where, $where)." $group;";
+                if ($count = $this->_getCached($count_query)) {
+                    $this->_found_rows = $count;
+                } else {
+                    $count = $this->misc($count_query);
                     $this->_found_rows = $count[0]['Count'];
-                } elseif ($count = $this->misc($count_query, false)) { // Cache managed here not in DB->query
-                    $this->_found_rows = $count[0]['Count'];
-                    $this->_writeCache($count, $parent_query.$count_query);
+                    $this->_writeCache($count, $count_query);
                 }
             }
             return ($output) ? $output : false;
