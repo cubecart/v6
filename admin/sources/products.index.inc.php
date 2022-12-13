@@ -1250,7 +1250,8 @@ if (isset($_GET['action'])) {
         $catalogue = Catalogue::getInstance();
         $seo  = SEO::getInstance();
         foreach ($results as $result) {
-            if ($result['use_stock_level'] == 0 || $result['digital'] > 0 || !empty($result['digital_path'])) {
+
+            if ((!$result['use_stock_level'] || $result['digital'] || $result['digital_path']) && !($result['use_stock_level'] && ($result['digital'] || $result['digital_path']))) {
                 $result['stock_level'] = "&infin;";
             }
 
