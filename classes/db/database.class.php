@@ -627,7 +627,7 @@ class Database_Contoller
     public function select($table, $columns = false, $where = false, $order = false, $maxRows = false, $page = false, $cache = true)
     {
         $table_where = $table;
-
+        $distinct = ''; 
         if (!stristr($table, 'JOIN')) {
             // Build an SQL SELECT query the (almost) easy way
             $allowed = $this->getFields($table);
@@ -646,9 +646,11 @@ class Database_Contoller
             if (isset($allowed) && isset($columns) && is_array($allowed) && is_array($columns)) {
                 foreach ($columns as $key => $field) {
                     if (in_array($field, $allowed) && !is_numeric($field)) {
-                        if (!is_numeric($key) && in_array(strtoupper($key), array('DISTINCT'))) {
-                            $group_by[] = $field;
-                            $cols[]  = "$key `$field`";
+                        $distinct = ''; 
+                        if (!is_numeric($key) && in_array(strtoupper(substr($key,0,8)), array('DISTINCT'))) {
+                            $distinct = "DISTINCT";
+                            $group_by[] = "`$field`";
+                            $cols[]  = "`$field`";
                         } elseif (!is_numeric($key) && in_array(strtoupper($key), array('MIN', 'MAX', 'SUM'))) {
                             $cols[]  = "$key($field) AS {$key}_$field";
                         } else {
@@ -701,7 +703,7 @@ class Database_Contoller
         }
         $group = (isset($group_by) && is_array($group_by)) ? 'GROUP BY '.implode(',', $group_by) : '';
         
-        $parent_query = "SELECT $sql_cache $calc_rows ".implode(', ', $cols)." FROM $wrapper{$prefix}$table$wrapper ".$this->where($table_where, $where)." $group $orderString $limit;";
+        $parent_query = "SELECT $sql_cache $calc_rows $distinct ".implode(', ', $cols)." FROM $wrapper{$prefix}$table$wrapper ".$this->where($table_where, $where)." $group $orderString $limit;";
         $this->_query = $parent_query;
 
         $this->_execute($cache);
