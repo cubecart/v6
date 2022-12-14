@@ -1705,6 +1705,7 @@ class Cubecart
         if ($contents) {
             $gc = $GLOBALS['config']->get('gift_certs');
             $digital_only = true;
+            $product_list = array();
             foreach ($contents as $hash => $product) {
                 if ((int)$product['product_id']>0) {
                     $product_list[] = $product['product_id']; // Certificate ID is NULL
@@ -1909,7 +1910,7 @@ class Cubecart
                 $GLOBALS['smarty']->assign('CHECKOUTS', $list_checkouts);
             }
             // Related Products from most recent 30 orders containing this product.
-            if (is_array($product_list) && !empty($product_list) && ($related_orders = $GLOBALS['db']->select('CubeCart_order_inventory', array('DISTINCT' => 'cart_order_id'), array('product_id' => $product_list), array('id' => 'DESC'), 30)) !== false) {
+            if (!empty($product_list) && ($related_orders = $GLOBALS['db']->select('CubeCart_order_inventory', array('DISTINCT' => 'cart_order_id'), array('product_id' => $product_list), array('id' => 'DESC'), 30)) !== false) {
                 foreach ($related_orders as $key => $data) {
                     $related[] = "'".$data['cart_order_id']."'";
                 }
