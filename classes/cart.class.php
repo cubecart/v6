@@ -914,7 +914,7 @@ class Cart
                 $this->basket['contents'][$hash]['option_absolute_price'] = isset($product['absolute_price'])?true:false;
 
                 // Calculate Line Shipping Price if enabled
-                if (isset($ship_by_cat['status']) && $ship_by_cat['status']) {
+                if (isset($product['product_id']) && is_int($product['product_id']) && isset($ship_by_cat['status']) && $ship_by_cat['status']) {
                     $assigned_categories = $GLOBALS['catalogue']->getCategoryStatusByProductID($product['product_id']);
                     foreach ($assigned_categories as $assigned_category) {
                         if ($assigned_category['primary']) {
@@ -927,7 +927,7 @@ class Cart
                 }
             }
             // Put By_Cat shipping prices into basket for calc class
-            if (isset($ship_by_cat['status']) && $ship_by_cat['status']) {
+            if (isset($product['product_id']) && is_int($product['product_id']) && isset($ship_by_cat['status']) && $ship_by_cat['status']) {
                 $this->basket['By_Category_Shipping'] =  $line_shipping->_lineShip + $line_shipping->_perShipPrice;
             }
             // Shipping
