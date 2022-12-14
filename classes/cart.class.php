@@ -1200,8 +1200,7 @@ class Cart
 
                 if ($quantity <= 0) {
                     unset($this->basket['contents'][$hash]);
-                } else {
-                    $product = $GLOBALS['catalogue']->getProductData($this->basket['contents'][$hash]['id']);
+                } elseif (($product = $GLOBALS['catalogue']->getProductData($this->basket['contents'][$hash]['id'])) !== false) {
 
                     $this->checkMinimumProductQuantity($product['product_id'], $quantity, false);
 
@@ -1235,10 +1234,9 @@ class Cart
                     
                     $pprice = $product['ctrl_sale'] ? $product['sale_price'] : $product['price'];
                     $this->basket['contents'][$hash]['total_price_each'] = ($pprice+$this->basket['contents'][$hash]['option_line_price']);
-                    
-                    $this->_subtotal += $this->basket['contents'][$hash]['total_price_each'] * $quantity;
-                    $this->basket['subtotal'] = $this->_subtotal;
                 }
+                $this->_subtotal += $this->basket['contents'][$hash]['total_price_each'] * $quantity;
+                $this->basket['subtotal'] = $this->_subtotal;
             }
             foreach ($GLOBALS['hooks']->load('class.cart.update') as $hook) {
                 include $hook;
