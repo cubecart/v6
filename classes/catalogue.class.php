@@ -99,17 +99,23 @@ class Catalogue
      * @param int $spaces
      * @return array
      */
-    public function buildCategoriesDropDown($parent_id = 0, $breakout = '|', $spaces = 0)
+    public function buildCategoriesDropDown($parent_id = 0, $breakout = '|', $spaces = 0, &$noLoops = array())
     {
         $out = array();
         if (($categories = $GLOBALS['db']->select('CubeCart_category', array('cat_parent_id', 'cat_id', 'cat_name'), array('cat_parent_id' => $parent_id), 'priority, cat_name ASC')) !== false) {
             foreach ($categories as $category) {
+                // Prevent never-ending loops!
+                if (in_array($category['cat_id'], $noLoops)) {
+                    trigger_error('Cat Loop Detected! Cat Path: '.implode(' -> ', $noLoops).'.', E_USER_WARNING);
+                    return false;
+                }
+                $noLoops[] = $category['cat_id'];
                 $out[] = array(
                     'cat_id' => $category['cat_id'],
                     'name'  => ($spaces > 0) ? str_repeat('&nbsp;', $spaces).$breakout.' '.$category['cat_name'] : $category['cat_name'],
                 );
                 if (($children = $GLOBALS['db']->count('CubeCart_category', 'cat_id', array('cat_parent_id' => $category['cat_id']))) !== false) {
-                    $out = array_merge($out, $this->buildCategoriesDropDown($category['cat_id'], $breakout, $spaces + 2));
+                    $out = array_merge($out, $this->buildCategoriesDropDown($category['cat_id'], $breakout, $spaces + 2, $noLoops));
                 }
             }
         }
