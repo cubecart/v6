@@ -91,7 +91,7 @@
                </td>
                <td>{$product.product_code}</td>
                <td>{$product.price}</td>
-               <td style="text-align:center">{$product.stock_level}</td>
+               <td style="text-align:center">{$product.stock_level_display}</td>
                <td>
                   {if $product.updated == '0000-00-00 00:00:00'}
                   {$LANG.common.unknown}
