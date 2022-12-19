@@ -61,6 +61,7 @@
 	<hook trigger="admin.head_css" deprecated="" />
 	<hook trigger="admin.body_js" deprecated="" />
 	<hook trigger="admin.navigation" deprecated="" />
+	<hook trigger="admin.optionsets.post_assign" deprecated="" />
 	<hook trigger="admin.order.index.display" deprecated="" />
 	<hook trigger="admin.order.index.post_display" deprecated="" />
 	<hook trigger="admin.order.index.list" deprecated="" />

@@ -28,6 +28,9 @@ if (isset($_POST['set'])) {
             }
         }
     }
+    foreach ($GLOBALS['hooks']->load('admin.optionsets.post_assign') as $hook) {
+        include $hook;
+    }
     if ($updated) {
         $GLOBALS['main']->successMessage($lang['catalogue']['notify_option_sets_updated']);
     } else {
