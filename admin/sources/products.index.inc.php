@@ -1027,7 +1027,7 @@ if (isset($_GET['action'])) {
             return $output;
         }
         $option_matrix = option_matrix($unique_groups);
-        $possible = false;
+        $possible = array();
 
         if (is_array($option_matrix)) {
             foreach ($option_matrix as $matrix_values) {
@@ -1048,7 +1048,7 @@ if (isset($_GET['action'])) {
             }
         }
 
-        if (is_array($possible)) {
+        if (!empty($possible) && is_array($possible)) {
             $delete_query = "UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_option_matrix` SET `status` = 0 WHERE `product_id` = $product_id AND `options_identifier` NOT IN ('".implode("','", $possible)."')";
             $GLOBALS['db']->misc($delete_query);
         } else {
