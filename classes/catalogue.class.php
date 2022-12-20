@@ -1778,6 +1778,10 @@ class Catalogue
             $limit = 'LIMIT 100';
         }
 
+        if($GLOBALS['config']->get('config', 'hide_out_of_stock')=='1') {
+            $search_data['inStock'] = true;
+        }
+        
         // Presence of a join is similar to presence of a search keyword
         if (!empty($joins) || is_array($search_data)) {
             if (!empty($search_data['priceVary'])) {
@@ -1891,7 +1895,10 @@ class Catalogue
             }
             // Only look for items that are in stock
             if (isset($search_data['inStock'])) {
-                $where[] = $this->outOfStockWhere();
+                $oosWhere = $this->outOfStockWhere(false, 'I');
+                if(!empty($oosWhere)) {
+                    $where[] = "AND $oosWhere";
+                }
             }
 
             if(!isset($search_data['manufacturer']) && $manufacturers  = $GLOBALS['db']->select('CubeCart_manufacturers', array('id'), "`name` LIKE '%".$search_data['keywords']."%'")) {
@@ -1951,7 +1958,7 @@ class Catalogue
                     $match_val = '0.5';
 
                     $query = sprintf("SELECT I.*, %2\$s AS Relevance FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND (%2\$s) >= %4\$s %3\$s %5\$s %6\$s", $GLOBALS['config']->get('config', 'dbprefix'), $match, $whereString, $match_val, $order_string, $limit);
-                    
+              
                     if ($search = $GLOBALS['db']->query($query)) {
                         $q2 = sprintf("SELECT COUNT(I.product_id) as count, %2\$s AS Relevance FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND (%2\$s) >= %4\$s %3\$s GROUP BY I.product_id %5\$s", $GLOBALS['config']->get('config', 'dbprefix'), $match, $whereString, $match_val, $order_string);
                         $count = $GLOBALS['db']->query($q2);
