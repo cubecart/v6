@@ -702,7 +702,7 @@ class Order
                 $update = false;
             }
             // Shipping - calculate taxes (if any)
-            if (isset($this->_basket['shipping']) && is_array($this->_basket['shipping'])) {
+            if (isset($this->_basket['shipping']) && is_array($this->_basket['shipping']) && !empty($this->_basket['shipping'])) {
                 Tax::getInstance()->productTax($this->_basket['shipping']['value'], (int)$this->_basket['shipping']['tax_id'], false, 0, 'shipping');
             }
 

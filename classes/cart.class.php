@@ -931,7 +931,7 @@ class Cart
                 $this->basket['By_Category_Shipping'] =  $line_shipping->_lineShip + $line_shipping->_perShipPrice;
             }
             // Shipping
-            $this->_shipping = (isset($this->basket['shipping']) && !empty($this->basket['shipping'])) ? $this->basket['shipping']['value']: 0;
+            $this->_shipping = (isset($this->basket['shipping']) && !empty($this->basket['shipping'])) ? $this->basket['shipping']['value'] : 0;
 
             if (isset($this->basket[$tax_on]['state_id']) && isset($this->basket['shipping'])) {
                 $GLOBALS['tax']->productTax($this->_shipping, $this->basket['shipping']['tax_id'], false, $this->basket[$tax_on]['state_id'], 'shipping');
@@ -1123,7 +1123,7 @@ class Cart
                 return false;
             }
         } else {
-            $GLOBALS['cart']->set('shipping', 0);
+            $this->set('shipping', array());
             $this->save();
             return false;
         }
