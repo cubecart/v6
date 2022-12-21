@@ -1536,7 +1536,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="table_message_text" introduced="5.0.0"><![CDATA[Message Text]]></string>
     <string name="title_db" introduced="5.0.0"><![CDATA[Database Maintenance]]></string>
     <string name="title_db_backup" introduced="5.0.0"><![CDATA[Database Backup]]></string>
-    <string name="title_files_backup" introduced="5.1.0"><![CDATA[Files Backup]]></string>
+    <string name="title_files_backup" introduced="5.1.0"><![CDATA[File Backup]]></string>
     <string name="title_existing_backups" introduced="5.1.0"><![CDATA[Existing Backups]]></string>
     <string name="title_db_info" introduced="5.0.0"><![CDATA[<strong>MySQL %s</strong> running on <strong>%s</strong> as <strong>%s@%s</strong>]]></string>
     <string name="title_db_tables" introduced="5.0.0"><![CDATA[Tables]]></string>

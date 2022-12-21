@@ -50,12 +50,12 @@
 <div id="backup" class="tab_content">
   {if !isset($CONFIG.cid)}
   <h3>Automated Backups</h3>
-  	<ul class="severity">
-  		<li class="orange"><strong>Disclaimer:</strong><br>These backup tools are constrained by resource limitations of PHP which can be low. A backup may fail so please check file integrity after the process has completed. If possible we recommend taking a full backup via your web hosting control panel instead.</li>
-  	</ul>
   	<p>Official CubeCart hosting comes with automated hourly backups. Visit <a href="https://hosted.cubecart.com" target="_blank">https://hosted.cubecart.com</a> for more information. We offer a <a href="https://support.cubecart.com/hc/en-gb/articles/360004746498-How-do-I-transfer-my-existing-CubeCart-store-to-your-hosting-service-" target="_blank">free migration service</a>.</p>
   {/if}
   <h3>{$LANG.maintain.title_files_backup}</h3>
+  <ul class="severity">
+  		<li class="orange"><strong>Disclaimer:</strong><br>The file and database backup tools are constrained by resource limitations of PHP which can be low. A backup may fail so please check file integrity after the process has completed. If possible we recommend taking a full backup via your web hosting control panel instead and to check that regular automated backups are generated.</li>
+	</ul>
   <form action="?_g=maintenance&node=index&files_backup=1#backup" method="post">
 	<p>{$LANG.maintain.files_backup_desc}</p>
 	<fieldset><legend>{$LANG.maintain.backup_options}</legend>
