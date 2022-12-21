@@ -466,11 +466,6 @@ if (isset($_GET['action'])) {
                 $decrypt = Encryption::getInstance();
                 $decrypt->setup(false, $summary[0]['cart_order_id']);
                 $card = unserialize($decrypt->decrypt(stripslashes($summary[0]['offline_capture'])));
-                
-                if (empty($card)) {
-                    // Decrypt CC3/CC4 Card Details
-                    $card = unserialize($decrypt->decryptDepreciated(base64_decode($summary[0]['offline_capture']), $summary[0]['cart_order_id']));
-                }
 
                 $card = (!empty($card)) ? $card : array('card_type' => '', 'card_number' => '', 'card_expire' => '', 'card_valid' => '', 'card_issue' => '', 'card_cvv' => '');
                 foreach ($card as $key => $value) {

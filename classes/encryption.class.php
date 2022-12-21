@@ -99,7 +99,7 @@ class Encryption
     }
 
     /**
-     * Decrypt CC3/CC4 data
+     * Decrypt CC3/CC4 data (deprecated)
      *
      * @param string $data
      * @param string $cart_order_id
