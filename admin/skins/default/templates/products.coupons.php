@@ -141,7 +141,7 @@
 		<span>
 		  <input type="hidden" name="product[]" id="result_form-product" class="add">
 
-		  <input type="text" id="form-product" placeholder="{$LANG.common.type_to_search}" rel="product" class="ajax textbox add display">
+		  <input type="text" id="form-product" placeholder="{$LANG.common.type_to_search}" rel="product" class="ajax textbox add display clear_field">
 
 		  <a href="#" target="assigned-prods" class="add"><i class="fa fa-plus-circle" style="display: none" id="add-button" title="{$LANG.common.add}"></i></a>
 		</span>

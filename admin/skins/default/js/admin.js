@@ -989,6 +989,9 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
                 var t = $(this).is("select") ? $(this).find(":selected").text() : "<strong>" + $(this).val() + "</strong>";
                 $(o).append(t)
             }
+            if ($(this).hasClass("clear_field")) {
+                $(this).val('');
+            }
             if ($(this).attr("name")) {
                 var e = document.createElement("input");
                 $(e).attr({
