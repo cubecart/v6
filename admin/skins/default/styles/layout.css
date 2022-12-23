@@ -1114,7 +1114,6 @@ input[type="submit"].go_search {
 .link_active {
     color: green
 }
-;
 ul.quick_links li#help_menu {
     position: relative
 }
@@ -1265,7 +1264,7 @@ ul.quick_links li#help_menu ul li:not(:last-child) {
     position: relative;
     background-repeat: no-repeat;
     background-position: center;
-    background-color: none !important;
+    background-color: transparent !important;
     
 }
 .fm-item.hilighted {
