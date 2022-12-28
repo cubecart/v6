@@ -23,7 +23,7 @@
 
   <div class="preauth-wrapper">
   {include file='templates/common.gui_message.php'}
-  <form action="{$VAL_SELF}" method="post" enctype="application/x-www-form-urlencoded" name="acp-login">
+  <form action="{$VAL_SELF}" class="ignore-dirty" method="post" enctype="application/x-www-form-urlencoded" name="acp-login">
 	<div id="login-box">
 	{if isset($RECOVERY)}
 	  <h1>{$LANG.account.title_password_new}</h1>
@@ -33,7 +33,7 @@
 	  <div><span><input type="password" autocomplete="off" name="password[confirm]" id="passconf" class="textbox required"></span><label for="passconf">{$LANG.account.new_password_confirm}</label>:</div>
 	  <div id="login-box-foot">
 	    <span><a href="?_g=login">{$LANG.account.login_return}</a></span>
-	    <input name="login" type="submit" id="login" value="{$LANG.form.submit}" class="submit no-change">
+	    <input name="login" type="submit" id="login" value="{$LANG.form.submit}" class="submit">
 	  </div>
 	{elseif isset($PASSWORD)}
 	  <h1>{$LANG.account.forgotten_password}</h1>
@@ -41,7 +41,7 @@
 	  <div><span><input type="text" name="email" id="email" class="textbox required" value="{$EMAIL}"></span><label for="email">{$LANG.common.email}</label>:</div>
 	  <div id="login-box-foot">
 	    <span><a href="?_g=login">{$LANG.account.login_return}</a></span>
-	    <input name="login" type="submit" id="login" value="{$LANG.form.submit}" class="submit no-change">
+	    <input name="login" type="submit" id="login" value="{$LANG.form.submit}" class="submit">
 	  </div>
 	{else}
 	  <h1>{if $SSL.state}<span id="login_ssl_switch"><a href="{$SSL.url}"><img src="{$SSL.icon}"></a></span>{/if}{$LANG.account.title_login_acp}</h1>
@@ -50,7 +50,7 @@
 	  <div id="login-box-foot">
 		<span><a href="?_g=password">{$LANG.account.forgotten_password}</a></span>
 		<input type="hidden" name="redir" value="{$REDIRECT_TO}">
-		<input name="login" type="submit" id="login" value="{$LANG.account.log_in}" class="submit no-change">
+		<input name="login" type="submit" id="login" value="{$LANG.account.log_in}" class="submit">
 	  </div>
 	{/if}
 	</div>

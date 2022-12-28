@@ -366,7 +366,7 @@
                      {include file='templates/element.product_options.php'}
                   </td>
                   <td style="text-align:right">
-                     <input type="text" name="inv[{$product.id}][price]" id="{$product.id}_price" class="textbox number-right lineprice original-fix" original="{$product.line_price_less_options}" value="{$product.line}">
+                     <input type="text" name="inv[{$product.id}][price]" id="{$product.id}_price" class="textbox number-right lineprice" original="{$product.line_price_less_options}" value="{$product.line}">
                   </td>
                   <td style="text-align:right"><input type="text" name="inv[{$product.id}][line_price]" class="textbox number-right subtotal goods" value="{$product.price_total}"></td>
                   <td style="text-align:center"><a href="#{$product.id}" class="remove" title="{$LANG.notification.confirm_delete}" name="inv_remove" rel="{$PRODUCT.id}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
