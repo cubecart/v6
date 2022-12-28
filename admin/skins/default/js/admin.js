@@ -1119,7 +1119,7 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
 }), $("a.refresh").on("click", function() {
     return $(".update-subtotal input.number").trigger("change"), !1
 });
-$("form:not(.skip-dirty)").dirty({preventLeaving:true});
+$("form:not(.ignore-dirty)").dirty({preventLeaving:true});
 /* Work in progress relating to #2097
 $('#order-builder').on('change', '.tax-chooser', function() {
     var goods_items = $(".goods");

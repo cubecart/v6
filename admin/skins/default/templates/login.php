@@ -23,7 +23,7 @@
 
   <div class="preauth-wrapper">
   {include file='templates/common.gui_message.php'}
-  <form action="{$VAL_SELF}" class="skip-dirty" method="post" enctype="application/x-www-form-urlencoded" name="acp-login">
+  <form action="{$VAL_SELF}" class="ignore-dirty" method="post" enctype="application/x-www-form-urlencoded" name="acp-login">
 	<div id="login-box">
 	{if isset($RECOVERY)}
 	  <h1>{$LANG.account.title_password_new}</h1>
