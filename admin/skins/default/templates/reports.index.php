@@ -9,7 +9,7 @@
  * Email:  sales@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
-<form action="{$VAL_SELF}" method="post">
+<form action="{$VAL_SELF}" class="ignore-dirty" method="post">
   <div id="results" class="tab_content">
 	<h3>{$REPORT_TITLE}</h3>
 	<table>

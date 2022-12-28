@@ -9,7 +9,7 @@
  * Email:  sales@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
-<form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
+<form action="{$VAL_SELF}" class="ignore-dirty" method="post" enctype="multipart/form-data">
    <div id="general" class="tab_content">
       <h3>{$LANG.navigation.nav_subscribers}</h3>
       <fieldset class="width_30">
@@ -85,7 +85,7 @@
    </div>
 </form>
 <div id="export_mailing_list" class="tab_content">
-      <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data" target="_self">
+      <form action="{$VAL_SELF}" class="ignore-dirty" method="post" enctype="multipart/form-data" target="_self">
             <h3>{$LANG.email.title_export}</h3>
             <fieldset>
             <legend>{$LANG.email.title_export_settings}</legend>

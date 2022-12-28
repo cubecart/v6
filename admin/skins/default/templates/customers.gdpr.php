@@ -12,7 +12,7 @@
 
 <div id="general" class="tab_content">
     <h3>{$LANG.search.gdpr_tools}</h3>
-    <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
+    <form action="{$VAL_SELF}" class="ignore-dirty" method="post" enctype="multipart/form-data">
     <fieldset>
             <legend>{$LANG.search.title_gdpr_report}</legend>
             <div><label for="email">{$LANG.common.email}</label><span><input type="text" name="email" id="email" value="" class="textbox"></span></div>
@@ -21,18 +21,18 @@
         <input type="submit" value="{$LANG.form.create_report}" name="search">
         </form>
     <hr>
-    <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
+    <form action="{$VAL_SELF}" class="ignore-dirty" method="post" enctype="multipart/form-data">
         <p>{$LANG.customer.delete_older_than|replace:'%s':'<input type="number" min="1" value="" class="number-center" name="customer_purge">'} <input type="submit" class="delete submit_confirm tiny" title="{$LANG.notification.confirm_continue}" value="{$LANG.common.go}"></p>
     </form>
     <hr>
-    <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
+    <form action="{$VAL_SELF}" class="ignore-dirty" method="post" enctype="multipart/form-data">
         <p>
             <input type="hidden" name="no_order_purge" value="1">
             <input type="submit" class="delete submit_confirm uppercase" value="{$LANG.customer.delete_no_order}" title="{$LANG.notification.confirm_continue}" name="search">
         </p>
     </form>
     <hr>
-    <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
+    <form action="{$VAL_SELF}" class="ignore-dirty" method="post" enctype="multipart/form-data">
         <p>
             <input type="hidden" name="delete_guests" value="1">
             <input type="submit" class="delete submit_confirm uppercase" value="{$LANG.customer.delete_guests}" title="{$LANG.notification.confirm_continue}" name="search">

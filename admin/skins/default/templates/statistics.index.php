@@ -13,7 +13,7 @@
 <div id="stats_sales" class="tab_content">
    <h3>{$LANG.statistics.title_sales}</h3>
    {if $DISPLAY_SALES}
-   <form action="{$VAL_SELF}" method="post">
+   <form action="{$VAL_SELF}" class="ignore-dirty" method="post">
       <div>
          <fieldset>
             <legend>{$LANG.common.filter}</legend>

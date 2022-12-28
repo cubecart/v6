@@ -12,7 +12,7 @@
 {if isset($DISPLAY_ALL_TRANSACTIONS)}
 <div id="logs" class="tab_content">
   <h3>{$LANG.orders.title_transaction_logs}</h3>
-  <form action="{$VAL_SELF}" method="post">
+  <form action="{$VAL_SELF}" class="ignore-dirty" method="post">
 	<div>
 	  <input type="text" name="search" class="textbox"> <input type="submit" value="{$LANG.common.search}" class="mini_button">
 	</div>
