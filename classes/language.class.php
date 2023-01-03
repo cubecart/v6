@@ -90,9 +90,10 @@ class Language
 
     final protected function __construct()
     {
+        $d = array();
         if($cache && $GLOBALS['cache']->exists('lang.domain.list')) {
             $d = $GLOBALS['cache']->read('lang.domain.list');
-        } else {
+        } elseif(isset($GLOBALS['db']) && method_exists($GLOBALS['db'],'select')) {
             if($domains = $GLOBALS['db']->select('CubeCart_domains')) {
                 foreach($domains as $domain) {
                     $d[$domain['domain']] = $domain['language'];
@@ -721,7 +722,7 @@ class Language
             //Get all langauge files
             if (($files = glob(CC_LANGUAGE_DIR.'*.{xml,gz}', GLOB_BRACE)) !== false) {
                 $d = array();
-                if($domains = $GLOBALS['db']->select('CubeCart_domains')) {
+                if(isset($GLOBALS['db']) && method_exists($GLOBALS['db'],'select') && $domains = $GLOBALS['db']->select('CubeCart_domains')) {
                     foreach($domains as $domain) {
                         $d[$domain['language']] = $domain['domain'];
                     }
