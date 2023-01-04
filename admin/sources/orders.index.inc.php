@@ -851,7 +851,6 @@ if (isset($_GET['action'])) {
 
             $smarty_data['list_orders'][] = $order;
         }
-        var_dump();
         $GLOBALS['smarty']->assign('ORDER_LIST', $smarty_data['list_orders']);
     } elseif (isset($_GET['search']) && !empty($_POST['month_purge'])) {
         # No orders found
