@@ -103,7 +103,7 @@ class Language
         }
         $url = parse_url(CC_STORE_URL);
 
-        if(ADMIN_CP == false && isset($d[$url['host']]) && !empty($d[$url['host']])) {
+        if(defined('ADMIN_CP') && ADMIN_CP == false && isset($d[$url['host']]) && !empty($d[$url['host']])) {
             $this->_language = $d[$url['host']];
         } else if (isset($GLOBALS['session'])) {
             //If the language is trying to be changed try to change it
