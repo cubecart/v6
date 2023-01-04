@@ -469,7 +469,7 @@ $GLOBALS['smarty']->assign('w3w_compatibility', file_exists($current_skin_path.'
 
 if ($inventory_columns = $GLOBALS['db']->misc('SHOW FULL COLUMNS FROM '.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory')) {
     $excluded = array('use_stock_level');
-    $select_options[]['product_sort_column'] = array();
+    $select_options['product_sort_column'] = array();
     foreach ($inventory_columns as $inventory_column) {
         if (!in_array($inventory_column['Field'], $excluded)) {
             $inventory_column['Comment'] = ($inventory_column['Field']=='price') ? $lang['common']['price'] : $inventory_column['Comment'];
