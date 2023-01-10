@@ -91,7 +91,7 @@ class Language
     final protected function __construct()
     {
         $d = array();
-        if($cache && $GLOBALS['cache']->exists('lang.domain.list')) {
+        if(isset($GLOBALS['cache']) && is_object($GLOBALS['cache']) && $GLOBALS['cache']->exists('lang.domain.list')) {
             $d = $GLOBALS['cache']->read('lang.domain.list');
         } elseif(isset($GLOBALS['db']) && method_exists($GLOBALS['db'],'select')) {
             if($domains = $GLOBALS['db']->select('CubeCart_domains')) {
