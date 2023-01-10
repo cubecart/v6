@@ -254,7 +254,7 @@ if (isset($_POST['proceed'])) {
     httpredir('index.php', 'cancelled');
 }
 
-if (!isset($_SESSION['setup']) || (isset($_SESSION['setup']) && empty($_SESSION['setup']))) {
+if (!isset($_SESSION['setup'])) {
     $restart = false;
     $step    = 1;
     // Compatibility Test
