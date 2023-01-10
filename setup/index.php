@@ -51,7 +51,7 @@ if (isset($_GET['autoupdate']) && $_GET['autoupdate']) {
 }
 // Empty the cache before we start
 $GLOBALS['cache'] = Cache::getInstance();
-if (!isset($_SESSION['setup']) || (isset($_SESSION['setup']) && is_empty($_SESSION['setup']))) {
+if (!isset($_SESSION['setup']) || (isset($_SESSION['setup']) && empty($_SESSION['setup']))) {
     $GLOBALS['cache']->clear();
 
     // Remove cached skins
@@ -254,7 +254,7 @@ if (isset($_POST['proceed'])) {
     httpredir('index.php', 'cancelled');
 }
 
-if (!isset($_SESSION['setup']) || (isset($_SESSION['setup']) && is_empty($_SESSION['setup']))) {
+if (!isset($_SESSION['setup']) || (isset($_SESSION['setup']) && empty($_SESSION['setup']))) {
     $restart = false;
     $step    = 1;
     // Compatibility Test
