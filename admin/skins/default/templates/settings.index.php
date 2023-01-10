@@ -533,20 +533,6 @@
       </fieldset>
       <p>* {$LANG.settings.scheduled_snippet}</p>
    </div>
-   <div id="Offline" class="tab_content">
-      <h3>{$LANG.settings.title_offline}</h3>
-      <fieldset>
-         <legend>{$LANG.settings.title_offline}</legend>
-         <div><label for="offline">{$LANG.settings.offline_enable}</label><span><select name="config[offline]" id="offline" class="textbox">
-            {foreach from=$OPT_OFFLINE item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
-            </select></span>
-         </div>
-      </fieldset>
-      <fieldset>
-         <legend>{$LANG.settings.offline_message}</legend>
-         <textarea name="config[offline_content]" id="offline_content" class="textbox fck fck-full">{$CONFIG.offline_content|escape:"html"}</textarea>
-      </fieldset>
-   </div>
    <div id="Extra" class="tab_content">
       <h3>{$LANG.settings.title_extra}</h3>
       <fieldset>
