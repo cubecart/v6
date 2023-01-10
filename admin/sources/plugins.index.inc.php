@@ -275,7 +275,7 @@ if (isset($_POST['plugin_token']) && !empty($_POST['plugin_token'])) {
                                     'seller_id' => $data['seller_id'],
                                     'modified'	=> $data['modified'],
                                     'name'	=> $data['name'],
-                                    'nakeep_currentme'	=> 1 // if possible
+                                    'keep_current'	=> 1 // if possible
                                 );
 
                                 if ($GLOBALS['db']->select('CubeCart_extension_info', 'file_id', array('file_id' => $extension_info['file_id']))) {
