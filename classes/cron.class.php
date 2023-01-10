@@ -7,6 +7,9 @@ class Cron
         if (($request = new Request('www.ecb.europa.eu', '/stats/eurofxref/eurofxref-daily.xml')) !== false) {
             $request->setMethod('get');
             $request->setSSL();
+            if(defined('CC_IN_SETUP')) {
+                $request->skiplog(true);
+            }
             $rates_xml = $request->send();
 
             if (!empty($rates_xml)) {
