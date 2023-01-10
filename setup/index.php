@@ -44,14 +44,14 @@ $setup_path  = CC_ROOT_DIR . '/setup' . '/';
 session_start();
 
 if (isset($_GET['autoupdate']) && $_GET['autoupdate']) {
-    $_SESSION['setup']                = ''; // remove any past upgrade/install data
-    $_SESSION['setup']['method']      = 'upgrade';
+    $_SESSION['setup'] = array(); // remove any past upgrade/install data
+    $_SESSION['setup']['method'] = 'upgrade';
     $_SESSION['setup']['autoupgrade'] = true;
     httpredir('index.php');
 }
 // Empty the cache before we start
 $GLOBALS['cache'] = Cache::getInstance();
-if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
+if (!isset($_SESSION['setup']) || (isset($_SESSION['setup']) && is_empty($_SESSION['setup']))) {
     $GLOBALS['cache']->clear();
 
     // Remove cached skins
@@ -225,7 +225,7 @@ $GLOBALS['smarty']->assign('ROOT', CC_ROOT_DIR);
 
 if (isset($_POST['proceed'])) {
     $redir = true;
-    if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
+    if (!isset($_SESSION['setup'])) {
         $_SESSION['setup'] = array();
     } else {
         if (!isset($_POST['method']) && !isset($_SESSION['setup']['method'])) {
@@ -250,11 +250,11 @@ if (isset($_POST['proceed'])) {
         httpredir('index.php');
     }
 } elseif (isset($_POST['cancel']) || isset($_GET['cancel'])) {
-    $_SESSION['setup'] = null;
+    $_SESSION['setup'] = array();
     httpredir('index.php', 'cancelled');
 }
 
-if (!isset($_SESSION['setup']) || is_null($_SESSION['setup'])) {
+if (!isset($_SESSION['setup']) || (isset($_SESSION['setup']) && is_empty($_SESSION['setup']))) {
     $restart = false;
     $step    = 1;
     // Compatibility Test
