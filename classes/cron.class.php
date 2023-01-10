@@ -15,8 +15,8 @@ class Cron
             if (!empty($rates_xml)) {
                 try {
                     $xml  = new SimpleXMLElement($rates_xml);
-                    foreach ($xml->Cube->Cube->Cube as $currency) {
-                        $rate = $currency->attributes();
+                    foreach ($xml->Cube->Cube->Cube as $c) {
+                        $rate = $c->attributes();
                         $fx[(string)$rate['currency']] = (float)$rate['rate'];
                     }
                     $fx['EUR'] = 1;
