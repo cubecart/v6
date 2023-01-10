@@ -78,8 +78,9 @@ class Config
         } else {
             $this->_config['config'] = $glob;
         }
-
-        $GLOBALS['cache']->enable((bool)$this->_config['config']['cache']);
+        if(isset($GLOBALS['cache']) && is_object($GLOBALS['cache'])) {
+            $GLOBALS['cache']->enable(isset($this->_config['config']['cache']) ? (bool)$this->_config['config']['cache'] : false);
+        }
     }
 
     public function __destruct()
