@@ -1,7 +1,7 @@
 <?php
 class Cron
 {
-    public function updateExchangeRates() {
+    public function updateExchangeRates($currency = '') {
         ## European Central Bank
         $output = array();
         if (($request = new Request('www.ecb.europa.eu', '/stats/eurofxref/eurofxref-daily.xml')) !== false) {
@@ -22,7 +22,10 @@ class Cron
                     $fx['EUR'] = 1;
                     $updated = strtotime((string)$xml->Cube->Cube->attributes()->time);
                     # Get the divisor
-                    $base  = (1/$fx[strtoupper($GLOBALS['config']->get('config', 'default_currency'))]);
+                    if(empty($currency)) {
+                        $currency = $GLOBALS['config']->get('config', 'default_currency');
+                    }
+                    $base  = (1/$fx[strtoupper($currency)]);
                     foreach ($fx as $code => $rate) {
                         $value = ($base/(1/$rate));
                         $output[] = array(

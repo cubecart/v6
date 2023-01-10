@@ -271,7 +271,7 @@ if (!isset($_SESSION['setup']['permissions'])) {
             $GLOBALS['db']->insert('CubeCart_admin_users', $_SESSION['setup']['admin']);
             // Set the current exchange rates
             $cron = new Cron();
-            $cron->updateExchangeRates();
+            $cron->updateExchangeRates($_SESSION['setup']['config']['default_currency']);
 
             $default_docs = array(
                 0 => array('doc_name' => str_replace('CubeCart', $_SESSION['setup']['config']['store_name'], $strings['setup']['default_doc_title_welcome']), 'doc_content' => $strings['setup']['default_doc_content_welcome'], 'doc_order' => 1, 'doc_lang' => $config['default_language'], 'doc_home' => 1, 'doc_terms' => 0, 'doc_privacy' => 0),
