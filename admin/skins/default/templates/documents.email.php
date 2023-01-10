@@ -133,7 +133,7 @@
 		editor.setValue(`{$CONTENT.content_html|escape:'quotes'}`, 1);
 		editor.getSession().on("change", function () { input.value = editor.getSession().getValue(); });
 	</script>
-	<button type="button" class="button" id="preview_email_template" onclick="previewEmailTemplate()">{$LANG.common.test}</button></span>
+	<button type="button" class="button" id="preview_email_template" onclick="previewEmailTemplate()">{$LANG.common.test}</button>
 	<script>
 		function previewEmailTemplate() { $.colorbox({ html:function(){ return editor.getSession().getValue(); } }) };
 	</script>
@@ -209,7 +209,7 @@
 		editor.setValue(`{$TEMPLATE.content_html|escape:'quotes'}`, 1);
 		editor.getSession().on("change", function () { input.value = editor.getSession().getValue(); });
 	</script>
-	<button type="button" class="button" id="preview_email_template" onclick="previewEmailTemplate()">{$LANG.common.test}</button></span>
+	<button type="button" class="button" id="preview_email_template" onclick="previewEmailTemplate()">{$LANG.common.test}</button>
 	<script>
 		function previewEmailTemplate() { $.colorbox({ html:function(){ return editor.getSession().getValue(); } }) };
 	</script>
