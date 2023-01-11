@@ -1784,6 +1784,9 @@ class Catalogue
         
         // Presence of a join is similar to presence of a search keyword
         if (!empty($joins) || is_array($search_data)) {
+            if($GLOBALS['config']->get('config', 'hide_out_of_stock')=='1') {
+                $search_data['inStock'] = true;
+            }
             if (!empty($search_data['priceVary'])) {
                 // Allow for a 5% variance in prices
                 if (!empty($search_data['priceMin']) && is_numeric($search_data['priceMin'])) {
