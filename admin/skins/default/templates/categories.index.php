@@ -12,7 +12,12 @@
 <form action="{$VAL_SELF}" method="post" id="cat_form" name="cat_form" enctype="multipart/form-data">
   {if $LIST_CATEGORIES}
   <div id="categories" class="tab_content">
+  	{if $PARENT_CATEGORY}
+	<h3>{$LANG.settings.subcategories_of|replace:'%s':$PARENT_CATEGORY.cat_name}</h3>
+	<p><a href="?_g=categories&node=index&parent={$PARENT_CATEGORY.cat_parent_id}" title="{$LANG.settings.return_parent_category}"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> {$LANG.settings.return_parent_category}</a></p>
+	{else}
 	<h3>{$LANG.settings.title_category}</h3>
+	{/if}
 	<table>
 	  <thead>
 		<tr>

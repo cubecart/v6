@@ -460,6 +460,11 @@ if (isset($_GET['action'])) {
         } else {
             httpredir('?_g=categories');
         }
+    } else {
+        $parent_cat = $GLOBALS['db']->select('CubeCart_category', array('cat_id','cat_name','cat_parent_id'), array('cat_id' => $_GET['parent']));
+        if ($parent_cat) {
+            $GLOBALS['smarty']->assign('PARENT_CATEGORY', $parent_cat[0]);
+        }
     }
     foreach ($GLOBALS['hooks']->load('admin.category.pre_smarty') as $hook) {
         include $hook;
