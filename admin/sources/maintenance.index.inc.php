@@ -714,7 +714,7 @@ if (isset($database_result) && $database_result) {
         ),
         'cubecart_extension_info' => array(
             'file_id' => 'PRIMARY',
-            'seller_id' => 'key'
+            'seller_id' => 'KEY'
         ),
         'cubecart_filemanager' => array(
             'file_id' => 'PRIMARY',
