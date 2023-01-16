@@ -47,11 +47,11 @@
 {/if}
 
 
-{if ($view_all)}
+{* if ($view_all)}
 	{if (strtolower($page) != 'all')}
 	  {$params[$var_name] = 'all'}
 	  <a href="{$current}{http_build_query($params)}{$anchor}">{$LANG.common.view_all}</a>
 	{else}
 	  <strong>[{$LANG.common.view_all}]</strong>
 	{/if}
-{/if}
+{/if *}

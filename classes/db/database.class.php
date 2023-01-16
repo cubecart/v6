@@ -496,6 +496,11 @@ class Database_Contoller
      */
     public function pagination($total_results = false, $per_page = 10, $page = 1, $show = 5, $var_name = 'page', $anchor = false, $glue = ' ', $view_all = true)
     {
+        if($page == 'all') {
+            $page = 1;
+            $skin_data = GUI::getInstance()->getSkinData();
+            $per_page = array_key_last($skin_data['layout']['products']['perpage']);
+        }
         if ($page == 1) {
             $this->page_one[] = $var_name;
         }
