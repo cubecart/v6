@@ -30,7 +30,7 @@
 
 	{$params[$var_name] = $i}
 	{if ($i == $page)}
-  		<strong>[{$i}]</strong>
+  		<div class="current">{$i}</div>
 	{else}
   		<a href="{$current}{http_build_query($params)}{$anchor}">{$i}</a>
   	{/if}
@@ -45,13 +45,3 @@
   {$params[$var_name] = $total}
   &hellip; <a href="{$current}{http_build_query($params)}{$anchor}">{$total}</a>
 {/if}
-
-
-{* if ($view_all)}
-	{if (strtolower($page) != 'all')}
-	  {$params[$var_name] = 'all'}
-	  <a href="{$current}{http_build_query($params)}{$anchor}">{$LANG.common.view_all}</a>
-	{else}
-	  <strong>[{$LANG.common.view_all}]</strong>
-	{/if}
-{/if *}

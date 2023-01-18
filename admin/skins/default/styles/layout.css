@@ -698,6 +698,19 @@ tfoot tr.foot td {
 tfoot>tr>th {
     text-align: right
 }
+div.pagination a, div.pagination div.current {
+    padding: 5px 9px;
+    border-radius: 3px;
+    display:inline;
+}
+div.pagination div.current {
+    background-color:#4F9AAF;
+    color: #ffffff;
+    cursor: not-allowed;
+}
+div.pagination a {
+    background-color: #E7E7E7;
+}
 div.pagination {
     padding: 5px 2px;
     margin: 5px 0
