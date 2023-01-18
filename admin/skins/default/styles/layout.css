@@ -710,6 +710,14 @@ div.pagination div.current {
 }
 div.pagination a {
     background-color: #E7E7E7;
+    color: #555555;
+    -webkit-transition: background-color 0.25s ease-out;
+    -moz-transition: background-color 0.25s ease-out;
+    -o-transition: background-color 0.25s ease-out;
+    transition: background-color 0.25s ease-out;
+}
+div.pagination a:hover {
+    background-color: #c5c5c5;
 }
 div.pagination {
     padding: 5px 2px;
