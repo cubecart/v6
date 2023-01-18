@@ -1261,6 +1261,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_templates" introduced="5.0.0"><![CDATA[Email Templates]]></string>
   </group>
   <group name="filemanager">
+    <string name="parent_directory" introduced="6.4.10"><![CDATA[Parent Directory]]></string>
     <string name="error_file_not_changed" introduced="6.4.8"><![CDATA[No file changes have been made.]]></string>
     <string name="notice_file_updated" introduced="6.4.8"><![CDATA[File Updated.]]></string>
     <string name="alt" introduced="6.4.8"><![CDATA[Alt text]]></string>
