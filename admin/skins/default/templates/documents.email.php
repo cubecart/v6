@@ -135,7 +135,17 @@
 	</script>
 	<button type="button" class="button" id="preview_email_template" onclick="previewEmailTemplate()">{$LANG.common.test}</button>
 	<script>
-		function previewEmailTemplate() { $.colorbox({ html:function(){ return editor.getSession().getValue(); } }) };
+		function previewEmailTemplate() {
+			$.colorbox({
+				title: '{$CONTENT.subject}',
+				width: '90%',
+				height: '90%',
+				html:function(){ 
+					var content = editor.getSession().getValue().replace("'","&#39;");
+					return '<iframe width=\'100%\' height=\'95%\' frameBorder=\'0\' srcdoc=\'<div style="margin: auto;width: 50%;">'+content+'</div>\'></iframe>';
+				}
+			}); 
+		};
 	</script>
   	<h3>{$LANG.email.title_macros}</h3>
   	<p>{$LANG.email.important|escape:'htmlall'}</p>
@@ -211,7 +221,17 @@
 	</script>
 	<button type="button" class="button" id="preview_email_template" onclick="previewEmailTemplate()">{$LANG.common.test}</button>
 	<script>
-		function previewEmailTemplate() { $.colorbox({ html:function(){ return editor.getSession().getValue(); } }) };
+		function previewEmailTemplate() { 
+			$.colorbox({
+				title: '{$TEMPLATE.title}',
+				width: '90%',
+				height: '90%',
+				html:function(){ 
+					var content = editor.getSession().getValue().replace("'","&#39;");;
+					return '<iframe width=\'100%\' height=\'95%\' frameBorder=\'0\' srcdoc=\'<div style="margin: auto;width: 50%;">'+content+'</div>\'></iframe>';
+				}
+			}); 
+		};
 	</script>
   	<h3>{$LANG.email.title_macros}</h3>
   	<table>
