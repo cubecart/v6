@@ -597,6 +597,7 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
     if (is_array($email_types)) {
         $lang_list = $GLOBALS['language']->listLanguages();
         $max_translations = count($lang_list);
+        $can_translate = false;
         foreach ($email_types as $key => $values) {
             $translations = $GLOBALS['db']->select('CubeCart_email_content', array('description','content_id', 'language'), array('content_type' => $key), array('language' => 'ASC'));
             if ($translations) {
@@ -614,11 +615,17 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
                     }
                 }
             }
-            $content['translate'] = ($enabled_translations == $max_translations) ? false : currentPage(null, array('type' => 'content', 'action' => 'add', 'content_type' => $key));
+            if($enabled_translations == $max_translations) {
+                $content['translate'] = false;
+            } else {
+                $content['translate'] = currentPage(null, array('type' => 'content', 'action' => 'add', 'content_type' => $key));
+                $can_translate = true;
+            }
             $content['type']  = $values['description'];
             $smarty_data['e_contents'][] = $content;
             unset($content);
         }
+        $GLOBALS['smarty']->assign('CAN_TRANSLATE', $can_translate);
         $GLOBALS['smarty']->assign('EMAIL_CONTENTS', $smarty_data['e_contents']);
     }
     // List Templates

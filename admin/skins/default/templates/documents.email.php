@@ -17,7 +17,8 @@
 	  <thead>
 		<tr>
 		  <td width="300">{$LANG.email.email_type}</td>
-		  <td colspan="2">{$LANG.translate.title_translations}</td>
+		  <td>{$LANG.translate.title_translations}</td>
+		  {if $CAN_TRANSLATE}<td>&nbsp;</td>{/if}
 		</tr>
 	  </thead>
 	  <tbody>
@@ -33,11 +34,13 @@
 			{$LANG.translate.trans_none}
 			{/if}
 		  </td>
+		  {if $CAN_TRANSLATE}
 		  <td width="30" align="center">
 			{if $content.translate!==false}
 			<a href="{$content.translate}" title="{$LANG.translate.trans_add}"><i class="fa fa-plus-circle" title="{$LANG.translate.trans_add}"></i></a>
 			{/if}
 		  </td>
+		  {/if}
 		</tr>
 		{/foreach}
 	  </tbody>
@@ -49,22 +52,26 @@
 	  <fieldset>
 	  {if isset($EMAIL_TEMPLATES)}
 	  <table width="70%">
-		<tr>
-			<th width="20">{$LANG.common.default}</th>
-			<th>{$LANG.email.template_name}</th>
-			<th colspan="3">&nbsp;</th>
-		</tr>
-	  {foreach from=$EMAIL_TEMPLATES item=template}
-	  <tr>
-		<td style="text-align:center">
-			<input type="radio" name="template_default" id="template_default_{$template.template_id}" value="{$template.template_id}"{if $template.template_default==1} checked="checked"{/if}>
-		</td>
-		<td><a href="{$template.edit}">{$template.title}</a></td>
-		<td width="10"><a href="{$template.clone}"><i class="fa fa-files-o" title="{$LANG.common.clone}"></i></a></td>
-		<td width="10"><a href="{$template.edit}" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a></td>
-		<td width="10"><a href="{$template.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
-	  </tr>
-	  {/foreach}
+	  	<thead>
+			<tr>
+				<th width="20">{$LANG.common.default}</th>
+				<th>{$LANG.email.template_name}</th>
+				<th colspan="3">&nbsp;</th>
+			</tr>
+		</thead>
+		<tbody>
+			{foreach from=$EMAIL_TEMPLATES item=template}
+			<tr>
+				<td style="text-align:center">
+					<input type="radio" name="template_default" id="template_default_{$template.template_id}" value="{$template.template_id}"{if $template.template_default==1} checked="checked"{/if}>
+				</td>
+				<td><a href="{$template.edit}">{$template.title}</a></td>
+				<td width="10"><a href="{$template.clone}"><i class="fa fa-files-o" title="{$LANG.common.clone}"></i></a></td>
+				<td width="10"><a href="{$template.edit}" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a></td>
+				<td width="10"><a href="{$template.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
+			</tr>
+			{/foreach}
+		</tbody>
 	  </table>
 	  {else}
 	  <div>{$EMAIL.email.templates_none}</div>
