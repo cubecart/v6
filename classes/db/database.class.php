@@ -513,7 +513,7 @@ class Database_Contoller
 
         $glue = (!$glue) ? ' ' : $glue;
         // Lets do some maths...
-        $total_pages = $per_page ? ceil($total_results/$per_page) : 0;
+        $total_pages = $per_page ? ceil((int)$total_results/(int)$per_page) : 0;
         $params = array();
         if ($total_pages > 1) {
             // Get the current query string variables
