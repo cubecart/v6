@@ -1262,7 +1262,7 @@ This email is sent from the store's master email address but it is possible to r
   </group>
   <group name="filemanager">
     <string name="parent_directory" introduced="6.4.10"><![CDATA[Parent Directory]]></string>
-    <string name="how_to_select" introduced="6.4.10"><![CDATA[Select the item you want to insert into your document using the <i class="fa fa-plus-circle" title="{$LANG.common.add}"></i> icon.]]></string>
+    <string name="how_to_select" introduced="6.4.10"><![CDATA[Select the item you want to insert into your document using the <i class="fa fa-plus-circle" title="Add"></i> icon.]]></string>
     <string name="error_file_not_changed" introduced="6.4.8"><![CDATA[No file changes have been made.]]></string>
     <string name="notice_file_updated" introduced="6.4.8"><![CDATA[File Updated.]]></string>
     <string name="alt" introduced="6.4.8"><![CDATA[Alt text]]></string>
