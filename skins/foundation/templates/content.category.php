@@ -71,7 +71,7 @@
             <div class="row product_list_view">
                <div class="small-3 columns">
                   <a href="{$product.url}" class="th" title="{$product.name}">
-                     <img src="{$product.thumbnail}" alt="{if isset($product.image_tags.alt) && !empty($product.image_tags.alt)}{$product.image_tags.alt}{else}{$product.name}{/if}"{if isset($product.image_tags.title)} title="{$product.image_tags.title}"{/if}>
+                     <img src="{$product.thumbnail}" alt="{if isset($product.image_tags.thumbnail.alt) && !empty($product.image_tags.thumbnail.alt)}{$product.image_tags.thumbnail.alt}{else}{$product.name}{/if}"{if isset($product.image_tags.thumbnail.title)} title="{$product.image_tags.thumbnail.title}"{/if}>
                   </a>
                </div>
                <div class="small-6 columns">
@@ -132,7 +132,7 @@
             <div class="product_grid_view hide">
                <div data-equalizer-watch>
                   <div class="text-center">
-                     <a href="{$product.url}" title="{$product.name}"><img src="{$product.thumbnail}" alt="{if isset($product.image_tags.alt) && !empty($product.image_tags.alt)}{$product.image_tags.alt}{else}{$product.name}{/if}"{if isset($product.image_tags.alt)} title="{$product.image_tags.title}"{/if}></a>
+                     <a href="{$product.url}" title="{$product.name}"><img src="{$product.thumbnail}" alt="{if isset($product.image_tags.thumbnail.alt) && !empty($product.image_tags.thumbnail.alt)}{$product.image_tags.thumbnail.alt}{else}{$product.name}{/if}"{if isset($product.image_tags.thumbnail.alt)} title="{$product.image_tags.thumbnail.title}"{/if}></a>
                   </div>
                   <h3><a href="{$product.url}" title="{$product.name}">{$product.name|truncate:38:"&hellip;"}</a></h3>
                   {if $product.review_score}
