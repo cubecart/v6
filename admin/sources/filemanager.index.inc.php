@@ -33,6 +33,9 @@ if (isset($_POST['filter-update']) && isset($_POST['filter']['subdir'])) {
 $select_button = false;
 if (isset($_GET['mode'])) {
     switch (strtolower($_GET['mode'])) {
+    case 'fckfile':
+        $GLOBALS['main']->hideNavigation(true);
+        $select_button = true;
     case 'digital':
         $mode = FileManager::FM_FILETYPE_DL;
         break;
