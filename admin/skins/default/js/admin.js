@@ -249,6 +249,7 @@ $(document).ready(function() {
     $("input.toggle:hidden").each(function() {
         var c = ($(this).val() == "1") ? "1" : "0";
         var d = document.createElement("img");
+        var s = $(this).attr("style");
         d.src = image_icon_path + c + "_checkbox.png";
         if (c == "1") {
             d.alt = d.title = lang.disable
@@ -258,6 +259,9 @@ $(document).ready(function() {
         $(d).addClass("checkbox");
         $(d).addClass("cbs");
         $(d).attr("rel", "#" + $(this).attr("id"));
+        if (typeof s !== 'undefined' && s !== false) {
+            $(d).attr("style", s);
+        }
         $(this).after(d)
     });
 
