@@ -65,7 +65,7 @@
 	  </tbody>
 	</table>
 	<div class="pagination">
-	  <span>{$TOTAL_RESULTS}</span>
+	  <span><strong>{$TOTAL_RESULTS}</strong></span>
 	  {$PAGINATION_COUNTRY}&nbsp;
 	</div>
   </div>
@@ -127,7 +127,7 @@
   	  </tfoot>
 	</table>
 	<div class="pagination">
-	  <span>{$TOTAL_RESULTS}</span>
+	  <span><strong>{$TOTAL_RESULTS}</strong></span>
 	  {$PAGINATION_ZONE}&nbsp;
 	</div>
   </div>

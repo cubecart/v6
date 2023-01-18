@@ -58,7 +58,7 @@
       </select>
       <input type="submit" value="{$LANG.common.go}" name="go" class="tiny submit_confirm" title="{$LANG.notification.confirm_delete}">
       <div class="pagination">
-         <span>{$LANG.common.total}: {$TOTAL_RESULTS}</span>{$PAGINATION}
+         <span><strong>{$LANG.common.total}:</strong> {$TOTAL_RESULTS}</span>{$PAGINATION}
       </div>
       {else}
       <p>{$LANG.reviews.error_reviews_none}</p>

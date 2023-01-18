@@ -720,11 +720,18 @@ div.pagination a:hover {
     background-color: #c5c5c5;
 }
 div.pagination {
-    padding: 5px 2px;
-    margin: 5px 0
+    padding: 12px 2px;
+    margin: 5px 0;
+    position: relative; 
+    border-top: 1px solid #E7E7E7;
 }
 div.pagination span {
-    float: right
+    padding: 5px 9px;
+    border-radius: 3px;
+    background-color: #E7E7E7;
+    position: absolute; 
+    bottom: 7px; 
+    right: 0; 
 }
 #advanced dl {
     margin: 0;

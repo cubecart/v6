@@ -121,7 +121,7 @@
                <td width="10">
                   <span><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/select_all.gif" alt=""></span>
                </td>
-               <td colspan="11">
+               <td colspan="12">
                   <a href="#" class="check-all" rel="table">{$LANG.form.check_uncheck}</a>
                   {$LANG.maintain.db_with_selected}
                   <select name="action" class="textbox">
@@ -133,9 +133,9 @@
                </td>
             </tr>
             <tr>
-               <td colspan="11">
+               <td colspan="12">
                   <div class="pagination">
-                     <span>{$LANG.common.total}: {$TOTAL_RESULTS}</span>
+                     <span><strong>{$LANG.common.total}:</strong> {$TOTAL_RESULTS}</span>
                      {$PAGINATION}&nbsp;
                   </div>
                </td>
