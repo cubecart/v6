@@ -116,6 +116,7 @@
 		<span>
 			<select name="details[move]" id="move" class="textbox">
 	  			<option value="">{$LANG.form.please_select}</option>
+				{if isset($DIRS)}{foreach from=$DIRS item=dir}<option value="{$dir.path}"{$dir.selected}>{$dir.path}</option>{/foreach}{/if}
 			</select>
 		</span>
 	</div>
