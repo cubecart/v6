@@ -960,7 +960,7 @@ class Cubecart
         }
         if(isset($gc['image']) && !empty($gc['image'])) {
             $gc['image'] = $GLOBALS['catalogue']->imagePath($gc['image']);
-            $gc['image_tags'] = $GLOBALS['catalogue']->image_tags[$gc['image']];
+            $gc['image_tags'] = $GLOBALS['catalogue']->image_tags[$gc['image']] ?? array();
         }
         $GLOBALS['smarty']->assign('LANG_CERT_VALUES', sprintf($GLOBALS['language']->catalogue['gift_certificate_value'], $GLOBALS['tax']->priceFormat($gc['min'], true, true, $purchase_enabled), $GLOBALS['tax']->priceFormat($gc['max'], true, true, $purchase_enabled)));
         $GLOBALS['smarty']->assign('ctrl_allow_purchase', $purchase_enabled);

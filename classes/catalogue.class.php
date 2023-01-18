@@ -267,7 +267,7 @@ class Catalogue
 
             if (!empty($catData['cat_image'])) {
                 $vars['category']['image'] = $this->imagePath($catData['cat_image'], 'category', 'url');
-                $vars['category']['image_tags'] = $GLOBALS['catalogue']->image_tags[$vars['category']['image']];
+                $vars['category']['image_tags'] = $GLOBALS['catalogue']->image_tags[$vars['category']['image']] ?? array();
             }
             $GLOBALS['smarty']->assign('category', $vars['category']);
             $meta_data = array(
@@ -699,7 +699,7 @@ class Catalogue
                     
                     if ($products || $GLOBALS['config']->get('config', 'catalogue_show_empty') == '1') {
                         $cat['cat_image'] = $this->imagePath($cat['cat_image'], 'subcategory', 'url');
-                        $cat['image_tags'] = $GLOBALS['catalogue']->image_tags[$cat['cat_image']];
+                        $cat['image_tags'] = $GLOBALS['catalogue']->image_tags[$cat['cat_image']] ?? array();
                         $cat['url'] = $GLOBALS['seo']->buildURL('cat', $cat['cat_id'], '&');
                         $cat['products_number'] = $products;
                         $return[] = $cat;
@@ -1627,7 +1627,7 @@ class Catalogue
             }
             foreach ($image_types as $image_key => $values) {
                 $product[$image_key] = $GLOBALS['gui']->getProductImage($product['product_id'], $image_key);
-                $product['image_tags'][$image_key] = $GLOBALS['catalogue']->image_tags[$product[$image_key]];
+                $product['image_tags'][$image_key] = $GLOBALS['catalogue']->image_tags[$product[$image_key]] ?? array();
                 if ($image_key == 'medium') {
                     if (strpos($product[$image_key], 'noimage') !== false) {
                         $product['magnify'] = false;
@@ -2150,7 +2150,7 @@ class Catalogue
                         $duplicates[] = $image['file_id'];
                         foreach ($image_types as $type) {
                             $image[$type] = $this->imagePath($image['file_id'], $type);
-                            $image['image_tags'] = $GLOBALS['catalogue']->image_tags[$image[$type]];
+                            $image['image_tags'] = $GLOBALS['catalogue']->image_tags[$image[$type]] ?? array();
                         }
                         $return[] = $image;
                         $json['image_'.$image['id']] = $image;
