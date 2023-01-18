@@ -16,8 +16,11 @@
 		{if $FILMANAGER_MODE == '1'}<input type="text" name="fm-search-term" id="fm-search-term" placeholder="{$LANG.common.search}..."><button type="button" class="button tiny" id="fm-search-button" data-mode="{if $FILMANAGER_MODE == '1'}images{else}digital{/if}" data-action="show">{$LANG.common.go}</button>
 		<hr>
 		{/if}
-		{if $FILMANAGER_MODE == '2'}
+		{if $FILMANAGER_MODE == '2' && !$SELECT_BUTTON}
 		<p>{$LANG.filemanager.public}</p>
+		{/if}
+		{if $SELECT_BUTTON}
+		<p>{$LANG.filemanager.how_to_select}</p>
 		{/if}
 		<div id="fm-wrapper" class="{if $FILMANAGER_MODE == '1'}images{else}digital{/if}" style="overflow:hidden;">
 			{if $FOLDER_PARENT}

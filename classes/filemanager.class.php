@@ -176,6 +176,7 @@ class FileManager
     public function admin($select_button = false)
     {
         $this->listFiles(false, $select_button);
+        $GLOBALS['smarty']->assign('SELECT_BUTTON', $select_button);
         if (isset($_GET['CKEditorFuncNum'])) {
             $GLOBALS['smarty']->assign('CK_FUNC_NUM', (int)$_GET['CKEditorFuncNum']);
         }
