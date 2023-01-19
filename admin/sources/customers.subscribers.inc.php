@@ -228,7 +228,7 @@ if($subscriber_count = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', 
         $GLOBALS['smarty']->assign('PAGINATION', $GLOBALS['db']->pagination($count, $per_page, $page, 9, 'page', 'subscribers'));
     }
 
-    $subscribers = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', false, $where, array('email' => 'ASC'), $per_page, $page);
+    $subscribers = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', false, $where, array('date' => 'DESC'), $per_page, $page);
 
     $GLOBALS['smarty']->assign('SUBSCRIBERS', $subscribers);
 }
