@@ -50,16 +50,16 @@
   </styles>
   <images>
 	<image reference="thumbnail" maximum="190" quality="80" default="noimage.png" />
-	<image reference="category" maximum="800" quality="80" default="" /><!-- Doesnt need a default -->
+	<image reference="category" maximum="800" quality="80" default="noimage.png" />
 	<image reference="subcategory" maximum="105" quality="80" default="noimage.png" />
 	<image reference="gallery" maximum="50" quality="80" default="noimage.png" />
 	<image reference="checkout" maximum="50" quality="80" default="noimage.png" />
 	<image reference="normal" maximum="300" quality="80" default="noimage.png" />
-	<image reference="enlarge" maximum="600" quality="80" default="" /><!-- Doesnt need a default -->
+	<image reference="enlarge" maximum="600" quality="80" default="noimage.png" />
 	<image reference="tiny" maximum="30" quality="80" default="noimage.png" />
 	<image reference="small" maximum="200" quality="80" default="noimage.png" />
 	<image reference="medium" maximum="500" quality="80" default="noimage.png" />
-	<image reference="large" maximum="600" quality="80" default="" /><!-- Doesnt need a default -->
+	<image reference="large" maximum="600" quality="80" default="noimage.png" />
   </images>
 	<!-- Use this to add custom variables into the skin which can be found in the smarty SKIN_CUSTOM array -->
 	<custom>
