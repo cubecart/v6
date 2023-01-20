@@ -1570,7 +1570,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="backup_if_exists" introduced="6.0.0"><![CDATA[Backup if already exists]]></string>
     <string name="backup_abort" introduced="6.0.0"><![CDATA[Abort if backup fails]]></string>
     <string name="available_plugins" introduced="6.0.0"><![CDATA[Available Extensions]]></string>
-    <string name="extensions_available_desc" introduced="6.1.0"><![CDATA[Updates are available for the following extensions. Please click the update link and obtain a new token (<i class="fa fa-bolt" aria-hidden="true"></i>). Once you have a new token please upgrade in the &quot;<a href="?_g=plugins">Manage Extensions</a>&quot; section of your admin control panel.]]></string>
+    <string name="extensions_available_desc" introduced="6.1.0"><![CDATA[Updates are available for the following extensions.]]></string>
     <string name="token" introduced="6.0.0"><![CDATA[Token]]></string>
     <string name="get_file_failed" introduced="6.0.0"><![CDATA[Failed to retrieve file.]]></string>
     <string name="aff_sale" introduced="5.0.0"><![CDATA[Base on]]></string>
