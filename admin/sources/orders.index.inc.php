@@ -827,7 +827,7 @@ if (isset($_GET['action'])) {
             array_push($oids, $order['cart_order_id']);
         }
         $has_notes = array();
-        if($notes = $GLOBALS['db']->select('CubeCart_order_notes', array('cart_order_id', array('cart_order_id' => $oids)))) {
+        if($notes = $GLOBALS['db']->select('CubeCart_order_notes', array('cart_order_id'), array('cart_order_id' => $oids))) {
             foreach($notes as $note) {
                 $has_notes[$note['cart_order_id']] = true;
             }
