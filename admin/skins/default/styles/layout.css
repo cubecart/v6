@@ -320,6 +320,9 @@ hr {
 #breadcrumbs ul.quick_links li:not(:last-child) {
     border-right: 1px solid #D0D0D0
 }
+#help_menu > ul > li:last-child {
+    border-right: 1px solid #D0D0D0 !important
+}
 #page_content {
     padding: 0 10px 10px;
     min-height: 400px;
@@ -1162,7 +1165,7 @@ ul.quick_links li#help_menu ul li {
     text-align: left;
     float: left;
     border: none;
-    width: 100%
+    width: 120px
 }
 ul.quick_links li#help_menu ul li:not(:last-child) {
     border-bottom: 1px solid #D0D0D0
