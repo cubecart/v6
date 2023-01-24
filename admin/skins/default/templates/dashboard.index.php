@@ -51,7 +51,7 @@
                <h4>{$LANG.dashboard.title_last_orders}</h4>
                {if isset($LAST_ORDERS)}
                {foreach from=$LAST_ORDERS item=order}
-               <div><a href="?_g=orders&action=edit&order_id={$order.cart_order_id}" title="{$LANG.common.edit}">{$order.{$CONFIG.oid_col}|default:$order.order_id}</a> - {if empty($order.first_name) && empty($order.last_name)}
+               <div><a href="?_g=orders&action=edit&order_id={$order.cart_order_id}" title="{$LANG.common.edit}">{$order.{$CONFIG.oid_col}|default:$order.cart_order_id}</a> - {if empty($order.first_name) && empty($order.last_name)}
                   {$order.name}
                   {else}
                   {$order.first_name|capitalize} {$order.last_name|capitalize}
@@ -140,7 +140,7 @@
             {foreach from=$ORDERS item=order}
             <tr>
                <td style="text-align:center"><input type="checkbox" id="" name="multi-order[]" value="{$order.cart_order_id}" class="all-orders"></td>
-               <td><a href="?_g=orders&action=edit&order_id={$order.cart_order_id}&source=dashboard" title="{$LANG.common.edit}">{$order.{$CONFIG.oid_col}|default:$order.order_id}</a></td>
+               <td><a href="?_g=orders&action=edit&order_id={$order.cart_order_id}&source=dashboard" title="{$LANG.common.edit}">{$order.{$CONFIG.oid_col}|default:$order.cart_order_id}</a></td>
                <td style="text-align:center">
                   {append "cust_type" "registered" index="1"}
                   {append "cust_type" "unregistered" index="2"}
