@@ -1001,16 +1001,3 @@ function parseUrlToLink($text, $target = '_blank')
 	$regex = '<https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)>';
 	return preg_replace($regex, '<a href="$0" target="$target">$0</a>', $text);
 }
-
-/* Work around for missing ctype */
-if(!function_exists('ctype_alnum')) {
-    function ctype_alnum($var) {
-        return preg_match('/^[a-zA-Z0-9]+$/', $var);
-    }
-}
-
-if(!function_exists('ctype_digit')) {
-    function ctype_digit($var) {
-        return is_numeric($var);
-    }
-}
