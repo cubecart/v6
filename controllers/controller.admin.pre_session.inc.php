@@ -54,14 +54,12 @@ $GLOBALS['seo'] = SEO::getInstance();
 $GLOBALS['language']->setTemplate();
 //Initialize Catalogue
 $GLOBALS['catalogue'] = Catalogue::getInstance();
-
+//Initialize ACP
 $GLOBALS['main'] = ACP::getInstance();
 $lang = $GLOBALS['language']->getLanguageStrings();
-//Initialize user
-$GLOBALS['user'] = User::getInstance();
 //Initialize Cart
 $GLOBALS['cart'] = Cart::getInstance();
-$GLOBALS['cart']->init();
+
 
 $global_template_file['session_true']  = 'main.php';
 $global_template_file['session_false']  = 'login.php';
