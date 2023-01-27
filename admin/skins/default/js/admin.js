@@ -1096,10 +1096,26 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
         if (e[s] = jQuery.trim(e[s]), null != a)
             for (j = 0; j < a.length; j++) updateAddressValues(a[j], s, e);
         else updateAddressValues(i, s, e)
-}), $("a.select").on("click", function() {
+}),
+$(".choose_option_img").on("click", function(a) {
+    var opnr = window.open('?_g=filemanager&mode=fck&source=options','chooser','toolbar=no,menubar=no,width=600,height=600');
+    opnr.addEventListener('message', function(event) {
+        console.log(event.data); // Message received from child
+    });
+});
+
+$("a.select").on("click", function(a) {
     var t = $(this).attr("href"),
+        i = $(this).attr("rel"),
         e = $("#ckfuncnum").val();
-    return window.opener.CKEDITOR.tools.callFunction(e, t), window.close(), !1
+    if($(this).hasClass('options')) {
+        a.preventDefault();
+        window.parent.postMessage({path: t, image_id: i}, "*");
+        window.close();
+        return;
+    } else {
+        return window.opener.CKEDITOR.tools.callFunction(e, t), window.close(), !1
+    }
 }), $("#discount_type, .lineprice").on("change", function() {
     $(".update-subtotal input.number").trigger("change")
 }), $(".update-subtotal input.number").on("change", function() {

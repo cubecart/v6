@@ -54,7 +54,7 @@
 		<input type="checkbox" value="{$file.value}" class="multi_delete right" name="multi_delete[]">
 		{$file.filesize}
 		{if $file.select_button}
-		<a href="{$file.master_filepath}" class="select"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a>
+		<a href="{$file.master_filepath}" class="select{if $SOURCE=='options'} options{/if}" rel="{$file.file_id}"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a>
 		{else}
 		<a href="{$file.delete}" class="delete right" title="{$LANG.notification.confirm_delete_file|replace:'%s':$file.filename}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		<a href="{$file.edit}" class="edit right" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>

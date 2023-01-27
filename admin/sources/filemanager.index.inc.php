@@ -106,7 +106,9 @@ if ($post_max_size !== $upload_max_filesize) {
 } else {
     $GLOBALS['smarty']->assign('UPLOAD_LIMIT_DESC', sprintf($lang['filemanager']['max_upload_same'], $upload_max_filesize));
 }
-
+if(isset($_GET['source'])) {
+    $GLOBALS['smarty']->assign('SOURCE', $_GET['source']);
+}
 if (isset($_GET['fm-edit']) && is_numeric($_GET['fm-edit'])) {
     $page_content = $fm->editor($_GET['fm-edit']);
 } else {

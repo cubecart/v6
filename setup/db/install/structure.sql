@@ -618,6 +618,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_option_assign` (
 	`option_weight` DECIMAL(10,4) NOT NULL DEFAULT '0.0000',
 	`matrix_include` TINYINT(1) NOT NULL DEFAULT  '0',
 	`absolute_price` enum('0','1') NOT NULL DEFAULT '0',
+	`image_id` int DEFAULT NULL,
 	PRIMARY KEY (`assign_id`),
 	KEY `set_member_id` (`set_member_id`),
 	KEY `product` (`product`),

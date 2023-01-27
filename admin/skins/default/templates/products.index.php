@@ -415,6 +415,7 @@
                   <td>{$LANG.common.price}</td>
                   <td>{$LANG.catalogue.absolute_price} *</td>
                   <td>{$LANG.common.weight}</td>
+                  <td>{$LANG.filemanager.file_type_image}</td>
                   <td width="20">&nbsp;</td>
                </tr>
             </thead>
@@ -432,6 +433,7 @@
                   <td><span class="editable number-right" name="option_update[{$option.assign_id}][option_price]" title="{$LANG.common.click_edit}">{$option.option_price}</span></td>
                   <td style="text-align:center"><input type="checkbox" name="option_update[{$option.assign_id}][absolute_price]" {if isset($option.absolute_price) && $option.absolute_price == 1}checked="checked"{/if} value="1"></td>
                   <td><span class="editable number" name="option_update[{$option.assign_id}][option_weight]" title="{$LANG.common.click_edit}">{$option.option_weight}</span></td>
+                  <td style="text-align:center">{if empty($option.image_id)}<i class="fa fa-plus-circle choose_option_img" aria-hidden="true" title="{$LANG.filemanager.click_to_select}"></i>{else}{$option.image_id}{/if}</td>
                   <td style="text-align:center">
                      {if !$option.set_member_id}<a href="#" name="option_remove" class="remove" rel="{$option.assign_id}" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>{else}<i class="fa fa-trash disabled" title="{$LANG.catalogue.delete_option_disabled}"></i>{/if}
                      <input type="hidden" id="data_{$option.assign_id}" value="{$option.data}">
@@ -448,6 +450,7 @@
                   <td><span class="editable number-right" name="option_create[{$option.set_member_id}][option_price]" title="{$LANG.common.click_edit}">{$option.option_price}</span></td>
                   <td style="text-align:center"><input type="checkbox" name="option_create[{$option.set_member_id}][absolute_price]" {if isset($option.absolute_price) && $option.absolute_price == 1}checked="checked"{/if}  value="1"></td>
                   <td><span class="editable number" name="option_create[{$option.set_member_id}][option_weight]" title="{$LANG.common.click_edit}">{$option.option_weight}</span></td>
+                  <td></td>
                   <td style="text-align:center"><i class="fa fa-trash disabled" title="{$LANG.catalogue.delete_option_disabled}"></i></td>
                </tr>
                {/if}
@@ -485,6 +488,7 @@
                   <td><input type="text" id="opt_price" rel="price" class="textbox number data"></td>
                   <td style="text-align:center"><input type="checkbox" id="opt_absolute_price" rel="absolute_price" class="checkbox data"></td>
                   <td><input type="text" id="opt_weight" rel="weight" class="textbox number data"></td>
+                  <td></td>
                   <td style="text-align:center"><a href="#" onclick="optionAdd('option_template', 'options_added'); return false;"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a></td>
                </tr>
                <tr class="inline-source">
@@ -496,6 +500,7 @@
                   <td class="price"><input type="hidden" rel=""></td>
                   <td class="absolute_price"><input type="hidden" rel=""></td>
                   <td class="weight"><input type="hidden" rel=""></td>
+                  <td class="image_id"><input type="hidden" rel=""></td>
                   <td style="text-align:center"><a href="#" class="remove dynamic"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
                </tr>
                <tr id="option_template" class="dynamic">
@@ -508,6 +513,7 @@
                   <td class="price"><input type="hidden" name="option_add[price][]" value="" disabled="disabled"></td>
                   <td class="absolute_price" align="center"><input type="checkbox" name="option_add[absolute_price][]" value="1" disabled="disabled"></td>
                   <td class="weight"><input type="hidden" name="option_add[weight][]" value="" disabled="disabled"></td>
+                  <td class="image_id"><input type="hidden" name="option_add[image_id][]" value="" disabled="disabled"></td>
                   <td style="text-align:center"><a href="#" class="remove" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
                </tr>
             </tfoot>

@@ -1,0 +1,1 @@
+ALTER TABLE `CubeCart_option_assign` ADD `image_id` INT NULL; #EOQ
