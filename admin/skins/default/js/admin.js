@@ -1105,7 +1105,7 @@ $(".choose_option_img").on("click", function(a) {
         $('#option_image_id_'+assign_id).val(event.data.image_id);
         $('#option_image_preview_'+assign_id).attr('src',event.data.path);
         $('#remove_image_id_'+assign_id).show();
-        selector.hide();
+        $('#selector_image_id_'+assign_id).hide();
     });
 });
 $(".remove_option_img").on("click", function(a) {
