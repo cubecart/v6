@@ -312,7 +312,7 @@ hr {
 }
 #breadcrumbs ul.quick_links li {
     float: left;
-    padding: 5px 15px
+    padding: 5px 1rem 5px 0.5rem;
 }
 #breadcrumbs a {
     color: #737373
@@ -1153,9 +1153,9 @@ ul.quick_links li#help_menu ul {
     position: absolute;
     background-color: #F9F9F9;
     padding: 0;
-    margin: 5px 0 0 -16px;
+    margin: 5px 0 0 -0.5rem;
     border: 1px solid #D0D0D0;
-    border-right: none
+    border-right: none;
 }
 ul.quick_links li#help_menu:hover ul {
     display: block !important
@@ -1165,7 +1165,7 @@ ul.quick_links li#help_menu ul li {
     text-align: left;
     float: left;
     border: none;
-    width: 120px
+    width: 8rem;
 }
 ul.quick_links li#help_menu ul li:not(:last-child) {
     border-bottom: 1px solid #D0D0D0
