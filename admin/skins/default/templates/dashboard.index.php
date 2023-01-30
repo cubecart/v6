@@ -14,25 +14,19 @@
    <div class="dashboard_content">
       {if isset($QUICK_STATS)}
       {literal}
-      <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
       <script type="text/javascript">
          google.load("visualization", "1", {packages:["corechart"]});
          google.setOnLoadCallback(drawChart);
          function drawChart() {
-           var data = google.visualization.arrayToDataTable([
-             {/literal}{$CHART.data}{literal}
-           ]);
-         
-           var options = {
-             title: '{/literal}{$CHART.title}{literal}',
-           };
-         
-           var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-           chart.draw(data, options);
+            var data = google.visualization.arrayToDataTable([{/literal}{$CHART.data}{literal}]);
+            var options = {title: '{/literal}{$CHART.title}{literal}',width:'100%',height:300};
+            var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
          }
       </script>
       {/literal}	
-      <div id="chart_div" style="width:100%; height: 300px;"></div>
+      <div id="chart_div"></div>
       {/if}
       <table width="100%">
          <tr>
