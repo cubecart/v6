@@ -1099,9 +1099,21 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
 }),
 $(".choose_option_img").on("click", function(a) {
     var opnr = window.open('?_g=filemanager&mode=fck&source=options','chooser','toolbar=no,menubar=no,width=600,height=600');
+    var selector = $(this);
+    var assign_id = selector.attr("rel");
     opnr.addEventListener('message', function(event) {
-        console.log(event.data); // Message received from child
+        $('#option_image_id_'+assign_id).val(event.data.image_id);
+        $('#option_image_preview_'+assign_id).attr('src',event.data.path);
+        $('#remove_image_id_'+assign_id).show();
+        selector.hide();
     });
+});
+$(".remove_option_img").on("click", function(a) {
+    var assign_id = $(this).attr("rel");
+    $('#option_image_id_'+assign_id).val(0);
+    $('#option_image_preview_'+assign_id).attr('src','data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=');
+    $('#remove_image_id_'+assign_id).hide();
+    $('#selector_image_id_'+assign_id).show();
 });
 
 $("a.select").on("click", function(a) {

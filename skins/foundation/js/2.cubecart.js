@@ -433,6 +433,15 @@ jQuery(document).ready(function() {
         price_inc_options();
         $("[name^=productOptions]").change(function() {
             price_inc_options();
+            var product_image = '';
+            if($(this).attr('type')==='radio') {
+                product_image = $(this).attr('data-image');
+            } else {
+                product_image = $(this).find(':selected').attr('data-image');
+            }
+            if(product_image.length>0) {
+                $('img#product_image').attr('src',product_image);
+            }
         });
     }
 

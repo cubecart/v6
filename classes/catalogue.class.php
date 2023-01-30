@@ -561,7 +561,7 @@ class Catalogue
                                     'value_name' => $value['value_name'],
                                     'option_default' => (bool)$value['option_default'],
                                     'selected' => isset($selected[$value['assign_id']]) ? true : false,
-                                    'absolute_price' => $value['absolute_price']
+                                    'absolute_price' => $value['absolute_price'],
                                 );
                                 
                                 if (isset($selected[$value['assign_id']]) && $selected[$value['assign_id']] > 0) {
@@ -576,7 +576,6 @@ class Catalogue
                                     }
                                 }
                             }
-                            $option_list[$value['option_id']]['priority'] = $group_priority;
                         }
                         
                         break;

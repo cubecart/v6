@@ -433,7 +433,12 @@
                   <td><span class="editable number-right" name="option_update[{$option.assign_id}][option_price]" title="{$LANG.common.click_edit}">{$option.option_price}</span></td>
                   <td style="text-align:center"><input type="checkbox" name="option_update[{$option.assign_id}][absolute_price]" {if isset($option.absolute_price) && $option.absolute_price == 1}checked="checked"{/if} value="1"></td>
                   <td><span class="editable number" name="option_update[{$option.assign_id}][option_weight]" title="{$LANG.common.click_edit}">{$option.option_weight}</span></td>
-                  <td style="text-align:center">{if empty($option.image_id)}<i class="fa fa-plus-circle choose_option_img" aria-hidden="true" title="{$LANG.filemanager.click_to_select}"></i>{else}{$option.image_id}{/if}</td>
+                  <td class="option_image">
+                     <i class="fa fa-picture-o choose_option_img"  id="selector_image_id_{$option.assign_id}" aria-hidden="true" title="{$LANG.filemanager.click_to_select}" rel="{$option.assign_id}"{if !empty($option.image_id)} style="display:none"{/if}></i>
+                     <img src="{$option.image}" id="option_image_preview_{$option.assign_id}" title="{$LANG.filemanager.click_to_select}" rel="{$option.assign_id}" class="choose_option_img" style="max-width: 100px; max-height: 100px;" />
+                     <div{if empty($option.image_id)} style="display: none;"{/if} id="remove_image_id_{$option.assign_id}" title="{$LANG.common.remove}" class="remove_option_img"  rel="{$option.assign_id}">{$LANG.common.remove}</div>
+                     <input type="hidden" name="option_update[{$option.assign_id}][image_id]" id="option_image_id_{$option.assign_id}" value="{$option.image_id}">
+                  </td>
                   <td style="text-align:center">
                      {if !$option.set_member_id}<a href="#" name="option_remove" class="remove" rel="{$option.assign_id}" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>{else}<i class="fa fa-trash disabled" title="{$LANG.catalogue.delete_option_disabled}"></i>{/if}
                      <input type="hidden" id="data_{$option.assign_id}" value="{$option.data}">

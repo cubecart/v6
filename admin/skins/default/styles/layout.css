@@ -77,8 +77,20 @@ fieldset .custom-checkbox {
 .custom-checkbox.selected {
     background: url(../images/1.png)
 }
-.fm-refresh {
+.fm-refresh, .remove_option_img, .choose_option_img {
     cursor: pointer;
+    font-size: 10px;
+    line-height: 14px;
+}
+.remove_option_img {
+    background-color: #E7E7E7;
+    -webkit-transition: background-color 0.25s ease-out;
+    -moz-transition: background-color 0.25s ease-out;
+    -o-transition: background-color 0.25s ease-out;
+    transition: background-color 0.25s ease-out;
+}
+.remove_option_img:hover {
+    background-color: #c5c5c5
 }
 .fm-container {
     height: 489px;
@@ -1522,4 +1534,8 @@ ul.fmsearch_images img {
 }
 .editable_phrase {
     cursor: text;
+}
+td.option_image {
+    text-align:center;
+    line-height:0
 }

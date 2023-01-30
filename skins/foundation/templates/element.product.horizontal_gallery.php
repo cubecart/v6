@@ -12,9 +12,9 @@
 <div class="row">
    <div class="small-5 medium-7 columns horizontal">
       {if count($GALLERY) > 1}
-         <a href="#" class="open-clearing" data-thumb-index="0"><img src="{$PRODUCT.medium}" alt="{if isset($PRODUCT.image_tags.medium.alt) && !empty($PRODUCT.image_tags.medium.alt)}{$PRODUCT.image_tags.medium.alt}{else}{$PRODUCT.name}{/if}"{if isset($PRODUCT.image_tags.medium.title)} title="{$PRODUCT.image_tags.medium.title}"{/if} id="img-preview"></a>
+         <a href="#" class="open-clearing" data-thumb-index="0"><img src="{$PRODUCT.medium}" alt="{if isset($PRODUCT.image_tags.medium.alt) && !empty($PRODUCT.image_tags.medium.alt)}{$PRODUCT.image_tags.medium.alt}{else}{$PRODUCT.name}{/if}"{if isset($PRODUCT.image_tags.medium.title)} id="product_image" title="{$PRODUCT.image_tags.medium.title}"{/if} id="img-preview"></a>
       {else}
-         <div data-clearing><a href="{$PRODUCT.source}"><img src="{$PRODUCT.medium}" alt="{if isset($PRODUCT.image_tags.medium.alt) && !empty($PRODUCT.image_tags.medium.alt)}{$PRODUCT.image_tags.medium.alt}{else}{$PRODUCT.name}{/if}"{if isset($PRODUCT.image_tags.medium.title)} title="{$PRODUCT.image_tags.medium.title}"{/if}></a></div>
+         <div data-clearing><a href="{$PRODUCT.source}"><img src="{$PRODUCT.medium}" alt="{if isset($PRODUCT.image_tags.medium.alt) && !empty($PRODUCT.image_tags.medium.alt)}{$PRODUCT.image_tags.medium.alt}{else}{$PRODUCT.name}{/if}"{if isset($PRODUCT.image_tags.medium.title)} id="product_image" title="{$PRODUCT.image_tags.medium.title}"{/if}></a></div>
       {/if}
       {if count($GALLERY) > 1}
       <ul class="clearing-thumbs small-block-grid-3 medium-block-grid-5 marg-top" data-clearing>
