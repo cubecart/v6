@@ -562,6 +562,7 @@ class Catalogue
                                     'option_default' => (bool)$value['option_default'],
                                     'selected' => isset($selected[$value['assign_id']]) ? true : false,
                                     'absolute_price' => $value['absolute_price'],
+                                    'image' => (ctype_digit($value['image_id']) && $value['image_id']>0) ? $GLOBALS['catalogue']->imagePath($value['image_id']) : ''
                                 );
                                 
                                 if (isset($selected[$value['assign_id']]) && $selected[$value['assign_id']] > 0) {
