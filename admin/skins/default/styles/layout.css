@@ -79,8 +79,6 @@ fieldset .custom-checkbox {
 }
 .fm-refresh, .remove_option_img, .choose_option_img {
     cursor: pointer;
-    font-size: 10px;
-    line-height: 14px;
 }
 .remove_option_img {
     background-color: #E7E7E7;
@@ -88,6 +86,8 @@ fieldset .custom-checkbox {
     -moz-transition: background-color 0.25s ease-out;
     -o-transition: background-color 0.25s ease-out;
     transition: background-color 0.25s ease-out;
+    font-size: 10px;
+    line-height: 14px;
 }
 .remove_option_img:hover {
     background-color: #c5c5c5
