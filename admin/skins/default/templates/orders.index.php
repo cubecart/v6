@@ -183,7 +183,7 @@
             <fieldset id="items">
                <legend>{$LANG.catalogue.title_items}</legend>
                {foreach from=$PRODUCTS item=product}
-               <div id="item">
+               <div class="item">
                   <strong>{$product.quantity} x <a href="?_g=products&action=edit&product_id={$product.product_id}" title="{$product.name}">{$product.name|truncate:60:"&hellip;"}</a></strong> - {$product.product_code} ({$product.line_formatted})<span>{$product.price_total_formatted}</span>
                   {if $product.accesskey}
                   <div class="download_info"><i class="fa fa-download"></i>{$STORE_URL}/index.php?_a=download&amp;s={$product.stream}&amp;accesskey={$product.accesskey}<br>

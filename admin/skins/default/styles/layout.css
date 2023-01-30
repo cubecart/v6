@@ -957,7 +957,7 @@ a.handle {
 #order_overview #items div {
     text-align: right
 }
-#order_overview #items #item {
+#order_overview #items .item {
     text-align: left
 }
 #order_overview #items div span {
