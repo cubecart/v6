@@ -419,6 +419,11 @@ class Debug
         $can_log = (isset($GLOBALS['config']) && is_object($GLOBALS['config']) && method_exists($GLOBALS['config'], 'get')) ? (bool)$GLOBALS['config']->get('config', 'debug') : false;
 
         switch ($error_no) {
+            case E_DEPRECATED:
+            case E_USER_DEPRECATED:
+                $type = 'Deprecated';
+                $log = $can_log;
+            break;
             case E_CORE_ERROR:
                 $type = 'Core Error';
             break;
@@ -462,11 +467,6 @@ class Debug
             break;
             default:
                 $type = 'Unknown ('.$error_no.')';
-                if ($error_no == E_DEPRECATED || $error_no == E_USER_DEPRECATED) {
-                    $type = 'Deprecated';
-                }
-                
-            break;
         }
         $error = "[<strong>".$type."</strong>] \t".$error_file.":".$error_line." - ".$error_string;
         $this->_errors[] = $error;
