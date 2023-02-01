@@ -604,6 +604,8 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="setup" introduced="6.4.10"><![CDATA[Setup]]></string>
+    <string name="configure" introduced="6.4.10"><![CDATA[Configure]]></string>
     <string name="nobody" introduced="6.4.8"><![CDATA[Nobody]]></string>
     <string name="eg_size" introduced="6.4.8"><![CDATA[e.g. Size]]></string>
     <string name="eg_large" introduced="6.4.8"><![CDATA[e.g. Large]]></string>

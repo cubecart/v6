@@ -22,17 +22,18 @@
          <div><label>&nbsp;</label><span><input type="submit" value="{$LANG.common.go}"></span></div>
       </fieldset>
       </form>
+      <hr>
       <h3>{$LANG.module.available_plugins}</h3>
       {if is_array($MODULES)}
       <form action="{$VAL_SELF}" method="post">
       <table width="70%">
          <thead>
             <tr>
-               <th width="45">{$LANG.common.status}</th>
+               <th width="45" style="text-align:center">{$LANG.common.status}</th>
                <th>{$LANG.common.name_and_desc}</th>
-               <th>{$LANG.hooks.version}</th>
-               <th>{$LANG.common.type}</th>
-               <th>{$LANG.common.developer}</th>
+               <th style="text-align:center">{$LANG.hooks.version}</th>
+               <th style="text-align:center">{$LANG.common.type}</th>
+               <th style="text-align:center">{$LANG.common.developer}</th>
                <th width="10">&nbsp;</th>
             </tr>
          </thead>
@@ -40,8 +41,12 @@
             {foreach from=$MODULES item=module}
             <tr>
                <td style="text-align:center">
+                  {if $module.configured}
                   <input type="hidden" id="status_{$module.basename}" name="status[{$module.basename}]" value="{$module.config.status}" class="toggle">
                   <input type="hidden" name="type[{$module.basename}]" value="{$module.type}" />
+                  {else}
+                     <a href="{$module.edit_url}" class="button mini_button">{$LANG.common.setup}</a>
+                  {/if}
                </td>
                <td><a href="{$module.edit_url}">{$module.name}</a><br>{$module.description}</td>
                <td>{$module.version}</td>
@@ -58,9 +63,11 @@
             {/foreach}
             </tbody>
       </table>
+      {if $SAVE_STATUS}
       <div class="form_control">
          <input type="submit" value="{$LANG.common.save}">
       </div>
+      {/if}
       {else}
       <p>{$LANG.form.none}</p>
       {/if}

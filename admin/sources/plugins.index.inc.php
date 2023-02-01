@@ -343,6 +343,12 @@ if (isset($_POST['status'])) {
 $module_paths = glob("modules/*/*/config.xml");
 $i=0;
 $modules = array();
+$configs = $GLOBALS['db']->select('CubeCart_config');
+$config_isset = array();
+$save_status = false;
+foreach($configs as $c) {
+    array_push($config_isset, $c['name']);
+} 
 foreach ($module_paths as $module_path) {
     try {
         $xml   = new SimpleXMLElement(file_get_contents($module_path));
@@ -352,9 +358,8 @@ foreach ($module_paths as $module_path) {
     if (is_object($xml)) {
         $basename = (string)basename(str_replace('config.xml', '', $module_path));
         $key = trim((string)$xml->info->name.$i);
-        
-        $module_config = $GLOBALS['db']->select('CubeCart_modules', '*', array('folder' => $basename, 'module' => (string)$xml->info->type));
 
+        $module_config = $GLOBALS['db']->select('CubeCart_modules', '*', array('folder' => $basename, 'module' => (string)$xml->info->type));
         $modules[$key] = array(
             'uid' 				=> (string)$xml->info->uid,
             'type' 				=> (string)$xml->info->type,
@@ -369,19 +374,21 @@ foreach ($module_paths as $module_path) {
             'block' 			=> (string)$xml->info->block,
             'basename' 			=> $basename,
             'config'			=> (is_array($module_config)) ? $module_config[0] : array('status' => 0),
+            'configured'        => in_array((string)$basename, $config_isset),
             'edit_url'			=> '?_g=plugins&type='.(string)$xml->info->type.'&module='.$basename,
             'delete_url'		=> '?_g=plugins&type='.(string)$xml->info->type.'&module='.$basename.'&delete=1&token='.SESSION_TOKEN
-
         );
+        if($modules[$key]['configured']) {
+            $save_status = true;
+        }
         $i++;
         unset($xml);
     }
 }
-
 if (is_array($modules)) {
     ksort($modules);
 }
-    
+$GLOBALS['smarty']->assign('SAVE_STATUS', $save_status); 
 $GLOBALS['smarty']->assign('MODULES', $modules);
 
 $languages_installed = $GLOBALS['language']->listLanguages();
