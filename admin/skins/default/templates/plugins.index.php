@@ -53,8 +53,8 @@
                <td>{$module.type|ucfirst}</td>
                <td>{$module.creator}</td>
                <td nowrap>
-                  {if $module.configured}<a href="{$module.edit_url}" class="edit"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>{/if}
                   <a href="{$module.delete_url}"  class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
+                  {if $module.configured}<a href="{$module.edit_url}" class="edit"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>{/if}
                </td>
             </tr>
             {/foreach}
