@@ -719,7 +719,7 @@ class Session
                 session_save_path($session_save_path);
             }
         }
-        session_cache_limiter('none');
+        session_cache_limiter('nocache');
         $session_prefix = CC_SSL ? 'S' : '';
         session_name('CC'.$session_prefix.'_'.strtoupper(substr(md5(CC_ROOT_DIR), 0, 10)));
         session_start();
