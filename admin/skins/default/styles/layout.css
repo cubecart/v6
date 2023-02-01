@@ -638,8 +638,11 @@ thead th {
 }
 #filemanager div div:nth-child(even),
 fieldset>div:nth-child(even),
-tbody tr:nth-child(even) {
+tbody tr:nth-child(even) td {
     background-color: #edf4f7
+}
+tbody tr:nth-child(even) td.no-bg {
+    background-color: #ffffff
 }
 #filemanager div div.fm-item:nth-child(odd) {
     background-color: #edf4f7
@@ -962,21 +965,6 @@ a.handle {
 #order_overview #shipping_address {
     float: right;
     margin-top: 0
-}
-#order_overview #items {
-    clear: right
-}
-#order_overview #items div {
-    text-align: right
-}
-#order_overview #items .item {
-    text-align: left
-}
-#order_overview #items div span {
-    float: right;
-    width: 110px;
-    text-align: right;
-    margin-left: 10px
 }
 #order_overview .other {
     width: 350px
@@ -1543,4 +1531,13 @@ td.option_image {
     margin: 30px 0;
     width: 70%;
     visibility: hidden;
+}
+.order_break td {
+    border-top: 1px solid #c5c5c5
+}
+.order_summary > td:nth-child(2) {
+    font-weight: bold;
+}
+.double_ul {
+    border-bottom: 4px double #c5c5c5;
 }

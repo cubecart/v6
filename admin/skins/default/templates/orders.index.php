@@ -121,7 +121,7 @@
    {/if}
    {if isset($DISPLAY_FORM)}
    <div>
-      <div id="order_summary" class="tab_content" style="width: 660px;">
+      <div id="order_summary" class="tab_content" style="width: 700px;">
          <h3>{$LANG.orders.title_order_summary}</h3>
          {include file='templates/orders.paypal-tooltip.php'}
          <p><a href="?_g=orders&node=index&print[]={$SUMMARY.cart_order_id}" class="print" target="_blank"><i class="fa fa-print" title="{$LANG.common.print}"></i> {$LANG.common.print}</a></p>
@@ -180,35 +180,75 @@
                 <strong>{$LANG.basket.order_date}:</strong> {$OVERVIEW_SUMMARY.order_date}
                 {if !empty($OVERVIEW_SUMMARY.currency)}<br><strong>{$LANG.catalogue.guide_currency}:</strong> {$OVERVIEW_SUMMARY.currency}{/if}
             </p>
-            <fieldset id="items">
-               <legend>{$LANG.catalogue.title_items}</legend>
+            <table id="items" style="width: 700px;">
+               <thead>
+                  <tr>
+                     <th>{$LANG.common.quantity}</th>
+                     <th>{$LANG.common.item}</th>
+                     <th nowrap>{$LANG.catalogue.product_code}</th>
+                     <th>{$LANG.catalogue.price_each}</th>
+                     <th>{$LANG.common.price}</th>
+                  </tr>
+               </thead>
+               <tbody>
                {foreach from=$PRODUCTS item=product}
-               <div class="item">
-                  <strong>{$product.quantity} x <a href="?_g=products&action=edit&product_id={$product.product_id}" title="{$product.name}">{$product.name|truncate:60:"&hellip;"}</a></strong> - {$product.product_code} ({$product.line_formatted})<span>{$product.price_total_formatted}</span>
-                  {if $product.accesskey}
-                  <div class="download_info"><i class="fa fa-download"></i>{$STORE_URL}/index.php?_a=download&amp;s={$product.stream}&amp;accesskey={$product.accesskey}<br>
-                  <a href="{$VAL_SELF}&reset_id={$product.id}"><i class="fa fa-recycle"></i>{$LANG.orders.reset_download_link}</a> <font class="{if $product.expired}link_expired{else}link_active{/if}">({$LANG.common.downloads}: {$product.downloads}/{$CONFIG.download_count} {$LANG.account.download_expires}: {$product.expire})</font></div>
-                  {/if}
-                  {if $product.options_text}
-                  <br>{$product.options_text}
-                  {/if}
-                  {if $product.custom}
-                  {foreach from=$product.custom key=k item=v}
-                  <br>{$k|capitalize}: {$v}
+               <tr>
+                  <td class="text-center">{$product.quantity}</td>
+                  <td>
+                     <a href="?_g=products&action=edit&product_id={$product.product_id}" title="{$product.name}">{$product.name}</a>
+                     {if $product.options_text}
+                     <div>{$product.options_text}</div>
+                     {/if}
+                     {if $product.custom}
+                     {foreach from=$product.custom key=k item=v}
+                     <div>{$k|capitalize}: {$v}</div>
+                     {/foreach}
+                     {/if}
+                     {if $product.accesskey}
+                     <div class="download_info"><i class="fa fa-download"></i>{$STORE_URL}/index.php?_a=download&amp;s={$product.stream}&amp;accesskey={$product.accesskey}<br>
+                     <a href="{$VAL_SELF}&reset_id={$product.id}"><i class="fa fa-recycle"></i>{$LANG.orders.reset_download_link}</a> <span class="{if $product.expired}link_expired{else}link_active{/if}">({$LANG.common.downloads}: {$product.downloads}/{$CONFIG.download_count} {$LANG.account.download_expires}: {$product.expire})</span></div>
+                     {/if}
+                     </td>
+                     <td>{$product.product_code}</td>
+                     <td class="text-center">{$product.line_formatted}</td>
+                     <td class="text-right">{$product.price_total_formatted}</td>
+                  </tr>
                   {/foreach}
-                  {/if}
-               </div>
-               {/foreach}
-               <div>{$LANG.basket.total_sub}:<span>{$OVERVIEW_SUMMARY.subtotal}</span></div>
-               <div>{$LANG.basket.total_discount}  {if !empty($OVERVIEW_SUMMARY.percent)}({$OVERVIEW_SUMMARY.percent}){/if}:<span>{$OVERVIEW_SUMMARY.discount}</span></div>
-               <div>{$LANG.basket.shipping}:<span>{$OVERVIEW_SUMMARY.shipping}</span></div>
-               {foreach from=$TAX_SUMMARY item=tax}
-               <div>{$tax.tax_name}:<span>{$tax.tax_amount}</span></div>
-               {foreachelse}
-               <div>{$LANG.basket.total_tax}:<span>{$OVERVIEW_SUMMARY.total_tax}</span></div>
-               {/foreach}
-               <div><strong>{$LANG.basket.total}:<span>{$OVERVIEW_SUMMARY.total}</span></strong></div>
-            </fieldset>
+                  <tr class="order_break order_summary">
+                     <td colspan="3" class="no-bg"></td>
+                     <td nowrap>{$LANG.basket.total_sub}</td>
+                     <td class="text-right">{$OVERVIEW_SUMMARY.subtotal}</td>
+                  </tr>
+                  <tr class="order_summary">
+                     <td colspan="3" class="no-bg"></td>
+                     <td nowrap>{$LANG.basket.total_discount}{if !empty($OVERVIEW_SUMMARY.percent)} ({$OVERVIEW_SUMMARY.percent}){/if}</td>
+                     <td class="text-right">{$OVERVIEW_SUMMARY.discount}</td>
+                  </tr>
+                  <tr class="order_summary">
+                     <td colspan="3" class="no-bg"></td>
+                     <td nowrap>{$LANG.basket.shipping}</td>
+                     <td class="text-right">{$OVERVIEW_SUMMARY.shipping}</td>
+                  </tr>
+                  {foreach from=$TAX_SUMMARY item=tax}
+                  <tr class="order_summary">
+                     <td colspan="3" class="no-bg"></td>
+                     <td nowrap>{$tax.tax_name}</td>
+                     <td class="text-right">{$tax.tax_amount}</td>
+                  </tr>
+                  {foreachelse}
+                  <tr class="order_summary">
+                     <td colspan="3" class="no-bg"></td>
+                     <td nowrap>{$LANG.basket.total_tax}</td>
+                     <td class="text-right">{$OVERVIEW_SUMMARY.total_tax}</td>
+                  </tr>
+                  {/foreach}
+                  <tr class="order_summary total">
+                     <td colspan="3" class="no-bg"></td>
+                     <td nowrap>{$LANG.basket.total}</td>
+                     <td class="text-right"><span class="double_ul">{$OVERVIEW_SUMMARY.total}</span></td>
+                  </tr>
+               </tbody>
+            </table>
             <fieldset class="other">
                <legend>{$LANG.account.contact_details}</legend>
                <div><label>{$LANG.common.email}</label><span><a href="mailto:{$OVERVIEW_SUMMARY.email}">{$OVERVIEW_SUMMARY.email}</a></span></div>
