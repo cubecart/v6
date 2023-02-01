@@ -53,11 +53,8 @@
                <td>{$module.type|ucfirst}</td>
                <td>{$module.creator}</td>
                <td nowrap>
-                  <a href="{$module.edit_url}" class="edit"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
+                  {if $module.configured}<a href="{$module.edit_url}" class="edit"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>{/if}
                   <a href="{$module.delete_url}"  class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
-                  {if $module.mobile_optimized=='true'}
-                  <a href="javascript:alert('{$LANG.module.mobile_optimized}');"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/phone.png" title="{$LANG.module.mobile_optimized}"></a>
-                  {/if}
                </td>
             </tr>
             {/foreach}
