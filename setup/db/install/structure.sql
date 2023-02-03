@@ -208,6 +208,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_coupons` (
 	`cart_order_id` VARCHAR(18) DEFAULT NULL,
 	`email_sent` enum('0','1') NOT NULL DEFAULT '0',
 	`coupon_per_customer` INT(10) UNSIGNED NULL DEFAULT NULL,
+	`exclude_sale_items` ENUM('0','1') NOT NULL DEFAULT '0',
 	PRIMARY KEY (`coupon_id`),
 	UNIQUE KEY `code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ

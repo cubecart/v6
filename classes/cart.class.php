@@ -786,8 +786,10 @@ class Cart
                     }
 
                     $product['quantity'] = $item['quantity'];
+                    $product['in_sale'] = 0;
                     if ($GLOBALS['tax']->salePrice($product['price'], $product['sale_price'])) {
                         $product['price'] = $product['sale_price'];
+                        $product['in_sale'] = 1;
                     }
                     $product['price_display'] = $product['price'];
                     $product['base_price_display'] = $GLOBALS['tax']->priceFormat($product['price'], true);
@@ -836,7 +838,7 @@ class Cart
                     }
 
                     $this->basket['contents'][$hash]['digital'] = $product['digital'];
-
+                    $this->basket['contents'][$hash]['in_sale'] = $product['in_sale'];
                     // Add the total product price inc options etc for payment gateways
                     $this->basket['contents'][$hash]['cost_price'] = round($product['cost_price']*$item['quantity'],2);
                     $this->basket['contents'][$hash]['option_line_price'] = $product['option_line_price'];

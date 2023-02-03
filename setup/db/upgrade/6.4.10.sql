@@ -11,3 +11,4 @@ ALTER TABLE `CubeCart_inventory` CHANGE `seo_meta_keywords` `seo_meta_keywords` 
 ALTER TABLE `CubeCart_inventory_language` CHANGE `seo_meta_title` `seo_meta_title` TEXT NULL; #EOQ
 ALTER TABLE `CubeCart_inventory_language` CHANGE `seo_meta_description` `seo_meta_description` TEXT NULL; #EOQ
 ALTER TABLE `CubeCart_inventory_language` CHANGE `seo_meta_keywords` `seo_meta_keywords` TEXT NULL; #EOQ
+ALTER TABLE `CubeCart_coupons` ADD `exclude_sale_items` ENUM('0', '1') NOT NULL DEFAULT '0'; #EOQ

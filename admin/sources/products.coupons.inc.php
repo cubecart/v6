@@ -62,6 +62,7 @@ if (isset($_POST['coupon']) && is_array($_POST['coupon'])) {
         'description' => $_POST['coupon']['description'],
         'free_shipping' => $_POST['coupon']['free_shipping'],
         'free_shipping_excluded' => $_POST['coupon']['free_shipping_excluded'],
+        'exclude_sale_items' => $_POST['coupon']['exclude_sale_items'],
         'coupon_per_customer' => empty($_POST['coupon']['coupon_per_customer']) ? 'NULL' : $_POST['coupon']['coupon_per_customer'],
         ## Temporary reset
         'discount_percent' => 0,
