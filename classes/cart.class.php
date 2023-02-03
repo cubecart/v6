@@ -654,6 +654,21 @@ class Cart
                 } else {
                     $proceed = true;
                 }
+
+                if((bool)$coupon['exclude_sale_items']) {
+                    $proceed = false;
+                    foreach ($this->basket['contents'] as $key => $data) {
+                        if(isset($include[$data['id']]) && (bool)$data['in_sale']) {
+                            unset($include[$data['id']]);
+                        } elseif(!(bool)$data['in_sale']) {
+                            $proceed = true;
+                            $include[$data['id']] = true;
+                        }
+                    }
+                    if(!$proceed) {
+                        $GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_sales_items_excluded']);
+                    }
+                }
                 foreach ($GLOBALS['hooks']->load('class.cart.discount_add') as $hook) {
                     include $hook;
                 }
