@@ -914,9 +914,6 @@ class Order
             } else {
                 if ($force_past_oids) { // Not currently used
                     $GLOBALS['db']->misc("UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary` SET `custom_oid` = ".$concat);
-                } else {
-                    $column = $GLOBALS['config']->get('config', 'oid_mode')=='i' ? 'id' : 'cart_order_id';
-                    $GLOBALS['db']->misc("UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary` SET `custom_oid` = `$column` WHERE `custom_oid` = '' OR `custom_oid` IS NULL");
                 }
                 $GLOBALS['db']->misc("DROP TRIGGER IF EXISTS `custom_oid`");
                 $oid_col = 'custom_oid';
