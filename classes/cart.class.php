@@ -621,6 +621,7 @@ class Cart
                 }
 
                 if ($incexc!=='shipping_only' && is_array($qualifying_products) && count($qualifying_products)>0) {
+                    $product_ids = array();
                     foreach ($qualifying_products as $id) {
                         $product_ids[$id] = true;
                     }
