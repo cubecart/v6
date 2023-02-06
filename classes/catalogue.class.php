@@ -1735,11 +1735,11 @@ class Catalogue
             case '1':
             case '2':
                 $this->sale_on = true;
-                if ($GLOBALS['config']->get('config', 'sale_starts')!=='0000-00-00' && (strtotime($GLOBALS['config']->get('config', 'sale_starts')) > time())) {
+                if (!empty($GLOBALS['config']->get('config', 'sale_starts')) && (strtotime($GLOBALS['config']->get('config', 'sale_starts')) > time())) {
                     // Sale has not yet started
                     $this->sale_on = false;
                 }
-                if ($GLOBALS['config']->get('config', 'sale_expires')!=='0000-00-00' && (strtotime($GLOBALS['config']->get('config', 'sale_expires')) < time())) {
+                if (!empty($GLOBALS['config']->get('config', 'sale_expires')) && (strtotime($GLOBALS['config']->get('config', 'sale_expires')) < time())) {
                     // Sale has expired
                     $this->sale_on = false;
                 }
