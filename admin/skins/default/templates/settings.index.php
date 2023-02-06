@@ -128,6 +128,8 @@
             </select></span>
          </div>
          <div><label for="catalogue_sale_percentage">{$LANG.settings.sales_percentage}</label><span><input name="config[catalogue_sale_percentage]" id="catalogue_sale_percentage" type="text" class="textbox number" value="{$CONFIG.catalogue_sale_percentage}">%</span></div>
+         <div><label for="sale_starts">{$LANG.catalogue.title_coupon_starts} (YYYY-MM-DD)</label><span><input type="text" name="config[sale_starts]" id="sale_starts" value="{if $CONFIG.sale_starts=='0000-00-00'}{else}{$CONFIG.sale_starts}{/if}" class="textbox date number"></span></div>
+	      <div><label for="sale_expires">{$LANG.catalogue.title_coupon_expires} (YYYY-MM-DD)</label><span><input type="text" name="config[sale_expires]" id="sale_expires" value="{if $CONFIG.sale_expires=='0000-00-00'}{else}{$CONFIG.sale_expires}{/if}" class="textbox date number"></span></div>
          <div><label for="catalogue_sale_items">{$LANG.settings.sales_items_count}</label><span><input name="config[catalogue_sale_items]" id="catalogue_sale_items" type="text" class="textbox number" value="{$CONFIG.catalogue_sale_items}"></span></div>
       </fieldset>
       <fieldset>

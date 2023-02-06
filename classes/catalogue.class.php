@@ -35,6 +35,7 @@ class Catalogue
     private $_product_data = array();
 
     public $image_tags = array();
+    public $sale_on = false;
 
     const OPTION_SELECT     = 0;
     const OPTION_TEXTBOX    = 1;
@@ -72,6 +73,10 @@ class Catalogue
         $pre_release = $GLOBALS['db']->select('CubeCart_inventory', 'MIN(`live_from`) AS `next_time`', '`live_from` > UNIX_TIMESTAMP()', false, 1, false, false);
         if(!is_null($pre_release[0]['next_time'])) {
             $this->_where_live_from = ' AND `live_from` < UNIX_TIMESTAMP() ';
+        }
+        $this->saleOn();
+        if(!CC_IN_ADMIN && !$this->sale_on) {
+            $GLOBALS['config']->setSessionConfig('config', array('catalogue_sale_mode' => '0'));
         }
     }
 
@@ -1725,6 +1730,26 @@ class Catalogue
         }
     }
 
+    public function saleOn() {
+        switch($GLOBALS['config']->get('config', 'catalogue_sale_mode')) {
+            case '1':
+            case '2':
+                $this->sale_on = true;
+                if ($GLOBALS['config']->get('config', 'sale_starts')!=='0000-00-00' && (strtotime($GLOBALS['config']->get('config', 'sale_starts')) > time())) {
+                    // Sale has not yet started
+                    $this->sale_on = false;
+                }
+                if ($GLOBALS['config']->get('config', 'sale_expires')!=='0000-00-00' && (strtotime($GLOBALS['config']->get('config', 'sale_expires')) < time())) {
+                    // Sale has expired
+                    $this->sale_on = false;
+                }
+                return $this->sale_on;
+            break;
+            default:
+                return false;
+        }  
+    }
+ 
     /**
      * Search product catalog
      *

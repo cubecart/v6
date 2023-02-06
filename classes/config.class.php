@@ -28,6 +28,12 @@ class Config
      */
     private $_config = array();
     /**
+     * Session config
+     *
+     * @var array
+     */
+    private $_session_config = array();
+    /**
      * Temp configs that should not be written to the db
      *
      * @var array
@@ -138,6 +144,10 @@ class Config
      */
     public function get($config_name, $element = '', $isset = false)
     {
+        if(!empty($element) && isset($this->_session_config[$config_name][$element])) {
+            return $this->_session_config[$config_name][$element];
+        }
+        
         //If there is an config
         if (isset($this->_config[$config_name])) {
             //If there is not an element the entire array
@@ -199,6 +209,14 @@ class Config
                 }
                 $this->_config[$config_name] = merge_array($this->_config[$config_name], $data);
             }
+        }
+    }
+
+    public function setSessionConfig($config_name, $data) {
+        if (isset($this->_session_config[$config_name])) {
+            $this->_session_config[$config_name] = merge_array($this->_session_config[$config_name], $data);
+        } else {
+            $this->_session_config[$config_name] = $data;
         }
     }
 
