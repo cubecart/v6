@@ -16,13 +16,17 @@
       {literal}
       <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
       <script type="text/javascript">
-         google.load("visualization", "1", {packages:["corechart"]});
-         google.setOnLoadCallback(drawChart);
          function drawChart() {
             var data = google.visualization.arrayToDataTable([{/literal}{$CHART.data}{literal}]);
             var options = {title: '{/literal}{$CHART.title}{literal}',width:'100%',height:300};
             var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
             chart.draw(data, options);
+         }
+         google.charts.load('current', {packages: ['corechart']});
+         const listener = ['resize','load'];
+         listener.forEach(addEL);
+         function addEL(l) {
+            addEventListener(l, (event) => {drawChart()});
          }
       </script>
       {/literal}	
