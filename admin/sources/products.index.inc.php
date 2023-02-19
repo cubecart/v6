@@ -1220,6 +1220,7 @@ if (isset($_GET['action'])) {
     if (($where === false || strlen($where) > 0) && ($results = $GLOBALS['db']->select('CubeCart_inventory', false, $where, $_GET['sort'], $per_page, $page)) !== false) {
         $pagination = $GLOBALS['db']->pagination(false, $per_page, $page, 9);
         // Find fist letters to sort products by
+        $char_list_array = array();
         if (($chars = $GLOBALS['db']->query('SELECT DISTINCT UPPER(LEFT(`name`, 1)) AS `char` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory`')) !== false) {
             $int = false;
             foreach ($chars as $key) {
