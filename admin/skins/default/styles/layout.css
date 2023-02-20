@@ -1255,7 +1255,7 @@ ul.quick_links li#help_menu ul li:not(:last-child) {
     text-transform: uppercase;
 }
 
-@keyframes cache_amimation {
+@keyframes cache_animation {
     0% {
       background-color: #ffb733;
     }
@@ -1269,7 +1269,7 @@ ul.quick_links li#help_menu ul li:not(:last-child) {
 
 #clear_cache_master.clear {
     background: #ffa500;
-    animation-name: cache_amimation;
+    animation-name: cache_animation;
     animation-duration: 1s;
     animation-iteration-count: 3;
 }
