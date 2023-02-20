@@ -1175,22 +1175,48 @@ ul.quick_links li#help_menu ul li:not(:last-child) {
     color: #000
 }
 #dashboard .extension-container {
-    max-width: 1200px;
+    width: 1000px;
 }
 #dashboard .extension {
     float: left;
     width: 150px;
-    height: 200px;
-    margin: 5px;
-    padding: 0 10px 5px 10px;
-    border: 1px solid #D0D0D0;
-    background-color: #ECECEC
+    margin: 10px 5px;
+    padding: 0;
+    background-color: transparent;
+    text-align: center;
+    border: 1px solid #1E3D45;
+    white-space: nowrap;
 }
 #dashboard .extension h4 {
-    height: 30px
+    height: 17px;
+    line-height: 17px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 144px;
+    background-color: #1E3D45;
+    color: #ffffff;
+    margin: 0;
+    padding: 0 3px;
 }
-#dashboard .extension h4 span {
-    float: right
+#dashboard .extension .img-wrapper {
+    width: 150px;
+    height: 150px;
+}
+#dashboard .extension .shunt {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+#dashboard .extension img {
+    max-width: 144px;
+    max-height: 144px;
+    padding: 3px;
+    vertical-align: middle;
+}
+#dashboard .extension .price {
+    background-color: #1E3D45;
+    color: #ffffff;
 }
 .mail_modal {
     padding: 10px;
