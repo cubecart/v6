@@ -148,6 +148,7 @@ if (isset($_GET['delete']) && is_numeric($_GET['delete']) && Admin::getInstance(
         // Detect products
         if (!$products = $GLOBALS['db']->select('CubeCart_category_index', array('id'), array('cat_id' => (int)$_GET['delete']))) {
             if ($GLOBALS['db']->delete('CubeCart_category', array('cat_id' => (int)$_GET['delete']))) {
+                $GLOBALS['db']->delete('CubeCart_category_language', array('cat_id' => (int)$_GET['delete']));
                 $GLOBALS['seo']->delete('cat', $_GET['delete']);
                 $GLOBALS['main']->successMessage($lang['settings']['notify_category_delete']);
             } else {
