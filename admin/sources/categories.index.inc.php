@@ -164,7 +164,7 @@ if (isset($_GET['delete']) && is_numeric($_GET['delete']) && Admin::getInstance(
     httpredir(currentPage(array('delete')));
 }
 
-if (isset($_POST['translate']) && isset($_POST['cat_id']) && is_numeric($_POST['cat_id'])) {
+if (isset($_POST['translate']) && isset($_POST['cat_id']) && is_numeric($_POST['cat_id']) && Admin::getInstance()->permissions('categories', CC_PERM_EDIT)) {
     $_POST['translate']['cat_desc'] = $GLOBALS['RAW']['POST']['translate']['cat_desc'];
 
     foreach ($GLOBALS['hooks']->load('admin.category.translate.save.pre_process') as $hook) {
@@ -183,7 +183,7 @@ if (isset($_POST['translate']) && isset($_POST['cat_id']) && is_numeric($_POST['
     // Get original category name
     $master_cat_name = $GLOBALS['db']->select('CubeCart_category', array('cat_name'), array('cat_id' => (int)$_POST['cat_id']));
 
-    if (!empty($_POST['translation_id']) && is_numeric($_POST['translation_id']) && Admin::getInstance()->permissions('categories', CC_PERM_EDIT)) {
+    if (!empty($_POST['translation_id']) && is_numeric($_POST['translation_id'])) {
         if ($GLOBALS['db']->update('CubeCart_category_language', $_POST['translate'], array('translation_id' => (int)$_POST['translation_id'], 'cat_id' => (int)$_POST['cat_id']))) {
             $GLOBALS['main']->successMessage($lang['translate']['notify_translation_update']);
             $remarray = array('action', 'cat_id', 'translation_id');
