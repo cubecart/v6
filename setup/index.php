@@ -153,6 +153,7 @@ $default_config_settings = array(
   'catalogue_sale_percentage' => '',
   'catalogue_show_empty' => '1',
   'product_weight_unit' => 'Kg',
+  'product_size_unit' => 'cm',
   'proxy' => '0',
   'proxy_host' => '',
   'proxy_port' => '',
