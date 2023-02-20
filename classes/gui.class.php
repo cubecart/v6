@@ -1302,7 +1302,7 @@ class GUI
             foreach ($GLOBALS['hooks']->load('class.gui.display_popular_products') as $hook) {
                 include $hook;
             }
-            $GLOBALS['cache']->write($vars, $cache_id);
+            //$GLOBALS['cache']->write($vars, $cache_id);
             $GLOBALS['smarty']->assign('POPULAR', $vars);
             $content = $GLOBALS['smarty']->fetch('templates/box.popular.php');    
             $GLOBALS['smarty']->assign('POPULAR_PRODUCTS', $content);
