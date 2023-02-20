@@ -1930,6 +1930,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
+    <string name="size_unit" introduced="6.4.10"><![CDATA[Default Size Unit]]></string>
     <string name="subcategories_of" introduced="6.4.10"><![CDATA[Sub-Categories of %s]]></string>
     <string name="return_parent_category" introduced="6.4.10"><![CDATA[Return to parent category]]></string>
     <string name="item_id" introduced="6.4.8"><![CDATA[Item ID]]></string>

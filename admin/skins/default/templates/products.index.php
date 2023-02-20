@@ -186,8 +186,8 @@
             <label for="dimension_unit">{$LANG.catalogue.dimension_unit}</label>
             <span>
                 <select name="dimension_unit" id="dimension_unit">
-                    <option{if $PRODUCT.dimension_unit=='cm'} selected='selected'{/if} value="cm">Centimeters (cm)</option>
-                    <option{if $PRODUCT.dimension_unit=='in'} selected='selected'{/if} value="in">Inches (in)</option>
+                    <option{if (!isset($PRODUCT.dimension_unit) && $CONFIG.product_size_unit == 'cm') || $PRODUCT.dimension_unit=='cm'} selected='selected'{/if} value="cm">Centimeters (cm)</option>
+                    <option{if  (!isset($PRODUCT.dimension_unit) && $CONFIG.product_size_unit == 'in') || $PRODUCT.dimension_unit=='in'} selected='selected'{/if} value="in">Inches (in)</option>
                 </select>
             </span>
         </div>

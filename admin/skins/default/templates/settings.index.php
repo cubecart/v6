@@ -37,6 +37,10 @@
             {foreach from=$OPT_PRODUCT_WEIGHT_UNIT item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
             </select></span>
          </div>
+         <div><label for="product_size_unit">{$LANG.settings.size_unit}</label><span><select name="config[product_size_unit]" id="product_size_unit" class="textbox">
+            {foreach from=$OPT_PRODUCT_SIZE_UNIT item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
+            </select></span>
+         </div>
          {if !in_array($CONFIG.store_country, array(840, 124, 036))}
          <div><label for="tax_number">{$LANG.settings.tax_number}</label><span><input name="config[tax_number]" id="tax_number" type="text" class="textbox" value="{$CONFIG.tax_number}" placeholder="{$LANG.settings.tax_number_placeholder}"></span></div>
          {/if}
