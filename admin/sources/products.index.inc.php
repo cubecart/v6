@@ -406,7 +406,9 @@ if (isset($_GET['delete_review']) && is_numeric($_GET['delete_review']) && Admin
 if (isset($_POST['translate']) && isset($_POST['product_id']) && is_numeric($_POST['product_id']) && Admin::getInstance()->permissions('products', CC_PERM_EDIT)) {
     $_POST['translate']['description'] = $GLOBALS['RAW']['POST']['translate']['description'];
     $_POST['translate']['description_short'] = $GLOBALS['RAW']['POST']['translate']['description_short'];
-    
+    foreach ($GLOBALS['hooks']->load('admin.product.translate.save.pre_process') as $hook) {
+        include $hook;
+    }
     // Insert/Update translation
     if (!empty($_POST['translation_id']) && is_numeric($_POST['translation_id'])) {
         if ($GLOBALS['db']->update('CubeCart_inventory_language', $_POST['translate'], array('translation_id' => (int)$_POST['translation_id'], 'product_id' => (int)$_POST['product_id']))) {
@@ -429,6 +431,10 @@ if (isset($_POST['translate']) && isset($_POST['product_id']) && is_numeric($_PO
             $rem_array = false;
             $add_array = false;
         }
+    }
+
+    foreach ($GLOBALS['hooks']->load('admin.product.translate.save.post_process') as $hook) {
+        include $hook;
     }
     
     httpredir(currentPage($rem_array, $add_array), 'translate');

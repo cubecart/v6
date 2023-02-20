@@ -100,6 +100,8 @@
 	<hook trigger="admin.product.import.format" deprecated="" />
 	<hook trigger="admin.product.table_head_sort" deprecated="" />
 	<hook trigger="admin.product.tabs" deprecated="" />
+	<hook trigger="admin.product.translate.save.pre_process" deprecated="" />
+	<hook trigger="admin.product.translate.save.post_process" deprecated="" />
 	<hook trigger="admin.reports.display" deprecated="" />
 	<hook trigger="admin.reports.final" deprecated="" />
 	<hook trigger="admin.reports.order.pre" deprecated="" />
