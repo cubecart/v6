@@ -145,9 +145,9 @@ class Module
             // Enable this class as an ACP interface
             if ($template) {
                 $GLOBALS['gui']->changeTemplateDir($this->_path.'/skin');
-                $module_lang_node = str_replace('_', '', strtolower($this->_module_name));
+                $module_lang_node = strtolower($this->_module_name);
                 $lang = $GLOBALS['language']->getStrings($module_lang_node);
-                $GLOBALS['smarty']->assign('TITLE', $this->module_fetch_logo($this->_info['type'], $this->_module_name, $lang['module_title']));
+                $GLOBALS['smarty']->assign('TITLE', $this->module_fetch_logo($this->_info['type'], $this->_module_name, isset($lang['module_title']) ? $lang['module_title'] : str_replace('_',' ',$this->_module_name)));
 
                 // Get tax types for modules drop down box
                 if (($this->_taxes = $GLOBALS['db']->select('CubeCart_tax_class', array('id', 'tax_name'), false, array('tax_name' => 'ASC'))) !== false) {
