@@ -365,18 +365,17 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
     }
     $GLOBALS['seo']->setdbPath('prod', $product_id, $_POST['seo_path']);
 
+    $rem_array = array();
     if (isset($_POST['categories']) && count($_POST['categories'])>1 && empty($_POST['primary_cat'])) {
         $GLOBALS['main']->errorMessage($lang['catalogue']['error_category_defaulted']);
-        $rem_array = false;
     } elseif ($inserted) {
         $GLOBALS['main']->successMessage($lang['catalogue']['notify_product_create']);
         $_POST['previous-tab'] = ($_POST['submit_cont']) ? $_POST['previous-tab'] : null;
-        $rem_array = array('action');
+        $rem_array = array('action', 'product_id');
     } else {
         $GLOBALS['catalogue']->getProductHash($_POST['product_id'], "after");
         if ($GLOBALS['catalogue']->productHashMatch('before', 'after')) {
             $GLOBALS['main']->errorMessage($lang['catalogue']['error_product_update']);
-            $rem_array = false;
         } else {
             $GLOBALS['db']->update('CubeCart_inventory', array('updated' => date('Y-m-d H:i:s', time())), array('product_id' => $product_id));
             $GLOBALS['main']->successMessage($lang['catalogue']['notify_product_update']);

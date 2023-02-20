@@ -25,7 +25,7 @@ if (isset($_POST['document']) && Admin::getInstance()->permissions('documents', 
         $_POST['document']['doc_id'] = $duplicates[0]['doc_id'];
     }
     ## Do the database magic
-    $rem_array = null;
+    $rem_array = array();
     $_POST['document']['doc_content'] = $GLOBALS['RAW']['POST']['document']['doc_content'];
     if (isset($_POST['document']['doc_id']) && is_numeric($_POST['document']['doc_id'])) {
         if ($GLOBALS['db']->update('CubeCart_documents', $_POST['document'], array('doc_id' => $_POST['document']['doc_id']), true)) {
@@ -34,7 +34,7 @@ if (isset($_POST['document']) && Admin::getInstance()->permissions('documents', 
             }
             $GLOBALS['seo']->setdbPath('doc', $_POST['document']['doc_id'], $_POST['seo_path'], true, true);
             $GLOBALS['main']->successMessage($lang['documents']['notify_document_update']);
-            $rem_array = array('action');
+            $rem_array = array('action','doc_id');
         } else {
             $GLOBALS['main']->errorMessage($lang['documents']['error_document_update']);
         }
@@ -42,7 +42,7 @@ if (isset($_POST['document']) && Admin::getInstance()->permissions('documents', 
         if ($doc_id = $GLOBALS['db']->insert('CubeCart_documents', $_POST['document'])) {
             $GLOBALS['seo']->setdbPath('doc', $doc_id, $_POST['seo_path']);
             $GLOBALS['main']->successMessage($lang['documents']['notify_document_create']);
-            $rem_array = array('action');
+            $rem_array = array('action','doc_id');
         } else {
             $GLOBALS['main']->errorMessage($lang['documents']['error_document_create']);
         }
