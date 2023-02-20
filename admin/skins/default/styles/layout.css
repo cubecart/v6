@@ -1188,8 +1188,6 @@ ul.quick_links li#help_menu ul li:not(:last-child) {
     white-space: nowrap;
 }
 #dashboard .extension h4 {
-    height: 17px;
-    line-height: 17px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
