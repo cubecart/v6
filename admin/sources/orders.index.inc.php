@@ -327,7 +327,7 @@ if (isset($_GET['action'])) {
             if (($customer_notes = $GLOBALS['db']->select('CubeCart_customer', array('notes'), array('customer_id' => $summary[0]['customer_id']))) !== false) {
                 $GLOBALS['smarty']->assign('CUSTOMER_NOTES', $customer_notes[0]['notes']);
             }
-            $GLOBALS['gui']->addBreadcrumb($GLOBALS['config']->get('config', 'oid_mode') == 'i' ? $summary[0][$GLOBALS['config']->get('config', 'oid_col')] : $summary[0]['cart_order_id'], currentPage(array('print_hash')));
+            $GLOBALS['gui']->addBreadcrumb(($GLOBALS['config']->get('config', 'oid_mode') == 'i' && !empty($summary[0][$GLOBALS['config']->get('config', 'oid_col')])) ? $summary[0][$GLOBALS['config']->get('config', 'oid_col')] : $summary[0]['cart_order_id'], currentPage(array('print_hash')));
             // Load order inventory
             if (($inventory = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('cart_order_id' => $summary[0]['cart_order_id']))) !== false) {
                 $subtotal = 0;
