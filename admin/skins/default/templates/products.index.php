@@ -715,6 +715,12 @@
       <div><a href="{$TRANSLATE}">{$LANG.translate.trans_add}</a></div>
    </div>
    {/if}
+   {if isset($PLUGIN_TABS)}
+      {foreach from=$PLUGIN_TABS item=tab}
+		{$tab}
+      {/foreach}
+   {/if}   
+   {include file='templates/element.hook_form_content.php'}
    <div class="form_control">
       <input type="hidden" name="save" value="{$FORM_HASH}">
       <input type="hidden" name="previous-tab" id="previous-tab" value="">
@@ -747,11 +753,6 @@
          <div><label for="seo_meta_description">{$LANG.settings.seo_meta_description}</label><span><textarea name="translate[seo_meta_description]" id="prod_seo_description" class="textbox">{$TRANS.seo_meta_description}</textarea></span></div>
       </fieldset>
    </div>
-   {if isset($PLUGIN_TABS)}
-      {foreach from=$PLUGIN_TABS item=tab}
-		{$tab}
-      {/foreach}
-   {/if}   
    {include file='templates/element.hook_form_content.php'}
    <div class="form_control">
       <input type="hidden" name="product_id" value="{$TRANS.product_id}">
@@ -760,4 +761,5 @@
       <input type="submit" value="{$LANG.common.save}">
    </div>
    {/if}
+   
 </form>
