@@ -440,7 +440,7 @@ jQuery(document).ready(function() {
                 product_image = $(this).find(':selected').attr('data-image');
             }
             if(product_image.length>0) {
-                $('img#product_image').attr('src',product_image);
+                $('img#img-preview').attr('src',product_image);
             }
         });
     }

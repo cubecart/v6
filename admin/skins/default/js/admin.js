@@ -1101,12 +1101,12 @@ $(".choose_option_img").on("click", function(a) {
     var opnr = window.open('?_g=filemanager&mode=fck&source=options','chooser','toolbar=no,menubar=no,width=600,height=600');
     var selector = $(this);
     var assign_id = selector.attr("rel");
-    opnr.addEventListener('message', function(event) {
+    window.addEventListener('message', function(event) {
         $('#option_image_id_'+assign_id).val(event.data.image_id);
         $('#option_image_preview_'+assign_id).attr('src',event.data.path);
         $('#remove_image_id_'+assign_id).show();
         $('#selector_image_id_'+assign_id).hide();
-    });
+    }, { once:true} );
 });
 $(".remove_option_img").on("click", function(a) {
     var assign_id = $(this).attr("rel");
@@ -1122,11 +1122,11 @@ $("a.select").on("click", function(a) {
         e = $("#ckfuncnum").val();
     if($(this).hasClass('options')) {
         a.preventDefault();
-        window.parent.postMessage({path: t, image_id: i}, "*");
+        window.opener.postMessage({path: t, image_id: i}, "*");
         window.close();
         return;
     } else {
-        return window.opener.CKEDITOR.tools.callFunction(e, t), window.close(), !1
+    return window.opener.CKEDITOR.tools.callFunction(e, t), window.close(), !1
     }
 }), $("#discount_type, .lineprice").on("change", function() {
     $(".update-subtotal input.number").trigger("change")
