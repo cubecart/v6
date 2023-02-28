@@ -262,8 +262,8 @@ class Debug
         }
 
         if ($this->_display && $this->_enabled) {
-            $output[] = "<div style='font-family: \"Courier New\",Courier,monospace;font-size: 10px;border-top: 5px dashed silver;color: #000;background-color: #E7E7E7; clear: both; padding: 5px;'>";
-            $output[] = "<h2>Debug Output</h2>";
+            $output[] = "<div style='font-family: \"Courier New\",Courier,monospace;font-size: 10px;border-bottom: 5px dashed silver;border-top: 5px dashed silver;margin: 0 0 50px 0;color: #000;background-color: #E7E7E7; clear: both; padding: 5px;'>";
+            $output[] = "<h2>Debug Output - ".$_SERVER['REQUEST_URI']."</h2>";
             $output[] = "<div>This can be disabled via &quot;Store Settings&quot; &raquo; &quot;Advanced&quot; (Tab) &raquo; &quot;Enable Debugging&quot;.</div>";
             $output[] = "<hr/>";
 
@@ -357,8 +357,8 @@ class Debug
             $cache = Cache::getInstance();
             $cache->status();
             $cacheState = $cache->status ? '<span style="color: #008000">'.$cache->status_desc.'</span>' : '<span style="color: #ff0000">'.$cache->status_desc.'</span>';
-
-            $clear_cache = CC_IN_ADMIN ? '' : '[<a href="'.currentPage(null, array('debug-cache-clear' => 'true')).'">Clear Cache</a>]';
+            $clear_cache_url = currentPage(null, array('debug-cache-clear' => 'true'));
+            $clear_cache = CC_IN_ADMIN ? '' : '[<a href="javascript: void(0)" onclick="javascript:window.opener.document.location.href=\''.$clear_cache_url.'\'">Clear Cache</a>]';
             $output[] = '<strong>Cache ('.$cache->getCacheSystem().'): '.$cacheState.'</strong><br />'.$cache->usage().' '.$clear_cache.'<hr size="1" />';
 
             // Page render timer
@@ -375,7 +375,11 @@ class Debug
                 return $content;
             } else {
                 $has_debug_spool = (is_object($GLOBALS['session']) && $GLOBALS['session']->has('debug_spool'));
-                echo implode(($has_debug_spool) ? $GLOBALS['session']->get('debug_spool') : array()).$content;
+                $debug_html = implode(($has_debug_spool) ? $GLOBALS['session']->get('debug_spool') : array()).$content;
+                echo '<script type="text/javascript">
+                const debug_data = `'.str_replace('`','\`',implode(($has_debug_spool) ? $GLOBALS['session']->get('debug_spool') : array()).$content).'`;
+                debugConsole(debug_data);
+                </script>';
                 if ($has_debug_spool) $GLOBALS['session']->set('debug_spool',null);
             }
         }
