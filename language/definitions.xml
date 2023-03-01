@@ -1279,7 +1279,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="min_three_char" introduced="6.4.0"><![CDATA[Search term should be a minimum of three charachters.]]></string>
     <string name="search_result" introduced="6.4.0"><![CDATA[Image Search Result for '%s']]></string>
     <string name="public" introduced="6.1.6"><![CDATA[Files uploaded to the files/public folder can be accessed directly via a browser. All others are protected with intent to be sold as digital products.]]></string>
-    <string name="upload_destination" introduced="6.1.2"><![CDATA[Upload Destination]]></string>
     <string name="refresh_files" introduced="6.1.2"><![CDATA[Refresh File List]]></string>
     <string name="show_assigned" introduced="6.1.2"><![CDATA[Show Assigned Images Only]]></string>
     <string name="show_all" introduced="6.1.2"><![CDATA[Show All Images]]></string>
