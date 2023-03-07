@@ -189,14 +189,16 @@ class Cubecart
                 );
 
                 $GLOBALS['seo']->set_meta_data($meta_data);
+
+                if ($contents['doc_privacy']==1) {
+                    $GLOBALS['smarty']->assign('COOKIE_SWITCH', true);
+                }
+                $contents['doc_content'] = ($contents['doc_parse']==1) ? $GLOBALS['smarty']->fetch('string:'.$contents['doc_content']) : $contents['doc_content'];
+
+                return $contents;
             }
         }
-        if ($contents['doc_privacy']==1) {
-            $GLOBALS['smarty']->assign('COOKIE_SWITCH', true);
-        }
-        $contents['doc_content'] = ($contents['doc_parse']==1) ? $GLOBALS['smarty']->fetch('string:'.$contents['doc_content']) : $contents['doc_content'];
-
-        return (isset($contents) && !empty($contents)) ? $contents : false;
+        return false;
     }
 
     /**
