@@ -538,6 +538,8 @@ class Catalogue
                     case self::OPTION_SELECT:  ## Dropdown options
                     case self::OPTION_RADIO:  ## Radio options
                         foreach ($group as $key => $option) {
+                            $group_priority = $option['priority'];
+                            unset($option['priority']);
                             foreach ($option as $value) {
                                 if (!isset($option_list[$value['option_id']])) {
                                     $option_list[$value['option_id']] = array(
