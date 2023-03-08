@@ -1317,14 +1317,13 @@ class GUI
         if (!$GLOBALS['smarty']->templateExists('templates/box.featured.php')) {
             return false;
         }
-
+        $random_product = false;
         foreach ($GLOBALS['hooks']->load('class.gui.display_random_product_pre') as $hook) {
             include $hook;
         }
         $featured_products  = $GLOBALS['db']->select('CubeCart_inventory', 'product_id', $GLOBALS['catalogue']->outOfStockWhere(array('status' => '1', 'featured' => '1')));
         $n = ($featured_products ? count($featured_products) : 0);
         if ($n > 0) {
-            $random_product = false;
             $tries = 0;
             while (!$random_product && $tries < 15) {
                 $random_id = $featured_products[mt_rand(0, $n - 1)]['product_id'];
