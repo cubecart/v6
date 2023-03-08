@@ -440,7 +440,12 @@ jQuery(document).ready(function() {
                 product_image = $(this).find(':selected').attr('data-image');
             }
             if(product_image.length>0) {
-                $('img#img-preview').attr('src',product_image);
+                if($('a.MagicZoom').length>0){
+                    var magicZoomNode = $('a.MagicZoom').attr('id');
+                    MagicZoom.update(magicZoomNode, product_image.replace(".500.", ".").replace("/cache/", "/source/"), product_image);
+                } else {
+                    $('img#img-preview').attr('src',product_image);
+                }
             }
         });
     }
