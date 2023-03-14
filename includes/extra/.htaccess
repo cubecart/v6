@@ -3,6 +3,6 @@
 # Relates to Session->_start()
 # Code snippets are also stored here and must be protected.
 
-<FilesMatch "^(sess_|snippet_)">
+<FilesMatch "^(sess_|snippet_|es.json)">
   deny from all
 </FilesMatch>

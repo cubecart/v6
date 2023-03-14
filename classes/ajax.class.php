@@ -48,6 +48,9 @@ class Ajax
         $string = ($_GET['q']) ? $_GET['q'] : '';
         $function = (isset($_GET['function']) && !empty($_GET['function'])) ? $_GET['function'] : 'search';
         switch ($function) {
+            case 'rebuildElasticsearch':
+                $return_data = self::rebuildElasticsearch();
+            break;
             case 'filesize':
                 $return_data = self::filesize((string)$_GET['path'], 0);
             break;
@@ -78,6 +81,24 @@ class Ajax
             break;
         }
         return $return_data;
+    }
+
+    /**
+     * Rebuild ElasticSearch
+     *
+     * @param string $path
+     * @param int $item_id
+     * @return json string
+     */
+    public static function rebuildElasticSearch() { 
+        $es = new ElasticsearchHandler;
+        $status  = $es->rebuild($_GET['page']);
+        if (is_array($status)) {
+            $data = $status;
+        } else {
+            $data = ($status) ? array('complete' => 'true', 'percent' => 100) : array('error' => 'true');
+        }
+        return json_encode($data);
     }
 
     /**

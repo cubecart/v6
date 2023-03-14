@@ -385,6 +385,15 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
         }
     }
 
+    if($GLOBALS['config']->get('config', 'elasticsearch')=='1') {
+        $es = new ElasticsearchHandler;
+        if($es->exists($product_id)){
+            $es->update($product_id);
+        } else {
+            $es->add($product_id);
+        }
+    }
+
     foreach ($GLOBALS['hooks']->load('admin.product.save.post_process') as $hook) {
         include $hook;
     }
@@ -479,6 +488,12 @@ if (((isset($_GET['delete']) && !empty($_GET['delete'])) || (isset($_POST['delet
             $GLOBALS['db']->delete('CubeCart_options_set_product', array('product_id' => $delete_id));
             // Delete SEO value
             $GLOBALS['seo']->delete('prod', $delete_id);
+            if($GLOBALS['config']->get('config', 'elasticsearch')=='1') {
+                $es = new ElasticsearchHandler;
+                if($es->exists($delete_id)) {
+                    $es->delete($delete_id);
+                }
+            }
             $deleted = true;
         }
     }

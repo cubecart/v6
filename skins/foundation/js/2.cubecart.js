@@ -311,9 +311,71 @@ jQuery(document).ready(function() {
         }
         return false;
     });
-    $(".search_input").click(function(event) {
+    var sayt = $(".search_input");
+
+    sayt.click(function(event) {
         $.removeCookie('ccScroll', null);
     });
+    var keyDelay = sayt.hasClass("es") ? 0 : 500;
+    sayt.keyup(input_delay(function (e) {
+        saytGo();
+    }, keyDelay));
+
+    function input_delay(callback, ms) {
+        var timer = 0;
+        return function() {
+            var context = this, args = arguments;
+            clearTimeout(timer);
+            timer = setTimeout(function () {
+                callback.apply(context, args);
+            }, ms || 0);
+        };
+    }
+    
+    function saytGo() {
+        if(!sayt.hasClass("es")) {
+            return false;
+        }
+        var search_term = sayt.val();
+        if(!$('#sayt_results').length) {
+            $('<ul id="sayt_results">').insertAfter(sayt);
+        }
+        if(search_term.length==0) {
+            $('#sayt_results li').remove();
+            if(keyDelay>0) {
+                $('.search_form button').html('<svg class="icon"><use xlink:href="#icon-search"></use></svg>');
+            }
+        } else {
+            var amount = sayt.attr("data-amount");
+            var url = '?_e=es&q='+search_term+'&a='+amount;
+            $.ajax({
+                async: true,
+                url: url,
+                cache: true,
+                beforeSend: function() {
+                    if(keyDelay>0) {
+                        $('.search_form button').html('<svg class="icon icon-submit"><use xlink:href="#icon-spinner"></use></svg>');
+                    }
+                },
+                complete: function(response) {
+                    $('#sayt_results li').remove();
+                    var products = $.parseJSON(response.responseText);
+                    if(Array.isArray(products)) {
+                        for(var k in products) {
+                            var regexp = new RegExp('('+search_term+')', 'gi');
+                            var image = (sayt.attr("data-image")=='true') ? "<img src=\""+products[k]['thumbnail']+"\" title=\""+products[k]['name']+"\">" : '';
+                            $("#sayt_results").append("<li><a href='?_a=product&product_id="+products[k]['product_id']+"'>"+image+products[k]['name'].replace(regexp, "<strong>"+search_term+"</strong>")+"</a></li>");
+                        }
+                    } else {
+                        $('#sayt_results').append('<li class="status">No results found</li>');
+                    }
+                    if(keyDelay>0) {
+                        $('.search_form button').html('<svg class="icon"><use xlink:href="#icon-search"></use></svg>');
+                    }
+                }
+            });
+        }
+    }
     $("#ccScroll").on( "click", ".ccScroll-next", function(event) {
         event.preventDefault();
         $(this).hide();

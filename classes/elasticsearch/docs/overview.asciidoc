@@ -1,0 +1,26 @@
+[[overview]]
+== Overview
+
+This is the official PHP client for {es}. It is designed to be a low-level 
+client that does not stray from the REST API.
+
+All methods closely match the REST API, and furthermore, match the method 
+structure of other language clients (Ruby, Python, and so on). We hope that this 
+consistency makes it easy to get started with a client and to seamlessly switch 
+from one language to the next with minimal effort.
+
+The client is designed to facilitate the API call using different way to read the
+results using associative array, object, string or https://www.php-fig.org/psr/psr-7/[PSR-7].
+
+[discrete]
+[[psr-7-standard]]
+=== PSR 7 standard
+
+The {es} PHP client uses the https://www.php-fig.org/psr/[PSR] 7 standard. This 
+standard is a community effort that contains a set of interfaces defined by the 
+PHP Framework Interop Group. For more information, refer to the 
+https://www.php-fig.org/psr/psr-7/[PSR 7 standard documentation].
+
+* <<breaking_changes>>
+
+include::breaking-changes.asciidoc[]

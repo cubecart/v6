@@ -606,6 +606,9 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="count" introduced="6.5.0"><![CDATA[Count]]></string>
+    <string name="rebuild" introduced="6.5.0"><![CDATA[Rebuild]]></string>
+    <string name="build" introduced="6.5.0"><![CDATA[Build]]></string>
     <string name="setup" introduced="6.4.10"><![CDATA[Setup]]></string>
     <string name="configure" introduced="6.4.10"><![CDATA[Configure]]></string>
     <string name="nobody" introduced="6.4.8"><![CDATA[Nobody]]></string>
@@ -1435,6 +1438,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="example_code_snippet_xml" introduced="5.2.0"><![CDATA[An example of an import XML feed can be found <a href="docs/examples/code_snippet_import.php" target="blank">here</a>. Please use the &quot;Help&quot; link for further information.]]></string>
   </group>
   <group name="maintain">
+    <string name="rebuild_elasticsearch" introduced="6.5.0"><![CDATA[Clear and rebuild the Elasticsearch engine. Once built it will self manage along with inventory changes.]]></string>
     <string name="auto_upgrade_disabled" introduced="6.4.2"><![CDATA[This tool is disabled in order to prevent customisations from being overwritten. Please contact <a href="mailto:{$EMAIL}">{$EMAIL}</a> for support.]]></string>
     <string name="duplicate_index" introduced="6.1.6"><![CDATA[%s has duplicate %s indexes. One of these could be removed.]]></string>
     <string name="missing_index" introduced="6.1.5"><![CDATA[%s has no key set. Expecting %s.]]></string>
@@ -1529,6 +1533,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="sitemap" introduced="5.0.0"><![CDATA[Rebuild Sitemap]]></string>
     <string name="tab_backup" introduced="5.0.0"><![CDATA[Backup]]></string>
     <string name="tab_db" introduced="5.0.0"><![CDATA[Database]]></string>
+    <string name="tab_elasticsearch" introduced="6.5.0"><![CDATA[Elasticsearch]]></string>
     <string name="tab_rebuild" introduced="5.0.0"><![CDATA[Rebuild]]></string>
     <string name="tab_query_sql" introduced="5.0.0"><![CDATA[Query Database (Advanced)]]></string>
     <string name="table_name" introduced="5.0.0"><![CDATA[Table]]></string>
@@ -1929,6 +1934,12 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
+    <string name="index_name" introduced="6.5.0"><![CDATA[Index Name]]></string>
+    <string name="cert_auth" introduced="6.5.0"><![CDATA[Certificate Authority]]></string>
+    <string name="elasticsearch" introduced="6.5.0"><![CDATA[Elasticsearch]]></string>
+    <string name="es_hosts" introduced="6.5.0"><![CDATA[Host (Comma separated for multiple)]]></string>
+    <string name="es_ssl_v" introduced="6.5.0"><![CDATA[Strict SSL Validation]]></string>
+    <string name="no_elasticsearch" introduced="6.5.0"><![CDATA[Elasticsearch isn't available or the provided settings are incorrect. Please contact <a href="https://support.cubecart.com/hc/en-gb/requests/new">CubeCart support</a>.]]></string>
     <string name="size_unit" introduced="6.4.10"><![CDATA[Default Size Unit]]></string>
     <string name="subcategories_of" introduced="6.4.10"><![CDATA[Sub-Categories of %s]]></string>
     <string name="return_parent_category" introduced="6.4.10"><![CDATA[Return to parent category]]></string>
