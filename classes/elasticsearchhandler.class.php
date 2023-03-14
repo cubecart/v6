@@ -162,8 +162,10 @@ class ElasticsearchHandler
      */
     public function deleteIndex() {
         try {
-            return $this->_client->indices()->delete(['index' => $this->_index]);
+            $response =  $this->_client->indices()->delete(['index' => $this->_index]);
+            return $response->getStatusCode() == 200 ? true : false;
         } catch (Exception $e) {
+            $this->last_error = 'Elasticsearch: '.$e->getMessage();
             return false;
         } 
     }
@@ -172,13 +174,11 @@ class ElasticsearchHandler
      * Delete product from index
      */
     public function delete($id) {
-        $params = [
-            'index'     => $this->_index,
-            'id'        => $id,
-        ];
         try {
-            return $this->_client->delete($params);
+            $response =  $this->_client->delete(['index' => $this->_index, 'id' => $id]);
+            return $response->getStatusCode() == 200 ? true : false;
         } catch (Exception $e) {
+            $this->last_error = 'Elasticsearch: '.$e->getMessage();
             return false;
         }
     }
