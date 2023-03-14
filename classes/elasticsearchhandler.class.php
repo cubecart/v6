@@ -75,11 +75,7 @@ class ElasticsearchHandler
                 $this->createIndex();
             }
             $response = $this->_client->index($params);
-            if($response->getStatusCode()=='200') {
-                return true;
-            } else {
-                return false;
-            }
+            return $response->getStatusCode() == 200 ? true : false;
         } catch (Exception $e) {
             $this->last_error = $e->getMessage();
             return false;
@@ -154,11 +150,7 @@ class ElasticsearchHandler
         ];
         try {
             $response = $this->_client->indices()->create($params);
-            if($response->getStatusCode()=='200') {
-                return true;
-            } else {
-                return false;
-            }
+            return $response->getStatusCode() == 200 ? true : false;
         } catch (Exception $e) {
             $this->last_error = 'Elasticsearch: '.$e->getMessage();
             return false;
@@ -195,9 +187,9 @@ class ElasticsearchHandler
      * Check product exists in index
      */
     public function exists($id = '') {
-        $params = ['index' => $this->_index, 'id' => $id];
         try {
-            return $this->_client->exists($params);
+            $response = $this->_client->exists(['index' => $this->_index, 'id' => $id]);
+            return $response->getStatusCode() == 200 ? true : false;
         } catch (Exception $e) {
             $this->last_error = 'Elasticsearch: '.$e->getMessage();
             return false;
@@ -235,11 +227,7 @@ class ElasticsearchHandler
     public function indexExists() {
         try {
             $response = $this->_client->indices()->exists(['index' => $this->_index]);
-            if($response->getStatusCode()=='200') {
-                return true;
-            } else {
-                return false;
-            }
+            return $response->getStatusCode() == 200 ? true : false;
         } catch (Exception $e) {
             $this->last_error = 'Elasticsearch: '.$e->getMessage();
             return false;
