@@ -232,6 +232,7 @@ class ElasticsearchHandler
     public function query($search_data) {
         if(!isset($search_data['keywords'])) return false;
         $es_keywords = $search_data['keywords'];
+        /* Just search as you type
         $this->_search_body = [
             'query' => [
                 'match' => [
@@ -242,12 +243,62 @@ class ElasticsearchHandler
                 ]
             ]
         ];
+        */
+        /*
+        Search as you type or product code
+        */
+        $this->_search_body = 
+        [
+            'query' =>
+            [
+                'bool' =>
+                [
+                    'should' =>
+                    [
+                        [
+                            'match' => 
+                            [
+                                'name' => 
+                                [
+                                    'query' => $es_keywords, 'analyzer' => 'standard'
+                                ]
+                            ]
+                        ],
+                        [
+                            'match' =>
+                            [
+                                'product_code' => $es_keywords
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * Execute search query
+     */
+    public function search($from, $size) {
+        $from = ($from-1)*$size;
+        $params = [
+            'index' => $this->_index,
+            'body'  => json_encode(array_merge(['from' => $from, 'size' => $size],$this->_search_body))
+        ];
+        try {
+            $response = $this->_client->search($params);
+            return $response->getStatusCode() == 200 ? true : false;
+        } catch (Exception $e) {
+            $this->_logError($e->getMessage());
+            die($e->getMessage());
+            return false;
+        }
     }
 
     /**
      * Rebuild index
      */
-    public function rebuild($cycle) {
+    public function rebuild($cycle, $limit = 25) {
         ini_set('ignore_user_abort', true);
         if($cycle == 1) {
             if($this->indexExists()) {
@@ -256,7 +307,6 @@ class ElasticsearchHandler
             $this->createIndex();
         }
     
-        $limit = 25;
         $where = array('status' => 1);
         $total = (int)$GLOBALS['db']->count('CubeCart_inventory', 'status', $where);
         if($total==0 && $cycle==1) {
@@ -293,20 +343,6 @@ class ElasticsearchHandler
         } 
         
     }
-    
-    /**
-     * Execute search query
-     */
-    public function search($from, $size) {
-        $from = ($from-1)*$size;
-        $params = [
-            'index' => $this->_index,
-            'body'  => json_encode(array_merge(array('from' => $from, 'size' => $size),$this->_search_body))
-        ];
-        
-        $response = $this->_client->search($params);
-        return $response;
-    }
 
     /**
      * Update product in index
@@ -333,12 +369,12 @@ class ElasticsearchHandler
     private function _getConfig($config) {
         if(!empty($config)) {
             $es_config = array(
-                'es_h' => $config['es_h'],
-                'es_u' => $config['es_u'],
-                'es_p' => $config['es_p'],
-                'es_i' => $config['es_i'],
-                'es_v' => $config['es_v'],
-                'es_c' => $config['es_c']
+                'es_h' => $config['es_h'],  // Hostname
+                'es_u' => $config['es_u'],  // Username
+                'es_p' => $config['es_p'],  // Password
+                'es_i' => $config['es_i'],  // Index name
+                'es_v' => $config['es_v'],  // Validate SSL (bool)
+                'es_c' => $config['es_c']   // Certificate path
             );
             $fh = fopen($this->_config_file,"wa+");
             fwrite($fh,json_encode($es_config));
@@ -356,7 +392,8 @@ class ElasticsearchHandler
         $es_data = $GLOBALS['catalogue']->getProductData($product_id);
         $this->_index_body = array(
             'name'          => (string)$es_data['name'],
-            'thumbnail'     => (string)$GLOBALS['gui']->getProductImage($es_data['product_id'], 'thumbnail')
+            'product_code'  => (string)$es_data['product_code'],
+            'thumbnail'     => (string)$GLOBALS['gui']->getProductImage($es_data['product_id'], 'thumbnail', 'relative')
         );
     }
 }

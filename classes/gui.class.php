@@ -493,7 +493,7 @@ class GUI
      *
      * @return image path/false
      */
-    public function getProductImage($product_id = false, $mode = 'small')
+    public function getProductImage($product_id = false, $mode = 'small', $path_type = 'url')
     {
         
         // If array take first key that exists (This is for backward compatibility to ensure old skins still work).
@@ -510,7 +510,7 @@ class GUI
             $this->_product_images[$product_id] = isset($this->_product_images[$product_id]) ? $this->_product_images[$product_id] : $GLOBALS['db']->select('CubeCart_image_index', false, array('product_id' => $product_id), array('main_img' => 'DESC'), 1);
 
             if ($this->_product_images[$product_id]) {
-                return $GLOBALS['catalogue']->imagePath($this->_product_images[$product_id][0]['file_id'], $mode, 'url');
+                return $GLOBALS['catalogue']->imagePath($this->_product_images[$product_id][0]['file_id'], $mode, $path_type);
             }
         }
 
