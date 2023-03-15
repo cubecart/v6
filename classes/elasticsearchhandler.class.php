@@ -254,6 +254,42 @@ class ElasticsearchHandler
                             [
                                 'product_code' => $es_keywords
                             ]
+                        ],
+                        [
+                            'match' =>
+                            [
+                                'upc' => $es_keywords
+                            ]
+                        ],
+                        [
+                            'match' =>
+                            [
+                                'ean' => $es_keywords
+                            ]
+                        ],
+                        [
+                            'match' =>
+                            [
+                                'jan' => $es_keywords
+                            ]
+                        ],
+                        [
+                            'match' =>
+                            [
+                                'isbn' => $es_keywords
+                            ]
+                        ],
+                        [
+                            'match' =>
+                            [
+                                'gtin' => $es_keywords
+                            ]
+                        ],
+                        [
+                            'match' =>
+                            [
+                                'mpn' => $es_keywords
+                            ]
                         ]
                     ]
                 ]
@@ -375,10 +411,24 @@ class ElasticsearchHandler
      */
     private function _indexBody($product_id) {
         $es_data = $GLOBALS['catalogue']->getProductData($product_id);
+        $cat = $GLOBALS['db']->select('CubeCart_category_index', array('cat_id'), array('product_id' => $es_data['product_id'], 'primary' => 1));
+        $seo = SEO::getInstance();
         $this->_index_body = array(
             'name'          => (string)$es_data['name'],
             'product_code'  => (string)$es_data['product_code'],
-            'thumbnail'     => (string)$GLOBALS['gui']->getProductImage($es_data['product_id'], 'thumbnail', 'relative')
+            'upc'           => (string)$es_data['upc'],
+            'ean'           => (string)$es_data['ean'],
+            'jan'           => (string)$es_data['jan'],
+            'isbn'          => (string)$es_data['isbn'],
+            'gtin'          => (string)$es_data['gtin'],
+            'mpn'           => (string)$es_data['mpn'],
+            'thumbnail'     => (string)$GLOBALS['gui']->getProductImage($es_data['product_id'], 'thumbnail', 'relative'),
+            'description'   => (string)$es_data['description'],
+            'price_to_pay'  => (float)$es_data['price_to_pay'],
+            'category'      => (string)$seo->getDirectory((int)$cat[0]['cat_id'], false, ' ', false, false),
+            'manufacturer'  => (string)$GLOBALS['catalogue']->getManufacturer($es_data['manufacturer']),
+            'featured'      => (int)$es_data['featured'],
+            'stock_level'   => (int)$GLOBALS['catalogue']->getProductStock($es_data['product_id'])
         );
     }
 }
