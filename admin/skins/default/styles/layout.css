@@ -324,7 +324,7 @@ hr {
 }
 #breadcrumbs ul.quick_links li {
     float: left;
-    padding: 5px 1rem 5px 0.5rem;
+    padding: 5px 10px 5px 10px;
 }
 #breadcrumbs a {
     color: #737373
@@ -1153,7 +1153,7 @@ ul.quick_links li#help_menu ul {
     position: absolute;
     background-color: #F9F9F9;
     padding: 0;
-    margin: 5px 0 0 -0.5rem;
+    margin: 5px 0 0 -11px;
     border: 1px solid #D0D0D0;
     border-right: none;
 }
