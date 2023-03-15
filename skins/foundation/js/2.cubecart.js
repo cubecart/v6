@@ -331,6 +331,20 @@ jQuery(document).ready(function() {
             }, ms || 0);
         };
     }
+
+    function matchCase(text, pattern) {
+        var result = '';
+        for(var i = 0; i < text.length; i++) {
+            var c = text.charAt(i);
+            var p = pattern.charCodeAt(i);
+            if(p >= 65 && p < 65 + 26) {
+                result += c.toUpperCase();
+            } else {
+                result += c.toLowerCase();
+            }
+        }
+        return result;
+    }
     
     function saytGo() {
         if(!sayt.hasClass("es")) {
@@ -342,9 +356,6 @@ jQuery(document).ready(function() {
         }
         if(search_term.length==0) {
             $('#sayt_results li').remove();
-            if(keyDelay>0) {
-                $('.search_form button').html('<svg class="icon"><use xlink:href="#icon-search"></use></svg>');
-            }
         } else {
             var amount = sayt.attr("data-amount");
             var url = '?_e=es&q='+search_term+'&a='+amount;
@@ -352,11 +363,6 @@ jQuery(document).ready(function() {
                 async: true,
                 url: url,
                 cache: true,
-                beforeSend: function() {
-                    if(keyDelay>0) {
-                        $('.search_form button').html('<svg class="icon icon-submit"><use xlink:href="#icon-spinner"></use></svg>');
-                    }
-                },
                 complete: function(response) {
                     $('#sayt_results li').remove();
                     var products = $.parseJSON(response.responseText);
@@ -364,13 +370,10 @@ jQuery(document).ready(function() {
                         for(var k in products) {
                             var regexp = new RegExp('('+search_term+')', 'gi');
                             var image = (sayt.attr("data-image")=='true') ? "<img src=\""+products[k]['thumbnail']+"\" title=\""+products[k]['name']+"\">" : '';
-                            $("#sayt_results").append("<li><a href='?_a=product&product_id="+products[k]['product_id']+"'>"+image+products[k]['name'].replace(regexp, "<strong>"+search_term+"</strong>")+"</a></li>");
+                            $("#sayt_results").append("<li><a href='?_a=product&product_id="+products[k]['product_id']+"'>"+image+products[k]['name'].replace(regexp, function(match) { return '<strong>'+matchCase(search_term, match)+'</strong>'})+"</a></li>");
                         }
                     } else {
                         $('#sayt_results').append('<li class="status">No results found</li>');
-                    }
-                    if(keyDelay>0) {
-                        $('.search_form button').html('<svg class="icon"><use xlink:href="#icon-search"></use></svg>');
                     }
                 }
             });

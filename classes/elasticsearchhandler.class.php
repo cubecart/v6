@@ -232,21 +232,6 @@ class ElasticsearchHandler
     public function query($search_data) {
         if(!isset($search_data['keywords'])) return false;
         $es_keywords = $search_data['keywords'];
-        /* Just search as you type
-        $this->_search_body = [
-            'query' => [
-                'match' => [
-                    'name' => [
-                        'query' => $es_keywords,
-                        'analyzer' => 'standard'
-                    ]
-                ]
-            ]
-        ];
-        */
-        /*
-        Search as you type or product code
-        */
         $this->_search_body = 
         [
             'query' =>
@@ -287,7 +272,7 @@ class ElasticsearchHandler
         ];
         try {
             $response = $this->_client->search($params);
-            return $response->getStatusCode() == 200 ? true : false;
+            return $response->getStatusCode() == 200 ? $response : false;
         } catch (Exception $e) {
             $this->_logError($e->getMessage());
             die($e->getMessage());
