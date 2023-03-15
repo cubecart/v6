@@ -31,30 +31,13 @@ class ElasticsearchHandler
     private $_index_body = array();
     private $_index = '';
     private $_config = array();
-    private $_marker = array();
     private $_config_file = './includes/extra/es.json';
 
     public function __construct($config = array())
     {
-        if(!empty($config)) {
-            $es_config = array(
-                'es_h' => $config['es_h'],
-                'es_u' => $config['es_u'],
-                'es_p' => $config['es_p'],
-                'es_i' => $config['es_i'],
-                'es_v' => $config['es_v'],
-                'es_c' => $config['es_c']
-            );
-            $fh = fopen($this->_config_file,"wa+");
-            fwrite($fh,json_encode($es_config));
-            fclose($fh);
-            $this->_config = $es_config;
-        } else {
-            $this->_config = json_decode(file_get_contents($this->_config_file),true);
-        }
+        $this->_getConfig($config);
         $this->connect();
         $this->_index = trim($this->_config['es_i']);
-
     }
     /**
      * Add product to index
@@ -86,7 +69,7 @@ class ElasticsearchHandler
      */
     public function connect($test = false) {
         if(empty($this->_config['es_i'])) {
-            $this->last_error = "Elasticsearch: A unique index name is required.";
+            $this->_logError("A unique index name is required.");
             return false;
         }
         $hosts = empty($this->_config['es_h']) ? array('https://localhost:9200') : explode(',', $this->_config['es_h']);
@@ -104,7 +87,7 @@ class ElasticsearchHandler
                 try {
                     return $this->createIndex();
                 } catch (Exception $e) {
-                    $this->last_error = 'Elasticsearch: '.$e->getMessage();
+                    $this->_logError($e->getMessage());
                     return false;
                 }
             }
@@ -152,7 +135,7 @@ class ElasticsearchHandler
             $response = $this->_client->indices()->create($params);
             return $response->getStatusCode() == 200 ? true : false;
         } catch (Exception $e) {
-            $this->last_error = 'Elasticsearch: '.$e->getMessage();
+            $this->_logError($e->getMessage());
             return false;
         } 
     }
@@ -165,7 +148,7 @@ class ElasticsearchHandler
             $response =  $this->_client->indices()->delete(['index' => $this->_index]);
             return $response->getStatusCode() == 200 ? true : false;
         } catch (Exception $e) {
-            $this->last_error = 'Elasticsearch: '.$e->getMessage();
+            $this->_logError($e->getMessage());
             return false;
         } 
     }
@@ -178,7 +161,7 @@ class ElasticsearchHandler
             $response =  $this->_client->delete(['index' => $this->_index, 'id' => $id]);
             return $response->getStatusCode() == 200 ? true : false;
         } catch (Exception $e) {
-            $this->last_error = 'Elasticsearch: '.$e->getMessage();
+            $this->_logError($e->getMessage());
             return false;
         }
     }
@@ -191,11 +174,10 @@ class ElasticsearchHandler
             $response = $this->_client->exists(['index' => $this->_index, 'id' => $id]);
             return $response->getStatusCode() == 200 ? true : false;
         } catch (Exception $e) {
-            $this->last_error = 'Elasticsearch: '.$e->getMessage();
+            $this->_logError($e->getMessage());
             return false;
         } 
     }
-
 
     /**
      * Get stats about index
@@ -229,8 +211,18 @@ class ElasticsearchHandler
             $response = $this->_client->indices()->exists(['index' => $this->_index]);
             return $response->getStatusCode() == 200 ? true : false;
         } catch (Exception $e) {
-            $this->last_error = 'Elasticsearch: '.$e->getMessage();
+            $this->_logError($e->getMessage());
             return false;
+        }
+    }
+
+    /**
+     * Log error
+     */
+    private function _logError($message = '') {
+        if(!empty($message)) {
+            trigger_error('Elasticsearch: '.$message, E_USER_NOTICE);
+            $this->last_error = $message;
         }
     }
 
@@ -336,33 +328,35 @@ class ElasticsearchHandler
     }
 
     /**
+     * Get config
+     */
+    private function _getConfig($config) {
+        if(!empty($config)) {
+            $es_config = array(
+                'es_h' => $config['es_h'],
+                'es_u' => $config['es_u'],
+                'es_p' => $config['es_p'],
+                'es_i' => $config['es_i'],
+                'es_v' => $config['es_v'],
+                'es_c' => $config['es_c']
+            );
+            $fh = fopen($this->_config_file,"wa+");
+            fwrite($fh,json_encode($es_config));
+            fclose($fh);
+            $this->_config = $es_config;
+        } else {
+            $this->_config = json_decode(file_get_contents($this->_config_file),true);
+        }
+    }
+
+    /**
      * Create body for product to be indexed
      */
-    public function _indexBody($product_id) {
-        $es_data = $GLOBALS['catalogue']->getProductPrice($product_id);
-        $cat = $GLOBALS['db']->select('CubeCart_category_index', array('cat_id'), array('product_id' => $es_data['product_id'], 'primary' => 1));
-        $seo = SEO::getInstance();
+    private function _indexBody($product_id) {
+        $es_data = $GLOBALS['catalogue']->getProductData($product_id);
         $this->_index_body = array(
             'name'          => (string)$es_data['name'],
             'thumbnail'     => (string)$GLOBALS['gui']->getProductImage($es_data['product_id'], 'thumbnail')
-            /*,
-            'description'   => (string)$es_data['description'],
-            'price_to_pay'  => (float)$es_data['price_to_pay'],
-            'category'      => (string)$seo->getDirectory((int)$cat[0]['cat_id'], false, ' ', false, false),
-            'manufacturer'  => (string)$GLOBALS['catalogue']->getManufacturer($es_data['manufacturer']),
-            'featured'      => (int)$es_data['featured'],
-            'stock_level'   => (int)$GLOBALS['catalogue']->getProductStock($es_data['product_id']),
-            
-            'product_codes' => array(
-                'sku'   => (string)$es_data['product_code'],
-                'upc'   => (string)$es_data['upc'],
-                'ean'   => (string)$es_data['ean'],
-                'jan'   => (string)$es_data['jan'],
-                'isbn'  => (string)$es_data['isbn'],
-                'gtin'  => (string)$es_data['gtin'],
-                'mpn'   => (string)$es_data['mpn']
-            )
-            */
         );
     }
 }

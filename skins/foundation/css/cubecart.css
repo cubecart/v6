@@ -329,6 +329,32 @@ body.stream h1, body.stream h2, body.stream h3, body.stream p {
 a.grey {
     color: #808080;
 }
+#search_container {
+    position: relative;
+}
+#sayt_results {
+    list-style-type: none;
+    margin: 0;
+    position: absolute;
+    z-index: 999999;
+    width: 100%;
+}
+#sayt_results li {
+    background-color: #ffffff;
+    border-right: 1px solid #cccccc;
+    border-left: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
+    padding: 0.25rem;
+    color: #222222;
+}
+#sayt_results li a:hover {
+    text-decoration: underline;
+}
+#sayt_results li img {
+    max-height: 60px;
+    max-width: 60px;
+    margin-right: 0.25rem;
+}
 
 @media only screen and (max-width: 52.0625em) {
     #checkout_actions .button {
