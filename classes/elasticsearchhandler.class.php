@@ -406,6 +406,13 @@ class ElasticsearchHandler
         }
     }
 
+    private function _indexToPlainText($string) {
+        $string = strip_tags($string);
+        $string = html_entity_decode($string, ENT_QUOTES, 'UTF-8');
+        $string = preg_replace("/\s+/", " ", $string);
+        return $string;
+    }
+
     /**
      * Create body for product to be indexed
      */
@@ -423,7 +430,7 @@ class ElasticsearchHandler
             'gtin'          => (string)$es_data['gtin'],
             'mpn'           => (string)$es_data['mpn'],
             'thumbnail'     => (string)$GLOBALS['gui']->getProductImage($es_data['product_id'], 'thumbnail', 'relative'),
-            'description'   => (string)$es_data['description'],
+            'description'   => (string)$this->_indexToPlainText($es_data['description']),
             'price_to_pay'  => (float)$es_data['price_to_pay'],
             'category'      => (string)$seo->getDirectory((int)$cat[0]['cat_id'], false, ' ', false, false),
             'manufacturer'  => (string)$GLOBALS['catalogue']->getManufacturer($es_data['manufacturer']),
