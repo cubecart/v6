@@ -18,7 +18,7 @@
          <fieldset>
             <legend>{$LANG.common.filter}</legend>
             <select name="select[year]">
-            {foreach from=$YEARS item=year}>
+            {foreach from=$YEARS item=year}
               <option value="{$year.value}" {$year.selected}>{$year.value}</option>
             {/foreach}
             </select>
