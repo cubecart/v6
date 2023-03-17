@@ -1173,6 +1173,9 @@ class Order
      */
     private function _manageStock($status_id, $order_id)
     {
+        if($GLOBALS['config']->get('config', 'elasticsearch')=='1') {
+            $es = new ElasticsearchHandler;
+        }
         foreach ($GLOBALS['hooks']->load('class.order.manage_stock') as $hook) {
             include $hook;
         }
@@ -1227,6 +1230,10 @@ class Order
                         $GLOBALS['db']->update('CubeCart_option_matrix', array('stock_level' => $stock), array('product_id' => (int)$item['product_id'], 'options_identifier' => $item['options_identifier']));
                         // Update order inventory information
                         $GLOBALS['db']->update('CubeCart_order_inventory', array('stock_updated' => (int)$update), array('id' => $item['id'], 'cart_order_id' => $order_id));
+                        // Update Elasticsearch
+                        if(isset($es)) {
+                            $es->update($item['product_id'], 'stock_level');
+                        }
                         // Unset variables
                         unset($stock, $update);
                     }
@@ -1275,6 +1282,10 @@ class Order
                         $GLOBALS['db']->update('CubeCart_inventory', array('stock_level' => $stock), array('product_id' => (int)$item['product_id']));
                         // Update order inventory information
                         $GLOBALS['db']->update('CubeCart_order_inventory', array('stock_updated' => (int)$update), array('id' => $item['id'], 'cart_order_id' => $order_id));
+                        // Update Elasticsearch
+                        if(isset($es)) {
+                            $es->update($item['product_id'], 'stock_level');
+                        }
                         // Unset variables
                         unset($stock, $update);
                     }
@@ -1286,6 +1297,10 @@ class Order
                 foreach ($matrix_prods as $prod_id) {
                     $options_stock = $GLOBALS['db']->select('CubeCart_option_matrix', 'SUM(stock_level) AS stock', array('product_id' => (int)$prod_id, 'status' => 1, 'use_stock' => 1), false, false, false, false);
                     $GLOBALS['db']->update('CubeCart_inventory', array('stock_level' => $options_stock[0]['stock']), array('product_id' => (int)$prod_id));
+                    // Update Elasticsearch
+                    if(isset($es)) {
+                        $es->update($prod_id, 'stock_level');
+                    }
                 }
             }
             return true;

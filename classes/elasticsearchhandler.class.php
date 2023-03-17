@@ -295,6 +295,20 @@ class ElasticsearchHandler
                 ];
                 array_push($must, $price_range);
             }
+            if(isset($search['inStock']) && $search['inStock']=='1') {
+                $price_range =
+                [
+                    'range' =>
+                    [
+                        'stock_level' => 
+                        [
+                            'gte' => 1
+                        ]
+                    ]
+
+                ];
+                array_push($must, $price_range);
+            }
         }
         $this->_search_body = 
         [
