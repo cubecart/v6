@@ -443,26 +443,27 @@ class ElasticsearchHandler
      * Create body for product to be indexed
      */
     private function _indexBody($product_id) {
-        $es_data = $GLOBALS['catalogue']->getProductData($product_id);
-        $cat = $GLOBALS['db']->select('CubeCart_category_index', array('cat_id'), array('product_id' => $es_data['product_id'], 'primary' => 1));
+        $product = $GLOBALS['catalogue']->getProductData($product_id);
+        $cat = $GLOBALS['db']->select('CubeCart_category_index', array('cat_id'), array('product_id' => $product['product_id'], 'primary' => 1));
         $seo = SEO::getInstance();
         $this->_index_body = array(
-            'name'          => (string)$es_data['name'],
-            'product_code'  => (string)$es_data['product_code'],
-            'upc'           => (string)$es_data['upc'],
-            'ean'           => (string)$es_data['ean'],
-            'jan'           => (string)$es_data['jan'],
-            'isbn'          => (string)$es_data['isbn'],
-            'gtin'          => (string)$es_data['gtin'],
-            'mpn'           => (string)$es_data['mpn'],
-            'thumbnail'     => (string)$GLOBALS['gui']->getProductImage($es_data['product_id'], 'thumbnail', 'relative'),
-            'description'   => (string)$this->_indexToPlainText($es_data['description']),
-            'price_to_pay'  => (float)round($es_data['price_to_pay'],2),
+            'name'          => (string)$product['name'],
+            'product_code'  => (string)$product['product_code'],
+            'upc'           => (string)$product['upc'],
+            'ean'           => (string)$product['ean'],
+            'jan'           => (string)$product['jan'],
+            'isbn'          => (string)$product['isbn'],
+            'gtin'          => (string)$product['gtin'],
+            'mpn'           => (string)$product['mpn'],
+            'thumbnail'     => (string)$GLOBALS['gui']->getProductImage($product['product_id'], 'thumbnail', 'relative'),
+            'description'   => (string)$this->_indexToPlainText($product['description']),
+            'price_to_pay'  => (float)round($product['price_to_pay'],2),
             'category'      => (string)$seo->getDirectory((int)$cat[0]['cat_id'], false, ' ', false, false),
-            'manufacturer'  => (string)$GLOBALS['catalogue']->getManufacturer($es_data['manufacturer']),
-            'manufacturer_id'  => (int)$es_data['manufacturer'],
-            'featured'      => (int)$es_data['featured'],
-            'stock_level'   => (int)$GLOBALS['catalogue']->getProductStock($es_data['product_id'])
+            'manufacturer'  => (string)$GLOBALS['catalogue']->getManufacturer($product['manufacturer']),
+            'manufacturer_id'  => (int)$product['manufacturer'],
+            'featured'      => (int)$product['featured'],
+            'stock_level'   => (int)$GLOBALS['catalogue']->getProductStock($product['product_id']),
+            'digital'       => (int)$product['digital']
         );
     }
 }
