@@ -1921,8 +1921,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="gdpr_report_desc" introduced="6.2.0"><![CDATA[This tool can be used to search for all information stored in the database against an email address.]]></string>
     <string name="advanced" introduced="5.0.0"><![CDATA[Advanced Search]]></string>
     <string name="date_range" introduced="5.0.0"><![CDATA[Date Range]]></string>
-    <string name="featured_only" introduced="5.0.0"><![CDATA[Featured Products Only]]></string>
-    <string name="in_stock" introduced="5.0.0"><![CDATA[In Stock]]></string>
+    <string name="featured_only" introduced="5.0.0"><![CDATA[Show only featured products]]></string>
+    <string name="in_stock" introduced="5.0.0"><![CDATA[Show only items in stock]]></string>
     <string name="input_default" introduced="5.0.0"><![CDATA[Search our store]]></string>
     <string name="keywords" introduced="5.0.0"><![CDATA[Keywords]]></string>
     <string name="price_range" introduced="5.0.0"><![CDATA[Price Range]]></string>

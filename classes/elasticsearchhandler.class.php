@@ -229,72 +229,83 @@ class ElasticsearchHandler
     /**
      * Create search query to execute later
      */
-    public function query($search_data) {
-        if(!isset($search_data['keywords'])) return false;
-        $es_keywords = $search_data['keywords'];
+    public function query($search, $sayt = true) {
+        if(!isset($search['keywords'])) return false;
+        $q = $search['keywords'];
+        $must = [];
+        $should = 
+        [
+            ['match' => 
+                ['name' => 
+                    ['query' => $q, 
+                    'analyzer' => 'standard'
+                    ]
+                ]
+            ],
+            ['match' => ['product_code' => $q]],
+            ['match' => ['upc' => $q]],
+            ['match' => ['ean' => $q]],
+            ['match' => ['jan' => $q]],
+            ['match' => ['isbn' => $q]],
+            ['match' => ['gtin' => $q]],
+            ['match' => ['mpn' => $q]]
+        ];
+        
+        if(!$sayt) { // Form submitted search 
+            $should = array_merge($should, [['match' => ['description' => $q]]]);
+            if(isset($search['featured']) && $search['featured']=='1') {
+                $featured =
+                [
+                    'match' =>
+                    [
+                        'featured' => 1
+                    ]
+
+                ];
+                array_push($must, $featured);
+            }
+            if(isset($search['manufacturer']) && is_array($search['manufacturer']) && !empty($search['manufacturer'])) {
+                $manufacturer =
+                [
+                    'terms' =>
+                    [
+                        'manufacturer_id' => array_map('intval', $search['manufacturer'])
+                    ]
+
+                ];
+                array_push($must, $manufacturer);
+            }
+            $price_range = [];
+            if(isset($search['priceMin']) && $search['priceMin'] > 0) {
+                $price = empty($search['priceVary']) ? $search['priceMin'] : round($GLOBALS['tax']->priceConvertFX($search['priceMin'])/1.05, 2); // Legacy for old skins
+                $price_range['gte'] = (float)$price;
+            }
+            if(isset($search['priceMax']) && $search['priceMax'] > 0) {
+                $price = empty($search['priceVary']) ? $search['priceMax'] : round($GLOBALS['tax']->priceConvertFX($search['priceMax'])*1.05, 2); // Legacy for old skins
+                $price_range['lte'] = (float)$price;
+            }
+            if(!empty($price_range)) {
+                $price_range =
+                [
+                    'range' =>
+                    [
+                        'price_to_pay' => $price_range
+                    ]
+
+                ];
+                array_push($must, $price_range);
+            }
+        }
         $this->_search_body = 
         [
             'query' =>
             [
                 'bool' =>
                 [
-                    'should' =>
-                    [
-                        [
-                            'match' => 
-                            [
-                                'name' => 
-                                [
-                                    'query' => $es_keywords, 'analyzer' => 'standard'
-                                ]
-                            ]
-                        ],
-                        [
-                            'match' =>
-                            [
-                                'product_code' => $es_keywords
-                            ]
-                        ],
-                        [
-                            'match' =>
-                            [
-                                'upc' => $es_keywords
-                            ]
-                        ],
-                        [
-                            'match' =>
-                            [
-                                'ean' => $es_keywords
-                            ]
-                        ],
-                        [
-                            'match' =>
-                            [
-                                'jan' => $es_keywords
-                            ]
-                        ],
-                        [
-                            'match' =>
-                            [
-                                'isbn' => $es_keywords
-                            ]
-                        ],
-                        [
-                            'match' =>
-                            [
-                                'gtin' => $es_keywords
-                            ]
-                        ],
-                        [
-                            'match' =>
-                            [
-                                'mpn' => $es_keywords
-                            ]
-                        ]
-                    ]
+                    'must'      => array_merge($must,[['bool' => ['should' => $should]]])   
                 ]
             ]
-        ];
+        ];   
     }
 
     /**
@@ -306,6 +317,7 @@ class ElasticsearchHandler
             'index' => $this->_index,
             'body'  => json_encode(array_merge(['from' => $from, 'size' => $size],$this->_search_body))
         ];
+        
         try {
             $response = $this->_client->search($params);
             return $response->getStatusCode() == 200 ? $response : false;
@@ -431,9 +443,10 @@ class ElasticsearchHandler
             'mpn'           => (string)$es_data['mpn'],
             'thumbnail'     => (string)$GLOBALS['gui']->getProductImage($es_data['product_id'], 'thumbnail', 'relative'),
             'description'   => (string)$this->_indexToPlainText($es_data['description']),
-            'price_to_pay'  => (float)$es_data['price_to_pay'],
+            'price_to_pay'  => (float)round($es_data['price_to_pay'],2),
             'category'      => (string)$seo->getDirectory((int)$cat[0]['cat_id'], false, ' ', false, false),
             'manufacturer'  => (string)$GLOBALS['catalogue']->getManufacturer($es_data['manufacturer']),
+            'manufacturer_id'  => (int)$es_data['manufacturer'],
             'featured'      => (int)$es_data['featured'],
             'stock_level'   => (int)$GLOBALS['catalogue']->getProductStock($es_data['product_id'])
         );
