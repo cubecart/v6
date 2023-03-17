@@ -18,7 +18,7 @@
 	  <table class="fixed" width="100%">
 		<thead>
 		  <tr>
-			<td nowrap="nowrap" width="75">{$LANG.common.date}</td>
+			<td nowrap="nowrap" width="100">{$LANG.common.date}</td>
 			<td width="100%">&nbsp;</td>
 		  </tr>
 		</thead>
@@ -52,5 +52,7 @@
 	  </table>
   
   </form>
-  <div>{$PAGINATION_REQUEST_LOG}</div>
+	<div class="pagination">
+		<span><strong>{$LANG.common.total}:</strong> {$TOTAL_RESULTS}</span>{$PAGINATION_REQUEST_LOG}
+	</div>
 </div>
