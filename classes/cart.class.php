@@ -76,6 +76,12 @@ class Cart
      */
     private $_total    = 0;
     /**
+     * Cart taxes added (not used in core)
+     *
+     * @var float
+     */
+    private $_total_tax_add = 0;
+    /**
      * Cart weight
      *
      * @var float
@@ -289,6 +295,7 @@ class Cart
 
                     // Check required options have a value!
                     $quantity = (is_numeric($quantity) && $quantity > 0) ? $quantity : 1;
+                    $stock_warning = false;
                     $stock_level = $GLOBALS['catalogue']->getProductStock($product['product_id'], $options_identifier_string, false, ((isset($this->basket['contents']) && is_array($this->basket['contents'])) ? $this->basket['contents'] : false), $quantity);
 
                     // Check stock level
