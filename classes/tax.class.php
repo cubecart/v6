@@ -437,6 +437,9 @@ class Tax
             return array('tax_id' => $tax_id, 'amount' => $amount, 'tax_inclusive' => $tax_inclusive, 'tax_name' => 'inherited', 'tax_percent' => $percent);
         }
         if (is_array($this->_tax_table) && !empty($this->_tax_table)) {
+            $tax_id = $amount = $percent = 0;
+            $tax_inclusive = false;
+            $tax_name = '';
             foreach ($this->_tax_table as $tax_id => $tax) {
                 if ($tax[$type] && $tax['type'] == $tax_type && in_array($tax['county_id'], array($state, 0))) {
                     $tax_name = $tax['name'];

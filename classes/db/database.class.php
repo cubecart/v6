@@ -124,7 +124,12 @@ class Database_Contoller
      * @var string
      */
     protected $_db_engine = '';
-
+    /**
+     * Error string
+     *
+     * @var string
+     */
+    private $_error = '';
     /**
      * Class instance
      *

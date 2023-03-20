@@ -657,7 +657,7 @@ class Cubecart
         $GLOBALS['cart']->verifyBasket();
         $this->_basket =& $GLOBALS['cart']->basket;
         
-        if ($_GET['_a'] == 'basket' && $this->_basket['billing_address']['user_defined']) {
+        if ($_GET['_a'] == 'basket' && $this->_basket['billing_address']['user_defined'] ?? false) {
             httpredir('index.php?_a=confirm');
         }
 
@@ -693,8 +693,8 @@ class Cubecart
                         }
                         $GLOBALS['smarty']->append('COUNTRIES', $country);
                     }
-                    $delivery_address = $this->_basket['delivery_address'];
-                    if ($this->_basket['delivery_address']['postcode'] == $GLOBALS['config']->get('config', 'store_postcode')) {
+                    $delivery_address = $this->_basket['delivery_address'] ?? [];
+                    if (isset($this->_basket['delivery_address']['postcode']) && $this->_basket['delivery_address']['postcode'] == $GLOBALS['config']->get('config', 'store_postcode')) {
                         $delivery_address['postcode'] = '';
                     }
                     $GLOBALS['smarty']->assign('ESTIMATES', $delivery_address);
