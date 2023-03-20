@@ -483,7 +483,7 @@ class Database_Contoller
     {
         $this->_query = $query;
         $this->_execute($cache);
-        return (!empty($this->_result)) ? count($this->_result) : false;
+        return is_array($this->_result) ? count($this->_result) : 0;
     }
 
     /**
