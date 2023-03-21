@@ -131,6 +131,7 @@ jQuery(document).ready(function() {
     });
     $(".show-small-search").click(function() { 
         $('#small-search').slideToggle();
+        $('#small-search .search_input').focus();
         return;
     });
     $(".hide_skin_selector").click(function(e) {
