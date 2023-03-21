@@ -311,7 +311,8 @@ jQuery(document).ready(function() {
         }
         return false;
     });
-    var sayt = $(".search_input");
+    var selector = ($(window).width() < 640) ? '#small-search .search_input' : '.search_input';
+    var sayt = $(selector);
 
     sayt.click(function(event) {
         $.removeCookie('ccScroll', null);

@@ -351,6 +351,12 @@ a.grey {
     align-items: center;
     height: 63px;
 }
+#sayt_results li a {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
+}
 #sayt_results li a:hover {
     text-decoration: underline;
 }
