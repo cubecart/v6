@@ -296,18 +296,47 @@ class ElasticsearchHandler
                 array_push($must, $price_range);
             }
             if(isset($search['inStock']) && $search['inStock']=='1') {
-                $price_range =
+                // (digital = 1 OR (digital = 0 AND  stock_level > 1))
+                $inStock = 
                 [
-                    'range' =>
+                    'bool' =>
                     [
-                        'stock_level' => 
+                        'must' =>
                         [
-                            'gte' => 1
+                            'bool' => 
+                            [
+                                'should' => 
+                                [ 
+                                    [
+                                        'range' =>
+                                        [
+                                            'stock_level' => 
+                                            [
+                                                'gte' => 1
+                                            ]
+                                        ]
+                                    ],
+                                    [
+                                        'match' => 
+                                        [
+                                            'digital' => 0
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ],
+                        'should' => 
+                        [
+                            [
+                                'match' => 
+                                [
+                                    'digital' => 0
+                                ]
+                            ]
                         ]
                     ]
-
                 ];
-                array_push($must, $price_range);
+                array_push($must, $inStock);
             }
         }
         $this->_search_body = 
@@ -319,19 +348,22 @@ class ElasticsearchHandler
                     'must'      => array_merge($must,[['bool' => ['should' => $should]]])   
                 ]
             ]
-        ];   
+        ];  
     }
+   
+
 
     /**
      * Execute search query
      */
     public function search($from, $size) {
         $from = ($from-1)*$size;
+        $body = json_encode(array_merge(['from' => $from, 'size' => $size],$this->_search_body));
         $params = [
             'index' => $this->_index,
-            'body'  => json_encode(array_merge(['from' => $from, 'size' => $size],$this->_search_body))
+            'body'  => $body
         ];
-        
+        var_dump($body);
         try {
             $response = $this->_client->search($params);
             return $response->getStatusCode() == 200 ? $response : false;
