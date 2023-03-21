@@ -511,7 +511,7 @@ if (isset($_GET['action'])) {
                 $author[$admin['admin_id']] = $admin['name'];
             }
         }
-        $author[0] = $LANG['common']['nobody'];
+        $author[0] = $lang['common']['nobody'];
         $_GET['order_id'] = (isset($_GET['order_id'])) ? $_GET['order_id'] : '';
         $notes = $GLOBALS['db']->select('CubeCart_order_notes', false, array('cart_order_id' => $_GET['order_id']), array('time' => 'ASC'));
         $no_notes = $notes ? count($notes) : false;
@@ -519,7 +519,7 @@ if (isset($_GET['action'])) {
         if ($notes) {
             foreach ($notes as $note) {
                 $note['time']  = formatTime($note['time']);
-                $note['author']  = $author[$note['admin_id']] ?? $LANG['common']['nobody'];
+                $note['author']  = $author[$note['admin_id']] ?? $lang['common']['nobody'];
                 $note['delete']  = currentPage(array('print_hash'), array('delete-note' => $note['note_id'], 'token' => SESSION_TOKEN));
                 $note['content'] = strip_tags($note['content']);
                 $smarty_data['list_notes'][] = $note;
