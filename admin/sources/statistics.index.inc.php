@@ -305,7 +305,7 @@ $smarty_data['plugin_tabs'] = array();
 foreach ($GLOBALS['hooks']->load('admin.statistics.tabs') as $hook) {
     include $hook;
 }
-$GLOBALS['smarty']->assign('PLUGIN_TABS', $smarty_data['plugin_tabs']);
+$GLOBALS['smarty']->assign('PLUGIN_TABS', $smarty_data['plugin_tabs'] ?? false);
 
 // Customers Online
 $timeLimit = time()-1800;  // 30 minutes
