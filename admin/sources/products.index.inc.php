@@ -1160,7 +1160,7 @@ if (isset($_GET['action'])) {
         foreach ($GLOBALS['hooks']->load('admin.product.tabs') as $hook) {
             include $hook;
         }
-        $GLOBALS['smarty']->assign('PLUGIN_TABS', $smarty_data['plugin_tabs']);
+        $GLOBALS['smarty']->assign('PLUGIN_TABS', $smarty_data['plugin_tabs'] ?? false);
 
         $GLOBALS['smarty']->assign('FORM_HASH', md5(implode('', $result[0])));
         $GLOBALS['smarty']->assign('DISPLAY_PRODUCT_FORM', true);

@@ -958,7 +958,7 @@ class Cart
             // Shipping
             $this->_shipping = (isset($this->basket['shipping']) && !empty($this->basket['shipping'])) ? $this->basket['shipping']['value'] : 0;
 
-            if (isset($this->basket[$tax_on]['state_id']) && isset($this->basket['shipping'])) {
+            if (isset($this->basket[$tax_on]['state_id']) && ($this->basket['shipping']['tax_id'] ?? false)) {
                 $GLOBALS['tax']->productTax($this->_shipping, $this->basket['shipping']['tax_id'], false, $this->basket[$tax_on]['state_id'], 'shipping');
             }
 

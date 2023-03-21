@@ -82,6 +82,12 @@ class SEO
      * @var string
      */
     private $_sitemap_base_url = '';
+    /**
+     * Standard Dynamic URL
+     *
+     * @var string
+     */
+    private $_url = '';
 
     /**
      * Class instance

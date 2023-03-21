@@ -198,7 +198,7 @@ if (isset($_GET['action'])) {
     foreach ($GLOBALS['hooks']->load('admin.documents.tabs') as $hook) {
         include $hook;
     }
-    $GLOBALS['smarty']->assign('PLUGIN_TABS', $smarty_data['plugin_tabs']);
+    $GLOBALS['smarty']->assign('PLUGIN_TABS', $smarty_data['plugin_tabs'] ?? false);
     $GLOBALS['smarty']->assign('DISPLAY_FORM', true);
 } else {
     $GLOBALS['main']->addTabControl($lang['common']['overview'], 'overview');
