@@ -296,44 +296,30 @@ class ElasticsearchHandler
                 array_push($must, $price_range);
             }
             if(isset($search['inStock']) && $search['inStock']=='1') {
-                // (digital = 1 OR (digital = 0 AND  stock_level > 1))
+                // (digital = 1 OR stock_level > 1)
                 $inStock = 
                 [
                     'bool' =>
                     [
-                        'must' =>
+                        'should' =>
                         [
-                            'bool' => 
                             [
-                                'should' => 
-                                [ 
+                                    
+                                'range' =>
+                                [
+                                    'stock_level' => 
                                     [
-                                        'range' =>
-                                        [
-                                            'stock_level' => 
-                                            [
-                                                'gte' => 1
-                                            ]
-                                        ]
-                                    ],
-                                    [
-                                        'match' => 
-                                        [
-                                            'digital' => 0
-                                        ]
+                                        'gte' => 1
                                     ]
                                 ]
-                            ]
-                        ],
-                        'should' => 
-                        [
+                            ],
                             [
                                 'match' => 
                                 [
-                                    'digital' => 0
+                                    'digital' => 1
                                 ]
                             ]
-                        ]
+                        ]    
                     ]
                 ];
                 array_push($must, $inStock);
@@ -363,7 +349,6 @@ class ElasticsearchHandler
             'index' => $this->_index,
             'body'  => $body
         ];
-        var_dump($body);
         try {
             $response = $this->_client->search($params);
             return $response->getStatusCode() == 200 ? $response : false;
