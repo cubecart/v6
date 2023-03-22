@@ -1233,7 +1233,7 @@ ul.quick_links li#help_menu ul li:not(:last-child) {
     color: #9aaf4f;
 }
 .row_warn {
-    background-color: #FF6600;
+    background-color: #FF6600!important;
     color: #fff;
     padding-left: 5px;
     border-bottom: 25px solid #FFF;
