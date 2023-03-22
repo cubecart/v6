@@ -15,11 +15,6 @@ if (!defined('CC_INI_SET')) {
 }
 Admin::getInstance()->permissions('statistics', CC_PERM_READ, true);
 
-
-if (isset($_POST['select'])) {
-    httpredir(currentPage(null, $_POST['select']));
-}
-
 $select['year']  = (isset($_GET['year']) && is_numeric($_GET['year'])) ? (int)$_GET['year'] : date('Y');
 $select['month'] = (isset($_GET['month']) && in_array($_GET['month'], range(1, 12))) ? str_pad((int)$_GET['month'], 2, '0', STR_PAD_LEFT) : date('m');
 $select['day']  = (isset($_GET['day']) && in_array($_GET['day'], range(1, 31))) ? str_pad((int)$_GET['day'], 2, '0', STR_PAD_LEFT) : date('d');

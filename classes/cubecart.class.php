@@ -1803,7 +1803,7 @@ class Cubecart
                             'value'  => base64url_encode(json_encode($value)),
                             'display' => (isset($data['name'])) ? $GLOBALS['tax']->priceFormat($data['value'], true).$data['name'] : $data['desc']
                         );
-                        if (isset($this->_basket['shipping']) && $this->_basket['shipping']['offset'] == $offset) {
+                        if (($this->_basket['shipping']['offset'] ?? false) == $offset) {
                             $offset_matched = true;
                             $option['selected'] = ' selected="selected"';
                             if ((string)$value['value'] !== (string)$this->_basket['shipping']['value']) {
@@ -1916,10 +1916,14 @@ class Cubecart
                 foreach ($related_orders as $key => $data) {
                     $related[] = "'".$data['cart_order_id']."'";
                 }
-                if (($related_products = $GLOBALS['db']->select('CubeCart_order_inventory', array('DISTINCT' => 'product_id'), array('cart_order_id' => $related, '!product_id' => $product_list), false, 3)) !== false) {
+                if (($related_products = $GLOBALS['db']->select('CubeCart_order_inventory', array('DISTINCT' => 'product_id'), array('cart_order_id' => $related, '!product_id' => $product_list), false, 10)) !== false) {
+                    $i = 0; // Looking for 5 related products (possibly configurable in the future)
                     foreach ($related_products as $related) {
                         if (!empty($related['product_id']) && !in_array($related['product_id'], $product_list)) {
                             $related = $GLOBALS['catalogue']->getProductData($related['product_id']);
+                            if($related == false) {
+                                continue;
+                            }
                             $related['img_src'] = $GLOBALS['gui']->getProductImage($related['product_id']);
                             $related['url'] = $GLOBALS['seo']->buildURL('prod', $related['product_id'], '&');
                             
@@ -1936,6 +1940,10 @@ class Cubecart
                             if ($related['product_id']>0) {
                                 $related_list[] = $related;
                             }
+                        }
+                        $i++;
+                        if($i==5) {
+                            break;
                         }
                     }
                     $GLOBALS['smarty']->assign('RELATED', $related_list);
@@ -2161,8 +2169,8 @@ class Cubecart
                 $GLOBALS['smarty']->assign('MAX_DOWNLOADS', (int)$GLOBALS['config']->get('config', 'download_count'));
                 foreach ($downloads as $download) {
                     if (($product = $GLOBALS['db']->select('`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_inventory` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary` ON `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_inventory`.`cart_order_id` = `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary`.`cart_order_id`', '`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_inventory`.*, `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary`.`status`', array('id' => $download['order_inv_id']), false, 1, false, false)) !== false) {
-                        $download['file_info'] = $filemanager->getFileInfo($download['product_id']);
-                        if($download['file_info']['stream']==1) {
+                        $download['file_info'] = $filemanager->getFileInfo($download['product_id']) ?: array(); // Make sure this is an array
+                        if(($download['file_info']['stream'] ??= 0)==1) { // Make un-streamable if FileManager does not otherwise indicate - for template
                             $type = $filemanager->mimeParts($download['file_info']['mimetype']);
                             $download['action'] = $type['type']=='video' ? $GLOBALS['language']->common['watch'] : $GLOBALS['language']->common['listen'];
                         } else {

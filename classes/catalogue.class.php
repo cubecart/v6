@@ -40,18 +40,18 @@ class Catalogue
     const OPTION_SELECT     = 0;
     const OPTION_TEXTBOX    = 1;
     const OPTION_TEXTAREA   = 2;
-    const OPTION_PASSWORD = 3;
-    const OPTION_RADIO  = 4;
-    const OPTION_CHECKBOX = 5;
+    const OPTION_PASSWORD   = 3;
+    const OPTION_RADIO      = 4;
+    const OPTION_CHECKBOX   = 5;
     const OPTION_DATEPICKER = 6;
-    const OPTION_HIDDEN  = 7;
-    const OPTION_FILE  = 8;
+    const OPTION_HIDDEN     = 7;
+    const OPTION_FILE       = 8;
 
     private $_options_selectable = array( // fixed values
         self::OPTION_SELECT,
         self::OPTION_RADIO,
         self::OPTION_CHECKBOX,
-        self::OPTION_HIDDEN,
+        self::OPTION_HIDDEN
     );
     
     private $_options_textual = array(
@@ -59,7 +59,14 @@ class Catalogue
         self::OPTION_TEXTAREA,
         self::OPTION_PASSWORD,
         self::OPTION_DATEPICKER,
-        self::OPTION_FILE,
+        self::OPTION_FILE
+    );
+
+    private $_options_default = array(
+        self::OPTION_SELECT,
+        self::OPTION_RADIO,
+        self::OPTION_TEXTBOX,
+        self::OPTION_TEXTAREA
     );
 
     /**
@@ -903,6 +910,20 @@ class Catalogue
             }
         }
         return (isset($tree_data)) ? $tree_data : false;
+    }
+
+    /**
+     * Get default product options
+     *
+     * @return array
+     */
+    public function getDefaultOptions() {
+        $output = array();
+        $descriptions = $this->_optionDescriptions();
+        foreach($this->_options_default as $key) {
+            $output[$key] = $descriptions[$key];
+        }
+        return $output;
     }
 
     /**
@@ -2172,6 +2193,25 @@ class Catalogue
             }
         }
         return false;
+    }
+    
+    /**
+     * Give option keys a description
+     *
+     * @return arra
+     */
+    public function _optionDescriptions() {
+        return array(
+            self::OPTION_SELECT     => $GLOBALS['lang']['catalogue']['option_type_select'],
+            self::OPTION_TEXTBOX    => $GLOBALS['lang']['catalogue']['option_type_textbox'],
+            self::OPTION_TEXTAREA   => $GLOBALS['lang']['catalogue']['option_type_textarea'],
+            self::OPTION_PASSWORD   => $GLOBALS['lang']['catalogue']['option_type_password'],
+            self::OPTION_RADIO      => $GLOBALS['lang']['catalogue']['option_type_radio'],
+            self::OPTION_CHECKBOX   => $GLOBALS['lang']['catalogue']['option_type_checkbox'],
+            self::OPTION_DATEPICKER => $GLOBALS['lang']['catalogue']['option_type_datepicker'],
+            self::OPTION_HIDDEN     => $GLOBALS['lang']['catalogue']['option_type_hidden'],
+            self::OPTION_FILE       => $GLOBALS['lang']['catalogue']['option_type_file']
+        );
     }
 
     /**

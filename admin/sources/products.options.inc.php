@@ -266,12 +266,7 @@ if (($categories = $GLOBALS['db']->select('CubeCart_option_group', false, false,
     }
 }
 
-$optionTypes = array(
-    0 => $lang['catalogue']['option_type_select'],
-    4 => $lang['catalogue']['option_type_radio'],
-    1 => $lang['catalogue']['option_type_textbox'],
-    2 => $lang['catalogue']['option_type_textarea']
-);
+$optionTypes = $GLOBALS['catalogue']->getDefaultOptions();
 
 foreach ($GLOBALS['hooks']->load('admin.products.options.types') as $hook) {
     include $hook;

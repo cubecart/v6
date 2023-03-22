@@ -454,17 +454,19 @@ if (isset($_GET['action'])) {
     }
 
     // If no categories exist but parent is set redirect back to next level up
-    if (!isset($category_list) && isset($_GET['parent']) && $_GET['parent']>0) {
-        $parent_cat = $GLOBALS['db']->select('CubeCart_category', array('cat_parent_id'), array('cat_id' => $_GET['parent']));
-        if ($parent_cat && $parent_cat[0]['cat_parent_id']>0) {
-            httpredir('?_g=categories&parent='.$parent_cat[0]['cat_parent_id']);
+    if(isset($_GET['parent']) && (int)$_GET['parent'] > 0) {
+        if (!isset($category_list)) {
+            $parent_cat = $GLOBALS['db']->select('CubeCart_category', array('cat_parent_id'), array('cat_id' => $_GET['parent']));
+            if ($parent_cat && $parent_cat[0]['cat_parent_id']>0) {
+                httpredir('?_g=categories&parent='.$parent_cat[0]['cat_parent_id']);
+            } else {
+                httpredir('?_g=categories');
+            }
         } else {
-            httpredir('?_g=categories');
-        }
-    } else {
-        $parent_cat = $GLOBALS['db']->select('CubeCart_category', array('cat_id','cat_name','cat_parent_id'), array('cat_id' => $_GET['parent']));
-        if ($parent_cat) {
-            $GLOBALS['smarty']->assign('PARENT_CATEGORY', $parent_cat[0]);
+            $parent_cat = $GLOBALS['db']->select('CubeCart_category', array('cat_id','cat_name','cat_parent_id'), array('cat_id' => $_GET['parent']));
+            if ($parent_cat) {
+                $GLOBALS['smarty']->assign('PARENT_CATEGORY', $parent_cat[0]);
+            }
         }
     }
     foreach ($GLOBALS['hooks']->load('admin.category.pre_smarty') as $hook) {

@@ -961,8 +961,9 @@ class FileManager
                         'is_url' => false
                     );
                 $data['file'] = $product[0]['digital_path'];
+                return $data;
             }
-            return $data;
+            return false;
         }
         return false;
     }
