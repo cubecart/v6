@@ -13,29 +13,29 @@
 <div id="stats_sales" class="tab_content">
    <h3>{$LANG.statistics.title_sales}</h3>
    {if $DISPLAY_SALES}
-   <form action="{$VAL_SELF}" class="ignore-dirty" method="post">
+   <form action="{$VAL_SELF}" class="ignore-dirty" method="get">
       <div>
          <fieldset>
             <legend>{$LANG.common.filter}</legend>
-            <select name="select[year]">
+            <select name="year">
             {foreach from=$YEARS item=year}
               <option value="{$year.value}" {$year.selected}>{$year.value}</option>
             {/foreach}
             </select>
-            <select name="select[month]">
+            <select name="month">
             {foreach from=$MONTHS item=month}
               <option value="{$month.value}"{$month.selected}>{$month.title}</option>
             {/foreach}
             </select>
-            <select name="select[day]">
+            <select name="day">
             {foreach from=$DAYS item=day}
               <option value="{$day.value}"{$day.selected}>{$day.value}</option>
             {/foreach}
             </select>
-            <input type="submit" value="{$LANG.common.go}">
+            <input type="submit" class="tiny" value="{$LANG.common.go}">
          </fieldset>
       </div>
-      
+   <input type="hidden" name="_g" value="statistics"> 
    </form>
    <div id="chart1" class="google_chart"></div>
    <div id="chart1-title" style="display:none">{$GRAPH_DATA.1.title}</div>
