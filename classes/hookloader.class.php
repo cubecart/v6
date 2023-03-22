@@ -354,7 +354,7 @@ class HookLoader
 
                 if ($enabled) {
                     $plugin = $GLOBALS['config']->get($basename);
-                    if (!$plugin['status']) {
+                    if (!($plugin['status'] ?? false)) {
                         continue;
                     }
                 }
