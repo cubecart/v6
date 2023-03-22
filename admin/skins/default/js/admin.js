@@ -1152,6 +1152,10 @@ $("a.select").on("click", function(a) {
     return $(".update-subtotal input.number").trigger("change"), !1
 });
 $("form:not(.ignore-dirty)").dirty({preventLeaving:true});
+function debugConsole(content) {
+    _cubecart_console = window.open("", "console:cubecart_debug", "width=1024,height=600,left=50,top=50,resizable,scrollbars=yes");
+    _cubecart_console.document.write(`<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head><title>CubeCart Debug Console</title><style>body{margin:0}</style></head><body>`+content+`</body></html>`);
+}
 /* Work in progress relating to #2097
 $('#order-builder').on('change', '.tax-chooser', function() {
     var goods_items = $(".goods");
