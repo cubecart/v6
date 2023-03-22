@@ -60,6 +60,8 @@
          <div><label for="vimeo">Vimeo</label><span><input name="config[vimeo]" id="vimeo" type="text" class="textbox" value="{$CONFIG.vimeo}"></span></div>
          <div><label for="wordpress">WordPress</label><span><input name="config[wordpress]" id="wordpress" type="text" class="textbox" value="{$CONFIG.wordpress}"></span></div>
          <div><label for="youtube">YouTube</label><span><input name="config[youtube]" id="youtube" type="text" class="textbox" value="{$CONFIG.youtube}"></span></div>
+         <div><label for="reddit">Reddit</label><span><input name="config[reddit]" id="reddit" type="text" class="textbox" value="{$CONFIG.reddit}"></span></div>
+         <div><label for="tumblr">Tumblr</label><span><input name="config[tumblr]" id="tumblr" type="text" class="textbox" value="{$CONFIG.tumblr}"></span></div>
       </fieldset>
    </div>
    <div id="Features" class="tab_content">

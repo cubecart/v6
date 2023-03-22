@@ -1614,28 +1614,28 @@ class GUI
         }
         if (!empty($config['flickr'])) {
             $vars[] = array(
-                'url' => (filter_var($config['flickr'], FILTER_VALIDATE_URL)) ? $config['flickr'] : 'http://www.flickr.com/photos/'.$config['flickr'],
+                'url' => (filter_var($config['flickr'], FILTER_VALIDATE_URL)) ? $config['flickr'] : 'https://www.flickr.com/photos/'.$config['flickr'],
                 'name' => 'Flickr',
                 'icon'	=> 'flickr'
             );
         }
         if (!empty($config['instagram'])) {
             $vars[] = array(
-                'url' => (filter_var($config['instagram'], FILTER_VALIDATE_URL)) ? $config['instagram'] : 'http://www.instagram.com/'.$config['instagram'],
+                'url' => (filter_var($config['instagram'], FILTER_VALIDATE_URL)) ? $config['instagram'] : 'https://www.instagram.com/'.$config['instagram'],
                 'name' => 'Instagram',
                 'icon'	=> 'instagram'
             );
         }
         if (!empty($config['linkedin'])) {
             $vars[] = array(
-                'url' => (filter_var($config['linkedin'], FILTER_VALIDATE_URL)) ? $config['linkedin'] : 'http://www.linkedin.com/company/'.$config['linkedin'],
+                'url' => (filter_var($config['linkedin'], FILTER_VALIDATE_URL)) ? $config['linkedin'] : 'https://www.linkedin.com/company/'.$config['linkedin'],
                 'name' => 'Linkedin',
                 'icon'	=> 'linkedin-square'
             );
         }
         if (!empty($config['pinterest'])) {
             $vars[] = array(
-                'url' => (filter_var($config['pinterest'], FILTER_VALIDATE_URL)) ? $config['pinterest'] : 'http://www.pinterest.com/'.$config['pinterest'],
+                'url' => (filter_var($config['pinterest'], FILTER_VALIDATE_URL)) ? $config['pinterest'] : 'https://www.pinterest.com/'.$config['pinterest'],
                 'name' => 'Pinterest',
                 'icon'	=> 'pinterest-square'
             );
@@ -1656,19 +1656,32 @@ class GUI
         }
         if (!empty($config['wordpress'])) {
             $vars[] = array(
-                'url' => (filter_var($config['wordpress'], FILTER_VALIDATE_URL)) ? $config['wordpress'] : 'http://'.$config['wordpress'].'.wordpress.com',
+                'url' => (filter_var($config['wordpress'], FILTER_VALIDATE_URL)) ? $config['wordpress'] : 'https://'.$config['wordpress'].'.wordpress.com',
                 'name' => 'WordPress',
                 'icon'	=> 'wordpress'
             );
         }
         if (!empty($config['youtube'])) {
             $vars[] = array(
-                'url' => (filter_var($config['youtube'], FILTER_VALIDATE_URL)) ? $config['youtube'] : 'http://www.youtube.com/user/'.$config['youtube'],
+                'url' => (filter_var($config['youtube'], FILTER_VALIDATE_URL)) ? $config['youtube'] : 'https://www.youtube.com/user/'.$config['youtube'],
                 'name' => 'YouTube',
                 'icon'	=> 'youtube-square'
             );
         }
-
+        if (!empty($config['reddit'])) {
+            $vars[] = array(
+                'url' => (filter_var($config['reddit'], FILTER_VALIDATE_URL)) ? $config['reddit'] : 'https://www.reddit.com/r/'.$config['reddit'],
+                'name' => 'Reddit',
+                'icon'	=> 'reddit-square'
+            );
+        }
+        if (!empty($config['tumblr'])) {
+            $vars[] = array(
+                'url' => (filter_var($config['tumblr'], FILTER_VALIDATE_URL)) ? $config['tumblr'] : 'https://www.tumblr.com/'.$config['tumblr'],
+                'name' => 'Tumblr',
+                'icon'	=> 'tumblr-square'
+            );
+        }
         foreach ($GLOBALS['hooks']->load('class.gui.display_social') as $hook) {
             include $hook;
         }
