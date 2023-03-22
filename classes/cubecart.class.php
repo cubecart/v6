@@ -1916,10 +1916,14 @@ class Cubecart
                 foreach ($related_orders as $key => $data) {
                     $related[] = "'".$data['cart_order_id']."'";
                 }
-                if (($related_products = $GLOBALS['db']->select('CubeCart_order_inventory', array('DISTINCT' => 'product_id'), array('cart_order_id' => $related, '!product_id' => $product_list), false, 3)) !== false) {
+                if (($related_products = $GLOBALS['db']->select('CubeCart_order_inventory', array('DISTINCT' => 'product_id'), array('cart_order_id' => $related, '!product_id' => $product_list), false, 10)) !== false) {
+                    $i = 0; // Looking for 5 related products (possibly configurable in the future)
                     foreach ($related_products as $related) {
                         if (!empty($related['product_id']) && !in_array($related['product_id'], $product_list)) {
                             $related = $GLOBALS['catalogue']->getProductData($related['product_id']);
+                            if($related == false) {
+                                continue;
+                            }
                             $related['img_src'] = $GLOBALS['gui']->getProductImage($related['product_id']);
                             $related['url'] = $GLOBALS['seo']->buildURL('prod', $related['product_id'], '&');
                             
@@ -1936,6 +1940,10 @@ class Cubecart
                             if ($related['product_id']>0) {
                                 $related_list[] = $related;
                             }
+                        }
+                        $i++;
+                        if($i==5) {
+                            break;
                         }
                     }
                     $GLOBALS['smarty']->assign('RELATED', $related_list);
