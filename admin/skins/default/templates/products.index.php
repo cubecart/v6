@@ -13,31 +13,41 @@
    {if isset($DISPLAY_PRODUCT_LIST)}
    <div id="general" class="tab_content">
       <h3>{$LANG.catalogue.title_product_inventory}</h3>
-      <table align="right">
-         <tr>
-         <td>&nbsp;</td>
-            <td>{$LANG.common.category}</td>
-            <td>{$LANG.common.status}</td>
-         </tr>
-         <tr>
-            <td><strong>{$LANG.common.filter}:</strong></td>
-            <td> 
-               <select class="product_list_filter">
-                  <option value="{$CAT_LIST_ANY}">{$LANG.common.any}</option>
-                  {foreach from=$CAT_LIST item=cat_dropdown}
-                  <option value="?_g=products&amp;cat_id={$cat_dropdown.cat_id}{if $STATUS_FILTER}&amp;status_filter={$STATUS_FILTER}{/if}" {if $cat_dropdown.cat_id == $CURRENT_CAT}selected="selected"{/if}>{$cat_dropdown.name}</option>
-                  {/foreach}
-               </select>
-            </td>
-            <td>
-               <select class="product_list_filter">
-                  <option value="?_g=products&amp;cat_id={$CURRENT_CAT}" {if !$STATUS_FILTER || $STATUS_FILTER==''}selected="selected"{/if}>{$LANG.common.any}</option>
-                  <option value="?_g=products&amp;cat_id={$CURRENT_CAT}&amp;status_filter=1" {if $STATUS_FILTER=='1'}selected="selected"{/if}>{$LANG.common.enabled}</option>
-                  <option value="?_g=products&amp;cat_id={$CURRENT_CAT}&amp;status_filter=0" {if $STATUS_FILTER=='0'}selected="selected"{/if}>{$LANG.common.disabled}</option>
-               </select>
-            </td>
-         </tr>
-      </table>
+         <table width="100%" class="filter">
+            <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+               <td>{$LANG.common.category}</td>
+               <td>{$LANG.common.status}</td>
+            </tr>
+            <tr>
+               <td>
+                  <select class="product_list_filter">
+                     {foreach from=$PAGE_BREAKS  item=p}
+                     <option value="?_g=products&items={$p}"{if $p == $PAGE_BREAK} selected="selected"{/if}>{$p} {$LANG.common.item_plural}</option> 
+                     {/foreach} 
+                  </select>
+                  {$LANG.common.per_page}
+               </td>
+               <td width="50"><strong>{$LANG.common.filter}:</strong></td>
+               <td width="100"> 
+                  <select class="product_list_filter">
+                     <option value="{$CAT_LIST_ANY}">{$LANG.common.any}</option>
+                     {foreach from=$CAT_LIST item=cat_dropdown}
+                     <option value="?_g=products&amp;cat_id={$cat_dropdown.cat_id}{if $STATUS_FILTER}&amp;status_filter={$STATUS_FILTER}{/if}" {if $cat_dropdown.cat_id == $CURRENT_CAT}selected="selected"{/if}>{$cat_dropdown.name}</option>
+                     {/foreach}
+                  </select>
+               </td>
+               <td width="50">
+                  <select class="product_list_filter">
+                     <option value="?_g=products&amp;cat_id={$CURRENT_CAT}" {if !$STATUS_FILTER || $STATUS_FILTER==''}selected="selected"{/if}>{$LANG.common.any}</option>
+                     <option value="?_g=products&amp;cat_id={$CURRENT_CAT}&amp;status_filter=1" {if $STATUS_FILTER=='1'}selected="selected"{/if}>{$LANG.common.enabled}</option>
+                     <option value="?_g=products&amp;cat_id={$CURRENT_CAT}&amp;status_filter=0" {if $STATUS_FILTER=='0'}selected="selected"{/if}>{$LANG.common.disabled}</option>
+                  </select>
+               </td>
+            </tr>
+         </table>
+      </div>
       {if isset($PRODUCTS)}
       <table width="100%">
          <tr>
