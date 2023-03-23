@@ -288,7 +288,8 @@ class HookLoader
                     $this->_plugin_name($hook['plugin']);
                     $this->_plugin_language($hook['plugin']);
                     $hook['filepath'] = (!empty($hook['filepath'])) ? str_replace('/', '/', $hook['filepath']) : 'hooks/'.$trigger.'.php';
-                    if (file_exists($this->_hook_dir.'/'.$hook['plugin'].'/'.$hook['filepath']) && $this->_security_check($hook['filepath'])) {
+                    $this->_security_check($hook['filepath']);
+                    if (file_exists($this->_hook_dir.'/'.$hook['plugin'].'/'.$hook['filepath'])) {
                         $include[] =
                             array(
                             'fullpath' => $this->_hook_dir.'/'.$hook['plugin'].'/'.$hook['filepath'],
@@ -514,6 +515,7 @@ class HookLoader
         $find  = array('#^[^a-z0-9.\\\\/_]$#iU', '#(/+)|(\\\+)#', '#\.{1,2}/#');
         $replace = array('', '/', '');
         $filename = preg_replace($find, $replace, $filename);
+        $filename = ltrim($filename,"/");
         return true;
     }
 }
