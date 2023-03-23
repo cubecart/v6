@@ -325,7 +325,9 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
 }
 
 ######################################
-$per_page = 20;
+$per_page = (isset($_GET['items']) && ctype_digit($_GET['items'])) ? (int)$_GET['items'] : 25;
+$GLOBALS['smarty']->assign('PAGE_BREAKS', array(25, 50, 100, 250, 500));
+$GLOBALS['smarty']->assign('PAGE_BREAK', $per_page);
 
 if ( (isset($_GET['action']) || isset($_POST['multi-action'])) && Admin::getInstance()->permissions('customers', CC_PERM_EDIT)) {
     if ($_GET['action'] == 'signinas' && isset($_GET['customer_id']) && $_GET['customer_id']) {
