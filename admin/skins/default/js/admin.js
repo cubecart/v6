@@ -151,8 +151,9 @@ function ajaxElasticSearch(e) {
         page: e,
         function: "rebuildElasticsearch"
     }, function(i) {
+        var redirect = '?_g=maintenance&_='+Math.floor(Date.now() / 1000)+'#elasticsearch';
         if (typeof i.error !== 'undefined' && i.error=='true') {
-            window.location.href = '?_g=maintenance#elasticsearch';
+            window.location.href = redirect;
             return false;
         }
         if(i.es_count !== false && i.es_size !== false) {
@@ -166,7 +167,7 @@ function ajaxElasticSearch(e) {
         if(100 == i.percent || "true" == i.complete) {
             window.onbeforeunload = null;
             setTimeout(function(){
-                $(location).prop('href', '?_g=maintenance&_='+Math.floor(Date.now() / 1000)+'#elasticsearch');
+                window.location.href = redirect;
             }, 2000);
         } else {
             ajaxElasticSearch(e + 1);

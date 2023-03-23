@@ -489,6 +489,7 @@
       </fieldset>
       <fieldset>
          <legend>{$LANG.settings.elasticsearch}</legend>
+         <div>Elasticsearch brings lightening fast, search-as-you-type functionality to your store. This is included as standard with official <a href="https://hosted.cubecart.com/" target="_blank">CubeCart Hosting</a>. Alternatively please contact your hosting company to check for availability.</div>
          <div><label for="elasticsearch">{$LANG.common.enable}</label><span><input name="config[elasticsearch]" id="elasticsearch" type="hidden" class="toggle" value="{$CONFIG.elasticsearch}"></span></div>
          <div><label for="es_h">{$LANG.settings.es_hosts}</label><span><input name="config[es_h]" id="es_h" type="text" class="textbox" value="{$CONFIG.es_h}" placeholder="{$LANG.common.eg} https://localhost:9200"></span></div>
          <div><label for="es_u">{$LANG.account.username}</label><span><input name="config[es_u]" id="es_u" type="text" class="textbox" value="{$CONFIG.es_u}"></span></div>
