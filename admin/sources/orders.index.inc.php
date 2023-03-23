@@ -783,7 +783,9 @@ if (isset($_GET['action'])) {
     $GLOBALS['main']->addTabControl($lang['search']['gdpr_tools'], 'gdpr');
 
     $page = (isset($_GET['page'])) ? $_GET['page'] : 1;
-    $per_page = 20;
+    $per_page = (isset($_GET['items']) && ctype_digit($_GET['items'])) ? (int)$_GET['items'] : 25;
+    $GLOBALS['smarty']->assign('PAGE_BREAKS', array(25, 50, 100, 250, 500));
+    $GLOBALS['smarty']->assign('PAGE_BREAK', $per_page);
 
     if ((!isset($_GET['sort']) || !is_array($_GET['sort'])) && !isset($_GET['action'])) {
         $_GET['sort'] = array('order_date' => 'DESC');

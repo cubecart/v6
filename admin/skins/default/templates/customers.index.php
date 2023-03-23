@@ -19,6 +19,17 @@
 	  <i class="fa fa-user registered" title="{$LANG.customer.title_key_registered}"></i> - {$LANG.customer.title_key_registered}<br>
 	  <i class="fa fa-user unregistered" title="{$LANG.customer.title_key_unregistered}"></i> - {$LANG.customer.title_key_unregistered}
 	</p>
+	<table width="100%" class="filter">
+	<tr>
+	  <td>
+        <select class="select_submit">
+		{foreach from=$PAGE_BREAKS  item=p}
+			<option value="?_g=customers&items={$p}"{if $p == $PAGE_BREAK} selected="selected"{/if}>{$p} {$LANG.common.item_plural}</option> 
+		{/foreach} 
+		</select>
+	   {$LANG.common.per_page}
+	</td>
+  </table>
 	<table width="100%">
 	  <thead>
 		<tr>
