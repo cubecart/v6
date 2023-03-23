@@ -267,6 +267,10 @@ class Ajax
                 $data = (isset($json) && is_array($json)) ? $json : false;
                 break;
             default:
+                ## See https://github.com/cubecart/v6/issues/3191 
+                foreach ($GLOBALS['hooks']->load('class.ajax.search.case_default') as $hook) {
+                    include $hook;
+                }
                 return false;
                 break;
             }

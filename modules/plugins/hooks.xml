@@ -119,6 +119,7 @@
 	<hook trigger="class.admin.get_section_id" deprecated="" />
 	<hook trigger="class.ajax.load" deprecated="" />
 	<hook trigger="class.ajax.search" deprecated="" />
+	<hook trigger="class.ajax.search.case_default" deprecated="" />
 	<hook trigger="class.cart.add.check" deprecated="" />
 	<hook trigger="class.cart.add.pre" deprecated="" />
 	<hook trigger="class.cart.add.preredirect" deprecated="" />
