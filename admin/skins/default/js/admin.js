@@ -165,7 +165,9 @@ function ajaxElasticSearch(e) {
         $("div#progress_bar_percent").text(Math.round(i.percent) + "%");
         if(100 == i.percent || "true" == i.complete) {
             window.onbeforeunload = null;
-            setTimeout(function(){}, 2000);
+            setTimeout(function(){
+                $(location).prop('href', '?_g=maintenance&_='+Math.floor(Date.now() / 1000)+'#elasticsearch');
+            }, 2000);
         } else {
             ajaxElasticSearch(e + 1);
         }
