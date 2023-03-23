@@ -271,21 +271,17 @@
    chart_data[{$k}] = [{$v.data}];
    {/foreach}
    {literal}
-   
-   google.setOnLoadCallback(function(){
-     {/literal}
-     {foreach from=$GRAPH_DATA key=k item=v}
-     drawChart({$k},chart_data);
-     {/foreach}
-     {literal}
-   });
-   
-   window.onresize = function(){
-     {/literal}
-     {foreach from=$GRAPH_DATA key=k item=v}
-     drawChart({$k},chart_data);
-     {/foreach}
-     {literal}
+
+   const listener = ['resize','load'];
+   listener.forEach(addEL);
+   function addEL(l) {
+      addEventListener(l, (event) => {
+         {/literal}
+         {foreach from=$GRAPH_DATA key=k item=v}
+         drawChart({$k},chart_data);
+         {/foreach}
+         {literal}
+      });
    }
 
    var ms_delay = 10; // delay before resize so sizes can be calculated
