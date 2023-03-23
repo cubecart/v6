@@ -1266,8 +1266,8 @@ class GUI
                     $where      = $GLOBALS['catalogue']->outOfStockWhere(array('status' => '1'));
                     $products = $GLOBALS['db']->select('CubeCart_inventory', array('name', 'product_id', 'quantity', 'price', 'sale_price', 'tax_type', 'tax_inclusive'), $where, 'popularity DESC', $limit);
             }
+            $vars = array();
             if ($products) {
-                $vars = array();
                 foreach ($products as $product) {
                     $category_data = $GLOBALS['catalogue']->getCategoryStatusByProductID($product['product_id']);
                     $category_status = false;
@@ -1296,8 +1296,6 @@ class GUI
                     $product['image'] = $this->getProductImage($product['product_id']);
                     $vars[] = $product;
                 }
-            } else {
-                $vars = 'none';
             }
             foreach ($GLOBALS['hooks']->load('class.gui.display_popular_products') as $hook) {
                 include $hook;
