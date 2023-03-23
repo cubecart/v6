@@ -588,6 +588,7 @@ class Catalogue
                                     }
                                 }
                             }
+                            $option_list[$value['option_id']]['priority'] = $group_priority;
                         }
                         
                         break;
