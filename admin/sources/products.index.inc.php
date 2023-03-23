@@ -1199,7 +1199,10 @@ if (isset($_GET['action'])) {
 
     // Get inventory
     $page  = (isset($_GET['page'])) ? $_GET['page'] : 1;
-    $per_page = 20;
+    $per_page = (isset($_GET['items']) && ctype_digit($_GET['items'])) ? (int)$_GET['items'] : 25;
+    $page_breaks = array(25, 50, 100, 250);
+    $GLOBALS['smarty']->assign('PAGE_BREAKS', array(25, 50, 100, 250, 500));
+    $GLOBALS['smarty']->assign('PAGE_BREAK', $per_page);
     if (isset($_GET['char']) && !empty($_GET['char'])) {
         $where  =  "`name` REGEXP '^[".$_GET['char']."]'";
     } elseif (isset($_GET['q']) && !empty($_GET['q'])) {

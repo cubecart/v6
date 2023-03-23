@@ -1254,6 +1254,9 @@ ul.quick_links li#help_menu ul li:not(:last-child) {
 #clear_cache_master {
     text-transform: uppercase;
 }
+table.filter td {
+    background-color: transparent!important;
+}
 
 @keyframes cache_animation {
     0% {

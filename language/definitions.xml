@@ -614,6 +614,7 @@
     <string name="count" introduced="6.5.0"><![CDATA[Count]]></string>
     <string name="rebuild" introduced="6.5.0"><![CDATA[Rebuild]]></string>
     <string name="build" introduced="6.5.0"><![CDATA[Build]]></string>
+    <string name="per_page" introduced="6.4.10"><![CDATA[per page]]></string>
     <string name="setup" introduced="6.4.10"><![CDATA[Setup]]></string>
     <string name="configure" introduced="6.4.10"><![CDATA[Configure]]></string>
     <string name="nobody" introduced="6.4.8"><![CDATA[Nobody]]></string>
