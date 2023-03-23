@@ -167,7 +167,7 @@ $query = "SELECT sum(`O`.`quantity`) AS `quan`, `O`.`product_id`, `I`.`name` FRO
 if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
     $GLOBALS['main']->addTabControl($lang['statistics']['title_popular'], 'stats_prod_sales');
     $numrows = $GLOBALS['db']->numrows($query);
-    $divider = $GLOBALS['db']->query("SELECT SUM(quantity) as totalProducts FROM  `".$glob['dbprefix']."CubeCart_order_inventory`");
+    $divider = $GLOBALS['db']->query("SELECT SUM(`O`.`quantity`) as `totalProducts` FROM `".$glob['dbprefix']."CubeCart_order_inventory` AS `O` INNER JOIN `".$glob['dbprefix']."CubeCart_order_summary` AS `S` ON `S`.`cart_order_id` = `O`.`cart_order_id` WHERE (`S`.`status` = 2 OR `S`.`status` = 3)");
     
     $g_graph_data[5]['data'] = "['".$lang['statistics']['percentage_of_sales']."','".$lang['common']['percentage']."'],";
     
