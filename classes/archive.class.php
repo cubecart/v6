@@ -49,7 +49,7 @@ class Archive
      *
      * @var class
      */
-    private $_zip  = false;
+    private object $_zip;
 
     ##############################################
 

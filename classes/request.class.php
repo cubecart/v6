@@ -40,6 +40,7 @@ class Request
     private $_add_request_headers  = array();
     private $_custom_request_headers = array();
     private $_request_body   = null;
+    private $_request_path = '';
     private $_request_return  = true;
     private $_request_auth   = null;
 
