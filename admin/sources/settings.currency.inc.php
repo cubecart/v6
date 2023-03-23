@@ -25,10 +25,11 @@ if (isset($_POST['autoupdate']) && Admin::getInstance()->permissions('settings',
         include $hook;
     }
     $cron = new Cron();
-    if(!empty($cron->updateExchangeRates())) {
+    $result = $cron->updateExchangeRates('', false);
+    if(!empty($result)) {
         $GLOBALS['main']->successMessage($lang['settings']['notify_currency_rates_update']);
     } else {
-        $GLOBALS['main']->successMessage($lang['settings']['notify_currency_rates_update_fail']);
+        $GLOBALS['main']->errorMessage($lang['settings']['notify_currency_rates_update_fail']);
     }
     httpredir('?_g=settings&node=currency', 'exchange');
 }

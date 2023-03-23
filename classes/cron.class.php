@@ -1,7 +1,7 @@
 <?php
 class Cron
 {
-    public function updateExchangeRates($currency = '') {
+    public function updateExchangeRates($currency = '', $echo = true) {
         ## European Central Bank
         $output = array();
         if (($request = new Request('www.ecb.europa.eu', '/stats/eurofxref/eurofxref-daily.xml')) !== false) {
@@ -40,7 +40,11 @@ class Cron
                 }
             }
         }
-        echo json_encode($output);
+        if($echo) {
+            echo json_encode($output);
+        } else {
+            return $output;
+        }
     }
     public function clearCache() {
         return $GLOBALS['cache']->clear();
