@@ -347,6 +347,11 @@ jQuery(document).ready(function() {
         }
         return result;
     }
+    function toBold(text){
+        var bold = /\*(.*?)\*/gm;
+        var html = text.replace(bold, '<strong>$1</strong>');          
+        return html;
+    }
     
     function saytGo() {
         if(!sayt.hasClass("es")) {
@@ -369,10 +374,21 @@ jQuery(document).ready(function() {
                     $('#sayt_results li').remove();
                     var products = $.parseJSON(response.responseText);
                     if(Array.isArray(products)) {
+                        search_term.replace('*','');
+                        const splitted = search_term.split(' ');
                         for(var k in products) {
-                            var regexp = new RegExp('('+search_term+')', 'gi');
+                            var product_name = products[k]['name'];
+                            splitted.forEach(
+                                function(split) {
+                                    if(split == '' || split == '*') {
+                                        return;
+                                    }
+                                    var regexp = new RegExp('('+split+')', 'ig');
+                                    product_name = product_name.replace(regexp, function(match) { return '*'+matchCase(split, match)+'*'})  
+                                }
+                            );
                             var image = (sayt.attr("data-image")=='true') ? "<img src=\""+products[k]['thumbnail']+"\" title=\""+products[k]['name']+"\">" : '';
-                            $("#sayt_results").append("<li><a href='?_a=product&product_id="+products[k]['product_id']+"'>"+image+products[k]['name'].replace(regexp, function(match) { return '<strong>'+matchCase(search_term, match)+'</strong>'})+"</a></li>");
+                            $("#sayt_results").append("<li><a href='?_a=product&product_id="+products[k]['product_id']+"'>"+image+toBold(product_name)+"</a></li>");
                         }
                     } else {
                         $('#sayt_results').append('<li class="status">No results found</li>');
