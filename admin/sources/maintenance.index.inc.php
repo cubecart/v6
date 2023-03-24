@@ -598,8 +598,8 @@ $GLOBALS['main']->addTabControl($lang['maintain']['tab_rebuild'], 'rebuild');
 $GLOBALS['main']->addTabControl($lang['maintain']['tab_backup'], 'backup');
 $GLOBALS['main']->addTabControl($lang['common']['upgrade'], 'upgrade');
 $GLOBALS['main']->addTabControl($lang['maintain']['tab_db'], 'database');
+$GLOBALS['main']->addTabControl($lang['maintain']['tab_elasticsearch'], 'elasticsearch');
 if($GLOBALS['config']->get('config', 'elasticsearch')=='1') {
-    $GLOBALS['main']->addTabControl($lang['maintain']['tab_elasticsearch'], 'elasticsearch');
     $es = new ElasticsearchHandler;
     $GLOBALS['smarty']->assign('ES_STATS', $es->getStats());
 }

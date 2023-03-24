@@ -273,7 +273,8 @@
   </form>
 </div>
 <div id="elasticsearch" class="tab_content">
-  <h3>{$LANG.maintain.tab_elasticsearch}</h3>
+<img src="./{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/logo.elasticsearch.png" alt="Elasticsearch" />
+  {if $CONFIG.elasticsearch =='1'}
   <p>{$LANG.maintain.rebuild_elasticsearch}</p>
   <p>
 	<table width="200">
@@ -296,4 +297,12 @@
    </div>
    <div id="progress_bar_percent"></div>
   <input type="submit" value="{if $ES_STATS.count == 0}{$LANG.common.build}{else}{$LANG.common.rebuild}{/if}" id="rebuild_elastic"></button>
+  {else}
+	<p>Elasticsearch brings lightening fast, search-as-you-type functionality to your store. This is included as standard with official <a href="https://hosted.cubecart.com/" target="_blank">CubeCart Hosting</a>.<br>Alternatively please contact your hosting company to check for availability. To configure and enable Elastic search please update your store <a href="?_g=settings#Advanced_Settings">settings</a>.</p>
+	<p>For more informarion contact <a href="mailto:sales@cubecart.com">sales@cubecart.com</a>.</p>
+	<h4>Example:</h4>
+	<video width="750" loop="true" autoplay="autoplay" controls muted>
+		<source src="./{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/media/movie.elasticsearch.mp4" type="video/mp4">
+	</video>
+  {/if}
 </div>
