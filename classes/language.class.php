@@ -96,14 +96,16 @@ class Language
         } elseif(isset($GLOBALS['db']) && method_exists($GLOBALS['db'],'select')) {
             if($domains = $GLOBALS['db']->select('CubeCart_domains')) {
                 foreach($domains as $domain) {
+                    if(empty($domain['domain'])) continue;
                     $d[$domain['domain']] = $domain['language'];
                 }
+                $GLOBALS['cache']->write($d, 'lang.domain.list');
             }
-            $GLOBALS['cache']->write($d, 'lang.domain.list');
+            
         }
         $url = parse_url(CC_STORE_URL);
 
-        if(defined('ADMIN_CP') && ADMIN_CP == false && isset($d[$url['host']]) && !empty($d[$url['host']])) {
+        if(defined('ADMIN_CP') && ADMIN_CP == false && !empty($d) && isset($d[$url['host']]) && !empty($d[$url['host']])) {
             $this->_language = $d[$url['host']];
         } else if (isset($GLOBALS['session'])) {
             //If the language is trying to be changed try to change it
