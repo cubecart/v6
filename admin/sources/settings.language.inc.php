@@ -268,6 +268,10 @@ if (isset($_GET['export'])) {
     } elseif (isset($_POST['status']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
         if(is_array($_POST['domain'])) {
             foreach($_POST['domain'] as $language => $domain) {
+                if(empty($domain)) {
+                    $GLOBALS['db']->delete('CubeCart_domains', array('language' => $language));
+                    continue;
+                }
                 if($GLOBALS['db']->select('CubeCart_domains', false, array('language' => $language))) {
                     $GLOBALS['db']->update('CubeCart_domains', array('domain' => $domain), array('language' => $language));
                 } else {
