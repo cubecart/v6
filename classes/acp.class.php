@@ -239,7 +239,7 @@ class ACP
         }
     }
 
-    public function newFeatures($version, $features) {
+    public function newFeatures($version, $features, $total) {
         $li = '';
         foreach($features as $id => $feature) {
             $li .= "<tr><td  class=\"text-center\" valign=\"top\"><a href=\"https://github.com/cubecart/v6/issues/$id\" title=\"https://github.com/cubecart/v6/issues/$id\" target=\"_blank\">#$id</a></td><td>$feature</td></tr>";
@@ -251,7 +251,7 @@ class ACP
             <thead><tr><th>Github Issue</th><th>New Feature</th></tr></thead>
             <tbody>
             $li
-            <tr><td colspan="2" class="text-center"><a href="https://github.com/cubecart/v6/issues?q=is%3Aclosed+milestone%3A$version">View all closed issues for $version</a></td></tr>
+            <tr><td colspan="2" class="text-center"><a href="https://github.com/cubecart/v6/issues?q=is%3Aclosed+milestone%3A$version" target="_blank" class="button">View all $total closed issues for $version</a></td></tr>
             </tbody>
             </table>
         </div>

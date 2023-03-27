@@ -16,7 +16,8 @@ $features = array(
 	'2600' => $elastic,
 	'3218' => 'Release notes added to CubeCart to showcase new features',
 	'3213' => 'Tumblr & Reddit socials icons added',
-	'3105' => 'Debug Output to modal window to prevent page output interruption',
+	'3105' => 'Debug output to modal window to prevent page output interruption',
+	'3186' => 'Large page breaks added to product, customer and order pages to compensate for removed &quot;View All&quot;'
 );
-$page_content = $GLOBALS['main']->newFeatures($_GET['node'], $features);
+$page_content = $GLOBALS['main']->newFeatures($_GET['node'], $features, 38);
 ?>
