@@ -17,6 +17,14 @@ if (!defined('CC_INI_SET')) {
 
 global $glob, $lang, $admin_data;
 
+## Release Notification
+$notification_id = CC_VERSION.'_'.Admin::getInstance()->getId();
+$release_notes_path = CC_ROOT_DIR.'/'.$GLOBALS['config']->get('config', 'adminFolder').'/sources/release_notes/'.CC_VERSION.'.php';
+if(file_exists($release_notes_path) && !$GLOBALS['config']->has('release_notes', $notification_id)) {
+    $GLOBALS['config']->set('release_notes', $notification_id, '1');
+    httpredir('?_g=release_notes&node='.CC_VERSION);
+}
+
 ## Quick tour
 $GLOBALS['smarty']->assign('QUICK_TOUR', true);
 

@@ -239,6 +239,26 @@ class ACP
         }
     }
 
+    public function newFeatures($version, $features) {
+        $li = '';
+        foreach($features as $id => $feature) {
+            $li .= "<tr><td  class=\"text-center\" valign=\"top\"><a href=\"https://github.com/cubecart/v6/issues/$id\" title=\"https://github.com/cubecart/v6/issues/$id\" target=\"_blank\">#$id</a></td><td>$feature</td></tr>";
+        }
+        $page_content = <<<END
+        <div id="general" class="tab_content">
+            <h3>CubeCart $version</h3>
+            <table class="new_features">
+            <thead><tr><th>Github Issue</th><th>Feature</th></tr></thead>
+            <tbody>
+            $li
+            <tr><td colspan="2" class="text-center"><a href="https://github.com/cubecart/v6/issues?q=is%3Aclosed+milestone%3A$version">View all closed issues for $version</a></td></tr>
+            </tbody>
+            </table>
+        </div>
+        END;
+        return $page_content;
+    }
+
     /**
      * Remove tab control
      *
