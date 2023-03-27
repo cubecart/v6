@@ -19,7 +19,10 @@ global $glob, $lang, $admin_data;
 
 ## Release Notification
 $notification_id = CC_VERSION.'_'.Admin::getInstance()->getId();
-$release_notes_path = CC_ROOT_DIR.'/'.$GLOBALS['config']->get('config', 'adminFolder').'/sources/release_notes/'.CC_VERSION.'.php';
+$release_notes_path = CC_ROOT_DIR.'/'.$GLOBALS['config']->get('config', 'adminFolder').'/sources/release_notes/'.CC_VERSION.'.inc.php';
+if(file_exists($release_notes_path)) {
+    echo "bums";
+}
 if(file_exists($release_notes_path) && !$GLOBALS['config']->has('release_notes', $notification_id)) {
     $GLOBALS['config']->set('release_notes', $notification_id, '1');
     httpredir('?_g=release_notes&node='.CC_VERSION);

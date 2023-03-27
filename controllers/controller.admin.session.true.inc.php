@@ -43,7 +43,7 @@ if (!empty($_GET['_g'])) {
     $module_type = (isset($_GET['type']) && preg_match("/[a-z]/i", $_GET['type'])) ? $_GET['type'] : '';
 
     $node = (!empty($_GET['node'])) ? strtolower($_GET['node']) : 'index';
-    $node = preg_replace('/[^a-z0-9_-]/', '', $node);
+    $node = preg_replace('/[^a-z0-9._-]/', '', $node);
     
     if (!isset($_GET['delete']) && strtolower($_GET['_g']) == 'plugins' && !empty($module_type)) {
         $module_type = preg_match("/[a-z]/i", $_GET['type']) ? $_GET['type'] : '';

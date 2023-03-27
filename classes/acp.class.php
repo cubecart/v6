@@ -246,9 +246,9 @@ class ACP
         }
         $page_content = <<<END
         <div id="general" class="tab_content">
-            <h3>CubeCart $version</h3>
+            <h3>Welcome to CubeCart $version</h3>
             <table class="new_features">
-            <thead><tr><th>Github Issue</th><th>Feature</th></tr></thead>
+            <thead><tr><th>Github Issue</th><th>New Feature</th></tr></thead>
             <tbody>
             $li
             <tr><td colspan="2" class="text-center"><a href="https://github.com/cubecart/v6/issues?q=is%3Aclosed+milestone%3A$version">View all closed issues for $version</a></td></tr>

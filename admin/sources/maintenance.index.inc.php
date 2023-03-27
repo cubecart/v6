@@ -89,8 +89,11 @@ $versions = $GLOBALS['db']->select('CubeCart_history');
 $version_history = array();
 if ($versions) {
     foreach ($versions as $version) {
-        $version['time'] = formatTime($version['time']);
-        $version_history[$version['version']] = $version;
+        $release_notes_path = CC_ROOT_DIR.'/'.$GLOBALS['config']->get('config', 'adminFolder').'/sources/release_notes/'.$version['version'].'.inc.php';
+        $version_history[$version['version']] = array(
+            'time' => formatTime($version['time']),
+            'version' => file_exists($release_notes_path) ? '<a href="?_g=release_notes&node='.$version['version'].'">'.$version['version'].'</a>' : $version['version']
+        );
     }
 }
 krsort($version_history, SORT_NATURAL);
