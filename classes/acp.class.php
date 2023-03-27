@@ -238,9 +238,43 @@ class ACP
             return $source;
         }
     }
-
+    
+    /**
+     * Get latest release URL
+     *
+     * @return string
+     */
+    public function newFeatureRedir() {
+        $li = '';
+        $release_notes_path = CC_ROOT_DIR.'/'.$GLOBALS['config']->get('config', 'adminFolder').'/sources/release_notes/*.inc.php';
+        $options = '';
+        $list = glob($release_notes_path);
+        arsort($list, SORT_NATURAL);
+        foreach ($list as $filename) {
+            $version = basename($filename);
+            $version = rtrim($version,'.inc.php');
+            return '?_g=release_notes&node='.$version;
+        }
+    }
+    
+    /**
+     * Get release notes
+     *
+     * @return string
+     */
     public function newFeatures($version, $features, $total) {
         $li = '';
+        $release_notes_path = CC_ROOT_DIR.'/'.$GLOBALS['config']->get('config', 'adminFolder').'/sources/release_notes/*.inc.php';
+        $options = '';
+        $list = glob($release_notes_path);
+        arsort($list, SORT_NATURAL);
+        foreach ($list as $filename) {
+            $version = basename($filename);
+            $version = rtrim($version,'.inc.php');
+            $selected = $_GET['node'] == $version ? ' selected="selected"' : '';
+            $options .= '<option value="?_g=release_notes&node='.$version.'"'.$selected.'>'.$version.'</option>';
+        }
+        $switcher = "<select name=\"version\" class=\"select_url\">".$options."</select>";
         foreach($features as $id => $feature) {
             $li .= "<tr><td  class=\"text-center\" valign=\"top\"><a href=\"https://github.com/cubecart/v6/issues/$id\" title=\"https://github.com/cubecart/v6/issues/$id\" target=\"_blank\">#$id</a></td><td>$feature</td></tr>";
         }
@@ -248,7 +282,7 @@ class ACP
         <div id="general" class="tab_content">
             <h3>Welcome to CubeCart $version</h3>
             <table class="new_features">
-            <thead><tr><th>Github Issue</th><th>New Feature</th></tr></thead>
+            <thead><tr><th>Github Issue</th><th><span>Version: $switcher</span> New Feature</th></tr></thead>
             <tbody>
             $li
             <tr><td colspan="2" class="text-center"><a href="https://github.com/cubecart/v6/issues?q=is%3Aclosed+milestone%3A$version" target="_blank" class="button">View all $total closed issues for $version</a></td></tr>
@@ -265,7 +299,6 @@ class ACP
      * @param string $name
      * @return self
      */
-
     public function removeTabControl($name)
     {
         if (!empty($name)) {

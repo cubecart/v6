@@ -17,7 +17,7 @@
       <table width="100%" class="filter">
          <tr>
             <td>
-               <select class="select_submit">
+               <select class="select_url">
                   {foreach from=$PAGE_BREAKS  item=p}
                   <option value="?_g=orders&items={$p}"{if $p == $PAGE_BREAK} selected="selected"{/if}>{$p} {$LANG.common.item_plural}</option> 
                   {/foreach} 

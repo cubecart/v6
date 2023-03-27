@@ -79,7 +79,8 @@ $nav_items['advanced']  = array(
     $lang['navigation']['nav_request_log']  => '?_g=settings&node=requestlog',
     $lang['navigation']['nav_access_log']  => '?_g=settings&node=logs',
     $lang['navigation']['nav_error_log']  => '?_g=settings&node=errorlog',
-    $lang['navigation']['nav_server_info']  => '?_g=phpinfo'
+    $lang['navigation']['nav_server_info']  => '?_g=phpinfo',
+    $lang['settings']['release_notes']  => '?_g=release_notes'
 );
 
 // Include menu item hooks

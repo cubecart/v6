@@ -1568,6 +1568,9 @@ td.option_image {
 .double_ul {
     border-bottom: 4px double #c5c5c5;
 }
+.new_features thead span {
+    float: right
+}
 .new_features tr:last-child td {
     background-color: transparent!important;
 }
