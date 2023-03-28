@@ -361,6 +361,12 @@ jQuery(document).ready(function() {
         if(!$('#sayt_results').length) {
             $('<ul id="sayt_results">').insertAfter(sayt);
         }
+        $(document).keyup(function(e) {
+            if (e.key === "Escape") {
+                sayt.val('');
+                $('#sayt_results li').remove();
+            }
+        });
         if(search_term.length==0) {
             $('#sayt_results li').remove();
         } else {
