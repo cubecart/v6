@@ -360,6 +360,12 @@ a.grey {
     white-space: nowrap;
     width: 100%;
 }
+#sayt_results li a span {
+    float: left;
+    width: 70px;
+    display: block;
+    text-align: center;
+}
 #sayt_results li img {
     max-height: 60px;
     max-width: 60px;
