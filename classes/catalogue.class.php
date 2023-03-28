@@ -1796,79 +1796,113 @@ class Catalogue
             CI for CubeCart_category_index
             C for CubeCart_category
         */
-        if($search_mode == 'elastic') {
-            if($GLOBALS['config']->get('config', 'elasticsearch')=='1') {
-                $es = new ElasticsearchHandler;
-                $es->query($search_data, false);
-                $result = $es->search($page, $per_page);
-                $pids = array();
-            
-                if($result) {
-                    foreach($result["hits"]["hits"] as $hit) {
-                        array_push($pids, $hit['_id']);
+        $where = array();
+        $joins = array();
+        foreach ($GLOBALS['hooks']->load('class.catalogue.pre_search') as $hook) {
+            include $hook;
+        }
+
+        $sale_mode = $GLOBALS['config']->get('config', 'catalogue_sale_mode');
+
+        if ($sale_mode == 2) {
+            $sale_percentage = $GLOBALS['config']->get('config', 'catalogue_sale_percentage');
+        }
+        $user = (array)$GLOBALS['user']->get();
+        $group_id = 'WHERE group_id = 0';
+        if (($memberships = $GLOBALS['user']->getMemberships()) !== false) {
+            $group_id = 'WHERE ';
+            foreach ($memberships as $membership) {
+                $group_id .= 'group_id = '.$membership['group_id'].' OR ';
+            }
+            $group_id = substr($group_id, 0, -4);
+        }
+
+        if (strtolower($page) != 'all') {
+            $page = (is_numeric($page)) ? $page : 1;
+            $limit = sprintf('LIMIT %d OFFSET %d', (int)$per_page, $per_page*($page-1));
+        } else {
+            $limit = 'LIMIT 100';
+        }
+        
+        // Presence of a join is similar to presence of a search keyword
+        if (!empty($joins) || is_array($search_data)) {
+            if($search_mode == 'elastic') {
+                if($GLOBALS['config']->get('config', 'elasticsearch')=='1') {
+                    $es = new ElasticsearchHandler;
+                    $es->query($search_data, false);
+                    $result = $es->search($page, $per_page);
+                    $pids = array();
+                
+                    if($result) {
+                        foreach($result["hits"]["hits"] as $hit) {
+                            array_push($pids, $hit['_id']);
+                        }
+                    }
+                    $this->_category_count  = $result["hits"]["total"]["value"];
+                    if(!empty($pids)) {
+                        $this->_category_products = $GLOBALS['db']->select('CubeCart_inventory', false, array('product_id' => $pids));
+                        $this->_sort_by_relevance = true;
+                    } else {
+                        $this->_elasticsearch = false;
+                        return $this->searchCatalogue($original_search_data, 1, $per_page, 'fulltext');  
+                    }
+                } else {
+                    return $this->searchCatalogue($original_search_data, 1, $per_page, 'fulltext');
+                }
+                
+            }
+            if($GLOBALS['config']->get('config', 'hide_out_of_stock')=='1') {
+                $search_data['inStock'] = true;
+            }
+            if (!empty($search_data['priceVary'])) {
+                // Allow for a 5% variance in prices
+                if (!empty($search_data['priceMin']) && is_numeric($search_data['priceMin'])) {
+                    $price = round($GLOBALS['tax']->priceConvertFX($search_data['priceMin'])/1.05, 3);
+                    if ($sale_mode == 1) {
+                        $where[] = 'AND (IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price) >= '.$price.', IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price) >= '.$price.'))';
+                    } elseif ($sale_mode == 2) {
+                        $where[] = 'AND (IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) >= '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) >= '.$price.'))';
+                    } else {
+                        $where[] = 'AND (IF (G.price IS NULL, I.price >= '.$price.', G.price >= '.$price.'))';
                     }
                 }
-                $this->_category_count  = $result["hits"]["total"]["value"];
-                if(!empty($pids)) {
-                    $this->_category_products = $GLOBALS['db']->select('CubeCart_inventory', false, array('product_id' => $pids));
-                    $this->_sort_by_relevance = true;
+
+                if (!empty($search_data['priceMax']) && is_numeric($search_data['priceMax'])) {
+                    $price = round($GLOBALS['tax']->priceConvertFX($search_data['priceMax'])*1.05, 3);
+                    if ($sale_mode == 1) {
+                        $where[] = 'AND (IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price) <= '.$price.', IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price) <= '.$price.'))';
+                    } elseif ($sale_mode == 2) {
+                        $where[] = 'AND (IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) <= '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) <= '.$price.'))';
+                    } else {
+                        $where[] = 'AND (IF (G.price IS NULL, I.price <= '.$price.', G.price <= '.$price.'))';
+                    }
+                }
+            } else {
+                ## Basic price searching
+                if (!empty($search_data['priceMin']) && is_numeric($search_data['priceMin']) &&
+                    !empty($search_data['priceMax']) && is_numeric($search_data['priceMax']) &&
+                    $search_data['priceMax'] == $search_data['priceMin']) {
+                    $price = round($GLOBALS['tax']->priceConvertFX($search_data['priceMin']), 3);
+                    if ($sale_mode == 1) {
+                        $where[] = 'AND (IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price) = '.$price.', IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price) = '.$price.'))';
+                    } elseif ($sale_mode == 2) {
+                        $where[] = 'AND (IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) = '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) = '.$price.'))';
+                    } else {
+                        $where[] = 'AND (IF (G.price IS NULL, I.price = '.$price.', G.price = '.$price.'))';
+                    }
                 } else {
-                    $this->_elasticsearch = false;
-                    return $this->searchCatalogue($original_search_data, 1, $per_page, 'fulltext');  
-                }
-            } else {
-                return $this->searchCatalogue($original_search_data, 1, $per_page, 'fulltext');
-            }
-            
-        } else {
-            $where = array();
-            $joins = array();
-            foreach ($GLOBALS['hooks']->load('class.catalogue.pre_search') as $hook) {
-                include $hook;
-            }
-
-            $sale_mode = $GLOBALS['config']->get('config', 'catalogue_sale_mode');
-
-            if ($sale_mode == 2) {
-                $sale_percentage = $GLOBALS['config']->get('config', 'catalogue_sale_percentage');
-            }
-            $user = (array)$GLOBALS['user']->get();
-            $group_id = 'WHERE group_id = 0';
-            if (($memberships = $GLOBALS['user']->getMemberships()) !== false) {
-                $group_id = 'WHERE ';
-                foreach ($memberships as $membership) {
-                    $group_id .= 'group_id = '.$membership['group_id'].' OR ';
-                }
-                $group_id = substr($group_id, 0, -4);
-            }
-
-            if (strtolower($page) != 'all') {
-                $page = (is_numeric($page)) ? $page : 1;
-                $limit = sprintf('LIMIT %d OFFSET %d', (int)$per_page, $per_page*($page-1));
-            } else {
-                $limit = 'LIMIT 100';
-            }
-            
-            // Presence of a join is similar to presence of a search keyword
-            if (!empty($joins) || is_array($search_data)) {
-                if($GLOBALS['config']->get('config', 'hide_out_of_stock')=='1') {
-                    $search_data['inStock'] = true;
-                }
-                if (!empty($search_data['priceVary'])) {
-                    // Allow for a 5% variance in prices
                     if (!empty($search_data['priceMin']) && is_numeric($search_data['priceMin'])) {
-                        $price = round($GLOBALS['tax']->priceConvertFX($search_data['priceMin'])/1.05, 3);
+                        $price = round($GLOBALS['tax']->priceConvertFX($search_data['priceMin']), 3);
                         if ($sale_mode == 1) {
-                            $where[] = 'AND (IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price) >= '.$price.', IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price) >= '.$price.'))';
+                            $where[] = 'AND (IF (G.product_id IS NULL, IF (I.sale_price = 0, I.price, I.sale_price) >= '.$price.', IF (G.sale_price = 0, G.price, G.sale_price) >= '.$price.'))';
                         } elseif ($sale_mode == 2) {
                             $where[] = 'AND (IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) >= '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) >= '.$price.'))';
                         } else {
                             $where[] = 'AND (IF (G.price IS NULL, I.price >= '.$price.', G.price >= '.$price.'))';
                         }
                     }
-
                     if (!empty($search_data['priceMax']) && is_numeric($search_data['priceMax'])) {
-                        $price = round($GLOBALS['tax']->priceConvertFX($search_data['priceMax'])*1.05, 3);
+                        $price = round($GLOBALS['tax']->priceConvertFX($search_data['priceMax']), 3);
                         if ($sale_mode == 1) {
                             $where[] = 'AND (IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price) <= '.$price.', IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price) <= '.$price.'))';
                         } elseif ($sale_mode == 2) {
@@ -1877,289 +1911,254 @@ class Catalogue
                             $where[] = 'AND (IF (G.price IS NULL, I.price <= '.$price.', G.price <= '.$price.'))';
                         }
                     }
-                } else {
-                    ## Basic price searching
-                    if (!empty($search_data['priceMin']) && is_numeric($search_data['priceMin']) &&
-                        !empty($search_data['priceMax']) && is_numeric($search_data['priceMax']) &&
-                        $search_data['priceMax'] == $search_data['priceMin']) {
-                        $price = round($GLOBALS['tax']->priceConvertFX($search_data['priceMin']), 3);
-                        if ($sale_mode == 1) {
-                            $where[] = 'AND (IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price) = '.$price.', IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price) = '.$price.'))';
-                        } elseif ($sale_mode == 2) {
-                            $where[] = 'AND (IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) = '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) = '.$price.'))';
-                        } else {
-                            $where[] = 'AND (IF (G.price IS NULL, I.price = '.$price.', G.price = '.$price.'))';
-                        }
-                    } else {
-                        if (!empty($search_data['priceMin']) && is_numeric($search_data['priceMin'])) {
-                            $price = round($GLOBALS['tax']->priceConvertFX($search_data['priceMin']), 3);
-                            if ($sale_mode == 1) {
-                                $where[] = 'AND (IF (G.product_id IS NULL, IF (I.sale_price = 0, I.price, I.sale_price) >= '.$price.', IF (G.sale_price = 0, G.price, G.sale_price) >= '.$price.'))';
-                            } elseif ($sale_mode == 2) {
-                                $where[] = 'AND (IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) >= '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) >= '.$price.'))';
-                            } else {
-                                $where[] = 'AND (IF (G.price IS NULL, I.price >= '.$price.', G.price >= '.$price.'))';
-                            }
-                        }
-                        if (!empty($search_data['priceMax']) && is_numeric($search_data['priceMax'])) {
-                            $price = round($GLOBALS['tax']->priceConvertFX($search_data['priceMax']), 3);
-                            if ($sale_mode == 1) {
-                                $where[] = 'AND (IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price) <= '.$price.', IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price) <= '.$price.'))';
-                            } elseif ($sale_mode == 2) {
-                                $where[] = 'AND (IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) <= '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) <= '.$price.'))';
-                            } else {
-                                $where[] = 'AND (IF (G.price IS NULL, I.price <= '.$price.', G.price <= '.$price.'))';
-                            }
-                        }
-                    }
                 }
-                // Manufacturer
-                if (isset($search_data['manufacturer']) && is_array($search_data['manufacturer']) && count($search_data['manufacturer'])>0) {
-                    $where[] = 'AND I.manufacturer IN ('.implode(',', $this->get_int_array($search_data['manufacturer'])).')';
-                }
+            }
+            // Manufacturer
+            if (isset($search_data['manufacturer']) && is_array($search_data['manufacturer']) && count($search_data['manufacturer'])>0) {
+                $where[] = 'AND I.manufacturer IN ('.implode(',', $this->get_int_array($search_data['manufacturer'])).')';
+            }
 
-                $order = array();
-                
-                if (isset($_GET['sort']) && is_array($_GET['sort'])) {
-                    foreach ($_GET['sort'] as $field => $direction) {
-                        if (strtolower($field) == 'relevance' && $search_mode !== 'fulltext') {
-                            break;
-                        }
-                        $order['field'] = $field;
-                        if ($field == 'price') {
-                            if ($sale_mode == 1) {
-                                $order['field'] = 'IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price), IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price))';
-                            } else {
-                                $order['field'] = 'IFNULL (G.price, I.price)';
-                            }
-                        }
-                        $order['sort'] = (strtolower($direction) == 'asc') ? 'ASC' : 'DESC';
+            $order = array();
+            
+            if (isset($_GET['sort']) && is_array($_GET['sort'])) {
+                foreach ($_GET['sort'] as $field => $direction) {
+                    if (strtolower($field) == 'relevance' && $search_mode !== 'fulltext') {
                         break;
                     }
-                } elseif ($search_mode == 'fulltext') {
-                    $order['field'] = 'Relevance';
-                    $order['sort'] = 'DESC';
-                }
-                // Use store settings for sort order if none designated
-                if (empty($order)) {
-                    $order['field'] = $GLOBALS['config']->get('config', 'product_sort_column');
-                    $order['sort'] = $GLOBALS['config']->get('config', 'product_sort_direction');
-                    if (empty($order['field']) || empty($order['sort'])) {
-                        unset($order); // store settings were somehow invalid
-                    }
-                }
-                if (empty($search_data['keywords']) && $order['field'] == 'Relevance') {
-                    if ($sale_mode == 1) {
-                        $order['field'] = 'IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price), IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price))';
-                    } else {
-                        $order['field'] = 'IFNULL (G.price, I.price)';
-                    }
-                }
-                if (is_array($order)) {
-                    $field_format = preg_match('/\s/', $order['field']) ? $order['field'] : '`'.$order['field'].'`';
-                    $order_string = 'ORDER BY '.$field_format.' '.$order['sort'];
-                }
-
-                if (isset($search_data['featured'])) {
-                    $where[] = "AND I.featured = '1'";
-                }
-                // Only look for items that are in stock
-                if (isset($search_data['inStock'])) {
-                    $oosWhere = $this->outOfStockWhere(false, 'I');
-                    if(!empty($oosWhere)) {
-                        $where[] = "AND $oosWhere";
-                    }
-                }
-
-                if(!isset($search_data['manufacturer']) && $manufacturers  = $GLOBALS['db']->select('CubeCart_manufacturers', array('id'), "`name` LIKE '%".$search_data['keywords']."%'")) {
-                    $ids = array();
-                    foreach($manufacturers as $manufacturer) {
-                        $ids[] = $manufacturer['id'];
-                    }
-                    $manufacturers = implode(',',$ids);
-                    $where[] = "AND `I`.`manufacturer` IN($manufacturers)";
-                }
-
-                $whereString = (isset($where) && is_array($where)) ? implode(' ', $where) : '';
-                $whereString .= $this->_where_live_from;
-
-                $joinString = (isset($joins) && is_array($joins)) ? implode(' JOIN ', $joins) : '';
-                if (!empty($joinString)) {
-                    $joinString = ' JOIN '.$joinString;
-                }
-
-                $indexes = $GLOBALS['db']->getFulltextIndex('CubeCart_inventory', 'I');
-
-                if (!empty($joins) || isset($search_data['keywords']) && is_array($indexes) && !empty($search_data['keywords'])) {
-                    if ($search_mode == 'fulltext') {
-                        $max_word_len = $GLOBALS['db']->getSearchWordLen();
-                        $words = explode(' ', $search_data['keywords']);
-                        if (is_array($words)) {
-                            $search_str_len = 0;
-                            foreach ($words as $word) {
-                                $search_str_len = ($search_str_len < strlen($word)) ? strlen($word) : $search_str_len;
-                            }
+                    $order['field'] = $field;
+                    if ($field == 'price') {
+                        if ($sale_mode == 1) {
+                            $order['field'] = 'IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price), IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price))';
                         } else {
-                            $search_str_len = strlen($search_data['keywords']);
+                            $order['field'] = 'IFNULL (G.price, I.price)';
                         }
                     }
+                    $order['sort'] = (strtolower($direction) == 'asc') ? 'ASC' : 'DESC';
+                    break;
+                }
+            } elseif ($search_mode == 'fulltext') {
+                $order['field'] = 'Relevance';
+                $order['sort'] = 'DESC';
+            }
+            // Use store settings for sort order if none designated
+            if (empty($order)) {
+                $order['field'] = $GLOBALS['config']->get('config', 'product_sort_column');
+                $order['sort'] = $GLOBALS['config']->get('config', 'product_sort_direction');
+                if (empty($order['field']) || empty($order['sort'])) {
+                    unset($order); // store settings were somehow invalid
+                }
+            }
+            if (empty($search_data['keywords']) && $order['field'] == 'Relevance') {
+                if ($sale_mode == 1) {
+                    $order['field'] = 'IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price), IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price))';
+                } else {
+                    $order['field'] = 'IFNULL (G.price, I.price)';
+                }
+            }
+            if (is_array($order)) {
+                $field_format = preg_match('/\s/', $order['field']) ? $order['field'] : '`'.$order['field'].'`';
+                $order_string = 'ORDER BY '.$field_format.' '.$order['sort'];
+            }
 
-                    if ($search_mode == 'fulltext') {
-                        if ($search_str_len < $max_word_len) {
-                            return $this->searchCatalogue($original_search_data, 1, $per_page, 'rlike');
-                        }
+            if (isset($search_data['featured'])) {
+                $where[] = "AND I.featured = '1'";
+            }
+            // Only look for items that are in stock
+            if (isset($search_data['inStock'])) {
+                $oosWhere = $this->outOfStockWhere(false, 'I');
+                if(!empty($oosWhere)) {
+                    $where[] = "AND $oosWhere";
+                }
+            }
 
-                        switch (true) {
-                        case (preg_match('#[\+\-\>\<][\w]+#iu', $search_data['keywords'])):
-                            ## Switch to bolean mode
-                            $mode = 'IN BOOLEAN MODE';
-                            break;
-                        default:
-                            $search_data['keywords'] = str_replace(' ', '*) +(*', $search_data['keywords']);
-                            $search_data['keywords'] .= '*)';
-                            $search_data['keywords'] = '+(*'.$search_data['keywords'];
-                            $mode = 'IN BOOLEAN MODE';
-                            break;
-                        }
-                        $words = preg_replace('/[^\p{Greek}a-zA-Z0-9\-\s]+/u', '', $search_data['keywords']);
-                        $words = $GLOBALS['db']->sqlSafe($words);
-                        // Score matching string
-                        $match = sprintf("MATCH (%s) AGAINST('%s' %s)", implode(',', $indexes), $words, $mode);
-                        $match_val = '0.5';
+            if(!isset($search_data['manufacturer']) && $manufacturers  = $GLOBALS['db']->select('CubeCart_manufacturers', array('id'), "`name` LIKE '%".$search_data['keywords']."%'")) {
+                $ids = array();
+                foreach($manufacturers as $manufacturer) {
+                    $ids[] = $manufacturer['id'];
+                }
+                $manufacturers = implode(',',$ids);
+                $where[] = "AND `I`.`manufacturer` IN($manufacturers)";
+            }
 
-                        $query = sprintf("SELECT I.*, %2\$s AS Relevance FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND (%2\$s) >= %4\$s %3\$s %5\$s %6\$s", $GLOBALS['config']->get('config', 'dbprefix'), $match, $whereString, $match_val, $order_string, $limit);
-                
-                        if ($search = $GLOBALS['db']->query($query)) {
-                            $q2 = sprintf("SELECT COUNT(I.product_id) as count, %2\$s AS Relevance FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND (%2\$s) >= %4\$s %3\$s GROUP BY I.product_id %5\$s", $GLOBALS['config']->get('config', 'dbprefix'), $match, $whereString, $match_val, $order_string);
-                            $count = $GLOBALS['db']->query($q2);
-                            $this->_category_count  = (int)count($count);
-                            $this->_category_products = $search;
-                            $this->_sort_by_relevance = true;
-                            if ($page == 1 && count($this->_category_products)==1 && ctype_digit($this->_category_products[0]['product_id']) && $_SERVER['HTTP_X_REQUESTED_WITH']!=='XMLHttpRequest') {
-                                $GLOBALS['gui']->setNotify(sprintf($GLOBALS['language']->catalogue['notify_product_search_one'], $_REQUEST['search']['keywords']));
-                                httpredir('?_a=product&product_id='.$this->_category_products[0]['product_id']);
-                            }
-                            return true;
-                        } elseif ($search_mode == 'fulltext') {
-                            return $this->searchCatalogue($original_search_data, 1, $per_page, 'rlike');
+            $whereString = (isset($where) && is_array($where)) ? implode(' ', $where) : '';
+            $whereString .= $this->_where_live_from;
+
+            $joinString = (isset($joins) && is_array($joins)) ? implode(' JOIN ', $joins) : '';
+            if (!empty($joinString)) {
+                $joinString = ' JOIN '.$joinString;
+            }
+
+            $indexes = $GLOBALS['db']->getFulltextIndex('CubeCart_inventory', 'I');
+
+            if (!empty($joins) || isset($search_data['keywords']) && is_array($indexes) && !empty($search_data['keywords'])) {
+                if ($search_mode == 'fulltext') {
+                    $max_word_len = $GLOBALS['db']->getSearchWordLen();
+                    $words = explode(' ', $search_data['keywords']);
+                    if (is_array($words)) {
+                        $search_str_len = 0;
+                        foreach ($words as $word) {
+                            $search_str_len = ($search_str_len < strlen($word)) ? strlen($word) : $search_str_len;
                         }
                     } else {
-                        $search_mode = in_array($search_mode, array('rlike','like')) ? $search_mode : 'rlike';
-                        $this->_sort_by_relevance = false;
-                        $like = '';
-                        if (!empty($search_data['keywords'])) {
-                            $searchwords = preg_split('/[\s,]+/', $GLOBALS['db']->sqlSafe($search_data['keywords']));
-                            $searchArray = array();
-                            foreach ($searchwords as $word) {
-                                if (empty($word) && !is_numeric($word)) {
-                                    continue;
-                                }
-                                $searchArray[] = $word;
-                            }
-
-                            $noKeys = count($searchArray);
-                            $regexp = $regexp_desc = '';
-                            
-                            $search_mode = in_array($search_mode, array('rlike','like')) ? $search_mode : 'rlike';
-                            if($search_mode == 'rlike' && version_compare($GLOBALS['db']->serverVersion(), '8.0.0') >= 0) {
-                                $like_keyword = "RLIKE";
-                                $like_prefix = '\\\b';
-                                $like_postfix = '\\\b';
-                            } elseif ($search_mode == 'rlike') {
-                                $like_keyword = "RLIKE";
-                                $like_prefix = '[[:<:]]';
-                                $like_postfix = '[[:>:]].*';
-                            } else {
-                                $like_keyword = "LIKE";
-                                $like_prefix = '%';
-                                $like_postfix = '%';
-                            }
-                            for ($i=0; $i<$noKeys; ++$i) {
-                                $ucSearchTerm = strtoupper($searchArray[$i]);
-                                if (($ucSearchTerm != 'AND') && ($ucSearchTerm != 'OR')) {
-                                    $regexp .= $like_prefix.$searchArray[$i].$like_postfix;
-                                    $regexp_desc .= $like_prefix.htmlentities(html_entity_decode($searchArray[$i], ENT_COMPAT, 'UTF-8'), ENT_QUOTES, 'UTF-8', false).$like_postfix;
-                                }
-                            }
-                            if ($search_mode == 'rlike' && strstr($like_postfix, '.*')) {
-                                $regexp = substr($regexp, 0, strlen($regexp)-2);
-                                $regexp_desc = substr($regexp_desc, 0, strlen($regexp_desc)-2);
-                            }
-                            $like = " AND (I.name ".$like_keyword." '".$regexp."' OR I.description ".$like_keyword." '".$regexp_desc."' OR I.product_code ".$like_keyword." '".$regexp."')";
-                        }
-
-                        $q2 = "SELECT I.* FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_category_index` as CI INNER JOIN ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 ".$whereString.$like;
-                        
-                        $query = $q2.' '.$order_string.' '.$limit;
-                        $search = $GLOBALS['db']->query($query);
-                        if (is_array($search) && count($search)>0) {
-                            $count = $GLOBALS['db']->query($q2);
-                            $this->_category_count  = (int)count($count);
-                            $this->_category_products = $search;
-                            if ($page == 1 && count($this->_category_products)==1 && ctype_digit($this->_category_products[0]['product_id']) && $_SERVER['HTTP_X_REQUESTED_WITH']!=='XMLHttpRequest') {
-                                $GLOBALS['gui']->setNotify(sprintf($GLOBALS['language']->catalogue['notify_product_search_one'], $_REQUEST['search']['keywords']));
-                                httpredir('?_a=product&product_id='.$this->_category_products[0]['product_id']);
-                            }
-                            return true;
-                        } elseif ($search_mode=="rlike") {
-                            return $this->searchCatalogue($original_search_data, 1, $per_page, 'like');
-                        }
+                        $search_str_len = strlen($search_data['keywords']);
                     }
                 }
-            } else {
-                if (is_numeric($search_data)) {
-                    if (($category = $this->getCategoryData((int)$search_data)) !== false) {
-                        if (($products = $this->getCategoryProducts((int)$search_data, $page, $per_page)) !== false) {
-                            $this->_category_products = $products;
-                            return true;
-                        }
-                    }
-                } elseif (strtolower($search_data) == 'sale') {
-                    if (isset($_GET['sort']) && is_array($_GET['sort'])) {
-                        foreach ($_GET['sort'] as $field => $direction) {
-                            $order[$field] = (strtolower($direction) == 'asc') ? 'ASC' : 'DESC';
-                            break;
-                        }
-                    } else {
-                        $order['price'] = 'DESC';
+
+                if ($search_mode == 'fulltext') {
+                    if ($search_str_len < $max_word_len) {
+                        return $this->searchCatalogue($original_search_data, 1, $per_page, 'rlike');
                     }
 
-                    if (is_array($order)) {
-                        if (key($order) == "price") {
-                            if ($GLOBALS['config']->get('config', 'catalogue_sale_mode') == '1') {
-                                $order_string = 'ORDER BY (I.price-I.sale_price) '.current($order);
-                            } elseif ($GLOBALS['config']->get('config', 'catalogue_sale_mode') == '2' && $GLOBALS['config']->get('config', 'catalogue_sale_percentage'>0)) {
-                                $order_string = 'ORDER BY (I.price - (I.price / 100) * '.$GLOBALS['config']->get('config', 'catalogue_sale_percentage').') '.current($order);
-                            }
-                            $_GET['sort']['price'] = current($order);
-                        } else {
-                            $_GET['sort'][key($order)] = current($order);
-                            $order_string = 'ORDER BY `'.key($order).'` '.current($order);
-                        }
+                    switch (true) {
+                    case (preg_match('#[\+\-\>\<][\w]+#iu', $search_data['keywords'])):
+                        ## Switch to bolean mode
+                        $mode = 'IN BOOLEAN MODE';
+                        break;
+                    default:
+                        $search_data['keywords'] = str_replace(' ', '*) +(*', $search_data['keywords']);
+                        $search_data['keywords'] .= '*)';
+                        $search_data['keywords'] = '+(*'.$search_data['keywords'];
+                        $mode = 'IN BOOLEAN MODE';
+                        break;
                     }
-                    $where2 = $this->outOfStockWhere(false, 'I', true);
-                    $whereString = 'IF (G.sale_price IS NULL, I.sale_price, G.sale_price) > 0'.$where2;
-                    if ($GLOBALS['config']->get('config', 'catalogue_sale_mode') == '1') {
-                        $query = sprintf("SELECT I.* FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND %2\$s %3\$s %4\$s", $GLOBALS['config']->get('config', 'dbprefix'), $whereString, $order_string, $limit);
-                    } elseif ($GLOBALS['config']->get('config', 'catalogue_sale_mode') == '2') {
-                        $decimal_percent = $GLOBALS['config']->get('config', 'catalogue_sale_percentage')/100;
-                        $query = sprintf("SELECT I.* FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, price*%4\$s as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 %2\$s %3\$s", $GLOBALS['config']->get('config', 'dbprefix'), $order_string, $limit, $decimal_percent);
-                    } else {
-                        return false;
-                    }
-                    foreach ($GLOBALS['hooks']->load('class.cubecart.search_catalogue') as $hook) {
-                        include $hook;
-                    }
-                    if (($sale = $GLOBALS['db']->query($query)) !== false) {
-                        $q2 = sprintf("SELECT COUNT(*) AS `Count` FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND %2\$s", $GLOBALS['config']->get('config', 'dbprefix'), $whereString);
+                    $words = preg_replace('/[^\p{Greek}a-zA-Z0-9\-\s]+/u', '', $search_data['keywords']);
+                    $words = $GLOBALS['db']->sqlSafe($words);
+                    // Score matching string
+                    $match = sprintf("MATCH (%s) AGAINST('%s' %s)", implode(',', $indexes), $words, $mode);
+                    $match_val = '0.5';
+
+                    $query = sprintf("SELECT I.*, %2\$s AS Relevance FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND (%2\$s) >= %4\$s %3\$s %5\$s %6\$s", $GLOBALS['config']->get('config', 'dbprefix'), $match, $whereString, $match_val, $order_string, $limit);
+            
+                    if ($search = $GLOBALS['db']->query($query)) {
+                        $q2 = sprintf("SELECT COUNT(I.product_id) as count, %2\$s AS Relevance FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND (%2\$s) >= %4\$s %3\$s GROUP BY I.product_id %5\$s", $GLOBALS['config']->get('config', 'dbprefix'), $match, $whereString, $match_val, $order_string);
                         $count = $GLOBALS['db']->query($q2);
-                        $this->_category_count  = (int)$count[0]['Count'];
-                        $this->_category_products = $sale;
-                        foreach ($GLOBALS['hooks']->load('class.catalogue.search_catalogue.sale_items.post') as $hook) {
-                            include $hook;
+                        $this->_category_count  = (int)count($count);
+                        $this->_category_products = $search;
+                        $this->_sort_by_relevance = true;
+                        if ($page == 1 && count($this->_category_products)==1 && ctype_digit($this->_category_products[0]['product_id']) && $_SERVER['HTTP_X_REQUESTED_WITH']!=='XMLHttpRequest') {
+                            $GLOBALS['gui']->setNotify(sprintf($GLOBALS['language']->catalogue['notify_product_search_one'], $_REQUEST['search']['keywords']));
+                            httpredir('?_a=product&product_id='.$this->_category_products[0]['product_id']);
                         }
                         return true;
+                    } elseif ($search_mode == 'fulltext') {
+                        return $this->searchCatalogue($original_search_data, 1, $per_page, 'rlike');
                     }
+                } else {
+                    $search_mode = in_array($search_mode, array('rlike','like')) ? $search_mode : 'rlike';
+                    $this->_sort_by_relevance = false;
+                    $like = '';
+                    if (!empty($search_data['keywords'])) {
+                        $searchwords = preg_split('/[\s,]+/', $GLOBALS['db']->sqlSafe($search_data['keywords']));
+                        $searchArray = array();
+                        foreach ($searchwords as $word) {
+                            if (empty($word) && !is_numeric($word)) {
+                                continue;
+                            }
+                            $searchArray[] = $word;
+                        }
+
+                        $noKeys = count($searchArray);
+                        $regexp = $regexp_desc = '';
+                        
+                        $search_mode = in_array($search_mode, array('rlike','like')) ? $search_mode : 'rlike';
+                        if($search_mode == 'rlike' && version_compare($GLOBALS['db']->serverVersion(), '8.0.0') >= 0) {
+                            $like_keyword = "RLIKE";
+                            $like_prefix = '\\\b';
+                            $like_postfix = '\\\b';
+                        } elseif ($search_mode == 'rlike') {
+                            $like_keyword = "RLIKE";
+                            $like_prefix = '[[:<:]]';
+                            $like_postfix = '[[:>:]].*';
+                        } else {
+                            $like_keyword = "LIKE";
+                            $like_prefix = '%';
+                            $like_postfix = '%';
+                        }
+                        for ($i=0; $i<$noKeys; ++$i) {
+                            $ucSearchTerm = strtoupper($searchArray[$i]);
+                            if (($ucSearchTerm != 'AND') && ($ucSearchTerm != 'OR')) {
+                                $regexp .= $like_prefix.$searchArray[$i].$like_postfix;
+                                $regexp_desc .= $like_prefix.htmlentities(html_entity_decode($searchArray[$i], ENT_COMPAT, 'UTF-8'), ENT_QUOTES, 'UTF-8', false).$like_postfix;
+                            }
+                        }
+                        if ($search_mode == 'rlike' && strstr($like_postfix, '.*')) {
+                            $regexp = substr($regexp, 0, strlen($regexp)-2);
+                            $regexp_desc = substr($regexp_desc, 0, strlen($regexp_desc)-2);
+                        }
+                        $like = " AND (I.name ".$like_keyword." '".$regexp."' OR I.description ".$like_keyword." '".$regexp_desc."' OR I.product_code ".$like_keyword." '".$regexp."')";
+                    }
+
+                    $q2 = "SELECT I.* FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_category_index` as CI INNER JOIN ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 ".$whereString.$like;
+                    
+                    $query = $q2.' '.$order_string.' '.$limit;
+                    $search = $GLOBALS['db']->query($query);
+                    if (is_array($search) && count($search)>0) {
+                        $count = $GLOBALS['db']->query($q2);
+                        $this->_category_count  = (int)count($count);
+                        $this->_category_products = $search;
+                        if ($page == 1 && count($this->_category_products)==1 && ctype_digit($this->_category_products[0]['product_id']) && $_SERVER['HTTP_X_REQUESTED_WITH']!=='XMLHttpRequest') {
+                            $GLOBALS['gui']->setNotify(sprintf($GLOBALS['language']->catalogue['notify_product_search_one'], $_REQUEST['search']['keywords']));
+                            httpredir('?_a=product&product_id='.$this->_category_products[0]['product_id']);
+                        }
+                        return true;
+                    } elseif ($search_mode=="rlike") {
+                        return $this->searchCatalogue($original_search_data, 1, $per_page, 'like');
+                    }
+                }
+            }
+        } else {
+            if (is_numeric($search_data)) {
+                if (($category = $this->getCategoryData((int)$search_data)) !== false) {
+                    if (($products = $this->getCategoryProducts((int)$search_data, $page, $per_page)) !== false) {
+                        $this->_category_products = $products;
+                        return true;
+                    }
+                }
+            } elseif (strtolower($search_data) == 'sale') {
+                if (isset($_GET['sort']) && is_array($_GET['sort'])) {
+                    foreach ($_GET['sort'] as $field => $direction) {
+                        $order[$field] = (strtolower($direction) == 'asc') ? 'ASC' : 'DESC';
+                        break;
+                    }
+                } else {
+                    $order['price'] = 'DESC';
+                }
+
+                if (is_array($order)) {
+                    if (key($order) == "price") {
+                        if ($GLOBALS['config']->get('config', 'catalogue_sale_mode') == '1') {
+                            $order_string = 'ORDER BY (I.price-I.sale_price) '.current($order);
+                        } elseif ($GLOBALS['config']->get('config', 'catalogue_sale_mode') == '2' && $GLOBALS['config']->get('config', 'catalogue_sale_percentage'>0)) {
+                            $order_string = 'ORDER BY (I.price - (I.price / 100) * '.$GLOBALS['config']->get('config', 'catalogue_sale_percentage').') '.current($order);
+                        }
+                        $_GET['sort']['price'] = current($order);
+                    } else {
+                        $_GET['sort'][key($order)] = current($order);
+                        $order_string = 'ORDER BY `'.key($order).'` '.current($order);
+                    }
+                }
+                $where2 = $this->outOfStockWhere(false, 'I', true);
+                $whereString = 'IF (G.sale_price IS NULL, I.sale_price, G.sale_price) > 0'.$where2;
+                if ($GLOBALS['config']->get('config', 'catalogue_sale_mode') == '1') {
+                    $query = sprintf("SELECT I.* FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND %2\$s %3\$s %4\$s", $GLOBALS['config']->get('config', 'dbprefix'), $whereString, $order_string, $limit);
+                } elseif ($GLOBALS['config']->get('config', 'catalogue_sale_mode') == '2') {
+                    $decimal_percent = $GLOBALS['config']->get('config', 'catalogue_sale_percentage')/100;
+                    $query = sprintf("SELECT I.* FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, price*%4\$s as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 %2\$s %3\$s", $GLOBALS['config']->get('config', 'dbprefix'), $order_string, $limit, $decimal_percent);
+                } else {
+                    return false;
+                }
+                foreach ($GLOBALS['hooks']->load('class.cubecart.search_catalogue') as $hook) {
+                    include $hook;
+                }
+                if (($sale = $GLOBALS['db']->query($query)) !== false) {
+                    $q2 = sprintf("SELECT COUNT(*) AS `Count` FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND %2\$s", $GLOBALS['config']->get('config', 'dbprefix'), $whereString);
+                    $count = $GLOBALS['db']->query($q2);
+                    $this->_category_count  = (int)$count[0]['Count'];
+                    $this->_category_products = $sale;
+                    foreach ($GLOBALS['hooks']->load('class.catalogue.search_catalogue.sale_items.post') as $hook) {
+                        include $hook;
+                    }
+                    return true;
                 }
             }
         }
