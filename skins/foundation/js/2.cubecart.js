@@ -387,7 +387,7 @@ jQuery(document).ready(function() {
                                     product_name = product_name.replace(regexp, function(match) { return '*'+matchCase(split, match)+'*'})  
                                 }
                             );
-                            var image = (sayt.attr("data-image")=='true') ? "<span><img src=\""+products[k]['thumbnail']+"\" title=\""+products[k]['name']+"\"></span>" : '';
+                            var image = (sayt.attr("data-image")=='true' && products[k]['thumbnail']!=='') ? "<span><img src=\""+products[k]['thumbnail']+"\" title=\""+products[k]['name']+"\"></span>" : '<span></span>';
                             $("#sayt_results").append("<li><a href='?_a=product&product_id="+products[k]['product_id']+"'>"+image+toBold(product_name)+"</a></li>");
                         }
                     } else {
