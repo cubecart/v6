@@ -262,7 +262,7 @@ class ACP
      *
      * @return string
      */
-    public function newFeatures($version, $features, $total) {
+    public function newFeatures($version, $features, $total, $notes) {
         $li = '';
         $release_notes_path = CC_ROOT_DIR.'/'.$GLOBALS['config']->get('config', 'adminFolder').'/sources/release_notes/*.inc.php';
         $options = '';
@@ -280,12 +280,13 @@ class ACP
         }
         $page_content = <<<END
         <div id="general" class="tab_content">
-            <h3>Welcome to CubeCart $version</h3>
+            <h3>Welcome to CubeCart {$_GET['node']}</h3>
+            $notes
             <table class="new_features">
             <thead><tr><th>Github Issue</th><th><span>Version: $switcher</span> New Feature</th></tr></thead>
             <tbody>
             $li
-            <tr><td colspan="2" class="text-center"><a href="https://github.com/cubecart/v6/issues?q=is%3Aclosed+milestone%3A$version" target="_blank" class="button">View all $total closed issues for $version</a></td></tr>
+            <tr><td colspan="2" class="text-center"><a href="https://github.com/cubecart/v6/issues?q=is%3Aclosed+milestone%3A{$_GET['node']}" target="_blank" class="button">View all $total closed issues for {$_GET['node']}</a></td></tr>
             </tbody>
             </table>
         </div>
