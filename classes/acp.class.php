@@ -262,7 +262,7 @@ class ACP
      *
      * @return string
      */
-    public function newFeatures($version, $features, $total, $notes) {
+    public function newFeatures($version, $features, $total, $notes = '') {
         $li = '';
         $release_notes_path = CC_ROOT_DIR.'/'.$GLOBALS['config']->get('config', 'adminFolder').'/sources/release_notes/*.inc.php';
         $options = '';
