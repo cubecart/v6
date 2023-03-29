@@ -28,7 +28,8 @@
 		{/foreach} 
 		</select>
 	   {$LANG.common.per_page}
-	</td>
+	  </td>
+	</tr>
   </table>
 	<table width="100%">
 	  <thead>
