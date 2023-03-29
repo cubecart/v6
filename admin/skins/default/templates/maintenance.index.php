@@ -273,7 +273,7 @@
   </form>
 </div>
 <div id="elasticsearch" class="tab_content">
-<img src="./{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/logo.elasticsearch.png" alt="Elasticsearch" />
+<img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/logo.elasticsearch.png" alt="Elasticsearch" />
   {if $CONFIG.elasticsearch =='1'}
   <p>{$LANG.maintain.rebuild_elasticsearch}</p>
   <p>
