@@ -1054,9 +1054,15 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
         $(t).val($(this).val()), "sum_country" == $(this).attr("id") && $(t).trigger("change")
     }), !1
 }), $("#search-placeholder").on("click", function() {
-    return $("#sidebar_contain").animate({
+    $(document).keyup(function(e) {
+        if (e.key === "Escape") {
+            $("#sidebar_contain").animate({ left: "-340px"});
+        }
+    });
+    $('.sidebar_content input#customer_id').focus();
+    $("#sidebar_contain").animate({
         left: "0px"
-    }), !1
+    });
 }), $("#sidebar_contain").on("mouseleave", function() {
     if(!$(".jqac-menu").length) {
         return $(this).animate({
