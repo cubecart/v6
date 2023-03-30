@@ -931,13 +931,14 @@ class Catalogue
      * Get specific manufacturer data
      *
      * @param int $manufacturer_id
+     * @param bool $placeholder
      * @return string/false
      */
-    public function getManufacturer($manufacturer_id)
+    public function getManufacturer($manufacturer_id, $placeholder = false)
     {
         if (($manufacturers = $GLOBALS['db']->select('CubeCart_manufacturers', array('name', 'URL'), array('id' => $manufacturer_id))) !== false) {
             if (filter_var($manufacturers[0]['URL'], FILTER_VALIDATE_URL)) {
-                return '<a href="'.$manufacturers[0]['URL'].'" target="_blank">'.$manufacturers[0]['name'].'</a>';
+                return '<a href="'.$manufacturers[0]['URL'].'" target="_blank">'.($placeholder ? '%s' : $manufacturers[0]['name']).'</a>';
             } else {
                 return $manufacturers[0]['name'];
             }
