@@ -234,7 +234,6 @@ class ACP
             } else {
                 $source = CC_ROOT_DIR.'/'.$GLOBALS['config']->get('config', 'adminFolder').'/'.'sources/'.$request.'/'.$node.'.inc.php';
             }
-            trigger_error($request.'/'.$node.' needs to be updated.', E_USER_NOTICE);
             return $source;
         }
     }
