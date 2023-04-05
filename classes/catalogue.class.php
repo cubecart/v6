@@ -205,6 +205,9 @@ class Catalogue
                 if (is_numeric($value)) {
                     $assign_ids[] = $value;
                 }
+                if (is_array($value)) {
+                    foreach ($value as $val) $assign_ids[] = $val;
+                }
             }
 
             if (is_array($assign_ids)) {
