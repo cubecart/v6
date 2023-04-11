@@ -24,7 +24,7 @@
             <td>
                <select class="select_url">
                   {foreach from=$PAGE_BREAKS  item=p}
-                  <option value="?_g=products&items={$p}"{if $p == $PAGE_BREAK} selected="selected"{/if}>{$p} {$LANG.common.item_plural}</option> 
+                  <option value="{$PAGE_BREAK_URL}&items={$p}"{if $p == $PAGE_BREAK} selected="selected"{/if}>{$p} {$LANG.common.item_plural}</option> 
                   {/foreach} 
                </select>
                {$LANG.common.per_page}
@@ -34,15 +34,15 @@
                <select class="select_url">
                   <option value="{$CAT_LIST_ANY}">{$LANG.common.any}</option>
                   {foreach from=$CAT_LIST item=cat_dropdown}
-                  <option value="?_g=products&amp;cat_id={$cat_dropdown.cat_id}{if $STATUS_FILTER}&amp;status_filter={$STATUS_FILTER}{/if}" {if $cat_dropdown.cat_id == $CURRENT_CAT}selected="selected"{/if}>{$cat_dropdown.name}</option>
+                  <option value="{$CAT_LIST_ANY}&amp;cat_id={$cat_dropdown.cat_id}{if $STATUS_FILTER}&amp;status_filter={$STATUS_FILTER}{/if}" {if $cat_dropdown.cat_id == $CURRENT_CAT}selected="selected"{/if}>{$cat_dropdown.name}</option>
                   {/foreach}
                </select>
             </td>
             <td width="50">
                <select class="select_url">
-                  <option value="?_g=products&amp;cat_id={$CURRENT_CAT}" {if !$STATUS_FILTER || $STATUS_FILTER==''}selected="selected"{/if}>{$LANG.common.any}</option>
-                  <option value="?_g=products&amp;cat_id={$CURRENT_CAT}&amp;status_filter=1" {if $STATUS_FILTER=='1'}selected="selected"{/if}>{$LANG.common.enabled}</option>
-                  <option value="?_g=products&amp;cat_id={$CURRENT_CAT}&amp;status_filter=0" {if $STATUS_FILTER=='0'}selected="selected"{/if}>{$LANG.common.disabled}</option>
+                  <option value="{$CAT_LIST_ANY}&amp;cat_id={$CURRENT_CAT}" {if !$STATUS_FILTER || $STATUS_FILTER==''}selected="selected"{/if}>{$LANG.common.any}</option>
+                  <option value="{$CAT_LIST_ANY}&amp;cat_id={$CURRENT_CAT}&amp;status_filter=1" {if $STATUS_FILTER=='1'}selected="selected"{/if}>{$LANG.common.enabled}</option>
+                  <option value="{$CAT_LIST_ANY}&amp;cat_id={$CURRENT_CAT}&amp;status_filter=0" {if $STATUS_FILTER=='0'}selected="selected"{/if}>{$LANG.common.disabled}</option>
                </select>
             </td>
          </tr>
