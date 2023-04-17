@@ -1161,8 +1161,6 @@ if (isset($_GET['action'])) {
             include $hook;
         }
         $GLOBALS['smarty']->assign('PLUGIN_TABS', $smarty_data['plugin_tabs'] ?? false);
-
-        $GLOBALS['smarty']->assign('FORM_HASH', md5(implode('', $result[0])));
         $GLOBALS['smarty']->assign('DISPLAY_PRODUCT_FORM', true);
     }
 } else {

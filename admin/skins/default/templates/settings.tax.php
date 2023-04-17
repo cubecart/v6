@@ -158,7 +158,6 @@
    {include file='templates/element.hook_form_content.php'}
    <div class="form_control">
       <input type="submit" id="submit" class="button" value="{$LANG.common.save}">
-      <input type="hidden" value="{$FORM_HASH}">
       <input type="hidden" name="previous-tab" id="previous-tab" value="">
       
    </div>
