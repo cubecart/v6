@@ -601,10 +601,10 @@ if (!isset($_SESSION['setup'])) {
         }
 
         // secure global files
-        $global_files = glob(CC_INCLUDES_DIR.'global.*.php');
-        if (is_array($global_files)) {
-            foreach ($global_files as $global_file) {
-                chmod($global_file, 0444);
+        $gfs = glob(CC_INCLUDES_DIR.'global.*.php');
+        if (is_array($gfs)) {
+            foreach ($gfs as $gf) {
+                chmod($gf, 0444);
             }
         }
 
