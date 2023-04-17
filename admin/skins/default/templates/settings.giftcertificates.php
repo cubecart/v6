@@ -70,7 +70,6 @@
   {include file='templates/element.hook_form_content.php'}
   
   <div class="form_control">
-	<input type="hidden" name="save" value="{$FORM_HASH}">
 	<input type="hidden" name="previous-tab" id="previous-tab" value="">
 	<input type="submit" value="{$LANG.common.save}">
   </div>
