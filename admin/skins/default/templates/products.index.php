@@ -732,7 +732,9 @@
    {include file='templates/element.hook_form_content.php'}
    <div class="form_control">
       <input type="hidden" name="previous-tab" id="previous-tab" value="">
-      <input type="submit" value="{$LANG.common.save}"> <input type="submit" name="submit_cont" value="{$LANG.common.save_reload}">
+      <input type="hidden" name="save" value="{$FORM_HASH}">
+      <input type="submit" value="{$LANG.common.save}">
+      <input type="submit" name="submit_cont" value="{$LANG.common.save_reload}">
    </div>
    {/if}
    {if isset($DISPLAY_TRANSLATE_FORM)}
