@@ -293,7 +293,7 @@ class Catalogue
             );
             $GLOBALS['seo']->set_meta_data($meta_data);
         } elseif ($_GET['_a'] !== 'saleitems') {
-            $GLOBALS['gui']->setError(optioncatalogue['error_category_error']);
+            $GLOBALS['gui']->setError($GLOBALS['language']->catalogue['error_category_error']);
             return false;
         }
 
