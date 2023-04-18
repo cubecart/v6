@@ -246,7 +246,7 @@ if (isset($_GET['export'])) {
     $plural = isset($_GET['key']) ? '' : 's';
     $GLOBALS['main']->addTabControl($lang['translate']['tab_edit_phrase'.$plural], 'general');
     $GLOBALS['smarty']->assign("EDIT_TITLE", $lang['translate']['tab_edit_phrase'.$plural]);
-    if (!preg_match('/^(modules)/', $_REQUEST['type'])) {
+    if (!preg_match('/^(modules)/', $_REQUEST['type'] ?? '')) {
         $GLOBALS['main']->addTabControl($lang['translate']['merge_db_file'], false, currentPage(array('language'), array('export' => $_GET['language'])));
     }
 } else {
