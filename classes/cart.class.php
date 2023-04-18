@@ -1114,7 +1114,7 @@ class Cart
                                 // work out tax amount on shipping
                                 foreach ($packages as $package) {
                                     $package['value'] = sprintf('%.2F', $package['value']);
-                                    $packages_with_tax[] = array_merge($package, array('tax' => $GLOBALS['tax']->productTax($package['value'], $package['tax_id'], $package['tax_inclusive']??false, $this->basket[$tax_on]['state_id'], 'shipping', false)));
+                                    $packages_with_tax[] = array_merge($package, array('tax' => $GLOBALS['tax']->productTax($package['value'], $package['tax_id'], (bool)($package['tax_inclusive']??false), $this->basket[$tax_on]['state_id'], 'shipping', false)));
                                 }
 
                                 $shipArray[$group_name]	= $packages_with_tax;

@@ -551,7 +551,7 @@ if (isset($_GET['action'])) {
     foreach ($GLOBALS['hooks']->load('admin.order.index.display') as $hook) {
         include $hook;
     }
-    $GLOBALS['smarty']->assign('PLUGIN_TABS', $smarty_data['plugin_tabs'] ?? false);
+    $GLOBALS['smarty']->assign('PLUGIN_TABS', (bool)($smarty_data['plugin_tabs'] ?? false));
     $GLOBALS['smarty']->assign('DISPLAY_FORM', true);
 } elseif (isset($_GET['print']) && !empty($_GET['print'])) {
     // Generate a printable page, and display it

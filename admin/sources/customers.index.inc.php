@@ -480,7 +480,7 @@ if ( (isset($_GET['action']) || isset($_POST['multi-action'])) && Admin::getInst
     foreach ($GLOBALS['hooks']->load('admin.customer.tabs') as $hook) {
         include $hook;
     }
-    $GLOBALS['smarty']->assign('PLUGIN_TABS', $smarty_data['plugin_tabs'] ?? false);
+    $GLOBALS['smarty']->assign('PLUGIN_TABS', (bool)($smarty_data['plugin_tabs'] ?? false));
     $GLOBALS['smarty']->assign('DISPLAY_CUSTOMER_FORM', true);
 } else {
     $GLOBALS['main']->addTabControl($lang['customer']['title_customer'], 'customer-list');

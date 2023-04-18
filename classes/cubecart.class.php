@@ -1803,7 +1803,7 @@ class Cubecart
                             'value'  => base64url_encode(json_encode($value)),
                             'display' => (isset($data['name'])) ? $GLOBALS['tax']->priceFormat($data['value'], true).$data['name'] : $data['desc']
                         );
-                        if (($this->_basket['shipping']['offset'] ?? false) == $offset) {
+                        if (((bool)($this->_basket['shipping']['offset'] ?? false)) == $offset) {
                             $offset_matched = true;
                             $option['selected'] = ' selected="selected"';
                             if ((string)$value['value'] !== (string)$this->_basket['shipping']['value']) {

@@ -557,8 +557,8 @@ class Catalogue
                                         'option_id'  => $value['option_id'],
                                         'option_name' => $value['option_name'],
                                         'option_description' => $value['option_description'],
-                                        'option_default' => (bool)$value['option_default'],
-                                        'required'  => (bool)$value['option_required'],
+                                        'option_default' => (bool)($value['option_default'] ?? false),
+                                        'required'  => (bool)($value['option_required'] ?? false),
                                         'selected' => isset($selected[$value['assign_id']]) ? true : false
                                     );
                                 }
@@ -573,7 +573,7 @@ class Catalogue
                                     'symbol'  => ($value['absolute_price']=='1' && $symbol=='+') ? '' : $symbol,
                                     'value_id'  => $value['value_id'],
                                     'value_name' => $value['value_name'],
-                                    'option_default' => (bool)$value['option_default'],
+                                    'option_default' => (bool)($value['option_default'] ?? false),
                                     'selected' => isset($selected[$value['assign_id']]) ? true : false,
                                     'absolute_price' => $value['absolute_price'],
                                     'image' => (ctype_digit($value['image_id']) && $value['image_id']>0) ? $GLOBALS['catalogue']->imagePath($value['image_id']) : ''

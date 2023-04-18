@@ -738,7 +738,7 @@ if (isset($_GET['action'])) {
             include $hook;
         }
         if(is_array($external_categories)) {
-			$GLOBALS['smarty']->assign("EXTERNAL_CATS", $external_categories ?? false);
+			$GLOBALS['smarty']->assign("EXTERNAL_CATS", (bool)($external_categories ?? false));
 		}
         $GLOBALS['smarty']->assign("GOOGLE_CATS", $google_cats);
 
@@ -1160,7 +1160,7 @@ if (isset($_GET['action'])) {
         foreach ($GLOBALS['hooks']->load('admin.product.tabs') as $hook) {
             include $hook;
         }
-        $GLOBALS['smarty']->assign('PLUGIN_TABS', $smarty_data['plugin_tabs'] ?? false);
+        $GLOBALS['smarty']->assign('PLUGIN_TABS', (bool)($smarty_data['plugin_tabs'] ?? false));
         $GLOBALS['smarty']->assign('DISPLAY_PRODUCT_FORM', true);
     }
 } else {
