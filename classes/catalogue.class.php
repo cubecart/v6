@@ -2204,7 +2204,7 @@ class Catalogue
      *
      * @return arra
      */
-    public function _optionDescriptions() {
+    private function _optionDescriptions() {
         return array(
             self::OPTION_SELECT     => $GLOBALS['lang']['catalogue']['option_type_select'],
             self::OPTION_TEXTBOX    => $GLOBALS['lang']['catalogue']['option_type_textbox'],
