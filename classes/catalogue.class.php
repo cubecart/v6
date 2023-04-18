@@ -293,7 +293,7 @@ class Catalogue
             );
             $GLOBALS['seo']->set_meta_data($meta_data);
         } elseif ($_GET['_a'] !== 'saleitems') {
-            $GLOBALS['gui']->setError($GLOBALS['language']->catalogue['error_category_error']);
+            $GLOBALS['gui']->setError(optioncatalogue['error_category_error']);
             return false;
         }
 
@@ -2206,15 +2206,15 @@ class Catalogue
      */
     private function _optionDescriptions() {
         return array(
-            self::OPTION_SELECT     => $GLOBALS['lang']['catalogue']['option_type_select'],
-            self::OPTION_TEXTBOX    => $GLOBALS['lang']['catalogue']['option_type_textbox'],
-            self::OPTION_TEXTAREA   => $GLOBALS['lang']['catalogue']['option_type_textarea'],
-            self::OPTION_PASSWORD   => $GLOBALS['lang']['catalogue']['option_type_password'],
-            self::OPTION_RADIO      => $GLOBALS['lang']['catalogue']['option_type_radio'],
-            self::OPTION_CHECKBOX   => $GLOBALS['lang']['catalogue']['option_type_checkbox'],
-            self::OPTION_DATEPICKER => $GLOBALS['lang']['catalogue']['option_type_datepicker'],
-            self::OPTION_HIDDEN     => $GLOBALS['lang']['catalogue']['option_type_hidden'],
-            self::OPTION_FILE       => $GLOBALS['lang']['catalogue']['option_type_file']
+            self::OPTION_SELECT     => $GLOBALS['language']->catalogue['option_type_select'],
+            self::OPTION_TEXTBOX    => $GLOBALS['language']->catalogue['option_type_textbox'],
+            self::OPTION_TEXTAREA   => $GLOBALS['language']->catalogue['option_type_textarea'],
+            self::OPTION_PASSWORD   => $GLOBALS['language']->catalogue['option_type_password'],
+            self::OPTION_RADIO      => $GLOBALS['language']->catalogue['option_type_radio'],
+            self::OPTION_CHECKBOX   => $GLOBALS['language']->catalogue['option_type_checkbox'],
+            self::OPTION_DATEPICKER => $GLOBALS['language']->catalogue['option_type_datepicker'],
+            self::OPTION_HIDDEN     => $GLOBALS['language']->catalogue['option_type_hidden'],
+            self::OPTION_FILE       => $GLOBALS['language']->catalogue['option_type_file']
         );
     }
 
