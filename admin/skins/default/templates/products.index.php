@@ -228,7 +228,7 @@
                {if $GOOGLE_CATS}
                <select name="google_category" id="google_category" class="chzn-select">
                   <option value="">{$LANG.common.please_select} &hellip;</option>
-                  {foreach from=$GOOGLE_CATS item=cat}<option value="{$cat}" {if $cat|escape:'htmlall' == $PRODUCT.google_category && !empty($PRODUCT.google_category)}selected="selected"{/if}>{$cat}</option>{/foreach}
+                  {foreach from=$GOOGLE_CATS item=cat}<option value="{$cat}" {if (($cat|escape:'htmlall' == $PRODUCT.google_category || $cat == $PRODUCT.google_category) && !empty($PRODUCT.google_category))}selected="selected"{/if}>{$cat}</option>{/foreach}
                </select>
                {else}
                <input name="google_category" id="google_category" class="textbox" type="text" value="{$PRODUCT.google_category}" maxlength="250">
