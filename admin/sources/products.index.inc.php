@@ -1198,7 +1198,7 @@ if (isset($_GET['action'])) {
 
     // Get inventory
     $page  = (isset($_GET['page'])) ? $_GET['page'] : 1;
-    $per_page = (isset($_GET['items']) && ctype_digit($_GET['items'])) ? (int)$_GET['items'] : 25;
+    $per_page = $GLOBALS['main']->itemsPerPage('products', $_GET['items'] ?? 0, 25);
     $page_break_url = currentPage(array('items'));
     $GLOBALS['smarty']->assign('PAGE_BREAKS', array(25, 50, 100, 250, 500));
     $GLOBALS['smarty']->assign('PAGE_BREAK', $per_page);

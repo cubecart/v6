@@ -237,6 +237,26 @@ class ACP
             return $source;
         }
     }
+
+    /**
+     * Amount of items to list per page
+     *
+     * @param string $list_name
+     * @param int $requested_amount
+     * @param int $default_amount
+     * @return int
+     */
+    public function itemsPerPage($list_name, $requested_amount = 0, $default_amount = 25) {
+        $cookie_name = 'per_page_'.$list_name;
+        if($requested_amount>0) {
+            $GLOBALS['session']->set_cookie($cookie_name, $requested_amount, time() + (3600*24*30));
+            return (int)$requested_amount;
+        } else if(isset($_COOKIE[$cookie_name]) && $_COOKIE[$cookie_name]>0) {
+            return (int)$_COOKIE[$cookie_name];
+        } else {
+            return (int)$default_amount;
+        }
+    }
     
     /**
      * Get latest release URL

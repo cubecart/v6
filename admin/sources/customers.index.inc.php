@@ -325,7 +325,7 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
 }
 
 ######################################
-$per_page = (isset($_GET['items']) && ctype_digit($_GET['items'])) ? (int)$_GET['items'] : 25;
+$per_page = $GLOBALS['main']->itemsPerPage('customers', $_GET['items'] ?? 0, 25);
 $GLOBALS['smarty']->assign('PAGE_BREAKS', array(25, 50, 100, 250, 500));
 $GLOBALS['smarty']->assign('PAGE_BREAK', $per_page);
 
