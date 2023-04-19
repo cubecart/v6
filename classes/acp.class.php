@@ -247,12 +247,21 @@ class ACP
      * @return int
      */
     public function itemsPerPage($list_name, $requested_amount = 0, $default_amount = 25) {
-        $cookie_name = 'per_page_'.$list_name;
+        $cookie_name = 'rs_limit';
+        if(isset($_COOKIE[$cookie_name])) {
+            $rs_limit = json_decode(html_entity_decode($_COOKIE[$cookie_name],ENT_QUOTES), true);
+            if(!is_array($rs_limit)) {
+                $rs_limit = array();
+            }
+        } else {
+            $rs_limit = array();
+        }
         if($requested_amount>0) {
-            $GLOBALS['session']->set_cookie($cookie_name, $requested_amount, time() + (3600*24*30));
+            $cookie_value = (count($rs_limit) > 0) ? array_merge($rs_limit, array((string)$list_name => (int)$requested_amount)) : array((string)$list_name => (int)$requested_amount);
+            $GLOBALS['session']->set_cookie($cookie_name, json_encode($cookie_value), time() + (3600*24*30));
             return (int)$requested_amount;
-        } else if(isset($_COOKIE[$cookie_name]) && $_COOKIE[$cookie_name]>0) {
-            return (int)$_COOKIE[$cookie_name];
+        } else if(is_array($rs_limit) && isset($rs_limit[$list_name]) && $rs_limit[$list_name]>0) {
+            return (int)$rs_limit[$list_name];
         } else {
             return (int)$default_amount;
         }
