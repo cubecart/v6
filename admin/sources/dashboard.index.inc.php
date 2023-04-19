@@ -267,8 +267,12 @@ $thead_sort = array(
 $GLOBALS['smarty']->assign('THEAD_ORDERS', $thead_sort);
 $order_by = (empty($order_by) ? '`dashboard` DESC, `'.$key.'` '.$sort : $order_by);
 
-$results_per_page = 25;
-$unsettled_orders = $GLOBALS['db']->select('CubeCart_order_summary', false, 'status IN (1,2) OR `dashboard` = 1', $order_by, $results_per_page, $page);
+$per_page = $GLOBALS['main']->itemsPerPage('dashboard', $_GET['items'] ?? 0, 25);
+$page_break_url = currentPage(array('items'));
+$GLOBALS['smarty']->assign('PAGE_BREAKS', array(25, 50, 100, 250, 500));
+$GLOBALS['smarty']->assign('PAGE_BREAK', $per_page);
+$GLOBALS['smarty']->assign('PAGE_BREAK_URL', $page_break_url);
+$unsettled_orders = $GLOBALS['db']->select('CubeCart_order_summary', false, 'status IN (1,2) OR `dashboard` = 1', $order_by, $per_page, $page);
 
 if ($unsettled_orders) {
     $tax = Tax::getInstance();
@@ -319,7 +323,7 @@ if ($unsettled_orders) {
     }
     
     $GLOBALS['smarty']->assign('ORDERS', $orders);
-    $GLOBALS['smarty']->assign('ORDER_PAGINATION', $GLOBALS['db']->pagination($unsettled_count, $results_per_page, $page, $show = 5, 'orders', 'orders', $glue = ' ', $view_all = true));
+    $GLOBALS['smarty']->assign('ORDER_PAGINATION', $GLOBALS['db']->pagination($unsettled_count, $per_page, $page, $show = 5, 'orders', 'orders', $glue = ' ', $view_all = true));
 }
 
 ## Product Reviews Tab

@@ -122,6 +122,18 @@
 {if isset($ORDERS)}
 <div id="orders" class="tab_content">
    <h3>{$LANG.dashboard.title_orders_unsettled}</h3>
+   <table width="100%" class="filter">
+         <tr>
+            <td>
+               <select class="select_url">
+                  {foreach from=$PAGE_BREAKS  item=p}
+                  <option value="?items={$p}#orders"{if $p == $PAGE_BREAK} selected="selected"{/if}>{$p} {$LANG.common.item_plural}</option> 
+                  {/foreach} 
+               </select>
+               {$LANG.common.per_page}
+            </td>
+         </tr>
+      </table>
    <form action="?_g=orders&amp;redirect=dashboard" method="post" enctype="multipart/form-data">
    <div>
       <table>
