@@ -47,7 +47,7 @@ if (!empty($_GET['_g'])) {
     
     if (!isset($_GET['delete']) && strtolower($_GET['_g']) == 'plugins' && !empty($module_type)) {
         $module_type = preg_match("/[a-z]/i", $_GET['type']) ? $_GET['type'] : '';
-        $GLOBALS['gui']->addBreadcrumb($lang['navigation']['nav_plugins'], '?_g=plugins');
+        $GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->navigation['nav_plugins'], '?_g=plugins');
         // Display Modules
         $GLOBALS['main']->wikiNamespace('Modules');
         
@@ -95,7 +95,7 @@ if (!empty($_GET['_g'])) {
         httpredir('?_g=plugins');
         exit;
     } elseif ($_GET['_g'] == '401') {
-        $GLOBALS['gui']->setError($lang['navigation']['error_401']);
+        $GLOBALS['gui']->setError($GLOBALS['language']->navigation['error_401']);
     } else {
         if (strtolower($_GET['_g']) == 'xml') {
             $suppress_output = true;

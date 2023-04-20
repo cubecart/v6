@@ -257,7 +257,7 @@ class Database extends Database_Contoller
             // check MySQL Strict mode on upgrade/install
             $mysql_mode = $this->misc('SELECT @@sql_mode;');
             if (stristr($mysql_mode[0]['@@sql_mode'], 'strict')) {
-                die($lang['setup']['error_strict_mode']);
+                die($GLOBALS['language']->setup['error_strict_mode']);
             }
             return false;
         }
