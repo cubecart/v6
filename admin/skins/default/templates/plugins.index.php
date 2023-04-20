@@ -50,7 +50,7 @@
                </td>
                <td><a href="{$module.edit_url}">{$module.name}</a><br>{$module.description}</td>
                <td>{$module.version}</td>
-               <td>{$module.type|ucfirst}</td>
+               <td>{ucfirst($module.type)}</td>
                <td>{$module.creator}</td>
                <td nowrap>
                   <a href="{$module.delete_url}"  class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>

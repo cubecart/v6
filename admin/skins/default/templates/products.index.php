@@ -228,7 +228,7 @@
                {if $GOOGLE_CATS}
                <select name="google_category" id="google_category" class="chzn-select">
                   <option value="">{$LANG.common.please_select} &hellip;</option>
-                  {foreach from=$GOOGLE_CATS item=cat}<option value="{$cat}" {if (($cat|escape:'htmlall' == $PRODUCT.google_category || $cat == $PRODUCT.google_category) && !empty($PRODUCT.google_category))}selected="selected"{/if}>{$cat}</option>{/foreach}
+                  {foreach from=$GOOGLE_CATS item=cat}<option value="{$cat}" {if ((htmlentities($cat, ENT_QUOTES, 'UTF-8', true) == $PRODUCT.google_category || $cat == $PRODUCT.google_category) && !empty($PRODUCT.google_category))}selected="selected"{/if}>{$cat}</option>{/foreach}
                </select>
                {else}
                <input name="google_category" id="google_category" class="textbox" type="text" value="{$PRODUCT.google_category}" maxlength="250">
@@ -255,7 +255,7 @@
       <textarea name="description" class="textbox fck">{$PRODUCT.description}</textarea>
       <br>
       <h3>{$LANG.common.description_short} {$LANG.common.optional}</h3>
-      <textarea name="description_short" id="description_short" class="textbox fck" type="text">{$PRODUCT.description_short|escape:"html"}</textarea>
+      <textarea name="description_short" id="description_short" class="textbox fck" type="text">{htmlentities($PRODUCT.description_short, ENT_QUOTES, 'UTF-8', true)}</textarea>
    </div>
    <div id="pricing" class="tab_content">
       <h3>{$LANG.catalogue.title_pricing}</h3>

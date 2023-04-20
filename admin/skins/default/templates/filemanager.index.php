@@ -69,7 +69,7 @@
 		</span>
 		{/if}
 		{/if}
-		<a href="{if $file.class}{$file.filepath}?{$file.random}{else}?_g=filemanager&download_file={$file.filepath|base64_encode}{/if}" class="{$file.class}" title="{$file.description}" target="_self">{$file.filename}</a>
+		<a href="{if $file.class}{$file.filepath}?{$file.random}{else}?_g=filemanager&download_file={base64_encode($file.filepath)}{/if}" class="{$file.class}" title="{$file.description}" target="_self">{$file.filename}</a>
 	</div>
 	{/foreach}
 	{else}

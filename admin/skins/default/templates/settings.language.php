@@ -103,7 +103,7 @@
                {foreach $hit as $desc}
                <tr{if $desc@last} style="border-bottom: 1px solid #c5c5c5"{/if}>
                   {if $desc@first}
-               <td valign="top" rowspan="{$SEARCH_HITS[$group]|count}" class="thead vertical" title="{$SEARCH_PHRASE_TITLES[$group]}">{$SEARCH_PHRASE_GROUPS[$group]}</td>
+               <td valign="top" rowspan="{count($SEARCH_HITS[$group])}" class="thead vertical" title="{$SEARCH_PHRASE_TITLES[$group]}">{$SEARCH_PHRASE_GROUPS[$group]}</td>
                   {/if}
                <td width="150px" valign="top"><a href="?_g=settings&node=language&language={$SEARCH_LANG}&type={$group}&key={$desc@key}">{$desc@key}</a></td>
                <td>{$desc}</td>
