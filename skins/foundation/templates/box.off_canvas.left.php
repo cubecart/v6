@@ -41,7 +41,7 @@
       <li><label>{$LANG.common.change_language}</label></li>
       {foreach from=$LANGUAGES item=language}
       {if $current_language.code!==$language.code}
-      <li><a href="{$language.url}"><span class="flag flag-{$language.code|substr:3:2}"></span> {$language.title}</a></li>
+      <li><a href="{$language.url}"><span class="flag flag-{substr($language.code,3,2)}"></span> {$language.title}</a></li>
       {/if}
       {/foreach}  
    </ul>
