@@ -673,7 +673,7 @@ class Session
      */
     private function _http_user_agent()
     {
-        return strpos($_SERVER['HTTP_USER_AGENT'], 'Trident') ? 'IEX' : htmlspecialchars($_SERVER['HTTP_USER_AGENT']);
+        return strpos(($_SERVER['HTTP_USER_AGENT'] ?? "Not Available"), 'Trident') ? 'IEX' : htmlspecialchars($_SERVER['HTTP_USER_AGENT'] ?? "Not Available");
     }
 
     /**

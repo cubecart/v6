@@ -36,7 +36,7 @@ class SSL
 
     public function __construct()
     {
-        if ($GLOBALS['config']->get('config', 'ssl') && !ADMIN_CP && !CC_SSL && !in_array($_GET['_g'], $this->_ignored_pages)) {
+        if (isset($_GET['_g']) && $GLOBALS['config']->get('config', 'ssl') && !ADMIN_CP && !CC_SSL && !in_array($_GET['_g'], $this->_ignored_pages)) {
             $ssl_url = currentPage();
             $ssl_url = preg_replace('#^http://#', 'https://', $ssl_url);
             httpredir($ssl_url, '', false, 301);
