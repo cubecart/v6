@@ -829,7 +829,7 @@ class Language
                 unset($attributes, $definition, $group, $string, $xml);
             }
         }
-        $this->_language_strings = merge_array($this->_language_strings, $this->_language_definitions);
+        $this->_language_strings = merge_array($this->_language_definitions, $this->_language_strings);
     }
 
     /**
