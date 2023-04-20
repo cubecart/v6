@@ -213,6 +213,15 @@ class Cache_Controler
         }
         return $this->status;
     }
+    
+    /**
+     * Exception to status
+     *
+     * @param string $id
+     */
+    public function statusException($id) {
+        return (CC_IN_ADMIN === true && preg_match('/^request\./', $id)) ? true : false;
+    }
 
     /**
      * Tidy the cache folder

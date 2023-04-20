@@ -132,7 +132,7 @@ class Cache extends Cache_Controler
      */
     public function exists($id)
     {
-        if (!$this->status) {
+        if (!$this->status && !$this->statusException($id)) {
             return false;
         }
 
@@ -177,7 +177,7 @@ class Cache extends Cache_Controler
     
     public function read($id)
     {
-        if (!$this->status) {
+        if (!$this->status && !$this->statusException($id)) {
             return false;
         }
         
@@ -251,7 +251,7 @@ class Cache extends Cache_Controler
      */
     public function write($data, $id, $expire = '')
     {
-        if (!$this->status) {
+        if (!$this->status && !$this->statusException($id)) {
             return false;
         }
 
