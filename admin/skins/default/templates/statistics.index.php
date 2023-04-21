@@ -64,23 +64,25 @@
    <div id="chart5-title" style="display:none">{$GRAPH_DATA.5.title}</div>
    <div id="chart5-hAxis" style="display:none">{$GRAPH_DATA.5.hAxis}</div>
    <div id="chart5-vAxis" style="display:none">{$GRAPH_DATA.5.vAxis}</div>
-   <div>{$PAGINATION_SALES}</div>
+   <div class="pagination">
+      {$PAGINATION_SALES}
+   </div>
    <table width="100%">
       <thead>
          <tr>
             <td></td>
             <td>{$LANG.catalogue.product_name}</td>
-            <td width="130">{$LANG.statistics.quantity_sold}</td>
-            <td width="150">{$LANG.statistics.percentage_of_total}</td>
+            <td style="text-align: center" nowrap="nowrap"><span title="{$LANG.statistics.quantity_sold}">{$LANG.common.quantity}</span></td>
+            <td style="text-align: center" nowrap="nowrap"><span title="{$LANG.statistics.percentage_of_total}">{$LANG.common.percentage}</span></td>
          </tr>
       </thead>
       <tbody>
          {foreach from=$PRODUCT_SALES item=sale}
          <tr>
-            <td>{$sale.key}</td>
+            <td style="text-align: center">{$sale.key}</td>
             <td>{$sale.name}</td>
-            <td>{$sale.quan}</td>
-            <td>{$sale.percent}</td>
+            <td style="text-align: center">{$sale.quan}</td>
+            <td style="text-align: center">{$sale.percent}</td>
          </tr>
          {/foreach}
       </tbody>
@@ -96,14 +98,14 @@
    <div id="chart6-title" style="display:none">{$GRAPH_DATA.6.title}</div>
    <div id="chart6-hAxis" style="display:none">{$GRAPH_DATA.6.hAxis}</div>
    <div id="chart6-vAxis" style="display:none">{$GRAPH_DATA.6.vAxis}</div>
-   <div>{$PAGINATION_VIEWS}</div>
+   <div class="pagination">{$PAGINATION_VIEWS}</div>
    <table width="100%">
       <thead>
          <tr>
             <td width="20">&nbsp;</td>
             <td>{$LANG.catalogue.product_name}</td>
-            <td width="130">{$LANG.statistics.product_views}</td>
-            <td width="150">{$LANG.statistics.percentage_of_views}</td>
+            <td style="text-align:center">{$LANG.statistics.product_views}</td>
+            <td style="text-align:center"><span title="{$LANG.statistics.percentage_of_views}">{$LANG.common.percentage}</span></td>
          </tr>
       </thead>
       <tbody>
@@ -111,8 +113,8 @@
          <tr>
             <td style="text-align:center">{$view.key}</td>
             <td>{$view.name}</td>
-            <td>{$view.popularity}</td>
-            <td>{$view.percent}</td>
+            <td style="text-align:center">{$view.popularity}</td>
+            <td style="text-align:center">{$view.percent}</td>
          </tr>
          {/foreach}
       </tbody>
@@ -127,14 +129,14 @@
    <div id="chart7-title" style="display:none">{$GRAPH_DATA.7.title}</div>
    <div id="chart7-hAxis" style="display:none">{$GRAPH_DATA.7.hAxis}</div>
    <div id="chart7-vAxis" style="display:none">{$GRAPH_DATA.7.vAxis}</div>
-   <div>{$PAGINATION_SEARCH}</div>
+   <div class="pagination">{$PAGINATION_SEARCH}</div>
    <table width="100%">
       <thead>
          <tr>
             <td width="20">&nbsp;</td>
             <td>{$LANG.statistics.search_term}</td>
-            <td width="130">{$LANG.statistics.product_hits}</td>
-            <td width="150">{$LANG.statistics.percentage_of_search}</td>
+            <td style="text-align:center">{$LANG.statistics.product_hits}</td>
+            <td style="text-align:center"><span title="{$LANG.statistics.percentage_of_search}">{$LANG.common.percentage}</span></td>
          </tr>
       </thead>
       <tbody>
@@ -142,8 +144,8 @@
          <tr>
             <td style="text-align:center">{$term.key}</td>
             <td>{$term.searchstr}</td>
-            <td>{$term.hits}</td>
-            <td>{$term.percent}</td>
+            <td style="text-align:center">{$term.hits}</td>
+            <td style="text-align:center">{$term.percent}</td>
          </tr>
          {/foreach}
       </tbody>
@@ -162,23 +164,23 @@
    <div id="chart8-hAxis" style="display:none">{$GRAPH_DATA.8.hAxis}</div>
    <div id="chart8-vAxis" style="display:none">{$GRAPH_DATA.8.vAxis}</div>
    <div id="chart8-data" style="display:none">[{$GRAPH_DATA.8.data}]</div>
-   <div>{$PAGINATION_BEST}</div>
+   <div class="pagination">{$PAGINATION_BEST}</div>
    <table width="100%">
       <thead>
          <tr>
             <td width="20">&nbsp;</td>
             <td>{$LANG.common.name}</td>
-            <td width="130">{$LANG.statistics.total_expenditure}</td>
-            <td width="150">{$LANG.statistics.percentage_of_total}</td>
+            <td style="text-align:center">{$LANG.statistics.total_expenditure}</td>
+            <td style="text-align:center">{$LANG.statistics.percentage_of_total}</td>
          </tr>
       </thead>
       <tbody>
          {foreach from=$BEST_CUSTOMERS item=customer}
          <tr>
             <td style="text-align:center">{$customer.key}</td>
-            <td><a href="?_g=customers&node=index&action=edit&customer_id={$customer.customer_id}">{$customer.last_name|capitalize}, {$customer.first_name|capitalize}</a></td>
-            <td>{$customer.expenditure}</td>
-            <td>{$customer.percent}</td>
+            <td><a href="?_g=customers&node=index&action=edit&customer_id={$customer.customer_id}" class="capitalize">{$customer.last_name}, {$customer.first_name}</a></td>
+            <td style="text-align:center">{$customer.expenditure}</td>
+            <td style="text-align:center">{$customer.percent}</td>
          </tr>
          {/foreach}
       </tbody>
