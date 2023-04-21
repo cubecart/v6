@@ -50,6 +50,11 @@ button.tiny {
     font-size: 10px!important;
     padding: 5px 3px 3px!important
 }
+img.border {
+    padding: 2px;
+    border: 1px solid #D0D0D0;
+    border-radius: 5px;
+}
 input[type=checkbox] {
     margin: 0;
     padding: 0;

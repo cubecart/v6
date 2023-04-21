@@ -14,7 +14,7 @@
    <h3>{$PRODUCT.name} ({$PRODUCT.product_code})</h3>
    <table>
     <tr>
-      {if !empty($PRODUCT.image)}<td rowspan="6"><img src="{$PRODUCT.image}" style="margin-right: 20px" /></td>{/if}
+      {if !empty($PRODUCT.image)}<td rowspan="6"><img src="{$PRODUCT.image}" class="border" style="margin-right: 20px" /></td>{/if}
       <td>{$LANG.common.created}</td>
       <td>{$PRODUCT.date_added}</td>
     </tr>
