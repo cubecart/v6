@@ -764,7 +764,13 @@ if (isset($_GET['action'])) {
             }
         }
     } else {
-        $where = (isset($_GET['customer_id']) && is_numeric($_GET['customer_id'])) ? array('customer_id' => (int)$_GET['customer_id']) : false;
+        if(isset($_GET['i']) && preg_match('/^\d+(?:,\d+)*$/', $_GET['i'])) {
+            $where = array('id' => explode(',',$_GET['i']));
+        } else if(isset($_GET['customer_id']) && is_numeric($_GET['customer_id'])) {
+            $where = array('customer_id' => (int)$_GET['customer_id']);
+        } else {
+            $where = false;
+        }
     }
     $where = (isset($where) && !empty($where)) ? $where : false;
 
