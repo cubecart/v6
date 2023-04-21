@@ -2397,6 +2397,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="help_defaultcurrency" introduced="5.0.0"><![CDATA[Please choose your stores default currency.]]></string>
   </group>
   <group name="statistics">
+    <string name="product_stats" introduced="6.5.2"><![CDATA[Product Statistics]]></string>
     <string name="first_sale" introduced="6.5.2"><![CDATA[First Sale]]></string>
     <string name="last_sale" introduced="6.5.2"><![CDATA[Last Sale]]></string>
     <string name="total_sales" introduced="6.5.2"><![CDATA[Total Sales]]></string>

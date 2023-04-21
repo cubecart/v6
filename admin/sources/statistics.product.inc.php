@@ -14,8 +14,8 @@ if (!defined('CC_INI_SET')) {
     die('Access Denied');
 }
 Admin::getInstance()->permissions('settings', CC_PERM_READ, true);
-$GLOBALS['gui']->addBreadcrumb('Product');
-$GLOBALS['main']->addTabControl('Product', 'general');
+$GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->statistics['product_stats']);
+$GLOBALS['main']->addTabControl($GLOBALS['language']->statistics['product_stats'], 'general');
 
 $product = $GLOBALS['catalogue']->getProductData((int)$_GET['product_id']);
 if($product) {
