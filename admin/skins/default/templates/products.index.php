@@ -238,7 +238,7 @@
          {if $EXTERNAL_CATS}
          {foreach from=$EXTERNAL_CATS key=k item=v}
          <div>
-            <label for="category_{$k}">{$k|ucfirst}</label>
+            <label for="category_{$k}">{ucfirst($k)}</label>
             <span>
                <select name="category_{$k}" id="category_{$k}" class="textbox" style="font-size: 10px;">
                   <option value="">{$LANG.common.please_select} &hellip;</option>
