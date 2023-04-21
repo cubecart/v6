@@ -114,11 +114,12 @@
                   {/foreach}
                </td>
                <td style="text-align:center"><input type="hidden" name="status[{$product.product_id}]" id="status_{$product.product_id}" value="{$product.status}" class="toggle"></td>
-               <td style="text-align:center">
+               <td style="text-align:center" nowrap="nowrap">
                   {if isset($product.link_clone)}
                   <a href="{$product.link_clone}" title="{$LANG.common.clone}" alt="{$LANG.common.clone}"><i class="fa fa-files-o" title="{$LANG.common.clone}"></i></a>
                   {/if}
                   <a href="{$product.link_preview}" title="{$LANG.common.preview}" target="_blank" alt="{$LANG.common.preview}"><i class="fa fa-search" title="{$LANG.common.preview}"></i></a>
+                  <a href="?_g=statistics&node=product&product_id={$product.product_id}" title="{$LANG.statistics.product_stats}" target="_blank" alt="{$LANG.statistics.product_stats}"><i class="fa fa-bar-chart" title="{$LANG.statistics.product_stats}"></i></a>
                   <a href="{$product.link_edit}" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
                   <a href="{$product.link_delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
                </td>
