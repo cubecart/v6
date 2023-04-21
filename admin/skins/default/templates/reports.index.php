@@ -37,7 +37,7 @@
 		  <td style="text-align:right">{$data.shipping}</td>
 		  <td style="text-align:right">{$data.total_tax}</td>
 		  <td style="text-align:right">{$data.total}</td>
-		  <td style="text-align:left"><a href="?_g=customers&action=edit&customer_id={$data.customer_id}">{$data.first_name|capitalize} {$data.last_name|capitalize}</a></td>
+		  <td style="text-align:left"><a href="?_g=customers&action=edit&customer_id={$data.customer_id}" class="capitalize">{$data.first_name} {$data.last_name}</a></td>
 		  <td>{$data.country}</td>
 		  <td>{$data.state}</td>
 		  <td>{$data.status}</td>

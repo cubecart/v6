@@ -161,7 +161,7 @@
          {if isset($DISPLAY_COMMENTS)}
          <div class="note">
             <span class="actions"></span>
-            <div class="note-header">{$LANG.orders.note_from} {$OVERVIEW_SUMMARY.first_name|capitalize} {$OVERVIEW_SUMMARY.last_name|capitalize}</div>
+            <div class="note-header">{$LANG.orders.note_from} <span class="capitalize">{$OVERVIEW_SUMMARY.first_name} {$OVERVIEW_SUMMARY.last_name}</span></div>
             &quot;{$OVERVIEW_SUMMARY.customer_comments}&quot;
          </div>
          {/if}
@@ -170,10 +170,10 @@
                <legend>{$LANG.address.delivery_address}</legend>
                {$OVERVIEW_SUMMARY.name_d}<br>
                {if !empty($OVERVIEW_SUMMARY.company_name_d)}{$OVERVIEW_SUMMARY.company_name_d}<br>{/if}
-               {$OVERVIEW_SUMMARY.line1_d|capitalize}<br>
-               {if !empty($OVERVIEW_SUMMARY.line2_d)}{$OVERVIEW_SUMMARY.line2_d|capitalize}<br>{/if}
-               {$OVERVIEW_SUMMARY.town_d|upper}<br>
-               {if !empty($OVERVIEW_SUMMARY.state_d)}{$OVERVIEW_SUMMARY.state_d|upper}, {/if}{$OVERVIEW_SUMMARY.postcode_d}<br>
+               <span class="capitalize">{$OVERVIEW_SUMMARY.line1_d}<br>
+               {if !empty($OVERVIEW_SUMMARY.line2_d)}{$OVERVIEW_SUMMARY.line2_d}<br>{/if}</span>
+               <span class="upprcase">{$OVERVIEW_SUMMARY.town_d}<br>
+               {if !empty($OVERVIEW_SUMMARY.state_d)}{$OVERVIEW_SUMMARY.state_d}, {/if}</span>{$OVERVIEW_SUMMARY.postcode_d}<br>
                {$OVERVIEW_SUMMARY.country_d}
                {if !empty($OVERVIEW_SUMMARY.w3w_d)}<span class="w3w">///<a href="https://what3words.com/{$OVERVIEW_SUMMARY.w3w_d}" target="_blank">{$OVERVIEW_SUMMARY.w3w_d}</a></span>{/if}
             </fieldset>
@@ -181,10 +181,10 @@
                <legend>{$LANG.address.billing_address}</legend>
                {$OVERVIEW_SUMMARY.name}<br>
                {if !empty($OVERVIEW_SUMMARY.company_name)}{$OVERVIEW_SUMMARY.company_name}<br>{/if}
-               {$OVERVIEW_SUMMARY.line1|capitalize}<br>
-               {if !empty($OVERVIEW_SUMMARY.line2)}{$OVERVIEW_SUMMARY.line2|capitalize}<br>{/if}
-               {$OVERVIEW_SUMMARY.town|upper}<br>
-               {if !empty($OVERVIEW_SUMMARY.state)}{$OVERVIEW_SUMMARY.state|upper}, {/if}{$OVERVIEW_SUMMARY.postcode}<br>
+               <span class="capitalize">{$OVERVIEW_SUMMARY.line1}<br>
+               {if !empty($OVERVIEW_SUMMARY.line2)}{$OVERVIEW_SUMMARY.line2}<br>{/if}</span>
+               <span class="uppercase">{$OVERVIEW_SUMMARY.town}<br>
+               {if !empty($OVERVIEW_SUMMARY.state)}{$OVERVIEW_SUMMARY.state}, {/if}</span>{$OVERVIEW_SUMMARY.postcode}<br>
                {$OVERVIEW_SUMMARY.country}
                {if !empty($OVERVIEW_SUMMARY.w3w)}<span class="w3w">///<a href="https://what3words.com/{$OVERVIEW_SUMMARY.w3w}" target="_blank">{$OVERVIEW_SUMMARY.w3w}</a></span>{/if}
             </fieldset>
@@ -213,7 +213,7 @@
                      {/if}
                      {if $product.custom}
                      {foreach from=$product.custom key=k item=v}
-                     <div>{$k|capitalize}: {$v}</div>
+                     <div><span class="capitalize">{$k}</span>: {$v}</div>
                      {/foreach}
                      {/if}
                      {if $product.accesskey}
@@ -316,11 +316,11 @@
                </span>
             </div>
             <div><label for="ajax_title">{$LANG.user.title}</label><span><input type="text" id="ajax_title" name="customer[title]" value="{$SUMMARY.title}" class="textbox billing"></span></div>
-            <div><label for="ajax_first_name">{$LANG.user.name_first}</label><span><input type="text" id="ajax_first_name" name="customer[first_name]" value="{$SUMMARY.first_name|capitalize}" class="textbox billing required"></span></div>
-            <div><label for="ajax_last_name">{$LANG.user.name_last}</label><span><input type="text" id="ajax_last_name" name="customer[last_name]" value="{$SUMMARY.last_name|capitalize}" class="textbox billing required"></span></div>
+            <div><label for="ajax_first_name">{$LANG.user.name_first}</label><span><input type="text" id="ajax_first_name" name="customer[first_name]" value="{ucwords($SUMMARY.first_name)}" class="textbox billing required"></span></div>
+            <div><label for="ajax_last_name">{$LANG.user.name_last}</label><span><input type="text" id="ajax_last_name" name="customer[last_name]" value="{ucwords($SUMMARY.last_name)}" class="textbox billing required"></span></div>
             <div><label for="sum_company_name">{$LANG.address.company_name}</label><span><input type="text" id="sum_company_name" name="customer[company_name]" value="{$SUMMARY.company_name}" class="textbox billing"></span></div>
-            <div><label for="sum_line1">{$LANG.address.line1}</label><span><input type="text" id="sum_line1" name="customer[line1]" value="{$SUMMARY.line1|capitalize}" class="textbox billing required"></span></div>
-            <div><label for="sum_line2">{$LANG.address.line2}</label><span><input type="text" id="sum_line2" name="customer[line2]" value="{$SUMMARY.line2|capitalize}" class="textbox billing"></span></div>
+            <div><label for="sum_line1">{$LANG.address.line1}</label><span><input type="text" id="sum_line1" name="customer[line1]" value="{ucwords($SUMMARY.line1)}" class="textbox billing required"></span></div>
+            <div><label for="sum_line2">{$LANG.address.line2}</label><span><input type="text" id="sum_line2" name="customer[line2]" value="{ucwords($SUMMARY.line2)}" class="textbox billing"></span></div>
             <div><label for="sum_town">{$LANG.address.town}</label><span><input type="text" id="sum_town" name="customer[town]" value="{$SUMMARY.town}" class="textbox billing required"></span></div>
             <div>
                <label for="sum_country">{$LANG.address.country}</label>
@@ -361,8 +361,8 @@
             <div><label for="d_ajax_first_name">{$LANG.user.name_first}</label><span><input type="text" id="d_ajax_first_name" name="customer[first_name_d]" value="{$SUMMARY.first_name_d}" class="textbox required"></span></div>
             <div><label for="d_ajax_last_name">{$LANG.user.name_last}</label><span><input type="text" id="d_ajax_last_name" name="customer[last_name_d]" value="{$SUMMARY.last_name_d}" class="textbox required"></span></div>
             <div><label for="d_sum_company_name">{$LANG.address.company_name}</label><span><input type="text" id="d_sum_company_name" name="customer[company_name_d]" value="{$SUMMARY.company_name_d}" class="textbox"></span></div>
-            <div><label for="d_sum_line1">{$LANG.address.line1}</label><span><input type="text" id="d_sum_line1" name="customer[line1_d]" value="{$SUMMARY.line1_d|capitalize}" class="textbox required"></span></div>
-            <div><label for="d_sum_line2">{$LANG.address.line2}</label><span><input type="text" id="d_sum_line2" name="customer[line2_d]" value="{$SUMMARY.line2_d|capitalize}" class="textbox"></span></div>
+            <div><label for="d_sum_line1">{$LANG.address.line1}</label><span><input type="text" id="d_sum_line1" name="customer[line1_d]" value="{ucwords($SUMMARY.line1_d)}" class="textbox required"></span></div>
+            <div><label for="d_sum_line2">{$LANG.address.line2}</label><span><input type="text" id="d_sum_line2" name="customer[line2_d]" value="{ucwords($SUMMARY.line2_d)}" class="textbox"></span></div>
             <div><label for="d_sum_town">{$LANG.address.town}</label><span><input type="text" id="d_sum_town" name="customer[town_d]" value="{$SUMMARY.town_d}" class="textbox required"></span></div>
             <div>
                <label for="d_sum_country">{$LANG.address.country}</label>

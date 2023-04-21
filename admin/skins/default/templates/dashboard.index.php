@@ -52,7 +52,7 @@
                <div><a href="?_g=orders&action=edit&order_id={$order.cart_order_id}" title="{$LANG.common.edit}">{$order.{$CONFIG.oid_col}|default:$order.cart_order_id}</a> - {if empty($order.first_name) && empty($order.last_name)}
                   {$order.name}
                   {else}
-                  {$order.first_name|capitalize} {$order.last_name|capitalize}
+                  <span class="capitalize">{$order.first_name} {$order.last_name}</span>
                   {/if}
                </div>
                {/foreach}
@@ -163,7 +163,7 @@
                   <a href="?_g=customers&action=edit&customer_id={$order.customer_id}">{if empty($order.first_name) && empty($order.last_name)}
                   {$order.name}
                   {else}
-                  {$order.first_name|capitalize} {$order.last_name|capitalize}
+                  <span class="capitalize">{$order.first_name} {$order.last_name}</span>
                   {/if}</a>
                </td>
                <td class="{$order.status_class}">{$order.status}</td>

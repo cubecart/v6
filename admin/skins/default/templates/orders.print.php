@@ -160,6 +160,15 @@
     		color: #333333;
     		text-decoration: none;
 		}
+		.capitalize {
+			text-transform: capitalize;
+		}
+		.lowercase {
+			text-transform: lowercase;
+		}
+		.uppercase {
+			text-transform: uppercase;
+		}
 		@media print
 		{
 				.noprint, .noprint *
@@ -170,7 +179,7 @@
 	</style>
 </head>
 <body>
-<a href="../{$SKIN_VARS.admin_file}?_g=documents&node=invoice" class="noprint">{$LANG.common.customise_layout|upper}</a>
+<a href="../{$SKIN_VARS.admin_file}?_g=documents&node=invoice" class="noprint uppercase">{$LANG.common.customise_layout}</a>
   {if isset($ORDER_LIST)}
   {foreach from=$ORDER_LIST item=order}
   <div class="page-break">
@@ -179,17 +188,17 @@
 		  <div>
 		  	{if !empty($order.name_d) && empty($order.last_name_d)}{$order.name_d}{else}{$order.title_d} {$order.first_name_d} {$order.last_name_d}{/if}<br>
 	  		{if !empty($order.company_name_d)}{$order.company_name_d}<br>{/if}
-	  		{$order.line1_d|capitalize} <br>
-	  		{if !empty($order.line2_d)}{$order.line2_d|capitalize}<br>{/if}
-	  		{$order.town_d|upper}<br>
-	  		{if !empty($order.state_d)}{$order.state_d|upper}, {/if}{$order.postcode_d}{if $CONFIG.store_country_name!==$order.country_d}<br>
+	  		<span class="capitalize">{$order.line1_d} <br>
+	  		{if !empty($order.line2_d)}{$order.line2_d}<br>{/if}</span>
+	  		<span class="uppercase">{$order.town_d}<br>
+	  		{if !empty($order.state_d)}{$order.state_d}, {/if}</span>{$order.postcode_d}{if $CONFIG.store_country_name!==$order.country_d}<br>
 			  {$order.country_d}{/if}
 			{if !empty($order.w3w_d)}<br>
 			<div class="w3w">///<a href="https://what3words.com/{$order.w3w_d}">{$order.w3w_d}</a></div>{/if}
 		  </div>
 		  <div class="sender">
 				{if !empty($STORE.address)}{$LANG.address.return_address}<br>{$STORE.address},{/if}
-				{if !empty($STORE.county)}{$STORE.county|upper},{/if}
+				{if !empty($STORE.county)}<span class="uppercase">{$STORE.county}</span>,{/if}
 				{if !empty($STORE.postcode)}{$STORE.postcode}{/if}
 				{if $CONFIG.store_country_name!==$order.country_d}{$STORE.country}{/if}
 			</div>

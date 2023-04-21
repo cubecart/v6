@@ -64,6 +64,15 @@ input[type=checkbox] {
     width: 16px;
     height: 16px
 }
+.capitalize {
+    text-transform: capitalize;
+}
+.lowercase {
+    text-transform: lowercase;
+}
+.uppercase {
+    text-transform: uppercase;
+}
 .custom-checkbox {
     background: url(../images/0.png);
     width: 16px;
