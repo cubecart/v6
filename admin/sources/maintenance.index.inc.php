@@ -61,7 +61,7 @@ function crc_integrity_check($files, $mode = 'upgrade')
 
             ## Read the file content
             $filesize = filesize($file);
-            $v_content = ((int)$file_size > 0) ? fread($v_file, $filesize) : '';
+            $v_content = ((int)$filesize > 0) ? fread($v_file, $filesize) : '';
             fclose($v_file);
 
             if (crc32($v_content) !== $value) {
