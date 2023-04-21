@@ -227,6 +227,9 @@ img.checkbox {
 input.editable {
     cursor: text
 }
+.editable:hover::after {
+    font-family: FontAwesome; content: " \f040";
+}
 html {
     margin: 0;
     padding: 0
