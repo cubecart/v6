@@ -439,6 +439,11 @@ if (isset($_GET['action'])) {
                     $category['translations'][] = $translation;
                 }
             }
+            
+            $cat_sel = $GLOBALS['db']->select('CubeCart_category_index', array('primary'), array('cat_id' => $category['cat_id'])) ?: array();
+            $category['primary_count'] = (array_count_values(array_column($cat_sel, 'primary'))['1'] ?? 0);
+            $category['additional_count'] = (array_count_values(array_column($cat_sel, 'primary'))['0'] ?? 0);
+            $category['total_count'] = $category['primary_count'] + $category['additional_count'];
             $category['children'] = currentPage(null, array('parent' => $category['cat_id']));
             $category['translate'] = currentPage(null, array('action' => 'translate', 'cat_id' => $category['cat_id']));
             $category['edit']  = currentPage(null, array('action' => 'edit', 'cat_id' => $category['cat_id']));
