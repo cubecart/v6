@@ -33,7 +33,7 @@ if($product) {
     function secondsToTime($seconds) {
         $dtF = new \DateTime('@0');
         $dtT = new \DateTime("@$seconds");
-        return $dtF->diff($dtT)->format('%a days, %h hours, %i minutes and %s seconds');
+        return $dtF->diff($dtT)->format($GLOBALS['language']->statistics['dhms']);
     }
     $product['date_added'] = formatTime(strtotime($product['date_added']));
     $product['updated'] = formatTime(strtotime($product['updated']));
@@ -41,7 +41,7 @@ if($product) {
         'first_sale' => !$first_sale ? '-' : formatTime($first_sale[0]['order_date']),
         'last_sale' => !$last_sale ? '-' : formatTime($last_sale[0]['order_date']),
         'total_sales' => is_array($all_sales) ? count($all_sales) : 0,
-        'sale_interval' => secondsToTime(ceil((time() - strtotime($product['date_added'])) / count($all_sales)))
+        'sale_interval' => is_array($all_sales) ? secondsToTime(ceil((time() - strtotime($product['date_added'])) / count($all_sales))) : '-'
     );
 
     $GLOBALS['smarty']->assign('PRODUCT', array_merge($product, $data));

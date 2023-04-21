@@ -15,27 +15,27 @@
    <table>
     <tr>
       {if !empty($PRODUCT.image)}<td rowspan="6"><img src="{$PRODUCT.image}" style="margin-right: 20px" /></td>{/if}
-      <td>Created</td>
+      <td>{$LANG.common.created}</td>
       <td>{$PRODUCT.date_added}</td>
     </tr>
     <tr>
-      <td>Updated</td>
+      <td>{$LANG.common.updated}</td>
       <td>{$PRODUCT.updated}</td>
     </tr>
     <tr>
-      <td>First Sale</td>
+      <td>{$LANG.statistics.first_sale}</td>
       <td>{$PRODUCT.first_sale}</td>
     </tr>
     <tr>
-      <td>Last Sale</td>
+      <td>{$LANG.statistics.last_sale}</td>
       <td>{$PRODUCT.last_sale}</td>
     </tr>
     <tr>
-      <td>Total Sales</td>
+      <td>{$LANG.statistics.total_sales}</td>
       <td>{$PRODUCT.total_sales}</td>
     </tr>
     <tr>
-      <td>Sale Interval</td>
+      <td>{$LANG.statistics.sale_interval}</td>
       <td>{$PRODUCT.sale_interval}</td>
     </tr>
    </table>
