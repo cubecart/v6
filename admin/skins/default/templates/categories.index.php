@@ -55,7 +55,7 @@
 		    {$category.cat_name}
 		    {/if}
 	      </td>
-		  <td style="text-align:center"><span title="{sprintf($LANG.catalogue.product_count_ratio, $category.primary_count, $category.additional_count)}">{$category.total_count}</span></td>
+		  <td style="text-align:center"><abbr title="{sprintf($LANG.catalogue.product_count_ratio, $category.primary_count, $category.additional_count)}">{$category.total_count}</span></td>
 	      <td style="text-align:center" class="language_list">
 	    	{foreach from=$category.translations item=translation}
 	  	    <a href="{$translation.edit}"><img src="language/flags/{$translation.language}.png" alt="{$translation.language}" title="{$translation.language}" class="flag"></a>
