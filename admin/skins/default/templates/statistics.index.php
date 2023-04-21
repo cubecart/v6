@@ -80,7 +80,7 @@
          {foreach from=$PRODUCT_SALES item=sale}
          <tr>
             <td style="text-align: center">{$sale.key}</td>
-            <td>{$sale.name}</td>
+            <td><a href="?_g=statistics&amp;node=product&amp;product_id={$sale.product_id}">{$sale.name}</a></td>
             <td style="text-align: center">{$sale.quan}</td>
             <td style="text-align: center">{$sale.percent}</td>
          </tr>
