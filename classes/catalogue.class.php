@@ -777,7 +777,7 @@ class Catalogue
 
         $where2 = $this->outOfStockWhere(false, 'INV', true);
 
-        if (($result = $GLOBALS['db']->query('SELECT I.product_id FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_category_index` as I,  `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory` as INV WHERE I.cat_id = '.$category_id.' AND I.product_id = INV.product_id AND INV.status = 1'.$where2)) !== false) {
+        if (($result = $GLOBALS['db']->select('`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_category_index` AS `I` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory` AS `INV`', '`I`.`product_id`','`I`.`cat_id` = '.$category_id.' AND `I`.`product_id` = `INV`.`product_id` AND `INV`.`status` = 1 '.$where2)) !== false) {
             $this->_category_count = $GLOBALS['db']->numrows();
             if (isset($_GET['sort']) && is_array($_GET['sort'])) {
                 foreach ($_GET['sort'] as $field => $direction) {
