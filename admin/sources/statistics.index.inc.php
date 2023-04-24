@@ -241,7 +241,7 @@ if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
     
     $g_graph_data[7]['data'] = "['".$lang['statistics']['percentage_of_views']."','".$lang['common']['percentage']."'],";
     
-    $smarty_data[7] = array();
+    $smarty_data['search_terms'] = array();
     foreach ($results as $key => $result) {
         $result['percent']  = 100*($result['hits']/$divider[0]['totalHits']);
         $max_percent = ($result['percent']>$max_percent) ? $result['percent'] : $max_percent;
