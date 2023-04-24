@@ -1485,7 +1485,8 @@ class Cubecart
                 $ga_id = $GLOBALS['config']->get('config', 'google_analytics');
                 $ga_id = trim($ga_id);
                 $GLOBALS['smarty']->assign('ANALYTICS', !empty($ga_id) ? $ga_id : false);
-
+                
+                $GLOBALS['smarty']->assign('SECTION_NAME', 'receipt');
                 $content = $GLOBALS['smarty']->fetch('templates/content.receipt.php');
                 $GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
             }
@@ -1617,6 +1618,7 @@ class Cubecart
             foreach ($GLOBALS['hooks']->load('class.cubecart.contact.display') as $hook) {
                 include $hook;
             }
+            $GLOBALS['smarty']->assign('SECTION_NAME', 'contact');
             $content = $GLOBALS['smarty']->fetch('templates/content.contact.php');
             $GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
         } else {
