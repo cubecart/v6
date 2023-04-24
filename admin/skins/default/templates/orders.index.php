@@ -414,7 +414,7 @@
                      {/if}
                   </td>
                   <td>
-                     <span class="editable" name="inv[{$product.id}][name]">{$product.name}</span>
+                     <span style="display:inline-block;width:98%;" class="editable" name="inv[{$product.id}][name]">{$product.name}</span>
                      {include file='templates/element.product_options.php'}
                   </td>
                   <td style="text-align:right">

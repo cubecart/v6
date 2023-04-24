@@ -836,8 +836,7 @@ $(document).ready(function() {
     }).on("click", function() {
         var t = $(this).html();
         "<em>null</em>" == t && (t = "");
-        var e = $(this).attr("name"),
-            i = $(this).attr("class");
+        var e = $(this).attr("name"), s = $(this).attr("style"), i = $(this).attr("class");
         if ($(this).hasClass("select")) {
             var a = document.createElement("select");
             $.each(select_data, function(t, e) {
@@ -850,7 +849,7 @@ $(document).ready(function() {
                 value: t
             }).addClass(i)
         }
-        $(a).addClass("textbox"), $(a).attr("name", e), $(this).replaceWith(a)
+        $(a).addClass("textbox"), $(a).attr("name", e), $(a).attr("style", s), $(this).replaceWith(a)
     }), $(".reorder-list").sortable({
         axis: "y",
         handle: "a.handle",
