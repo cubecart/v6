@@ -52,6 +52,12 @@ class Debug
      */
     private $_errors  = array();
     /**
+     * Messages
+     *
+     * @var array of strings
+     */
+    private $_messages  = array();
+    /**
      * SQL messages
      *
      * @var array of strings
