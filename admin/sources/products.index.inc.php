@@ -249,7 +249,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
         }
     }
 
-    if (is_array($_POST['option_matrix'])) {
+    if (isset($_POST['option_matrix']) && is_array($_POST['option_matrix'])) {
         $pc_postfix = 1;
         foreach ($_POST['option_matrix'] as $options_identifier => $data) {
             $data['product_id'] = $product_id;
