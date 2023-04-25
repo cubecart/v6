@@ -13,7 +13,7 @@
    <a href="{$BRANCH.url}" title="{$BRANCH.name}">{$BRANCH.name}</a>
    {if isset($BRANCH.children)}
    <ul class="dropdown">
-      <li itemprop="name"><label itemprop="url" content="{$BRANCH.url}" rel="{$BRANCH.url}">{$BRANCH.name}</label></li>
+      <li itemprop="name" class="hide-for-large-up"><label itemprop="url" content="{$BRANCH.url}" rel="{$BRANCH.url}">{$BRANCH.name}</label></li>
       {$BRANCH.children}
    </ul>
    {/if}
