@@ -1256,7 +1256,7 @@ ul.quick_links li#help_menu ul li:not(:last-child) {
     border-bottom: 25px solid #FFF;
 }
 .row_error {
-    background-color: #FF0000;
+    background-color: #FF0000!important;
     color: #fff;
     padding-left: 5px;
     border-bottom: 25px solid #FFF;
