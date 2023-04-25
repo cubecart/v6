@@ -839,7 +839,7 @@ if (isset($_GET['action'])) {
             }
 
             // Sort Options
-            if (is_array($option_list)) {
+            if (isset($option_list) && is_array($option_list)) {
                 uasort($option_list, 'cmpmc');
                 foreach ($option_list as $oid => $array) {
                     unset($array['priority']);
@@ -1098,7 +1098,7 @@ if (isset($_GET['action'])) {
                 $smarty_data['option_matrix']['existing'][$existing_matrix['options_identifier']] = $existing_matrix;
             }
         }
-        $GLOBALS['smarty']->assign('OPTIONS_MATRIX', $smarty_data['option_matrix']);
+        $GLOBALS['smarty']->assign('OPTIONS_MATRIX', $smarty_data['option_matrix'] ?? false);
 
         // List Manufacturers
         if (($manufacturers = $GLOBALS['db']->select('CubeCart_manufacturers', false, false, array('name' => 'ASC'))) !== false) {
