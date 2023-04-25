@@ -253,10 +253,10 @@
    </div>
    <div id="description" class="tab_content">
       <h3>{$LANG.common.description}</h3>
-      <textarea name="description" class="textbox fck">{$PRODUCT.description}</textarea>
+      <textarea name="description" class="textbox fck">{if $PRODUCT.description}{htmlentities($PRODUCT.description, ENT_QUOTES, 'UTF-8', true)}{/if}</textarea>
       <br>
       <h3>{$LANG.common.description_short} {$LANG.common.optional}</h3>
-      <textarea name="description_short" id="description_short" class="textbox fck" type="text">{htmlentities($PRODUCT.description_short, ENT_QUOTES, 'UTF-8', true)}</textarea>
+      <textarea name="description_short" id="description_short" class="textbox fck">{if $PRODUCT.description_short}{htmlentities($PRODUCT.description_short, ENT_QUOTES, 'UTF-8', true)}{/if}</textarea>
    </div>
    <div id="pricing" class="tab_content">
       <h3>{$LANG.catalogue.title_pricing}</h3>

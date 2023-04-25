@@ -325,7 +325,7 @@ if (isset($_GET['action'])) {
         $GLOBALS['main']->addTabControl($lang['common']['description'], 'cat_description', null, 'D');
         $GLOBALS['main']->addTabControl($lang['settings']['title_images'], 'cat_images', null, 'I');
         $GLOBALS['main']->addTabControl($lang['settings']['tab_seo'], 'seo');
-        $GLOBALS['smarty']->assign("REDIRECTS", $GLOBALS['seo']->getRedirects('cat', $_GET['cat_id']));
+        
         // Add shipping tab if shipping by category is enabled
         $ship_by_cat = $GLOBALS['config']->get('Per_Category');
         if (isset($ship_by_cat['status']) && $ship_by_cat['status']) {
@@ -333,6 +333,7 @@ if (isset($_GET['action'])) {
             $GLOBALS['smarty']->assign('DISPLAY_SHIPPING', true);
         }
         if (isset($_GET['cat_id']) && is_numeric($_GET['cat_id'])) {
+            $GLOBALS['smarty']->assign("REDIRECTS", $GLOBALS['seo']->getRedirects('cat', $_GET['cat_id']));
             // Load from db, and assign
             if (($category = $GLOBALS['db']->select('CubeCart_category', false, array('cat_id' => (int)$_GET['cat_id']))) !== false) {
                 $catData = $category[0];
