@@ -632,9 +632,10 @@ class Database_Contoller
      * @param int $maxRows
      * @param int $page
      * @param bool $cache
-     * @return bool
+     * @param array $cache
+     * @return bool $group_by
      */
-    public function select($table, $columns = false, $where = false, $order = false, $maxRows = false, $page = false, $cache = true)
+    public function select($table, $columns = false, $where = false, $order = false, $maxRows = false, $page = false, $cache = true, $group_by = array())
     {
         $table_where = $table;
         $distinct = ''; 
@@ -710,7 +711,8 @@ class Database_Contoller
                 }
             }
         }
-        $group = (isset($group_by) && is_array($group_by)) ? 'GROUP BY '.implode(',', $group_by) : '';
+
+        $group = (!empty($group_by)) ? 'GROUP BY '.implode(',', $group_by) : '';
         
         $parent_query = "SELECT $distinct ".implode(', ', $cols)." FROM $wrapper{$prefix}$table$wrapper ".$this->where($table_where, $where)." $group $orderString $limit;";
         $this->_query = $parent_query;
@@ -725,7 +727,7 @@ class Database_Contoller
                     $this->_found_rows = $count;
                 } else {
                     $count = $this->misc($count_query);
-                    $this->_found_rows = $count[0]['Count'];
+                    $this->_found_rows = (count($count)>1) ? count($count) : $count[0]['Count'];
                     $this->_writeCache($count, $count_query);
                 }
             }

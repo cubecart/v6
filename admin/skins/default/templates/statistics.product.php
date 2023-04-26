@@ -12,9 +12,15 @@
  <div id="general" class="tab_content">
    {if $PRODUCT}
    <h3>{$PRODUCT.name} ({$PRODUCT.product_code})</h3>
-   <table>
+   <table width="700">
+    <thead>
+      <tr>
+        <th colspan="3">Overview</th>
+      </tr>
+    </thead>
+    <tbody>
     <tr>
-      {if !empty($PRODUCT.image)}<td rowspan="6"><img src="{$PRODUCT.image}" class="border" style="margin-right: 20px" /></td>{/if}
+      {if !empty($PRODUCT.image)}<td rowspan="6" width="230"><img src="{$PRODUCT.image}" class="border" style="margin-right: 20px" /></td>{/if}
       <td>{$LANG.common.created}</td>
       <td>{$PRODUCT.date_added}</td>
     </tr>
@@ -44,7 +50,26 @@
       <td>{$LANG.statistics.sale_interval}</td>
       <td>{$PRODUCT.sale_interval}</td>
     </tr>
+</tbody>
    </table>
+   {if $CUSTOMERS}
+   <table width="700">
+    <thead>
+      <tr>
+        <th>Customer Name</th>
+        <th class="text-center">Purchases</th>
+      </tr>
+    </thead>
+    <tbody>
+      {foreach from=$CUSTOMERS item=c}
+      <tr>
+        <td><a href="?_g=customers&action=edit&customer_id={$c.customer_id}">{$c.first_name} {$c.last_name}</a></td><td class="text-center">{$c.purchases}</td>
+      </tr>
+      {/foreach}
+    </tbody>
+   </table>
+   <div class="pagination">{$PAGINATION}</div>
+   {/if}
    {else}
    <p>Product not found.</p>
    {/if}

@@ -50,6 +50,14 @@ if($product) {
     );
 
     $GLOBALS['smarty']->assign('PRODUCT', array_merge($product, $data));
+    
+    $per_page = 25;
+    $page  = (isset($_GET['page']) && is_numeric($_GET['page'])) ? $_GET['page'] : 1;
+    $customers = $GLOBALS['db']->select('`CubeCart_order_inventory` AS `I` INNER JOIN `CubeCart_order_summary` AS `S` INNER JOIN `CubeCart_customer` AS `C` ON `S`.`customer_id` = `C`.`customer_id`', '`C`.`customer_id`, `C`.`first_name`, `C`.`last_name`, SUM(`I`.`quantity`) AS `purchases`', '`S`.`status` IN(2,3) AND`I`.`product_id` = '.(int)$_GET['product_id'], 'SUM(`I`.`quantity`) DESC', $per_page, $page, false, array('`S`.`customer_id`'));
+    
+    $GLOBALS['smarty']->assign('CUSTOMERS', $customers);
+    $GLOBALS['smarty']->assign('PAGINATION', $GLOBALS['db']->pagination(false, $per_page, $page, 5, 'page'));
+
 } else {
     $GLOBALS['smarty']->assign('PRODUCT', false);
 }
