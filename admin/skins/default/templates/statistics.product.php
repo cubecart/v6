@@ -44,7 +44,7 @@
       {else}
         {$PRODUCT.total_sales}
       {/if}
-      ({$PRODUCT.avg_per_order} per order)
+      ({sprintf($LANG.orders.per_order,$PRODUCT.avg_per_order)})
       </td>
     </tr>
     <tr>
