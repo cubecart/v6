@@ -23,7 +23,7 @@ if($product) {
     $product['image'] = $master_image;
 
     $join = "`CubeCart_order_inventory` AS `I` INNER JOIN `CubeCart_order_summary` AS `S` ON `I`.`cart_order_id` = `S`.`cart_order_id`";
-    $columns = '`S`.`order_date`, `S`.`id`';
+    $columns = '`S`.`order_date`, `S`.`id`, `I`.`quantity`';
     $where = '`I`.`product_id` = '.(string)$_GET['product_id'].' AND `S`.`status` IN(2, 3)';
 
     $first_sale = $GLOBALS['db']->select($join, $columns, $where, '`S`.`order_date` ASC', 1);
@@ -36,15 +36,21 @@ if($product) {
         return $dtF->diff($dtT)->format($GLOBALS['language']->statistics['dhms']);
     }
     $ids = array();
+    $total_sales = 0;
+    $total_orders = 0;
     foreach($all_sales as $s) {
         array_push($ids, $s['id']);
+        $total_sales += (int)$s['quantity'];
+        $total_orders++;
     }
     $product['date_added'] = formatTime(strtotime($product['date_added']));
     $product['updated'] = formatTime(strtotime($product['updated']));
     $data = array(
         'first_sale' => !$first_sale ? '-' : formatTime($first_sale[0]['order_date']),
         'last_sale' => !$last_sale ? '-' : formatTime($last_sale[0]['order_date']),
-        'total_sales' => is_array($all_sales) ? count($all_sales) : 0,
+        'total_sales' => $total_sales,
+        'total_orders' => $total_orders,
+        'avg_per_order' => round($total_sales/$total_orders, 1),
         'order_ids' => urlencode(implode(',',$ids)),
         'sale_interval' => is_array($all_sales) ? secondsToTime(ceil((time() - strtotime($product['date_added'])) / count($all_sales))) : '-'
     );
@@ -53,7 +59,7 @@ if($product) {
     
     $per_page = 25;
     $page  = (isset($_GET['page']) && is_numeric($_GET['page'])) ? $_GET['page'] : 1;
-    $customers = $GLOBALS['db']->select('`CubeCart_order_inventory` AS `I` INNER JOIN `CubeCart_order_summary` AS `S` INNER JOIN `CubeCart_customer` AS `C` ON `S`.`customer_id` = `C`.`customer_id`', '`C`.`customer_id`, `C`.`first_name`, `C`.`last_name`, SUM(`I`.`quantity`) AS `purchases`', '`S`.`status` IN(2,3) AND`I`.`product_id` = '.(int)$_GET['product_id'], 'SUM(`I`.`quantity`) DESC', $per_page, $page, false, array('`S`.`customer_id`'));
+    $customers = $GLOBALS['db']->select('`CubeCart_order_inventory` AS `I` INNER JOIN `CubeCart_order_summary` AS `S`  ON `I`.`cart_order_id` = `S`.`cart_order_id` INNER JOIN `CubeCart_customer` AS `C` ON `S`.`customer_id` = `C`.`customer_id`', '`C`.`customer_id`, `C`.`first_name`, `C`.`last_name`, SUM(`I`.`quantity`) AS `purchases`', '`S`.`status` IN(2,3) AND`I`.`product_id` = '.(int)$_GET['product_id'], 'SUM(`I`.`quantity`) DESC', $per_page, $page, false, array('`S`.`customer_id`'));
     
     $GLOBALS['smarty']->assign('CUSTOMERS', $customers);
     $GLOBALS['smarty']->assign('PAGINATION', $GLOBALS['db']->pagination(false, $per_page, $page, 5, 'page'));

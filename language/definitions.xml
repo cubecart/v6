@@ -242,6 +242,7 @@
     <string name="your_comments" introduced="5.0.0"><![CDATA[Delivery Notes or Additional Comments]]></string>
   </group>
   <group name="catalogue">
+    <string name="product_not_found" introduced="6.5.2"><![CDATA[Product not found.]]></string>
     <string name="product_count" introduced="6.5.2"><![CDATA[Product Count]]></string>
     <string name="product_count_ratio" introduced="6.5.2"><![CDATA[Primary: %s&#013;Additional: %s]]></string>
     <string name="option_type_password" introduced="6.4.11"><![CDATA[Password]]></string>
@@ -613,6 +614,7 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="purchases" introduced="6.5.2"><![CDATA[Purchases]]></string>
     <string name="created" introduced="6.5.2"><![CDATA[Created]]></string>
     <string name="updated" introduced="6.5.2"><![CDATA[Updated]]></string>
     <string name="count" introduced="6.5.0"><![CDATA[Count]]></string>

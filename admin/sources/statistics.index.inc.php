@@ -159,15 +159,15 @@ if (!empty($earliest_order[0]['MIN_order_date'])) {
 #############################################
 // Percentages
 
-// Product Sales
+## Product Sales
 $per_page = 15;
 $page = (isset($_GET['page_sales']) && is_numeric($_GET['page_sales'])) ? $_GET['page_sales'] : 1;
-$query = "SELECT sum(`O`.`quantity`) AS `quan`, `O`.`product_id`, `I`.`name` FROM `".$glob['dbprefix']."CubeCart_order_inventory` AS `O` INNER JOIN `".$glob['dbprefix']."CubeCart_order_summary` AS `S` ON `S`.`cart_order_id` = `O`.`cart_order_id` INNER JOIN `".$glob['dbprefix']."CubeCart_inventory` AS `I` ON `O`.`product_id` = `I`.`product_id` WHERE (`S`.`status` = 2 OR `S`.`status` = 3) GROUP BY `I`.`product_id` ORDER BY `quan` DESC";
+$query = "SELECT sum(`O`.`quantity`) AS `quan`, `O`.`product_id`, `I`.`name` FROM `".$glob['dbprefix']."CubeCart_order_inventory` AS `O` INNER JOIN `".$glob['dbprefix']."CubeCart_order_summary` AS `S` ON `S`.`cart_order_id` = `O`.`cart_order_id` INNER JOIN `".$glob['dbprefix']."CubeCart_inventory` AS `I` ON `O`.`product_id` = `I`.`product_id` WHERE `S`.`status` IN (2,3) GROUP BY `I`.`product_id` ORDER BY `quan` DESC";
 
 if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
     $GLOBALS['main']->addTabControl($lang['statistics']['title_popular'], 'stats_prod_sales');
     $numrows = $GLOBALS['db']->numrows($query);
-    $divider = $GLOBALS['db']->query("SELECT SUM(`O`.`quantity`) as `totalProducts` FROM `".$glob['dbprefix']."CubeCart_order_inventory` AS `O` INNER JOIN `".$glob['dbprefix']."CubeCart_order_summary` AS `S` ON `S`.`cart_order_id` = `O`.`cart_order_id` WHERE (`S`.`status` = 2 OR `S`.`status` = 3)");
+    $divider = $GLOBALS['db']->query("SELECT SUM(`O`.`quantity`) as `totalProducts` FROM `".$glob['dbprefix']."CubeCart_order_inventory` AS `O` INNER JOIN `".$glob['dbprefix']."CubeCart_order_summary` AS `S` ON `S`.`cart_order_id` = `O`.`cart_order_id` WHERE `S`.`status` IN (2,3)");
     
     $g_graph_data[5]['data'] = "['".$lang['statistics']['percentage_of_sales']."','".$lang['common']['percentage']."'],";
     
@@ -263,7 +263,7 @@ if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
     $GLOBALS['smarty']->assign('PAGINATION_SEARCH', $GLOBALS['db']->pagination($numrows, $per_page, $page, 5, 'page_search', 'stats_search', ' ', false));
     unset($results, $result, $divider);
 }
-// Best Customers
+## Best Customers
 $per_page = 15;
 $page = (isset($_GET['page_customers']) && is_numeric($_GET['page_customers'])) ? $_GET['page_customers'] : 1;
 $query = "SELECT sum(`total`) as `customer_expenditure`, C.first_name, C.last_name, C.customer_id FROM `".$glob['dbprefix']."CubeCart_order_summary` as O INNER JOIN  `".$glob['dbprefix']."CubeCart_customer` as C on O.customer_id = C.customer_id WHERE O.status = 3 GROUP BY O.customer_id ORDER BY `customer_expenditure` DESC";

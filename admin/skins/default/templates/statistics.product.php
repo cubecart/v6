@@ -15,7 +15,7 @@
    <table width="700">
     <thead>
       <tr>
-        <th colspan="3">Overview</th>
+        <th colspan="3">{$LANG.common.overview}</th>
       </tr>
     </thead>
     <tbody>
@@ -44,6 +44,7 @@
       {else}
         {$PRODUCT.total_sales}
       {/if}
+      ({$PRODUCT.avg_per_order} per order)
       </td>
     </tr>
     <tr>
@@ -56,8 +57,8 @@
    <table width="700">
     <thead>
       <tr>
-        <th>Customer Name</th>
-        <th class="text-center">Purchases</th>
+        <th>{$LANG.orders.customer_name}</th>
+        <th class="text-center">{$LANG.common.purchases}</th>
       </tr>
     </thead>
     <tbody>
@@ -71,6 +72,6 @@
    <div class="pagination">{$PAGINATION}</div>
    {/if}
    {else}
-   <p>Product not found.</p>
+   <p>{$LANG.catalogue.product_not_found}</p>
    {/if}
 </div>
