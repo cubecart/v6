@@ -78,25 +78,32 @@ if ($logs_activity) {
     foreach ($logs_activity as $log) {
         $log['date'] = formatTime($log['time']);
         $log['admin'] = $users[$log['admin_id']];
+        $log['item_name'] = '';
+        $log['item_link'] = '';
         if(!empty($log['item_id']) && !empty($log['item_type'])) {
             switch($log['item_type']) {
                 case 'prod':
-                    $log['item'] = $GLOBALS['language']->common['product'].' (#'.$log['item_id'].')';
-                    $log['link'] = '?_g=products&node=index&action=edit&product_id='.$log['item_id'];
+                    $item = $GLOBALS['db']->select('CubeCart_inventory', array('name'), array('product_id' => $log['item_id']));
+                    if($item && !empty($item[0]['name'])) {
+                        $log['item_name'] = $item[0]['name'];
+                        $log['item_link'] = '?_g=products&node=index&action=edit&product_id='.$log['item_id'];
+                    }
                 break;
                 case 'cat':
-                    $log['item'] = $GLOBALS['language']->common['category'].'(#'.$log['item_id'].')';
-                    $log['link'] = '?_g=categories&action=edit&cat_id='.$log['item_id'];
+                    $item = $GLOBALS['db']->select('CubeCart_category', array('cat_name'), array('cat_id' => $log['item_id']));
+                    if($item && !empty($item[0]['cat_name'])) {
+                        $log['item_name'] = $item[0]['cat_name'];
+                        $log['item_link'] = '?_g=categories&action=edit&cat_id='.$log['item_id'];
+                    }
                 break;
                 case 'doc':
-                    $log['item'] = $GLOBALS['language']->common['document'].'(#'.$log['item_id'].')';
-                    $log['link'] = '?_g=documents&action=edit&doc_id='.$log['item_id'];
+                    $item = $GLOBALS['db']->select('CubeCart_documents', array('doc_name'), array('doc_id' => $log['item_id']));
+                    if($item && !empty($item[0]['doc_name'])) {
+                        $log['item_name'] = $item[0]['doc_name'];
+                        $log['item_link'] = '?_g=documents&action=edit&doc_id='.$log['item_id'];
+                    }
                 break;
-
             }
-        } else {
-            $log['item'] = '';
-            $log['link'] = '';
         }
         $smarty_data['admin_activity'][] = $log;
     }

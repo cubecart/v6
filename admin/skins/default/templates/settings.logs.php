@@ -55,8 +55,8 @@
 		<td>{$log.admin.username} ({$log.admin.name})</td>
 		<td>{$log.description}</td>
 		<td>
-		{if !empty($log.item)}
-		<a href="{$log.link}">{$log.item}</a>
+		{if !empty($log.item_name)}
+		<a href="{$log.item_link}">{$log.item_name}</a>
 		{/if}	
 		</td>
 		<td style="text-align:center">{$log.date}</td>
