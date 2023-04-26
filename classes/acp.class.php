@@ -160,12 +160,29 @@ class ACP
      */
     public function adminLog($message)
     {
+        $item_id = null;
+        $item_type = null;
+        if(isset($_REQUEST['product_id'])) {
+            $item_id = $_REQUEST['product_id'];
+            $item_type = 'prod';
+        }
+        if(isset($_REQUEST['cat_id'])) {
+            $item_id = $_REQUEST['cat_id'];
+            $item_type = 'cat';
+        }
+        if(isset($_REQUEST['doc_id'])) {
+            $item_id = $_REQUEST['doc_id'];
+            $item_type = 'doc';
+        }
+
         if (!empty($message)) {
             $record = array(
                 'admin_id'  => Admin::getInstance()->getId(),
                 'ip_address' => get_ip_address(),
                 'time'   => time(),
                 'description' => $message,
+                'item_id' => $item_id,
+                'item_type' => $item_type
             );
             
             $log_days = $GLOBALS['config']->get('config', 'r_admin_activity');

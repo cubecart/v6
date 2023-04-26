@@ -44,6 +44,7 @@
 	  <tr>
 		<td>{$THEAD_ACTIVITY.username}</td>
 		<td>{$THEAD_ACTIVITY.description}</td>
+		<td>{$LANG.common.item}</td>
 		<td>{$THEAD_ACTIVITY.date}</td>
 		<td width="100">{$THEAD_ACTIVITY.ip_address}</td>
 	  </tr>
@@ -53,6 +54,11 @@
 	  <tr>
 		<td>{$log.admin.username} ({$log.admin.name})</td>
 		<td>{$log.description}</td>
+		<td>
+		{if !empty($log.item)}
+		<a href="{$log.link}">{$log.item}</a>
+		{/if}	
+		</td>
 		<td style="text-align:center">{$log.date}</td>
 		<td><a href="http://whois.domaintools.com/{$log.ip_address}" target="_blank">{$log.ip_address}</a></td>
 	  </tr>

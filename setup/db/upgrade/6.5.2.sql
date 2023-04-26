@@ -1,0 +1,2 @@
+ALTER TABLE `CubeCart_admin_log` ADD `item_id` INT UNSIGNED NULL DEFAULT NULL AFTER `description`; #EOQ
+ALTER TABLE `CubeCart_admin_log` ADD `item_type` VARCHAR(4) NULL DEFAULT NULL AFTER `item_id`; #EOQ

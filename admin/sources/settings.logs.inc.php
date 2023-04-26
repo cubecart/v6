@@ -78,6 +78,26 @@ if ($logs_activity) {
     foreach ($logs_activity as $log) {
         $log['date'] = formatTime($log['time']);
         $log['admin'] = $users[$log['admin_id']];
+        if(!empty($log['item_id']) && !empty($log['item_type'])) {
+            switch($log['item_type']) {
+                case 'prod':
+                    $log['item'] = $GLOBALS['language']->common['product'].' (#'.$log['item_id'].')';
+                    $log['link'] = '?_g=products&node=index&action=edit&product_id='.$log['item_id'];
+                break;
+                case 'cat':
+                    $log['item'] = $GLOBALS['language']->common['category'].'(#'.$log['item_id'].')';
+                    $log['link'] = '?_g=categories&action=edit&cat_id='.$log['item_id'];
+                break;
+                case 'doc':
+                    $log['item'] = $GLOBALS['language']->common['document'].'(#'.$log['item_id'].')';
+                    $log['link'] = '?_g=documents&action=edit&doc_id='.$log['item_id'];
+                break;
+
+            }
+        } else {
+            $log['item'] = '';
+            $log['link'] = '';
+        }
         $smarty_data['admin_activity'][] = $log;
     }
     $GLOBALS['smarty']->assign('PAGINATION_ADMIN_ACTIVITY', $GLOBALS['db']->pagination(false, $per_page, $page_activity, 5, $page_var, $anchor));
