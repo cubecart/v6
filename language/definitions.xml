@@ -1735,6 +1735,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="subscribers_not_added" introduced="6.0.0"><![CDATA[No subscribers were added.]]></string>
   </group>
   <group name="notification">
+    <string name="notify_seo_url_deleted" introduced="6.5.2"><![CDATA[Redirect has been deleted.]]></string>
+    <string name="notify_seo_url_not_deleted" introduced="6.5.2"><![CDATA[Failed to delete redierct.]]></string>
     <string name="notify_success_add_redirect" introduced="6.4.0"><![CDATA[Redirect added successfully.]]></string>
     <string name="notify_fail_add_redirect" introduced="6.4.0"><![CDATA[Failed to add redirect. Please check it isn't already in use.]]></string>
     <string name="notify_object_not_found" introduced="6.4.0"><![CDATA[Target product, category or document not found.]]></string>
