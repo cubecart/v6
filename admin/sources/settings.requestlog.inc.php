@@ -49,7 +49,7 @@ if (Admin::getInstance()->superUser()) {
         }
     }
 
-    $GLOBALS['smarty']->assign('REQUEST_LOG', $smarty_data['request_log']);
+    $GLOBALS['smarty']->assign('REQUEST_LOG', $smarty_data['request_log'] ?? false);
     $GLOBALS['smarty']->assign('PAGINATION_REQUEST_LOG', $GLOBALS['db']->pagination($count, $per_page, $page, 5, 'page'));
 }
 $page_content = $GLOBALS['smarty']->fetch('templates/settings.requestlog.php');
