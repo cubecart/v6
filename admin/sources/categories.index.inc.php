@@ -409,7 +409,7 @@ if (isset($_GET['action'])) {
         foreach ($GLOBALS['hooks']->load('admin.category.tabs') as $hook) {
             include $hook;
         }
-        $GLOBALS['smarty']->assign('PLUGIN_TABS', (bool)($smarty_data['plugin_tabs'] ?? false));
+        $GLOBALS['smarty']->assign('PLUGIN_TABS', ($smarty_data['plugin_tabs'] ?? false));
             
         $GLOBALS['smarty']->assign('SELECT_CATEGORIES', $select_categories);
         $GLOBALS['smarty']->assign('MODE_ADDEDIT', true);
@@ -422,7 +422,7 @@ if (isset($_GET['action'])) {
     foreach ($GLOBALS['hooks']->load('admin.category_list.tabs') as $hook) {
         include $hook;
     }
-    $GLOBALS['smarty']->assign('PLUGIN_TABS', (bool)($smarty_data['plugin_tabs'] ?? false));
+    $GLOBALS['smarty']->assign('PLUGIN_TABS', ($smarty_data['plugin_tabs'] ?? false));
     $GLOBALS['main']->addTabControl($lang['settings']['title_category'], 'categories');
     $GLOBALS['main']->addTabControl($lang['settings']['title_category_add'], null, currentPage(null, array('action' => 'add')));
     if (($categories = $GLOBALS['db']->select('CubeCart_category', false, array('cat_parent_id' => (isset($_GET['parent'])) ? (int)$_GET['parent'] : 0), array('priority' => 'ASC'))) !== false) {

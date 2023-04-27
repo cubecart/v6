@@ -82,7 +82,7 @@ if (isset($_GET['edit']) && is_numeric($_GET['edit'])) {
     foreach ($GLOBALS['hooks']->load('admin.product.manufacturer.tabs') as $hook) {
         include $hook;
     }
-    $GLOBALS['smarty']->assign('PLUGIN_TABS', (bool)($smarty_data['plugin_tabs'] ?? false));
+    $GLOBALS['smarty']->assign('PLUGIN_TABS', ($smarty_data['plugin_tabs'] ?? false));
     
     $GLOBALS['smarty']->assign('DISPLAY_FORM', true);
 } else {

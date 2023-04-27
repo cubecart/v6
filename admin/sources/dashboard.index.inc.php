@@ -415,7 +415,7 @@ foreach ($GLOBALS['hooks']->load('admin.dashboard.tabs') as $hook) {
     include $hook;
 }
 
-$GLOBALS['smarty']->assign('PLUGIN_TABS', (bool)($smarty_data['plugin_tabs'] ?? false));
+$GLOBALS['smarty']->assign('PLUGIN_TABS', ($smarty_data['plugin_tabs'] ?? false));
 
 ## Latest News (from RSS)
 if ($GLOBALS['config']->has('config', 'default_rss_feed') && !$GLOBALS['config']->isEmpty('config', 'default_rss_feed') && filter_var($GLOBALS['config']->get('config', 'default_rss_feed'), FILTER_VALIDATE_URL)) {
