@@ -59,7 +59,8 @@ if($product) {
     
     $per_page = 25;
     $page  = (isset($_GET['page']) && is_numeric($_GET['page'])) ? $_GET['page'] : 1;
-    $customers = $GLOBALS['db']->select('`CubeCart_order_inventory` AS `I` INNER JOIN `CubeCart_order_summary` AS `S`  ON `I`.`cart_order_id` = `S`.`cart_order_id` INNER JOIN `CubeCart_customer` AS `C` ON `S`.`customer_id` = `C`.`customer_id`', '`C`.`customer_id`, `C`.`first_name`, `C`.`last_name`, SUM(`I`.`quantity`) AS `purchases`', '`S`.`status` IN(2,3) AND`I`.`product_id` = '.(int)$_GET['product_id'], 'SUM(`I`.`quantity`) DESC', $per_page, $page, false, array('`S`.`customer_id`'));
+    
+    $customers = $GLOBALS['db']->query('SELECT `C`.`customer_id`, `C`.`first_name`, `C`.`last_name`, SUM(`I`.`quantity`) AS `purchases` FROM `'.$glob['dbprefix'].'CubeCart_order_inventory` AS `I` INNER JOIN `'.$glob['dbprefix'].'CubeCart_order_summary` AS `S` ON `I`.`cart_order_id` = `S`.`cart_order_id` INNER JOIN `'.$glob['dbprefix'].'CubeCart_customer` AS `C` ON `S`.`customer_id` = `C`.`customer_id` WHERE `S`.`status` IN(2,3) AND`I`.`product_id` = 10 GROUP BY `S`.`customer_id` ORDER BY SUM(`I`.`quantity`) DESC', $per_page, $page);
     
     $GLOBALS['smarty']->assign('CUSTOMERS', $customers);
     $GLOBALS['smarty']->assign('PAGINATION', $GLOBALS['db']->pagination(false, $per_page, $page, 5, 'page'));
