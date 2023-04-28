@@ -40,7 +40,7 @@ if (isset($_POST['save']) && (isset($_POST['string']) || isset($_POST['delete'])
 
     # Save strings to Database
     $clear = false;
-    if (is_array($_POST['delete'])) {
+    if (isset($_POST['delete']) && is_array($_POST['delete'])) {
         foreach ($_POST['delete'] as $name => $value) {
             $record = array(
                 'language' => $_GET['language'],
@@ -51,7 +51,7 @@ if (isset($_POST['save']) && (isset($_POST['string']) || isset($_POST['delete'])
         }
     }
     
-    if (is_array($_POST['string'])) {
+    if (isset($_POST['string']) && is_array($_POST['string'])) {
         foreach ($GLOBALS['RAW']['POST']['string'] as $type => $data) {
             foreach ($data as $name => $value) {
                 $record = array(
