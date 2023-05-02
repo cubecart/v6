@@ -203,12 +203,6 @@ if (isset($_GET['export'])) {
                 $smarty_data['strings'][] = $assign;
             }
         }
-        if (!empty($custom)) {
-            ## For custom strings that aren't listed in the definitions file
-            foreach ($custom as $name => $value) {
-                continue;
-            }
-        }
         $GLOBALS['smarty']->assign('STRINGS', $smarty_data['strings']);
     } elseif (isset($_POST['lang_groups_search_phrase']) && !empty($_POST['lang_groups_search_phrase'])) { // We have a language to search through.
         $language_strings_to_search = $GLOBALS['language']->getLanguageStrings();
