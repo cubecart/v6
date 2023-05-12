@@ -10,11 +10,9 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
 <div id="request_log" class="tab_content">
-  <h3>{$LANG.navigation.nav_request_log}</h3>
-  {if $REQUEST_LOG}
+{if $REQUEST_LOG}
   <p class="right"><a href="?_g=maintenance&emptyRequestLogs=true&redir=viewlog" class="button">{$LANG.maintain.logs_request}</a></p>
-  {/if}
-  
+  {/if}<h3>{$LANG.navigation.nav_request_log}</h3>
   {if $REQUEST_LOG}
 	{foreach from=$REQUEST_LOG item=log}
 	<table class="request{if $log.error && !is_bool($log.error)} error{/if}" width="100%">
