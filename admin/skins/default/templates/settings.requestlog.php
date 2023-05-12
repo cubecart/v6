@@ -12,47 +12,44 @@
 <div id="request_log" class="tab_content">
   <h3>{$LANG.navigation.nav_request_log}</h3>
   {if $REQUEST_LOG}
-  <p>[<a href="?_g=maintenance&emptyRequestLogs=true&redir=viewlog">{$LANG.maintain.logs_request}</a>]</p>
+  <p class="right"><a href="?_g=maintenance&emptyRequestLogs=true&redir=viewlog" class="button">{$LANG.maintain.logs_request}</a></p>
   {/if}
-  <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
-	  <table class="fixed" width="100%">
-		<thead>
-		  <tr>
-			<td nowrap="nowrap" width="100">{$LANG.common.date}</td>
-			<td width="100%">&nbsp;</td>
-		  </tr>
-		</thead>
-		<tbody>
-		{foreach from=$REQUEST_LOG item=log}
-		  <tr {if $log.error}class="request_error"{/if}>
-			<td valign="top" nowrap="nowrap" width="75">{$log.time}</td>
-			<td width="100%">
-			<div class="request">
-			  <strong>{$LANG.common.request} {if $log.is_curl==='1'}(cURL){elseif $log.is_curl==='0'}(fsock){/if} - {$log.request_url}</strong>
-			  {$log.request}
-			</div>
-			{if $log.error && !is_bool($log.error)}
-			<div class="request">
-			  <strong>Error:</strong>
-			  {$log.error}
-			</div>
-			{/if}
-			<div class="received">
-			  <strong>{$LANG.common.received}{if !empty($log.response_code)} ({$log.response_code} - {$log.response_code_description}){/if}</strong>
-			  {$log.result}
-			</div>
-			</td>
-		  </tr>
-		{foreachelse}
-		  <tr>
-			<td colspan="3" align="center" width="650"><strong>{$LANG.form.none}</strong></td>
-		  </tr>
-		{/foreach}
-		</tbody>
-	  </table>
   
-  </form>
+  {if $REQUEST_LOG}
+	{foreach from=$REQUEST_LOG item=log}
+	<table class="request{if $log.error && !is_bool($log.error)} error{/if}" width="100%">
+		<tr>
+			<td width="125">{$LANG.maintain.request_time}</td><td>{$log.time}</td>
+		</tr>
+		<tr>
+			<td width="125">{$LANG.maintain.request_url}</td><td>{$log.request_url}</td>
+		</tr>
+		<tr>
+			<td width="125">{$LANG.maintain.request_headers}</td><td>{$log.request_headers}</td>
+		</tr>
+		<tr>
+			<td width="125">{$LANG.maintain.request_body}</td><td>{$log.request}</td>
+		</tr>
+		<tr>
+			<td width="125">{$LANG.maintain.response_code}</td><td>{if !empty($log.response_code)} {$log.response_code} - {$log.response_code_description}{/if}</td>
+		</tr>
+		<tr>
+			<td width="125">{$LANG.maintain.response_headers}</td><td>{$log.response_headers}</td>
+		</tr>
+		<tr>
+			<td width="125">{$LANG.maintain.response_body}</td><td>{$log.result}</td>
+		</tr>
+		{if $log.error && !is_bool($log.error)}
+		<tr>
+			<td width="125">{$LANG.common.error}</td><td>{$log.error}</td>
+		</tr>
+		{/if}
+	</table>
+	{/foreach}
 	<div class="pagination">
 		<span><strong>{$LANG.common.total}:</strong> {$TOTAL_RESULTS}</span>{$PAGINATION_REQUEST_LOG}
 	</div>
+  {else}
+    <p><strong>{$LANG.form.none}</strong></p>
+  {/if}  
 </div>

@@ -44,7 +44,9 @@ if (Admin::getInstance()->superUser()) {
                 'response_code_description'   => Request::getResponseCodeDescription($log['response_code']),
                 'is_curl'   => $log['is_curl'],
                 'request_url' => $log['request_url'],
-                'error' => $error
+                'error' => $error,
+                'response_headers' => $log['response_headers'],
+                'request_headers' => $log['request_headers']
             );
         }
     }

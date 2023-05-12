@@ -36,7 +36,8 @@ class Request
     private $_request_cache   = false;
     private $_request_hash   = null;
 
-    private $_request_headers  = false;
+    private $_request_headers  = array();
+    private $_response_headers  = '';
     private $_add_request_headers  = array();
     private $_custom_request_headers = array();
     private $_request_body   = null;
@@ -267,12 +268,13 @@ class Request
             return false;
         }
         $data = array(
-            'request_url'  	=> $this->_request_protocol.'://'.$this->_request_url.$this->_request_path,
-            'request' => (!empty($request)) ? $this->mask_cc($request) : "",
-            'result'    	=> $this->mask_cc($result),
-            'response_code' => (string)$this->server_response_code,
-            'is_curl'   => $this->_curl ? 1 : 0,
-            'error'   		=> $error
+            'request_url'       => $this->_request_protocol.'://'.$this->_request_url.$this->_request_path,
+            'request'           => (!empty($request)) ? $this->mask_cc($request) : "",
+            'result'    	    => $this->mask_cc($result),
+            'response_code'     => (string)$this->server_response_code,
+            'is_curl'           => $this->_curl ? 1 : 0,
+            'request_headers'   => implode(' ', $this->_request_headers),
+            'response_headers'  => $this->_request_return_headers ? $this->_response_headers : null,
         );
         $log_days = $GLOBALS['config']->get('config', 'r_request');
         if (ctype_digit((string)$log_days) &&  $log_days > 0) {
@@ -311,7 +313,7 @@ class Request
             $this->_request_body = $dataArray;
         }
         ## Generate headers
-        $this->_request_headers = null;
+        $this->_request_headers = array();
         $this->_request_http_version = (!empty($this->_proxy_username) && !empty($this->_proxy_password)) ? 1.1 : $this->_request_http_version;
         if ($this->_send_headers) {
             if ($this->_request_method == 'post') {
@@ -382,6 +384,8 @@ class Request
             $return = curl_exec($this->_curl);
             $error = curl_error($this->_curl);
             $this->server_response_code = curl_getinfo($this->_curl, CURLINFO_RESPONSE_CODE);
+            $headerSize = curl_getinfo($this->_curl, CURLINFO_HEADER_SIZE);
+            $this->_response_headers = substr($return, 0, $headerSize);
             
             if ($return || in_array($this->server_response_code, $this->_success_responses)) { // A server doesb't always return a response body!
                 if ($this->_request_cache) {

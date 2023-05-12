@@ -1053,14 +1053,21 @@ a.handle {
 table.fixed {
     table-layout: fixed;
 }
-.received,
-.request,
-.request_error {
-    font-family: "Courier New", Courier, monospace;
-    overflow-wrap: break-word
+.request {
+    margin-bottom: 30px;
+    border: 1px solid #ccc;
+    table-layout: fixed;
 }
-#request_log tr.request_error {
-    background: #fff2f2;
+.request tr td:nth-child(2) {
+    font-family: "Courier New", Courier, monospace;
+}
+.request td {
+    word-wrap: break-word;
+    vertical-align: top;
+    height: auto;
+    padding: 5px;
+}
+.request.error {
     color: red
 }
 .custom-phrase {

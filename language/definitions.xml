@@ -1450,6 +1450,13 @@ This email is sent from the store's master email address but it is possible to r
     <string name="example_code_snippet_xml" introduced="5.2.0"><![CDATA[An example of an import XML feed can be found <a href="docs/examples/code_snippet_import.php" target="blank">here</a>. Please use the &quot;Help&quot; link for further information.]]></string>
   </group>
   <group name="maintain">
+    <string name="request_time" introduced="6.5.2"><![CDATA[Request Time]]></string>
+    <string name="request_url" introduced="6.5.2"><![CDATA[Request URL]]></string>
+    <string name="response_code" introduced="6.5.2"><![CDATA[Response Code]]></string>
+    <string name="request_headers" introduced="6.5.2"><![CDATA[Request Headers]]></string>
+    <string name="request_body" introduced="6.5.2"><![CDATA[Request Body]]></string>
+    <string name="response_headers" introduced="6.5.2"><![CDATA[Response Headers]]></string>
+    <string name="response_body" introduced="6.5.2"><![CDATA[Response Body]]></string>
     <string name="rebuild_elasticsearch" introduced="6.5.0"><![CDATA[Clear and rebuild the Elasticsearch engine. Once built it will self manage along with inventory changes.]]></string>
     <string name="auto_upgrade_disabled" introduced="6.4.2"><![CDATA[This tool is disabled in order to prevent customisations from being overwritten. Please contact <a href="mailto:{$EMAIL}">{$EMAIL}</a> for support.]]></string>
     <string name="duplicate_index" introduced="6.1.6"><![CDATA[%s has duplicate %s indexes. One of these could be removed.]]></string>
