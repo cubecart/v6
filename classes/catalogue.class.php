@@ -1969,7 +1969,7 @@ class Catalogue
                 }
             }
 
-            if(!isset($search_data['manufacturer']) && $manufacturers  = $GLOBALS['db']->select('CubeCart_manufacturers', array('id'), "`name` LIKE '%".$search_data['keywords']."%'")) {
+            if(!isset($search_data['manufacturer']) && $manufacturers  = $GLOBALS['db']->select('CubeCart_manufacturers', array('id'), "`name` LIKE '%".addslashes($search_data['keywords'])."%'")) {
                 $ids = array();
                 foreach($manufacturers as $manufacturer) {
                     $ids[] = $manufacturer['id'];
