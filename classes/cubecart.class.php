@@ -2267,7 +2267,7 @@ class Cubecart
      *
      * @return string/bool
      */
-    private function _getLiveHelp()
+    private function _getLiveHelp($section, $method = 'invocationHTML')
     {
         if (($livehelp_plugins = $GLOBALS['db']->select('CubeCart_modules', array('folder'), array('module' => 'livehelp', 'status' => '1'))) !== false) {
             foreach ($livehelp_plugins as $plugin) {
