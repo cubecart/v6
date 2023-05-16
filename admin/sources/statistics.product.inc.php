@@ -45,12 +45,13 @@ if($product) {
     }
     $product['date_added'] = formatTime(strtotime($product['date_added']));
     $product['updated'] = formatTime(strtotime($product['updated']));
+
     $data = array(
         'first_sale' => !$first_sale ? '-' : formatTime($first_sale[0]['order_date']),
         'last_sale' => !$last_sale ? '-' : formatTime($last_sale[0]['order_date']),
         'total_sales' => $total_sales,
         'total_orders' => $total_orders,
-        'avg_per_order' => round($total_sales/$total_orders, 1),
+        'avg_per_order' => ($total_orders > 0) ? round($total_sales/$total_orders, 1) : 0,
         'order_ids' => urlencode(implode(',',$ids)),
         'sale_interval' => is_array($all_sales) ? secondsToTime(ceil((time() - strtotime($product['date_added'])) / count($all_sales))) : '-'
     );
