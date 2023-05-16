@@ -172,15 +172,9 @@ if (isset($_GET['export'])) {
         if (!empty($definitions)) {
             foreach ($definitions as $name => $data) {
                 if(isset($_GET['key']) && $_GET['key']!==$name) continue;
-                $default = $data['value'];
+                $default = (isset($strings[$name])) ? $strings[$name] : $data['value'];
                 $defined = (isset($strings[$name]) || isset($custom[$name])) ? true : false;
-                if (isset($custom[$name])) {
-                    $value = $custom[$name];
-                } elseif (isset($strings[$name])) {
-                    $value = $strings[$name];
-                } else {
-                    $value = $default;
-                } // Lost mind on multi-ternary order by parentheses
+                $value = (isset($custom[$name])) ? $custom[$name] : $default;
                 $assign = array(
                     'name'  => $name,
                     'type'  => $type,
