@@ -487,6 +487,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_inventory_language` (
 	`language` VARCHAR(5) NOT NULL,
 	`name` VARCHAR(255) NOT NULL,
 	`description` TEXT NOT NULL,
+	`description_short` TEXT NOT NULL,
 	`seo_meta_title` TEXT NULL,
 	`seo_meta_description` TEXT NULL,
 	`seo_meta_keywords` TEXT NULL,
