@@ -863,7 +863,7 @@ $(document).ready(function() {
         }
     }), $(".revert").each(function() {
         var t = $(this).attr("rel");
-        "0" == $("#defined_" + t).val() ? $("#row_" + t).addClass("list-changed") : $("#string_" + t).val() != $("#default_" + t).val() ? $("#row_" + t).addClass("custom-phrase") : $(this).hide()
+        "0" == $("#defined_" + t).val() ? $("#row_" + t).addClass("list-changed") : $("#string_" + t).val() != $("#default_" + t).val() ? $("#row_" + t + " td").addClass("custom-phrase") : $(this).hide()
     }).on("click", function() {
 
         var t = $(this).attr("rel"),
@@ -875,13 +875,13 @@ $(document).ready(function() {
                     value: true
         }).appendTo('form#edit_phrases');
         $("#string_"+t).prop("disabled", true)
-        return $("#string_" + t).val(e), $("#row_" + t).removeClass("custom-phrase"), $(this).hide(), !1
+        return $("#string_" + t).val(e), $("#row_" + t + " td").removeClass("custom-phrase"), $(this).hide(), !1
     }), $("td.phrase_row").click(function() {
         var t = $(this).attr("rel");
         $("#"+t).prop("disabled", false).focus();
     }), $(".editable_phrase").focusout(function() {
         var t = $(this).attr("rel");
-        $(this).val() != $("#default_" + t).val() ? ($("#row_" + t).addClass("custom-phrase"), $("#revert_" + t).show(), $("#delete_" + t).remove()) : ($("#row_" + t).removeClass("custom-phrase"), $(this).prop("disabled", true), $("#revert_" + t).hide(),$('<input>').attr({type: 'hidden',id: 'delete_' + t,name: 'delete['+t+']',value: true}).appendTo('form#edit_phrases'))
+        $(this).val() != $("#default_" + t).val() ? ($("#row_" + t + " td").addClass("custom-phrase"), $("#revert_" + t).show(), $("#delete_" + t).remove()) : ($("#row_" + t + " td").removeClass("custom-phrase"), $(this).prop("disabled", true), $("#revert_" + t).hide(),$('<input>').attr({type: 'hidden',id: 'delete_' + t,name: 'delete['+t+']',value: true}).appendTo('form#edit_phrases'))
     }), $("input.ajax").autocomplete({
         timeout: 5e3,
         ajax_get: ajaxSuggest,
