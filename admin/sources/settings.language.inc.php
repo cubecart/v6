@@ -36,7 +36,7 @@ if (isset($_GET['download']) && Admin::getInstance()->permissions('settings', CC
 if (isset($_POST['save']) && (isset($_POST['string']) || isset($_POST['delete'])) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
     ## Load all existing language strings
     $GLOBALS['language']->loadDefinitions($_GET['language']);
-    $base_strings = $GLOBALS['language']->loadLanguageXML($_GET['language']);
+    $base_strings = $GLOBALS['language']->loadLanguageXML('lang.core', $_GET['language']);
 
     # Save strings to Database
     $clear = false;
@@ -60,7 +60,8 @@ if (isset($_POST['save']) && (isset($_POST['string']) || isset($_POST['delete'])
                     'name'  => $name,
                 );
                 $basic = htmlspecialchars($base_strings[$type][$name], ENT_COMPAT, 'UTF-8', false);
-                if ($basic != $value) {
+                
+                if ($basic !== $value) {
                     $GLOBALS['db']->delete('CubeCart_lang_strings', $record);
                     $record['value'] = htmlspecialchars_decode($value, ENT_COMPAT);
                     $GLOBALS['db']->insert('CubeCart_lang_strings', $record);
