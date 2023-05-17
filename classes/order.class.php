@@ -414,8 +414,7 @@ class Order
                 'status'  => isset($log['status']) ? $log['status'] : '',
                 'customer_id' => isset($log['customer_id']) ? $log['customer_id'] : '',
                 'extra'   => isset($log['extra']) ? $log['extra'] : '',
-
-                'notes'   => is_array($log['notes']) ? implode(PHP_EOL, $log['notes']) : $log['notes'],
+                'notes'   => is_array($log['notes']) ? implode('<br>', $log['notes']) : $log['notes']
             );
             $record['amount'] = preg_replace('/[^0-9.]*/', '', $record['amount']);
             if ($force_log || !empty($record['order_id']) && !empty($record['gateway'])) {

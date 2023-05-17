@@ -340,6 +340,16 @@ function deliverFile($path, $localFile = true, $data = null, $fileName = null)
 }
 
 /**
+ * Instead of PHP_EOL
+ *
+ * @return bool
+ */
+function detectEol($value) {
+    $value = nl2br($value, false);
+    return strstr($value, '<br>');
+}
+
+/**
  * Has GD
  *
  * @return bool

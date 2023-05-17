@@ -182,7 +182,7 @@ if (isset($_GET['export'])) {
                     'default' => htmlspecialchars($default, ENT_COMPAT, 'UTF-8', false),
                     'value'  => htmlspecialchars($value, ENT_COMPAT, 'UTF-8', false),
                     'defined' => (int)$defined,
-                    'multiline' => strstr($value, PHP_EOL) ? true : false,
+                    'multiline' =>  detectEol($value),
                     'disabled' => ($default!==$value) ? false : true,
                 );
                 $smarty_data['strings'][] = $assign;
@@ -199,7 +199,7 @@ if (isset($_GET['export'])) {
                     'default' 	=> htmlspecialchars($default, ENT_COMPAT, 'UTF-8', false),
                     'value'  	=> htmlspecialchars($value, ENT_COMPAT, 'UTF-8', false),
                     'defined' 	=> (int)$defined,
-                    'multiline' => strstr($value, PHP_EOL) ? true : false
+                    'multiline' => detectEol($value)
                 );
                 $smarty_data['strings'][] = $assign;
             }
