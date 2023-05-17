@@ -452,6 +452,7 @@ if (isset($_GET['action'])) {
                     $transaction['status'] = empty($transaction['status']) ? $GLOBALS['lang']['common']['null'] : $transaction['status'];
                     $transaction['time'] = formatTime($transaction['time']);
                     $transaction['amount'] = Tax::getInstance()->priceFormat($transaction['amount']);
+                    $transaction['notes'] = nl2br($transaction['notes']);
                     $smarty_data['list_transactions'][] = $transaction;
                     if (isset($transaction['actions'])) {
                         $GLOBALS['smarty']->assign('DISPLAY_ACTIONS', true);
