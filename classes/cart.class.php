@@ -1492,14 +1492,18 @@ class Cart
             $option['price_display'] = '';
             $display_option_tax = $option['option_price'];
             if (!empty($product['remove_options_tax'])) {
-                $GLOBALS['tax']->inclusiveTaxRemove($option['option_price'], $product['tax_type']);
+                $exTax = $GLOBALS['tax']->inclusiveTaxRemove($option['option_price'], $product['tax_type']);
             }
             $price_value = $option['option_price'] * (isset($option['option_negative']) && $option['option_negative'] ? -1 : 1);
             $display_option_tax *= (isset($option['option_negative']) && $option['option_negative'] ? -1 : 1);
             $product['price'] += $price_value;
             $product['option_line_price'] += $price_value;
             $product['option_price_ignoring_tax'] += $display_option_tax;
-            if ($option['absolute_price']) {
+            if($option['absolute_price'] && !empty($product['remove_options_tax'])) {
+                $product['price'] = $exTax;
+                $product['option_line_price'] = $exTax;
+                $product['absolute_price'] = true;
+            } elseif ($option['absolute_price']) {
                 $product['price'] -= $product['price_to_pay'];
                 $product['option_line_price'] -= $product['price_to_pay'];
                 $product['absolute_price'] = true;
