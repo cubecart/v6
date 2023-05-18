@@ -874,14 +874,13 @@ $(document).ready(function() {
                     name: 'delete['+t+']',
                     value: true
         }).appendTo('form#edit_phrases');
-        $("#string_"+t).prop("disabled", true)
         return $("#string_" + t).val(e), $("#row_" + t + " td").removeClass("custom-phrase"), $(this).hide(), !1
     }), $("td.phrase_row").click(function() {
         var t = $(this).attr("rel");
         $("#"+t).prop("disabled", false).focus();
     }), $(".editable_phrase").focusout(function() {
         var t = $(this).attr("rel");
-        $(this).val() != $("#default_" + t).val() ? ($("#row_" + t + " td").addClass("custom-phrase"), $("#revert_" + t).show(), $("#delete_" + t).remove()) : ($("#row_" + t + " td").removeClass("custom-phrase"), $(this).prop("disabled", true), $("#revert_" + t).hide(),$('<input>').attr({type: 'hidden',id: 'delete_' + t,name: 'delete['+t+']',value: true}).appendTo('form#edit_phrases'))
+        $(this).val() != $("#default_" + t).val() ? ($("#row_" + t + " td").addClass("custom-phrase"), $("#revert_" + t).show(), $("#delete_" + t).remove()) : ($("#row_" + t + " td").removeClass("custom-phrase"), $("#revert_" + t).hide(),$('<input>').attr({type: 'hidden',id: 'delete_' + t,name: 'delete['+t+']',value: true}).appendTo('form#edit_phrases'))
     }), $("input.ajax").autocomplete({
         timeout: 5e3,
         ajax_get: ajaxSuggest,
