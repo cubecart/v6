@@ -775,7 +775,7 @@ class Language
      * @param string $file_name
      * @param bool $cache
      */
-    public function loadDefinitions($name, $path = CC_LANGUAGE_DIR, $file_name = 'definitions.xml', $cache = true)
+    public function loadDefinitions($name, $path = CC_LANGUAGE_DIR, $file_name = 'definitions.xml', $cache = true, $merge = true)
     {
         if (!$this->_checkPath($path)) {
             trigger_error("Invalid language path: $path - $name - $file_name", E_USER_ERROR);
@@ -829,7 +829,11 @@ class Language
                 unset($attributes, $definition, $group, $string, $xml);
             }
         }
-        $this->_language_strings = merge_array($this->_language_definitions, $this->_language_strings);
+        if($merge) {
+            $this->_language_strings = merge_array($this->_language_definitions, $this->_language_strings);
+        } else {
+            $this->_language_strings = $this->_language_definitions;
+        }
     }
 
     /**

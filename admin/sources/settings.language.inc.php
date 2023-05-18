@@ -155,7 +155,7 @@ if (isset($_GET['export'])) {
             $breadcrumb  = $GLOBALS['language']->getFriendlyModulePath($_REQUEST['type']);
             $basename   = basename($_REQUEST['type']);
             $module_name  = $GLOBALS['language']->getFriendlyModulePath($_REQUEST['type'], true);
-            $GLOBALS['language']->loadDefinitions($module_name, str_replace($basename, '', $_REQUEST['type']), $basename);
+            $GLOBALS['language']->loadDefinitions($module_name, str_replace($basename, '', $_REQUEST['type']), $basename, false, false);
 
             $definitions = $GLOBALS['language']->getDefinitions($module_name);
             $type  = $module_name;
