@@ -32,7 +32,7 @@ if (Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
                 $exists = $GLOBALS['db']->select('CubeCart_category', false, array('cat_id' => (int)$_POST['item_id']));
             break;
             case 'doc':
-                $exists = $GLOBALS['db']->select('CubeCart_category', false, array('doc_id' => (int)$_POST['item_id']));
+                $exists = $GLOBALS['db']->select('CubeCart_documents', false, array('doc_id' => (int)$_POST['item_id']));
             break;
             default: // Catch static sections
                 $exists = true;
