@@ -489,7 +489,7 @@ if ($inventory_columns = $GLOBALS['db']->misc('SHOW FULL COLUMNS FROM '.$GLOBALS
 }
 
 $smarty_data['config'] = $GLOBALS['config']->get('config');
-
+$GLOBALS['smarty']->assign('FIXED_CONFIG', $glob);
 $GLOBALS['smarty']->assign('CONFIG', $smarty_data['config']);
 
 if (isset($select_options)) {

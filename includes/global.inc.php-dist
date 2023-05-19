@@ -25,4 +25,9 @@ $glob['session_save_path'] = '';		// Set your own session save path (please note
 $glob['safe_mode'] = false;		        // Set to true to disable hooks and code snippets, 'hooks' to disable code hooks and 'snippets' to disable code snippets
 $glob['auto_upgrade_disabled'] = false;  // Set to an email address or false. Entering an email will disable the auto upgrade too with a message about who to contact
 $glob['subscribe_mode_lax'] = '0';  // Set to 1 to enable lax newsletter subscribe mode. This will allow double opt in to be disabled.
-?>
+$glob['es_h'] 		= '';               // Elasticsearch host e.g. https://localhost:9200
+$glob['es_u'] 		= '';               // Elasticserch username
+$glob['es_p'] 		= '';               // Elasticsearch password
+$glob['es_i'] 		= '';               // Elasticsearch index name
+$glob['es_v'] 		= '';               // Elasticsearch vertificate validation enum('1','0')
+$glob['es_c'] 		= '';               // Elasticsearch certificate path

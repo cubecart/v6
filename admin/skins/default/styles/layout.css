@@ -444,9 +444,10 @@ img {
     border-bottom: none
 }
 input.textbox[disabled] {
-    border: 0;
-    background-color: #FFF!important;
-    color: #000!important
+    color: #989797;
+}
+input.textbox[disabled]:hover, input.textbox[disabled]:focus {
+    background-color: #e8e8e8!important;
 }
 .phrases input.textbox[disabled] {
     background-color: #e8e8e8!important;

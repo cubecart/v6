@@ -491,12 +491,12 @@
          <legend>{$LANG.settings.elasticsearch}</legend>
          <div>Elasticsearch brings lightening fast, search-as-you-type functionality to your store. This is included as standard with official <a href="https://hosted.cubecart.com/" target="_blank">CubeCart Hosting</a>. Alternatively please contact your hosting company to check for availability.</div>
          <div><label for="elasticsearch">{$LANG.common.enable}</label><span><input name="config[elasticsearch]" id="elasticsearch" type="hidden" class="toggle" value="{$CONFIG.elasticsearch}"></span></div>
-         <div><label for="es_h">{$LANG.settings.es_hosts}</label><span><input name="config[es_h]" id="es_h" type="text" class="textbox" value="{$CONFIG.es_h}" placeholder="{$LANG.common.eg} https://localhost:9200"></span></div>
-         <div><label for="es_u">{$LANG.account.username}</label><span><input name="config[es_u]" id="es_u" type="text" class="textbox" value="{$CONFIG.es_u}"></span></div>
-         <div><label for="es_p">{$LANG.account.password}</label><span><input name="config[es_p]" id="es_p" type="password" class="textbox" value="{$CONFIG.es_p}"></span></div>
-         <div><label for="es_i">{$LANG.settings.index_name}</label><span><input name="config[es_i]" id="es_i" type="text" class="textbox" value="{$CONFIG.es_i}" placeholder="{$LANG.common.eg} {$CONFIG.dbdatabase}"></span></div>
-         <div><label for="es_v">{$LANG.settings.es_ssl_v}</label><span><input name="config[es_v]" id="es_v" type="hidden" class="toggle" value="{$CONFIG.es_v}"></span></div>
-         <div><label for="es_c">{$LANG.settings.cert_auth}</label><span><input name="config[es_c]" id="es_c" type="text" class="textbox" value="{$CONFIG.es_c}" placeholder="{$LANG.common.eg} path/to/http_ca.crt"></span></div>
+         <div><label for="es_h">{$LANG.settings.es_hosts}</label><span><input name="config[es_h]" id="es_h" type="text" class="textbox" value="{$CONFIG.es_h}" placeholder="{$LANG.common.eg} https://localhost:9200" autocomplete="false"{if isset({$FIXED_CONFIG.es_h})} disabled{/if}></span></div>
+         <div><label for="es_u">{$LANG.account.username}</label><span><input name="config[es_u]" id="es_u" type="text" class="textbox" value="{$CONFIG.es_u}" autocomplete="false"{if isset({$FIXED_CONFIG.es_u})} disabled{/if}></span></div>
+         <div><label for="es_p">{$LANG.account.password}</label><span><input name="config[es_p]" id="es_p" type="password" class="textbox" value="{$CONFIG.es_p}" autocomplete="false"{if isset({$FIXED_CONFIG.es_p})} disabled{/if}></span></div>
+         <div><label for="es_i">{$LANG.settings.index_name}</label><span><input name="config[es_i]" id="es_i" type="text" class="textbox" value="{$CONFIG.es_i}" placeholder="{$LANG.common.eg} {$CONFIG.dbdatabase}" autocomplete="false" {if isset({$FIXED_CONFIG.es_i})} disabled{/if}></span></div>
+         <div><label for="es_v">{$LANG.settings.es_ssl_v}</label><span><input name="config[es_v]" id="es_v" type="hidden" class="toggle" value="{$CONFIG.es_v}" autocomplete="false"{if isset({$FIXED_CONFIG.es_v})} disabled{/if}></span></div>
+         <div><label for="es_c">{$LANG.settings.cert_auth}</label><span><input name="config[es_c]" id="es_c" type="text" class="textbox" value="{$CONFIG.es_c}" placeholder="{$LANG.common.eg} path/to/http_ca.crt" autocomplete="false"{if isset({$FIXED_CONFIG.es_c})} disabled{/if}></span></div>
          <div class="clear important"><strong>IMPORTANT: After enabling Elasticsearch you must build your search index <a href="?_g=maintenance#elasticsearch">here</a>. Once built it will self manage.</strong></div>
       </fieldset>
       <fieldset>
