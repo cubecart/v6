@@ -33,6 +33,8 @@ if(isset($_GET['install']) && is_array($_GET['install'])) {
 
 foreach($apps as $extension_type => $token) {
 
+    $app_parts = explode("|",$token);
+
     if(!isset($_GET['install']) && ($GLOBALS['config']->has('default_apps', $token) || $GLOBALS['db']->select('CubeCart_modules', false, array('module' => $extension_type)))) {
         $GLOBALS['config']->set('default_apps', $token, 1); continue;
     }
@@ -119,7 +121,7 @@ foreach($apps as $extension_type => $token) {
                     $GLOBALS['db']->insert('CubeCart_modules', array('module' => 'shipping', 'folder' => "All_In_One_Shipping", 'status' => 1, 'default' => 1));
                 }
             } elseif(isset($_GET['install'])) {
-                $GLOBALS['db']->update('CubeCart_extension_info', array('keep_current' => 0), array('file_id' => $data['file_id'], 'seller_id' => $data['seller_id']));
+                $GLOBALS['db']->update('CubeCart_extension_info', array('keep_current' => 0), array('file_id' => $app_parts[1], 'seller_id' => $app_parts[0]));
                 $GLOBALS['main']->errorMessage('Auto upgrade failed. Please update manually.');
                 httpredir('?');
                 exit;
@@ -129,13 +131,15 @@ foreach($apps as $extension_type => $token) {
                 unlink($tmp_path);
             }
         } else {
+            $GLOBALS['db']->update('CubeCart_extension_info', array('keep_current' => 0), array('file_id' => $app_parts[1], 'seller_id' => $app_parts[0]));
             $GLOBALS['main']->errorMessage('Failed to retrieve extension data.'); 
-            httpredir('?_g=plugins');
+            httpredir('?');
             exit; 
         }
     } else {
+        $GLOBALS['db']->update('CubeCart_extension_info', array('keep_current' => 0), array('file_id' => $app_parts[1], 'seller_id' => $app_parts[0]));
         $GLOBALS['main']->errorMessage('Failed to connect to extension server.'); 
-        httpredir('?_g=plugins');
+        httpredir('?');
         exit;   
     }
 }
