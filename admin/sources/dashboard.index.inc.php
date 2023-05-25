@@ -399,7 +399,7 @@ if ($GLOBALS['session']->has('version_check')) {
         $eu = array();
         $oeu = $GLOBALS['session']->get('version_check');
         foreach($extension_updates as $u) {
-            $u['auto_upgrade'] = $oeu[$u['file_id']] == 'a' ? true : false;
+            $u['auto_upgrade'] = $oeu[$u['file_id']] === 'a' ? true : false;
             $eu[] = $u;
             if($u['keep_current'] == 1) {
                 httpredir('?_g=plugins&install[type]=plugins&install[id]='.$u['file_id'].'&install[seller_id]='.$u['seller_id']);
