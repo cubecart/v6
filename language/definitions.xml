@@ -1044,7 +1044,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="tech_upload_max" introduced="5.0.0"><![CDATA[Max. Upload filesize]]></string>
     <string name="tech_version_cc" introduced="5.0.0"><![CDATA[CubeCart Version]]></string>
     <string name="tech_version_mysql" introduced="5.0.0"><![CDATA[MySQL Version]]></string>
-    <string name="tech_version_php" introduced="5.0.0"><![CDATA[PHP Version (7.3 Recommended)]]></string>
+    <string name="tech_version_php" introduced="5.0.0"><![CDATA[PHP Version]]></string>
     <string name="title_admin_cp" introduced="5.0.0"><![CDATA[Admin Control Panel]]></string>
     <string name="title_dashboard" introduced="5.0.0"><![CDATA[Dashboard]]></string>
     <string name="title_extension_updates" introduced="6.1.0"><![CDATA[Extension Updates]]></string>
