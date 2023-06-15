@@ -170,16 +170,13 @@ if (file_exists(CC_ROOT_DIR.'/ini-custom.inc.php')) {
 if (isset($_GET['act'])) {
     switch ($_GET['act']) {
     case "viewDoc":
-        $_GET['_a'] = 'document';
-        $_GET['doc_id'] = (int)$_GET['docId'];
+        header('Location: index.php?_a=document&doc_id='.(int)$_GET['docId'],true,301);
         break;
     case "viewCat":
-        $_GET['_a'] = 'category';
-        $_GET['cat_id'] = (int)$_GET['catId'];
+        header('Location: index.php?_a=category&cat_id='.(int)$_GET['catId'],true,301);
         break;
     case "viewProd":
-        $_GET['_a'] = 'product';
-        $_GET['product_id'] = (int)$_GET['productId'];
+        header('Location: index.php?_a=product&product_id='.(int)$_GET['productId'],true,301);
         break;
     }
 }
