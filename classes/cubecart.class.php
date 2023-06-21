@@ -2123,6 +2123,7 @@ class Cubecart
         foreach ($GLOBALS['hooks']->load('class.cubecart.404') as $hook) include $hook;
 
         if(!empty($_SERVER['REQUEST_URI'])) {
+            $GLOBALS['db']->delete('CubeCart_404_log', '`created` < DATE_SUB(NOW(), INTERVAL 90 DAY)');
             $uri = htmlentities($_SERVER['REQUEST_URI'],ENT_QUOTES);
             if($GLOBALS['db']->select('CubeCart_404_log', false, array('uri' => $uri))) {
                 $GLOBALS['db']->update('CubeCart_404_log', array('hits' => '+1'), array('uri' => $uri));
