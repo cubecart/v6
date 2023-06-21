@@ -2121,6 +2121,16 @@ class Cubecart
     private function _404()
     {
         foreach ($GLOBALS['hooks']->load('class.cubecart.404') as $hook) include $hook;
+
+        if(!empty($_SERVER['REQUEST_URI'])) {
+            $uri = htmlentities($_SERVER['REQUEST_URI'],ENT_QUOTES);
+            if($GLOBALS['db']->select('CubeCart_404_log', false, array('uri' => $uri))) {
+                $GLOBALS['db']->update('CubeCart_404_log', array('hits' => '+1'), array('uri' => $uri));
+            } else {
+                $GLOBALS['db']->insert('CubeCart_404_log', array('uri' => $uri));
+            }
+        }
+
         header("HTTP/1.0 404 Not Found");
         $template = 'templates/content.404.php';
         
