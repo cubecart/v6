@@ -16,8 +16,9 @@ if (!defined('CC_INI_SET')) {
 Admin::getInstance()->permissions('settings', CC_PERM_READ, true);
 
 
-$GLOBALS['gui']->addBreadcrumb($lang['settings']['redirects'], currentPage());
+$GLOBALS['gui']->addBreadcrumb($lang['navigation']['nav_redirects404s'], currentPage());
 $GLOBALS['main']->addTabControl($lang['settings']['redirects'], 'redirects');
+$GLOBALS['main']->addTabControl($lang['settings']['missing_uris'], 'missing_uris');
 
 if (Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
 
@@ -88,5 +89,18 @@ if($redirects =  $GLOBALS['db']->select('CubeCart_seo_urls', false, "`redirect` 
     }
 }
 $GLOBALS['smarty']->assign('REDIRECTS', $redirect_dataset);
+
+$page  = (isset($_GET['404_page'])) ? $_GET['404_page'] : 1;
+$per_page = 100;
+$missing_dataset = array();
+if($missing =  $GLOBALS['db']->select('CubeCart_404_log', false, false, array('updated' => 'DESC'), $per_page, $page)) {
+    $total = $GLOBALS['db']->count('CubeCart_404_log', false, false);
+    $GLOBALS['smarty']->assign('PAGINATION_404', $GLOBALS['db']->pagination($total, $per_page, $page));
+    foreach($missing as $m) {
+        $m['updated'] = formatTime(strtotime($m['updated']));
+        $missing_dataset[] = $m;
+    }
+}
+$GLOBALS['smarty']->assign('MISSING', $missing_dataset);
 
 $page_content = $GLOBALS['smarty']->fetch('templates/settings.redirects.php');

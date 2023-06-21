@@ -98,5 +98,33 @@
       </table>
       {$PAGINATION}
    </div>
+   <div id="missing_uris" class="tab_content">
+      <h3>{$LANG.settings.missing_uris}</h3>
+      <table>
+         <thead>
+            <tr>
+               <th>ID</th>
+               <th>URI</th>
+               <th>Hits</th>
+               <th>Last Request</th>
+            </tr>
+         </thead>
+         <tbody>
+            {foreach $MISSING item=m}
+            <tr>
+               <td>{$m.id}</td>
+               <td>{$m.uri}</td>
+               <td>{$m.hits}</td>
+               <td>{$m.updated}</td>
+            </tr>
+            {foreachelse}
+            <tr>
+               <td colspan="4">{$LANG.common.none}</td>
+            </tr>
+            {/foreach}
+         </tbody>
+      </table>
+      {$PAGINATION_404}
+   </div>
    {include file='templates/element.hook_form_content.php'}
 </form>

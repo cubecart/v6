@@ -1633,6 +1633,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="mobile_optimized" introduced="5.2.0"><![CDATA[This module has been optimized for mobile devices.]]></string>
   </group>
   <group name="navigation">
+    <string name="nav_redirects404s" introduced="6.4.0"><![CDATA[Redirects &amp; 404&rsquo;s]]></string>
     <string name="error_401" introduced="5.0.0"><![CDATA[You do not have the correct privileges to perform that action.]]></string>
     <string name="giftcerts" introduced="5.0.0"><![CDATA[Gift Cards]]></string>
     <string name="homepage" introduced="5.0.0"><![CDATA[Homepage]]></string>
@@ -1956,6 +1957,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
+    <string name="missing_uris" introduced="6.5.2"><![CDATA[404 Log]]></string>
     <string name="release_notes" introduced="6.5.0"><![CDATA[Release Notes]]></string>
     <string name="index_name" introduced="6.5.0"><![CDATA[Index Name]]></string>
     <string name="cert_auth" introduced="6.5.0"><![CDATA[Certificate Authority]]></string>
