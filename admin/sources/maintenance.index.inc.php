@@ -616,6 +616,11 @@ if (isset($database_result) && $database_result) {
     $GLOBALS['smarty']->assign('TABLES_AFTER', $database_result);
 } elseif (($tables = $GLOBALS['db']->getRows()) !== false) {
     $index_map = array(
+        'CubeCart_404_log' => array(
+            'id' => 'PRIMARY',
+            'uri' => 'KEY',
+            'created' => 'KEY'
+        ),
         'cubecart_access_log' => array(
             'log_id' => 'PRIMARY',
             'time' => 'KEY',
