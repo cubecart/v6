@@ -95,7 +95,7 @@ $per_page = 100;
 $missing_dataset = array();
 if($missing =  $GLOBALS['db']->select('CubeCart_404_log', false, false, array('updated' => 'DESC'), $per_page, $page)) {
     $total = $GLOBALS['db']->count('CubeCart_404_log', false, false);
-    $GLOBALS['smarty']->assign('PAGINATION_404', $GLOBALS['db']->pagination($total, $per_page, $page));
+    $GLOBALS['smarty']->assign('PAGINATION_404', $GLOBALS['db']->pagination($total, $per_page, $page, 5, '404_page', 'missing_uris'));
     foreach($missing as $m) {
         $m['updated'] = formatTime(strtotime($m['updated']));
         $missing_dataset[] = $m;

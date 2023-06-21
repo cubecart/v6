@@ -96,7 +96,9 @@
             {/foreach}
          </tbody>
       </table>
-      {$PAGINATION}
+      {if !empty($PAGINATION)}
+      <div class="pagination">{$PAGINATION}</div>
+      {/if}
    </div>
    <div id="missing_uris" class="tab_content">
       <h3>{$LANG.settings.missing_uris}</h3>
@@ -105,8 +107,8 @@
             <tr>
                <th>ID</th>
                <th>URI</th>
-               <th>Hits</th>
-               <th>Last Request</th>
+               <th>{$LANG.statistics.product_hits}</th>
+               <th>{$LANG.settings.last_requested}</th>
             </tr>
          </thead>
          <tbody>
@@ -124,7 +126,9 @@
             {/foreach}
          </tbody>
       </table>
-      {$PAGINATION_404}
+      {if !empty($PAGINATION_404)}
+      <div class="pagination">{$PAGINATION_404}</div>
+      {/if}
    </div>
    {include file='templates/element.hook_form_content.php'}
 </form>
