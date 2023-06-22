@@ -252,6 +252,38 @@ function fmSearch(mode, term, token) {
  }
 $(document).ready(function() {
 
+    $('.done_toggle').on("click",function() {
+        var this_toggle = $(this);
+        var requestData = {};
+        requestData['status'] = $(this).attr('data-status');
+        requestData['id'] = $(this).attr('data-id');
+        requestData['table'] = $(this).attr('data-table');
+        requestData['token'] = $('.cc_session_token').val();
+        $.ajax({
+            type: 'post',
+            url: "?_g=xml&function=doneToggle",
+            data: requestData,
+            dataType: "text",
+            success: function(responseData) {
+               const r = JSON.parse(responseData);
+               if(r['success']=='1') {
+                    if(requestData['status'] == 1) {
+                        this_toggle.removeClass('fa-check-circle');
+                        this_toggle.addClass('fa-times-circle');
+                        this_toggle.attr('data-status',0);
+                        if($('#warn_'+r['id']).length) {
+                            $('#warn_'+r['id']).remove();
+                        }
+                    } else {
+                        this_toggle.removeClass('fa-times-circle');
+                        this_toggle.addClass('fa-check-circle');
+                        this_toggle.attr('data-status',1);
+                    }
+               }
+            }
+         });
+    });
+
     setTimeout(function() {
         window.scrollTo(-81, 0);
         if($(".fm-item.hilighted").length) {

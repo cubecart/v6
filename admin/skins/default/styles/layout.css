@@ -1164,11 +1164,22 @@ input[type="submit"].go_search {
     font-family: courier;
     font-size: 10px
 }
-.link_expired {
+.link_expired, .fa-times-circle {
     color: red
 }
-.link_active {
+.link_active, .fa-check-circle {
     color: green
+}
+.fa-times-circle {
+    color: red;
+    cursor: pointer;
+}
+.fa-check-circle {
+    color: green;
+    cursor: pointer;
+}
+.fa-exclamation-triangle {
+    color: orange;
 }
 ul.quick_links li#help_menu {
     position: relative

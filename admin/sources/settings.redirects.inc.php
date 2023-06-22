@@ -93,7 +93,7 @@ $GLOBALS['smarty']->assign('REDIRECTS', $redirect_dataset);
 $page  = (isset($_GET['404_page'])) ? $_GET['404_page'] : 1;
 $per_page = 100;
 $missing_dataset = array();
-if($missing =  $GLOBALS['db']->select('CubeCart_404_log', false, false, array('updated' => 'DESC'), $per_page, $page)) {
+if($missing =  $GLOBALS['db']->select('CubeCart_404_log', false, false, array('created' => 'DESC'), $per_page, $page)) {
     $total = $GLOBALS['db']->count('CubeCart_404_log', false, false);
     $GLOBALS['smarty']->assign('PAGINATION_404', $GLOBALS['db']->pagination($total, $per_page, $page, 5, '404_page', 'missing_uris'));
     foreach($missing as $m) {

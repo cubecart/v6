@@ -57,6 +57,9 @@ class Ajax
             case 'fmSearch':
                 $return_data = self::fmSearch();
             break;
+            case 'doneToggle':
+                $return_data = self::doneToggle();
+            break;
             case 'viewEmail':
                 $return_data = self::viewEmail((int)$_GET['id'], (string)$_GET['mode']);
             break;
@@ -81,6 +84,19 @@ class Ajax
             break;
         }
         return $return_data;
+    }
+
+    public static function doneToggle() {
+        $status = $_POST['status'] == '1' ? 0 : 1;
+        $update = array('done' => $status);
+        if($status==0) {
+            $update['warn'] = 0;
+        }
+        if($GLOBALS['db']->update('CubeCart_'.(string)$_POST['table'], $update, array('id' => (int)$_POST['id']))) {
+            return json_encode(array('success' =>'1', 'id' => (int)$_POST['id']));
+        } else {
+            return json_encode(array('success' =>'0', 'id' => (int)$_POST['id']));
+        }
     }
 
     /**
