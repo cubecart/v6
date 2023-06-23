@@ -313,7 +313,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_documents` (
 	KEY `doc_privacy` (`doc_privacy`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
-CREATE TABLE `CubeCart_domains` (
+CREATE TABLE IF NOT EXISTS `CubeCart_domains` (
 	`id` int UNSIGNED NOT NULL,
 	`language` varchar(5) NOT NULL,
 	`domain` varchar(255) NOT NULL,
@@ -586,7 +586,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_newsletter_subscriber` (
 	KEY `status` (`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
-CREATE TABLE `CubeCart_newsletter_subscriber_log` (
+CREATE TABLE IF NOT EXISTS `CubeCart_newsletter_subscriber_log` (
 	`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 	`email` varchar(255) DEFAULT NULL,
 	`log` text COLLATE utf8_unicode_ci,
@@ -1037,7 +1037,7 @@ ALTER TABLE `CubeCart_email_log` ADD PRIMARY KEY (`id`); #EOQ
 ALTER TABLE `CubeCart_email_log` ADD INDEX(`to`); #EOQ
 ALTER TABLE `CubeCart_email_log` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1; #EOQ
 
-CREATE TABLE `CubeCart_invoice_template` (
+CREATE TABLE IF NOT EXISTS `CubeCart_invoice_template` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `content` text COLLATE utf8_unicode_ci,
   `date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -1046,7 +1046,7 @@ CREATE TABLE `CubeCart_invoice_template` (
   KEY `hash` (`hash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
-CREATE TABLE `CubeCart_cookie_consent` (
+CREATE TABLE IF NOT EXISTS `CubeCart_cookie_consent` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `ip_address` varchar(45) DEFAULT NULL,
   `session_id` varchar(32) DEFAULT NULL,
@@ -1062,7 +1062,7 @@ CREATE TABLE `CubeCart_cookie_consent` (
   KEY `log_hash` (`log_hash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
-CREATE TABLE `CubeCart_customer_coupon` (
+CREATE TABLE IF NOT EXISTS `CubeCart_customer_coupon` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `customer_id` int(10) UNSIGNED NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
