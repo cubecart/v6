@@ -1,3 +1,22 @@
+DROP TABLE IF EXISTS `CubeCart_404_log`; #EOQ 
+DROP TABLE IF EXISTS `CubeCart_admin_error_log`; #EOQ 
+DROP TABLE IF EXISTS `CubeCart_code_snippet`; #EOQ 
+DROP TABLE IF EXISTS `CubeCart_cookie_consent`; #EOQ 
+DROP TABLE IF EXISTS `CubeCart_customer_coupon`; #EOQ 
+DROP TABLE IF EXISTS `CubeCart_domains`; #EOQ 
+DROP TABLE IF EXISTS `CubeCart_email_log`; #EOQ 
+DROP TABLE IF EXISTS `CubeCart_extension_info`; #EOQ 
+DROP TABLE IF EXISTS `CubeCart_invoice_template`; #EOQ 
+DROP TABLE IF EXISTS `CubeCart_manufacturers`; #EOQ 
+DROP TABLE IF EXISTS `CubeCart_newsletter_subscriber_log`; #EOQ 
+DROP TABLE IF EXISTS `CubeCart_option_matrix`; #EOQ 
+DROP TABLE IF EXISTS `CubeCart_order_history`; #EOQ 
+DROP TABLE IF EXISTS `CubeCart_request_log`; #EOQ 
+DROP TABLE IF EXISTS `CubeCart_saved_cart`; #EOQ 
+DROP TABLE IF EXISTS `CubeCart_seo_urls`; #EOQ 
+DROP TABLE IF EXISTS `CubeCart_shipping_rates`; #EOQ 
+DROP TABLE IF EXISTS `CubeCart_shipping_zones`; #EOQ 
+DROP TABLE IF EXISTS `CubeCart_system_error_log`; #EOQ 
 DROP TABLE IF EXISTS `CubeCart_access_log`; #EOQ 
 DROP TABLE IF EXISTS `CubeCart_addressbook`; #EOQ 
 DROP TABLE IF EXISTS `CubeCart_admin_log`; #EOQ 
@@ -49,7 +68,8 @@ DROP TABLE IF EXISTS `CubeCart_modules`; #EOQ
 DROP TABLE IF EXISTS `CubeCart_newsletter`; #EOQ 
 DROP TABLE IF EXISTS `CubeCart_newsletter_subscriber`; #EOQ 
 DROP TABLE IF EXISTS `CubeCart_options_bot`; #EOQ 
-DROP TABLE IF EXISTS `CubeCart_options_mid`,  `CubeCart_options_top`; #EOQ 
+DROP TABLE IF EXISTS `CubeCart_options_mid`; #EOQ 
+DROP TABLE IF EXISTS `CubeCart_options_top`; #EOQ 
 DROP TABLE IF EXISTS `CubeCart_options_set`; #EOQ 
 DROP TABLE IF EXISTS `CubeCart_options_set_member`; #EOQ 
 DROP TABLE IF EXISTS `CubeCart_options_set_product`; #EOQ 
