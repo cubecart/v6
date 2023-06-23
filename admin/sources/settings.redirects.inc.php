@@ -42,14 +42,17 @@ if (Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
         if($exists) {
             if($GLOBALS['seo']->setdbPath($_POST['type'], (int)$_POST['item_id'], $_POST['path'], true, false, $_POST['redirect'])) {
                 $GLOBALS['main']->successMessage($lang['notification']['notify_success_add_redirect']);
+                if($missing = $GLOBALS['db']->select('CubeCart_404_log', false, array('uri' => $_POST['path']))) {
+                    $GLOBALS['db']->update('CubeCart_404_log', array('done' => 1, 'warn' => 0), array('id' => $missing[0]['id']));
+                }
             } else {
                 $GLOBALS['main']->errorMessage($lang['notification']['notify_fail_add_redirect']);
             }
         } else {
             $GLOBALS['main']->errorMessage($lang['notification']['notify_object_not_found']);
         }
+        httpredir('?_g=settings&node=redirects');
     }
-
 }
 
 if (isset($_GET['delete']) && ctype_digit($_GET['delete']) && Admin::getInstance()->permissions('settings', CC_PERM_DELETE)) {

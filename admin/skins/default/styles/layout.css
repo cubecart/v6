@@ -1180,6 +1180,7 @@ input[type="submit"].go_search {
 }
 .fa-exclamation-triangle {
     color: orange;
+    cursor: pointer;
 }
 ul.quick_links li#help_menu {
     position: relative

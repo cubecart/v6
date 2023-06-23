@@ -255,7 +255,7 @@ $(document).ready(function() {
     $('.done_toggle').on("click",function() {
         var this_toggle = $(this);
         var requestData = {};
-        requestData['status'] = $(this).attr('data-status');
+        requestData['status'] = $(this).attr('data-status');  
         requestData['id'] = $(this).attr('data-id');
         requestData['table'] = $(this).attr('data-table');
         requestData['token'] = $('.cc_session_token').val();
@@ -274,10 +274,12 @@ $(document).ready(function() {
                         if($('#warn_'+r['id']).length) {
                             $('#warn_'+r['id']).remove();
                         }
-                    } else {
+                    } else if(r['status']=='0') {
                         this_toggle.removeClass('fa-times-circle');
                         this_toggle.addClass('fa-check-circle');
                         this_toggle.attr('data-status',1);
+                    } else if(r['status']=='warn') {
+                        this_toggle.remove();
                     }
                }
             }

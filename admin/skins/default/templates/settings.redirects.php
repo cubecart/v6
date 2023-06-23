@@ -121,8 +121,8 @@
                <td>{$m.uri}</td>
                <td style="text-align: center">{$m.hits}</td>
                <td>{$m.updated}</td>
-               <td style="text-align: center">{if $m.done == '1'}<i class="fa fa-check-circle done_toggle" aria-hidden="true"  data-id="{$m.id}" data-status="1" data-table="404_log"></i>{else}<i class="fa fa-times-circle done_toggle" aria-hidden="true" data-id="{$m.id}" data-status="0" data-table="404_log"></i>{/if}</td>
-               <td style="text-align: center">{if $m.warn == '1' && $m.done == '1'}<i class="fa fa-exclamation-triangle" id="warn_{$m.id}" aria-hidden="true"></i>{/if}</td>
+               <td style="text-align: center">{if $m.done == '1'}<i class="fa fa-check-circle done_toggle" aria-hidden="true" data-id="{$m.id}" data-status="1" data-table="404_log"></i>{else}<i class="fa fa-times-circle done_toggle" aria-hidden="true" data-id="{$m.id}" data-status="0" data-table="404_log"></i>{/if}</td>
+               <td style="text-align: center">{if $m.warn == '1' && $m.done == '1'}<i class="fa fa-exclamation-triangle done_toggle" id="warn_{$m.id}" data-id="{$m.id}" data-status="warn" data-table="404_log" aria-hidden="true" title="{$LANG.common.remove}"></i>{/if}</td>
             </tr>
             {foreachelse}
             <tr>

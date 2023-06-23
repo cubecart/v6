@@ -2121,12 +2121,18 @@ class Cubecart
     private function _404()
     {
         foreach ($GLOBALS['hooks']->load('class.cubecart.404') as $hook) include $hook;
+        
+        if(isset($_SERVER['REQUEST_URI']) && !empty($_SERVER['REQUEST_URI'])) {
+            
+            $uri = strtok($_SERVER['REQUEST_URI']);
 
-        if(!empty($_SERVER['REQUEST_URI'])) {
-            if(substr($_SERVER['REQUEST_URI'],-6)=='_a=404') return false;
+            if(substr($uri,-6)=='_a=404') return false;
             
             $GLOBALS['db']->delete('CubeCart_404_log', '`created` < DATE_SUB(NOW(), INTERVAL 90 DAY)');
-            $uri = htmlentities(ltrim($_SERVER['REQUEST_URI'], CC_ROOT_REL),ENT_QUOTES);
+            $uri = strtok($uri, '?');
+            $uri = ltrim($uri, CC_ROOT_REL);
+            $uri = rtrim($uri, '/');
+            $uri = htmlentities($uri, ENT_QUOTES);
             if($existing = $GLOBALS['db']->select('CubeCart_404_log', false, array('uri' => $uri))) {
                 $warn = ($existing[0]['done'] == 1) ? 1 : 0;
                 $GLOBALS['db']->update('CubeCart_404_log', array('hits' => '+1', 'warn' => $warn), array('uri' => $uri));
