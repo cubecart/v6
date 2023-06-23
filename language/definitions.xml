@@ -1958,7 +1958,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
-    <string name="404_desc" introduced="6.5.2"><![CDATA[The table below shows 404 (not found) request URL's form the last 90 days. These can be fixed by creating a redirect to appropriate area of your store in the &quot;Redirects&quot; tab. Once done it's possible to toggle it's staus in the &quot;Done&quot; column with a click. A warning triangle may show next to a 404 that still isn't working but marked as done.]]></string>
+    <string name="404_desc" introduced="6.5.2"><![CDATA[The table below shows 404 (not found) page requests for the last 90 days. These can be fixed by creating a redirect to the current, correct page in the "Redirects" tab. Once created, it is possible to toggle it's status in the "Done" column. A warning triangle may show for a 404 that is marked as done, but subsequent page requests have continued to fail.]]></string>
     <string name="last_requested" introduced="6.5.2"><![CDATA[Last Requested]]></string>
     <string name="missing_uris" introduced="6.5.2"><![CDATA[404 Log]]></string>
     <string name="release_notes" introduced="6.5.0"><![CDATA[Release Notes]]></string>
