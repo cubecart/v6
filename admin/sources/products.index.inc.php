@@ -728,10 +728,9 @@ if (isset($_GET['action'])) {
 
         if ($response = $request->send()) {
             $google_cats = explode("\n", $response);
-        }
-        
-        if (strstr($google_cats[0], 'Google_Product_Taxonomy_Version')) {
-            unset($google_cats[0]);
+            if (strstr($google_cats[0], 'Google_Product_Taxonomy_Version')) {
+                unset($google_cats[0]);
+            }
         }
 
         foreach ($GLOBALS['hooks']->load('admin.product.google_cats') as $hook) {
