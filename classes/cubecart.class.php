@@ -2124,7 +2124,7 @@ class Cubecart
         
         if(isset($_SERVER['REQUEST_URI']) && !empty($_SERVER['REQUEST_URI'])) {
             
-            $uri = strtok($_SERVER['REQUEST_URI']);
+            $uri = $_SERVER['REQUEST_URI'];
 
             if(substr($uri,-6)=='_a=404') return false;
             
@@ -2133,11 +2133,14 @@ class Cubecart
             $uri = ltrim($uri, CC_ROOT_REL);
             $uri = rtrim($uri, '/');
             $uri = htmlentities($uri, ENT_QUOTES);
-            if($existing = $GLOBALS['db']->select('CubeCart_404_log', false, array('uri' => $uri))) {
-                $warn = ($existing[0]['done'] == 1) ? 1 : 0;
-                $GLOBALS['db']->update('CubeCart_404_log', array('hits' => '+1', 'warn' => $warn), array('uri' => $uri));
-            } else {
-                $GLOBALS['db']->insert('CubeCart_404_log', array('uri' => $uri));
+        
+            if(!empty($uri)) {
+                if($existing = $GLOBALS['db']->select('CubeCart_404_log', false, array('uri' => $uri))) {
+                    $warn = ($existing[0]['done'] == 1) ? 1 : 0;
+                    $GLOBALS['db']->update('CubeCart_404_log', array('hits' => '+1', 'warn' => $warn), array('uri' => $uri));
+                } else {
+                    $GLOBALS['db']->insert('CubeCart_404_log', array('uri' => $uri));
+                }
             }
         }
 

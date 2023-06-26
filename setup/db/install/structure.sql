@@ -6,10 +6,12 @@ CREATE TABLE IF NOT EXISTS `CubeCart_404_log` (
   `hits` int UNSIGNED NOT NULL DEFAULT '1',
   `done` tinyint(1) NOT NULL DEFAULT '0',
   `warn` tinyint(1) NOT NULL DEFAULT '0',
+  `ignore` tinyint(1) NOT NULL DEFAULT '0',
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `uri` (`uri`),
+  KEY `ignore` (`ignore`),
   KEY `created` (`created`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 

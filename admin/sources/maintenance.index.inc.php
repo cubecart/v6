@@ -619,6 +619,7 @@ if (isset($database_result) && $database_result) {
         'cubecart_404_log' => array(
             'id' => 'PRIMARY',
             'uri' => 'KEY',
+            'ignore' => 'KEY',
             'created' => 'KEY'
         ),
         'cubecart_access_log' => array(

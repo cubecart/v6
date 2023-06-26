@@ -15,12 +15,16 @@ if (!defined('CC_INI_SET')) {
 }
 Admin::getInstance()->permissions('settings', CC_PERM_READ, true);
 
-
-$GLOBALS['gui']->addBreadcrumb($lang['navigation']['nav_redirects404s'], currentPage());
-$GLOBALS['main']->addTabControl($lang['settings']['redirects'], 'redirects');
-$GLOBALS['main']->addTabControl($lang['settings']['missing_uris'], 'missing_uris');
-
 if (Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
+
+    if(isset($_GET['ignore']) && !empty($_GET['ignore'])) {
+        $GLOBALS['db']->update('CubeCart_404_log', array('ignore' => 1, 'done' => 0, 'warn' => 0), array('id' => (int)$_GET['ignore']));
+        httpredir('?_g=settings&node=redirects','missing_uris');
+    }
+    if(isset($_GET['remove_ignore']) && !empty($_GET['remove_ignore'])) {
+        $GLOBALS['db']->update('CubeCart_404_log', array('ignore' => 0, 'done' => 0, 'warn' => 0), array('id' => (int)$_GET['remove_ignore']));
+        httpredir('?_g=settings&node=redirects','ignored_uris');
+    }
 
     if(isset($_POST['path']) && !empty($_POST['path'])) {
         // Check product, category, doc exists
@@ -83,6 +87,7 @@ if (isset($_GET['delete']) && ctype_digit($_GET['delete']) && Admin::getInstance
 $page  = (isset($_GET['page'])) ? $_GET['page'] : 1;
 $per_page = 100;
 $redirect_dataset = array();
+$total = 0;
 if($redirects =  $GLOBALS['db']->select('CubeCart_seo_urls', false, "`redirect` IN ('301', '302')", false, $per_page, $page)) {
     $total = $GLOBALS['db']->count('CubeCart_seo_urls', false, "`redirect` IN ('301', '302')");
     $GLOBALS['smarty']->assign('PAGINATION', $GLOBALS['db']->pagination($total, $per_page, $page));
@@ -91,19 +96,37 @@ if($redirects =  $GLOBALS['db']->select('CubeCart_seo_urls', false, "`redirect` 
         $redirect_dataset[] = $redirect;
     }
 }
+$GLOBALS['main']->addTabControl($lang['settings']['redirects'], 'redirects');
 $GLOBALS['smarty']->assign('REDIRECTS', $redirect_dataset);
 
 $page  = (isset($_GET['404_page'])) ? $_GET['404_page'] : 1;
 $per_page = 100;
 $missing_dataset = array();
-if($missing =  $GLOBALS['db']->select('CubeCart_404_log', false, false, array('created' => 'DESC'), $per_page, $page)) {
-    $total = $GLOBALS['db']->count('CubeCart_404_log', false, false);
+$total = 0;
+if($missing =  $GLOBALS['db']->select('CubeCart_404_log', false, array('ignore' => 0), array('created' => 'DESC'), $per_page, $page)) {
+    $total = $GLOBALS['db']->count('CubeCart_404_log', false, array('ignore' => 0));
     $GLOBALS['smarty']->assign('PAGINATION_404', $GLOBALS['db']->pagination($total, $per_page, $page, 5, '404_page', 'missing_uris'));
     foreach($missing as $m) {
         $m['updated'] = formatTime(strtotime($m['updated']));
         $missing_dataset[] = $m;
     }
 }
+$GLOBALS['main']->addTabControl($lang['settings']['missing_uris'], 'missing_uris');
 $GLOBALS['smarty']->assign('MISSING', $missing_dataset);
+
+$page  = (isset($_GET['404_ignored'])) ? $_GET['404_ignored'] : 1;
+$per_page = 10;
+$ignored_dataset = array();
+$total = 0;
+if($ignored =  $GLOBALS['db']->select('CubeCart_404_log', false, array('ignore' => 1), array('created' => 'DESC'), $per_page, $page)) {
+    $total = $GLOBALS['db']->count('CubeCart_404_log', false, array('ignore' => 1));
+    $GLOBALS['smarty']->assign('PAGINATION_IGNORED', $GLOBALS['db']->pagination($total, $per_page, $page, 5, '404_ignored', 'missing_uris'));
+    foreach($ignored as $m) {
+        $ignored_dataset[] = $m;
+    }
+}
+$GLOBALS['smarty']->assign('IGNORED', $ignored_dataset);
+$GLOBALS['main']->addTabControl($lang['settings']['ignored_uris'], 'ignored_uris');
+$GLOBALS['gui']->addBreadcrumb($lang['navigation']['nav_redirects404s'], currentPage());
 
 $page_content = $GLOBALS['smarty']->fetch('templates/settings.redirects.php');
