@@ -47,15 +47,22 @@
             </td>
          </tr>
       </table>
+      
+      {if $SORT_CHARACTERS}
+      <ul class="char_filter"{if empty($SORT_CHARACTERS)} style="text-align: right"{/if}>
+         {foreach from=$SORT_CHARACTERS item=character}
+            {if $CHAR_SELECTED==$character.char}
+               <li class="selected">{$character.char}</li>
+            {else}
+               <li><a href="{$character.link}">{$character.char}</a></li>
+            {/if}
+         {/foreach}
+         <li><a href="{$SORT_CHARS_RESET_LINK}">{$LANG.common.any}</a></li>
+      </ul>
+      {else}
+      <div style="text-align: right"><a href="{$SORT_CHARS_RESET_LINK}">{$LANG.common.any}</a></div>
+      {/if}
       {if isset($PRODUCTS)}
-      <table width="100%">
-         <tr>
-            {foreach from=$SORT_CHARACTERS item=character}
-            <td style="text-align:center"><a href="{$character.link}">{$character.char}</a></td>
-            {/foreach}
-            <td width="1%"><a href="{$SORT_CHARS_RESET_LINK}">{$LANG.common.any}</a></td>
-         </tr>
-      </table>
       <table width="100%">
          <thead>
             <tr>

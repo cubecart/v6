@@ -1238,6 +1238,9 @@ if (isset($_GET['action'])) {
     foreach ($GLOBALS['hooks']->load('admin.product.products_list.where_filter') as $hook) {
         include $hook;
     }
+    $char_link = currentPage(array('char', 'page'));
+    $GLOBALS['smarty']->assign('CHAR_SELECTED', isset($_GET['char']) ? $_GET['char'] : '');
+    $GLOBALS['smarty']->assign('SORT_CHARS_RESET_LINK', $char_link);
     if (($where === false || strlen($where) > 0) && ($results = $GLOBALS['db']->select('CubeCart_inventory', false, $where, $_GET['sort'], $per_page, $page)) !== false) {
         $pagination = $GLOBALS['db']->pagination(false, $per_page, $page, 9);
         // Find fist letters to sort products by
@@ -1256,8 +1259,7 @@ if (isset($_GET['action'])) {
         if ($int) {
             $char_list_array = array_merge(array('0' => '#'), $char_list_array);
         }
-        $char_link = currentPage(array('char', 'page'));
-        $GLOBALS['smarty']->assign('SORT_CHARS_RESET_LINK', $char_link);
+        
         natcasesort($char_list_array);
         foreach ($char_list_array as $char) {
             $char_get_val  = ($char == '#') ? '0-9' : $char;
