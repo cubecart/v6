@@ -191,8 +191,8 @@ class Order
         if ($set_basket) {
             $this->_basket['cart_order_id'] = $this->_order_id;
             /* fix for admin generated orders */
-            if (method_exists($GLOBALS['cart'], 'save')) {
-                $GLOBALS['cart']->save();
+            if (method_exists(Cart::getInstance(), 'save')) {
+                Cart::getInstance()->save();
             }
         }
         return ($return) ? $this->_order_id : true;
