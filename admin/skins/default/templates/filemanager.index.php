@@ -12,17 +12,17 @@
  <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
 	{if isset($mode_list)}
 	<div id="filemanager" class="tab_content">
-		<h3>{if $FILMANAGER_MODE == '1'}<span class="toggle"><span class="small"></span><span class="medium"></span><span class="large"></span><span class="xlarge"></span></span>{/if}{$FILMANAGER_TITLE}</h3>
-		{if $FILMANAGER_MODE == '1'}<input type="text" name="fm-search-term" id="fm-search-term" placeholder="{$LANG.common.search}..."><button type="button" class="button tiny" id="fm-search-button" data-mode="{if $FILMANAGER_MODE == '1'}images{else}digital{/if}" data-action="show">{$LANG.common.go}</button>
+		<h3>{if $FILMANAGER_MODE == FileManager::FM_FILETYPE_IMG}<span class="toggle"><span class="small"></span><span class="medium"></span><span class="large"></span><span class="xlarge"></span></span>{/if}{$FILMANAGER_TITLE}</h3>
+		{if $FILMANAGER_MODE == FileManager::FM_FILETYPE_IMG}<input type="text" name="fm-search-term" id="fm-search-term" placeholder="{$LANG.common.search}..."><button type="button" class="button tiny" id="fm-search-button" data-mode="{if $FILMANAGER_MODE == FileManager::FM_FILETYPE_IMG}images{else}digital{/if}" data-action="show">{$LANG.common.go}</button>
 		<hr>
 		{/if}
-		{if $FILMANAGER_MODE == '2' && !$SELECT_BUTTON}
+		{if $FILMANAGER_MODE == FileManager::FM_FILETYPE_DL && !$SELECT_BUTTON}
 		<p>{$LANG.filemanager.public}</p>
 		{/if}
 		{if $SELECT_BUTTON}
 		<p>{$LANG.filemanager.how_to_select}</p>
 		{/if}
-		<div id="fm-wrapper" class="{if $FILMANAGER_MODE == '1'}images{else}digital{/if}" style="overflow:hidden;">
+		<div id="fm-wrapper" class="{if $FILMANAGER_MODE == FileManager::FM_FILETYPE_IMG}images{else}digital{/if}" style="overflow:hidden;">
 			{if $FOLDER_PARENT}
 			<div>
 				<a href="{$FOLDER_PARENT}"><i class="fa fa-arrow-left" aria-hidden="true"></i> {$LANG.filemanager.parent_directory}</a>
@@ -30,23 +30,23 @@
 			{/if}
 			{if isset($FOLDERS)}
 			{foreach from=$FOLDERS item=folder}
-			<div {if $FILMANAGER_MODE == '1'}class="fm-item folder {$FM_SIZE}"{/if}>
-			{if $FILMANAGER_MODE == '1'}<a href="{$folder.link}" class="thumbnail"><img src="{$SKIN_VARS.admin_folder}/skins/default/images/folder_large.png"/></a>{/if}
+			<div {if $FILMANAGER_MODE == FileManager::FM_FILETYPE_IMG}class="fm-item folder {$FM_SIZE}"{/if}>
+			{if $FILMANAGER_MODE == FileManager::FM_FILETYPE_IMG}<a href="{$folder.link}" class="thumbnail"><img src="{$SKIN_VARS.admin_folder}/skins/default/images/folder_large.png"/></a>{/if}
 			<span class="actions">
 			{if NOT is_null($folder.delete)}
-			{if $FILMANAGER_MODE == '1'}<input type="checkbox" value="{$folder.value}" class="multi_delete" name="multi_delete[]">{/if}
+			{if $FILMANAGER_MODE == FileManager::FM_FILETYPE_IMG}<input type="checkbox" value="{$folder.value}" class="multi_delete" name="multi_delete[]">{/if}
 			<a href="{$folder.delete}" class="delete right" title="{$LANG.notification.confirm_delete_folder|replace:'%s':$folder.name}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 			{/if}
 			</span>
-			{if $FILMANAGER_MODE == '2'}<input type="checkbox" value="{$folder.value}" class="multi_delete" name="multi_delete[]"> <i class="fa fa-folder" aria-hidden="true" alt="{$folder.name}"></i>{/if}
+			{if $FILMANAGER_MODE == FileManager::FM_FILETYPE_DL}<input type="checkbox" value="{$folder.value}" class="multi_delete" name="multi_delete[]"> <i class="fa fa-folder" aria-hidden="true" alt="{$folder.name}"></i>{/if}
 			<a href="{$folder.link}">{$folder.name}</a>
 		</div>
 		{/foreach}
 		{/if}
 		{if isset($FILES)}
 		{foreach from=$FILES item=file}
-		<div {if $FILMANAGER_MODE == '1'}class="fm-item {$FM_SIZE}{if $file.file_name_hash==$HILIGHTED_FILE} hilighted{/if}"{/if} id="{$file.file_name_hash}">
-		{if $FILMANAGER_MODE == '1'}
+		<div {if $FILMANAGER_MODE == FileManager::FM_FILETYPE_IMG}class="fm-item {$FM_SIZE}{if $file.file_name_hash==$HILIGHTED_FILE} hilighted{/if}"{/if} id="{$file.file_name_hash}">
+		{if $FILMANAGER_MODE == FileManager::FM_FILETYPE_IMG}
 		<a href="{$file.master_filepath}?{$file.random}" class="{$file.class} thumbnail" title="{$file.description}" target="_self">
 		<img class="lazyload" data-src="{$file.filepath}" src="data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs=">
 		</a>
@@ -61,7 +61,7 @@
 		{/if}
 		</span>
 		{/if}
-		{if $FILMANAGER_MODE == '2'}
+		{if $FILMANAGER_MODE == FileManager::FM_FILETYPE_DL}
 		<input type="checkbox" value="{$file.value}" class="multi_delete" name="multi_delete[]"> <i class="fa fa-{$file.icon}" aria-hidden="true" alt="{$file.mimetype}"></i>
 		{if $file.select_button}
 		<span class="actions">
@@ -87,7 +87,7 @@
 	</div>
 	<div id="upload" class="tab_content">
 		<h3>{$FILMANAGER_TITLE}</h3>
-		{if $FILMANAGER_MODE == '1'}
+		{if $FILMANAGER_MODE == FileManager::FM_FILETYPE_IMG}
 		<div class="dropzone">
 			<div class="dz-default dz-message"><span>{$LANG.filemanager.file_upload_note}</span></div>
 		</div>

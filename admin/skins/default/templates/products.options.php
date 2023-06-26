@@ -71,7 +71,7 @@
          <div>
             {assign var=attribute_groups value=0}
             <select name="add-value[option_id]" id="select_group_id" rel="group_" class="field_select">
-               {foreach from=$GROUPS item=group}{if $group.type==0 || $group.type==4}
+               {foreach from=$GROUPS item=group}{if $group.type==Catalogue::OPTION_SELECT || $group.type==Catalogue::OPTION_RADIO}
                {assign var=attribute_groups value=$attribute_groups+1}
                <option value="{$group.id}">{$group.name}</option>
                {/if}{/foreach}
@@ -103,7 +103,7 @@
             </div>
          </fieldset>
          {foreach from=$GROUPS item=group}
-         {if $group.type==0 || $group.type==4}
+         {if $group.type==Catalogue::OPTION_SELECT || $group.type==Catalogue::OPTION_RADIO}
          <fieldset id="group_{$group.id}" class="field_select_target">
             <legend>{$group.name}</legend>
             <table width="100%">
@@ -173,13 +173,13 @@
                <select name="add_to_set[]" class="multi" multiple="multiple" style="width: 200px; height:200px">
                   <option value="">{$LANG.form.please_select}</option>
                   {foreach from=$GROUPS item=group}
-                  {if $group.type == 0}
+                  {if $group.type == Catalogue::OPTION_SELECT}
                   <optgroup label="{$group.name}">
                      {foreach from=$group.options key=value_id item=value_name}
                      <option value="g{$group.id}-{$value_id}">{$value_name}</option>
                      {/foreach}
                   </optgroup>
-                  {else if $group.type == 4}
+                  {else if $group.type == Catalogue::OPTION_RADIO}
                   <optgroup label="{$group.name}">
                      {foreach from=$group.options key=value_id item=value_name}
                      <option value="g{$group.id}-{$value_id}">{$value_name}</option>
