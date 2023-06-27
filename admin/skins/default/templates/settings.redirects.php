@@ -35,17 +35,14 @@
                <td>
                   <select name="type" id="redirect_type">
                      <optgroup label="Dynamic Pages">
-                        <option value="cat" data-static="false">{$LANG.common.category}</option>
-                        <option value="doc" data-static="false">{$LANG.common.document}</option>
-                        <option value="prod" data-static="false">{$LANG.common.product}</option>
+                     {foreach from=$REDIRECT_TYPES.dynamic key=type item=name}
+                        <option value="{$type}" data-static="false">{$name}</option>
+                     {/foreach}
                      </optgroup>
                      <optgroup label="Static Pages">
-                        <option value="certificates" data-static="true">{$LANG.catalogue.gift_certificates}</option>
-                        <option value="contact" data-static="true">{$LANG.documents.document_contact}</option>
-                        <option value="login" data-static="true">{$LANG.account.login}</option>
-                        <option value="register" data-static="true">{$LANG.account.register}</option>
-                        <option value="saleitems" data-static="true">{$LANG.navigation.saleitems}</option>
-                        <option value="search" data-static="true">{$LANG.common.search}</option>
+                     {foreach from=$REDIRECT_TYPES.static key=type item=name}
+                        <option value="{$type}" data-static="true">{$name}</option>
+                     {/foreach}
                      </optgroup>
                   </select>
                </td>
@@ -55,7 +52,7 @@
                </td> 
                <td id="destination"></td>  
             </tr>
-            {foreach $REDIRECTS item=redirect}
+            {foreach from=$REDIRECTS item=redirect}
             <tr>
                <td style="text-align:center"><a href="?_g=settings&node=redirects&delete={$redirect.id}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></td>
                <td style="text-align:center">{$redirect.redirect}</td>

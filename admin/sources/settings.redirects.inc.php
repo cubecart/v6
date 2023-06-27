@@ -84,6 +84,28 @@ if (isset($_GET['delete']) && ctype_digit($_GET['delete']) && Admin::getInstance
     } 
 }
 
+$redirect_types = array(
+    'static' => array(
+        'certificates' => $lang['catalogue']['gift_certificates'],
+        'contact' => $lang['documents']['document_contact'],
+        'login' => $lang['account']['login'],
+        'register' => $lang['account']['register'],
+        'saleitems' => $lang['navigation']['saleitems'],
+        'search' => $lang['common']['search']
+    ),
+    'dynamic' => array(
+        'cat' => $lang['common']['category'],
+        'doc' => $lang['common']['document'],
+        'prod' => $lang['common']['product']
+    )
+);
+
+foreach ($GLOBALS['hooks']->load('admin.settings.redirect.types') as $hook) {
+    include $hook;
+}
+
+$GLOBALS['smarty']->assign('REDIRECT_TYPES', $redirect_types);
+
 $page  = (isset($_GET['page'])) ? $_GET['page'] : 1;
 $per_page = 100;
 $redirect_dataset = array();
