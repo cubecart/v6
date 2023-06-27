@@ -204,6 +204,7 @@
     <string name="title_administrators" introduced="5.0.0"><![CDATA[Administrators]]></string>
   </group>
   <group name="basket">
+    <string name="basket_total" introduced="6.5.2"><![CDATA[Your basket total is %s]]></string>
     <string name="continue_shopping" introduced="6.1.0"><![CDATA[Continue Shopping]]></string>
     <string name="free_coupon_shipping" introduced="6.1.0"><![CDATA[Free Shipping from Promotional Code]]></string>
     <string name="fetch_shipping_rates" introduced="6.0.5"><![CDATA[Fetch Shipping Rates]]></string>
@@ -1634,6 +1635,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="mobile_optimized" introduced="5.2.0"><![CDATA[This module has been optimized for mobile devices.]]></string>
   </group>
   <group name="navigation">
+    <string name="expand_for_more" introduced="6.5.2"><![CDATA[Expand for more options]]></string>
     <string name="nav_redirects404s" introduced="6.4.0"><![CDATA[Redirects &amp; 404&rsquo;s]]></string>
     <string name="error_401" introduced="5.0.0"><![CDATA[You do not have the correct privileges to perform that action.]]></string>
     <string name="giftcerts" introduced="5.0.0"><![CDATA[Gift Cards]]></string>

@@ -40,7 +40,7 @@
                   <div class="row" id="nav-actions">
                      <div class="small-12 columns">
                         <div class="right text-center">{include file='templates/box.basket.php'}</div>
-                        <div class="right text-center show-for-small"><a class="left-off-canvas-toggle button trans tiny" href="#"><svg class="icon icon-x2"><use xlink:href="#icon-bars"></use></svg></a> <a class="button trans tiny show-small-search" href="#"><svg class="icon icon-x2"><use xlink:href="#icon-search"></use></svg></a></div>
+                        <div class="right text-center show-for-small"><a class="left-off-canvas-toggle button trans tiny" href="#" title="{$LANG.navigation.expand_for_more}"><svg class="icon icon-x2"><use xlink:href="#icon-bars"></use></svg></a> <a class="button trans tiny show-small-search" href="#" title="{$LANG.common.search}"><svg class="icon icon-x2"><use xlink:href="#icon-search"></use></svg></a></div>
                         {include file='templates/box.currency.php'}
                         {include file='templates/box.language.php'}
                         {include file='templates/box.session.php'}

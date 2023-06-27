@@ -35,7 +35,7 @@
                <div class="small-8 large-9 columns">
                   <div class="row" id="nav-actions">
                      <div class="small-12 columns">
-                        <div class="right text-center show-for-small"><a class="left-off-canvas-toggle button trans tiny" href="#"><svg class="icon icon-x2"><use xlink:href="#icon-bars"></use></svg></a></div>
+                        <div class="right text-center show-for-small"><a class="left-off-canvas-toggle button trans tiny" href="#" title="{$LANG.navigation.expand_for_more}"><svg class="icon icon-x2"><use xlink:href="#icon-bars"></use></svg></a></div>
                         <div class="right text-right show-for-medium-up">{include file='templates/box.session.php'}</div>
                      </div>
                   </div>

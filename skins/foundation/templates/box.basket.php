@@ -12,14 +12,14 @@
  {if !$CATALOGUE_MODE}
 <div id="mini-basket">
    <div class="show-for-medium-up">
-      <div class="text-right"><a href="#" id="basket-summary" class="button trans small"><svg class="icon icon-basket"><use xlink:href="#icon-basket"></use></svg> {$CART_TOTAL}</a></div>
+      <div class="text-right"><a href="#" id="basket-summary" class="button trans small" title="{sprintf($LANG.basket.basket_total, $CART_TOTAL)}"><svg class="icon icon-basket"><use xlink:href="#icon-basket"></use></svg> {$CART_TOTAL}</a></div>
       <div class="basket-detail-container hide" id="basket-detail">
          <div class="mini-basket-arrow"></div>
          {include file='templates/box.basket.content.php'} 
       </div>
    </div>
    <div class="show-for-small-only">
-      <div class="show-for-small-only"><a class="right-off-canvas-toggle button trans tiny" href="#"><svg class="icon icon-basket icon-x2"><use xlink:href="#icon-basket"></use></svg></a></div>
+      <div class="show-for-small-only"><a class="right-off-canvas-toggle button trans tiny" href="#" title="{sprintf($LANG.basket.basket_total, $CART_TOTAL)}"><svg class="icon icon-basket icon-x2"><use xlink:href="#icon-basket"></use></svg></a></div>
       <div class="hide panel radius small-basket-detail-container js_fadeOut" id="small-basket-detail"><svg class="icon"><use xlink:href="#icon-check"></use></svg> {$LANG.catalogue.added_to_basket}</div>
    </div>
    <div class="session_token hide">{$SESSION_TOKEN}</div>
