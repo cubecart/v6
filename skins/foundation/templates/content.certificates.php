@@ -16,8 +16,8 @@
   	<div class="row">
 		<div class="small-12"><img src="{$GC.image}"  alt="{if isset($GC.image_tags.alt)}{$GC.image_tags.alt}{else}{$LANG.catalogue.gift_certificates}{/if}"{if isset($GC.image_tags.title)} title="{$GC.image_tags.title}"{/if} /></div>
 	</div>
-	<div class="row"><div class="small-12 large-8 columns"><label for="gc-value">{$LANG.common.value} ({$CONFIG.default_currency})</label><input type="text" name="gc[value]" id="gc-value" value="{$POST.value}" placeholder="{$LANG.common.value} {$LANG.form.required}" required></div></div>
 	{/if}
+	<div class="row"><div class="small-12 large-8 columns"><label for="gc-value">{$LANG.common.value} ({$CONFIG.default_currency})</label><input type="text" name="gc[value]" id="gc-value" value="{$POST.value}" placeholder="{$LANG.common.value} {$LANG.form.required}" required></div></div>
 	<div class="row"><div class="small-12 large-8 columns">
 	  <label for="gc-method">{$LANG.catalogue.delivery_method}</label>
 		<select name="gc[method]" id="gc-method">
