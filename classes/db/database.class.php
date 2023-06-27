@@ -657,7 +657,6 @@ class Database_Contoller
             if (isset($allowed) && isset($columns) && is_array($allowed) && is_array($columns)) {
                 foreach ($columns as $key => $field) {
                     if (in_array($field, $allowed) && !is_numeric($field)) {
-                        $distinct = ''; 
                         if (!is_numeric($key) && in_array(strtoupper(substr($key,0,8)), array('DISTINCT'))) {
                             $distinct = "DISTINCT";
                             $group_by[] = "`$field`";
