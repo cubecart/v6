@@ -66,7 +66,8 @@ if (isset($_POST['review']) && is_array($_POST['review']) && Admin::getInstance(
     }
 
     if (is_numeric($_POST['review']['id'])) {
-        if ($GLOBALS['db']->update('CubeCart_reviews', $record, array('id' => (int)$_POST['review']['id']))) {
+        $updated = $GLOBALS['db']->update('CubeCart_reviews', $record, array('id' => (int)$_POST['review']['id']));
+        if ((bool)$GLOBALS['db']->affected()) {
             $GLOBALS['main']->successMessage($lang['reviews']['notify_review_update']);
             $rem_array = array('edit');
         } else {
