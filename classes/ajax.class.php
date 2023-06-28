@@ -291,7 +291,6 @@ class Ajax
                 foreach ($GLOBALS['hooks']->load('class.ajax.search.case_default') as $hook) {
                     include $hook;
                 }
-                return false;
                 break;
             }
             if (!$data) {
