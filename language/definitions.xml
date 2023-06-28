@@ -1758,6 +1758,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="cookies_blocked" introduced="6.2.1"><![CDATA[Non-essential cookies have been blocked.]]></string>
     <string name="cookies_accepted" introduced="6.2.1"><![CDATA[All cookies have been allowed.]]></string>
     <string name="cookie_switch" introduced="6.2.1"><![CDATA[Cookie Switch]]></string>
+    <string name="cookie_switch_desc" introduced="6.5.2"><![CDATA[The switch below allows you to accept or block non-essential cookies. Non-essential cookies are any cookies that do not fall within the definition of essential cookies, such as cookies used to analyse your behaviour on a website ('analytical' cookies) or cookies used to display advertisements to you ('advertising' cookies).]]></string>
     <string name="confirm_cancel" introduced="5.2.8"><![CDATA[Are you sure you want to cancel?]]></string>
     <string name="cookie_dialogue" introduced="5.0.0"><![CDATA[%s uses cookies. For more detailed information about these cookies please see our <a href="%PRIVACY_URL%">privacy policy</a>. Please accept to continue or block all non-essential cookies.]]></string>
     <string name="cookie_dialogue_declaration" introduced="5.0.0"><![CDATA[I accept cookies from this site.]]></string>
