@@ -1844,10 +1844,10 @@ class Catalogue
                         $this->_sort_by_relevance = true;
                     } else {
                         $this->_elasticsearch = false;
-                        return $this->searchCatalogue($original_search_data, 1, $per_page, 'fulltext');  
+                        return $this->searchCatalogue($original_search_data, $page, $per_page, 'fulltext');  
                     }
                 } else {
-                    return $this->searchCatalogue($original_search_data, 1, $per_page, 'fulltext');
+                    return $this->searchCatalogue($original_search_data, $page, $per_page, 'fulltext');
                 }
                 
             }
@@ -2006,7 +2006,7 @@ class Catalogue
 
                 if ($search_mode == 'fulltext') {
                     if ($search_str_len < $max_word_len) {
-                        return $this->searchCatalogue($original_search_data, 1, $per_page, 'rlike');
+                        return $this->searchCatalogue($original_search_data, $page, $per_page, 'rlike');
                     }
 
                     switch (true) {
@@ -2041,7 +2041,7 @@ class Catalogue
                         }
                         return true;
                     } elseif ($search_mode == 'fulltext') {
-                        return $this->searchCatalogue($original_search_data, 1, $per_page, 'rlike');
+                        return $this->searchCatalogue($original_search_data, $page, $per_page, 'rlike');
                     }
                 } else {
                     $search_mode = in_array($search_mode, array('rlike','like')) ? $search_mode : 'rlike';
@@ -2102,7 +2102,7 @@ class Catalogue
                         }
                         return true;
                     } elseif ($search_mode=="rlike") {
-                        return $this->searchCatalogue($original_search_data, 1, $per_page, 'like');
+                        return $this->searchCatalogue($original_search_data, $page, $per_page, 'like');
                     }
                 }
             }
