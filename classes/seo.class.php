@@ -713,7 +713,7 @@ class SEO
             if (empty($path)) {
                 return ($bool) ? false : '';
             }
-            $existing = $GLOBALS['db']->select('CubeCart_seo_urls', array('id', 'path'), array('type' => $type, 'item_id' => $item_id), false, 1, false, false);
+            $existing = $GLOBALS['db']->select('CubeCart_seo_urls', array('id', 'path'), array('type' => $type, 'item_id' => $item_id), false, false, false, false);
             if ($existing) {
                 $match = false;
                 $path = $this->_handleExtension($path);
