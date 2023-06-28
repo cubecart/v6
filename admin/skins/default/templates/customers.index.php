@@ -221,7 +221,7 @@
 		  <strong>{$address.description}</strong> - {$address.title} {$address.first_name} {$address.last_name}
 		  {if !empty({$address.company_name})}({$address.company_name}){/if}
 		  <br>
-		  <span class="capitalize">{$address.line1}, {if !empty($address.line2)}{$address.line2}</span>, {/if}<span class="uppercase">{$address.town}</span>, {if !empty($address.state_name)}{$address.state_name}, {/if}</span>{$address.postcode}, {$address.country_name}
+		  <span class="capitalize">{$address.line1}, {if !empty($address.line2)}{$address.line2}, {/if}</span>{$address.town}, <span class="uppercase">{if !empty($address.state_name)}{$address.state_name}, {/if}</span>{$address.postcode}, {$address.country_name}
 		</div>
 		{/foreach}
 		{else}
