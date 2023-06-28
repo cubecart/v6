@@ -758,10 +758,10 @@
    </div>
    <div id="description" class="tab_content">
       <h3>{$LANG.translate.title_translate}</h3>
-      <textarea name="translate[description]" class="textbox fck">{$TRANS.description|escape:"html"}</textarea>
+      <textarea name="translate[description]" class="textbox fck">{htmlentities($TRANS.description, ENT_QUOTES, 'UTF-8', true)}</textarea>
       <br>
       <h3>{$LANG.translate.title_translate_short}</h3>
-      <textarea name="translate[description_short]" class="textbox fck">{$TRANS.description_short|escape:"html"}</textarea>
+      <textarea name="translate[description_short]" class="textbox fck">{htmlentities($TRANS.description_short, ENT_QUOTES, 'UTF-8', true)}</textarea>
    </div>
    <div id="seo" class="tab_content">
       <h3>{$LANG.settings.title_seo}</h3>
