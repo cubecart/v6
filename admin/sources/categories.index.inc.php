@@ -130,8 +130,9 @@ if (isset($_POST['cat']) && is_array($_POST['cat']) && Admin::getInstance()->per
         }
     }
     updateCatsWithHierPosition();
-    
-    if ($redirect) {
+    if (isset($_POST['submit_cont'])) {
+        httpredir(currentPage(null, array('action' => 'edit', 'cat_id' => (int)$cat_id)));
+    } else if ($redirect) {
         httpredir(currentPage($keys_remove, $keys_add));
     }
 }
