@@ -351,10 +351,12 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
         }
 
         $GLOBALS['db']->update('CubeCart_inventory', array('cat_id' => $primary_cat), array('product_id' => $product_id));
+        
+        if (!$category_assigned) {
+            $GLOBALS['main']->errorMessage($lang['catalogue']['no_categories_specified']);
+        }
     }
-    if (!$category_assigned) {
-        $GLOBALS['main']->errorMessage($lang['catalogue']['no_categories_specified']);
-    }
+    
 
     // SEO
     if (substr($_POST['seo_path'], 0, 1) == '/' || substr($_POST['seo_path'], 0, 1) == '\\') {
