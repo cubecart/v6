@@ -125,6 +125,7 @@ if (Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT)) {
 }
 // Create list of enabled plugin folders
 $plugins = $GLOBALS['hooks']->scan_all_plugins('plugins', true);
+$smarty_data = array();
 
 if (isset($_GET['plugin']) && isset($plugins[(string)$_GET['plugin']]) && !is_numeric($_GET['plugin'])) {
     $GLOBALS['gui']->addBreadcrumb($plugins[$_GET['plugin']]['name'], currentPage(array('hook_id', 'action')));
@@ -224,7 +225,7 @@ if (isset($_GET['plugin']) && isset($plugins[(string)$_GET['plugin']]) && !is_nu
             $plugin['edit'] = currentPage(null, array('plugin' => $plugin['plugin']));
             $smarty_data['plugins'][] = $plugin;
         }
-        $GLOBALS['smarty']->assign('PLUGINS', $smarty_data['plugins']);
+        $GLOBALS['smarty']->assign('PLUGINS', isset($smarty_data['plugins']) ? $smarty_data['plugins'] : array());
     }
     $GLOBALS['smarty']->assign('DISPLAY_PLUGINS', true);
 

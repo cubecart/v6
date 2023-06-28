@@ -729,7 +729,7 @@ if (isset($_GET['action'])) {
         $request->cache(true);
 
         if ($response = $request->send()) {
-            $google_cats = explode("\n", $response);
+            $google_cats = explode("\n", (string)$response);
             if (strstr($google_cats[0], 'Google_Product_Taxonomy_Version')) {
                 unset($google_cats[0]);
             }
@@ -742,8 +742,7 @@ if (isset($_GET['action'])) {
         $GLOBALS['smarty']->assign("GOOGLE_CATS", $google_cats);
 
         $GLOBALS['main']->addTabControl($lang['settings']['tab_seo'], 'seo');
-        $GLOBALS['smarty']->assign("REDIRECTS", $GLOBALS['seo']->getRedirects('prod', $_GET['product_id']));
-
+        
         // Generate list of groups and values
         if (($groups = $GLOBALS['db']->select('CubeCart_option_group', false, false, array('priority'=>'ASC'))) !== false) {
             foreach ($groups as $group) {
@@ -766,6 +765,7 @@ if (isset($_GET['action'])) {
 
         if (strtolower($_GET['action'])=='edit' && is_numeric($_GET['product_id'])) {
             $product_id = (int)$_GET['product_id'];
+            $GLOBALS['smarty']->assign("REDIRECTS", $GLOBALS['seo']->getRedirects('prod', $product_id));
             if (($result = $GLOBALS['db']->select('CubeCart_inventory', false, array('product_id'=> $product_id))) !== false) {
                 $GLOBALS['main']->addTabControl($lang['translate']['title_translations'], 'translate');
                 $translations = $GLOBALS['db']->select('CubeCart_inventory_language', array('translation_id', 'language'), array('product_id' => $product_id));
