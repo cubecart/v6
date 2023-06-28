@@ -212,12 +212,6 @@ class GUI
             $copyright = $GLOBALS['smarty']->fetch('string:'.stripslashes($GLOBALS['config']->get('config', 'store_copyright')));
             $GLOBALS['smarty']->assign('COPYRIGHT', $copyright);
 
-            //Setup Google Analytics
-            $google_analytics = $GLOBALS['config']->get('config', 'google_analytics');
-            if (!empty($google_analytics)) {
-                // Third party cookies are needed for this define to we can warn
-                $GLOBALS['smarty']->assign('ANALYTICS', $google_analytics);
-            }
         } else {
             $skin_folder = (!$GLOBALS['config']->isEmpty('config', 'admin_skin')) ? $GLOBALS['config']->get('config', 'admin_skin') : 'default';
             $admin_folder  = (!$GLOBALS['config']->isEmpty('config', 'adminFolder')) ? $GLOBALS['config']->get('config', 'adminFolder') : 'admin';

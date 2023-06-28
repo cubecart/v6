@@ -132,7 +132,6 @@ $default_config_settings = array(
   'email_smtp_port' => '',
   'email_smtp_user' => '',
   'enable_ssl' => '0',
-  'google_analytics' => '',
   'cache' => '1',
   'basket_allow_non_invoice_address' => '1',
   'basket_jump_to' => '0',

@@ -132,28 +132,3 @@
 {/if}
 <p><a href="{$STORE_URL}/index.php?_a=receipt&cart_order_id={$SUM.cart_order_id}{if !$IS_USER}&email={$SUM.email}{/if}" target="_blank"><svg class="icon"><use xlink:href="#icon-print"></use></svg> {$LANG.confirm.print}</a></p>
 {foreach from=$AFFILIATES item=affiliate}{$affiliate}{/foreach}
-{if isset($smarty.cookies.accept_cookies) && $smarty.cookies.accept_cookies=='true' && $ANALYTICS && $GA_SUM}
-<script>
-{literal}(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  ga('create', '{/literal}{$ANALYTICS}{literal}', 'auto');
-  ga('require', 'ecommerce');
-  ga('ecommerce:addTransaction', {
-    'id': '{/literal}{$GA_SUM.cart_order_id}{literal}',
-    'affiliation': '{/literal}{$GA_SUM.store_name}{literal}',
-    'revenue': '{/literal}{$GA_SUM.total}{literal}',
-    'shipping': '{/literal}{$GA_SUM.shipping}{literal}',
-    'tax': '{/literal}{$GA_SUM.total_tax}{literal}'
-  });
-{/literal}{foreach from=$GA_ITEMS item=item}{literal}ga('ecommerce:addItem', {
-    'id': '{/literal}{$GA_SUM.cart_order_id}{literal}',
-    'name': '{/literal}{$item.name}{literal}',
-    'sku': '{/literal}{$item.product_code}{literal}',
-    'price': '{/literal}{$item.price}{literal}',
-    'quantity': '{/literal}{$item.quantity}{literal}',
-    'category': '{/literal}{$ITEM_CATS.{$item.product_id}}{literal}'
-  });{/literal}{/foreach}{literal}  ga('ecommerce:send');{/literal}
-</script>
-{/if}

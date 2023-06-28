@@ -189,10 +189,6 @@
          <div><label for="basket_allow_non_invoice_address">{$LANG.settings.dispatch_to_non_invoice}</label><span><input name="config[basket_allow_non_invoice_address]" id="basket_allow_non_invoice_address" type="hidden" class="toggle" value="{$CONFIG.basket_allow_non_invoice_address}"></span></div>
          <div><label for="emailconf">{$LANG.settings.emailconf}</label><span><input name="config[emailconf]" id="emailconf" type="hidden" class="toggle" value="{$CONFIG.emailconf}"></span></div>
       </fieldset>
-      <fieldset>
-         <legend>{$LANG.settings.google_analytics} - <a href="https://www.cubecart.com/extensions/plugins/google-analytics-for-ecommerce" target="_blank">Get the Google Analytics 4 Extension</a></legend>
-         <div><label for="google_analytics">{$LANG.settings.google_analytics_id}</label><span><input name="config[google_analytics]" id="google_analytics" class="textbox" placeholder="UA-" value="{$CONFIG.google_analytics}"></span></div>
-      </fieldset>
    </div>
    <div id="Layout" class="tab_content">
       <h3>{$LANG.settings.title_layout}</h3>

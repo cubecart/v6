@@ -1415,16 +1415,6 @@ class Cubecart
                 $GLOBALS['smarty']->assign('TAXES', $vars['taxes']);
                 $order['state'] = getStateFormat($order['state']);
                 $order['state_d'] = getStateFormat($order['state_d']);
-
-                // Analytics
-                if (in_array($order['status'], array(2, 3))) {
-                    $vars['ga_sum'] = $order;
-                    $vars['ga_sum']['country_iso'] = getCountryFormat($order['country'], 'numcode', 'iso');
-                    $vars['ga_sum']['google_id'] = $GLOBALS['config']->get('config', 'google_analytics');
-                    $vars['ga_sum']['store_name'] = $GLOBALS['config']->get('config', 'store_name');
-                    $GLOBALS['smarty']->assign('GA_SUM', $vars['ga_sum']);
-                }
-
                 $order['country'] = getCountryFormat($order['country']);
                 $order['country_d'] = getCountryFormat($order['country_d']);
 
@@ -1481,10 +1471,6 @@ class Cubecart
                 if ($affiliates) {
                     $GLOBALS['smarty']->assign('AFFILIATES', $affiliates);
                 }
-                
-                $ga_id = $GLOBALS['config']->get('config', 'google_analytics');
-                $ga_id = trim($ga_id);
-                $GLOBALS['smarty']->assign('ANALYTICS', !empty($ga_id) ? $ga_id : false);
                 
                 $GLOBALS['smarty']->assign('SECTION_NAME', 'receipt');
                 $content = $GLOBALS['smarty']->fetch('templates/content.receipt.php');
