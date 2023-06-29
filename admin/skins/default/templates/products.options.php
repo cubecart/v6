@@ -62,9 +62,6 @@
          <script type="text/javascript">
             {if isset($OPTION_TYPE_JSON)}var select_data = {$OPTION_TYPE_JSON}{/if}
          </script>
-         <div class="form_control">
-            <input type="submit" class="button" value="{$LANG.common.save}">
-         </div>
       </div>
       <div id="attributes" class="tab_content">
          <h3>{$LANG.catalogue.title_option_attributes}</h3>
@@ -128,9 +125,6 @@
          </fieldset>
          {/if}
          {/foreach}
-         <div class="form_control">
-            <input type="submit" class="button" value="{$LANG.common.save}">
-         </div>
          {else}
          <script>
             document.getElementById("select_group_id").style.display = "none";
@@ -198,13 +192,16 @@
             <div><label for="new-set-name">{$LANG.common.name}</label><span><input type="text" name="set_create[set_name]" id="new-set-name" class="textbox"></span></div>
             <div><label for="new-set-desc">{$LANG.common.description}</label><span><input type="text" name="set_create[set_description]" id="new-set-desc" class="textbox"></span></div>
          </fieldset>
-         <div class="form_control">
-            <input type="submit" class="button" value="{$LANG.common.save}">
-         </div>
       </div>
-      {include file='templates/element.hook_form_content.php'}
-      
+      {if isset($PLUGIN_TABS)}
+	      {foreach from=$PLUGIN_TABS item=tab}
+		   {$tab}
+	      {/foreach}
+	   {/if}	
+	   {include file='templates/element.hook_form_content.php'}
+      <div class="form_control">
+         <input type="submit" class="button" value="{$LANG.common.save}">
+      </div>
       <input type="hidden" name="previous-tab" id="previous-tab" value="">
-      
    </form>
 </div>
