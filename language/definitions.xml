@@ -245,7 +245,6 @@
   <group name="catalogue">
     <string name="product_not_found" introduced="6.5.2"><![CDATA[Product not found.]]></string>
     <string name="product_count" introduced="6.5.2"><![CDATA[Product Count]]></string>
-    <string name="product_count_ratio" introduced="6.5.2"><![CDATA[Primary: %s&#013;Additional: %s]]></string>
     <string name="option_type_password" introduced="6.4.11"><![CDATA[Password]]></string>
     <string name="option_type_checkbox" introduced="6.4.11"><![CDATA[Checkbox]]></string>
     <string name="option_type_datepicker" introduced="6.4.11"><![CDATA[Datepicker]]></string>
@@ -615,6 +614,8 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="primary" introduced="6.5.2"><![CDATA[Primary]]></string>
+    <string name="additional" introduced="6.5.2"><![CDATA[Additional]]></string>
     <string name="import_export" introduced="6.5.2"><![CDATA[Import/Export]]></string>
     <string name="done" introduced="6.5.2"><![CDATA[Done]]></string>
     <string name="purchases" introduced="6.5.2"><![CDATA[Purchases]]></string>

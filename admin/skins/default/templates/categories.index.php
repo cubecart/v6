@@ -26,7 +26,7 @@
 		  <td>{$LANG.common.visible}</td>
 		  <td>{$LANG.common.status}</td>
 		  <td>{$LANG.settings.category_name}</td>
-		  <td>{$LANG.catalogue.product_count}</td>
+		  <td colspan="2">{$LANG.catalogue.product_count}</td>
 		  <td>{$LANG.translate.title_translations}</td>
 		  <td>&nbsp;</td>
 		</tr>
@@ -55,7 +55,11 @@
 		    {$category.cat_name}
 		    {/if}
 	      </td>
-		  <td style="text-align:center"><abbr title="{sprintf($LANG.catalogue.product_count_ratio, $category.primary_count, $category.additional_count)}">{$category.total_count}</abbr></td>
+		  <td style="text-align:center; padding: 0 7px; font-weight: bold">{$category.total_count}</td>
+		  <td style="text-align:center; display: flex;flex-direction: row;">
+		  	<div style="width: 50px; text-align: left; font-size: 10px">{$LANG.common.primary}<br>{$LANG.common.additional}</div>
+		  	<div style="width: 15px; text-align: center; font-size: 10px">{$category.primary_count}<br>{$category.additional_count}</div>
+		  </td>
 	      <td style="text-align:center" class="language_list">
 	    	{foreach from=$category.translations item=translation}
 	  	    <a href="{$translation.edit}"><img src="language/flags/{$translation.language}.png" alt="{$translation.language}" title="{$translation.language}" class="flag"></a>
@@ -70,7 +74,7 @@
 	    </tr>
 	    {foreachelse}
 	    <tr>
-	      <td colspan="6" align="center"><strong>{$LANG.form.none}</strong></td>
+	      <td colspan="7" align="center"><strong>{$LANG.form.none}</strong></td>
 	    </tr>
 	    {/foreach}
 	  </tbody>
