@@ -491,9 +491,15 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
             }
             $lang_list = $GLOBALS['language']->listLanguages();
             if (is_array($lang_list)) {
+                $lang_skip = array();
+                if($existing = $GLOBALS['db']->select('CubeCart_email_content', array('DISTINCT' => 'language'), array('content_type' => $_GET['content_type']))) {
+                    foreach($existing as $l) {
+                        array_push($lang_skip, $l['language']);
+                    }
+                }
                 foreach ($lang_list as $langs) {
-                    ## If we are adding a translation don't show default language
-                    if (($_GET['action']=='add' && $langs['code']!==$GLOBALS['config']->get('config', 'default_language')) || $_GET['action']=='edit') {
+                    ## If we are adding a translation don't show if it exists alreadt
+                    if (($_GET['action']=='add' && !in_array($langs['code'], $lang_skip)) || $_GET['action']=='edit') {
                         $langs['selected'] = ($langs['code'] == $data['language']) ? ' selected="selected"' : '';
                         $smarty_data['languages'][] = $langs;
                     }
