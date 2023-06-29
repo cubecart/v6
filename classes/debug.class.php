@@ -507,7 +507,13 @@ class Debug
     {
         $message = "[<strong>Exception</strong>] \t".$e->getFile().":".$e->getLine()." - ".$e->getMessage();
         $this->_errors[] = $message;
-        $this->_writeErrorLog($message, 'Exception');
+        $backtrace = $e->getTrace();
+        ob_start();
+        array_walk($backtrace, function($a){ if(!empty($a['line'])) {print $a['function']."() (".basename($a['file']).":".$a['line'].")\n";}});
+        $backtrace = ob_get_contents();
+        ob_end_clean(); 
+        if (empty($backtrace)) $backtrace = 'No Backtrace.';
+        $this->_writeErrorLog($message, 'Exception', $backtrace);
     }
 
     /**
