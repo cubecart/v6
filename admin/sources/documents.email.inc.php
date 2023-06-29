@@ -641,7 +641,7 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
     $GLOBALS['smarty']->assign('TEMPLATE_CREATE', currentPage(null, array('action' => 'create', 'type' => 'template')));
     // Importer
     $import = glob(CC_ROOT_DIR.'/language/email_*');
-    if ($import) {
+    if ($import !== false && is_array($import)) {
         foreach ($import as $source) {
             if (preg_match(Language::EMAIL_FILE, basename($source), $match)) {
                 $emails[$match[1]] = basename($source);
