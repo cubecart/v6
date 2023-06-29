@@ -615,7 +615,7 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
-    <string name="import_export" introduced="6.5.2"><![CDATA[Import / Export]]></string>
+    <string name="import_export" introduced="6.5.2"><![CDATA[Import/Export]]></string>
     <string name="done" introduced="6.5.2"><![CDATA[Done]]></string>
     <string name="purchases" introduced="6.5.2"><![CDATA[Purchases]]></string>
     <string name="created" introduced="6.5.2"><![CDATA[Created]]></string>
@@ -1249,7 +1249,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="test_email" introduced="5.0.0"><![CDATA[Recipient Email]]></string>
     <string name="title_content_create" introduced="5.0.0"><![CDATA[Add Email Content Translation]]></string>
     <string name="title_content_html" introduced="5.0.0"><![CDATA[HTML Content]]></string>
-    <string name="title_content_manage" introduced="5.0.0"><![CDATA[Import / Export Email Contents]]></string>
+    <string name="title_content_manage" introduced="5.0.0"><![CDATA[Import/Export Email Contents]]></string>
     <string name="title_content_text" introduced="5.0.0"><![CDATA[Plain Text Content]]></string>
     <string name="title_content_update" introduced="5.0.0"><![CDATA[Edit Email Content]]></string>
     <string name="title_contents" introduced="5.0.0"><![CDATA[Email Contents]]></string>
