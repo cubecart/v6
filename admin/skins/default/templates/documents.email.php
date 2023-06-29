@@ -81,9 +81,8 @@
   </div>
 
   <div id="email_import" class="tab_content">
+  	<h3>{$LANG.email.title_content_manage}</h3>
 	{if isset($EMAIL_IMPORT)}
-	<h3>{$LANG.email.title_content_manage}</h3>
-
 	<fieldset><legend>{$LANG.common.import}</legend>
 	  <p>{$LANG.email.help_email_import}</p>
 	  <div>
@@ -94,7 +93,6 @@
 	  </div>
 	</fieldset>
 	{/if}
-
 	{if isset($EMAIL_EXPORTS)}
 	<fieldset><legend>{$LANG.common.export}</legend>
 	  <p>{$LANG.email.help_email_export}</p>

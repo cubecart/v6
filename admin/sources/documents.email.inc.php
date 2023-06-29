@@ -440,7 +440,7 @@ if (isset($_POST['content']) && Admin::getInstance()->permissions('documents', C
 }
 
 ###########################################################
-
+$smarty_data = array();
 if (isset($_GET['action']) && isset($_GET['type'])) {
     switch (strtolower($_GET['type'])) {
     case 'content':
@@ -592,7 +592,7 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
 } else {
     $GLOBALS['main']->addTabControl($lang['email']['title_email_contents'], 'email_contents');
     $GLOBALS['main']->addTabControl($lang['email']['title_email_templates'], 'email_templates');
-    $GLOBALS['main']->addTabControl($lang['common']['import'], 'email_import');
+    $GLOBALS['main']->addTabControl($lang['common']['import_export'], 'email_import');
     // List Contents
     if (is_array($email_types)) {
         $lang_list = $GLOBALS['language']->listLanguages();
