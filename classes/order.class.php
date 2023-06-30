@@ -1508,6 +1508,14 @@ class Order
             $record['gateway'] = $this->_basket['gateway'];
         }
 
+        if (($orderNotes = $GLOBALS['session']->get(null,'OrderNotes')) !== false) {
+            foreach ($orderNotes as $note_source => $note_msg) {
+                if ($this->addNote($this->_order_id, $note_source.':'.$note_msg)) {
+                    $GLOBALS['session']->set($note_source,null,'OrderNotes');
+                }
+            }
+        }
+
         foreach ($GLOBALS['hooks']->load('class.order.order_summary') as $hook) {
             include $hook;
         }
