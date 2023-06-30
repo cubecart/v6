@@ -428,7 +428,7 @@ class SEO
      */
     public function getRedirects($type, $item_id)
     {
-        if(ctype_digit($item_id) && !empty($type)) {
+        if(ctype_digit((string)$item_id) && !empty($type)) {
             return $GLOBALS['db']->select('CubeCart_seo_urls', false, array('type'=> $type, 'item_id' => $item_id, 'redirect' => '>0'), false, false, false, false);
         }
         return false;
