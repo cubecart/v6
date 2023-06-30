@@ -928,7 +928,7 @@ class Database_Contoller
                             }
                         }
                         if (isset($or) && is_array($or)) {
-                            $where[] = implode(' OR ', $or);
+                            $where[] = '('.implode(' OR ', $or).')';
                             unset($or);
                         }
                     } else {
