@@ -440,3 +440,20 @@ a.grey {
         margin: 3px 5px 0 5px;
     }
 }
+@keyframes apply_changes {
+    0% {
+      background-color: #e9e9e9;
+    }
+    50% {
+      background-color: #bababa;
+    }
+    100% {
+      background-color: #e9e9e9;
+    }
+}
+#apply_coupon.animate {
+    background: #e9e9e9;
+    animation-name: apply_changes;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}

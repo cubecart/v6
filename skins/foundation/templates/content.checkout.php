@@ -27,7 +27,7 @@
                   <input name="coupon" id="coupon" type="text" maxlength="25">
                </div>
                <div class="small-3 medium-4 columns">
-                  <button type="submit" name="update" class="postfix nomarg nopad secondary" value="{$LANG.common.apply}"><svg class="icon"><use xlink:href="#icon-refresh"></use></svg> {$LANG.common.apply}</button>
+                  <button type="submit" name="update" class="postfix nomarg nopad secondary" value="{$LANG.common.apply}" id="apply_coupon"><svg class="icon"><use xlink:href="#icon-refresh"></use></svg> {$LANG.common.apply}</button>
                </div>
             </div>
          </div>

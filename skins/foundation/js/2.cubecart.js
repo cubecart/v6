@@ -1,7 +1,13 @@
 ;
 var validation_ini = {};
 jQuery(document).ready(function() {
-
+    $('input#coupon').on('input',function(e){
+        if($(this).val()!=='') {
+            $('#apply_coupon').addClass('animate');
+        } else {
+            $('#apply_coupon').removeClass('animate');
+        }
+    });
     $('.nopaste').on("cut copy paste",function(e) {
         e.preventDefault();
     });
