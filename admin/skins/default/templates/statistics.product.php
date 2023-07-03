@@ -60,13 +60,16 @@
     <thead>
       <tr>
         <th>{$LANG.orders.customer_name}</th>
+        <th>{$LANG.common.email}</th>
         <th class="text-center">{$LANG.common.purchases}</th>
       </tr>
     </thead>
     <tbody>
       {foreach from=$CUSTOMERS item=c}
       <tr>
-        <td><a href="?_g=customers&action=edit&customer_id={$c.customer_id}">{$c.first_name} {$c.last_name}</a></td><td class="text-center">{$c.purchases}</td>
+        <td><a href="?_g=customers&action=edit&customer_id={$c.customer_id}">{$c.first_name} {$c.last_name}</a></td>
+        <td><a href="mailto:{$c.email}">{$c.email}</a></td>
+        <td class="text-center">{$c.purchases}</td>
       </tr>
       {/foreach}
     </tbody>
