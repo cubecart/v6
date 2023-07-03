@@ -72,5 +72,5 @@
   {else}
   	{$LANG.form.none}
   {/if}
-  <div>{$PAGINATION_EMAIL_LOG}</div>
+  <div class="pagination">{$PAGINATION_EMAIL_LOG}</div>
 </div>

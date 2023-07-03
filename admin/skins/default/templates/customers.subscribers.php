@@ -59,7 +59,7 @@
             </tr>
          </tfoot>
       </table>
-      <p>{$PAGINATION}</p>
+      <div class="pagination">{$PAGINATION}</div>
       {else}
       <div>{$LANG.form.none}</div>
       {/if}

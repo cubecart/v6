@@ -59,7 +59,7 @@
 		</tr>
 	  </tfoot>
 	</table>
-	<div>{$PAGINATION}</div>
+	<div class="pagination">{$PAGINATION}</div>
   	<p>
 		{if $DOWNLOAD}<input type="submit" name="download" class="submit" value="{$LANG.common.export}">{/if}
 		{foreach from=$EXPORT item=module}

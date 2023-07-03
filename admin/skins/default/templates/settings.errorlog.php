@@ -55,7 +55,7 @@
 	  </table>
   
   </form>
-  <div>{$PAGINATION_ADMIN_ERROR_LOG}</div>
+  <div class="pagination">{$PAGINATION_ADMIN_ERROR_LOG}</div>
 </div>
 <div id="system_error_log" class="tab_content">
   <h3>{$LANG.settings.title_system_error_log}</h3>
@@ -116,5 +116,5 @@
 	  </table>
   
   </form>
-  <div>{$PAGINATION_SYSTEM_ERROR_LOG}</div>
+  <div class="pagination">{$PAGINATION_SYSTEM_ERROR_LOG}</div>
 </div>

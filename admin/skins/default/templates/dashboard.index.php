@@ -211,7 +211,7 @@
             </tr>
          </tfoot>
       </table>
-      <div>{$ORDER_PAGINATION}</div>
+      <div class="pagination">{$ORDER_PAGINATION}</div>
    </div>
    
    </form>
@@ -245,7 +245,7 @@
       </div>
       
    </form>
-   <div>{$REVIEW_PAGINATION}</div>
+   <div class="pagination">{$REVIEW_PAGINATION}</div>
 </div>
 {/if}
 {if isset($EXTENSION_UPDATES)}
@@ -310,7 +310,7 @@
          {/foreach}
       </tbody>
    </table>
-   <div>{$STOCK_PAGINATION}</div>
+   <div class="pagination">{$STOCK_PAGINATION}</div>
 </div>
 {/if}
 {if isset($PLUGIN_TABS)}

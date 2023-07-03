@@ -32,7 +32,7 @@
 	{/foreach}
 	</tbody>
   </table>
-  <div>{$PAGINATION_ADMIN_ACCESS}</div>
+  <div class="pagination">{$PAGINATION_ADMIN_ACCESS}</div>
 </div>
 {/if}
 
@@ -65,7 +65,7 @@
 	{/foreach}
 	</tbody>
   </table>
-  <div>{$PAGINATION_ADMIN_ACTIVITY}</div>
+  <div class="pagination">{$PAGINATION_ADMIN_ACTIVITY}</div>
 </div>
 {/if}
 
@@ -92,6 +92,6 @@
 	  {/foreach}
 	</tbody>
   </table>
-  <div>{$PAGINATION_CUSTOMER}</div>
+  <div class="pagination">{$PAGINATION_CUSTOMER}</div>
 </div>
 {/if}
