@@ -36,12 +36,12 @@
   	{/if}
 {/for}
 
-{if ($page < $total)}
-  {$params[$var_name] = $page + 1}
-  <a href="{$current}{http_build_query($params)}{$anchor}">&gt;</a>
-{/if}
-
 {if ($i <= $total)}
   {$params[$var_name] = $total}
   &hellip; <a href="{$current}{http_build_query($params)}{$anchor}">{$total}</a>
+{/if}
+
+{if ($page < $total)}
+  {$params[$var_name] = $page + 1}
+  <a href="{$current}{http_build_query($params)}{$anchor}">&gt;</a>
 {/if}
