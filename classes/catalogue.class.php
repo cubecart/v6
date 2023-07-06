@@ -145,7 +145,7 @@ class Catalogue
     {
         if ($this->_category_count) {
             //Pagination
-            $catalogue_products_per_page = $GLOBALS['gui']->itemsPerPage('products', 'perpage');
+            $catalogue_products_per_page = $GLOBALS['gui']->itemsPerPage();
             if(ctype_digit((string)$page)) {
                 if (($page * $catalogue_products_per_page) > $this->_category_count) {
                     $new_page = (int)ceil($this->_category_count / $catalogue_products_per_page);

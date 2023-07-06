@@ -576,17 +576,21 @@ class GUI
      * @param string $page_key
      * @return int
      */
-    public function itemsPerPage($list_id = 'products', $page_key = 'perpage')
+    public function itemsPerPage($list_id = 'products', $page_key = 'perpage', $list_amount = 'default')
     {
         if (isset($_GET[$page_key]) && (int)$_GET[$page_key]>0) {
             return (int)$_GET[$page_key];
         }
-
         if (isset($this->_skin_data['layout'][$list_id]['perpage'])) {
-            foreach ($this->_skin_data['layout'][$list_id]['perpage'] as $amount => $default) {
-                if ($default) {
-                    return (int)$amount;
+            ksort($this->_skin_data['layout'][$list_id]['perpage'], SORT_NUMERIC);
+            if($list_amount == 'default') {
+                foreach ($this->_skin_data['layout'][$list_id]['perpage'] as $amount => $default) {
+                    if ($default) return (int)$amount;
                 }
+            } else if ($list_amount == "last") {
+                return (int)array_key_last($this->_skin_data['layout'][$list_id]['perpage']);
+            } else if ($list_amount == "first") { // for some future reason
+                return (int)array_key_first($this->_skin_data['layout'][$list_id]['perpage']);
             }
         }
 

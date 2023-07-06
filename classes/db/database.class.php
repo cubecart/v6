@@ -503,8 +503,7 @@ class Database_Contoller
     {
         if($page == 'all') {
             $page = 1;
-            $skin_data = GUI::getInstance()->getSkinData();
-            $per_page = (isset($skin_data['layout']['products']['perpage']) && is_array($skin_data['layout']['products']['perpage']) && !empty($skin_data['layout']['products']['perpage'])) ? array_key_last($skin_data['layout']['products']['perpage']) : 96;
+            $per_page = GUI::getInstance()->itemsPerPage('products', 'perpage', 'last');
         }
         if ($page == 1) {
             $this->page_one[] = $var_name;
