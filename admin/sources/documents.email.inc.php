@@ -15,7 +15,6 @@ if (!defined('CC_INI_SET')) {
 }
 Admin::getInstance()->permissions('documents', CC_PERM_READ, true);
 
-
 $email_types = array(
     'account.password_recovery' => array(
         'description' => $lang['email']['title_macro_user_password'],
@@ -259,12 +258,12 @@ foreach ($GLOBALS['hooks']->load('admin.documents.email.macros') as $hook) {
 
 $GLOBALS['gui']->addBreadcrumb($lang['email']['title_email'], currentPage(array('action', 'content_id', 'content_type', 'template_id')));
 
-if (isset($_POST['import']) && !empty($_POST['import'])) {
+if (isset($_POST['import']) && !empty($_POST['import']) && Admin::getInstance()->permissions('documents', CC_PERM_EDIT, true)) {
     if (preg_match(Language::EMAIL_FILE, $_POST['import']) && $GLOBALS['language']->importEmail($_POST['import'])) {
         $GLOBALS['main']->successMessage($lang['email']['notify_import']);
         httpredir(currentPage());
     }
-} elseif (isset($_POST['export']) && !empty($_POST['export'])) {
+} elseif (isset($_POST['export']) && !empty($_POST['export']) && Admin::getInstance()->permissions('documents', CC_PERM_READ, true)) {
     if (preg_match(Language::LANG_REGEX, $_POST['export'])) {
         ## Export language to XML...
         if (($emails = $GLOBALS['db']->select('CubeCart_email_content', false, array('language' => $_POST['export']))) !== false) {
@@ -448,7 +447,7 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
         switch (strtolower($_GET['action'])) {
         case 'delete':
             ## Delete content
-            if (isset($_GET['content_id'])) {
+            if (isset($_GET['content_id']) && is_numeric($_GET['content_id']) && Admin::getInstance()->permissions('documents', CC_PERM_DELETE)) {
                 ## ONLY allow delete if there is more than one translation in the system
                 $content_type = $GLOBALS['db']->select('CubeCart_email_content', array('content_type'), array('content_id' => (int)$_GET['content_id']));
                 $count = $GLOBALS['db']->numrows('SELECT * FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_email_content` WHERE `content_type` = \''.(string)$content_type[0]['content_type'].'\'');
