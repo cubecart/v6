@@ -251,6 +251,13 @@ function fmSearch(mode, term, token) {
     });
  }
 $(document).ready(function() {
+    
+    $(".editable_phrase").on("focusout", function() {
+        var phrase_id = $(this).attr('rel');
+        if($(this).val() == $('#default_' + phrase_id).val()) {
+            $('#string_' + phrase_id).attr("disabled", "disabled");
+        }
+    });
 
     $('.done_toggle').on("click",function() {
         var this_toggle = $(this);
