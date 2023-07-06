@@ -170,9 +170,9 @@
 		<div><label for="cust-mobile">{$LANG.address.mobile}</label><span><input type="text" name="customer[mobile]" id="cust-mobile" value="{$CUSTOMER.mobile}" class="textbox"></span></div>
 		<div><label>{$LANG.newsletter.customer_subscribed}</label><span>
 		<select name="customer[subscription_status]" id="subscription_status" class="textbox">
-		  <option value="0" {if $CUSTOMER.subscription_status.0.status=='0'}selected="selected"{/if}>{$LANG.common.no}</option>
-		  <option value="1" {if $CUSTOMER.subscription_status.0.status=='1' && $CUSTOMER.subscription_status.0.dbl_opt=='0'}selected="selected"{/if}>{$LANG.common.yes}</option>
-		  <option value="2" {if $CUSTOMER.subscription_status.0.status=='1' && $CUSTOMER.subscription_status.0.dbl_opt=='1'}selected="selected"{/if}>{$LANG.common.yes} ({$LANG.newsletter.dbl_opt_in})</option>
+		  <option value="0" {if $CUSTOMER.subscription_status.status=='0'}selected="selected"{/if}>{$LANG.common.no}</option>
+		  <option value="1" {if $CUSTOMER.subscription_status.status=='1' && $CUSTOMER.subscription_status.dbl_opt=='0'}selected="selected"{/if}>{$LANG.common.yes}</option>
+		  <option value="2" {if $CUSTOMER.subscription_status.status=='1' && $CUSTOMER.subscription_status.dbl_opt=='1'}selected="selected"{/if}>{$LANG.common.yes} ({$LANG.newsletter.dbl_opt_in})</option>
 		</select></span></div>
 		<div><label>{$LANG.common.ip_address}</label><span>{$CUSTOMER.ip_address}</span></div>
 	  </fieldset>
