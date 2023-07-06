@@ -337,8 +337,8 @@ if ( (isset($_GET['action']) || isset($_POST['multi-action'])) && Admin::getInst
         exit;
     }
 
-    if ( (($_GET['action'] == 'delete' && isset($_GET['customer_id']) ) || ($_POST['multi-action'] == 'delete' && !empty($_POST['multi-customer']))) && Admin::getInstance()->permissions('customers', CC_PERM_DELETE) ) {
-        if (!empty($_POST['multi-customer']) ) {
+    if ((($_GET['action'] == 'delete' && isset($_GET['customer_id']) ) || (isset($_POST['multi-action']) && $_POST['multi-action'] == 'delete' && isset($_POST['multi-customer']) && !empty($_POST['multi-customer']))) && Admin::getInstance()->permissions('customers', CC_PERM_DELETE)) {
+        if (isset($_POST['multi-customer']) && !empty($_POST['multi-customer'])) {
             foreach ($_POST['multi-customer'] as $list_item) {
                 $customer_list[] = (int)$list_item;
             }

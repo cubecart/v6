@@ -181,7 +181,7 @@ if (isset($_GET['action'])) {
     foreach ($incexc_choices as $index => $incexc_type) {
         $smarty_data['incexc'][] = array(
             'index'  => $index,
-            'selected' => ($incexc == $index) ? 'selected="selected"' : '',
+            'selected' => (isset($incexc) && $incexc == $index) ? 'selected="selected"' : '',
             'title'  => $lang['catalogue'][$incexc_type]
         );
     }

@@ -484,6 +484,7 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
                 ## Content to translate content
                 $content = $GLOBALS['db']->select('CubeCart_email_content', array('content_type', 'language', 'subject', 'content_html', 'content_text'), array('content_type' => (string)$_GET['content_type'], 'language' => $GLOBALS['config']->get('config', 'default_language')));
                 $data  = $content[0];
+                $existing = $GLOBALS['db']->select('CubeCart_email_content', array('DISTINCT' => 'language'), array('content_type' => $_GET['content_type']));
                 $breadcrumb = $lang['common']['create'].': '.$_GET['content_type'];
             } else {
                 ## Back to main list
@@ -492,7 +493,7 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
             $lang_list = $GLOBALS['language']->listLanguages();
             if (is_array($lang_list)) {
                 $lang_skip = array();
-                if($existing = $GLOBALS['db']->select('CubeCart_email_content', array('DISTINCT' => 'language'), array('content_type' => $_GET['content_type']))) {
+                if (!empty($existing)) {
                     foreach($existing as $l) {
                         array_push($lang_skip, $l['language']);
                     }
