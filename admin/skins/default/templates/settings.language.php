@@ -153,7 +153,7 @@
                   {/if}
                </td>
                <td class="actions">
-                  {if $string.placeholders}<a href="javascript: alert('{$string.name}: {$string.placeholders}'); void(0);" id="placeholder_{$string.name}" title="{$string.name}: {$string.placeholders}"><i class="fa fa-info-circle"></i></a>{/if}
+                  {if $string.placeholders}<a href="javascript: alert('`{$string.name}`: {$string.placeholders}'); void(0);" id="placeholder_{$string.name}" title="`{$string.name}`: {$string.placeholders}"><i class="fa fa-info-circle"></i></a>{/if}
                   <input type="hidden" id="default_{$string.name}" value="{$string.default}">
                   <a href="#" class="revert" id="revert_{$string.name}" rel="{$string.name}" title="{$LANG.common.revert}"><i class="fa fa-clock-o"></i></a>
                </td>
