@@ -450,11 +450,14 @@ if ( (isset($_GET['action']) || isset($_POST['multi-action'])) && Admin::getInst
                     $membership_list[$membership['membership_id']] = $membership;
                 }
             }
-            $customer['subscription_status'] = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', false, array('email' => $customer['email']));
+            $customer['subscription_status'] = array('status' => '0', 'dbl_opt' => '0');
+            if(($cns = $GLOBALS['db']->select('CubeCart_newsletter_subscriber', false, array('email' => $customer['email']))) !== false) {
+                $customer['subscription_status'] = $cns[0];
+            }
         }
     } else {
         $GLOBALS['smarty']->assign('ADD_EDIT_CUSTOMER', $lang['customer']['title_customer_add']);
-        $customer = (isset($_POST['customer']) && is_array($_POST['customer'])) ? $_POST['customer'] : array('subscription_status' => false);
+        $customer = (isset($_POST['customer']) && is_array($_POST['customer'])) ? $_POST['customer'] : array('subscription_status' => array('status' => '0', 'dbl_opt' => '0'));
         // address interface
         $GLOBALS['smarty']->assign('DISPLAY_ADDRESS_LIST', true);
     }
