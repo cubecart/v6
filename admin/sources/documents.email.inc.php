@@ -501,7 +501,13 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
                 foreach ($lang_list as $langs) {
                     ## If we are adding a translation don't show if it exists alreadt
                     if (($_GET['action']=='add' && !in_array($langs['code'], $lang_skip)) || $_GET['action']=='edit') {
-                        $langs['selected'] = ($langs['code'] == $data['language']) ? ' selected="selected"' : '';
+                        if($langs['code'] == $data['language']) {
+                            $GLOBALS['smarty']->assign('LANGUAGES', $langs['title']);
+                            $GLOBALS['smarty']->assign('ASSIGNED_LANG', array('name' => $langs['title'], 'code' => $langs['code']));
+                            $langs['selected'] = ' selected="selected"';
+                        } else {
+                            $langs['selected'] = '';
+                        }
                         $smarty_data['languages'][] = $langs;
                     }
                 }
