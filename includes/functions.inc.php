@@ -173,6 +173,18 @@ function chmod_writable()
 }
 
 /**
+ * Count 
+ *
+ * @param string $value
+ * @return int
+ */
+function countPlaceholders($value){
+    $pattern = "/(?<!%)%{1}(?!%)/";
+    preg_match_all($pattern, $value, $matches);
+    if(is_array($matches)) return count($matches[0]);
+  }
+
+/**
  * Custom product optionsarray sorting
  *
  * @param array $a

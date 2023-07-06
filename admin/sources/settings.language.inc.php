@@ -183,14 +183,16 @@ if (isset($_GET['export'])) {
                 $default = (isset($strings[$name])) ? $strings[$name] : $data['value'];
                 $defined = (isset($strings[$name]) || isset($custom[$name])) ? true : false;
                 $value = (isset($custom[$name])) ? $custom[$name] : $default;
+                $countPlaceholders = countPlaceholders($value);
                 $assign = array(
                     'name'  => $name,
                     'type'  => $type,
                     'default' => htmlspecialchars($default, ENT_COMPAT, 'UTF-8', false),
                     'value'  => htmlspecialchars($value, ENT_COMPAT, 'UTF-8', false),
                     'defined' => (int)$defined,
-                    'multiline' =>  detectEol($value),
-                    'disabled' => ($default!==$value) ? false : true,
+                    'multiline' => detectEol($value),
+                    'placeholders' => (!empty($countPlaceholders) ? "There must be $countPlaceholders placeholder".(($countPlaceholders > 1) ? "s. Unless using n\$ position specifiers, their existing order in the string must stay that way." : ".") : null),
+                    'disabled' => ($default!==$value) ? false : true
                 );
                 $smarty_data['strings'][] = $assign;
             }
