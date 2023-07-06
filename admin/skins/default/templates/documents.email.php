@@ -116,9 +116,11 @@
 	{if $LANGUAGES}
 	<fieldset>
 	  <div><label for="content_subject">{$LANG.common.subject}</label><span><input type="text" name="content[subject]" id="content_subject" value="{$CONTENT.subject}" class="textbox"></span></div>
+	  {if empty($CONTENT.content_id)}
 	  <div><label for="content_language">{$LANG.common.language}</label><span><select name="content[language]" id="content_language" class="textbox">
 	  {foreach from=$LANGUAGES item=language}<option value="{$language.code}"{$language.selected}>{$language.title}</option>{/foreach}
 	  </select></span></div>
+	  {/if}
 	</fieldset>
 	{else}
 	<p>{$LANG.email.install_master_lang}</p> 
