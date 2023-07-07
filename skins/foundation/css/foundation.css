@@ -3237,7 +3237,9 @@ ul.pagination {
         background: #2ba6cb; }
   ul.pagination li {
     display: block;
-    float: left; }
+    float: left;
+    border-radius: 3px;
+    background-color: whitesmoke }
 
 /* Pagination centred wrapper */
 .pagination-centered {

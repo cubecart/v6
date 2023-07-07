@@ -9,15 +9,15 @@
  * Email:  sales@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
-<ul class="pagination" id="element-paginate">
+<ul class="pagination right" id="element-paginate">
+   {if ($page > 1)}
+   {$params[$var_name] = $page-1}
+   <li class="arrow"><a href="{$current}{http_build_query($params)}{$anchor}"><svg class="icon"><use xlink:href="#icon-angle-left"></use></svg> {$LANG.common.previous}</a></li>
+   {/if}
    {if ($page >= $show-1)}
    {$params[$var_name] = 1}
    <li><a href="{$current}{http_build_query($params)}{$anchor}">1</a></li>
    <li class="unavailable">&hellip;</li>
-   {/if}
-   {if ($page > 1)}
-   {$params[$var_name] = $page-1}
-   <li class="arrow"><a href="{$current}{http_build_query($params)}{$anchor}"><svg class="icon"><use xlink:href="#icon-angle-double-left"></use></svg></a></li>
    {/if}
    {for $i = 1; $i <= $total; $i++}
    {if ($i < $page - floor($show / 2))}
@@ -40,6 +40,6 @@
    {/if}
    {if ($page < $total)}
    {$params[$var_name] = $page + 1}
-   <li class="arrow"><a href="{$current}{http_build_query($params)}{$anchor}"><svg class="icon"><use xlink:href="#icon-angle-double-right"></use></svg></a></li>
+   <li class="arrow"><a href="{$current}{http_build_query($params)}{$anchor}">{$LANG.common.next} <svg class="icon"><use xlink:href="#icon-angle-right"></use></svg></a></li>
    {/if}
 </ul>

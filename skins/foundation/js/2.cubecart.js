@@ -464,39 +464,41 @@ jQuery(document).ready(function() {
         });
     });
 
-    if($('#ccScrollCat').length > 0) {
-        var cat_pages = parseInt($('#ccScrollCat').text());
-        if ($.cookie('ccScroll')) {
-            var ccScrollHistory = $.parseJSON($.cookie("ccScroll"));
-            var query = true;
-            if(cat_pages in ccScrollHistory) {
-                if(localStorage.hasOwnProperty('category')) {
-                    var cat = localStorage.getItem('category');
-                    cat = JSON.parse(cat);
-                    if(cat.catId==cat_pages) {
-                        query = false;
+    if ($(window).width() < 640) {
+        if($('#ccScrollCat').length > 0) {
+            var cat_pages = parseInt($('#ccScrollCat').text());
+            if ($.cookie('ccScroll')) {
+                var ccScrollHistory = $.parseJSON($.cookie("ccScroll"));
+                var query = true;
+                if(cat_pages in ccScrollHistory) {
+                    if(localStorage.hasOwnProperty('category')) {
+                        var cat = localStorage.getItem('category');
+                        cat = JSON.parse(cat);
+                        if(cat.catId==cat_pages) {
+                            query = false;
+                        }
                     }
-                }
-                if(query) {
-                    for (i = 1; i < ccScrollHistory[cat_pages]; i++) {
-                        $('.ccScroll-next:last').trigger("click");
+                    if(query) {
+                        for (i = 1; i < ccScrollHistory[cat_pages]; i++) {
+                            $('.ccScroll-next:last').trigger("click");
+                        }
+                    } else {
+                        $('#ccScroll').html(cat.html);
                     }
-                } else {
-                    $('#ccScroll').html(cat.html);
+                    $('html, body').animate({ scrollTop: ccScrollHistory['loc'] }, 'slow');
                 }
-                $('html, body').animate({ scrollTop: ccScrollHistory['loc'] }, 'slow');
             }
         }
-    }
 
-    var duration = 500;
-    $(window).scroll(function() {
-        if ($(this).scrollTop() > 400) {
-            $('.back-to-top').fadeIn(duration);
-        } else {
-            $('.back-to-top').fadeOut(duration);
-        }
-    });
+        var duration = 500;
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 400) {
+                $('.back-to-top').fadeIn(duration);
+            } else {
+                $('.back-to-top').fadeOut(duration);
+            }
+        });
+    }
 
     $('.back-to-top').click(function(event) {
         event.preventDefault();
