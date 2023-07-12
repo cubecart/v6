@@ -63,10 +63,12 @@ class Newsletter
             foreach($rows as $row) {
                 if($this->validateEmail($row['email'])==2) {
                     if($GLOBALS['db']->delete('CubeCart_newsletter_subscriber', array('subscriber_id' => $row['subscriber_id']))) {
+                        $this->_subscriberLog($row['email'], 'Invalid email address deleted from mailing list.');
                         $return['deleted']++;
                     }
                 } else if($this->validateEmail($row['email'])==0) {
                     if($GLOBALS['db']->update('CubeCart_newsletter_subscriber', array('status' => 0), array('subscriber_id' => $row['subscriber_id']))) {
+                        $this->_subscriberLog($row['email'], 'No valid MX record found. Status set to disabled.');
                         $return['unsubscribed']++;
                     }
                 }
