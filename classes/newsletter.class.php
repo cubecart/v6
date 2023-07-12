@@ -65,7 +65,7 @@ class Newsletter
                     if($GLOBALS['db']->delete('CubeCart_newsletter_subscriber', array('subscriber_id' => $row['subscriber_id']))) {
                         $return['deleted']++;
                     }
-                } else if($this->validateEmail($row['email'])===false) {
+                } else if($this->validateEmail($row['email'])==0) {
                     if($GLOBALS['db']->update('CubeCart_newsletter_subscriber', array('status' => 0), array('subscriber_id' => $row['subscriber_id']))) {
                         $return['unsubscribed']++;
                     }
@@ -348,7 +348,6 @@ class Newsletter
             return $this->_validated_domain[$domain];
         }
         return 2;
-        
     }
 
     /**
