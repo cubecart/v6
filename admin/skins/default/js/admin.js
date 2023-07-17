@@ -564,8 +564,8 @@ $(document).ready(function() {
     if($("div.dropzone").length) {
         Dropzone.autoDiscover = false;
         var dropzone_url = $("div#dropzone_url").text();
-        $("div.dropzone").dropzone({url: dropzone_url, resizeWidth: 2000, resizeMimeType: 'image/jpeg', acceptedFiles: 'image/gif,image/jpeg,image/png,image/webp', renameFile: function (file) {
-            return file.name.substr(0, file.name.lastIndexOf(".")) + ".jpg";
+        $("div.dropzone").dropzone({url: dropzone_url, resizeWidth: 2000, resizeMimeType: 'image/webp', acceptedFiles: 'image/gif,image/jpeg,image/png,image/webp', renameFile: function (file) {
+            return file.name.substr(0, file.name.lastIndexOf(".")) + ".webp";
         }, init: function () {
                 this.on("complete", function (file) {
                     if($("div#imageset.fm-filelist").length) {
