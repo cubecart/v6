@@ -16,7 +16,6 @@ class GD
     private $_abort = false;
 
     private $_gdImageMax;
-    private $_gdThumbMax;
     private $_gdJpegQuality;
     private $_gdTargetDir;
     private $_gdWebpSupport;
@@ -27,7 +26,7 @@ class GD
     private $_gdImageSource;
     private $_gdImageOutput;
 
-    private $_gdUploaded = false;
+    private $_gdImageArray = array();
 
     ##############################################
 
