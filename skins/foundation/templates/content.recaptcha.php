@@ -27,7 +27,7 @@
             </script>
             {/if}
         {else if $RECAPTCHA=='4'}
-            {include file='templates/element.hcaptcha.php'}
+            {include file='templates/element.hcaptcha.php' ga_fid=$ga_fid}
         {/if}
     </div>
 </div>
