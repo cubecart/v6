@@ -462,6 +462,20 @@ if ( (isset($_GET['action']) || isset($_POST['multi-action'])) && Admin::getInst
         $GLOBALS['smarty']->assign('DISPLAY_ADDRESS_LIST', true);
     }
 
+    ## Get Languages
+    if (($languages = $GLOBALS['language']->listLanguages()) !== false) {
+        foreach ($languages as $code => $option) {
+            if(isset($customer['language']) && !empty($customer['language'])) {
+                $comparator = $customer['language'];
+            } else {
+                $comparator = $GLOBALS['config']->get('config', 'default_language');
+            }
+            $option['selected'] = ($code == $comparator) ? ' selected="selected"' : '';
+            $smarty_data['languages'][] = $option;
+        }
+        $GLOBALS['smarty']->assign('LANGUAGES', $smarty_data['languages']);
+    }
+
     if (($groups = $GLOBALS['db']->select('CubeCart_customer_group', false, false, array('group_name' => 'ASC'))) !== false) {
         $GLOBALS['smarty']->assign('ALL_CUSTOMER_GROUPS', $groups);
         foreach ($groups as $group) {
@@ -508,6 +522,7 @@ if ( (isset($_GET['action']) || isset($_POST['multi-action'])) && Admin::getInst
         'type'   => $GLOBALS['db']->column_sort('type', $lang['customer']['customer_type'], 'sort', $current_page, $_GET['sort']),
         'email'   => $GLOBALS['db']->column_sort('email', $lang['common']['email'], 'sort', $current_page, $_GET['sort']),
         'no_orders'  => $GLOBALS['db']->column_sort('order_count', $lang['customer']['order_count'], 'sort', $current_page, $_GET['sort']),
+        'language'  => $GLOBALS['db']->column_sort('language', $lang['common']['language'], 'sort', $current_page, $_GET['sort'])
     );
 
     foreach ($GLOBALS['hooks']->load('admin.customer.table_head_sort') as $hook) {
@@ -530,6 +545,7 @@ if ( (isset($_GET['action']) || isset($_POST['multi-action'])) && Admin::getInst
         $signinas = !CC_SSL && $GLOBALS['config']->get('config', 'ssl')=='1' ? true : false;
         foreach ($customers as $customer) {
             $orders = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id'), array('customer_id' => $customer['customer_id']));
+            $customer['language'] = file_exists(CC_ROOT_DIR.'/language/flags/'.$customer['language'].'.png') ? $customer['language'] : 'unknown';
             $customer['order_count'] = ($orders) ? count($orders) : 0;
             $customer['registered'] = formatTime($customer['registered']);
             $customer['signinas_url'] = ($signinas) ? "#" : currentPage(array('page'), array('action' => 'signinas', 'customer_id' => $customer['customer_id']));

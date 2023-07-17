@@ -38,6 +38,7 @@
 		  <td>{$THEAD.status}</td>
 		  <td>{$THEAD.type}</td>
 		  <td>{$THEAD.customer}</td>
+		  <td>{$THEAD.language}</td>
 		  <td>{$THEAD.email}</td>
 		  <td>{$THEAD.registered}</td>
 		  <td>{$THEAD.no_orders}</td>
@@ -57,6 +58,7 @@
 		  	{/if}
 		  </td>
 		  <td><a href="{$customer.edit}">{$customer.last_name}, {$customer.first_name}</a> {if !empty($customer.groups)}({$customer.groups}){/if}</td>
+		  <td class="text-center"><a href="https://www.brooky.com/v6/admin.php?_g=settings&node=language&language={$customer.language}"><img src="language/flags/{$customer.language}.png" alt="{$customer.language}" /></a></td> 
 		  <td>{$customer.email}</td>
 		  <td>{$customer.registered}</td>
 		  <td style="text-align:center">
@@ -162,6 +164,10 @@
 		    </select>
 		  </span>
 		</div>
+		<div><label for="language">{$LANG.common.language}</label><span><select name="customer[language]" id="language" class="textbox">
+            {foreach from=$LANGUAGES item=language}<option value="{$language.code}"{$language.selected}>{$language.title}</option>{/foreach}
+            </select></span>
+         </div>
 		<div><label for="cust-notes">{$LANG.common.notes} ({$LANG.common.private})</label><span><textarea name="customer[notes]" id="cust-notes" class="textbox">{$CUSTOMER.notes}</textarea></span></div>
 	  </fieldset>
 	  <fieldset><legend>{$LANG.account.contact_details}</legend>
