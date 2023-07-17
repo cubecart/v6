@@ -183,7 +183,8 @@ class Module
                     $GLOBALS['smarty']->assign('MODULE', $basesettings);
                     // Assign checked & selects
                     if (is_array($this->_settings)) {
-                        foreach ($this->_settings as $setting => $value) {
+                        $filter_result = array_filter($this->_settings, 'is_scalar');  // removes all NULLs
+                        foreach ($filter_result as $setting => $value) {
                             $value = str_replace(array('.', '-'), '_', $value);
                             $GLOBALS['smarty']->assign('SELECT_'.$setting.'_'.$value, 'selected="selected"');
                             $GLOBALS['smarty']->assign('CHECKED_'.$setting.'_'.$value, 'checked="checked"');
