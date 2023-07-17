@@ -1092,6 +1092,7 @@ class GUI
         $enabled = $GLOBALS['config']->get('languages');
         if (is_array($lang_list)) {
             foreach ($lang_list as $language) {
+                if(!isset($language['code'])) continue;
                 if (preg_match(Language::LANG_REGEX, $language['code'], $match) && isset($match[2])) {
                     if (isset($enabled[$language['code']]) && !$enabled[$language['code']]) {
                         unset($lang_list[$language['code']]);
@@ -1102,6 +1103,7 @@ class GUI
             }
             if (count($lang_list) > 1) {
                 foreach ($lang_list as $language) {
+                    if(!isset($language['code'])) continue;
                     $url = '';
                     if(!empty($language['domain'])) {
                         $url = currentPage();
