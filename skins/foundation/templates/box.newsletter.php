@@ -29,7 +29,9 @@
          </div>
       </div>
       <div class="hide" id="newsletter_recaptcha">
+      {if $RECAPTCHA!=='4'}
       {include file='templates/content.recaptcha.php' ga_fid='Newsletter'}
+      {/if}
       </div>
    </form>
    <div class="hide" id="validate_email">{$LANG.common.error_email_invalid}</div>

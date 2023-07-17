@@ -1,0 +1,1 @@
+<div class="h-captcha" data-sitekey="{$CONFIG.recaptcha_public_key}"></div>

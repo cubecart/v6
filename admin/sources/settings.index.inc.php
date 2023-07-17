@@ -446,7 +446,7 @@ $select_options = array(
     'basket_tax_by_delivery'   => array($lang['address']['billing_address'], $lang['address']['delivery_address']),
     'proxy'     => null,
     'catalogue_sale_mode' => array($lang['common']['disabled'], $lang['settings']['sales_per_product'], $lang['settings']['sales_percentage']),
-    'recaptcha' => array(0 => $lang['common']['off']." (".$lang['common']['not_recommended'].")", 2 => "reCaptcha v2 - Checkbox", 3 => "reCaptcha v2 - Invisible (".$lang['common']['recommended'].")"),
+    'recaptcha' => array(0 => $lang['common']['off']." (".$lang['common']['not_recommended'].")", 2 => "reCaptcha v2 - Checkbox", 3 => "reCaptcha v2 - Invisible (".$lang['common']['recommended'].")", 4 => "hCaptcha"),
     'seo_metadata'   => array($lang['settings']['seo_meta_option_disable'], $lang['settings']['seo_meta_option_merge'], $lang['settings']['seo_meta_option_replace']),
     'basket_allow_non_invoice_address' => null,
     'catalogue_latest_products'   => null,
@@ -471,7 +471,8 @@ $select_options = array(
 $current_skin_path = CC_ROOT_DIR.'/skins/'.$GLOBALS['config']->get('config', 'skin_folder').'/templates/';
 $gr_compatibility = array(
     'v2' => file_exists($current_skin_path.'content.recaptcha.head.php'),
-    'invisible' => file_exists($current_skin_path.'element.recaptcha.invisible.php')
+    'invisible' => file_exists($current_skin_path.'element.recaptcha.invisible.php'),
+    'h' => file_exists($current_skin_path.'element.hcaptcha.php')
 );
 $GLOBALS['smarty']->assign('gr_compatibility', $gr_compatibility);
 $GLOBALS['smarty']->assign('w3w_compatibility', file_exists($current_skin_path.'element.w3w.php'));

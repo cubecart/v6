@@ -746,28 +746,52 @@ class GUI
         if ($this->recaptchaRequired()) {
             $recaptcha['error'] = null;
             $recaptcha['confirmed'] = false;
-
-            if (empty($_POST['g-recaptcha-response'])) {
-                $recaptcha['error'] = $GLOBALS['language']->form['verify_human_fail'];
-            } else {
-                $g_data = array(
-                    'secret' => $GLOBALS['config']->get('config', 'recaptcha_secret_key'),
-                    'response' => $_POST['g-recaptcha-response'],
-                    'remoteip' => get_ip_address()
-                );
-                $request = new Request('www.google.com', '/recaptcha/api/siteverify');
-                $request->setMethod('get');
-                $request->cache(false);
-                $request->setSSL();
-                $request->setData($g_data);
-
-                $response = $request->send();
-                $g_result = json_decode($response);
-                
-                if ($g_result->success) {
-                    $recaptcha['confirmed'] = true;
-                } else {
+            if($GLOBALS['config']->get('config', 'recaptcha')=='4') {
+                if (empty($_POST['h-captcha-response'])) {
                     $recaptcha['error'] = $GLOBALS['language']->form['verify_human_fail'];
+                } else {
+                    $h_data = array(
+                        'secret' => $GLOBALS['config']->get('config', 'recaptcha_secret_key'),
+                        'response' => $_POST['g-recaptcha-response']
+                    );
+                    $request = new Request('hcaptcha.com', '/siteverify');
+                    $request->setMethod('get');
+                    $request->cache(false);
+                    $request->setSSL();
+                    $request->setData($h_data);
+
+                    $response = $request->send();
+                    $h_result = json_decode($response);
+
+                    if ($g_result->success) {
+                        $recaptcha['confirmed'] = true;
+                    } else {
+                        $recaptcha['error'] = $GLOBALS['language']->form['verify_human_fail'];
+                    }
+                }
+            } else {
+                if (empty($_POST['g-recaptcha-response'])) {
+                    $recaptcha['error'] = $GLOBALS['language']->form['verify_human_fail'];
+                } else {
+                    $g_data = array(
+                        'secret' => $GLOBALS['config']->get('config', 'recaptcha_secret_key'),
+                        'response' => $_POST['g-recaptcha-response'],
+                        'remoteip' => get_ip_address()
+                    );
+                    $request = new Request('www.google.com', '/recaptcha/api/siteverify');
+                    $request->setMethod('get');
+                    $request->cache(false);
+                    $request->setSSL();
+                    $request->setData($g_data);
+
+                    $response = $request->send();
+                    $g_result = json_decode($response);
+                    
+                    if ($g_result->success) {
+                        $recaptcha['confirmed'] = true;
+                    } else {
+                        $recaptcha['error'] = $GLOBALS['language']->form['verify_human_fail'];
+                    }
                 }
             }
             $GLOBALS['session']->set('', $recaptcha, 'recaptcha');

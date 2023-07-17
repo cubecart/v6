@@ -2012,6 +2012,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="dbl_opt" introduced="6.2.0"><![CDATA[Marketing Double Opt-In]]></string>
     <string name="reCAPTCHA_v2_na" introduced="6.1.6"><![CDATA[Warning: It doesn't look like your current skin is compatible with reCAPTCHA v2.]]></string>
     <string name="reCAPTCHA_invisible_na" introduced="6.1.6"><![CDATA[Warning: It doesn't look like your current skin is compatible with Invisible reCAPTCHA.]]></string>
+    <string name="hCAPTCHA_na" introduced="6.5.2"><![CDATA[Warning: It doesn't look like your current skin is compatible with hCAPTCHA.]]></string>
     <string name="enabled_for_all" introduced="6.1.2"><![CDATA[Enabled for all customers]]></string>
     <string name="enabled_for_logged_in" introduced="6.1.2"><![CDATA[Enabled for logged in customers only]]></string>
     <string name="log_retention" introduced="6.1.0"><![CDATA[Log Retention]]></string>
@@ -2183,10 +2184,10 @@ This email is sent from the store's master email address but it is possible to r
     <string name="proxy_pass" introduced="5.0.0"><![CDATA[Proxy Password]]></string>
     <string name="proxy_port" introduced="5.0.0"><![CDATA[Proxy Port]]></string>
     <string name="proxy_user" introduced="5.0.0"><![CDATA[Proxy Username]]></string>
-    <string name="recaptcha_enable" introduced="5.0.0"><![CDATA[Enable <a href="https://www.google.com/recaptcha/intro/index.html" target="_blank">Google reCAPTCHA</a>]]></string>
-    <string name="new_recaptcha_note" introduced="6.0.0"><![CDATA[Site &amp; secret keys are provided by <a href="https://www.google.com/recaptcha/admin" target="_blank">Google</a>.]]></string>
-    <string name="recaptcha_public_key" introduced="6.0.0"><![CDATA[reCAPTCHA Site Key]]></string>
-    <string name="recaptcha_secret_key" introduced="6.0.0"><![CDATA[reCAPTCHA Secret Key]]></string>
+    <string name="recaptcha_enable" introduced="5.0.0"><![CDATA[Enable Bot Protection]]></string>
+    <string name="new_recaptcha_note" introduced="6.0.0"><![CDATA[Site &amp; secret keys are provided by <a href="https://www.google.com/recaptcha/admin" target="_blank">Google</a> or <a href="https://www.hcaptcha.com" target="_blank">hCapture</a>.]]></string>
+    <string name="recaptcha_public_key" introduced="6.0.0"><![CDATA[Site Key]]></string>
+    <string name="recaptcha_secret_key" introduced="6.0.0"><![CDATA[Secret Key]]></string>
     <string name="repair" introduced="5.0.0"><![CDATA[Repair]]></string>
     <string name="sales_items_count" introduced="5.0.0"><![CDATA[Number of sale items to display]]></string>
     <string name="sales_mode" introduced="5.0.0"><![CDATA[Sales Mode]]></string>

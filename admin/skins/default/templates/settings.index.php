@@ -149,10 +149,13 @@
          <div><label for="recaptcha_secret_key">{$LANG.settings.recaptcha_secret_key}</label><span><input name="config[recaptcha_secret_key]" id="recaptcha_secret_key" class="textbox" value="{$CONFIG.recaptcha_secret_key}"></span></div>
          <div class="clear important"><strong>{$LANG.settings.new_recaptcha_note}</strong>
             {if !$gr_compatibility.v2}
-            <br><strong>{$LANG.settings.reCAPTCHA_v2_na}</strong>
+            <div><strong>{$LANG.settings.reCAPTCHA_v2_na}</strong></div>
             {/if}
             {if !$gr_compatibility.invisible}
-            <br><strong>{$LANG.settings.reCAPTCHA_invisible_na}</strong>
+            <div><strong>{$LANG.settings.reCAPTCHA_invisible_na}</strong></div>
+            {/if}
+            {if !$gr_compatibility.h}
+            <div><strong>{$LANG.settings.hCAPTCHA_na}</strong></div>
             {/if}
          </div>
       </fieldset>
