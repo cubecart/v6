@@ -5,7 +5,7 @@
 <script src="https://js.hcaptcha.com/1/api.js?onload=hCaptchaCallback{$ga_fid}&render=explicit" async defer></script>
 <script type="text/javascript">{literal}
 var hCaptchaCallback{/literal}{$ga_fid}{literal} = function () {
-    var widgetID = hcaptcha.render('hCaptchaField{/literal}{$ga_fid}{literal}', { sitekey: '{/literal}{$CONFIG.recaptcha_public_key}{literal}' });
+    var hCaptcha{/literal}{$ga_fid}{literal} = hcaptcha.render('hCaptchaField{/literal}{$ga_fid}{literal}', { sitekey: '{/literal}{$CONFIG.recaptcha_public_key}{literal}' });
   };
 {/literal}</script>
 {/if}
