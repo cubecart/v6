@@ -195,7 +195,7 @@
          <div><label for="hook_priority">{$LANG.hooks.priority}</label><span><input type="text" name="hook[priority]" id="hook_priority" class="textbox number" value="{$HOOK.priority}"></span></div>
          <div>
             <label for="filepath">{$LANG.hooks.path_to_file}</label><span><input type="text" name="hook[filepath]" id="filepath" class="textbox" value="{$HOOK.filepath}"></span>
-            <br><small>{$LANG.hooks.path_to_file_desc|replace:'%s':$HOOK.trigger}.php</small>
+            <br><small>{sprintf($LANG.hooks.path_to_file_desc,$HOOK.trigger)}.php</small>
          </div>
          <input type="hidden" name="hook[hook_id]" value="{$HOOK.hook_id}">
       </fieldset>

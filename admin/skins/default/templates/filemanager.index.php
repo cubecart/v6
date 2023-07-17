@@ -35,7 +35,7 @@
 			<span class="actions">
 			{if NOT is_null($folder.delete)}
 			{if $FILMANAGER_MODE == FileManager::FM_FILETYPE_IMG}<input type="checkbox" value="{$folder.value}" class="multi_delete" name="multi_delete[]">{/if}
-			<a href="{$folder.delete}" class="delete right" title="{$LANG.notification.confirm_delete_folder|replace:'%s':$folder.name}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
+			<a href="{$folder.delete}" class="delete right" title="{sprintf($LANG.notification.confirm_delete_folder,$folder.name)}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 			{/if}
 			</span>
 			{if $FILMANAGER_MODE == FileManager::FM_FILETYPE_DL}<input type="checkbox" value="{$folder.value}" class="multi_delete" name="multi_delete[]"> <i class="fa fa-folder" aria-hidden="true" alt="{$folder.name}"></i>{/if}
@@ -56,7 +56,7 @@
 		{if $file.select_button}
 		<a href="{$file.master_filepath}" class="select{if $SOURCE=='options'} options{/if}" rel="{$file.file_id}"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a>
 		{else}
-		<a href="{$file.delete}" class="delete right" title="{$LANG.notification.confirm_delete_file|replace:'%s':$file.filename}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
+		<a href="{$file.delete}" class="delete right" title="{sprintf($LANG.notification.confirm_delete_file,$file.filename)}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		<a href="{$file.edit}" class="edit right" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
 		{/if}
 		</span>

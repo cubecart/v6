@@ -255,10 +255,10 @@
 		<div><label>{$LANG.orders.shipping_date}</label><span>{$order.ship_date}</span></div>
 		{/if}
 		{if !empty($order.ship_method)}
-		<div><label>{$LANG.orders.shipping_method}</label><span>{$order.ship_method|replace:'_':' '}</span></div>
+		<div><label>{$LANG.orders.shipping_method}</label><span>{str_replace('_',' ',$order.ship_method)}</span></div>
 		{/if}
 		{if !empty($order.ship_product)}
-		<div><label>{$LANG.orders.shipping_product}</label><span>{$order.ship_product|replace:'_':' '}</span></div>
+		<div><label>{$LANG.orders.shipping_product}</label><span>{str_replace('_',' ',$order.ship_product)}</span></div>
 		{/if}
 		{if !empty($order.ship_tracking)}
 		<div><label>{$LANG.orders.shipping_tracking}</label><span>{$order.ship_tracking}</span></div>

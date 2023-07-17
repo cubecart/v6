@@ -50,7 +50,7 @@
 {if !empty($DELIVERY.method)}
 <div class="row">
   <div class="small-6 medium-3 columns">{$LANG.catalogue.delivery_method}:</div>
-  <div class="small-6 medium-9 columns">{$DELIVERY.method|replace:'_':' '}{if !empty($DELIVERY.product)} ({$DELIVERY.product|replace:'_':' '}){/if}</div>
+  <div class="small-6 medium-9 columns">{str_replace('_',' ',$DELIVERY.method)}{if !empty($DELIVERY.product)} ({str_replace('_',' ',$DELIVERY.product)}){/if}</div>
 </div>
 {/if}
 {if !empty($DELIVERY.url)}
@@ -99,7 +99,7 @@
       </tr>
       <tr>
          <td colspan="2"></td>
-         <td>{if !empty($SUM.ship_method)}{$SUM.ship_method|replace:'_':' '}{if !empty($SUM.ship_product)} ({$SUM.ship_product}){/if}{else}{$LANG.basket.shipping}{/if}</td>
+         <td>{if !empty($SUM.ship_method)}{str_replace('_',' ',$SUM.ship_method)}{if !empty($SUM.ship_product)} ({$SUM.ship_product}){/if}{else}{$LANG.basket.shipping}{/if}</td>
          <td class="text-right">{$SUM.shipping}</td>
       </tr>
       {foreach from=$TAXES item=tax}

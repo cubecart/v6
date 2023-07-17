@@ -36,8 +36,8 @@
    <div  class="small-12 medium-10 columns">
       <button type="submit" value="{$LANG.catalogue.add_to_basket}" class="button postfix">{$LANG.catalogue.add_to_basket}</button>
    </div>
-   {if $PRODUCT.minimum_quantity>1}<div><small>{$LANG.catalogue.min_purchase_quantity|replace:'%s':$PRODUCT.minimum_quantity}</small></div>{/if}
-   {if $PRODUCT.maximum_quantity gte $PRODUCT.minimum_quantity}<div><small>{$LANG.catalogue.max_purchase_quantity|replace:'%s':$PRODUCT.maximum_quantity}</small></div>{/if}
+   {if $PRODUCT.minimum_quantity>1}<div><small>{sprintf($LANG.catalogue.min_purchase_quantity,$PRODUCT.minimum_quantity)}</small></div>{/if}
+   {if $PRODUCT.maximum_quantity gte $PRODUCT.minimum_quantity}<div><small>{sprintf($LANG.catalogue.max_purchase_quantity,$PRODUCT.maximum_quantity)}</small></div>{/if}
    {/if}
 </div>
 {else}

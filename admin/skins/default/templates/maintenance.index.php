@@ -95,7 +95,7 @@
 		<span><input type="hidden" name="compress" id="compress" class="toggle" value="1"></span>
 	  </div>
 	  <div>
-		<label for="db_data">{$LANG.maintain.db_3rdparty|replace:'%s':$CONFIG.dbprefix}</label>
+		<label for="db_data">{sprintf($LANG.maintain.db_3rdparty,$CONFIG.dbprefix)}</label>
 		<span><input type="hidden" name="db_3rdparty" id="db_3rdparty" class="toggle" value="0"></span>
 	  </div>
 	</fieldset>
@@ -141,7 +141,7 @@
   		<li class="orange"><strong>Disclaimer:</strong><br>Please use this tool at your own risk. This upgrade tool may fail if the web server isn't able to write to file or if PHP hasn't got enough resources to complete the task. Please also note that any core code customisation will be overwritten. Other more reliable upgrade methods are available. <a href="https://support.cubecart.com/hc/en-gb/articles/360003794198-How-do-I-upgrade-from-CubeCart-v6-to-latest-v6-" target="_blank">Upgrade Documentation</a></li>
   	</ul>
   {if $CONFIG.auto_upgrade_disabled}
-	<p>{$LANG.maintain.auto_upgrade_disabled|replace:'{$EMAIL}':$CONFIG.auto_upgrade_disabled}</p>
+	<p>{str_replace('{$EMAIL}', $CONFIG.auto_upgrade_disabled,$LANG.maintain.auto_upgrade_disabled)}</p>
   {else}
   {if $OUT_OF_DATE}
   <p><strong>{$OUT_OF_DATE}</strong></p>

@@ -128,7 +128,7 @@
    </div>
    <div id="gdpr" class="tab_content">
    <h3>{$LANG.search.gdpr_tools}</h3>
-   <p>{$LANG.orders.delete_older_than|replace:'%s':'<input  type="number" min="1" value="" class="number-center" name="month_purge">'} <input type="submit" class="delete submit_confirm tiny" title="{$LANG.notification.confirm_continue}" value="{$LANG.common.go}"></p>
+   <p>{sprintf($LANG.orders.delete_older_than,'<input  type="number" min="1" value="" class="number-center" name="month_purge">')} <input type="submit" class="delete submit_confirm tiny" title="{$LANG.notification.confirm_continue}" value="{$LANG.common.go}"></p>
    </div>
    {/if}
    {if isset($DISPLAY_FORM)}

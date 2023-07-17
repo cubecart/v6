@@ -526,8 +526,9 @@ $(document).ready(function() {
         var time_out_text = $("#val_time_out_text").text();
         var parent = $(this).parent();
         var path = $(this).attr("data-path");
-
-        time_out_text = time_out_text.replace("%s", "30");
+        
+        time_out_text = time_out_text.replace("%s", "30"); // Backward compatible
+        time_out_text = time_out_text.replace("%1$s", "30");
         parent.html('<i class="fa fa-spinner fa-spin fa-fw"></i>');
 
         $.ajax({

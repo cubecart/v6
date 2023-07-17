@@ -304,7 +304,7 @@
                {/if}
             </td>
             <td width="30">
-            <a href="?_g=products&action=edit&product_id={$warn.product_id}{if $warn.M_use_stock==1}#Options{/if}" class="edit"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a><a href="?_g=products&delete={$warn.product_id}&dashboard=1" class="delete" title="{$LANG.notification.confirm_delete_product|replace:'%s':{$warn.name}}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
+            <a href="?_g=products&action=edit&product_id={$warn.product_id}{if $warn.M_use_stock==1}#Options{/if}" class="edit"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a><a href="?_g=products&delete={$warn.product_id}&dashboard=1" class="delete" title="{sprintf($LANG.notification.confirm_delete_product,$warn.name)}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
             </td>
          </tr>
          {/foreach}

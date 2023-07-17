@@ -38,7 +38,7 @@
 			<select name="country[{$country.id}][status]" id="{$country.id}_status">
 				<option value="0"{if $country.status=='0'} selected="selected"{/if}>{$LANG.common.disabled}</option>
 				<option value="1"{if $country.status=='1'} selected="selected"{/if}>{$LANG.common.enabled} ({$LANG.country.zone} {$LANG.common.required})</option>
-				<option value="2"{if $country.status=='2'} selected="selected"{/if}>{$LANG.common.enabled} ({$LANG.country.zone} {$LANG.common.optional|replace:array('(',')'):''})</option>
+				<option value="2"{if $country.status=='2'} selected="selected"{/if}>{$LANG.common.enabled} ({$LANG.country.zone} {str_replace(array('(',')'),''$LANG.common.optional)})</option>
 				<option value="3"{if $country.status=='3'} selected="selected"{/if}>{$LANG.common.enabled} ({$LANG.country.zone} {$LANG.common.disabled})</option>
 			</select>
 			</td>
@@ -54,7 +54,7 @@
   	  	   	  <option value="">{$LANG.form.with_selected}</option>
   	  	      <option value="delete">{$LANG.common.delete}</option>
   	  	      <option value="1">{$LANG.common.enabled} ({$LANG.country.zone} {$LANG.common.required})</option>
-							<option value="2">{$LANG.common.enabled} ({$LANG.country.zone} {$LANG.common.optional|replace:array('(',')'):''})</option>
+							<option value="2">{$LANG.common.enabled} ({$LANG.country.zone} {str_replace(array('(',')'),'',$LANG.common.optional)})</option>
 							<option value="3">{$LANG.common.enabled} ({$LANG.country.zone} {$LANG.common.disabled})</option>
   	  	      <option value="0">{$LANG.common.disable}</option>
   	  	    </select>
@@ -80,7 +80,7 @@
 			<div><label for="country-status">{$LANG.common.status}</label><span><select name="new_country[status]" id="country-status">
 				<option value="0">{$LANG.common.disabled}</option>
 				<option value="1">{$LANG.common.enabled} ({$LANG.country.zone} {$LANG.common.required})</option>
-				<option value="2">{$LANG.common.enabled} ({$LANG.country.zone} {$LANG.common.optional|replace:array('(',')'):''})</option>
+				<option value="2">{$LANG.common.enabled} ({$LANG.country.zone} {str_replace(array('(',')'),'',$LANG.common.optional)})</option>
 				<option value="3">{$LANG.common.enabled} ({$LANG.country.zone} {$LANG.common.disabled})</option>
 			</select>
 			</div>
