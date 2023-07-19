@@ -27,10 +27,10 @@ if (Admin::getInstance()->superUser()) {
     $count = $GLOBALS['db']->getFoundRows();
     if (is_array($request_log)) {
         foreach ($request_log as $log) {
-            $error_code_fd = substr($log['response_code'],0,1);
+            $error_code_fd = (isset($log['response_code']) && !empty($log['response_code'])) ? (int)substr($log['response_code'],0,1) : 0;
             if(!empty($log['error'])) {
                 $error = htmlspecialchars($log['error']);
-            } elseif($log['response_code']>0 && in_array($error_code_fd, array('4', '5'))) {
+            } elseif($log['response_code']>0 && in_array($error_code_fd, array(4, 5))) {
                 $error = true;
             } else {
                 $error = false;
