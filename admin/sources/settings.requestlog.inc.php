@@ -30,7 +30,7 @@ if (Admin::getInstance()->superUser()) {
             $error_code_fd = (isset($log['response_code']) && !empty($log['response_code'])) ? (int)substr($log['response_code'],0,1) : 0;
             if(!empty($log['error'])) {
                 $error = htmlspecialchars($log['error']);
-            } elseif($log['response_code']>0 && in_array($error_code_fd, array(4, 5))) {
+            } elseif($error_code_fd > 0 && in_array($error_code_fd, array(4, 5))) {
                 $error = true;
             } else {
                 $error = false;
