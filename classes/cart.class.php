@@ -1048,7 +1048,7 @@ class Cart
     public function load()
     {
         // Load previously saved basket
-        if (($this->basket = $GLOBALS['session']->get('', 'basket')) !== false) {
+        if (is_array($this->basket = $GLOBALS['session']->get('', 'basket'))) {
             return true;
         }
 
