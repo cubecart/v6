@@ -29,6 +29,7 @@ class Order
 
     private $_email_enabled   = true;
     private $_email_admin_enabled = true;
+    private $_email_details = array();
 
     private $_skip_order_complete_email = false;
 
