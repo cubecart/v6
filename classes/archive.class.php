@@ -39,12 +39,6 @@ class Archive
      */
     private $_enabled = false;
     /**
-     * Error message
-     *
-     * @var string
-     */
-    private $_error  = false;
-    /**
      * Zip class class
      *
      * @var class

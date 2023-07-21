@@ -24,7 +24,6 @@ class Catalogue
     private $_category_products  = 0;
     private $_category_status_prod_id = array();
     private $_categoryData;
-    private $_productData;
     private $_productHash = array();
     private $_pathElements;
     private $_category_translations = array();

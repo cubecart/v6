@@ -21,23 +21,15 @@
 class Tax
 {
     public $_tax_country;
-
     public $_tax_table_add = array();
     public $_tax_table_inc = array();
     public $_tax_table_applied = array();
     public $_tax_table = array();
-
     public $_currency_vars = array();
-
     public $_total_tax_add = 0;
     public $_total_tax_inc = 0;
     private $_adjust_tax	= 1;
-
     public $_tax_classes;
-
-    private $_country_id = null;
-    private $_old_country_id = null;
-
     public static $_instance;
 
     ##############################################
@@ -284,8 +276,6 @@ class Tax
     public function loadTaxes($country_id)
     {
         if (!empty($country_id)) {
-            $this->_country_id = $country_id;
-
             // Fetch new vars
             $query = "SELECT T.tax_name AS type_name, D.display, D.name, R.id, R.type_id, R.tax_percent, R.goods, R.shipping, R.county_id FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_tax_rates AS R, ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_tax_details AS D, ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_tax_class AS T, ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_geo_country AS C WHERE D.id = R.details_id AND C.numcode = R.country_id AND R.type_id = T.id AND D.status = 1 AND R.active = 1 AND R.country_id = ".$country_id;
             $taxes = $GLOBALS['db']->query($query);

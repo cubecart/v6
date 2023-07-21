@@ -22,20 +22,15 @@ class Request
 {
     private $_curl;
     private $_fp;
-
     private $_request_url;
     private $_request_port;
-
     private $_proxy_host   = false;
     private $_proxy_port   = false;
     private $_proxy_username  = false;
     private $_proxy_password  = false;
-
     private $_send_headers   = true;
-
     private $_request_cache   = false;
     private $_request_hash   = null;
-
     private $_request_headers  = array();
     private $_response_headers  = '';
     private $_add_request_headers  = array();
@@ -43,19 +38,13 @@ class Request
     private $_request_body   = null;
     private $_request_path = '';
     private $_request_return  = true;
-    private $_request_auth   = null;
-
     private $_request_method  = 'post';
     private $_request_protocol  = 'http';
     private $_fsock_protocol = 'tcp';
     private $_request_http_version = '1.0';
     private $_request_timeout  = 15;
-
-    private $_request_useragent;
     private $_request_return_headers;
-
     private $_curl_options  = array();
-    private $_debug    = array();
     private $_log    = true;
 
     private $_success_responses = array(200, 201, 202, 203, 204, 205, 206, 207, 208, 226);

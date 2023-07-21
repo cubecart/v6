@@ -21,7 +21,6 @@ class FileManager
     private $_manage_root;
     private $_recently_uploaded = array();
     private $_sub_dir;
-    private $_sendfile = false;
     private $_max_upload_image_size = 350000;
     private $_md5_filesize_limit = 10485760;
 

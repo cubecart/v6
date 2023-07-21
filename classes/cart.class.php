@@ -58,12 +58,6 @@ class Cart
      */
     private $_shipping   = 0;
     /**
-     * Shipping discount
-     *
-     * @var float
-     */
-    private $_shipping_discount = 0;
-    /**
      * Cart subtotal
      *
      * @var float
@@ -75,12 +69,6 @@ class Cart
      * @var float
      */
     private $_total    = 0;
-    /**
-     * Cart taxes added (not used in core)
-     *
-     * @var float
-     */
-    private $_total_tax_add = 0;
     /**
      * Cart weight
      *
@@ -759,7 +747,7 @@ class Cart
         }
 
         if (!empty($this->basket['contents']) && is_array($this->basket['contents'])) {
-            $this->_discount = $this->_subtotal = $this->_total_tax_add = $this->_weight = 0;
+            $this->_discount = $this->_subtotal = $this->_weight = 0;
             // Include inline shipping maths for Per Category Shipping
             $ship_by_cat = $GLOBALS['config']->get('Per_Category');
 

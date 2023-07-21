@@ -22,8 +22,6 @@ class Newsletter
 {
     private $_mailer;
 
-    private $_html;
-    private $_text;
     private $_validated_domain = array();
 
     public $_newsletter_id;
@@ -142,8 +140,6 @@ class Newsletter
         if ($newsletter_id && is_numeric($newsletter_id)) {
             if (($contents = $GLOBALS['db']->select('CubeCart_newsletter', false, array('newsletter_id' => (int)$newsletter_id))) !== false) {
                 $content = $contents[0];
-                $this->_html = $content['content_html'];
-                $this->_text = $content['content_text'];
 
                 if (!empty($content['sender_name'])) {
                     $this->_mailer->FromName = $content['sender_name'];
