@@ -989,9 +989,11 @@ class GUI
         }
         if (Config::getInstance()->get('config', 'cookie_dialogue') && !isset($_COOKIE['accept_cookies'])) {
             if ($privacy = $GLOBALS['db']->select('CubeCart_documents', 'doc_id', array('doc_privacy' => '1'))) {
-                $dialogue = str_replace(array('%1$s','%PRIVACY_URL%'), array($GLOBALS['config']->get('config', 'store_name'), $GLOBALS['seo']->buildURL('doc', $privacy[0]['doc_id'])), $GLOBALS['language']->notification['cookie_dialogue']);
+                $dialogue = str_replace('%1$s', $GLOBALS['config']->get('config', 'store_name'), $GLOBALS['language']->notification['cookie_dialogue']);
+                $dialogue = str_replace('%s', $GLOBALS['config']->get('config', 'store_name'), $dialogue);
+                $dialogue = str_replace('%PRIVACY_URL%', $GLOBALS['seo']->buildURL('doc', $privacy[0]['doc_id']), $dialogue);
             } else {
-                $dialogue = sprintf('%1$s', $GLOBALS['config']->get('config', 'store_name'));
+                $dialogue = str_replace(array('%s','%1$s'), $GLOBALS['config']->get('config', 'store_name'), $GLOBALS['language']->notification['cookie_dialogue']);
                 $dialogue = preg_replace('/<\/?a[^>]*>/', '', $dialogue);
             }
             $GLOBALS['smarty']->assign('COOKIE_DIALOGUE_TEXT', $dialogue);
