@@ -1628,3 +1628,6 @@ ul.char_filter li {
     list-style-type: none;
 }
 ul.char_filter li.selected {}
+.cke_dialog_ui_checkbox_input {
+    opacity: 1!important;
+}
