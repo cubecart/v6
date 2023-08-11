@@ -890,7 +890,7 @@ class Cubecart
             $GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->common['search'], 'index.php?_a=search');
             $GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->navigation['search_results'], currentPage());
         } else {
-            $GLOBALS['catalogue']->searchCatalogue($_GET['cat_id'], $page, $catalogue_products_per_page);
+            $GLOBALS['catalogue']->searchCatalogue((int)$_GET['cat_id'], $page, $catalogue_products_per_page);
             if ($_GET['cat_id'] == 'sale') {
                 $GLOBALS['catalogue']->setCategory('cat_name', $GLOBALS['language']->navigation['saleitems']);
                 $GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->navigation['saleitems'], currentPage());
