@@ -14,17 +14,17 @@ $GLOBALS['main']->addTabControl($lang['settings']['release_notes'], 'general');
 $GLOBALS['gui']->addBreadcrumb($lang['settings']['release_notes'], currentPage(array('node')), true);
 
 $features = array(
-    '3304' => 'Back office 404 log. Very useful to discover required redirects and improve SEO.',
-	'3131' => 'Back office category list now shows product count.',
-	'3229' => 'Escape key now closes back office search pull out.',
-	'3243' => 'Memory added to back office list size (Products, Orders, Customers).',
+    '3304' => 'Back-office 404 log. Discover pages that are not found and then use the existing redirect tool to fix them.',
+	'3131' => 'Back-office category list now shows product count.',
+	'3229' => 'Escape key now closes back-office search pull out.',
+	'3243' => 'Memory added to back-office list size (Products, Orders, Customers).',
 	'3275' => 'Administrator log to show more detailed info. e.g. The item that was edited.',
-	'3299' => 'Improved back office request log including headers.',
-    '3331' => 'Save &amp; Reload added to category edit add/page',
-    '3332' => 'Google Universal Analytics removed infavour of new <a href="https://www.cubecart.com/extensions/plugins/google-analytics-for-ecommerce" target="_blank">extension</a>.',
-    '3346' => 'Back office customer list to show their chosen language.',
-    '3347' => '<a href="https://www.hcaptcha.com" target="_blank">hCaptcha</a> officilaiiy supported as an alternative to Google reCAPTCHA. This requires skin updates.',
-    '3348' => 'Back office now logs actions of cleaning subscriber log.'
+	'3299' => 'Improved back-office request log including headers.',
+    '3331' => '&quot;Save &amp; Reload&quot; button added to category edit add/page.',
+    '3332' => 'Google Universal Analytics removed in favour of new <a href="https://www.cubecart.com/extensions/plugins/google-analytics-for-ecommerce" target="_blank">extension</a>.',
+    '3346' => 'Back-office customer list to show their chosen language.',
+    '3347' => '<a href="https://www.hcaptcha.com" target="_blank">hCaptcha</a> officially supported as an alternative to Google reCAPTCHA. This requires skin updates.',
+    '3348' => 'Back-office now logs actions of cleaning subscriber log.'
 );
 $notes = '';
 $page_content = $GLOBALS['main']->newFeatures($_GET['node'], $features, 112, $notes);
