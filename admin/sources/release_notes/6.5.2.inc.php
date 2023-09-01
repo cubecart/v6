@@ -27,5 +27,5 @@ $features = array(
     '3348' => 'Back office now logs actions of cleaning subscriber log.'
 );
 $notes = '';
-$page_content = $GLOBALS['main']->newFeatures($_GET['node'], $features, 111, $notes);
+$page_content = $GLOBALS['main']->newFeatures($_GET['node'], $features, 112, $notes);
 ?>
