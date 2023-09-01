@@ -821,7 +821,7 @@ class FileManager
      */
     private function formatName($name)
     {
-        return preg_replace('#[^\p{L}\p{N}\w\.\-\_]#iu', '_', $name);
+        return preg_replace('#[^\p{L}\p{N}\w\.\-\_\@]#iu', '_', $name);
     }
 
     /**
