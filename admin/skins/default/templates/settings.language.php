@@ -113,7 +113,7 @@
          {/foreach}
          </table>
          {elseif isset($SEARCH_HITS)}
-         <p>{sprinf($LANG.translate.no_phrases_found,$SEARCH_PHRASE)}</p>
+         <p>{sprintf($LANG.translate.no_phrases_found,$SEARCH_PHRASE)}</p>
          {/if}
       {/if}
       {if $SECTIONS}
