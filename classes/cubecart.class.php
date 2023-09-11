@@ -2121,7 +2121,7 @@ class Cubecart
             $uri = htmlentities($uri, ENT_QUOTES);
         
             if(!empty($uri)) {
-                if($existing = $GLOBALS['db']->select('CubeCart_404_log', false, array('uri' => $uri))) {
+                if($existing = $GLOBALS['db']->select('CubeCart_404_log', false, array('uri' => $uri), false, 1, false, false)) {
                     $warn = ($existing[0]['done'] == 1) ? 1 : 0;
                     $GLOBALS['db']->update('CubeCart_404_log', array('hits' => '+1', 'warn' => $warn), array('uri' => $uri));
                 } else {
