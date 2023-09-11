@@ -2426,7 +2426,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="last_sale" introduced="6.5.2"><![CDATA[Last Sale]]></string>
     <string name="total_sales" introduced="6.5.2"><![CDATA[Total Sales]]></string>
     <string name="sale_interval" introduced="6.5.2"><![CDATA[Avg. Sale Interval]]></string>
-    <string name="dhms" introduced="6.5.2"><![CDATA[%a days, %h hours, %i minutes and %1$s seconds]]></string>
+    <string name="dhms" introduced="6.5.2"><![CDATA[%a days, %h hours, %i minutes and %s seconds]]></string>
     <string name="email_resent" introduced="6.1.6"><![CDATA[Email with subject &quot;%1$s&quot; has been resent to %2$s.]]></string>
     <string name="email_not_resent" introduced="6.1.6"><![CDATA[Failed to resend email. Please check your <a href="?_g=settings#Advanced_Settings">settings</a>.]]></string>
     <string name="notify_sales_none" introduced="5.0.0"><![CDATA[No sales have been made.]]></string>
