@@ -2,7 +2,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO"; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_404_log` (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-  `uri` varchar(510) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `uri` varchar(510) NOT NULL,
   `hits` int UNSIGNED NOT NULL DEFAULT '1',
   `done` tinyint(1) NOT NULL DEFAULT '0',
   `warn` tinyint(1) NOT NULL DEFAULT '0',
@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_404_log` (
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `uri` (`uri`),
+  UNIQUE KEY (`uri`),
   KEY `ignore` (`ignore`),
   KEY `created` (`created`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
