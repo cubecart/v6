@@ -15,35 +15,7 @@
       {foreach from=$HEAD_JS item=js_src}
       <script type="text/javascript" src="{$js_src}?{$VERSION_HASH}"></script>
       {/foreach}
-<script type="text/javascript">
-{literal}
-window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
-d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
-_.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");
-$.src="https://v2.zopim.com/?2zg8JeryZ6qTz93mglrw2llJid6J2QEu";z.t=+new Date;$.
-type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
-{/literal}
-$zopim(function() {
-   {if $CONFIG.hide_chat=="1"}
-   $zopim.livechat.hideAll();
-   {else}
-   $zopim.livechat.button.show();
-   $zopim.livechat.setName(document.getElementById("admin_id").textContent);
-{/if}
-});
-{literal}
-function rL () {
-    var s = this.responseText=='1' ? 'online' : 'offline';
-    $zopim(function() {
-        $zopim.livechat.setStatus(s);
-    });
-}
-var oR = new XMLHttpRequest();
-oR.addEventListener("load", rL);
-oR.open("GET", "https://agent.cubecart.com");
-oR.send();
-{/literal}
-</script>
+      <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=a8467fc7-018a-4ce5-9fb4-873f6c733196"> </script>
    </head>
    <body>
       <div id="header">
