@@ -45,7 +45,7 @@
 	</table>
 	{/foreach}
 	<div class="pagination">
-		<span><strong>{$LANG.common.total}:</strong> {$TOTAL_RESULTS}</span>{$PAGINATION_REQUEST_LOG}
+		<span><strong>{$LANG.common.total}:</strong> {number_format($TOTAL_RESULTS)}</span>{$PAGINATION_REQUEST_LOG}
 	</div>
   {else}
     <p><strong>{$LANG.form.none}</strong></p>

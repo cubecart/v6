@@ -33,7 +33,7 @@
 		{/foreach}
 	  </tbody>
 	</table>
-	<div class="pagination"><span><strong>{$TOTAL_RESULTS}</strong></span>{$PAGINATION}</div>
+	<div class="pagination"><span><strong>{number_format($TOTAL_RESULTS)}</strong></span>{$PAGINATION}</div>
 	{else}
 	<p>{$LANG.catalogue.error_manufacturer_none}</p>
 	{/if}

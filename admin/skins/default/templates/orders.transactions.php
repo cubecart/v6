@@ -45,7 +45,7 @@
 	</tbody>
   </table>
   <div class="pagination">
-	<span><strong>{$TOTAL_RESULTS}</strong></span>
+	<span><strong>{number_format($TOTAL_RESULTS)}</strong></span>
 	{$PAGINATION}
   </div>
 </div>

@@ -91,7 +91,7 @@
             <tr>
                <td colspan="8">
                   <div class="pagination">
-                     <span><strong>{$LANG.common.total}:</strong> {$TOTAL_RESULTS}</span>
+                     <span><strong>{$LANG.common.total}:</strong> {number_format($TOTAL_RESULTS)}</span>
                      {$PAGINATION}&nbsp;
                   </div>
                </td>
