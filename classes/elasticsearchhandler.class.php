@@ -431,21 +431,33 @@ class ElasticsearchHandler
      * Get config
      */
     private function _getConfig($config) {
-        if(!empty($config)) {
-            $es_config = array(
-                'es_h' => $config['es_h'],  // Hostname
-                'es_u' => $config['es_u'],  // Username
-                'es_p' => $config['es_p'],  // Password
-                'es_i' => $config['es_i'],  // Index name
-                'es_v' => $config['es_v'],  // Validate SSL (bool)
-                'es_c' => $config['es_c']   // Certificate path
+        // Get config from globals.inc.php file if set 
+        if($GLOBALS['config']->has('config', 'es_h')) {
+            $this->_config = array(
+                'es_h' => $GLOBALS['config']->get('config', 'es_h'),
+                'es_u' => $GLOBALS['config']->get('config', 'es_u'),
+                'es_p' => $GLOBALS['config']->get('config', 'es_p'),
+                'es_i' => $GLOBALS['config']->get('config', 'es_i'),
+                'es_v' => $GLOBALS['config']->get('config', 'es_v'),
+                'es_c' => $GLOBALS['config']->get('config', 'es_c'),
             );
-            $fh = fopen($this->_config_file,"wa+");
-            fwrite($fh,json_encode($es_config));
-            fclose($fh);
-            $this->_config = $es_config;
         } else {
-            $this->_config = json_decode(file_get_contents($this->_config_file),true);
+            if(!empty($config)) {
+                $es_config = array(
+                    'es_h' => $config['es_h'],  // Hostname
+                    'es_u' => $config['es_u'],  // Username
+                    'es_p' => $config['es_p'],  // Password
+                    'es_i' => $config['es_i'],  // Index name
+                    'es_v' => $config['es_v'],  // Validate SSL (bool)
+                    'es_c' => $config['es_c']   // Certificate path
+                );
+                $fh = fopen($this->_config_file,"wa+");
+                fwrite($fh,json_encode($es_config));
+                fclose($fh);
+                $this->_config = $es_config;
+            } else {
+                $this->_config = json_decode(file_get_contents($this->_config_file),true);
+            }
         }
     }
 
