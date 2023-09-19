@@ -40,9 +40,9 @@
       <td>{$LANG.statistics.total_sales}</td>
       <td>
       {if !empty($PRODUCT.order_ids)}
-        <a href="?_g=orders&i={$PRODUCT.order_ids}">{$PRODUCT.total_sales}</a>
+        <a href="?_g=orders&i={$PRODUCT.order_ids}">{number_format($PRODUCT.total_sales)}</a>
       {else}
-        {$PRODUCT.total_sales}
+        {number_format($PRODUCT.total_sales)}
       {/if}
       {if $PRODUCT.avg_per_order > 1}
       ({sprintf($LANG.orders.per_order,$PRODUCT.avg_per_order)})
