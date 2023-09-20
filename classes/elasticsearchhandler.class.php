@@ -26,7 +26,7 @@ require 'elasticsearch/vendor/autoload.php';
 
 class ElasticsearchHandler
 {
-    private $_client = '';
+    private $_client;
     private $_search_body = array();
     private $_index_body = array();
     private $_index = '';
