@@ -300,7 +300,7 @@
   {else}
 	<h3>New in CubeCart 6.5</h3>
 	<p>Getting your products infront of your customers is critical. Elasticsearch brings lightening fast, search-as-you-type functionality to your store. This is included as standard with official <a href="https://hosted.cubecart.com/" target="_blank">CubeCart Hosting</a>.<br>Alternatively please contact your hosting company to check for availability. To configure and enable Elasticsearch please update your store <a href="?_g=settings#Advanced_Settings">settings</a>.</p>
-	<p>For more informarion contact <a href="mailto:sales@cubecart.com">sales@cubecart.com</a>.</p>
+	<p>For more informarion contact <a href="mailto:hello@cubecart.com">hello@cubecart.com</a>.</p>
 	<h4>Example:</h4>
 	<video width="750" loop="true" autoplay="autoplay" controls muted>
 		<source src="./{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/media/movie.elasticsearch.mp4" type="video/mp4">
