@@ -424,7 +424,11 @@ class ElasticsearchHandler
             'id'    => $id,
             'body'  => array('doc' => $this->_index_body)
         );
-        return $this->_client->update($params);   
+        try {
+            return $this->_client->update($params);
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     /**
