@@ -11,7 +11,7 @@
  *}
  <div id="general" class="tab_content">
    {if $PRODUCT}
-   <h3>{$PRODUCT.name} ({$PRODUCT.product_code})</h3>
+   <a href="?_g=products&node=index&action=edit&product_id={$PRODUCT.product_id}" class="button right">{$LANG.catalogue.title_product_update}</a><h3>{$PRODUCT.name} ({$PRODUCT.product_code})</h3>
    <table width="700">
     <thead>
       <tr>
