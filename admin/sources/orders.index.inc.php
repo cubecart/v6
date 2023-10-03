@@ -304,6 +304,9 @@ if (isset($_GET['action'])) {
             // Seek weight from basket data for orders placed before 6.0.9
             if ((float)$summary[0]['weight'] == 0) {
                 $basket_array = unserialize($summary[0]['basket']);
+                if(!is_array($basket_array)) {
+                    $basket_array = array();
+                }
                 $summary[0]['weight'] = $basket_array['weight'];
             }
             $GLOBALS['smarty']->assign('WEIGHT_UNIT', $GLOBALS['config']->get('config', 'product_weight_unit'));
