@@ -2435,7 +2435,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="percentage_of_sales" introduced="5.0.0"><![CDATA[Percentage of total product sales]]></string>
     <string name="percentage_of_search" introduced="5.0.0"><![CDATA[Percentage of total hits]]></string>
     <string name="percentage_of_total" introduced="5.0.0"><![CDATA[Percentage of Total]]></string>
-    <string name="percentage_of_views" introduced="5.0.0"><![CDATA[Pecentage of total product views]]></string>
+    <string name="percentage_of_views" introduced="5.0.0"><![CDATA[Percentage of total product views]]></string>
     <string name="product_hits" introduced="5.0.0"><![CDATA[Hits]]></string>
     <string name="product_views" introduced="5.0.0"><![CDATA[Views]]></string>
     <string name="quantity_sold" introduced="5.0.0"><![CDATA[Quantity Sold]]></string>
