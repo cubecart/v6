@@ -307,7 +307,7 @@ if (isset($_GET['action'])) {
                 if(!is_array($basket_array)) {
                     $basket_array = array();
                 }
-                $summary[0]['weight'] = $basket_array['weight'];
+                $summary[0]['weight'] = $basket_array['weight'] ?? 0;
             }
             $GLOBALS['smarty']->assign('WEIGHT_UNIT', $GLOBALS['config']->get('config', 'product_weight_unit'));
 
