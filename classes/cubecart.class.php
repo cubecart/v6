@@ -362,6 +362,7 @@ class Cubecart
                 case 'checkout':
                 case 'confirm':
                     $GLOBALS['smarty']->assign('SECTION_NAME', 'checkout');
+                    $GLOBALS['session']->set('LAST_PAGE', 'basket');
                     if ($GLOBALS['config']->get('config', 'catalogue_mode')) {
                         httpredir('index.php');
                     }
@@ -371,6 +372,7 @@ class Cubecart
                 case 'basket':
                 case 'cart':
                     $GLOBALS['smarty']->assign('SECTION_NAME', 'checkout');
+                    $GLOBALS['session']->set('LAST_PAGE', 'basket');
                     if ($GLOBALS['config']->get('config', 'catalogue_mode')) {
                         httpredir('index.php');
                     }
@@ -2401,8 +2403,9 @@ class Cubecart
             include $hook;
         }
         $GLOBALS['smarty']->assign('LOGIN_HTML', $login_html);
-
-        if (!isset($redir) && is_array($GLOBALS['cart']->basket) && is_array($GLOBALS['cart']->basket['contents'])) {
+        if($GLOBALS['session']->has('LAST_PAGE')) {
+            $redir = 'index.php?_a='.$GLOBALS['session']->get('LAST_PAGE');
+        } elseif (!isset($redir) && is_array($GLOBALS['cart']->basket) && is_array($GLOBALS['cart']->basket['contents'])) {
             $redir = 'index.php?_a=basket';
         } elseif (!isset($redir)) {
             $redir = 'index.php?_a=account';
