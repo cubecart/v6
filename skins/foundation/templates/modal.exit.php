@@ -22,7 +22,7 @@
             <input type="hidden" name="force_unsubscribe" id="force_unsubscribe_exit" value="0">
          </div>
       </div>
-      <div class="hide" id="newsletter_recaptcha">
+      <div id="newsletter_recaptcha">
          {include file='templates/content.recaptcha.php' ga_fid='newsletter_exit'}
       </div>
    </form>

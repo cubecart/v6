@@ -1177,6 +1177,16 @@ class GUI
         }
 
         if (isset($_POST['subscribe'])) {
+            if ($GLOBALS['gui']->recaptchaRequired()) {
+                if (($message = $GLOBALS['session']->get('error', 'recaptcha')) === false) {
+                    //If the error message from recaptcha fails for some reason:
+                    $GLOBALS['gui']->setError($GLOBALS['language']->form['verify_human_fail']);
+                } else {
+                    $GLOBALS['gui']->setError($GLOBALS['session']->get('error', 'recaptcha'));
+                }
+                httpredir(currentPage());
+                exit;
+            }
             $newsletter = Newsletter::getInstance();
             if (isset($_POST['force_unsubscribe']) && $_POST['force_unsubscribe']=='1') {
                 $newsletter->unsubscribe($_POST['subscribe'], $GLOBALS['user']->getId());
