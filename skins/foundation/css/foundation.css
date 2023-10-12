@@ -3808,7 +3808,7 @@ blockquote p {
   top: 0;
   visibility: hidden;
   width: 100%;
-  z-index: 1005;
+  z-index: 999999;
   left: 0;
   background-color: #FFFFFF;
   padding: 1.875rem;
