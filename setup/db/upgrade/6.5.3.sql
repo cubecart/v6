@@ -1,3 +1,4 @@
 TRUNCATE TABLE `CubeCart_404_log`; #EOQ
 ALTER TABLE `CubeCart_404_log` DROP INDEX `uri`; #EOQ
-ALTER TABLE `CubeCart_404_log` ADD UNIQUE `uri` (`uri`) USING BTREE; #EOQ
+ALTER TABLE `CubeCart_404_log` ADD UNIQUE `uri` (`uri`); #EOQ
+ALTER TABLE `CubeCart_domains` CHANGE id id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT; #EOQ
