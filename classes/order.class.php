@@ -1527,7 +1527,7 @@ class Order
 
         if ($update) {
             // Update Summary
-            $GLOBALS['db']->update('CubeCart_order_summary', $record, array('cart_order_id' => $this->_basket['cart_order_id']));
+            $this->updateSummary($this->_basket['cart_order_id'], $record);
         } else {
             // Insert Summary
             if ($order_id = $GLOBALS['db']->insert('CubeCart_order_summary', $record)) {
