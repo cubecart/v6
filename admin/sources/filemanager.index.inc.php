@@ -17,7 +17,10 @@ Admin::getInstance()->permissions('filemanager', CC_PERM_READ, true);
 
 
 if(isset($_GET['download_file']) && !empty($_GET['download_file'])) {
-    $file = CC_ROOT_DIR.'/'.base64_decode($_GET['download_file']);
+    $file = base64_decode($_GET['download_file']);
+    $file = str_replace(array('..'.DIRECTORY_SEPARATOR,'.'.DIRECTORY_SEPARATOR),'',$file);
+    $file = ltrim($file, DIRECTORY_SEPARATOR);
+    $file = CC_ROOT_DIR.'/'.$file;
     if(file_exists($file)) { // It really should exist
         deliverFile($file);
     }
