@@ -763,7 +763,7 @@ class GUI
                     $response = $request->send();
                     $h_result = json_decode($response);
 
-                    if ($g_result->success) {
+                    if ($h_result->success) {
                         $recaptcha['confirmed'] = true;
                     } else {
                         $recaptcha['error'] = $GLOBALS['language']->form['verify_human_fail'];
