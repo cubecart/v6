@@ -33,11 +33,18 @@ class Sanitize
             if (file_exists($csrf_path)) {
                 require_once($csrf_path);
                 if (is_array($csrf_maps)) {
+                    // All CRSF mappings are lowercase
+                    $g = array();
+                    if(is_array($_GET)) {
+                        foreach($_GET as $k => $v) {
+                            $g[strtolower($k)] = is_string($v) ? strtolower($v) : $v;
+                        }
+                    }
                     foreach ($csrf_maps as $csrf_map) {
                         if (is_array($csrf_map)) {
                             $csrf_check = false;
                             foreach ($csrf_map as $key => $value) {
-                                if ((!$value && isset($_GET[$key])) || (isset($_GET[$key]) && $_GET[$key]==$value)) {
+                                if ((!$value && isset($g[$key])) || (isset($g[$key]) && $g[$key]==$value)) {
                                     $csrf_check = true;
                                 } else {
                                     $csrf_check = false;
