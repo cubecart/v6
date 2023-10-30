@@ -155,23 +155,27 @@ if (is_array($hash_files)) {
 $GLOBALS['main']->addTabControl($lang['navigation']['nav_plugins'], 'plugins');
 $GLOBALS['gui']->addBreadcrumb($lang['navigation']['nav_modules'], '?_g=plugins', true);
 if (isset($_GET['delete']) && $_GET['delete']==1 && !empty($_GET['type']) && !empty($_GET['module'])) {
-    $dir = CC_ROOT_DIR.'/modules/'.$_GET['type'].'/'.$_GET['module'];
-    if (file_exists($dir)) {
-        recursiveDelete($dir);
-        $GLOBALS['db']->delete('CubeCart_config', array('name' => $_GET['module']));
-        $GLOBALS['db']->delete('CubeCart_modules', array('folder' => $_GET['module']));
-        $GLOBALS['db']->delete('CubeCart_hooks', array('plugin' => $_GET['module']));
-       
+    $type = basename($_GET['type']);
+    $module = basename($_GET['module']);
+    if(!empty($type) && !empty($module)) {
+        $dir = CC_ROOT_DIR.'/modules/'.$type.'/'.$module;
         if (file_exists($dir)) {
-            $GLOBALS['main']->errorMessage($lang['module']['plugin_still_exists']);
+            recursiveDelete($dir);
+            $GLOBALS['db']->delete('CubeCart_config', array('name' => $module));
+            $GLOBALS['db']->delete('CubeCart_modules', array('folder' => $module));
+            $GLOBALS['db']->delete('CubeCart_hooks', array('plugin' => $module));
+        
+            if (file_exists($dir)) {
+                $GLOBALS['main']->errorMessage($lang['module']['plugin_still_exists']);
+            } else {
+                $GLOBALS['main']->successMessage($lang['module']['plugin_deleted_successfully']);
+            }
         } else {
-            $GLOBALS['main']->successMessage($lang['module']['plugin_deleted_successfully']);
+            $GLOBALS['db']->delete('CubeCart_config', array('name' => $module));
+            $GLOBALS['db']->delete('CubeCart_modules', array('folder' => $module));
+            $GLOBALS['db']->delete('CubeCart_hooks', array('plugin' => $module));
+            $GLOBALS['main']->successMessage($lang['module']['plugin_deleted_already']);
         }
-    } else {
-        $GLOBALS['db']->delete('CubeCart_config', array('name' => $_GET['module']));
-        $GLOBALS['db']->delete('CubeCart_modules', array('folder' => $_GET['module']));
-        $GLOBALS['db']->delete('CubeCart_hooks', array('plugin' => $_GET['module']));
-        $GLOBALS['main']->successMessage($lang['module']['plugin_deleted_already']);
     }
     httpredir('?_g=plugins');
 }
