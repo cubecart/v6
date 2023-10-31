@@ -20,7 +20,7 @@
    </div>
    {if $CONTACT.phone}
    <div class="row">
-      <div class="small-12 large-8 columns"><label for="contact_email">{$LANG.address.phone}</label><input type="text" name="contact[phone]" id="contact_phone" value="{$MESSAGE.phone}" placeholder="{$LANG.address.phone}{if $CONTACT.phone=='2'} {$LANG.form.required}{/if}"{if $CONTACT.phone=='2'} required="required"{/if}></div>
+      <div class="small-12 large-8 columns"><label for="contact_phone">{$LANG.address.phone}</label><input type="text" name="contact[phone]" id="contact_phone" value="{$MESSAGE.phone}" placeholder="{$LANG.address.phone}{if $CONTACT.phone=='2'} {$LANG.form.required}{/if}"{if $CONTACT.phone=='2'} required="required"{/if}></div>
    </div>
    {/if}
    {if isset($DEPARTMENTS)}
