@@ -383,8 +383,10 @@ CREATE TABLE IF NOT EXISTS `CubeCart_filemanager` (
 	`stream` enum('0','1') NOT NULL DEFAULT '0',
 	`alt` TEXT NOT NULL,
 	PRIMARY KEY (`file_id`),
+	KEY (`type`),
 	KEY (`filepath`),
-	KEY (`filename`)
+	KEY (`filename`),
+	UNIQUE KEY (`md5hash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_geo_country` (

@@ -734,7 +734,9 @@ if (isset($database_result) && $database_result) {
         'cubecart_filemanager' => array(
             'file_id' => 'PRIMARY',
             'filepath' => 'KEY',
-            'filename' => 'KEY'
+            'filename' => 'KEY',
+            'type' => 'KEY',
+            'md5hash' => 'UNIQUE KEY'
         ),
         'cubecart_geo_country' => array(
             'iso' => 'PRIMARY',

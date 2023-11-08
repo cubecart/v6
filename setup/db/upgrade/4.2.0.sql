@@ -12,5 +12,9 @@ CREATE TABLE IF NOT EXISTS `CubeCart_filemanager` (
 	`mimetype` VARCHAR(50) NOT NULL,
 	`md5hash` VARCHAR(32) NOT NULL,
 	`description` TEXT NOT NULL,
-	PRIMARY KEY (`file_id`)
+	PRIMARY KEY (`file_id`),
+	KEY (`type`),
+	KEY (`filepath`),
+	KEY (`filename`),
+	UNIQUE KEY (`md5hash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
