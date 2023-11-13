@@ -2431,7 +2431,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="email_not_resent" introduced="6.1.6"><![CDATA[Failed to resend email. Please check your <a href="?_g=settings#Advanced_Settings">settings</a>.]]></string>
     <string name="notify_sales_none" introduced="5.0.0"><![CDATA[No sales have been made.]]></string>
     <string name="notify_searches_none" introduced="6.0.0"><![CDATA[No searches have been made.]]></string>
-    <string name="notify_customers_none" introduced="6.0.0"><![CDATA[No customers exist.]]></string>
+    <string name="notify_customers_none" introduced="6.0.0"><![CDATA[No existing customers have had their order completely fulfilled.]]></string>
     <string name="percentage_of_sales" introduced="5.0.0"><![CDATA[Percentage of total product sales]]></string>
     <string name="percentage_of_search" introduced="5.0.0"><![CDATA[Percentage of total hits]]></string>
     <string name="percentage_of_total" introduced="5.0.0"><![CDATA[Percentage of Total]]></string>
