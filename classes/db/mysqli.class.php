@@ -263,6 +263,6 @@ class Database extends Database_Contoller
         }
 
         //Force UTF-8
-        $this->_db_connect_id->set_charset("utf8");
+        $this->_db_connect_id->set_charset("utf8mb4");
     }
 }
