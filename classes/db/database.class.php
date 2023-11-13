@@ -151,6 +151,30 @@ class Database_Contoller
     //=====[ Public ]=======================================
 
     /**
+     * Change Database Encoding
+     *
+     * @param string $charset
+     * @param string $collation
+     * @return null
+     */
+    public function changeCollation($dbname = '', $charset = 'utf8mb4', $collation = 'utf8mb4_unicode_ci')
+    {
+        if(empty($dbname)) {
+            $dbname = $GLOBALS['config']->get('config', 'dbdatabase');
+        }
+        $this->_query = "ALTER DATABASE `$dbname` DEFAULT CHARSET=$charset COLLATE $collation;";
+        $this->_execute(false);
+        $tables = $this->getRows();
+
+        foreach ($tables as $table) {
+            $this->_query = "ALTER TABLE `$dbname`.`{$table['Name']}` DEFAULT CHARSET=$charset COLLATE $collation;";
+            $this->_execute(false);
+            $this->_query = "ALTER TABLE `$dbname`.`{$table['Name']}` CONVERT TO CHARACTER SET $charset COLLATE $collation;";
+            $this->_execute(false);
+        }
+    }
+
+    /**
      * Get table checksum
      *
      * @param string $table
@@ -278,7 +302,7 @@ class Database_Contoller
         fwrite($fp, $open_text);
         fclose($fp);
 
-        $tables = $this->getRows(false, 'CubeCart_', $all_tables);
+        $tables = $this->getRows(false, 'CubeCart_');
 
         foreach ($tables as $table) {
             $this->sqldumptable($file_name, $table, $dropTables, $incStructure, $incRows);

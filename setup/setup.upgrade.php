@@ -112,32 +112,7 @@ if (!isset($_SESSION['setup']['permissions'])) {
         $step = 5;
         ## If version is less then 4 or 5 try to fix database encoding
         if (!$_SESSION['setup']['db_converted'] && version_compare($current, '5.0.0', '<')) {
-            /* ########################
-            ##	Following code based on;
-            ##	Migrating MySQL Data to Unicode
-            ##	http://daveyshafik.com/archives/166-migrating-mysql-data-to-unicode.html
-            ##	Thanks to Davey Shafik
-            ## ######################## */
-            $tables = $db->getRows();
-            foreach ($tables as $table) {
-                ## Get Schema
-                if ($schema = $db->misc('SHOW CREATE TABLE '.$table['Name'])) {
-                    ## Fix Schema and Create Temp Table
-                    $find   = array("latin1", $table['Name']);
-                    $replace  = array("utf8", $table['Name'].'_utf8');
-
-                    if ($db->misc(str_replace($find, $replace, $schema[0]['Create Table']))) {
-                        if ($db->misc("SHOW TABLES LIKE '".$table['Name']."_utf8'", false)) {
-                            ## Copy Data
-                            $db->misc('INSERT INTO '.$table['Name'].'_utf8 SELECT * FROM '.$table['Name']);
-                            ## Deleting Original Table
-                            $db->misc('DROP TABLE '.$table['Name']);
-                            ## Renaming Temporary Table
-                            $db->misc('ALTER TABLE '.$table['Name'].'_utf8 RENAME TO '.$table['Name']);
-                        }
-                    }
-                }
-            }
+            $db->changeCollation($glob['dbdatabase']);
             $_SESSION['setup']['db_converted'] = true;
         }
 
