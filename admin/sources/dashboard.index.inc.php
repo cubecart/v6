@@ -243,7 +243,7 @@ $GLOBALS['smarty']->assign('QUICK_TASKS', $quick_tasks);
 
 ## Pending Orders Tab
 $page  = (isset($_GET['orders'])) ? $_GET['orders'] : 1;
-$unsettled_count  = $GLOBALS['db']->count('CubeCart_order_summary', 'cart_order_id', array('status' => array(1, 2)));
+$unsettled_count  = $GLOBALS['db']->count('CubeCart_order_summary', 'cart_order_id', '`status` IN (1,2) OR `dashboard` = 1');
 
 ## Pending Orders Sort
 $order_by = '';
@@ -273,7 +273,7 @@ $page_break_url = currentPage(array('items'));
 $GLOBALS['smarty']->assign('PAGE_BREAKS', array(25, 50, 100, 250, 500));
 $GLOBALS['smarty']->assign('PAGE_BREAK', $per_page);
 $GLOBALS['smarty']->assign('PAGE_BREAK_URL', $page_break_url);
-$unsettled_orders = $GLOBALS['db']->select('CubeCart_order_summary', false, 'status IN (1,2) OR `dashboard` = 1', $order_by, $per_page, $page);
+$unsettled_orders = $GLOBALS['db']->select('CubeCart_order_summary', false, '`status` IN (1,2) OR `dashboard` = 1', $order_by, $per_page, $page);
 
 if ($unsettled_orders) {
     $tax = Tax::getInstance();
