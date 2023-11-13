@@ -236,7 +236,7 @@ if (!isset($_SESSION['setup']['permissions'])) {
             $GLOBALS['config'] = $glob;
             $GLOBALS['db'] = Database::getInstance($GLOBALS['config']);
 
-            $GLOBALS['db']->misc('ALTER DATABASE `'.$GLOBALS['config']['dbdatabase'].'` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;');
+            $GLOBALS['db']->misc('ALTER DATABASE `'.$GLOBALS['config']['dbdatabase'].'` DEFAULT CHARACTER SET utf8 COLLATE utf8mb4_unicode_ci;');
 
             if ($_SESSION['setup']['droptable']) {
                 $GLOBALS['db']->parseSchema(file_get_contents($setup_path.'db/install/table_drop.sql', false));

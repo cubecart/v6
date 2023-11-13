@@ -16,4 +16,4 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_notes` (
 	KEY `cart_order_id` (`cart_order_id`),
 	KEY `time` (`time`),
 	FULLTEXT KEY `content` (`content`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ

@@ -16,4 +16,4 @@ CREATE TABLE IF NOT EXISTS `CubeCart_404_log` (
   KEY `uri` (`uri`),
   KEY `ignore` (`ignore`),
   KEY `created` (`created`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ

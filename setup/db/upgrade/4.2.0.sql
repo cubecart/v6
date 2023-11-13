@@ -17,4 +17,4 @@ CREATE TABLE IF NOT EXISTS `CubeCart_filemanager` (
 	KEY (`filepath`),
 	KEY (`filename`),
 	UNIQUE KEY (`md5hash`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ

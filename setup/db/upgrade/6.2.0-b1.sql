@@ -19,11 +19,11 @@ ALTER TABLE `CubeCart_newsletter` ADD `dbl_opt` enum('0','1') NOT NULL DEFAULT '
 ALTER TABLE `CubeCart_email_log` ADD `fail_reason` TEXT  NULL; #EOQ
 CREATE TABLE `CubeCart_invoice_template` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `content` text COLLATE utf8_unicode_ci,
+  `content` text COLLATE utf8mb4_unicode_ci,
   `date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `hash` varchar(35) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `hash` varchar(35) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `hash` (`hash`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_documents` ADD `hide_title` ENUM('0', '1')  DEFAULT '0'; #EOQ
 ALTER TABLE `CubeCart_order_summary` ADD `currency` VARCHAR(3)  NULL  DEFAULT ''; #EOQ

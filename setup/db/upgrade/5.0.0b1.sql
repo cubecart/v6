@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_access_log` (
 	`useragent` TEXT NOT NULL,
 	`success` ENUM('Y','N') NOT NULL,
 	PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_addressbook` (
 	`address_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -33,14 +33,14 @@ CREATE TABLE IF NOT EXISTS `CubeCart_addressbook` (
 	`country` SMALLINT(3) UNSIGNED NOT NULL,
 	PRIMARY KEY (`address_id`),
 	KEY `customer_id` (`customer_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 INSERT INTO `CubeCart_addressbook` (`customer_id`, `title`, `first_name`, `last_name`, `company_name`, `line1`, `line2`, `town`, `state`, `postcode`, `country`) (SELECT `customer_id`, `title`, `firstName`, `lastName`, `companyName`, `add_1`, `add_2`, `town`, `county`, `postcode`, `country` FROM `CubeCart_customer` WHERE `add_1` <> ''); #EOQ
 UPDATE `CubeCart_addressbook` SET `billing` = '1', `default` = '1' WHERE 1; #EOQ
 
 UPDATE `CubeCart_addressbook` AS `A`, `CubeCart_iso_countries` AS `C` SET `A`.`country` = `C`.`numcode` WHERE `A`.`country` = `C`.`id`; #EOQ
 
-ALTER TABLE `CubeCart_admin_log` DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+ALTER TABLE `CubeCart_admin_log` DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_admin_log` CHANGE `id` `log_id` INT UNSIGNED NOT NULL AUTO_INCREMENT; #EOQ
 ALTER TABLE `CubeCart_admin_log` ADD `admin_id` INT UNSIGNED NOT NULL DEFAULT '0'; #EOQ
 ALTER TABLE `CubeCart_admin_log` CHANGE `time` `time` INT UNSIGNED NOT NULL; #EOQ
@@ -53,7 +53,7 @@ ALTER TABLE `CubeCart_admin_log` DROP INDEX `id` ; #EOQ
 
 DROP TABLE IF EXISTS `CubeCart_admin_sections`; #EOQ
 
-ALTER TABLE `CubeCart_admin_users` DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+ALTER TABLE `CubeCart_admin_users` DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_admin_users` CHANGE `adminId` `admin_id` INT UNSIGNED NOT NULL AUTO_INCREMENT FIRST; #EOQ
 ALTER TABLE `CubeCart_admin_users` ADD `customer_id` INT UNSIGNED NULL DEFAULT NULL; #EOQ
 ALTER TABLE `CubeCart_admin_users` ADD `status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'; #EOQ
@@ -86,9 +86,9 @@ CREATE TABLE IF NOT EXISTS `CubeCart_blocker` (
 	PRIMARY KEY  (`block_id`),
 	KEY `location` (`location`),
 	KEY `last_attempt` (`last_attempt`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
-ALTER TABLE `CubeCart_category` DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+ALTER TABLE `CubeCart_category` DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_category` CHANGE `cat_id` `cat_id` INT UNSIGNED NOT NULL AUTO_INCREMENT FIRST; #EOQ
 ALTER TABLE `CubeCart_category` CHANGE `cat_father_id` `cat_parent_id` INT UNSIGNED NOT NULL DEFAULT '0'; #EOQ
 ALTER TABLE `CubeCart_category` CHANGE `cat_image` `cat_image` VARBINARY(250) NOT NULL DEFAULT ''; #EOQ
@@ -101,7 +101,7 @@ ALTER TABLE `CubeCart_category` CHANGE `cat_metakeywords` `seo_meta_keywords` TE
 ALTER TABLE `CubeCart_category` DROP `noProducts`; #EOQ
 ALTER TABLE `CubeCart_category` DROP INDEX `cat_father_id` , ADD INDEX `cat_parent_id` (`cat_parent_id`); #EOQ 
 
-ALTER TABLE `CubeCart_cats_idx` RENAME TO `CubeCart_category_index`, DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+ALTER TABLE `CubeCart_cats_idx` RENAME TO `CubeCart_category_index`, DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_category_index` CHANGE `productId` `product_id` INT UNSIGNED NOT NULL DEFAULT '0'; #EOQ
 ALTER TABLE `CubeCart_category_index` ADD `primary` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'; #EOQ
 
@@ -113,7 +113,7 @@ UPDATE `CubeCart_category_index` AS I INNER JOIN `CubeCart_inventory` AS C ON I.
 DELETE FROM `CubeCart_category_index` WHERE `cat_id` IN (SELECT `cat_id` FROM `CubeCart_category` WHERE `cat_desc` = '##HIDDEN##'); #EOQ
 DELETE FROM `CubeCart_category` WHERE `cat_desc` = '##HIDDEN##'; #EOQ
 
-ALTER TABLE `CubeCart_cats_lang` RENAME TO `CubeCart_category_language`, DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+ALTER TABLE `CubeCart_cats_lang` RENAME TO `CubeCart_category_language`, DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_category_language` CHANGE `id` `translation_id` INT UNSIGNED NOT NULL AUTO_INCREMENT FIRST; #EOQ
 ALTER TABLE `CubeCart_category_language` CHANGE `cat_master_id` `cat_id` INT UNSIGNED NOT NULL DEFAULT '0'; #EOQ
 ALTER TABLE `CubeCart_category_language` CHANGE `cat_lang` `language` VARCHAR(5); #EOQ
@@ -122,7 +122,7 @@ ALTER TABLE `CubeCart_category_language` ADD `seo_meta_description` TEXT NOT NUL
 ALTER TABLE `CubeCart_category_language` ADD `seo_meta_keywords` TEXT NOT NULL; #EOQ
 
 ALTER TABLE `CubeCart_Coupons` RENAME TO `CubeCart_coupons_temp`; #EOQ
-ALTER TABLE `CubeCart_coupons_temp` RENAME TO `CubeCart_coupons`, DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+ALTER TABLE `CubeCart_coupons_temp` RENAME TO `CubeCart_coupons`, DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_coupons` CHANGE `id` `coupon_id` INT UNSIGNED NOT NULL AUTO_INCREMENT FIRST; #EOQ
 ALTER TABLE `CubeCart_coupons` ADD `archived` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'; #EOQ
 ALTER TABLE `CubeCart_coupons` CHANGE `code` `code` VARCHAR(25) NOT NULL; #EOQ
@@ -137,7 +137,7 @@ ALTER TABLE `CubeCart_coupons` ADD `shipping` TINYINT(1) UNSIGNED NOT NULL DEFAU
 ALTER TABLE `CubeCart_coupons` CHANGE `desc` `description` TEXT NOT NULL; #EOQ
 ALTER TABLE `CubeCart_coupons` CHANGE `cart_order_id` `cart_order_id` VARCHAR(18) NULL DEFAULT NULL; #EOQ
 
-ALTER TABLE `CubeCart_currencies` RENAME TO `CubeCart_currency`, DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+ALTER TABLE `CubeCart_currencies` RENAME TO `CubeCart_currency`, DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_currency` CHANGE `currencyId` `currency_id` INT UNSIGNED NOT NULL AUTO_INCREMENT FIRST; #EOQ
 ALTER TABLE `CubeCart_currency` CHANGE `name` `name` VARCHAR(150) NOT NULL; #EOQ
 ALTER TABLE `CubeCart_currency` CHANGE `code` `code` VARCHAR(3) NOT NULL; #EOQ
@@ -169,14 +169,14 @@ CREATE TABLE IF NOT EXISTS `CubeCart_newsletter_subscriber` (
 	`validation` VARCHAR(50) DEFAULT NULL,
 	PRIMARY KEY  (`subscriber_id`),
 	KEY `customer_id` (`customer_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 INSERT INTO `CubeCart_newsletter_subscriber` (`email`, `status`)
 SELECT DISTINCT (`email`), `optIn1st` AS `status` FROM `CubeCart_customer` WHERE `optIn1st` = 1; #EOQ
 
 DELETE FROM `CubeCart_customer` WHERE `type` = 0; #EOQ
 
-ALTER TABLE `CubeCart_customer` DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+ALTER TABLE `CubeCart_customer` DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_customer` CHANGE `customer_id` `customer_id` INT UNSIGNED NOT NULL AUTO_INCREMENT FIRST; #EOQ
 ALTER TABLE `CubeCart_customer` CHANGE `email` `email` VARCHAR(254) NOT NULL; #EOQ
 ALTER TABLE `CubeCart_customer` CHANGE `password` `password` VARCHAR(40) NOT NULL; #EOQ
@@ -207,7 +207,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_customer_group` (
 	`group_name` VARCHAR(150) NOT NULL,
 	`group_description` TEXT NOT NULL,
 	PRIMARY KEY (`group_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_customer_membership` (
 	`membership_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -216,9 +216,9 @@ CREATE TABLE IF NOT EXISTS `CubeCart_customer_membership` (
 	PRIMARY KEY (`membership_id`),
 	KEY `group_id` (`group_id`),
 	KEY `customer_id` (`customer_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
-ALTER TABLE `CubeCart_docs` RENAME TO `CubeCart_documents`, DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+ALTER TABLE `CubeCart_docs` RENAME TO `CubeCart_documents`, DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_documents` CHANGE `doc_id` `doc_id` INT UNSIGNED NOT NULL AUTO_INCREMENT FIRST; #EOQ
 ALTER TABLE `CubeCart_documents` ADD `doc_parent_id` INT UNSIGNED NOT NULL DEFAULT '0'; #EOQ
 ALTER TABLE `CubeCart_documents` ADD `doc_status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1'; #EOQ
@@ -241,7 +241,7 @@ SELECT `doc_master_id` AS `doc_parent_id`, `doc_lang`, `doc_name`, `doc_content`
 DROP TABLE `CubeCart_docs_lang`; #EOQ
 
 ALTER TABLE `CubeCart_Downloads` RENAME TO `CubeCart_downloads_temp`; #EOQ
-ALTER TABLE `CubeCart_downloads_temp` RENAME TO `CubeCart_downloads`, DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+ALTER TABLE `CubeCart_downloads_temp` RENAME TO `CubeCart_downloads`, DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_downloads` CHANGE `id` `digital_id` INT UNSIGNED NOT NULL AUTO_INCREMENT; #EOQ
 ALTER TABLE `CubeCart_downloads` ADD `order_inv_id` INT UNSIGNED NOT NULL; #EOQ
 ALTER TABLE `CubeCart_downloads` CHANGE `customerId` `customer_id` INT UNSIGNED NOT NULL DEFAULT '0'; #EOQ
@@ -261,7 +261,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_email_content` (
 	PRIMARY KEY (`content_id`),
 	KEY `content_type` (`content_type`),
 	KEY `language` (`language`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_email_template` (
 	`template_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -270,7 +270,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_email_template` (
 	`content_html` TEXT NOT NULL,
 	`content_text` TEXT NOT NULL,
 	PRIMARY KEY (`template_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 UPDATE `CubeCart_filemanager` SET `filepath` = REPLACE(`filepath`, 'images/uploads/', ''); #EOQ
 UPDATE `CubeCart_filemanager` SET `filepath` = REPLACE(`filepath`, 'images\\uploads\\', ''); #EOQ
@@ -280,15 +280,15 @@ ALTER TABLE `CubeCart_filemanager` CHANGE `filepath` `filepath` VARCHAR(255) def
 
 UPDATE `CubeCart_filemanager` SET `filepath` = NULL WHERE `filepath` = ''; #EOQ
 
-ALTER TABLE `CubeCart_iso_countries` RENAME TO `CubeCart_geo_country`, DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+ALTER TABLE `CubeCart_iso_countries` RENAME TO `CubeCart_geo_country`, DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_geo_country` CHANGE `id` `id` INT UNSIGNED NOT NULL AUTO_INCREMENT; #EOQ
 ALTER TABLE `CubeCart_geo_country` CHANGE  `numcode`  `numcode` SMALLINT( 3 ) NULL DEFAULT NULL; #EOQ
 
-ALTER TABLE `CubeCart_iso_counties` RENAME TO `CubeCart_geo_zone`, DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+ALTER TABLE `CubeCart_iso_counties` RENAME TO `CubeCart_geo_zone`, DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_geo_zone` CHANGE `id` `id` INT UNSIGNED NOT NULL AUTO_INCREMENT; #EOQ
 ALTER TABLE `CubeCart_geo_zone` CHANGE `countryId` `country_id` INT(4) UNSIGNED NOT NULL DEFAULT '0'; #EOQ
 
-ALTER TABLE `CubeCart_history` DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci, CHANGE `time` `time` INT UNSIGNED NOT NULL; #EOQ
+ALTER TABLE `CubeCart_history` DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci, CHANGE `time` `time` INT UNSIGNED NOT NULL; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_hooks` (
 	`hook_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -300,23 +300,23 @@ CREATE TABLE IF NOT EXISTS `CubeCart_hooks` (
 	`priority` INT UNSIGNED NOT NULL DEFAULT '0',
 	PRIMARY KEY (`hook_id`),
 	KEY `trigger` (`trigger`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
-ALTER TABLE `CubeCart_img_idx` RENAME TO `CubeCart_image_index`, DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+ALTER TABLE `CubeCart_img_idx` RENAME TO `CubeCart_image_index`, DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_image_index` CHANGE `id` `id` INT UNSIGNED NOT NULL AUTO_INCREMENT FIRST; #EOQ
 ALTER TABLE `CubeCart_image_index` CHANGE `productId` `product_id` INT UNSIGNED NOT NULL; #EOQ
 ALTER TABLE `CubeCart_image_index` ADD `file_id` INT UNSIGNED NOT NULL; #EOQ
 ALTER TABLE `CubeCart_image_index` ADD `main_img` ENUM('0','1') NOT NULL DEFAULT '0'; #EOQ
 ALTER TABLE `CubeCart_image_index` ADD INDEX (`file_id`); #EOQ
 DROP INDEX `fulltext` ON `CubeCart_inventory`; #EOQ
-ALTER TABLE `CubeCart_inventory` DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+ALTER TABLE `CubeCart_inventory` DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_inventory` ADD `status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1'; #EOQ
-ALTER TABLE `CubeCart_inventory` CHANGE `productCode` `product_code` VARCHAR(60) NULL DEFAULT NULL COLLATE utf8_unicode_ci; #EOQ
-ALTER TABLE `CubeCart_inventory` CHANGE `description` `description` TEXT  COLLATE utf8_unicode_ci; #EOQ
+ALTER TABLE `CubeCart_inventory` CHANGE `productCode` `product_code` VARCHAR(60) NULL DEFAULT NULL COLLATE utf8mb4_unicode_ci; #EOQ
+ALTER TABLE `CubeCart_inventory` CHANGE `description` `description` TEXT  COLLATE utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_inventory` DROP `noImages`; #EOQ
 ALTER TABLE `CubeCart_inventory` CHANGE `price` `price` DECIMAL(16,2) NOT NULL DEFAULT '0.00'; #EOQ
 ALTER TABLE `CubeCart_inventory` CHANGE `sale_price` `sale_price` DECIMAL(16,2) NOT NULL DEFAULT '0.00'; #EOQ
-ALTER TABLE `CubeCart_inventory` CHANGE `name` `name` VARCHAR(250) DEFAULT NULL COLLATE utf8_unicode_ci; #EOQ
+ALTER TABLE `CubeCart_inventory` CHANGE `name` `name` VARCHAR(250) DEFAULT NULL COLLATE utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_inventory` CHANGE `stockWarn` `stock_warning` INT NOT NULL DEFAULT '0'; #EOQ
 ALTER TABLE `CubeCart_inventory` CHANGE `useStockLevel` `use_stock_level` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1'; #EOQ
 ALTER TABLE `CubeCart_inventory` CHANGE `digital` `digital` INT(4) UNSIGNED NOT NULL DEFAULT '0'; #EOQ
@@ -336,7 +336,7 @@ ALTER TABLE `CubeCart_inventory` DROP `disabled`; #EOQ
 
 CREATE FULLTEXT INDEX `fulltext` ON `CubeCart_inventory` (`product_code`, `name`, `description`); #EOQ
 
-ALTER TABLE `CubeCart_inv_lang` RENAME TO `CubeCart_inventory_language`, DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+ALTER TABLE `CubeCart_inv_lang` RENAME TO `CubeCart_inventory_language`, DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_inventory_language` CHANGE `id` `translation_id` INT UNSIGNED NOT NULL AUTO_INCREMENT; #EOQ
 ALTER TABLE `CubeCart_inventory_language` CHANGE `prod_master_id` `product_id` INT UNSIGNED NOT NULL DEFAULT '0'; #EOQ
 ALTER TABLE `CubeCart_inventory_language` CHANGE `prod_lang` `language` VARCHAR(5); #EOQ
@@ -354,7 +354,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_lang_strings` (
 	KEY `language` (`language`),
 	KEY `type` (`type`),
 	KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_logo` (
 	`logo_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -366,7 +366,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_logo` (
 	`skin` VARCHAR(100) NOT NULL,
 	`style` VARCHAR(100) NOT NULL,
 	PRIMARY KEY (`logo_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_manufacturers` (
   `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -374,7 +374,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_manufacturers` (
   `URL` VARCHAR(250) NULL,
   `image` INT(10) UNSIGNED NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 ALTER TABLE `CubeCart_Modules` RENAME TO `CubeCart_modules_temp`; #EOQ
 ALTER TABLE `CubeCart_modules_temp` RENAME TO `CubeCart_modules`; #EOQ
@@ -395,14 +395,14 @@ CREATE TABLE IF NOT EXISTS `CubeCart_newsletter` (
 	`content_html` TEXT NOT NULL,
 	`content_text` TEXT NOT NULL,
 	PRIMARY KEY (`newsletter_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_options_set` (
 	`set_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`set_name` TEXT NOT NULL,
 	`set_description` TEXT NOT NULL,
 	PRIMARY KEY  (`set_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_options_set_member` (
 	`set_member_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -412,7 +412,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_options_set_member` (
 	`priority` INT NOT NULL,
 	PRIMARY KEY  (`set_member_id`),
 	KEY `set_id` (`set_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_options_set_product` (
 	`set_product_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -421,9 +421,9 @@ CREATE TABLE IF NOT EXISTS `CubeCart_options_set_product` (
 	PRIMARY KEY  (`set_product_id`),
 	KEY `set_id` (`set_id`),
 	KEY `product_id` (`product_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
-ALTER TABLE `CubeCart_options_bot` RENAME TO `CubeCart_option_assign`, DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+ALTER TABLE `CubeCart_options_bot` RENAME TO `CubeCart_option_assign`, DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_option_assign` CHANGE `assign_id` `assign_id` INT UNSIGNED NOT NULL AUTO_INCREMENT; #EOQ
 ALTER TABLE `CubeCart_option_assign` CHANGE `product` `product` INT UNSIGNED NOT NULL DEFAULT '0'; #EOQ
 ALTER TABLE `CubeCart_option_assign` CHANGE `option_id` `option_id` INT UNSIGNED NOT NULL; #EOQ
@@ -437,19 +437,19 @@ UPDATE `CubeCart_option_assign` SET `set_enabled` = 1; #EOQ
 UPDATE `CubeCart_option_assign` SET `option_price` = (0-`option_price`) WHERE `option_symbol` = '-'; #EOQ
 ALTER TABLE `CubeCart_option_assign` DROP `option_symbol`; #EOQ
 
-ALTER TABLE `CubeCart_options_mid` RENAME TO `CubeCart_option_value`, DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+ALTER TABLE `CubeCart_options_mid` RENAME TO `CubeCart_option_value`, DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_option_value` CHANGE `value_id` `value_id` INT UNSIGNED NOT NULL AUTO_INCREMENT; #EOQ
 ALTER TABLE `CubeCart_option_value` CHANGE `value_name` `value_name` VARCHAR(50) NOT NULL DEFAULT ''; #EOQ
 ALTER TABLE `CubeCart_option_value` CHANGE `father_id` `option_id` INT UNSIGNED NOT NULL DEFAULT '0'; #EOQ
 
-ALTER TABLE `CubeCart_options_top` RENAME TO `CubeCart_option_group`, DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+ALTER TABLE `CubeCart_options_top` RENAME TO `CubeCart_option_group`, DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_option_group` CHANGE `option_id` `option_id` INT UNSIGNED NOT NULL AUTO_INCREMENT; #EOQ
 ALTER TABLE `CubeCart_option_group` CHANGE `option_name` `option_name` VARCHAR(50) NOT NULL DEFAULT ''; #EOQ
 ALTER TABLE `CubeCart_option_group` ADD `option_description` TEXT; #EOQ
 ALTER TABLE `CubeCart_option_group` CHANGE `option_type` `option_type` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'; #EOQ
 ALTER TABLE `CubeCart_option_group` ADD `option_required` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'; #EOQ
 
-ALTER TABLE `CubeCart_order_inv` RENAME TO `CubeCart_order_inventory`, DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+ALTER TABLE `CubeCart_order_inv` RENAME TO `CubeCart_order_inventory`, DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_order_inventory` CHANGE `id` `id` INT UNSIGNED NOT NULL AUTO_INCREMENT FIRST; #EOQ
 ALTER TABLE `CubeCart_order_inventory` CHANGE `productId` `product_id` INT UNSIGNED NOT NULL DEFAULT '0'; #EOQ
 ALTER TABLE `CubeCart_order_inventory` CHANGE `productCode` `product_code` VARCHAR(255) NOT NULL DEFAULT ''; #EOQ
@@ -473,9 +473,9 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_notes` (
 	KEY `cart_order_id` (`cart_order_id`),
 	KEY `time` (`time`),
 	FULLTEXT KEY `content` (`content`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
-ALTER TABLE `CubeCart_order_sum` RENAME TO `CubeCart_order_summary`, DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+ALTER TABLE `CubeCart_order_sum` RENAME TO `CubeCart_order_summary`, DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_order_summary` CHANGE `cart_order_id` `cart_order_id` VARCHAR(18) NOT NULL; #EOQ
 ALTER TABLE `CubeCart_order_summary` CHANGE `time` `order_date` INT UNSIGNED NOT NULL DEFAULT '0'; #EOQ
 ALTER TABLE `CubeCart_order_summary` CHANGE `customer_id` `customer_id` INT UNSIGNED NOT NULL DEFAULT '0'; #EOQ
@@ -523,12 +523,12 @@ UPDATE `CubeCart_order_summary` SET `subtotal` = `subtotal`+`discount`; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_order_history` (
   `history_id` int(10) unsigned NOT NULL auto_increment,
-  `cart_order_id` varchar(18) collate utf8_unicode_ci NOT NULL,
+  `cart_order_id` varchar(18) collate utf8mb4_unicode_ci NOT NULL,
   `status` tinyint(2) unsigned NOT NULL default '0',
   `updated` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`history_id`),
   KEY `cart_order_id` (`cart_order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_order_tax` (
 	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -537,7 +537,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_tax` (
 	`amount` DECIMAL(10,2) UNSIGNED NOT NULL,
 	PRIMARY KEY (`id`),
 	KEY `cart_order_id` (`cart_order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_permissions` (
 	`permission_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -547,7 +547,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_permissions` (
 	PRIMARY KEY  (`permission_id`),
 	KEY `admin_id` (`admin_id`),
 	KEY `section_id` (`section_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_pricing_group` (
 	`price_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -560,7 +560,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_pricing_group` (
 	PRIMARY KEY  (`price_id`),
 	KEY `group_id` (`group_id`),
 	KEY `product_id` (`product_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_pricing_quantity` (
 	`discount_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -570,9 +570,9 @@ CREATE TABLE IF NOT EXISTS `CubeCart_pricing_quantity` (
 	`price` DECIMAL(16,2) NOT NULL,
 	PRIMARY KEY  (`discount_id`),
 	KEY `product_id` (`product_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
-ALTER TABLE `CubeCart_reviews` DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+ALTER TABLE `CubeCart_reviews` DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_reviews` CHANGE `id` `id` INT UNSIGNED NOT NULL AUTO_INCREMENT; #EOQ
 ALTER TABLE `CubeCart_reviews` CHANGE `productId` `product_id` INT UNSIGNED NOT NULL DEFAULT '0'; #EOQ
 ALTER TABLE `CubeCart_reviews` CHANGE `rating` `rating` DECIMAL(3,1) UNSIGNED DEFAULT '0.0'; #EOQ
@@ -584,7 +584,7 @@ ALTER TABLE `CubeCart_reviews` ADD `vote_down` INT NOT NULL DEFAULT '0'; #EOQ
 ALTER TABLE `CubeCart_reviews` ADD `anon` TINYINT(1) UNSIGNED DEFAULT '0'; #EOQ
 ALTER TABLE `CubeCart_reviews` ADD INDEX (`approved`); #EOQ
 
-ALTER TABLE `CubeCart_sessions` DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+ALTER TABLE `CubeCart_sessions` DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_sessions` CHANGE `sessId` `session_id` VARCHAR(32) NOT NULL DEFAULT ''; #EOQ
 ALTER TABLE `CubeCart_sessions` CHANGE `timeStart` `session_start` INT UNSIGNED NOT NULL DEFAULT '0'; #EOQ
 ALTER TABLE `CubeCart_sessions` CHANGE `timeLast` `session_last` INT UNSIGNED NOT NULL DEFAULT '0'; #EOQ
@@ -597,13 +597,13 @@ ALTER TABLE `CubeCart_sessions` CHANGE `browser` `useragent` TEXT NOT NULL; #EOQ
 ALTER TABLE `CubeCart_sessions` CHANGE `basket` `basket` BLOB NULL; #EOQ
 ALTER TABLE `CubeCart_sessions` ADD `admin_id` INT UNSIGNED NOT NULL DEFAULT '0'; #EOQ
 
-ALTER TABLE `CubeCart_tax_details` DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+ALTER TABLE `CubeCart_tax_details` DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_tax_details` CHANGE `id` `id` INT UNSIGNED NOT NULL AUTO_INCREMENT; #EOQ
 ALTER TABLE `CubeCart_tax_details` CHANGE `name` `name` VARBINARY(150) NOT NULL DEFAULT ''; #EOQ
 ALTER TABLE `CubeCart_tax_details` CHANGE `display` `display` VARBINARY(150) NOT NULL DEFAULT ''; #EOQ
 ALTER TABLE `CubeCart_tax_details` CHANGE `status` `status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1'; #EOQ
 
-ALTER TABLE `CubeCart_tax_rates` DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+ALTER TABLE `CubeCart_tax_rates` DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_tax_rates` CHANGE `id` `id` INT UNSIGNED NOT NULL AUTO_INCREMENT; #EOQ
 ALTER TABLE `CubeCart_tax_rates` CHANGE `type_id` `type_id` INT UNSIGNED NOT NULL DEFAULT '1'; #EOQ
 ALTER TABLE `CubeCart_tax_rates` CHANGE `details_id` `details_id` INT UNSIGNED NOT NULL; #EOQ
@@ -613,7 +613,7 @@ ALTER TABLE `CubeCart_tax_rates` CHANGE `goods` `goods` TINYINT(1) UNSIGNED NOT 
 ALTER TABLE `CubeCart_tax_rates` CHANGE `shipping` `shipping` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'; #EOQ
 ALTER TABLE `CubeCart_tax_rates` CHANGE `active` `active` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'; #EOQ
 
-ALTER TABLE `CubeCart_transactions` DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+ALTER TABLE `CubeCart_transactions` DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_transactions` CHANGE `id` `id` INT UNSIGNED NOT NULL AUTO_INCREMENT; #EOQ
 ALTER TABLE `CubeCart_transactions` CHANGE `customer_id` `customer_id` INT UNSIGNED NULL DEFAULT NULL; #EOQ
 ALTER TABLE `CubeCart_transactions` CHANGE `order_id` `order_id` VARCHAR(18) NULL DEFAULT NULL; #EOQ

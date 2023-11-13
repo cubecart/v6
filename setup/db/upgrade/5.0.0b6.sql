@@ -22,11 +22,11 @@ CREATE TABLE IF NOT EXISTS `CubeCart_admin_error_log` (
   `log_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `admin_id` int(10) unsigned NOT NULL,
   `time` int(10) unsigned NOT NULL,
-  `message` text COLLATE utf8_unicode_ci NOT NULL,
+  `message` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `read` tinyint(1) unsigned NOT NULL,
   PRIMARY KEY (`log_id`),
   KEY `admin_id` (`admin_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 UPDATE  `CubeCart_modules` SET  `folder` =  'SagePay' WHERE  `folder` = 'Protx'; #EOQ
 UPDATE  `CubeCart_config` SET  `name` =  'SagePay' WHERE  `name` = 'Protx'; #EOQ
@@ -42,29 +42,29 @@ ALTER TABLE `CubeCart_order_summary` ADD `discount_type` CHAR( 1 ) NOT NULL DEFA
 CREATE TABLE IF NOT EXISTS `CubeCart_system_error_log` (
   `log_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `time` int(10) unsigned NOT NULL,
-  `message` text COLLATE utf8_unicode_ci NOT NULL,
+  `message` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `read` tinyint(1) unsigned NOT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_request_log` (
   `request_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `request_url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `request_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `request` blob NOT NULL,
   `result` blob NOT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`request_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 ALTER TABLE  `CubeCart_geo_country` CHANGE  `printable_name`  `name` VARCHAR( 80 ) NOT NULL DEFAULT  ''; #EOQ
 
 CREATE TABLE `CubeCart_seo_urls` (
 	`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-	`path` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-	`type` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+	`path` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+	`type` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
 	`item_id` int(25) unsigned DEFAULT NULL,
   PRIMARY KEY (`path`),
   KEY `id` (`id`),
   KEY `type` (`type`),
   KEY `item_id` (`item_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ; #EOQ
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ; #EOQ

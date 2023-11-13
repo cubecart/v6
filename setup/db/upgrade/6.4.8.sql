@@ -11,5 +11,5 @@ CREATE TABLE `CubeCart_domains` (
 	`domain` varchar(255) NOT NULL,
 	PRIMARY KEY (`id`),
 	KEY `language` (`language`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 UPDATE `CubeCart_customer` SET `order_count` = (SELECT COUNT(*) FROM `CubeCart_order_summary` WHERE `CubeCart_customer`.`customer_id` = `CubeCart_order_summary`.`customer_id`); #EOQ
