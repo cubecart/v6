@@ -20,6 +20,7 @@
 		<td style="text-align:center">{$LANG.settings.currency_name}</td>
 		<td style="text-align:center">{$LANG.settings.currency_symbol_left}</td>
 		<td style="text-align:center">{$LANG.settings.currency_exchange_rate}</td>
+		<td style="text-align:center">{$LANG.settings.currency_adjustment}</td>
 		<td style="text-align:center">{$LANG.settings.currency_symbol_right}</td>
 		<td style="text-align:center">{$LANG.settings.currency_decimal_places}</td>
 		<td style="text-align:center">{$LANG.settings.currency_symbol_decimal}</td>
@@ -36,6 +37,7 @@
 		<td><span class="editable" name="currency[{$currency.code}][name]">{$currency.name}</span></td>
 		<td style="text-align:center"><input type="text" name="currency[{$currency.code}][symbol_left]" class="textbox number edited" value="{$currency.symbol_left}"></td>
 		<td style="text-align:right"><span class="editable number-right" name="currency[{$currency.code}][value]">{$currency.value}</span></td>
+		<td style="text-align:right"><span class="editable number-right" name="currency[{$currency.code}][adjustment]">{$currency.adjustment}</span></td>
 		<td style="text-align:center"><input type="text" name="currency[{$currency.code}][symbol_right]" class="textbox number edited" value="{$currency.symbol_right}"></td>
 		<td style="text-align:center"><input type="text" name="currency[{$currency.code}][decimal_places]" class="textbox number edited" value="{$currency.decimal_places}"></td>
 		<td style="text-align:center"><input type="text" name="currency[{$currency.code}][symbol_decimal]" class="textbox number edited" value="{$currency.symbol_decimal}" maxlength="10"></td>

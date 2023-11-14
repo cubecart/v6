@@ -243,6 +243,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_currency` (
   `active` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `symbol_decimal` varchar(10) NOT NULL DEFAULT '.',
   `symbol_thousand` varchar(10) NOT NULL DEFAULT ',',
+  `adjustment` decimal(5,3) NOT NULL DEFAULT '0.000',
   PRIMARY KEY (`currency_id`),
   UNIQUE KEY `code` (`code`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=32 ; #EOQ

@@ -1965,6 +1965,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
+    <string name="currency_adjustment" introduced="6.5.4"><![CDATA[Percentage Adjustment]]></string>
     <string name="404_desc" introduced="6.5.2"><![CDATA[The table below shows 404 (not found) page requests for the last 90 days. These can be fixed by creating a redirect to the current, correct page in the "Redirects" tab. Once created, it is possible to toggle its status in the "Done" column. A warning triangle may show for a 404 that is marked as done, but subsequent page requests have continued to fail.]]></string>
     <string name="ignored_uris" introduced="6.5.2"><![CDATA[Ignored]]></string>
     <string name="last_requested" introduced="6.5.2"><![CDATA[Last Requested]]></string>

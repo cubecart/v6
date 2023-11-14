@@ -1,2 +1,0 @@
-ALTER TABLE `CubeCart_filemanager` ADD INDEX(`type`); #EOQ
-ALTER TABLE `CubeCart_filemanager` ADD UNIQUE(`md5hash`); #EOQ
