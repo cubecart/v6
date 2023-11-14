@@ -352,7 +352,7 @@ class Tax
                 } elseif (empty($decimal_places) || !is_numeric($this->_currency_vars['decimal_places'])) {
                     $decimal_places = 2;
                 }
-                $price = ($this->_currency_vars['value']*($this->_currency_vars['adjustment']/100))*$price;
+                $price = ($this->_currency_vars['value']+($this->_currency_vars['value']*($this->_currency_vars['adjustment']/100)))*$price;
                 $string = $this->_currency_vars['symbol_left'].
                         number_format(
                             $price,
