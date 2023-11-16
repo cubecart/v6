@@ -135,7 +135,7 @@ class ACP
      */
     public function addTabControl($name, $target = '', $url = null, $accesskey = null, $notify_count = false, $a_target = '_self', $priority = null, $onclick = '')
     {
-        if (!empty($name)) {
+        if (!empty(settype($name,'string'))) {
             $url = (!empty($url) && is_array($url)) ? currentPage(null, $url) : $url;
             $url = is_null($url) ? '' : preg_replace('/(#.*)$/i', '', $url);
             $priority = $this->_setTabPriority($priority);
