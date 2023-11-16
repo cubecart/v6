@@ -453,7 +453,7 @@
                   <td class="option_image">
                      <i class="fa fa-picture-o choose_option_img"  id="selector_image_id_{$option.assign_id}" aria-hidden="true" title="{$LANG.filemanager.click_to_select}" rel="{$option.assign_id}"{if !empty($option.image_id)} style="display:none"{/if}></i>
                      <img src="{$option.image}" id="option_image_preview_{$option.assign_id}" title="{$LANG.filemanager.click_to_select}" rel="{$option.assign_id}" class="choose_option_img" style="max-width: 100px; max-height: 100px;" />
-                     <div{if empty($option.image_id)} style="display: none;"{/if} id="remove_image_id_{$option.assign_id}" title="{$LANG.common.remove}" class="remove_option_img"  rel="{$option.assign_id}">{$LANG.common.remove}</div>
+                     <div{if empty($option.image_id)} style="display: none;" {/if} id="remove_image_id_{$option.assign_id}" title="{$LANG.common.remove}" class="remove_option_img"  rel="{$option.assign_id}">{$LANG.common.remove}</div>
                      <input type="hidden" name="option_update[{$option.assign_id}][image_id]" id="option_image_id_{$option.assign_id}" value="{$option.image_id}">
                   </td>
                   <td style="text-align:center">
