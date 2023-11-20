@@ -1991,20 +1991,20 @@ class Catalogue
 
             if (!empty($joins) || isset($search_data['keywords']) && is_array($indexes) && !empty($search_data['keywords'])) {
                 if ($search_mode == 'fulltext') {
-                    $max_word_len = $GLOBALS['db']->getSearchWordLen();
+                    $fulltext_min_word_len = $GLOBALS['db']->getSearchWordLen();
                     $words = explode(' ', $search_data['keywords']);
                     if (is_array($words)) {
-                        $search_str_len = 0;
+                        $longest_search_word_len = 0;
                         foreach ($words as $word) {
-                            $search_str_len = ($search_str_len < strlen($word)) ? strlen($word) : $search_str_len;
+                            $longest_search_word_len = ($longest_search_word_len < strlen($word)) ? strlen($word) : $longest_search_word_len;
                         }
                     } else {
-                        $search_str_len = strlen($search_data['keywords']);
+                        $longest_search_word_len = strlen($search_data['keywords']);
                     }
                 }
 
                 if ($search_mode == 'fulltext') {
-                    if ($search_str_len < $max_word_len) {
+                    if ($longest_search_word_len < $fulltext_min_word_len) {
                         return $this->searchCatalogue($original_search_data, $page, $per_page, 'rlike');
                     }
 
