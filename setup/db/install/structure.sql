@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_admin_users` (
 	`password` VARCHAR(128) NOT NULL,
 	`salt` VARCHAR(32) DEFAULT NULL,
 	`new_password` tinyint(1) NOT NULL DEFAULT '1',
-	`email` VARCHAR(254) NOT NULL,
+	`email` VARCHAR(96) NOT NULL,
 	`verify` VARCHAR(32) DEFAULT NULL,
 	`logins` INT UNSIGNED NOT NULL DEFAULT '0',
 	`super_user` TINYINT(1) NOT NULL DEFAULT '0',
