@@ -69,10 +69,10 @@
       <div class="small-12 large-8 columns"><label for="addr_title">{$LANG.user.title}</label><input type="text" name="title" id="addr_title" value="{$DATA.title}" placeholder="{$LANG.user.title}"></div>
    </div>
    <div class="row">
-      <div class="small-12 large-8 columns"><label for="addr_first_name">{$LANG.user.name_first}</label><input type="text" name="first_name" id="addr_first_name" value="{$DATA.first_name|capitalize}" required placeholder="{$LANG.user.name_first} {$LANG.form.required}"></div>
+      <div class="small-12 large-8 columns"><label for="addr_first_name">{$LANG.user.name_first}</label><input type="text" name="first_name" id="addr_first_name" value="{$DATA.first_name|capitalize}" required placeholder="{$LANG.user.name_first} {$LANG.form.required}" maxlength="32"></div>
    </div>
    <div class="row">
-      <div class="small-12 large-8 columns"><label for="addr_last_name">{$LANG.user.name_last}</label><input type="text" name="last_name" id="addr_last_name" value="{$DATA.last_name|capitalize}" required placeholder="{$LANG.user.name_last} {$LANG.form.required}"></div>
+      <div class="small-12 large-8 columns"><label for="addr_last_name">{$LANG.user.name_last}</label><input type="text" name="last_name" id="addr_last_name" value="{$DATA.last_name|capitalize}" required placeholder="{$LANG.user.name_last} {$LANG.form.required}" maxlength="32"></div>
    </div>
    <div class="row">
       <div class="small-12 large-8 columns"><label for="addr_company_name">{$LANG.address.company_name}</label><input type="text" name="company_name" id="addr_company_name" value="{$DATA.company_name}" placeholder="{$LANG.address.company_name}"></div>

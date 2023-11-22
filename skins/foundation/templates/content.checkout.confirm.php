@@ -120,17 +120,17 @@
       <div class="small-4 columns"><label for="user_title" class="show-for-medium-up">{$LANG.user.title}</label><input type="text" name="user[title]" id="user_title"  class="capitalize" value="{$USER.title}" placeholder="{$LANG.user.title}" autocomplete="honorific-prefix"></div>
    </div>
    <div class="row">
-      <div class="small-12 large-8 columns"><label for="user_first" class="show-for-medium-up">{$LANG.user.name_first}</label><input type="text" name="user[first_name]" id="user_first" required value="{$USER.first_name|capitalize}" placeholder="{$LANG.user.name_first}  {$LANG.form.required}" autocomplete="given-name"></div>
+      <div class="small-12 large-8 columns"><label for="user_first" class="show-for-medium-up">{$LANG.user.name_first}</label><input type="text" name="user[first_name]" id="user_first" required value="{$USER.first_name|capitalize}" placeholder="{$LANG.user.name_first}  {$LANG.form.required}" autocomplete="given-name" maxlength="32"></div>
    </div>
    <div class="row">
-      <div class="small-12 large-8 columns"><label for="user_last" class="show-for-medium-up">{$LANG.user.name_last}</label><input type="text" name="user[last_name]" id="user_last" required value="{$USER.last_name|capitalize}" placeholder="{$LANG.user.name_last}  {$LANG.form.required}" autocomplete="family-name"></div>
+      <div class="small-12 large-8 columns"><label for="user_last" class="show-for-medium-up">{$LANG.user.name_last}</label><input type="text" name="user[last_name]" id="user_last" required value="{$USER.last_name|capitalize}" placeholder="{$LANG.user.name_last}  {$LANG.form.required}" autocomplete="family-name" maxlength="32"></div>
    </div>
    <div class="row">
-      <div class="small-12 large-8 columns"><label for="user_email" class="show-for-medium-up">{$LANG.common.email}</label><input type="text" name="user[email]" id="user_email" required value="{$USER.email}" placeholder="{$LANG.common.email}  {$LANG.form.required}" autocomplete="email"></div>
+      <div class="small-12 large-8 columns"><label for="user_email" class="show-for-medium-up">{$LANG.common.email}</label><input type="text" name="user[email]" id="user_email" required value="{$USER.email}" placeholder="{$LANG.common.email}  {$LANG.form.required}" autocomplete="email" maxlength="96"></div>
    </div>
    {if $CONFIG.emailconf=='1'}
    <div class="row">
-      <div class="small-12 large-8 columns"><label for="emailconf" class="show-for-medium-up">{$LANG.account.email_confirm}</label><input type="text" name="emailconf" id="emailconf" class="nopaste" placeholder="{$LANG.account.email_confirm}  {$LANG.form.required}" required ></div>
+      <div class="small-12 large-8 columns"><label for="emailconf" class="show-for-medium-up">{$LANG.account.email_confirm}</label><input type="text" name="emailconf" id="emailconf" class="nopaste" placeholder="{$LANG.account.email_confirm}  {$LANG.form.required}" required maxlength="96"></div>
    </div>
    {/if}
    <div class="row">

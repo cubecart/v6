@@ -17,17 +17,17 @@
          <div class="small-4 columns"><label for="acc_title" class="show-for-medium-up">{$LANG.user.title}</label><input type="text" name="title" id="acc_title" value="{$USER.title}" placeholder="{$LANG.user.title}"></div>
       </div>
       <div class="row">
-         <div class="small-12 large-8 columns"><label for="acc_first_name" class="show-for-medium-up">{$LANG.user.name_first}</label><input type="text" name="first_name" id="acc_first_name" class="required" value="{$USER.first_name|capitalize}" placeholder="{$LANG.user.name_first} {$LANG.form.required}" required></div>
+         <div class="small-12 large-8 columns"><label for="acc_first_name" class="show-for-medium-up">{$LANG.user.name_first}</label><input type="text" name="first_name" id="acc_first_name" class="required" value="{$USER.first_name|capitalize}" placeholder="{$LANG.user.name_first} {$LANG.form.required}" required maxlength="32"></div>
       </div>
       <div class="row">
-         <div class="small-12 large-8 columns"><label for="acc_last_name" class="show-for-medium-up">{$LANG.user.name_last}</label><input type="text" name="last_name" id="acc_last_name" class="required" value="{$USER.last_name|capitalize}" placeholder="{$LANG.user.name_last} {$LANG.form.required}" required></div>
+         <div class="small-12 large-8 columns"><label for="acc_last_name" class="show-for-medium-up">{$LANG.user.name_last}</label><input type="text" name="last_name" id="acc_last_name" class="required" value="{$USER.last_name|capitalize}" placeholder="{$LANG.user.name_last} {$LANG.form.required}" required maxlength="32"></div>
       </div>
       <div class="row">
-         <div class="small-12 large-8 columns"><label for="acc_email" class="show-for-medium-up">{$LANG.common.email}</label><input type="text" name="email" id="acc_email" class="required" value="{$USER.email}" placeholder="{$LANG.common.email} {$LANG.form.required}" required></div>
+         <div class="small-12 large-8 columns"><label for="acc_email" class="show-for-medium-up">{$LANG.common.email}</label><input type="text" name="email" id="acc_email" class="required" value="{$USER.email}" placeholder="{$LANG.common.email} {$LANG.form.required}" required maxlength="96"></div>
       </div>
       {if $CONFIG.emailconf=='1'}
       <div class="row">
-         <div class="small-12 large-8 columns"><label for="emailconf" class="show-for-medium-up">{$LANG.account.email_confirm}</label><input type="text" name="emailconf" id="emailconf" class="nopaste" placeholder="{$LANG.account.email_confirm}  {$LANG.form.required}" required ></div>
+         <div class="small-12 large-8 columns"><label for="emailconf" class="show-for-medium-up">{$LANG.account.email_confirm}</label><input type="text" name="emailconf" id="emailconf" class="nopaste" placeholder="{$LANG.account.email_confirm}  {$LANG.form.required}" required maxlength="96"></div>
       </div>
       {/if}
       <div class="row">
