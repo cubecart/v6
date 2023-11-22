@@ -1009,7 +1009,6 @@ class Catalogue
     {
         // If there is only one value OR a default value for every option assign them
         if (isset($_POST['add'])) {
-            $add_options = true;
             $single_fixed_options = false;
 
             $assigned_options = $GLOBALS['db']->select('CubeCart_option_assign', false, array('product' => (int)$_POST['add']));
