@@ -147,7 +147,9 @@ jQuery(document).ready(function() {
     });
     $(".image-gallery").hover(function() {
         var src = $(this).attr("data-image-swap");
-        $('#img-preview').attr("src", src);
+        var ttl = $(this).attr("title");
+        var alt = $(this).attr("alt");
+        $('#img-preview').attr("src", src).attr("title",ttl).attr("alt",alt);
     });
     $('.open-clearing').on('click', function(e) {
         e.preventDefault();
