@@ -667,6 +667,11 @@ function httpredir($destination = '', $anchor = '', $meta_refresh = false, $stat
     if (empty($destination)) {
         $destination = currentPage();
     }
+    
+    if(substr($destination, 0, 1) === '?') {
+        $b = basename($_SERVER['REQUEST_URI']);
+        $destination = (substr($b,-4)==='.php') ? CC_ROOT_REL.$destination : CC_ROOT_REL.'index.php'.$destination;
+    }
 
     ## We could have just used header('Location: *'), but then we wouldn't be able to sanitize the requests
     ## Check for spoofing
@@ -686,9 +691,6 @@ function httpredir($destination = '', $anchor = '', $meta_refresh = false, $stat
         $rewrite = $GLOBALS['seo']->rewriteUrls(sprintf('href="%s"', $destination));
         if (preg_match('#href="(.+)"#i', $rewrite, $match)) {
             $destination	= preg_match('#^http#i', $match[1]) ? $match[1] : $base.$match[1];
-        }
-        if (!CC_IN_ADMIN && !strstr($destination, '.') && substr($destination, 0, 1)!=='?') { // Add .html if for some reason its missing!!
-            $destination = $destination.'.html';
         }
     }
 
