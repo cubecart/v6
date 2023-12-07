@@ -669,7 +669,7 @@ function httpredir($destination = '', $anchor = '', $meta_refresh = false, $stat
     }
     
     if(substr($destination, 0, 1) === '?') {
-        $b = basename($_SERVER['REQUEST_URI']);
+        $b = basename($_SERVER['PHP_SELF']);
         $destination = (substr($b,-4)==='.php') ? CC_ROOT_REL.$b.$destination : CC_ROOT_REL.'index.php'.$destination;
     }
 
