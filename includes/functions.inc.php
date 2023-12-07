@@ -670,7 +670,7 @@ function httpredir($destination = '', $anchor = '', $meta_refresh = false, $stat
     
     if(substr($destination, 0, 1) === '?') {
         $b = basename($_SERVER['REQUEST_URI']);
-        $destination = (substr($b,-4)==='.php') ? CC_ROOT_REL.$destination : CC_ROOT_REL.'index.php'.$destination;
+        $destination = (substr($b,-4)==='.php') ? CC_ROOT_REL.$b.$destination : CC_ROOT_REL.'index.php'.$destination;
     }
 
     ## We could have just used header('Location: *'), but then we wouldn't be able to sanitize the requests
