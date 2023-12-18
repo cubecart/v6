@@ -306,6 +306,9 @@ class GUI
                 'url' => $GLOBALS['seo']->SEOable($href),
                 'title' => ucfirst(strip_tags(str_replace('_', ' ', $name)))
             );
+            foreach ($GLOBALS['hooks']->load('class.gui.add_breadcrumb_post') as $hook) {
+                include $hook;
+            }
         }
     }
 
