@@ -613,38 +613,37 @@ class Cart
                         array_unshift($qualifying_products, $incexc);
                         $incexc = 'include';
                     }
-                }
-
-                if ($incexc!=='shipping_only' && is_array($qualifying_products) && count($qualifying_products)>0) {
-                    $product_ids = array();
-                    foreach ($qualifying_products as $id) {
-                        $product_ids[$id] = true;
-                    }
-
-                    if ($incexc == 'include') {
-                        // If product IS in qualifying ids coupon is allowed
-                        foreach ($this->basket['contents'] as $key => $data) {
-                            if ($product_ids[$data['id']]) {
-                                $include[$data['id']] = true;
-                                $proceed = true;
+                    if ($incexc!=='shipping_only' && is_array($qualifying_products) && count($qualifying_products)>0) {
+                        $product_ids = array();
+                        foreach ($qualifying_products as $id) {
+                            $product_ids[$id] = true;
+                        }
+    
+                        if ($incexc == 'include') {
+                            // If product IS in qualifying ids coupon is allowed
+                            foreach ($this->basket['contents'] as $key => $data) {
+                                if ($product_ids[$data['id']]) {
+                                    $include[$data['id']] = true;
+                                    $proceed = true;
+                                }
+                            }
+                        } elseif ($incexc == 'exclude') {
+                            foreach ($this->basket['contents'] as $key => $data) {
+                                if (isset($qualifying_manufacturers) && $product_ids[$data['id']] && isset($include[$data['id']])) {
+                                    unset($include[$data['id']]);
+                                } elseif($product_ids[$data['id']]) {
+                                    continue;
+                                } else {
+                                    $include[$data['id']] = true;
+                                    $proceed = true;
+                                }
                             }
                         }
-                    } elseif ($incexc == 'exclude') {
-                        foreach ($this->basket['contents'] as $key => $data) {
-                            if (isset($qualifying_manufacturers) && $product_ids[$data['id']] && isset($include[$data['id']])) {
-                                unset($include[$data['id']]);
-                            } elseif($product_ids[$data['id']]) {
-                                continue;
-                            } else {
-                                $include[$data['id']] = true;
-                                $proceed = true;
-                            }
+    
+                        if (!$proceed || count($include)==0) {
+                            $GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_wrong_product']);
+                            return false;
                         }
-                    }
-
-                    if (!$proceed || count($include)==0) {
-                        $GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_wrong_product']);
-                        return false;
                     }
                 } else {
                     $proceed = true;
