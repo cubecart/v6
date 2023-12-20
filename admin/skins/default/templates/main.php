@@ -15,7 +15,9 @@
       {foreach from=$HEAD_JS item=js_src}
       <script type="text/javascript" src="{$js_src}?{$VERSION_HASH}"></script>
       {/foreach}
-      <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=a8467fc7-018a-4ce5-9fb4-873f6c733196"> </script>
+      {if !isset($CONFIG.hide_chat) || (isset($CONFIG.hide_chat) && $CONFIG.hide_chat == '0')}
+      <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=a8467fc7-018a-4ce5-9fb4-873f6c733196"></script>
+      {/if}
    </head>
    <body>
       <div id="header">
