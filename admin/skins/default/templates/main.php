@@ -16,10 +16,22 @@
       <script type="text/javascript" src="{$js_src}?{$VERSION_HASH}"></script>
       {/foreach}
       {if !isset($CONFIG.hide_chat) || (isset($CONFIG.hide_chat) && $CONFIG.hide_chat == '0')}
-      <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=a8467fc7-018a-4ce5-9fb4-873f6c733196"></script>
+      {literal}
+      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-KK9N36X3');</script>
+      {/literal}
       {/if}
    </head>
    <body>
+      {if !isset($CONFIG.hide_chat) || (isset($CONFIG.hide_chat) && $CONFIG.hide_chat == '0')}
+      {literal}
+      <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KK9N36X3"
+      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+      {/literal}
+      {/if}
       <div id="header">
          <a href="?"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/logo.cubecart.png" width="158" height="30" id="logo"></a>
          <span class="user_info">{$LANG.settings.title_welcome_back} <a href="?_g=settings&node=admins&action=edit&admin_id={$ADMIN_UID}" id="admin_id">{$ADMIN_USER}</a> - <a href="?_g=logout&amp;token={$SESSION_TOKEN}">{$LANG.account.logout} <i class="fa fa-sign-out"></i></a></span>
