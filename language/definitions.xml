@@ -614,6 +614,7 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="view" introduced="6.5.4"><![CDATA[View]]></string>
     <string name="next" introduced="6.5.2"><![CDATA[Next]]></string>
     <string name="previous" introduced="6.5.2"><![CDATA[Previous]]></string>
     <string name="primary" introduced="6.5.2"><![CDATA[Primary]]></string>
