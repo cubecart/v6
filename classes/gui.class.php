@@ -252,7 +252,7 @@ class GUI
         $config['store_country_name'] = getCountryFormat($config['store_country']);
         $GLOBALS['smarty']->assign('CONFIG', $config);
         ## Version hash to refresh CSS on each version load (storeURL added to prevent possible version disclosure)
-        $GLOBALS['smarty']->assign('VERSION_HASH', md5($GLOBALS['storeURL'].CC_VERSION));
+        $GLOBALS['smarty']->assign('VERSION_HASH', md5(CC_ROOT_DIR.CC_VERSION));
     }
 
     /**
