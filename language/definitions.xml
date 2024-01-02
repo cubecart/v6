@@ -1705,6 +1705,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title" introduced="5.0.0"><![CDATA[Shop by Category]]></string>
   </group>
   <group name="newsletter">
+    <string name="subscriber_log" introduced="6.5.4"><![CDATA[Newsletter with subject %s (%s) sent.]]></string>
+    <string name="test_subscriber_log" introduced="6.5.4"><![CDATA[Test newsletter with subject %s (%s) sent.]]></string>
     <string name="no_subscribers" introduced="6.2.9"><![CDATA[There are no subscribers in your mailing list.]]></string>
     <string name="log_search" introduced="6.2.1"><![CDATA[Search Subscriber Newsletter Sent Log]]></string>
     <string name="delete_single_optin" introduced="6.2.1"><![CDATA[Delete all subscribers without double Opt-In status]]></string>

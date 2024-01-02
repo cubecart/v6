@@ -152,7 +152,8 @@ class Newsletter
                     if (filter_var($test, FILTER_VALIDATE_EMAIL)) {
                         $this->unsubscribeHeader($test);
                         if($this->_mailer->sendEmail($test, $content, $contents[0]['template_id'])) {
-                            $this->_subscriberLog($test, 'Test newsletter with subject "'.$contents[0]['subject'].'" ('.$this->_mailer->getTemplateTitle().') sent.');
+                            $log = sprintf($GLOBALS['language']->newsletter['test_subscriber_log'], $contents[0]['subject'], $this->_mailer->getTemplateTitle());
+                            $this->_subscriberLog($test, $log);
                         }
                         return true;
                     }
@@ -178,7 +179,8 @@ class Newsletter
                                 );
                                 $this->unsubscribeHeader($subscriber['email']);
                                 if($this->_mailer->sendEmail($subscriber['email'], $content, $contents[0]['template_id'])) {
-                                    $this->_subscriberLog($subscriber['email'], 'Newsletter with subject "'.$contents[0]['subject'].'" ('.$this->_mailer->getTemplateTitle().') sent.');
+                                    $log = sprintf($GLOBALS['language']->newsletter['subscriber_log'], $contents[0]['subject'], $this->_mailer->getTemplateTitle());
+                                    $this->_subscriberLog($subscriber['email'], $log);
                                 }
                             } else {
                                 // Flag for deletion
