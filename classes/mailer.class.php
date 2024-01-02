@@ -31,6 +31,7 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
 
     private $_html;
     private $_text;
+    private $_template_title;
     private $_email_content_id;
     private $_import_new = false;
     private $_sendgrid = false;
@@ -92,7 +93,16 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
     }
 
     //=====[ Public ]=======================================
-
+    
+    /**
+     * Setup the instance (singleton)
+     *
+     * @return Mailer
+     */
+    public function getTemplateTitle()
+    {
+        return $this->_template_title;
+    }
     /**
      * Load email content
      *
@@ -196,7 +206,8 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
         if (is_array($contents)) {
             // Load template from specified id or default if not set
             $where = (!$template_id) ? array('template_default' => 1) : array('template_id' => (int)$template_id);
-            if (($templates = $GLOBALS['db']->select('CubeCart_email_template', array('content_html', 'content_text'), $where)) !== false) {
+            if (($templates = $GLOBALS['db']->select('CubeCart_email_template', array('title', 'content_html', 'content_text'), $where)) !== false) {
+                $this->_template_title = $templates[0]['title'];
                 foreach ($contents as $key => $string) {
                     if (strtolower($key) == 'subject') {
                         $this->Subject = strip_tags($string);
