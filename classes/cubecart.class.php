@@ -2122,7 +2122,8 @@ class Cubecart
             
             $GLOBALS['db']->delete('CubeCart_404_log', '`created` < DATE_SUB(NOW(), INTERVAL 90 DAY)');
             $uri = strtok($uri, '?');
-            $uri = ltrim($uri, CC_ROOT_REL);
+	    $cc_root_rel_pattern = "/\A" . preg_quote(CC_ROOT_REL, "/") . "/"
+	    $uri = preg_replace($cc_root_rel_pattern, "", $uri)
             $uri = rtrim($uri, '/');
             $uri = htmlentities($uri, ENT_QUOTES);
         
