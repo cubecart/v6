@@ -781,7 +781,7 @@ class SEO
         $this->_sitemap_xml = new XML();
         $this->_sitemap_xml->startElement('urlset', array('xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9'));
 
-        $this->_sitemap_link(array('url' => $this->_sitemap_base_url.'/index.php'));
+        $this->_sitemap_link(array('url' => $this->_sitemap_base_url));
         # Sale Items
         if ($GLOBALS['config']->get('config', 'catalogue_sale_mode')!=='0' && $GLOBALS['config']->get('config', 'catalogue_sale_mode')!=='2') {
             $this->_sitemap_link(array('url' => $this->_sitemap_base_url.'/index.php?_a=saleitems'));
