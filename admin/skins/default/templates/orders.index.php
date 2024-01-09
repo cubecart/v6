@@ -172,7 +172,7 @@
                {if !empty($OVERVIEW_SUMMARY.company_name_d)}{$OVERVIEW_SUMMARY.company_name_d}<br>{/if}
                <span class="capitalize">{$OVERVIEW_SUMMARY.line1_d}<br>
                {if !empty($OVERVIEW_SUMMARY.line2_d)}{$OVERVIEW_SUMMARY.line2_d}<br>{/if}</span>
-               <span class="upprcase">{$OVERVIEW_SUMMARY.town_d}<br>
+               <span class="uppercase">{$OVERVIEW_SUMMARY.town_d}<br>
                {if !empty($OVERVIEW_SUMMARY.state_d)}{$OVERVIEW_SUMMARY.state_d}, {/if}</span>{$OVERVIEW_SUMMARY.postcode_d}<br>
                {$OVERVIEW_SUMMARY.country_d}
                {if !empty($OVERVIEW_SUMMARY.w3w_d)}<span class="w3w">///<a href="https://what3words.com/{$OVERVIEW_SUMMARY.w3w_d}" target="_blank">{$OVERVIEW_SUMMARY.w3w_d}</a></span>{/if}
