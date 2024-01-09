@@ -196,7 +196,6 @@
       {/if}
       {/foreach}
    </ul>
-   {* Choose between "traditional" 123 pagination or "more" button to load next page inline *}
    {include file='templates/element.category.pagination.traditional.php'}
    {include file='templates/element.category.pagination.more.php'}
 </div>
