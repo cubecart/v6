@@ -174,7 +174,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_category_language` (
 	`cat_id` INT UNSIGNED NOT NULL DEFAULT '0',
 	`language` VARCHAR(5) NULL DEFAULT NULL,
 	`cat_name` VARCHAR(255) NULL DEFAULT NULL,
-	`cat_desc` TEXT NOT NULL,
+	`cat_desc` TEXT NULL,
 	`seo_meta_title` TEXT NULL,
 	`seo_meta_description` TEXT NULL,
 	`seo_meta_keywords` TEXT NULL,

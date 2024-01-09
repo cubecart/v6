@@ -17,3 +17,4 @@ ALTER TABLE `CubeCart_newsletter_subscriber_log` CHANGE `email` `email` VARCHAR(
 ALTER TABLE `CubeCart_reviews` CHANGE `email` `email` VARCHAR(96); #EOQ
 ALTER TABLE `CubeCart_customer_coupon` CHANGE `email` `email` VARCHAR(96); #EOQ
 ALTER TABLE `CubeCart_admin_users` CHANGE `email` `email` VARCHAR(96); #EOQ
+ALTER TABLE `CubeCart_category_language` CHANGE `cat_desc` `cat_desc` TEXT NULL DEFAULT NULL; #EOQ
