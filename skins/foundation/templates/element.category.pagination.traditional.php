@@ -1,3 +1,4 @@
+{if isset($PAGINATION) && !empty($PAGINATION)}
 <div class="row show-for-medium-up">
     <div class="large-3 columns">
         <dl>
@@ -14,3 +15,4 @@
         {$PAGINATION}
     </div>
 </div>
+{/if}
