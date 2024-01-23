@@ -1776,7 +1776,7 @@ class Catalogue
      * @param string $search_mode
      * @return bool
      */
-    public function searchCatalogue($search_data = null, $page = 1, $per_page = 10, $search_mode = 'like')
+    public function searchCatalogue($search_data = null, $page = 1, $per_page = 10, $search_mode = 'elastic')
     {
         if(isset($search_data['keywords']) && stristr('{search}', $search_data['keywords'])) return false;
         
