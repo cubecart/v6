@@ -1176,6 +1176,9 @@ if (isset($_GET['action'])) {
     if (!isset($_GET['sort']) || !is_array($_GET['sort'])) {
         $_GET['sort'] = array('updated' => 'DESC');
     }
+
+    $matrix_stock = $GLOBALS['db']->select('CubeCart_option_matrix', false, array('use_stock' => 1, 'status' => 1), false, 1);
+
     $thead_sort = array(
         'product_id'   => $GLOBALS['db']->column_sort('product_id', $lang['settings']['item_id'], 'sort', $current_page, $_GET['sort']),
         'status'   => $GLOBALS['db']->column_sort('status', $lang['common']['status'], 'sort', $current_page, $_GET['sort']),
@@ -1184,7 +1187,7 @@ if (isset($_GET['action'])) {
         'name'    => $GLOBALS['db']->column_sort('name', $lang['catalogue']['product_name'], 'sort', $current_page, $_GET['sort']),
         'product_code'  => $GLOBALS['db']->column_sort('product_code', $lang['catalogue']['product_code'], 'sort', $current_page, $_GET['sort']),
         'price'   => $GLOBALS['db']->column_sort('price', $lang['common']['price'], 'sort', $current_page, $_GET['sort']),
-        'stock_level'  => $lang['catalogue']['title_stock'],
+        'stock_level'  => ($matrix_stock) ? $lang['catalogue']['title_stock'] : $GLOBALS['db']->column_sort('stock_level', $lang['catalogue']['title_stock'], 'sort', $current_page, $_GET['sort']),
         'updated'   => $GLOBALS['db']->column_sort('updated', $lang['catalogue']['title_last_updated'], 'sort', $current_page, $_GET['sort']),
         'translations'  => $lang['translate']['title_translations']
     );
@@ -1285,7 +1288,7 @@ if (isset($_GET['action'])) {
                 $result['stock_level_display'] = "&infin;";
             }
 
-            if ($stock_variations = $GLOBALS['db']->select('CubeCart_option_matrix', 'MAX(stock_level) AS max_stock, MIN(stock_level) AS min_stock', array('product_id' => $result['product_id'], 'use_stock' => 1, 'status' => 1), false, 1)) {
+            if ($matrix_stock && $stock_variations = $GLOBALS['db']->select('CubeCart_option_matrix', 'MAX(stock_level) AS max_stock, MIN(stock_level) AS min_stock', array('product_id' => $result['product_id'], 'use_stock' => 1, 'status' => 1), false, 1)) {
                 if (is_numeric($stock_variations[0]['min_stock']) && is_numeric($stock_variations[0]['max_stock'])) {
                     $result['stock_level_display'] =  ($stock_variations[0]['min_stock'] == $stock_variations[0]['max_stock']) ? $stock_variations[0]['max_stock'] : $stock_variations[0]['min_stock'].' - '.$stock_variations[0]['max_stock'];
                 }
