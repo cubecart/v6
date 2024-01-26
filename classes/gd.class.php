@@ -203,10 +203,9 @@ class GD
      *
      * @param string $filename
      * @param bool $resize
-     * @param bool $thumbnail
      * @return bool
      */
-    public function gdSave($filename, $resize = false, $thumbnail = false)
+    public function gdSave($filename, $resize = false)
     {
         if ($this->_abort) {
             return false;
