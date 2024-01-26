@@ -146,10 +146,10 @@ class GD
                     return imagerotate($im, 180, 0);
                 break;
                 case 6:
-                    return imagerotate($im, 90, 0);
+                    return imagerotate($im, -90, 0);
                 break;
                 case 8:
-                    return imagerotate($im, -90, 0);
+                    return imagerotate($im, 90, 0);
                 break;
             }
         }
