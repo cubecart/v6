@@ -21,10 +21,10 @@ class GD
     private $_gdWebpSupport;
 
     private $_gdImageData;
+    private $_gdImageExif;
     private $_gdImageType;
 
     private $_gdImageSource;
-    private $_gdImageSourceFile;
     private $_gdImageOutput;
 
     private $_gdImageArray = array();
@@ -52,6 +52,7 @@ class GD
         $this->_gdImageOutput = false;
         $this->_gdImageSource = false;
         $this->_gdImageData  = false;
+        $this->_gdImageExif = false;
     }
 
     /**
@@ -98,8 +99,8 @@ class GD
     public function gdLoadFile($file)
     {
         if (file_exists($file)) {
-            $this->_gdImageSourceFile = $file;
             $this->_gdImageData = getimagesize($file);
+            $this->_gdImageExif = exif_read_data($file);
             $this->_gdImageType = $this->_gdImageData[2];
 
             switch ($this->_gdImageType) {
@@ -139,9 +140,8 @@ class GD
      */
     private function gdOrientate($im)
     {
-        $exif = exif_read_data($this->_gdImageSourceFile);
-        if (!empty($exif['Orientation'])) {
-            switch ($exif['Orientation']) {
+        if (isset($this->_gdImageExif['Orientation']) && !empty($this->_gdImageExif['Orientation'])) {
+            switch ($this->_gdImageExif['Orientation']) {
                 case 3:
                     return imagerotate($im, 180, 0);
                 break;
@@ -241,8 +241,9 @@ class GD
                     break;
                 default:
                     trigger_error(__METHOD__.' - Unknown file type', E_USER_NOTICE);
-                return false;
+                    return false;
             }
+            
             return true;
         }
         return false;
