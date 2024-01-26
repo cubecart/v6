@@ -24,6 +24,7 @@ class GD
     private $_gdImageType;
 
     private $_gdImageSource;
+    private $_gdImageSourceFile;
     private $_gdImageOutput;
 
     private $_gdImageArray = array();
@@ -97,6 +98,7 @@ class GD
     public function gdLoadFile($file)
     {
         if (file_exists($file)) {
+            $this->_gdImageSourceFile = $file;
             $this->_gdImageData = getimagesize($file);
             $this->_gdImageType = $this->_gdImageData[2];
 
@@ -128,6 +130,30 @@ class GD
             return true;
         }
         return false;
+    }
+
+    /**
+     * Orientate image based on EXIF data
+     *
+     * @return $im object
+     */
+    private function gdOrientate($im)
+    {
+        $exif = exif_read_data($this->_gdImageSourceFile);
+        if (!empty($exif['Orientation'])) {
+            switch ($exif['Orientation']) {
+                case 3:
+                    return imagerotate($im, 180, 0);
+                break;
+                case 6:
+                    return imagerotate($im, 90, 0);
+                break;
+                case 8:
+                    return imagerotate($im, -90, 0);
+                break;
+            }
+        }
+        return $im;
     }
 
     /**
@@ -193,6 +219,7 @@ class GD
         $im = $this->gdGetCurrentData();
         if ($im) {
             $file = $this->_gdTargetDir.$filename;
+            $im = $this->gdOrientate($im);
             imageinterlace($im, true);
             switch ($this->_gdImageType) {
                 case IMAGETYPE_GIF:
