@@ -371,9 +371,6 @@ a.grey {
     max-width: 60px;
     margin-right: 0.5rem;
 }
-.breadcrumbs > * {
-    text-transform: none !important;
-}
 @media only screen and (max-width: 52.0625em) {
     #checkout_actions .button {
         padding-left:0.3125em;
