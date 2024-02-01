@@ -24,6 +24,7 @@
       })(window,document,'script','dataLayer','GTM-KK9N36X3');</script>
       {/literal}
       {/if}
+      <meta name="robots" content="noindex,nofollow">
    </head>
    <body>
       {if !isset($CONFIG.hide_chat) || (isset($CONFIG.hide_chat) && $CONFIG.hide_chat == '0')}
