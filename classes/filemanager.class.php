@@ -711,7 +711,7 @@ class FileManager
             }
             if (($file = $GLOBALS['db']->select('CubeCart_filemanager', false, array('file_id' => $file_id))) !== false) {
                 $source = $this->_manage_dir.'/'.$this->_sub_dir;
-                $sub_dir = (substr($this->_sub_dir, 0, 1) == '/') ? $this->_sub_dir : '/'.$this->_sub_dir;
+                $sub_dir = (($this->_sub_dir.' ')[0] == '/') ? $this->_sub_dir : '/'.$this->_sub_dir;
                 if (file_exists($source.$file[0]['filename'])) {
                     $GLOBALS['gui']->addBreadcrumb($file[0]['filename'], currentPage());
                     $GLOBALS['main']->addTabControl('Details', 'fm-details');
