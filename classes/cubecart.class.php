@@ -2390,6 +2390,9 @@ class Cubecart
     {
         $GLOBALS['session']->setBack();
         $GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->account['login'], $GLOBALS['seo']->buildURL('login'));
+        
+        $GLOBALS['seo']->set_meta_data(array('description' => '', 'title' => $GLOBALS['language']->account['login']));
+
         //If there is a cookie for the username then use it in the login
         if (isset($_COOKIE['username']) && !empty($_COOKIE['username'])) {
             $GLOBALS['smarty']->assign('USERNAME', $_COOKIE['username']);
@@ -3020,6 +3023,7 @@ class Cubecart
     private function _recover()
     {
         $GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->account['recover_password'], currentPage());
+        $GLOBALS['seo']->set_meta_data(array('description' => '', 'title' => $GLOBALS['language']->account['recover_password']));
 
         $GLOBALS['smarty']->assign('SECTION_NAME', 'recover');
 
@@ -3046,6 +3050,8 @@ class Cubecart
     {
         $GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->account['recover_password'], currentPage());
 
+        $GLOBALS['seo']->set_meta_data(array('description' => '', 'title' => $GLOBALS['language']->account['recover_password']));
+
         $GLOBALS['smarty']->assign('SECTION_NAME', 'recovery');
 
         if (isset($_POST['email']) && isset($_POST['validate']) && isset($_POST['password'])) {
@@ -3067,6 +3073,8 @@ class Cubecart
     private function _register()
     {
         $GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->account['register'], $GLOBALS['seo']->buildURL('register'));
+
+        $GLOBALS['seo']->set_meta_data(array('description' => '', 'title' => $GLOBALS['language']->account['register']));
 
         foreach ($GLOBALS['hooks']->load('class.cubecart.construct.register') as $hook) {
             include $hook;

@@ -80,7 +80,7 @@
     <string name="email_confirm" introduced="6.4.5"><![CDATA[Confirm Email]]></string>
     <string name="password_strength" introduced="5.0.0"><![CDATA[Password Strength]]></string>
     <string name="recover_password" introduced="5.0.0"><![CDATA[Recover Password]]></string>
-    <string name="recover_password_text" introduced="5.0.0"><![CDATA[If you have forgotten your password, put your email in the box below and we'll send instructions to regain access]]></string>
+    <string name="recover_password_text" introduced="5.0.0"><![CDATA[If you have forgotten your password, put your email in the box below and we'll send instructions to regain access.]]></string>
     <string name="register" introduced="5.0.0"><![CDATA[Register]]></string>
     <string name="register_welcome" introduced="6.0.0"><![CDATA[New here? Please click the button below to register.]]></string>
     <string name="register_mailing" introduced="5.0.0"><![CDATA[Subscribe to mailing list.]]></string>
