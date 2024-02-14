@@ -695,14 +695,18 @@ if (isset($_GET['action'])) {
                 }
             }
             switch ($_POST['multi-action']) {
-            case 'print':
-                $add_array['print'][] = $order_id;
+                case 'print':
+                    $add_array['print'][] = $order_id;
+                    break;
+                case 'delete':
+                    if ($order->deleteOrder($order_id)) {
+                        $deleted = true;
+                    }
                 break;
-            case 'delete':
-                if ($order->deleteOrder($order_id)) {
-                    $deleted = true;
-                }
-                break;
+                default:
+                    foreach ($GLOBALS['hooks']->load('admin.order.index.multi_tasks') as $hook) {
+                        include $hook;
+                    }
             }
         }
         if ($_POST['multi-action'] == 'delete') {
