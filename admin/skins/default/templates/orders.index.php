@@ -81,9 +81,17 @@
                   </select>
                   {$LANG.common.then}
                   <select name="multi-action" class="textbox">
-                     <option value="">{$LANG.orders.option_nothing}</option>
-                     <option value="print">{$LANG.orders.option_print}</option>
-                     <option value="delete" style="color: red;">{$LANG.orders.option_delete}</option>
+                     {foreach $LIST_ORDER_TASKS as $tasks}
+                     {if $tasks.opt_group_name}
+                     <optgroup label="{$tasks.opt_group_name}">
+                     {/if}
+                     {foreach $tasks.selections as $task}
+                       <option value="{$task.value}" style="{$task.style}">{$task.string}</option>
+                     {/foreach}
+                     {if $tasks.opt_group_name}
+                     </optgroup>
+                     {/if}
+                     {/foreach}
                   </select>
                   <input type="submit" value="{$LANG.common.go}" name="go" data-confirm="{$LANG.notification.confirm_delete}" id="submit_multi" class="tiny">
                </td>

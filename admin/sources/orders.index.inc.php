@@ -782,6 +782,15 @@ if (isset($_GET['action'])) {
     }
     $where = (isset($where) && !empty($where)) ? $where : false;
 
+    $smarty_data['order_tasks'][] = array(
+        'opt_group_name' => '', // Leave blank for no option grouping for this group
+        'selections' => array(
+            array('value' => "", 'string' => $lang['orders']['option_nothing'], 'style' => ""),
+            array('value' => "print", 'string' => $lang['orders']['option_print'], 'style' => ""),
+            array('value' => "delete", 'string' => $lang['orders']['option_delete'], 'style' => "color: red"),
+        )
+    );
+
     for ($i = 1;$i <= 6; ++$i) {
         $smarty_data['order_status'][] = array(
             'id'  => $i,
@@ -789,6 +798,12 @@ if (isset($_GET['action'])) {
             'string' => $lang['order_state']['name_'.$i],
         );
     }
+    
+    foreach ($GLOBALS['hooks']->load('admin.order.index.order_tasks') as $hook) {
+        include $hook;
+    }
+
+    $GLOBALS['smarty']->assign('LIST_ORDER_TASKS', $smarty_data['order_tasks']);
     $GLOBALS['smarty']->assign('LIST_ORDER_STATUS', $smarty_data['order_status']);
 
     $GLOBALS['main']->addTabControl($lang['orders']['tab_orders_overview'], 'orders', null, 'O');

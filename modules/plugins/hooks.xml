@@ -66,6 +66,7 @@
 	<hook trigger="admin.order.index.post_display" deprecated="" />
 	<hook trigger="admin.order.index.list" deprecated="" />
 	<hook trigger="admin.order.index.multi_tasks" deprecated="" />
+	<hook trigger="admin.order.index.order_tasks" deprecated="" />
 	<hook trigger="admin.order.index.post_process" deprecated="" />
 	<hook trigger="admin.order.index.pre_display" deprecated="" />
 	<hook trigger="admin.order.index.pre_process" deprecated="" />
