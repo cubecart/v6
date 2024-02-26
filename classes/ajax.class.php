@@ -153,7 +153,7 @@ class Ajax
      */
     public static function search($type, $search_string)
     {
-        $data = false;
+        $data = array();
         
         foreach ($GLOBALS['hooks']->load('class.ajax.search') as $hook) {
             include $hook;
