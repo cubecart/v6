@@ -618,7 +618,7 @@ if (isset($database_result) && $database_result) {
     $index_map = array(
         'cubecart_404_log' => array(
             'id' => 'PRIMARY',
-            'uri' => 'KEY',
+            'uri' => 'UNIQUE',
             'ignore' => 'KEY',
             'created' => 'KEY'
         ),
