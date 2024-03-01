@@ -128,7 +128,7 @@
     <h3>{$LANG.email.title_content_html}</h3>
 	{if $LANGUAGES}
 	<div id="template_html" class="ace_email_editor"></div>
-	<input type="hidden" name="content[content_html]" id="content_html" class="textbox">
+	<input type="hidden" name="content[content_html]" id="content_html" class="textbox" value="{$CONTENT.content_html|escape:'quotes'}">
 	<script src="includes/ace/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 	<script>
 		var input = document.getElementById('content_html');
@@ -214,7 +214,7 @@
   <div id="email_html" class="tab_content">
     <h3>{$LANG.email.title_content_html}</h3>
 	<div id="template_html" class="ace_email_editor"></div>
-	<input type="hidden" name="template[content_html]" id="template_content_html" class="textbox">
+	<input type="hidden" name="template[content_html]" id="template_content_html" class="textbox" value="{$TEMPLATE.content_html|escape:'quotes'}">
 	<script src="includes/ace/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 	<script>
 		var input = document.getElementById('template_content_html');
