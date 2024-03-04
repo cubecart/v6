@@ -18,3 +18,4 @@ ALTER TABLE `CubeCart_reviews` CHANGE `email` `email` VARCHAR(96); #EOQ
 ALTER TABLE `CubeCart_customer_coupon` CHANGE `email` `email` VARCHAR(96); #EOQ
 ALTER TABLE `CubeCart_admin_users` CHANGE `email` `email` VARCHAR(96); #EOQ
 ALTER TABLE `CubeCart_category_language` CHANGE `cat_desc` `cat_desc` TEXT NULL DEFAULT NULL; #EOQ
+ALTER TABLE `CubeCart_inventory` CHANGE `maximum_quantity` `maximum_quantity` INT NULL DEFAULT '0'; #EOQ

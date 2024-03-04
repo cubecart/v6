@@ -490,7 +490,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_inventory` (
   `condition` varchar(25) DEFAULT NULL COMMENT 'Condition',
   `available` enum('0','1') NOT NULL DEFAULT '1',
   `minimum_quantity` INT(10) NOT NULL DEFAULT '1',
-  `maximum_quantity` INT(10) NULL DEFAULT NULL,
+  `maximum_quantity` INT(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`product_id`),
   KEY `status` (`status`),
   KEY `live_from` (`live_from`),
