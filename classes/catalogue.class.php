@@ -700,6 +700,7 @@ class Catalogue
     {
         if (!empty($category_id) && is_numeric($category_id)) {
             if (($subcats = $GLOBALS['db']->select('CubeCart_category', false, array('cat_parent_id' => $category_id, 'status' => '1', 'hide' => '0'), array('priority'=>'ASC'))) !== false) {
+                $return = array();
                 foreach ($subcats as $cat) {
                     // Translate
                     $GLOBALS['language']->translateCategory($cat);
