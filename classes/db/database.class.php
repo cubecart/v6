@@ -412,6 +412,7 @@ class Database_Contoller
         $this->_query .= (empty($table_match) || $all_tables == true) ?  '' : " LIKE '".$table_match."%'";
         $this->_execute(false);
         $tableNames = $this->_result;
+        $tables = array();
         foreach ($tableNames as $tableName) {
             sort($tableName);
             $this->_query = "SHOW TABLE STATUS LIKE '".$tableName[0]."'";
