@@ -920,9 +920,9 @@ if (isset($_GET['action'])) {
                         $group['price']   = $price[0]['price'];
                         $group['sale_price'] = $price[0]['sale_price'];
                     } else {
-                        $group['price']   = $result[0]['price'];
-                        $group['sale_price'] = $result[0]['sale_price'];
-                        $tax_inclusive = $result[0]['tax_inclusive'];
+                        $group['price']   = $result[0]['price'] ?? 0.00;
+                        $group['sale_price'] = $result[0]['sale_price'] ?? 0.00;
+                        $tax_inclusive = $result[0]['tax_inclusive'] ?? 0;
                     }
                 }
                 foreach ($tax_list as $tax_id => $details) {
@@ -1104,7 +1104,7 @@ if (isset($_GET['action'])) {
         // List Manufacturers
         if (($manufacturers = $GLOBALS['db']->select('CubeCart_manufacturers', false, false, array('name' => 'ASC'))) !== false) {
             foreach ($manufacturers as $manufacturer) {
-                $manufacturer['selected'] = ($manufacturer['id'] == $result[0]['manufacturer']) ? ' selected="SELECTED"' : '';
+                $manufacturer['selected'] = (isset($result[0]['manufacturer']) && $manufacturer['id'] == $result[0]['manufacturer']) ? ' selected="SELECTED"' : '';
                 $smarty_data['list_manufacturers'][] = $manufacturer;
             }
             $GLOBALS['smarty']->assign('MANUFACTURERS', $smarty_data['list_manufacturers']);
