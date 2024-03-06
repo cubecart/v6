@@ -716,7 +716,7 @@ class User
     {
         if (is_null($this->_bot)) {
             $this->_bot = false;
-            $agent = strtolower($_SERVER['HTTP_USER_AGENT']);
+            $agent = strtolower($_SERVER['HTTP_USER_AGENT'] ?? 'curl');
             foreach ($this->_bot_sigs as $signature) {
                 if (strpos($agent, $signature) !== false) {
                     $this->_bot = true;
