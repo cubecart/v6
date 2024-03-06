@@ -231,7 +231,7 @@ class FileManager
         }
 
         // If no default image was chosen pick last one and let staff member know
-        if (!$default && sizeof($img_add) > 0) {
+        if (!isset($default) && sizeof($img_add) > 0) {
             $default = (int)$img_add[0];
             // Display warning message if more than one image was chosen
             if (sizeof($img_add) > 1) {
