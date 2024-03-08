@@ -94,7 +94,7 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
                             }
                             
                             $GLOBALS['db']->insert('CubeCart_logo', $record);
-                            if (!$logo_update) { // prevents x amount of notifications for same thing
+                            if (!isset($logo_update)) { // prevents x amount of notifications for same thing
                                 $GLOBALS['main']->successMessage($lang['settings']['notify_logo_upload']);
                             }
                             $logo_update = true;
@@ -250,7 +250,7 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
 
     $updated = ($GLOBALS['config']->set('config', '', $config_new)) ? true : false;
 
-    if ((isset($updated) && $updated) || isset($logo_update)) {
+    if ($updated || (isset($logo_update) && $logo_update)) {
         $GLOBALS['main']->successMessage($lang['settings']['notify_settings_update']);
     } else {
         $GLOBALS['main']->errorMessage($lang['settings']['error_settings_update']);
