@@ -136,6 +136,7 @@ if (isset($_GET['plugin']) && isset($plugins[(string)$_GET['plugin']]) && !is_nu
         try {
             $xml = new SimpleXMLElement(file_get_contents($config_file));
         } catch (Exception $e) {
+            trigger_error($e->getMessage());
         }
     }
     $this_plugin = (isset($_POST['hook']['plugin'])) ? $_POST['hook']['plugin'] : $_GET['plugin'];
@@ -189,6 +190,7 @@ if (isset($_GET['plugin']) && isset($plugins[(string)$_GET['plugin']]) && !is_nu
                     $GLOBALS['smarty']->assign('TRIGGERS', $smarty_data['triggers']);
                 }
             } catch (Exception $e) {
+                trigger_error($e->getMessage());
                 $GLOBALS['main']->errorMessage($lang['hooks']['error_plugin_config']);
             }
         }
@@ -267,6 +269,7 @@ if (isset($_GET['plugin']) && isset($plugins[(string)$_GET['plugin']]) && !is_nu
                 $GLOBALS['smarty']->assign('TRIGGERS', $smarty_data['triggers']);
             }
         } catch (Exception $e) {
+            trigger_error($e->getMessage());
             $GLOBALS['main']->errorMessage($lang['hooks']['error_plugin_config']);
         }
     }

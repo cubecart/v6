@@ -47,7 +47,7 @@ class Cron
                         $GLOBALS['db']->update('CubeCart_currency', array('value' => $value, 'updated' => $updated), array('code' => $code), true);
                     }
                 } catch (Exception $e) {
-                    trigger_error('Error parsing ECB Exchange Rates.', E_USER_WARNING);
+                    trigger_error($e->getMessage());
                 }
             }
         }

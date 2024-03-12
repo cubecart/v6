@@ -405,10 +405,14 @@ class Module
     private function _enumerateRawVars()
     {
         if (file_exists($this->_path.'/'.$this->_package_xml)) {
-            $xml = new SimpleXMLElement(file_get_contents($this->_path.'/'.$this->_package_xml, true));
-            ## Parse and handle XML data
-            foreach ((array)$xml->rawvars->var as $value) {
-                $this->_rawvarsout[] = (string)$value;
+            try {
+                $xml = new SimpleXMLElement(file_get_contents($this->_path.'/'.$this->_package_xml, true));
+                ## Parse and handle XML data
+                foreach ((array)$xml->rawvars->var as $value) {
+                    $this->_rawvarsout[] = (string)$value;
+                }
+            } catch (Exception $e) {
+                trigger_error($e->getMessage());
             }
         }
     }
@@ -451,15 +455,20 @@ class Module
         }
         // Load package configuration data
         if (file_exists($this->_path.'/'.$this->_package_xml)) {
-            $xml = new SimpleXMLElement($this->_path.'/'.$this->_package_xml, LIBXML_NOCDATA, true);
-            if(isset($xml->info)) {
-                $config_array = json_decode(json_encode($xml->info), true);
-                ## Parse and handle XML data
-                if(is_array($config_array)) {
-                    foreach ($config_array as $key => $value) {
-                        $this->_info[$key] = (string)$value;
+            try {
+                $xml = new SimpleXMLElement($this->_path.'/'.$this->_package_xml, LIBXML_NOCDATA, true);
+                if(isset($xml->info)) {
+                    $config_array = json_decode(json_encode($xml->info), true);
+                    ## Parse and handle XML data
+                    if(is_array($config_array)) {
+                        foreach ($config_array as $key => $value) {
+                            $this->_info[$key] = (string)$value;
+                        }
                     }
                 }
+            } catch (Exception $e) {
+                trigger_error($e->getMessage());
+                return false;
             }
             //$this->_module_name = (isset($this->_info['folder']) && !empty($this->_info['folder'])) ? $this->_info['folder'] : str_replace(' ', '_', $this->_info['name']);
         } elseif (file_exists($this->_path.'/'.$this->_package_file)) {

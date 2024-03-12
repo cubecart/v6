@@ -361,7 +361,7 @@ foreach ($module_paths as $module_path) {
     try {
         $xml   = new SimpleXMLElement(file_get_contents($module_path));
     } catch (Exception $e) {
-        trigger_error($e, E_USER_WARNING);
+        trigger_error($e->getMessage(), E_USER_WARNING);
     }
     if (is_object($xml)) {
         $basename = (string)basename(str_replace('config.xml', '', $module_path));

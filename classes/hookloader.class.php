@@ -190,7 +190,7 @@ class HookLoader
                         }
                         return true;
                     } catch (Exception $e) {
-                        trigger_error("Error: Code snippet file does not contains valid XML.", E_USER_NOTICE);
+                        trigger_error($e->getMessage());
                     }
                 }
             } else {
@@ -242,6 +242,7 @@ class HookLoader
                     $GLOBALS['db']->misc("DELETE FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_hooks` WHERE `plugin` = '".$plugin."' AND `trigger` NOT IN ('".implode("','", $allowed_hooks)."')");
                     return true;
                 } catch (Exception $e) {
+                    trigger_error($e->getMessage());
                 }
             }
         }

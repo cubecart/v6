@@ -611,7 +611,12 @@ class GUI
         }
         if (!empty($path) && file_exists($path)) {
             $xml = file_get_contents($path, true);
-            return new SimpleXMLElement($xml);
+            try {
+                return new SimpleXMLElement($xml);
+            } catch (Exception $e) {
+                trigger_error($e->getMessage());
+                return false;
+            }
         }
         return false;
     }

@@ -661,6 +661,7 @@ class Language
                         return true;
                     }
                 } catch (Exception $e) {
+                    trigger_error($e->getMessage());
                     return false;
                 }
             }
@@ -695,8 +696,13 @@ class Language
             }
             return false;
         } else {
-            $xml = new SimpleXMLElement($file_content);
-            if (empty($xml->info->title) || empty($xml->info->code)) {
+            try {
+                $xml = new SimpleXMLElement($file_content);
+                if (empty($xml->info->title) || empty($xml->info->code)) {
+                    return false;
+                }
+            } catch (Exception $e) {
+                trigger_error($e->getMessage());
                 return false;
             }
             // Check if file already exists and if we are allowed to overwrite
@@ -748,10 +754,15 @@ class Language
                                 unset($gz);
                             }
                         }
-                        $data = new simpleXMLElement($xml);
-                        foreach ((array)$data->info as $key => $value) {
-                            $c = trim((string)$data->info->code);
-                            $list[$c][trim((string)$key)] = trim((string)$value);
+                        try {
+                            $data = new simpleXMLElement($xml);
+                            foreach ((array)$data->info as $key => $value) {
+                                $c = trim((string)$data->info->code);
+                                $list[$c][trim((string)$key)] = trim((string)$value);
+                            }
+                        } catch (Exception $e) {
+                            trigger_error($e->getMessage());
+                            return false;
                         }
                         $list[$c]['domain'] = (isset($d[$c]) && !empty($d[$c])) ? $d[$c] : '';
                         unset($data, $xml);
@@ -793,31 +804,36 @@ class Language
             $file = $path.$file_name;
             if (file_exists($file)) {
                 $definition_data = $definition = array();
-                $xml = new SimpleXMLElement(file_get_contents($file));
-                foreach ($xml->group as $group) {
-                    $group_name = (string)$group->attributes()->name;
-                    if (empty($group_name)) {
-                        continue;
-                    }
-                    foreach ($group->string as $string) {
-                        // Get attributes of the string definition
-                        $attributes = $string->attributes();
-                        if (empty($attributes->name)) {
+                try {
+                    $xml = new SimpleXMLElement(file_get_contents($file));
+                    foreach ($xml->group as $group) {
+                        $group_name = (string)$group->attributes()->name;
+                        if (empty($group_name)) {
                             continue;
                         }
-                        //Loop through each attributes
-                        foreach ($attributes as $attr_name => $attr_value) {
-                            $data[(string)$attr_name] = (string)$attr_value;
+                        foreach ($group->string as $string) {
+                            // Get attributes of the string definition
+                            $attributes = $string->attributes();
+                            if (empty($attributes->name)) {
+                                continue;
+                            }
+                            //Loop through each attributes
+                            foreach ($attributes as $attr_name => $attr_value) {
+                                $data[(string)$attr_name] = (string)$attr_value;
+                            }
+                            $definition_data[$group_name][(string)$attributes->name] = $data;
+                            // String was introduced in this version, or earlier
+                            if (isset($attributes->deprecated) && !empty($attributes->deprecated) && version_compare((string)$attributes->deprecated, CC_VERSION, '<=')) {
+                                continue;
+                            }
+                            // String has not been deprecated, so add this string to the list, and set the default value
+                            $definition[$group_name][(string)$attributes->name] = (string)$string;
                         }
-                        $definition_data[$group_name][(string)$attributes->name] = $data;
-                        // String was introduced in this version, or earlier
-                        if (isset($attributes->deprecated) && !empty($attributes->deprecated) && version_compare((string)$attributes->deprecated, CC_VERSION, '<=')) {
-                            continue;
-                        }
-                        // String has not been deprecated, so add this string to the list, and set the default value
-                        $definition[$group_name][(string)$attributes->name] = (string)$string;
+                        unset($group);
                     }
-                    unset($group);
+                } catch (Exception $e) {
+                    trigger_error($e->getMessage());
+                    return false;
                 }
 
                 if (!empty($definition)) {
@@ -881,33 +897,38 @@ class Language
             $strings = array();
             $data = $this->_extractXML($path.$language);
             if (!empty($data)) {
-                $xml = new SimpleXMLElement($data);
-                if (!empty($xml)) {
-                    if (!empty($xml->info)) {
-                        foreach ((array)$xml->info as $key => $value) {
-                            $lang_data[$key] = (string)$value;
-                        }
-                        $GLOBALS['cache']->write($lang_data, $cache_name_info);
-                        $this->_language_data = $lang_data;
-                    }
-                    switch (floor((float)$xml->attributes()->version)) {
-                    case 2:
-                        // New format - Similar layout to the definition file
-                        if ($xml->translation && $xml->translation->group) {
-                            foreach ($xml->translation->group as $groups) {
-                                $group = (string)$groups->attributes()->name;
-                                foreach ($groups->string as $string) {
-                                    $xml_name = $string->attributes()->name;
-                                    $strings[(string)$group][(string)$xml_name] = trim((string)$string);
-                                }
+                try {
+                    $xml = new SimpleXMLElement($data);
+                    if (!empty($xml)) {
+                        if (!empty($xml->info)) {
+                            foreach ((array)$xml->info as $key => $value) {
+                                $lang_data[$key] = (string)$value;
                             }
-                            unset($groups, $group, $xml_name, $string);
+                            $GLOBALS['cache']->write($lang_data, $cache_name_info);
+                            $this->_language_data = $lang_data;
                         }
-                        break;
-                    default:
-                        trigger_error('Language format error - exiting.', E_USER_WARNING);
-                        die;
+                        switch (floor((float)$xml->attributes()->version)) {
+                        case 2:
+                            // New format - Similar layout to the definition file
+                            if ($xml->translation && $xml->translation->group) {
+                                foreach ($xml->translation->group as $groups) {
+                                    $group = (string)$groups->attributes()->name;
+                                    foreach ($groups->string as $string) {
+                                        $xml_name = $string->attributes()->name;
+                                        $strings[(string)$group][(string)$xml_name] = trim((string)$string);
+                                    }
+                                }
+                                unset($groups, $group, $xml_name, $string);
+                            }
+                            break;
+                        default:
+                            trigger_error('Language format error - exiting.', E_USER_WARNING);
+                            die;
+                        }
                     }
+                } catch (Exception $e) {
+                    trigger_error($e->getMessage());
+                    return false;
                 }
 
                 // Load custom strings from database
@@ -957,20 +978,25 @@ class Language
 
             if (file_exists($source)) {
                 $data = file_get_contents($source);
-                $xml = new SimpleXMLElement($data);
-                foreach ($xml->info as $values) {
-                    foreach ($values as $key => $value) {
-                        $info[$key] = $value;
-                    }
-                }
-                if ($xml->translation && $xml->translation->group) {
-                    foreach ($xml->translation->group as $groups) {
-                        $group = $groups->attributes()->name;
-                        foreach ($groups->string as $string) {
-                            $name = $string->attributes()->name;
-                            $strings[(string)$group][(string)$name] = $string;
+                try {
+                    $xml = new SimpleXMLElement($data);
+                    foreach ($xml->info as $values) {
+                        foreach ($values as $key => $value) {
+                            $info[$key] = $value;
                         }
                     }
+                    if ($xml->translation && $xml->translation->group) {
+                        foreach ($xml->translation->group as $groups) {
+                            $group = $groups->attributes()->name;
+                            foreach ($groups->string as $string) {
+                                $name = $string->attributes()->name;
+                                $strings[(string)$group][(string)$name] = $string;
+                            }
+                        }
+                    }
+                } catch (Exception $e) {
+                    trigger_error($e->getMessage());
+                    return false;
                 }
                 unset($data, $xml);
 
