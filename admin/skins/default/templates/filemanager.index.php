@@ -119,6 +119,10 @@
 	{if isset($mode_form)}
 	<div id="fm-details" class="tab_content">
 		<h3>{$LANG.filemanager.title_file_edit}</h3>
+		{if $FILE.type == 1}
+		<a href="{$FILE.filepath}{$FILE.filename}?_={$smarty.now}" target="_blank" title="{$LANG.filemanager.opens_new_window}"><img src="{$FILE.filepath}{$FILE.filename}"{if !empty($FILE.alt)} alt="{$FILE.alt}"{/if} style="max-height:200px;" /></a>
+		<div>{$LANG.common.size}: {$FILE.width}px x {$FILE.height}px</div>
+		{/if}
 		<fieldset>
 			<div>
 				<label for="filename">{$LANG.filemanager.file_name}</label>
@@ -177,8 +181,5 @@
 		<input type="submit" value="{$LANG.common.save}">
 		<input type="submit" name="cancel" value="{$LANG.common.cancel}">
 	</div>
-	{if $FILE.type == 1}
-	<img src="{$FILE.filepath}{$FILE.filename}" alt="{$FILE.alt}" title="{$FILE.title}" style="max-width: 100%" />
-	{/if}
 	{/if}
 </form>

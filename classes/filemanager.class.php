@@ -738,6 +738,9 @@ class FileManager
                         $GLOBALS['smarty']->assign('DIRS', $vars['dirs']);
                     }
                     $file[0]['filepath'] = $source;
+                    $size = getimagesize(CC_ROOT_DIR.'/'.$file[0]['filepath'].$file[0]['filename']);
+                    $file[0]['width'] = $size[0];
+                    $file[0]['height'] = $size[1];
                     $file[0]['random']  = mt_rand();
                     $GLOBALS['smarty']->assign('FILE', $file[0]);
 
