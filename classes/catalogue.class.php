@@ -1681,14 +1681,12 @@ class Catalogue
             } else {
                 $product['review_info'] = sprintf($GLOBALS['language']->catalogue['review_info'], $score, $count, $link);
             }
-            unset($score, $count);
         } else {
             $product['review_score'] = false;
         }
 
         if ($product_view) {
             // Price by quantity
-            $user = (array)$GLOBALS['user']->get();
             if (($memberships = $GLOBALS['user']->getMemberships()) !== false) {
                 foreach ($memberships as $membership) {
                     $group_id[] = $membership['group_id'];
