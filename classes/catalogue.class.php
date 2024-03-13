@@ -1678,9 +1678,8 @@ class Catalogue
             $score = number_format(($score/$count), 1);
             if ($product_view) {
                 $GLOBALS['smarty']->assign('LANG_REVIEW_INFO', sprintf($GLOBALS['language']->catalogue['review_info'], $score, $count, $link));
-            } else {
-                $product['review_info'] = sprintf($GLOBALS['language']->catalogue['review_info'], $score, $count, $link);
             }
+            $product['review_info'] = sprintf($GLOBALS['language']->catalogue['review_info'], $score, $count, $link);
         } else {
             $product['review_score'] = false;
         }
