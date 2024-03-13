@@ -656,6 +656,12 @@ if (isset($_GET['action'])) {
         }
         $template = $GLOBALS['smarty']->fetch($fetch_source);
 
+        $template = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $template);
+        
+        $print_script = "<script>setTimeout(function(){window.print();},2000);</script>";
+
+        $template = preg_replace('/<\/body>/i', $print_script.'</body>', $template);
+
         $print_hash = md5(implode('{@}', $summaries[0]));
 
         $cleanup = '<?php unlink(__FILE__); ?>';

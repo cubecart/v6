@@ -292,8 +292,5 @@
   {/if}
   {/foreach}
   {/if}
-	<script>
-	setTimeout(function(){ window.print(); }, 2000);
-	</script>
 </body>
 </html>
