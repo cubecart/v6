@@ -35,6 +35,7 @@
                <td>{$THEAD.customer}</td>
                <td nowrap="nowrap">{$THEAD.status}</td>
                <td>{$THEAD.date}</td>
+               <td>{$THEAD.updated}</td>
                <td>{$THEAD.total}</td>
                <td>&nbsp;</td>
             </tr>
@@ -58,6 +59,7 @@
                </td>
                <td class="{$order.status_class}">{$order.status}</td>
                <td>{$order.date}</td>
+               <td>{$order.updated}</td>
                <td style="text-align:right">{$order.prod_total}</td>
                <td style="text-align:center">
                   <a href="{$order.link_print}" class="print" target="_blank" title="{$LANG.common.print}"><i class="fa fa-print" title="{$LANG.common.print}"></i></a>

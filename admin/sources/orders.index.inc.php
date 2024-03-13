@@ -469,7 +469,7 @@ if (isset($_GET['action'])) {
                 $GLOBALS['main']->addTabControl($lang['orders']['title_card_details'], 'credit_card');
                 $decrypt = Encryption::getInstance();
                 $decrypt->setup(false, $summary[0]['cart_order_id']);
-                $card = unserialize($decrypt->decrypt(stripslashes($summary[0]['offline_capture'])));
+                $card = unserialize((string)$decrypt->decrypt(stripslashes($summary[0]['offline_capture'])));
 
                 $card = (!empty($card)) ? $card : array('card_type' => '', 'card_number' => '', 'card_expire' => '', 'card_valid' => '', 'card_issue' => '', 'card_cvv' => '');
                 foreach ($card as $key => $value) {
@@ -831,6 +831,7 @@ if (isset($_GET['action'])) {
         'customer'   => $GLOBALS['db']->column_sort('customer', $lang['orders']['title_customer'], 'sort', $current_page, $_GET['sort']),
         'status'   => $GLOBALS['db']->column_sort('status', $lang['common']['status'], 'sort', $current_page, $_GET['sort']),
         'date'    => $GLOBALS['db']->column_sort('order_date', $lang['common']['date'], 'sort', $current_page, $_GET['sort']),
+        'updated'    => $GLOBALS['db']->column_sort('updated', $lang['common']['updated'], 'sort', $current_page, $_GET['sort']),
         'total'   => $GLOBALS['db']->column_sort('total', $lang['basket']['total'], 'sort', $current_page, $_GET['sort'])
     );
 
@@ -885,6 +886,7 @@ if (isset($_GET['action'])) {
             $order['status_class']  = 'order_status_'.$order['status'];
             $order['status']  = $lang['order_state']['name_'.$order['status']];
             $order['date']   = formatTime($order['order_date']);
+            $order['updated']   = formatTime(strtotime($order['updated']));
             $order['prod_total'] = Tax::getInstance()->priceFormat($order['total']);
 
             $smarty_data['list_orders'][] = $order;

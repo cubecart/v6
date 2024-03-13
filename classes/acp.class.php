@@ -162,6 +162,10 @@ class ACP
     {
         $item_id = null;
         $item_type = null;
+        if(isset($_REQUEST['order_id'])) {
+            $item_id = $_REQUEST['order_id'];
+            $item_type = 'oid';
+        }
         if(isset($_REQUEST['product_id'])) {
             $item_id = $_REQUEST['product_id'];
             $item_type = 'prod';

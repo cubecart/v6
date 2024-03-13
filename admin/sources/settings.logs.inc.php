@@ -82,6 +82,13 @@ if ($logs_activity) {
         $log['item_link'] = '';
         if(!empty($log['item_id']) && !empty($log['item_type'])) {
             switch($log['item_type']) {
+                case 'oid':
+                    $item = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id'), array('cart_order_id' => $log['item_id']));
+                    if($item && !empty($item[0]['cart_order_id'])) {
+                        $log['item_name'] = $item[0]['cart_order_id'];
+                        $log['item_link'] = '?_g=orders&action=edit&order_id='.$log['item_id'];
+                    }
+                break;
                 case 'prod':
                     $item = $GLOBALS['db']->select('CubeCart_inventory', array('name'), array('product_id' => $log['item_id']));
                     if($item && !empty($item[0]['name'])) {
