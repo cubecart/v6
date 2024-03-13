@@ -322,6 +322,12 @@ if (isset($_GET['action'])) {
             } else {
                 $summary[0]['discount_form'] = number_format($summary[0]['discount'], 2);
             }
+            $summary[0]['first_name'] = ucwords((string)$summary[0]['first_name']);
+            $summary[0]['last_name'] = ucwords((string)$summary[0]['last_name']);
+            $summary[0]['line1'] = ucwords((string)$summary[0]['line1']);
+            $summary[0]['line2'] = ucwords((string)$summary[0]['line2']);
+            $summary[0]['line1_d'] = ucwords((string)$summary[0]['line1_d']);
+            $summary[0]['line2_d'] = ucwords((string)$summary[0]['line2_d']);
 
             $GLOBALS['smarty']->assign('SUMMARY', $summary[0]);
             if ($summary[0]['status'] >= 3) {

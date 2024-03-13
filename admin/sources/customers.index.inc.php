@@ -423,6 +423,8 @@ if ( (isset($_GET['action']) || isset($_POST['multi-action'])) && Admin::getInst
                         $GLOBALS['smarty']->assign('COUNTRIESL', $smarty_data['countries']);
                         $GLOBALS['smarty']->assign('JSON_STATE', state_json());
                     }
+                    $address[0]['line1'] = ucwords((string)$address[0]['line1']);
+                    $address[0]['line2'] = ucwords((string)$address[0]['line2']);
                     $GLOBALS['smarty']->assign('ADDRESS', $address[0]);
                 }
                 $GLOBALS['smarty']->assign('DISPLAY_ADDRESS_EDIT', true);

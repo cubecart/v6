@@ -197,8 +197,8 @@
 	  <div><label for="address_firstname">{$LANG.user.name_first}</label><span><input type="text" name="address[first_name]" id="address_firstname" value="{$ADDRESS.first_name}" class="textbox capitalize"></span></div>
 	  <div><label for="address_lastname">{$LANG.user.name_last}</label><span><input type="text" name="address[last_name]" id="address_lastname" value="{$ADDRESS.last_name}" class="textbox capitalize"></span></div>
 	  <div><label for="address_company">{$LANG.address.company_name}</label><span><input type="text" name="address[company_name]" id="address_company" value="{$ADDRESS.company_name}" class="textbox"></span></div>
-	  <div><label for="address_line1">{$LANG.address.line1}</label><span><input type="text" name="address[line1]" id="address_line1" value="{ucwords($ADDRESS.line1)}" class="textbox"></span></div>
-	  <div><label for="address_line2">{$LANG.address.line2}</label><span><input type="text" name="address[line2]" id="address_line2" value="{ucwords($ADDRESS.line2)}" class="textbox"></span></div>
+	  <div><label for="address_line1">{$LANG.address.line1}</label><span><input type="text" name="address[line1]" id="address_line1" value="{$ADDRESS.line1}" class="textbox"></span></div>
+	  <div><label for="address_line2">{$LANG.address.line2}</label><span><input type="text" name="address[line2]" id="address_line2" value="{$ADDRESS.line2}" class="textbox"></span></div>
 	  <div><label for="address_town">{$LANG.address.town}</label><span><input type="text" name="address[town]" id="address_town" value="{$ADDRESS.town}" class="textbox"></span></div>
 	  <div><label for="country_list">{$LANG.address.country}</label><span>
 		<select name="address[country]" id="country-list" class="textbox">

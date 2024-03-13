@@ -326,11 +326,11 @@
                </span>
             </div>
             <div><label for="ajax_title">{$LANG.user.title}</label><span><input type="text" id="ajax_title" name="customer[title]" value="{$SUMMARY.title}" class="textbox billing"></span></div>
-            <div><label for="ajax_first_name">{$LANG.user.name_first}</label><span><input type="text" id="ajax_first_name" name="customer[first_name]" value="{ucwords($SUMMARY.first_name)}" class="textbox billing required"></span></div>
-            <div><label for="ajax_last_name">{$LANG.user.name_last}</label><span><input type="text" id="ajax_last_name" name="customer[last_name]" value="{ucwords($SUMMARY.last_name)}" class="textbox billing required"></span></div>
+            <div><label for="ajax_first_name">{$LANG.user.name_first}</label><span><input type="text" id="ajax_first_name" name="customer[first_name]" value="{$SUMMARY.first_name}" class="textbox billing required"></span></div>
+            <div><label for="ajax_last_name">{$LANG.user.name_last}</label><span><input type="text" id="ajax_last_name" name="customer[last_name]" value="{$SUMMARY.last_name}" class="textbox billing required"></span></div>
             <div><label for="sum_company_name">{$LANG.address.company_name}</label><span><input type="text" id="sum_company_name" name="customer[company_name]" value="{$SUMMARY.company_name}" class="textbox billing"></span></div>
-            <div><label for="sum_line1">{$LANG.address.line1}</label><span><input type="text" id="sum_line1" name="customer[line1]" value="{ucwords($SUMMARY.line1)}" class="textbox billing required"></span></div>
-            <div><label for="sum_line2">{$LANG.address.line2}</label><span><input type="text" id="sum_line2" name="customer[line2]" value="{ucwords($SUMMARY.line2)}" class="textbox billing"></span></div>
+            <div><label for="sum_line1">{$LANG.address.line1}</label><span><input type="text" id="sum_line1" name="customer[line1]" value="{$SUMMARY.line1}" class="textbox billing required"></span></div>
+            <div><label for="sum_line2">{$LANG.address.line2}</label><span><input type="text" id="sum_line2" name="customer[line2]" value="{$SUMMARY.line2}" class="textbox billing"></span></div>
             <div><label for="sum_town">{$LANG.address.town}</label><span><input type="text" id="sum_town" name="customer[town]" value="{$SUMMARY.town}" class="textbox billing required"></span></div>
             <div>
                <label for="sum_country">{$LANG.address.country}</label>
@@ -371,8 +371,8 @@
             <div><label for="d_ajax_first_name">{$LANG.user.name_first}</label><span><input type="text" id="d_ajax_first_name" name="customer[first_name_d]" value="{$SUMMARY.first_name_d}" class="textbox required"></span></div>
             <div><label for="d_ajax_last_name">{$LANG.user.name_last}</label><span><input type="text" id="d_ajax_last_name" name="customer[last_name_d]" value="{$SUMMARY.last_name_d}" class="textbox required"></span></div>
             <div><label for="d_sum_company_name">{$LANG.address.company_name}</label><span><input type="text" id="d_sum_company_name" name="customer[company_name_d]" value="{$SUMMARY.company_name_d}" class="textbox"></span></div>
-            <div><label for="d_sum_line1">{$LANG.address.line1}</label><span><input type="text" id="d_sum_line1" name="customer[line1_d]" value="{ucwords($SUMMARY.line1_d)}" class="textbox required"></span></div>
-            <div><label for="d_sum_line2">{$LANG.address.line2}</label><span><input type="text" id="d_sum_line2" name="customer[line2_d]" value="{ucwords($SUMMARY.line2_d)}" class="textbox"></span></div>
+            <div><label for="d_sum_line1">{$LANG.address.line1}</label><span><input type="text" id="d_sum_line1" name="customer[line1_d]" value="{$SUMMARY.line1_d}" class="textbox required"></span></div>
+            <div><label for="d_sum_line2">{$LANG.address.line2}</label><span><input type="text" id="d_sum_line2" name="customer[line2_d]" value="{$SUMMARY.line2_d}" class="textbox"></span></div>
             <div><label for="d_sum_town">{$LANG.address.town}</label><span><input type="text" id="d_sum_town" name="customer[town_d]" value="{$SUMMARY.town_d}" class="textbox required"></span></div>
             <div>
                <label for="d_sum_country">{$LANG.address.country}</label>
