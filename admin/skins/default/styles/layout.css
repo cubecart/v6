@@ -985,11 +985,11 @@ a.handle {
     margin-top: 0
 }
 #order_overview .other {
-    width: 350px
+    width: 375px
 }
 #order_overview .other label {
     float: left;
-    width: 180px;
+    width: 120px;
     margin: 0;
     padding: 0
 }
