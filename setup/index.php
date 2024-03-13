@@ -266,7 +266,7 @@ if (!isset($_SESSION['setup'])) {
       'fail' => PHP_VERSION
     ),
     'MySQL' => array(
-      'title' => 'MySQL 5.5+',
+      'title' => 'MySQL 8+',
       'status' => extension_loaded('mysqli'),
       'pass' => (function_exists('mysqli_get_client_info')) ? mysqli_get_client_info() : "Bad database extension",
       'fail' => "PHP mysqli extension not installed"
