@@ -14,6 +14,7 @@
 		<h3>{$LANG.orders.invoice_editor}</h3>
 		<textarea name="content" id="invoice_html" class="textbox fck fck-full fck-source" data-fck-height="800">{$INVOICE_HTML}</textarea>
   </div>
+  {include file='templates/element.hook_form_content.php'}
   <div class="form_control">
 		<input type="hidden" name="previous-tab" id="previous-tab" value="">
 		<input type="submit" value="{$LANG.common.save}"> <a href="?_g=documents&node=invoice&restore=1" class="delete" title="{$LANG.notification.confirm_restore}">{$LANG.common.restore_default}</a>

@@ -52,6 +52,7 @@
 	<hook trigger="admin.dashboard.unsettled_orders" deprecated="" />
 	<hook trigger="admin.documents.delete" deprecated="" />
 	<hook trigger="admin.documents.email.macros" deprecated="" />
+	<hook trigger="admin.documents.invoice.macros" deprecated="" />
 	<hook trigger="admin.documents.pre_display" deprecated="" />
 	<hook trigger="admin.documents.save.pre_process" deprecated="" />
 	<hook trigger="admin.documents.save.post_process" deprecated="" />

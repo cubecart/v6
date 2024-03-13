@@ -15,6 +15,13 @@ if (!defined('CC_INI_SET')) {
 }
 Admin::getInstance()->permissions('documents', CC_PERM_EDIT, true);
 
+$invoice_types = array();
+
+## Add hook
+foreach ($GLOBALS['hooks']->load('admin.documents.invoice.macros') as $hook) {
+    include $hook;
+}
+
 $current = $GLOBALS['db']->select('CubeCart_invoice_template', array('hash', 'content'), false, 'id DESC', 1);
 $filename = CC_ROOT_DIR.'/'.$GLOBALS['config']->get('config', 'adminFolder').'/skins/'.$GLOBALS['config']->get('config', 'admin_skin').'/templates/orders.print.php';
 $handle = fopen($filename, "rb");
