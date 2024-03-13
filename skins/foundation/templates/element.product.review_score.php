@@ -10,7 +10,7 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
 {if $PRODUCT.review_score && $CTRL_REVIEW}
-<p>
+<div>
    {for $i = 1; $i <= 5; $i++}
    {if $PRODUCT.review_score >= $i}
    <img src="{$STORE_URL}/skins/{$SKIN_FOLDER}/images/star.png" alt="">
@@ -20,6 +20,6 @@
    <img src="{$STORE_URL}/skins/{$SKIN_FOLDER}/images/star_off.png" alt="">
    {/if}
    {/for}
+</div>
 <div>{$LANG_REVIEW_INFO}</div>
-</p>
 {/if}
