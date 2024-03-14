@@ -491,7 +491,6 @@ CREATE TABLE IF NOT EXISTS `CubeCart_inventory` (
   `available` enum('0','1') NOT NULL DEFAULT '1',
   `minimum_quantity` INT(10) NOT NULL DEFAULT '1',
   `maximum_quantity` INT(10) NOT NULL DEFAULT '0',
-  `product_parse` tinyint(1) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`product_id`),
   KEY `status` (`status`),
   KEY `live_from` (`live_from`),

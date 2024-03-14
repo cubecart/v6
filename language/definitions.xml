@@ -243,7 +243,6 @@
     <string name="your_comments" introduced="5.0.0"><![CDATA[Delivery Notes or Additional Comments]]></string>
   </group>
   <group name="catalogue">
-    <string name="product_parse" introduced="6.5.4"><![CDATA[Parse Smarty Tags in Description]]></string>
     <string name="product_not_found" introduced="6.5.2"><![CDATA[Product not found.]]></string>
     <string name="product_count" introduced="6.5.2"><![CDATA[Product Count]]></string>
     <string name="option_type_password" introduced="6.4.11"><![CDATA[Password]]></string>
