@@ -765,15 +765,9 @@ $(document).ready(function() {
             if($("#val_admin_lang").length) {
                 fck_lang = $("#val_admin_lang").text().substr(0,2);
             }
-            if ($(this).hasClass("fck-full")) var t = {
+            var t = {
                 path: "includes/ckeditor/",
-                fullPage: !0,
-                selector: "textarea.fck",
-                language: fck_lang
-            };
-            else var t = {
-                path: "includes/ckeditor/",
-                fullPage: !1,
+                fullPage: $(this).hasClass("fck-full"),
                 selector: "textarea.fck",
                 language: fck_lang
             };
