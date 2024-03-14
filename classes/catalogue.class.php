@@ -1119,7 +1119,6 @@ class Catalogue
             foreach ($result as $product) {
                 $product['product_weight'] = (float)$product['product_weight'];
                 $GLOBALS['language']->translateProduct($product);
-                $product['description'] = ($product['product_parse']==1) ? $GLOBALS['smarty']->fetch('string:'.$product['description']) : $product['description'];
                 $this->getProductPrice($product, $quantity);
                 if (!$category && $count == 1) {
                     $data = $product;
