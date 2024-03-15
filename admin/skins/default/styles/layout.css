@@ -1632,3 +1632,14 @@ ul.char_filter li.selected {}
 .cke_dialog_ui_checkbox_input {
     opacity: 1!important;
 }
+#description .parse {
+    border-bottom: 1px solid #d1d1d1;
+    border-left: 1px solid #d1d1d1;
+    border-right: 1px solid #d1d1d1;
+    padding: 3px;
+    background-color: #f8f8f8;
+    text-indent: 5px;
+}
+#description .parse span img.checkbox {
+    float: left;
+}
