@@ -243,7 +243,7 @@
     <string name="your_comments" introduced="5.0.0"><![CDATA[Delivery Notes or Additional Comments]]></string>
   </group>
   <group name="catalogue">
-    <string name="product_parse" introduced="6.5.4"><![CDATA[Parse <a href="https://www.smarty.net/docs/en/" target="_blank">Smarty Tags</a> (Opens in new window)]]></string>
+    <string name="parse_content" introduced="6.5.4"><![CDATA[Parse <a href="https://www.smarty.net/docs/en/" target="_blank">Smarty Tags</a> (Opens in new window)]]></string>
     <string name="product_not_found" introduced="6.5.2"><![CDATA[Product not found.]]></string>
     <string name="product_count" introduced="6.5.2"><![CDATA[Product Count]]></string>
     <string name="option_type_password" introduced="6.4.11"><![CDATA[Password]]></string>
@@ -1078,7 +1078,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="hide_title" introduced="6.2.0"><![CDATA[Hide Title]]></string>
     <string name="404_title" introduced="6.0.6"><![CDATA[404 - Page Not Found]]></string>
     <string name="404_content" introduced="6.0.6"><![CDATA[Sorry but the page you are looking for could not be found.]]></string>
-    <string name="smarty_parse" introduced="6.0.0"><![CDATA[Parse Smarty Tags]]></string>
     <string name="document_contact" introduced="5.0.0"><![CDATA[Contact Us]]></string>
     <string name="document_content" introduced="5.0.0"><![CDATA[Content]]></string>
     <string name="document_create" introduced="5.0.0"><![CDATA[Create Document]]></string>

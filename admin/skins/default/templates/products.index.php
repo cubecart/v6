@@ -262,8 +262,8 @@
       <h3>{$LANG.common.description}</h3>
       
       <textarea name="description" class="textbox fck">{if $PRODUCT.description}{htmlentities($PRODUCT.description, ENT_QUOTES, 'UTF-8', true)}{/if}</textarea>
-      <div class="parse">
-         <label for="product_parse">{$LANG.catalogue.product_parse}</label><span><input type="hidden" name="product_parse" id="product_parse" class="toggle" value="{$PRODUCT.product_parse}"></span>
+      <div class="parse_content">
+         <label for="product_parse">{$LANG.catalogue.parse_content}</label><span><input type="hidden" name="product_parse" id="product_parse" class="toggle" value="{$PRODUCT.product_parse}"></span>
       </div>
       <br>
       <h3>{$LANG.common.description_short} {$LANG.common.optional}</h3>

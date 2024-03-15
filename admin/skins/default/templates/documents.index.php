@@ -79,7 +79,6 @@
 		{foreach from=$TARGETS item=target}<option value="{$target.value}"{$target.selected}>{$target.title}</option>{/foreach}
 	  </select></span></div>
 	  <div><label for="doc-navigation_link">{$LANG.documents.navigation_link}</label><span><input type="hidden" id="doc_navigation_link" name="document[navigation_link]" value="{$DOCUMENT.navigation_link}" class="toggle"></span></div>
-	  <div><label for="doc_parse">{$LANG.documents.smarty_parse}</label><span><input type="hidden" id="doc_parse" name="document[doc_parse]" value="{if !isset($DOCUMENT.doc_parse)}0{else}{$DOCUMENT.doc_parse}{/if}" class="toggle"></span></div>
 	  <input type="hidden" name="document[doc_parent_id]" value="{$DOCUMENT.doc_parent_id}">
 	  <input type="hidden" name="document[doc_id]" value="{$DOCUMENT.doc_id}">
 	</fieldset>
@@ -88,6 +87,7 @@
   <div id="article" class="tab_content">
 	<h3>{$ADD_EDIT_DOCUMENT}</h3>
 	<textarea name="document[doc_content]" id="doc-content" class="textbox fck">{$DOCUMENT.doc_content|escape:"html"}</textarea>
+		<div class="parse_content"><label for="doc_parse">{$LANG.catalogue.parse_content}</label><span><input type="hidden" id="doc_parse" name="document[doc_parse]" value="{if !isset($DOCUMENT.doc_parse)}0{else}{$DOCUMENT.doc_parse}{/if}" class="toggle"></span></div>
   </div>
 
   <div id="seo" class="tab_content">
