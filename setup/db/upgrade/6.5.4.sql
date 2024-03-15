@@ -22,3 +22,4 @@ ALTER TABLE `CubeCart_inventory` CHANGE `maximum_quantity` `maximum_quantity` IN
 ALTER TABLE `CubeCart_order_summary` ADD `updated` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP; #EOQ
 ALTER TABLE `CubeCart_admin_log` CHANGE `item_id` `item_id` VARCHAR(255) NULL DEFAULT NULL; #EOQ
 ALTER TABLE `CubeCart_inventory` ADD `product_parse` INT UNSIGNED NOT NULL DEFAULT '0'; #EOQ
+ALTER TABLE `CubeCart_category` ADD `cat_parse` INT UNSIGNED NOT NULL DEFAULT '0'; #EOQ

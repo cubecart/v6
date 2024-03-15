@@ -86,7 +86,7 @@
 
   <div id="article" class="tab_content">
 	<h3>{$ADD_EDIT_DOCUMENT}</h3>
-	<textarea name="document[doc_content]" id="doc-content" class="textbox fck">{$DOCUMENT.doc_content|escape:"html"}</textarea>
+		<textarea name="document[doc_content]" id="doc-content" class="textbox fck">{$DOCUMENT.doc_content|escape:"html"}</textarea>
 		<div class="parse_content"><label for="doc_parse">{$LANG.catalogue.parse_content}</label><span><input type="hidden" id="doc_parse" name="document[doc_parse]" value="{if !isset($DOCUMENT.doc_parse)}0{else}{$DOCUMENT.doc_parse}{/if}" class="toggle"></span></div>
   </div>
 

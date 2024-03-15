@@ -155,6 +155,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_category` (
 	`priority` SMALLINT(6) UNSIGNED NOT NULL DEFAULT '0',
 	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
 	`cat_hier_position` int NOT NULL DEFAULT '0',
+	`cat_parse` tinyint(1) unsigned NOT NULL DEFAULT '1',
 	PRIMARY KEY (`cat_id`),
 	KEY `cat_parent_id` (`cat_parent_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ

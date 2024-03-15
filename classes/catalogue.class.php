@@ -277,6 +277,9 @@ class Catalogue
         }
 
         if (isset($catData) && is_array($catData)) {
+            if($catData['cat_parse']=='1') {
+                $catData['cat_desc'] = $GLOBALS['smarty']->fetch('string:'.$catData['cat_desc']);
+            }
             $vars['category'] = $catData;
 
             if (!empty($catData['cat_image'])) {

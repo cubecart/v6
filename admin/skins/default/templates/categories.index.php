@@ -100,6 +100,7 @@
   <div id="cat_description" class="tab_content">
 	<h3>{$LANG.settings.title_description}</h3>
 	<textarea name="cat[cat_desc]" id="description" class="textbox fck">{$CATEGORY.cat_desc|escape:"html"}</textarea>
+	<div class="parse_content"><label for="cat_parse">{$LANG.catalogue.parse_content}</label><span><input type="hidden" id="cat_parse" name="cat[cat_parse]" value="{if !isset($CATEGORY.cat_parse)}0{else}{$CATEGORY.cat_parse}{/if}" class="toggle"></span></div>
 	</div>
 	<div id="cat_images" class="tab_content">
 		<h3>{$LANG.settings.category_images}</h3>
