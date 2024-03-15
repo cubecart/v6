@@ -531,8 +531,10 @@ class Database_Contoller
      */
     public function pagination($total_results = false, $per_page = 10, $page = 1, $show = 5, $var_name = 'page', $anchor = false, $glue = ' ', $view_all = true)
     {
+        $disable = false;
         if($page == 'all') {
             $page = 1;
+            $disable = true;
             $per_page = GUI::getInstance()->itemsPerPage('products', 'perpage', 'last');
         }
         if ($page == 1) {
@@ -581,6 +583,7 @@ class Database_Contoller
                 'var_name'  => $var_name,
                 'view_all'  => (bool)$view_all,
                 'per_page'  => (int)$per_page,
+                'disable' => $disable
             );
             $GLOBALS['smarty']->assign($data);
             return $GLOBALS['smarty']->fetch('templates/element.paginate.php');
