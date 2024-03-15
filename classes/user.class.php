@@ -830,7 +830,7 @@ class User
     public function registerUser()
     {
         // Validation
-        $error = false;
+        $error = array();
         foreach ($GLOBALS['hooks']->load('class.user.register_user') as $hook) {
             include $hook;
         }
@@ -894,7 +894,7 @@ class User
             }
         }
 
-        if (!$error) {
+        if (empty($error)) {
             // Format data nicely from mr barney brimstock to Mr Barney Brimstock
             $_POST['title']   = ucwords($_POST['title']);
             $_POST['first_name']  = ucwords($_POST['first_name']);
