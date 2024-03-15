@@ -25,13 +25,13 @@
 		<div id="fm-wrapper" class="{if $FILMANAGER_MODE == FileManager::FM_FILETYPE_IMG}images{else}digital{/if}" style="overflow:hidden;">
 			{if $FOLDER_PARENT}
 			<div>
-				<a href="{$FOLDER_PARENT}"><i class="fa fa-arrow-left" aria-hidden="true"></i> {$LANG.filemanager.parent_directory}</a>
+				<a href="{$FOLDER_PARENT}" class="fm_location"><i class="fa fa-arrow-left" aria-hidden="true"></i> {$LANG.filemanager.parent_directory}</a>
 			</div>
 			{/if}
 			{if isset($FOLDERS)}
 			{foreach from=$FOLDERS item=folder}
 			<div {if $FILMANAGER_MODE == FileManager::FM_FILETYPE_IMG}class="fm-item folder {$FM_SIZE}"{/if}>
-			{if $FILMANAGER_MODE == FileManager::FM_FILETYPE_IMG}<a href="{$folder.link}" class="thumbnail"><img src="{$SKIN_VARS.admin_folder}/skins/default/images/folder_large.png"/></a>{/if}
+			{if $FILMANAGER_MODE == FileManager::FM_FILETYPE_IMG}<a href="{$folder.link}" class="thumbnail fm_folder fm_location"><img src="{$SKIN_VARS.admin_folder}/skins/default/images/folder_large.png" /></a>{/if}
 			<span class="actions">
 			{if NOT is_null($folder.delete)}
 			{if $FILMANAGER_MODE == FileManager::FM_FILETYPE_IMG}<input type="checkbox" value="{$folder.value}" class="multi_delete" name="multi_delete[]">{/if}

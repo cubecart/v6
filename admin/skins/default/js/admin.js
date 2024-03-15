@@ -1176,8 +1176,16 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
             for (j = 0; j < a.length; j++) updateAddressValues(a[j], s, e);
         else updateAddressValues(i, s, e)
 }),
+$(".fm_location").on("click", function() {
+    localStorage.setItem('fm_folder_href', $(this).attr('href'))
+});
 $(".choose_option_img").on("click", function(a) {
-    var opnr = window.open('?_g=filemanager&mode=fck&source=options','chooser','toolbar=no,menubar=no,width=600,height=600');
+    var filemanager_path = '?_g=filemanager&mode=fck&source=options';
+    var fm_folder_href = localStorage.getItem('fm_folder_href');
+    if(fm_folder_href) {
+        filemanager_path = fm_folder_href;
+    }
+    var opnr = window.open(filemanager_path,'chooser','toolbar=no,menubar=no,width=600,height=600');
     var selector = $(this);
     var assign_id = selector.attr("rel");
     window.addEventListener('message', function(event) {
