@@ -240,7 +240,7 @@
 		<div class="total"><strong>{$LANG.basket.total_grand} {$order.total}</strong></div>
 	  </div>
 	  {if !empty($order.customer_comments)}
-	  <div id=" "><strong>{$LANG.orders.title_notes_extra}</strong> - {$order.customer_comments}</div>
+	  <div id="customer_comments"><strong>{$LANG.orders.title_notes_extra}</strong> - {$order.customer_comments}</div>
 	  {/if}
 	  <fieldset class="other"><legend>{$LANG.account.contact_details}</legend>
 		<div><label>{$LANG.common.email}</label><span><a href="mailto:{$order.email}">{$order.email}</a></span></div>
