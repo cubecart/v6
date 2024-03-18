@@ -197,6 +197,8 @@
                   <select name="multi-action" class="textbox">
                      <option value="">{$LANG.orders.option_nothing}</option>
                      <option value="print">{$LANG.orders.option_print}</option>
+                     <option value="pin">{$LANG.orders.dashboard_show|lower}</option>
+                     <option value="unpin">{$LANG.orders.dashboard_hide|lower}</option>
                      <option value="delete" style="color: red;">{$LANG.orders.option_delete}</option>
                   </select>
                   <input type="submit" value="{$LANG.common.go}" name="go" class="tiny">

@@ -690,8 +690,7 @@ if (isset($_GET['action'])) {
         // An admin is working on this so lets NOT send out email notifications
         //$order->disableAdminEmail();
 
-        $updated = false;
-        $deleted = false;
+        $updated = $deleted = $pinned = $unpinned = false;
         $add_array = array();
 
         foreach ($_POST['multi-order'] as $order_id) {
@@ -707,6 +706,16 @@ if (isset($_GET['action'])) {
                 }
             }
             switch ($_POST['multi-action']) {
+                case 'unpin':
+                    if ($order->pinOrder($order_id, 0)) {
+                        $unpinned = true;
+                    }
+                    break;
+                case 'pin':
+                    if ($order->pinOrder($order_id, 1)) {
+                        $pinned = true;
+                    }
+                    break;
                 case 'print':
                     $add_array['print'][] = $order_id;
                     break;
@@ -735,6 +744,12 @@ if (isset($_GET['action'])) {
                     $GLOBALS['main']->errorMessage($lang['orders']['error_orders_delete']);
                 }
             }
+        }
+        if($unpinned) {
+            $GLOBALS['main']->successMessage($lang['orders']['notify_orders_unpinned']);
+        }
+        if($pinned) {
+            $GLOBALS['main']->successMessage($lang['orders']['notify_orders_pinned']);
         }
         if ($updated) {
             $GLOBALS['main']->successMessage($lang['orders']['notify_orders_status']);
@@ -799,6 +814,8 @@ if (isset($_GET['action'])) {
         'selections' => array(
             array('value' => "", 'string' => $lang['orders']['option_nothing'], 'style' => ""),
             array('value' => "print", 'string' => $lang['orders']['option_print'], 'style' => ""),
+            array('value' => "pin", 'string' => strtolower($lang['orders']['dashboard_show']), 'style' => ""),
+            array('value' => "unpin", 'string' => strtolower($lang['orders']['dashboard_hide']), 'style' => ""),
             array('value' => "delete", 'string' => $lang['orders']['option_delete'], 'style' => "color: red"),
         )
     );

@@ -1811,6 +1811,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="name_6" introduced="5.0.0"><![CDATA[Cancelled]]></string>
   </group>
   <group name="orders">
+    <string name="notify_orders_unpinned" introduced="6.5.4"><![CDATA[Order(s) removed from the dashboard &quot;Unsettled Orders&quot;]]></string>
+    <string name="notify_orders_pinned" introduced="6.5.4"><![CDATA[Order(s) added to the dashboard &quot;Unsettled Orders&quot;]]></string>
     <string name="standard_order_id" introduced="6.5.4"><![CDATA[Standard Order ID]]></string>
     <string name="custom_order_id" introduced="6.5.4"><![CDATA[Custom Order ID]]></string>
     <string name="skip_email_notification" introduced="6.4.6"><![CDATA[Do not send email notifications on status change]]></string>
@@ -1845,7 +1847,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="card_delete" introduced="5.0.0"><![CDATA[Delete Card Details]]></string>
     <string name="change_order_status" introduced="5.0.0"><![CDATA[Change status to:]]></string>
     <string name="customer_name" introduced="5.0.0"><![CDATA[Customer Name]]></string>
-    <string name="dashboard_show" introduced="5.0.0"><![CDATA[Show on Dashboard (Unsettled Orders)]]></string>
+    <string name="dashboard_show" introduced="5.0.0"><![CDATA[Add to Dashboard (Unsettled Orders)]]></string>
+    <string name="dashboard_hide" introduced="6.5.4"><![CDATA[Remove from Dashboard (Unsettled Orders)]]></string>
     <string name="error_card_delete" introduced="5.0.0"><![CDATA[Failed to delete card details.]]></string>
     <string name="error_global_risk" introduced="5.0.0"><![CDATA[WARNING: The main configuration file, 'includes/global.inc.php', is writable and your store is at risk. Please change the file permissions so that it is read only.]]></string>
     <string name="error_login_previous" introduced="5.0.0"><![CDATA[Last login by %1$s, failed on %2$s.]]></string>

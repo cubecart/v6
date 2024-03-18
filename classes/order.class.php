@@ -213,7 +213,7 @@ class Order
     /**
      * Delete order
      *
-     * @param string $cart_order_id
+     * @param string $order_id
      * @return bool
      */
     public function deleteOrder($order_id)
@@ -241,6 +241,17 @@ class Order
         }
 
         return $deleted;
+    }
+
+    /**
+     * Pin order to unsettled orders
+     *
+     * @param string $order_id
+     * @param int $pin
+     * @return bool
+     */
+    public function pinOrder($order_id, $pin = 1) {
+        return $GLOBALS['db']->update('CubeCart_order_summary', array('dashboard' => (int)$pin), array('cart_order_id' => $order_id));
     }
 
     /**
