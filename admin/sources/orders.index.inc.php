@@ -622,9 +622,9 @@ if (isset($_GET['action'])) {
             $summary['country'] = getCountryFormat($summary['country']);
             $summary['country_d'] = getCountryFormat($summary['country_d']);
             $summary['order_date'] = formatTime($summary['order_date'], false, true);
-            $summary['ship_date'] = ((int)(str_replace('-', '', $summary['ship_date'])) > 0) ? formatDispatchDate($summary['ship_date']) : '';
+            $summary['ship_date'] = ((int)(str_replace('-', '', $summary['ship_date'] ?? 0)) > 0) ? formatDispatchDate($summary['ship_date']) : '';
             $summary['weight'] = (float)$summary['weight'];
-            $summary['ship_tracking']  = parseUrlToLink($summary['ship_tracking']);
+            $summary['ship_tracking']  = parseUrlToLink($summary['ship_tracking'] ?? '');
 
             if (($notes = $GLOBALS['db']->select('CubeCart_order_notes', false, array('cart_order_id' => $summary['cart_order_id']))) !== false) {
                 foreach ($notes as $key => $note) {
