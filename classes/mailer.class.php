@@ -254,24 +254,27 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
             }
 
             // Send email
-            if($this->_method=='sendgrid') {
-                $this->_sendgrid->setFrom($this->From, $this->FromName);
-                $this->_sendgrid->setSubject($this->Subject);
-                foreach($send_grid_to as $t) {
-                    $this->_sendgrid->addTo($t);
+            if(!isset($disable_send) || !$disable_send) {
+                if($this->_method=='sendgrid') {
+                    $this->_sendgrid->setFrom($this->From, $this->FromName);
+                    $this->_sendgrid->setSubject($this->Subject);
+                    foreach($send_grid_to as $t) {
+                        $this->_sendgrid->addTo($t);
+                    }
+                    $this->_sendgrid->addContent("text/plain", $this->_text);
+                    $this->_sendgrid->addContent("text/html", $this->_html);
+                    $sendgrid = new \SendGrid($this->_sendgrid_key);
+                    try {
+                        $response = $sendgrid->send($this->_sendgrid);
+                        $result =  in_array($response->statusCode(), array(200, 202)) ? true : false;
+                    } catch (Exception $e) {
+                        $this->ErrorInfo = $e->getMessage();
+                    }
+                } else {
+                    $result = $this->Send();
                 }
-                $this->_sendgrid->addContent("text/plain", $this->_text);
-                $this->_sendgrid->addContent("text/html", $this->_html);
-                $sendgrid = new \SendGrid($this->_sendgrid_key);
-                try {
-                    $response = $sendgrid->send($this->_sendgrid);
-                    $result =  in_array($response->statusCode(), array(200, 202)) ? true : false;
-                } catch (Exception $e) {
-                    $this->ErrorInfo = $e->getMessage();
-                }
-            } else {
-                $result = $this->Send();
             }
+            
             // Log email
             $email_data = array(
                 'subject' => $this->Subject,
