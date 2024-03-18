@@ -127,7 +127,7 @@
          <td>
             <select class="select_url">
                {foreach from=$PAGE_BREAKS  item=p}
-               <option value="?items={$p}#orders"{if $p == $PAGE_BREAK} selected="selected"{/if}>{$p} {$LANG.common.item_plural}</option> 
+               <option value="{$PAGE_BREAK_URL}&items={$p}#orders"{if $p == $PAGE_BREAK} selected="selected"{/if}>{$p} {$LANG.common.item_plural}</option> 
                {/foreach} 
             </select>
             {$LANG.common.per_page}
@@ -293,6 +293,18 @@
 {if isset($STOCK)}
 <div id="stock_warnings" class="tab_content">
    <h3>{$LANG.dashboard.title_stock_warnings}</h3>
+   <table width="100%" class="filter">
+      <tr>
+         <td>
+            <select class="select_url">
+               {foreach from=$PAGE_BREAKS_STOCK  item=p}
+               <option value="{$PAGE_BREAK_URL_STOCK}&items_stock={$p}#stock_warnings"{if $p == $PAGE_BREAK_STOCK} selected="selected"{/if}>{$p} {$LANG.common.item_plural}</option> 
+               {/foreach} 
+            </select>
+            {$LANG.common.per_page}
+         </td>
+      </tr>
+   </table>
    <table width="70%">
       <thead>
          <tr>

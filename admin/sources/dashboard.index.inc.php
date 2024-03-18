@@ -268,7 +268,7 @@ $thead_sort = array(
 $GLOBALS['smarty']->assign('THEAD_ORDERS', $thead_sort);
 $order_by = (empty($order_by) ? '`dashboard` DESC, `'.$key.'` '.$sort : $order_by);
 
-$per_page = $GLOBALS['main']->itemsPerPage('dashboard', $_GET['items'] ?? 0, 25);
+$per_page = $GLOBALS['main']->itemsPerPage('dashboard_pending', $_GET['items'] ?? 0, 25);
 $page_break_url = currentPage(array('items'));
 $GLOBALS['smarty']->assign('PAGE_BREAKS', array(25, 50, 100, 250, 500));
 $GLOBALS['smarty']->assign('PAGE_BREAK', $per_page);
@@ -363,6 +363,12 @@ if (($reviews = $GLOBALS['db']->select('CubeCart_reviews', false, array('approve
 ## Stock Warnings
 $page  = (isset($_GET['stock'])) ? $_GET['stock'] : 1;
 
+$per_page = $GLOBALS['main']->itemsPerPage('dashboard_stock', $_GET['items_stock'] ?? 0, 25);
+$page_break_url = currentPage(array('items_stock'));
+$GLOBALS['smarty']->assign('PAGE_BREAKS_STOCK', array(25, 50, 100, 250, 500));
+$GLOBALS['smarty']->assign('PAGE_BREAK_STOCK', $per_page);
+$GLOBALS['smarty']->assign('PAGE_BREAK_URL_STOCK', $page_break_url);
+
 $tables = '`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory` AS `I` LEFT JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_option_matrix` AS `M` on `I`.`product_id` = `M`.`product_id`';
 
 $fields = 'I.name, I.product_code, I.stock_level AS I_stock_level, I.stock_warning AS I_stock_warning, I.product_id, M.stock_level AS M_stock_level, M.use_stock as M_use_stock, M.cached_name';
@@ -390,11 +396,9 @@ $thead_sort = array(
 $GLOBALS['smarty']->assign('THEAD_STOCK', $thead_sort);
 $order_by = 'I.`'.$key.'` '.$sort;
 
-$result_limit = 20;
-
 if ($stock_c = $GLOBALS['db']->select($tables, $fields, $where)) {
     $stock_count = count($stock_c);
-    $stock = $GLOBALS['db']->select($tables, $fields, $where, $order_by, $result_limit, $page);
+    $stock = $GLOBALS['db']->select($tables, $fields, $where, $order_by, $per_page, $page);
     $GLOBALS['smarty']->assign('STOCK', $stock);
     $GLOBALS['main']->addTabControl($lang['dashboard']['title_stock_warnings'], 'stock_warnings', null, null, $stock_count);
     $GLOBALS['smarty']->assign('STOCK_PAGINATION', $GLOBALS['db']->pagination($stock_count, $result_limit, $page, $show = 5, 'stock', 'stock_warnings', $glue = ' ', $view_all = true));
