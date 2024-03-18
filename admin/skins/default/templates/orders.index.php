@@ -199,8 +199,13 @@
                {if !empty($OVERVIEW_SUMMARY.w3w)}<span class="w3w">///<a href="https://what3words.com/{$OVERVIEW_SUMMARY.w3w}" target="_blank">{$OVERVIEW_SUMMARY.w3w}</a></span>{/if}
             </fieldset>
             <p>
-                <strong>{$LANG.basket.order_date}:</strong> {$OVERVIEW_SUMMARY.order_date}
-                {if !empty($OVERVIEW_SUMMARY.currency)}<br><strong>{$LANG.catalogue.guide_currency}:</strong> {$OVERVIEW_SUMMARY.currency}{/if}
+               <strong>{$LANG.orders.standard_order_id}:</strong> {$OVERVIEW_SUMMARY.cart_order_id}<br>
+               {if !empty($OVERVIEW_SUMMARY.custom_oid)}
+               <strong>{$LANG.orders.custom_order_id}:</strong> {$OVERVIEW_SUMMARY.custom_oid}<br>
+               {/if}
+               <strong>{$LANG.basket.order_date}:</strong> {$OVERVIEW_SUMMARY.order_date}<br>
+               
+               {if !empty($OVERVIEW_SUMMARY.currency)}<br><strong>{$LANG.catalogue.guide_currency}:</strong> {$OVERVIEW_SUMMARY.currency}{/if}
             </p>
             <table id="items" style="width: 700px;">
                <thead>
