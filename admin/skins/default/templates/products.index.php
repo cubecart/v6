@@ -261,13 +261,13 @@
    <div id="description" class="tab_content">
       <h3>{$LANG.common.description}</h3>
       
-      <textarea name="description" class="textbox fck">{if $PRODUCT.description}{htmlentities($PRODUCT.description, ENT_QUOTES, 'UTF-8', true)}{/if}</textarea>
+      <textarea name="description" class="textbox fck">{if $PRODUCT.description}{$PRODUCT.description|escape:"htmlall"}{/if}</textarea>
       <div class="parse_content">
          <label for="product_parse">{$LANG.catalogue.parse_content}</label><span><input type="hidden" name="product_parse" id="product_parse" class="toggle" value="{$PRODUCT.product_parse}"></span>
       </div>
       <br>
       <h3>{$LANG.common.description_short} {$LANG.common.optional}</h3>
-      <textarea name="description_short" id="description_short" class="textbox fck">{if $PRODUCT.description_short}{htmlentities($PRODUCT.description_short, ENT_QUOTES, 'UTF-8', true)}{/if}</textarea>
+      <textarea name="description_short" id="description_short" class="textbox fck">{if $PRODUCT.description_short}{$PRODUCT.description_short|escape:"htmlall"}{/if}</textarea>
    </div>
    <div id="pricing" class="tab_content">
       <h3>{$LANG.catalogue.title_pricing}</h3>
@@ -762,10 +762,10 @@
    </div>
    <div id="description" class="tab_content">
       <h3>{$LANG.translate.title_translate}</h3>
-      <textarea name="translate[description]" class="textbox fck">{htmlentities($TRANS.description, ENT_QUOTES, 'UTF-8', true)}</textarea>
+      <textarea name="translate[description]" class="textbox fck">{if $TRANS.description}{$TRANS.description|escape:"htmlall"}{/if}</textarea>
       <br>
       <h3>{$LANG.translate.title_translate_short}</h3>
-      <textarea name="translate[description_short]" class="textbox fck">{htmlentities($TRANS.description_short, ENT_QUOTES, 'UTF-8', true)}</textarea>
+      <textarea name="translate[description_short]" class="textbox fck">{if $TRANS.description}{$TRANS.description_short|escape:"htmlall"}{/if}</textarea>
    </div>
    <div id="seo" class="tab_content">
       <h3>{$LANG.settings.title_seo}</h3>
