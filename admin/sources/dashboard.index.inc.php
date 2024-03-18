@@ -290,6 +290,15 @@ if ($unsettled_orders) {
             $customer_type[$customer['customer_id']] = $customer['type'];
         }
     }
+    
+    $smarty_data['order_tasks'][] = array(
+        'opt_group_name' => '', // Leave blank for no option grouping for this group
+        'selections' => array(
+            array('value' => "", 'string' => $lang['orders']['option_nothing'], 'style' => ""),
+            array('value' => "print", 'string' => $lang['orders']['option_print'], 'style' => ""),
+            array('value' => "delete", 'string' => $lang['orders']['option_delete'], 'style' => "color: red"),
+        )
+    );
 
     for ($i = 1; $i <= 6; ++$i) {
         $smarty_data['order_status'][] = array(
@@ -298,6 +307,11 @@ if ($unsettled_orders) {
             'string' => $lang['order_state']['name_'.$i],
         );
     }
+
+    foreach ($GLOBALS['hooks']->load('admin.order.index.order_tasks') as $hook) {
+        include $hook;
+    }
+    
     $GLOBALS['smarty']->assign('LIST_ORDER_STATUS', $smarty_data['order_status']);
 
     foreach ($unsettled_orders as $order) {
