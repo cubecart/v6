@@ -16,44 +16,46 @@
       <div style="max-width: 700px">
          <fieldset>
             <legend>{$LANG.search.date_range}</legend>
-            {$LANG.common.from}
-            <select name="from[day]">
-            {foreach from=$DAYS item=day}
-              <option value="{$day.value}"{$day.selected_from}>{$day.value}</option>
-            {/foreach}
-            </select>
-            <select name="from[month]">
-            {foreach from=$MONTHS item=month}
-              <option value="{$month.value}"{$month.selected_from}>{$month.title}</option>
-            {/foreach}
-            </select>
-            <select name="from[year]">
-            {foreach from=$YEARS item=year}
-              <option value="{$year.value}" {$year.selected_from}>{$year.value}</option>
-            {/foreach}
-            </select>
-            {$LANG.common.to|lower}
-            <select name="to[day]">
-            {foreach from=$DAYS item=day}
-              <option value="{$day.value}"{$day.selected_to}>{$day.value}</option>
-            {/foreach}
-            </select>
-            <select name="to[month]">
-            {foreach from=$MONTHS item=month}
-              <option value="{$month.value}"{$month.selected_to}>{$month.title}</option>
-            {/foreach}
-            </select>
-            <select name="to[year]">
-            {foreach from=$YEARS item=year}
-              <option value="{$year.value}" {$year.selected_to}>{$year.value}</option>
-            {/foreach}
-            </select>
-            <span style="float: right">
-            {if $RESET}
-            <a href="?_g=statistics&node=product&product_id={$PRODUCT.product_id}">{$LANG.common.reset}</a>
-            {/if}
-            <input type="submit" class="tiny" value="{$LANG.common.go}">
-            </span>
+            <div>
+              {$LANG.common.from}
+              <select name="from[day]">
+              {foreach from=$DAYS item=day}
+                <option value="{$day.value}"{$day.selected_from}>{$day.value}</option>
+              {/foreach}
+              </select>
+              <select name="from[month]">
+              {foreach from=$MONTHS item=month}
+                <option value="{$month.value}"{$month.selected_from}>{$month.title}</option>
+              {/foreach}
+              </select>
+              <select name="from[year]">
+              {foreach from=$YEARS item=year}
+                <option value="{$year.value}" {$year.selected_from}>{$year.value}</option>
+              {/foreach}
+              </select>
+              {$LANG.common.to|lower}
+              <select name="to[day]">
+              {foreach from=$DAYS item=day}
+                <option value="{$day.value}"{$day.selected_to}>{$day.value}</option>
+              {/foreach}
+              </select>
+              <select name="to[month]">
+              {foreach from=$MONTHS item=month}
+                <option value="{$month.value}"{$month.selected_to}>{$month.title}</option>
+              {/foreach}
+              </select>
+              <select name="to[year]">
+              {foreach from=$YEARS item=year}
+                <option value="{$year.value}" {$year.selected_to}>{$year.value}</option>
+              {/foreach}
+              </select>
+              <span style="float: right">
+              {if $RESET}
+              <a href="?_g=statistics&node=product&product_id={$PRODUCT.product_id}">{$LANG.common.reset}</a>
+              {/if}
+              <input type="submit" class="tiny" value="{$LANG.common.go}">
+              </span>
+            </div>
          </fieldset>
       </div>
       <input type="hidden" name="_g" value="statistics"> 
