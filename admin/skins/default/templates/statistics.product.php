@@ -12,6 +12,54 @@
  <div id="general" class="tab_content">
    {if $PRODUCT}
    <a href="?_g=products&node=index&action=edit&product_id={$PRODUCT.product_id}" class="button right">{$LANG.catalogue.title_product_update}</a><h3>{$PRODUCT.name} ({$PRODUCT.product_code})</h3>
+   <form action="{$VAL_SELF}" class="ignore-dirty" method="get">
+      <div style="max-width: 700px">
+         <fieldset>
+            <legend>{$LANG.search.date_range}</legend>
+            {$LANG.common.from}
+            <select name="from[day]">
+            {foreach from=$DAYS item=day}
+              <option value="{$day.value}"{$day.selected_from}>{$day.value}</option>
+            {/foreach}
+            </select>
+            <select name="from[month]">
+            {foreach from=$MONTHS item=month}
+              <option value="{$month.value}"{$month.selected_from}>{$month.title}</option>
+            {/foreach}
+            </select>
+            <select name="from[year]">
+            {foreach from=$YEARS item=year}
+              <option value="{$year.value}" {$year.selected_from}>{$year.value}</option>
+            {/foreach}
+            </select>
+            {$LANG.common.to|lower}
+            <select name="to[day]">
+            {foreach from=$DAYS item=day}
+              <option value="{$day.value}"{$day.selected_to}>{$day.value}</option>
+            {/foreach}
+            </select>
+            <select name="to[month]">
+            {foreach from=$MONTHS item=month}
+              <option value="{$month.value}"{$month.selected_to}>{$month.title}</option>
+            {/foreach}
+            </select>
+            <select name="to[year]">
+            {foreach from=$YEARS item=year}
+              <option value="{$year.value}" {$year.selected_to}>{$year.value}</option>
+            {/foreach}
+            </select>
+            <span style="float: right">
+            {if $RESET}
+            <a href="?_g=statistics&node=product&product_id={$PRODUCT.product_id}">{$LANG.common.reset}</a>
+            {/if}
+            <input type="submit" class="tiny" value="{$LANG.common.go}">
+            </span>
+         </fieldset>
+      </div>
+      <input type="hidden" name="_g" value="statistics"> 
+      <input type="hidden" name="node" value="product">
+      <input type="hidden" name="product_id" value="{$PRODUCT.product_id}">
+   </form>
    <table width="700">
     <thead>
       <tr>
