@@ -1181,6 +1181,10 @@ $(".fm_location").on("click", function() {
 });
 $(".choose_option_img").on("click", function(a) {
     var filemanager_path = '?_g=filemanager&mode=fck&source=options';
+    var filepath = $(this).attr('data-filepath');
+    if(filepath!=='') {
+        filemanager_path = filemanager_path + '&subdir=' + filepath;
+    }
     var fm_folder_href = localStorage.getItem('fm_folder_href');
     if(fm_folder_href) {
         filemanager_path = fm_folder_href;

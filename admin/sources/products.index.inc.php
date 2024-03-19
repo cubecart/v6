@@ -827,10 +827,13 @@ if (isset($_GET['action'])) {
                     $group = (isset($group_list[$assign['option_id']])) ? $group_list[$assign['option_id']] : array();
                     $value = (isset($value_list[$assign['option_id']][$assign['value_id']])) ? $value_list[$assign['option_id']][$assign['value_id']] : array();
                     $group['display'] = in_array($group['option_type'], $select_types) ? '<strong>'.$group['option_name'].':</strong> '.$value['value_name'] : $group['option_name'];
+                    $assign['filepath'] = '';
                     if($assign['image_id']==0) {
                         $assign['image'] = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
                     } else {
                         $assign['image'] = $GLOBALS['catalogue']->imagePath($assign['image_id']);
+                        $fp = $GLOBALS['db']->select('CubeCart_filemanager', array('filepath'), array('file_id' => $assign['image_id']));
+                        $assign['filepath'] = (!$fp || empty($fp[0]['filepath'])) ? '' : urlencode($fp[0]['filepath']);
                     }
                     $option_list[$assign['option_id']][$assign['value_id']] = array_merge($assign, $group, $value, array('show_disable' => false));
                     $option_list[$assign['option_id']][$assign['value_id']]['from_assigned'] = true;
