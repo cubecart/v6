@@ -563,9 +563,9 @@
          {$LANG.catalogue.no_option_sets_assigned}
          {/foreach}
          <div class="list-footer">
-            <label for="">{$LANG.catalogue.set_assign}:</label>
+            <label for="set_assign">{$LANG.catalogue.set_assign}:</label>
             <span>
-               <select id="" name="set_assign">
+               <select id="set_assign" name="set_assign">
                   <option value="">{$LANG.form.please_select}</option>
                   {foreach from=$OPTION_SETS item=option_set}
                   <option value="{$option_set.set_id}">{$option_set.set_name}</option>
