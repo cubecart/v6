@@ -222,9 +222,9 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
                 'option_default' => (isset($_POST['option_add']['default'][$offset]) && $_POST['option_add']['default'][$offset]==1) ? $_POST['option_add']['default'][$offset] : '0',
                 'option_price'  => $_POST['option_add']['price'][$offset],
                 'option_weight'  => $_POST['option_add']['weight'][$offset],
-                'matrix_include'  => $_POST['option_add']['matrix_include'][$offset],
-                'set_enabled'  => $_POST['option_add']['set_enabled'][$offset],
-                'absolute_price'  => $_POST['option_add']['absolute_price'][$offset]
+                'matrix_include'  => (isset($_POST['option_add']['matrix_include'][$offset]) && $_POST['option_add']['matrix_include'][$offset]==1) ? $_POST['option_add']['matrix_include'][$offset] : '0',
+                'set_enabled'  => (isset($_POST['option_add']['set_enabled'][$offset]) && $_POST['option_add']['set_enabled'][$offset]==1) ? $_POST['option_add']['set_enabled'][$offset] : '0',
+                'absolute_price'  => (isset($_POST['option_add']['absolute_price'][$offset]) && $_POST['option_add']['absolute_price'][$offset]==1) ? $_POST['option_add']['absolute_price'][$offset] : '0'
             );
             if ($value > 0) {
                 // get the option id
