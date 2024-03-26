@@ -1114,6 +1114,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_documents" introduced="5.0.0"><![CDATA[Site Documents]]></string>
   </group>
   <group name="email">
+    <string name="dbl_opt_strict" introduced="6.5.4"><![CDATA[A double opt-in occurs when a user signs up for an email marketing list, and then an email is sent out to the user which includes a link to click and confirm the subscription. Only after the confirmation click is completed will the user officially be added to the email marketing list. Please be aware that sending email to subscribers that do not have a double opt-in status is illegal in some countries. To enable this checkbox please set `subscribe_mode_lax` to 1 in the includes/global.inc.php file.]]></string>
     <string name="purge_list_clean" introduced="6.4.3"><![CDATA[No changes were made. Your list seems healthy.]]></string>
     <string name="purge_list_cleaned" introduced="6.4.3"><![CDATA[Invalid addresses removed: %1$s, Invalid Domains removed: %2$s.]]></string>
     <string name="purge" introduced="6.4.3"><![CDATA[Clean-up Mailing List]]></string>

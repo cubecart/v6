@@ -17,14 +17,17 @@
          <div><label for="email_subject">{$LANG.email.news_subject}</label><span><input type="text" name="newsletter[subject]" id="email_subject" class="required textbox" value="{$NEWSLETTER.subject}"></span></div>
          <div><label for="sender_name">{$LANG.email.news_sender_name}</label><span><input type="text" name="newsletter[sender_name]" id="sender_name" class="textbox" value="{$NEWSLETTER.sender_name}"> ({$LANG.email.empty_equals_default})</span></div>
          <div><label for="sender_email">{$LANG.email.news_sender_email}</label><span><input type="text" name="newsletter[sender_email]" id="sender_email" class="textbox" value="{$NEWSLETTER.sender_email}"> ({$LANG.email.empty_equals_default})</span></div>
-         <div><label for="dbl_opt">{$LANG.email.news_dbl_opt_only}</label><span>
-            {if isset($CONFIG.subscribe_mode_lax) && $CONFIG.subscribe_mode_lax=='1'}
-               <input type="hidden" id="dbl_opt" name="newsletter[dbl_opt]" class="toggle" value="{if !isset($NEWSLETTER.dbl_opt)}{$CONFIG.dbl_opt}{else}{$NEWSLETTER.dbl_opt}{/if}">
-            {else}
-               <input name=newsletter[dbl_opt]" id="dbl_opt" type="hidden" value="1">
-               <img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/1_checkbox.png">
-            {/if}
-            </span></div>
+         <div>
+            <label for="dbl_opt">{$LANG.email.news_dbl_opt_only}*</label>
+            <span>
+               <input type="hidden" id="dbl_opt" name="newsletter[dbl_opt]" class="toggle"
+               {if isset($CONFIG.subscribe_mode_lax) && $CONFIG.subscribe_mode_lax=='1'}
+               value="{if !isset($NEWSLETTER.dbl_opt)}{$CONFIG.dbl_opt}{else}{$NEWSLETTER.dbl_opt}{/if}">
+               {else}
+               value="1" style="pointer-events: none;" tabindex="-1">
+               {/if}
+            </span>
+         </div>
          <div>
             <label for="template_id">{$LANG.email.email_template}</label>
             <span>
@@ -39,6 +42,7 @@
             </span>
          </div>
       </fieldset>
+      * {$LANG.email.dbl_opt_strict}
    </div>
    <div id="email_html" class="tab_content">
       <h3>{$LANG.email.title_content_html}</h3>
