@@ -31,7 +31,7 @@
                {/for}
             </div>
          </div>
-         <div class="row review_row" rel="{$review.id}_{$review.gravatar}">
+         <div class="row{if $review.gravatar_exists} review_row{/if}" rel="{$review.id}_{$review.gravatar}">
             {if $review.gravatar_exists}
             <div class="small-3 medium-2 columns gravatar">
                <a href="http://gravatar.com/emails/"><img class="th marg-right" id="{$review.id}_{$review.gravatar}" src="" align="left"></a>
