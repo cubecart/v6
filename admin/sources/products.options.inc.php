@@ -59,7 +59,7 @@ if (!empty($_POST) && Admin::getInstance()->permissions('products', CC_PERM_EDIT
                 $value  = 0;
             }
             $record = array('set_id' => $set_id, 'option_id' => (int)$option, 'value_id' => (int)$value);
-            if (isset($record) && !$GLOBALS['db']->select('CubeCart_options_set_member', array('member_id'), $record)) {
+            if (isset($record) && !$GLOBALS['db']->select('CubeCart_options_set_member', array('set_member_id'), $record)) {
                 if ($GLOBALS['db']->insert('CubeCart_options_set_member', $record)) {
                     $added = true;
                     $changes = true;
