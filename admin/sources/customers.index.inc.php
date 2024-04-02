@@ -568,6 +568,17 @@ if ( (isset($_GET['action']) || isset($_POST['multi-action'])) && Admin::getInst
             unset($group_membership, $member_groups);
             $customer_list[] = $customer;
         }
+        $customer_tasks[] = array(
+            'opt_group_name' => "", // Leave blank for no option grouping for this group
+            'selections' => array(
+                array('value' => "", 'string' => $lang['orders']['option_nothing'], 'style' => ""),
+                array('value' => "delete", 'string' => strtolower($lang['customer']['delete_customer']), 'style' => "color: red"),
+            )
+        );
+        foreach ($GLOBALS['hooks']->load('admin.customer.index.customer_tasks') as $hook) {
+            include $hook;
+        }
+        $GLOBALS['smarty']->assign('LIST_CUSTOMER_TASKS', $customer_tasks);
         $GLOBALS['smarty']->assign('CUSTOMERS', $customer_list);
     } elseif (isset($_GET['q'])) {
         $GLOBALS['main']->errorMessage(sprintf($lang['customer']['error_customer_matching_x'], $_GET['q']));

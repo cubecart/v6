@@ -86,8 +86,17 @@
 		    <td colspan="2"><a href="#" class="check-all" rel="all-customers">{$LANG.form.check_uncheck}</a></td>
 		    <td colspan="5">{$LANG.orders.with_selected}:
 		      <select name="multi-action" class="textbox">
-		        <option value="">{$LANG.orders.option_nothing}</option>
-		        <option value="delete" style="color: red;">delete customer</option>
+			  	{foreach $LIST_CUSTOMER_TASKS as $tasks}
+                    {if $tasks.opt_group_name}
+                    <optgroup label="{$tasks.opt_group_name}">
+                    {/if}
+                    {foreach $tasks.selections as $task}
+                    <option value="{$task.value}" style="{$task.style}">{$task.string}</option>
+                    {/foreach}
+                    {if $tasks.opt_group_name}
+                    </optgroup>
+                	{/if}
+                {/foreach}
 		      </select>
 		      <input type="submit" value="{$LANG.common.go}" name="go" class="tiny">
 		    </td>

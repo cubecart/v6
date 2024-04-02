@@ -37,6 +37,7 @@
 	<hook trigger="admin.customer.group.add" deprecated="" />
 	<hook trigger="admin.customer.group.delete" deprecated="" />
 	<hook trigger="admin.customer.group.get" deprecated="" />
+	<hook trigger="admin.customer.index.customer_tasks" deprecated="" />
 	<hook trigger="admin.customer.list" deprecated="" />
 	<hook trigger="admin.customer.table_head_sort" deprecated="" />
 	<hook trigger="admin.customer.tabs" deprecated="" />

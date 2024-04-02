@@ -953,6 +953,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="zone" introduced="6.2.7"><![CDATA[Zone]]></string>
   </group>
   <group name="customer">
+    <string name="delete_customer" introduced="6.5.4"><![CDATA[Delete Customer]]></string>
     <string name="cookie_consent" introduced="6.2.1"><![CDATA[Cookie Consent]]></string>
     <string name="delete_guests" introduced="6.2.1"><![CDATA[Delete all guest accounts]]></string>
     <string name="delete_guests_success" introduced="6.2.1"><![CDATA[All guest accounts have been deleted.]]></string>
