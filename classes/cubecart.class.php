@@ -3027,13 +3027,23 @@ class Cubecart
 
         $GLOBALS['smarty']->assign('SECTION_NAME', 'recover');
 
+        $error = false;
         if (isset($_POST['email'])) {
+            if ($GLOBALS['gui']->recaptchaRequired()) {
+                if (($message = $GLOBALS['session']->get('error', 'recaptcha')) === false) {
+                    //If the error message from recaptcha fails for some reason:
+                    $GLOBALS['gui']->setError($GLOBALS['language']->form['verify_human_fail']);
+                } else {
+                    $GLOBALS['gui']->setError($GLOBALS['session']->get('error', 'recaptcha'));
+                }
+                $error = true;
+            }
             // Send a recovery email
-            if ($GLOBALS['user']->passwordRequest($_POST['email'])) {
+            if (!$error && $GLOBALS['user']->passwordRequest($_POST['email'])) {
                 $GLOBALS['gui']->setNotify($GLOBALS['language']->account['notify_password_recovery']);
                 // Send them shopping whilst they wait for their email!
                 httpredir(currentPage(array('_a')));
-            } else {
+            } elseif(!$error) {
                 $GLOBALS['gui']->setError($GLOBALS['language']->account['error_password_recovery']);
             }
             // Reload the same page so they can try again

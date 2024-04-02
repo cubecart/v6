@@ -14,6 +14,7 @@
   <p>{$LANG.account.recover_password_text}</p>
   <label for="email">{$LANG.common.email}</label>
   <input type="text" name="email" id="email" class="required" placeholder="{$LANG.common.email} {$LANG.form.required}">
+  {include file='templates/content.recaptcha.php' ga_fid='recover'}
   <div><input type="submit" value="{$LANG.form.submit}" class="button"></div>
 </form>
 <div class="hide" id="validate_email">{$LANG.common.error_email_invalid}</div>
