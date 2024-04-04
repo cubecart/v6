@@ -19,21 +19,21 @@
                   <td width="20">{$LANG.common.arrange}</td>
                   <td width="70" align="center">{$LANG.common.required}</td>
                   <td width="300">{$LANG.common.name}</td>
-                  <td width="150">{$LANG.catalogue.option_group_type}</td>
+                  <td width="200">{$LANG.catalogue.option_group_type}</td>
                   <td width="300">{$LANG.common.description}</td>
                   <td width="50">&nbsp;</td>
                </tr>
             </thead>
             <tbody class="reorder-list">
                {foreach from=$GROUPS item=group}
-               <tr>
+               <tr style="white-space: nowrap;">
                   <td style="text-align:center"><a href="#" class="handle"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/updown.gif" title="{$LANG.ui.drag_reorder}"></a>
                      <input type="hidden" name="group_priority[]" value="{$group.id}">
                   </td>
                   <td style="text-align:center"><input type="hidden" name="edit_group[{$group.id}][option_required]" id="status_{$group.id}" value="{$group.required}" class="toggle"></td>
                   <td><span class="editable" name="edit_group[{$group.id}][option_name]">{$group.name}</span></td>
                   <td><span class="editable select" name="edit_group[{$group.id}][option_type]">{$group.type_name}</span></td>
-                  <td><span class="editable" name="edit_group[{$group.id}][option_description]">{$group.description}</span>&nbsp;</td>
+                  <td><span class="editable" name="edit_group[{$group.id}][option_description]">{$group.description}</span></td>
                   <td style="text-align:center"><a href="{$group.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
                </tr>
                {foreachelse}

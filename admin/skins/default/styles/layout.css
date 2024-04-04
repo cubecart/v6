@@ -241,8 +241,16 @@ img.checkbox {
 input.editable {
     cursor: text
 }
+.editable::after {
+    font-family: FontAwesome; content: " \f040";
+    visibility: hidden;
+}
 .editable:hover::after {
     font-family: FontAwesome; content: " \f040";
+    visibility: visible;
+}
+#groups select.textbox {
+    max-width: 200px;
 }
 html {
     margin: 0;
