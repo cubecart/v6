@@ -1438,13 +1438,13 @@ table.filter td {
 }
 .fm-item-list {
     width: 700px;
-    height: 40px;
-    margin: 5px 0;
+    height: 20px;
+    margin: 3px 0;
 }
 .fm-item-list img {
     width: auto;
-    height: 40px;
-    max-width: 40px;
+    height: 20px;
+    max-width: 20px;
     float: left;
 }
 .fm-item-list .filesize {
@@ -1458,7 +1458,7 @@ table.filter td {
 }
 .fm-item-list > a {
     bottom: 0px;
-    text-indent: 45px;
+    text-indent: 25px;
 }
 #filemanager .toggle {
     float: right;
