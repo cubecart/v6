@@ -665,7 +665,7 @@ thead th {
 #filemanager div div:nth-child(even),
 fieldset>div:nth-child(even),
 tbody tr:nth-child(even) td {
-    background-color: #edf4f7
+    background-color: #edf4f7!important
 }
 tbody tr:nth-child(even) td.no-bg {
     background-color: #ffffff
@@ -1439,10 +1439,12 @@ table.filter td {
 .fm-item-list {
     width: 700px;
     height: 40px;
+    margin: 5px 0;
 }
 .fm-item-list img {
     width: auto;
     height: 40px;
+    max-width: 40px;
     float: left;
 }
 .fm-item-list .filesize {
@@ -1453,6 +1455,10 @@ table.filter td {
 }
 .fm-item-list .actions {
     background: transparent;
+}
+.fm-item-list > a {
+    bottom: 0px;
+    text-indent: 45px;
 }
 #filemanager .toggle {
     float: right;
