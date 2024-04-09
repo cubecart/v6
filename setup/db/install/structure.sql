@@ -384,6 +384,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_filemanager` (
 	`description` TEXT NOT NULL,
 	`stream` enum('0','1') NOT NULL DEFAULT '0',
 	`alt` TEXT NOT NULL,
+	`date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`file_id`),
 	KEY (`type`),
 	KEY (`filepath`),
