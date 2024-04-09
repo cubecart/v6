@@ -1439,12 +1439,13 @@ table.filter td {
 .fm-item-list {
     width: 700px;
     height: 20px;
-    margin: 3px 0;
+    margin: 0;
 }
 .fm-item-list img {
     width: auto;
-    height: 20px;
+    height: 18px;
     max-width: 20px;
+    padding-top: 1px;
     float: left;
 }
 .fm-item-list .filesize {
