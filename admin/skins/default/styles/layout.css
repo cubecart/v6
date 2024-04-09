@@ -1436,20 +1436,44 @@ table.filter td {
     width: 100px;
     height: 100px;
 }
+.fm-item-list {
+    width: 700px;
+    height: 40px;
+}
+.fm-item-list img {
+    width: auto;
+    height: 40px;
+    float: left;
+}
+.fm-item-list .filesize {
+    display: none;
+}
+.fm-item-list .item_link {
+    padding-left: 20px;
+}
+.fm-item-list .actions {
+    background: transparent;
+}
 #filemanager .toggle {
     float: right;
 }
 #filemanager .toggle span {
     display: inline-block;
-    margin: 2px;
+    margin: 0 2px;
     background-color: #444;
     cursor: pointer;
 }
-#filemanager .toggle span:hover {
+#filemanager .toggle span:hover  {
     background-color: #f3068f;
+}
+#filemanager .toggle span:hover i  {
+    color: #f3068f;
 }
 #filemanager .toggle span.active {
     background-color: #4F9AAF;
+}
+#filemanager .toggle span.active i {
+    color: #4F9AAF;
 }
 #filemanager .toggle span.xlarge {
     width: 16px;
@@ -1466,6 +1490,13 @@ table.filter td {
 #filemanager .toggle span.small {
     width:10px;
     height:10px;
+    margin-left: 10px;
+}
+#filemanager .toggle span.list {
+    margin: 0;
+    background-color: transparent!important; 
+    padding-right: 10px;
+    border-right: 1px solid #ddd;   
 }
 #filemanager .digital {
     font-size: 14px;

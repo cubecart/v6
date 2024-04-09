@@ -958,11 +958,16 @@ $(document).ready(function() {
     $("#filemanager .toggle span").on("click", function() {
         var size = $(this).attr("class");
         $.cookie('fm_size', size, {expires: 365});
-        $("#filemanager .fm-item").removeClass('fm-item-xlarge fm-item-large fm-item-medium fm-item-small');
+        $("#filemanager .fm-item").removeClass('fm-item-xlarge fm-item-large fm-item-medium fm-item-small fm-item-list');
         $("#filemanager .fm-item").addClass('fm-item-'+size);
         $("#filemanager .toggle span").removeClass("active");
         $(this).addClass("active");
         $("#page_content").height($("#fm-wrapper"));
+        if(size == 'list') {
+            $("#filemanager .list-filesize").show();
+        } else {
+            $("#filemanager .list-filesize").hide();
+        }
     });
     var fm_size = $.cookie('fm_size');
     if(fm_size === undefined) {
