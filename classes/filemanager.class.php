@@ -1058,7 +1058,23 @@ class FileManager
         $filepath_where  = empty($this->_sub_dir) ? 'IS NULL' : '= \''.str_replace('\\', '/', $this->_sub_dir).'\'';
         $where = '`disabled` = 0 AND `type` = '.(int)$this->_mode.' AND `filepath` '.$filepath_where;
         $GLOBALS['smarty']->assign('FM_SIZE', isset($_COOKIE['fm_size']) ? 'fm-item-'.$_COOKIE['fm_size'] : 'fm-item-medium');
-        if (($files = $GLOBALS['db']->select('CubeCart_filemanager', false, $where, array('filename' => 'ASC'))) !== false) {
+        
+        $sort = array('filename' => 'ASC');
+        if(isset($_POST['fm-sort']) && !empty($_POST['fm-sort'])) {
+            $sort_param = $_POST['fm-sort'];
+        } elseif($GLOBALS['session']->has('fm-sort')) {
+            $sort_param = $GLOBALS['session']->get('fm-sort');
+        }
+        if(isset($sort_param) && !empty($sort_param)) {
+            $sort_params = explode('-', $sort_param);             
+            if(in_array($sort_params[0], array('filename', 'filesize', 'date_added')) && in_array($sort_params[1], array('asc', 'desc'))) {
+                $GLOBALS['session']->set('fm-sort', $sort_param);
+                $GLOBALS['smarty']->assign('FM_SORT', $sort_param);
+                $sort = array($sort_params[0] => strtoupper($sort_params[1]));
+            }
+        }
+        
+        if (($files = $GLOBALS['db']->select('CubeCart_filemanager', false, $where, $sort)) !== false) {
             $catalogue = $GLOBALS['catalogue']->getInstance();
             $GLOBALS['smarty']->assign('ROOT_REL', $GLOBALS['rootRel']);
             foreach ($files as $key => $file) {

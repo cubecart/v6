@@ -18,7 +18,7 @@
 		<div>
 			<div class="fm-sort">
 				Sort by
-				<select name="fm-sort">
+				<select name="fm-sort" class="auto_submit">
 					<option value="filename-asc"{if !isset($FM_SORT) || $FM_SORT=='filename-asc'} selected="selected"{/if}>Name (A-Z)</option>
 					<option value="filename-desc"{if isset($FM_SORT) && $FM_SORT=='filename-desc'} selected="selected"{/if}>Name (Z-A)</option>
 					<option value="filesize-asc"{if isset($FM_SORT) && $FM_SORT=='filesize-asc'} selected="selected"{/if}>Size (Low-High)</option>
