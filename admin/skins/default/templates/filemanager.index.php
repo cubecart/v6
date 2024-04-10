@@ -13,8 +13,23 @@
 	{if isset($mode_list)}
 	<div id="filemanager" class="tab_content">
 		<h3>
-		{if $FILMANAGER_MODE == FileManager::FM_FILETYPE_IMG}<span class="toggle"><span class="list"><i class="fa fa-list" aria-hidden="true"></i></span><span class="small"></span><span class="medium"></span><span class="large"></span><span class="xlarge"></span></span>{/if}{$FILMANAGER_TITLE}</h3>
-		{if $FILMANAGER_MODE == FileManager::FM_FILETYPE_IMG}<input type="text" name="fm-search-term" id="fm-search-term" placeholder="{$LANG.common.search}..."><button type="button" class="button tiny" id="fm-search-button" data-mode="{if $FILMANAGER_MODE == FileManager::FM_FILETYPE_IMG}images{else}digital{/if}" data-action="show">{$LANG.common.go}</button>
+		{if $FILMANAGER_MODE == FileManager::FM_FILETYPE_IMG}<span class="toggle"><span class="list"><i class="fa fa-list" aria-hidden="true"></i></span><span class="small"></span><span class="medium"></span><span class="large"></span><span class="xlarge"></span></span>{/if}
+		{$FILMANAGER_TITLE}</h3>
+		<div>
+			<div class="fm-sort">
+				Sort by
+				<select name="fm-sort">
+					<option value="filename-asc"{if !isset($FM_SORT) || $FM_SORT=='filename-asc'} selected="selected"{/if}>Name (A-Z)</option>
+					<option value="filename-desc"{if isset($FM_SORT) && $FM_SORT=='filename-desc'} selected="selected"{/if}>Name (Z-A)</option>
+					<option value="filesize-asc"{if isset($FM_SORT) && $FM_SORT=='filesize-asc'} selected="selected"{/if}>Size (Low-High)</option>
+					<option value="filesize-desc"{if isset($FM_SORT) && $FM_SORT=='filesize-desc'} selected="selected"{/if}>Size (High-Low)</option>
+					<option value="date_added-asc"{if isset($FM_SORT) && $FM_SORT=='date_added-asc'} selected="selected"{/if}>Date Added (Old-New)</option>
+					<option value="date_added-desc"{if isset($FM_SORT) && $FM_SORT=='date_added-desc'} selected="selected"{/if}>Date Added (New-Old)</option>
+				</select>
+			</div>
+			{if $FILMANAGER_MODE == FileManager::FM_FILETYPE_IMG}<input type="text" name="fm-search-term" id="fm-search-term" placeholder="{$LANG.common.search}..."><button type="button" class="button tiny" id="fm-search-button" data-mode="{if $FILMANAGER_MODE == FileManager::FM_FILETYPE_IMG}images{else}digital{/if}" data-action="show">{$LANG.common.go}</button>
+			
+		</div>
 		<hr>
 		{/if}
 		{if $FILMANAGER_MODE == FileManager::FM_FILETYPE_DL && !$SELECT_BUTTON}
