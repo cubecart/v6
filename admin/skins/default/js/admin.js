@@ -955,6 +955,12 @@ $(document).ready(function() {
             $(this).is(":checked") ? $(this).parent().addClass("selected") : $(this).parent().removeClass("selected")
         })
     });
+    
+    if($(".fm-item-list").length>0) {
+        $("#filemanager .list-filesize").show();
+    } else {
+        $("#filemanager .list-filesize").hide();
+    }
     $("#filemanager .toggle span").on("click", function() {
         var size = $(this).attr("class");
         $.cookie('fm_size', size, {expires: 365});
