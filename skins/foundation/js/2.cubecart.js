@@ -533,10 +533,10 @@ jQuery(document).ready(function() {
         $("[name^=productOptions]").change(function() {
             price_inc_options();
             var product_image = '';
-            if($(this).attr('type')==='radio') {
-                product_image = $(this).attr('data-image');
-            } else {
-                product_image = $(this).find(':selected').attr('data-image');
+            if($(this).is('input:radio, input:checkbox, input:hidden')) {
+                product_image = $(this).is(':checked') ? $(this).attr('data-image') : '';
+            } else if ($(this).is('select')) {
+                product_image = $('option:selected', this).attr('data-image');
             }
             if(product_image.length>0) {
                 if($('a.MagicZoom').length>0){
