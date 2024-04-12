@@ -5,7 +5,7 @@
 	</note>
 *}
 <div class="powered">
-	Open Source eCommerce<br>powered by <a href="http://www.cubecart.com">CubeCart</a>
+	Open Source eCommerce<br>powered by <a href="http://www.cubecart.com" target="_blank">CubeCart</a>
 	<ul class="logos">
 		<li><a href="https://www.gnu.org/licenses/quick-guide-gplv3.html" target="_blank"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/gpl-v3-logo.svg" alt="GPLv3 logo"></a></li>
 		<li><a href="https://www.buymeacoffee.com/cubecart" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" ></a></li>
