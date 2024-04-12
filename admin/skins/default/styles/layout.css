@@ -1123,12 +1123,12 @@ table#order-builder .quantity {
 }
 div#content .powered {
     text-align: center;
-    padding: 7px 0;
+    padding: 15px 0;
     font-size: 14px;
     color: #333;
-    background: #fff;
-    border-left: 1px solid #D0D0D0;
-    border-bottom: 1px solid #D0D0D0
+    background: #ececec;
+    border-bottom: 1px solid #D0D0D0;
+    border-top: 1px solid #D0D0D0;
 }
 div#content .powered div {
     margin: 10px;
