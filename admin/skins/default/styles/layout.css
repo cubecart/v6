@@ -1133,7 +1133,16 @@ div#content .powered {
 div#content .powered div {
     margin: 10px;
 }
-div#content .powered div img {
+div#content .powered ul {
+    padding: 0;
+}
+
+div#content .powered ul li {
+    list-style: none;
+    display: inline;
+    padding: 5px
+}
+div#content .powered ul li img {
     height: 30px !important;
 }
 .preauth-body .powered {
