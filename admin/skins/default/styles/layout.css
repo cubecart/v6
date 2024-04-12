@@ -1130,6 +1130,12 @@ div#content .powered {
     border-left: 1px solid #D0D0D0;
     border-bottom: 1px solid #D0D0D0
 }
+div#content .powered div {
+    margin: 10px;
+}
+div#content .powered div img {
+    height: 30px !important;
+}
 .preauth-body .powered {
     text-align: center;
     padding: 7px 0;
