@@ -28,6 +28,18 @@ $product_dates = <<<END
 
 END;
 
+$product_dates = <<<END
+<div>Adjust product sales report by date.</div>
+    <div><img src="./{$GLOBALS['config']->get('config', 'adminFolder')}/skins/{$GLOBALS['config']->get('config', 'admin_skin')}/media/issue.3392.png" style="width: 60%" alt="Date filter" /></div>
+
+END;
+
+$emoji = <<<END
+<div>Rich Text Editor - Emoji Picker Plugin</div>
+    <div><img src="./{$GLOBALS['config']->get('config', 'adminFolder')}/skins/{$GLOBALS['config']->get('config', 'admin_skin')}/media/issue.3420.png" style="width: 60%" alt="Emoji selector" /></div>
+
+END;
+
 $features = array( 
 	'3543' => $list_view,
 	'3544' => 'Sorter added to filemanager for name, date added and filesize (see screenshot above).',
@@ -43,8 +55,9 @@ $features = array(
     '3418' => 'Order summary to show both custom order ID (if available) and traditional order ID.',
     '3413' => 'Filemanager last location memory for product option images',
     '3392' => $product_dates,
-    '3385' => 'Switch off order email whilst in PayPal Sandbox mode (PayPal Commerce 1.9.5+ required).'
+    '3385' => 'Switch off order email whilst in PayPal Sandbox mode (PayPal Commerce 1.9.5+ required).',
+    '3420' => $emoji,
 );
 $notes = '';
-$page_content = $GLOBALS['main']->newFeatures($_GET['node'], $features, 94, $notes);
+$page_content = $GLOBALS['main']->newFeatures($_GET['node'], $features, 95, $notes);
 ?>
