@@ -24,7 +24,7 @@ END;
 
 $product_dates = <<<END
 <div>Adjust product sales report by date.</div>
-    <div><img src="./{$GLOBALS['config']->get('config', 'adminFolder')}/skins/{$GLOBALS['config']->get('config', 'admin_skin')}/media/issue.3392.png" style="width: 60%" alt="Exchange rate buffer" /></div>
+    <div><img src="./{$GLOBALS['config']->get('config', 'adminFolder')}/skins/{$GLOBALS['config']->get('config', 'admin_skin')}/media/issue.3392.png" style="width: 60%" alt="Date filter" /></div>
 
 END;
 
@@ -32,15 +32,15 @@ $features = array(
 	'3543' => $list_view,
 	'3544' => 'Sorter added to filemanager for name, date added and filesize (see screenshot above).',
     '3536' => 'reCaptcha added to password recovery tool.',
-    '3532' => 'Customer commets icon with link added to dashboard orders (unsettled orders) list.',
-    '3525' => 'Bulk action to add/remove orders from dasboard (unsettled orders).',
+    '3532' => 'Customer comments icon with link added to dashboard orders (unsettled orders) list.',
+    '3525' => 'Bulk action to add/remove orders from dashboard (unsettled orders).',
     '3488' => 'Use of hooks to manipulate dashboard  (unsettled orders) bulk actions.',
     '3487' => 'Order list to have new &quot;Last Updated&quot; column with sorter.',
     '3447' => 'Preview icon on category and document list to view on front end.',
     '3427' => 'Switch to allow for product and category descriptions to be parsed via Smarty (for dynamic contnt).',
     '3425' => 'Improved character set support utf8mb3 to utf8mb4',
     '3424' => $er_buffer,
-    '3418' => 'Order summary to show both custom order ID (if avaialable) and traditional oreder ID.',
+    '3418' => 'Order summary to show both custom order ID (if available) and traditional order ID.',
     '3413' => 'Filemanager last location memory for product option images',
     '3392' => $product_dates,
     '3385' => 'Switch off order email whilst in PayPal Sandbox mode (PayPal Commerce 1.9.5+ required).'
