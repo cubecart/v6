@@ -167,6 +167,10 @@ class Database_Contoller
         $tables = $this->getRows();
 
         foreach ($tables as $table) {
+            // CubeCart tables only
+            if(!preg_match('/CubeCart_/', $table['Name'])) {
+                continue;
+            }
             $this->_query = "ALTER TABLE `$dbname`.`{$table['Name']}` DEFAULT CHARSET=$charset COLLATE $collation;";
             $this->_execute(false);
             $this->_query = "ALTER TABLE `$dbname`.`{$table['Name']}` CONVERT TO CHARACTER SET $charset COLLATE $collation;";

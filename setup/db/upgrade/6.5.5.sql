@@ -1,0 +1,1 @@
+ALTER TABLE `CubeCart_seo_urls` CHANGE `path` `path` VARCHAR(250) NOT NULL; #EOQ

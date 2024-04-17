@@ -18,8 +18,7 @@ if(!strstr($error_log_path, '/')) {
     ini_set('error_log', '../'.$error_log_path);
 }
 
-@ini_set('memory_limit', '512M');
-@set_time_limit('600');
+@set_time_limit('900');
 define('CC_IN_SETUP', true);
 define('CC_IN_ADMIN', false);
 
