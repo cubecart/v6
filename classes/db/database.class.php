@@ -168,7 +168,7 @@ class Database_Contoller
 
         foreach ($tables as $table) {
             // CubeCart tables only
-            if(!preg_match('/CubeCart_/', $table['Name'])) {
+            if(!preg_match('/^'.$this->_prefix.'CubeCart_/', $table['Name'])) {
                 continue;
             }
             $this->_query = "ALTER TABLE `$dbname`.`{$table['Name']}` DEFAULT CHARSET=$charset COLLATE $collation;";
