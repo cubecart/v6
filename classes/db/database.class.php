@@ -466,13 +466,8 @@ class Database_Contoller
             $allowed = $this->getFields($table);
             foreach ($record as $field => $value) {
                 if (in_array($field, $allowed) && !is_numeric($field)) {
-                    if(empty($value) && !is_numeric($value)) {
-                        $fields[] = "`$field`";
-                        $values[] = "DEFAULT";
-                    } else {
-                        $fields[] = "`$field`";
-                        $values[] = ($value==='NULL') ? 'NULL' : $this->sqlSafe($value, true);
-                    }
+                    $fields[] = "`$field`";
+                    $values[] = ($value==='NULL') ? 'NULL' : $this->sqlSafe($value, true);
                 }
             }
             if (!empty($fields) && !empty($values)) {
