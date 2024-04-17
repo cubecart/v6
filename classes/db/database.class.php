@@ -62,7 +62,7 @@ class Database_Contoller
      *
      * @var array
      */
-    protected $_allowed_exceptions = array('CURRENT_TIMESTAMP', 'NOW()', 'offline_capture', 'NULL', 'DEFAULT');
+    protected $_allowed_exceptions = array('CURRENT_TIMESTAMP', 'NOW()', 'offline_capture', 'NULL');
     /**
      * Was it a cached query
      *
@@ -879,8 +879,6 @@ class Database_Contoller
                 if (in_array($field, $allowed) && !is_numeric($field)) {
                     if (($number = substr((string)$value, 1)) && is_numeric($number) && $skip_math_fields!== 'all' && !in_array($field, $skip_math_fields) && isset($value[0]) && ($value[0] == '+' || $value[0] == '-')) {
                         $set[] = "`$field` = `$field` {$value[0]} ".$number;
-                    } elseif (empty($value) && !is_numeric($value)) {
-  $set[] = "`$field` = DEFAULT";
                     } else {
                         $value = (in_array($value, $this->_allowed_exceptions, true)) ? $value : $this->sqlSafe($value, true);
                         $set[] = "`$field` = $value";
