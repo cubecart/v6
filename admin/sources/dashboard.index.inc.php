@@ -401,7 +401,7 @@ if ($stock_c = $GLOBALS['db']->select($tables, $fields, $where)) {
     $stock = $GLOBALS['db']->select($tables, $fields, $where, $order_by, $per_page, $page);
     $GLOBALS['smarty']->assign('STOCK', $stock);
     $GLOBALS['main']->addTabControl($lang['dashboard']['title_stock_warnings'], 'stock_warnings', null, null, $stock_count);
-    $GLOBALS['smarty']->assign('STOCK_PAGINATION', $GLOBALS['db']->pagination($stock_count, $result_limit, $page, $show = 5, 'stock', 'stock_warnings', $glue = ' ', $view_all = true));
+    $GLOBALS['smarty']->assign('STOCK_PAGINATION', $GLOBALS['db']->pagination($stock_count, $per_page, $page, $show = 5, 'stock', 'stock_warnings', $glue = ' ', $view_all = true));
 
     foreach ($GLOBALS['hooks']->load('admin.dashboard.stock.post') as $hook) {
         include $hook;
