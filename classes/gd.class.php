@@ -21,7 +21,7 @@ class GD
     private $_gdWebpSupport;
 
     private $_gdImageData;
-    private $_gdImageExif;
+    private $_gdImageExif = array();
     private $_gdImageType;
 
     private $_gdImageSource;
@@ -100,7 +100,7 @@ class GD
     {
         if (file_exists($file)) {
             $this->_gdImageData = getimagesize($file);
-            $this->_gdImageExif = exif_read_data($file);
+            $this->_gdImageExif = function_exists('exif_read_data') ? exif_read_data($file) : array();
             $this->_gdImageType = $this->_gdImageData[2];
 
             switch ($this->_gdImageType) {
