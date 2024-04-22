@@ -155,7 +155,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_category` (
 	`priority` SMALLINT(6) UNSIGNED NOT NULL DEFAULT '0',
 	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
 	`cat_hier_position` int NOT NULL DEFAULT '0',
-	`cat_parse` tinyint(1) unsigned NOT NULL DEFAULT '1',
+	`cat_parse` tinyint(1) unsigned NOT NULL DEFAULT '0',
 	PRIMARY KEY (`cat_id`),
 	KEY `cat_parent_id` (`cat_parent_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
@@ -493,7 +493,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_inventory` (
   `available` enum('0','1') NOT NULL DEFAULT '1',
   `minimum_quantity` INT(10) NOT NULL DEFAULT '1',
   `maximum_quantity` INT(10) NOT NULL DEFAULT '0',
-  `product_parse` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `product_parse` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`product_id`),
   KEY `status` (`status`),
   KEY `live_from` (`live_from`),
