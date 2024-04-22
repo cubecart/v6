@@ -18,7 +18,7 @@
 		<div>
 			<div class="fm-sort">
 				{$LANG.form.sort_by}
-				<select name="fm-sort" class="auto_submit">
+				<select name="fm-sort" onchange="this.form.submit()">
 					<option value="filename-asc"{if !isset($FM_SORT) || $FM_SORT=='filename-asc'} selected="selected"{/if}>{$LANG.common.name} (A-Z)</option>
 					<option value="filename-desc"{if isset($FM_SORT) && $FM_SORT=='filename-desc'} selected="selected"{/if}>{$LANG.common.name} (Z-A)</option>
 					<option value="filesize-asc"{if isset($FM_SORT) && $FM_SORT=='filesize-asc'} selected="selected"{/if}>{$LANG.common.size} ({$LANG.category.sort_low_high})</option>
