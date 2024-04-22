@@ -1200,7 +1200,6 @@ class Cart
      */
     public function update($verify = array())
     {
-        $this->get();
         // Update basket values and such - possibly to the database too
         $quantities = isset($_POST['quan']) && is_array($_POST['quan']) ? $_POST['quan'] : $verify;
         if (count($quantities) > 0) {
