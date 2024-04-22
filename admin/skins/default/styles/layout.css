@@ -1452,9 +1452,18 @@ table.filter td {
     height: 100px;
 }
 .fm-item-list {
-    width: 700px;
+    width: 550px;
     height: 20px;
     margin: 0;
+    position: relative;
+}
+.fm-item-list .fa-plus-circle {
+    position: absolute;
+    right: 0px;
+    color: #9aaf4f!important;
+}
+.fm-item-list .fa-trash {
+    color: #ff0000!important;
 }
 .fm-item-list img {
     width: auto;
