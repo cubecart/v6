@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_admin_log` (
 	`time` INT UNSIGNED NOT NULL,
 	`ip_address` VARCHAR(45) NOT NULL,
 	`description` TEXT NOT NULL,
-	`item_id` VARCHAR(255) UNSIGNED NULL,
+	`item_id` VARCHAR(255) NULL DEFAULT NULL,
 	`item_type` VARCHAR(4) NULL,
 	PRIMARY KEY (`log_id`),
 	KEY `admin_id` (`admin_id`),
