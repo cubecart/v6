@@ -41,12 +41,12 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
         $_POST['config'] = array_merge(
             $_POST['config'],
             array(
-                'oid_prefix' => $config_old['oid_prefix'],
-                'oid_postfix' => $config_old['oid_postfix'],
-                'oid_zeros' => $config_old['oid_zeros'],
-                'oid_zeros' => $config_old['oid_zeros'],
-                'oid_start' => $config_old['oid_start'],
-                'oid_col' => $config_old['oid_col']
+                'oid_prefix' => $config_old['oid_prefix'] ?? '',
+                'oid_postfix' => $config_old['oid_postfix'] ?? '',
+                'oid_zeros' => $config_old['oid_zeros'] ?? '',
+                'oid_zeros' => $config_old['oid_zeros'] ?? '',
+                'oid_start' => $config_old['oid_start'] ?? '',
+                'oid_col' => $config_old['oid_col'] ?? ''
             )
         );
         $_POST['config']['oid_col'] = 'cart_order_id';
@@ -196,7 +196,7 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
     if($config_old['default_currency']!==$config_new['default_currency']) {
         $GLOBALS['main']->successMessage($lang['settings']['currency_changed']);
     }
-    $config_new['enc_key'] =  $config_old['enc_key']; // Keep old encryption key
+    $config_new['enc_key'] =  $config_old['enc_key'] ?? ''; // Keep old encryption key
     $config_new['offline_content'] = $GLOBALS['RAW']['POST']['config']['offline_content'];
     $config_new['store_copyright'] = $GLOBALS['RAW']['POST']['config']['store_copyright'];
     $config_new['email_smtp_password'] = $GLOBALS['RAW']['POST']['config']['email_smtp_password'];
