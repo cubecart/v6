@@ -254,7 +254,7 @@ $(document).ready(function() {
     
     $(".editable_phrase").on("focusout", function() {
         var phrase_id = $(this).attr('rel');
-        if($(this).val() == $('#default_' + phrase_id).val()) {
+        if($(this).val() == $('#default_' + phrase_id).val() && !$(this).hasClass('reverted')) {
             $('#string_' + phrase_id).attr("disabled", "disabled");
         }
     });
@@ -901,7 +901,6 @@ $(document).ready(function() {
         var t = $(this).attr("rel");
         "0" == $("#defined_" + t).val() ? $("#row_" + t).addClass("list-changed") : $("#string_" + t).val() != $("#default_" + t).val() ? $("#row_" + t + " td").addClass("custom-phrase") : $(this).hide()
     }).on("click", function() {
-
         var t = $(this).attr("rel"),
             e = $("#default_" + t).val();
         $('<input>').attr({
@@ -910,7 +909,7 @@ $(document).ready(function() {
                     name: 'delete['+t+']',
                     value: true
         }).appendTo('form#edit_phrases');
-        return $("#string_" + t).val(e), $("#row_" + t + " td").removeClass("custom-phrase"), $(this).hide(), !1
+        return $("#string_" + t).val(e), $("#row_" + t + " td").removeClass("custom-phrase"), $(this).hide(), $("#string_" + t).prop("disabled", false), $("#string_" + t).addClass("reverted"), !1
     }), $("td.phrase_row").click(function() {
         var t = $(this).attr("rel");
         $("#"+t).prop("disabled", false).focus();

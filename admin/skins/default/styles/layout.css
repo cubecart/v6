@@ -464,6 +464,9 @@ input.textbox[disabled]:hover, input.textbox[disabled]:focus {
     min-height: 15px;
     width: 300px
 }
+.phrase_row i {
+    cursor: pointer;
+}
 .textbox {
     background-color: #e8e8e8;
     border: 1px solid #a6a6a6;
@@ -1078,9 +1081,6 @@ table.fixed {
 }
 .request.error {
     color: red
-}
-.custom-phrase {
-    background: #f2fff2!important
 }
 table.phrases td.actions {
     background-color: #FFF!important

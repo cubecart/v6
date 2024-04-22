@@ -164,9 +164,9 @@ if (isset($_GET['export'])) {
             $custom  = $GLOBALS['language']->getCustom($module_name, $_GET['language']);
         } else {
             $breadcrumb = $_REQUEST['type'];
+            $strings = $GLOBALS['language']->getStrings($type);
             $definitions = $GLOBALS['language']->getDefinitions($_REQUEST['type']);
             $type  = $_REQUEST['type'];
-            $strings = $GLOBALS['language']->getStrings($type);
             $custom  = $GLOBALS['language']->getCustom($type, $_GET['language']);
         }
 
@@ -192,8 +192,7 @@ if (isset($_GET['export'])) {
                     'value'  => htmlspecialchars($value, ENT_COMPAT, 'UTF-8', false),
                     'defined' => (int)$defined,
                     'multiline' => detectEol($value),
-                    'placeholders' => (!empty($countPlaceholders) ? "There must be $countPlaceholders placeholder".(($countPlaceholders > 1) ? "s. Unless using n\$ position specifiers, their existing order in the string must stay that way." : ".") : null),
-                    'disabled' => ($default!==$value) ? false : true
+                    'placeholders' => (!empty($countPlaceholders) ? "There must be $countPlaceholders placeholder".(($countPlaceholders > 1) ? "s. Unless using n\$ position specifiers, their existing order in the string must stay that way." : ".") : null)
                 );
                 $smarty_data['strings'][] = $assign;
             }

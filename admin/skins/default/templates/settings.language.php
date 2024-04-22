@@ -147,10 +147,11 @@
                   <label for="string_{$string.name}">{$string.name}</label>
                   <input type="hidden" id="defined_{$string.name}" value="{$string.defined}">
                   {if $string.multiline}
-                  <textarea id="string_{$string.name}" name="string[{$string.type}][{$string.name}]" class="textbox editable_phrase" rel="{$string.name}"{if $string.disabled} disabled="disabled"{/if}>{$string.value}</textarea>
+                  <textarea id="string_{$string.name}" name="string[{$string.type}][{$string.name}]" class="textbox editable_phrase" rel="{$string.name}" disabled="disabled" autocomplete="one-time-code">{$string.value}</textarea>
                   {else}
-                  <input type="text" id="string_{$string.name}" name="string[{$string.type}][{$string.name}]" value="{$string.value}" class="textbox editable_phrase" rel="{$string.name}"{if $string.disabled} disabled="disabled"{/if}>
+                  <input type="text" id="string_{$string.name}" name="string[{$string.type}][{$string.name}]" value="{$string.value}" class="textbox editable_phrase" rel="{$string.name}" disabled="disabled" autocomplete="one-time-code">
                   {/if}
+                  <i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i>
                </td>
                <td class="actions">
                   {if $string.placeholders}<a href="javascript: alert('`{$string.name}`: {$string.placeholders}'); void(0);" id="placeholder_{$string.name}" title="`{$string.name}`: {$string.placeholders}"><i class="fa fa-info-circle"></i></a>{/if}
