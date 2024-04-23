@@ -665,16 +665,15 @@ thead td,
 thead th {
     padding: 0 0 0 5px !important
 }
-#filemanager div div:nth-child(even),
 fieldset>div:nth-child(even),
 tbody tr:nth-child(even) td {
+    background-color: #edf4f7
+}
+#filemanager div div:nth-child(even) {
     background-color: #edf4f7!important
 }
 tbody tr:nth-child(even) td.no-bg {
     background-color: #ffffff
-}
-#filemanager div div.fm-item:nth-child(odd) {
-    background-color: #edf4f7
 }
 #filemanager div div:hover {
     background-color: #f7f5ed;
@@ -1079,6 +1078,9 @@ table.fixed {
     height: auto;
     padding: 5px;
 }
+.custom-phrase {
+    background: #f2fff2!important
+}
 .request.error {
     color: red
 }
@@ -1456,6 +1458,7 @@ table.filter td {
     height: 20px;
     margin: 0;
     position: relative;
+    clear: left;
 }
 .fm-item-list .fa-plus-circle {
     position: absolute;
