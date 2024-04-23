@@ -64,6 +64,7 @@ if (!isset($_SESSION['setup']['permissions'])) {
     $step = 5;
     if (!isset($_SESSION['setup']['global']) || !isset($_SESSION['setup']['progress'])) {
         if (isset($_POST['global']) && isset($_POST['admin'])) {
+            $GLOBALS['smarty']->assign('FORM', $_POST);
             // Validation
             $validated = true;
             $required = array('dbhost', 'dbusername', 'dbdatabase');
@@ -163,7 +164,6 @@ if (!isset($_SESSION['setup']['permissions'])) {
                     ));
                 httpredir('index.php');
             }
-            $GLOBALS['smarty']->assign('FORM', $_POST);
         }
 
         $currencies = array(
