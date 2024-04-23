@@ -110,20 +110,20 @@
   {if isset($MODE_INSTALL)}
 	<h3>{$LANG.setup.title_database_settings}</h3>
 	<fieldset>
-	  <div><label for="form-dbhost" class="help" rel="" title="{$LANG.setup.help_dbhostname}">{$LANG.setup.db_host}</label><span><input type="text" name="global[dbhost]" id="form-dbhost" value="{$FORM.global.dbhost}" class="textbox required" /></span></div>
-	  <div><label for="form-dbdatabase" class="help" rel="" title="{$LANG.setup.help_dbname}">{$LANG.setup.db_name}</label><span><input type="text" name="global[dbdatabase]" id="form-dbdatabase" value="{$FORM.global.dbdatabase}" class="textbox required" /></span></div>
-	  <div><label for="form-dbusername" class="help" rel="" title="{$LANG.setup.help_dbusername}">{$LANG.account.username}</label><span><input type="text" name="global[dbusername]" id="form-dbusername" value="{$FORM.global.dbusername}" class="textbox required" /></span></div>
-	  <div><label for="form-dbpassword" class="help" rel="" title="{$LANG.setup.help_dbuserpass}">{$LANG.account.password}</label><span><input type="password" autocomplete="off" name="global[dbpassword]" id="form-dbpassword" value="{$FORM.global.dbpassword}" class="textbox" /></span></div>
-	  <div><label for="form-dbpassconf" class="help" rel="" title="{$LANG.setup.help_dbconfirmpass}">{$LANG.account.password_confirm}</label><span><input type="password" autocomplete="off" name="global[dbpassconf]" rel="form-dbpassword" id="form-dbpassconf" value="{$FORM.global.dbpassconf}" class="textbox confirm" /></span></div>
-	  <div><label for="form-dbprefix" class="help" rel="" title="{$LANG.setup.help_dbprefix}">{$LANG.setup.db_prefix}</label><span><input type="text" name="global[dbprefix]" id="form-dbprefix" value="{$FORM.global.dbprefix}" class="textbox" /></span></div>
-	  <div><label for="form-dbport" class="help" rel="" title="{$LANG.setup.help_dbport}">{$LANG.setup.db_port} {$LANG.common.optional}</label><span><input type="text" name="global[dbport]" id="form-dbport" value="{$FORM.global.dbport}" class="textbox" /></span></div>
-	  <div><label for="form-dbsocket" class="help" rel="" title="{$LANG.setup.help_dbsocket}">{$LANG.setup.db_socket} {$LANG.common.optional}</label><span><input type="text" name="global[dbsocket]" id="form-dbsocket" value="{$FORM.global.dbsocket}" class="textbox" /></span></div>
+	  <div><label for="form-dbhost" class="help" title="{$LANG.setup.help_dbhostname}">{$LANG.setup.db_host}</label><span><input type="text" name="global[dbhost]" id="form-dbhost"{if isset($FORM.global.dbhost)} value="{$FORM.global.dbhost}"{/if} class="textbox required" /></span></div>
+	  <div><label for="form-dbdatabase" class="help" title="{$LANG.setup.help_dbname}">{$LANG.setup.db_name}</label><span><input type="text" name="global[dbdatabase]" id="form-dbdatabase"{if isset($FORM.global.dbdatabase)} value="{$FORM.global.dbdatabase}"{/if} class="textbox required" /></span></div>
+	  <div><label for="form-dbusername" class="help" title="{$LANG.setup.help_dbusername}">{$LANG.account.username}</label><span><input type="text" name="global[dbusername]" id="form-dbusername"{if isset($FORM.global.dbusername)} value="{$FORM.global.dbusername}"{/if} class="textbox required" /></span></div>
+	  <div><label for="form-dbpassword" class="help" title="{$LANG.setup.help_dbuserpass}">{$LANG.account.password}</label><span><input type="password" autocomplete="off" name="global[dbpassword]" id="form-dbpassword"{if isset($FORM.global.dbpassword)} value="{$FORM.global.dbpassword}"{/if} class="textbox" /></span></div>
+	  <div><label for="form-dbpassconf" class="help" title="{$LANG.setup.help_dbconfirmpass}">{$LANG.account.password_confirm}</label><span><input type="password" autocomplete="off" name="global[dbpassconf]" rel="form-dbpassword" id="form-dbpassconf"{if isset($FORM.global.dbpassconf)} value="{$FORM.global.dbpassconf}"{/if} class="textbox confirm" /></span></div>
+	  <div><label for="form-dbprefix" class="help" title="{$LANG.setup.help_dbprefix}">{$LANG.setup.db_prefix}</label><span><input type="text" name="global[dbprefix]" id="form-dbprefix"{if isset($FORM.global.dbprefix)} value="{$FORM.global.dbprefix}"{/if} class="textbox" /></span></div>
+	  <div><label for="form-dbport" class="help" title="{$LANG.setup.help_dbport}">{$LANG.setup.db_port} {$LANG.common.optional}</label><span><input type="text" name="global[dbport]" id="form-dbport"{if isset($FORM.global.dbport)} value="{$FORM.global.dbport}"{/if} class="textbox" /></span></div>
+	  <div><label for="form-dbsocket" class="help" title="{$LANG.setup.help_dbsocket}">{$LANG.setup.db_socket} {$LANG.common.optional}</label><span><input type="text" name="global[dbsocket]" id="form-dbsocket"{if isset($FORM.global.dbsocket)} value="{$FORM.global.dbsocket}"{/if} class="textbox" /></span></div>
 	</fieldset>
 	<h3>{$LANG.setup.title_store_settings}</h3>
 	<fieldset>
-	  <div><label for="form-store_name" rel="">{$LANG.settings.store_name}</label><span><input type="text" name="config[store_name]" id="form-store_name" value="{$FORM.config.store_name}" class="textbox required" /></span></div>
+	  <div><label for="form-store_name">{$LANG.settings.store_name}</label><span><input type="text" name="config[store_name]" id="form-store_name"{if isset($FORM.config.store_name)} value="{$FORM.config.store_name}"{/if} class="textbox required" /></span></div>
 	  <div>
-		<label for="form-language" class="help" rel="" title="{$LANG.setup.help_defaultlang}">{$LANG.settings.default_language}</label>
+		<label for="form-language" class="help" title="{$LANG.setup.help_defaultlang}">{$LANG.settings.default_language}</label>
 		<span>
 		  <select name="config[default_language]" id="form-language" class="textbox required">
 			<option value="">{$LANG.form.please_select}</option>
@@ -132,7 +132,7 @@
 		</span>
 	  </div>
 	  <div>
-		<label for="form-currency" class="help" rel="" title="{$LANG.setup.help_defaultcurrency}">{$LANG.settings.default_currency}</label>
+		<label for="form-currency" class="help" title="{$LANG.setup.help_defaultcurrency}">{$LANG.settings.default_currency}</label>
 		<span>
 		  <select name="config[default_currency]" id="form-currency" class="textbox required">
 			<option value="">{$LANG.form.please_select}</option>
@@ -143,11 +143,11 @@
 	</fieldset>
 	<h3>{$LANG.setup.title_admin_profile}</h3>
 	<fieldset>
-	  <div><label for="form-username" rel="">{$LANG.account.username}</label><span><input type="text" name="admin[username]" id="form-username" value="{$FORM.admin.username}" class="textbox required" /></span></div>
-	  <div><label for="form-password" rel="">{$LANG.account.password}</label><span><input type="password" name="admin[password]" id="form-password" value="{$FORM.admin.password}" class="textbox required" /></span></div>
-	  <div><label for="form-passconf" rel="">{$LANG.account.password_confirm}</label><span><input type="password" name="admin[passconf]" id="form-passconf" rel="form-password" value="{$FORM.admin.passconf}" class="textbox required confirm" /></span></div>
-	  <div><label for="form-realname" rel="">{$LANG.user.name_full}</label><span><input type="text" name="admin[name]" id="form-realname" value="{$FORM.admin.name}" class="textbox required" /></span></div>
-	  <div><label for="form-email" rel="">{$LANG.common.email}</label><span><input type="text" name="admin[email]" id="form-email" value="{$FORM.admin.email}" class="textbox required" /></span></div>
+	  <div><label for="form-username">{$LANG.account.username}</label><span><input type="text" name="admin[username]" id="form-username"{if isset($FORM.admin.username)} value="{$FORM.admin.username}"{/if} class="textbox required" /></span></div>
+	  <div><label for="form-password">{$LANG.account.password}</label><span><input type="password" name="admin[password]" id="form-password"{if isset($FORM.admin.password)} value="{$FORM.admin.password}"{/if} class="textbox required" /></span></div>
+	  <div><label for="form-passconf">{$LANG.account.password_confirm}</label><span><input type="password" name="admin[passconf]" id="form-passconf" rel="form-password"{if isset($FORM.admin.passconf)} value="{$FORM.admin.passconf}"{/if} class="textbox required confirm" /></span></div>
+	  <div><label for="form-realname">{$LANG.user.name_full}</label><span><input type="text" name="admin[name]" id="form-realname"{if isset($FORM.admin.name)} value="{$FORM.admin.name}"{/if} class="textbox required" /></span></div>
+	  <div><label for="form-email">{$LANG.common.email}</label><span><input type="text" name="admin[email]" id="form-email"{if isset($FORM.admin.email)} value="{$FORM.admin.email}"{/if} class="textbox required" /></span></div>
 	</fieldset>
 	<h3>{$LANG.setup.title_advanced_settings}</h3>
 	<fieldset>
