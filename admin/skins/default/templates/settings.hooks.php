@@ -138,7 +138,7 @@
    {/if}
    {if $DISPLAY_HOOKS}
    <div id="hooks" class="tab_content">
-      <h3>{$PLUGIN}</h3>
+      <h3>{ucwords($PLUGIN)}</h3>
       {if $HOOKS}
       <table width="70%">
          <thead>
@@ -166,13 +166,15 @@
         <p>{$LANG.hooks.error_hook_none}</p>
         {/if}
       <p>{$LANG.hooks.notify_hook_magic}</p>
+      <p><a href="?_g=settings&node=hooks&plugin={$HOOKS.0.plugin}&revert=1" title="{$LANG.notification.confirm_revert}" class="button small delete">Revert to default hook configuration</a></p>
    </div>
    {/if}
    {if $DISPLAY_FORM}
    <div id="hook_edit" class="tab_content">
-      <h3>{$LANG.hooks.title_hook_configure}</h3>
+      <h3>{if $ADD_HOOK}{$LANG.hooks.title_hook_add}{else}{$LANG.hooks.title_hook_configure}{/if}</h3>
       <fieldset>
          <legend>{$LANG.hooks.title_hook_required}</legend>
+         <div><label for="hook_enabled">{$LANG.common.status}</label><span><input type="hidden" name="hook[enabled]" id="hook_enabled" class="toggle" value="{$HOOK.enabled}"></span></div>
          <div><label for="hook_name">{$LANG.hooks.name}</label><span><input type="text" name="hook[hook_name]" id="hook_name" class="textbox required" value="{$HOOK.hook_name}"></span></div>
          {if isset($PLUGINS)}
          <div>
@@ -187,7 +189,13 @@
          {/if}
          <div>
             <label for="trigger">{$LANG.hooks.trigger}</label>
-            <span class="courier">{$HOOK.trigger}</span>
+            <span>
+               <select name="hook[trigger]">
+               {foreach from=$TRIGGERS item=t}
+                  <option value="{$t.trigger}"{if (isset($HOOK.trigger) && !empty($HOOK.trigger) && $HOOK.trigger==$t.trigger)} selected="selected"{/if}>{$t.trigger}</option>
+               {/foreach}
+               </select>
+            </span>
          </div>
       </fieldset>
       <fieldset>

@@ -128,7 +128,7 @@ $plugins = $GLOBALS['hooks']->scan_all_plugins('plugins', true);
 $smarty_data = array();
 
 if (isset($_GET['plugin']) && isset($plugins[(string)$_GET['plugin']]) && !is_numeric($_GET['plugin'])) {
-    $GLOBALS['gui']->addBreadcrumb($plugins[$_GET['plugin']]['name'], currentPage(array('hook_id', 'action')));
+    $GLOBALS['gui']->addBreadcrumb(ucwords($plugins[$_GET['plugin']]['name']), currentPage(array('hook_id', 'action')));
 
     // Load config.xml if it exists
     $config_file = CC_ROOT_DIR.'/modules/plugins/'.$_GET['plugin'].'/config.xml';
@@ -168,7 +168,7 @@ if (isset($_GET['plugin']) && isset($plugins[(string)$_GET['plugin']]) && !is_nu
         foreach ($plugin_list as $plugin_path) {
             if (is_dir($plugin_path)) {
                 $hook_name = 'admin.'.basename($plugin_path);
-                $selected = ($hook_data['trigger']==$hook_name) ? ' selected="selected"' : '';
+                $selected = (isset($hook_data) && $hook_name==$hook_data['trigger']) ? ' selected="selected"' : '';
                 $smarty_data['triggers'][] = array('trigger' => $hook_name, 'deprecated' => 0, 'selected' => $selected);
             }
         }
@@ -194,13 +194,23 @@ if (isset($_GET['plugin']) && isset($plugins[(string)$_GET['plugin']]) && !is_nu
                 $GLOBALS['main']->errorMessage($lang['hooks']['error_plugin_config']);
             }
         }
+        $add_hook = (isset($_GET['action']) && $_GET['action']=='add') ? true : false;
+        $GLOBALS['smarty']->assign('ADD_HOOK', $add_hook);
         $GLOBALS['smarty']->assign('DISPLAY_FORM', true);
     } else {
         $GLOBALS['main']->AddTabControl($lang['hooks']['title_hook'], 'hooks');
         $GLOBALS['main']->AddTabControl($lang['hooks']['title_hook_add'], null, currentPage(null, array('action' => 'add')));
 
         // Update hooks and add more if we need to...
-        $hooks->install($this_plugin);
+        if(isset($_GET['revert'])) {
+            if($hooks->install($this_plugin)) {
+                $GLOBALS['main']->successMessage($lang['module']['success_install']);
+                httpredir(currentPage(array('revert')));
+            } else {
+                $GLOBALS['main']->errorMessage($lang['module']['failed_install']);
+                httpredir(currentPage(array('revert')));
+            }
+        }
 
         // Display all hooks for the selected plugin
         if (($hook_list = $GLOBALS['db']->select('CubeCart_hooks', false, array('plugin' => $this_plugin))) !== false) {

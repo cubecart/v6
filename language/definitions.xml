@@ -1432,7 +1432,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_hook" introduced="5.0.0"><![CDATA[Hooks]]></string>
     <string name="title_hook_add" introduced="5.0.0"><![CDATA[Add Hook]]></string>
     <string name="title_hook_available" introduced="5.0.0"><![CDATA[Available Hooks]]></string>
-    <string name="title_hook_configure" introduced="5.0.0"><![CDATA[Configure Hook]]></string>
+    <string name="title_hook_configure" introduced="5.0.0"><![CDATA[Edit Hook]]></string>
     <string name="title_hook_optional" introduced="5.0.0"><![CDATA[Optional Configuration]]></string>
     <string name="title_hook_required" introduced="5.0.0"><![CDATA[Required Configuration]]></string>
     <string name="title_plugin" introduced="5.0.0"><![CDATA[Extension]]></string>
