@@ -84,6 +84,7 @@ if ($GLOBALS['session']->has('email_filter') && $email_filter = $GLOBALS['sessio
 $per_page = 25;
 $page = (isset($_GET['page'])) ? $_GET['page'] : 1;
 $email_logs = $GLOBALS['db']->select('CubeCart_email_log', false, $where, array('date' => 'DESC'), $per_page, $page, false);
+$email_log = array();
 $count = $GLOBALS['db']->getFoundRows();
 if ($email_logs!==false) {
     $row['to_email'] = array();
