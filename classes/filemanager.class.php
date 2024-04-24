@@ -779,7 +779,7 @@ class FileManager
 
     public function filenameIsIllegal($file_name)
     {
-        if (preg_match('/(\.sh\.inc\.ini|\.htaccess|\.php|\.phtml|\.php[3-6])$/i', $file_name)) {
+        if (preg_match('/(\.sh\.inc\.ini|\.htaccess|\.php|\.phar|\.phtml|\.php[3-6])$/i', $file_name)) {
             return true;
         } elseif (preg_match('/\.php\./i', $file_name)) {
             return true;
