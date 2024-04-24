@@ -324,8 +324,12 @@ class ACP
             $options .= '<option value="?_g=release_notes&node='.$version.'"'.$selected.'>'.$version.'</option>';
         }
         $switcher = "<select name=\"version\" class=\"select_url\">".$options."</select>";
-        foreach($features as $id => $feature) {
-            $li .= "<tr><td  class=\"text-center\" valign=\"top\"><a href=\"https://github.com/cubecart/v6/issues/$id\" title=\"https://github.com/cubecart/v6/issues/$id\" target=\"_blank\">#$id</a></td><td>$feature</td></tr>";
+        if(!empty($features)) {
+            foreach($features as $id => $feature) {
+                $li .= "<tr><td  class=\"text-center\" valign=\"top\"><a href=\"https://github.com/cubecart/v6/issues/$id\" title=\"https://github.com/cubecart/v6/issues/$id\" target=\"_blank\">#$id</a></td><td>$feature</td></tr>";
+            }
+        } else {
+            $li = "<tr><td  colspan=\"2\">This is a maintenance release with no new features of any significance.</td></tr>";
         }
         $page_content = <<<END
         <div id="general" class="tab_content">
