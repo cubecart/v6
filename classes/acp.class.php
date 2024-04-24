@@ -311,7 +311,7 @@ class ACP
      *
      * @return string
      */
-    public function newFeatures($version, $features, $total, $notes = '') {
+    public function newFeatures($version, $features, $total, $notes = '', $security = array()) {
         $li = '';
         $release_notes_path = CC_ROOT_DIR.'/'.$GLOBALS['config']->get('config', 'adminFolder').'/sources/release_notes/*.inc.php';
         $options = '';
@@ -326,7 +326,8 @@ class ACP
         $switcher = "<select name=\"version\" class=\"select_url\">".$options."</select>";
         if(!empty($features)) {
             foreach($features as $id => $feature) {
-                $li .= "<tr><td  class=\"text-center\" valign=\"top\"><a href=\"https://github.com/cubecart/v6/issues/$id\" title=\"https://github.com/cubecart/v6/issues/$id\" target=\"_blank\">#$id</a></td><td>$feature</td></tr>";
+                $security_class = in_array($id, $security) ? 'security' : '' ;
+                $li .= "<tr><td class=\"text-center $security_class\" valign=\"top\"><a href=\"https://github.com/cubecart/v6/issues/$id\" title=\"https://github.com/cubecart/v6/issues/$id\" target=\"_blank\">#$id</a></td><td class=\"$security_class\" valign=\"top\">$feature</td></tr>";
             }
         } else {
             $li = "<tr><td  colspan=\"2\">This is a maintenance release with no new features of any significance.</td></tr>";
@@ -336,7 +337,7 @@ class ACP
             <h3 style="clear: right;">Welcome to CubeCart {$_GET['node']}</h3>
             $notes
             <table class="new_features">
-            <thead><tr><th>Issue</th><th><span>Version: $switcher</span> New Feature</th></tr></thead>
+            <thead><tr><th>Issue</th><th><span>Version: $switcher</span>Description</th></tr></thead>
             <tbody>
             $li
             <tr><td colspan="2" class="text-center"><a href="https://github.com/cubecart/v6/issues?q=is%3Aclosed+milestone%3A{$_GET['node']}" target="_blank" class="button">View all $total closed issues for {$_GET['node']}</a></td></tr>

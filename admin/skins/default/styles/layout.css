@@ -1682,8 +1682,21 @@ td.option_image {
 .double_ul {
     border-bottom: 4px double #c5c5c5;
 }
+.new_features .security {
+    background-color: #ff0000;
+    color: #ffffff;
+}
+.new_features .security a {
+    color: #ffffff;
+}
 .new_features thead span {
     float: right
+}
+.new_features td {
+    padding-top: 5px 
+}
+.new_features td img {
+    padding-top: 5px;
 }
 .new_features tr:last-child td {
     background-color: transparent!important;

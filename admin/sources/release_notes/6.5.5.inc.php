@@ -12,5 +12,9 @@
  */
 $GLOBALS['main']->addTabControl($lang['settings']['release_notes'], 'general');
 $GLOBALS['gui']->addBreadcrumb($lang['settings']['release_notes'], currentPage(array('node')), true);
-$page_content = $GLOBALS['main']->newFeatures($_GET['node'], array(), 23, '');
+$features = array( 
+	'3570' => 'Security: Arbitrary File Upload Leads to RCE'
+);
+$security = array(3570);
+$page_content = $GLOBALS['main']->newFeatures($_GET['node'], $features, 24, '', $security);
 ?>
