@@ -138,7 +138,7 @@
             </div>
             <div><label for="state-list">{$LANG.address.state}</label><span><input name="addrule[county_id]" type="text" id="state-list" class="textbox" value="{$VAL_TAX_STATE}"></span></div>
          </div>
-         <div><label for="rule-taxrate">{$LANG.settings.tax_rate}</label><span><input name="addrule[tax_percent]" id="rule-taxrate" type="text" class="textbox number"></span></div>
+         <div><label for="rule-taxrate">{$LANG.settings.tax_rate}</label><span><input name="addrule[tax_percent]" id="rule-taxrate" type="text" class="textbox number"> %</span></div>
          <div><label for="rule-applyto">{$LANG.settings.tax_apply_to}</label><span>
             <input type="hidden" name="addrule[goods]" id="rule-goods" value="0" class="toggle"> {$LANG.settings.tax_on_goods} 
             <input type="hidden" name="addrule[shipping]" id="rule-shipping" value="0" class="toggle"> {$LANG.settings.tax_on_shipping} 
