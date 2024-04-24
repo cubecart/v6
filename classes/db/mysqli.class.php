@@ -94,7 +94,8 @@ class Database extends Database_Contoller
      */
     public function error()
     {
-        return ($this->_db_connect_id->errno) ? true : false;
+        $this->_errorno = (int)$this->_db_connect_id->errno;
+        return ((bool)$this->_errorno) ? true : false;
     }
 
     /**

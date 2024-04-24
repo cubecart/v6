@@ -1064,7 +1064,7 @@ class Database_Contoller
         if (isset($GLOBALS['debug']) && $GLOBALS['debug'] instanceof Debug) {
             $message = array($this->_query, round($this->_query_time *1000 *1000) . " &micro;s");
             $GLOBALS['debug']->debugSQL('query', $message, $cache, $source);
-            $this->_error = ($this->error()) ? $this->error().': '.$this->errorInfo() : false;
+            $this->_error = ($this->error()) ? $this->_errorno . ': '.$this->errorInfo() : false;
             $GLOBALS['debug']->debugSQL('error', $this->_error, $cache, $source);
         }
 
