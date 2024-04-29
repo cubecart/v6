@@ -131,6 +131,12 @@ class Database_Contoller
      */
     private $_error = '';
     /**
+     * Error number
+     *
+     * @var int
+     */
+    private $_errorno;
+    /**
      * Class instance
      *
      * @var instance
