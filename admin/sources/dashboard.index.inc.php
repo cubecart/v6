@@ -311,7 +311,7 @@ if ($unsettled_orders) {
     foreach ($GLOBALS['hooks']->load('admin.order.index.order_tasks') as $hook) {
         include $hook;
     }
-    
+    $GLOBALS['smarty']->assign('LIST_ORDER_TASKS', $smarty_data['order_tasks']);
     $GLOBALS['smarty']->assign('LIST_ORDER_STATUS', $smarty_data['order_status']);
 
     foreach ($unsettled_orders as $order) {
