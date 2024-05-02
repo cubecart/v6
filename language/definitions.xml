@@ -1649,7 +1649,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="error_401" introduced="5.0.0"><![CDATA[You do not have the correct privileges to perform that action.]]></string>
     <string name="giftcerts" introduced="5.0.0"><![CDATA[Gift Cards]]></string>
     <string name="homepage" introduced="5.0.0"><![CDATA[Homepage]]></string>
-    <string name="nav_access_log" introduced="5.0.0"><![CDATA[Staff Access Log]]></string>
+    <string name="nav_access_log" introduced="5.0.0"><![CDATA[Audit Log]]></string>
     <string name="nav_administrators" introduced="5.0.0"><![CDATA[Administrators]]></string>
     <string name="nav_advanced" introduced="5.0.0"><![CDATA[Advanced]]></string>
     <string name="nav_affiliate" introduced="5.0.0"><![CDATA[Affiliate Trackers]]></string>
