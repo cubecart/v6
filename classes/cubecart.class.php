@@ -875,7 +875,8 @@ class Cubecart
                 $query['cat_id'] = $_GET['cat_id'] ?? null;
             }
             ksort($query);
-            httpredir('?'.http_build_query($query, '', '&'));
+            $path = explode('?',$_SERVER['REQUEST_URI']);
+            httpredir($path[0].'?'.http_build_query($query, '', '&'));
         }
         $GLOBALS['session']->delete('', 'search');
 
