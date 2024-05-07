@@ -26,7 +26,6 @@
                <label for="rad_option_{$value.assign_id}" class="return">{$value.value_name}{if $value.price} {$value.symbol}{$value.price}{/if}</label>
             </div>
             {/foreach}
-            </span>
             {/if}
          </div>
       </div>
