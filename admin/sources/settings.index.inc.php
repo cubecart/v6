@@ -217,6 +217,11 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
         $config_new['time_format'] = 'Y-m-d H:i';
     }
 
+    // Trim
+    foreach(array('facebook','flickr','instagram','linkedin','pinterest','twitter','vimeo','wordpress','youtube','reddit','tumblr') as $t) {
+        $config_new[$t] = trim($config_new[$t]);
+    }
+
     ## Set default currency to have an exchange rate of 1
     $GLOBALS['db']->update('CubeCart_currency', array('value' => 1), array('code' => $_POST['config']['default_currency']));
 
