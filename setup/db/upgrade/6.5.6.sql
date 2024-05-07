@@ -1,0 +1,1 @@
+ALTER TABLE `CubeCart_filemanager` CHANGE `title` `title` VARCHAR(255) NOT NULL; #EOQ

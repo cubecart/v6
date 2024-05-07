@@ -380,7 +380,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_filemanager` (
 	`filesize` BIGINT UNSIGNED NOT NULL,
 	`mimetype` VARCHAR(50) NOT NULL,
 	`md5hash` VARCHAR(32) NOT NULL,
-	`title` varchar(16) NOT NULL,
+	`title` varchar(255) NOT NULL,
 	`description` TEXT NOT NULL,
 	`stream` enum('0','1') NOT NULL DEFAULT '0',
 	`alt` TEXT NOT NULL,
