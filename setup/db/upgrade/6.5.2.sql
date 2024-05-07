@@ -5,7 +5,7 @@ ALTER TABLE `CubeCart_request_log` ADD `response_headers` BLOB NULL AFTER `reque
 ALTER TABLE `CubeCart_inventory_language` ADD `description_short` TEXT NOT NULL AFTER `description`; #EOQ
 CREATE TABLE IF NOT EXISTS `CubeCart_404_log` (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-  `uri` varchar(510) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `uri` varchar(510) NOT NULL,
   `hits` int UNSIGNED NOT NULL DEFAULT '1',
   `done` tinyint(1) NOT NULL DEFAULT '0',
   `warn` tinyint(1) NOT NULL DEFAULT '0',
