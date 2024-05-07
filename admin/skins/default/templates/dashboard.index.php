@@ -18,7 +18,12 @@
       <script type="text/javascript">
          function drawChart() {
             var data = google.visualization.arrayToDataTable([{/literal}{$CHART.data}{literal}]);
-            var options = {title: '{/literal}{$CHART.title}{literal}',width:'100%',height:300};
+            var yMax;
+            var columnRange = data.getColumnRange(2);
+            if (columnRange.max < 20) {
+               yMax = 20;
+            }
+            var options = {title: '{/literal}{$CHART.title}{literal}',width:'100%',height:300,vAxis:{title:'{/literal}{$CONFIG.default_currency}{literal}',viewWindowMode:'explicit',viewWindow:{min:0,max:yMax}}};
             var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
             chart.draw(data, options);
          }
