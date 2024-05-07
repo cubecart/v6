@@ -1017,7 +1017,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_request_log` (
 
 CREATE TABLE IF NOT EXISTS `CubeCart_seo_urls` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `path` varchar(255) NOT NULL,
+  `path` varchar(250) NOT NULL,
   `type` varchar(45) NOT NULL,
   `item_id` int(25) unsigned DEFAULT NULL,
   `custom` enum('0','1') NOT NULL DEFAULT '0',
