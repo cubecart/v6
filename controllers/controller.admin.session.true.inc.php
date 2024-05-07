@@ -43,9 +43,10 @@ if (!empty($_GET['_g'])) {
     $module_type = (isset($_GET['type']) && preg_match("/[a-z]/i", $_GET['type'])) ? $_GET['type'] : '';
 
     $node = (!empty($_GET['node'])) ? strtolower($_GET['node']) : 'index';
-    $node = preg_replace('/[^a-z0-9._-]/', '', $node);
+    $node = preg_replace('/[^a-z0-9_-]/', '', $node);
+    $_g = preg_replace('/[^a-z0-9_-]/', '', $_GET['_g']);
     
-    if (!isset($_GET['delete']) && strtolower($_GET['_g']) == 'plugins' && !empty($module_type)) {
+    if (!isset($_GET['delete']) && strtolower($_g) == 'plugins' && !empty($module_type)) {
         $module_type = preg_match("/[a-z]/i", $_GET['type']) ? $_GET['type'] : '';
         $GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->navigation['nav_plugins'], '?_g=plugins');
         // Display Modules
@@ -85,19 +86,19 @@ if (!empty($_GET['_g'])) {
                 trigger_error("Extension config.xml file doesn't exist. (".$config_xml.")", E_USER_WARNING);
             }
         }
-    } elseif (strtolower($_GET['_g']) == 'plugin' && isset($_GET['name'])) {
+    } elseif (strtolower($_g) == 'plugin' && isset($_GET['name'])) {
         // Include plugins
         $GLOBALS['main']->wikiNamespace('Plugins');
         foreach ($GLOBALS['hooks']->load('admin.'.strtolower($_GET['name'])) as $hook) {
             include $hook;
         }
-    } elseif (strtolower($_GET['_g']) == 'plugin' && (!isset($_GET['name']) || empty($_GET['name']))) {
+    } elseif (strtolower($_g) == 'plugin' && (!isset($_GET['name']) || empty($_GET['name']))) {
         httpredir('?_g=plugins');
         exit;
-    } elseif ($_GET['_g'] == '401') {
+    } elseif ($_g == '401') {
         $GLOBALS['gui']->setError($GLOBALS['language']->navigation['error_401']);
     } else {
-        if (strtolower($_GET['_g']) == 'xml') {
+        if (strtolower($_g) == 'xml') {
             $suppress_output = true;
             // Process an XMLHTTPRequest
             $json = AJAX::load();
@@ -105,7 +106,7 @@ if (!empty($_GET['_g'])) {
             die($json);
         } else {
             // Everything else
-            $include = $GLOBALS['main']->importNode($_GET['_g'], $node);
+            $include = $GLOBALS['main']->importNode($_g, $node);
             if (file_exists($include)) {
                 require $include;
             } else {
