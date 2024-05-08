@@ -108,7 +108,7 @@ class Cache extends Cache_Controler
             }
         }
         */
-        $this->flush();
+        $this->_memcached->flush();
         $this->_clearFileCache();
         return $return;
     }
