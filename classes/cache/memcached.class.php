@@ -79,6 +79,7 @@ class Cache extends Cache_Controler
      */
     public function clear($type = '')
     {
+        /*
         //Get the current cache IDs
         $this->getIDs();
 
@@ -106,6 +107,8 @@ class Cache extends Cache_Controler
                 }
             }
         }
+        */
+        $this->flush();
         $this->_clearFileCache();
         return $return;
     }
@@ -141,7 +144,7 @@ class Cache extends Cache_Controler
     }
 
     /**
-     * Get all the cache ids
+     * Get all the cache ids (memcache doesn't guarantee to return all keys)
      *
      * @return array
      */
