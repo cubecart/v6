@@ -37,7 +37,7 @@ class Cache extends Cache_Controler
         $this->_mode = 'Memcached';
         $this->_memcached = new memcached;
     
-        $this->_memcache_servers = isset($glob['memcached_servers']) ? $glob['memcached_servers'] : array($this->_memcache_servers);
+        $this->_memcache_servers = isset($glob['memcached_servers']) ? array($glob['memcached_servers']) : array($this->_memcache_servers);
 
         $this->_memcached->setOption(Memcached::OPT_LIBKETAMA_COMPATIBLE, true);
         if (!count($this->_memcached->getServerList())) {
@@ -79,35 +79,6 @@ class Cache extends Cache_Controler
      */
     public function clear($type = '')
     {
-        /*
-        //Get the current cache IDs
-        $this->getIDs();
-
-        if (!empty($type)) {
-            $type = strtolower($type);
-            $len = strlen($type);
-        }
-
-        $return = true;
-        if (!empty($this->_ids)) {
-            //Loop through each id to delete it
-            foreach ($this->_ids as $id) {
-                //If there is a type we need to only delete that
-                if (!empty($type)) {
-                    if (substr($id, 0, $len) == $type) {
-                        if (!$this->delete($id)) {
-                            $return = false;
-                        }
-                    }
-                } else {
-                    //If no type delete every id
-                    if (!$this->delete($id)) {
-                        $return = false;
-                    }
-                }
-            }
-        }
-        */
         $this->_memcached->flush();
         $this->_clearFileCache();
         return $return;
@@ -141,27 +112,6 @@ class Cache extends Cache_Controler
         } else {
             return true;
         }
-    }
-
-    /**
-     * Get all the cache ids (memcache doesn't guarantee to return all keys)
-     *
-     * @return array
-     */
-    public function getIDs()
-    {
-        if (empty($this->_ids)) {
-            $keys = $this->_memcached->getAllKeys();
-            $len = strlen($this->_prefix);
-            if (is_array($keys)) {
-                foreach ($keys as $key) {
-                    if(substr($key, 0, $len) === $this->_prefix) {
-                        $this->_ids[] = str_replace(array($this->_prefix, $this->_suffix), '', $key);
-                    }
-                }
-            }
-        }
-        return $this->_ids;
     }
     
     /**
