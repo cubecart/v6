@@ -528,7 +528,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_history` (
   `updated` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`history_id`),
   KEY `cart_order_id` (`cart_order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_order_tax` (
 	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,

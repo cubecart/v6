@@ -15,7 +15,7 @@ CREATE TABLE `CubeCart_email_log` (
   `result` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_email_log` ADD PRIMARY KEY (`id`); #EOQ
-ALTER TABLE `CubeCart_email_log` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1; #EOQ 
+ALTER TABLE `CubeCart_email_log` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT; #EOQ 
 ALTER TABLE `CubeCart_coupons` ADD `free_shipping` ENUM('0','1') NOT NULL DEFAULT '0' AFTER `shipping`; #EOQ
 UPDATE `CubeCart_geo_zone` SET `abbrev` = 'LKS' WHERE `name` = 'Lanarkshire'; #EOQ
 ALTER TABLE `CubeCart_geo_zone` ADD UNIQUE(`country_id`, `abbrev`); #EOQ
