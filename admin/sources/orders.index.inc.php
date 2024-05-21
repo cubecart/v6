@@ -447,7 +447,6 @@ if (isset($_GET['action'])) {
             if (!empty($overview_summary['customer_comments'])) {
                 $GLOBALS['smarty']->assign('DISPLAY_COMMENTS', true);
             }
-            unset($overview_summary);
             $GLOBALS['smarty']->assign('DISPLAY_OVERVIEW', true);
 
             // Load transaction details, if any
