@@ -54,6 +54,7 @@ if (!empty($_POST['delete']['ip_address'])) {
 if (isset($_POST['review']) && is_array($_POST['review']) && Admin::getInstance()->permissions('reviews', CC_PERM_EDIT)) {
     $record = array(
         'approved' => $_POST['review']['approved'],
+        'anon' => $_POST['review']['anon'],
         'name'  => $_POST['review']['name'],
         'email'  => $_POST['review']['email'],
         'title'  => $_POST['review']['title'],

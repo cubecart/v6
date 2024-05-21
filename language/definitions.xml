@@ -243,6 +243,7 @@
     <string name="your_comments" introduced="5.0.0"><![CDATA[Delivery Notes or Additional Comments]]></string>
   </group>
   <group name="catalogue">
+    <string name="internal_use_only" introduced="6.5.6"><![CDATA[Internal use only]]></string>
     <string name="parse_content" introduced="6.5.4"><![CDATA[Parse <a href="https://www.smarty.net/docs/en/" target="_blank">Smarty Tags</a> (Opens in new window)]]></string>
     <string name="product_not_found" introduced="6.5.2"><![CDATA[Product not found.]]></string>
     <string name="product_count" introduced="6.5.2"><![CDATA[Product Count]]></string>
@@ -615,7 +616,7 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
-    <string name="reset_pagination"><![CDATA[Reset Pagination]]></string>
+    <string name="reset_pagination" introduced="6.5.4"><![CDATA[Reset Pagination]]></string>
     <string name="view" introduced="6.5.4"><![CDATA[View]]></string>
     <string name="next" introduced="6.5.2"><![CDATA[Next]]></string>
     <string name="previous" introduced="6.5.2"><![CDATA[Previous]]></string>
@@ -1938,6 +1939,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_reports_from_to" introduced="5.0.0"><![CDATA[Sales Report from %1$s to %2$s]]></string>
   </group>
   <group name="reviews">
+    <string name="empty_anon" introduced="6.5.6"><![CDATA[Leave empty for anonymous]]></string>
     <string name="error_no_product_selected" introduced="6.1.0"><![CDATA[No product selected.]]></string>
     <string name="error_review_delete" introduced="5.0.0"><![CDATA[Failed to delete review.]]></string>
     <string name="error_review_update" introduced="5.0.0"><![CDATA[Failed to update review.]]></string>

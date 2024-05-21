@@ -38,7 +38,7 @@
             </div>
             {/if}
             <div class="{if $review.gravatar_exists}small-9 medium-10{else}small-12{/if} columns review_copy">
-            <blockquote>{$review.review}<cite>{$review.name}{if !empty($review.date)} ({$review.date}){/if}</cite></blockquote>
+            <blockquote>{$review.review}<cite>{$review.name}{if !empty($review.date)} ({$review.date}){/if}</cite></blockquote>ß
             </div>
          </div>
       </div>
@@ -54,18 +54,16 @@
       <h3>{$LANG.catalogue.write_review}</h3>
       <form action="{$VAL_SELF}#reviews_write" id="review_form" method="post">
          <div class="panel">
-            {if $IS_USER}
-            <div class="row">
+         <div class="row">
                <div class="small-12 columns"><input type="checkbox" id="rev_anon" name="review[anon]" value="1"> <label for="rev_anon">{$LANG.catalogue.post_anonymously}</label></div>
             </div>
-            {else}
             <div class="row">
                <div class="small-12 columns"><label for="rev_name">{$LANG.common.name}</label><input id="rev_name" type="text" name="review[name]" value="{$WRITE.name}" placeholder="{$LANG.common.name} {$LANG.form.required}" required></div>
             </div>
             <div class="row">
-               <div class="small-12 columns"><label for="rev_email">{$LANG.common.email}</label><input id="rev_email" type="text" name="review[email]" value="{$WRITE.email}" placeholder="{$LANG.common.email} {$LANG.form.required}" required></div>
+               <div class="small-12 columns"><label for="rev_email">{$LANG.common.email} ({$LANG.catalogue.internal_use_only})</label><input id="rev_email" type="text" name="review[email]" value="{$WRITE.email}" placeholder="{$LANG.common.email} {$LANG.form.required}" required></div>
             </div>
-            {/if}
+      
             <div class="row">
                <div class="small-12 columns" id="review_stars">
                   <label for="rating">{$LANG.documents.rating}</label>

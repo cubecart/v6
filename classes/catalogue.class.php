@@ -430,7 +430,7 @@ class Catalogue
                     }
                     $skin_data = GUI::getInstance()->getSkinData();
                     foreach ($reviews as $review) {
-                        if ($review['anon']) {
+                        if ($review['anon']=='1') {
                             $review['name'] = $GLOBALS['language']->catalogue['review_anon'];
                         }
                         $review['date']  = formatTime($review['time']);

@@ -250,7 +250,7 @@
             <input type="radio" class="rating" name="rating_{$review.id}" value="{$smarty.section.i.index}" disabled="disabled" {if $review.rating == $smarty.section.i.index}checked="checked"{/if}>
             {/section}
             </span>
-            <a href="?_g=products&product_id={$review.product_id}&action=edit">{$review.product.name}</a> &raquo; {$review.date} :: {$review.name} &lt;<a href="mailto:{$review.email}">{$review.email}</a>&gt;  {$review.ip_address}
+            <a href="?_g=products&product_id={$review.product_id}&action=edit">{$review.product.name}</a> &raquo; {$review.date} :: {$review.name}{if $review.anon=='1'} ({$LANG.catalogue.review_anon}){/if} &lt;<a href="mailto:{$review.email}">{$review.email}</a>&gt;  {$review.ip_address}
          </div>
       </div>
       {/foreach}

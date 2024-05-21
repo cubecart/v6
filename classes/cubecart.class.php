@@ -2807,15 +2807,14 @@ class Cubecart
             }
             
             $record = array_map('htmlspecialchars', $_POST['review']);
+            $record['anon'] = (isset($record['anon'])) ? 1 : 0;
             if ($GLOBALS['user']->is()) {
                 $record['name']   = $GLOBALS['user']->get('first_name').' '.$GLOBALS['user']->get('last_name');
                 $record['email']  = $GLOBALS['user']->get('email');
                 $record['customer_id'] = $GLOBALS['user']->get('customer_id');
-                $record['anon']   = (isset($record['anon'])) ? 1 : 0;
             } else {
                 $record['customer_id'] = 0;
                 $record['email']  = $_POST['review']['email'];
-                $record['anon']   = 0;
                 if (!$GLOBALS['session']->isEmpty('error', 'recaptcha')) {
                     $GLOBALS['gui']->setError($GLOBALS['session']->get('error', 'recaptcha'));
                     $error = true;

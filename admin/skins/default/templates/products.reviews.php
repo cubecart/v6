@@ -45,7 +45,7 @@
             {section name=i start=1 loop=6 step=1}<input type="radio" class="rating" name="rating_{$review.id}" value="{$smarty.section.i.index}" disabled="disabled" {if $review.rating == $smarty.section.i.index}checked="checked"{/if}>{/section}
             </span>
             <a href="index.php?_a=product&amp;product_id={$review.product_id}" target="_blank">{$review.product.name}</a> &raquo;
-            {$review.date} - {$review.name} &lt;<a href="mailto:{$review.email}">{$review.email}</a>&gt; {$review.ip_address}
+            {$review.date} - {$review.name} {if $review.anon=='1'}({$LANG.catalogue.review_anon}){/if} &lt;<a href="mailto:{$review.email}">{$review.email}</a>&gt; {$review.ip_address}
          </div>
       </div>
       {/foreach}
@@ -103,6 +103,7 @@
          <div><label for="ajax_name">{$LANG.common.product}</label><span><input type="hidden" id="ajax_product_id" name="review[product_id]" rel="product_id"><input type="text" id="ajax_name" placeholder="{$LANG.common.type_to_search}" class="textbox ajax not-empty" rel="product"></span></div>
          {/if}
          <div><label for="review_approved">{$LANG.common.status}</label><span><input type="hidden" class="toggle" name="review[approved]" id="review_approved" value="{$REVIEW.approved}"></span></div>
+         <div><label for="review_anonymous">{$LANG.catalogue.review_anon}</label><span><input type="hidden" class="toggle" name="review[anon]" id="review_anonymous" value="{$REVIEW.anon}"></span></div>
          <div><label for="review_name">{$LANG.common.name}</label><span><input type="text" name="review[name]" id="review_name" value="{$REVIEW.name}" class="textbox"></span></div>
          <div><label for="review_email">{$LANG.common.email}</label><span><input type="text" name="review[email]" id="review_email" value="{$REVIEW.email}" class="textbox"></span></div>
          <div><label for="review_title">{$LANG.documents.document_title}</label><span><input type="text" name="review[title]" id="review_title" value="{$REVIEW.title}" class="textbox"></span></div>
