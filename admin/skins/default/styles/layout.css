@@ -675,7 +675,7 @@ tbody tr:nth-child(even) td {
 tbody tr:nth-child(even) td.no-bg {
     background-color: #ffffff
 }
-#filemanager div div:hover {
+#filemanager #fm-wrapper div:hover {
     background-color: #f7f5ed;
 }
 #filemanager div div.folder {
