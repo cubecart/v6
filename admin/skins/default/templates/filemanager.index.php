@@ -28,10 +28,10 @@
 				</select>
 			</div>
 			{if $FILMANAGER_MODE == FileManager::FM_FILETYPE_IMG}<input type="text" name="fm-search-term" id="fm-search-term" placeholder="{$LANG.common.search}..."><button type="button" class="button tiny" id="fm-search-button" data-mode="{if $FILMANAGER_MODE == FileManager::FM_FILETYPE_IMG}images{else}digital{/if}" data-action="show">{$LANG.common.go}</button>
-			
+		{/if}			
 		</div>
 		<hr>
-		{/if}
+
 		{if $FILMANAGER_MODE == FileManager::FM_FILETYPE_DL && !$SELECT_BUTTON}
 		<p>{$LANG.filemanager.public}</p>
 		{/if}
