@@ -296,7 +296,6 @@ class ACP
     public function newFeatureRedir() {
         $li = '';
         $release_notes_path = CC_ROOT_DIR.'/'.$GLOBALS['config']->get('config', 'adminFolder').'/sources/release_notes/*.inc.php';
-        $options = '';
         $list = glob($release_notes_path);
         arsort($list, SORT_NATURAL);
         foreach ($list as $filename) {
