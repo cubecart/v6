@@ -78,27 +78,7 @@
       {/foreach}
    {/if}
 {/if}
-{if $RELATED}
-<div class="show-for-medium-up">
-   <h2>{$LANG.catalogue.related_products}</h2>
-   <ul class="small-block-grid-5 no-bullet">
-      {foreach from=$RELATED item=product}
-      <li>
-         <a href="{$product.url}" title="{$product.name}"><img src="{$product.img_src}" class="th" alt="{$product.name}"></a>
-         <br>
-         <a href="{$product.url}" title="{$product.name}">{$product.name}</a>
-         <p>
-            {if $product.ctrl_sale}
-            <span class="old_price">{$product.price}</span> <span class="sale_price">{$product.sale_price}</span>
-            {else}
-            {$product.price}
-            {/if}
-         </p>
-      </li>
-      {/foreach}
-   </ul>
-</div>
-{/if}
+{include file='templates/element.checkout.related_products.php'}
 {else}
 <h2>{$LANG.checkout.your_basket}</h2>
 <div class="text-center">
