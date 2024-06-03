@@ -1683,11 +1683,10 @@ td.option_image {
     border-bottom: 4px double #c5c5c5;
 }
 .new_features .security {
-    background-color: #ff0000;
-    color: #ffffff;
+    background-color: #ffcccc;
 }
 .new_features .security a {
-    color: #ffffff;
+    color: #000000;
 }
 .new_features thead span {
     float: right
