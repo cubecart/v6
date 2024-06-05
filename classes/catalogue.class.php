@@ -1324,11 +1324,39 @@ class Catalogue
                     foreach ($memberships as $membership) {
                         $group_id[] = $membership['group_id'];
                     }
+                    // Comparison data for best price
+                    $prices = array(
+                        'standard' => array(
+                            'price' => $product_data['price'],
+                            'sale_price' => $product_data['sale_price']
+                        ),
+                        'category' => array(
+                            'price' => $product_data['price'],
+                            'sale_price' => $product_data['sale_price']
+                        ),
+                        'product' => array(
+                            'price' => $product_data['price'],
+                            'sale_price' => $product_data['sale_price']
+                        )
+                    );
+                    // Check category discounts
+                    if (($pricing_group = $GLOBALS['db']->select('CubeCart_category_discount', false, array('cat_id' => $product_data['cat_id'], 'group_id' => $group_id), array('percent' => 'DESC'), 1)) !== false) {
+                        if($pricing_group[0]['percent']>0) {
+                            $prices['category']['price'] = $product_data['price']*((100-$pricing_group[0]['percent'])/100);
+                            $prices['category']['sale_price'] = $product_data['sale_price']*((100-$pricing_group[0]['sale_price'])/100);
+                        }
+                    }
+                    // Check specific product group pricing
                     if (($pricing_group = $GLOBALS['db']->select('CubeCart_pricing_group', false, array('product_id' => $product_id, 'group_id' => $group_id), array('price' => 'ASC'), 1)) !== false) {
-                        $product_data['price'] = $pricing_group[0]['price'];
-                        $product_data['sale_price'] = $pricing_group[0]['sale_price'];
+                        $prices['product']['price'] = $pricing_group[0]['price'];
+                        $prices['product']['sale_price'] = $pricing_group[0]['sale_price'];
                         $product_data['tax_inclusive'] = $pricing_group[0]['tax_inclusive']; # do not rely on retail price setting!
                         $product_data['tax_type'] = $pricing_group[0]['tax_type'];
+                    }
+                    // Give the customer the lowest price
+                    foreach($prices as $type => $price) {
+                        $product_data['price'] = $price['price']<$product_data['price'] ? $price['price'] : $product_data['price'];
+                        $product_data['sale_price'] = $price['sale_price']<$product_data['sale_price'] ? $price['sale_price'] : $product_data['sale_price'];
                     }
                 }
             }

@@ -130,7 +130,7 @@
 		<div id="val_lang_enable" style="display: none;">{$LANG.common.enable}</div>
 		<div id="val_lang_disable" style="display: none;">{$LANG.common.disable}</div>
 	</div>
-  <div id="seo" class="tab_content">
+	<div id="seo" class="tab_content">
   <h3>{$LANG.settings.title_seo}</h3>
     <fieldset>
 	  <legend>{$LANG.settings.title_seo_meta_data}</legend>
@@ -140,6 +140,26 @@
 	</fieldset>
 	<p>* {$LANG.settings.seo_path_auto}</p>
 	{include file='templates/element.redirects.php'}
+  </div>
+  <div id="customer_group_discounts" class="tab_content">
+  <h3>{$LANG.settings.customer_group_discounts}</h3>
+  {if $CUSTOMER_GROUPS}
+  <table>
+	  <thead>
+		<tr>
+		  <td>{$LANG.common.name}</td>
+		  <td>{$LANG.catalogue.discount_percent}</td>
+		</tr>
+	  </thead>
+	  <tbody class="reorder-list">
+		{foreach from=$CUSTOMER_GROUPS item=$g}
+		<tr><td>{$g.group_name}</td><td><input type="number" step="0.01" name="group_discount[{$g.group_id}]" id="group_discount_{$g.group_id}" class="textbox number" value="{if is_null($g.percent)}0.00{else}{$g.percent}{/if}" placeholder="{$LANG.common.eg} 20"> %</td></tr>
+		{/foreach}
+	  </tbody>
+  </table>
+  {else}
+  <p>{$LANG.customer.no_customer_groups}</p>
+  {/if}
   </div>
 	{if isset($DISPLAY_SHIPPING)}
   <div id="cat_shipping" class="tab_content">

@@ -76,7 +76,7 @@
 		</tr>
 		{foreachelse}
 		<tr>
-		  <td colspan="7" align="center"><strong>{$LANG.form.none}</strong></td>
+		  <td colspan="7" align="center"><strong>{$LANG.customer.no_customer_groups}</strong></td>
 		</tr>
 		{/foreach}
 	  </tbody>

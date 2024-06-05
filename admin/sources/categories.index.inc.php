@@ -109,6 +109,19 @@ if (isset($_POST['cat']) && is_array($_POST['cat']) && Admin::getInstance()->per
         }
     }
 
+    if(isset($_POST['group_discount']) && is_array($_POST['group_discount'])) {
+        foreach($_POST['group_discount'] as $group_id => $percent) {
+            $percent = (empty($percent) || !is_numeric($percent)) ? 0.00 : $percent;
+            $where = array('group_id' => $group_id, 'cat_id' => $cat_id);
+            if($GLOBALS['db']->select('CubeCart_category_discount', false, $where)) {
+                $GLOBALS['db']->update('CubeCart_category_discount', array('percent' => (float)$percent), $where);
+            } else {
+                $GLOBALS['db']->insert('CubeCart_category_discount', array_merge($where, array('percent' => (float)$percent)));
+            }
+        }
+
+    }
+
     foreach ($GLOBALS['hooks']->load('admin.category.save.post_process') as $hook) {
         include $hook;
     }
@@ -326,6 +339,9 @@ if (isset($_GET['action'])) {
         $GLOBALS['main']->addTabControl($lang['common']['description'], 'cat_description', null, 'D');
         $GLOBALS['main']->addTabControl($lang['settings']['title_images'], 'cat_images', null, 'I');
         $GLOBALS['main']->addTabControl($lang['settings']['tab_seo'], 'seo');
+        $GLOBALS['main']->addTabControl($lang['settings']['customer_group_discounts'], 'customer_group_discounts');
+        $cg = $GLOBALS['db']->select('`CubeCart_customer_group` AS `G` LEFT JOIN `CubeCart_category_discount` AS `D` ON `D`.`group_id` = `G`.`group_id`','`G`.`group_name`, `G`.`group_id`, `D`.`percent`');
+        $GLOBALS['smarty']->assign('CUSTOMER_GROUPS', $cg);
         
         // Add shipping tab if shipping by category is enabled
         $ship_by_cat = $GLOBALS['config']->get('Per_Category');
