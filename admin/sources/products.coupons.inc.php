@@ -54,6 +54,7 @@ if (isset($_POST['coupon']) && is_array($_POST['coupon'])) {
         'code'   => preg_replace('/[^\w\-\_]/u', '', $_POST['coupon']['code']),
         'product_id' => null,
         'manufacturer_id' => serialize($_POST['coupon']['manufacturer']),
+        'category_id' => serialize($_POST['coupon']['category']),
         'starts'  => $_POST['coupon']['starts'],
         'expires'  => $_POST['coupon']['expires'],
         'allowed_uses' => (int)$_POST['coupon']['allowed_uses'],
@@ -195,7 +196,37 @@ if (isset($_GET['action'])) {
         $GLOBALS['smarty']->assign('MANUFACTURERS', $smarty_data['list_manufacturers']);
     }
     $GLOBALS['smarty']->assign('INCEXC', $smarty_data['incexc']);
+    
+    // List Categories
+    if (is_array(unserialize($coupon[0]['category_id']))) {
+        $category_assigned = array_flip(unserialize($coupon[0]['category_id']));
+    }
 
+    $categoryArray = $GLOBALS['db']->select('CubeCart_category', array('cat_name', 'cat_parent_id', 'cat_id'));
+
+    if ($categoryArray) {
+        $cat_list[] = '/';
+        $seo = SEO::getInstance();
+        foreach ($categoryArray as $category) {
+            if ($category['cat_parent_id'] == $category['cat_id']) {
+                continue;
+            }
+            $cat_list[$category['cat_id']] = $seo->getDirectory((int)$category['cat_id'], false, '/', false, false);
+        }
+        natcasesort($cat_list);
+        foreach ($cat_list as $cat_id => $cat_name) {
+            if (empty($cat_name)) {
+                continue;
+            }
+            $data = array(
+                'id'  => $cat_id,
+                'name'  => $cat_name,
+                'selected' => isset($category_assigned[$cat_id]) ? true : false
+            );
+            $smarty_data['categories'][] = $data;
+        }
+        $GLOBALS['smarty']->assign('CATEGORIES', $smarty_data['categories']);
+    }
     $GLOBALS['smarty']->assign('DISPLAY_FORM', true);
 } else {
     $GLOBALS['main']->addTabControl($lang['catalogue']['title_coupons'], 'coupons', null, 'C');

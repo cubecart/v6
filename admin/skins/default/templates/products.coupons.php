@@ -128,6 +128,15 @@
 			</select>
 		</span>
 	  </div>
+	  <div>
+		<label for="form-categories">{$LANG.catalogue.category_limit}</label>
+		<span>
+		<select name="coupon[category][]" id="form-category" data-placeholder="{$LANG.catalogue.choose_categories}" multiple class="chzn-select">
+			{foreach from=$CATEGORIES item=category}
+			<option value="{$category.id}"{if $category.selected} selected="selected"{/if}>{$category.name}</option>
+            {/foreach}
+		</span>
+	  </div>
 	  <input type="hidden" name="coupon[coupon_id]" value="{$COUPON.coupon_id}">
 	</fieldset>
 	<fieldset><legend>{$LANG.catalogue.title_coupon_convert}</legend>

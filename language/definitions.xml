@@ -263,6 +263,8 @@
     <string name="empty_notice" introduced="6.4.0"><![CDATA[Note: Categories will only show on the front end when products have been assigned. This can be changed in your <a href="?_g=settings#Layout">settings</a>.]]></string>
     <string name="manufacturer_limit" introduced="6.4.0"><![CDATA[Limit to manufacturer]]></string>
     <string name="choose_manufacturers" introduced="6.4.0"><![CDATA[Choose manufacturers&hellip;]]></string>
+    <string name="category_limit" introduced="6.5.6"><![CDATA[Limit to category]]></string>
+    <string name="choose_categories" introduced="6.5.6"><![CDATA[Choose categories&hellip;]]></string>
     <string name="absolute_price_explained" introduced="6.1.10"><![CDATA[Only one option group can have absolute pricing. An option with absolute price will override the price set in the &quot;Pricing&quot; tab. We recommend setting the product price to the lowest option price combination under these circumstances.]]></string>
     <string name="gc_not_numeric" introduced="6.4.0"><![CDATA[Product code for gift certificate cannot be numeric. Changed to &quot;%1$s&quot;.]]></string>
     <string name="live_from" introduced="6.2.3"><![CDATA[List from (Leave empty to list now)]]></string>
@@ -592,6 +594,7 @@
     <string name="error_voucher_used_already" introduced="6.4.6"><![CDATA[Sorry, but that code has been used to it's maximum <em>per-user</em> allowance.]]></string>
     <string name="error_voucher_free_shipping" introduced="6.4.0"><![CDATA[Sorry but that voucher can't be used when shipping is free of charge.]]></string>
     <string name="error_voucher_manufacturer" introduced="6.4.0"><![CDATA[Sorry but that voucher is manufacturer specific.]]></string>
+    <string name="error_voucher_category" introduced="6.5.6"><![CDATA[Sorry but that voucher is category specific.]]></string>
     <string name="stock_availability_changed" introduced="6.4.0"><![CDATA[Items added to your basket are no longer available.]]></string>
     <string name="confirm_billing" introduced="6.2.8"><![CDATA[Please confirm your billing address is correct before proceeding.]]></string>
     <string name="error_voucher_exceeded" introduced="6.1.14"><![CDATA[Sorry but that code has been used to it's maximum allowance.]]></string>

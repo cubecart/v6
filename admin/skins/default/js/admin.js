@@ -370,7 +370,7 @@ $(document).ready(function() {
         $(e).val(value_new)
     })
 
-    $('.chzn-select').chosen({width:"50%",search_contains:true});
+    $('.chzn-select').chosen({width:"500px;",search_contains:true});
     var t = !1;
     if (jQuery.debug = function(t) {
             window.console ? console.debug("CubeCart: " + t) : alert(t)
