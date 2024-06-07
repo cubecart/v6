@@ -174,8 +174,7 @@ if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
     $smarty_data[5] = array();
     foreach ($results as $key => $result) {
         $result['key']  = (($page-1)*$per_page)+($key+1);
-        $result['percent'] = 100*($result['quan']/$divider[0]['totalProducts']);
-        $result['percent'] = number_format($result['percent'], 2);
+        $result['percent'] = (float)$divider[0]['totalProducts'] ? number_format(100*($result['quan']/$divider[0]['totalProducts']),2) : 0;
         $tmp_col_data[] = "['".$result['key'].". ".addslashes($result['name'])."',".$result['percent']."]";
         // Create a product legend
         $smarty_data[5][] = $result;
@@ -209,9 +208,8 @@ if ($results) {
     
     foreach ($results as $key => $result) {
         $result['key']  = (($page-1)*$per_page)+($key+1);
-        $result['percent'] = (100*($result['popularity']/$divider[0]['totalHits']));
-        $max_percent = ($result['percent']>$max_percent) ? $result['percent'] : $max_percent;
-        $result['percent'] = number_format($result['percent'], 2);
+        $result['percent'] = (float)$divider[0]['totalHits'] ? number_format(100*($result['popularity']/$divider[0]['totalHits']),2) : 0;
+        // not used // $max_percent = ($result['percent']>$max_percent) ? $result['percent'] : $max_percent;
         $tmp_col_data[] = "['".$result['key'].". ".addslashes($result['name'])."',".$result['percent']."]";
         // Create a product legend
         $smarty_data['product_views'][] = $result;
@@ -243,9 +241,7 @@ if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
     
     $smarty_data['search_terms'] = array();
     foreach ($results as $key => $result) {
-        $result['percent']  = 100*($result['hits']/$divider[0]['totalHits']);
-        $max_percent = ($result['percent']>$max_percent) ? $result['percent'] : $max_percent;
-        $result['percent'] = number_format($result['percent'], 2);
+        $result['percent']  = (float)$divider[0]['totalHits'] ? number_format(100*($result['hits']/$divider[0]['totalHits']),2) : 0;
         $result['key']   = (($page-1)*$per_page)+($key+1);
         $result['searchstr']  = ucfirst(strtolower($result['searchstr']));
         $tmp_col_data[] = "['".$result['key'].". ".addslashes($result['searchstr'])."',".$result['percent']."]";
