@@ -14,7 +14,7 @@ jQuery(document).ready(function() {
 	$('#element-reviews .review_row').each(function() {
         var avatar_id = $(this).attr('rel');
         var g_parts = avatar_id.split("_"); 
-		var img_url = 'https://gravatar.com/avatar/'+g_parts[1]+'?s=90';
+		var img_url = 'https://gravatar.com/avatar/'+g_parts[1]+'?s=90&d=mp';
         $.ajax({
             url:img_url,
             type:"HEAD",
