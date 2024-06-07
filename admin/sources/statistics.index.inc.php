@@ -278,8 +278,7 @@ if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
     foreach ($results as $key => $result) {
         $result['key']  = (($page-1)*$per_page)+($key+1);
         $result['expenditure'] = Tax::getInstance()->priceFormat($result['customer_expenditure']);
-        $divider = (float)$divider[0]['total_sales'];
-        $result['percent'] = $divider ? number_format(100*($result['customer_expenditure']/$divider), 2) : 0;
+        $result['percent'] = (float)$divider[0]['total_sales'] ? number_format(100*($result['customer_expenditure']/$divider[0]['total_sales']), 2) : 0;
         $tmp_col_data[] = "['".$result['key'].". ".addslashes($result['last_name'].", ".$result['first_name'])."',".$result['customer_expenditure']."]";
         // Create a customer legend
         $smarty_data[8][] = $result;
