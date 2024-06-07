@@ -159,7 +159,7 @@
             <tr>
                <td style="text-align:center"><input type="checkbox" name="multi-order[]" value="{$order.cart_order_id}" class="all-orders"></td>
                <td><a href="?_g=orders&action=edit&order_id={$order.cart_order_id}&source=dashboard" title="{$LANG.common.edit}">{$order.{$CONFIG.oid_col}|default:$order.cart_order_id}</a>
-               {if !empty($order.customer_comments)}<a href="?_g=orders&action=edit&order_id={$order.cart_order_id}"><i class="fa fa fa-comment" title="{$LANG.email.customer_comments}: {$order.customer_comments|strip_tags}" aria-hidden="true"></i></a>{/if}</td>
+               {if !empty($order.customer_comments)}<a href="?_g=orders&action=edit&order_id={$order.cart_order_id}&source=dashboard"><i class="fa fa fa-comment" title="{$LANG.email.customer_comments}: {$order.customer_comments|strip_tags}" aria-hidden="true"></i></a>{/if}</td>
                <td style="text-align:center">
                   {append "cust_type" "registered" index="1"}
                   {append "cust_type" "unregistered" index="2"}
