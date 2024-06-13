@@ -321,9 +321,9 @@ class Cart
                         if (isset($max_stock)) {
                             $current = $this->basket['contents'][$hash]['quantity'];
                             $request = $current + $quantity;
-                            if ($request > $max_stock) {
+                            if ($request > $max_stock+1) {
                                 $GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_too_many_added']);
-                                $quantity = $max_stock-$current;
+                                $quantity = ($max_stock+1)-$current;
                                 $stock_warning = true;
                             }
                         }
