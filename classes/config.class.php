@@ -306,7 +306,7 @@ class Config
             $array_out = $this->_json_decode($result[0]['array']);
 
             if (($module = $GLOBALS['db']->select('CubeCart_modules', array('status', 'countries'), array('folder' => $name), false, 1, false)) !== false) {
-                $array_out = array_merge($module[0], $array_out);
+                $array_out = is_array($array_out) ? array_merge($module[0], $array_out) : $module[0];
             }
 
             if (!empty($array_out)) {
