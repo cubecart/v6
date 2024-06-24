@@ -122,7 +122,7 @@ $email_types = array(
             '{$DATA.first_name}' => $lang['email']['macro_first_name'],
             '{$DATA.last_name}' => $lang['email']['macro_last_name'],
             '{$DATA.cart_order_id}'  => $lang['email']['macro_order_number_t'],
-            '{$DATA.id}'  => $lang['email']['macro_order_number_i']
+            '{$DATA.custom_oid}'  => $lang['email']['macro_order_number_i']
         ),
     ),
     'cart.order_confirmation' => array(
@@ -151,7 +151,7 @@ $email_types = array(
             '{$BILLING.phone}' => $lang['email']['macro_phone'],
             '{$BILLING.email}' => $lang['email']['macro_email'],
             '{$DATA.cart_order_id}'  => $lang['email']['macro_order_number_t'],
-            '{$DATA.id}'  => $lang['email']['macro_order_number_i'],
+            '{$DATA.custom_oid}'  => $lang['email']['macro_order_number_i'],
             '{$DATA.order_date}' => $lang['email']['macro_order_date'],
             '{$DATA.ship_method}'=> $lang['email']['macro_order_shipping_method'],
             '{$DATA.shipping}' => $lang['email']['macro_order_shipping'],
@@ -197,7 +197,7 @@ $email_types = array(
             '{$BILLING.phone}' => $lang['email']['macro_phone'],
             '{$BILLING.email}' => $lang['email']['macro_email'],
             '{$DATA.cart_order_id}'  => $lang['email']['macro_order_number_t'],
-            '{$DATA.id}'  => $lang['email']['macro_order_number_i'],
+            '{$DATA.custom_oid}'  => $lang['email']['macro_order_number_i'],
             '{$DATA.order_date}' => $lang['email']['macro_order_date'],
             '{$DATA.ship_method}'=> $lang['email']['macro_order_shipping_method'],
             '{$DATA.shipping}' => $lang['email']['macro_order_shipping'],
@@ -227,7 +227,7 @@ $email_types = array(
             '{$DATA.first_name}' => $lang['email']['macro_first_name'],
             '{$DATA.last_name}' => $lang['email']['macro_last_name'],
             '{$DATA.cart_order_id}'  => $lang['email']['macro_order_number_t'],
-            '{$DATA.id}'  => $lang['email']['macro_order_number_i']
+            '{$DATA.custom_oid}'  => $lang['email']['macro_order_number_i']
         ),
     ),
     'cart.payment_received' => array(
@@ -236,7 +236,7 @@ $email_types = array(
             '{$DATA.first_name}'  => $lang['email']['macro_first_name'],
             '{$DATA.last_name}'  => $lang['email']['macro_last_name'],
             '{$DATA.cart_order_id}'  => $lang['email']['macro_order_number_t'],
-            '{$DATA.id}'  => $lang['email']['macro_order_number_i'],
+            '{$DATA.custom_oid}'  => $lang['email']['macro_order_number_i'],
             '{$DATA.total}'   => $lang['email']['macro_payment_amount'],
         ),
     ),
