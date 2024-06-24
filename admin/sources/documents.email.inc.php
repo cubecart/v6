@@ -21,7 +21,7 @@ $email_types = array(
         'macros' => array(
             '{$DATA.first_name}' => $lang['email']['macro_first_name'],
             '{$DATA.last_name}'  => $lang['email']['macro_last_name'],
-            '{$DATA.reset_link}'  => $lang['email']['macro_link_password']
+            '{$DATA.reset_link}'  => $lang['email']['macro_link_password'],
         ),
     ),
     'newsletter.verify_email' => array(
@@ -82,7 +82,7 @@ $email_types = array(
         'description' => $lang['email']['title_macro_admin_password'],
         'macros' => array(
             '{$DATA.name}' => $lang['email']['macro_admin_name'],
-            '{$DATA.link}' => $lang['email']['macro_link_password']
+            '{$DATA.link}' => $lang['email']['macro_link_password'],
         ),
     ),
     'admin.review_added' => array(
@@ -91,7 +91,7 @@ $email_types = array(
             '{$DATA.name}' => $lang['email']['macro_review_name'],
             '{$DATA.product_name}' => $lang['email']['macro_product_name'],
             '{$DATA.link}' => $lang['email']['macro_link_review'],
-            '{$DATA.review}' => $lang['email']['macro_review_copy']
+            '{$DATA.review}' => $lang['email']['macro_review_copy'],
         ),
     ),
     'cart.digital_download' => array(
@@ -113,7 +113,7 @@ $email_types = array(
             '{$DATA.last_name}'  => $lang['email']['macro_sender_name_last'],
             '{$DATA.value}'  => $lang['email']['macro_cert_value'],
             '{$DATA.code}'  => $lang['email']['macro_cert_code'],
-            '{$DATA.message}' => $lang['email']['macro_sender_message']
+            '{$DATA.message}' => $lang['email']['macro_sender_message'],
         ),
     ),
     'cart.order_cancelled' => array(
@@ -121,7 +121,8 @@ $email_types = array(
         'macros' => array(
             '{$DATA.first_name}' => $lang['email']['macro_first_name'],
             '{$DATA.last_name}' => $lang['email']['macro_last_name'],
-            '{$DATA.cart_order_id}'  => $lang['email']['macro_order_number_t']
+            '{$DATA.cart_order_id}'  => $lang['email']['macro_order_number_t'],
+            '{$DATA.id}'  => $lang['email']['macro_order_number_i']
         ),
     ),
     'cart.order_confirmation' => array(
@@ -150,6 +151,7 @@ $email_types = array(
             '{$BILLING.phone}' => $lang['email']['macro_phone'],
             '{$BILLING.email}' => $lang['email']['macro_email'],
             '{$DATA.cart_order_id}'  => $lang['email']['macro_order_number_t'],
+            '{$DATA.id}'  => $lang['email']['macro_order_number_i'],
             '{$DATA.order_date}' => $lang['email']['macro_order_date'],
             '{$DATA.ship_method}'=> $lang['email']['macro_order_shipping_method'],
             '{$DATA.shipping}' => $lang['email']['macro_order_shipping'],
@@ -195,6 +197,7 @@ $email_types = array(
             '{$BILLING.phone}' => $lang['email']['macro_phone'],
             '{$BILLING.email}' => $lang['email']['macro_email'],
             '{$DATA.cart_order_id}'  => $lang['email']['macro_order_number_t'],
+            '{$DATA.id}'  => $lang['email']['macro_order_number_i'],
             '{$DATA.order_date}' => $lang['email']['macro_order_date'],
             '{$DATA.ship_method}'=> $lang['email']['macro_order_shipping_method'],
             '{$DATA.shipping}' => $lang['email']['macro_order_shipping'],
@@ -223,7 +226,8 @@ $email_types = array(
         'macros' => array(
             '{$DATA.first_name}' => $lang['email']['macro_first_name'],
             '{$DATA.last_name}' => $lang['email']['macro_last_name'],
-            '{$DATA.cart_order_id}'  => $lang['email']['macro_order_number_t']
+            '{$DATA.cart_order_id}'  => $lang['email']['macro_order_number_t'],
+            '{$DATA.id}'  => $lang['email']['macro_order_number_i']
         ),
     ),
     'cart.payment_received' => array(
@@ -232,7 +236,8 @@ $email_types = array(
             '{$DATA.first_name}'  => $lang['email']['macro_first_name'],
             '{$DATA.last_name}'  => $lang['email']['macro_last_name'],
             '{$DATA.cart_order_id}'  => $lang['email']['macro_order_number_t'],
-            '{$DATA.total}'   => $lang['email']['macro_payment_amount']
+            '{$DATA.id}'  => $lang['email']['macro_order_number_i'],
+            '{$DATA.total}'   => $lang['email']['macro_payment_amount'],
         ),
     ),
     'catalogue.tell_friend' => array(
@@ -242,7 +247,7 @@ $email_types = array(
             '{$DATA.from}' => $lang['email']['macro_sender_name'],
             '{$DATA.name}' => $lang['email']['macro_product_name'],
             '{$DATA.link}' => $lang['email']['macro_link_product'],
-            '{$DATA.message}'=> $lang['email']['macro_tell_message']
+            '{$DATA.message}'=> $lang['email']['macro_tell_message'],
         ),
     ),
 );
