@@ -258,10 +258,25 @@
      var chart_vAxis = document.getElementById('chart'+id+'-vAxis');
    
      var data = google.visualization.arrayToDataTable(chart_data[id]);
+     var yMax = 0, gNOR = data.getNumberOfRows(), gNOC = data.getNumberOfColumns();
+     for(var x = 1; x < gNOC; x++) {
+       for(var y = 0; y < gNOR; y++) {
+         yMax = Math.max(data.getValue(y,x), yMax);
+       }
+     }
+
+     var log10yMax = Math.log10(yMax);
+     var floorexp = Math.floor(log10yMax);
+     var normyMax = yMax/Math.pow(10,floorexp);
+     var ceilnormyMax = Math.ceil(normyMax);
+     yMax = ceilnormyMax * Math.pow(10,floorexp);
+
+     if (yMax < 20 || isNaN(yMax)) { yMax = 20; }
+
      var options = {
        title: chart_title.innerHTML,
        hAxis: {title: chart_hAxis.innerHTML},
-       vAxis: {title: chart_vAxis.innerHTML}
+       vAxis: {title: chart_vAxis.innerHTML,viewWindowMode:'explicit',viewWindow:{min:0,max:yMax}}
      };
      var chart = new google.visualization.ColumnChart(container);
      chart.draw(data, options);

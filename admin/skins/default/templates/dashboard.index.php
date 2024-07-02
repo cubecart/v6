@@ -23,7 +23,30 @@
             if (columnRange.max < 20) {
                yMax = 20;
             }
-            var options = {title: '{/literal}{$CHART.title}{literal}',width:'100%',height:300,vAxis:{title:'{/literal}{$CONFIG.default_currency}{literal}',viewWindowMode:'explicit',viewWindow:{min:0,max:yMax}}};
+            var yMax = 0, gNOR = data.getNumberOfRows(), gNOC = data.getNumberOfColumns();
+            for(var x = 1; x < gNOC; x++) {
+              for(var y = 0; y < gNOR; y++) {
+                yMax = Math.max(data.getValue(y,x), yMax);
+              }
+            }
+
+            var log10yMax = Math.log10(yMax);
+            var floorexp = Math.floor(log10yMax);
+            var normyMax = yMax/Math.pow(10,floorexp);
+            var ceilnormyMax = Math.ceil(normyMax);
+            yMax = ceilnormyMax * Math.pow(10,floorexp);
+
+            if (yMax < 20 || isNaN(yMax)) { yMax = 20; }
+            var options = {
+              title: '{/literal}{$CHART.title}{literal}',
+              width:'100%',
+              height:300,
+              vAxis:{
+                title:'{/literal}{$CONFIG.default_currency}{literal}',
+                viewWindowMode:'explicit',
+                viewWindow:{min:0,max:yMax}
+              }
+            };
             var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
             chart.draw(data, options);
          }
