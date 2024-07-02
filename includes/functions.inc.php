@@ -697,20 +697,9 @@ function httpredir($destination = '', $anchor = '', $meta_refresh = false, $stat
     // Sanitize url and make sure it remains properly encoded; note that it has already been run through urldecode
     $parts = explode('?', $destination, 2);
     if (count($parts) > 1) {
-        $destination = "$parts[0]?";
-        $parts = explode('&', $parts[1]);
-        $sanitized = array();
-        foreach ($parts as $part) {
-            $param = explode('=', $part, 2);
-            if (count($param) === 2) {
-                $sanitized[] = urlencode($param[0]).'='.urlencode($param[1]);
-            } elseif (empty($sanitized)) { // invalid pair with no previous query to which to append
-                continue;
-            } else { // invalid pair, assume it's a straggler caused by searching '&'
-                $sanitized[count($sanitized) - 1] .= urlencode('&'.$param[0]);
-            }
-        }
-        $destination .= implode('&', $sanitized);
+        $destination = $parts[0].'?';
+        parse_str($parts[1], $qstring);
+        $destination .= http_build_query($qstring, '', '&');
     }
 
     // Redirect - appending the last tab anchor for extra cleverness
