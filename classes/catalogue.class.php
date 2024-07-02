@@ -1835,7 +1835,7 @@ class Catalogue
         if ($sale_mode == 2) {
             $sale_percentage = $GLOBALS['config']->get('config', 'catalogue_sale_percentage');
         }
-        $user = (array)$GLOBALS['user']->get();
+
         $group_id = 'WHERE group_id = 0';
         if (($memberships = $GLOBALS['user']->getMemberships()) !== false) {
             $group_id = 'WHERE ';
@@ -2143,7 +2143,7 @@ class Catalogue
             }
         } else {
             if (is_numeric($search_data)) {
-                if (($category = $this->getCategoryData((int)$search_data)) !== false) {
+                if (($this->getCategoryData((int)$search_data)) !== false) {
                     if (($products = $this->getCategoryProducts((int)$search_data, $page, $per_page)) !== false) {
                         $this->_category_products = $products;
                         return true;
