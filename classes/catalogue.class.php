@@ -1516,7 +1516,7 @@ class Catalogue
                 $return_placeholder = true;
             }
         } elseif (!empty($input)) {
-            $file  = str_replace(array('images/cache/', 'images/uploads/'), '', $input);
+            $file  = str_replace(array('images/cache/', 'images/uploads/'), '', (string)$input);
         }
 
         $skins = $GLOBALS['gui']->getSkinData();
