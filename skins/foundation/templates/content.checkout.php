@@ -18,20 +18,28 @@
    {include file='templates/content.checkout.medium-up.php'}
    {include file='templates/content.checkout.small.php'}
    <div class="row">
-         <div class="medium-8 columns text-right">
-            {$LANG.basket.coupon_add}
-         </div>
-         <div class="medium-4 columns">
-            <div class="row collapse">
-               <div class="small-9 medium-8 columns">
-                  <input name="coupon" id="coupon" type="text" maxlength="25">
-               </div>
-               <div class="small-3 medium-4 columns">
-                  <button type="submit" name="update" class="postfix nomarg nopad secondary" value="{$LANG.common.apply}" id="apply_coupon"><svg class="icon"><use xlink:href="#icon-refresh"></use></svg> {$LANG.common.apply}</button>
-               </div>
+      <div class="medium-8 columns text-right">
+         Apply credit:
+      </div>
+      <div class="medium-4 columns text-right">
+         {$AVAILABLE_CREDIT} <input type="checkbox" name="credit" value="1" />
+      </div>
+   </div>
+   <div class="row">
+      <div class="medium-8 columns text-right">
+         {$LANG.basket.coupon_add}
+      </div>
+      <div class="medium-4 columns">
+         <div class="row collapse">
+            <div class="small-9 medium-8 columns">
+               <input name="coupon" id="coupon" type="text" maxlength="25">
+            </div>
+            <div class="small-3 medium-4 columns">
+               <button type="submit" name="update" class="postfix nomarg nopad secondary" value="{$LANG.common.apply}" id="apply_coupon"><svg class="icon"><use xlink:href="#icon-refresh"></use></svg> {$LANG.common.apply}</button>
             </div>
          </div>
       </div>
+   </div>
    
    {if $INCLUDE_CHECKOUT && !$DISABLE_GATEWAYS}
    <div id="payment_method">

@@ -502,6 +502,8 @@ class Cubecart
         foreach ($GLOBALS['hooks']->load('class.cubecart.account.list') as $hook) {
             include $hook;
         }
+        $credit = $GLOBALS['tax']->priceFormat($GLOBALS['user']->get('credit'));
+        $GLOBALS['smarty']->assign('CREDIT', $credit);
         $GLOBALS['smarty']->assign('ACCOUNT_LIST_HOOKS', $account_list_hooks);
         $content = $GLOBALS['smarty']->fetch('templates/content.account.php');
         $GLOBALS['smarty']->assign('SECTION_NAME', 'account');

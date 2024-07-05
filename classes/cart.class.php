@@ -978,6 +978,8 @@ class Cart
             $this->basket['weight']  = sprintf('%.4F', $this->_weight);
             $this->basket['discount'] = sprintf('%.2F', $this->_discount);
             $this->basket['subtotal'] = sprintf('%.2F', $this->_subtotal);
+            $this->basket['available_credit'] = $available_credit = $GLOBALS['user']->get('credit');
+            $GLOBALS['smarty']->assign('AVAILABLE_CREDIT', $GLOBALS['tax']->priceFormat($available_credit));
             $taxes = $GLOBALS['tax']->fetchTaxAmounts();
             foreach ($GLOBALS['hooks']->load('class.cart.get.fetchtaxes') as $hook) {
                 include $hook;

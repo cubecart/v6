@@ -270,6 +270,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_customer` (
 	`type` TINYINT(1) UNSIGNED DEFAULT '1',
 	`language` VARCHAR(5) NOT NULL DEFAULT 'en-GB',
 	`notes` text,
+	`credit` DECIMAL(8,2) NOT NULL DEFAULT '0.00',
 	PRIMARY KEY (`customer_id`),
 	UNIQUE KEY `email` (`email`),
 	FULLTEXT KEY `fulltext` (`first_name`,`last_name`,`email`)

@@ -15,6 +15,10 @@
 -->
 <definitions version="1.0">
   <group name="account">
+    <string name="credit_on_account" introduced="6.5.6"><![CDATA[Account Credit: %s]]></string>
+    <string name="account_credit" introduced="6.5.6"><![CDATA[Account Credit]]></string>
+    <string name="credit_desc" introduced="6.5.6"><![CDATA[Any credit on your account can be offset against your order total during checkout.]]></string>
+    <string name="error_name_same" introduced="6.5.6"><![CDATA[First and last names are the same.]]></string>
     <string name="error_name_same" introduced="6.4.5"><![CDATA[First and last names are the same.]]></string>
     <string name="error_billing_fields_missing" introduced="6.1.2"><![CDATA[Required billing address fields are missing.]]></string>
     <string name="error_delivery_fields_missing" introduced="6.1.2"><![CDATA[Required delivery address fields are missing.]]></string>
@@ -619,6 +623,7 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="credit" introduced="6.5.6"><![CDATA[Credit]]></string>
     <string name="reset_pagination" introduced="6.5.4"><![CDATA[Reset Pagination]]></string>
     <string name="view" introduced="6.5.4"><![CDATA[View]]></string>
     <string name="next" introduced="6.5.2"><![CDATA[Next]]></string>

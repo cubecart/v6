@@ -179,6 +179,9 @@
          </div>
 		<div><label for="cust-notes">{$LANG.common.notes} ({$LANG.common.private})</label><span><textarea name="customer[notes]" id="cust-notes" class="textbox">{$CUSTOMER.notes}</textarea></span></div>
 	  </fieldset>
+	  <fieldset><legend>{$LANG.common.credit}</legend>
+	  <div><label for="cust-credit">{$LANG.common.amount}</label><span><input type="number" name="customer[credit]" id="cust-credit" value="{if empty($CUSTOMER.credit)}0.00{else}{$CUSTOMER.credit}{/if}" class="textbox capitalize number" min="0" max="100000" step="0.01"></span></div>
+	  </fieldset>
 	  <fieldset><legend>{$LANG.account.contact_details}</legend>
 		<div><label for="cust-email">{$LANG.common.email}</label><span><input type="text" name="customer[email]" id="cust-email" value="{$CUSTOMER.email}" class="textbox"></span></div>
 		<div><label for="cust-phone">{$LANG.address.phone}</label><span><input type="text" name="customer[phone]" id="cust-phone" value="{$CUSTOMER.phone}" class="textbox"></span></div>
