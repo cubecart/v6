@@ -993,12 +993,11 @@ class Cart
                     $credit_used = $this->_total;
                     $this->_total = 0;
                     $this->basket['credit_used'] = $credit_used;
-                    $GLOBALS['smarty']->assign('CREDIT_USED', $GLOBALS['tax']->priceFormat($this->basket['credit_used']));
                 } else {
                     $this->_total = $total_balance;
                     $this->basket['credit_used'] = $available_credit;
-                    $GLOBALS['smarty']->assign('CREDIT_USED', $GLOBALS['tax']->priceFormat($this->basket['credit_used']));
                 }
+                $GLOBALS['smarty']->assign('CREDIT_USED', $GLOBALS['tax']->priceFormat($this->basket['credit_used']));
             }
             // if we are using per-product coupon, the prices are already reduced, so the total is fine
             if (!$this->_item_discount) {
