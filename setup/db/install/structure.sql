@@ -799,6 +799,8 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_summary` (
 	`note_to_customer` TEXT,
 	`custom_oid` varchar(50) DEFAULT NULL,
 	`currency` varchar(3) DEFAULT '',
+  	`credit_used` decimal(8,2) NOT NULL DEFAULT '0.00',
+  	`credit_shift` tinyint NOT NULL DEFAULT '0',
 	`updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `cart_order_id` (`cart_order_id`),

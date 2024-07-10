@@ -1514,7 +1514,8 @@ class Order
             'basket'  => serialize($this->_basket),
             'lang'   => $GLOBALS['language']->current(),
             'ip_address' => get_ip_address(),
-            'currency' => empty($currency) ? $GLOBALS['config']->get('config', 'default_currency') : $currency
+            'currency' => empty($currency) ? $GLOBALS['config']->get('config', 'default_currency') : $currency,
+            'credit_used' => (isset($this->_basket['credit_used']) && $this->_basket['credit_used']>0) ? $this->_basket['credit_used'] : 0
         );
         if(!empty($this->_basket['gateway'])) {
             $record['gateway'] = $this->_basket['gateway'];

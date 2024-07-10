@@ -22,7 +22,9 @@
          Apply credit:
       </div>
       <div class="medium-4 columns text-right">
-         {$AVAILABLE_CREDIT} <input type="checkbox" name="credit" value="1" />
+        {if $CREDIT_USED == $AVAILABLE_CREDIT}{$CREDIT_USED}{else}{$CREDIT_USED} of {$AVAILABLE_CREDIT}{/if}
+        <input type="hidden" value="0" name="use_credit">
+        <input type="checkbox" name="use_credit" value="1"{if $USE_CREDIT=='1'} checked="checked"{/if} />
       </div>
    </div>
    <div class="row">

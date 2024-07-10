@@ -715,6 +715,10 @@ class Cubecart
         if ($GLOBALS['user']->is() && in_array($_GET['_a'], array('basket', 'cart'))) {
             httpredir(currentPage(null, array('_a' => 'confirm')));
         }
+
+        if(isset($_POST['use_credit'])) {
+            $this->_basket['use_credit'] = $_POST['use_credit'];
+        }
         
         if (isset($_POST['gateway']) && !empty($_POST['gateway'])) {
             $this->_basket['gateway'] = $_POST['gateway'];
@@ -1893,7 +1897,7 @@ class Cubecart
             if ($this->_basket['weight'] > 0) {
                 $GLOBALS['smarty']->assign('BASKET_WEIGHT', ($GLOBALS['config']->get('config', 'show_basket_weight')) ? (float)$this->_basket['weight'].strtolower($GLOBALS['config']->get('config', 'product_weight_unit')) : false);
             }
-            
+            $GLOBALS['smarty']->assign('USE_CREDIT', $this->_basket['use_credit']);
             $this->_listPaymentOptions($this->_basket['gateway']??'');
 
             // Alternate Checkouts - loaded as hooks

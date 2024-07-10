@@ -978,7 +978,7 @@ class Cart
             $this->basket['weight']  = sprintf('%.4F', $this->_weight);
             $this->basket['discount'] = sprintf('%.2F', $this->_discount);
             $this->basket['subtotal'] = sprintf('%.2F', $this->_subtotal);
-            $this->basket['available_credit'] = $available_credit = $GLOBALS['user']->get('credit');
+            $this->basket['available_credit'] = $available_credit = (float)$GLOBALS['user']->get('credit');
             $GLOBALS['smarty']->assign('AVAILABLE_CREDIT', $GLOBALS['tax']->priceFormat($available_credit));
             $taxes = $GLOBALS['tax']->fetchTaxAmounts();
             foreach ($GLOBALS['hooks']->load('class.cart.get.fetchtaxes') as $hook) {
@@ -987,6 +987,19 @@ class Cart
             $this->basket['total_tax'] = sprintf('%.2F', $taxes['applied']);
 
             $this->_total = (($this->_subtotal + $this->_shipping) + $this->basket['total_tax']);
+            if(isset($this->basket['use_credit']) && $this->basket['use_credit']==1) {
+                $total_balance = $this->_total - $available_credit;
+                if($total_balance < 0) {
+                    $credit_used = $this->_total;
+                    $this->_total = 0;
+                    $this->basket['credit_used'] = $credit_used;
+                    $GLOBALS['smarty']->assign('CREDIT_USED', $GLOBALS['tax']->priceFormat($this->basket['credit_used']));
+                } else {
+                    $this->_total = $total_balance;
+                    $this->basket['credit_used'] = $available_credit;
+                    $GLOBALS['smarty']->assign('CREDIT_USED', $GLOBALS['tax']->priceFormat($this->basket['credit_used']));
+                }
+            }
             // if we are using per-product coupon, the prices are already reduced, so the total is fine
             if (!$this->_item_discount) {
                 $this->_total -= $this->_discount;
