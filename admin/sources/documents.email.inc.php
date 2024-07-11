@@ -343,7 +343,7 @@ if (isset($_POST['template'])) {
     }
 
     foreach (array('content_html', 'content_text') as $key) {
-        if (!preg_match("/{$EMAIL_CONTENT}/", $_POST['template'][$key])) {
+        if (strpos($_POST['template'][$key], '$EMAIL_CONTENT') === false) {
             $GLOBALS['main']->errorMessage($lang['email']['error_macro_content']);
             $proceed = false;
         }
