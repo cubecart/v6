@@ -208,6 +208,7 @@
     <string name="title_administrators" introduced="5.0.0"><![CDATA[Administrators]]></string>
   </group>
   <group name="basket">
+    <string name="credit_use" introduced="6.5.6"><![CDATA[%1$s of %2$s]]></string>
     <string name="basket_total" introduced="6.5.2"><![CDATA[Your basket total is %1$s]]></string>
     <string name="continue_shopping" introduced="6.1.0"><![CDATA[Continue Shopping]]></string>
     <string name="free_coupon_shipping" introduced="6.1.0"><![CDATA[Free Shipping from Promotional Code]]></string>
@@ -1823,6 +1824,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="name_6" introduced="5.0.0"><![CDATA[Cancelled]]></string>
   </group>
   <group name="orders">
+    <string name="credit_note_usage" introduced="6.5.6"><![CDATA[This order used a balance of %1$s from existing customer credit.]]></string>
     <string name="pinned" introduced="6.5.4"><![CDATA[This order shows on the dashboard as an &quot;Unsettled Order&quot;]]></string>
     <string name="notify_orders_unpinned" introduced="6.5.4"><![CDATA[Order(s) removed from the dashboard &quot;Unsettled Orders&quot;]]></string>
     <string name="notify_orders_pinned" introduced="6.5.4"><![CDATA[Order(s) added to the dashboard &quot;Unsettled Orders&quot;]]></string>

@@ -573,7 +573,7 @@ class Order
                         if($invalid_orders = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id'), array('status' => 1,'credit_shift' => 0, 'credit_used' => '>0', 'customer_id' => $order_summary['customer_id']))) {
                             foreach($invalid_orders as $o) {
                                 $this->orderStatus(6, $o['cart_order_id']); 
-                                $this->addNote($o['cart_order_id'], 'This order has been cancelled as the customers credit balance has been used against order '.$order_summary['cart_order_id'].' instead.');
+                                $this->addNote($o['cart_order_id'], sprintf($GLOBALS['language']->orders['discount_codes_used'], $order_summary['cart_order_id']));
                             }
                         }
                     }
@@ -1563,7 +1563,7 @@ class Order
         }
         // Add notes if credit has been used
         if($record['credit_used']>0) {
-            $this->addNote($this->_order_id, 'This order used a balance of '.Tax::getInstance()->priceFormat($record['credit_used']).' from existing customer credit.');
+            $this->addNote($this->_basket['cart_order_id'], sprintf($GLOBALS['language']->orders['credit_note_usage'], Tax::getInstance()->priceFormat($record['credit_used'])));
         }
     }
 
