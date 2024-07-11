@@ -522,7 +522,7 @@ if (isset($_GET['action'])) {
         }
         $author[0] = $lang['common']['nobody'];
         $_GET['order_id'] = (isset($_GET['order_id'])) ? $_GET['order_id'] : '';
-        $notes = $GLOBALS['db']->select('CubeCart_order_notes', false, array('cart_order_id' => $_GET['order_id']), array('time' => 'ASC'));
+        $notes = $GLOBALS['db']->select('CubeCart_order_notes', false, array('cart_order_id' => $_GET['order_id']), array('note_id' => 'ASC'));
         $no_notes = $notes ? count($notes) : false;
         $GLOBALS['main']->addTabControl($lang['common']['notes'], 'order_notes', null, null, $no_notes);
         if ($notes) {

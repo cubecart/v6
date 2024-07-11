@@ -17,6 +17,7 @@
    <h2>{$LANG.checkout.your_basket}</h2>
    {include file='templates/content.checkout.medium-up.php'}
    {include file='templates/content.checkout.small.php'}
+   {if $CREDIT_AVAILABLE>0}
    <div class="row">
       <div class="medium-8 columns text-right">
          Apply credit:
@@ -27,6 +28,7 @@
         <input type="checkbox" name="use_credit" value="1"{if $USE_CREDIT=='1'} checked="checked"{/if} />
       </div>
    </div>
+   {/if}
    <div class="row">
       <div class="medium-8 columns text-right">
          {$LANG.basket.coupon_add}

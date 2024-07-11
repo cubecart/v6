@@ -573,7 +573,7 @@ class Order
                         if($invalid_orders = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id'), array('status' => 1,'credit_shift' => 0, 'credit_used' => '>0', 'customer_id' => $order_summary['customer_id']))) {
                             foreach($invalid_orders as $o) {
                                 $this->orderStatus(6, $o['cart_order_id']); 
-                                $this->addNote($o['cart_order_id'], sprintf($GLOBALS['language']->orders['discount_codes_used'], $order_summary['cart_order_id']));
+                                $this->addNote($o['cart_order_id'], sprintf($GLOBALS['language']->orders['cancelled_invalid_credit'], $order_summary['cart_order_id']));
                             }
                         }
                     }
@@ -741,7 +741,6 @@ class Order
                 }
             }
             if (isset($this->_basket['coupons']) && is_array($this->_basket['coupons'])) {
-                $codes_used = array();
                 foreach ($this->_basket['coupons'] as $key => $data) {
                     if ($data['gc']) {
                         // Update gift certificate balance
@@ -1548,7 +1547,8 @@ class Order
         }
 
         if ($GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id'), array('cart_order_id' => $this->_order_id), false, false, false, false)) {
-            $update = false;
+            $this->addNote($this->_order_id, $this->_basket['billing_address']['first_name'].' has made changes to this order by returning to the basket form the payment page.');
+            $update = true;
         }
 
         if ($update) {
