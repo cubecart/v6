@@ -1824,6 +1824,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="name_6" introduced="5.0.0"><![CDATA[Cancelled]]></string>
   </group>
   <group name="orders">
+    <string name="order_updated_via_basket" introduced="6.5.6"><![CDATA[%1$s has made changes to this order after returning to the basket from the payment page.]]></string>
     <string name="credit_note_usage" introduced="6.5.6"><![CDATA[This order used a balance of %1$s from existing customer credit.]]></string>
     <string name="cancelled_invalid_credit" introduced="6.5.6"><![CDATA[This order has been cancelled as the customers credit balance has been used against order %1$s instead. Do not fulfil.]]></string>
     <string name="pinned" introduced="6.5.4"><![CDATA[This order shows on the dashboard as an &quot;Unsettled Order&quot;]]></string>
