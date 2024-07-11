@@ -809,7 +809,9 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_summary` (
 	KEY `status` (`status`),
 	KEY `email` (`email`),
 	KEY `order_date` (`order_date`),
-	KEY `dashboard` (`dashboard`)
+	KEY `dashboard` (`dashboard`),
+	KEY `credit_used` (`credit_used`),
+	KEY `credit_shift` (`credit_shift`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_order_tax` (

@@ -564,6 +564,20 @@ class Order
                     // Send digital files
                     $this->_digitalDelivery($order_id, $this->_order_summary['email']);
 
+                    // Adjust credit balance
+                    if($order_summary['credit_used'] > 0 && $order_summary['credit_shift'] == 0) {
+                        $GLOBALS['db']->misc('UPDATE `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_customer` SET `credit` = `credit` - '.(string)$order_summary['credit_used'].' WHERE `customer_id` = '.$order_summary['customer_id']);
+                        $GLOBALS['db']->update('CubeCart_order_summary', array('credit_shift' => 1), array('cart_order_id' => $order_summary['cart_order_id']));
+                        
+                        // Any pending orders with credit applied are no longer valid
+                        if($invalid_orders = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id'), array('status' => 1,'credit_shift' => 0, 'credit_used' => '>0', 'customer_id' => $order_summary['customer_id']))) {
+                            foreach($invalid_orders as $o) {
+                                $this->orderStatus(6, $o['cart_order_id']); 
+                                $this->addNote($o['cart_order_id'], 'This order has been cancelled as the customers credit balance has been used against order '.$order_summary['cart_order_id'].' instead.');
+                            }
+                        }
+                    }
+
                 break;
 
                 case self::ORDER_COMPLETE:
@@ -1533,7 +1547,7 @@ class Order
             include $hook;
         }
 
-        if (!$check = $GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id'), array('cart_order_id' => $this->_order_id), false, false, false, false)) {
+        if ($GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id'), array('cart_order_id' => $this->_order_id), false, false, false, false)) {
             $update = false;
         }
 
@@ -1542,10 +1556,14 @@ class Order
             $this->updateSummary($this->_basket['cart_order_id'], $record);
         } else {
             // Insert Summary
-            if ($order_id = $GLOBALS['db']->insert('CubeCart_order_summary', $record)) {
+            if ($GLOBALS['db']->insert('CubeCart_order_summary', $record)) {
                 $this->setOrderCustomID($this->_basket['cart_order_id']);
                 $GLOBALS['user']->addOrder($customer_id);
             }
+        }
+        // Add notes if credit has been used
+        if($record['credit_used']>0) {
+            $this->addNote($this->_order_id, 'This order used a balance of '.Tax::getInstance()->priceFormat($record['credit_used']).' from existing customer credit.');
         }
     }
 

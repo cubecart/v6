@@ -867,7 +867,9 @@ if (isset($database_result) && $database_result) {
             'email' => 'KEY',
             'order_date' => 'KEY',
             'custom_oid' => 'UNIQUE KEY',
-            'dashboard' => 'KEY'
+            'dashboard' => 'KEY',
+            'credit_used' => 'KEY',
+            'credit_shift' => 'KEY'
         ),
         'cubecart_order_tax' => array(
             'id' => 'PRIMARY',
