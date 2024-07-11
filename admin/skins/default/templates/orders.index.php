@@ -275,6 +275,13 @@
                      <td class="text-right">{$OVERVIEW_SUMMARY.total_tax}</td>
                   </tr>
                   {/foreach}
+                  {if $OVERVIEW_SUMMARY.show_credit}
+                  <tr class="order_summary total">
+                     <td colspan="3" class="no-bg"></td>
+                     <td nowrap>{$LANG.common.credit}</td>
+                     <td class="text-right">({$OVERVIEW_SUMMARY.credit_used})</td>
+                  </tr>
+                  {/if}
                   <tr class="order_summary total">
                      <td colspan="3" class="no-bg"></td>
                      <td nowrap>{$LANG.basket.total}</td>
@@ -526,6 +533,11 @@
                <tr>
                   <th colspan="3">{$LANG.basket.total_tax}</th>
                   <td><input type="text" id="total_tax" name="summary[total_tax]" class="textbox number-right" value="{$SUMMARY.total_tax}"></td>
+                  <td>&nbsp;</td>
+               </tr>
+               <tr>
+                  <th colspan="3">{$LANG.common.credit}</th>
+                  <td><input type="text" id="credit_used" name="summary[credit_used]" class="textbox number-right" value="{$SUMMARY.credit_used}"></td>
                   <td>&nbsp;</td>
                </tr>
                <!-- Add total tax: read only -->

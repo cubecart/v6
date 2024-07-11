@@ -122,15 +122,25 @@
          <td width="10%" class="text-right">
             {$coupon.value}
          </td>
-         </tr>
-         {/foreach}
-         {if isset($DISCOUNT)}
+      </tr>
+      {/foreach}
+      {if isset($DISCOUNT)}
       <tr>
          <td colspan="2">
             {$LANG.basket.total_discount}
          </td>
          <td width="10%" class="text-right">
             {$DISCOUNT}
+         </td>
+      </tr>
+      {/if}
+      {if !empty($CREDIT_USED)}
+      <tr>
+         <td colspan="2">
+            {$LANG.common.credit}
+         </td>
+         <td width="10%" class="text-right">
+         ({$CREDIT_USED})
          </td>
       </tr>
       {/if}

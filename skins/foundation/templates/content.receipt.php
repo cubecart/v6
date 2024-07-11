@@ -116,6 +116,13 @@
          <td class="text-right">{$SUM.discount}</td>
       </tr>
       {/if}
+      {if $SUM.show_credit}
+      <tr>
+         <td colspan="2"></td>
+         <td>{$LANG.common.credit}</td>
+         <td class="text-right">({$SUM.credit_used})</td>
+      </tr>
+      {/if}
       <tr>
          <td colspan="2"></td>
          <td>{$LANG.basket.total_grand}</td>

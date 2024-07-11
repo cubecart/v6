@@ -236,7 +236,9 @@
 		{if isset($order.taxes)} {foreach from=$order.taxes item=tax}
 		<div class="total">{$tax.name} <strong>{$tax.value}</strong></div>
 		{/foreach}{/if}
-		<br>
+		{if $order.show_credit}
+		<div class="total">{$LANG.common.credit} <strong>({$order.credit_used})</strong></div>
+		{/if}
 		<div class="total"><strong>{$LANG.basket.total_grand} {$order.total}</strong></div>
 	  </div>
 	  {if !empty($order.customer_comments)}

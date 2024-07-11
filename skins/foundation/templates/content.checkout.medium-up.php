@@ -108,6 +108,13 @@
             <td class="text-right">{$DISCOUNT}</td>
          </tr>
          {/if}
+         {if !empty($CREDIT_USED)}
+         <tr>
+            <td colspan="4"></td>
+            <td>{$LANG.common.credit}</td>
+            <td class="text-right">({$CREDIT_USED})</td>
+         </tr>
+         {/if}
          <tr>
             <td colspan="4"></td>
             <td>{$LANG.basket.total_grand}</td>

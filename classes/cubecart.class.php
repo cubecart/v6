@@ -1379,7 +1379,7 @@ class Cubecart
             foreach ($GLOBALS['hooks']->load('class.cubecart.construct.complete') as $hook) {
                 include $hook;
             }
-            $formatting  = array('discount', 'price', 'shipping', 'subtotal', 'total', 'total_tax');
+            $formatting  = array('discount', 'price', 'shipping', 'subtotal', 'total', 'total_tax', 'credit_used');
             $empty_basket = true;
             # Get the order details, and display a receipt
             if (($orders = $GLOBALS['db']->select('CubeCart_order_summary', false, array('cart_order_id' => $this->_basket['cart_order_id']), false, false, false, false)) !== false) {
@@ -1432,7 +1432,7 @@ class Cubecart
                 if ($order['discount']>0) {
                     $GLOBALS['smarty']->assign('DISCOUNT', true);
                 }
-                
+                $order['show_credit'] = $order['credit_used']>0 ? true : false;
                 foreach ($order as $key => $value) {
                     if (!in_array($key, $formatting)) {
                         continue;
@@ -1445,8 +1445,6 @@ class Cubecart
                     include $hook;
                 }
                 $order['basket'] = unserialize($order['basket']);
-
-                
 
                 $GLOBALS['smarty']->assign('SUM', $order);
 
@@ -2610,7 +2608,8 @@ class Cubecart
                     }
 
                     // Loop through price values, and do the formatting
-                    foreach (array('discount', 'shipping', 'subtotal', 'total', 'total_tax') as $key) {
+                    $order['show_credit'] = ($order['credit_used']>0) ? true : false;
+                    foreach (array('discount', 'shipping', 'subtotal', 'total', 'total_tax', 'credit_used') as $key) {
                         $order[$key] = $GLOBALS['tax']->priceFormat($order[$key], true);
                     }
                     $order['order_status'] = $GLOBALS['language']->order_state['name_'.$order['status']];

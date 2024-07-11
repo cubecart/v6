@@ -217,7 +217,8 @@ function updateOrderTotals(t) {
         var t = $(this).val();
         d += 1 * t
     });
-    var h = 1 * r - o + 1 * c + 1 * d;
+    var cu = $("#credit_used").val();
+    var h = (1 * r - o + 1 * c + 1 * d) - cu;
     $("#total_tax").val(d.toFixed(2)), $("#total").val(h.toFixed(2))
 }
 

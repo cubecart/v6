@@ -423,6 +423,8 @@ if (isset($_GET['action'])) {
             $overview_summary['subtotal']  = $GLOBALS['tax']->priceFormat($overview_summary['subtotal']);
             $overview_summary['shipping']  = $GLOBALS['tax']->priceFormat($overview_summary['shipping']);
             $overview_summary['total_tax']  = $GLOBALS['tax']->priceFormat($overview_summary['total_tax']);
+            $overview_summary['show_credit']  = $overview_summary['credit_used'] > 0 ? true : false;
+            $overview_summary['credit_used']  = $GLOBALS['tax']->priceFormat($overview_summary['credit_used']);
             $overview_summary['total']   = $GLOBALS['tax']->priceFormat($overview_summary['total']);
             $overview_summary['country_d'] = is_numeric($overview_summary['country_d']) ? getCountryFormat($overview_summary['country_d'], 'numcode', 'name') : $overview_summary['country_d'];
             $overview_summary['country'] = is_numeric($overview_summary['country']) ? getCountryFormat($overview_summary['country'], 'numcode', 'name') : $overview_summary['country'];
@@ -610,7 +612,8 @@ if (isset($_GET['action'])) {
             } elseif ($summary['discount_type'] == 'pp') {
                 $summary['percent'] = number_format(($summary['discount']/($summary['subtotal']+$summary['discount']))*100) . '%';
             }
-            $format = array('discount', 'shipping', 'subtotal', 'total_tax', 'total');
+            $format = array('discount', 'shipping', 'subtotal', 'total_tax', 'total', 'credit_used');
+            $summary['show_credit'] = ($summary['credit_used']>0) ? true : false;
             foreach ($format as $field) {
                 if (isset($summary[$field])) {
                     $summary[$field] = Tax::getInstance()->priceFormat($summary[$field]);
