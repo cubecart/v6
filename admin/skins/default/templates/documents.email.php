@@ -128,7 +128,7 @@
     <h3>{$LANG.email.title_content_html}</h3>
 	{if $LANGUAGES}
 	<div id="template_html" class="ace_email_editor"></div>
-	<input type="hidden" name="content[content_html]" id="content_html" class="textbox" value="{$CONTENT.content_html|escape:'quotes'}">
+	<input type="hidden" name="content[content_html]" id="content_html" class="textbox" value="{base64_encode($CONTENT.content_html)}">
 	<script src="includes/ace/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 	<script>
 		var input = document.getElementById('content_html');
@@ -136,7 +136,9 @@
 		editor.session.setUseWrapMode(true);
 		editor.setOptions({ highlightActiveLine:true, showPrintMargin:false, theme:'ace/theme/github', mode: 'ace/mode/smarty' });
 		editor.setValue(`{$CONTENT.content_html|escape:'quotes'}`, 1);
-		editor.getSession().on("change", function () { input.value = editor.getSession().getValue(); });
+		editor.getSession().on("change", function () {
+			input.value = b64EncodeUnicode(editor.getSession().getValue()); 
+		});
 	</script>
 	<button type="button" class="button" id="preview_email_template" onclick="previewEmailTemplate()">{$LANG.common.test}</button>
 	<script>
@@ -222,7 +224,7 @@
 		editor.session.setUseWrapMode(true);
 		editor.setOptions({ highlightActiveLine:true, showPrintMargin:false, theme:'ace/theme/github', mode: 'ace/mode/smarty' });
 		editor.setValue(`{$TEMPLATE.content_html|escape:'quotes'}`, 1);
-		editor.getSession().on("change", function () { input.value = editor.getSession().getValue(); });
+		editor.getSession().on("change", function () { input.value = b64EncodeUnicode(editor.getSession().getValue()); });
 	</script>
 	<button type="button" class="button" id="preview_email_template" onclick="previewEmailTemplate()">{$LANG.common.test}</button>
 	<script>
@@ -292,5 +294,13 @@
 	<input id="previous-tab" type="hidden" value="" name="previous-tab">
 	<input type="submit" value="{$LANG.common.save}">{if isset($DISPLAY_DELETE_LINK)} <a href="{$LINK_DELETE}" class="delete" title="{$LANG.notification.confirm_delete}">{$LANG.common.delete}</a>{/if}
   </div>
-  
 </form>
+<script>
+	// Source: https://stackoverflow.com/questions/30106476/using-javascripts-atob-to-decode-base64-doesnt-properly-decode-utf-8-strings
+	function b64EncodeUnicode(str) {
+		return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+			function toSolidBytes(match, p1) {
+				return String.fromCharCode('0x' + p1);
+		}));
+	}
+</script>
