@@ -94,7 +94,7 @@ Order number {$DATA.cart_order_id} has been cancelled.]]></content>
 {/foreach}
 <tr>
 <td>&nbsp;</td>
-<td> {if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Shipping:{/if}</td>
+<td>{if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Shipping:{/if}</td>
 <td> {$DATA.shipping}</td>
 </tr>
 <tr>
@@ -114,6 +114,13 @@ Order number {$DATA.cart_order_id} has been cancelled.]]></content>
 <td> {$tax.tax_amount}</td>
 </tr>
 {/foreach}
+{if $DATA.show_credit}
+<tr>
+<td>&nbsp;</td>
+<td>Credit:</td>
+<td>({$DATA.credit_used})</td>
+</tr>
+{/if}
 <tr>
 <td>&nbsp;</td>
 <td><strong>Order Total: </strong></td>
@@ -124,7 +131,7 @@ Order number {$DATA.cart_order_id} has been cancelled.]]></content>
 {if !empty($DATA.note_to_customer)}
 <p>&quot;{$DATA.note_to_customer}&quot;</p>
 {/if}]]></content>
-    <content type="text"><![CDATA[Thank You {$DATA.first_name|capitalize}!
+    <content type="text"><![CDATA[Thank you {$DATA.first_name|capitalize}!
 
 Your order {$DATA.cart_order_id} has been received which was placed on {$DATA.order_date}. Please keep this email for your records. It is possible to view the status of your order online. 
 
@@ -175,8 +182,9 @@ Subtotal: {$DATA.subtotal}
 Discount: {$DATA.discount}
 {if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Shipping:{/if} {$DATA.shipping}
 {foreach from=$TAXES item=tax}{$tax.tax_name} ({$tax.tax_percent}%): {$tax.tax_amount}
-{/foreach}
---------------------------
+{/foreach}{if $DATA.show_credit}
+Credit: ({$DATA.credit_used})
+{/if}--------------------------
 Order Total: {$DATA.total}
 ==========================
 {if !empty($DATA.note_to_customer)}
@@ -276,6 +284,13 @@ If you require further assistance in resetting your password, please contact us.
 <td> {$tax.tax_amount}</td>
 </tr>
 {/foreach}
+{if $DATA.show_credit}
+<tr>
+<td>&nbsp;</td>
+<td>Credit:</td>
+<td>({$DATA.credit_used})</td>
+</tr>
+{/if}
 <tr>
 <td>&nbsp;</td>
 <td><strong>Order Total: </strong></td>
@@ -335,8 +350,9 @@ Subtotal: {$DATA.subtotal}
 Discount: {$DATA.discount}
 {if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Shipping:{/if} {$DATA.shipping}
 {foreach from=$TAXES item=tax}{$tax.tax_name} ({$tax.tax_percent}%): {$tax.tax_amount}
-{/foreach}
---------------------------
+{/foreach}{if $DATA.show_credit}
+Credit: ({$DATA.credit_used})
+{/if}--------------------------
 Order Total: {$DATA.total}
 ==========================]]></content>
   </email>

@@ -278,6 +278,8 @@ class Order
 
         // Format prices etc for order emails...
         $order_summary['subtotal']  = Tax::getInstance()->priceFormat($order_summary['subtotal'], true);
+        $order_summary['show_credit']  = $order_summary['credit_used'] > 0 ? true : false;
+        $order_summary['credit_used']  = Tax::getInstance()->priceFormat($order_summary['credit_used'], true);
         $order_summary['total']  = Tax::getInstance()->priceFormat($order_summary['total'], true);
         $order_summary['discount']  = Tax::getInstance()->priceFormat($order_summary['discount'], true);
         $order_summary['shipping'] = Tax::getInstance()->priceFormat($order_summary['shipping'], true);

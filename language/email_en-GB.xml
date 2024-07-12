@@ -47,7 +47,7 @@ Order number {$DATA.cart_order_id} has been cancelled.]]></content>
   </email>
   <email name="cart.order_confirmation">
     <subject><![CDATA[Order Confirmation #{$DATA.cart_order_id}]]></subject>
-    <content type="html"><![CDATA[<p>Thank You {$DATA.first_name|capitalize}!</p>
+    <content type="html"><![CDATA[<p>Thank you {$DATA.first_name|capitalize}!</p>
 <p>Your order {$DATA.cart_order_id} has been received which was placed on {$DATA.order_date}. Please keep this email for your records. It is possible to view the status of your order online.</p> 
 <p><a href="{$DATA.link}">{$DATA.link}</a></p>
 <table width="100%">
@@ -114,6 +114,13 @@ Order number {$DATA.cart_order_id} has been cancelled.]]></content>
 <td> {$tax.tax_amount}</td>
 </tr>
 {/foreach}
+{if $DATA.show_credit}
+<tr>
+<td>&nbsp;</td>
+<td>Credit:</td>
+<td>({$DATA.credit_used})</td>
+</tr>
+{/if}
 <tr>
 <td>&nbsp;</td>
 <td><strong>Order Total: </strong></td>
@@ -124,7 +131,7 @@ Order number {$DATA.cart_order_id} has been cancelled.]]></content>
 {if !empty($DATA.note_to_customer)}
 <p>&quot;{$DATA.note_to_customer}&quot;</p>
 {/if}]]></content>
-    <content type="text"><![CDATA[Thank You {$DATA.first_name|capitalize}!
+    <content type="text"><![CDATA[Thank you {$DATA.first_name|capitalize}!
 
 Your order {$DATA.cart_order_id} has been received which was placed on {$DATA.order_date}. Please keep this email for your records. It is possible to view the status of your order online. 
 
@@ -175,8 +182,9 @@ Subtotal: {$DATA.subtotal}
 Discount: {$DATA.discount}
 {if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Shipping:{/if} {$DATA.shipping}
 {foreach from=$TAXES item=tax}{$tax.tax_name} ({$tax.tax_percent}%): {$tax.tax_amount}
-{/foreach}
---------------------------
+{/foreach}{if $DATA.show_credit}
+Credit: ({$DATA.credit_used})
+{/if}--------------------------
 Order Total: {$DATA.total}
 ==========================
 {if !empty($DATA.note_to_customer)}
@@ -276,13 +284,19 @@ If you require further assistance in resetting your password, please contact us.
 <td> {$tax.tax_amount}</td>
 </tr>
 {/foreach}
+{if $DATA.show_credit}
+<tr>
+<td>&nbsp;</td>
+<td>Credit:</td>
+<td>({$DATA.credit_used})</td>
+</tr>
+{/if}
 <tr>
 <td>&nbsp;</td>
 <td><strong>Order Total: </strong></td>
 <td><strong>{$DATA.total}</strong></td>
 </tr>
 </tbody>
-
 </table>]]></content>
     <content type="text"><![CDATA[{$DATA.first_name|capitalize} {$DATA.last_name|capitalize} {if !empty($BILLING.company_name)}({$BILLING.company_name}){/if} just placed order number {$DATA.cart_order_id} on {$DATA.order_date}.
 
@@ -335,8 +349,9 @@ Subtotal: {$DATA.subtotal}
 Discount: {$DATA.discount}
 {if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Shipping:{/if} {$DATA.shipping}
 {foreach from=$TAXES item=tax}{$tax.tax_name} ({$tax.tax_percent}%): {$tax.tax_amount}
-{/foreach}
---------------------------
+{/foreach}{if $DATA.show_credit}
+Credit: ({$DATA.credit_used})
+{/if}--------------------------
 Order Total: {$DATA.total}
 ==========================]]></content>
   </email>
