@@ -4,12 +4,10 @@
  */
 
 CKEDITOR.editorConfig = function( config ) {
-	config.versionCheck = false;
 	config.filebrowserImageBrowseUrl = document.location.pathname+'?_g=filemanager&mode=fck';
 	config.filebrowserLinkBrowseUrl = document.location.pathname+'?_g=filemanager&mode=fckfile';
-	//config.protectedSource.push(/{\S*?.*?\S}/g);
-	config.protectedSource = [/{\S*?.*?\S}/g];
-	config.extraPlugins = 'showprotected,emoji,textmatch,autocomplete,textwatcher';
+	config.protectedSource.push(/{\S*?.*?\S}/g);
+	config.extraPlugins = 'showprotected';
 	config.filebrowserWindowHeight  = 500;
 	config.filebrowserWindowWidth  = 650;
 	config.allowedContent = true;
@@ -31,5 +29,5 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'others', groups: [ 'others' ] },
 		{ name: 'about', groups: [ 'about' ] }
 	];
-	config.removeButtons = 'Save,Print,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,CopyFormatting,Language,About,Flash,Iframe,Smiley';
+	config.removeButtons = 'Save,Print,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,CopyFormatting,Language,About,Flash,Iframe';
 };
