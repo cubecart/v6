@@ -52,7 +52,7 @@ class GD
         $this->_gdImageOutput = false;
         $this->_gdImageSource = false;
         $this->_gdImageData  = false;
-        $this->_gdImageExif = false;
+        $this->_gdImageExif = array();
     }
 
     /**
@@ -101,6 +101,7 @@ class GD
         if (file_exists($file)) {
             $this->_gdImageData = getimagesize($file);
             $this->_gdImageExif = function_exists('exif_read_data') ? exif_read_data($file) : array();
+            if($this->_gdImageExif === false) $this->_gdImageExif = array();
             $this->_gdImageType = $this->_gdImageData[2];
 
             switch ($this->_gdImageType) {
