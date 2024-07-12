@@ -1039,8 +1039,8 @@ CREATE TABLE IF NOT EXISTS `CubeCart_seo_urls` (
 CREATE TABLE IF NOT EXISTS `CubeCart_email_log` (
   `id` int(11) NOT NULL,
   `subject` varchar(255) NOT NULL,
-  `content_html` text NOT NULL,
-  `content_text` text NOT NULL,
+  `content_html` mediumtext NOT NULL,
+  `content_text` mediumtext NOT NULL,
   `to` varchar(255) NOT NULL,
   `from` varchar(255) NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
