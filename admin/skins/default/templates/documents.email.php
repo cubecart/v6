@@ -135,10 +135,8 @@
 		var editor = ace.edit("template_html");
 		editor.session.setUseWrapMode(true);
 		editor.setOptions({ highlightActiveLine:true, showPrintMargin:false, theme:'ace/theme/github', mode: 'ace/mode/smarty' });
-		editor.setValue(`{$CONTENT.content_html|escape:'quotes'}`, 1);
-		editor.getSession().on("change", function () {
-			input.value = b64EncodeUnicode(editor.getSession().getValue()); 
-		});
+		editor.setValue(window.atob(input.value), 1);
+		editor.getSession().on("change", function () { input.value = b64EncodeUnicode(editor.getSession().getValue()); });
 	</script>
 	<button type="button" class="button" id="preview_email_template" onclick="previewEmailTemplate()">{$LANG.common.test}</button>
 	<script>
@@ -223,7 +221,7 @@
 		var editor = ace.edit("template_html");
 		editor.session.setUseWrapMode(true);
 		editor.setOptions({ highlightActiveLine:true, showPrintMargin:false, theme:'ace/theme/github', mode: 'ace/mode/smarty' });
-		editor.setValue(`{$TEMPLATE.content_html|escape:'quotes'}`, 1);
+		editor.setValue(window.atob(input.value), 1);
 		editor.getSession().on("change", function () { input.value = b64EncodeUnicode(editor.getSession().getValue()); });
 	</script>
 	<button type="button" class="button" id="preview_email_template" onclick="previewEmailTemplate()">{$LANG.common.test}</button>
