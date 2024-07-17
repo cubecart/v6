@@ -1854,19 +1854,20 @@ class Catalogue
             if($search_mode == 'elastic') {
                 if($GLOBALS['config']->get('config', 'elasticsearch')=='1') {
                     $es = new ElasticsearchHandler;
-                    $es->query($search_data, false);
+                    $es->query($search_data);
                     $result = $es->search($page, $per_page);
-                    $pids = array();
-                
+                    
+                    $this->_category_products = array();
                     if($result) {
                         foreach($result["hits"]["hits"] as $hit) {
-                            array_push($pids, $hit['_id']);
+                            $p = $GLOBALS['db']->select('CubeCart_inventory', false, array('product_id' => $hit['_id']));
+                            $this->_category_products[] = $p[0];
                         }
                     }
                     $this->_category_count  = $result["hits"]["total"]["value"];
-                    if(!empty($pids)) {
-                        $this->_category_products = $GLOBALS['db']->select('CubeCart_inventory', false, array('product_id' => $pids));
+                    if(!empty($this->_category_products)) {
                         $this->_sort_by_relevance = true;
+                        return true;
                     } else {
                         $this->_elasticsearch = false;
                         return $this->searchCatalogue($original_search_data, $page, $per_page, 'fulltext');  

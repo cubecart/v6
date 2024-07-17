@@ -229,7 +229,7 @@ class ElasticsearchHandler
     /**
      * Create search query to execute later
      */
-    public function query($search, $sayt = true) {
+    public function query($search) {
         if(!isset($search['keywords'])) return false;
         $q = $search['keywords'];
         $must = [];
@@ -251,7 +251,7 @@ class ElasticsearchHandler
             ['match' => ['mpn' => $q]]
         ];
         
-        if(!$sayt) { // Form submitted search 
+        if(count($search)>1) { // Form submitted search 
             $should = array_merge($should, [['match' => ['description' => $q]]]);
             if(isset($search['featured']) && $search['featured']=='1') {
                 $featured =
