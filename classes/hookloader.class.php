@@ -217,7 +217,6 @@ class HookLoader
                 // Read each XML file, check contents, and update/add to database
                 try {
                     $xml   = new simpleXMLElement(file_get_contents($file));
-                    $plugin_name = (string)$xml->info->name;
                     foreach ($xml->hooks->hook as $hook) {
                         // Check if the hook already exists
                         $allowed_hooks[] = (string)$hook->attributes()->trigger;
