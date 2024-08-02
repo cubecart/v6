@@ -32,6 +32,7 @@ class Catalogue
     private $_sort_by_relevance = false;
     private $_where_live_from = '';
     private $_product_data = array();
+    private $_search_mode = '';
 
     public $image_tags = array();
     public $sale_on = false;
@@ -328,7 +329,7 @@ class Catalogue
         }
 
         // Sorting
-        $GLOBALS['smarty']->assign('SORTING', $this->displaySort());
+        $GLOBALS['smarty']->assign('SORTING', $this->_search_mode == 'elastic' ? false : $this->displaySort());
                 
         $GLOBALS['smarty']->assign('PAGE_SPLITS', $GLOBALS['gui']->perPageSplits());
         
@@ -1805,6 +1806,7 @@ class Catalogue
      */
     public function searchCatalogue($search_data = null, $page = 1, $per_page = 10, $search_mode = 'elastic')
     {
+        $this->_search_mode = $search_mode;
         if(isset($search_data['keywords']) && stristr('{search}', $search_data['keywords'])) return false;
         
         $per_page = (!is_numeric($per_page) || $per_page < 1) ? 10 : $per_page;
