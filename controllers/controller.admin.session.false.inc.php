@@ -25,13 +25,10 @@ case 'recovery':
     $GLOBALS['smarty']->assign('RECOVERY', true);
     break;
 case 'password':
-    if (isset($_POST['email']) && isset($_POST['username'])) {
+    if (isset($_POST['email'])) {
         // Send a recovery email
-        if (Admin::getInstance()->passwordRequest($_POST['username'], $_POST['email'])) {
-            $GLOBALS['gui']->setNotify($GLOBALS['language']->account['notify_password_recovery']);
-        } else {
-            $GLOBALS['gui']->setError($GLOBALS['language']->account['error_details_wrong']);
-        }
+        Admin::getInstance()->passwordRequest($_POST['email']);
+        $GLOBALS['gui']->setNotify($GLOBALS['language']->account['notify_password_recovery']);
     }
     $GLOBALS['smarty']->assign('PASSWORD', true);
     break;

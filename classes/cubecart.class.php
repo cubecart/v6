@@ -3044,12 +3044,11 @@ class Cubecart
                 $error = true;
             }
             // Send a recovery email
-            if (!$error && $GLOBALS['user']->passwordRequest($_POST['email'])) {
+            if (!$error) {
+                $GLOBALS['user']->passwordRequest($_POST['email']);
                 $GLOBALS['gui']->setNotify($GLOBALS['language']->account['notify_password_recovery']);
                 // Send them shopping whilst they wait for their email!
                 httpredir(currentPage(array('_a')));
-            } elseif(!$error) {
-                $GLOBALS['gui']->setError($GLOBALS['language']->account['error_password_recovery']);
             }
             // Reload the same page so they can try again
             httpredir(currentPage());

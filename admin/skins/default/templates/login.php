@@ -28,17 +28,16 @@
 	<div id="login-box">
 	{if isset($RECOVERY)}
 	  <h1>{$LANG.account.title_password_new}</h1>
-	  <div><span><input type="text" name="validate" id="validate" class="textbox required" value="{$REQUEST.validate}"></span><label for="validate">{$LANG.account.validation_key}</label>:</div>
 	  <div><span><input type="text" name="email" id="email" class="textbox required" value="{$REQUEST.email}"></span><label for="email">{$LANG.common.email}</label>:</div>
 	  <div><span><input type="password" autocomplete="off" name="password[new]" id="password" class="textbox required"></span><label for="password">{$LANG.account.new_password}</label>:</div>
 	  <div><span><input type="password" autocomplete="off" name="password[confirm]" id="passconf" class="textbox required"></span><label for="passconf">{$LANG.account.new_password_confirm}</label>:</div>
 	  <div id="login-box-foot">
 	    <span><a href="?_g=login">{$LANG.account.login_return}</a></span>
+		<input type="hidden" name="validate" id="validate" value="{$REQUEST.validate}">
 	    <input name="login" type="submit" id="login" value="{$LANG.form.submit}" class="submit">
 	  </div>
 	{elseif isset($PASSWORD)}
 	  <h1>{$LANG.account.forgotten_password}</h1>
-	  <div><span><input type="text" name="username" id="username" class="textbox required" value="{$USERNAME}"></span><label for="username">{$LANG.account.username}</label>:</div>
 	  <div><span><input type="text" name="email" id="email" class="textbox required" value="{$EMAIL}"></span><label for="email">{$LANG.common.email}</label>:</div>
 	  <div id="login-box-foot">
 	    <span><a href="?_g=login">{$LANG.account.login_return}</a></span>

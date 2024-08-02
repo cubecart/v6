@@ -51,7 +51,6 @@
     <string name="error_password_length_max" introduced="6.0.0"><![CDATA[Password must be less than 64 characters long.]]></string>
     <string name="error_password_mismatch" introduced="5.0.0"><![CDATA[Your passwords do not match.]]></string>
     <string name="error_email_mismatch" introduced="6.4.5"><![CDATA[Please check your email address matches.]]></string>
-    <string name="error_password_recovery" introduced="5.0.0"><![CDATA[Email not sent. Please check your email address, and try again.]]></string>
     <string name="error_password_recover" introduced="5.0.0"><![CDATA[Failed to update your password. Please check the email address and validation key are correct and verify the new password matches.]]></string>
     <string name="error_password_update" introduced="5.0.0"><![CDATA[Failed to update your password.]]></string>
     <string name="error_password_update_mismatch" introduced="5.0.0"><![CDATA[Please check the original password is correct, and that the new password matches the confirmation password.]]></string>
@@ -76,7 +75,7 @@
     <string name="notify_address_updated" introduced="5.0.0"><![CDATA[Address has been updated and new shipping options may be available. Click &quot;Checkout&quot; to proceed.]]></string>
     <string name="notify_details_updated" introduced="5.0.0"><![CDATA[Your profile has been updated.]]></string>
     <string name="notify_logged_out" introduced="5.0.0"><![CDATA[You have been logged out successfully.]]></string>
-    <string name="notify_password_recovery" introduced="5.0.0"><![CDATA[Password recovery email has been sent.]]></string>
+    <string name="notify_password_recovery" introduced="5.0.0"><![CDATA[If we were able to find an account for the email address supplied, an email will be sent with further instructions to recover your account. Check your email within the next few minutes, including any junk or spam folders.]]></string>
     <string name="notify_password_recovery_success" introduced="5.0.0"><![CDATA[Thank you. Your password has been updated.]]></string>
     <string name="password" introduced="5.0.0"><![CDATA[Password]]></string>
     <string name="password_change" introduced="5.0.0"><![CDATA[Change Password]]></string>
