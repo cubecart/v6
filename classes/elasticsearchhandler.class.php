@@ -26,6 +26,8 @@ require 'elasticsearch/vendor/autoload.php';
 
 class ElasticsearchHandler
 {
+    public $last_error = '';
+
     private $_client;
     private $_search_body = array();
     private $_index_body = array();
@@ -60,6 +62,8 @@ class ElasticsearchHandler
                 } else {
                     $this->createIndex();
                 }
+            } else if ($this->_config['es_is']=='1' && $this->_index_body['stock_level']<=0) {
+                return $this->delete($id);
             }
             $response = $this->_client->index($params);
             return $response->getStatusCode() == 200 ? true : false;
@@ -299,7 +303,7 @@ class ElasticsearchHandler
                 ];
                 array_push($must, $price_range);
             }
-            if(isset($search['inStock']) && $search['inStock']=='1') {
+            //if(isset($search['inStock']) && $search['inStock']=='1') {
                 // (digital = 1 OR stock_level > 1)
                 $inStock = 
                 [
@@ -327,7 +331,7 @@ class ElasticsearchHandler
                     ]
                 ];
                 array_push($must, $inStock);
-            }
+            //}
         }
         $this->_search_body = 
         [
@@ -366,7 +370,7 @@ class ElasticsearchHandler
     /**
      * Rebuild index
      */
-    public function rebuild($cycle, $limit = 25) {
+    public function rebuild($cycle, $limit = 50) {
         ini_set('ignore_user_abort', true);
         if($cycle == 1) {
             if($this->indexExists()) {
@@ -444,8 +448,21 @@ class ElasticsearchHandler
      */
     private function _getConfig($config) {
         global $glob;
-        // Get config from globals.inc.php file if set 
-        if(isset($GLOBALS['config']) && $GLOBALS['config']->has('config', 'es_h')) {
+        /* 
+        #############################
+        # Config Variable Reference
+        #############################
+        es_h = Hostname
+        es_u = Username
+        es_p = Password
+        es_i = Index name
+        es_v = Validate SSL (bool)
+        es_c = Certificate path
+        es_is = Include out of stock
+        */
+
+        // Get config from master config which also merges global.inc.php file
+        if(isset($GLOBALS['config']) && $GLOBALS['config']->has('config', 'es_h')) { 
             $this->_config = array(
                 'es_h' => $GLOBALS['config']->get('config', 'es_h'),
                 'es_u' => $GLOBALS['config']->get('config', 'es_u'),
@@ -456,32 +473,32 @@ class ElasticsearchHandler
                 'es_is' => $GLOBALS['config']->get('config', 'es_is')
             );
         } else {
-            if(!empty($config)) {
+            if(!empty($config)) { // Get config from $_POST of admin settings page
                 $es_config = array(
-                    'es_h' => $config['es_h'],  // Hostname
-                    'es_u' => $config['es_u'],  // Username
-                    'es_p' => $config['es_p'],  // Password
-                    'es_i' => $config['es_i'],  // Index name
-                    'es_v' => $config['es_v'],  // Validate SSL (bool)
-                    'es_c' => $config['es_c'],   // Certificate path
-                    'es_is' => $config['es_is']   // Include out of stock
+                    'es_h' => $config['es_h'],
+                    'es_u' => $config['es_u'],
+                    'es_p' => $config['es_p'],
+                    'es_i' => $config['es_i'],
+                    'es_v' => $config['es_v'],
+                    'es_c' => $config['es_c'],
+                    'es_is' => $config['es_is']
                 );
                 $fh = fopen($this->_config_file,"wa+");
                 fwrite($fh,json_encode($es_config));
                 fclose($fh);
                 $this->_config = $es_config;
-            } elseif(!empty($glob['es_h'])) {
+            } elseif(!empty($glob['es_h'])) { // Get config from globals.inc.php file if set
                 $es_config = array(
-                    'es_h' => $glob['es_h'],  // Hostname
-                    'es_u' => $glob['es_u'],  // Username
-                    'es_p' => $glob['es_p'],  // Password
-                    'es_i' => $glob['es_i'],  // Index name
-                    'es_v' => $glob['es_v'],  // Validate SSL (bool)
-                    'es_c' => $glob['es_c'],   // Certificate path
-                    'es_is' => isset($glob['es_is']) ? $glob['es_is'] : 1  // Include out of stock
+                    'es_h' => $glob['es_h'],
+                    'es_u' => $glob['es_u'],
+                    'es_p' => $glob['es_p'],
+                    'es_i' => $glob['es_i'],
+                    'es_v' => $glob['es_v'],
+                    'es_c' => $glob['es_c'],
+                    'es_is' => isset($glob['es_is']) ? $glob['es_is'] : 1
                 );
                 $this->_config = $es_config;
-            } else {
+            } else { // Get config from cached settings in json file
                 $this->_config = json_decode(file_get_contents($this->_config_file),true);
             }
         }
