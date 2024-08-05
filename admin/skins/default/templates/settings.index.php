@@ -490,6 +490,14 @@
          <legend>{$LANG.settings.elasticsearch}</legend>
          <div>Elasticsearch brings lightening fast, search-as-you-type functionality to your store. This is included as standard with official <a href="https://hosted.cubecart.com/" target="_blank">CubeCart Hosting</a>. Alternatively please contact your hosting company to check for availability.</div>
          <div><label for="elasticsearch">{$LANG.common.enable}</label><span><input name="config[elasticsearch]" id="elasticsearch" type="hidden" class="toggle" value="{$CONFIG.elasticsearch}"></span></div>
+         <div><label for="es_is">Only index items in stock</label>
+            <span>
+               <select name="config[es_is]" id="es_is" class="textbox">
+                  <option value="0"{if !isset($CONFIG.es_is) || (isset($CONFIG.es_is) && $CONFIG.es_is=='0')} selected="selected"{/if}>{$LANG.common.no}</option>
+                  <option value="1"{if isset($CONFIG.es_is) && $CONFIG.es_is=='1'} selected="selected"{/if}>{$LANG.common.yes}</option>
+               </select>
+            </span>
+         </div>
          <div><label for="es_h">{$LANG.settings.es_hosts}</label><span><input name="config[es_h]" id="es_h" type="text" class="textbox" value="{$CONFIG.es_h}" placeholder="{$LANG.common.eg} https://localhost:9200" autocomplete="false"{if isset($FIXED_CONFIG.es_h)} disabled{/if}></span></div>
          <div><label for="es_u">{$LANG.account.username}</label><span><input name="config[es_u]" id="es_u" type="text" class="textbox" value="{$CONFIG.es_u}" autocomplete="false"{if isset($FIXED_CONFIG.es_u)} disabled{/if}></span></div>
          <div><label for="es_p">{$LANG.account.password}</label><span><input name="config[es_p]" id="es_p" type="password" class="textbox" value="{$CONFIG.es_p}" autocomplete="false"{if isset($FIXED_CONFIG.es_p)} disabled{/if}></span></div>

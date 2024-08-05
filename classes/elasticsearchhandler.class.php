@@ -55,7 +55,11 @@ class ElasticsearchHandler
         ];
         try {
             if(!$this->indexExists()) {
-                $this->createIndex();
+                if($this->_config['es_is']=='1' && $this->_index_body['stock_level']<=0) {
+                    return false;
+                } else {
+                    $this->createIndex();
+                }
             }
             $response = $this->_client->index($params);
             return $response->getStatusCode() == 200 ? true : false;
@@ -425,7 +429,11 @@ class ElasticsearchHandler
             'body'  => array('doc' => $this->_index_body)
         );
         try {
-            return $this->_client->update($params);
+            if($this->_config['es_is']=='1' && $this->_index_body['stock_level']<=0) {
+                return $this->delete($id);
+            } else {
+                return $this->_client->update($params);
+            }
         } catch (Exception $e) {
             return false;
         }
@@ -474,6 +482,7 @@ class ElasticsearchHandler
                 $this->_config = json_decode(file_get_contents($this->_config_file),true);
             }
         }
+        $this->_config['es_is'] = $GLOBALS['config']->get('config', 'es_is');
     }
 
     private function _indexToPlainText($string) {
