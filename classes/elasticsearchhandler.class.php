@@ -453,6 +453,7 @@ class ElasticsearchHandler
                 'es_i' => $GLOBALS['config']->get('config', 'es_i'),
                 'es_v' => $GLOBALS['config']->get('config', 'es_v'),
                 'es_c' => $GLOBALS['config']->get('config', 'es_c'),
+                'es_is' => $GLOBALS['config']->get('config', 'es_is')
             );
         } else {
             if(!empty($config)) {
@@ -462,7 +463,8 @@ class ElasticsearchHandler
                     'es_p' => $config['es_p'],  // Password
                     'es_i' => $config['es_i'],  // Index name
                     'es_v' => $config['es_v'],  // Validate SSL (bool)
-                    'es_c' => $config['es_c']   // Certificate path
+                    'es_c' => $config['es_c'],   // Certificate path
+                    'es_is' => $config['es_is']   // Include out of stock
                 );
                 $fh = fopen($this->_config_file,"wa+");
                 fwrite($fh,json_encode($es_config));
@@ -475,14 +477,14 @@ class ElasticsearchHandler
                     'es_p' => $glob['es_p'],  // Password
                     'es_i' => $glob['es_i'],  // Index name
                     'es_v' => $glob['es_v'],  // Validate SSL (bool)
-                    'es_c' => $glob['es_c']   // Certificate path
+                    'es_c' => $glob['es_c'],   // Certificate path
+                    'es_is' => isset($glob['es_is']) ? $glob['es_is'] : 1  // Include out of stock
                 );
                 $this->_config = $es_config;
             } else {
                 $this->_config = json_decode(file_get_contents($this->_config_file),true);
             }
         }
-        $this->_config['es_is'] = $GLOBALS['config']->get('config', 'es_is');
     }
 
     private function _indexToPlainText($string) {
