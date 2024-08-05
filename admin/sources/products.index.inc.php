@@ -929,7 +929,7 @@ if (isset($_GET['action'])) {
                     }
                 }
                 foreach ($tax_list as $tax_id => $details) {
-                    $details['selected'] = ($tax_id == $tax_type) ? 'selected="selected"' : '';
+                    $details['selected'] = ($tax_id == $tax_type) ? ' selected="selected"' : '';
                     $group['tax_types'][] = $details;
                 }
 
