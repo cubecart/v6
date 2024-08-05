@@ -2725,7 +2725,7 @@ class Cubecart
                         include $hook;
                     }
                     $GLOBALS['smarty']->assign('ORDERS', $vars['orders']);
-
+                    
                     $GLOBALS['smarty']->assign('PAGINATION', $GLOBALS['db']->pagination($order_count, $per_page, $page));
                 }
             }
