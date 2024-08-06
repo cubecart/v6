@@ -18,9 +18,9 @@ $features = array(
     '3620' => 'Elasticsearch: Feature to only index items that are in stock.',
     '3605' => 'Default Gravatar changed to person silhouette.',
     '3603' => 'Customer group discount by category.',
-    '3599' => 'Foundating skin to have styles related products on checkout.',
+    '3599' => 'Foundation skin to have styles related products on checkout.',
     '3595' => 'Promotional codes to be restricted by category.',
-    '3595' => 'Anonymouse reviews for unauthenticated customers.'
+    '3595' => 'Anonymous reviews for unauthenticated customers.'
 );
 $security = array(3622);
 $page_content = $GLOBALS['main']->newFeatures($_GET['node'], $features, 45, '', $security);
