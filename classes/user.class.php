@@ -792,7 +792,7 @@ class User
                 $GLOBALS['gui']->setError($GLOBALS['language']->account['error_password_length_max']);
                 return false;
             }
-            if (($check = $GLOBALS['db']->select('CubeCart_customer', array('customer_id', 'email'), "`email` = '$email' AND `verify` = '$verification'", false, 1, false, false)) !== false) {
+            if (($check = $GLOBALS['db']->select('CubeCart_customer', array('customer_id', 'email'), array('email' => $email, 'verify' => $verification), false, 1, false, false)) !== false) {
                 // Remove any blocks
                 $GLOBALS['db']->delete('CubeCart_blocker', array('username' => $email));
 
