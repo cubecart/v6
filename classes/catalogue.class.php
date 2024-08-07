@@ -1806,7 +1806,6 @@ class Catalogue
      */
     public function searchCatalogue($search_data = null, $page = 1, $per_page = 10, $search_mode = 'elastic')
     {
-        $this->_search_mode = $search_mode;
         if(isset($search_data['keywords']) && stristr('{search}', $search_data['keywords'])) return false;
         
         $per_page = (!is_numeric($per_page) || $per_page < 1) ? 10 : $per_page;
@@ -1869,6 +1868,7 @@ class Catalogue
                     $this->_category_count  = $result["hits"]["total"]["value"];
                     if(!empty($this->_category_products)) {
                         $this->_sort_by_relevance = true;
+                        $this->_search_mode = $search_mode;
                         return true;
                     } else {
                         $this->_elasticsearch = false;
