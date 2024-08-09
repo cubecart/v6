@@ -441,10 +441,8 @@ Thank you. We have received a payment of {$DATA.total} for order number {$DATA.c
   </email>
   <email name="newsletter.verify_email">
     <subject><![CDATA[Confirm your subscription]]></subject>
-    <content type="html"><![CDATA[<p>{$DATA.email} has been subscribed to our newsletter. To confirm your subscription please follow the link below:</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
-    <content type="text"><![CDATA[{$DATA.email} has been subscribed to our newsletter.
-
-To confirm your subscription please follow the link below:
+    <content type="html"><![CDATA[<p>{$DATA.email} has been submitted to subscribe to our newsletter. If this is you and you want to subscribe, please confirm your subscription using the link below:</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+    <content type="text"><![CDATA[{$DATA.email} has been submitted to subscribe to our newsletter. If this is you and you want to subscribe, please confirm your subscription using the link below:
 
 {$DATA.link}
 ]]></content>
