@@ -38,7 +38,7 @@
             </div>
             {/if}
             <div class="{if $review.gravatar_exists}small-9 medium-10{else}small-12{/if} columns review_copy">
-            <blockquote>{$review.review}<cite>{$review.name}{if !empty($review.date)} ({$review.date}){/if}</cite></blockquote>ß
+            <blockquote>{$review.review}<cite>{$review.name}{if !empty($review.date)} ({$review.date}){/if}</cite></blockquote>
             </div>
          </div>
       </div>
