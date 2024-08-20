@@ -1394,6 +1394,12 @@ class Smarty extends Smarty_Internal_TemplateBase
     public function muteUndefinedOrNullWarnings(): void {
         $this->isMutingUndefinedOrNullWarnings = true;
     }
+    /**
+     * Added for bckward compatibility for extensions that haven't been maintained
+     */
+    public function muteExpectedErrors(): void {
+        $this->isMutingUndefinedOrNullWarnings = true;
+    }
 
     /**
      * Indicates if PHP7 compatibility mode is set.
