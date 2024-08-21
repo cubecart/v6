@@ -338,7 +338,7 @@ if (isset($_GET['action'])) {
             }
             $GLOBALS['gui']->addBreadcrumb(($GLOBALS['config']->get('config', 'oid_mode') == 'i' && !empty($summary[0][$GLOBALS['config']->get('config', 'oid_col')])) ? $summary[0][$GLOBALS['config']->get('config', 'oid_col')] : $summary[0]['cart_order_id'], currentPage(array('print_hash')));
             // Load order inventory
-            if (($inventory = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('cart_order_id' => $summary[0]['cart_order_id']))) !== false) {
+            if (($inventory = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('cart_order_id' => $summary[0]['cart_order_id']), array('name' => 'ASC'))) !== false) {
                 $subtotal = 0;
                 $filemanager = new FileManager(FileManager::FM_FILETYPE_DL);
                 foreach ($inventory as $product) {
@@ -576,7 +576,7 @@ if (isset($_GET['action'])) {
         foreach ($summaries as $key => $summary) {
             $summary['raw'] = $summary;
             $GLOBALS['smarty']->assign('PAGE_TITLE', (count($_GET['print'])>1) ? $lang['orders']['title_invoices'] : sprintf($lang['orders']['title_invoice_x'], $summary['cart_order_id']));
-            if (($inventory = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('cart_order_id' => $summary['cart_order_id']))) !== false) {
+            if (($inventory = $GLOBALS['db']->select('CubeCart_order_inventory', false, array('cart_order_id' => $summary['cart_order_id']), array('name' => 'ASC'))) !== false) {
                 foreach ($inventory as $item) {
                     $item['raw'] = $item;
                     $item['item_price'] = Tax::getInstance()->priceFormat($item['price'], true);
