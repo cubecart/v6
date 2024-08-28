@@ -53,6 +53,7 @@ class Autoloader
      */
     public static function autoload($class)
     {
+        if(empty($class)) return false;
         
         //Don't double load
         if (class_exists($class)) {
@@ -90,6 +91,7 @@ class Autoloader
         //Loop through the include paths
         if (is_array(self::$_paths)) {
             foreach (self::$_paths as $path) {
+                if(empty($path)) continue;
                 if (file_exists($path.'/'.strtolower($class).'.class.php')) {
                     include_once $path.'/'.strtolower($class).'.class.php';
                     return true;
@@ -99,8 +101,7 @@ class Autoloader
                 }
             }
         }
-
-        return true;
+        return false;
     }
 
     /**
