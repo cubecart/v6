@@ -1359,6 +1359,7 @@ class Catalogue
                         $product_data['price'] = $price['price']<$product_data['price'] ? $price['price'] : $product_data['price'];
                         $product_data['sale_price'] = $price['sale_price']<$product_data['sale_price'] ? $price['sale_price'] : $product_data['sale_price'];
                     }
+                    unset($prices);
                 }
             }
 
