@@ -146,7 +146,7 @@
 				width: '90%',
 				height: '90%',
 				html:function(){ 
-					var content = editor.getSession().getValue().replace(/'/g,"&#39;");
+					var content = editor.getSession().getValue();
 					return '<iframe width=\'100%\' height=\'95%\' frameBorder=\'0\' srcdoc=\'<div style="margin: auto;width: 50%;">'+content+'</div>\'></iframe>';
 				}
 			}); 
@@ -232,7 +232,7 @@
 				width: '90%',
 				height: '90%',
 				html:function(){ 
-					var content = editor.getSession().getValue().replace(/'/g,"&#39;");
+					var content = editor.getSession().getValue();
 					return '<iframe width=\'100%\' height=\'95%\' frameBorder=\'0\' srcdoc=\'<div style="margin: auto;width: 50%;">'+content+'</div>\'></iframe>';
 				}
 			}); 
