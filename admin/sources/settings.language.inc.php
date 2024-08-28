@@ -163,10 +163,9 @@ if (isset($_GET['export'])) {
             $strings = $GLOBALS['language']->getStrings($module_name);
             $custom  = $GLOBALS['language']->getCustom($module_name, $_GET['language']);
         } else {
-            $breadcrumb = $_REQUEST['type'];
+            $breadcrumb = $type = $_REQUEST['type'];
+            $definitions = $GLOBALS['language']->getDefinitions($type);
             $strings = $GLOBALS['language']->getStrings($type);
-            $definitions = $GLOBALS['language']->getDefinitions($_REQUEST['type']);
-            $type  = $_REQUEST['type'];
             $custom  = $GLOBALS['language']->getCustom($type, $_GET['language']);
         }
 
