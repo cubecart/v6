@@ -27,8 +27,6 @@ require 'PHPMailer/src/Exception.php';
 
 class Mailer extends PHPMailer\PHPMailer\PHPMailer
 {
-    private $_debugger;
-
     private $_html;
     private $_text;
     private $_template_title;
