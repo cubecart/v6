@@ -98,7 +98,7 @@ function smarty_function_combine($params, &$smarty)
                         if ($params['type'] == 'js') {
                             $min = JSMin::minify($min).";";
                         } elseif ($params['type'] == 'css') {
-                            $min = CSSMin::minify(preg_replace('/url\\(((?>["\']?))(?!(\\/|http(s)?:|data:|#))(.*?)\\1\\)/', 'url("' . $dirname . '/$4")', $min));
+                            $min = CSSMin::minify(preg_replace('/url\\(((?>["\']?))(?!(\\/|http(s)?:|data:|#))(.*?)\\1\\)/', 'url("' . dirname(CC_ROOT_REL . $file['name']) . '/$4")', $min));
                         } else {
                             fputs($fh, PHP_EOL . PHP_EOL . '/* ' . $file['name'] . ' @ ' . date('c', $file['time']) . ' */' . PHP_EOL . PHP_EOL);
                         }
