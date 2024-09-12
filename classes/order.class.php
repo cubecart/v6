@@ -579,6 +579,10 @@ class Order
                             }
                         }
                     }
+                    if (isset($order_summary['coupon_data']) && !empty($order_summary['coupon_data'])) {
+                        $coupon_data = json_decode($order_summary['coupon_data'], true);
+                        $this->_processCoupons($coupon_data, $order_summary['customer_id'], $order_summary['cart_order_id']);
+                    }
 
                 break;
 
@@ -742,36 +746,25 @@ class Order
                     $GLOBALS['db']->insert('CubeCart_order_tax', $order_tax);
                 }
             }
+            // Log coupons used but don't use them
             if (isset($this->_basket['coupons']) && is_array($this->_basket['coupons'])) {
+                $certificates_used = $vouchers_used = array();
                 foreach ($this->_basket['coupons'] as $key => $data) {
                     if ($data['gc']) {
-                        // Update gift certificate balance
-                        $GLOBALS['db']->update('CubeCart_coupons', array('discount_price' => $data['remainder']), array('code' => $data['voucher']));
                         $certificates_used[] = $data['voucher'];
                     } else {
-                        $vouchers_used[] = $data['voucher'];
-                        // Update usage count
-                        $GLOBALS['db']->update('CubeCart_coupons', array('count' => '+1'), array('code' => $data['voucher']));
-                        
-                        $customer_id = isset($this->_basket['customer']['customer_id']) ? $this->_basket['customer']['customer_id'] : $this->_basket['billing_address']['customer_id'];
-                        $email = isset($this->_basket['customer']['email']) ? $this->_basket['customer']['email'] : $GLOBALS['user']->get('email');
-                        
-                        if($GLOBALS['db']->select('CubeCart_customer_coupon', '*', array('customer_id' => $customer_id), false, false, false, false)) {
-                            $GLOBALS['db']->update('CubeCart_customer_coupon', array('used' => '+1'), array('customer_id' => $customer_id, 'email' => $email, 'coupon' => $data['voucher']));
-                        } else {
-                            $GLOBALS['db']->insert('CubeCart_customer_coupon', array('coupon' => $data['voucher'],'used' => 1, 'customer_id' => $customer_id, 'email' => $email));
-                        }
+                        $vouchers_used[] = $data['voucher'];       
                     }
                 }
                 $note_content = '';
-                if (is_array($certificates_used)) {
+                if (!empty($certificates_used)) {
                     $note_content .= "\r\n".$GLOBALS['language']->orders['certificate_codes_used']."\r\n".implode("\r\n", $certificates_used);
                 }
-                if (is_array($vouchers_used)) {
+                if (!empty($vouchers_used)) {
                     $note_content .= "\r\n".$GLOBALS['language']->orders['discount_codes_used']."\r\n".implode("\r\n", $vouchers_used);
                 }
                 $this->addNote($this->_order_id, $note_content);
-            }
+            }       
             // Set order as 'Pending'
             $this->_basket['order_status'] = constant('ORDER_PENDING');
             foreach ($GLOBALS['hooks']->load('class.order.place_order.basket') as $hook) {
@@ -794,6 +787,23 @@ class Order
         // Go back to the basket page
         httpredir(currentPage(array('cart_order_id'), array('_a' => 'basket')));
         return false;
+    }
+
+    private function _processCoupons($coupon_data = array(), $customer_id, $email) {
+        foreach ($coupon_data as $k => $data) {
+            if ($data['gc']) {
+                // Update gift certificate balance
+                $GLOBALS['db']->update('CubeCart_coupons', array('discount_price' => $data['remainder']), array('code' => $data['voucher']));
+            } else {
+                // Update usage count
+                $GLOBALS['db']->update('CubeCart_coupons', array('count' => '+1'), array('code' => $data['voucher']));
+                if($GLOBALS['db']->select('CubeCart_customer_coupon', '*', array('customer_id' => $customer_id), false, false, false, false)) {
+                    $GLOBALS['db']->update('CubeCart_customer_coupon', array('used' => '+1'), array('customer_id' => $customer_id, 'email' => $email, 'coupon' => $data['voucher']));
+                } else {
+                    $GLOBALS['db']->insert('CubeCart_customer_coupon', array('coupon' => $data['voucher'],'used' => 1, 'customer_id' => $customer_id, 'email' => $email));
+                }
+            }
+        }
     }
 
     /**
@@ -1530,7 +1540,8 @@ class Order
             'lang'   => $GLOBALS['language']->current(),
             'ip_address' => get_ip_address(),
             'currency' => empty($currency) ? $GLOBALS['config']->get('config', 'default_currency') : $currency,
-            'credit_used' => (isset($this->_basket['credit_used']) && $this->_basket['credit_used']>0) ? $this->_basket['credit_used'] : 0
+            'credit_used' => (isset($this->_basket['credit_used']) && $this->_basket['credit_used']>0) ? $this->_basket['credit_used'] : 0,
+            'coupon_data' => (isset($this->_basket['coupons']) && is_array($this->_basket['coupons'])) ? json_encode($this->_basket['coupons']) : null
         );
         if(!empty($this->_basket['gateway'])) {
             $record['gateway'] = $this->_basket['gateway'];
