@@ -329,7 +329,7 @@ class Catalogue
         }
 
         // Sorting
-        $GLOBALS['smarty']->assign('SORTING', $this->_search_mode == 'elastic' ? false : $this->displaySort());
+        $GLOBALS['smarty']->assign('SORTING', $this->displaySort());
                 
         $GLOBALS['smarty']->assign('PAGE_SPLITS', $GLOBALS['gui']->perPageSplits());
         
@@ -1856,12 +1856,15 @@ class Catalogue
             if($search_mode == 'elastic') {
                 if($GLOBALS['config']->get('config', 'elasticsearch')=='1') {
                     $es = new ElasticsearchHandler;
-                    $es->query($search_data);
+                    $sort = isset($_REQUEST['sort']) ? $_REQUEST['sort'] : array();
+                    $es->query($search_data, $sort);
                     $result = $es->search($page, $per_page);
                     
                     $this->_category_products = array();
                     if($result) {
-                        foreach($result["hits"]["hits"] as $hit) {
+                        // Array reverse for sort by relevence DESC
+                        $hits = isset($_REQUEST['sort']['Relevance']) &&  $_REQUEST['sort']['Relevance'] == 'DESC' ? array_reverse($result["hits"]["hits"]) : $result["hits"]["hits"];
+                        foreach($hits as $hit) {
                             $p = $GLOBALS['db']->select('CubeCart_inventory', false, array('product_id' => $hit['_id']));
                             $this->_category_products[] = $p[0];
                         }

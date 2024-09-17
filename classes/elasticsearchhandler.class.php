@@ -237,7 +237,7 @@ class ElasticsearchHandler
     /**
      * Create search query to execute later
      */
-    public function query($search) {
+    public function query($search, $sort = array()) {
         if(!isset($search['keywords'])) return false;
         $q = $search['keywords'];
         $must = [];
@@ -342,7 +342,41 @@ class ElasticsearchHandler
                     'must'      => array_merge($must,[['bool' => ['should' => $should]]])   
                 ]
             ]
-        ];  
+        ];
+        if(!empty($sort)) {
+            // Map: stock_level, price_to_pay, date_added, product_name
+            foreach ($sort as $field => $direction) {
+                switch(strtolower($field)) {
+                    case 'name':
+                        $f = 'product_name';
+                    break;
+                    case 'date_added':
+                        $f = 'date_added';
+                    break;
+                    case 'stock_level':
+                        $f = 'stock_level';
+                    break;
+                    case 'price':
+                        $f = 'price_to_pay';
+                    break;
+                    default:
+                        $f = '';
+                }
+                switch(strtolower($direction)) {
+                    case 'asc':
+                        $d = 'asc';
+                    break;
+                    case 'desc':
+                        $d = 'desc';
+                    break;
+                    default:
+                        $d = '';
+                }
+            }
+            if(!empty($f) && !empty($d)) {
+                $this->_search_body = array_merge($this->_search_body, ['sort' => [$f => $d]]);
+            }
+        }
     }
    
 
@@ -519,7 +553,7 @@ class ElasticsearchHandler
         $cat = $GLOBALS['db']->select('CubeCart_category_index', array('cat_id'), array('product_id' => $product['product_id'], 'primary' => 1));
         $seo = SEO::getInstance();
         $this->_index_body = array(
-            'name'          => (string)$product['name'],
+            'name'          => (string)$product['name'], ## We can't sort on autocomplete mappings (hence `product_name`)
             'product_code'  => (string)$product['product_code'],
             'upc'           => (string)$product['upc'],
             'ean'           => (string)$product['ean'],
@@ -529,13 +563,15 @@ class ElasticsearchHandler
             'mpn'           => (string)$product['mpn'],
             'thumbnail'     => (string)$GLOBALS['gui']->getProductImage($product['product_id'], 'thumbnail', 'relative'),
             'description'   => (string)$this->_indexToPlainText($product['description']),
-            'price_to_pay'  => (float)round($product['price_to_pay'],2),
             'category'      => (string)$seo->getDirectory((int)$cat[0]['cat_id'], false, ' ', false, false),
             'manufacturer'  => (string)$GLOBALS['catalogue']->getManufacturer($product['manufacturer']),
             'manufacturer_id'  => (int)$product['manufacturer'],
             'featured'      => (int)$product['featured'],
-            'stock_level'   => (int)$GLOBALS['catalogue']->getProductStock($product['product_id']),
-            'digital'       => (int)$product['digital']
+            'digital'       => (int)$product['digital'],
+            'date_added'       => (string)$product['date_added'], ## Sorter
+            'product_name'  => (string)$product['name'], ## Sorter
+            'stock_level'   => (int)$GLOBALS['catalogue']->getProductStock($product['product_id']), ## Sorter
+            'price_to_pay'  => (float)round($product['price_to_pay'],2) ## Sorter
         );
     }
 }
