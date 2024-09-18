@@ -134,6 +134,12 @@ class ElasticsearchHandler
                         'name' => [
                             'type' => 'text',
                             'analyzer' => 'autocomplete'
+                        ],
+                        'date_added' => [
+                            'type' => 'keyword'
+                        ],
+                        'product_name' => [
+                            'type' => 'keyword'
                         ]
                     ]
                 ]

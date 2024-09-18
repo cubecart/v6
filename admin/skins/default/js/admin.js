@@ -157,7 +157,7 @@ function ajaxElasticSearch(e) {
             return false;
         }
         if(i.es_count !== false && i.es_size !== false) {
-            $("#es_count").html(i.es_count);
+            $("#es_count").html(i.es_count).toLocaleString();
             $("#es_size").html(i.es_size);
         }
         $("div#progress_bar").css({
