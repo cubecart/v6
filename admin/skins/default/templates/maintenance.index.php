@@ -286,7 +286,7 @@
 		</thead>
 		<tbody>
 			<tr>
-				<td id="es_count" class="text-center">{$ES_STATS.count}</td>
+				<td id="es_count" class="text-center">{number_format($ES_STATS.count)}</td>
 				<td id="es_size" class="text-center">{$ES_STATS.size}</td>
 			</tr>
 		</tbody>
