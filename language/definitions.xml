@@ -99,21 +99,21 @@
     <string name="title_login_acp" introduced="5.0.0"><![CDATA[Store Control Panel Login]]></string>
     <string name="title_password_new" introduced="5.0.0"><![CDATA[Please enter a new password]]></string>
     <string name="update_your_details" introduced="5.0.0"><![CDATA[Your existing details can be edited below.]]></string>
-    <string name="update_your_password" introduced="5.0.0"><![CDATA[To change your password please verify your existing one then enter and confirm a new one.]]></string>
+    <string name="update_your_password" introduced="5.0.0"><![CDATA[Please verify your existing password then enter and confirm a new one.]]></string>
     <string name="user_id" introduced="5.0.0"><![CDATA[User ID]]></string>
     <string name="username" introduced="5.0.0"><![CDATA[Username]]></string>
     <string name="validation_key" introduced="5.0.0"><![CDATA[Validation Key]]></string>
     <string name="welcome_back" introduced="5.0.0"><![CDATA[Welcome back, %1$s %2$s]]></string>
     <string name="welcome_back_guest" introduced="5.0.0"><![CDATA[Welcome back, Guest!]]></string>
     <string name="welcome_guest" introduced="5.0.0"><![CDATA[Hi, Guest!]]></string>
-    <string name="your_account" introduced="5.0.0"><![CDATA[Your Account]]></string>
+    <string name="your_account" introduced="5.0.0"><![CDATA[Account]]></string>
     <string name="my_account" introduced="6.0.0"><![CDATA[My Account]]></string>
     <string name="your_addressbook" introduced="5.0.0"><![CDATA[Address Book]]></string>
     <string name="your_details" introduced="5.0.0"><![CDATA[Profile]]></string>
     <string name="your_downloads" introduced="5.0.0"><![CDATA[Digital Downloads]]></string>
     <string name="your_order" introduced="5.0.0"><![CDATA[Your Order]]></string>
-    <string name="your_orders" introduced="5.0.0"><![CDATA[Order History]]></string>
-    <string name="your_orders_explained" introduced="5.0.0"><![CDATA[Your past and existing orders are listed here.]]></string>
+    <string name="your_orders" introduced="5.0.0"><![CDATA[Orders]]></string>
+    <string name="your_orders_explained" introduced="5.0.0"><![CDATA[Past and existing orders are listed here.]]></string>
     <string name="your_subscription" introduced="5.0.0"><![CDATA[Newsletter Subscriptions]]></string>
   </group>
   <group name="address">
@@ -1879,7 +1879,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="certificate_codes_used" introduced="5.0.0"><![CDATA[Gift Cards Used:]]></string>
     <string name="discount_codes_used" introduced="5.0.0"><![CDATA[Discount Codes Used:]]></string>
     <string name="gateway_name" introduced="5.0.0"><![CDATA[Gateway]]></string>
-    <string name="my_order" introduced="5.0.0"><![CDATA[My Order]]></string>
+    <string name="my_order" introduced="5.0.0"><![CDATA[Order]]></string>
     <string name="note_content" introduced="5.0.0"><![CDATA[Internal Note Content]]></string>
     <string name="note_content_public" introduced="6.0.0"><![CDATA[Public Note Content]]></string>
     <string name="note_explain_email" introduced="6.0.0"><![CDATA[These notes CAN be viewed by the customer and will be appended to order notifications.]]></string>
