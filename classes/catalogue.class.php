@@ -1807,7 +1807,7 @@ class Catalogue
      */
     public function searchCatalogue($search_data = null, $page = 1, $per_page = 10, $search_mode = 'elastic')
     {
-        if(isset($search_data['keywords']) && stristr('{search}', $search_data['keywords'])) return false;
+        if(isset($search_data['keywords']) && !empty($search_data['keywords']) && stristr('{search}', $search_data['keywords'])) return false;
         
         $per_page = (!is_numeric($per_page) || $per_page < 1) ? 10 : $per_page;
 
