@@ -207,7 +207,7 @@
 	</div>
   </form>
 </div>
-<div id="footer">eCommerce by <a href="http://www.cubecart.com">CubeCart</a></div>
+<div id="footer">eCommerce by <a href="https://www.cubecart.com">CubeCart</a></div>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
 <script type="text/javascript" src="../js/plugins/jquery.pstrength.js"></script>

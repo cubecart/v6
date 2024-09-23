@@ -6,6 +6,6 @@
 *}
 <div class="row" id="ccpower">
 	<div class="large-12 columns text-center">
-		<p>eCommerce by <a href="http://www.cubecart.com">CubeCart</a></p>
+		<p>eCommerce by <a href="https://www.cubecart.com">CubeCart</a></p>
 	</div>
 </div>

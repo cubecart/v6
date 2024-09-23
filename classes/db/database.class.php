@@ -306,7 +306,7 @@ class Database_Contoller
      */
     public function doSQLBackup($dropTables = false, $incStructure = true, $incRows = true, $file_name = '', $compress = false, $all_tables = false)
     {
-        $open_text = "-- --------------------------------------------------------\n-- CubeCart SQL Dump\n-- version ".CC_VERSION."\n-- http://www.cubecart.com\n-- \n-- Host: ".$GLOBALS['config']->get('config', 'dbhost')."\n-- Generation Time: ".date($GLOBALS['config']->get('config', 'time_format'), time())."\n-- Server version: ".$this->serverVersion()."\n-- PHP Version: ".phpversion()."\n-- \n-- Database: `".$GLOBALS['config']->get('config', 'dbdatabase')."`\n";
+        $open_text = "-- --------------------------------------------------------\n-- CubeCart SQL Dump\n-- version ".CC_VERSION."\n-- https://www.cubecart.com\n-- \n-- Host: ".$GLOBALS['config']->get('config', 'dbhost')."\n-- Generation Time: ".date($GLOBALS['config']->get('config', 'time_format'), time())."\n-- Server version: ".$this->serverVersion()."\n-- PHP Version: ".phpversion()."\n-- \n-- Database: `".$GLOBALS['config']->get('config', 'dbdatabase')."`\n";
         
         $fp = fopen($file_name, 'w');
         fwrite($fp, $open_text);
