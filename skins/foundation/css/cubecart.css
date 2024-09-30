@@ -103,6 +103,9 @@ div.alert-box a {
 	color: #fff;
 	text-decoration: underline;
 }
+div.alert-box a.close {
+    text-decoration: none;
+}
 
 /* Start Mini Basket */
 .basket-detail-container {
