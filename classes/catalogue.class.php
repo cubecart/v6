@@ -2117,7 +2117,7 @@ class Catalogue
                             $regexp = substr($regexp, 0, strlen($regexp)-2);
                             $regexp_desc = substr($regexp_desc, 0, strlen($regexp_desc)-2);
                         }
-                        $like[$i] = "(I.name ".$like_keyword." '".$regexp."' OR I.description ".$like_keyword." '".$regexp_desc."' OR I.product_code ".$like_keyword." '".$regexp."')";
+                        $like[$i] = "(I.name ".$like_keyword." '".addslashes($regexp)."' OR I.description ".$like_keyword." '".addslashes($regexp_desc)."' OR I.product_code ".$like_keyword." '".addslashes($regexp)."')";
                     }
                   }
                   $likeString = ' AND ('.implode(' OR ',$like).')';
