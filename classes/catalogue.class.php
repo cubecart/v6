@@ -1105,7 +1105,7 @@ class Catalogue
             }
             $result = $GLOBALS['db']->query($query);
         } else {
-            $result = $GLOBALS['db']->select('CubeCart_inventory', false, $where, $order, $per_page, $page);
+            $result = $GLOBALS['db']->select('CubeCart_inventory', false, $where, $order, $per_page, $page, false, false);
         }
 
         // Get product option specific data
@@ -1663,6 +1663,7 @@ class Catalogue
         if ($product['use_stock_level']) {
             // Get Stock Level
             $stock_level = $this->getProductStock($product['product_id'], null, true);
+            $product['stock_level'] = $stock_level;
             if ((int)$stock_level <= 0) {
                 // Out of Stock
                 if (!$GLOBALS['config']->get('config', 'basket_out_of_stock_purchase')) {
