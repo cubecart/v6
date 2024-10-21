@@ -114,6 +114,7 @@ $fields = array(
     'country_d',
     'postcode_d',
     'phone',
+    'mobile',
     'email',
     'gateway'
 );
