@@ -112,13 +112,14 @@ class Order
      * @param string $note
      * @return bool
      */
-    public function addNote($order_id = null, $note = null)
+    public function addNote($order_id = null, $note = null, $print = true)
     {
         if (!empty($order_id) && !empty($note)) {
             $record = array(
                 'cart_order_id' => $order_id,
                 'time'   => time(),
-                'content'  => $note
+                'content'  => $note,
+                'print' => $print ? '1' : '0'  
             );
             // Check for duplicates...
             if ($GLOBALS['db']->select('CubeCart_order_notes', 'note_id', array('cart_order_id' => $order_id, 'content' => $note))) {
@@ -1560,7 +1561,11 @@ class Order
         }
 
         if ($GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id'), array('cart_order_id' => $this->_order_id), false, false, false, false)) {
-            $this->addNote($this->_order_id, sprintf($GLOBALS['language']->orders['order_updated_via_basket'], $this->_basket['billing_address']['first_name']));
+            $this->addNote(
+                $this->_order_id,
+                sprintf($GLOBALS['language']->orders['order_updated_via_basket'], $this->_basket['billing_address']['first_name']),
+                false
+            );
             $update = true;
         }
 

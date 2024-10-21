@@ -628,7 +628,7 @@ if (isset($_GET['action'])) {
             $summary['weight'] = (float)$summary['weight'];
             $summary['ship_tracking']  = parseUrlToLink($summary['ship_tracking'] ?? '');
 
-            if (($notes = $GLOBALS['db']->select('CubeCart_order_notes', false, array('cart_order_id' => $summary['cart_order_id']))) !== false) {
+            if (($notes = $GLOBALS['db']->select('CubeCart_order_notes', false, array('cart_order_id' => $summary['cart_order_id'], 'print' => '1'))) !== false) {
                 foreach ($notes as $key => $note) {
                     $summary['notes'][] = $note['content'].'<br />';
                 }

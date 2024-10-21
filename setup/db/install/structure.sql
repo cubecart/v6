@@ -749,8 +749,12 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_notes` (
 	`cart_order_id` varchar(18) NOT NULL,
 	`time` int(11) UNSIGNED NOT NULL,
 	`content` text NOT NULL,
+	`print` enum('0','1') NOT NULL DEFAULT '1',
 	PRIMARY KEY (`note_id`),
-	KEY `admin_id` (`admin_id`,`cart_order_id`,`time`),
+	KEY `admin_id` (`admin_id`),
+	KEY `cart_order_id` (`cart_order_id`),
+	KEY `time` (`time`),
+	KEY `print` (`print`),
 	FULLTEXT KEY `content` (`content`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
