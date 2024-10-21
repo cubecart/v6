@@ -726,8 +726,9 @@ class SEO
                             $GLOBALS['db']->update('CubeCart_seo_urls', array('redirect' => 301), array('id' => $e['id']));
                         }
                     }
-                    if(!$match) {
-                        $GLOBALS['db']->insert('CubeCart_seo_urls', array('redirect' => 0, 'type' => $type, 'item_id' => $item_id, 'path' => $path, 'custom' => $custom));
+                    $insert_data = array('redirect' => 0, 'type' => $type, 'item_id' => $item_id, 'path' => $path, 'custom' => $custom);
+                    if(!$match && !$GLOBALS['db']->select('CubeCart_seo_urls', false, $insert_data, false, false, false, false)) {
+                        $GLOBALS['db']->insert('CubeCart_seo_urls', $insert_data);
                     }
                 }
             } else {
