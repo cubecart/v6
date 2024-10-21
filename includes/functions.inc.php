@@ -1011,6 +1011,9 @@ function version_clean($version)
  */
 function parseUrlToLink($text = '', $target = '_blank')
 {
+    if(empty($text)) {
+        return '';
+    }
 	$regex = '<https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)>';
 	return preg_replace($regex, '<a href="$0" target="$target">$0</a>', $text);
 }
