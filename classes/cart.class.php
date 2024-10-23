@@ -584,6 +584,21 @@ class Cart
 
                 $include = array();
 
+                // Check shipping is allowed
+                if (!empty($coupon['shipping_id'])) {
+                    $qualifying_shipping = unserialize($coupon['shipping_id']);
+                    if(is_array($qualifying_shipping) && count($qualifying_shipping)>0) {
+                        $proceed = false;
+                        if(in_array($this->basket["shipping"]["folder"], $qualifying_shipping)) {
+                            $proceed = true;
+                        }
+                        if(!$proceed) {
+                            $GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_shipping']);
+                            return false;
+                        }
+                    }
+                }
+
                 // Check manufacturer is allowed
                 if (!empty($coupon['manufacturer_id'])) {
                     $qualifying_manufacturers = unserialize($coupon['manufacturer_id']);

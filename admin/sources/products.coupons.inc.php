@@ -55,6 +55,7 @@ if (isset($_POST['coupon']) && is_array($_POST['coupon'])) {
         'product_id' => null,
         'manufacturer_id' => serialize($_POST['coupon']['manufacturer']),
         'category_id' => serialize($_POST['coupon']['category']),
+        'shipping_id' => serialize($_POST['coupon']['shipping']),
         'starts'  => $_POST['coupon']['starts'],
         'expires'  => $_POST['coupon']['expires'],
         'allowed_uses' => (int)$_POST['coupon']['allowed_uses'],
@@ -227,6 +228,20 @@ if (isset($_GET['action'])) {
         }
         $GLOBALS['smarty']->assign('CATEGORIES', $smarty_data['categories']);
     }
+    if($shipping = $GLOBALS['db']->select('CubeCart_modules', array('folder'), array('module' => 'shipping', 'status' => 1))) {
+        // List shipping methods
+        if (is_array(unserialize($coupon[0]['shipping_id']))) {
+            $shipping_assigned = array_flip(unserialize($coupon[0]['shipping_id']));
+        }
+        $shipping_data = array();
+        foreach($shipping as $s) {
+            $shipping_data[$s['folder']] = isset($shipping_assigned[$s['folder']]);
+        }
+    } else {
+        $shipping_data = array();
+    }
+    $GLOBALS['smarty']->assign('SHIPPING', $shipping_data);
+    
     $GLOBALS['smarty']->assign('DISPLAY_FORM', true);
 } else {
     $GLOBALS['main']->addTabControl($lang['catalogue']['title_coupons'], 'coupons', null, 'C');

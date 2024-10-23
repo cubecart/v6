@@ -247,6 +247,8 @@
     <string name="your_comments" introduced="5.0.0"><![CDATA[Delivery Notes or Additional Comments]]></string>
   </group>
   <group name="catalogue">
+    <string name="shipping_limit" introduced="6.5.7"><![CDATA[Limit to shipping method]]></string>
+    <string name="choose_shipping" introduced="6.5.7"><![CDATA[Choose shipping method&hellip;]]></string>
     <string name="internal_use_only" introduced="6.5.6"><![CDATA[Internal use only]]></string>
     <string name="parse_content" introduced="6.5.4"><![CDATA[Parse <a href="https://www.smarty.net/docs/en/" target="_blank">Smarty Tags</a> (Opens in new window)]]></string>
     <string name="product_not_found" introduced="6.5.2"><![CDATA[Product not found.]]></string>
@@ -594,6 +596,7 @@
     <string name="sort_stock" introduced="5.0.0"><![CDATA[Stock]]></string>
   </group>
   <group name="checkout">
+    <string name="error_voucher_shipping" introduced="6.5.7"><![CDATA[Sorry but that voucher isn't allowed for the chosen shipping method.]]></string>
     <string name="error_voucher_sales_items_excluded" introduced="6.4.10"><![CDATA[Sorry, that code is not valid for sale items.]]></string>
     <string name="error_voucher_used_already" introduced="6.4.6"><![CDATA[Sorry, but that code has been used to it's maximum <em>per-user</em> allowance.]]></string>
     <string name="error_voucher_free_shipping" introduced="6.4.0"><![CDATA[Sorry but that voucher can't be used when shipping is free of charge.]]></string>

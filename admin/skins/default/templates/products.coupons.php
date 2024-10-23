@@ -135,6 +135,17 @@
 			{foreach from=$CATEGORIES item=category}
 			<option value="{$category.id}"{if $category.selected} selected="selected"{/if}>{$category.name}</option>
             {/foreach}
+		</select>
+		</span>
+	  </div>
+	  <div>
+		<label for="form-shipping">{$LANG.catalogue.shipping_limit}</label>
+		<span>
+		<select name="coupon[shipping][]" id="form-shipping" data-placeholder="{$LANG.catalogue.choose_shipping}" multiple class="chzn-select">
+			{foreach from=$SHIPPING key=k item=v}
+			<option value="{$k}"{if $v} selected="selected"{/if}>{ucwords(str_replace('_',' ',$k))}</option>
+            {/foreach}
+		</select>
 		</span>
 	  </div>
 	  <input type="hidden" name="coupon[coupon_id]" value="{$COUPON.coupon_id}">

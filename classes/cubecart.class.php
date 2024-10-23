@@ -1772,6 +1772,7 @@ class Cubecart
                 
                 $offset_matched = false;
                 foreach ($shipping as $ship_name => $methods) {
+                    $folder = str_replace(" ", "_", $ship_name);
                     $label = (!is_numeric($ship_name) && !empty($ship_name)) ? str_replace('_', ' ', $ship_name) : null;
                     foreach ($methods as $data) {
                         if (isset($data['tax_inclusive']) && (bool)$data['tax_inclusive']) {
@@ -1785,6 +1786,7 @@ class Cubecart
 
                         $value = array(
                             'offset' 	=> $offset,
+                            'folder'    => $folder,
                             'name'		=> $ship_name, // e.g. UPS
                             'product'	=> $data['name'], // e.g. Ground
                             'value'		=> $data['value'],
