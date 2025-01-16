@@ -158,6 +158,9 @@
             {if !$gr_compatibility.h}
             <div><strong>{$LANG.settings.hCAPTCHA_na}</strong></div>
             {/if}
+            {if !$gr_compatibility.t}
+            <div><strong>{$LANG.settings.turnstile_na}</strong></div>
+            {/if}
          </div>
       </fieldset>
       <fieldset>

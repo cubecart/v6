@@ -754,11 +754,34 @@ class GUI
         if ($this->recaptchaRequired()) {
             $recaptcha['error'] = null;
             $recaptcha['confirmed'] = false;
-            if($GLOBALS['config']->get('config', 'recaptcha')=='4') {
+            if($GLOBALS['config']->get('config', 'recaptcha')=='5') {
+                if (empty($_POST['cf-turnstile-response'])) {
+                    $recaptcha['error'] = $GLOBALS['language']->form['verify_human_fail'];
+                } else {
+                    $data = array(
+                        'secret' => $GLOBALS['config']->get('config', 'recaptcha_secret_key'),
+                        'response' => $_POST['cf-turnstile-response']
+                    );
+                    $request = new Request('challenges.cloudflare.com', '/turnstile/v0/siteverify');
+                    $request->setMethod('post');
+                    $request->cache(false);
+                    $request->setSSL();
+                    $request->setData($data);
+
+                    $response = $request->send();
+                    
+                    $result = json_decode($response);
+                    if ($result->success) {
+                        $recaptcha['confirmed'] = true;
+                    } else {
+                        $recaptcha['error'] = $GLOBALS['language']->form['verify_human_fail'];
+                    }
+                }
+            } elseif($GLOBALS['config']->get('config', 'recaptcha')=='4') {
                 if (empty($_POST['h-captcha-response'])) {
                     $recaptcha['error'] = $GLOBALS['language']->form['verify_human_fail'];
                 } else {
-                    $h_data = array(
+                    $data = array(
                         'secret' => $GLOBALS['config']->get('config', 'recaptcha_secret_key'),
                         'response' => $_POST['g-recaptcha-response']
                     );
@@ -766,12 +789,12 @@ class GUI
                     $request->setMethod('get');
                     $request->cache(false);
                     $request->setSSL();
-                    $request->setData($h_data);
+                    $request->setData($data);
 
                     $response = $request->send();
-                    $h_result = json_decode($response);
+                    $result = json_decode($response);
 
-                    if ($h_result->success) {
+                    if ($result->success) {
                         $recaptcha['confirmed'] = true;
                     } else {
                         $recaptcha['error'] = $GLOBALS['language']->form['verify_human_fail'];
@@ -781,7 +804,7 @@ class GUI
                 if (empty($_POST['g-recaptcha-response'])) {
                     $recaptcha['error'] = $GLOBALS['language']->form['verify_human_fail'];
                 } else {
-                    $g_data = array(
+                    $data = array(
                         'secret' => $GLOBALS['config']->get('config', 'recaptcha_secret_key'),
                         'response' => $_POST['g-recaptcha-response'],
                         'remoteip' => get_ip_address()
@@ -790,12 +813,12 @@ class GUI
                     $request->setMethod('get');
                     $request->cache(false);
                     $request->setSSL();
-                    $request->setData($g_data);
+                    $request->setData($data);
 
                     $response = $request->send();
-                    $g_result = json_decode($response);
+                    $result = json_decode($response);
                     
-                    if ($g_result->success) {
+                    if ($result->success) {
                         $recaptcha['confirmed'] = true;
                     } else {
                         $recaptcha['error'] = $GLOBALS['language']->form['verify_human_fail'];
