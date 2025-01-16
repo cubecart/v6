@@ -1725,6 +1725,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title" introduced="5.0.0"><![CDATA[Shop by Category]]></string>
   </group>
   <group name="newsletter">
+    <string name="disabled_notice" introduced="6.5.7"><![CDATA[<strong>Notice:</strong> Newsletter functionality is currently disabled on the front end.]]></string>
     <string name="subscriber_log" introduced="6.5.4"><![CDATA[Newsletter with subject %s (%s) sent.]]></string>
     <string name="test_subscriber_log" introduced="6.5.4"><![CDATA[Test newsletter with subject %s (%s) sent.]]></string>
     <string name="no_subscribers" introduced="6.2.9"><![CDATA[There are no subscribers in your mailing list.]]></string>
@@ -2042,9 +2043,9 @@ This email is sent from the store's master email address but it is possible to r
     <string name="cheapest_not_free" introduced="6.2.7"><![CDATA[Cheapest but not free]]></string>
     <string name="most_expensive" introduced="6.2.7"><![CDATA[Most expensive]]></string>
     <string name="shipping_defaults" introduced="6.2.7"><![CDATA[Default Shipping Selection]]></string>
-    <string name="enable_exit_modal" introduced="6.2.6"><![CDATA[Enable exit modal newsletter signup]]></string>
+    <string name="enable_exit_modal" introduced="6.2.6"><![CDATA[Show exit model when enabled]]></string>
     <string name="gdpr" introduced="6.2.0"><![CDATA[General Data Protection Regulation (GDPR)]]></string>
-    <string name="dbl_opt" introduced="6.2.0"><![CDATA[Marketing Double Opt-In]]></string>
+    <string name="dbl_opt" introduced="6.2.0"><![CDATA[Double Opt-In (Required under GDPR)]]></string>
     <string name="reCAPTCHA_v2_na" introduced="6.1.6"><![CDATA[Warning: It doesn't look like your current skin is compatible with reCAPTCHA v2.]]></string>
     <string name="reCAPTCHA_invisible_na" introduced="6.1.6"><![CDATA[Warning: It doesn't look like your current skin is compatible with Invisible reCAPTCHA.]]></string>
     <string name="hCAPTCHA_na" introduced="6.5.2"><![CDATA[Warning: It doesn't look like your current skin is compatible with hCAPTCHA.]]></string>

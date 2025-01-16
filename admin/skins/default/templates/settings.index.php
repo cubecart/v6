@@ -165,7 +165,20 @@
       </fieldset>
       <fieldset>
          <legend>{$LANG.navigation.nav_subscribers}</legend>
+         <div><label for="newsletter_status">{$LANG.common.status}</label><span>
+            <select name="config[newsletter_status]" id="newsletter_status" class="textbox">
+            {foreach from=$OPT_NEWSLETTER_STATUS item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
+            </select>
+         </span></div>
          <div><label for="exit_modal">{$LANG.settings.enable_exit_modal}</label><span><input name="config[exit_modal]" id="exit_modal" type="hidden" class="toggle" value="{$CONFIG.exit_modal}"></span></div>
+         <div><label for="dbl_opt">{$LANG.settings.dbl_opt}</label><span>
+         {if isset($CONFIG.subscribe_mode_lax) && $CONFIG.subscribe_mode_lax=='1'}
+            <input name="config[dbl_opt]" id="dbl_opt" type="hidden" class="toggle" value="{$CONFIG.dbl_opt}">
+         {else}
+            <input name="config[dbl_opt]" id="dbl_opt" type="hidden" value="1">
+            <img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/1_checkbox.png">
+         {/if}
+         </span></div>
       </fieldset>
       <fieldset>
          <legend>{$LANG.address.w3w} - <a href="https://what3words.com/business/ecommerce/" target="_blank">{$LANG.common.learn_more}</a></legend>
@@ -586,14 +599,6 @@
       </fieldset>
       <fieldset>
          <legend>{$LANG.settings.gdpr}</legend>
-         <div><label for="dbl_opt">{$LANG.settings.dbl_opt}</label><span>
-         {if isset($CONFIG.subscribe_mode_lax) && $CONFIG.subscribe_mode_lax=='1'}
-            <input name="config[dbl_opt]" id="dbl_opt" type="hidden" class="toggle" value="{$CONFIG.dbl_opt}">
-         {else}
-            <input name="config[dbl_opt]" id="dbl_opt" type="hidden" value="1">
-            <img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/1_checkbox.png">
-         {/if}
-         </span></div>
          <div><label for="cookie_dialogue">{$LANG.settings.cookie_dialogue}</label><span><input name="config[cookie_dialogue]" id="cookie_dialogue" type="hidden" class="toggle" value="{$CONFIG.cookie_dialogue}"></span></div>
       </fieldset>
    </div>

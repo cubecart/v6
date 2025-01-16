@@ -471,7 +471,8 @@ $select_options = array(
     'seo_cat_add_cats'      => array('1' => $lang['common']['yes'], '0' => $lang['common']['no']),
     'seo_ext'      => array('' => $lang['common']['none'].' ('.$lang['common']['recommended'].')', '.html' => '.html'),
     'oid_mode'      => array('t' => $lang['orders']['id_traditional'], 'i' => $lang['orders']['id_incremental']),
-    'shipping_defaults' => array('0' => $lang['common']['cheapest'], '1' => $lang['settings']['cheapest_not_free'], '2' => $lang['settings']['most_expensive'])
+    'shipping_defaults' => array('0' => $lang['common']['cheapest'], '1' => $lang['settings']['cheapest_not_free'], '2' => $lang['settings']['most_expensive']),
+    'newsletter_status' => array('1' => $lang['common']['enabled'], '0' => $lang['common']['disabled'])
 );
 $current_skin_path = CC_ROOT_DIR.'/skins/'.$GLOBALS['config']->get('config', 'skin_folder').'/templates/';
 $gr_compatibility = array(

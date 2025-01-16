@@ -219,6 +219,9 @@ class Newsletter
      */
     public function subscribe($email = false, $customer_id = null)
     {
+        if($GLOBALS['config']->get('config', 'newsletter_status')==='0') {
+            return false;
+        }
         $checkout = in_array($_GET['_a'], array('confirm','checkout','basket')) ? true : false;
         if ($checkout && $GLOBALS['config']->get('config', 'dbl_opt')=='1' && $GLOBALS['session']->has('dbl_opted') && $GLOBALS['session']->get('dbl_opted')==$email) {
             return false;
@@ -283,6 +286,9 @@ class Newsletter
      */
     public function unsubscribe($email = false, $customer_id = false)
     {
+        if($GLOBALS['config']->get('config', 'newsletter_status')==='0') {
+            return false;
+        }
         // Unsubscribe the user
         $removed = false;
         if (ctype_digit($customer_id) && $customer_id > 0) {

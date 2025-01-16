@@ -12,6 +12,9 @@
 {if isset($DISPLAY_FORM)}
 <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
    <div id="general" class="tab_content">
+   {if $CONFIG.newsletter_status=='0'}
+   <p>{$LANG.newsletter.disabled_notice}</p>
+   {/if}
       <fieldset>
          <legend>{$LANG.email.title_overview}</legend>
          <div><label for="email_subject">{$LANG.email.news_subject}</label><span><input type="text" name="newsletter[subject]" id="email_subject" class="required textbox" value="{$NEWSLETTER.subject}"></span></div>
@@ -72,7 +75,10 @@
 {/if}
 {if isset($DISPLAY_LIST)}
 <div id="newsletter-list" class="tab_content">
-   <h3>{$LANG.email.title_newsletters}</h3>
+<h3>{$LANG.email.title_newsletters}</h3>
+   {if $CONFIG.newsletter_status=='0'}
+   <p>{$LANG.newsletter.disabled_notice}</p>
+   {/if}
    {if isset($NEWSLETTERS)}
    <table width="100%">
       <thead>

@@ -50,11 +50,13 @@
       <div class="small-12 large-8 columns"><span id="error_terms_agree"><input type="checkbox" id="terms" name="terms_agree" value="1" {$TERMS_CONDITIONS_CHECKED} rel="error_terms_agree"><label for="terms">{sprintf($LANG.account.register_terms_agree_link,$TERMS_CONDITIONS)}</label></span></div>
    </div>
    {/if}
+   {if !isset($CONFIG.newsletter_status) || $CONFIG.newsletter_status=='1'}
    <div class="row">
       <div class="small-12 large-8 columns">
          <input type="checkbox" id="mailing" name="mailing_list" value="1" {if isset($DATA.mailing_list) && $DATA.mailing_list == 1}checked{/if}><label for="mailing">{$LANG.account.register_mailing}</label>
       </div>
    </div>
+   {/if}
    <div class="row">
       <div class="small-12 large-8 columns clearfix">
       	  <input type="hidden" name="register" value="1">

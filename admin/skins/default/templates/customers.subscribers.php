@@ -12,7 +12,10 @@
 <form action="{$VAL_SELF}" class="ignore-dirty" method="post" enctype="multipart/form-data">
    <div id="general" class="tab_content">
       <h3>{$LANG.navigation.nav_subscribers}</h3>
-      <fieldset class="width_30">
+      {if $CONFIG.newsletter_status=='0'}
+      <p>{$LANG.newsletter.disabled_notice}</p>
+      {/if}
+      <fieldset class="width_40">
             <legend>{$LANG.common.filter}</legend>
             <div>
                   <label class="narrow">{$LANG.statistics.search_term}</label>

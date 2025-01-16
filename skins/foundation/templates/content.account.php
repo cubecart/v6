@@ -20,7 +20,9 @@
    <li><a href="{$STORE_URL}/index.php?_a=vieworder" title="{$LANG.account.your_orders}" class="button secondary expand nomarg"><svg class="icon"><use xlink:href="#icon-truck"></use></svg> {$LANG.account.your_orders}</a></li>
    <li><a href="{$STORE_URL}/index.php?_a=addressbook" title="{$LANG.account.your_addressbook}" class="button secondary expand nomarg"><svg class="icon"><use xlink:href="#icon-book"></use></svg> {$LANG.account.your_addressbook}</a></li>
    <li><a href="{$STORE_URL}/index.php?_a=downloads" title="{$LANG.account.your_downloads}" class="button secondary expand nomarg"><svg class="icon"><use xlink:href="#icon-download"></use></svg> {$LANG.account.your_downloads}</a></li>
+   {if !isset($CONFIG.newsletter_status) || $CONFIG.newsletter_status=='1'}
    <li><a href="{$STORE_URL}/index.php?_a=newsletter" title="{$LANG.account.your_subscription}" class="button secondary expand nomarg"><svg class="icon"><use xlink:href="#icon-envelope"></use></svg> {$LANG.account.your_subscription}</a></li>
+   {/if}
    {foreach from=$ACCOUNT_LIST_HOOKS item=list_item}
    <li><a href="{$list_item.href}" title="{$list_item.title}" class="button secondary expand nomarg">{if !empty($list_item.fa)}<svg class="icon"><use xlink:href="#icon-{$list_item.fa}"></use></svg> {/if}{$list_item.title}</a></li>
    {/foreach}

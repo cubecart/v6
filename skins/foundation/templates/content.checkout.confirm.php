@@ -42,12 +42,14 @@
       {/if}
    </div>
 </div>
-{if !$USER_SUBSCRIBED}
-<div class="row">
-   <div class="small-12 large-8 columns">
-      <input type="checkbox" id="mailing_list" name="mailing_list" value="1"><label for="mailing_list">{$LANG.account.register_mailing}</label>
+{if !isset($CONFIG.newsletter_status) || $CONFIG.newsletter_status=='1'}
+   {if !$USER_SUBSCRIBED}
+   <div class="row">
+      <div class="small-12 large-8 columns">
+         <input type="checkbox" id="mailing_list" name="mailing_list" value="1"><label for="mailing_list">{$LANG.account.register_mailing}</label>
+      </div>
    </div>
-</div>
+   {/if}
 {/if}
 {else}
 <div id="register_false_address" class="row{if empty($BILLING.line1)} hide{/if}">
@@ -188,11 +190,13 @@
    <div class="small-12 large-8 columns"><span id="error_terms_agree"><input type="checkbox" id="reg_terms" name="terms_agree" value="1" {$TERMS_CONDITIONS_CHECKED} rel="error_terms_agree"><label for="reg_terms">{sprintf($LANG.account.register_terms_agree_link,$TERMS_CONDITIONS)}</label></span></div>
 </div>
 {/if}
+{if !isset($CONFIG.newsletter_status) || $CONFIG.newsletter_status=='1'}
 <div class="row">
    <div class="small-12 large-8 columns">
       <input type="checkbox" id="mailing_list" name="mailing_list" value="1" {$MAILING_LIST_SUBSCRIBE}><label for="mailing_list">{$LANG.account.register_mailing}</label>
    </div>
 </div>
+{/if}
 {assign var=CTRL_DELIVERY value=false}
 {foreach from=$ITEMS key=hash item=item}
    {if $item.digital=='0'}

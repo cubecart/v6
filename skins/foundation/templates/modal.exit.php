@@ -9,7 +9,7 @@
  * Email:  hello@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
-{if $CONFIG.exit_modal}
+{if (!isset($CONFIG.newsletter_status) || $CONFIG.newsletter_status=='1') && $CONFIG.exit_modal}
 <div id="newsletter_exit" class="reveal-modal medium" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
    <h2 id="modalTitle">{$LANG.email.exit_title}</h2>
    <p>{$LANG.email.exit_copy}</p>
