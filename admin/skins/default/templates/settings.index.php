@@ -150,7 +150,6 @@
          <div><label for="recaptcha_secret_key">{$LANG.settings.recaptcha_secret_key}</label><span><input name="config[recaptcha_secret_key]" id="recaptcha_secret_key" class="textbox" value="{$CONFIG.recaptcha_secret_key}"></span></div>
          <div class="clear important"><strong>{$LANG.settings.new_recaptcha_note}</strong>
             {if !empty($unavailable_captchas)}
-            <div>
             {$LANG.settings.captcha_warning}
             <ul style="margin:0">
                {foreach from=$unavailable_captchas key=k item=v}
@@ -158,7 +157,6 @@
                {/foreach}
             </ul>
             {/if}
-            </div>
          </div>
       </fieldset>
       <fieldset>
