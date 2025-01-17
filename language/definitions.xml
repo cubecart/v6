@@ -2218,7 +2218,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="proxy_port" introduced="5.0.0"><![CDATA[Proxy Port]]></string>
     <string name="proxy_user" introduced="5.0.0"><![CDATA[Proxy Username]]></string>
     <string name="recaptcha_enable" introduced="5.0.0"><![CDATA[Enable Bot Protection]]></string>
-    <string name="new_recaptcha_note" introduced="6.0.0"><![CDATA[Site &amp; secret keys are provided by <a href="https://www.google.com/recaptcha/admin" target="_blank">Google</a> or <a href="https://www.hcaptcha.com" target="_blank">hCapture</a>.]]></string>
+    <string name="new_recaptcha_note" introduced="6.0.0"><![CDATA[Site &amp; secret keys are provided by <a href="https://www.google.com/recaptcha/admin" target="_blank">Google</a>, <a href="https://www.hcaptcha.com" target="_blank">hCapture</a> and <a href="https://www.cloudflare.com/en-gb/application-services/products/turnstile/" target="_blank">Cloudflare</a>.]]></string>
     <string name="recaptcha_public_key" introduced="6.0.0"><![CDATA[Site Key]]></string>
     <string name="recaptcha_secret_key" introduced="6.0.0"><![CDATA[Secret Key]]></string>
     <string name="repair" introduced="5.0.0"><![CDATA[Repair]]></string>
