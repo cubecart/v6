@@ -451,7 +451,7 @@ $select_options = array(
     'basket_tax_by_delivery'   => array($lang['address']['billing_address'], $lang['address']['delivery_address']),
     'proxy'     => null,
     'catalogue_sale_mode' => array($lang['common']['disabled'], $lang['settings']['sales_per_product'], $lang['settings']['sales_percentage']),
-    'recaptcha' => array(0 => $lang['common']['off'], 2 => "reCaptcha v2 - Checkbox", 3 => "reCaptcha v2 - Invisible", 4 => "hCaptcha", 5 => "Cloudflare Turnstile (".$lang['common']['recommended'].")"),
+    'recaptcha' => array(0 => $lang['common']['off'], 2 => "reCaptcha v2 - Tickbox", 3 => "reCaptcha v2 - Invisible", 4 => "hCaptcha", 5 => "Cloudflare Turnstile (".$lang['common']['recommended'].")"),
     'seo_metadata'   => array($lang['settings']['seo_meta_option_disable'], $lang['settings']['seo_meta_option_merge'], $lang['settings']['seo_meta_option_replace']),
     'basket_allow_non_invoice_address' => null,
     'catalogue_latest_products'   => null,
@@ -475,13 +475,22 @@ $select_options = array(
     'newsletter_status' => array('1' => $lang['common']['enabled'], '0' => $lang['common']['disabled'])
 );
 $current_skin_path = CC_ROOT_DIR.'/skins/'.$GLOBALS['config']->get('config', 'skin_folder').'/templates/';
-$gr_compatibility = array(
-    'v2' => file_exists($current_skin_path.'content.recaptcha.head.php'),
-    'invisible' => file_exists($current_skin_path.'element.recaptcha.invisible.php'),
-    'h' => file_exists($current_skin_path.'element.hcaptcha.php'),
-    't' => file_exists($current_skin_path.'element.turnstile.php')
-);
-$GLOBALS['smarty']->assign('gr_compatibility', $gr_compatibility);
+$unavailable_captchas = array();
+
+if(!file_exists($current_skin_path.'content.recaptcha.head.php')) {
+    $unavailable_captchas['reCaptcha v2 - Tickbox'] = true;
+}
+if(!file_exists($current_skin_path.'element.recaptcha.invisible.php')) {
+    $unavailable_captchas['reCaptcha v2 - Invisible'] = true;
+}
+if(!file_exists($current_skin_path.'element.hcaptcha.php')) {
+    $unavailable_captchas['hCaptcha'] = true;
+}
+if(!file_exists($current_skin_path.'element.turnstile.php')) {
+    $unavailable_captchas['Cloudflare Turnstile'] = true;
+}
+
+$GLOBALS['smarty']->assign('unavailable_captchas', $unavailable_captchas);
 $GLOBALS['smarty']->assign('w3w_compatibility', file_exists($current_skin_path.'element.w3w.php'));
 
 if ($inventory_columns = $GLOBALS['db']->misc('SHOW FULL COLUMNS FROM '.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory')) {

@@ -149,18 +149,16 @@
          <div><label for="recaptcha_public_key">{$LANG.settings.recaptcha_public_key}</label><span><input name="config[recaptcha_public_key]" id="recaptcha_public_key" class="textbox" value="{$CONFIG.recaptcha_public_key}"></span></div>
          <div><label for="recaptcha_secret_key">{$LANG.settings.recaptcha_secret_key}</label><span><input name="config[recaptcha_secret_key]" id="recaptcha_secret_key" class="textbox" value="{$CONFIG.recaptcha_secret_key}"></span></div>
          <div class="clear important"><strong>{$LANG.settings.new_recaptcha_note}</strong>
-            {if !$gr_compatibility.v2}
-            <div><strong>{$LANG.settings.reCAPTCHA_v2_na}</strong></div>
+            {if !empty($unavailable_captchas)}
+            <div>
+            {$LANG.settings.captcha_warning}
+            <ul style="margin:0">
+               {foreach from=$unavailable_captchas key=k item=v}
+               <li>{$k}</li>
+               {/foreach}
+            </ul>
             {/if}
-            {if !$gr_compatibility.invisible}
-            <div><strong>{$LANG.settings.reCAPTCHA_invisible_na}</strong></div>
-            {/if}
-            {if !$gr_compatibility.h}
-            <div><strong>{$LANG.settings.hCAPTCHA_na}</strong></div>
-            {/if}
-            {if !$gr_compatibility.t}
-            <div><strong>{$LANG.settings.turnstile_na}</strong></div>
-            {/if}
+            </div>
          </div>
       </fieldset>
       <fieldset>
