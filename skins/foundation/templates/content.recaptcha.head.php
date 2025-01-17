@@ -18,6 +18,4 @@ var reCaptchaCallback = function() {
         });
     };
 </script>
-{elseif  $RECAPTCHA=='5'}
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 {/if}
