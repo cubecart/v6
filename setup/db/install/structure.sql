@@ -1109,5 +1109,5 @@ CREATE TABLE IF NOT EXISTS `CubeCart_cookie_consent_text` (
   `hash` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
   `log` text COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `hash` (`hash`)
+  UNIQUE KEY `hash` (`hash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ

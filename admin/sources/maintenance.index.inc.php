@@ -962,6 +962,10 @@ if (isset($database_result) && $database_result) {
         'cubecart_invoice_template' => array(
             'id' => 'PRIMARY',
             'hash' => 'KEY'
+        ),
+        'CubeCart_cookie_consent_text' => array(
+            'id' => 'PRIMARY',
+            'hash' => 'UNIQUE KEY'
         )
     );
 

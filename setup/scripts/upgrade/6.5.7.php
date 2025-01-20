@@ -5,7 +5,7 @@ if($logs = $db->misc("SELECT DISTINCT `log_hash`, `log` FROM `".$glob['dbprefix'
     // Create new table for log
     $db->parseSchema('CREATE TABLE `CubeCart_cookie_consent_text` (`id` int UNSIGNED NOT NULL,`hash` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,`log` text COLLATE utf8mb4_unicode_ci NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ');
     // Add keys for table
-    $db->parseSchema('ALTER TABLE `CubeCart_cookie_consent_text` ADD PRIMARY KEY (`id`), ADD KEY `hash` (`hash`); #EOQ');
+    $db->parseSchema('ALTER TABLE `CubeCart_cookie_consent_text` ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `hash` (`hash`); #EOQ');
     $db->parseSchema('ALTER TABLE `CubeCart_cookie_consent_text` MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1; #EOQ');
     // Insert logs
     foreach($logs as $log) {
