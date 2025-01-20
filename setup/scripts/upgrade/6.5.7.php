@@ -9,8 +9,12 @@ if($logs = $db->misc("SELECT DISTINCT `log_hash`, `log` FROM `".$glob['dbprefix'
     $db->parseSchema('ALTER TABLE `CubeCart_cookie_consent_text` MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1; #EOQ');
     // Insert logs
     foreach($logs as $log) {
-        $id = $db->insert('CubeCart_cookie_consent_text', array('log' => $log['log'], 'hash' => $log['log_hash']));
-        $map[$log['log_hash']] = $id;
+        if($existing = $db->select('CubeCart_cookie_consent_text', array('id'), array('hash' => $log['log_hash']))) {
+            $map[$log['log_hash']] = $existing[0]['id'];
+        } else {
+            $id = $db->insert('CubeCart_cookie_consent_text', array('log' => $log['log'], 'hash' => $log['log_hash']));
+            $map[$log['log_hash']] = $id;
+        }
     }
     // Add ID to replace log and hash
     $db->parseSchema('ALTER TABLE `CubeCart_cookie_consent` ADD `dialogue_id` INT UNSIGNED NOT NULL AFTER `customer_id`, ADD INDEX (`dialogue_id`); #EOQ');
