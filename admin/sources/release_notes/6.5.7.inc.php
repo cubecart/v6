@@ -13,6 +13,7 @@
 $GLOBALS['main']->addTabControl($lang['settings']['release_notes'], 'general');
 $GLOBALS['gui']->addBreadcrumb($lang['settings']['release_notes'], currentPage(array('node')), true);
 $features = array( 
+    '3678' => 'Cache Optimisation - Shorter Keys',
 	'3702' => 'Cloudflare Turnstile - A new captcha alternative.',
     '3699' => 'Bluesky social link support.',
     '3685' => 'Optimisation of cookie consent logging. Saves up to 56% disk space.',
