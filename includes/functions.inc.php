@@ -1029,7 +1029,7 @@ function parseUrlToLink($text = '', $target = '_blank')
  */
 function shortHash($input, $length = 8)
 {
-	$hash_base64 = base64_encode(hash('sha256', $input.$GLOBALS['config']->get('config','dbdatabase'), true));
+	$hash_base64 = base64_encode(hash('sha256', $input.CC_STORE_URL, true));
 	$hash_urlsafe = strtr($hash_base64, '+/', '-_');
 	$hash_urlsafe = rtrim($hash_urlsafe, '=');
 	return substr($hash_urlsafe, 0, $length);
