@@ -597,7 +597,7 @@ if (isset($_GET['action'])) {
 } elseif (isset($_GET['print']) && !empty($_GET['print'])) {
     // Generate a printable page, and display it
     // Made somewhat trickier by the way the templating system works
-    // so we'll generate the page, stick it in the cache folder, trigger the print, then delete the file
+    // so we'll generate the page, stick it in the files directory, trigger the print, then delete the file
     foreach ($_GET['print'] as $order_id) {
         $order_list[] = "'".$order_id."'";
     }
