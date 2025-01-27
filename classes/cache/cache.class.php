@@ -174,7 +174,7 @@ class Cache_Controler
     public function setPath($path = '')
     {
         if (empty($path)) {
-            $path = CC_ROOT_DIR.'/cache'.'/';
+            $path = CC_CACHE_DIR;
         } else {
             $ds = substr($path, -1);
             if ($ds != '/' && $ds != '\\') {
@@ -227,7 +227,7 @@ class Cache_Controler
     public function tidy()
     {
         //Loop through the cache folder
-        if (($files = glob(CC_CACHE_DIR.'*', GLOB_NOSORT)) !== false) {
+        if (($files = glob($this->_cache_path.'*', GLOB_NOSORT)) !== false) {
             foreach ($files as $file) {
                 //Delete any file that is not a cache file
                 if (substr($file, -6) !== '.cache' && $file !== '.htaccess' && $file !== 'index.php') {
