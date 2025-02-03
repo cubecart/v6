@@ -110,7 +110,7 @@ if (isset($_POST['process']) || isset($_GET['cycle'])) {
                     
                         foreach ($image_splits as $image_split) {
                             $image_name = basename(trim($image_split));
-                            $image_path = preg_replace('/^(\.\/|\/)/', '', dirname($image_split)); // lose first slash to match DB storage but add end slash
+                            $image_path = preg_replace('/^(\.\/|\/)/', '', trim(dirname($image_split))); // lose first slash to match DB storage but add end slash
                             if (!empty($image_path)) {
                                 $image_path .= '/';
                             }
