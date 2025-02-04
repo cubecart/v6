@@ -806,7 +806,7 @@ class GUI
                 } else {
                     $data = array(
                         'secret' => $GLOBALS['config']->get('config', 'recaptcha_secret_key'),
-                        'response' => 'test',
+                        'response' => $_POST['g-recaptcha-response'],
                         'remoteip' => get_ip_address()
                     );
                     $request = new Request('www.google.com', '/recaptcha/api/siteverify');
