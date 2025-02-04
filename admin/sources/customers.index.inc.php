@@ -69,7 +69,7 @@ if (isset($_POST['external_report']) && is_array($_POST['external_report'])) {
 
 if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInstance()->permissions('customers', CC_PERM_EDIT)) {
     $customer = $_POST['customer'];
-    $customer_added = $customer_not_added = $customer_updated = false;
+    $customer_added = $customer_not_added = $customer_updated = $customer_add_error = false;
     // Reset password
     if (isset($customer['password']) && !empty($customer['password'])) {
         if ($customer['password'] === $customer['passconf']) {
@@ -113,14 +113,14 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
         foreach ($customer as $field => $value) {
             if ($field == 'email' && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
                 $GLOBALS['main']->errorMessage($lang['common']['error_email_invalid']);
-                $error = true;
+                $customer_add_error = true;
             } elseif($GLOBALS['db']->select('CubeCart_customer', array('customer_id'), array('email' => $customer['email']))) {
                 $GLOBALS['main']->errorMessage($lang['account']['error_email_in_use']);
-                $error = true;
+                $customer_add_error = true;
             }
             if (in_array($field, $required) && empty($value)) {
                 $GLOBALS['main']->errorMessage($lang['account']['error_customer_create_empty_fields']);
-                $error = true;
+                $customer_add_error = true;
             }
         }
 
@@ -128,7 +128,7 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
             include $hook;
         }
 
-        if (!isset($error)) {
+        if (!isset($customer_add_error)) {
             if (($customer_id = $GLOBALS['db']->insert('CubeCart_customer', $customer)) !== false) {
                 $customer_added = true;
             } else {
