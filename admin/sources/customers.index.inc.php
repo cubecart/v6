@@ -329,7 +329,7 @@ $per_page = $GLOBALS['main']->itemsPerPage('customers', $_GET['items'] ?? 0, 25)
 $GLOBALS['smarty']->assign('PAGE_BREAKS', array(25, 50, 100, 250, 500));
 $GLOBALS['smarty']->assign('PAGE_BREAK', $per_page);
 
-if ( (isset($_GET['action']) || isset($_POST['multi-action'])) && Admin::getInstance()->permissions('customers', CC_PERM_EDIT)) {
+if ((!empty($_GET['action'] ??= "") || isset($_POST['multi-action'])) && Admin::getInstance()->permissions('customers', CC_PERM_EDIT)) {
     if ($_GET['action'] == 'signinas' && isset($_GET['customer_id']) && $_GET['customer_id']) {
         $GLOBALS['session']->delete('', 'basket');
         $GLOBALS['db']->update('CubeCart_sessions', array('customer_id' => $_GET['customer_id']), array('session_id' => $GLOBALS['session']->getId()));
