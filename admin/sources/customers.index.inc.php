@@ -139,7 +139,7 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
         }
     }
 
-    if (isset($customer_id)) {
+    if (!empty($customer_id)) {
 
         // Update / Insert newsletter subscription
         $GLOBALS['db']->delete('CubeCart_newsletter_subscriber', '`customer_id` = '.$customer_id.' OR `email` = \''.$customer['email'].'\'');
