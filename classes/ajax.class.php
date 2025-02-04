@@ -28,8 +28,6 @@ class Ajax
      */
     public static function load()
     {
-        global $glob;
-
         $json = '';
         //Kill debug
         $GLOBALS['debug']->supress();
@@ -66,8 +64,11 @@ class Ajax
             case 'SMTPTest':
                 $return_data = self::SMTPTest();
             break;
+            case 'captchaTest':
+                $return_data = self::captchaTest();
+            break;
             case 'previewOrderFormat':
-            $return_data = self::previewOrderFormat();
+                $return_data = self::previewOrderFormat();
             break;
             case 'template':
                 $return_data = self::template($type, $string);
@@ -466,6 +467,51 @@ class Ajax
                 $test_mailer->Send();
 
                 return "<div class=\"mail_modal\"><h3>Testing ".$method_name."</h3><p>It isn't possible  to get a definitive test result for the &quot;PHP mail() Function&quot; method.</p><p>We have attempted to send a test email to &quot;".$GLOBALS['RAW']['POST']['email_address']."&quot; with the subject of &quot;".$subject."&quot; Please note that it can take ten minutes or even longer for a busy mail server to deliver email. Don't forget to check your spam folder!</p><p>This method can fail if the server hasn't been configured properly and may refuse to send mail from &quot;untrusted&quot; sources such as Hotmail, Yahoo, AOL etc&hellip;. We recommend using an email address from a domain hosted on this server such as sales@".parse_url(CC_STORE_URL, PHP_URL_HOST)." for example and this may need to be setup form within your web hosting account.</p></div>";
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Test captcha system
+     *
+     * @return data/false
+     */
+    public static function captchaTest()
+    {
+        if (CC_IN_ADMIN) {
+            $secret = $_POST['secret'];
+            switch($_POST['provider']) {
+                case '0': // Off
+                    return 'off';
+                break;
+                case '2': // Google
+                case '3':
+                    $data = array(
+                        'secret' => $secret,
+                        'response' => 'test',
+                        'remoteip' => get_ip_address()
+                    );
+                    var_dump($data); 
+                    $request = new Request('www.google.com', '/recaptcha/api/siteverify');
+                    $request->setMethod('get');
+                    $request->cache(false);
+                    $request->setSSL();
+                    $request->setData($data);
+
+                    $response = $request->send();
+                    //$result = json_decode($response);
+                    
+                    //return $result->success ? 'success' : 'fail';
+                    echo print_r($response);
+                    exit;
+                break;
+                case '4': // hCaptcha
+
+                break;
+                case '5': // Cloudflare
+
+                break;
             }
         }
         return false;

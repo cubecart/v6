@@ -252,6 +252,23 @@ function fmSearch(mode, term, token) {
     });
  }
 $(document).ready(function() {
+    
+    $('#test_captcha').on("click", function() {
+        var requestData = {
+            'provider': $('#recaptcha').find(":selected").val(),
+            'secret': $('#recaptcha_secret_key').val(),
+            'token': $('.cc_session_token').val()
+        };
+        $.ajax({
+            type: 'post',
+            url: "?_g=xml&function=captchaTest",
+            data: requestData,
+            dataType: "text",
+            success: function(responseData) {
+                console.log(responseData);
+            }
+        });
+    });
     $('.copy_text').on("click", function() {
         navigator.clipboard.writeText($(this).attr('data-value'));
         var text = $(this).attr('data-copied');
