@@ -389,7 +389,7 @@ if ((!empty($_GET['action'] ??= "") || isset($_POST['multi-action'])) && Admin::
             $no_orders = $GLOBALS['db']->count('CubeCart_order_summary', false, array('customer_id' => (int)$_GET['customer_id']));
             $GLOBALS['main']->addTabControl($lang['settings']['title_orders'], '', '?_g=orders&customer_id='.(int)$_GET['customer_id'], null, $no_orders);
             $GLOBALS['main']->addTabControl($lang['customer']['cookie_consent'], 'consent');
-            $cookie_consent = $GLOBALS['db']->select('`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_cookie_consent` AS `L` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_cookie_consent_text` AS `T` ON `L`.`dialogue_id` = `T`.`id`', false, array('customer_id' => (int)$_GET['customer_id']));
+            $cookie_consent = $GLOBALS['db']->misc('SELECT * FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_cookie_consent` AS `L` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_cookie_consent_text` AS `T` ON `L`.`dialogue_id` = `T`.`id` WHERE customer_id = '.(int)$_GET['customer_id']);
             $GLOBALS['smarty']->assign('COOKIE_CONSENT', $cookie_consent);
 
             $customer = $customer[0];
