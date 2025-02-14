@@ -582,7 +582,7 @@ class Order
                     }
                     if (isset($order_summary['coupon_data']) && !empty($order_summary['coupon_data'])) {
                         $coupon_data = json_decode($order_summary['coupon_data'], true);
-                        $this->_processCoupons($coupon_data, $order_summary['customer_id'], $order_summary['cart_order_id']);
+                        $this->_processCoupons($order_summary['customer_id'], $order_summary['cart_order_id'], $coupon_data);
                     }
 
                 break;
@@ -790,7 +790,7 @@ class Order
         return false;
     }
 
-    private function _processCoupons($coupon_data = array(), $customer_id, $email) {
+    private function _processCoupons($customer_id, $email, $coupon_data = array()) {
         foreach ($coupon_data as $k => $data) {
             if ($data['gc']) {
                 // Update gift certificate balance
