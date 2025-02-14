@@ -25,7 +25,7 @@
       <div class="medium-4 columns text-right">
         {if $CREDIT_USED && $CREDIT_USED !== $AVAILABLE_CREDIT}{sprintf($LANG.basket.credit_use, $CREDIT_USED, $AVAILABLE_CREDIT)}{else}{$AVAILABLE_CREDIT}{/if}
         <input type="hidden" value="0" name="use_credit">
-        <input type="checkbox" name="use_credit" value="1"{if $USE_CREDIT=='1'} checked="checked"{/if} />
+        <input type="checkbox" name="use_credit" value="1"{if isset($USE_CREDIT) && $USE_CREDIT=='1'} checked="checked"{/if} />
       </div>
    </div>
    {/if}
