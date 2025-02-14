@@ -582,7 +582,7 @@ class Order
                     }
                     if (isset($order_summary['coupon_data']) && !empty($order_summary['coupon_data'])) {
                         $coupon_data = json_decode($order_summary['coupon_data'], true);
-                        $this->_processCoupons($order_summary['customer_id'], $order_summary['cart_order_id'], $coupon_data);
+                        $this->_processCoupons($order_summary['customer_id'], $order_summary['email'], $coupon_data);
                     }
 
                 break;
