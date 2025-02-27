@@ -133,7 +133,9 @@ if (!$GLOBALS['session']->has('version_check') && $request = new Request('www.cu
         $extension_check = array();
         foreach ($extension_versions as $v) {
             $parts = explode('/',$v['dir']);
-            if(($status = $GLOBALS['db']->select('CubeCart_modules', array('status'), array('module' => $parts[2], 'folder' => $parts[3]))) !== false){
+            $module = (isset($parts[2]) && !empty($parts[2])) ? '' : $parts[2];
+            $folder =  (isset($parts[3]) && !empty($parts[3])) ? '' : $parts[3];
+            if(($status = $GLOBALS['db']->select('CubeCart_modules', array('status'), array('module' => $module, 'folder' => $folder))) !== false){
                 if (file_exists(CC_ROOT_DIR.$v['dir'])) {
                     if($status[0]['status']=='1') {
                         $extension_check[$v['file_id']] = $v['modified'];
