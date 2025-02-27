@@ -135,7 +135,7 @@ class Database_Contoller
      *
      * @var int
      */
-    private $_errorno;
+    protected $_errorno;
     /**
      * Class instance
      *
