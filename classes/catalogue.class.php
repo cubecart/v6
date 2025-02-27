@@ -2331,8 +2331,9 @@ class Catalogue
      */
     private function _productPopularity($product_id = false)
     {
-        if ($product_id && is_numeric($product_id)) {
-            $GLOBALS['db']->update('CubeCart_inventory', array('popularity' => '+1'), array('product_id' => (int)$product_id), false);
+        $product_id = intval($product_id);
+        if ($product_id > 0) {
+            $GLOBALS['db']->update('CubeCart_inventory', array('popularity' => '+1'), array('product_id' => $product_id), false);
             return true;
         }
         return false;
