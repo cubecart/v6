@@ -62,7 +62,7 @@
             </tr>
          </tfoot>
       </table>
-      <div class="pagination">{$PAGINATION}</div>
+      <div class="pagination"><span><strong>{$LANG.common.total}:</strong> {number_format($TOTAL_RESULTS)}</span>{$PAGINATION}</div>
       {else}
       <div>{$LANG.form.none}</div>
       {/if}
