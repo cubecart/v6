@@ -688,6 +688,7 @@ class Cart
 
                 if((bool)$coupon['exclude_sale_items']) {
                     $proceed = false;
+                    $add_to_include = array();
                     foreach ($this->basket['contents'] as $key => $data) {
                         // If we have a specific list of product already we ignore this
                         if(isset($include) && is_array($include) && count($include)>0 && !isset($include[$data['id']])) {
@@ -696,9 +697,16 @@ class Cart
                             unset($include[$data['id']]);
                         } elseif(!(bool)$data['in_sale']) {
                             $proceed = true;
-                            $include[$data['id']] = true;
+                            $add_to_include[$data['id']] = true;
+                            
                         }
                     }
+                    if(count($add_to_include)>0) {
+                        foreach($add_to_include as $k => $v) {
+                            $include[$k] = $v;
+                        }
+                    }
+                    
                     if(!$proceed) {
                         $GLOBALS['gui']->setError($GLOBALS['language']->checkout['error_voucher_sales_items_excluded']);
                     }
@@ -1388,8 +1396,9 @@ class Cart
                     } elseif (isset($this->basket['shipping']) && $this->basket['shipping']['value']>0) {
                         $excluded_shipping = $this->basket['shipping'];
                     }
-
-                    $ave_tax_rate = round($tax_total / $subtotal, 2);
+                    if($subtotal>0) {
+                        $ave_tax_rate = round($tax_total / $subtotal, 2);
+                    }
 
                     $discount = ($data['type']=='percent') ? $subtotal*($data['value']/100) : $data['value'];
 
