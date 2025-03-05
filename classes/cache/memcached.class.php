@@ -105,10 +105,10 @@ class Cache extends Cache_Controler
      */
     public function exists($id)
     {
-        $id = shortHash($id);
         if (!$this->status && !$this->statusException($id)) {
             return false;
         }
+        $id = shortHash($id);
         
         if (!$this->_memcached->get($this->_makeName($id))) {
             return false;
@@ -125,10 +125,10 @@ class Cache extends Cache_Controler
      */
     public function read($id)
     {
-        $id = shortHash($id);
         if (!$this->status && !$this->statusException($id)) {
             return false;
         }
+        $id = shortHash($id);
         
         if (preg_match('/^sql\./', $id) && $this->_empties_id!==$id && isset($this->_empties[$id])) {
             return array('empty' => true, 'data' => $this->_empties[$id]);
@@ -176,10 +176,10 @@ class Cache extends Cache_Controler
      */
     public function write($data, $id, $expire = '')
     {
-        $id = shortHash($id);
         if (!$this->status && !$this->statusException($id)) {
             return false;
         }
+        $id = shortHash($id);
         
         if (preg_match('/^sql\./', $id) && $this->_empties_id!==$id && empty($data)) {
             if (!isset($this->_empties[$id])) {
