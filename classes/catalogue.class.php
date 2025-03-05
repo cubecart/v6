@@ -1344,7 +1344,13 @@ class Catalogue
                         )
                     );
                     // Check category discounts
-                    if (($pricing_group = $GLOBALS['db']->select('CubeCart_category_discount', false, array('cat_id' => $product_data['cat_id'], 'group_id' => $group_id), array('percent' => 'DESC'), 1)) !== false) {
+                    if(!isset($product_data['cat_id']) || empty($product_data['cat_id'])) {
+                        $cid = $GLOBALS['db']->select('CubeCart_category_index', array('cat_id'), array('product_id' => $product_id, 'primary' => 1));
+                        if($cid && isset($cid[0]['cat_id'])) {
+                            $product_data['cat_id'] = $cid[0]['cat_id'];
+                        }
+                    }
+                    if(isset($product_data['cat_id']) && !empty($product_data['cat_id']) && ($pricing_group = $GLOBALS['db']->select('CubeCart_category_discount', false, array('cat_id' => $product_data['cat_id'], 'group_id' => $group_id), array('percent' => 'DESC'), 1)) !== false) {
                         if($pricing_group[0]['percent']>0) {
                             $prices['category']['price'] = $product_data['price']*((100-$pricing_group[0]['percent'])/100);
                             $prices['category']['sale_price'] = $product_data['sale_price']*((100-$pricing_group[0]['sale_price'])/100);
