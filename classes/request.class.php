@@ -383,13 +383,10 @@ class Request
                 $this->log($this->_request_body, $return);
                 return $return;
             } else {
-                $error_no = @curl_errno($this->_curl);
-                if (!$error_no && !$error) {
-                    $error_no = "NA";
-                    $error = "cURL is installed but may be disabled by the host. cURL exec returns false.";
+                $error = curl_error($this->_curl);
+                if (!empty($error)) {
+                    $this->log($this->_request_body, $return, $error);
                 }
-                $error = sprintf('cURL Error (%s): %s', $error_no, $error);
-                $this->log($this->_request_body, $return, $error);
             }
         } else {
             ## Fallback to fsockopen
