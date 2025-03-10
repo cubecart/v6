@@ -13,6 +13,11 @@
    {if isset($DISPLAY_ORDER_LIST)}
    <div id="orders" class="tab_content">
       <h3>{$LANG.orders.title_orders}</h3>
+      <p>
+      <strong>{$LANG.customer.title_key_type}:</strong><br>
+      <i class="fa fa-user registered" title="{$LANG.customer.title_key_registered}"></i> - {$LANG.customer.title_key_registered}<br>
+      <i class="fa fa-user unregistered" title="{$LANG.customer.title_key_unregistered}"></i> - {$LANG.customer.title_key_unregistered}
+      </p>
       {if $ORDER_LIST}
       <table width="100%" class="filter">
          <tr>
