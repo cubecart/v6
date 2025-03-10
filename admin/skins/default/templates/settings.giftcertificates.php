@@ -63,8 +63,8 @@
   <div id="seo" class="tab_content">
 	<h3>{$LANG.settings.title_seo}</h3>
 	<fieldset><legend>{$LANG.settings.title_seo_meta_data}</legend>
-	  <div><label for="seo_meta_title">{$LANG.settings.seo_meta_title}</label><span><input type="text" name="gc[seo_meta_title]" id="seo_meta_title" value="{$GC.seo_meta_title}" class="textbox strlen" rel="seo_meta_title_strlen"></span> <span id="seo_meta_title_strlen">{strlen($GC.seo_meta_title)}</span></div>
-	  <div><label for="seo_meta_description">{$LANG.settings.seo_meta_description}</label><span><textarea name="gc[seo_meta_description]" id="seo_meta_description" class="textbox strlen" rel="seo_meta_description_strlen">{$GC.seo_meta_description}</textarea></span> <span id="seo_meta_description_strlen">{strlen($GC.seo_meta_description)}</span></div>
+	  <div><label for="seo_meta_title">{$LANG.settings.seo_meta_title}</label><span><input type="text" name="gc[seo_meta_title]" id="seo_meta_title" value="{$GC.seo_meta_title}" class="textbox strlen" rel="seo_meta_title_strlen"></span> <span id="seo_meta_title_strlen">{strlen($GC.seo_meta_title|default:"")}</span></div>
+	  <div><label for="seo_meta_description">{$LANG.settings.seo_meta_description}</label><span><textarea name="gc[seo_meta_description]" id="seo_meta_description" class="textbox strlen" rel="seo_meta_description_strlen">{$GC.seo_meta_description}</textarea></span> <span id="seo_meta_description_strlen">{strlen($GC.seo_meta_description|default:"")}</span></div>
 	</fieldset>
   </div>
   {include file='templates/element.hook_form_content.php'}

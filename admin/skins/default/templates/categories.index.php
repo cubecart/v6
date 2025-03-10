@@ -134,9 +134,9 @@
   <h3>{$LANG.settings.title_seo}</h3>
     <fieldset>
 	  <legend>{$LANG.settings.title_seo_meta_data}</legend>
-	  <div><label for="seo_meta_title">{$LANG.settings.seo_meta_title}</label><span><input type="text" name="cat[seo_meta_title]" id="seo_meta_title" class="textbox strlen" rel="seo_meta_title_strlen" value="{$CATEGORY.seo_meta_title}"> <span id="seo_meta_title_strlen">{strlen($CATEGORY.seo_meta_title)}</span></span></div>
+	  <div><label for="seo_meta_title">{$LANG.settings.seo_meta_title}</label><span><input type="text" name="cat[seo_meta_title]" id="seo_meta_title" class="textbox strlen" rel="seo_meta_title_strlen" value="{$CATEGORY.seo_meta_title}"> <span id="seo_meta_title_strlen">{strlen($CATEGORY.seo_meta_title|default:"")}</span></span></div>
 	  <div><label for="seo_path">{$LANG.settings.seo_path} *</label><span><input type="text" name="seo_path" id="seo_path" class="textbox" value="{$CATEGORY.seo_path}"></span></div>
-	  <div><label for="seo_meta_description">{$LANG.settings.seo_meta_description}</label><span><textarea name="cat[seo_meta_description]" id="seo_meta_description" class="textbox strlen" rel="seo_meta_description_strlen">{$CATEGORY.seo_meta_description}</textarea></span> <span id="seo_meta_description_strlen">{strlen($CATEGORY.seo_meta_description)}</span></div>
+	  <div><label for="seo_meta_description">{$LANG.settings.seo_meta_description}</label><span><textarea name="cat[seo_meta_description]" id="seo_meta_description" class="textbox strlen" rel="seo_meta_description_strlen">{$CATEGORY.seo_meta_description}</textarea></span> <span id="seo_meta_description_strlen">{strlen($CATEGORY.seo_meta_description|default:"")}</span></div>
 	</fieldset>
 	<p>* {$LANG.settings.seo_path_auto}</p>
 	{include file='templates/element.redirects.php'}
@@ -218,9 +218,9 @@
   <h3>{$LANG.settings.title_seo}</h3>
   <fieldset>
   	  <legend>{$LANG.settings.title_seo_meta_data}</legend>
-	  <div><label for="seo_meta_title">{$LANG.settings.seo_meta_title}</label><span><input type="text" name="translate[seo_meta_title]" id="seo_meta_title" class="textbox strlen" value="{$TRANS.seo_meta_title}" rel="seo_meta_title_strlen"></span> <span id="seo_meta_title_strlen">{strlen($TRANS.seo_meta_title)}</span></div>
+	  <div><label for="seo_meta_title">{$LANG.settings.seo_meta_title}</label><span><input type="text" name="translate[seo_meta_title]" id="seo_meta_title" class="textbox strlen" value="{$TRANS.seo_meta_title}" rel="seo_meta_title_strlen"></span> <span id="seo_meta_title_strlen">{strlen($TRANS.seo_meta_title|default:"")}</span></div>
 	  <div><label for="seo_path">{$LANG.settings.seo_path}</label><span><input type="text" name="seo_path" id="seo_path" class="textbox" value="{$TRANS.seo_path}"></span></div>
-	  <div><label for="seo_meta_description">{$LANG.settings.seo_meta_description}</label><span><textarea name="translate[seo_meta_description]" id="seo_meta_description" class="textbox strlen" rel="seo_meta_description_strlen">{$TRANS.seo_meta_description}</textarea></span> <span id="seo_meta_description_strlen">{strlen($TRANS.seo_meta_description)}</span></div>
+	  <div><label for="seo_meta_description">{$LANG.settings.seo_meta_description}</label><span><textarea name="translate[seo_meta_description]" id="seo_meta_description" class="textbox strlen" rel="seo_meta_description_strlen">{$TRANS.seo_meta_description}</textarea></span> <span id="seo_meta_description_strlen">{strlen($TRANS.seo_meta_description|default:"")}</span></div>
 	</fieldset>
   </div>
   <input type="hidden" name="cat_id" value="{$TRANS.cat_id}">
