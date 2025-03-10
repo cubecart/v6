@@ -62,7 +62,9 @@
             </tr>
          </tfoot>
       </table>
+      {if $PAGINATION}
       <div class="pagination"><span><strong>{$LANG.common.total}:</strong> {number_format($TOTAL_RESULTS)}</span>{$PAGINATION}</div>
+      {/if}
       {else}
       <div>{$LANG.form.none}</div>
       {/if}
@@ -73,7 +75,7 @@
             <input type="button" name="submit" onclick="$.colorbox({ href:'{$STORE_URL}/{$SKIN_VARS.admin_file}?_g=xml&function=subscriber_log&email='+$('#email_history').val()})" class="tiny" value="{$LANG.common.go}">
             </div>
       </fieldset>
-      <a href="?_g=customers&node=subscribers&purge=1" class="button delete" title="{$LANG.email.confirm_purge}">{$LANG.email.purge}</a>
+      <a href="?_g=customers&node=subscribers&purge=1" class="button delete" title="{$LANG.email.confirm_purge}">{$LANG.email.purge}</a> <a href="?_g=customers&node=subscribers&empty=1" class="button delete" title="{$LANG.email.empty_list_conf}">{$LANG.email.empty_list}</a>
    </div>
    <div id="import" class="tab_content">
       <h3>{$LANG.newsletter.import_subscribers}</h3>

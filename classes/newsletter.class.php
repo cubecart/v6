@@ -94,6 +94,15 @@ class Newsletter
     }
 
     /**
+     * Empty newsletter
+     *
+     * @return bool
+     */
+    public function emptyList() {
+        return $GLOBALS['db']->misc('TRUNCATE TABLE `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_newsletter_subscriber`;');
+    }
+
+    /**
      * Generate validaton key for email verification
      *
      * @param string $key

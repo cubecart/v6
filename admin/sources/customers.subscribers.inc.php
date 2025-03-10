@@ -30,6 +30,12 @@ if (isset($_GET['purge']) && !empty($_GET['purge'])) {
     }
     httpredir('?_g=customers&node=subscribers');
 }
+if (isset($_GET['empty']) && !empty($_GET['empty'])) {
+    $newsletter = Newsletter::getInstance();
+    $newsletter->emptyList();
+    $GLOBALS['main']->successMessage($lang['email']['empty_list_emptied']);
+    httpredir('?_g=customers&node=subscribers');
+}
 
 if (isset($GLOBALS['RAW']['POST']['maillist_format'])) {
     if (empty($GLOBALS['RAW']['POST']['maillist_format'])) {

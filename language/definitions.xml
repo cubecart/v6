@@ -1130,6 +1130,9 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_documents" introduced="5.0.0"><![CDATA[Site Documents]]></string>
   </group>
   <group name="email">
+    <string name="empty_list" introduced="6.5.9"><![CDATA[Empty Mailing List]]></string>
+    <string name="empty_list_conf" introduced="6.5.9"><![CDATA[Are you sure you want to do this? All subscribers will be removed.]]></string>
+    <string name="empty_list_emptied" introduced="6.5.9"><![CDATA[All subscribers have been removed.]]></string>
     <string name="macro_order_shipping_product" introduced="6.5.7"><![CDATA[Shipping Product.]]></string>
     <string name="macro_order_credit_used" introduced="6.5.7"><![CDATA[Credit Used.]]></string>
     <string name="dbl_opt_strict" introduced="6.5.4"><![CDATA[A double opt-in occurs when a user signs up for an email marketing list, and then an email is sent out to the user which includes a link to click and confirm the subscription. Only after the confirmation click is completed will the user officially be added to the email marketing list. Please be aware that sending email to subscribers that do not have a double opt-in status is illegal in some countries. To enable this checkbox please set `subscribe_mode_lax` to 1 in the includes/global.inc.php file.]]></string>
