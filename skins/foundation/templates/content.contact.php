@@ -10,7 +10,7 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
 <h2>{$LANG.documents.document_contact}</h2>
-<p>{$CONTACT.description}</p>
+{$CONTACT.description}
 <form action="{$VAL_SELF}" id="contact_form" method="post">
    <div class="row">
       <div class="small-12 large-8 columns"><label for="contact_name">{$LANG.common.name}</label><input type="text" name="contact[name]" id="contact_name" value="{$MESSAGE.name}" placeholder="{$LANG.common.name} {$LANG.form.required}"></div>
