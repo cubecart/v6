@@ -384,7 +384,7 @@ class Cubecart
                             include $hook;
                         }
                         
-                        $GLOBALS['gui']->addBreadcrumb($document['doc_name'], currentPage());
+                        $GLOBALS['gui']->addBreadcrumb($document['doc_name'], 'index.php?_a=document&doc_id='.(string)$document['doc_id']);
                         $GLOBALS['smarty']->assign('DOCUMENT', $document);
                         /* Social Bookmarks */
                         $GLOBALS['smarty']->assign('SHARE', $this->_getSocial('document', 'getButtonHTML'));
