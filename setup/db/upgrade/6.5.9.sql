@@ -1,0 +1,1 @@
+ALTER TABLE `CubeCart_customer` ADD `currency` VARCHAR(3) NULL AFTER `language`; #EOQ

@@ -173,10 +173,26 @@
 		    </select>
 		  </span>
 		</div>
-		<div><label for="language">{$LANG.common.language}</label><span><select name="customer[language]" id="language" class="textbox">
-            {foreach from=$LANGUAGES item=language}<option value="{$language.code}"{$language.selected}>{$language.title}</option>{/foreach}
-            </select></span>
-         </div>
+		<div>
+			<label for="language">{$LANG.common.language}</label>
+			<span>
+				<select name="customer[language]" id="language" class="textbox">
+            	{foreach from=$LANGUAGES item=language}
+					<option value="{$language.code}"{$language.selected}>{$language.title}</option>
+				{/foreach}
+            	</select>
+			</span>
+        </div>
+		<div>
+			<label for="currency">{$LANG.common.currency}</label>
+			<span>
+				<select name="customer[currency]" id="currency" class="textbox">
+            	{foreach from=$CURRENCIES item=currency}
+					<option value="{$currency.code}"{$currency.selected}>{$currency.code}</option>
+				{/foreach}
+            	</select>
+			</span>
+        </div>
 		<div><label for="cust-notes">{$LANG.common.notes} ({$LANG.common.private})</label><span><textarea name="customer[notes]" id="cust-notes" class="textbox">{$CUSTOMER.notes}</textarea></span></div>
 	  </fieldset>
 	  <fieldset><legend>{$LANG.common.credit}</legend>

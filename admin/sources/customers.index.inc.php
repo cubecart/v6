@@ -477,6 +477,20 @@ if ((!empty($_GET['action'] ??= "") || isset($_POST['multi-action'])) && Admin::
         }
         $GLOBALS['smarty']->assign('LANGUAGES', $smarty_data['languages']);
     }
+    ## Get Currencies
+    if (($currencies = $GLOBALS['db']->select('CubeCart_currency', array('code'), array('active' => 1))) !== false) {
+        foreach ($currencies as $currency) {
+            if(isset($customer['currency']) && !empty($customer['currency'])) {
+                $comparator = $customer['currency'];
+            } else {
+                $comparator = $GLOBALS['config']->get('config', 'default_currency');
+            }
+            $option['selected'] = ($currency['code'] == $comparator) ? ' selected="selected"' : '';
+            $option['code'] = $currency['code'];
+            $smarty_data['currencies'][] = $option;
+        }
+        $GLOBALS['smarty']->assign('CURRENCIES', $smarty_data['currencies']);
+    }
 
     if (($groups = $GLOBALS['db']->select('CubeCart_customer_group', false, false, array('group_name' => 'ASC'))) !== false) {
         $GLOBALS['smarty']->assign('ALL_CUSTOMER_GROUPS', $groups);

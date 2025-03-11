@@ -47,6 +47,9 @@ class Tax
         // Switch Currency
         if (isset($_POST['set_currency']) && !empty($_POST['set_currency']) && ($switch = $_POST['set_currency']) || isset($_GET['set_currency']) && !empty($_GET['set_currency']) && ($switch = $_GET['set_currency'])) {
             if (preg_match('#^[A-Z]{3}$#i', $switch) && $currency = $GLOBALS['db']->select('CubeCart_currency', array('updated'), array('code' => (string)$switch, 'active' => 1))) {
+                if(User::getInstance()->is()) {
+                    $GLOBALS['db']->update('CubeCart_customer',array('currency' => (string)$switch), array('customer_id' => User::getInstance()->get('customer_id')));
+                }
                 $GLOBALS['session']->set('currency', $switch, 'client');
             }
             httpredir(currentPage(array('set_currency')));

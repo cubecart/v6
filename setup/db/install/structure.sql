@@ -279,6 +279,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_customer` (
 	`order_count` INT UNSIGNED DEFAULT '0',
 	`type` TINYINT(1) UNSIGNED DEFAULT '1',
 	`language` VARCHAR(5) NOT NULL DEFAULT 'en-GB',
+	`currency` varchar(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
 	`notes` text,
 	`credit` DECIMAL(8,2) NOT NULL DEFAULT '0.00',
 	PRIMARY KEY (`customer_id`),

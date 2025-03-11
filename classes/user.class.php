@@ -243,12 +243,13 @@ class User
             'email'  => $username,
             'password' => $hash_password,
         );
-        $user = $GLOBALS['db']->select('CubeCart_customer', array('language', 'customer_id', 'email', 'password', 'salt', 'new_password'), $where, false, 1, false, false);
+        $user = $GLOBALS['db']->select('CubeCart_customer', array('language', 'customer_id', 'email', 'password', 'salt', 'new_password', 'currency'), $where, false, 1, false, false);
 
         $GLOBALS['session']->blocker($username, (is_array($user)) ? $user[0]['customer_id'] : 0, (bool)$user, Session::BLOCKER_FRONTEND, $GLOBALS['config']->get('config', 'bfattempts'), $GLOBALS['config']->get('config', 'bftime'));
         if (!$user) {
             $GLOBALS['gui']->setError($GLOBALS['language']->account['error_login']);
         } else {
+            $GLOBALS['session']->set('currency', $user[0]['currency'], 'client');
             $user[0]['language'] = $this->_validLanguage($user[0]['language']);
             if ($user[0]['new_password'] != 1) {
                 $salt = Password::getInstance()->createSalt();
