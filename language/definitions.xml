@@ -585,6 +585,7 @@
     <string name="your_name" introduced="5.0.0"><![CDATA[Your Name]]></string>
   </group>
   <group name="category">
+    <string name="edit_category" introduced="6.5.9"><![CDATA[Edit Category]]></string>
     <string name="no_products" introduced="5.0.0"><![CDATA[No products found.]]></string>
     <string name="sort_date" introduced="5.0.0"><![CDATA[Date Added]]></string>
     <string name="sort_date_added_asc" introduced="5.0.0"><![CDATA[Oldest First]]></string>
@@ -1092,6 +1093,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_technical_data" introduced="5.0.0"><![CDATA[Technical Details]]></string>
   </group>
   <group name="documents">
+    <string name="edit_homepage" introduced="6.5.9"><![CDATA[Edit Homepage]]></string>
     <string name="hide_title" introduced="6.2.0"><![CDATA[Hide Title]]></string>
     <string name="404_title" introduced="6.0.6"><![CDATA[404 - Page Not Found]]></string>
     <string name="404_content" introduced="6.0.6"><![CDATA[Sorry but the page you are looking for could not be found.]]></string>
@@ -1662,6 +1664,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="mobile_optimized" introduced="5.2.0"><![CDATA[This module has been optimized for mobile devices.]]></string>
   </group>
   <group name="navigation">
+    <string name="acp_home" introduced="6.5.9"><![CDATA[ACP Home]]></string>
     <string name="expand_for_more" introduced="6.5.2"><![CDATA[Expand for more options]]></string>
     <string name="nav_redirects404s" introduced="6.4.0"><![CDATA[Redirects &amp; 404&rsquo;s]]></string>
     <string name="error_401" introduced="5.0.0"><![CDATA[You do not have the correct privileges to perform that action.]]></string>

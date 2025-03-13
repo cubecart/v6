@@ -389,6 +389,8 @@ class GUI
         $this->_displayErrors();
         // Display cookie warning is needed
         $this->_displayCookieDialogue();
+        // Display admin tools
+        $this->_displayAdminToolBar();
     }
 
     /**
@@ -990,6 +992,38 @@ class GUI
         }
 
         return $this->mobile;
+    }
+
+    private function _displayAdminToolBar() {
+        
+        if(!Admin::getInstance()->is()) return false;
+        
+        $acp_path = CC_ROOT_REL.$GLOBALS['config']->get('config', 'adminFile');
+        $acp_data = array('acp_path' => $acp_path);
+        if(isset($_GET['_a']) && !empty($_GET['_a'])) {
+            switch($_GET['_a']) {
+                case 'product':
+                    $acp_data['edit_url'] = $acp_path.'?_g=products&node=index&action=edit&product_id='.$_GET['product_id'];
+                    $acp_data['url_text'] = $GLOBALS['language']->catalogue['title_product_update'];
+                break;
+                case 'category':
+                    $acp_data['edit_url'] = $acp_path.'?_g=categories&node=index&action=edit&cat_id='.$_GET['cat_id'];
+                    $acp_data['url_text'] = $GLOBALS['language']->category['edit_category'];
+                break;
+                case 'document':
+                    $acp_data['edit_url'] = $acp_path.'?_g=documents&node=index&action=edit&cat_id='.$_GET['doc_id'];
+                    $acp_data['url_text'] = $GLOBALS['language']->documents['document_edit'];
+                break;
+            }
+        } else {
+            if($home = $GLOBALS['db']->select('CubeCart_documents', array('doc_id'), array('doc_home' => '1'))) {
+                $acp_data['edit_url'] = $acp_path.'?_g=documents&node=index&action=edit&doc_id='.$home[0]['doc_id'];
+                $acp_data['url_text'] = $GLOBALS['language']->documents['edit_homepage'];
+            }
+        }
+        $html = file_get_contents(CC_ROOT_DIR.'/'.$GLOBALS['config']->get('config', 'adminFolder').'/skins/default/templates/frontend.acp_toolbar.php');
+        $GLOBALS['smarty']->assign('ACP_DATA', $acp_data);
+        $GLOBALS['smarty']->assign('ACP_WIDGET', $GLOBALS['smarty']->fetch('string:'.$html));
     }
 
     /**
