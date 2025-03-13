@@ -1310,7 +1310,7 @@ class GUI
                 break;
                 default: // view-based
                     $where      = $GLOBALS['catalogue']->outOfStockWhere(array('status' => '1'));
-                    $products = $GLOBALS['db']->select('CubeCart_inventory', array('name', 'product_id', 'quantity', 'price', 'sale_price', 'tax_type', 'tax_inclusive'), $where, 'popularity DESC', $limit);
+                    $products = $GLOBALS['db']->select('CubeCart_inventory', array('name', 'product_id', 'quantity', 'price', 'sale_price', 'tax_type', 'tax_inclusive','cat_id'), $where, 'popularity DESC', $limit);
             }
             $vars = array();
             if ($products) {
