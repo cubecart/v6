@@ -473,7 +473,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_notes` (
 	KEY `cart_order_id` (`cart_order_id`),
 	KEY `time` (`time`),
 	FULLTEXT KEY `content` (`content`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 ALTER TABLE `CubeCart_order_sum` RENAME TO `CubeCart_order_summary`, DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_order_summary` CHANGE `cart_order_id` `cart_order_id` VARCHAR(18) NOT NULL; #EOQ
