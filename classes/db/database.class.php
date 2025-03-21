@@ -769,7 +769,9 @@ class Database_Contoller
 
         if (is_array($this->_result) && count($this->_result) >= 1) {
             $output = $this->_result;
-            if ($calc_rows) {
+            if($maxRows == 1) {
+                $this->_found_rows = 1;
+            } else if ($calc_rows) {
                 $count_query = "SELECT $distinct COUNT(*) AS `Count` FROM $wrapper{$prefix}$table$wrapper ".$this->where($table_where, $where)." $group;";
                 if ($count = $this->_getCached($count_query)) {
                     $this->_found_rows = $count;
