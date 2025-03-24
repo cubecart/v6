@@ -3,7 +3,7 @@
  * CubeCart v6
  * ========================================
  * CubeCart is a registered trade mark of CubeCart Limited
- * Copyright CubeCart Limited 2023. All rights reserved.
+ * Copyright CubeCart Limited 2025. All rights reserved.
  * UK Private Limited Company No. 5323904
  * ========================================
  * Web:   https://www.cubecart.com
