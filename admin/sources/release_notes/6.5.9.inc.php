@@ -14,4 +14,4 @@ $GLOBALS['main']->addTabControl($lang['settings']['release_notes'], 'general');
 $GLOBALS['gui']->addBreadcrumb($lang['settings']['release_notes'], currentPage(array('node')), true);
 $features = array();
 $security = array();
-$page_content = $GLOBALS['main']->newFeatures($_GET['node'], $features, 31, '', $security);
+$page_content = $GLOBALS['main']->newFeatures($_GET['node'], $features, 32, '', $security);
