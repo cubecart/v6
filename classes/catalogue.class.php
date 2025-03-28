@@ -501,7 +501,7 @@ class Catalogue
                         }
                     }
                 }
-                $GLOBALS['gui']->addBreadcrumb($product['name'], 'idex.php?_a=product&product_id='.(string)$product['product_id']);
+                $GLOBALS['gui']->addBreadcrumb($product['name'], 'index.php?_a=product&product_id='.(string)$product['product_id']);
             }
 
             // Output to main GUI
