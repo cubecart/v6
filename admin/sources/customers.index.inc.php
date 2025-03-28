@@ -128,7 +128,7 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
             include $hook;
         }
 
-        if (!isset($customer_add_error)) {
+        if (!$customer_add_error) {
             if (($customer_id = $GLOBALS['db']->insert('CubeCart_customer', $customer)) !== false) {
                 $customer_added = true;
             } else {
