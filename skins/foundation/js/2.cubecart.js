@@ -1,6 +1,27 @@
 ;
 var validation_ini = {};
 jQuery(document).ready(function() {
+    
+    $('.acp_widget .close a').click(function(e) {
+        e.preventDefault();
+        var show = show_acp_widget($.cookie('show_acp_widget'), true);
+        $.cookie('show_acp_widget', show, {expires: 30});
+    });
+    
+    show_acp_widget($.cookie('show_acp_widget'), false);
+    
+    function show_acp_widget(show, change) {
+        if ((show == 0 && change) || (show == 1 && !change)) {
+            show = 1;
+            $('.acp_widget').css("left","0");
+            $('.acp_widget .close a').html('&laquo;');
+        } else {
+            show = 0;
+            $('.acp_widget').css("left","-123px");
+            $('.acp_widget .close a').html('&raquo;');
+        }
+        return show;
+    }
     $('input#coupon').on('input',function(e){
         if($(this).val()!=='') {
             $('#apply_coupon').addClass('animate');
