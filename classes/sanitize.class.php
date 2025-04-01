@@ -125,8 +125,6 @@ class Sanitize
                     if (is_array($value)) {
                         self::_clean($data[$key]);
                     } else {
-                        // If your HTML content isn't in a field with one of the following names, it's going!
-                        // We shold probably standardise the field names in the future
                         if (!empty($value)) {
                             $data[$key] = self::_safety($value);
                         }
