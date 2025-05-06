@@ -341,7 +341,7 @@ if (isset($_GET['action'])) {
         $GLOBALS['main']->addTabControl($lang['settings']['title_images'], 'cat_images', null, 'I');
         $GLOBALS['main']->addTabControl($lang['settings']['tab_seo'], 'seo');
         $GLOBALS['main']->addTabControl($lang['settings']['customer_group_discounts'], 'customer_group_discounts');
-        $cg = $GLOBALS['db']->select('`CubeCart_customer_group` AS `G` LEFT JOIN `CubeCart_category_discount` AS `D` ON `D`.`group_id` = `G`.`group_id`','`G`.`group_name`, `G`.`group_id`, `D`.`percent`');
+        $cg = $GLOBALS['db']->misc('SELECT `G`.`group_name`, `G`.`group_id`, `D`.`percent` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_customer_group` AS `G` LEFT JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_category_discount` AS `D` ON `D`.`group_id` = `G`.`group_id` GROUP BY `G`.`group_id`');
         $GLOBALS['smarty']->assign('CUSTOMER_GROUPS', $cg);
         
         // Add shipping tab if shipping by category is enabled
