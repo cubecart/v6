@@ -614,10 +614,9 @@ class Session
         $attributes .= ';Expires='.$date->format(DateTime::COOKIE);
         $attributes .= ';Domain='.$this->_session_domain;
         $attributes .= ';Path='.$this->_session_path;
-        if(CC_SSL) {
-            $attributes .= ';SameSite='.$params['samesite'];
-            $attributes .= ';Secure';
-        }
+        $attributes .= ';SameSite='.$params['samesite'];
+        $attributes .= ';Secure';
+
         if($params['httponly']) {
             $attributes .= ';HttpOnly';
         }
