@@ -1562,6 +1562,27 @@ class Cubecart
                     foreach ($GLOBALS['hooks']->load('class.cubecart.contact.mailer') as $hook) {
                         include $hook;
                     }
+                    /* 
+                    Add multiple attachments
+                    Please make sure your skin has the suitable HTML
+                    <input type="file" id="contact_attach" name="attachments[]" multiple accept="image/*,application/zip,application/pdf" />
+                    */
+                    if(is_array($_FILES['attachments']) && !empty($_FILES['attachments'])) {
+                        $total = count($_FILES['attachments']['name']);
+                        $allowed = array(
+                            'image/jpeg',
+                            'image/png',
+                            'image/gif',
+                            'image/png',
+                            'application/zip',
+                            'application/pdf'
+                        );
+                        for ($i = 0; $i < $total; $i++) {
+                            if(in_array($_FILES['attachments']['type'][$i], $allowed) && file_exists($_FILES['attachments']['tmp_name'][$i])) {
+                                $mailer->AddAttachment($_FILES['attachments']['tmp_name'][$i], $_FILES['attachments']['name'][$i]);
+                            }
+                        }
+                    }
                     // Send
                     $email_sent = $mailer->Send();
                     $email_data = array(
