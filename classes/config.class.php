@@ -51,6 +51,12 @@ class Config
      * @var array
      */
     private $_pre_enc_config = array();
+    /**
+     * Array of legacy variables that may still be needed with skins and extensions
+     *
+     * @var array
+     */
+    private $_legacy_config_variables = array('ssl' => 1);
 
     /**
      * Class instance
@@ -79,7 +85,7 @@ class Config
             $this->_config['config'] = $this->_clean($array_out);
             //Merge the main global with the config
             if (is_array($this->_config['config'])) {
-                $this->_config['config'] = array_merge($this->_config['config'], $glob);
+                $this->_config['config'] = array_merge($this->_config['config'], $glob, $this->_legacy_config_variables);
             }
         } else {
             $this->_config['config'] = $glob;

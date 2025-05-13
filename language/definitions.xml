@@ -608,7 +608,6 @@
     <string name="error_voucher_exceeded" introduced="6.1.14"><![CDATA[Sorry but that code has been used to it's maximum allowance.]]></string>
     <string name="error_voucher_order_status" introduced="6.1.14"><![CDATA[Sorry, but this gift certificate is invalid at this time.]]></string>
     <string name="checkout" introduced="5.0.0"><![CDATA[Checkout]]></string>
-    <string name="secure_checkout" introduced="6.0.0"><![CDATA[Secure Checkout]]></string>
     <string name="error_shipping" introduced="5.0.0"><![CDATA[Unfortunately there are no suitable shipping methods available for your order. This may be because the total weight of your order is too high or we cannot ship to your country. Please contact a member of our staff for any further inquiries.]]></string>
     <string name="check_shipping" introduced="5.0.0"><![CDATA[Available shipping methods have changed. Please check before proceeding.]]></string>
     <string name="error_too_many_added" introduced="5.0.0"><![CDATA[Sorry, you can't buy more than we have. We have automatically reduced your quantity to the maximum available.]]></string>
@@ -2293,7 +2292,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="tab_logos" introduced="5.0.0"><![CDATA[Logos]]></string>
     <string name="tab_offline" introduced="5.0.0"><![CDATA[Offline]]></string>
     <string name="tab_seo" introduced="5.0.0"><![CDATA[Search Engines]]></string>
-    <string name="tab_ssl" introduced="5.0.0"><![CDATA[SSL]]></string>
     <string name="tab_stock" introduced="5.0.0"><![CDATA[Stock]]></string>
     <string name="tax_apply_to" introduced="5.0.0"><![CDATA[Apply To]]></string>
     <string name="tax_class" introduced="5.0.0"><![CDATA[Tax Class]]></string>
@@ -2361,7 +2359,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_shipping" introduced="5.0.0"><![CDATA[Shipping]]></string>
     <string name="title_shipping_costs" introduced="5.0.0"><![CDATA[Shipping Costs]]></string>
     <string name="title_skins" introduced="5.0.0"><![CDATA[Skin Settings]]></string>
-    <string name="title_ssl" introduced="5.0.0"><![CDATA[SSL Settings]]></string>
+    <string name="title_domain" introduced="5.0.0"><![CDATA[Domain Settings]]></string>
     <string name="title_stock" introduced="5.0.0"><![CDATA[Stock Settings]]></string>
     <string name="title_stock_general" introduced="5.0.0"><![CDATA[General Stock Settings]]></string>
     <string name="title_tax_class" introduced="5.0.0"><![CDATA[Tax Classes]]></string>

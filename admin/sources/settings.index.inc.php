@@ -201,15 +201,12 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
     $config_new['store_copyright'] = $GLOBALS['RAW']['POST']['config']['store_copyright'];
     $config_new['email_smtp_password'] = $GLOBALS['RAW']['POST']['config']['email_smtp_password'];
 
-    $config_new['standard_url'] = preg_replace('#^https://#', 'http://', $config_new['standard_url']);
-    if (substr($config_new['standard_url'], 0, 7) !=="http://") {
-        $config_new['standard_url'] = 'http://'.$config_new['standard_url'];
-    }
+    $config_new['standard_url'] = preg_replace('#^http://#', 'https://', $config_new['standard_url']);
     if (!filter_var($config_new['standard_url'], FILTER_VALIDATE_URL)) {
         $config_new['standard_url'] = CC_STORE_URL;
     }
     // Added for backward compatibility as these old values may be used in extensions
-    $config_new['ssl_url'] = preg_replace('#^http://#', 'https://', $config_new['standard_url']);
+    $config_new['ssl_url'] = $config_new['standard_url'];
     $domain_parts = parse_url($config_new['standard_url']);
     $config_new['ssl_path'] = ($domain_parts['path'] ?? '').'/';
 
@@ -297,7 +294,6 @@ $GLOBALS['main']->addTabControl($lang['settings']['tab_features'], 'Features');
 $GLOBALS['main']->addTabControl($lang['settings']['tab_layout'], 'Layout');
 $GLOBALS['main']->addTabControl($lang['settings']['tab_stock'], 'Stock');
 $GLOBALS['main']->addTabControl($lang['settings']['tab_seo'], 'Search_Engines');
-$GLOBALS['main']->addTabControl($lang['settings']['tab_ssl'], 'SSL');
 $GLOBALS['main']->addTabControl($lang['settings']['tab_offline'], 'Offline');
 $GLOBALS['main']->addTabControl($lang['settings']['tab_logos'], 'Logos');
 $GLOBALS['main']->addTabControl($lang['settings']['tab_copyright'], 'Copyright');

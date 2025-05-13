@@ -155,14 +155,12 @@ class Session
             // make sure session cookies are http ONLY!
             ini_set('session.cookie_httponly', true);
         }
-        if (CC_SSL && empty($ini['session.cookie_samesite'])) {
-            // make sure session cookies are samesite
-            ini_set('session.cookie_samesite', 'None');
-        }
-        if (!$ini['session.cookie_secure'] && CC_SSL) {
-            // make sure session cookies are secure if SSL is enabled
-            ini_set('session.cookie_secure', true);
-        }
+        
+        // make sure session cookies are samesite
+        ini_set('session.cookie_samesite', 'None');
+    
+        // make sure session cookies are secure
+        ini_set('session.cookie_secure', true);
         
         $this->_start();
         $this->_validate();
@@ -614,10 +612,9 @@ class Session
         $attributes .= ';Expires='.$date->format(DateTime::COOKIE);
         $attributes .= ';Domain='.$this->_session_domain;
         $attributes .= ';Path='.$this->_session_path;
-        if(CC_SSL) {
-            $attributes .= ';SameSite='.$params['samesite'];
-            $attributes .= ';Secure';
-        }
+        $attributes .= ';SameSite='.$params['samesite'];
+        $attributes .= ';Secure';
+
         if($params['httponly']) {
             $attributes .= ';HttpOnly';
         }
@@ -716,8 +713,7 @@ class Session
     private function _start()
     {
         session_cache_limiter('nocache');
-        $session_prefix = CC_SSL ? 'S' : '';
-        session_name('CC'.$session_prefix.'_'.strtoupper(substr(md5(CC_ROOT_DIR), 0, 10)));
+        session_name('CCS_'.strtoupper(substr(md5(CC_ROOT_DIR), 0, 10)));
         session_start();
         
         // Increase session length on each page load.

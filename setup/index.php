@@ -540,10 +540,8 @@ if (!isset($_SESSION['setup'])) {
         $date = new Datetime(date('r',time()+7200));
         $attributes = '';
         $attributes .= ';Expires='.$date->format(DateTime::COOKIE);
-        if(CC_SSL) {
-            $attributes .= ';SameSite=None';
-            $attributes .= ';Secure';
-        }
+        $attributes .= ';SameSite=None';
+        $attributes .= ';Secure';
         $attributes .= ';HttpOnly';
         header('Set-Cookie: delete_setup=1'.$attributes);
 

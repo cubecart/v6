@@ -35,7 +35,7 @@
          </li>
       </ul>
       {if !$HIDE_CHECKOUT_BUTTON || $IS_USER}
-      <div><a href="{$STORE_URL}/index.php?_a=checkout" class="button success expand nomarg">{if $CONFIG.ssl == 1}<svg class="icon"><use xlink:href="#icon-lock"></use></svg>{$LANG.basket.basket_secure_checkout}{else}{$LANG.basket.basket_checkout}{/if}</a></div>
+      <div><a href="{$STORE_URL}/index.php?_a=checkout" class="button success expand nomarg">{$LANG.basket.basket_checkout}</a></div>
       {/if}
       {if !$IS_USER}
       <div class="thinpad-top"><a href="{$STORE_URL}/index.php?_a=basket" class="button expand nomarg">{$LANG.basket.view_basket}</a></div>

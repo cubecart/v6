@@ -73,7 +73,32 @@ define('CC_INCLUDES_DIR', CC_ROOT_DIR.'/includes/');
 
 define('CC_LANGUAGE_DIR', CC_ROOT_DIR.'/language/');
 
-// Include a custom ssl-check file, if it exists.  Otherwise use the existing check.
+date_default_timezone_set('UTC');  // Set the default timezone for the scripts until the config gets loaded and overrides it
+
+// Automatically detect and assign the store url, and root relative path
+$server_name = (!empty($_SERVER['HTTP_HOST'])) ? strtolower($_SERVER['HTTP_HOST']) :  strtolower($_SERVER['SERVER_NAME']);
+$script_name = (isset($_SERVER['PHP_SELF']) && !empty($_SERVER['PHP_SELF'])) ? $_SERVER['PHP_SELF'] : $_SERVER['REQUEST_URI'];
+$script_name = preg_replace('/[^a-z0-9-_.~\/]/i', '', $script_name);
+$script_path = trim(dirname($script_name));
+$script_path = str_replace('\\', '/', $script_path);
+$script_path = preg_replace('#[\\\\/]{2,}#', '/', $script_path);
+$url = 'https://'.$server_name.$script_path;
+$url = htmlspecialchars(html_entity_decode($url));
+// Remove index.php/anything
+if (strstr($url, '/index.php')) {
+    $url = substr($url, 0, strpos($url, '/index.php'));
+}
+
+// Set min value for script path as /
+if (substr($script_path, -1) != '/' && substr($script_path, -1) != '\\') {
+    $script_path .= '/';
+}
+
+if (substr($url, -1) == '/' || substr($url, -1) == '\\') {
+    $url = substr($url, 0, -1);
+}
+
+## Force SSL Always
 if (file_exists(CC_ROOT_DIR.'/ssl-custom.inc.php')) {
     include CC_ROOT_DIR.'/ssl-custom.inc.php';
 } else {
@@ -92,30 +117,9 @@ if (file_exists(CC_ROOT_DIR.'/ssl-custom.inc.php')) {
     }
 }
 
-date_default_timezone_set('UTC');  // Set the default timezone for the scripts until the config gets loaded and over rights it
-
-// Automatically detect and assign the store url, and root relative path
-$server_name = (!empty($_SERVER['HTTP_HOST'])) ? strtolower($_SERVER['HTTP_HOST']) :  strtolower($_SERVER['SERVER_NAME']);
-$server_port = (!empty($_SERVER['SERVER_PORT'])) ? (int) $_SERVER['SERVER_PORT'] : 80;
-$script_name = (isset($_SERVER['PHP_SELF']) && !empty($_SERVER['PHP_SELF'])) ? $_SERVER['PHP_SELF'] : $_SERVER['REQUEST_URI'];
-$script_name = preg_replace('/[^a-z0-9-_.~\/]/i', '', $script_name);
-$script_path = trim(dirname($script_name));
-$script_path = str_replace('\\', '/', $script_path);
-$script_path = preg_replace('#[\\\\/]{2,}#', '/', $script_path);
-$url = (CC_SSL ? 'https://' : 'http://') . $server_name . $script_path;
-$url = htmlspecialchars(html_entity_decode($url));
-// Remove index.php/anything
-if (strstr($url, '/index.php')) {
-    $url = substr($url, 0, strpos($url, '/index.php'));
-}
-
-// Set min value for script path as /
-if (substr($script_path, -1) != '/' && substr($script_path, -1) != '\\') {
-    $script_path .= '/';
-}
-
-if (substr($url, -1) == '/' || substr($url, -1) == '\\') {
-    $url = substr($url, 0, -1);
+if(!CC_SSL) {
+    header('Location: '.$url, true, 301); // $url will always have https protocol
+    exit;
 }
 
 ## Check for the global file if not in setup mode
@@ -140,12 +144,12 @@ if (!strstr($_SERVER['SCRIPT_NAME'], '/setup/')) {
 }
 
 // Use specified values if set although this shouldn't be needed
-if (!CC_SSL && isset($glob['storeURL']) && !empty($glob['storeURL'])) {
+if (isset($glob['storeURL']) && !empty($glob['storeURL'])) {
     define('CC_STORE_URL', $glob['storeURL']);
 } else {
     define('CC_STORE_URL', $url);
 }
-if (!CC_SSL && isset($glob['rootRel']) && !empty($glob['rootRel'])) {
+if (isset($glob['rootRel']) && !empty($glob['rootRel'])) {
     define('CC_ROOT_REL', $glob['rootRel']);
 } else {
     define('CC_ROOT_REL', $script_path);

@@ -677,7 +677,7 @@ class Debug
      */
     private function _writeErrorLog($message, $type, $backtrace = '')
     {
-        $url = (CC_SSL ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $url = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         if (isset($GLOBALS['db']) && $GLOBALS['db']->connected) {
             $log_days = (is_object($GLOBALS['config']) && method_exists($GLOBALS['config'], 'get')) ? $GLOBALS['config']->get('config', 'r_system_error') : 7;
             if (ctype_digit((string)$log_days) &&  $log_days > 0) {

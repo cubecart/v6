@@ -121,7 +121,7 @@ class SEO
             include $hook;
         }
 
-        $this->_sitemap_base_url = $GLOBALS['config']->get('config', 'ssl')=='1' ? preg_replace('#^http://#', 'https://', $GLOBALS['config']->get('config', 'standard_url')) : $GLOBALS['config']->get('config', 'standard_url');
+        $this->_sitemap_base_url = $GLOBALS['config']->get('config', 'standard_url');
 
         self::_checkModRewrite();
 

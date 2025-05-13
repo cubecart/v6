@@ -1904,8 +1904,7 @@ class Cubecart
 
             $GLOBALS['tax']->displayTaxes();
             $GLOBALS['smarty']->assign('TOTAL', $GLOBALS['tax']->priceFormat($GLOBALS['cart']->getTotal()));
-            $checkout_button = (CC_SSL) ? $GLOBALS['language']->checkout['secure_checkout'] : $GLOBALS['language']->checkout['checkout'];
-            $GLOBALS['smarty']->assign('CHECKOUT_BUTTON', $checkout_button);
+            $GLOBALS['smarty']->assign('CHECKOUT_BUTTON', $GLOBALS['language']->checkout['checkout']);
             if ($this->_basket['weight'] > 0) {
                 $GLOBALS['smarty']->assign('BASKET_WEIGHT', ($GLOBALS['config']->get('config', 'show_basket_weight')) ? (float)$this->_basket['weight'].strtolower($GLOBALS['config']->get('config', 'product_weight_unit')) : false);
             }

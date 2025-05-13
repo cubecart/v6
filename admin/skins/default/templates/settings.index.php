@@ -24,6 +24,11 @@
          <div><label for="store_postcode">{$LANG.address.postcode}</label><span><input name="config[store_postcode]" id="store_postcode" type="text" class="textbox" value="{$CONFIG.store_postcode}"></span></div>
       </fieldset>
       <fieldset>
+         <legend>{$LANG.settings.title_domain}</legend>
+         <div><label for="standard_url">{$LANG.settings.standard_url}</label><span><input name="config[standard_url]" id="standard_url" type="text" class="textbox" value="{$CONFIG.standard_url}"> {$LANG.common.eg} https://www.example.com/store</span></div>
+         <div><label for="cookie_domain">{$LANG.settings.cookie_domain}</label><span><input name="config[cookie_domain]" id="cookie_domain" type="text" class="textbox" value="{$CONFIG.cookie_domain}"> {$LANG.common.eg} .example.com</span></div>
+      </fieldset>
+      <fieldset>
          <legend>{$LANG.settings.title_tax_lang}</legend>
          <div><label for="default_language">{$LANG.settings.default_language}</label><span><select name="config[default_language]" id="default_language" class="textbox">
             {foreach from=$LANGUAGES item=language}<option value="{$language.code}"{$language.selected}>{$language.title}</option>{/foreach}
@@ -351,18 +356,6 @@
             {foreach from=$OPT_SEO_METADATA item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
             </select></span>
          </div>
-      </fieldset>
-   </div>
-   <div id="SSL" class="tab_content">
-      <h3>{$LANG.settings.title_ssl}</h3>
-      <fieldset>
-         <legend>{$LANG.settings.title_ssl}</legend>
-         <div><label for="ssl">{$LANG.settings.ssl_enable}</label><span><select name="config[ssl]" id="ssl" class="textbox">
-            {foreach from=$OPT_SSL item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
-            </select></span>
-         </div>
-         <div><label for="standard_url">{$LANG.settings.standard_url}</label><span><input name="config[standard_url]" id="standard_url" type="text" class="textbox" value="{$CONFIG.standard_url}"> {$LANG.common.eg} http://www.example.com/store</span></div>
-         <div><label for="cookie_domain">{$LANG.settings.cookie_domain}</label><span><input name="config[cookie_domain]" id="cookie_domain" type="text" class="textbox" value="{$CONFIG.cookie_domain}"> {$LANG.common.eg} .example.com</span></div>
       </fieldset>
    </div>
    <div id="Offline" class="tab_content">
