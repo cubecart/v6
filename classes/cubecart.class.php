@@ -1564,10 +1564,8 @@ class Cubecart
                     }
                     /* 
                     Add multiple attachments
-                    Please make sure your skin has the suitable HTML
-                    <input type="file" id="contact_attach" name="attachments[]" multiple accept="image/*,application/zip,application/pdf" />
                     */
-                    if(is_array($_FILES['attachments']) && !empty($_FILES['attachments'])) {
+                    if((bool)$contact['attachments'] && is_array($_FILES['attachments']) && !empty($_FILES['attachments'])) {
                         $total = count($_FILES['attachments']['name']);
                         $allowed = array(
                             'image/jpeg',
@@ -1577,29 +1575,35 @@ class Cubecart
                             'application/zip',
                             'application/pdf'
                         );
+                        $error = false;
                         for ($i = 0; $i < $total; $i++) {
                             if(in_array($_FILES['attachments']['type'][$i], $allowed) && file_exists($_FILES['attachments']['tmp_name'][$i])) {
                                 $mailer->AddAttachment($_FILES['attachments']['tmp_name'][$i], $_FILES['attachments']['name'][$i]);
+                            } else {
+                                $error = true;
+                                $GLOBALS['gui']->setError(sprintf($GLOBALS['language']->contact['type_not_allowed'], $_FILES['attachments']['type'][$i]));
                             }
                         }
                     }
                     // Send
-                    $email_sent = $mailer->Send();
-                    $email_data = array(
-                        'subject' => $mailer->Subject,
-                        'content_html' => '',
-                        'content_text' => $mailer->Body,
-                        'to' => "$department <$email>",
-                        'from' => "$from_name <$from_email>",
-                        'result' => $email_sent,
-                        'email_content_id' => ''
-                    );
-                    $GLOBALS['db']->insert('CubeCart_email_log', $email_data);
-                    if ($email_sent) {
-                        $GLOBALS['gui']->setNotify($GLOBALS['language']->documents['notify_document_contact']);
-                        httpredir('index.php');
-                    } else {
-                        $GLOBALS['gui']->setError($GLOBALS['language']->documents['error_document_contact']);
+                    if(!$error) {
+                        $email_sent = $mailer->Send();
+                        $email_data = array(
+                            'subject' => $mailer->Subject,
+                            'content_html' => '',
+                            'content_text' => $mailer->Body,
+                            'to' => "$department <$email>",
+                            'from' => "$from_name <$from_email>",
+                            'result' => $email_sent,
+                            'email_content_id' => ''
+                        );
+                        $GLOBALS['db']->insert('CubeCart_email_log', $email_data);
+                        if ($email_sent) {
+                            $GLOBALS['gui']->setNotify($GLOBALS['language']->documents['notify_document_contact']);
+                            httpredir('index.php');
+                        } else {
+                            $GLOBALS['gui']->setError($GLOBALS['language']->documents['error_document_contact']);
+                        }
                     }
                 }
             }
@@ -1624,6 +1628,7 @@ class Cubecart
                 include $hook;
             }
             $GLOBALS['smarty']->assign('SECTION_NAME', 'contact');
+            $GLOBALS['smarty']->assign('ALLOW_ATTACHMENTS', (bool)$contact['attachments']);
             $content = $GLOBALS['smarty']->fetch('templates/content.contact.php');
             $GLOBALS['smarty']->assign('PAGE_CONTENT', $content);
         } else {

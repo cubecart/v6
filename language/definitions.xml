@@ -626,6 +626,7 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="attachments" introduced="6.5.10"><![CDATA[Attachments]]></string>
     <string name="click_copy" introduced="6.5.7"><![CDATA[Click to copy]]></string>
     <string name="copied" introduced="6.5.7"><![CDATA[Copied!]]></string>
     <string name="credit" introduced="6.5.6"><![CDATA[Credit]]></string>
@@ -913,6 +914,8 @@
     <string name="order_cancelled" introduced="5.2.6"><![CDATA[Your order has been cancelled. Please contact a member of staff if you require further assistance. Alternatively we hope to see you again in the future.]]></string>
   </group>
   <group name="contact">
+    <string name="type_not_allowed" introduced="6.5.10"><![CDATA[Sorry but attachment type `%1$s` is not allowed.]]></string>
+    <string name="allow_attachments" introduced="6.5.10"><![CDATA[Allow Attachments]]></string>
     <string name="contact_form" introduced="5.0.0"><![CDATA[Contact Form]]></string>
     <string name="contact_info" introduced="5.0.0"><![CDATA[It is possible to specify specific departments and email addresses below. On completion a drop down menu will be presented to the customer so that the message can be directed to the appropriate department.]]></string>
     <string name="content_info" introduced="5.0.0"><![CDATA[It is possible to add extra information to the contact section of the store such as phone numbers and postal addresses using the rich text editor below.]]></string>
