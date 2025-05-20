@@ -1913,7 +1913,7 @@ class Cubecart
             if ($this->_basket['weight'] > 0) {
                 $GLOBALS['smarty']->assign('BASKET_WEIGHT', ($GLOBALS['config']->get('config', 'show_basket_weight')) ? (float)$this->_basket['weight'].strtolower($GLOBALS['config']->get('config', 'product_weight_unit')) : false);
             }
-            $GLOBALS['smarty']->assign('USE_CREDIT', $this->_basket['use_credit']);
+            $GLOBALS['smarty']->assign('USE_CREDIT', $this->_basket['use_credit'] ?? '0');
             $this->_listPaymentOptions($this->_basket['gateway']??'');
 
             // Alternate Checkouts - loaded as hooks
