@@ -172,6 +172,7 @@
 	<hook trigger="class.cubecart.construct.complete" deprecated="" />
 	<hook trigger="class.cubecart.construct.confirm" deprecated="" />
 	<hook trigger="class.cubecart.construct.confirm.create_user.created" deprecated="" />
+	<hook trigger="class.cubecart.construct.displayaddresses" deprecated="" />
 	<hook trigger="class.cubecart.construct.download" deprecated="" />
 	<hook trigger="class.cubecart.construct.gateway" deprecated="" />
 	<hook trigger="class.cubecart.prerecaptcha.confirm" deprecated="" />

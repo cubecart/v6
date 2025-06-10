@@ -1694,7 +1694,9 @@ class Cubecart
                 $this->_basket['delivery_address'] = $this->_basket['billing_address'];
                 $GLOBALS['cart']->save();
             }
-
+            foreach ($GLOBALS['hooks']->load('class.cubecart.construct.displayaddresses') as $hook) {
+                include $hook;
+            }
             $GLOBALS['smarty']->assign('ADDRESSES', $address_list);
             // Display selector, if allowed
             $GLOBALS['smarty']->assign('CTRL_DELIVERY', ($GLOBALS['config']->get('config', 'basket_allow_non_invoice_address') && !$GLOBALS['cart']->getBasketDigital()));
