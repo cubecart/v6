@@ -288,22 +288,24 @@ class Order
         $order_taxes = $GLOBALS['db']->select('CubeCart_order_tax', array('tax_id', 'amount'), array('cart_order_id' => $order_id));
 
         // Put in items
-        $vars = array();
+        $vars = $image_types = [];
+        $skins = $GLOBALS['gui']->getSkinData();
+        if (isset($skins['images'])) {
+            $image_types[] = 'source';
+            foreach ($skins['images'] as $name => $values) {
+                $image_types[] = $name;
+            }
+        } else {
+            $image_types[] = 'source';
+        }
         foreach ($this->_order_inventory as $item) {
             if ($item['product_id']>0) {
                 $existing_data = $GLOBALS['catalogue']->getProductData($item['product_id']);
                 $product    = is_array($existing_data) ? array_merge($existing_data, $item) : $item;
                 $product['item_price'] = Tax::getInstance()->priceFormat($product['price']);
                 $product['price']   = Tax::getInstance()->priceFormat($product['price']*$product['quantity']);
+                
                 $images = array();
-                $skins = $GLOBALS['gui']->getSkinData();
-                if (isset($skins['images'])) {
-                    $image_types[] = 'source';
-                    foreach ($skins['images'] as $name => $values) {
-                        $image_types[] = $name;
-                    }
-                }
-                $image_types[] = 'source';
                 if (($gallery = $GLOBALS['db']->select('`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_image_index` AS `i` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_filemanager` AS `f` ON i.file_id = f.file_id', false, 'i.product_id = '.$item['product_id'], 'ORDER BY i.main_img DESC'))) {
                     $duplicates = array();
                     foreach ($gallery as $key => $image) {
