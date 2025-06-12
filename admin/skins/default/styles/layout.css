@@ -1674,7 +1674,9 @@ td.option_image {
 #plugins hr {
     margin: 30px 0;
     width: 70%;
-    visibility: hidden;
+}
+#plugins table, #plugins fieldset, #plugins p {
+    width: 70%;
 }
 .order_break td {
     border-top: 1px solid #c5c5c5

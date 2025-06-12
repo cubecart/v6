@@ -26,13 +26,13 @@
 			<h2>3. {$LANG.navigation.nav_products}</h2>
 			<p>{$LANG.dashboard.tour_3}</p>
 		</li>
-		<li data-id="nav_plugins">
-			<h2>4. {$LANG.navigation.nav_plugins}</h2>
-			<p>{$LANG.dashboard.tour_5}</p>
-		</li>
 		<li data-id="nav_marketplace">
-			<h2>5. {$LANG.navigation.nav_marketplace}</h2>
+			<h2>4. {$LANG.navigation.nav_marketplace}</h2>
 			<p>{$LANG.dashboard.tour_4}</p>
+		</li>
+		<li data-id="nav_plugins">
+			<h2>5. {$LANG.navigation.nav_plugins}</h2>
+			<p>{$LANG.dashboard.tour_5}</p>
 		</li>
 		<li data-id="nav_docs">
 		<h2>6. {$LANG.dashboard.tour_6_title}</h2>

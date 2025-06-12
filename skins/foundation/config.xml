@@ -15,7 +15,7 @@
 	<version>n/a</version>
 	<minVersion>6.0.0</minVersion>
 	<maxVersion>6.*.*</maxVersion>
-	<creator>CubeCart Limited</creator>
+	<creator>CubeCart</creator>
 	<homepage>https://www.cubecart.com</homepage>
 	<mobile>false</mobile>
 	<responsive>true</responsive>

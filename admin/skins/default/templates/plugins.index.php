@@ -19,14 +19,15 @@
          <div><label for="plugin_token">{$LANG.module.token}</label><span><input type="textbox" class="textbox" name="plugin_token" id="plugin_token" value="" placeholder="XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX"></span></div>
          <div><label for="backup">{$LANG.module.backup_if_exists}</label><span><input type="hidden" id="backup" name="backup" value="1" class="toggle"></span></div>
          <div><label for="backup">{$LANG.module.backup_abort}</label><span><input type="hidden" id="abort" name="abort" value="1" class="toggle"></span></div>
-         <div><label>&nbsp;</label><span><input type="submit" value="{$LANG.common.go}"></span></div>
       </fieldset>
+      <input type="submit" value="{$LANG.settings.install_extension}" class="button">
       </form>
       <hr>
       <h3>{$LANG.module.available_plugins}</h3>
       {if is_array($MODULES)}
+      <p>{$LANG.module.default_extensions}</p>
       <form action="{$VAL_SELF}" method="post">
-      <table width="70%">
+      <table>
          <thead>
             <tr>
                <th width="45" style="text-align:center">{$LANG.common.status}</th>
@@ -70,11 +71,11 @@
       {/if}
       
       </form>
+      <hr>
+      <h3>{$LANG.settings.installed_languages}</h3>
       <form action="?_g=settings&node=language" method="post">
       {if is_array($LANGUAGES)}
-      <hr>
-      <h3>{$LANG.navigation.nav_languages}</h3>
-      <table width="70%">
+      <table>
          <thead>
             <tr>
                <th width="45">{$LANG.common.status}</th>
@@ -105,8 +106,8 @@
       </form>
       {if is_array($SKINS)}
       <hr>
-      <h3>{$LANG.settings.logo_all_skins}</h3>
-      <table width="70%">
+      <h3>{$LANG.settings.installed_skins}</h3>
+      <table>
          <thead>
             <tr>
                <th width="50">{$LANG.common.default}</th>

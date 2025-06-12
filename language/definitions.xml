@@ -1039,8 +1039,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="tour_1" introduced="6.0.0"><![CDATA[Define some basic information here such as your store name &amp; address, main currency and upload a logo.]]></string>
     <string name="tour_2" introduced="6.0.0"><![CDATA[Create the category structure for your product inventory.]]></string>
     <string name="tour_3" introduced="6.0.0"><![CDATA[Add digital or physical products and assign them to categories.]]></string>
-    <string name="tour_4" introduced="6.0.0"><![CDATA[Visit our marketplace to find hundreds of other extensions such as Stripe, FedEx, Olark etc&hellip;]]></string>
-    <string name="tour_5" introduced="6.0.0"><![CDATA[Connect PayPal to take payments instantly and configure your shipping rates.]]></string>
+    <string name="tour_4" introduced="6.0.0"><![CDATA[Visit our marketplace to choose a free payment integration such as Stripe, Square or PayPal and have a browse for themes and shipping calculators etc&hellip;]]></string>
+    <string name="tour_5" introduced="6.0.0"><![CDATA[Come here to install and configure your chosen extensions.]]></string>
     <string name="tour_6_title" introduced="6.0.0"><![CDATA[Homepage Content]]></string>
     <string name="tour_6" introduced="6.0.0"><![CDATA[Update your homepage with rich, vibrant content.]]></string>
      <string name="tour_7_title" introduced="6.2.3"><![CDATA[Clear Cache]]></string>
@@ -1613,6 +1613,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="query_box" introduced="5.0.0"><![CDATA[Query Box]]></string>
   </group>
   <group name="module">
+    <string name="default_extensions" introduced="6.5.10"><![CDATA[CubeCart comes preinstalled with <a href="https://www.cubecart.com/extensions/plugins/paypal-commerce" target="_blank">PayPal Commerce</a> &amp; <a href="https://www.cubecart.com/extensions/shipping-methods/all-in-one-shipping" target="_blank">All in One Shipping</a> due to their huge popularity. These can, of course be deleted and replaced with other extensions from our marketplace.]]></string>
     <string name="package_fail" introduced="6.0.9"><![CDATA[Error: Failed to obtain package information. Please install via FTP.]]></string>
     <string name="plugin_still_exists" introduced="6.0.0"><![CDATA[Plugin still exists. Please delete manually via FTP or hosting filemanager.]]></string>
     <string name="plugin_deleted_successfully" introduced="6.0.0"><![CDATA[Plugin deleted succesfully.]]></string>
@@ -1627,11 +1628,11 @@ This email is sent from the store's master email address but it is possible to r
     <string name="not_writable" introduced="6.0.0"><![CDATA[Error: %1$s is not writable by the web server.]]></string>
     <string name="not_exist" introduced="6.0.0"><![CDATA[Error: %1$s does not exist. Please create it and try again.]]></string>
     <string name="token_unknown" introduced="6.0.0"><![CDATA[Error: Token was not recognised or has expired.]]></string>
-    <string name="token_title" introduced="6.0.0"><![CDATA[Auto Install/Upgrade Token]]></string>
-    <string name="token_desc" introduced="6.0.0"><![CDATA[Installing anything from the CubeCart Marketplace is a breeze using install tokens. Locate the item you want and click the thunderbolt icon (<i class="fa fa-bolt"></i>) next to the file name. This will generate your install token which can be used here to install/upgrade and downgrade.]]></string>
+    <string name="token_title" introduced="6.0.0"><![CDATA[Install / Upgrade an Extension]]></string>
+    <string name="token_desc" introduced="6.0.0"><![CDATA[Installing anything from the <a href="?_g=marketplace" target="_blank">CubeCart Marketplace</a> is a simple using install &quot;tokens&quot;. Locate the item you want and click the thunderbolt icon (<i class="fa fa-bolt"></i>) next to the file name. This will generate your install token which can be used here to install or upgrade any existing ones.]]></string>
     <string name="backup_if_exists" introduced="6.0.0"><![CDATA[Backup if already exists]]></string>
     <string name="backup_abort" introduced="6.0.0"><![CDATA[Abort if backup fails]]></string>
-    <string name="available_plugins" introduced="6.0.0"><![CDATA[Available Extensions]]></string>
+    <string name="available_plugins" introduced="6.0.0"><![CDATA[Installed Extensions]]></string>
     <string name="extensions_available_desc" introduced="6.1.0"><![CDATA[Updates are available for the following extensions.]]></string>
     <string name="token" introduced="6.0.0"><![CDATA[Token]]></string>
     <string name="get_file_failed" introduced="6.0.0"><![CDATA[Failed to retrieve file.]]></string>
@@ -2006,6 +2007,9 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
+    <string name="installed_languages" introduced="6.5.10"><![CDATA[Installed Languages]]></string>
+    <string name="installed_skins" introduced="6.5.10"><![CDATA[Installed Skins]]></string>
+    <string name="install_extension" introduced="6.5.10"><![CDATA[Install / Upgrade Extension]]></string>
     <string name="captcha_warning" introduced="6.5.7"><![CDATA[The following bot protection service providers are not compatible with your current skin:]]></string>
     <string name="customer_group_discounts" introduced="6.5.4"><![CDATA[Customer Group Discounts]]></string>
     <string name="currency_adjustment" introduced="6.5.4"><![CDATA[Percentage Adjustment]]></string>
