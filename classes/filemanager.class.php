@@ -106,10 +106,10 @@ class FileManager
                                 $GLOBALS['gui']->setError($GLOBALS['language']->filemanager['error_file_moved']);
                             }
                         }
-                        $record['description'] = strip_tags($_POST['details']['description']);
-                        $record['title'] = $_POST['details']['title'];
-                        $record['stream'] = $_POST['details']['stream'];
-                        $record['alt'] = $_POST['details']['alt'];
+                        $record['description'] = strip_tags($_POST['details']['description'] ?? "");
+                        $record['title'] = $_POST['details']['title'] ?? "";
+                        $record['stream'] = $_POST['details']['stream'] ?? "0"; // must be string "0" or "1"
+                        $record['alt'] = $_POST['details']['alt'] ?? "";
 
                         $update = false;
                         foreach ($record as $k => $v) {
