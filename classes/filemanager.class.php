@@ -22,7 +22,7 @@ class FileManager
     private $_recently_uploaded = array();
     private $_sub_dir;
     private $_max_upload_image_size = 350000;
-    private $_md5_filesize_limit = 10485760;
+    private $_md5_filesize_limit = 268435456; // 256MB
 
     public $form_fields = false;
 
