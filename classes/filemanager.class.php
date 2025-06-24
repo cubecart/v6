@@ -1201,7 +1201,7 @@ class FileManager
         if($force || $size <= $this->_md5_filesize_limit) {
             return md5_file($file);
         }
-        return '';
+        return null;
     }
 
     /**

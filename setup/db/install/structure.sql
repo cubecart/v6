@@ -392,7 +392,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_filemanager` (
 	`filename` VARCHAR(255) COLLATE utf8_bin NOT NULL,
 	`filesize` BIGINT UNSIGNED NOT NULL,
 	`mimetype` VARCHAR(50) NOT NULL,
-	`md5hash` VARCHAR(32) NOT NULL,
+	`md5hash` varchar(32) DEFAULT NULL,
 	`title` varchar(255) NOT NULL,
 	`description` TEXT NOT NULL,
 	`stream` enum('0','1') NOT NULL DEFAULT '0',

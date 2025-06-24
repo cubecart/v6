@@ -1,0 +1,1 @@
+ALTER TABLE `CubeCart_filemanager` CHANGE `md5hash` `md5hash` VARCHAR(32) default NULL; #EOQ
