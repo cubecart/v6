@@ -79,11 +79,14 @@
 		{/if}
 		{if $FILMANAGER_MODE == FileManager::FM_FILETYPE_DL}
 		<input type="checkbox" value="{$file.value}" class="multi_delete" name="multi_delete[]"> <i class="fa fa-{$file.icon}" aria-hidden="true" alt="{$file.mimetype}"></i>
-		{if $file.select_button}
 		<span class="actions">
+		{if $file.select_button}
 		<a href="{$file.master_filepath}" class="select"><i class="fa fa-plus-circle" title="{$LANG.common.add}"></i></a>
-		</span>
+		{else}
+		<a href="{$file.delete}" class="delete right" title="{sprintf($LANG.notification.confirm_delete_file,$file.filename)}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
+		<a href="{$file.edit}" class="edit right" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
 		{/if}
+		</span>
 		{/if}
 		<a class="item_link" href="{if $file.class}{$file.filepath}?{$file.random}{else}?_g=filemanager&download_file={base64_encode($file.filepath)}{/if}" class="{$file.class}" title="{$file.description}" target="_self">{$file.filename} <span class="list-filesize">({$file.filesize})</span></a>
 	</div>
