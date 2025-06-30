@@ -466,11 +466,6 @@ class Debug
             case E_RECOVERABLE_ERROR:
                 $type = 'Recoverable';
             break;
-            case E_STRICT:
-                $type = 'Strict';
-                $group = 'warn';
-                $log = $can_log;
-                break;
             case E_WARNING:
             case E_USER_WARNING:
                 $type = 'Warning';
