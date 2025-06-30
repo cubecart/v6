@@ -1898,27 +1898,53 @@ class Catalogue
             if($GLOBALS['config']->get('config', 'hide_out_of_stock')=='1') {
                 $search_data['inStock'] = true;
             }
+            // Only uses expensive join if really needed
+            $pg_join = '';
+            $pg = false;
+            if($GLOBALS['db']->select('CubeCart_pricing_group', false, false, false, 1, false, true)) {
+                $pg = true;
+                $pg_join = " LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id ";
+            }
             if (!empty($search_data['priceVary'])) {
                 // Allow for a 5% variance in prices
                 if (!empty($search_data['priceMin']) && is_numeric($search_data['priceMin'])) {
                     $price = round($GLOBALS['tax']->priceConvertFX($search_data['priceMin'])/1.05, 3);
                     if ($sale_mode == 1) {
-                        $where[] = 'AND (IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price) >= '.$price.', IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price) >= '.$price.'))';
+                        if($pg) {
+                            $where[] = 'AND (IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price) >= '.$price.', IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price) >= '.$price.'))';
+                        } else {
+                            $where[] = 'AND (IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price) >= '.$price.')';
+                        }
+                        
                     } elseif ($sale_mode == 2) {
-                        $where[] = 'AND (IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) >= '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) >= '.$price.'))';
+                        if($pg) {
+                            $where[] = 'AND (IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) >= '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) >= '.$price.'))';
+                        } else {
+                            $where[] = 'AND (IF (I.price - ((I.price / 100) * '.$sale_percentage.')) >= '.$price.')';
+                        }
                     } else {
-                        $where[] = 'AND (IF (G.price IS NULL, I.price >= '.$price.', G.price >= '.$price.'))';
+                        if($pg) {
+                            $where[] = 'AND (IF (G.price IS NULL, I.price >= '.$price.', G.price >= '.$price.'))';
+                        } else {
+                            $where[] = 'AND (I.price >= '.$price.')';
+                        }
                     }
                 }
 
                 if (!empty($search_data['priceMax']) && is_numeric($search_data['priceMax'])) {
                     $price = round($GLOBALS['tax']->priceConvertFX($search_data['priceMax'])*1.05, 3);
                     if ($sale_mode == 1) {
-                        $where[] = 'AND (IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price) <= '.$price.', IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price) <= '.$price.'))';
+                        if($pg) {
+                            $where[] = 'AND (IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price) <= '.$price.', IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price) <= '.$price.'))';
+                        } else {
+                            $where[] = 'AND (IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price) <= '.$price.')';
+                        }
                     } elseif ($sale_mode == 2) {
-                        $where[] = 'AND (IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) <= '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) <= '.$price.'))';
-                    } else {
-                        $where[] = 'AND (IF (G.price IS NULL, I.price <= '.$price.', G.price <= '.$price.'))';
+                        if($pg) {
+                            $where[] = 'AND (IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) <= '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) <= '.$price.'))';
+                        } else {
+                            $where[] = 'AND (I.price - ((I.price / 100) * '.$sale_percentage.')) <= '.$price;
+                        }
                     }
                 }
             } else {
@@ -1928,31 +1954,67 @@ class Catalogue
                     $search_data['priceMax'] == $search_data['priceMin']) {
                     $price = round($GLOBALS['tax']->priceConvertFX($search_data['priceMin']), 3);
                     if ($sale_mode == 1) {
-                        $where[] = 'AND (IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price) = '.$price.', IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price) = '.$price.'))';
+                        if($pg) {
+                            $where[] = 'AND (IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price) = '.$price.', IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price) = '.$price.'))';
+                        } else {   
+                            $where[] = 'AND (IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price) = '.$price.')';
+                        }
                     } elseif ($sale_mode == 2) {
-                        $where[] = 'AND (IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) = '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) = '.$price.'))';
+                        if($pg) {
+                            $where[] = 'AND (IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) = '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) = '.$price.'))';
+                        } else {
+                            $where[] = 'AND (IF (I.price - ((I.price / 100) * '.$sale_percentage.')) = '.$price.')';
+                        }
                     } else {
-                        $where[] = 'AND (IF (G.price IS NULL, I.price = '.$price.', G.price = '.$price.'))';
+                        if($pg) {
+                            $where[] = 'AND (IF (G.price IS NULL, I.price = '.$price.', G.price = '.$price.'))';
+                        } else {
+                            $where[] = 'AND (I.price = '.$price.')';
+                        }
                     }
                 } else {
                     if (!empty($search_data['priceMin']) && is_numeric($search_data['priceMin'])) {
                         $price = round($GLOBALS['tax']->priceConvertFX($search_data['priceMin']), 3);
                         if ($sale_mode == 1) {
-                            $where[] = 'AND (IF (G.product_id IS NULL, IF (I.sale_price = 0, I.price, I.sale_price) >= '.$price.', IF (G.sale_price = 0, G.price, G.sale_price) >= '.$price.'))';
+                            if($pg) {
+                                $where[] = 'AND (IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price) >= '.$price.', IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price) >= '.$price.'))';
+                            } else {
+                                $where[] = 'AND (IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price) >= '.$price.')';
+                            }
                         } elseif ($sale_mode == 2) {
-                            $where[] = 'AND (IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) >= '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) >= '.$price.'))';
+                            if($pg) {
+                                $where[] = 'AND (IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) >= '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) >= '.$price.'))';
+                            } else {
+                                $where[] = 'AND (IF (I.price - ((I.price / 100) * '.$sale_percentage.')) >= '.$price.')';
+                            }
                         } else {
-                            $where[] = 'AND (IF (G.price IS NULL, I.price >= '.$price.', G.price >= '.$price.'))';
+                            if($pg) {
+                                $where[] = 'AND (IF (G.price IS NULL, I.price >= '.$price.', G.price >= '.$price.'))';
+                            } else {    
+                                $where[] = 'AND (I.price >= '.$price.')';
+                            }
                         }
                     }
                     if (!empty($search_data['priceMax']) && is_numeric($search_data['priceMax'])) {
                         $price = round($GLOBALS['tax']->priceConvertFX($search_data['priceMax']), 3);
                         if ($sale_mode == 1) {
-                            $where[] = 'AND (IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price) <= '.$price.', IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price) <= '.$price.'))';
+                            if($pg) {
+                                $where[] = 'AND (IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price) <= '.$price.', IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price) <= '.$price.'))';
+                            } else {
+                                $where[] = 'AND (IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price) <= '.$price.')';
+                            }
                         } elseif ($sale_mode == 2) {
-                            $where[] = 'AND (IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) <= '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) <= '.$price.'))';
+                            if($pg) {
+                                $where[] = 'AND (IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) <= '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) <= '.$price.'))';
+                            } else {
+                                $where[] = 'AND (IF (I.price - ((I.price / 100) * '.$sale_percentage.')) <= '.$price.')';
+                            }
                         } else {
-                            $where[] = 'AND (IF (G.price IS NULL, I.price <= '.$price.', G.price <= '.$price.'))';
+                            if($pg) {
+                                $where[] = 'AND (IF (G.price IS NULL, I.price <= '.$price.', G.price <= '.$price.'))';
+                            } else {
+                                $where[] = 'AND (I.price <= '.$price.')';
+                            }
                         }
                     }
                 }
@@ -1971,10 +2033,18 @@ class Catalogue
                     }
                     $order['field'] = $field;
                     if ($field == 'price') {
-                        if ($sale_mode == 1) {
-                            $order['field'] = 'IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price), IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price))';
+                        if($pg) {
+                            if ($sale_mode == 1) {
+                                $order['field'] = 'IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price), IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price))';
+                            } else {
+                                $order['field'] = 'IFNULL (G.price, I.price)';
+                            }
                         } else {
-                            $order['field'] = 'IFNULL (G.price, I.price)';
+                            if ($sale_mode == 1) {
+                                $order['field'] = 'IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price)';
+                            } else {
+                                $order['field'] = 'I.price';
+                            }
                         }
                     }
                     $order['sort'] = (strtolower($direction) == 'asc') ? 'ASC' : 'DESC';
@@ -1993,10 +2063,18 @@ class Catalogue
                 }
             }
             if (empty($search_data['keywords']) && $order['field'] == 'Relevance') {
-                if ($sale_mode == 1) {
-                    $order['field'] = 'IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price), IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price))';
+                if($pg) {
+                    if ($sale_mode == 1) {
+                        $order['field'] = 'IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price), IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price))';
+                    } else {
+                        $order['field'] = 'IFNULL (G.price, I.price)';
+                    }
                 } else {
-                    $order['field'] = 'IFNULL (G.price, I.price)';
+                    if ($sale_mode == 1) {
+                        $order['field'] = 'IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price)';
+                    } else {
+                        $order['field'] = 'I.price';
+                    }
                 }
             }
             if (is_array($order)) {
@@ -2071,10 +2149,20 @@ class Catalogue
                     $match = sprintf("MATCH (%s) AGAINST('%s' %s)", implode(',', $indexes), $words, $mode);
                     $match_val = '0.5';
 
-                    $query = sprintf("SELECT I.*, %2\$s AS Relevance FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND (%2\$s) >= %4\$s %3\$s %5\$s %6\$s", $GLOBALS['config']->get('config', 'dbprefix'), $match, $whereString, $match_val, $order_string, $limit);
+                    if($pg) {
+                        $query_string = "SELECT I.*, %2\$s AS Relevance FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND (%2\$s) >= %4\$s %3\$s %5\$s %6\$s";
+                    } else {
+                        $query_string = "SELECT I.*, %2\$s AS Relevance FROM %1\$sCubeCart_inventory AS I $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND (%2\$s) >= %4\$s %3\$s %5\$s %6\$s";
+                    }
+                    $query = sprintf($query_string, $GLOBALS['config']->get('config', 'dbprefix'), $match, $whereString, $match_val, $order_string, $limit);
             
                     if ($search = $GLOBALS['db']->query($query)) {
-                        $q2 = sprintf("SELECT COUNT(I.product_id) as count, %2\$s AS Relevance FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND (%2\$s) >= %4\$s %3\$s GROUP BY I.product_id %5\$s", $GLOBALS['config']->get('config', 'dbprefix'), $match, $whereString, $match_val, $order_string);
+                        if($pg) {
+                            $query_string = "SELECT COUNT(I.product_id) as count, %2\$s AS Relevance FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND (%2\$s) >= %4\$s %3\$s GROUP BY I.product_id %5\$s";
+                        } else {
+                            $query_string = "SELECT COUNT(I.product_id) as count, %2\$s AS Relevance FROM %1\$sCubeCart_inventory AS I $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND (%2\$s) >= %4\$s %3\$s GROUP BY I.product_id %5\$s";
+                        }
+                        $q2 = sprintf($query_string, $GLOBALS['config']->get('config', 'dbprefix'), $match, $whereString, $match_val, $order_string);
                         $count = $GLOBALS['db']->query($q2);
                         $this->_category_count  = (int)count($count);
                         $this->_category_products = $search;
@@ -2144,11 +2232,6 @@ class Catalogue
                   }
                   $likeString = ' AND ('.implode(' OR ',$like).')';
 
-                  // Only uses expensive join if really needed
-                  $pg_join = '';
-                  if($GLOBALS['db']->select('CubeCart_pricing_group', false, false, false, 1, false, true)) {
-                    $pg_join = " LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id ";
-                  }
                   $q2 = "SELECT I.* FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_inventory AS I".$pg_join.$joinString." WHERE I.product_id IN (SELECT product_id FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_category_index` as CI INNER JOIN ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 ".$whereString.$likeString;
                     
                     $query = $q2.' '.$order_string.' '.$limit;
@@ -2199,12 +2282,21 @@ class Catalogue
                     }
                 }
                 $where2 = $this->outOfStockWhere(false, 'I', true);
-                $whereString = 'IF (G.sale_price IS NULL, I.sale_price, G.sale_price) > 0'.$where2;
+                if($pg) {
+                    $whereString = 'IF (G.sale_price IS NULL, I.sale_price, G.sale_price) > 0'.$where2;
+                } else {
+                    $whereString = 'I.sale_price > 0'.$where2;
+                }
                 if ($GLOBALS['config']->get('config', 'catalogue_sale_mode') == '1') {
                     $query = sprintf("SELECT I.* FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND %2\$s %3\$s %4\$s", $GLOBALS['config']->get('config', 'dbprefix'), $whereString, $order_string, $limit);
                 } elseif ($GLOBALS['config']->get('config', 'catalogue_sale_mode') == '2') {
                     $decimal_percent = $GLOBALS['config']->get('config', 'catalogue_sale_percentage')/100;
-                    $query = sprintf("SELECT I.* FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, price*%4\$s as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 %2\$s %3\$s", $GLOBALS['config']->get('config', 'dbprefix'), $order_string, $limit, $decimal_percent);
+                    if($pg) {
+                        $query_string = "SELECT I.* FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, price*%4\$s as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 %2\$s %3\$s";
+                    } else {
+                        $query_string = "SELECT I.* FROM %1\$sCubeCart_inventory AS I WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 %2\$s %3\$s";
+                    }
+                    $query = sprintf($query_string, $GLOBALS['config']->get('config', 'dbprefix'), $order_string, $limit, $decimal_percent);
                 } else {
                     return false;
                 }
@@ -2212,7 +2304,13 @@ class Catalogue
                     include $hook;
                 }
                 if (($sale = $GLOBALS['db']->query($query)) !== false) {
-                    $q2 = sprintf("SELECT COUNT(*) AS `Count` FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND %2\$s", $GLOBALS['config']->get('config', 'dbprefix'), $whereString);
+                    if($pg) {
+                        $query_string = "SELECT COUNT(*) AS `Count` FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND %2\$s";
+                    } else {
+                        $query_string = "SELECT COUNT(*) AS `Count` FROM %1\$sCubeCart_inventory AS I WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND %2\$s";
+                    }
+                    
+                    $q2 = sprintf($query_string, $GLOBALS['config']->get('config', 'dbprefix'), $whereString);
                     $count = $GLOBALS['db']->query($q2);
                     $this->_category_count  = (int)$count[0]['Count'];
                     $this->_category_products = $sale;
