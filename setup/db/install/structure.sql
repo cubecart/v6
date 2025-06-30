@@ -1063,7 +1063,8 @@ CREATE TABLE IF NOT EXISTS `CubeCart_email_log` (
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `email_content_id` int(11) NOT NULL,
   `result` tinyint(1) NOT NULL,
-  `fail_reason` text
+  `fail_reason` text,
+  `attachment` text DEFAULT NULL,
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_email_log` ADD PRIMARY KEY (`id`); #EOQ
 ALTER TABLE `CubeCart_email_log` ADD INDEX(`to`); #EOQ

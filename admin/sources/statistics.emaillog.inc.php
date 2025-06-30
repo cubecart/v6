@@ -98,6 +98,21 @@ if ($email_logs!==false) {
                 );
             }
         }
+        $attachments = json_decode($row['attachment'], true);
+        if(is_array($attachments) && !empty($attachments)) {
+            $row['attachment'] = array();
+            foreach ($attachments as $file) {
+                if (file_exists(CC_FILES_DIR.'attachments/'.$file)) {
+                    $row['attachment'][] = array(
+                        'name' => $file,
+                        'download_file' => base64_encode('files/attachments/'.$file)
+                    );
+                }
+            }
+        } else {
+            $row['attachment'] = array();
+        }
+
         if($from = User::getEmailAddressParts($row['from'])) {
             $row['from_name'] = $from['name'];
             $row['from_email'] = $from['email'];

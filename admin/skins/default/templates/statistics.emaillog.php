@@ -32,6 +32,7 @@
 		<td>{$LANG.common.from}</td>
 		<td colspan="2" align="center">{$LANG.common.read}</td>
 		<td>{$LANG.common.date}</td>
+		<td>Attachments</td>
 		<td>{$LANG.common.edit}</td>
 		<td>{$LANG.common.resend}</td>
 	  </tr>
@@ -58,6 +59,13 @@
 			{/if}
 		</td>
 		<td>{$log.date}</td>
+		<td>
+			{if !empty($log.attachment)}
+			{foreach from=$log.attachment item=file}	
+			<a href="?_g=filemanager&download_file={$file.download_file}">{$file.name}</a><br>
+			{/foreach}
+			{/if}
+		</td>
 		<td style="text-align:center">{if $log.email_content_id>0}<a href="?_g=documents&amp;node=email&amp;type=content&amp;action=edit&amp;content_id={$log.email_content_id}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>{/if}</td>
 		<td style="text-align:center"><a href="?_g=statistics&node=emaillog&resend={$log.id}"><i class="fa fa-paper-plane" title="{$LANG.common.resend}" aria-hidden="true"></i></i></a></td>
 	  </tr>

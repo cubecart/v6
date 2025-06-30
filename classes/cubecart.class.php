@@ -1576,13 +1576,24 @@ class Cubecart
                             'application/pdf'
                         );
                         $error = false;
+                        $moved = [];
                         for ($i = 0; $i < $total; $i++) {
                             if(in_array($_FILES['attachments']['type'][$i], $allowed) && file_exists($_FILES['attachments']['tmp_name'][$i])) {
                                 $mailer->AddAttachment($_FILES['attachments']['tmp_name'][$i], $_FILES['attachments']['name'][$i]);
+                                $attach_dir = CC_FILES_DIR.'attachments/';
+                                file_exists($attach_dir) || mkdir($attach_dir, 0755, true);
+                                // Move uploaded file to attachments directory
+                                move_uploaded_file($_FILES['attachments']['tmp_name'][$i], $attach_dir.$_FILES['attachments']['name'][$i]);
+                                $moved[] = $_FILES['attachments']['name'][$i];
+
                             } else {
                                 $error = true;
                                 $GLOBALS['gui']->setError(sprintf($GLOBALS['language']->contact['type_not_allowed'], $_FILES['attachments']['type'][$i]));
                             }
+                        }
+                        if(count($moved) > 0 && !$error) {
+                            $fm  = new FileManager('digital', 'attachments');
+                            $fm->buildDatabase();
                         }
                     }
                     // Send
@@ -1595,7 +1606,8 @@ class Cubecart
                             'to' => "$department <$email>",
                             'from' => "$from_name <$from_email>",
                             'result' => $email_sent,
-                            'email_content_id' => ''
+                            'email_content_id' => '',
+                            'attachment' => json_encode($moved)
                         );
                         $GLOBALS['db']->insert('CubeCart_email_log', $email_data);
                         if ($email_sent) {
