@@ -34,7 +34,7 @@ if (($cat_dropdown = $GLOBALS['cache']->read('products_category_dropdown')) === 
     $cat_dropdown = $GLOBALS['catalogue']->buildCategoriesDropDown();
     $GLOBALS['cache']->write($cat_dropdown, 'products_category_dropdown');
 }
-$GLOBALS['smarty']->assign('CAT_LIST_ANY', currentPage(array('cat_id')));
+$GLOBALS['smarty']->assign('CAT_LIST_ANY', currentPage(array('cat_id','status_filter')));
 $GLOBALS['smarty']->assign('CAT_LIST', $cat_dropdown);
 $GLOBALS['smarty']->assign('CURRENT_CAT', (isset($_GET['cat_id'])) ? $_GET['cat_id'] : '');
 
@@ -1232,14 +1232,17 @@ if (isset($_GET['action'])) {
         }
     }
 
-    if (isset($_GET['status_filter']) && is_numeric($_GET['status_filter'])) {
-        if (!$where) {
-            $where = '';
-        } else {
-            $where .= ' AND ';
-        }
-        $where .= '`status` = '.(int)$_GET['status_filter'];
+    if (isset($_GET['status_filter'])) {
         $GLOBALS['smarty']->assign('STATUS_FILTER', $_GET['status_filter']);
+        if(is_numeric($_GET['status_filter'])) {
+            if (!$where) {
+                $where = '';
+            } else {
+                $where .= ' AND ';
+            }
+            $where .= '`status` = '.(int)$_GET['status_filter'];
+            $GLOBALS['smarty']->assign('STATUS_FILTER', $_GET['status_filter']);
+        }
     }
 
     foreach ($GLOBALS['hooks']->load('admin.product.products_list.where_filter') as $hook) {
