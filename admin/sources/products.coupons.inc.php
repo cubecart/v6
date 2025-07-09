@@ -189,7 +189,9 @@ if (isset($_GET['action'])) {
     }
     // List Manufacturers
     if (($manufacturers = $GLOBALS['db']->select('CubeCart_manufacturers', false, false, array('name' => 'ASC'))) !== false) {
-        if (is_array(unserialize($coupon[0]['manufacturer_id']))) $manufacturer_assigned = array_flip(unserialize($coupon[0]['manufacturer_id']));
+        if (isset($coupon[0]['manufacturer_id']) && is_array(unserialize($coupon[0]['manufacturer_id']))) {
+            $manufacturer_assigned = array_flip(unserialize($coupon[0]['manufacturer_id']));
+        }
         foreach ($manufacturers as $manufacturer) {
             $manufacturer['selected'] = isset($manufacturer_assigned[$manufacturer['id']]) ? true : false;
             $smarty_data['list_manufacturers'][] = $manufacturer;
@@ -199,7 +201,7 @@ if (isset($_GET['action'])) {
     $GLOBALS['smarty']->assign('INCEXC', $smarty_data['incexc']);
     
     // List Categories
-    if (is_array(unserialize($coupon[0]['category_id']))) {
+    if (isset($coupon[0]['category_id']) && is_array(unserialize($coupon[0]['category_id']))) {
         $category_assigned = array_flip(unserialize($coupon[0]['category_id']));
     }
 
@@ -230,7 +232,7 @@ if (isset($_GET['action'])) {
     }
     if($shipping = $GLOBALS['db']->select('CubeCart_modules', array('folder'), array('module' => 'shipping', 'status' => 1))) {
         // List shipping methods
-        if (is_array(unserialize($coupon[0]['shipping_id']))) {
+        if (isset($coupon[0]['shipping_id']) && is_array(unserialize($coupon[0]['shipping_id']))) {
             $shipping_assigned = array_flip(unserialize($coupon[0]['shipping_id']));
         }
         $shipping_data = array();
