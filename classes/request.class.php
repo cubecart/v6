@@ -261,6 +261,7 @@ class Request
             'request'           => (!empty($request)) ? $this->mask_cc($request) : "",
             'result'    	    => $this->mask_cc($result),
             'response_code'     => (string)$this->server_response_code,
+            'error'   		    => $error,
             'is_curl'           => $this->_curl ? 1 : 0,
             'request_headers'   => implode(' ', $this->_request_headers),
             'response_headers'  => $this->_request_return_headers ? $this->_response_headers : null,
