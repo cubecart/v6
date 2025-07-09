@@ -7,3 +7,4 @@ ALTER TABLE `CubeCart_seo_urls` DROP PRIMARY KEY; #EOQ
 ALTER TABLE `CubeCart_seo_urls` DROP INDEX `id`;
 ALTER TABLE `CubeCart_seo_urls` ADD PRIMARY KEY(`id`); #EOQ
 ALTER TABLE `CubeCart_seo_urls`  ADD UNIQUE (`path`); #EOQ
+ALTER TABLE `CubeCart_order_history` ADD KEY (`status`); #EOQ
