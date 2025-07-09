@@ -913,19 +913,21 @@ CREATE TABLE IF NOT EXISTS `CubeCart_search` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_sessions` (
-	`session_id` VARCHAR(32) NOT NULL,
-	`session_start` INT UNSIGNED NOT NULL DEFAULT '0',
-	`session_last` INT UNSIGNED NOT NULL DEFAULT '0',
-	`admin_id` INT UNSIGNED NOT NULL DEFAULT '0',
-	`customer_id` INT UNSIGNED NOT NULL DEFAULT '0',
-	`location` VARBINARY(255) DEFAULT NULL,
-	`ip_address` VARCHAR(45) DEFAULT NULL COMMENT 'Supports IPv6 addresses',
-	`useragent` TEXT NULL,
-	`acp` TINYINT(1) DEFAULT 0,
-	PRIMARY KEY (`session_id`),
-	KEY `customer_id` (`customer_id`),
-	KEY `session_last` (`session_last`),
-	KEY `acp` (`acp`)
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `session_id` varchar(32) NOT NULL,
+  `session_start` int(10) unsigned NOT NULL DEFAULT 0,
+  `session_last` int(10) unsigned NOT NULL DEFAULT 0,
+  `admin_id` int(10) unsigned NOT NULL DEFAULT 0,
+  `customer_id` int(10) unsigned NOT NULL DEFAULT 0,
+  `location` varbinary(255) DEFAULT NULL,
+  `ip_address` varchar(45) DEFAULT NULL COMMENT 'Supports IPv6 addresses',
+  `useragent` text DEFAULT NULL,
+  `acp` tinyint(1) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  KEY `customer_id` (`customer_id`),
+  KEY `session_last` (`session_last`),
+  KEY `acp` (`acp`),
+  KEY `session_id` (`session_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_shipping_rates` (
@@ -1036,7 +1038,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_request_log` (
   	`response_headers` blob NULL,
   PRIMARY KEY (`request_id`),
   KEY `time` (`time`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ; #EOQ
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_seo_urls` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -1044,8 +1046,9 @@ CREATE TABLE IF NOT EXISTS `CubeCart_seo_urls` (
   `type` varchar(45) NOT NULL,
   `item_id` int(25) unsigned DEFAULT NULL,
   `custom` enum('0','1') NOT NULL DEFAULT '0',
-  `redirect` enum('0','301','302') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
-  PRIMARY KEY (`path`),
+  `redirect` enum('0','301','302') NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `path` (`path`),
   KEY `id` (`id`),
   KEY `type` (`type`),
   KEY `item_id` (`item_id`),
