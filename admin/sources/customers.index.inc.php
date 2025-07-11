@@ -26,16 +26,6 @@ if (isset($_POST['search']) && !empty($_POST['search'])) {
     }
 }
 
-if (isset($_GET['group_id']) && isset($_GET['customer_id']) && Admin::getInstance()->permissions('customers', CC_PERM_DELETE)) {
-    $group_id = (int)$_GET['group_id'];
-    $customer_id = (int)$_GET['customer_id'];
-    foreach ($GLOBALS['hooks']->load('admin.customer.group.delete') as $hook) {
-        include $hook;
-    }
-    $GLOBALS['db']->delete('CubeCart_customer_membership', array('group_id' => $group_id, 'customer_id' => $customer_id));
-    httpredir(currentPage(array('group_id')));
-}
-
 // If we are wanting an external report start new External class
 if (isset($_POST['external_report']) && is_array($_POST['external_report'])) {
     $module_name = array_keys($_POST['external_report']);
