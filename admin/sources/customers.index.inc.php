@@ -35,7 +35,7 @@ if (isset($_POST['external_report']) && is_array($_POST['external_report'])) {
         $external_report = new External($GLOBALS['config']->get($module_name[0]));
     }
     if(!isset($external_report) || !is_object($external_report)) {
-        $GLOBALS['main']->errorMessage('Failed to generate external report module: '.$module_name[0]);
+        $GLOBALS['main']->errorMessage(ucfirst($module_name[0]).': Failed to generate external report.');
         httpredir(currentPage());
     }
     if (($customers_export = $GLOBALS['db']->select('CubeCart_customer', array('title', 'first_name', 'last_name', 'phone', 'mobile', 'customer_id', 'email'))) !== false) {
