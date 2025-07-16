@@ -620,6 +620,7 @@ class Session
         }
         // Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
         header('Set-Cookie: '.$name.'='.$value.$attributes);
+        $GLOBALS['SENT_COOKIES'][] = "header('Set-Cookie: '".$name.'='.$value.$attributes; // phrased to show how sent
     }
 
     //=====[ Private ]=======================================
