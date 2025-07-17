@@ -31,6 +31,7 @@
             <th>{$LANG.common.email}</th>
             <th>{$LANG.common.ip_address}</th>
             <th>{$LANG.common.date}</th>
+            <th>{$LANG.newsletter.subscribed}</th>
             <th>{$LANG.catalogue.imported}</th>
             <th>{$LANG.newsletter.dbl_opt_in}</th>
             <th></th>
@@ -42,6 +43,7 @@
                <td>{if $subscriber.customer_id > 0}<a href="?_g=customers&action=edit&customer_id={$subscriber.customer_id}">{$subscriber.email}</a>{else}{$subscriber.email}{/if}</td>
                <td style="text-align:center">{$subscriber.ip_address}</td>
                <td style="text-align:center">{$subscriber.date}</td>
+               <td style="text-align:center">{if $subscriber.status}<i class="fa fa-check"></i>{else}<i class="fa fa-times"></i>{/if}</td>
                <td style="text-align:center">{if $subscriber.imported}<i class="fa fa-check"></i>{else}<i class="fa fa-times"></i>{/if}</td>
                <td style="text-align:center">{if $subscriber.dbl_opt}<i class="fa fa-check"></i>{else}<i class="fa fa-times"></i>{/if}</td>
                <td style="text-align:center"><a href="#" onclick="$.colorbox({ href:'{$STORE_URL}/{$SKIN_VARS.admin_file}?_g=xml&function=subscriber_log&email={$subscriber.email|escape:'url'}'})">{$LANG.common.log}</a> <a href="?_g=customers&node=subscribers&delete={$subscriber.subscriber_id}&token={$SESSION_TOKEN}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
