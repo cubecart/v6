@@ -50,7 +50,31 @@ if (Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
                     $GLOBALS['db']->update('CubeCart_404_log', array('done' => 1, 'warn' => 0), array('id' => $missing[0]['id']));
                 }
             } else {
-                $GLOBALS['main']->errorMessage($lang['notification']['notify_fail_add_redirect']);
+                $existing = $GLOBALS['db']->select('CubeCart_seo_urls', false, array('path' => $_POST['path']));
+                $a = '';
+                switch($existing[0]['type']) {
+                    case 'prod':
+                        $a = '?_g=products&node=index&action=edit&product_id='.$existing[0]['item_id'].'#seo';
+                        $type = 'Product';
+                    break;
+                    case 'cat':
+                        $a = '?_g=categories&action=edit&cat_id='.$existing[0]['item_id'].'#seo';
+                        $type = 'Category';
+                    break;
+                    case 'doc':
+                        $a = '?_g=documents&action=edit&doc_id='.$existing[0]['item_id'].'#seo';
+                        $type = 'Document';
+                    break;
+                }
+                $item = '('.$type;
+                if($existing[0]['item_id']>0) {
+                    $item .= ': '.$existing[0]['item_id'];
+                }
+                $item .= ')';
+                if(!empty($a)) {
+                    $item .= ' <a href="'.$a.'">'.$lang['common']['view'].'</a>';
+                }
+                $GLOBALS['main']->errorMessage($lang['notification']['notify_fail_add_redirect'].' '.$item);
             }
         } else {
             $GLOBALS['main']->errorMessage($lang['notification']['notify_object_not_found']);

@@ -1788,7 +1788,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="notify_seo_url_deleted" introduced="6.5.2"><![CDATA[Redirect has been deleted.]]></string>
     <string name="notify_seo_url_not_deleted" introduced="6.5.2"><![CDATA[Failed to delete redirect.]]></string>
     <string name="notify_success_add_redirect" introduced="6.4.0"><![CDATA[Redirect added successfully.]]></string>
-    <string name="notify_fail_add_redirect" introduced="6.4.0"><![CDATA[Failed to add redirect. Please check it isn't already in use.]]></string>
+    <string name="notify_fail_add_redirect" introduced="6.4.0"><![CDATA[Failed to add redirect. It looks like that path is already in use.]]></string>
     <string name="notify_object_not_found" introduced="6.4.0"><![CDATA[Target product, category or document not found.]]></string>
     <string name="confirm_delete_folder" introduced="6.4.0"><![CDATA[Are you sure you want to delete the folder '%1$s'?\n\nWARNING: All files contained within it will be deleted permanently!]]></string>
     <string name="confirm_delete_file" introduced="6.2.2"><![CDATA[Are you sure you want to delete '%1$s'?]]></string>
@@ -2008,6 +2008,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
+    <string name="redirect_error_not_found" introduced="6.5.10"><![CDATA[Error: Destination not found.]]></string>
     <string name="installed_languages" introduced="6.5.10"><![CDATA[Installed Languages]]></string>
     <string name="installed_skins" introduced="6.5.10"><![CDATA[Installed Skins]]></string>
     <string name="install_extension" introduced="6.5.10"><![CDATA[Install / Upgrade Extension]]></string>

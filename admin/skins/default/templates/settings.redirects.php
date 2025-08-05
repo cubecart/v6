@@ -25,7 +25,7 @@
          </thead>
          <tbody>
             <tr>
-               <td style="text-align:center"><input id="submit" type="submit" class="tiny button" value="{$LANG.common.add}"></td>
+               <td style="text-align:center"><input id="redir_submit" type="submit" class="tiny button" value="{$LANG.common.add}"></td>
                <td>
                <select name="redirect">
                      <option value="301">301 - {$LANG.common.permanent}</option>
@@ -166,3 +166,4 @@
    </div>
    {include file='templates/element.hook_form_content.php'}
 </form>
+<div id="val_error_not_found" style="display:none">{$LANG.settings.redirect_error_not_found}</div>

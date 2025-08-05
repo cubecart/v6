@@ -28,6 +28,7 @@ function getSEODestination() {
     var item_id = $("#item_id").val();
     var type = $("#redirect_type").val();
     var a = $("#val_admin_file").text();
+    var error_text = $("#val_error_not_found").text();
     $.getJSON("./" + a, {
         _g: "xml",
         item_id: item_id,
@@ -36,6 +37,10 @@ function getSEODestination() {
     }, function(t) {
         if(t.length) {
             $('#destination').html(t);
+            $("#redir_submit").prop('disabled', false);
+        } else {
+            $('#destination').html(error_text);
+            $("#redir_submit").prop('disabled', true);
         }
     });
 }
