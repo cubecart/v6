@@ -28,6 +28,7 @@ $anchor  = false;
 if (isset($_GET['assign_class']) && $_GET['assign_class']>0) {
     if ($GLOBALS['db']->update('CubeCart_inventory', array('tax_type' => (int)$_GET['assign_class']))) {
         $no_assigned = $GLOBALS['db']->affected();
+        $GLOBALS['db']->update('CubeCart_pricing_group', array('tax_type' => (int)$_GET['assign_class']));
         $GLOBALS['main']->successMessage(sprintf($lang['settings']['notify_tax_class_assigned'], $no_assigned));
     } else {
         $GLOBALS['main']->errorMessage($lang['settings']['notify_tax_class_not_assigned']);
