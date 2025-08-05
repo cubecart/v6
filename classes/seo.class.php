@@ -71,6 +71,24 @@ class SEO
      */
     private $_sitemap_xml  = false;
     /**
+     * Sitemap Count
+     *
+     * @var int
+     */
+    private $_sitemap_count  = 0;
+    /**
+     * Sitemap Limit
+     *
+     * @var int
+     */
+    private $_sitemap_limit  = 10000; // 10,000 URLs per sitemap (Limit is generally 50,000 URLs per sitemap, but we are being conservative here)
+    /**
+     * Sitemap URL Count
+     *
+     * @var int
+     */
+    private $_sitemap_url_count  = 0; // Count of URLs in the current sitemap file
+    /**
      * Static URL sections
      *
      * @var array of strings
@@ -778,6 +796,7 @@ class SEO
      */
     public function sitemap()
     {
+        $this->_deleteExitingSitemaps();
         // Generate a Sitemap Protocol v0.9 compliant sitemap (http://sitemaps.org)
         $this->_sitemap_xml = new XML();
         $this->_sitemap_xml->startElement('urlset', array('xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9'));
@@ -816,41 +835,29 @@ class SEO
                         break;
                     }
                     $this->_sitemap_link(array('key' => $key, 'id' => $id), $record['updated'], $type);
+                    if($this->_sitemap_url_count == $this->_sitemap_limit) {
+                        $this->_writeSiteMap();
+                        $this->_sitemap_xml = new XML();
+                        $this->_sitemap_xml->startElement('urlset', array('xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9'));
+                        $this->_sitemap_url_count = 0;
+                    }
                 }
             }
         }
-
         foreach ($GLOBALS['hooks']->load('class.seo.sitemap') as $hook) {
             include $hook;
         }
-
-        $sitemap = $this->_sitemap_xml->getDocument(true);
-
-        if (function_exists('gzencode')) {
-            // Compress the file if GZip is enabled
-            $filename = CC_ROOT_DIR.'/sitemap.xml.gz';
-            $mapdata = gzencode($sitemap, 9, FORCE_GZIP);
-            if (file_exists(CC_ROOT_DIR.'/sitemap.xml')) {
-                unlink(CC_ROOT_DIR.'/sitemap.xml');
-            }
-        } else {
-            $filename = CC_ROOT_DIR.'/sitemap.xml';
-            $mapdata = $sitemap;
-            if (file_exists(CC_ROOT_DIR.'/sitemap.xml.gz')) {
-                unlink(CC_ROOT_DIR.'/sitemap.xml.gz');
-            }
+        if($this->_sitemap_url_count > 0) {
+            $this->_writeSiteMap();
         }
-        if (file_put_contents($filename, $mapdata)) {
-            if ($GLOBALS['config']->get('config', 'offline')=='0') {
-                // Ping Google
-                $request = new Request('www.google.com', '/webmasters/sitemaps/ping');
-                $request->setMethod('get');
-                $request->setData(array('sitemap' => $this->_sitemap_base_url.'/'.basename($filename)));
-                $request->send();
-            }
-            return true;
+        $this->_sitemap_xml = new XML();
+        $this->_sitemap_xml->startElement('sitemapindex', array('xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9'));
+        foreach (glob(CC_ROOT_DIR."/sitemap_*") as $filename) {
+            $this->_sitemap_link(array('url' => $this->_sitemap_base_url.'/'.basename($filename)), false, false, 'sitemap');    
         }
-        return false;
+        $this->_writeSiteMap(true); 
+        $this->_writeRobots();   
+        return true;
     }
 
     /**
@@ -989,6 +996,79 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
                 }
             }
         }
+    }
+
+    /**
+     * Delete existing sitemaps
+     *
+     * @param string $type
+     * @param string $item_id
+     * @return string
+     */
+    private function _deleteExitingSitemaps() {
+        // Delete existing sitemaps
+        $sitemap_files = glob(CC_ROOT_DIR.'/sitemap_*.xml*');
+        if ($sitemap_files !== false) {
+            foreach ($sitemap_files as $file) {
+                if (is_file($file)) {
+                    unlink($file);
+                }
+            }
+        }
+    }
+
+    /**
+     * Write the sitemap XML to file
+     *
+     * @param bool $index
+     * @return bool
+     */
+    private function _writeSiteMap($index = false) {
+        $sitedata = $this->_sitemap_xml->getDocument(true);
+        $this->_sitemap_xml->endDocument(); 
+        if($index) {
+            $filepath_uncompressed = CC_ROOT_DIR.'/sitemap_index.xml'; 
+        } else {
+            $this->_sitemap_count++;
+            $filepath_uncompressed = CC_ROOT_DIR.'/sitemap_'.$this->_sitemap_count.'.xml';
+            $filepath_compressed = $filepath_uncompressed.'.gz';  
+        }
+        
+        if (!$index && function_exists('gzencode')) {
+            // Compress the file if GZip is enabled
+            $filepath = $filepath_compressed;
+            $sitedata = gzencode($sitedata, 9, FORCE_GZIP);
+        } else {
+            $filepath = $filepath_uncompressed;
+        }
+        return file_put_contents($filepath, $sitedata);
+    }
+    
+    /**
+     * Write the robots.txt file
+     *
+     * @param bool $index
+     * @return bool
+     */
+    private function _writeRobots() {
+        $robots_path = CC_ROOT_DIR.'/robots.txt';
+        $sitemap_index = $this->_sitemap_base_url.'/sitemap_index.xml'; 
+        if(file_exists($robots_path)) {
+            $robots_content = file_get_contents($robots_path);
+            if (strpos($robots_content, 'Sitemap:') === false) {
+                $robots_content .= "\n\nSitemap: $sitemap_index";
+            } else {
+                $robots_content = preg_replace('/^Sitemap:.*$/m', "Sitemap: $sitemap_index", $robots_content);
+            }
+            unlink($robots_path); // Remove old robots.txt
+        } else {
+            $robots_content = <<<EOD
+User-agent: *
+Allow: /
+Sitemap: $sitemap_index
+EOD;
+        }
+        return file_put_contents($robots_path, $robots_content);
     }
 
     /**
@@ -1156,7 +1236,7 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
      * @param string $updated
      * @param string $type
      */
-    private function _sitemap_link($input, $updated = false, $type = false)
+    private function _sitemap_link($input, $updated = false, $type = false, $masterElement = 'url')
     {
         $updated =  (!$updated || "0000-00-00" == substr($updated, 0, 10)) ? 'NOW' : $updated;
 
@@ -1169,9 +1249,10 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
 
         $input['url'] = stristr($input['url'],$this->_sitemap_base_url) ? $input['url'] : $this->_sitemap_base_url.$input['url'];
 
-        $this->_sitemap_xml->startElement('url');
+        $this->_sitemap_xml->startElement($masterElement);
         $this->_sitemap_xml->setElement('loc', htmlspecialchars($input['url']), false, false);
         $this->_sitemap_xml->setElement('lastmod', $updated, false, false);
         $this->_sitemap_xml->endElement();
+        $this->_sitemap_url_count++;
     }
 }
