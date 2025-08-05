@@ -935,7 +935,7 @@ class Database_Contoller
                         foreach ($value as $val) {
                             if (in_array($val, $allowed) && !is_numeric($val) || preg_match('/CONCAT/', $val)) {
                                 if (isset($key[0]) && !ctype_alnum((string)$key[0]) || $key[0]=='NULL' || is_null($key[0]) || $key[0]=='NOT NULL') {
-                                    if (preg_match('#^([<>!~\+\-]=?)(.+)#', (string)$key, $match)) {
+                                    if (preg_match('#^([<>~\+\-]=?|!=)(.+)#', (string)$key, $match)) {
                                         switch ($match[1]) {
                                         case '~':
                                             // Fuzzy searching
