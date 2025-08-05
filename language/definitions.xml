@@ -2466,6 +2466,9 @@ This email is sent from the store's master email address but it is possible to r
     <string name="help_defaultcurrency" introduced="5.0.0"><![CDATA[Please choose your stores default currency.]]></string>
   </group>
   <group name="statistics">
+    <string name="invalid_date_from" introduced="6.5.10"><![CDATA[The from date entered was invalid.]]></string>
+    <string name="invalid_date_to" introduced="6.5.10"><![CDATA[The to date entered was invalid.]]></string>
+    <string name="date_range_error" introduced="6.5.10"><![CDATA[Please make sure the date from is before the date to.]]></string>
     <string name="product_stats" introduced="6.5.2"><![CDATA[Product Statistics]]></string>
     <string name="first_sale" introduced="6.5.2"><![CDATA[First Sale]]></string>
     <string name="last_sale" introduced="6.5.2"><![CDATA[Last Sale]]></string>
