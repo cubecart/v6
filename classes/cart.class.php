@@ -660,16 +660,16 @@ class Cart
                     if ($incexc == 'include') {
                         // If product IS in qualifying ids coupon is allowed
                         foreach ($this->basket['contents'] as $key => $data) {
-                            if ($product_ids[$data['id']]) {
+                            if (!empty($product_ids[$data['id']])) {
                                 $include[$data['id']] = true;
                                 $proceed = true;
                             }
                         }
                     } elseif ($incexc == 'exclude') {
                         foreach ($this->basket['contents'] as $key => $data) {
-                            if (isset($qualifying_manufacturers) && $product_ids[$data['id']] && isset($include[$data['id']])) {
+                            if (isset($qualifying_manufacturers) && !empty($product_ids[$data['id']]) && isset($include[$data['id']])) {
                                 unset($include[$data['id']]);
-                            } elseif($product_ids[$data['id']]) {
+                            } elseif(!empty($product_ids[$data['id']])) {
                                 continue;
                             } else {
                                 $include[$data['id']] = true;
@@ -718,7 +718,7 @@ class Cart
 
                     // only allow multiple discount codes for gift certificates!
                     if (empty($coupon['cart_order_id'])) {
-                        if (is_array($this->basket['coupons'])) {
+                        if (isset(($this->basket['coupons'])) && is_array($this->basket['coupons'])) {
                             foreach ($this->basket['coupons'] as $key => $item) {
                                 if (!$item['gc']) {
                                     unset($this->basket['coupons'][$key]);
