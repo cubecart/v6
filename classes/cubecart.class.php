@@ -1760,12 +1760,12 @@ class Cubecart
             $GLOBALS['smarty']->assign('ITEMS', array_reverse($items, true));
 
             // Get basket total
-            if (isset($this->_basket['coupons']) && is_array($this->_basket['coupons']) || !empty($this->_basket['discount'])) {
+            if (isset($this->_basket['coupons']) && is_array($this->_basket['coupons']) && !empty($this->_basket['coupons']) || !empty($this->_basket['discount'])) {
                 if (!empty($this->_basket['discount']) && $this->_basket['discount']>0) {
                     $GLOBALS['smarty']->assign('DISCOUNT', $GLOBALS['tax']->priceFormat($this->_basket['discount']));
                 }
 
-                if (isset($this->_basket['coupons']) && is_array($this->_basket['coupons'])) {
+                if (isset($this->_basket['coupons']) && is_array($this->_basket['coupons']) && !empty($this->_basket['coupons'])) {
                     foreach ($this->_basket['coupons'] as $coupon) {
                         $coupon['remove_code'] = $coupon['voucher'];
                         if ($coupon['type'] == 'fixed') {
