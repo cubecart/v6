@@ -1492,7 +1492,7 @@ class GUI
         $sale_sql_group_where    = $GLOBALS['catalogue']->outOfStockWhere($sale_sql_group_where, 'I');
 
         // Check for group pricing
-        if (($memberships = $GLOBALS['user']->getMemberships()) !== false) {
+        if ($GLOBALS['user']->is() && ($memberships = $GLOBALS['user']->getMemberships()) !== false) {
             $group_id = array();
             foreach ($memberships as $membership) {
                 $group_id[] = $membership['group_id'];
