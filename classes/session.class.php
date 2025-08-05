@@ -601,7 +601,7 @@ class Session
      * @param integer $expire
      * @return bool
      */
-    public function set_cookie($name, $value, $expires, $options = array())
+    public function set_cookie($name, $value, $expires = false, $options = array())
     {
         $params = session_get_cookie_params();
         $params = array_merge($params, $options); // Allow overwrite for specific cookies    
@@ -609,7 +609,7 @@ class Session
         $date = new Datetime();
         $date->setTimestamp($expires);
         $attributes = '';
-        $attributes .= ';Expires='.$date->format(DateTime::COOKIE);
+        $attributes .= ($expires !== false) ? ';Expires='.$date->format(DateTime::COOKIE) : '';
         $attributes .= ';Domain='.$this->_session_domain;
         $attributes .= ';Path='.$this->_session_path;
         $attributes .= ';SameSite='.$params['samesite'];
