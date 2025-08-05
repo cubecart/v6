@@ -1510,6 +1510,7 @@ class GUI
         }
 
         if (isset($group_pricing) && is_array($group_pricing) && !empty($group_pricing)) {
+            $group_products = array();
             foreach ($group_pricing as $product) {
                 $group_products[$product['product_id']] = $product;
             }
@@ -1535,7 +1536,7 @@ class GUI
         if ($no_sale_items && isset($sale_sql_standard_select) && ($standard_pricing = $GLOBALS['db']->query('SELECT `price`, `sale_price`, `product_id`,`description`,`name`, `cat_id`, '.$sale_sql_standard_select.' AS `saving` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory` WHERE '.$sale_sql_standard_where.' AND `status` = \'1\' '.$not_on_sale.' LIMIT '.$no_sale_items)) !== false && is_array($standard_pricing)) {
             $unsorted_products = array();
             foreach ($standard_pricing as $product) {
-                if (isset($group_products[$product['product_id']])) {
+                if (is_array($group_products) && isset($group_products[$product['product_id']])) {
                     $unsorted_products[$product['product_id']] = $group_products[$product['product_id']];
                 } else {
                     $unsorted_products[$product['product_id']] = $product;
