@@ -377,7 +377,8 @@ class Request
             $headerSize = curl_getinfo($this->_curl, CURLINFO_HEADER_SIZE);
             $this->_response_headers = substr($return, 0, $headerSize);
             
-            if ($return || in_array($this->server_response_code, $this->_success_responses)) { // A server doesb't always return a response body!
+            // A server doesn't always return a response body or the response may be empty or false like
+            if (in_array($this->server_response_code, $this->_success_responses)) { 
                 if ($this->_request_cache) {
                     $GLOBALS['cache']->write($return, 'request.'.$this->_request_hash);
                 }
@@ -388,6 +389,7 @@ class Request
                 if (!empty($error)) {
                     $this->log($this->_request_body, $return, $error);
                 }
+                return false;
             }
         } else {
             ## Fallback to fsockopen
