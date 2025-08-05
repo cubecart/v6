@@ -1493,6 +1493,7 @@ class GUI
 
         // Check for group pricing
         if (($memberships = $GLOBALS['user']->getMemberships()) !== false) {
+            $group_id = array();
             foreach ($memberships as $membership) {
                 $group_id[] = $membership['group_id'];
             }
@@ -1503,18 +1504,18 @@ class GUI
         } else {
             $catalogue_sale_items = $GLOBALS['config']->get('config', 'catalogue_sale_items');
         }
-        if (isset($group_id) && is_array($group_id)) {
-            $query = 'SELECT `I`.`product_id`,`I`.`description`,`I`.`name`, '.$sale_sql_group_select.' AS `saving` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_pricing_group` AS `G` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory` AS `I` ON `G`.`product_id` = `I`.`product_id` WHERE  '.$sale_sql_group_where.' AND `G`.`group_id` IN('.implode(',', $group_id).') AND `I`.`status` = \'1\'';
+        if (isset($group_id) && !empty($group_id)) {
+            $query = 'SELECT `I`.`product_id`,`I`.`description`,`I`.`name`,`I`.`cat_id`, '.$sale_sql_group_select.' AS `saving` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_pricing_group` AS `G` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory` AS `I` ON `G`.`product_id` = `I`.`product_id` WHERE  '.$sale_sql_group_where.' AND `G`.`group_id` IN('.implode(',', $group_id).') AND `I`.`status` = \'1\'';
             $group_pricing = $GLOBALS['db']->query($query, $catalogue_sale_items);
         }
 
-        if (isset($group_pricing) && is_array($group_pricing)) {
+        if (isset($group_pricing) && is_array($group_pricing) && !empty($group_pricing)) {
             foreach ($group_pricing as $product) {
                 $group_products[$product['product_id']] = $product;
             }
         }
 
-        if (isset($group_id) && is_array($group_id)) {
+        if (isset($group_id) && !empty($group_id)) {
             //Get list of group priced products that are NOT on sale so we can exclude them from standard prices query result
             $nosale_sql_group_where = ' G.sale_price = 0 ';
             $query_group_not_on_sale = 'SELECT `I`.`product_id`	FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_pricing_group` AS `G` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory` AS `I` ON `G`.`product_id` = `I`.`product_id` WHERE  '.$nosale_sql_group_where.' AND `group_id` IN('.implode(',', $group_id).') AND `I`.`status` = \'1\' ';
@@ -1531,7 +1532,8 @@ class GUI
         // Get Retail Prices second
         $no_sale_items = (is_numeric($GLOBALS['config']->get('config', 'catalogue_sale_items'))) ? (int)$GLOBALS['config']->get('config', 'catalogue_sale_items') : 10;
 
-        if ($no_sale_items && isset($sale_sql_standard_select) && ($standard_pricing = $GLOBALS['db']->query('SELECT `price`, `sale_price`, `product_id`,`description`,`name`, '.$sale_sql_standard_select.' AS `saving` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory` WHERE '.$sale_sql_standard_where.' AND `status` = \'1\' '.$not_on_sale.' LIMIT '.$no_sale_items)) !== false && is_array($standard_pricing)) {
+        if ($no_sale_items && isset($sale_sql_standard_select) && ($standard_pricing = $GLOBALS['db']->query('SELECT `price`, `sale_price`, `product_id`,`description`,`name`, `cat_id`, '.$sale_sql_standard_select.' AS `saving` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory` WHERE '.$sale_sql_standard_where.' AND `status` = \'1\' '.$not_on_sale.' LIMIT '.$no_sale_items)) !== false && is_array($standard_pricing)) {
+            $unsorted_products = array();
             foreach ($standard_pricing as $product) {
                 if (isset($group_products[$product['product_id']])) {
                     $unsorted_products[$product['product_id']] = $group_products[$product['product_id']];
@@ -1542,18 +1544,17 @@ class GUI
         }
 
         // Loop and merge group price into Retail Prices
-        if (!empty($unsorted_products) && is_array($unsorted_products)) {
+        $sorted_products = array();
+        if (is_array($unsorted_products) && !empty($unsorted_products)) {
             foreach ($unsorted_products as $product) {
                 $sorted_products[$product['saving'].$product['product_id']] = $product;
             }
             krsort($sorted_products);
-        } else {
-            $sorted_products = false;
         }
         unset($group_pricing, $standard_pricing, $group_products, $unsorted_products, $product, $not_on_sale);
 
         $vars = array();
-        if ($sorted_products) {
+        if (!empty($sorted_products)) {
             foreach ($sorted_products as $product) {
                 $GLOBALS['language']->translateProduct($product);
                 $product['name'] = validHTML($product['name']);
