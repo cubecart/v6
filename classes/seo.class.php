@@ -816,7 +816,11 @@ class SEO
             'product' => $GLOBALS['db']->select('CubeCart_inventory', array('product_id', 'updated'), array('status' => '1')),
             'document' => $GLOBALS['db']->select('CubeCart_documents', array('doc_id'), array('doc_parent_id' => '0', 'doc_status' => 1)),
         );
-
+        
+        foreach ($GLOBALS['hooks']->load('class.seo.sitemap') as $hook) {
+            include $hook;
+        }
+        
         foreach ($queryArray as $type => $results) {
             if ($results) {
                 foreach ($results as $record) {
@@ -843,9 +847,6 @@ class SEO
                     }
                 }
             }
-        }
-        foreach ($GLOBALS['hooks']->load('class.seo.sitemap') as $hook) {
-            include $hook;
         }
         if($this->_sitemap_url_count > 0) {
             $this->_writeSiteMap();
