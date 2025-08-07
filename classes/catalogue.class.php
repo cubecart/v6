@@ -2271,7 +2271,7 @@ class Catalogue
                 if (is_array($order)) {
                     if (key($order) == "price") {
                         if ($GLOBALS['config']->get('config', 'catalogue_sale_mode') == '1') {
-                            $order_string = 'ORDER BY (I.price-I.sale_price) '.current($order);
+                            $order_string = 'ORDER BY I.sale_price '.current($order);
                         } elseif ($GLOBALS['config']->get('config', 'catalogue_sale_mode') == '2' && $GLOBALS['config']->get('config', 'catalogue_sale_percentage'>0)) {
                             $order_string = 'ORDER BY (I.price - (I.price / 100) * '.$GLOBALS['config']->get('config', 'catalogue_sale_percentage').') '.current($order);
                         }
