@@ -20,10 +20,10 @@
    <li class="unavailable">&hellip;</li>
    {/if}
    {for $i = 1; $i <= $total; $i++}
-   {if ($i < $page - floor($show / 2))}
+   {if ($i < $page - floor((float)$show / 2))}
    {continue}
    {/if}
-   {if ($i > $page + floor($show / 2))}
+   {if ($i > $page + floor((float)$show / 2))}
    {break}
    {/if}
    {$params[$var_name] = $i}
