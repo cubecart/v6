@@ -552,7 +552,7 @@ class Database_Contoller
         if($page == 'all') {
             $page = 1;
             $disable = true;
-            $per_page = GUI::getInstance()->itemsPerPage('products', 'perpage', 'last');
+            $per_page = (int)GUI::getInstance()->itemsPerPage('products', 'perpage', 'last');
         }
         if ($page == 1) {
             $this->page_one[] = $var_name;
@@ -566,7 +566,7 @@ class Database_Contoller
 
         $glue = (!$glue) ? ' ' : $glue;
         // Lets do some maths...
-        $total_pages = $per_page ? ceil((int)$total_results/(int)$per_page) : 0;
+        $total_pages = (int)$per_page ? ceil((int)$total_results/(int)$per_page) : 0;
         $params = array();
         if ($total_pages > 1) {
             // Get the current query string variables
@@ -582,17 +582,17 @@ class Database_Contoller
                     $params[$var_name] = 1;
                 }
                 if ($page > 1) {
-                    $params[$var_name] = $page - 1;
+                    $params[$var_name] = (int)$page - 1;
                 }
                 if ($page < (int)$total_pages) {
-                    $params[$var_name] = $page + 1;
+                    $params[$var_name] = (int)$page + 1;
                 }
             }
 
             $data = array(
                 'anchor'  => $anchor,
                 'current'  => "{$url_elements['path']}?",
-                'page'   => $page,
+                'page'   => (int)$page,
                 'params'  => $params,
                 'http_params' => http_build_query($params),
                 'show'   => (int)$show,
