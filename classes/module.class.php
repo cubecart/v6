@@ -230,10 +230,11 @@ class Module
      */
     public function assign_to_template($name, $value=null)
     {
-        if (is_array($name)) {
+        if (is_array($name) && !empty($name)) {
             foreach ($name as $key => $value) {
                 $this->_template_data[$key] = $value;
             }
+            return true;
         } elseif (!empty($name) && !is_null($value)) {
             $this->_template_data[$name] = $value;
             return true;
