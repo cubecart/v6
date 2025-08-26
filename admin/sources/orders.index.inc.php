@@ -630,7 +630,7 @@ if (isset($_GET['action'])) {
                 $GLOBALS['tax']->loadTaxes($summary['country']);
                 foreach ($taxes as $vat) {
                     $detail = Tax::getInstance()->fetchTaxDetails($vat['tax_id']);
-                    $summary['taxes'][] = array('name' => $detail['name'], 'value' => Tax::getInstance()->priceFormat($vat['amount'], true));
+                    $summary['taxes'][] = array('display' => $detail['display'], 'name' => $detail['name'], 'value' => Tax::getInstance()->priceFormat($vat['amount'], true));
                 }
             } else {
                 $summary['taxes'][] = array('name' => $lang['basket']['total_tax'], 'value' => Tax::getInstance()->priceFormat($summary['total_tax']));

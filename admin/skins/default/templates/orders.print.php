@@ -234,7 +234,7 @@
 		<div class="total">{$LANG.basket.total_discount} {if !empty($order.percent)}({$order.percent}){/if} <strong>{$order.discount}</strong></div>
 		<div class="total">{$LANG.basket.shipping} <strong>{$order.shipping}</strong></div>
 		{if isset($order.taxes)} {foreach from=$order.taxes item=tax}
-		<div class="total">{$tax.name} <strong>{$tax.value}</strong></div>
+		<div class="total">{$tax.display} <strong>{$tax.value}</strong></div>
 		{/foreach}{/if}
 		{if $order.show_credit}
 		<div class="total">{$LANG.common.credit} <strong>({$order.credit_used})</strong></div>
