@@ -260,11 +260,13 @@ class GD
     private function _allocateMemory()
     {
         $this->_abort = false;
+        $memLimit = ini_get('memory_limit');
+        if($memLimit == -1) {
+            return true;
+        }
+        $memLimit = substr($memLimit, -1) == 'G' ? (int)$memLimit * 1024 : (int)$memLimit;
         
         $memoryNeeded = round(($this->_gdImageData[0] * $this->_gdImageData[1] * $this->_gdImageData['bits'] * $this->_gdImageData['channels'] / 8 + Pow(2, 16)) * 1.65);
-        
-        $memLimit = ini_get('memory_limit');
-        $memLimit = substr($memLimit, -1) == 'G' ? (int)$memLimit * 1024 : (int)$memLimit;
     
         if (function_exists('memory_get_usage') && memory_get_usage() + $memoryNeeded > $memLimit * pow(1024, 2)) {
             $new_memory_limit = $memLimit + ceil(((memory_get_usage() + $memoryNeeded) - $memLimit * pow(1024, 2)) / pow(1024, 2)) . 'M';
