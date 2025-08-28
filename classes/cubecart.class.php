@@ -1855,20 +1855,37 @@ class Cubecart
                     } else {
                         $shipping_defaults = $GLOBALS['config']->get('config', 'shipping_defaults');
                     }
-                    foreach ($shipping_values as $value) {
-                        if (!isset($default_shipping)) { $default_shipping = $value; } // Make sure we have a shipping value
-                        switch($shipping_defaults) {
-                            case '1': // Cheapest > 0
-                            if (($value['value'] < $default_shipping['value'] || $default_shipping['value']==0) && $value['value']>0) { $default_shipping = $value; }
-                            break;
-                            case '2': // Most expensive
-                            if ($value['value'] > $default_shipping['value']) { $default_shipping = $value; }
-                            break;
-                            default: // Cheapest
-                            if ($value['value'] < $default_shipping['value']) { $default_shipping = $value; }
+                    
+                    $cheapest = null;
+                    $mostExpensive = null;
+                    $cheapestOverZero = null;
+                    foreach ($shipping_values as $row) {
+                        $val = (float)$row['value'];
+                        // Cheapest (min value)
+                        if ($cheapest === null || $val < (float)$cheapest['value']) {
+                            $cheapest = $row;
                         }
-                        
+                        // Most expensive (max value)
+                        if ($mostExpensive === null || $val > (float)$mostExpensive['value']) {
+                            $mostExpensive = $row;
+                        }
+                        // Cheapest over zero
+                        if ($val > 0 && ($cheapestOverZero === null || $val < (float)$cheapestOverZero['value'])) {
+                            $cheapestOverZero = $row;
+                        }
                     }
+
+                    switch($shipping_defaults) {
+                        case '1': // Cheapest over zero
+                            $default_shipping = $cheapestOverZero;
+                        break;
+                        case '2': // Most expensive
+                            $default_shipping = $mostExpensive;
+                        break;
+                        default: // Cheapest
+                            $default_shipping = $cheapest;
+                    }
+                    
                     if (!empty($default_shipping)) {
                         $GLOBALS['cart']->set('shipping', $default_shipping);
                         if (!isset($this->_basket['default_shipping_set'])) {
