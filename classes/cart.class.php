@@ -91,10 +91,10 @@ class Cart
             include $hook;
         }
         if ($GLOBALS['user']->is()) {
-            if (($currency = $GLOBALS['user']->get('currency')) !== false) {
-                if ($GLOBALS['config']->get('config', 'default_currency') != $currency) {
-                    $GLOBALS['tax']->loadCurrencyVars($currency);
-                }
+            $currency = $GLOBALS['user']->get('currency');
+            $default_currency = $GLOBALS['config']->get('config', 'default_currency');
+            if (!empty($currency) && strlen($currency) == 3 && $currency != $default_currency) {
+                $GLOBALS['tax']->loadCurrencyVars($currency);
             }
         }
 

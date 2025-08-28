@@ -251,11 +251,14 @@ class Tax
      * @param string $code
      * @return bool
      */
-    public function loadCurrencyVars($code = false)
+    public function loadCurrencyVars($code = '')
     {
-        if (!$code) {
+        if (empty($code) || strlen($code) !== 3) {
             if ($GLOBALS['session']->has('currency', 'client')) {
                 $code = $GLOBALS['session']->get('currency', 'client');
+                if (empty($code) || strlen($code) !== 3) {
+                    $code = $GLOBALS['config']->get('config', 'default_currency');
+                }
             } else {
                 $code = $GLOBALS['config']->get('config', 'default_currency');
             }
