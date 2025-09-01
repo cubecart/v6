@@ -703,26 +703,7 @@ if (isset($_GET['action'])) {
         $print_hash = md5($template);
 
 $cleanup = <<<'CODE'
-<?php
-$dir = __DIR__;
-$pattern = '/^print\.[A-Za-z0-9]{32}\.php$/';
-$expireSeconds = 3600; // 1 Hour
-$now = time();
-$deleted = [];
-if ($handle = opendir($dir)) {
-    while (false !== ($file = readdir($handle))) {
-        if (preg_match($pattern, $file)) {
-            $fullPath = $dir . DIRECTORY_SEPARATOR . $file;
-            $age = $now - filemtime($fullPath);
-            if ($age > $expireSeconds) {
-                if (@unlink($fullPath)) {
-                    $deleted[] = $file;
-                }
-            }
-        }
-    }
-    closedir($handle);
-}
+<?php $d='.';$p='/^print\.[A-Za-z0-9]{32}\.php$/';$e=3600;$n=time();$x=[];if($h=opendir($d)){while(false!==($f=readdir($h))){if(preg_match($p,$f)){$a=$d.'/'.$f;$g=$n-filemtime($a);if($g>$e){if(@unlink($a))$x[]=$f;}}}closedir($h);}
 CODE;
         
         $filename = 'print.'.$print_hash.'.php';
