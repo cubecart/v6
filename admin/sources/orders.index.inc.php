@@ -706,7 +706,7 @@ $cleanup = <<<'CODE'
 <?php
 $dir = __DIR__;
 $pattern = '/^print\.[A-Za-z0-9]{32}\.php$/';
-$expireSeconds = 600; // 10 Mins
+$expireSeconds = 3600; // 1 Hour
 $now = time();
 $deleted = [];
 if ($handle = opendir($dir)) {
