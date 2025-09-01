@@ -716,7 +716,6 @@ if ($handle = opendir($dir)) {
             $age = $now - filemtime($fullPath);
             if ($age > $expireSeconds) {
                 if (@unlink($fullPath)) {
-                    echo "Delete: $fullPath";
                     $deleted[] = $file;
                 }
             }
