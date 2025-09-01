@@ -700,9 +700,32 @@ if (isset($_GET['action'])) {
 
         $template = preg_replace('/<\/body>/i', $print_script.'</body>', $template);
 
-        $print_hash = md5(implode('{@}', $summaries[0]));
+        $print_hash = md5($template);
 
-        $cleanup = '<?php unlink(__FILE__); ?>';
+$cleanup = <<<'CODE'
+<?php
+$dir = __DIR__;
+$pattern = '/^print\.[A-Za-z0-9]{32}\.php$/';
+$expireSeconds = 600; // 10 Mins
+$now = time();
+$deleted = [];
+if ($handle = opendir($dir)) {
+    while (false !== ($file = readdir($handle))) {
+        if (preg_match($pattern, $file)) {
+            $fullPath = $dir . DIRECTORY_SEPARATOR . $file;
+            $age = $now - filemtime($fullPath);
+            if ($age > $expireSeconds) {
+                if (@unlink($fullPath)) {
+                    echo "Delete: $fullPath";
+                    $deleted[] = $file;
+                }
+            }
+        }
+    }
+    closedir($handle);
+}
+CODE;
+        
         $filename = 'print.'.$print_hash.'.php';
 
         if (file_put_contents(CC_FILES_DIR.$filename, $template.$cleanup)) {
