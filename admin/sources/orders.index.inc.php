@@ -700,6 +700,8 @@ if (isset($_GET['action'])) {
 
         $template = preg_replace('/<\/body>/i', $print_script.'</body>', $template);
 
+        $template = htmlMinify($template, []);
+
         $print_hash = md5($template);
 
 $cleanup = <<<'CODE'

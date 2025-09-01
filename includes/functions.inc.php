@@ -653,6 +653,41 @@ if (!function_exists('hex2bin')) {
 }
 
 /**
+ * Minify html output
+ *
+ * @param string $html
+ * @return string
+ */
+function htmlMinify($html, $preserve = ['pre','textarea','script','style']) {
+    $stash = [];
+    // 1) Stash preserved blocks
+    foreach ($preserve as $tag) {
+        $html = preg_replace_callback(
+            "#<{$tag}\b[^>]*>.*?</{$tag}>#si",
+            function($m) use (&$stash, $tag) {
+                $k = "%%MINIFY-{$tag}-".count($stash)."%%";
+                $stash[$k] = $m[0];
+                return $k;
+            },
+            $html
+        );
+    }
+
+    // 2) Strip HTML comments (but keep IE conditionals etc.)
+    $html = preg_replace('/<!--(?!\s*\[if|\s*<!|.*?\[endif\]).*?-->/si', '', $html);
+
+    // 3) Collapse whitespace
+    $html = preg_replace('/>\s+</', '><', $html);   // between tags
+    $html = preg_replace('/\s{2,}/', ' ', $html);   // multiple spaces
+    $html = trim($html);
+
+    // 4) Restore preserved blocks
+    $html = strtr($html, $stash);
+
+    return $html;
+}
+
+/**
  * Redirect to a page
  *
  * @param string $destination
