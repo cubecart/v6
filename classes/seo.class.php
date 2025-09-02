@@ -81,13 +81,19 @@ class SEO
      *
      * @var int
      */
-    private $_sitemap_limit  = 10000; // 10,000 URLs per sitemap (Limit is generally 50,000 URLs per sitemap, but we are being conservative here)
+    private $_sitemap_limit  = 50000; // 50,000 URLs per sitemap (Limit is generally 50,000 URLs per sitemap, but we are being conservative here)
     /**
      * Sitemap URL Count
      *
      * @var int
      */
     private $_sitemap_url_count  = 0; // Count of URLs in the current sitemap file
+    /**
+     * Sitemap Duplicates
+     *
+     * @var array
+     */
+    private $_sitemap_duplicates  = array(); // Count of URLs in the current sitemap file
     /**
      * Static URL sections
      *
@@ -139,7 +145,7 @@ class SEO
             include $hook;
         }
 
-        $this->_sitemap_base_url = $GLOBALS['config']->get('config', 'standard_url');
+        $this->_sitemap_base_url = str_replace('http://','https://', $GLOBALS['config']->get('config', 'standard_url'));
 
         self::_checkModRewrite();
 
@@ -1016,6 +1022,12 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
                 }
             }
         }
+        if(file_exists(CC_ROOT_DIR.'/sitemap.xml')) {
+            unlink(CC_ROOT_DIR.'/sitemap.xml');
+        }
+        if(file_exists(CC_ROOT_DIR.'/sitemap.xml.gz')) {
+            unlink(CC_ROOT_DIR.'/sitemap.xml.gz');
+        }
     }
 
     /**
@@ -1249,11 +1261,16 @@ EOD;
         }
 
         $input['url'] = stristr($input['url'],$this->_sitemap_base_url) ? $input['url'] : $this->_sitemap_base_url.$input['url'];
+        
+        $url = htmlspecialchars($input['url']);
 
-        $this->_sitemap_xml->startElement($masterElement);
-        $this->_sitemap_xml->setElement('loc', htmlspecialchars($input['url']), false, false);
-        $this->_sitemap_xml->setElement('lastmod', $updated, false, false);
-        $this->_sitemap_xml->endElement();
-        $this->_sitemap_url_count++;
+        if(!in_array(md5($url)) && substr($url, -6) !== '/.html') {
+            $this->_sitemap_xml->startElement($masterElement);
+            $this->_sitemap_xml->setElement('loc', $url, false, false);
+            $this->_sitemap_xml->setElement('lastmod', $updated, false, false);
+            $this->_sitemap_xml->endElement();
+            $this->_sitemap_url_count++;
+            array_push($this->_sitemap_duplicates, md5($url));
+        } 
     }
 }
