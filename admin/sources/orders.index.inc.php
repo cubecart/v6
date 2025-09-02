@@ -699,8 +699,9 @@ if (isset($_GET['action'])) {
         $print_script = "<script>setTimeout(function(){window.print()},2000)</script>";
 
         $template = preg_replace('/<\/body>/i', $print_script.'</body>', $template);
-
-        $template = htmlMinify($template, []);
+        if(!$GLOBALS['debug']->status()) {
+            $template = htmlMinify($template, []);
+        }
 
         $print_hash = md5($template);
 
