@@ -1262,9 +1262,9 @@ EOD;
 
         $input['url'] = stristr($input['url'],$this->_sitemap_base_url) ? $input['url'] : $this->_sitemap_base_url.$input['url'];
         
-        $url = htmlspecialchars($input['url']);
+        $url = $this->_encodeSlug($input['url']);
 
-        if(!in_array(md5($url)) && substr($url, -6) !== '/.html') {
+        if(!in_array(md5($url), $this->_sitemap_duplicates) && substr($url, -6) !== '/.html') {
             $this->_sitemap_xml->startElement($masterElement);
             $this->_sitemap_xml->setElement('loc', $url, false, false);
             $this->_sitemap_xml->setElement('lastmod', $updated, false, false);
@@ -1272,5 +1272,52 @@ EOD;
             $this->_sitemap_url_count++;
             array_push($this->_sitemap_duplicates, md5($url));
         } 
+    }
+
+    /**
+     * Percent-encode non-ASCII characters in a URL slug,
+     * but preserve safe characters like / - _ . ~
+     *
+     * @param string $url
+     * @return string
+     */
+    private function _encodeSlug($url) {
+        $result = '';
+        $len = mb_strlen($url, 'UTF-8');
+
+        for ($i = 0; $i < $len; $i++) {
+            $char = mb_substr($url, $i, 1, 'UTF-8');
+            $ord = $this->_uniord($char);
+
+            // Allowed: A-Z a-z 0-9 / - _ . ~
+            if (
+                ($ord >= 0x30 && $ord <= 0x39) || // 0-9
+                ($ord >= 0x41 && $ord <= 0x5A) || // A-Z
+                ($ord >= 0x61 && $ord <= 0x7A) || // a-z
+                in_array($char, ['/', '-', '_', '.', '~'])
+            ) {
+                $result .= $char;
+            } else {
+                // Convert to UTF-8 bytes and percent-encode
+                $bytes = mb_convert_encoding($char, 'UTF-8');
+                foreach (str_split($bytes) as $b) {
+                    $result .= sprintf("%%%02X", ord($b));
+                }
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Get Unicode codepoint of a UTF-8 character
+     */
+    private function _uniord($c) {
+        $h = ord($c[0]);
+        if ($h <= 0x7F) return $h;
+        if ($h < 0xC2) return null;
+        if ($h <= 0xDF) return ($h & 0x1F) << 6 | (ord($c[1]) & 0x3F);
+        if ($h <= 0xEF) return ($h & 0x0F) << 12 | (ord($c[1]) & 0x3F) << 6 | (ord($c[2]) & 0x3F);
+        if ($h <= 0xF4) return ($h & 0x07) << 18 | (ord($c[1]) & 0x3F) << 12 | (ord($c[2]) & 0x3F) << 6 | (ord($c[3]) & 0x3F);
+        return null;
     }
 }
