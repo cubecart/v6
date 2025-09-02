@@ -1257,20 +1257,19 @@ EOD;
         $updated = $dateTime->format(DateTime::W3C);
 
         if (!isset($input['url']) && !empty($type)) {
-            $input['url'] = $this->_sitemap_base_url.'/'.$this->generatePath($input['id'], $type, '', false);
+            $slug = $this->generatePath($input['id'], $type, '', false);
+            $input['url'] = $this->_sitemap_base_url.'/'.$this->_encodeSlug($slug);
         }
 
         $input['url'] = stristr($input['url'],$this->_sitemap_base_url) ? $input['url'] : $this->_sitemap_base_url.$input['url'];
-        
-        $url = $this->_encodeSlug($input['url']);
 
-        if(!in_array(md5($url), $this->_sitemap_duplicates) && substr($url, -6) !== '/.html') {
+        if(!in_array(md5($input['url']), $this->_sitemap_duplicates) && substr($input['url'], -6) !== '/.html') {
             $this->_sitemap_xml->startElement($masterElement);
-            $this->_sitemap_xml->setElement('loc', $url, false, false);
+            $this->_sitemap_xml->setElement('loc', $input['url'], false, false);
             $this->_sitemap_xml->setElement('lastmod', $updated, false, false);
             $this->_sitemap_xml->endElement();
             $this->_sitemap_url_count++;
-            array_push($this->_sitemap_duplicates, md5($url));
+            array_push($this->_sitemap_duplicates, md5($input['url']));
         } 
     }
 
