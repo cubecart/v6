@@ -40,15 +40,16 @@ if (isset($_POST['external_report']) && is_array($_POST['external_report'])) {
     }
     if (($customers_export = $GLOBALS['db']->select('CubeCart_customer', array('title', 'first_name', 'last_name', 'phone', 'mobile', 'customer_id', 'email'))) !== false) {
         // Get States Array
-        $zones = $GLOBALS['db']->select('CubeCart_geo_zone', array('id', 'name'), array('status' => 1));
+        $zones = $GLOBALS['db']->select('CubeCart_geo_zone', array('id', 'name'), array('status' => '1'));
         if ($zones) {
+            $zone_name = array();
             foreach ($zones as $zone) {
                 $zone_name[$zone['id']] = $zone['name'];
             }
         }
         foreach ($customers_export as $customer) {
             // Find default address
-            $address = $GLOBALS['db']->select('CubeCart_addressbook', array('company_name', 'line1', 'line2', 'town', 'state', 'postcode', 'country'), array('customer_id' => $customer['customer_id'], 'billing' => 1));
+            $address = $GLOBALS['db']->select('CubeCart_addressbook', array('company_name', 'line1', 'line2', 'town', 'state', 'postcode', 'country'), array('customer_id' => $customer['customer_id'], 'billing' => '1'));
             // Get state name if it is numeric
             $address[0]['state'] = is_numeric($address[0]['state']) ? $zone_name[$address[0]['state']] : $address[0]['state'];
             $data = array_merge($address[0], $customer);
