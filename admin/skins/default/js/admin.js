@@ -1,11 +1,3 @@
-function updateStriping() {
-    $(".list-even,.list-odd").removeClass("list-even list-odd"), $(".list,.reorder-list").find(">div,tbody>tr").hover(function() {
-        $(this).addClass("list-hover")
-    }, function() {
-        $(this).removeClass("list-hover")
-    }), $(".list,.reorder-list").find(">div:nth-child(even),tbody>tr:nth-child(even)").addClass("list-even"), $(".list,.reorder-list").find(">div:nth-child(odd),tbody>tr:nth-child(odd)").addClass("list-odd")
-}
-
 function pageChanged(t) {
     var e = $(t).parents("form:first");
     if (1 == e.length) {
@@ -71,7 +63,7 @@ function inlineRemove(t) {
         }).val(i), $(t).parents("form:first").append(n)
     } else pageChanged(t);
     var s = $(t).parents("tr:first,div:first:not(.tab_content)").get(0);
-    return $(s).remove(), updateStriping(), !1
+    return $(s).remove(), !1
 }
 
 function optionAdd(t, e) {
@@ -667,7 +659,7 @@ $(document).ready(function() {
         }
     }), $("input[type=radio].rating").rating({
         required: !0
-    }), updateStriping(".list,table,.reorder-list"), $("a.preview").click(function() {
+    }), $("a.preview").click(function() {
         return $("#img-preview").attr("src", $(this).attr("href")), !1
     }), $("a.delete, a.confirm, .submit_confirm, .install_confirm").click(function() {
         var t = $(this).attr("title");
@@ -906,9 +898,7 @@ $(document).ready(function() {
         placeholderElement: "> tr",
         revert: !0,
         scroll: !0,
-        stop: function() {
-            updateStriping()
-        }
+        stop: function() {}
     }), $(".revert").each(function() {
         var t = $(this).attr("rel");
         "0" == $("#defined_" + t).val() ? $("#row_" + t).addClass("list-changed") : $("#string_" + t).val() != $("#default_" + t).val() ? $("#row_" + t + " td").addClass("custom-phrase") : $(this).hide()
@@ -1101,7 +1091,7 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
             //$(this).val("")
         }), $(o).prepend(c)
     }
-    return 1 == s && e.length > 1 && 1 == $("#" + e).length ? t($(this), $("#" + e), o) : $(i).before(o), $(".update-subtotal input.number").trigger("change"), inline_add_offset++, updateStriping(), $(".dymanic_none").hide(), !1
+    return 1 == s && e.length > 1 && 1 == $("#" + e).length ? t($(this), $("#" + e), o) : $(i).before(o), $(".update-subtotal input.number").trigger("change"), inline_add_offset++, $(".dymanic_none").hide(), !1
 }), $("a.duplicate").on("click", function() {
     var t = $(this).attr("rel"),
         e = $(this).attr("target").length >= 1 ? $(this).attr("target") : "";
