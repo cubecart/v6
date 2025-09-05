@@ -98,8 +98,9 @@ function optionAdd(t, e) {
                 h = $(o).find("." + c).find("input:first");
             "matrix_include" == c ? h.attr("name", "option_add[" + c + "][" + options_added + "]") : "set_enabled" == c ? (h.removeAttr("disabled"), h.attr("checked", "checked"), h.parent().addClass("selected"), h.val(1), 1 == d && (h.parent().addClass("selected"), h.attr("checked", "checked")), h.attr("name", "option_add[" + c + "][" + options_added + "]")) : "default" == c || "negative" == c || "absolute_price" == c ? (h.removeAttr("disabled"), $(l[i]).is(":checked") && (h.parent().addClass("selected"), h.attr("checked", "checked"), $(l[i]).removeAttr("checked").parent().removeClass("selected")), h.attr("name", "option_add[" + c + "][" + options_added + "]")) : (d = parseFloat(d, 10).toFixed(2), $(o).find("." + c).append(d).find("input:first").val(parseFloat(d)).removeAttr("disabled")), $(l[i]).val("")
         }
-        $(o).find("a.remove").on("click", function() {
-            inlineRemove(this)
+        $(document).on("click", "a.remove", function (e) {
+            e.preventDefault();
+            inlineRemove(this);
         }), $(o).removeAttr("id"), $("#opt_mid :selected").removeAttr("selected"), $("#opt_mid:first-child").attr("selected", "selected"), $(e).append($(o)), options_added++
     }
     return !1
