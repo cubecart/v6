@@ -57,12 +57,12 @@ function updateAddressValues(t, e, i) {
             $("#" + t + "_" + e).val($(this).val());
             return;
         }
-    }).first().attr("selected", "selected"), $("#" + t + "_" + e).trigger("change"), !$("#" + t + "_state").is("select") ? $("#" + t + "_state").val(i.state) : $("#" + t + "_state option").filter(function() {
+    }).first().prop("selected", true), $("#" + t + "_" + e).trigger("change"), !$("#" + t + "_state").is("select") ? $("#" + t + "_state").val(i.state) : $("#" + t + "_state option").filter(function() {
         if(i.state == $(this).text()) {
             $("#" + t + "_" + "state").val($(this).val());
             return;
         }
-    }).attr("selected", "selected")) : "state" != e && $("#" + t + "_" + e).val(i[e])
+    }).prop("selected", true)) : "state" != e && $("#" + t + "_" + e).val(i[e])
 }
 
 function inlineRemove(t) {
@@ -90,18 +90,18 @@ function optionAdd(t, e) {
         r = $("#opt_mid").val();
     if ("" != r && 0 != r) {
         var o = $(t).clone();
-        $(o).find(".name").append(s).find("input:first").val(r).removeAttr("disabled");
+        $(o).find(".name").append(s).find("input:first").val(r).prop('disabled', false);
         var l = $("input.data");
         for (i = 0; i < l.length; i++) {
             var c = $(l[i]).attr("rel"),
                 d = "" == $(l[i]).val() ? "0" : $(l[i]).val(),
                 h = $(o).find("." + c).find("input:first");
-            "matrix_include" == c ? h.attr("name", "option_add[" + c + "][" + options_added + "]") : "set_enabled" == c ? (h.removeAttr("disabled"), h.attr("checked", "checked"), h.parent().addClass("selected"), h.val(1), 1 == d && (h.parent().addClass("selected"), h.attr("checked", "checked")), h.attr("name", "option_add[" + c + "][" + options_added + "]")) : "default" == c || "negative" == c || "absolute_price" == c ? (h.removeAttr("disabled"), $(l[i]).is(":checked") && (h.parent().addClass("selected"), h.attr("checked", "checked"), $(l[i]).removeAttr("checked").parent().removeClass("selected")), h.attr("name", "option_add[" + c + "][" + options_added + "]")) : (d = parseFloat(d, 10).toFixed(2), $(o).find("." + c).append(d).find("input:first").val(parseFloat(d)).removeAttr("disabled")), $(l[i]).val("")
+            "matrix_include" == c ? h.attr("name", "option_add[" + c + "][" + options_added + "]") : "set_enabled" == c ? (h.prop('disabled', false), h.attr("checked", "checked"), h.parent().addClass("selected"), h.val(1), 1 == d && (h.parent().addClass("selected"), h.attr("checked", "checked")), h.attr("name", "option_add[" + c + "][" + options_added + "]")) : "default" == c || "negative" == c || "absolute_price" == c ? (h.prop('disabled', false), $(l[i]).is(":checked") && (h.parent().addClass("selected"), h.attr("checked", "checked"), $(l[i]).prop('checked', false).parent().removeClass("selected")), h.attr("name", "option_add[" + c + "][" + options_added + "]")) : (d = parseFloat(d, 10).toFixed(2), $(o).find("." + c).append(d).find("input:first").val(parseFloat(d)).prop('disabled', false)), $(l[i]).val("")
         }
         $(document).on("click", "a.remove", function (e) {
             e.preventDefault();
             inlineRemove(this);
-        }), $(o).removeAttr("id"), $("#opt_mid :selected").removeAttr("selected"), $("#opt_mid:first-child").attr("selected", "selected"), $(e).append($(o)), options_added++
+        }), $(o).removeAttr("id"), $("#opt_mid :selected").prop('selected', false), $("#opt_mid:first-child").prop("selected", true), $(e).append($(o)), options_added++
     }
     return !1
 }
@@ -278,7 +278,7 @@ $(document).ready(function() {
     $(".editable_phrase").on("focusout", function() {
         var phrase_id = $(this).attr('rel');
         if($(this).val() == $('#default_' + phrase_id).val() && !$(this).hasClass('reverted')) {
-            $('#string_' + phrase_id).attr("disabled", "disabled");
+            $('#string_' + phrase_id).prop("disabled", true);
         }
     });
 
@@ -438,7 +438,7 @@ $(document).ready(function() {
             var e = !0;
             if (t = !1, $("#inventory-list").exists() && !$("input[name*=inv]").exists()) return $(".inline-add:first").addClass("highlight"), !1;
             $(".required-error").removeClass("required-error"), $(":checkbox.ignore").each(function() {
-                $(this).not(":checked") && $(this).attr("disabled", "disabled")
+                $(this).not(":checked") && $(this).prop("disabled", true)
             });
             var i = $($("div.tab_content").exists() ? "div.tab_content:visible" : this);
             if ($(i).find(".required:input:not(:hidden)").each(function() {
@@ -501,10 +501,10 @@ $(document).ready(function() {
 
         $("#bulk_price_method").change(function() {
             if($(this).val()=='percent') {
-                $("#bulk_price_action").hide().attr('disabled', true);
+                $("#bulk_price_action").hide().prop('disabled', true);
                 $("#bulk_price_percent_symbol").show();
             } else {
-                $("#bulk_price_action").show().attr('disabled', false);
+                $("#bulk_price_action").show().prop('disabled', false);
                 $("#bulk_price_percent_symbol").hide();
             }
         });
@@ -582,7 +582,7 @@ $(document).ready(function() {
             $("#bulk_update_categories").hide();
             $("#bulk_update_products").show();
         }
-        $('input:checkbox').removeAttr('checked');
+        $('input:checkbox').prop("checked", false);
         $('.custom-checkbox').removeClass('selected');
     });
     if($("div.dropzone").length) {
@@ -637,11 +637,9 @@ $(document).ready(function() {
                 }
                 for (i in t) {
                     var s = document.createElement("option");
-                    $("select" + e).append(a == t[i].name || a == t[i].id ? $(s).val(t[i].id).text(t[i].name).attr("selected", "selected") : $(s).val(t[i].id).text(t[i].name))
+                    $("select" + e).append(a == t[i].name || a == t[i].id ? $(s).val(t[i].id).text(t[i].name).prop("selected", true) : $(s).val(t[i].id).text(t[i].name))
                 }
-            } else $(this).hasClass("no-custom-zone") && $(e).attr({
-                disabled: "disabled"
-            }).val($(this).attr("title"))
+            } else $(this).hasClass("no-custom-zone") && $(e).prop('disabled', true).val($(this).attr("title"))
         }
     }).change(function() {
         if ("object" == typeof county_list) {
@@ -663,7 +661,7 @@ $(document).ready(function() {
                     $("select" + e).append($(n).val(t[s].id).text(t[s].name))
                 }
                 if(i) {
-                    $("select" + e + " > option[value=" + i + "]").attr("selected", "selected");
+                    $("select" + e + " > option[value=" + i + "]").prop("selected", true);
                 }
             } else {
                 var r = document.createElement("input"),
@@ -673,7 +671,7 @@ $(document).ready(function() {
                         name: $(e).attr("name"),
                         "class": $(e).attr("class")
                     });
-                $(this).hasClass("no-custom-zone") && $(o).attr("disabled", "disabled").val($(this).attr("title")), $(e).replaceWith($(o))
+                $(this).hasClass("no-custom-zone") && $(o).prop("disabled", true).val($(this).attr("title")), $(e).replaceWith($(o))
             }
         }
     }), $("input[type=radio].rating").rating({
@@ -688,8 +686,8 @@ $(document).ready(function() {
     }), $(".contentswitch:not(:input)").hide(), $(".contentswitch:input").click(function() {
         var t = $(this).val();
         $(".contentswitch:not(:input)").hide(), $("#" + t + ".contentswitch").show()
-    }), $("input.contentswitch:radio").attr("checked", !1).parent().hide(), $("#methods").hide(), $(".selector:input").change(function() {
-        $("input.contentswitch:radio").attr("checked", !1).parent().hide(), $(".contentswitch:not(:input)").hide();
+    }), $("input.contentswitch:radio").prop("checked", false).parent().hide(), $("#methods").hide(), $(".selector:input").change(function() {
+        $("input.contentswitch:radio").prop("checked", false).parent().hide(), $(".contentswitch:not(:input)").hide();
         var t = $(this).val();
         if ("" != t) {
             var e = transactions[t].methods.split(",");
@@ -749,7 +747,7 @@ $(document).ready(function() {
             }), !1
         }), $("#content_body").on("click", ".check-primary", function() {
             var t = $(this).attr("rel");
-            $("#" + t).parent().addClass("selected"), $("#" + t + ":checkbox").attr("checked", "checked")
+            $("#" + t).parent().addClass("selected"), $("#" + t + ":checkbox").prop("checked", true)
         }), $("#quickTour").on("click", function() {
             $("#navigation .submenu").show(), $("#joyrideTour").joyride()
         }), $("#rule-eu, #rule-rest").click(function(e) {
@@ -857,7 +855,7 @@ $(document).ready(function() {
             for (value in json_skins[$(this).val()]) {
                 var i = json_skins[$(this).val()][value],
                     a = document.createElement("option");
-                $(a).val(value).text(i).addClass("dynamic"), value == e && $(a).attr("selected", "selected"), $(t).append(a)
+                $(a).val(value).text(i).addClass("dynamic"), value == e && $(a).prop("selected", true), $(t).append(a)
             } else $(this).hasClass("no-drop") && $(t).hide();
         $(this).on("change", function() {
             if ($(t).children("option.dynamic").remove(), json_skins[$(this).val()]) {
@@ -876,7 +874,7 @@ $(document).ready(function() {
             for (value in json_skins[$(this).val()]) {
                 var i = json_skins[$(this).val()][value],
                     a = document.createElement("option");
-                $(a).val(value).text(i).addClass("dynamic"), value == e && $(a).attr("selected", "selected"), $(t).append(a)
+                $(a).val(value).text(i).addClass("dynamic"), value == e && $(a).prop("selected", true), $(t).append(a)
             } else $(this).hasClass("no-drop") && $(t).hide();
         $(this).on("change", function() {
             if ($(t).children("option.dynamic").remove(), json_skins[$(this).val()]) {
@@ -900,7 +898,7 @@ $(document).ready(function() {
             var a = document.createElement("select");
             $.each(select_data, function(t, e) {
                 $(a).append('<option value="' + t + '">' + e + "</option>")
-            }), $(a).children(":contains(" + t + ")").attr("selected", "selected")
+            }), $(a).children(":contains(" + t + ")").prop("selected", true)
         } else {
             var a = document.createElement("input");
             $(a).attr({
@@ -944,7 +942,7 @@ $(document).ready(function() {
         ajax_get: ajaxSuggest,
         callback: ajaxSelected
     }), $("select.field_select").each(function() {
-        if ($(this).find("option:first").attr("selected", "selected"), $(this).parent().parent().find(".field_select_target:not(:first)").hide(), "select_group_id" == $(this).attr("id")) {
+        if ($(this).find("option:first").prop("selected", true), $(this).parent().parent().find(".field_select_target:not(:first)").hide(), "select_group_id" == $(this).attr("id")) {
             var t = $("option:selected", $(this)).val();
             $("#attr_source").attr("name", "add_attr[" + t + "]"), $("#group_target").attr("target", "group_" + t)
         }
@@ -1068,7 +1066,7 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
 
         var fields_ok = true;
         $(this).parents("div:first,tr:first").find(".add:input").each(function() {
-            if($(this).attr("required")=='required' && $(this).val()=='') {
+            if($(this).prop("required") && $(this).val()=='') {
                 $(this).addClass('required-error');
                 $(this).click(function(){$(this).removeClass('required-error')});
                 fields_ok = false;  
