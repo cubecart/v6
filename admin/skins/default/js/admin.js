@@ -1,246 +1,3 @@
-function pageChanged(t) {
-    var e = $(t).parents("form:first");
-    if (1 == e.length) {
-        if (void 0 !== e.attr("title")) var i = e.attr("title"),
-            a = i.length > 1 ? i : "";
-        e.hasClass("no-change") || (window.onbeforeunload = function() {
-            return a
-        })
-    }
-}
-
-function getSEODestination() {
-    var item_id = $("#item_id").val();
-    var type = $("#redirect_type").val();
-    var a = ADMIN_FILE;
-    var error_text = $("#val_error_not_found").text();
-    $.getJSON("./" + a, {
-        _g: "xml",
-        item_id: item_id,
-        type: type,
-        function: "seopath"
-    }, function(t) {
-        if(t.length) {
-            $('#destination').html(t);
-            $("#redir_submit").prop('disabled', false);
-        } else {
-            $('#destination').html(error_text);
-            $("#redir_submit").prop('disabled', true);
-        }
-    });
-}
-
-function removeVariableFromURL(t, e) {
-    var i = String(t),
-        a = new RegExp("\\?" + e + "=[^&]*&?", "gi");
-    return i = i.replace(a, "?"), a = new RegExp("\\&" + e + "=[^&]*&?", "gi"), i = i.replace(a, "&"), i = i.replace(/(\?|&)$/, ""), a = null, i
-}
-
-function updateAddressValues(t, e, i) {
-    "country" == e ? ($("#" + t + "_" + e + " option").filter(function() {
-        if($(this).text()==i[e]) {
-            $("#" + t + "_" + e).val($(this).val());
-            return;
-        }
-    }).first().prop("selected", true), $("#" + t + "_" + e).trigger("change"), !$("#" + t + "_state").is("select") ? $("#" + t + "_state").val(i.state) : $("#" + t + "_state option").filter(function() {
-        if(i.state == $(this).text()) {
-            $("#" + t + "_" + "state").val($(this).val());
-            return;
-        }
-    }).prop("selected", true)) : "state" != e && $("#" + t + "_" + e).val(i[e])
-}
-
-function inlineRemove(t) {
-    var e = $(t).attr("title"),
-        i = $(t).attr("rel"),
-        a = ($(t).attr("href"), $(t).attr("name"));
-    if ("" != e && !confirm(e)) return !1;
-    if (i && !$(t).hasClass("dynamic")) {
-        var n = document.createElement("input");
-        $(n).attr({
-            type: "hidden",
-            name: a + "[]"
-        }).val(i), $(t).parents("form:first").append(n)
-    } else pageChanged(t);
-    var s = $(t).parents("tr:first,div:first:not(.tab_content)").get(0);
-    return $(s).remove(), !1
-}
-
-function optionAdd(t, e) {
-    var e = $("#" + e),
-        t = $("#" + t),
-        a = $("#opt_mid :selected").parent().attr("label"),
-        n = $("#opt_mid :selected").text(),
-        s = "undefined" == typeof a ? n : "<strong>" + a + "</strong>: " + n,
-        r = $("#opt_mid").val();
-    if ("" != r && 0 != r) {
-        var o = $(t).clone();
-        $(o).find(".name").append(s).find("input").first().val(r).prop('disabled', false);
-        var l = $("input.data");
-        for (i = 0; i < l.length; i++) {
-            var c = $(l[i]).attr("rel"),
-                d = "" == $(l[i]).val() ? "0" : $(l[i]).val(),
-                h = $(o).find("." + c).find("input").first();
-            "matrix_include" == c ? h.attr("name", "option_add[" + c + "][" + options_added + "]") : "set_enabled" == c ? (h.prop('disabled', false), h.prop("checked", true), h.parent().addClass("selected"), h.val(1), 1 == d && (h.parent().addClass("selected"), h.prop("checked", true)), h.attr("name", "option_add[" + c + "][" + options_added + "]")) : "default" == c || "negative" == c || "absolute_price" == c ? (h.prop('disabled', false), $(l[i]).is(":checked") && (h.parent().addClass("selected"), h.prop("checked", true), $(l[i]).prop('checked', false).parent().removeClass("selected")), h.attr("name", "option_add[" + c + "][" + options_added + "]")) : (d = parseFloat(d, 10).toFixed(2), $(o).find("." + c).append(d).find("input").first().val(parseFloat(d)).prop('disabled', false)), $(l[i]).val("")
-        }
-        $(document).on("click", "a.remove", function (e) {
-            e.preventDefault();
-            inlineRemove(this);
-        }), $(o).removeAttr("id"), $("#opt_mid :selected").prop('selected', false), $("#opt_mid:first-child").prop("selected", true), $(e).append($(o)), options_added++
-    }
-    return !1
-}
-
-function ajaxSelected(t, e, i) {
-    var a = ADMIN_FILE;
-    switch ($("#result_" + e).val(t.id), i.toLowerCase()) {
-        case "user":
-            $.getJSON("./" + a, {
-                _g: "xml",
-                type: "address",
-                q: t.id,
-                function: "search"
-            }, function(t) {
-                $("select.address-list>option.temporary").remove();
-                for (var e = 0; e < t.length; e++) {
-                    var i = document.createElement("option");
-                    $(i).val(e), $(i).html(t[e].description), $(i).addClass("temporary"), $(".address-list").append(i)
-                }
-                addresses = t
-            });
-            break;
-        case "product":
-            $("#add-price").val(t.data.price), $("#add-subtotal").html(($("#add-quantity").val() * t.data.price).toFixed(2)), data = t.data
-    }
-    for (key in t.data) "" != t.data[key] && $("#ajax_" + key).val(t.data[key]).trigger("change");
-    $("#result_" + e).hasClass("clickSubmit") && $("#result_" + e).closest("form").submit()
-}
-
-function ajaxSuggest(t, e, i) {
-    var a = "./" + ADMIN_FILE,
-        n = {
-            _g: "xml",
-            type: i,
-            q: t,
-            function: "search"
-        };
-    $.get(a, n, function(t) {
-        for (var i = [], a = 0; a < t.length; a++) i.push({
-            id: t[a].value,
-            value: t[a].display,
-            info: t[a].info,
-            data: t[a].data
-        });
-        e(i)
-    }, "json")
-}
-
-function ajaxElasticSearch(page) {
-  const admin = ADMIN_FILE;
-  $.getJSON(`./${admin}`, {_g:"xml", page, "function":"rebuildElasticsearch"}, (res) => {
-    const redirect = '?_g=maintenance&_=' + Math.floor(Date.now()/1000) + '#elasticsearch';
-    if (res?.error === 'true') { window.location.href = redirect; return; }
-
-    if (res.es_count !== false && res.es_size !== false) {
-      $("#es_count").text(Number(res.es_count).toLocaleString());
-      $("#es_size").text(res.es_size);
-    }
-    $("#progress_bar").css({ width: res.percent + "%" });
-    $("#progress_bar_percent").text(Math.round(res.percent) + "%");
-
-    if (res.percent === 100 || res.complete === "true") {
-      window.onbeforeunload = null;
-      setTimeout(() => { window.location.href = redirect; }, 2000);
-    } else {
-      // schedule next page *iteratively*
-      setTimeout(() => ajaxElasticSearch(page + 1), 0);
-    }
-  });
-}
-
-function ajaxNewsletter(t, e) {
-    var i = ADMIN_FILE;
-    $.getJSON("./" + i, {
-        _g: "xml",
-        type: "newsletter",
-        q: t,
-        page: e,
-        function: "search"
-    }, function(i) {
-        if (typeof i.error !== 'undefined' && i.error=='true') {
-            window.location.href = '?_g=customers&node=email';
-            return false;
-        }
-        $("div#progress_bar").css({
-            width: i.percent + "%"
-        }), $("div#progress_bar_percent").text(Math.round(i.percent) + "%"), 100 == i.percent || "true" == i.complete ? (window.onbeforeunload = null, setTimeout(function(){ window.location = "?_g=customers&node=email"; }, 2000)) : ajaxNewsletter(t, e + 1)
-    })
-}
-
-function updateOrderTotals(t) {
-    t.hasClass("quantity") || t.val((1 * $(this).val()).toFixed(2));
-    var e = t.parents(".update-subtotal:first"),
-        i = $(e).find("input.quantity").val(),
-        a = $(e).find("input.lineprice").val(),
-        n = $(e).find("input.subtotal:first"),
-        s = (i * a).toFixed(2);
-    $(n).val(s);
-    var r = 0;
-    $("input.subtotal").each(function() {
-        var t = 1 * $(this).val();
-        r += t
-    });
-    var o = $("#discount").val();
-    o = 1 * o;
-    var l = $("#discount_type").val();
-    "p" == l ? (o > 100 && ($("#discount").val("100"), o = 100), o = o / 100 * r, $("#discount_percent").html("%")) : $("#discount_percent").html(""), $("#subtotal").val(r.toFixed(2));
-    var c = $("#shipping").val(),
-        d = 0;
-    $(".update-subtotal input.tax").each(function() {
-        var t = $(this).val();
-        d += 1 * t
-    });
-    var cu = $("#credit_used").val();
-    var h = (1 * r - o + 1 * c + 1 * d) - cu;
-    $("#total_tax").val(d.toFixed(2)), $("#total").val(h.toFixed(2))
-}
-
-function productOptionPrices(id) {
-  const $price = $("#" + id + "_price");
-  let base = +$price.attr("original");
-  $("span[rel="+id+"] select").each(function () {
-    const rel = $(this).find("option:selected").attr("rel");
-    if (!rel) return;
-    const sign = rel[0], val = +rel.slice(1);
-    if (val > 0) base = sign === '+' ? base + val : sign === '-' ? base - val : +rel; // fallback
-  });
-  $("span[rel="+id+"] input, span[rel="+id+"] textarea").each(function () {
-    const v = $(this).val();
-    const rel = $(this).attr("rel");
-    if (!v || !rel) return;
-    const sign = rel[0], val = +rel.slice(1);
-    if (val > 0) base = sign === '+' ? base + val : sign === '-' ? base - val : +rel;
-  });
-  $price.val(base.toFixed(2));
-  $(".update-subtotal input.number").trigger("change");
-  return false;
-}
-function fmSearch(mode, term, token) {
-    if(term.length==0) return false;
-    var requestData = {};
-    requestData['mode'] = mode;
-    requestData['term'] = term;
-    requestData['token'] = token;
-    $.ajax({
-       type: 'post',
-       url: "?_g=xml&function=fmSearch",
-       data: requestData,
-       dataType: "text",
-       success: function(responseData) {
-          $.colorbox({html:responseData,width:860,height:600})
-       }
-    });
- }
 $(document).ready(function() {
     const $doc = $(document);
     const ADMIN_FILE = $("#val_admin_file").text() || "admin.php";
@@ -334,7 +91,7 @@ $(document).ready(function() {
 
     var config = {
         skin_folder:    $("#val_skin_folder").length ? SKIN_FOLDER : 'default',
-        admin_folder:   $("#val_admin_folder").length ? ADMIN_FILE : 'admin',
+        admin_folder:   $("#val_admin_folder").length ? ADMIN_FOLDER : 'admin',
         admin_file:     $("#val_admin_file").length ? ADMIN_FILE : 'admin.php' 
     }
     if($("input#product_code").length > 0) {
@@ -462,17 +219,12 @@ $(document).ready(function() {
             return $("html, body").animate({
                 scrollTop: n.top - 50
             }, "slow"), t = !0, !1
-        }), $(".check-all").click(function(t) {
-            $(this).is("a") && t.preventDefault();
-            var e = $(this).attr("rel"),
-                i = $("input[type=checkbox]." + e);
-                s;
-            if(this.checked) {
-                s = this.checked;
-            } else {
-                s = !i.prop("checked");
-            }
-            i.prop("checked", s)
+        }), $(".check-all").on("click", function(ev){
+        if ($(this).is("a")) ev.preventDefault();
+        const group  = $(this).attr("rel");
+        const $boxes = $("input[type=checkbox]." + group);
+        const state  = this.type === "checkbox" ? this.checked : !$boxes.prop("checked");
+        $boxes.prop("checked", !!state).trigger("change");
         }), $("select.auto_submit").each(function() {
             $(this).hasClass("show_submit") || $(this).parents("form:first").find("input:submit").hide()
         }).change(function() {
@@ -509,7 +261,7 @@ $(document).ready(function() {
     
     $("#redirect_type").change(function() {
         var static = $('option:selected', this).attr("data-static");
-        $("#item_id").value = '';
+        $("#item_id").val('');
         if(static=='true') {
             $("#item_id").hide();
         } else {
@@ -1270,27 +1022,246 @@ $("a.select").on("click", function(a) {
     return $(".update-subtotal input.number").trigger("change"), !1
 });
 $("form:not(.ignore-dirty)").dirty({preventLeaving:true});
-/* Work in progress relating to #2097
-$('#order-builder').on('change', '.tax-chooser', function() {
-    var goods_items = $(".goods");
-    var tax_percent = parseFloat($(this).find(':selected').attr('data-percent'))/100;
-    var goods = $(this).find(':selected').attr('data-goods');
-    var shipping = $(this).find(':selected').attr('data-shipping');
-    var total_tax = 0;
-    if(goods=='1') {
-        for(var i = 0; i < goods_items.length; i++){
-            var item = parseFloat($(goods_items[i]).val());
-            if(item>0) {
-                total_tax += item*tax_percent;
-            }
-        };
+
+function pageChanged(t) {
+    var e = $(t).parents("form:first");
+    if (1 == e.length) {
+        if (void 0 !== e.attr("title")) var i = e.attr("title"),
+            a = i.length > 1 ? i : "";
+        e.hasClass("no-change") || (window.onbeforeunload = function() {
+            return a
+        })
     }
-    if(shipping=='1') {
-        var shipping_total = parseFloat($(".shipping").val())*tax_percent;
-        if(shipping_total>0) {
-            total_tax += shipping_total*tax_percent;
+}
+
+function getSEODestination() {
+    var item_id = $("#item_id").val();
+    var type = $("#redirect_type").val();
+    var a = ADMIN_FILE;
+    var error_text = $("#val_error_not_found").text();
+    $.getJSON("./" + a, {
+        _g: "xml",
+        item_id: item_id,
+        type: type,
+        function: "seopath"
+    }, function(t) {
+        if(t.length) {
+            $('#destination').html(t);
+            $("#redir_submit").prop('disabled', false);
+        } else {
+            $('#destination').html(error_text);
+            $("#redir_submit").prop('disabled', true);
         }
+    });
+}
+
+function removeVariableFromURL(t, e) {
+    var i = String(t),
+        a = new RegExp("\\?" + e + "=[^&]*&?", "gi");
+    return i = i.replace(a, "?"), a = new RegExp("\\&" + e + "=[^&]*&?", "gi"), i = i.replace(a, "&"), i = i.replace(/(\?|&)$/, ""), a = null, i
+}
+
+function updateAddressValues(t, e, i) {
+    "country" == e ? ($("#" + t + "_" + e + " option").filter(function() {
+        if($(this).text()==i[e]) {
+            $("#" + t + "_" + e).val($(this).val());
+            return;
+        }
+    }).first().prop("selected", true), $("#" + t + "_" + e).trigger("change"), !$("#" + t + "_state").is("select") ? $("#" + t + "_state").val(i.state) : $("#" + t + "_state option").filter(function() {
+        if(i.state == $(this).text()) {
+            $("#" + t + "_" + "state").val($(this).val());
+            return;
+        }
+    }).prop("selected", true)) : "state" != e && $("#" + t + "_" + e).val(i[e])
+}
+
+function inlineRemove(t) {
+    var e = $(t).attr("title"),
+        i = $(t).attr("rel"),
+        a = ($(t).attr("href"), $(t).attr("name"));
+    if ("" != e && !confirm(e)) return !1;
+    if (i && !$(t).hasClass("dynamic")) {
+        var n = document.createElement("input");
+        $(n).attr({
+            type: "hidden",
+            name: a + "[]"
+        }).val(i), $(t).parents("form:first").append(n)
+    } else pageChanged(t);
+    var s = $(t).parents("tr:first,div:first:not(.tab_content)").get(0);
+    return $(s).remove(), !1
+}
+
+function optionAdd(t, e) {
+    var e = $("#" + e),
+        t = $("#" + t),
+        a = $("#opt_mid :selected").parent().attr("label"),
+        n = $("#opt_mid :selected").text(),
+        s = "undefined" == typeof a ? n : "<strong>" + a + "</strong>: " + n,
+        r = $("#opt_mid").val();
+    if ("" != r && 0 != r) {
+        var o = $(t).clone();
+        $(o).find(".name").append(s).find("input").first().val(r).prop('disabled', false);
+        var l = $("input.data");
+        for (i = 0; i < l.length; i++) {
+            var c = $(l[i]).attr("rel"),
+                d = "" == $(l[i]).val() ? "0" : $(l[i]).val(),
+                h = $(o).find("." + c).find("input").first();
+            "matrix_include" == c ? h.attr("name", "option_add[" + c + "][" + options_added + "]") : "set_enabled" == c ? (h.prop('disabled', false), h.prop("checked", true), h.parent().addClass("selected"), h.val(1), 1 == d && (h.parent().addClass("selected"), h.prop("checked", true)), h.attr("name", "option_add[" + c + "][" + options_added + "]")) : "default" == c || "negative" == c || "absolute_price" == c ? (h.prop('disabled', false), $(l[i]).is(":checked") && (h.parent().addClass("selected"), h.prop("checked", true), $(l[i]).prop('checked', false).parent().removeClass("selected")), h.attr("name", "option_add[" + c + "][" + options_added + "]")) : (d = parseFloat(d, 10).toFixed(2), $(o).find("." + c).append(d).find("input").first().val(parseFloat(d)).prop('disabled', false)), $(l[i]).val("")
+        }
+        $(document).on("click", "a.remove", function (e) {
+            e.preventDefault();
+            inlineRemove(this);
+        }), $(o).removeAttr("id"), $("#opt_mid :selected").prop('selected', false), $("#opt_mid:first-child").prop("selected", true), $(e).append($(o)), options_added++
     }
-    $(".tax").val(total_tax.toFixed(2));
-});
-*/
+    return !1
+}
+
+function ajaxSelected(t, e, i) {
+    var a = ADMIN_FILE;
+    switch ($("#result_" + e).val(t.id), i.toLowerCase()) {
+        case "user":
+            $.getJSON("./" + a, {
+                _g: "xml",
+                type: "address",
+                q: t.id,
+                function: "search"
+            }, function(t) {
+                $("select.address-list>option.temporary").remove();
+                for (var e = 0; e < t.length; e++) {
+                    var i = document.createElement("option");
+                    $(i).val(e), $(i).html(t[e].description), $(i).addClass("temporary"), $(".address-list").append(i)
+                }
+                addresses = t
+            });
+            break;
+        case "product":
+            $("#add-price").val(t.data.price), $("#add-subtotal").html(($("#add-quantity").val() * t.data.price).toFixed(2)), data = t.data
+    }
+    for (key in t.data) "" != t.data[key] && $("#ajax_" + key).val(t.data[key]).trigger("change");
+    $("#result_" + e).hasClass("clickSubmit") && $("#result_" + e).closest("form").submit()
+}
+
+function ajaxSuggest(t, e, i) {
+    var a = "./" + ADMIN_FILE,
+        n = {
+            _g: "xml",
+            type: i,
+            q: t,
+            function: "search"
+        };
+    $.get(a, n, function(t) {
+        for (var i = [], a = 0; a < t.length; a++) i.push({
+            id: t[a].value,
+            value: t[a].display,
+            info: t[a].info,
+            data: t[a].data
+        });
+        e(i)
+    }, "json")
+}
+
+function ajaxElasticSearch(page) {
+  const admin = ADMIN_FILE;
+  $.getJSON(`./${admin}`, {_g:"xml", page, "function":"rebuildElasticsearch"}, (res) => {
+    const redirect = '?_g=maintenance&_=' + Math.floor(Date.now()/1000) + '#elasticsearch';
+    if (res?.error === 'true') { window.location.href = redirect; return; }
+
+    if (res.es_count !== false && res.es_size !== false) {
+      $("#es_count").text(Number(res.es_count).toLocaleString());
+      $("#es_size").text(res.es_size);
+    }
+    $("#progress_bar").css({ width: res.percent + "%" });
+    $("#progress_bar_percent").text(Math.round(res.percent) + "%");
+
+    if (res.percent === 100 || res.complete === "true") {
+      window.onbeforeunload = null;
+      setTimeout(() => { window.location.href = redirect; }, 2000);
+    } else {
+      setTimeout(() => ajaxElasticSearch(page + 1), 0);
+    }
+  });
+}
+
+function ajaxNewsletter(t, e) {
+    var i = ADMIN_FILE;
+    $.getJSON("./" + i, {
+        _g: "xml",
+        type: "newsletter",
+        q: t,
+        page: e,
+        function: "search"
+    }, function(i) {
+        if (typeof i.error !== 'undefined' && i.error=='true') {
+            window.location.href = '?_g=customers&node=email';
+            return false;
+        }
+        $("div#progress_bar").css({
+            width: i.percent + "%"
+        }), $("div#progress_bar_percent").text(Math.round(i.percent) + "%"), 100 == i.percent || "true" == i.complete ? (window.onbeforeunload = null, setTimeout(function(){ window.location = "?_g=customers&node=email"; }, 2000)) : ajaxNewsletter(t, e + 1)
+    })
+}
+
+function updateOrderTotals(t) {
+    t.hasClass("quantity") || t.val((1 * $(this).val()).toFixed(2));
+    var e = t.parents(".update-subtotal:first"),
+        i = $(e).find("input.quantity").val(),
+        a = $(e).find("input.lineprice").val(),
+        n = $(e).find("input.subtotal:first"),
+        s = (i * a).toFixed(2);
+    $(n).val(s);
+    var r = 0;
+    $("input.subtotal").each(function() {
+        var t = 1 * $(this).val();
+        r += t
+    });
+    var o = $("#discount").val();
+    o = 1 * o;
+    var l = $("#discount_type").val();
+    "p" == l ? (o > 100 && ($("#discount").val("100"), o = 100), o = o / 100 * r, $("#discount_percent").html("%")) : $("#discount_percent").html(""), $("#subtotal").val(r.toFixed(2));
+    var c = $("#shipping").val(),
+        d = 0;
+    $(".update-subtotal input.tax").each(function() {
+        var t = $(this).val();
+        d += 1 * t
+    });
+    var cu = $("#credit_used").val();
+    var h = (1 * r - o + 1 * c + 1 * d) - cu;
+    $("#total_tax").val(d.toFixed(2)), $("#total").val(h.toFixed(2))
+}
+
+function productOptionPrices(id) {
+  const $price = $("#" + id + "_price");
+  let base = +$price.attr("original");
+  $("span[rel="+id+"] select").each(function () {
+    const rel = $(this).find("option:selected").attr("rel");
+    if (!rel) return;
+    const sign = rel[0], val = +rel.slice(1);
+    if (val > 0) base = sign === '+' ? base + val : sign === '-' ? base - val : +rel; // fallback
+  });
+  $("span[rel="+id+"] input, span[rel="+id+"] textarea").each(function () {
+    const v = $(this).val();
+    const rel = $(this).attr("rel");
+    if (!v || !rel) return;
+    const sign = rel[0], val = +rel.slice(1);
+    if (val > 0) base = sign === '+' ? base + val : sign === '-' ? base - val : +rel;
+  });
+  $price.val(base.toFixed(2));
+  $(".update-subtotal input.number").trigger("change");
+  return false;
+}
+function fmSearch(mode, term, token) {
+    if(term.length==0) return false;
+    var requestData = {};
+    requestData['mode'] = mode;
+    requestData['term'] = term;
+    requestData['token'] = token;
+    $.ajax({
+       type: 'post',
+       url: "?_g=xml&function=fmSearch",
+       data: requestData,
+       dataType: "text",
+       success: function(responseData) {
+          $.colorbox({html:responseData,width:860,height:600})
+       }
+    });
+}
