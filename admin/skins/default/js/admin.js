@@ -261,11 +261,21 @@ $(document).ready(function() {
         $(this).attr('title', text);
     });
 
-    $('.strlen').on("keyup", function() {
-		var rel = $(this).attr('rel');
-        var length = $(this).val().length;
-		$('#'+rel).text(length);
-	});
+    const debounce = (fn, ms = 120) => {
+    let t;
+    return function (...args) {
+        clearTimeout(t);
+        t = setTimeout(() => fn.apply(this, args), ms);
+    };
+    };
+
+    $(document).on("keyup", ".strlen", debounce(function () {
+    const rel = this.getAttribute("rel");
+    if (rel) {
+        const target = document.getElementById(rel);
+        if (target) target.innerText = this.value.length;
+    }
+    }, 150));
     
     $(".editable_phrase").on("focusout", function() {
         var phrase_id = $(this).attr('rel');
