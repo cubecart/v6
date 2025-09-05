@@ -332,13 +332,11 @@ $(document).ready(function() {
         $("input#product_code").val().length > 0 ? $("input#product_code_auto").val('0') : $("input#product_code_auto").val('1'); $("input#product_code_auto").change();
     }
 
-    var image_icon_path  = config.admin_folder + "/skins/" + config.skin_folder + "/images/";
-
     $("input.toggle:hidden").each(function() {
         var c = ($(this).val() == "1") ? "1" : "0";
         var d = document.createElement("img");
         var s = $(this).attr("style");
-        d.src = image_icon_path + c + "_checkbox.png";
+        d.src = IMG_PATH + c + "_checkbox.png";
         if (c == "1") {
             d.alt = d.title = lang.disable
         } else {
