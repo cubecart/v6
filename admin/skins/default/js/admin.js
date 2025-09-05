@@ -27,7 +27,7 @@ function pageChanged(t) {
 function getSEODestination() {
     var item_id = $("#item_id").val();
     var type = $("#redirect_type").val();
-    var a = $("#val_admin_file").text();
+    var a = ADMIN_FILE;
     var error_text = $("#val_error_not_found").text();
     $.getJSON("./" + a, {
         _g: "xml",
@@ -106,7 +106,7 @@ function optionAdd(t, e) {
 }
 
 function ajaxSelected(t, e, i) {
-    var a = $("#val_admin_file").text();
+    var a = ADMIN_FILE;
     switch ($("#result_" + e).val(t.id), i.toLowerCase()) {
         case "user":
             $.getJSON("./" + a, {
@@ -131,7 +131,7 @@ function ajaxSelected(t, e, i) {
 }
 
 function ajaxSuggest(t, e, i) {
-    var a = "./" + $("#val_admin_file").text(),
+    var a = "./" + ADMIN_FILE,
         n = {
             _g: "xml",
             type: i,
@@ -150,7 +150,7 @@ function ajaxSuggest(t, e, i) {
 }
 
 function ajaxElasticSearch(page) {
-  const admin = $("#val_admin_file").text();
+  const admin = ADMIN_FILE;
   $.getJSON(`./${admin}`, {_g:"xml", page, "function":"rebuildElasticsearch"}, (res) => {
     const redirect = '?_g=maintenance&_=' + Math.floor(Date.now()/1000) + '#elasticsearch';
     if (res?.error === 'true') { window.location.href = redirect; return; }
@@ -173,7 +173,7 @@ function ajaxElasticSearch(page) {
 }
 
 function ajaxNewsletter(t, e) {
-    var i = $("#val_admin_file").text();
+    var i = ADMIN_FILE;
     $.getJSON("./" + i, {
         _g: "xml",
         type: "newsletter",
@@ -249,6 +249,15 @@ function fmSearch(mode, term, token) {
     });
  }
 $(document).ready(function() {
+    const $doc = $(document);
+    const ADMIN_FILE = $("#val_admin_file").text() || "admin.php";
+    const ADMIN_FOLDER = $("#val_admin_folder").text() || "admin";
+    const SKIN_FOLDER  = $("#val_skin_folder").text()  || "default";
+    const IMG_PATH = `${ADMIN_FOLDER}/skins/${SKIN_FOLDER}/images/`;
+    const LANG = {
+    disable: $("#val_lang_disable").text() || "Disable",
+    enable:  $("#val_lang_enable").text()  || "Enable"
+    };
     $('.copy_text').on("click", function() {
         navigator.clipboard.writeText($(this).attr('data-value'));
         var text = $(this).attr('data-copied');
@@ -316,14 +325,14 @@ $(document).ready(function() {
     }, 1);
 
     var lang = {
-        disable:        $("#val_lang_disable").length ? $("#val_lang_disable").text() : 'Disable',
-        enable:         $("#val_lang_enable").length ? $("#val_lang_enable").text() : 'Enable'
+        disable:        $("#val_lang_disable").length ? LANG.disable : 'Disable',
+        enable:         $("#val_lang_enable").length ? LANG.enable : 'Enable'
     }
 
     var config = {
-        skin_folder:    $("#val_skin_folder").length ? $("#val_skin_folder").text() : 'default',
-        admin_folder:   $("#val_admin_folder").length ? $("#val_admin_folder").text() : 'admin',
-        admin_file:     $("#val_admin_file").length ? $("#val_admin_file").text() : 'admin.php' 
+        skin_folder:    $("#val_skin_folder").length ? SKIN_FOLDER : 'default',
+        admin_folder:   $("#val_admin_folder").length ? ADMIN_FILE : 'admin',
+        admin_file:     $("#val_admin_file").length ? ADMIN_FILE : 'admin.php' 
     }
     if($("input#product_code").length > 0) {
         $("input#product_code").val().length > 0 ? $("input#product_code_auto").val('0') : $("input#product_code_auto").val('1'); $("input#product_code_auto").change();
@@ -535,7 +544,7 @@ $(document).ready(function() {
     }),
 
     $(".getFileSize").on("click",function() {
-        var i = $("#val_admin_file").text();
+        var i = ADMIN_FILE;
         var time_out_text = $("#val_time_out_text").text();
         var parent = $(this).parent();
         var path = $(this).attr("data-path");
@@ -584,7 +593,7 @@ $(document).ready(function() {
                 this.on("complete", function (file) {
                     if($("div#imageset.fm-filelist").length) {
                         if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
-                            var t = $("#val_admin_file").text();
+                            var t = ADMIN_FILE;
                             $("div#imageset.fm-filelist").fileTree({
                                 root: "/",
                                 script: "./" + t,
@@ -792,7 +801,7 @@ $(document).ready(function() {
             }
             $(this).ckeditor(t)
         }), $("div.fm-filelist").each(function() {
-            var t = $("#val_admin_file").text();
+            var t = ADMIN_FILE;
             $(this).fileTree({
                 root: "/",
                 script: "./" + t,
@@ -1028,7 +1037,7 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
             o = $(a).clone(!0).attr({
                 name: ""
             }).removeAttr("id").removeClass("inline-source"),
-            l = $("#val_admin_file").text();
+            l = ADMIN_FILE;
         $(i).find(":input").each(function() {
             var t, e = $(this).attr("rel"),
                 i = $(this).val();
@@ -1111,7 +1120,7 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
         $(t).val($(this).val()), "sum_country" == $(this).attr("id") && $(t).trigger("change")
     }), !1
 }), $("#search-placeholder").on("click", function() {
-    $(document).keyup(function(e) {
+    $doc.keyup(function(e) {
         if (e.key === "Escape") {
             $("#sidebar_contain").animate({ left: "-340px"});
         }
