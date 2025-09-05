@@ -83,13 +83,13 @@ function optionAdd(t, e) {
         r = $("#opt_mid").val();
     if ("" != r && 0 != r) {
         var o = $(t).clone();
-        $(o).find(".name").append(s).find("input:first").val(r).prop('disabled', false);
+        $(o).find(".name").append(s).find("input").first().val(r).prop('disabled', false);
         var l = $("input.data");
         for (i = 0; i < l.length; i++) {
             var c = $(l[i]).attr("rel"),
                 d = "" == $(l[i]).val() ? "0" : $(l[i]).val(),
-                h = $(o).find("." + c).find("input:first");
-            "matrix_include" == c ? h.attr("name", "option_add[" + c + "][" + options_added + "]") : "set_enabled" == c ? (h.prop('disabled', false), h.attr("checked", "checked"), h.parent().addClass("selected"), h.val(1), 1 == d && (h.parent().addClass("selected"), h.attr("checked", "checked")), h.attr("name", "option_add[" + c + "][" + options_added + "]")) : "default" == c || "negative" == c || "absolute_price" == c ? (h.prop('disabled', false), $(l[i]).is(":checked") && (h.parent().addClass("selected"), h.attr("checked", "checked"), $(l[i]).prop('checked', false).parent().removeClass("selected")), h.attr("name", "option_add[" + c + "][" + options_added + "]")) : (d = parseFloat(d, 10).toFixed(2), $(o).find("." + c).append(d).find("input:first").val(parseFloat(d)).prop('disabled', false)), $(l[i]).val("")
+                h = $(o).find("." + c).find("input").first();
+            "matrix_include" == c ? h.attr("name", "option_add[" + c + "][" + options_added + "]") : "set_enabled" == c ? (h.prop('disabled', false), h.prop("checked", true), h.parent().addClass("selected"), h.val(1), 1 == d && (h.parent().addClass("selected"), h.prop("checked", true)), h.attr("name", "option_add[" + c + "][" + options_added + "]")) : "default" == c || "negative" == c || "absolute_price" == c ? (h.prop('disabled', false), $(l[i]).is(":checked") && (h.parent().addClass("selected"), h.prop("checked", true), $(l[i]).prop('checked', false).parent().removeClass("selected")), h.attr("name", "option_add[" + c + "][" + options_added + "]")) : (d = parseFloat(d, 10).toFixed(2), $(o).find("." + c).append(d).find("input").first().val(parseFloat(d)).prop('disabled', false)), $(l[i]).val("")
         }
         $(document).on("click", "a.remove", function (e) {
             e.preventDefault();
