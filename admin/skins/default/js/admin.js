@@ -149,35 +149,27 @@ function ajaxSuggest(t, e, i) {
     }, "json")
 }
 
-function ajaxElasticSearch(e) {
-    var i = $("#val_admin_file").text();
-    $.getJSON("./" + i, {
-        _g: "xml",
-        page: e,
-        function: "rebuildElasticsearch"
-    }, function(i) {
-        var redirect = '?_g=maintenance&_='+Math.floor(Date.now() / 1000)+'#elasticsearch';
-        if (typeof i.error !== 'undefined' && i.error=='true') {
-            window.location.href = redirect;
-            return false;
-        }
-        if(i.es_count !== false && i.es_size !== false) {
-            $("#es_count").html(i.es_count).toLocaleString();
-            $("#es_size").html(i.es_size);
-        }
-        $("div#progress_bar").css({
-            width: i.percent + "%"
-        });
-        $("div#progress_bar_percent").text(Math.round(i.percent) + "%");
-        if(100 == i.percent || "true" == i.complete) {
-            window.onbeforeunload = null;
-            setTimeout(function(){
-                window.location.href = redirect;
-            }, 2000);
-        } else {
-            ajaxElasticSearch(e + 1);
-        }
-    })
+function ajaxElasticSearch(page) {
+  const admin = $("#val_admin_file").text();
+  $.getJSON(`./${admin}`, {_g:"xml", page, "function":"rebuildElasticsearch"}, (res) => {
+    const redirect = '?_g=maintenance&_=' + Math.floor(Date.now()/1000) + '#elasticsearch';
+    if (res?.error === 'true') { window.location.href = redirect; return; }
+
+    if (res.es_count !== false && res.es_size !== false) {
+      $("#es_count").text(Number(res.es_count).toLocaleString());
+      $("#es_size").text(res.es_size);
+    }
+    $("#progress_bar").css({ width: res.percent + "%" });
+    $("#progress_bar_percent").text(Math.round(res.percent) + "%");
+
+    if (res.percent === 100 || res.complete === "true") {
+      window.onbeforeunload = null;
+      setTimeout(() => { window.location.href = redirect; }, 2000);
+    } else {
+      // schedule next page *iteratively*
+      setTimeout(() => ajaxElasticSearch(page + 1), 0);
+    }
+  });
 }
 
 function ajaxNewsletter(t, e) {
