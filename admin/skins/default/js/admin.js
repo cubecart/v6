@@ -427,9 +427,7 @@ $(document).ready(function() {
         }), $("form").submit(function() {
             var e = !0;
             if (t = !1, $("#inventory-list").exists() && !$("input[name*=inv]").exists()) return $(".inline-add:first").addClass("highlight"), !1;
-            $(".required-error").removeClass("required-error"), $(":checkbox.ignore").each(function() {
-                $(this).not(":checked") && $(this).prop("disabled", true)
-            });
+            $(".required-error").removeClass("required-error"), $(":checkbox.ignore").each(function () { if (!this.checked) $(this).prop("disabled", true); });
             var i = $($("div.tab_content").exists() ? "div.tab_content:visible" : this);
             if ($(i).find(".required:input:not(:hidden)").each(function() {
                     var t = $(this).val();
