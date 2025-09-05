@@ -1749,3 +1749,18 @@ ul.char_filter li.selected {}
     font-family: FontAwesome;
     content: " \f24d";
 }
+.list > div:nth-child(odd),
+.reorder-list > div:nth-child(odd),
+.list tbody > tr:nth-child(odd),
+.reorder-list tbody > tr:nth-child(odd) { background: var(--rowOdd); }
+
+.list > div:nth-child(even),
+.reorder-list > div:nth-child(even),
+.list tbody > tr:nth-child(even),
+.reorder-list tbody > tr:nth-child(even) { background: var(--rowEven); }
+
+/* hover is free in CSS */
+.list > div:hover,
+.list tbody > tr:hover,
+.reorder-list > div:hover,
+.reorder-list tbody > tr:hover { background: var(--rowHover); }
