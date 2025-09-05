@@ -1,5 +1,4 @@
 $(document).ready(function() {
-    const $doc = $(document);
     const ADMIN_FILE = $("#val_admin_file").text() || "admin.php";
     const ADMIN_FOLDER = $("#val_admin_folder").text() || "admin";
     const SKIN_FOLDER  = $("#val_skin_folder").text()  || "default";
@@ -867,7 +866,7 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
         $(t).val($(this).val()), "sum_country" == $(this).attr("id") && $(t).trigger("change")
     }), !1
 }), $("#search-placeholder").on("click", function() {
-    $doc.keyup(function(e) {
+    $(document).keyup(function(e) {
         if (e.key === "Escape") {
             $("#sidebar_contain").animate({ left: "-340px"});
         }
