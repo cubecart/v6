@@ -205,18 +205,25 @@ function updateOrderTotals(t) {
     $("#total_tax").val(d.toFixed(2)), $("#total").val(h.toFixed(2))
 }
 
-function productOptionPrices(t) {
-    var e = $("#" + t + "_price"),
-        i = +e.attr("original"),
-        a = "";
-    return $("span[rel=" + t + "] select").each(function() {
-        option_price = $(this).find("option:selected").attr("rel");
-        option_price && (a = option_price.substr(0, 1), value = +option_price.substr(1), value > 0 && ("+"==a?i=+i+ +value:"-"==a?i-=value:i+=parseFloat(option_price)-i));
-    }),$("span[rel=" + t + "] input, span[rel=" + t + "] textarea").each(function() {
-        var t = $(this).val(),
-            e = $(this).attr("rel");
-        "" != t && e && (a = e.substr(0, 1), value = +e.substr(1), value > 0 && ("+"==a?i=+i+ +value:"-"==a?i-=value:i+=parseFloat(option_price)-i))
-    }), e.val(i.toFixed(2)), $(".update-subtotal input.number").trigger("change"), !1
+function productOptionPrices(id) {
+  const $price = $("#" + id + "_price");
+  let base = +$price.attr("original");
+  $("span[rel="+id+"] select").each(function () {
+    const rel = $(this).find("option:selected").attr("rel");
+    if (!rel) return;
+    const sign = rel[0], val = +rel.slice(1);
+    if (val > 0) base = sign === '+' ? base + val : sign === '-' ? base - val : +rel; // fallback
+  });
+  $("span[rel="+id+"] input, span[rel="+id+"] textarea").each(function () {
+    const v = $(this).val();
+    const rel = $(this).attr("rel");
+    if (!v || !rel) return;
+    const sign = rel[0], val = +rel.slice(1);
+    if (val > 0) base = sign === '+' ? base + val : sign === '-' ? base - val : +rel;
+  });
+  $price.val(base.toFixed(2));
+  $(".update-subtotal input.number").trigger("change");
+  return false;
 }
 function fmSearch(mode, term, token) {
     if(term.length==0) return false;
