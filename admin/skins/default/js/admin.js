@@ -1,13 +1,13 @@
+const getADMIN_FILE   = () => $("#val_admin_file").text()   || "admin.php";
+const getADMIN_FOLDER = () => $("#val_admin_folder").text() || "admin";
+const getSKIN_FOLDER  = () => $("#val_skin_folder").text()  || "default";
+const getIMG_PATH     = () => `${getADMIN_FOLDER()}/skins/${getSKIN_FOLDER()}/images/`;
+const LANG = {
+  disable: $("#val_lang_disable").text() || "Disable",
+  enable:  $("#val_lang_enable").text()  || "Enable"
+};
+window.addresses = window.addresses || {};
 $(document).ready(function() {
-    const $doc = $(document);
-    const ADMIN_FILE = $("#val_admin_file").text() || "admin.php";
-    const ADMIN_FOLDER = $("#val_admin_folder").text() || "admin";
-    const SKIN_FOLDER  = $("#val_skin_folder").text()  || "default";
-    const IMG_PATH = `${ADMIN_FOLDER}/skins/${SKIN_FOLDER}/images/`;
-    const LANG = {
-    disable: $("#val_lang_disable").text() || "Disable",
-    enable:  $("#val_lang_enable").text()  || "Enable"
-    };
     $('.copy_text').on("click", function() {
         navigator.clipboard.writeText($(this).attr('data-value'));
         var text = $(this).attr('data-copied');
@@ -84,16 +84,6 @@ $(document).ready(function() {
         }
     }, 1);
 
-    var lang = {
-        disable:        $("#val_lang_disable").length ? LANG.disable : 'Disable',
-        enable:         $("#val_lang_enable").length ? LANG.enable : 'Enable'
-    }
-
-    var config = {
-        skin_folder:    $("#val_skin_folder").length ? SKIN_FOLDER : 'default',
-        admin_folder:   $("#val_admin_folder").length ? ADMIN_FOLDER : 'admin',
-        admin_file:     $("#val_admin_file").length ? ADMIN_FILE : 'admin.php' 
-    }
     if($("input#product_code").length > 0) {
         $("input#product_code").val().length > 0 ? $("input#product_code_auto").val('0') : $("input#product_code_auto").val('1'); $("input#product_code_auto").change();
     }
@@ -102,11 +92,11 @@ $(document).ready(function() {
         var c = ($(this).val() == "1") ? "1" : "0";
         var d = document.createElement("img");
         var s = $(this).attr("style");
-        d.src = IMG_PATH + c + "_checkbox.png";
+        d.src = getIMG_PATH + c + "_checkbox.png";
         if (c == "1") {
-            d.alt = d.title = lang.disable
+            d.alt = d.title = LANG.disable
         } else {
-            d.alt = d.title = lang.enable
+            d.alt = d.title = LANG.enable
         }
         $(d).addClass("checkbox");
         $(d).addClass("cbs");
@@ -260,9 +250,9 @@ $(document).ready(function() {
         });
     
     $("#redirect_type").change(function() {
-        var static = $('option:selected', this).attr("data-static");
+        var isStatic = $('option:selected', this).attr("data-static");
         $("#item_id").val('');
-        if(static=='true') {
+        if(isStatic=='true') {
             $("#item_id").hide();
         } else {
             $("#item_id").show();
@@ -295,7 +285,7 @@ $(document).ready(function() {
     }),
 
     $(".getFileSize").on("click",function() {
-        var i = ADMIN_FILE;
+        var i = getADMIN_FILE();
         var time_out_text = $("#val_time_out_text").text();
         var parent = $(this).parent();
         var path = $(this).attr("data-path");
@@ -344,7 +334,7 @@ $(document).ready(function() {
                 this.on("complete", function (file) {
                     if($("div#imageset.fm-filelist").length) {
                         if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
-                            var t = ADMIN_FILE;
+                            var t = getADMIN_FILE();
                             $("div#imageset.fm-filelist").fileTree({
                                 root: "/",
                                 script: "./" + t,
@@ -550,7 +540,7 @@ $(document).ready(function() {
             }
             $(this).ckeditor(t)
         }), $("div.fm-filelist").each(function() {
-            var t = ADMIN_FILE;
+            var t = getADMIN_FILE();
             $(this).fileTree({
                 root: "/",
                 script: "./" + t,
@@ -751,9 +741,7 @@ $(document).ready(function() {
     }
     lazyload();
 });
-var new_option = 0,
-    data = !1;
-if (!addresses || "object" != typeof addresses) var addresses = new Object;
+var new_option = 0, data = !1;
 var options_added = 0;
 $("#inventory-list").on("change", "select.options_calc", function() {
     productOptionPrices($(this).parent().attr("rel"))
@@ -784,7 +772,7 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
             o = $(a).clone(!0).attr({
                 name: ""
             }).removeAttr("id").removeClass("inline-source"),
-            l = ADMIN_FILE;
+            l = getADMIN_FILE();
         $(i).find(":input").each(function() {
             var t, e = $(this).attr("rel"),
                 i = $(this).val();
@@ -867,8 +855,8 @@ $('a.add, a.inline-add, input[type="button"].add').on("click", function() {
         $(t).val($(this).val()), "sum_country" == $(this).attr("id") && $(t).trigger("change")
     }), !1
 }), $("#search-placeholder").on("click", function() {
-    $doc.keyup(function(e) {
-        if (e.key === "Escape") {
+        $(document).keyup(function(e) {
+         if (e.key === "Escape") {
             $("#sidebar_contain").animate({ left: "-340px"});
         }
     });
@@ -1037,7 +1025,7 @@ function pageChanged(t) {
 function getSEODestination() {
     var item_id = $("#item_id").val();
     var type = $("#redirect_type").val();
-    var a = ADMIN_FILE;
+    var a = getADMIN_FILE();
     var error_text = $("#val_error_not_found").text();
     $.getJSON("./" + a, {
         _g: "xml",
@@ -1102,22 +1090,19 @@ function optionAdd(t, e) {
         var o = $(t).clone();
         $(o).find(".name").append(s).find("input").first().val(r).prop('disabled', false);
         var l = $("input.data");
-        for (i = 0; i < l.length; i++) {
+        for (let i = 0; i < l.length; i++) {
             var c = $(l[i]).attr("rel"),
                 d = "" == $(l[i]).val() ? "0" : $(l[i]).val(),
                 h = $(o).find("." + c).find("input").first();
             "matrix_include" == c ? h.attr("name", "option_add[" + c + "][" + options_added + "]") : "set_enabled" == c ? (h.prop('disabled', false), h.prop("checked", true), h.parent().addClass("selected"), h.val(1), 1 == d && (h.parent().addClass("selected"), h.prop("checked", true)), h.attr("name", "option_add[" + c + "][" + options_added + "]")) : "default" == c || "negative" == c || "absolute_price" == c ? (h.prop('disabled', false), $(l[i]).is(":checked") && (h.parent().addClass("selected"), h.prop("checked", true), $(l[i]).prop('checked', false).parent().removeClass("selected")), h.attr("name", "option_add[" + c + "][" + options_added + "]")) : (d = parseFloat(d, 10).toFixed(2), $(o).find("." + c).append(d).find("input").first().val(parseFloat(d)).prop('disabled', false)), $(l[i]).val("")
         }
-        $(document).on("click", "a.remove", function (e) {
-            e.preventDefault();
-            inlineRemove(this);
-        }), $(o).removeAttr("id"), $("#opt_mid :selected").prop('selected', false), $("#opt_mid:first-child").prop("selected", true), $(e).append($(o)), options_added++
+        $(o).removeAttr("id"), $("#opt_mid :selected").prop('selected', false), $("#opt_mid:first-child").prop("selected", true), $(e).append($(o)), options_added++
     }
     return !1
 }
 
 function ajaxSelected(t, e, i) {
-    var a = ADMIN_FILE;
+    var a = getADMIN_FILE();
     switch ($("#result_" + e).val(t.id), i.toLowerCase()) {
         case "user":
             $.getJSON("./" + a, {
@@ -1142,7 +1127,7 @@ function ajaxSelected(t, e, i) {
 }
 
 function ajaxSuggest(t, e, i) {
-    var a = "./" + ADMIN_FILE,
+    var a = "./" + getADMIN_FILE(),
         n = {
             _g: "xml",
             type: i,
@@ -1161,7 +1146,7 @@ function ajaxSuggest(t, e, i) {
 }
 
 function ajaxElasticSearch(page) {
-  const admin = ADMIN_FILE;
+  const admin = getADMIN_FILE();
   $.getJSON(`./${admin}`, {_g:"xml", page, "function":"rebuildElasticsearch"}, (res) => {
     const redirect = '?_g=maintenance&_=' + Math.floor(Date.now()/1000) + '#elasticsearch';
     if (res?.error === 'true') { window.location.href = redirect; return; }
@@ -1183,7 +1168,7 @@ function ajaxElasticSearch(page) {
 }
 
 function ajaxNewsletter(t, e) {
-    var i = ADMIN_FILE;
+    var i = getADMIN_FILE();
     $.getJSON("./" + i, {
         _g: "xml",
         type: "newsletter",
