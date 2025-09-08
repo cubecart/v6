@@ -121,9 +121,9 @@ class Session
             ini_set('session.use_trans_sid', '0');
         }
 
-        if ($ini['session.gc_probability'] != 15) {
+        if ($ini['session.gc_probability'] != 1) {
             //Clean up 15% of the time
-            ini_set('session.gc_probability', 15);
+            ini_set('session.gc_probability', 1);
         }
         if ($ini['session.gc_divisor'] != 100) {
             ini_set('session.gc_divisor', 100);
