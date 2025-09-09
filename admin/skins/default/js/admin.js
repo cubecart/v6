@@ -147,7 +147,7 @@ $(document).ready(function() {
         var new_src = $(this).attr('src').replace(value_old+'_checkbox.png',value_new+'_checkbox.png');
         $(this).attr({src: new_src});
         $(e).val(value_new)
-    })
+    });
 
     $('.chzn-select').chosen({width:"500px",search_contains:true});
     var t = !1;
