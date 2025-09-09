@@ -1565,7 +1565,7 @@ class Cubecart
                     /* 
                     Add multiple attachments
                     */
-                    if((bool)$contact['attachments'] && is_array($_FILES['attachments']) && !empty($_FILES['attachments'])) {
+                    if (isset($_FILES['attachments']) && is_array($_FILES['attachments']['name']) && count(array_filter($_FILES['attachments']['name'])) > 0) {
                         $total = count($_FILES['attachments']['name']);
                         $allowed = array(
                             'image/jpeg',
