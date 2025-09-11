@@ -902,6 +902,7 @@ class Cart
                     $this->basket['contents'][$hash]['total_price_each'] = $product['price'];
                     $this->basket['contents'][$hash]['description']   = substr(strip_tags($product['description']), 0, 255);
                     $this->basket['contents'][$hash]['name']     = $product['name'];
+                    $this->basket['contents'][$hash]['dimension_unit']   = $product['dimension_unit'];
                     $this->basket['contents'][$hash]['product_code']   = $product['product_code'];
                     $this->basket['contents'][$hash]['product_weight']   = $product['product_weight'];
                     $this->basket['contents'][$hash]['product_width']   = $product['product_width'];
