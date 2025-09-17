@@ -1084,9 +1084,9 @@ class Catalogue
      * @param int $assign_id
      * @return array/false
      */
-    public function getProductData($product_id, $quantity = 1, $order = false, $per_page = 10, $page = 1, $category = false, $options_identifier = null)
+    public function getProductData($product_id, $quantity = 1, $order = false, $per_page = 10, $page = 1, $category = false, $options_identifier = null, $check_category_status = true)
     {
-        if (!is_array($product_id)) {
+        if ($check_category_status && !is_array($product_id)) {
             $category_data = $this->getCategoryStatusByProductID($product_id);
             $category_status = false;
             if (is_array($category_data)) {

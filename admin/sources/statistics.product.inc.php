@@ -16,8 +16,7 @@ if (!defined('CC_INI_SET')) {
 Admin::getInstance()->permissions('settings', CC_PERM_READ, true);
 $GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->statistics['product_stats']);
 $GLOBALS['main']->addTabControl($GLOBALS['language']->statistics['product_stats'], 'general');
-
-$product = $GLOBALS['catalogue']->getProductData((int)$_GET['product_id']);
+$product = $GLOBALS['catalogue']->getProductData((int)$_GET['product_id'], 1, false, 10, 1, false, null, false);
 if($product) {
     $master_image = isset($_GET['product_id']) ? $GLOBALS['gui']->getProductImage((int)$_GET['product_id']) : '';
     $product['image'] = $master_image;
