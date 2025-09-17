@@ -3,6 +3,6 @@
 {combine input=$js_head output='cache/js_head.{$SKIN_FOLDER}.js' age='604800' debug=$CONFIG.debug||!$CONFIG.cache}
 {foreach from=$HEAD_JS item=js}{$js}{/foreach}
 {if !empty($CONFIG.w3w)}
-<script type="module" src="https://cdn.what3words.com/javascript-components@4-latest/dist/what3words/what3words.esm.js"></script>
-<script nomodule src="https://cdn.what3words.com/javascript-components@4-latest/dist/what3words/what3words.js?key={$CONFIG.w3w}"></script>
+<script type="module" async src="https://cdn.what3words.com/javascript-components@5.0.0/dist/what3words/what3words.esm.js"></script>
+<script nomodule async src="https://cdn.what3words.com/javascript-components@5.0.0/dist/what3words/what3words.js"></script>
 {/if}
