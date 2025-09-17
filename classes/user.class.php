@@ -754,7 +754,7 @@ class User
     /**
      * Logout
      */
-    public function logout()
+    public function logout($password_change = false)
     {
         foreach ($GLOBALS['hooks']->load('class.user.logout') as $hook) {
             include $hook;
@@ -764,10 +764,14 @@ class User
             // Unset the 'Remember Me' cookies
             $GLOBALS['session']->set_cookie('username', '', time()-3600);
         }
-        //Destory the session
+        // Destory the session
         $GLOBALS['session']->destroy();
         // Redirect to login
-        httpredir(currentPage(null, array('_a' => 'login')));
+        $get = array('_a' => 'login');
+        if($password_change) {
+            $get['pu'] = 1;
+        };
+        httpredir(currentPage(null, $get));
     }
 
     /**

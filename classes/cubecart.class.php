@@ -2442,6 +2442,9 @@ class Cubecart
      */
     private function _login()
     {
+        if(isset($_GET['pu'])) {
+            $GLOBALS['gui']->setNotify($GLOBALS['language']->account['password_updated']);
+        }
         $GLOBALS['session']->setBack();
         $GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->account['login'], $GLOBALS['seo']->buildURL('login'));
         
@@ -2957,7 +2960,7 @@ class Cubecart
             }
             if ($change_pass) {
                 if ($change_pass = $GLOBALS['user']->changePassword()) {
-                    $GLOBALS['gui']->setNotify($GLOBALS['language']->account['password_updated']);
+                    $GLOBALS['user']->logout(true);
                 }
             }
         }

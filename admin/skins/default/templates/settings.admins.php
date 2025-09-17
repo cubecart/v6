@@ -36,9 +36,10 @@
 	  {/if}
 	  <div><label for="tour_shown">{$LANG.admins.tour_shown}</label><span><input type="hidden" name="admin[tour_shown]" id="tour_shown" class="toggle" value="{$ADMIN.tour_shown}"></span></div>
 	</fieldset>
-	<fieldset><legend>{$LANG.account.password}</legend>
+	<fieldset><legend>{$LANG.account.new_password}</legend>
 	  <div><label for="admin-password">{$LANG.account.password}</label><span><input type="password" autocomplete="off" name="password" id="admin-password" class="textbox"></span></div>
 	  <div><label for="admin-passconf">{$LANG.user.password_confirm}</label><span><input type="password" autocomplete="off" name="passconf" id="admin-passconf" rel="admin-password" class="textbox confirm"></span></div>
+	  <div class="nostripe">{$LANG.account.pw_cause_logout}</div>
 	</fieldset>
 	<fieldset><legend>{$LANG.common.notes}</legend>
 	  <div><label for="admin-notes">{$LANG.common.notes}</label><span><textarea name="admin[notes]" id="admin-notes" class="textbox">{$ADMIN.notes}</textarea></span></div>
