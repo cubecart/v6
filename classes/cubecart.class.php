@@ -2859,8 +2859,7 @@ class Cubecart
             foreach ($GLOBALS['hooks']->load('class.cubecart.review') as $hook) {
                 include $hook;
             }
-            
-            $record = array_map('htmlspecialchars', $_POST['review']);
+            $record = array_map('htmlToPlainText', $_POST['review']);
             $record['anon'] = (isset($record['anon'])) ? 1 : 0;
             if ($GLOBALS['user']->is()) {
                 $record['name']   = $GLOBALS['user']->get('first_name').' '.$GLOBALS['user']->get('last_name');
@@ -2874,6 +2873,7 @@ class Cubecart
                     $error = true;
                 }
             }
+            $record['review'] = !empty($record['review']) ? nl2br($record['review']) : $record['review'];
             $record['rating']   = (isset($_POST['rating'])) ? $_POST['rating'] : 0;
             $record['product_id']  = (int)$_GET['product_id'];
             $record['ip_address']  = get_ip_address();
