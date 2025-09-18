@@ -792,7 +792,8 @@ if (isset($database_result) && $database_result) {
             'customer_id' => 'KEY',
             'status' => 'KEY',
             'email' => 'KEY',
-            'dbl_opt' => 'KEY'
+            'dbl_opt' => 'KEY',
+            'remove_token' => 'KEY'
         ),
         'cubecart_newsletter_subscriber_log' => array(
             'id' => 'PRIMARY',

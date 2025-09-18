@@ -31,6 +31,13 @@ $email_types = array(
             '{$DATA.link}'  => $lang['email']['macro_link_verify']
         ),
     ),
+    'newsletter.remove_request' => array(
+        'description' => $lang['email']['title_macro_user_newsletter_remove'],
+        'macros' => array(
+            '{$DATA.email}' => $lang['common']['email'],
+            '{$DATA.link}'  => $lang['email']['macro_link_verify']
+        ),
+    ),
     'admin.order_received' => array(
         'description' => $lang['email']['title_macro_admin_order'],
         'macros' => array(

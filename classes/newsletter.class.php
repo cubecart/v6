@@ -300,13 +300,31 @@ class Newsletter
         }
         // Unsubscribe the user
         $removed = false;
+        $remove_token = null;
         if (ctype_digit($customer_id) && $customer_id > 0) {
             $removed = $GLOBALS['db']->delete('CubeCart_newsletter_subscriber', array('customer_id' => $customer_id));
         } else if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $removed = $GLOBALS['db']->delete('CubeCart_newsletter_subscriber', array('email' => $email));
+            if(defined('ADMIN_CP') && ADMIN_CP === true || isset($_GET['rt']) && !empty($_GET['rt'])) {
+                $where = isset($_GET['rt']) ? array('remove_token' => $_GET['rt']) : array('email' => $email);
+                $removed = $GLOBALS['db']->delete('CubeCart_newsletter_subscriber', $where);
+            } else {
+                $remove_token = md5(uniqid((string)time(), true));
+                $remove_possible = $GLOBALS['db']->update('CubeCart_newsletter_subscriber', array('remove_token' => $remove_token), array('email' => $email));
+            }
             foreach ($GLOBALS['hooks']->load('class.newsletter.unsubscribe') as $hook) {
                 include $hook;
             }
+        }
+        if(!empty($remove_token)) {
+            $this->_subscriberLog($email, 'Removal requested. Pending confirmation.');
+            $mailer = new Mailer();
+            if ($remove_possible && ($content = $mailer->loadContent('newsletter.remove_request', $GLOBALS['language']->current())) !== false) {
+                $GLOBALS['smarty']->assign('DATA', array('email' => $email, 'link' => CC_STORE_URL."/index.php?_a=unsubscribe&unsubscribe=".urlencode($email)."&rt=".$remove_token));
+                $mailer->sendEmail($email, $content); 
+                $this->_subscriberLog($email, 'Removal requested email sent.');
+            }
+            $GLOBALS['gui']->setNotify($GLOBALS['language']->newsletter['notify_remove_request']);
+            return true;
         }
         if ($removed) {
             $this->_subscriberLog($email, 'Removed from mailing list');

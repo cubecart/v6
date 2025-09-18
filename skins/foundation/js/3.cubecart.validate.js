@@ -174,10 +174,15 @@ jQuery(document).ready(function() {
                         if(json.result) {
                             $("#subscribe_button").val($('#validate_subscribe').text());
                             $("#force_unsubscribe").val('0');
+                            $("#subscribe_button").removeClass('alert');
+                            $("#newsletter_email").removeClass('alert');
                         } else {
                             alert($('#validate_already_subscribed').text());
                             $("#subscribe_button").val($('#validate_unsubscribe').text());
                             $("#force_unsubscribe").val('1');
+                            $("#subscribe_button").addClass('alert');
+                            $("#newsletter_email").addClass('alert');
+                            
                         }
                         return true;
                     }
