@@ -92,7 +92,7 @@ class Cache extends Cache_Controler
      */
     public function delete($id)
     {
-        $id = shortHash($id, 8, $this->_empties_id);
+        $id = shortHash($id, 8, array($this->_empties_id));
         return xcache_unset($this->_makeName($id));
     }
 
@@ -107,7 +107,7 @@ class Cache extends Cache_Controler
         if (!$this->status && !$this->statusException($id)) {
             return false;
         }
-        $id = shortHash($id, 8, $this->_empties_id);
+        $id = shortHash($id, 8, array($this->_empties_id));
         return xcache_isset($this->_makeName($id));
     }
 
@@ -148,7 +148,7 @@ class Cache extends Cache_Controler
         }
 
         $raw_id = $id;
-        $id = shortHash($id, 8, $this->_empties_id);
+        $id = shortHash($id, 8, array($this->_empties_id));
 
         if ($this->_empties_id!==$id && isset($this->_empties[$id])) {
             return array('empty' => true, 'data' => $this->_empties[$id]);
@@ -195,7 +195,7 @@ class Cache extends Cache_Controler
         }
 
         $raw_id = $id;
-        $id = shortHash($id, 8, $this->_empties_id);
+        $id = shortHash($id, 8, array($this->_empties_id));
         
         if ($this->_empties_id!==$id && empty($data)) {
             if (!isset($this->_empties[$id])) {
