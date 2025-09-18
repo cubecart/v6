@@ -1062,8 +1062,11 @@ function parseUrlToLink($text = '', $target = '_blank')
  *
  * @return string
  */
-function shortHash($input, $length = 8)
+function shortHash($input, $length = 8, $exception = '')
 {
+    if ($input == $exception) {
+        return $exception;
+    }
 	$hash_base64 = base64_encode(hash('sha256', $input.CC_STORE_URL, true));
 	$hash_urlsafe = strtr($hash_base64, '+/', '-_');
 	$hash_urlsafe = rtrim($hash_urlsafe, '=');

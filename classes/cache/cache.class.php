@@ -74,7 +74,7 @@ class Cache_Controler
      * @var string
      */
     protected $_suffix  = '';
-    protected $_empties_id = 'sql.empties';
+    protected $_empties_id = '___EMPTY';
     protected $_empties = array();
     protected $_empties_added = false;
     /**
