@@ -35,11 +35,9 @@ if (isset($_POST['admin']) && is_array($_POST['admin']) && Admin::getInstance()-
     $record   = $_POST['admin'];
     $record['name'] = ucwords($record['name']);
 
-    if (!empty($_POST['password'])) {
-        if ($_POST['password'] === $_POST['passconf']) {
-            $record['password'] = $_POST['password'];
-        } else {
-        }
+    ## Validate new password
+    if (!empty($_POST['password']) && $_POST['password'] === $_POST['passconf']) {
+        $record['password'] = $_POST['password'];
     }
 
     ## Validate email
@@ -48,9 +46,11 @@ if (isset($_POST['admin']) && is_array($_POST['admin']) && Admin::getInstance()-
         unset($_POST['admin']['email']);
     }
 
+    $logout = false;
     if (isset($_POST['admin_id']) && !empty($_POST['admin_id']) && is_numeric($_POST['admin_id'])) {
         ## Update existing admin
         if (!empty($record['password'])) {
+            $logout = true;
             if (($user = $GLOBALS['db']->select('CubeCart_admin_users', array('salt'), array('admin_id' => $_POST['admin_id']), null, 1)) !== false) {
                 if (empty($user[0]['salt'])) {
                     $salt = Password::getInstance()->createSalt();
@@ -110,7 +110,9 @@ if (isset($_POST['admin']) && is_array($_POST['admin']) && Admin::getInstance()-
         $updated = true;
     }
 
-    if ($added) {
+    if($logout) {
+        httpredir('?_g=logout&token='.SESSION_TOKEN);
+    } elseif ($added) {
         httpredir(currentPage(array('action')));
     } elseif ($updated) {
         $GLOBALS['main']->successMessage($lang['admins']['notify_admin_update']);
