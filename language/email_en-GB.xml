@@ -447,4 +447,12 @@ Thank you. We have received a payment of {$DATA.total} for order number {$DATA.c
 {$DATA.link}
 ]]></content>
   </email>
+  <email name="newsletter.remove_request">
+    <subject><![CDATA[Confirm Newsletter Removal]]></subject>
+    <content type="html"><![CDATA[<p>Someone has requested that <strong>{$DATA.email}</strong> is to be unsubscribed from our mailing list. If you did requst this action please confirm using the link below.</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+    <content type="text"><![CDATA[Someone has requested that {$DATA.email} is to be unsubscribed from our mailing list. If you did requst this action please confirm using the link below.
+    
+{$DATA.link}
+]]></content>
+  </email>
 </emails>

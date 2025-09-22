@@ -601,11 +601,13 @@ CREATE TABLE IF NOT EXISTS `CubeCart_newsletter_subscriber` (
 	`date` datetime DEFAULT NULL,
 	`imported` tinyint(1) DEFAULT '0',
 	`dbl_opt` tinyint(1) DEFAULT '0',
+	`remove_token` varchar(32) DEFAULT NULL,
 	PRIMARY KEY (`subscriber_id`),
 	KEY `customer_id` (`customer_id`),
 	KEY `email` (`email`),
 	KEY `dbl_opt` (`dbl_opt`),
-	KEY `status` (`status`)
+	KEY `status` (`status`),
+	KEY `remove_token` (`remove_token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_newsletter_subscriber_log` (

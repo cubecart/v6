@@ -1,0 +1,1 @@
+ALTER TABLE `CubeCart_newsletter_subscriber` ADD `remove_token` VARCHAR(32) NULL, ADD INDEX `remove_token` (`remove_token`); #EOQ

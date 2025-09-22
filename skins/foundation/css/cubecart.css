@@ -477,3 +477,7 @@ ul.pagination .arrow:first-child a {
 ul.pagination .arrow:last-child a {
     padding: 0.0625rem 0.0625rem 0.0625rem 0.625rem!important
 }
+#newsletter_email.alert {
+    border: 1px solid #9e0c0f;
+    color: #c60f13!important;
+}

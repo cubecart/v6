@@ -33,8 +33,10 @@
    </div>
    <div class="hide" id="validate_email">{$LANG.common.error_email_invalid}</div>
    <div class="hide" id="validate_already_subscribed">{$LANG.newsletter.notify_already_subscribed}</div>
+   <div class="hide" id="validate_subscribe">{$LANG.newsletter.subscribe}</div>
+   <div class="hide" id="validate_unsubscribe">{$LANG.newsletter.unsubscribe}</div>
    <div class="row">
-      <div class="small-12 large-8 columns"><input name="submit" class="button" type="submit" value="{$LANG.form.submit}"></div>
+      <div class="small-12 large-8 columns"><input name="submit" class="button" type="submit" id="subscribe_button" value="{$LANG.form.submit}"></div>
    </div>
 </form>
 {/if}

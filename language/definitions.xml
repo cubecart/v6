@@ -1134,6 +1134,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_documents" introduced="5.0.0"><![CDATA[Site Documents]]></string>
   </group>
   <group name="email">
+    <string name="title_macro_user_newsletter_remove" introduced="6.5.11"><![CDATA[User: Request Newsletter Removal]]></string>
     <string name="empty_list" introduced="6.5.9"><![CDATA[Empty Mailing List]]></string>
     <string name="empty_list_conf" introduced="6.5.9"><![CDATA[Are you sure you want to do this? All subscribers will be removed.]]></string>
     <string name="empty_list_emptied" introduced="6.5.9"><![CDATA[All subscribers have been removed.]]></string>
@@ -1734,6 +1735,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title" introduced="5.0.0"><![CDATA[Shop by Category]]></string>
   </group>
   <group name="newsletter">
+    <string name="notify_remove_request" introduced="6.5.11"><![CDATA[If this email address was subscribed an email has been sent to confirm removal.]]></string>
     <string name="subscribed" introduced="6.5.10"><![CDATA[Subscribed]]></string>
     <string name="disabled_notice" introduced="6.5.7"><![CDATA[<strong>Notice:</strong> Newsletter functionality is currently disabled on the front end.]]></string>
     <string name="subscriber_log" introduced="6.5.4"><![CDATA[Newsletter with subject %s (%s) sent.]]></string>
@@ -1747,7 +1749,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="dbl_opt_in_only" introduced="6.2.1"><![CDATA[Double Opt-In Only]]></string>
     <string name="dbl_opt_in_success" introduced="6.2.0"><![CDATA[Thank you for confirming your email address you are now subscribed to our mailing list.]]></string>
     <string name="dbl_opt_in_fail" introduced="6.2.0"><![CDATA[Sorry but we have not able to validate your email address.]]></string>
-    <string name="continue_to_unsubscribe" introduced="6.2.0"><![CDATA[Continue if you wish to unsubscribe.]]></string>
+    <string name="continue_to_unsubscribe" introduced="6.2.0"><![CDATA[Click OK, then the unsubscribe button if you wish to continue. An email will be sent with a link to confirm removal.]]></string>
     <string name="click_to_subscribe" introduced="5.0.0"><![CDATA[Click here to subscribe.]]></string>
     <string name="click_to_unsubscribe" introduced="5.0.0"><![CDATA[Click here to unsubscribe.]]></string>
     <string name="customer_is_subscribed" introduced="5.0.0"><![CDATA[You are subscribed to receive our newsletter.]]></string>
