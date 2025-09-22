@@ -403,6 +403,11 @@ class Tax
         foreach ($GLOBALS['hooks']->load('class.tax.producttax') as $hook) {
             include $hook;
         }
+
+        // Allows a hook to trigger a RETURN of this function by setting a variable
+        if(isset($classTaxProducttaxReturn) && $classTaxProducttaxReturn === true){
+            return array('tax_id' => $tax_id, 'amount' => $amount, 'tax_inclusive' => $tax_inclusive, 'tax_name' => $tax_name, 'tax_percent' => $percent);
+        }
         
         if ($price<=0) {
             return false;
