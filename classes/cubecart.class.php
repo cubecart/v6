@@ -2238,7 +2238,9 @@ class Cubecart
             $where = array('customer_id' => $GLOBALS['user']->getId());
             if (($downloads = $GLOBALS['db']->select('CubeCart_downloads', false, $where, array('digital_id' => 'DESC'), $per_page, $page, false)) !== false) {
                 $GLOBALS['smarty']->assign('PAGINATION', $GLOBALS['db']->pagination($GLOBALS['db']->getFoundRows(), $per_page, $page, 5, 'p'));
-                $GLOBALS['smarty']->assign('MAX_DOWNLOADS', (int)$GLOBALS['config']->get('config', 'download_count'));
+                $max_downloads = (int)$GLOBALS['config']->get('config', 'download_count');
+                $max_downloads = ($max_downloads > 0) ? $max_downloads : '&infin;';
+                $GLOBALS['smarty']->assign('MAX_DOWNLOADS', $max_downloads);
                 foreach ($downloads as $download) {
                     if (($product = $GLOBALS['db']->select('`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_inventory` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary` ON `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_inventory`.`cart_order_id` = `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary`.`cart_order_id`', '`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_inventory`.*, `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary`.`status`', array('id' => $download['order_inv_id']), false, 1, false, false)) !== false) {
                         $download['file_info'] = $filemanager->getFileInfo($download['product_id']) ?: array(); // Make sure this is an array
