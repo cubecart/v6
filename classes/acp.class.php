@@ -326,7 +326,15 @@ class ACP
         if(!empty($features)) {
             foreach($features as $id => $feature) {
                 $security_class = in_array($id, $security) ? 'security' : '' ;
-                $li .= "<tr><td class=\"text-center $security_class\" valign=\"top\"><a href=\"https://github.com/cubecart/v6/issues/$id\" title=\"https://github.com/cubecart/v6/issues/$id\" target=\"_blank\">#$id</a></td><td valign=\"top\">$feature</td></tr>";
+                if (preg_match('/^GHSA-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}$/i', $id)) {
+                    $url = 'https://github.com/cubecart/v6/security/advisories/'.$id;
+                    $security_class = 'security';
+                } else {
+                    $url = 'https://github.com/cubecart/v6/issues/'.$id;
+                    $id = '#'.$id;
+                }
+                
+                $li .= "<tr><td class=\"text-left $security_class\" valign=\"top\"><a href=\"$url\" target=\"_blank\">$id</a></td><td valign=\"top\">$feature</td></tr>";
             }
         } else {
             $li = "<tr><td  colspan=\"2\">This is a maintenance release with no new features of any significance.</td></tr>";
