@@ -688,6 +688,24 @@ function htmlMinify($html, $preserve = ['pre','textarea','script','style']) {
 }
 
 /**
+ * Convert HTML to plain text
+ *
+ * @param string $html
+ * @return string
+ */
+function htmlToPlainText($html) {
+    return trim(
+        strip_tags(
+            html_entity_decode(
+                strip_tags($html ?? ''), 
+                ENT_QUOTES | ENT_HTML5, 
+                'UTF-8'
+            )
+        )
+    );
+}
+
+/**
  * Redirect to a page
  *
  * @param string $destination
