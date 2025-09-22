@@ -2078,7 +2078,7 @@ class Catalogue
                 }
             }
             if (is_array($order)) {
-                $field_format = preg_match('/\s/', $order['field']) ? $order['field'] : '`'.$order['field'].'`';
+                $field_format = preg_match('/[\s\.]/', $order['field']) ? $order['field'] : '`'.$order['field'].'`';
                 $order_string = 'ORDER BY '.$field_format.' '.$order['sort'];
             }
 
