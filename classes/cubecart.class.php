@@ -1558,7 +1558,7 @@ class Cubecart
                     if(!empty($_POST['contact']['phone'])) {
                         $enquiry .= "\r\n\r\n".$GLOBALS['language']->address['phone'].': '.$_POST['contact']['phone'];
                     }
-                    $mailer->Body  = sprintf($GLOBALS['language']->contact['email_content'], $_POST['contact']['name'], $_POST['contact']['email'], $department, $enquiry);
+                    $mailer->Body  = sprintf($GLOBALS['language']->contact['email_content'], $_POST['contact']['name'], $_POST['contact']['email'], $department, nl2br(htmlToPlainText($enquiry)));
                     foreach ($GLOBALS['hooks']->load('class.cubecart.contact.mailer') as $hook) {
                         include $hook;
                     }
