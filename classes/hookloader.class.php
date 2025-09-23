@@ -213,6 +213,7 @@ class HookLoader
         if (!empty($plugin)) {
             $this->_plugin_name($plugin);
             $file = $this->_hook_dir.'/'.$plugin.'/'.'config.xml';
+            $allowed_hooks = array();
             if (file_exists($file)) {
                 // Read each XML file, check contents, and update/add to database
                 try {
@@ -519,3 +520,4 @@ class HookLoader
         return true;
     }
 }
+
