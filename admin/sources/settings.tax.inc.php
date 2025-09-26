@@ -20,10 +20,28 @@ $GLOBALS['gui']->addBreadcrumb($lang['settings']['bread_tax']);
 $GLOBALS['main']->addTabControl($lang['settings']['title_tax_class'], 'taxclasses', null, 'C');
 $GLOBALS['main']->addTabControl($lang['settings']['title_tax_detail'], 'taxdetails', null, 'D');
 $GLOBALS['main']->addTabControl($lang['settings']['title_tax_rule'], 'taxrules', null, 'R');
+$GLOBALS['main']->addTabControl($lang['settings']['title_tariffs'], 'tariff', null, 'T');
 
 $updated  = false;
 $redirect  = false;
 $anchor  = false;
+
+if (isset($_GET['delete_tariff']) && $_GET['delete_tariff']>0) {
+    $GLOBALS['db']->delete('CubeCart_tariff', array('id' => (int)$_GET['delete_tariff']));
+    $GLOBALS['main']->successMessage($lang['settings']['tariff_deleted']);
+    $anchor = 'tariff';
+    httpredir(currentPage(array('delete_tariff')), $anchor);
+}
+if (isset($_POST['addtariff']) && $_POST['addtariff']['percent']>0) {
+    $exists = $GLOBALS['db']->select('CubeCart_tariff', false, array('source' => $_POST['addtariff']['source'], 'destination' => $_POST['addtariff']['destination'], 'tariff' => $_POST['addtariff']['tariff']));
+    if (!$exists && $GLOBALS['db']->insert('CubeCart_tariff', $_POST['addtariff'])) {
+        $GLOBALS['main']->successMessage($lang['settings']['notify_tax_tariff_add']);
+    } else {
+        $GLOBALS['main']->errorMessage($lang['settings']['error_tax_tariff_add']);
+    }
+    $anchor = 'tariff';
+    httpredir(currentPage(), $anchor);
+}
 
 if (isset($_GET['assign_class']) && $_GET['assign_class']>0) {
     if ($GLOBALS['db']->update('CubeCart_inventory', array('tax_type' => (int)$_GET['assign_class']))) {
@@ -152,7 +170,7 @@ if ($redirect) {
 
 ###############################################################
 ## Get countries
-if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('numcode', 'name'), '`status` > 0', array('name' => 'ASC'))) !== false) {
+if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('numcode', 'name', 'iso'), '`status` > 0', array('name' => 'ASC'))) !== false) {
     $GLOBALS['smarty']->assign('COUNTRIES', $countries);
     ## Get counties
     $GLOBALS['smarty']->assign('VAL_JSON_COUNTY', state_json());
@@ -195,5 +213,19 @@ if (($tax_rules = $GLOBALS['db']->select('CubeCart_tax_rates')) !== false) {
 }
 foreach ($GLOBALS['hooks']->load('admin.settings.tax.pre_smarty') as $hook) {
 	include $hook;
+}
+
+## Get Tariffs
+if (($tariffs = $GLOBALS['db']->select('CubeCart_tariff')) !== false) {
+    foreach ($tariffs as $tariff) {
+        $smarty_data['tariffs'][] = array(
+            'id'        => $tariff['id'],
+            'source'      => $tariff['source'],
+            'destination'      => $tariff['destination'],
+            'tariff'      => $tariff['tariff']=='M' ? $lang['settings']['country_of_manufacture'] : $lang['settings']['country_of_dispatch'],
+            'percent'   => $tariff['percent']
+        );
+    }
+    $GLOBALS['smarty']->assign('TARIFFS', $smarty_data['tariffs']);
 }
 $page_content = $GLOBALS['smarty']->fetch('templates/settings.tax.php');

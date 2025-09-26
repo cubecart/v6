@@ -1764,3 +1764,12 @@ ul.char_filter li.selected {}
 .list tbody > tr:hover,
 .reorder-list > div:hover,
 .reorder-list tbody > tr:hover { background: var(--rowHover); }
+
+.no-arrows::-webkit-outer-spin-button,
+.no-arrows::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.no-arrows {
+  -moz-appearance: textfield;
+}

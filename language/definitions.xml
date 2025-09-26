@@ -1723,7 +1723,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="nav_settings_store" introduced="5.0.0"><![CDATA[Store Settings]]></string>
     <string name="nav_shipping" introduced="5.0.0"><![CDATA[Shipping Methods]]></string>
     <string name="nav_statistics" introduced="5.0.0"><![CDATA[Statistics]]></string>
-    <string name="nav_taxes" introduced="5.0.0"><![CDATA[Taxes]]></string>
+    <string name="nav_taxes" introduced="5.0.0"><![CDATA[Taxes &amp; Tariffs]]></string>
     <string name="nav_transaction_logs" introduced="5.0.0"><![CDATA[Transaction Logs]]></string>
     <string name="saleitems" introduced="5.0.0"><![CDATA[Sale Items]]></string>
     <string name="search_results" introduced="5.0.0"><![CDATA[Search results]]></string>
@@ -2011,6 +2011,12 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
+    <string name="tariff_deleted" introduced="6.5.12"><![CDATA[Tariff deleted.]]></string>
+    <string name="country_of_manufacture" introduced="6.5.12"><![CDATA[Country of manufacture]]></string>
+    <string name="country_of_dispatch" introduced="6.5.12"><![CDATA[Country of dispatch]]></string>
+    <string name="notify_tax_tariff_add" introduced="6.5.12"><![CDATA[Tariff added.]]></string>
+    <string name="error_tax_tariff_add" introduced="6.5.12"><![CDATA[Failed to add tariff as it exists already.]]></string>
+    <string name="title_tariffs" introduced="6.5.12"><![CDATA[Tariffs]]></string>
     <string name="redirect_error_not_found" introduced="6.5.10"><![CDATA[Error: Destination not found.]]></string>
     <string name="installed_languages" introduced="6.5.10"><![CDATA[Installed Languages]]></string>
     <string name="installed_skins" introduced="6.5.10"><![CDATA[Installed Skins]]></string>

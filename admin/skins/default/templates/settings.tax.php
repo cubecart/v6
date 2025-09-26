@@ -155,6 +155,62 @@
          </div>
       </fieldset>
    </div>
+   <div id="tariff" class="tab_content">
+      <h3>{$LANG.settings.title_tariffs}</h3>
+      <fieldset>
+         <table>
+            <thead>
+               <tr>
+                  <td>Source Country</td>
+                  <td>Destination Country</td>
+                  <td>Tariff</td>
+                  <td>Percent</td>
+                  <td>&nbsp;</td>
+               </tr>
+            </thead>
+            <tbody>
+               {foreach from=$TARIFFS item=tariff}
+               <tr>
+                  <td>{$tariff.source}</td>
+                  <td>{$tariff.destination}</td>
+                  <td>{$tariff.tariff}</td>
+                  <td>{$tariff.percent}&#37;</td>
+                  <td><a href="?_g=settings&node=tax&delete_tariff={$tariff.id}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
+               </tr>
+               {foreachelse}
+               <tr>
+                  <td colspan="4" class="text-center">- {$LANG.common.none} -</td>
+               </tr>
+               {/foreach}
+               <tr>
+                  <td>
+                     <select name="addtariff[source]" style="max-width: 180px">
+                     {foreach from=$COUNTRIES item=country}
+                     <option value="{$country.iso}">{$country.name}</option>
+                     {/foreach}
+                     </select>
+                  </td>
+                  <td>
+                     <select name="addtariff[destination]" style="max-width: 180px">
+                     {foreach from=$COUNTRIES item=country}
+                     <option value="{$country.iso}">{$country.name}</option>
+                     {/foreach}
+                     </select>
+                  </td>
+                  <td>
+                     <select name="addtariff[tariff]">
+                        <option value="M">{$LANG.settings.country_of_manufacture}</option>
+                        <option value="D">{$LANG.settings.country_of_dispatch}</option>
+                     </select>
+                  </td>
+                  <td><input type="number" value="" name="addtariff[percent]" class="textbox number text-right no-arrows" step="0.01" min="0" max="999.99" /> &#37;</td>
+                  <td>&nbsp;</td>
+               </tr>
+            </tbody>
+         </table>
+      </fieldset>
+      <p>{$LANG.settings.tariff_import_notice}</p>
+   </div>
    {include file='templates/element.hook_form_content.php'}
    <div class="form_control">
       <input type="submit" id="submit" class="button" value="{$LANG.common.save}">
