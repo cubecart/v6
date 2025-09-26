@@ -657,6 +657,13 @@ $smarty_data['list_conditions'] = array (
   );
 $GLOBALS['smarty']->assign('CONDITIONS', $smarty_data['list_conditions']);
 
+if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', false, false, array('name' => 'ASC'), $per_page, $country_page)) !== false) {
+    foreach ($countries as $country) {
+        $smarty_data['countries'][] = $country;
+    }
+    $GLOBALS['smarty']->assign('COUNTRIES', $smarty_data['countries']);
+}
+
 foreach ($GLOBALS['hooks']->load('admin.product.pre_display') as $hook) {
     include $hook;
 }

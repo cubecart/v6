@@ -248,6 +248,7 @@
     <string name="your_comments" introduced="5.0.0"><![CDATA[Delivery Notes or Additional Comments]]></string>
   </group>
   <group name="catalogue">
+    <string name="manufacture_country" introduced="6.5.12"><![CDATA[Manufacturing country]]></string>
     <string name="shipping_limit" introduced="6.5.7"><![CDATA[Limit to shipping method]]></string>
     <string name="choose_shipping" introduced="6.5.7"><![CDATA[Choose shipping method&hellip;]]></string>
     <string name="internal_use_only" introduced="6.5.6"><![CDATA[Internal use only]]></string>
@@ -627,6 +628,7 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="na" introduced="6.5.12"><![CDATA[N/A]]></string>
     <string name="attachments" introduced="6.5.10"><![CDATA[Attachments]]></string>
     <string name="click_copy" introduced="6.5.7"><![CDATA[Click to copy]]></string>
     <string name="copied" introduced="6.5.7"><![CDATA[Copied!]]></string>
