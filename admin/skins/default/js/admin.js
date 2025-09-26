@@ -1,9 +1,9 @@
 $(document).ready(function() {
-    const ADMIN_FILE = $("#val_admin_file").text() || "admin.php";
-    const ADMIN_FOLDER = $("#val_admin_folder").text() || "admin";
-    const SKIN_FOLDER  = $("#val_skin_folder").text()  || "default";
-    const IMG_PATH = `${ADMIN_FOLDER}/skins/${SKIN_FOLDER}/images/`;
-    const LANG = {
+    window.ADMIN_FILE = $("#val_admin_file").text() || "admin.php";
+    window.ADMIN_FOLDER = $("#val_admin_folder").text() || "admin";
+    window.SKIN_FOLDER  = $("#val_skin_folder").text()  || "default";
+    window.IMG_PATH = `${ADMIN_FOLDER}/skins/${SKIN_FOLDER}/images/`;
+    window.LANG = {
     disable: $("#val_lang_disable").text() || "Disable",
     enable:  $("#val_lang_enable").text()  || "Enable"
     };
