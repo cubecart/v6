@@ -217,9 +217,10 @@ class HookLoader
                 // Read each XML file, check contents, and update/add to database
                 try {
                     $xml   = new simpleXMLElement(file_get_contents($file));
+                    $allowed_hooks = array();
                     foreach ($xml->hooks->hook as $hook) {
                         // Check if the hook already exists
-                        $allowed_hooks[] = (string)$hook->attributes()->trigger;
+                        array_push($allowed_hooks, (string)$hook->attributes()->trigger);
                         $check = $GLOBALS['db']->select('CubeCart_hooks', false, array('plugin' => $plugin, 'trigger' => (string)$hook->attributes()->trigger));
 
                         $record = array(
