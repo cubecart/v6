@@ -599,6 +599,7 @@
     <string name="sort_stock" introduced="5.0.0"><![CDATA[Stock]]></string>
   </group>
   <group name="checkout">
+    <string name="shipping_required" introduced="6.5.12"><![CDATA[Please select a shipping method.]]></string>
     <string name="error_voucher_shipping" introduced="6.5.7"><![CDATA[Sorry but that voucher isn't allowed for the chosen shipping method.]]></string>
     <string name="error_voucher_sales_items_excluded" introduced="6.4.10"><![CDATA[Sorry, that code is not valid for sale items.]]></string>
     <string name="error_voucher_used_already" introduced="6.4.6"><![CDATA[Sorry, but that code has been used to it's maximum <em>per-user</em> allowance.]]></string>
@@ -2013,6 +2014,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
+    <string name="force_choice" introduced="6.5.12"><![CDATA[Force choice (no default)]]></string>
     <string name="tariff_deleted" introduced="6.5.12"><![CDATA[Tariff deleted.]]></string>
     <string name="country_of_manufacture" introduced="6.5.12"><![CDATA[Country of manufacture]]></string>
     <string name="country_of_dispatch" introduced="6.5.12"><![CDATA[Country of dispatch]]></string>

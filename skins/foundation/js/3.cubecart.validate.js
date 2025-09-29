@@ -222,6 +222,9 @@ jQuery(document).ready(function() {
                 required: true,
                 email: true
             },
+            shipping: {
+                required: true
+            },
             'user[first_name]': {
                 required: true
             },
@@ -335,6 +338,9 @@ jQuery(document).ready(function() {
             },
             gateway: {
                 required: $('#validate_gateway_required').text()
+            },
+            shipping: {
+                required: $('#validate_shipping_required').text()
             }
         },
         submitHandler: function(form) {

@@ -47,7 +47,7 @@
             <td colspan="4">
                {if !isset($free_coupon_shipping)}
                {$LANG.basket.shipping_select}:
-               <select name="shipping">
+               <select name="shipping" class="required">
                   <option value="">{$LANG.form.please_select}</option>
                   {foreach from=$SHIPPING key=group item=methods}
                   {if $HIDE_OPTION_GROUPS ne '1'}
@@ -60,6 +60,7 @@
                   {/if}
                   {/foreach}
                </select>
+               <div class="hide" id="validate_shipping_required">{$LANG.checkout.shipping_required}</div>
                {/if}
             </td>
             <td>{$LANG.basket.shipping}

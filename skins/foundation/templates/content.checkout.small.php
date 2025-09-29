@@ -84,7 +84,7 @@
          </td>
          <td>
             {if !isset($free_coupon_shipping)}
-            <select name="shipping" class="nomarg">
+            <select name="shipping" class="required nomarg">
                <option value="">{$LANG.form.please_select}</option>
                {foreach from=$SHIPPING key=group item=methods}
                {if $HIDE_OPTION_GROUPS ne '1'}
@@ -97,6 +97,7 @@
                {/if}
                {/foreach}
             </select>
+            <div class="hide" id="validate_shipping_required">{$LANG.checkout.shipping_required}</div>
             {/if}
          </td>
          <td width="10%" class="text-right">

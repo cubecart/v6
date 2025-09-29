@@ -1882,6 +1882,9 @@ class Cubecart
                         case '2': // Most expensive
                             $default_shipping = $mostExpensive;
                         break;
+                        case '3': // Force choice
+                            $default_shipping = true;
+                        break;
                         default: // Cheapest
                             $default_shipping = $cheapest;
                     }

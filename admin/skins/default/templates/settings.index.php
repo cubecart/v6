@@ -201,7 +201,7 @@
          <div><label for="allow_no_shipping">{$LANG.settings.allow_no_shipping}</label><span><input name="config[allow_no_shipping]" id="allow_no_shipping" type="hidden" class="toggle" value="{$CONFIG.allow_no_shipping}"></span></div>
          <div><label for="disable_shipping_groups">{$LANG.settings.disable_shipping_groups}</label><span><input name="config[disable_shipping_groups]" id="disable_shipping_groups" type="hidden" class="toggle" value="{$CONFIG.disable_shipping_groups}"></span></div>
          <div><label for="shipping_defaults">{$LANG.settings.shipping_defaults}</label><span>
-            <select name="config[shipping_defaults]">
+            <select name="config[shipping_defaults]" class="textbox">
             {foreach from=$OPT_SHIPPING_DEFAULTS item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
             </select>
          </span></div>
