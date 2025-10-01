@@ -271,6 +271,7 @@ if (isset($_GET['action'])) {
     }
 
     // Get tax rates
+    $tax_by_country = array();
     if (($tax_rates = $GLOBALS['db']->select('CubeCart_tax_rates', false, array('active' => 1), array('country_id' => 'ASC'))) !== false) {
         if (($tax_types = $GLOBALS['db']->select('CubeCart_tax_class')) !== false) {
             foreach ($tax_types as $tax_type) {
@@ -281,21 +282,45 @@ if (isset($_GET['action'])) {
             foreach ($tax_details as $tax_detail) {
                 $detail[(int)$tax_detail['id']] = $tax_detail;
             }
-            $tax_by_country = array();
             foreach ($tax_rates as $tax_rate) {
                 $data = array_merge($types[$tax_rate['type_id']], $detail[$tax_rate['details_id']], $tax_rate);
                 $rates[$tax_rate['id']] = $data;
                 $tax_by_country[$tax_rate['country_id']][] = $data;
             }
         }
-        if (is_array($tax_by_country)) {
-            foreach ($tax_by_country as $numcode => $taxes) {
-                $county = ($taxes[0]['county_id']>0) ? getStateFormat($taxes[0]['county_id']) : 'All';
-                $country = getCountryFormat($numcode).' ('.$county.')';
-                $smarty_data['select_tax'][$country] = $taxes;
-            }
-            $GLOBALS['smarty']->assign('SELECT_TAX', $smarty_data['select_tax']);
+    }
+
+    // Get tariffs
+    if (($tariffs = $GLOBALS['db']->select('CubeCart_tariff')) !== false) {
+        foreach($tariffs as $tariff) {
+            $numcode = getCountryFormat($tariff['destination'], 'iso', 'numcode');
+            $array = array(
+                "type_name" => $lang['common']['tariff'],
+                "id" => 'i'.$tariff['id'],
+                "name" => sprintf($lang['checkout']['import_tariff'], $tariff['destination']),
+                "display" => sprintf($lang['checkout']['import_tariff'], $tariff['destination']),
+                "status" => "1",
+                "type_id" => "1",
+                "details_id" => "0",
+                "country_id" => $numcode,
+                "county_id" => "0",
+                "tax_percent" => $tariff['percent'],
+                "goods" => "1",
+                "shipping" => "0",
+                "active" => "1"
+            );
+            $rates['i'.$tariff['id']] = $array;
+            $tax_by_country[$numcode][] = $array;
         }
+    }
+
+    if(!empty($tax_by_country)){
+        foreach ($tax_by_country as $numcode => $taxes) {
+            $county = ($taxes[0]['county_id']>0) ? getStateFormat($taxes[0]['county_id']) : 'All';
+            $country = getCountryFormat($numcode).' ('.$county.')';
+            $smarty_data['select_tax'][$country] = $taxes;
+        }
+        $GLOBALS['smarty']->assign('SELECT_TAX', $smarty_data['select_tax']);
     }
     if (in_array($_GET['action'], array('add', 'edit'))) {
         // Load order summary

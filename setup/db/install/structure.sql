@@ -838,7 +838,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_summary` (
 CREATE TABLE IF NOT EXISTS `CubeCart_order_tax` (
 	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`cart_order_id` VARCHAR(18) NOT NULL,
-	`tax_id` INT UNSIGNED NOT NULL,
+	`tax_id` varchar(10) NOT NULL,
 	`amount` DECIMAL(16,2) UNSIGNED NOT NULL,
 	PRIMARY KEY (`id`),
 	KEY `cart_order_id` (`cart_order_id`)

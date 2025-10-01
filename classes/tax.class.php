@@ -25,6 +25,7 @@ class Tax
     public $_tax_table_inc = array();
     public $_tax_table_applied = array();
     public $_tax_table = array();
+    public $_tariff_table = array();
     public $_currency_vars = array();
     public $_total_tax_add = 0;
     public $_total_tax_inc = 0;
@@ -171,13 +172,20 @@ class Tax
      */
     public function fetchTaxDetails($tax_id)
     {
+        if(substr($tax_id, 0, 1) === 'i') { // import tariff
+            $tax_id = (int)substr($tax_id, 1);
+            if (($tariff = $GLOBALS['db']->select('CubeCart_tariff', false, array('id' => $tax_id))) !== false) {
+                $name = sprintf($GLOBALS['language']->checkout['import_tariff'], $tariff[0]['destination']);
+                return array('name' => $name, 'display' => $name, 'tax_percent' => $tariff[0]['percent']);
+            }    
+        }
         if (($rate = $GLOBALS['db']->select('CubeCart_tax_rates', false, array('id' => (int)$tax_id))) !== false) {
             if (($detail = $GLOBALS['db']->select('CubeCart_tax_details', false, array('id' => $rate[0]['details_id']))) !== false) {
-                return array_merge($rate[0], $detail[0]);
+                return array('name' => $detail[0]['name'], 'display' => $detail[0]['display'], 'tax_percent' => $rate[0]['tax_percent'], 'display' => $detail[0]['display']);
             }
         }
 
-        return false;
+        
     }
 
     /**
@@ -302,7 +310,20 @@ class Tax
                         'type'  => $tax_group['type_id'],
                         'name'  => $name,
                         'percent' => $tax_group['tax_percent'],
-                        'county_id' => $tax_group['county_id'],
+                        'county_id' => $tax_group['county_id']
+                    );
+                }
+            }
+            // Get tariffs
+            if($tariffs = $GLOBALS['db']->select('CubeCart_tariff', false, array('destination' => $GLOBALS['cart']->basket['delivery_address']['country_iso']))) {
+                foreach($tariffs as $tariff) {
+                    $this->_tariff_table[$tariff['id']] = array(
+                        'goods'  => 1,
+                        'shipping' => 0,
+                        'tariff'  => $tariff['tariff'],
+                        'source'  => $tariff['source'],
+                        'destination'  => $tariff['destination'],
+                        'percent' => $tariff['percent']
                     );
                 }
             }
@@ -403,6 +424,14 @@ class Tax
         foreach ($GLOBALS['hooks']->load('class.tax.producttax') as $hook) {
             include $hook;
         }
+        $check_tariff = false;
+        if(is_array($tax_type)) {
+            $manufacture_country = $tax_type['manufacture'] ?? '';
+            $tax_type = $tax_type['tax_type'] ?? 0;
+            $check_tariff = true;
+        } else {
+            $manufacture_country = '';
+        }
 
         // Allows a hook to trigger a RETURN of this function by setting a variable
         if(isset($classTaxProducttaxReturn) && $classTaxProducttaxReturn === true){
@@ -440,6 +469,26 @@ class Tax
             }
             return array('tax_id' => $tax_id, 'amount' => $amount, 'tax_inclusive' => $tax_inclusive, 'tax_name' => 'inherited', 'tax_percent' => $percent);
         }
+        if ($check_tariff && is_array($this->_tariff_table) && !empty($this->_tariff_table)) {
+            $store_country_iso = getCountryFormat($GLOBALS['config']->get('config', 'store_country'), 'numcode', 'iso');
+            foreach ($this->_tariff_table as $tariff_id => $tariff) {
+                if(($tariff['tariff']=='M' && $manufacture_country == $tariff['source'] && $GLOBALS['cart']->basket['delivery_address']['country_iso'] == $tariff['destination']) || ($tariff['tariff']=='D' && $store_country_iso == $tariff['source'] && $GLOBALS['cart']->basket['delivery_address']['country_iso'] == $tariff['destination'])
+                    ) {
+                    $percent = $tariff['percent'];
+                    $amount	= sprintf('%.2F', $price*($tariff['percent']/100));
+                    $tariff_id = 'i'.$tariff_id;
+                    if ($sum) {
+                        $this->_tax_table_applied[$tariff_id]	= sprintf($GLOBALS['language']->checkout['import_tariff'], $tariff['destination']);
+                        if (isset($this->_tax_table_add[$tariff_id])) {
+                            $this->_tax_table_add[$tariff_id]	+= $amount;
+                        } else {
+                            $this->_tax_table_add[$tariff_id]	= $amount;
+                        }
+                        $this->_total_tax_add				+= $amount;
+                    }
+                }   
+            }
+        }
         if (is_array($this->_tax_table) && !empty($this->_tax_table)) {
             $tax_id = $amount = $percent = 0;
             $tax_name = '';
@@ -474,7 +523,7 @@ class Tax
                     }
                 }
             }
-            return array('tax_id' => $tax_id, 'amount' => $amount, 'tax_inclusive' => $tax_inclusive, 'tax_name' => $tax_name, 'tax_percent' => $percent);
+            //return array('tax_id' => $tax_id, 'amount' => $amount, 'tax_inclusive' => $tax_inclusive, 'tax_name' => $tax_name, 'tax_percent' => $percent);
         }
         return false;
     }
@@ -516,6 +565,7 @@ class Tax
     {
         // Reset tax vars
         $this->_tax_table   = array();
+        $this->_tariff_table   = array();
         $this->_tax_table_add  = array();
         $this->_tax_table_inc  = array();
         $this->_tax_table_applied = array();

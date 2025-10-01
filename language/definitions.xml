@@ -599,6 +599,7 @@
     <string name="sort_stock" introduced="5.0.0"><![CDATA[Stock]]></string>
   </group>
   <group name="checkout">
+    <string name="import_tariff" introduced="6.5.12"><![CDATA[%1$s Import Tariff]]></string>
     <string name="shipping_required" introduced="6.5.12"><![CDATA[Please select a shipping method.]]></string>
     <string name="error_voucher_shipping" introduced="6.5.7"><![CDATA[Sorry but that voucher isn't allowed for the chosen shipping method.]]></string>
     <string name="error_voucher_sales_items_excluded" introduced="6.4.10"><![CDATA[Sorry, that code is not valid for sale items.]]></string>
@@ -629,6 +630,7 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="tariff" introduced="6.5.12"><![CDATA[Tariff]]></string>
     <string name="na" introduced="6.5.12"><![CDATA[N/A]]></string>
     <string name="attachments" introduced="6.5.10"><![CDATA[Attachments]]></string>
     <string name="click_copy" introduced="6.5.7"><![CDATA[Click to copy]]></string>
