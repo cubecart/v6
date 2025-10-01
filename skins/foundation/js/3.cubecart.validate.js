@@ -1,5 +1,6 @@
-; jQuery(document).ready(function ($) {
+; var validation_ini = {};
 
+(function ($) {
     //
     // Validator defaults
     //
@@ -35,7 +36,7 @@
     init_add_to_basket();
 
     //
-    // Shared messages
+    // Shared messages (cached once)
     //
     const msg = {
         email: $('#validate_email').text(),
@@ -64,21 +65,27 @@
     };
 
     //
-    // Generic form config map
+    // Base rule/message templates
+    //
+    const baseEmailRule = { required: true, email: true };
+    const baseEmailMsg = { required: msg.email, email: msg.email };
+
+    //
+    // Generic form configs
     //
     const forms = {
         "#recover_password": {
-            rules: { email: { required: true, email: true } },
-            messages: { email: { required: msg.email } }
+            rules: { email: baseEmailRule },
+            messages: { email: baseEmailMsg }
         },
         "#review_form": {
             rules: {
                 'review[name]': { required: true },
                 'review[review]': { required: true },
                 'review[title]': { required: true },
-                'review[email]': { required: true, email: true }
+                'review[email]': baseEmailRule
             },
-            messages: { 'review[email]': { required: msg.email } }
+            messages: { 'review[email]': baseEmailMsg }
         },
         "#contact_form": {
             rules: {
@@ -86,72 +93,64 @@
                 'contact[dept]': { required: true },
                 'contact[enquiry]': { required: true },
                 'contact[name]': { required: true },
-                'contact[email]': { required: true, email: true },
+                'contact[email]': baseEmailRule,
                 'contact[phone]': { phone: true }
             },
             messages: {
-                'contact[email]': { required: msg.email, email: msg.email },
+                'contact[email]': baseEmailMsg,
                 'contact[phone]': { phone: msg.phone }
             }
         },
         "#gc_form": {
-            rules: { 'gc[email]': { required: true, email: true } },
-            messages: { 'gc[email]': { required: msg.email, email: msg.email } }
+            rules: { 'gc[email]': baseEmailRule },
+            messages: { 'gc[email]': baseEmailMsg }
         },
         "#newsletter_form_unsubscribe": {
             onkeyup: false,
-            rules: { unsubscribe: { required: true, email: true } },
-            messages: { unsubscribe: { required: msg.email, email: msg.email } }
+            rules: { unsubscribe: baseEmailRule },
+            messages: { unsubscribe: baseEmailMsg }
         },
-        "#checkout_form": {
+        "#lookup_order": {
+            rules: { cart_order_id: { required: true }, email: baseEmailRule },
+            messages: { email: baseEmailMsg }
+        },
+        ".search_form": {
+            rules: { 'search[keywords]': { required: true } },
+            messages: { 'search[keywords]': { required: msg.search } }
+        },
+        "#advanced_search_form": {
+            rules: { 'search[keywords]': { required: true } },
+            messages: { 'search[keywords]': { required: msg.search } }
+        },
+        "#login_form": {
             rules: {
-                username: { required: true, email: true },
-                shipping: { required: true },
-                'user[first_name]': { required: true },
-                'user[last_name]': { required: true },
-                'user[email]': {
-                    required: true, email: true,
-                    remote: {
-                        url: "?_g=ajax_email",
-                        type: "post",
-                        data: {
-                            username: () => $("#user_email").val(),
-                            token: () => $("input[name=token]").val()
-                        },
-                        dataFilter: d => JSON.parse(d).result
-                    }
-                },
-                'user[phone]': { required: true, phone: true },
-                'user[mobile]': { phone: true },
-                'billing[line1]': { required: true },
-                'billing[town]': { required: true },
-                'billing[country]': { required: true },
-                'billing[state]': { required: validation_ini['#state-list'] },
-                'billing[postcode]': { required: true },
-                'delivery[line1]': { required: true },
-                'delivery[town]': { required: true },
-                'delivery[country]': { required: true },
-                'delivery[state]': { required: validation_ini['#delivery_state'] },
-                'delivery[postcode]': { required: true },
-                password: { required: true, minlength: 6, maxlength: 64 },
-                passconf: { equalTo: "#reg_password" },
-                emailconf: { equalTo: "#user_email" },
-                terms_agree: { required: true },
-                gateway: { required: true }
+                username: baseEmailRule,
+                password: { required: true, maxlength: 64 }
             },
             messages: {
-                username: { required: msg.email, email: msg.email },
-                'user[email]': { required: msg.email, email: msg.email, remote: msg.emailInUse },
-                'user[phone]': { required: msg.phone, phone: msg.phone },
-                'user[mobile]': { phone: msg.mobile },
-                password: { required: msg.password },
-                passconf: { required: msg.passwordMismatch, equalTo: msg.passwordMismatch },
-                emailconf: { equalTo: msg.emailMismatch },
-                terms_agree: { required: msg.terms },
-                gateway: { required: msg.gateway },
-                shipping: { required: msg.shipping }
+                username: baseEmailMsg,
+                password: { required: msg.emptyPassword, maxlength: msg.passwordMax }
+            }
+        },
+        "#password_recovery": {
+            rules: {
+                email: baseEmailRule,
+                validate: { required: true },
+                'password[password]': { required: true, minlength: 6, maxlength: 64 },
+                'password[passconf]': { equalTo: "#password" }
             },
-            submitHandler: form => form.submit()
+            messages: {
+                email: baseEmailMsg,
+                'password[password]': {
+                    required: msg.password,
+                    minlength: msg.passwordLength,
+                    maxlength: msg.passwordMax
+                },
+                'password[passconf]': {
+                    required: msg.passwordMismatch,
+                    equalTo: msg.passwordMismatch
+                }
+            }
         },
         "#addressbook_form": {
             rules: {
@@ -164,82 +163,11 @@
                 postcode: { required: true }
             }
         },
-        "#lookup_order": {
-            rules: { cart_order_id: { required: true }, email: { required: true, email: true } },
-            messages: { email: { required: msg.email, email: msg.email } }
-        },
-        ".search_form": {
-            rules: { 'search[keywords]': { required: true } },
-            messages: { 'search[keywords]': { required: msg.search } }
-        },
-        "#advanced_search_form": {
-            rules: { 'search[keywords]': { required: true } },
-            messages: { 'search[keywords]': { required: msg.search } }
-        },
-        "#login_form": {
-            rules: {
-                username: { required: true, email: true },
-                password: { required: true, maxlength: 64 }
-            },
-            messages: {
-                username: { required: msg.email, email: msg.email },
-                password: { required: msg.emptyPassword, maxlength: msg.passwordMax }
-            }
-        },
-        "#password_recovery": {
-            rules: {
-                email: { required: true, email: true },
-                validate: { required: true },
-                'password[password]': { required: true, minlength: 6, maxlength: 64 },
-                'password[passconf]': { equalTo: "#password" }
-            },
-            messages: {
-                email: { required: msg.email, email: msg.email },
-                'password[password]': { required: msg.password, minlength: msg.passwordLength, maxlength: msg.passwordMax },
-                'password[passconf]': { required: msg.passwordMismatch, equalTo: msg.passwordMismatch }
-            }
-        },
-        "#registration_form": {
-            rules: {
-                first_name: { required: true },
-                last_name: { required: true },
-                email: {
-                    required: true, email: true,
-                    remote: {
-                        url: "?_g=ajax_email",
-                        type: "post",
-                        data: {
-                            username: () => $("#email").val(),
-                            token: () => $("input[name=token]").val()
-                        },
-                        dataFilter: d => JSON.parse(d).result
-                    }
-                },
-                emailconf: { equalTo: "#email" },
-                phone: { required: true, phone: true },
-                mobile: { phone: true },
-                password: { required: true, minlength: 6, maxlength: 64 },
-                passconf: { equalTo: "#password" },
-                terms_agree: { required: true }
-            },
-            messages: {
-                first_name: { required: msg.firstname },
-                last_name: { required: msg.lastname },
-                email: { required: msg.email, email: msg.email, remote: msg.emailInUse },
-                emailconf: { equalTo: msg.emailMismatch },
-                phone: { required: msg.phone, phone: msg.phone },
-                mobile: { phone: msg.mobile },
-                password: { required: msg.password, minlength: msg.passwordLength, maxlength: msg.passwordMax },
-                passconf: { required: msg.passwordMismatch, equalTo: msg.passwordMismatch },
-                terms_agree: { required: msg.terms }
-            },
-            submitHandler: form => form.submit()
-        },
         "#profile_form": {
             rules: {
                 first_name: { required: true },
                 last_name: { required: true },
-                email: { required: true, email: true },
+                email: baseEmailRule,
                 phone: { required: true, phone: true },
                 mobile: { phone: true },
                 passnew: { minlength: 6, maxlength: 64 },
@@ -249,7 +177,7 @@
             messages: {
                 first_name: { required: msg.firstname },
                 last_name: { required: msg.lastname },
-                email: { required: msg.email, email: msg.email },
+                email: baseEmailMsg,
                 phone: { required: msg.phone, phone: msg.phone },
                 mobile: { phone: msg.mobile },
                 passnew: { minlength: msg.passwordLength, maxlength: msg.passwordMax },
@@ -260,10 +188,11 @@
     };
 
     //
-    // Init simple forms
+    // Init forms that exist
     //
-    Object.entries(forms).forEach(([selector, config]) => {
-        if ($(selector).length) $(selector).validate(config);
+    Object.keys(forms).forEach(selector => {
+        const $form = $(selector);
+        if ($form.length) $form.validate(forms[selector]);
     });
 
     //
@@ -272,38 +201,31 @@
     function initNewsletter(selector, emailInput, button, unsubscribeInput, labels) {
         $(selector).validate({
             onkeyup: false,
-            rules: {
-                subscribe: {
-                    required: true,
-                    email: true,
-                    remote: {
-                        url: "?_g=ajax_email&source=newsletter",
-                        type: "post",
-                        data: {
-                            username: () => $(emailInput).val(),
-                            token: () => $("input[name=token]").val()
-                        },
-                        dataFilter: function (data) {
-                            const json = JSON.parse(data);
-                            if (json.result) {
-                                $(button).val(labels.subscribe).removeClass('alert');
-                                $(unsubscribeInput).val('0');
-                                $(emailInput).removeClass('alert');
-                            } else {
-                                alert(labels.already);
-                                $(button).val(labels.unsubscribe).addClass('alert');
-                                $(unsubscribeInput).val('1');
-                                $(emailInput).addClass('alert');
-                            }
-                            return true;
-                        }
+            rules: { subscribe: baseEmailRule },
+            messages: { subscribe: { required: labels.email, email: labels.email, remote: labels.already } },
+            submitHandler: form => form.submit(),
+            remote: {
+                url: "?_g=ajax_email&source=newsletter",
+                type: "post",
+                data: {
+                    username: () => $(emailInput).val(),
+                    token: () => $("input[name=token]").val()
+                },
+                dataFilter: function (data) {
+                    const json = JSON.parse(data);
+                    if (json.result) {
+                        $(button).val(labels.subscribe).removeClass('alert');
+                        $(unsubscribeInput).val('0');
+                        $(emailInput).removeClass('alert');
+                    } else {
+                        alert(labels.already);
+                        $(button).val(labels.unsubscribe).addClass('alert');
+                        $(unsubscribeInput).val('1');
+                        $(emailInput).addClass('alert');
                     }
+                    return true;
                 }
-            },
-            messages: {
-                subscribe: { required: labels.email, email: labels.email, remote: labels.already }
-            },
-            submitHandler: form => form.submit()
+            }
         });
     }
 
@@ -341,8 +263,8 @@
     //
     // Reset button
     //
-    $('input:reset').click(function () {
+    $('input:reset').on('click', function () {
         $(this).closest('form').validate().resetForm();
     });
 
-});
+})(jQuery);
