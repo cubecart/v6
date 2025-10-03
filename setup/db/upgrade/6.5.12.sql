@@ -20,3 +20,13 @@ ALTER TABLE `CubeCart_manufacturers` ADD `country` MEDIUMINT(3) NOT NULL; #EOQ
 ALTER TABLE `CubeCart_manufacturers` ADD `email` VARCHAR(200) NOT NULL; #EOQ
 ALTER TABLE `CubeCart_manufacturers` ADD `phone` VARCHAR(20) NOT NULL; #EOQ
 ALTER TABLE `CubeCart_manufacturers` ADD `contact_url` VARCHAR(200) NOT NULL; #EOQ
+ALTER TABLE `CubeCart_manufacturers` ADD `eu_name` VARCHAR(200) NOT NULL; #EOQ
+ALTER TABLE `CubeCart_manufacturers` ADD `eu_line1` VARCHAR(200) NOT NULL; #EOQ
+ALTER TABLE `CubeCart_manufacturers` ADD `eu_line2` VARCHAR(200) NOT NULL; #EOQ 
+ALTER TABLE `CubeCart_manufacturers` ADD `eu_town` VARCHAR(100) NOT NULL; #EOQ
+ALTER TABLE `CubeCart_manufacturers` ADD `eu_state` VARCHAR(100) NOT NULL; #EOQ 
+ALTER TABLE `CubeCart_manufacturers` ADD `eu_postcode` VARCHAR(15) NOT NULL; #EOQ
+ALTER TABLE `CubeCart_manufacturers` ADD `eu_country` MEDIUMINT(3) NOT NULL; #EOQ
+ALTER TABLE `CubeCart_manufacturers` ADD `eu_email` VARCHAR(200) NOT NULL; #EOQ
+ALTER TABLE `CubeCart_manufacturers` ADD `eu_phone` VARCHAR(20) NOT NULL; #EOQ
+ALTER TABLE `CubeCart_manufacturers` ADD `eu_contact_url` VARCHAR(200) NOT NULL; #EOQ

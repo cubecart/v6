@@ -631,6 +631,7 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="manufactuter" introduced="6.5.12"><![CDATA[Manufactuter]]></string>
     <string name="tariff" introduced="6.5.12"><![CDATA[Tariff]]></string>
     <string name="na" introduced="6.5.12"><![CDATA[N/A]]></string>
     <string name="attachments" introduced="6.5.10"><![CDATA[Attachments]]></string>
@@ -2017,6 +2018,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
+    <string name="eu_contact" introduced="6.5.12"><![CDATA[EU Responsible Contact]]></string>
     <string name="force_choice" introduced="6.5.12"><![CDATA[Force choice (no default)]]></string>
     <string name="tariff_deleted" introduced="6.5.12"><![CDATA[Tariff deleted.]]></string>
     <string name="country_of_manufacture" introduced="6.5.12"><![CDATA[Country of manufacture]]></string>

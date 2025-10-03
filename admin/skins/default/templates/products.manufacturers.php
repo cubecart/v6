@@ -40,7 +40,6 @@
   </div>
   <div id="manu_add" class="tab_content">
 	<h3>{$LANG.catalogue.title_manufacturer_add}</h3>
-	<fieldset><legend>{$LANG.catalogue.title_manufacturer_add}</legend>
 	{include file='templates/products.manufacturers.fields.php'}
 	</fieldset>
 	
@@ -56,7 +55,6 @@
   {if $DISPLAY_FORM}
   <div id="manu_edit" class="tab_content">
 	<h3>{$LANG.catalogue.title_manufacturer_edit}</h3>
-	<fieldset><legend>{$LANG.catalogue.title_manufacturer_edit}</legend>
 	{include file='templates/products.manufacturers.fields.php'}
 	</fieldset>
 	<div class="form_control">

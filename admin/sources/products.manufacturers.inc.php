@@ -68,10 +68,10 @@ $GLOBALS['gui']->addBreadcrumb($lang['catalogue']['title_manufacturer'], current
 foreach ($GLOBALS['hooks']->load('admin.product.manufacturer.pre_display') as $hook) {
     include $hook;
 }
-
+$smarty_data = array();
 if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('id', 'numcode', 'name'), false, array('name' => 'ASC'))) !== false) {
     $smarty_data = array();
-    if (isset($_GET['edit']) && is_numeric($_GET['edit']) && ($geo = $GLOBALS['db']->select('CubeCart_manufacturers', array('country', 'state'), array('id' => (int)$_GET['edit']))) !== false) {
+    if (isset($_GET['edit']) && is_numeric($_GET['edit']) && ($geo = $GLOBALS['db']->select('CubeCart_manufacturers', array('country', 'eu_country'), array('id' => (int)$_GET['edit']))) !== false) {
         
     }
     foreach ($countries as $country) {
@@ -83,6 +83,16 @@ if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('id', 'nu
         $smarty_data['countries'][] = $array;
     }
     $GLOBALS['smarty']->assign('COUNTRIES', $smarty_data['countries']);
+
+    foreach ($countries as $country) {
+        $array = array(
+            'selected' => (isset($geo[0]['eu_country']) && !empty($geo[0]['eu_country']) && $country['numcode'] == $geo[0]['eu_country']) ? 'selected="selected"' : '',
+            'id'  => $country['numcode'],
+            'name'  => $country['name'],
+        );
+        $smarty_data['eu_countries'][] = $array;
+    }
+    $GLOBALS['smarty']->assign('EU_COUNTRIES', $smarty_data['eu_countries']);
     $GLOBALS['smarty']->assign('JSON_STATE', state_json());
 }
 
