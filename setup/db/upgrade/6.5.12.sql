@@ -11,3 +11,12 @@ CREATE TABLE IF NOT EXISTS `CubeCart_tariff` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_inventory` ADD `manufacture_country` VARCHAR(2) NULL; #EOQ
 ALTER TABLE `CubeCart_order_tax` CHANGE `tax_id` `tax_id` VARCHAR(10) NOT NULL; #EOQ
+ALTER TABLE `CubeCart_manufacturers` ADD `line1` VARCHAR(200) NOT NULL; #EOQ
+ALTER TABLE `CubeCart_manufacturers` ADD `line2` VARCHAR(200) NOT NULL; #EOQ 
+ALTER TABLE `CubeCart_manufacturers` ADD `town` VARCHAR(100) NOT NULL; #EOQ
+ALTER TABLE `CubeCart_manufacturers` ADD `state` VARCHAR(100) NOT NULL; #EOQ 
+ALTER TABLE `CubeCart_manufacturers` ADD `postcode` VARCHAR(15) NOT NULL; #EOQ
+ALTER TABLE `CubeCart_manufacturers` ADD `country` MEDIUMINT(3) NOT NULL; #EOQ
+ALTER TABLE `CubeCart_manufacturers` ADD `email` VARCHAR(200) NOT NULL; #EOQ
+ALTER TABLE `CubeCart_manufacturers` ADD `phone` VARCHAR(20) NOT NULL; #EOQ
+ALTER TABLE `CubeCart_manufacturers` ADD `contact_url` VARCHAR(200) NOT NULL; #EOQ

@@ -561,7 +561,16 @@ CREATE TABLE IF NOT EXISTS `CubeCart_manufacturers` (
 	`name` VARCHAR(200) NOT NULL,
 	`URL` VARCHAR(250) NULL,
 	`image` INT(10) UNSIGNED NULL,
-  PRIMARY KEY  (`id`)
+	`line1` varchar(200) NOT NULL,
+  	`line2` varchar(200) NOT NULL,
+  	`town` varchar(100) NOT NULL,
+  	`state` varchar(100) NOT NULL,
+  	`postcode` varchar(15) NOT NULL,
+  	`country` mediumint(3) NOT NULL,
+  	`email` varchar(200) NOT NULL,
+  	`phone` varchar(20) NOT NULL,
+  	`contact_url` varchar(200) NOT NULL,
+  	PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ 
 
 CREATE TABLE IF NOT EXISTS `CubeCart_modules` (

@@ -69,10 +69,27 @@ foreach ($GLOBALS['hooks']->load('admin.product.manufacturer.pre_display') as $h
     include $hook;
 }
 
+if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('id', 'numcode', 'name'), false, array('name' => 'ASC'))) !== false) {
+    $smarty_data = array();
+    if (isset($_GET['edit']) && is_numeric($_GET['edit']) && ($geo = $GLOBALS['db']->select('CubeCart_manufacturers', array('country', 'state'), array('id' => (int)$_GET['edit']))) !== false) {
+        
+    }
+    foreach ($countries as $country) {
+        $array = array(
+            'selected' => (isset($geo[0]['country']) && !empty($geo[0]['country']) && $country['numcode'] == $geo[0]['country']) ? 'selected="selected"' : '',
+            'id'  => $country['numcode'],
+            'name'  => $country['name'],
+        );
+        $smarty_data['countries'][] = $array;
+    }
+    $GLOBALS['smarty']->assign('COUNTRIES', $smarty_data['countries']);
+    $GLOBALS['smarty']->assign('JSON_STATE', state_json());
+}
+
 if (isset($_GET['edit']) && is_numeric($_GET['edit'])) {
     $GLOBALS['main']->addTabControl($lang['catalogue']['title_manufacturer'], false, currentPage(array('edit')));
     $GLOBALS['main']->addTabControl($lang['catalogue']['title_manufacturer_edit'], 'manu_edit');
-    if (($manufacturers = $GLOBALS['db']->select('CubeCart_manufacturers', array('name', 'id', 'URL'), array('id' => (int)$_GET['edit']))) !== false) {
+    if (($manufacturers = $GLOBALS['db']->select('CubeCart_manufacturers', false, array('id' => (int)$_GET['edit']))) !== false) {
         $GLOBALS['smarty']->assign('EDIT', $manufacturers[0]);
     } else {
         $GLOBALS['main']->errorMessage($lang['catalogue']['error_manufacturer_found']);

@@ -41,12 +41,10 @@
   <div id="manu_add" class="tab_content">
 	<h3>{$LANG.catalogue.title_manufacturer_add}</h3>
 	<fieldset><legend>{$LANG.catalogue.title_manufacturer_add}</legend>
-		<div><label for="manu_name">{$LANG.catalogue.manufacturer}</label><span><input type="text" class="textbox required" id="manu_name" name="manufacturer[name]" value="{$EDIT.name}"></span></div>
-		<div><label for="manu_site">{$LANG.common.url}</label><span><input type="text" class="textbox" id="manu_site" name="manufacturer[URL]" value="{$EDIT.URL}"></span></div>
+	{include file='templates/products.manufacturers.fields.php'}
 	</fieldset>
 	
 	{include file='templates/element.hook_form_content.php'}
-	
 	<div class="form_control">
 	<input type="hidden" name="previous-tab" id="previous-tab" value="">
 	<input type="submit" value="{$LANG.form.submit}" class="submit">
@@ -59,8 +57,7 @@
   <div id="manu_edit" class="tab_content">
 	<h3>{$LANG.catalogue.title_manufacturer_edit}</h3>
 	<fieldset><legend>{$LANG.catalogue.title_manufacturer_edit}</legend>
-		<div><label for="manu_name">{$LANG.catalogue.manufacturer}</label><span><input type="text" class="textbox required" id="manu_name" name="manufacturer[name]" value="{$EDIT.name}"></span></div>
-		<div><label for="manu_site">{$LANG.common.url}</label><span><input type="text" class="textbox" id="manu_site" name="manufacturer[URL]" value="{$EDIT.URL}"></span></div>
+	{include file='templates/products.manufacturers.fields.php'}
 	</fieldset>
 	<div class="form_control">
 	<input type="hidden" name="previous-tab" id="previous-tab" value="">
@@ -75,3 +72,6 @@
   {/if}
   
 </form>
+<script type="text/javascript">
+	var county_list = {if !empty($JSON_STATE)}{$JSON_STATE}{else}false{/if};
+</script>
