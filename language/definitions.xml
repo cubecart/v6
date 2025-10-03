@@ -111,7 +111,7 @@
     <string name="my_account" introduced="6.0.0"><![CDATA[My Account]]></string>
     <string name="your_addressbook" introduced="5.0.0"><![CDATA[Address Book]]></string>
     <string name="your_details" introduced="5.0.0"><![CDATA[Profile]]></string>
-    <string name="your_downloads" introduced="5.0.0"><![CDATA[Digital Downloads]]></string>
+    <string name="your_downloads" introduced="5.0.0"><![CDATA[Downloadable Products]]></string>
     <string name="your_order" introduced="5.0.0"><![CDATA[Your Order]]></string>
     <string name="your_orders" introduced="5.0.0"><![CDATA[Orders]]></string>
     <string name="your_orders_explained" introduced="5.0.0"><![CDATA[Past and existing orders are listed here.]]></string>
@@ -387,7 +387,7 @@
     <string name="imported" introduced="5.0.0"><![CDATA[Imported]]></string>
     <string name="importing_progress" introduced="6.0.0"><![CDATA[Imported %1$s of %2$s &hellip;]]></string>
     <string name="imported_products" introduced="5.0.0"><![CDATA[Imported Products]]></string>
-    <string name="is_digital" introduced="5.0.0"><![CDATA[Is Digital Download]]></string>
+    <string name="is_digital" introduced="5.0.0"><![CDATA[Is Downloadable Product]]></string>
     <string name="latest_products" introduced="5.0.0"><![CDATA[Latest Products]]></string>
     <string name="login_to_view" introduced="5.0.0"><![CDATA[Login to view price]]></string>
     <string name="manufacturer" introduced="5.0.0"><![CDATA[Manufacturer]]></string>
@@ -469,7 +469,7 @@
     <string name="product_latest" introduced="5.0.0"><![CDATA[Include in latest products]]></string>
     <string name="product_name" introduced="5.0.0"><![CDATA[Product Name]]></string>
     <string name="product_not_reviewed" introduced="5.0.0"><![CDATA[This product hasn't been reviewed yet.]]></string>
-    <string name="product_type_digital" introduced="5.0.0"><![CDATA[Digital]]></string>
+    <string name="product_type_digital" introduced="5.0.0"><![CDATA[Downloadable]]></string>
     <string name="product_type_tangible" introduced="5.0.0"><![CDATA[Tangible]]></string>
     <string name="product_weight" introduced="5.0.0"><![CDATA[Product Weight]]></string>
     <string name="product_width" introduced="6.2.0"><![CDATA[Product Width]]></string>
@@ -1047,7 +1047,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="ok_go" introduced="6.0.0"><![CDATA[Ok, lets go!]]></string>
     <string name="tour_1" introduced="6.0.0"><![CDATA[Define some basic information here such as your store name &amp; address, main currency and upload a logo.]]></string>
     <string name="tour_2" introduced="6.0.0"><![CDATA[Create the category structure for your product inventory.]]></string>
-    <string name="tour_3" introduced="6.0.0"><![CDATA[Add digital or physical products and assign them to categories.]]></string>
+    <string name="tour_3" introduced="6.0.0"><![CDATA[Add downloadable or physical products and assign them to categories.]]></string>
     <string name="tour_4" introduced="6.0.0"><![CDATA[Visit our marketplace to choose a free payment integration such as Stripe, Square or PayPal and have a browse for themes and shipping calculators etc&hellip;]]></string>
     <string name="tour_5" introduced="6.0.0"><![CDATA[Come here to install and configure your chosen extensions.]]></string>
     <string name="tour_6_title" introduced="6.0.0"><![CDATA[Homepage Content]]></string>
@@ -1304,7 +1304,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_macro_admin_password" introduced="5.0.0"><![CDATA[Admin: Recover Password]]></string>
     <string name="title_macro_admin_review" introduced="5.0.0"><![CDATA[Admin: Review Added]]></string>
     <string name="title_macro_cart_certificate" introduced="5.0.0"><![CDATA[Cart: Gift Card]]></string>
-    <string name="title_macro_cart_digital" introduced="5.0.0"><![CDATA[Cart: Digital Download]]></string>
+    <string name="title_macro_cart_digital" introduced="5.0.0"><![CDATA[Cart: File Download]]></string>
     <string name="title_macro_order_cancelled" introduced="5.0.0"><![CDATA[Cart: Order Cancelled]]></string>
     <string name="title_macro_order_confirmed" introduced="5.0.0"><![CDATA[Cart: Order Confirmed]]></string>
     <string name="title_macro_order_dispatched" introduced="5.0.0"><![CDATA[Cart: Order Complete]]></string>
@@ -1338,7 +1338,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="search_location" introduced="6.4.0"><![CDATA[Search for image loction]]></string>
     <string name="min_three_char" introduced="6.4.0"><![CDATA[Search term should be a minimum of three charachters.]]></string>
     <string name="search_result" introduced="6.4.0"><![CDATA[Image Search Result for '%1$s']]></string>
-    <string name="public" introduced="6.1.6"><![CDATA[Files uploaded to the files/public folder can be accessed directly via a browser. All others are protected with intent to be sold as digital products.]]></string>
+    <string name="public" introduced="6.1.6"><![CDATA[Files uploaded to the files/public folder can be accessed directly via a browser. All others are protected with intent to be sold as downloadable products.]]></string>
     <string name="refresh_files" introduced="6.1.2"><![CDATA[Refresh File List]]></string>
     <string name="show_assigned" introduced="6.1.2"><![CDATA[Show Assigned Images Only]]></string>
     <string name="show_all" introduced="6.1.2"><![CDATA[Show All Images]]></string>
@@ -2352,7 +2352,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_currency" introduced="5.0.0"><![CDATA[Currencies]]></string>
     <string name="title_currency_add" introduced="5.0.0"><![CDATA[Add Currency]]></string>
     <string name="title_description" introduced="5.0.0"><![CDATA[Description]]></string>
-    <string name="title_digital" introduced="5.0.0"><![CDATA[Digital Products]]></string>
+    <string name="title_digital" introduced="5.0.0"><![CDATA[Downloadable Products]]></string>
     <string name="title_display" introduced="5.0.0"><![CDATA[Layout Settings]]></string>
     <string name="title_error_log" introduced="5.0.0"><![CDATA[Error Log]]></string>
     <string name="title_admin_error_log" introduced="5.0.0"><![CDATA[Admin Error Log]]></string>
