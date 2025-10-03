@@ -520,8 +520,9 @@
     <string name="title_coupon_value" introduced="5.0.0"><![CDATA[Promotional Code Value]]></string>
     <string name="title_coupons" introduced="5.0.0"><![CDATA[Promotional Codes]]></string>
     <string name="title_data_example" introduced="5.0.0"><![CDATA[Example Data]]></string>
-    <string name="title_digital" introduced="5.0.0"><![CDATA[Digital]]></string>
-    <string name="title_digital_options" introduced="5.0.0"><![CDATA[Digital Options]]></string>
+    <string name="title_digital" introduced="5.0.0"><![CDATA[File Download]]></string>
+    <string name="title_digital_options" introduced="5.0.0"><![CDATA[File Download]]></string>
+    <string name="title_digital_explain" introduced="6.5.12"><![CDATA[This file will be available to download after completion of payment.]]></string>
     <string name="title_discount_quantity" introduced="5.0.0"><![CDATA[Quantity Discount]]></string>
     <string name="title_export" introduced="5.0.0"><![CDATA[Export Catalogue]]></string>
     <string name="export_explain" introduced="5.0.0"><![CDATA[Exporting the store catalogue may be broken down into several downloads for larger inventories. Please click the number to download each part. If there is an error exporting please try a lower value using the drop down menu.<p>So long as a data feed access password is set in your stores settings (under the &quot;Other&quot; section of the <a href="?_g=settings#Advanced_Settings">Advanced Tab</a>) you can automate your feeds by pasting the feed URL into your providers control panel.</p>]]></string>

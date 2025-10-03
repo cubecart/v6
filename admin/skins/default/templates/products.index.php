@@ -677,6 +677,7 @@
    </div>
    <div id="digital" class="tab_content">
       <h3>{$LANG.catalogue.title_digital_options}</h3>
+      <p>{$LANG.catalogue.title_digital_explain}</p>
       <div class="fm-container">
          <div class="loading">{$LANG.common.loading} <i class="fa fa-spinner fa-spin fa-fw"></i></div>
          <div id="download" rel="2" class="fm-filelist unique"></div>
