@@ -249,6 +249,8 @@
     <string name="your_comments" introduced="5.0.0"><![CDATA[Delivery Notes or Additional Comments]]></string>
   </group>
   <group name="catalogue">
+    <string name="manufacturer_address" introduced="6.5.12"><![CDATA[Manufacturer Address]]></string>
+    <string name="manufacturer_eu_contact" introduced="6.5.12"><![CDATA[EU Responsible Contact]]></string>
     <string name="manufacture_country" introduced="6.5.12"><![CDATA[Manufacturing country]]></string>
     <string name="shipping_limit" introduced="6.5.7"><![CDATA[Limit to shipping method]]></string>
     <string name="choose_shipping" introduced="6.5.7"><![CDATA[Choose shipping method&hellip;]]></string>
@@ -779,6 +781,7 @@
     <string name="department" introduced="5.0.0"><![CDATA[Department]]></string>
     <string name="description" introduced="5.0.0"><![CDATA[Description]]></string>
     <string name="description_short" introduced="6.0.5"><![CDATA[Short Description]]></string>
+    <string name="description_short_desc" introduced="6.5.12"><![CDATA[This shows on the product list of category view. If left empty a short description will be generated automatically from the main one.]]></string>
     <string name="decision_remove" introduced="5.0.0"><![CDATA[Are you sure you want to remove this?]]></string>
     <string name="desktop_site" introduced="5.1.1"><![CDATA[Desktop Site]]></string>
     <string name="details" introduced="5.0.0"><![CDATA[Details]]></string>

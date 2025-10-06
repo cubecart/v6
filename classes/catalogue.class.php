@@ -385,6 +385,7 @@ class Catalogue
                 // Show manfacturer
                 if (($manufacturer = $this->getManufacturer($product['manufacturer'])) !== false) {
                     $GLOBALS['smarty']->assign('MANUFACTURER', $manufacturer);
+                    $GLOBALS['smarty']->assign('MANUFACTURER_GPSR', $this->getManufacturerGPSR($product['manufacturer']));
                 }
 
                 // Display gallery
@@ -942,12 +943,33 @@ class Catalogue
      */
     public function getManufacturer($manufacturer_id, $placeholder = false)
     {
-        if (($manufacturers = $GLOBALS['db']->select('CubeCart_manufacturers', array('name', 'URL'), array('id' => $manufacturer_id))) !== false) {
+        if (($manufacturers = $GLOBALS['db']->select('CubeCart_manufacturers', false, array('id' => $manufacturer_id))) !== false) {
             if (filter_var($manufacturers[0]['URL'], FILTER_VALIDATE_URL)) {
                 return '<a href="'.$manufacturers[0]['URL'].'" target="_blank">'.($placeholder ? '%s' : $manufacturers[0]['name']).'</a>';
             } else {
                 return $manufacturers[0]['name'];
             }
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Get specific manufacturer GPSR data
+     *
+     * @param int $id
+     * @return array/false
+     */
+    public function getManufacturerGPSR($id)
+    {
+        if (($manufacturer = $GLOBALS['db']->select('CubeCart_manufacturers', false, array('id' => $id))) !== false) {
+            $manufacturer[0]['contact_url'] = filter_var($manufacturer[0]['contact_url'], FILTER_VALIDATE_URL) ? $manufacturer[0]['contact_url'] : '';
+            $manufacturer[0]['eu_contact_url'] = filter_var($manufacturer[0]['eu_contact_url'], FILTER_VALIDATE_URL) ? $manufacturer[0]['eu_contact_url'] : '';
+            $manufacturer[0]['email'] = filter_var($manufacturer[0]['email'], FILTER_VALIDATE_EMAIL) ? $manufacturer[0]['email'] : '';
+            $manufacturer[0]['eu_email'] = filter_var($manufacturer[0]['eu_email'], FILTER_VALIDATE_EMAIL) ? $manufacturer[0]['eu_email'] : '';
+            $manufacturer[0]['country'] = ctype_digit($manufacturer[0]['country']) ? getCountryFormat($manufacturer[0]['country']) : $manufacturer[0]['country'];
+            $manufacturer[0]['eu_country'] = ctype_digit($manufacturer[0]['eu_country']) ? getCountryFormat($manufacturer[0]['eu_country']) : $manufacturer[0]['eu_country'];
+            return $manufacturer[0];
         } else {
             return false;
         }

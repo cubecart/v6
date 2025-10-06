@@ -11,6 +11,38 @@
                 <td>{$MANUFACTURER}</td>
             </tr>
             {/if}
+            {if $MANUFACTURER_GPSR}
+            <tr>
+                <td valign="top">{$LANG.catalogue.manufacturer_address}</td>
+                <td>{if !empty($MANUFACTURER_GPSR.line1)}{$MANUFACTURER_GPSR.line1}<br>{/if}
+                    {if !empty($MANUFACTURER_GPSR.line2)}{$MANUFACTURER_GPSR.line2}<br>{/if}
+                    {if !empty($MANUFACTURER_GPSR.town)}{$MANUFACTURER_GPSR.town}<br>{/if}
+                    {if !empty($MANUFACTURER_GPSR.state)}{$MANUFACTURER_GPSR.state}<br>{/if}
+                    {if !empty($MANUFACTURER_GPSR.postcode)}{$MANUFACTURER_GPSR.postcode}<br>{/if}
+                    {if !empty($MANUFACTURER_GPSR.country)}{$MANUFACTURER_GPSR.country}<br>{/if}
+                    {if !empty($MANUFACTURER_GPSR.phone)}{$MANUFACTURER_GPSR.phone}<br>{/if}
+                    {if !empty($MANUFACTURER_GPSR.email)}<a href="mailto:{$MANUFACTURER_GPSR.email}">{$MANUFACTURER_GPSR.email}</a><br>{/if}
+                    {if !empty($MANUFACTURER_GPSR.contact_url)}<a href="{$MANUFACTURER_GPSR.contact_url}" target="_blank">{$MANUFACTURER_GPSR.contact_url}</a>{/if}
+                </td>
+            </tr>
+            {/if}
+            {if $MANUFACTURER_GPSR}
+            <tr>
+                <td valign="top">{$LANG.catalogue.manufacturer_eu_contact}</td>
+                <td>
+                    {if !empty($MANUFACTURER_GPSR.eu_name)}{$MANUFACTURER_GPSR.eu_name}<br>{/if}
+                    {if !empty($MANUFACTURER_GPSR.eu_line1)}{$MANUFACTURER_GPSR.eu_line1}<br>{/if}
+                    {if !empty($MANUFACTURER_GPSR.eu_line2)}{$MANUFACTURER_GPSR.eu_line2}<br>{/if}
+                    {if !empty($MANUFACTURER_GPSR.eu_town)}{$MANUFACTURER_GPSR.eu_town}<br>{/if}
+                    {if !empty($MANUFACTURER_GPSR.eu_state)}{$MANUFACTURER_GPSR.eu_state}<br>{/if}
+                    {if !empty($MANUFACTURER_GPSR.eu_postcode)}{$MANUFACTURER_GPSR.eu_postcode}<br>{/if}
+                    {if !empty($MANUFACTURER_GPSR.eu_country)}{$MANUFACTURER_GPSR.eu_country}<br>{/if}
+                    {if !empty($MANUFACTURER_GPSR.eu_phone)}{$MANUFACTURER_GPSR.eu_phone}<br>{/if}
+                    {if !empty($MANUFACTURER_GPSR.eu_email)}<a href="mailto:{$MANUFACTURER_GPSR.eu_email}">{$MANUFACTURER_GPSR.eu_email}</a><br>{/if}
+                    {if !empty($MANUFACTURER_GPSR.eu_contact_url)}<a href="{$MANUFACTURER_GPSR.eu_contact_url}" target="_blank">{$MANUFACTURER_GPSR.eu_contact_url}</a>{/if}
+                </td>
+            </tr>
+            {/if}
             {if $PRODUCT.stock_level}
             <tr>
                 <td>{$LANG.catalogue.stock_level}</td>

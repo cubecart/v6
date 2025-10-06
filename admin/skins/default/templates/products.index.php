@@ -276,6 +276,7 @@
       </div>
       <br>
       <h3>{$LANG.common.description_short} {$LANG.common.optional}</h3>
+      <p>{$LANG.common.description_short_desc}</p>
       <textarea name="description_short" id="description_short" class="textbox fck">{if $PRODUCT.description_short}{$PRODUCT.description_short|escape:"htmlall"}{/if}</textarea>
    </div>
    <div id="pricing" class="tab_content">
