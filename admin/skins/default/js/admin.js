@@ -7,6 +7,43 @@ $(document).ready(function() {
     disable: $("#val_lang_disable").text() || "Disable",
     enable:  $("#val_lang_enable").text()  || "Enable"
     };
+    $(function() {
+        let counter = $('#spec-container .spec-row').length-1;
+        let lang_value = $('#lang_name').text() || 'Value';
+        let lang_name = $('#lang_name').text() || 'Name';
+        $('#spec-container').on('click', '.add', function(e) {
+            e.preventDefault();
+            counter++;
+            $(this).text('-').removeClass('add').addClass('remove');
+            const newRow = `
+            <div class="spec-row">
+                <input type="text" name="specs[${counter}][name]" class="textbox" placeholder="${lang_name}">
+                <textarea name="specs[${counter}][value]" class="textbox" placeholder="${lang_value}"></textarea>
+                <button class="add">+</button>
+            </div>`;
+            $('#spec-container').append(newRow);
+        });
+
+        $('#spec-container').on('click', '.remove', function(e) {
+            e.preventDefault();
+            $(this).closest('.spec-row').remove();
+        });
+    });
+    $('.spec-row input, .spec-row textarea').on('focusout', function (e) {
+        e.preventDefault();
+        const specs = [];
+        $('#spec-container .spec-row').each(function (i) {
+            const name = $(this).find('input[name*="[name]"]').val().trim();
+            const value = $(this).find('textarea[name*="[value]"]').val().trim();
+
+            if (name !== '' && value !== '') {
+                specs.push([name, value]);
+            }
+        });
+        const jsonData = JSON.stringify(specs);
+        const base64Data = btoa(jsonData);
+        $('#spec_array').val(base64Data);
+    });
     $('.copy_text').on("click", function() {
         navigator.clipboard.writeText($(this).attr('data-value'));
         var text = $(this).attr('data-copied');

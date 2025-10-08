@@ -9,7 +9,7 @@
  * Email:  hello@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
-<form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
+<form action="{$VAL_SELF}" method="post" enctype="multipart/form-data" id="add_edit_product">
    {if isset($DISPLAY_PRODUCT_LIST)}
    <div id="general" class="tab_content">
       <h3>{$LANG.catalogue.title_product_inventory}</h3>
@@ -278,6 +278,34 @@
       <h3>{$LANG.common.description_short} {$LANG.common.optional}</h3>
       <p>{$LANG.common.description_short_desc}</p>
       <textarea name="description_short" id="description_short" class="textbox fck">{if $PRODUCT.description_short}{$PRODUCT.description_short|escape:"htmlall"}{/if}</textarea>
+   </div>
+   <div id="specification" class="tab_content">
+      <h3>{$LANG.common.specification}</h3>
+      <h3>{$LANG.catalogue.specification_desc}</h3>
+      <div id="spec-container">
+         {foreach from=$PRODUCT.spec_array key="k" item="spec"}
+         <div class="spec-row">
+            <input type="text" name="specs[{$k}][name]" class="textbox" placeholder="{$LANG.common.name}" value="{$spec.0}">
+            <textarea name="specs[{$k}][value]" class="textbox" placeholder="{$LANG.common.value}">{$spec.1}</textarea>
+            <button class="remove">-</button>
+         </div>
+         {/foreach}
+         {if isset($k)}
+            {assign var="k" value=$k+1}
+         {else}
+            {assign var="k" value="0"}
+         {/if}
+         <div class="spec-row">
+            <input type="text" name="specs[{$k}][name]" class="textbox" placeholder="{$LANG.common.name}">
+            <textarea name="specs[{$k}][value]" class="textbox" placeholder="{$LANG.common.value}"></textarea>
+            <button class="add">+</button>
+         </div>
+      </div>
+      <div id="lang_name" class="inline-source">{$LANG.common.name}</div>
+      <div id="lang_value" class="inline-source">{$LANG.common.value}</div>
+      <input type="hidden" id="spec_array" name="spec_array" value="{$PRODUCT.spec_array_b64}" />
+      <hr>
+      <textarea name="spec_copy" class="textbox fck">{if $PRODUCT.spec_copy}{$PRODUCT.spec_copy|escape:"htmlall"}{/if}</textarea>
    </div>
    <div id="pricing" class="tab_content">
       <h3>{$LANG.catalogue.title_pricing}</h3>

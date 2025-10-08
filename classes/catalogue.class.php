@@ -1148,6 +1148,7 @@ class Catalogue
             $count = count($result);
             $data = array();
             foreach ($result as $product) {
+                $product['spec_array'] = !empty($product['spec_array']) ? json_decode(base64_decode($product['spec_array']), true) : array();
                 $product['product_weight'] = (float)$product['product_weight'];
                 $GLOBALS['language']->translateProduct($product);
                 $product['description'] = ($product['product_parse']==1) ? $GLOBALS['smarty']->fetch('string:'.$product['description']) : $product['description'];

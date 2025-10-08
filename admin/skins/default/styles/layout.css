@@ -1773,3 +1773,21 @@ ul.char_filter li.selected {}
 .no-arrows {
   -moz-appearance: textfield;
 }
+.spec-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+}
+.spec-row input.textbox {
+  width: 200px;
+}
+.spec-row textarea.textbox {
+  width: 60%;
+  min-height: 40px!important;
+  resize: vertical;
+}
+.spec-row { margin-bottom: 8px; }
+.spec-row input, .spec-row textarea { margin-right: 5px; padding: 5px; }
+.spec-row button { display: inline-flex; align-items: center; justify-content: center; transition: background 0.2s ease; width: 20px; height: 20px; border: none; border-radius: 50%; color: #ffffff; cursor: pointer; }
+.spec-row button.add { background-color: #43AC6A; }
+.spec-row button.remove { background-color: #ff0000; }

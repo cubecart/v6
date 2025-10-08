@@ -53,6 +53,7 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
     $record = $_POST;
     $record['description'] = $GLOBALS['RAW']['POST']['description'];
     $record['description_short'] = $GLOBALS['RAW']['POST']['description_short'];
+    $record['spec_copy'] = $GLOBALS['RAW']['POST']['spec_copy'];
     unset($record['categories'], $record['group'], $record['image']);
 
     if ((isset($record['product_code_auto']) && $record['product_code_auto']==1) || (empty($record['product_code']) && $record['product_code_auto']==0)) {
@@ -674,6 +675,7 @@ if (isset($_GET['action'])) {
     // Display product info
     $GLOBALS['main']->addTabControl($lang['common']['general'], 'general');
     $GLOBALS['main']->addTabControl($lang['common']['description'], 'description');
+    $GLOBALS['main']->addTabControl($lang['common']['specification'], 'specification');
 
     if (strtolower($_GET['action']) == 'delete' && Admin::getInstance()->permissions('products', CC_PERM_DELETE)) {
         if (isset($_GET['translation_id']) && is_numeric($_GET['translation_id'])) {
@@ -1151,6 +1153,10 @@ if (isset($_GET['action'])) {
             if (!preg_match("/^(http|https|ftp)/", $result[0]['digital_path']) && !file_exists($result[0]['digital_path'])) {
                 $GLOBALS['main']->errorMessage($GLOBALS['language']->filemanager['error_dl_3']." ".$result[0]['digital_path']);
             }
+        }
+        if(!empty($result[0]['spec_array'])) {
+            $result[0]['spec_array_b64'] = $result[0]['spec_array'];
+            $result[0]['spec_array'] = json_decode(base64_decode($result[0]['spec_array']), true);
         }
         $GLOBALS['smarty']->assign('PRODUCT', $result[0]);
 

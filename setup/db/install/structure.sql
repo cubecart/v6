@@ -508,6 +508,8 @@ CREATE TABLE IF NOT EXISTS `CubeCart_inventory` (
   `maximum_quantity` INT(10) NOT NULL DEFAULT '0',
   `product_parse` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `manufacture_country` varchar(2) DEFAULT NULL,
+  `spec_array` TEXT NULL,
+  `spec_copy` TEXT NULL,
   PRIMARY KEY (`product_id`),
   KEY `status` (`status`),
   KEY `live_from` (`live_from`),

@@ -83,6 +83,15 @@
                 <td>{$LANG.common.download}</td>
             </tr>
             {/if}
+            {if $PRODUCT.spec_array}
+            {foreach from=$PRODUCT.spec_array key=spec_key item=spec_val}
+            <tr>
+                <td>{$spec_val.0}</td>
+                <td>{$spec_val.1}</td>
+            </tr>
+            {/foreach}
+            {/if}
         </tbody>
     </table>
+    {$PRODUCT.spec_copy}
 </div>

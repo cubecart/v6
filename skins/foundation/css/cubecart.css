@@ -481,3 +481,9 @@ ul.pagination .arrow:last-child a {
     border: 1px solid #9e0c0f;
     color: #c60f13!important;
 }
+#product_spec table {
+    width: 100%;
+}
+#product_spec > table > tbody > tr > td:nth-child(1) {
+    width: 30%;
+}
