@@ -1565,40 +1565,49 @@ class Cubecart
                     /* 
                     Add multiple attachments
                     */
-                    $moved = array();
+                    $attach_dir = CC_FILES_DIR.'attachments/';
+                    $attachment_prefix = time().'_';
+                    $allowed = array(
+                        'image/jpeg',
+                        'image/png',
+                        'image/gif',
+                        'image/png',
+                        'application/zip',
+                        'application/pdf'
+                    );
+                    $total_files = 0;
+                    $attachments = array();
                     if (isset($_FILES['attachments']) && is_array($_FILES['attachments']['name']) && count(array_filter($_FILES['attachments']['name'])) > 0) {
-                        $total = count($_FILES['attachments']['name']);
-                        $allowed = array(
-                            'image/jpeg',
-                            'image/png',
-                            'image/gif',
-                            'image/png',
-                            'application/zip',
-                            'application/pdf'
-                        );
+                        $total_files = count($_FILES['attachments']['name']);
                         $error = false;
-                        for ($i = 0; $i < $total; $i++) {
+                        if(!file_exists($attach_dir)) {
+                            mkdir($attach_dir, 0755, true);
+                        }
+                        for ($i = 0; $i < $total_files; $i++) {
                             if(in_array($_FILES['attachments']['type'][$i], $allowed) && file_exists($_FILES['attachments']['tmp_name'][$i])) {
-                                $mailer->AddAttachment($_FILES['attachments']['tmp_name'][$i], $_FILES['attachments']['name'][$i]);
-                                $attach_dir = CC_FILES_DIR.'attachments/';
-                                file_exists($attach_dir) || mkdir($attach_dir, 0755, true);
-                                // Move uploaded file to attachments directory
-                                move_uploaded_file($_FILES['attachments']['tmp_name'][$i], $attach_dir.$_FILES['attachments']['name'][$i]);
-                                $moved[] = $_FILES['attachments']['name'][$i];
-
+                                $mailer->AddAttachment($_FILES['attachments']['tmp_name'][$i], $attachment_prefix.$_FILES['attachments']['name'][$i]);
+                                $attachments[] = array('tmp_name' => $_FILES['attachments']['tmp_name'][$i], 'name' => $attachment_prefix.$_FILES['attachments']['name'][$i]);
                             } else {
                                 $error = true;
                                 $GLOBALS['gui']->setError(sprintf($GLOBALS['language']->contact['type_not_allowed'], $_FILES['attachments']['type'][$i]));
                             }
                         }
-                        if(count($moved) > 0 && !$error) {
-                            $fm  = new FileManager(FileManager::FM_FILETYPE_DL);
-                            $fm->buildDatabase(false, false, $attach_dir);
-                        }
                     }
                     // Send
                     if(!$error) {
                         $email_sent = $mailer->Send();
+                        $moved = array();
+                        
+                        foreach($attachments as $file) {
+                            move_uploaded_file($file['tmp_name'], $attach_dir.$file['name']);
+                            $moved[] = $file['name'];
+                        }
+
+                        if(count($moved) > 0 && !$error) {
+                            $fm  = new FileManager(FileManager::FM_FILETYPE_DL);
+                            $fm->buildDatabase(false, false, $attach_dir);
+                        }
+
                         $email_data = array(
                             'subject' => $mailer->Subject,
                             'content_html' => '',
