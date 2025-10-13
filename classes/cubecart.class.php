@@ -1565,6 +1565,7 @@ class Cubecart
                     /* 
                     Add multiple attachments
                     */
+                    $moved = array();
                     if (isset($_FILES['attachments']) && is_array($_FILES['attachments']['name']) && count(array_filter($_FILES['attachments']['name'])) > 0) {
                         $total = count($_FILES['attachments']['name']);
                         $allowed = array(
@@ -1576,7 +1577,6 @@ class Cubecart
                             'application/pdf'
                         );
                         $error = false;
-                        $moved = [];
                         for ($i = 0; $i < $total; $i++) {
                             if(in_array($_FILES['attachments']['type'][$i], $allowed) && file_exists($_FILES['attachments']['tmp_name'][$i])) {
                                 $mailer->AddAttachment($_FILES['attachments']['tmp_name'][$i], $_FILES['attachments']['name'][$i]);
@@ -1592,8 +1592,8 @@ class Cubecart
                             }
                         }
                         if(count($moved) > 0 && !$error) {
-                            $fm  = new FileManager('digital', 'attachments');
-                            $fm->buildDatabase();
+                            $fm  = new FileManager(FileManager::FM_FILETYPE_DL);
+                            $fm->buildDatabase(false, false, $attach_dir);
                         }
                     }
                     // Send
