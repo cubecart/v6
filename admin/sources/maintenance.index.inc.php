@@ -901,7 +901,8 @@ if (isset($database_result) && $database_result) {
             'id' => 'PRIMARY'
         ),
         'cubecart_sessions' => array(
-            'session_id' => 'PRIMARY',
+            'id' => 'PRIMARY',
+            'session_id' => 'KEY',
             'customer_id' => 'KEY',
             'session_last' => 'KEY',
             'acp' => 'KEY'
@@ -949,8 +950,8 @@ if (isset($database_result) && $database_result) {
             'time' => 'KEY'
         ),
         'cubecart_seo_urls' => array(
-            'path' => 'PRIMARY',
-            'id' => 'KEY',
+            'id' => 'PRIMARY',
+            'path' => 'UNIQUE',
             'type' => 'KEY',
             'item_id' => 'KEY',
             'custom' => 'KEY',
