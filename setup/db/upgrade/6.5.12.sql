@@ -32,3 +32,4 @@ ALTER TABLE `CubeCart_manufacturers` ADD `eu_phone` VARCHAR(20) NOT NULL; #EOQ
 ALTER TABLE `CubeCart_manufacturers` ADD `eu_contact_url` VARCHAR(200) NOT NULL; #EOQ
 ALTER TABLE `CubeCart_inventory` ADD `spec_array` TEXT NULL; #EOQ
 ALTER TABLE `CubeCart_inventory` ADD `spec_copy` TEXT NULL; #EOQ
+ALTER TABLE `CubeCart_seo_urls` DROP INDEX `id`; #EOQ

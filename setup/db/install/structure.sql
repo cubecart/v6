@@ -1074,7 +1074,6 @@ CREATE TABLE IF NOT EXISTS `CubeCart_seo_urls` (
   `redirect` enum('0','301','302') NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `path` (`path`),
-  KEY `id` (`id`),
   KEY `type` (`type`),
   KEY `item_id` (`item_id`),
   KEY `custom` (`custom`),
