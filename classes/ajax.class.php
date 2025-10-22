@@ -67,7 +67,7 @@ class Ajax
                 $return_data = self::SMTPTest();
             break;
             case 'previewOrderFormat':
-            $return_data = self::previewOrderFormat();
+                $return_data = self::previewOrderFormat();
             break;
             case 'template':
                 $return_data = self::template($type, $string);
@@ -324,7 +324,7 @@ class Ajax
                     $html_out .= $order->setOrderFormat($_GET['oid_prefix'], $_GET['oid_postfix'], $_GET['oid_zeros'], $_GET['oid_start'], false, false, $i).'<br>';
                 }
             }
-            return "<div class=\"mail_modal\">".$html_out."</div>";
+            return "<div class=\"default_modal\">".$html_out."</div>";
         }
         return false;
     }
@@ -410,7 +410,7 @@ class Ajax
                 } catch (Exception $e) {
                     $json .= $e->getMessage();
                 }
-                return "<div class=\"mail_modal\">".str_replace('{{RESULT}}', $test_success ? 'Success' : 'Fail', $json)."</div>";
+                return "<div class=\"default_modal\">".str_replace('{{RESULT}}', $test_success ? 'Success' : 'Fail', $json)."</div>";
 
             } else if ($GLOBALS['RAW']['POST']['email_method']!=="mail") {
                 @ob_start();
@@ -455,7 +455,7 @@ class Ajax
                 } else {
                     $json .= "Test failed to execute. ".$test_mailer->ErrorInfo;
                 }
-                return "<div class=\"mail_modal\">".str_replace('{{RESULT}}', $test_success ? 'Success' : 'Fail', $json)."</div>";
+                return "<div class=\"default_modal\">".str_replace('{{RESULT}}', $test_success ? 'Success' : 'Fail', $json)."</div>";
             } else {
                 $test_mailer = new Mailer();
                 $test_mailer->ClearAddresses();
@@ -465,7 +465,7 @@ class Ajax
                 $test_mailer->AltBody = $altbody;
                 $test_mailer->Send();
 
-                return "<div class=\"mail_modal\"><h3>Testing ".$method_name."</h3><p>It isn't possible  to get a definitive test result for the &quot;PHP mail() Function&quot; method.</p><p>We have attempted to send a test email to &quot;".$GLOBALS['RAW']['POST']['email_address']."&quot; with the subject of &quot;".$subject."&quot; Please note that it can take ten minutes or even longer for a busy mail server to deliver email. Don't forget to check your spam folder!</p><p>This method can fail if the server hasn't been configured properly and may refuse to send mail from &quot;untrusted&quot; sources such as Hotmail, Yahoo, AOL etc&hellip;. We recommend using an email address from a domain hosted on this server such as sales@".parse_url(CC_STORE_URL, PHP_URL_HOST)." for example and this may need to be setup form within your web hosting account.</p></div>";
+                return "<div class=\"default_modal\"><h3>Testing ".$method_name."</h3><p>It isn't possible  to get a definitive test result for the &quot;PHP mail() Function&quot; method.</p><p>We have attempted to send a test email to &quot;".$GLOBALS['RAW']['POST']['email_address']."&quot; with the subject of &quot;".$subject."&quot; Please note that it can take ten minutes or even longer for a busy mail server to deliver email. Don't forget to check your spam folder!</p><p>This method can fail if the server hasn't been configured properly and may refuse to send mail from &quot;untrusted&quot; sources such as Hotmail, Yahoo, AOL etc&hellip;. We recommend using an email address from a domain hosted on this server such as sales@".parse_url(CC_STORE_URL, PHP_URL_HOST)." for example and this may need to be setup form within your web hosting account.</p></div>";
             }
         }
         return false;
@@ -492,7 +492,7 @@ class Ajax
             } else {
                 $html_out .= "<p>Invalid email</p>";
             }
-            return "<div class=\"mail_modal\">".$html_out."</div>";
+            return "<div class=\"default_modal\">".$html_out."</div>";
         }
         return false;
     }

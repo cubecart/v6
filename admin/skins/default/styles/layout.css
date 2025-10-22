@@ -1279,7 +1279,7 @@ ul.quick_links li#help_menu ul li:not(:last-child) {
     background-color: #1E3D45;
     color: #ffffff;
 }
-.mail_modal {
+.default_modal {
     padding: 10px;
     width: 450px
 }
