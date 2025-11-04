@@ -193,6 +193,11 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
         }
     }
     $send_email = (isset($_POST['skip_email']) && $_POST['skip_email'] == '1') ? false : true;
+    
+    if($_POST['order']['status']==3 && empty($_POST['summary']['ship_date'])) {
+        $record['ship_date'] = date('Y-m-d');
+    }
+    
     if (empty($_POST['cart_order_id'])) {
         // Create order record
         $record['order_date'] = time();
