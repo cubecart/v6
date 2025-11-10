@@ -2821,4 +2821,8 @@ ul.char_filter li.selected {
   .fm-filelist::-webkit-scrollbar-thumb:hover {
     background: var(--primary-accent);
   }
+  .phpinfodisplay {
+    background-color: var(--panel) !important;
+    color: var(--text) !important;
+  }
 }
