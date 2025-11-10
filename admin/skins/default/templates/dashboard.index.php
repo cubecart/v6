@@ -37,15 +37,45 @@
             yMax = ceilnormyMax * Math.pow(10,floorexp);
 
             if (yMax < 20 || isNaN(yMax)) { yMax = 20; }
+
+            // Detect if the user prefers dark mode
+            const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            // Define light & dark palettes using your CSS variables or close equivalents
+            const theme = isDark ? {
+               backgroundColor: '#171b1f',
+               chartAreaBg: '#171b1f',
+               text: '#e6e6e6',
+               gridline: '#2c343b'
+            } : {
+               backgroundColor: '#ffffff',
+               chartAreaBg: '#ffffff',
+               text: '#555555',
+               gridline: '#ddd'
+            };
             var options = {
-              title: '{/literal}{$CHART.title}{literal}',
-              width:'100%',
-              height:300,
-              vAxis:{
-                title:'{/literal}{$CONFIG.default_currency}{literal}',
-                viewWindowMode:'explicit',
-                viewWindow:{min:0,max:yMax}
-              }
+               titleTextStyle: {
+                  color: theme.text,
+               },
+               backgroundColor: theme.backgroundColor,
+               chartArea: { backgroundColor: theme.chartAreaBg },
+               legend: { textStyle: { color: theme.text } },
+               hAxis: {
+                  textStyle: { color: theme.text },
+                  gridlines: { color: theme.gridline },
+               },
+               vAxis: {
+                  textStyle: { color: theme.text },
+                  gridlines: { color: theme.gridline },
+               },
+               title: '{/literal}{$CHART.title}{literal}',
+               width:'100%',
+               height:300,
+               vAxis:{
+                  title:'{/literal}{$CONFIG.default_currency}{literal}',
+                  viewWindowMode:'explicit',
+                  viewWindow:{min:0,max:yMax}
+               }
             };
             var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
             chart.draw(data, options);

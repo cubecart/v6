@@ -1791,3 +1791,285 @@ ul.char_filter li.selected {}
 .spec-row button { display: inline-flex; align-items: center; justify-content: center; transition: background 0.2s ease; width: 20px; height: 20px; border: none; border-radius: 50%; color: #ffffff; cursor: pointer; }
 .spec-row button.add { background-color: #43AC6A; }
 .spec-row button.remove { background-color: #ff0000; }
+
+/* ===== THEME VARIABLES (LIGHT DEFAULT) ===== */
+:root {
+  --bg: #ECECEC;
+  --panel: #ffffff;
+  --panel-subtle: #F9F9F9;
+  --panel-muted: #E7E7E7;
+  --text: #555555;
+  --text-muted: #737373;
+  --text-invert: #ffffff;
+  --primary: #1E3D45;
+  --primary-accent: #4F9AAF;
+  --link: #4f9aaf;
+  --link-hover: #f3068f;
+  --border: #D0D0D0;
+  --border-strong: #c5c5c5;
+
+  /* table stripes (light) */
+  --rowOdd: #ffffff;
+  --rowEven: #edf4f7;
+  --rowHover: #f7f5ed;
+
+  /* buttons (light) */
+  --btn-bg: #e1e1e1;
+  --btn-bg-hover: #ededed;
+  --btn-text: #444444;
+  --btn-border: #d0d0d0;
+  --btn-border-hover: #b0b0b0;
+
+  /* status / messages (light) */
+  --success-bg: #1b4271;
+  --error-bg: #900;
+  --note-bg: #fffbf2;
+  --note-border: #ffe6b8;
+
+  /* inputs (light) */
+  --input-bg: #e8e8e8;
+  --input-bg-focus: #ffffff;
+  --input-border: #a6a6a6;
+
+  /* header/nav (light) */
+  --header-bg: #1E3D45;
+  --nav-bg: #F9F9F9;
+  --breadcrumbs-bg: #F9F9F9;
+}
+
+/* ===== DARK THEME OVERRIDES ===== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f1214;
+    --panel: #171b1f;
+    --panel-subtle: #15191d;
+    --panel-muted: #1b2025;
+    --text: #e6e6e6;
+    --text-muted: #b8c0c7;
+    --text-invert: #0f1214;
+    --primary: #2a6c7a;
+    --primary-accent: #6bbad0;
+    --link: #79cdea;
+    --link-hover: #ff58c6;
+    --border: #2c343b;
+    --border-strong: #39424a;
+
+    --rowOdd: #161a1f;
+    --rowEven: #13171b;
+    --rowHover: #20262c;
+
+    --btn-bg: #2a3036;
+    --btn-bg-hover: #343a40;
+    --btn-text: #e6e6e6;
+    --btn-border: #3b434b;
+    --btn-border-hover: #4a545e;
+
+    --success-bg: #21577a;
+    --error-bg: #b32828;
+    --note-bg: #201a12;
+    --note-border: #5b4a2a;
+
+    --input-bg: #1b2025;
+    --input-bg-focus: #20262c;
+    --input-border: #3a424a;
+
+    --header-bg: #0f2a31;
+    --nav-bg: #14191e;
+    --breadcrumbs-bg: #14191e;
+  }
+
+  /* === global surfaces & text === */
+  html, body { background: var(--bg) !important; color: var(--text) !important; }
+  a, .fm-refresh { color: var(--link) !important; }
+  a:hover { color: var(--link-hover) !important; }
+
+  /* headers / chrome */
+  #header { background: var(--header-bg) !important; border-bottom: 3px solid var(--primary-accent) !important; }
+  #navigation { background: var(--nav-bg) !important; border-right: 1px solid var(--border) !important; border-bottom: 1px solid var(--border) !important; color: var(--text-muted) !important; }
+  #navigation a { color: var(--text-muted) !important; }
+  #breadcrumbs { background: var(--breadcrumbs-bg) !important; border-bottom: 1px solid var(--border) !important; border-left: 1px solid var(--border) !important; }
+  #content_body { background: var(--panel) !important; border-left: 1px solid var(--border) !important; }
+  #page_content { color: var(--text) !important; }
+
+  /* panels & borders */
+  .note { background: var(--note-bg) !important; border: 1px solid var(--note-border) !important; color: var(--text) !important; }
+  hr { background: var(--border) !important; color: var(--border) !important; }
+
+  /* inputs */
+  .textbox, textarea.textbox, select.textbox, input.textbox {
+    background-color: var(--input-bg) !important;
+    border: 1px solid var(--input-border) !important;
+    color: var(--text) !important;
+  }
+  .textbox:focus, .textbox:hover, textarea.textbox:focus, textarea.textbox:hover {
+    background-color: var(--input-bg-focus) !important;
+  }
+  input.textbox[disabled], .phrases input.textbox[disabled] {
+    background-color: var(--panel-muted) !important;
+    border-color: var(--border) !important;
+    color: var(--text-muted) !important;
+  }
+
+  /* tables & stripes */
+  thead, .thead, thead td, thead th {
+    background-color: var(--panel-muted) !important;
+    border-bottom: 1px solid var(--border-strong) !important;
+    color: var(--text) !important;
+  }
+  tbody td { color: var(--text) !important; }
+  /* You already use CSS vars for row colors—these set them for dark */
+  .list > div:nth-child(odd),
+  .reorder-list > div:nth-child(odd),
+  .list tbody > tr:nth-child(odd),
+  .reorder-list tbody > tr:nth-child(odd) { background: var(--rowOdd) !important; }
+
+  .list > div:nth-child(even),
+  .reorder-list > div:nth-child(even),
+  .list tbody > tr:nth-child(even),
+  .reorder-list tbody > tr:nth-child(even) { background: var(--rowEven) !important; }
+
+  .list > div:hover,
+  .list tbody > tr:hover,
+  .reorder-list > div:hover,
+  .reorder-list tbody > tr:hover { background: var(--rowHover) !important; }
+
+  /* buttons (remove light gradients, switch to solid dark) */
+  a.button, div.button, span.button, button.button,
+  input[type=button], input[type=submit] {
+    color: var(--btn-text) !important;
+    border: 1px solid var(--btn-border) !important;
+    background: var(--btn-bg) !important;
+    background-image: none !important;
+    text-shadow: none !important;
+    box-shadow: inset 0 0 0 transparent !important;
+  }
+  a.button:hover, div.button:hover, span.button:hover,
+  input[type=button]:hover, input[type=submit]:hover {
+    background: var(--btn-bg-hover) !important;
+    border-color: var(--btn-border-hover) !important;
+  }
+  /* destructive button accent still red, but readable on dark */
+  a.button.delete, div.button.delete, span.button.delete, button.button.delete,
+  input[type=button].delete, input[type=submit].delete {
+    border-color: #ff4d4d !important;
+    color: #ff6666 !important;
+  }
+
+  /* header accents & titles */
+  #page_content h3, div.tab_content > h3, div.tb-form > h3 { color: var(--primary-accent) !important; }
+  div.tab { background: var(--panel-subtle) !important; border-color: var(--border) !important; color: var(--text-muted) !important; }
+  div.tab-selected { background: var(--panel) !important; border-color: var(--border) !important; }
+  div.tab a, div.tab-selected a { color: var(--text) !important; }
+
+  /* messages */
+  #gui_message .success { background: var(--success-bg) !important; color: var(--text-invert) !important; }
+  #gui_message .error   { background: var(--error-bg)   !important; color: var(--text-invert) !important; }
+  #gui_message .success a, #gui_message .error a { color: var(--text-invert) !important; }
+
+  /* nav & quick links */
+  #breadcrumbs a { color: var(--text-muted) !important; }
+  #breadcrumbs a:hover { color: var(--text) !important; text-decoration: none !important; }
+  #navigation ul.submenu { background: var(--panel-subtle) !important; }
+  #navigation ul.submenu > li { border-bottom: 1px solid var(--border) !important; }
+  #navigation ul.submenu > li a:hover { color: var(--link-hover) !important; }
+
+  /* miscellaneous surfaces */
+  .default_modal, .tb-form, .sidebar_content, #sidebar_content,
+  .dashboard_content, .request { background: var(--panel) !important; color: var(--text) !important; }
+  .request { border-color: var(--border) !important; }
+  .order_break td { border-top: 1px solid var(--border-strong) !important; }
+
+  /* pagination */
+  div.pagination { border-top: 1px solid var(--border) !important; }
+  div.pagination a { background: var(--panel-muted) !important; color: var(--text) !important; }
+  div.pagination a:hover { background: var(--rowHover) !important; }
+  div.pagination div.current { background: var(--primary-accent) !important; color: #fff !important; }
+
+  /* “powered by” footer bar */
+  div#content .powered {
+    background: var(--panel-subtle) !important;
+    color: var(--text) !important;
+    border-top: 1px solid var(--border) !important;
+    border-bottom: 1px solid var(--border) !important;
+  }
+  #tab_control {
+    background: var(--panel-subtle);
+    border-bottom: 1px solid var(--border);
+    height: 26px;           /* keep your existing height */
+    margin-top: 10px;
+    padding: 0 0 1px;
+  }
+  #breadcrumbs ul.quick_links {
+    background: var(--panel-subtle) !important;
+    border-left: 1px solid var(--border) !important;
+  }
+  #breadcrumbs ul.quick_links li:not(:last-child) {
+    border-right: 1px solid var(--border) !important;
+  }
+  input.search {
+    background-color: var(--input-bg) !important;
+    border-bottom: 1px solid var(--input-border) !important;
+    color: var(--text) !important;
+  }
+
+  input.search:focus,
+  input.search:hover {
+    background-color: var(--input-bg-focus) !important;
+    border-bottom: 1px solid var(--primary-accent) !important;
+    color: var(--text) !important;
+  }
+
+  input.search::placeholder {
+    color: var(--text-muted) !important;
+  }
+    #navigation div.menu {
+    background: var(--panel-subtle) !important;
+    border-bottom: 1px solid var(--border) !important;
+    color: var(--text) !important;
+  }
+
+  #navigation div.menu:hover {
+    background: var(--panel) !important;
+    color: var(--text) !important;
+  }
+  fieldset > div:nth-child(even),
+  tbody tr:nth-child(even) td {
+    background-color: var(--rowEven) !important;
+  }
+
+  fieldset > div:nth-child(odd),
+  tbody tr:nth-child(odd) td {
+    background-color: var(--rowOdd) !important;
+  }
+
+  /* Optional: hover highlight for tables */
+  tbody tr:hover td {
+    background-color: var(--rowHover) !important;
+  }
+  div.pagination span {
+    background-color: var(--panel-muted) !important;
+    color: var(--text) !important;
+    border: 1px solid var(--border) !important;
+  }
+  fieldset > legend {
+    background-color: var(--panel-muted) !important;
+    border-bottom: 1px solid var(--border) !important;
+    color: var(--text) !important;
+  }
+  .note textarea {
+    background-color: var(--panel-subtle) !important;
+    border: 1px solid var(--note-border) !important;
+    color: var(--text) !important;
+  }
+
+  .note textarea:focus {
+    background-color: var(--panel) !important;
+    border-color: var(--primary-accent) !important;
+    color: var(--text) !important;
+    outline: none !important;
+  }
+
+  .note textarea::placeholder {
+    color: var(--text-muted) !important;
+  }
+}
