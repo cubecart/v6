@@ -274,12 +274,37 @@
      yMax = ceilnormyMax * Math.pow(10,floorexp);
 
      if (yMax < 20 || isNaN(yMax)) { yMax = 20; }
-
-     var options = {
-       title: chart_title.innerHTML,
-       hAxis: {title: chart_hAxis.innerHTML},
-       vAxis: {title: chart_vAxis.innerHTML,viewWindowMode:'explicit',viewWindow:{min:0,max:yMax}}
-     };
+      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = isDark ? {
+         backgroundColor: '#171b1f',
+         chartAreaBg: '#171b1f',
+         text: '#e6e6e6',
+         gridline: '#2c343b'
+      } : {
+         backgroundColor: '#ffffff',
+         chartAreaBg: '#ffffff',
+         text: '#555555',
+         gridline: '#ddd'
+      };
+      var options = {
+         titleTextStyle: {
+            color: theme.text,
+         },
+         backgroundColor: theme.backgroundColor,
+         chartArea: { backgroundColor: theme.chartAreaBg },
+         legend: { textStyle: { color: theme.text } },
+         hAxis: {
+            textStyle: { color: theme.text },
+            gridlines: { color: theme.gridline },
+         },
+         vAxis: {
+            textStyle: { color: theme.text },
+            gridlines: { color: theme.gridline },
+         },
+         title: chart_title.innerHTML,
+         hAxis: {title: chart_hAxis.innerHTML},
+         vAxis: {title: chart_vAxis.innerHTML,viewWindowMode:'explicit',viewWindow:{min:0,max:yMax}}
+      };
      var chart = new google.visualization.ColumnChart(container);
      chart.draw(data, options);
    }

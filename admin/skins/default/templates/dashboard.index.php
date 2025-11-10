@@ -38,10 +38,7 @@
 
             if (yMax < 20 || isNaN(yMax)) { yMax = 20; }
 
-            // Detect if the user prefers dark mode
             const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-            // Define light & dark palettes using your CSS variables or close equivalents
             const theme = isDark ? {
                backgroundColor: '#171b1f',
                chartAreaBg: '#171b1f',
