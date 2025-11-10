@@ -2072,4 +2072,13 @@ ul.char_filter li.selected {}
   .note textarea::placeholder {
     color: var(--text-muted) !important;
   }
+  .textbox:focus,
+  textarea.textbox:focus,
+  select.textbox:focus,
+  input.textbox:focus {
+    outline: none !important;                /* removes blue glow */
+    box-shadow: none !important;             /* removes any inner/outer blur */
+    border-color: var(--primary-accent) !important;  /* clean theme border */
+    background-color: var(--input-bg-focus) !important;
+  }
 }
