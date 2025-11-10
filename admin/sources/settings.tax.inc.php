@@ -26,6 +26,18 @@ $updated  = false;
 $redirect  = false;
 $anchor  = false;
 
+if($_POST['edittariff'] && is_array($_POST['edittariff'])) {
+    foreach($_POST['edittariff'] as $id => $data) {
+        if($GLOBALS['db']->update('CubeCart_tariff', $data, array('id' => (int)$id))) {
+            $updated = true;
+        }
+    }
+    $anchor = 'tariff';
+    $redirect = true;
+    $GLOBALS['main']->successMessage($lang['settings']['notify_tax_tariff_edited']);
+    httpredir(currentPage(), $anchor);
+}
+
 if (isset($_GET['delete_tariff']) && $_GET['delete_tariff']>0) {
     $GLOBALS['db']->delete('CubeCart_tariff', array('id' => (int)$_GET['delete_tariff']));
     $GLOBALS['main']->successMessage($lang['settings']['tariff_deleted']);

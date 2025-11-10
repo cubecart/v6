@@ -174,7 +174,7 @@
                   <td>{$tariff.source}</td>
                   <td>{$tariff.destination}</td>
                   <td>{$tariff.tariff}</td>
-                  <td>{$tariff.percent}&#37;</td>
+                  <td><input type="number" value="{$tariff.percent}" name="edittariff[{$tariff.id}][percent]" class="textbox number text-right no-arrows" step="0.01" min="0" max="999.99" /> &#37;</td>
                   <td><a href="?_g=settings&node=tax&delete_tariff={$tariff.id}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
                </tr>
                {foreachelse}
