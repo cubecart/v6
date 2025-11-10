@@ -4,6 +4,8 @@
  */
 
 CKEDITOR.editorConfig = function( config ) {
+	var darkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+	config.skin = darkMode ? 'moono-dark' : 'moono-lisa';
 	config.filebrowserImageBrowseUrl = document.location.pathname+'?_g=filemanager&mode=fck';
 	config.filebrowserLinkBrowseUrl = document.location.pathname+'?_g=filemanager&mode=fckfile';
 	config.protectedSource.push(/{\S*?.*?\S}/g);

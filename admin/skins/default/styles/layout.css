@@ -2825,4 +2825,31 @@ ul.char_filter li.selected {
     background-color: var(--panel) !important;
     color: var(--text) !important;
   }
+  .parse_content {
+    border: 1px solid #333;          /* darker, unified border tone */
+    border-radius: 4px;              /* optional: soften corners */
+    padding: 6px 8px;                /* slightly more breathing room */
+    background-color: #1e1e1e;       /* deep neutral background */
+    color: #e0e0e0;                  /* readable text colour */
+    text-indent: 5px;
+
+    /* subtle inner glow to lift from page background */
+    box-shadow: inset 0 0 4px rgba(255, 255, 255, 0.05);
+    }
+
+    /* optional hover/focus highlight */
+    .parse_content:focus-within,
+    .parse_content:hover {
+    border-color: #555;
+    box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.08);
+    }
+
+    /* links and inline elements */
+    .parse_content a {
+    color: #6ab4ff;                  /* accent link colour */
+    text-decoration: none;
+    }
+    .parse_content a:hover {
+    text-decoration: underline;
+    }
 }
