@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_tariff` (
   `destination` varchar(2) NOT NULL,
   `tariff` enum('D','M') NOT NULL,
   `percent` decimal(5,2) NOT NULL,
+  `display` varchar(255) NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `combos` (`source`,`destination`,`tariff`),
   KEY `source` (`source`),

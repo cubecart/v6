@@ -2022,6 +2022,9 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
+    <string name="tariff_display_eg" introduced="6.5.12"><![CDATA[e.g. US Import Tariff]]></string>
+    <string name="destination_country" introduced="6.5.12"><![CDATA[Destination Country]]></string>
+    <string name="source_country" introduced="6.5.12"><![CDATA[Source Country]]></string>
     <string name="notify_tax_tariff_edited" introduced="6.5.12"><![CDATA[Tariff edited.]]></string>
     <string name="eu_contact" introduced="6.5.12"><![CDATA[EU Responsible Contact]]></string>
     <string name="force_choice" introduced="6.5.12"><![CDATA[Force choice (no default)]]></string>

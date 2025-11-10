@@ -35,14 +35,12 @@ if($_POST['edittariff'] && is_array($_POST['edittariff'])) {
     $anchor = 'tariff';
     $redirect = true;
     $GLOBALS['main']->successMessage($lang['settings']['notify_tax_tariff_edited']);
-    httpredir(currentPage(), $anchor);
 }
 
 if (isset($_GET['delete_tariff']) && $_GET['delete_tariff']>0) {
     $GLOBALS['db']->delete('CubeCart_tariff', array('id' => (int)$_GET['delete_tariff']));
     $GLOBALS['main']->successMessage($lang['settings']['tariff_deleted']);
     $anchor = 'tariff';
-    httpredir(currentPage(array('delete_tariff')), $anchor);
 }
 if (isset($_POST['addtariff']) && $_POST['addtariff']['percent']>0) {
     $exists = $GLOBALS['db']->select('CubeCart_tariff', false, array('source' => $_POST['addtariff']['source'], 'destination' => $_POST['addtariff']['destination'], 'tariff' => $_POST['addtariff']['tariff']));
@@ -52,7 +50,6 @@ if (isset($_POST['addtariff']) && $_POST['addtariff']['percent']>0) {
         $GLOBALS['main']->errorMessage($lang['settings']['error_tax_tariff_add']);
     }
     $anchor = 'tariff';
-    httpredir(currentPage(), $anchor);
 }
 
 if (isset($_GET['assign_class']) && $_GET['assign_class']>0) {
@@ -231,11 +228,12 @@ foreach ($GLOBALS['hooks']->load('admin.settings.tax.pre_smarty') as $hook) {
 if (($tariffs = $GLOBALS['db']->select('CubeCart_tariff')) !== false) {
     foreach ($tariffs as $tariff) {
         $smarty_data['tariffs'][] = array(
-            'id'        => $tariff['id'],
-            'source'      => $tariff['source'],
-            'destination'      => $tariff['destination'],
-            'tariff'      => $tariff['tariff']=='M' ? $lang['settings']['country_of_manufacture'] : $lang['settings']['country_of_dispatch'],
-            'percent'   => $tariff['percent']
+            'id'            => $tariff['id'],
+            'source'        => $tariff['source'],
+            'destination'   => $tariff['destination'],
+            'display'       => $tariff['display'],
+            'tariff'        => $tariff['tariff']=='M' ? $lang['settings']['country_of_manufacture'] : $lang['settings']['country_of_dispatch'],
+            'percent'       => $tariff['percent']
         );
     }
     $GLOBALS['smarty']->assign('TARIFFS', $smarty_data['tariffs']);

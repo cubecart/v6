@@ -175,7 +175,7 @@ class Tax
         if(substr($tax_id, 0, 1) === 'i') { // import tariff
             $tax_id = (int)substr($tax_id, 1);
             if (($tariff = $GLOBALS['db']->select('CubeCart_tariff', false, array('id' => $tax_id))) !== false) {
-                $name = sprintf($GLOBALS['language']->checkout['import_tariff'], $tariff[0]['destination']);
+                $name = (!empty($tariff[0]['display'])) ? $tariff[0]['display'] : sprintf($GLOBALS['language']->checkout['import_tariff'], $tariff[0]['destination']);
                 return array('name' => $name, 'display' => $name, 'tax_percent' => $tariff[0]['percent']);
             }    
         }
@@ -323,7 +323,8 @@ class Tax
                         'tariff'  => $tariff['tariff'],
                         'source'  => $tariff['source'],
                         'destination'  => $tariff['destination'],
-                        'percent' => $tariff['percent']
+                        'percent' => $tariff['percent'],
+                        'display' => $tariff['display']
                     );
                 }
             }
@@ -472,13 +473,16 @@ class Tax
         if ($check_tariff && is_array($this->_tariff_table) && !empty($this->_tariff_table)) {
             $store_country_iso = getCountryFormat($GLOBALS['config']->get('config', 'store_country'), 'numcode', 'iso');
             foreach ($this->_tariff_table as $tariff_id => $tariff) {
-                if(($tariff['tariff']=='M' && $manufacture_country == $tariff['source'] && $GLOBALS['cart']->basket['delivery_address']['country_iso'] == $tariff['destination']) || ($tariff['tariff']=='D' && $store_country_iso == $tariff['source'] && $GLOBALS['cart']->basket['delivery_address']['country_iso'] == $tariff['destination'])
-                    ) {
+                if(
+                    ($tariff['tariff']=='M' && $manufacture_country == $tariff['source'] && $GLOBALS['cart']->basket['delivery_address']['country_iso'] == $tariff['destination']) 
+                        ||
+                    ($tariff['tariff']=='D' && $store_country_iso == $tariff['source'] && $GLOBALS['cart']->basket['delivery_address']['country_iso'] == $tariff['destination'])
+                ) {
                     $percent = $tariff['percent'];
                     $amount	= sprintf('%.2F', $price*($tariff['percent']/100));
                     $tariff_id = 'i'.$tariff_id;
                     if ($sum) {
-                        $this->_tax_table_applied[$tariff_id]	= sprintf($GLOBALS['language']->checkout['import_tariff'], $tariff['destination']);
+                        $this->_tax_table_applied[$tariff_id]	= !empty($tariff['display']) ? $tariff['display'] : sprintf($GLOBALS['language']->checkout['import_tariff'], $tariff['destination']);
                         if (isset($this->_tax_table_add[$tariff_id])) {
                             $this->_tax_table_add[$tariff_id]	+= $amount;
                         } else {

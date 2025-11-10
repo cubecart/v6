@@ -161,10 +161,11 @@
          <table>
             <thead>
                <tr>
-                  <td>Source Country</td>
-                  <td>Destination Country</td>
-                  <td>Tariff</td>
-                  <td>Percent</td>
+                  <td>{$LANG.settings.source_country}</td>
+                  <td>{$LANG.settings.destination_country}</td>
+                  <td>{$LANG.common.tariff}</td>
+                  <td>{$LANG.common.percentage}</td>
+                  <td>{$LANG.common.display} {$LANG.common.optional}</td>
                   <td>&nbsp;</td>
                </tr>
             </thead>
@@ -175,6 +176,7 @@
                   <td>{$tariff.destination}</td>
                   <td>{$tariff.tariff}</td>
                   <td><input type="number" value="{$tariff.percent}" name="edittariff[{$tariff.id}][percent]" class="textbox number text-right no-arrows" step="0.01" min="0" max="999.99" /> &#37;</td>
+                  <td><input type="text" value="{$tariff.display}" name="edittariff[{$tariff.id}][display]" class="textbox" /></td>
                   <td><a href="?_g=settings&node=tax&delete_tariff={$tariff.id}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
                </tr>
                {foreachelse}
@@ -204,6 +206,7 @@
                      </select>
                   </td>
                   <td><input type="number" value="" name="addtariff[percent]" class="textbox number text-right no-arrows" step="0.01" min="0" max="999.99" /> &#37;</td>
+                  <td><input type="text" value="" name="addtariff[display]" class="textbox" placeholder="{$LANG.settings.tariff_display_eg}" /></td>
                   <td>&nbsp;</td>
                </tr>
             </tbody>

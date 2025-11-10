@@ -94,3 +94,5 @@ DROP TABLE IF EXISTS `CubeCart_tax_details`; #EOQ
 DROP TABLE IF EXISTS `CubeCart_tax_rates`; #EOQ 
 DROP TABLE IF EXISTS `CubeCart_taxes`; #EOQ 
 DROP TABLE IF EXISTS `CubeCart_transactions`; #EOQ
+DROP TABLE IF EXISTS `CubeCart_cookie_consent_text`; #EOQ
+DROP TABLE IF EXISTS `CubeCart_tariff`; #EOQ
