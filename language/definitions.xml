@@ -2022,6 +2022,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
+    <string name="note_tariff_grouping" introduced="6.5.12"><![CDATA[Tariffs with the same display text will be grouped at checkout. Unique tariff names will be split separately.]]></string>
     <string name="tariff_display_eg" introduced="6.5.12"><![CDATA[e.g. US Import Tariff]]></string>
     <string name="destination_country" introduced="6.5.12"><![CDATA[Destination Country]]></string>
     <string name="source_country" introduced="6.5.12"><![CDATA[Source Country]]></string>

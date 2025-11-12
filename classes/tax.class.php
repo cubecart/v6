@@ -97,12 +97,17 @@ class Tax
     {
         // Display applied taxes
         $GLOBALS['cart']->set('order_taxes', false);
+        $taxes = array();
         if (!empty($this->_tax_table_applied)) {
             foreach ($this->_tax_table_applied as $tax_id => $tax_name) {
-                $taxes[$tax_name]['value'] = $taxes[$tax_name]['value']??0 + (float)($this->_tax_table_inc[$tax_id]??0+$this->_tax_table_add[$tax_id]??0)*$this->_adjust_tax;
-                $taxes[$tax_name]['tax_id'] = $tax_id;
+                if(isset($taxes[$tax_name])) {
+                    $taxes[$tax_name]['value'] += (float)($this->_tax_table_inc[$tax_id]+$this->_tax_table_add[$tax_id])*$this->_adjust_tax;
+                    $taxes[$tax_name]['tax_id'] .= "|".$tax_id;
+                } else {
+                    $taxes[$tax_name]['value'] = $taxes[$tax_name]['value']??0 + (float)($this->_tax_table_inc[$tax_id]??0+$this->_tax_table_add[$tax_id]??0)*$this->_adjust_tax;
+                    $taxes[$tax_name]['tax_id'] = $tax_id;
+                }
             }
-
             $total_standard_taxes = 0;
             foreach ($taxes as $tax_name => $tax) {
                 if ($tax_name!=='inherited') {
@@ -193,7 +198,7 @@ class Tax
      */
     public function tariffName($tariff) {
         if(!empty($tariff['display'])) {
-            return $tariff['display'].'<!--'.bin2hex(random_bytes(16)).'-->'; // Work around to preserve duplicate display names
+            return $tariff['display']; // Work around to preserve duplicate display names
         }
         $tariff_on = $tariff['tariff']=='M' ? 'Manufacture': 'Dispatch';
         return sprintf($GLOBALS['language']->checkout['import_tariff'], $tariff['destination'], $tariff['source'], $tariff['percent']+0, $tariff_on);

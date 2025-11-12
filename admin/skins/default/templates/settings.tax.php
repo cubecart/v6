@@ -206,11 +206,12 @@
                      </select>
                   </td>
                   <td><input type="number" value="" name="addtariff[percent]" class="textbox number text-right no-arrows" step="0.01" min="0" max="999.99" /> &#37;</td>
-                  <td><input type="text" value="" name="addtariff[display]" class="textbox" placeholder="{$LANG.settings.tariff_display_eg}" /></td>
+                  <td><input type="text" value="" name="addtariff[display]" class="textbox" placeholder="{$LANG.settings.tariff_display_eg}" /> *</td>
                   <td>&nbsp;</td>
                </tr>
             </tbody>
          </table>
+         <p>* {$LANG.settings.note_tariff_grouping}</p>
       </fieldset>
       <p>{$LANG.settings.tariff_import_notice}</p>
    </div>
