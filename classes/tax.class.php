@@ -178,13 +178,15 @@ class Tax
     public function fetchTaxDetails($tax_id)
     {
         // Grouped tariffs this will get the right name but the percent may later be wrong
+        $grouped = false;
         if (strpos($tax_id, '|') !== false) { 
-            $tax_id = explode('|', $tax_id)[0];    
+            $tax_id = explode('|', $tax_id)[0]; 
+            $grouped = true;   
         }
         if(substr($tax_id, 0, 1) === 'i') { // import tariff
             $tax_id = (int)substr($tax_id, 1);
             if (($tariff = $GLOBALS['db']->select('CubeCart_tariff', false, array('id' => $tax_id))) !== false) {
-                return array('name' => $this->tariffName($tariff[0]), 'display' => $this->tariffName($tariff[0]), 'tax_percent' => $tariff[0]['percent']);
+                return array('name' => $this->tariffName($tariff[0]), 'display' => $this->tariffName($tariff[0]), 'tax_percent' => $grouped ? null : $tariff[0]['percent']);
             }    
         }
         if (($rate = $GLOBALS['db']->select('CubeCart_tax_rates', false, array('id' => (int)$tax_id))) !== false) {
