@@ -2546,4 +2546,12 @@ ul.char_filter li.selected {}
   .stripe_reverse div:nth-child(even) {
     background-color: var(--rowEven) !important;
   }
+  .preauth-wrapper {
+    background-color: var(--panel) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--text) !important;
+  }
+  .preauth-wrapper label {
+    color: var(--text) !important;
+  }
 }
