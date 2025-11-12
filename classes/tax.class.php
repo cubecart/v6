@@ -493,7 +493,6 @@ class Tax
                     $amount	= sprintf('%.2F', $price*($tariff['percent']/100));
                     $tariff_id = 'i'.$tariff_id;
                     if ($sum) {
-                        $type = $tariff['tariff']=='M' ? 'Manufacture': 'Shipping';
                         $this->_tax_table_applied[$tariff_id] = $this->tariffName($tariff);
                         if (isset($this->_tax_table_add[$tariff_id])) {
                             $this->_tax_table_add[$tariff_id]	+= $amount;
