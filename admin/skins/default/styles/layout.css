@@ -2554,4 +2554,66 @@ ul.char_filter li.selected {}
   .preauth-wrapper label {
     color: var(--text) !important;
   }
+    /* --- Quick Links (breadcrumbs right side) --- */
+  #breadcrumbs ul.quick_links {
+    background: var(--panel-subtle) !important;
+    border-left: 1px solid var(--border) !important;
+  }
+
+  #breadcrumbs ul.quick_links li {
+    color: var(--text) !important;
+  }
+
+  #breadcrumbs ul.quick_links li a {
+    color: var(--text-muted) !important;
+  }
+  #breadcrumbs ul.quick_links li a:hover {
+    color: var(--text) !important;
+  }
+
+  /* separators between items */
+  #breadcrumbs ul.quick_links li:not(:last-child) {
+    border-right: 1px solid var(--border) !important;
+  }
+
+  /* hover/active backgrounds for items */
+  #breadcrumbs ul.quick_links li:hover,
+  #breadcrumbs ul.quick_links li:focus-within {
+    background: var(--rowHover) !important;
+  }
+
+  /* keyboard focus ring */
+  #breadcrumbs ul.quick_links a:focus-visible {
+    outline: 2px solid var(--primary-accent);
+  }
+
+  /* Help menu dropdown */
+  ul.quick_links li#help_menu { position: relative }
+  ul.quick_links li#help_menu ul {
+    background: var(--panel) !important;
+    border: 1px solid var(--border) !important;
+  }
+  ul.quick_links li#help_menu ul li {
+    color: var(--text) !important;
+  }
+  ul.quick_links li#help_menu ul li:not(:last-child) {
+    border-bottom: 1px solid var(--border) !important;
+  }
+  ul.quick_links li#help_menu ul li a {
+    color: var(--text-muted) !important;
+  }
+  ul.quick_links li#help_menu ul li a:hover,
+  ul.quick_links li#help_menu ul li a:focus-visible {
+    background: var(--rowHover) !important;
+    color: var(--text) !important;
+  }
+
+  /* Optional: icon colours inside quick_links */
+  #breadcrumbs ul.quick_links i.fa {
+    color: var(--text-muted) !important;
+  }
+  #breadcrumbs ul.quick_links li:hover i.fa {
+    color: var(--text) !important;
+  }
+  #help_menu > ul > li:last-child { border-right: 1px solid var(--border) !important; }
 }
