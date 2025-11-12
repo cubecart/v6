@@ -534,7 +534,7 @@
                         {foreach from=$SELECT_TAX item=country key=taxes}
                         <optgroup label="{$taxes}">
                            {foreach from=$country item=tax}
-                           <option value="{$tax.id}" data-percent="{$tax.tax_percent}" data-shipping="{$tax.shipping}" data-goods="{$tax.goods}">{$tax.type_name}: {$tax.display}</option>
+                           <option value="{$tax.id}" data-percent="{$tax.tax_percent}" data-shipping="{$tax.shipping}" data-goods="{$tax.goods}">{$tax.type_name}: {$tax.display}{if $GROUPED_TARIFFS && isset($tax.source)} ({$tax.source}-{$tax.destination} @ {$tax.tax_percent}){/if}</option>
                            {/foreach}
                         </optgroup>
                         {/foreach}

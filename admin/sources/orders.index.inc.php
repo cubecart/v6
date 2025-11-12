@@ -297,13 +297,20 @@ if (isset($_GET['action'])) {
 
     // Get tariffs
     if (($tariffs = $GLOBALS['db']->select('CubeCart_tariff')) !== false) {
+        $names = array();
+        $grouped = false;
         foreach($tariffs as $tariff) {
             $numcode = getCountryFormat($tariff['destination'], 'iso', 'numcode');
+            $name = $GLOBALS['tax']->tariffName($tariff);
+            if (in_array($name, $names)) {
+                $grouped = true;
+            }
+            array_push($names, $name);
             $array = array(
                 "type_name" => $lang['common']['tariff'],
                 "id" => 'i'.$tariff['id'],
-                "name" => $GLOBALS['tax']->tariffName($tariff),
-                "display" => $GLOBALS['tax']->tariffName($tariff),
+                "name" => $name,
+                "display" => $name,
                 "status" => "1",
                 "type_id" => "1",
                 "details_id" => "0",
@@ -312,13 +319,15 @@ if (isset($_GET['action'])) {
                 "tax_percent" => $tariff['percent'],
                 "goods" => "1",
                 "shipping" => "0",
-                "active" => "1"
+                "active" => "1",
+                "source" => $tariff['source'],
+                "destination" => $tariff['destination'],
             );
             $rates['i'.$tariff['id']] = $array;
             $tax_by_country[$numcode][] = $array;
         }
     }
-
+    $GLOBALS['smarty']->assign('GROUPED_TARIFFS', $grouped);
     if(!empty($tax_by_country)){
         foreach ($tax_by_country as $numcode => $taxes) {
             $county = ($taxes[0]['county_id']>0) ? getStateFormat($taxes[0]['county_id']) : 'All';
@@ -564,6 +573,9 @@ if (isset($_GET['action'])) {
             // Taxes
             if (($taxes = $GLOBALS['db']->select('CubeCart_order_tax', false, array('cart_order_id' => $summary[0]['cart_order_id']))) !== false) {
                 foreach ($taxes as $tax) {
+                    if (strpos($tax['tax_id'], '|') !== false) { 
+                        $tax['tax_id'] = explode('|', $tax['tax_id'])[0]; 
+                    }
                     $tax['display']  = $rates[$tax['tax_id']]['display'];
                     $tax['type_name'] = $rates[$tax['tax_id']]['type_name'];
                     $smarty_data['list_taxes'][] = $tax;

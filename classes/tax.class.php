@@ -177,6 +177,10 @@ class Tax
      */
     public function fetchTaxDetails($tax_id)
     {
+        // Grouped tariffs this will get the right name but the percent may later be wrong
+        if (strpos($tax_id, '|') !== false) { 
+            $tax_id = explode('|', $tax_id)[0];    
+        }
         if(substr($tax_id, 0, 1) === 'i') { // import tariff
             $tax_id = (int)substr($tax_id, 1);
             if (($tariff = $GLOBALS['db']->select('CubeCart_tariff', false, array('id' => $tax_id))) !== false) {
@@ -187,9 +191,7 @@ class Tax
             if (($detail = $GLOBALS['db']->select('CubeCart_tax_details', false, array('id' => $rate[0]['details_id']))) !== false) {
                 return array('name' => $detail[0]['name'], 'display' => $detail[0]['display'], 'tax_percent' => $rate[0]['tax_percent'], 'display' => $detail[0]['display']);
             }
-        }
-
-        
+        }  
     }
     /**
      * Fetch tariff name
