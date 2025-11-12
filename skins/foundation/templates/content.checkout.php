@@ -77,6 +77,11 @@
       <button type="submit" name="proceed" id="checkout_proceed" class="button success right g-recaptcha"><svg class="icon"><use xlink:href="#icon-chevron-right"></use></svg><span class="left">{$CHECKOUT_BUTTON}</span></button>
       {/if}
    </div>
+   {if $CUSTOMER_LOCALE.description}
+   <div class="row">
+      <small>&#185;{$LANG.basket.unconfirmed_locale}</small>
+   </div>
+   {/if}
 </form>
 {if $DISABLE_CHECKOUT_BUTTON!==true}
    {if $CHECKOUTS}
