@@ -302,8 +302,8 @@ if (isset($_GET['action'])) {
             $array = array(
                 "type_name" => $lang['common']['tariff'],
                 "id" => 'i'.$tariff['id'],
-                "name" => sprintf($lang['checkout']['import_tariff'], $tariff['destination']),
-                "display" => sprintf($lang['checkout']['import_tariff'], $tariff['destination']),
+                "name" => $GLOBALS['tax']->tariffName($tariff),
+                "display" => $GLOBALS['tax']->tariffName($tariff),
                 "status" => "1",
                 "type_id" => "1",
                 "details_id" => "0",

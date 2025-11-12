@@ -100,7 +100,7 @@ class Tax
         if (!empty($this->_tax_table_applied)) {
             foreach ($this->_tax_table_applied as $tax_id => $tax_name) {
                 $taxes[$tax_name]['value'] = $taxes[$tax_name]['value']??0 + (float)($this->_tax_table_inc[$tax_id]??0+$this->_tax_table_add[$tax_id]??0)*$this->_adjust_tax;
-                $taxes[$tax_name]['tax_id']= $tax_id;
+                $taxes[$tax_name]['tax_id'] = $tax_id;
             }
 
             $total_standard_taxes = 0;
@@ -175,8 +175,7 @@ class Tax
         if(substr($tax_id, 0, 1) === 'i') { // import tariff
             $tax_id = (int)substr($tax_id, 1);
             if (($tariff = $GLOBALS['db']->select('CubeCart_tariff', false, array('id' => $tax_id))) !== false) {
-                $name = (!empty($tariff[0]['display'])) ? $tariff[0]['display'] : sprintf($GLOBALS['language']->checkout['import_tariff'], $tariff[0]['destination']);
-                return array('name' => $name, 'display' => $name, 'tax_percent' => $tariff[0]['percent']);
+                return array('name' => $this->tariffName($tariff[0]), 'display' => $this->tariffName($tariff[0]), 'tax_percent' => $tariff[0]['percent']);
             }    
         }
         if (($rate = $GLOBALS['db']->select('CubeCart_tax_rates', false, array('id' => (int)$tax_id))) !== false) {
@@ -186,6 +185,18 @@ class Tax
         }
 
         
+    }
+    /**
+     * Fetch tariff name
+     *
+     * @return string
+     */
+    public function tariffName($tariff) {
+        if(!empty($tariff['display'])) {
+            return $tariff['display'].'<!--'.bin2hex(random_bytes(16)).'-->'; // Work around to preserve duplicate display names
+        }
+        $tariff_on = $tariff['tariff']=='M' ? 'Manufacture': 'Dispatch';
+        return sprintf($GLOBALS['language']->checkout['import_tariff'], $tariff['destination'], $tariff['source'], $tariff['percent']+0, $tariff_on);
     }
 
     /**
@@ -482,7 +493,8 @@ class Tax
                     $amount	= sprintf('%.2F', $price*($tariff['percent']/100));
                     $tariff_id = 'i'.$tariff_id;
                     if ($sum) {
-                        $this->_tax_table_applied[$tariff_id]	= !empty($tariff['display']) ? $tariff['display'] : sprintf($GLOBALS['language']->checkout['import_tariff'], $tariff['destination']);
+                        $type = $tariff['tariff']=='M' ? 'Manufacture': 'Shipping';
+                        $this->_tax_table_applied[$tariff_id] = $this->tariffName($tariff);
                         if (isset($this->_tax_table_add[$tariff_id])) {
                             $this->_tax_table_add[$tariff_id]	+= $amount;
                         } else {
