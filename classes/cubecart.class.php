@@ -1868,6 +1868,7 @@ class Cubecart
                     $cheapest = null;
                     $mostExpensive = null;
                     $cheapestOverZero = null;
+                    $count = count($shipping_values);  
                     foreach ($shipping_values as $row) {
                         $val = (float)$row['value'];
                         // Cheapest (min value)
@@ -1879,7 +1880,7 @@ class Cubecart
                             $mostExpensive = $row;
                         }
                         // Cheapest over zero
-                        if ($val > 0 && ($cheapestOverZero === null || $val < (float)$cheapestOverZero['value'])) {
+                        if ($count == 1 || ($val > 0 && ($cheapestOverZero === null || $val < (float)$cheapestOverZero['value']))) {
                             $cheapestOverZero = $row;
                         }
                     }
