@@ -677,7 +677,9 @@ class Debug
             $log_days = (is_object($GLOBALS['config']) && method_exists($GLOBALS['config'], 'get')) ? $GLOBALS['config']->get('config', 'r_system_error') : 7;
             if (ctype_digit((string)$log_days) &&  $log_days > 0) {
                 $GLOBALS['db']->insert('CubeCart_system_error_log', array('message' => $message, 'url' => $url, 'backtrace' => $backtrace, 'time' => time()));
-                $GLOBALS['db']->delete('CubeCart_system_error_log', 'time < UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL '.$log_days.' DAY))');
+                if (executionChance(10)) { // 10% probability
+                    $GLOBALS['db']->delete('CubeCart_system_error_log', 'time < UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL '.$log_days.' DAY))', 500);
+                }
             } elseif (empty($log_days) || !$log_days) {
                 $GLOBALS['db']->insert('CubeCart_system_error_log', array('message' => $message, 'url' => $url, 'backtrace' => $backtrace, 'time' => time()));
             }

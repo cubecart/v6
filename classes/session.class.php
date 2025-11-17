@@ -229,7 +229,9 @@ class Session
             $GLOBALS['db']->insert('CubeCart_access_log', $record);
         }
         // Remove expired blocks
-        $GLOBALS['db']->delete('CubeCart_blocker', array('last_attempt' => '<='.($now - $time)));
+        if (executionChance(10)) { // 10% probability
+            $GLOBALS['db']->delete('CubeCart_blocker', array('last_attempt' => '<='.($now - $time)), 500);
+        }
 
         // Search for active blocks
         $where = array(
@@ -646,10 +648,12 @@ class Session
         
         //Use the instance because the global might be gone already
         Database::getInstance()->update('CubeCart_sessions', $record, array('session_id' => $this->getId()), false);
-        // Tidy Access Logs keep months worth
-        Database::getInstance()->delete('CubeCart_access_log', array('time' => '<'.(time()-(3600*24*7*4))));
-        // Purge sessions older than the session time out
-        Database::getInstance()->delete('CubeCart_sessions', array('session_last' => '<='.(time() - $this->_session_timeout)), false);
+        if (executionChance(2)) {  // 2% probability
+            // Tidy Access Logs keep months worth
+            Database::getInstance()->delete('CubeCart_access_log', array('time' => '<'.(time()-(3600*24*7*4))), 500);
+            // Purge sessions older than the session time out
+            Database::getInstance()->delete('CubeCart_sessions', array('session_last' => '<='.(time() - $this->_session_timeout)), 500);
+        }
 
         $this->_state = 'closed';
 

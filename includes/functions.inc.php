@@ -526,6 +526,23 @@ function formatTime($timestamp, $format = false, $static = false)
 }
 
 /**
+ * Returns true with the given percentage chance.
+ *
+ * @param int|float $percent 0–100 (e.g. 5 means 5% chance)
+ * @return bool
+ */
+function executionChance($percent) {
+    // Clamp percent to valid range
+    $percent = max(0, min(100, $percent));
+
+    // Convert percent to a 1-in-X chance
+    // e.g. 5% → 1 in 20
+    $range = 100 / $percent;
+
+    return mt_rand(1, (int)ceil($range)) === 1;
+}
+
+/**
  * Generate Product Code
  *
  * @param string $product_name

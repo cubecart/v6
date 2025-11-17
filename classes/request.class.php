@@ -268,7 +268,9 @@ class Request
         );
         $log_days = $GLOBALS['config']->get('config', 'r_request');
         if (ctype_digit((string)$log_days) &&  $log_days > 0) {
-            $GLOBALS['db']->delete('CubeCart_request_log', 'time < DATE_SUB(NOW(), INTERVAL '.$log_days.' DAY)');
+            if (executionChance(2)) { // 2% probability
+                $GLOBALS['db']->delete('CubeCart_request_log', 'time < DATE_SUB(NOW(), INTERVAL '.$log_days.' DAY)', 500);
+            }
         }
         $GLOBALS['db']->insert('CubeCart_request_log', $data);
     }
