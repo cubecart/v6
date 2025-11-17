@@ -781,8 +781,7 @@ class Catalogue
     public function getCategoryProducts($category_id, $page = 1, $per_page = 10, $hidden = false)
     {
         if (strtolower($page) == 'all') {
-            $per_page = false;
-            $page  = false;
+            httpredir(currentPage(array('page')), '', false, $status = 301);
         }
 
         $where2 = $this->outOfStockWhere(false, 'INV', true);
