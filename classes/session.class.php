@@ -229,9 +229,7 @@ class Session
             $GLOBALS['db']->insert('CubeCart_access_log', $record);
         }
         // Remove expired blocks
-        if (executionChance(10)) { // 10% probability
-            $GLOBALS['db']->delete('CubeCart_blocker', array('last_attempt' => '<='.($now - $time)), 500);
-        }
+        $GLOBALS['db']->delete('CubeCart_blocker', array('last_attempt' => '<='.($now - $time)), 500);
 
         // Search for active blocks
         $where = array(
