@@ -129,8 +129,7 @@ $current_page = currentPage(array($sort_var));
 $thead_sort = array(
     'username'   => $GLOBALS['db']->column_sort('admin_id', $lang['account']['username'], $sort_var, $current_page, $_GET[$sort_var], $anchor),
     'ip_address' => $GLOBALS['db']->column_sort('ip_address', $lang['common']['ip_address'], $sort_var, $current_page, $_GET[$sort_var], $anchor),
-    'description'  => $GLOBALS['db']->column_sort('description', $lang['common']['description'], $sort_var, $current_page, $_GET[$sort_var], $anchor),
-    'date'    => $GLOBALS['db']->column_sort('time', $lang['common']['date'], $sort_var, $current_page, $_GET[$sort_var], $anchor)
+    'time'    => $GLOBALS['db']->column_sort('time', $lang['common']['date'], $sort_var, $current_page, $_GET[$sort_var], $anchor)
 );
 $GLOBALS['smarty']->assign('THEAD_CUSTOMER', $thead_sort);
 $page_customer  = (isset($_GET[$page_var])) ? $_GET[$page_var] : 1;
