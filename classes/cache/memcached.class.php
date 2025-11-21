@@ -28,6 +28,7 @@ class Cache extends Cache_Controler
 
     private $_memcache_servers = array('127.0.0.1',11211);
     private $_connected = false;
+    private $_memcached;
 
     ##############################################
 
