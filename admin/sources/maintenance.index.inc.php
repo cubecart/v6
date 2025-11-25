@@ -951,7 +951,7 @@ if (isset($database_result) && $database_result) {
         ),
         'cubecart_seo_urls' => array(
             'id' => 'PRIMARY',
-            'path' => 'UNIQUE',
+            'path' => 'UNIQUE KEY',
             'type' => 'KEY',
             'item_id' => 'KEY',
             'custom' => 'KEY',
@@ -968,6 +968,12 @@ if (isset($database_result) && $database_result) {
         'CubeCart_cookie_consent_text' => array(
             'id' => 'PRIMARY',
             'hash' => 'UNIQUE KEY'
+        ),
+        'CubeCart_tariff' => array(
+            'id' => 'PRIMARY',
+            'combos' => 'UNIQUE KEY',
+            'source' => 'KEY',
+            'destination' => 'KEY'
         )
     );
 
