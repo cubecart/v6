@@ -733,7 +733,7 @@ class User
     public function logConsent($dialogue)
     {
         $hash = md5($dialogue);
-        if($e = $GLOBALS['db']->select('CubeCart_cookie_consent_text', 'id', array('hash' => $hash))) {
+        if($e = $GLOBALS['db']->select('CubeCart_cookie_consent_text', 'id', array('hash' => $hash), false, 1, false, false)) {
             $id = $e[0]['id'];
         } else {
             $id = $GLOBALS['db']->insert('CubeCart_cookie_consent_text', array('hash' => $hash, 'log' => $dialogue));
