@@ -2607,8 +2607,6 @@ ul.char_filter li.selected {}
     background: var(--rowHover) !important;
     color: var(--text) !important;
   }
-
-  /* Optional: icon colours inside quick_links */
   #breadcrumbs ul.quick_links i.fa {
     color: var(--text-muted) !important;
   }
@@ -2616,4 +2614,12 @@ ul.char_filter li.selected {}
     color: var(--text) !important;
   }
   #help_menu > ul > li:last-child { border-right: 1px solid var(--border) !important; }
+  .row_warn {
+    color: #ffffff !important;
+    border: 1px solid #ff6600;
+  }
+  .row_error {
+    color: #ffffff !important;
+    border-bottom: 1px solid #ff0000;
+  }
 }
