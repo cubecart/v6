@@ -24,7 +24,6 @@ ini_set('display_errors', false);
 ini_set('magic_quotes_runtime', false);
 ini_set('short_open_tag', false);   // Disable '<?' style php short tags for xml happiness
 ini_set('arg_separator.output', '&'); // Set argument separator to & HTML validity
-ini_set('allow_url_include', false);  // Disable URL includes
 ini_set('default_charset', 'UTF-8');  // Set default charset as 'UTF-8'
 ini_set('default_mimetype', 'text/html'); // Set default mimetype as 'text/html'
 
