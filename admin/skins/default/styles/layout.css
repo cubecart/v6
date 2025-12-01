@@ -1648,10 +1648,7 @@ table.filter td {
     animation-iteration-count: 3;
 }
 #clear_cache_master.clear a {
-    color: #fff !important;   
-}
-#clear_cache_master.clear a {
-    color: #fff !important;   
+    color: #ffffff;   
 }
 #clear_cache_master.clear:hover {
     background: #ffb733;
@@ -2565,10 +2562,10 @@ ul.char_filter li.selected {}
   }
 
   #breadcrumbs ul.quick_links li a {
-    color: var(--text-muted) !important;
+    color: var(--text-muted);
   }
   #breadcrumbs ul.quick_links li a:hover {
-    color: var(--text) !important;
+    color: #000000 !important;
   }
 
   /* separators between items */
@@ -2581,12 +2578,10 @@ ul.char_filter li.selected {}
   #breadcrumbs ul.quick_links li:focus-within {
     background: var(--rowHover) !important;
   }
-
-  /* keyboard focus ring */
-  #breadcrumbs ul.quick_links a:focus-visible {
-    outline: 2px solid var(--primary-accent);
+  #breadcrumbs ul.quick_links li#clear_cache_master:hover,
+  #breadcrumbs ul.quick_links li#clear_cache_master:focus-within {
+    background: #ffb733 !important;
   }
-
   /* Help menu dropdown */
   ul.quick_links li#help_menu { position: relative }
   ul.quick_links li#help_menu ul {
@@ -2621,5 +2616,11 @@ ul.char_filter li.selected {}
   .row_error {
     color: #ffffff !important;
     border-bottom: 1px solid #ff0000;
+  }
+  #clear_cache_master.clear a {
+    color: #000000 !important;
+  }
+  #clear_cache_master.clear a:hover {
+    color: #ffffff !important;
   }
 }
