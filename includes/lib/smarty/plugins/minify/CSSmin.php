@@ -277,6 +277,19 @@ class CSSmin
         // Normalize all whitespace strings to single spaces. Easier to work with that way.
         $css = preg_replace('/\s+/', ' ', $css);
 
+        # preserve CSS clamp(s)
+        if (preg_match_all('/clamp/i', $css, $matches, PREG_OFFSET_CAPTURE)) {
+            $adj = 0;
+            foreach ($matches[0] as $match) {
+                $clampStart = $match[1] + $adj;
+                $clampLen = strpos($css, ';', $clampStart) - $clampStart + 1;
+                $this->preserved_tokens[] = substr($css, $clampStart, $clampLen);
+                $token_tring = self::TOKEN . (count($this->preserved_tokens) - 1) . '___';
+                $css = substr_replace($css, $token_tring, $clampStart, $clampLen);
+                $adj += strlen($token_tring) - $clampLen;
+            }
+        }
+
         // Shorten & preserve calculations calc(...) since spaces are important
         $css = preg_replace_callback('/calc(\(((?:[^\(\)]+|(?1))*)\))/i', array($this, 'replace_calc'), $css);
 
