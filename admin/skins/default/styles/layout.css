@@ -2632,4 +2632,10 @@ ul.char_filter li.selected {}
   #clear_cache_master.clear a:hover {
     color: #ffffff !important;
   }
+  pre {
+    background-color: var(--input-bg) !important;
+    border: 1px solid var(--input-border) !important;
+    color: var(--text) !important;
+    font-family: 'Courier New', Courier, monospace;
+  }
 }
