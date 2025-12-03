@@ -225,7 +225,7 @@ class Cart
         $gc = $GLOBALS['config']->get('gift_certs');
 
         if (isset($gc['product_code']) && $product_id == $gc['product_code'] && !empty($optionsArray)) {
-            $hash = md5(recursive_implode('{@}', $optionsArray));
+            $hash = md5(json_encode($optionsArray));
             if (isset($this->basket['contents'][$hash])) {
                 // Increment quantity
                 $this->basket['contents'][$hash]['quantity'] += $quantity;
