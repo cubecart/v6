@@ -315,7 +315,7 @@ class Cart
                     $this->checkMinimumProductQuantity($product_id, $quantity, true);
 
                     // Add item to basket
-                    $hash = md5($product['product_id'].((!empty($optionsArray)) ? $product['name'].recursive_implode('{@}', $optionsArray) : $product['name']));
+                    $hash = md5($product['product_id'].json_encode($optionsArray));
                     if (isset($this->basket['contents'][$hash])) {
                         // Update quantity
                         if (isset($max_stock)) {
