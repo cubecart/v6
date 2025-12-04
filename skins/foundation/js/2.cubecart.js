@@ -634,6 +634,9 @@ function price_inc_options() {
                 $('#ptp').html(prices[0]);
                 $('#fbp').html(prices[1]);
                 // Maintain original behaviour: show/hide sale price by comparison
+                prices = prices.map(function (p) {
+                    return parseFloat(String(p).replace(/[^0-9.-]/g, ""));
+                });
                 if (prices[0] <= prices[1]) {
                     $('#fbp').hide();
                     $('#ptp').removeClass('sale_price');
