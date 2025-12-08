@@ -20,7 +20,7 @@
 </fieldset>
 <fieldset>
     <legend>{$LANG.settings.eu_contact} {$LANG.common.optional}</legend>
-    <div><label for="manu_eu_name">{$LANG.common.name}</label><span><input type="text" class="textbox required" id="manu_eu_name" name="manufacturer[eu_name]" value="{$EDIT.eu_name}"></span></div>
+    <div><label for="manu_eu_name">{$LANG.common.name}</label><span><input type="text" class="textbox" id="manu_eu_name" name="manufacturer[eu_name]" value="{$EDIT.eu_name}"></span></div>
     <div><label for="manu_eu_line1">{$LANG.address.line1}</label><span><input type="text" class="textbox" id="manu_eu_line1" name="manufacturer[eu_line1]" value="{$EDIT.eu_line1}"></span></div>
     <div><label for="manu_eu_line2">{$LANG.address.line2}</label><span><input type="text" class="textbox" id="manu_eu_line2" name="manufacturer[eu_line2]" value="{$EDIT.eu_line2}"></span></div>
     <div><label for="manu_eu_town">{$LANG.address.town}</label><span><input type="text" class="textbox" id="manu_eu_town" name="manufacturer[eu_town]" value="{$EDIT.eu_town}"></span></div>
