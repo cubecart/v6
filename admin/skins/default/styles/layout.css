@@ -2638,4 +2638,7 @@ ul.char_filter li.selected {}
     color: var(--text) !important;
     font-family: 'Courier New', Courier, monospace;
   }
+  #filemanager div div.folder {
+    background-color: var(--panel-subtle) !important;
+  }
 }
