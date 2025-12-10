@@ -1885,6 +1885,11 @@ class Cubecart
                         }
                     }
 
+                    // If no over-zero options exist, fall back to cheapest
+                    if ($cheapestOverZero === null) {
+                        $cheapestOverZero = $cheapest;
+                    }
+
                     switch($shipping_defaults) {
                         case '1': // Cheapest over zero
                             $default_shipping = $cheapestOverZero;
