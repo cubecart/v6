@@ -547,7 +547,7 @@ class Tax
                     }
                 }
             }
-            //return array('tax_id' => $tax_id, 'amount' => $amount, 'tax_inclusive' => $tax_inclusive, 'tax_name' => $tax_name, 'tax_percent' => $percent);
+            return array('tax_id' => $tax_id, 'amount' => $amount, 'tax_inclusive' => $tax_inclusive, 'tax_name' => $tax_name, 'tax_percent' => $percent);
         }
         return false;
     }
