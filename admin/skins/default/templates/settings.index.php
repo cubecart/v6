@@ -508,7 +508,7 @@
          <div><label for="es_u">{$LANG.account.username}</label><span><input name="config[es_u]" id="es_u" type="text" class="textbox" value="{$CONFIG.es_u}" autocomplete="false"{if isset($FIXED_CONFIG.es_u)} disabled{/if}></span></div>
          <div><label for="es_p">{$LANG.account.password}</label><span><input name="config[es_p]" id="es_p" type="password" class="textbox" value="{$CONFIG.es_p}" autocomplete="false"{if isset($FIXED_CONFIG.es_p)} disabled{/if}></span></div>
          <div><label for="es_a">{$LANG.account.api}</label><span><input name="config[es_a]" id="es_a" type="password" class="textbox" value="{$CONFIG.es_a}" autocomplete="false"{if isset($FIXED_CONFIG.es_a)} disabled{/if}></span></div>
-		 <div><label for="es_t">{$LANG.account.authtype</label>
+		 <div><label for="es_t">{$LANG.account.authtype}</label>
             <span>
                <select name="config[es_t]" id="es_t" class="textbox">
                   <option value="0"{if !isset($CONFIG.es_t) || (isset($CONFIG.es_t) && $CONFIG.es_t=='0')} selected="selected"{/if}>{$LANG.account.basic}</option>
@@ -613,4 +613,5 @@
    var county_list = {if !empty($VAL_JSON_COUNTY)}{$VAL_JSON_COUNTY}{else}false{/if};
    {if $JSON_STYLES}var json_skins	= {$JSON_STYLES};{/if}
 </script>
+
 
