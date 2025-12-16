@@ -507,6 +507,15 @@
          <div><label for="es_h">{$LANG.settings.es_hosts}</label><span><input name="config[es_h]" id="es_h" type="text" class="textbox" value="{$CONFIG.es_h}" placeholder="{$LANG.common.eg} https://localhost:9200" autocomplete="false"{if isset($FIXED_CONFIG.es_h)} disabled{/if}></span></div>
          <div><label for="es_u">{$LANG.account.username}</label><span><input name="config[es_u]" id="es_u" type="text" class="textbox" value="{$CONFIG.es_u}" autocomplete="false"{if isset($FIXED_CONFIG.es_u)} disabled{/if}></span></div>
          <div><label for="es_p">{$LANG.account.password}</label><span><input name="config[es_p]" id="es_p" type="password" class="textbox" value="{$CONFIG.es_p}" autocomplete="false"{if isset($FIXED_CONFIG.es_p)} disabled{/if}></span></div>
+         <div><label for="es_a">{$LANG.account.api}</label><span><input name="config[es_a]" id="es_a" type="password" class="textbox" value="{$CONFIG.es_a}" autocomplete="false"{if isset($FIXED_CONFIG.es_a)} disabled{/if}></span></div>
+		 <div><label for="es_t">{$LANG.account.authtype</label>
+            <span>
+               <select name="config[es_t]" id="es_t" class="textbox">
+                  <option value="0"{if !isset($CONFIG.es_t) || (isset($CONFIG.es_t) && $CONFIG.es_t=='0')} selected="selected"{/if}>{$LANG.account.basic}</option>
+                  <option value="1"{if isset($CONFIG.es_t) && $CONFIG.es_t=='1'} selected="selected"{/if}>{$LANG.account.api}</option>
+               </select>
+            </span>
+         </div>
          <div><label for="es_i">{$LANG.settings.index_name}</label><span><input name="config[es_i]" id="es_i" type="text" class="textbox" value="{$CONFIG.es_i}" placeholder="{$LANG.common.eg} {$CONFIG.dbdatabase}" autocomplete="false" {if isset($FIXED_CONFIG.es_i)} disabled{/if}></span></div>
          <div><label for="es_v">{$LANG.settings.es_ssl_v}</label><span><input name="config[es_v]" id="es_v" type="hidden" class="toggle" value="{$CONFIG.es_v}" autocomplete="false"{if isset($FIXED_CONFIG.es_v)} disabled{/if}></span></div>
          <div><label for="es_c">{$LANG.settings.cert_auth}</label><span><input name="config[es_c]" id="es_c" type="text" class="textbox" value="{$CONFIG.es_c}" placeholder="{$LANG.common.eg} path/to/http_ca.crt" autocomplete="false"{if isset($FIXED_CONFIG.es_c)} disabled{/if}></span></div>
@@ -604,3 +613,4 @@
    var county_list = {if !empty($VAL_JSON_COUNTY)}{$VAL_JSON_COUNTY}{else}false{/if};
    {if $JSON_STYLES}var json_skins	= {$JSON_STYLES};{/if}
 </script>
+
