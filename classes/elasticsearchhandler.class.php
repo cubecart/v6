@@ -83,19 +83,19 @@ class ElasticsearchHandler
         $hosts = empty($this->_config['es_h']) ? array('https://localhost:9200') : explode(',', $this->_config['es_h']);
         $validate_ssl = ($this->_config['es_v']=='1') ? true : false;
 
-        $this->_client = ClientBuilder::create()
+        $clientBuilder = ClientBuilder::create()
             ->setHosts($hosts)
             ->setSSLVerification($validate_ssl)
             ->setCABundle($this->_config['es_c']);
 		if (isset($this->_config['es_t']) && $this->_config['es_t'] == '1')
 		{
-			$this->_client->setApiKey($this->_config['es_a']);
+			$clientBuilder->setApiKey($this->_config['es_a']);
 		}
 		else
 		{
-			$this->_client->setBasicAuthentication($this->_config['es_u'], $this->_config['es_p']);
+			$clientBuilder->setBasicAuthentication($this->_config['es_u'], $this->_config['es_p']);
 		}
-		$this->_client->build();
+		$this->_client = $clientBuilder->build();
          
         if($test) {
             if(!$this->indexExists()) {
