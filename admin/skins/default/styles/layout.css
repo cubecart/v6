@@ -1004,12 +1004,6 @@ tbody tr:nth-child(even) td.no-bg {
 .stripe div:nth-child(even) {
     background-color: #fff !important
 }
-.stripe_reverse div:nth-child(odd) {
-    background-color: #fff !important
-}
-.stripe_reverse div:nth-child(even) {
-    background-color: #edf4f7 !important
-}
 fieldset .checkbox {
     margin-top: 4px
 }
@@ -2537,12 +2531,6 @@ ul.char_filter li.selected {}
     .parse_content a:hover {
     text-decoration: underline;
     }
-    .stripe_reverse div:nth-child(odd) {
-    background-color: var(--rowOdd) !important;
-  }
-  .stripe_reverse div:nth-child(even) {
-    background-color: var(--rowEven) !important;
-  }
   .preauth-wrapper {
     background-color: var(--panel) !important;
     border: 1px solid var(--border) !important;

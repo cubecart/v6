@@ -88,7 +88,7 @@
          <div><label for="oid_mode">{$LANG.orders.id_mode}</label><span><select name="config[oid_mode]" id="oid_mode" class="textbox preview_order" onchange="this.value == 'i' ? document.getElementById('i_options').style.display = 'block' :  document.getElementById('i_options').style.display = 'none';">
          {foreach from=$OPT_OID_MODE item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
             </select></span></div>
-         <div{if $CONFIG.oid_mode!=="i"} style="display: none"{/if} id="i_options" class="stripe">
+         <div{if $CONFIG.oid_mode!=="i"} style="display: none"{/if} id="i_options">
             <div><label for="oid_prefix">{$LANG.orders.oid_prefix}</label>
                   <span>
                         <input name="oid_prefix" id="oid_prefix" class="textbox number preview_order" value="{$CONFIG.oid_prefix}">
@@ -440,7 +440,7 @@
          </div>
          <div><label for="email_name">{$LANG.settings.email_sender_name}</label><span><input name="config[email_name]" id="email_name" type="text" class="textbox preview_email" value="{$CONFIG.email_name}"></span></div>
          <div><label for="email_address">{$LANG.settings.email_sender_address}</label><span><input name="config[email_address]" id="email_address" type="text" class="textbox preview_email" value="{$CONFIG.email_address}"></span></div>
-         <div id="smtp_settings" class="stripe stripe_reverse"{if $CONFIG.email_method=='mail'|| $CONFIG.email_method=='sendgrid' || $CONFIG.email_method==''} style="display: none"{/if}>
+         <div id="smtp_settings" {if $CONFIG.email_method=='mail'|| $CONFIG.email_method=='sendgrid' || $CONFIG.email_method==''} style="display: none"{/if}>
             <div><label for="email_smtp_host">{$LANG.settings.smtp_host}</label><span><input name="config[email_smtp_host]" id="email_smtp_host" type="text" class="textbox preview_email" value="{$CONFIG.email_smtp_host}"></span></div>
             <div><label for="email_smtp_port">{$LANG.settings.smtp_port}</label><span><input name="config[email_smtp_port]" id="email_smtp_port" type="text" class="textbox number preview_email" value="{$CONFIG.email_smtp_port}"></span></div>
             <div><label for="email_smtp">{$LANG.settings.smtp_auth}</label><span><select name="config[email_smtp]" id="email_smtp" class="textbox preview_email" autocomplete="off">
@@ -450,7 +450,7 @@
             <div><label for="email_smtp_user">{$LANG.settings.smtp_user}</label><span><input name="config[email_smtp_user]" id="email_smtp_user" type="text" class="textbox preview_email" value="{$CONFIG.email_smtp_user}" autocomplete="off"></span></div>
             <div><label for="email_smtp_password">{$LANG.settings.smtp_pass}</label><span><input name="config[email_smtp_password]" id="email_smtp_password" type="password" class="textbox preview_email" value="{$CONFIG.email_smtp_password|escape:'html'}" onfocus="this.removeAttribute('readonly');" readonly autocomplete="off"></span></div>
          </div>
-         <div id="sendgrid" class="stripe stripe_reverse"{if 
+         <div id="sendgrid" {if 
          $CONFIG.email_method=='mail' || 
          $CONFIG.email_method=='smtp' || 
          $CONFIG.email_method=='smtp_ssl' || 

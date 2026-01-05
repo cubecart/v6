@@ -2094,7 +2094,15 @@ class Cubecart
                             break;
                         default:
                             if (method_exists($gateway, 'form')) {
-                                $GLOBALS['smarty']->assign('LANG_AMOUNT_DUE', sprintf($GLOBALS['language']->checkout['make_payment'], $GLOBALS['tax']->priceFormat($this->_basket['total']), $this->_basket['cart_order_id']));
+                                $order = Order::getInstance();
+                                $order_data = $order->getOrderDetails($this->_basket['cart_order_id']);
+                                $col = $GLOBALS['config']->get('config', 'oid_col');
+                                if($GLOBALS['config']->get('config', 'oid_mode') == 'i' && !empty($order_data["order_summary"][$col])) { 
+                                    $oid = $order_data["order_summary"][$col];
+                                } else {
+                                    $oid = $order_data['cart_order_id'];
+                                }
+                                $GLOBALS['smarty']->assign('LANG_AMOUNT_DUE', sprintf($GLOBALS['language']->checkout['make_payment'], $GLOBALS['tax']->priceFormat($this->_basket['total']), $oid));
                                 $GLOBALS['smarty']->assign('FORM_TEMPLATE', $gateway->form());
                                 $GLOBALS['smarty']->assign('BTN_PROCEED', $GLOBALS['language']->gateway['make_payment']);
                             } else {
