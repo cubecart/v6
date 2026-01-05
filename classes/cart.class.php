@@ -964,11 +964,10 @@ class Cart
 
                 // Calculate Taxes
                 if (isset($this->basket[$tax_on])) $tax_state_id = is_numeric($this->basket[$tax_on]['state_id']) ? $this->basket[$tax_on]['state_id'] : getStateFormat($this->basket[$tax_on]['state_id'], 'name', 'id');
-                
                 if (isset($tax_state_id)) {
-                    $product_tax =  $GLOBALS['tax']->productTax($product['price'], array('tax_type' => (int)$product['tax_type'], 'manufacture' => $product['manufacture_country']), (bool)$product['tax_inclusive'], $tax_state_id);
+                    $product_tax =  $GLOBALS['tax']->productTax($product['price'], array('tax_type' => (int)$product['tax_type'], 'manufacture' => $product['manufacture_country']), (bool)$product['tax_inclusive'], $tax_state_id, 'goods', true, $product['digital']);
                 } else {
-                    $product_tax =  $GLOBALS['tax']->productTax($product['price'], array('tax_type' => (int)$product['tax_type'], 'manufacture' => $product['manufacture_country']), (bool)$product['tax_inclusive']);
+                    $product_tax =  $GLOBALS['tax']->productTax($product['price'], array('tax_type' => (int)$product['tax_type'], 'manufacture' => $product['manufacture_country']), (bool)$product['tax_inclusive'], 0, 'goods', true, $product['digital']);
                 }
                 $this->basket['contents'][$hash]['tax_each'] = $product_tax;
                 $this->basket['contents'][$hash]['option_absolute_price'] = isset($product['absolute_price'])?true:false;

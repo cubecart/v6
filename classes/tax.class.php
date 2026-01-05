@@ -440,7 +440,7 @@ class Tax
      * @param bool $sum
      * @return foat/false
      */
-    public function productTax(&$price, $tax_type, $tax_inclusive = false, $state = 0, $type = 'goods', $sum = true)
+    public function productTax(&$price, $tax_type, $tax_inclusive = false, $state = 0, $type = 'goods', $sum = true, $is_digital = '0')
     {
         foreach ($GLOBALS['hooks']->load('class.tax.producttax') as $hook) {
             include $hook;
@@ -452,6 +452,10 @@ class Tax
             $check_tariff = true;
         } else {
             $manufacture_country = '';
+        }
+
+        if($is_digital == '1') {
+            $check_tariff = false; // No tariffs on digital goods
         }
 
         // Allows a hook to trigger a RETURN of this function by setting a variable
