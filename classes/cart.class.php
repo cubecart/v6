@@ -1396,7 +1396,7 @@ class Cart
                         $excluded_shipping = $this->basket['shipping'];
                     }
                     if($subtotal>0) {
-                        $ave_tax_rate = round($tax_total / $subtotal, 2);
+                        $ave_tax_rate = $tax_total / $subtotal;
                     }
 
                     $discount = ($data['type']=='percent') ? $subtotal*($data['value']/100) : $data['value'];
