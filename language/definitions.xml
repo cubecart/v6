@@ -18,6 +18,9 @@
     <string name="pw_cause_logout" introduced="6.5.11"><![CDATA[Changing your password will log you out of this current session.]]></string>
     <string name="credit_on_account" introduced="6.5.6"><![CDATA[Account Credit: %s]]></string>
     <string name="account_credit" introduced="6.5.6"><![CDATA[Account Credit]]></string>
+    <string name="api" introduced="6.5.13"><![CDATA[API Key]]></string>
+    <string name="authtype" introduced="6.5.13"><![CDATA[Authentication Method]]></string>
+    <string name="basic" introduced="6.5.13"><![CDATA[Basic (Username and Passsword)]]></string>
     <string name="credit_desc" introduced="6.5.6"><![CDATA[Any credit on your account can be offset against your order total during checkout.]]></string>
     <string name="error_name_same" introduced="6.5.6"><![CDATA[First and last names are the same.]]></string>
     <string name="error_name_same" introduced="6.4.5"><![CDATA[First and last names are the same.]]></string>
@@ -2640,3 +2643,5 @@ This email is sent from the store's master email address but it is possible to r
     <string name="password_too_long" introduced="6.4.6"><![CDATA[If your old password was longer than 64 characters please logout and use the password reset tool.]]></string>
   </group>
 </definitions>
+
+

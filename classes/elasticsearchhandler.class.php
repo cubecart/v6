@@ -83,12 +83,19 @@ class ElasticsearchHandler
         $hosts = empty($this->_config['es_h']) ? array('https://localhost:9200') : explode(',', $this->_config['es_h']);
         $validate_ssl = ($this->_config['es_v']=='1') ? true : false;
 
-        $this->_client = ClientBuilder::create()
+        $clientBuilder = ClientBuilder::create()
             ->setHosts($hosts)
             ->setSSLVerification($validate_ssl)
-            ->setCABundle($this->_config['es_c'])
-            ->setBasicAuthentication($this->_config['es_u'], $this->_config['es_p'])
-            ->build();
+            ->setCABundle($this->_config['es_c']);
+		if (isset($this->_config['es_t']) && $this->_config['es_t'] == '1')
+		{
+			$clientBuilder->setApiKey($this->_config['es_a']);
+		}
+		else
+		{
+			$clientBuilder->setBasicAuthentication($this->_config['es_u'], $this->_config['es_p']);
+		}
+		$this->_client = $clientBuilder->build();
          
         if($test) {
             if(!$this->indexExists()) {
@@ -495,6 +502,8 @@ class ElasticsearchHandler
         es_h = Hostname
         es_u = Username
         es_p = Password
+        es_a = API Key
+        es_t = Authentication Type (0 = Basic, 1 = API)
         es_i = Index name
         es_v = Validate SSL (bool)
         es_c = Certificate path
@@ -507,6 +516,8 @@ class ElasticsearchHandler
                 'es_h' => $GLOBALS['config']->get('config', 'es_h'),
                 'es_u' => $GLOBALS['config']->get('config', 'es_u'),
                 'es_p' => $GLOBALS['config']->get('config', 'es_p'),
+            	'es_a' => $GLOBALS['config']->get('config', 'es_a'),
+            	'es_t' => $GLOBALS['config']->get('config', 'es_t'),
                 'es_i' => $GLOBALS['config']->get('config', 'es_i'),
                 'es_v' => $GLOBALS['config']->get('config', 'es_v'),
                 'es_c' => $GLOBALS['config']->get('config', 'es_c'),
@@ -518,6 +529,8 @@ class ElasticsearchHandler
                     'es_h' => $config['es_h'],
                     'es_u' => $config['es_u'],
                     'es_p' => $config['es_p'],
+                	'es_a' => $config['es_a'],
+                	'es_t' => $config['es_t'],
                     'es_i' => $config['es_i'],
                     'es_v' => $config['es_v'],
                     'es_c' => $config['es_c'],
@@ -532,6 +545,8 @@ class ElasticsearchHandler
                     'es_h' => $glob['es_h'],
                     'es_u' => $glob['es_u'],
                     'es_p' => $glob['es_p'],
+                	'es_a' => $glob['es_a'],
+                	'es_t' => isset($glob['es_t']) ? $glob['es_t'] : 1,
                     'es_i' => $glob['es_i'],
                     'es_v' => $glob['es_v'],
                     'es_c' => $glob['es_c'],
