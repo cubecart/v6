@@ -320,6 +320,18 @@ $(document).ready(function() {
                 $("#sendgrid").slideUp();
         }
     });
+    $("#es_t").change(function() {
+        switch($(this).val()) {
+            case '1':
+                $("#es_auth_basic").hide();
+                $("#es_auth_api").slideDown();
+            break;
+            case '0':
+                $("#es_auth_basic").slideDown();
+                $("#es_auth_api").hide();
+            break;
+        }
+    });
 
     $("#fm-search-button").click(function() {
         var mode = $(this).attr("data-mode");
