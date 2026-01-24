@@ -240,9 +240,20 @@ class Newsletter
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $GLOBALS['gui']->setError(sprintf($GLOBALS['language']->newsletter['email_invalid'], $email));
             $error = true;
-        } elseif (!User::getInstance()->is() && $skin_data['info']['newsletter_recaptcha'] && GUI::getInstance()->recaptchaRequired() && $GLOBALS['session']->get('error', 'recaptcha')) {
-            $GLOBALS['gui']->setError($GLOBALS['session']->get('error', 'recaptcha'));
-            $error = true;
+        } else {
+            // Avoid recursion: Newsletter::subscribe() can be called during User construction,
+            // so DO NOT call User::getInstance() here.
+            $logged_in = !empty($GLOBALS['session']->session_data['customer_id'])
+                && (int)$GLOBALS['session']->session_data['customer_id'] > 0;
+
+            if (!$logged_in
+                && !empty($skin_data['info']['newsletter_recaptcha'])
+                && GUI::getInstance()->recaptchaRequired()
+                && $GLOBALS['session']->get('error', 'recaptcha')
+            ) {
+                $GLOBALS['gui']->setError($GLOBALS['session']->get('error', 'recaptcha'));
+                $error = true;
+            }
         }
 
         if ($error) {
