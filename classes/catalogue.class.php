@@ -598,7 +598,9 @@ class Catalogue
                                     }
                                 }
                             }
-                            $option_list[$value['option_id']]['priority'] = $group_priority;
+                            if(!empty($option_list) && is_array($option_list)) {
+                                $option_list[$value['option_id']]['priority'] = $group_priority;
+                            }
                         }
                     } else if (in_array($type, $this->_options_textual)) {
                         
