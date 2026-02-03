@@ -58,7 +58,7 @@
       },{/literal}
     {/if}
     {literal}
-    "description": "{/literal}{$product_description|escape:'javascript'}{literal}",
+    "description": {/literal}{$product_description|json_encode}{literal},
     "sku": "{/literal}{$PRODUCT.product_code}{literal}",
     "mpn": "{/literal}{$PRODUCT.mpn}{literal}",
     "image": "{/literal}{$PRODUCT.source}{literal}",
