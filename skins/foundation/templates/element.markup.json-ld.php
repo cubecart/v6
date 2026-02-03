@@ -90,11 +90,12 @@
       },
       {/literal}
     {/if}
-
+    {assign var="future_date" value=$smarty.now+31536000}
     {literal}
     "offers": {
       "@type": "Offer",
       "url": "{/literal}{$VAL_SELF}{literal}",
+      "priceValidUntil": "{/literal}{$future_date|date_format:'%Y-%m-%d'}{literal}",
       "priceCurrency": "{/literal}{$CONFIG.default_currency}{literal}",
       "price": "{/literal}{preg_replace('/[^0-9.]+/','',$PRODUCT.price_to_pay)}{literal}",
       "itemCondition": "https://schema.org/{/literal}{ucfirst($PRODUCT.condition)}{literal}Condition",
