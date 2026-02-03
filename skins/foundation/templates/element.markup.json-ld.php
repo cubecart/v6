@@ -44,7 +44,7 @@
 </script>
 
 {if $SECTION_NAME == 'product'}
-  {assign var=product_description value=$PRODUCT.description|strip_tags|html_entity_decode}
+  {assign var=product_description value=$PRODUCT.description|strip_tags|html_entity_decode|truncate:4900:"..."}
   <script type="application/ld+json">
   {literal}
   {
