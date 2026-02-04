@@ -383,23 +383,66 @@ $(document).ready(function() {
         $('input:checkbox').prop("checked", false);
         $('.custom-checkbox').removeClass('selected');
     });
-    if($("div.dropzone").length) {
+    if ($("div.dropzone").length) {
         Dropzone.autoDiscover = false;
         var dropzone_url = $("div#dropzone_url").text();
+
         $("div.dropzone").dropzone({
             url: dropzone_url,
-            resizeWidth: 2000,
-            resizeMimeType: 'image/webp',
             acceptedFiles: 'image/gif,image/jpeg,image/png,image/webp',
-            renameFile: function (file) {
-                return file.name.substr(0, file.name.lastIndexOf(".")) + ".webp";
+            // Manual transformation to handle Firefox Canvas bugs
+            transformFile: function(file, done) {
+                var maxWidth = 2000;
+                var reader = new FileReader();
+
+                reader.onload = function(event) {
+                    var img = new Image();
+                    img.onload = function() {
+                        var canvas = document.createElement('canvas');
+                        var ctx = canvas.getContext('2d');
+                        
+                        var width = img.width;
+                        var height = img.height;
+
+                        // Only resize if the image is wider than the limit
+                        if (width > maxWidth) {
+                            height *= maxWidth / width;
+                            width = maxWidth;
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        // Convert to WebP
+                        canvas.toBlob(function(blob) {
+                            if (!blob || blob.size === 0) {
+                                // FALLBACK: If Firefox fails to create the blob, send original
+                                console.warn("Resize failed, uploading original file.");
+                                done(file);
+                            } else {
+                                done(blob);
+                            }
+                        }, 'image/webp', 0.8);
+                    };
+                    img.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
             },
+
+            renameFile: function (file) {
+                // Ensure we append .webp since transformFile is converting the stream
+                var name = file.name.substr(0, file.name.lastIndexOf("."));
+                return name + ".webp";
+            },
+
             init: function () {
                 this.on("error", function(file, message) {
                     console.error("Dropzone Error:", message);
                 });
+
                 this.on("complete", function (file) {
-                    if($("div#imageset.fm-filelist").length) {
+                    if ($("div#imageset.fm-filelist").length) {
                         if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
                             var t = ADMIN_FILE;
                             $("div#imageset.fm-filelist").fileTree({
@@ -412,12 +455,13 @@ $(document).ready(function() {
                         }
                     }
                 });
+
                 this.on("processing", function(file) {
                     var subdir = '';
-                    if($("#val_subdir").length) {
-                        subdir = '&subdir='+$("#val_subdir").text();
+                    if ($("#val_subdir").length) {
+                        subdir = '&subdir=' + $("#val_subdir").text();
                     }   
-                    this.options.url = dropzone_url+subdir;
+                    this.options.url = dropzone_url + subdir;
                 });
             }
         });        
