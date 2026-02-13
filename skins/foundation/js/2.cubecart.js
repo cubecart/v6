@@ -1,12 +1,9 @@
 ;var validation_ini = {};
 
 /**
- * CubeCart theme/ui behaviour - OPTIMIZED
- * - Cached selectors for better performance
- * - Debounced AJAX calls to reduce server load
- * - Native type checking for faster execution
- * - Fixed blocking async calls
- * - Improved animation performance
+ * CubeCart theme/ui behaviour
+ * - Keeps public helper functions (init_add_to_basket, price_inc_options, etc.) for compatibility.
+ * - Reduces repetition, improves readability, and preserves behaviour.
  */
 jQuery(document).ready(function ($) {
     // -------------------------------
@@ -70,38 +67,21 @@ jQuery(document).ready(function ($) {
     $('.nopaste').on('cut copy paste', function (e) { e.preventDefault(); });
 
     // -------------------------------
-    // Gravatar for reviews - OPTIMIZED with batch loading
+    // Gravatar for reviews
     // -------------------------------
-    var $reviewRows = $('#element-reviews .review_row');
-    if ($reviewRows.length > 0) {
-        // Batch load gravatars with delay to avoid overwhelming the browser
-        var gravatarDelay = 0;
-        $reviewRows.each(function () {
-            var avatar_id = $(this).attr('rel');
-            var g_parts = avatar_id.split("_");
-            var img_url = 'https://gravatar.com/avatar/' + g_parts[1] + '?s=90&d=mp';
-
-            // Stagger requests by 100ms each
-            setTimeout(function() {
-                $.ajax({
-                    url: img_url,
-                    type: "HEAD",
-                    crossDomain: true,
-                    timeout: 3000 // Add timeout to prevent hanging
-                }).done(function () {
-                    $('#' + avatar_id).attr("src", img_url);
-                });
-            }, gravatarDelay);
-            gravatarDelay += 100;
-        });
-    }
+    $('#element-reviews .review_row').each(function () {
+        var avatar_id = $(this).attr('rel');
+        var g_parts = avatar_id.split("_");
+        var img_url = 'https://gravatar.com/avatar/' + g_parts[1] + '?s=90&d=mp';
+        $.ajax({ url: img_url, type: "HEAD", crossDomain: true })
+            .done(function () { $('#' + avatar_id).attr("src", img_url); });
+    });
 
     // -------------------------------
     // Open-clearing preview sizing
     // -------------------------------
-    var $clearingImg = $('a.open-clearing img#img-preview');
-    if ($clearingImg.length) {
-        $clearingImg.on('load', function () {
+    if ($('a.open-clearing img#img-preview').length) {
+        $('a.open-clearing img#img-preview').on('load', function () {
             var ip = $(this);
             var ip_height = ip.height();
             var ip_width = ip.width();
@@ -113,51 +93,27 @@ jQuery(document).ready(function ($) {
     }
 
     // -------------------------------
-    // Small scroller (hover to auto-scroll) - OPTIMIZED
+    // Small scroller (hover to auto-scroll)
     // -------------------------------
-    var $scrollContent = $("#scrollContent");
-    if ($scrollContent.length > 0) {
+    if ($("#scrollContent").length > 0) {
         var scrolling = false;
-        var scrollArea = $scrollContent[0];
-        var animationId = null;
-
+        var scrollArea = document.querySelector('#scrollContent');
         if (scrollArea.offsetHeight < scrollArea.scrollHeight) {
             $(".scroller").show();
         }
-
-        // Use requestAnimationFrame for smoother scrolling
         function scrollContent(direction) {
-            if (!scrolling) return;
-
-            var increment = direction === "up" ? -3 : 3; // 3px per frame instead of 1px
-            var currentScroll = scrollArea.scrollTop;
-            scrollArea.scrollTop = currentScroll + increment;
-
-            animationId = requestAnimationFrame(function() {
-                scrollContent(direction);
+            var amount = (direction === "up" ? "-=1px" : "+=1px");
+            $("#scrollContent").animate({ scrollTop: amount }, 1, function () {
+                if (scrolling) scrollContent(direction);
             });
         }
-
         $("#scrollUp").hover(
-            function () {
-                scrolling = true;
-                scrollContent("up");
-            },
-            function () {
-                scrolling = false;
-                if (animationId) cancelAnimationFrame(animationId);
-            }
+            function () { scrolling = true; scrollContent("up"); },
+            function () { scrolling = false; }
         );
         $("#scrollDown").hover(
-            function () {
-                scrolling = true;
-                $("#scrollUp .icon").show();
-                scrollContent("down");
-            },
-            function () {
-                scrolling = false;
-                if (animationId) cancelAnimationFrame(animationId);
-            }
+            function () { scrolling = true; $("#scrollUp .icon").show(); scrollContent("down"); },
+            function () { scrolling = false; }
         );
     }
 
@@ -269,10 +225,9 @@ jQuery(document).ready(function ($) {
 
     // -------------------------------
     // Basket summary pane + quantity buttons + checkout proceed
-    // Use event delegation for better performance with dynamic content
     // -------------------------------
     $('body').on('click', '#basket-summary', function () { mini_basket_action(); });
-    $('body').on('click', 'a.quan', function () {
+    $('a.quan').on('click', function () {
         var rel = $(this).attr('rel');
         var sign = $(this).hasClass('add') ? '+' : ($(this).hasClass('subtract') ? '-' : null);
         if (!sign) { alert("No 'add' or 'subtract' class defined."); return false; }
@@ -467,7 +422,7 @@ jQuery(document).ready(function ($) {
     }
 
     // -------------------------------
-    // Infinite scroll (category pages) - FIXED async blocking
+    // Infinite scroll (category pages)
     // -------------------------------
     $("#ccScroll").on("click", ".ccScroll-next", function (event) {
         event.preventDefault();
@@ -500,7 +455,7 @@ jQuery(document).ready(function ($) {
 
         var href = $(this).attr('href');
         $.ajax({
-            async: true, // FIXED: Changed from false to true - no longer blocks UI
+            async: false,
             url: href,
             cache: true,
             complete: function (returned) {
@@ -509,8 +464,6 @@ jQuery(document).ready(function ($) {
                 var next = $('a.ccScroll-next', page_html);
                 $('.product_list li').removeClass("newTop");
                 $(list[0]).addClass('newTop');
-
-                // Use timeout to ensure smooth transition
                 setTimeout(function () {
                     product_list.append(list);
                     set_product_view(0);
@@ -520,7 +473,7 @@ jQuery(document).ready(function ($) {
                     $('html, body').animate({ scrollTop: $("li.newTop").offset().top }, 500);
                     var local = { catId: cat, html: $('#ccScroll').html() };
                     localStorage.setItem('category', JSON.stringify(local));
-                }, 100); // Reduced from 1500ms to 100ms for better UX
+                }, 1500);
             }
         });
     });
@@ -583,44 +536,28 @@ jQuery(document).ready(function ($) {
     }
 
     // -------------------------------
-    // Product options -> price + image update - OPTIMIZED
+    // Product options -> price + image update
     // -------------------------------
-    var $ptp = $('#ptp');
-    var $fbp = $('#fbp');
-    var $productOptions = $('[name^=productOptions]');
-    var $magicZoom = $('a.MagicZoom');
-    var $imgPreview = $('img#img-preview');
-
-    if ($ptp.length > 0 && $productOptions.length > 0) {
+    if ($('#ptp').length > 0 && $('[name^=productOptions]').length > 0) {
         price_inc_options();
-
-        // Debounced price update to prevent AJAX spam
-        var debouncedPrice = input_delay(price_inc_options, 150);
-
-        $productOptions.on('change', function () {
-            debouncedPrice();
-
+        $("[name^=productOptions]").on('change', function () {
+            price_inc_options();
             var product_image = '';
-            var nodeType = this.nodeName.toLowerCase();
-            var inputType = this.type;
-
-            // Optimized type checking using native properties instead of jQuery .is()
-            if (nodeType === 'input' && (inputType === 'radio' || inputType === 'checkbox' || inputType === 'hidden')) {
-                product_image = this.checked ? $(this).attr('data-image') : '';
-            } else if (nodeType === 'select') {
-                product_image = $(this).find('option:selected').attr('data-image');
+            if ($(this).is('input:radio, input:checkbox, input:hidden')) {
+                product_image = $(this).is(':checked') ? $(this).attr('data-image') : '';
+            } else if ($(this).is('select')) {
+                product_image = $('option:selected', this).attr('data-image');
             }
-
-            if (product_image && product_image.length > 0) {
-                if ($magicZoom.length > 0) {
-                    var magicZoomNode = $magicZoom.attr('id');
+            if (product_image.length > 0) {
+                if ($('a.MagicZoom').length > 0) {
+                    var magicZoomNode = $('a.MagicZoom').attr('id');
                     MagicZoom.update(
                         magicZoomNode,
                         product_image.replace(".500.", ".").replace("/cache/", "/source/"),
                         product_image
                     );
                 } else {
-                    $imgPreview.attr('src', product_image);
+                    $('img#img-preview').attr('src', product_image);
                 }
             }
         });
@@ -663,77 +600,63 @@ function init_add_to_basket() {
     });
 }
 
-// OPTIMIZED: Cached selectors and improved performance
-var price_inc_options = (function() {
-    // Cache all selectors in closure - only queries DOM once
-    var $form = $('form.add_to_basket');
-    var $ptp = $('#ptp');
-    var $fbp = $('#fbp');
-    var $options = $("[name^=productOptions]");
-    var action = $form.attr('action');
-    var parts = action ? action.split("?") : ['', ''];
-    var baseUrl = action + (parts.length > 1 ? "&" : "?") + '_g=ajax_price_format';
+function price_inc_options() {
+    var action = $('form.add_to_basket').attr('action');
+    var total = 0;
+    var ptp = parseFloat($('#ptp').attr("data-price"));
+    var fbp = parseFloat($('#fbp').attr("data-price"));
+    var parts = action.split("?");
 
-    return function() {
-        if (!$ptp.length) return; // Exit if elements don't exist
+    action += (parts.length > 1 ? "&" : "?") + '_g=ajax_price_format&price[0]=';
 
-        var total = 0;
-        var ptp = parseFloat($ptp.attr("data-price")) || 0;
-        var fbp = parseFloat($fbp.attr("data-price")) || 0;
-
-        // Optimized loop with native type checking
-        $options.each(function () {
-            var nodeType = this.nodeName.toLowerCase();
-            var dataPrice = parseFloat($(this).attr("data-price")) || 0;
-
-            if (nodeType === 'input' && this.type === 'radio' && this.checked) {
-                if ($(this).hasClass('absolute')) total -= ptp;
-                total += dataPrice;
-            } else if (nodeType === 'select' && this.value) {
-                var $selected = $(this).find("option:selected");
-                if ($selected.hasClass('absolute')) total -= ptp;
-                total += parseFloat($selected.attr("data-price")) || 0;
-            } else if ((nodeType === 'textarea' || (nodeType === 'input' && this.type === 'text')) && this.value !== '') {
-                if ($(this).hasClass('absolute')) total -= ptp;
-                total += dataPrice;
-            }
-        });
-
-        ptp = ptp + total;
-
-        // Build URL with both prices if sale price exists
-        var url = baseUrl + '&price[0]=' + ptp;
-        if ($fbp.length) {
-            fbp = fbp + total;
-            url += '&price[1]=' + fbp;
+    $("[name^=productOptions]").each(function () {
+        if ($(this).is('input:radio') && $(this).is(':checked')) {
+            if ($(this).hasClass('absolute')) { total -= ptp; }
+            total += parseFloat($(this).attr("data-price"));
+        } else if ($(this).is('select') && $(this).val()) {
+            if ($("option:selected", this).hasClass('absolute')) { total -= ptp; }
+            total += parseFloat($(this).find("option:selected").attr("data-price"));
+        } else if (($(this).is('textarea') || $(this).is('input:text')) && $(this).val() !== '') {
+            if ($(this).hasClass('absolute')) { total -= ptp; }
+            total += parseFloat($(this).attr("data-price"));
         }
+    });
 
+    ptp = ptp + total;
+
+    if ($('#fbp').length > 0) {
+        fbp = fbp + total;
         $.ajax({
-            url: url,
+            url: action + ptp + '&price[1]=' + fbp,
             cache: true,
             complete: function (returned) {
                 var prices = $.parseJSON(returned.responseText);
-                $ptp.html(prices[0]);
-
-                if ($fbp.length && prices[1]) {
-                    $fbp.html(prices[1]);
-
-                    // Parse prices for comparison
-                    var price0 = parseFloat(prices[0].replace(/[^0-9.-]/g, ""));
-                    var price1 = parseFloat(prices[1].replace(/[^0-9.-]/g, ""));
-
-                    if (price0 <= price1) {
-                        $fbp.hide();
-                        $ptp.removeClass('sale_price');
-                    } else {
-                        $fbp.show();
-                        $ptp.addClass('sale_price');
-                    }
+                $('#ptp').html(prices[0]);
+                $('#fbp').html(prices[1]);
+                // Maintain original behaviour: show/hide sale price by comparison
+                prices = prices.map(function (p) {
+                    return parseFloat(String(p).replace(/[^0-9.-]/g, ""));
+                });
+                if (prices[0] <= prices[1]) {
+                    $('#fbp').hide();
+                    $('#ptp').removeClass('sale_price');
+                } else {
+                    $('#fbp').show();
+                    $('#ptp').addClass('sale_price');
                 }
             }
         });
-    };
-})();
+    } else {
+        $.ajax({
+            url: action + ptp,
+            cache: true,
+            complete: function (returned) {
+                var prices = $.parseJSON(returned.responseText);
+                $('#ptp').html(prices[0]);
+            }
+        });
+    }
+}
 
 function add_to_basket(form) {
     var add = $(form).serialize();
