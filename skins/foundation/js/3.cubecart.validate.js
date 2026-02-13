@@ -2,6 +2,11 @@
 
 (function ($) {
   //
+  // Cache phone validation message once
+  //
+  const phoneMsg = $('#validate_phone').text();
+
+  //
   // Validator defaults
   //
   $.validator.setDefaults({
@@ -9,11 +14,16 @@
     errorPlacement: function (error, element) {
       if (element.is(":radio") || element.is(":checkbox")) {
         const errorLocation = element.attr('rel');
-        if ($('#' + errorLocation).length) {
-          error.insertAfter('#' + errorLocation);
+        if (errorLocation) {
+          const $errorTarget = $('#' + errorLocation);
+          if ($errorTarget.length) {
+            error.insertAfter($errorTarget);
+          } else {
+            element.removeClass("error");
+            alert(error.text());
+          }
         } else {
-          element.removeClass("error");
-          alert(error.text());
+          error.insertAfter(element);
         }
       } else {
         error.insertAfter(element);
@@ -27,7 +37,7 @@
   $.validator.addMethod("phone", function (phone, element) {
     phone = phone.replace(/\s+/g, "");
     return this.optional(element) || /^[0-9-+().]+$/.test(phone);
-  }, $('#validate_phone').text());
+  }, phoneMsg);
 
   $.extend($.validator.messages, {
     required: $('#validate_field_required').text()
@@ -42,7 +52,7 @@
   const msg = {
     email: $('#validate_email').text(),
     emailExit: $('#validate_email_exit').text(),
-    phone: $('#validate_phone').text(),
+    phone: phoneMsg,
     mobile: $('#validate_mobile').text(),
     password: $('#validate_password').text(),
     passwordLength: $('#validate_password_length').text(),
@@ -214,6 +224,10 @@
 
   // Checkout
   if ($('#checkout_form').length) {
+    // Cache selectors for remote validation
+    const $userEmail = $("#user_email");
+    const $checkoutToken = $("#checkout_form input[name=token]");
+
     $('#checkout_form').validate({
       rules: {
         username: { required: true, email: true },
@@ -227,8 +241,8 @@
             url: "?_g=ajax_email",
             type: "post",
             data: {
-              username: () => $("#user_email").val(),
-              token:    () => $("input[name=token]").val()
+              username: () => $userEmail.val(),
+              token:    () => $checkoutToken.val()
             },
             dataFilter: d => JSON.parse(d).result
           }
@@ -282,6 +296,10 @@
 
   // Registration
   if ($('#registration_form').length) {
+    // Cache selectors for remote validation
+    const $regEmail = $("#email");
+    const $regToken = $("#registration_form input[name=token]");
+
     $('#registration_form').validate({
       rules: {
         first_name: { required: true },
@@ -292,8 +310,8 @@
             url: "?_g=ajax_email",
             type: "post",
             data: {
-              username: () => $("#email").val(),
-              token:    () => $("input[name=token]").val()
+              username: () => $regEmail.val(),
+              token:    () => $regToken.val()
             },
             dataFilter: d => JSON.parse(d).result
           }
@@ -321,90 +339,115 @@
   }
 
   //
-  // Newsletter forms (two behaviours)
+  // Newsletter forms (two behaviours) - Factory function to reduce duplication
   //
+  function createNewsletterValidator(config) {
+    const {
+      emailSelector,
+      buttonSelector,
+      forceUnsubscribeSelector,
+      messages,
+      toggleClasses = false
+    } = config;
+
+    // Cache selectors
+    const $email = $(emailSelector);
+    const $button = $(buttonSelector);
+    const $forceUnsubscribe = $(forceUnsubscribeSelector);
+    const $token = $("input[name=token]");
+
+    return {
+      onkeyup: false,
+      rules: {
+        subscribe: {
+          required: true,
+          email: true,
+          remote: {
+            url: "?_g=ajax_email&source=newsletter",
+            type: "post",
+            data: {
+              username: () => $email.val(),
+              token: () => $token.val()
+            },
+            dataFilter: function (data) {
+              const json = JSON.parse(data);
+              if (json.result) {
+                $button.val(messages.subscribe);
+                $forceUnsubscribe.val('0');
+                if (toggleClasses) {
+                  $button.removeClass('alert');
+                  $email.removeClass('alert');
+                }
+              } else {
+                alert(messages.alreadySubscribed);
+                $button.val(messages.unsubscribe);
+                $forceUnsubscribe.val('1');
+                if (toggleClasses) {
+                  $button.addClass('alert');
+                  $email.addClass('alert');
+                }
+              }
+              return true;
+            }
+          }
+        }
+      },
+      messages: {
+        subscribe: {
+          required: messages.emailRequired,
+          email: messages.emailRequired,
+          remote: messages.alreadySubscribed
+        }
+      },
+      submitHandler: function (form) { form.submit(); }
+    };
+  }
 
   // Standard newsletter (form + box): toggles classes on button/email + force_unsubscribe
   if ($("#newsletter_form, #newsletter_form_box").length) {
-    $("#newsletter_form, #newsletter_form_box").validate({
-      onkeyup: false,
-      rules: {
-        subscribe: {
-          required: true,
-          email: true,
-          remote: {
-            url: "?_g=ajax_email&source=newsletter",
-            type: "post",
-            data: {
-              username: () => $("#newsletter_email").val(),
-              token:    () => $("input[name=token]").val()
-            },
-            dataFilter: function (data) {
-              const json = JSON.parse(data);
-              if (json.result) {
-                $("#subscribe_button").val(msg.subscribe).removeClass('alert');
-                $("#force_unsubscribe").val('0');
-                $("#newsletter_email").removeClass('alert');
-              } else {
-                alert(msg.alreadySubscribed);
-                $("#subscribe_button").val(msg.unsubscribe).addClass('alert');
-                $("#force_unsubscribe").val('1');
-                $("#newsletter_email").addClass('alert');
-              }
-              return true;
-            }
-          }
-        }
-      },
-      messages: {
-        subscribe: { required: msg.email, email: msg.email, remote: msg.alreadySubscribed }
-      },
-      submitHandler: function (form) { form.submit(); }
-    });
+    $("#newsletter_form, #newsletter_form_box").validate(
+      createNewsletterValidator({
+        emailSelector: "#newsletter_email",
+        buttonSelector: "#subscribe_button",
+        forceUnsubscribeSelector: "#force_unsubscribe",
+        messages: {
+          subscribe: msg.subscribe,
+          unsubscribe: msg.unsubscribe,
+          alreadySubscribed: msg.alreadySubscribed,
+          emailRequired: msg.email
+        },
+        toggleClasses: true
+      })
+    );
   }
 
-  // Exit newsletter: does NOT toggle classes; only text + hidden field (as in original)
+  // Exit newsletter: does NOT toggle classes; only text + hidden field
   if ($("#newsletter_exit").length) {
-    $("#newsletter_exit").validate({
-      onkeyup: false,
-      rules: {
-        subscribe: {
-          required: true,
-          email: true,
-          remote: {
-            url: "?_g=ajax_email&source=newsletter",
-            type: "post",
-            data: {
-              username: () => $("#newsletter_email_exit").val(),
-              token:    () => $("input[name=token]").val()
-            },
-            dataFilter: function (data) {
-              const json = JSON.parse(data);
-              if (json.result) {
-                $("#subscribe_button_exit").val(msg.subscribeExit);
-                $("#force_unsubscribe_exit").val('0');
-              } else {
-                alert(msg.alreadySubscribedExit);
-                $("#subscribe_button_exit").val(msg.unsubscribeExit);
-                $("#force_unsubscribe_exit").val('1');
-              }
-              return true;
-            }
-          }
-        }
-      },
-      messages: {
-        subscribe: { required: msg.emailExit, email: msg.emailExit, remote: msg.alreadySubscribedExit }
-      },
-      submitHandler: function (form) { form.submit(); }
-    });
+    $("#newsletter_exit").validate(
+      createNewsletterValidator({
+        emailSelector: "#newsletter_email_exit",
+        buttonSelector: "#subscribe_button_exit",
+        forceUnsubscribeSelector: "#force_unsubscribe_exit",
+        messages: {
+          subscribe: msg.subscribeExit,
+          unsubscribe: msg.unsubscribeExit,
+          alreadySubscribed: msg.alreadySubscribedExit,
+          emailRequired: msg.emailExit
+        },
+        toggleClasses: false
+      })
+    );
   }
 
   //
-  // Reset buttons clear validator state
+  // Reset buttons clear validator state - Use event delegation
   //
-  $('input:reset').on('click', function () {
-    $(this).closest('form').validate().resetForm();
+  $(document).on('click', 'input:reset', function () {
+    const $form = $(this).closest('form');
+    const validator = $form.data('validator');
+    if (validator) {
+      validator.resetForm();
+    }
   });
 
 })(jQuery);
