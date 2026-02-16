@@ -24,8 +24,8 @@ trait ProductCheckTrait
      * Check if the response comes from Elasticsearch server
      */
     private function productCheck(ResponseInterface $response): void
-    {
-        $statusCode = (int) $response->getStatusCode();
+    {   
+        return; // Disable product check for now, as it prevents the client from working with ES forks.
         if ($statusCode >= 200 && $statusCode < 300) {
             $product = $response->getHeaderLine(Elasticsearch::HEADER_CHECK);
             if (empty($product) || $product !== Elasticsearch::PRODUCT_NAME) {
