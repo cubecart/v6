@@ -35,8 +35,11 @@ class ElasticsearchHandler
     private $_config = array();
     private $_config_file = './includes/extra/es.json';
 
-    public function __construct($config = array())
+    public function __construct($config = array(), $write = false)
     {
+        if($write) {
+            $this->_writeConfig($config);
+        }
         $this->_getConfig($config);
         $this->connect();
         $this->_index = trim($this->_config['es_i']);
@@ -83,19 +86,33 @@ class ElasticsearchHandler
         $hosts = empty($this->_config['es_h']) ? array('https://localhost:9200') : explode(',', $this->_config['es_h']);
         $validate_ssl = ($this->_config['es_v']=='1') ? true : false;
 
+        // Detect if using Elastic Cloud
+        $isElasticCloud = false;
+        foreach ($hosts as $host) {
+            if (strpos($host, '.elastic-cloud.com') !== false || strpos($host, '.es.io') !== false) {
+                $isElasticCloud = true;
+                break;
+            }
+        }
+
         $clientBuilder = ClientBuilder::create()
-            ->setHosts($hosts)
-            ->setSSLVerification($validate_ssl)
-            ->setCABundle($this->_config['es_c']);
-		if (isset($this->_config['es_t']) && $this->_config['es_t'] == '1')
-		{
-			$clientBuilder->setApiKey($this->_config['es_a']);
-		}
-		else
-		{
-			$clientBuilder->setBasicAuthentication($this->_config['es_u'], $this->_config['es_p']);
-		}
-		$this->_client = $clientBuilder->build();
+            ->setHosts($hosts);
+
+        // Only set SSL verification and CA bundle for self-hosted Elasticsearch
+        if (!$isElasticCloud) {
+            $clientBuilder
+                ->setSSLVerification($validate_ssl)
+                ->setCABundle($this->_config['es_c']);
+        }
+
+        // Authentication (works for both Cloud and self-hosted)
+        if (isset($this->_config['es_t']) && $this->_config['es_t'] == '1') {
+            $clientBuilder->setApiKey($this->_config['es_a']);
+        } else {
+            $clientBuilder->setBasicAuthentication($this->_config['es_u'], $this->_config['es_p']);
+        }
+
+        $this->_client = $clientBuilder->build();
          
         if($test) {
             if(!$this->indexExists()) {
@@ -491,6 +508,26 @@ class ElasticsearchHandler
     }
 
     /**
+     * Write config to json file
+     */
+    private function _writeConfig($config) {
+        $es_config = array(
+            'es_h' => $config['es_h'],
+            'es_u' => $config['es_u'],
+            'es_p' => $config['es_p'],
+        	'es_a' => $config['es_a'],
+        	'es_t' => $config['es_t'],
+            'es_i' => $config['es_i'],
+            'es_v' => $config['es_v'],
+            'es_c' => $config['es_c'],
+            'es_is' => $config['es_is']
+        );
+        $fh = fopen($this->_config_file,"wa+");
+        fwrite($fh,json_encode($es_config));
+        fclose($fh);
+    }
+
+    /**
      * Get config
      */
     private function _getConfig($config) {
@@ -525,20 +562,6 @@ class ElasticsearchHandler
             );
         } else {
             if(!empty($config)) { // Get config from $_POST of admin settings page
-                $es_config = array(
-                    'es_h' => $config['es_h'],
-                    'es_u' => $config['es_u'],
-                    'es_p' => $config['es_p'],
-                	'es_a' => $config['es_a'],
-                	'es_t' => $config['es_t'],
-                    'es_i' => $config['es_i'],
-                    'es_v' => $config['es_v'],
-                    'es_c' => $config['es_c'],
-                    'es_is' => $config['es_is']
-                );
-                $fh = fopen($this->_config_file,"wa+");
-                fwrite($fh,json_encode($es_config));
-                fclose($fh);
                 $this->_config = $es_config;
             } elseif(!empty($glob['es_h'])) { // Get config from globals.inc.php file if set
                 $es_config = array(

@@ -10,6 +10,7 @@
  * Email:  hello@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  */
+
 $o = array();
 if(!empty($_GET['q'])) {
     require_once(CC_ROOT_DIR.'/classes/elasticsearchhandler.class.php');
