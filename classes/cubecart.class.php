@@ -1831,7 +1831,9 @@ class Cubecart
                             'product'	=> $data['name'], // e.g. Ground
                             'value'		=> $data['value'],
                             'tax_id' 	=> $data['tax_id'], // Kept for legacy
-                            'tax'		=> $data['tax']
+                            'tax'		=> $data['tax'],
+                            'position'	=> $data['position']
+
                         );
                         $shipping_values[] = $value;
                         $data['name'] = empty($data['name']) ? '' : ' ('.$data['name'].')';
@@ -1868,26 +1870,41 @@ class Cubecart
                     $cheapest = null;
                     $mostExpensive = null;
                     $cheapestOverZero = null;
-                    $count = count($shipping_values);  
+                    $count = count($shipping_values);
+
                     foreach ($shipping_values as $row) {
                         $val = (float)$row['value'];
-                        // Cheapest (min value)
+                        $priority = (int)($row['priority'] ?? PHP_INT_MAX); // Default to lowest priority if not set
+                        
+                        // Cheapest (min value) - with priority tie-breaker
                         if ($cheapest === null || $val < (float)$cheapest['value']) {
                             $cheapest = $row;
+                        } elseif ($val == (float)$cheapest['value'] && $val == 0) {
+                            // Tie at zero - pick highest priority (lowest priority value)
+                            if ($priority < (int)($cheapest['priority'] ?? PHP_INT_MAX)) {
+                                $cheapest = $row;
+                            }
                         }
-                        // Most expensive (max value)
+                        
+                        // Most expensive (max value) - with priority tie-breaker
                         if ($mostExpensive === null || $val > (float)$mostExpensive['value']) {
                             $mostExpensive = $row;
+                        } elseif ($val == (float)$mostExpensive['value'] && $val == 0) {
+                            // Tie at zero - pick highest priority (lowest priority value)
+                            if ($priority < (int)($mostExpensive['priority'] ?? PHP_INT_MAX)) {
+                                $mostExpensive = $row;
+                            }
                         }
-                        // Cheapest over zero
+                        
+                        // Cheapest over zero - with priority tie-breaker
                         if ($count == 1 || ($val > 0 && ($cheapestOverZero === null || $val < (float)$cheapestOverZero['value']))) {
                             $cheapestOverZero = $row;
+                        } elseif ($cheapestOverZero !== null && $val > 0 && $val == (float)$cheapestOverZero['value']) {
+                            // Tie above zero - pick highest priority (lowest priority value)
+                            if ($priority < (int)($cheapestOverZero['priority'] ?? PHP_INT_MAX)) {
+                                $cheapestOverZero = $row;
+                            }
                         }
-                    }
-
-                    // If no over-zero options exist, fall back to cheapest
-                    if ($cheapestOverZero === null) {
-                        $cheapestOverZero = $cheapest;
                     }
 
                     switch($shipping_defaults) {
@@ -1903,7 +1920,7 @@ class Cubecart
                         default: // Cheapest
                             $default_shipping = $cheapest;
                     }
-                    
+
                     if (!empty($default_shipping)) {
                         $GLOBALS['cart']->set('shipping', $default_shipping);
                         if (!isset($this->_basket['default_shipping_set'])) {

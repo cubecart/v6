@@ -1111,7 +1111,7 @@ class Cart
      */
     public function loadShippingModules()
     {
-        if (($shipping = $GLOBALS['db']->select('CubeCart_modules', array('folder', 'countries'), array('module' => 'shipping', 'status' => '1'), array('position' => 'asc'))) !== false) {
+        if (($shipping = $GLOBALS['db']->select('CubeCart_modules', array('folder', 'countries', 'position'), array('module' => 'shipping', 'status' => '1'), array('position' => 'asc'))) !== false) {
             $tax_on = ($GLOBALS['config']->get('config', 'basket_tax_by_delivery')) ? 'delivery_address' : 'billing_address';
 
             // Fetch the basket data
@@ -1163,7 +1163,20 @@ class Cart
                                 // work out tax amount on shipping
                                 foreach ($packages as $package) {
                                     $package['value'] = sprintf('%.2F', $package['value']);
-                                    $packages_with_tax[] = array_merge($package, array('tax' => $GLOBALS['tax']->productTax($package['value'], $package['tax_id'], (bool)($package['tax_inclusive']??false), $this->basket[$tax_on]['state_id'], 'shipping', false)));
+                                    $packages_with_tax[] = array_merge(
+                                        $package,
+                                        array(
+                                            'tax' => $GLOBALS['tax']->productTax($package['value'],
+                                            $package['tax_id'], 
+                                            (bool)($package['tax_inclusive']??false), 
+                                            $this->basket[$tax_on]['state_id'], 
+                                            'shipping', 
+                                            false
+                                            ),
+                                            'position' => $module['position']  // Add this line
+                                        )
+                                    );
+
                                 }
 
                                 $shipArray[$group_name]	= $packages_with_tax;
