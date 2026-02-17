@@ -29,12 +29,18 @@ final class Client implements ClientInterface
 {
     const CLIENT_NAME = 'es';
     const VERSION = '8.6.1';
-    const API_COMPATIBILITY_HEADER = '%s/vnd.elasticsearch+%s; compatible-with=7';
-    
+    const API_COMPATIBILITY_HEADER_7 = '%s/vnd.elasticsearch+%s; compatible-with=7';
+    const API_COMPATIBILITY_HEADER_8 = '%s/vnd.elasticsearch+%s; compatible-with=8';
+
+    /**
+     * Flag to indicate if the client is connected to Searchly
+     */
+    public static bool $isSearchly = false;
+
     use ClientEndpointsTrait;
     use EndpointTrait;
     use NamespaceTrait;
-    
+
     protected Transport $transport;
     protected LoggerInterface $logger;
 

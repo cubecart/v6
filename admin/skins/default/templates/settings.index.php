@@ -519,8 +519,8 @@
          </div>
          <div id="es_auth_api" {if !isset($CONFIG.es_t) || $CONFIG.es_t=='0'}style="display: none"{/if}>
             <div><label for="es_a">{$LANG.account.api}</label><span><input name="config[es_a]" id="es_a" type="password" class="textbox" value="{$CONFIG.es_a}" autocomplete="false"{if isset($FIXED_CONFIG.es_a)} disabled{/if}></span></div>
-            <div><label for="es_i">{$LANG.settings.index_name}</label><span><input name="config[es_i]" id="es_i" type="text" class="textbox" value="{$CONFIG.es_i}" placeholder="{$LANG.common.eg} {$CONFIG.dbdatabase}" autocomplete="false" {if isset($FIXED_CONFIG.es_i)} disabled{/if}></span></div>
          </div>
+         <div><label for="es_i">{$LANG.settings.index_name}</label><span><input name="config[es_i]" id="es_i" type="text" class="textbox" value="{$CONFIG.es_i}" placeholder="{$LANG.common.eg} {$CONFIG.dbdatabase}" autocomplete="false" {if isset($FIXED_CONFIG.es_i)} disabled{/if}></span></div>
          <div><label for="es_v">{$LANG.settings.es_ssl_v}</label><span><input name="config[es_v]" id="es_v" type="hidden" class="toggle" value="{$CONFIG.es_v}" autocomplete="false"{if isset($FIXED_CONFIG.es_v)} disabled{/if}></span></div>
          <div><label for="es_c">{$LANG.settings.cert_auth}</label><span><input name="config[es_c]" id="es_c" type="text" class="textbox" value="{$CONFIG.es_c}" placeholder="{$LANG.common.eg} path/to/http_ca.crt" autocomplete="false"{if isset($FIXED_CONFIG.es_c)} disabled{/if}></span></div>
          <div class="clear important"><strong>IMPORTANT: After enabling Elasticsearch you must build your search index <a href="?_g=maintenance#elasticsearch">here</a>. Once built it will self manage.</strong></div>

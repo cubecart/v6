@@ -86,14 +86,21 @@ class ElasticsearchHandler
         $hosts = empty($this->_config['es_h']) ? array('https://localhost:9200') : explode(',', $this->_config['es_h']);
         $validate_ssl = ($this->_config['es_v']=='1') ? true : false;
 
-        // Detect if using Elastic Cloud
+        // Detect if using a hosted Elasticsearch service
         $isElasticCloud = false;
+        $isSearchly = false;
         foreach ($hosts as $host) {
             if (strpos($host, '.elastic-cloud.com') !== false || strpos($host, '.es.io') !== false) {
                 $isElasticCloud = true;
                 break;
             }
+            if (strpos($host, '.searchly.com') !== false) {
+                $isElasticCloud = true;
+                $isSearchly = true;
+                break;
+            }
         }
+        \Elastic\Elasticsearch\Client::$isSearchly = $isSearchly;
 
         $clientBuilder = ClientBuilder::create()
             ->setHosts($hosts);

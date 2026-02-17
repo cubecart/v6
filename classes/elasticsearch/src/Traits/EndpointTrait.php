@@ -161,16 +161,18 @@ trait EndpointTrait
      */
     protected function buildCompatibilityHeaders(array $headers): array
     {
+        $headerFormat = Client::$isSearchly ? Client::API_COMPATIBILITY_HEADER_7 : Client::API_COMPATIBILITY_HEADER_8;
+
         if (isset($headers['Content-Type'])) {
             if (preg_match('/application\/([^,]+)$/', $headers['Content-Type'], $matches)) {
-                $headers['Content-Type'] = sprintf(Client::API_COMPATIBILITY_HEADER, 'application', $matches[1]);
+                $headers['Content-Type'] = sprintf($headerFormat, 'application', $matches[1]);
             }
         }
         if (isset($headers['Accept'])) {
             $values = explode(',', $headers['Accept']);
             foreach ($values as &$value) {
-                if (preg_match('/(application|text)\/([^,]+)/', $value, $matches)) { 
-                    $value = sprintf(Client::API_COMPATIBILITY_HEADER, $matches[1], $matches[2]);
+                if (preg_match('/(application|text)\/([^,]+)/', $value, $matches)) {
+                    $value = sprintf($headerFormat, $matches[1], $matches[2]);
                 }
             }
             $headers['Accept'] = implode(',', $values);

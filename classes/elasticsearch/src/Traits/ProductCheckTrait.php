@@ -14,6 +14,7 @@ declare(strict_types = 1);
 
 namespace Elastic\Elasticsearch\Traits;
 
+use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Exception\ProductCheckException;
 use Elastic\Elasticsearch\Response\Elasticsearch;
 use Psr\Http\Message\ResponseInterface;
@@ -24,8 +25,12 @@ trait ProductCheckTrait
      * Check if the response comes from Elasticsearch server
      */
     private function productCheck(ResponseInterface $response): void
-    {   
-        return; // Disable product check for now, as it prevents the client from working with ES forks.
+    {
+        // Skip product check for Searchly (ES fork)
+        if (Client::$isSearchly) {
+            return;
+        }
+        $statusCode = $response->getStatusCode();
         if ($statusCode >= 200 && $statusCode < 300) {
             $product = $response->getHeaderLine(Elasticsearch::HEADER_CHECK);
             if (empty($product) || $product !== Elasticsearch::PRODUCT_NAME) {
