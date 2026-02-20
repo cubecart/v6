@@ -545,7 +545,9 @@ class Catalogue
             }
 
             $optionArray = $this->getProductOptions($product_id);
-            $this->_options_line_price = 0; // Reset option line price
+            $this->_options_line_price = 0;
+            $option_list = array(); // FIX: initialise before use
+            
             if (is_array($optionArray)) {
                 if(!isset($this->_product_data[$product_id])) {
                     $this->_product_data[$product_id] = $this->getProductData($product_id);
@@ -558,47 +560,47 @@ class Catalogue
                             foreach ($option as $value) {
                                 if (!isset($option_list[$value['option_id']])) {
                                     $option_list[$value['option_id']] = array(
-                                        'type'   => $value['option_type'],
-                                        'option_id'  => $value['option_id'],
-                                        'option_name' => $value['option_name'],
-                                        'option_weight' => $value['option_weight'],
+                                        'type'               => $value['option_type'],
+                                        'option_id'          => $value['option_id'],
+                                        'option_name'        => $value['option_name'],
+                                        'option_weight'      => $value['option_weight'],
                                         'option_description' => $value['option_description'],
-                                        'option_default' => (bool)($value['option_default'] ?? false),
-                                        'required'  => (bool)($value['option_required'] ?? false),
-                                        'selected' => isset($selected[$value['assign_id']]) ? true : false
+                                        'option_default'     => (bool)($value['option_default'] ?? false),
+                                        'required'           => (bool)($value['option_required'] ?? false),
+                                        'selected'           => isset($selected[$value['assign_id']]) ? true : false
                                     );
                                 }
-                    
+
                                 $decimal_price_sign = $value['option_negative'] ? '-' : '';
                                 $symbol = (isset($value['option_price']) && $value['option_price']!=0 && $value['option_negative'] == 0) ? '+' : '-';
 
                                 $option_list[$value['option_id']]['values'][] = array(
-                                    'assign_id'  => $value['assign_id'],
-                                    'decimal_price'   => ($value['option_price'] > 0 ? (string)$decimal_price_sign.$value['option_price'] : '0.00'),
-                                    'price'   => (isset($value['option_price']) && $value['option_price']!=0) ? Tax::getInstance()->priceFormat($value['option_price'], true) : false,
-                                    'symbol'  => ($value['absolute_price']=='1' && $symbol=='+') ? '' : $symbol,
-                                    'value_id'  => $value['value_id'],
-                                    'value_name' => $value['value_name'],
-                                    'option_weight' => $value['option_weight'],
+                                    'assign_id'      => $value['assign_id'],
+                                    'decimal_price'  => ($value['option_price'] > 0 ? (string)$decimal_price_sign.$value['option_price'] : '0.00'),
+                                    'price'          => (isset($value['option_price']) && $value['option_price']!=0) ? Tax::getInstance()->priceFormat($value['option_price'], true) : false,
+                                    'symbol'         => ($value['absolute_price']=='1' && $symbol=='+') ? '' : $symbol,
+                                    'value_id'       => $value['value_id'],
+                                    'value_name'     => $value['value_name'],
+                                    'option_weight'  => $value['option_weight'],
                                     'option_default' => (bool)($value['option_default'] ?? false),
-                                    'selected' => isset($selected[$value['assign_id']]) ? true : false,
+                                    'selected'       => isset($selected[$value['assign_id']]) ? true : false,
                                     'absolute_price' => $value['absolute_price'],
-                                    'image' => (ctype_digit($value['image_id']) && $value['image_id']>0) ? $GLOBALS['catalogue']->imagePath($value['image_id']) : ''
+                                    'image'          => (ctype_digit($value['image_id']) && $value['image_id']>0) ? $GLOBALS['catalogue']->imagePath($value['image_id']) : ''
                                 );
-                                
+
                                 if (isset($selected[$value['assign_id']]) && $selected[$value['assign_id']] > 0) {
                                     if ($value['absolute_price']=='1') {
-                                        $this->_options_line_price +=  $value['option_price'] - $this->_product_data[$product_id]['price_to_pay'];
+                                        $this->_options_line_price += $value['option_price'] - $this->_product_data[$product_id]['price_to_pay'];
                                     } else {
                                         if ($value['option_price']>0 && $value['option_negative'] == 0) {
-                                            $this->_options_line_price +=  $value['option_price'];
+                                            $this->_options_line_price += $value['option_price'];
                                         } elseif ($value['option_price']>0) {
-                                            $this->_options_line_price -=  $value['option_price'];
+                                            $this->_options_line_price -= $value['option_price'];
                                         }
                                     }
                                 }
-                            }
-                            if(!empty($option_list) && is_array($option_list)) {
+
+                                // FIX: moved inside foreach so $value is always a valid array
                                 $option_list[$value['option_id']]['priority'] = $group_priority;
                             }
                         }
@@ -610,39 +612,39 @@ class Catalogue
                             if(isset($selected[$option[0]['assign_id']]) && !empty($selected[$option[0]['assign_id']])) {
                                 $description = trim(str_replace(array($option[0]['option_name'].':','('.$symbol.$price.')'), '', $selected[$option[0]['assign_id']]));
                             } else {
-                                $description = '';   
+                                $description = '';
                             }
-                            
+
                             $decimal_price_sign = $option[0]['option_negative'] ? '-' : '';
-                            
+
                             $option_list[$option[0]['option_id']] = array(
-                                'type'   => $option[0]['option_type'],
-                                'option_id'  => $option[0]['option_id'],
-                                'assign_id'  => $option[0]['assign_id'],
-                                'option_name' => $option[0]['option_name'],
+                                'type'               => $option[0]['option_type'],
+                                'option_id'          => $option[0]['option_id'],
+                                'assign_id'          => $option[0]['assign_id'],
+                                'option_name'        => $option[0]['option_name'],
                                 'option_description' => $option[0]['option_description'],
-                                'required'  => (bool)$option[0]['option_required'],
-                                'price'   => $price,
-                                'decimal_price'   => (string)$decimal_price_sign.$option[0]['option_price'],
-                                'symbol'  => ($option[0]['absolute_price']=='1' && $symbol=='+') ? '' : $symbol,
-                                'priority'      => $option['priority'],
-                                'value'	=> $description,
-                                'absolute_price' => $option[0]['absolute_price']
+                                'required'           => (bool)$option[0]['option_required'],
+                                'price'              => $price,
+                                'decimal_price'      => (string)$decimal_price_sign.$option[0]['option_price'],
+                                'symbol'             => ($option[0]['absolute_price']=='1' && $symbol=='+') ? '' : $symbol,
+                                'priority'           => $option['priority'],
+                                'value'              => $description,
+                                'absolute_price'     => $option[0]['absolute_price']
                             );
-                            
+
                             if ($option[0]['absolute_price']=='1') {
                                 $this->_options_line_price += ($option[0]['option_price'] - $this->_product_data[$product_id]['price_to_pay']);
                             } else {
                                 if ($option[0]['option_price']>0 && $option[0]['option_negative'] == 0) {
-                                    $this->_options_line_price +=  $option[0]['option_price'];
+                                    $this->_options_line_price += $option[0]['option_price'];
                                 } elseif ($option[0]['option_price']>0) {
-                                    $this->_options_line_price -=  $option[0]['option_price'];
+                                    $this->_options_line_price -= $option[0]['option_price'];
                                 }
                             }
                         }
                     }
                 }
-                uasort($option_list, 'cmpmc'); // sort groups
+                uasort($option_list, 'cmpmc');
                 foreach ($GLOBALS['hooks']->load('class.catalogue.display_product_options') as $hook) {
                     include $hook;
                 }
