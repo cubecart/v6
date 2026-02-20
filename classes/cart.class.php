@@ -1489,16 +1489,18 @@ class Cart
                     // Gift cert not needed so remove
                     unset($this->basket['coupons'][$key]);
                 } elseif ($data['gc'] && $subtotal>0) {
-                    $discount	= $data['value'];
+                    // GC face value is tax-inclusive; convert to ex-tax equivalent for internal calculation
+                    $inclusive_subtotal = $subtotal * (1 + $ave_tax_rate);
+                    $discount = ($inclusive_subtotal > 0) ? ($data['value'] * $subtotal / $inclusive_subtotal) : $data['value'];
 
                     if ($discount<$subtotal) {
                         $subtotal -= $discount;
                         $this->_discount += $discount;
-                        $this->basket['coupons'][$key]['value_display'] = sprintf('%.2F', $discount);
+                        $this->basket['coupons'][$key]['value_display'] = sprintf('%.2F', $data['value']); // face value
                         $remainder = 0;
                     } elseif ($discount>=$subtotal) {
-                        $remainder = $discount - $subtotal;
-                        $this->basket['coupons'][$key]['value_display'] = sprintf('%.2F', $subtotal);
+                        $remainder = max(0, $data['value'] - $inclusive_subtotal); // remaining balance in face-value terms
+                        $this->basket['coupons'][$key]['value_display'] = sprintf('%.2F', $inclusive_subtotal);
                         $this->_discount += $subtotal;
                         $subtotal = 0;
                     }

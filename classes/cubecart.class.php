@@ -1785,14 +1785,16 @@ class Cubecart
                 if (isset($this->_basket['coupons']) && is_array($this->_basket['coupons']) && !empty($this->_basket['coupons'])) {
                     foreach ($this->_basket['coupons'] as $coupon) {
                         $coupon['remove_code'] = $coupon['voucher'];
+                        // GC value_display is already in face-value (inclusive) terms; only scale regular coupons
+                        $display_ratio = $coupon['gc'] ? 1.0 : $inclusive_ratio;
                         if ($coupon['type'] == 'fixed') {
                             $this->_basket['discount_type'] = 'f';
-                            $coupon['value'] = $GLOBALS['tax']->priceFormat($coupon['value_display'] * $inclusive_ratio, true);
+                            $coupon['value'] = $GLOBALS['tax']->priceFormat($coupon['value_display'] * $display_ratio, true);
                             $coupons[] = $coupon;
                         } elseif ($coupon['type'] == 'percent') {
                             $this->_basket['discount_type'] = $coupon['products'] ? 'pp' : 'p';
                             $coupon['voucher'] .= ' ('.$coupon['value'].'%)';
-                            $coupon['value'] = $GLOBALS['tax']->priceFormat($coupon['value_display'] * $inclusive_ratio, true);
+                            $coupon['value'] = $GLOBALS['tax']->priceFormat($coupon['value_display'] * $display_ratio, true);
                             $coupons[] = $coupon;
                         }
                     }
