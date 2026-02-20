@@ -689,9 +689,10 @@ class Cart
                 if((bool)$coupon['exclude_sale_items']) {
                     $proceed = false;
                     $add_to_include = array();
+                    $has_restriction = isset($include) && is_array($include) && count($include) > 0;
                     foreach ($this->basket['contents'] as $key => $data) {
                         // If we have a specific list of product already we ignore this
-                        if(isset($include) && is_array($include) && count($include)>0 && !isset($include[$data['id']])) {
+                        if($has_restriction && !isset($include[$data['id']])) {
                             continue;
                         } elseif(isset($include[$data['id']]) && (bool)$data['in_sale']) {
                             unset($include[$data['id']]);
