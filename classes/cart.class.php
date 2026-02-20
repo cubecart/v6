@@ -795,6 +795,7 @@ class Cart
 
         if (!empty($this->basket['contents']) && is_array($this->basket['contents'])) {
             $this->_discount = $this->_subtotal = $this->_weight = 0;
+            $this->basket['has_inclusive_tax'] = false;
             // Include inline shipping maths for Per Category Shipping
             $ship_by_cat = $GLOBALS['config']->get('Per_Category');
 
@@ -856,6 +857,7 @@ class Cart
                         $GLOBALS['tax']->inclusiveTaxRemove($product['price'], $product['tax_type']);
                         $product['tax_inclusive'] = false;
                         $product['remove_options_tax'] = true;
+                        $this->basket['has_inclusive_tax'] = true;
                     }
                     $product['option_line_price'] = $product['option_price_ignoring_tax'] = 0;
                     if (isset($item['options']) && is_array($item['options'])) {

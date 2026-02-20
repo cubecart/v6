@@ -92,7 +92,7 @@
          <tr>
             <td colspan="4"></td>
             <td>{$tax.name}{$CUSTOMER_LOCALE.mark}</td>
-            <td class="text-right">{$tax.value}</td>
+            <td class="text-right">{if $tax.included}({$tax.value}){else}{$tax.value}{/if}</td>
          </tr>
          {/foreach}
          {foreach from=$COUPONS item=coupon}

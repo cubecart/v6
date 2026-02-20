@@ -111,7 +111,7 @@
             {$tax.name}
          </td>
          <td width="10%" class="text-right">
-            {$CUSTOMER_LOCALE.mark}{$tax.value}
+            {if $tax.included}({$CUSTOMER_LOCALE.mark}{$tax.value}){else}{$CUSTOMER_LOCALE.mark}{$tax.value}{/if}
          </td>
       </tr>
       {/foreach}

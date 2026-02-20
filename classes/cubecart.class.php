@@ -1747,8 +1747,8 @@ class Cubecart
                 if ((int)$product['product_id']>0) {
                     $product_list[] = $product['product_id']; // Certificate ID is NULL
                 }
-                $product['line_price_display'] = $GLOBALS['tax']->priceFormat($product['line_price']);
-                $product['price_display'] = $GLOBALS['tax']->priceFormat($product['price']);
+                $product['line_price_display'] = $GLOBALS['tax']->priceFormat($product['line_price_display']);
+                $product['price_display'] = $GLOBALS['tax']->priceFormat($product['price_display']);
 
                 if (!$product['digital']) {
                     $digital_only = false;
@@ -1768,10 +1768,18 @@ class Cubecart
             }
             $GLOBALS['smarty']->assign('ITEMS', array_reverse($items, true));
 
+            // Ratio to convert ex-tax amounts to inclusive for display (1.0 for exclusive stores)
+            $inclusive_ratio = 1.0;
+            if (!empty($GLOBALS['cart']->basket['has_inclusive_tax']) && $GLOBALS['cart']->getSubTotal() > 0) {
+                $shipping_tax = (float)($GLOBALS['cart']->basket['shipping']['tax']['amount'] ?? 0);
+                $pre_discount_product_tax = $GLOBALS['tax']->_total_tax_add - $shipping_tax;
+                $inclusive_ratio = ($GLOBALS['cart']->getSubTotal() + $pre_discount_product_tax) / $GLOBALS['cart']->getSubTotal();
+            }
+
             // Get basket total
             if (isset($this->_basket['coupons']) && is_array($this->_basket['coupons']) && !empty($this->_basket['coupons']) || !empty($this->_basket['discount'])) {
                 if (!empty($this->_basket['discount']) && $this->_basket['discount']>0) {
-                    $GLOBALS['smarty']->assign('DISCOUNT', $GLOBALS['tax']->priceFormat($this->_basket['discount']));
+                    $GLOBALS['smarty']->assign('DISCOUNT', $GLOBALS['tax']->priceFormat($this->_basket['discount'] * $inclusive_ratio));
                 }
 
                 if (isset($this->_basket['coupons']) && is_array($this->_basket['coupons']) && !empty($this->_basket['coupons'])) {
@@ -1779,12 +1787,12 @@ class Cubecart
                         $coupon['remove_code'] = $coupon['voucher'];
                         if ($coupon['type'] == 'fixed') {
                             $this->_basket['discount_type'] = 'f';
-                            $coupon['value'] = $GLOBALS['tax']->priceFormat($coupon['value_display'], true);
+                            $coupon['value'] = $GLOBALS['tax']->priceFormat($coupon['value_display'] * $inclusive_ratio, true);
                             $coupons[] = $coupon;
                         } elseif ($coupon['type'] == 'percent') {
                             $this->_basket['discount_type'] = $coupon['products'] ? 'pp' : 'p';
                             $coupon['voucher'] .= ' ('.$coupon['value'].'%)';
-                            $coupon['value'] = $GLOBALS['tax']->priceFormat($coupon['value_display'], true);
+                            $coupon['value'] = $GLOBALS['tax']->priceFormat($coupon['value_display'] * $inclusive_ratio, true);
                             $coupons[] = $coupon;
                         }
                     }
@@ -1971,7 +1979,7 @@ class Cubecart
                 $GLOBALS['smarty']->assign('SHIPPING', $shipping_list);
             }
 
-            $GLOBALS['smarty']->assign('SUBTOTAL', $GLOBALS['tax']->priceFormat($GLOBALS['cart']->getSubTotal()));
+            $GLOBALS['smarty']->assign('SUBTOTAL', $GLOBALS['tax']->priceFormat($GLOBALS['cart']->getSubTotal() * $inclusive_ratio));
 
             $GLOBALS['tax']->displayTaxes();
             $GLOBALS['smarty']->assign('TOTAL', $GLOBALS['tax']->priceFormat($GLOBALS['cart']->getTotal()));

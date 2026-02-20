@@ -98,6 +98,7 @@ class Tax
         // Display applied taxes
         $GLOBALS['cart']->set('order_taxes', false);
         $taxes = array();
+        $taxes_included = !empty($GLOBALS['cart']->basket['has_inclusive_tax']);
         if (!empty($this->_tax_table_applied)) {
             foreach ($this->_tax_table_applied as $tax_id => $tax_name) {
                 if(isset($taxes[$tax_name])) {
@@ -121,14 +122,14 @@ class Tax
                         if ($tax_name!=='inherited') {
                             $inherited_split = ($tax['value']/$total_standard_taxes) * $taxes['inherited']['value'];
                             $tax_value = $tax['value']+$inherited_split;
-                            $display_taxes[] = array('name' => $tax_name, 'value' => $this->priceFormat($tax_value));
+                            $display_taxes[] = array('name' => $tax_name, 'value' => $this->priceFormat($tax_value), 'included' => $taxes_included);
                             $basket_taxes[] = array('tax_id' => $tax['tax_id'], 'amount' => $tax_value);
                         }
                     }
                 }
             } else {
                 foreach ($taxes as $tax_name => $tax) {
-                    $display_taxes[] = array('name' => $tax_name, 'value' => $this->priceFormat($tax['value']));
+                    $display_taxes[] = array('name' => $tax_name, 'value' => $this->priceFormat($tax['value']), 'included' => $taxes_included);
                     $basket_taxes[] = array('tax_id' => $tax['tax_id'], 'amount' => $tax['value']);
                 }
             }
