@@ -376,12 +376,13 @@ $GLOBALS['smarty']->assign('PAGE_BREAKS_STOCK', array(25, 50, 100, 250, 500));
 $GLOBALS['smarty']->assign('PAGE_BREAK_STOCK', $per_page);
 $GLOBALS['smarty']->assign('PAGE_BREAK_URL_STOCK', $page_break_url);
 
-$tables = '`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory` AS `I` LEFT JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_option_matrix` AS `M` on `I`.`product_id` = `M`.`product_id`';
+$dbprefix = $GLOBALS['config']->get('config', 'dbprefix');
+$tables = '`'.$dbprefix.'CubeCart_inventory` AS `I` LEFT JOIN `'.$dbprefix.'CubeCart_option_matrix` AS `M` on `I`.`product_id` = `M`.`product_id`';
 
 $fields = 'I.name, I.product_code, I.stock_level AS I_stock_level, I.stock_warning AS I_stock_warning, I.product_id, M.stock_level AS M_stock_level, M.use_stock as M_use_stock, M.cached_name';
 $stock_warn_level = ($GLOBALS['config']->isEmpty('config', 'stock_warn_level')) ? '0' : $GLOBALS['config']->get('config', 'stock_warn_level');
 $condition = $GLOBALS['config']->get('config', 'stock_warn_type') == '1' ? 'I.stock_warning' : $stock_warn_level;
-$where = "use_stock_level = 1 AND ((M.status = 1 AND M.use_stock = 1 AND M.stock_level <= $condition) OR (I.stock_level <= $condition))";
+$where = "use_stock_level = 1 AND ((M.status = 1 AND M.use_stock = 1 AND M.stock_level <= $condition) OR (I.stock_level <= $condition AND NOT EXISTS (SELECT 1 FROM `".$dbprefix."CubeCart_option_matrix` M2 WHERE M2.product_id = I.product_id AND M2.status = 1 AND M2.use_stock = 1)))";
 // Stock Warnings Sort
 if (!isset($_GET['sort']) || !is_array($_GET['sort'])) {
     $_GET['sort'] = array('stock_level' => 'DESC');
