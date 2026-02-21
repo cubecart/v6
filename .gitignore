@@ -10,6 +10,9 @@
 /robots.txt
 /sitemap_*
 
+# Tests
+/tests/
+
 # OS General
 .DS_Store
 Thumbs.db
