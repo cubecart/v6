@@ -2235,8 +2235,15 @@ class Catalogue
                         for ($i=0; $i<$noKeys; ++$i) {
                             $ucSearchTerm = strtoupper($searchArray[$i]);
                             if (($ucSearchTerm != 'AND') && ($ucSearchTerm != 'OR')) {
-                                $regexp = $like_prefix.$searchArray[$i].$like_postfix;
-                                $regexp_desc = $like_prefix.htmlentities(html_entity_decode($searchArray[$i], ENT_COMPAT, 'UTF-8'), ENT_QUOTES, 'UTF-8', false).$like_postfix;
+                                // Decode HTML entities from the raw search term first
+                                $term = html_entity_decode($searchArray[$i], ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                                // For RLIKE, escape MySQL regex metacharacters to prevent parse errors on input like ( ) [ ] . * etc.
+                                $term_safe = ($search_mode === 'rlike') ? addcslashes($term, '\\.[]()*+?{}^$|') : $term;
+                                $regexp = $like_prefix.$term_safe.$like_postfix;
+                                // For the description column (stored as HTML) re-encode entities then escape regex metacharacters
+                                $term_desc = htmlspecialchars($term, ENT_QUOTES, 'UTF-8', false);
+                                $term_desc_safe = ($search_mode === 'rlike') ? addcslashes($term_desc, '\\.[]()*+?{}^$|') : $term_desc;
+                                $regexp_desc = $like_prefix.$term_desc_safe.$like_postfix;
                             }
 
                         if ($search_mode == 'rlike' && strstr($like_postfix, '.*')) {
@@ -2250,7 +2257,7 @@ class Catalogue
                         }
                         $cq = array();
                         foreach($search_cols as $col) {
-                            $r = $col == 'description' ? $regexp_desc : $regexp;
+                            $r = ($col === 'product_code') ? $regexp : $regexp_desc;
                             $cq[] = "I.$col ".$like_keyword." '".addslashes($r)."'";
                         }
                         $like[$i] = "(".implode(' OR ', $cq).")";
