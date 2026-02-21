@@ -99,7 +99,8 @@ if (!empty($_POST) && Admin::getInstance()->permissions('products', CC_PERM_EDIT
     if (isset($_POST['add_attr'])) {
         $attributes_added = false;
         foreach ($_POST['add_attr'] as $option_id => $values) {
-            $priority = 1;
+            $max = $GLOBALS['db']->select('CubeCart_option_value', array('MAX' => 'priority'), array('option_id' => (int)$option_id));
+            $priority = ($max) ? (int)$max[0]['MAX_priority'] + 1 : 1;
             foreach ($values as $offset => $data) {
                 $record = array(
                     'value_name' => $data['attr_name'],
