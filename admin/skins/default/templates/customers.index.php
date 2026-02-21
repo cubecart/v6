@@ -314,6 +314,12 @@
 			{/foreach}
 			</tbody>
 		</table>
+			{if $CONSENT_PAGINATION}
+			<div class="pagination">
+				<span><strong>{$LANG.common.total}:</strong> {number_format($TOTAL_RESULTS)}</span>
+				{$CONSENT_PAGINATION}&nbsp;
+			</div>
+			{/if}
 		{else}
 		{$LANG.form.none}
 		{/if}

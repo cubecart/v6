@@ -695,7 +695,7 @@ class Database_Contoller
             $prefix = $this->_prefix;
         } else {
             // Find the original table in JOIN set
-            if (preg_match('#^`(.+)`[a-z ]+JOIN#i', $table, $match)) {
+            if (preg_match('#^`([^`]+)`[a-z ]+JOIN#i', $table, $match)) {
                 $table_where = str_replace($this->_prefix, '', $match[1]);
             }
             $wrapper = '';

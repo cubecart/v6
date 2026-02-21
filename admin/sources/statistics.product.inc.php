@@ -21,7 +21,7 @@ if($product) {
     $master_image = isset($_GET['product_id']) ? $GLOBALS['gui']->getProductImage((int)$_GET['product_id']) : '';
     $product['image'] = $master_image;
 
-    $join = "`CubeCart_order_inventory` AS `I` INNER JOIN `CubeCart_order_summary` AS `S` ON `I`.`cart_order_id` = `S`.`cart_order_id`";
+    $join = "`".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_inventory` AS `I` INNER JOIN `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary` AS `S` ON `I`.`cart_order_id` = `S`.`cart_order_id`";
     $columns = '`S`.`order_date`, `S`.`id`, `I`.`quantity`';
     $where = '`I`.`product_id` = '.(string)$_GET['product_id'].' AND `S`.`status` IN(2, 3)';
     $where_date = '';
