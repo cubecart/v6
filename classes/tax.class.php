@@ -297,6 +297,17 @@ class Tax
         }
         if (($result = $GLOBALS['db']->select('CubeCart_currency', '*', array('code' => $code))) !== false) {
             $this->_currency_vars = $result[0];
+            // Persist to session so currency survives page loads (#3477)
+            if (!$GLOBALS['session']->has('currency', 'client')) {
+                $GLOBALS['session']->set('currency', $code, 'client');
+            }
+            return true;
+        }
+        // Session currency not found in DB - fall back to default (#3477)
+        $default = $GLOBALS['config']->get('config', 'default_currency');
+        if ($code !== $default && ($result = $GLOBALS['db']->select('CubeCart_currency', '*', array('code' => $default))) !== false) {
+            $this->_currency_vars = $result[0];
+            $GLOBALS['session']->set('currency', $default, 'client');
             return true;
         }
 
