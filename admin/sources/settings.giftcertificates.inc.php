@@ -65,13 +65,6 @@ if (isset($gc['image'])) {
     $GLOBALS['smarty']->assign('JSON_IMAGES', json_encode(array($gc['image'])));
 }
 
-if (($taxes = $GLOBALS['db']->select('CubeCart_tax_class')) !== false) {
-    foreach ($taxes as $tax) {
-        $tax['selected'] = (isset($gc['taxType']) && $gc['taxType'] == $tax['id'])? ' selected="selected"' : '';
-        $smarty_data['taxs'][] = $tax;
-    }
-    $GLOBALS['smarty']->assign('TAXES', $smarty_data['taxs']);
-}
 $GLOBALS['smarty']->assign('GC', $gc);
 $select_options = array(
     'delivery' => array(1 => $lang['settings']['gc_type_digital'], 2 => $lang['settings']['gc_type_physical'], 3 => $lang['settings']['gc_type_both']),

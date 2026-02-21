@@ -944,7 +944,7 @@ class Cart
                         'price'   => $item['certificate']['value'],
                         'name'   => sprintf('%s %s (%s)', $method, $GLOBALS['language']->catalogue['gift_certificate'], $GLOBALS['tax']->priceFormat($item['certificate']['value'], true)),
                         'digital'  => (bool)$item['digital'],
-                        'tax_type'  => $gc['taxType'],
+                        'tax_type'  => 0, // Gift certificates are MPV - no VAT at point of sale
                         'tax_inclusive' => 0,
                         'options'  => array(),
                         'option_price_ignoring_tax' => 0,

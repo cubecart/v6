@@ -1401,6 +1401,7 @@ class Order
                     'price'   => $item['certificate']['value'],
                     'product_code' => $gc['product_code'],
                     'digital'  => (bool)$item['digital'],
+                    'tax_type'  => 0, // Gift certificates are MPV - no VAT at point of sale
                     'coupon_id'  => $this->_createCertificate($item['certificate']['value']),
                     'custom'  => serialize($item['certificate']),
                     'hash'   => $hash
