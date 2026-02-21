@@ -182,7 +182,8 @@ $(document).ready(function() {
                 break
         }
         var new_src = $(this).attr('src').replace(value_old+'_checkbox.png',value_new+'_checkbox.png');
-        $(this).attr({src: new_src});
+        var new_label = (value_new == '1') ? lang.disable : lang.enable;
+        $(this).attr({src: new_src, alt: new_label, title: new_label});
         $(e).val(value_new)
     });
 
