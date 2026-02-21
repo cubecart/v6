@@ -46,10 +46,11 @@ if (!empty($_POST) && Admin::getInstance()->permissions('products', CC_PERM_EDIT
         }
     }
 
-    ## Add options to a set
+    ## Add options to a set
     if (!empty($_POST['set_id']) && !empty($_POST['add_to_set'])) {
         $set_id = (int)$_POST['set_id'];
         $added = false;
+        $new_members = array();
         foreach ($_POST['add_to_set'] as $value) {
             if ($value[0] == 'g') {
                 $value = substr($value, 1);
@@ -60,9 +61,26 @@ if (!empty($_POST) && Admin::getInstance()->permissions('products', CC_PERM_EDIT
             }
             $record = array('set_id' => $set_id, 'option_id' => (int)$option, 'value_id' => (int)$value);
             if (isset($record) && !$GLOBALS['db']->select('CubeCart_options_set_member', array('set_member_id'), $record)) {
-                if ($GLOBALS['db']->insert('CubeCart_options_set_member', $record)) {
+                if ($set_member_id = $GLOBALS['db']->insert('CubeCart_options_set_member', $record)) {
                     $added = true;
                     $changes = true;
+                    $new_members[] = array('set_member_id' => (int)$set_member_id, 'option_id' => (int)$option, 'value_id' => (int)$value);
+                }
+            }
+        }
+        // Create option_assign records for products that already have this set (#2864)
+        if (!empty($new_members) && ($set_products = $GLOBALS['db']->select('CubeCart_options_set_product', array('product_id'), array('set_id' => $set_id))) !== false) {
+            foreach ($set_products as $sp) {
+                foreach ($new_members as $member) {
+                    $assign_check = array('product' => (int)$sp['product_id'], 'option_id' => $member['option_id'], 'value_id' => $member['value_id']);
+                    if (!$GLOBALS['db']->select('CubeCart_option_assign', array('assign_id'), $assign_check)) {
+                        $GLOBALS['db']->insert('CubeCart_option_assign', array_merge($assign_check, array(
+                            'set_member_id' => $member['set_member_id'],
+                            'set_enabled'   => 1,
+                            'option_price'  => '0.00',
+                            'option_weight' => '0.00',
+                        )));
+                    }
                 }
             }
         }
