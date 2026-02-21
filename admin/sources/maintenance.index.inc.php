@@ -633,7 +633,9 @@ if (isset($database_result) && $database_result) {
             'admin_id' => 'KEY'
         ),
         'cubecart_admin_users' => array(
-            'admin_id' => 'PRIMARY'
+            'admin_id' => 'PRIMARY',
+            'username' => 'KEY',
+            'email' => 'KEY'
         ),
         'cubecart_alt_shipping' => array(
             'id' => 'PRIMARY'
@@ -644,11 +646,14 @@ if (isset($database_result) && $database_result) {
         'cubecart_blocker' => array(
             'block_id' => 'PRIMARY',
             'location' => 'KEY',
-            'last_attempt' => 'KEY'
+            'last_attempt' => 'KEY',
+            'username' => 'KEY'
         ),
         'cubecart_category' => array(
             'cat_id' => 'PRIMARY',
-            'cat_parent_id' => 'KEY'
+            'cat_parent_id' => 'KEY',
+            'status' => 'KEY',
+            'hide' => 'KEY'
         ),
         'cubecart_category_index' => array(
             'id' => 'PRIMARY',
@@ -706,7 +711,11 @@ if (isset($database_result) && $database_result) {
             'ip_address' => 'KEY'
         ),
         'cubecart_downloads' => array(
-            'digital_id' => 'PRIMARY'
+            'digital_id' => 'PRIMARY',
+            'customer_id' => 'KEY',
+            'cart_order_id' => 'KEY',
+            'accesskey' => 'KEY',
+            'order_inv_id' => 'KEY'
         ),
         'cubecart_email_content' => array(
             'content_id' => 'PRIMARY',
@@ -742,7 +751,9 @@ if (isset($database_result) && $database_result) {
         ),
         'cubecart_hooks' => array(
             'hook_id' => 'PRIMARY',
-            'enabled' => 'KEY'
+            'trigger' => 'KEY',
+            'enabled' => 'KEY',
+            'plugin' => 'KEY'
         ),
         'cubecart_image_index' => array(
             'id' => 'PRIMARY',
@@ -758,13 +769,15 @@ if (isset($database_result) && $database_result) {
             'description' => 'FULLTEXT',
             'name' => 'FULLTEXT',
             'featured' => 'KEY',
-            'use_stock_level' => 'KEY'
+            'use_stock_level' => 'KEY',
+            'manufacturer' => 'KEY'
         ),
         'cubecart_inventory_language' => array(
             'translation_id' => 'PRIMARY',
             'name' => 'FULLTEXT',
             'description' => 'FULLTEXT',
-            'language' => 'KEY'
+            'language' => 'KEY',
+            'product_id' => 'KEY'
         ),
         'cubecart_lang_strings' => array(
             'string_id' => 'PRIMARY',
@@ -956,7 +969,7 @@ if (isset($database_result) && $database_result) {
             'item_id' => 'KEY',
             'custom' => 'KEY',
             'redirect' => 'KEY'
-        ),
+        ), // type+item_id are covered by composite KEY type_item
         'cubecart_email_log' => array(
             'id' => 'PRIMARY',
             'to' => 'KEY'
