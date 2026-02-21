@@ -477,20 +477,22 @@ class Tax
 
             if ($tax_inclusive) {
                 // if tax inclusive we need to remove tax and flag it as done!
-                $amount = sprintf('%.2F', $price - ($price/($percent+1)));
+                $amount_raw = $price - ($price/($percent+1));
+                $amount = sprintf('%.2F', $amount_raw);
                 if ($sum) {
-                    $this->_tax_table_inc[$tax_id]		+= $amount;
-                    $this->_total_tax_inc				+= $amount;
+                    $this->_tax_table_inc[$tax_id]		+= $amount_raw;
+                    $this->_total_tax_inc				+= $amount_raw;
                 }
             } else {
-                $amount	= sprintf('%.2F', $price * $percent);
+                $amount_raw = $price * $percent;
+                $amount	= sprintf('%.2F', $amount_raw);
                 if ($sum) {
                     if (isset($this->_tax_table_add[$tax_id])) {
-                        $this->_tax_table_add[$tax_id]	+= $amount;
+                        $this->_tax_table_add[$tax_id]	+= $amount_raw;
                     } else {
-                        $this->_tax_table_add[$tax_id]	= $amount;
+                        $this->_tax_table_add[$tax_id]	= $amount_raw;
                     }
-                    $this->_total_tax_add				+= $amount;
+                    $this->_total_tax_add				+= $amount_raw;
                 }
             }
             return array('tax_id' => $tax_id, 'amount' => $amount, 'tax_inclusive' => $tax_inclusive, 'tax_name' => 'inherited', 'tax_percent' => $percent);
@@ -504,16 +506,17 @@ class Tax
                     ($tariff['tariff']=='D' && $store_country_iso == $tariff['source'] && $GLOBALS['cart']->basket['delivery_address']['country_iso'] == $tariff['destination'])
                 ) {
                     $percent = $tariff['percent'];
-                    $amount	= sprintf('%.2F', $price*($tariff['percent']/100));
+                    $amount_raw = $price*($tariff['percent']/100);
+                    $amount	= sprintf('%.2F', $amount_raw);
                     $tariff_id = 'i'.$tariff_id;
                     if ($sum) {
                         $this->_tax_table_applied[$tariff_id] = $this->tariffName($tariff);
                         if (isset($this->_tax_table_add[$tariff_id])) {
-                            $this->_tax_table_add[$tariff_id]	+= $amount;
+                            $this->_tax_table_add[$tariff_id]	+= $amount_raw;
                         } else {
-                            $this->_tax_table_add[$tariff_id]	= $amount;
+                            $this->_tax_table_add[$tariff_id]	= $amount_raw;
                         }
-                        $this->_total_tax_add				+= $amount;
+                        $this->_total_tax_add				+= $amount_raw;
                     }
                 }   
             }
@@ -528,25 +531,27 @@ class Tax
                     switch ($tax_inclusive) {
                         case true:
                             ## Already includes tax - but how much?
-                            $amount = sprintf('%.2F', $price - ($price/(($tax['percent']/100)+1)));
+                            $amount_raw = $price - ($price/(($tax['percent']/100)+1));
+                            $amount = sprintf('%.2F', $amount_raw);
                             if ($sum) {
                                 $this->_tax_table_applied[$tax_id]	= $tax['name'];
-                                $this->_tax_table_inc[$tax_id]		+= $amount;
-                                $this->_total_tax_inc				+= $amount;
+                                $this->_tax_table_inc[$tax_id]		+= $amount_raw;
+                                $this->_total_tax_inc				+= $amount_raw;
                             }
                             break;
                         case false:
                         default:
                             ## Excludes tax - lets add it
-                            $amount	= sprintf('%.2F', $price*($tax['percent']/100));
+                            $amount_raw = $price*($tax['percent']/100);
+                            $amount	= sprintf('%.2F', $amount_raw);
                             if ($sum) {
                                 $this->_tax_table_applied[$tax_id]	= $tax['name'];
                                 if (isset($this->_tax_table_add[$tax_id])) {
-                                    $this->_tax_table_add[$tax_id]	+= $amount;
+                                    $this->_tax_table_add[$tax_id]	+= $amount_raw;
                                 } else {
-                                    $this->_tax_table_add[$tax_id]	= $amount;
+                                    $this->_tax_table_add[$tax_id]	= $amount_raw;
                                 }
-                                $this->_total_tax_add				+= $amount;
+                                $this->_total_tax_add				+= $amount_raw;
                             }
                             break;
                     }

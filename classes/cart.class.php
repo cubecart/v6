@@ -58,6 +58,13 @@ class Cart
      */
     private $_shipping   = 0;
     /**
+     * Gross inclusive subtotal (original inc-tax prices × qty, before tax stripping)
+     * Used to reconstruct an accurate total for tax-inclusive baskets.
+     *
+     * @var float
+     */
+    private $_subtotal_inc_gross = 0;
+    /**
      * Cart subtotal
      *
      * @var float
@@ -795,7 +802,7 @@ class Cart
         }
 
         if (!empty($this->basket['contents']) && is_array($this->basket['contents'])) {
-            $this->_discount = $this->_subtotal = $this->_weight = 0;
+            $this->_discount = $this->_subtotal = $this->_subtotal_inc_gross = $this->_weight = 0;
             $this->basket['has_inclusive_tax'] = false;
             // Include inline shipping maths for Per Category Shipping
             $ship_by_cat = $GLOBALS['config']->get('Per_Category');
@@ -827,6 +834,7 @@ class Cart
                     continue;
                 }
                 // Basket Contents
+                $inc_unit_price_pre_strip = 0; // reset each iteration; set only for tax-inclusive products
                 if (is_numeric($item['id'])) {
                     $item['options_identifier'] = isset($item['options_identifier']) ? $item['options_identifier'] : '';
                     $product = $GLOBALS['catalogue']->getProductData($item['id'], $item['quantity'], false, 10, 1, false, $item['options_identifier']);
@@ -853,8 +861,10 @@ class Cart
                     $product['price_display'] = $product['price'];
                     $product['base_price_display'] = $GLOBALS['tax']->priceFormat($product['price'], true);
                     $product['remove_options_tax'] = false;
+                    $inc_unit_price_pre_strip = 0;
                     if ($product['tax_inclusive']) {
                         // Remove tax from the items by default, everything internally should be sans-tax
+                        $inc_unit_price_pre_strip = $product['price']; // save original inclusive unit price
                         $GLOBALS['tax']->inclusiveTaxRemove($product['price'], $product['tax_type']);
                         $product['tax_inclusive'] = false;
                         $product['remove_options_tax'] = true;
@@ -960,7 +970,6 @@ class Cart
                 $product['line_price'] = $product['price'];
                 $product['price']  = $product['price'] * $item['quantity'];
 
-                $this->_subtotal  += $product['price'];
                 $this->_weight   += $product['quantity'] * $product['product_weight'];
 
                 $this->basket_data[$hash] = $product;
@@ -974,6 +983,20 @@ class Cart
                 }
                 $this->basket['contents'][$hash]['tax_each'] = $product_tax;
                 $this->basket['contents'][$hash]['option_absolute_price'] = isset($product['absolute_price'])?true:false;
+
+                // Accumulate subtotal. For originally tax-inclusive products without option
+                // price adjustments, use (inc_line - rounded_tax) instead of the raw ex-tax
+                // line price to prevent floating-point drift from inclusiveTaxRemove's division
+                // accumulating into the basket total (e.g. 3 x £7.49 inc 20%% VAT showing £22.48
+                // instead of the correct £22.47).
+                if ($inc_unit_price_pre_strip > 0 && $product_tax !== false && $product['option_line_price'] == 0) {
+                    $inc_line = $inc_unit_price_pre_strip * $item['quantity'];
+                    $this->_subtotal_inc_gross += $inc_line;
+                    $this->_subtotal += $inc_line - (float)$product_tax['amount'];
+                } else {
+                    $this->_subtotal_inc_gross += $product['price'];
+                    $this->_subtotal  += $product['price'];
+                }
 
                 // Calculate Line Shipping Price if enabled
                 if (isset($product['product_id']) && !empty($product['product_id']) && isset($ship_by_cat['status']) && (bool)$ship_by_cat['status']) {
