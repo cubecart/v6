@@ -1418,7 +1418,7 @@ class Cart
                                     $subtotal += ($item['total_price_each'] * $item['quantity']);
                                 }
                                 if ($item['tax_each']['amount']>0) {
-                                    $tax_total += $item['tax_each']['amount'];
+                                    $tax_total += $item['tax_each']['amount_raw'] ?? $item['tax_each']['amount'];
                                 }
                             } elseif ($item['total_price_each']>0) { // excluded items CAN be used against gift certificates!!
                                 $excluded_products[$hash] = $item;
@@ -1429,7 +1429,7 @@ class Cart
                     if (isset($this->basket['shipping']) && $data['shipping'] && $this->basket['shipping']['value']>0) {
                         $subtotal += $this->basket['shipping']['value'];
                         if ($this->basket['shipping']['tax']['amount']>0) {
-                            $tax_total += $this->basket['shipping']['tax']['amount'];
+                            $tax_total += $this->basket['shipping']['tax']['amount_raw'] ?? $this->basket['shipping']['tax']['amount'];
                         }
                     } elseif (isset($this->basket['shipping']) && $this->basket['shipping']['value']>0) {
                         $excluded_shipping = $this->basket['shipping'];
@@ -1468,14 +1468,14 @@ class Cart
                         $subtotal += ($item['total_price_each'] * $item['quantity']);
                     }
                     if ($item['tax_each']['amount']>0) {
-                        $tax_total += $item['tax_each']['amount'];
+                        $tax_total += $item['tax_each']['amount_raw'] ?? $item['tax_each']['amount'];
                     }
                 }
 
                 if (isset($this->basket['shipping']) && $this->basket['shipping']['value']>0) {
                     $subtotal += $this->basket['shipping']['value'];
                     if ($this->basket['shipping']['tax']['amount']>0) {
-                        $tax_total += $this->basket['shipping']['tax']['amount'];
+                        $tax_total += $this->basket['shipping']['tax']['amount_raw'] ?? $this->basket['shipping']['tax']['amount'];
                     }
                 }
 
@@ -1489,14 +1489,14 @@ class Cart
                                 $excluded_subtotal += ($item['total_price_each'] * $item['quantity']);
                             }
                             if ($item['tax_each']['amount']>0) {
-                                $excluded_tax_total += $item['tax_each']['amount'];
+                                $excluded_tax_total += $item['tax_each']['amount_raw'] ?? $item['tax_each']['amount'];
                             }
                         }
                     }
                     if (is_array($excluded_shipping) && $excluded_shipping['value']>0) {
                         $excluded_subtotal += $excluded_shipping['value'];
                         if ($excluded_shipping['tax']['amount']>0) {
-                            $excluded_tax_total += $excluded_shipping['tax']['amount'];
+                            $excluded_tax_total += $excluded_shipping['tax']['amount_raw'] ?? $excluded_shipping['tax']['amount'];
                         }
                     }
                     if ($excluded_tax_total>0) {

@@ -472,7 +472,7 @@ class Tax
 
         // Allows a hook to trigger a RETURN of this function by setting a variable
         if(isset($classTaxProducttaxReturn) && $classTaxProducttaxReturn === true){
-            return array('tax_id' => $tax_id, 'amount' => $amount, 'tax_inclusive' => $tax_inclusive, 'tax_name' => $tax_name, 'tax_percent' => $percent);
+            return array('tax_id' => $tax_id, 'amount' => $amount, 'amount_raw' => $amount, 'tax_inclusive' => $tax_inclusive, 'tax_name' => $tax_name, 'tax_percent' => $percent);
         }
         
         if ($price<=0) {
@@ -506,7 +506,7 @@ class Tax
                     $this->_total_tax_add				+= $amount_raw;
                 }
             }
-            return array('tax_id' => $tax_id, 'amount' => $amount, 'tax_inclusive' => $tax_inclusive, 'tax_name' => 'inherited', 'tax_percent' => $percent);
+            return array('tax_id' => $tax_id, 'amount' => $amount, 'amount_raw' => $amount_raw, 'tax_inclusive' => $tax_inclusive, 'tax_name' => 'inherited', 'tax_percent' => $percent);
         }
         if ($check_tariff && is_array($this->_tariff_table) && !empty($this->_tariff_table)) {
             $store_country_iso = getCountryFormat($GLOBALS['config']->get('config', 'store_country'), 'numcode', 'iso');
@@ -568,7 +568,7 @@ class Tax
                     }
                 }
             }
-            return array('tax_id' => $tax_id, 'amount' => $amount, 'tax_inclusive' => $tax_inclusive, 'tax_name' => $tax_name, 'tax_percent' => $percent);
+            return array('tax_id' => $tax_id, 'amount' => $amount, 'amount_raw' => $amount_raw, 'tax_inclusive' => $tax_inclusive, 'tax_name' => $tax_name, 'tax_percent' => $percent);
         }
         return false;
     }
