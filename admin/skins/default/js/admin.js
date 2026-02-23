@@ -4,8 +4,10 @@ $(document).ready(function() {
     window.SKIN_FOLDER  = $("#val_skin_folder").text()  || "default";
     window.IMG_PATH = `${ADMIN_FOLDER}/skins/${SKIN_FOLDER}/images/`;
     window.LANG = {
-    disable: $("#val_lang_disable").text() || "Disable",
-    enable:  $("#val_lang_enable").text()  || "Enable"
+    disable:  $("#val_lang_disable").text()  || "Disable",
+    enable:   $("#val_lang_enable").text()   || "Enable",
+    disabled: $("#val_lang_disabled").text() || "Disabled",
+    enabled:  $("#val_lang_enabled").text()  || "Enabled"
     };
     $(function() {
         let counter = $('#spec-container .spec-row').length-1;
@@ -121,8 +123,10 @@ $(document).ready(function() {
     }, 1);
 
     var lang = {
-        disable:        $("#val_lang_disable").length ? LANG.disable : 'Disable',
-        enable:         $("#val_lang_enable").length ? LANG.enable : 'Enable'
+        disable:  $("#val_lang_disable").length  ? LANG.disable  : 'Disable',
+        enable:   $("#val_lang_enable").length   ? LANG.enable   : 'Enable',
+        disabled: $("#val_lang_disabled").length ? LANG.disabled : 'Disabled',
+        enabled:  $("#val_lang_enabled").length  ? LANG.enabled  : 'Enabled'
     }
 
     var config = {
@@ -140,9 +144,9 @@ $(document).ready(function() {
         var s = $(this).attr("style");
         d.src = IMG_PATH + c + "_checkbox.png";
         if (c == "1") {
-            d.alt = d.title = lang.disable
+            d.alt = d.title = lang.enabled
         } else {
-            d.alt = d.title = lang.enable
+            d.alt = d.title = lang.disabled
         }
         $(d).addClass("checkbox");
         $(d).addClass("cbs");
@@ -182,7 +186,7 @@ $(document).ready(function() {
                 break
         }
         var new_src = $(this).attr('src').replace(value_old+'_checkbox.png',value_new+'_checkbox.png');
-        var new_label = (value_new == '1') ? lang.disable : lang.enable;
+        var new_label = (value_new == '1') ? lang.enabled : lang.disabled;
         $(this).attr({src: new_src, alt: new_label, title: new_label});
         $(e).val(value_new)
     });

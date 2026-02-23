@@ -54,6 +54,8 @@
 	<div id="val_lang_upload_destination" style="display: none;">{$LANG.filemanager.upload_destination}:</div>
 	<div id="val_lang_enable" style="display: none;">{$LANG.common.enable}</div>
 	<div id="val_lang_disable" style="display: none;">{$LANG.common.disable}</div>
+	<div id="val_lang_enabled" style="display: none;">{$LANG.common.enabled}</div>
+	<div id="val_lang_disabled" style="display: none;">{$LANG.common.disabled}</div>
   </div>
   <div id="seo" class="tab_content">
 	<h3>{$LANG.settings.title_seo}</h3>
