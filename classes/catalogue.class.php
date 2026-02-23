@@ -924,6 +924,15 @@ class Catalogue
     }
 
     /**
+     * Return the list of option types that carry fixed value attributes (select, radio, checkbox, hidden + hook additions)
+     *
+     * @return array
+     */
+    public function getSelectableTypes() {
+        return $this->_options_selectable;
+    }
+
+    /**
      * Get default product options
      *
      * @return array

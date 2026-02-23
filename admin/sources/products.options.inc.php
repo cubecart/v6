@@ -294,9 +294,12 @@ foreach ($GLOBALS['hooks']->load('admin.products.options.types') as $hook) {
 $GLOBALS['smarty']->assign('OPTION_TYPES', $optionTypes);
 $GLOBALS['smarty']->assign('OPTION_TYPE_JSON', json_encode($optionTypes));
 
+$selectableTypes = $GLOBALS['catalogue']->getSelectableTypes();
+
 if (isset($optionArray) && !empty($optionArray)) {
     foreach ($optionArray as $option_id => $option) {
-        $option['type_name']= $optionTypes[$option['type']];
+        $option['type_name']  = $optionTypes[$option['type']];
+        $option['selectable'] = in_array($option['type'], $selectableTypes);
         $option['delete'] = currentPage(null, array('delete' => 'group', 'id' => $option_id, 'token' => SESSION_TOKEN));
         $groups_list[]  = $option;
         $smarty_data['option_name'][$option_id] = $optionArray[$option_id]['name'];

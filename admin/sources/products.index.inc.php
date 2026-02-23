@@ -798,7 +798,7 @@ if (isset($_GET['action'])) {
             }
 
             ## Product Options (Sets)
-            $select_types = array(0,4);
+            $select_types = $GLOBALS['catalogue']->getSelectableTypes();
             if (($set_products = $GLOBALS['db']->misc(sprintf("SELECT * FROM `%1\$sCubeCart_options_set_product` AS `P` INNER JOIN `%1\$sCubeCart_options_set` AS `S` ON `S`.`set_id` = `P`.`set_id` WHERE `P`.`product_id` = $product_id", $GLOBALS['config']->get('config', 'dbprefix')))) !== false) {
                 foreach ($set_products as $set_product) {
                     if (($members = $GLOBALS['db']->select('CubeCart_options_set_member', false, array('set_id' => $set_product['set_id']))) !== false) {
