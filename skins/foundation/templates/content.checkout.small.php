@@ -105,16 +105,6 @@
          </td>
       </tr>
       {/if}
-      {foreach from=$TAXES item=tax}
-      <tr>
-         <td colspan="2">
-            {$tax.name}
-         </td>
-         <td width="10%" class="text-right">
-            {if $tax.included}({$CUSTOMER_LOCALE.mark}{$tax.value}){else}{$CUSTOMER_LOCALE.mark}{$tax.value}{/if}
-         </td>
-      </tr>
-      {/foreach}
       {foreach from=$COUPONS item=coupon}
       <tr>
          <td colspan="2">
@@ -135,6 +125,16 @@
          </td>
       </tr>
       {/if}
+      {foreach from=$TAXES item=tax}
+      <tr>
+         <td colspan="2">
+            {$tax.name}
+         </td>
+         <td width="10%" class="text-right">
+            {if $tax.included}({$CUSTOMER_LOCALE.mark}{$tax.value}){else}{$CUSTOMER_LOCALE.mark}{$tax.value}{/if}
+         </td>
+      </tr>
+      {/foreach}
       {if !empty($CREDIT_USED)}
       <tr>
          <td colspan="2">
