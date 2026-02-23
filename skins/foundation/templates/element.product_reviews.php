@@ -58,10 +58,10 @@
                <div class="small-12 columns"><input type="checkbox" id="rev_anon" name="review[anon]" value="1"> <label for="rev_anon">{$LANG.catalogue.post_anonymously}</label></div>
             </div>
             <div class="row">
-               <div class="small-12 columns"><label for="rev_name">{$LANG.common.name}</label><input id="rev_name" type="text" name="review[name]" value="{$WRITE.name}" placeholder="{$LANG.common.name} {$LANG.form.required}" required></div>
+               <div class="small-12 columns"><label for="rev_name">{$LANG.common.name}</label><input id="rev_name" type="text" name="review[name]" value="{$WRITE.name|default:''}" placeholder="{$LANG.common.name} {$LANG.form.required}" required></div>
             </div>
             <div class="row">
-               <div class="small-12 columns"><label for="rev_email">{$LANG.common.email} ({$LANG.catalogue.internal_use_only})</label><input id="rev_email" type="text" name="review[email]" value="{$WRITE.email}" placeholder="{$LANG.common.email} {$LANG.form.required}" required></div>
+               <div class="small-12 columns"><label for="rev_email">{$LANG.common.email} ({$LANG.catalogue.internal_use_only})</label><input id="rev_email" type="text" name="review[email]" value="{$WRITE.email|default:''}" placeholder="{$LANG.common.email} {$LANG.form.required}" required></div>
             </div>
       
             <div class="row">
@@ -73,10 +73,10 @@
                </div>
             </div>
             <div class="row">
-               <div class="small-12 columns"><label for="rev_title" class="inline">{$LANG.catalogue.review_title}</label><input id="rev_title" type="text" name="review[title]" value="{$WRITE.title}" placeholder="{$LANG.catalogue.review_title} {$LANG.form.required}" required></div>
+               <div class="small-12 columns"><label for="rev_title" class="inline">{$LANG.catalogue.review_title}</label><input id="rev_title" type="text" name="review[title]" value="{$WRITE.title|default:''}" placeholder="{$LANG.catalogue.review_title} {$LANG.form.required}" required></div>
             </div>
             <div class="row">
-               <div class="small-12 columns"><label for="rev_review" class="return">{$LANG.catalogue.review}</label><textarea id="rev_review" name="review[review]" placeholder="{$LANG.catalogue.review} {$LANG.form.required}" required>{$WRITE.review}</textarea></div>
+               <div class="small-12 columns"><label for="rev_review" class="return">{$LANG.catalogue.review}</label><textarea id="rev_review" name="review[review]" placeholder="{$LANG.catalogue.review} {$LANG.form.required}" required>{$WRITE.review|default:''}</textarea></div>
             </div>
             {include file='templates/content.recaptcha.php' ga_fid='reviews'}
          </div>

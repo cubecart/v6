@@ -1007,7 +1007,7 @@ class GUI
                     $acp_data['url_text'] = $GLOBALS['language']->catalogue['title_product_update'];
                 break;
                 case 'category':
-                    $acp_data['edit_url'] = $acp_path.'?_g=categories&node=index&action=edit&cat_id='.$_GET['cat_id'];
+                    $acp_data['edit_url'] = $acp_path.'?_g=categories&node=index&action=edit&cat_id='.($_GET['cat_id'] ?? '');
                     $acp_data['url_text'] = $GLOBALS['language']->category['edit_category'];
                 break;
                 case 'document':

@@ -1317,7 +1317,7 @@ class Cart
 
                     $this->checkMinimumProductQuantity($product['product_id'], $quantity, false);
 
-                    $stock_level = $GLOBALS['catalogue']->getProductStock($product['product_id'], $this->basket['contents'][$hash]['options_identifier']);
+                    $stock_level = $GLOBALS['catalogue']->getProductStock($product['product_id'], $this->basket['contents'][$hash]['options_identifier'] ?? null);
                     if ($product['use_stock_level'] && !$GLOBALS['config']->get('config', 'basket_out_of_stock_purchase')) {
                         if ($stock_level <= 0) {
                             $max_stock = 0;

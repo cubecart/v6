@@ -2466,7 +2466,7 @@ class Cubecart
             $gateway_list = array();
             foreach ($gateways as $gateway) {
                 $gateway_path  = CC_ROOT_DIR.'/modules/gateway/'.$gateway['folder'].'/gateway.class.php';
-                $plugin_path  = CC_ROOT_DIR.'/modules/plugins/'.$gateway['base_folder'].'/gateway.class.php';
+                $plugin_path  = CC_ROOT_DIR.'/modules/plugins/'.($gateway['base_folder'] ?? '').'/gateway.class.php';
 
                 if (!file_exists($gateway_path) && !file_exists($plugin_path)) {
                     continue;
