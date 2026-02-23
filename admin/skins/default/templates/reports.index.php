@@ -74,8 +74,8 @@
 		<div>
 		  <label for="date_range_from">{$LANG.search.date_range}</label>
 		  <span>
-			<input type="text" id="date_range_from" name="report[date][from]" class="textbox number date" value="{$POST.date.from}"> -
-			<input type="text" id="date_range_to" name="report[date][to]" class="textbox number date" value="{$POST.date.to}">
+			<input type="text" id="date_range_from" name="report[date][from]" class="textbox number date" value="{$POST.date.from|default:''}"> -
+			<input type="text" id="date_range_to" name="report[date][to]" class="textbox number date" value="{$POST.date.to|default:''}">
 		  </span>
 		</div>
 		<div>

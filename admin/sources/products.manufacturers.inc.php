@@ -113,6 +113,7 @@ if (isset($_GET['edit']) && is_numeric($_GET['edit'])) {
     
     $GLOBALS['smarty']->assign('DISPLAY_FORM', true);
 } else {
+    $GLOBALS['smarty']->assign('EDIT', array());
     $GLOBALS['main']->addTabControl($lang['catalogue']['title_manufacturer'], 'manufacturers');
     $GLOBALS['main']->addTabControl($lang['catalogue']['title_manufacturer_add'], 'manu_add');
     $catalogue = Catalogue::getInstance();

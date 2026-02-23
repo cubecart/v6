@@ -26,7 +26,7 @@ $updated  = false;
 $redirect  = false;
 $anchor  = false;
 
-if($_POST['edittariff'] && is_array($_POST['edittariff'])) {
+if(isset($_POST['edittariff']) && is_array($_POST['edittariff'])) {
     foreach($_POST['edittariff'] as $id => $data) {
         if($GLOBALS['db']->update('CubeCart_tariff', $data, array('id' => (int)$id))) {
             $updated = true;

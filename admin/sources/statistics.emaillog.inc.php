@@ -98,7 +98,7 @@ if ($email_logs!==false) {
                 );
             }
         }
-        $attachments = json_decode($row['attachment'], true);
+        $attachments = json_decode($row['attachment'] ?? '', true);
         if(is_array($attachments) && !empty($attachments)) {
             $row['attachment'] = array();
             foreach ($attachments as $file) {

@@ -874,7 +874,7 @@ class FileManager
                     if ($this->_mode == self::FM_FILETYPE_IMG && in_array(basename($dir), array('thumbs', 'source', '_vti_cnf'))) {
                         continue;
                     }
-                    $this->_directories[$this->makeFilepath($dir)][] = basename($dir);
+                    $this->_directories[$this->makeFilepath($dir) ?? ''][] = basename($dir);
                     if (is_dir($dir)) {
                         $this->findDirectories($dir, $i++);
                     }
@@ -1092,9 +1092,10 @@ class FileManager
         $GLOBALS['smarty']->assign('FILMANAGER_MODE', (string)$this->_mode);
 
         // Create a backlink to the parent directory, if is exists
-        if ($this->_directories && isset($this->_directories[$this->formatPath($this->_sub_dir)])) {
+        $sub_dir_path = $this->formatPath($this->_sub_dir) ?? '';
+        if ($this->_directories && isset($this->_directories[$sub_dir_path])) {
             // List subdirectories
-            foreach ($this->_directories[$this->formatPath($this->_sub_dir)] as $dir) {
+            foreach ($this->_directories[$sub_dir_path] as $dir) {
                 if ($this->_mode == self::FM_FILETYPE_IMG && in_array($this->makeFilename($dir), array('thumbs', 'source'))) {
                     continue;
                 }

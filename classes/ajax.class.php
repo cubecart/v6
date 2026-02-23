@@ -225,7 +225,7 @@ class Ajax
                 $dirs = $filemanager->getDirectories();
 
                 if (is_array($dirs)) {
-                    $dir = $filemanager->formatPath($dir);
+                    $dir = $filemanager->formatPath($dir) ?? '';
                     if(isset($dirs[$dir]) && !empty($dirs[$dir])) {
                         foreach ($dirs[$dir] as $parent => $folder) {
                             $path = (!empty($dir)) ? '/' : '';

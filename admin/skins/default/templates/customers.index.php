@@ -150,7 +150,7 @@
   {include file='templates/element.hook_form_content.php'}
 
   <div class="form_control">
-	<input type="hidden" name="customer_id" value="{$CUSTOMER.customer_id}">
+	<input type="hidden" name="customer_id" value="{$CUSTOMER.customer_id|default:''}">
 	<input type="hidden" name="previous-tab" id="previous-tab" value="">
 	<input type="submit" name="save" value="{$LANG.common.save}">
   </div>
