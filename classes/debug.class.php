@@ -156,7 +156,12 @@ class Debug
     public function __destruct()
     {
         if (!defined('CC_IN_SETUP') && $this->stream_into_session) {
-            Session::getInstance()->set('debug_spool', array($this->display(true)));
+            // Read the existing spool, filter out any empty entries, then append
+            // this request's output. Write back with overwrite=true to avoid
+            // merge_array() clobbering earlier entries when the key already exists.
+            $debug_spool = array_filter((array)Session::getInstance()->get('debug_spool', 'system', array()));
+            $debug_spool[] = $this->display(true);
+            Session::getInstance()->set('debug_spool', $debug_spool, 'system', true);
         } else {
             $this->display();
         }
