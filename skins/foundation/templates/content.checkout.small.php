@@ -125,7 +125,7 @@
          </td>
       </tr>
       {/foreach}
-      {if isset($DISCOUNT)}
+      {if isset($DISCOUNT) && count($COUPONS) > 1}
       <tr>
          <td colspan="2">
             {$LANG.basket.total_discount}
