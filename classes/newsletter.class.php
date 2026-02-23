@@ -407,8 +407,8 @@ class Newsletter
      */
     private function _subscriberLog($email, $log)
     {
-        if (filter_var($email, FILTER_VALIDATE_EMAIL) && !empty($log)) {
-            return $GLOBALS['db']->insert('CubeCart_newsletter_subscriber_log', array('email' => $email, 'log' => $log, 'ip_address' => get_ip_address()));
+        if (!empty($email) && !empty($log)) {
+            return $GLOBALS['db']->insert('CubeCart_newsletter_subscriber_log', array('email' => htmlentities((string)$email, ENT_QUOTES, 'UTF-8'), 'log' => $log, 'ip_address' => get_ip_address()));
         }
         return false;
     }
