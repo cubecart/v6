@@ -1884,8 +1884,8 @@ class GUI
      */
     private function _setSkin()
     {
-        //Try the session
-        if ($GLOBALS['session']->has('skin', 'client') && isset($this->_skins[$GLOBALS['session']->get('skin', 'client')])) {
+        //Try the session (only when skin switching is enabled)
+        if ($GLOBALS['config']->get('config', 'skin_change') && $GLOBALS['session']->has('skin', 'client') && isset($this->_skins[$GLOBALS['session']->get('skin', 'client')])) {
             $this->_skin = $GLOBALS['session']->get('skin', 'client');
         //Try the config
         } elseif ($GLOBALS['config']->has('config', 'skin_folder'.$this->_skin_config_postfix) && isset($this->_skins[$GLOBALS['config']->get('config', 'skin_folder'.$this->_skin_config_postfix)])) {
@@ -1933,7 +1933,7 @@ class GUI
      */
     private function _setStyle()
     {
-        if ($GLOBALS['session']->has('style', 'client') && isset($this->_skins[$this->_skin]['styles'][$GLOBALS['session']->get('style', 'client')])) {
+        if ($GLOBALS['config']->get('config', 'skin_change') && $GLOBALS['session']->has('style', 'client') && isset($this->_skins[$this->_skin]['styles'][$GLOBALS['session']->get('style', 'client')])) {
             $this->_style = $GLOBALS['session']->get('style', 'client');
         } elseif ($GLOBALS['config']->has('config', 'skin_style'.$this->_skin_config_postfix) && isset($this->_skins[$this->_skin]['styles'][$GLOBALS['config']->get('config', 'skin_style'.$this->_skin_config_postfix)])) {
             $this->_style = $GLOBALS['config']->get('config', 'skin_style'.$this->_skin_config_postfix);
