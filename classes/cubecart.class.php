@@ -1825,8 +1825,11 @@ class Cubecart
                     $folder = str_replace(" ", "_", $ship_name);
                     $label = (!is_numeric($ship_name) && !empty($ship_name)) ? str_replace('_', ' ', $ship_name) : null;
                     foreach ($methods as $data) {
+                        $data['value_inclusive'] = $data['value'];
                         if (isset($data['tax_inclusive']) && (bool)$data['tax_inclusive']) {
                             $GLOBALS['tax']->inclusiveTaxRemove($data['value'], $data['tax_id']);
+                        } else {
+                            $data['value_inclusive'] = null;
                         }
                         
                         $regex = '/[^a-z0-9]/i';
@@ -1840,6 +1843,7 @@ class Cubecart
                             'name'		=> $ship_name, // e.g. UPS
                             'product'	=> $data['name'], // e.g. Ground
                             'value'		=> $data['value'],
+                            'value_inclusive' => $data['value_inclusive'],
                             'tax_id' 	=> $data['tax_id'], // Kept for legacy
                             'tax'		=> $data['tax'],
                             'position'	=> $data['position']
@@ -1848,9 +1852,10 @@ class Cubecart
                         $shipping_values[] = $value;
                         $data['name'] = empty($data['name']) ? '' : ' ('.$data['name'].')';
                         $data['desc'] = empty($data['desc']) ? '' : ' ('.$data['desc'].')';
+                        $ship_display_value = $data['value_inclusive'] ?? $data['value'];
                         $option = array(
                             'value'  => base64url_encode(json_encode($value)),
-                            'display' => (isset($data['name'])) ? $GLOBALS['tax']->priceFormat($data['value'], true).$data['name'] : $data['desc']
+                            'display' => (isset($data['name'])) ? $GLOBALS['tax']->priceFormat($ship_display_value, true).$data['name'] : $data['desc']
                         );
                         if (isset($this->_basket['shipping']['offset']) && (int)$this->_basket['shipping']['offset'] == $offset) {
                             $offset_matched = true;
@@ -1860,6 +1865,8 @@ class Cubecart
                                 $GLOBALS['cart']->save();
                                 httpredir(currentPage());
                             }
+                            // Sync inclusive value into session for display
+                            $this->_basket['shipping']['value_inclusive'] = $value['value_inclusive'];
                         } else {
                             $option['selected'] = '';
                         }
@@ -1975,7 +1982,8 @@ class Cubecart
             if (!$digital_only && isset($this->_basket['digital_only'])) {
                 unset($this->_basket['digital_only']); // Digital good removed fix
             }
-            $GLOBALS['smarty']->assign('SHIPPING_VALUE', (isset($this->_basket['shipping'])) ? $GLOBALS['tax']->priceFormat($this->_basket['shipping']['value'], true) : '-');
+            $ship_display = (isset($this->_basket['shipping'])) ? ($this->_basket['shipping']['value_inclusive'] ?? $this->_basket['shipping']['value']) : null;
+            $GLOBALS['smarty']->assign('SHIPPING_VALUE', ($ship_display !== null) ? $GLOBALS['tax']->priceFormat($ship_display, true) : '-');
             $GLOBALS['smarty']->assign('HIDE_OPTION_GROUPS', $GLOBALS['config']->get('config', 'disable_shipping_groups'));
             if (!$digital_only && $shipping) {
                 $GLOBALS['smarty']->assign('SHIPPING', $shipping_list);

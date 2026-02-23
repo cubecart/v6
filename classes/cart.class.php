@@ -1401,7 +1401,7 @@ class Cart
         }
 
         if (isset($this->basket['coupons']) && is_array($this->basket['coupons']) && count($this->basket['coupons'])>0) {
-            $subtotal = $tax_total = 0;
+            $subtotal = 0;
             $coupon = false;
 
             // COUPONS FIRST!!
@@ -1417,9 +1417,6 @@ class Cart
                                 if ($item['total_price_each']>0) {
                                     $subtotal += ($item['total_price_each'] * $item['quantity']);
                                 }
-                                if ($item['tax_each']['amount']>0) {
-                                    $tax_total += $item['tax_each']['amount_raw'] ?? $item['tax_each']['amount'];
-                                }
                             } elseif ($item['total_price_each']>0) { // excluded items CAN be used against gift certificates!!
                                 $excluded_products[$hash] = $item;
                             }
@@ -1428,14 +1425,8 @@ class Cart
 
                     if (isset($this->basket['shipping']) && $data['shipping'] && $this->basket['shipping']['value']>0) {
                         $subtotal += $this->basket['shipping']['value'];
-                        if ($this->basket['shipping']['tax']['amount']>0) {
-                            $tax_total += $this->basket['shipping']['tax']['amount_raw'] ?? $this->basket['shipping']['tax']['amount'];
-                        }
                     } elseif (isset($this->basket['shipping']) && $this->basket['shipping']['value']>0) {
                         $excluded_shipping = $this->basket['shipping'];
-                    }
-                    if($subtotal>0) {
-                        $ave_tax_rate = $tax_total / $subtotal;
                     }
 
                     $discount = ($data['type']=='percent') ? $subtotal*($data['value']/100) : $data['value'];
@@ -1462,50 +1453,46 @@ class Cart
                 }
             }
 
+            $excluded_subtotal = 0;
+            $excluded_tax = 0;
+
             if (!$coupon) {
                 foreach ($this->basket['contents'] as $hash => $item) {
                     if ($item['total_price_each']>0) {
                         $subtotal += ($item['total_price_each'] * $item['quantity']);
                     }
-                    if ($item['tax_each']['amount']>0) {
-                        $tax_total += $item['tax_each']['amount_raw'] ?? $item['tax_each']['amount'];
-                    }
                 }
 
                 if (isset($this->basket['shipping']) && $this->basket['shipping']['value']>0) {
                     $subtotal += $this->basket['shipping']['value'];
-                    if ($this->basket['shipping']['tax']['amount']>0) {
-                        $tax_total += $this->basket['shipping']['tax']['amount_raw'] ?? $this->basket['shipping']['tax']['amount'];
-                    }
                 }
-
-                $ave_tax_rate = round($tax_total / $subtotal, 2);
             } else {
                 if ((is_array($excluded_products) || is_array($excluded_shipping))) {
-                    $excluded_subtotal = $excluded_tax_total = 0;
                     if (is_array($excluded_products)) {
                         foreach ($excluded_products as $hash => $item) {
                             if ($item['total_price_each']>0) {
                                 $excluded_subtotal += ($item['total_price_each'] * $item['quantity']);
                             }
                             if ($item['tax_each']['amount']>0) {
-                                $excluded_tax_total += $item['tax_each']['amount_raw'] ?? $item['tax_each']['amount'];
+                                $excluded_tax += $item['tax_each']['amount_raw'] ?? $item['tax_each']['amount'];
                             }
                         }
                     }
                     if (is_array($excluded_shipping) && $excluded_shipping['value']>0) {
                         $excluded_subtotal += $excluded_shipping['value'];
                         if ($excluded_shipping['tax']['amount']>0) {
-                            $excluded_tax_total += $excluded_shipping['tax']['amount_raw'] ?? $excluded_shipping['tax']['amount'];
+                            $excluded_tax += $excluded_shipping['tax']['amount_raw'] ?? $excluded_shipping['tax']['amount'];
                         }
-                    }
-                    if ($excluded_tax_total>0) {
-                        $excluded_ave_tax_rate = ($excluded_tax_total / $excluded_subtotal);
-                        $ave_tax_rate = round(($ave_tax_rate + $excluded_ave_tax_rate) / 2, 2);
                     }
                     $subtotal += $excluded_subtotal;
                 }
             }
+
+            // Full subtotal = remaining + discount (i.e. original before coupon)
+            $full_subtotal = $subtotal + $this->_discount;
+
+            // Weighted blended tax rate from totalTax (only needed for GC face-value conversion)
+            $ave_tax_rate = ($full_subtotal > 0) ? $GLOBALS['tax']->totalTax() / $full_subtotal : 0;
 
             // GIFT CERTS SECOND!!
             foreach ($this->basket['coupons'] as $key => $data) {
@@ -1531,8 +1518,17 @@ class Cart
                     $this->basket['coupons'][$key]['remainder'] = $remainder;
                 }
             }
-            $tax = ($subtotal>0) ? ($subtotal*$ave_tax_rate) : 0;
-            $GLOBALS['tax']->adjustTax($tax);
+            // Adjust tax: reduce discounted items' tax proportionally, keep excluded items' tax at 100%
+            $full_subtotal = $subtotal + $this->_discount;
+            if ($subtotal > 0 && $full_subtotal > 0) {
+                $discounted_remaining = $subtotal - $excluded_subtotal;
+                $discounted_original = $discounted_remaining + $this->_discount;
+                $discounted_ratio = ($discounted_original > 0) ? $discounted_remaining / $discounted_original : 0;
+                $adjusted_tax = ($GLOBALS['tax']->totalTax() - $excluded_tax) * $discounted_ratio + $excluded_tax;
+                $GLOBALS['tax']->adjustTax($adjusted_tax);
+            } else {
+                $GLOBALS['tax']->adjustTax(0);
+            }
 
             foreach ($GLOBALS['hooks']->load('class.cart.apply_discounts') as $hook) {
                 include $hook;
