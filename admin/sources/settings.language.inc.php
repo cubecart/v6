@@ -124,7 +124,8 @@ if (isset($_GET['export'])) {
 
     $GLOBALS['language']->loadDefinitions($_GET['language']);
 
-    $GLOBALS['language']->loadLanguageXML($_GET['language'], $_GET['language'], CC_LANGUAGE_DIR, true, false);
+    $foreign_strings = $GLOBALS['language']->loadLanguageXML($_GET['language'], $_GET['language'], CC_LANGUAGE_DIR, false, false);
+    if (!is_array($foreign_strings)) $foreign_strings = array();
     $lang_info = $GLOBALS['language']->getLanguageInfo($_GET['language']);
     $GLOBALS['gui']->addBreadcrumb($lang_info['title'], currentPage(array('type'), array('language' => $_GET['language'])));
 
@@ -156,7 +157,7 @@ if (isset($_GET['export'])) {
             $breadcrumb  = $GLOBALS['language']->getFriendlyModulePath($_REQUEST['type']);
             $basename   = basename($_REQUEST['type']);
             $module_name  = $GLOBALS['language']->getFriendlyModulePath($_REQUEST['type'], true);
-            $GLOBALS['language']->loadDefinitions($module_name, str_replace($basename, '', $_REQUEST['type']), $basename, false, false);
+            $GLOBALS['language']->loadDefinitions($module_name, str_replace($basename, '', $_REQUEST['type']), $basename, false, true);
 
             $definitions = $GLOBALS['language']->getDefinitions($module_name);
             $type  = $module_name;
@@ -165,7 +166,7 @@ if (isset($_GET['export'])) {
         } else {
             $breadcrumb = $type = $_REQUEST['type'];
             $definitions = $GLOBALS['language']->getDefinitions($type);
-            $strings = $GLOBALS['language']->getStrings($type);
+            $strings = isset($foreign_strings[$type]) ? $foreign_strings[$type] : array();
             $custom  = $GLOBALS['language']->getCustom($type, $_GET['language']);
         }
 
@@ -214,7 +215,7 @@ if (isset($_GET['export'])) {
         }
         $GLOBALS['smarty']->assign('STRINGS', $smarty_data['strings']);
     } elseif (isset($_POST['lang_groups_search_phrase']) && !empty($_POST['lang_groups_search_phrase'])) { // We have a language to search through.
-        $language_strings_to_search = $GLOBALS['language']->getLanguageStrings();
+        $language_strings_to_search = !empty($foreign_strings) ? $foreign_strings : $GLOBALS['language']->getLanguageStrings();
         $search_hits = array();
         unset($language_strings_to_search['_language_strings_def']); // Do not want this group - it has array of arrays instead of array of strings.
         foreach ($language_strings_to_search as $keySearchGroup => $arrSearchPhrases) {
