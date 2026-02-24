@@ -47,8 +47,19 @@ class GD
     /**
      * Set GD params false
      */
+    public function __destruct()
+    {
+        $this->gdClear();
+    }
+
     public function gdClear()
     {
+        if ($this->_gdImageOutput) {
+            imagedestroy($this->_gdImageOutput);
+        }
+        if ($this->_gdImageSource) {
+            imagedestroy($this->_gdImageSource);
+        }
         $this->_gdImageOutput = false;
         $this->_gdImageSource = false;
         $this->_gdImageData  = false;
@@ -70,9 +81,23 @@ class GD
             $ow = imagesx($im);
             $h = ($oh < $h) ? $oh : $h;
             $w = ($ow < $w) ? $ow : $w;
+            if ($this->_gdImageOutput) {
+                imagedestroy($this->_gdImageOutput);
+            }
             $this->_gdImageOutput = imagecreatetruecolor($w, $h);
+            if ($this->_gdImageType == IMAGETYPE_GIF) {
+                $transIndex = imagecolortransparent($im);
+                if ($transIndex >= 0) {
+                    $transColor = imagecolorsforindex($im, $transIndex);
+                    $transNew = imagecolorallocate($this->_gdImageOutput, $transColor['red'], $transColor['green'], $transColor['blue']);
+                    imagefill($this->_gdImageOutput, 0, 0, $transNew);
+                    imagecolortransparent($this->_gdImageOutput, $transNew);
+                }
+            } else {
+                imagealphablending($this->_gdImageOutput, false);
+                imagesavealpha($this->_gdImageOutput, true);
+            }
             imagecopyresampled($this->_gdImageOutput, $im, 0, 0, $x, $y, $w, $h, $w, $h);
-            imagesavealpha($this->_gdImageOutput, true);
             $this->_gdImageArray[0] = $w;
             $this->_gdImageArray[1] = $h;
         }
@@ -100,7 +125,7 @@ class GD
     {
         if (file_exists($file)) {
             $this->_gdImageData = getimagesize($file);
-            $this->_gdImageExif = function_exists('exif_read_data') ? exif_read_data($file) : array();
+            $this->_gdImageExif = ($this->_gdImageData[2] == IMAGETYPE_JPEG && function_exists('exif_read_data')) ? @exif_read_data($file) : array();
             if($this->_gdImageExif === false) $this->_gdImageExif = array();
             $this->_gdImageType = $this->_gdImageData[2];
 
@@ -189,9 +214,22 @@ class GD
             }
             if ($proceed) {
                 // Create the output file and resample
+                if ($this->_gdImageOutput) {
+                    imagedestroy($this->_gdImageOutput);
+                }
                 $this->_gdImageOutput = imagecreatetruecolor($out_width, $out_height);
-                imagealphablending($this->_gdImageOutput, false);
-                imagesavealpha($this->_gdImageOutput, true);
+                if ($this->_gdImageType == IMAGETYPE_GIF) {
+                    $transIndex = imagecolortransparent($im);
+                    if ($transIndex >= 0) {
+                        $transColor = imagecolorsforindex($im, $transIndex);
+                        $transNew = imagecolorallocate($this->_gdImageOutput, $transColor['red'], $transColor['green'], $transColor['blue']);
+                        imagefill($this->_gdImageOutput, 0, 0, $transNew);
+                        imagecolortransparent($this->_gdImageOutput, $transNew);
+                    }
+                } else {
+                    imagealphablending($this->_gdImageOutput, false);
+                    imagesavealpha($this->_gdImageOutput, true);
+                }
                 imagecopyresampled($this->_gdImageOutput, $im, 0, 0, 0, 0, $out_width, $out_height, $width, $height);
                 return true;
             }
@@ -219,32 +257,42 @@ class GD
         $im = $this->gdGetCurrentData();
         if ($im) {
             $file = $this->_gdTargetDir.$filename;
+            $source = $im;
             $im = $this->gdOrientate($im);
             imageinterlace($im, true);
+            $result = false;
             switch ($this->_gdImageType) {
                 case IMAGETYPE_GIF:
-                    $this->_gdImageSource = imagegif($im, $file);
+                    $result = imagegif($im, $file);
                     break;
                 case IMAGETYPE_JPEG:
-                    $this->_gdImageSource = imagejpeg($im, $file, $this->_gdJpegQuality);
+                    $result = imagejpeg($im, $file, $this->_gdJpegQuality);
                     break;
                 case IMAGETYPE_PNG:
                     imagesavealpha($im, true);
-                    $this->_gdImageSource = imagepng($im, $file);
+                    $result = imagepng($im, $file);
                     break;
                 case IMAGETYPE_WEBP:
                     if($this->_gdWebpSupport) {
-                        $this->_gdImageSource = imagewebp($im, $file, $this->_gdJpegQuality);
+                        $result = imagewebp($im, $file, $this->_gdJpegQuality);
                     } else {
+                        if ($im !== $source) {
+                            imagedestroy($im);
+                        }
                         return false;
                     }
                     break;
                 default:
                     trigger_error(__METHOD__.' - Unknown file type', E_USER_NOTICE);
+                    if ($im !== $source) {
+                        imagedestroy($im);
+                    }
                     return false;
             }
-            
-            return true;
+            if ($im !== $source) {
+                imagedestroy($im);
+            }
+            return $result;
         }
         return false;
     }
@@ -264,9 +312,18 @@ class GD
         if($memLimit == -1) {
             return true;
         }
-        $memLimit = substr($memLimit, -1) == 'G' ? (int)$memLimit * 1024 : (int)$memLimit;
-        
-        $memoryNeeded = round(($this->_gdImageData[0] * $this->_gdImageData[1] * $this->_gdImageData['bits'] * $this->_gdImageData['channels'] / 8 + Pow(2, 16)) * 1.65);
+        $suffix = strtoupper(substr($memLimit, -1));
+        if ($suffix === 'G') {
+            $memLimit = (int)$memLimit * 1024;
+        } elseif ($suffix === 'K') {
+            $memLimit = (int)$memLimit / 1024;
+        } else {
+            $memLimit = (int)$memLimit;
+        }
+
+        $bits = isset($this->_gdImageData['bits']) ? $this->_gdImageData['bits'] : 8;
+        $channels = isset($this->_gdImageData['channels']) ? $this->_gdImageData['channels'] : 4;
+        $memoryNeeded = round(($this->_gdImageData[0] * $this->_gdImageData[1] * $bits * $channels / 8 + pow(2, 16)) * 1.65);
     
         if (function_exists('memory_get_usage') && memory_get_usage() + $memoryNeeded > $memLimit * pow(1024, 2)) {
             $new_memory_limit = $memLimit + ceil(((memory_get_usage() + $memoryNeeded) - $memLimit * pow(1024, 2)) / pow(1024, 2)) . 'M';
