@@ -491,11 +491,28 @@ if (isset($_GET['files_backup'])) {
 
     // Prevent user stopping process
     ignore_user_abort(true);
-    // Set max execution time to three minutes
-    set_time_limit(180);
-    
+    // Allow up to 1 hour — large stores with many images can take several minutes.
+    // Note: web-server level timeouts (nginx fastcgi_read_timeout, PHP-FPM
+    // request_terminate_timeout) are not affected and may also need raising.
+    set_time_limit(3600);
+
     chdir(CC_ROOT_DIR);
     $destination = CC_BACKUP_DIR.'files_'.CC_VERSION.'_'.date("dMy-His").'.zip';
+
+    // Detect a PHP execution timeout (E_ERROR fatal) in the shutdown handler.
+    // Web-server-level kills are not catchable, but the PHP-level timeout is.
+    register_shutdown_function(function () use ($destination) {
+        $error = error_get_last();
+        if ($error && $error['type'] === E_ERROR && strpos($error['message'], 'Maximum execution time') !== false) {
+            if (file_exists($destination)) {
+                unlink($destination); // remove the incomplete zip
+            }
+            if (isset($GLOBALS['main']) && is_object($GLOBALS['main'])) {
+                $GLOBALS['main']->errorMessage('File backup timed out. Try enabling the "skip images" and/or "skip downloads" options to reduce archive size, or ask your host to raise the server execution timeout.');
+                session_write_close();
+            }
+        }
+    });
 
     $zip = new ZipArchive();
 
@@ -519,9 +536,6 @@ if (isset($_GET['files_backup'])) {
             $skip_folders .= '|'.$files_folder;
         }
 
-        $files = glob_recursive('*');
-
-
         $zip->addEmptyDir('./'.$backup_folder);
         if (file_exists('./'.$backup_folder.'/.htaccess')) {
             $zip->addFile('./'.$backup_folder.'/.htaccess');
@@ -533,15 +547,29 @@ if (isset($_GET['files_backup'])) {
         }
         $zip->addEmptyDir('./images/cache');
 
-        foreach ($files as $file) {
-            $file_match = preg_replace('#^./#', '', $file);
-            if ($file == 'images' || preg_match('#^('.$skip_folders.')#', $file_match)) {
+        // Use a lazy RecursiveDirectoryIterator instead of glob_recursive() to
+        // avoid loading the entire file-tree into a PHP array before we start.
+        // The RecursiveCallbackFilterIterator prunes skip-listed directories so
+        // we never even descend into them.
+        $skip_pattern = '#^('.$skip_folders.')#';
+        $dir_iter = new RecursiveDirectoryIterator('.', RecursiveDirectoryIterator::SKIP_DOTS);
+        $filter_iter = new RecursiveCallbackFilterIterator($dir_iter, function ($current) use ($skip_pattern) {
+            if ($current->isDir()) {
+                $path = ltrim(str_replace('\\', '/', $current->getPathname()), './');
+                return !preg_match($skip_pattern, $path);
+            }
+            return true;
+        });
+        $iterator = new RecursiveIteratorIterator($filter_iter, RecursiveIteratorIterator::SELF_FIRST);
+        foreach ($iterator as $fileInfo) {
+            $path = ltrim(str_replace('\\', '/', $fileInfo->getPathname()), './');
+            if ($path === 'images' || preg_match($skip_pattern, $path)) {
                 continue;
             }
-            if (is_dir($file)) {
-                $zip->addEmptyDir($file);
+            if ($fileInfo->isDir()) {
+                $zip->addEmptyDir('./'.$path);
             } else {
-                $zip->addFile($file);
+                $zip->addFile($fileInfo->getPathname(), './'.$path);
             }
         }
         $zip->close();

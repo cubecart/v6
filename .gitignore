@@ -13,6 +13,9 @@
 # Tests
 /tests/
 
+# Claude Code
+.claude/
+
 # OS General
 .DS_Store
 Thumbs.db
