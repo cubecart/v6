@@ -233,7 +233,7 @@ class Language
      */
     public function assignLang()
     {
-        $GLOBALS['smarty']->assign('LANG', $this->_language_strings);
+        $GLOBALS['smarty']->assignByRef('LANG', $this->_language_strings);
     }
 
     /**
