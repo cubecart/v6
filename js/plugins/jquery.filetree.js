@@ -161,7 +161,7 @@ if (jQuery)(function($){
 
 	/* Set up status toggle images */
 	$('input.toggle:hidden').each(function(){
-		var img_status = ($(this).val() == '1') ? '1' : '0';
+		var img_status = ($(this).val() == '2') ? 'star' : (($(this).val() == '1') ? '1' : '0');
 		var img			= document.createElement('img');
 		img.src = image_dir+img_status+'.png';
 		if (img_status == '1') {
@@ -227,25 +227,57 @@ if (jQuery)(function($){
 		var is_filemanager	= $(this).parents('div:first').hasClass('fm-filelist');
 		var is_unique		= $(this).hasClass('unique');
 		switch ($(parent).val()) {
-			case '1':
+			case '2': // star -> off
+				var new_value = '0';
+				break;
+			case '1': // included -> star (demote existing star)
 				if (is_unique || !is_filemanager) {
 					var new_value = '0';
 				} else {
 					$('input[value=2].toggle').each(function(){
-						$('img[rel='+$(this).attr('rel')+'].checkbox').val('1').change();
+						$(this).val('1').change();
 					});
 					var new_value = '2';
 				}
 				break;
-			case '2':
-				var new_value = '0';
-				break;
-			default:
-				
-				if (is_unique) $('.fm-container input.toggle').val('0').change();
-				var new_value = '1';
+			default: // off -> star if no star exists, otherwise included
+				if (is_unique) {
+					$('.fm-container input.toggle').val('0').change();
+					var new_value = '2';
+				} else if (is_filemanager) {
+					var has_star = $('input.toggle').filter(function(){
+						return $(this).val() === '2';
+					}).length > 0;
+					var new_value = has_star ? '1' : '2';
+				} else {
+					var new_value = '1';
+				}
 				break;
 		}
+		if (new_value === '1' || new_value === '2') {
+			$(parent).data('last-changed', Date.now());
+		}
 		$(parent).val(new_value).change();
+		// If selected images exist with no star, promote the most recently changed
+		if (is_filemanager && !is_unique) {
+			var selected = $('input.toggle').filter(function(){
+				return $(this).val() === '1' || $(this).val() === '2';
+			});
+			var has_star = selected.filter(function(){
+				return $(this).val() === '2';
+			}).length > 0;
+			if (selected.length > 0 && !has_star) {
+				var latest = null;
+				var latest_time = 0;
+				selected.each(function(){
+					var t = $(this).data('last-changed') || 0;
+					if (t >= latest_time) {
+						latest_time = t;
+						latest = $(this);
+					}
+				});
+				if (latest) latest.val('2').change();
+			}
+		}
 	});
 })(jQuery);
