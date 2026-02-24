@@ -180,7 +180,7 @@
    <table width="100%" class="filter">
       <tr>
          <td>
-            <select class="select_url">
+            <select class="select_url textbox">
                {foreach from=$PAGE_BREAKS  item=p}
                <option value="{$PAGE_BREAK_URL}&items={$p}#orders"{if $p == $PAGE_BREAK} selected="selected"{/if}>{$p} {$LANG.common.item_plural}</option> 
                {/foreach} 
@@ -352,7 +352,7 @@
    <table width="100%" class="filter">
       <tr>
          <td>
-            <select class="select_url">
+            <select class="select_url textbox">
                {foreach from=$PAGE_BREAKS_STOCK  item=p}
                <option value="{$PAGE_BREAK_URL_STOCK}&items_stock={$p}#stock_warnings"{if $p == $PAGE_BREAK_STOCK} selected="selected"{/if}>{$p} {$LANG.common.item_plural}</option> 
                {/foreach} 

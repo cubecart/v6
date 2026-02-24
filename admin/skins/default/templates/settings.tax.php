@@ -186,21 +186,21 @@
                {/foreach}
                <tr>
                   <td>
-                     <select name="addtariff[source]" style="max-width: 180px">
+                     <select name="addtariff[source]" style="max-width: 180px" class="textbox">
                      {foreach from=$COUNTRIES item=country}
                      <option value="{$country.iso}">{$country.name}</option>
                      {/foreach}
                      </select>
                   </td>
                   <td>
-                     <select name="addtariff[destination]" style="max-width: 180px">
+                     <select name="addtariff[destination]" style="max-width: 180px" class="textbox">
                      {foreach from=$COUNTRIES item=country}
                      <option value="{$country.iso}">{$country.name}</option>
                      {/foreach}
                      </select>
                   </td>
                   <td>
-                     <select name="addtariff[tariff]">
+                     <select name="addtariff[tariff]" class="textbox">
                         <option value="M">{$LANG.settings.country_of_manufacture}</option>
                         <option value="D">{$LANG.settings.country_of_dispatch}</option>
                      </select>

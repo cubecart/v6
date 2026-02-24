@@ -17,17 +17,17 @@
       <div>
          <fieldset>
             <legend>{$LANG.common.filter}</legend>
-            <select name="year">
+            <select name="year" class="textbox">
             {foreach from=$YEARS item=year}
               <option value="{$year.value}" {$year.selected}>{$year.value}</option>
             {/foreach}
             </select>
-            <select name="month">
+            <select name="month" class="textbox">
             {foreach from=$MONTHS item=month}
               <option value="{$month.value}"{$month.selected}>{$month.title}</option>
             {/foreach}
             </select>
-            <select name="day">
+            <select name="day" class="textbox">
             {foreach from=$DAYS item=day}
               <option value="{$day.value}"{$day.selected}>{$day.value}</option>
             {/foreach}

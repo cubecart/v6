@@ -47,8 +47,9 @@
 		<tr><td colspan="11" align="center"><strong>{$LANG.common.error_no_results}</strong></td></tr>
 		{/foreach}
 	  </tbody>
+	  {if $REPORT_DATE}
 	  <tfoot>
-		<tr class="foot" style="font-weight: bold;">
+		<tr class="foot">
 		  <td style="text-align:right">{$TALLY.orders} {if $TALLY.orders==1}{$LANG.customer.order_count_single}{else}{$LANG.customer.order_count}{/if}</td>
 		  <td style="text-align:right">{$TALLY.subtotal}</td>
 		  <td style="text-align:right">{$TALLY.discount}</td>
@@ -58,6 +59,7 @@
 		  <td style="text-align:center" colspan="6">&nbsp;</td>
 		</tr>
 	  </tfoot>
+	  {/if}
 	</table>
 	<div class="pagination">{$PAGINATION}</div>
   	<p>
@@ -81,7 +83,7 @@
 		<div>
 			<label for="report_status">{$LANG.orders.title_order_status}</label>
 			<span>
-				<select id="report_status" multiple="multiple" name="report[status][]">
+				<select id="report_status" multiple="multiple" name="report[status][]" class="textbox">
 					{foreach from=$STATUS item=status}
 					<option value="{$status.value}" {$status.selected}>{$status.name}</option>
 					{/foreach}

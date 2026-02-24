@@ -86,7 +86,7 @@
 	<fieldset><legend>{$LANG.common.import}</legend>
 	  <p>{$LANG.email.help_email_import}</p>
 	  <div>
-		<select name="import">
+		<select name="import" class="textbox">
 		  <option value="">{$LANG.form.please_select}</option>
 		  {foreach from=$EMAIL_IMPORT item=import}<option value="{$import.file}">{$import.code}</option>{/foreach}
 		</select>
@@ -97,7 +97,7 @@
 	<fieldset><legend>{$LANG.common.export}</legend>
 	  <p>{$LANG.email.help_email_export}</p>
 	  <div>
-		<select name="export">
+		<select name="export" class="textbox">
 		  <option value="">{$LANG.form.please_select}</option>
 		  {foreach from=$EMAIL_EXPORTS item=export}
 		  <option value="{$export}">{$export}</option>

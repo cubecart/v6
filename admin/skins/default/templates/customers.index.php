@@ -22,7 +22,7 @@
 	<table width="100%" class="filter">
 	<tr>
 	  <td>
-        <select class="select_url">
+        <select class="select_url textbox">
 		{foreach from=$PAGE_BREAKS  item=p}
 			<option value="?_g=customers&items={$p}"{if $p == $PAGE_BREAK} selected="selected"{/if}>{$p} {$LANG.common.item_plural}</option> 
 		{/foreach} 
@@ -283,7 +283,7 @@
 	  </fieldset>
 	  <fieldset><legend>{$LANG.customer.title_groups_membership_add}</legend>
 		<div>
-		  <select id="group-join" name="membership_add[]" class="add display">
+		  <select id="group-join" name="membership_add[]" class="add display textbox">
 			<option value="">{$LANG.form.please_select}</option>
 			{foreach from=$ALL_CUSTOMER_GROUPS item=group}<option value="{$group.group_id}">{$group.group_name}</option>{/foreach}
 		  </select>

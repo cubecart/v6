@@ -15,7 +15,7 @@
 	<p>{$LANG.catalogue.export_explain}</p>
 	<div>
 	  {$LANG.catalogue.export_products_per}
-		<select class="auto_submit" name="per_page">
+		<select class="auto_submit textbox" name="per_page">
 		{foreach from=$LIMITS item=limit}<option value="{$limit.per_page}"{$limit.selected}>{$limit.per_page}</option>{/foreach}
 		</select>
 		<input type="hidden" name="_g" value="products">

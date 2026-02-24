@@ -15,7 +15,7 @@
 <div class="dymanic_options">
    <label for="option_{$option.option_id}" class="return">{$option.option_name}{if $option.price} ({$option.symbol}{$option.price}){/if}{if $option.required} ({$LANG.common.required}){/if}</label><br>
    <span rel="{$product.id}">
-      <select name="inv[{$product.id}][productOptions][{$option.option_id}]" id="option_{$product.id}_{$option.option_id}" class="nomarg options_calc">
+      <select name="inv[{$product.id}][productOptions][{$option.option_id}]" id="option_{$product.id}_{$option.option_id}" class="nomarg options_calc textbox">
       <option value="">{$LANG.form.please_select}</option>
       {foreach from=$option.values item=value}
       <option value="{$value.assign_id}"{if $value.selected} selected="selected"{/if} rel="{$value.symbol}{$value.decimal_price}">{$value.value_name}{if $value.price} ({$value.symbol}{$value.price}){/if}</option>
@@ -43,7 +43,7 @@
    {if $k=='Message'}
    <textarea name="inv[{$product.id}][custom][{$k}]">{$v}</textarea>
    {elseif $k=='Method'}
-   <select name="inv[{$product.id}][custom][{$k}]">
+   <select name="inv[{$product.id}][custom][{$k}]" class="textbox">
       <option{if $v=='Email'} selected="selected"{/if} value="Email">Email</option>
       <option{if $v=='Post'} selected="selected"{/if} value="Post">Post</option>
    </select>

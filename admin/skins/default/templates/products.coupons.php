@@ -96,7 +96,7 @@
 	  <div>
 		<label for="form-type">{$LANG.catalogue.discount_type}</label>
 		<span>
-		  <select name="discount_type" id="form-type">
+		  <select name="discount_type" id="form-type" class="textbox">
 			{foreach from=$DISCOUNTS item=discount}
 			<option value="{$discount.index}" {$discount.selected}>{$discount.title}</option>
 			{/foreach}
@@ -121,7 +121,7 @@
 	  <div>
 	  	<label for="form-manufacturer">{$LANG.catalogue.manufacturer_limit}</label>
 		<span>
-			<select name="coupon[manufacturer][]" id="form-manufacturer" data-placeholder="{$LANG.catalogue.choose_manufacturers}" multiple class="chzn-select">
+			<select name="coupon[manufacturer][]" id="form-manufacturer" data-placeholder="{$LANG.catalogue.choose_manufacturers}" multiple class="chzn-select textbox">
 				{foreach from=$MANUFACTURERS item=manufacturer}
 				<option value="{$manufacturer.id}"{if $manufacturer.selected} selected="selected"{/if}>{$manufacturer.name}</option>
 				{/foreach}
@@ -131,7 +131,7 @@
 	  <div>
 		<label for="form-categories">{$LANG.catalogue.category_limit}</label>
 		<span>
-		<select name="coupon[category][]" id="form-category" data-placeholder="{$LANG.catalogue.choose_categories}" multiple class="chzn-select">
+		<select name="coupon[category][]" id="form-category" data-placeholder="{$LANG.catalogue.choose_categories}" multiple class="chzn-select textbox">
 			{foreach from=$CATEGORIES item=category}
 			<option value="{$category.id}"{if $category.selected} selected="selected"{/if}>{$category.name}</option>
             {/foreach}
@@ -141,7 +141,7 @@
 	  <div>
 		<label for="form-shipping">{$LANG.catalogue.shipping_limit}</label>
 		<span>
-		<select name="coupon[shipping][]" id="form-shipping" data-placeholder="{$LANG.catalogue.choose_shipping}" multiple class="chzn-select">
+		<select name="coupon[shipping][]" id="form-shipping" data-placeholder="{$LANG.catalogue.choose_shipping}" multiple class="chzn-select textbox">
 			{foreach from=$SHIPPING key=k item=v}
 			<option value="{$k}"{if $v} selected="selected"{/if}>{ucwords(str_replace('_',' ',$k))}</option>
             {/foreach}
@@ -183,7 +183,7 @@
 	  <div>
 		<label for="prod-list">{$LANG.catalogue.title_product_list}:</label>
 		<span>
-		  <select name="incexc" id="prod-list">
+		  <select name="incexc" id="prod-list" class="textbox">
 			{foreach from=$INCEXC item=incexc}
 			<option value="{$incexc.index}" {$incexc.selected}>{$incexc.title}</option>
 			{/foreach}

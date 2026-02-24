@@ -22,7 +22,7 @@
       <table width="100%" class="filter">
          <tr>
             <td>
-               <select class="select_url">
+               <select class="select_url textbox">
                   {foreach from=$PAGE_BREAKS  item=p}
                   <option value="?_g=orders&items={$p}"{if $p == $PAGE_BREAK} selected="selected"{/if}>{$p} {$LANG.common.item_plural}</option> 
                   {/foreach} 
@@ -163,7 +163,7 @@
          {/if}
          <fieldset>
             <legend>{$LANG.orders.title_status_change}</legend>
-            <div><label for="o_status">{$LANG.orders.title_order_status}</label><span><select name="order[status]" id="o_status">
+            <div><label for="o_status">{$LANG.orders.title_order_status}</label><span><select name="order[status]" id="o_status" class="textbox">
                {foreach from=$LIST_ORDER_STATUS item=status}<option value="{$status.id}"{$status.selected}>{$status.string}</option>{/foreach}
                </select></span>
             </div>
@@ -499,7 +499,7 @@
                </tr>
                <tr class="update-subtotal">
                   <th colspan="3">
-                     <select name="summary[discount_type]" id="discount_type">
+                     <select name="summary[discount_type]" id="discount_type" class="textbox">
                      <option value="f" {if $SUMMARY.discount_type == "f"}selected="selected"{/if}>{$LANG.catalogue.discount_price}</option>
                      <option value="p" {if $SUMMARY.discount_type == "p"}selected="selected"{/if}>{$LANG.catalogue.discount_percent}</option>
                      </select>
@@ -528,7 +528,7 @@
                </tr>
                <tr class="inline-add">
                   <th colspan="3">
-                     <select class="not-empty tax-chooser" rel="tax_id">
+                     <select class="not-empty tax-chooser textbox" rel="tax_id">
                         <option value="">{$LANG.form.please_select}</option>
                         {if isset($SELECT_TAX)}
                         {foreach from=$SELECT_TAX item=country key=taxes}

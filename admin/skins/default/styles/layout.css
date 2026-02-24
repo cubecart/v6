@@ -1041,7 +1041,8 @@ tfoot tr {
 }
 tfoot tr.foot td {
     border-top: 1px solid #c5c5c5!important;
-    background-color: #e7e7e7!important
+    background-color: #e7e7e7!important;
+    font-weight: bold
 }
 tfoot>tr>th {
     text-align: right
@@ -2178,6 +2179,63 @@ ul.char_filter li.selected {}
     color: var(--text-muted) !important;
   }
 
+  /* Chosen.js — all hardcoded light colours overridden for dark mode */
+  .chosen-container-single .chosen-single,
+  .chosen-container-multi .chosen-choices {
+    background: var(--input-bg) !important;
+    background-image: none !important;
+    border-color: var(--input-border) !important;
+    box-shadow: none !important;
+    color: var(--text) !important;
+  }
+  .chosen-container-single .chosen-default {
+    color: var(--text-muted) !important;
+  }
+  .chosen-container-active .chosen-single,
+  .chosen-container-active .chosen-choices {
+    border-color: var(--primary-accent) !important;
+    box-shadow: 0 0 4px rgba(107,186,208,.35) !important;
+  }
+  .chosen-container-active.chosen-with-drop .chosen-single {
+    background: var(--input-bg-focus) !important;
+    background-image: none !important;
+    border-color: var(--primary-accent) !important;
+    box-shadow: none !important;
+  }
+  .chosen-container .chosen-drop {
+    background: var(--panel) !important;
+    border-color: var(--border) !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,.5) !important;
+  }
+  .chosen-container .chosen-results {
+    color: var(--text) !important;
+  }
+  .chosen-container .chosen-results li.highlighted {
+    background: var(--primary) !important;
+    background-image: none !important;
+    color: #fff !important;
+  }
+  .chosen-container .chosen-results li.no-results {
+    background: var(--panel-muted) !important;
+    color: var(--text-muted) !important;
+  }
+  .chosen-container .chosen-results li.disabled-result {
+    color: var(--text-muted) !important;
+  }
+  .chosen-container-single .chosen-search input[type=text],
+  .chosen-container-multi .chosen-choices li.search-field input[type=text] {
+    background: var(--input-bg) !important;
+    border-color: var(--input-border) !important;
+    color: var(--text) !important;
+  }
+  .chosen-container-multi .chosen-choices li.search-choice {
+    background: var(--panel-muted) !important;
+    background-image: none !important;
+    border-color: var(--border) !important;
+    box-shadow: none !important;
+    color: var(--text) !important;
+  }
+
   /* tables & stripes */
   thead,
   .thead,
@@ -2385,6 +2443,23 @@ ul.char_filter li.selected {}
   fieldset > div:nth-child(odd),
   tbody tr:nth-child(odd) td {
     background-color: var(--rowOdd) !important;
+  }
+
+  /* #advanced / #specs use dl>dt+dd zebra striping with a hardcoded light
+     background (#edf4f7) that becomes invisible against dark-mode text. */
+  #advanced dt:nth-of-type(even),
+  #advanced dd:nth-of-type(even),
+  #specs dt:nth-of-type(even),
+  #specs dd:nth-of-type(even) {
+    background-color: var(--rowEven) !important;
+    color: var(--text) !important;
+  }
+  #advanced dt:nth-of-type(odd),
+  #advanced dd:nth-of-type(odd),
+  #specs dt:nth-of-type(odd),
+  #specs dd:nth-of-type(odd) {
+    background-color: var(--rowOdd) !important;
+    color: var(--text) !important;
   }
 
   /* Optional: hover highlight for tables */
@@ -2628,5 +2703,13 @@ ul.char_filter li.selected {}
   }
   #filemanager div div.folder {
     background-color: var(--panel-subtle) !important;
+  }
+  tfoot {
+    border-top: 1px solid var(--border) !important;
+  }
+  tfoot tr.foot td {
+    border-top: 1px solid var(--border) !important;
+    background-color: var(--panel-muted) !important;
+    color: var(--text) !important;
   }
 }

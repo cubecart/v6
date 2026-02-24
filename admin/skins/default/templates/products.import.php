@@ -15,10 +15,10 @@
   <h3>{$LANG.catalogue.title_import}</h3>
 	<fieldset><legend>{$LANG.catalogue.title_import_csv}</legend>
 	  <div><label for="import_source">{$LANG.catalogue.import_source} ({$LANG.common.max}: {$UPLOAD_LIMIT})</label><span><input type="file" name="source" id="import_source"></span></div>
-	  <div><label for="import_format">{$LANG.catalogue.import_format}</label><span><select name="format" id="import_format">
+	  <div><label for="import_format">{$LANG.catalogue.import_format}</label><span><select name="format" id="import_format" class="textbox">
 		<option value="">{$LANG.catalogue.unknown_format}</option>
 	  </select></span></div>
-	  <div><label for="opt_delimiter">{$LANG.catalogue.delimiter}</label><span><select name="delimiter" id="opt_delimiter">
+	  <div><label for="opt_delimiter">{$LANG.catalogue.delimiter}</label><span><select name="delimiter" id="opt_delimiter" class="textbox">
 		<option value=",">,</option>
 		<option value=";">;</option>
 		<option value="tab">{$LANG.catalogue.delimiter_tab}</option>
@@ -63,7 +63,7 @@
 	  <div rel="{$map.offset}">
 		<label>{$map.example}</label>
 		<span>
-		  <select name="map[{$map.offset}]" class="unique">
+		  <select name="map[{$map.offset}]" class="unique textbox">
 			<option value="">{$LANG.catalogue.import_column_ignore}</option>
 			{foreach from=$COLUMNS item=column}<option value="{$column.column}">{$column.title}</option>{/foreach}
 		  </select>

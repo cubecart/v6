@@ -18,33 +18,33 @@
             <legend>{$LANG.search.date_range}</legend>
             <div>
               {$LANG.common.from}
-              <select name="from[day]">
+              <select name="from[day]" class="textbox">
               {foreach from=$DAYS item=day}
                 <option value="{$day.value}"{$day.selected_from}>{$day.value}</option>
               {/foreach}
               </select>
-              <select name="from[month]">
+              <select name="from[month]" class="textbox">
               {foreach from=$MONTHS item=month}
                 <option value="{$month.value}"{$month.selected_from}>{$month.title}</option>
               {/foreach}
               </select>
-              <select name="from[year]">
+              <select name="from[year]" class="textbox">
               {foreach from=$YEARS item=year}
                 <option value="{$year.value}" {$year.selected_from}>{$year.value}</option>
               {/foreach}
               </select>
               {$LANG.common.to|lower}
-              <select name="to[day]">
+              <select name="to[day]" class="textbox">
               {foreach from=$DAYS item=day}
                 <option value="{$day.value}"{$day.selected_to}>{$day.value}</option>
               {/foreach}
               </select>
-              <select name="to[month]">
+              <select name="to[month]" class="textbox">
               {foreach from=$MONTHS item=month}
                 <option value="{$month.value}"{$month.selected_to}>{$month.title}</option>
               {/foreach}
               </select>
-              <select name="to[year]">
+              <select name="to[year]" class="textbox">
               {foreach from=$YEARS item=year}
                 <option value="{$year.value}" {$year.selected_to}>{$year.value}</option>
               {/foreach}

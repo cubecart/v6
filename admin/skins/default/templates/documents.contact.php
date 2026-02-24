@@ -18,7 +18,7 @@
 	  <div><label for="email">{$LANG.contact.email_override}</label><span><input type="text" name="contact[email]" id="email" value="{$CONTACT.email}" class="textbox"></span></div>
 	  <div><label for="phone">{$LANG.address.phone}</label>
 	  	<span>
-		  	<select name="contact[phone]">
+		  	<select name="contact[phone]" class="textbox">
 			  <option value="0"{if $CONTACT.phone=='0'} selected="selected"{/if}>{$LANG.common.disabled}</option>
 			  <option value="1"{if $CONTACT.phone=='1'} selected="selected"{/if}>{$LANG.common.enabled} {$LANG.common.optional}</option>
 			  <option value="2"{if $CONTACT.phone=='2'} selected="selected"{/if}>{$LANG.common.enabled} ({$LANG.common.required})</option>

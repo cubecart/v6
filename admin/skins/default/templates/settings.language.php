@@ -56,7 +56,7 @@
          <div>
             <label for="create_direction">{$LANG.translate.language_direction}</label>
             <span>
-               <select id="create_direction" name="create[text_direction]">
+               <select id="create_direction" name="create[text_direction]" class="textbox">
                   <option value="ltr">{$LANG.common.read_ltr}</option>
                   <option value="rtl">{$LANG.common.read_rtl}</option>
                </select>

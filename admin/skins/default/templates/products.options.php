@@ -67,7 +67,7 @@
          <h3>{$LANG.catalogue.title_option_attributes}</h3>
          <div>
             {assign var=attribute_groups value=0}
-            <select name="add-value[option_id]" id="select_group_id" rel="group_" class="field_select">
+            <select name="add-value[option_id]" id="select_group_id" rel="group_" class="field_select textbox">
                {foreach from=$GROUPS item=group}{if $group.selectable}
                {assign var=attribute_groups value=$attribute_groups+1}
                <option value="{$group.id}">{$group.name}</option>
@@ -137,7 +137,7 @@
          <p>{$LANG.catalogue.title_option_set_add_desc}</p>
          {if $SETS}
          <div>
-            <select name="set_id" id="" rel="set_" class="field_select">
+            <select name="set_id" id="" rel="set_" class="field_select textbox">
                <option value="0">{$LANG.form.please_select}</option>
                {foreach from=$SETS item=set}
                <option value="{$set.set_id}">{$set.set_name}</option>
@@ -164,7 +164,7 @@
          <fieldset id="add_options" class="field_select_target">
             <legend>{$LANG.catalogue.title_option_set_append}</legend>
             <div>
-               <select name="add_to_set[]" class="multi" multiple="multiple" style="width: 200px; height:200px">
+               <select name="add_to_set[]" class="multi textbox" multiple="multiple" style="width: 200px; height:200px">
                   <option value="">{$LANG.form.please_select}</option>
                   {foreach from=$GROUPS item=group}
                   {if $group.selectable}

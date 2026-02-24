@@ -22,7 +22,7 @@
          </tr>
          <tr>
             <td>
-               <select class="select_url">
+               <select class="select_url textbox">
                   {foreach from=$PAGE_BREAKS  item=p}
                   <option value="{$PAGE_BREAK_URL}&items={$p}"{if $p == $PAGE_BREAK} selected="selected"{/if}>{$p} {$LANG.common.item_plural}</option> 
                   {/foreach} 
@@ -31,7 +31,7 @@
             </td>
             <td width="50"><strong>{$LANG.common.filter}:</strong></td>
             <td width="100"> 
-               <select class="select_url">
+               <select class="select_url textbox">
                   <option value="{$CAT_LIST_ANY}">{$LANG.common.any}</option>
                   {foreach from=$CAT_LIST item=cat_dropdown}
                   <option value="{$CAT_LIST_ANY}&amp;cat_id={$cat_dropdown.cat_id}{if $STATUS_FILTER}&amp;status_filter={$STATUS_FILTER}{/if}" {if $cat_dropdown.cat_id == $CURRENT_CAT}selected="selected"{/if}>{$cat_dropdown.name}</option>
@@ -39,7 +39,7 @@
                </select>
             </td>
             <td width="50">
-               <select class="select_url">
+               <select class="select_url textbox">
                   <option value="{$CAT_LIST_ANY}&amp;cat_id={$CURRENT_CAT}" {if !$STATUS_FILTER || $STATUS_FILTER==''}selected="selected"{/if}>{$LANG.common.any}</option>
                   <option value="{$CAT_LIST_ANY}&amp;cat_id={$CURRENT_CAT}&amp;status_filter=1" {if $STATUS_FILTER=='1'}selected="selected"{/if}>{$LANG.common.enabled}</option>
                   <option value="{$CAT_LIST_ANY}&amp;cat_id={$CURRENT_CAT}&amp;status_filter=0" {if $STATUS_FILTER=='0'}selected="selected"{/if}>{$LANG.common.disabled}</option>
@@ -202,7 +202,7 @@
          <div>
             <label for="dimension_unit">{$LANG.catalogue.dimension_unit}</label>
             <span>
-                <select name="dimension_unit" id="dimension_unit">
+                <select name="dimension_unit" id="dimension_unit" class="textbox">
                     <option{if (!isset($PRODUCT.dimension_unit) && $CONFIG.product_size_unit == 'cm') || $PRODUCT.dimension_unit=='cm'} selected='selected'{/if} value="cm">Centimeters (cm)</option>
                     <option{if  (!isset($PRODUCT.dimension_unit) && $CONFIG.product_size_unit == 'in') || $PRODUCT.dimension_unit=='in'} selected='selected'{/if} value="in">Inches (in)</option>
                 </select>
@@ -214,7 +214,7 @@
          <div>
             <label for="product_manufacture_country">{$LANG.catalogue.manufacture_country}</label>
             <span>
-               <select name="manufacture_country" id="product_manufacture_country">
+               <select name="manufacture_country" id="product_manufacture_country" class="textbox">
                   <option value="">-- {$LANG.common.na} --</option>
                   {foreach from=$COUNTRIES item=country}<option value="{$country.iso}" {if $country.iso == $PRODUCT.manufacture_country}selected="selected"{/if}>{$country.name}</option>{/foreach}
                </select>
@@ -243,7 +243,7 @@
             <label for="google_cat_code">{$LANG.catalogue.product_google_category}</label>
             <span>
                {if $GOOGLE_CATS}
-               <select name="google_category" id="google_category" class="chzn-select">
+               <select name="google_category" id="google_category" class="chzn-select textbox">
                   <option value="">{$LANG.common.please_select} &hellip;</option>
                   {foreach from=$GOOGLE_CATS item=cat}<option value="{$cat}" {if ((htmlentities($cat, ENT_QUOTES, 'UTF-8', true) == $PRODUCT.google_category || $cat == $PRODUCT.google_category) && !empty($PRODUCT.google_category))}selected="selected"{/if}>{$cat}</option>{/foreach}
                </select>
@@ -311,7 +311,7 @@
       <h3>{$LANG.catalogue.title_pricing}</h3>
       {if isset($CUSTOMER_GROUPS)}
       <div>
-         <select class="field_select" rel="group_">
+         <select class="field_select textbox" rel="group_">
             <option value="0">{$LANG.catalogue.pricing_standard}</option>
             {foreach from=$CUSTOMER_GROUPS item=group}
             <option value="{$group.group_id}">{$group.group_name}</option>
@@ -603,7 +603,7 @@
          <div class="list-footer">
             <label for="set_assign">{$LANG.catalogue.set_assign}:</label>
             <span>
-               <select id="set_assign" name="set_assign">
+               <select id="set_assign" name="set_assign" class="textbox">
                   <option value="">{$LANG.form.please_select}</option>
                   {foreach from=$OPTION_SETS item=option_set}
                   <option value="{$option_set.set_id}">{$option_set.set_name}</option>

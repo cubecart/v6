@@ -55,7 +55,7 @@
                <td><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/select_all.gif" alt=""></td>
                <td>
                   <a href="#" class="check-all" rel="subscribers">{$LANG.form.check_uncheck}</a>
-                  <select name="multi_subscriber_action">
+                  <select name="multi_subscriber_action" class="textbox">
                      <option value="">{$LANG.form.with_selected}</option>
                      <option value="delete">{$LANG.common.remove}</option>
                   </select>
@@ -100,7 +100,7 @@
                   <label for="format">{$LANG.email.export_format}</label>
                   <span>
                   <input style="width:335px;" type="text" name="maillist_format" id="format" class="textbox" value="" title="{literal}e.g. &quot;{$FULL_NAME_SHORT}&quot; &lt;{$EMAIL_ADDRESS}&gt;{/literal}">
-                        <select name="maillist_extension">
+                        <select name="maillist_extension" class="textbox">
                               <option value="txt">.txt</option>
                               <option value="csv">.csv</option>
                         </select>

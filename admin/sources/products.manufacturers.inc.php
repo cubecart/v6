@@ -122,9 +122,7 @@ if (isset($_GET['edit']) && is_numeric($_GET['edit'])) {
     if (($manufacturers = $GLOBALS['db']->select('CubeCart_manufacturers', false, false, 'name', $per_page, $page)) !== false) {
         $GLOBALS['smarty']->assign('PAGINATION', $GLOBALS['db']->pagination(false, $per_page, $page));
         foreach ($manufacturers as $i => $manufacturer) {
-            if (filter_var($manufacturer['URL'], FILTER_VALIDATE_URL)) {
-                $manufacturers[$i]['name'] = '<a href="'.$manufacturer['URL'].'" target="_blank">'.$manufacturer['name'].'</a>';
-            }
+            $manufacturers[$i]['has_url'] = filter_var($manufacturer['URL'], FILTER_VALIDATE_URL) !== false;
         }
         $GLOBALS['smarty']->assign('MANUFACTURERS', $manufacturers);
     }

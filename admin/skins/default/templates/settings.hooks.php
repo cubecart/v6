@@ -84,7 +84,7 @@
          <div>
             <label for="trigger">{$LANG.hooks.trigger}</label>
             <span>
-               <select name="snippet[hook_trigger]" id="hook_trigger" class="required">
+               <select name="snippet[hook_trigger]" id="hook_trigger" class="required textbox">
                   <option value="">{$LANG.form.please_select}</option>
                   {foreach from=$TRIGGERS item=trigger}<option value="{$trigger.trigger}"{$trigger.selected}>{$trigger.trigger}</option>{/foreach}
                </select>
@@ -180,7 +180,7 @@
          <div>
             <label for="plugin">{$LANG.hooks.title_plugin}</label>
             <span>
-               <select name="hook[plugin]" id="plugin" class="required">
+               <select name="hook[plugin]" id="plugin" class="required textbox">
                   <option value="">{$LANG.form.please_select}</option>
                   {foreach from=$PLUGINS item=plugin}<option value="{$plugin.plugin}"{$plugin.selected}>{$plugin.name}</option>{/foreach}
                </select>
@@ -190,7 +190,7 @@
          <div>
             <label for="trigger">{$LANG.hooks.trigger}</label>
             <span>
-               <select name="hook[trigger]">
+               <select name="hook[trigger]" class="textbox">
                {foreach from=$TRIGGERS item=t}
                   <option value="{$t.trigger}"{if (isset($HOOK.trigger) && !empty($HOOK.trigger) && $HOOK.trigger==$t.trigger)} selected="selected"{/if}>{$t.trigger}</option>
                {/foreach}

@@ -35,7 +35,7 @@
 		  <td><span class="editable number" name="country[{$country.id}][numcode]">{$country.numcode}</span></td>
 		  <td style="text-align:center"><input name="country[{$country.id}][eu]" id="{$country.id}_eu" type="hidden" class="toggle" value="{$country.eu}"></td>
 		  <td style="text-align:center">
-			<select name="country[{$country.id}][status]" id="{$country.id}_status">
+			<select name="country[{$country.id}][status]" id="{$country.id}_status" class="textbox">
 				<option value="0"{if $country.status=='0'} selected="selected"{/if}>{$LANG.common.disabled}</option>
 				<option value="1"{if $country.status=='1'} selected="selected"{/if}>{$LANG.common.enabled} ({$LANG.country.zone} {$LANG.common.required})</option>
 				<option value="2"{if $country.status=='2'} selected="selected"{/if}>{$LANG.common.enabled} ({$LANG.country.zone} {str_replace(array('(',')'),'',$LANG.common.optional)})</option>
@@ -50,7 +50,7 @@
   	  	  <td><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/select_all.gif" alt=""></td>
   	  	  <td colspan="5">
   	  	    <a href="#" class="check-all" rel="all-countries">{$LANG.form.check_uncheck}</a>
-  	  	    <select name="multi_country_action">
+  	  	    <select name="multi_country_action" class="textbox">
   	  	   	  <option value="">{$LANG.form.with_selected}</option>
   	  	      <option value="delete">{$LANG.common.delete}</option>
   	  	      <option value="1">{$LANG.common.enabled} ({$LANG.country.zone} {$LANG.common.required})</option>
@@ -77,7 +77,7 @@
 		  <div><label for="country-iso3">{$LANG.country.country_iso_alpha3}</label><span><input type="text" name="new_country[iso3]" id="country-iso3" class="textbox"></span></div>
 		  <div><label for="country-num">{$LANG.country.country_iso_numeric}</label><span><input type="text" name="new_country[numcode]" id="country-num" class="textbox"></span></div>
 		  <div><label for="country-eu">{$LANG.country.assign_to_eu}</label><span><input name="new_country[eu]" id="country-eu" type="hidden" class="toggle" value="0" /></span></div>
-			<div><label for="country-status">{$LANG.common.status}</label><span><select name="new_country[status]" id="country-status">
+			<div><label for="country-status">{$LANG.common.status}</label><span><select name="new_country[status]" id="country-status" class="textbox">
 				<option value="0">{$LANG.common.disabled}</option>
 				<option value="1">{$LANG.common.enabled} ({$LANG.country.zone} {$LANG.common.required})</option>
 				<option value="2">{$LANG.common.enabled} ({$LANG.country.zone} {str_replace(array('(',')'),'',$LANG.common.optional)})</option>
@@ -117,7 +117,7 @@
   	  	  <td><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/select_all.gif" alt=""></td>
   	  	  <td colspan="5">
   	  	    <a href="#" class="check-all" rel="all-zones">{$LANG.form.check_uncheck}</a>
-  	  	    <select name="multi_zone_action">
+  	  	    <select name="multi_zone_action" class="textbox">
   	  	    	<option value="">{$LANG.form.with_selected}</option>
   	  	        <option value="delete">{$LANG.common.delete}</option>
   	  	    </select>

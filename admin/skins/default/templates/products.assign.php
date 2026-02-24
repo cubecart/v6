@@ -20,22 +20,22 @@
       <fieldset>
          <legend>{$LANG.catalogue.title_prices_update}</legend>
          <div>
-            <select name="price[what]" id="bulk_price_target">
+            <select name="price[what]" id="bulk_price_target" class="textbox">
                <option value="products">{$LANG.catalogue.update_checked_products}</option>
                <option value="categories">{$LANG.catalogue.update_checked_categories}</option>
             </select>
-            <select name="price[method]" id="bulk_price_method">
+            <select name="price[method]" id="bulk_price_method" class="textbox">
                <option value="fixed">{$LANG.catalogue.update_by_amount}</option>
                <option value="percent">{$LANG.catalogue.update_by_percent}</option>
             </select>
-            <select name="price[action]" id="bulk_price_action">
+            <select name="price[action]" id="bulk_price_action" class="textbox">
                <option value="0">{$LANG.common.subtract}</option>
                <option value="1">{$LANG.common.add}</option>
                <option value="2">{$LANG.common.set_to}</option>
             </select>
             <input type="text" name="price[value]" value="" class="textbox number">
             <span id="bulk_price_percent_symbol" style="display:none">%</span>
-            <select name="price[field]">
+            <select name="price[field]" class="textbox">
                <option value="all">{$LANG.common.price_standard}, {$LANG.common.price_sale}, {$LANG.common.price_cost}, {$LANG.catalogue.quantity_discounts} &amp; {$LANG.catalogue.title_product_options}</option>
                <option value="price">{$LANG.common.price_standard}</option>
                <option value="sale_price">{$LANG.common.price_sale}</option>

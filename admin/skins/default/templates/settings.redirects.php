@@ -27,13 +27,13 @@
             <tr>
                <td style="text-align:center"><input id="redir_submit" type="submit" class="tiny button" value="{$LANG.common.add}"></td>
                <td>
-               <select name="redirect">
+               <select name="redirect" class="textbox">
                      <option value="301">301 - {$LANG.common.permanent}</option>
                      <option value="302">302 - {$LANG.common.temporary}</option>
                   </select>
                </td>
                <td>
-                  <select name="type" id="redirect_type">
+                  <select name="type" id="redirect_type" class="textbox">
                      <optgroup label="Dynamic Pages">
                      {foreach from=$REDIRECT_TYPES.dynamic key=type item=name}
                         <option value="{$type}" data-static="false">{$name}</option>

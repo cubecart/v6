@@ -85,7 +85,7 @@
          <div>
             <label for="search-status">{$LANG.common.status}</label>
             <span>
-            <select name="filter[approved]">
+            <select name="filter[approved]" class="textbox">
             {foreach from=$STATUSES item=status}
             <option value="{$status.value}" {$status.selected}>{$status.name}</option>
             {/foreach}
