@@ -1772,7 +1772,8 @@ class Cubecart
                 }
                 $items[$hash] = $product;
             }
-            $GLOBALS['smarty']->assign('ITEMS', array_reverse($items, true));
+            uasort($items, function($a, $b) { return strnatcasecmp($a['name'], $b['name']); });
+            $GLOBALS['smarty']->assign('ITEMS', $items);
 
             // Ratio to convert ex-tax amounts to inclusive for display (1.0 for exclusive stores)
             $inclusive_ratio = 1.0;
