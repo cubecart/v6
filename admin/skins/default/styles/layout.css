@@ -2726,8 +2726,43 @@ textarea#query {
     color: var(--text) !important;
     font-family: 'Courier New', Courier, monospace;
   }
+  /* filemanager grid/digital view */
+  #filemanager div div:nth-child(even) {
+    background-color: var(--rowEven) !important;
+  }
+  #filemanager div div:nth-child(odd) {
+    background-color: var(--rowOdd) !important;
+  }
+  #filemanager #fm-wrapper div:hover {
+    background-color: var(--rowHover) !important;
+  }
   #filemanager div div.folder {
     background-color: var(--panel-subtle) !important;
+  }
+  .fm-item .actions {
+    background: rgba(0,0,0,0.6) !important;
+    color: var(--text) !important;
+  }
+  .fm-item .actions i.fa {
+    color: var(--text-muted) !important;
+  }
+  .fm-item > a {
+    color: var(--text-muted) !important;
+  }
+  .folder .actions i.fa {
+    color: var(--text-muted) !important;
+  }
+  .fm-sort,
+  .fm-sort select {
+    color: var(--text) !important;
+    background-color: var(--input-bg) !important;
+    border-color: var(--input-border) !important;
+  }
+  #filemanager .toggle span.list {
+    border-right-color: var(--border) !important;
+  }
+  .form_control {
+    color: var(--text) !important;
   }
   ul.filetree a {
     color: var(--text) !important;
