@@ -206,3 +206,13 @@ a > img {
 	max-height: 1080px;
 	margin:0 auto;
 }
+
+@media (prefers-color-scheme: dark) {
+	body {
+		color: #e6e6e6;
+		background-color: #1a1a1a;
+	}
+	a {
+		color: #6db3f2;
+	}
+}
