@@ -90,9 +90,12 @@ class Cache extends Cache_Controler
     public function delete($id)
     {
         $id = shortHash($id, 8, array($this->_empties_id));
-        clearstatcache(); // Clear cached results
-        if (file_exists($this->_cache_path.$this->_makeName($id))) {
-            return unlink($this->_cache_path.$this->_makeName($id));
+        $file = $this->_cache_path.$this->_makeName($id);
+        clearstatcache(true, $file);
+        if (file_exists($file)) {
+            $result = unlink($file);
+            clearstatcache(true, $file);
+            return $result;
         }
 
         return true;
@@ -111,10 +114,10 @@ class Cache extends Cache_Controler
             return false;
         }
         $id = shortHash($id, 8, array($this->_empties_id));
-        
-        clearstatcache(); // Clear cached results
+        $file = $this->_cache_path.$this->_makeName($id);
+        clearstatcache(true, $file);
 
-        return file_exists($this->_cache_path.$this->_makeName($id));
+        return file_exists($file);
     }
 
     /**
@@ -147,7 +150,6 @@ class Cache extends Cache_Controler
             return false;
         }
         
-        $raw_id = $id;
         $id = shortHash($id, 8, array($this->_empties_id));
         
         if ($this->_empties_id!==$id && isset($this->_empties[$id])) {
@@ -159,9 +161,9 @@ class Cache extends Cache_Controler
         } else {
             $name = $this->_makeName($id);
             $file = $this->_cache_path.$name;
-    
-            clearstatcache(); // Clear cached results
-    
+
+            clearstatcache(true, $file);
+
             //Make sure the cache file exists
             if (file_exists($file)) {
                 $contents = @file_get_contents($file, false);
@@ -203,7 +205,6 @@ class Cache extends Cache_Controler
             return false;
         }
 
-        $raw_id = $id;
         $id = shortHash($id, 8, array($this->_empties_id));
         if ($this->_empties_id!==$id && empty($data)) {
             if (!isset($this->_empties[$id])) {

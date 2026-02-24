@@ -168,11 +168,14 @@ class Cache extends Cache_Controler
             return false;
         }
 
-        $raw_id = $id;
         $id = shortHash($id, 8, array($this->_empties_id));
         
         if ($this->_empties_id!==$id && isset($this->_empties[$id])) {
             return array('empty' => true, 'data' => $this->_empties[$id]);
+        }
+
+        if ($this->_empties_id!==$id && isset($this->_dupes[$id])) {
+            return $this->_dupes[$id];
         }
 
         //Setup the name of the cache
@@ -181,7 +184,8 @@ class Cache extends Cache_Controler
         //Make sure the cache file exists
         if ($contents = $this->redis_client->get($name)) {
             if (!empty($contents)) {
-                return json_decode($contents, true);
+                $this->_dupes[$id] = json_decode($contents, true);
+                return $this->_dupes[$id];
             }
         }
 
@@ -228,7 +232,6 @@ class Cache extends Cache_Controler
             return false;
         }
 
-        $raw_id = $id;
         $id = shortHash($id, 8, array($this->_empties_id));
 
         if ($this->_empties_id!==$id && empty($data)) {
@@ -261,6 +264,6 @@ class Cache extends Cache_Controler
     protected function _getEmpties()
     {
         $this->_setPrefix();
-        $this->_empties = $this->read($this->_empties_id);
+        $this->_empties = ($this->read($this->_empties_id))?:array();
     }
 }
