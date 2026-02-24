@@ -134,7 +134,9 @@
 		var input = document.getElementById('content_html');
 		var editor = ace.edit("template_html");
 		editor.session.setUseWrapMode(true);
-		editor.setOptions({ highlightActiveLine:true, showPrintMargin:false, theme:'ace/theme/github', mode: 'ace/mode/smarty' });
+		var darkMQ = window.matchMedia('(prefers-color-scheme: dark)');
+		editor.setOptions({ highlightActiveLine:true, showPrintMargin:false, theme: darkMQ.matches ? 'ace/theme/tomorrow_night' : 'ace/theme/github', mode: 'ace/mode/smarty' });
+		darkMQ.addEventListener('change', function(e) { editor.setTheme(e.matches ? 'ace/theme/tomorrow_night' : 'ace/theme/github'); });
 		editor.setValue(window.atob(input.value), 1);
 		editor.getSession().on("change", function () { input.value = b64EncodeUnicode(editor.getSession().getValue()); });
 	</script>
@@ -220,7 +222,9 @@
 		var input = document.getElementById('template_content_html');
 		var editor = ace.edit("template_html");
 		editor.session.setUseWrapMode(true);
-		editor.setOptions({ highlightActiveLine:true, showPrintMargin:false, theme:'ace/theme/github', mode: 'ace/mode/smarty' });
+		var darkMQ = window.matchMedia('(prefers-color-scheme: dark)');
+		editor.setOptions({ highlightActiveLine:true, showPrintMargin:false, theme: darkMQ.matches ? 'ace/theme/tomorrow_night' : 'ace/theme/github', mode: 'ace/mode/smarty' });
+		darkMQ.addEventListener('change', function(e) { editor.setTheme(e.matches ? 'ace/theme/tomorrow_night' : 'ace/theme/github'); });
 		editor.setValue(window.atob(input.value), 1);
 		editor.getSession().on("change", function () { input.value = b64EncodeUnicode(editor.getSession().getValue()); });
 	</script>
