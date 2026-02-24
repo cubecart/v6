@@ -31,6 +31,16 @@ class Cache extends Cache_Controler
 
     ##############################################
 
+    /**
+     * Get the Memcached connection instance
+     *
+     * @return Memcached
+     */
+    public function getConnection()
+    {
+        return $this->_memcached;
+    }
+
     final protected function __construct()
     {
         global $glob;

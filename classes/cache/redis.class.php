@@ -27,6 +27,16 @@ class Cache extends Cache_Controler
 
     ##############################################
 
+    /**
+     * Get the Predis client instance
+     *
+     * @return Predis\Client
+     */
+    public function getConnection()
+    {
+        return $this->redis_client;
+    }
+
     final protected function __construct()
     {
         global $glob;
