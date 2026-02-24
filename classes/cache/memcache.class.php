@@ -41,6 +41,16 @@ class Cache extends Cache_Controler
         return $this->_memcache;
     }
 
+    /**
+     * Get session save path in the format required by PHP's memcache session handler
+     *
+     * @return string e.g. 'tcp://127.0.0.1:11211'
+     */
+    public function getSessionSavePath()
+    {
+        return 'tcp://'.$this->_memcache_host.':'.$this->_memcache_port;
+    }
+
     final protected function __construct()
     {
         global $glob;

@@ -43,7 +43,7 @@ class Session
      *
      * @var int
      */
-    private $_session_timeout = 86400;
+    private $_session_timeout = 172800; // 2 days (guest default)
     /**
      * Session path
      *
@@ -116,6 +116,14 @@ class Session
             }
         }
 
+        // Use database session handler by default.
+        // Only skipped if an explicit session_save_handler is configured above.
+        if ($this->_save_handler === 'files') {
+            $handler = new Session_Handler($this->_session_timeout);
+            $handler->register();
+            $this->_save_handler = 'database';
+        }
+
         if ($ini['session.use_trans_sid'] != '0') {
             //disable transparent sid support
             ini_set('session.use_trans_sid', '0');
@@ -164,6 +172,14 @@ class Session
         
         $this->_start();
         $this->_validate();
+
+        // Extend session to 7 days for logged-in customers/admins
+        if (!empty($this->session_data['customer_id']) || !empty($this->session_data['admin_id'])) {
+            $this->_session_timeout = 604800; // 7 days
+            ini_set('session.gc_maxlifetime', $this->_session_timeout);
+            $this->set_cookie(session_name(), session_id(), time() + $this->_session_timeout);
+        }
+
         $this->_setTimers();
     }
 
@@ -649,8 +665,8 @@ class Session
         if (executionChance(2)) {  // 2% probability
             // Tidy Access Logs keep months worth
             Database::getInstance()->delete('CubeCart_access_log', array('time' => '<'.(time()-(3600*24*7*4))), 500);
-            // Purge sessions older than the session time out
-            Database::getInstance()->delete('CubeCart_sessions', array('session_last' => '<='.(time() - $this->_session_timeout)), 500);
+            // Purge sessions older than 7 days (the longest possible session lifetime)
+            Database::getInstance()->delete('CubeCart_sessions', array('session_last' => '<='.(time() - 604800)), 500);
         }
 
         $this->_state = 'closed';

@@ -958,6 +958,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_sessions` (
   `location` varbinary(255) DEFAULT NULL,
   `ip_address` varchar(45) DEFAULT NULL COMMENT 'Supports IPv6 addresses',
   `useragent` text DEFAULT NULL,
+  `session_data` mediumblob DEFAULT NULL,
   `acp` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `customer_id` (`customer_id`),

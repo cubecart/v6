@@ -29,6 +29,9 @@ ALTER TABLE `CubeCart_seo_urls` DROP KEY `type`; #EOQ
 ALTER TABLE `CubeCart_seo_urls` DROP KEY `item_id`; #EOQ
 ALTER TABLE `CubeCart_seo_urls` ADD KEY `type_item` (`type`, `item_id`); #EOQ
 
+-- Session data column for database-backed session handler
+ALTER TABLE `CubeCart_sessions` ADD `session_data` mediumblob DEFAULT NULL AFTER `useragent`; #EOQ
+
 -- Config NVP migration: rename old blob table
 ALTER TABLE `CubeCart_config` RENAME TO `CubeCart_config_legacy`; #EOQ
 
