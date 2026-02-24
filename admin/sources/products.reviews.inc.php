@@ -68,29 +68,32 @@ if (isset($_POST['review']) && is_array($_POST['review']) && Admin::getInstance(
 
     if (is_numeric($_POST['review']['id'])) {
         $updated = $GLOBALS['db']->update('CubeCart_reviews', $record, array('id' => (int)$_POST['review']['id']));
-        if ((bool)$GLOBALS['db']->affected()) {
+        if ($updated !== false && (bool)$GLOBALS['db']->affected()) {
             $GLOBALS['main']->successMessage($lang['reviews']['notify_review_update']);
             $rem_array = array('edit');
         } else {
             $GLOBALS['main']->errorMessage($lang['reviews']['error_review_update']);
-            $rem_array = false;
+            $no_redirect = true;
+            $failed_review_data = $record;
+            $failed_review_data['id'] = $_POST['review']['id'];
         }
     } else {
         $record['ip_address'] = get_ip_address();
         $record['customer_id'] = 0;
         $record['product_id'] = $_POST['review']['product_id'];
-        
+
         if (!empty($_POST['review']['product_id']) && is_numeric($_POST['review']['product_id'])) {
             if ($GLOBALS['db']->insert('CubeCart_reviews', $record)) {
                 $GLOBALS['main']->successMessage($lang['reviews']['notify_review_added']);
                 $rem_array = array('edit');
             } else {
                 $GLOBALS['main']->errorMessage($lang['reviews']['error_review_added']);
-                $rem_array = false;
+                $no_redirect = true;
+                $failed_review_data = $record;
             }
         } else {
             $no_redirect = true;
-            $GLOBALS['smarty']->assign('REVIEW', $record);
+            $failed_review_data = $record;
             $GLOBALS['main']->errorMessage($lang['reviews']['error_no_product_selected']);
         }
     }
@@ -152,8 +155,17 @@ if (isset($_POST['filter']) && !empty($_POST['filter'])) {
 }
 $GLOBALS['gui']->addBreadcrumb($lang['reviews']['title_reviews'], currentPage(array('edit', 'field', 'sort', 'product_id', 'approved')));
 
-if (isset($_GET['edit']) && is_numeric($_GET['edit']) && Admin::getInstance()->permissions('reviews', CC_PERM_EDIT)) {
-    
+if (isset($failed_review_data)) {
+    $mode = is_numeric($failed_review_data['id'] ?? '') ? 'edit' : 'add';
+    $GLOBALS['main']->addTabControl($mode == 'edit' ? $lang['reviews']['title_review_edit'] : $lang['catalogue']['add_review'], 'review');
+    $GLOBALS['smarty']->assign('FORM_MODE', $mode);
+    for ($i=1; $i<=5; $i++) {
+        $GLOBALS['smarty']->assign('STAR', array('value' => $i, 'checked' => ($i == ($failed_review_data['rating'] ?? 0)) ? ' checked="checked"' : ''));
+    }
+    $GLOBALS['smarty']->assign('REVIEW', $failed_review_data);
+    $GLOBALS['smarty']->assign('DISPLAY_FORM', true);
+} elseif (isset($_GET['edit']) && is_numeric($_GET['edit']) && Admin::getInstance()->permissions('reviews', CC_PERM_EDIT)) {
+
     // Edit review
     if ($_GET['edit']==0) {
         $GLOBALS['main']->addTabControl($lang['catalogue']['add_review'], 'review');
