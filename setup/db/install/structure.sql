@@ -213,8 +213,9 @@ CREATE TABLE IF NOT EXISTS `CubeCart_code_snippet` (
 
 CREATE TABLE IF NOT EXISTS `CubeCart_config` (
 	`name` VARCHAR(100) NOT NULL,
-	`array` text NOT NULL,
-	UNIQUE KEY `name` (`name`)
+	`config_key` VARCHAR(128) NOT NULL,
+	`config_value` TEXT,
+	UNIQUE KEY `name_key` (`name`, `config_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_coupons` (

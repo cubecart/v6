@@ -28,3 +28,14 @@ ALTER TABLE `CubeCart_inventory` ADD KEY `manufacturer` (`manufacturer`); #EOQ
 ALTER TABLE `CubeCart_seo_urls` DROP KEY `type`; #EOQ
 ALTER TABLE `CubeCart_seo_urls` DROP KEY `item_id`; #EOQ
 ALTER TABLE `CubeCart_seo_urls` ADD KEY `type_item` (`type`, `item_id`); #EOQ
+
+-- Config NVP migration: rename old blob table
+ALTER TABLE `CubeCart_config` RENAME TO `CubeCart_config_legacy`; #EOQ
+
+-- Config NVP migration: create new NVP table
+CREATE TABLE IF NOT EXISTS `CubeCart_config` (
+	`name` VARCHAR(100) NOT NULL,
+	`config_key` VARCHAR(128) NOT NULL,
+	`config_value` TEXT,
+	UNIQUE KEY `name_key` (`name`, `config_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ

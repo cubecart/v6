@@ -70,8 +70,8 @@ class Config
     final protected function __construct($glob)
     {
         //Get the main config because it will be used
-        if (isset($GLOBALS['db']) && ($result = $GLOBALS['db']->select('CubeCart_config', array('array'), array('name' => 'config'), false, 1, false, false)) !== false) {
-            $array_out = $this->_json_decode($result[0]['array']);
+        if (isset($GLOBALS['db'])) {
+            $array_out = $this->_fetchRows('config');
         }
 
         //Remove the db password for safety
@@ -153,7 +153,7 @@ class Config
         if(!empty($element) && isset($this->_session_config[$config_name][$element])) {
             return $this->_session_config[$config_name][$element];
         }
-        
+
         //If there is an config
         if (isset($this->_config[$config_name])) {
             //If there is not an element the entire array
@@ -242,12 +242,7 @@ class Config
     public function set($config_name, $element, $data, $force_write = false)
     {
         //Clean up the config array
-        if (is_array($data) && !empty($element)) {
-            array_walk_recursive($data, function (&$s, $k) {
-                $s = $this->_stripslashes($s);
-            });
-            $data = $this->_json_encode($data);
-        } elseif (is_array($data)) {
+        if (is_array($data)) {
             array_walk_recursive($data, function (&$s, $k) {
                 $s = $this->_stripslashes($s);
             });
@@ -298,6 +293,67 @@ class Config
     }
 
     /**
+     * Decode a stored config value back to its PHP type
+     *
+     * Scalars are stored as plain text, arrays as JSON strings
+     *
+     * @param string $raw
+     * @return mixed
+     */
+    private function _decodeValue($raw)
+    {
+        if ($raw === null || $raw === '') {
+            return $raw;
+        }
+        // Only attempt JSON decode for values that look like JSON arrays/objects
+        if (isset($raw[0]) && ($raw[0] === '{' || $raw[0] === '[')) {
+            $decoded = json_decode($raw, true);
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                return $decoded;
+            }
+        }
+        return $raw;
+    }
+
+    /**
+     * Encode a PHP value for NVP storage
+     *
+     * Arrays are stored as JSON, scalars as plain text
+     *
+     * @param mixed $value
+     * @return string
+     */
+    private function _encodeValue($value)
+    {
+        if (is_array($value)) {
+            return json_encode($value);
+        }
+        return (string)$value;
+    }
+
+    /**
+     * Fetch NVP rows for a config section and rebuild the array
+     *
+     * @param string $name
+     * @return array|false
+     */
+    private function _fetchRows($name)
+    {
+        if (!isset($GLOBALS['db'])) {
+            return false;
+        }
+        $result = $GLOBALS['db']->select('CubeCart_config', array('config_key', 'config_value'), array('name' => $name));
+        if ($result === false) {
+            return false;
+        }
+        $array_out = array();
+        foreach ($result as $row) {
+            $array_out[$row['config_key']] = $this->_decodeValue($row['config_value']);
+        }
+        return $array_out;
+    }
+
+    /**
      * Fetch config data
      *
      * @param string $name
@@ -307,46 +363,15 @@ class Config
         //Clean up the entire config array
         $this->_config[$name] = array();
 
-        //If the DB class exists and the config row exists
-        if (isset($GLOBALS['db']) && ($result = $GLOBALS['db']->select('CubeCart_config', array('array'), array('name' => $name), false, 1, false)) !== false) {
-            $array_out = $this->_json_decode($result[0]['array']);
+        $array_out = $this->_fetchRows($name);
 
-            if (($module = $GLOBALS['db']->select('CubeCart_modules', array('status', 'countries'), array('folder' => $name), false, 1, false)) !== false) {
-                $array_out = is_array($array_out) ? array_merge($module[0], $array_out) : $module[0];
-            }
-
-            if (!empty($array_out)) {
-                $this->_config[$name] = $this->_clean($array_out);
-            }
+        if (isset($GLOBALS['db']) && ($module = $GLOBALS['db']->select('CubeCart_modules', array('status', 'countries'), array('folder' => $name), false, 1, false)) !== false) {
+            $array_out = is_array($array_out) ? array_merge($module[0], $array_out) : $module[0];
         }
-    }
 
-    /**
-     * Json decode but convert if serialized
-     */
-    private function _json_decode($string)
-    {
-        if (preg_match('/^a:[0-9]/', $string)) { // convert from serialized and next save will convert
-            $array = unserialize($string);
-            if (isset($array['offline_content']) && !empty($array['offline_content'])) {
-                $array['offline_content'] = base64_decode($array['offline_content']);
-            }
-            if (isset($array['store_copyright']) && !empty($array['store_copyright'])) {
-                $array['store_copyright'] = base64_decode($array['store_copyright']);
-            }
-            return $array;
-        } else {
-            return json_decode(base64_decode($string), true);
+        if (!empty($array_out)) {
+            $this->_config[$name] = $this->_clean($array_out);
         }
-    }
-
-    /**
-     * Json encode
-     */
-    private function _json_encode($array)
-    {
-        $this->_pre_enc_config = $array;
-        return base64_encode(json_encode($array));
     }
 
     /**
@@ -363,6 +388,7 @@ class Config
     private function _writeDB()
     {
         if (!empty($this->_config) && is_array($this->_config)) {
+            $db = Database::getInstance();
             foreach ($this->_config as $config => $data) {
                 //Remove data that was merged in
                 if (!empty($this->_temp) && isset($this->_temp[$config])) {
@@ -377,20 +403,23 @@ class Config
                 if (empty($data)) {
                     continue;
                 }
-                $record = array('array' => $this->_json_encode($data));
-                if (strlen($record['array']) > 65535 || strlen($config) > 100) {
-                    trigger_error('Config write size error: '.$config, E_USER_ERROR);
+                //Safeguard to prevent config loss
+                if ($config == 'config' && !isset($data['store_name'])) {
+                    return false;
                 }
-                if (Database::getInstance()->count('CubeCart_config', 'name', array('name' => $config))) {
-                    //Safeguard to prevent config loss
-                    if ($config=='config' && !isset($this->_pre_enc_config['store_name'])) {
-                        return false;
-                    } else {
-                        Database::getInstance()->update('CubeCart_config', $record, array('name' => $config));
-                    }
-                } else {
-                    $record['name'] = $config;
-                    Database::getInstance()->insert('CubeCart_config', $record);
+                if (strlen($config) > 100) {
+                    trigger_error('Config write size error: '.$config, E_USER_ERROR);
+                    continue;
+                }
+                $this->_pre_enc_config = $data;
+                // Delete existing rows for this section then insert new ones
+                $db->delete('CubeCart_config', array('name' => $config));
+                foreach ($data as $key => $value) {
+                    $db->insert('CubeCart_config', array(
+                        'name'         => $config,
+                        'config_key'   => $key,
+                        'config_value' => $this->_encodeValue($value)
+                    ));
                 }
             }
         }
