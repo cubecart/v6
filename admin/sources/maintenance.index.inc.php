@@ -489,6 +489,8 @@ if (!empty($_POST['database'])) {
 ########## Backup ##########
 if (isset($_GET['files_backup'])) {
 
+    $is_ajax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+
     // Prevent user stopping process
     ignore_user_abort(true);
     // Allow up to 1 hour — large stores with many images can take several minutes.
@@ -507,17 +509,40 @@ if (isset($_GET['files_backup'])) {
             if (file_exists($destination)) {
                 unlink($destination); // remove the incomplete zip
             }
-            if (isset($GLOBALS['main']) && is_object($GLOBALS['main'])) {
-                $GLOBALS['main']->errorMessage('File backup timed out. Try enabling the "skip images" and/or "skip downloads" options to reduce archive size, or ask your host to raise the server execution timeout.');
-                session_write_close();
-            }
         }
     });
+
+    // For AJAX requests, release the session and send response immediately
+    // so the user can navigate away while the backup continues.
+    if ($is_ajax) {
+        session_write_close();
+        $response = json_encode(array('status' => 'started'));
+        header('Content-Type: application/json');
+        header('Content-Length: ' . strlen($response));
+        header('Connection: close');
+        while (ob_get_level()) ob_end_flush();
+        echo $response;
+        flush();
+        if (function_exists('fastcgi_finish_request')) {
+            fastcgi_finish_request();
+        }
+    }
+
+    $zip = new ZipArchive();
 
     $zip = new ZipArchive();
 
     if ($zip->open($destination, ZipArchive::CREATE)!==true) {
-        $GLOBALS['main']->errorMessage("Error: Backup failed.");
+        if ($is_ajax) {
+            $mailer = new Mailer();
+            $mailer->sendEmail($GLOBALS['config']->get('config', 'email_address'), array(
+                'subject'      => sprintf($lang['maintain']['backup_failed_email_subject'], ucwords($lang['maintain']['title_files_backup'])),
+                'content_html' => '<p>'.sprintf($lang['maintain']['backup_failed_email_body'], strtolower($lang['maintain']['title_files_backup'])).'</p>',
+                'content_text' => sprintf($lang['maintain']['backup_failed_email_body'], strtolower($lang['maintain']['title_files_backup'])),
+            ));
+        } else {
+            $GLOBALS['main']->errorMessage("Error: Backup failed.");
+        }
     } else {
         $cache_folder = basename(CC_CACHE_DIR);
         $backup_folder = basename(CC_BACKUP_DIR);
@@ -573,12 +598,37 @@ if (isset($_GET['files_backup'])) {
             }
         }
         $zip->close();
-        $GLOBALS['main']->successMessage($lang['maintain']['files_backup_complete']);
+        if ($is_ajax) {
+            $backup_file = basename($destination);
+            $backup_size = formatBytes(filesize($destination), true);
+            $backup_url  = $GLOBALS['storeURL'].'/'.$GLOBALS['config']->get('config', 'adminFile').'?_g=maintenance&node=index#backup';
+            $type_label  = strtolower($lang['maintain']['title_files_backup']);
+            $type_label_uc = ucwords($lang['maintain']['title_files_backup']);
+            $mailer = new Mailer();
+            $mailer->sendEmail($GLOBALS['config']->get('config', 'email_address'), array(
+                'subject'      => sprintf($lang['maintain']['backup_complete_email_subject'], $type_label_uc),
+                'content_html' => '<p>'.sprintf($lang['maintain']['backup_complete_email_body'], $type_label).'</p>'
+                    .'<p>'.sprintf($lang['maintain']['backup_complete_email_filename'], $backup_file).'<br>'
+                    .sprintf($lang['maintain']['backup_complete_email_size'], $backup_size).'</p>'
+                    .'<p>'.sprintf($lang['maintain']['backup_complete_email_download'], '<a href="'.$backup_url.'">'.$backup_url.'</a>').'</p>',
+                'content_text' => sprintf($lang['maintain']['backup_complete_email_body'], $type_label)."\n\n"
+                    .sprintf($lang['maintain']['backup_complete_email_filename'], $backup_file)."\n"
+                    .sprintf($lang['maintain']['backup_complete_email_size'], $backup_size)."\n\n"
+                    .sprintf($lang['maintain']['backup_complete_email_download'], $backup_url),
+            ));
+        } else {
+            $GLOBALS['main']->successMessage($lang['maintain']['files_backup_complete']);
+        }
+    }
+    if ($is_ajax) {
+        exit;
     }
     httpredir('?_g=maintenance&node=index', 'backup');
 }
 
 if (isset($_POST['backup'])) {
+
+    $is_ajax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
 
     // Prevent user stopping process
     ignore_user_abort(true);
@@ -588,9 +638,19 @@ if (isset($_POST['backup'])) {
     set_time_limit(3600);
 
     if (!$_POST['drop'] && !$_POST['structure'] && !$_POST['data']) {
+        if ($is_ajax) {
+            header('Content-Type: application/json');
+            echo json_encode(array('status' => 'error', 'message' => $lang['maintain']['error_db_backup_option']));
+            exit;
+        }
         $GLOBALS['main']->errorMessage($lang['maintain']['error_db_backup_option']);
     } else {
         if ($_POST['drop'] && !$_POST['structure']) {
+            if ($is_ajax) {
+                header('Content-Type: application/json');
+                echo json_encode(array('status' => 'error', 'message' => $lang['maintain']['error_db_backup_conflict']));
+                exit;
+            }
             $GLOBALS['main']->errorMessage($lang['maintain']['error_db_backup_conflict']);
         } else {
             $full = ($_POST['drop'] && $_POST['structure'] && $_POST['data']) ? '_full' : '';
@@ -610,20 +670,64 @@ if (isset($_POST['backup'])) {
                     if (file_exists($fileName.'.zip')) {
                         unlink($fileName.'.zip');
                     }
-                    if (isset($GLOBALS['main']) && is_object($GLOBALS['main'])) {
-                        $GLOBALS['main']->errorMessage('Database backup timed out. Try excluding 3rd-party tables or ask your host to raise the server execution timeout.');
-                        session_write_close();
-                    }
                 }
             });
 
+            // For AJAX requests, release the session and send response immediately
+            // so the user can navigate away while the backup continues.
+            if ($is_ajax) {
+                session_write_close();
+                $response = json_encode(array('status' => 'started'));
+                header('Content-Type: application/json');
+                header('Content-Length: ' . strlen($response));
+                header('Connection: close');
+                while (ob_get_level()) ob_end_flush();
+                echo $response;
+                flush();
+                if (function_exists('fastcgi_finish_request')) {
+                    fastcgi_finish_request();
+                }
+            }
+
             $all_tables = (isset($_POST['db_3rdparty']) && $_POST['db_3rdparty'] == '1') ? true : false;
             $write = $GLOBALS['db']->doSQLBackup($_POST['drop'], $_POST['structure'], $_POST['data'], $fileName, $_POST['compress'], $all_tables);
-            if ($write) {
-                $GLOBALS['main']->successMessage($lang['maintain']['db_backup_complete']);
+            if ($is_ajax) {
+                $mailer = new Mailer();
+                $admin_email = $GLOBALS['config']->get('config', 'email_address');
+                if ($write) {
+                    $actual_file = $_POST['compress'] ? $fileName.'.zip' : $fileName;
+                    $backup_size = file_exists($actual_file) ? formatBytes(filesize($actual_file), true) : '';
+                    $backup_url  = $GLOBALS['storeURL'].'/'.$GLOBALS['config']->get('config', 'adminFile').'?_g=maintenance&node=index#backup';
+                    $type_label  = strtolower($lang['maintain']['title_db_backup']);
+                    $type_label_uc = ucwords($lang['maintain']['title_db_backup']);
+                    $mailer->sendEmail($admin_email, array(
+                        'subject'      => sprintf($lang['maintain']['backup_complete_email_subject'], $type_label_uc),
+                        'content_html' => '<p>'.sprintf($lang['maintain']['backup_complete_email_body'], $type_label).'</p>'
+                            .'<p>'.sprintf($lang['maintain']['backup_complete_email_filename'], basename($actual_file)).'<br>'
+                            .sprintf($lang['maintain']['backup_complete_email_size'], $backup_size).'</p>'
+                            .'<p>'.sprintf($lang['maintain']['backup_complete_email_download'], '<a href="'.$backup_url.'">'.$backup_url.'</a>').'</p>',
+                        'content_text' => sprintf($lang['maintain']['backup_complete_email_body'], $type_label)."\n\n"
+                            .sprintf($lang['maintain']['backup_complete_email_filename'], basename($actual_file))."\n"
+                            .sprintf($lang['maintain']['backup_complete_email_size'], $backup_size)."\n\n"
+                            .sprintf($lang['maintain']['backup_complete_email_download'], $backup_url),
+                    ));
+                } else {
+                    $mailer->sendEmail($admin_email, array(
+                        'subject'      => sprintf($lang['maintain']['backup_failed_email_subject'], ucwords($lang['maintain']['title_db_backup'])),
+                        'content_html' => '<p>'.sprintf($lang['maintain']['backup_failed_email_body'], strtolower($lang['maintain']['title_db_backup'])).'</p>',
+                        'content_text' => sprintf($lang['maintain']['backup_failed_email_body'], strtolower($lang['maintain']['title_db_backup'])),
+                    ));
+                }
             } else {
-                $GLOBALS['main']->errorMessage($lang['maintain']['db_backup_failed']);
+                if ($write) {
+                    $GLOBALS['main']->successMessage($lang['maintain']['db_backup_complete']);
+                } else {
+                    $GLOBALS['main']->errorMessage($lang['maintain']['db_backup_failed']);
+                }
             }
+        }
+        if ($is_ajax) {
+            exit;
         }
         $clear_post = true;
     }

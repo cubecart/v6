@@ -52,7 +52,7 @@
   {/if}
   <h3>{$LANG.maintain.title_files_backup}</h3>
   <ul class="severity">
-  		<li class="orange"><strong>Disclaimer:</strong><br>The file and database backup tools are constrained by resource limitations of PHP which can be low. A backup may fail so please check file integrity after the process has completed. If possible we recommend taking a full backup via your web hosting control panel instead and to check that regular automated backups are generated.</li>
+  		<li class="orange"><strong>{$LANG.common.disclaimer}:</strong><br>{$LANG.maintain.backup_disclaimer}</li>
 	</ul>
   <form action="?_g=maintenance&node=index&files_backup=1#backup" method="post">
 	<p>{$LANG.maintain.files_backup_desc}</p>
@@ -68,7 +68,6 @@
 	</fieldset>
 	<div>
 		<input type="submit" name="backup" value="{$LANG.maintain.tab_backup}">
-		
 	</div>
   </form>
   <br>
@@ -136,7 +135,7 @@
 <div id="upgrade" class="tab_content">
   <h3>{$LANG.maintain.upgrade_to_latest}</h3>
   <ul class="severity">
-  		<li class="orange"><strong>Disclaimer:</strong><br>Please use this tool at your own risk. This upgrade tool may fail if the web server isn't able to write to file or if PHP hasn't got enough resources to complete the task. Please also note that any core code customisation will be overwritten. Other more reliable upgrade methods are available. <a href="https://support.cubecart.com/hc/en-gb/articles/360003794198-How-do-I-upgrade-from-CubeCart-v6-to-latest-v6-" target="_blank">Upgrade Documentation</a></li>
+  		<li class="orange"><strong>{$LANG.common.disclaimer}:</strong><br>{$LANG.maintain.upgrade_disclaimer}</li>
   	</ul>
   {if $CONFIG.auto_upgrade_disabled}
 	<p>{str_replace('{$EMAIL}', $CONFIG.auto_upgrade_disabled,$LANG.maintain.auto_upgrade_disabled)}</p>
@@ -305,3 +304,42 @@
   </video>
   {/if}
 </div>
+<script>
+document.querySelectorAll('input[type="submit"][name="backup"]').forEach(function(btn) {
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    if (!confirm('{$LANG.maintain.backup_confirm}')) return;
+
+    var form = btn.closest('form');
+    var formData = new FormData(form);
+    formData.append(btn.name, btn.value);
+
+    btn.disabled = true;
+    btn.value = '{$LANG.maintain.backup_wait}';
+    window.onbeforeunload = null;
+    $(window).off('beforeunload');
+
+    var msg = document.createElement('div');
+    msg.className = 'success';
+    msg.textContent = '{$LANG.maintain.backup_background}';
+    var container = document.getElementById('gui_message');
+    if (container) container.appendChild(msg);
+
+    fetch(form.action, {
+      method: 'POST',
+      body: formData,
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    }).then(function(r) { return r.json(); }).then(function(data) {
+      if (data.status === 'error') {
+        msg.className = 'error';
+        msg.textContent = data.message;
+      }
+      btn.disabled = false;
+      btn.value = '{$LANG.maintain.tab_backup}';
+    }).catch(function() {
+      btn.disabled = false;
+      btn.value = '{$LANG.maintain.tab_backup}';
+    });
+  });
+});
+</script>
