@@ -54,7 +54,7 @@
    {/foreach}
    <div class="clearfix">
       <button type="submit" class="button alert right">{$LANG.common.delete_selected}</button>
-      {if $CHECKOUT_BUTTON}<a href="?_a=basket" class="button success right show-for-medium-up">{if $CONFIG.ssl == 1}{$LANG.basket.basket_secure_checkout}{else}{$LANG.basket.basket_checkout}{/if}</a>{else}<a href="?" class="button success right show-for-medium-up">{$LANG.basket.continue_shopping}</a>{/if}
+      {if $CHECKOUT_BUTTON}<a href="?_a=basket" class="button success right show-for-medium-up">{$LANG.basket.basket_secure_checkout}</a>{else}<a href="?" class="button success right show-for-medium-up">{$LANG.basket.continue_shopping}</a>{/if}
       <div class="left"><a href="{$STORE_URL}/index.php?_a=addressbook&action=add" class="button">{$LANG.address.address_add}</a></div>
    </div>
 </form>

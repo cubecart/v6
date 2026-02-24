@@ -205,11 +205,6 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
     if (!filter_var($config_new['standard_url'], FILTER_VALIDATE_URL)) {
         $config_new['standard_url'] = CC_STORE_URL;
     }
-    // Added for backward compatibility as these old values may be used in extensions
-    $config_new['ssl_url'] = $config_new['standard_url'];
-    $domain_parts = parse_url($config_new['standard_url']);
-    $config_new['ssl_path'] = ($domain_parts['path'] ?? '').'/';
-
     if (empty($config_new['time_format'])) {
         $config_new['time_format'] = 'Y-m-d H:i';
     }
@@ -453,7 +448,6 @@ $select_options = array(
     'catalogue_latest_products'   => null,
     'catalogue_show_empty' => null,
     'email_smtp'   => null,
-    'ssl'     => null,
     'stock_level'   => null,
     'stock_change_time'  => array(1 => $lang['settings']['stock_reduce_process'], 0 => $lang['settings']['stock_reduce_complete'], 2 => $lang['settings']['stock_reduce_pending']),
     'stock_warn_type'  => array($lang['settings']['stock_warning_method_global'], $lang['settings']['stock_warning_method_product']),

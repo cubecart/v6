@@ -2315,8 +2315,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="smtp_pass" introduced="5.0.0"><![CDATA[SMTP Password]]></string>
     <string name="smtp_port" introduced="5.0.0"><![CDATA[Outgoing SMTP Port (Default 25)]]></string>
     <string name="smtp_user" introduced="5.0.0"><![CDATA[SMTP Username]]></string>
-    <string name="ssl_enable" introduced="5.0.0"><![CDATA[Enable SSL]]></string>
-    <string name="ssl_root_path" introduced="5.0.0"><![CDATA[SSL Root Path]]></string>
     <string name="cookie_domain" introduced="6.0.0"><![CDATA[Cookie Domain]]></string>
     <string name="standard_url" introduced="5.0.0"><![CDATA[Store URL]]></string>
     <string name="stock_allow_oos" introduced="5.0.0"><![CDATA[Allow out-of-stock purchases]]></string>
