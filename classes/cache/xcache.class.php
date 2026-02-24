@@ -119,9 +119,9 @@ class Cache extends Cache_Controler
     public function getIDs()
     {
         if (empty($this->_ids)) {
+            $len = strlen($this->_prefix);
             for ($i = 0, $count = xcache_count(XC_TYPE_VAR); $i < $count; ++$i) {
                 $entries = xcache_list(XC_TYPE_VAR, $i);
-                $len = strlen($this->_prefix);
                 if (is_array($entries['cache_list'])) {
                     foreach ($entries['cache_list'] as $entry) {
                         if(substr($entry['name'], 0, $len) === $this->_prefix) {

@@ -78,13 +78,6 @@ class Cache_Controler
     protected $_empties = array();
     protected $_empties_added = false;
     /**
-     * Temp variable to hold the cache read for exists function
-     *
-     * @var mixed
-     */
-    protected $_temp  = null;
-
-    /**
      * Class instance
      *
      * @var instance
@@ -184,7 +177,7 @@ class Cache_Controler
 
         clearstatcache(); // Clear cached results
 
-        if (is_dir($path) && file_exists($path) && is_writable($path)) {
+        if (is_dir($path) && is_writable($path)) {
             $this->_cache_path = $path;
         } else {
             trigger_error('Could not change cache path ('.$path.')', E_USER_WARNING);
@@ -230,7 +223,7 @@ class Cache_Controler
         if (($files = glob($this->_cache_path.'*', GLOB_NOSORT)) !== false) {
             foreach ($files as $file) {
                 //Delete any file that is not a cache file
-                if (substr($file, -6) !== '.cache' && $file !== '.htaccess' && $file !== 'index.php') {
+                if (substr($file, -6) !== '.cache' && basename($file) !== 'index.php') {
                     @unlink($file);
                 }
             }
@@ -288,9 +281,7 @@ class Cache_Controler
         
         if (is_array($files)) {
             foreach ($files as $file) {
-                if (file_exists($file)) {
-                    @unlink($file);
-                }
+                @unlink($file);
             }
         }   
     }

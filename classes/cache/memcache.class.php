@@ -25,6 +25,7 @@ require CC_ROOT_DIR.'/classes/cache/cache.class.php';
  */
 class Cache extends Cache_Controler
 {
+    private $_memcache;
     private $_memcache_host = '127.0.0.1';
     private $_memcache_port = '11211';
     
@@ -38,7 +39,7 @@ class Cache extends Cache_Controler
         $this->_memcache = new Memcache;
     
         $this->_memcache_host = isset($glob['memcache_host']) ? $glob['memcache_host'] : $this->_memcache_host;
-        $this->_memcache_port = isset($glob['memcache_post']) ? $glob['memcache_post'] : $this->_memcache_port;
+        $this->_memcache_port = isset($glob['memcache_port']) ? $glob['memcache_port'] : $this->_memcache_port;
         if (!$this->_memcache->connect($this->_memcache_host, $this->_memcache_port)) {
             trigger_error("Couldn't initiate Memcache. Please set 'memcache_host' and 'memcache_port' in the includes/global.inc.php file.", E_USER_WARNING);
         }
@@ -119,11 +120,7 @@ class Cache extends Cache_Controler
         }
         $id = shortHash($id, 8, array($this->_empties_id));
         
-        if (!$this->_memcache->get($this->_makeName($id))) {
-            return false;
-        } else {
-            return true;
-        }
+        return (bool)$this->_memcache->get($this->_makeName($id));
     }
 
     /**

@@ -27,7 +27,6 @@ class Cache extends Cache_Controler
 {
 
     private $_memcache_servers = array('127.0.0.1',11211);
-    private $_connected = false;
     private $_memcached;
 
     ##############################################
@@ -43,7 +42,7 @@ class Cache extends Cache_Controler
 
         $this->_memcached->setOption(Memcached::OPT_LIBKETAMA_COMPATIBLE, true);
         if (!count($this->_memcached->getServerList())) {
-            $this->_connected = $this->_memcached->addServers($this->_memcache_servers);
+            $this->_memcached->addServers($this->_memcache_servers);
         }
 
         //Run the parent constructor
@@ -83,7 +82,7 @@ class Cache extends Cache_Controler
     {
         $this->_memcached->flush();
         $this->_clearFileCache();
-        return $return;
+        return true;
     }
 
     /**
@@ -111,11 +110,7 @@ class Cache extends Cache_Controler
         }
         $id = shortHash($id, 8, array($this->_empties_id));
         
-        if (!$this->_memcached->get($this->_makeName($id))) {
-            return false;
-        } else {
-            return true;
-        }
+        return (bool)$this->_memcached->get($this->_makeName($id));
     }
     
     /**

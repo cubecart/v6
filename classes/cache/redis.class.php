@@ -122,15 +122,7 @@ class Cache extends Cache_Controler
             return false;
         }
         $id = shortHash($id, 8, array($this->_empties_id));
-
-        $name = $this->_makeName($id);
-
-        //Try to set the temp variable to the item
-        if (($this->_temp[$name] = (bool)$this->redis_client->exists($name)) !== false) {
-            return true;
-        }
-
-        return false;
+        return (bool)$this->redis_client->exists($this->_makeName($id));
     }
 
     /**
@@ -250,7 +242,8 @@ class Cache extends Cache_Controler
             return false;
         }
 
-        if($this->redis_client->set($name, $data)=='OK') {
+        $ttl = (!empty($expire) && is_numeric($expire)) ? $expire : $this->_expire;
+        if ($this->redis_client->setex($name, $ttl, $data) == 'OK') {
             return true;
         }
         return false;

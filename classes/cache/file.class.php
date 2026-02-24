@@ -158,36 +158,37 @@ class Cache extends Cache_Controler
         
         if ($this->_empties_id!==$id && isset($this->_dupes[$id])) {
             return $this->_dupes[$id];
-        } else {
-            $name = $this->_makeName($id);
-            $file = $this->_cache_path.$name;
-
-            clearstatcache(true, $file);
-
-            //Make sure the cache file exists
-            if (file_exists($file)) {
-                $contents = @file_get_contents($file, false);
-                $this->_page_cache_usage += filesize($file);
-                $this->_page_cache_file_count++;
-                //If there is no newline then the file isn't valid
-                if (strpos($contents, $this->_file_data_split) === false) {
-                    @unlink($file);
-                    return false;
-                }
-    
-                //Split meta and data
-                list($meta, $data) = explode($this->_file_data_split, $contents);
-                $meta = unserialize($meta);
-
-                //Check to see if the cache is past the experation date
-                if (($meta['time'] + $meta['expire']) <= time()) {
-                    unlink($file);
-                    return false;
-                }
-                $this->_dupes[$id] = ($serialized) ? unserialize($data) : $data;
-                return $this->_dupes[$id];
-            }
         }
+
+        $name = $this->_makeName($id);
+        $file = $this->_cache_path.$name;
+
+        clearstatcache(true, $file);
+
+        //Make sure the cache file exists
+        if (file_exists($file)) {
+            $contents = @file_get_contents($file);
+            $this->_page_cache_usage += strlen($contents);
+            $this->_page_cache_file_count++;
+            //If there is no boundary then the file isn't valid
+            if (strpos($contents, $this->_file_data_split) === false) {
+                @unlink($file);
+                return false;
+            }
+
+            //Split meta and data
+            list($meta, $data) = explode($this->_file_data_split, $contents, 2);
+            $meta = unserialize($meta);
+
+            //Check to see if the cache is past the experation date
+            if (($meta['time'] + $meta['expire']) <= time()) {
+                unlink($file);
+                return false;
+            }
+            $this->_dupes[$id] = ($serialized) ? unserialize($data) : $data;
+            return $this->_dupes[$id];
+        }
+
         return false;
     }
 
@@ -232,7 +233,7 @@ class Cache extends Cache_Controler
         $data  = serialize($meta).$this->_file_data_split.$data;
 
         //Write to file
-        if (file_put_contents($this->_cache_path.$name, $data)) {
+        if (file_put_contents($this->_cache_path.$name, $data, LOCK_EX)) {
             return true;
         }
         trigger_error('Cache data not written.', E_USER_WARNING);
