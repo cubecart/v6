@@ -20,7 +20,7 @@
     <string name="account_credit" introduced="6.5.6"><![CDATA[Account Credit]]></string>
     <string name="api" introduced="6.5.13"><![CDATA[API Key]]></string>
     <string name="authtype" introduced="6.5.13"><![CDATA[Authentication Method]]></string>
-    <string name="basic" introduced="6.5.13"><![CDATA[Basic (Username and Passsword)]]></string>
+    <string name="basic" introduced="6.5.13"><![CDATA[Basic (Username and Password)]]></string>
     <string name="credit_desc" introduced="6.5.6"><![CDATA[Any credit on your account can be offset against your order total during checkout.]]></string>
     <string name="error_name_same" introduced="6.5.6"><![CDATA[First and last names are the same.]]></string>
     <string name="error_name_same" introduced="6.4.5"><![CDATA[First and last names are the same.]]></string>
@@ -405,7 +405,7 @@
     <string name="no_option_sets" introduced="5.2.0b1"><![CDATA[No option sets exist.]]></string>
     <string name="no_option_set_attributes" introduced="6.0.5"><![CDATA[No attributes have been assigned. Please select from the list below and save.]]></string>
     <string name="no_option_sets_assigned" introduced="6.0.5"><![CDATA[No option sets have been assigned.]]></string>
-    <string name="no_taxes_setup" introduced="5.0.0"><![CDATA[No taxs have been setup.]]></string>
+    <string name="no_taxes_setup" introduced="5.0.0"><![CDATA[No taxes have been set up.]]></string>
     <string name="notify_assign_update" introduced="5.0.0"><![CDATA[Products have been assigned accordingly.]]></string>
     <string name="notify_prices_updates" introduced="6.1.0"><![CDATA[Prices have been updated accordingly.]]></string>
     <string name="notify_certs_none" introduced="5.0.0"><![CDATA[No gift cards exist.]]></string>
@@ -530,7 +530,7 @@
     <string name="title_digital_explain" introduced="6.5.12"><![CDATA[This file will be available to download after completion of payment.]]></string>
     <string name="title_discount_quantity" introduced="5.0.0"><![CDATA[Quantity Discount]]></string>
     <string name="title_export" introduced="5.0.0"><![CDATA[Export Catalogue]]></string>
-    <string name="export_explain" introduced="5.0.0"><![CDATA[Exporting the store catalogue may be broken down into several downloads for larger inventories. Please click the number to download each part. If there is an error exporting please try a lower value using the drop down menu.<p>So long as a data feed access password is set in your stores settings (under the &quot;Other&quot; section of the <a href="?_g=settings#Advanced_Settings">Advanced Tab</a>) you can automate your feeds by pasting the feed URL into your providers control panel.</p>]]></string>
+    <string name="export_explain" introduced="5.0.0"><![CDATA[Exporting the store catalogue may be broken down into several downloads for larger inventories. Please click the number to download each part. If there is an error exporting please try a lower value using the drop down menu.<p>So long as a data feed access password is set in your store's settings (under the &quot;Other&quot; section of the <a href="?_g=settings#Advanced_Settings">Advanced Tab</a>) you can automate your feeds by pasting the feed URL into your providers control panel.</p>]]></string>
     <string name="export_parts" introduced="5.0.0"><![CDATA[Download Parts]]></string>
     <string name="export_url" introduced="5.1.5"><![CDATA[Export URL]]></string>
     <string name="title_feature" introduced="5.0.0"><![CDATA[Featured Product]]></string>
@@ -610,13 +610,13 @@
     <string name="shipping_required" introduced="6.5.12"><![CDATA[Please select a shipping method.]]></string>
     <string name="error_voucher_shipping" introduced="6.5.7"><![CDATA[Sorry but that voucher isn't allowed for the chosen shipping method.]]></string>
     <string name="error_voucher_sales_items_excluded" introduced="6.4.10"><![CDATA[Sorry, that code is not valid for sale items.]]></string>
-    <string name="error_voucher_used_already" introduced="6.4.6"><![CDATA[Sorry, but that code has been used to it's maximum <em>per-user</em> allowance.]]></string>
+    <string name="error_voucher_used_already" introduced="6.4.6"><![CDATA[Sorry, but that code has been used to its maximum <em>per-user</em> allowance.]]></string>
     <string name="error_voucher_free_shipping" introduced="6.4.0"><![CDATA[Sorry but that voucher can't be used when shipping is free of charge.]]></string>
     <string name="error_voucher_manufacturer" introduced="6.4.0"><![CDATA[Sorry but that voucher is manufacturer specific.]]></string>
     <string name="error_voucher_category" introduced="6.5.6"><![CDATA[Sorry but that voucher is category specific.]]></string>
     <string name="stock_availability_changed" introduced="6.4.0"><![CDATA[Items added to your basket are no longer available.]]></string>
     <string name="confirm_billing" introduced="6.2.8"><![CDATA[Please confirm your billing address is correct before proceeding.]]></string>
-    <string name="error_voucher_exceeded" introduced="6.1.14"><![CDATA[Sorry but that code has been used to it's maximum allowance.]]></string>
+    <string name="error_voucher_exceeded" introduced="6.1.14"><![CDATA[Sorry but that code has been used to its maximum allowance.]]></string>
     <string name="error_voucher_order_status" introduced="6.1.14"><![CDATA[Sorry, but this gift certificate is invalid at this time.]]></string>
     <string name="checkout" introduced="5.0.0"><![CDATA[Checkout]]></string>
     <string name="error_shipping" introduced="5.0.0"><![CDATA[Unfortunately there are no suitable shipping methods available for your order. This may be because the total weight of your order is too high or we cannot ship to your country. Please contact a member of our staff for any further inquiries.]]></string>
@@ -637,7 +637,7 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
-    <string name="manufactuter" introduced="6.5.12"><![CDATA[Manufactuter]]></string>
+    <string name="manufactuter" introduced="6.5.12"><![CDATA[Manufacturer]]></string>
     <string name="tariff" introduced="6.5.12"><![CDATA[Tariff]]></string>
     <string name="na" introduced="6.5.12"><![CDATA[N/A]]></string>
     <string name="attachments" introduced="6.5.10"><![CDATA[Attachments]]></string>
@@ -750,7 +750,7 @@
     <string name="add_new" introduced="5.0.0"><![CDATA[Add new]]></string>
     <string name="advanced" introduced="5.0.0"><![CDATA[Advanced]]></string>
     <string name="all" introduced="5.0.0"><![CDATA[All]]></string>
-    <string name="all_translated" introduced="5.0.0"><![CDATA[All translations have been done already for the installed languages. Please choose one to edit if you need to make changes or install an new language pack if you want to offer more language options.]]></string>
+    <string name="all_translated" introduced="5.0.0"><![CDATA[All translations have been done already for the installed languages. Please choose one to edit if you need to make changes or install a new language pack if you want to offer more language options.]]></string>
     <string name="amount" introduced="5.0.0"><![CDATA[Amount]]></string>
     <string name="any" introduced="5.0.0"><![CDATA[Any]]></string>
     <string name="approved" introduced="5.0.0"><![CDATA[Approved]]></string>
@@ -994,7 +994,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="delete_guests_fail" introduced="6.2.1"><![CDATA[No guest accounts were deleted.]]></string>
     <string name="delete_no_order" introduced="6.2.1"><![CDATA[Delete all customers without orders]]></string>
     <string name="delete_older_than" introduced="6.2.1"><![CDATA[Delete all customers with orders older than %1$s months.]]></string>
-    <string name="purge_success" introduced="6.2.1"><![CDATA[Customers with orders olders placed over %1$s months ago have been deleted.]]></string>
+    <string name="purge_success" introduced="6.2.1"><![CDATA[Customers with orders placed over %1$s months ago have been deleted.]]></string>
     <string name="purge_fail" introduced="6.2.1"><![CDATA[No customers to delete.]]></string>
     <string name="no_order_purge" introduced="6.2.1"><![CDATA[Customers without any orders have been deleted.]]></string>
     <string name="login_register" introduced="6.1.2"><![CDATA[Please login or register to continue.]]></string>
@@ -1051,7 +1051,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="ignore_update" introduced="6.1.0"><![CDATA[This update has been ignored. Next time an update is released by the developer a notification will be shown again.]]></string>
     <string name="quick_tour" introduced="6.0.0"><![CDATA[Quick Tour]]></string>
     <string name="tour_welcome" introduced="6.0.0"><![CDATA[Welcome to your store. Please follow this quick tour to help get you started.]]></string>
-    <string name="ok_go" introduced="6.0.0"><![CDATA[Ok, lets go!]]></string>
+    <string name="ok_go" introduced="6.0.0"><![CDATA[Ok, let's go!]]></string>
     <string name="tour_1" introduced="6.0.0"><![CDATA[Define some basic information here such as your store name &amp; address, main currency and upload a logo.]]></string>
     <string name="tour_2" introduced="6.0.0"><![CDATA[Create the category structure for your product inventory.]]></string>
     <string name="tour_3" introduced="6.0.0"><![CDATA[Add downloadable or physical products and assign them to categories.]]></string>
@@ -1067,7 +1067,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="error_version" introduced="5.2.3"><![CDATA[WARNING: Your store appears to be using source code from %1$s but the database is still at %2$s. Please complete the upgrade by running the <a href="setup">setup</a> process.]]></string>
     <string name="error_global_risk" introduced="5.0.0"><![CDATA[WARNING: Your includes/global.inc.php is currently writable, you should change the file permissions to read only. On Linux or Unix systems it should be CHMOD to 0444.]]></string>
     <string name="error_mysql_root" introduced="5.0.0"><![CDATA[WARNING: You are currently connected to the database using the root account. This is not secure, and should be changed.]]></string>
-    <string name="error_caching_disabled" introduced="6.0.0"><![CDATA[WARNING: Caching is disabled. Please enable it in the advanced tab of your stores <a href="?_g=settings#Advanced_Settings">settings</a>.]]></string>
+    <string name="error_caching_disabled" introduced="6.0.0"><![CDATA[WARNING: Caching is disabled. Please enable it in the advanced tab of your store's <a href="?_g=settings#Advanced_Settings">settings</a>.]]></string>
     <string name="error_notes_save" introduced="5.0.0"><![CDATA[Failed to save notes.]]></string>
     <string name="error_setup_folder" introduced="5.0.0"><![CDATA[WARNING: Please delete the setup folder from your store directory, your store may be at risk until you do.]]></string>
     <string name="error_version_update" introduced="5.0.0"><![CDATA[WARNING: Your store is not up-to-date. Version %1$s is available but you are running %2$s.]]></string>
@@ -1160,7 +1160,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="purge_list_clean" introduced="6.4.3"><![CDATA[No changes were made. Your list seems healthy.]]></string>
     <string name="purge_list_cleaned" introduced="6.4.3"><![CDATA[Invalid addresses removed: %1$s, Invalid Domains removed: %2$s.]]></string>
     <string name="purge" introduced="6.4.3"><![CDATA[Clean-up Mailing List]]></string>
-    <string name="confirm_purge" introduced="6.4.3"><![CDATA[This will delete any subscribers with an invalid email address or unsubscribe domains that are not expecting to recieve email (no MX records found). Are you sure you want to continue?]]></string>
+    <string name="confirm_purge" introduced="6.4.3"><![CDATA[This will delete any subscribers with an invalid email address or unsubscribe domains that are not expecting to receive email (no MX records found). Are you sure you want to continue?]]></string>
     <string name="macro_stream" introduced="6.4.0"><![CDATA[Does the file download or stream?]]></string>
     <string name="exit_title" introduced="6.2.0"><![CDATA[Wait&hellip;]]></string>
     <string name="exit_copy" introduced="6.2.0"><![CDATA[Before you go, be sure to sign up to our newsletter for exclusive offers and promotions!]]></string>
@@ -1175,7 +1175,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="email_macro_available" introduced="5.0.0"><![CDATA[Always Available]]></string>
     <string name="email_template" introduced="5.0.0"><![CDATA[Template]]></string>
     <string name="email_type" introduced="5.0.0"><![CDATA[Email Type]]></string>
-    <string name="empty_equals_default" introduced="5.0.0"><![CDATA[If left empty stores default taken.]]></string>
+    <string name="empty_equals_default" introduced="5.0.0"><![CDATA[If left empty store's default taken.]]></string>
     <string name="error_content_create" introduced="5.0.0"><![CDATA[Failed to save email content.]]></string>
     <string name="error_content_create_exists" introduced="6.2.3"><![CDATA[Failed to create email content as it already exists.]]></string>
     <string name="error_content_delete" introduced="5.0.0"><![CDATA[Failed to delete email content.]]></string>
@@ -1262,7 +1262,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="macro_w3w_d" introduced="6.4.0"><![CDATA[Shipping address what3words]]></string>
     <string name="macro_first_name" introduced="5.0.0"><![CDATA[Billing address first name]]></string>
     <string name="macro_last_name" introduced="5.0.0"><![CDATA[Billing address last name]]></string>
-    <string name="macro_company_name" introduced="5.0.0"><![CDATA[Billing address companyname]]></string>
+    <string name="macro_company_name" introduced="5.0.0"><![CDATA[Billing address company name]]></string>
     <string name="macro_line1" introduced="5.0.0"><![CDATA[Billing address line 1]]></string>
     <string name="macro_line2" introduced="5.0.0"><![CDATA[Billing address line 2]]></string>
     <string name="macro_town" introduced="5.0.0"><![CDATA[Billing address town]]></string>
@@ -1342,8 +1342,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="media_expired" introduced="6.4.2"><![CDATA[Sorry but access to this media has expired or the file no longer exists.]]></string>
     <string name="stream" introduced="6.4.0"><![CDATA[Stream]]></string>
     <string name="title" introduced="6.4.0"><![CDATA[Title]]></string>
-    <string name="search_location" introduced="6.4.0"><![CDATA[Search for image loction]]></string>
-    <string name="min_three_char" introduced="6.4.0"><![CDATA[Search term should be a minimum of three charachters.]]></string>
+    <string name="search_location" introduced="6.4.0"><![CDATA[Search for image location]]></string>
+    <string name="min_three_char" introduced="6.4.0"><![CDATA[Search term should be a minimum of three characters.]]></string>
     <string name="search_result" introduced="6.4.0"><![CDATA[Image Search Result for '%1$s']]></string>
     <string name="public" introduced="6.1.6"><![CDATA[Files uploaded to the files/public folder can be accessed directly via a browser. All others are protected with intent to be sold as downloadable products.]]></string>
     <string name="refresh_files" introduced="6.1.2"><![CDATA[Refresh File List]]></string>
@@ -1579,8 +1579,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="clear_sessions" introduced="6.4.0"><![CDATA[Clear all session data]]></string>
     <string name="sessions_cleared" introduced="6.4.0"><![CDATA[Session data has been cleared.]]></string>
     <string name="sessions_not_cleared" introduced="6.4.0"><![CDATA[Failed to clear session data.]]></string>
-    <string name="cookie_consent_cleared" introduced="6.2.7"><![CDATA[Cookie consent log cleared]]></string>
-    <string name="cookie_consent_not_cleared" introduced="6.2.7"><![CDATA[Failed to clear cookie consent log cleared]]></string>
+    <string name="cookie_consent_cleared" introduced="6.2.7"><![CDATA[Cookie consent log.]]></string>
+    <string name="cookie_consent_not_cleared" introduced="6.2.7"><![CDATA[Failed to clear cookie consent log.]]></string>
     <string name="notify_search_clear" introduced="6.0.8"><![CDATA[Search has been cleared.]]></string>
     <string name="error_search_clear" introduced="6.0.8"><![CDATA[Failed to clear search.]]></string>
     <string name="notify_cache_image" introduced="5.0.0"><![CDATA[Image cache has been cleared.]]></string>
@@ -1645,7 +1645,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="default_extensions" introduced="6.5.10"><![CDATA[CubeCart comes preinstalled with <a href="https://www.cubecart.com/extensions/plugins/paypal-commerce" target="_blank">PayPal Commerce</a> &amp; <a href="https://www.cubecart.com/extensions/shipping-methods/all-in-one-shipping" target="_blank">All in One Shipping</a> due to their huge popularity. These can, of course be deleted and replaced with other extensions from our marketplace.]]></string>
     <string name="package_fail" introduced="6.0.9"><![CDATA[Error: Failed to obtain package information. Please install via FTP.]]></string>
     <string name="plugin_still_exists" introduced="6.0.0"><![CDATA[Plugin still exists. Please delete manually via FTP or hosting filemanager.]]></string>
-    <string name="plugin_deleted_successfully" introduced="6.0.0"><![CDATA[Plugin deleted succesfully.]]></string>
+    <string name="plugin_deleted_successfully" introduced="6.0.0"><![CDATA[Plugin deleted successfully.]]></string>
     <string name="plugin_deleted_already" introduced="6.0.0"><![CDATA[Plugin not found. Maybe it was deleted already.]]></string>
     <string name="exists_not_writable" introduced="6.0.0"><![CDATA[Error: '%1$s' already exists and is not writable.]]></string>
     <string name="failed_backup" introduced="6.0.0"><![CDATA[Failed to backup existing plugin.]]></string>
@@ -1658,14 +1658,14 @@ This email is sent from the store's master email address but it is possible to r
     <string name="not_exist" introduced="6.0.0"><![CDATA[Error: %1$s does not exist. Please create it and try again.]]></string>
     <string name="token_unknown" introduced="6.0.0"><![CDATA[Error: Token was not recognised or has expired.]]></string>
     <string name="token_title" introduced="6.0.0"><![CDATA[Install / Upgrade an Extension]]></string>
-    <string name="token_desc" introduced="6.0.0"><![CDATA[Installing anything from the <a href="?_g=marketplace" target="_blank">CubeCart Marketplace</a> is a simple using install &quot;tokens&quot;. Locate the item you want and click the thunderbolt icon (<i class="fa fa-bolt"></i>) next to the file name. This will generate your install token which can be used here to install or upgrade any existing ones.]]></string>
+    <string name="token_desc" introduced="6.0.0"><![CDATA[Installing anything from the <a href="?_g=marketplace" target="_blank">CubeCart Marketplace</a> is simple using install &quot;tokens&quot;. Locate the item you want and click the thunderbolt icon (<i class="fa fa-bolt"></i>) next to the file name. This will generate your install token which can be used here to install or upgrade any existing ones.]]></string>
     <string name="backup_if_exists" introduced="6.0.0"><![CDATA[Backup if already exists]]></string>
     <string name="backup_abort" introduced="6.0.0"><![CDATA[Abort if backup fails]]></string>
     <string name="available_plugins" introduced="6.0.0"><![CDATA[Installed Extensions]]></string>
     <string name="extensions_available_desc" introduced="6.1.0"><![CDATA[Updates are available for the following extensions.]]></string>
     <string name="token" introduced="6.0.0"><![CDATA[Token]]></string>
     <string name="get_file_failed" introduced="6.0.0"><![CDATA[Failed to retrieve file.]]></string>
-    <string name="aff_sale" introduced="5.0.0"><![CDATA[Base on]]></string>
+    <string name="aff_sale" introduced="5.0.0"><![CDATA[Based on]]></string>
     <string name="aff_sale_grand" introduced="5.0.0"><![CDATA[Grand Total]]></string>
     <string name="aff_sale_sub" introduced="5.0.0"><![CDATA[Subtotal]]></string>
     <string name="aff_track" introduced="5.0.0"><![CDATA[Log commission at]]></string>
@@ -1673,7 +1673,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="aff_track_gateway" introduced="5.0.0"><![CDATA[Payment Selection Page]]></string>
     <string name="config_settings" introduced="5.0.0"><![CDATA[Configuration Settings]]></string>
     <string name="cubecart_settings" introduced="5.0.0"><![CDATA[Module Settings]]></string>
-    <string name="3rd_party_settings_desc" introduced="5.0.0"><![CDATA[The following read only settings needs to be set within the 3rd parties control panel interface.]]></string>
+    <string name="3rd_party_settings_desc" introduced="5.0.0"><![CDATA[The following read only settings need to be set within the 3rd party's control panel interface.]]></string>
     <string name="description_options" introduced="5.2.5"><![CDATA[* It is possible to either enter text such as &quot;Credit Card&quot; or enter a file path to an image.]]></string>
     <string name="merchant_id" introduced="5.0.0"><![CDATA[Merchant ID]]></string>
     <string name="notify_module_status" introduced="5.0.0"><![CDATA[Module statuses updated.]]></string>
@@ -1772,11 +1772,11 @@ This email is sent from the store's master email address but it is possible to r
     <string name="log_search" introduced="6.2.1"><![CDATA[Search Subscriber Newsletter Sent Log]]></string>
     <string name="delete_single_optin" introduced="6.2.1"><![CDATA[Delete all subscribers without double Opt-In status]]></string>
     <string name="log_delete_success" introduced="6.2.1"><![CDATA[Log deleted for that email address.]]></string>
-    <string name="log_delete_fail" introduced="6.2.1"><![CDATA[failed to deleted log for that email address.]]></string>
+    <string name="log_delete_fail" introduced="6.2.1"><![CDATA[Failed to delete log for that email address.]]></string>
     <string name="dbl_opt_in" introduced="6.2.0"><![CDATA[Double Opt-In]]></string>
     <string name="dbl_opt_in_only" introduced="6.2.1"><![CDATA[Double Opt-In Only]]></string>
     <string name="dbl_opt_in_success" introduced="6.2.0"><![CDATA[Thank you for confirming your email address you are now subscribed to our mailing list.]]></string>
-    <string name="dbl_opt_in_fail" introduced="6.2.0"><![CDATA[Sorry but we have not able to validate your email address.]]></string>
+    <string name="dbl_opt_in_fail" introduced="6.2.0"><![CDATA[Sorry but we have not been able to validate your email address.]]></string>
     <string name="continue_to_unsubscribe" introduced="6.2.0"><![CDATA[Click OK, then the unsubscribe button if you wish to continue. An email will be sent with a link to confirm removal.]]></string>
     <string name="click_to_subscribe" introduced="5.0.0"><![CDATA[Click here to subscribe.]]></string>
     <string name="click_to_unsubscribe" introduced="5.0.0"><![CDATA[Click here to unsubscribe.]]></string>
@@ -1787,7 +1787,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="enter_email_signup" introduced="5.0.0"><![CDATA[Enter your e-mail address to receive our newsletter]]></string>
     <string name="enter_email_subscribe_unsubscribe" introduced="5.0.0"><![CDATA[Please enter your email address below to subscribe or to be removed from our mailing list.]]></string>
     <string name="error_email_verified" introduced="5.0.0"><![CDATA[There was an error verifying your email address.]]></string>
-    <string name="error_subscribed" introduced="5.0.0"><![CDATA[You have either susbcribed already, or the email address entered was not valid.]]></string>
+    <string name="error_subscribed" introduced="5.0.0"><![CDATA[You have either subscribed already, or the email address entered was not valid.]]></string>
     <string name="mailing_list" introduced="5.0.0"><![CDATA[Mailing List]]></string>
     <string name="newsletters" introduced="5.0.0"><![CDATA[Newsletters]]></string>
     <string name="no_archived_newsletters" introduced="5.0.0"><![CDATA[There are no archived newsletters right now.]]></string>
@@ -1856,7 +1856,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="initiator_E" introduced="6.1.13"><![CDATA[Expired]]></string>
     <string name="initiator_F" introduced="6.1.13"><![CDATA[Invalid]]></string>
     <string name="desc_1" introduced="5.0.0"><![CDATA[Order has been created and staff members are awaiting payment before any further action will be taken. This order may be automatically cancelled if payment has not been made by a specific time scale.]]></string>
-    <string name="desc_2" introduced="5.0.0"><![CDATA[Payment may or may have not cleared or the order hasn't been dealt with yet.]]></string>
+    <string name="desc_2" introduced="5.0.0"><![CDATA[Payment may or may not have cleared or the order hasn't been dealt with yet.]]></string>
     <string name="desc_3" introduced="5.0.0"><![CDATA[Order has been paid for and dispatched. Goods should arrive shortly. Tracking information may be available.]]></string>
     <string name="desc_4" introduced="5.0.0"><![CDATA[Order has been declined. More information may be available in the order notes.]]></string>
     <string name="desc_5" introduced="5.0.0"><![CDATA[Payment for the order has failed external/internal fraud review.]]></string>
@@ -2079,20 +2079,20 @@ This email is sent from the store's master email address but it is possible to r
     <string name="tab_cron" introduced="6.4.8"><![CDATA[Scheduled Tasks]]></string>
     <string name="title_cron" introduced="6.4.8"><![CDATA[Available Tasks]]></string>
     <string name="cron_currency" introduced="6.4.8"><![CDATA[Update Exchange Rates]]></string>
-    <string name="cron_desc" introduced="6.4.8"><![CDATA[Scheduled task (or cron jobs) can be used to automate built in or custom tasks. Please seek support from your web hosting provider concerning how to setup a sheduled task.]]></string>
+    <string name="cron_desc" introduced="6.4.8"><![CDATA[Scheduled tasks (or cron jobs) can be used to automate built-in or custom tasks. Please seek support from your web hosting provider concerning how to set up a scheduled task.]]></string>
     <string name="cron_cache" introduced="6.4.8"><![CDATA[Clear Cache]]></string>
     <string name="cron_snippet" introduced="6.4.8"><![CDATA[Custom Code Snippet]]></string>
     <string name="scheduled_snippet" introduced="6.4.8"><![CDATA[Executes one or more <a href="?_g=settings&node=hooks#snippets">code snippets</a> that have their event trigger set to &quot;cron&quot;.]]></string>
     <string name="clone_settings" introduced="6.4.6"><![CDATA[Before we clone for the first time please configure what you do and don't want to clone each time.]]></string>
-    <string name="emailconf" introduced="6.4.5"><![CDATA[Require email address confirmaton (double entry)]]></string>
+    <string name="emailconf" introduced="6.4.5"><![CDATA[Require email address confirmation (double entry)]]></string>
     <string name="redirects" introduced="6.4.0"><![CDATA[Redirects]]></string>
     <string name="image_delete" introduced="6.4.0"><![CDATA[Delete associated images with product delete]]></string>
-    <string name="w3w_na" introduced="6.4.0"><![CDATA[Warning: It doesn't look like your current skin is compatible with whats3words.]]></string>
-    <string name="error_notice_desc" introduced="6.4.0"><![CDATA[Notice Error - These are unlikely to cause operatinal problems and can be thought of as best practice recommendations. Action is not required.]]></string>
+    <string name="w3w_na" introduced="6.4.0"><![CDATA[Warning: It doesn't look like your current skin is compatible with what3words.]]></string>
+    <string name="error_notice_desc" introduced="6.4.0"><![CDATA[Notice Error - These are unlikely to cause operational problems and can be thought of as best practice recommendations. Action is not required.]]></string>
     <string name="error_warning_desc" introduced="6.4.0"><![CDATA[Warning Error - These are unlikely to cause operational problems now but there is a problem, one that is likely to cause bigger issues in the future. Action is recommended.]]></string>
     <string name="error_parse_desc" introduced="6.4.0"><![CDATA[Parse Error - These are caused by misused or missing symbols in a syntax. Action is required.]]></string>
-    <string name="error_fatal_desc" introduced="6.4.0"><![CDATA[Fatal Error - These are are classified as critical errors. Action is required.]]></string>
-    <string name="error_exception_desc" introduced="6.4.0"><![CDATA[Exception Error - These are are classified as critical errors. Action is required.]]></string>
+    <string name="error_fatal_desc" introduced="6.4.0"><![CDATA[Fatal Error - These are classified as critical errors. Action is required.]]></string>
+    <string name="error_exception_desc" introduced="6.4.0"><![CDATA[Exception Error - These are classified as critical errors. Action is required.]]></string>
     <string name="error_general_desc" introduced="6.4.0"><![CDATA[Note: Your store should only log notice and warning errors if it is in <a href="?_g=settings#Advanced_Settings">debug mode</a>.]]></string>
     <string name="w3w_status" introduced="6.4.0"><![CDATA[Enable]]></string>
     <string name="sendgrid_key" introduced="6.4.0"><![CDATA[SendGrid API Key]]></string>
@@ -2100,7 +2100,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="cheapest_not_free" introduced="6.2.7"><![CDATA[Cheapest but not free]]></string>
     <string name="most_expensive" introduced="6.2.7"><![CDATA[Most expensive]]></string>
     <string name="shipping_defaults" introduced="6.2.7"><![CDATA[Default Shipping Selection]]></string>
-    <string name="enable_exit_modal" introduced="6.2.6"><![CDATA[Show exit model when enabled]]></string>
+    <string name="enable_exit_modal" introduced="6.2.6"><![CDATA[Show exit modal when enabled]]></string>
     <string name="gdpr" introduced="6.2.0"><![CDATA[General Data Protection Regulation (GDPR)]]></string>
     <string name="dbl_opt" introduced="6.2.0"><![CDATA[Double Opt-In (Required under GDPR)]]></string>
     <string name="enabled_for_all" introduced="6.1.2"><![CDATA[Enabled for all customers]]></string>
@@ -2176,7 +2176,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="email_sender_address" introduced="5.0.0"><![CDATA[Sender's Email Address]]></string>
     <string name="email_sender_name" introduced="5.0.0"><![CDATA[Sender's Name]]></string>
     <string name="enable_reviews" introduced="5.0.0"><![CDATA[Enable Product Reviews/Comments]]></string>
-    <string name="error_archive_delete" introduced="5.0.0"><![CDATA[Failed to deleted archive.]]></string>
+    <string name="error_archive_delete" introduced="5.0.0"><![CDATA[Failed to delete archive.]]></string>
     <string name="error_archive_restore" introduced="5.0.0"><![CDATA[Please select an archive to restore from.]]></string>
     <string name="error_category_create" introduced="5.0.0"><![CDATA[Failed to create category.]]></string>
     <string name="error_category_delete" introduced="5.0.0"><![CDATA[Failed to delete category.]]></string>
@@ -2192,7 +2192,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="error_js_required" introduced="5.0.0"><![CDATA[To get full control panel functionality you must enable JavaScript in your browser.]]></string>
     <string name="error_logo_upload" introduced="5.0.0"><![CDATA[Failed to upload logo.]]></string>
     <string name="error_module_install" introduced="5.0.0"><![CDATA[Module was not installed.]]></string>
-    <string name="error_settings_update" introduced="5.0.0"><![CDATA[Failed to updated settings.]]></string>
+    <string name="error_settings_update" introduced="5.0.0"><![CDATA[Failed to update settings.]]></string>
     <string name="error_mobile_vs_responsive" introduced="6.0.0"><![CDATA[Mobile skin has been disabled as the chosen default front-end skin is responsive.]]></string>
     <string name="error_tax_class_add" introduced="5.0.0"><![CDATA[Failed to add Tax Class.]]></string>
     <string name="error_tax_class_delete" introduced="5.0.0"><![CDATA[Failed to delete Tax Class.]]></string>
@@ -2275,7 +2275,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="proxy_port" introduced="5.0.0"><![CDATA[Proxy Port]]></string>
     <string name="proxy_user" introduced="5.0.0"><![CDATA[Proxy Username]]></string>
     <string name="recaptcha_enable" introduced="5.0.0"><![CDATA[Enable Bot Protection]]></string>
-    <string name="new_recaptcha_note" introduced="6.0.0"><![CDATA[Site &amp; secret keys are provided by <a href="https://www.google.com/recaptcha/admin" target="_blank">Google</a>, <a href="https://www.hcaptcha.com" target="_blank">hCapture</a> and <a href="https://www.cloudflare.com/en-gb/application-services/products/turnstile/" target="_blank">Cloudflare</a>.]]></string>
+    <string name="new_recaptcha_note" introduced="6.0.0"><![CDATA[Site &amp; secret keys are provided by <a href="https://www.google.com/recaptcha/admin" target="_blank">Google</a>, <a href="https://www.hcaptcha.com" target="_blank">hCaptcha</a> and <a href="https://www.cloudflare.com/en-gb/application-services/products/turnstile/" target="_blank">Cloudflare</a>.]]></string>
     <string name="recaptcha_public_key" introduced="6.0.0"><![CDATA[Site Key]]></string>
     <string name="recaptcha_secret_key" introduced="6.0.0"><![CDATA[Secret Key]]></string>
     <string name="repair" introduced="5.0.0"><![CDATA[Repair]]></string>
@@ -2474,7 +2474,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="install_drop_tables" introduced="5.0.0"><![CDATA[Drop Tables]]></string>
     <string name="install_drop_tables_explained" introduced="5.0.0"><![CDATA[(Check this if you wish to overwrite existing data.)]]></string>
     <string name="install_fresh" introduced="5.0.0"><![CDATA[Choose this option if you wish to perform a fresh installation of CubeCart.<br><strong style='color: red;'>WARNING</strong>: By proceeding with this option any existing store data may be overwritten!]]></string>
-    <string name="licence_agree" introduced="5.0.0"><![CDATA[I agree to to the terms of the software licence.]]></string>
+    <string name="licence_agree" introduced="5.0.0"><![CDATA[I agree to the terms of the software licence.]]></string>
     <string name="link_admin_panel" introduced="5.0.0"><![CDATA[Admin Control Panel]]></string>
     <string name="link_admin_panel_note" introduced="6.1.0"><![CDATA[Please save this as a bookmark in your browser.]]></string>
     <string name="link_store_front" introduced="5.0.0"><![CDATA[Store Front]]></string>
@@ -2503,9 +2503,9 @@ This email is sent from the store's master email address but it is possible to r
     <string name="help_dbuserpass" introduced="5.0.0"><![CDATA[The password required by the username.]]></string>
     <string name="help_dbconfirmpass" introduced="5.0.0"><![CDATA[Confirm the password.]]></string>
     <string name="help_dbname" introduced="5.0.0"><![CDATA[The database name for the store tables to be served from.]]></string>
-    <string name="help_dbprefix" introduced="5.0.0"><![CDATA[If you are hosting more then one store on one dtabase please define a table prefix to prevent clashing table names.]]></string>
-    <string name="help_defaultlang" introduced="5.0.0"><![CDATA[Please choose your stores default language.]]></string>
-    <string name="help_defaultcurrency" introduced="5.0.0"><![CDATA[Please choose your stores default currency.]]></string>
+    <string name="help_dbprefix" introduced="5.0.0"><![CDATA[If you are hosting more than one store on one database please define a table prefix to prevent clashing table names.]]></string>
+    <string name="help_defaultlang" introduced="5.0.0"><![CDATA[Please choose your store's default language.]]></string>
+    <string name="help_defaultcurrency" introduced="5.0.0"><![CDATA[Please choose your store's default currency.]]></string>
   </group>
   <group name="statistics">
     <string name="invalid_date_from" introduced="6.5.10"><![CDATA[The from date entered was invalid.]]></string>
@@ -2563,7 +2563,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="error_language_delete" introduced="5.0.0"><![CDATA[Failed to delete language.]]></string>
     <string name="error_language_import_failed" introduced="5.0.0"><![CDATA[Failed to import language.]]></string>
     <string name="error_language_status" introduced="5.0.0"><![CDATA[Failed to update language status.]]></string>
-    <string name="error_lang_status_fixed" introduced="6.2.3"><![CDATA[%1$s can't be disabled or deleted as it is the default language used for the store. Please change it first in the stores settings.]]></string>
+    <string name="error_lang_status_fixed" introduced="6.2.3"><![CDATA[%1$s can't be disabled or deleted as it is the default language used for the store. Please change it first in the store's settings.]]></string>
     <string name="error_translation_create" introduced="5.0.0"><![CDATA[Failed to create translation.]]></string>
     <string name="error_translation_delete" introduced="5.0.0"><![CDATA[Failed to delete translation.]]></string>
     <string name="error_translation_update" introduced="5.0.0"><![CDATA[Failed to update translation.]]></string>
@@ -2586,7 +2586,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="notify_translation_update" introduced="5.0.0"><![CDATA[Translation successfully updated.]]></string>
     <string name="phrase_group_account" introduced="5.0.0"><![CDATA[Account - Phrases within the customers account area]]></string>
     <string name="phrase_group_address" introduced="5.0.0"><![CDATA[Address - Phrases connected with postal or invoice addresses, and addressbook]]></string>
-    <string name="phrase_group_admins" introduced="5.0.0"><![CDATA[Administor - Phrases within the administrators section of the control panel]]></string>
+    <string name="phrase_group_admins" introduced="5.0.0"><![CDATA[Administrator - Phrases within the administrators section of the control panel]]></string>
     <string name="phrase_group_basket" introduced="5.0.0"><![CDATA[Basket - Phrases displayed in the basket pages]]></string>
     <string name="phrase_group_catalogue" introduced="5.0.0"><![CDATA[Catalogue - Phrases displayed within the product inventory pages]]></string>
     <string name="phrase_group_category" introduced="5.0.0"><![CDATA[Category - Phrases connected with the product categories]]></string>
@@ -2597,7 +2597,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="phrase_group_country" introduced="5.0.0"><![CDATA[Country - Phrases concerning country management]]></string>
     <string name="phrase_group_customer" introduced="5.0.0"><![CDATA[Customer - Phrases concerning customer management]]></string>
     <string name="phrase_group_dashboard" introduced="5.0.0"><![CDATA[Dashboard - Phrases used within the administrators dashboard]]></string>
-    <string name="phrase_group_documents" introduced="5.0.0"><![CDATA[Documents - Phrases show in the administrators document management section]]></string>
+    <string name="phrase_group_documents" introduced="5.0.0"><![CDATA[Documents - Phrases shown in the administrators document management section]]></string>
     <string name="phrase_group_email" introduced="5.0.0"><![CDATA[Email - Phrases used in email templates management]]></string>
     <string name="phrase_group_filemanager" introduced="5.0.0"><![CDATA[Filemanager - Phrases displayed in the administration area filemanager]]></string>
     <string name="phrase_group_form" introduced="5.0.0"><![CDATA[Form - Phrases commonly used on forms]]></string>
@@ -2610,14 +2610,14 @@ This email is sent from the store's master email address but it is possible to r
     <string name="phrase_group_newsletter" introduced="5.0.0"><![CDATA[Newsletter - Phrases used in newsletter management]]></string>
     <string name="phrase_group_notification" introduced="5.0.0"><![CDATA[Notification - Phrases used to notify customers or staff members]]></string>
     <string name="phrase_group_order_state" introduced="5.0.0"><![CDATA[Order State - Order statuses]]></string>
-    <string name="phrase_group_orders" introduced="5.0.0"><![CDATA[Orders - Phrases releated to store orders]]></string>
+    <string name="phrase_group_orders" introduced="5.0.0"><![CDATA[Orders - Phrases related to store orders]]></string>
     <string name="phrase_group_recaptcha" introduced="5.0.0"><![CDATA[Recaptcha - Phrases shown within the Recaptcha captcha system]]></string>
-    <string name="phrase_group_reports" introduced="5.0.0"><![CDATA[Reports - Phrases used within the administrational reporting tools]]></string>
+    <string name="phrase_group_reports" introduced="5.0.0"><![CDATA[Reports - Phrases used within the administrative reporting tools]]></string>
     <string name="phrase_group_reviews" introduced="5.0.0"><![CDATA[Reviews - Phrases displayed on the review management page]]></string>
     <string name="phrase_group_search" introduced="5.0.0"><![CDATA[Search - Phrases displayed to the customer on product search]]></string>
     <string name="phrase_group_settings" introduced="5.0.0"><![CDATA[Settings - Phrases]]></string>
     <string name="phrase_group_setup" introduced="5.0.0"><![CDATA[Setup - Phrases displayed during the install/upgrade process]]></string>
-    <string name="phrase_group_statistics" introduced="5.0.0"><![CDATA[Statistics - Phrases shown on the administrational statistics pages]]></string>
+    <string name="phrase_group_statistics" introduced="5.0.0"><![CDATA[Statistics - Phrases shown on the administrative statistics pages]]></string>
     <string name="phrase_group_translate" introduced="5.0.0"><![CDATA[Translate - Phrases concerning translating phrases]]></string>
     <string name="phrase_group_ui" introduced="5.0.0"><![CDATA[User Interface - Phrases specific to the user interface]]></string>
     <string name="phrase_group_user" introduced="5.0.0"><![CDATA[User - Phrases specific to customers]]></string>
