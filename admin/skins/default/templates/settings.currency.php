@@ -49,7 +49,12 @@
 	  </tbody>
 	</table>
 	
-	{include file='templates/element.hook_form_content.php'}
+		{if isset($PLUGIN_TABS)}
+	{foreach from=$PLUGIN_TABS item=tab}
+	{\}
+	{/foreach}
+	{/if}
+{include file='templates/element.hook_form_content.php'}
 	
 	<div class="form_control">
 	  <input type="submit" name="update_manual" class="button" value="{$LANG.common.save}"> &nbsp;
@@ -70,7 +75,12 @@
 	  <div><label for="currency-symbol_thousand">{$LANG.settings.currency_symbol_thousand}</label><span><input name="add[symbol_thousand]" id="currency-symbol_thousand" type="text" class="textbox number"></span></div>
 	</fieldset>
 	
-	{include file='templates/element.hook_form_content.php'}
+		{if isset($PLUGIN_TABS)}
+	{foreach from=$PLUGIN_TABS item=tab}
+	{\}
+	{/foreach}
+	{/if}
+{include file='templates/element.hook_form_content.php'}
 	
 	<div class="form_control">
 	  <input type="hidden" name="previous-tab" id="previous-tab" value="">

@@ -215,7 +215,12 @@
       </fieldset>
       <p>{$LANG.settings.tariff_import_notice}</p>
    </div>
-   {include file='templates/element.hook_form_content.php'}
+      {if isset($PLUGIN_TABS)}
+   {foreach from=$PLUGIN_TABS item=tab}
+   {\}
+   {/foreach}
+   {/if}
+{include file='templates/element.hook_form_content.php'}
    <div class="form_control">
       <input type="submit" id="submit" class="button" value="{$LANG.common.save}">
       <input type="hidden" name="previous-tab" id="previous-tab" value="">

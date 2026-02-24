@@ -194,7 +194,12 @@
   </div>
   {/if}
 
-  {include file='templates/element.hook_form_content.php'}
+    {if isset($PLUGIN_TABS)}
+  {foreach from=$PLUGIN_TABS item=tab}
+  {\}
+  {/foreach}
+  {/if}
+{include file='templates/element.hook_form_content.php'}
 
   <div class="form_control">
 	<input type="hidden" name="previous-tab" id="previous-tab" value="">

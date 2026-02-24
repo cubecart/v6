@@ -604,7 +604,12 @@
          <div><label for="cookie_dialogue">{$LANG.settings.cookie_dialogue}</label><span><input name="config[cookie_dialogue]" id="cookie_dialogue" type="hidden" class="toggle" value="{$CONFIG.cookie_dialogue}"></span></div>
       </fieldset>
    </div>
-   {include file='templates/element.hook_form_content.php'}
+      {if isset($PLUGIN_TABS)}
+   {foreach from=$PLUGIN_TABS item=tab}
+   {\}
+   {/foreach}
+   {/if}
+{include file='templates/element.hook_form_content.php'}
    <div class="form_control">
       <input type="hidden" name="config[bftime]" value="600">
       <input type="hidden" name="config[bfattempts]" value="5">

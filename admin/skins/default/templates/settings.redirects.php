@@ -164,6 +164,11 @@
       <div class="pagination">{$PAGINATION_IGNORED}</div>
       {/if}
    </div>
-   {include file='templates/element.hook_form_content.php'}
+      {if isset($PLUGIN_TABS)}
+   {foreach from=$PLUGIN_TABS item=tab}
+   {\}
+   {/foreach}
+   {/if}
+{include file='templates/element.hook_form_content.php'}
 </form>
 <div id="val_error_not_found" style="display:none">{$LANG.settings.redirect_error_not_found}</div>

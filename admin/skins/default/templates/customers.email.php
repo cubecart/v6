@@ -64,7 +64,12 @@
          <div><label for="email_test">{$LANG.email.test_email}</label><span><input type="text" name="newsletter[test_email]" id="email_test" class="textbox" value=""> <input type="submit" value="{$LANG.email.save_send_test}" class="tiny"></span></div>
       </fieldset>
    </div>
-   {include file='templates/element.hook_form_content.php'}
+      {if isset($PLUGIN_TABS)}
+   {foreach from=$PLUGIN_TABS item=tab}
+   {\}
+   {/foreach}
+   {/if}
+{include file='templates/element.hook_form_content.php'}
    <div class="form_control">
       <input type="hidden" name="newsletter[newsletter_id]" value="{$NEWSLETTER.newsletter_id}">
       <input type="hidden" name="previous-tab" id="previous-tab" value="">

@@ -133,7 +133,12 @@
 			<input type="hidden" id="ckfuncnum" value="{$CK_FUNC_NUM}">
 		</div>
 	</div>
-	{include file='templates/element.hook_form_content.php'}
+		{if isset($PLUGIN_TABS)}
+	{foreach from=$PLUGIN_TABS item=tab}
+	{\}
+	{/foreach}
+	{/if}
+{include file='templates/element.hook_form_content.php'}
 	{/if}
 	{if isset($mode_form)}
 	<div id="fm-details" class="tab_content">
@@ -193,7 +198,12 @@
 		<div class="dimensions hidden center"><span class="width">150</span> x <span class="height">150</span> px</div>
 	</div>
 	{/if}
-	{include file='templates/element.hook_form_content.php'}
+		{if isset($PLUGIN_TABS)}
+	{foreach from=$PLUGIN_TABS item=tab}
+	{\}
+	{/foreach}
+	{/if}
+{include file='templates/element.hook_form_content.php'}
 	<div class="form_control">
 		<input type="hidden" name="file_id" value="{$FILE.file_id}">
 		<input type="hidden" name="previous-tab" id="previous-tab" value="">

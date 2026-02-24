@@ -64,7 +64,12 @@
 	  <div><label for="seo_meta_description">{$LANG.settings.seo_meta_description}</label><span><textarea name="gc[seo_meta_description]" id="seo_meta_description" class="textbox strlen" rel="seo_meta_description_strlen">{$GC.seo_meta_description}</textarea></span> <span id="seo_meta_description_strlen">{strlen($GC.seo_meta_description|default:"")}</span></div>
 	</fieldset>
   </div>
-  {include file='templates/element.hook_form_content.php'}
+    {if isset($PLUGIN_TABS)}
+  {foreach from=$PLUGIN_TABS item=tab}
+  {\}
+  {/foreach}
+  {/if}
+{include file='templates/element.hook_form_content.php'}
   
   <div class="form_control">
 	<input type="hidden" name="previous-tab" id="previous-tab" value="">

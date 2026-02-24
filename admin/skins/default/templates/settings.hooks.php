@@ -209,6 +209,11 @@
       </fieldset>
    </div>
    {/if}
-   {include file='templates/element.hook_form_content.php'}
+      {if isset($PLUGIN_TABS)}
+   {foreach from=$PLUGIN_TABS item=tab}
+   {\}
+   {/foreach}
+   {/if}
+{include file='templates/element.hook_form_content.php'}
    <div class="form_control"><input type="submit" value="{$LANG.common.save}"></div>
 </form>
