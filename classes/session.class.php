@@ -102,10 +102,27 @@ class Session
         
         //Get all the ini settings to save time later
         $ini = ini_get_all(null, false);
-        // Always use database session handler
-        $handler = new Session_Handler($this->_session_timeout);
-        $handler->register();
-        $this->_save_handler = 'database';
+        if($GLOBALS['config']->has('config', 'session_save_handler')) {
+            $this->_save_handler = $GLOBALS['config']->get('config', 'session_save_handler');
+            if(!empty($this->_save_handler)) {
+                ini_set('session.save_handler', $this->_save_handler);
+            }
+        }
+
+        if($GLOBALS['config']->has('config', 'session_save_path')) {
+            $this->_save_path = $GLOBALS['config']->get('config', 'session_save_path');
+            if(!empty($this->_save_path)) {
+                ini_set('session.save_path', $this->_save_path);
+            }
+        }
+
+        // Use database session handler by default.
+        // Only skipped if an explicit session_save_handler is configured above.
+        if ($this->_save_handler === 'files') {
+            $handler = new Session_Handler($this->_session_timeout);
+            $handler->register();
+            $this->_save_handler = 'database';
+        }
 
         if ($ini['session.use_trans_sid'] != '0') {
             //disable transparent sid support
