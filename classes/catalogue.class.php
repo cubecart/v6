@@ -1917,7 +1917,25 @@ class Catalogue
                             $hit_ids[] = (int)$hit['_id'];
                         }
                         if (!empty($hit_ids)) {
-                            $products = $GLOBALS['db']->select('CubeCart_inventory', false, array('product_id' => $hit_ids));
+                            // Apply pre_search hook conditions and verify active status/category
+                            $whereString = '';
+                            if (!empty($where)) {
+                                $whereString = ' AND (' . implode(') AND (', $where) . ')';
+                            }
+                            $joinString = '';
+                            if (!empty($joins)) {
+                                $joinString = ' JOIN ' . implode(' JOIN ', $joins);
+                            }
+                            $prefix = $GLOBALS['config']->get('config', 'dbprefix');
+                            $id_list = implode(',', $hit_ids);
+                            $query = sprintf(
+                                "SELECT I.* FROM %1\$sCubeCart_inventory AS I%2\$s WHERE I.product_id IN (%3\$s) AND I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C WHERE CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1%4\$s",
+                                $prefix,
+                                $joinString,
+                                $id_list,
+                                $whereString
+                            );
+                            $products = $GLOBALS['db']->query($query);
                             if ($products) {
                                 // Re-order results to match Elasticsearch relevance order
                                 $products_by_id = array();
@@ -2276,9 +2294,15 @@ class Catalogue
                             $regexp_desc = substr($regexp_desc, 0, strlen($regexp_desc)-2);
                         }
 
-                        $search_cols = array('name', 'description', 'product_code');
-                        if($GLOBALS['config']->has('config', 'search_columns')) {
-                            $search_cols = $GLOBALS['config']->get('config', 'search_columns');
+                        // Use fulltext index columns so RLIKE/LIKE searches the same fields
+                        $search_cols = array();
+                        if (is_array($indexes)) {
+                            foreach ($indexes as $col) {
+                                $search_cols[] = preg_replace('/^[A-Z]+\./', '', $col);
+                            }
+                        }
+                        if (empty($search_cols)) {
+                            $search_cols = array('name', 'description', 'product_code');
                         }
                         $cq = array();
                         foreach($search_cols as $col) {
