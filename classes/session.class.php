@@ -102,16 +102,22 @@ class Session
         
         //Get all the ini settings to save time later
         $ini = ini_get_all(null, false);
-        if($GLOBALS['config']->has('config', 'session_save_handler')) {
+        if (!empty($GLOBALS['glob']['session_save_handler'])) {
+            $this->_save_handler = $GLOBALS['glob']['session_save_handler'];
+            ini_set('session.save_handler', $this->_save_handler);
+        } elseif ($GLOBALS['config']->has('config', 'session_save_handler')) {
             $this->_save_handler = $GLOBALS['config']->get('config', 'session_save_handler');
-            if(!empty($this->_save_handler)) {
+            if (!empty($this->_save_handler)) {
                 ini_set('session.save_handler', $this->_save_handler);
             }
         }
 
-        if($GLOBALS['config']->has('config', 'session_save_path')) {
+        if (!empty($GLOBALS['glob']['session_save_path'])) {
+            $this->_save_path = $GLOBALS['glob']['session_save_path'];
+            ini_set('session.save_path', $this->_save_path);
+        } elseif ($GLOBALS['config']->has('config', 'session_save_path')) {
             $this->_save_path = $GLOBALS['config']->get('config', 'session_save_path');
-            if(!empty($this->_save_path)) {
+            if (!empty($this->_save_path)) {
                 ini_set('session.save_path', $this->_save_path);
             }
         }

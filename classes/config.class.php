@@ -84,6 +84,11 @@ class Config
         } else {
             $this->_config['config'] = $glob;
         }
+        // Mark $glob keys as temp so they override DB values
+        // in memory but are never written back to the database
+        foreach ($glob as $key => $value) {
+            $this->_temp['config'][$key] = $value;
+        }
         if(isset($GLOBALS['cache']) && is_object($GLOBALS['cache'])) {
             $GLOBALS['cache']->enable(isset($this->_config['config']['cache']) ? (bool)$this->_config['config']['cache'] : false);
         }
