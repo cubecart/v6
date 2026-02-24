@@ -1912,9 +1912,24 @@ class Catalogue
                     if($result) {
                         // Array reverse for sort by relevence DESC
                         $hits = isset($_REQUEST['sort']['Relevance']) &&  $_REQUEST['sort']['Relevance'] == 'DESC' ? array_reverse($result["hits"]["hits"]) : $result["hits"]["hits"];
+                        $hit_ids = array();
                         foreach($hits as $hit) {
-                            $p = $GLOBALS['db']->select('CubeCart_inventory', false, array('product_id' => $hit['_id']));
-                            $this->_category_products[] = $p[0];
+                            $hit_ids[] = (int)$hit['_id'];
+                        }
+                        if (!empty($hit_ids)) {
+                            $products = $GLOBALS['db']->select('CubeCart_inventory', false, array('product_id' => $hit_ids));
+                            if ($products) {
+                                // Re-order results to match Elasticsearch relevance order
+                                $products_by_id = array();
+                                foreach ($products as $p) {
+                                    $products_by_id[$p['product_id']] = $p;
+                                }
+                                foreach ($hit_ids as $id) {
+                                    if (isset($products_by_id[$id])) {
+                                        $this->_category_products[] = $products_by_id[$id];
+                                    }
+                                }
+                            }
                         }
                     }
                     $this->_category_count  = $result["hits"]["total"]["value"];
@@ -1955,7 +1970,7 @@ class Catalogue
                         if($pg) {
                             $where[] = 'AND (IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) >= '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) >= '.$price.'))';
                         } else {
-                            $where[] = 'AND (IF (I.price - ((I.price / 100) * '.$sale_percentage.')) >= '.$price.')';
+                            $where[] = 'AND ((I.price - ((I.price / 100) * '.$sale_percentage.')) >= '.$price.')';
                         }
                     } else {
                         if($pg) {
@@ -1978,7 +1993,7 @@ class Catalogue
                         if($pg) {
                             $where[] = 'AND (IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) <= '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) <= '.$price.'))';
                         } else {
-                            $where[] = 'AND (I.price - ((I.price / 100) * '.$sale_percentage.')) <= '.$price;
+                            $where[] = 'AND ((I.price - ((I.price / 100) * '.$sale_percentage.')) <= '.$price.')';
                         }
                     }
                 }
@@ -1998,7 +2013,7 @@ class Catalogue
                         if($pg) {
                             $where[] = 'AND (IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) = '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) = '.$price.'))';
                         } else {
-                            $where[] = 'AND (IF (I.price - ((I.price / 100) * '.$sale_percentage.')) = '.$price.')';
+                            $where[] = 'AND ((I.price - ((I.price / 100) * '.$sale_percentage.')) = '.$price.')';
                         }
                     } else {
                         if($pg) {
@@ -2020,12 +2035,12 @@ class Catalogue
                             if($pg) {
                                 $where[] = 'AND (IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) >= '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) >= '.$price.'))';
                             } else {
-                                $where[] = 'AND (IF (I.price - ((I.price / 100) * '.$sale_percentage.')) >= '.$price.')';
+                                $where[] = 'AND ((I.price - ((I.price / 100) * '.$sale_percentage.')) >= '.$price.')';
                             }
                         } else {
                             if($pg) {
                                 $where[] = 'AND (IF (G.price IS NULL, I.price >= '.$price.', G.price >= '.$price.'))';
-                            } else {    
+                            } else {
                                 $where[] = 'AND (I.price >= '.$price.')';
                             }
                         }
@@ -2042,7 +2057,7 @@ class Catalogue
                             if($pg) {
                                 $where[] = 'AND (IF (G.price IS NULL, (I.price - ((I.price / 100) * '.$sale_percentage.')) <= '.$price.', (G.price - ((G.price / 100) * '.$sale_percentage.')) <= '.$price.'))';
                             } else {
-                                $where[] = 'AND (IF (I.price - ((I.price / 100) * '.$sale_percentage.')) <= '.$price.')';
+                                $where[] = 'AND ((I.price - ((I.price / 100) * '.$sale_percentage.')) <= '.$price.')';
                             }
                         } else {
                             if($pg) {
@@ -2097,7 +2112,8 @@ class Catalogue
                     unset($order); // store settings were somehow invalid
                 }
             }
-            if (empty($search_data['keywords']) && $order['field'] == 'Relevance') {
+            $order_string = '';
+            if (empty($search_data['keywords']) && isset($order) && $order['field'] == 'Relevance') {
                 if($pg) {
                     if ($sale_mode == 1) {
                         $order['field'] = 'IF (G.product_id IS NULL, IF (I.sale_price IS NULL OR I.sale_price = 0, I.price, I.sale_price), IF (G.sale_price IS NULL OR G.sale_price = 0, G.price, G.sale_price))';
@@ -2128,7 +2144,7 @@ class Catalogue
                 }
             }
 
-            if(!isset($search_data['manufacturer']) && $manufacturers  = $GLOBALS['db']->select('CubeCart_manufacturers', array('id'), "`name` LIKE '%".addslashes($search_data['keywords'])."%'")) {
+            if(!isset($search_data['manufacturer']) && $manufacturers  = $GLOBALS['db']->select('CubeCart_manufacturers', array('id'), "`name` LIKE '%".$GLOBALS['db']->sqlSafe($search_data['keywords'])."%'")) {
                 $ids = array();
                 foreach($manufacturers as $manufacturer) {
                     $ids[] = $manufacturer['id'];
@@ -2147,7 +2163,7 @@ class Catalogue
 
             $indexes = $GLOBALS['db']->getFulltextIndex('CubeCart_inventory', 'I');
 
-            if (!empty($joins) || isset($search_data['keywords']) && is_array($indexes) && !empty($search_data['keywords'])) {
+            if (!empty($joins) || (isset($search_data['keywords']) && is_array($indexes) && !empty($search_data['keywords']))) {
                 if ($search_mode == 'fulltext') {
                     $fulltext_min_word_len = $GLOBALS['db']->getSearchWordLen();
                     $words = explode(' ', $search_data['keywords']);
@@ -2314,7 +2330,7 @@ class Catalogue
                     if (key($order) == "price") {
                         if ($GLOBALS['config']->get('config', 'catalogue_sale_mode') == '1') {
                             $order_string = 'ORDER BY I.sale_price '.current($order);
-                        } elseif ($GLOBALS['config']->get('config', 'catalogue_sale_mode') == '2' && $GLOBALS['config']->get('config', 'catalogue_sale_percentage'>0)) {
+                        } elseif ($GLOBALS['config']->get('config', 'catalogue_sale_mode') == '2' && $GLOBALS['config']->get('config', 'catalogue_sale_percentage') > 0) {
                             $order_string = 'ORDER BY (I.price - (I.price / 100) * '.$GLOBALS['config']->get('config', 'catalogue_sale_percentage').') '.current($order);
                         }
                         $_GET['sort']['price'] = current($order);
