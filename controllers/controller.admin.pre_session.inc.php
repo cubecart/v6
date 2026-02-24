@@ -13,7 +13,6 @@
 if (!defined('CC_INI_SET')) {
     die('Access Denied');
 }
-global $glob;
 define('ADMIN_CP', true);
 // Initialize Cache
 $GLOBALS['cache'] = Cache::getInstance();

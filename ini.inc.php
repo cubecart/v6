@@ -122,7 +122,6 @@ if (!strstr($_SERVER['SCRIPT_NAME'], '/setup/')) {
     }
     if (file_exists(CC_INCLUDES_DIR.'global.inc.php')) {
         require CC_INCLUDES_DIR.'global.inc.php';
-        global $glob;
         ## Lets check that the installed flag has been set
         if (!$glob['installed'] || !isset($glob['dbdatabase'])) {
             header('Location: setup/index.php');
