@@ -798,30 +798,31 @@ class Database_Contoller
     public function sqldumptable($file_name, $tableData, $dropTables = false, $incStructure = true, $incRows = true, $maxRows = 50, $page = 1)
     {
         $fp = fopen($file_name, 'a+');
-        $tabledump = '';
-        if ($dropTables && $page===1) {
+        if ($dropTables) {
             fwrite($fp, "-- --------------------------------------------------------\n\nDROP TABLE IF EXISTS `".$tableData['Name']."`; #EOQ\n\n");
         }
-        if ($incStructure && $page===1) {
+        if ($incStructure) {
             $schema	= $this->query('SHOW CREATE TABLE `'.$tableData['Name'].'`');
             fwrite($fp, "-- --------------------------------------------------------\n\n-- \n-- Table structure for table `".$tableData['Name']."`\n--\n\n");
             fwrite($fp, $schema[0]['Create Table']);
             fwrite($fp, "; #EOQ\n\n");
         }
         if ($incRows) {
-            ## get data
-            $limit = $page>0 ? "LIMIT $maxRows OFFSET ".($page - 1) * $maxRows : "LIMIT $maxRows";
+            $hasData = false;
+            while (true) {
+                $offset = ($page - 1) * $maxRows;
+                $this->_query = "SELECT * FROM `".$tableData['Name']."` LIMIT $maxRows OFFSET $offset";
+                $this->_execute(false);
 
-            $this->_query = "SELECT * FROM `".$tableData['Name']."` ".$limit;
-            $this->_execute(false);
-            
-            if ($this->_result) {
-                if ($page===1) {
+                if (!$this->_result) {
+                    break;
+                }
+                if ($page === 1) {
                     fwrite($fp, "--\n-- Dumping data for table `".$tableData['Name']."`\n--\n\n");
                 }
+                $hasData = true;
                 foreach ($this->_result as $row) {
                     fwrite($fp, "INSERT INTO `".$tableData['Name']."` VALUES(");
-                    ## get each field's data
                     $comma = false;
                     foreach ($row as $key => $value) {
                         fwrite($fp, $comma ? ', ' : '');
@@ -830,14 +831,13 @@ class Database_Contoller
                     }
                     fwrite($fp, "); #EOQ\n");
                 }
-                fclose($fp);
                 $page++;
-                $this->sqldumptable($file_name, $tableData, $dropTables, $incStructure, $incRows, $maxRows, $page);
-            } elseif ($page===1) {
+            }
+            if (!$hasData) {
                 fwrite($fp, "-- Table `".$tableData['Name']."` has no data\n\n");
-                fclose($fp);
             }
         }
+        fclose($fp);
         return false;
     }
 

@@ -582,8 +582,10 @@ if (isset($_POST['backup'])) {
 
     // Prevent user stopping process
     ignore_user_abort(true);
-    // Set max execution time to three minutes
-    set_time_limit(180);
+    // Allow up to 1 hour — large databases can take several minutes.
+    // Note: web-server level timeouts (nginx fastcgi_read_timeout, PHP-FPM
+    // request_terminate_timeout) are not affected and may also need raising.
+    set_time_limit(3600);
 
     if (!$_POST['drop'] && !$_POST['structure'] && !$_POST['data']) {
         $GLOBALS['main']->errorMessage($lang['maintain']['error_db_backup_option']);
@@ -597,6 +599,24 @@ if (isset($_POST['backup'])) {
             if (file_exists($fileName)) { // Keep file pointer at the start
                 unlink($fileName);
             }
+
+            // Detect a PHP execution timeout (E_ERROR fatal) in the shutdown handler.
+            register_shutdown_function(function () use ($fileName) {
+                $error = error_get_last();
+                if ($error && $error['type'] === E_ERROR && strpos($error['message'], 'Maximum execution time') !== false) {
+                    if (file_exists($fileName)) {
+                        unlink($fileName);
+                    }
+                    if (file_exists($fileName.'.zip')) {
+                        unlink($fileName.'.zip');
+                    }
+                    if (isset($GLOBALS['main']) && is_object($GLOBALS['main'])) {
+                        $GLOBALS['main']->errorMessage('Database backup timed out. Try excluding 3rd-party tables or ask your host to raise the server execution timeout.');
+                        session_write_close();
+                    }
+                }
+            });
+
             $all_tables = (isset($_POST['db_3rdparty']) && $_POST['db_3rdparty'] == '1') ? true : false;
             $write = $GLOBALS['db']->doSQLBackup($_POST['drop'], $_POST['structure'], $_POST['data'], $fileName, $_POST['compress'], $all_tables);
             if ($write) {
