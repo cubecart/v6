@@ -20,9 +20,6 @@ ini_set('display_errors', false);
 
 /************* CUSTOMISED PHP.INI SETTINGS *************/
 
-// This ensures that everyone has the correct php.ini options running
-ini_set('magic_quotes_runtime', false);
-ini_set('short_open_tag', false);   // Disable '<?' style php short tags for xml happiness
 ini_set('arg_separator.output', '&'); // Set argument separator to & HTML validity
 ini_set('default_charset', 'UTF-8');  // Set default charset as 'UTF-8'
 ini_set('default_mimetype', 'text/html'); // Set default mimetype as 'text/html'
@@ -81,18 +78,17 @@ $script_path = trim(dirname($script_name));
 $script_path = str_replace('\\', '/', $script_path);
 $script_path = preg_replace('#[\\\\/]{2,}#', '/', $script_path);
 $url = 'https://'.$server_name.$script_path;
-$url = htmlspecialchars(html_entity_decode($url));
 // Remove index.php/anything
 if (strstr($url, '/index.php')) {
     $url = substr($url, 0, strpos($url, '/index.php'));
 }
 
 // Set min value for script path as /
-if (substr($script_path, -1) != '/' && substr($script_path, -1) != '\\') {
+if (substr($script_path, -1) != '/') {
     $script_path .= '/';
 }
 
-if (substr($url, -1) == '/' || substr($url, -1) == '\\') {
+if (substr($url, -1) == '/') {
     $url = substr($url, 0, -1);
 }
 
@@ -101,15 +97,13 @@ if (file_exists(CC_ROOT_DIR.'/ssl-custom.inc.php')) {
     include CC_ROOT_DIR.'/ssl-custom.inc.php';
 } else {
     ## Detect if SSL is enabled
-    if (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS'])!== 'off' && ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == true) || $_SERVER['SERVER_PORT'] == 443) {
+    if (
+        (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off')
+        || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443)
+        || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')
+        || (isset($_SERVER['HTTP_CF_VISITOR']) && strpos($_SERVER['HTTP_CF_VISITOR'], 'https') !== false)
+    ) {
         define('CC_SSL', true);
-    } else if (isset($_SERVER['HTTP_CF_VISITOR'])) { // Cloudflair specific
-        $cf_visitor = json_decode($_SERVER['HTTP_CF_VISITOR']);
-        if (isset($cf_visitor->scheme) && $cf_visitor->scheme == 'https') {
-            define('CC_SSL', true);
-        } else {
-            define('CC_SSL', false);   
-        }
     } else {
         define('CC_SSL', false);
     }
@@ -141,17 +135,8 @@ if (!strstr($_SERVER['SCRIPT_NAME'], '/setup/')) {
     }
 }
 
-// Use specified values if set although this shouldn't be needed
-if (isset($glob['storeURL']) && !empty($glob['storeURL'])) {
-    define('CC_STORE_URL', $glob['storeURL']);
-} else {
-    define('CC_STORE_URL', $url);
-}
-if (isset($glob['rootRel']) && !empty($glob['rootRel'])) {
-    define('CC_ROOT_REL', $glob['rootRel']);
-} else {
-    define('CC_ROOT_REL', $script_path);
-}
+define('CC_STORE_URL', $url);
+define('CC_ROOT_REL', $script_path);
 
 $GLOBALS['rootRel'] = CC_ROOT_REL;
 $GLOBALS['storeURL'] = CC_STORE_URL;
@@ -166,37 +151,4 @@ $config_default = array(
 // Include a custom ini file, if it exists
 if (file_exists(CC_ROOT_DIR.'/ini-custom.inc.php')) {
     include CC_ROOT_DIR.'/ini-custom.inc.php';
-}
-
-// v3 compatible links
-if (isset($_GET['act'])) {
-    switch ($_GET['act']) {
-    case "viewDoc":
-        header('Location: index.php?_a=document&doc_id='.(int)$_GET['docId'],true,301);
-        break;
-    case "viewCat":
-        header('Location: index.php?_a=category&cat_id='.(int)$_GET['catId'],true,301);
-        break;
-    case "viewProd":
-        header('Location: index.php?_a=product&product_id='.(int)$_GET['productId'],true,301);
-        break;
-    }
-}
-
-// v4 compatible links
-if (isset($_GET['_a'])) {
-    switch ($_GET['_a']) {
-    case "viewDoc":
-        $_GET['_a'] = 'document';
-        $_GET['doc_id'] = (int)$_GET['docId'];
-        break;
-    case "viewCat":
-        $_GET['_a'] = 'category';
-        $_GET['cat_id'] = (int)$_GET['catId'];
-        break;
-    case "viewProd":
-        $_GET['_a'] = 'product';
-        $_GET['product_id'] = (int)$_GET['productId'];
-        break;
-    }
 }
