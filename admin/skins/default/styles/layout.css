@@ -2064,6 +2064,9 @@ ul.char_filter li.selected {}
 .list tbody > tr:hover,
 .reorder-list > div:hover,
 .reorder-list tbody > tr:hover { background: var(--rowHover); }
+textarea#query {
+  font-family: 'Courier New', Courier, monospace;
+}
 /* ===== DARK THEME OVERRIDES ===== */
 @media (prefers-color-scheme: dark) {
   .sidebar_content h4 {
@@ -2706,6 +2709,16 @@ ul.char_filter li.selected {}
   }
   #clear_cache_master.clear a:hover {
     color: #ffffff !important;
+  }
+  textarea#query {
+    background-color: var(--input-bg) !important;
+    border: 1px solid var(--input-border) !important;
+    color: var(--text) !important;
+  }
+  textarea#query:focus {
+    background-color: var(--input-bg-focus) !important;
+    border-color: var(--primary-accent) !important;
+    outline: none !important;
   }
   pre {
     background-color: var(--input-bg) !important;
