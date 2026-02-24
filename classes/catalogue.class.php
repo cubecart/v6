@@ -2166,7 +2166,7 @@ class Catalogue
             if (!empty($joins) || (isset($search_data['keywords']) && is_array($indexes) && !empty($search_data['keywords']))) {
                 if ($search_mode == 'fulltext') {
                     $fulltext_min_word_len = $GLOBALS['db']->getSearchWordLen();
-                    $words = explode(' ', $search_data['keywords']);
+                    $words = preg_split('/[\s,]+/', $search_data['keywords']);
                     if (is_array($words)) {
                         $longest_search_word_len = 0;
                         foreach ($words as $word) {

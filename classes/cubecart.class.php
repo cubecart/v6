@@ -836,7 +836,7 @@ class Cubecart
             $search = true;
             // Insert into search records
             if (isset($_REQUEST['search']['keywords'])) {
-                $keys = explode(' ', $_REQUEST['search']['keywords']);
+                $keys = preg_split('/[\s,]+/', $_REQUEST['search']['keywords']);
                 $terms = array();
                 if (is_array($keys)) {
                     foreach ($keys as $key) {
