@@ -48,14 +48,6 @@ default:
         httpredir(currentPage(array('redir')));
     }
 
-    $current_page = currentPage();
-    $ssl = array(
-        'url'   => preg_replace('#^https#', 'http', $current_page),
-        'icon'  => $GLOBALS['config']->get('config', 'adminFolder').'/skins/'.$GLOBALS['config']->get('config', 'admin_skin').'/images/ssl_true.png',
-        'state' => true
-    );
-    $GLOBALS['smarty']->assign('SSL', $ssl);
-
     if (isset($redir) && !empty($redir)) {
         $GLOBALS['smarty']->assign('REDIRECT_TO', $redir);
     }
