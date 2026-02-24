@@ -2066,6 +2066,9 @@ ul.char_filter li.selected {}
 .reorder-list tbody > tr:hover { background: var(--rowHover); }
 /* ===== DARK THEME OVERRIDES ===== */
 @media (prefers-color-scheme: dark) {
+  .sidebar_content h4 {
+    color: var(--text-muted) !important;
+  }
   .fa {
     color: #aab4be !important;
   }
