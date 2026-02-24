@@ -37,7 +37,11 @@ if ($legacy_rows) {
         }
 
         // Insert each first-level key as its own row
+        // Skip keys that belong in global.inc.php (file config overrides DB)
         foreach ($data as $key => $value) {
+            if ($name === 'config' && isset($glob[$key])) {
+                continue;
+            }
             $encoded_value = is_array($value) ? json_encode($value) : (string)$value;
             $db->insert('CubeCart_config', array(
                 'name'         => $name,
