@@ -39,7 +39,7 @@
 	        <strong>{$category.cat_id}</strong>
 	      </td>
 	      <td style="text-align:center">
-	        <a href="#" class="handle"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/updown.gif" title="{$LANG.ui.drag_reorder}"></a>
+	        <a href="#" class="handle"><i class="fa fa-sort" title="{$LANG.ui.drag_reorder}"></i></a>
 	        <input type="hidden" name="order[]" value="{$category.cat_id}">
 	      </td>
 	      <td style="text-align:center">

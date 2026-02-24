@@ -2066,6 +2066,15 @@ ul.char_filter li.selected {}
 .reorder-list tbody > tr:hover { background: var(--rowHover); }
 /* ===== DARK THEME OVERRIDES ===== */
 @media (prefers-color-scheme: dark) {
+  .fa {
+    color: #aab4be !important;
+  }
+  .fa-check,
+  .fa-plus-circle,
+  .fa-refresh,
+  .fa-user.registered {
+    color: #b5cc6a !important;
+  }
   :root {
     --bg: #0f1214;
     --panel: #171b1f;
@@ -2703,6 +2712,13 @@ ul.char_filter li.selected {}
   }
   #filemanager div div.folder {
     background-color: var(--panel-subtle) !important;
+  }
+  ul.filetree a {
+    color: var(--text) !important;
+  }
+  ul.filetree a:hover {
+    background: var(--primary) !important;
+    color: var(--text-invert) !important;
   }
   tfoot {
     border-top: 1px solid var(--border) !important;

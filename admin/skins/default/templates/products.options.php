@@ -27,7 +27,7 @@
             <tbody class="reorder-list">
                {foreach from=$GROUPS item=group}
                <tr style="white-space: nowrap;">
-                  <td style="text-align:center"><a href="#" class="handle"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/updown.gif" title="{$LANG.ui.drag_reorder}"></a>
+                  <td style="text-align:center"><a href="#" class="handle"><i class="fa fa-sort" title="{$LANG.ui.drag_reorder}"></i></a>
                      <input type="hidden" name="group_priority[]" value="{$group.id}">
                   </td>
                   <td style="text-align:center"><input type="hidden" name="edit_group[{$group.id}][option_required]" id="status_{$group.id}" value="{$group.required}" class="toggle"></td>
@@ -107,7 +107,7 @@
                <tbody class="reorder-list">
                   {foreach from=$group.options key=key item=option}
                   <tr>
-                     <td width="10"><a href="#" class="handle"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/updown.gif" title="{$LANG.ui.drag_reorder}"></a>
+                     <td width="10"><a href="#" class="handle"><i class="fa fa-sort" title="{$LANG.ui.drag_reorder}"></i></a>
                         <input type="hidden" name="attr_priority[]" value="{$key}">
                      </td>
                      <td><span class="editable" name="edit_attribute[{$key}][value_name]">{$option}</span></td>
