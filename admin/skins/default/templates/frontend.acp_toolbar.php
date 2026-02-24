@@ -92,9 +92,9 @@
 </style>
 <div class="acp_widget">
     <div class="close"><a href="#">&laquo;</a></div>
-    <a href="{$ACP_DATA.acp_path}" class="button">{$LANG.navigation.acp_home}</a>
+    <a href="{$ACP_DATA.acp_path}" class="button" target="acp_window">{$LANG.navigation.acp_home}</a>
     {if isset($ACP_DATA.edit_url)}<br>
-    <a href="{$ACP_DATA.edit_url}" class="button">{$ACP_DATA.url_text}</a>
+    <a href="{$ACP_DATA.edit_url}" class="button" target="acp_window">{$ACP_DATA.url_text}</a>
     {/if}
 </div>
 {/if}
