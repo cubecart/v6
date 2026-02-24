@@ -1199,7 +1199,8 @@ class Cart
                                             'shipping', 
                                             false
                                             ),
-                                            'position' => $module['position']  // Add this line
+                                            'position' => $module['position'],
+                                            'module_folder' => $module['folder']
                                         )
                                     );
 

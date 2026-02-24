@@ -1846,8 +1846,8 @@ class Cubecart
                             'value_inclusive' => $data['value_inclusive'],
                             'tax_id' 	=> $data['tax_id'], // Kept for legacy
                             'tax'		=> $data['tax'],
-                            'position'	=> $data['position']
-
+                            'position'	=> $data['position'],
+                            'module_folder' => $data['module_folder'] ?? $folder
                         );
                         $shipping_values[] = $value;
                         $data['name'] = empty($data['name']) ? '' : ' ('.$data['name'].')';
@@ -1995,7 +1995,14 @@ class Cubecart
             $GLOBALS['smarty']->assign('TOTAL', $GLOBALS['tax']->priceFormat($GLOBALS['cart']->getTotal()));
             $GLOBALS['smarty']->assign('CHECKOUT_BUTTON', $GLOBALS['language']->checkout['checkout']);
             if ($this->_basket['weight'] > 0) {
-                $GLOBALS['smarty']->assign('BASKET_WEIGHT', ($GLOBALS['config']->get('config', 'show_basket_weight')) ? (float)$this->_basket['weight'].strtolower($GLOBALS['config']->get('config', 'product_weight_unit')) : false);
+                $display_weight = (float)$this->_basket['weight'];
+                if (isset($this->_basket['shipping']['module_folder'])) {
+                    $ship_config = $GLOBALS['config']->get($this->_basket['shipping']['module_folder']);
+                    if (!empty($ship_config['packagingWeight'])) {
+                        $display_weight += (float)$ship_config['packagingWeight'];
+                    }
+                }
+                $GLOBALS['smarty']->assign('BASKET_WEIGHT', ($GLOBALS['config']->get('config', 'show_basket_weight')) ? $display_weight.strtolower($GLOBALS['config']->get('config', 'product_weight_unit')) : false);
             }
             $GLOBALS['smarty']->assign('USE_CREDIT', $this->_basket['use_credit'] ?? '0');
             $this->_listPaymentOptions($this->_basket['gateway']??'');
