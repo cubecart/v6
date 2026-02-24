@@ -807,6 +807,10 @@ if (isset($database_result) && $database_result) {
             'status' => 'KEY',
             'hide' => 'KEY'
         ),
+        'cubecart_category_discount' => array(
+            'id' => 'PRIMARY',
+            'cat_id' => 'KEY'
+        ),
         'cubecart_category_index' => array(
             'id' => 'PRIMARY',
             'cat_id' => 'KEY',
@@ -823,7 +827,8 @@ if (isset($database_result) && $database_result) {
             'enabled' => 'KEY'
         ),
         'cubecart_config' => array(
-            'name' => 'UNIQUE KEY'
+            'name' => 'UNIQUE KEY',
+            'config_key' => 'UNIQUE KEY'
         ),
         'cubecart_coupons' => array(
             'coupon_id' => 'PRIMARY',
@@ -856,11 +861,22 @@ if (isset($database_result) && $database_result) {
             'doc_home' => 'KEY',
             'doc_privacy' => 'KEY'
         ),
+        'cubecart_domains' => array(
+            'id' => 'PRIMARY',
+            'language' => 'KEY'
+        ),
         'cubecart_cookie_consent' => array(
             'id' => 'PRIMARY',
             'session_id' => 'KEY',
             'customer_id' => 'KEY',
-            'ip_address' => 'KEY'
+            'ip_address' => 'KEY',
+            'dialogue_id' => 'KEY'
+        ),
+        'cubecart_customer_coupon' => array(
+            'id' => 'PRIMARY',
+            'customer_id' => 'KEY',
+            'email' => 'KEY',
+            'coupon' => 'KEY'
         ),
         'cubecart_downloads' => array(
             'digital_id' => 'PRIMARY',
@@ -896,7 +912,9 @@ if (isset($database_result) && $database_result) {
         ),
         'cubecart_geo_zone' => array(
             'id' => 'PRIMARY',
-            'status' => 'KEY'
+            'status' => 'KEY',
+            'country_id' => 'UNIQUE KEY',
+            'abbrev' => 'UNIQUE KEY'
         ),
         'cubecart_history' => array(
             'id' => 'PRIMARY'
@@ -999,7 +1017,8 @@ if (isset($database_result) && $database_result) {
         ),
         'cubecart_order_history' => array(
             'history_id' => 'PRIMARY',
-            'cart_order_id' => 'KEY'
+            'cart_order_id' => 'KEY',
+            'status' => 'KEY'
         ),
         'cubecart_order_inventory' => array(
             'id' => 'PRIMARY',
@@ -1013,6 +1032,7 @@ if (isset($database_result) && $database_result) {
             'admin_id' => 'KEY',
             'cart_order_id' => 'KEY',
             'time' => 'KEY',
+            'print' => 'KEY',
             'content' => 'FULLTEXT'
         ),
         'cubecart_order_summary' => array(
