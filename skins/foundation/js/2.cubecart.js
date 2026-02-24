@@ -604,6 +604,7 @@ function init_add_to_basket() {
 function price_inc_options() {
     var action = $('form.add_to_basket').attr('action');
     var total = 0;
+    var total_original = 0;
     var ptp = parseFloat($('#ptp').attr("data-price"));
     var fbp = parseFloat($('#fbp').attr("data-price"));
     var parts = action.split("?");
@@ -612,21 +613,24 @@ function price_inc_options() {
 
     $("[name^=productOptions]").each(function () {
         if ($(this).is('input:radio') && $(this).is(':checked')) {
-            if ($(this).hasClass('absolute')) { total -= ptp; }
+            if ($(this).hasClass('absolute')) { total -= ptp; total_original -= fbp; }
             total += parseFloat($(this).attr("data-price"));
+            total_original += parseFloat($(this).attr("data-price-original") || $(this).attr("data-price"));
         } else if ($(this).is('select') && $(this).val()) {
-            if ($("option:selected", this).hasClass('absolute')) { total -= ptp; }
+            if ($("option:selected", this).hasClass('absolute')) { total -= ptp; total_original -= fbp; }
             total += parseFloat($(this).find("option:selected").attr("data-price"));
+            total_original += parseFloat($(this).find("option:selected").attr("data-price-original") || $(this).find("option:selected").attr("data-price"));
         } else if (($(this).is('textarea') || $(this).is('input:text')) && $(this).val() !== '') {
-            if ($(this).hasClass('absolute')) { total -= ptp; }
+            if ($(this).hasClass('absolute')) { total -= ptp; total_original -= fbp; }
             total += parseFloat($(this).attr("data-price"));
+            total_original += parseFloat($(this).attr("data-price-original") || $(this).attr("data-price"));
         }
     });
 
     ptp = ptp + total;
 
     if ($('#fbp').length > 0) {
-        fbp = fbp + total;
+        fbp = fbp + total_original;
         $.ajax({
             url: action + ptp + '&price[1]=' + fbp,
             cache: true,

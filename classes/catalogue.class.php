@@ -574,9 +574,11 @@ class Catalogue
                                 $decimal_price_sign = $value['option_negative'] ? '-' : '';
                                 $symbol = (isset($value['option_price']) && $value['option_price']!=0 && $value['option_negative'] == 0) ? '+' : '-';
 
+                                $original_price = isset($value['option_price_original']) ? $value['option_price_original'] : $value['option_price'];
                                 $option_list[$value['option_id']]['values'][] = array(
                                     'assign_id'      => $value['assign_id'],
                                     'decimal_price'  => ($value['option_price'] > 0 ? (string)$decimal_price_sign.$value['option_price'] : '0.00'),
+                                    'decimal_price_original' => ($original_price > 0 ? (string)$decimal_price_sign.$original_price : '0.00'),
                                     'price'          => (isset($value['option_price']) && $value['option_price']!=0) ? Tax::getInstance()->priceFormat($value['option_price'], true) : false,
                                     'symbol'         => ($value['absolute_price']=='1' && $symbol=='+') ? '' : $symbol,
                                     'value_id'       => $value['value_id'],
@@ -616,6 +618,7 @@ class Catalogue
                             }
 
                             $decimal_price_sign = $option[0]['option_negative'] ? '-' : '';
+                            $original_price = isset($option[0]['option_price_original']) ? $option[0]['option_price_original'] : $option[0]['option_price'];
 
                             $option_list[$option[0]['option_id']] = array(
                                 'type'               => $option[0]['option_type'],
@@ -626,6 +629,7 @@ class Catalogue
                                 'required'           => (bool)$option[0]['option_required'],
                                 'price'              => $price,
                                 'decimal_price'      => (string)$decimal_price_sign.$option[0]['option_price'],
+                                'decimal_price_original' => (string)$decimal_price_sign.$original_price,
                                 'symbol'             => ($option[0]['absolute_price']=='1' && $symbol=='+') ? '' : $symbol,
                                 'priority'           => $option['priority'],
                                 'value'              => $description,
@@ -1247,6 +1251,7 @@ class Catalogue
                                                     continue;
                                                 }
                                                 if ($sale_percent) {
+                                                    $assign['option_price_original'] = $assign['option_price'];
                                                     $assign['option_price'] = $assign['option_price'] - ($assign['option_price'] / 100) * $sale_percent;
                                                 }
                                                 $option_array[$group['option_type']][$value['option_id']][] = array_merge($group, $value, $assign);
@@ -1261,6 +1266,7 @@ class Catalogue
                                 // Text option
                                 if (($assigns = $GLOBALS['db']->select('CubeCart_option_assign', false, array('option_id' => $group['option_id'], 'product' => (int)$product_id))) !== false) {
                                     if ($sale_percent) {
+                                        $assigns[0]['option_price_original'] = $assigns[0]['option_price'];
                                         $assigns[0]['option_price'] = $assigns[0]['option_price'] - ($assigns[0]['option_price'] / 100) * $sale_percent;
                                     }
                                     $assign = $assigns[0];
@@ -1286,6 +1292,7 @@ class Catalogue
 
             foreach ($products as $assigned) {
                 if ($sale_percent) {
+                    $assigned['option_price_original'] = $assigned['option_price'];
                     $assigned['option_price'] = $assigned['option_price'] - ($assigned['option_price'] / 100) * $sale_percent;
                 }
 
