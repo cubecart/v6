@@ -342,9 +342,9 @@ class ElasticsearchHandler
                 ];
                 array_push($must, $price_range);
             }
-            //if(isset($search['inStock']) && $search['inStock']=='1') {
+            if(isset($search['inStock']) && $search['inStock']=='1') {
                 // (digital = 1 OR stock_level > 1)
-                $inStock = 
+                $inStock =
                 [
                     'bool' =>
                     [
@@ -370,7 +370,7 @@ class ElasticsearchHandler
                     ]
                 ];
                 array_push($must, $inStock);
-            //}
+            }
         }
         $this->_search_body = 
         [
@@ -425,10 +425,9 @@ class ElasticsearchHandler
      */
     public function search($from, $size) {
         $from = ($from-1)*$size;
-        $body = json_encode(array_merge(['from' => $from, 'size' => $size],$this->_search_body));
         $params = [
             'index' => $this->_index,
-            'body'  => $body
+            'body'  => array_merge(['from' => $from, 'size' => $size], $this->_search_body)
         ];
         try {
             $response = $this->_client->search($params);
@@ -602,6 +601,7 @@ class ElasticsearchHandler
      */
     private function _indexBody($product_id) {
         $product = $GLOBALS['catalogue']->getProductData($product_id);
+        if (empty($product)) return;
         $cat = $GLOBALS['db']->select('CubeCart_category_index', array('cat_id'), array('product_id' => $product['product_id'], 'primary' => 1));
         $seo = SEO::getInstance();
         $this->_index_body = array(
@@ -615,7 +615,7 @@ class ElasticsearchHandler
             'mpn'           => (string)$product['mpn'],
             'thumbnail'     => (string)$GLOBALS['gui']->getProductImage($product['product_id'], 'thumbnail', 'relative'),
             'description'   => (string)$this->_indexToPlainText($product['description']),
-            'category'      => (string)$seo->getDirectory((int)$cat[0]['cat_id'], false, ' ', false, false),
+            'category'      => !empty($cat) ? (string)$seo->getDirectory((int)$cat[0]['cat_id'], false, ' ', false, false) : '',
             'manufacturer'  => (string)$GLOBALS['catalogue']->getManufacturer($product['manufacturer']),
             'manufacturer_id'  => (int)$product['manufacturer'],
             'featured'      => (int)$product['featured'],
