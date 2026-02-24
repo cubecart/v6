@@ -2193,6 +2193,9 @@ textarea#query {
     border-color: var(--border) !important;
     color: var(--text-muted) !important;
   }
+  table.phrases td.actions {
+    background-color: transparent !important;
+  }
 
   /* Chosen.js — all hardcoded light colours overridden for dark mode */
   .chosen-container-single .chosen-single,
