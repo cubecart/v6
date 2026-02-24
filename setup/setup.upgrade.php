@@ -147,8 +147,8 @@ if (!isset($_SESSION['setup']['permissions'])) {
                 $config[] = sprintf("\$glob['%s'] = %s;", $key, $value);
             }
             $config = sprintf("<?php\n%s\n?>", implode("\n", $config));
-            ##�Backup existing config file, if it exists
-            if (file_exists($global_file)) {
+            ## Backup existing config file only if contents have changed
+            if (file_exists($global_file) && file_get_contents($global_file) !== $config) {
                 rename($global_file, $global_file.'-'.date('Ymdgi').'.php');
             }
             file_put_contents($global_file, $config);
@@ -178,8 +178,8 @@ if (!isset($_SESSION['setup']['permissions'])) {
                 $config[] = sprintf("\$glob['%s'] = %s;", $key, $value);
             }
             $config = sprintf("<?php\n%s\n?>", implode("\n", $config));
-            ##�Backup existing config file, if it exists
-            if (file_exists($global_file)) {
+            ## Backup existing config file only if contents have changed
+            if (file_exists($global_file) && file_get_contents($global_file) !== $config) {
                 rename($global_file, $global_file.'-'.date('Ymdgi').'.php');
             }
             file_put_contents($global_file, $config);
