@@ -229,7 +229,7 @@ class ElasticsearchHandler
      */
     public function getStats() {
         try {
-            $params = ['index',$this->_index];
+            $params = ['index' => $this->_index];
             $params['metric'] = '_all';
             $response = $this->_client->indices()->stats($params);
             $response = json_decode($response, true);
@@ -237,11 +237,13 @@ class ElasticsearchHandler
         } catch (Exception $e) {
             $error = $e->getMessage();
             $error = json_decode($error,true);
-            
-            if($error['error']['type'] == 'index_not_found_exception') {
-                $GLOBALS['gui']->setError('Elasticsearch has no indicies. Please rebuild.');    
+
+            if(isset($error['error']['type']) && $error['error']['type'] == 'index_not_found_exception') {
+                $GLOBALS['gui']->setError('Elasticsearch has no indices. Please rebuild.');
+            } elseif(isset($error['error']['reason'])) {
+                $GLOBALS['gui']->setError($error['error']['reason']);
             } else {
-                $GLOBALS['gui']->setError($error['error']['reason']); 
+                $GLOBALS['gui']->setError('Elasticsearch error: '.$e->getMessage());
             }
             return array('size' => '0b', 'count' => '0');
         } 
@@ -433,7 +435,6 @@ class ElasticsearchHandler
             return $response->getStatusCode() == 200 ? $response : false;
         } catch (Exception $e) {
             $this->_logError($e->getMessage());
-            die($e->getMessage());
             return false;
         }
     }
@@ -453,7 +454,7 @@ class ElasticsearchHandler
         $where = array('status' => 1);
         $total = (int)$GLOBALS['db']->count('CubeCart_inventory', 'status', $where);
         if($total==0 && $cycle==1) {
-            $GLOBALS['gui']->setError('No produts to index.');
+            $GLOBALS['gui']->setError('No products to index.');
         }
         if (($products = $GLOBALS['db']->select('CubeCart_inventory', array('product_id'), $where, false, $limit, $cycle)) !== false) {
             foreach ($products as $product) {
@@ -529,7 +530,7 @@ class ElasticsearchHandler
             'es_c' => $config['es_c'],
             'es_is' => $config['es_is']
         );
-        $fh = fopen($this->_config_file,"wa+");
+        $fh = fopen($this->_config_file,"w");
         fwrite($fh,json_encode($es_config));
         fclose($fh);
     }
@@ -569,7 +570,7 @@ class ElasticsearchHandler
             );
         } else {
             if(!empty($config)) { // Get config from $_POST of admin settings page
-                $this->_config = $es_config;
+                $this->_config = $config;
             } elseif(!empty($glob['es_h'])) { // Get config from globals.inc.php file if set
                 $es_config = array(
                     'es_h' => $glob['es_h'],
