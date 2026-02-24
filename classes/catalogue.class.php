@@ -2162,13 +2162,13 @@ class Catalogue
                 }
             }
 
+            $manufacturer_or = '';
             if(!isset($search_data['manufacturer']) && $manufacturers  = $GLOBALS['db']->select('CubeCart_manufacturers', array('id'), "`name` LIKE '%".$GLOBALS['db']->sqlSafe($search_data['keywords'])."%'")) {
                 $ids = array();
                 foreach($manufacturers as $manufacturer) {
-                    $ids[] = $manufacturer['id'];
+                    $ids[] = (int)$manufacturer['id'];
                 }
-                $manufacturers = implode(',',$ids);
-                $where[] = "AND `I`.`manufacturer` IN($manufacturers)";
+                $manufacturer_or = 'OR `I`.`manufacturer` IN('.implode(',',$ids).')';
             }
 
             $whereString = (isset($where) && is_array($where)) ? implode(' ', $where) : '';
@@ -2219,17 +2219,17 @@ class Catalogue
                     $match_val = '0.5';
 
                     if($pg) {
-                        $query_string = "SELECT I.*, %2\$s AS Relevance FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND (%2\$s) >= %4\$s %3\$s %5\$s %6\$s";
+                        $query_string = "SELECT I.*, %2\$s AS Relevance FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND ((%2\$s) >= %4\$s $manufacturer_or) %3\$s %5\$s %6\$s";
                     } else {
-                        $query_string = "SELECT I.*, %2\$s AS Relevance FROM %1\$sCubeCart_inventory AS I $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND (%2\$s) >= %4\$s %3\$s %5\$s %6\$s";
+                        $query_string = "SELECT I.*, %2\$s AS Relevance FROM %1\$sCubeCart_inventory AS I $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND ((%2\$s) >= %4\$s $manufacturer_or) %3\$s %5\$s %6\$s";
                     }
                     $query = sprintf($query_string, $GLOBALS['config']->get('config', 'dbprefix'), $match, $whereString, $match_val, $order_string, $limit);
             
                     if ($search = $GLOBALS['db']->query($query)) {
                         if($pg) {
-                            $query_string = "SELECT COUNT(I.product_id) as count, %2\$s AS Relevance FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND (%2\$s) >= %4\$s %3\$s GROUP BY I.product_id %5\$s";
+                            $query_string = "SELECT COUNT(I.product_id) as count, %2\$s AS Relevance FROM %1\$sCubeCart_inventory AS I LEFT JOIN (SELECT product_id, MAX(price) as price, MAX(sale_price) as sale_price FROM %1\$sCubeCart_pricing_group $group_id GROUP BY product_id) as G ON G.product_id = I.product_id $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND ((%2\$s) >= %4\$s $manufacturer_or) %3\$s GROUP BY I.product_id %5\$s";
                         } else {
-                            $query_string = "SELECT COUNT(I.product_id) as count, %2\$s AS Relevance FROM %1\$sCubeCart_inventory AS I $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND (%2\$s) >= %4\$s %3\$s GROUP BY I.product_id %5\$s";
+                            $query_string = "SELECT COUNT(I.product_id) as count, %2\$s AS Relevance FROM %1\$sCubeCart_inventory AS I $joinString WHERE I.product_id IN (SELECT product_id FROM `%1\$sCubeCart_category_index` as CI INNER JOIN %1\$sCubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 AND ((%2\$s) >= %4\$s $manufacturer_or) %3\$s GROUP BY I.product_id %5\$s";
                         }
                         $q2 = sprintf($query_string, $GLOBALS['config']->get('config', 'dbprefix'), $match, $whereString, $match_val, $order_string);
                         $count = $GLOBALS['db']->query($q2);
@@ -2312,7 +2312,7 @@ class Catalogue
                         $like[$i] = "(".implode(' OR ', $cq).")";
                     }
                   }
-                  $likeString = ' AND ('.implode(' OR ',$like).')';
+                  $likeString = ' AND ('.implode(' OR ',$like).' '.$manufacturer_or.')';
 
                   $q2 = "SELECT I.* FROM ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_inventory AS I".$pg_join.$joinString." WHERE I.product_id IN (SELECT product_id FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_category_index` as CI INNER JOIN ".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_category as C where CI.cat_id = C.cat_id AND C.status = 1) AND I.status = 1 ".$whereString.$likeString;
                     
