@@ -36,13 +36,14 @@ jQuery(document).ready(function ($) {
     // ACP widget toggle
     // -------------------------------
     function show_acp_widget(show, change) {
+        var method = change ? 'animate' : 'css';
         if ((show == 0 && change) || (show == 1 && !change)) {
             show = 1;
-            $('.acp_widget').css("left", "0");
+            $('.acp_widget')[method]({"left": "0"}, 300);
             $('.acp_widget .close a').html('&laquo;');
         } else {
             show = 0;
-            $('.acp_widget').css("left", "-123px");
+            $('.acp_widget')[method]({"left": "-123px"}, 300);
             $('.acp_widget .close a').html('&raquo;');
         }
         return show;
