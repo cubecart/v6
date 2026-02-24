@@ -14,12 +14,12 @@
   <email name="admin.password_recovery">
     <subject><![CDATA[Admin Password Recovery]]></subject>
     <content type="html"><![CDATA[<p>Dear {$DATA.name},</p>
-<p>To regain access to the stores administration control panel. Please follow the link below:</p>
+<p>To regain access to the store's administration control panel. Please follow the link below:</p>
 <p><a href="{$DATA.link}">{$DATA.link}</a></p>
 <p>If the link above doesn't work, please copy and paste it into your browser address bar.</p>]]></content>
     <content type="text"><![CDATA[Dear {$DATA.name},
 
-To regain access to the stores administration control panel. Please follow the link below:
+To regain access to the store's administration control panel. Please follow the link below:
 
 {$DATA.link}
 
@@ -202,14 +202,14 @@ We are very sorry but we have not been able to accept the payment for order {$DA
     <subject><![CDATA[Password Recovery]]></subject>
     <content type="html"><![CDATA[<p>Dear {$DATA.first_name|capitalize} {$DATA.last_name|capitalize},<br>
 <br>
-To reset your password, please click on the link below or copy and paste the address onto your web browser's address window. Once you're on the web page, you will be instructed to enter and confirm your new password.<br> 
+To reset your password, please click on the link below or copy and paste the address into your browser's address bar. Once you're on the web page, you will be instructed to enter and confirm your new password.<br> 
 <br>
 <a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br>
 <br>
 If you require further assistance in resetting your password, please contact us.</p>]]></content>
     <content type="text"><![CDATA[Hi {$DATA.first_name|capitalize},
 
-To reset your password, please click on the link below or copy and paste the address onto your web browser's address window. Once you're on the web page, you will be instructed to enter and confirm your new password.
+To reset your password, please click on the link below or copy and paste the address into your browser's address bar. Once you're on the web page, you will be instructed to enter and confirm your new password.
 
 {$DATA.reset_link}
 
@@ -357,10 +357,10 @@ Order Total: {$DATA.total}
   </email>
   <email name="admin.review_added">
     <subject><![CDATA[New Product Review]]></subject>
-    <content type="html"><![CDATA[{$DATA.name} has submit a new review/comment about '{$DATA.product_name}'. This can be moderated following the link below.
+    <content type="html"><![CDATA[{$DATA.name} has submitted a new review/comment about '{$DATA.product_name}'. This can be moderated following the link below.
         <p><strong>Moderation Link:</strong><br><a href='{$DATA.link}'>{$DATA.link}</a></p>
         <p><strong>Review Text:</strong><br>{$DATA.review}</p>]]></content>
-    <content type="text"><![CDATA[{$DATA.name} has submit a new review/comment about '{$DATA.product_name}'. This can be moderated following the link below.
+    <content type="text"><![CDATA[{$DATA.name} has submitted a new review/comment about '{$DATA.product_name}'. This can be moderated following the link below.
 
 Moderation Link:
 {$DATA.link}
@@ -370,23 +370,23 @@ Review Text:
   <email name="cart.digital_download">
     <subject><![CDATA[Your Purchased Downloads]]></subject>
     <content type="html"><![CDATA[<p>Hi {$DATA.first_name|capitalize},</p>
-<p>Your digital files are now ready for download. Please use the links provided below to access them below:</p>
+<p>Your digital files are now ready for download. Please use the links provided below to access them:</p>
 {foreach from=$DOWNLOADS item=download}
 <p><strong>{$download.name}:</strong> (Link expires on {$download.expire}<strong>)</strong><br>
 <a href="{$download.url}">{$download.url}</a></p>
 {/foreach}
-<p>If the links above don't work, please try copy and pasting them it into your browser address bar. You can also find access to these files from your the customer area of our website.</p> 
+<p>If the links above don't work, please try copy and pasting them into your browser address bar. You can also find access to these files from the customer area of our website.</p> 
 <p>&nbsp;</p>]]></content>
     <content type="text"><![CDATA[Hi {$DATA.first_name|capitalize},
 
-Your digital files are now ready for download. Please use the links provided below to access them below:
+Your digital files are now ready for download. Please use the links provided below to access them:
 
 {foreach from=$DOWNLOADS item=download}
 {$download.name}: (Link expires on {$download.expire})
 {$download.url}
 {/foreach}
 
-If the links above don't work, please try copy and pasting them it into your browser address bar. You can also find access to these files from your the customer area of our website.]]></content>
+If the links above don't work, please try copy and pasting them into your browser address bar. You can also find access to these files from the customer area of our website.]]></content>
   </email>
   <email name="cart.gift_certificate">
     <subject><![CDATA[Your Gift Card]]></subject>
@@ -397,7 +397,7 @@ If the links above don't work, please try copy and pasting them it into your bro
 <strong>Claim Code:</strong> {$DATA.code}<br>
 <strong>Gift Message:</strong> {$DATA.message}</p>
 <p>-------------------</p>
-<p>To redeem this gift card please enter the &quot;Claim Code&quot; above into the text field labeled &quot;Promotional code or gift card&quot; during checkout.</p>
+<p>To redeem this gift card please enter the &quot;Claim Code&quot; above into the text field labelled &quot;Promotional code or gift card&quot; during checkout.</p>
 <p>Why not spend it now?</p>]]></content>
     <content type="text"><![CDATA[Dear {$DATA.name},
 
@@ -412,7 +412,7 @@ Gift Message: {$DATA.message}
 
 -------------------
 
-To redeem this gift card please enter the "Claim Code" above into the text field labeled "Promotional code or gift card" during checkout.
+To redeem this gift card please enter the "Claim Code" above into the text field labelled "Promotional code or gift card" during checkout.
 
 Why not spend it now?]]></content>
   </email>
@@ -449,8 +449,8 @@ Thank you. We have received a payment of {$DATA.total} for order number {$DATA.c
   </email>
   <email name="newsletter.remove_request">
     <subject><![CDATA[Confirm Newsletter Removal]]></subject>
-    <content type="html"><![CDATA[<p>Someone has requested that <strong>{$DATA.email}</strong> is to be unsubscribed from our mailing list. If you did requst this action please confirm using the link below.</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
-    <content type="text"><![CDATA[Someone has requested that {$DATA.email} is to be unsubscribed from our mailing list. If you did requst this action please confirm using the link below.
+    <content type="html"><![CDATA[<p>Someone has requested that <strong>{$DATA.email}</strong> is to be unsubscribed from our mailing list. If you did request this action please confirm using the link below.</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+    <content type="text"><![CDATA[Someone has requested that {$DATA.email} is to be unsubscribed from our mailing list. If you did request this action please confirm using the link below.
     
 {$DATA.link}
 ]]></content>
