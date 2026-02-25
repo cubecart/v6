@@ -35,6 +35,7 @@ Sanitize::checkToken();
 // Initialize Smarty
 $GLOBALS['smarty'] = new Smarty();
 $GLOBALS['smarty']->muteUndefinedOrNullWarnings();
+$GLOBALS['smarty']->registerPlugin('modifier', 'html_entity_decode', 'html_entity_decode');
 $GLOBALS['smarty']->error_reporting = E_ALL & ~E_NOTICE & ~E_WARNING;
 $GLOBALS['smarty']->compile_dir  = CC_SKIN_CACHE_DIR;
 $GLOBALS['smarty']->config_dir  = CC_SKIN_CACHE_DIR;
