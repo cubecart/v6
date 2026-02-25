@@ -2061,6 +2061,12 @@ This email is sent from the store's master email address but it is possible to r
     <string name="install_extension" introduced="6.5.10"><![CDATA[Install / Upgrade Extension]]></string>
     <string name="captcha_warning" introduced="6.5.7"><![CDATA[The following bot protection service providers are not compatible with your current skin:]]></string>
     <string name="customer_group_discounts" introduced="6.5.4"><![CDATA[Customer Group Discounts]]></string>
+    <string name="access_control" introduced="6.6.0"><![CDATA[Access Control]]></string>
+    <string name="restrict_to_groups" introduced="6.6.0"><![CDATA[Restrict to Customer Groups]]></string>
+    <string name="access_control_help" introduced="6.6.0"><![CDATA[Select which customer groups can access this category. Leave all unchecked for unrestricted access. Child categories inherit restrictions from their parent unless overridden.]]></string>
+    <string name="guest_access" introduced="6.6.0"><![CDATA[Guest Access]]></string>
+    <string name="guest_access_label" introduced="6.6.0"><![CDATA[Allow guest visitors]]></string>
+    <string name="guest_access_help" introduced="6.6.0"><![CDATA[When group restrictions are set above, this controls whether visitors who are not logged in can still see this category.]]></string>
     <string name="currency_adjustment" introduced="6.5.4"><![CDATA[Percentage Adjustment]]></string>
     <string name="404_desc" introduced="6.5.2"><![CDATA[The table below shows 404 (not found) page requests for the last 90 days. These can be fixed by creating a redirect to the current, correct page in the "Redirects" tab. Once created, it is possible to toggle its status in the "Done" column. A warning triangle may show for a 404 that is marked as done, but subsequent page requests have continued to fail.]]></string>
     <string name="ignored_uris" introduced="6.5.2"><![CDATA[Ignored]]></string>

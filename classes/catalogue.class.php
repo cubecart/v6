@@ -27,6 +27,7 @@ class Catalogue
     private $_productHash = array();
     private $_pathElements;
     private $_category_translations = array();
+    private $_category_access_cache = array();
     private $_option_required = false;
     private $_options_line_price = 0;
     private $_sort_by_relevance = false;
@@ -720,6 +721,9 @@ class Catalogue
             if (($subcats = $GLOBALS['db']->select('CubeCart_category', false, array('cat_parent_id' => $category_id, 'status' => '1', 'hide' => '0'), array('priority'=>'ASC'))) !== false) {
                 $return = array();
                 foreach ($subcats as $cat) {
+                    if (!$this->categoryAccessAllowed($cat['cat_id'])) {
+                        continue;
+                    }
                     // Translate
                     $GLOBALS['language']->translateCategory($cat);
                     $products = $this->productCount($cat['cat_id']);
@@ -769,6 +773,9 @@ class Catalogue
     public function getCategoryData($category_id)
     {
         if (($result = $GLOBALS['db']->select('CubeCart_category', false, array('cat_id' => $category_id, 'status' => 1))) !== false) {
+            if (!$this->categoryAccessAllowed($category_id)) {
+                return false;
+            }
             $GLOBALS['language']->translateCategory($result[0]);
             $this->_categoryData = $result[0];
             return $this->_categoryData;
@@ -865,6 +872,9 @@ class Catalogue
             }
 
             foreach ($categories as $category) {
+                if (!$this->categoryAccessAllowed($category['cat_id'])) {
+                    continue;
+                }
                 $sql = 'SELECT C.`product_id`, I.`use_stock_level` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_category_index` AS C INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_inventory` AS I ON I.`product_id` = C.`product_id` WHERE C.cat_id = '.$category['cat_id'].' AND I.status = 1';
                 $available_products = $GLOBALS['db']->misc($sql);
 
@@ -925,6 +935,88 @@ class Catalogue
             }
         }
         return (isset($tree_data)) ? $tree_data : false;
+    }
+
+    /**
+     * Check if the current visitor is allowed to access a category
+     *
+     * @param int $cat_id
+     * @return bool
+     */
+    public function categoryAccessAllowed($cat_id)
+    {
+        if (CC_IN_ADMIN) {
+            return true;
+        }
+
+        $cat_id = (int)$cat_id;
+        if (isset($this->_category_access_cache[$cat_id])) {
+            return $this->_category_access_cache[$cat_id];
+        }
+
+        $restrictions = $this->_getCategoryRestrictions($cat_id);
+
+        // No restrictions found (including ancestors) — unrestricted
+        if ($restrictions === null) {
+            $this->_category_access_cache[$cat_id] = true;
+            return true;
+        }
+
+        // Check logged-in user's group memberships
+        if (isset($GLOBALS['user']) && $GLOBALS['user']->is()) {
+            $memberships = $GLOBALS['user']->getMemberships();
+            if ($memberships) {
+                foreach ($memberships as $membership) {
+                    if (in_array((int)$membership['group_id'], $restrictions['groups'])) {
+                        $this->_category_access_cache[$cat_id] = true;
+                        return true;
+                    }
+                }
+            }
+            $this->_category_access_cache[$cat_id] = false;
+            return false;
+        }
+
+        // Guest — check guest_access flag
+        $allowed = (bool)$restrictions['guest_access'];
+        $this->_category_access_cache[$cat_id] = $allowed;
+        return $allowed;
+    }
+
+    /**
+     * Get group restrictions for a category, walking up the parent chain (inheritance)
+     *
+     * @param int $cat_id
+     * @return array|null  null if unrestricted, otherwise ['groups' => [...], 'guest_access' => 0|1]
+     */
+    private function _getCategoryRestrictions($cat_id)
+    {
+        $visited = array();
+        $current = (int)$cat_id;
+
+        while ($current > 0 && !isset($visited[$current])) {
+            $visited[$current] = true;
+
+            $groups = $GLOBALS['db']->select('CubeCart_category_group', array('group_id'), array('cat_id' => $current));
+            if ($groups) {
+                $group_ids = array();
+                foreach ($groups as $g) {
+                    $group_ids[] = (int)$g['group_id'];
+                }
+                $cat = $GLOBALS['db']->select('CubeCart_category', array('guest_access'), array('cat_id' => $current));
+                $guest_access = ($cat) ? (int)$cat[0]['guest_access'] : 1;
+                return array('groups' => $group_ids, 'guest_access' => $guest_access);
+            }
+
+            // No restrictions on this category — walk up to parent
+            $parent = $GLOBALS['db']->select('CubeCart_category', array('cat_parent_id'), array('cat_id' => $current));
+            if (!$parent || (int)$parent[0]['cat_parent_id'] === 0) {
+                break;
+            }
+            $current = (int)$parent[0]['cat_parent_id'];
+        }
+
+        return null;
     }
 
     /**

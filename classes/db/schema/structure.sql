@@ -159,6 +159,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_category` (
 	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
 	`cat_hier_position` int NOT NULL DEFAULT '0',
 	`cat_parse` tinyint(1) unsigned NOT NULL DEFAULT '0',
+	`guest_access` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
 	PRIMARY KEY (`cat_id`),
 	KEY `cat_parent_status_hide` (`cat_parent_id`, `status`, `hide`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
@@ -170,6 +171,14 @@ CREATE TABLE IF NOT EXISTS `CubeCart_category_discount` (
   `percent` decimal(5,2) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `cat_id` (`cat_id`,`group_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
+
+CREATE TABLE IF NOT EXISTS `CubeCart_category_group` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `cat_id` INT UNSIGNED NOT NULL,
+  `group_id` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `cat_group` (`cat_id`, `group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_category_index` (

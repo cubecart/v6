@@ -163,6 +163,23 @@
   <p>{$LANG.customer.no_customer_groups}</p>
   {/if}
   </div>
+  <div id="access_control" class="tab_content">
+  <h3>{$LANG.settings.access_control}</h3>
+  {if $ACCESS_GROUPS}
+  <fieldset><legend>{$LANG.settings.restrict_to_groups}</legend>
+	<p>{$LANG.settings.access_control_help}</p>
+	{foreach from=$ACCESS_GROUPS item=ag}
+	<div><label><input type="checkbox" name="group_access[]" value="{$ag.group_id}"{if $ag.checked} checked="checked"{/if}> {$ag.group_name}</label></div>
+	{/foreach}
+  </fieldset>
+  <fieldset><legend>{$LANG.settings.guest_access}</legend>
+	<div><label for="guest_access">{$LANG.settings.guest_access_label}</label><span><input type="hidden" name="cat[guest_access]" id="guest_access" value="{if isset($CATEGORY.guest_access)}{$CATEGORY.guest_access}{else}1{/if}" class="toggle"></span></div>
+	<p>{$LANG.settings.guest_access_help}</p>
+  </fieldset>
+  {else}
+  <p>{$LANG.customer.no_customer_groups}</p>
+  {/if}
+  </div>
 	{if isset($DISPLAY_SHIPPING)}
   <div id="cat_shipping" class="tab_content">
 	<h3>{$LANG.settings.title_shipping}</h3>

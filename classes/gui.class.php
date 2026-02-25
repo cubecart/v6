@@ -1265,7 +1265,22 @@ class GUI
             return false;
         }
 
-        $cache_id = 'html.'.$this->_skin.'.menu.'.$GLOBALS['language']->current();
+        // Include customer group in cache key so different groups see correct navigation
+        $group_key = 'guest';
+        if (isset($GLOBALS['user']) && $GLOBALS['user']->is()) {
+            $memberships = $GLOBALS['user']->getMemberships();
+            if ($memberships) {
+                $gids = array();
+                foreach ($memberships as $m) {
+                    $gids[] = (int)$m['group_id'];
+                }
+                sort($gids);
+                $group_key = implode(',', $gids);
+            } else {
+                $group_key = '0';
+            }
+        }
+        $cache_id = 'html.'.$this->_skin.'.menu.'.$GLOBALS['language']->current().'.'.$group_key;
         $serialize = false;
         if (($content = $GLOBALS['cache']->read($cache_id, $serialize)) == false) {
             

@@ -122,6 +122,14 @@ if (isset($_POST['cat']) && is_array($_POST['cat']) && Admin::getInstance()->per
 
     }
 
+    // Save group access restrictions
+    $GLOBALS['db']->delete('CubeCart_category_group', array('cat_id' => (int)$cat_id));
+    if (isset($_POST['group_access']) && is_array($_POST['group_access'])) {
+        foreach ($_POST['group_access'] as $group_id) {
+            $GLOBALS['db']->insert('CubeCart_category_group', array('cat_id' => (int)$cat_id, 'group_id' => (int)$group_id));
+        }
+    }
+
     foreach ($GLOBALS['hooks']->load('admin.category.save.post_process') as $hook) {
         include $hook;
     }
@@ -343,6 +351,27 @@ if (isset($_GET['action'])) {
         $GLOBALS['main']->addTabControl($lang['settings']['customer_group_discounts'], 'customer_group_discounts');
         $cg = $GLOBALS['db']->misc('SELECT `G`.`group_name`, `G`.`group_id`, `D`.`percent` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_customer_group` AS `G` LEFT JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_category_discount` AS `D` ON `D`.`group_id` = `G`.`group_id` GROUP BY `G`.`group_id`');
         $GLOBALS['smarty']->assign('CUSTOMER_GROUPS', $cg);
+
+        // Access Control tab
+        $GLOBALS['main']->addTabControl($lang['settings']['access_control'], 'access_control');
+        $access_groups = $GLOBALS['db']->select('CubeCart_customer_group', false, false, array('group_name' => 'ASC'));
+        if ($access_groups) {
+            $cat_id_for_access = (isset($_GET['cat_id']) && is_numeric($_GET['cat_id'])) ? (int)$_GET['cat_id'] : 0;
+            $allowed_groups = array();
+            if ($cat_id_for_access > 0) {
+                $existing = $GLOBALS['db']->select('CubeCart_category_group', array('group_id'), array('cat_id' => $cat_id_for_access));
+                if ($existing) {
+                    foreach ($existing as $eg) {
+                        $allowed_groups[] = (int)$eg['group_id'];
+                    }
+                }
+            }
+            foreach ($access_groups as &$ag) {
+                $ag['checked'] = in_array((int)$ag['group_id'], $allowed_groups);
+            }
+            unset($ag);
+            $GLOBALS['smarty']->assign('ACCESS_GROUPS', $access_groups);
+        }
         
         // Add shipping tab if shipping by category is enabled
         $ship_by_cat = $GLOBALS['config']->get('Per_Category');

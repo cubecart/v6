@@ -42,3 +42,14 @@ CREATE TABLE IF NOT EXISTS `CubeCart_config` (
 	`config_value` TEXT,
 	UNIQUE KEY `name_key` (`name`, `config_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
+
+-- Category access control by customer group
+CREATE TABLE IF NOT EXISTS `CubeCart_category_group` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `cat_id` INT UNSIGNED NOT NULL,
+  `group_id` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `cat_group` (`cat_id`, `group_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
+
+ALTER TABLE `CubeCart_category` ADD `guest_access` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1'; #EOQ
