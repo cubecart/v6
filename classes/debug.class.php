@@ -155,7 +155,7 @@ class Debug
 
     public function __destruct()
     {
-        if (!defined('CC_IN_SETUP') && $this->stream_into_session) {
+        if (!defined('CC_IN_SETUP') && $this->stream_into_session && Session::getInstance()->isStarted()) {
             // Read the existing spool, filter out any empty entries, then append
             // this request's output. Write back with overwrite=true to avoid
             // merge_array() clobbering earlier entries when the key already exists.

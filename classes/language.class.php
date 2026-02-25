@@ -110,9 +110,8 @@ class Language
         } else if (isset($GLOBALS['session'])) {
             //If the language is trying to be changed try to change it
             if (((isset($_POST['set_language']) && ($switch = $_POST['set_language']) || isset($_GET['set_language']) && ($switch = $_GET['set_language']))) && $this->_valid($switch)) {
-                $customer_id = (int)$GLOBALS['session']->getSessionTableData('customer_id');
-                if ($customer_id>0) {
-                    $GLOBALS['db']->update('CubeCart_customer', array('language' => $switch), array('customer_id' => $customer_id));
+                if (isset($GLOBALS['user']) && $GLOBALS['user']->is()) {
+                    $GLOBALS['db']->update('CubeCart_customer', array('language' => $switch), array('customer_id' => $GLOBALS['user']->get('customer_id')));
                 }
                 $GLOBALS['session']->set('language', $switch, 'client');
                 httpredir(currentPage(array('set_language')));

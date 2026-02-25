@@ -827,7 +827,9 @@ class GUI
                     }
                 }
             }
-            $GLOBALS['session']->set('', $recaptcha, 'recaptcha');
+            if (!empty($_POST)) {
+                $GLOBALS['session']->set('', $recaptcha, 'recaptcha');
+            }
         } elseif (!$GLOBALS['session']->get('confirmed', 'recaptcha')) {
             $GLOBALS['session']->delete('', 'recaptcha');
         }

@@ -68,6 +68,38 @@ class Session
      * @var bool
      */
     private $_user_blocked	= false;
+    /**
+     * Whether the PHP session has been started
+     *
+     * @var bool
+     */
+    private $_started = false;
+    /**
+     * Computed session cookie name (CCS_XXXX)
+     *
+     * @var string
+     */
+    private $_session_cookie_name = '';
+    /**
+     * In-flight cookie preference cache
+     *
+     * @var array
+     */
+    private $_cookie_cache = array();
+
+    /**
+     * Cookie-backed preference keys: namespace => array(name => cookie_name)
+     *
+     * @var array
+     */
+    private static $_cookie_prefs = array(
+        'client' => array(
+            'currency' => 'CCP_currency',
+            'language' => 'CCP_language',
+            'skin'     => 'CCP_skin',
+            'style'    => 'CCP_style',
+        ),
+    );
 
     const BLOCKER_FRONTEND	= 'F';
     const BLOCKER_BACKEND	= 'B';
@@ -78,7 +110,7 @@ class Session
      * @var instance
      */
     private static $_instance;
-    
+
     /**
      * Current session data
      *
@@ -94,12 +126,13 @@ class Session
             $this->_token_name = 'token_acp';
         }
 
-        if (session_id()) {
+        if (session_status() === PHP_SESSION_ACTIVE) {
             session_unset();
             session_destroy();
+            session_write_close();
             $_SESSION = array();
         }
-        
+
         //Get all the ini settings to save time later
         $ini = ini_get_all(null, false);
         if (!empty($GLOBALS['glob']['session_save_handler'])) {
@@ -169,24 +202,23 @@ class Session
             // make sure session cookies are http ONLY!
             ini_set('session.cookie_httponly', true);
         }
-        
+
         // make sure session cookies are samesite
         ini_set('session.cookie_samesite', 'None');
-    
+
         // make sure session cookies are secure
         ini_set('session.cookie_secure', true);
-        
-        $this->_start();
-        $this->_validate();
 
-        // Extend session to 7 days for logged-in customers/admins
-        if (!empty($this->session_data['customer_id']) || !empty($this->session_data['admin_id'])) {
-            $this->_session_timeout = 604800; // 7 days
-            ini_set('session.gc_maxlifetime', $this->_session_timeout);
-            $this->set_cookie(session_name(), session_id(), time() + $this->_session_timeout);
+        // Compute the session cookie name for lazy start detection
+        $this->_session_cookie_name = 'CCS_'.strtoupper(substr(md5(CC_ROOT_DIR), 0, 10));
+
+        // Load cookie-backed preferences
+        $this->_loadCookiePrefs();
+
+        // Start session immediately if needed, otherwise defer
+        if ($this->_shouldStartImmediately()) {
+            $this->_ensureStarted();
         }
-
-        $this->_setTimers();
     }
 
     public function __destruct()
@@ -232,6 +264,8 @@ class Session
      */
     public function blocker($user, $user_id, $login = false, $location = false, $attempts = 5, $time = 600)
     {
+        $this->_ensureStarted();
+
         $now = time();
         // Access Log
         $record	= array(
@@ -272,7 +306,7 @@ class Session
                     $this->_user_blocked = true;
                 }
             } elseif (!$login) {
-                // Attempts remaining
+                // Attempts remaining
                 $record	= array(
                     'last_attempt'	=> $now,
                     'level'			=> ($blocked['last_attempt'] <= ($now - $time)) ? 1 : $blocked['level'] + 1,
@@ -285,7 +319,7 @@ class Session
                 $GLOBALS['db']->update('CubeCart_blocker', $record, array('block_id' => $blocked['block_id']));
             }
         } elseif (!$login) {
-            // Login failed - Create blacklist entry
+            // Login failed - Create blacklist entry
             $record	= array(
                 'level'			=> 1,
                 'last_attempt'	=> $now,
@@ -314,7 +348,7 @@ class Session
         }
         return ($this->get($this->_token_name) == $token);
     }
-     
+
     /**
      * Have cookied been accepted or not
      *
@@ -325,7 +359,7 @@ class Session
      */
     public function cookiesBlocked()
     {
-    
+
         // Check cookies exists for verified and if so return value
         if (isset($_COOKIE['accept_cookies']) && $_COOKIE['accept_cookies']=='false') {
             return false;
@@ -349,6 +383,19 @@ class Session
      */
     public function delete($name, $namespace = 'system')
     {
+        // Handle cookie-backed preferences
+        if ($this->_isCookiePref($name, $namespace)) {
+            $cookie = $this->_getCookieName($name, $namespace);
+            $this->set_cookie($cookie, '', time() - 42000, array('httponly' => false));
+            unset($this->_cookie_cache[$cookie]);
+            return true;
+        }
+
+        // Session-backed: ensure started
+        if (!$this->_started) {
+            return false;
+        }
+
         $namespace = $this->_namespace($namespace);
 
         //If the session isn't active we don't need to continue
@@ -385,6 +432,12 @@ class Session
             return true;
         }
 
+        // Nothing to destroy if session was never started
+        if (!$this->_started) {
+            $this->_state = 'destroyed';
+            return true;
+        }
+
         //Delete the session from the DB
         $GLOBALS['db']->delete('CubeCart_sessions', array('session_id' => $this->getId()), false);
         //Completely unset everything
@@ -416,6 +469,20 @@ class Session
      */
     public function get($name, $namespace = 'system', $default = false)
     {
+        // Check cookie-backed preferences first (no session needed)
+        if ($this->_isCookiePref($name, $namespace)) {
+            $cookie = $this->_getCookieName($name, $namespace);
+            if (isset($this->_cookie_cache[$cookie])) {
+                return $this->_cookie_cache[$cookie];
+            }
+            return $default;
+        }
+
+        // If session not started, return default
+        if (!$this->_started) {
+            return $default;
+        }
+
         $namespace = $this->_namespace($namespace);
 
         if ($this->_state != 'active' && $this->_state != 'expired') {
@@ -440,7 +507,7 @@ class Session
      */
     public function getId()
     {
-        if ($this->_state == 'destroyed') {
+        if ($this->_state == 'destroyed' || !$this->_started) {
             return null;
         }
 
@@ -454,7 +521,7 @@ class Session
      */
     public function getName()
     {
-        if ($this->_state == 'destroyed') {
+        if ($this->_state == 'destroyed' || !$this->_started) {
             return null;
         }
 
@@ -478,6 +545,8 @@ class Session
      */
     public function getSessionTableData($column = false)
     {
+        $this->_ensureStarted();
+
         $data = $GLOBALS['db']->select('CubeCart_sessions', $column, array('session_id' => $this->getId()), false, 1, false, false);
         if (is_array($data)) {
             if (count($data[0])==1 && is_string($column)) {
@@ -497,6 +566,14 @@ class Session
      */
     public function getToken($new = false)
     {
+        // If session not started and not forcing new, generate a stateless token
+        // The token will be properly session-backed once the session starts (e.g. on POST)
+        if (!$this->_started && !$new) {
+            return $this->_createToken();
+        }
+
+        $this->_ensureStarted();
+
         if ((($token = $this->get($this->_token_name)) === false) || $new) {
             $token = $this->_createToken();
             $this->set($this->_token_name, $token);
@@ -514,6 +591,17 @@ class Session
      */
     public function has($name, $namespace = 'system')
     {
+        // Check cookie-backed preferences first
+        if ($this->_isCookiePref($name, $namespace)) {
+            $cookie = $this->_getCookieName($name, $namespace);
+            return isset($this->_cookie_cache[$cookie]);
+        }
+
+        // If session not started, it doesn't have anything
+        if (!$this->_started) {
+            return false;
+        }
+
         $namespace = $this->_namespace($namespace);
 
         if ($this->_state != 'active') {
@@ -540,6 +628,12 @@ class Session
      */
     public function isEmpty($name, $namespace)
     {
+        // Check cookie-backed preferences
+        if ($this->_isCookiePref($name, $namespace)) {
+            $cookie = $this->_getCookieName($name, $namespace);
+            return !isset($this->_cookie_cache[$cookie]) || empty($this->_cookie_cache[$cookie]);
+        }
+
         //If the element isn't there then it is empty
         if (!$this->has($name, $namespace)) {
             return true;
@@ -550,7 +644,19 @@ class Session
         return empty($_SESSION[$namespace][$name]);
     }
 
+    /**
+     * Whether the PHP session has been started
+     *
+     * @return bool
+     */
+    public function isStarted()
+    {
+        return $this->_started;
+    }
+
     public function regenerateSessionId() {
+        $this->_ensureStarted();
+
         $old_session = $this->getId();
         session_regenerate_id();
         Database::getInstance()->update('CubeCart_sessions', array('session_id' => $this->getId()), array('session_id' => $old_session), false);
@@ -568,6 +674,22 @@ class Session
      */
     public function set($name, $value, $namespace = 'system', $overwrite = false)
     {
+        // Handle cookie-backed preferences
+        if ($this->_isCookiePref($name, $namespace)) {
+            $cookie = $this->_getCookieName($name, $namespace);
+            if (is_null($value)) {
+                $this->set_cookie($cookie, '', time() - 42000, array('httponly' => false));
+                unset($this->_cookie_cache[$cookie]);
+            } else {
+                $this->_cookie_cache[$cookie] = $value;
+                $this->set_cookie($cookie, $value, time() + 31536000, array('httponly' => false)); // 1 year
+            }
+            return true;
+        }
+
+        // Session-backed: ensure started
+        $this->_ensureStarted();
+
         $namespace = $this->_namespace($namespace);
         if ($this->_state != 'active') {
             return true;
@@ -614,7 +736,7 @@ class Session
             }
         }
     }
-    
+
     /**
      * Set cookie
      *
@@ -626,7 +748,7 @@ class Session
     public function set_cookie($name, $value, $expires = false, $options = array())
     {
         $params = session_get_cookie_params();
-        $params = array_merge($params, $options); // Allow overwrite for specific cookies    
+        $params = array_merge($params, $options); // Allow overwrite for specific cookies
 
         $date = new Datetime();
         $date->setTimestamp($expires);
@@ -658,6 +780,12 @@ class Session
             return true;
         }
 
+        // Nothing to close if session was never started
+        if (!$this->_started) {
+            $this->_state = 'closed';
+            return true;
+        }
+
         $cp = str_replace($GLOBALS['storeURL'].'/','',currentPage());
 
         $record = array(
@@ -665,7 +793,7 @@ class Session
             'session_last'	=> $this->get('session_last', 'client', ''),
             'acp'		=> ADMIN_CP
         );
-        
+
         //Use the instance because the global might be gone already
         Database::getInstance()->update('CubeCart_sessions', $record, array('session_id' => $this->getId()), false);
         if (executionChance(2)) {  // 2% probability
@@ -693,6 +821,44 @@ class Session
     }
 
     /**
+     * Ensure the PHP session is started. No-op if already started.
+     */
+    private function _ensureStarted()
+    {
+        if ($this->_started) {
+            return;
+        }
+
+        $this->_started = true; // Set before _start/_validate to prevent re-entry
+        $this->_start();
+        $this->_validate();
+
+        // Extend session to 7 days for logged-in customers/admins
+        if (!empty($this->session_data['customer_id']) || !empty($this->session_data['admin_id'])) {
+            $this->_session_timeout = 604800; // 7 days
+            ini_set('session.gc_maxlifetime', $this->_session_timeout);
+            $this->set_cookie(session_name(), session_id(), time() + $this->_session_timeout);
+        }
+
+        $this->_setTimers();
+    }
+
+    /**
+     * Get the cookie name for a cookie-backed preference
+     *
+     * @param string $name
+     * @param string $namespace
+     * @return string|null
+     */
+    private function _getCookieName($name, $namespace)
+    {
+        if (isset(self::$_cookie_prefs[$namespace][$name])) {
+            return self::$_cookie_prefs[$namespace][$name];
+        }
+        return null;
+    }
+
+    /**
      * User agent
      *
      * @return string
@@ -700,6 +866,32 @@ class Session
     private function _http_user_agent()
     {
         return strpos(($_SERVER['HTTP_USER_AGENT'] ?? "Not Available"), 'Trident') ? 'IEX' : htmlspecialchars($_SERVER['HTTP_USER_AGENT'] ?? "Not Available");
+    }
+
+    /**
+     * Check if a key is a cookie-backed preference
+     *
+     * @param string $name
+     * @param string $namespace
+     * @return bool
+     */
+    private function _isCookiePref($name, $namespace)
+    {
+        return !empty($name) && isset(self::$_cookie_prefs[$namespace][$name]);
+    }
+
+    /**
+     * Load cookie-backed preferences from $_COOKIE into cache
+     */
+    private function _loadCookiePrefs()
+    {
+        foreach (self::$_cookie_prefs as $ns => $keys) {
+            foreach ($keys as $name => $cookie_name) {
+                if (isset($_COOKIE[$cookie_name]) && $_COOKIE[$cookie_name] !== '') {
+                    $this->_cookie_cache[$cookie_name] = $_COOKIE[$cookie_name];
+                }
+            }
+        }
     }
 
     /**
@@ -733,14 +925,32 @@ class Session
     }
 
     /**
+     * Check if the session should start immediately
+     *
+     * @return bool
+     */
+    private function _shouldStartImmediately()
+    {
+        // Admin always needs a session
+        if (CC_IN_ADMIN) {
+            return true;
+        }
+        // Returning visitor with an existing session cookie
+        if (isset($_COOKIE[$this->_session_cookie_name])) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Start session
      */
     private function _start()
     {
         session_cache_limiter('nocache');
-        session_name('CCS_'.strtoupper(substr(md5(CC_ROOT_DIR), 0, 10)));
+        session_name($this->_session_cookie_name);
         session_start();
-        
+
         // Increase session length on each page load.
         if (isset($_COOKIE[session_name()])) {
             $this->set_cookie(session_name(), session_id(), time()+$this->_session_timeout);
