@@ -75,11 +75,11 @@ class Session
      */
     private $_started = false;
     /**
-     * Computed session cookie name (CCS_XXXX)
+     * Session cookie name (cc_session)
      *
      * @var string
      */
-    private $_session_cookie_name = '';
+    private $_session_cookie_name = 'cc_session';
     /**
      * In-flight cookie preference cache
      *
@@ -94,10 +94,10 @@ class Session
      */
     private static $_cookie_prefs = array(
         'client' => array(
-            'currency' => 'CCP_currency',
-            'language' => 'CCP_language',
-            'skin'     => 'CCP_skin',
-            'style'    => 'CCP_style',
+            'currency' => 'cc_currency',
+            'language' => 'cc_language',
+            'skin'     => 'cc_skin',
+            'style'    => 'cc_style',
         ),
     );
 
@@ -208,9 +208,6 @@ class Session
 
         // make sure session cookies are secure
         ini_set('session.cookie_secure', true);
-
-        // Compute the session cookie name for lazy start detection
-        $this->_session_cookie_name = 'CCS_'.strtoupper(substr(md5(CC_ROOT_DIR), 0, 10));
 
         // Load cookie-backed preferences
         $this->_loadCookiePrefs();
