@@ -71,26 +71,10 @@ define('CC_LANGUAGE_DIR', CC_ROOT_DIR.'/language/');
 date_default_timezone_set('UTC');  // Set the default timezone for the scripts until the config gets loaded and overrides it
 
 // Automatically detect and assign the store url, and root relative path
-$server_name = (!empty($_SERVER['HTTP_HOST'])) ? strtolower($_SERVER['HTTP_HOST']) :  strtolower($_SERVER['SERVER_NAME']);
-$script_name = (isset($_SERVER['PHP_SELF']) && !empty($_SERVER['PHP_SELF'])) ? $_SERVER['PHP_SELF'] : $_SERVER['REQUEST_URI'];
-$script_name = preg_replace('/[^a-z0-9-_.~\/]/i', '', $script_name);
-$script_path = trim(dirname($script_name));
-$script_path = str_replace('\\', '/', $script_path);
-$script_path = preg_replace('#[\\\\/]{2,}#', '/', $script_path);
-$url = 'https://'.$server_name.$script_path;
-// Remove index.php/anything
-if (strstr($url, '/index.php')) {
-    $url = substr($url, 0, strpos($url, '/index.php'));
-}
-
-// Set min value for script path as /
-if (substr($script_path, -1) != '/') {
-    $script_path .= '/';
-}
-
-if (substr($url, -1) == '/') {
-    $url = substr($url, 0, -1);
-}
+$server_name = strtolower($_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME']);
+$script_name = preg_replace('/[^a-z0-9\-_.~\/]/i', '', $_SERVER['PHP_SELF'] ?? $_SERVER['REQUEST_URI']);
+$script_path = rtrim(str_replace('\\', '/', dirname($script_name)), '/') . '/';
+$url = 'https://' . $server_name . strtok($script_path, 'index.php');
 
 ## Force SSL Always
 if (file_exists(CC_ROOT_DIR.'/ssl-custom.inc.php')) {
