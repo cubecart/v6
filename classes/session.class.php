@@ -771,7 +771,9 @@ class Session
         $date->setTimestamp($expires);
         $attributes = '';
         $attributes .= ($expires !== false) ? ';Expires='.$date->format(DateTime::COOKIE) : '';
-        $attributes .= ';Domain='.$this->_session_domain;
+        if (!empty($this->_session_domain)) {
+            $attributes .= ';Domain='.$this->_session_domain;
+        }
         $attributes .= ';Path='.$this->_session_path;
         $attributes .= ';SameSite='.$params['samesite'];
         $attributes .= ';Secure';

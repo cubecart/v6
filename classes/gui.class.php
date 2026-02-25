@@ -178,7 +178,8 @@ class GUI
             if (!isset($_COOKIE['cc_browser'])) {
                 $ccb_path = $GLOBALS['session']->getCookiePath();
                 $ccb_domain = $GLOBALS['session']->getCookieDomain();
-                $body_js_top[] = '<script>document.cookie="cc_browser=1;Path='.$ccb_path.';Domain='.$ccb_domain.';SameSite=None;Secure;Max-Age=31536000";</script>';
+                $ccb_domain_attr = !empty($ccb_domain) ? ';Domain='.$ccb_domain : '';
+                $body_js_top[] = '<script>document.cookie="cc_browser=1;Path='.$ccb_path.$ccb_domain_attr.';SameSite=None;Secure;Max-Age=31536000";</script>';
             }
             $GLOBALS['smarty']->assign('BODY_JS_TOP', $body_js_top);
 
