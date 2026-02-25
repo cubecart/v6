@@ -756,413 +756,99 @@ $GLOBALS['main']->addTabControl($lang['maintain']['tab_query_sql'], 'general', '
 if (isset($database_result) && $database_result) {
     $GLOBALS['smarty']->assign('TABLES_AFTER', $database_result);
 } elseif (($tables = $GLOBALS['db']->getRows()) !== false) {
-    $index_map = array(
-        'cubecart_404_log' => array(
-            'id' => 'PRIMARY',
-            'uri' => 'UNIQUE KEY',
-            'ignore' => 'KEY',
-            'created' => 'KEY'
-        ),
-        'cubecart_access_log' => array(
-            'log_id' => 'PRIMARY',
-            'time' => 'KEY',
-            'type' => 'KEY'
-        ),
-        'cubecart_addressbook' => array(
-            'address_id' => 'PRIMARY',
-            'customer_id' => 'KEY',
-            'billing' => 'KEY',
-            'hash' => 'KEY',
-            'default' => 'KEY'
-        ),
-        'cubecart_admin_log' => array(
-            'log_id' => 'PRIMARY',
-            'admin_id' => 'KEY',
-            'time' => 'KEY'
-        ),
-        'cubecart_admin_error_log' => array(
-            'log_id' => 'PRIMARY',
-            'admin_id' => 'KEY'
-        ),
-        'cubecart_admin_users' => array(
-            'admin_id' => 'PRIMARY',
-            'username' => 'KEY',
-            'email' => 'KEY'
-        ),
-        'cubecart_alt_shipping' => array(
-            'id' => 'PRIMARY'
-        ),
-        'cubecart_alt_shipping_prices' => array(
-            'id' => 'PRIMARY'
-        ),
-        'cubecart_blocker' => array(
-            'block_id' => 'PRIMARY',
-            'location' => 'KEY',
-            'last_attempt' => 'KEY',
-            'username' => 'KEY'
-        ),
-        'cubecart_category' => array(
-            'cat_id' => 'PRIMARY',
-            'cat_parent_id' => 'KEY',
-            'status' => 'KEY',
-            'hide' => 'KEY'
-        ),
-        'cubecart_category_discount' => array(
-            'id' => 'PRIMARY',
-            'cat_id' => 'KEY'
-        ),
-        'cubecart_category_index' => array(
-            'id' => 'PRIMARY',
-            'cat_id' => 'KEY',
-            'product_id' => 'KEY'
-        ),
-        'cubecart_category_language' => array(
-            'translation_id' => 'PRIMARY',
-            'cat_id' => 'KEY'
-        ),
-        'cubecart_code_snippet' => array(
-            'snippet_id' => 'PRIMARY',
-            'unique_id' => 'UNIQUE KEY',
-            'hook_trigger' => 'KEY',
-            'enabled' => 'KEY'
-        ),
-        'cubecart_config' => array(
-            'name' => 'UNIQUE KEY',
-            'config_key' => 'UNIQUE KEY'
-        ),
-        'cubecart_coupons' => array(
-            'coupon_id' => 'PRIMARY',
-            'code' => 'UNIQUE KEY'
-        ),
-        'cubecart_currency' => array(
-            'currency_id' => 'PRIMARY',
-            'code' => 'UNIQUE KEY'
-        ),
-        'cubecart_customer' => array(
-            'customer_id' => 'PRIMARY',
-            'email' => 'UNIQUE KEY',
-            'first_name' => 'FULLTEXT',
-            'last_name' => 'FULLTEXT',
-            'email' => 'FULLTEXT'
-        ),
-        'cubecart_customer_group' => array(
-            'group_id' => 'PRIMARY',
-            'group_name' => 'KEY'
-        ),
-        'cubecart_customer_membership' => array(
-            'membership_id' => 'PRIMARY',
-            'group_id' => 'KEY',
-            'customer_id' => 'KEY'
-        ),
-        'cubecart_documents' => array(
-            'doc_id' => 'PRIMARY',
-            'doc_parent_id' => 'KEY',
-            'doc_status' => 'KEY',
-            'doc_home' => 'KEY',
-            'doc_privacy' => 'KEY'
-        ),
-        'cubecart_domains' => array(
-            'id' => 'PRIMARY',
-            'language' => 'KEY'
-        ),
-        'cubecart_cookie_consent' => array(
-            'id' => 'PRIMARY',
-            'session_id' => 'KEY',
-            'customer_id' => 'KEY',
-            'ip_address' => 'KEY',
-            'dialogue_id' => 'KEY'
-        ),
-        'cubecart_customer_coupon' => array(
-            'id' => 'PRIMARY',
-            'customer_id' => 'KEY',
-            'email' => 'KEY',
-            'coupon' => 'KEY'
-        ),
-        'cubecart_downloads' => array(
-            'digital_id' => 'PRIMARY',
-            'customer_id' => 'KEY',
-            'cart_order_id' => 'KEY',
-            'accesskey' => 'KEY',
-            'order_inv_id' => 'KEY'
-        ),
-        'cubecart_email_content' => array(
-            'content_id' => 'PRIMARY',
-            'content_type' => 'KEY',
-            'language' => 'KEY'
-        ),
-        'cubecart_email_template' => array(
-            'template_id' => 'PRIMARY'
-        ),
-        'cubecart_extension_info' => array(
-            'file_id' => 'PRIMARY',
-            'seller_id' => 'KEY'
-        ),
-        'cubecart_filemanager' => array(
-            'file_id' => 'PRIMARY',
-            'filepath' => 'KEY',
-            'filename' => 'KEY',
-            'type' => 'KEY',
-            'md5hash' => 'UNIQUE KEY'
-        ),
-        'cubecart_geo_country' => array(
-            'iso' => 'PRIMARY',
-            'id' => 'KEY',
-            'eu' => 'KEY',
-            'numcode' => 'KEY'
-        ),
-        'cubecart_geo_zone' => array(
-            'id' => 'PRIMARY',
-            'status' => 'KEY',
-            'country_id' => 'UNIQUE KEY',
-            'abbrev' => 'UNIQUE KEY'
-        ),
-        'cubecart_history' => array(
-            'id' => 'PRIMARY'
-        ),
-        'cubecart_hooks' => array(
-            'hook_id' => 'PRIMARY',
-            'trigger' => 'KEY',
-            'enabled' => 'KEY',
-            'plugin' => 'KEY'
-        ),
-        'cubecart_image_index' => array(
-            'id' => 'PRIMARY',
-            'file_id' => 'KEY',
-            'product_id' => 'KEY'
-        ),
-        'cubecart_inventory' => array(
-            'product_id' => 'PRIMARY',
-            'status' => 'KEY',
-            'live_from' => 'KEY',
-            'popularity' => 'KEY',
-            'product_code' => 'FULLTEXT',
-            'description' => 'FULLTEXT',
-            'name' => 'FULLTEXT',
-            'featured' => 'KEY',
-            'use_stock_level' => 'KEY',
-            'manufacturer' => 'KEY'
-        ),
-        'cubecart_inventory_language' => array(
-            'translation_id' => 'PRIMARY',
-            'name' => 'FULLTEXT',
-            'description' => 'FULLTEXT',
-            'language' => 'KEY',
-            'product_id' => 'KEY'
-        ),
-        'cubecart_lang_strings' => array(
-            'string_id' => 'PRIMARY',
-            'language' => 'KEY',
-            'type' => 'KEY',
-            'name' => 'KEY'
-        ),
-        'cubecart_logo' => array(
-            'logo_id' => 'PRIMARY'
-        ),
-        'cubecart_manufacturers' => array(
-            'id' => 'PRIMARY'
-        ),
-        'cubecart_modules' => array(
-            'module_id' => 'PRIMARY',
-            'folder' => 'KEY',
-            'status' => 'KEY',
-            'module' => 'KEY'
-        ),
-        'cubecart_newsletter' => array(
-            'newsletter_id' => 'PRIMARY'
-        ),
-        'cubecart_newsletter_subscriber' => array(
-            'subscriber_id' => 'PRIMARY',
-            'customer_id' => 'KEY',
-            'status' => 'KEY',
-            'email' => 'KEY',
-            'dbl_opt' => 'KEY',
-            'remove_token' => 'KEY'
-        ),
-        'cubecart_newsletter_subscriber_log' => array(
-            'id' => 'PRIMARY',
-            'email' => 'KEY'
-        ),
-        'cubecart_options_set' => array(
-            'set_id' => 'PRIMARY'
-        ),
-        'cubecart_options_set_member' => array(
-            'set_member_id' => 'PRIMARY',
-            'set_id' => 'KEY'
-        ),
-        'cubecart_options_set_product' => array(
-            'set_product_id' => 'PRIMARY',
-            'set_id' => 'KEY',
-            'product_id' => 'KEY'
-        ),
-        'cubecart_option_assign' => array(
-            'assign_id' => 'PRIMARY',
-            'set_member_id' => 'KEY',
-            'product' => 'KEY',
-            'set_enabled' => 'KEY'
-        ),
-        'cubecart_option_group' => array(
-            'option_id' => 'PRIMARY',
-            'option_name' => 'UNIQUE KEY'
-        ),
-        'cubecart_option_matrix' => array(
-            'matrix_id' => 'PRIMARY',
-            'product_id' => 'KEY',
-            'options_identifier' => 'KEY',
-            'status' => 'KEY',
-            'timestamp' => 'KEY'
-        ),
-        'cubecart_option_value' => array(
-            'value_id' => 'PRIMARY',
-            'option_id' => 'KEY'
-        ),
-        'cubecart_order_history' => array(
-            'history_id' => 'PRIMARY',
-            'cart_order_id' => 'KEY',
-            'status' => 'KEY'
-        ),
-        'cubecart_order_inventory' => array(
-            'id' => 'PRIMARY',
-            'product_id' => 'KEY',
-            'cart_order_id' => 'KEY',
-            'options_identifier' => 'KEY',
-            'quantity' => 'KEY'
-        ),
-        'cubecart_order_notes' => array(
-            'note_id' => 'PRIMARY',
-            'admin_id' => 'KEY',
-            'cart_order_id' => 'KEY',
-            'time' => 'KEY',
-            'print' => 'KEY',
-            'content' => 'FULLTEXT'
-        ),
-        'cubecart_order_summary' => array(
-            'id' => 'PRIMARY',
-            'cart_order_id' => 'UNIQUE KEY',
-            'customer_id' => 'KEY',
-            'status' => 'KEY',
-            'email' => 'KEY',
-            'order_date' => 'KEY',
-            'custom_oid' => 'UNIQUE KEY',
-            'dashboard' => 'KEY',
-            'credit_used' => 'KEY',
-            'credit_shift' => 'KEY'
-        ),
-        'cubecart_order_tax' => array(
-            'id' => 'PRIMARY',
-            'cart_order_id' => 'KEY'
-        ),
-        'cubecart_permissions' => array(
-            'permission_id' => 'PRIMARY',
-            'admin_id' => 'KEY',
-            'section_id' => 'KEY'
-        ),
-        'cubecart_pricing_group' => array(
-            'price_id' => 'PRIMARY',
-            'group_id' => 'KEY',
-            'product_id' => 'KEY',
-            'tax_type' => 'KEY'
-        ),
-        'cubecart_pricing_quantity' => array(
-            'discount_id' => 'PRIMARY',
-            'product_id' => 'KEY',
-            'group_id' => 'KEY',
-            'quantity' => 'KEY'
-        ),
-        'cubecart_reviews' => array(
-            'id' => 'PRIMARY',
-            'product_id' => 'KEY',
-            'vote_up' => 'KEY',
-            'vote_down' => 'KEY',
-            'approved' => 'KEY',
-            'name' => 'FULLTEXT',
-            'email' => 'FULLTEXT',
-            'title' => 'FULLTEXT',
-            'review' => 'FULLTEXT'
-        ),
-        'cubecart_saved_cart' => array(
-            'customer_id' => 'PRIMARY'
-        ),
-        'cubecart_search' => array(
-            'id' => 'PRIMARY'
-        ),
-        'cubecart_sessions' => array(
-            'id' => 'PRIMARY',
-            'session_id' => 'KEY',
-            'customer_id' => 'KEY',
-            'session_last' => 'KEY',
-            'acp' => 'KEY'
-        ),
-        'cubecart_shipping_rates' => array(
-            'id' => 'PRIMARY',
-            'zone_id' => 'KEY',
-            'method_name' => 'KEY',
-            'min_weight' => 'KEY',
-            'max_weight' => 'KEY',
-            'min_value' => 'KEY'
-        ),
-        'cubecart_shipping_zones' => array(
-            'id' => 'PRIMARY',
-            'zone_name' => 'KEY'
-        ),
-        'cubecart_system_error_log' => array(
-            'log_id' => 'PRIMARY',
-            'time' => 'KEY',
-            'read' => 'KEY'
-        ),
-        'cubecart_tax_class' => array(
-            'id' => 'PRIMARY'
-        ),
-        'cubecart_tax_details' => array(
-            'id' => 'PRIMARY',
-            'name' => 'UNIQUE KEY'
-        ),
-        'cubecart_tax_rates' => array(
-            'id' => 'PRIMARY',
-            'type_id' => 'UNIQUE KEY',
-            'details_id' => 'UNIQUE KEY',
-            'country_id' => 'UNIQUE KEY',
-            'county_id' => 'UNIQUE KEY',
-            'active' => 'KEY'
-        ),
-        'cubecart_transactions' => array(
-            'id' => 'PRIMARY',
-            'order_id' => 'KEY',
-            'customer_id' => 'KEY',
-            'time' => 'KEY',
-        ),
-        'cubecart_request_log' => array(
-            'request_id' => 'PRIMARY',
-            'time' => 'KEY'
-        ),
-        'cubecart_seo_urls' => array(
-            'id' => 'PRIMARY',
-            'path' => 'UNIQUE KEY',
-            'type' => 'KEY',
-            'item_id' => 'KEY',
-            'custom' => 'KEY',
-            'redirect' => 'KEY'
-        ), // type+item_id are covered by composite KEY type_item
-        'cubecart_email_log' => array(
-            'id' => 'PRIMARY',
-            'to' => 'KEY'
-        ),
-        'cubecart_invoice_template' => array(
-            'id' => 'PRIMARY',
-            'hash' => 'KEY'
-        ),
-        'CubeCart_cookie_consent_text' => array(
-            'id' => 'PRIMARY',
-            'hash' => 'UNIQUE KEY'
-        ),
-        'CubeCart_tariff' => array(
-            'id' => 'PRIMARY',
-            'combos' => 'UNIQUE KEY',
-            'source' => 'KEY',
-            'destination' => 'KEY'
-        )
-    );
+
+    ## Parse structure.sql to build index map (single source of truth)
+    $index_map = array();
+    $full_indexes = array();
+    $structure_file = CC_ROOT_DIR.'/classes/db/schema/structure.sql';
+    if (file_exists($structure_file)) {
+        $sql = file_get_contents($structure_file);
+        $statements = preg_split('/;\s*#EOQ/i', $sql);
+        ## Track all index types per column (a column can be in multiple indexes)
+        foreach ($statements as $stmt) {
+            ## Parse CREATE TABLE statements
+            if (preg_match('/CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?`?(\w+)`?/i', $stmt, $tbl_match)) {
+                $table_name = strtolower($tbl_match[1]);
+                if (!isset($index_map[$table_name])) {
+                    $index_map[$table_name] = array();
+                }
+                ## Match index definitions including bare UNIQUE(...) and FULLTEXT(...) without KEY
+                if (preg_match_all('/^\s*(PRIMARY\s+KEY|UNIQUE\s+KEY|FULLTEXT\s+KEY|UNIQUE|FULLTEXT|KEY)\s*(?:`?(\w+)`?\s*)?\(((?:[^()]+|\([^)]*\))+)\)/im', $stmt, $idx_matches, PREG_SET_ORDER)) {
+                    foreach ($idx_matches as $idx) {
+                        $raw_type = strtoupper(trim($idx[1]));
+                        if (strpos($raw_type, 'PRIMARY') !== false) {
+                            $key_type = 'PRIMARY';
+                        } elseif (strpos($raw_type, 'UNIQUE') !== false) {
+                            $key_type = 'UNIQUE KEY';
+                        } elseif (strpos($raw_type, 'FULLTEXT') !== false) {
+                            $key_type = 'FULLTEXT';
+                        } else {
+                            $key_type = 'KEY';
+                        }
+                        ## Extract column names, strip prefix lengths e.g. (150) and backticks
+                        $columns = explode(',', $idx[3]);
+                        foreach ($columns as $col) {
+                            $col = trim(str_replace('`', '', $col));
+                            $col = trim(preg_replace('/\(\d+\)/', '', $col));
+                            if (!empty($col)) {
+                                if (!isset($index_map[$table_name][$col])) {
+                                    $index_map[$table_name][$col] = array();
+                                }
+                                if (!in_array($key_type, $index_map[$table_name][$col])) {
+                                    $index_map[$table_name][$col][] = $key_type;
+                                }
+                            }
+                        }
+                        ## Store full index definition for fix SQL generation
+                        $idx_key_name = ($key_type === 'PRIMARY') ? 'PRIMARY' : (!empty($idx[2]) ? $idx[2] : null);
+                        if ($idx_key_name !== null) {
+                            $full_indexes[$table_name][$idx_key_name] = array('type' => $key_type, 'columns' => $idx[3]);
+                        }
+                    }
+                }
+            }
+            ## Parse ALTER TABLE ... ADD INDEX/KEY/PRIMARY KEY/UNIQUE statements
+            if (preg_match('/ALTER\s+TABLE\s+`?(\w+)`?\s+ADD\s+(PRIMARY\s+KEY|UNIQUE\s+KEY|UNIQUE|FULLTEXT|INDEX|KEY)\s*(?:`?(\w+)`?\s*)?\(((?:[^()]+|\([^)]*\))+)\)/i', $stmt, $alt_match)) {
+                $table_name = strtolower($alt_match[1]);
+                if (!isset($index_map[$table_name])) {
+                    $index_map[$table_name] = array();
+                }
+                $raw_type = strtoupper(trim($alt_match[2]));
+                if (strpos($raw_type, 'PRIMARY') !== false) {
+                    $key_type = 'PRIMARY';
+                } elseif (strpos($raw_type, 'UNIQUE') !== false) {
+                    $key_type = 'UNIQUE KEY';
+                } elseif (strpos($raw_type, 'FULLTEXT') !== false) {
+                    $key_type = 'FULLTEXT';
+                } else {
+                    $key_type = 'KEY';
+                }
+                $columns = explode(',', $alt_match[4]);
+                foreach ($columns as $col) {
+                    $col = trim(str_replace('`', '', $col));
+                    $col = trim(preg_replace('/\(\d+\)/', '', $col));
+                    if (!empty($col)) {
+                        if (!isset($index_map[$table_name][$col])) {
+                            $index_map[$table_name][$col] = array();
+                        }
+                        if (!in_array($key_type, $index_map[$table_name][$col])) {
+                            $index_map[$table_name][$col][] = $key_type;
+                        }
+                    }
+                }
+                ## Store full index definition for fix SQL generation
+                $alt_key_name = ($key_type === 'PRIMARY') ? 'PRIMARY' : (!empty($alt_match[3]) ? $alt_match[3] : null);
+                if ($alt_key_name !== null) {
+                    $full_indexes[$table_name][$alt_key_name] = array('type' => $key_type, 'columns' => $alt_match[4]);
+                }
+            }
+        }
+    } else {
+        $GLOBALS['main']->errorMessage('Unable to read classes/db/schema/structure.sql.');
+    }
 
     $actual_map = array();
+    $all_fix_sql = array();
 
     foreach ($tables as $table) {
         if (!preg_match('/^'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_/i', $table['Name'])) {
@@ -1172,6 +858,7 @@ if (isset($database_result) && $database_result) {
         // Get index and map them
         $indexes = $GLOBALS['db']->misc("SHOW INDEX FROM `".$table['Name']."`");
         $index_errors = array();
+        $actual_full_indexes = array();
 
         foreach ($indexes as $index) {
             if ($index['Key_name']=='PRIMARY') {
@@ -1185,25 +872,127 @@ if (isset($database_result) && $database_result) {
             }
             $table_name = $GLOBALS['config']->get('config', 'dbprefix').str_replace('cubecart', 'CubeCart', $index['Table']);
             $duplicate = false;
-            if (isset($actual_map[$index['Table']][$index['Column_name']]) && $actual_map[$index['Table']][$index['Column_name']]==$key_type) {
+            if (isset($actual_map[$index['Table']][$index['Column_name']]) && in_array($key_type, $actual_map[$index['Table']][$index['Column_name']])) {
                 $duplicate = sprintf($lang['maintain']['duplicate_index'], $table_name.'.'.$index['Column_name'], $key_type);
             }
-            $actual_map[$index['Table']][$index['Column_name']] = $key_type;
+            if (!isset($actual_map[$index['Table']][$index['Column_name']])) {
+                $actual_map[$index['Table']][$index['Column_name']] = array();
+            }
+            if (!in_array($key_type, $actual_map[$index['Table']][$index['Column_name']])) {
+                $actual_map[$index['Table']][$index['Column_name']][] = $key_type;
+            }
+            // Build full index definitions grouped by key name
+            if (!isset($actual_full_indexes[$index['Key_name']])) {
+                $actual_full_indexes[$index['Key_name']] = array('type' => $key_type, 'columns' => array());
+            }
+            $actual_full_indexes[$index['Key_name']]['columns'][(int)$index['Seq_in_index']] = '`'.$index['Column_name'].'`';
         }
-        
-        if (isset($index_map[strtolower($index['Table'])])) {
-            foreach ($index_map[strtolower($index['Table'])] as $column => $key) {
+
+        if (!empty($index_map) && isset($index_map[strtolower($index['Table'])])) {
+            foreach ($index_map[strtolower($index['Table'])] as $column => $expected_types) {
                 $table_name = $GLOBALS['config']->get('config', 'dbprefix').str_replace('cubecart', 'CubeCart', $index['Table']);
                 if (!isset($actual_map[$index['Table']][$column])) {
-                    $index_errors[] = sprintf($lang['maintain']['missing_index'], $table_name.'.'.$column, $key);
-                } elseif (isset($actual_map[$index['Table']][$column]) && $actual_map[$index['Table']][$column]!==$key) {
-                    $index_errors[] = sprintf($lang['maintain']['wrong_index'], $table_name.'.'.$column, $actual_map[$index['Table']][$column], $key);
+                    $index_errors[] = sprintf($lang['maintain']['missing_index'], $table_name.'.'.$column, implode(', ', $expected_types));
+                } else {
+                    $missing_types = array_diff($expected_types, $actual_map[$index['Table']][$column]);
+                    foreach ($missing_types as $missing_type) {
+                        $index_errors[] = sprintf($lang['maintain']['missing_index'], $table_name.'.'.$column, $missing_type);
+                    }
                 }
             }
         }
 
         if ($duplicate !== false) {
             $index_errors[] = $duplicate;
+        }
+
+        // Generate fix SQL by comparing full index definitions
+        $table_lower = strtolower($index['Table']);
+        if (!empty($full_indexes[$table_lower])) {
+            $renamed_indexes = array();
+            foreach ($full_indexes[$table_lower] as $key_name => $expected_idx) {
+                $fix_table = '`'.$table['Name'].'`';
+                if (!isset($actual_full_indexes[$key_name])) {
+                    // Index name missing - check if same type+columns exist under a different name
+                    $expected_cols_norm = array_map(function($c) {
+                        return strtolower(trim(preg_replace('/\(\d+\)/', '', str_replace('`', '', trim($c)))));
+                    }, explode(',', $expected_idx['columns']));
+                    $old_name = null;
+                    foreach ($actual_full_indexes as $act_name => $act_idx) {
+                        if ($act_idx['type'] === $expected_idx['type']) {
+                            ksort($act_idx['columns']);
+                            $act_cols_norm = array_map(function($c) {
+                                return strtolower(trim(str_replace('`', '', $c)));
+                            }, array_values($act_idx['columns']));
+                            if ($expected_cols_norm === $act_cols_norm) {
+                                $old_name = $act_name;
+                                break;
+                            }
+                        }
+                    }
+                    if ($key_name === 'PRIMARY') {
+                        $all_fix_sql[] = 'ALTER TABLE '.$fix_table.' ADD PRIMARY KEY ('.$expected_idx['columns']; #EOQ');
+                    } elseif ($old_name !== null) {
+                        // Same index exists under wrong name - drop old, add with correct name
+                        $renamed_indexes[] = $old_name;
+                        $table_name = $GLOBALS['config']->get('config', 'dbprefix').str_replace('cubecart', 'CubeCart', $index['Table']);
+                        $index_errors[] = sprintf($lang['maintain']['wrong_index_name'], $table_name, $old_name, $key_name);
+                        $type_kw = ($expected_idx['type'] === 'FULLTEXT') ? 'FULLTEXT KEY' : $expected_idx['type'];
+                        $all_fix_sql[] = 'ALTER TABLE '.$fix_table.' DROP INDEX `'.$old_name.'`, ADD '.$type_kw.' `'.$key_name.'` ('.$expected_idx['columns'].'); #EOQ';
+                    } else {
+                        $type_kw = ($expected_idx['type'] === 'FULLTEXT') ? 'FULLTEXT KEY' : $expected_idx['type'];
+                        $all_fix_sql[] = 'ALTER TABLE '.$fix_table.' ADD '.$type_kw.' `'.$key_name.'` ('.$expected_idx['columns'].'); #EOQ';
+                    }
+                } elseif ($actual_full_indexes[$key_name]['type'] !== $expected_idx['type']) {
+                    // Index exists but wrong type
+                    if ($key_name === 'PRIMARY') {
+                        $all_fix_sql[] = 'ALTER TABLE '.$fix_table.' DROP PRIMARY KEY, ADD PRIMARY KEY ('.$expected_idx['columns'].'); #EOQ';
+                    } else {
+                        $type_kw = ($expected_idx['type'] === 'FULLTEXT') ? 'FULLTEXT KEY' : $expected_idx['type'];
+                        $all_fix_sql[] = 'ALTER TABLE '.$fix_table.' DROP INDEX `'.$key_name.'`, ADD '.$type_kw.' `'.$key_name.'` ('.$expected_idx['columns'].'); #EOQ';
+                    }
+                } else {
+                    // Index exists with correct type - check columns match
+                    $expected_cols = array_map(function($c) {
+                        return strtolower(trim(preg_replace('/\(\d+\)/', '', str_replace('`', '', trim($c)))));
+                    }, explode(',', $expected_idx['columns']));
+                    ksort($actual_full_indexes[$key_name]['columns']);
+                    $actual_cols = array_map(function($c) {
+                        return strtolower(trim(str_replace('`', '', $c)));
+                    }, array_values($actual_full_indexes[$key_name]['columns']));
+                    if ($expected_cols !== $actual_cols) {
+                        // Index has wrong columns - drop and recreate
+                        if ($key_name === 'PRIMARY') {
+                            $all_fix_sql[] = 'ALTER TABLE '.$fix_table.' DROP PRIMARY KEY, ADD PRIMARY KEY ('.$expected_idx['columns'].'); #EOQ';
+                        } else {
+                            $type_kw = ($expected_idx['type'] === 'FULLTEXT') ? 'FULLTEXT KEY' : $expected_idx['type'];
+                            $all_fix_sql[] = 'ALTER TABLE '.$fix_table.' DROP INDEX `'.$key_name.'`, ADD '.$type_kw.' `'.$key_name.'` ('.$expected_idx['columns'].'); #EOQ';
+                        }
+                    }
+                }
+            }
+            // Check for duplicate actual indexes that should be dropped
+            foreach ($actual_full_indexes as $act_name => $act_idx) {
+                if ($act_name === 'PRIMARY' || isset($full_indexes[$table_lower][$act_name]) || in_array($act_name, $renamed_indexes)) {
+                    continue; // Skip expected indexes, PRIMARY, and already-renamed indexes
+                }
+                ksort($act_idx['columns']);
+                $act_cols_norm = array_map(function($c) {
+                    return strtolower(trim(str_replace('`', '', $c)));
+                }, array_values($act_idx['columns']));
+                foreach ($full_indexes[$table_lower] as $exp_name => $exp_idx) {
+                    if ($act_idx['type'] !== $exp_idx['type']) {
+                        continue;
+                    }
+                    $exp_cols_norm = array_map(function($c) {
+                        return strtolower(trim(preg_replace('/\(\d+\)/', '', str_replace('`', '', trim($c)))));
+                    }, explode(',', $exp_idx['columns']));
+                    if ($act_cols_norm === $exp_cols_norm) {
+                        $all_fix_sql[] = 'ALTER TABLE '.$fix_table.' DROP INDEX `'.$act_name.'`; #EOQ';
+                        break;
+                    }
+                }
+            }
         }
 
         $table['Data_free'] = ($table['Data_free'] > 0) ? formatBytes($table['Data_free'], true) : '-';
@@ -1215,6 +1004,9 @@ if (isset($database_result) && $database_result) {
         $smarty_data['tables'][] = $table;
     }
     $GLOBALS['smarty']->assign('TABLES', $smarty_data['tables']);
+    if (!empty($all_fix_sql)) {
+        $GLOBALS['smarty']->assign('INDEX_FIX_SQL', implode("\n", $all_fix_sql));
+    }
 }
 
 

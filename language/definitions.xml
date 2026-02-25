@@ -1514,7 +1514,10 @@ This email is sent from the store's master email address but it is possible to r
     <string name="duplicate_index" introduced="6.1.6"><![CDATA[%1$s has duplicate %2$s indexes. One of these could be removed.]]></string>
     <string name="missing_index" introduced="6.1.5"><![CDATA[%1$s has no key set. Expecting %2$s.]]></string>
     <string name="wrong_index" introduced="6.1.5"><![CDATA[%1$s has a key type %2$s but expecting %3$s.]]></string>
+    <string name="wrong_index_name" introduced="6.5.14"><![CDATA[%1$s index `%2$s` should be named `%3$s`.]]></string>
     <string name="table_indexes" introduced="6.1.5"><![CDATA[Indexes]]></string>
+    <string name="suggested_sql_fixes" introduced="6.5.14"><![CDATA[Suggested SQL Fixes]]></string>
+    <string name="suggested_sql_fixes_desc" introduced="6.5.14"><![CDATA[Copy and paste the following into {link}Query Database (Advanced){/link} to fix the index errors above.]]></string>
     <string name="file_compressed" introduced="6.1.2"><![CDATA[%1$s compressed successfully.]]></string>
     <string name="latest_version_unknown" introduced="6.0.9"><![CDATA[Failed to look up latest version.]]></string>
     <string name="upgrade_history" introduced="6.0.7"><![CDATA[Upgrade History]]></string>
@@ -1524,6 +1527,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="seo_urls_emptied" introduced="6.0.0"><![CDATA[SEO URLs have been cleared.]]></string>
     <string name="seo_urls_not_emptied" introduced="6.0.0"><![CDATA[No SEO URLs were cleared. This may have already been done, or there were none to remove.]]></string>
     <string name="affected_rows" introduced="5.0.0"><![CDATA[Affected Rows]]></string>
+    <string name="query_executed" introduced="6.5.14"><![CDATA[Query executed successfully.]]></string>
     <string name="backup_options" introduced="5.0.0"><![CDATA[Backup Options]]></string>
     <string name="skip_images" introduced="6.0.2"><![CDATA[Skip Filemanager Images]]></string>
     <string name="skip_downloads" introduced="6.0.2"><![CDATA[Skip Filemanager Downloads]]></string>

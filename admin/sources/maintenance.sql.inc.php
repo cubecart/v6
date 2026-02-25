@@ -27,7 +27,8 @@ if (isset($_POST['execute'])) {
         if ($GLOBALS['db']->error()) {
             $GLOBALS['main']->errorMessage($GLOBALS['db']->errorInfo());
         } else {
-            $GLOBALS['main']->successMessage($lang['maintain']['affected_rows'].': '.(int)$GLOBALS['db']->affected());
+            $affected = (int)$GLOBALS['db']->affected();
+            $GLOBALS['main']->successMessage($affected > 0 ? $lang['maintain']['affected_rows'].': '.$affected : $lang['maintain']['query_executed']);
         }
     } else {
         $GLOBALS['main']->errorMessage($lang['maintain']['no_query_entered']);

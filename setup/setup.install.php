@@ -244,7 +244,7 @@ if (!isset($_SESSION['setup']['permissions'])) {
                 # httpredir('index.php');
             }
             ## Create tables
-            $GLOBALS['db']->parseSchema(file_get_contents($setup_path.'db/install/structure.sql', false));
+            $GLOBALS['db']->parseSchema(file_get_contents(CC_ROOT_DIR.'/classes/db/schema/structure.sql', false));
             ## Insert basic data
             $GLOBALS['db']->parseSchema(file_get_contents($setup_path.'db/install/data.sql', false));
             ## Insert example product/category

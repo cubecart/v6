@@ -240,6 +240,11 @@
 	  	  </tr>
 	  	</tfoot>
 	  </table>
+	  {if $INDEX_FIX_SQL}
+	  <h3>{$LANG.maintain.suggested_sql_fixes}</h3>
+	  <p>{$LANG.maintain.suggested_sql_fixes_desc|replace:'{link}':'<a href="?_g=maintenance&node=sql">'|replace:'{/link}':'</a>'}</p>
+	  <textarea rows="6" style="width:100%;font-family:monospace;font-size:12px" onclick="this.select()" readonly>{$INDEX_FIX_SQL}</textarea>
+	  {/if}
 	  <div>
   		<input type="hidden" name="previous-tab" id="previous-tab" value="database">
   		<input type="submit" name="database" value="{$LANG.common.submit}">
