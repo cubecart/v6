@@ -285,7 +285,7 @@ if (isset($_GET['action'])) {
             $certificate['value']  = ($certificate['discount_percent'] > 0) ? $certificate['discount_percent'].'%' : Tax::getInstance()->priceFormat($certificate['discount_price']);
 
             $certificate['link_edit'] = currentPage(null, array('action' => 'edit', 'coupon_id' => $certificate['coupon_id']));
-            $certificate['link_delete'] = currentPage(null, array('delete' => $certificate['coupon_id']));
+            $certificate['link_delete'] = currentPage(null, array('delete' => $certificate['coupon_id'], 'token'=>SESSION_TOKEN));
 
             $certificate['display_oid'] = ($config_oid_mode=='i' && !empty($certificate[$config_oid_col])) ? $certificate[$config_oid_col] : $certificate['cart_order_id'];
             $smarty_data['list_cert'][] = $certificate;

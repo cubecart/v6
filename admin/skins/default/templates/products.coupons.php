@@ -60,6 +60,7 @@
 		  <td>{$THEAD_CERTIFICATE.value}</td>
 		  <td>{$THEAD_CERTIFICATE.expires}</td>
 		  <td>{$THEAD_CERTIFICATE.cart_order_id}</td>
+		  <td>&nbsp;</td>
 		</tr>
 	  </thead>
 	  <tbody>
@@ -71,11 +72,12 @@
 		  <td>{$certificate.value}</td>
 		  <td>{$certificate.expires}</td>
 		  <td><a href="?_g=orders&action=edit&order_id={$certificate.cart_order_id}">{$certificate.display_oid}</a></td>
+		  <td><a href="{$certificate.link_delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
 		</tr>
 		{/foreach}
 		{else}
 		<tr>
-		  <td style="text-align:center" colspan="5">{$LANG.catalogue.notify_certs_none}</td>
+		  <td style="text-align:center" colspan="6">{$LANG.catalogue.notify_certs_none}</td>
 		</tr>
 		{/if}
 	  </tbody>
