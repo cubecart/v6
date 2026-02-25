@@ -44,7 +44,8 @@ if (isset($_POST['cat']) && is_array($_POST['cat']) && Admin::getInstance()->per
     $_POST['cat']['hide'] = (int)$_POST['cat']['visible'] && (int)$_POST['cat']['status'] ? 0 : 1;
 
     $_POST['cat']['cat_desc'] = $GLOBALS['RAW']['POST']['cat']['cat_desc'];
-    
+    $_POST['cat']['updated'] = date('Y-m-d H:i:s');
+
     if (is_numeric($_POST['cat']['cat_id'])) {
         $cat_id = $_POST['cat']['cat_id'];
         $old_image = $GLOBALS['db']->select('CubeCart_category', array('cat_image'), array('cat_id' => $_POST['cat']['cat_id']));
@@ -97,6 +98,7 @@ if (isset($_POST['cat']) && is_array($_POST['cat']) && Admin::getInstance()->per
             }
         }
 
+        $_POST['cat']['date_added'] = date('Y-m-d H:i:s');
         if (!empty($_POST['cat']['cat_name']) && $cat_id = $GLOBALS['db']->insert('CubeCart_category', $_POST['cat'])) {
             $path = empty($_POST['seo_path']) ? $_POST['cat']['cat_name'] : $_POST['seo_path'];
             $GLOBALS['seo']->setdbPath('cat', $cat_id, $path);

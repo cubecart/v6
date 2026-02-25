@@ -811,6 +811,8 @@ class SEO
     public function sitemap()
     {
         $this->_deleteExitingSitemaps();
+        $prefix = $GLOBALS['config']->get('config', 'dbprefix');
+
         // Generate a Sitemap Protocol v0.9 compliant sitemap (http://sitemaps.org)
         $this->_sitemap_xml = new XML();
         $this->_sitemap_xml->startElement('urlset', array('xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9'));
@@ -825,34 +827,151 @@ class SEO
             $this->_sitemap_link(array('url' => $this->_sitemap_base_url.'/index.php?_a=certificates'));
         }
 
-        $queryArray = array(
-            'category' => $GLOBALS['db']->select('CubeCart_category', array('cat_id'), array('status' => '1')),
-            'product' => $GLOBALS['db']->select('CubeCart_inventory', array('product_id', 'updated'), array('status' => '1')),
-            'document' => $GLOBALS['db']->select('CubeCart_documents', array('doc_id'), array('doc_parent_id' => '0', 'doc_status' => 1)),
+        // Build set of restricted category IDs (have group access rows or inherit from parent)
+        $restricted_cats = array();
+        $all_cats = $GLOBALS['db']->select('CubeCart_category', array('cat_id', 'cat_parent_id', 'guest_access'), array('status' => '1'));
+        if ($all_cats) {
+            $cat_parents = array();
+            $cat_guest = array();
+            foreach ($all_cats as $c) {
+                $cat_parents[(int)$c['cat_id']] = (int)$c['cat_parent_id'];
+                $cat_guest[(int)$c['cat_id']] = (int)$c['guest_access'];
+            }
+            // Categories with their own group restrictions
+            $own_restricted = array();
+            $group_rows = $GLOBALS['db']->select('CubeCart_category_group', array('cat_id'), false, false, false, false, false);
+            if ($group_rows) {
+                foreach ($group_rows as $gr) {
+                    $own_restricted[(int)$gr['cat_id']] = true;
+                }
+            }
+            // A category is restricted if it (or an ancestor) has group rows AND guest_access is off
+            foreach ($cat_parents as $cid => $pid) {
+                $current = $cid;
+                $visited = array();
+                while ($current > 0 && !isset($visited[$current])) {
+                    $visited[$current] = true;
+                    if (isset($own_restricted[$current])) {
+                        // Found restrictions — check guest_access on the category that owns them
+                        if (empty($cat_guest[$current])) {
+                            $restricted_cats[$cid] = true;
+                        }
+                        break;
+                    }
+                    $current = isset($cat_parents[$current]) ? $cat_parents[$current] : 0;
+                }
+            }
+        }
+
+        // Pre-fetch all SEO URLs in one query to avoid N+1
+        $seo_urls = array();
+        $seo_rows = $GLOBALS['db']->misc(sprintf(
+            "SELECT `type`, `item_id`, `path`, `custom` FROM `%sCubeCart_seo_urls` WHERE `redirect` = 0", $prefix
+        ));
+        if ($seo_rows) {
+            foreach ($seo_rows as $sr) {
+                $seo_urls[$sr['type']][(int)$sr['item_id']] = $sr;
+            }
+        }
+
+        // Categories: exclude hidden and guest-restricted
+        $categories = $GLOBALS['db']->select('CubeCart_category', array('cat_id', 'updated'), array('status' => '1', 'hide' => '0'));
+        $sitemap_categories = array();
+        if ($categories) {
+            foreach ($categories as $cat) {
+                if (isset($restricted_cats[(int)$cat['cat_id']])) {
+                    continue;
+                }
+                $sitemap_categories[] = $cat;
+            }
+        }
+
+        // Products: pre-fetch with SEO path in one query, exclude those only in restricted categories
+        $products_sql = sprintf(
+            "SELECT I.`product_id`, I.`updated`, I.`name`, I.`cat_id`, S.`path` AS `seo_path`
+             FROM `%1\$sCubeCart_inventory` AS I
+             LEFT JOIN `%1\$sCubeCart_seo_urls` AS S ON S.`item_id` = I.`product_id` AND S.`type` = 'prod' AND S.`redirect` = 0
+             WHERE I.`status` = 1", $prefix
         );
-        
+        $products_raw = $GLOBALS['db']->misc($products_sql);
+        $sitemap_products = array();
+        if ($products_raw) {
+            // Pre-fetch primary category assignments for products without SEO path
+            $cat_index = array();
+            if ($GLOBALS['config']->get('config', 'seo_add_cats') != 0) {
+                $ci_rows = $GLOBALS['db']->misc(sprintf(
+                    "SELECT `product_id`, `cat_id` FROM `%sCubeCart_category_index` ORDER BY `primary` DESC", $prefix
+                ));
+                if ($ci_rows) {
+                    foreach ($ci_rows as $ci) {
+                        if (!isset($cat_index[(int)$ci['product_id']])) {
+                            $cat_index[(int)$ci['product_id']] = (int)$ci['cat_id'];
+                        }
+                    }
+                }
+            }
+
+            foreach ($products_raw as $prod) {
+                $pid = (int)$prod['product_id'];
+                // Determine product's primary category
+                $prod_cat = isset($cat_index[$pid]) ? $cat_index[$pid] : (int)$prod['cat_id'];
+                // Skip if product's primary category is restricted
+                if ($prod_cat > 0 && isset($restricted_cats[$prod_cat])) {
+                    continue;
+                }
+                $sitemap_products[] = $prod;
+            }
+        }
+
+        $queryArray = array(
+            'category' => $sitemap_categories,
+            'product' => $sitemap_products,
+            'document' => $GLOBALS['db']->select('CubeCart_documents', array('doc_id', 'updated'), array('doc_parent_id' => '0', 'doc_status' => 1)),
+        );
+
         foreach ($GLOBALS['hooks']->load('class.seo.sitemap') as $hook) {
             include $hook;
         }
-        
+
         foreach ($queryArray as $type => $results) {
             if ($results) {
                 foreach ($results as $record) {
+                    $url = null;
                     switch ($type) {
                     case 'category':
                         $id  = $record['cat_id'];
                         $key = 'cat_id';
+                        // Use pre-fetched SEO URL if available
+                        if (isset($seo_urls['cat'][(int)$id])) {
+                            $slug = $seo_urls['cat'][(int)$id]['path'];
+                            if ($GLOBALS['config']->get('config', 'seo_cat_add_cats') == 0 && !$seo_urls['cat'][(int)$id]['custom']) {
+                                $parts = explode('/', $slug);
+                                $slug = array_pop($parts);
+                            }
+                            $url = $this->_sitemap_base_url.'/'.SEO::_safeUrl($slug).$this->_extension;
+                        }
                         break;
                     case 'product':
                         $id  = $record['product_id'];
                         $key = 'product_id';
+                        // Use pre-fetched SEO path if available
+                        if (!empty($record['seo_path'])) {
+                            $url = $this->_sitemap_base_url.'/'.SEO::_safeUrl($record['seo_path']).$this->_extension;
+                        }
                         break;
                     case 'document':
                         $id  = $record['doc_id'];
                         $key = 'doc_id';
+                        if (isset($seo_urls['doc'][(int)$id])) {
+                            $url = $this->_sitemap_base_url.'/'.SEO::_safeUrl($seo_urls['doc'][(int)$id]['path']).$this->_extension;
+                        }
                         break;
                     }
-                    $this->_sitemap_link(array('key' => $key, 'id' => $id), $record['updated'], $type);
+                    if ($url) {
+                        $this->_sitemap_link(array('url' => $url), $record['updated'] ?? false);
+                    } else {
+                        $this->_sitemap_link(array('key' => $key, 'id' => $id), $record['updated'] ?? false, $type);
+                    }
                     if($this->_sitemap_url_count == $this->_sitemap_limit) {
                         $this->_writeSiteMap();
                         $this->_sitemap_xml = new XML();
@@ -868,10 +987,10 @@ class SEO
         $this->_sitemap_xml = new XML();
         $this->_sitemap_xml->startElement('sitemapindex', array('xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9'));
         foreach (glob(CC_ROOT_DIR."/sitemap_*") as $filename) {
-            $this->_sitemap_link(array('url' => $this->_sitemap_base_url.'/'.basename($filename)), false, false, 'sitemap');    
+            $this->_sitemap_link(array('url' => $this->_sitemap_base_url.'/'.basename($filename)), false, false, 'sitemap');
         }
-        $this->_writeSiteMap(true); 
-        $this->_writeRobots();   
+        $this->_writeSiteMap(true);
+        $this->_writeRobots();
         return true;
     }
 
@@ -1236,11 +1355,6 @@ EOD;
      */
     private function _sitemap_link($input, $updated = false, $type = false, $masterElement = 'url')
     {
-        $updated =  (!$updated || "0000-00-00" == substr($updated, 0, 10)) ? 'NOW' : $updated;
-
-        $dateTime = new DateTime($updated);
-        $updated = $dateTime->format(DateTime::W3C);
-
         if (!isset($input['url']) && !empty($type)) {
             $slug = $this->generatePath($input['id'], $type, '', false);
             $input['url'] = $this->_sitemap_base_url.'/'.$this->_encodeSlug($slug);
@@ -1251,11 +1365,14 @@ EOD;
         if(!in_array(md5($input['url']), $this->_sitemap_duplicates) && substr($input['url'], -6) !== '/.html') {
             $this->_sitemap_xml->startElement($masterElement);
             $this->_sitemap_xml->setElement('loc', $input['url'], false, false);
-            $this->_sitemap_xml->setElement('lastmod', $updated, false, false);
+            if ($updated && "0000-00-00" !== substr($updated, 0, 10)) {
+                $dateTime = new DateTime($updated);
+                $this->_sitemap_xml->setElement('lastmod', $dateTime->format(DateTime::W3C), false, false);
+            }
             $this->_sitemap_xml->endElement();
             $this->_sitemap_url_count++;
             array_push($this->_sitemap_duplicates, md5($input['url']));
-        } 
+        }
     }
 
     /**

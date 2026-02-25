@@ -27,6 +27,7 @@ if (isset($_POST['document']) && Admin::getInstance()->permissions('documents', 
     ## Do the database magic
     $rem_array = array();
     $_POST['document']['doc_content'] = $GLOBALS['RAW']['POST']['document']['doc_content'];
+    $_POST['document']['updated'] = date('Y-m-d H:i:s');
     if (isset($_POST['document']['doc_id']) && is_numeric($_POST['document']['doc_id'])) {
         if ($GLOBALS['db']->update('CubeCart_documents', $_POST['document'], array('doc_id' => $_POST['document']['doc_id']), true)) {
             if(empty($_POST['seo_path'])) {
@@ -39,6 +40,7 @@ if (isset($_POST['document']) && Admin::getInstance()->permissions('documents', 
             $GLOBALS['main']->errorMessage($lang['documents']['error_document_update']);
         }
     } else {
+        $_POST['document']['date_added'] = date('Y-m-d H:i:s');
         if ($doc_id = $GLOBALS['db']->insert('CubeCart_documents', $_POST['document'])) {
             $GLOBALS['seo']->setdbPath('doc', $doc_id, $_POST['seo_path']);
             $GLOBALS['main']->successMessage($lang['documents']['notify_document_create']);

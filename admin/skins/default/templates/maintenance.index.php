@@ -182,6 +182,11 @@
   <h3>{$LANG.maintain.title_db}</h3>
   <form action="{$VAL_SELF}#database" method="post" enctype="multipart/form-data">
   <fieldset>
+	  {if isset($MISSING_TABLES)}
+	  {foreach from=$MISSING_TABLES item=msg}
+	  <div class="row_warn" style="padding:5px;margin-bottom:5px"><i class="fa fa-exclamation-triangle"></i> {$msg}</div>
+	  {/foreach}
+	  {/if}
 	  {if $TABLES}
 	  <table width="650">
 	  	<thead>

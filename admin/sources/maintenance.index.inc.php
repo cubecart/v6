@@ -757,9 +757,10 @@ if (isset($database_result) && $database_result) {
     $GLOBALS['smarty']->assign('TABLES_AFTER', $database_result);
 } elseif (($tables = $GLOBALS['db']->getRows()) !== false) {
 
-    ## Parse structure.sql to build index map (single source of truth)
+    ## Parse structure.sql to build index map and column map (single source of truth)
     $index_map = array();
     $full_indexes = array();
+    $column_map = array();
     $structure_file = CC_ROOT_DIR.'/classes/db/schema/structure.sql';
     if (file_exists($structure_file)) {
         $sql = file_get_contents($structure_file);
@@ -806,6 +807,17 @@ if (isset($database_result) && $database_result) {
                         }
                     }
                 }
+                ## Parse column definitions
+                $column_map[$table_name] = array();
+                $stmt_lines = preg_split('/\r?\n/', $stmt);
+                foreach ($stmt_lines as $line) {
+                    $line = trim($line);
+                    if (preg_match('/^`(\w+)`\s+(.+)$/', $line, $col_match)) {
+                        $col_name = $col_match[1];
+                        $col_def = rtrim(rtrim($col_match[2]), ',');
+                        $column_map[$table_name][$col_name] = $col_def;
+                    }
+                }
             }
             ## Parse ALTER TABLE ... ADD INDEX/KEY/PRIMARY KEY/UNIQUE statements
             if (preg_match('/ALTER\s+TABLE\s+`?(\w+)`?\s+ADD\s+(PRIMARY\s+KEY|UNIQUE\s+KEY|UNIQUE|FULLTEXT|INDEX|KEY)\s*(?:`?(\w+)`?\s*)?\(((?:[^()]+|\([^)]*\))+)\)/i', $stmt, $alt_match)) {
@@ -849,11 +861,13 @@ if (isset($database_result) && $database_result) {
 
     $actual_map = array();
     $all_fix_sql = array();
+    $found_tables = array();
 
     foreach ($tables as $table) {
         if (!preg_match('/^'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_/i', $table['Name'])) {
             continue;
         }
+        $found_tables[] = strtolower(str_replace($GLOBALS['config']->get('config', 'dbprefix'), '', $table['Name']));
 
         // Get index and map them
         $indexes = $GLOBALS['db']->misc("SHOW INDEX FROM `".$table['Name']."`");
@@ -904,6 +918,24 @@ if (isset($database_result) && $database_result) {
 
         if ($duplicate !== false) {
             $index_errors[] = $duplicate;
+        }
+
+        // Check for missing columns
+        $table_key = strtolower(str_replace($GLOBALS['config']->get('config', 'dbprefix'), '', $table['Name']));
+        if (isset($column_map[$table_key])) {
+            $actual_columns = $GLOBALS['db']->misc("SHOW COLUMNS FROM `".$table['Name']."`");
+            $actual_col_names = array();
+            if ($actual_columns) {
+                foreach ($actual_columns as $col) {
+                    $actual_col_names[] = strtolower($col['Field']);
+                }
+            }
+            foreach ($column_map[$table_key] as $col_name => $col_def) {
+                if (!in_array(strtolower($col_name), $actual_col_names)) {
+                    $index_errors[] = sprintf($lang['maintain']['missing_column'], $table['Name'], $col_name);
+                    $all_fix_sql[] = 'ALTER TABLE `'.$table['Name'].'` ADD `'.$col_name.'` '.$col_def.'; #EOQ';
+                }
+            }
         }
 
         // Generate fix SQL by comparing full index definitions
@@ -1003,6 +1035,32 @@ if (isset($database_result) && $database_result) {
         $table['errors'] = count($index_errors)>0 ? implode('<br>', $index_errors) : false;
         $smarty_data['tables'][] = $table;
     }
+    // Check for missing tables
+    $missing_tables = array();
+    $prefix = $GLOBALS['config']->get('config', 'dbprefix');
+    foreach ($column_map as $expected_table => $cols) {
+        if (!in_array($expected_table, $found_tables)) {
+            $display_name = $prefix.str_replace('cubecart_', 'CubeCart_', $expected_table);
+            $missing_tables[] = sprintf($lang['maintain']['missing_table'], $display_name);
+            // Generate CREATE TABLE fix from structure.sql
+            foreach ($statements as $fix_stmt) {
+                if (preg_match('/CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?`?(\w+)`?/i', $fix_stmt, $fix_match)) {
+                    if (strtolower($fix_match[1]) === $expected_table) {
+                        $create_sql = trim($fix_stmt);
+                        if ($prefix) {
+                            $create_sql = str_replace('`'.$fix_match[1].'`', '`'.$display_name.'`', $create_sql);
+                        }
+                        $all_fix_sql[] = $create_sql.'; #EOQ';
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    if (!empty($missing_tables)) {
+        $GLOBALS['smarty']->assign('MISSING_TABLES', $missing_tables);
+    }
+
     $GLOBALS['smarty']->assign('TABLES', $smarty_data['tables']);
     if (!empty($all_fix_sql)) {
         $GLOBALS['smarty']->assign('INDEX_FIX_SQL', implode("\n", $all_fix_sql));

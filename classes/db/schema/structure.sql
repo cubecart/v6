@@ -160,6 +160,8 @@ CREATE TABLE IF NOT EXISTS `CubeCart_category` (
 	`cat_hier_position` int NOT NULL DEFAULT '0',
 	`cat_parse` tinyint(1) unsigned NOT NULL DEFAULT '0',
 	`guest_access` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
+	`date_added` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+	`updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
 	PRIMARY KEY (`cat_id`),
 	KEY `cat_parent_status_hide` (`cat_parent_id`, `status`, `hide`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
@@ -336,6 +338,8 @@ CREATE TABLE IF NOT EXISTS `CubeCart_documents` (
 	`navigation_link` tinyint(1) unsigned NOT NULL DEFAULT '1',
 	`doc_parse` tinyint(1) NOT NULL DEFAULT '0',
 	`hide_title` enum('0','1') DEFAULT '0',
+	`date_added` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+	`updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
 	PRIMARY KEY (`doc_id`),
 	KEY `doc_parent_id` (`doc_parent_id`),
 	KEY `doc_status` (`doc_status`),

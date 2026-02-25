@@ -1515,6 +1515,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="missing_index" introduced="6.1.5"><![CDATA[%1$s has no key set. Expecting %2$s.]]></string>
     <string name="wrong_index" introduced="6.1.5"><![CDATA[%1$s has a key type %2$s but expecting %3$s.]]></string>
     <string name="wrong_index_name" introduced="6.5.14"><![CDATA[%1$s index `%2$s` should be named `%3$s`.]]></string>
+    <string name="missing_column" introduced="6.6.0"><![CDATA[%1$s is missing column `%2$s`.]]></string>
+    <string name="missing_table" introduced="6.6.0"><![CDATA[Table %1$s is missing from the database.]]></string>
     <string name="table_indexes" introduced="6.1.5"><![CDATA[Indexes]]></string>
     <string name="suggested_sql_fixes" introduced="6.5.14"><![CDATA[Suggested SQL Fixes]]></string>
     <string name="suggested_sql_fixes_desc" introduced="6.5.14"><![CDATA[Copy and paste the following into {link}Query Database (Advanced){/link} to fix the index errors above.]]></string>
@@ -1598,7 +1600,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="notify_logs_request" introduced="5.0.0"><![CDATA[Request logs successfully emptied.]]></string>
     <string name="notify_logs_transaction" introduced="5.0.0"><![CDATA[Transaction logs successfully emptied.]]></string>
     <string name="notify_reset_product" introduced="5.0.0"><![CDATA[Product views were successfully reset.]]></string>
-    <string name="notify_sitemap" introduced="5.0.0"><![CDATA[Sitemap.xml successfully rebuilt.]]></string>
+    <string name="notify_sitemap" introduced="5.0.0"><![CDATA[Sitemap has been rebuilt successfully.]]></string>
     <string name="notify_sitemap_fail" introduced="5.0.0"><![CDATA[Failed to rebuild sitemap.]]></string>
     <string name="no_query_entered" introduced="5.0.0"><![CDATA[No query entered]]></string>
     <string name="expert_use_only" introduced="5.0.0"><![CDATA[Warning: This tool executes queries directly on your database. Incorrect queries may cause data loss.]]></string>

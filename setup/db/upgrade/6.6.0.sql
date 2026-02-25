@@ -53,3 +53,9 @@ CREATE TABLE IF NOT EXISTS `CubeCart_category_group` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 ALTER TABLE `CubeCart_category` ADD `guest_access` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1'; #EOQ
+
+-- Timestamps for categories and documents
+ALTER TABLE `CubeCart_category` ADD `date_added` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'; #EOQ
+ALTER TABLE `CubeCart_category` ADD `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'; #EOQ
+ALTER TABLE `CubeCart_documents` ADD `date_added` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'; #EOQ
+ALTER TABLE `CubeCart_documents` ADD `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'; #EOQ
