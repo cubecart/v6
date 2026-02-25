@@ -174,6 +174,12 @@ class GUI
             foreach ($GLOBALS['hooks']->load('class.gui.body_js_top') as $hook) {
                 include $hook;
             }
+            // Set JS cookie to prove browser capability (bot protection)
+            if (!isset($_COOKIE['CCB'])) {
+                $ccb_path = $GLOBALS['session']->getCookiePath();
+                $ccb_domain = $GLOBALS['session']->getCookieDomain();
+                $body_js_top[] = '<script>document.cookie="CCB=1;Path='.$ccb_path.';Domain='.$ccb_domain.';SameSite=None;Secure;Max-Age=31536000";</script>';
+            }
             $GLOBALS['smarty']->assign('BODY_JS_TOP', $body_js_top);
 
             // <body> JS

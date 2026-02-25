@@ -654,6 +654,26 @@ class Session
         return $this->_started;
     }
 
+    /**
+     * Get the session cookie path
+     *
+     * @return string
+     */
+    public function getCookiePath()
+    {
+        return $this->_session_path;
+    }
+
+    /**
+     * Get the session cookie domain
+     *
+     * @return string
+     */
+    public function getCookieDomain()
+    {
+        return $this->_session_domain;
+    }
+
     public function regenerateSessionId() {
         $this->_ensureStarted();
 
@@ -829,6 +849,11 @@ class Session
             return;
         }
 
+        // Never start sessions for bots or clients without JS proof
+        if (!CC_IN_ADMIN && ($this->_isBot() || !isset($_COOKIE['CCB']))) {
+            return;
+        }
+
         $this->_started = true; // Set before _start/_validate to prevent re-entry
         $this->_start();
         $this->_validate();
@@ -866,6 +891,50 @@ class Session
     private function _http_user_agent()
     {
         return strpos(($_SERVER['HTTP_USER_AGENT'] ?? "Not Available"), 'Trident') ? 'IEX' : htmlspecialchars($_SERVER['HTTP_USER_AGENT'] ?? "Not Available");
+    }
+
+    /**
+     * Check if the user agent matches a known bot signature
+     *
+     * @return bool
+     */
+    private function _isBot()
+    {
+        $agent = strtolower($_SERVER['HTTP_USER_AGENT'] ?? 'bot');
+        // Allow override via $glob['bot_sigs'] in includes/global.inc.php
+        if (!empty($GLOBALS['glob']['bot_sigs']) && is_array($GLOBALS['glob']['bot_sigs'])) {
+            $sigs = $GLOBALS['glob']['bot_sigs'];
+        } else {
+            // Generic patterns that catch many bots at once:
+            //   'bot' catches googlebot, bingbot, msnbot, yandexbot, ahrefsbot, semrushbot, etc.
+            //   'crawl' catches crawler, applebot-crawler, etc.
+            //   'spider' catches baiduspider, sogou spider, etc.
+            $sigs = array(
+                'bot', 'crawl', 'spider', 'slurp',         // generic patterns
+                'alexa', 'archiver', 'appie', 'ask jeeves', // legacy
+                'curl', 'wget', 'python', 'perl', 'java',  // http libraries
+                'pear', 'mechanize', 'larbin', 'scraper',   // scraping tools
+                'facebookexternal', 'facebook', 'twitt',    // social media
+                'yandex', 'sogou', 'baidu',                 // search engines (non-'bot' UAs)
+                'google', 'bing', 'yahoo',                  // search engines
+                'teoma', 'infoseek', 'inktomi',             // legacy search
+                'scooter', 'fast', 'froogle', 'looksmart',  // legacy search
+                'wordpress', 'monitor', 'transcoder',       // CMS/tools
+                'headless', 'phantom', 'puppeteer',         // headless browsers
+                'lighthouse', 'pagespeed', 'gtmetrix',      // performance testing
+                'pingdom', 'uptimerobot', 'statuscake',     // uptime monitors
+                'semrush', 'ahrefs', 'majestic', 'dotbot',   // SEO tools
+                'bytespider', 'gptbot', 'chatgpt',         // AI crawlers
+                'claudebot', 'anthropic', 'ccbot',          // AI crawlers
+                'applebot', 'duckduck',                     // search engines
+            );
+        }
+        foreach ($sigs as $sig) {
+            if (strpos($agent, $sig) !== false) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
