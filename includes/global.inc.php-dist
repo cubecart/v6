@@ -33,4 +33,4 @@ $glob['es_p'] 		= '';               // Elasticsearch password
 $glob['es_i'] 		= '';               // Elasticsearch index name
 $glob['es_v'] 		= '';               // Elasticsearch vertificate validation enum('1','0')
 $glob['es_c'] 		= '';               // Elasticsearch certificate path
-$glob['bot_sigs']	= array('bot', 'crawl', 'spider', 'slurp', 'curl', 'wget', 'python'); // Override bot UA signatures for session blocking. Matched as substrings e.g. 'bot' catches googlebot, bingbot etc.
+$glob['bot_sigs']	= array('bot', 'crawl', 'spider', 'slurp', 'headless', 'phantom', 'puppeteer', 'lighthouse', 'pagespeed', 'gtmetrix', 'pingdom', 'uptimerobot', 'statuscake', 'semrush', 'ahrefs', 'majestic', 'dotbot', 'facebookexternal'); // Override bot UA signatures for session blocking. Layer 2 only - catches bots that spoof browser UAs. Simple bots (curl, python etc.) are already blocked by the mozilla/ whitelist check.

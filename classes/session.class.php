@@ -900,33 +900,25 @@ class Session
      */
     private function _isBot()
     {
-        $agent = strtolower($_SERVER['HTTP_USER_AGENT'] ?? 'bot');
-        // Allow override via $glob['bot_sigs'] in includes/global.inc.php
+        $agent = strtolower($_SERVER['HTTP_USER_AGENT'] ?? '');
+
+        // Layer 1: Must look like a real browser (all include 'mozilla/')
+        if (empty($agent) || strpos($agent, 'mozilla/') === false) {
+            return true;
+        }
+
+        // Layer 2: Block known bots that spoof full browser UAs
+        // Override via $glob['bot_sigs'] in includes/global.inc.php
         if (!empty($GLOBALS['glob']['bot_sigs']) && is_array($GLOBALS['glob']['bot_sigs'])) {
             $sigs = $GLOBALS['glob']['bot_sigs'];
         } else {
-            // Generic patterns that catch many bots at once:
-            //   'bot' catches googlebot, bingbot, msnbot, yandexbot, ahrefsbot, semrushbot, etc.
-            //   'crawl' catches crawler, applebot-crawler, etc.
-            //   'spider' catches baiduspider, sogou spider, etc.
             $sigs = array(
                 'bot', 'crawl', 'spider', 'slurp',         // generic patterns
-                'alexa', 'archiver', 'appie', 'ask jeeves', // legacy
-                'curl', 'wget', 'python', 'perl', 'java',  // http libraries
-                'pear', 'mechanize', 'larbin', 'scraper',   // scraping tools
-                'facebookexternal', 'facebook', 'twitt',    // social media
-                'yandex', 'sogou', 'baidu',                 // search engines (non-'bot' UAs)
-                'google', 'bing', 'yahoo',                  // search engines
-                'teoma', 'infoseek', 'inktomi',             // legacy search
-                'scooter', 'fast', 'froogle', 'looksmart',  // legacy search
-                'wordpress', 'monitor', 'transcoder',       // CMS/tools
                 'headless', 'phantom', 'puppeteer',         // headless browsers
                 'lighthouse', 'pagespeed', 'gtmetrix',      // performance testing
                 'pingdom', 'uptimerobot', 'statuscake',     // uptime monitors
-                'semrush', 'ahrefs', 'majestic', 'dotbot',   // SEO tools
-                'bytespider', 'gptbot', 'chatgpt',         // AI crawlers
-                'claudebot', 'anthropic', 'ccbot',          // AI crawlers
-                'applebot', 'duckduck',                     // search engines
+                'semrush', 'ahrefs', 'majestic', 'dotbot',  // SEO tools
+                'facebookexternal',                          // social media
             );
         }
         foreach ($sigs as $sig) {
