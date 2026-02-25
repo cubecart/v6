@@ -40,21 +40,6 @@ $GLOBALS['smarty']->error_reporting = E_ALL & ~E_NOTICE & ~E_WARNING;
 $GLOBALS['smarty']->compile_dir  = CC_SKIN_CACHE_DIR;
 $GLOBALS['smarty']->config_dir  = CC_SKIN_CACHE_DIR;
 $GLOBALS['smarty']->cache_dir  = CC_SKIN_CACHE_DIR;
-$_smarty_cache_type = strtolower($GLOBALS['cache']->getCacheSystem());
-if ($_smarty_cache_type !== 'none' && $_smarty_cache_type !== 'file') {
-    $resourceFile = CC_ROOT_DIR.'/classes/cache/smarty_cacheresource_'.$_smarty_cache_type.'.class.php';
-    if (file_exists($resourceFile)) {
-        require $resourceFile;
-        $className = 'Smarty_CacheResource_'.ucfirst($_smarty_cache_type);
-        if (method_exists($GLOBALS['cache'], 'getConnection')) {
-            $GLOBALS['smarty']->registerCacheResource($_smarty_cache_type, new $className($GLOBALS['cache']->getConnection()));
-        } else {
-            $GLOBALS['smarty']->registerCacheResource($_smarty_cache_type, new $className());
-        }
-        $GLOBALS['smarty']->caching_type = $_smarty_cache_type;
-    }
-}
-unset($_smarty_cache_type);
 //Initialize language
 $GLOBALS['language'] = Language::getInstance();
 //Initialize hooks

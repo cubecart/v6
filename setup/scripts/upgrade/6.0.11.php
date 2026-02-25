@@ -9,23 +9,7 @@ foreach ($glob as $key => $value) {
 }
 
 if (!$cache_defined) {
-    if (class_exists('memcached')) {
-        $cache_name = 'memcached';
-    } elseif (class_exists('Memcache')) {
-        $cache_name = 'memcache';
-    } elseif (extension_loaded('APC') && ini_get('apc.enabled')) {
-        $cache_name = 'apc';
-    } elseif (extension_loaded('XCache') && ini_get('xcache.size') > 0) {
-        $enable_auth = ini_get('xcache.admin.enable_auth');
-        if (!$enable_auth || $enable_auth == strtolower('off')) {
-            $cache_name = 'xcache';
-        } else {
-            $cache_name = 'file';
-        }
-    } else {
-        $cache_name = 'file';
-    }
-
+    $cache_name = 'file';
     $cfg[] =sprintf("\$glob['cache'] = '%s';", $cache_name);
 
     $cfg = sprintf("<?php\n%s\n?>", implode("\n", $cfg));
