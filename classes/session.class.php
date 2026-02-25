@@ -358,7 +358,7 @@ class Session
     {
 
         // Check cookies exists for verified and if so return value
-        if (isset($_COOKIE['accept_cookies']) && $_COOKIE['accept_cookies']=='false') {
+        if (isset($_COOKIE['cc_accept_cookies']) && $_COOKIE['cc_accept_cookies']=='false') {
             return false;
         } elseif (!$GLOBALS['config']->get('config', 'cookie_dialogue')) {
             return false;
@@ -847,7 +847,7 @@ class Session
         }
 
         // Never start sessions for bots or clients without JS proof
-        if (!CC_IN_ADMIN && ($this->_isBot() || !isset($_COOKIE['CCB']))) {
+        if (!CC_IN_ADMIN && ($this->_isBot() || !isset($_COOKIE['cc_browser']))) {
             return;
         }
 

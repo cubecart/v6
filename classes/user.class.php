@@ -129,7 +129,7 @@ class User
             $this->authenticate($_POST['username'], $_POST['password'], $remember);
         } else {
             //If there is a cookie for the username and they are not logged in
-            if (isset($_COOKIE['username']) && !empty($_COOKIE['username']) && !$this->is()) {
+            if (isset($_COOKIE['cc_username']) && !empty($_COOKIE['cc_username']) && !$this->is()) {
                 //If we haven't pushed the user to the login
                 if (!$GLOBALS['session']->get('login_push')) {
                     $GLOBALS['session']->set('login_push', true);
@@ -272,7 +272,7 @@ class User
                  * The password cookie is not stored to make stores more secure
                  */
                 if ($remember || $from_cookie) {
-                    $GLOBALS['session']->set_cookie('username', $user[0]['email'], time() + (3600*24*30));
+                    $GLOBALS['session']->set_cookie('cc_username', $user[0]['email'], time() + (3600*24*30));
                 }
                 if (!$GLOBALS['session']->blocked()) {
                     // possibly replaceable with session_set_save_handler?
@@ -760,9 +760,9 @@ class User
             include $hook;
         }
 
-        if (isset($_COOKIE['username'])) {
+        if (isset($_COOKIE['cc_username'])) {
             // Unset the 'Remember Me' cookies
-            $GLOBALS['session']->set_cookie('username', '', time()-3600);
+            $GLOBALS['session']->set_cookie('cc_username', '', time()-3600);
         }
         // Destory the session
         $GLOBALS['session']->destroy();

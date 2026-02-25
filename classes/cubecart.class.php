@@ -2531,8 +2531,8 @@ class Cubecart
         $GLOBALS['seo']->set_meta_data(array('description' => '', 'title' => $GLOBALS['language']->account['login']));
 
         //If there is a cookie for the username then use it in the login
-        if (isset($_COOKIE['username']) && !empty($_COOKIE['username'])) {
-            $GLOBALS['smarty']->assign('USERNAME', $_COOKIE['username']);
+        if (isset($_COOKIE['cc_username']) && !empty($_COOKIE['cc_username'])) {
+            $GLOBALS['smarty']->assign('USERNAME', $_COOKIE['cc_username']);
             $GLOBALS['smarty']->assign('REMEMBER', true);
         } else {
             $GLOBALS['smarty']->assign('REMEMBER', false);

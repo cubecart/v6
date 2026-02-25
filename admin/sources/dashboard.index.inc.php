@@ -65,10 +65,10 @@ if ($glob['adminFile']!=='admin.php' && file_exists(CC_ROOT_DIR.'/admin.php')) {
 ## Check if setup folder remains after install/upgrade
 if ($glob['installed'] && file_exists(CC_ROOT_DIR.'/setup')) {
     ## Attempt auto delete as we have just upgraded or installed
-    if (isset($_COOKIE['delete_setup']) && $_COOKIE['delete_setup']) {
+    if (isset($_COOKIE['cc_delete_setup']) && $_COOKIE['cc_delete_setup']) {
         recursiveDelete(CC_ROOT_DIR.'/setup');
         unlink(CC_ROOT_DIR.'/setup');
-        $GLOBALS['session']->set_cookie('delete_setup', '', time()-3600);
+        $GLOBALS['session']->set_cookie('cc_delete_setup', '', time()-3600);
     }
 
     $history = $GLOBALS['db']->misc('SELECT `version` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_history` ORDER BY `time` DESC LIMIT 1');

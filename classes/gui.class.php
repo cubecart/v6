@@ -175,10 +175,10 @@ class GUI
                 include $hook;
             }
             // Set JS cookie to prove browser capability (bot protection)
-            if (!isset($_COOKIE['CCB'])) {
+            if (!isset($_COOKIE['cc_browser'])) {
                 $ccb_path = $GLOBALS['session']->getCookiePath();
                 $ccb_domain = $GLOBALS['session']->getCookieDomain();
-                $body_js_top[] = '<script>document.cookie="CCB=1;Path='.$ccb_path.';Domain='.$ccb_domain.';SameSite=None;Secure;Max-Age=31536000";</script>';
+                $body_js_top[] = '<script>document.cookie="cc_browser=1;Path='.$ccb_path.';Domain='.$ccb_domain.';SameSite=None;Secure;Max-Age=31536000";</script>';
             }
             $GLOBALS['smarty']->assign('BODY_JS_TOP', $body_js_top);
 
@@ -1048,10 +1048,10 @@ class GUI
             $accept = (isset($_POST['accept_cookies'])) ? true : false;
             $dialogue = ($accept) ? 'Accepted chosen.' : 'Blocked chosen.';
             $GLOBALS['user']->logConsent($dialogue);
-            $GLOBALS['session']->set_cookie('accept_cookies', true, time()+31536000);
+            $GLOBALS['session']->set_cookie('cc_accept_cookies', true, time()+31536000);
             httpredir();
         }
-        if (Config::getInstance()->get('config', 'cookie_dialogue') && !isset($_COOKIE['accept_cookies'])) {
+        if (Config::getInstance()->get('config', 'cookie_dialogue') && !isset($_COOKIE['cc_accept_cookies'])) {
             if ($privacy = $GLOBALS['db']->select('CubeCart_documents', 'doc_id', array('doc_privacy' => '1'))) {
                 $dialogue = str_replace('%1$s', $GLOBALS['config']->get('config', 'store_name'), $GLOBALS['language']->notification['cookie_dialogue']);
                 $dialogue = str_replace('%s', $GLOBALS['config']->get('config', 'store_name'), $dialogue);

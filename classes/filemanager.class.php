@@ -1127,7 +1127,7 @@ class FileManager
 
         $filepath_where  = empty($this->_sub_dir) ? 'IS NULL' : '= \''.str_replace('\\', '/', $this->_sub_dir).'\'';
         $where = '`disabled` = 0 AND `type` = '.(int)$this->_mode.' AND `filepath` '.$filepath_where;
-        $GLOBALS['smarty']->assign('FM_SIZE', isset($_COOKIE['fm_size']) ? 'fm-item-'.$_COOKIE['fm_size'] : 'fm-item-medium');
+        $GLOBALS['smarty']->assign('FM_SIZE', isset($_COOKIE['cc_fm_size']) ? 'fm-item-'.$_COOKIE['cc_fm_size'] : 'fm-item-medium');
         
         $sort = array('filename' => 'ASC');
         if(isset($_POST['fm-sort']) && !empty($_POST['fm-sort'])) {

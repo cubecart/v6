@@ -270,7 +270,7 @@ class ACP
      * @return int
      */
     public function itemsPerPage($list_name, $requested_amount = 0, $default_amount = 25) {
-        $cookie_name = 'rs_limit';
+        $cookie_name = 'cc_rs_limit';
         if(isset($_COOKIE[$cookie_name])) {
             $rs_limit = json_decode(html_entity_decode($_COOKIE[$cookie_name],ENT_QUOTES), true);
             if(!is_array($rs_limit)) {
@@ -535,8 +535,8 @@ class ACP
                     $title = $group;
                     $group = str_replace(' ', '_', $group);
                     
-                    if (isset($_COOKIE['nav_'.$group])) {
-                        $visible = $_COOKIE['nav_'.$group];
+                    if (isset($_COOKIE['cc_nav_'.$group])) {
+                        $visible = $_COOKIE['cc_nav_'.$group];
                     } else {
                         $visible = 'true';
                     }

@@ -543,7 +543,7 @@ if (!isset($_SESSION['setup'])) {
         $attributes .= ';SameSite=None';
         $attributes .= ';Secure';
         $attributes .= ';HttpOnly';
-        header('Set-Cookie: delete_setup=1'.$attributes);
+        header('Set-Cookie: cc_delete_setup=1'.$attributes);
 
         //Attempt admin file and folder rename
         if (!isset($_SESSION['setup']['admin_rename']) && (file_exists('../admin') || file_exists('../admin.php'))) {

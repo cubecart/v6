@@ -152,7 +152,7 @@ jQuery(document).ready(function ($) {
             alert($(this).attr('data-alert-text'));
         }
         $('#eu_cookie_dialogue').slideUp();
-        $.cookie('accept_cookies', accept, { expires: 365 });
+        $.cookie('cc_accept_cookies', accept, { expires: 365 });
         $.ajax({ url: '?_g=ajax_cookie_consent&accept=' + (accept ? '1' : '0'), cache: false });
         return false;
     });
@@ -371,7 +371,7 @@ jQuery(document).ready(function ($) {
     // -------------------------------
     var selector = ($(window).width() < 640) ? '#small-search .search_input' : '.search_input';
     var sayt = $(selector);
-    sayt.on('click', function () { $.removeCookie('ccScroll', null); });
+    sayt.on('click', function () { $.removeCookie('cc_scroll', null); });
     var keyDelay = sayt.hasClass("es") ? 0 : 500;
     sayt.on('keyup', input_delay(function () { saytGo(); }, keyDelay));
 
@@ -439,8 +439,8 @@ jQuery(document).ready(function ($) {
 
         // Keep history to load on back button
         var ccScrollHistory;
-        if ($.cookie('ccScroll')) {
-            ccScrollHistory = $.parseJSON($.cookie("ccScroll"));
+        if ($.cookie('cc_scroll')) {
+            ccScrollHistory = $.parseJSON($.cookie("cc_scroll"));
             ccScrollHistory[cat] = page;
         } else {
             ccScrollHistory = {};
@@ -452,7 +452,7 @@ jQuery(document).ready(function ($) {
         // Set cookie for 10 mins
         var date = new Date();
         date.setTime(date.getTime() + (10 * 60 * 1000));
-        $.cookie("ccScroll", JSON.stringify(ccScrollHistory), { expires: date });
+        $.cookie("cc_scroll", JSON.stringify(ccScrollHistory), { expires: date });
 
         var href = $(this).attr('href');
         $.ajax({
@@ -483,8 +483,8 @@ jQuery(document).ready(function ($) {
     if ($(window).width() < 640) {
         if ($('#ccScrollCat').length > 0) {
             var cat_pages = parseInt($('#ccScrollCat').text(), 10);
-            if ($.cookie('ccScroll')) {
-                var ccScrollHistory = $.parseJSON($.cookie("ccScroll"));
+            if ($.cookie('cc_scroll')) {
+                var ccScrollHistory = $.parseJSON($.cookie("cc_scroll"));
                 var query = true;
                 if (cat_pages in ccScrollHistory) {
                     if (localStorage.hasOwnProperty('category')) {
