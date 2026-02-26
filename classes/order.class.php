@@ -277,6 +277,13 @@ class Order
         $hide_prices = $GLOBALS['session']->has('hide_prices') ? $GLOBALS['session']->get('hide_prices') : false;
         $GLOBALS['session']->set('hide_prices', false);
 
+        // Preserve raw numeric values for JSON-LD schema
+        $order_summary['raw_subtotal'] = $order_summary['subtotal'];
+        $order_summary['raw_total'] = $order_summary['total'];
+        $order_summary['raw_discount'] = $order_summary['discount'];
+        $order_summary['raw_shipping'] = $order_summary['shipping'];
+        $order_summary['raw_order_date'] = $order_summary['order_date'];
+
         // Format prices etc for order emails...
         $order_summary['subtotal']  = Tax::getInstance()->priceFormat($order_summary['subtotal'], true);
         $order_summary['show_credit']  = $order_summary['credit_used'] > 0 ? true : false;
@@ -302,6 +309,8 @@ class Order
             if ($item['product_id']>0) {
                 $existing_data = $GLOBALS['catalogue']->getProductData($item['product_id']);
                 $product    = is_array($existing_data) ? array_merge($existing_data, $item) : $item;
+                $product['raw_price'] = $product['price'];
+                $product['raw_line_total'] = $product['price'] * $product['quantity'];
                 $product['item_price'] = Tax::getInstance()->priceFormat($product['price']);
                 $product['price']   = Tax::getInstance()->priceFormat($product['price']*$product['quantity']);
                 

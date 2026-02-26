@@ -31,6 +31,7 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
     private $_text;
     private $_template_title;
     private $_email_content_id;
+    private $_content_type = '';
     private $_import_new = false;
     private $_sendgrid = false;
     private $_sendgrid_key = '';
@@ -121,6 +122,7 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
             }
             if (($contents =  $GLOBALS['db']->select('CubeCart_email_content', false, $where, false, 1)) !== false) {
                 $this->_email_content_id = $contents[0]['content_id'];
+                $this->_content_type = $content_type;
                 $elements = array(
                     'subject'  => $contents[0]['subject'],
                     'content_html' => $contents[0]['content_html'],
@@ -217,6 +219,7 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
                         $data['storeName']  = $GLOBALS['config']->get('config', 'store_name');
                         $data['storeURL']  = $GLOBALS['storeURL'];
                         $data['unsubscribeURL'] = $GLOBALS['storeURL'].'/index.php?_a=unsubscribe'.$email_param;
+                        $data['jsonLd'] = $this->_buildJsonLd();
 
                         $template = $this->_parseTemplate($templates[0], $data, $string);
                         // assign to right variable
@@ -349,5 +352,177 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
      */
     private function _cleanseContents($string) {
         return preg_replace('#<script(.*?)>(.*?)</script>#is', '', $string);
+    }
+
+    /**
+     * Build JSON-LD schema markup for email
+     *
+     * @return string Script tag with JSON-LD or empty string
+     */
+    private function _buildJsonLd()
+    {
+        $data = $GLOBALS['smarty']->getTemplateVars('DATA');
+        $products = $GLOBALS['smarty']->getTemplateVars('PRODUCTS');
+        $billing = $GLOBALS['smarty']->getTemplateVars('BILLING');
+        $shipping = $GLOBALS['smarty']->getTemplateVars('SHIPPING');
+
+        $schema = null;
+
+        switch ($this->_content_type) {
+            case 'cart.order_confirmation':
+                $schema = $this->_buildOrderSchema($data, $products, $billing, $shipping, 'https://schema.org/OrderProcessing');
+                break;
+            case 'cart.order_complete':
+                $schema = $this->_buildOrderSchema($data, $products, $billing, $shipping, 'https://schema.org/OrderDelivered');
+                break;
+            case 'cart.order_cancelled':
+                $schema = $this->_buildOrderSchema($data, $products, $billing, $shipping, 'https://schema.org/OrderCancelled');
+                break;
+            case 'cart.payment_received':
+                $schema = $this->_buildOrderSchema($data, $products, $billing, $shipping, 'https://schema.org/OrderProcessing');
+                break;
+            case 'cart.payment_fraud':
+                $schema = $this->_buildOrderSchema($data, $products, $billing, $shipping, 'https://schema.org/OrderProblem');
+                break;
+            case 'cart.digital_download':
+                $schema = $this->_buildOrderSchema($data, $products, $billing, $shipping, 'https://schema.org/OrderInTransit');
+                break;
+            case 'account.password_recovery':
+                $link = isset($data['reset_link']) ? $data['reset_link'] : '';
+                $schema = $this->_buildViewActionSchema('Reset Password', $link);
+                break;
+            case 'newsletter.verify_email':
+                $link = isset($data['link']) ? $data['link'] : '';
+                $schema = $this->_buildViewActionSchema('Confirm Subscription', $link);
+                break;
+            case 'newsletter.remove_request':
+                $link = isset($data['link']) ? $data['link'] : '';
+                $schema = $this->_buildViewActionSchema('Confirm Unsubscribe', $link);
+                break;
+        }
+
+        if (!$schema) {
+            return '';
+        }
+
+        return '<script type="application/ld+json">'
+            . json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
+            . '</script>';
+    }
+
+    /**
+     * Build Order schema for transactional emails
+     */
+    private function _buildOrderSchema($data, $products, $billing, $shipping, $orderStatus)
+    {
+        if (empty($data) || empty($data['cart_order_id'])) {
+            return null;
+        }
+
+        $storeName = $GLOBALS['config']->get('config', 'store_name');
+        $currency = !empty($data['currency']) ? $data['currency'] : $GLOBALS['config']->get('config', 'default_currency');
+        $orderDate = !empty($data['raw_order_date']) ? date('c', (int)$data['raw_order_date']) : '';
+        $total = isset($data['raw_total']) ? sprintf('%.2f', $data['raw_total']) : '0.00';
+        $displayOrderId = !empty($data['custom_oid']) ? $data['custom_oid'] : $data['cart_order_id'];
+
+        $schema = array(
+            '@context' => 'http://schema.org',
+            '@type' => 'Order',
+            'orderNumber' => $displayOrderId,
+            'orderStatus' => $orderStatus,
+            'merchant' => array(
+                '@type' => 'Organization',
+                'name' => $storeName
+            ),
+            'priceCurrency' => $currency,
+            'price' => $total
+        );
+
+        if (!empty($orderDate)) {
+            $schema['orderDate'] = $orderDate;
+        }
+
+        // Line items
+        if (!empty($products) && is_array($products)) {
+            $offers = array();
+            foreach ($products as $product) {
+                $offer = array(
+                    '@type' => 'Offer',
+                    'itemOffered' => array(
+                        '@type' => 'Product',
+                        'name' => $product['name']
+                    ),
+                    'priceCurrency' => $currency,
+                    'price' => isset($product['raw_price']) ? sprintf('%.2f', $product['raw_price']) : '0.00',
+                    'eligibleQuantity' => array(
+                        '@type' => 'QuantitativeValue',
+                        'value' => (int)$product['quantity']
+                    )
+                );
+                if (!empty($product['product_code'])) {
+                    $offer['itemOffered']['sku'] = $product['product_code'];
+                }
+                $offers[] = $offer;
+            }
+            $schema['acceptedOffer'] = $offers;
+        }
+
+        // Billing address
+        if (!empty($billing)) {
+            $schema['billingAddress'] = $this->_buildPostalAddress($billing);
+        }
+
+        // View order action
+        $schema['potentialAction'] = array(
+            '@type' => 'ViewAction',
+            'target' => $GLOBALS['storeURL'] . '/index.php?_a=vieworder&cart_order_id=' . $displayOrderId,
+            'name' => 'View Order'
+        );
+
+        return $schema;
+    }
+
+    /**
+     * Build ViewAction schema for non-order emails
+     */
+    private function _buildViewActionSchema($name, $url)
+    {
+        if (empty($url)) {
+            return null;
+        }
+
+        return array(
+            '@context' => 'http://schema.org',
+            '@type' => 'EmailMessage',
+            'potentialAction' => array(
+                '@type' => 'ViewAction',
+                'name' => $name,
+                'target' => $url
+            )
+        );
+    }
+
+    /**
+     * Build PostalAddress schema from address array
+     */
+    private function _buildPostalAddress($address)
+    {
+        $postal = array('@type' => 'PostalAddress');
+        if (!empty($address['line1'])) {
+            $postal['streetAddress'] = $address['line1'] . (!empty($address['line2']) ? ', ' . $address['line2'] : '');
+        }
+        if (!empty($address['town'])) {
+            $postal['addressLocality'] = $address['town'];
+        }
+        if (!empty($address['state'])) {
+            $postal['addressRegion'] = $address['state'];
+        }
+        if (!empty($address['postcode'])) {
+            $postal['postalCode'] = $address['postcode'];
+        }
+        if (!empty($address['country'])) {
+            $postal['addressCountry'] = $address['country'];
+        }
+        return $postal;
     }
 }

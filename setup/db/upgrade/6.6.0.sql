@@ -59,3 +59,6 @@ ALTER TABLE `CubeCart_category` ADD `date_added` timestamp NOT NULL DEFAULT '000
 ALTER TABLE `CubeCart_category` ADD `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'; #EOQ
 ALTER TABLE `CubeCart_documents` ADD `date_added` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'; #EOQ
 ALTER TABLE `CubeCart_documents` ADD `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'; #EOQ
+
+-- Add JSON-LD schema markup placeholder to email templates
+UPDATE `CubeCart_email_template` SET `content_html` = REPLACE(`content_html`, '</head>', '{$DATA.jsonLd}\n</head>') WHERE `content_html` NOT LIKE '%{$DATA.jsonLd}%'; #EOQ
