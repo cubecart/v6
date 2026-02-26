@@ -271,15 +271,15 @@ if (isset($_GET['export'])) {
         }
     } elseif (isset($_POST['status']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
         if(is_array($_POST['domain'])) {
-            foreach($_POST['domain'] as $language => $domain) {
+            foreach($_POST['domain'] as $lang_code => $domain) {
                 if(empty($domain)) {
-                    $GLOBALS['db']->delete('CubeCart_domains', array('language' => $language));
+                    $GLOBALS['db']->delete('CubeCart_domains', array('language' => $lang_code));
                     continue;
                 }
-                if($GLOBALS['db']->select('CubeCart_domains', false, array('language' => $language))) {
-                    $GLOBALS['db']->update('CubeCart_domains', array('domain' => $domain), array('language' => $language));
+                if($GLOBALS['db']->select('CubeCart_domains', false, array('language' => $lang_code))) {
+                    $GLOBALS['db']->update('CubeCart_domains', array('domain' => $domain), array('language' => $lang_code));
                 } else {
-                    $GLOBALS['db']->insert('CubeCart_domains', array('domain' => $domain, 'language' => $language));
+                    $GLOBALS['db']->insert('CubeCart_domains', array('domain' => $domain, 'language' => $lang_code));
                 }
             }
         }
@@ -292,6 +292,35 @@ if (isset($_GET['export'])) {
             $GLOBALS['main']->errorMessage(sprintf($lang['translate']['error_lang_status_fixed'],$default_lang));
         }
         $GLOBALS['config']->set('languages', false, $_POST['status']);
+
+        // For each language being enabled, ensure all email content types are seeded
+        foreach ($_POST['status'] as $code => $status) {
+            if ($status == '1') {
+                $xml_file = CC_LANGUAGE_DIR.'email_'.$code.'.xml';
+                if (!file_exists($xml_file)) continue;
+                $xml_data = file_get_contents($xml_file);
+                if (empty($xml_data)) continue;
+                try {
+                    $xml_emails = new SimpleXMLElement($xml_data);
+                } catch (Exception $e) {
+                    continue;
+                }
+                $xml_types = array();
+                foreach ($xml_emails->email as $email) {
+                    if ($email->content) {
+                        $xml_types[] = (string)$email->attributes()->name;
+                    }
+                }
+                if (empty($xml_types)) continue;
+                $existing = $GLOBALS['db']->select('CubeCart_email_content', array('content_type'), array('language' => $code));
+                $db_types = $existing ? array_column($existing, 'content_type') : array();
+                if (!empty(array_diff($xml_types, $db_types))) {
+                    $GLOBALS['language']->importEmail('email_'.$code.'.xml');
+                    $GLOBALS['main']->successMessage(sprintf($lang['translate']['notify_email_content_imported'], $code));
+                }
+            }
+        }
+
         $after = $GLOBALS['config']->get('config', 'default_language');
         if (md5($before) !== md5($after)) {
             $GLOBALS['main']->successMessage($lang['translate']['notify_language_status']);

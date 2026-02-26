@@ -2592,6 +2592,7 @@ VARNING: Alla filer i den kommer att raderas permanent]]></string>
    <string name="notify_language_delete"><![CDATA[Språket har raderats.]]></string>
    <string name="notify_language_import_success"><![CDATA[Språket har importerats.]]></string>
    <string name="notify_language_status"><![CDATA[Språkstatus har uppdaterats.]]></string>
+   <string name="notify_email_content_imported"><![CDATA[E-postinnehåll för %1$s saknades och har importerats automatiskt.]]></string>
    <string name="notify_translation_create"><![CDATA[Översättningen har skapats.]]></string>
    <string name="notify_translation_delete"><![CDATA[Översättningen har raderats.]]></string>
    <string name="notify_translation_update"><![CDATA[Översättningen har uppdaterats.]]></string>

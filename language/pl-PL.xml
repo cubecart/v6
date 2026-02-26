@@ -2596,6 +2596,7 @@ UWAGA: Wszystkie pliki w nim zawarte zostaną trwale usunięte!]]></string>
    <string name="notify_language_delete"><![CDATA[Język pomyślnie usunięty.]]></string>
    <string name="notify_language_import_success"><![CDATA[Język pomyślnie zaimportowany.]]></string>
    <string name="notify_language_status"><![CDATA[Status języka pomyślnie zaktualizowany.]]></string>
+   <string name="notify_email_content_imported"><![CDATA[Treść wiadomości e-mail dla %1$s była brakująca i została automatycznie zaimportowana.]]></string>
    <string name="notify_translation_create"><![CDATA[Tłumaczenie pomyślnie utworzone.]]></string>
    <string name="notify_translation_delete"><![CDATA[Tłumaczenie pomyślnie usunięte.]]></string>
    <string name="notify_translation_update"><![CDATA[Tłumaczenie pomyślnie zaktualizowane.]]></string>

@@ -2595,6 +2595,7 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
    <string name="notify_language_delete"><![CDATA[Sprache erfolgreich gelöscht.]]></string>
    <string name="notify_language_import_success"><![CDATA[Sprache erfolgreich importiert.]]></string>
    <string name="notify_language_status"><![CDATA[Sprachstatus erfolgreich aktualisiert.]]></string>
+   <string name="notify_email_content_imported"><![CDATA[E-Mail-Inhalt für %1$s fehlte und wurde automatisch importiert.]]></string>
    <string name="notify_translation_create"><![CDATA[Übersetzung erfolgreich erstellt.]]></string>
    <string name="notify_translation_delete"><![CDATA[Übersetzung erfolgreich gelöscht.]]></string>
    <string name="notify_translation_update"><![CDATA[Übersetzung erfolgreich aktualisiert.]]></string>

@@ -2596,6 +2596,7 @@ Questa email è inviata dall'indirizzo email principale del negozio ma è possib
     <string name="notify_language_delete"><![CDATA[Lingua eliminata con successo.]]></string>
     <string name="notify_language_import_success"><![CDATA[Lingua importata con successo.]]></string>
     <string name="notify_language_status"><![CDATA[Stato della lingua aggiornato con successo.]]></string>
+    <string name="notify_email_content_imported"><![CDATA[Il contenuto email per %1$s era mancante ed è stato importato automaticamente.]]></string>
     <string name="notify_translation_create"><![CDATA[Traduzione creata con successo.]]></string>
     <string name="notify_translation_delete"><![CDATA[Traduzione eliminata con successo.]]></string>
     <string name="notify_translation_update"><![CDATA[Traduzione aggiornata con successo.]]></string>

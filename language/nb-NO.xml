@@ -2595,6 +2595,7 @@ ADVARSEL: Alle filer i den vil bli slettet permanent.]]></string>
    <string name="notify_language_delete"><![CDATA[Språk slettet.]]></string>
    <string name="notify_language_import_success"><![CDATA[Språk importert.]]></string>
    <string name="notify_language_status"><![CDATA[Språkstatus oppdatert.]]></string>
+   <string name="notify_email_content_imported"><![CDATA[E-postinnhold for %1$s manglet og har blitt importert automatisk.]]></string>
    <string name="notify_translation_create"><![CDATA[Oversettelse opprettet.]]></string>
    <string name="notify_translation_delete"><![CDATA[Oversettelse slettet.]]></string>
    <string name="notify_translation_update"><![CDATA[Oversettelse oppdatert.]]></string>

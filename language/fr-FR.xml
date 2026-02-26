@@ -2584,6 +2584,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="notify_language_delete"><![CDATA[Langue supprimée avec succès.]]></string>
     <string name="notify_language_import_success"><![CDATA[Langue importée avec succès.]]></string>
     <string name="notify_language_status"><![CDATA[Statut de la langue mis à jour avec succès.]]></string>
+    <string name="notify_email_content_imported"><![CDATA[Le contenu des e-mails pour %1$s était manquant et a été importé automatiquement.]]></string>
     <string name="notify_translation_create"><![CDATA[Traduction créée avec succès.]]></string>
     <string name="notify_translation_delete"><![CDATA[Traduction supprimée avec succès.]]></string>
     <string name="notify_translation_update"><![CDATA[Traduction mise à jour avec succès.]]></string>

@@ -2581,6 +2581,7 @@
       <string name="notify_language_delete"><![CDATA[Мову успішно видалено.]]></string>
       <string name="notify_language_import_success"><![CDATA[Мову успішно імпортовано.]]></string>
       <string name="notify_language_status"><![CDATA[Статус мови успішно оновлено.]]></string>
+      <string name="notify_email_content_imported"><![CDATA[Вміст електронної пошти для %1$s був відсутній і був автоматично імпортований.]]></string>
       <string name="notify_translation_create"><![CDATA[Переклад успішно створено.]]></string>
       <string name="notify_translation_delete"><![CDATA[Переклад успішно видалено.]]></string>
       <string name="notify_translation_update"><![CDATA[Переклад успішно оновлено.]]></string>
