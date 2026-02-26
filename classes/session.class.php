@@ -68,6 +68,19 @@ class Session
      * @var bool
      */
     private $_user_blocked	= false;
+    /**
+     * Cookie-backed preference keys: namespace => array(name => cookie_name)
+     *
+     * @var array
+     */
+    private static $_cookie_prefs = array(
+        'client' => array(
+            'currency' => 'cc_currency',
+            'language' => 'cc_language',
+            'skin'     => 'cc_skin',
+            'style'    => 'cc_style',
+        ),
+    );
 
     const BLOCKER_FRONTEND	= 'F';
     const BLOCKER_BACKEND	= 'B';
@@ -356,6 +369,13 @@ class Session
      */
     public function delete($name, $namespace = 'system')
     {
+        if ($this->_isCookiePref($name, $namespace)) {
+            $cookie = self::$_cookie_prefs[$namespace][$name];
+            $this->set_cookie($cookie, '', time() - 42000, array('httponly' => false));
+            unset($_COOKIE[$cookie]);
+            return true;
+        }
+
         $namespace = $this->_namespace($namespace);
 
         //If the session isn't active we don't need to continue
@@ -423,6 +443,11 @@ class Session
      */
     public function get($name, $namespace = 'system', $default = false)
     {
+        if ($this->_isCookiePref($name, $namespace)) {
+            $cookie = self::$_cookie_prefs[$namespace][$name];
+            return isset($_COOKIE[$cookie]) && $_COOKIE[$cookie] !== '' ? $_COOKIE[$cookie] : $default;
+        }
+
         $namespace = $this->_namespace($namespace);
 
         if ($this->_state != 'active' && $this->_state != 'expired') {
@@ -521,6 +546,11 @@ class Session
      */
     public function has($name, $namespace = 'system')
     {
+        if ($this->_isCookiePref($name, $namespace)) {
+            $cookie = self::$_cookie_prefs[$namespace][$name];
+            return isset($_COOKIE[$cookie]) && $_COOKIE[$cookie] !== '';
+        }
+
         $namespace = $this->_namespace($namespace);
 
         if ($this->_state != 'active') {
@@ -547,6 +577,11 @@ class Session
      */
     public function isEmpty($name, $namespace)
     {
+        if ($this->_isCookiePref($name, $namespace)) {
+            $cookie = self::$_cookie_prefs[$namespace][$name];
+            return !isset($_COOKIE[$cookie]) || empty($_COOKIE[$cookie]);
+        }
+
         //If the element isn't there then it is empty
         if (!$this->has($name, $namespace)) {
             return true;
@@ -595,6 +630,18 @@ class Session
      */
     public function set($name, $value, $namespace = 'system', $overwrite = false)
     {
+        if ($this->_isCookiePref($name, $namespace)) {
+            $cookie = self::$_cookie_prefs[$namespace][$name];
+            if (is_null($value)) {
+                $this->set_cookie($cookie, '', time() - 42000, array('httponly' => false));
+                unset($_COOKIE[$cookie]);
+            } else {
+                $_COOKIE[$cookie] = $value;
+                $this->set_cookie($cookie, $value, time() + 31536000, array('httponly' => false)); // 1 year
+            }
+            return true;
+        }
+
         $namespace = $this->_namespace($namespace);
         if ($this->_state != 'active') {
             return true;
@@ -770,6 +817,18 @@ class Session
             }
         }
         return false;
+    }
+
+    /**
+     * Check if a key is a cookie-backed preference
+     *
+     * @param string $name
+     * @param string $namespace
+     * @return bool
+     */
+    private function _isCookiePref($name, $namespace)
+    {
+        return !empty($name) && isset(self::$_cookie_prefs[$namespace][$name]);
     }
 
     /**
