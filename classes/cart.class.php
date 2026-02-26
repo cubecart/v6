@@ -1265,10 +1265,6 @@ class Cart
      */
     public function save()
     {
-        // Don't start a session just to save an empty basket
-        if (empty($this->basket) && !Session::getInstance()->isStarted()) {
-            return;
-        }
         Session::getInstance()->set('', $this->basket, 'basket', true);
         //Only care about auto saving the cart if there is something in there
         if (!empty($this->basket) && isset($this->basket['contents'])) {

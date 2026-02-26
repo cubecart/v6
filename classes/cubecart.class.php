@@ -857,13 +857,10 @@ class Cubecart
                 }
                 if (!empty($terms)) {
                     foreach ($terms as $term) {
-                        // Only deduplicate hits if session is already active
-                        if ($GLOBALS['session']->isStarted()) {
-                            if ($GLOBALS['session']->has($term, 'search')) {
-                                continue;
-                            }
-                            $GLOBALS['session']->set($term, '1', 'search');
+                        if ($GLOBALS['session']->has($term, 'search')) {
+                            continue;
                         }
+                        $GLOBALS['session']->set($term, '1', 'search');
 
                         if (($select = $GLOBALS['db']->select('CubeCart_search', array('id', 'hits'), array('searchstr' => strtoupper($term)), false, 1, false, false)) !== false) {
                             $GLOBALS['db']->update('CubeCart_search', array('hits' => $select[0]['hits'] + 1), array('id' => $select[0]['id']), false);
