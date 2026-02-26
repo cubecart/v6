@@ -54,3 +54,19 @@ if ($legacy_rows) {
 
 // Drop the legacy table
 $db->misc("DROP TABLE IF EXISTS `".$glob['dbprefix']."CubeCart_config_legacy`");
+
+// Remove discontinued cache backends (memcache and xcache)
+if (isset($glob['cache']) && in_array($glob['cache'], array('memcache', 'xcache'))) {
+    $glob['cache'] = 'file';
+    $contents = file_get_contents($global_file);
+    if ($contents !== false) {
+        $updated = preg_replace(
+            '/(\$glob\[\'cache\'\]\s*=\s*\')(?:memcache|xcache)(\';)/',
+            '${1}file${2}',
+            $contents
+        );
+        if ($updated !== $contents) {
+            file_put_contents($global_file, $updated);
+        }
+    }
+}
