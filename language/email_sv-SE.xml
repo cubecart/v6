@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * CubeCart v6
+ * ========================================
+ * CubeCart is a registered trade mark of CubeCart Limited
+ * Copyright CubeCart Limited 2025. All rights reserved.
+ * UK Private Limited Company No. 5323904
+ * ========================================
+ * Web:   https://www.cubecart.com
+ * Email:  hello@cubecart.com
+ * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
+-->
+<emails version="2.0" language="sv-SE">
+  <email name="admin.password_recovery">
+    <subject><![CDATA[Adminlösenordsåterställning]]></subject>
+    <content type="html"><![CDATA[<p>Hej {$DATA.name},</p>
+<p>För att återfå åtkomst till butikens administrationspanel, vänligen följ länken nedan:</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<p>Om länken ovan inte fungerar, kopiera och klistra in den i webbläsarens adressfält.</p>]]></content>
+    <content type="text"><![CDATA[Hej {$DATA.name},
+
+För att återfå åtkomst till butikens administrationspanel, vänligen följ länken nedan:
+
+{$DATA.link}
+
+Om länken ovan inte fungerar, kopiera och klistra in den i webbläsarens adressfält.]]></content>
+  </email>
+  <email name="cart.order_complete">
+    <subject><![CDATA[Beställning slutförd]]></subject>
+    <content type="html"><![CDATA[<p>Hej {$DATA.first_name|capitalize},</p>
+<p>Vi är glada att meddela att beställning nummer {$DATA.cart_order_id} nu är slutförd. Om du beställde fysiska varor bör de vara framme snart.</p>{if !empty($DATA.ship_tracking)}<p>Spåra din beställning:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
+    <content type="text"><![CDATA[Hej {$DATA.first_name|capitalize},
+
+Vi är glada att meddela att beställning nummer {$DATA.cart_order_id} nu är slutförd. Om du beställde fysiska varor bör de vara framme snart.
+{if !empty($DATA.ship_tracking)}
+Spåra din beställning:
+{$DATA.ship_tracking}
+{/if}]]></content>
+  </email>
+  <email name="cart.order_cancelled">
+    <subject><![CDATA[Beställning avbruten]]></subject>
+    <content type="html"><![CDATA[<p>Hej {$DATA.first_name|capitalize},</p>
+<p>Beställning nummer {$DATA.cart_order_id} har blivit avbruten. Om du har några frågor, tveka inte att kontakta oss.</p>]]></content>
+    <content type="text"><![CDATA[Hej {$DATA.first_name|capitalize},
+
+Beställning nummer {$DATA.cart_order_id} har blivit avbruten. Om du har några frågor, tveka inte att kontakta oss.]]></content>
+  </email>
+  <email name="cart.order_confirmation">
+    <subject><![CDATA[Orderbekräftelse #{$DATA.cart_order_id}]]></subject>
+    <content type="html"><![CDATA[<p>Tack för din beställning, {$DATA.first_name|capitalize}.</p>
+<p>Vi har mottagit din beställning {$DATA.cart_order_id}, lagd den {$DATA.order_date}. Vänligen spara detta e-postmeddelande för dina egna uppgifter. Du kan se din orderstatus online när som helst.</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<table width="100%">
+<tr>
+<td valign="top" width="50%"><strong>Faktureringsadress:</strong><br>
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
+{if !empty($BILLING.company_name)}{$BILLING.company_name}<br>
+{/if}
+{$BILLING.line1|capitalize}<br>
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>
+{/if}
+{$BILLING.town|upper}<br>
+{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
+{$BILLING.postcode}<br>
+{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}<br>
+{$BILLING.phone}<br>
+<br>
+<strong>E-post:</strong><br>
+{$BILLING.email}</td>
+<td valign="top" width="50%"><strong>Leveransadress:</strong><br>
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>
+{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>
+{/if}{$SHIPPING.line1|capitalize}<br>
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize} <br>
+{/if}{$SHIPPING.town|upper}<br>
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
+{$SHIPPING.postcode}<br>
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
+</tr>
+</table>
+<table border="0" cellpadding="3" cellspacing="0" width="100%">
+<tbody>
+<tr>
+<td><strong>Artikel</strong></td>
+<td><strong>Antal</strong></td>
+<td><strong>Pris</strong></td>
+</tr>
+{foreach from=$PRODUCTS item=product}
+<tr>
+<td>{$product.name} <br>{$product.product_options}</td>
+<td>{$product.quantity}</td>
+<td>{$product.price}</td>
+</tr>
+{/foreach}
+<tr>
+<td>&nbsp;</td>
+<td>{if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Frakt:{/if}</td>
+<td> {$DATA.shipping}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td> Rabatt:</td>
+<td> {$DATA.discount}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td> Delsumma:</td>
+<td> {$DATA.subtotal}</td>
+</tr>
+{foreach from=$TAXES item=tax}
+<tr>
+<td>&nbsp;</td>
+<td> {$tax.tax_name}: ({$tax.tax_percent}%)</td>
+<td> {$tax.tax_amount}</td>
+</tr>
+{/foreach}
+{if $DATA.show_credit}
+<tr>
+<td>&nbsp;</td>
+<td>Tillgodo:</td>
+<td>({$DATA.credit_used})</td>
+</tr>
+{/if}
+<tr>
+<td>&nbsp;</td>
+<td><strong>Ordersumma: </strong></td>
+<td><strong>{$DATA.total}</strong></td>
+</tr>
+</tbody>
+</table>
+{if !empty($DATA.note_to_customer)}
+<p>&quot;{$DATA.note_to_customer}&quot;</p>
+{/if}]]></content>
+    <content type="text"><![CDATA[Tack för din beställning, {$DATA.first_name|capitalize}.
+
+Vi har mottagit din beställning {$DATA.cart_order_id}, lagd den {$DATA.order_date}. Vänligen spara detta e-postmeddelande för dina egna uppgifter. Du kan se din orderstatus online när som helst.
+
+{$DATA.link}
+
+----------------------------------------------------------------------
+Faktureringsadress:
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}
+{if !empty($BILLING.company_name)}{$BILLING.company_name}
+{/if}{$BILLING.line1|capitalize}
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}
+{/if}{$BILLING.town|upper}
+{if !empty($BILLING.state)}{$BILLING.state|upper}
+{/if}{$BILLING.postcode}
+{$BILLING.country}{if !empty($BILLING.w3w)}
+///{$BILLING.w3w}{/if}
+{$BILLING.phone}
+
+E-post:
+{$BILLING.email}
+
+Leveransadress:
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}
+{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name}
+{/if}{$SHIPPING.line1|capitalize}
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize}
+{/if}{$SHIPPING.town|upper}
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}
+{/if}{$SHIPPING.postcode}
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}
+///{$SHIPPING.w3w}{/if}
+
+----------------------------------------------------------------------
+Artiklar i din beställning
+
+{foreach from=$PRODUCTS item=product}
+-----------------------------------
+{$product.name}
+{$product.product_options}
+
+Artikelnummer: {$product.product_code}
+Styckpris: {$product.price}
+Antal: {$product.quantity}
+
+{/foreach}
+-----------------------------------
+Delsumma: {$DATA.subtotal}
+Rabatt: {$DATA.discount}
+{if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Frakt:{/if} {$DATA.shipping}
+{foreach from=$TAXES item=tax}{$tax.tax_name} ({$tax.tax_percent}%): {$tax.tax_amount}
+{/foreach}{if $DATA.show_credit}
+Tillgodo: ({$DATA.credit_used})
+{/if}--------------------------
+Ordersumma: {$DATA.total}
+==========================
+{if !empty($DATA.note_to_customer)}
+"{$DATA.note_to_customer}"{/if}]]></content>
+  </email>
+  <email name="cart.payment_fraud">
+    <subject><![CDATA[Problem med beställningen]]></subject>
+    <content type="html"><![CDATA[<p>Hej {$DATA.first_name|capitalize},</p>
+<p>Tyvärr kunde vi inte behandla betalningen för beställning {$DATA.cart_order_id}. Om du har några frågor, tveka inte att kontakta oss.</p>]]></content>
+    <content type="text"><![CDATA[Hej {$DATA.first_name|capitalize},
+
+Tyvärr kunde vi inte behandla betalningen för beställning {$DATA.cart_order_id}. Om du har några frågor, tveka inte att kontakta oss.]]></content>
+  </email>
+  <email name="account.password_recovery">
+    <subject><![CDATA[Lösenordsåterställning]]></subject>
+    <content type="html"><![CDATA[<p>Hej {$DATA.first_name|capitalize} {$DATA.last_name|capitalize},<br>
+<br>
+För att återställa ditt lösenord, vänligen klicka på länken nedan eller kopiera och klistra in adressen i webbläsarens adressfält. När du kommit till webbsidan blir du ombedd att ange och bekräfta ditt nya lösenord.<br>
+<br>
+<a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br>
+<br>
+Om du behöver ytterligare hjälp, vänligen kontakta oss.</p>]]></content>
+    <content type="text"><![CDATA[Hej {$DATA.first_name|capitalize},
+
+För att återställa ditt lösenord, vänligen klicka på länken nedan eller kopiera och klistra in adressen i webbläsarens adressfält. När du kommit till webbsidan blir du ombedd att ange och bekräfta ditt nya lösenord.
+
+{$DATA.reset_link}
+
+Om du behöver ytterligare hjälp, vänligen kontakta oss.]]></content>
+  </email>
+  <email name="admin.order_received">
+    <subject><![CDATA[Ny beställning #{$DATA.cart_order_id}]]></subject>
+    <content type="html"><![CDATA[<p>{$DATA.first_name|capitalize} {$DATA.last_name|capitalize} {if !empty($BILLING.company_name)}({$BILLING.company_name}){/if} har just lagt beställning nummer {$DATA.cart_order_id} den {$DATA.order_date}.</p>
+<p>Du kan hantera denna beställning via länken nedan.</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<table width="100%">
+<tr>
+<td valign="top" width="50%"><strong>Faktureringsadress:</strong><br>
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
+{if !empty($BILLING.company_name)}{$BILLING.company_name}<br>
+{/if}
+{$BILLING.line1|capitalize}<br>
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>
+{/if}
+{$BILLING.town|upper}<br>
+{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
+{$BILLING.postcode}<br>
+{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}<br>
+{$BILLING.phone}<br>
+<br>
+<strong>E-post:</strong><br>
+{$BILLING.email}</td>
+<td valign="top" width="50%"><strong>Leveransadress:</strong><br>
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>
+{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>
+{/if}{$SHIPPING.line1|capitalize}<br>
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize} <br>
+{/if}{$SHIPPING.town|upper}<br>
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
+{$SHIPPING.postcode}<br>
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
+</tr>
+</table>
+<table border="0" cellpadding="3" cellspacing="0" width="100%">
+<tbody>
+<tr>
+<td><strong>Artikel</strong></td>
+<td><strong>Antal</strong></td>
+<td><strong>Pris</strong></td>
+</tr>
+{foreach from=$PRODUCTS item=product}
+<tr>
+<td>{$product.name} <br>{$product.product_options}</td>
+<td>{$product.quantity}</td>
+<td>{$product.price}</td>
+</tr>
+{/foreach}
+<tr>
+<td>&nbsp;</td>
+<td> {if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Frakt:{/if}</td>
+<td> {$DATA.shipping}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td> Rabatt:</td>
+<td> {$DATA.discount}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td> Delsumma:</td>
+<td> {$DATA.subtotal}</td>
+</tr>
+{foreach from=$TAXES item=tax}
+<tr>
+<td>&nbsp;</td>
+<td> {$tax.tax_name}: ({$tax.tax_percent}%)</td>
+<td> {$tax.tax_amount}</td>
+</tr>
+{/foreach}
+{if $DATA.show_credit}
+<tr>
+<td>&nbsp;</td>
+<td>Tillgodo:</td>
+<td>({$DATA.credit_used})</td>
+</tr>
+{/if}
+<tr>
+<td>&nbsp;</td>
+<td><strong>Ordersumma: </strong></td>
+<td><strong>{$DATA.total}</strong></td>
+</tr>
+</tbody>
+
+</table>]]></content>
+    <content type="text"><![CDATA[{$DATA.first_name|capitalize} {$DATA.last_name|capitalize} {if !empty($BILLING.company_name)}({$BILLING.company_name}){/if} har just lagt beställning nummer {$DATA.cart_order_id} den {$DATA.order_date}.
+
+Du kan hantera denna beställning via länken nedan.
+
+{$DATA.link}
+
+----------------------------------------------------------------------
+Faktureringsadress:
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}
+{if !empty($BILLING.company_name)}{$BILLING.company_name}
+{/if}{$BILLING.line1|capitalize}
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}
+{/if}{$BILLING.town|upper}
+{if !empty($BILLING.state)}{$BILLING.state|upper}
+{/if}{$BILLING.postcode}
+{$BILLING.country}{if !empty($BILLING.w3w)}
+///{$BILLING.w3w}{/if}
+{$BILLING.phone}
+
+E-post:
+{$BILLING.email}
+
+Leveransadress:
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}
+{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name}
+{/if}{$SHIPPING.line1|capitalize}
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize}
+{/if}{$SHIPPING.town|upper}
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}
+{/if}{$SHIPPING.postcode}
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}
+///{$SHIPPING.w3w}{/if}
+
+----------------------------------------------------------------------
+Artiklar i beställningen
+
+{foreach from=$PRODUCTS item=product}
+-----------------------------------
+{$product.name}
+{$product.product_options}
+
+Artikelnummer: {$product.product_code}
+Styckpris: {$product.price}
+Antal: {$product.quantity}
+
+{/foreach}
+-----------------------------------
+Delsumma: {$DATA.subtotal}
+Rabatt: {$DATA.discount}
+{if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Frakt:{/if} {$DATA.shipping}
+{foreach from=$TAXES item=tax}{$tax.tax_name} ({$tax.tax_percent}%): {$tax.tax_amount}
+{/foreach}{if $DATA.show_credit}
+Tillgodo: ({$DATA.credit_used})
+{/if}--------------------------
+Ordersumma: {$DATA.total}
+==========================]]></content>
+  </email>
+  <email name="admin.review_added">
+    <subject><![CDATA[Ny produktrecension]]></subject>
+    <content type="html"><![CDATA[{$DATA.name} har lämnat en ny recension för '{$DATA.product_name}'. Du kan moderera den via länken nedan.
+        <p><strong>Modereringslänk:</strong><br><a href='{$DATA.link}'>{$DATA.link}</a></p>
+        <p><strong>Recensionstext:</strong><br>{$DATA.review}</p>]]></content>
+    <content type="text"><![CDATA[{$DATA.name} har lämnat en ny recension för '{$DATA.product_name}'. Du kan moderera den via länken nedan.
+
+Modereringslänk:
+{$DATA.link}
+Recensionstext:
+{$DATA.review}]]></content>
+  </email>
+  <email name="cart.digital_download">
+    <subject><![CDATA[Dina nedladdningar är klara]]></subject>
+    <content type="html"><![CDATA[<p>Hej {$DATA.first_name|capitalize},</p>
+<p>Dina digitala filer är redo att laddas ner. Du kan hämta dem via länkarna nedan:</p>
+{foreach from=$DOWNLOADS item=download}
+<p><strong>{$download.name}:</strong> (Länken går ut den {$download.expire}<strong>)</strong><br>
+<a href="{$download.url}">{$download.url}</a></p>
+{/foreach}
+<p>Om länkarna ovan inte fungerar, försök kopiera och klistra in dem i webbläsarens adressfält. Du kan även komma åt dessa filer från ditt konto på vår webbplats.</p>
+<p>&nbsp;</p>]]></content>
+    <content type="text"><![CDATA[Hej {$DATA.first_name|capitalize},
+
+Dina digitala filer är redo att laddas ner. Du kan hämta dem via länkarna nedan:
+
+{foreach from=$DOWNLOADS item=download}
+{$download.name}: (Länken går ut den {$download.expire})
+{$download.url}
+{/foreach}
+
+Om länkarna ovan inte fungerar, försök kopiera och klistra in dem i webbläsarens adressfält. Du kan även komma åt dessa filer från ditt konto på vår webbplats.]]></content>
+  </email>
+  <email name="cart.gift_certificate">
+    <subject><![CDATA[Ditt presentkort]]></subject>
+    <content type="html"><![CDATA[<p>Hej {$DATA.name},</p>
+<p>Du har fått ett presentkort som kan användas vid köp på vår webbplats.</p>
+<p><strong>Från: </strong>{$DATA.first_name|capitalize} {$DATA.last_name|capitalize}<br>
+<strong>Belopp: </strong>{$DATA.value}<br>
+<strong>Inlösenkod:</strong> {$DATA.code}<br>
+<strong>Hälsning:</strong> {$DATA.message}</p>
+<p>-------------------</p>
+<p>För att lösa in detta presentkort anger du &quot;Inlösenkoden&quot; ovan i fältet &quot;Kampanjkod eller presentkort&quot; vid kassan.</p>
+<p>Varför inte använda det nu?</p>]]></content>
+    <content type="text"><![CDATA[Hej {$DATA.name},
+
+Du har fått ett presentkort som kan användas vid köp på vår webbplats.
+
+Trevlig shopping!
+
+Från: {$DATA.first_name|capitalize} {$DATA.last_name|capitalize}
+Belopp: {$DATA.value}
+Inlösenkod: {$DATA.code}
+Hälsning: {$DATA.message}
+
+-------------------
+
+För att lösa in detta presentkort anger du "Inlösenkoden" ovan i fältet "Kampanjkod eller presentkort" vid kassan.
+
+Varför inte använda det nu?]]></content>
+  </email>
+  <email name="catalogue.tell_friend">
+    <subject><![CDATA[{$DATA.from} har rekommenderat en produkt till dig]]></subject>
+    <content type="html"><![CDATA[Hej {$DATA.to},
+<p>Din vän <strong>{$DATA.from}</strong> trodde att du kanske är intresserad av <strong>{$DATA.name}</strong>.</p>
+<p><strong>Produktlänk:</strong> <a href="{$DATA.link}">{$DATA.name}</a></p>
+<p>{$DATA.message}</p>]]></content>
+    <content type="text"><![CDATA[Hej {$DATA.to},
+
+Din vän {$DATA.from} trodde att du kanske är intresserad av '{$DATA.name}'.
+
+{$DATA.name}
+Produktlänk: {$DATA.link}
+
+{$DATA.message}]]></content>
+  </email>
+  <email name="cart.payment_received">
+    <subject><![CDATA[Tack för din betalning]]></subject>
+    <content type="html"><![CDATA[<p>Hej {$DATA.first_name|capitalize},</p>
+<p>Vi har mottagit din betalning på {$DATA.total} för beställning nummer {$DATA.cart_order_id}.</p>]]></content>
+    <content type="text"><![CDATA[Hej {$DATA.first_name|capitalize},
+
+Vi har mottagit din betalning på {$DATA.total} för beställning nummer {$DATA.cart_order_id}.]]></content>
+  </email>
+  <email name="newsletter.verify_email">
+    <subject><![CDATA[Bekräfta din prenumeration]]></subject>
+    <content type="html"><![CDATA[<p>{$DATA.email} användes för att prenumerera på vårt nyhetsbrev. För att bekräfta din prenumeration, vänligen klicka på länken nedan:</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+    <content type="text"><![CDATA[{$DATA.email} användes för att prenumerera på vårt nyhetsbrev. För att bekräfta din prenumeration, vänligen klicka på länken nedan:
+
+{$DATA.link}
+]]></content>
+  </email>
+  <email name="newsletter.remove_request">
+    <subject><![CDATA[Bekräfta avprenumeration från nyhetsbrevet]]></subject>
+    <content type="html"><![CDATA[<p>En begäran har gjorts om att avprenumerera <strong>{$DATA.email}</strong> från vårt nyhetsbrev. För att bekräfta, vänligen klicka på länken nedan.</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+    <content type="text"><![CDATA[En begäran har gjorts om att avprenumerera {$DATA.email} från vårt nyhetsbrev. För att bekräfta, vänligen klicka på länken nedan.
+
+{$DATA.link}
+]]></content>
+  </email>
+</emails>

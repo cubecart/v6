@@ -62,3 +62,7 @@ ALTER TABLE `CubeCart_documents` ADD `updated` timestamp NOT NULL DEFAULT '0000-
 
 -- Add JSON-LD schema markup placeholder to email templates
 UPDATE `CubeCart_email_template` SET `content_html` = REPLACE(`content_html`, '</head>', '{$DATA.jsonLd}\n</head>') WHERE `content_html` NOT LIKE '%{$DATA.jsonLd}%'; #EOQ
+
+-- Correct Swedish locale code from se-SE to sv-SE
+UPDATE `CubeCart_config` SET `config_value` = 'sv-SE' WHERE `config_key` = 'default_language' AND `config_value` = 'se-SE'; #EOQ
+UPDATE `CubeCart_config` SET `config_key` = 'sv-SE' WHERE `config_key` = 'se-SE' AND `name` = 'language'; #EOQ
