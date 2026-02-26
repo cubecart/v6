@@ -210,18 +210,34 @@ class Cache extends Cache_Controler
     public function usage()
     {
         $info = $this->_redis->info();
-        $output = '<table>';
-        foreach ($info as $key => $value) {
-            if (is_array($value)) {
-                $array_value = '';
-                foreach ($value as $k => $v) {
-                    $array_value .= $k.': '.$v.'<br>';
-                }
-                $value = $array_value;
-            }
-            $output .= '<tr><td>'.$key.'</td><td>'.$value.'</td></tr>';
+
+        $uptime = (int)$info['uptime_in_seconds'];
+        if ($uptime >= 86400) {
+            $uptime_str = floor($uptime / 86400).'d '.gmdate('H:i:s', $uptime % 86400);
+        } else {
+            $uptime_str = gmdate('H:i:s', $uptime);
         }
-        $output .= '</table>';
+
+        $hits = (int)$info['keyspace_hits'];
+        $misses = (int)$info['keyspace_misses'];
+        $total_requests = $hits + $misses;
+        $hit_rate = $total_requests > 0 ? round($hits / $total_requests * 100, 1) : 0;
+
+        $output = "<table border='1'>";
+        $output .= "<thead><tr><th colspan='2'>Redis Server: ".$info['redis_version']." (".$info['redis_mode'].")</th></tr></thead>";
+        $output .= "<tbody>";
+        $output .= "<tr><td>Uptime</td><td>".$uptime_str."</td></tr>";
+        $output .= "<tr><td>Connected clients</td><td>".$info['connected_clients']."</td></tr>";
+        $output .= "<tr><td>Memory used</td><td>".$info['used_memory_human']."</td></tr>";
+        $output .= "<tr><td>Memory peak</td><td>".$info['used_memory_peak_human']."</td></tr>";
+        $output .= "<tr><td>Total keys</td><td>".($this->_redis->dbSize())."</td></tr>";
+        $output .= "<tr><td>Cache hits</td><td>".$hits." (".$hit_rate."%)</td></tr>";
+        $output .= "<tr><td>Cache misses</td><td>".$misses." (".(100 - $hit_rate)."%)</td></tr>";
+        $output .= "<tr><td>Total commands processed</td><td>".number_format((float)$info['total_commands_processed'])."</td></tr>";
+        $output .= "<tr><td>Evicted keys</td><td>".$info['evicted_keys']."</td></tr>";
+        $output .= "<tr><td>Expired keys</td><td>".$info['expired_keys']."</td></tr>";
+        $output .= "</tbody></table>";
+
         return $output;
     }
 

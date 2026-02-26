@@ -167,15 +167,43 @@ class Cache extends Cache_Controler
     public function usage()
     {
         $stats = $this->_memcached->getStats();
-        if (is_array($stats)) {
-            $output = '';
-            foreach ($stats as $server => $data) {
-                $output .= $this->_printStats($server, $data);
-            }
-            return $output;
-        } else {
+        if (!is_array($stats)) {
             return "No stats available for memcached.";
         }
+
+        $output = '';
+        foreach ($stats as $server => $data) {
+            $uptime = (int)$data['uptime'];
+            if ($uptime >= 86400) {
+                $uptime_str = floor($uptime / 86400).'d '.gmdate('H:i:s', $uptime % 86400);
+            } else {
+                $uptime_str = gmdate('H:i:s', $uptime);
+            }
+
+            $hits = (int)$data['get_hits'];
+            $misses = (int)$data['get_misses'];
+            $total_requests = $hits + $misses;
+            $hit_rate = $total_requests > 0 ? round($hits / $total_requests * 100, 1) : 0;
+
+            $used = (float)$data['bytes'] / (1024 * 1024);
+            $limit = (float)$data['limit_maxbytes'] / (1024 * 1024);
+
+            $output .= "<table border='1'>";
+            $output .= "<thead><tr><th colspan='2'>Memcached Server: ".$server." (v".$data['version'].")</th></tr></thead>";
+            $output .= "<tbody>";
+            $output .= "<tr><td>Uptime</td><td>".$uptime_str."</td></tr>";
+            $output .= "<tr><td>Connected clients</td><td>".$data['curr_connections']."</td></tr>";
+            $output .= "<tr><td>Memory used</td><td>".round($used, 2)." MiB</td></tr>";
+            $output .= "<tr><td>Memory limit</td><td>".round($limit, 0)." MiB</td></tr>";
+            $output .= "<tr><td>Total items stored</td><td>".number_format((float)$data['total_items'])."</td></tr>";
+            $output .= "<tr><td>Current items</td><td>".number_format((float)$data['curr_items'])."</td></tr>";
+            $output .= "<tr><td>Cache hits</td><td>".$hits." (".$hit_rate."%)</td></tr>";
+            $output .= "<tr><td>Cache misses</td><td>".$misses." (".(100 - $hit_rate)."%)</td></tr>";
+            $output .= "<tr><td>Evicted keys</td><td>".$data['evictions']."</td></tr>";
+            $output .= "</tbody></table>";
+        }
+
+        return $output;
     }
 
     /**
@@ -222,51 +250,5 @@ class Cache extends Cache_Controler
     {
         $this->_setPrefix();
         $this->_empties = ($this->read($this->_empties_id))?:array();
-    }
-    /**
-     * Return string of stats for output
-     */
-    private function _printStats($server, $data)
-    {
-        $output = '';
-        $output .= "<table border='1'>";
-        $output .= "<thead><tr><th colspan='2'>Server: ".$server."</th></tr></thead>";
-        $output .= "<tbody><tr><td>Memcache Server version:</td><td> ".$data["version"]."</td></tr>";
-        $output .= "<tr><td>Process id of this server process </td><td>".$data["pid"]."</td></tr>";
-        $output .= "<tr><td>Number of seconds this server has been running </td><td>".$data["uptime"]."</td></tr>";
-        if(!empty($data["rusage_user_seconds"])) {
-            $output .= "<tr><td>Accumulated user time for this process </td><td>".$data["rusage_user_seconds"]." seconds</td></tr>";
-        }
-        if(!empty($data["rusage_system_seconds"])) {
-            $output .= "<tr><td>Accumulated system time for this process </td><td>".$data["rusage_system_seconds"]." seconds</td></tr>";
-        }
-        $output .= "<tr><td>Total number of items stored by this server ever since it started </td><td>".$data["total_items"]."</td></tr>";
-        $output .= "<tr><td>Number of open connections </td><td>".$data["curr_connections"]."</td></tr>";
-        $output .= "<tr><td>Total number of connections opened since the server started running </td><td>".$data["total_connections"]."</td></tr>";
-        $output .= "<tr><td>Number of connection structures allocated by the server </td><td>".$data["connection_structures"]."</td></tr>";
-        $output .= "<tr><td>Cumulative number of retrieval requests </td><td>".$data["cmd_get"]."</td></tr>";
-        $output .= "<tr><td> Cumulative number of storage requests </td><td>".$data["cmd_set"]."</td></tr>";
-        if($data["cmd_get"]) {
-            $percCacheHit = ((float)$data["get_hits"] / (float)$data["cmd_get"] * 100);
-            $percCacheHit = round($percCacheHit, 3);
-            $percCacheMiss = 100-$percCacheHit;
-            $output .= "<tr><td>Number of keys that have been requested and found present </td><td>".$data["get_hits"]." ($percCacheHit%)</td></tr>";
-            $output .= "<tr><td>Number of items that have been requested and not found </td><td>".$data["get_misses"]." ($percCacheMiss%)</td></tr>";
-        }
-        if($data["bytes_read"]>0) {
-            $MBRead = (float)$data["bytes_read"] / (1024 * 1024);
-            $output .= "<tr><td>Total number of bytes read by this server from network </td><td>".$MBRead." MiB</td></tr>";
-        }
-        if($data["bytes_written"]>0) { 
-            $MBWrite = (float)$data["bytes_written"] / (1024 * 1024);
-            $output .= "<tr><td>Total number of bytes sent by this server to network </td><td>".$MBWrite." MiB</td></tr>";
-        }
-        if($data["limit_maxbytes"]>0) {
-            $MBSize = (float)$data["limit_maxbytes"] / (1024 * 1024);
-            $output .= "<tr><td>Number of bytes this server is allowed to use for storage.</td><td>".$MBSize." MiB</td></tr>";
-        }
-        $output .= "<tr><td>Number of valid items removed from cache to free memory for new items.</td><td>".$data["evictions"]."</td></tr>";
-        $output .= "</tbody></table>";
-        return $output;
     }
 }
