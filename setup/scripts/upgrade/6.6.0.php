@@ -70,3 +70,39 @@ if (isset($glob['cache']) && in_array($glob['cache'], array('memcache', 'xcache'
         }
     }
 }
+
+// Migrate Predis redis_parameters/redis_options to native phpredis config
+if (isset($glob['redis_parameters'])) {
+    $host = '127.0.0.1';
+    $port = 6379;
+    $params = $glob['redis_parameters'];
+    if (is_string($params) && preg_match('#^tcp://([^:]+):(\d+)#', $params, $m)) {
+        $host = $m[1];
+        $port = (int)$m[2];
+    } elseif (is_array($params)) {
+        if (isset($params['host'])) $host = $params['host'];
+        if (isset($params['port'])) $port = (int)$params['port'];
+    }
+    $contents = file_get_contents($global_file);
+    if ($contents !== false) {
+        // Remove old Predis config lines
+        $updated = preg_replace('/^\$glob\[\'redis_parameters\'\].*;\s*\n/m', '', $contents);
+        $updated = preg_replace('/^\$glob\[\'redis_options\'\].*;\s*\n/m', '', $updated);
+        // Add new phpredis config if not already present
+        if (strpos($updated, "glob['redis_host']") === false) {
+            $new_config = "\$glob['redis_host'] = '".$host."';\n";
+            $new_config .= "\$glob['redis_port'] = ".$port.";\n";
+            $updated = preg_replace(
+                '/(\$glob\[\'cache\'\]\s*=\s*\'redis\';)\s*\n/',
+                "$1\n".$new_config,
+                $updated
+            );
+        }
+        if ($updated !== $contents) {
+            file_put_contents($global_file, $updated);
+        }
+    }
+    unset($glob['redis_parameters'], $glob['redis_options']);
+    $glob['redis_host'] = $host;
+    $glob['redis_port'] = $port;
+}

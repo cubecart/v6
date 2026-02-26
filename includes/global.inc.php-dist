@@ -10,27 +10,81 @@
  * Email:  hello@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  */
-$glob['dbdatabase'] 	= '';			// Database name e.g. cubecart 
-$glob['dbhost'] 		= '';			// Database server hostname e.g. localhost (Can be domain or ip address)
-$glob['dbprefix'] 		= '';			// Table prefix e.g. store_1_ (handy for multiple stores in one database)
-$glob['dbport'] 		= '';			// Database server port (e.g. 3306). This can be left empty.
-$glob['dbsocket'] 		= '';			// Database server socket (e.g. /var/mysql/mysql.sock). This can be left empty.
-$glob['dbusername'] 	= '';			// Username that has access to the database
-$glob['dbpassword'] 	= '';			// Password for username above.
-$glob['installed'] 		= '0';			// Set to 1 if store is installed. Prevents setup redirect.
-$glob['adminFolder'] 	= 'admin';		// Change this if you have changed the admin folder name
-$glob['adminFile'] 		= 'admin.php';	// Change this if you have changed the admin file name
-$glob['cache'] 			= 'file';		// Cache in use can be (file, memcached, redis)
-$glob['session_save_path'] = '';		// Set your own session save path e.g. 127.0.0.1:11211
-$glob['session_save_handler'] = '';		// Set your own session save handler e.g. memcached
-$glob['safe_mode'] = false;		        // Set to true to disable hooks and code snippets, 'hooks' to disable code hooks and 'snippets' to disable code snippets
-$glob['auto_upgrade_disabled'] = false;  // Set to an email address or false. Entering an email will disable the auto upgrade too with a message about who to contact
-$glob['subscribe_mode_lax'] = '0';  // Set to 1 to enable lax newsletter subscribe mode. This will allow double opt in to be disabled.
-$glob['search_columns'] = array('name', 'description', 'product_code');  // Use this to specify earch columns for like search
-$glob['es_h'] 		= '';               // Elasticsearch host e.g. https://localhost:9200
-$glob['es_u'] 		= '';               // Elasticserch username
-$glob['es_p'] 		= '';               // Elasticsearch password
-$glob['es_i'] 		= '';               // Elasticsearch index name
-$glob['es_v'] 		= '';               // Elasticsearch vertificate validation enum('1','0')
-$glob['es_c'] 		= '';               // Elasticsearch certificate path
-$glob['bot_sigs']	= array('bot', 'crawl', 'spider', 'slurp', 'headless', 'phantom', 'puppeteer', 'lighthouse', 'pagespeed', 'gtmetrix', 'pingdom', 'uptimerobot', 'statuscake', 'semrush', 'ahrefs', 'majestic', 'dotbot', 'facebookexternal'); // Override bot UA signatures for session blocking. Layer 2 only - catches bots that spoof browser UAs. Simple bots (curl, python etc.) are already blocked by the mozilla/ whitelist check.
+
+// Database
+// Name e.g. cubecart
+$glob['dbdatabase'] 	= '';
+// Server hostname e.g. localhost (can be domain or ip address)
+$glob['dbhost'] 		= '';
+// Table prefix e.g. store_1_ (handy for multiple stores in one database)
+$glob['dbprefix'] 		= '';
+// Server port e.g. 3306 (can be left empty)
+$glob['dbport'] 		= '';
+// Server socket e.g. /var/mysql/mysql.sock (can be left empty)
+$glob['dbsocket'] 		= '';
+// Username that has access to the database
+$glob['dbusername'] 	= '';
+// Password for username above
+$glob['dbpassword'] 	= '';
+
+// Installation
+// Set to 1 if store is installed. Prevents setup redirect.
+$glob['installed'] 		= '0';
+
+// Admin
+// Change these if you have renamed the admin folder or file
+$glob['adminFolder'] 	= 'admin';
+$glob['adminFile'] 		= 'admin.php';
+
+// Cache (file, memcached, redis)
+$glob['cache'] 			= 'file';
+
+// Memcached server host and port
+$glob['memcached_servers'] = array('127.0.0.1', 11211);
+
+// Redis server settings
+$glob['redis_host'] 	= '127.0.0.1';
+$glob['redis_port'] 	= 6379;
+// Leave empty if no password
+$glob['redis_password'] = '';
+// Database number
+$glob['redis_db'] 		= 0;
+
+// Sessions
+// Set your own session save path e.g. 127.0.0.1:11211
+$glob['session_save_path'] = '';
+// Set your own session save handler e.g. memcached
+$glob['session_save_handler'] = '';
+
+// Safety and maintenance
+// Set to true to disable hooks and code snippets, 'hooks' to disable code hooks, 'snippets' to disable code snippets
+$glob['safe_mode'] = false;
+// Set to an email address to disable auto upgrade with a message about who to contact, or false
+$glob['auto_upgrade_disabled'] = false;
+
+// Newsletter
+// Set to 1 to enable lax subscribe mode (allows double opt-in to be disabled)
+$glob['subscribe_mode_lax'] = '0';
+
+// Search
+// Columns used for LIKE search
+$glob['search_columns'] = array('name', 'description', 'product_code');
+
+// Elasticsearch
+// Host e.g. https://localhost:9200
+$glob['es_h'] 		= '';
+// Username
+$glob['es_u'] 		= '';
+// Password
+$glob['es_p'] 		= '';
+// Index name
+$glob['es_i'] 		= '';
+// Certificate validation (1 or 0)
+$glob['es_v'] 		= '';
+// Certificate path
+$glob['es_c'] 		= '';
+
+// Bot detection
+// UA signatures for session blocking (layer 2 - catches bots that spoof browser UAs)
+// Simple bots (curl, python etc.) are already blocked by the mozilla/ whitelist check
+$glob['bot_sigs']	= array('bot', 'crawl', 'spider', 'slurp', 'headless', 'phantom', 'puppeteer', 'lighthouse', 'pagespeed', 'gtmetrix', 'pingdom', 'uptimerobot', 'statuscake', 'semrush', 'ahrefs', 'majestic', 'dotbot', 'facebookexternal');
