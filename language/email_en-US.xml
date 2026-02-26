@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * CubeCart v6
+ * ========================================
+ * CubeCart is a registered trade mark of CubeCart Limited
+ * Copyright CubeCart Limited 2025. All rights reserved.
+ * UK Private Limited Company No. 5323904
+ * ========================================
+ * Web:   https://www.cubecart.com
+ * Email:  hello@cubecart.com
+ * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
+-->
+<emails version="2.0" language="en-US">
+  <email name="admin.password_recovery">
+    <subject><![CDATA[Admin Password Recovery]]></subject>
+    <content type="html"><![CDATA[<p>Dear {$DATA.name},</p>
+<p>To regain access to the store's administration panel, please follow the link below:</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<p>If the link above doesn't work, please copy and paste it into your browser address bar.</p>]]></content>
+    <content type="text"><![CDATA[Dear {$DATA.name},
+
+To regain access to the store's administration panel, please follow the link below:
+
+{$DATA.link}
+
+If the link above doesn't work, please copy and paste it into your browser address bar.]]></content>
+  </email>
+  <email name="cart.order_complete">
+    <subject><![CDATA[Order Complete]]></subject>
+    <content type="html"><![CDATA[<p>Hi {$DATA.first_name|capitalize},</p>
+<p>We're pleased to let you know that order number {$DATA.cart_order_id} is now complete. If you ordered physical goods, they should be with you soon.</p>{if !empty($DATA.ship_tracking)}<p>Track your order:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
+    <content type="text"><![CDATA[Hi {$DATA.first_name|capitalize},
+
+We're pleased to let you know that order number {$DATA.cart_order_id} is now complete. If you ordered physical goods, they should be with you soon.
+{if !empty($DATA.ship_tracking)}
+Track your order:
+{$DATA.ship_tracking}
+{/if}]]></content>
+  </email>
+  <email name="cart.order_cancelled">
+    <subject><![CDATA[Order Canceled]]></subject>
+    <content type="html"><![CDATA[<p>Hi {$DATA.first_name|capitalize},</p>
+<p>Order number {$DATA.cart_order_id} has been canceled. If you have any questions, please don't hesitate to contact us.</p>]]></content>
+    <content type="text"><![CDATA[Hi {$DATA.first_name|capitalize},
+
+Order number {$DATA.cart_order_id} has been canceled. If you have any questions, please don't hesitate to contact us.]]></content>
+  </email>
+  <email name="cart.order_confirmation">
+    <subject><![CDATA[Order Confirmation #{$DATA.cart_order_id}]]></subject>
+    <content type="html"><![CDATA[<p>Thank you for your order, {$DATA.first_name|capitalize}.</p>
+<p>We've received your order {$DATA.cart_order_id}, placed on {$DATA.order_date}. Please keep this email for your records. You can view your order status online at any time.</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<table width="100%">
+<tr>
+<td valign="top" width="50%"><strong>Billing address:</strong><br>
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
+{if !empty($BILLING.company_name)}{$BILLING.company_name}<br>
+{/if}
+{$BILLING.line1|capitalize}<br>
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>
+{/if}
+{$BILLING.town|upper}<br>
+{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
+{$BILLING.postcode}<br>
+{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}<br>
+{$BILLING.phone}<br>
+<br>
+<strong>Email:</strong><br>
+{$BILLING.email}</td>
+<td valign="top" width="50%"><strong>Shipping address:</strong><br>
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>
+{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>
+{/if}{$SHIPPING.line1|capitalize}<br>
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize} <br>
+{/if}{$SHIPPING.town|upper}<br>
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
+{$SHIPPING.postcode}<br>
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
+</tr>
+</table>
+<table border="0" cellpadding="3" cellspacing="0" width="100%">
+<tbody>
+<tr>
+<td><strong>Item</strong></td>
+<td><strong>Quantity</strong></td>
+<td><strong>Cost</strong></td>
+</tr>
+{foreach from=$PRODUCTS item=product}
+<tr>
+<td>{$product.name} <br>{$product.product_options}</td>
+<td>{$product.quantity}</td>
+<td>{$product.price}</td>
+</tr>
+{/foreach}
+<tr>
+<td>&nbsp;</td>
+<td>{if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Shipping:{/if}</td>
+<td> {$DATA.shipping}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td> Discount:</td>
+<td> {$DATA.discount}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td> Subtotal:</td>
+<td> {$DATA.subtotal}</td>
+</tr>
+{foreach from=$TAXES item=tax}
+<tr>
+<td>&nbsp;</td>
+<td> {$tax.tax_name}: ({$tax.tax_percent}%)</td>
+<td> {$tax.tax_amount}</td>
+</tr>
+{/foreach}
+{if $DATA.show_credit}
+<tr>
+<td>&nbsp;</td>
+<td>Credit:</td>
+<td>({$DATA.credit_used})</td>
+</tr>
+{/if}
+<tr>
+<td>&nbsp;</td>
+<td><strong>Order Total: </strong></td>
+<td><strong>{$DATA.total}</strong></td>
+</tr>
+</tbody>
+</table>
+{if !empty($DATA.note_to_customer)}
+<p>&quot;{$DATA.note_to_customer}&quot;</p>
+{/if}]]></content>
+    <content type="text"><![CDATA[Thank you for your order, {$DATA.first_name|capitalize}.
+
+We've received your order {$DATA.cart_order_id}, placed on {$DATA.order_date}. Please keep this email for your records. You can view your order status online at any time.
+
+{$DATA.link}
+
+----------------------------------------------------------------------
+Billing address:
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}
+{if !empty($BILLING.company_name)}{$BILLING.company_name}
+{/if}{$BILLING.line1|capitalize}
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}
+{/if}{$BILLING.town|upper}
+{if !empty($BILLING.state)}{$BILLING.state|upper}
+{/if}{$BILLING.postcode}
+{$BILLING.country}{if !empty($BILLING.w3w)}
+///{$BILLING.w3w}{/if}
+{$BILLING.phone}
+
+Email:
+{$BILLING.email}
+
+Shipping address:
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}
+{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name}
+{/if}{$SHIPPING.line1|capitalize}
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize}
+{/if}{$SHIPPING.town|upper}
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}
+{/if}{$SHIPPING.postcode}
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}
+///{$SHIPPING.w3w}{/if}
+
+----------------------------------------------------------------------
+Items in Your Order
+
+{foreach from=$PRODUCTS item=product}
+-----------------------------------
+{$product.name}
+{$product.product_options}
+
+Part Number: {$product.product_code}
+Unit Price: {$product.price}
+Qty: {$product.quantity}
+
+{/foreach}
+-----------------------------------
+Subtotal: {$DATA.subtotal}
+Discount: {$DATA.discount}
+{if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Shipping:{/if} {$DATA.shipping}
+{foreach from=$TAXES item=tax}{$tax.tax_name} ({$tax.tax_percent}%): {$tax.tax_amount}
+{/foreach}{if $DATA.show_credit}
+Credit: ({$DATA.credit_used})
+{/if}--------------------------
+Order Total: {$DATA.total}
+==========================
+{if !empty($DATA.note_to_customer)}
+"{$DATA.note_to_customer}"{/if}]]></content>
+  </email>
+  <email name="cart.payment_fraud">
+    <subject><![CDATA[Order Problem]]></subject>
+    <content type="html"><![CDATA[<p>Hi {$DATA.first_name|capitalize},</p>
+<p>We're sorry, but we were unable to process the payment for order {$DATA.cart_order_id}. If you have any questions, please don't hesitate to contact us.</p>]]></content>
+    <content type="text"><![CDATA[Hi {$DATA.first_name|capitalize},
+
+We're sorry, but we were unable to process the payment for order {$DATA.cart_order_id}. If you have any questions, please don't hesitate to contact us.]]></content>
+  </email>
+  <email name="account.password_recovery">
+    <subject><![CDATA[Password Recovery]]></subject>
+    <content type="html"><![CDATA[<p>Dear {$DATA.first_name|capitalize} {$DATA.last_name|capitalize},<br>
+<br>
+To reset your password, please click on the link below or copy and paste the address into your browser's address bar. Once you're on the web page, you'll be asked to enter and confirm your new password.<br>
+<br>
+<a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br>
+<br>
+If you need any further help, please contact us.</p>]]></content>
+    <content type="text"><![CDATA[Hi {$DATA.first_name|capitalize},
+
+To reset your password, please click on the link below or copy and paste the address into your browser's address bar. Once you're on the web page, you'll be asked to enter and confirm your new password.
+
+{$DATA.reset_link}
+
+If you need any further help, please contact us.]]></content>
+  </email>
+  <email name="admin.order_received">
+    <subject><![CDATA[New Order #{$DATA.cart_order_id}]]></subject>
+    <content type="html"><![CDATA[<p>{$DATA.first_name|capitalize} {$DATA.last_name|capitalize} {if !empty($BILLING.company_name)}({$BILLING.company_name}){/if} just placed order number {$DATA.cart_order_id} on {$DATA.order_date}.</p>
+<p>You can manage this order using the link below.</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<table width="100%">
+<tr>
+<td valign="top" width="50%"><strong>Billing address:</strong><br>
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
+{if !empty($BILLING.company_name)}{$BILLING.company_name}<br>
+{/if}
+{$BILLING.line1|capitalize}<br>
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>
+{/if}
+{$BILLING.town|upper}<br>
+{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
+{$BILLING.postcode}<br>
+{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}<br>
+{$BILLING.phone}<br>
+<br>
+<strong>Email:</strong><br>
+{$BILLING.email}</td>
+<td valign="top" width="50%"><strong>Shipping address:</strong><br>
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>
+{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>
+{/if}{$SHIPPING.line1|capitalize}<br>
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize} <br>
+{/if}{$SHIPPING.town|upper}<br>
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
+{$SHIPPING.postcode}<br>
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
+</tr>
+</table>
+<table border="0" cellpadding="3" cellspacing="0" width="100%">
+<tbody>
+<tr>
+<td><strong>Item</strong></td>
+<td><strong>Quantity</strong></td>
+<td><strong>Cost</strong></td>
+</tr>
+{foreach from=$PRODUCTS item=product}
+<tr>
+<td>{$product.name} <br>{$product.product_options}</td>
+<td>{$product.quantity}</td>
+<td>{$product.price}</td>
+</tr>
+{/foreach}
+<tr>
+<td>&nbsp;</td>
+<td> {if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Shipping:{/if}</td>
+<td> {$DATA.shipping}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td> Discount:</td>
+<td> {$DATA.discount}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td> Subtotal:</td>
+<td> {$DATA.subtotal}</td>
+</tr>
+{foreach from=$TAXES item=tax}
+<tr>
+<td>&nbsp;</td>
+<td> {$tax.tax_name}: ({$tax.tax_percent}%)</td>
+<td> {$tax.tax_amount}</td>
+</tr>
+{/foreach}
+{if $DATA.show_credit}
+<tr>
+<td>&nbsp;</td>
+<td>Credit:</td>
+<td>({$DATA.credit_used})</td>
+</tr>
+{/if}
+<tr>
+<td>&nbsp;</td>
+<td><strong>Order Total: </strong></td>
+<td><strong>{$DATA.total}</strong></td>
+</tr>
+</tbody>
+
+</table>]]></content>
+    <content type="text"><![CDATA[{$DATA.first_name|capitalize} {$DATA.last_name|capitalize} {if !empty($BILLING.company_name)}({$BILLING.company_name}){/if} just placed order number {$DATA.cart_order_id} on {$DATA.order_date}.
+
+You can manage this order using the link below.
+
+{$DATA.link}
+
+----------------------------------------------------------------------
+Billing address:
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}
+{if !empty($BILLING.company_name)}{$BILLING.company_name}
+{/if}{$BILLING.line1|capitalize}
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}
+{/if}{$BILLING.town|upper}
+{if !empty($BILLING.state)}{$BILLING.state|upper}
+{/if}{$BILLING.postcode}
+{$BILLING.country}{if !empty($BILLING.w3w)}
+///{$BILLING.w3w}{/if}
+{$BILLING.phone}
+
+Email:
+{$BILLING.email}
+
+Shipping address:
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}
+{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name}
+{/if}{$SHIPPING.line1|capitalize}
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize}
+{/if}{$SHIPPING.town|upper}
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}
+{/if}{$SHIPPING.postcode}
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}
+///{$SHIPPING.w3w}{/if}
+
+----------------------------------------------------------------------
+Items in Your Order
+
+{foreach from=$PRODUCTS item=product}
+-----------------------------------
+{$product.name}
+{$product.product_options}
+
+Part Number: {$product.product_code}
+Unit Price: {$product.price}
+Qty: {$product.quantity}
+
+{/foreach}
+-----------------------------------
+Subtotal: {$DATA.subtotal}
+Discount: {$DATA.discount}
+{if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Shipping:{/if} {$DATA.shipping}
+{foreach from=$TAXES item=tax}{$tax.tax_name} ({$tax.tax_percent}%): {$tax.tax_amount}
+{/foreach}{if $DATA.show_credit}
+Credit: ({$DATA.credit_used})
+{/if}--------------------------
+Order Total: {$DATA.total}
+==========================]]></content>
+  </email>
+  <email name="admin.review_added">
+    <subject><![CDATA[New Product Review]]></subject>
+    <content type="html"><![CDATA[{$DATA.name} has left a new review for '{$DATA.product_name}'. You can moderate this using the link below.
+        <p><strong>Moderation Link:</strong><br><a href='{$DATA.link}'>{$DATA.link}</a></p>
+        <p><strong>Review Text:</strong><br>{$DATA.review}</p>]]></content>
+    <content type="text"><![CDATA[{$DATA.name} has left a new review for '{$DATA.product_name}'. You can moderate this using the link below.
+
+Moderation Link:
+{$DATA.link}
+Review Text:
+{$DATA.review}]]></content>
+  </email>
+  <email name="cart.digital_download">
+    <subject><![CDATA[Your Downloads Are Ready]]></subject>
+    <content type="html"><![CDATA[<p>Hi {$DATA.first_name|capitalize},</p>
+<p>Your digital files are ready to download. You can access them using the links below:</p>
+{foreach from=$DOWNLOADS item=download}
+<p><strong>{$download.name}:</strong> (Link expires on {$download.expire}<strong>)</strong><br>
+<a href="{$download.url}">{$download.url}</a></p>
+{/foreach}
+<p>If the links above don't work, try copying and pasting them into your browser's address bar. You can also access these files from your account on our website.</p>
+<p>&nbsp;</p>]]></content>
+    <content type="text"><![CDATA[Hi {$DATA.first_name|capitalize},
+
+Your digital files are ready to download. You can access them using the links below:
+
+{foreach from=$DOWNLOADS item=download}
+{$download.name}: (Link expires on {$download.expire})
+{$download.url}
+{/foreach}
+
+If the links above don't work, try copying and pasting them into your browser's address bar. You can also access these files from your account on our website.]]></content>
+  </email>
+  <email name="cart.gift_certificate">
+    <subject><![CDATA[Your Gift Card]]></subject>
+    <content type="html"><![CDATA[<p>Dear {$DATA.name},</p>
+<p>You've received a gift card that can be used towards any purchase on our website.</p>
+<p><strong>From: </strong>{$DATA.first_name|capitalize} {$DATA.last_name|capitalize}<br>
+<strong>Amount: </strong>{$DATA.value}<br>
+<strong>Claim Code:</strong> {$DATA.code}<br>
+<strong>Gift Message:</strong> {$DATA.message}</p>
+<p>-------------------</p>
+<p>To redeem this gift card please enter the &quot;Claim Code&quot; above into the text field labeled &quot;Promotional code or gift card&quot; during checkout.</p>
+<p>Why not spend it now?</p>]]></content>
+    <content type="text"><![CDATA[Dear {$DATA.name},
+
+You've received a gift card that can be used towards any purchase on our website.
+
+Happy shopping!
+
+From: {$DATA.first_name|capitalize} {$DATA.last_name|capitalize}
+Amount: {$DATA.value}
+Claim Code: {$DATA.code}
+Gift Message: {$DATA.message}
+
+-------------------
+
+To redeem this gift card please enter the "Claim Code" above into the text field labeled "Promotional code or gift card" during checkout.
+
+Why not spend it now?]]></content>
+  </email>
+  <email name="catalogue.tell_friend">
+    <subject><![CDATA[{$DATA.from} has recommended a product for you]]></subject>
+    <content type="html"><![CDATA[Dear {$DATA.to},
+<p>Your friend <strong>{$DATA.from}</strong> thought you might be interested in <strong>{$DATA.name}</strong>.</p>
+<p><strong>Product Link:</strong> <a href="{$DATA.link}">{$DATA.name}</a></p>
+<p>{$DATA.message}</p>]]></content>
+    <content type="text"><![CDATA[Dear {$DATA.to},
+
+Your friend {$DATA.from} thought you might be interested in '{$DATA.name}'.
+
+{$DATA.name}
+Product Link: {$DATA.link}
+
+{$DATA.message}]]></content>
+  </email>
+  <email name="cart.payment_received">
+    <subject><![CDATA[Thank you for your payment]]></subject>
+    <content type="html"><![CDATA[<p>Hi {$DATA.first_name|capitalize},</p>
+<p>We've received your payment of {$DATA.total} for order number {$DATA.cart_order_id}.</p>]]></content>
+    <content type="text"><![CDATA[Hi {$DATA.first_name|capitalize},
+
+We've received your payment of {$DATA.total} for order number {$DATA.cart_order_id}.]]></content>
+  </email>
+  <email name="newsletter.verify_email">
+    <subject><![CDATA[Confirm your subscription]]></subject>
+    <content type="html"><![CDATA[<p>{$DATA.email} was used to subscribe to our newsletter. To confirm your subscription, please click the link below:</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+    <content type="text"><![CDATA[{$DATA.email} was used to subscribe to our newsletter. To confirm your subscription, please click the link below:
+
+{$DATA.link}
+]]></content>
+  </email>
+  <email name="newsletter.remove_request">
+    <subject><![CDATA[Confirm Newsletter Unsubscribe]]></subject>
+    <content type="html"><![CDATA[<p>A request was made to unsubscribe <strong>{$DATA.email}</strong> from our newsletter. To confirm, please click the link below.</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+    <content type="text"><![CDATA[A request was made to unsubscribe {$DATA.email} from our newsletter. To confirm, please click the link below.
+
+{$DATA.link}
+]]></content>
+  </email>
+</emails>
