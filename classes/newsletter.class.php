@@ -184,7 +184,6 @@ class Newsletter
                                 $content = array(
                                     'subject'  => $content['subject'],
                                     'content_html' => $content['content_html'],
-                                    'content_text' => $content['content_text'],
                                 );
                                 $this->unsubscribeHeader($subscriber['email']);
                                 if($this->_mailer->sendEmail($subscriber['email'], $content, $contents[0]['template_id'])) {

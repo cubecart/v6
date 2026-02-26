@@ -1304,7 +1304,6 @@ Denne e-posten er sendt fra butikkens hoved-e-postadresse, men det er mulig å s
    <string name="title_content_create"><![CDATA[Legg til oversettelse av e-postinnhold]]></string>
    <string name="title_content_html"><![CDATA[HTML-innhold]]></string>
    <string name="title_content_manage"><![CDATA[Importer/Eksporter e-postinnhold]]></string>
-   <string name="title_content_text"><![CDATA[Ren tekst-innhold]]></string>
    <string name="title_content_update"><![CDATA[Rediger e-postinnhold]]></string>
    <string name="title_contents"><![CDATA[E-postinnhold]]></string>
    <string name="title_email"><![CDATA[E-postinnhold &amp; maler]]></string>

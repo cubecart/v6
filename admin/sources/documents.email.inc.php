@@ -282,13 +282,10 @@ if (isset($_POST['import']) && !empty($_POST['import']) && Admin::getInstance()-
         if (($emails = $GLOBALS['db']->select('CubeCart_email_content', false, array('language' => $_POST['export']))) !== false) {
             $xml = new XML();
             $xml->startElement('emails', array('version' => '1.0', 'language' => $_POST['export']));
-            $content_types = array('html', 'text');
             foreach ($emails as $email) {
                 $xml->startElement('email', array('name' => $email['content_type']));
-                foreach ($content_types as $type) {
-                    if (!empty($email['content_'.$type])) {
-                        $xml->setElement('content', $email['content_'.$type], array('type' => $type));
-                    }
+                if (!empty($email['content_html'])) {
+                    $xml->setElement('content', $email['content_html'], array('type' => 'html'));
                 }
                 $xml->endElement();
             }
@@ -322,7 +319,6 @@ if (isset($_POST['template_default']) && ctype_digit($_POST['template_default'])
 
 if (isset($_POST['template'])) {
     $_POST['template']['content_html'] = urldecode(base64_decode($GLOBALS['RAW']['POST']['template']['content_html']));
-    $_POST['template']['content_text'] = $GLOBALS['RAW']['POST']['template']['content_text'];
 
     ## Save/Update Template
     $proceed = true;
@@ -337,29 +333,15 @@ if (isset($_POST['template'])) {
         $redirect = false;
         $html_error = true;
     }
-    try {
-        $GLOBALS['smarty']->fetch('string:'.$_POST['template']['content_text']);
-    } catch (Exception $e) {
-        $error_message = str_replace('string:', '', $e->getMessage());
-        $GLOBALS['main']->errorMessage($lang['email']['title_content_text'].': '.$error_message);
-        $redirect = false;
-    }
 
     if (empty($_POST['template']['content_html'])) {
         $GLOBALS['main']->errorMessage($lang['email']['error_html_empty']);
         $proceed = false;
     }
 
-    if (!$html_error && empty($_POST['template']['content_text']) && !empty($_POST['template']['content_html'])) {
-        $GLOBALS['main']->successMessage($lang['email']['error_plain_empty']);
-        $_POST['template']['content_text'] = strip_tags($_POST['template']['content_html']);
-    }
-
-    foreach (array('content_html', 'content_text') as $key) {
-        if (strpos($_POST['template'][$key], '$EMAIL_CONTENT') === false) {
-            $GLOBALS['main']->errorMessage($lang['email']['error_macro_content']);
-            $proceed = false;
-        }
+    if (!$html_error && strpos($_POST['template']['content_html'], '$EMAIL_CONTENT') === false) {
+        $GLOBALS['main']->errorMessage($lang['email']['error_macro_content']);
+        $proceed = false;
     }
     
     if ($proceed && Admin::getInstance()->permissions('documents', CC_PERM_EDIT)) {
@@ -378,12 +360,11 @@ if (isset($_POST['template'])) {
 
 if (isset($_POST['content']) && Admin::getInstance()->permissions('documents', CC_PERM_EDIT)) {
     $_POST['content']['content_html'] = urldecode(base64_decode($GLOBALS['RAW']['POST']['content']['content_html']));
-    $_POST['content']['content_text'] = $GLOBALS['RAW']['POST']['content']['content_text'];
-    
+
     $proceed = true;
     $redirect = true;
     $html_error = false;
-    
+
     try {
         $GLOBALS['smarty']->fetch('string:'.$_POST['content']['content_html']);
     } catch (Exception $e) {
@@ -393,22 +374,9 @@ if (isset($_POST['content']) && Admin::getInstance()->permissions('documents', C
         $html_error = true;
     }
 
-    try {
-        $GLOBALS['smarty']->fetch('string:'.$_POST['content']['content_text']);
-    } catch (Exception $e) {
-        $error_message = str_replace('string:', '', $e->getMessage());
-        $GLOBALS['main']->errorMessage($lang['email']['title_content_text'].': '.$error_message);
-        $redirect = false;
-    }
-
     if (empty($_POST['content']['content_html'])) {
         $GLOBALS['main']->errorMessage($lang['email']['error_html_empty']);
         $proceed = false;
-    }
-
-    if (!$html_error && empty($_POST['content']['content_text']) && !empty($_POST['content']['content_html'])) {
-        $GLOBALS['main']->successMessage($lang['email']['error_plain_empty']);
-        $_POST['content']['content_text'] = strip_tags($_POST['content']['content_html']);
     }
 
     if ($proceed) {
@@ -494,7 +462,7 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
                 ## Create Content
                 # $data  = (isset($_POST['content'])) ? $_POST['content'] : array('content_type' => $_GET['content_type']);
                 ## Content to translate content
-                $content = $GLOBALS['db']->select('CubeCart_email_content', array('content_type', 'language', 'subject', 'content_html', 'content_text'), array('content_type' => (string)$_GET['content_type'], 'language' => $GLOBALS['config']->get('config', 'default_language')));
+                $content = $GLOBALS['db']->select('CubeCart_email_content', array('content_type', 'language', 'subject', 'content_html'), array('content_type' => (string)$_GET['content_type'], 'language' => $GLOBALS['config']->get('config', 'default_language')));
                 $data  = $content[0];
                 $existing = $GLOBALS['db']->select('CubeCart_email_content', array('DISTINCT' => 'language'), array('content_type' => $_GET['content_type']));
                 $breadcrumb = $lang['common']['create'].': '.$_GET['content_type'];
@@ -531,9 +499,7 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
                 $page_title = $lang['email']['title_content_create'];
             }
             $GLOBALS['smarty']->assign('ADD_EDIT_CONTENT', $page_title);
-            $data['content_text'] = htmlentities($data['content_text'], ENT_QUOTES, 'UTF-8');
             // See GitHub #1511
-            $data['content_text'] = str_replace(array('empty({$','})}'), array('empty($',')}'), $data['content_text']);
             $data['content_html'] = str_replace(array('empty({$','})}'), array('empty($',')}'), $data['content_html']);
             $GLOBALS['smarty']->assign('CONTENT', $data);
 
@@ -607,7 +573,6 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
     ## Tabs
     $GLOBALS['main']->addTabControl($lang['common']['general'], 'general');
     $GLOBALS['main']->addTabControl($lang['email']['title_content_html'], 'email_html');
-    $GLOBALS['main']->addTabControl($lang['email']['title_content_text'], 'email_text');
     ## Breadcrumbs
     $GLOBALS['gui']->addBreadcrumb($breadcrumb, currentPage());
     // Delete link

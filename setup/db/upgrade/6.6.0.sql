@@ -66,3 +66,8 @@ UPDATE `CubeCart_email_template` SET `content_html` = REPLACE(`content_html`, '<
 -- Correct Swedish locale code from se-SE to sv-SE
 UPDATE `CubeCart_config` SET `config_value` = 'sv-SE' WHERE `config_key` = 'default_language' AND `config_value` = 'se-SE'; #EOQ
 UPDATE `CubeCart_config` SET `config_key` = 'sv-SE' WHERE `config_key` = 'se-SE' AND `name` = 'language'; #EOQ
+
+-- Remove stored plain-text email content; plain text is now auto-generated from HTML
+ALTER TABLE `CubeCart_email_content` DROP COLUMN `content_text`; #EOQ
+ALTER TABLE `CubeCart_email_template` DROP COLUMN `content_text`; #EOQ
+ALTER TABLE `CubeCart_newsletter` DROP COLUMN `content_text`; #EOQ

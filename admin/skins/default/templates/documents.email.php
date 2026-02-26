@@ -176,32 +176,6 @@
 	<p>{$LANG.email.install_master_lang}</p> 
 	{/if}
   </div>
-  <div id="email_text" class="tab_content">
-  	<h3>{$LANG.email.title_content_text}</h3>
-  	{if $LANGUAGES}
-	<textarea name="content[content_text]" id="content_text" class="textbox" style="width: 100%; height: 480px">{$CONTENT.content_text}</textarea>
-  	<h3>{$LANG.email.title_macros}</h3>
-  	<p>{$LANG.email.important}</p>
-  	<table>
-  		<thead>
-  		  <tr>
-  			<td>{$LANG.email.email_macro}</td>
-  			<td>{$LANG.common.description}</td>
-  		  </tr>
-  		</thead>
-  		<tbody>
-		  {foreach from=$CONTENT_MACROS item=macro}
-  		  <tr>
-  			<td>{$macro.name}</td>
-  			<td>{$macro.description}</td>
-  		  </tr>
-  		  {/foreach}
-  		</tbody>
-  	</table>
-  	{else}
-	<p>{$LANG.email.install_master_lang}</p> 
-	{/if}
-  </div>
   <input type="hidden" name="content[content_type]" value="{$CONTENT.content_type}">
   <input type="hidden" name="content[content_id]" value="{$CONTENT.content_id}">
   {/if}
@@ -263,30 +237,6 @@
   		</tbody>
   	</table>
   </div>
-  <div id="email_text" class="tab_content">
-    <h3>{$LANG.email.title_content_text}</h3>
-	<textarea name="template[content_text]" id="template_text" class="textbox" style="height: 550px; width: 100%">{$TEMPLATE.content_text}</textarea>
-  	<h3>{$LANG.email.title_macros}</h3>
-  	<table>
-  		<thead>
-		  <tr>
-			<td>{$LANG.email.email_macro}</td>
-			<td>{$LANG.common.description}</td>
-			<td>{$LANG.common.required}</td>
-		  </tr>
-  		</thead>
-  		<tbody>
-		  {foreach from=$TEMPLATE_MACROS item=macro}
-  		  <tr>
-  			<td>{$macro.name}</td>
-  			<td>{$macro.description}</td>
-  			<td style="text-align:center">{$macro.required}</td>
-  		  </tr>
-  		  {/foreach}
-  		</tbody>
-  	</table>
-  </div>
-
   <input type="hidden" name="template[template_id]" value="{$TEMPLATE.template_id}">
   {/if}
   

@@ -16,34 +16,17 @@
     <content type="html"><![CDATA[<p>Hei {$DATA.name},</p>
 <p>Pääset takaisin kaupan hallintapaneeliin seuraamalla alla olevaa linkkiä:</p>
 <p><a href="{$DATA.link}">{$DATA.link}</a></p>
-<p>Jos yllä oleva linkki ei toimi, kopioi ja liitä se selaimesi osoitekenttään.</p>]]></content>
-    <content type="text"><![CDATA[Hei {$DATA.name},
-
-Pääset takaisin kaupan hallintapaneeliin seuraamalla alla olevaa linkkiä:
-
-{$DATA.link}
-
-Jos yllä oleva linkki ei toimi, kopioi ja liitä se selaimesi osoitekenttään.]]></content>
+<p>Jos yllä oleva linkki ei toimi, kopioi ja liitä se selaimesi osoitekenttään.</p>]]></content>
   </email>
   <email name="cart.order_complete">
     <subject><![CDATA[Tilaus valmis]]></subject>
     <content type="html"><![CDATA[<p>Hei {$DATA.first_name|capitalize},</p>
-<p>Ilmoitamme ilolla, että tilaus numero {$DATA.cart_order_id} on nyt valmis. Jos tilasit fyysisiä tuotteita, ne ovat pian perillä.</p>{if !empty($DATA.ship_tracking)}<p>Seuraa tilaustasi:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
-    <content type="text"><![CDATA[Hei {$DATA.first_name|capitalize},
-
-Ilmoitamme ilolla, että tilaus numero {$DATA.cart_order_id} on nyt valmis. Jos tilasit fyysisiä tuotteita, ne ovat pian perillä.
-{if !empty($DATA.ship_tracking)}
-Seuraa tilaustasi:
-{$DATA.ship_tracking}
-{/if}]]></content>
+<p>Ilmoitamme ilolla, että tilaus numero {$DATA.cart_order_id} on nyt valmis. Jos tilasit fyysisiä tuotteita, ne ovat pian perillä.</p>{if !empty($DATA.ship_tracking)}<p>Seuraa tilaustasi:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
   </email>
   <email name="cart.order_cancelled">
     <subject><![CDATA[Tilaus peruutettu]]></subject>
     <content type="html"><![CDATA[<p>Hei {$DATA.first_name|capitalize},</p>
-<p>Tilaus numero {$DATA.cart_order_id} on peruutettu. Jos sinulla on kysyttävää, älä epäröi ottaa meihin yhteyttä.</p>]]></content>
-    <content type="text"><![CDATA[Hei {$DATA.first_name|capitalize},
-
-Tilaus numero {$DATA.cart_order_id} on peruutettu. Jos sinulla on kysyttävää, älä epäröi ottaa meihin yhteyttä.]]></content>
+<p>Tilaus numero {$DATA.cart_order_id} on peruutettu. Jos sinulla on kysyttävää, älä epäröi ottaa meihin yhteyttä.</p>]]></content>
   </email>
   <email name="cart.order_confirmation">
     <subject><![CDATA[Tilausvahvistus #{$DATA.cart_order_id}]]></subject>
@@ -130,73 +113,12 @@ Tilaus numero {$DATA.cart_order_id} on peruutettu. Jos sinulla on kysyttävää,
 </table>
 {if !empty($DATA.note_to_customer)}
 <p>&quot;{$DATA.note_to_customer}&quot;</p>
-{/if}]]></content>
-    <content type="text"><![CDATA[Kiitos tilauksestasi, {$DATA.first_name|capitalize}.
-
-Olemme vastaanottaneet tilauksesi {$DATA.cart_order_id}, joka tehtiin {$DATA.order_date}. Säilytä tämä sähköposti arkistossasi. Voit tarkistaa tilauksesi tilan milloin tahansa verkossa.
-
-{$DATA.link}
-
-----------------------------------------------------------------------
-Laskutusosoite:
-{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}
-{if !empty($BILLING.company_name)}{$BILLING.company_name}
-{/if}{$BILLING.line1|capitalize}
-{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}
-{/if}{$BILLING.town|upper}
-{if !empty($BILLING.state)}{$BILLING.state|upper}
-{/if}{$BILLING.postcode}
-{$BILLING.country}{if !empty($BILLING.w3w)}
-///{$BILLING.w3w}{/if}
-{$BILLING.phone}
-
-Sähköposti:
-{$BILLING.email}
-
-Toimitusosoite:
-{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}
-{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name}
-{/if}{$SHIPPING.line1|capitalize}
-{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize}
-{/if}{$SHIPPING.town|upper}
-{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}
-{/if}{$SHIPPING.postcode}
-{$SHIPPING.country}{if !empty($SHIPPING.w3w)}
-///{$SHIPPING.w3w}{/if}
-
-----------------------------------------------------------------------
-Tilauksen tuotteet
-
-{foreach from=$PRODUCTS item=product}
------------------------------------
-{$product.name}
-{$product.product_options}
-
-Tuotenumero: {$product.product_code}
-Yksikköhinta: {$product.price}
-Määrä: {$product.quantity}
-
-{/foreach}
------------------------------------
-Välisumma: {$DATA.subtotal}
-Alennus: {$DATA.discount}
-{if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Toimitus:{/if} {$DATA.shipping}
-{foreach from=$TAXES item=tax}{$tax.tax_name} ({$tax.tax_percent}%): {$tax.tax_amount}
-{/foreach}{if $DATA.show_credit}
-Hyvitys: ({$DATA.credit_used})
-{/if}--------------------------
-Tilaus yhteensä: {$DATA.total}
-==========================
-{if !empty($DATA.note_to_customer)}
-"{$DATA.note_to_customer}"{/if}]]></content>
+{/if}]]></content>
   </email>
   <email name="cart.payment_fraud">
     <subject><![CDATA[Ongelma tilauksessa]]></subject>
     <content type="html"><![CDATA[<p>Hei {$DATA.first_name|capitalize},</p>
-<p>Valitettavasti emme pystyneet käsittelemään maksua tilaukselle {$DATA.cart_order_id}. Jos sinulla on kysyttävää, älä epäröi ottaa meihin yhteyttä.</p>]]></content>
-    <content type="text"><![CDATA[Hei {$DATA.first_name|capitalize},
-
-Valitettavasti emme pystyneet käsittelemään maksua tilaukselle {$DATA.cart_order_id}. Jos sinulla on kysyttävää, älä epäröi ottaa meihin yhteyttä.]]></content>
+<p>Valitettavasti emme pystyneet käsittelemään maksua tilaukselle {$DATA.cart_order_id}. Jos sinulla on kysyttävää, älä epäröi ottaa meihin yhteyttä.</p>]]></content>
   </email>
   <email name="account.password_recovery">
     <subject><![CDATA[Salasanan palautus]]></subject>
@@ -206,14 +128,7 @@ Voit nollata salasanasi napsauttamalla alla olevaa linkkiä tai kopioimalla ja l
 <br>
 <a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br>
 <br>
-Jos tarvitset lisää apua, ota meihin yhteyttä.</p>]]></content>
-    <content type="text"><![CDATA[Hei {$DATA.first_name|capitalize},
-
-Voit nollata salasanasi napsauttamalla alla olevaa linkkiä tai kopioimalla ja liittämällä osoitteen selaimesi osoitekenttään. Verkkosivulla sinua pyydetään syöttämään ja vahvistamaan uusi salasanasi.
-
-{$DATA.reset_link}
-
-Jos tarvitset lisää apua, ota meihin yhteyttä.]]></content>
+Jos tarvitset lisää apua, ota meihin yhteyttä.</p>]]></content>
   </email>
   <email name="admin.order_received">
     <subject><![CDATA[Uusi tilaus #{$DATA.cart_order_id}]]></subject>
@@ -298,75 +213,13 @@ Jos tarvitset lisää apua, ota meihin yhteyttä.]]></content>
 </tr>
 </tbody>
 
-</table>]]></content>
-    <content type="text"><![CDATA[{$DATA.first_name|capitalize} {$DATA.last_name|capitalize} {if !empty($BILLING.company_name)}({$BILLING.company_name}){/if} teki juuri tilauksen numero {$DATA.cart_order_id} päivämäärällä {$DATA.order_date}.
-
-Voit hallita tätä tilausta alla olevan linkin kautta.
-
-{$DATA.link}
-
-----------------------------------------------------------------------
-Laskutusosoite:
-{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}
-{if !empty($BILLING.company_name)}{$BILLING.company_name}
-{/if}{$BILLING.line1|capitalize}
-{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}
-{/if}{$BILLING.town|upper}
-{if !empty($BILLING.state)}{$BILLING.state|upper}
-{/if}{$BILLING.postcode}
-{$BILLING.country}{if !empty($BILLING.w3w)}
-///{$BILLING.w3w}{/if}
-{$BILLING.phone}
-
-Sähköposti:
-{$BILLING.email}
-
-Toimitusosoite:
-{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}
-{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name}
-{/if}{$SHIPPING.line1|capitalize}
-{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize}
-{/if}{$SHIPPING.town|upper}
-{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}
-{/if}{$SHIPPING.postcode}
-{$SHIPPING.country}{if !empty($SHIPPING.w3w)}
-///{$SHIPPING.w3w}{/if}
-
-----------------------------------------------------------------------
-Tilauksen tuotteet
-
-{foreach from=$PRODUCTS item=product}
------------------------------------
-{$product.name}
-{$product.product_options}
-
-Tuotenumero: {$product.product_code}
-Yksikköhinta: {$product.price}
-Määrä: {$product.quantity}
-
-{/foreach}
------------------------------------
-Välisumma: {$DATA.subtotal}
-Alennus: {$DATA.discount}
-{if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Toimitus:{/if} {$DATA.shipping}
-{foreach from=$TAXES item=tax}{$tax.tax_name} ({$tax.tax_percent}%): {$tax.tax_amount}
-{/foreach}{if $DATA.show_credit}
-Hyvitys: ({$DATA.credit_used})
-{/if}--------------------------
-Tilaus yhteensä: {$DATA.total}
-==========================]]></content>
+</table>]]></content>
   </email>
   <email name="admin.review_added">
     <subject><![CDATA[Uusi tuotearvostelu]]></subject>
     <content type="html"><![CDATA[{$DATA.name} on jättänyt uuden arvostelun tuotteelle '{$DATA.product_name}'. Voit moderoida sen alla olevan linkin kautta.
         <p><strong>Moderointilinkki:</strong><br><a href='{$DATA.link}'>{$DATA.link}</a></p>
-        <p><strong>Arvostelun teksti:</strong><br>{$DATA.review}</p>]]></content>
-    <content type="text"><![CDATA[{$DATA.name} on jättänyt uuden arvostelun tuotteelle '{$DATA.product_name}'. Voit moderoida sen alla olevan linkin kautta.
-
-Moderointilinkki:
-{$DATA.link}
-Arvostelun teksti:
-{$DATA.review}]]></content>
+        <p><strong>Arvostelun teksti:</strong><br>{$DATA.review}</p>]]></content>
   </email>
   <email name="cart.digital_download">
     <subject><![CDATA[Latauksesi ovat valmiina]]></subject>
@@ -377,17 +230,7 @@ Arvostelun teksti:
 <a href="{$download.url}">{$download.url}</a></p>
 {/foreach}
 <p>Jos yllä olevat linkit eivät toimi, kopioi ja liitä ne selaimesi osoitekenttään. Voit myös käyttää näitä tiedostoja tililtäsi verkkosivustollamme.</p>
-<p>&nbsp;</p>]]></content>
-    <content type="text"><![CDATA[Hei {$DATA.first_name|capitalize},
-
-Digitaaliset tiedostosi ovat valmiina ladattaviksi. Pääset niihin käsiksi alla olevien linkkien kautta:
-
-{foreach from=$DOWNLOADS item=download}
-{$download.name}: (Linkki vanhenee {$download.expire})
-{$download.url}
-{/foreach}
-
-Jos yllä olevat linkit eivät toimi, kopioi ja liitä ne selaimesi osoitekenttään. Voit myös käyttää näitä tiedostoja tililtäsi verkkosivustollamme.]]></content>
+<p>&nbsp;</p>]]></content>
   </email>
   <email name="cart.gift_certificate">
     <subject><![CDATA[Lahjakorttisi]]></subject>
@@ -399,61 +242,26 @@ Jos yllä olevat linkit eivät toimi, kopioi ja liitä ne selaimesi osoitekentt�
 <strong>Lahjaviesti:</strong> {$DATA.message}</p>
 <p>-------------------</p>
 <p>Lunastaaksesi tämän lahjakortin, syötä yllä oleva &quot;Lunastuskoodi&quot; kassalla kenttään &quot;Tarjouskoodi tai lahjakortti&quot;.</p>
-<p>Käytä se jo tänään!</p>]]></content>
-    <content type="text"><![CDATA[Hei {$DATA.name},
-
-Olet saanut lahjakortin, jota voit käyttää mihin tahansa ostokseen verkkokaupassamme.
-
-Mukavia ostoksia!
-
-Lähettäjä: {$DATA.first_name|capitalize} {$DATA.last_name|capitalize}
-Summa: {$DATA.value}
-Lunastuskoodi: {$DATA.code}
-Lahjaviesti: {$DATA.message}
-
--------------------
-
-Lunastaaksesi tämän lahjakortin, syötä yllä oleva "Lunastuskoodi" kassalla kenttään "Tarjouskoodi tai lahjakortti".
-
-Käytä se jo tänään!]]></content>
+<p>Käytä se jo tänään!</p>]]></content>
   </email>
   <email name="catalogue.tell_friend">
     <subject><![CDATA[{$DATA.from} suosittelee sinulle tuotetta]]></subject>
     <content type="html"><![CDATA[Hei {$DATA.to},
 <p>Ystäväsi <strong>{$DATA.from}</strong> ajatteli, että saattaisit olla kiinnostunut tuotteesta <strong>{$DATA.name}</strong>.</p>
 <p><strong>Tuotelinkki:</strong> <a href="{$DATA.link}">{$DATA.name}</a></p>
-<p>{$DATA.message}</p>]]></content>
-    <content type="text"><![CDATA[Hei {$DATA.to},
-
-Ystäväsi {$DATA.from} ajatteli, että saattaisit olla kiinnostunut tuotteesta '{$DATA.name}'.
-
-{$DATA.name}
-Tuotelinkki: {$DATA.link}
-
-{$DATA.message}]]></content>
+<p>{$DATA.message}</p>]]></content>
   </email>
   <email name="cart.payment_received">
     <subject><![CDATA[Kiitos maksustasi]]></subject>
     <content type="html"><![CDATA[<p>Hei {$DATA.first_name|capitalize},</p>
-<p>Olemme vastaanottaneet maksusi {$DATA.total} tilaukselle numero {$DATA.cart_order_id}.</p>]]></content>
-    <content type="text"><![CDATA[Hei {$DATA.first_name|capitalize},
-
-Olemme vastaanottaneet maksusi {$DATA.total} tilaukselle numero {$DATA.cart_order_id}.]]></content>
+<p>Olemme vastaanottaneet maksusi {$DATA.total} tilaukselle numero {$DATA.cart_order_id}.</p>]]></content>
   </email>
   <email name="newsletter.verify_email">
     <subject><![CDATA[Vahvista tilauksesi]]></subject>
-    <content type="html"><![CDATA[<p>Sähköpostiosoitetta {$DATA.email} käytettiin uutiskirjeemme tilaamiseen. Vahvista tilauksesi napsauttamalla alla olevaa linkkiä:</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
-    <content type="text"><![CDATA[Sähköpostiosoitetta {$DATA.email} käytettiin uutiskirjeemme tilaamiseen. Vahvista tilauksesi napsauttamalla alla olevaa linkkiä:
-
-{$DATA.link}
-]]></content>
+    <content type="html"><![CDATA[<p>Sähköpostiosoitetta {$DATA.email} käytettiin uutiskirjeemme tilaamiseen. Vahvista tilauksesi napsauttamalla alla olevaa linkkiä:</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
   </email>
   <email name="newsletter.remove_request">
     <subject><![CDATA[Vahvista uutiskirjeen peruutus]]></subject>
-    <content type="html"><![CDATA[<p>Pyyntö peruuttaa sähköpostiosoitteen <strong>{$DATA.email}</strong> uutiskirjetilaus on vastaanotettu. Vahvista napsauttamalla alla olevaa linkkiä.</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
-    <content type="text"><![CDATA[Pyyntö peruuttaa sähköpostiosoitteen {$DATA.email} uutiskirjetilaus on vastaanotettu. Vahvista napsauttamalla alla olevaa linkkiä.
-
-{$DATA.link}
-]]></content>
+    <content type="html"><![CDATA[<p>Pyyntö peruuttaa sähköpostiosoitteen <strong>{$DATA.email}</strong> uutiskirjetilaus on vastaanotettu. Vahvista napsauttamalla alla olevaa linkkiä.</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
   </email>
 </emails>

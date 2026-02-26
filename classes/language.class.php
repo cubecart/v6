@@ -647,6 +647,10 @@ class Language
                                 $record['subject']  = str_replace('DATA.'.$traditional_oid_col, 'DATA.'.$oid_col, (string)$email->subject);
                                 ;
                                 foreach ($email->content as $content) {
+                                    // Plain text is auto-generated from HTML; skip legacy text entries
+                                    if ((string)$content->attributes()->type === 'text') {
+                                        continue;
+                                    }
                                     // See GitHub #1511
                                     $record['content_'.(string)$content->attributes()->type] = str_replace(array('empty({$','})}','DATA.'.$traditional_oid_col), array('empty($',')}','DATA.'.$oid_col), trim((string)$content));
                                 }

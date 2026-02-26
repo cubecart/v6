@@ -52,11 +52,6 @@
       <p>{$LANG.email.help_content_html}</p>
       <textarea name="newsletter[content_html]" id="content_html" class="textbox fck">{$NEWSLETTER.content_html|escape:"html"}</textarea>
    </div>
-   <div id="email_text" class="tab_content">
-      <h3>{$LANG.email.title_content_text}</h3>
-      <p>{$LANG.email.help_content_text}</p>
-      <textarea name="newsletter[content_text]" id="content_text" class="textbox" style="width: 100%; height: 300px;">{$NEWSLETTER.content_text}</textarea>
-   </div>
    <div id="send_test" class="tab_content">
       <h3>{$LANG.email.title_send_test}</h3>
       <p>{$LANG.email.help_test_send}</p>

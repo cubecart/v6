@@ -126,12 +126,11 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
                 $elements = array(
                     'subject'  => $contents[0]['subject'],
                     'content_html' => $contents[0]['content_html'],
-                    'content_text' => $contents[0]['content_text'],
                 );
                 if ($data) {
                     $GLOBALS['smarty']->assign('DATA', $data);
                 }
-                if (!empty($elements['content_html']) && !empty($elements['content_text'])) {
+                if (!empty($elements['content_html'])) {
                     return $elements;
                 }
             } else {
@@ -206,13 +205,13 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
         if (is_array($contents)) {
             // Load template from specified id or default if not set
             $where = (!$template_id) ? array('template_default' => 1) : array('template_id' => (int)$template_id);
-            if (($templates = $GLOBALS['db']->select('CubeCart_email_template', array('title', 'content_html', 'content_text'), $where)) !== false) {
+            if (($templates = $GLOBALS['db']->select('CubeCart_email_template', array('title', 'content_html'), $where)) !== false) {
                 $this->_template_title = $templates[0]['title'];
                 foreach ($contents as $key => $string) {
                     if (strtolower($key) == 'subject') {
                         $this->Subject = strip_tags($string);
                         continue;
-                    } elseif (in_array($key, array('content_html', 'content_text'))) {
+                    } elseif ($key === 'content_html') {
                         // define macros
                         $data['logoURL']  = $GLOBALS['gui']->getLogo(true, 'emails');
                         $data['store_name'] = $GLOBALS['config']->get('config', 'store_name');
@@ -222,21 +221,14 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
                         $data['jsonLd'] = $this->_buildJsonLd();
 
                         $template = $this->_parseTemplate($templates[0], $data, $string);
-                        // assign to right variable
-                        switch ($key) {
-                            case 'content_html':
-                                $this->_html = $template['content_html'];
-                            break;
-                            case 'content_text':
-                                $this->_text = $template['content_text'];
-                            break;
-                        }
+                        $this->_html = $template['content_html'];
+                        $this->_text = $this->_htmlToText($this->_html);
                     }
                 }
             } else {
                 $this->Subject = $contents['subject'];
                 $this->_html = $contents['content_html'];
-                $this->_text = $contents['content_text'];
+                $this->_text = $this->_htmlToText($this->_html);
             }
 
             $this->Body   = $this->_html;
@@ -352,6 +344,44 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
      */
     private function _cleanseContents($string) {
         return preg_replace('#<script(.*?)>(.*?)</script>#is', '', $string);
+    }
+
+    /**
+     * Convert HTML to plain text
+     *
+     * @param string $html
+     * @return string
+     */
+    private function _htmlToText($html) {
+        // Remove head/script/style sections entirely
+        $html = preg_replace('#<head[^>]*>.*?</head>#is', '', $html);
+        $html = preg_replace('#<script[^>]*>.*?</script>#is', '', $html);
+        $html = preg_replace('#<style[^>]*>.*?</style>#is', '', $html);
+        // Convert anchors: preserve URL when it differs from link text
+        $html = preg_replace_callback(
+            '#<a[^>]+href=["\']([^"\']+)["\'][^>]*>(.*?)</a>#is',
+            function ($m) {
+                $text = trim(strip_tags($m[2]));
+                $url  = $m[1];
+                return ($text && $text !== $url) ? $text.' ('.$url.')' : $url;
+            },
+            $html
+        );
+        // Block-level elements → line breaks
+        $html = preg_replace('#<br\s*/?>#i', "\n", $html);
+        $html = preg_replace('#</?(p|div|tr|h[1-6]|blockquote|table|tbody|thead)[^>]*>#i', "\n\n", $html);
+        $html = preg_replace('#<li[^>]*>#i', "\n• ", $html);
+        $html = preg_replace('#</?(td|th)[^>]*>#i', "\t", $html);
+        // Strip remaining tags
+        $html = strip_tags($html);
+        // Decode HTML entities
+        $html = html_entity_decode($html, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        // Normalise whitespace
+        $html = preg_replace('/[ \t]+/', ' ', $html);
+        $html = preg_replace('/\n[ \t]+/', "\n", $html);
+        $html = preg_replace('/[ \t]+\n/', "\n", $html);
+        $html = preg_replace('/\n{3,}/', "\n\n", $html);
+        return trim($html);
     }
 
     /**

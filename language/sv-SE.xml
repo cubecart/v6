@@ -1304,7 +1304,6 @@ Detta meddelande skickas från butikens huvudsakliga e-postadress men det går a
    <string name="title_content_create"><![CDATA[Lägg till e-postinnehållsöversättning]]></string>
    <string name="title_content_html"><![CDATA[HTML-innehåll]]></string>
    <string name="title_content_manage"><![CDATA[Importera/Exportera e-postinnehåll]]></string>
-   <string name="title_content_text"><![CDATA[Oformaterat textinnehåll]]></string>
    <string name="title_content_update"><![CDATA[Redigera e-postinnehåll]]></string>
    <string name="title_contents"><![CDATA[E-postinnehåll]]></string>
    <string name="title_email"><![CDATA[E-posthantering]]></string>

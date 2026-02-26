@@ -1305,7 +1305,6 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
       <string name="title_content_create"><![CDATA[E-Mail-Inhaltsuebersetzung hinzufuegen]]></string>
       <string name="title_content_html"><![CDATA[HTML-Inhalt]]></string>
       <string name="title_content_manage"><![CDATA[E-Mail-Inhalte importieren/exportieren]]></string>
-      <string name="title_content_text"><![CDATA[Nur-Text-Inhalt]]></string>
       <string name="title_content_update"><![CDATA[E-Mail-Inhalt bearbeiten]]></string>
       <string name="title_contents"><![CDATA[E-Mail-Inhalte]]></string>
       <string name="title_email"><![CDATA[E-Mail-Inhalte &amp; Vorlagen]]></string>

@@ -16,34 +16,17 @@
     <content type="html"><![CDATA[<p>Шановний(-а) {$DATA.name},</p>
 <p>Щоб відновити доступ до панелі адміністрування магазину, будь ласка, перейдіть за посиланням нижче:</p>
 <p><a href="{$DATA.link}">{$DATA.link}</a></p>
-<p>Якщо посилання не працює, будь ласка, скопіюйте його та вставте в адресний рядок вашого браузера.</p>]]></content>
-    <content type="text"><![CDATA[Шановний(-а) {$DATA.name},
-
-Щоб відновити доступ до панелі адміністрування магазину, будь ласка, перейдіть за посиланням нижче:
-
-{$DATA.link}
-
-Якщо посилання не працює, будь ласка, скопіюйте його та вставте в адресний рядок вашого браузера.]]></content>
+<p>Якщо посилання не працює, будь ласка, скопіюйте його та вставте в адресний рядок вашого браузера.</p>]]></content>
   </email>
   <email name="cart.order_complete">
     <subject><![CDATA[Замовлення виконано]]></subject>
     <content type="html"><![CDATA[<p>Вітаємо, {$DATA.first_name|capitalize}!</p>
-<p>Раді повідомити, що замовлення номер {$DATA.cart_order_id} виконано. Якщо ви замовляли фізичні товари, вони мають бути доставлені найближчим часом.</p>{if !empty($DATA.ship_tracking)}<p>Відстежити замовлення:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
-    <content type="text"><![CDATA[Вітаємо, {$DATA.first_name|capitalize}!
-
-Раді повідомити, що замовлення номер {$DATA.cart_order_id} виконано. Якщо ви замовляли фізичні товари, вони мають бути доставлені найближчим часом.
-{if !empty($DATA.ship_tracking)}
-Відстежити замовлення:
-{$DATA.ship_tracking}
-{/if}]]></content>
+<p>Раді повідомити, що замовлення номер {$DATA.cart_order_id} виконано. Якщо ви замовляли фізичні товари, вони мають бути доставлені найближчим часом.</p>{if !empty($DATA.ship_tracking)}<p>Відстежити замовлення:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
   </email>
   <email name="cart.order_cancelled">
     <subject><![CDATA[Замовлення скасовано]]></subject>
     <content type="html"><![CDATA[<p>Вітаємо, {$DATA.first_name|capitalize}!</p>
-<p>Замовлення номер {$DATA.cart_order_id} було скасовано. Якщо у вас є запитання, будь ласка, зв'яжіться з нами.</p>]]></content>
-    <content type="text"><![CDATA[Вітаємо, {$DATA.first_name|capitalize}!
-
-Замовлення номер {$DATA.cart_order_id} було скасовано. Якщо у вас є запитання, будь ласка, зв'яжіться з нами.]]></content>
+<p>Замовлення номер {$DATA.cart_order_id} було скасовано. Якщо у вас є запитання, будь ласка, зв'яжіться з нами.</p>]]></content>
   </email>
   <email name="cart.order_confirmation">
     <subject><![CDATA[Підтвердження замовлення #{$DATA.cart_order_id}]]></subject>
@@ -130,73 +113,12 @@
 </table>
 {if !empty($DATA.note_to_customer)}
 <p>&quot;{$DATA.note_to_customer}&quot;</p>
-{/if}]]></content>
-    <content type="text"><![CDATA[Дякуємо за ваше замовлення, {$DATA.first_name|capitalize}.
-
-Ми отримали ваше замовлення {$DATA.cart_order_id}, оформлене {$DATA.order_date}. Будь ласка, збережіть цей лист для ваших записів. Ви можете переглянути статус замовлення онлайн у будь-який час.
-
-{$DATA.link}
-
-----------------------------------------------------------------------
-Адреса для рахунку:
-{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}
-{if !empty($BILLING.company_name)}{$BILLING.company_name}
-{/if}{$BILLING.line1|capitalize}
-{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}
-{/if}{$BILLING.town|upper}
-{if !empty($BILLING.state)}{$BILLING.state|upper}
-{/if}{$BILLING.postcode}
-{$BILLING.country}{if !empty($BILLING.w3w)}
-///{$BILLING.w3w}{/if}
-{$BILLING.phone}
-
-Електронна пошта:
-{$BILLING.email}
-
-Адреса доставки:
-{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}
-{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name}
-{/if}{$SHIPPING.line1|capitalize}
-{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize}
-{/if}{$SHIPPING.town|upper}
-{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}
-{/if}{$SHIPPING.postcode}
-{$SHIPPING.country}{if !empty($SHIPPING.w3w)}
-///{$SHIPPING.w3w}{/if}
-
-----------------------------------------------------------------------
-Товари у вашому замовленні
-
-{foreach from=$PRODUCTS item=product}
------------------------------------
-{$product.name}
-{$product.product_options}
-
-Артикул: {$product.product_code}
-Ціна за одиницю: {$product.price}
-Кількість: {$product.quantity}
-
-{/foreach}
------------------------------------
-Проміжний підсумок: {$DATA.subtotal}
-Знижка: {$DATA.discount}
-{if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Доставка:{/if} {$DATA.shipping}
-{foreach from=$TAXES item=tax}{$tax.tax_name} ({$tax.tax_percent}%): {$tax.tax_amount}
-{/foreach}{if $DATA.show_credit}
-Кредит: ({$DATA.credit_used})
-{/if}--------------------------
-Загальна сума замовлення: {$DATA.total}
-==========================
-{if !empty($DATA.note_to_customer)}
-"{$DATA.note_to_customer}"{/if}]]></content>
+{/if}]]></content>
   </email>
   <email name="cart.payment_fraud">
     <subject><![CDATA[Проблема із замовленням]]></subject>
     <content type="html"><![CDATA[<p>Вітаємо, {$DATA.first_name|capitalize}!</p>
-<p>На жаль, ми не змогли обробити оплату за замовлення {$DATA.cart_order_id}. Якщо у вас є запитання, будь ласка, зв'яжіться з нами.</p>]]></content>
-    <content type="text"><![CDATA[Вітаємо, {$DATA.first_name|capitalize}!
-
-На жаль, ми не змогли обробити оплату за замовлення {$DATA.cart_order_id}. Якщо у вас є запитання, будь ласка, зв'яжіться з нами.]]></content>
+<p>На жаль, ми не змогли обробити оплату за замовлення {$DATA.cart_order_id}. Якщо у вас є запитання, будь ласка, зв'яжіться з нами.</p>]]></content>
   </email>
   <email name="account.password_recovery">
     <subject><![CDATA[Відновлення пароля]]></subject>
@@ -206,14 +128,7 @@
 <br>
 <a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br>
 <br>
-Якщо вам потрібна додаткова допомога, будь ласка, зв'яжіться з нами.</p>]]></content>
-    <content type="text"><![CDATA[Вітаємо, {$DATA.first_name|capitalize}!
-
-Щоб скинути пароль, будь ласка, натисніть на посилання нижче або скопіюйте та вставте адресу в адресний рядок вашого браузера. На веб-сторінці вам буде запропоновано ввести та підтвердити новий пароль.
-
-{$DATA.reset_link}
-
-Якщо вам потрібна додаткова допомога, будь ласка, зв'яжіться з нами.]]></content>
+Якщо вам потрібна додаткова допомога, будь ласка, зв'яжіться з нами.</p>]]></content>
   </email>
   <email name="admin.order_received">
     <subject><![CDATA[Нове замовлення #{$DATA.cart_order_id}]]></subject>
@@ -298,75 +213,13 @@
 </tr>
 </tbody>
 
-</table>]]></content>
-    <content type="text"><![CDATA[{$DATA.first_name|capitalize} {$DATA.last_name|capitalize} {if !empty($BILLING.company_name)}({$BILLING.company_name}){/if} щойно оформив(-ла) замовлення номер {$DATA.cart_order_id} від {$DATA.order_date}.
-
-Ви можете керувати цим замовленням за посиланням нижче.
-
-{$DATA.link}
-
-----------------------------------------------------------------------
-Адреса для рахунку:
-{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}
-{if !empty($BILLING.company_name)}{$BILLING.company_name}
-{/if}{$BILLING.line1|capitalize}
-{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}
-{/if}{$BILLING.town|upper}
-{if !empty($BILLING.state)}{$BILLING.state|upper}
-{/if}{$BILLING.postcode}
-{$BILLING.country}{if !empty($BILLING.w3w)}
-///{$BILLING.w3w}{/if}
-{$BILLING.phone}
-
-Електронна пошта:
-{$BILLING.email}
-
-Адреса доставки:
-{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}
-{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name}
-{/if}{$SHIPPING.line1|capitalize}
-{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize}
-{/if}{$SHIPPING.town|upper}
-{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}
-{/if}{$SHIPPING.postcode}
-{$SHIPPING.country}{if !empty($SHIPPING.w3w)}
-///{$SHIPPING.w3w}{/if}
-
-----------------------------------------------------------------------
-Товари у замовленні
-
-{foreach from=$PRODUCTS item=product}
------------------------------------
-{$product.name}
-{$product.product_options}
-
-Артикул: {$product.product_code}
-Ціна за одиницю: {$product.price}
-Кількість: {$product.quantity}
-
-{/foreach}
------------------------------------
-Проміжний підсумок: {$DATA.subtotal}
-Знижка: {$DATA.discount}
-{if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Доставка:{/if} {$DATA.shipping}
-{foreach from=$TAXES item=tax}{$tax.tax_name} ({$tax.tax_percent}%): {$tax.tax_amount}
-{/foreach}{if $DATA.show_credit}
-Кредит: ({$DATA.credit_used})
-{/if}--------------------------
-Загальна сума замовлення: {$DATA.total}
-==========================]]></content>
+</table>]]></content>
   </email>
   <email name="admin.review_added">
     <subject><![CDATA[Новий відгук на товар]]></subject>
     <content type="html"><![CDATA[{$DATA.name} залишив(-ла) новий відгук на товар '{$DATA.product_name}'. Ви можете модерувати його за посиланням нижче.
         <p><strong>Посилання для модерації:</strong><br><a href='{$DATA.link}'>{$DATA.link}</a></p>
-        <p><strong>Текст відгуку:</strong><br>{$DATA.review}</p>]]></content>
-    <content type="text"><![CDATA[{$DATA.name} залишив(-ла) новий відгук на товар '{$DATA.product_name}'. Ви можете модерувати його за посиланням нижче.
-
-Посилання для модерації:
-{$DATA.link}
-Текст відгуку:
-{$DATA.review}]]></content>
+        <p><strong>Текст відгуку:</strong><br>{$DATA.review}</p>]]></content>
   </email>
   <email name="cart.digital_download">
     <subject><![CDATA[Ваші завантаження готові]]></subject>
@@ -377,17 +230,7 @@
 <a href="{$download.url}">{$download.url}</a></p>
 {/foreach}
 <p>Якщо посилання вище не працюють, спробуйте скопіювати та вставити їх в адресний рядок вашого браузера. Ви також можете отримати доступ до цих файлів зі свого облікового запису на нашому сайті.</p>
-<p>&nbsp;</p>]]></content>
-    <content type="text"><![CDATA[Вітаємо, {$DATA.first_name|capitalize}!
-
-Ваші цифрові файли готові до завантаження. Ви можете отримати їх за посиланнями нижче:
-
-{foreach from=$DOWNLOADS item=download}
-{$download.name}: (Посилання дійсне до {$download.expire})
-{$download.url}
-{/foreach}
-
-Якщо посилання вище не працюють, спробуйте скопіювати та вставити їх в адресний рядок вашого браузера. Ви також можете отримати доступ до цих файлів зі свого облікового запису на нашому сайті.]]></content>
+<p>&nbsp;</p>]]></content>
   </email>
   <email name="cart.gift_certificate">
     <subject><![CDATA[Ваш подарунковий сертифікат]]></subject>
@@ -399,61 +242,26 @@
 <strong>Повідомлення:</strong> {$DATA.message}</p>
 <p>-------------------</p>
 <p>Щоб використати цей подарунковий сертифікат, введіть &quot;Код активації&quot; вище у поле &quot;Промокод або подарунковий сертифікат&quot; під час оформлення замовлення.</p>
-<p>Чому б не витратити його прямо зараз?</p>]]></content>
-    <content type="text"><![CDATA[Шановний(-а) {$DATA.name},
-
-Ви отримали подарунковий сертифікат, який можна використати для будь-якої покупки на нашому сайті.
-
-Приємних покупок!
-
-Від: {$DATA.first_name|capitalize} {$DATA.last_name|capitalize}
-Сума: {$DATA.value}
-Код активації: {$DATA.code}
-Повідомлення: {$DATA.message}
-
--------------------
-
-Щоб використати цей подарунковий сертифікат, введіть "Код активації" вище у поле "Промокод або подарунковий сертифікат" під час оформлення замовлення.
-
-Чому б не витратити його прямо зараз?]]></content>
+<p>Чому б не витратити його прямо зараз?</p>]]></content>
   </email>
   <email name="catalogue.tell_friend">
     <subject><![CDATA[{$DATA.from} рекомендує вам товар]]></subject>
     <content type="html"><![CDATA[Шановний(-а) {$DATA.to},
 <p>Ваш друг <strong>{$DATA.from}</strong> вважає, що вас може зацікавити товар <strong>{$DATA.name}</strong>.</p>
 <p><strong>Посилання на товар:</strong> <a href="{$DATA.link}">{$DATA.name}</a></p>
-<p>{$DATA.message}</p>]]></content>
-    <content type="text"><![CDATA[Шановний(-а) {$DATA.to},
-
-Ваш друг {$DATA.from} вважає, що вас може зацікавити товар '{$DATA.name}'.
-
-{$DATA.name}
-Посилання на товар: {$DATA.link}
-
-{$DATA.message}]]></content>
+<p>{$DATA.message}</p>]]></content>
   </email>
   <email name="cart.payment_received">
     <subject><![CDATA[Дякуємо за вашу оплату]]></subject>
     <content type="html"><![CDATA[<p>Вітаємо, {$DATA.first_name|capitalize}!</p>
-<p>Ми отримали вашу оплату на суму {$DATA.total} за замовлення номер {$DATA.cart_order_id}.</p>]]></content>
-    <content type="text"><![CDATA[Вітаємо, {$DATA.first_name|capitalize}!
-
-Ми отримали вашу оплату на суму {$DATA.total} за замовлення номер {$DATA.cart_order_id}.]]></content>
+<p>Ми отримали вашу оплату на суму {$DATA.total} за замовлення номер {$DATA.cart_order_id}.</p>]]></content>
   </email>
   <email name="newsletter.verify_email">
     <subject><![CDATA[Підтвердіть вашу підписку]]></subject>
-    <content type="html"><![CDATA[<p>Адресу {$DATA.email} було використано для підписки на нашу розсилку. Щоб підтвердити підписку, будь ласка, натисніть на посилання нижче:</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
-    <content type="text"><![CDATA[Адресу {$DATA.email} було використано для підписки на нашу розсилку. Щоб підтвердити підписку, будь ласка, натисніть на посилання нижче:
-
-{$DATA.link}
-]]></content>
+    <content type="html"><![CDATA[<p>Адресу {$DATA.email} було використано для підписки на нашу розсилку. Щоб підтвердити підписку, будь ласка, натисніть на посилання нижче:</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
   </email>
   <email name="newsletter.remove_request">
     <subject><![CDATA[Підтвердження відписки від розсилки]]></subject>
-    <content type="html"><![CDATA[<p>Було надіслано запит на відписку адреси <strong>{$DATA.email}</strong> від нашої розсилки. Щоб підтвердити, будь ласка, натисніть на посилання нижче.</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
-    <content type="text"><![CDATA[Було надіслано запит на відписку адреси {$DATA.email} від нашої розсилки. Щоб підтвердити, будь ласка, натисніть на посилання нижче.
-
-{$DATA.link}
-]]></content>
+    <content type="html"><![CDATA[<p>Було надіслано запит на відписку адреси <strong>{$DATA.email}</strong> від нашої розсилки. Щоб підтвердити, будь ласка, натисніть на посилання нижче.</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
   </email>
 </emails>

@@ -1306,7 +1306,6 @@ Questa email è inviata dall'indirizzo email principale del negozio ma è possib
     <string name="title_content_create"><![CDATA[Aggiungi traduzione contenuto email]]></string>
     <string name="title_content_html"><![CDATA[Contenuto HTML]]></string>
     <string name="title_content_manage"><![CDATA[Importa/Esporta contenuti email]]></string>
-    <string name="title_content_text"><![CDATA[Contenuto in testo semplice]]></string>
     <string name="title_content_update"><![CDATA[Modifica contenuto email]]></string>
     <string name="title_contents"><![CDATA[Contenuti email]]></string>
     <string name="title_email"><![CDATA[Contenuti email &amp; Modelli]]></string>

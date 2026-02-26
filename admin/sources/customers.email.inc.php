@@ -29,7 +29,7 @@ if (isset($_POST['newsletter']) && !empty($_POST['newsletter'])) {
         $proceed = false;
         $GLOBALS['main']->errorMessage($lang['email']['error_no_subject']);
     }
-    if (empty($_POST['newsletter']['content_html']) && empty($_POST['newsletter']['content_text'])) {
+    if (empty($_POST['newsletter']['content_html'])) {
         $proceed = false;
         $GLOBALS['main']->errorMessage($lang['email']['error_no_message']);
     }
@@ -72,7 +72,6 @@ if (isset($_GET['action']) && strtolower($_GET['action']) == 'delete') {
 
     $GLOBALS['main']->addTabControl($lang['common']['general'], 'general');
     $GLOBALS['main']->addTabControl($lang['email']['title_content_html'], 'email_html');
-    $GLOBALS['main']->addTabControl($lang['email']['title_content_text'], 'email_text');
     $GLOBALS['main']->addTabControl($lang['email']['title_send_test'], 'send_test');
     if (isset($_GET['newsletter_id']) && is_numeric($_GET['newsletter_id'])) {
         if (($content = $GLOBALS['db']->select('CubeCart_newsletter', false, array('newsletter_id' => (int)$_GET['newsletter_id']))) !== false) {

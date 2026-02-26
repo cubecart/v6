@@ -16,34 +16,17 @@
     <content type="html"><![CDATA[<p>Hei {$DATA.name},</p>
 <p>For å gjenopprette tilgang til butikkens administrasjonspanel, vennligst følg lenken nedenfor:</p>
 <p><a href="{$DATA.link}">{$DATA.link}</a></p>
-<p>Hvis lenken ovenfor ikke fungerer, kopier og lim den inn i adressefeltet i nettleseren din.</p>]]></content>
-    <content type="text"><![CDATA[Hei {$DATA.name},
-
-For å gjenopprette tilgang til butikkens administrasjonspanel, vennligst følg lenken nedenfor:
-
-{$DATA.link}
-
-Hvis lenken ovenfor ikke fungerer, kopier og lim den inn i adressefeltet i nettleseren din.]]></content>
+<p>Hvis lenken ovenfor ikke fungerer, kopier og lim den inn i adressefeltet i nettleseren din.</p>]]></content>
   </email>
   <email name="cart.order_complete">
     <subject><![CDATA[Ordre fullført]]></subject>
     <content type="html"><![CDATA[<p>Hei {$DATA.first_name|capitalize},</p>
-<p>Vi er glade for å informere deg om at ordrenummer {$DATA.cart_order_id} nå er fullført. Hvis du bestilte fysiske varer, bør de snart være hos deg.</p>{if !empty($DATA.ship_tracking)}<p>Spor bestillingen din:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
-    <content type="text"><![CDATA[Hei {$DATA.first_name|capitalize},
-
-Vi er glade for å informere deg om at ordrenummer {$DATA.cart_order_id} nå er fullført. Hvis du bestilte fysiske varer, bør de snart være hos deg.
-{if !empty($DATA.ship_tracking)}
-Spor bestillingen din:
-{$DATA.ship_tracking}
-{/if}]]></content>
+<p>Vi er glade for å informere deg om at ordrenummer {$DATA.cart_order_id} nå er fullført. Hvis du bestilte fysiske varer, bør de snart være hos deg.</p>{if !empty($DATA.ship_tracking)}<p>Spor bestillingen din:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
   </email>
   <email name="cart.order_cancelled">
     <subject><![CDATA[Ordre kansellert]]></subject>
     <content type="html"><![CDATA[<p>Hei {$DATA.first_name|capitalize},</p>
-<p>Ordrenummer {$DATA.cart_order_id} har blitt kansellert. Hvis du har spørsmål, er du velkommen til å kontakte oss.</p>]]></content>
-    <content type="text"><![CDATA[Hei {$DATA.first_name|capitalize},
-
-Ordrenummer {$DATA.cart_order_id} har blitt kansellert. Hvis du har spørsmål, er du velkommen til å kontakte oss.]]></content>
+<p>Ordrenummer {$DATA.cart_order_id} har blitt kansellert. Hvis du har spørsmål, er du velkommen til å kontakte oss.</p>]]></content>
   </email>
   <email name="cart.order_confirmation">
     <subject><![CDATA[Ordrebekreftelse #{$DATA.cart_order_id}]]></subject>
@@ -130,73 +113,12 @@ Ordrenummer {$DATA.cart_order_id} har blitt kansellert. Hvis du har spørsmål, 
 </table>
 {if !empty($DATA.note_to_customer)}
 <p>&quot;{$DATA.note_to_customer}&quot;</p>
-{/if}]]></content>
-    <content type="text"><![CDATA[Takk for bestillingen din, {$DATA.first_name|capitalize}.
-
-Vi har mottatt din ordre {$DATA.cart_order_id}, lagt inn den {$DATA.order_date}. Vennligst ta vare på denne e-posten for dine egne notater. Du kan se ordrestatusen din på nettet når som helst.
-
-{$DATA.link}
-
-----------------------------------------------------------------------
-Fakturaadresse:
-{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}
-{if !empty($BILLING.company_name)}{$BILLING.company_name}
-{/if}{$BILLING.line1|capitalize}
-{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}
-{/if}{$BILLING.town|upper}
-{if !empty($BILLING.state)}{$BILLING.state|upper}
-{/if}{$BILLING.postcode}
-{$BILLING.country}{if !empty($BILLING.w3w)}
-///{$BILLING.w3w}{/if}
-{$BILLING.phone}
-
-E-post:
-{$BILLING.email}
-
-Leveringsadresse:
-{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}
-{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name}
-{/if}{$SHIPPING.line1|capitalize}
-{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize}
-{/if}{$SHIPPING.town|upper}
-{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}
-{/if}{$SHIPPING.postcode}
-{$SHIPPING.country}{if !empty($SHIPPING.w3w)}
-///{$SHIPPING.w3w}{/if}
-
-----------------------------------------------------------------------
-Varer i din bestilling
-
-{foreach from=$PRODUCTS item=product}
------------------------------------
-{$product.name}
-{$product.product_options}
-
-Varenummer: {$product.product_code}
-Enhetspris: {$product.price}
-Antall: {$product.quantity}
-
-{/foreach}
------------------------------------
-Delsum: {$DATA.subtotal}
-Rabatt: {$DATA.discount}
-{if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Frakt:{/if} {$DATA.shipping}
-{foreach from=$TAXES item=tax}{$tax.tax_name} ({$tax.tax_percent}%): {$tax.tax_amount}
-{/foreach}{if $DATA.show_credit}
-Kreditt: ({$DATA.credit_used})
-{/if}--------------------------
-Ordretotal: {$DATA.total}
-==========================
-{if !empty($DATA.note_to_customer)}
-"{$DATA.note_to_customer}"{/if}]]></content>
+{/if}]]></content>
   </email>
   <email name="cart.payment_fraud">
     <subject><![CDATA[Problem med bestillingen]]></subject>
     <content type="html"><![CDATA[<p>Hei {$DATA.first_name|capitalize},</p>
-<p>Beklager, men vi kunne ikke behandle betalingen for ordre {$DATA.cart_order_id}. Hvis du har spørsmål, er du velkommen til å kontakte oss.</p>]]></content>
-    <content type="text"><![CDATA[Hei {$DATA.first_name|capitalize},
-
-Beklager, men vi kunne ikke behandle betalingen for ordre {$DATA.cart_order_id}. Hvis du har spørsmål, er du velkommen til å kontakte oss.]]></content>
+<p>Beklager, men vi kunne ikke behandle betalingen for ordre {$DATA.cart_order_id}. Hvis du har spørsmål, er du velkommen til å kontakte oss.</p>]]></content>
   </email>
   <email name="account.password_recovery">
     <subject><![CDATA[Gjenoppretting av passord]]></subject>
@@ -206,14 +128,7 @@ For å tilbakestille passordet ditt, vennligst klikk på lenken nedenfor eller k
 <br>
 <a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br>
 <br>
-Hvis du trenger ytterligere hjelp, vennligst kontakt oss.</p>]]></content>
-    <content type="text"><![CDATA[Hei {$DATA.first_name|capitalize},
-
-For å tilbakestille passordet ditt, vennligst klikk på lenken nedenfor eller kopier og lim inn adressen i adressefeltet i nettleseren din. Når du er på nettsiden, vil du bli bedt om å oppgi og bekrefte ditt nye passord.
-
-{$DATA.reset_link}
-
-Hvis du trenger ytterligere hjelp, vennligst kontakt oss.]]></content>
+Hvis du trenger ytterligere hjelp, vennligst kontakt oss.</p>]]></content>
   </email>
   <email name="admin.order_received">
     <subject><![CDATA[Ny ordre #{$DATA.cart_order_id}]]></subject>
@@ -298,75 +213,13 @@ Hvis du trenger ytterligere hjelp, vennligst kontakt oss.]]></content>
 </tr>
 </tbody>
 
-</table>]]></content>
-    <content type="text"><![CDATA[{$DATA.first_name|capitalize} {$DATA.last_name|capitalize} {if !empty($BILLING.company_name)}({$BILLING.company_name}){/if} har nettopp lagt inn ordrenummer {$DATA.cart_order_id} den {$DATA.order_date}.
-
-Du kan administrere denne ordren via lenken nedenfor.
-
-{$DATA.link}
-
-----------------------------------------------------------------------
-Fakturaadresse:
-{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}
-{if !empty($BILLING.company_name)}{$BILLING.company_name}
-{/if}{$BILLING.line1|capitalize}
-{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}
-{/if}{$BILLING.town|upper}
-{if !empty($BILLING.state)}{$BILLING.state|upper}
-{/if}{$BILLING.postcode}
-{$BILLING.country}{if !empty($BILLING.w3w)}
-///{$BILLING.w3w}{/if}
-{$BILLING.phone}
-
-E-post:
-{$BILLING.email}
-
-Leveringsadresse:
-{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}
-{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name}
-{/if}{$SHIPPING.line1|capitalize}
-{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize}
-{/if}{$SHIPPING.town|upper}
-{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}
-{/if}{$SHIPPING.postcode}
-{$SHIPPING.country}{if !empty($SHIPPING.w3w)}
-///{$SHIPPING.w3w}{/if}
-
-----------------------------------------------------------------------
-Varer i bestillingen
-
-{foreach from=$PRODUCTS item=product}
------------------------------------
-{$product.name}
-{$product.product_options}
-
-Varenummer: {$product.product_code}
-Enhetspris: {$product.price}
-Antall: {$product.quantity}
-
-{/foreach}
------------------------------------
-Delsum: {$DATA.subtotal}
-Rabatt: {$DATA.discount}
-{if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Frakt:{/if} {$DATA.shipping}
-{foreach from=$TAXES item=tax}{$tax.tax_name} ({$tax.tax_percent}%): {$tax.tax_amount}
-{/foreach}{if $DATA.show_credit}
-Kreditt: ({$DATA.credit_used})
-{/if}--------------------------
-Ordretotal: {$DATA.total}
-==========================]]></content>
+</table>]]></content>
   </email>
   <email name="admin.review_added">
     <subject><![CDATA[Ny produktanmeldelse]]></subject>
     <content type="html"><![CDATA[{$DATA.name} har lagt igjen en ny anmeldelse for '{$DATA.product_name}'. Du kan moderere den via lenken nedenfor.
         <p><strong>Modereringslenke:</strong><br><a href='{$DATA.link}'>{$DATA.link}</a></p>
-        <p><strong>Anmeldelsestekst:</strong><br>{$DATA.review}</p>]]></content>
-    <content type="text"><![CDATA[{$DATA.name} har lagt igjen en ny anmeldelse for '{$DATA.product_name}'. Du kan moderere den via lenken nedenfor.
-
-Modereringslenke:
-{$DATA.link}
-Anmeldelsestekst:
-{$DATA.review}]]></content>
+        <p><strong>Anmeldelsestekst:</strong><br>{$DATA.review}</p>]]></content>
   </email>
   <email name="cart.digital_download">
     <subject><![CDATA[Nedlastingene dine er klare]]></subject>
@@ -377,17 +230,7 @@ Anmeldelsestekst:
 <a href="{$download.url}">{$download.url}</a></p>
 {/foreach}
 <p>Hvis lenkene ovenfor ikke fungerer, prøv å kopiere og lime dem inn i adressefeltet i nettleseren din. Du kan også få tilgang til filene fra kontoen din på nettstedet vårt.</p>
-<p>&nbsp;</p>]]></content>
-    <content type="text"><![CDATA[Hei {$DATA.first_name|capitalize},
-
-Dine digitale filer er klare til nedlasting. Du kan hente dem via lenkene nedenfor:
-
-{foreach from=$DOWNLOADS item=download}
-{$download.name}: (Lenken utløper {$download.expire})
-{$download.url}
-{/foreach}
-
-Hvis lenkene ovenfor ikke fungerer, prøv å kopiere og lime dem inn i adressefeltet i nettleseren din. Du kan også få tilgang til filene fra kontoen din på nettstedet vårt.]]></content>
+<p>&nbsp;</p>]]></content>
   </email>
   <email name="cart.gift_certificate">
     <subject><![CDATA[Ditt gavekort]]></subject>
@@ -399,61 +242,26 @@ Hvis lenkene ovenfor ikke fungerer, prøv å kopiere og lime dem inn i adressefe
 <strong>Gavemelding:</strong> {$DATA.message}</p>
 <p>-------------------</p>
 <p>For å løse inn dette gavekortet, skriv inn &quot;Innløsningskoden&quot; ovenfor i tekstfeltet merket &quot;Kampanjekode eller gavekort&quot; ved utsjekking.</p>
-<p>Hvorfor ikke bruke det med en gang?</p>]]></content>
-    <content type="text"><![CDATA[Hei {$DATA.name},
-
-Du har mottatt et gavekort som kan brukes til kjøp i nettbutikken vår.
-
-God handel!
-
-Fra: {$DATA.first_name|capitalize} {$DATA.last_name|capitalize}
-Beløp: {$DATA.value}
-Innløsningskode: {$DATA.code}
-Gavemelding: {$DATA.message}
-
--------------------
-
-For å løse inn dette gavekortet, skriv inn "Innløsningskoden" ovenfor i tekstfeltet merket "Kampanjekode eller gavekort" ved utsjekking.
-
-Hvorfor ikke bruke det med en gang?]]></content>
+<p>Hvorfor ikke bruke det med en gang?</p>]]></content>
   </email>
   <email name="catalogue.tell_friend">
     <subject><![CDATA[{$DATA.from} har anbefalt et produkt til deg]]></subject>
     <content type="html"><![CDATA[Hei {$DATA.to},
 <p>Vennen din <strong>{$DATA.from}</strong> trodde du kanskje ville være interessert i <strong>{$DATA.name}</strong>.</p>
 <p><strong>Produktlenke:</strong> <a href="{$DATA.link}">{$DATA.name}</a></p>
-<p>{$DATA.message}</p>]]></content>
-    <content type="text"><![CDATA[Hei {$DATA.to},
-
-Vennen din {$DATA.from} trodde du kanskje ville være interessert i '{$DATA.name}'.
-
-{$DATA.name}
-Produktlenke: {$DATA.link}
-
-{$DATA.message}]]></content>
+<p>{$DATA.message}</p>]]></content>
   </email>
   <email name="cart.payment_received">
     <subject><![CDATA[Takk for betalingen din]]></subject>
     <content type="html"><![CDATA[<p>Hei {$DATA.first_name|capitalize},</p>
-<p>Vi har mottatt betalingen din på {$DATA.total} for ordrenummer {$DATA.cart_order_id}.</p>]]></content>
-    <content type="text"><![CDATA[Hei {$DATA.first_name|capitalize},
-
-Vi har mottatt betalingen din på {$DATA.total} for ordrenummer {$DATA.cart_order_id}.]]></content>
+<p>Vi har mottatt betalingen din på {$DATA.total} for ordrenummer {$DATA.cart_order_id}.</p>]]></content>
   </email>
   <email name="newsletter.verify_email">
     <subject><![CDATA[Bekreft abonnementet ditt]]></subject>
-    <content type="html"><![CDATA[<p>{$DATA.email} ble brukt til å abonnere på nyhetsbrevet vårt. For å bekrefte abonnementet ditt, vennligst klikk på lenken nedenfor:</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
-    <content type="text"><![CDATA[{$DATA.email} ble brukt til å abonnere på nyhetsbrevet vårt. For å bekrefte abonnementet ditt, vennligst klikk på lenken nedenfor:
-
-{$DATA.link}
-]]></content>
+    <content type="html"><![CDATA[<p>{$DATA.email} ble brukt til å abonnere på nyhetsbrevet vårt. For å bekrefte abonnementet ditt, vennligst klikk på lenken nedenfor:</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
   </email>
   <email name="newsletter.remove_request">
     <subject><![CDATA[Bekreft avmelding fra nyhetsbrevet]]></subject>
-    <content type="html"><![CDATA[<p>Det ble sendt en forespørsel om å melde av <strong>{$DATA.email}</strong> fra nyhetsbrevet vårt. For å bekrefte, vennligst klikk på lenken nedenfor.</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
-    <content type="text"><![CDATA[Det ble sendt en forespørsel om å melde av {$DATA.email} fra nyhetsbrevet vårt. For å bekrefte, vennligst klikk på lenken nedenfor.
-
-{$DATA.link}
-]]></content>
+    <content type="html"><![CDATA[<p>Det ble sendt en forespørsel om å melde av <strong>{$DATA.email}</strong> fra nyhetsbrevet vårt. For å bekrefte, vennligst klikk på lenken nedenfor.</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
   </email>
 </emails>

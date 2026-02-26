@@ -1293,7 +1293,6 @@ Deze e-mail is verzonden vanaf het hoofd-e-mailadres van de winkel, maar het is 
       <string name="title_content_create"><![CDATA[E-mailinhoudvertaling toevoegen]]></string>
       <string name="title_content_html"><![CDATA[HTML-inhoud]]></string>
       <string name="title_content_manage"><![CDATA[E-mailinhoud importeren/exporteren]]></string>
-      <string name="title_content_text"><![CDATA[Platte-tekstinhoud]]></string>
       <string name="title_content_update"><![CDATA[E-mailinhoud bewerken]]></string>
       <string name="title_contents"><![CDATA[E-mailinhoud]]></string>
       <string name="title_email"><![CDATA[E-mailinhoud &amp; sjablonen]]></string>

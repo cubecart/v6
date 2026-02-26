@@ -1289,7 +1289,6 @@
       <string name="title_content_create"><![CDATA[Додати переклад вмісту листа]]></string>
       <string name="title_content_html"><![CDATA[HTML-вміст]]></string>
       <string name="title_content_manage"><![CDATA[Імпорт/Експорт вмісту листів]]></string>
-      <string name="title_content_text"><![CDATA[Текстовий вміст]]></string>
       <string name="title_content_update"><![CDATA[Редагувати вміст листа]]></string>
       <string name="title_contents"><![CDATA[Вміст листів]]></string>
       <string name="title_email"><![CDATA[Вміст та шаблони листів]]></string>

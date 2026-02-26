@@ -1303,7 +1303,6 @@ Este correo electr&oacute;nico se env&iacute;a desde la direcci&oacute;n de corr
   <string name="title_content_create"><![CDATA[A&ntilde;adir traducci&oacute;n de contenido de correo]]></string>
   <string name="title_content_html"><![CDATA[Contenido HTML]]></string>
   <string name="title_content_manage"><![CDATA[Importar/Exportar contenido de correos]]></string>
-  <string name="title_content_text"><![CDATA[Contenido en texto plano]]></string>
   <string name="title_content_update"><![CDATA[Editar contenido de correo]]></string>
   <string name="title_contents"><![CDATA[Contenido de correos]]></string>
   <string name="title_email"><![CDATA[Contenidos y plantillas de correo electr&oacute;nico]]></string>

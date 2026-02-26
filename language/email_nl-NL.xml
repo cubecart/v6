@@ -16,34 +16,17 @@
     <content type="html"><![CDATA[<p>Beste {$DATA.name},</p>
 <p>Om weer toegang te krijgen tot het beheerpaneel van de winkel, klikt u op de onderstaande link:</p>
 <p><a href="{$DATA.link}">{$DATA.link}</a></p>
-<p>Als de bovenstaande link niet werkt, kopieer deze dan en plak hem in de adresbalk van uw browser.</p>]]></content>
-    <content type="text"><![CDATA[Beste {$DATA.name},
-
-Om weer toegang te krijgen tot het beheerpaneel van de winkel, klikt u op de onderstaande link:
-
-{$DATA.link}
-
-Als de bovenstaande link niet werkt, kopieer deze dan en plak hem in de adresbalk van uw browser.]]></content>
+<p>Als de bovenstaande link niet werkt, kopieer deze dan en plak hem in de adresbalk van uw browser.</p>]]></content>
   </email>
   <email name="cart.order_complete">
     <subject><![CDATA[Bestelling voltooid]]></subject>
     <content type="html"><![CDATA[<p>Beste {$DATA.first_name|capitalize},</p>
-<p>We laten u graag weten dat bestelling nummer {$DATA.cart_order_id} nu voltooid is. Als u fysieke producten heeft besteld, worden deze binnenkort bij u bezorgd.</p>{if !empty($DATA.ship_tracking)}<p>Volg uw bestelling:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
-    <content type="text"><![CDATA[Beste {$DATA.first_name|capitalize},
-
-We laten u graag weten dat bestelling nummer {$DATA.cart_order_id} nu voltooid is. Als u fysieke producten heeft besteld, worden deze binnenkort bij u bezorgd.
-{if !empty($DATA.ship_tracking)}
-Volg uw bestelling:
-{$DATA.ship_tracking}
-{/if}]]></content>
+<p>We laten u graag weten dat bestelling nummer {$DATA.cart_order_id} nu voltooid is. Als u fysieke producten heeft besteld, worden deze binnenkort bij u bezorgd.</p>{if !empty($DATA.ship_tracking)}<p>Volg uw bestelling:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
   </email>
   <email name="cart.order_cancelled">
     <subject><![CDATA[Bestelling geannuleerd]]></subject>
     <content type="html"><![CDATA[<p>Beste {$DATA.first_name|capitalize},</p>
-<p>Bestelling nummer {$DATA.cart_order_id} is geannuleerd. Als u vragen heeft, neem dan gerust contact met ons op.</p>]]></content>
-    <content type="text"><![CDATA[Beste {$DATA.first_name|capitalize},
-
-Bestelling nummer {$DATA.cart_order_id} is geannuleerd. Als u vragen heeft, neem dan gerust contact met ons op.]]></content>
+<p>Bestelling nummer {$DATA.cart_order_id} is geannuleerd. Als u vragen heeft, neem dan gerust contact met ons op.</p>]]></content>
   </email>
   <email name="cart.order_confirmation">
     <subject><![CDATA[Orderbevestiging #{$DATA.cart_order_id}]]></subject>
@@ -130,73 +113,12 @@ Bestelling nummer {$DATA.cart_order_id} is geannuleerd. Als u vragen heeft, neem
 </table>
 {if !empty($DATA.note_to_customer)}
 <p>&quot;{$DATA.note_to_customer}&quot;</p>
-{/if}]]></content>
-    <content type="text"><![CDATA[Bedankt voor uw bestelling, {$DATA.first_name|capitalize}.
-
-We hebben uw bestelling {$DATA.cart_order_id} ontvangen, geplaatst op {$DATA.order_date}. Bewaar deze e-mail voor uw administratie. U kunt de status van uw bestelling op elk moment online bekijken.
-
-{$DATA.link}
-
-----------------------------------------------------------------------
-Factuuradres:
-{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}
-{if !empty($BILLING.company_name)}{$BILLING.company_name}
-{/if}{$BILLING.line1|capitalize}
-{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}
-{/if}{$BILLING.town|upper}
-{if !empty($BILLING.state)}{$BILLING.state|upper}
-{/if}{$BILLING.postcode}
-{$BILLING.country}{if !empty($BILLING.w3w)}
-///{$BILLING.w3w}{/if}
-{$BILLING.phone}
-
-E-mail:
-{$BILLING.email}
-
-Verzendadres:
-{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}
-{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name}
-{/if}{$SHIPPING.line1|capitalize}
-{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize}
-{/if}{$SHIPPING.town|upper}
-{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}
-{/if}{$SHIPPING.postcode}
-{$SHIPPING.country}{if !empty($SHIPPING.w3w)}
-///{$SHIPPING.w3w}{/if}
-
-----------------------------------------------------------------------
-Artikelen in uw bestelling
-
-{foreach from=$PRODUCTS item=product}
------------------------------------
-{$product.name}
-{$product.product_options}
-
-Artikelnummer: {$product.product_code}
-Stukprijs: {$product.price}
-Aantal: {$product.quantity}
-
-{/foreach}
------------------------------------
-Subtotaal: {$DATA.subtotal}
-Korting: {$DATA.discount}
-{if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Verzending:{/if} {$DATA.shipping}
-{foreach from=$TAXES item=tax}{$tax.tax_name} ({$tax.tax_percent}%): {$tax.tax_amount}
-{/foreach}{if $DATA.show_credit}
-Tegoed: ({$DATA.credit_used})
-{/if}--------------------------
-Totaal bestelling: {$DATA.total}
-==========================
-{if !empty($DATA.note_to_customer)}
-"{$DATA.note_to_customer}"{/if}]]></content>
+{/if}]]></content>
   </email>
   <email name="cart.payment_fraud">
     <subject><![CDATA[Probleem met bestelling]]></subject>
     <content type="html"><![CDATA[<p>Beste {$DATA.first_name|capitalize},</p>
-<p>Het spijt ons, maar we konden de betaling voor bestelling {$DATA.cart_order_id} niet verwerken. Als u vragen heeft, neem dan gerust contact met ons op.</p>]]></content>
-    <content type="text"><![CDATA[Beste {$DATA.first_name|capitalize},
-
-Het spijt ons, maar we konden de betaling voor bestelling {$DATA.cart_order_id} niet verwerken. Als u vragen heeft, neem dan gerust contact met ons op.]]></content>
+<p>Het spijt ons, maar we konden de betaling voor bestelling {$DATA.cart_order_id} niet verwerken. Als u vragen heeft, neem dan gerust contact met ons op.</p>]]></content>
   </email>
   <email name="account.password_recovery">
     <subject><![CDATA[Wachtwoordherstel]]></subject>
@@ -206,14 +128,7 @@ Om uw wachtwoord opnieuw in te stellen, klikt u op de onderstaande link of kopie
 <br>
 <a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br>
 <br>
-Als u verdere hulp nodig heeft, neem dan contact met ons op.</p>]]></content>
-    <content type="text"><![CDATA[Beste {$DATA.first_name|capitalize},
-
-Om uw wachtwoord opnieuw in te stellen, klikt u op de onderstaande link of kopieert u het adres en plakt u het in de adresbalk van uw browser. Op de webpagina wordt u gevraagd uw nieuwe wachtwoord in te voeren en te bevestigen.
-
-{$DATA.reset_link}
-
-Als u verdere hulp nodig heeft, neem dan contact met ons op.]]></content>
+Als u verdere hulp nodig heeft, neem dan contact met ons op.</p>]]></content>
   </email>
   <email name="admin.order_received">
     <subject><![CDATA[Nieuwe bestelling #{$DATA.cart_order_id}]]></subject>
@@ -298,75 +213,13 @@ Als u verdere hulp nodig heeft, neem dan contact met ons op.]]></content>
 </tr>
 </tbody>
 
-</table>]]></content>
-    <content type="text"><![CDATA[{$DATA.first_name|capitalize} {$DATA.last_name|capitalize} {if !empty($BILLING.company_name)}({$BILLING.company_name}){/if} heeft zojuist bestelling nummer {$DATA.cart_order_id} geplaatst op {$DATA.order_date}.
-
-U kunt deze bestelling beheren via de onderstaande link.
-
-{$DATA.link}
-
-----------------------------------------------------------------------
-Factuuradres:
-{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}
-{if !empty($BILLING.company_name)}{$BILLING.company_name}
-{/if}{$BILLING.line1|capitalize}
-{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}
-{/if}{$BILLING.town|upper}
-{if !empty($BILLING.state)}{$BILLING.state|upper}
-{/if}{$BILLING.postcode}
-{$BILLING.country}{if !empty($BILLING.w3w)}
-///{$BILLING.w3w}{/if}
-{$BILLING.phone}
-
-E-mail:
-{$BILLING.email}
-
-Verzendadres:
-{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}
-{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name}
-{/if}{$SHIPPING.line1|capitalize}
-{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize}
-{/if}{$SHIPPING.town|upper}
-{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}
-{/if}{$SHIPPING.postcode}
-{$SHIPPING.country}{if !empty($SHIPPING.w3w)}
-///{$SHIPPING.w3w}{/if}
-
-----------------------------------------------------------------------
-Artikelen in de bestelling
-
-{foreach from=$PRODUCTS item=product}
------------------------------------
-{$product.name}
-{$product.product_options}
-
-Artikelnummer: {$product.product_code}
-Stukprijs: {$product.price}
-Aantal: {$product.quantity}
-
-{/foreach}
------------------------------------
-Subtotaal: {$DATA.subtotal}
-Korting: {$DATA.discount}
-{if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Verzending:{/if} {$DATA.shipping}
-{foreach from=$TAXES item=tax}{$tax.tax_name} ({$tax.tax_percent}%): {$tax.tax_amount}
-{/foreach}{if $DATA.show_credit}
-Tegoed: ({$DATA.credit_used})
-{/if}--------------------------
-Totaal bestelling: {$DATA.total}
-==========================]]></content>
+</table>]]></content>
   </email>
   <email name="admin.review_added">
     <subject><![CDATA[Nieuwe productbeoordeling]]></subject>
     <content type="html"><![CDATA[{$DATA.name} heeft een nieuwe beoordeling achtergelaten voor '{$DATA.product_name}'. U kunt deze modereren via de onderstaande link.
         <p><strong>Moderatielink:</strong><br><a href='{$DATA.link}'>{$DATA.link}</a></p>
-        <p><strong>Beoordelingstekst:</strong><br>{$DATA.review}</p>]]></content>
-    <content type="text"><![CDATA[{$DATA.name} heeft een nieuwe beoordeling achtergelaten voor '{$DATA.product_name}'. U kunt deze modereren via de onderstaande link.
-
-Moderatielink:
-{$DATA.link}
-Beoordelingstekst:
-{$DATA.review}]]></content>
+        <p><strong>Beoordelingstekst:</strong><br>{$DATA.review}</p>]]></content>
   </email>
   <email name="cart.digital_download">
     <subject><![CDATA[Uw downloads zijn gereed]]></subject>
@@ -377,17 +230,7 @@ Beoordelingstekst:
 <a href="{$download.url}">{$download.url}</a></p>
 {/foreach}
 <p>Als de bovenstaande links niet werken, probeer ze dan te kopieren en in de adresbalk van uw browser te plakken. U kunt deze bestanden ook openen via uw account op onze website.</p>
-<p>&nbsp;</p>]]></content>
-    <content type="text"><![CDATA[Beste {$DATA.first_name|capitalize},
-
-Uw digitale bestanden zijn klaar om te downloaden. U kunt ze openen via de onderstaande links:
-
-{foreach from=$DOWNLOADS item=download}
-{$download.name}: (Link verloopt op {$download.expire})
-{$download.url}
-{/foreach}
-
-Als de bovenstaande links niet werken, probeer ze dan te kopieren en in de adresbalk van uw browser te plakken. U kunt deze bestanden ook openen via uw account op onze website.]]></content>
+<p>&nbsp;</p>]]></content>
   </email>
   <email name="cart.gift_certificate">
     <subject><![CDATA[Uw cadeaubon]]></subject>
@@ -399,61 +242,26 @@ Als de bovenstaande links niet werken, probeer ze dan te kopieren en in de adres
 <strong>Bericht:</strong> {$DATA.message}</p>
 <p>-------------------</p>
 <p>Om deze cadeaubon te gebruiken, voert u de bovenstaande &quot;Claimcode&quot; in het tekstveld &quot;Promotiecode of cadeaubon&quot; in tijdens het afrekenen.</p>
-<p>Waarom besteedt u hem niet meteen?</p>]]></content>
-    <content type="text"><![CDATA[Beste {$DATA.name},
-
-U heeft een cadeaubon ontvangen die u kunt gebruiken voor elke aankoop in onze webwinkel.
-
-Veel winkelplezier!
-
-Van: {$DATA.first_name|capitalize} {$DATA.last_name|capitalize}
-Bedrag: {$DATA.value}
-Claimcode: {$DATA.code}
-Bericht: {$DATA.message}
-
--------------------
-
-Om deze cadeaubon te gebruiken, voert u de bovenstaande "Claimcode" in het tekstveld "Promotiecode of cadeaubon" in tijdens het afrekenen.
-
-Waarom besteedt u hem niet meteen?]]></content>
+<p>Waarom besteedt u hem niet meteen?</p>]]></content>
   </email>
   <email name="catalogue.tell_friend">
     <subject><![CDATA[{$DATA.from} heeft een product voor u aanbevolen]]></subject>
     <content type="html"><![CDATA[Beste {$DATA.to},
 <p>Uw vriend(in) <strong>{$DATA.from}</strong> dacht dat u wellicht geinteresseerd zou zijn in <strong>{$DATA.name}</strong>.</p>
 <p><strong>Productlink:</strong> <a href="{$DATA.link}">{$DATA.name}</a></p>
-<p>{$DATA.message}</p>]]></content>
-    <content type="text"><![CDATA[Beste {$DATA.to},
-
-Uw vriend(in) {$DATA.from} dacht dat u wellicht geinteresseerd zou zijn in '{$DATA.name}'.
-
-{$DATA.name}
-Productlink: {$DATA.link}
-
-{$DATA.message}]]></content>
+<p>{$DATA.message}</p>]]></content>
   </email>
   <email name="cart.payment_received">
     <subject><![CDATA[Bedankt voor uw betaling]]></subject>
     <content type="html"><![CDATA[<p>Beste {$DATA.first_name|capitalize},</p>
-<p>We hebben uw betaling van {$DATA.total} ontvangen voor bestelling nummer {$DATA.cart_order_id}.</p>]]></content>
-    <content type="text"><![CDATA[Beste {$DATA.first_name|capitalize},
-
-We hebben uw betaling van {$DATA.total} ontvangen voor bestelling nummer {$DATA.cart_order_id}.]]></content>
+<p>We hebben uw betaling van {$DATA.total} ontvangen voor bestelling nummer {$DATA.cart_order_id}.</p>]]></content>
   </email>
   <email name="newsletter.verify_email">
     <subject><![CDATA[Bevestig uw inschrijving]]></subject>
-    <content type="html"><![CDATA[<p>{$DATA.email} is gebruikt om u in te schrijven voor onze nieuwsbrief. Om uw inschrijving te bevestigen, klikt u op de onderstaande link:</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
-    <content type="text"><![CDATA[{$DATA.email} is gebruikt om u in te schrijven voor onze nieuwsbrief. Om uw inschrijving te bevestigen, klikt u op de onderstaande link:
-
-{$DATA.link}
-]]></content>
+    <content type="html"><![CDATA[<p>{$DATA.email} is gebruikt om u in te schrijven voor onze nieuwsbrief. Om uw inschrijving te bevestigen, klikt u op de onderstaande link:</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
   </email>
   <email name="newsletter.remove_request">
     <subject><![CDATA[Bevestig uitschrijving nieuwsbrief]]></subject>
-    <content type="html"><![CDATA[<p>Er is een verzoek gedaan om <strong>{$DATA.email}</strong> uit te schrijven van onze nieuwsbrief. Om dit te bevestigen, klikt u op de onderstaande link.</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
-    <content type="text"><![CDATA[Er is een verzoek gedaan om {$DATA.email} uit te schrijven van onze nieuwsbrief. Om dit te bevestigen, klikt u op de onderstaande link.
-
-{$DATA.link}
-]]></content>
+    <content type="html"><![CDATA[<p>Er is een verzoek gedaan om <strong>{$DATA.email}</strong> uit te schrijven van onze nieuwsbrief. Om dit te bevestigen, klikt u op de onderstaande link.</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
   </email>
 </emails>

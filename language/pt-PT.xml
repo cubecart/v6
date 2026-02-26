@@ -1304,7 +1304,6 @@ Este e-mail é enviado a partir do endereço de e-mail principal da loja, mas é
     <string name="title_content_create"><![CDATA[Adicionar Tradução de Conteúdo de E-mail]]></string>
     <string name="title_content_html"><![CDATA[Conteúdo HTML]]></string>
     <string name="title_content_manage"><![CDATA[Importar/Exportar Conteúdo de E-mail]]></string>
-    <string name="title_content_text"><![CDATA[Conteúdo em Texto Simples]]></string>
     <string name="title_content_update"><![CDATA[Editar Conteúdo de E-mail]]></string>
     <string name="title_contents"><![CDATA[Conteúdo de E-mail]]></string>
     <string name="title_email"><![CDATA[Conteúdo &amp; Modelos de E-mail]]></string>

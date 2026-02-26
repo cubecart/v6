@@ -54,7 +54,7 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
         $field_replace = 'cart_order_id';
     }
     if(is_array($fields_find)) {
-        foreach (array('subject', 'content_html', 'content_text') as $column) {
+        foreach (array('subject', 'content_html') as $column) {
             foreach ($fields_find as $field) {
                 $GLOBALS['db']->misc("UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_email_content` SET `".$column."` = REPLACE(`".$column."`, 'DATA.".$field."', 'DATA.".$field_replace."')");
             }

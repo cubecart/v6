@@ -538,7 +538,6 @@ if (isset($_GET['files_backup'])) {
             $mailer->sendEmail($GLOBALS['config']->get('config', 'email_address'), array(
                 'subject'      => sprintf($lang['maintain']['backup_failed_email_subject'], ucwords($lang['maintain']['title_files_backup'])),
                 'content_html' => '<p>'.sprintf($lang['maintain']['backup_failed_email_body'], strtolower($lang['maintain']['title_files_backup'])).'</p>',
-                'content_text' => sprintf($lang['maintain']['backup_failed_email_body'], strtolower($lang['maintain']['title_files_backup'])),
             ));
         } else {
             $GLOBALS['main']->errorMessage("Error: Backup failed.");
@@ -611,10 +610,6 @@ if (isset($_GET['files_backup'])) {
                     .'<p>'.sprintf($lang['maintain']['backup_complete_email_filename'], $backup_file).'<br>'
                     .sprintf($lang['maintain']['backup_complete_email_size'], $backup_size).'</p>'
                     .'<p>'.sprintf($lang['maintain']['backup_complete_email_download'], '<a href="'.$backup_url.'">'.$backup_url.'</a>').'</p>',
-                'content_text' => sprintf($lang['maintain']['backup_complete_email_body'], $type_label)."\n\n"
-                    .sprintf($lang['maintain']['backup_complete_email_filename'], $backup_file)."\n"
-                    .sprintf($lang['maintain']['backup_complete_email_size'], $backup_size)."\n\n"
-                    .sprintf($lang['maintain']['backup_complete_email_download'], $backup_url),
             ));
         } else {
             $GLOBALS['main']->successMessage($lang['maintain']['files_backup_complete']);
@@ -706,16 +701,11 @@ if (isset($_POST['backup'])) {
                             .'<p>'.sprintf($lang['maintain']['backup_complete_email_filename'], basename($actual_file)).'<br>'
                             .sprintf($lang['maintain']['backup_complete_email_size'], $backup_size).'</p>'
                             .'<p>'.sprintf($lang['maintain']['backup_complete_email_download'], '<a href="'.$backup_url.'">'.$backup_url.'</a>').'</p>',
-                        'content_text' => sprintf($lang['maintain']['backup_complete_email_body'], $type_label)."\n\n"
-                            .sprintf($lang['maintain']['backup_complete_email_filename'], basename($actual_file))."\n"
-                            .sprintf($lang['maintain']['backup_complete_email_size'], $backup_size)."\n\n"
-                            .sprintf($lang['maintain']['backup_complete_email_download'], $backup_url),
                     ));
                 } else {
                     $mailer->sendEmail($admin_email, array(
                         'subject'      => sprintf($lang['maintain']['backup_failed_email_subject'], ucwords($lang['maintain']['title_db_backup'])),
                         'content_html' => '<p>'.sprintf($lang['maintain']['backup_failed_email_body'], strtolower($lang['maintain']['title_db_backup'])).'</p>',
-                        'content_text' => sprintf($lang['maintain']['backup_failed_email_body'], strtolower($lang['maintain']['title_db_backup'])),
                     ));
                 }
             } else {

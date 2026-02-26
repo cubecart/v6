@@ -378,7 +378,6 @@ CREATE TABLE IF NOT EXISTS `CubeCart_email_content` (
 	`language` VARCHAR(5) NOT NULL,
 	`subject` VARCHAR(250) NOT NULL,
 	`content_html` TEXT NOT NULL,
-	`content_text` TEXT NOT NULL,
 	PRIMARY KEY (`content_id`),
 	KEY `content_type` (`content_type`),
 	KEY `language` (`language`)
@@ -389,7 +388,6 @@ CREATE TABLE IF NOT EXISTS `CubeCart_email_template` (
 	`template_default` ENUM('0','1') NOT NULL DEFAULT '0',
 	`title` VARCHAR(100) NOT NULL,
 	`content_html` TEXT NOT NULL,
-	`content_text` TEXT NOT NULL,
 	PRIMARY KEY (`template_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
@@ -633,7 +631,6 @@ CREATE TABLE IF NOT EXISTS `CubeCart_newsletter` (
 	`sender_email` VARCHAR(254) NOT NULL,
 	`sender_name` VARCHAR(255) NOT NULL,
 	`content_html` TEXT NOT NULL,
-	`content_text` TEXT NOT NULL,
 	PRIMARY KEY (`newsletter_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 

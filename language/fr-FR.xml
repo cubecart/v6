@@ -1301,7 +1301,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_content_create"><![CDATA[Ajouter une traduction du contenu e-mail]]></string>
     <string name="title_content_html"><![CDATA[Contenu HTML]]></string>
     <string name="title_content_manage"><![CDATA[Import/Export des contenus e-mail]]></string>
-    <string name="title_content_text"><![CDATA[Contenu texte brut]]></string>
     <string name="title_content_update"><![CDATA[Modifier le contenu de l'e-mail]]></string>
     <string name="title_contents"><![CDATA[Contenus des e-mails]]></string>
     <string name="title_email"><![CDATA[Contenus des e-mails et modèles]]></string>

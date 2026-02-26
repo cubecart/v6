@@ -1304,7 +1304,6 @@ Ten e-mail jest wysyłany z głównego adresu e-mail sklepu, ale możesz odpowie
    <string name="title_content_create"><![CDATA[Dodaj tłumaczenie treści e-maila]]></string>
    <string name="title_content_html"><![CDATA[Treść HTML]]></string>
    <string name="title_content_manage"><![CDATA[Import/Eksport treści e-maili]]></string>
-   <string name="title_content_text"><![CDATA[Treść tekstowa]]></string>
    <string name="title_content_update"><![CDATA[Edytuj treść e-maila]]></string>
    <string name="title_contents"><![CDATA[Treści e-maili]]></string>
    <string name="title_email"><![CDATA[Treści e-maili i szablony]]></string>

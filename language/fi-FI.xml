@@ -1289,7 +1289,6 @@ Tämä sähköposti on lähetetty kaupan pääsähköpostiosoitteesta, mutta voi
       <string name="title_content_create"><![CDATA[Lisää sähköpostin sisältökäännös]]></string>
       <string name="title_content_html"><![CDATA[HTML-sisältö]]></string>
       <string name="title_content_manage"><![CDATA[Sähköpostin sisällön tuonti/vienti]]></string>
-      <string name="title_content_text"><![CDATA[Pelkkätekstisisältö]]></string>
       <string name="title_content_update"><![CDATA[Muokkaa sähköpostin sisältöä]]></string>
       <string name="title_contents"><![CDATA[Sähköpostin sisällöt]]></string>
       <string name="title_email"><![CDATA[Sähköpostin sisällöt ja mallit]]></string>
