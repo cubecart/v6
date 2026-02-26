@@ -54,7 +54,7 @@ function writeGlobalConfig($config_data, $file_path)
         $value = is_array($value) ? var_export($value, true) : "'".addslashes($value)."'";
         $lines[] = sprintf("\$glob['%s'] = %s;", $key, $value);
     }
-    $config = sprintf("<?php\n// See global.inc.php-dist for full list of configuration options\n%s\n?>", implode("\n", $lines));
+    $config = sprintf("<?php\n// See global.inc.php-dist for full list of configuration options\n%s\n", implode("\n", $lines));
 
     if (file_exists($file_path) && file_get_contents($file_path) !== $config) {
         rename($file_path, $file_path.'-'.date('Ymdgis').'.php');
