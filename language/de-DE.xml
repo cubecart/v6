@@ -23,7 +23,6 @@
   <override/>
  </info>
  <translation>
-
   <group name="account">
    <string name="pw_cause_logout"><![CDATA[Wenn Sie Ihr Passwort ändern, werden Sie aus der aktuellen Sitzung abgemeldet.]]></string>
    <string name="credit_on_account"><![CDATA[Kontoguthaben: %s]]></string>
@@ -129,7 +128,6 @@
    <string name="your_orders_explained"><![CDATA[Frühere und aktuelle Bestellungen werden hier aufgeführt.]]></string>
    <string name="your_subscription"><![CDATA[Newsletter-Abonnements]]></string>
   </group>
-
   <group name="address">
    <string name="contact_url"><![CDATA[Kontakt-URL]]></string>
    <string name="w3w"><![CDATA[what3words]]></string>
@@ -168,7 +166,6 @@
    <string name="town"><![CDATA[Stadt/Ort]]></string>
    <string name="your_address_book"><![CDATA[Ihr Adressbuch]]></string>
   </group>
-
   <group name="admins">
    <string name="tour_shown"><![CDATA[Willkommenstour bei nächster Anmeldung unterdrücken?]]></string>
    <string name="account_link"><![CDATA[Mit Kundenkonto verknüpfen]]></string>
@@ -222,7 +219,6 @@
    <string name="title_admin_edit"><![CDATA[Administrator bearbeiten]]></string>
    <string name="title_administrators"><![CDATA[Administratoren]]></string>
   </group>
-
   <group name="basket">
    <string name="credit_use"><![CDATA[%1$s von %2$s]]></string>
    <string name="basket_total"><![CDATA[Ihr Warenkorbwert beträgt %1$s]]></string>
@@ -263,7 +259,6 @@
    <string name="weight"><![CDATA[Warenkorbgewicht]]></string>
    <string name="your_comments"><![CDATA[Lieferhinweise oder zusätzliche Anmerkungen]]></string>
   </group>
-
   <group name="catalogue">
     <string name="manufacturer_address"><![CDATA[Herstelleradresse]]></string>
     <string name="manufacturer_eu_contact"><![CDATA[EU-Verantwortlicher Kontakt]]></string>
@@ -606,7 +601,6 @@
     <string name="your_email"><![CDATA[Ihre E-Mail]]></string>
     <string name="your_name"><![CDATA[Ihr Name]]></string>
    </group>
-
   <group name="category">
    <string name="edit_category"><![CDATA[Kategorie bearbeiten]]></string>
    <string name="no_products"><![CDATA[Keine Produkte gefunden.]]></string>
@@ -619,7 +613,6 @@
    <string name="sort_name_desc"><![CDATA[Z-A]]></string>
    <string name="sort_stock"><![CDATA[Lagerbestand]]></string>
   </group>
-
   <group name="checkout">
    <string name="import_tariff"><![CDATA[%2$s-%1$s %4$s Zoll (%3$s&#37;)]]></string>
    <string name="shipping_required"><![CDATA[Bitte wählen Sie eine Versandart.]]></string>
@@ -651,7 +644,6 @@
    <string name="process_payment"><![CDATA[Zahlung]]></string>
    <string name="your_basket"><![CDATA[Ihr Warenkorb]]></string>
   </group>
-
   <group name="common">
    <string name="manufactuter"><![CDATA[Hersteller]]></string>
    <string name="tariff"><![CDATA[Zoll]]></string>
@@ -934,7 +926,6 @@
    <string name="yes"><![CDATA[Ja]]></string>
    <string name="yesterday"><![CDATA[Gestern]]></string>
   </group>
-
   <group name="confirm">
    <string name="confirm_page"><![CDATA[Bestätigungsseite]]></string>
    <string name="fail_page"><![CDATA[Fehlerseite]]></string>
@@ -946,7 +937,6 @@
    <string name="order_failed"><![CDATA[Leider war die Zahlung nicht erfolgreich. Sie können es über den untenstehenden Link erneut versuchen oder uns für Hilfe kontaktieren.]]></string>
    <string name="order_cancelled"><![CDATA[Ihre Bestellung wurde storniert. Falls Sie Hilfe benötigen, kontaktieren Sie uns bitte. Wir hoffen, Sie bald wiederzusehen.]]></string>
   </group>
-
   <group name="contact">
    <string name="type_not_allowed"><![CDATA[Der Dateityp `%1$s` ist leider nicht erlaubt.]]></string>
    <string name="allow_attachments"><![CDATA[Anhänge erlauben]]></string>
@@ -957,7 +947,6 @@
 ---------------
 %4$s
 ---------------
-
 Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können dem Absender direkt über die Antwortfunktion Ihres E-Mail-Programms antworten.]]></string>
    <string name="email_override"><![CDATA[Formulareinsendungen sollen gesendet werden an]]></string>
    <string name="error_contact_update"><![CDATA[Kontaktformular-Einstellungen konnten nicht aktualisiert werden.]]></string>
@@ -967,7 +956,6 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
    <string name="title_content"><![CDATA[Inhalt der Kontaktseite]]></string>
    <string name="title_departments"><![CDATA[Abteilungen (optional)]]></string>
   </group>
-
   <group name="country">
    <string name="assign_to_rest"><![CDATA[Rest der Welt zuweisen]]></string>
    <string name="rest_of_world"><![CDATA[Rest der Welt]]></string>
@@ -1004,7 +992,6 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
    <string name="zone_name"><![CDATA[Name]]></string>
    <string name="zone"><![CDATA[Zone]]></string>
   </group>
-
   <group name="customer">
     <string name="no_customer_groups"><![CDATA[Es sind keine Kundengruppen vorhanden.]]></string>
     <string name="delete_customer"><![CDATA[Kunde löschen]]></string>
@@ -1062,7 +1049,6 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
     <string name="title_key_unregistered"><![CDATA[Nicht registrierter Kunde]]></string>
     <string name="title_list"><![CDATA[Kundenliste]]></string>
    </group>
-
   <group name="dashboard">
     <string name="cache_reminder"><![CDATA[Bitte beachten Sie, dass Änderungen erst im Shop angezeigt werden, wenn Sie auf &quot;Cache leeren&quot; klicken. Diese Erinnerung wird während Ihrer ersten Sitzungen angezeigt.]]></string>
     <string name="recent_extensions"><![CDATA[Aktuelle Marketplace-Erweiterungen]]></string>
@@ -1131,7 +1117,6 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
     <string name="title_tasks"><![CDATA[Schnellaufgaben]]></string>
     <string name="title_technical_data"><![CDATA[Technische Details]]></string>
    </group>
-
   <group name="documents">
     <string name="edit_homepage"><![CDATA[Startseite bearbeiten]]></string>
     <string name="hide_title"><![CDATA[Titel ausblenden]]></string>
@@ -1171,7 +1156,6 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
     <string name="tab_content"><![CDATA[Inhalt]]></string>
     <string name="title_documents"><![CDATA[Website-Dokumente]]></string>
    </group>
-
   <group name="email">
       <string name="title_macro_user_newsletter_remove"><![CDATA[Benutzer: Newsletter-Abmeldung anfordern]]></string>
       <string name="empty_list"><![CDATA[Mailingliste leeren]]></string>
@@ -1354,7 +1338,6 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
       <string name="title_template_update"><![CDATA[Vorlage bearbeiten]]></string>
       <string name="title_templates"><![CDATA[E-Mail-Vorlagen]]></string>
    </group>
-
   <group name="filemanager">
       <string name="opens_new_window"><![CDATA[Oeffnet in neuem Fenster]]></string>
       <string name="click_to_select"><![CDATA[Klicken zum Auswaehlen oder Aendern]]></string>
@@ -1416,7 +1399,6 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
       <string name="title_file_edit"><![CDATA[Datei bearbeiten]]></string>
       <string name="title_image_crop"><![CDATA[Bild zuschneiden]]></string>
    </group>
-
   <group name="form">
       <string name="error_no_action_selected"><![CDATA[Es wurde keine Aktion ausgewaehlt.]]></string>
       <string name="create_report"><![CDATA[Bericht erstellen]]></string>
@@ -1443,7 +1425,6 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
       <string name="verify_human_fail"><![CDATA[Der Bestaetigungscode war falsch. Bitte versuchen Sie es erneut.]]></string>
       <string name="with_selected"><![CDATA[-- Mit Auswahl --]]></string>
    </group>
-
   <group name="gateway">
       <string name="none_defined"><![CDATA[Fuer Ihre Region wurden keine Zahlungsmethoden definiert. Bitte kontaktieren Sie den Haendler fuer Hilfe.]]></string>
       <string name="amount_due"><![CDATA[Faelliger Betrag]]></string>
@@ -1474,7 +1455,6 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
       <string name="transfer_progress"><![CDATA[Zahlungsgateway-Fortschritt]]></string>
       <string name="transferring"><![CDATA[Wird uebertragen, bitte warten...]]></string>
    </group>
-
   <group name="gui_message">
       <string name="error"><![CDATA[Fehler]]></string>
       <string name="errors_detected"><![CDATA[Die folgenden Fehler wurden erkannt:]]></string>
@@ -1483,7 +1463,6 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
       <string name="contact_support"><![CDATA[Fuer Unterstuetzung wenden Sie sich bitte an Ihren technischen Support oder Webmaster.]]></string>
       <string name="retry"><![CDATA[Aktualisieren &amp; Erneut versuchen]]></string>
    </group>
-
   <group name="hooks">
       <string name="error_hook_create"><![CDATA[Hook konnte nicht hinzugefuegt werden.]]></string>
       <string name="error_hook_none"><![CDATA[Fuer dieses Plugin sind keine Hooks definiert.]]></string>
@@ -1529,7 +1508,6 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
       <string name="author"><![CDATA[Autor]]></string>
       <string name="example_code_snippet_xml"><![CDATA[Ein Beispiel fuer einen Import-XML-Feed finden Sie <a href="docs/examples/code_snippet_import.php" target="blank">hier</a>. Bitte verwenden Sie den &quot;Hilfe&quot;-Link fuer weitere Informationen.]]></string>
    </group>
-
   <group name="maintain">
       <string name="request_time"><![CDATA[Anfragezeitpunkt]]></string>
       <string name="request_url"><![CDATA[Anfrage-URL]]></string>
@@ -1676,7 +1654,6 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
       <string name="title_query_db"><![CDATA[MySQL-Datenbank abfragen]]></string>
       <string name="query_box"><![CDATA[Abfragefeld]]></string>
    </group>
-
   <group name="module">
       <string name="default_extensions"><![CDATA[CubeCart wird mit <a href="https://www.cubecart.com/extensions/plugins/paypal-commerce" target="_blank">PayPal Commerce</a> &amp; <a href="https://www.cubecart.com/extensions/shipping-methods/all-in-one-shipping" target="_blank">All in One Shipping</a> vorinstalliert, da diese sehr beliebt sind. Diese können selbstverständlich gelöscht und durch andere Erweiterungen aus unserem Marktplatz ersetzt werden.]]></string>
       <string name="package_fail"><![CDATA[Fehler: Paketinformationen konnten nicht abgerufen werden. Bitte installieren Sie per FTP.]]></string>
@@ -1731,7 +1708,6 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
       <string name="position"><![CDATA[Priorität]]></string>
       <string name="mobile_optimized"><![CDATA[Dieses Modul wurde für mobile Geräte optimiert.]]></string>
    </group>
-
   <group name="navigation">
       <string name="acp_home"><![CDATA[ACP Startseite]]></string>
       <string name="expand_for_more"><![CDATA[Erweitern für weitere Optionen]]></string>
@@ -1799,7 +1775,6 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
       <string name="seo_path_login"><![CDATA[anmelden]]></string>
       <string name="title"><![CDATA[Nach Kategorie einkaufen]]></string>
    </group>
-
   <group name="newsletter">
       <string name="notify_remove_request"><![CDATA[Falls diese E-Mail-Adresse abonniert war, wurde eine E-Mail zur Bestätigung der Abmeldung gesendet.]]></string>
       <string name="subscribed"><![CDATA[Abonniert]]></string>
@@ -1852,7 +1827,6 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
       <string name="email_invalid"><![CDATA[E-Mail-Adresse &quot;%1$s&quot; ist ungültig.]]></string>
       <string name="subscribers_not_added"><![CDATA[Es wurden keine Abonnenten hinzugefügt.]]></string>
    </group>
-
   <group name="notification">
       <string name="notify_seo_url_deleted"><![CDATA[Weiterleitung wurde gelöscht.]]></string>
       <string name="notify_seo_url_not_deleted"><![CDATA[Weiterleitung konnte nicht gelöscht werden.]]></string>
@@ -1886,7 +1860,6 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
       <string name="notify_success_delete"><![CDATA[%1$s gelöscht]]></string>
       <string name="notify_success_update"><![CDATA[%1$s aktualisiert]]></string>
    </group>
-
   <group name="order_state">
       <string name="initiator_"><![CDATA[Nicht angegeben]]></string>
       <string name="initiator_U"><![CDATA[Unbekannt]]></string>
@@ -1908,7 +1881,6 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
       <string name="name_5"><![CDATA[Betrugsprüfung fehlgeschlagen]]></string>
       <string name="name_6"><![CDATA[Storniert]]></string>
    </group>
-
   <group name="orders">
     <string name="per_order"><![CDATA[%1$s pro Bestellung]]></string>
     <string name="order_updated_via_basket"><![CDATA[%1$s hat Änderungen an dieser Bestellung vorgenommen, nachdem er/sie vom Zahlungsvorgang zum Warenkorb zurückgekehrt ist.]]></string>
@@ -2031,7 +2003,6 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
     <string name="transaction_id"><![CDATA[Transaktions-ID]]></string>
     <string name="with_selected"><![CDATA[Mit Auswahl]]></string>
    </group>
-
   <group name="reports">
    <string name="data"><![CDATA[Daten]]></string>
    <string name="sales_data"><![CDATA[Verkaufsdaten]]></string>
@@ -2039,7 +2010,6 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
    <string name="title_reports_from"><![CDATA[Verkaufsbericht ab %1$s]]></string>
    <string name="title_reports_from_to"><![CDATA[Verkaufsbericht von %1$s bis %2$s]]></string>
   </group>
-
   <group name="reviews">
    <string name="empty_anon"><![CDATA[Leer lassen für anonym]]></string>
    <string name="error_no_product_selected"><![CDATA[Kein Produkt ausgewählt.]]></string>
@@ -2062,7 +2032,6 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
    <string name="title_review_edit"><![CDATA[Bewertung bearbeiten]]></string>
    <string name="title_review_search"><![CDATA[Bewertungen suchen]]></string>
   </group>
-
   <group name="search">
    <string name="gdpr_tools"><![CDATA[DSGVO-Werkzeuge]]></string>
    <string name="title_gdpr_report"><![CDATA[DSGVO-Bericht]]></string>
@@ -2081,7 +2050,6 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
    <string name="title_search_orders"><![CDATA[Bestellungen suchen]]></string>
    <string name="title_search_products"><![CDATA[Produkte suchen]]></string>
   </group>
-
   <group name="settings">
    <string name="note_tariff_grouping"><![CDATA[Zölle mit gleichem Anzeigetext werden an der Kasse gruppiert. Eindeutige Zollbezeichnungen werden separat aufgeführt.]]></string>
    <string name="tariff_display_eg"><![CDATA[z.B. US-Importzoll]]></string>
@@ -2482,7 +2450,6 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
    <string name="weight_unit_lb"><![CDATA[Imperial (lb)]]></string>
    <string name="default_product_sort"><![CDATA[Produktlisten-Sortierung]]></string>
   </group>
-
   <group name="setup">
    <string name="help_dbport"><![CDATA[Dies ist der Datenbank-Server-Port. In den meisten Fällen kann dieses Feld leer gelassen werden. Standardwert ist 3306]]></string>
    <string name="help_dbsocket"><![CDATA[Dies ist der Datenbank-Server-Socket. In den meisten Fällen kann dieses Feld leer gelassen werden.]]></string>
@@ -2514,8 +2481,6 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
    <string name="error_db_doesnt_exist"><![CDATA[Diese Datenbank existiert nicht.]]></string>
    <string name="error_db_incorrect_something"><![CDATA[Falscher Datenbank-Host, Benutzername und/oder Passwort.]]></string>
    <string name="error_db_password_mismatch"><![CDATA[Ihre Datenbankpasswörter stimmen nicht überein.]]></string>
-   <string name="error_licence_invalid"><![CDATA[Dieser Lizenzschlüssel scheint ungültig zu sein. Bitte lassen Sie das Feld leer, wenn Sie keinen haben.]]></string>
-   <string name="error_licence_required"><![CDATA[Ein Software-Lizenzschlüssel ist erforderlich, um diese Software zu installieren und zu verwenden.]]></string>
    <string name="error_rename_images"><![CDATA[Bitte benennen Sie Ihren Ordner 'images/uploads/' manuell in 'images/source/' um.]]></string>
    <string name="error_x_is_required"><![CDATA[%1$s ist erforderlich, um CubeCart 6 auszuführen.]]></string>
    <string name="error_x_not_writable"><![CDATA[%1$s ist nicht beschreibbar.]]></string>
@@ -2538,7 +2503,6 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
    <string name="title_file_permissions"><![CDATA[Dateiberechtigungen]]></string>
    <string name="title_licence"><![CDATA[Software-Lizenzvereinbarung]]></string>
    <string name="title_optional_features"><![CDATA[Optionale Funktionen]]></string>
-   <string name="title_software_licence"><![CDATA[Softwarelizenz]]></string>
    <string name="title_store_settings"><![CDATA[Shop-Einstellungen]]></string>
    <string name="upgrade_click_continue"><![CDATA[Wenn Sie bereit sind, das Upgrade zu starten, klicken Sie auf <strong>Weiter</strong>.]]></string>
    <string name="upgrade_complete"><![CDATA[Upgrade abgeschlossen]]></string>
@@ -2548,7 +2512,6 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
    <string name="upgrade_existing"><![CDATA[Wählen Sie diese Option, um Ihren CubeCart-Shop auf die neueste Version zu aktualisieren. <br><strong style='color: red;'>WICHTIG:</strong> Bitte erstellen Sie ein VOLLSTÄNDIGES Backup Ihrer Datenbank und Dateien, bevor Sie fortfahren!]]></string>
    <string name="upgrade_from_to"><![CDATA[Ihr Shop ist bereit für ein Upgrade von Version <strong>%1$s</strong> auf Version <strong>%2$s</strong>]]></string>
    <string name="upgrade_in_progress"><![CDATA[Upgrade wird durchgeführt. Aktualisierung von Version <strong>%1$s</strong> auf Version <strong>%2$s</strong>]]></string>
-   <string name="upgrade_licence_needed"><![CDATA[Da Sie von Version <strong>%1$s</strong> upgraden, können Sie einen Software-Lizenzschlüssel eingeben, um CubeCart Pro zu nutzen.]]></string>
    <string name="upgrade_will_reload"><![CDATA[Die Seite wird möglicherweise mehrmals neu geladen, aber das ist völlig normal. Wir informieren Sie, wenn es fertig ist — holen Sie sich in der Zwischenzeit einen Kaffee.]]></string>
    <string name="help_dbhostname"><![CDATA[Dies ist der Datenbank-Hostname, z. B. localhost]]></string>
    <string name="help_dbusername"><![CDATA[Der der Datenbank zugewiesene Benutzername.]]></string>
@@ -2559,7 +2522,6 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
    <string name="help_defaultlang"><![CDATA[Bitte wählen Sie die Standardsprache Ihres Shops.]]></string>
    <string name="help_defaultcurrency"><![CDATA[Bitte wählen Sie die Standardwährung Ihres Shops.]]></string>
   </group>
-
   <group name="statistics">
    <string name="invalid_date_from"><![CDATA[Das eingegebene Von-Datum war ungültig.]]></string>
    <string name="invalid_date_to"><![CDATA[Das eingegebene Bis-Datum war ungültig.]]></string>
@@ -2605,7 +2567,6 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
    <string name="display_customers_only"><![CDATA[Nur Kunden anzeigen]]></string>
    <string name="display_bots_and_customers"><![CDATA[Webbots &amp; Kunden anzeigen]]></string>
   </group>
-
   <group name="translate">
    <string name="no_phrases_found"><![CDATA[Keine Phrasen gefunden, die &quot;%1$s&quot; enthalten.]]></string>
    <string name="phrases_found"><![CDATA[Diese Phrasen wurden in folgenden Gruppen gefunden&hellip;]]></string>
@@ -2690,11 +2651,9 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
    <string name="trans_delete"><![CDATA[Übersetzung löschen]]></string>
    <string name="trans_none"><![CDATA[Keine Übersetzungen vorhanden]]></string>
   </group>
-
   <group name="ui">
    <string name="drag_reorder"><![CDATA[Ziehen zum Neuanordnen]]></string>
   </group>
-
   <group name="user">
    <string name="email"><![CDATA[E-Mail]]></string>
    <string name="email_address"><![CDATA[E-Mail-Adresse]]></string>
@@ -2709,6 +2668,5 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
    <string name="title"><![CDATA[Anrede]]></string>
    <string name="password_too_long"><![CDATA[Wenn Ihr altes Passwort länger als 64 Zeichen war, melden Sie sich bitte ab und verwenden Sie die Passwort-Zurücksetzen-Funktion.]]></string>
   </group>
-
 </translation>
 </language>

@@ -19,7 +19,6 @@
   <minVersion>6.0.0</minVersion>
   <maxVersion>6.*.*</maxVersion>
  </info>
-
  <translation>
  <group name="account">
   <string name="pw_cause_logout"><![CDATA[Cambiar su contrase&ntilde;a cerrar&aacute; la sesi&oacute;n actual.]]></string>
@@ -946,7 +945,6 @@
 ---------------
 %4$s
 ---------------
-
 Este correo electr&oacute;nico se env&iacute;a desde la direcci&oacute;n de correo principal de la tienda, pero es posible responder directamente al remitente usando el bot&oacute;n de respuesta de su programa de correo electr&oacute;nico.]]></string>
   <string name="email_override"><![CDATA[Los env&iacute;os del formulario deben enviarse a]]></string>
   <string name="error_contact_update"><![CDATA[No se pudieron actualizar los ajustes del formulario de contacto.]]></string>
@@ -2481,8 +2479,6 @@ Este correo electr&oacute;nico se env&iacute;a desde la direcci&oacute;n de corr
   <string name="error_db_doesnt_exist"><![CDATA[Esa base de datos no existe.]]></string>
   <string name="error_db_incorrect_something"><![CDATA[Host, nombre de usuario y/o contrase&ntilde;a de base de datos incorrectos.]]></string>
   <string name="error_db_password_mismatch"><![CDATA[Las contrase&ntilde;as de la base de datos no coinciden.]]></string>
-  <string name="error_licence_invalid"><![CDATA[Esa clave de licencia no parece ser v&aacute;lida. D&eacute;jela en blanco si no tiene una.]]></string>
-  <string name="error_licence_required"><![CDATA[Se necesita una clave de licencia de software para instalar y usar este programa.]]></string>
   <string name="error_rename_images"><![CDATA[Cambie manualmente el nombre de su carpeta &apos;images/uploads/&apos; a &apos;images/source/&apos;.]]></string>
   <string name="error_x_is_required"><![CDATA[%1$s es necesario para ejecutar CubeCart 6.]]></string>
   <string name="error_x_not_writable"><![CDATA[%1$s no tiene permisos de escritura.]]></string>
@@ -2505,7 +2501,6 @@ Este correo electr&oacute;nico se env&iacute;a desde la direcci&oacute;n de corr
   <string name="title_file_permissions"><![CDATA[Permisos de archivo]]></string>
   <string name="title_licence"><![CDATA[Acuerdo de licencia de software]]></string>
   <string name="title_optional_features"><![CDATA[Funciones opcionales]]></string>
-  <string name="title_software_licence"><![CDATA[Licencia de software]]></string>
   <string name="title_store_settings"><![CDATA[Configuraci&oacute;n de la tienda]]></string>
   <string name="upgrade_click_continue"><![CDATA[Cuando est&eacute; listo para iniciar la actualizaci&oacute;n, haga clic en <strong>Continuar</strong>.]]></string>
   <string name="upgrade_complete"><![CDATA[Actualizaci&oacute;n completada]]></string>
@@ -2515,7 +2510,6 @@ Este correo electr&oacute;nico se env&iacute;a desde la direcci&oacute;n de corr
   <string name="upgrade_existing"><![CDATA[Elija esta opci&oacute;n para actualizar su tienda CubeCart a la &uacute;ltima versi&oacute;n. <br><strong style='color: red;'>IMPORTANTE:</strong> &iexcl;Realice una copia de seguridad COMPLETA de su base de datos y archivos antes de continuar!]]></string>
   <string name="upgrade_from_to"><![CDATA[Su tienda est&aacute; lista para ser actualizada de la versi&oacute;n <strong>%1$s</strong> a la versi&oacute;n <strong>%2$s</strong>]]></string>
   <string name="upgrade_in_progress"><![CDATA[Actualizaci&oacute;n en curso. Actualizando de la versi&oacute;n <strong>%1$s</strong> a la versi&oacute;n <strong>%2$s</strong>]]></string>
-  <string name="upgrade_licence_needed"><![CDATA[Como est&aacute; actualizando desde la versi&oacute;n <strong>%1$s</strong>, puede introducir una clave de licencia de software para usar CubeCart Pro.]]></string>
   <string name="upgrade_will_reload"><![CDATA[La p&aacute;gina puede recargarse varias veces, pero es completamente normal. Le avisaremos cuando haya terminado, as&iacute; que trate de tomar un caf&eacute;.]]></string>
   <string name="help_dbhostname"><![CDATA[Este es el nombre de host de la base de datos, p. ej. localhost.]]></string>
   <string name="help_dbusername"><![CDATA[El nombre de usuario asignado a la base de datos.]]></string>
@@ -2672,6 +2666,5 @@ Este correo electr&oacute;nico se env&iacute;a desde la direcci&oacute;n de corr
   <string name="title"><![CDATA[T&iacute;tulo]]></string>
   <string name="password_too_long"><![CDATA[Si su contrase&ntilde;a anterior ten&iacute;a m&aacute;s de 64 caracteres, cierre la sesi&oacute;n y use la herramienta de restablecimiento de contrase&ntilde;a.]]></string>
  </group>
-
  </translation>
 </language>

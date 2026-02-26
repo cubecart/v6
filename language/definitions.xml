@@ -939,7 +939,6 @@
 ---------------
 %4$s
 ---------------
-
 This email is sent from the store's master email address but it is possible to reply directly to the sender using the reply button on your email software.]]></string>
     <string name="email_override" introduced="5.0.0"><![CDATA[Form submissions should be sent to]]></string>
     <string name="error_contact_update" introduced="5.0.0"><![CDATA[Unable to update Contact Form settings.]]></string>
@@ -2474,8 +2473,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="error_db_doesnt_exist" introduced="5.0.0"><![CDATA[That database doesn't exist.]]></string>
     <string name="error_db_incorrect_something" introduced="5.0.0"><![CDATA[Incorrect database host, username, and/or password.]]></string>
     <string name="error_db_password_mismatch" introduced="5.0.0"><![CDATA[Your database passwords do not match.]]></string>
-    <string name="error_licence_invalid" introduced="5.0.0"><![CDATA[That licence key does not appear to be valid. Please leave empty if you do not have one.]]></string>
-    <string name="error_licence_required" introduced="5.0.0"><![CDATA[A software licence key is required to install and use this software.]]></string>
     <string name="error_rename_images" introduced="5.0.0"><![CDATA[Please manually rename your 'images/uploads/' folder to 'images/source/'.]]></string>
     <string name="error_x_is_required" introduced="5.0.0"><![CDATA[%1$s is required to run CubeCart 6.]]></string>
     <string name="error_x_not_writable" introduced="5.0.0"><![CDATA[%1$s is not writable.]]></string>
@@ -2498,7 +2495,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_file_permissions" introduced="5.0.0"><![CDATA[File Permissions]]></string>
     <string name="title_licence" introduced="5.0.0"><![CDATA[Software Licence Agreement]]></string>
     <string name="title_optional_features" introduced="5.0.0"><![CDATA[Optional Features]]></string>
-    <string name="title_software_licence" introduced="5.0.0"><![CDATA[Software Licence]]></string>
     <string name="title_store_settings" introduced="5.0.0"><![CDATA[Store Settings]]></string>
     <string name="upgrade_click_continue" introduced="5.0.0"><![CDATA[When you're ready to start the upgrade, click <strong>Continue</strong>.]]></string>
     <string name="upgrade_complete" introduced="5.0.0"><![CDATA[Upgrade Complete]]></string>
@@ -2508,7 +2504,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="upgrade_existing" introduced="5.0.0"><![CDATA[Choose this option to upgrade your CubeCart store to the latest version. <br><strong style='color: red;'>IMPORTANT:</strong> Please take a FULL backup of your database and files before continuing!]]></string>
     <string name="upgrade_from_to" introduced="5.0.0"><![CDATA[Your store is ready to be upgraded from version <strong>%1$s</strong> to version <strong>%2$s</strong>]]></string>
     <string name="upgrade_in_progress" introduced="5.0.0"><![CDATA[Upgrade in progress. Upgrading from version <strong>%1$s</strong> to version <strong>%2$s</strong>]]></string>
-    <string name="upgrade_licence_needed" introduced="5.0.0"><![CDATA[As you are upgrading from version <strong>%1$s</strong>, you can enter a Software Licence Key to use CubeCart Pro.]]></string>
     <string name="upgrade_will_reload" introduced="5.0.0"><![CDATA[The page may reload several times, but this is perfectly normal. We'll let you know when it's done, so go grab a cup of coffee.]]></string>
     <string name="help_dbhostname" introduced="5.0.0"><![CDATA[This is the database hostname e.g. localhost]]></string>
     <string name="help_dbusername" introduced="5.0.0"><![CDATA[The username assigned to the database.]]></string>
@@ -2666,5 +2661,3 @@ This email is sent from the store's master email address but it is possible to r
     <string name="password_too_long" introduced="6.4.6"><![CDATA[If your old password was longer than 64 characters please logout and use the password reset tool.]]></string>
   </group>
 </definitions>
-
-

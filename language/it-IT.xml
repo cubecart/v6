@@ -948,7 +948,6 @@
 ---------------
 %4$s
 ---------------
-
 Questa email è inviata dall'indirizzo email principale del negozio ma è possibile rispondere direttamente al mittente utilizzando il pulsante rispondi del tuo programma di posta.]]></string>
     <string name="email_override"><![CDATA[I moduli compilati devono essere inviati a]]></string>
     <string name="error_contact_update"><![CDATA[Impossibile aggiornare le impostazioni del modulo di contatto.]]></string>
@@ -2483,8 +2482,6 @@ Questa email è inviata dall'indirizzo email principale del negozio ma è possib
     <string name="error_db_doesnt_exist"><![CDATA[Quel database non esiste.]]></string>
     <string name="error_db_incorrect_something"><![CDATA[Host del database, nome utente e/o password non corretti.]]></string>
     <string name="error_db_password_mismatch"><![CDATA[Le password del database non corrispondono.]]></string>
-    <string name="error_licence_invalid"><![CDATA[Quella chiave di licenza non sembra essere valida. Lascia vuoto se non ne possiedi una.]]></string>
-    <string name="error_licence_required"><![CDATA[È necessaria una chiave di licenza software per installare e utilizzare questo software.]]></string>
     <string name="error_rename_images"><![CDATA[Rinomina manualmente la cartella 'images/uploads/' in 'images/source/'.]]></string>
     <string name="error_x_is_required"><![CDATA[%1$s è necessario per eseguire CubeCart 6.]]></string>
     <string name="error_x_not_writable"><![CDATA[%1$s non è scrivibile.]]></string>
@@ -2507,7 +2504,6 @@ Questa email è inviata dall'indirizzo email principale del negozio ma è possib
     <string name="title_file_permissions"><![CDATA[Permessi file]]></string>
     <string name="title_licence"><![CDATA[Contratto di licenza software]]></string>
     <string name="title_optional_features"><![CDATA[Funzionalità opzionali]]></string>
-    <string name="title_software_licence"><![CDATA[Licenza software]]></string>
     <string name="title_store_settings"><![CDATA[Impostazioni negozio]]></string>
     <string name="upgrade_click_continue"><![CDATA[Quando sei pronto per avviare l'aggiornamento, fai clic su <strong>Continua</strong>.]]></string>
     <string name="upgrade_complete"><![CDATA[Aggiornamento completato]]></string>
@@ -2517,7 +2513,6 @@ Questa email è inviata dall'indirizzo email principale del negozio ma è possib
     <string name="upgrade_existing"><![CDATA[Scegli questa opzione per aggiornare il tuo negozio CubeCart all'ultima versione. <br><strong style='color: red;'>IMPORTANTE:</strong> Esegui un backup COMPLETO del database e dei file prima di continuare!]]></string>
     <string name="upgrade_from_to"><![CDATA[Il tuo negozio è pronto per essere aggiornato dalla versione <strong>%1$s</strong> alla versione <strong>%2$s</strong>]]></string>
     <string name="upgrade_in_progress"><![CDATA[Aggiornamento in corso. Aggiornamento dalla versione <strong>%1$s</strong> alla versione <strong>%2$s</strong>]]></string>
-    <string name="upgrade_licence_needed"><![CDATA[Poiché stai aggiornando dalla versione <strong>%1$s</strong>, puoi inserire una chiave di licenza software per utilizzare CubeCart Pro.]]></string>
     <string name="upgrade_will_reload"><![CDATA[La pagina potrebbe ricaricarsi più volte, ma è perfettamente normale. Ti avviseremo quando sarà completato, quindi vai a prenderti un caffè.]]></string>
     <string name="help_dbhostname"><![CDATA[Questo è l'hostname del database, ad es. localhost]]></string>
     <string name="help_dbusername"><![CDATA[Il nome utente assegnato al database.]]></string>
@@ -2676,5 +2671,3 @@ Questa email è inviata dall'indirizzo email principale del negozio ma è possib
   </group>
  </translation>
 </language>
-
-
