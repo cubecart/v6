@@ -717,7 +717,7 @@ class Session
             $attributes .= ';HttpOnly';
         }
         // Ref: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
-        header('Set-Cookie: '.$name.'='.$value.$attributes);
+        header('Set-Cookie: '.$name.'='.$value.$attributes, false);
         $GLOBALS['SENT_COOKIES'][] = "header('Set-Cookie: '".$name.'='.$value.$attributes; // phrased to show how sent
     }
 
