@@ -223,7 +223,7 @@ class Cache extends Cache_Controler
         $total_requests = $hits + $misses;
         $hit_rate = $total_requests > 0 ? round($hits / $total_requests * 100, 1) : 0;
 
-        $output = "<table border='1'>";
+        $output .= "<table border='1' style='border-collapse: collapse;'>";
         $output .= "<thead><tr><th colspan='2'>Redis Server: ".$info['redis_version']." (".$info['redis_mode'].")</th></tr></thead>";
         $output .= "<tbody>";
         $output .= "<tr><td>Uptime</td><td>".$uptime_str."</td></tr>";

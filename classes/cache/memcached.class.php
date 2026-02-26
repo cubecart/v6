@@ -188,7 +188,7 @@ class Cache extends Cache_Controler
             $used = (float)$data['bytes'] / (1024 * 1024);
             $limit = (float)$data['limit_maxbytes'] / (1024 * 1024);
 
-            $output .= "<table border='1'>";
+            $output .= "<table border='1' style='border-collapse: collapse;'>";
             $output .= "<thead><tr><th colspan='2'>Memcached Server: ".$server." (v".$data['version'].")</th></tr></thead>";
             $output .= "<tbody>";
             $output .= "<tr><td>Uptime</td><td>".$uptime_str."</td></tr>";
