@@ -106,3 +106,9 @@ if (isset($glob['redis_parameters'])) {
     $glob['redis_host'] = $host;
     $glob['redis_port'] = $port;
 }
+
+// Remove bundled Predis library (replaced by native phpredis extension)
+$predis_path = CC_INCLUDES_DIR.'lib/predis';
+if (is_dir($predis_path)) {
+    recursiveDelete($predis_path);
+}
