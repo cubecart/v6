@@ -37,14 +37,16 @@ jQuery(document).ready(function ($) {
     // -------------------------------
     function show_acp_widget(show, change) {
         var method = change ? 'animate' : 'css';
+        var $widget = $('.acp_widget');
         if ((show == 0 && change) || (show == 1 && !change)) {
             show = 1;
-            $('.acp_widget')[method]({"left": "0"}, 300);
-            $('.acp_widget .close a').html('&laquo;');
+            $widget[method]({"left": "0"}, 300);
+            $widget.find('.close a').html('&laquo;');
         } else {
             show = 0;
-            $('.acp_widget')[method]({"left": "-123px"}, 300);
-            $('.acp_widget .close a').html('&raquo;');
+            var hideOffset = $widget.outerWidth() - 15;
+            $widget[method]({"left": "-" + hideOffset + "px"}, 300);
+            $widget.find('.close a').html('&raquo;');
         }
         return show;
     }
