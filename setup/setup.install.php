@@ -272,8 +272,10 @@ if (!isset($_SESSION['setup']['permissions'])) {
             foreach ($default_docs as $default_doc) {
                 $GLOBALS['db']->insert('CubeCart_documents', $default_doc);
             }
-            $contact_form = base64_encode(json_encode(array('status' => 1, 'email' => $_SESSION['setup']['admin']['email'],'description' => '')));
-            $GLOBALS['db']->insert('CubeCart_config', array('name' => 'Contact_Form', 'array' => $contact_form));
+            $contact_form_data = array('status' => 1, 'email' => $_SESSION['setup']['admin']['email'], 'description' => '');
+            foreach ($contact_form_data as $cf_key => $cf_value) {
+                $GLOBALS['db']->insert('CubeCart_config', array('name' => 'Contact_Form', 'config_key' => $cf_key, 'config_value' => (string)$cf_value));
+            }
 
             // Install email templates based on all languages
             if (is_array($languages)) {

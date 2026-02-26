@@ -378,12 +378,13 @@ if (!isset($_SESSION['setup'])) {
         $GLOBALS['db'] = Database::getInstance($glob);
 
         // Move to scripts folder?
-        $config_string = $db->select('CubeCart_config', array(
-      'array'
-    ), array(
-      'name' => 'config'
-    ));
-        $main_config   = json_decode(base64_decode($config_string[0]['array']), true);
+        $config_rows = $db->select('CubeCart_config', array('config_key', 'config_value'), array('name' => 'config'));
+        $main_config = array();
+        if ($config_rows) {
+            foreach ($config_rows as $row) {
+                $main_config[$row['config_key']] = $row['config_value'];
+            }
+        }
 
         if ($_SESSION['setup']['config_update'] && is_array($main_config)) {
             // Remove unused keys
@@ -539,11 +540,14 @@ if (!isset($_SESSION['setup'])) {
             ksort($new_config);
 
             // Write new config to database
-            $db->update('CubeCart_config', array(
-        'array' => base64_encode(json_encode($new_config))
-      ), array(
-        'name' => 'config'
-      ));
+            $db->delete('CubeCart_config', array('name' => 'config'));
+            foreach ($new_config as $cfg_key => $cfg_value) {
+                $db->insert('CubeCart_config', array(
+                    'name'         => 'config',
+                    'config_key'   => $cfg_key,
+                    'config_value' => is_array($cfg_value) ? json_encode($cfg_value) : (string)$cfg_value
+                ));
+            }
             $_SESSION['setup']['config_update'] = true;
         }
 
@@ -656,10 +660,13 @@ function build_logos($image_name = '')
     'invoices' => $logo_path
   );
 
-    $db->insert('CubeCart_config', array(
-    'name' => 'logos',
-    'array' => base64_encode(json_encode($logo_config))
-  ));
+    foreach ($logo_config as $key => $value) {
+        $db->insert('CubeCart_config', array(
+            'name'         => 'logos',
+            'config_key'   => $key,
+            'config_value' => $value
+        ));
+    }
 }
 
 ## Controller elements

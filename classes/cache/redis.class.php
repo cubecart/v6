@@ -105,12 +105,15 @@ class Cache extends Cache_Controler
 
         $return = true;
         if (!empty($this->_ids)) {
-            //Loop through each id to delete it
+            //Loop through each id to delete it directly (bypass delete() which would double-hash)
             foreach ($this->_ids as $id) {
-                if (!$this->delete($id)) {
+                if (!(bool)$this->_redis->del($this->_makeName($id))) {
                     $return = false;
                 }
             }
+            //Reset so subsequent getIDs() fetches fresh from Redis
+            $this->_ids = array();
+            $this->_dupes = array();
         }
         $this->_clearFileCache();
         return $return;

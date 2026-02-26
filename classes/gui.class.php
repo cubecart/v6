@@ -913,13 +913,19 @@ class GUI
             if (isset($custom[$type])) {
                 ## Use custom logo
                 $target = 'images/logos/'.$custom[$type]['all'];
+            } elseif (isset($custom['all'])) {
+                ## Use the "All Skins" logo
+                $target = 'images/logos/'.$custom['all']['all'];
+            } elseif (!empty($logo_config)) {
+                ## Use the first skin logo already built
+                $target = reset($logo_config);
             } else {
-                ## Look for default logo
+                ## Last resort: look for default logo from config/skin
                 $target = $this->getLogo();
             }
             $logo_config[$type] = $target;
         }
-        $GLOBALS['config']->set('logos', false, str_replace('/', '/', $logo_config)); // Save skin and extra templates
+        $GLOBALS['config']->set('logos', false, str_replace('/', '/', $logo_config), true); // Save skin and extra templates
     }
 
     /**
