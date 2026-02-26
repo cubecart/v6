@@ -219,18 +219,7 @@ if (!isset($_SESSION['setup']['permissions'])) {
         ## Stage 5: Actual installation
         ## Write config file
         ksort($_SESSION['setup']['global']);
-        foreach ($_SESSION['setup']['global'] as $key => $value) {
-            $value = is_array($value) ? var_export($value, true) : "'".addslashes($value)."'";
-            $config[] = sprintf("\$glob['%s'] = %s;", $key, $value);
-        }
-        $config = sprintf("<?php\n%s\n?>", implode("\n", $config));
-        ## Backup existing config file, if it exists
-        if (file_exists($global_file)) {
-            rename($global_file, $global_file.'-'.date('Ymdgis').'.php');
-        }
-
-        if (file_put_contents($global_file, $config)) {
-            unset($config);
+        if (writeGlobalConfig($_SESSION['setup']['global'], $global_file)) {
             ## Install database
             include $global_file;
             $GLOBALS['config'] = $glob;

@@ -141,17 +141,8 @@ if (!isset($_SESSION['setup']['permissions'])) {
             $global = array_merge($glob, $append);
             ksort($global);
             ## Write new file
-            unset($config, $global['rootDir'], $global['rootRel'], $global['storeURL']);
-            foreach ($global as $key => $value) {
-                $value = is_array($value) ? var_export($value, true) : "'".addslashes($value)."'";
-                $config[] = sprintf("\$glob['%s'] = %s;", $key, $value);
-            }
-            $config = sprintf("<?php\n%s\n?>", implode("\n", $config));
-            ## Backup existing config file only if contents have changed
-            if (file_exists($global_file) && file_get_contents($global_file) !== $config) {
-                rename($global_file, $global_file.'-'.date('Ymdgi').'.php');
-            }
-            file_put_contents($global_file, $config);
+            unset($global['rootDir'], $global['rootRel'], $global['storeURL']);
+            writeGlobalConfig($global, $global_file);
             $_SESSION['setup']['config_converted'] = true;
 
         ## Updates from version 4
@@ -172,17 +163,7 @@ if (!isset($_SESSION['setup']['permissions'])) {
             unset($glob['license_key'], $glob['rootDir'], $glob['rootRel'], $glob['storeURL']);
             ksort($glob);
             ## Write new file
-            unset($config);
-            foreach ($glob as $key => $value) {
-                $value = is_array($value) ? var_export($value, true) : "'".addslashes($value)."'";
-                $config[] = sprintf("\$glob['%s'] = %s;", $key, $value);
-            }
-            $config = sprintf("<?php\n%s\n?>", implode("\n", $config));
-            ## Backup existing config file only if contents have changed
-            if (file_exists($global_file) && file_get_contents($global_file) !== $config) {
-                rename($global_file, $global_file.'-'.date('Ymdgi').'.php');
-            }
-            file_put_contents($global_file, $config);
+            writeGlobalConfig($glob, $global_file);
 
             $_SESSION['setup']['short_lang_identifier'] = $new_config['defaultLang'];
             $_SESSION['setup']['config_converted'] = true;

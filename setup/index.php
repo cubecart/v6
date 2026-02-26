@@ -40,6 +40,29 @@ if (file_exists($gitignore)) {
 $global_file = CC_INCLUDES_DIR . 'global.inc.php';
 $setup_path  = CC_ROOT_DIR . '/setup' . '/';
 
+/**
+ * Write the global config array to global.inc.php
+ *
+ * @param array $config_data Associative array of glob key/value pairs
+ * @param string $file_path Path to global.inc.php
+ * @return int|false Bytes written or false on failure
+ */
+function writeGlobalConfig($config_data, $file_path)
+{
+    $lines = array();
+    foreach ($config_data as $key => $value) {
+        $value = is_array($value) ? var_export($value, true) : "'".addslashes($value)."'";
+        $lines[] = sprintf("\$glob['%s'] = %s;", $key, $value);
+    }
+    $config = sprintf("<?php\n// See global.inc.php-dist for full list of configuration options\n%s\n?>", implode("\n", $lines));
+
+    if (file_exists($file_path) && file_get_contents($file_path) !== $config) {
+        rename($file_path, $file_path.'-'.date('Ymdgis').'.php');
+    }
+
+    return file_put_contents($file_path, $config);
+}
+
 session_start();
 
 if (isset($_GET['autoupdate']) && $_GET['autoupdate']) {
@@ -568,26 +591,10 @@ if (!isset($_SESSION['setup'])) {
 
             if ($update_config) {
                 $_SESSION['setup']['admin_rename'] = true;
-                $config = array();
                 if(is_array($glob) && !empty($glob)) {
-                    foreach ($glob as $key => $value) {
-                        if ($key=='adminFile') {
-                            $value = $adminFile;
-                        } elseif ($key=='adminFolder') {
-                            $value = $adminFolder;
-                        }
-                        $value = is_array($value) ? var_export($value, true) : "'".addslashes($value)."'";
-                        $config[] = sprintf("\$glob['%s'] = %s;", $key, $value);
-                    }
-                    // Config to string
-                    $config = sprintf("<?php\n%s\n?>", implode("\n", $config));
-                }
-                ## Backup existing config file, if it exists
-                if (file_exists($global_file)) {
-                    rename($global_file, $global_file.'-'.date('Ymdgis').'.php');
-                }
-                if (!empty($config)) {
-                    file_put_contents($global_file, $config);
+                    $glob['adminFile'] = $adminFile;
+                    $glob['adminFolder'] = $adminFolder;
+                    writeGlobalConfig($glob, $global_file);
                 }
             }
             $adminURL = str_replace('/setup', '', CC_STORE_URL).'/'.$adminFile;
