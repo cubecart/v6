@@ -390,9 +390,7 @@ class Request
                 return $return;
             } else {
                 $error = curl_error($this->_curl);
-                if (!empty($error)) {
-                    $this->log($this->_request_body, $return, $error);
-                }
+                $this->log($this->_request_body, (string)$return, $error ?: 'HTTP '.$this->server_response_code);
                 return false;
             }
         } else {

@@ -777,11 +777,13 @@ class Order
                 }
                 $this->addNote($this->_order_id, $note_content);
             }
-            // Write USPS packing note if USPS was the chosen shipping module
-            if (isset($this->_basket['shipping']['module_folder']) && $this->_basket['shipping']['module_folder'] === 'USPS') {
-                if ($packing_note = $GLOBALS['session']->get('usps_packing_note')) {
+            // Write shipping module packing note if available
+            $module_folder = isset($this->_basket['shipping']['module_folder']) ? $this->_basket['shipping']['module_folder'] : '';
+            if (!empty($module_folder)) {
+                $packing_session_key = strtolower($module_folder).'_packing_note';
+                if ($packing_note = $GLOBALS['session']->get($packing_session_key)) {
                     $this->addNote($this->_order_id, $packing_note, false);
-                    $GLOBALS['session']->delete('usps_packing_note');
+                    $GLOBALS['session']->delete($packing_session_key);
                 }
             }
             // Set order as 'Pending'
