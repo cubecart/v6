@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * CubeCart v6
+ * ========================================
+ * CubeCart is a registered trade mark of CubeCart Limited
+ * Copyright CubeCart Limited 2025. All rights reserved.
+ * UK Private Limited Company No. 5323904
+ * ========================================
+ * Web:   https://www.cubecart.com
+ * Email:  hello@cubecart.com
+ * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
+-->
+<emails version="2.0" language="el-GR">
+  <email name="admin.password_recovery">
+    <subject><![CDATA[Ανάκτηση κωδικού διαχειριστή]]></subject>
+    <content type="html"><![CDATA[<p>Αγαπητέ/ή {$DATA.name},</p>
+<p>Για να ανακτήσετε πρόσβαση στον πίνακα διαχείρισης του καταστήματος, ακολουθήστε τον παρακάτω σύνδεσμο:</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<p>Εάν ο παραπάνω σύνδεσμος δεν λειτουργεί, αντιγράψτε τον και επικολλήστε τον στη γραμμή διευθύνσεων του προγράμματος περιήγησής σας.</p>]]></content>
+
+  </email>
+  <email name="cart.order_complete">
+    <subject><![CDATA[Η παραγγελία ολοκληρώθηκε]]></subject>
+    <content type="html"><![CDATA[<p>Γεια σας {$DATA.first_name|capitalize},</p>
+<p>Με χαρά σας ενημερώνουμε ότι η παραγγελία με αριθμό {$DATA.cart_order_id} έχει πλέον ολοκληρωθεί. Εάν παραγγείλατε φυσικά προϊόντα, θα πρέπει να τα παραλάβετε σύντομα.</p>{if !empty($DATA.ship_tracking)}<p>Παρακολούθηση παραγγελίας:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
+
+  </email>
+  <email name="cart.order_cancelled">
+    <subject><![CDATA[Η παραγγελία ακυρώθηκε]]></subject>
+    <content type="html"><![CDATA[<p>Γεια σας {$DATA.first_name|capitalize},</p>
+<p>Η παραγγελία με αριθμό {$DATA.cart_order_id} έχει ακυρωθεί. Εάν έχετε ερωτήσεις, μη διστάσετε να επικοινωνήσετε μαζί μας.</p>]]></content>
+
+  </email>
+  <email name="cart.order_confirmation">
+    <subject><![CDATA[Επιβεβαίωση παραγγελίας #{$DATA.cart_order_id}]]></subject>
+    <content type="html"><![CDATA[<p>Ευχαριστούμε για την παραγγελία σας, {$DATA.first_name|capitalize}.</p>
+<p>Λάβαμε την παραγγελία σας {$DATA.cart_order_id}, που πραγματοποιήθηκε στις {$DATA.order_date}. Παρακαλούμε φυλάξτε αυτό το email για τα αρχεία σας. Μπορείτε να δείτε την κατάσταση της παραγγελίας σας ανά πάσα στιγμή online.</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<table width="100%">
+<tr>
+<td valign="top" width="50%"><strong>Διεύθυνση τιμολόγησης:</strong><br>
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
+{if !empty($BILLING.company_name)}{$BILLING.company_name}<br>
+{/if}
+{$BILLING.line1|capitalize}<br>
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>
+{/if}
+{$BILLING.town|upper}<br>
+{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
+{$BILLING.postcode}<br>
+{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}<br>
+{$BILLING.phone}<br>
+<br>
+<strong>Email:</strong><br>
+{$BILLING.email}</td>
+<td valign="top" width="50%"><strong>Διεύθυνση αποστολής:</strong><br>
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>
+{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>
+{/if}{$SHIPPING.line1|capitalize}<br>
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize} <br>
+{/if}{$SHIPPING.town|upper}<br>
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
+{$SHIPPING.postcode}<br>
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
+</tr>
+</table>
+<table border="0" cellpadding="3" cellspacing="0" width="100%">
+<tbody>
+<tr>
+<td><strong>Προϊόν</strong></td>
+<td><strong>Ποσότητα</strong></td>
+<td><strong>Τιμή</strong></td>
+</tr>
+{foreach from=$PRODUCTS item=product}
+<tr>
+<td>{$product.name} <br>{$product.product_options}</td>
+<td>{$product.quantity}</td>
+<td>{$product.price}</td>
+</tr>
+{/foreach}
+<tr>
+<td>&nbsp;</td>
+<td>{if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Αποστολή:{/if}</td>
+<td> {$DATA.shipping}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td> Έκπτωση:</td>
+<td> {$DATA.discount}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td> Μερικό σύνολο:</td>
+<td> {$DATA.subtotal}</td>
+</tr>
+{foreach from=$TAXES item=tax}
+<tr>
+<td>&nbsp;</td>
+<td> {$tax.tax_name}: ({$tax.tax_percent}%)</td>
+<td> {$tax.tax_amount}</td>
+</tr>
+{/foreach}
+{if $DATA.show_credit}
+<tr>
+<td>&nbsp;</td>
+<td>Πίστωση:</td>
+<td>({$DATA.credit_used})</td>
+</tr>
+{/if}
+<tr>
+<td>&nbsp;</td>
+<td><strong>Σύνολο παραγγελίας: </strong></td>
+<td><strong>{$DATA.total}</strong></td>
+</tr>
+</tbody>
+</table>
+{if !empty($DATA.note_to_customer)}
+<p>&quot;{$DATA.note_to_customer}&quot;</p>
+{/if}]]></content>
+
+  </email>
+  <email name="cart.payment_fraud">
+    <subject><![CDATA[Πρόβλημα με την παραγγελία]]></subject>
+    <content type="html"><![CDATA[<p>Γεια σας {$DATA.first_name|capitalize},</p>
+<p>Λυπούμαστε, αλλά δεν μπορέσαμε να επεξεργαστούμε την πληρωμή για την παραγγελία {$DATA.cart_order_id}. Εάν έχετε ερωτήσεις, μη διστάσετε να επικοινωνήσετε μαζί μας.</p>]]></content>
+
+  </email>
+  <email name="account.password_recovery">
+    <subject><![CDATA[Ανάκτηση κωδικού πρόσβασης]]></subject>
+    <content type="html"><![CDATA[<p>Αγαπητέ/ή {$DATA.first_name|capitalize} {$DATA.last_name|capitalize},<br>
+<br>
+Για να επαναφέρετε τον κωδικό πρόσβασής σας, κάντε κλικ στον παρακάτω σύνδεσμο ή αντιγράψτε και επικολλήστε τη διεύθυνση στη γραμμή διευθύνσεων του προγράμματος περιήγησής σας. Στην ιστοσελίδα θα σας ζητηθεί να εισαγάγετε και να επιβεβαιώσετε τον νέο σας κωδικό πρόσβασης.<br>
+<br>
+<a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br>
+<br>
+Εάν χρειάζεστε περαιτέρω βοήθεια, μη διστάσετε να επικοινωνήσετε μαζί μας.</p>]]></content>
+
+  </email>
+  <email name="admin.order_received">
+    <subject><![CDATA[Νέα παραγγελία #{$DATA.cart_order_id}]]></subject>
+    <content type="html"><![CDATA[<p>Ο/Η {$DATA.first_name|capitalize} {$DATA.last_name|capitalize} {if !empty($BILLING.company_name)}({$BILLING.company_name}){/if} μόλις πραγματοποίησε την παραγγελία {$DATA.cart_order_id} στις {$DATA.order_date}.</p>
+<p>Μπορείτε να διαχειριστείτε αυτή την παραγγελία μέσω του παρακάτω συνδέσμου.</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<table width="100%">
+<tr>
+<td valign="top" width="50%"><strong>Διεύθυνση τιμολόγησης:</strong><br>
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
+{if !empty($BILLING.company_name)}{$BILLING.company_name}<br>
+{/if}
+{$BILLING.line1|capitalize}<br>
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>
+{/if}
+{$BILLING.town|upper}<br>
+{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
+{$BILLING.postcode}<br>
+{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}<br>
+{$BILLING.phone}<br>
+<br>
+<strong>Email:</strong><br>
+{$BILLING.email}</td>
+<td valign="top" width="50%"><strong>Διεύθυνση αποστολής:</strong><br>
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>
+{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>
+{/if}{$SHIPPING.line1|capitalize}<br>
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize} <br>
+{/if}{$SHIPPING.town|upper}<br>
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
+{$SHIPPING.postcode}<br>
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
+</tr>
+</table>
+<table border="0" cellpadding="3" cellspacing="0" width="100%">
+<tbody>
+<tr>
+<td><strong>Προϊόν</strong></td>
+<td><strong>Ποσότητα</strong></td>
+<td><strong>Τιμή</strong></td>
+</tr>
+{foreach from=$PRODUCTS item=product}
+<tr>
+<td>{$product.name} <br>{$product.product_options}</td>
+<td>{$product.quantity}</td>
+<td>{$product.price}</td>
+</tr>
+{/foreach}
+<tr>
+<td>&nbsp;</td>
+<td> {if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Αποστολή:{/if}</td>
+<td> {$DATA.shipping}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td> Έκπτωση:</td>
+<td> {$DATA.discount}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td> Μερικό σύνολο:</td>
+<td> {$DATA.subtotal}</td>
+</tr>
+{foreach from=$TAXES item=tax}
+<tr>
+<td>&nbsp;</td>
+<td> {$tax.tax_name}: ({$tax.tax_percent}%)</td>
+<td> {$tax.tax_amount}</td>
+</tr>
+{/foreach}
+{if $DATA.show_credit}
+<tr>
+<td>&nbsp;</td>
+<td>Πίστωση:</td>
+<td>({$DATA.credit_used})</td>
+</tr>
+{/if}
+<tr>
+<td>&nbsp;</td>
+<td><strong>Σύνολο παραγγελίας: </strong></td>
+<td><strong>{$DATA.total}</strong></td>
+</tr>
+</tbody>
+
+</table>]]></content>
+
+  </email>
+  <email name="admin.review_added">
+    <subject><![CDATA[Νέα αξιολόγηση προϊόντος]]></subject>
+    <content type="html"><![CDATA[Ο/Η {$DATA.name} έγραψε μια νέα αξιολόγηση για το '{$DATA.product_name}'. Μπορείτε να τη διαχειριστείτε μέσω του παρακάτω συνδέσμου.
+        <p><strong>Σύνδεσμος διαχείρισης:</strong><br><a href='{$DATA.link}'>{$DATA.link}</a></p>
+        <p><strong>Κείμενο αξιολόγησης:</strong><br>{$DATA.review}</p>]]></content>
+
+  </email>
+  <email name="cart.digital_download">
+    <subject><![CDATA[Οι λήψεις σας είναι έτοιμες]]></subject>
+    <content type="html"><![CDATA[<p>Γεια σας {$DATA.first_name|capitalize},</p>
+<p>Τα ψηφιακά σας αρχεία είναι έτοιμα για λήψη. Μπορείτε να τα κατεβάσετε από τους παρακάτω συνδέσμους:</p>
+{foreach from=$DOWNLOADS item=download}
+<p><strong>{$download.name}:</strong> (Ο σύνδεσμος λήγει στις {$download.expire}<strong>)</strong><br>
+<a href="{$download.url}">{$download.url}</a></p>
+{/foreach}
+<p>Εάν οι παραπάνω σύνδεσμοι δεν λειτουργούν, δοκιμάστε να τους αντιγράψετε και να τους επικολλήσετε στη γραμμή διευθύνσεων του προγράμματος περιήγησής σας. Μπορείτε επίσης να αποκτήσετε πρόσβαση σε αυτά τα αρχεία από τον λογαριασμό σας στον ιστότοπό μας.</p>
+<p>&nbsp;</p>]]></content>
+
+  </email>
+  <email name="cart.gift_certificate">
+    <subject><![CDATA[Η δωροκάρτα σας]]></subject>
+    <content type="html"><![CDATA[<p>Αγαπητέ/ή {$DATA.name},</p>
+<p>Λάβατε μια δωροκάρτα που μπορεί να χρησιμοποιηθεί για οποιαδήποτε αγορά στον ιστότοπό μας.</p>
+<p><strong>Από: </strong>{$DATA.first_name|capitalize} {$DATA.last_name|capitalize}<br>
+<strong>Ποσό: </strong>{$DATA.value}<br>
+<strong>Κωδικός εξαργύρωσης:</strong> {$DATA.code}<br>
+<strong>Μήνυμα δώρου:</strong> {$DATA.message}</p>
+<p>-------------------</p>
+<p>Για να εξαργυρώσετε αυτή τη δωροκάρτα, εισαγάγετε τον &quot;Κωδικό εξαργύρωσης&quot; παραπάνω στο πεδίο κειμένου με ετικέτα &quot;Κωδικός προσφοράς ή δωροκάρτα&quot; στο ταμείο.</p>
+<p>Γιατί να μην τη χρησιμοποιήσετε τώρα;</p>]]></content>
+
+  </email>
+  <email name="catalogue.tell_friend">
+    <subject><![CDATA[Ο/Η {$DATA.from} σας πρότεινε ένα προϊόν]]></subject>
+    <content type="html"><![CDATA[Αγαπητέ/ή {$DATA.to},
+<p>Ο/Η φίλος/η σας <strong>{$DATA.from}</strong> πιστεύει ότι μπορεί να ενδιαφέρεστε για το <strong>{$DATA.name}</strong>.</p>
+<p><strong>Σύνδεσμος προϊόντος:</strong> <a href="{$DATA.link}">{$DATA.name}</a></p>
+<p>{$DATA.message}</p>]]></content>
+
+  </email>
+  <email name="cart.payment_received">
+    <subject><![CDATA[Ευχαριστούμε για την πληρωμή σας]]></subject>
+    <content type="html"><![CDATA[<p>Γεια σας {$DATA.first_name|capitalize},</p>
+<p>Λάβαμε την πληρωμή σας ύψους {$DATA.total} για την παραγγελία {$DATA.cart_order_id}.</p>]]></content>
+
+  </email>
+  <email name="newsletter.verify_email">
+    <subject><![CDATA[Επιβεβαιώστε τη συνδρομή σας]]></subject>
+    <content type="html"><![CDATA[<p>Η διεύθυνση {$DATA.email} χρησιμοποιήθηκε για εγγραφή στο ενημερωτικό μας δελτίο. Για να επιβεβαιώσετε τη συνδρομή σας, κάντε κλικ στον παρακάτω σύνδεσμο:</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+
+  </email>
+  <email name="newsletter.remove_request">
+    <subject><![CDATA[Επιβεβαίωση διαγραφής από ενημερωτικό δελτίο]]></subject>
+    <content type="html"><![CDATA[<p>Ζητήθηκε η διαγραφή της διεύθυνσης <strong>{$DATA.email}</strong> από το ενημερωτικό μας δελτίο. Για επιβεβαίωση, κάντε κλικ στον παρακάτω σύνδεσμο.</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+
+  </email>
+  <email name="admin.two_factor_code">
+    <subject><![CDATA[Ο κωδικός επαλήθευσης σύνδεσής σας]]></subject>
+    <content type="html"><![CDATA[<p>Γεια σας {$DATA.name},</p><p>Ο κωδικός επαλήθευσης σύνδεσής σας είναι:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Αυτός ο κωδικός λήγει σε 10 λεπτά. Εάν δεν προσπαθήσατε να συνδεθείτε, επικοινωνήστε αμέσως με τον διαχειριστή του καταστήματος.</p>]]></content>
+  </email>
+</emails>
