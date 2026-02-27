@@ -2175,6 +2175,12 @@ This email is sent from the store's master email address but it is possible to r
     <string name="analyze" introduced="5.0.0"><![CDATA[Analyze]]></string>
     <string name="allowed_zones" introduced="5.0.0"><![CDATA[Allowed Zones]]></string>
     <string name="disabled_zones" introduced="5.0.8"><![CDATA[Disabled Zones]]></string>
+    <string name="packaging_tab"   introduced="6.6.0"><![CDATA[Packaging]]></string>
+    <string name="packaging_title" introduced="6.6.0"><![CDATA[Packaging Boxes]]></string>
+    <string name="packaging_boxes" introduced="6.6.0"><![CDATA[Defined Boxes]]></string>
+    <string name="packaging_add"   introduced="6.6.0"><![CDATA[Add Box]]></string>
+    <string name="packaging_name"  introduced="6.6.0"><![CDATA[Box name]]></string>
+    <string name="packaging_note"  introduced="6.6.0"><![CDATA[Orders will be shipped in as few boxes as possible based on the boxes defined below. If no boxes are defined, each item will be shipped individually.]]></string>
     <string name="allow_no_shipping" introduced="5.0.5"><![CDATA[Allow physical orders even if no shipping options are available]]></string>
     <string name="disable_shipping_groups" introduced="5.0.8"><![CDATA[Disable Shipping Groups]]></string>
     <string name="archive_create" introduced="5.0.0"><![CDATA[Create a new store archive. Depending on the size of your inventory, this may take some time.]]></string>

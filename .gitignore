@@ -1,3 +1,7 @@
+# Logs
+/logs/*
+!/logs/.htaccess
+
 # CubeCart
 /includes/extra/snippet_*
 /includes/global.inc.*

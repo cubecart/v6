@@ -776,7 +776,14 @@ class Order
                     $note_content .= "\r\n".$GLOBALS['language']->orders['discount_codes_used']."\r\n".implode("\r\n", $vouchers_used);
                 }
                 $this->addNote($this->_order_id, $note_content);
-            }       
+            }
+            // Write USPS packing note if USPS was the chosen shipping module
+            if (isset($this->_basket['shipping']['module_folder']) && $this->_basket['shipping']['module_folder'] === 'USPS') {
+                if ($packing_note = $GLOBALS['session']->get('usps_packing_note')) {
+                    $this->addNote($this->_order_id, $packing_note, false);
+                    $GLOBALS['session']->delete('usps_packing_note');
+                }
+            }
             // Set order as 'Pending'
             $this->_basket['order_status'] = constant('ORDER_PENDING');
             foreach ($GLOBALS['hooks']->load('class.order.place_order.basket') as $hook) {

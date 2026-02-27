@@ -857,6 +857,44 @@ $(document).ready(function() {
     }
     lazyload();
 
+    // Switch to the correct tab when a required field inside a hidden tab fails validation
+    document.addEventListener('invalid', function(e) {
+        var $tab = $(e.target).closest('.tab_content');
+        if ($tab.length && $tab.is(':hidden')) {
+            var id = $tab.attr('id');
+            $('div.tab_content').hide();
+            $tab.show();
+            $('.tab').removeClass('tab-selected');
+            $('#tab_' + id).addClass('tab-selected');
+        }
+    }, true);
+
+    // Packaging box add
+    $('#pkg-add-btn').on('click', function(e) {
+        e.preventDefault();
+        var name = $.trim($('#pkg_name').val());
+        var l    = parseFloat($('#pkg_l').val()) || 0;
+        var w    = parseFloat($('#pkg_w').val()) || 0;
+        var h    = parseFloat($('#pkg_h').val()) || 0;
+        if (!name || !l || !w || !h) return false;
+        var $list = $('#packaging-list');
+        var idx   = parseInt($list.data('next-index'), 10) || 0;
+        $list.data('next-index', idx + 1);
+        var unit = $.trim($('#packaging-dim-unit').text());
+        var esc  = function(s) { return $('<div>').text(s).html(); };
+        var row = '<div class="packaging-row">' +
+            '<span class="actions"><a href="#" class="remove dynamic" title="Delete">' +
+            '<i class="fa fa-trash"></i></a></span>' +
+            '<input type="text" name="packaging_boxes[' + idx + '][name]" value="' + esc(name) + '" class="textbox" style="width:150px"> ' +
+            '<input type="text" name="packaging_boxes[' + idx + '][l]" value="' + l + '" class="textbox" size="5"> &#215; ' +
+            '<input type="text" name="packaging_boxes[' + idx + '][w]" value="' + w + '" class="textbox" size="5"> &#215; ' +
+            '<input type="text" name="packaging_boxes[' + idx + '][h]" value="' + h + '" class="textbox" size="5"> ' +
+            unit + '</div>';
+        $list.append(row);
+        $('#pkg_name, #pkg_l, #pkg_w, #pkg_h').val('');
+        return false;
+    });
+
     // TOTP QR code
     var $qr = $('#totp-qr');
     if ($qr.length) {

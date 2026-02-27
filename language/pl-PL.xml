@@ -2489,7 +2489,13 @@ UWAGA: Wszystkie pliki w nim zawarte zostaną trwale usunięte!]]></string>
    <string name="weight_unit_kg"><![CDATA[Metryczny (kg)]]></string>
    <string name="weight_unit_lb"><![CDATA[Imperialny (lb)]]></string>
    <string name="default_product_sort"><![CDATA[Sortowanie listy produktów]]></string>
-  </group>
+     <string name="packaging_tab" introduced="6.6.0"><![CDATA[Opakowanie]]></string>
+   <string name="packaging_title" introduced="6.6.0"><![CDATA[Pudełka do pakowania]]></string>
+   <string name="packaging_boxes" introduced="6.6.0"><![CDATA[Zdefiniowane pudełka]]></string>
+   <string name="packaging_add" introduced="6.6.0"><![CDATA[Dodaj pudełko]]></string>
+   <string name="packaging_name" introduced="6.6.0"><![CDATA[Nazwa pudełka]]></string>
+   <string name="packaging_note"  introduced="6.6.0"><![CDATA[Zamówienia będą wysyłane w jak najmniejszej liczbie pudełek na podstawie pudełek zdefiniowanych poniżej. Jeśli nie zdefiniowano żadnych pudełek, każdy przedmiot zostanie wysłany osobno.]]></string>
+</group>
   <group name="setup">
    <string name="help_dbport"><![CDATA[To jest port serwera bazy danych. W większości przypadków można pozostawić puste. Wartość domyślna to 3306]]></string>
    <string name="help_dbsocket"><![CDATA[To jest gniazdo serwera bazy danych. W większości przypadków można pozostawić puste.]]></string>

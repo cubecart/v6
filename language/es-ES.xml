@@ -2486,7 +2486,13 @@ Este correo electr&oacute;nico se env&iacute;a desde la direcci&oacute;n de corr
   <string name="weight_unit_kg"><![CDATA[M&eacute;trico (kg)]]></string>
   <string name="weight_unit_lb"><![CDATA[Imperial (lb)]]></string>
   <string name="default_product_sort"><![CDATA[Orden de lista de productos]]></string>
- </group>
+    <string name="packaging_tab" introduced="6.6.0"><![CDATA[Embalaje]]></string>
+   <string name="packaging_title" introduced="6.6.0"><![CDATA[Cajas de embalaje]]></string>
+   <string name="packaging_boxes" introduced="6.6.0"><![CDATA[Cajas definidas]]></string>
+   <string name="packaging_add" introduced="6.6.0"><![CDATA[Añadir caja]]></string>
+   <string name="packaging_name" introduced="6.6.0"><![CDATA[Nombre de la caja]]></string>
+   <string name="packaging_note"  introduced="6.6.0"><![CDATA[Los pedidos se enviarán en el menor número de cajas posible según las cajas definidas a continuación. Si no se definen cajas, cada artículo se enviará individualmente.]]></string>
+</group>
  <group name="setup">
   <string name="help_dbport"><![CDATA[Este es el puerto del servidor de base de datos. En la mayor&iacute;a de los casos puede dejarse en blanco. El valor predeterminado es 3306.]]></string>
   <string name="help_dbsocket"><![CDATA[Este es el socket del servidor de base de datos. En la mayor&iacute;a de los casos puede dejarse en blanco.]]></string>

@@ -193,9 +193,12 @@ class Module
                 }
                 // Assign config settings regardless
                 $GLOBALS['smarty']->assign('CONFIG', $GLOBALS['config']->get('config'));
-                // Zone selector
+                // Zone selector + packaging
                 if ($zones) {
                     $this->_module_zones();
+                    if (isset($_GET['type']) && $_GET['type'] === 'shipping') {
+                        $this->_module_packaging();
+                    }
                     $GLOBALS['gui']->changeTemplateDir($this->_path.'/skin');
                 }
                 $GLOBALS['language']->setTemplate();
@@ -369,6 +372,22 @@ class Module
 
             $settings['countries']    = $this->module_fetch_zones('zones');
             $settings['disabled_countries'] = $this->module_fetch_zones('disabled_zones');
+
+            // Save packaging boxes to global config (shared across all shipping modules)
+            if (isset($_POST['packaging_boxes'])) {
+                $boxes = array();
+                foreach ((array)$_POST['packaging_boxes'] as $box) {
+                    if (!empty($box['name'])) {
+                        $boxes[] = array(
+                            'name' => trim($box['name']),
+                            'l'    => round((float)$box['l'], 4),
+                            'w'    => round((float)$box['w'], 4),
+                            'h'    => round((float)$box['h'], 4),
+                        );
+                    }
+                }
+                $GLOBALS['config']->set('config', 'packaging_boxes', $boxes);
+            }
             $data = array(
                 'status' => $settings['status'],
                 'position' => (isset($settings['position']) && $settings['position'] > 0) ? $settings['position'] : 0
@@ -492,6 +511,32 @@ class Module
             //unset($config['status'], $config['default']);
             $this->_settings = ($module) ? array_merge($module[0], $config) : $config;
         }
+    }
+
+    /**
+     * Load packaging boxes tab (global, shared across all shipping modules)
+     */
+    private function _module_packaging()
+    {
+        $boxes    = $GLOBALS['config']->get('config', 'packaging_boxes');
+        $boxes    = is_array($boxes) ? $boxes : array();
+        $wunit    = $GLOBALS['config']->get('config', 'product_weight_unit');
+        $dim_unit = ($wunit === 'Lb') ? 'in' : 'cm';
+
+        $GLOBALS['smarty']->assign('PACKAGING_BOXES',    $boxes);
+        $GLOBALS['smarty']->assign('PACKAGING_DIM_UNIT', $dim_unit);
+
+        $GLOBALS['main']->addTabControl(
+            $GLOBALS['language']->settings['packaging_tab'],
+            'packaging-boxes', null, null, count($boxes), '', 999999
+        );
+        $GLOBALS['gui']->changeTemplateDir();
+        $GLOBALS['smarty']->assign('LANG', $GLOBALS['lang']);
+        $packaging_html = $GLOBALS['smarty']->fetch('templates/modules.packaging.php');
+
+        // Append to MODULE_ZONES (same mechanism as zone tabs)
+        $existing = $GLOBALS['smarty']->getTemplateVars('MODULE_ZONES');
+        $GLOBALS['smarty']->assign('MODULE_ZONES', $existing . $packaging_html);
     }
 
     /**

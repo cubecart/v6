@@ -2474,7 +2474,13 @@
       <string name="weight_unit_kg"><![CDATA[Метрична (кг)]]></string>
       <string name="weight_unit_lb"><![CDATA[Імперська (фунт)]]></string>
       <string name="default_product_sort"><![CDATA[Сортування списку товарів]]></string>
-    </group>
+       <string name="packaging_tab" introduced="6.6.0"><![CDATA[Упаковка]]></string>
+   <string name="packaging_title" introduced="6.6.0"><![CDATA[Пакувальні коробки]]></string>
+   <string name="packaging_boxes" introduced="6.6.0"><![CDATA[Визначені коробки]]></string>
+   <string name="packaging_add" introduced="6.6.0"><![CDATA[Додати коробку]]></string>
+   <string name="packaging_name" introduced="6.6.0"><![CDATA[Назва коробки]]></string>
+   <string name="packaging_note"  introduced="6.6.0"><![CDATA[Замовлення надсилатимуться у якомога меншій кількості коробок на основі коробок, визначених нижче. Якщо коробки не визначено, кожен товар надсилатиметься окремо.]]></string>
+</group>
     <group name="setup">
       <string name="help_dbport"><![CDATA[Це порт сервера бази даних. У більшості випадків можна залишити порожнім. Значення за замовчуванням — 3306]]></string>
       <string name="help_dbsocket"><![CDATA[Це сокет сервера бази даних. У більшості випадків можна залишити порожнім.]]></string>

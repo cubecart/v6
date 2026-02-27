@@ -2478,7 +2478,13 @@ WAARSCHUWING: Alle bestanden erin worden permanent verwijderd!]]></string>
       <string name="weight_unit_kg"><![CDATA[Metrisch (kg)]]></string>
       <string name="weight_unit_lb"><![CDATA[Imperiaal (lb)]]></string>
       <string name="default_product_sort"><![CDATA[Productlijstsortering]]></string>
-    </group>
+       <string name="packaging_tab" introduced="6.6.0"><![CDATA[Verpakking]]></string>
+   <string name="packaging_title" introduced="6.6.0"><![CDATA[Verpakkingsdozen]]></string>
+   <string name="packaging_boxes" introduced="6.6.0"><![CDATA[Gedefinieerde dozen]]></string>
+   <string name="packaging_add" introduced="6.6.0"><![CDATA[Doos toevoegen]]></string>
+   <string name="packaging_name" introduced="6.6.0"><![CDATA[Doosnaam]]></string>
+   <string name="packaging_note"  introduced="6.6.0"><![CDATA[Bestellingen worden verzonden in zo weinig mogelijk dozen op basis van de hieronder gedefinieerde dozen. Als er geen dozen zijn gedefinieerd, wordt elk artikel afzonderlijk verzonden.]]></string>
+</group>
     <group name="setup">
       <string name="help_dbport"><![CDATA[Dit is de databaseserverpoort. In de meeste gevallen kan dit leeg worden gelaten. Standaard is 3306.]]></string>
       <string name="help_dbsocket"><![CDATA[Dit is de databaseserversocket. In de meeste gevallen kan dit leeg worden gelaten.]]></string>

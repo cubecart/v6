@@ -2489,7 +2489,13 @@ ADVARSEL: Alle filer i den vil bli slettet permanent.]]></string>
    <string name="weight_unit_kg"><![CDATA[Metrisk (kg)]]></string>
    <string name="weight_unit_lb"><![CDATA[Imperial (lb)]]></string>
    <string name="default_product_sort"><![CDATA[Produktlistesortering]]></string>
-  </group>
+     <string name="packaging_tab" introduced="6.6.0"><![CDATA[Emballasje]]></string>
+   <string name="packaging_title" introduced="6.6.0"><![CDATA[Emballasjebokser]]></string>
+   <string name="packaging_boxes" introduced="6.6.0"><![CDATA[Definerte bokser]]></string>
+   <string name="packaging_add" introduced="6.6.0"><![CDATA[Legg til boks]]></string>
+   <string name="packaging_name" introduced="6.6.0"><![CDATA[Boksnavn]]></string>
+   <string name="packaging_note"  introduced="6.6.0"><![CDATA[Bestillinger vil bli sendt i så få esker som mulig basert på eskene definert nedenfor. Hvis ingen esker er definert, vil hvert element sendes individuelt.]]></string>
+</group>
   <group name="setup">
    <string name="help_dbport"><![CDATA[Dette er databaseserverens port. I de fleste tilfeller kan dette stå tomt. Standardverdi er 3306]]></string>
    <string name="help_dbsocket"><![CDATA[Dette er databaseserverens socket. I de fleste tilfeller kan det stå tomt.]]></string>

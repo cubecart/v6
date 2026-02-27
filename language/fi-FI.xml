@@ -2474,7 +2474,13 @@ VAROITUS: Kaikki sen sisältämät tiedostot poistetaan pysyvästi!]]></string>
       <string name="weight_unit_kg"><![CDATA[Metrinen (kg)]]></string>
       <string name="weight_unit_lb"><![CDATA[Brittiläinen (lb)]]></string>
       <string name="default_product_sort"><![CDATA[Tuotelistan lajittelu]]></string>
-    </group>
+       <string name="packaging_tab" introduced="6.6.0"><![CDATA[Pakkaus]]></string>
+   <string name="packaging_title" introduced="6.6.0"><![CDATA[Pakkauslaatikot]]></string>
+   <string name="packaging_boxes" introduced="6.6.0"><![CDATA[Määritellyt laatikot]]></string>
+   <string name="packaging_add" introduced="6.6.0"><![CDATA[Lisää laatikko]]></string>
+   <string name="packaging_name" introduced="6.6.0"><![CDATA[Laatikon nimi]]></string>
+   <string name="packaging_note"  introduced="6.6.0"><![CDATA[Tilaukset toimitetaan mahdollisimman harvassa pakkauksessa alla määriteltyjen laatikoiden perusteella. Jos laatikoita ei ole määritelty, jokainen tuote toimitetaan erikseen.]]></string>
+</group>
     <group name="setup">
       <string name="help_dbport"><![CDATA[Tämä on tietokantapalvelimen portti. Useimmissa tapauksissa tämä voidaan jättää tyhjäksi. Oletusarvo on 3306]]></string>
       <string name="help_dbsocket"><![CDATA[Tämä on tietokantapalvelimen socket. Useimmissa tapauksissa se voidaan jättää tyhjäksi.]]></string>

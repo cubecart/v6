@@ -2487,7 +2487,13 @@ Este e-mail é enviado a partir do endereço de e-mail principal da loja, mas é
     <string name="weight_unit_kg"><![CDATA[Métrico (kg)]]></string>
     <string name="weight_unit_lb"><![CDATA[Imperial (lb)]]></string>
     <string name="default_product_sort"><![CDATA[Ordenação da Lista de Produtos]]></string>
-  </group>
+     <string name="packaging_tab" introduced="6.6.0"><![CDATA[Embalagem]]></string>
+   <string name="packaging_title" introduced="6.6.0"><![CDATA[Caixas de embalagem]]></string>
+   <string name="packaging_boxes" introduced="6.6.0"><![CDATA[Caixas definidas]]></string>
+   <string name="packaging_add" introduced="6.6.0"><![CDATA[Adicionar caixa]]></string>
+   <string name="packaging_name" introduced="6.6.0"><![CDATA[Nome da caixa]]></string>
+   <string name="packaging_note"  introduced="6.6.0"><![CDATA[Os pedidos serão enviados no menor número possível de caixas com base nas caixas definidas abaixo. Se não houver caixas definidas, cada item será enviado individualmente.]]></string>
+</group>
   <group name="setup">
     <string name="help_dbport"><![CDATA[Esta é a porta do servidor de base de dados. Na maioria dos casos pode ser deixada vazia. O valor predefinido é 3306]]></string>
     <string name="help_dbsocket"><![CDATA[Este é o socket do servidor de base de dados. Na maioria dos casos pode ser deixado em branco.]]></string>

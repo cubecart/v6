@@ -2488,7 +2488,13 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
    <string name="weight_unit_kg"><![CDATA[Metrisch (kg)]]></string>
    <string name="weight_unit_lb"><![CDATA[Imperial (lb)]]></string>
    <string name="default_product_sort"><![CDATA[Produktlisten-Sortierung]]></string>
-  </group>
+     <string name="packaging_tab" introduced="6.6.0"><![CDATA[Verpackung]]></string>
+   <string name="packaging_title" introduced="6.6.0"><![CDATA[Verpackungsboxen]]></string>
+   <string name="packaging_boxes" introduced="6.6.0"><![CDATA[Definierte Boxen]]></string>
+   <string name="packaging_add" introduced="6.6.0"><![CDATA[Box hinzufügen]]></string>
+   <string name="packaging_name" introduced="6.6.0"><![CDATA[Boxname]]></string>
+   <string name="packaging_note"  introduced="6.6.0"><![CDATA[Bestellungen werden in so wenige Pakete wie möglich verpackt, basierend auf den unten definierten Kartons. Wenn keine Kartons definiert sind, wird jeder Artikel einzeln versandt.]]></string>
+</group>
   <group name="setup">
    <string name="help_dbport"><![CDATA[Dies ist der Datenbank-Server-Port. In den meisten Fällen kann dieses Feld leer gelassen werden. Standardwert ist 3306]]></string>
    <string name="help_dbsocket"><![CDATA[Dies ist der Datenbank-Server-Socket. In den meisten Fällen kann dieses Feld leer gelassen werden.]]></string>
