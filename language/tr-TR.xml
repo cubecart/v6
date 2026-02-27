@@ -15,7 +15,7 @@
   <title><![CDATA[Türkçe]]></title>
   <code>tr-TR</code>
   <character_set>utf-8</character_set>
-  <version>6.5.13</version>
+  <version>6.6.0</version>
   <minVersion>6.0.0</minVersion>
   <maxVersion>6.*.*</maxVersion>
   <default_currency>TRY</default_currency>

@@ -15,7 +15,7 @@
   <title>Norsk bokmål</title>
   <code>nb-NO</code>
   <character_set>utf-8</character_set>
-  <version>1.0.0</version>
+  <version>6.6.0</version>
   <minVersion>5.0.0</minVersion>
   <maxVersion>6.*.*</maxVersion>
   <default_currency>NOK</default_currency>
