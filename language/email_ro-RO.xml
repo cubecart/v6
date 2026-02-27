@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * CubeCart v6
+ * ========================================
+ * CubeCart is a registered trade mark of CubeCart Limited
+ * Copyright CubeCart Limited 2025. All rights reserved.
+ * UK Private Limited Company No. 5323904
+ * ========================================
+ * Web:   https://www.cubecart.com
+ * Email:  hello@cubecart.com
+ * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
+-->
+<emails version="2.0" language="ro-RO">
+  <email name="admin.password_recovery">
+    <subject><![CDATA[Recuperare parolă administrator]]></subject>
+    <content type="html"><![CDATA[<p>Dragă {$DATA.name},</p>
+<p>Pentru a recăpăta accesul la panoul de administrare al magazinului, vă rugăm să urmați linkul de mai jos:</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<p>Dacă linkul de mai sus nu funcționează, copiați-l și inserați-l în bara de adrese a browserului dumneavoastră.</p>]]></content>
+
+  </email>
+  <email name="cart.order_complete">
+    <subject><![CDATA[Comandă finalizată]]></subject>
+    <content type="html"><![CDATA[<p>Bună {$DATA.first_name|capitalize},</p>
+<p>Suntem bucuroși să vă informăm că comanda numărul {$DATA.cart_order_id} a fost finalizată. Dacă ați comandat produse fizice, acestea ar trebui să ajungă la dumneavoastră în curând.</p>{if !empty($DATA.ship_tracking)}<p>Urmăriți comanda:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
+
+  </email>
+  <email name="cart.order_cancelled">
+    <subject><![CDATA[Comandă anulată]]></subject>
+    <content type="html"><![CDATA[<p>Bună {$DATA.first_name|capitalize},</p>
+<p>Comanda numărul {$DATA.cart_order_id} a fost anulată. Dacă aveți întrebări, nu ezitați să ne contactați.</p>]]></content>
+
+  </email>
+  <email name="cart.order_confirmation">
+    <subject><![CDATA[Confirmare comandă #{$DATA.cart_order_id}]]></subject>
+    <content type="html"><![CDATA[<p>Vă mulțumim pentru comanda dumneavoastră, {$DATA.first_name|capitalize}.</p>
+<p>Am primit comanda {$DATA.cart_order_id}, plasată pe {$DATA.order_date}. Vă rugăm să păstrați acest e-mail pentru evidențele dumneavoastră. Puteți verifica oricând statusul comenzii online.</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<table width="100%">
+<tr>
+<td valign="top" width="50%"><strong>Adresă de facturare:</strong><br>
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
+{if !empty($BILLING.company_name)}{$BILLING.company_name}<br>
+{/if}
+{$BILLING.line1|capitalize}<br>
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>
+{/if}
+{$BILLING.town|upper}<br>
+{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
+{$BILLING.postcode}<br>
+{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}<br>
+{$BILLING.phone}<br>
+<br>
+<strong>E-mail:</strong><br>
+{$BILLING.email}</td>
+<td valign="top" width="50%"><strong>Adresă de livrare:</strong><br>
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>
+{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>
+{/if}{$SHIPPING.line1|capitalize}<br>
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize} <br>
+{/if}{$SHIPPING.town|upper}<br>
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
+{$SHIPPING.postcode}<br>
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
+</tr>
+</table>
+<table border="0" cellpadding="3" cellspacing="0" width="100%">
+<tbody>
+<tr>
+<td><strong>Produs</strong></td>
+<td><strong>Cantitate</strong></td>
+<td><strong>Preț</strong></td>
+</tr>
+{foreach from=$PRODUCTS item=product}
+<tr>
+<td>{$product.name} <br>{$product.product_options}</td>
+<td>{$product.quantity}</td>
+<td>{$product.price}</td>
+</tr>
+{/foreach}
+<tr>
+<td>&nbsp;</td>
+<td>{if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Livrare:{/if}</td>
+<td> {$DATA.shipping}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td> Reducere:</td>
+<td> {$DATA.discount}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td> Subtotal:</td>
+<td> {$DATA.subtotal}</td>
+</tr>
+{foreach from=$TAXES item=tax}
+<tr>
+<td>&nbsp;</td>
+<td> {$tax.tax_name}: ({$tax.tax_percent}%)</td>
+<td> {$tax.tax_amount}</td>
+</tr>
+{/foreach}
+{if $DATA.show_credit}
+<tr>
+<td>&nbsp;</td>
+<td>Credit:</td>
+<td>({$DATA.credit_used})</td>
+</tr>
+{/if}
+<tr>
+<td>&nbsp;</td>
+<td><strong>Total comandă: </strong></td>
+<td><strong>{$DATA.total}</strong></td>
+</tr>
+</tbody>
+</table>
+{if !empty($DATA.note_to_customer)}
+<p>&quot;{$DATA.note_to_customer}&quot;</p>
+{/if}]]></content>
+
+  </email>
+  <email name="cart.payment_fraud">
+    <subject><![CDATA[Problemă cu comanda]]></subject>
+    <content type="html"><![CDATA[<p>Bună {$DATA.first_name|capitalize},</p>
+<p>Ne pare rău, dar nu am putut procesa plata pentru comanda {$DATA.cart_order_id}. Dacă aveți întrebări, nu ezitați să ne contactați.</p>]]></content>
+
+  </email>
+  <email name="account.password_recovery">
+    <subject><![CDATA[Recuperare parolă]]></subject>
+    <content type="html"><![CDATA[<p>Dragă {$DATA.first_name|capitalize} {$DATA.last_name|capitalize},<br>
+<br>
+Pentru a vă reseta parola, vă rugăm să faceți clic pe linkul de mai jos sau să copiați și să inserați adresa în bara de adrese a browserului dumneavoastră. Pe pagina web vi se va cere să introduceți și să confirmați noua parolă.<br>
+<br>
+<a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br>
+<br>
+Dacă aveți nevoie de asistență suplimentară, nu ezitați să ne contactați.</p>]]></content>
+
+  </email>
+  <email name="admin.order_received">
+    <subject><![CDATA[Comandă nouă #{$DATA.cart_order_id}]]></subject>
+    <content type="html"><![CDATA[<p>{$DATA.first_name|capitalize} {$DATA.last_name|capitalize} {if !empty($BILLING.company_name)}({$BILLING.company_name}){/if} tocmai a plasat comanda numărul {$DATA.cart_order_id} pe {$DATA.order_date}.</p>
+<p>Puteți administra această comandă prin linkul de mai jos.</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<table width="100%">
+<tr>
+<td valign="top" width="50%"><strong>Adresă de facturare:</strong><br>
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
+{if !empty($BILLING.company_name)}{$BILLING.company_name}<br>
+{/if}
+{$BILLING.line1|capitalize}<br>
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>
+{/if}
+{$BILLING.town|upper}<br>
+{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
+{$BILLING.postcode}<br>
+{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}<br>
+{$BILLING.phone}<br>
+<br>
+<strong>E-mail:</strong><br>
+{$BILLING.email}</td>
+<td valign="top" width="50%"><strong>Adresă de livrare:</strong><br>
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>
+{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>
+{/if}{$SHIPPING.line1|capitalize}<br>
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize} <br>
+{/if}{$SHIPPING.town|upper}<br>
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
+{$SHIPPING.postcode}<br>
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
+</tr>
+</table>
+<table border="0" cellpadding="3" cellspacing="0" width="100%">
+<tbody>
+<tr>
+<td><strong>Produs</strong></td>
+<td><strong>Cantitate</strong></td>
+<td><strong>Preț</strong></td>
+</tr>
+{foreach from=$PRODUCTS item=product}
+<tr>
+<td>{$product.name} <br>{$product.product_options}</td>
+<td>{$product.quantity}</td>
+<td>{$product.price}</td>
+</tr>
+{/foreach}
+<tr>
+<td>&nbsp;</td>
+<td> {if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Livrare:{/if}</td>
+<td> {$DATA.shipping}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td> Reducere:</td>
+<td> {$DATA.discount}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td> Subtotal:</td>
+<td> {$DATA.subtotal}</td>
+</tr>
+{foreach from=$TAXES item=tax}
+<tr>
+<td>&nbsp;</td>
+<td> {$tax.tax_name}: ({$tax.tax_percent}%)</td>
+<td> {$tax.tax_amount}</td>
+</tr>
+{/foreach}
+{if $DATA.show_credit}
+<tr>
+<td>&nbsp;</td>
+<td>Credit:</td>
+<td>({$DATA.credit_used})</td>
+</tr>
+{/if}
+<tr>
+<td>&nbsp;</td>
+<td><strong>Total comandă: </strong></td>
+<td><strong>{$DATA.total}</strong></td>
+</tr>
+</tbody>
+
+</table>]]></content>
+
+  </email>
+  <email name="admin.review_added">
+    <subject><![CDATA[Recenzie nouă de produs]]></subject>
+    <content type="html"><![CDATA[{$DATA.name} a scris o recenzie nouă pentru '{$DATA.product_name}'. O puteți modera prin linkul de mai jos.
+        <p><strong>Link de moderare:</strong><br><a href='{$DATA.link}'>{$DATA.link}</a></p>
+        <p><strong>Textul recenziei:</strong><br>{$DATA.review}</p>]]></content>
+
+  </email>
+  <email name="cart.digital_download">
+    <subject><![CDATA[Descărcările dumneavoastră sunt disponibile]]></subject>
+    <content type="html"><![CDATA[<p>Bună {$DATA.first_name|capitalize},</p>
+<p>Fișierele dumneavoastră digitale sunt disponibile pentru descărcare. Le puteți accesa prin linkurile de mai jos:</p>
+{foreach from=$DOWNLOADS item=download}
+<p><strong>{$download.name}:</strong> (Linkul expiră pe {$download.expire}<strong>)</strong><br>
+<a href="{$download.url}">{$download.url}</a></p>
+{/foreach}
+<p>Dacă linkurile de mai sus nu funcționează, puteți încerca să le copiați și să le inserați în bara de adrese a browserului. De asemenea, puteți accesa aceste fișiere din contul dumneavoastră de pe site-ul nostru.</p>
+<p>&nbsp;</p>]]></content>
+
+  </email>
+  <email name="cart.gift_certificate">
+    <subject><![CDATA[Certificatul dumneavoastră cadou]]></subject>
+    <content type="html"><![CDATA[<p>Dragă {$DATA.name},</p>
+<p>Ați primit un certificat cadou care poate fi folosit pentru orice achiziție de pe site-ul nostru.</p>
+<p><strong>De la: </strong>{$DATA.first_name|capitalize} {$DATA.last_name|capitalize}<br>
+<strong>Valoare: </strong>{$DATA.value}<br>
+<strong>Cod de valorificare:</strong> {$DATA.code}<br>
+<strong>Mesaj cadou:</strong> {$DATA.message}</p>
+<p>-------------------</p>
+<p>Pentru a valorifica acest certificat cadou, introduceți &quot;Codul de valorificare&quot; de mai sus în câmpul text marcat &quot;Cod promoțional sau certificat cadou&quot; la finalizarea comenzii.</p>
+<p>De ce să nu îl folosiți chiar acum?</p>]]></content>
+
+  </email>
+  <email name="catalogue.tell_friend">
+    <subject><![CDATA[{$DATA.from} v-a recomandat un produs]]></subject>
+    <content type="html"><![CDATA[Dragă {$DATA.to},
+<p>Prietenul dumneavoastră <strong>{$DATA.from}</strong> a considerat că ați putea fi interesat(ă) de <strong>{$DATA.name}</strong>.</p>
+<p><strong>Link produs:</strong> <a href="{$DATA.link}">{$DATA.name}</a></p>
+<p>{$DATA.message}</p>]]></content>
+
+  </email>
+  <email name="cart.payment_received">
+    <subject><![CDATA[Vă mulțumim pentru plata dumneavoastră]]></subject>
+    <content type="html"><![CDATA[<p>Bună {$DATA.first_name|capitalize},</p>
+<p>Am primit plata dumneavoastră de {$DATA.total} pentru comanda numărul {$DATA.cart_order_id}.</p>]]></content>
+
+  </email>
+  <email name="newsletter.verify_email">
+    <subject><![CDATA[Confirmați abonamentul]]></subject>
+    <content type="html"><![CDATA[<p>{$DATA.email} a fost folosit pentru a se abona la buletinul nostru informativ. Pentru a confirma abonamentul, vă rugăm să faceți clic pe linkul de mai jos:</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+
+  </email>
+  <email name="newsletter.remove_request">
+    <subject><![CDATA[Confirmați dezabonarea de la buletin informativ]]></subject>
+    <content type="html"><![CDATA[<p>S-a solicitat dezabonarea adresei <strong>{$DATA.email}</strong> de la buletinul nostru informativ. Pentru a confirma, vă rugăm să faceți clic pe linkul de mai jos.</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+
+  </email>
+  <email name="admin.two_factor_code">
+    <subject><![CDATA[Codul dumneavoastră de verificare pentru autentificarea în back-office]]></subject>
+    <content type="html"><![CDATA[<p>Bună {$DATA.name},</p><p>Codul dumneavoastră de verificare pentru autentificare este:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Acest cod expiră în 10 minute. Dacă nu ați încercat să vă autentificați, contactați imediat administratorul magazinului.</p>]]></content>
+  </email>
+</emails>
