@@ -10,7 +10,7 @@
  * Email:  hello@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
 -->
-<emails version="2.0" language="de-DE">
+<emails version="6.6.0" language="de-DE">
   <email name="admin.password_recovery">
     <subject><![CDATA[Admin-Passwortwiederherstellung]]></subject>
     <content type="html"><![CDATA[<p>Sehr geehrte/r {$DATA.name},</p>
