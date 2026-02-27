@@ -53,6 +53,64 @@
 	</fieldset>
   </div>
 
+  {if isset($ADMIN_TWOFA)}
+  <div id="twofa" class="tab_content">
+  <h3>{$LANG.admins.twofa_title}</h3>
+
+  {if isset($TWOFA_BACKUP_CODES)}
+  <fieldset style="border-color:#e6a817;background:#fffbe6">
+    <legend style="color:#a06000">&#9888; {$LANG.admins.twofa_backup_save_legend}</legend>
+    <p>{$LANG.admins.twofa_backup_save_info}</p>
+    <ul style="font-family:monospace;font-size:1.1em;column-count:2;list-style:none;padding:0">
+    {foreach from=$TWOFA_BACKUP_CODES item=bcode}<li style="padding:4px 0">{$bcode}</li>{/foreach}
+    </ul>
+  </fieldset>
+  {/if}
+
+  {if $ADMIN_TWOFA.enabled}
+  <fieldset><legend>{$LANG.admins.twofa_status}</legend>
+    <div><label>{$LANG.admins.twofa_method}</label><span><strong>{$ADMIN_TWOFA.method|upper}</strong></span></div>
+    <div><label>{$LANG.admins.twofa_backup_remaining}</label><span>{$ADMIN_TWOFA.backup_count}</span></div>
+  </fieldset>
+  <fieldset><legend>{$LANG.admins.twofa_actions}</legend>
+    <div class="nostripe">
+      <button type="submit" name="twofa_action" value="regenerate_backup" style="margin-right:10px">{$LANG.admins.twofa_regen_backup}</button>
+      <button type="submit" name="twofa_action" value="disable" class="delete" onclick="return confirm('{$LANG.admins.twofa_disable_confirm}')">{$LANG.admins.twofa_disable}</button>
+    </div>
+  </fieldset>
+
+  {else}
+
+  <fieldset><legend>{$LANG.admins.twofa_enable_legend}</legend>
+    <div><label>{$LANG.admins.twofa_status}</label><span>{$LANG.admins.twofa_disabled}</span></div>
+    <div class="nostripe">
+      <p>{$LANG.admins.twofa_choose_method}</p>
+      <div style="margin:10px 0">
+        <strong>{$LANG.admins.twofa_email_option}</strong>
+        <p style="color:#555;margin:4px 0 8px">{$LANG.admins.twofa_email_desc}</p>
+        <button type="submit" name="twofa_action" value="enable_email">{$LANG.admins.twofa_enable_email}</button>
+      </div>
+      <hr>
+      <div style="margin:10px 0" id="totp-setup-section">
+        <strong>{$LANG.admins.twofa_totp_option}</strong>
+        <p style="color:#555;margin:4px 0 8px">{$LANG.admins.twofa_totp_desc}</p>
+        <p>{$LANG.admins.twofa_totp_step1}</p>
+        <div id="totp-qr" data-uri="{$TOTP_SETUP_URI|escape:'html'}" style="margin:10px 0;width:180px;height:180px"></div>
+        <p>{$LANG.admins.twofa_manual_key} <code style="font-size:1em;letter-spacing:2px">{$TOTP_SETUP_SECRET}</code></p>
+        <p>{$LANG.admins.twofa_totp_step2}</p>
+        <div><label for="twofa_setup_code">{$LANG.account.twofa_code_label}</label><span><input type="text" name="twofa_setup_code" id="twofa_setup_code" class="textbox" inputmode="numeric" maxlength="6" placeholder="000000" autocomplete="one-time-code" style="width:120px"></span></div>
+        <div class="nostripe" style="margin-top:8px">
+          <button type="submit" name="twofa_action" value="enable_totp">{$LANG.admins.twofa_enable_totp}</button>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+  {/if}
+
+  </div>
+  {/if}
+
   <div id="permissions" class="tab_content">
 	{if $IS_SUPER && isset($ADMIN.super_user)}
   <h3>{$LANG.admins.permission}</h3>

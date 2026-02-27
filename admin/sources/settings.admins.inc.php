@@ -14,6 +14,87 @@ if (!defined('CC_INI_SET')) {
     die('Access Denied');
 }
 
+## Helper: generate 8 single-use backup codes (8 uppercase hex characters each)
+function _admin2FAGenerateBackupCodes($count = 8)
+{
+    $codes = array();
+    for ($i = 0; $i < $count; $i++) {
+        $codes[] = strtoupper(bin2hex(random_bytes(4)));
+    }
+    return $codes;
+}
+
+## Handle 2FA management actions (separate from general admin record update)
+if (isset($_POST['twofa_action']) && isset($_POST['admin_id']) && is_numeric($_POST['admin_id'])) {
+    $twofa_admin_id = (int)$_POST['admin_id'];
+    $is_own = ((int)$twofa_admin_id === (int)Admin::getInstance()->getId());
+    $can_manage = ($is_own || Admin::getInstance()->superUser()) && Admin::getInstance()->permissions('users', CC_PERM_EDIT);
+
+    if ($can_manage) {
+        $action = $_POST['twofa_action'];
+
+        if ($action === 'enable_email') {
+            $backup_codes  = _admin2FAGenerateBackupCodes();
+            $hashed_codes  = array_map(function($c) { return password_hash($c, PASSWORD_DEFAULT); }, $backup_codes);
+            $GLOBALS['db']->update('CubeCart_admin_users', array(
+                'twofa_enabled'      => 1,
+                'twofa_method'       => 'email',
+                'twofa_secret'       => null,
+                'twofa_backup_codes' => json_encode($hashed_codes),
+                'twofa_otp_hash'     => null,
+                'twofa_otp_expires'  => 0,
+            ), array('admin_id' => $twofa_admin_id));
+            $GLOBALS['session']->set('twofa_show_backup_codes', $backup_codes, 'client');
+            $GLOBALS['main']->successMessage($lang['admins']['notify_twofa_email_enabled']);
+
+        } elseif ($action === 'enable_totp') {
+            $secret = $GLOBALS['session']->get('twofa_totp_setup_secret', 'client');
+            $code   = preg_replace('/\s+/', '', (string)($_POST['twofa_setup_code'] ?? ''));
+            require_once CC_ROOT_DIR.CC_DS.'classes'.CC_DS.'totp.class.php';
+            if ($secret && TOTP::verifyCode($secret, $code)) {
+                $backup_codes  = _admin2FAGenerateBackupCodes();
+                $hashed_codes  = array_map(function($c) { return password_hash($c, PASSWORD_DEFAULT); }, $backup_codes);
+                $GLOBALS['db']->update('CubeCart_admin_users', array(
+                    'twofa_enabled'      => 1,
+                    'twofa_method'       => 'totp',
+                    'twofa_secret'       => $secret,
+                    'twofa_backup_codes' => json_encode($hashed_codes),
+                    'twofa_otp_hash'     => null,
+                    'twofa_otp_expires'  => 0,
+                ), array('admin_id' => $twofa_admin_id));
+                $GLOBALS['session']->delete('twofa_totp_setup_secret', 'client');
+                $GLOBALS['session']->set('twofa_show_backup_codes', $backup_codes, 'client');
+                $GLOBALS['main']->successMessage($lang['admins']['notify_twofa_totp_enabled']);
+            } else {
+                $GLOBALS['main']->errorMessage($lang['admins']['error_twofa_totp_invalid']);
+            }
+
+        } elseif ($action === 'disable') {
+            $GLOBALS['db']->update('CubeCart_admin_users', array(
+                'twofa_enabled'      => 0,
+                'twofa_method'       => null,
+                'twofa_secret'       => null,
+                'twofa_backup_codes' => null,
+                'twofa_otp_hash'     => null,
+                'twofa_otp_expires'  => 0,
+            ), array('admin_id' => $twofa_admin_id));
+            $GLOBALS['main']->successMessage($lang['admins']['notify_twofa_disabled']);
+
+        } elseif ($action === 'regenerate_backup') {
+            $backup_codes = _admin2FAGenerateBackupCodes();
+            $hashed_codes = array_map(function($c) { return password_hash($c, PASSWORD_DEFAULT); }, $backup_codes);
+            $GLOBALS['db']->update('CubeCart_admin_users',
+                array('twofa_backup_codes' => json_encode($hashed_codes)),
+                array('admin_id' => $twofa_admin_id));
+            $GLOBALS['session']->set('twofa_show_backup_codes', $backup_codes, 'client');
+            $GLOBALS['main']->successMessage($lang['admins']['notify_twofa_backup_regen']);
+        }
+    } else {
+        $GLOBALS['main']->errorMessage($lang['common']['error_no_permission'] ?? 'Access denied.');
+    }
+    httpredir(currentPage());
+}
+
 if (isset($_GET['tour_shown']) && is_numeric($_GET['tour_shown'])) {
     $query = "UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_admin_users` SET `tour_shown` = '1' WHERE `admin_id` = ".$_GET['tour_shown'];
     $GLOBALS['db']->misc($query);
@@ -191,6 +272,43 @@ if (isset($_GET['action']) && (Admin::getInstance()->superUser() || ((int)$_GET[
                 $GLOBALS['smarty']->assign('LINKED', true);
             }
             $GLOBALS['main']->addTabControl($lang['admins']['tab_overview'], 'overview');
+
+            ## 2FA tab – only when editing an existing admin
+            if ($_GET['action'] == 'edit' && isset($admin[0]['admin_id'])) {
+                $is_own_account = ((int)$admin[0]['admin_id'] === (int)Admin::getInstance()->getId());
+                $can_manage_twofa = $is_own_account || Admin::getInstance()->superUser();
+                if ($can_manage_twofa) {
+                    $GLOBALS['main']->addTabControl($lang['admins']['tab_twofa'], 'twofa');
+                    require_once CC_ROOT_DIR.CC_DS.'classes'.CC_DS.'totp.class.php';
+                    // Generate/retrieve a pending TOTP setup secret (kept in session until verified)
+                    if (empty($admin[0]['twofa_enabled']) || $admin[0]['twofa_method'] !== 'totp') {
+                        $pending_secret = $GLOBALS['session']->get('twofa_totp_setup_secret', 'client');
+                        if (!$pending_secret) {
+                            $pending_secret = TOTP::generateSecret();
+                            $GLOBALS['session']->set('twofa_totp_setup_secret', $pending_secret, 'client');
+                        }
+                        $store_name = $GLOBALS['config']->get('config', 'store_name');
+                        $GLOBALS['smarty']->assign('TOTP_SETUP_SECRET', $pending_secret);
+                        $GLOBALS['smarty']->assign('TOTP_SETUP_URI', TOTP::otpauthURI($pending_secret, $admin[0]['email'], $store_name));
+                    }
+                    $backup_count = 0;
+                    if (!empty($admin[0]['twofa_backup_codes'])) {
+                        $bc = json_decode($admin[0]['twofa_backup_codes'], true);
+                        $backup_count = is_array($bc) ? count($bc) : 0;
+                    }
+                    $GLOBALS['smarty']->assign('ADMIN_TWOFA', array(
+                        'enabled'      => (bool)$admin[0]['twofa_enabled'],
+                        'method'       => $admin[0]['twofa_method'],
+                        'backup_count' => $backup_count,
+                        'is_own'       => $is_own_account,
+                    ));
+                    // Show backup codes if they were just generated (flash via session)
+                    if ($flash_codes = $GLOBALS['session']->get('twofa_show_backup_codes', 'client')) {
+                        $GLOBALS['smarty']->assign('TWOFA_BACKUP_CODES', $flash_codes);
+                        $GLOBALS['session']->delete('twofa_show_backup_codes', 'client');
+                    }
+                }
+            }
         } else {
             $GLOBALS['main']->errorMessage($lang['admins']['error_admin_exists']);
             httpredir(currentPage(array('action', 'admin_id')));

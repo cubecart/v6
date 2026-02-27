@@ -71,3 +71,12 @@ UPDATE `CubeCart_config` SET `config_key` = 'sv-SE' WHERE `config_key` = 'se-SE'
 ALTER TABLE `CubeCart_email_content` DROP COLUMN `content_text`; #EOQ
 ALTER TABLE `CubeCart_email_template` DROP COLUMN `content_text`; #EOQ
 ALTER TABLE `CubeCart_newsletter` DROP COLUMN `content_text`; #EOQ
+-- Two-factor authentication: add columns to admin users table
+ALTER TABLE `CubeCart_admin_users` ADD COLUMN `twofa_enabled` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0; #EOQ
+ALTER TABLE `CubeCart_admin_users` ADD COLUMN `twofa_method` VARCHAR(10) NULL DEFAULT NULL; #EOQ
+ALTER TABLE `CubeCart_admin_users` ADD COLUMN `twofa_secret` VARCHAR(64) NULL DEFAULT NULL; #EOQ
+ALTER TABLE `CubeCart_admin_users` ADD COLUMN `twofa_backup_codes` TEXT NULL DEFAULT NULL; #EOQ
+ALTER TABLE `CubeCart_admin_users` ADD COLUMN `twofa_otp_hash` VARCHAR(255) NULL DEFAULT NULL; #EOQ
+ALTER TABLE `CubeCart_admin_users` ADD COLUMN `twofa_otp_expires` INT UNSIGNED NOT NULL DEFAULT 0; #EOQ
+
+-- Two-factor authentication: email templates imported from language XML files by 6.6.0.php

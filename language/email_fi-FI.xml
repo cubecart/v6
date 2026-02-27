@@ -16,17 +16,20 @@
     <content type="html"><![CDATA[<p>Hei {$DATA.name},</p>
 <p>Pääset takaisin kaupan hallintapaneeliin seuraamalla alla olevaa linkkiä:</p>
 <p><a href="{$DATA.link}">{$DATA.link}</a></p>
-<p>Jos yllä oleva linkki ei toimi, kopioi ja liitä se selaimesi osoitekenttään.</p>]]></content>
+<p>Jos yllä oleva linkki ei toimi, kopioi ja liitä se selaimesi osoitekenttään.</p>]]></content>
+
   </email>
   <email name="cart.order_complete">
     <subject><![CDATA[Tilaus valmis]]></subject>
     <content type="html"><![CDATA[<p>Hei {$DATA.first_name|capitalize},</p>
-<p>Ilmoitamme ilolla, että tilaus numero {$DATA.cart_order_id} on nyt valmis. Jos tilasit fyysisiä tuotteita, ne ovat pian perillä.</p>{if !empty($DATA.ship_tracking)}<p>Seuraa tilaustasi:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
+<p>Ilmoitamme ilolla, että tilaus numero {$DATA.cart_order_id} on nyt valmis. Jos tilasit fyysisiä tuotteita, ne ovat pian perillä.</p>{if !empty($DATA.ship_tracking)}<p>Seuraa tilaustasi:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
+
   </email>
   <email name="cart.order_cancelled">
     <subject><![CDATA[Tilaus peruutettu]]></subject>
     <content type="html"><![CDATA[<p>Hei {$DATA.first_name|capitalize},</p>
-<p>Tilaus numero {$DATA.cart_order_id} on peruutettu. Jos sinulla on kysyttävää, älä epäröi ottaa meihin yhteyttä.</p>]]></content>
+<p>Tilaus numero {$DATA.cart_order_id} on peruutettu. Jos sinulla on kysyttävää, älä epäröi ottaa meihin yhteyttä.</p>]]></content>
+
   </email>
   <email name="cart.order_confirmation">
     <subject><![CDATA[Tilausvahvistus #{$DATA.cart_order_id}]]></subject>
@@ -113,12 +116,14 @@
 </table>
 {if !empty($DATA.note_to_customer)}
 <p>&quot;{$DATA.note_to_customer}&quot;</p>
-{/if}]]></content>
+{/if}]]></content>
+
   </email>
   <email name="cart.payment_fraud">
     <subject><![CDATA[Ongelma tilauksessa]]></subject>
     <content type="html"><![CDATA[<p>Hei {$DATA.first_name|capitalize},</p>
-<p>Valitettavasti emme pystyneet käsittelemään maksua tilaukselle {$DATA.cart_order_id}. Jos sinulla on kysyttävää, älä epäröi ottaa meihin yhteyttä.</p>]]></content>
+<p>Valitettavasti emme pystyneet käsittelemään maksua tilaukselle {$DATA.cart_order_id}. Jos sinulla on kysyttävää, älä epäröi ottaa meihin yhteyttä.</p>]]></content>
+
   </email>
   <email name="account.password_recovery">
     <subject><![CDATA[Salasanan palautus]]></subject>
@@ -128,7 +133,8 @@ Voit nollata salasanasi napsauttamalla alla olevaa linkkiä tai kopioimalla ja l
 <br>
 <a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br>
 <br>
-Jos tarvitset lisää apua, ota meihin yhteyttä.</p>]]></content>
+Jos tarvitset lisää apua, ota meihin yhteyttä.</p>]]></content>
+
   </email>
   <email name="admin.order_received">
     <subject><![CDATA[Uusi tilaus #{$DATA.cart_order_id}]]></subject>
@@ -213,13 +219,15 @@ Jos tarvitset lisää apua, ota meihin yhteyttä.</p>]]></content>
 </tr>
 </tbody>
 
-</table>]]></content>
+</table>]]></content>
+
   </email>
   <email name="admin.review_added">
     <subject><![CDATA[Uusi tuotearvostelu]]></subject>
     <content type="html"><![CDATA[{$DATA.name} on jättänyt uuden arvostelun tuotteelle '{$DATA.product_name}'. Voit moderoida sen alla olevan linkin kautta.
         <p><strong>Moderointilinkki:</strong><br><a href='{$DATA.link}'>{$DATA.link}</a></p>
-        <p><strong>Arvostelun teksti:</strong><br>{$DATA.review}</p>]]></content>
+        <p><strong>Arvostelun teksti:</strong><br>{$DATA.review}</p>]]></content>
+
   </email>
   <email name="cart.digital_download">
     <subject><![CDATA[Latauksesi ovat valmiina]]></subject>
@@ -230,7 +238,8 @@ Jos tarvitset lisää apua, ota meihin yhteyttä.</p>]]></content>
 <a href="{$download.url}">{$download.url}</a></p>
 {/foreach}
 <p>Jos yllä olevat linkit eivät toimi, kopioi ja liitä ne selaimesi osoitekenttään. Voit myös käyttää näitä tiedostoja tililtäsi verkkosivustollamme.</p>
-<p>&nbsp;</p>]]></content>
+<p>&nbsp;</p>]]></content>
+
   </email>
   <email name="cart.gift_certificate">
     <subject><![CDATA[Lahjakorttisi]]></subject>
@@ -242,26 +251,35 @@ Jos tarvitset lisää apua, ota meihin yhteyttä.</p>]]></content>
 <strong>Lahjaviesti:</strong> {$DATA.message}</p>
 <p>-------------------</p>
 <p>Lunastaaksesi tämän lahjakortin, syötä yllä oleva &quot;Lunastuskoodi&quot; kassalla kenttään &quot;Tarjouskoodi tai lahjakortti&quot;.</p>
-<p>Käytä se jo tänään!</p>]]></content>
+<p>Käytä se jo tänään!</p>]]></content>
+
   </email>
   <email name="catalogue.tell_friend">
     <subject><![CDATA[{$DATA.from} suosittelee sinulle tuotetta]]></subject>
     <content type="html"><![CDATA[Hei {$DATA.to},
 <p>Ystäväsi <strong>{$DATA.from}</strong> ajatteli, että saattaisit olla kiinnostunut tuotteesta <strong>{$DATA.name}</strong>.</p>
 <p><strong>Tuotelinkki:</strong> <a href="{$DATA.link}">{$DATA.name}</a></p>
-<p>{$DATA.message}</p>]]></content>
+<p>{$DATA.message}</p>]]></content>
+
   </email>
   <email name="cart.payment_received">
     <subject><![CDATA[Kiitos maksustasi]]></subject>
     <content type="html"><![CDATA[<p>Hei {$DATA.first_name|capitalize},</p>
-<p>Olemme vastaanottaneet maksusi {$DATA.total} tilaukselle numero {$DATA.cart_order_id}.</p>]]></content>
+<p>Olemme vastaanottaneet maksusi {$DATA.total} tilaukselle numero {$DATA.cart_order_id}.</p>]]></content>
+
   </email>
   <email name="newsletter.verify_email">
     <subject><![CDATA[Vahvista tilauksesi]]></subject>
-    <content type="html"><![CDATA[<p>Sähköpostiosoitetta {$DATA.email} käytettiin uutiskirjeemme tilaamiseen. Vahvista tilauksesi napsauttamalla alla olevaa linkkiä:</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+    <content type="html"><![CDATA[<p>Sähköpostiosoitetta {$DATA.email} käytettiin uutiskirjeemme tilaamiseen. Vahvista tilauksesi napsauttamalla alla olevaa linkkiä:</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+
   </email>
   <email name="newsletter.remove_request">
     <subject><![CDATA[Vahvista uutiskirjeen peruutus]]></subject>
-    <content type="html"><![CDATA[<p>Pyyntö peruuttaa sähköpostiosoitteen <strong>{$DATA.email}</strong> uutiskirjetilaus on vastaanotettu. Vahvista napsauttamalla alla olevaa linkkiä.</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+    <content type="html"><![CDATA[<p>Pyyntö peruuttaa sähköpostiosoitteen <strong>{$DATA.email}</strong> uutiskirjetilaus on vastaanotettu. Vahvista napsauttamalla alla olevaa linkkiä.</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+
+  </email>
+  <email name="admin.two_factor_code">
+    <subject><![CDATA[Back-office-kirjautumisesi vahvistuskoodi]]></subject>
+    <content type="html"><![CDATA[<p>Hei {$DATA.name},</p><p>Kirjautumisvahvistuskoodisi on:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Tämä koodi vanhenee 10 minuutin kuluttua. Jos et yrittänyt kirjautua sisään, ota välittömästi yhteyttä kauppasi ylläpitäjään.</p>]]></content>
   </email>
 </emails>

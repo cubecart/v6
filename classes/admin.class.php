@@ -347,17 +347,14 @@ class Admin
                 $GLOBALS['gui']->setError($GLOBALS['language']->account['error_login']);
                 return false;
             }
-            $result = $GLOBALS['db']->select('CubeCart_admin_users', array('admin_id', 'customer_id', 'logins', 'new_password'), array('username' => $username, 'password' => $hash_password, 'status' => '1'));
+            $result = $GLOBALS['db']->select('CubeCart_admin_users', array('admin_id', 'customer_id', 'logins', 'new_password', 'name', 'email', 'language', 'twofa_enabled', 'twofa_method', 'twofa_secret'), array('username' => $username, 'password' => $hash_password, 'status' => '1'));
             $GLOBALS['session']->blocker($username, 0, (bool)$result, Session::BLOCKER_BACKEND, $GLOBALS['config']->get('config', 'bfattempts'), $GLOBALS['config']->get('config', 'bftime'));
             if ($result) {
                 if (!$GLOBALS['session']->blocked()) {
-                    $this->_logged_in = true;
-                    $GLOBALS['session']->regenerateSessionId();
                     $update = array(
                         'blockTime'  => 0,
                         'browser'  => htmlspecialchars($_SERVER['HTTP_USER_AGENT']),
                         'failLevel'  => 0,
-                        'session_id' => $GLOBALS['session']->getId(),
                         'ip_address' => get_ip_address(),
                         'verify'  => '',
                         'lastTime'  => time(),
@@ -372,9 +369,13 @@ class Admin
                                 'new_password' => 1,
                             ));
                     }
-                    $GLOBALS['db']->update('CubeCart_admin_users', $update, array('admin_id' => $result[0]['admin_id']));
-                    $GLOBALS['session']->set('admin_id', $result[0]['admin_id'], 'client');
-                    $this->_load();
+                    $GLOBALS['db']->update('CubeCart_admin_users', $update, array('admin_id' => (int)$result[0]['admin_id']));
+                    if (!empty($result[0]['twofa_enabled'])) {
+                        // 2FA required – store pending state and redirect to challenge page (exits)
+                        $this->_initiate2FA($result[0]);
+                    }
+                    // No 2FA – establish session directly (sets _logged_in, admin_id in session, calls _load)
+                    $this->_establishSession((int)$result[0]['admin_id']);
                 } else {
                     foreach ($GLOBALS['hooks']->load('admin.authenticate.failed_valid_admin') as $hook) {
                         include $hook;
@@ -573,5 +574,208 @@ class Admin
     public function __get($name)
     {
         return (isset($this->_admin_data[$name])) ? $this->_admin_data[$name] : false;
+    }
+
+    /**
+     * Verify a 2FA code (TOTP, email OTP, or backup code) for a pending login
+     *
+     * @param string $code
+     * @return bool  Always redirects on success; returns false on failure
+     */
+    public function verify2FA($code)
+    {
+        $admin_id = (int)$GLOBALS['session']->get('twofa_pending_admin_id', 'client', 0);
+        if (!$admin_id) {
+            return false;
+        }
+
+        // IP binding – prevent session token theft between credential check and 2FA entry
+        $pending_ip = $GLOBALS['session']->get('twofa_pending_ip', 'client');
+        if ($pending_ip !== md5(get_ip_address())) {
+            $this->_clearPending2FA();
+            $GLOBALS['gui']->setError($GLOBALS['language']->account['error_twofa_session']);
+            httpredir($GLOBALS['rootRel'].$GLOBALS['config']->get('config', 'adminFile'));
+        }
+
+        $admin = $GLOBALS['db']->select('CubeCart_admin_users', false, array('admin_id' => $admin_id, 'status' => 1), false, 1, false, false);
+        if (!$admin) {
+            $this->_clearPending2FA();
+            httpredir($GLOBALS['rootRel'].$GLOBALS['config']->get('config', 'adminFile'));
+        }
+        $admin = $admin[0];
+
+        $code     = trim((string)$code);
+        $verified = false;
+
+        // Check backup codes (8 uppercase hex chars)
+        if (strlen($code) === 8 && preg_match('/^[A-F0-9]+$/i', $code)) {
+            $backup_codes = json_decode($admin['twofa_backup_codes'] ?? '[]', true);
+            if (is_array($backup_codes)) {
+                foreach ($backup_codes as $i => $hash) {
+                    if (password_verify(strtoupper($code), $hash)) {
+                        unset($backup_codes[$i]);
+                        $GLOBALS['db']->update('CubeCart_admin_users',
+                            array('twofa_backup_codes' => json_encode(array_values($backup_codes))),
+                            array('admin_id' => $admin_id));
+                        $verified = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (!$verified) {
+            if ($admin['twofa_method'] === 'email') {
+                if (!empty($admin['twofa_otp_hash']) && (int)$admin['twofa_otp_expires'] > time()) {
+                    if (password_verify($code, $admin['twofa_otp_hash'])) {
+                        $GLOBALS['db']->update('CubeCart_admin_users',
+                            array('twofa_otp_hash' => null, 'twofa_otp_expires' => 0),
+                            array('admin_id' => $admin_id));
+                        $verified = true;
+                    }
+                }
+            } elseif ($admin['twofa_method'] === 'totp') {
+                if (!empty($admin['twofa_secret'])) {
+                    require_once CC_ROOT_DIR.CC_DS.'classes'.CC_DS.'totp.class.php';
+                    $verified = TOTP::verifyCode($admin['twofa_secret'], $code);
+                }
+            }
+        }
+
+        if ($verified) {
+            $redir = (string)$GLOBALS['session']->get('twofa_pending_redir', 'client', '');
+            $this->_clearPending2FA();
+            $this->_establishSession($admin_id);
+            if (!empty($redir) && $GLOBALS['ssl']->validRedirect($redir)) {
+                httpredir($redir);
+            }
+            httpredir($GLOBALS['rootRel'].$GLOBALS['config']->get('config', 'adminFile'));
+        }
+
+        // Failed attempt – session-based rate limiting
+        $fail_count = (int)$GLOBALS['session']->get('twofa_fail_count', 'client', 0) + 1;
+        $max_attempts = (int)$GLOBALS['config']->get('config', 'bfattempts') ?: 5;
+        if ($fail_count >= $max_attempts) {
+            $this->_clearPending2FA();
+            $minutes = ceil($GLOBALS['config']->get('config', 'bftime') / 60);
+            $GLOBALS['gui']->setError(sprintf($GLOBALS['language']->account['error_twofa_locked'], $minutes));
+            httpredir($GLOBALS['rootRel'].$GLOBALS['config']->get('config', 'adminFile'));
+        }
+        $GLOBALS['session']->set('twofa_fail_count', $fail_count, 'client');
+        $GLOBALS['gui']->setError($GLOBALS['language']->account['error_twofa_invalid']);
+        return false;
+    }
+
+    /**
+     * Resend the email OTP for a pending 2FA login (rate-limited to once per 60 s)
+     *
+     * @return bool
+     */
+    public function resend2FACode()
+    {
+        $admin_id = (int)$GLOBALS['session']->get('twofa_pending_admin_id', 'client', 0);
+        if (!$admin_id) {
+            return false;
+        }
+        $admin = $GLOBALS['db']->select('CubeCart_admin_users',
+            array('admin_id', 'name', 'email', 'language', 'twofa_method', 'twofa_otp_expires'),
+            array('admin_id' => $admin_id, 'status' => 1, 'twofa_method' => 'email'),
+            false, 1, false, false);
+        if (!$admin) {
+            return false;
+        }
+        $admin = $admin[0];
+        // Allow resend only if at least 60 seconds have elapsed since last send
+        $sent_at = (int)$admin['twofa_otp_expires'] - 600;
+        if ((time() - $sent_at) < 60) {
+            $GLOBALS['gui']->setError($GLOBALS['language']->account['error_twofa_wait']);
+            return false;
+        }
+        $this->_send2FACode($admin);
+        $GLOBALS['gui']->setNotify($GLOBALS['language']->account['notify_twofa_resent']);
+        return true;
+    }
+
+    /**
+     * Establish an authenticated admin session after credentials (and 2FA) are verified
+     *
+     * @param int $admin_id
+     */
+    private function _establishSession($admin_id)
+    {
+        $GLOBALS['session']->regenerateSessionId();
+        $GLOBALS['db']->update('CubeCart_admin_users',
+            array('session_id' => $GLOBALS['session']->getId()),
+            array('admin_id' => $admin_id));
+        $GLOBALS['session']->set('admin_id', $admin_id, 'client');
+        $this->_logged_in = true;
+        $this->_load();
+    }
+
+    /**
+     * Initiate the 2FA challenge: store pending state, send email OTP if needed, then redirect
+     *
+     * @param array $admin  admin record from DB (must include admin_id, twofa_method, name, email, language)
+     */
+    private function _initiate2FA($admin)
+    {
+        $GLOBALS['session']->set('twofa_pending_admin_id', (int)$admin['admin_id'], 'client');
+        $GLOBALS['session']->set('twofa_pending_ip', md5(get_ip_address()), 'client');
+
+        // Preserve any post-login redirect destination
+        $redir = '';
+        if (isset($_POST['redir']) && !empty($_POST['redir'])) {
+            $redir = $_POST['redir'];
+        } elseif (isset($_GET['redir']) && !empty($_GET['redir'])) {
+            $redir = $_GET['redir'];
+        }
+        if (!empty($redir)) {
+            $GLOBALS['session']->set('twofa_pending_redir', $redir, 'client');
+        }
+
+        if ($admin['twofa_method'] === 'email') {
+            $this->_send2FACode($admin);
+        }
+
+        httpredir($GLOBALS['rootRel'].$GLOBALS['config']->get('config', 'adminFile').'?_g=twofa');
+    }
+
+    /**
+     * Generate and email a 6-digit OTP to the admin
+     *
+     * @param array $admin  must include admin_id, name, email, language
+     */
+    private function _send2FACode($admin)
+    {
+        $code    = str_pad((string)random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+        $hash    = password_hash($code, PASSWORD_DEFAULT);
+        $expires = time() + 600;
+
+        $GLOBALS['db']->update('CubeCart_admin_users',
+            array('twofa_otp_hash' => $hash, 'twofa_otp_expires' => $expires),
+            array('admin_id' => (int)$admin['admin_id']));
+
+        $mailer = new Mailer();
+        $data   = array(
+            'code'    => $code,
+            'name'    => isset($admin['name']) ? $admin['name'] : '',
+            'expires' => '10 minutes',
+        );
+        $content = $mailer->loadContent('admin.two_factor_code', $admin['language'], $data);
+        if ($content) {
+            $GLOBALS['smarty']->assign('DATA', $data);
+            $mailer->sendEmail($admin['email'], $content);
+        }
+    }
+
+    /**
+     * Clear all pending 2FA session state
+     */
+    private function _clearPending2FA()
+    {
+        $GLOBALS['session']->delete('twofa_pending_admin_id', 'client');
+        $GLOBALS['session']->delete('twofa_pending_ip', 'client');
+        $GLOBALS['session']->delete('twofa_pending_redir', 'client');
+        $GLOBALS['session']->delete('twofa_fail_count', 'client');
     }
 }

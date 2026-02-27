@@ -112,3 +112,10 @@ $predis_path = CC_INCLUDES_DIR.'lib/predis';
 if (is_dir($predis_path)) {
     recursiveDelete($predis_path);
 }
+
+// Import two-factor authentication email template for all active languages
+if (is_array($languages)) {
+    foreach ($languages as $code => $lang) {
+        $language->importEmail('email_'.$code.'.xml', CC_LANGUAGE_DIR, 'admin.two_factor_code');
+    }
+}

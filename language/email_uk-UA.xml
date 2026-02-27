@@ -16,17 +16,20 @@
     <content type="html"><![CDATA[<p>Шановний(-а) {$DATA.name},</p>
 <p>Щоб відновити доступ до панелі адміністрування магазину, будь ласка, перейдіть за посиланням нижче:</p>
 <p><a href="{$DATA.link}">{$DATA.link}</a></p>
-<p>Якщо посилання не працює, будь ласка, скопіюйте його та вставте в адресний рядок вашого браузера.</p>]]></content>
+<p>Якщо посилання не працює, будь ласка, скопіюйте його та вставте в адресний рядок вашого браузера.</p>]]></content>
+
   </email>
   <email name="cart.order_complete">
     <subject><![CDATA[Замовлення виконано]]></subject>
     <content type="html"><![CDATA[<p>Вітаємо, {$DATA.first_name|capitalize}!</p>
-<p>Раді повідомити, що замовлення номер {$DATA.cart_order_id} виконано. Якщо ви замовляли фізичні товари, вони мають бути доставлені найближчим часом.</p>{if !empty($DATA.ship_tracking)}<p>Відстежити замовлення:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
+<p>Раді повідомити, що замовлення номер {$DATA.cart_order_id} виконано. Якщо ви замовляли фізичні товари, вони мають бути доставлені найближчим часом.</p>{if !empty($DATA.ship_tracking)}<p>Відстежити замовлення:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
+
   </email>
   <email name="cart.order_cancelled">
     <subject><![CDATA[Замовлення скасовано]]></subject>
     <content type="html"><![CDATA[<p>Вітаємо, {$DATA.first_name|capitalize}!</p>
-<p>Замовлення номер {$DATA.cart_order_id} було скасовано. Якщо у вас є запитання, будь ласка, зв'яжіться з нами.</p>]]></content>
+<p>Замовлення номер {$DATA.cart_order_id} було скасовано. Якщо у вас є запитання, будь ласка, зв'яжіться з нами.</p>]]></content>
+
   </email>
   <email name="cart.order_confirmation">
     <subject><![CDATA[Підтвердження замовлення #{$DATA.cart_order_id}]]></subject>
@@ -113,12 +116,14 @@
 </table>
 {if !empty($DATA.note_to_customer)}
 <p>&quot;{$DATA.note_to_customer}&quot;</p>
-{/if}]]></content>
+{/if}]]></content>
+
   </email>
   <email name="cart.payment_fraud">
     <subject><![CDATA[Проблема із замовленням]]></subject>
     <content type="html"><![CDATA[<p>Вітаємо, {$DATA.first_name|capitalize}!</p>
-<p>На жаль, ми не змогли обробити оплату за замовлення {$DATA.cart_order_id}. Якщо у вас є запитання, будь ласка, зв'яжіться з нами.</p>]]></content>
+<p>На жаль, ми не змогли обробити оплату за замовлення {$DATA.cart_order_id}. Якщо у вас є запитання, будь ласка, зв'яжіться з нами.</p>]]></content>
+
   </email>
   <email name="account.password_recovery">
     <subject><![CDATA[Відновлення пароля]]></subject>
@@ -128,7 +133,8 @@
 <br>
 <a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br>
 <br>
-Якщо вам потрібна додаткова допомога, будь ласка, зв'яжіться з нами.</p>]]></content>
+Якщо вам потрібна додаткова допомога, будь ласка, зв'яжіться з нами.</p>]]></content>
+
   </email>
   <email name="admin.order_received">
     <subject><![CDATA[Нове замовлення #{$DATA.cart_order_id}]]></subject>
@@ -213,13 +219,15 @@
 </tr>
 </tbody>
 
-</table>]]></content>
+</table>]]></content>
+
   </email>
   <email name="admin.review_added">
     <subject><![CDATA[Новий відгук на товар]]></subject>
     <content type="html"><![CDATA[{$DATA.name} залишив(-ла) новий відгук на товар '{$DATA.product_name}'. Ви можете модерувати його за посиланням нижче.
         <p><strong>Посилання для модерації:</strong><br><a href='{$DATA.link}'>{$DATA.link}</a></p>
-        <p><strong>Текст відгуку:</strong><br>{$DATA.review}</p>]]></content>
+        <p><strong>Текст відгуку:</strong><br>{$DATA.review}</p>]]></content>
+
   </email>
   <email name="cart.digital_download">
     <subject><![CDATA[Ваші завантаження готові]]></subject>
@@ -230,7 +238,8 @@
 <a href="{$download.url}">{$download.url}</a></p>
 {/foreach}
 <p>Якщо посилання вище не працюють, спробуйте скопіювати та вставити їх в адресний рядок вашого браузера. Ви також можете отримати доступ до цих файлів зі свого облікового запису на нашому сайті.</p>
-<p>&nbsp;</p>]]></content>
+<p>&nbsp;</p>]]></content>
+
   </email>
   <email name="cart.gift_certificate">
     <subject><![CDATA[Ваш подарунковий сертифікат]]></subject>
@@ -242,26 +251,35 @@
 <strong>Повідомлення:</strong> {$DATA.message}</p>
 <p>-------------------</p>
 <p>Щоб використати цей подарунковий сертифікат, введіть &quot;Код активації&quot; вище у поле &quot;Промокод або подарунковий сертифікат&quot; під час оформлення замовлення.</p>
-<p>Чому б не витратити його прямо зараз?</p>]]></content>
+<p>Чому б не витратити його прямо зараз?</p>]]></content>
+
   </email>
   <email name="catalogue.tell_friend">
     <subject><![CDATA[{$DATA.from} рекомендує вам товар]]></subject>
     <content type="html"><![CDATA[Шановний(-а) {$DATA.to},
 <p>Ваш друг <strong>{$DATA.from}</strong> вважає, що вас може зацікавити товар <strong>{$DATA.name}</strong>.</p>
 <p><strong>Посилання на товар:</strong> <a href="{$DATA.link}">{$DATA.name}</a></p>
-<p>{$DATA.message}</p>]]></content>
+<p>{$DATA.message}</p>]]></content>
+
   </email>
   <email name="cart.payment_received">
     <subject><![CDATA[Дякуємо за вашу оплату]]></subject>
     <content type="html"><![CDATA[<p>Вітаємо, {$DATA.first_name|capitalize}!</p>
-<p>Ми отримали вашу оплату на суму {$DATA.total} за замовлення номер {$DATA.cart_order_id}.</p>]]></content>
+<p>Ми отримали вашу оплату на суму {$DATA.total} за замовлення номер {$DATA.cart_order_id}.</p>]]></content>
+
   </email>
   <email name="newsletter.verify_email">
     <subject><![CDATA[Підтвердіть вашу підписку]]></subject>
-    <content type="html"><![CDATA[<p>Адресу {$DATA.email} було використано для підписки на нашу розсилку. Щоб підтвердити підписку, будь ласка, натисніть на посилання нижче:</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+    <content type="html"><![CDATA[<p>Адресу {$DATA.email} було використано для підписки на нашу розсилку. Щоб підтвердити підписку, будь ласка, натисніть на посилання нижче:</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+
   </email>
   <email name="newsletter.remove_request">
     <subject><![CDATA[Підтвердження відписки від розсилки]]></subject>
-    <content type="html"><![CDATA[<p>Було надіслано запит на відписку адреси <strong>{$DATA.email}</strong> від нашої розсилки. Щоб підтвердити, будь ласка, натисніть на посилання нижче.</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+    <content type="html"><![CDATA[<p>Було надіслано запит на відписку адреси <strong>{$DATA.email}</strong> від нашої розсилки. Щоб підтвердити, будь ласка, натисніть на посилання нижче.</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+
+  </email>
+  <email name="admin.two_factor_code">
+    <subject><![CDATA[Ваш код верифікації входу до панелі управління]]></subject>
+    <content type="html"><![CDATA[<p>Вітаємо, {$DATA.name},</p><p>Ваш код верифікації входу:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Цей код діє 10 хвилин. Якщо ви не намагались увійти, негайно зверніться до адміністратора магазину.</p>]]></content>
   </email>
 </emails>

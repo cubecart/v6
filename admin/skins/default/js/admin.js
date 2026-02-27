@@ -856,6 +856,15 @@ $(document).ready(function() {
         $("#filemanager .toggle span."+fm_size).addClass("active");
     }
     lazyload();
+
+    // TOTP QR code
+    var $qr = $('#totp-qr');
+    if ($qr.length) {
+        var totpUri = $qr.data('uri');
+        if (totpUri && typeof QRCode !== 'undefined') {
+            new QRCode($qr[0], {text: totpUri, width: 180, height: 180, correctLevel: QRCode.CorrectLevel.M});
+        }
+    }
 });
 var new_option = 0,
     data = !1;

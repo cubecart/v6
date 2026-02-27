@@ -16,17 +16,20 @@
     <content type="html"><![CDATA[<p>Sehr geehrte/r {$DATA.name},</p>
 <p>Um wieder Zugang zum Administrationspanel des Shops zu erhalten, folgen Sie bitte dem nachstehenden Link:</p>
 <p><a href="{$DATA.link}">{$DATA.link}</a></p>
-<p>Falls der obige Link nicht funktioniert, kopieren Sie ihn bitte und fügen Sie ihn in die Adressleiste Ihres Browsers ein.</p>]]></content>
+<p>Falls der obige Link nicht funktioniert, kopieren Sie ihn bitte und fügen Sie ihn in die Adressleiste Ihres Browsers ein.</p>]]></content>
+
   </email>
   <email name="cart.order_complete">
     <subject><![CDATA[Bestellung abgeschlossen]]></subject>
     <content type="html"><![CDATA[<p>Hallo {$DATA.first_name|capitalize},</p>
-<p>wir freuen uns, Ihnen mitteilen zu können, dass Ihre Bestellung Nr. {$DATA.cart_order_id} nun abgeschlossen ist. Wenn Sie physische Waren bestellt haben, sollten diese in Kürze bei Ihnen eintreffen.</p>{if !empty($DATA.ship_tracking)}<p>Verfolgen Sie Ihre Bestellung:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
+<p>wir freuen uns, Ihnen mitteilen zu können, dass Ihre Bestellung Nr. {$DATA.cart_order_id} nun abgeschlossen ist. Wenn Sie physische Waren bestellt haben, sollten diese in Kürze bei Ihnen eintreffen.</p>{if !empty($DATA.ship_tracking)}<p>Verfolgen Sie Ihre Bestellung:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
+
   </email>
   <email name="cart.order_cancelled">
     <subject><![CDATA[Bestellung storniert]]></subject>
     <content type="html"><![CDATA[<p>Hallo {$DATA.first_name|capitalize},</p>
-<p>Bestellung Nr. {$DATA.cart_order_id} wurde storniert. Wenn Sie Fragen haben, zögern Sie bitte nicht, uns zu kontaktieren.</p>]]></content>
+<p>Bestellung Nr. {$DATA.cart_order_id} wurde storniert. Wenn Sie Fragen haben, zögern Sie bitte nicht, uns zu kontaktieren.</p>]]></content>
+
   </email>
   <email name="cart.order_confirmation">
     <subject><![CDATA[Bestellbestätigung #{$DATA.cart_order_id}]]></subject>
@@ -113,12 +116,14 @@
 </table>
 {if !empty($DATA.note_to_customer)}
 <p>&quot;{$DATA.note_to_customer}&quot;</p>
-{/if}]]></content>
+{/if}]]></content>
+
   </email>
   <email name="cart.payment_fraud">
     <subject><![CDATA[Problem mit der Bestellung]]></subject>
     <content type="html"><![CDATA[<p>Hallo {$DATA.first_name|capitalize},</p>
-<p>leider konnten wir die Zahlung für Bestellung {$DATA.cart_order_id} nicht verarbeiten. Wenn Sie Fragen haben, zögern Sie bitte nicht, uns zu kontaktieren.</p>]]></content>
+<p>leider konnten wir die Zahlung für Bestellung {$DATA.cart_order_id} nicht verarbeiten. Wenn Sie Fragen haben, zögern Sie bitte nicht, uns zu kontaktieren.</p>]]></content>
+
   </email>
   <email name="account.password_recovery">
     <subject><![CDATA[Passwortwiederherstellung]]></subject>
@@ -128,7 +133,8 @@ Um Ihr Passwort zurückzusetzen, klicken Sie bitte auf den nachstehenden Link od
 <br>
 <a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br>
 <br>
-Wenn Sie weitere Hilfe benötigen, kontaktieren Sie uns bitte.</p>]]></content>
+Wenn Sie weitere Hilfe benötigen, kontaktieren Sie uns bitte.</p>]]></content>
+
   </email>
   <email name="admin.order_received">
     <subject><![CDATA[Neue Bestellung #{$DATA.cart_order_id}]]></subject>
@@ -213,13 +219,15 @@ Wenn Sie weitere Hilfe benötigen, kontaktieren Sie uns bitte.</p>]]></content>
 </tr>
 </tbody>
 
-</table>]]></content>
+</table>]]></content>
+
   </email>
   <email name="admin.review_added">
     <subject><![CDATA[Neue Produktbewertung]]></subject>
     <content type="html"><![CDATA[{$DATA.name} hat eine neue Bewertung für '{$DATA.product_name}' hinterlassen. Sie können diese über den folgenden Link moderieren.
         <p><strong>Moderationslink:</strong><br><a href='{$DATA.link}'>{$DATA.link}</a></p>
-        <p><strong>Bewertungstext:</strong><br>{$DATA.review}</p>]]></content>
+        <p><strong>Bewertungstext:</strong><br>{$DATA.review}</p>]]></content>
+
   </email>
   <email name="cart.digital_download">
     <subject><![CDATA[Ihre Downloads stehen bereit]]></subject>
@@ -230,7 +238,8 @@ Wenn Sie weitere Hilfe benötigen, kontaktieren Sie uns bitte.</p>]]></content>
 <a href="{$download.url}">{$download.url}</a></p>
 {/foreach}
 <p>Falls die obigen Links nicht funktionieren, kopieren Sie sie bitte und fügen Sie sie in die Adressleiste Ihres Browsers ein. Sie können diese Dateien auch über Ihr Konto auf unserer Website abrufen.</p>
-<p>&nbsp;</p>]]></content>
+<p>&nbsp;</p>]]></content>
+
   </email>
   <email name="cart.gift_certificate">
     <subject><![CDATA[Ihr Geschenkgutschein]]></subject>
@@ -242,26 +251,35 @@ Wenn Sie weitere Hilfe benötigen, kontaktieren Sie uns bitte.</p>]]></content>
 <strong>Geschenknachricht:</strong> {$DATA.message}</p>
 <p>-------------------</p>
 <p>Um diesen Geschenkgutschein einzulösen, geben Sie bitte den oben genannten &quot;Einlösecode&quot; in das Feld &quot;Aktionscode oder Geschenkgutschein&quot; beim Bezahlvorgang ein.</p>
-<p>Warum nicht gleich einkaufen?</p>]]></content>
+<p>Warum nicht gleich einkaufen?</p>]]></content>
+
   </email>
   <email name="catalogue.tell_friend">
     <subject><![CDATA[{$DATA.from} hat Ihnen ein Produkt empfohlen]]></subject>
     <content type="html"><![CDATA[Sehr geehrte/r {$DATA.to},
 <p>Ihr Freund <strong>{$DATA.from}</strong> dachte, dass Sie sich für <strong>{$DATA.name}</strong> interessieren könnten.</p>
 <p><strong>Produktlink:</strong> <a href="{$DATA.link}">{$DATA.name}</a></p>
-<p>{$DATA.message}</p>]]></content>
+<p>{$DATA.message}</p>]]></content>
+
   </email>
   <email name="cart.payment_received">
     <subject><![CDATA[Vielen Dank für Ihre Zahlung]]></subject>
     <content type="html"><![CDATA[<p>Hallo {$DATA.first_name|capitalize},</p>
-<p>wir haben Ihre Zahlung in Höhe von {$DATA.total} für Bestellung Nr. {$DATA.cart_order_id} erhalten.</p>]]></content>
+<p>wir haben Ihre Zahlung in Höhe von {$DATA.total} für Bestellung Nr. {$DATA.cart_order_id} erhalten.</p>]]></content>
+
   </email>
   <email name="newsletter.verify_email">
     <subject><![CDATA[Abonnement bestätigen]]></subject>
-    <content type="html"><![CDATA[<p>{$DATA.email} wurde für die Anmeldung zu unserem Newsletter verwendet. Um Ihr Abonnement zu bestätigen, klicken Sie bitte auf den folgenden Link:</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+    <content type="html"><![CDATA[<p>{$DATA.email} wurde für die Anmeldung zu unserem Newsletter verwendet. Um Ihr Abonnement zu bestätigen, klicken Sie bitte auf den folgenden Link:</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+
   </email>
   <email name="newsletter.remove_request">
     <subject><![CDATA[Newsletter-Abmeldung bestätigen]]></subject>
-    <content type="html"><![CDATA[<p>Es wurde eine Anfrage gestellt, <strong>{$DATA.email}</strong> von unserem Newsletter abzumelden. Zur Bestätigung klicken Sie bitte auf den folgenden Link.</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+    <content type="html"><![CDATA[<p>Es wurde eine Anfrage gestellt, <strong>{$DATA.email}</strong> von unserem Newsletter abzumelden. Zur Bestätigung klicken Sie bitte auf den folgenden Link.</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+
+  </email>
+  <email name="admin.two_factor_code">
+    <subject><![CDATA[Ihr Anmeldecode für das Back-Office]]></subject>
+    <content type="html"><![CDATA[<p>Hallo {$DATA.name},</p><p>Ihr Anmeldeverifizierungscode lautet:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Dieser Code läuft in 10 Minuten ab. Falls Sie keinen Anmeldeversuch unternommen haben, wenden Sie sich bitte sofort an Ihren Shop-Administrator.</p>]]></content>
   </email>
 </emails>

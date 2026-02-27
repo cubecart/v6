@@ -16,17 +16,20 @@
     <content type="html"><![CDATA[<p>Hei {$DATA.name},</p>
 <p>For å gjenopprette tilgang til butikkens administrasjonspanel, vennligst følg lenken nedenfor:</p>
 <p><a href="{$DATA.link}">{$DATA.link}</a></p>
-<p>Hvis lenken ovenfor ikke fungerer, kopier og lim den inn i adressefeltet i nettleseren din.</p>]]></content>
+<p>Hvis lenken ovenfor ikke fungerer, kopier og lim den inn i adressefeltet i nettleseren din.</p>]]></content>
+
   </email>
   <email name="cart.order_complete">
     <subject><![CDATA[Ordre fullført]]></subject>
     <content type="html"><![CDATA[<p>Hei {$DATA.first_name|capitalize},</p>
-<p>Vi er glade for å informere deg om at ordrenummer {$DATA.cart_order_id} nå er fullført. Hvis du bestilte fysiske varer, bør de snart være hos deg.</p>{if !empty($DATA.ship_tracking)}<p>Spor bestillingen din:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
+<p>Vi er glade for å informere deg om at ordrenummer {$DATA.cart_order_id} nå er fullført. Hvis du bestilte fysiske varer, bør de snart være hos deg.</p>{if !empty($DATA.ship_tracking)}<p>Spor bestillingen din:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
+
   </email>
   <email name="cart.order_cancelled">
     <subject><![CDATA[Ordre kansellert]]></subject>
     <content type="html"><![CDATA[<p>Hei {$DATA.first_name|capitalize},</p>
-<p>Ordrenummer {$DATA.cart_order_id} har blitt kansellert. Hvis du har spørsmål, er du velkommen til å kontakte oss.</p>]]></content>
+<p>Ordrenummer {$DATA.cart_order_id} har blitt kansellert. Hvis du har spørsmål, er du velkommen til å kontakte oss.</p>]]></content>
+
   </email>
   <email name="cart.order_confirmation">
     <subject><![CDATA[Ordrebekreftelse #{$DATA.cart_order_id}]]></subject>
@@ -113,12 +116,14 @@
 </table>
 {if !empty($DATA.note_to_customer)}
 <p>&quot;{$DATA.note_to_customer}&quot;</p>
-{/if}]]></content>
+{/if}]]></content>
+
   </email>
   <email name="cart.payment_fraud">
     <subject><![CDATA[Problem med bestillingen]]></subject>
     <content type="html"><![CDATA[<p>Hei {$DATA.first_name|capitalize},</p>
-<p>Beklager, men vi kunne ikke behandle betalingen for ordre {$DATA.cart_order_id}. Hvis du har spørsmål, er du velkommen til å kontakte oss.</p>]]></content>
+<p>Beklager, men vi kunne ikke behandle betalingen for ordre {$DATA.cart_order_id}. Hvis du har spørsmål, er du velkommen til å kontakte oss.</p>]]></content>
+
   </email>
   <email name="account.password_recovery">
     <subject><![CDATA[Gjenoppretting av passord]]></subject>
@@ -128,7 +133,8 @@ For å tilbakestille passordet ditt, vennligst klikk på lenken nedenfor eller k
 <br>
 <a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br>
 <br>
-Hvis du trenger ytterligere hjelp, vennligst kontakt oss.</p>]]></content>
+Hvis du trenger ytterligere hjelp, vennligst kontakt oss.</p>]]></content>
+
   </email>
   <email name="admin.order_received">
     <subject><![CDATA[Ny ordre #{$DATA.cart_order_id}]]></subject>
@@ -213,13 +219,15 @@ Hvis du trenger ytterligere hjelp, vennligst kontakt oss.</p>]]></content>
 </tr>
 </tbody>
 
-</table>]]></content>
+</table>]]></content>
+
   </email>
   <email name="admin.review_added">
     <subject><![CDATA[Ny produktanmeldelse]]></subject>
     <content type="html"><![CDATA[{$DATA.name} har lagt igjen en ny anmeldelse for '{$DATA.product_name}'. Du kan moderere den via lenken nedenfor.
         <p><strong>Modereringslenke:</strong><br><a href='{$DATA.link}'>{$DATA.link}</a></p>
-        <p><strong>Anmeldelsestekst:</strong><br>{$DATA.review}</p>]]></content>
+        <p><strong>Anmeldelsestekst:</strong><br>{$DATA.review}</p>]]></content>
+
   </email>
   <email name="cart.digital_download">
     <subject><![CDATA[Nedlastingene dine er klare]]></subject>
@@ -230,7 +238,8 @@ Hvis du trenger ytterligere hjelp, vennligst kontakt oss.</p>]]></content>
 <a href="{$download.url}">{$download.url}</a></p>
 {/foreach}
 <p>Hvis lenkene ovenfor ikke fungerer, prøv å kopiere og lime dem inn i adressefeltet i nettleseren din. Du kan også få tilgang til filene fra kontoen din på nettstedet vårt.</p>
-<p>&nbsp;</p>]]></content>
+<p>&nbsp;</p>]]></content>
+
   </email>
   <email name="cart.gift_certificate">
     <subject><![CDATA[Ditt gavekort]]></subject>
@@ -242,26 +251,35 @@ Hvis du trenger ytterligere hjelp, vennligst kontakt oss.</p>]]></content>
 <strong>Gavemelding:</strong> {$DATA.message}</p>
 <p>-------------------</p>
 <p>For å løse inn dette gavekortet, skriv inn &quot;Innløsningskoden&quot; ovenfor i tekstfeltet merket &quot;Kampanjekode eller gavekort&quot; ved utsjekking.</p>
-<p>Hvorfor ikke bruke det med en gang?</p>]]></content>
+<p>Hvorfor ikke bruke det med en gang?</p>]]></content>
+
   </email>
   <email name="catalogue.tell_friend">
     <subject><![CDATA[{$DATA.from} har anbefalt et produkt til deg]]></subject>
     <content type="html"><![CDATA[Hei {$DATA.to},
 <p>Vennen din <strong>{$DATA.from}</strong> trodde du kanskje ville være interessert i <strong>{$DATA.name}</strong>.</p>
 <p><strong>Produktlenke:</strong> <a href="{$DATA.link}">{$DATA.name}</a></p>
-<p>{$DATA.message}</p>]]></content>
+<p>{$DATA.message}</p>]]></content>
+
   </email>
   <email name="cart.payment_received">
     <subject><![CDATA[Takk for betalingen din]]></subject>
     <content type="html"><![CDATA[<p>Hei {$DATA.first_name|capitalize},</p>
-<p>Vi har mottatt betalingen din på {$DATA.total} for ordrenummer {$DATA.cart_order_id}.</p>]]></content>
+<p>Vi har mottatt betalingen din på {$DATA.total} for ordrenummer {$DATA.cart_order_id}.</p>]]></content>
+
   </email>
   <email name="newsletter.verify_email">
     <subject><![CDATA[Bekreft abonnementet ditt]]></subject>
-    <content type="html"><![CDATA[<p>{$DATA.email} ble brukt til å abonnere på nyhetsbrevet vårt. For å bekrefte abonnementet ditt, vennligst klikk på lenken nedenfor:</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+    <content type="html"><![CDATA[<p>{$DATA.email} ble brukt til å abonnere på nyhetsbrevet vårt. For å bekrefte abonnementet ditt, vennligst klikk på lenken nedenfor:</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+
   </email>
   <email name="newsletter.remove_request">
     <subject><![CDATA[Bekreft avmelding fra nyhetsbrevet]]></subject>
-    <content type="html"><![CDATA[<p>Det ble sendt en forespørsel om å melde av <strong>{$DATA.email}</strong> fra nyhetsbrevet vårt. For å bekrefte, vennligst klikk på lenken nedenfor.</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+    <content type="html"><![CDATA[<p>Det ble sendt en forespørsel om å melde av <strong>{$DATA.email}</strong> fra nyhetsbrevet vårt. For å bekrefte, vennligst klikk på lenken nedenfor.</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+
+  </email>
+  <email name="admin.two_factor_code">
+    <subject><![CDATA[Din påloggingsverifiseringskode for back-office]]></subject>
+    <content type="html"><![CDATA[<p>Hei {$DATA.name},</p><p>Din påloggingsverifiseringskode er:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Denne koden utløper om 10 minutter. Hvis du ikke forsøkte å logge inn, ta kontakt med butikkens administrator umiddelbart.</p>]]></content>
   </email>
 </emails>

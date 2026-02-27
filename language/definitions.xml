@@ -119,6 +119,18 @@
     <string name="your_orders" introduced="5.0.0"><![CDATA[Orders]]></string>
     <string name="your_orders_explained" introduced="5.0.0"><![CDATA[Past and existing orders are listed here.]]></string>
     <string name="your_subscription" introduced="5.0.0"><![CDATA[Newsletter Subscriptions]]></string>
+    <string name="twofa_title" introduced="6.6.0"><![CDATA[Two-factor verification]]></string>
+    <string name="twofa_email_sent" introduced="6.6.0"><![CDATA[A 6-digit code was sent to]]></string>
+    <string name="twofa_enter_totp" introduced="6.6.0"><![CDATA[Enter the 6-digit code from your authenticator app]]></string>
+    <string name="twofa_code_label" introduced="6.6.0"><![CDATA[Verification code]]></string>
+    <string name="twofa_resend" introduced="6.6.0"><![CDATA[Resend code]]></string>
+    <string name="twofa_verify" introduced="6.6.0"><![CDATA[Verify]]></string>
+    <string name="twofa_backup_hint" introduced="6.6.0"><![CDATA[Have a backup code? Enter it above instead (8 characters).]]></string>
+    <string name="error_twofa_session" introduced="6.6.0"><![CDATA[Session mismatch. Please log in again.]]></string>
+    <string name="error_twofa_invalid" introduced="6.6.0"><![CDATA[Invalid or expired verification code.]]></string>
+    <string name="error_twofa_locked" introduced="6.6.0"><![CDATA[Too many failed attempts. Please log in again and wait %d minutes before retrying.]]></string>
+    <string name="error_twofa_wait" introduced="6.6.0"><![CDATA[Please wait before requesting a new code.]]></string>
+    <string name="notify_twofa_resent" introduced="6.6.0"><![CDATA[A new verification code has been sent to your email.]]></string>
   </group>
   <group name="address">
     <string name="contact_url" introduced="6.5.12"><![CDATA[Contact URL]]></string>
@@ -210,6 +222,34 @@
     <string name="title_admin_add" introduced="5.0.0"><![CDATA[Add Administrator]]></string>
     <string name="title_admin_edit" introduced="5.0.0"><![CDATA[Edit Administrator]]></string>
     <string name="title_administrators" introduced="5.0.0"><![CDATA[Administrators]]></string>
+    <string name="tab_twofa" introduced="6.6.0"><![CDATA[Two-Factor Auth]]></string>
+    <string name="twofa_title" introduced="6.6.0"><![CDATA[Two-Factor Authentication]]></string>
+    <string name="twofa_backup_save_legend" introduced="6.6.0"><![CDATA[Save your backup codes]]></string>
+    <string name="twofa_backup_save_info" introduced="6.6.0"><![CDATA[Each code can only be used once. Store them somewhere safe before leaving this page.]]></string>
+    <string name="twofa_status" introduced="6.6.0"><![CDATA[Status]]></string>
+    <string name="twofa_method" introduced="6.6.0"><![CDATA[Method]]></string>
+    <string name="twofa_backup_remaining" introduced="6.6.0"><![CDATA[Backup codes remaining]]></string>
+    <string name="twofa_actions" introduced="6.6.0"><![CDATA[Actions]]></string>
+    <string name="twofa_regen_backup" introduced="6.6.0"><![CDATA[Regenerate backup codes]]></string>
+    <string name="twofa_disable" introduced="6.6.0"><![CDATA[Disable 2FA]]></string>
+    <string name="twofa_disable_confirm" introduced="6.6.0"><![CDATA[Disable two-factor authentication for this account?]]></string>
+    <string name="twofa_enable_legend" introduced="6.6.0"><![CDATA[Enable Two-Factor Authentication]]></string>
+    <string name="twofa_disabled" introduced="6.6.0"><![CDATA[Disabled]]></string>
+    <string name="twofa_choose_method" introduced="6.6.0"><![CDATA[Choose a method:]]></string>
+    <string name="twofa_email_option" introduced="6.6.0"><![CDATA[Option 1 – Email OTP]]></string>
+    <string name="twofa_email_desc" introduced="6.6.0"><![CDATA[A 6-digit code will be emailed to you each time you log in.]]></string>
+    <string name="twofa_enable_email" introduced="6.6.0"><![CDATA[Enable Email 2FA]]></string>
+    <string name="twofa_totp_option" introduced="6.6.0"><![CDATA[Option 2 – Authenticator App (TOTP)]]></string>
+    <string name="twofa_totp_desc" introduced="6.6.0"><![CDATA[Use Google Authenticator, Authy, or any TOTP app.]]></string>
+    <string name="twofa_totp_step1" introduced="6.6.0"><![CDATA[1. Scan the QR code or enter the key manually into your app.]]></string>
+    <string name="twofa_manual_key" introduced="6.6.0"><![CDATA[Manual key:]]></string>
+    <string name="twofa_totp_step2" introduced="6.6.0"><![CDATA[2. Enter the 6-digit code your app shows to verify:]]></string>
+    <string name="twofa_enable_totp" introduced="6.6.0"><![CDATA[Verify and Enable Authenticator App]]></string>
+    <string name="notify_twofa_email_enabled" introduced="6.6.0"><![CDATA[Two-factor authentication (email) enabled. Save your backup codes — they will not be shown again.]]></string>
+    <string name="notify_twofa_totp_enabled" introduced="6.6.0"><![CDATA[Authenticator app 2FA enabled. Save your backup codes — they will not be shown again.]]></string>
+    <string name="notify_twofa_disabled" introduced="6.6.0"><![CDATA[Two-factor authentication disabled.]]></string>
+    <string name="notify_twofa_backup_regen" introduced="6.6.0"><![CDATA[Backup codes regenerated. Save your new backup codes — they will not be shown again.]]></string>
+    <string name="error_twofa_totp_invalid" introduced="6.6.0"><![CDATA[Invalid verification code. Please scan the QR code again and try once more.]]></string>
   </group>
   <group name="basket">
     <string name="credit_use" introduced="6.5.6"><![CDATA[%1$s of %2$s]]></string>

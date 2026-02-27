@@ -26,7 +26,24 @@
   {include file='templates/common.gui_message.php'}
   <form action="{$VAL_SELF}" class="ignore-dirty" method="post" enctype="application/x-www-form-urlencoded" name="acp-login">
 	<div id="login-box">
-	{if isset($RECOVERY)}
+	{if isset($TWOFA)}
+	  <h1>{$LANG.account.twofa_title}</h1>
+	  {if $TWOFA.method == 'email'}
+	  <p style="color:#555;font-size:0.9em">{$LANG.account.twofa_email_sent} {$TWOFA.email_hint}</p>
+	  {else}
+	  <p style="color:#555;font-size:0.9em">{$LANG.account.twofa_enter_totp}</p>
+	  {/if}
+	  <div><span><input type="text" name="twofa_code" id="twofa_code" class="textbox required" inputmode="numeric" autocomplete="one-time-code" maxlength="8" autofocus placeholder="000000"></span><label for="twofa_code">{$LANG.account.twofa_code_label}</label>:</div>
+	  <div id="login-box-foot">
+	    {if $TWOFA.method == 'email' && $TWOFA.can_resend}
+	    <span><a href="{$TWOFA.resend_url}">{$LANG.account.twofa_resend}</a></span>
+	    {else}
+	    <span>&nbsp;</span>
+	    {/if}
+	    <input type="submit" value="{$LANG.account.twofa_verify}" class="submit">
+	  </div>
+	  <p style="color:#888;font-size:0.85em;text-align:center;margin-top:8px">{$LANG.account.twofa_backup_hint}</p>
+	{elseif isset($RECOVERY)}
 	  <h1>{$LANG.account.title_password_new}</h1>
 	  <div><span><input type="text" name="email" id="email" class="textbox required" value="{$REQUEST.email}"></span><label for="email">{$LANG.common.email}</label>:</div>
 	  <div><span><input type="password" autocomplete="off" name="password[new]" id="password" class="textbox required"></span><label for="password">{$LANG.account.new_password}</label>:</div>
