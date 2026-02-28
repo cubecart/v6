@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * CubeCart v6
+ * ========================================
+ * CubeCart is a registered trade mark of CubeCart Limited
+ * Copyright CubeCart Limited 2026. All rights reserved.
+ * UK Private Limited Company No. 5323904
+ * ========================================
+ * Web:   https://www.cubecart.com
+ * Email:  hello@cubecart.com
+ * License:  GPL-3.0 http://opensource.org/licenses/GPL-3.0
+-->
+<emails version="6.6.0" language="hr-HR">
+  <email name="admin.password_recovery">
+    <subject><![CDATA[Oporavak administratorske lozinke]]></subject>
+    <content type="html"><![CDATA[<p>Poštovani/a {$DATA.name},</p>
+<p>Za ponovni pristup administracijskoj ploči trgovine, kliknite na poveznicu u nastavku:</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<p>Ako gornja poveznica ne radi, kopirajte je i zalijepite u adresnu traku preglednika.</p>]]></content>
+
+  </email>
+  <email name="cart.order_complete">
+    <subject><![CDATA[Narudžba dovršena]]></subject>
+    <content type="html"><![CDATA[<p>Poštovani/a {$DATA.first_name|capitalize},</p>
+<p>S zadovoljstvom Vas obavještavamo da je narudžba broj {$DATA.cart_order_id} dovršena. Ako ste naručili fizičke proizvode, uskoro bi trebali stići.</p>{if !empty($DATA.ship_tracking)}<p>Pratite svoju pošiljku:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
+
+  </email>
+  <email name="cart.order_cancelled">
+    <subject><![CDATA[Narudžba otkazana]]></subject>
+    <content type="html"><![CDATA[<p>Poštovani/a {$DATA.first_name|capitalize},</p>
+<p>Narudžba broj {$DATA.cart_order_id} je otkazana. Ako imate pitanja, slobodno nas kontaktirajte.</p>]]></content>
+
+  </email>
+  <email name="cart.order_confirmation">
+    <subject><![CDATA[Potvrda narudžbe #{$DATA.cart_order_id}]]></subject>
+    <content type="html"><![CDATA[<p>Hvala na narudžbi, {$DATA.first_name|capitalize}.</p>
+<p>Primili smo Vašu narudžbu {$DATA.cart_order_id}, izrađenu dana {$DATA.order_date}. Molimo sačuvajte ovaj e-mail. Status narudžbe možete provjeriti online u bilo kojem trenutku.</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<table width="100%">
+<tr>
+<td valign="top" width="50%"><strong>Adresa za naplatu:</strong><br>
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
+{if !empty($BILLING.company_name)}{$BILLING.company_name}<br>
+{/if}
+{$BILLING.line1|capitalize}<br>
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>
+{/if}
+{$BILLING.town|upper}<br>
+{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
+{$BILLING.postcode}<br>
+{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}<br>
+{$BILLING.phone}<br>
+<br>
+<strong>E-mail:</strong><br>
+{$BILLING.email}</td>
+<td valign="top" width="50%"><strong>Adresa za dostavu:</strong><br>
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>
+{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>
+{/if}{$SHIPPING.line1|capitalize}<br>
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize} <br>
+{/if}{$SHIPPING.town|upper}<br>
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
+{$SHIPPING.postcode}<br>
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
+</tr>
+</table>
+<table border="0" cellpadding="3" cellspacing="0" width="100%">
+<tbody>
+<tr>
+<td><strong>Stavka</strong></td>
+<td><strong>Količina</strong></td>
+<td><strong>Cijena</strong></td>
+</tr>
+{foreach from=$PRODUCTS item=product}
+<tr>
+<td>{$product.name} <br>{$product.product_options}</td>
+<td>{$product.quantity}</td>
+<td>{$product.price}</td>
+</tr>
+{/foreach}
+<tr>
+<td>&nbsp;</td>
+<td> {if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Dostava:{/if}</td>
+<td> {$DATA.shipping}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td> Popust:</td>
+<td> {$DATA.discount}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td> Međuzbroj:</td>
+<td> {$DATA.subtotal}</td>
+</tr>
+{foreach from=$TAXES item=tax}
+<tr>
+<td>&nbsp;</td>
+<td> {$tax.tax_name}: ({$tax.tax_percent}%)</td>
+<td> {$tax.tax_amount}</td>
+</tr>
+{/foreach}
+{if $DATA.show_credit}
+<tr>
+<td>&nbsp;</td>
+<td>Kredit:</td>
+<td>({$DATA.credit_used})</td>
+</tr>
+{/if}
+<tr>
+<td>&nbsp;</td>
+<td><strong>Ukupno: </strong></td>
+<td><strong>{$DATA.total}</strong></td>
+</tr>
+</tbody>
+</table>
+{if !empty($DATA.note_to_customer)}
+<p>&quot;{$DATA.note_to_customer}&quot;</p>
+{/if}]]></content>
+
+  </email>
+  <email name="cart.payment_fraud">
+    <subject><![CDATA[Problem s narudžbom]]></subject>
+    <content type="html"><![CDATA[<p>Poštovani/a {$DATA.first_name|capitalize},</p>
+<p>Žao nam je, ali nismo uspjeli obraditi plaćanje za narudžbu {$DATA.cart_order_id}. Ako imate pitanja, slobodno nas kontaktirajte.</p>]]></content>
+
+  </email>
+  <email name="account.password_recovery">
+    <subject><![CDATA[Oporavak lozinke]]></subject>
+    <content type="html"><![CDATA[<p>Poštovani/a {$DATA.first_name|capitalize} {$DATA.last_name|capitalize},<br>
+<br>
+Za resetiranje lozinke, kliknite na poveznicu u nastavku ili je kopirajte i zalijepite u adresnu traku preglednika. Na web stranici ćete biti zamoljeni da unesete i potvrdite novu lozinku.<br>
+<br>
+<a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br>
+<br>
+Ako trebate dodatnu pomoć, molimo kontaktirajte nas.</p>]]></content>
+
+  </email>
+  <email name="admin.order_received">
+    <subject><![CDATA[Nova narudžba #{$DATA.cart_order_id}]]></subject>
+    <content type="html"><![CDATA[<p>{$DATA.first_name|capitalize} {$DATA.last_name|capitalize} {if !empty($BILLING.company_name)}({$BILLING.company_name}){/if} upravo je naručio/la narudžbu broj {$DATA.cart_order_id} dana {$DATA.order_date}.</p>
+<p>Ovu narudžbu možete upravljati putem donje poveznice.</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<table width="100%">
+<tr>
+<td valign="top" width="50%"><strong>Adresa za naplatu:</strong><br>
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
+{if !empty($BILLING.company_name)}{$BILLING.company_name}<br>
+{/if}
+{$BILLING.line1|capitalize}<br>
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>
+{/if}
+{$BILLING.town|upper}<br>
+{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
+{$BILLING.postcode}<br>
+{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}<br>
+{$BILLING.phone}<br>
+<br>
+<strong>E-mail:</strong><br>
+{$BILLING.email}</td>
+<td valign="top" width="50%"><strong>Adresa za dostavu:</strong><br>
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>
+{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>
+{/if}{$SHIPPING.line1|capitalize}<br>
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize} <br>
+{/if}{$SHIPPING.town|upper}<br>
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
+{$SHIPPING.postcode}<br>
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
+</tr>
+</table>
+<table border="0" cellpadding="3" cellspacing="0" width="100%">
+<tbody>
+<tr>
+<td><strong>Stavka</strong></td>
+<td><strong>Količina</strong></td>
+<td><strong>Cijena</strong></td>
+</tr>
+{foreach from=$PRODUCTS item=product}
+<tr>
+<td>{$product.name} <br>{$product.product_options}</td>
+<td>{$product.quantity}</td>
+<td>{$product.price}</td>
+</tr>
+{/foreach}
+<tr>
+<td>&nbsp;</td>
+<td> {if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Dostava:{/if}</td>
+<td> {$DATA.shipping}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td> Popust:</td>
+<td> {$DATA.discount}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td> Međuzbroj:</td>
+<td> {$DATA.subtotal}</td>
+</tr>
+{foreach from=$TAXES item=tax}
+<tr>
+<td>&nbsp;</td>
+<td> {$tax.tax_name}: ({$tax.tax_percent}%)</td>
+<td> {$tax.tax_amount}</td>
+</tr>
+{/foreach}
+{if $DATA.show_credit}
+<tr>
+<td>&nbsp;</td>
+<td>Kredit:</td>
+<td>({$DATA.credit_used})</td>
+</tr>
+{/if}
+<tr>
+<td>&nbsp;</td>
+<td><strong>Ukupno: </strong></td>
+<td><strong>{$DATA.total}</strong></td>
+</tr>
+</tbody>
+</table>]]></content>
+
+  </email>
+  <email name="admin.review_added">
+    <subject><![CDATA[Nova recenzija proizvoda]]></subject>
+    <content type="html"><![CDATA[{$DATA.name} je napisao/la novu recenziju za '{$DATA.product_name}'. Možete je moderirati putem donje poveznice.
+        <p><strong>Poveznica za moderiranje:</strong><br><a href='{$DATA.link}'>{$DATA.link}</a></p>
+        <p><strong>Tekst recenzije:</strong><br>{$DATA.review}</p>]]></content>
+
+  </email>
+  <email name="cart.digital_download">
+    <subject><![CDATA[Vaše datoteke za preuzimanje su spremne]]></subject>
+    <content type="html"><![CDATA[<p>Poštovani/a {$DATA.first_name|capitalize},</p>
+<p>Vaše digitalne datoteke su spremne za preuzimanje. Možete im pristupiti putem donjih poveznica:</p>
+{foreach from=$DOWNLOADS item=download}
+<p><strong>{$download.name}:</strong> (Poveznica istječe {$download.expire}<strong>)</strong><br>
+<a href="{$download.url}">{$download.url}</a></p>
+{/foreach}
+<p>Ako gornje poveznice ne rade, pokušajte ih kopirati i zalijepiti u adresnu traku preglednika. Ovim datotekama možete pristupiti i putem svog računa na našoj web stranici.</p>
+<p>&nbsp;</p>]]></content>
+
+  </email>
+  <email name="cart.gift_certificate">
+    <subject><![CDATA[Vaš poklon bon]]></subject>
+    <content type="html"><![CDATA[<p>Poštovani/a {$DATA.name},</p>
+<p>Primili ste poklon bon koji možete koristiti za bilo koju kupnju u našoj web trgovini.</p>
+<p><strong>Od: </strong>{$DATA.first_name|capitalize} {$DATA.last_name|capitalize}<br>
+<strong>Iznos: </strong>{$DATA.value}<br>
+<strong>Kod za korištenje:</strong> {$DATA.code}<br>
+<strong>Poruka:</strong> {$DATA.message}</p>
+<p>-------------------</p>
+<p>Za korištenje ovog poklon bona unesite gornji &quot;Kod za korištenje&quot; u polje &quot;Promotivni kod ili poklon bon&quot; prilikom plaćanja.</p>
+<p>Zašto ga ne iskoristite sada?</p>]]></content>
+
+  </email>
+  <email name="catalogue.tell_friend">
+    <subject><![CDATA[{$DATA.from} Vam preporučuje proizvod]]></subject>
+    <content type="html"><![CDATA[Poštovani/a {$DATA.to},
+<p>Vaš prijatelj <strong>{$DATA.from}</strong> misli da bi Vas mogao zanimati proizvod <strong>{$DATA.name}</strong>.</p>
+<p><strong>Poveznica na proizvod:</strong> <a href="{$DATA.link}">{$DATA.name}</a></p>
+<p>{$DATA.message}</p>]]></content>
+
+  </email>
+  <email name="cart.payment_received">
+    <subject><![CDATA[Hvala na uplati]]></subject>
+    <content type="html"><![CDATA[<p>Poštovani/a {$DATA.first_name|capitalize},</p>
+<p>Primili smo Vašu uplatu u iznosu od {$DATA.total} za narudžbu broj {$DATA.cart_order_id}.</p>]]></content>
+
+  </email>
+  <email name="newsletter.verify_email">
+    <subject><![CDATA[Potvrdite pretplatu]]></subject>
+    <content type="html"><![CDATA[<p>E-mail adresa {$DATA.email} korištena je za pretplatu na naš bilten. Za potvrdu pretplate, kliknite na poveznicu u nastavku:</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+
+  </email>
+  <email name="newsletter.remove_request">
+    <subject><![CDATA[Potvrda odjave s biltena]]></subject>
+    <content type="html"><![CDATA[<p>Zaprimljen je zahtjev za odjavu adrese <strong>{$DATA.email}</strong> s našeg biltena. Za potvrdu, kliknite na poveznicu u nastavku.</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+
+  </email>
+  <email name="admin.two_factor_code">
+    <subject><![CDATA[Vaš verifikacijski kod za prijavu]]></subject>
+    <content type="html"><![CDATA[<p>Poštovani/a {$DATA.name},</p><p>Vaš verifikacijski kod za prijavu je:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Kod istječe za 10 minuta. Ako se niste pokušali prijaviti, odmah kontaktirajte administratora trgovine.</p>]]></content>
+  </email>
+</emails>
