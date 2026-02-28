@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * CubeCart v6
+ * ========================================
+ * CubeCart is a registered trade mark of CubeCart Limited
+ * Copyright CubeCart Limited 2026. All rights reserved.
+ * UK Private Limited Company No. 5323904
+ * ========================================
+ * Web:   https://www.cubecart.com
+ * Email:  hello@cubecart.com
+ * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
+-->
+<emails version="6.6.0" language="mt-MT">
+  <email name="admin.password_recovery">
+    <subject><![CDATA[Irkupru tal-password tal-amministratur]]></subject>
+    <content type="html"><![CDATA[<p>Bonġu {$DATA.name},</p>
+<p>Biex terġa' taċċessa l-pannell ta' amministrazzjoni tal-ħanut, jekk jogħġbok segwi l-link hawn taħt:</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<p>Jekk il-link ta' hawn fuq ma jaħdimx, jekk jogħġbok ikkopjah u waħħlu fil-bar tal-indirizz tal-browser tiegħek.</p>]]></content>
+
+  </email>
+  <email name="cart.order_complete">
+    <subject><![CDATA[Ordni kompleta]]></subject>
+    <content type="html"><![CDATA[<p>Bonġu {$DATA.first_name|capitalize},</p>
+<p>Għandna l-pjaċir ninformawk li l-ordni tiegħek nru {$DATA.cart_order_id} issa hija kompleta. Jekk ordnajt oġġetti fiżikali, dawn għandhom jaslu dalwaqt.</p>{if !empty($DATA.ship_tracking)}<p>Segwi l-ordni tiegħek:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
+
+  </email>
+  <email name="cart.order_cancelled">
+    <subject><![CDATA[Ordni kkanċellata]]></subject>
+    <content type="html"><![CDATA[<p>Bonġu {$DATA.first_name|capitalize},</p>
+<p>L-ordni nru {$DATA.cart_order_id} ġiet ikkanċellata. Jekk għandek mistoqsijiet, toqgħodx lura milli tikkuntattjana.</p>]]></content>
+
+  </email>
+  <email name="cart.order_confirmation">
+    <subject><![CDATA[Konferma tal-ordni nru {$DATA.cart_order_id}]]></subject>
+    <content type="html"><![CDATA[<p>Grazzi għall-ordni tiegħek, {$DATA.first_name|capitalize}.</p>
+<p>Irċevejna l-ordni tiegħek {$DATA.cart_order_id}, li saret fi {$DATA.order_date}. Jekk jogħġbok żomm din l-email għar-rekords tiegħek. Tista' tiċċekkja l-istatus tal-ordni tiegħek online fi kwalunkwe ħin.</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<table width="100%">
+<tr>
+<td valign="top" width="50%"><strong>Indirizz tal-fatturazzjoni:</strong><br>
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
+{if !empty($BILLING.company_name)}{$BILLING.company_name}<br>
+{/if}
+{$BILLING.line1|capitalize}<br>
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>
+{/if}
+{$BILLING.town|upper}<br>
+{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
+{$BILLING.postcode}<br>
+{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}<br>
+{$BILLING.phone}<br>
+<br>
+<strong>Email:</strong><br>
+{$BILLING.email}</td>
+<td valign="top" width="50%"><strong>Indirizz tal-kunsinna:</strong><br>
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>
+{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>
+{/if}{$SHIPPING.line1|capitalize}<br>
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize} <br>
+{/if}{$SHIPPING.town|upper}<br>
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
+{$SHIPPING.postcode}<br>
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
+</tr>
+</table>
+<table border="0" cellpadding="3" cellspacing="0" width="100%">
+<tbody>
+<tr>
+<td><strong>Oġġett</strong></td>
+<td><strong>Kwantità</strong></td>
+<td><strong>Prezz</strong></td>
+</tr>
+{foreach from=$PRODUCTS item=product}
+<tr>
+<td>{$product.name} <br>{$product.product_options}</td>
+<td>{$product.quantity}</td>
+<td>{$product.price}</td>
+</tr>
+{/foreach}
+<tr>
+<td>&nbsp;</td>
+<td>{if !empty($DATA.ship_method)}{$DATA.ship_method} :{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Kunsinna:{/if}</td>
+<td> {$DATA.shipping}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td> Skont:</td>
+<td> {$DATA.discount}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td> Subtotal:</td>
+<td> {$DATA.subtotal}</td>
+</tr>
+{foreach from=$TAXES item=tax}
+<tr>
+<td>&nbsp;</td>
+<td> {$tax.tax_name} : ({$tax.tax_percent}%)</td>
+<td> {$tax.tax_amount}</td>
+</tr>
+{/foreach}
+{if $DATA.show_credit}
+<tr>
+<td>&nbsp;</td>
+<td>Kreditu:</td>
+<td>({$DATA.credit_used})</td>
+</tr>
+{/if}
+<tr>
+<td>&nbsp;</td>
+<td><strong>Total tal-ordni: </strong></td>
+<td><strong>{$DATA.total}</strong></td>
+</tr>
+</tbody>
+</table>
+{if !empty($DATA.note_to_customer)}
+<p>&quot;{$DATA.note_to_customer}&quot;</p>
+{/if}]]></content>
+
+  </email>
+  <email name="cart.payment_fraud">
+    <subject><![CDATA[Problema bl-ordni tiegħek]]></subject>
+    <content type="html"><![CDATA[<p>Bonġu {$DATA.first_name|capitalize},</p>
+<p>Jiddispjaċina, iżda ma stajniex nipproċessaw il-ħlas għall-ordni {$DATA.cart_order_id}. Jekk għandek mistoqsijiet, toqgħodx lura milli tikkuntattjana.</p>]]></content>
+
+  </email>
+  <email name="account.password_recovery">
+    <subject><![CDATA[Irkupru tal-password]]></subject>
+    <content type="html"><![CDATA[<p>Bonġu {$DATA.first_name|capitalize} {$DATA.last_name|capitalize},<br>
+<br>
+Biex tirrisettja l-password tiegħek, jekk jogħġbok ikklikkja fuq il-link hawn taħt jew ikkopja u waħħal l-indirizz fil-bar tal-indirizz tal-browser tiegħek. Imbagħad tintalab iddaħħal u tikkonferma l-password ġdid tiegħek.<br>
+<br>
+<a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br>
+<br>
+Jekk għandek bżonn aktar għajnuna, jekk jogħġbok ikkuntattjana.</p>]]></content>
+
+  </email>
+  <email name="admin.order_received">
+    <subject><![CDATA[Ordni ġdida nru {$DATA.cart_order_id}]]></subject>
+    <content type="html"><![CDATA[<p>{$DATA.first_name|capitalize} {$DATA.last_name|capitalize} {if !empty($BILLING.company_name)}({$BILLING.company_name}){/if} għadu kif għamel l-ordni nru {$DATA.cart_order_id} fi {$DATA.order_date}.</p>
+<p>Tista' timmaniġġja din l-ordni billi tuża l-link hawn taħt.</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<table width="100%">
+<tr>
+<td valign="top" width="50%"><strong>Indirizz tal-fatturazzjoni:</strong><br>
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
+{if !empty($BILLING.company_name)}{$BILLING.company_name}<br>
+{/if}
+{$BILLING.line1|capitalize}<br>
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>
+{/if}
+{$BILLING.town|upper}<br>
+{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
+{$BILLING.postcode}<br>
+{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}<br>
+{$BILLING.phone}<br>
+<br>
+<strong>Email:</strong><br>
+{$BILLING.email}</td>
+<td valign="top" width="50%"><strong>Indirizz tal-kunsinna:</strong><br>
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>
+{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>
+{/if}{$SHIPPING.line1|capitalize}<br>
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize} <br>
+{/if}{$SHIPPING.town|upper}<br>
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
+{$SHIPPING.postcode}<br>
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
+</tr>
+</table>
+<table border="0" cellpadding="3" cellspacing="0" width="100%">
+<tbody>
+<tr>
+<td><strong>Oġġett</strong></td>
+<td><strong>Kwantità</strong></td>
+<td><strong>Prezz</strong></td>
+</tr>
+{foreach from=$PRODUCTS item=product}
+<tr>
+<td>{$product.name} <br>{$product.product_options}</td>
+<td>{$product.quantity}</td>
+<td>{$product.price}</td>
+</tr>
+{/foreach}
+<tr>
+<td>&nbsp;</td>
+<td> {if !empty($DATA.ship_method)}{$DATA.ship_method} :{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Kunsinna:{/if}</td>
+<td> {$DATA.shipping}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td> Skont:</td>
+<td> {$DATA.discount}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td> Subtotal:</td>
+<td> {$DATA.subtotal}</td>
+</tr>
+{foreach from=$TAXES item=tax}
+<tr>
+<td>&nbsp;</td>
+<td> {$tax.tax_name} : ({$tax.tax_percent}%)</td>
+<td> {$tax.tax_amount}</td>
+</tr>
+{/foreach}
+{if $DATA.show_credit}
+<tr>
+<td>&nbsp;</td>
+<td>Kreditu:</td>
+<td>({$DATA.credit_used})</td>
+</tr>
+{/if}
+<tr>
+<td>&nbsp;</td>
+<td><strong>Total tal-ordni: </strong></td>
+<td><strong>{$DATA.total}</strong></td>
+</tr>
+</tbody>
+
+</table>]]></content>
+
+  </email>
+  <email name="admin.review_added">
+    <subject><![CDATA[Rivista ġdida tal-prodott]]></subject>
+    <content type="html"><![CDATA[{$DATA.name} ħalla rivista ġdida għal '{$DATA.product_name}'. Tista' timmoderaha billi tuża l-link hawn taħt.
+        <p><strong>Link tal-moderazzjoni:</strong><br><a href='{$DATA.link}'>{$DATA.link}</a></p>
+        <p><strong>Test tar-rivista:</strong><br>{$DATA.review}</p>]]></content>
+
+  </email>
+  <email name="cart.digital_download">
+    <subject><![CDATA[Id-downloads tiegħek huma lesti]]></subject>
+    <content type="html"><![CDATA[<p>Bonġu {$DATA.first_name|capitalize},</p>
+<p>Il-fajls diġitali tiegħek huma lesti biex jitniżżlu. Tista' taċċesshom billi tuża l-links hawn taħt:</p>
+{foreach from=$DOWNLOADS item=download}
+<p><strong>{$download.name}:</strong> (Il-link jiskadi fi {$download.expire}<strong>)</strong><br>
+<a href="{$download.url}">{$download.url}</a></p>
+{/foreach}
+<p>Jekk il-links ta' hawn fuq ma jaħdmux, ipprova ikkopjahom u waħħalhom fil-bar tal-indirizz tal-browser tiegħek. Tista' wkoll taċċessa dawn il-fajls mill-kont tiegħek fuq is-sit tagħna.</p>
+<p>&nbsp;</p>]]></content>
+
+  </email>
+  <email name="cart.gift_certificate">
+    <subject><![CDATA[Il-voucher rigal tiegħek]]></subject>
+    <content type="html"><![CDATA[<p>Bonġu {$DATA.name},</p>
+<p>Irċevejt voucher rigal li tista' tużah għal kwalunkwe xirja fuq is-sit tagħna.</p>
+<p><strong>Mingħand: </strong>{$DATA.first_name|capitalize} {$DATA.last_name|capitalize}<br>
+<strong>Ammont: </strong>{$DATA.value}<br>
+<strong>Kodiċi ta' użu:</strong> {$DATA.code}<br>
+<strong>Messaġġ:</strong> {$DATA.message}</p>
+<p>-------------------</p>
+<p>Biex tuża dan il-voucher rigal, jekk jogħġbok daħħal il-"Kodiċi ta' użu" ta' hawn fuq fil-qasam "Kodiċi promozzjonali jew voucher rigal" fiż-żmien tal-ħlas.</p>
+<p>Għaliex ma tapprofittax minnu issa?</p>]]></content>
+
+  </email>
+  <email name="catalogue.tell_friend">
+    <subject><![CDATA[{$DATA.from} qed jirrakkomandak prodott]]></subject>
+    <content type="html"><![CDATA[Bonġu {$DATA.to},
+<p>Il-ħabib/a tiegħek <strong>{$DATA.from}</strong> jaħseb/taħseb li <strong>{$DATA.name}</strong> jista' jinteressak.</p>
+<p><strong>Link tal-prodott:</strong> <a href="{$DATA.link}">{$DATA.name}</a></p>
+<p>{$DATA.message}</p>]]></content>
+
+  </email>
+  <email name="cart.payment_received">
+    <subject><![CDATA[Grazzi għall-ħlas tiegħek]]></subject>
+    <content type="html"><![CDATA[<p>Bonġu {$DATA.first_name|capitalize},</p>
+<p>Irċevejna l-ħlas tiegħek ta' {$DATA.total} għall-ordni nru {$DATA.cart_order_id}.</p>]]></content>
+
+  </email>
+  <email name="newsletter.verify_email">
+    <subject><![CDATA[Ikkonferma l-abbonament tiegħek]]></subject>
+    <content type="html"><![CDATA[<p>L-indirizz {$DATA.email} intuża biex jabbona għan-newsletter tagħna. Biex tikkonferma l-abbonament tiegħek, jekk jogħġbok ikklikkja fuq il-link hawn taħt:</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+
+  </email>
+  <email name="newsletter.remove_request">
+    <subject><![CDATA[Ikkonferma t-tneħħija min-newsletter]]></subject>
+    <content type="html"><![CDATA[<p>Saret talba biex <strong>{$DATA.email}</strong> jitneħħa min-newsletter tagħna. Biex tikkonferma, jekk jogħġbok ikklikkja fuq il-link hawn taħt.</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+
+  </email>
+  <email name="admin.two_factor_code">
+    <subject><![CDATA[Il-kodiċi ta' verifika tal-login tal-back-office tiegħek]]></subject>
+    <content type="html"><![CDATA[<p>Bonġu {$DATA.name},</p><p>Il-kodiċi ta' verifika tal-login tiegħek huwa:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Dan il-kodiċi jiskadi fi 10 minuti. Jekk ma pprovajtx tidħol, jekk jogħġbok ikkuntattja immedjatament lill-amministratur tal-ħanut tiegħek.</p>]]></content>
+  </email>
+</emails>
