@@ -91,10 +91,15 @@ ALTER TABLE `CubeCart_order_summary` DROP COLUMN `title_d`; #EOQ
 -- Geo data corrections: fix ISO codes, names, and add missing entries
 -- =============================================================
 
--- Convert geo columns from VARBINARY to VARCHAR for proper collation and sorting
+-- Convert VARBINARY columns to VARCHAR for proper collation and sorting
 ALTER TABLE `CubeCart_geo_country` MODIFY `name` VARCHAR(80) NOT NULL DEFAULT ''; #EOQ
 ALTER TABLE `CubeCart_geo_zone` MODIFY `abbrev` VARCHAR(6) NOT NULL DEFAULT ''; #EOQ
 ALTER TABLE `CubeCart_geo_zone` MODIFY `name` VARCHAR(60) NOT NULL DEFAULT ''; #EOQ
+ALTER TABLE `CubeCart_currency` MODIFY `name` VARCHAR(255) NOT NULL DEFAULT ''; #EOQ
+ALTER TABLE `CubeCart_search` MODIFY `searchstr` VARCHAR(255) NOT NULL DEFAULT ''; #EOQ
+ALTER TABLE `CubeCart_sessions` MODIFY `location` VARCHAR(255) DEFAULT NULL; #EOQ
+ALTER TABLE `CubeCart_tax_details` MODIFY `name` VARCHAR(150) NOT NULL DEFAULT ''; #EOQ
+ALTER TABLE `CubeCart_tax_details` MODIFY `display` VARCHAR(150) NOT NULL DEFAULT ''; #EOQ
 
 -- Fix wrong country codes
 UPDATE `CubeCart_geo_country` SET `numcode` = 024 WHERE `iso` = 'AO'; #EOQ

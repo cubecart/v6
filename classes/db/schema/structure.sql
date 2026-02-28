@@ -259,7 +259,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_coupons` (
 
 CREATE TABLE IF NOT EXISTS `CubeCart_currency` (
   `currency_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varbinary(255) NOT NULL DEFAULT '',
+  `name` VARCHAR(255) NOT NULL DEFAULT '',
   `code` varchar(7) NOT NULL,
   `iso` int(3) unsigned zerofill DEFAULT NULL,
   `symbol_left` tinyblob,
@@ -954,7 +954,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_saved_cart` (
 CREATE TABLE IF NOT EXISTS `CubeCart_search` (
 	`id` INT(64) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`hits` INT(64) NOT NULL DEFAULT '1',
-	`searchstr` VARBINARY(255) NOT NULL DEFAULT '',
+	`searchstr` VARCHAR(255) NOT NULL DEFAULT '',
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
@@ -965,7 +965,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_sessions` (
   `session_last` int(10) unsigned NOT NULL DEFAULT 0,
   `admin_id` int(10) unsigned NOT NULL DEFAULT 0,
   `customer_id` int(10) unsigned NOT NULL DEFAULT 0,
-  `location` varbinary(255) DEFAULT NULL,
+  `location` VARCHAR(255) DEFAULT NULL,
   `ip_address` varchar(45) DEFAULT NULL COMMENT 'Supports IPv6 addresses',
   `useragent` text DEFAULT NULL,
   `session_data` mediumblob DEFAULT NULL,
@@ -1032,8 +1032,8 @@ CREATE TABLE IF NOT EXISTS `CubeCart_tax_class` (
 
 CREATE TABLE IF NOT EXISTS `CubeCart_tax_details` (
 	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	`name` VARBINARY(150) NOT NULL DEFAULT '',
-	`display` VARBINARY(150) NOT NULL DEFAULT '',
+	`name` VARCHAR(150) NOT NULL DEFAULT '',
+	`display` VARCHAR(150) NOT NULL DEFAULT '',
 	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1',
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `name` (`name`)
