@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * CubeCart v6
+ * ========================================
+ * CubeCart is a registered trade mark of CubeCart Limited
+ * Copyright CubeCart Limited 2026. All rights reserved.
+ * UK Private Limited Company No. 5323904
+ * ========================================
+ * Web:   https://www.cubecart.com
+ * Email:  hello@cubecart.com
+ * License:  GPL-3.0 http://opensource.org/licenses/GPL-3.0
+-->
+<emails version="6.6.0" language="lv-LV">
+  <email name="admin.password_recovery">
+    <subject><![CDATA[Administratora paroles atjaunošana]]></subject>
+    <content type="html"><![CDATA[<p>Cienījamais/ā {$DATA.name},</p>
+<p>Lai atjaunotu piekļuvi veikala administrācijas panelim, lūdzu, noklikšķiniet uz zemāk esošās saites:</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<p>Ja saite nedarbojas, lūdzu, nokopējiet to un ielīmējiet pārlūkprogrammas adreses joslā.</p>]]></content>
+  </email>
+  <email name="cart.order_complete">
+    <subject><![CDATA[Pasūtījums izpildīts]]></subject>
+    <content type="html"><![CDATA[<p>Sveiki, {$DATA.first_name|capitalize},</p>
+<p>Ar prieku paziņojam, ka pasūtījums Nr. {$DATA.cart_order_id} ir izpildīts. Ja pasūtījāt fiziskas preces, tās drīzumā nonāks pie jums.</p>{if !empty($DATA.ship_tracking)}<p>Sekojiet savam sūtījumam:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
+  </email>
+  <email name="cart.order_cancelled">
+    <subject><![CDATA[Pasūtījums atcelts]]></subject>
+    <content type="html"><![CDATA[<p>Sveiki, {$DATA.first_name|capitalize},</p>
+<p>Pasūtījums Nr. {$DATA.cart_order_id} ir atcelts. Ja jums ir jautājumi, lūdzu, sazinieties ar mums.</p>]]></content>
+  </email>
+  <email name="cart.order_confirmation">
+    <subject><![CDATA[Pasūtījuma apstiprinājums #{$DATA.cart_order_id}]]></subject>
+    <content type="html"><![CDATA[<p>Paldies par pasūtījumu, {$DATA.first_name|capitalize}.</p>
+<p>Esam saņēmuši jūsu pasūtījumu {$DATA.cart_order_id}, kas veikts {$DATA.order_date}. Lūdzu, saglabājiet šo e-pastu. Pasūtījuma statusu varat pārbaudīt tiešsaistē jebkurā laikā.</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<table width="100%">
+<tr>
+<td valign="top" width="50%"><strong>Rēķina adrese:</strong><br>
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
+{if !empty($BILLING.company_name)}{$BILLING.company_name}<br>{/if}
+{$BILLING.line1|capitalize}<br>
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>{/if}
+{$BILLING.town|upper}<br>
+{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
+{$BILLING.postcode}<br>
+{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}<br>
+{$BILLING.phone}<br><br>
+<strong>E-pasts:</strong><br>
+{$BILLING.email}</td>
+<td valign="top" width="50%"><strong>Piegādes adrese:</strong><br>
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>
+{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>{/if}{$SHIPPING.line1|capitalize}<br>
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize} <br>{/if}{$SHIPPING.town|upper}<br>
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
+{$SHIPPING.postcode}<br>
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
+</tr>
+</table>
+<table border="0" cellpadding="3" cellspacing="0" width="100%">
+<tbody>
+<tr><td><strong>Prece</strong></td><td><strong>Daudzums</strong></td><td><strong>Cena</strong></td></tr>
+{foreach from=$PRODUCTS item=product}
+<tr><td>{$product.name} <br>{$product.product_options}</td><td>{$product.quantity}</td><td>{$product.price}</td></tr>
+{/foreach}
+<tr><td>&nbsp;</td><td> {if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Piegāde:{/if}</td><td> {$DATA.shipping}</td></tr>
+<tr><td>&nbsp;</td><td> Atlaide:</td><td> {$DATA.discount}</td></tr>
+<tr><td>&nbsp;</td><td> Starpsumma:</td><td> {$DATA.subtotal}</td></tr>
+{foreach from=$TAXES item=tax}
+<tr><td>&nbsp;</td><td> {$tax.tax_name}: ({$tax.tax_percent}%)</td><td> {$tax.tax_amount}</td></tr>
+{/foreach}
+{if $DATA.show_credit}
+<tr><td>&nbsp;</td><td>Kredīts:</td><td>({$DATA.credit_used})</td></tr>
+{/if}
+<tr><td>&nbsp;</td><td><strong>Kopā: </strong></td><td><strong>{$DATA.total}</strong></td></tr>
+</tbody>
+</table>
+{if !empty($DATA.note_to_customer)}
+<p>&quot;{$DATA.note_to_customer}&quot;</p>
+{/if}]]></content>
+  </email>
+  <email name="cart.payment_fraud">
+    <subject><![CDATA[Problēma ar pasūtījumu]]></subject>
+    <content type="html"><![CDATA[<p>Sveiki, {$DATA.first_name|capitalize},</p>
+<p>Atvainojamies, bet mēs nevarējām apstrādāt maksājumu par pasūtījumu {$DATA.cart_order_id}. Ja jums ir jautājumi, lūdzu, sazinieties ar mums.</p>]]></content>
+  </email>
+  <email name="account.password_recovery">
+    <subject><![CDATA[Paroles atjaunošana]]></subject>
+    <content type="html"><![CDATA[<p>Cienījamais/ā {$DATA.first_name|capitalize} {$DATA.last_name|capitalize},<br><br>
+Lai atjaunotu paroli, noklikšķiniet uz zemāk esošās saites vai nokopējiet to un ielīmējiet pārlūkprogrammas adreses joslā. Lapā jums tiks lūgts ievadīt un apstiprināt jaunu paroli.<br><br>
+<a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br><br>
+Ja nepieciešama papildu palīdzība, lūdzu, sazinieties ar mums.</p>]]></content>
+  </email>
+  <email name="admin.order_received">
+    <subject><![CDATA[Jauns pasūtījums #{$DATA.cart_order_id}]]></subject>
+    <content type="html"><![CDATA[<p>{$DATA.first_name|capitalize} {$DATA.last_name|capitalize} {if !empty($BILLING.company_name)}({$BILLING.company_name}){/if} tikko veica pasūtījumu Nr. {$DATA.cart_order_id}, {$DATA.order_date}.</p>
+<p>Šo pasūtījumu varat pārvaldīt, izmantojot zemāk esošo saiti.</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<table width="100%">
+<tr>
+<td valign="top" width="50%"><strong>Rēķina adrese:</strong><br>
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
+{if !empty($BILLING.company_name)}{$BILLING.company_name}<br>{/if}
+{$BILLING.line1|capitalize}<br>
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>{/if}
+{$BILLING.town|upper}<br>
+{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
+{$BILLING.postcode}<br>
+{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}<br>
+{$BILLING.phone}<br><br>
+<strong>E-pasts:</strong><br>
+{$BILLING.email}</td>
+<td valign="top" width="50%"><strong>Piegādes adrese:</strong><br>
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>
+{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>{/if}{$SHIPPING.line1|capitalize}<br>
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize} <br>{/if}{$SHIPPING.town|upper}<br>
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
+{$SHIPPING.postcode}<br>
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
+</tr>
+</table>
+<table border="0" cellpadding="3" cellspacing="0" width="100%">
+<tbody>
+<tr><td><strong>Prece</strong></td><td><strong>Daudzums</strong></td><td><strong>Cena</strong></td></tr>
+{foreach from=$PRODUCTS item=product}
+<tr><td>{$product.name} <br>{$product.product_options}</td><td>{$product.quantity}</td><td>{$product.price}</td></tr>
+{/foreach}
+<tr><td>&nbsp;</td><td> {if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Piegāde:{/if}</td><td> {$DATA.shipping}</td></tr>
+<tr><td>&nbsp;</td><td> Atlaide:</td><td> {$DATA.discount}</td></tr>
+<tr><td>&nbsp;</td><td> Starpsumma:</td><td> {$DATA.subtotal}</td></tr>
+{foreach from=$TAXES item=tax}
+<tr><td>&nbsp;</td><td> {$tax.tax_name}: ({$tax.tax_percent}%)</td><td> {$tax.tax_amount}</td></tr>
+{/foreach}
+{if $DATA.show_credit}
+<tr><td>&nbsp;</td><td>Kredīts:</td><td>({$DATA.credit_used})</td></tr>
+{/if}
+<tr><td>&nbsp;</td><td><strong>Kopā: </strong></td><td><strong>{$DATA.total}</strong></td></tr>
+</tbody>
+</table>]]></content>
+  </email>
+  <email name="admin.review_added">
+    <subject><![CDATA[Jauna produkta atsauksme]]></subject>
+    <content type="html"><![CDATA[{$DATA.name} atstāja jaunu atsauksmi par '{$DATA.product_name}'. Varat to moderēt, izmantojot zemāk esošo saiti.
+        <p><strong>Moderēšanas saite:</strong><br><a href='{$DATA.link}'>{$DATA.link}</a></p>
+        <p><strong>Atsauksmes teksts:</strong><br>{$DATA.review}</p>]]></content>
+  </email>
+  <email name="cart.digital_download">
+    <subject><![CDATA[Jūsu lejupielādes ir gatavas]]></subject>
+    <content type="html"><![CDATA[<p>Sveiki, {$DATA.first_name|capitalize},</p>
+<p>Jūsu digitālie faili ir gatavi lejupielādei. Varat tiem piekļūt, izmantojot zemāk esošās saites:</p>
+{foreach from=$DOWNLOADS item=download}
+<p><strong>{$download.name}:</strong> (Saite derīga līdz {$download.expire}<strong>)</strong><br>
+<a href="{$download.url}">{$download.url}</a></p>
+{/foreach}
+<p>Ja augstāk esošās saites nedarbojas, mēģiniet tās nokopēt un ielīmēt pārlūkprogrammas adreses joslā. Šiem failiem varat piekļūt arī no sava konta mūsu tīmekļa vietnē.</p>
+<p>&nbsp;</p>]]></content>
+  </email>
+  <email name="cart.gift_certificate">
+    <subject><![CDATA[Jūsu dāvanu karte]]></subject>
+    <content type="html"><![CDATA[<p>Cienījamais/ā {$DATA.name},</p>
+<p>Jūs esat saņēmis/usi dāvanu karti, ko var izmantot jebkuram pirkumam mūsu veikalā.</p>
+<p><strong>No: </strong>{$DATA.first_name|capitalize} {$DATA.last_name|capitalize}<br>
+<strong>Vērtība: </strong>{$DATA.value}<br>
+<strong>Izmantošanas kods:</strong> {$DATA.code}<br>
+<strong>Dāvanas ziņojums:</strong> {$DATA.message}</p>
+<p>-------------------</p>
+<p>Lai izmantotu šo dāvanu karti, ievadiet augstāk norādīto &quot;Izmantošanas kodu&quot; laukā &quot;Atlaides kods vai dāvanu karte&quot; norēķinu laikā.</p>
+<p>Kāpēc gan to neiztērēt tagad?</p>]]></content>
+  </email>
+  <email name="catalogue.tell_friend">
+    <subject><![CDATA[{$DATA.from} iesaka jums produktu]]></subject>
+    <content type="html"><![CDATA[Cienījamais/ā {$DATA.to},
+<p>Jūsu draugs <strong>{$DATA.from}</strong> domā, ka jūs varētu interesēt <strong>{$DATA.name}</strong>.</p>
+<p><strong>Produkta saite:</strong> <a href="{$DATA.link}">{$DATA.name}</a></p>
+<p>{$DATA.message}</p>]]></content>
+  </email>
+  <email name="cart.payment_received">
+    <subject><![CDATA[Paldies par maksājumu]]></subject>
+    <content type="html"><![CDATA[<p>Sveiki, {$DATA.first_name|capitalize},</p>
+<p>Esam saņēmuši jūsu maksājumu {$DATA.total} par pasūtījumu Nr. {$DATA.cart_order_id}.</p>]]></content>
+  </email>
+  <email name="newsletter.verify_email">
+    <subject><![CDATA[Apstipriniet abonementu]]></subject>
+    <content type="html"><![CDATA[<p>E-pasta adrese {$DATA.email} tika izmantota, lai abonētu mūsu jaunumu vēstuli. Lai apstiprinātu abonementu, noklikšķiniet uz zemāk esošās saites:</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+  </email>
+  <email name="newsletter.remove_request">
+    <subject><![CDATA[Jaunumu vēstules atteikuma apstiprinājums]]></subject>
+    <content type="html"><![CDATA[<p>Saņemts pieprasījums atteikties no jaunumu vēstules adresei <strong>{$DATA.email}</strong>. Lai apstiprinātu, noklikšķiniet uz zemāk esošās saites.</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+  </email>
+  <email name="admin.two_factor_code">
+    <subject><![CDATA[Jūsu pieteikšanās verifikācijas kods]]></subject>
+    <content type="html"><![CDATA[<p>Sveiki, {$DATA.name},</p><p>Jūsu pieteikšanās verifikācijas kods ir:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Kods derīgs 10 minūtes. Ja nemēģinājāt pieteikties, nekavējoties sazinieties ar veikala administratoru.</p>]]></content>
+  </email>
+</emails>
