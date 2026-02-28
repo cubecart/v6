@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * CubeCart v6
+ * ========================================
+ * CubeCart is a registered trade mark of CubeCart Limited
+ * Copyright CubeCart Limited 2026. All rights reserved.
+ * UK Private Limited Company No. 5323904
+ * ========================================
+ * Web:   https://www.cubecart.com
+ * Email:  hello@cubecart.com
+ * License:  GPL-3.0 http://opensource.org/licenses/GPL-3.0
+-->
+<emails version="6.6.0" language="ja-JP">
+  <email name="admin.password_recovery">
+    <subject><![CDATA[管理者パスワードの再設定]]></subject>
+    <content type="html"><![CDATA[<p>{$DATA.name} 様</p>
+<p>ストア管理画面へのアクセスを復旧するには、以下のリンクをクリックしてください。</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<p>上記のリンクが機能しない場合は、コピーしてブラウザのアドレスバーに貼り付けてください。</p>]]></content>
+  </email>
+  <email name="cart.order_complete">
+    <subject><![CDATA[ご注文完了のお知らせ]]></subject>
+    <content type="html"><![CDATA[<p>{$DATA.first_name|capitalize} 様</p>
+<p>ご注文番号 {$DATA.cart_order_id} の処理が完了いたしました。実物商品をご注文の場合は、まもなくお届けいたします。</p>{if !empty($DATA.ship_tracking)}<p>配送状況の確認:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
+  </email>
+  <email name="cart.order_cancelled">
+    <subject><![CDATA[ご注文キャンセルのお知らせ]]></subject>
+    <content type="html"><![CDATA[<p>{$DATA.first_name|capitalize} 様</p>
+<p>ご注文番号 {$DATA.cart_order_id} はキャンセルされました。ご不明な点がございましたら、お気軽にお問い合わせください。</p>]]></content>
+  </email>
+  <email name="cart.order_confirmation">
+    <subject><![CDATA[ご注文確認 #{$DATA.cart_order_id}]]></subject>
+    <content type="html"><![CDATA[<p>{$DATA.first_name|capitalize} 様、ご注文ありがとうございます。</p>
+<p>{$DATA.order_date} に承りましたご注文 {$DATA.cart_order_id} を受け付けました。このメールは控えとして保管してください。ご注文状況はいつでもオンラインでご確認いただけます。</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<table width="100%">
+<tr>
+<td valign="top" width="50%"><strong>請求先住所:</strong><br>
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
+{if !empty($BILLING.company_name)}{$BILLING.company_name}<br>{/if}
+{$BILLING.line1|capitalize}<br>
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>{/if}
+{$BILLING.town|upper}<br>
+{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
+{$BILLING.postcode}<br>
+{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}<br>
+{$BILLING.phone}<br><br>
+<strong>メールアドレス:</strong><br>
+{$BILLING.email}</td>
+<td valign="top" width="50%"><strong>配送先住所:</strong><br>
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>
+{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>{/if}{$SHIPPING.line1|capitalize}<br>
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize} <br>{/if}{$SHIPPING.town|upper}<br>
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
+{$SHIPPING.postcode}<br>
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
+</tr>
+</table>
+<table border="0" cellpadding="3" cellspacing="0" width="100%">
+<tbody>
+<tr><td><strong>商品</strong></td><td><strong>数量</strong></td><td><strong>価格</strong></td></tr>
+{foreach from=$PRODUCTS item=product}
+<tr><td>{$product.name} <br>{$product.product_options}</td><td>{$product.quantity}</td><td>{$product.price}</td></tr>
+{/foreach}
+<tr><td>&nbsp;</td><td> {if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}送料:{/if}</td><td> {$DATA.shipping}</td></tr>
+<tr><td>&nbsp;</td><td> 割引:</td><td> {$DATA.discount}</td></tr>
+<tr><td>&nbsp;</td><td> 小計:</td><td> {$DATA.subtotal}</td></tr>
+{foreach from=$TAXES item=tax}
+<tr><td>&nbsp;</td><td> {$tax.tax_name}: ({$tax.tax_percent}%)</td><td> {$tax.tax_amount}</td></tr>
+{/foreach}
+{if $DATA.show_credit}
+<tr><td>&nbsp;</td><td>クレジット:</td><td>({$DATA.credit_used})</td></tr>
+{/if}
+<tr><td>&nbsp;</td><td><strong>ご注文合計: </strong></td><td><strong>{$DATA.total}</strong></td></tr>
+</tbody>
+</table>
+{if !empty($DATA.note_to_customer)}
+<p>&quot;{$DATA.note_to_customer}&quot;</p>
+{/if}]]></content>
+  </email>
+  <email name="cart.payment_fraud">
+    <subject><![CDATA[ご注文に関する問題]]></subject>
+    <content type="html"><![CDATA[<p>{$DATA.first_name|capitalize} 様</p>
+<p>申し訳ございませんが、ご注文番号 {$DATA.cart_order_id} のお支払いを処理することができませんでした。ご不明な点がございましたら、お気軽にお問い合わせください。</p>]]></content>
+  </email>
+  <email name="account.password_recovery">
+    <subject><![CDATA[パスワードの再設定]]></subject>
+    <content type="html"><![CDATA[<p>{$DATA.first_name|capitalize} {$DATA.last_name|capitalize} 様<br><br>
+パスワードを再設定するには、以下のリンクをクリックするか、アドレスをコピーしてブラウザのアドレスバーに貼り付けてください。ページが表示されたら、新しいパスワードを入力・確認してください。<br><br>
+<a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br><br>
+その他ご不明な点がございましたら、お問い合わせください。</p>]]></content>
+  </email>
+  <email name="admin.order_received">
+    <subject><![CDATA[新規注文 #{$DATA.cart_order_id}]]></subject>
+    <content type="html"><![CDATA[<p>{$DATA.first_name|capitalize} {$DATA.last_name|capitalize} {if !empty($BILLING.company_name)}({$BILLING.company_name}){/if} 様より、{$DATA.order_date} にご注文番号 {$DATA.cart_order_id} を受け付けました。</p>
+<p>以下のリンクからこの注文を管理できます。</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<table width="100%">
+<tr>
+<td valign="top" width="50%"><strong>請求先住所:</strong><br>
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
+{if !empty($BILLING.company_name)}{$BILLING.company_name}<br>{/if}
+{$BILLING.line1|capitalize}<br>
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>{/if}
+{$BILLING.town|upper}<br>
+{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
+{$BILLING.postcode}<br>
+{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}<br>
+{$BILLING.phone}<br><br>
+<strong>メールアドレス:</strong><br>
+{$BILLING.email}</td>
+<td valign="top" width="50%"><strong>配送先住所:</strong><br>
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>
+{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>{/if}{$SHIPPING.line1|capitalize}<br>
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize} <br>{/if}{$SHIPPING.town|upper}<br>
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
+{$SHIPPING.postcode}<br>
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
+</tr>
+</table>
+<table border="0" cellpadding="3" cellspacing="0" width="100%">
+<tbody>
+<tr><td><strong>商品</strong></td><td><strong>数量</strong></td><td><strong>価格</strong></td></tr>
+{foreach from=$PRODUCTS item=product}
+<tr><td>{$product.name} <br>{$product.product_options}</td><td>{$product.quantity}</td><td>{$product.price}</td></tr>
+{/foreach}
+<tr><td>&nbsp;</td><td> {if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}送料:{/if}</td><td> {$DATA.shipping}</td></tr>
+<tr><td>&nbsp;</td><td> 割引:</td><td> {$DATA.discount}</td></tr>
+<tr><td>&nbsp;</td><td> 小計:</td><td> {$DATA.subtotal}</td></tr>
+{foreach from=$TAXES item=tax}
+<tr><td>&nbsp;</td><td> {$tax.tax_name}: ({$tax.tax_percent}%)</td><td> {$tax.tax_amount}</td></tr>
+{/foreach}
+{if $DATA.show_credit}
+<tr><td>&nbsp;</td><td>クレジット:</td><td>({$DATA.credit_used})</td></tr>
+{/if}
+<tr><td>&nbsp;</td><td><strong>ご注文合計: </strong></td><td><strong>{$DATA.total}</strong></td></tr>
+</tbody>
+</table>]]></content>
+  </email>
+  <email name="admin.review_added">
+    <subject><![CDATA[新しい商品レビュー]]></subject>
+    <content type="html"><![CDATA[{$DATA.name} が商品「{$DATA.product_name}」に新しいレビューを投稿しました。以下のリンクからレビューを管理できます。
+        <p><strong>管理リンク:</strong><br><a href='{$DATA.link}'>{$DATA.link}</a></p>
+        <p><strong>レビュー内容:</strong><br>{$DATA.review}</p>]]></content>
+  </email>
+  <email name="cart.digital_download">
+    <subject><![CDATA[ダウンロードの準備ができました]]></subject>
+    <content type="html"><![CDATA[<p>{$DATA.first_name|capitalize} 様</p>
+<p>デジタルファイルのダウンロード準備が完了しました。以下のリンクからアクセスできます。</p>
+{foreach from=$DOWNLOADS item=download}
+<p><strong>{$download.name}:</strong> (リンクの有効期限: {$download.expire}<strong>)</strong><br>
+<a href="{$download.url}">{$download.url}</a></p>
+{/foreach}
+<p>上記のリンクが機能しない場合は、コピーしてブラウザのアドレスバーに貼り付けてお試しください。当サイトのアカウントからもこれらのファイルにアクセスできます。</p>
+<p>&nbsp;</p>]]></content>
+  </email>
+  <email name="cart.gift_certificate">
+    <subject><![CDATA[ギフトカードのお届け]]></subject>
+    <content type="html"><![CDATA[<p>{$DATA.name} 様</p>
+<p>当ストアでのお買い物にご利用いただけるギフトカードが届いています。</p>
+<p><strong>送り主: </strong>{$DATA.first_name|capitalize} {$DATA.last_name|capitalize}<br>
+<strong>金額: </strong>{$DATA.value}<br>
+<strong>利用コード:</strong> {$DATA.code}<br>
+<strong>ギフトメッセージ:</strong> {$DATA.message}</p>
+<p>-------------------</p>
+<p>このギフトカードをご利用になるには、お会計時に&quot;プロモーションコードまたはギフトカード&quot;の入力欄に上記の&quot;利用コード&quot;を入力してください。</p>
+<p>さっそく使ってみませんか?</p>]]></content>
+  </email>
+  <email name="catalogue.tell_friend">
+    <subject><![CDATA[{$DATA.from} さんからのおすすめ商品]]></subject>
+    <content type="html"><![CDATA[{$DATA.to} 様
+<p>お友達の <strong>{$DATA.from}</strong> さんが、<strong>{$DATA.name}</strong> をおすすめしています。</p>
+<p><strong>商品リンク:</strong> <a href="{$DATA.link}">{$DATA.name}</a></p>
+<p>{$DATA.message}</p>]]></content>
+  </email>
+  <email name="cart.payment_received">
+    <subject><![CDATA[お支払いを受け付けました]]></subject>
+    <content type="html"><![CDATA[<p>{$DATA.first_name|capitalize} 様</p>
+<p>ご注文番号 {$DATA.cart_order_id} に対するお支払い {$DATA.total} を受け付けました。</p>]]></content>
+  </email>
+  <email name="newsletter.verify_email">
+    <subject><![CDATA[ニュースレター購読の確認]]></subject>
+    <content type="html"><![CDATA[<p>{$DATA.email} でニュースレターの購読登録がありました。購読を確認するには、以下のリンクをクリックしてください。</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+  </email>
+  <email name="newsletter.remove_request">
+    <subject><![CDATA[ニュースレター購読解除の確認]]></subject>
+    <content type="html"><![CDATA[<p><strong>{$DATA.email}</strong> のニュースレター購読解除のリクエストを受け付けました。確認するには、以下のリンクをクリックしてください。</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+  </email>
+  <email name="admin.two_factor_code">
+    <subject><![CDATA[管理画面ログイン認証コード]]></subject>
+    <content type="html"><![CDATA[<p>{$DATA.name} 様</p><p>ログイン認証コードは以下の通りです。</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>このコードは10分後に失効します。ログインを試みていない場合は、直ちにストア管理者にご連絡ください。</p>]]></content>
+  </email>
+</emails>
