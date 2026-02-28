@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * CubeCart v6
+ * ========================================
+ * CubeCart is a registered trade mark of CubeCart Limited
+ * Copyright CubeCart Limited 2026. All rights reserved.
+ * UK Private Limited Company No. 5323904
+ * ========================================
+ * Web:   https://www.cubecart.com
+ * Email:  hello@cubecart.com
+ * License:  GPL-3.0 http://opensource.org/licenses/GPL-3.0
+-->
+<emails version="6.6.0" language="sk-SK">
+  <email name="admin.password_recovery">
+    <subject><![CDATA[Obnovenie hesla administrátora]]></subject>
+    <content type="html"><![CDATA[<p>Vážený/á {$DATA.name},</p>
+<p>Pre obnovenie prístupu k administračnému panelu obchodu kliknite na nasledujúci odkaz:</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<p>Ak odkaz nefunguje, skopírujte ho a vložte do adresného riadku prehliadača.</p>]]></content>
+  </email>
+  <email name="cart.order_complete">
+    <subject><![CDATA[Objednávka dokončená]]></subject>
+    <content type="html"><![CDATA[<p>Dobrý deň, {$DATA.first_name|capitalize},</p>
+<p>S potešením Vám oznamujeme, že objednávka číslo {$DATA.cart_order_id} je dokončená. Ak ste si objednali fyzický tovar, mal by k Vám čoskoro doraziť.</p>{if !empty($DATA.ship_tracking)}<p>Sledujte svoju zásielku:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
+  </email>
+  <email name="cart.order_cancelled">
+    <subject><![CDATA[Objednávka zrušená]]></subject>
+    <content type="html"><![CDATA[<p>Dobrý deň, {$DATA.first_name|capitalize},</p>
+<p>Objednávka číslo {$DATA.cart_order_id} bola zrušená. Ak máte akékoľvek otázky, neváhajte nás kontaktovať.</p>]]></content>
+  </email>
+  <email name="cart.order_confirmation">
+    <subject><![CDATA[Potvrdenie objednávky #{$DATA.cart_order_id}]]></subject>
+    <content type="html"><![CDATA[<p>Ďakujeme za Vašu objednávku, {$DATA.first_name|capitalize}.</p>
+<p>Prijali sme Vašu objednávku {$DATA.cart_order_id}, zadanú dňa {$DATA.order_date}. Uchovajte si prosím tento e-mail. Stav objednávky môžete kedykoľvek skontrolovať online.</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<table width="100%">
+<tr>
+<td valign="top" width="50%"><strong>Fakturačná adresa:</strong><br>
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
+{if !empty($BILLING.company_name)}{$BILLING.company_name}<br>{/if}
+{$BILLING.line1|capitalize}<br>
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>{/if}
+{$BILLING.town|upper}<br>
+{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
+{$BILLING.postcode}<br>
+{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}<br>
+{$BILLING.phone}<br><br>
+<strong>E-mail:</strong><br>
+{$BILLING.email}</td>
+<td valign="top" width="50%"><strong>Doručovacia adresa:</strong><br>
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>
+{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>{/if}{$SHIPPING.line1|capitalize}<br>
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize} <br>{/if}{$SHIPPING.town|upper}<br>
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
+{$SHIPPING.postcode}<br>
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
+</tr>
+</table>
+<table border="0" cellpadding="3" cellspacing="0" width="100%">
+<tbody>
+<tr><td><strong>Položka</strong></td><td><strong>Množstvo</strong></td><td><strong>Cena</strong></td></tr>
+{foreach from=$PRODUCTS item=product}
+<tr><td>{$product.name} <br>{$product.product_options}</td><td>{$product.quantity}</td><td>{$product.price}</td></tr>
+{/foreach}
+<tr><td>&nbsp;</td><td> {if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Doprava:{/if}</td><td> {$DATA.shipping}</td></tr>
+<tr><td>&nbsp;</td><td> Zľava:</td><td> {$DATA.discount}</td></tr>
+<tr><td>&nbsp;</td><td> Medzisúčet:</td><td> {$DATA.subtotal}</td></tr>
+{foreach from=$TAXES item=tax}
+<tr><td>&nbsp;</td><td> {$tax.tax_name}: ({$tax.tax_percent}%)</td><td> {$tax.tax_amount}</td></tr>
+{/foreach}
+{if $DATA.show_credit}
+<tr><td>&nbsp;</td><td>Kredit:</td><td>({$DATA.credit_used})</td></tr>
+{/if}
+<tr><td>&nbsp;</td><td><strong>Celkom: </strong></td><td><strong>{$DATA.total}</strong></td></tr>
+</tbody>
+</table>
+{if !empty($DATA.note_to_customer)}
+<p>&quot;{$DATA.note_to_customer}&quot;</p>
+{/if}]]></content>
+  </email>
+  <email name="cart.payment_fraud">
+    <subject><![CDATA[Problém s objednávkou]]></subject>
+    <content type="html"><![CDATA[<p>Dobrý deň, {$DATA.first_name|capitalize},</p>
+<p>Ospravedlňujeme sa, ale nepodarilo sa nám spracovať platbu za objednávku {$DATA.cart_order_id}. Ak máte otázky, neváhajte nás kontaktovať.</p>]]></content>
+  </email>
+  <email name="account.password_recovery">
+    <subject><![CDATA[Obnovenie hesla]]></subject>
+    <content type="html"><![CDATA[<p>Vážený/á {$DATA.first_name|capitalize} {$DATA.last_name|capitalize},<br><br>
+Pre obnovenie hesla kliknite na odkaz nižšie alebo ho skopírujte a vložte do adresného riadku prehliadača. Na stránke budete požiadaný/á o zadanie a potvrdenie nového hesla.<br><br>
+<a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br><br>
+Ak potrebujete ďalšiu pomoc, kontaktujte nás.</p>]]></content>
+  </email>
+  <email name="admin.order_received">
+    <subject><![CDATA[Nová objednávka #{$DATA.cart_order_id}]]></subject>
+    <content type="html"><![CDATA[<p>{$DATA.first_name|capitalize} {$DATA.last_name|capitalize} {if !empty($BILLING.company_name)}({$BILLING.company_name}){/if} práve zadal/a objednávku číslo {$DATA.cart_order_id} dňa {$DATA.order_date}.</p>
+<p>Túto objednávku môžete spravovať pomocou odkazu nižšie.</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<table width="100%">
+<tr>
+<td valign="top" width="50%"><strong>Fakturačná adresa:</strong><br>
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
+{if !empty($BILLING.company_name)}{$BILLING.company_name}<br>{/if}
+{$BILLING.line1|capitalize}<br>
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>{/if}
+{$BILLING.town|upper}<br>
+{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
+{$BILLING.postcode}<br>
+{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}<br>
+{$BILLING.phone}<br><br>
+<strong>E-mail:</strong><br>
+{$BILLING.email}</td>
+<td valign="top" width="50%"><strong>Doručovacia adresa:</strong><br>
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>
+{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>{/if}{$SHIPPING.line1|capitalize}<br>
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize} <br>{/if}{$SHIPPING.town|upper}<br>
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
+{$SHIPPING.postcode}<br>
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
+</tr>
+</table>
+<table border="0" cellpadding="3" cellspacing="0" width="100%">
+<tbody>
+<tr><td><strong>Položka</strong></td><td><strong>Množstvo</strong></td><td><strong>Cena</strong></td></tr>
+{foreach from=$PRODUCTS item=product}
+<tr><td>{$product.name} <br>{$product.product_options}</td><td>{$product.quantity}</td><td>{$product.price}</td></tr>
+{/foreach}
+<tr><td>&nbsp;</td><td> {if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Doprava:{/if}</td><td> {$DATA.shipping}</td></tr>
+<tr><td>&nbsp;</td><td> Zľava:</td><td> {$DATA.discount}</td></tr>
+<tr><td>&nbsp;</td><td> Medzisúčet:</td><td> {$DATA.subtotal}</td></tr>
+{foreach from=$TAXES item=tax}
+<tr><td>&nbsp;</td><td> {$tax.tax_name}: ({$tax.tax_percent}%)</td><td> {$tax.tax_amount}</td></tr>
+{/foreach}
+{if $DATA.show_credit}
+<tr><td>&nbsp;</td><td>Kredit:</td><td>({$DATA.credit_used})</td></tr>
+{/if}
+<tr><td>&nbsp;</td><td><strong>Celkom: </strong></td><td><strong>{$DATA.total}</strong></td></tr>
+</tbody>
+</table>]]></content>
+  </email>
+  <email name="admin.review_added">
+    <subject><![CDATA[Nová recenzia produktu]]></subject>
+    <content type="html"><![CDATA[{$DATA.name} napísal/a novú recenziu na produkt '{$DATA.product_name}'. Môžete ju moderovať pomocou odkazu nižšie.
+        <p><strong>Odkaz na moderovanie:</strong><br><a href='{$DATA.link}'>{$DATA.link}</a></p>
+        <p><strong>Text recenzie:</strong><br>{$DATA.review}</p>]]></content>
+  </email>
+  <email name="cart.digital_download">
+    <subject><![CDATA[Vaše súbory na stiahnutie sú pripravené]]></subject>
+    <content type="html"><![CDATA[<p>Dobrý deň, {$DATA.first_name|capitalize},</p>
+<p>Vaše digitálne súbory sú pripravené na stiahnutie. Môžete k nim pristúpiť pomocou odkazov nižšie:</p>
+{foreach from=$DOWNLOADS item=download}
+<p><strong>{$download.name}:</strong> (Odkaz vyprší dňa {$download.expire}<strong>)</strong><br>
+<a href="{$download.url}">{$download.url}</a></p>
+{/foreach}
+<p>Ak vyššie uvedené odkazy nefungujú, skúste ich skopírovať a vložiť do adresného riadku prehliadača. K týmto súborom sa dostanete aj prostredníctvom svojho účtu na našej webovej stránke.</p>
+<p>&nbsp;</p>]]></content>
+  </email>
+  <email name="cart.gift_certificate">
+    <subject><![CDATA[Váš darčekový poukaz]]></subject>
+    <content type="html"><![CDATA[<p>Vážený/á {$DATA.name},</p>
+<p>Dostali ste darčekový poukaz, ktorý môžete použiť na akýkoľvek nákup v našom obchode.</p>
+<p><strong>Od: </strong>{$DATA.first_name|capitalize} {$DATA.last_name|capitalize}<br>
+<strong>Hodnota: </strong>{$DATA.value}<br>
+<strong>Kód poukazu:</strong> {$DATA.code}<br>
+<strong>Darčeková správa:</strong> {$DATA.message}</p>
+<p>-------------------</p>
+<p>Pre uplatnenie tohto darčekového poukazu zadajte vyššie uvedený &quot;Kód poukazu&quot; do textového poľa označeného &quot;Zľavový kód alebo darčekový poukaz&quot; pri dokončovaní objednávky.</p>
+<p>Prečo ho nevyužiť hneď?</p>]]></content>
+  </email>
+  <email name="catalogue.tell_friend">
+    <subject><![CDATA[{$DATA.from} Vám odporúča produkt]]></subject>
+    <content type="html"><![CDATA[Vážený/á {$DATA.to},
+<p>Váš priateľ <strong>{$DATA.from}</strong> si myslí, že by Vás mohol zaujímať produkt <strong>{$DATA.name}</strong>.</p>
+<p><strong>Odkaz na produkt:</strong> <a href="{$DATA.link}">{$DATA.name}</a></p>
+<p>{$DATA.message}</p>]]></content>
+  </email>
+  <email name="cart.payment_received">
+    <subject><![CDATA[Ďakujeme za Vašu platbu]]></subject>
+    <content type="html"><![CDATA[<p>Dobrý deň, {$DATA.first_name|capitalize},</p>
+<p>Prijali sme Vašu platbu vo výške {$DATA.total} za objednávku číslo {$DATA.cart_order_id}.</p>]]></content>
+  </email>
+  <email name="newsletter.verify_email">
+    <subject><![CDATA[Potvrdenie odberu]]></subject>
+    <content type="html"><![CDATA[<p>E-mailová adresa {$DATA.email} bola použitá na prihlásenie k odberu nášho newslettera. Pre potvrdenie odberu kliknite na odkaz nižšie:</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+  </email>
+  <email name="newsletter.remove_request">
+    <subject><![CDATA[Potvrdenie odhlásenia z newslettera]]></subject>
+    <content type="html"><![CDATA[<p>Bola zaznamenaná žiadosť o odhlásenie adresy <strong>{$DATA.email}</strong> z odberu nášho newslettera. Pre potvrdenie kliknite na odkaz nižšie.</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+  </email>
+  <email name="admin.two_factor_code">
+    <subject><![CDATA[Váš overovací kód pre prihlásenie do administrácie]]></subject>
+    <content type="html"><![CDATA[<p>Dobrý deň, {$DATA.name},</p><p>Váš overovací kód pre prihlásenie je:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Platnosť kódu vyprší za 10 minút. Ak ste sa nepokúšali prihlásiť, okamžite kontaktujte správcu obchodu.</p>]]></content>
+  </email>
+</emails>
