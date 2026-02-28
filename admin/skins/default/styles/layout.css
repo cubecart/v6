@@ -509,7 +509,9 @@ fieldset .custom-checkbox {
     padding: 4px 8px 4px 10px;
     text-align: left;
     cursor: pointer;
-    min-height: 16px
+    min-height: 16px;
+    display: flex;
+    align-items: center
 }
 #gui_message .success::before,
 #gui_message .error::before {

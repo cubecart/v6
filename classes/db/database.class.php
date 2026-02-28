@@ -676,7 +676,23 @@ class Database_Contoller
     public function select($table, $columns = false, $where = false, $order = false, $maxRows = false, $page = false, $cache = true)
     {
         $table_where = $table;
-        $distinct = ''; 
+        $distinct = '';
+        $exclude_columns = false;
+
+        // Support column exclusion: array('-col1', '-col2') means SELECT * minus those columns
+        if (is_array($columns)) {
+            $excludes = array();
+            foreach ($columns as $col) {
+                if (is_string($col) && substr($col, 0, 1) === '-') {
+                    $excludes[] = substr($col, 1);
+                }
+            }
+            if (!empty($excludes)) {
+                $exclude_columns = $excludes;
+                $columns = false;
+            }
+        }
+
         if (!stristr($table, 'JOIN')) {
             // Build an SQL SELECT query the (almost) easy way
             $allowed = $this->getFields($table);
@@ -769,6 +785,17 @@ class Database_Contoller
                     $this->_found_rows = (count($count)>1) ? count($count) : $count[0]['Count'];
                     $this->_writeCache($count, $count_query);
                 }
+            }
+            // Strip excluded columns from results
+            if ($output && $exclude_columns) {
+                foreach ($output as &$row) {
+                    if (is_array($row)) {
+                        foreach ($exclude_columns as $exc) {
+                            unset($row[$exc]);
+                        }
+                    }
+                }
+                unset($row);
             }
             return ($output) ? $output : false;
         }

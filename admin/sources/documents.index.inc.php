@@ -27,13 +27,15 @@ if (isset($_POST['document']) && Admin::getInstance()->permissions('documents', 
     ## Do the database magic
     $rem_array = array();
     $_POST['document']['doc_content'] = $GLOBALS['RAW']['POST']['document']['doc_content'];
-    $_POST['document']['updated'] = date('Y-m-d H:i:s');
     if (isset($_POST['document']['doc_id']) && is_numeric($_POST['document']['doc_id'])) {
-        if ($GLOBALS['db']->update('CubeCart_documents', $_POST['document'], array('doc_id' => $_POST['document']['doc_id']), true)) {
-            if(empty($_POST['seo_path'])) {
-                $GLOBALS['seo']->unsetdbPath('doc', $_POST['document']['doc_id']);
-            }
-            $GLOBALS['seo']->setdbPath('doc', $_POST['document']['doc_id'], $_POST['seo_path'], true, true);
+        $GLOBALS['db']->update('CubeCart_documents', $_POST['document'], array('doc_id' => $_POST['document']['doc_id']), true);
+        $doc_changed = $GLOBALS['db']->affected() > 0;
+        if(empty($_POST['seo_path'])) {
+            $GLOBALS['seo']->unsetdbPath('doc', $_POST['document']['doc_id']);
+        }
+        $GLOBALS['seo']->setdbPath('doc', $_POST['document']['doc_id'], $_POST['seo_path'], true, true);
+        if ($doc_changed) {
+            $GLOBALS['db']->update('CubeCart_documents', array('updated' => date('Y-m-d H:i:s')), array('doc_id' => $_POST['document']['doc_id']));
             $GLOBALS['main']->successMessage($lang['documents']['notify_document_update']);
             $rem_array = array('action','doc_id');
         } else {
@@ -75,11 +77,12 @@ if (isset($_POST['privacy']) ||isset($_POST['terms']) || isset($_POST['home']) |
         if (count($docs)>0) {
             foreach ($docs as $doc) {
                 $document = $GLOBALS['db']->select('CubeCart_documents', array('doc_name'), array('doc_id' => $doc['id']));
-                if ($GLOBALS['db']->update('CubeCart_documents', array('doc_'.$doc['key'] => 1), array('doc_id' => $doc['id'], 'doc_parent_id' => 0), true)) {
+                $GLOBALS['db']->update('CubeCart_documents', array('doc_'.$doc['key'] => 1), array('doc_id' => $doc['id'], 'doc_parent_id' => 0), true);
+                $GLOBALS['db']->update('CubeCart_documents', array('doc_'.$doc['key'] => 0), 'doc_id <> '.$doc['id']);
+                if ($GLOBALS['db']->affected() > 0) {
                     $GLOBALS['main']->successMessage($lang['documents']['notify_document_'.$doc['key']]);
                     $updated = true;
                 }
-                $GLOBALS['db']->update('CubeCart_documents', array('doc_'.$doc['key'] => 0), 'doc_id <> '.$doc['id']);
             }
         }
 
@@ -87,7 +90,8 @@ if (isset($_POST['privacy']) ||isset($_POST['terms']) || isset($_POST['home']) |
         if (isset($_POST['order']) && is_array($_POST['order'])) {
             $order_updated = false;
             foreach ($_POST['order'] as $doc_order => $doc_id) {
-                if ($GLOBALS['db']->update('CubeCart_documents', array('doc_order' => (int)$doc_order), array('doc_id' => (int)$doc_id))) {
+                $GLOBALS['db']->update('CubeCart_documents', array('doc_order' => (int)$doc_order), array('doc_id' => (int)$doc_id));
+                if ($GLOBALS['db']->affected() > 0) {
                     $order_updated = true;
                 }
             }
@@ -99,7 +103,8 @@ if (isset($_POST['privacy']) ||isset($_POST['terms']) || isset($_POST['home']) |
         if (isset($_POST['status']) && is_array($_POST['status'])) {
             $status_updated = false;
             foreach ($_POST['status'] as $doc_id => $status) {
-                if ($GLOBALS['db']->update('CubeCart_documents', array('doc_status' => (int)$status), array('doc_id' => (int)$doc_id))) {
+                $GLOBALS['db']->update('CubeCart_documents', array('doc_status' => (int)$status), array('doc_id' => (int)$doc_id));
+                if ($GLOBALS['db']->affected() > 0) {
                     $status_updated = true;
                 }
             }
@@ -109,7 +114,7 @@ if (isset($_POST['privacy']) ||isset($_POST['terms']) || isset($_POST['home']) |
         }
         ## If no changes have been made let administrator know
         if (!$updated && !$status_updated && !$order_updated) {
-            $GLOBALS['main']->errorMessage($lang['common']['notify_no_changes']);
+            $GLOBALS['main']->errorMessage($lang['common']['error_no_changes']);
         }
         httpredir(currentPage());
     }

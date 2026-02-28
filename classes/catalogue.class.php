@@ -1285,26 +1285,43 @@ class Catalogue
      */
     public function getProductHash($product_id, $id)
     {
-        $inventory = $GLOBALS['db']->select('CubeCart_inventory', false, array('product_id' => $product_id));
-        
+        $inventory = $GLOBALS['db']->select('CubeCart_inventory', array('-updated'), array('product_id' => $product_id));
+
         if ($inventory == false) {
             return false;
         }
 
         $data = array(
             $inventory,
-            $GLOBALS['db']->select('CubeCart_category_index', array('cat_id','primary'), array('product_id' => $product_id)),
-            $GLOBALS['db']->select('CubeCart_option_assign', false, array('product' => $product_id)),
-            $GLOBALS['db']->select('CubeCart_option_matrix', false, array('product_id' => $product_id)),
+            $this->_sortHashData($GLOBALS['db']->select('CubeCart_category_index', array('cat_id','primary'), array('product_id' => $product_id))),
+            $this->_sortHashData($GLOBALS['db']->select('CubeCart_option_assign', array('-assign_id', '-product'), array('product' => $product_id))),
+            $this->_sortHashData($GLOBALS['db']->select('CubeCart_option_matrix', array('-matrix_id', '-product_id'), array('product_id' => $product_id))),
             $GLOBALS['db']->select('CubeCart_reviews', false, array('product_id' => $product_id)),
-            $GLOBALS['db']->select('CubeCart_image_index', false, array('product_id' => $product_id)),
-            $GLOBALS['db']->select('CubeCart_pricing_group', false, array('product_id' => $product_id)),
-            $GLOBALS['db']->select('CubeCart_pricing_quantity', false, array('product_id' => $product_id)),
+            $this->_sortHashData($GLOBALS['db']->select('CubeCart_image_index', array('-id', '-product_id'), array('product_id' => $product_id))),
+            $this->_sortHashData($GLOBALS['db']->select('CubeCart_pricing_group', array('-price_id', '-product_id'), array('product_id' => $product_id))),
+            $this->_sortHashData($GLOBALS['db']->select('CubeCart_pricing_quantity', array('-discount_id', '-product_id'), array('product_id' => $product_id))),
             $GLOBALS['db']->select('CubeCart_inventory_language', false, array('product_id' => $product_id)),
-            $GLOBALS['db']->select('CubeCart_options_set_product', false, array('product_id' => $product_id)),
+            $this->_sortHashData($GLOBALS['db']->select('CubeCart_options_set_product', array('-set_product_id', '-product_id'), array('product_id' => $product_id))),
             $GLOBALS['db']->select('CubeCart_seo_urls', false, array('type' => 'prod', 'item_id' => $product_id))
         );
         return $this->_productHash[$id] = md5(serialize($data));
+    }
+
+    /**
+     * Sort hash data for consistent comparison regardless of row order
+     */
+    private function _sortHashData($data)
+    {
+        if (is_array($data)) {
+            foreach ($data as &$row) {
+                if (is_array($row)) ksort($row);
+            }
+            unset($row);
+            usort($data, function($a, $b) {
+                return strcmp(serialize($a), serialize($b));
+            });
+        }
+        return $data;
     }
 
     /**
