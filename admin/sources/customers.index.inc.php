@@ -38,7 +38,7 @@ if (isset($_POST['external_report']) && is_array($_POST['external_report'])) {
         $GLOBALS['main']->errorMessage(ucfirst($module_name[0]).': Failed to generate external report.');
         httpredir(currentPage());
     }
-    if (($customers_export = $GLOBALS['db']->select('CubeCart_customer', array('title', 'first_name', 'last_name', 'phone', 'mobile', 'customer_id', 'email'))) !== false) {
+    if (($customers_export = $GLOBALS['db']->select('CubeCart_customer', array('first_name', 'last_name', 'phone', 'mobile', 'customer_id', 'email'))) !== false) {
         // Get States Array
         $zones = $GLOBALS['db']->select('CubeCart_geo_zone', array('id', 'name'), array('status' => '1'));
         if ($zones) {
@@ -79,8 +79,7 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
         unset($customer['passconf']);
     }
 
-    // Format data nicely from mr barney brimstock to Mr Barney Brimstock
-    $customer['title']  = ucwords($customer['title']);
+    // Format data nicely from barney brimstock to Barney Brimstock
     $customer['first_name'] = ucwords($customer['first_name']);
     $customer['last_name'] = ucwords($customer['last_name']);
 
@@ -198,8 +197,7 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
                     }
                 }
 
-                // Format data nicely from mr barney brimstock to Mr Barney Brimstock & Post/Zip code to uppercase
-                $record['title']  = ucwords($record['title']);
+                // Format data nicely & Post/Zip code to uppercase
                 $record['first_name'] = ucwords($record['first_name']);
                 $record['last_name'] = ucwords($record['last_name']);
                 $record['postcode']  = strtoupper($record['postcode']);

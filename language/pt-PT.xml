@@ -2710,7 +2710,6 @@ Este e-mail é enviado a partir do endereço de e-mail principal da loja, mas é
     <string name="password_confirm"><![CDATA[Confirmar palavra-passe]]></string>
     <string name="password_current"><![CDATA[Palavra-passe atual]]></string>
     <string name="password_new"><![CDATA[Nova palavra-passe]]></string>
-    <string name="title"><![CDATA[Título]]></string>
     <string name="password_too_long"><![CDATA[Se a sua palavra-passe antiga tinha mais de 64 caracteres, por favor termine sessão e utilize a ferramenta de recuperação de palavra-passe.]]></string>
   </group>
  </translation>

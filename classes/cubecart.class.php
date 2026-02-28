@@ -1046,7 +1046,6 @@ class Cubecart
 
                 $this->_basket['billing_address'] = array(
                     'user_defined' => true,
-                    'title'   => $_POST['user']['title'],
                     'first_name'  => $_POST['user']['first_name'],
                     'last_name'  => $_POST['user']['last_name'],
                     'company_name'  => $_POST['billing']['company_name'],
@@ -1086,7 +1085,6 @@ class Cubecart
 
                     $this->_basket['delivery_address'] = array(
                         'user_defined' => true,
-                        'title'   => $_POST['delivery']['title'],
                         'first_name'  => $_POST['delivery']['first_name'],
                         'last_name'  => $_POST['delivery']['last_name'],
                         'company_name'  => $_POST['delivery']['company_name'],
@@ -1175,7 +1173,6 @@ class Cubecart
                         'customer_id' => $user_id,
                         'billing'  => true,
                         'default'  => (isset($_POST['delivery'])) ? false : true,
-                        'title'   => $this->_basket['customer']['title'],
                         'first_name' => $this->_basket['customer']['first_name'],
                         'last_name'  => $this->_basket['customer']['last_name'],
                         'description' => $GLOBALS['language']->address['default_billing_address'],

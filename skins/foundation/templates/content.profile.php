@@ -14,9 +14,6 @@
    <p>{$LANG.account.update_your_details}</p>
    <form action="{$VAL_SELF}" method="post" id="profile_form">
       <div class="row">
-         <div class="small-4 columns"><label for="acc_title" class="show-for-medium-up">{$LANG.user.title}</label><input type="text" name="title" id="acc_title" value="{$USER.title}" placeholder="{$LANG.user.title}"></div>
-      </div>
-      <div class="row">
          <div class="small-12 large-8 columns"><label for="acc_first_name" class="show-for-medium-up">{$LANG.user.name_first}</label><input type="text" name="first_name" id="acc_first_name" class="required" value="{$USER.first_name|capitalize}" placeholder="{$LANG.user.name_first} {$LANG.form.required}" required maxlength="32"></div>
       </div>
       <div class="row">

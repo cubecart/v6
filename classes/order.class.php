@@ -1540,7 +1540,6 @@ class Order
             'email'   => $email,
             'customer_comments' => (isset($this->_basket['comments'])) ? $this->_basket['comments'] : null,
             ## Billing Details
-            'title'   => $this->_basket['billing_address']['title'],
             'first_name' => $this->_basket['billing_address']['first_name'],
             'last_name'  => $this->_basket['billing_address']['last_name'],
             'company_name' => $this->_basket['billing_address']['company_name'],
@@ -1552,7 +1551,6 @@ class Order
             'country'  => $this->_basket['billing_address']['country_id'],
             'w3w'  => $this->_basket['billing_address']['w3w'],
             ## Delivery Details
-            'title_d'  => $this->_basket['delivery_address']['title'],
             'first_name_d' => $this->_basket['delivery_address']['first_name'],
             'last_name_d' => $this->_basket['delivery_address']['last_name'],
             'company_name_d'=> $this->_basket['delivery_address']['company_name'],

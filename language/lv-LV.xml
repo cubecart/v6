@@ -2699,7 +2699,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="password_confirm"><![CDATA[Apstiprināt paroli]]></string>
     <string name="password_current"><![CDATA[Pašreizējā parole]]></string>
     <string name="password_new"><![CDATA[Jaunā parole]]></string>
-    <string name="title"><![CDATA[Uzruna]]></string>
     <string name="password_too_long"><![CDATA[Ja jūsu vecā parole saturēja vairāk nekā 64 rakstzīmes, lūdzu, izrakstieties un izmantojiet paroles atiestatīšanas rīku.]]></string>
   </group>
  </translation>

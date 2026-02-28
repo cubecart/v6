@@ -2711,7 +2711,6 @@ Acest email este trimis de la adresa de email principală a magazinului, dar put
     <string name="password_confirm" introduced="5.0.0"><![CDATA[Confirmare parolă]]></string>
     <string name="password_current" introduced="5.0.0"><![CDATA[Parola curentă]]></string>
     <string name="password_new" introduced="5.0.0"><![CDATA[Parola nouă]]></string>
-    <string name="title" introduced="5.0.0"><![CDATA[Titlu]]></string>
     <string name="password_too_long" introduced="6.4.6"><![CDATA[Dacă parola dvs. veche avea mai mult de 64 de caractere, vă rugăm să vă deconectați și să utilizați instrumentul de resetare a parolei.]]></string>
   </group>
  </translation>

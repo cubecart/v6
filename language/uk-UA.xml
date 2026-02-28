@@ -2697,7 +2697,6 @@
       <string name="password_confirm"><![CDATA[Підтвердіть пароль]]></string>
       <string name="password_current"><![CDATA[Поточний пароль]]></string>
       <string name="password_new"><![CDATA[Новий пароль]]></string>
-      <string name="title"><![CDATA[Звертання]]></string>
       <string name="password_too_long"><![CDATA[Якщо ваш старий пароль був довший за 64 символи, вийдіть з системи та скористайтеся інструментом скидання пароля.]]></string>
     </group>
   </translation>

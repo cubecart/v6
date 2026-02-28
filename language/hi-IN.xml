@@ -2698,7 +2698,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="password_confirm"><![CDATA[पासवर्ड पुष्टि]]></string>
     <string name="password_current"><![CDATA[वर्तमान पासवर्ड]]></string>
     <string name="password_new"><![CDATA[नया पासवर्ड]]></string>
-    <string name="title"><![CDATA[शीर्षक]]></string>
     <string name="password_too_long"><![CDATA[यदि आपका पुराना पासवर्ड 64 अक्षरों से अधिक लंबा था, तो कृपया लॉगआउट करें और पासवर्ड रीसेट सुविधा का उपयोग करें।]]></string>
   </group>
  </translation>

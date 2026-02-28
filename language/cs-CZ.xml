@@ -3027,7 +3027,6 @@ POZOR: všechny soubory v ní budou trvale smazány!]]></string>
     <string name="password_confirm"><![CDATA[Potvrdit heslo]]></string>
     <string name="password_current"><![CDATA[Aktuální heslo]]></string>
     <string name="password_new"><![CDATA[Nové heslo]]></string>
-    <string name="title"><![CDATA[Titul]]></string>
     <string name="password_too_long"><![CDATA[Pokud vaše staré heslo obsahovalo více než 64 znaků, prosím odhlaste se a použijte nástroj pro obnovení hesla.]]></string>
   </group>
  </translation>

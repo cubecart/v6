@@ -2712,7 +2712,6 @@ UWAGA: Wszystkie pliki w nim zawarte zostaną trwale usunięte!]]></string>
    <string name="password_confirm"><![CDATA[Potwierdź hasło]]></string>
    <string name="password_current"><![CDATA[Bieżące hasło]]></string>
    <string name="password_new"><![CDATA[Nowe hasło]]></string>
-   <string name="title"><![CDATA[Tytuł]]></string>
    <string name="password_too_long"><![CDATA[Jeśli Twoje stare hasło miało więcej niż 64 znaki, proszę się wylogować i użyć narzędzia resetowania hasła.]]></string>
   </group>
  </translation>

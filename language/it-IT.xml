@@ -2712,7 +2712,6 @@ Questa email è inviata dall'indirizzo email principale del negozio ma è possib
     <string name="password_confirm"><![CDATA[Conferma password]]></string>
     <string name="password_current"><![CDATA[Password attuale]]></string>
     <string name="password_new"><![CDATA[Nuova password]]></string>
-    <string name="title"><![CDATA[Titolo]]></string>
     <string name="password_too_long"><![CDATA[Se la tua vecchia password era più lunga di 64 caratteri, esci e utilizza lo strumento di reimpostazione password.]]></string>
   </group>
  </translation>

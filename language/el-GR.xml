@@ -2710,7 +2710,6 @@
     <string name="password_confirm" introduced="5.0.0"><![CDATA[Επιβεβαίωση κωδικού πρόσβασης]]></string>
     <string name="password_current" introduced="5.0.0"><![CDATA[Τρέχων κωδικός πρόσβασης]]></string>
     <string name="password_new" introduced="5.0.0"><![CDATA[Νέος κωδικός πρόσβασης]]></string>
-    <string name="title" introduced="5.0.0"><![CDATA[Τίτλος]]></string>
     <string name="password_too_long" introduced="6.4.6"><![CDATA[Αν ο παλιός σας κωδικός ήταν μεγαλύτερος από 64 χαρακτήρες, παρακαλώ αποσυνδεθείτε και χρησιμοποιήστε το εργαλείο επαναφοράς κωδικού.]]></string>
   </group>
  </translation>

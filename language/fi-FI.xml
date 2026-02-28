@@ -2697,7 +2697,6 @@ VAROITUS: Kaikki sen sisältämät tiedostot poistetaan pysyvästi!]]></string>
       <string name="password_confirm"><![CDATA[Vahvista salasana]]></string>
       <string name="password_current"><![CDATA[Nykyinen salasana]]></string>
       <string name="password_new"><![CDATA[Uusi salasana]]></string>
-      <string name="title"><![CDATA[Titteli]]></string>
       <string name="password_too_long"><![CDATA[Jos vanha salasanasi oli yli 64 merkkiä pitkä, kirjaudu ulos ja käytä salasanan palautustyökalua.]]></string>
     </group>
   </translation>

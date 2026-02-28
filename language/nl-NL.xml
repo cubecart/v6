@@ -2699,7 +2699,6 @@ WAARSCHUWING: Alle bestanden erin worden permanent verwijderd!]]></string>
       <string name="password_confirm"><![CDATA[Wachtwoord bevestigen]]></string>
       <string name="password_current"><![CDATA[Huidig wachtwoord]]></string>
       <string name="password_new"><![CDATA[Nieuw wachtwoord]]></string>
-      <string name="title"><![CDATA[Aanhef]]></string>
       <string name="password_too_long"><![CDATA[Als uw oude wachtwoord langer was dan 64 tekens, log dan uit en gebruik de tool voor wachtwoordherstel.]]></string>
     </group>
   </translation>

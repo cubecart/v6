@@ -2701,7 +2701,6 @@
     <string name="password_confirm"><![CDATA[אשר סיסמה]]></string>
     <string name="password_current"><![CDATA[סיסמה נוכחית]]></string>
     <string name="password_new"><![CDATA[סיסמה חדשה]]></string>
-    <string name="title"><![CDATA[תואר]]></string>
     <string name="password_too_long"><![CDATA[אם הסיסמה הישנה שלך הייתה ארוכה מ-64 תווים, אנא התנתק והשתמש בכלי לאיפוס סיסמה.]]></string>
   </group>
  </translation>

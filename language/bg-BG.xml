@@ -2701,7 +2701,6 @@
     <string name="password_confirm"><![CDATA[Потвърждение на паролата]]></string>
     <string name="password_current"><![CDATA[Текуща парола]]></string>
     <string name="password_new"><![CDATA[Нова парола]]></string>
-    <string name="title"><![CDATA[Обръщение]]></string>
     <string name="password_too_long"><![CDATA[Ако старата ви парола съдържаше повече от 64 символа, моля излезте и използвайте инструмента за нулиране на паролата.]]></string>
   </group>
  </translation>

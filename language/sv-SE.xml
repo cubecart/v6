@@ -2708,7 +2708,6 @@ VARNING: Alla filer i den kommer att raderas permanent]]></string>
    <string name="password_confirm"><![CDATA[Bekräfta lösenord]]></string>
    <string name="password_current"><![CDATA[Nuvarande lösenord]]></string>
    <string name="password_new"><![CDATA[Nytt lösenord]]></string>
-   <string name="title"><![CDATA[Titel]]></string>
    <string name="password_too_long"><![CDATA[Om ditt gamla lösenord var längre än 64 tecken, logga ut och använd verktyget för lösenordsåterställning.]]></string>
   </group>
  </translation>

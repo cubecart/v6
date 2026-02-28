@@ -13,7 +13,7 @@
 <div class="row">
    <div class="large-6 columns">
       <h2>{if $CTRL_DELIVERY}{$LANG.address.billing_address}{else}{$LANG.address.billing_delivery_address}{/if}</h2>
-      {$DATA.title} {$DATA.first_name|capitalize} {$DATA.last_name|capitalize}<br>
+      {$DATA.first_name|capitalize} {$DATA.last_name|capitalize}<br>
       {if $DATA.company_name}{$DATA.company_name}<br>{/if}
       {$DATA.line1|capitalize}<br>
       {if $DATA.line2|capitalize}{$DATA.line2|capitalize}<br>{/if}
@@ -55,7 +55,7 @@
 <div id="register_false_address" class="row{if empty($BILLING.line1)} hide{/if}">
    <div class="large-6 columns">
       <h2>{$LANG.address.billing_address}</h2>
-      {$BILLING.title} {$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
+      {$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
       {if $BILLING.company_name}{$BILLING.company_name}<br>{/if}
       {$BILLING.line1|capitalize}<br>
       {if $BILLING.line2|capitalize}{$BILLING.line2|capitalize}<br>{/if}
@@ -78,7 +78,7 @@
       {/foreach}
       {if $CTRL_DELIVERY}
       <h2>{$LANG.address.delivery_address}</h2>
-      {$DELIVERY.title} {$DELIVERY.first_name|capitalize} {$DELIVERY.last_name|capitalize}<br>
+      {$DELIVERY.first_name|capitalize} {$DELIVERY.last_name|capitalize}<br>
       {if $DELIVERY.company_name}{$DELIVERY.company_name}<br>{/if}
       {$DELIVERY.line1|capitalize}<br>
       {if $DELIVERY.line2|capitalize}{$DELIVERY.line2|capitalize}<br>{/if}
@@ -118,9 +118,6 @@
    <h2>{$LANG.account.your_details}</h2>
    <p>{$LANG.account.already_registered} <a href="#" id="checkout_login">{$LANG.account.log_in}</a></p>
    <h3>{$LANG.account.contact_details}</h3>
-   <div class="row">
-      <div class="small-4 columns"><label for="user_title" class="show-for-medium-up">{$LANG.user.title}</label><input type="text" name="user[title]" id="user_title"  class="capitalize" value="{$USER.title}" placeholder="{$LANG.user.title}" autocomplete="honorific-prefix"></div>
-   </div>
    <div class="row">
       <div class="small-12 large-8 columns"><label for="user_first" class="show-for-medium-up">{$LANG.user.name_first}</label><input type="text" name="user[first_name]" id="user_first" required value="{$USER.first_name|capitalize}" placeholder="{$LANG.user.name_first}  {$LANG.form.required}" autocomplete="given-name" maxlength="32"></div>
    </div>

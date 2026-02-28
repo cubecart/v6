@@ -40,7 +40,7 @@
       <div class="row">
          <div class="small-6 columns thickmarg-topbottom">
             {if !empty($order.company_name)}<strong>{$order.company_name}</strong><br>{/if}
-            {$order.title} {$order.first_name|capitalize} {$order.last_name|capitalize}<br>
+            {$order.first_name|capitalize} {$order.last_name|capitalize}<br>
             {$order.line1|capitalize} <br>
             {if !empty($order.line2)}{$order.line2|capitalize}<br>{/if}
             {$order.town|upper}<br>

@@ -2709,7 +2709,6 @@ Este correo electr&oacute;nico se env&iacute;a desde la direcci&oacute;n de corr
   <string name="password_confirm"><![CDATA[Confirmar contrase&ntilde;a]]></string>
   <string name="password_current"><![CDATA[Contrase&ntilde;a actual]]></string>
   <string name="password_new"><![CDATA[Nueva contrase&ntilde;a]]></string>
-  <string name="title"><![CDATA[T&iacute;tulo]]></string>
   <string name="password_too_long"><![CDATA[Si su contrase&ntilde;a anterior ten&iacute;a m&aacute;s de 64 caracteres, cierre la sesi&oacute;n y use la herramienta de restablecimiento de contrase&ntilde;a.]]></string>
  </group>
  </translation>

@@ -2700,7 +2700,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="password_confirm"><![CDATA[パスワードの確認]]></string>
     <string name="password_current"><![CDATA[現在のパスワード]]></string>
     <string name="password_new"><![CDATA[新しいパスワード]]></string>
-    <string name="title"><![CDATA[敬称]]></string>
     <string name="password_too_long"><![CDATA[以前のパスワードが64文字を超えていた場合は、ログアウトしてパスワードリセットツールをご使用ください。]]></string>
   </group>
  </translation>

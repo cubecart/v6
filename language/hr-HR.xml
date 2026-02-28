@@ -2701,7 +2701,6 @@ UPOZORENJE: sve datoteke koje sadrži bit će trajno izbrisane!]]></string>
     <string name="password_confirm"><![CDATA[Potvrdite lozinku]]></string>
     <string name="password_current"><![CDATA[Trenutna lozinka]]></string>
     <string name="password_new"><![CDATA[Nova lozinka]]></string>
-    <string name="title"><![CDATA[Naslov]]></string>
     <string name="password_too_long"><![CDATA[Ako je vaša stara lozinka sadržavala više od 64 znaka, molimo odjavite se i koristite alat za resetiranje lozinke.]]></string>
   </group>
  </translation>

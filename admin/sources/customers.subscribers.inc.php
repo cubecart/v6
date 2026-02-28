@@ -52,19 +52,15 @@ if (isset($GLOBALS['RAW']['POST']['maillist_format'])) {
             '{$EMAIL_ADDRESS}',
             '{$FULL_NAME_LONG}',
             '{$FULL_NAME_SHORT}',
-            '{$TITLE}',
             '{$FIRST_NAME}',
             '{$LAST_NAME}'
         );
         // Loop through
         foreach ($maillist as $member) {
             if ($member['customer_id']) {
-                $customer = $GLOBALS['db']->select('CubeCart_customer', array('title', 'first_name', 'last_name'), array('customer_id' => $member['customer_id']));
+                $customer = $GLOBALS['db']->select('CubeCart_customer', array('first_name', 'last_name'), array('customer_id' => $member['customer_id']));
                 if ($customer) {
                     $member = array_merge($member, $customer[0]);
-                    if (!empty($member['title'])) {
-                        $long_name[]  = $member['title'];
-                    }
                     if (!empty($member['first_name'])) {
                         $long_name[]  = $member['first_name'];
                         $short_name[]  = $member['first_name'];
@@ -82,7 +78,6 @@ if (isset($GLOBALS['RAW']['POST']['maillist_format'])) {
                 $member['email'],
                 $member['long_name'],
                 $member['short_name'],
-                $member['title'],
                 $member['first_name'],
                 $member['last_name']
             );

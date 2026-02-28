@@ -2699,7 +2699,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="password_confirm"><![CDATA[Confirmer le mot de passe]]></string>
     <string name="password_current"><![CDATA[Mot de passe actuel]]></string>
     <string name="password_new"><![CDATA[Nouveau mot de passe]]></string>
-    <string name="title"><![CDATA[Titre]]></string>
     <string name="password_too_long"><![CDATA[Si votre ancien mot de passe contenait plus de 64 caractères, veuillez vous déconnecter et utiliser l'outil de réinitialisation du mot de passe.]]></string>
   </group>
  </translation>

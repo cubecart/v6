@@ -2701,7 +2701,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="password_confirm"><![CDATA[确认密码]]></string>
     <string name="password_current"><![CDATA[当前密码]]></string>
     <string name="password_new"><![CDATA[新密码]]></string>
-    <string name="title"><![CDATA[称谓]]></string>
     <string name="password_too_long"><![CDATA[如果您的旧密码超过 64 个字符，请退出并使用密码重置工具。]]></string>
   </group>
  </translation>

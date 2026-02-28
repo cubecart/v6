@@ -2701,7 +2701,6 @@ DĖMESIO: visi jame esantys failai bus visam laikui ištrinti!]]></string>
     <string name="password_confirm"><![CDATA[Patvirtinti slaptažodį]]></string>
     <string name="password_current"><![CDATA[Dabartinis slaptažodis]]></string>
     <string name="password_new"><![CDATA[Naujas slaptažodis]]></string>
-    <string name="title"><![CDATA[Kreipinys]]></string>
     <string name="password_too_long"><![CDATA[Jei jūsų senas slaptažodis turėjo daugiau nei 64 simbolius, atsijunkite ir naudokite slaptažodžio atkūrimo įrankį.]]></string>
   </group>
  </translation>

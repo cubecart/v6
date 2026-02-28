@@ -141,11 +141,6 @@
                   <td>{$LANG.user.fullname_short} {$LANG.email.example_fullname_short}</td>
                   </tr>
                   <tr>
-                  <td>{literal}{$TITLE}{/literal}</td>
-                  <td style="text-align:center"><i class="fa fa-times" alt="{$LANG.common.no}"></i></td>
-                  <td>{$LANG.user.title} {$LANG.email.example_title}</td>
-                  </tr>
-                  <tr>
                   <td>{literal}{$FIRST_NAME}{/literal}</td>
                   <td style="text-align:center"><i class="fa fa-times" alt="{$LANG.common.no}"></i></td>
                   <td>{$LANG.user.name_first} {$LANG.email.example_name_first}</td>

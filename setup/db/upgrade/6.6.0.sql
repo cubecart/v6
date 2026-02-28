@@ -80,3 +80,9 @@ ALTER TABLE `CubeCart_admin_users` ADD COLUMN `twofa_otp_hash` VARCHAR(255) NULL
 ALTER TABLE `CubeCart_admin_users` ADD COLUMN `twofa_otp_expires` INT UNSIGNED NOT NULL DEFAULT 0; #EOQ
 
 -- Two-factor authentication: email templates imported from language XML files by 6.6.0.php
+
+-- Remove customer title (Mr/Mrs/Dr) field from all tables
+ALTER TABLE `CubeCart_addressbook` DROP COLUMN `title`; #EOQ
+ALTER TABLE `CubeCart_customer` DROP COLUMN `title`; #EOQ
+ALTER TABLE `CubeCart_order_summary` DROP COLUMN `title`; #EOQ
+ALTER TABLE `CubeCart_order_summary` DROP COLUMN `title_d`; #EOQ

@@ -2701,7 +2701,6 @@ OPOZORILO: vse datoteke v njej bodo trajno izbrisane!]]></string>
     <string name="password_confirm"><![CDATA[Potrdite geslo]]></string>
     <string name="password_current"><![CDATA[Trenutno geslo]]></string>
     <string name="password_new"><![CDATA[Novo geslo]]></string>
-    <string name="title"><![CDATA[Naziv]]></string>
     <string name="password_too_long"><![CDATA[Če je vaše staro geslo vsebovalo več kot 64 znakov, se prosimo odjavite in uporabite orodje za ponastavitev gesla.]]></string>
   </group>
  </translation>

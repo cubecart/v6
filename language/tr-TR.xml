@@ -2710,7 +2710,6 @@ Bu e-posta mağazanın ana e-posta adresinden gönderilmiştir ancak e-posta yaz
     <string name="password_confirm" introduced="5.0.0"><![CDATA[Şifreyi onayla]]></string>
     <string name="password_current" introduced="5.0.0"><![CDATA[Mevcut şifre]]></string>
     <string name="password_new" introduced="5.0.0"><![CDATA[Yeni şifre]]></string>
-    <string name="title" introduced="5.0.0"><![CDATA[Unvan]]></string>
     <string name="password_too_long" introduced="6.4.6"><![CDATA[Eski şifreniz 64 karakterden uzunsa lütfen çıkış yapın ve şifre sıfırlama aracını kullanın.]]></string>
   </group>
  </translation>

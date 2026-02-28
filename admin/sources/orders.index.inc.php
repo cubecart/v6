@@ -170,7 +170,7 @@ if (isset($_POST['cart_order_id']) && Admin::getInstance()->permissions('orders'
 
     $customer_data = $_POST['customer'];
     if (isset($_POST['customer']['customer_id']) && !empty($_POST['customer']['customer_id'])) {
-        if (($customer = $GLOBALS['db']->select('CubeCart_customer', array('customer_id', 'title', 'first_name', 'last_name'), array('customer_id' => (int)$_POST['customer']['customer_id']))) !== false) {
+        if (($customer = $GLOBALS['db']->select('CubeCart_customer', array('customer_id', 'first_name', 'last_name'), array('customer_id' => (int)$_POST['customer']['customer_id']))) !== false) {
             $customer_data = array_merge($customer[0], $_POST['customer']);
         }
     }
@@ -977,7 +977,7 @@ CODE;
 
         foreach ($orders as $order) {
             $order['has_notes'] = isset($has_notes[$order['cart_order_id']]) ? true : false;
-            $order['name']   = (isset($order['name']) && !empty($order['name'])) ? $order['name'] : sprintf('%s %s %s', $order['title'], $order['first_name'], $order['last_name']);
+            $order['name']   = (isset($order['name']) && !empty($order['name'])) ? $order['name'] : sprintf('%s %s', $order['first_name'], $order['last_name']);
             $order['icon']   = ($order['type']==2 || empty($order['customer_id'])) ? 'user_ghost' : 'user_registered';// deprecated since 6.1.5
             $order['type'] = (empty($order['customer_id'])) ? 2 : $order['type'];
             $order['cust_type'] = array("1" => 'title_key_registered', "2" => 'title_key_unregistered');

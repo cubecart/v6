@@ -924,8 +924,7 @@ class User
         }
 
         if (empty($error)) {
-            // Format data nicely from mr barney brimstock to Mr Barney Brimstock
-            $_POST['title']   = ucwords($_POST['title']);
+            // Format data nicely from barney brimstock to Barney Brimstock
             $_POST['first_name']  = ucwords($_POST['first_name']);
             $_POST['last_name']  = ucwords($_POST['last_name']);
 
@@ -1007,7 +1006,6 @@ class User
             }
 
             // Format data nicely from mr barney brimstock to Mr Barney Brimstock & Post/Zip code to uppercase
-            $array['title'] = ucwords($array['title']);
             $array['first_name'] = ucwords($array['first_name']);
             $array['last_name'] = ucwords($array['last_name']);
             $array['postcode'] = strtoupper($array['postcode']); // e.g. ab12 34cd to  AB12 34CD
@@ -1016,7 +1014,7 @@ class User
             }
 
             $hash_values = '';
-            $checked_keys = array('billing', 'title', 'first_name', 'last_name', 'company_name', 'line1', 'line2', 'town', 'state', 'postcode', 'country');
+            $checked_keys = array('billing', 'first_name', 'last_name', 'company_name', 'line1', 'line2', 'town', 'state', 'postcode', 'country');
             foreach ($array as $key => $value) {
                 if (in_array($key, $checked_keys)) {
                     $hash_values .= $value;

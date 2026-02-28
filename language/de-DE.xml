@@ -2711,7 +2711,6 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
    <string name="password_confirm"><![CDATA[Passwort bestätigen]]></string>
    <string name="password_current"><![CDATA[Aktuelles Passwort]]></string>
    <string name="password_new"><![CDATA[Neues Passwort]]></string>
-   <string name="title"><![CDATA[Anrede]]></string>
    <string name="password_too_long"><![CDATA[Wenn Ihr altes Passwort länger als 64 Zeichen war, melden Sie sich bitte ab und verwenden Sie die Passwort-Zurücksetzen-Funktion.]]></string>
   </group>
 </translation>

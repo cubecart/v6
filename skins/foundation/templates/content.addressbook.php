@@ -21,7 +21,7 @@
       </div>
       <div class="row">
          <div class="small-6 medium-4 columns">
-            {if !empty($address.title)}{$address.title|capitalize} {/if}{$address.first_name|capitalize} {$address.last_name|capitalize}<br/>
+            {$address.first_name|capitalize} {$address.last_name|capitalize}<br/>
             {$address.line1|capitalize}<br/>
             {if !empty($address.line2)} {$address.line2|capitalize}<br/>{/if}
             {$address.town|upper}<br/>
@@ -64,9 +64,6 @@
 <form action="{$VAL_SELF}" method="post" id="addressbook_form" enctype="multipart/form-data">
    <div class="row">
       <div class="small-12 large-8 columns"><label for="addr_description">{$LANG.common.description}</label><input type="text" name="description" id="addr_description" value="{$DATA.description}" placeholder="{$LANG.address.example_address_description}"></div>
-   </div>
-   <div class="row">
-      <div class="small-12 large-8 columns"><label for="addr_title">{$LANG.user.title}</label><input type="text" name="title" id="addr_title" value="{$DATA.title}" placeholder="{$LANG.user.title}"></div>
    </div>
    <div class="row">
       <div class="small-12 large-8 columns"><label for="addr_first_name">{$LANG.user.name_first}</label><input type="text" name="first_name" id="addr_first_name" value="{$DATA.first_name|capitalize}" required placeholder="{$LANG.user.name_first} {$LANG.form.required}" maxlength="32"></div>

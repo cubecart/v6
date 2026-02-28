@@ -17,7 +17,7 @@
 <div class="row">
    <div class="small-6 columns">
       <strong>{$LANG.address.billing_address}</strong><br>
-      {$SUM.title} {$SUM.first_name|capitalize} {$SUM.last_name|capitalize}<br>
+      {$SUM.first_name|capitalize} {$SUM.last_name|capitalize}<br>
       {if $SUM.company_name}{$SUM.company_name}<br>{/if}
       {$SUM.line1|capitalize}<br>
       {if $SUM.line2|capitalize}{$SUM.line2|capitalize}<br>{/if}
@@ -28,7 +28,7 @@
    </div>
    <div class="small-6 columns">
       <strong>{$LANG.address.delivery_address}</strong><br>
-      {$SUM.title_d} {$SUM.first_name_d} {$SUM.last_name_d}<br>
+      {$SUM.first_name_d} {$SUM.last_name_d}<br>
       {if $SUM.company_name_d}{$SUM.company_name_d}<br>{/if}
       {$SUM.line1_d|capitalize}<br>
       {if $SUM.line2_d|capitalize}{$SUM.line2_d|capitalize}<br>{/if}

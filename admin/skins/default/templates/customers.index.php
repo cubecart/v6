@@ -161,7 +161,6 @@
 	<h3>{$ADD_EDIT_CUSTOMER}</h3>
 	  <fieldset><legend>{$LANG.common.details}</legend>
 		<div><label for="customer_status">{$LANG.common.status}</label><span><input type="hidden" name="customer[status]" id="customer_status" value="{$CUSTOMER.status}" class="toggle"></span></div>
-		<div><label for="cust-title">{$LANG.user.title}</label><span><input type="text" name="customer[title]" id="cust-title" class="textbox capitalize" value="{$CUSTOMER.title}"></span></div>
 		<div><label for="cust-firstname">{$LANG.user.name_first}</label><span><input type="text" name="customer[first_name]" id="cust-firstname" value="{$CUSTOMER.first_name}" class="textbox capitalize"></span></div>
 		<div><label for="cust-lastname">{$LANG.user.name_last}</label><span><input type="text" name="customer[last_name]" id="cust-lastname" value="{$CUSTOMER.last_name}" class="textbox capitalize"></span></div>
 		<div>
@@ -221,7 +220,6 @@
 	  <h3>{$LANG.address.address_edit}</h3>
 	  <fieldset>
 	  <div><label for="address_desc">{$LANG.common.description}</label><span><input type="text" name="address[description]" id="address_desc" value="{$ADDRESS.description}" class="textbox"></span></div>
-	  <div><label for="address_title">{$LANG.user.title}</label><span><input type="text" name="address[title]" id="address_title" value="{$ADDRESS.title}" class="textbox capitalize"></span></div>
 	  <div><label for="address_firstname">{$LANG.user.name_first}</label><span><input type="text" name="address[first_name]" id="address_firstname" value="{$ADDRESS.first_name}" class="textbox capitalize"></span></div>
 	  <div><label for="address_lastname">{$LANG.user.name_last}</label><span><input type="text" name="address[last_name]" id="address_lastname" value="{$ADDRESS.last_name}" class="textbox capitalize"></span></div>
 	  <div><label for="address_company">{$LANG.address.company_name}</label><span><input type="text" name="address[company_name]" id="address_company" value="{$ADDRESS.company_name}" class="textbox"></span></div>
@@ -252,7 +250,7 @@
 			<a href="{$address.edit}#address" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
 			<a href="{$address.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
 		  </span>
-		  <strong>{$address.description}</strong> - {$address.title} {$address.first_name} {$address.last_name}
+		  <strong>{$address.description}</strong> - {$address.first_name} {$address.last_name}
 		  {if !empty({$address.company_name})}({$address.company_name}){/if}
 		  <br>
 		  <span class="capitalize">{$address.line1}, {if !empty($address.line2)}{$address.line2}, {/if}</span>{$address.town}, <span class="uppercase">{if !empty($address.state_name)}{$address.state_name}, {/if}</span>{$address.postcode}, {$address.country_name}
@@ -347,7 +345,6 @@
 	  <h3>{$LANG.address.address_add}</h3>
 	  <fieldset>
 	  <div><label for="edit_description">{$LANG.common.description}</label><span><input type="text" name="address[description][]" id="edit_description" class="textbox add display" required="required"> *</span></div>
-	  <div><label for="edit_title">{$LANG.user.title}</label><span><input type="text" name="address[title][]" id="edit_title" class="textbox add capitalize"></span></div>
 	  <div><label for="edit_first_name">{$LANG.user.name_first}</label><span><input type="text" name="address[first_name][]" id="edit_first_name" class="textbox add capitalize" required="required"> *</span></div>
 	  <div><label for="edit_last_name">{$LANG.user.name_last}</label><span><input type="text" name="address[last_name][]" id="edit_last_name" class="textbox add capitalize" required="required"> *</span></div>
 	  <div><label for="edit_company_name">{$LANG.address.company_name}</label><span><input type="text" name="address[company_name][]" id="edit_company_name" class="textbox add"></span></div>

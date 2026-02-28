@@ -2711,7 +2711,6 @@ ADVARSEL: Alle filer i den vil bli slettet permanent.]]></string>
    <string name="password_confirm"><![CDATA[Bekreft passord]]></string>
    <string name="password_current"><![CDATA[Nåværende passord]]></string>
    <string name="password_new"><![CDATA[Nytt passord]]></string>
-   <string name="title"><![CDATA[Tittel]]></string>
    <string name="password_too_long"><![CDATA[Hvis det gamle passordet ditt var lengre enn 64 tegn, vennligst logg ut og bruk verktøyet for tilbakestilling av passord.]]></string>
   </group>
  </translation>

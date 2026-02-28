@@ -363,7 +363,6 @@
                   </select>
                </span>
             </div>
-            <div><label for="ajax_title">{$LANG.user.title}</label><span><input type="text" id="ajax_title" name="customer[title]" value="{$SUMMARY.title}" class="textbox billing"></span></div>
             <div><label for="ajax_first_name">{$LANG.user.name_first}</label><span><input type="text" id="ajax_first_name" name="customer[first_name]" value="{$SUMMARY.first_name}" class="textbox billing required"></span></div>
             <div><label for="ajax_last_name">{$LANG.user.name_last}</label><span><input type="text" id="ajax_last_name" name="customer[last_name]" value="{$SUMMARY.last_name}" class="textbox billing required"></span></div>
             <div><label for="sum_company_name">{$LANG.address.company_name}</label><span><input type="text" id="sum_company_name" name="customer[company_name]" value="{$SUMMARY.company_name}" class="textbox billing"></span></div>
@@ -405,7 +404,6 @@
                </span>
                <a href="#" class="duplicate" rel="billing" target="d_">{$LANG.address.copy_from_billing}</a>
             </div>
-            <div><label for="d_ajax_title">{$LANG.user.title}</label><span><input type="text" id="d_ajax_title" name="customer[title_d]" value="{$SUMMARY.title_d}" class="textbox"></span></div>
             <div><label for="d_ajax_first_name">{$LANG.user.name_first}</label><span><input type="text" id="d_ajax_first_name" name="customer[first_name_d]" value="{$SUMMARY.first_name_d}" class="textbox required"></span></div>
             <div><label for="d_ajax_last_name">{$LANG.user.name_last}</label><span><input type="text" id="d_ajax_last_name" name="customer[last_name_d]" value="{$SUMMARY.last_name_d}" class="textbox required"></span></div>
             <div><label for="d_sum_company_name">{$LANG.address.company_name}</label><span><input type="text" id="d_sum_company_name" name="customer[company_name_d]" value="{$SUMMARY.company_name_d}" class="textbox"></span></div>

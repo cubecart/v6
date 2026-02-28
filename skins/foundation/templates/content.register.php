@@ -16,9 +16,6 @@
    {$html}
    {/foreach}
    <div class="row">
-      <div class="small-4 columns"><label for="title" class="show-for-medium-up">{$LANG.user.title}</label><input type="text" name="title" id="title" value="{$DATA.title}" placeholder="{$LANG.user.title}"></div>
-   </div>
-   <div class="row">
       <div class="small-12 large-8 columns"><label for="first_name" class="show-for-medium-up">{$LANG.user.name_first}</label><input type="text" name="first_name" id="first_name" value="{$DATA.first_name|capitalize}" placeholder="{$LANG.user.name_first} {$LANG.form.required}" required maxlength="32"></div>
    </div>
    <div class="row">

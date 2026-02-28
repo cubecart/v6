@@ -267,7 +267,7 @@
                     {if !empty($order.name_d) && empty($order.last_name_d)}
                         {$order.name_d}
                     {else}
-                        {$order.title_d} {$order.first_name_d} {$order.last_name_d}
+                        {$order.first_name_d} {$order.last_name_d}
                     {/if}
                     <br>
 

@@ -2711,7 +2711,6 @@ Denne e-mail er sendt fra butikkens hoved-e-mailadresse, men det er muligt at sv
     <string name="password_confirm" introduced="5.0.0"><![CDATA[Bekræft adgangskode]]></string>
     <string name="password_current" introduced="5.0.0"><![CDATA[Nuværende adgangskode]]></string>
     <string name="password_new" introduced="5.0.0"><![CDATA[Ny adgangskode]]></string>
-    <string name="title" introduced="5.0.0"><![CDATA[Titel]]></string>
     <string name="password_too_long" introduced="6.4.6"><![CDATA[Hvis din gamle adgangskode var længere end 64 tegn, log venligst ud og brug værktøjet til nulstilling af adgangskode.]]></string>
   </group> </translation>
 </language>
