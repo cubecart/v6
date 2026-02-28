@@ -166,7 +166,7 @@
    <string name="delivery_is_billing"><![CDATA[Leverera till fakturaadressen.]]></string>
    <string name="form_address_select"><![CDATA[-- Sparade adresser --]]></string>
    <string name="line1"><![CDATA[Adress]]></string>
-   <string name="line2"><![CDATA[&nbsp;]]></string>
+   <string name="line2"></string>
    <string name="mobile"><![CDATA[Mobil]]></string>
    <string name="notify_addresses_none"><![CDATA[Inga sparade adresser.]]></string>
    <string name="phone"><![CDATA[Telefon]]></string>

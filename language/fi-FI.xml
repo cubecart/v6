@@ -151,7 +151,7 @@
       <string name="delivery_is_billing"><![CDATA[Toimita laskutusosoitteeseen.]]></string>
       <string name="form_address_select"><![CDATA[-- Tallennetut osoitteet --]]></string>
       <string name="line1"><![CDATA[Osoite]]></string>
-      <string name="line2"><![CDATA[&nbsp;]]></string>
+      <string name="line2"></string>
       <string name="mobile"><![CDATA[Matkapuhelin]]></string>
       <string name="notify_addresses_none"><![CDATA[Ei tallennettuja osoitteita.]]></string>
       <string name="phone"><![CDATA[Puhelin]]></string>

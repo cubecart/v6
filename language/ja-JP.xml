@@ -166,7 +166,7 @@
     <string name="delivery_is_billing"><![CDATA[請求先住所に配送する。]]></string>
     <string name="form_address_select"><![CDATA[-- 登録済み住所 --]]></string>
     <string name="line1"><![CDATA[住所]]></string>
-    <string name="line2"><![CDATA[&nbsp;]]></string>
+    <string name="line2"></string>
     <string name="mobile"><![CDATA[携帯電話]]></string>
     <string name="notify_addresses_none"><![CDATA[登録された住所はありません。]]></string>
     <string name="phone"><![CDATA[電話]]></string>

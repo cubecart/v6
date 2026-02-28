@@ -167,7 +167,7 @@
     <string name="delivery_is_billing" introduced="5.0.0"><![CDATA[Αποστολή στη διεύθυνση χρέωσης.]]></string>
     <string name="form_address_select" introduced="5.0.0"><![CDATA[-- Αποθηκευμένες διευθύνσεις --]]></string>
     <string name="line1" introduced="5.0.0"><![CDATA[Διεύθυνση]]></string>
-    <string name="line2" introduced="5.0.0"><![CDATA[&nbsp;]]></string>
+    <string name="line2" introduced="5.0.0"></string>
     <string name="mobile" introduced="5.0.0"><![CDATA[Κινητό]]></string>
     <string name="notify_addresses_none" introduced="5.0.0"><![CDATA[Δεν υπάρχουν αποθηκευμένες διευθύνσεις.]]></string>
     <string name="phone" introduced="5.0.0"><![CDATA[Τηλέφωνο]]></string>

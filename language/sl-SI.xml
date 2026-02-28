@@ -166,7 +166,7 @@
     <string name="delivery_is_billing"><![CDATA[Dostavi na naslov za račun.]]></string>
     <string name="form_address_select"><![CDATA[-- Shranjeni naslovi --]]></string>
     <string name="line1"><![CDATA[Naslov]]></string>
-    <string name="line2"><![CDATA[&nbsp;]]></string>
+    <string name="line2"></string>
     <string name="mobile"><![CDATA[Mobilni telefon]]></string>
     <string name="notify_addresses_none"><![CDATA[Ni shranjenih naslovov.]]></string>
     <string name="phone"><![CDATA[Telefon]]></string>

@@ -167,7 +167,7 @@
     <string name="delivery_is_billing" introduced="5.0.0"><![CDATA[Fatura adresine teslim et.]]></string>
     <string name="form_address_select" introduced="5.0.0"><![CDATA[-- Kayıtlı Adresler --]]></string>
     <string name="line1" introduced="5.0.0"><![CDATA[Adres]]></string>
-    <string name="line2" introduced="5.0.0"><![CDATA[&nbsp;]]></string>
+    <string name="line2" introduced="5.0.0"></string>
     <string name="mobile" introduced="5.0.0"><![CDATA[Cep Telefonu]]></string>
     <string name="notify_addresses_none" introduced="5.0.0"><![CDATA[Kayıtlı adres yok.]]></string>
     <string name="phone" introduced="5.0.0"><![CDATA[Telefon]]></string>

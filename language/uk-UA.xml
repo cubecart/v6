@@ -151,7 +151,7 @@
       <string name="delivery_is_billing"><![CDATA[Доставити на адресу рахунку.]]></string>
       <string name="form_address_select"><![CDATA[-- Збережені адреси --]]></string>
       <string name="line1"><![CDATA[Адреса]]></string>
-      <string name="line2"><![CDATA[&nbsp;]]></string>
+      <string name="line2"></string>
       <string name="mobile"><![CDATA[Мобільний]]></string>
       <string name="notify_addresses_none"><![CDATA[Збережених адрес немає.]]></string>
       <string name="phone"><![CDATA[Телефон]]></string>

@@ -164,7 +164,7 @@
   <string name="delivery_is_billing"><![CDATA[Enviar a la direcci&oacute;n de facturaci&oacute;n.]]></string>
   <string name="form_address_select"><![CDATA[-- Direcciones predefinidas --]]></string>
   <string name="line1"><![CDATA[Direcci&oacute;n]]></string>
-  <string name="line2"><![CDATA[&nbsp;]]></string>
+  <string name="line2"></string>
   <string name="mobile"><![CDATA[M&oacute;vil]]></string>
   <string name="notify_addresses_none"><![CDATA[No hay direcciones guardadas.]]></string>
   <string name="phone"><![CDATA[Tel&eacute;fono]]></string>

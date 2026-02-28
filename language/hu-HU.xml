@@ -166,7 +166,7 @@
     <string name="delivery_is_billing"><![CDATA[Szállítás a számlázási címre.]]></string>
     <string name="form_address_select"><![CDATA[-- Előre megadott címek --]]></string>
     <string name="line1"><![CDATA[Cím]]></string>
-    <string name="line2"><![CDATA[&nbsp;]]></string>
+    <string name="line2"></string>
     <string name="mobile"><![CDATA[Mobil]]></string>
     <string name="notify_addresses_none"><![CDATA[Nincsenek mentett címek.]]></string>
     <string name="phone"><![CDATA[Telefon]]></string>

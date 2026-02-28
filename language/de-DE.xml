@@ -166,7 +166,7 @@
    <string name="delivery_is_billing"><![CDATA[An Rechnungsadresse liefern.]]></string>
    <string name="form_address_select"><![CDATA[-- Gespeicherte Adressen --]]></string>
    <string name="line1"><![CDATA[Adresse]]></string>
-   <string name="line2"><![CDATA[&nbsp;]]></string>
+   <string name="line2"></string>
    <string name="mobile"><![CDATA[Mobiltelefon]]></string>
    <string name="notify_addresses_none"><![CDATA[Keine gespeicherten Adressen.]]></string>
    <string name="phone"><![CDATA[Telefon]]></string>

@@ -166,7 +166,7 @@
    <string name="delivery_is_billing"><![CDATA[Leveringsadressen er den samme som faktureringsadressen]]></string>
    <string name="form_address_select"><![CDATA[-- Forhåndsdefinerte adresser --]]></string>
    <string name="line1"><![CDATA[Adresse]]></string>
-   <string name="line2"><![CDATA[&nbsp;]]></string>
+   <string name="line2"></string>
    <string name="mobile"><![CDATA[Mobil]]></string>
    <string name="notify_addresses_none"><![CDATA[Ingen lagrede adresser.]]></string>
    <string name="phone"><![CDATA[Telefon]]></string>

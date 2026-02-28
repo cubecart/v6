@@ -166,7 +166,7 @@
     <string name="delivery_is_billing"><![CDATA[配送至账单地址。]]></string>
     <string name="form_address_select"><![CDATA[-- 预设地址 --]]></string>
     <string name="line1"><![CDATA[地址]]></string>
-    <string name="line2"><![CDATA[&nbsp;]]></string>
+    <string name="line2"></string>
     <string name="mobile"><![CDATA[手机]]></string>
     <string name="notify_addresses_none"><![CDATA[没有已保存的地址。]]></string>
     <string name="phone"><![CDATA[电话]]></string>

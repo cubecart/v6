@@ -166,7 +166,7 @@
     <string name="delivery_is_billing"><![CDATA[Doručit na fakturační adresu.]]></string>
     <string name="form_address_select"><![CDATA[-- Přednastavené adresy --]]></string>
     <string name="line1"><![CDATA[Adresa]]></string>
-    <string name="line2"><![CDATA[&nbsp;]]></string>
+    <string name="line2"></string>
     <string name="mobile"><![CDATA[Mobil]]></string>
     <string name="notify_addresses_none"><![CDATA[Žádné uložené adresy.]]></string>
     <string name="phone"><![CDATA[Telefon]]></string>

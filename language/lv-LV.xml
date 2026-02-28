@@ -166,7 +166,7 @@
     <string name="delivery_is_billing"><![CDATA[Piegādāt uz norēķinu adresi.]]></string>
     <string name="form_address_select"><![CDATA[-- Iepriekš saglabātās adreses --]]></string>
     <string name="line1"><![CDATA[Adrese]]></string>
-    <string name="line2"><![CDATA[&nbsp;]]></string>
+    <string name="line2"></string>
     <string name="mobile"><![CDATA[Mobilais]]></string>
     <string name="notify_addresses_none"><![CDATA[Nav saglabātu adrešu.]]></string>
     <string name="phone"><![CDATA[Tālrunis]]></string>

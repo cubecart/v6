@@ -166,7 +166,7 @@
     <string name="delivery_is_billing"><![CDATA[Dostavi na adresu za naplatu.]]></string>
     <string name="form_address_select"><![CDATA[-- Spremljene adrese --]]></string>
     <string name="line1"><![CDATA[Adresa]]></string>
-    <string name="line2"><![CDATA[&nbsp;]]></string>
+    <string name="line2"></string>
     <string name="mobile"><![CDATA[Samo mobilna stranica]]></string>
     <string name="notify_addresses_none"><![CDATA[Nema spremljenih adresa.]]></string>
     <string name="phone"><![CDATA[Telefon]]></string>

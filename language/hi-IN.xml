@@ -166,7 +166,7 @@
     <string name="delivery_is_billing"><![CDATA[बिलिंग पते पर डिलीवर करें।]]></string>
     <string name="form_address_select"><![CDATA[-- पूर्वनिर्धारित पते --]]></string>
     <string name="line1"><![CDATA[पता]]></string>
-    <string name="line2"><![CDATA[&nbsp;]]></string>
+    <string name="line2"></string>
     <string name="mobile"><![CDATA[मोबाइल]]></string>
     <string name="notify_addresses_none"><![CDATA[कोई पता संग्रहीत नहीं है।]]></string>
     <string name="phone"><![CDATA[फ़ोन]]></string>

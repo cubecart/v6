@@ -166,7 +166,7 @@
     <string name="delivery_is_billing"><![CDATA[Доставка на адреса за фактуриране.]]></string>
     <string name="form_address_select"><![CDATA[-- Запазени адреси --]]></string>
     <string name="line1"><![CDATA[Адрес]]></string>
-    <string name="line2"><![CDATA[&nbsp;]]></string>
+    <string name="line2"></string>
     <string name="mobile"><![CDATA[Мобилен]]></string>
     <string name="notify_addresses_none"><![CDATA[Няма запазени адреси.]]></string>
     <string name="phone"><![CDATA[Телефон]]></string>
