@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * CubeCart v6
+ * ========================================
+ * CubeCart is a registered trade mark of CubeCart Limited
+ * Copyright CubeCart Limited 2026. All rights reserved.
+ * UK Private Limited Company No. 5323904
+ * ========================================
+ * Web:   https://www.cubecart.com
+ * Email:  hello@cubecart.com
+ * License:  GPL-3.0 http://opensource.org/licenses/GPL-3.0
+-->
+<emails version="6.6.0" language="hi-IN">
+  <email name="admin.password_recovery">
+    <subject><![CDATA[व्यवस्थापक पासवर्ड पुनर्प्राप्ति]]></subject>
+    <content type="html"><![CDATA[<p>प्रिय {$DATA.name},</p>
+<p>स्टोर के व्यवस्थापन पैनल तक पुनः पहुँच प्राप्त करने के लिए, कृपया नीचे दिए गए लिंक पर क्लिक करें:</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<p>यदि ऊपर दिया गया लिंक काम नहीं करता है, तो कृपया इसे कॉपी करके अपने ब्राउज़र के एड्रेस बार में पेस्ट करें।</p>]]></content>
+  </email>
+  <email name="cart.order_complete">
+    <subject><![CDATA[ऑर्डर पूरा हुआ]]></subject>
+    <content type="html"><![CDATA[<p>नमस्ते {$DATA.first_name|capitalize},</p>
+<p>हमें आपको यह बताते हुए खुशी हो रही है कि ऑर्डर संख्या {$DATA.cart_order_id} अब पूरा हो गया है। यदि आपने भौतिक उत्पाद मँगवाए हैं, तो वे जल्द ही आप तक पहुँच जाएँगे।</p>{if !empty($DATA.ship_tracking)}<p>अपने ऑर्डर को ट्रैक करें:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
+  </email>
+  <email name="cart.order_cancelled">
+    <subject><![CDATA[ऑर्डर रद्द किया गया]]></subject>
+    <content type="html"><![CDATA[<p>नमस्ते {$DATA.first_name|capitalize},</p>
+<p>ऑर्डर संख्या {$DATA.cart_order_id} रद्द कर दिया गया है। यदि आपके कोई प्रश्न हैं, तो कृपया हमसे संपर्क करने में संकोच न करें।</p>]]></content>
+  </email>
+  <email name="cart.order_confirmation">
+    <subject><![CDATA[ऑर्डर की पुष्टि #{$DATA.cart_order_id}]]></subject>
+    <content type="html"><![CDATA[<p>आपके ऑर्डर के लिए धन्यवाद, {$DATA.first_name|capitalize}।</p>
+<p>हमें आपका ऑर्डर {$DATA.cart_order_id} प्राप्त हो गया है, जो {$DATA.order_date} को दिया गया था। कृपया इस ईमेल को अपने रिकॉर्ड के लिए सुरक्षित रखें। आप अपने ऑर्डर की स्थिति कभी भी ऑनलाइन देख सकते हैं।</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<table width="100%">
+<tr>
+<td valign="top" width="50%"><strong>बिलिंग पता:</strong><br>
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
+{if !empty($BILLING.company_name)}{$BILLING.company_name}<br>{/if}
+{$BILLING.line1|capitalize}<br>
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>{/if}
+{$BILLING.town|upper}<br>
+{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
+{$BILLING.postcode}<br>
+{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}<br>
+{$BILLING.phone}<br><br>
+<strong>ईमेल:</strong><br>
+{$BILLING.email}</td>
+<td valign="top" width="50%"><strong>शिपिंग पता:</strong><br>
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>
+{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>{/if}{$SHIPPING.line1|capitalize}<br>
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize} <br>{/if}{$SHIPPING.town|upper}<br>
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
+{$SHIPPING.postcode}<br>
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
+</tr>
+</table>
+<table border="0" cellpadding="3" cellspacing="0" width="100%">
+<tbody>
+<tr><td><strong>उत्पाद</strong></td><td><strong>मात्रा</strong></td><td><strong>मूल्य</strong></td></tr>
+{foreach from=$PRODUCTS item=product}
+<tr><td>{$product.name} <br>{$product.product_options}</td><td>{$product.quantity}</td><td>{$product.price}</td></tr>
+{/foreach}
+<tr><td>&nbsp;</td><td> {if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}शिपिंग:{/if}</td><td> {$DATA.shipping}</td></tr>
+<tr><td>&nbsp;</td><td> छूट:</td><td> {$DATA.discount}</td></tr>
+<tr><td>&nbsp;</td><td> उप-योग:</td><td> {$DATA.subtotal}</td></tr>
+{foreach from=$TAXES item=tax}
+<tr><td>&nbsp;</td><td> {$tax.tax_name}: ({$tax.tax_percent}%)</td><td> {$tax.tax_amount}</td></tr>
+{/foreach}
+{if $DATA.show_credit}
+<tr><td>&nbsp;</td><td>क्रेडिट:</td><td>({$DATA.credit_used})</td></tr>
+{/if}
+<tr><td>&nbsp;</td><td><strong>कुल योग: </strong></td><td><strong>{$DATA.total}</strong></td></tr>
+</tbody>
+</table>
+{if !empty($DATA.note_to_customer)}
+<p>&quot;{$DATA.note_to_customer}&quot;</p>
+{/if}]]></content>
+  </email>
+  <email name="cart.payment_fraud">
+    <subject><![CDATA[ऑर्डर में समस्या]]></subject>
+    <content type="html"><![CDATA[<p>नमस्ते {$DATA.first_name|capitalize},</p>
+<p>हमें खेद है, लेकिन हम ऑर्डर {$DATA.cart_order_id} के लिए भुगतान संसाधित नहीं कर पाए। यदि आपके कोई प्रश्न हैं, तो कृपया हमसे संपर्क करने में संकोच न करें।</p>]]></content>
+  </email>
+  <email name="account.password_recovery">
+    <subject><![CDATA[पासवर्ड पुनर्प्राप्ति]]></subject>
+    <content type="html"><![CDATA[<p>प्रिय {$DATA.first_name|capitalize} {$DATA.last_name|capitalize},<br><br>
+अपना पासवर्ड रीसेट करने के लिए, कृपया नीचे दिए गए लिंक पर क्लिक करें या इसे कॉपी करके अपने ब्राउज़र के एड्रेस बार में पेस्ट करें। वेब पेज पर आपसे नया पासवर्ड दर्ज करने और उसकी पुष्टि करने के लिए कहा जाएगा।<br><br>
+<a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br><br>
+यदि आपको और सहायता की आवश्यकता है, तो कृपया हमसे संपर्क करें।</p>]]></content>
+  </email>
+  <email name="admin.order_received">
+    <subject><![CDATA[नया ऑर्डर #{$DATA.cart_order_id}]]></subject>
+    <content type="html"><![CDATA[<p>{$DATA.first_name|capitalize} {$DATA.last_name|capitalize} {if !empty($BILLING.company_name)}({$BILLING.company_name}){/if} ने अभी {$DATA.order_date} को ऑर्डर संख्या {$DATA.cart_order_id} दिया है।</p>
+<p>आप नीचे दिए गए लिंक का उपयोग करके इस ऑर्डर को प्रबंधित कर सकते हैं।</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<table width="100%">
+<tr>
+<td valign="top" width="50%"><strong>बिलिंग पता:</strong><br>
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
+{if !empty($BILLING.company_name)}{$BILLING.company_name}<br>{/if}
+{$BILLING.line1|capitalize}<br>
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>{/if}
+{$BILLING.town|upper}<br>
+{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
+{$BILLING.postcode}<br>
+{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}<br>
+{$BILLING.phone}<br><br>
+<strong>ईमेल:</strong><br>
+{$BILLING.email}</td>
+<td valign="top" width="50%"><strong>शिपिंग पता:</strong><br>
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>
+{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>{/if}{$SHIPPING.line1|capitalize}<br>
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize} <br>{/if}{$SHIPPING.town|upper}<br>
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
+{$SHIPPING.postcode}<br>
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
+</tr>
+</table>
+<table border="0" cellpadding="3" cellspacing="0" width="100%">
+<tbody>
+<tr><td><strong>उत्पाद</strong></td><td><strong>मात्रा</strong></td><td><strong>मूल्य</strong></td></tr>
+{foreach from=$PRODUCTS item=product}
+<tr><td>{$product.name} <br>{$product.product_options}</td><td>{$product.quantity}</td><td>{$product.price}</td></tr>
+{/foreach}
+<tr><td>&nbsp;</td><td> {if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}शिपिंग:{/if}</td><td> {$DATA.shipping}</td></tr>
+<tr><td>&nbsp;</td><td> छूट:</td><td> {$DATA.discount}</td></tr>
+<tr><td>&nbsp;</td><td> उप-योग:</td><td> {$DATA.subtotal}</td></tr>
+{foreach from=$TAXES item=tax}
+<tr><td>&nbsp;</td><td> {$tax.tax_name}: ({$tax.tax_percent}%)</td><td> {$tax.tax_amount}</td></tr>
+{/foreach}
+{if $DATA.show_credit}
+<tr><td>&nbsp;</td><td>क्रेडिट:</td><td>({$DATA.credit_used})</td></tr>
+{/if}
+<tr><td>&nbsp;</td><td><strong>कुल योग: </strong></td><td><strong>{$DATA.total}</strong></td></tr>
+</tbody>
+</table>]]></content>
+  </email>
+  <email name="admin.review_added">
+    <subject><![CDATA[नई उत्पाद समीक्षा]]></subject>
+    <content type="html"><![CDATA[{$DATA.name} ने '{$DATA.product_name}' के लिए एक नई समीक्षा लिखी है। आप नीचे दिए गए लिंक का उपयोग करके इसे मॉडरेट कर सकते हैं।
+        <p><strong>मॉडरेशन लिंक:</strong><br><a href='{$DATA.link}'>{$DATA.link}</a></p>
+        <p><strong>समीक्षा पाठ:</strong><br>{$DATA.review}</p>]]></content>
+  </email>
+  <email name="cart.digital_download">
+    <subject><![CDATA[आपके डाउनलोड तैयार हैं]]></subject>
+    <content type="html"><![CDATA[<p>नमस्ते {$DATA.first_name|capitalize},</p>
+<p>आपकी डिजिटल फ़ाइलें डाउनलोड के लिए तैयार हैं। आप नीचे दिए गए लिंक का उपयोग करके उन्हें प्राप्त कर सकते हैं:</p>
+{foreach from=$DOWNLOADS item=download}
+<p><strong>{$download.name}:</strong> (लिंक {$download.expire} को समाप्त होगा<strong>)</strong><br>
+<a href="{$download.url}">{$download.url}</a></p>
+{/foreach}
+<p>यदि ऊपर दिए गए लिंक काम नहीं करते हैं, तो उन्हें कॉपी करके अपने ब्राउज़र के एड्रेस बार में पेस्ट करें। आप इन फ़ाइलों को हमारी वेबसाइट पर अपने खाते से भी प्राप्त कर सकते हैं।</p>
+<p>&nbsp;</p>]]></content>
+  </email>
+  <email name="cart.gift_certificate">
+    <subject><![CDATA[आपका उपहार कार्ड]]></subject>
+    <content type="html"><![CDATA[<p>प्रिय {$DATA.name},</p>
+<p>आपको एक उपहार कार्ड प्राप्त हुआ है जिसका उपयोग हमारी वेबसाइट पर किसी भी खरीदारी के लिए किया जा सकता है।</p>
+<p><strong>प्रेषक: </strong>{$DATA.first_name|capitalize} {$DATA.last_name|capitalize}<br>
+<strong>राशि: </strong>{$DATA.value}<br>
+<strong>रिडीम कोड:</strong> {$DATA.code}<br>
+<strong>उपहार संदेश:</strong> {$DATA.message}</p>
+<p>-------------------</p>
+<p>इस उपहार कार्ड को रिडीम करने के लिए कृपया ऊपर दिया गया &quot;रिडीम कोड&quot; चेकआउट के समय &quot;प्रोमोशनल कोड या उपहार कार्ड&quot; फ़ील्ड में दर्ज करें।</p>
+<p>क्यों न इसे अभी खर्च करें?</p>]]></content>
+  </email>
+  <email name="catalogue.tell_friend">
+    <subject><![CDATA[{$DATA.from} ने आपके लिए एक उत्पाद की सिफारिश की है]]></subject>
+    <content type="html"><![CDATA[प्रिय {$DATA.to},
+<p>आपके मित्र <strong>{$DATA.from}</strong> को लगता है कि आपकी <strong>{$DATA.name}</strong> में रुचि हो सकती है।</p>
+<p><strong>उत्पाद लिंक:</strong> <a href="{$DATA.link}">{$DATA.name}</a></p>
+<p>{$DATA.message}</p>]]></content>
+  </email>
+  <email name="cart.payment_received">
+    <subject><![CDATA[आपके भुगतान के लिए धन्यवाद]]></subject>
+    <content type="html"><![CDATA[<p>नमस्ते {$DATA.first_name|capitalize},</p>
+<p>हमें ऑर्डर संख्या {$DATA.cart_order_id} के लिए {$DATA.total} का आपका भुगतान प्राप्त हो गया है।</p>]]></content>
+  </email>
+  <email name="newsletter.verify_email">
+    <subject><![CDATA[अपनी सदस्यता की पुष्टि करें]]></subject>
+    <content type="html"><![CDATA[<p>{$DATA.email} का उपयोग हमारे न्यूज़लेटर की सदस्यता के लिए किया गया है। अपनी सदस्यता की पुष्टि करने के लिए, कृपया नीचे दिए गए लिंक पर क्लिक करें:</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+  </email>
+  <email name="newsletter.remove_request">
+    <subject><![CDATA[न्यूज़लेटर सदस्यता रद्द करने की पुष्टि]]></subject>
+    <content type="html"><![CDATA[<p>हमारे न्यूज़लेटर से <strong>{$DATA.email}</strong> की सदस्यता रद्द करने का अनुरोध प्राप्त हुआ है। पुष्टि करने के लिए, कृपया नीचे दिए गए लिंक पर क्लिक करें।</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+  </email>
+  <email name="admin.two_factor_code">
+    <subject><![CDATA[आपका व्यवस्थापन लॉगिन सत्यापन कोड]]></subject>
+    <content type="html"><![CDATA[<p>नमस्ते {$DATA.name},</p><p>आपका लॉगिन सत्यापन कोड है:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>यह कोड 10 मिनट में समाप्त हो जाएगा। यदि आपने लॉगिन करने का प्रयास नहीं किया है, तो कृपया तुरंत अपने स्टोर व्यवस्थापक से संपर्क करें।</p>]]></content>
+  </email>
+</emails>
