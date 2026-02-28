@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * CubeCart v6
+ * ========================================
+ * CubeCart is a registered trade mark of CubeCart Limited
+ * Copyright CubeCart Limited 2026. All rights reserved.
+ * UK Private Limited Company No. 5323904
+ * ========================================
+ * Web:   https://www.cubecart.com
+ * Email:  hello@cubecart.com
+ * License:  GPL-3.0 http://opensource.org/licenses/GPL-3.0
+-->
+<emails version="6.6.0" language="et-EE">
+  <email name="admin.password_recovery">
+    <subject><![CDATA[Administraatori parooli taastamine]]></subject>
+    <content type="html"><![CDATA[<p>Lugupeetud {$DATA.name},</p>
+<p>Poe halduspaneelile juurdepääsu taastamiseks klõpsake järgmisel lingil:</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<p>Kui link ei tööta, kopeerige see ja kleepige oma brauseri aadressiribale.</p>]]></content>
+  </email>
+  <email name="cart.order_complete">
+    <subject><![CDATA[Tellimus täidetud]]></subject>
+    <content type="html"><![CDATA[<p>Lugupeetud {$DATA.first_name|capitalize},</p>
+<p>Meil on hea meel teatada, et teie tellimus {$DATA.cart_order_id} on täidetud. Kui tellisite füüsilise toote, peaks see peagi kohale jõudma.</p>{if !empty($DATA.ship_tracking)}<p>Jälgige oma saadetist:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
+  </email>
+  <email name="cart.order_cancelled">
+    <subject><![CDATA[Tellimus tühistatud]]></subject>
+    <content type="html"><![CDATA[<p>Lugupeetud {$DATA.first_name|capitalize},</p>
+<p>Tellimus {$DATA.cart_order_id} on tühistatud. Kui teil on küsimusi, võtke meiega ühendust.</p>]]></content>
+  </email>
+  <email name="cart.order_confirmation">
+    <subject><![CDATA[Tellimuse kinnitus #{$DATA.cart_order_id}]]></subject>
+    <content type="html"><![CDATA[<p>Täname teid tellimuse eest, {$DATA.first_name|capitalize}.</p>
+<p>Oleme vastu võtnud teie tellimuse {$DATA.cart_order_id}, mis esitati {$DATA.order_date}. Palun säilitage see e-kiri. Tellimuse olekut saate igal ajal kontrollida veebis.</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<table width="100%">
+<tr>
+<td valign="top" width="50%"><strong>Arveldusaadress:</strong><br>
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
+{if !empty($BILLING.company_name)}{$BILLING.company_name}<br>{/if}
+{$BILLING.line1|capitalize}<br>
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>{/if}
+{$BILLING.town|upper}<br>
+{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
+{$BILLING.postcode}<br>
+{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}<br>
+{$BILLING.phone}<br><br>
+<strong>E-post:</strong><br>
+{$BILLING.email}</td>
+<td valign="top" width="50%"><strong>Tarneaadress:</strong><br>
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>
+{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>{/if}{$SHIPPING.line1|capitalize}<br>
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize} <br>{/if}{$SHIPPING.town|upper}<br>
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
+{$SHIPPING.postcode}<br>
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
+</tr>
+</table>
+<table border="0" cellpadding="3" cellspacing="0" width="100%">
+<tbody>
+<tr><td><strong>Toode</strong></td><td><strong>Kogus</strong></td><td><strong>Hind</strong></td></tr>
+{foreach from=$PRODUCTS item=product}
+<tr><td>{$product.name} <br>{$product.product_options}</td><td>{$product.quantity}</td><td>{$product.price}</td></tr>
+{/foreach}
+<tr><td>&nbsp;</td><td> {if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Tarne:{/if}</td><td> {$DATA.shipping}</td></tr>
+<tr><td>&nbsp;</td><td> Allahindlus:</td><td> {$DATA.discount}</td></tr>
+<tr><td>&nbsp;</td><td> Vahesumma:</td><td> {$DATA.subtotal}</td></tr>
+{foreach from=$TAXES item=tax}
+<tr><td>&nbsp;</td><td> {$tax.tax_name}: ({$tax.tax_percent}%)</td><td> {$tax.tax_amount}</td></tr>
+{/foreach}
+{if $DATA.show_credit}
+<tr><td>&nbsp;</td><td>Krediit:</td><td>({$DATA.credit_used})</td></tr>
+{/if}
+<tr><td>&nbsp;</td><td><strong>Kokku: </strong></td><td><strong>{$DATA.total}</strong></td></tr>
+</tbody>
+</table>
+{if !empty($DATA.note_to_customer)}
+<p>&quot;{$DATA.note_to_customer}&quot;</p>
+{/if}]]></content>
+  </email>
+  <email name="cart.payment_fraud">
+    <subject><![CDATA[Tellimusega seotud probleem]]></subject>
+    <content type="html"><![CDATA[<p>Lugupeetud {$DATA.first_name|capitalize},</p>
+<p>Kahjuks ei õnnestunud meil tellimuse {$DATA.cart_order_id} makset töödelda. Kui teil on küsimusi, võtke meiega ühendust.</p>]]></content>
+  </email>
+  <email name="account.password_recovery">
+    <subject><![CDATA[Parooli taastamine]]></subject>
+    <content type="html"><![CDATA[<p>Lugupeetud {$DATA.first_name|capitalize} {$DATA.last_name|capitalize},<br><br>
+Parooli taastamiseks klõpsake alloleval lingil või kopeerige see oma brauseri aadressiribale. Veebilehel palutakse teil sisestada ja kinnitada uus parool.<br><br>
+<a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br><br>
+Kui vajate täiendavat abi, võtke meiega ühendust.</p>]]></content>
+  </email>
+  <email name="admin.order_received">
+    <subject><![CDATA[Uus tellimus #{$DATA.cart_order_id}]]></subject>
+    <content type="html"><![CDATA[<p>{$DATA.first_name|capitalize} {$DATA.last_name|capitalize} {if !empty($BILLING.company_name)}({$BILLING.company_name}){/if} esitas just tellimuse {$DATA.cart_order_id} kuupäeval {$DATA.order_date}.</p>
+<p>Seda tellimust saate hallata alloleva lingi kaudu.</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<table width="100%">
+<tr>
+<td valign="top" width="50%"><strong>Arveldusaadress:</strong><br>
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
+{if !empty($BILLING.company_name)}{$BILLING.company_name}<br>{/if}
+{$BILLING.line1|capitalize}<br>
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>{/if}
+{$BILLING.town|upper}<br>
+{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
+{$BILLING.postcode}<br>
+{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}<br>
+{$BILLING.phone}<br><br>
+<strong>E-post:</strong><br>
+{$BILLING.email}</td>
+<td valign="top" width="50%"><strong>Tarneaadress:</strong><br>
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>
+{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>{/if}{$SHIPPING.line1|capitalize}<br>
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize} <br>{/if}{$SHIPPING.town|upper}<br>
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
+{$SHIPPING.postcode}<br>
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
+</tr>
+</table>
+<table border="0" cellpadding="3" cellspacing="0" width="100%">
+<tbody>
+<tr><td><strong>Toode</strong></td><td><strong>Kogus</strong></td><td><strong>Hind</strong></td></tr>
+{foreach from=$PRODUCTS item=product}
+<tr><td>{$product.name} <br>{$product.product_options}</td><td>{$product.quantity}</td><td>{$product.price}</td></tr>
+{/foreach}
+<tr><td>&nbsp;</td><td> {if !empty($DATA.ship_method)}{$DATA.ship_method}:{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Tarne:{/if}</td><td> {$DATA.shipping}</td></tr>
+<tr><td>&nbsp;</td><td> Allahindlus:</td><td> {$DATA.discount}</td></tr>
+<tr><td>&nbsp;</td><td> Vahesumma:</td><td> {$DATA.subtotal}</td></tr>
+{foreach from=$TAXES item=tax}
+<tr><td>&nbsp;</td><td> {$tax.tax_name}: ({$tax.tax_percent}%)</td><td> {$tax.tax_amount}</td></tr>
+{/foreach}
+{if $DATA.show_credit}
+<tr><td>&nbsp;</td><td>Krediit:</td><td>({$DATA.credit_used})</td></tr>
+{/if}
+<tr><td>&nbsp;</td><td><strong>Kokku: </strong></td><td><strong>{$DATA.total}</strong></td></tr>
+</tbody>
+</table>]]></content>
+  </email>
+  <email name="admin.review_added">
+    <subject><![CDATA[Uus tootearvustus]]></subject>
+    <content type="html"><![CDATA[{$DATA.name} kirjutas uue arvustuse tootele '{$DATA.product_name}'. Saate seda modereerida alloleva lingi kaudu.
+        <p><strong>Modereerimislink:</strong><br><a href='{$DATA.link}'>{$DATA.link}</a></p>
+        <p><strong>Arvustuse tekst:</strong><br>{$DATA.review}</p>]]></content>
+  </email>
+  <email name="cart.digital_download">
+    <subject><![CDATA[Teie allalaadimised on valmis]]></subject>
+    <content type="html"><![CDATA[<p>Lugupeetud {$DATA.first_name|capitalize},</p>
+<p>Teie digitaalsed failid on allalaadimiseks valmis. Nendele pääsete ligi allolevatelt linkidelt:</p>
+{foreach from=$DOWNLOADS item=download}
+<p><strong>{$download.name}:</strong> (Link aegub {$download.expire}<strong>)</strong><br>
+<a href="{$download.url}">{$download.url}</a></p>
+{/foreach}
+<p>Kui ülaltoodud lingid ei tööta, proovige need kopeerida ja brauseri aadressiribale kleepida. Nendele failidele pääsete ligi ka oma konto kaudu meie veebilehel.</p>
+<p>&nbsp;</p>]]></content>
+  </email>
+  <email name="cart.gift_certificate">
+    <subject><![CDATA[Teie kinkekaart]]></subject>
+    <content type="html"><![CDATA[<p>Lugupeetud {$DATA.name},</p>
+<p>Olete saanud kinkekaardi, mida saate kasutada mis tahes ostu sooritamiseks meie poes.</p>
+<p><strong>Saatja: </strong>{$DATA.first_name|capitalize} {$DATA.last_name|capitalize}<br>
+<strong>Väärtus: </strong>{$DATA.value}<br>
+<strong>Lunastamiskood:</strong> {$DATA.code}<br>
+<strong>Kinkesõnum:</strong> {$DATA.message}</p>
+<p>-------------------</p>
+<p>Kinkekaardi lunastamiseks sisestage ülaltoodud &quot;Lunastamiskood&quot; kassas väljale &quot;Sooduskood või kinkekaart&quot;.</p>
+<p>Miks mitte seda kohe kasutada?</p>]]></content>
+  </email>
+  <email name="catalogue.tell_friend">
+    <subject><![CDATA[{$DATA.from} soovitab teile toodet]]></subject>
+    <content type="html"><![CDATA[Lugupeetud {$DATA.to},
+<p>Teie sõber <strong>{$DATA.from}</strong> arvab, et teid võiks huvitada toode <strong>{$DATA.name}</strong>.</p>
+<p><strong>Toote link:</strong> <a href="{$DATA.link}">{$DATA.name}</a></p>
+<p>{$DATA.message}</p>]]></content>
+  </email>
+  <email name="cart.payment_received">
+    <subject><![CDATA[Täname teid makse eest]]></subject>
+    <content type="html"><![CDATA[<p>Lugupeetud {$DATA.first_name|capitalize},</p>
+<p>Oleme vastu võtnud teie makse summas {$DATA.total} tellimuse {$DATA.cart_order_id} eest.</p>]]></content>
+  </email>
+  <email name="newsletter.verify_email">
+    <subject><![CDATA[Tellimuse kinnitamine]]></subject>
+    <content type="html"><![CDATA[<p>E-posti aadress {$DATA.email} on registreeritud meie uudiskirja saamiseks. Tellimuse kinnitamiseks klõpsake alloleval lingil:</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+  </email>
+  <email name="newsletter.remove_request">
+    <subject><![CDATA[Uudiskirjast loobumise kinnitus]]></subject>
+    <content type="html"><![CDATA[<p>Saime taotluse eemaldada <strong>{$DATA.email}</strong> meie uudiskirja nimekirjast. Kinnitamiseks klõpsake alloleval lingil.</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+  </email>
+  <email name="admin.two_factor_code">
+    <subject><![CDATA[Teie administraatori sisselogimise kinnituskood]]></subject>
+    <content type="html"><![CDATA[<p>Lugupeetud {$DATA.name},</p><p>Teie sisselogimise kinnituskood on:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Kood aegub 10 minuti pärast. Kui te ei üritanud sisse logida, võtke kohe ühendust poe administraatoriga.</p>]]></content>
+  </email>
+</emails>
