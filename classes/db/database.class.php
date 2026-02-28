@@ -22,26 +22,15 @@ class Database_Contoller
 {
 
     /**
-     * Tables to ignore cache clear notice. Use controller.admin hook to add to this
+     * Tables that trigger cache clear notice for new admins. Use controller.admin hook to add to this
      *
      * @var array
      */
-    public $cache_notice_tables_ingore = array(
-        'CubeCart_access_log',
-        'CubeCart_admin_error_log',
-        'CubeCart_admin_log',
-        'CubeCart_admin_users',
-        'CubeCart_blocker',
-        'CubeCart_email_log',
-        'CubeCart_extension_info',
-        'CubeCart_history',
-        'CubeCart_permissions',
-        'CubeCart_request_log',
-        'CubeCart_saved_cart',
-        'CubeCart_search',
-        'CubeCart_sessions',
-        'CubeCart_system_error_log',
-        'CubeCart_transactions'
+    public $cache_notice_tables = array(
+        'CubeCart_inventory',
+        'CubeCart_category',
+        'CubeCart_documents',
+        'CubeCart_config'
     );
 
     /**
@@ -1039,10 +1028,11 @@ class Database_Contoller
      */
     private function _clearCacheNotice($purge, $affected, $table)
     {
-        if (CC_IN_ADMIN && $purge && $affected && is_object($GLOBALS['session']) && method_exists($GLOBALS['session'], 'set') && !in_array($table, $this->cache_notice_tables_ingore)) {
-            if((int)$GLOBALS['session']->get('logins','admin_data') <= 3) {
-                $GLOBALS['main']->successMessage($GLOBALS['language']->dashboard['cache_reminder'], false);
-            }
+        if (CC_IN_ADMIN && $purge && $affected && is_object($GLOBALS['session']) && method_exists($GLOBALS['session'], 'set')
+            && !$GLOBALS['session']->has('CLEAR_CACHE')
+            && (int)$GLOBALS['session']->get('logins','admin_data') <= 3
+            && in_array($table, $this->cache_notice_tables)) {
+            $GLOBALS['main']->successMessage($GLOBALS['language']->dashboard['cache_reminder'], false);
             $GLOBALS['session']->set('CLEAR_CACHE', true);
         }
     }

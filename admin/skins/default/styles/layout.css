@@ -506,13 +506,21 @@ fieldset .custom-checkbox {
 #gui_message .error {
     color: #FFF;
     font-size: 14px;
-    padding: 2px 2px 2px 30px;
+    padding: 4px 8px 4px 10px;
     text-align: left;
     cursor: pointer;
     min-height: 16px
 }
-#gui_message .error:first-child {
-    background: url(../images/warn-close.gif) 4px no-repeat #900
+#gui_message .success::before,
+#gui_message .error::before {
+    font-family: FontAwesome;
+    margin-right: 8px;
+}
+#gui_message .success::before {
+    content: "\f05a";
+}
+#gui_message .error::before {
+    content: "\f071";
 }
 #gui_message .error {
     background-color: #900
@@ -523,9 +531,6 @@ fieldset .custom-checkbox {
 }
 #gui_message .success a:hover, #gui_message .error a:hover {
     text-decoration: none;
-}
-#gui_message .success:first-child {
-    background: url(../images/info-close.gif) 4px no-repeat #1b4271
 }
 #gui_message .success {
     background-color: #1b4271
@@ -1646,7 +1651,7 @@ table.filter td {
     color: #ffffff;   
 }
 #clear_cache_master.clear:hover {
-    background: #ffb733;#ffa500
+    background: #ffb733;
 }
 .order_status_1 {
 	color:#008CBA;
@@ -2344,15 +2349,15 @@ textarea#query {
   /* messages */
   #gui_message .success {
     background: var(--success-bg) !important;
-    color: var(--text-invert) !important;
+    color: #ffffff !important;
   }
   #gui_message .error {
     background: var(--error-bg) !important;
-    color: var(--text-invert) !important;
+    color: #ffffff !important;
   }
   #gui_message .success a,
   #gui_message .error a {
-    color: var(--text-invert) !important;
+    color: #ffffff !important;
   }
 
   /* nav & quick links */
@@ -2659,17 +2664,17 @@ textarea#query {
   #breadcrumbs ul.quick_links li:focus-within {
     background: var(--rowHover) !important;
   }
-  #breadcrumbs ul.quick_links li#clear_cache_master
- {
-    background: #ffb733; !important;
+  #breadcrumbs ul.quick_links li#clear_cache_master.clear {
+    background-color: #e08600;
+    animation: cache_animation_dark 1s 3;
   }
-  #breadcrumbs ul.quick_links li#clear_cache_master:hover,
-  #breadcrumbs ul.quick_links li#clear_cache_master:focus-within {
+  #breadcrumbs ul.quick_links li#clear_cache_master.clear:hover,
+  #breadcrumbs ul.quick_links li#clear_cache_master.clear:focus-within {
     background: #ffa500 !important;
   }
-  #breadcrumbs ul.quick_links li#clear_cache_master a,
-  #breadcrumbs ul.quick_links li#clear_cache_master:hover a,
-  #breadcrumbs ul.quick_links li#clear_cache_master:focus-within a {
+  #breadcrumbs ul.quick_links li#clear_cache_master.clear a,
+  #breadcrumbs ul.quick_links li#clear_cache_master.clear:hover a,
+  #breadcrumbs ul.quick_links li#clear_cache_master.clear:focus-within a {
     color: #000000 !important;
   }
   /* Help menu dropdown */
@@ -2707,11 +2712,10 @@ textarea#query {
     color: #ffffff !important;
     border-bottom: 1px solid #ff0000;
   }
-  #clear_cache_master.clear a {
-    color: #000000 !important;
-  }
-  #clear_cache_master.clear a:hover {
-    color: #ffffff !important;
+  @keyframes cache_animation_dark {
+    0% { background-color: #e08600; }
+    50% { background-color: #cc5500; }
+    100% { background-color: #e08600; }
   }
   textarea#query {
     background-color: var(--input-bg) !important;
