@@ -571,13 +571,45 @@
    <div id="Scheduled_Tasks" class="tab_content">
       <h3>{$LANG.settings.tab_cron}</h3>
       <p>{$LANG.settings.cron_desc}</p>
+      <p><strong>{$LANG.settings.cron_url}:</strong> {$STORE_URL}?_g=cron&_m=run <span class="copy_text" style="float:none;opacity:1" data-copied="{$LANG.common.copied}" data-copy="{$LANG.common.click_copy}" data-value="{$STORE_URL}?_g=cron&_m=run"></span></p>
       <fieldset>
-         <legend>{$LANG.settings.title_cron}</legend>
-         <div><label for="currency">{$LANG.settings.cron_currency}</label><span>{$STORE_URL}?_g=cron&_m=updateExchangeRates</span></div>
-         <div><label for="cache">{$LANG.settings.cron_cache}</label><span>{$STORE_URL}?_g=cron&_m=clearCache</span></div>
-         <div><label for="snippet">{$LANG.settings.cron_snippet} *</label><span>{$STORE_URL}?_g=cron&_m=runSnippets</span></div>
+         <table width="100%">
+            <thead>
+               <tr>
+                  <th>{$LANG.settings.title_cron}</th>
+                  <th>{$LANG.common.status}</th>
+                  <th>{$LANG.settings.cron_frequency}</th>
+                  <th>{$LANG.settings.cron_last_run}</th>
+                  <th>{$LANG.settings.cron_last_result}</th>
+               </tr>
+            </thead>
+            <tbody>
+               {foreach from=$CRON_TASKS item=task}
+               <tr>
+                  <td>{$task.label}</td>
+                  <td style="text-align:center"><input type="hidden" class="toggle" name="cron_tasks[{$task.id}][enabled]" id="cron_enabled_{$task.id}" value="{$task.enabled}"></td>
+                  <td>
+                     <select name="cron_tasks[{$task.id}][frequency]" class="textbox">
+                        {foreach from=$CRON_FREQUENCIES key=secs item=flabel}
+                        <option value="{$secs}"{if $task.frequency == $secs} selected="selected"{/if}>{$flabel}</option>
+                        {/foreach}
+                     </select>
+                  </td>
+                  <td>{if $task.last_run}{$task.last_run}{else}{$LANG.common.never}{/if}</td>
+                  <td>{if $task.last_result}{$task.last_result}{else}&mdash;{/if}</td>
+               </tr>
+               {/foreach}
+            </tbody>
+         </table>
+      </fieldset>
+      <fieldset>
+         <legend>{$LANG.settings.cron_examples}</legend>
+         <p>{$LANG.settings.cron_examples_desc}</p>
+         <div><label>Cron</label><span><code>*/5 * * * * /usr/bin/curl -s "{$STORE_URL}?_g=cron&_m=run" > /dev/null 2>&1</code></span></div>
+         <div><label>Wget</label><span><code>*/5 * * * * /usr/bin/wget -qO /dev/null "{$STORE_URL}?_g=cron&_m=run"</code></span></div>
       </fieldset>
       <p>* {$LANG.settings.scheduled_snippet}</p>
+      <p>{$LANG.settings.cron_cache_note}</p>
    </div>
    <div id="Extra" class="tab_content">
       <h3>{$LANG.settings.title_extra}</h3>

@@ -931,6 +931,7 @@
     <string name="subject" introduced="5.0.0"><![CDATA[Subject]]></string>
     <string name="submit" introduced="5.0.0"><![CDATA[Submit]]></string>
     <string name="subtract" introduced="5.0.0"><![CDATA[Subtract]]></string>
+    <string name="task" introduced="6.6.0"><![CDATA[Task]]></string>
     <string name="thanks" introduced="5.0.0"><![CDATA[Thank you for shopping with us!]]></string>
     <string name="then" introduced="5.0.0"><![CDATA[then]]></string>
     <string name="time" introduced="5.0.0"><![CDATA[Time]]></string>
@@ -2129,10 +2130,17 @@ This email is sent from the store's master email address but it is possible to r
     <string name="tab_cron" introduced="6.4.8"><![CDATA[Scheduled Tasks]]></string>
     <string name="title_cron" introduced="6.4.8"><![CDATA[Available Tasks]]></string>
     <string name="cron_currency" introduced="6.4.8"><![CDATA[Update Exchange Rates]]></string>
-    <string name="cron_desc" introduced="6.4.8"><![CDATA[Scheduled tasks (or cron jobs) can be used to automate built-in or custom tasks. Please seek support from your web hosting provider concerning how to set up a scheduled task.]]></string>
+    <string name="cron_desc" introduced="6.4.8"><![CDATA[A cron job must be set up on your server to call the URL below every five minutes. The system will automatically determine which tasks are due to run based on the frequency settings. Please contact your server administrator for assistance.]]></string>
     <string name="cron_cache" introduced="6.4.8"><![CDATA[Clear Cache]]></string>
     <string name="cron_snippet" introduced="6.4.8"><![CDATA[Custom Code Snippet]]></string>
-    <string name="scheduled_snippet" introduced="6.4.8"><![CDATA[Executes one or more <a href="?_g=settings&node=hooks#snippets">code snippets</a> that have their event trigger set to &quot;cron&quot;.]]></string>
+    <string name="scheduled_snippet" introduced="6.4.8"><![CDATA[Executes one or more <a href="?_g=settings&node=hooks#snippets">code snippet</a> or <a href="?_g=settings&node=hooks#hooks">hook</a> that have their event trigger set to &quot;cron&quot;.]]></string>
+    <string name="cron_url" introduced="6.6.0"><![CDATA[Cron URL]]></string>
+    <string name="cron_frequency" introduced="6.6.0"><![CDATA[Frequency]]></string>
+    <string name="cron_last_run" introduced="6.6.0"><![CDATA[Last Run]]></string>
+    <string name="cron_last_result" introduced="6.6.0"><![CDATA[Last Result]]></string>
+    <string name="cron_cache_note" introduced="6.6.0"><![CDATA[<strong>Note:</strong> Cached data expires automatically after 24 hours so the Clear Cache task should not be needed in most cases.]]></string>
+    <string name="cron_examples" introduced="6.6.0"><![CDATA[Example Cron Commands]]></string>
+    <string name="cron_examples_desc" introduced="6.6.0"><![CDATA[Add one of the following commands to your server's crontab. The schedule (*/5 * * * *) runs every 5 minutes — the system will only execute tasks when they are due based on the frequency set above.]]></string>
     <string name="clone_settings" introduced="6.4.6"><![CDATA[Before we clone for the first time please configure what you do and don't want to clone each time.]]></string>
     <string name="emailconf" introduced="6.4.5"><![CDATA[Require email address confirmation (double entry)]]></string>
     <string name="redirects" introduced="6.4.0"><![CDATA[Redirects]]></string>

@@ -247,6 +247,17 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
 
     $updated = ($GLOBALS['config']->set('config', '', $config_new)) ? true : false;
 
+    ## Save cron task settings if submitted
+    if (isset($_POST['cron_tasks'])) {
+        foreach ($_POST['cron_tasks'] as $id => $data) {
+            $update = array(
+                'enabled'   => isset($data['enabled']) ? (int)$data['enabled'] : 0,
+                'frequency' => (int)$data['frequency'],
+            );
+            $GLOBALS['db']->update('CubeCart_cron_tasks', $update, array('id' => (int)$id));
+        }
+    }
+
     if ($updated || (isset($logo_update) && $logo_update)) {
         $GLOBALS['main']->successMessage($lang['settings']['notify_settings_update']);
     } else {
@@ -513,4 +524,19 @@ if (isset($select_options)) {
     }
 }
 $GLOBALS['smarty']->assign('HOOK_TAB_CONTENT', $GLOBALS['hook_tab_content']);
+
+## Cron tasks
+Cron::ensureDefaults();
+$cron_tasks = $GLOBALS['db']->select('CubeCart_cron_tasks', false, false, false, false, false, false);
+$GLOBALS['smarty']->assign('CRON_TASKS', $cron_tasks ? $cron_tasks : array());
+$GLOBALS['smarty']->assign('CRON_FREQUENCIES', array(
+    300    => '5 Minutes',
+    900    => '15 Minutes',
+    1800   => '30 Minutes',
+    3600   => 'Hourly',
+    21600  => '6 Hours',
+    43200  => '12 Hours',
+    86400  => 'Daily',
+    604800 => 'Weekly',
+));
 $page_content = $GLOBALS['smarty']->fetch('templates/settings.index.php');

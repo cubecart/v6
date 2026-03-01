@@ -36,7 +36,12 @@ class Cron
                     if(empty($currency)) {
                         $currency = $GLOBALS['config']->get('config', 'default_currency');
                     }
-                    $base  = (1/$fx[strtoupper($currency)]);
+                    $currency = strtoupper($currency);
+                    if (!isset($fx[$currency])) {
+                        trigger_error('Default currency '.$currency.' is not available from the ECB exchange rate feed.', E_USER_WARNING);
+                        throw new Exception('Default currency '.$currency.' not in ECB feed');
+                    }
+                    $base  = (1/$fx[$currency]);
                     foreach ($fx as $code => $rate) {
                         $value = ($base/(1/$rate));
                         $output[] = array(
@@ -64,5 +69,64 @@ class Cron
         foreach ($GLOBALS['hooks']->load('cron') as $hook) {
             include $hook;
         }
+    }
+
+    /**
+     * Ensure default cron tasks exist in the database
+     */
+    public static function ensureDefaults() {
+        $defaults = array(
+            array('method' => 'updateExchangeRates', 'label' => 'Update Exchange Rates', 'enabled' => 1, 'frequency' => 86400),
+            array('method' => 'clearCache', 'label' => 'Clear Cache', 'enabled' => 0, 'frequency' => 21600),
+            array('method' => 'runSnippets', 'label' => 'Run Code Snippets / Hooks*', 'enabled' => 0, 'frequency' => 3600),
+        );
+        foreach ($defaults as $task) {
+            $exists = $GLOBALS['db']->select('CubeCart_cron_tasks', 'id', array('method' => $task['method']), false, false, false, false);
+            if (!$exists) {
+                $GLOBALS['db']->insert('CubeCart_cron_tasks', $task);
+            }
+        }
+    }
+
+    /**
+     * Unified cron entry point - runs all enabled tasks that are due
+     */
+    public function run() {
+        $tasks = $GLOBALS['db']->select('CubeCart_cron_tasks', false, array('enabled' => 1), false, false, false, false);
+        $output = array();
+        if ($tasks) {
+            foreach ($tasks as $task) {
+                $method = $task['method'];
+                if (!method_exists($this, $method)) {
+                    continue;
+                }
+                $due = false;
+                if (empty($task['last_run'])) {
+                    $due = true;
+                } else {
+                    $elapsed = time() - strtotime($task['last_run']);
+                    if ($elapsed >= (int)$task['frequency']) {
+                        $due = true;
+                    }
+                }
+                if ($due) {
+                    try {
+                        if ($method === 'updateExchangeRates') {
+                            $this->$method('', false);
+                        } else {
+                            $this->$method();
+                        }
+                        $result = 'OK';
+                    } catch (Exception $e) {
+                        $result = substr($e->getMessage(), 0, 255);
+                    }
+                    $GLOBALS['db']->update('CubeCart_cron_tasks', array('last_run' => date('Y-m-d H:i:s'), 'last_result' => $result), array('id' => $task['id']));
+                    $output[] = $task['label'] . ': ' . $result;
+                } else {
+                    $output[] = $task['label'] . ': skipped (not due)';
+                }
+            }
+        }
+        echo implode("\n", $output);
     }
 }

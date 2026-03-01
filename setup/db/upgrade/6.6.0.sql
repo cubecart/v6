@@ -435,3 +435,20 @@ INSERT IGNORE INTO `CubeCart_currency` (`name`, `code`, `iso`, `symbol_left`, `s
 INSERT IGNORE INTO `CubeCart_currency` (`name`, `code`, `iso`, `symbol_left`, `symbol_right`, `value`, `decimal_places`, `updated`, `active`, `symbol_decimal`, `symbol_thousand`) VALUES ('Israeli new shekel', 'ILS', 376, '₪', '', 3.60000, 2, 0, 0, '.', ','); #EOQ
 INSERT IGNORE INTO `CubeCart_currency` (`name`, `code`, `iso`, `symbol_left`, `symbol_right`, `value`, `decimal_places`, `updated`, `active`, `symbol_decimal`, `symbol_thousand`) VALUES ('Indonesian rupiah', 'IDR', 360, 'Rp', '', 16000.00000, 2, 0, 0, '.', ','); #EOQ
 INSERT IGNORE INTO `CubeCart_currency` (`name`, `code`, `iso`, `symbol_left`, `symbol_right`, `value`, `decimal_places`, `updated`, `active`, `symbol_decimal`, `symbol_thousand`) VALUES ('Ukrainian hryvnia', 'UAH', 980, '₴', '', 42.00000, 2, 0, 0, '.', ','); #EOQ
+
+-- Cron tasks scheduler
+CREATE TABLE IF NOT EXISTS `CubeCart_cron_tasks` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `method` VARCHAR(50) NOT NULL,
+  `label` VARCHAR(100) NOT NULL DEFAULT '',
+  `enabled` TINYINT(1) NOT NULL DEFAULT 1,
+  `frequency` INT UNSIGNED NOT NULL DEFAULT 3600,
+  `last_run` DATETIME DEFAULT NULL,
+  `last_result` VARCHAR(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `method` (`method`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
+
+INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('updateExchangeRates', 'Update Exchange Rates', 1, 86400) ON DUPLICATE KEY UPDATE `id`=`id`; #EOQ
+INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('clearCache', 'Clear Cache', 0, 21600) ON DUPLICATE KEY UPDATE `id`=`id`; #EOQ
+INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('runSnippets', 'Run Code Snippets / Hooks*', 0, 3600) ON DUPLICATE KEY UPDATE `id`=`id`; #EOQ

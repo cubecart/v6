@@ -309,9 +309,12 @@ class Cubecart
                         }
                         $GLOBALS['debug']->supress();
                         $cron = new Cron();
-                        $method = preg_replace('/([^a-z]+)/i', '', $_GET['_m']);
                         if(method_exists($cron, $method)) {
                             $cron->$method();
+                            // Update last_run for individual task calls
+                            if ($method !== 'run') {
+                                $GLOBALS['db']->update('CubeCart_cron_tasks', array('last_run' => date('Y-m-d H:i:s'), 'last_result' => 'OK'), array('method' => $method));
+                            }
                         } else {
                             header('HTTP/1.0 403 Forbidden');
                         }
