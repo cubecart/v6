@@ -145,52 +145,12 @@ if (!isset($_SESSION['setup']['permissions'])) {
                 $_SESSION['setup']['progress'] = true;
                 $_SESSION['setup']['droptable'] = (isset($_POST['drop'])) ? true : false;
 
-                // Auto-detect best available cache backend
-                $cache_type = 'file';
-                $cache_config = array();
-
-                // Prefer Redis
-                if (extension_loaded('redis')) {
-                    try {
-                        $r = new Redis();
-                        if ($r->connect('127.0.0.1', 6379, 2.0)) {
-                            $r->ping();
-                            $r->close();
-                            $cache_type = 'redis';
-                            $cache_config = array(
-                                'redis_host'     => '127.0.0.1',
-                                'redis_port'     => 6379,
-                                'redis_password' => '',
-                                'redis_db'       => 0
-                            );
-                        }
-                    } catch (Exception $e) {}
-                }
-
-                // Try Memcached if Redis unavailable
-                if ($cache_type === 'file' && extension_loaded('memcached')) {
-                    try {
-                        $m = new Memcached();
-                        $m->addServer('127.0.0.1', 11211);
-                        $stats = $m->getStats();
-                        if (!empty($stats) && !empty($stats['127.0.0.1:11211'])) {
-                            $cache_type = 'memcached';
-                            $cache_config = array(
-                                'memcached_servers' => array('127.0.0.1', 11211)
-                            );
-                        }
-                    } catch (Exception $e) {}
-                }
-
                 $global = array(
                     'installed'  => true,
                     'adminFolder' => 'admin',
                     'adminFile'  => 'admin.php',
-                    'cache'      => $cache_type
+                    'cache'  => 'file'
                 );
-                if (!empty($cache_config)) {
-                    $global = array_merge($global, $cache_config);
-                }
                 $_SESSION['setup']['global'] = array_merge($_POST['global'], $global);
                 $_SESSION['setup']['config'] = $_POST['config'];
                 $salt = Password::getInstance()->createSalt();
