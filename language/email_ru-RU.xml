@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * CubeCart v6
+ * ========================================
+ * CubeCart is a registered trade mark of CubeCart Limited
+ * Copyright CubeCart Limited 2026. All rights reserved.
+ * UK Private Limited Company No. 5323904
+ * ========================================
+ * Web:   https://www.cubecart.com
+ * Email:  hello@cubecart.com
+ * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
+-->
+<emails version="6.6.0" language="ru-RU">
+  <email name="admin.password_recovery">
+    <subject><![CDATA[Восстановление пароля администратора]]></subject>
+    <content type="html"><![CDATA[<p>Здравствуйте, {$DATA.name}!</p>
+<p>Чтобы восстановить доступ к панели администрирования магазина, перейдите по ссылке ниже:</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<p>Если ссылка не работает, скопируйте её и вставьте в адресную строку браузера.</p>]]></content>
+
+  </email>
+  <email name="cart.order_complete">
+    <subject><![CDATA[Заказ выполнен]]></subject>
+    <content type="html"><![CDATA[<p>Здравствуйте, {$DATA.first_name|capitalize}!</p>
+<p>Мы рады сообщить, что ваш заказ № {$DATA.cart_order_id} выполнен. Если вы заказывали физические товары, они будут доставлены вам в ближайшее время.</p>{if !empty($DATA.ship_tracking)}<p>Отслеживание заказа:<br>{$DATA.ship_tracking}</p>{/if}]]></content>
+
+  </email>
+  <email name="cart.order_cancelled">
+    <subject><![CDATA[Заказ отменён]]></subject>
+    <content type="html"><![CDATA[<p>Здравствуйте, {$DATA.first_name|capitalize}!</p>
+<p>Заказ № {$DATA.cart_order_id} был отменён. Если у вас есть вопросы, пожалуйста, свяжитесь с нами.</p>]]></content>
+
+  </email>
+  <email name="cart.order_confirmation">
+    <subject><![CDATA[Подтверждение заказа № {$DATA.cart_order_id}]]></subject>
+    <content type="html"><![CDATA[<p>Спасибо за ваш заказ, {$DATA.first_name|capitalize}!</p>
+<p>Мы получили ваш заказ {$DATA.cart_order_id}, оформленный {$DATA.order_date}. Пожалуйста, сохраните это письмо для ваших записей. Вы можете проверить статус заказа онлайн в любое время.</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<table width="100%">
+<tr>
+<td valign="top" width="50%"><strong>Адрес для выставления счёта:</strong><br>
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
+{if !empty($BILLING.company_name)}{$BILLING.company_name}<br>
+{/if}
+{$BILLING.line1|capitalize}<br>
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>
+{/if}
+{$BILLING.town|upper}<br>
+{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
+{$BILLING.postcode}<br>
+{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}<br>
+{$BILLING.phone}<br>
+<br>
+<strong>Эл. почта:</strong><br>
+{$BILLING.email}</td>
+<td valign="top" width="50%"><strong>Адрес доставки:</strong><br>
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>
+{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>
+{/if}{$SHIPPING.line1|capitalize}<br>
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize} <br>
+{/if}{$SHIPPING.town|upper}<br>
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
+{$SHIPPING.postcode}<br>
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
+</tr>
+</table>
+<table border="0" cellpadding="3" cellspacing="0" width="100%">
+<tbody>
+<tr>
+<td><strong>Товар</strong></td>
+<td><strong>Количество</strong></td>
+<td><strong>Цена</strong></td>
+</tr>
+{foreach from=$PRODUCTS item=product}
+<tr>
+<td>{$product.name} <br>{$product.product_options}</td>
+<td>{$product.quantity}</td>
+<td>{$product.price}</td>
+</tr>
+{/foreach}
+<tr>
+<td>&nbsp;</td>
+<td>{if !empty($DATA.ship_method)}{$DATA.ship_method} :{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Доставка:{/if}</td>
+<td> {$DATA.shipping}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td> Скидка:</td>
+<td> {$DATA.discount}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td> Подытог:</td>
+<td> {$DATA.subtotal}</td>
+</tr>
+{foreach from=$TAXES item=tax}
+<tr>
+<td>&nbsp;</td>
+<td> {$tax.tax_name} : ({$tax.tax_percent}%)</td>
+<td> {$tax.tax_amount}</td>
+</tr>
+{/foreach}
+{if $DATA.show_credit}
+<tr>
+<td>&nbsp;</td>
+<td>Кредит на счёте:</td>
+<td>({$DATA.credit_used})</td>
+</tr>
+{/if}
+<tr>
+<td>&nbsp;</td>
+<td><strong>Итого по заказу: </strong></td>
+<td><strong>{$DATA.total}</strong></td>
+</tr>
+</tbody>
+</table>
+{if !empty($DATA.note_to_customer)}
+<p>&quot;{$DATA.note_to_customer}&quot;</p>
+{/if}]]></content>
+
+  </email>
+  <email name="cart.payment_fraud">
+    <subject><![CDATA[Проблема с вашим заказом]]></subject>
+    <content type="html"><![CDATA[<p>Здравствуйте, {$DATA.first_name|capitalize}!</p>
+<p>К сожалению, мы не смогли обработать оплату по заказу {$DATA.cart_order_id}. Если у вас есть вопросы, пожалуйста, свяжитесь с нами.</p>]]></content>
+
+  </email>
+  <email name="account.password_recovery">
+    <subject><![CDATA[Восстановление пароля]]></subject>
+    <content type="html"><![CDATA[<p>Здравствуйте, {$DATA.first_name|capitalize} {$DATA.last_name|capitalize}!<br>
+<br>
+Чтобы сбросить пароль, перейдите по ссылке ниже или скопируйте и вставьте адрес в адресную строку браузера. После этого вам будет предложено ввести и подтвердить новый пароль.<br>
+<br>
+<a href="{$DATA.reset_link}">{$DATA.reset_link}</a><br>
+<br>
+Если вам нужна дополнительная помощь, пожалуйста, свяжитесь с нами.</p>]]></content>
+
+  </email>
+  <email name="admin.order_received">
+    <subject><![CDATA[Новый заказ № {$DATA.cart_order_id}]]></subject>
+    <content type="html"><![CDATA[<p>{$DATA.first_name|capitalize} {$DATA.last_name|capitalize} {if !empty($BILLING.company_name)}({$BILLING.company_name}){/if} оформил(а) заказ № {$DATA.cart_order_id} от {$DATA.order_date}.</p>
+<p>Вы можете управлять этим заказом, перейдя по ссылке ниже.</p>
+<p><a href="{$DATA.link}">{$DATA.link}</a></p>
+<table width="100%">
+<tr>
+<td valign="top" width="50%"><strong>Адрес для выставления счёта:</strong><br>
+{$BILLING.first_name|capitalize} {$BILLING.last_name|capitalize}<br>
+{if !empty($BILLING.company_name)}{$BILLING.company_name}<br>
+{/if}
+{$BILLING.line1|capitalize}<br>
+{if !empty($BILLING.line2)}{$BILLING.line2|capitalize}<br>
+{/if}
+{$BILLING.town|upper}<br>
+{if !empty($BILLING.state)}{$BILLING.state|upper}<br>{/if}
+{$BILLING.postcode}<br>
+{$BILLING.country}{if !empty($BILLING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$BILLING.w3w}">{$BILLING.w3w}</a></div>{/if}<br>
+{$BILLING.phone}<br>
+<br>
+<strong>Эл. почта:</strong><br>
+{$BILLING.email}</td>
+<td valign="top" width="50%"><strong>Адрес доставки:</strong><br>
+{$SHIPPING.first_name|capitalize} {$SHIPPING.last_name|capitalize}<br>
+{if !empty($SHIPPING.company_name)}{$SHIPPING.company_name} <br>
+{/if}{$SHIPPING.line1|capitalize}<br>
+{if !empty($SHIPPING.line2)}{$SHIPPING.line2|capitalize} <br>
+{/if}{$SHIPPING.town|upper}<br>
+{if !empty($SHIPPING.state)}{$SHIPPING.state|upper}<br>{/if}
+{$SHIPPING.postcode}<br>
+{$SHIPPING.country}{if !empty($SHIPPING.w3w)}<div class="w3w">///<a href="https://what3words.com/{$SHIPPING.w3w}">{$SHIPPING.w3w}</a></div>{/if}</td>
+</tr>
+</table>
+<table border="0" cellpadding="3" cellspacing="0" width="100%">
+<tbody>
+<tr>
+<td><strong>Товар</strong></td>
+<td><strong>Количество</strong></td>
+<td><strong>Цена</strong></td>
+</tr>
+{foreach from=$PRODUCTS item=product}
+<tr>
+<td>{$product.name} <br>{$product.product_options}</td>
+<td>{$product.quantity}</td>
+<td>{$product.price}</td>
+</tr>
+{/foreach}
+<tr>
+<td>&nbsp;</td>
+<td> {if !empty($DATA.ship_method)}{$DATA.ship_method} :{if !empty($DATA.ship_product)} ({$DATA.ship_product}){/if}{else}Доставка:{/if}</td>
+<td> {$DATA.shipping}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td> Скидка:</td>
+<td> {$DATA.discount}</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td> Подытог:</td>
+<td> {$DATA.subtotal}</td>
+</tr>
+{foreach from=$TAXES item=tax}
+<tr>
+<td>&nbsp;</td>
+<td> {$tax.tax_name} : ({$tax.tax_percent}%)</td>
+<td> {$tax.tax_amount}</td>
+</tr>
+{/foreach}
+{if $DATA.show_credit}
+<tr>
+<td>&nbsp;</td>
+<td>Кредит на счёте:</td>
+<td>({$DATA.credit_used})</td>
+</tr>
+{/if}
+<tr>
+<td>&nbsp;</td>
+<td><strong>Итого по заказу: </strong></td>
+<td><strong>{$DATA.total}</strong></td>
+</tr>
+</tbody>
+
+</table>]]></content>
+
+  </email>
+  <email name="admin.review_added">
+    <subject><![CDATA[Новый отзыв о товаре]]></subject>
+    <content type="html"><![CDATA[{$DATA.name} оставил(а) новый отзыв о товаре «{$DATA.product_name}». Вы можете модерировать его, перейдя по ссылке ниже.
+        <p><strong>Ссылка для модерации:</strong><br><a href='{$DATA.link}'>{$DATA.link}</a></p>
+        <p><strong>Текст отзыва:</strong><br>{$DATA.review}</p>]]></content>
+
+  </email>
+  <email name="cart.digital_download">
+    <subject><![CDATA[Ваши загрузки готовы]]></subject>
+    <content type="html"><![CDATA[<p>Здравствуйте, {$DATA.first_name|capitalize}!</p>
+<p>Ваши цифровые файлы готовы к скачиванию. Вы можете получить к ним доступ по ссылкам ниже:</p>
+{foreach from=$DOWNLOADS item=download}
+<p><strong>{$download.name}:</strong> (Ссылка действительна до {$download.expire}<strong>)</strong><br>
+<a href="{$download.url}">{$download.url}</a></p>
+{/foreach}
+<p>Если ссылки не работают, попробуйте скопировать их и вставить в адресную строку браузера. Вы также можете получить доступ к этим файлам из вашей учётной записи на нашем сайте.</p>
+<p>&nbsp;</p>]]></content>
+
+  </email>
+  <email name="cart.gift_certificate">
+    <subject><![CDATA[Ваш подарочный сертификат]]></subject>
+    <content type="html"><![CDATA[<p>Здравствуйте, {$DATA.name}!</p>
+<p>Вы получили подарочный сертификат для покупок в нашем магазине.</p>
+<p><strong>От: </strong>{$DATA.first_name|capitalize} {$DATA.last_name|capitalize}<br>
+<strong>Сумма: </strong>{$DATA.value}<br>
+<strong>Код для использования:</strong> {$DATA.code}<br>
+<strong>Сообщение:</strong> {$DATA.message}</p>
+<p>-------------------</p>
+<p>Чтобы воспользоваться подарочным сертификатом, введите указанный выше «Код для использования» в поле «Промокод или подарочный сертификат» при оформлении заказа.</p>
+<p>Почему бы не воспользоваться им прямо сейчас?</p>]]></content>
+
+  </email>
+  <email name="catalogue.tell_friend">
+    <subject><![CDATA[{$DATA.from} рекомендует вам товар]]></subject>
+    <content type="html"><![CDATA[Здравствуйте, {$DATA.to}!
+<p>Ваш друг <strong>{$DATA.from}</strong> считает, что вам может быть интересен товар <strong>{$DATA.name}</strong>.</p>
+<p><strong>Ссылка на товар:</strong> <a href="{$DATA.link}">{$DATA.name}</a></p>
+<p>{$DATA.message}</p>]]></content>
+
+  </email>
+  <email name="cart.payment_received">
+    <subject><![CDATA[Спасибо за оплату]]></subject>
+    <content type="html"><![CDATA[<p>Здравствуйте, {$DATA.first_name|capitalize}!</p>
+<p>Мы получили вашу оплату в размере {$DATA.total} по заказу № {$DATA.cart_order_id}.</p>]]></content>
+
+  </email>
+  <email name="newsletter.verify_email">
+    <subject><![CDATA[Подтвердите подписку]]></subject>
+    <content type="html"><![CDATA[<p>Адрес {$DATA.email} был использован для подписки на нашу рассылку. Чтобы подтвердить подписку, перейдите по ссылке ниже:</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+
+  </email>
+  <email name="newsletter.remove_request">
+    <subject><![CDATA[Подтверждение отписки от рассылки]]></subject>
+    <content type="html"><![CDATA[<p>Был получен запрос на отписку адреса <strong>{$DATA.email}</strong> от нашей рассылки. Для подтверждения перейдите по ссылке ниже.</p><p><a href="{$DATA.link}">{$DATA.link}</a></p>]]></content>
+
+  </email>
+  <email name="admin.two_factor_code">
+    <subject><![CDATA[Код подтверждения для входа в панель управления]]></subject>
+    <content type="html"><![CDATA[<p>Здравствуйте, {$DATA.name}!</p><p>Ваш код подтверждения для входа:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Срок действия кода истекает через 10 минут. Если вы не пытались войти в систему, немедленно свяжитесь с администратором магазина.</p>]]></content>
+  </email>
+</emails>
