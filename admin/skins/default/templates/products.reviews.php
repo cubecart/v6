@@ -29,26 +29,43 @@
          <input type="submit" class="submit mini_button" name="filter" value="{$LANG.common.go}">
          <a href="?_g=products&amp;node=reviews">{$LANG.common.reset}</a>
       </div>
-      {foreach from=$REVIEWS item=review}
-      <div class="note">
-         <span class="actions">
-         <input type="hidden" class="toggle" name="approve[{$review.id}]" id="approve_{$review.id}" value="{$review.approved}">
-         <a href="{$review.edit}" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
-         <a href="{$review.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
-         </span>
-         <div>
-            <input type="checkbox" class="all-reviews" id="multi_{$review.id}" name="delete[individual][{$review.id}]" value="" /><strong>{$review.title}</strong>
-         </div>
-         <p>{$review.review}</p>
-         <div class="details">
-            <span style="float: right;">
-            {section name=i start=1 loop=6 step=1}<input type="radio" class="rating" name="rating_{$review.id}" value="{$smarty.section.i.index}" disabled="disabled" {if $review.rating == $smarty.section.i.index}checked="checked"{/if}>{/section}
-            </span>
-            <a href="index.php?_a=product&amp;product_id={$review.product_id}" target="_blank">{$review.product.name}</a> &raquo;
-            {$review.date} - {$review.name} {if $review.anon=='1'}({$LANG.catalogue.review_anon}){/if} &lt;<a href="mailto:{$review.email}">{$review.email}</a>&gt; {$review.ip_address}
-         </div>
-      </div>
-      {/foreach}
+      <table width="100%">
+         <thead>
+            <tr>
+               <th width="10">&nbsp;</th>
+               <th>{$LANG.documents.document_title}</th>
+               <th>{$LANG.common.product}</th>
+               <th>{$LANG.documents.rating}</th>
+               <th>{$LANG.common.name}</th>
+               <th>{$LANG.common.date}</th>
+               <th>{$LANG.common.approved}</th>
+               <th>&nbsp;</th>
+            </tr>
+         </thead>
+         <tbody>
+            {foreach from=$REVIEWS item=review}
+            <tr>
+               <td style="text-align:center"><input type="checkbox" class="all-reviews" id="multi_{$review.id}" name="delete[individual][{$review.id}]" value=""></td>
+               <td>
+                  <a href="{$review.edit}"><strong>{$review.title}</strong></a>
+                  <div class="review-excerpt">{$review.review|truncate:120:"&hellip;"}</div>
+               </td>
+               <td><a href="index.php?_a=product&amp;product_id={$review.product_id}" target="_blank">{$review.product.name}</a></td>
+               <td style="text-align:center;white-space:nowrap">{section name=i start=1 loop=6 step=1}<i class="fa {if $review.rating >= $smarty.section.i.index}fa-star{else}fa-star-o{/if}" style="color:#e88e22"></i>{/section}</td>
+               <td>
+                  {$review.name}{if $review.anon=='1'} ({$LANG.catalogue.review_anon}){/if}
+                  <div class="review-meta"><a href="mailto:{$review.email}">{$review.email}</a> &middot; {$review.ip_address}</div>
+               </td>
+               <td nowrap="nowrap">{$review.date}</td>
+               <td style="text-align:center"><input type="hidden" class="toggle" name="approve[{$review.id}]" id="approve_{$review.id}" value="{$review.approved}"></td>
+               <td style="text-align:center" nowrap="nowrap">
+                  <a href="{$review.edit}" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o"></i></a>
+                  <a href="{$review.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash"></i></a>
+               </td>
+            </tr>
+            {/foreach}
+         </tbody>
+      </table>
       <img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/select_all.gif" alt="">
       <a href="#" class="check-all" rel="all-reviews">{$LANG.form.check_uncheck}</a>
       <br>

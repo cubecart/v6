@@ -191,7 +191,7 @@ if (isset($failed_review_data)) {
     $GLOBALS['main']->addTabControl($lang['common']['search'], 'search');
 
     $page  = (isset($_GET['page'])) ? $_GET['page'] : 1;
-    $per_page = 10;
+    $per_page = 25;
 
     $where = false;
 

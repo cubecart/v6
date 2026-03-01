@@ -1162,6 +1162,16 @@ form.note p {
     font-size: 10px;
     padding-top: 5px
 }
+.review-excerpt {
+    font-size: 11px;
+    color: #888;
+    margin-top: 2px
+}
+.review-meta {
+    font-size: 11px;
+    color: #888;
+    margin-top: 2px
+}
 .tab_notify {
     z-index: 1000;
     position: absolute;
@@ -2520,6 +2530,10 @@ textarea#query {
   }
 
   .note textarea::placeholder {
+    color: var(--text-muted) !important;
+  }
+  .review-excerpt,
+  .review-meta {
     color: var(--text-muted) !important;
   }
   .textbox:focus,
