@@ -3,12 +3,17 @@
   color: #333;
   background-color: #fff;
   border: 1px solid #888;
-  border-top: none;
-  border-radius: 0 0 3px 3px;
+  border-radius: 3px;
   box-shadow: 0 3px 8px rgba(0,0,0,.15);
   z-index: 90 !important;
   font-size: 12px;
   font-family: 'Open Sans', sans-serif;
+}
+
+/* sidebar: flush against input */
+.jqac-menu.jqac-sidebar {
+  border-top: none;
+  border-radius: 0 0 3px 3px;
 }
 
 /* unordered list for suggestions */

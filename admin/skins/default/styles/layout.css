@@ -796,6 +796,14 @@ input.textbox[disabled]:hover, input.textbox[disabled]:focus {
 .textbox:hover {
     background-color: #FFF
 }
+.textbox:focus,
+textarea.textbox:focus,
+select.textbox:focus,
+input.textbox:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: #888
+}
 textarea.textbox {
     width: 500px;
     min-height: 100px

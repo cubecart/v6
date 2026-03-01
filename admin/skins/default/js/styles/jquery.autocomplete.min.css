@@ -1,4 +1,5 @@
-.jqac-menu{color:#333;background-color:#fff;border:1px solid #888;border-top:none;border-radius:0 0 3px 3px;box-shadow:0 3px 8px rgba(0,0,0,.15);z-index:90!important;font-size:12px;font-family:'Open Sans',sans-serif}
+.jqac-menu{color:#333;background-color:#fff;border:1px solid #888;border-radius:3px;box-shadow:0 3px 8px rgba(0,0,0,.15);z-index:90!important;font-size:12px;font-family:'Open Sans',sans-serif}
+.jqac-menu.jqac-sidebar{border-top:none;border-radius:0 0 3px 3px}
 .jqac-menu ul{list-style:none;margin:0;padding:4px 0;overflow:hidden}
 .jqac-menu li{border-bottom:1px solid #f0f0f0}
 .jqac-menu li:last-child{border-bottom:none}
