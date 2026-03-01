@@ -1219,7 +1219,8 @@ input.save-changes {
     color: #555;
     -webkit-margin-before: 0;
     -webkit-margin-after: 0;
-    font-size: 14px
+    font-size: 14px;
+    margin: 0 0 5px
 }
 #sidebar_content #customer_id,
 #sidebar_content #product,
@@ -1229,18 +1230,37 @@ input.save-changes {
 .sidebar_content {
     background-color: #e8e8e8;
     margin: 5px 10px 10px!important;
-    padding: 10px 5px
+    padding: 10px 5px;
+    border-radius: 3px
+}
+.sidebar_content form {
+    display: flex;
+    flex-wrap: wrap
+}
+.sidebar_content form h4 {
+    width: 100%
 }
 .sidebar_content .textbox {
     font-family: 'Open Sans', sans-serif, FontAwesome;
     font-style: normal;
     font-weight: 400;
     text-decoration: inherit;
-    width: 213px;
-    height: 24px;
-    line-height: 24px;
+    height: 28px;
+    line-height: 28px;
     text-indent: 5px;
-    font-size: 12px
+    font-size: 12px;
+    flex: 1 1 0;
+    min-width: 0;
+    box-sizing: border-box;
+    border: 1px solid #a6a6a6;
+    border-right: none;
+    border-radius: 3px 0 0 3px;
+    margin: 0;
+    float: none;
+    outline: none
+}
+.sidebar_content .textbox:focus {
+    border-color: #888
 }
 input.search {
     font-family: 'Open Sans', sans-serif, FontAwesome;
@@ -1496,8 +1516,18 @@ textarea[id^='string_'] {
     width: 300px
 }
 input[type="submit"].go_search {
-    padding: 4px 12px;
-    margin-top: 2px
+    width: 50px;
+    height: 28px;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #a6a6a6;
+    border-left: none;
+    border-radius: 0 3px 3px 0;
+    background: #ddd;
+    cursor: pointer;
+    font-size: 12px;
+    flex: 0 0 50px;
+    box-sizing: border-box
 }
 @media screen and (max-width: 650px) and (min-width: 100px) {
     #content {
@@ -2403,6 +2433,11 @@ textarea#query {
   .dashboard_content,
   .request {
     background: var(--panel) !important;
+    color: var(--text) !important;
+  }
+  input[type="submit"].go_search {
+    background: var(--panel-muted) !important;
+    border-color: var(--border) !important;
     color: var(--text) !important;
   }
   .request {
