@@ -2458,6 +2458,13 @@ POZOR: všechny soubory v ní budou trvale smazány!]]></string>
     <string name="cron_cache"><![CDATA[Vymazat mezipaměť]]></string>
     <string name="cron_snippet"><![CDATA[Vlastní úryvek kódu]]></string>
     <string name="scheduled_snippet"><![CDATA[Spustí jeden nebo více <a href="?_g=settings&node=hooks#snippets">úryvků kódu</a>, jejichž spouštěcí událost je nastavena na &quot;cron&quot;.]]></string>
+    <string name="cron_url" introduced="6.6.0"><![CDATA[Cron URL]]></string>
+    <string name="cron_frequency" introduced="6.6.0"><![CDATA[Frequency]]></string>
+    <string name="cron_last_run" introduced="6.6.0"><![CDATA[Last Run]]></string>
+    <string name="cron_last_result" introduced="6.6.0"><![CDATA[Last Result]]></string>
+    <string name="cron_cache_note" introduced="6.6.0"><![CDATA[Cached data expires automatically after 24 hours so the Clear Cache task should not be needed in most cases.]]></string>
+    <string name="cron_examples" introduced="6.6.0"><![CDATA[Example Cron Commands]]></string>
+    <string name="cron_examples_desc" introduced="6.6.0"><![CDATA[Add one of the following commands to your server's crontab. The schedule (*/5 * * * *) runs every 5 minutes — the system will only execute tasks when they are due based on the frequency set above.]]></string>
     <string name="clone_settings"><![CDATA[Před prvním klonováním prosím nastavte, co chcete nebo nechcete při každém klonování kopírovat.]]></string>
     <string name="emailconf"><![CDATA[Vyžadovat potvrzení e-mailové adresy (dvojité zadání)]]></string>
     <string name="redirects"><![CDATA[Přesměrování]]></string>

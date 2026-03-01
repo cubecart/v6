@@ -77,8 +77,8 @@ class Cron
     public static function ensureDefaults() {
         $defaults = array(
             array('method' => 'updateExchangeRates', 'label' => 'Update Exchange Rates', 'enabled' => 1, 'frequency' => 86400),
-            array('method' => 'clearCache', 'label' => 'Clear Cache', 'enabled' => 0, 'frequency' => 21600),
-            array('method' => 'runSnippets', 'label' => 'Run Code Snippets / Hooks*', 'enabled' => 0, 'frequency' => 3600),
+            array('method' => 'clearCache', 'label' => 'Clear Cache*', 'enabled' => 0, 'frequency' => 21600),
+            array('method' => 'runSnippets', 'label' => 'Run Code Snippets / Hooks**', 'enabled' => 0, 'frequency' => 3600),
         );
         foreach ($defaults as $task) {
             $exists = $GLOBALS['db']->select('CubeCart_cron_tasks', 'id', array('method' => $task['method']), false, false, false, false);

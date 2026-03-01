@@ -608,8 +608,10 @@
          <div><label>Cron</label><span><code>*/5 * * * * /usr/bin/curl -s "{$STORE_URL}?_g=cron&_m=run" > /dev/null 2>&1</code></span></div>
          <div><label>Wget</label><span><code>*/5 * * * * /usr/bin/wget -qO /dev/null "{$STORE_URL}?_g=cron&_m=run"</code></span></div>
       </fieldset>
-      <p>* {$LANG.settings.scheduled_snippet}</p>
-      <p>{$LANG.settings.cron_cache_note}</p>
+      <p>
+         * {$LANG.settings.cron_cache_note}<br>
+         ** {$LANG.settings.scheduled_snippet}
+      </p>
    </div>
    <div id="Extra" class="tab_content">
       <h3>{$LANG.settings.title_extra}</h3>
