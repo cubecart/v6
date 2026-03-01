@@ -20,7 +20,7 @@
 </head>
 <body class="login">
 <div class="preauth-body">
-  <div id="logo"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/cubecart-logo.png" alt="CubeCart Logo"></div>
+  <div id="logo"><img src="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/images/logo.cubecart.svg" alt="CubeCart Logo"></div>
 
   <div class="preauth-wrapper">
   {include file='templates/common.gui_message.php'}
