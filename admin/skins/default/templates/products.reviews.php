@@ -126,7 +126,8 @@
          <div><label for="review_title">{$LANG.documents.document_title}</label><span><input type="text" name="review[title]" id="review_title" value="{$REVIEW.title}" class="textbox"></span></div>
          <div><label for="review_content">{$LANG.documents.document_content}</label><span><textarea name="review[review]" id="review_content" class="textbox">{$REVIEW.review}</textarea></span></div>
          <div><label for="">{$LANG.documents.rating}</label><span>
-            {section name=i start=1 loop=6 step=1}<input type="radio" name="rating" value="{$smarty.section.i.index}" class="rating" {if $REVIEW.rating == $smarty.section.i.index}checked="checked"{/if}>{/section}
+            <input type="hidden" name="rating" id="rating_value" value="{$REVIEW.rating}">
+            {section name=i start=1 loop=6 step=1}<i class="fa fa-star-rating {if $REVIEW.rating >= $smarty.section.i.index}fa-star{else}fa-star-o{/if}" data-value="{$smarty.section.i.index}" style="color:#e88e22;cursor:pointer;font-size:18px"></i>{/section}
             &nbsp;</span>
          </div>
          <br>
@@ -142,7 +143,10 @@
 {include file='templates/element.hook_form_content.php'}
    <div class="form_control">
       <input type="hidden" name="previous-tab" id="previous-tab" value="">
-      <input type="submit" value="{$LANG.form.submit}" class="submit">
+      <input type="submit" value="{$LANG.common.save}" class="submit">
+      {if $DISPLAY_FORM && $FORM_MODE=='edit'}
+      <input type="submit" name="save_reload" value="{$LANG.common.save_reload}" class="submit">
+      {/if}
    </div>
    
 </form>

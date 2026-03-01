@@ -744,9 +744,7 @@
          <div>{$review.review}</div>
          <div class="details">
             <span style="float: right;">
-            {section name=i start=1 loop=6 step=1}
-            <input type="radio" class="rating" name="rating_{$review.id}" value="{$smarty.section.i.index}" disabled="disabled" {if $review.rating == $smarty.section.i.index}checked="checked"{/if}>
-            {/section}
+            {section name=i start=1 loop=6 step=1}<i class="fa {if $review.rating >= $smarty.section.i.index}fa-star{else}fa-star-o{/if}" style="color:#e88e22"></i>{/section}
             </span>
             {$review.date} :: <a href="mailto:<{$review.email}">{$review.name}</a> (<a href="http://whois.domaintools.com/{$review.ip_address}" target="_blank">{$review.ip_address}</a>)
          </div>

@@ -530,8 +530,12 @@ $(document).ready(function() {
                 $(this).hasClass("no-custom-zone") && $(o).prop("disabled", true).val($(this).attr("title")), $(e).replaceWith($(o))
             }
         }
-    }), $("input[type=radio].rating").rating({
-        required: !0
+    }), $(document).on("click", ".fa-star-rating", function() {
+        var v = $(this).data("value");
+        $(this).closest("span").find("#rating_value").val(v);
+        $(this).closest("span").find(".fa-star-rating").each(function() {
+            $(this).toggleClass("fa-star", $(this).data("value") <= v).toggleClass("fa-star-o", $(this).data("value") > v)
+        })
     }), $("a.preview").click(function() {
         return $("#img-preview").attr("src", $(this).attr("href")), !1
     }), $("a.delete, a.confirm, .submit_confirm, .install_confirm").click(function() {

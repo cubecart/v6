@@ -70,6 +70,9 @@ if (isset($_POST['review']) && is_array($_POST['review']) && Admin::getInstance(
         $updated = $GLOBALS['db']->update('CubeCart_reviews', $record, array('id' => (int)$_POST['review']['id']));
         if ($updated !== false && (bool)$GLOBALS['db']->affected()) {
             $GLOBALS['main']->successMessage($lang['reviews']['notify_review_update']);
+            if (isset($_POST['save_reload'])) {
+                httpredir(currentPage());
+            }
             $rem_array = array('edit');
         } else {
             $GLOBALS['main']->errorMessage($lang['reviews']['error_review_update']);

@@ -285,31 +285,47 @@
 <div id="product_reviews" class="tab_content">
    <h3>{$LANG.dashboard.title_reviews_pending}</h3>
    <form action="?_g=products&node=reviews&origin=dashboard" method="post" enctype="multipart/form-data">
-      {foreach from=$REVIEWS item=review}
-      <div class="note">
-         <span class="actions">
-         <input type="hidden" class="toggle" name="approve[{$review.id}]" id="approve_{$review.id}" value="{$review.approved}">
-         <a href="{$review.edit}" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
-         <a href="{$review.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
-         </span>
-         <div><strong>{$review.title}</strong></div>
-         <p>{$review.review}</p>
-         <div class="details">
-            <span style="float: right;">
-            {section name=i start=1 loop=6 step=1}
-            <input type="radio" class="rating" name="rating_{$review.id}" value="{$smarty.section.i.index}" disabled="disabled" {if $review.rating == $smarty.section.i.index}checked="checked"{/if}>
-            {/section}
-            </span>
-            <a href="?_g=products&product_id={$review.product_id}&action=edit">{$review.product.name}</a> &raquo; {$review.date} :: {$review.name}{if $review.anon=='1'} ({$LANG.catalogue.review_anon}){/if} &lt;<a href="mailto:{$review.email}">{$review.email}</a>&gt;  {$review.ip_address}
-         </div>
-      </div>
-      {/foreach}
+      <table width="100%">
+         <thead>
+            <tr>
+               <th>{$LANG.documents.document_title}</th>
+               <th>{$LANG.common.product}</th>
+               <th>{$LANG.documents.rating}</th>
+               <th>{$LANG.common.name}</th>
+               <th>{$LANG.common.date}</th>
+               <th>{$LANG.common.approved}</th>
+               <th>&nbsp;</th>
+            </tr>
+         </thead>
+         <tbody>
+            {foreach from=$REVIEWS item=review}
+            <tr>
+               <td>
+                  <a href="{$review.edit}"><strong>{$review.title}</strong></a>
+                  <div class="review-excerpt">{$review.review|truncate:120:"&hellip;"}</div>
+               </td>
+               <td><a href="?_g=products&amp;product_id={$review.product_id}&amp;action=edit">{$review.product.name}</a></td>
+               <td style="text-align:center;white-space:nowrap">{section name=i start=1 loop=6 step=1}<i class="fa {if $review.rating >= $smarty.section.i.index}fa-star{else}fa-star-o{/if}" style="color:#e88e22"></i>{/section}</td>
+               <td>
+                  {$review.name}{if $review.anon=='1'} ({$LANG.catalogue.review_anon}){/if}
+                  <div class="review-meta"><a href="mailto:{$review.email}">{$review.email}</a> &middot; {$review.ip_address}</div>
+               </td>
+               <td nowrap="nowrap">{$review.date}</td>
+               <td style="text-align:center"><input type="hidden" class="toggle" name="approve[{$review.id}]" id="approve_{$review.id}" value="{$review.approved}"></td>
+               <td style="text-align:center" nowrap="nowrap">
+                  <a href="{$review.edit}" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o"></i></a>
+                  <a href="{$review.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash"></i></a>
+               </td>
+            </tr>
+            {/foreach}
+         </tbody>
+      </table>
+      <div class="pagination">{$REVIEW_PAGINATION}</div>
       <div>
          <input class="submit" type="submit" value="{$LANG.common.update}">
       </div>
-      
    </form>
-   <div class="pagination">{$REVIEW_PAGINATION}</div>
+   
 </div>
 {/if}
 {if isset($EXTENSION_UPDATES)}
