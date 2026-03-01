@@ -2571,6 +2571,25 @@ textarea#query {
   .review-meta {
     color: var(--text-muted) !important;
   }
+  .jqac-menu {
+    background-color: var(--panel) !important;
+    border-color: var(--border) !important;
+    color: var(--text) !important;
+    box-shadow: 0 3px 8px rgba(0,0,0,.4) !important;
+  }
+  .jqac-menu li {
+    border-bottom-color: var(--border) !important;
+  }
+  .jqac-menu .jqac-highlight {
+    background-color: var(--panel-muted) !important;
+  }
+  .jqac-menu .jqac-info {
+    color: var(--text-muted) !important;
+  }
+  .jqac-menu .jqac-warning,
+  .jqac-menu .jqac-loading {
+    color: var(--text-muted) !important;
+  }
   .textbox:focus,
   textarea.textbox:focus,
   select.textbox:focus,
