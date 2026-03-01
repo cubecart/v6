@@ -2129,12 +2129,12 @@ WAARSCHUWING: Alle bestanden erin worden permanent verwijderd!]]></string>
       <string name="cron_snippet"><![CDATA[Aangepast codefragment]]></string>
       <string name="scheduled_snippet"><![CDATA[Voert een of meer <a href="?_g=settings&node=hooks#snippets">codefragmenten</a> uit waarvan de gebeurtenistrigger is ingesteld op &quot;cron&quot;.]]></string>
     <string name="cron_url" introduced="6.6.0"><![CDATA[Cron URL]]></string>
-    <string name="cron_frequency" introduced="6.6.0"><![CDATA[Frequency]]></string>
-    <string name="cron_last_run" introduced="6.6.0"><![CDATA[Last Run]]></string>
-    <string name="cron_last_result" introduced="6.6.0"><![CDATA[Last Result]]></string>
-    <string name="cron_cache_note" introduced="6.6.0"><![CDATA[Cached data expires automatically after 24 hours so the Clear Cache task should not be needed in most cases.]]></string>
-    <string name="cron_examples" introduced="6.6.0"><![CDATA[Example Cron Commands]]></string>
-    <string name="cron_examples_desc" introduced="6.6.0"><![CDATA[Add one of the following commands to your server's crontab. The schedule (*/5 * * * *) runs every 5 minutes — the system will only execute tasks when they are due based on the frequency set above.]]></string>
+    <string name="cron_frequency" introduced="6.6.0"><![CDATA[Frequentie]]></string>
+    <string name="cron_last_run" introduced="6.6.0"><![CDATA[Laatste uitvoering]]></string>
+    <string name="cron_last_result" introduced="6.6.0"><![CDATA[Laatste resultaat]]></string>
+    <string name="cron_cache_note" introduced="6.6.0"><![CDATA[Gecachte gegevens verlopen automatisch na 24 uur, dus de taak Cache wissen zou in de meeste gevallen niet nodig moeten zijn.]]></string>
+    <string name="cron_examples" introduced="6.6.0"><![CDATA[Voorbeelden van Cron-opdrachten]]></string>
+    <string name="cron_examples_desc" introduced="6.6.0"><![CDATA[Voeg een van de volgende opdrachten toe aan de crontab van uw server. Het schema (*/5 * * * *) wordt elke 5 minuten uitgevoerd — het systeem voert taken alleen uit wanneer ze gepland zijn op basis van de hierboven ingestelde frequentie.]]></string>
       <string name="clone_settings"><![CDATA[Voordat we voor de eerste keer klonen, configureer wat u wel en niet wilt klonen.]]></string>
       <string name="emailconf"><![CDATA[E-mailadresbevestiging vereisen (dubbele invoer)]]></string>
       <string name="redirects"><![CDATA[Omleidingen]]></string>

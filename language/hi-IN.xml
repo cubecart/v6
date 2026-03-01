@@ -2131,12 +2131,12 @@ This email is sent from the store's master email address but it is possible to r
     <string name="cron_snippet"><![CDATA[कस्टम कोड स्निपेट]]></string>
     <string name="scheduled_snippet"><![CDATA[एक या अधिक <a href="?_g=settings&node=hooks#snippets">कोड स्निपेट</a> चलाता है जिनका इवेंट ट्रिगर &quot;क्रॉन&quot; पर सेट है।]]></string>
     <string name="cron_url" introduced="6.6.0"><![CDATA[Cron URL]]></string>
-    <string name="cron_frequency" introduced="6.6.0"><![CDATA[Frequency]]></string>
-    <string name="cron_last_run" introduced="6.6.0"><![CDATA[Last Run]]></string>
-    <string name="cron_last_result" introduced="6.6.0"><![CDATA[Last Result]]></string>
-    <string name="cron_cache_note" introduced="6.6.0"><![CDATA[Cached data expires automatically after 24 hours so the Clear Cache task should not be needed in most cases.]]></string>
-    <string name="cron_examples" introduced="6.6.0"><![CDATA[Example Cron Commands]]></string>
-    <string name="cron_examples_desc" introduced="6.6.0"><![CDATA[Add one of the following commands to your server's crontab. The schedule (*/5 * * * *) runs every 5 minutes — the system will only execute tasks when they are due based on the frequency set above.]]></string>
+    <string name="cron_frequency" introduced="6.6.0"><![CDATA[आवृत्ति]]></string>
+    <string name="cron_last_run" introduced="6.6.0"><![CDATA[अंतिम निष्पादन]]></string>
+    <string name="cron_last_result" introduced="6.6.0"><![CDATA[अंतिम परिणाम]]></string>
+    <string name="cron_cache_note" introduced="6.6.0"><![CDATA[कैश डेटा 24 घंटे बाद स्वचालित रूप से समाप्त हो जाता है, इसलिए अधिकांश मामलों में कैश साफ़ करने के कार्य की आवश्यकता नहीं होनी चाहिए।]]></string>
+    <string name="cron_examples" introduced="6.6.0"><![CDATA[Cron कमांड उदाहरण]]></string>
+    <string name="cron_examples_desc" introduced="6.6.0"><![CDATA[अपने सर्वर के crontab में निम्नलिखित में से एक कमांड जोड़ें। शेड्यूल (*/5 * * * *) हर 5 मिनट में चलता है — सिस्टम केवल ऊपर सेट की गई आवृत्ति के आधार पर निर्धारित समय पर ही कार्य निष्पादित करेगा।]]></string>
     <string name="clone_settings"><![CDATA[पहली बार क्लोन करने से पहले, कृपया कॉन्फ़िगर करें कि हर बार क्या क्लोन करना है और क्या नहीं।]]></string>
     <string name="emailconf"><![CDATA[ई-मेल पते की पुष्टि आवश्यक करें (दोहरा प्रवेश)]]></string>
     <string name="redirects"><![CDATA[रीडायरेक्ट]]></string>

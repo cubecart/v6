@@ -2139,13 +2139,13 @@ Questa email è inviata dall'indirizzo email principale del negozio ma è possib
     <string name="cron_cache"><![CDATA[Svuota cache]]></string>
     <string name="cron_snippet"><![CDATA[Frammento di codice personalizzato]]></string>
     <string name="scheduled_snippet"><![CDATA[Esegue uno o più <a href="?_g=settings&node=hooks#snippets">frammenti di codice</a> il cui trigger evento è impostato su &quot;cron&quot;.]]></string>
-    <string name="cron_url" introduced="6.6.0"><![CDATA[Cron URL]]></string>
-    <string name="cron_frequency" introduced="6.6.0"><![CDATA[Frequency]]></string>
-    <string name="cron_last_run" introduced="6.6.0"><![CDATA[Last Run]]></string>
-    <string name="cron_last_result" introduced="6.6.0"><![CDATA[Last Result]]></string>
-    <string name="cron_cache_note" introduced="6.6.0"><![CDATA[Cached data expires automatically after 24 hours so the Clear Cache task should not be needed in most cases.]]></string>
-    <string name="cron_examples" introduced="6.6.0"><![CDATA[Example Cron Commands]]></string>
-    <string name="cron_examples_desc" introduced="6.6.0"><![CDATA[Add one of the following commands to your server's crontab. The schedule (*/5 * * * *) runs every 5 minutes — the system will only execute tasks when they are due based on the frequency set above.]]></string>
+    <string name="cron_url" introduced="6.6.0"><![CDATA[URL Cron]]></string>
+    <string name="cron_frequency" introduced="6.6.0"><![CDATA[Frequenza]]></string>
+    <string name="cron_last_run" introduced="6.6.0"><![CDATA[Ultima esecuzione]]></string>
+    <string name="cron_last_result" introduced="6.6.0"><![CDATA[Ultimo risultato]]></string>
+    <string name="cron_cache_note" introduced="6.6.0"><![CDATA[I dati nella cache scadono automaticamente dopo 24 ore, pertanto l'attività di svuotamento della cache non dovrebbe essere necessaria nella maggior parte dei casi.]]></string>
+    <string name="cron_examples" introduced="6.6.0"><![CDATA[Esempi di comandi Cron]]></string>
+    <string name="cron_examples_desc" introduced="6.6.0"><![CDATA[Aggiungete uno dei seguenti comandi al crontab del vostro server. La pianificazione (*/5 * * * *) viene eseguita ogni 5 minuti — il sistema eseguirà le attività solo quando sono previste in base alla frequenza impostata sopra.]]></string>
     <string name="clone_settings"><![CDATA[Prima di clonare per la prima volta, configura cosa vuoi e cosa non vuoi clonare ogni volta.]]></string>
     <string name="emailconf"><![CDATA[Richiedi conferma dell'indirizzo email (doppia immissione)]]></string>
     <string name="redirects"><![CDATA[Reindirizzamenti]]></string>

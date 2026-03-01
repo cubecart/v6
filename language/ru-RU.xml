@@ -2137,13 +2137,13 @@
     <string name="cron_cache"><![CDATA[Очистить кэш]]></string>
     <string name="cron_snippet"><![CDATA[Пользовательский фрагмент кода]]></string>
     <string name="scheduled_snippet"><![CDATA[Выполняет один или несколько <a href="?_g=settings&node=hooks#snippets">фрагментов кода</a>, у которых триггер события установлен на &quot;cron&quot;.]]></string>
-    <string name="cron_url" introduced="6.6.0"><![CDATA[Cron URL]]></string>
-    <string name="cron_frequency" introduced="6.6.0"><![CDATA[Frequency]]></string>
-    <string name="cron_last_run" introduced="6.6.0"><![CDATA[Last Run]]></string>
-    <string name="cron_last_result" introduced="6.6.0"><![CDATA[Last Result]]></string>
-    <string name="cron_cache_note" introduced="6.6.0"><![CDATA[Cached data expires automatically after 24 hours so the Clear Cache task should not be needed in most cases.]]></string>
-    <string name="cron_examples" introduced="6.6.0"><![CDATA[Example Cron Commands]]></string>
-    <string name="cron_examples_desc" introduced="6.6.0"><![CDATA[Add one of the following commands to your server's crontab. The schedule (*/5 * * * *) runs every 5 minutes — the system will only execute tasks when they are due based on the frequency set above.]]></string>
+    <string name="cron_url" introduced="6.6.0"><![CDATA[URL задания Cron]]></string>
+    <string name="cron_frequency" introduced="6.6.0"><![CDATA[Частота]]></string>
+    <string name="cron_last_run" introduced="6.6.0"><![CDATA[Последний запуск]]></string>
+    <string name="cron_last_result" introduced="6.6.0"><![CDATA[Последний результат]]></string>
+    <string name="cron_cache_note" introduced="6.6.0"><![CDATA[Кешированные данные автоматически устаревают через 24 часа, поэтому задача очистки кеша в большинстве случаев не требуется.]]></string>
+    <string name="cron_examples" introduced="6.6.0"><![CDATA[Примеры команд Cron]]></string>
+    <string name="cron_examples_desc" introduced="6.6.0"><![CDATA[Добавьте одну из следующих команд в crontab вашего сервера. Расписание (*/5 * * * *) выполняется каждые 5 минут — система будет выполнять задачи только тогда, когда они запланированы согласно установленной выше частоте.]]></string>
     <string name="clone_settings"><![CDATA[Перед первым клонированием настройте, что вы хотите и не хотите клонировать каждый раз.]]></string>
     <string name="emailconf"><![CDATA[Требовать подтверждение адреса электронной почты (двойной ввод)]]></string>
     <string name="redirects"><![CDATA[Перенаправления]]></string>

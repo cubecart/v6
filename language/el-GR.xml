@@ -2137,13 +2137,13 @@
     <string name="cron_cache" introduced="6.4.8"><![CDATA[Εκκαθάριση Προσωρινής Μνήμης]]></string>
     <string name="cron_snippet" introduced="6.4.8"><![CDATA[Προσαρμοσμένο Απόσπασμα Κώδικα]]></string>
     <string name="scheduled_snippet" introduced="6.4.8"><![CDATA[Εκτελεί ένα ή περισσότερα <a href="?_g=settings&node=hooks#snippets">αποσπάσματα κώδικα</a> που έχουν ορισμένο ως ενεργοποιητή γεγονότος το &quot;cron&quot;.]]></string>
-    <string name="cron_url" introduced="6.6.0"><![CDATA[Cron URL]]></string>
-    <string name="cron_frequency" introduced="6.6.0"><![CDATA[Frequency]]></string>
-    <string name="cron_last_run" introduced="6.6.0"><![CDATA[Last Run]]></string>
-    <string name="cron_last_result" introduced="6.6.0"><![CDATA[Last Result]]></string>
-    <string name="cron_cache_note" introduced="6.6.0"><![CDATA[Cached data expires automatically after 24 hours so the Clear Cache task should not be needed in most cases.]]></string>
-    <string name="cron_examples" introduced="6.6.0"><![CDATA[Example Cron Commands]]></string>
-    <string name="cron_examples_desc" introduced="6.6.0"><![CDATA[Add one of the following commands to your server's crontab. The schedule (*/5 * * * *) runs every 5 minutes — the system will only execute tasks when they are due based on the frequency set above.]]></string>
+    <string name="cron_url" introduced="6.6.0"><![CDATA[URL Cron]]></string>
+    <string name="cron_frequency" introduced="6.6.0"><![CDATA[Συχνότητα]]></string>
+    <string name="cron_last_run" introduced="6.6.0"><![CDATA[Τελευταία εκτέλεση]]></string>
+    <string name="cron_last_result" introduced="6.6.0"><![CDATA[Τελευταίο αποτέλεσμα]]></string>
+    <string name="cron_cache_note" introduced="6.6.0"><![CDATA[Τα αποθηκευμένα δεδομένα λήγουν αυτόματα μετά από 24 ώρες, επομένως η εργασία εκκαθάρισης cache δεν θα πρέπει να χρειάζεται στις περισσότερες περιπτώσεις.]]></string>
+    <string name="cron_examples" introduced="6.6.0"><![CDATA[Παραδείγματα εντολών Cron]]></string>
+    <string name="cron_examples_desc" introduced="6.6.0"><![CDATA[Προσθέστε μία από τις παρακάτω εντολές στο crontab του διακομιστή σας. Το πρόγραμμα (*/5 * * * *) εκτελείται κάθε 5 λεπτά — το σύστημα θα εκτελεί εργασίες μόνο όταν οφείλονται βάσει της συχνότητας που ορίστηκε παραπάνω.]]></string>
     <string name="clone_settings" introduced="6.4.6"><![CDATA[Πριν κλωνοποιήσουμε για πρώτη φορά, ρυθμίστε τι θέλετε και τι δεν θέλετε να κλωνοποιείται κάθε φορά.]]></string>
     <string name="emailconf" introduced="6.4.5"><![CDATA[Απαίτηση επιβεβαίωσης διεύθυνσης email (διπλή εισαγωγή)]]></string>
     <string name="redirects" introduced="6.4.0"><![CDATA[Ανακατευθύνσεις]]></string>
