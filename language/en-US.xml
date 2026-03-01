@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<language version="2.0">
+<language version="3.0">
  <info>
   <title>
       English (US)
     </title>
   <code>en-US</code>
-  <character_set>utf-8</character_set>
   <version>6.6.0</version>
-  <minVersion>5.0.0</minVersion>
-  <maxVersion>6.*.*</maxVersion>
   <default_currency>USD</default_currency>
   <text-direction>ltr</text-direction>
   <override></override>

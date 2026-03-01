@@ -405,3 +405,33 @@ INSERT IGNORE INTO `CubeCart_geo_zone` (`country_id`, `abbrev`, `name`) VALUES (
 INSERT IGNORE INTO `CubeCart_geo_zone` (`country_id`, `abbrev`, `name`) VALUES (211, 'TH-94', 'Pattani'); #EOQ
 INSERT IGNORE INTO `CubeCart_geo_zone` (`country_id`, `abbrev`, `name`) VALUES (211, 'TH-95', 'Yala'); #EOQ
 INSERT IGNORE INTO `CubeCart_geo_zone` (`country_id`, `abbrev`, `name`) VALUES (211, 'TH-96', 'Narathiwat'); #EOQ
+
+-- Fix wrong currency ISO numeric codes
+UPDATE `CubeCart_currency` SET `iso` = 975 WHERE `code` = 'BGN'; #EOQ
+UPDATE `CubeCart_currency` SET `iso` = 946 WHERE `code` = 'RON'; #EOQ
+UPDATE `CubeCart_currency` SET `iso` = 949 WHERE `code` = 'TRY'; #EOQ
+
+-- Fix currency symbols
+UPDATE `CubeCart_currency` SET `symbol_left` = '₺' WHERE `code` = 'TRY'; #EOQ
+UPDATE `CubeCart_currency` SET `symbol_left` = 'zł' WHERE `code` = 'PLN'; #EOQ
+UPDATE `CubeCart_currency` SET `symbol_left` = 'HK$' WHERE `code` = 'HKD'; #EOQ
+UPDATE `CubeCart_currency` SET `symbol_left` = '₱' WHERE `code` = 'PHP'; #EOQ
+UPDATE `CubeCart_currency` SET `symbol_left` = '¥' WHERE `code` = 'CNY'; #EOQ
+UPDATE `CubeCart_currency` SET `symbol_left` = '₽', `symbol_right` = '' WHERE `code` = 'RUB'; #EOQ
+
+-- Disable defunct currencies (replaced by EUR)
+UPDATE `CubeCart_currency` SET `active` = 0, `value` = 0.00000, `updated` = 0 WHERE `code` = 'EEK'; #EOQ
+UPDATE `CubeCart_currency` SET `active` = 0, `value` = 0.00000, `updated` = 0 WHERE `code` = 'LTL'; #EOQ
+UPDATE `CubeCart_currency` SET `active` = 0, `value` = 0.00000, `updated` = 0 WHERE `code` = 'LVL'; #EOQ
+UPDATE `CubeCart_currency` SET `active` = 0, `value` = 0.00000, `updated` = 0 WHERE `code` = 'HRK'; #EOQ
+UPDATE `CubeCart_currency` SET `active` = 0, `value` = 0.00000, `updated` = 0 WHERE `code` = 'BGN'; #EOQ
+
+-- Add missing major currencies
+INSERT IGNORE INTO `CubeCart_currency` (`name`, `code`, `iso`, `symbol_left`, `symbol_right`, `value`, `decimal_places`, `updated`, `active`, `symbol_decimal`, `symbol_thousand`) VALUES ('Indian rupee', 'INR', 356, '₹', '', 85.00000, 2, 0, 0, '.', ','); #EOQ
+INSERT IGNORE INTO `CubeCart_currency` (`name`, `code`, `iso`, `symbol_left`, `symbol_right`, `value`, `decimal_places`, `updated`, `active`, `symbol_decimal`, `symbol_thousand`) VALUES ('South Korean won', 'KRW', 410, '₩', '', 1350.00000, 0, 0, 0, '.', ','); #EOQ
+INSERT IGNORE INTO `CubeCart_currency` (`name`, `code`, `iso`, `symbol_left`, `symbol_right`, `value`, `decimal_places`, `updated`, `active`, `symbol_decimal`, `symbol_thousand`) VALUES ('New Taiwan dollar', 'TWD', 901, 'NT$', '', 32.00000, 2, 0, 0, '.', ','); #EOQ
+INSERT IGNORE INTO `CubeCart_currency` (`name`, `code`, `iso`, `symbol_left`, `symbol_right`, `value`, `decimal_places`, `updated`, `active`, `symbol_decimal`, `symbol_thousand`) VALUES ('United Arab Emirates dirham', 'AED', 784, '', 'د.إ', 3.67000, 2, 0, 0, '.', ','); #EOQ
+INSERT IGNORE INTO `CubeCart_currency` (`name`, `code`, `iso`, `symbol_left`, `symbol_right`, `value`, `decimal_places`, `updated`, `active`, `symbol_decimal`, `symbol_thousand`) VALUES ('Saudi riyal', 'SAR', 682, '', 'ر.س', 3.75000, 2, 0, 0, '.', ','); #EOQ
+INSERT IGNORE INTO `CubeCart_currency` (`name`, `code`, `iso`, `symbol_left`, `symbol_right`, `value`, `decimal_places`, `updated`, `active`, `symbol_decimal`, `symbol_thousand`) VALUES ('Israeli new shekel', 'ILS', 376, '₪', '', 3.60000, 2, 0, 0, '.', ','); #EOQ
+INSERT IGNORE INTO `CubeCart_currency` (`name`, `code`, `iso`, `symbol_left`, `symbol_right`, `value`, `decimal_places`, `updated`, `active`, `symbol_decimal`, `symbol_thousand`) VALUES ('Indonesian rupiah', 'IDR', 360, 'Rp', '', 16000.00000, 2, 0, 0, '.', ','); #EOQ
+INSERT IGNORE INTO `CubeCart_currency` (`name`, `code`, `iso`, `symbol_left`, `symbol_right`, `value`, `decimal_places`, `updated`, `active`, `symbol_decimal`, `symbol_thousand`) VALUES ('Ukrainian hryvnia', 'UAH', 980, '₴', '', 42.00000, 2, 0, 0, '.', ','); #EOQ

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<language version="2.0">
+<language version="3.0">
   <info>
     <title>Українська</title>
     <code>uk-UA</code>
+    <version>6.6.0</version>
     <default_currency>UAH</default_currency>
-    <direction>ltr</direction>
+    <text-direction>ltr</text-direction>
     <override/>
   </info>
   <translation>

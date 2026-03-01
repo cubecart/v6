@@ -10,14 +10,11 @@
  * Email:  hello@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
 -->
-<language version="2.0">
+<language version="3.0">
  <info>
   <title><![CDATA[简体中文]]></title>
   <code>zh-CN</code>
-  <character_set>utf-8</character_set>
   <version>6.6.0</version>
-  <minVersion>6.0.0</minVersion>
-  <maxVersion>6.*.*</maxVersion>
   <default_currency>CNY</default_currency>
   <text-direction>ltr</text-direction>
   <override/>

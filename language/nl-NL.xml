@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<language version="2.0">
+<language version="3.0">
   <info>
     <title><![CDATA[Nederlands]]></title>
-    <code><![CDATA[nl-NL]]></code>
-    <country_code><![CDATA[NLD]]></country_code>
-    <default_currency><![CDATA[EUR]]></default_currency>
-    <locale><![CDATA[nl_NL.UTF-8,nl_NL,dutch]]></locale>
-    <character_set><![CDATA[UTF-8]]></character_set>
-    <date_format><![CDATA[d-m-Y]]></date_format>
-    <time_format><![CDATA[H:i]]></time_format>
-    <name_format><![CDATA[%s %s]]></name_format>
+    <code>nl-NL</code>
+    <version>6.6.0</version>
+    <default_currency>EUR</default_currency>
+    <text-direction>ltr</text-direction>
+    <override/>
   </info>
   <translation>
     <group name="account">
