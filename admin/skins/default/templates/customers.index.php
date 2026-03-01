@@ -217,7 +217,8 @@
 
 	<div id="address" class="tab_content">
 	  {if isset($DISPLAY_ADDRESS_EDIT)}
-	  <h3>{$LANG.address.address_edit}</h3>
+	  <p><a href="?_g=customers&action=edit&customer_id={$CUSTOMER.customer_id}#address"><i class="fa fa-arrow-left"></i> {$LANG.address.address_book}</a></p>
+	  <h3>{if isset($ADDRESS_ADD_MODE)}{$LANG.address.address_add}{else}{$LANG.address.address_edit}{/if}</h3>
 	  <fieldset>
 	  <div><label for="address_desc">{$LANG.common.description}</label><span><input type="text" name="address[description]" id="address_desc" value="{$ADDRESS.description}" class="textbox"></span></div>
 	  <div><label for="address_firstname">{$LANG.user.name_first}</label><span><input type="text" name="address[first_name]" id="address_firstname" value="{$ADDRESS.first_name}" class="textbox capitalize"></span></div>
@@ -241,26 +242,46 @@
 	  {/if}
 
 	  {if isset($DISPLAY_ADDRESS_LIST)}
-	  <h3>{$LANG.address.address_book}</h3>
+	  {if isset($CUSTOMER.customer_id)}
+	  <p class="right"><a href="?_g=customers&action=edit&customer_id={$CUSTOMER.customer_id}&address_id=add#address" class="button">{$LANG.address.address_add}</a></p><h3>{$LANG.address.address_book}</h3>
 	  <div id="address-list">
 		{if isset($ADDRESS_LIST)}
-		{foreach from=$ADDRESS_LIST item=address}
-		<div class="note">
-		  <span class="actions">
-			<a href="{$address.edit}#address" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
-			<a href="{$address.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
-		  </span>
-		  <strong>{$address.description}</strong> - {$address.first_name} {$address.last_name}
-		  {if !empty({$address.company_name})}({$address.company_name}){/if}
-		  <br>
-		  <span class="capitalize">{$address.line1}, {if !empty($address.line2)}{$address.line2}, {/if}</span>{$address.town}, <span class="uppercase">{if !empty($address.state_name)}{$address.state_name}, {/if}</span>{$address.postcode}, {$address.country_name}
-		</div>
-		{/foreach}
+		<table width="100%">
+		  <thead>
+			<tr>
+			  <td>{$LANG.common.description}</td>
+			  <td>{$LANG.common.name}</td>
+			  <td>{$LANG.address.line1}</td>
+			  <td>{$LANG.address.town}</td>
+			  <td>{$LANG.address.state}</td>
+			  <td>{$LANG.address.postcode}</td>
+			  <td>{$LANG.address.country}</td>
+			  <td>&nbsp;</td>
+			</tr>
+		  </thead>
+		  <tbody>
+			{foreach from=$ADDRESS_LIST item=address}
+			<tr>
+			  <td>{$address.description}</td>
+			  <td>{$address.first_name} {$address.last_name}{if !empty($address.company_name)} ({$address.company_name}){/if}</td>
+			  <td class="capitalize">{$address.line1}{if !empty($address.line2)}, {$address.line2}{/if}</td>
+			  <td>{$address.town}</td>
+			  <td>{$address.state_name}</td>
+			  <td class="uppercase">{$address.postcode}</td>
+			  <td>{$address.country_name}</td>
+			  <td style="text-align:center">
+				<a href="{$address.edit}#address" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
+				<a href="{$address.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
+			  </td>
+			</tr>
+			{/foreach}
+		  </tbody>
+		</table>
 		{else}
-	    <div>{$LANG.address.notify_address_none}</div>
-	    {/if}
+		<div>{$LANG.address.notify_address_none}</div>
+		{/if}
 	  </div>
-	  <div><a href="#" class="colorbox address-form">{$LANG.address.address_add}</a></div>
+	  {/if}
 	  {/if}
 	</div>
 

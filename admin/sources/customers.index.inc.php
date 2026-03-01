@@ -403,7 +403,29 @@ if ((!empty($_GET['action'] ??= "") || isset($_POST['multi-action'])) && Admin::
 
             $GLOBALS['gui']->addBreadcrumb(sprintf('%s %s', $customer['first_name'], $customer['last_name']), currentPage(array('address_id')));
 
-            if (isset($_GET['address_id']) && is_numeric($_GET['address_id'])) {
+            if (isset($_GET['address_id']) && $_GET['address_id'] === 'add') {
+                $store_country = $GLOBALS['config']->get('config', 'store_country');
+                $GLOBALS['smarty']->assign('ADDRESS', array(
+                    'address_id' => '', 'description' => '', 'first_name' => '', 'last_name' => '',
+                    'company_name' => '', 'line1' => '', 'line2' => '', 'town' => '',
+                    'state' => '', 'postcode' => '', 'w3w' => '',
+                    'billing' => 0, 'default' => 0, 'country' => ''
+                ));
+                if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('id', 'numcode', 'name'), false, array('name' => 'ASC'))) !== false) {
+                    $smarty_data = array();
+                    foreach ($countries as $country) {
+                        $smarty_data['countries'][] = array(
+                            'selected' => ($country['numcode'] == $store_country) ? 'selected="selected"' : '',
+                            'id'  => $country['numcode'],
+                            'name'  => $country['name'],
+                        );
+                    }
+                    $GLOBALS['smarty']->assign('COUNTRIESL', $smarty_data['countries']);
+                    $GLOBALS['smarty']->assign('JSON_STATE', state_json());
+                }
+                $GLOBALS['smarty']->assign('DISPLAY_ADDRESS_EDIT', true);
+                $GLOBALS['smarty']->assign('ADDRESS_ADD_MODE', true);
+            } elseif (isset($_GET['address_id']) && is_numeric($_GET['address_id'])) {
                 if (($address = $GLOBALS['db']->select('CubeCart_addressbook', false, array('customer_id' => $customer_id, 'address_id' => (int)$_GET['address_id']))) !== false) {
                     $GLOBALS['gui']->addBreadcrumb($address[0]['description'], currentPage());
                     if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('id', 'numcode', 'name'), false, array('name' => 'ASC'))) !== false) {
