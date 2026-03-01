@@ -804,8 +804,12 @@ optgroup>option {
     padding-left: 15px
 }
 .tab_content input.textbox,
-.tb-form input.textbox {
-    width: 300px
+.tab_content select.textbox,
+.tb-form input.textbox,
+.tb-form select.textbox {
+    width: 300px;
+    box-sizing: border-box;
+    padding: 2px 4px
 }
 .tab_content .number {
     width: 100px!important
