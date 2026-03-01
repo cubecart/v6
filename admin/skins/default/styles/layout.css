@@ -1230,7 +1230,7 @@ input.save-changes {
 .sidebar_content {
     background-color: #e8e8e8;
     margin: 5px 10px 10px!important;
-    padding: 10px 5px;
+    padding: 5px 5px 7px 5px;
     border-radius: 3px
 }
 .sidebar_content form {
