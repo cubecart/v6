@@ -887,7 +887,8 @@ div.tab_content fieldset > div {
 div.tab_content fieldset label {
     line-height: 23px;
     float: left;
-    width: 30em
+    width: 30em;
+    min-height: 23px
 }
 .tb-form fieldset span,
 div.tab_content fieldset > span {
