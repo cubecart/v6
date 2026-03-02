@@ -138,6 +138,21 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
                     trigger_error('Email content for '.$content_type.' doesn\'t exist in any language.');
                     return false;
                 } elseif ($default) {
+                    // Self-heal: try importing this content type from the default language's XML
+                    $GLOBALS['language']->importEmail('email_'.$language.'.xml', CC_LANGUAGE_DIR, $content_type);
+                    if (($contents = $GLOBALS['db']->select('CubeCart_email_content', false, $where, false, 1, false, false)) !== false) {
+                        $this->_email_content_id = $contents[0]['content_id'];
+                        $this->_content_type = $content_type;
+                        if ($data) {
+                            $GLOBALS['smarty']->assign('DATA', $data);
+                        }
+                        if (!empty($contents[0]['content_html'])) {
+                            return array(
+                                'subject'  => $contents[0]['subject'],
+                                'content_html' => $contents[0]['content_html'],
+                            );
+                        }
+                    }
                     trigger_error('Email content for '.$content_type.' doesn\'t exist in default language.');
                     return $this->loadContent($content_type, $GLOBALS['config']->get('config', 'default_language'), $data, true, true);
                 }
@@ -162,6 +177,21 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
                     $this->_import_new = true;
                     return $this->loadContent($content_type, $language, $data);
                 } else {
+                    ## Self-heal: language exists but specific content type is missing - try importing from XML
+                    $GLOBALS['language']->importEmail('email_'.$language.'.xml', CC_LANGUAGE_DIR, $content_type);
+                    if (($contents = $GLOBALS['db']->select('CubeCart_email_content', false, $where, false, 1, false, false)) !== false) {
+                        $this->_email_content_id = $contents[0]['content_id'];
+                        $this->_content_type = $content_type;
+                        if ($data) {
+                            $GLOBALS['smarty']->assign('DATA', $data);
+                        }
+                        if (!empty($contents[0]['content_html'])) {
+                            return array(
+                                'subject'  => $contents[0]['subject'],
+                                'content_html' => $contents[0]['content_html'],
+                            );
+                        }
+                    }
                     // Try loading the default language content
                     return $this->loadContent($content_type, $GLOBALS['config']->get('config', 'default_language'), $data, true);
                 }

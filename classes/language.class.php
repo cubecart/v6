@@ -654,7 +654,7 @@ class Language
                                     // See GitHub #1511
                                     $record['content_'.(string)$content->attributes()->type] = str_replace(array('empty({$','})}','DATA.'.$traditional_oid_col), array('empty($',')}','DATA.'.$oid_col), trim((string)$content));
                                 }
-                                if ($GLOBALS['db']->count('CubeCart_email_content', 'content_id', array('language' => $record['language'], 'content_type' => $record['content_type']))) {
+                                if ($GLOBALS['db']->select('CubeCart_email_content', array('content_id'), array('language' => $record['language'], 'content_type' => $record['content_type']), false, 1, false, false)) {
                                     $GLOBALS['db']->update('CubeCart_email_content', $record, array('language' => $record['language'], 'content_type' => $record['content_type']));
                                 } else {
                                     $GLOBALS['db']->insert('CubeCart_email_content', $record);

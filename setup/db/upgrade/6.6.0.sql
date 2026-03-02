@@ -479,3 +479,9 @@ INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`, `array_seri
 
 ALTER TABLE `CubeCart_cart_abandonment` ADD COLUMN `coupon_code` VARCHAR(25) DEFAULT NULL AFTER `token`; #EOQ
 INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`, `array_serial`) VALUES ('config', 'abandoned_cart_coupon', '0', '') ON DUPLICATE KEY UPDATE `name`=`name`; #EOQ
+
+-- Deduplicate email content rows (keep lowest content_id per content_type+language)
+DELETE t1 FROM `CubeCart_email_content` t1 INNER JOIN `CubeCart_email_content` t2 ON t1.content_type = t2.content_type AND t1.language = t2.language AND t1.content_id > t2.content_id; #EOQ
+
+-- Prevent duplicate email content rows
+ALTER TABLE `CubeCart_email_content` ADD UNIQUE KEY `content_language` (`content_type`, `language`); #EOQ
