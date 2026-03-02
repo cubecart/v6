@@ -2507,6 +2507,7 @@ ADVARSEL: Alle filer i den vil bli slettet permanent.]]></string>
    <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Send påminnelse etter]]></string>
    <string name="abandoned_cart_notify_cooldown" introduced="6.6.0"><![CDATA[Minimumstid mellom påminnelser]]></string>
    <string name="abandoned_cart_order_window" introduced="6.6.0"><![CDATA[Undertrykk hvis bestilt innen]]></string>
+   <string name="abandoned_cart_coupon" introduced="6.6.0"><![CDATA[Inkluder rabattkode]]></string>
    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Når aktivert vil registrerte kunder som legger igjen varer i handlekurven uten å fullføre kjøpet, motta en påminnelse via e-post. Den planlagte oppgaven &quot;Send e-poster om forlatt handlekurv&quot; må også være aktivert under fanen Planlagte oppgaver.<br><br><strong>En påminnelse sendes når alle følgende betingelser er oppfylt:</strong><br>&bull; Kunden har ikke hatt en aktiv økt i forsinkelsesperioden ovenfor<br>&bull; Kunden har ikke mottatt en påminnelse innen avkjølingsperioden ovenfor<br>&bull; Kunden har ingen pågående eller fullførte bestillinger innen ordrevinduet ovenfor<br>&bull; Kunden har ikke meldt seg av påminnelser<br><br>Cron-URL-en må kalles eksternt (f.eks. via crontab med curl/wget) &mdash; ikke fra en nettleser der en kunde er logget inn, da nettleserøkten ville telle som nylig aktivitet.]]></string>
 </group>
   <group name="setup">

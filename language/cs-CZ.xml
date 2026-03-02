@@ -2823,6 +2823,7 @@ POZOR: všechny soubory v ní budou trvale smazány!]]></string>
     <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Odeslat připomenutí po]]></string>
     <string name="abandoned_cart_notify_cooldown" introduced="6.6.0"><![CDATA[Minimální čas mezi připomínkami]]></string>
     <string name="abandoned_cart_order_window" introduced="6.6.0"><![CDATA[Potlačit pokud objednáno během]]></string>
+    <string name="abandoned_cart_coupon" introduced="6.6.0"><![CDATA[Zahrnout slevový kód]]></string>
     <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Pokud je povoleno, registrovaní zákazníci, kteří zanechají položky v košíku bez dokončení nákupu, obdrží připomínací e-mail. Naplánovaná úloha &quot;Odesílání e-mailů o opuštěných košících&quot; musí být rovněž povolena na záložce «Naplánované úlohy».<br><br><strong>Připomenutí je odesláno, když jsou splněny všechny následující podmínky:</strong><br>&bull; Zákazník neměl aktivní relaci po dobu prodlevy uvedené výše<br>&bull; Zákazníkovi nebylo odesláno připomenutí v období minimálního času uvedeném výše<br>&bull; Zákazník nemá žádné zpracovávané ani dokončené objednávky v časovém okně uvedeném výše<br>&bull; Zákazník neodmítl zasílání připomenutí<br><br>Adresa URL cronu musí být volána externě (např. přes crontab s curl/wget) &mdash; nikoli z prohlížeče, kde je zákazník přihlášen, protože relace prohlížeče by se počítala jako nedávná aktivita.]]></string>
 </group>
   <group name="setup">

@@ -2507,6 +2507,7 @@ UWAGA: Wszystkie pliki w nim zawarte zostaną trwale usunięte!]]></string>
    <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Wyślij przypomnienie po]]></string>
    <string name="abandoned_cart_notify_cooldown" introduced="6.6.0"><![CDATA[Minimalny czas między przypomnieniami]]></string>
    <string name="abandoned_cart_order_window" introduced="6.6.0"><![CDATA[Pomiń jeśli zamówiono w ciągu]]></string>
+   <string name="abandoned_cart_coupon" introduced="6.6.0"><![CDATA[Dołącz kod rabatowy]]></string>
    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Po włączeniu zarejestrowani klienci, którzy zostawią produkty w koszyku bez dokończenia zakupu, otrzymają e-mail z przypomnieniem. Zadanie zaplanowane &quot;Wyślij e-maile o porzuconym koszyku&quot; musi być również włączone w zakładce Zaplanowane zadania.<br><br><strong>Przypomnienie jest wysyłane gdy wszystkie poniższe warunki są spełnione:</strong><br>&bull; Klient nie miał aktywnej sesji przez czas określony powyżej<br>&bull; Klient nie otrzymał przypomnienia w okresie minimalnego czasu powyżej<br>&bull; Klient nie ma przetwarzanych ani zrealizowanych zamówień w oknie czasowym powyżej<br>&bull; Klient nie zrezygnował z przypomnień<br><br>Adres URL cron musi być wywoływany zewnętrznie (np. przez crontab z curl/wget) &mdash; nie z przeglądarki, w której klient jest zalogowany, ponieważ sesja przeglądarki zostanie uznana za ostatnią aktywność.]]></string>
 </group>
   <group name="setup">

@@ -2496,6 +2496,7 @@ VAROITUS: Kaikki sen sisältämät tiedostot poistetaan pysyvästi!]]></string>
    <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Lähetä muistutus jälkeen]]></string>
    <string name="abandoned_cart_notify_cooldown" introduced="6.6.0"><![CDATA[Vähimmäisaika muistutusten välillä]]></string>
    <string name="abandoned_cart_order_window" introduced="6.6.0"><![CDATA[Estä jos tilattu viimeisen]]></string>
+   <string name="abandoned_cart_coupon" introduced="6.6.0"><![CDATA[Sisällytä alennuskoodi]]></string>
    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Kun tämä on käytössä, rekisteröityneet asiakkaat, jotka jättävät tuotteita ostoskoriinsa suorittamatta tilausta loppuun, saavat muistutusviestin. Myös ajoitettu tehtävä &quot;Lähetä hylätyn ostoskorin sähköpostit&quot; on oltava käytössä Ajoitetut tehtävät -välilehdellä.<br><br><strong>Muistutus lähetetään, kun kaikki seuraavat ehdot täyttyvät:</strong><br>&bull; Asiakkaalla ei ole ollut aktiivista istuntoa yllä olevan viiveajan aikana<br>&bull; Asiakkaalle ei ole lähetetty muistutusta yllä olevan jäähdytysajan sisällä<br>&bull; Asiakkaalla ei ole käsittelyssä olevia tai valmiita tilauksia yllä olevan tilausikkunan sisällä<br>&bull; Asiakas ei ole kieltäytynyt muistutuksista<br><br>Cron-URL on kutsuttava ulkoisesti (esim. crontabilla curl/wget-komennolla) &mdash; ei selaimesta, jossa asiakas on kirjautuneena, sillä selainistunto laskettaisiin viimeaikaiseksi toiminnaksi.]]></string>
 </group>
     <group name="setup">

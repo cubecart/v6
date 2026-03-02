@@ -2497,6 +2497,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[リマインダー送信までの時間]]></string>
     <string name="abandoned_cart_notify_cooldown" introduced="6.6.0"><![CDATA[リマインダー間の最短時間]]></string>
     <string name="abandoned_cart_order_window" introduced="6.6.0"><![CDATA[期間内に注文がある場合は送信しない]]></string>
+    <string name="abandoned_cart_coupon" introduced="6.6.0"><![CDATA[割引コードを含める]]></string>
     <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[有効にすると、カートに商品を残したまま購入を完了しなかった登録済みのお客様にリマインダーメールが送信されます。「スケジュールタスク」タブで&quot;カート放棄メールを送信&quot;のスケジュールタスクも有効にする必要があります。&lt;br&gt;&lt;br&gt;&lt;strong&gt;以下のすべての条件を満たす場合にリマインダーが送信されます：&lt;/strong&gt;&lt;br&gt;&amp;bull; お客様が上記の遅延時間内にアクティブなセッションを持っていない&lt;br&gt;&amp;bull; お客様が上記のクールダウン期間内にリマインダーを受信していない&lt;br&gt;&amp;bull; お客様が上記の注文ウィンドウ内に処理中または完了した注文がない&lt;br&gt;&amp;bull; お客様がリマインダーのオプトアウトをしていない&lt;br&gt;&lt;br&gt;Cron URLは外部から呼び出す必要があります（例：crontabでcurl/wgetを使用）&amp;mdash; お客様がログインしているブラウザからは呼び出さないでください。ブラウザセッションが最近のアクティビティとしてカウントされます。]]></string>
 </group>
   <group name="setup">

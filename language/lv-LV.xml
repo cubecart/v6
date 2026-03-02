@@ -2495,6 +2495,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Sūtīt atgādinājumu pēc]]></string>
     <string name="abandoned_cart_notify_cooldown" introduced="6.6.0"><![CDATA[Minimālais laiks starp atgādinājumiem]]></string>
     <string name="abandoned_cart_order_window" introduced="6.6.0"><![CDATA[Neradīt ja pasūtīts pēdējā]]></string>
+    <string name="abandoned_cart_coupon" introduced="6.6.0"><![CDATA[Iekļaut atlaides kodu]]></string>
     <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Ja iespējots, reģistrēti klienti, kuri atstāj preces grozā, nepabeidzot pirkumu, saņems atgādinājuma e-pastu. Ieplānotajam uzdevumam &quot;Sūtīt pamesta groza e-pastus&quot; arī jābūt iespējotam cilnē Ieplānotie uzdevumi.<br><br><strong>Atgādinājums tiek nosūtīts, kad visi šie nosacījumi ir izpildīti:</strong><br>&bull; Klientam nav bijusi aktīva sesija iepriekš norādītajā aizkaves periodā<br>&bull; Klientam nav nosūtīts atgādinājums iepriekš norādītajā atdzišanas periodā<br>&bull; Klientam nav apstrādē esošu vai pabeigtu pasūtījumu iepriekš norādītajā pasūtījumu logā<br>&bull; Klients nav atteicies no atgādinājumiem<br><br>Cron URL ir jāizsauc ārēji (piem., izmantojot crontab ar curl/wget) &mdash; nevis no pārlūkprogrammas, kurā klients ir pieteicies, jo pārlūkprogrammas sesija tiktu uzskatīta par nesenu darbību.]]></string>
 </group>
   <group name="setup">

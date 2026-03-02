@@ -2497,6 +2497,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[发送提醒的延迟时间]]></string>
     <string name="abandoned_cart_notify_cooldown" introduced="6.6.0"><![CDATA[提醒之间的最短时间]]></string>
     <string name="abandoned_cart_order_window" introduced="6.6.0"><![CDATA[如果在此期间内下单则不发送]]></string>
+    <string name="abandoned_cart_coupon" introduced="6.6.0"><![CDATA[包含折扣码]]></string>
     <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[启用后，将购物车中的商品留置而未完成购买的注册客户将收到提醒邮件。还必须在&quot;定时任务&quot;标签中启用&quot;发送弃购购物车邮件&quot;定时任务。&lt;br&gt;&lt;br&gt;&lt;strong&gt;当满足以下所有条件时将发送提醒：&lt;/strong&gt;&lt;br&gt;&amp;bull; 客户在上述延迟时间内没有活跃会话&lt;br&gt;&amp;bull; 客户在上述冷却期内未收到过提醒&lt;br&gt;&amp;bull; 客户在上述订单窗口期内没有处理中或已完成的订单&lt;br&gt;&amp;bull; 客户未选择退出提醒&lt;br&gt;&lt;br&gt;Cron URL 必须从外部调用（例如通过 crontab 使用 curl/wget）&amp;mdash; 不能从客户已登录的浏览器中调用，因为浏览器会话会被视为近期活动。]]></string>
 </group>
   <group name="setup">

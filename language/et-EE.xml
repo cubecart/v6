@@ -2495,6 +2495,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Saada meeldetuletus pärast]]></string>
     <string name="abandoned_cart_notify_cooldown" introduced="6.6.0"><![CDATA[Minimaalne aeg meeldetuletuste vahel]]></string>
     <string name="abandoned_cart_order_window" introduced="6.6.0"><![CDATA[Keela kui tellitud viimase]]></string>
+    <string name="abandoned_cart_coupon" introduced="6.6.0"><![CDATA[Lisa sooduskood]]></string>
     <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Kui see on lubatud, saavad registreeritud kliendid, kes jätavad tooted ostukorvi ilma ostu lõpetamata, meeldetuletuse e-kirja. Ajastatud ülesanne &quot;Hüljatud ostukorvi e-kirjade saatmine&quot; peab samuti olema lubatud vahekaardil Ajastatud ülesanded.<br><br><strong>Meeldetuletus saadetakse, kui kõik järgmised tingimused on täidetud:</strong><br>&bull; Kliendil ei ole olnud aktiivset sessiooni ülaloleva viivitusperioodi jooksul<br>&bull; Kliendile ei ole saadetud meeldetuletust ülaloleva jahtumisperioodi jooksul<br>&bull; Kliendil ei ole töötlemises ega lõpetatud tellimusi ülaloleva tellimusakna jooksul<br>&bull; Klient ei ole meeldetuletustest loobunud<br><br>Croni URL-i tuleb kutsuda väliselt (nt crontabi kaudu curl/wget abil) &mdash; mitte brauserist, kus klient on sisse logitud, kuna brauseri sessioon loetaks hiljutiseks tegevuseks.]]></string>
 </group>
   <group name="setup">

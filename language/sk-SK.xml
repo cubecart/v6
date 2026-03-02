@@ -2498,6 +2498,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Odoslať pripomienku po]]></string>
     <string name="abandoned_cart_notify_cooldown" introduced="6.6.0"><![CDATA[Minimálny čas medzi pripomienkami]]></string>
     <string name="abandoned_cart_order_window" introduced="6.6.0"><![CDATA[Potlačiť ak objednané v rámci]]></string>
+    <string name="abandoned_cart_coupon" introduced="6.6.0"><![CDATA[Zahrnúť zľavový kód]]></string>
     <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Ak je povolené, registrovaní zákazníci, ktorí zanechajú položky v košíku bez dokončenia nákupu, dostanú pripomienkový e-mail. Naplánovaná úloha &quot;Odosielanie e-mailov o opustených košíkoch&quot; musí byť tiež povolená na záložke «Naplánované úlohy».<br><br><strong>Pripomienka je odoslaná, keď sú splnené všetky nasledujúce podmienky:</strong><br>&bull; Zákazník nemal aktívnu reláciu počas doby oneskorenia uvedenej vyššie<br>&bull; Zákazníkovi nebola odoslaná pripomienka v minimálnom čase uvedenom vyššie<br>&bull; Zákazník nemá žiadne spracovávané ani dokončené objednávky v časovom okne uvedenom vyššie<br>&bull; Zákazník neodmietol zasielanie pripomienok<br><br>Adresa URL cronu musí byť volaná externe (napr. cez crontab s curl/wget) &mdash; nie z prehliadača, kde je zákazník prihlásený, pretože relácia prehliadača by sa počítala ako nedávna aktivita.]]></string>
 </group>
   <group name="setup">

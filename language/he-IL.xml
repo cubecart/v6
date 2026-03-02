@@ -2497,6 +2497,7 @@
     <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[שלח תזכורת לאחר]]></string>
     <string name="abandoned_cart_notify_cooldown" introduced="6.6.0"><![CDATA[זמן מינימלי בין תזכורות]]></string>
     <string name="abandoned_cart_order_window" introduced="6.6.0"><![CDATA[השהה אם הוזמן בתוך]]></string>
+    <string name="abandoned_cart_coupon" introduced="6.6.0"><![CDATA[כלול קוד הנחה]]></string>
     <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[כאשר מופעל, לקוחות רשומים שעוזבים פריטים בסל הקניות שלהם מבלי להשלים את הרכישה יקבלו הודעת תזכורת בדוא"ל. יש להפעיל גם את המשימה המתוזמנת &quot;שלח הודעות דוא"ל על סל קניות נטוש&quot; בלשונית משימות מתוזמנות.&lt;br&gt;&lt;br&gt;&lt;strong&gt;תזכורת נשלחת כאשר כל התנאים הבאים מתקיימים:&lt;/strong&gt;&lt;br&gt;&amp;bull; ללקוח לא הייתה הפעלה פעילה למשך זמן ההשהיה שלעיל&lt;br&gt;&amp;bull; ללקוח לא נשלחה תזכורת בתוך תקופת הצינון שלעיל&lt;br&gt;&amp;bull; ללקוח אין הזמנות בעיבוד או שהושלמו בתוך חלון ההזמנות שלעיל&lt;br&gt;&amp;bull; הלקוח לא ביטל את הסכמתו לתזכורות&lt;br&gt;&lt;br&gt;כתובת ה-URL של cron חייבת להיקרא מבחוץ (למשל דרך crontab עם curl/wget) &amp;mdash; לא מדפדפן שבו לקוח מחובר, מכיוון שהפעלת הדפדפן תיחשב כפעילות אחרונה.]]></string>
 </group>
   <group name="setup">
