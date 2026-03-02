@@ -206,7 +206,11 @@ $default_config_settings = array(
   'r_request' => '14',
   'r_staff' => '30',
   'r_system_error' => '7',
-  'seo_ext' => ''
+  'seo_ext' => '',
+  'admin_login_notify' => '1',
+  'abandoned_cart_notify_cooldown' => '259200',
+  'abandoned_cart_order_window' => '259200',
+  'abandoned_cart_coupon' => '0'
 );
 
 ksort($default_config_settings);

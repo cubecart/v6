@@ -35,7 +35,6 @@ CREATE TABLE IF NOT EXISTS `CubeCart_addressbook` (
 	`billing` ENUM('0','1') NOT NULL DEFAULT '0',
 	`default` ENUM('0','1') NOT NULL DEFAULT '0',
 	`description` VARCHAR(250) NOT NULL,
-	`title` VARCHAR(16) NOT NULL,
 	`first_name` VARCHAR(32) NOT NULL,
 	`last_name` VARCHAR(32) NOT NULL,
 	`company_name` VARCHAR(200) NOT NULL,
@@ -101,6 +100,12 @@ CREATE TABLE IF NOT EXISTS `CubeCart_admin_users` (
 	`dashboard_notes` TEXT NULL,
 	`order_notify` TINYINT(1) UNSIGNED DEFAULT '0',
 	`tour_shown` ENUM('0','1') NOT NULL DEFAULT '0',
+	`twofa_enabled` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+	`twofa_method` VARCHAR(10) NULL DEFAULT NULL,
+	`twofa_secret` VARCHAR(64) NULL DEFAULT NULL,
+	`twofa_backup_codes` TEXT NULL DEFAULT NULL,
+	`twofa_otp_hash` VARCHAR(255) NULL DEFAULT NULL,
+	`twofa_otp_expires` INT UNSIGNED NOT NULL DEFAULT 0,
 	PRIMARY KEY `admin_id` (`admin_id`),
 	KEY `username` (`username`),
 	KEY `email` (`email`)
@@ -282,7 +287,6 @@ CREATE TABLE IF NOT EXISTS `CubeCart_customer` (
 	`salt` VARCHAR(32) DEFAULT NULL,
 	`new_password` tinyint(1) NOT NULL DEFAULT '1',
 	`verify` VARCHAR(32) DEFAULT NULL,
-	`title` VARCHAR(16) DEFAULT NULL,
 	`first_name` VARCHAR(32) NOT NULL,
 	`last_name` VARCHAR(32) NOT NULL,
 	`country` SMALLINT(3) UNSIGNED NOT NULL DEFAULT '0',
@@ -380,8 +384,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_email_content` (
 	`subject` VARCHAR(250) NOT NULL,
 	`content_html` TEXT NOT NULL,
 	PRIMARY KEY (`content_id`),
-	KEY `content_type` (`content_type`),
-	KEY `language` (`language`)
+	UNIQUE KEY `content_language` (`content_type`, `language`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_email_template` (
@@ -828,7 +831,6 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_summary` (
 	`ship_date` date DEFAULT NULL,
 	`ship_tracking` TEXT DEFAULT NULL,
 	`gateway` VARCHAR(100) NOT NULL,
-	`title` VARCHAR(16) NULL,
 	`first_name` VARCHAR(32) NOT NULL,
 	`last_name` VARCHAR(32) NOT NULL,
 	`company_name` VARCHAR(200) DEFAULT NULL,
@@ -839,7 +841,6 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_summary` (
 	`postcode` VARCHAR(50) NOT NULL,
 	`country` SMALLINT(3) UNSIGNED NOT NULL,
 	`w3w` varchar(255) NOT NULL,
-	`title_d` VARCHAR(16) NOT NULL,
 	`first_name_d` VARCHAR(32) NOT NULL,
 	`last_name_d` VARCHAR(32) NOT NULL,
 	`company_name_d` VARCHAR(200) DEFAULT NULL,
@@ -956,6 +957,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_cart_abandonment` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `customer_id` INT UNSIGNED NOT NULL,
   `token` VARCHAR(64) NOT NULL,
+  `coupon_code` VARCHAR(25) DEFAULT NULL,
   `notified_at` DATETIME NOT NULL,
   `clicked_at` DATETIME DEFAULT NULL,
   `recovered_at` DATETIME DEFAULT NULL,
@@ -963,6 +965,18 @@ CREATE TABLE IF NOT EXISTS `CubeCart_cart_abandonment` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `token` (`token`),
   KEY `customer_idx` (`customer_id`, `notified_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
+
+CREATE TABLE IF NOT EXISTS `CubeCart_cron_tasks` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `method` VARCHAR(50) NOT NULL,
+  `label` VARCHAR(100) NOT NULL DEFAULT '',
+  `enabled` TINYINT(1) NOT NULL DEFAULT 1,
+  `frequency` INT UNSIGNED NOT NULL DEFAULT 3600,
+  `last_run` DATETIME DEFAULT NULL,
+  `last_result` VARCHAR(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `method` (`method`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_search` (
