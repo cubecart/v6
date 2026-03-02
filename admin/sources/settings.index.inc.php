@@ -304,6 +304,7 @@ $GLOBALS['main']->addTabControl($lang['settings']['tab_offline'], 'Offline');
 $GLOBALS['main']->addTabControl($lang['settings']['tab_logos'], 'Logos');
 $GLOBALS['main']->addTabControl($lang['settings']['tab_copyright'], 'Copyright');
 $GLOBALS['main']->addTabControl($lang['settings']['tab_advanced'], 'Advanced_Settings');
+$GLOBALS['main']->addTabControl($lang['settings']['tab_cart_recovery'], 'Cart_Recovery');
 $GLOBALS['main']->addTabControl($lang['settings']['tab_cron'], 'Scheduled_Tasks', null, null, false, '_self', 98);
 $GLOBALS['main']->addTabControl($lang['settings']['tab_extra'], 'Extra', null, null, false, '_self', 99);
 
@@ -505,6 +506,18 @@ if ($inventory_columns = $GLOBALS['db']->misc('SHOW FULL COLUMNS FROM '.$GLOBALS
     }
     asort($select_options['product_sort_column']);
 }
+
+// Cart recovery delay options
+$select_options['abandoned_cart_delay'] = array(
+    3600   => '1 Hour',
+    7200   => '2 Hours',
+    14400  => '4 Hours',
+    21600  => '6 Hours',
+    43200  => '12 Hours',
+    86400  => '24 Hours',
+    172800 => '48 Hours',
+    259200 => '72 Hours',
+);
 
 $smarty_data['config'] = $GLOBALS['config']->get('config');
 $GLOBALS['smarty']->assign('FIXED_CONFIG', $glob);

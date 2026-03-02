@@ -72,6 +72,148 @@ class Cron
     }
 
     /**
+     * Send cart abandonment notification emails
+     */
+    public function sendAbandonmentEmails() {
+        if (!$GLOBALS['config']->get('config', 'abandoned_cart_enabled')) {
+            return 'Disabled';
+        }
+
+        $delay = (int)$GLOBALS['config']->get('config', 'abandoned_cart_delay');
+        if ($delay < 3600) {
+            $delay = 86400; // Default 24 hours
+        }
+
+        $cutoff = time() - $delay;
+        $seven_days_ago = time() - 604800;
+
+        // Find customers with saved carts who have abandoned
+        $query = "SELECT sc.customer_id, sc.basket, c.email, c.first_name, c.last_name, c.language
+            FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_saved_cart` sc
+            JOIN `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_customer` c
+                ON sc.customer_id = c.customer_id
+            LEFT JOIN `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_sessions` s
+                ON sc.customer_id = s.customer_id AND s.session_last > 0
+            WHERE c.abandon_optout = 0
+              AND c.status = 1
+              AND (s.session_id IS NULL OR s.session_last < ".(int)$cutoff.")
+              AND sc.customer_id NOT IN (
+                SELECT ca.customer_id FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_cart_abandonment` ca
+                WHERE ca.notified_at > '".date('Y-m-d H:i:s', $seven_days_ago)."'
+              )
+              AND sc.customer_id NOT IN (
+                SELECT DISTINCT os.customer_id FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary` os
+                WHERE os.order_date > ".(int)$seven_days_ago."
+                  AND os.status NOT IN (3)
+              )
+            GROUP BY sc.customer_id";
+
+        $results = $GLOBALS['db']->query($query);
+        if (!$results) {
+            return '0 emails sent';
+        }
+
+        $sent = 0;
+        $mailer = Mailer::getInstance();
+        $store_name = $GLOBALS['config']->get('config', 'store_name');
+
+        foreach ($results as $row) {
+            $contents = @unserialize($row['basket']);
+            if (empty($contents) || !is_array($contents)) {
+                continue;
+            }
+
+            // Build product list for email
+            $products = array();
+            $item_count = 0;
+            foreach ($contents as $hash => $item) {
+                if (!isset($item['id'])) {
+                    continue;
+                }
+                $product = $GLOBALS['db']->select('CubeCart_inventory', array('name', 'price', 'sale_price', 'product_id'), array('product_id' => (int)$item['id']), false, 1, false, false);
+                if (!$product) {
+                    continue;
+                }
+                $p = $product[0];
+                $price = ($p['sale_price'] > 0 && $p['sale_price'] < $p['price']) ? $p['sale_price'] : $p['price'];
+                $qty = isset($item['quantity']) ? (int)$item['quantity'] : 1;
+                $item_count += $qty;
+
+                // Get product options text
+                $options_text = '';
+                if (!empty($item['options']) && is_array($item['options'])) {
+                    $opt_parts = array();
+                    foreach ($item['options'] as $opt_id => $opt_val) {
+                        $opt_data = $GLOBALS['db']->select('CubeCart_option_value', array('value_name'), array('value_id' => (int)$opt_val), false, 1, false, false);
+                        if ($opt_data) {
+                            $opt_parts[] = $opt_data[0]['value_name'];
+                        }
+                    }
+                    $options_text = implode(', ', $opt_parts);
+                }
+
+                // Get product thumbnail
+                $image_url = '';
+                $img = $GLOBALS['db']->select('CubeCart_image_index', array('file_id'), array('product_id' => (int)$item['id']), array('main_img' => 'DESC'), 1, false, false);
+                if ($img) {
+                    $file = $GLOBALS['db']->select('CubeCart_filemanager', array('filepath', 'filename'), array('file_id' => (int)$img[0]['file_id']), false, 1, false, false);
+                    if ($file) {
+                        $image_url = $GLOBALS['storeURL'].'/images/source/'.$file[0]['filepath'].$file[0]['filename'];
+                    }
+                }
+
+                $products[] = array(
+                    'name' => $p['name'],
+                    'price' => Tax::getInstance()->priceFormat($price),
+                    'raw_price' => $price,
+                    'quantity' => $qty,
+                    'options' => $options_text,
+                    'image' => $image_url,
+                );
+            }
+
+            if (empty($products)) {
+                continue;
+            }
+
+            // Generate recovery token
+            $token = bin2hex(random_bytes(32));
+            $expires = date('Y-m-d H:i:s', time() + 604800); // 7 days
+
+            $GLOBALS['db']->insert('CubeCart_cart_abandonment', array(
+                'customer_id' => (int)$row['customer_id'],
+                'token' => $token,
+                'notified_at' => date('Y-m-d H:i:s'),
+                'expires_at' => $expires,
+            ));
+
+            $recovery_link = $GLOBALS['storeURL'].'/index.php?_a=recover&token='.$token;
+            $optout_link = $GLOBALS['storeURL'].'/index.php?_a=recover&action=optout&token='.$token;
+
+            $data = array(
+                'first_name' => $row['first_name'],
+                'last_name' => $row['last_name'],
+                'store_name' => $store_name,
+                'item_count' => $item_count,
+                'recovery_link' => $recovery_link,
+                'optout_link' => $optout_link,
+            );
+
+            $GLOBALS['smarty']->assign('PRODUCTS', $products);
+
+            $language = !empty($row['language']) ? $row['language'] : $GLOBALS['config']->get('config', 'default_language');
+            $email_content = $mailer->loadContent('cart.abandoned', $language, $data);
+            if ($email_content) {
+                if ($mailer->sendEmail($row['email'], $email_content)) {
+                    $sent++;
+                }
+            }
+        }
+
+        return $sent.' email(s) sent';
+    }
+
+    /**
      * Ensure default cron tasks exist in the database
      */
     public static function ensureDefaults() {
@@ -79,6 +221,7 @@ class Cron
             array('method' => 'updateExchangeRates', 'label' => 'Update Exchange Rates', 'enabled' => 1, 'frequency' => 86400),
             array('method' => 'clearCache', 'label' => 'Clear Cache*', 'enabled' => 0, 'frequency' => 21600),
             array('method' => 'runSnippets', 'label' => 'Run Code Snippets / Hooks**', 'enabled' => 0, 'frequency' => 3600),
+            array('method' => 'sendAbandonmentEmails', 'label' => 'Send Cart Abandonment Emails', 'enabled' => 0, 'frequency' => 3600),
         );
         foreach ($defaults as $task) {
             $exists = $GLOBALS['db']->select('CubeCart_cron_tasks', 'id', array('method' => $task['method']), false, false, false, false);
@@ -112,11 +255,11 @@ class Cron
                 if ($due) {
                     try {
                         if ($method === 'updateExchangeRates') {
-                            $this->$method('', false);
+                            $ret = $this->$method('', false);
                         } else {
-                            $this->$method();
+                            $ret = $this->$method();
                         }
-                        $result = 'OK';
+                        $result = is_string($ret) ? $ret : 'OK';
                     } catch (Exception $e) {
                         $result = substr($e->getMessage(), 0, 255);
                     }

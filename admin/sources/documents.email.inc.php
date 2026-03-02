@@ -103,6 +103,13 @@ $email_types = array(
             '{$DATA.review}' => $lang['email']['macro_review_copy'],
         ),
     ),
+    'admin.two_factor_code' => array(
+        'description' => $lang['email']['title_macro_admin_two_factor_code'],
+        'macros' => array(
+            '{$DATA.name}' => $lang['email']['macro_admin_name'],
+            '{$DATA.code}' => $lang['email']['macro_twofa_code'],
+        ),
+    ),
     'cart.digital_download' => array(
         'description' => $lang['email']['title_macro_cart_digital'],
         'macros' => array(
@@ -251,6 +258,21 @@ $email_types = array(
             '{$DATA.cart_order_id}'  => $lang['email']['macro_order_number_t'],
             '{$DATA.custom_oid}'  => $lang['email']['macro_order_number_i'],
             '{$DATA.total}'   => $lang['email']['macro_payment_amount'],
+        ),
+    ),
+    'cart.abandoned' => array(
+        'description' => $lang['email']['title_macro_cart_abandoned'],
+        'macros' => array(
+            '{$DATA.first_name}' => $lang['email']['macro_first_name'],
+            '{$DATA.last_name}' => $lang['email']['macro_last_name'],
+            '{$DATA.store_name}' => $lang['email']['macro_store_name'],
+            '{$DATA.recovery_link}' => $lang['email']['macro_recovery_link'],
+            '{$DATA.optout_link}' => $lang['email']['macro_optout_link'],
+            '{$product.name}' => $lang['email']['macro_product_name'],
+            '{$product.quantity}' => $lang['email']['macro_product_quantity'],
+            '{$product.price}' => $lang['email']['macro_product_price'],
+            '{$product.options}' => $lang['email']['macro_product_options'],
+            '{$product.image}' => $lang['email']['macro_product_image'],
         ),
     ),
     'catalogue.tell_friend' => array(

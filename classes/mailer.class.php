@@ -430,6 +430,9 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
                 $link = isset($data['link']) ? $data['link'] : '';
                 $schema = $this->_buildViewActionSchema('Confirm Unsubscribe', $link);
                 break;
+            case 'cart.abandoned':
+                $schema = $this->_buildAbandonedCartSchema($data, $products);
+                break;
         }
 
         if (!$schema) {
@@ -531,6 +534,54 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
                 'target' => $url
             )
         );
+    }
+
+    /**
+     * Build abandoned cart schema with product list and recovery action
+     */
+    private function _buildAbandonedCartSchema($data, $products)
+    {
+        if (empty($data['recovery_link'])) {
+            return null;
+        }
+
+        $storeName = $GLOBALS['config']->get('config', 'store_name');
+        $currency = $GLOBALS['config']->get('config', 'default_currency');
+
+        $schema = array(
+            '@context' => 'http://schema.org',
+            '@type' => 'EmailMessage',
+            'description' => 'You left items in your cart at ' . $storeName,
+            'potentialAction' => array(
+                '@type' => 'ViewAction',
+                'name' => 'Complete Your Order',
+                'target' => $data['recovery_link']
+            )
+        );
+
+        if (!empty($products) && is_array($products)) {
+            $items = array();
+            foreach ($products as $product) {
+                $item = array(
+                    '@type' => 'Product',
+                    'name' => $product['name']
+                );
+                if (!empty($product['image'])) {
+                    $item['image'] = $product['image'];
+                }
+                if (!empty($product['raw_price'])) {
+                    $item['offers'] = array(
+                        '@type' => 'Offer',
+                        'priceCurrency' => $currency,
+                        'price' => sprintf('%.2f', $product['raw_price'])
+                    );
+                }
+                $items[] = $item;
+            }
+            $schema['about'] = $items;
+        }
+
+        return $schema;
     }
 
     /**

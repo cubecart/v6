@@ -452,3 +452,21 @@ CREATE TABLE IF NOT EXISTS `CubeCart_cron_tasks` (
 INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('updateExchangeRates', 'Update Exchange Rates', 1, 86400) ON DUPLICATE KEY UPDATE `id`=`id`; #EOQ
 INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('clearCache', 'Clear Cache', 0, 21600) ON DUPLICATE KEY UPDATE `id`=`id`; #EOQ
 INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('runSnippets', 'Run Code Snippets / Hooks*', 0, 3600) ON DUPLICATE KEY UPDATE `id`=`id`; #EOQ
+
+-- Cart abandonment notification system
+CREATE TABLE IF NOT EXISTS `CubeCart_cart_abandonment` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `customer_id` INT UNSIGNED NOT NULL,
+  `token` VARCHAR(64) NOT NULL,
+  `notified_at` DATETIME NOT NULL,
+  `clicked_at` DATETIME DEFAULT NULL,
+  `recovered_at` DATETIME DEFAULT NULL,
+  `expires_at` DATETIME NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `token` (`token`),
+  KEY `customer_idx` (`customer_id`, `notified_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
+
+ALTER TABLE `CubeCart_customer` ADD COLUMN `abandon_optout` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0; #EOQ
+
+INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('sendAbandonmentEmails', 'Send Cart Abandonment Emails', 0, 3600) ON DUPLICATE KEY UPDATE `id`=`id`; #EOQ

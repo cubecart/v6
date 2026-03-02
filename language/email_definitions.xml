@@ -282,4 +282,22 @@ If you need any further help, please contact us.</p>]]></content>
     <subject><![CDATA[Your back-office login verification code]]></subject>
     <content type="html"><![CDATA[<p>Hello {$DATA.name},</p><p>Your login verification code is:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>This code will expire in 10 minutes. If you did not attempt to log in, please contact your store administrator immediately.</p>]]></content>
   </email>
+  <email name="cart.abandoned">
+    <subject><![CDATA[You left items in your cart at {$DATA.store_name}]]></subject>
+    <content type="html"><![CDATA[<p>Hi {$DATA.first_name|capitalize},</p>
+<p>You recently added items to your cart at {$DATA.store_name} but didn't complete your purchase. Your items are still waiting for you:</p>
+<table width="100%" border="0" cellpadding="5" cellspacing="0">
+<tr><td colspan="2"><strong>Item</strong></td><td align="right"><strong>Qty</strong></td><td align="right"><strong>Price</strong></td></tr>
+{foreach from=$PRODUCTS item=product}
+<tr>
+<td width="60" valign="top">{if !empty($product.image)}<img src="{$product.image}" width="50" height="50" style="object-fit:cover;border-radius:4px" alt="{$product.name}">{/if}</td>
+<td>{$product.name}{if !empty($product.options)}<br><small>{$product.options}</small>{/if}</td>
+<td align="right" valign="top">{$product.quantity}</td>
+<td align="right" valign="top">{$product.price}</td>
+</tr>
+{/foreach}
+</table>
+<p style="text-align:center;margin:20px 0"><a href="{$DATA.recovery_link}" style="background-color:#4CAF50;color:#fff;padding:12px 30px;text-decoration:none;border-radius:4px;font-weight:bold;display:inline-block">Complete Your Order</a></p>
+<p style="font-size:12px;color:#999">Don't want these reminders? <a href="{$DATA.optout_link}">Unsubscribe from cart reminders</a></p>]]></content>
+  </email>
 </emails>

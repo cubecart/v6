@@ -489,6 +489,11 @@ class Order
             // Retrieve order details
             $this->getOrderDetails($order_id);
 
+            // Mark cart abandonment as recovered if applicable
+            if ((int)$status_id !== self::ORDER_CANCELLED && !empty($this->_order_summary['customer_id'])) {
+                $GLOBALS['db']->misc("UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_cart_abandonment` SET `recovered_at` = '".date('Y-m-d H:i:s')."' WHERE `customer_id` = ".(int)$this->_order_summary['customer_id']." AND `recovered_at` IS NULL");
+            }
+
             foreach ($GLOBALS['hooks']->load('class.order.order_status') as $hook) {
                 include $hook;
             }

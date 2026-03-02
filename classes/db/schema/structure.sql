@@ -297,6 +297,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_customer` (
 	`currency` varchar(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
 	`notes` text,
 	`credit` DECIMAL(8,2) NOT NULL DEFAULT '0.00',
+	`abandon_optout` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
 	PRIMARY KEY (`customer_id`),
 	UNIQUE KEY `email` (`email`),
 	FULLTEXT KEY `fulltext` (`first_name`,`last_name`,`email`)
@@ -949,6 +950,19 @@ CREATE TABLE IF NOT EXISTS `CubeCart_saved_cart` (
   `customer_id` INT UNSIGNED NOT NULL,
   `basket` mediumblob NOT NULL,
   PRIMARY KEY (`customer_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
+
+CREATE TABLE IF NOT EXISTS `CubeCart_cart_abandonment` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `customer_id` INT UNSIGNED NOT NULL,
+  `token` VARCHAR(64) NOT NULL,
+  `notified_at` DATETIME NOT NULL,
+  `clicked_at` DATETIME DEFAULT NULL,
+  `recovered_at` DATETIME DEFAULT NULL,
+  `expires_at` DATETIME NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `token` (`token`),
+  KEY `customer_idx` (`customer_id`, `notified_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_search` (

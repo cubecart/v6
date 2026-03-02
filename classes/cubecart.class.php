@@ -429,6 +429,10 @@ class Cubecart
                     $this->_newsletter();
                 break;
 
+                case 'recover':
+                    $this->_recoverCart();
+                break;
+
                 case 'plugin':
                     $trigger = 'class.cubecart.display_content';
                     $plugin = preg_replace('#[^a-z0-9\_\-]#iU', '', $_GET['plugin']);
@@ -2570,6 +2574,43 @@ class Cubecart
         }
         $GLOBALS['gui']->setNotify($GLOBALS['language']->account['notify_logged_out']);
         $GLOBALS['user']->logout();
+    }
+
+    /**
+     * Handle cart recovery and abandonment opt-out links
+     */
+    private function _recoverCart()
+    {
+        if (empty($_GET['token'])) {
+            httpredir('index.php');
+            return;
+        }
+
+        $token = preg_replace('/[^a-f0-9]/i', '', $_GET['token']);
+        $record = $GLOBALS['db']->select('CubeCart_cart_abandonment', false, array('token' => $token), false, 1, false, false);
+
+        if (!$record || strtotime($record[0]['expires_at']) < time()) {
+            $GLOBALS['gui']->setError($GLOBALS['language']->basket['abandon_link_invalid']);
+            httpredir('index.php');
+            return;
+        }
+
+        $action = isset($_GET['action']) ? strtolower($_GET['action']) : 'recover';
+
+        if ($action === 'optout') {
+            $GLOBALS['db']->update('CubeCart_customer', array('abandon_optout' => 1), array('customer_id' => (int)$record[0]['customer_id']));
+            $GLOBALS['gui']->setNotify($GLOBALS['language']->basket['abandon_optout_confirmed']);
+            httpredir('index.php');
+            return;
+        }
+
+        // Mark as clicked
+        if (empty($record[0]['clicked_at'])) {
+            $GLOBALS['db']->update('CubeCart_cart_abandonment', array('clicked_at' => date('Y-m-d H:i:s')), array('id' => (int)$record[0]['id']));
+        }
+
+        // Redirect to basket - if logged in, saved cart auto-loads; if not, login page will show
+        httpredir('index.php?_a=basket');
     }
 
     /**

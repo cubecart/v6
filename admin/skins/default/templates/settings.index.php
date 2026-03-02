@@ -568,10 +568,24 @@
          <div><span><textarea name="config[store_copyright]" id="copyright_content" class="textbox fck">{$CONFIG.store_copyright|escape:"html"}</textarea></span></div>
       </fieldset>
    </div>
+   <div id="Cart_Recovery" class="tab_content">
+      <h3>{$LANG.settings.tab_cart_recovery}</h3>
+      <fieldset>
+         <legend>{$LANG.settings.abandoned_cart_settings}</legend>
+         <div><label for="abandoned_cart_enabled">{$LANG.settings.abandoned_cart_enabled}</label><span><input name="config[abandoned_cart_enabled]" id="abandoned_cart_enabled" type="hidden" class="toggle" value="{$CONFIG.abandoned_cart_enabled}"></span></div>
+         <div><label for="abandoned_cart_delay">{$LANG.settings.abandoned_cart_delay}</label><span><select name="config[abandoned_cart_delay]" id="abandoned_cart_delay" class="textbox">
+            {foreach from=$OPT_ABANDONED_CART_DELAY item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
+            </select></span>
+         </div>
+      </fieldset>
+      <fieldset>
+         <p>{$LANG.settings.abandoned_cart_info}</p>
+      </fieldset>
+   </div>
    <div id="Scheduled_Tasks" class="tab_content">
       <h3>{$LANG.settings.tab_cron}</h3>
       <p>{$LANG.settings.cron_desc}</p>
-      <p><strong>{$LANG.settings.cron_url}:</strong> {$STORE_URL}?_g=cron&_m=run <span class="copy_text" style="float:none;opacity:1" data-copied="{$LANG.common.copied}" data-copy="{$LANG.common.click_copy}" data-value="{$STORE_URL}?_g=cron&_m=run"></span></p>
+      <p><strong>{$LANG.settings.cron_url}:</strong> {$STORE_URL}/index.php?_g=cron&_m=run <span class="copy_text" style="float:none;opacity:1" data-copied="{$LANG.common.copied}" data-copy="{$LANG.common.click_copy}" data-value="{$STORE_URL}/index.php?_g=cron&_m=run"></span></p>
       <fieldset>
          <table width="100%">
             <thead>
@@ -605,8 +619,8 @@
       <fieldset>
          <legend>{$LANG.settings.cron_examples}</legend>
          <p>{$LANG.settings.cron_examples_desc}</p>
-         <div><label>Cron</label><span><code>*/5 * * * * /usr/bin/curl -s "{$STORE_URL}?_g=cron&_m=run" > /dev/null 2>&1</code></span></div>
-         <div><label>Wget</label><span><code>*/5 * * * * /usr/bin/wget -qO /dev/null "{$STORE_URL}?_g=cron&_m=run"</code></span></div>
+         <div><label>Cron</label><span><code>*/5 * * * * /usr/bin/curl -s "{$STORE_URL}/index.php?_g=cron&_m=run" > /dev/null 2>&1</code></span></div>
+         <div><label>Wget</label><span><code>*/5 * * * * /usr/bin/wget -qO /dev/null "{$STORE_URL}/index.php?_g=cron&_m=run"</code></span></div>
       </fieldset>
       <p>
          * {$LANG.settings.cron_cache_note}<br>

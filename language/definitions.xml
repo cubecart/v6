@@ -252,6 +252,8 @@
     <string name="error_twofa_totp_invalid" introduced="6.6.0"><![CDATA[Invalid verification code. Please scan the QR code again and try once more.]]></string>
   </group>
   <group name="basket">
+    <string name="abandon_optout_confirmed" introduced="6.6.0"><![CDATA[You have been unsubscribed from cart reminder emails.]]></string>
+    <string name="abandon_link_invalid" introduced="6.6.0"><![CDATA[This link has expired or is no longer valid.]]></string>
     <string name="credit_use" introduced="6.5.6"><![CDATA[%1$s of %2$s]]></string>
     <string name="basket_total" introduced="6.5.2"><![CDATA[Your basket total is %1$s]]></string>
     <string name="continue_shopping" introduced="6.1.0"><![CDATA[Continue Shopping]]></string>
@@ -1273,12 +1275,17 @@ This email is sent from the store's master email address but it is possible to r
     <string name="macro_product_price" introduced="5.0.0"><![CDATA[Product price.]]></string>
     <string name="macro_product_quantity" introduced="5.0.0"><![CDATA[Product quantity]]></string>
     <string name="macro_product_options" introduced="6.2.1"><![CDATA[Product options]]></string>
+    <string name="macro_product_image" introduced="6.6.0"><![CDATA[Product thumbnail URL]]></string>
     <string name="macro_review_copy" introduced="5.0.0"><![CDATA[The content of the review.]]></string>
     <string name="macro_review_name" introduced="5.0.0"><![CDATA[Reviewer's name.]]></string>
     <string name="macro_sender_message" introduced="5.0.0"><![CDATA[The sender's message.]]></string>
     <string name="macro_sender_name" introduced="5.0.0"><![CDATA[The sender's name.]]></string>
     <string name="macro_sender_first_name" introduced="5.0.0"><![CDATA[The sender's first name.]]></string>
     <string name="macro_sender_last_name" introduced="5.0.0"><![CDATA[The sender's last name.]]></string>
+    <string name="macro_recovery_link" introduced="6.6.0"><![CDATA[Link to recover the abandoned cart.]]></string>
+    <string name="macro_optout_link" introduced="6.6.0"><![CDATA[Link to unsubscribe from cart reminders.]]></string>
+    <string name="macro_store_name" introduced="6.6.0"><![CDATA[The store name.]]></string>
+    <string name="macro_twofa_code" introduced="6.6.0"><![CDATA[The verification code.]]></string>
     <string name="macro_ship_tracking" introduced="5.2.6"><![CDATA[Ship tracking code.]]></string>
     <string name="macro_tax_amount" introduced="5.0.0"><![CDATA[Tax Amount]]></string>
     <string name="macro_tax_name" introduced="5.0.0"><![CDATA[Tax Name]]></string>
@@ -1349,6 +1356,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_macro_admin_order" introduced="5.0.0"><![CDATA[Admin: Order Received]]></string>
     <string name="title_macro_admin_password" introduced="5.0.0"><![CDATA[Admin: Recover Password]]></string>
     <string name="title_macro_admin_review" introduced="5.0.0"><![CDATA[Admin: Review Added]]></string>
+    <string name="title_macro_admin_two_factor_code" introduced="6.6.0"><![CDATA[Admin: Two-Factor Code]]></string>
+    <string name="title_macro_cart_abandoned" introduced="6.6.0"><![CDATA[Cart: Abandoned Cart]]></string>
     <string name="title_macro_cart_certificate" introduced="5.0.0"><![CDATA[Cart: Gift Card]]></string>
     <string name="title_macro_cart_digital" introduced="5.0.0"><![CDATA[Cart: File Download]]></string>
     <string name="title_macro_order_cancelled" introduced="5.0.0"><![CDATA[Cart: Order Cancelled]]></string>
@@ -2141,6 +2150,11 @@ This email is sent from the store's master email address but it is possible to r
     <string name="cron_cache_note" introduced="6.6.0"><![CDATA[Cached data expires automatically after 24 hours so the Clear Cache task should not be needed in most cases.]]></string>
     <string name="cron_examples" introduced="6.6.0"><![CDATA[Example Cron Commands]]></string>
     <string name="cron_examples_desc" introduced="6.6.0"><![CDATA[Add one of the following commands to your server's crontab. The schedule (*/5 * * * *) runs every 5 minutes — the system will only execute tasks when they are due based on the frequency set above.]]></string>
+    <string name="tab_cart_recovery" introduced="6.6.0"><![CDATA[Cart Recovery]]></string>
+    <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[Abandoned Cart Settings]]></string>
+    <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[Enable abandoned cart emails]]></string>
+    <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Send reminder after]]></string>
+    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[When enabled, registered customers who leave items in their cart without completing their purchase will receive a reminder email after the specified delay. The &quot;Send Cart Abandonment Emails&quot; scheduled task must also be enabled under the Scheduled Tasks tab. Each customer will receive at most one reminder per 7 days.]]></string>
     <string name="clone_settings" introduced="6.4.6"><![CDATA[Before we clone for the first time please configure what you do and don't want to clone each time.]]></string>
     <string name="emailconf" introduced="6.4.5"><![CDATA[Require email address confirmation (double entry)]]></string>
     <string name="redirects" introduced="6.4.0"><![CDATA[Redirects]]></string>
