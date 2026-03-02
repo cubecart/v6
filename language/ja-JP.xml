@@ -295,6 +295,8 @@
     <string name="view_basket"><![CDATA[カートを見る]]></string>
     <string name="weight"><![CDATA[カート重量]]></string>
     <string name="your_comments"><![CDATA[配送に関する注記または追加コメント]]></string>
+    <string name="abandon_optout_confirmed" introduced="6.6.0"><![CDATA[カートリマインダーメールの配信を停止しました。]]></string>
+    <string name="abandon_link_invalid" introduced="6.6.0"><![CDATA[このリンクは期限切れまたは無効です。]]></string>
   </group>
   <group name="catalogue">
     <string name="manufacturer_address"><![CDATA[メーカー住所]]></string>
@@ -2489,6 +2491,11 @@ This email is sent from the store's master email address but it is possible to r
    <string name="packaging_add" introduced="6.6.0"><![CDATA[ボックスを追加]]></string>
    <string name="packaging_name" introduced="6.6.0"><![CDATA[ボックス名]]></string>
    <string name="packaging_note"  introduced="6.6.0"><![CDATA[注文は以下に定義されたボックスに基づいて、できるだけ少ないボックスで発送されます。ボックスが定義されていない場合、各商品は個別に発送されます。]]></string>
+    <string name="tab_cart_recovery" introduced="6.6.0"><![CDATA[カート復旧]]></string>
+    <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[カート放棄設定]]></string>
+    <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[カート放棄メールを有効にする]]></string>
+    <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[リマインダー送信までの時間]]></string>
+    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[有効にすると、カートに商品を残したまま購入を完了しなかった登録済みのお客様に、指定された時間の経過後にリマインダーメールが送信されます。「スケジュールタスク」タブで&quot;カート放棄メールを送信&quot;のスケジュールタスクも有効にする必要があります。各お客様に送信されるリマインダーは7日間に最大1通です。]]></string>
 </group>
   <group name="setup">
     <string name="help_dbport"><![CDATA[データベースサーバーのポートです。ほとんどの場合、空欄のままで構いません。デフォルトは3306です。]]></string>

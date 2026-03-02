@@ -295,6 +295,8 @@
     <string name="view_basket"><![CDATA[Просмотреть корзину]]></string>
     <string name="weight"><![CDATA[Вес корзины]]></string>
     <string name="your_comments"><![CDATA[Примечания к доставке или дополнительные комментарии]]></string>
+    <string name="abandon_optout_confirmed" introduced="6.6.0"><![CDATA[Вы отписались от напоминаний о брошенной корзине.]]></string>
+    <string name="abandon_link_invalid" introduced="6.6.0"><![CDATA[Эта ссылка истекла или больше недействительна.]]></string>
   </group>
   <group name="catalogue">
     <string name="manufacturer_address"><![CDATA[Адрес производителя]]></string>
@@ -2497,6 +2499,11 @@
     <string name="weight_unit_kg"><![CDATA[Метрическая (кг)]]></string>
     <string name="weight_unit_lb"><![CDATA[Имперская (фунты)]]></string>
     <string name="default_product_sort"><![CDATA[Сортировка списка товаров]]></string>
+    <string name="tab_cart_recovery" introduced="6.6.0"><![CDATA[Восстановление корзин]]></string>
+    <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[Настройки брошенных корзин]]></string>
+    <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[Включить письма о брошенных корзинах]]></string>
+    <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Отправить напоминание через]]></string>
+    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Если включено, зарегистрированные покупатели, оставившие товары в корзине без оформления заказа, получат напоминание по электронной почте после указанной задержки. Запланированная задача &quot;Отправка писем о брошенных корзинах&quot; также должна быть включена на вкладке «Запланированные задачи». Каждый покупатель будет получать не более одного напоминания за 7 дней.]]></string>
   </group>
   <group name="setup">
     <string name="help_dbport"><![CDATA[Это порт сервера базы данных. В большинстве случаев можно оставить пустым. Значение по умолчанию — 3306]]></string>

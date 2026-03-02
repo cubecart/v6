@@ -296,6 +296,8 @@
     <string name="view_basket" introduced="5.0.0"><![CDATA[Se indkøbskurv]]></string>
     <string name="weight" introduced="5.0.0"><![CDATA[Kurvens vægt]]></string>
     <string name="your_comments" introduced="5.0.0"><![CDATA[Leveringsnoter eller yderligere kommentarer]]></string>
+    <string name="abandon_optout_confirmed" introduced="6.6.0"><![CDATA[Du er blevet afmeldt fra e-mailpåmindelser om indkøbskurven.]]></string>
+    <string name="abandon_link_invalid" introduced="6.6.0"><![CDATA[Dette link er udløbet eller er ikke længere gyldigt.]]></string>
   </group>
   <group name="catalogue">
     <string name="manufacturer_address" introduced="6.5.12"><![CDATA[Producentadresse]]></string>
@@ -2498,6 +2500,11 @@ Denne e-mail er sendt fra butikkens hoved-e-mailadresse, men det er muligt at sv
     <string name="weight_unit_kg" introduced="5.0.0"><![CDATA[Metrisk (kg)]]></string>
     <string name="weight_unit_lb" introduced="5.0.0"><![CDATA[Imperial (lb)]]></string>
     <string name="default_product_sort" introduced="5.2.0"><![CDATA[Produktlistesortering]]></string>
+    <string name="tab_cart_recovery" introduced="6.6.0"><![CDATA[Gendannelse af indkøbskurv]]></string>
+    <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[Indstillinger for forladt indkøbskurv]]></string>
+    <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[Aktiver e-mails om forladt indkøbskurv]]></string>
+    <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Send påmindelse efter]]></string>
+    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Når aktiveret vil registrerede kunder, der efterlader varer i deres indkøbskurv uden at gennemføre deres køb, modtage en påmindelses-e-mail efter den angivne forsinkelse. Den planlagte opgave &quot;Send e-mails om forladt indkøbskurv&quot; skal også være aktiveret under fanen Planlagte opgaver. Hver kunde modtager højst én påmindelse per 7 dage.]]></string>
   </group>
   <group name="setup">
     <string name="help_dbport" introduced="6.1.1"><![CDATA[Dette er databaseserverens port. I de fleste tilfælde kan dette efterlades tomt. Standardværdien er 3306]]></string>

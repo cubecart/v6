@@ -281,4 +281,22 @@ Ha további segítségre van szüksége, kérjük, vegye fel velünk a kapcsolat
     <subject><![CDATA[Bejelentkezési ellenőrző kód]]></subject>
     <content type="html"><![CDATA[<p>Kedves {$DATA.name}!</p><p>Az Ön bejelentkezési ellenőrző kódja:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>A kód 10 perc múlva lejár. Ha nem Ön próbált bejelentkezni, azonnal vegye fel a kapcsolatot az áruház adminisztrátorával.</p>]]></content>
   </email>
+  <email name="cart.abandoned">
+    <subject><![CDATA[Termékeket hagyott a kosarában a(z) {$DATA.store_name} oldalon]]></subject>
+    <content type="html"><![CDATA[<p>Kedves {$DATA.first_name|capitalize}!</p>
+<p>Nemrégiben termékeket adott a kosarához a(z) {$DATA.store_name} oldalon, de nem fejezte be a vásárlást. Termékei még mindig várják:</p>
+<table width="100%" border="0" cellpadding="5" cellspacing="0">
+<tr><td colspan="2"><strong>Tétel</strong></td><td align="right"><strong>Menny.</strong></td><td align="right"><strong>Ár</strong></td></tr>
+{foreach from=$PRODUCTS item=product}
+<tr>
+<td width="60" valign="top">{if !empty($product.image)}<img src="{$product.image}" width="50" height="50" style="object-fit:cover;border-radius:4px" alt="{$product.name}">{/if}</td>
+<td>{$product.name}{if !empty($product.options)}<br><small>{$product.options}</small>{/if}</td>
+<td align="right" valign="top">{$product.quantity}</td>
+<td align="right" valign="top">{$product.price}</td>
+</tr>
+{/foreach}
+</table>
+<p style="text-align:center;margin:20px 0"><a href="{$DATA.recovery_link}" style="background-color:#4CAF50;color:#fff;padding:12px 30px;text-decoration:none;border-radius:4px;font-weight:bold;display:inline-block">Rendelés befejezése</a></p>
+<p style="font-size:12px;color:#999">Nem szeretne több emlékeztetőt? <a href="{$DATA.optout_link}">Leiratkozás a kosár emlékeztetőkről</a></p>]]></content>
+  </email>
 </emails>

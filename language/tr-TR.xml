@@ -296,6 +296,8 @@
     <string name="view_basket" introduced="5.0.0"><![CDATA[Sepeti Görüntüle]]></string>
     <string name="weight" introduced="5.0.0"><![CDATA[Sepet Ağırlığı]]></string>
     <string name="your_comments" introduced="5.0.0"><![CDATA[Teslimat Notları veya Ek Yorumlar]]></string>
+    <string name="abandon_optout_confirmed" introduced="6.6.0"><![CDATA[Sepet hatırlatma e-postalarından aboneliğiniz iptal edildi.]]></string>
+    <string name="abandon_link_invalid" introduced="6.6.0"><![CDATA[Bu bağlantının süresi dolmuş veya artık geçerli değil.]]></string>
   </group>
   <group name="catalogue">
     <string name="manufacturer_address" introduced="6.5.12"><![CDATA[Üretici Adresi]]></string>
@@ -2497,6 +2499,11 @@ Bu e-posta mağazanın ana e-posta adresinden gönderilmiştir ancak e-posta yaz
     <string name="weight_unit_kg" introduced="5.0.0"><![CDATA[Metrik (kg)]]></string>
     <string name="weight_unit_lb" introduced="5.0.0"><![CDATA[İngiliz (lb)]]></string>
     <string name="default_product_sort" introduced="5.2.0"><![CDATA[Ürün Listesi Sıralaması]]></string>
+    <string name="tab_cart_recovery" introduced="6.6.0"><![CDATA[Sepet Kurtarma]]></string>
+    <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[Terk Edilmiş Sepet Ayarları]]></string>
+    <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[Terk edilmiş sepet e-postalarını etkinleştir]]></string>
+    <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Hatırlatmayı şu süre sonra gönder]]></string>
+    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Etkinleştirildiğinde, sepetlerinde ürün bırakıp alışverişini tamamlamayan kayıtlı müşterilere belirtilen süre sonra bir hatırlatma e-postası gönderilir. &quot;Terk Edilmiş Sepet E-postalarını Gönder&quot; zamanlanmış görevi de Zamanlanmış Görevler sekmesinde etkinleştirilmiş olmalıdır. Her müşteri 7 günde en fazla bir hatırlatma alır.]]></string>
   </group>
   <group name="setup">
     <string name="help_dbport" introduced="6.1.1"><![CDATA[Bu veritabanı sunucu portudur. Çoğu durumda boş bırakılabilir. Varsayılan değer 3306'dır]]></string>

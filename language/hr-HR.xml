@@ -295,6 +295,8 @@
     <string name="view_basket"><![CDATA[Pogledaj košaricu]]></string>
     <string name="weight"><![CDATA[Težina košarice]]></string>
     <string name="your_comments"><![CDATA[Napomene o dostavi ili dodatni komentari]]></string>
+    <string name="abandon_optout_confirmed" introduced="6.6.0"><![CDATA[Odjavili ste se od e-mail podsjetnika košarice.]]></string>
+    <string name="abandon_link_invalid" introduced="6.6.0"><![CDATA[Ova poveznica je istekla ili više nije važeća.]]></string>
   </group>
   <group name="catalogue">
     <string name="manufacturer_address"><![CDATA[Adresa proizvođača]]></string>
@@ -2489,6 +2491,11 @@ UPOZORENJE: sve datoteke koje sadrži bit će trajno izbrisane!]]></string>
    <string name="packaging_add" introduced="6.6.0"><![CDATA[Dodaje boîte]]></string>
    <string name="packaging_name" introduced="6.6.0"><![CDATA[Naziv kutije]]></string>
    <string name="packaging_note"  introduced="6.6.0"><![CDATA[Narudžbe će biti otpremljene u najmanje moguće kutija prema definiranim kutijama ispod. Ako nijedna kutija nije definirana, svaki artikl bit će otpremljen pojedinačno.]]></string>
+    <string name="tab_cart_recovery" introduced="6.6.0"><![CDATA[Oporavak košarice]]></string>
+    <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[Postavke napuštene košarice]]></string>
+    <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[Omogući e-mailove napuštene košarice]]></string>
+    <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Pošalji podsjetnik nakon]]></string>
+    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Kada je omogućeno, registrirani kupci koji ostave artikle u košarici bez dovršetka kupnje primit će podsjetnik e-mailom nakon navedenog odgađanja. Zakazani zadatak &quot;Slanje e-mailova napuštene košarice&quot; također mora biti omogućen na kartici Zakazani zadaci. Svaki kupac će primiti najviše jedan podsjetnik svakih 7 dana.]]></string>
 </group>
   <group name="setup">
     <string name="help_dbport"><![CDATA[Ovo je port poslužitelja baze podataka. U većini slučajeva može se ostaviti prazno. Zadana vrijednost je 3306]]></string>

@@ -295,6 +295,8 @@
    <string name="view_basket"><![CDATA[Zobacz koszyk]]></string>
    <string name="weight"><![CDATA[Waga koszyka]]></string>
    <string name="your_comments"><![CDATA[Uwagi do dostawy lub dodatkowe komentarze]]></string>
+   <string name="abandon_optout_confirmed" introduced="6.6.0"><![CDATA[Zrezygnowano z otrzymywania przypomnień o porzuconym koszyku.]]></string>
+   <string name="abandon_link_invalid" introduced="6.6.0"><![CDATA[Ten link wygasł lub nie jest już aktywny.]]></string>
   </group>
   <group name="catalogue">
    <string name="manufacturer_address"><![CDATA[Adres producenta]]></string>
@@ -2499,6 +2501,11 @@ UWAGA: Wszystkie pliki w nim zawarte zostaną trwale usunięte!]]></string>
    <string name="packaging_add" introduced="6.6.0"><![CDATA[Dodaj pudełko]]></string>
    <string name="packaging_name" introduced="6.6.0"><![CDATA[Nazwa pudełka]]></string>
    <string name="packaging_note"  introduced="6.6.0"><![CDATA[Zamówienia będą wysyłane w jak najmniejszej liczbie pudełek na podstawie pudełek zdefiniowanych poniżej. Jeśli nie zdefiniowano żadnych pudełek, każdy przedmiot zostanie wysłany osobno.]]></string>
+   <string name="tab_cart_recovery" introduced="6.6.0"><![CDATA[Odzyskiwanie koszyka]]></string>
+   <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[Ustawienia porzuconego koszyka]]></string>
+   <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[Włącz e-maile o porzuconym koszyku]]></string>
+   <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Wyślij przypomnienie po]]></string>
+   <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Po włączeniu zarejestrowani klienci, którzy zostawią produkty w koszyku bez dokończenia zakupu, otrzymają e-mail z przypomnieniem po określonym czasie. Zadanie zaplanowane &quot;Wyślij e-maile o porzuconym koszyku&quot; musi być również włączone w zakładce Zaplanowane zadania. Każdy klient otrzyma maksymalnie jedno przypomnienie na 7 dni.]]></string>
 </group>
   <group name="setup">
    <string name="help_dbport"><![CDATA[To jest port serwera bazy danych. W większości przypadków można pozostawić puste. Wartość domyślna to 3306]]></string>

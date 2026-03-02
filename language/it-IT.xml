@@ -296,6 +296,8 @@
     <string name="view_basket"><![CDATA[Visualizza carrello]]></string>
     <string name="weight"><![CDATA[Peso del carrello]]></string>
     <string name="your_comments"><![CDATA[Note di consegna o commenti aggiuntivi]]></string>
+    <string name="abandon_optout_confirmed" introduced="6.6.0"><![CDATA[La tua iscrizione alle email di promemoria del carrello è stata annullata.]]></string>
+    <string name="abandon_link_invalid" introduced="6.6.0"><![CDATA[Questo link è scaduto o non è più valido.]]></string>
   </group>
   <group name="catalogue">
     <string name="manufacturer_address"><![CDATA[Indirizzo del produttore]]></string>
@@ -2701,6 +2703,11 @@ Questa email è inviata dall'indirizzo email principale del negozio ma è possib
     <string name="trans_add"><![CDATA[Aggiungi traduzione]]></string>
     <string name="trans_delete"><![CDATA[Elimina traduzione]]></string>
     <string name="trans_none"><![CDATA[Non esistono traduzioni]]></string>
+    <string name="tab_cart_recovery" introduced="6.6.0"><![CDATA[Recupero carrello]]></string>
+    <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[Impostazioni carrello abbandonato]]></string>
+    <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[Abilita email per carrello abbandonato]]></string>
+    <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Invia promemoria dopo]]></string>
+    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Quando abilitato, i clienti registrati che lasciano articoli nel carrello senza completare l'acquisto riceveranno un'email di promemoria dopo il ritardo specificato. Anche l'attività pianificata &quot;Invia email carrello abbandonato&quot; deve essere abilitata nella scheda Attività pianificate. Ogni cliente riceverà al massimo un promemoria ogni 7 giorni.]]></string>
   </group>
   <group name="ui">
     <string name="drag_reorder"><![CDATA[Trascina per riordinare]]></string>

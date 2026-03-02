@@ -284,6 +284,8 @@
       <string name="view_basket"><![CDATA[Winkelwagen bekijken]]></string>
       <string name="weight"><![CDATA[Gewicht winkelwagen]]></string>
       <string name="your_comments"><![CDATA[Bezorgopmerkingen of aanvullende opmerkingen]]></string>
+      <string name="abandon_optout_confirmed" introduced="6.6.0"><![CDATA[U bent uitgeschreven van de herinneringse-mails voor winkelwagens.]]></string>
+      <string name="abandon_link_invalid" introduced="6.6.0"><![CDATA[Deze link is verlopen of niet meer geldig.]]></string>
     </group>
     <group name="catalogue">
       <string name="manufacturer_address"><![CDATA[Adres fabrikant]]></string>
@@ -2688,6 +2690,11 @@ WAARSCHUWING: Alle bestanden erin worden permanent verwijderd!]]></string>
       <string name="trans_add"><![CDATA[Vertaling toevoegen]]></string>
       <string name="trans_delete"><![CDATA[Vertaling verwijderen]]></string>
       <string name="trans_none"><![CDATA[Er bestaan geen vertalingen]]></string>
+      <string name="tab_cart_recovery" introduced="6.6.0"><![CDATA[Winkelmand herstel]]></string>
+      <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[Instellingen achtergelaten winkelwagen]]></string>
+      <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[E-mails voor achtergelaten winkelwagens inschakelen]]></string>
+      <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Herinnering versturen na]]></string>
+      <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Wanneer ingeschakeld, ontvangen geregistreerde klanten die artikelen in hun winkelwagen achterlaten zonder hun aankoop te voltooien een herinneringse-mail na de opgegeven vertraging. De geplande taak &quot;Achtergelaten winkelwagen e-mails verzenden&quot; moet ook ingeschakeld zijn onder het tabblad Geplande taken. Elke klant ontvangt maximaal één herinnering per 7 dagen.]]></string>
     </group>
     <group name="ui">
       <string name="drag_reorder"><![CDATA[Sleep om te herschikken]]></string>

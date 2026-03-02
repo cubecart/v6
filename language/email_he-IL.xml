@@ -282,4 +282,22 @@
     <subject><![CDATA[קוד האימות שלך לכניסה לממשק הניהול]]></subject>
     <content type="html"><![CDATA[<p>שלום {$DATA.name},</p><p>קוד האימות שלך לכניסה הוא:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>קוד זה יפוג בעוד 10 דקות. אם לא ניסית להתחבר, אנא צור/י קשר עם מנהל החנות שלך מיד.</p>]]></content>
   </email>
+  <email name="cart.abandoned">
+    <subject><![CDATA[השארת פריטים בסל הקניות שלך ב-{$DATA.store_name}]]></subject>
+    <content type="html"><![CDATA[<p>שלום {$DATA.first_name|capitalize},</p>
+<p>לאחרונה הוספת פריטים לסל הקניות שלך ב-{$DATA.store_name} אך לא השלמת את הרכישה. הפריטים שלך עדיין ממתינים לך:</p>
+<table width="100%" border="0" cellpadding="5" cellspacing="0">
+<tr><td colspan="2"><strong>פריט</strong></td><td align="right"><strong>כמות</strong></td><td align="right"><strong>מחיר</strong></td></tr>
+{foreach from=$PRODUCTS item=product}
+<tr>
+<td width="60" valign="top">{if !empty($product.image)}<img src="{$product.image}" width="50" height="50" style="object-fit:cover;border-radius:4px" alt="{$product.name}">{/if}</td>
+<td>{$product.name}{if !empty($product.options)}<br><small>{$product.options}</small>{/if}</td>
+<td align="right" valign="top">{$product.quantity}</td>
+<td align="right" valign="top">{$product.price}</td>
+</tr>
+{/foreach}
+</table>
+<p style="text-align:center;margin:20px 0"><a href="{$DATA.recovery_link}" style="background-color:#4CAF50;color:#fff;padding:12px 30px;text-decoration:none;border-radius:4px;font-weight:bold;display:inline-block">השלם/י את ההזמנה</a></p>
+<p style="font-size:12px;color:#999">לא רוצה לקבל תזכורות אלה? <a href="{$DATA.optout_link}">ביטול הרשמה מתזכורות סל קניות</a></p>]]></content>
+  </email>
 </emails>

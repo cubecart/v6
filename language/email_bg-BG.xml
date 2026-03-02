@@ -281,4 +281,22 @@
     <subject><![CDATA[Вашият код за вход в администрацията]]></subject>
     <content type="html"><![CDATA[<p>Здравейте, {$DATA.name},</p><p>Вашият код за верификация при вход е:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Кодът изтича след 10 минути. Ако не сте се опитвали да влезете, моля свържете се незабавно с администратора на магазина.</p>]]></content>
   </email>
+  <email name="cart.abandoned">
+    <subject><![CDATA[Оставихте артикули в кошницата си в {$DATA.store_name}]]></subject>
+    <content type="html"><![CDATA[<p>Здравейте, {$DATA.first_name|capitalize},</p>
+<p>Наскоро добавихте артикули в кошницата си в {$DATA.store_name}, но не завършихте покупката. Вашите артикули все още Ви очакват:</p>
+<table width="100%" border="0" cellpadding="5" cellspacing="0">
+<tr><td colspan="2"><strong>Артикул</strong></td><td align="right"><strong>К-во</strong></td><td align="right"><strong>Цена</strong></td></tr>
+{foreach from=$PRODUCTS item=product}
+<tr>
+<td width="60" valign="top">{if !empty($product.image)}<img src="{$product.image}" width="50" height="50" style="object-fit:cover;border-radius:4px" alt="{$product.name}">{/if}</td>
+<td>{$product.name}{if !empty($product.options)}<br><small>{$product.options}</small>{/if}</td>
+<td align="right" valign="top">{$product.quantity}</td>
+<td align="right" valign="top">{$product.price}</td>
+</tr>
+{/foreach}
+</table>
+<p style="text-align:center;margin:20px 0"><a href="{$DATA.recovery_link}" style="background-color:#4CAF50;color:#fff;padding:12px 30px;text-decoration:none;border-radius:4px;font-weight:bold;display:inline-block">Завършете поръчката</a></p>
+<p style="font-size:12px;color:#999">Не желаете да получавате тези напомняния? <a href="{$DATA.optout_link}">Отпишете се от напомнянията за кошницата</a></p>]]></content>
+  </email>
 </emails>

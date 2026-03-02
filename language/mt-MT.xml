@@ -295,6 +295,8 @@
     <string name="view_basket"><![CDATA[Voir le panier]]></string>
     <string name="weight"><![CDATA[Poids du panier]]></string>
     <string name="your_comments"><![CDATA[Notes de livraison ou commentaires supplémentaires]]></string>
+    <string name="abandon_optout_confirmed" introduced="6.6.0"><![CDATA[Tneħħejt mill-emails ta' promemmorja tal-basket.]]></string>
+    <string name="abandon_link_invalid" introduced="6.6.0"><![CDATA[Dan il-link skada jew m'għadux validu.]]></string>
   </group>
   <group name="catalogue">
     <string name="manufacturer_address"><![CDATA[Adresse du fabricant]]></string>
@@ -2487,6 +2489,11 @@ This email is sent from the store's master email address but it is possible to r
    <string name="packaging_add" introduced="6.6.0"><![CDATA[Ajouter une boîte]]></string>
    <string name="packaging_name" introduced="6.6.0"><![CDATA[Nom de la boîte]]></string>
    <string name="packaging_note"  introduced="6.6.0"><![CDATA[Les commandes seront expédiées dans le moins de boîtes possible en fonction des boîtes définies ci-dessous. Si aucune boîte n'est définie, chaque article sera expédié individuellement.]]></string>
+    <string name="tab_cart_recovery" introduced="6.6.0"><![CDATA[Irkupru tal-Basket]]></string>
+    <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[Issettjar tal-Basket Abbandunat]]></string>
+    <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[Attiva l-emails tal-basket abbandunat]]></string>
+    <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Ibgħat promemmorja wara]]></string>
+    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Meta attivat, klijenti reġistrati li jħallu oġġetti fil-basket tagħhom mingħajr ma jikkompletaw ix-xirja jirċievu email ta' promemmorja wara d-dewmien speċifikat. Il-kompitu skedat &quot;Ibgħat Emails ta' Basket Abbandunat&quot; irid ikun attivat ukoll fit-tab tal-Kompiti Skedati. Kull klijent jirċievi l-iktar promemmorja waħda kull 7 ijiem.]]></string>
 </group>
   <group name="setup">
     <string name="help_dbport"><![CDATA[Il s'agit du port du serveur de base de données. Dans la plupart des cas, il peut être laissé vide. La valeur par défaut est 3306]]></string>

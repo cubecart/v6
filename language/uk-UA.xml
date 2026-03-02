@@ -284,6 +284,8 @@
       <string name="view_basket"><![CDATA[Переглянути кошик]]></string>
       <string name="weight"><![CDATA[Вага кошика]]></string>
       <string name="your_comments"><![CDATA[Примітки до доставки або додаткові коментарі]]></string>
+      <string name="abandon_optout_confirmed" introduced="6.6.0"><![CDATA[Вас відписано від нагадувань про залишений кошик.]]></string>
+      <string name="abandon_link_invalid" introduced="6.6.0"><![CDATA[Це посилання застаріло або більше не дійсне.]]></string>
     </group>
     <group name="catalogue">
       <string name="manufacturer_address"><![CDATA[Адреса виробника]]></string>
@@ -2488,6 +2490,11 @@
    <string name="packaging_add" introduced="6.6.0"><![CDATA[Додати коробку]]></string>
    <string name="packaging_name" introduced="6.6.0"><![CDATA[Назва коробки]]></string>
    <string name="packaging_note"  introduced="6.6.0"><![CDATA[Замовлення надсилатимуться у якомога меншій кількості коробок на основі коробок, визначених нижче. Якщо коробки не визначено, кожен товар надсилатиметься окремо.]]></string>
+      <string name="tab_cart_recovery" introduced="6.6.0"><![CDATA[Відновлення кошиків]]></string>
+      <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[Налаштування залишених кошиків]]></string>
+      <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[Увімкнути листи про залишені кошики]]></string>
+      <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Надіслати нагадування через]]></string>
+      <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Якщо увімкнено, зареєстровані покупці, які залишили товари в кошику без оформлення замовлення, отримають нагадування на електронну пошту після зазначеної затримки. Заплановане завдання &quot;Надсилання листів про залишені кошики&quot; також має бути увімкнено на вкладці «Заплановані завдання». Кожен покупець отримуватиме не більше одного нагадування за 7 днів.]]></string>
 </group>
     <group name="setup">
       <string name="help_dbport"><![CDATA[Це порт сервера бази даних. У більшості випадків можна залишити порожнім. Значення за замовчуванням — 3306]]></string>

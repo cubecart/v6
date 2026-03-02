@@ -295,6 +295,8 @@
     <string name="view_basket"><![CDATA[Ver Cesto]]></string>
     <string name="weight"><![CDATA[Peso do Cesto]]></string>
     <string name="your_comments"><![CDATA[Notas de Entrega ou Comentários Adicionais]]></string>
+    <string name="abandon_optout_confirmed" introduced="6.6.0"><![CDATA[A sua subscrição dos e-mails de lembrete de cesto foi cancelada.]]></string>
+    <string name="abandon_link_invalid" introduced="6.6.0"><![CDATA[Este link expirou ou já não é válido.]]></string>
   </group>
   <group name="catalogue">
     <string name="manufacturer_address"><![CDATA[Endereço do Fabricante]]></string>
@@ -2699,6 +2701,11 @@ Este e-mail é enviado a partir do endereço de e-mail principal da loja, mas é
     <string name="trans_add"><![CDATA[Adicionar Tradução]]></string>
     <string name="trans_delete"><![CDATA[Eliminar Tradução]]></string>
     <string name="trans_none"><![CDATA[Não existem traduções]]></string>
+    <string name="tab_cart_recovery" introduced="6.6.0"><![CDATA[Recuperação de cesto]]></string>
+    <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[Definições de cesto abandonado]]></string>
+    <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[Ativar e-mails de cesto abandonado]]></string>
+    <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Enviar lembrete após]]></string>
+    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Quando ativado, os clientes registados que deixem artigos no cesto sem concluir a compra receberão um e-mail de lembrete após o tempo especificado. A tarefa agendada &quot;Enviar e-mails de cesto abandonado&quot; também deve estar ativada no separador Tarefas agendadas. Cada cliente receberá no máximo um lembrete a cada 7 dias.]]></string>
   </group>
   <group name="ui">
     <string name="drag_reorder"><![CDATA[Arraste para reordenar]]></string>

@@ -284,6 +284,8 @@
       <string name="view_basket"><![CDATA[Näytä ostoskori]]></string>
       <string name="weight"><![CDATA[Ostoskorin paino]]></string>
       <string name="your_comments"><![CDATA[Toimitusohjeet tai lisäkommentit]]></string>
+      <string name="abandon_optout_confirmed" introduced="6.6.0"><![CDATA[Ostoskorimuistutusten tilaus on peruutettu.]]></string>
+      <string name="abandon_link_invalid" introduced="6.6.0"><![CDATA[Tämä linkki on vanhentunut tai ei ole enää voimassa.]]></string>
     </group>
     <group name="catalogue">
       <string name="manufacturer_address"><![CDATA[Valmistajan osoite]]></string>
@@ -2488,6 +2490,11 @@ VAROITUS: Kaikki sen sisältämät tiedostot poistetaan pysyvästi!]]></string>
    <string name="packaging_add" introduced="6.6.0"><![CDATA[Lisää laatikko]]></string>
    <string name="packaging_name" introduced="6.6.0"><![CDATA[Laatikon nimi]]></string>
    <string name="packaging_note"  introduced="6.6.0"><![CDATA[Tilaukset toimitetaan mahdollisimman harvassa pakkauksessa alla määriteltyjen laatikoiden perusteella. Jos laatikoita ei ole määritelty, jokainen tuote toimitetaan erikseen.]]></string>
+   <string name="tab_cart_recovery" introduced="6.6.0"><![CDATA[Ostoskorin palautus]]></string>
+   <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[Hylätyn ostoskorin asetukset]]></string>
+   <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[Ota käyttöön hylätyn ostoskorin sähköpostit]]></string>
+   <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Lähetä muistutus jälkeen]]></string>
+   <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Kun tämä on käytössä, rekisteröityneet asiakkaat, jotka jättävät tuotteita ostoskoriinsa suorittamatta tilausta loppuun, saavat muistutusviestin määritetyn viiveen jälkeen. Myös ajoitettu tehtävä &quot;Lähetä hylätyn ostoskorin sähköpostit&quot; on oltava käytössä Ajoitetut tehtävät -välilehdellä. Jokainen asiakas saa enintään yhden muistutuksen 7 päivän aikana.]]></string>
 </group>
     <group name="setup">
       <string name="help_dbport"><![CDATA[Tämä on tietokantapalvelimen portti. Useimmissa tapauksissa tämä voidaan jättää tyhjäksi. Oletusarvo on 3306]]></string>

@@ -190,4 +190,22 @@ Ja nepieciešama papildu palīdzība, lūdzu, sazinieties ar mums.</p>]]></conte
     <subject><![CDATA[Jūsu pieteikšanās verifikācijas kods]]></subject>
     <content type="html"><![CDATA[<p>Sveiki, {$DATA.name},</p><p>Jūsu pieteikšanās verifikācijas kods ir:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Kods derīgs 10 minūtes. Ja nemēģinājāt pieteikties, nekavējoties sazinieties ar veikala administratoru.</p>]]></content>
   </email>
+  <email name="cart.abandoned">
+    <subject><![CDATA[Jūs atstājāt preces savā grozā veikalā {$DATA.store_name}]]></subject>
+    <content type="html"><![CDATA[<p>Sveiki, {$DATA.first_name|capitalize},</p>
+<p>Jūs nesen pievienojāt preces savam grozam veikalā {$DATA.store_name}, bet nepabeidzāt pirkumu. Jūsu preces joprojām gaida:</p>
+<table width="100%" border="0" cellpadding="5" cellspacing="0">
+<tr><td colspan="2"><strong>Prece</strong></td><td align="right"><strong>Daudz.</strong></td><td align="right"><strong>Cena</strong></td></tr>
+{foreach from=$PRODUCTS item=product}
+<tr>
+<td width="60" valign="top">{if !empty($product.image)}<img src="{$product.image}" width="50" height="50" style="object-fit:cover;border-radius:4px" alt="{$product.name}">{/if}</td>
+<td>{$product.name}{if !empty($product.options)}<br><small>{$product.options}</small>{/if}</td>
+<td align="right" valign="top">{$product.quantity}</td>
+<td align="right" valign="top">{$product.price}</td>
+</tr>
+{/foreach}
+</table>
+<p style="text-align:center;margin:20px 0"><a href="{$DATA.recovery_link}" style="background-color:#4CAF50;color:#fff;padding:12px 30px;text-decoration:none;border-radius:4px;font-weight:bold;display:inline-block">Pabeidziet pasūtījumu</a></p>
+<p style="font-size:12px;color:#999">Nevēlaties šos atgādinājumus? <a href="{$DATA.optout_link}">Atteikties no groza atgādinājumiem</a></p>]]></content>
+  </email>
 </emails>

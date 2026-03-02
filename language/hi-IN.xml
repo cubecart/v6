@@ -295,6 +295,8 @@
     <string name="view_basket"><![CDATA[कार्ट देखें]]></string>
     <string name="weight"><![CDATA[कार्ट वज़न]]></string>
     <string name="your_comments"><![CDATA[शिपिंग नोट्स या अतिरिक्त टिप्पणियां]]></string>
+    <string name="abandon_optout_confirmed" introduced="6.6.0"><![CDATA[आपकी कार्ट रिमाइंडर ईमेल की सदस्यता रद्द कर दी गई है।]]></string>
+    <string name="abandon_link_invalid" introduced="6.6.0"><![CDATA[यह लिंक समाप्त हो गया है या अब मान्य नहीं है।]]></string>
   </group>
   <group name="catalogue">
     <string name="manufacturer_address"><![CDATA[निर्माता का पता]]></string>
@@ -2487,6 +2489,11 @@ This email is sent from the store's master email address but it is possible to r
    <string name="packaging_add" introduced="6.6.0"><![CDATA[बॉक्स जोड़ें]]></string>
    <string name="packaging_name" introduced="6.6.0"><![CDATA[बॉक्स का नाम]]></string>
    <string name="packaging_note"  introduced="6.6.0"><![CDATA[ऑर्डर नीचे परिभाषित बॉक्स के आधार पर कम से कम बॉक्स में शिप किए जाएंगे। यदि कोई बॉक्स परिभाषित नहीं है, तो प्रति आइटम एक पैकेज मान लिया जाएगा।]]></string>
+    <string name="tab_cart_recovery" introduced="6.6.0"><![CDATA[कार्ट पुनर्प्राप्ति]]></string>
+    <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[परित्यक्त कार्ट सेटिंग्स]]></string>
+    <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[परित्यक्त कार्ट ईमेल सक्षम करें]]></string>
+    <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[रिमाइंडर भेजने का समय]]></string>
+    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[सक्षम होने पर, जो पंजीकृत ग्राहक अपने कार्ट में आइटम छोड़कर खरीदारी पूरी नहीं करते हैं, उन्हें निर्दिष्ट विलंब के बाद एक रिमाइंडर ईमेल प्राप्त होगा। निर्धारित कार्य टैब में &quot;परित्यक्त कार्ट ईमेल भेजें&quot; निर्धारित कार्य भी सक्षम होना चाहिए। प्रत्येक ग्राहक को हर 7 दिनों में अधिकतम एक रिमाइंडर प्राप्त होगा।]]></string>
 </group>
   <group name="setup">
     <string name="help_dbport"><![CDATA[यह डेटाबेस सर्वर पोर्ट है। अधिकांश मामलों में इसे खाली छोड़ा जा सकता है।]]></string>

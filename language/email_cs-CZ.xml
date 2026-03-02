@@ -281,4 +281,22 @@ Pokud potřebujete další pomoc, kontaktujte nás.</p>]]></content>
     <subject><![CDATA[Váš ověřovací kód pro přihlášení do administrace]]></subject>
     <content type="html"><![CDATA[<p>Dobrý den, {$DATA.name},</p><p>Váš ověřovací kód pro přihlášení je:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Platnost kódu vyprší za 10 minut. Pokud jste se nepokoušeli přihlásit, okamžitě kontaktujte správce obchodu.</p>]]></content>
   </email>
+  <email name="cart.abandoned">
+    <subject><![CDATA[V košíku {$DATA.store_name} jste zanechali položky]]></subject>
+    <content type="html"><![CDATA[<p>Dobrý den, {$DATA.first_name|capitalize},</p>
+<p>Nedávno jste přidali položky do košíku v {$DATA.store_name}, ale nedokončili jste nákup. Vaše položky na Vás stále čekají:</p>
+<table width="100%" border="0" cellpadding="5" cellspacing="0">
+<tr><td colspan="2"><strong>Položka</strong></td><td align="right"><strong>Ks</strong></td><td align="right"><strong>Cena</strong></td></tr>
+{foreach from=$PRODUCTS item=product}
+<tr>
+<td width="60" valign="top">{if !empty($product.image)}<img src="{$product.image}" width="50" height="50" style="object-fit:cover;border-radius:4px" alt="{$product.name}">{/if}</td>
+<td>{$product.name}{if !empty($product.options)}<br><small>{$product.options}</small>{/if}</td>
+<td align="right" valign="top">{$product.quantity}</td>
+<td align="right" valign="top">{$product.price}</td>
+</tr>
+{/foreach}
+</table>
+<p style="text-align:center;margin:20px 0"><a href="{$DATA.recovery_link}" style="background-color:#4CAF50;color:#fff;padding:12px 30px;text-decoration:none;border-radius:4px;font-weight:bold;display:inline-block">Dokončit objednávku</a></p>
+<p style="font-size:12px;color:#999">Nechcete dostávat tato připomenutí? <a href="{$DATA.optout_link}">Odhlásit se z připomenutí košíku</a></p>]]></content>
+  </email>
 </emails>

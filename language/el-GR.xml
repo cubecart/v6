@@ -296,6 +296,8 @@
     <string name="view_basket" introduced="5.0.0"><![CDATA[Προβολή καλαθιού]]></string>
     <string name="weight" introduced="5.0.0"><![CDATA[Βάρος καλαθιού]]></string>
     <string name="your_comments" introduced="5.0.0"><![CDATA[Σημειώσεις παράδοσης ή πρόσθετα σχόλια]]></string>
+    <string name="abandon_optout_confirmed" introduced="6.6.0"><![CDATA[Έχετε διαγραφεί από τα email υπενθύμισης καλαθιού.]]></string>
+    <string name="abandon_link_invalid" introduced="6.6.0"><![CDATA[Αυτός ο σύνδεσμος έχει λήξει ή δεν είναι πλέον έγκυρος.]]></string>
   </group>
   <group name="catalogue">
     <string name="manufacturer_address" introduced="6.5.12"><![CDATA[Διεύθυνση Κατασκευαστή]]></string>
@@ -2497,6 +2499,11 @@
     <string name="weight_unit_kg" introduced="5.0.0"><![CDATA[Μετρικό (kg)]]></string>
     <string name="weight_unit_lb" introduced="5.0.0"><![CDATA[Αγγλοσαξονικό (lb)]]></string>
     <string name="default_product_sort" introduced="5.2.0"><![CDATA[Ταξινόμηση Λίστας Προϊόντων]]></string>
+    <string name="tab_cart_recovery" introduced="6.6.0"><![CDATA[Ανάκτηση Καλαθιού]]></string>
+    <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[Ρυθμίσεις Εγκαταλελειμμένου Καλαθιού]]></string>
+    <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[Ενεργοποίηση email εγκαταλελειμμένου καλαθιού]]></string>
+    <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Αποστολή υπενθύμισης μετά από]]></string>
+    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Όταν είναι ενεργοποιημένο, οι εγγεγραμμένοι πελάτες που αφήνουν προϊόντα στο καλάθι τους χωρίς να ολοκληρώσουν την αγορά θα λαμβάνουν ένα email υπενθύμισης μετά την καθορισμένη καθυστέρηση. Η προγραμματισμένη εργασία &quot;Αποστολή Email Εγκαταλελειμμένου Καλαθιού&quot; πρέπει επίσης να είναι ενεργοποιημένη στην καρτέλα Προγραμματισμένες Εργασίες. Κάθε πελάτης θα λαμβάνει το πολύ μία υπενθύμιση ανά 7 ημέρες.]]></string>
   </group>
   <group name="setup">
     <string name="help_dbport" introduced="6.1.1"><![CDATA[Αυτή είναι η θύρα του διακομιστή βάσης δεδομένων. Στις περισσότερες περιπτώσεις μπορεί να μείνει κενή. Η προεπιλεγμένη τιμή είναι 3306]]></string>

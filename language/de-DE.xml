@@ -295,6 +295,8 @@
    <string name="view_basket"><![CDATA[Warenkorb anzeigen]]></string>
    <string name="weight"><![CDATA[Warenkorbgewicht]]></string>
    <string name="your_comments"><![CDATA[Lieferhinweise oder zusätzliche Anmerkungen]]></string>
+   <string name="abandon_optout_confirmed" introduced="6.6.0"><![CDATA[Sie wurden von den Warenkorb-Erinnerungs-E-Mails abgemeldet.]]></string>
+   <string name="abandon_link_invalid" introduced="6.6.0"><![CDATA[Dieser Link ist abgelaufen oder nicht mehr gültig.]]></string>
   </group>
   <group name="catalogue">
     <string name="manufacturer_address"><![CDATA[Herstelleradresse]]></string>
@@ -2700,6 +2702,11 @@ Diese E-Mail wurde von der Master-E-Mail-Adresse des Shops gesendet. Sie können
    <string name="trans_add"><![CDATA[Übersetzung hinzufügen]]></string>
    <string name="trans_delete"><![CDATA[Übersetzung löschen]]></string>
    <string name="trans_none"><![CDATA[Keine Übersetzungen vorhanden]]></string>
+   <string name="tab_cart_recovery" introduced="6.6.0"><![CDATA[Warenkorb-Wiederherstellung]]></string>
+   <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[Einstellungen für verlassene Warenkörbe]]></string>
+   <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[E-Mails für verlassene Warenkörbe aktivieren]]></string>
+   <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Erinnerung senden nach]]></string>
+   <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Wenn aktiviert, erhalten registrierte Kunden, die Artikel im Warenkorb hinterlassen, ohne ihren Einkauf abzuschließen, nach der angegebenen Verzögerung eine Erinnerungs-E-Mail. Die geplante Aufgabe &quot;Warenkorb-Abbruch-E-Mails senden&quot; muss ebenfalls im Tab Geplante Aufgaben aktiviert sein. Jeder Kunde erhält höchstens eine Erinnerung pro 7 Tage.]]></string>
   </group>
   <group name="ui">
    <string name="drag_reorder"><![CDATA[Ziehen zum Neuanordnen]]></string>

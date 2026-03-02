@@ -295,6 +295,8 @@
     <string name="view_basket"><![CDATA[查看购物车]]></string>
     <string name="weight"><![CDATA[购物车重量]]></string>
     <string name="your_comments"><![CDATA[配送备注或其他说明]]></string>
+    <string name="abandon_optout_confirmed" introduced="6.6.0"><![CDATA[您已取消订阅购物车提醒邮件。]]></string>
+    <string name="abandon_link_invalid" introduced="6.6.0"><![CDATA[此链接已过期或不再有效。]]></string>
   </group>
   <group name="catalogue">
     <string name="manufacturer_address"><![CDATA[制造商地址]]></string>
@@ -2489,6 +2491,11 @@ This email is sent from the store's master email address but it is possible to r
    <string name="packaging_add" introduced="6.6.0"><![CDATA[添加箱子]]></string>
    <string name="packaging_name" introduced="6.6.0"><![CDATA[箱子名称]]></string>
    <string name="packaging_note"  introduced="6.6.0"><![CDATA[订单将根据下方定义的箱子使用尽可能少的箱子发货。如果未定义箱子，每件商品将单独发货。]]></string>
+    <string name="tab_cart_recovery" introduced="6.6.0"><![CDATA[购物车挽回]]></string>
+    <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[弃购购物车设置]]></string>
+    <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[启用弃购购物车邮件]]></string>
+    <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[发送提醒的延迟时间]]></string>
+    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[启用后，将购物车中的商品留置而未完成购买的注册客户将在指定延迟后收到提醒邮件。还必须在"定时任务"标签中启用&quot;发送弃购购物车邮件&quot;定时任务。每位客户每 7 天最多收到一封提醒邮件。]]></string>
 </group>
   <group name="setup">
     <string name="help_dbport"><![CDATA[这是数据库服务器的端口。在大多数情况下，可以留空。默认值为 3306]]></string>

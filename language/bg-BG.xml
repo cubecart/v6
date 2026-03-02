@@ -295,6 +295,8 @@
     <string name="view_basket"><![CDATA[Преглед на кошницата]]></string>
     <string name="weight"><![CDATA[Тегло на кошницата]]></string>
     <string name="your_comments"><![CDATA[Бележки за доставка или допълнителни коментари]]></string>
+    <string name="abandon_optout_confirmed" introduced="6.6.0"><![CDATA[Бяхте отписани от имейлите за напомняне за кошницата.]]></string>
+    <string name="abandon_link_invalid" introduced="6.6.0"><![CDATA[Този линк е изтекъл или вече не е валиден.]]></string>
   </group>
   <group name="catalogue">
     <string name="manufacturer_address"><![CDATA[Адрес на производителя]]></string>
@@ -2489,6 +2491,11 @@
    <string name="packaging_add" introduced="6.6.0"><![CDATA[Добавяне на кутия]]></string>
    <string name="packaging_name" introduced="6.6.0"><![CDATA[Име на кутията]]></string>
    <string name="packaging_note"  introduced="6.6.0"><![CDATA[Поръчките ще бъдат изпращани в минимален брой кутии на базата на дефинираните кутии по-долу. Ако не са дефинирани кутии, всеки артикул ще бъде изпратен отделно.]]></string>
+    <string name="tab_cart_recovery" introduced="6.6.0"><![CDATA[Възстановяване на кошници]]></string>
+    <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[Настройки за изоставени кошници]]></string>
+    <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[Активиране на имейли за изоставени кошници]]></string>
+    <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Изпращане на напомняне след]]></string>
+    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Когато е активирано, регистрираните клиенти, които оставят артикули в кошницата си без да завършат покупката, ще получат напомнящ имейл след зададеното забавяне. Планираната задача &quot;Изпращане на имейли за изоставени кошници&quot; също трябва да бъде активирана в раздела «Планирани задачи». Всеки клиент ще получава най-много едно напомняне на 7 дни.]]></string>
 </group>
   <group name="setup">
     <string name="help_dbport"><![CDATA[Това е портът на сървъра за базата данни. В повечето случаи може да бъде оставен празен. Стойността по подразбиране е 3306]]></string>

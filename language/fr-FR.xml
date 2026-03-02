@@ -295,6 +295,8 @@
     <string name="view_basket"><![CDATA[Voir le panier]]></string>
     <string name="weight"><![CDATA[Poids du panier]]></string>
     <string name="your_comments"><![CDATA[Notes de livraison ou commentaires supplémentaires]]></string>
+    <string name="abandon_optout_confirmed" introduced="6.6.0"><![CDATA[Vous avez été désinscrit(e) des e-mails de rappel de panier.]]></string>
+    <string name="abandon_link_invalid" introduced="6.6.0"><![CDATA[Ce lien a expiré ou n'est plus valide.]]></string>
   </group>
   <group name="catalogue">
     <string name="manufacturer_address"><![CDATA[Adresse du fabricant]]></string>
@@ -2689,6 +2691,11 @@ This email is sent from the store's master email address but it is possible to r
     <string name="trans_add"><![CDATA[Ajouter une traduction]]></string>
     <string name="trans_delete"><![CDATA[Supprimer la traduction]]></string>
     <string name="trans_none"><![CDATA[Aucune traduction n'existe]]></string>
+    <string name="tab_cart_recovery" introduced="6.6.0"><![CDATA[Récupération de panier]]></string>
+    <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[Paramètres de panier abandonné]]></string>
+    <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[Activer les e-mails de panier abandonné]]></string>
+    <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Envoyer le rappel après]]></string>
+    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Lorsque cette option est activée, les clients enregistrés qui laissent des articles dans leur panier sans finaliser leur achat recevront un e-mail de rappel après le délai spécifié. La tâche planifiée &quot;Envoyer les e-mails de panier abandonné&quot; doit également être activée dans l'onglet Tâches planifiées. Chaque client recevra au maximum un rappel tous les 7 jours.]]></string>
   </group>
   <group name="ui">
     <string name="drag_reorder"><![CDATA[Glisser pour réorganiser]]></string>

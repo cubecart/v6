@@ -295,6 +295,8 @@
     <string name="view_basket"><![CDATA[Poglej košarico]]></string>
     <string name="weight"><![CDATA[Teža košarice]]></string>
     <string name="your_comments"><![CDATA[Opombe za dostavo ali dodatne pripombe]]></string>
+    <string name="abandon_optout_confirmed" introduced="6.6.0"><![CDATA[Odjavljeni ste bili od e-poštnih opomnikov košarice.]]></string>
+    <string name="abandon_link_invalid" introduced="6.6.0"><![CDATA[Ta povezava je potekla ali ni več veljavna.]]></string>
   </group>
   <group name="catalogue">
     <string name="manufacturer_address"><![CDATA[Naslov proizvajalca]]></string>
@@ -2489,6 +2491,11 @@ OPOZORILO: vse datoteke v njej bodo trajno izbrisane!]]></string>
    <string name="packaging_add" introduced="6.6.0"><![CDATA[Dodaj škatlo]]></string>
    <string name="packaging_name" introduced="6.6.0"><![CDATA[Ime škatle]]></string>
    <string name="packaging_note"  introduced="6.6.0"><![CDATA[Naročila bodo odposlana v čim manj škatlah glede na spodaj določene škatle. Če nobena škatla ni določena, bo vsak artikel poslan posamično.]]></string>
+    <string name="tab_cart_recovery" introduced="6.6.0"><![CDATA[Obnovitev košaric]]></string>
+    <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[Nastavitve zapuščenih košaric]]></string>
+    <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[Omogoči e-pošto za zapuščene košarice]]></string>
+    <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Pošlji opomnik po]]></string>
+    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Ko je omogočeno, bodo registrirane stranke, ki pustijo izdelke v košarici brez zaključka nakupa, prejele opomnik po e-pošti po določenem zamiku. Načrtovano opravilo &quot;Pošiljanje e-pošte za zapuščene košarice&quot; mora biti prav tako omogočeno v zavihku «Načrtovana opravila». Vsaka stranka bo prejela največ en opomnik na 7 dni.]]></string>
 </group>
   <group name="setup">
     <string name="help_dbport"><![CDATA[To so vrata strežnika podatkovne baze. V večini primerov jih lahko pustite prazna. Privzeta vrednost je 3306]]></string>

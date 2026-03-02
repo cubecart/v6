@@ -295,6 +295,8 @@
    <string name="view_basket"><![CDATA[Vis handlekurv]]></string>
    <string name="weight"><![CDATA[Handlekurvvekt]]></string>
    <string name="your_comments"><![CDATA[Leveringsmerknader eller tilleggskommentarer]]></string>
+   <string name="abandon_optout_confirmed" introduced="6.6.0"><![CDATA[Du har blitt avmeldt fra påminnelser om handlekurv via e-post.]]></string>
+   <string name="abandon_link_invalid" introduced="6.6.0"><![CDATA[Denne lenken har utløpt eller er ikke lenger gyldig.]]></string>
   </group>
   <group name="catalogue">
    <string name="manufacturer_address"><![CDATA[Produsentadresse]]></string>
@@ -2499,6 +2501,11 @@ ADVARSEL: Alle filer i den vil bli slettet permanent.]]></string>
    <string name="packaging_add" introduced="6.6.0"><![CDATA[Legg til boks]]></string>
    <string name="packaging_name" introduced="6.6.0"><![CDATA[Boksnavn]]></string>
    <string name="packaging_note"  introduced="6.6.0"><![CDATA[Bestillinger vil bli sendt i så få esker som mulig basert på eskene definert nedenfor. Hvis ingen esker er definert, vil hvert element sendes individuelt.]]></string>
+   <string name="tab_cart_recovery" introduced="6.6.0"><![CDATA[Gjenoppretting av handlekurv]]></string>
+   <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[Innstillinger for forlatt handlekurv]]></string>
+   <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[Aktiver e-poster om forlatt handlekurv]]></string>
+   <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Send påminnelse etter]]></string>
+   <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Når aktivert vil registrerte kunder som legger igjen varer i handlekurven uten å fullføre kjøpet, motta en påminnelse via e-post etter angitt forsinkelse. Den planlagte oppgaven &quot;Send e-poster om forlatt handlekurv&quot; må også være aktivert under fanen Planlagte oppgaver. Hver kunde mottar maksimalt én påminnelse per 7 dager.]]></string>
 </group>
   <group name="setup">
    <string name="help_dbport"><![CDATA[Dette er databaseserverens port. I de fleste tilfeller kan dette stå tomt. Standardverdi er 3306]]></string>

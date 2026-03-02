@@ -296,6 +296,8 @@
   <string name="view_basket"><![CDATA[Ver cesta]]></string>
   <string name="weight"><![CDATA[Peso de la cesta]]></string>
   <string name="your_comments"><![CDATA[Notas de entrega o comentarios adicionales]]></string>
+  <string name="abandon_optout_confirmed" introduced="6.6.0"><![CDATA[Se ha cancelado su suscripción a los correos de recordatorio de cesta.]]></string>
+  <string name="abandon_link_invalid" introduced="6.6.0"><![CDATA[Este enlace ha caducado o ya no es válido.]]></string>
  </group>
  <group name="catalogue">
   <string name="manufacturer_address"><![CDATA[Direcci&oacute;n del fabricante]]></string>
@@ -2701,6 +2703,11 @@ Este correo electr&oacute;nico se env&iacute;a desde la direcci&oacute;n de corr
   <string name="trans_add"><![CDATA[A&ntilde;adir traducci&oacute;n]]></string>
   <string name="trans_delete"><![CDATA[Eliminar traducci&oacute;n]]></string>
   <string name="trans_none"><![CDATA[No existen traducciones]]></string>
+  <string name="tab_cart_recovery" introduced="6.6.0"><![CDATA[Recuperación de cestas]]></string>
+  <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[Configuración de cestas abandonadas]]></string>
+  <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[Activar correos de cestas abandonadas]]></string>
+  <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Enviar recordatorio después de]]></string>
+  <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Cuando está activado, los clientes registrados que dejen artículos en su cesta sin completar su compra recibirán un correo de recordatorio después del tiempo especificado. La tarea programada &quot;Enviar correos de cestas abandonadas&quot; también debe estar activada en la pestaña Tareas programadas. Cada cliente recibirá como máximo un recordatorio cada 7 días.]]></string>
  </group>
  <group name="ui">
   <string name="drag_reorder"><![CDATA[Arrastrar para reordenar]]></string>

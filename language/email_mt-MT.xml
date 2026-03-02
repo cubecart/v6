@@ -282,4 +282,22 @@ Jekk għandek bżonn aktar għajnuna, jekk jogħġbok ikkuntattjana.</p>]]></con
     <subject><![CDATA[Il-kodiċi ta' verifika tal-login tal-back-office tiegħek]]></subject>
     <content type="html"><![CDATA[<p>Bonġu {$DATA.name},</p><p>Il-kodiċi ta' verifika tal-login tiegħek huwa:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Dan il-kodiċi jiskadi fi 10 minuti. Jekk ma pprovajtx tidħol, jekk jogħġbok ikkuntattja immedjatament lill-amministratur tal-ħanut tiegħek.</p>]]></content>
   </email>
+  <email name="cart.abandoned">
+    <subject><![CDATA[Ħallejt oġġetti fil-basket tiegħek fuq {$DATA.store_name}]]></subject>
+    <content type="html"><![CDATA[<p>Bonġu {$DATA.first_name|capitalize},</p>
+<p>Dan l-aħħar żidt oġġetti fil-basket tiegħek fuq {$DATA.store_name} iżda ma kompletajtx ix-xirja tiegħek. L-oġġetti tiegħek għadhom jistennewk:</p>
+<table width="100%" border="0" cellpadding="5" cellspacing="0">
+<tr><td colspan="2"><strong>Oġġett</strong></td><td align="right"><strong>Kwantità</strong></td><td align="right"><strong>Prezz</strong></td></tr>
+{foreach from=$PRODUCTS item=product}
+<tr>
+<td width="60" valign="top">{if !empty($product.image)}<img src="{$product.image}" width="50" height="50" style="object-fit:cover;border-radius:4px" alt="{$product.name}">{/if}</td>
+<td>{$product.name}{if !empty($product.options)}<br><small>{$product.options}</small>{/if}</td>
+<td align="right" valign="top">{$product.quantity}</td>
+<td align="right" valign="top">{$product.price}</td>
+</tr>
+{/foreach}
+</table>
+<p style="text-align:center;margin:20px 0"><a href="{$DATA.recovery_link}" style="background-color:#4CAF50;color:#fff;padding:12px 30px;text-decoration:none;border-radius:4px;font-weight:bold;display:inline-block">Ikkompleta l-Ordni Tiegħek</a></p>
+<p style="font-size:12px;color:#999">Ma tridx tirċievi dawn il-promemmorji? <a href="{$DATA.optout_link}">Neħħi l-abbonament mill-promemmorji tal-basket</a></p>]]></content>
+  </email>
 </emails>

@@ -282,4 +282,22 @@
     <subject><![CDATA[Ваш код верифікації входу до панелі управління]]></subject>
     <content type="html"><![CDATA[<p>Вітаємо, {$DATA.name},</p><p>Ваш код верифікації входу:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Цей код діє 10 хвилин. Якщо ви не намагались увійти, негайно зверніться до адміністратора магазину.</p>]]></content>
   </email>
+  <email name="cart.abandoned">
+    <subject><![CDATA[Ви залишили товари у кошику {$DATA.store_name}]]></subject>
+    <content type="html"><![CDATA[<p>Вітаємо, {$DATA.first_name|capitalize}!</p>
+<p>Ви нещодавно додали товари до кошика {$DATA.store_name}, але не завершили покупку. Ваші товари все ще чекають на вас:</p>
+<table width="100%" border="0" cellpadding="5" cellspacing="0">
+<tr><td colspan="2"><strong>Товар</strong></td><td align="right"><strong>К-сть</strong></td><td align="right"><strong>Ціна</strong></td></tr>
+{foreach from=$PRODUCTS item=product}
+<tr>
+<td width="60" valign="top">{if !empty($product.image)}<img src="{$product.image}" width="50" height="50" style="object-fit:cover;border-radius:4px" alt="{$product.name}">{/if}</td>
+<td>{$product.name}{if !empty($product.options)}<br><small>{$product.options}</small>{/if}</td>
+<td align="right" valign="top">{$product.quantity}</td>
+<td align="right" valign="top">{$product.price}</td>
+</tr>
+{/foreach}
+</table>
+<p style="text-align:center;margin:20px 0"><a href="{$DATA.recovery_link}" style="background-color:#4CAF50;color:#fff;padding:12px 30px;text-decoration:none;border-radius:4px;font-weight:bold;display:inline-block">Завершити замовлення</a></p>
+<p style="font-size:12px;color:#999">Не бажаєте отримувати такі нагадування? <a href="{$DATA.optout_link}">Відписатися від нагадувань про кошик</a></p>]]></content>
+  </email>
 </emails>

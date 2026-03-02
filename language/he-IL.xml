@@ -295,6 +295,8 @@
     <string name="view_basket"><![CDATA[צפה בסל]]></string>
     <string name="weight"><![CDATA[משקל הסל]]></string>
     <string name="your_comments"><![CDATA[הערות למשלוח או הערות נוספות]]></string>
+    <string name="abandon_optout_confirmed" introduced="6.6.0"><![CDATA[בוטלה הרשמתך לקבלת תזכורות סל קניות בדוא"ל.]]></string>
+    <string name="abandon_link_invalid" introduced="6.6.0"><![CDATA[קישור זה פג תוקף או שאינו תקף עוד.]]></string>
   </group>
   <group name="catalogue">
     <string name="manufacturer_address"><![CDATA[כתובת היצרן]]></string>
@@ -2489,6 +2491,11 @@
    <string name="packaging_add" introduced="6.6.0"><![CDATA[הוסף קופסה]]></string>
    <string name="packaging_name" introduced="6.6.0"><![CDATA[שם קופסה]]></string>
    <string name="packaging_note"  introduced="6.6.0"><![CDATA[הזמנות יישלחו במספר המינימלי של קופסאות האפשרי בהתבסס על הקופסאות המוגדרות למטה. אם לא מוגדרות קופסאות, כל פריט יישלח בנפרד.]]></string>
+    <string name="tab_cart_recovery" introduced="6.6.0"><![CDATA[שחזור סל קניות]]></string>
+    <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[הגדרות סל קניות נטוש]]></string>
+    <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[הפעל הודעות דוא"ל לסל קניות נטוש]]></string>
+    <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[שלח תזכורת לאחר]]></string>
+    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[כאשר מופעל, לקוחות רשומים שעוזבים פריטים בסל הקניות שלהם מבלי להשלים את הרכישה יקבלו הודעת תזכורת בדוא"ל לאחר ההשהיה המצוינת. יש להפעיל גם את המשימה המתוזמנת &quot;שלח הודעות דוא"ל על סל קניות נטוש&quot; בלשונית משימות מתוזמנות. כל לקוח יקבל לכל היותר תזכורת אחת כל 7 ימים.]]></string>
 </group>
   <group name="setup">
     <string name="help_dbport"><![CDATA[זהו פורט שרת מסד הנתונים. ברוב המקרים ניתן להשאיר ריק. ערך ברירת המחדל הוא 3306]]></string>

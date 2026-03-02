@@ -295,6 +295,8 @@
     <string name="view_basket"><![CDATA[Skatīt grozu]]></string>
     <string name="weight"><![CDATA[Groza svars]]></string>
     <string name="your_comments"><![CDATA[Piegādes piezīmes vai papildu komentāri]]></string>
+    <string name="abandon_optout_confirmed" introduced="6.6.0"><![CDATA[Jūs esat atteicies no groza atgādinājumu e-pastiem.]]></string>
+    <string name="abandon_link_invalid" introduced="6.6.0"><![CDATA[Šī saite ir beigusies vai vairs nav derīga.]]></string>
   </group>
   <group name="catalogue">
     <string name="manufacturer_address"><![CDATA[Ražotāja adrese]]></string>
@@ -2487,6 +2489,11 @@ This email is sent from the store's master email address but it is possible to r
    <string name="packaging_add" introduced="6.6.0"><![CDATA[Pievienot kasti]]></string>
    <string name="packaging_name" introduced="6.6.0"><![CDATA[Kastes nosaukums]]></string>
    <string name="packaging_note"  introduced="6.6.0"><![CDATA[Pasūtījumi tiks nosūtīti pēc iespējas mazākā skaitā kastu, pamatojoties uz zemāk definētajām kastēm. Ja kastes nav definētas, katra prece tiks nosūtīta atsevišķi.]]></string>
+    <string name="tab_cart_recovery" introduced="6.6.0"><![CDATA[Groza atjaunošana]]></string>
+    <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[Pamesta groza iestatījumi]]></string>
+    <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[Iespējot pamesta groza e-pastus]]></string>
+    <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Sūtīt atgādinājumu pēc]]></string>
+    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Ja iespējots, reģistrēti klienti, kuri atstāj preces grozā, nepabeidzot pirkumu, saņems atgādinājuma e-pastu pēc norādītā laika. Ieplānotajam uzdevumam &quot;Sūtīt pamesta groza e-pastus&quot; arī jābūt iespējotam cilnē Ieplānotie uzdevumi. Katrs klients saņems ne vairāk kā vienu atgādinājumu ik pēc 7 dienām.]]></string>
 </group>
   <group name="setup">
     <string name="help_dbport"><![CDATA[Šis ir datubāzes servera ports. Vairumā gadījumu to var atstāt tukšu. Noklusējuma vērtība ir 3306]]></string>

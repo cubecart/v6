@@ -282,4 +282,22 @@ Jos tarvitset lisää apua, ota meihin yhteyttä.</p>]]></content>
     <subject><![CDATA[Back-office-kirjautumisesi vahvistuskoodi]]></subject>
     <content type="html"><![CDATA[<p>Hei {$DATA.name},</p><p>Kirjautumisvahvistuskoodisi on:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Tämä koodi vanhenee 10 minuutin kuluttua. Jos et yrittänyt kirjautua sisään, ota välittömästi yhteyttä kauppasi ylläpitäjään.</p>]]></content>
   </email>
+  <email name="cart.abandoned">
+    <subject><![CDATA[Jätit tuotteita ostoskoriisi kaupassa {$DATA.store_name}]]></subject>
+    <content type="html"><![CDATA[<p>Hei {$DATA.first_name|capitalize},</p>
+<p>Lisäsit äskettäin tuotteita ostoskoriisi kaupassa {$DATA.store_name}, mutta et suorittanut tilausta loppuun. Tuotteesi odottavat sinua edelleen:</p>
+<table width="100%" border="0" cellpadding="5" cellspacing="0">
+<tr><td colspan="2"><strong>Tuote</strong></td><td align="right"><strong>Määrä</strong></td><td align="right"><strong>Hinta</strong></td></tr>
+{foreach from=$PRODUCTS item=product}
+<tr>
+<td width="60" valign="top">{if !empty($product.image)}<img src="{$product.image}" width="50" height="50" style="object-fit:cover;border-radius:4px" alt="{$product.name}">{/if}</td>
+<td>{$product.name}{if !empty($product.options)}<br><small>{$product.options}</small>{/if}</td>
+<td align="right" valign="top">{$product.quantity}</td>
+<td align="right" valign="top">{$product.price}</td>
+</tr>
+{/foreach}
+</table>
+<p style="text-align:center;margin:20px 0"><a href="{$DATA.recovery_link}" style="background-color:#4CAF50;color:#fff;padding:12px 30px;text-decoration:none;border-radius:4px;font-weight:bold;display:inline-block">Viimeistele tilauksesi</a></p>
+<p style="font-size:12px;color:#999">Etkö halua näitä muistutuksia? <a href="{$DATA.optout_link}">Peruuta ostoskorimuistutukset</a></p>]]></content>
+  </email>
 </emails>

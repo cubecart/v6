@@ -296,6 +296,8 @@
    <string name="view_basket" introduced="5.0.0"><![CDATA[Vizualizare coș]]></string>
    <string name="weight" introduced="5.0.0"><![CDATA[Greutate coș]]></string>
    <string name="your_comments" introduced="5.0.0"><![CDATA[Note de livrare sau comentarii suplimentare]]></string>
+    <string name="abandon_optout_confirmed" introduced="6.6.0"><![CDATA[V-ați dezabonat de la e-mailurile de memento ale coșului.]]></string>
+    <string name="abandon_link_invalid" introduced="6.6.0"><![CDATA[Acest link a expirat sau nu mai este valid.]]></string>
   </group>
   <group name="catalogue">
     <string name="manufacturer_address" introduced="6.5.12"><![CDATA[Adresa producătorului]]></string>
@@ -2498,6 +2500,11 @@ Acest email este trimis de la adresa de email principală a magazinului, dar put
     <string name="weight_unit_kg" introduced="5.0.0"><![CDATA[Metric (kg)]]></string>
     <string name="weight_unit_lb" introduced="5.0.0"><![CDATA[Imperial (lb)]]></string>
     <string name="default_product_sort" introduced="5.2.0"><![CDATA[Sortare listă produse]]></string>
+    <string name="tab_cart_recovery" introduced="6.6.0"><![CDATA[Recuperare coș]]></string>
+    <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[Setări coș abandonat]]></string>
+    <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[Activare e-mailuri pentru coș abandonat]]></string>
+    <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Trimitere memento după]]></string>
+    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Când este activat, clienții înregistrați care lasă produse în coș fără a finaliza achiziția vor primi un e-mail de memento după intervalul specificat. Sarcina programată &quot;Trimitere e-mailuri coș abandonat&quot; trebuie, de asemenea, activată în fila Sarcini programate. Fiecare client va primi cel mult un memento la fiecare 7 zile.]]></string>
   </group>
   <group name="setup">
     <string name="help_dbport" introduced="6.1.1"><![CDATA[Acesta este portul serverului de baze de date. În majoritatea cazurilor poate fi lăsat gol. Valoarea implicită este 3306]]></string>

@@ -295,6 +295,8 @@
     <string name="view_basket"><![CDATA[Zobrazit košík]]></string>
     <string name="weight"><![CDATA[Hmotnost košíku]]></string>
     <string name="your_comments"><![CDATA[Poznámky k doručení nebo další komentáře]]></string>
+    <string name="abandon_optout_confirmed" introduced="6.6.0"><![CDATA[Byli jste odhlášeni z e-mailů s připomenutím košíku.]]></string>
+    <string name="abandon_link_invalid" introduced="6.6.0"><![CDATA[Tento odkaz vypršel nebo již není platný.]]></string>
   </group>
   <group name="catalogue">
     <string name="manufacturer_address"><![CDATA[Adresa výrobce]]></string>
@@ -2815,6 +2817,11 @@ POZOR: všechny soubory v ní budou trvale smazány!]]></string>
    <string name="packaging_add" introduced="6.6.0"><![CDATA[Přidat krabici]]></string>
    <string name="packaging_name" introduced="6.6.0"><![CDATA[Název krabice]]></string>
    <string name="packaging_note"  introduced="6.6.0"><![CDATA[Objednávky budou odeslány v co nejmenším počtu krabic na základě níže definovaných krabic. Pokud nejsou definovány žádné krabice, bude každá položka odeslána jednotlivě.]]></string>
+    <string name="tab_cart_recovery" introduced="6.6.0"><![CDATA[Obnova košíku]]></string>
+    <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[Nastavení opuštěných košíků]]></string>
+    <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[Povolit e-maily o opuštěných košících]]></string>
+    <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Odeslat připomenutí po]]></string>
+    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Pokud je povoleno, registrovaní zákazníci, kteří zanechají položky v košíku bez dokončení nákupu, obdrží připomínací e-mail po stanovené prodlevě. Naplánovaná úloha &quot;Odesílání e-mailů o opuštěných košících&quot; musí být rovněž povolena na záložce «Naplánované úlohy». Každý zákazník obdrží nejvýše jedno připomenutí za 7 dní.]]></string>
 </group>
   <group name="setup">
     <string name="help_dbport"><![CDATA[Toto je port databázového serveru. Ve většině případů může zůstat prázdný. Výchozí hodnota je 3306]]></string>

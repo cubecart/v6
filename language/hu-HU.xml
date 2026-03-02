@@ -295,6 +295,8 @@
     <string name="view_basket"><![CDATA[Kosár megtekintése]]></string>
     <string name="weight"><![CDATA[Kosár súlya]]></string>
     <string name="your_comments"><![CDATA[Szállítási megjegyzések vagy további észrevételek]]></string>
+    <string name="abandon_optout_confirmed" introduced="6.6.0"><![CDATA[Sikeresen leiratkozott a kosár emlékeztető e-mailekről.]]></string>
+    <string name="abandon_link_invalid" introduced="6.6.0"><![CDATA[Ez a hivatkozás lejárt vagy már nem érvényes.]]></string>
   </group>
   <group name="catalogue">
     <string name="manufacturer_address"><![CDATA[Gyártó címe]]></string>
@@ -2725,6 +2727,11 @@ FIGYELEM: a benne lévő összes fájl véglegesen törlésre kerül!]]></string
     <string name="packaging_add" introduced="6.6.0"><![CDATA[Doboz hozzáadása]]></string>
     <string name="packaging_name" introduced="6.6.0"><![CDATA[Doboz neve]]></string>
     <string name="packaging_note" introduced="6.6.0"><![CDATA[A rendelések a lehető legkevesebb dobozban kerülnek feladásra az alább meghatározott dobozok alapján. Ha nincs doboz meghatározva, minden tétel egyenként kerül feladásra.]]></string>
+    <string name="tab_cart_recovery" introduced="6.6.0"><![CDATA[Kosár visszaállítás]]></string>
+    <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[Elhagyott kosár beállítások]]></string>
+    <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[Elhagyott kosár e-mailek engedélyezése]]></string>
+    <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Emlékeztető küldése ennyi idő után]]></string>
+    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Ha engedélyezve van, a regisztrált vásárlók, akik termékeket hagynak a kosarukban a vásárlás befejezése nélkül, emlékeztető e-mailt kapnak a megadott késleltetés után. Az &quot;Elhagyott kosár e-mailek küldése&quot; ütemezett feladatnak is engedélyezve kell lennie az Ütemezett feladatok fülön. Minden vásárló legfeljebb egy emlékeztetőt kap 7 naponként.]]></string>
   </group>
   <group name="setup">
     <string name="help_dbport"><![CDATA[Ez az adatbázis-szerver portja. A legtöbb esetben üresen hagyható. Az alapértelmezés 3306]]></string>

@@ -295,6 +295,8 @@
     <string name="view_basket"><![CDATA[Peržiūrėti krepšelį]]></string>
     <string name="weight"><![CDATA[Krepšelio svoris]]></string>
     <string name="your_comments"><![CDATA[Pristatymo pastabos arba papildomi komentarai]]></string>
+    <string name="abandon_optout_confirmed" introduced="6.6.0"><![CDATA[Jūs atsisakėte krepšelio priminimo el. laiškų.]]></string>
+    <string name="abandon_link_invalid" introduced="6.6.0"><![CDATA[Ši nuoroda nebegalioja arba nebėra aktyvi.]]></string>
   </group>
   <group name="catalogue">
     <string name="manufacturer_address"><![CDATA[Gamintojo adresas]]></string>
@@ -2489,6 +2491,11 @@ DĖMESIO: visi jame esantys failai bus visam laikui ištrinti!]]></string>
    <string name="packaging_add" introduced="6.6.0"><![CDATA[Pridėti dėžę]]></string>
    <string name="packaging_name" introduced="6.6.0"><![CDATA[Dėžės pavadinimas]]></string>
    <string name="packaging_note"  introduced="6.6.0"><![CDATA[Užsakymai bus siunčiami kuo mažesniu dėžių skaičiumi pagal žemiau apibrėžtas dėžes. Jei dėžės neapibrėžtos, kiekviena prekė bus siunčiama atskirai.]]></string>
+    <string name="tab_cart_recovery" introduced="6.6.0"><![CDATA[Krepšelio atkūrimas]]></string>
+    <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[Palikto krepšelio nustatymai]]></string>
+    <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[Įjungti palikto krepšelio el. laiškus]]></string>
+    <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Siųsti priminimą po]]></string>
+    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Kai įjungta, registruoti klientai, kurie paliko prekes krepšelyje nebaigę pirkimo, gaus priminimo el. laišką po nurodyto laiko. Taip pat turi būti įjungta suplanuota užduotis &quot;Siųsti palikto krepšelio el. laiškus&quot; skirtuke „Suplanuotos užduotys". Kiekvienas klientas gaus ne daugiau kaip vieną priminimą per 7 dienas.]]></string>
 </group>
   <group name="setup">
     <string name="help_dbport"><![CDATA[Tai yra duomenų bazės serverio prievadas. Daugeliu atvejų jį galima palikti tuščią. Numatytoji reikšmė yra 3306]]></string>

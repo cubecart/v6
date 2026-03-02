@@ -295,6 +295,8 @@
    <string name="view_basket"><![CDATA[Visa varukorg]]></string>
    <string name="weight"><![CDATA[Varukorgens vikt]]></string>
    <string name="your_comments"><![CDATA[Leveransanteckningar eller ytterligare kommentarer]]></string>
+   <string name="abandon_optout_confirmed" introduced="6.6.0"><![CDATA[Du har avprenumererats från e-postpåminnelser om varukorgen.]]></string>
+   <string name="abandon_link_invalid" introduced="6.6.0"><![CDATA[Denna länk har gått ut eller är inte längre giltig.]]></string>
   </group>
   <group name="catalogue">
    <string name="manufacturer_address"><![CDATA[Tillverkarens adress]]></string>
@@ -2499,6 +2501,11 @@ VARNING: Alla filer i den kommer att raderas permanent]]></string>
    <string name="packaging_add" introduced="6.6.0"><![CDATA[Lägg till box]]></string>
    <string name="packaging_name" introduced="6.6.0"><![CDATA[Boxnamn]]></string>
    <string name="packaging_note"  introduced="6.6.0"><![CDATA[Beställningar skickas i så få lådor som möjligt baserat på lådorna definierade nedan. Om inga lådor är definierade skickas varje artikel individuellt.]]></string>
+   <string name="tab_cart_recovery" introduced="6.6.0"><![CDATA[Återställning av varukorg]]></string>
+   <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[Inställningar för övergiven varukorg]]></string>
+   <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[Aktivera e-post för övergiven varukorg]]></string>
+   <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Skicka påminnelse efter]]></string>
+   <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[När aktiverat kommer registrerade kunder som lämnar varor i sin varukorg utan att slutföra sitt köp att få ett påminnelsemeddelande efter angiven fördröjning. Den schemalagda uppgiften &quot;Skicka e-post om övergiven varukorg&quot; måste också vara aktiverad under fliken Schemalagda uppgifter. Varje kund får högst en påminnelse per 7 dagar.]]></string>
 </group>
   <group name="setup">
    <string name="help_dbport"><![CDATA[Detta är databasserverns port. I de flesta fall kan detta lämnas tomt. Standardvärdet är 3306]]></string>
