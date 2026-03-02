@@ -113,10 +113,16 @@ class ElasticsearchHandler
         }
 
         // Authentication (works for both Cloud and self-hosted)
-        if (isset($this->_config['es_t']) && $this->_config['es_t'] == '1') {
-            $clientBuilder->setApiKey($this->_config['es_a']);
-        } else {
-            $clientBuilder->setBasicAuthentication($this->_config['es_u'], $this->_config['es_p']);
+        $auth_type = isset($this->_config['es_t']) ? $this->_config['es_t'] : '0';
+        switch ($auth_type) {
+            case '2': // No authentication
+                break;
+            case '1': // API key
+                $clientBuilder->setApiKey($this->_config['es_a']);
+                break;
+            default: // Basic authentication
+                $clientBuilder->setBasicAuthentication($this->_config['es_u'], $this->_config['es_p']);
+                break;
         }
 
         $this->_client = $clientBuilder->build();

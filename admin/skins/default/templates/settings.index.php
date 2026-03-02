@@ -510,6 +510,7 @@
                <select name="config[es_t]" id="es_t" class="textbox">
                   <option value="0"{if !isset($CONFIG.es_t) || (isset($CONFIG.es_t) && $CONFIG.es_t=='0')} selected="selected"{/if}>{$LANG.account.basic}</option>
                   <option value="1"{if isset($CONFIG.es_t) && $CONFIG.es_t=='1'} selected="selected"{/if}>{$LANG.account.api}</option>
+                  <option value="2"{if isset($CONFIG.es_t) && $CONFIG.es_t=='2'} selected="selected"{/if}>{$LANG.common.none}</option>
                </select>
             </span>
          </div>
