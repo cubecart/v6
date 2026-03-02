@@ -2495,7 +2495,9 @@ UPOZORENJE: sve datoteke koje sadrži bit će trajno izbrisane!]]></string>
     <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[Postavke napuštene košarice]]></string>
     <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[Omogući e-mailove napuštene košarice]]></string>
     <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Pošalji podsjetnik nakon]]></string>
-    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Kada je omogućeno, registrirani kupci koji ostave artikle u košarici bez dovršetka kupnje primit će podsjetnik e-mailom nakon navedenog odgađanja. Zakazani zadatak &quot;Slanje e-mailova napuštene košarice&quot; također mora biti omogućen na kartici Zakazani zadaci. Svaki kupac će primiti najviše jedan podsjetnik svakih 7 dana.]]></string>
+    <string name="abandoned_cart_notify_cooldown" introduced="6.6.0"><![CDATA[Minimalno vrijeme između podsjetnika]]></string>
+    <string name="abandoned_cart_order_window" introduced="6.6.0"><![CDATA[Suzbij ako je naručeno unutar]]></string>
+    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Kada je omogućeno, registrirani kupci koji ostave artikle u košarici bez dovršetka kupnje primit će podsjetnik e-mailom. Zakazani zadatak &quot;Slanje e-mailova napuštene košarice&quot; također mora biti omogućen na kartici Zakazani zadaci.<br><br><strong>Podsjetnik se šalje kada su ispunjeni svi sljedeći uvjeti:</strong><br>&bull; Kupac nije imao aktivnu sesiju tijekom trajanja odgode navedene gore<br>&bull; Kupcu nije poslan podsjetnik unutar minimalnog vremena navedenog gore<br>&bull; Kupac nema narudžbi u obradi ili dovršenih narudžbi unutar vremenskog okvira navedenog gore<br>&bull; Kupac se nije odjavio od podsjetnika<br><br>Cron URL mora se pozivati vanjski (npr. putem crontab-a s curl/wget) &mdash; ne iz preglednika u kojem je kupac prijavljen, jer bi sesija preglednika računala kao nedavna aktivnost.]]></string>
 </group>
   <group name="setup">
     <string name="help_dbport"><![CDATA[Ovo je port poslužitelja baze podataka. U većini slučajeva može se ostaviti prazno. Zadana vrijednost je 3306]]></string>

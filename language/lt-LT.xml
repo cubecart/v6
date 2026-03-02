@@ -2495,7 +2495,9 @@ DĖMESIO: visi jame esantys failai bus visam laikui ištrinti!]]></string>
     <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[Palikto krepšelio nustatymai]]></string>
     <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[Įjungti palikto krepšelio el. laiškus]]></string>
     <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Siųsti priminimą po]]></string>
-    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Kai įjungta, registruoti klientai, kurie paliko prekes krepšelyje nebaigę pirkimo, gaus priminimo el. laišką po nurodyto laiko. Taip pat turi būti įjungta suplanuota užduotis &quot;Siųsti palikto krepšelio el. laiškus&quot; skirtuke „Suplanuotos užduotys". Kiekvienas klientas gaus ne daugiau kaip vieną priminimą per 7 dienas.]]></string>
+    <string name="abandoned_cart_notify_cooldown" introduced="6.6.0"><![CDATA[Minimalus laikas tarp priminimų]]></string>
+    <string name="abandoned_cart_order_window" introduced="6.6.0"><![CDATA[Nerodyti jei užsakyta per]]></string>
+    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Kai įjungta, registruoti klientai, kurie paliko prekes krepšelyje nebaigę pirkimo, gaus priminimo el. laišką. Taip pat turi būti įjungta suplanuota užduotis &quot;Siųsti palikto krepšelio el. laiškus&quot; skirtuke &quot;Suplanuotos užduotys&quot;.<br><br><strong>Priminimas siunčiamas, kai visos šios sąlygos yra tenkinamos:</strong><br>&bull; Klientas neturėjo aktyvios sesijos aukščiau nurodytu vėlavimo laikotarpiu<br>&bull; Klientui nebuvo siųstas priminimas per aukščiau nurodytą atvėsimo laikotarpį<br>&bull; Klientas neturi apdorojamų ar užbaigtų užsakymų per aukščiau nurodytą užsakymų langą<br>&bull; Klientas neatsisakė priminimų<br><br>Cron URL turi būti kviečiamas išoriškai (pvz., per crontab su curl/wget) &mdash; ne iš naršyklės, kurioje klientas yra prisijungęs, nes naršyklės sesija būtų laikoma neseniai buvusia veikla.]]></string>
 </group>
   <group name="setup">
     <string name="help_dbport"><![CDATA[Tai yra duomenų bazės serverio prievadas. Daugeliu atvejų jį galima palikti tuščią. Numatytoji reikšmė yra 3306]]></string>

@@ -514,9 +514,33 @@ $select_options['abandoned_cart_delay'] = array(
     14400  => '4 Hours',
     21600  => '6 Hours',
     43200  => '12 Hours',
-    86400  => '24 Hours',
-    172800 => '48 Hours',
-    259200 => '72 Hours',
+    86400  => '1 Day',
+    172800 => '2 Days',
+    259200 => '3 Days',
+);
+$select_options['abandoned_cart_notify_cooldown'] = array(
+    3600   => '1 Hour',
+    7200   => '2 Hours',
+    14400  => '4 Hours',
+    21600  => '6 Hours',
+    43200  => '12 Hours',
+    86400  => '1 Day',
+    172800 => '2 Days',
+    259200 => '3 Days',
+    432000 => '5 Days',
+    604800 => '7 Days',
+);
+$select_options['abandoned_cart_order_window'] = array(
+    3600   => '1 Hour',
+    7200   => '2 Hours',
+    14400  => '4 Hours',
+    21600  => '6 Hours',
+    43200  => '12 Hours',
+    86400  => '1 Day',
+    172800 => '2 Days',
+    259200 => '3 Days',
+    432000 => '5 Days',
+    604800 => '7 Days',
 );
 
 $smarty_data['config'] = $GLOBALS['config']->get('config');

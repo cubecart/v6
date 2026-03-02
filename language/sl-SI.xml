@@ -2495,7 +2495,9 @@ OPOZORILO: vse datoteke v njej bodo trajno izbrisane!]]></string>
     <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[Nastavitve zapuščenih košaric]]></string>
     <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[Omogoči e-pošto za zapuščene košarice]]></string>
     <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[Pošlji opomnik po]]></string>
-    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Ko je omogočeno, bodo registrirane stranke, ki pustijo izdelke v košarici brez zaključka nakupa, prejele opomnik po e-pošti po določenem zamiku. Načrtovano opravilo &quot;Pošiljanje e-pošte za zapuščene košarice&quot; mora biti prav tako omogočeno v zavihku «Načrtovana opravila». Vsaka stranka bo prejela največ en opomnik na 7 dni.]]></string>
+    <string name="abandoned_cart_notify_cooldown" introduced="6.6.0"><![CDATA[Minimalni čas med opomniki]]></string>
+    <string name="abandoned_cart_order_window" introduced="6.6.0"><![CDATA[Onemogoči če naročeno v]]></string>
+    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[Ko je omogočeno, bodo registrirane stranke, ki pustijo izdelke v košarici brez zaključka nakupa, prejele opomnik po e-pošti. Načrtovano opravilo &quot;Pošiljanje e-pošte za zapuščene košarice&quot; mora biti prav tako omogočeno v zavihku «Načrtovana opravila».<br><br><strong>Opomnik je poslan, ko so izpolnjeni vsi naslednji pogoji:</strong><br>&bull; Stranka ni imela aktivne seje v trajanju zamika navedenega zgoraj<br>&bull; Stranki ni bil poslan opomnik v obdobju minimalnega časa navedenega zgoraj<br>&bull; Stranka nima nobenih obdelanih ali zaključenih naročil v časovnem oknu navedenem zgoraj<br>&bull; Stranka se ni odjavila od opomnikov<br><br>URL za cron je treba klicati zunaj sistema (npr. prek crontab z curl/wget) &mdash; ne iz brskalnika, kjer je stranka prijavljena, saj bi seja brskalnika štela kot nedavna dejavnost.]]></string>
 </group>
   <group name="setup">
     <string name="help_dbport"><![CDATA[To so vrata strežnika podatkovne baze. V večini primerov jih lahko pustite prazna. Privzeta vrednost je 3306]]></string>

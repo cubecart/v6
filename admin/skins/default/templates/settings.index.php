@@ -577,6 +577,14 @@
             {foreach from=$OPT_ABANDONED_CART_DELAY item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
             </select></span>
          </div>
+         <div><label for="abandoned_cart_notify_cooldown">{$LANG.settings.abandoned_cart_notify_cooldown}</label><span><select name="config[abandoned_cart_notify_cooldown]" id="abandoned_cart_notify_cooldown" class="textbox">
+            {foreach from=$OPT_ABANDONED_CART_NOTIFY_COOLDOWN item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
+            </select></span>
+         </div>
+         <div><label for="abandoned_cart_order_window">{$LANG.settings.abandoned_cart_order_window}</label><span><select name="config[abandoned_cart_order_window]" id="abandoned_cart_order_window" class="textbox">
+            {foreach from=$OPT_ABANDONED_CART_ORDER_WINDOW item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
+            </select></span>
+         </div>
       </fieldset>
       <fieldset>
          <p>{$LANG.settings.abandoned_cart_info}</p>

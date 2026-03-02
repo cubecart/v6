@@ -85,7 +85,17 @@ class Cron
         }
 
         $cutoff = time() - $delay;
-        $seven_days_ago = time() - 604800;
+
+        $notify_cooldown = (int)$GLOBALS['config']->get('config', 'abandoned_cart_notify_cooldown');
+        if ($notify_cooldown < 3600) {
+            $notify_cooldown = 259200;
+        }
+        $order_window = (int)$GLOBALS['config']->get('config', 'abandoned_cart_order_window');
+        if ($order_window < 3600) {
+            $order_window = 259200;
+        }
+        $notify_cutoff = time() - $notify_cooldown;
+        $order_cutoff = time() - $order_window;
 
         // Find customers with saved carts who have abandoned
         $pfx = $GLOBALS['config']->get('config', 'dbprefix');
@@ -100,11 +110,11 @@ class Cron
               )
               AND NOT EXISTS (
                 SELECT 1 FROM `{$pfx}CubeCart_cart_abandonment` ca
-                WHERE ca.customer_id = sc.customer_id AND ca.notified_at > '".date('Y-m-d H:i:s', $seven_days_ago)."'
+                WHERE ca.customer_id = sc.customer_id AND ca.notified_at > '".date('Y-m-d H:i:s', $notify_cutoff)."'
               )
               AND NOT EXISTS (
                 SELECT 1 FROM `{$pfx}CubeCart_order_summary` os
-                WHERE os.customer_id = sc.customer_id AND os.order_date > ".(int)$seven_days_ago."
+                WHERE os.customer_id = sc.customer_id AND os.order_date > ".(int)$order_cutoff."
                   AND os.status IN (2, 3)
               )";
 

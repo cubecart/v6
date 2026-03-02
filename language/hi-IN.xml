@@ -2493,7 +2493,9 @@ This email is sent from the store's master email address but it is possible to r
     <string name="abandoned_cart_settings" introduced="6.6.0"><![CDATA[परित्यक्त कार्ट सेटिंग्स]]></string>
     <string name="abandoned_cart_enabled" introduced="6.6.0"><![CDATA[परित्यक्त कार्ट ईमेल सक्षम करें]]></string>
     <string name="abandoned_cart_delay" introduced="6.6.0"><![CDATA[रिमाइंडर भेजने का समय]]></string>
-    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[सक्षम होने पर, जो पंजीकृत ग्राहक अपने कार्ट में आइटम छोड़कर खरीदारी पूरी नहीं करते हैं, उन्हें निर्दिष्ट विलंब के बाद एक रिमाइंडर ईमेल प्राप्त होगा। निर्धारित कार्य टैब में &quot;परित्यक्त कार्ट ईमेल भेजें&quot; निर्धारित कार्य भी सक्षम होना चाहिए। प्रत्येक ग्राहक को हर 7 दिनों में अधिकतम एक रिमाइंडर प्राप्त होगा।]]></string>
+    <string name="abandoned_cart_notify_cooldown" introduced="6.6.0"><![CDATA[अनुस्मारक के बीच न्यूनतम समय]]></string>
+    <string name="abandoned_cart_order_window" introduced="6.6.0"><![CDATA[इस अवधि में ऑर्डर होने पर न भेजें]]></string>
+    <string name="abandoned_cart_info" introduced="6.6.0"><![CDATA[सक्षम होने पर, जो पंजीकृत ग्राहक अपने कार्ट में आइटम छोड़कर खरीदारी पूरी नहीं करते हैं, उन्हें रिमाइंडर ईमेल प्राप्त होगा। निर्धारित कार्य टैब में &quot;परित्यक्त कार्ट ईमेल भेजें&quot; निर्धारित कार्य भी सक्षम होना चाहिए।&lt;br&gt;&lt;br&gt;&lt;strong&gt;रिमाइंडर तब भेजा जाता है जब निम्नलिखित सभी शर्तें पूरी हों:&lt;/strong&gt;&lt;br&gt;&amp;bull; ग्राहक की ऊपर दी गई विलंब अवधि में कोई सक्रिय सत्र नहीं रहा हो&lt;br&gt;&amp;bull; ग्राहक को ऊपर दी गई कूलडाउन अवधि में कोई रिमाइंडर नहीं भेजा गया हो&lt;br&gt;&amp;bull; ग्राहक का ऊपर दी गई ऑर्डर अवधि में कोई प्रोसेसिंग या पूर्ण ऑर्डर न हो&lt;br&gt;&amp;bull; ग्राहक ने रिमाइंडर से ऑप्ट आउट नहीं किया हो&lt;br&gt;&lt;br&gt;Cron URL को बाहरी रूप से कॉल किया जाना चाहिए (जैसे crontab में curl/wget के माध्यम से) &amp;mdash; उस ब्राउज़र से नहीं जहाँ ग्राहक लॉग इन है, क्योंकि ब्राउज़र सत्र को हाल की गतिविधि के रूप में गिना जाएगा।]]></string>
 </group>
   <group name="setup">
     <string name="help_dbport"><![CDATA[यह डेटाबेस सर्वर पोर्ट है। अधिकांश मामलों में इसे खाली छोड़ा जा सकता है।]]></string>
