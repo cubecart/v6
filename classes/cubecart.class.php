@@ -429,10 +429,6 @@ class Cubecart
                     $this->_newsletter();
                 break;
 
-                case 'recover':
-                    $this->_recoverCart();
-                break;
-
                 case 'plugin':
                     $trigger = 'class.cubecart.display_content';
                     $plugin = preg_replace('#[^a-z0-9\_\-]#iU', '', $_GET['plugin']);
@@ -2609,8 +2605,8 @@ class Cubecart
             $GLOBALS['db']->update('CubeCart_cart_abandonment', array('clicked_at' => date('Y-m-d H:i:s')), array('id' => (int)$record[0]['id']));
         }
 
-        // Redirect to basket - if logged in, saved cart auto-loads; if not, login page will show
-        httpredir('index.php?_a=basket');
+        // Redirect to checkout - if logged in, saved cart auto-loads; if not, login/guest form will show
+        httpredir('index.php?_a=checkout');
     }
 
     /**
@@ -3197,6 +3193,12 @@ class Cubecart
      */
     private function _recover()
     {
+        // Cart recovery token takes priority over password reset
+        if (isset($_GET['token']) && !empty($_GET['token'])) {
+            $this->_recoverCart();
+            return;
+        }
+
         $GLOBALS['gui']->addBreadcrumb($GLOBALS['language']->account['recover_password'], currentPage());
         $GLOBALS['seo']->set_meta_data(array('description' => '', 'title' => $GLOBALS['language']->account['recover_password']));
 
