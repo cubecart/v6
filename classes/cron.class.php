@@ -88,25 +88,25 @@ class Cron
         $seven_days_ago = time() - 604800;
 
         // Find customers with saved carts who have abandoned
+        $pfx = $GLOBALS['config']->get('config', 'dbprefix');
         $query = "SELECT sc.customer_id, sc.basket, c.email, c.first_name, c.last_name, c.language
-            FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_saved_cart` sc
-            JOIN `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_customer` c
-                ON sc.customer_id = c.customer_id
-            LEFT JOIN `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_sessions` s
-                ON sc.customer_id = s.customer_id AND s.session_last > 0
+            FROM `{$pfx}CubeCart_saved_cart` sc
+            JOIN `{$pfx}CubeCart_customer` c ON sc.customer_id = c.customer_id
             WHERE c.abandon_optout = 0
               AND c.status = 1
-              AND (s.session_id IS NULL OR s.session_last < ".(int)$cutoff.")
-              AND sc.customer_id NOT IN (
-                SELECT ca.customer_id FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_cart_abandonment` ca
-                WHERE ca.notified_at > '".date('Y-m-d H:i:s', $seven_days_ago)."'
+              AND NOT EXISTS (
+                SELECT 1 FROM `{$pfx}CubeCart_sessions` s
+                WHERE s.customer_id = sc.customer_id AND s.session_last >= ".(int)$cutoff."
               )
-              AND sc.customer_id NOT IN (
-                SELECT DISTINCT os.customer_id FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary` os
-                WHERE os.order_date > ".(int)$seven_days_ago."
-                  AND os.status NOT IN (3)
+              AND NOT EXISTS (
+                SELECT 1 FROM `{$pfx}CubeCart_cart_abandonment` ca
+                WHERE ca.customer_id = sc.customer_id AND ca.notified_at > '".date('Y-m-d H:i:s', $seven_days_ago)."'
               )
-            GROUP BY sc.customer_id";
+              AND NOT EXISTS (
+                SELECT 1 FROM `{$pfx}CubeCart_order_summary` os
+                WHERE os.customer_id = sc.customer_id AND os.order_date > ".(int)$seven_days_ago."
+                  AND os.status IN (2, 3)
+              )";
 
         $results = $GLOBALS['db']->query($query);
         if (!$results) {
