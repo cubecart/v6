@@ -719,6 +719,13 @@ class Cubecart
             $GLOBALS['cart']->save();
         }
         
+        // Auto-apply coupon from abandoned cart recovery link
+        if ($abandon_coupon = $GLOBALS['session']->get('abandon_coupon', 'client')) {
+            $GLOBALS['session']->delete('abandon_coupon', 'client');
+            $GLOBALS['cart']->discountAdd($abandon_coupon);
+            $GLOBALS['cart']->save();
+        }
+
         if (isset($_POST['update'])) {
             $GLOBALS['cart']->update();
             if (isset($_POST['coupon']) && !empty($_POST['coupon'])) {
@@ -2603,6 +2610,11 @@ class Cubecart
         // Mark as clicked
         if (empty($record[0]['clicked_at'])) {
             $GLOBALS['db']->update('CubeCart_cart_abandonment', array('clicked_at' => date('Y-m-d H:i:s')), array('id' => (int)$record[0]['id']));
+        }
+
+        // Auto-apply discount coupon if one was included in the abandonment email
+        if (!empty($record[0]['coupon_code'])) {
+            $GLOBALS['session']->set('abandon_coupon', $record[0]['coupon_code'], 'client');
         }
 
         // Redirect to checkout - if logged in, saved cart auto-loads; if not, login/guest form will show

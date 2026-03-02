@@ -543,6 +543,21 @@ $select_options['abandoned_cart_order_window'] = array(
     604800 => '7 Days',
 );
 
+// Cart recovery discount code - active, non-archived coupons (fixed or percentage)
+$select_options['abandoned_cart_coupon'] = array(0 => $lang['common']['none']);
+$active_coupons = $GLOBALS['db']->select('CubeCart_coupons', array('coupon_id', 'code', 'discount_percent', 'discount_price', 'expires'), "`status` = 1 AND (`cart_order_id` IS NULL OR `cart_order_id` = '') AND (`expires` = '0000-00-00' OR `expires` >= CURDATE()) AND (`discount_percent` > 0 OR `discount_price` > 0)", false, false, false, false);
+if ($active_coupons) {
+    foreach ($active_coupons as $coupon) {
+        $desc = $coupon['code'].' - ';
+        if ($coupon['discount_percent'] > 0) {
+            $desc .= $coupon['discount_percent'].'%';
+        } else {
+            $desc .= Tax::getInstance()->priceFormat($coupon['discount_price']);
+        }
+        $select_options['abandoned_cart_coupon'][$coupon['coupon_id']] = $desc;
+    }
+}
+
 $smarty_data['config'] = $GLOBALS['config']->get('config');
 $GLOBALS['smarty']->assign('FIXED_CONFIG', $glob);
 $GLOBALS['smarty']->assign('CONFIG', $smarty_data['config']);

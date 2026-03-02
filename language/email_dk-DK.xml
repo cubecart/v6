@@ -297,6 +297,7 @@ Hvis du har brug for yderligere hjælp, er du velkommen til at kontakte os.</p>]
 </tr>
 {/foreach}
 </table>
+{if !empty($DATA.coupon_code)}<div style="text-align:center;margin:20px 0;padding:15px;background-color:#fff8e1;border:2px dashed #f9a825;border-radius:6px"><p style="margin:0 0 5px 0;font-size:16px;font-weight:bold">Brug rabatkode:</p><p style="margin:0;font-size:22px;font-weight:bold;letter-spacing:2px;color:#e65100">{$DATA.coupon_code}</p><p style="margin:5px 0 0 0;font-size:13px;color:#666">{$DATA.coupon_description}</p></div>{/if}
 <p style="text-align:center;margin:20px 0"><a href="{$DATA.recovery_link}" style="background-color:#4CAF50;color:#fff;padding:12px 30px;text-decoration:none;border-radius:4px;font-weight:bold;display:inline-block">Gennemfør din ordre</a></p>
 <p style="font-size:12px;color:#999">Ønsker du ikke disse påmindelser? <a href="{$DATA.optout_link}">Afmeld kurv-påmindelser</a></p>]]></content>
   </email>

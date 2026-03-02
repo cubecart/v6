@@ -473,3 +473,6 @@ INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VA
 
 INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`, `array_serial`) VALUES ('config', 'abandoned_cart_notify_cooldown', '259200', '') ON DUPLICATE KEY UPDATE `name`=`name`; #EOQ
 INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`, `array_serial`) VALUES ('config', 'abandoned_cart_order_window', '259200', '') ON DUPLICATE KEY UPDATE `name`=`name`; #EOQ
+
+ALTER TABLE `CubeCart_cart_abandonment` ADD COLUMN `coupon_code` VARCHAR(25) DEFAULT NULL AFTER `token`; #EOQ
+INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`, `array_serial`) VALUES ('config', 'abandoned_cart_coupon', '0', '') ON DUPLICATE KEY UPDATE `name`=`name`; #EOQ

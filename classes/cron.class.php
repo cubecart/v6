@@ -127,6 +127,22 @@ class Cron
         $mailer = Mailer::getInstance();
         $store_name = $GLOBALS['config']->get('config', 'store_name');
 
+        // Look up configured discount coupon for abandoned cart emails
+        $coupon_code = '';
+        $coupon_description = '';
+        $coupon_id = (int)$GLOBALS['config']->get('config', 'abandoned_cart_coupon');
+        if ($coupon_id > 0) {
+            $coupon_row = $GLOBALS['db']->select('CubeCart_coupons', array('code', 'discount_percent', 'discount_price'), "`coupon_id` = ".$coupon_id." AND `status` = 1 AND `archived` = 0 AND (`expires` = '0000-00-00' OR `expires` >= CURDATE())", false, 1, false, false);
+            if ($coupon_row) {
+                $coupon_code = $coupon_row[0]['code'];
+                if ($coupon_row[0]['discount_percent'] > 0) {
+                    $coupon_description = $coupon_row[0]['discount_percent'].'% off your order';
+                } else {
+                    $coupon_description = Tax::getInstance()->priceFormat($coupon_row[0]['discount_price']).' off your order';
+                }
+            }
+        }
+
         foreach ($results as $row) {
             $contents = @unserialize($row['basket']);
             if (empty($contents) || !is_array($contents)) {
@@ -190,12 +206,16 @@ class Cron
             $token = bin2hex(random_bytes(32));
             $expires = date('Y-m-d H:i:s', time() + 604800); // 7 days
 
-            $GLOBALS['db']->insert('CubeCart_cart_abandonment', array(
+            $abandon_data = array(
                 'customer_id' => (int)$row['customer_id'],
                 'token' => $token,
                 'notified_at' => date('Y-m-d H:i:s'),
                 'expires_at' => $expires,
-            ));
+            );
+            if (!empty($coupon_code)) {
+                $abandon_data['coupon_code'] = $coupon_code;
+            }
+            $GLOBALS['db']->insert('CubeCart_cart_abandonment', $abandon_data);
 
             $recovery_link = $GLOBALS['storeURL'].'/index.php?_a=recover&token='.$token;
             $optout_link = $GLOBALS['storeURL'].'/index.php?_a=recover&action=optout&token='.$token;
@@ -207,6 +227,8 @@ class Cron
                 'item_count' => $item_count,
                 'recovery_link' => $recovery_link,
                 'optout_link' => $optout_link,
+                'coupon_code' => $coupon_code,
+                'coupon_description' => $coupon_description,
             );
 
             $GLOBALS['smarty']->assign('PRODUCTS', $products);

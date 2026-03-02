@@ -585,6 +585,10 @@
             {foreach from=$OPT_ABANDONED_CART_ORDER_WINDOW item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
             </select></span>
          </div>
+         <div><label for="abandoned_cart_coupon">{$LANG.settings.abandoned_cart_coupon}</label><span><select name="config[abandoned_cart_coupon]" id="abandoned_cart_coupon" class="textbox">
+            {foreach from=$OPT_ABANDONED_CART_COUPON item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
+            </select></span>
+         </div>
       </fieldset>
       <fieldset>
          <p>{$LANG.settings.abandoned_cart_info}</p>
