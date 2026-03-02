@@ -1281,6 +1281,10 @@
     <string name="macro_sender_name"><![CDATA[שם השולח.]]></string>
     <string name="macro_sender_first_name"><![CDATA[שם פרטי של השולח.]]></string>
     <string name="macro_sender_last_name"><![CDATA[שם משפחה של השולח.]]></string>
+    <string name="macro_new_ip"><![CDATA[The new IP address.]]></string>
+    <string name="macro_previous_ip"><![CDATA[The previous IP address.]]></string>
+    <string name="macro_new_browser"><![CDATA[The new browser/device.]]></string>
+    <string name="macro_login_time"><![CDATA[The login date and time.]]></string>
     <string name="macro_ship_tracking"><![CDATA[קוד מעקב משלוח.]]></string>
     <string name="macro_tax_amount"><![CDATA[סכום המס]]></string>
     <string name="macro_tax_name"><![CDATA[שם המס]]></string>
@@ -1351,6 +1355,8 @@
     <string name="title_macro_admin_order"><![CDATA[מנהל: הזמנה התקבלה]]></string>
     <string name="title_macro_admin_password"><![CDATA[מנהל: שחזור סיסמה]]></string>
     <string name="title_macro_admin_review"><![CDATA[מנהל: ביקורת נוספה]]></string>
+    <string name="title_macro_admin_two_factor_code"><![CDATA[Admin: קוד אימות דו-שלבי]]></string>
+    <string name="title_macro_admin_new_device_login"><![CDATA[Admin: התחברות ממכשיר חדש]]></string>
     <string name="title_macro_cart_certificate"><![CDATA[עגלה: כרטיס מתנה]]></string>
     <string name="title_macro_cart_digital"><![CDATA[עגלה: הורדת קובץ]]></string>
     <string name="title_macro_order_cancelled"><![CDATA[עגלה: הזמנה בוטלה]]></string>
@@ -2179,6 +2185,7 @@
     <string name="seo_ext"><![CDATA[סיומת URL ל-SEO]]></string>
     <string name="admin_only_skin_select"><![CDATA[כן (מנהלים מחוברים בלבד)]]></string>
     <string name="all_skin_select"><![CDATA[כן (כולם)]]></string>
+    <string name="admin_login_notify"><![CDATA[שלח אימייל למנהל בהתחברות מכתובת IP או מכשיר חדש]]></string>
     <string name="admin_order_status_notification"><![CDATA[סטטוס הזמנה להודעות דוא"ל למנהלים]]></string>
     <string name="analyze"><![CDATA[ניתוח]]></string>
     <string name="allowed_zones"><![CDATA[אזורים מותרים]]></string>

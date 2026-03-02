@@ -282,6 +282,17 @@ Si necesita m&aacute;s ayuda, por favor cont&aacute;ctenos.</p>]]></content>
     <subject><![CDATA[Su código de verificación de acceso al back-office]]></subject>
     <content type="html"><![CDATA[<p>Hola {$DATA.name},</p><p>Su código de verificación de acceso es:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Este código caducará en 10 minutos. Si no ha intentado iniciar sesión, póngase en contacto con el administrador de su tienda inmediatamente.</p>]]></content>
   </email>
+  <email name="admin.new_device_login">
+    <subject><![CDATA[Nuevo inicio de sesión en su cuenta de back-office]]></subject>
+    <content type="html"><![CDATA[<p>Hola {$DATA.name},</p>
+<p>Se ha accedido a su cuenta de back-office desde {if $DATA.ip_changed && $DATA.browser_changed}una nueva ubicación y dispositivo{elseif $DATA.ip_changed}una nueva ubicación{else}un nuevo dispositivo{/if}.</p>
+<table cellpadding="5" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Hora:</td><td>{$DATA.login_time}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Dirección IP:</td><td>{$DATA.new_ip}{if $DATA.ip_changed} (anteriormente {$DATA.previous_ip}){/if}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Navegador:</td><td>{$DATA.new_browser|truncate:120}</td></tr>
+</table>
+<p>Si fue usted, no es necesaria ninguna acción. Si no reconoce esta actividad, cambie su contraseña inmediatamente y revise la configuración de seguridad de su cuenta.</p>]]></content>
+  </email>
   <email name="cart.abandoned">
     <subject><![CDATA[Ha dejado artículos en su cesta en {$DATA.store_name}]]></subject>
     <content type="html"><![CDATA[<p>Hola {$DATA.first_name|capitalize},</p>

@@ -282,6 +282,17 @@
     <subject><![CDATA[Ο κωδικός επαλήθευσης σύνδεσής σας]]></subject>
     <content type="html"><![CDATA[<p>Γεια σας {$DATA.name},</p><p>Ο κωδικός επαλήθευσης σύνδεσής σας είναι:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Αυτός ο κωδικός λήγει σε 10 λεπτά. Εάν δεν προσπαθήσατε να συνδεθείτε, επικοινωνήστε αμέσως με τον διαχειριστή του καταστήματος.</p>]]></content>
   </email>
+  <email name="admin.new_device_login">
+    <subject><![CDATA[Νέα σύνδεση στον λογαριασμό back-office σας]]></subject>
+    <content type="html"><![CDATA[<p>Γεια σας {$DATA.name},</p>
+<p>Ο λογαριασμός back-office σας μόλις προσπελάστηκε από {if $DATA.ip_changed && $DATA.browser_changed}νέα τοποθεσία και συσκευή{elseif $DATA.ip_changed}νέα τοποθεσία{else}νέα συσκευή{/if}.</p>
+<table cellpadding="5" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Ώρα:</td><td>{$DATA.login_time}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Διεύθυνση IP:</td><td>{$DATA.new_ip}{if $DATA.ip_changed} (προηγούμενη {$DATA.previous_ip}){/if}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Πρόγραμμα περιήγησης:</td><td>{$DATA.new_browser|truncate:120}</td></tr>
+</table>
+<p>Αν ήσασταν εσείς, δεν απαιτείται καμία ενέργεια. Αν δεν αναγνωρίζετε αυτή τη δραστηριότητα, αλλάξτε αμέσως τον κωδικό πρόσβασής σας και ελέγξτε τις ρυθμίσεις ασφαλείας του λογαριασμού σας.</p>]]></content>
+  </email>
   <email name="cart.abandoned">
     <subject><![CDATA[Αφήσατε προϊόντα στο καλάθι σας στο {$DATA.store_name}]]></subject>
     <content type="html"><![CDATA[<p>Γεια σας {$DATA.first_name|capitalize},</p>

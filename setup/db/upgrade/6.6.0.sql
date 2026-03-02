@@ -81,6 +81,9 @@ ALTER TABLE `CubeCart_admin_users` ADD COLUMN `twofa_otp_expires` INT UNSIGNED N
 
 -- Two-factor authentication: email templates imported from language XML files by 6.6.0.php
 
+-- Admin login notification: enable by default
+INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`) VALUES ('config', 'admin_login_notify', '1') ON DUPLICATE KEY UPDATE `name`=`name`; #EOQ
+
 -- Remove customer title (Mr/Mrs/Dr) field from all tables
 ALTER TABLE `CubeCart_addressbook` DROP COLUMN `title`; #EOQ
 ALTER TABLE `CubeCart_customer` DROP COLUMN `title`; #EOQ

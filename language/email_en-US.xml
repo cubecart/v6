@@ -282,6 +282,17 @@ If you need any further help, please contact us.</p>]]></content>
     <subject><![CDATA[Your back-office login verification code]]></subject>
     <content type="html"><![CDATA[<p>Hello {$DATA.name},</p><p>Your login verification code is:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>This code will expire in 10 minutes. If you did not attempt to log in, please contact your store administrator immediately.</p>]]></content>
   </email>
+  <email name="admin.new_device_login">
+    <subject><![CDATA[New login to your back-office account]]></subject>
+    <content type="html"><![CDATA[<p>Hello {$DATA.name},</p>
+<p>Your back-office account was just accessed from a new {if $DATA.ip_changed && $DATA.browser_changed}location and device{elseif $DATA.ip_changed}location{else}device{/if}.</p>
+<table cellpadding="5" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Time:</td><td>{$DATA.login_time}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">IP Address:</td><td>{$DATA.new_ip}{if $DATA.ip_changed} (previously {$DATA.previous_ip}){/if}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Browser:</td><td>{$DATA.new_browser|truncate:120}</td></tr>
+</table>
+<p>If this was you, no action is needed. If you do not recognise this activity, please change your password immediately and review your account security settings.</p>]]></content>
+  </email>
   <email name="cart.abandoned">
     <subject><![CDATA[You left items in your cart at {$DATA.store_name}]]></subject>
     <content type="html"><![CDATA[<p>Hi {$DATA.first_name|capitalize},</p>

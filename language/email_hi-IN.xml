@@ -190,6 +190,17 @@
     <subject><![CDATA[आपका व्यवस्थापन लॉगिन सत्यापन कोड]]></subject>
     <content type="html"><![CDATA[<p>नमस्ते {$DATA.name},</p><p>आपका लॉगिन सत्यापन कोड है:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>यह कोड 10 मिनट में समाप्त हो जाएगा। यदि आपने लॉगिन करने का प्रयास नहीं किया है, तो कृपया तुरंत अपने स्टोर व्यवस्थापक से संपर्क करें।</p>]]></content>
   </email>
+  <email name="admin.new_device_login">
+    <subject><![CDATA[आपके बैक-ऑफिस खाते में नया लॉगिन]]></subject>
+    <content type="html"><![CDATA[<p>नमस्ते {$DATA.name},</p>
+<p>आपके बैक-ऑफिस खाते को अभी {if $DATA.ip_changed && $DATA.browser_changed}एक नए स्थान और डिवाइस{elseif $DATA.ip_changed}एक नए स्थान{else}एक नए डिवाइस{/if} से एक्सेस किया गया।</p>
+<table cellpadding="5" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">समय:</td><td>{$DATA.login_time}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">IP पता:</td><td>{$DATA.new_ip}{if $DATA.ip_changed} (पहले {$DATA.previous_ip}){/if}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">ब्राउज़र:</td><td>{$DATA.new_browser|truncate:120}</td></tr>
+</table>
+<p>यदि यह आप थे, तो कोई कार्रवाई आवश्यक नहीं है। यदि आप इस गतिविधि को नहीं पहचानते हैं, तो कृपया तुरंत अपना पासवर्ड बदलें और अपने खाते की सुरक्षा सेटिंग्स की समीक्षा करें।</p>]]></content>
+  </email>
   <email name="cart.abandoned">
     <subject><![CDATA[आपने {$DATA.store_name} पर अपने कार्ट में आइटम छोड़ दिए हैं]]></subject>
     <content type="html"><![CDATA[<p>नमस्ते {$DATA.first_name|capitalize},</p>

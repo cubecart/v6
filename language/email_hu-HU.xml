@@ -281,6 +281,17 @@ Ha további segítségre van szüksége, kérjük, vegye fel velünk a kapcsolat
     <subject><![CDATA[Bejelentkezési ellenőrző kód]]></subject>
     <content type="html"><![CDATA[<p>Kedves {$DATA.name}!</p><p>Az Ön bejelentkezési ellenőrző kódja:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>A kód 10 perc múlva lejár. Ha nem Ön próbált bejelentkezni, azonnal vegye fel a kapcsolatot az áruház adminisztrátorával.</p>]]></content>
   </email>
+  <email name="admin.new_device_login">
+    <subject><![CDATA[Új bejelentkezés a back-office fiókjába]]></subject>
+    <content type="html"><![CDATA[<p>Kedves {$DATA.name},</p>
+<p>A back-office fiókjába éppen bejelentkeztek {if $DATA.ip_changed && $DATA.browser_changed}egy új helyről és eszközről{elseif $DATA.ip_changed}egy új helyről{else}egy új eszközről{/if}.</p>
+<table cellpadding="5" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Időpont:</td><td>{$DATA.login_time}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">IP-cím:</td><td>{$DATA.new_ip}{if $DATA.ip_changed} (korábban {$DATA.previous_ip}){/if}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Böngésző:</td><td>{$DATA.new_browser|truncate:120}</td></tr>
+</table>
+<p>Ha Ön volt az, nincs szükség semmilyen műveletre. Ha nem ismeri fel ezt a tevékenységet, azonnal változtassa meg jelszavát és ellenőrizze fiókja biztonsági beállításait.</p>]]></content>
+  </email>
   <email name="cart.abandoned">
     <subject><![CDATA[Termékeket hagyott a kosarában a(z) {$DATA.store_name} oldalon]]></subject>
     <content type="html"><![CDATA[<p>Kedves {$DATA.first_name|capitalize}!</p>

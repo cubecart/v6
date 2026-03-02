@@ -282,6 +282,17 @@ Wenn Sie weitere Hilfe benötigen, kontaktieren Sie uns bitte.</p>]]></content>
     <subject><![CDATA[Ihr Anmeldecode für das Back-Office]]></subject>
     <content type="html"><![CDATA[<p>Hallo {$DATA.name},</p><p>Ihr Anmeldeverifizierungscode lautet:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Dieser Code läuft in 10 Minuten ab. Falls Sie keinen Anmeldeversuch unternommen haben, wenden Sie sich bitte sofort an Ihren Shop-Administrator.</p>]]></content>
   </email>
+  <email name="admin.new_device_login">
+    <subject><![CDATA[Neue Anmeldung bei Ihrem Back-Office-Konto]]></subject>
+    <content type="html"><![CDATA[<p>Hallo {$DATA.name},</p>
+<p>Auf Ihr Back-Office-Konto wurde gerade von {if $DATA.ip_changed && $DATA.browser_changed}einem neuen Standort und Gerät{elseif $DATA.ip_changed}einem neuen Standort{else}einem neuen Gerät{/if} zugegriffen.</p>
+<table cellpadding="5" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Zeit:</td><td>{$DATA.login_time}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">IP-Adresse:</td><td>{$DATA.new_ip}{if $DATA.ip_changed} (zuvor {$DATA.previous_ip}){/if}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Browser:</td><td>{$DATA.new_browser|truncate:120}</td></tr>
+</table>
+<p>Wenn Sie das waren, ist keine Aktion erforderlich. Wenn Sie diese Aktivität nicht erkennen, ändern Sie bitte sofort Ihr Passwort und überprüfen Sie Ihre Kontosicherheitseinstellungen.</p>]]></content>
+  </email>
   <email name="cart.abandoned">
     <subject><![CDATA[Sie haben Artikel in Ihrem Warenkorb bei {$DATA.store_name} vergessen]]></subject>
     <content type="html"><![CDATA[<p>Hallo {$DATA.first_name|capitalize},</p>

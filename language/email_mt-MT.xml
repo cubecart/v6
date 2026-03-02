@@ -282,6 +282,17 @@ Jekk għandek bżonn aktar għajnuna, jekk jogħġbok ikkuntattjana.</p>]]></con
     <subject><![CDATA[Il-kodiċi ta' verifika tal-login tal-back-office tiegħek]]></subject>
     <content type="html"><![CDATA[<p>Bonġu {$DATA.name},</p><p>Il-kodiċi ta' verifika tal-login tiegħek huwa:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Dan il-kodiċi jiskadi fi 10 minuti. Jekk ma pprovajtx tidħol, jekk jogħġbok ikkuntattja immedjatament lill-amministratur tal-ħanut tiegħek.</p>]]></content>
   </email>
+  <email name="admin.new_device_login">
+    <subject><![CDATA[Dħul ġdid fil-kont back-office tiegħek]]></subject>
+    <content type="html"><![CDATA[<p>Bonġu {$DATA.name},</p>
+<p>Il-kont back-office tiegħek għadu kif ġie aċċessat minn {if $DATA.ip_changed && $DATA.browser_changed}post ġdid u apparat ġdid{elseif $DATA.ip_changed}post ġdid{else}apparat ġdid{/if}.</p>
+<table cellpadding="5" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Ħin:</td><td>{$DATA.login_time}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Indirizz IP:</td><td>{$DATA.new_ip}{if $DATA.ip_changed} (qabel {$DATA.previous_ip}){/if}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Browser:</td><td>{$DATA.new_browser|truncate:120}</td></tr>
+</table>
+<p>Jekk kont int, m'hemm bżonn ta' ebda azzjoni. Jekk ma tagħrafx din l-attività, jekk jogħġbok ibdel il-password tiegħek immedjatament u irrevedi s-settings tas-sigurtà tal-kont tiegħek.</p>]]></content>
+  </email>
   <email name="cart.abandoned">
     <subject><![CDATA[Ħallejt oġġetti fil-basket tiegħek fuq {$DATA.store_name}]]></subject>
     <content type="html"><![CDATA[<p>Bonġu {$DATA.first_name|capitalize},</p>

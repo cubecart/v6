@@ -190,6 +190,17 @@
     <subject><![CDATA[您的后台登录验证码]]></subject>
     <content type="html"><![CDATA[<p>您好 {$DATA.name}，</p><p>您的登录验证码为：</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>此验证码将在10分钟后失效。如果您未尝试登录，请立即联系商店管理员。</p>]]></content>
   </email>
+  <email name="admin.new_device_login">
+    <subject><![CDATA[后台管理账户的新登录]]></subject>
+    <content type="html"><![CDATA[<p>{$DATA.name} 您好，</p>
+<p>您的后台管理账户刚刚从{if $DATA.ip_changed && $DATA.browser_changed}新的位置和设备{elseif $DATA.ip_changed}新的位置{else}新的设备{/if}被访问。</p>
+<table cellpadding="5" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">时间:</td><td>{$DATA.login_time}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">IP地址:</td><td>{$DATA.new_ip}{if $DATA.ip_changed} (之前 {$DATA.previous_ip}){/if}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">浏览器:</td><td>{$DATA.new_browser|truncate:120}</td></tr>
+</table>
+<p>如果这是您本人操作，则无需任何操作。如果您不认识此活动，请立即更改密码并检查您的账户安全设置。</p>]]></content>
+  </email>
   <email name="cart.abandoned">
     <subject><![CDATA[您在 {$DATA.store_name} 的购物车中还有未结算的商品]]></subject>
     <content type="html"><![CDATA[<p>您好 {$DATA.first_name|capitalize}，</p>

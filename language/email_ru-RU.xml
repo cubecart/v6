@@ -282,6 +282,17 @@
     <subject><![CDATA[Код подтверждения для входа в панель управления]]></subject>
     <content type="html"><![CDATA[<p>Здравствуйте, {$DATA.name}!</p><p>Ваш код подтверждения для входа:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Срок действия кода истекает через 10 минут. Если вы не пытались войти в систему, немедленно свяжитесь с администратором магазина.</p>]]></content>
   </email>
+  <email name="admin.new_device_login">
+    <subject><![CDATA[Новый вход в ваш аккаунт back-office]]></subject>
+    <content type="html"><![CDATA[<p>Здравствуйте {$DATA.name},</p>
+<p>В ваш аккаунт back-office только что был выполнен вход с {if $DATA.ip_changed && $DATA.browser_changed}нового местоположения и устройства{elseif $DATA.ip_changed}нового местоположения{else}нового устройства{/if}.</p>
+<table cellpadding="5" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Время:</td><td>{$DATA.login_time}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">IP-адрес:</td><td>{$DATA.new_ip}{if $DATA.ip_changed} (ранее {$DATA.previous_ip}){/if}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Браузер:</td><td>{$DATA.new_browser|truncate:120}</td></tr>
+</table>
+<p>Если это были вы, никаких действий не требуется. Если вы не узнаёте эту активность, немедленно смените пароль и проверьте настройки безопасности вашего аккаунта.</p>]]></content>
+  </email>
   <email name="cart.abandoned">
     <subject><![CDATA[Вы оставили товары в корзине {$DATA.store_name}]]></subject>
     <content type="html"><![CDATA[<p>Здравствуйте, {$DATA.first_name|capitalize}!</p>

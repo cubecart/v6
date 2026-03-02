@@ -190,6 +190,17 @@ Kui vajate täiendavat abi, võtke meiega ühendust.</p>]]></content>
     <subject><![CDATA[Teie administraatori sisselogimise kinnituskood]]></subject>
     <content type="html"><![CDATA[<p>Lugupeetud {$DATA.name},</p><p>Teie sisselogimise kinnituskood on:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Kood aegub 10 minuti pärast. Kui te ei üritanud sisse logida, võtke kohe ühendust poe administraatoriga.</p>]]></content>
   </email>
+  <email name="admin.new_device_login">
+    <subject><![CDATA[Uus sisselogimine teie back-office kontole]]></subject>
+    <content type="html"><![CDATA[<p>Tere {$DATA.name},</p>
+<p>Teie back-office kontole logiti just sisse {if $DATA.ip_changed && $DATA.browser_changed}uuest asukohast ja seadmest{elseif $DATA.ip_changed}uuest asukohast{else}uuest seadmest{/if}.</p>
+<table cellpadding="5" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Aeg:</td><td>{$DATA.login_time}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">IP-aadress:</td><td>{$DATA.new_ip}{if $DATA.ip_changed} (varem {$DATA.previous_ip}){/if}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Brauser:</td><td>{$DATA.new_browser|truncate:120}</td></tr>
+</table>
+<p>Kui see olite teie, pole midagi vaja teha. Kui te ei tunne seda tegevust ära, muutke kohe oma parooli ja kontrollige oma konto turvaseadeid.</p>]]></content>
+  </email>
   <email name="cart.abandoned">
     <subject><![CDATA[Jätsite tooted ostukorvi poes {$DATA.store_name}]]></subject>
     <content type="html"><![CDATA[<p>Lugupeetud {$DATA.first_name|capitalize},</p>

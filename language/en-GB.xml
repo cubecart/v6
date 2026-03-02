@@ -14,5 +14,16 @@
   <group name="address">
    <string name="state"><![CDATA[County]]></string>
   </group>
+  <group name="email">
+   <string name="title_macro_admin_two_factor_code"><![CDATA[Admin: Two-Factor Code]]></string>
+   <string name="title_macro_admin_new_device_login"><![CDATA[Admin: New Device Login]]></string>
+   <string name="macro_new_ip"><![CDATA[The new IP address.]]></string>
+   <string name="macro_previous_ip"><![CDATA[The previous IP address.]]></string>
+   <string name="macro_new_browser"><![CDATA[The new browser/device.]]></string>
+   <string name="macro_login_time"><![CDATA[The login date and time.]]></string>
+  </group>
+  <group name="settings">
+   <string name="admin_login_notify"><![CDATA[Email admin on login from new IP or device]]></string>
+  </group>
  </translation>
 </language>

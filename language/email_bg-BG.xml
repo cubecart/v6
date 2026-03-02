@@ -281,6 +281,17 @@
     <subject><![CDATA[Вашият код за вход в администрацията]]></subject>
     <content type="html"><![CDATA[<p>Здравейте, {$DATA.name},</p><p>Вашият код за верификация при вход е:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Кодът изтича след 10 минути. Ако не сте се опитвали да влезете, моля свържете се незабавно с администратора на магазина.</p>]]></content>
   </email>
+  <email name="admin.new_device_login">
+    <subject><![CDATA[Нов вход в администраторския ви акаунт]]></subject>
+    <content type="html"><![CDATA[<p>Здравейте {$DATA.name},</p>
+<p>Вашият администраторски акаунт беше достъпен от {if $DATA.ip_changed && $DATA.browser_changed}ново местоположение и устройство{elseif $DATA.ip_changed}ново местоположение{else}ново устройство{/if}.</p>
+<table cellpadding="5" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Време:</td><td>{$DATA.login_time}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">IP адрес:</td><td>{$DATA.new_ip}{if $DATA.ip_changed} (преди {$DATA.previous_ip}){/if}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Браузър:</td><td>{$DATA.new_browser|truncate:120}</td></tr>
+</table>
+<p>Ако това сте били вие, не е необходимо действие. Ако не разпознавате тази активност, моля сменете паролата си незабавно и прегледайте настройките за сигурност на акаунта си.</p>]]></content>
+  </email>
   <email name="cart.abandoned">
     <subject><![CDATA[Оставихте артикули в кошницата си в {$DATA.store_name}]]></subject>
     <content type="html"><![CDATA[<p>Здравейте, {$DATA.first_name|capitalize},</p>

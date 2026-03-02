@@ -110,6 +110,16 @@ $email_types = array(
             '{$DATA.code}' => $lang['email']['macro_twofa_code'],
         ),
     ),
+    'admin.new_device_login' => array(
+        'description' => $lang['email']['title_macro_admin_new_device_login'],
+        'macros' => array(
+            '{$DATA.name}' => $lang['email']['macro_admin_name'],
+            '{$DATA.new_ip}' => $lang['email']['macro_new_ip'],
+            '{$DATA.previous_ip}' => $lang['email']['macro_previous_ip'],
+            '{$DATA.new_browser}' => $lang['email']['macro_new_browser'],
+            '{$DATA.login_time}' => $lang['email']['macro_login_time'],
+        ),
+    ),
     'cart.digital_download' => array(
         'description' => $lang['email']['title_macro_cart_digital'],
         'macros' => array(

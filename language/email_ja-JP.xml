@@ -190,6 +190,17 @@
     <subject><![CDATA[管理画面ログイン認証コード]]></subject>
     <content type="html"><![CDATA[<p>{$DATA.name} 様</p><p>ログイン認証コードは以下の通りです。</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>このコードは10分後に失効します。ログインを試みていない場合は、直ちにストア管理者にご連絡ください。</p>]]></content>
   </email>
+  <email name="admin.new_device_login">
+    <subject><![CDATA[バックオフィスアカウントへの新しいログイン]]></subject>
+    <content type="html"><![CDATA[<p>{$DATA.name} 様</p>
+<p>バックオフィスアカウントに{if $DATA.ip_changed && $DATA.browser_changed}新しい場所とデバイス{elseif $DATA.ip_changed}新しい場所{else}新しいデバイス{/if}からアクセスがありました。</p>
+<table cellpadding="5" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">時刻:</td><td>{$DATA.login_time}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">IPアドレス:</td><td>{$DATA.new_ip}{if $DATA.ip_changed} (以前: {$DATA.previous_ip}){/if}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">ブラウザ:</td><td>{$DATA.new_browser|truncate:120}</td></tr>
+</table>
+<p>ご自身のログインであれば、対応は不要です。この操作に心当たりがない場合は、直ちにパスワードを変更し、アカウントのセキュリティ設定を確認してください。</p>]]></content>
+  </email>
   <email name="cart.abandoned">
     <subject><![CDATA[{$DATA.store_name} のカートに商品が残っています]]></subject>
     <content type="html"><![CDATA[<p>{$DATA.first_name|capitalize} 様</p>

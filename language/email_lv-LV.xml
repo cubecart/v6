@@ -190,6 +190,17 @@ Ja nepieciešama papildu palīdzība, lūdzu, sazinieties ar mums.</p>]]></conte
     <subject><![CDATA[Jūsu pieteikšanās verifikācijas kods]]></subject>
     <content type="html"><![CDATA[<p>Sveiki, {$DATA.name},</p><p>Jūsu pieteikšanās verifikācijas kods ir:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Kods derīgs 10 minūtes. Ja nemēģinājāt pieteikties, nekavējoties sazinieties ar veikala administratoru.</p>]]></content>
   </email>
+  <email name="admin.new_device_login">
+    <subject><![CDATA[Jauna pieteikšanās jūsu back-office kontā]]></subject>
+    <content type="html"><![CDATA[<p>Sveiki {$DATA.name},</p>
+<p>Jūsu back-office kontam tikko tika piekļūts no {if $DATA.ip_changed && $DATA.browser_changed}jaunas atrašanās vietas un ierīces{elseif $DATA.ip_changed}jaunas atrašanās vietas{else}jaunas ierīces{/if}.</p>
+<table cellpadding="5" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Laiks:</td><td>{$DATA.login_time}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">IP adrese:</td><td>{$DATA.new_ip}{if $DATA.ip_changed} (iepriekš {$DATA.previous_ip}){/if}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Pārlūks:</td><td>{$DATA.new_browser|truncate:120}</td></tr>
+</table>
+<p>Ja tas bijāt jūs, nekāda darbība nav nepieciešama. Ja neatpazīstat šo darbību, lūdzu, nekavējoties nomainiet paroli un pārskatiet konta drošības iestatījumus.</p>]]></content>
+  </email>
   <email name="cart.abandoned">
     <subject><![CDATA[Jūs atstājāt preces savā grozā veikalā {$DATA.store_name}]]></subject>
     <content type="html"><![CDATA[<p>Sveiki, {$DATA.first_name|capitalize},</p>

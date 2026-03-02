@@ -26,6 +26,10 @@
    <string name="macro_postcode_d"><![CDATA[Shipping address zip code]]></string>
    <string name="macro_postcode"><![CDATA[Billing address zip code]]></string>
    <string name="title_macro_order_cancelled"><![CDATA[Cart: Order Canceled]]></string>
+   <string name="macro_new_ip"><![CDATA[The new IP address.]]></string>
+   <string name="macro_previous_ip"><![CDATA[The previous IP address.]]></string>
+   <string name="macro_new_browser"><![CDATA[The new browser/device.]]></string>
+   <string name="macro_login_time"><![CDATA[The login date and time.]]></string>
   </group>
   <group name="gateway">
    <string name="cheque_payable_to"><![CDATA[Please make checks payable to]]></string>

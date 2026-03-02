@@ -114,8 +114,11 @@ if (is_dir($predis_path)) {
 }
 
 // Import two-factor authentication email template for all active languages
+// Import admin new-device login notification email template
 if (is_array($languages)) {
     foreach ($languages as $code => $lang) {
         $language->importEmail('email_'.$code.'.xml', CC_LANGUAGE_DIR, 'admin.two_factor_code');
+        $language->importEmail('email_'.$code.'.xml', CC_LANGUAGE_DIR, 'admin.new_device_login');
+        $language->importEmail('email_'.$code.'.xml', CC_LANGUAGE_DIR, 'cart.abandoned');
     }
 }

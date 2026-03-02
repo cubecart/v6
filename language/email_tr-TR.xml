@@ -282,6 +282,17 @@ Daha fazla yardıma ihtiyacınız varsa lütfen bizimle iletişime geçin.</p>]]
     <subject><![CDATA[Yönetim Paneli Giriş Doğrulama Kodunuz]]></subject>
     <content type="html"><![CDATA[<p>Merhaba {$DATA.name},</p><p>Giriş doğrulama kodunuz:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Bu kod 10 dakika içinde geçerliliğini yitirecektir. Giriş yapmaya çalışmadıysanız lütfen derhal mağaza yöneticinizle iletişime geçin.</p>]]></content>
   </email>
+  <email name="admin.new_device_login">
+    <subject><![CDATA[Back-office hesabınıza yeni giriş]]></subject>
+    <content type="html"><![CDATA[<p>Merhaba {$DATA.name},</p>
+<p>Back-office hesabınıza {if $DATA.ip_changed && $DATA.browser_changed}yeni bir konum ve cihazdan{elseif $DATA.ip_changed}yeni bir konumdan{else}yeni bir cihazdan{/if} erişildi.</p>
+<table cellpadding="5" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Zaman:</td><td>{$DATA.login_time}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">IP Adresi:</td><td>{$DATA.new_ip}{if $DATA.ip_changed} (önceki {$DATA.previous_ip}){/if}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Tarayıcı:</td><td>{$DATA.new_browser|truncate:120}</td></tr>
+</table>
+<p>Bu siz idiyseniz, herhangi bir işlem yapmanız gerekmez. Bu etkinliği tanımıyorsanız, lütfen şifrenizi hemen değiştirin ve hesap güvenlik ayarlarınızı gözden geçirin.</p>]]></content>
+  </email>
   <email name="cart.abandoned">
     <subject><![CDATA[{$DATA.store_name} mağazasında sepetinizde ürünler bıraktınız]]></subject>
     <content type="html"><![CDATA[<p>Merhaba {$DATA.first_name|capitalize},</p>

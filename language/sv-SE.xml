@@ -1284,6 +1284,10 @@ Detta meddelande skickas från butikens huvudsakliga e-postadress men det går a
    <string name="macro_sender_name"><![CDATA[Avsändarens namn.]]></string>
    <string name="macro_sender_first_name"><![CDATA[Avsändarens förnamn.]]></string>
    <string name="macro_sender_last_name"><![CDATA[Avsändarens efternamn.]]></string>
+   <string name="macro_new_ip"><![CDATA[The new IP address.]]></string>
+   <string name="macro_previous_ip"><![CDATA[The previous IP address.]]></string>
+   <string name="macro_new_browser"><![CDATA[The new browser/device.]]></string>
+   <string name="macro_login_time"><![CDATA[The login date and time.]]></string>
    <string name="macro_ship_tracking"><![CDATA[Spårningskod.]]></string>
    <string name="macro_tax_amount"><![CDATA[Momsbelopp]]></string>
    <string name="macro_tax_name"><![CDATA[Momsnamn]]></string>
@@ -1354,6 +1358,8 @@ Detta meddelande skickas från butikens huvudsakliga e-postadress men det går a
    <string name="title_macro_admin_order"><![CDATA[Admin: Order mottagen]]></string>
    <string name="title_macro_admin_password"><![CDATA[Admin: Återställ lösenord]]></string>
    <string name="title_macro_admin_review"><![CDATA[Admin: Recension tillagd]]></string>
+   <string name="title_macro_admin_two_factor_code"><![CDATA[Admin: Tvåfaktorskod]]></string>
+   <string name="title_macro_admin_new_device_login"><![CDATA[Admin: Inloggning från ny enhet]]></string>
    <string name="title_macro_cart_certificate"><![CDATA[Varukorg: Presentkort]]></string>
    <string name="title_macro_cart_digital"><![CDATA[Varukorg: Filnedladdning]]></string>
    <string name="title_macro_order_cancelled"><![CDATA[Varukorg: Order avbruten]]></string>
@@ -2186,6 +2192,7 @@ VARNING: Alla filer i den kommer att raderas permanent]]></string>
    <string name="seo_ext"><![CDATA[SEO URL-filändelse]]></string>
    <string name="admin_only_skin_select"><![CDATA[Ja (enbart inloggade administratörer)]]></string>
    <string name="all_skin_select"><![CDATA[Ja (alla)]]></string>
+   <string name="admin_login_notify"><![CDATA[E-posta admin vid inloggning från ny IP eller enhet]]></string>
    <string name="admin_order_status_notification"><![CDATA[Orderstatus för adminmeddelandenotiser via e-post]]></string>
    <string name="analyze"><![CDATA[Analysera]]></string>
    <string name="allowed_zones"><![CDATA[Tillåtna zoner]]></string>

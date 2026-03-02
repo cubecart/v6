@@ -1285,6 +1285,10 @@
     <string name="macro_sender_name" introduced="5.0.0"><![CDATA[Το όνομα του αποστολέα.]]></string>
     <string name="macro_sender_first_name" introduced="5.0.0"><![CDATA[Το μικρό όνομα του αποστολέα.]]></string>
     <string name="macro_sender_last_name" introduced="5.0.0"><![CDATA[Το επώνυμο του αποστολέα.]]></string>
+    <string name="macro_new_ip"><![CDATA[The new IP address.]]></string>
+    <string name="macro_previous_ip"><![CDATA[The previous IP address.]]></string>
+    <string name="macro_new_browser"><![CDATA[The new browser/device.]]></string>
+    <string name="macro_login_time"><![CDATA[The login date and time.]]></string>
     <string name="macro_ship_tracking" introduced="5.2.6"><![CDATA[Κωδικός παρακολούθησης αποστολής.]]></string>
     <string name="macro_tax_amount" introduced="5.0.0"><![CDATA[Ποσό Φόρου]]></string>
     <string name="macro_tax_name" introduced="5.0.0"><![CDATA[Όνομα Φόρου]]></string>
@@ -1355,6 +1359,8 @@
     <string name="title_macro_admin_order" introduced="5.0.0"><![CDATA[Διαχειριστής: Παραλαβή Παραγγελίας]]></string>
     <string name="title_macro_admin_password" introduced="5.0.0"><![CDATA[Διαχειριστής: Ανάκτηση Κωδικού Πρόσβασης]]></string>
     <string name="title_macro_admin_review" introduced="5.0.0"><![CDATA[Διαχειριστής: Προσθήκη Κριτικής]]></string>
+    <string name="title_macro_admin_two_factor_code"><![CDATA[Admin: Κωδικός δύο παραγόντων]]></string>
+    <string name="title_macro_admin_new_device_login"><![CDATA[Admin: Σύνδεση από νέα συσκευή]]></string>
     <string name="title_macro_cart_certificate" introduced="5.0.0"><![CDATA[Καλάθι: Δωροκάρτα]]></string>
     <string name="title_macro_cart_digital" introduced="5.0.0"><![CDATA[Καλάθι: Λήψη Αρχείου]]></string>
     <string name="title_macro_order_cancelled" introduced="5.0.0"><![CDATA[Καλάθι: Ακύρωση Παραγγελίας]]></string>
@@ -2184,6 +2190,7 @@
     <string name="seo_ext" introduced="6.4.0"><![CDATA[Επέκταση URL SEO]]></string>
     <string name="admin_only_skin_select" introduced="6.0.0"><![CDATA[Ναι (Μόνο για συνδεδεμένους διαχειριστές)]]></string>
     <string name="all_skin_select" introduced="6.0.0"><![CDATA[Ναι (Όλοι)]]></string>
+    <string name="admin_login_notify"><![CDATA[Email στον διαχειριστή κατά τη σύνδεση από νέα IP ή συσκευή]]></string>
     <string name="admin_order_status_notification" introduced="5.0.0"><![CDATA[Κατάσταση παραγγελίας για ειδοποιήσεις email διαχειριστή]]></string>
     <string name="analyze" introduced="5.0.0"><![CDATA[Ανάλυση]]></string>
     <string name="allowed_zones" introduced="5.0.0"><![CDATA[Επιτρεπόμενες Ζώνες]]></string>

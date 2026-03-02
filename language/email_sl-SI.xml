@@ -190,6 +190,17 @@ Za obnovitev gesla kliknite na spodnjo povezavo ali jo kopirajte in prilepite v 
     <subject><![CDATA[Vaša potrditvena koda za prijavo v skrbništvo]]></subject>
     <content type="html"><![CDATA[<p>Spoštovani {$DATA.name},</p><p>Vaša potrditvena koda za prijavo je:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Koda poteče čez 10 minut. Če se niste poskušali prijaviti, nemudoma kontaktirajte skrbnika trgovine.</p>]]></content>
   </email>
+  <email name="admin.new_device_login">
+    <subject><![CDATA[Nova prijava v vaš back-office račun]]></subject>
+    <content type="html"><![CDATA[<p>Pozdravljeni {$DATA.name},</p>
+<p>V vaš back-office račun je bilo pravkar dostopano iz {if $DATA.ip_changed && $DATA.browser_changed}nove lokacije in naprave{elseif $DATA.ip_changed}nove lokacije{else}nove naprave{/if}.</p>
+<table cellpadding="5" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Čas:</td><td>{$DATA.login_time}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">IP naslov:</td><td>{$DATA.new_ip}{if $DATA.ip_changed} (prej {$DATA.previous_ip}){/if}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Brskalnik:</td><td>{$DATA.new_browser|truncate:120}</td></tr>
+</table>
+<p>Če ste bili to vi, ni potrebno nobeno dejanje. Če te dejavnosti ne prepoznate, takoj spremenite geslo in preverite varnostne nastavitve računa.</p>]]></content>
+  </email>
   <email name="cart.abandoned">
     <subject><![CDATA[V košarici {$DATA.store_name} ste pustili izdelke]]></subject>
     <content type="html"><![CDATA[<p>Spoštovani {$DATA.first_name|capitalize},</p>

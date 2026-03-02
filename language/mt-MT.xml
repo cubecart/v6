@@ -1281,6 +1281,10 @@ This email is sent from the store's master email address but it is possible to r
     <string name="macro_sender_name"><![CDATA[Le nom de l'expéditeur.]]></string>
     <string name="macro_sender_first_name"><![CDATA[Le prénom de l'expéditeur.]]></string>
     <string name="macro_sender_last_name"><![CDATA[Le nom de famille de l'expéditeur.]]></string>
+    <string name="macro_new_ip"><![CDATA[The new IP address.]]></string>
+    <string name="macro_previous_ip"><![CDATA[The previous IP address.]]></string>
+    <string name="macro_new_browser"><![CDATA[The new browser/device.]]></string>
+    <string name="macro_login_time"><![CDATA[The login date and time.]]></string>
     <string name="macro_ship_tracking"><![CDATA[Code de suivi de livraison.]]></string>
     <string name="macro_tax_amount"><![CDATA[Montant de la taxe]]></string>
     <string name="macro_tax_name"><![CDATA[Nom de la taxe]]></string>
@@ -1351,6 +1355,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_macro_admin_order"><![CDATA[Admin : commande reçue]]></string>
     <string name="title_macro_admin_password"><![CDATA[Admin : récupération du mot de passe]]></string>
     <string name="title_macro_admin_review"><![CDATA[Admin : avis ajouté]]></string>
+    <string name="title_macro_admin_two_factor_code"><![CDATA[Admin: Kodiċi ta' żewġ fatturi]]></string>
+    <string name="title_macro_admin_new_device_login"><![CDATA[Admin: Dħul minn apparat ġdid]]></string>
     <string name="title_macro_cart_certificate"><![CDATA[Panier : carte cadeau]]></string>
     <string name="title_macro_cart_digital"><![CDATA[Panier : téléchargement de fichier]]></string>
     <string name="title_macro_order_cancelled"><![CDATA[Panier : commande annulée]]></string>
@@ -2177,6 +2183,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="seo_ext"><![CDATA[Extension d'URL SEO]]></string>
     <string name="admin_only_skin_select"><![CDATA[Oui (administrateurs connectés uniquement)]]></string>
     <string name="all_skin_select"><![CDATA[Oui (tout le monde)]]></string>
+    <string name="admin_login_notify"><![CDATA[Ibgħat email lill-amministratur meta jidħol minn IP jew apparat ġdid]]></string>
     <string name="admin_order_status_notification"><![CDATA[Statut de commande pour les notifications e-mail admin]]></string>
     <string name="analyze"><![CDATA[Analyser]]></string>
     <string name="allowed_zones"><![CDATA[Zones autorisées]]></string>

@@ -281,6 +281,17 @@ Ako trebate dodatnu pomoć, molimo kontaktirajte nas.</p>]]></content>
     <subject><![CDATA[Vaš verifikacijski kod za prijavu]]></subject>
     <content type="html"><![CDATA[<p>Poštovani/a {$DATA.name},</p><p>Vaš verifikacijski kod za prijavu je:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Kod istječe za 10 minuta. Ako se niste pokušali prijaviti, odmah kontaktirajte administratora trgovine.</p>]]></content>
   </email>
+  <email name="admin.new_device_login">
+    <subject><![CDATA[Nova prijava na vaš back-office račun]]></subject>
+    <content type="html"><![CDATA[<p>Pozdrav {$DATA.name},</p>
+<p>Vašem back-office računu upravo je pristupljeno s {if $DATA.ip_changed && $DATA.browser_changed}nove lokacije i uređaja{elseif $DATA.ip_changed}nove lokacije{else}novog uređaja{/if}.</p>
+<table cellpadding="5" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Vrijeme:</td><td>{$DATA.login_time}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">IP adresa:</td><td>{$DATA.new_ip}{if $DATA.ip_changed} (prethodno {$DATA.previous_ip}){/if}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Preglednik:</td><td>{$DATA.new_browser|truncate:120}</td></tr>
+</table>
+<p>Ako ste to bili vi, nije potrebna nikakva radnja. Ako ne prepoznajete ovu aktivnost, odmah promijenite lozinku i pregledajte sigurnosne postavke računa.</p>]]></content>
+  </email>
   <email name="cart.abandoned">
     <subject><![CDATA[Ostavili ste artikle u košarici na {$DATA.store_name}]]></subject>
     <content type="html"><![CDATA[<p>Poštovani/a {$DATA.first_name|capitalize},</p>

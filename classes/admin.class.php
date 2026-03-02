@@ -347,7 +347,7 @@ class Admin
                 $GLOBALS['gui']->setError($GLOBALS['language']->account['error_login']);
                 return false;
             }
-            $result = $GLOBALS['db']->select('CubeCart_admin_users', array('admin_id', 'customer_id', 'logins', 'new_password', 'name', 'email', 'language', 'twofa_enabled', 'twofa_method', 'twofa_secret'), array('username' => $username, 'password' => $hash_password, 'status' => '1'));
+            $result = $GLOBALS['db']->select('CubeCart_admin_users', array('admin_id', 'customer_id', 'logins', 'new_password', 'name', 'email', 'language', 'twofa_enabled', 'twofa_method', 'twofa_secret', 'ip_address', 'browser'), array('username' => $username, 'password' => $hash_password, 'status' => '1'));
             $GLOBALS['session']->blocker($username, 0, (bool)$result, Session::BLOCKER_BACKEND, $GLOBALS['config']->get('config', 'bfattempts'), $GLOBALS['config']->get('config', 'bftime'));
             if ($result) {
                 if (!$GLOBALS['session']->blocked()) {
@@ -370,6 +370,7 @@ class Admin
                             ));
                     }
                     $GLOBALS['db']->update('CubeCart_admin_users', $update, array('admin_id' => (int)$result[0]['admin_id']));
+                    $this->_sendNewDeviceNotification($result[0]);
                     if (!empty($result[0]['twofa_enabled'])) {
                         // 2FA required – store pending state and redirect to challenge page (exits)
                         $this->_initiate2FA($result[0]);
@@ -766,6 +767,66 @@ class Admin
             $GLOBALS['smarty']->assign('DATA', $data);
             $mailer->sendEmail($admin['email'], $content);
         }
+    }
+
+    /**
+     * Send notification email if admin is logging in from a new IP or device
+     *
+     * @param array $admin  Admin record (must include ip_address, browser, name, email, language)
+     */
+    private function _sendNewDeviceNotification($admin)
+    {
+        if ($GLOBALS['config']->get('config', 'admin_login_notify') === '0') {
+            return;
+        }
+
+        $prev_ip      = isset($admin['ip_address']) ? trim($admin['ip_address']) : '';
+        $prev_browser = isset($admin['browser']) ? trim($admin['browser']) : '';
+
+        // Skip first-ever login — nothing to compare against
+        if (empty($prev_ip) && empty($prev_browser)) {
+            return;
+        }
+
+        $current_ip      = get_ip_address();
+        $current_browser = htmlspecialchars($_SERVER['HTTP_USER_AGENT']);
+
+        $ip_changed      = (!empty($prev_ip) && $prev_ip !== $current_ip);
+        $browser_changed = (!empty($prev_browser)
+            && $this->_normalizeBrowser($prev_browser) !== $this->_normalizeBrowser($current_browser));
+
+        if (!$ip_changed && !$browser_changed) {
+            return;
+        }
+
+        $mailer = new Mailer();
+        $data   = array(
+            'name'             => isset($admin['name']) ? $admin['name'] : '',
+            'new_ip'           => $current_ip,
+            'previous_ip'      => $prev_ip,
+            'new_browser'      => htmlspecialchars_decode($current_browser),
+            'previous_browser' => htmlspecialchars_decode($prev_browser),
+            'login_time'       => date('Y-m-d H:i:s T'),
+            'ip_changed'       => $ip_changed,
+            'browser_changed'  => $browser_changed,
+        );
+        $content = $mailer->loadContent('admin.new_device_login', $admin['language'], $data);
+        if ($content) {
+            $GLOBALS['smarty']->assign('DATA', $data);
+            $mailer->sendEmail($admin['email'], $content);
+        }
+    }
+
+    /**
+     * Normalize a user agent string by stripping version numbers
+     * so that browser auto-updates don't trigger false positives
+     *
+     * @param string $ua
+     * @return string
+     */
+    private function _normalizeBrowser($ua)
+    {
+        return preg_replace('/\/[\d]+[\d.]*/', '/', (string)$ua);
     }
 
     /**

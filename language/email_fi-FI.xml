@@ -282,6 +282,17 @@ Jos tarvitset lisää apua, ota meihin yhteyttä.</p>]]></content>
     <subject><![CDATA[Back-office-kirjautumisesi vahvistuskoodi]]></subject>
     <content type="html"><![CDATA[<p>Hei {$DATA.name},</p><p>Kirjautumisvahvistuskoodisi on:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Tämä koodi vanhenee 10 minuutin kuluttua. Jos et yrittänyt kirjautua sisään, ota välittömästi yhteyttä kauppasi ylläpitäjään.</p>]]></content>
   </email>
+  <email name="admin.new_device_login">
+    <subject><![CDATA[Uusi kirjautuminen back-office-tilillesi]]></subject>
+    <content type="html"><![CDATA[<p>Hei {$DATA.name},</p>
+<p>Back-office-tilillesi kirjauduttiin juuri {if $DATA.ip_changed && $DATA.browser_changed}uudesta sijainnista ja laitteesta{elseif $DATA.ip_changed}uudesta sijainnista{else}uudesta laitteesta{/if}.</p>
+<table cellpadding="5" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Aika:</td><td>{$DATA.login_time}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">IP-osoite:</td><td>{$DATA.new_ip}{if $DATA.ip_changed} (aiemmin {$DATA.previous_ip}){/if}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Selain:</td><td>{$DATA.new_browser|truncate:120}</td></tr>
+</table>
+<p>Jos tämä olit sinä, mitään toimenpiteitä ei tarvita. Jos et tunnista tätä toimintaa, vaihda salasanasi välittömästi ja tarkista tilisi turva-asetukset.</p>]]></content>
+  </email>
   <email name="cart.abandoned">
     <subject><![CDATA[Jätit tuotteita ostoskoriisi kaupassa {$DATA.store_name}]]></subject>
     <content type="html"><![CDATA[<p>Hei {$DATA.first_name|capitalize},</p>

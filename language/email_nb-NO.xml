@@ -282,6 +282,17 @@ Hvis du trenger ytterligere hjelp, vennligst kontakt oss.</p>]]></content>
     <subject><![CDATA[Din påloggingsverifiseringskode for back-office]]></subject>
     <content type="html"><![CDATA[<p>Hei {$DATA.name},</p><p>Din påloggingsverifiseringskode er:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Denne koden utløper om 10 minutter. Hvis du ikke forsøkte å logge inn, ta kontakt med butikkens administrator umiddelbart.</p>]]></content>
   </email>
+  <email name="admin.new_device_login">
+    <subject><![CDATA[Ny innlogging til din back-office-konto]]></subject>
+    <content type="html"><![CDATA[<p>Hei {$DATA.name},</p>
+<p>Din back-office-konto ble nettopp åpnet fra {if $DATA.ip_changed && $DATA.browser_changed}en ny plassering og enhet{elseif $DATA.ip_changed}en ny plassering{else}en ny enhet{/if}.</p>
+<table cellpadding="5" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Tid:</td><td>{$DATA.login_time}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">IP-adresse:</td><td>{$DATA.new_ip}{if $DATA.ip_changed} (tidligere {$DATA.previous_ip}){/if}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Nettleser:</td><td>{$DATA.new_browser|truncate:120}</td></tr>
+</table>
+<p>Hvis det var deg, trenger du ikke gjøre noe. Hvis du ikke gjenkjenner denne aktiviteten, vennligst endre passordet ditt umiddelbart og gjennomgå kontoens sikkerhetsinnstillinger.</p>]]></content>
+  </email>
   <email name="cart.abandoned">
     <subject><![CDATA[Du la igjen varer i handlekurven hos {$DATA.store_name}]]></subject>
     <content type="html"><![CDATA[<p>Hei {$DATA.first_name|capitalize},</p>

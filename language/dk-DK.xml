@@ -1286,6 +1286,10 @@ Denne e-mail er sendt fra butikkens hoved-e-mailadresse, men det er muligt at sv
     <string name="macro_sender_name" introduced="5.0.0"><![CDATA[Afsenders navn.]]></string>
     <string name="macro_sender_first_name" introduced="5.0.0"><![CDATA[Afsenders fornavn.]]></string>
     <string name="macro_sender_last_name" introduced="5.0.0"><![CDATA[Afsenders efternavn.]]></string>
+    <string name="macro_new_ip"><![CDATA[The new IP address.]]></string>
+    <string name="macro_previous_ip"><![CDATA[The previous IP address.]]></string>
+    <string name="macro_new_browser"><![CDATA[The new browser/device.]]></string>
+    <string name="macro_login_time"><![CDATA[The login date and time.]]></string>
     <string name="macro_ship_tracking" introduced="5.2.6"><![CDATA[Sporingskode for forsendelse.]]></string>
     <string name="macro_tax_amount" introduced="5.0.0"><![CDATA[Momsbeløb]]></string>
     <string name="macro_tax_name" introduced="5.0.0"><![CDATA[Momsnavn]]></string>
@@ -1356,6 +1360,8 @@ Denne e-mail er sendt fra butikkens hoved-e-mailadresse, men det er muligt at sv
     <string name="title_macro_admin_order" introduced="5.0.0"><![CDATA[Admin: Ordre modtaget]]></string>
     <string name="title_macro_admin_password" introduced="5.0.0"><![CDATA[Admin: Gendan adgangskode]]></string>
     <string name="title_macro_admin_review" introduced="5.0.0"><![CDATA[Admin: Anmeldelse tilføjet]]></string>
+    <string name="title_macro_admin_two_factor_code"><![CDATA[Admin: Tofaktorkode]]></string>
+    <string name="title_macro_admin_new_device_login"><![CDATA[Admin: Login fra ny enhed]]></string>
     <string name="title_macro_cart_certificate" introduced="5.0.0"><![CDATA[Kurv: Gavekort]]></string>
     <string name="title_macro_cart_digital" introduced="5.0.0"><![CDATA[Kurv: Fildownload]]></string>
     <string name="title_macro_order_cancelled" introduced="5.0.0"><![CDATA[Kurv: Ordre annulleret]]></string>
@@ -2185,6 +2191,7 @@ Denne e-mail er sendt fra butikkens hoved-e-mailadresse, men det er muligt at sv
     <string name="seo_ext" introduced="6.4.0"><![CDATA[SEO URL-endelse]]></string>
     <string name="admin_only_skin_select" introduced="6.0.0"><![CDATA[Ja (kun indloggede administratorer)]]></string>
     <string name="all_skin_select" introduced="6.0.0"><![CDATA[Ja (alle)]]></string>
+    <string name="admin_login_notify"><![CDATA[Send e-mail til admin ved login fra ny IP eller enhed]]></string>
     <string name="admin_order_status_notification" introduced="5.0.0"><![CDATA[Ordrestatus for admin-e-mailnotifikationer]]></string>
     <string name="analyze" introduced="5.0.0"><![CDATA[Analyser]]></string>
     <string name="allowed_zones" introduced="5.0.0"><![CDATA[Tilladte zoner]]></string>

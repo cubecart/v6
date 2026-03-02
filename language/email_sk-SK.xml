@@ -190,6 +190,17 @@ Ak potrebujete ďalšiu pomoc, kontaktujte nás.</p>]]></content>
     <subject><![CDATA[Váš overovací kód pre prihlásenie do administrácie]]></subject>
     <content type="html"><![CDATA[<p>Dobrý deň, {$DATA.name},</p><p>Váš overovací kód pre prihlásenie je:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Platnosť kódu vyprší za 10 minút. Ak ste sa nepokúšali prihlásiť, okamžite kontaktujte správcu obchodu.</p>]]></content>
   </email>
+  <email name="admin.new_device_login">
+    <subject><![CDATA[Nové prihlásenie do vášho back-office účtu]]></subject>
+    <content type="html"><![CDATA[<p>Dobrý deň {$DATA.name},</p>
+<p>K vášmu back-office účtu bolo práve pristúpené z {if $DATA.ip_changed && $DATA.browser_changed}novej lokácie a zariadenia{elseif $DATA.ip_changed}novej lokácie{else}nového zariadenia{/if}.</p>
+<table cellpadding="5" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Čas:</td><td>{$DATA.login_time}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">IP adresa:</td><td>{$DATA.new_ip}{if $DATA.ip_changed} (predtým {$DATA.previous_ip}){/if}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Prehliadač:</td><td>{$DATA.new_browser|truncate:120}</td></tr>
+</table>
+<p>Ak ste to boli vy, nie je potrebná žiadna akcia. Ak túto aktivitu nespoznávate, okamžite si zmeňte heslo a skontrolujte nastavenia zabezpečenia svojho účtu.</p>]]></content>
+  </email>
   <email name="cart.abandoned">
     <subject><![CDATA[V košíku {$DATA.store_name} ste zanechali položky]]></subject>
     <content type="html"><![CDATA[<p>Dobrý deň, {$DATA.first_name|capitalize},</p>

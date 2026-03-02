@@ -190,6 +190,17 @@ Jei reikia papildomos pagalbos, susisiekite su mumis.</p>]]></content>
     <subject><![CDATA[Jūsų prisijungimo patvirtinimo kodas]]></subject>
     <content type="html"><![CDATA[<p>Sveiki, {$DATA.name},</p><p>Jūsų prisijungimo patvirtinimo kodas yra:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>Kodas nustos galioti po 10 minučių. Jei nebandėte prisijungti, nedelsdami susisiekite su parduotuvės administratoriumi.</p>]]></content>
   </email>
+  <email name="admin.new_device_login">
+    <subject><![CDATA[Naujas prisijungimas prie jūsų back-office paskyros]]></subject>
+    <content type="html"><![CDATA[<p>Sveiki {$DATA.name},</p>
+<p>Prie jūsų back-office paskyros ką tik buvo prisijungta iš {if $DATA.ip_changed && $DATA.browser_changed}naujos vietos ir įrenginio{elseif $DATA.ip_changed}naujos vietos{else}naujo įrenginio{/if}.</p>
+<table cellpadding="5" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Laikas:</td><td>{$DATA.login_time}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">IP adresas:</td><td>{$DATA.new_ip}{if $DATA.ip_changed} (anksčiau {$DATA.previous_ip}){/if}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Naršyklė:</td><td>{$DATA.new_browser|truncate:120}</td></tr>
+</table>
+<p>Jei tai buvote jūs, jokių veiksmų nereikia. Jei neatpažįstate šios veiklos, nedelsdami pakeiskite slaptažodį ir patikrinkite paskyros saugumo nustatymus.</p>]]></content>
+  </email>
   <email name="cart.abandoned">
     <subject><![CDATA[Jūs palikote prekes savo krepšelyje parduotuvėje {$DATA.store_name}]]></subject>
     <content type="html"><![CDATA[<p>Sveiki, {$DATA.first_name|capitalize},</p>

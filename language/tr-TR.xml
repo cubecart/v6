@@ -1286,6 +1286,10 @@ Bu e-posta mağazanın ana e-posta adresinden gönderilmiştir ancak e-posta yaz
     <string name="macro_sender_name" introduced="5.0.0"><![CDATA[Gönderenin adı.]]></string>
     <string name="macro_sender_first_name" introduced="5.0.0"><![CDATA[Gönderenin adı.]]></string>
     <string name="macro_sender_last_name" introduced="5.0.0"><![CDATA[Gönderenin soyadı.]]></string>
+    <string name="macro_new_ip"><![CDATA[The new IP address.]]></string>
+    <string name="macro_previous_ip"><![CDATA[The previous IP address.]]></string>
+    <string name="macro_new_browser"><![CDATA[The new browser/device.]]></string>
+    <string name="macro_login_time"><![CDATA[The login date and time.]]></string>
     <string name="macro_ship_tracking" introduced="5.2.6"><![CDATA[Kargo takip kodu.]]></string>
     <string name="macro_tax_amount" introduced="5.0.0"><![CDATA[Vergi Tutarı]]></string>
     <string name="macro_tax_name" introduced="5.0.0"><![CDATA[Vergi Adı]]></string>
@@ -1356,6 +1360,8 @@ Bu e-posta mağazanın ana e-posta adresinden gönderilmiştir ancak e-posta yaz
     <string name="title_macro_admin_order" introduced="5.0.0"><![CDATA[Yönetici: Sipariş Alındı]]></string>
     <string name="title_macro_admin_password" introduced="5.0.0"><![CDATA[Yönetici: Şifre Kurtarma]]></string>
     <string name="title_macro_admin_review" introduced="5.0.0"><![CDATA[Yönetici: Değerlendirme Eklendi]]></string>
+    <string name="title_macro_admin_two_factor_code"><![CDATA[Admin: İki faktörlü kod]]></string>
+    <string name="title_macro_admin_new_device_login"><![CDATA[Admin: Yeni cihazdan giriş]]></string>
     <string name="title_macro_cart_certificate" introduced="5.0.0"><![CDATA[Sepet: Hediye Kartı]]></string>
     <string name="title_macro_cart_digital" introduced="5.0.0"><![CDATA[Sepet: Dosya İndirme]]></string>
     <string name="title_macro_order_cancelled" introduced="5.0.0"><![CDATA[Sepet: Sipariş İptal Edildi]]></string>
@@ -2184,6 +2190,7 @@ Bu e-posta mağazanın ana e-posta adresinden gönderilmiştir ancak e-posta yaz
     <string name="seo_ext" introduced="6.4.0"><![CDATA[SEO URL Uzantısı]]></string>
     <string name="admin_only_skin_select" introduced="6.0.0"><![CDATA[Evet (Yalnızca giriş yapmış yöneticiler)]]></string>
     <string name="all_skin_select" introduced="6.0.0"><![CDATA[Evet (Herkes)]]></string>
+    <string name="admin_login_notify"><![CDATA[Yeni IP veya cihazdan giriş yapıldığında yöneticiye e-posta gönder]]></string>
     <string name="admin_order_status_notification" introduced="5.0.0"><![CDATA[Yönetici e-posta bildirimleri için sipariş durumu]]></string>
     <string name="analyze" introduced="5.0.0"><![CDATA[Analiz Et]]></string>
     <string name="allowed_zones" introduced="5.0.0"><![CDATA[İzin Verilen Bölgeler]]></string>

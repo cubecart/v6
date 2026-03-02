@@ -282,6 +282,17 @@
     <subject><![CDATA[קוד האימות שלך לכניסה לממשק הניהול]]></subject>
     <content type="html"><![CDATA[<p>שלום {$DATA.name},</p><p>קוד האימות שלך לכניסה הוא:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px;text-align:center">{$DATA.code}</p><p>קוד זה יפוג בעוד 10 דקות. אם לא ניסית להתחבר, אנא צור/י קשר עם מנהל החנות שלך מיד.</p>]]></content>
   </email>
+  <email name="admin.new_device_login">
+    <subject><![CDATA[התחברות חדשה לחשבון הניהול שלך]]></subject>
+    <content type="html"><![CDATA[<p>שלום {$DATA.name},</p>
+<p>בוצעה גישה לחשבון הניהול שלך מ{if $DATA.ip_changed && $DATA.browser_changed}מיקום ומכשיר חדשים{elseif $DATA.ip_changed}מיקום חדש{else}מכשיר חדש{/if}.</p>
+<table cellpadding="5" cellspacing="0" border="0" style="border-collapse:collapse">
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">זמן:</td><td>{$DATA.login_time}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">כתובת IP:</td><td>{$DATA.new_ip}{if $DATA.ip_changed} (קודם {$DATA.previous_ip}){/if}</td></tr>
+<tr><td style="padding:4px 12px 4px 0;font-weight:bold">דפדפן:</td><td>{$DATA.new_browser|truncate:120}</td></tr>
+</table>
+<p>אם זה היית אתה, לא נדרשת פעולה. אם אינך מזהה פעילות זו, שנה את הסיסמה שלך מיד ובדוק את הגדרות האבטחה של החשבון שלך.</p>]]></content>
+  </email>
   <email name="cart.abandoned">
     <subject><![CDATA[השארת פריטים בסל הקניות שלך ב-{$DATA.store_name}]]></subject>
     <content type="html"><![CDATA[<p>שלום {$DATA.first_name|capitalize},</p>
