@@ -2109,6 +2109,19 @@ ul.char_filter li.selected {}
     font-family: FontAwesome;
     content: " \f24d";
 }
+.copy_text.copied:before {
+    content: " \f00c";
+    color: #5cb85c;
+}
+.copy_text.copied {
+    opacity: 100%;
+}
+.copy_feedback {
+    font-size: 11px;
+    margin-left: 4px;
+    color: #5cb85c;
+    font-weight: bold;
+}
 .list > div:nth-child(odd),
 .reorder-list > div:nth-child(odd),
 .list tbody > tr:nth-child(odd),

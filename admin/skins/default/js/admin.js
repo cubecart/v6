@@ -47,13 +47,16 @@ $(document).ready(function() {
         $('#spec_array').val(base64Data);
     });
     $('.copy_text').on("click", function() {
-        navigator.clipboard.writeText($(this).attr('data-value'));
-        var text = $(this).attr('data-copied');
-        $(this).attr('title', text);
-    });
-    $('.copy_text').on("mouseenter mouseout", function() {
-        var text = $(this).attr('data-copy');
-        $(this).attr('title', text);
+        var $el = $(this);
+        navigator.clipboard.writeText($el.attr('data-value'));
+        $el.addClass('copied');
+        $el.find('.copy_feedback').remove();
+        $el.append('<span class="copy_feedback">' + $el.attr('data-copied') + '</span>');
+        clearTimeout($el.data('copyTimer'));
+        $el.data('copyTimer', setTimeout(function() {
+            $el.removeClass('copied');
+            $el.find('.copy_feedback').remove();
+        }, 1500));
     });
 
     const debounce = (fn, ms = 120) => {
