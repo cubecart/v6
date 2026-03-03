@@ -1,7 +1,7 @@
 <script type="application/ld+json">
 {literal}
 {
-  "@context": "http://schema.org",
+  "@context": "https://schema.org",
   "@type": "Organization",
   "legalName": "{/literal}{$CONFIG.store_name}{literal}",
   "url": "{/literal}{$STORE_URL}{literal}",
@@ -30,7 +30,7 @@
 <script type="application/ld+json">
 {literal}
 {
-  "@context": "http://schema.org",
+  "@context": "https://schema.org",
   "@type": "WebSite",
   "name": "{/literal}{$CONFIG.store_name}{literal}",
   "url": "{/literal}{$STORE_URL}{literal}",

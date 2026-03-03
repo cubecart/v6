@@ -490,7 +490,7 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
         $displayOrderId = !empty($data['custom_oid']) ? $data['custom_oid'] : $data['cart_order_id'];
 
         $schema = array(
-            '@context' => 'http://schema.org',
+            '@context' => 'https://schema.org',
             '@type' => 'Order',
             'orderNumber' => $displayOrderId,
             'orderStatus' => $orderStatus,
@@ -556,7 +556,7 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
         }
 
         return array(
-            '@context' => 'http://schema.org',
+            '@context' => 'https://schema.org',
             '@type' => 'EmailMessage',
             'potentialAction' => array(
                 '@type' => 'ViewAction',
@@ -579,7 +579,7 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
         $currency = $GLOBALS['config']->get('config', 'default_currency');
 
         $schema = array(
-            '@context' => 'http://schema.org',
+            '@context' => 'https://schema.org',
             '@type' => 'EmailMessage',
             'description' => 'You left items in your cart at ' . $storeName,
             'potentialAction' => array(

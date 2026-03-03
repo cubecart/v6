@@ -11,9 +11,9 @@
  *}
 <div id="element-breadcrumbs">
    {if $CRUMBS}
-   <ul class="breadcrumbs" itemscope itemtype="http://schema.org/BreadcrumbList">
+   <ul class="breadcrumbs" itemscope itemtype="https://schema.org/BreadcrumbList">
       <li itemprop="itemListElement" itemscope
-      itemtype="http://schema.org/ListItem">
+      itemtype="https://schema.org/ListItem">
          <a itemprop="item" href="{$STORE_URL}">
             <span class="show-for-small-only">
                <svg class="icon"><use xlink:href="#icon-home"></use></svg>
@@ -25,7 +25,7 @@
       {foreach from=$CRUMBS item=crumb name=crumbposition}
       {assign var="position" value=$smarty.foreach.crumbposition.iteration+1}
       <li itemprop="itemListElement" itemscope
-      itemtype="http://schema.org/ListItem">
+      itemtype="https://schema.org/ListItem">
          <a itemprop="item" href="{$crumb.url}">
             <span itemprop="name">{$crumb.title}</span>
          </a>
