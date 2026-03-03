@@ -252,6 +252,7 @@ if (empty($strings['gui_message']['errors_detected'])) {
 $GLOBALS['smarty']->assign('LANG', $strings);
 $GLOBALS['smarty']->assign('VERSION', CC_VERSION);
 $GLOBALS['smarty']->assign('ROOT', CC_ROOT_DIR);
+$GLOBALS['smarty']->assign('SESSION_LANGUAGE', $_SESSION['language']);
 
 // Detect upgrade (skip language selection stage)
 $is_upgrade = false;

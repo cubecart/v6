@@ -131,15 +131,7 @@
 	<h3>{$LANG.setup.title_store_settings}</h3>
 	<fieldset>
 	  <div><label for="form-store_name">{$LANG.settings.store_name}</label><span><input type="text" name="config[store_name]" id="form-store_name"{if isset($FORM.config.store_name)} value="{$FORM.config.store_name}"{/if} class="textbox required" /></span></div>
-	  <div>
-		<label for="form-language" class="help" title="{$LANG.setup.help_defaultlang}">{$LANG.settings.default_language}</label>
-		<span>
-		  <select name="config[default_language]" id="form-language" class="textbox required">
-			<option value="">{$LANG.form.please_select}</option>
-			{foreach from=$LANGUAGES item=language}<option value="{$language.code}"{$language.selected}>{$language.title}</option>{/foreach}
-		  </select>
-		</span>
-	  </div>
+	  <input type="hidden" name="config[default_language]" value="{$SESSION_LANGUAGE}" />
 	  <div>
 		<label for="form-currency" class="help" title="{$LANG.setup.help_defaultcurrency}">{$LANG.settings.default_currency}</label>
 		<span>

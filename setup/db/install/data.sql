@@ -1,7 +1,3 @@
-INSERT INTO `CubeCart_tax_class` (`id`, `tax_name`) VALUES (1, 'Standard Rate'), (2, 'Reduced Rate'), (3, 'Zero Rate'); #EOQ
-INSERT INTO `CubeCart_tax_details` (`id`, `name`, `display`, `status`) VALUES (1, 'VAT', 'VAT', 0); #EOQ
-INSERT INTO `CubeCart_tax_rates` (`type_id`, `details_id`, `country_id`, `tax_percent`, `goods`, `shipping`, `active`) VALUES (1, 1, 826, '20', 1, 1, 0), (2, 1, 826, '5.0', 1, 1, 0), (3, 1, 826, '0.0', 1, 1, 0); #EOQ
-
 INSERT INTO `CubeCart_currency` (`currency_id`, `name`, `code`, `iso`, `symbol_left`, `symbol_right`, `value`, `decimal_places`, `updated`, `active`, `symbol_decimal`, `symbol_thousand`) VALUES(1, 'United States dollar', 'USD', 840, '$', '', 1.16180, 2, 1421884800, 1, '.', ','); #EOQ
 INSERT INTO `CubeCart_currency` (`currency_id`, `name`, `code`, `iso`, `symbol_left`, `symbol_right`, `value`, `decimal_places`, `updated`, `active`, `symbol_decimal`, `symbol_thousand`) VALUES(2, 'Japanese yen', 'JPY', 392, '¥', '', 136.70000, 0, 1421884800, 1, '.', ','); #EOQ
 INSERT INTO `CubeCart_currency` (`currency_id`, `name`, `code`, `iso`, `symbol_left`, `symbol_right`, `value`, `decimal_places`, `updated`, `active`, `symbol_decimal`, `symbol_thousand`) VALUES(3, 'Bulgarian lev', 'BGN', 975, '', 'BGN', 0.00000, 2, 0, 0, '.', ','); #EOQ

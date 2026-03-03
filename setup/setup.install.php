@@ -208,13 +208,6 @@ if (!isset($_SESSION['setup']['permissions'])) {
             $list_currency[] = array('code' => $code, 'selected' => $selected, 'name' => (!empty($name))?$name:$code);
         }
         $GLOBALS['smarty']->assign('CURRENCIES', $list_currency);
-
-
-        foreach ($languages as $option) {
-            $selected = (isset($_POST['config']['default_language']) && $_POST['config']['default_language'] == $option['code']) ? ' selected="selected"' : '';
-            $list_langs[] = array('title' => $option['title'], 'selected' => $selected, 'code' => $option['code']);
-        }
-        $GLOBALS['smarty']->assign('LANGUAGES', $list_langs);
     } else {
         ## Stage 5: Actual installation
         ## Write config file
