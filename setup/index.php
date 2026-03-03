@@ -256,7 +256,7 @@ $GLOBALS['smarty']->assign('SESSION_LANGUAGE', $_SESSION['language']);
 
 // Detect upgrade (skip language selection stage)
 $is_upgrade = false;
-if (file_exists($global_file)) {
+if (file_exists($global_file) && filesize($global_file) > 0) {
     include $global_file;
     if (isset($glob['installed']) && $glob['installed']) {
         $is_upgrade = true;
@@ -468,7 +468,7 @@ if (!$is_upgrade && !isset($_SESSION['language_selected'])) {
         // Select Install/Upgrade
         $GLOBALS['smarty']->assign('LANG_INSTALL_CUBECART_TITLE', sprintf($strings['setup']['install_cubecart_title'], CC_VERSION));
         // Check if upgrading is possible
-        if (file_exists($global_file)) {
+        if (file_exists($global_file) && filesize($global_file) > 0) {
             include $global_file;
             $installed = (isset($glob['installed'])) ? (bool) $glob['installed'] : false;
             unset($glob);
@@ -493,6 +493,10 @@ if (!$is_upgrade && !isset($_SESSION['language_selected'])) {
     } else {
         // Install/Upgrade Complete
         // Upgrade Main Configuration
+        clearstatcache(true, $global_file);
+        if (function_exists('opcache_invalidate')) {
+            opcache_invalidate($global_file, true);
+        }
         include $global_file;
         $GLOBALS['db'] = Database::getInstance($glob);
 

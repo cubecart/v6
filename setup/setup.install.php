@@ -215,6 +215,10 @@ if (!isset($_SESSION['setup']['permissions'])) {
         ksort($_SESSION['setup']['global']);
         if (writeGlobalConfig($_SESSION['setup']['global'], $global_file)) {
             ## Install database
+            clearstatcache(true, $global_file);
+            if (function_exists('opcache_invalidate')) {
+                opcache_invalidate($global_file, true);
+            }
             include $global_file;
             $GLOBALS['config'] = $glob;
             $GLOBALS['db'] = Database::getInstance($GLOBALS['config']);
