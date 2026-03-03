@@ -43,6 +43,35 @@
 {/literal}
 </script>
 
+{if $CRUMBS}
+<script type="application/ld+json">
+{literal}
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "{/literal}{$LANG.common.home}{literal}",
+      "item": "{/literal}{$STORE_URL}{literal}"
+    }
+{/literal}
+{foreach from=$CRUMBS item=crumb name=crumbposition}
+    {literal},{
+      "@type": "ListItem",
+      "position": {/literal}{$smarty.foreach.crumbposition.iteration+1}{literal},
+      "name": "{/literal}{$crumb.title}{literal}",
+      "item": "{/literal}{$crumb.url}{literal}"
+    }{/literal}
+{/foreach}
+{literal}
+  ]
+}
+{/literal}
+</script>
+{/if}
+
 {if $SECTION_NAME == 'product'}
   {assign var=product_description value=$PRODUCT.description|strip_tags|html_entity_decode|truncate:4900:"..."}
   <script type="application/ld+json">
