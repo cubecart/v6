@@ -2643,7 +2643,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="search_phrases" introduced="6.4.3"><![CDATA[Search this language for a phrase that contains&hellip;]]></string>
     <string name="language_currency" introduced="6.1.2"><![CDATA[Default Currency Code (<a href="https://en.wikipedia.org/wiki/ISO_4217#Active_codes" target="_blank">ISO-4217</a>)]]></string>
     <string name="language_direction" introduced="6.1.21"><![CDATA[Reading Direction]]></string>
-    <string name="error_no_languages" introduced="6.0.0"><![CDATA[No languages have been found. Please visit the <a href="?_g=marketplace" target="_blank">marketplace</a> to get hold of the ones you want.]]></string>
     <string name="error_language_create" introduced="5.0.0"><![CDATA[Failed to create language.]]></string>
     <string name="error_language_delete" introduced="5.0.0"><![CDATA[Failed to delete language.]]></string>
     <string name="error_language_import_failed" introduced="5.0.0"><![CDATA[Failed to import language.]]></string>

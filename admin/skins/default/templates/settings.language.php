@@ -72,8 +72,8 @@
    {/if}
    {elseif !$DISPLAY_EDITOR && !$DISPLAY_EXPORT}
    <div id="lang_list" class="tab_content">
-   <h3>{$LANG.translate.title_languages}</h3>
-   <p>{$LANG.translate.error_no_languages}</p>
+   <h3>{$LANG.translate.title_installed_languages}</h3>
+   <p>{$LANG.common.none}</p>
    </div>
    {/if}
    {if $DISPLAY_EDITOR}
