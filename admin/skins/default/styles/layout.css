@@ -760,7 +760,8 @@ img {
     color: #fff
 }
 #header .btn-signout i {
-    margin-right: 3px
+    margin-right: 3px;
+    color: #fff
 }
 .store_open {
     color: var(--success)
