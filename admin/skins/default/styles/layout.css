@@ -2097,6 +2097,7 @@ ul.char_filter li.selected {}
     float: left;
 }
 .copy_text {
+    position: relative;
     float: right;
     margin: 0 3px 0 0;
     opacity: 30%;
@@ -2117,10 +2118,19 @@ ul.char_filter li.selected {}
     opacity: 100%;
 }
 .copy_feedback {
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap;
     font-size: 11px;
+    padding: 2px 8px;
     margin-left: 4px;
-    color: #5cb85c;
+    color: #fff;
+    background: #5cb85c;
+    border-radius: 3px;
     font-weight: bold;
+    z-index: 1;
 }
 .list > div:nth-child(odd),
 .reorder-list > div:nth-child(odd),
