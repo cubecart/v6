@@ -217,33 +217,8 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
     ## Set default currency to have an exchange rate of 1
     $GLOBALS['db']->update('CubeCart_currency', array('value' => 1), array('code' => $_POST['config']['default_currency']));
 
-    ## If language has changed (Upadted from https://github.com/cubecart/v6/issues/2162)
-    $wasLang = $config_old['default_language'];
-    $nowLang = $config_new['default_language'];
-    if($wasLang !== $nowLang) {
-        $make_child = 0;
-        $docs = $GLOBALS['db']->select('CubeCart_documents', false, array('doc_lang' => $wasLang, 'doc_parent_id' => 0));
-        if($docs){
-            foreach($docs as $doc){
-                $children = $GLOBALS['db']->select('CubeCart_documents', false, array('doc_parent_id' => $doc['doc_id']));
-                if($children){
-                    foreach($children as $child){
-                        $to_have_new_parent[] = $child['doc_id'];
-                        if($child['doc_lang'] == $nowLang){
-                            $make_parent = $child['doc_id'];
-                            $make_child = $doc['doc_id'];
-                        }
-                    }
-                    if(!empty($make_parent)){
-                        $GLOBALS['db']->update('CubeCart_documents', array('doc_parent_id' => $make_parent), array('doc_id' => $to_have_new_parent));
-                        $GLOBALS['db']->update('CubeCart_documents', array('doc_parent_id' => 0),            array('doc_id' => $make_parent));
-                        $GLOBALS['db']->update('CubeCart_documents', array('doc_parent_id' => $make_parent), array('doc_id' => $make_child));
-                    }
-                }
-                unset($to_have_new_parent, $make_parent, $make_child);
-            }
-        }
-    }
+    // Preserve current default_language (now managed in Settings > Languages)
+    $config_new['default_language'] = $config_old['default_language'];
 
     $updated = ($GLOBALS['config']->set('config', '', $config_new)) ? true : false;
 
@@ -373,15 +348,6 @@ if (($logos = $GLOBALS['db']->select('CubeCart_logo')) !== false) {
     }
     $GLOBALS['smarty']->assign('LOGOS', $smarty_data['logos']);
 }
-## Get Languages
-if (($languages = $GLOBALS['language']->listLanguages()) !== false) {
-    foreach ($languages as $code => $option) {
-        $option['selected'] = ($code == $GLOBALS['config']->get('config', 'default_language')) ? ' selected="selected"' : '';
-        $smarty_data['languages'][] = $option;
-    }
-    $GLOBALS['smarty']->assign('LANGUAGES', $smarty_data['languages']);
-}
-
 ## Get countries
 if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('numcode', 'name'), false, array('name'=>'ASC'))) !== false) {
     $store_country = $GLOBALS['config']->get('config', 'store_country');

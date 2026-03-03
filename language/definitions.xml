@@ -960,6 +960,8 @@
     <string name="writable" introduced="5.0.0"><![CDATA[Writable]]></string>
     <string name="yes" introduced="5.0.0"><![CDATA[Yes]]></string>
     <string name="yesterday" introduced="5.0.0"><![CDATA[Yesterday]]></string>
+    <string name="install" introduced="6.6.0"><![CDATA[Install]]></string>
+    <string name="version" introduced="6.6.0"><![CDATA[Version]]></string>
   </group>
   <group name="confirm">
     <string name="confirm_page" introduced="5.0.0"><![CDATA[Confirmation Page]]></string>
@@ -2719,6 +2721,11 @@ This email is sent from the store's master email address but it is possible to r
     <string name="trans_add" introduced="5.0.0"><![CDATA[Add Translation]]></string>
     <string name="trans_delete" introduced="5.0.0"><![CDATA[Delete Translation]]></string>
     <string name="trans_none" introduced="5.0.0"><![CDATA[No translations exist]]></string>
+    <string name="title_available_languages" introduced="6.6.0"><![CDATA[Available Languages]]></string>
+    <string name="title_installed_languages" introduced="6.6.0"><![CDATA[Installed Languages]]></string>
+    <string name="notify_language_installed" introduced="6.6.0"><![CDATA[Language %s successfully installed.]]></string>
+    <string name="error_language_install" introduced="6.6.0"><![CDATA[Failed to install language. Please check your internet connection and try again.]]></string>
+    <string name="error_language_install_write" introduced="6.6.0"><![CDATA[Cannot install language: %s is not writable.]]></string>
   </group>
   <group name="ui">
     <string name="drag_reorder" introduced="5.0.0"><![CDATA[Drag to reorder]]></string>

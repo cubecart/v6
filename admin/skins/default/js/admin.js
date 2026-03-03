@@ -608,7 +608,7 @@ $(document).ready(function() {
                     }, 70))
                 }
             }), !1
-        }), $("#content_body").on("click", ".check-primary", function() {
+        }), $("#content_body").on("click", ".check-primary, .check-default", function() {
             var t = $(this).attr("rel");
             $("#" + t).parent().addClass("selected"), $("#" + t + ":checkbox").prop("checked", true)
         }), $("#quickTour").on("click", function() {

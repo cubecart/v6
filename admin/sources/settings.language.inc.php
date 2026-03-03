@@ -28,11 +28,6 @@ if (isset($_GET['delete']) && Admin::getInstance()->permissions('settings', CC_P
     httpredir(currentPage(array('delete')));
 }
 
-if (isset($_GET['download']) && Admin::getInstance()->permissions('settings', CC_PERM_READ)) {
-    deliverFile(CC_ROOT_DIR.'/language/'.$_GET['download'].'.xml');
-    exit;
-}
-
 if (isset($_POST['save']) && (isset($_POST['string']) || isset($_POST['delete'])) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
     ## Load all existing language strings
     $GLOBALS['language']->loadDefinitions($_GET['language']);
@@ -94,6 +89,116 @@ if (isset($_POST['export']) && Admin::getInstance()->permissions('settings', CC_
         $GLOBALS['main']->errorMessage($lang['email']['error_export']);
     }
     httpredir(currentPage(array('export'), array('language' => $_GET['export'])));
+}
+
+if (isset($_GET['install']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT) && isset($_GET['token']) && $_GET['token'] == SESSION_TOKEN) {
+    $install_code = $_GET['install'];
+    $installed = false;
+
+    // Validate language code format
+    if (preg_match('#^[a-z]{2}\-[A-Z]{2}$#', $install_code)) {
+        // Fetch API to get download URL
+        $api_url_path = '/api/languages';
+        $request = new Request('extensions.cubecart.com', $api_url_path, 443, false, true, 10);
+        $request->setMethod('get');
+        $request->setSSL();
+        $request->setUserAgent('CubeCart');
+        $request->skiplog(true);
+        if (!$json = $request->send()) {
+            $json = file_get_contents('https://extensions.cubecart.com'.$api_url_path);
+        }
+
+        $download_url = false;
+        if ($json) {
+            $api_data = json_decode($json, true);
+            if ($api_data && !empty($api_data['languages'])) {
+                foreach ($api_data['languages'] as $api_lang) {
+                    if ($api_lang['code'] === $install_code) {
+                        $download_url = $api_lang['download'];
+                        break;
+                    }
+                }
+            }
+        }
+
+        if ($download_url) {
+            // Download the ZIP file
+            $url_parts = parse_url($download_url);
+            $dl_request = new Request($url_parts['host'], $url_parts['path'], 443, false, true, 30);
+            $dl_request->setMethod('get');
+            $dl_request->setSSL();
+            $dl_request->setUserAgent('CubeCart');
+            $dl_request->skiplog(true);
+            $zip_data = $dl_request->send();
+
+            if (!$zip_data) {
+                $zip_data = file_get_contents($download_url);
+            }
+
+            if ($zip_data) {
+                $tmp_path = CC_BACKUP_DIR.$install_code.'.zip';
+                file_put_contents($tmp_path, $zip_data);
+
+                $zip = new ZipArchive();
+                if ($zip->open($tmp_path) === true) {
+                    $extract_ok = true;
+
+                    // Check all files are writable if they exist
+                    for ($i = 0; $i < $zip->numFiles; $i++) {
+                        $entry = $zip->getNameIndex($i);
+                        // Determine destination based on file type
+                        if (preg_match('/\.png$/i', $entry)) {
+                            $dest = CC_LANGUAGE_DIR.'flags/'.basename($entry);
+                        } else {
+                            $dest = CC_LANGUAGE_DIR.basename($entry);
+                        }
+                        if (file_exists($dest) && !is_writable($dest)) {
+                            $GLOBALS['main']->errorMessage(sprintf($lang['translate']['error_language_install_write'], $dest));
+                            $extract_ok = false;
+                        }
+                    }
+
+                    if ($extract_ok) {
+                        // Extract files to appropriate locations
+                        for ($i = 0; $i < $zip->numFiles; $i++) {
+                            $entry = $zip->getNameIndex($i);
+                            $file_data = $zip->getFromIndex($i);
+                            if ($file_data === false) continue;
+
+                            if (preg_match('/\.png$/i', $entry)) {
+                                file_put_contents(CC_LANGUAGE_DIR.'flags/'.basename($entry), $file_data);
+                            } else {
+                                file_put_contents(CC_LANGUAGE_DIR.basename($entry), $file_data);
+                            }
+                        }
+
+                        // Import email content if available
+                        $email_file = 'email_'.$install_code.'.xml';
+                        if (file_exists(CC_LANGUAGE_DIR.$email_file)) {
+                            $GLOBALS['language']->importEmail($email_file);
+                        }
+
+                        // Set language to disabled initially
+                        $GLOBALS['config']->set('languages', $install_code, '0');
+                        $GLOBALS['cache']->clear('lang');
+                        $installed = true;
+                    }
+                    $zip->close();
+                }
+                // Clean up temp file
+                if (file_exists($tmp_path)) {
+                    unlink($tmp_path);
+                }
+            }
+        }
+    }
+
+    if ($installed) {
+        $GLOBALS['main']->successMessage(sprintf($lang['translate']['notify_language_installed'], $install_code));
+    } else {
+        $GLOBALS['main']->errorMessage($lang['translate']['error_language_install']);
+    }
+    httpredir(currentPage(array('install', 'token')));
 }
 
 $GLOBALS['gui']->addBreadcrumb($lang['translate']['title_languages']);
@@ -254,22 +359,7 @@ if (isset($_GET['export'])) {
         $GLOBALS['main']->addTabControl($lang['translate']['merge_db_file'], false, currentPage(array('language'), array('export' => $_GET['language'])));
     }
 } else {
-    if (!empty($_FILES['import']['tmp_name']['file'])) {
-        if ($GLOBALS['language']->importLanguage($_FILES['import'], $_POST['import']['overwrite'])) {
-            $GLOBALS['main']->successMessage($lang['translate']['notify_language_import_success']);
-        } else {
-            $GLOBALS['main']->errorMessage($lang['translate']['error_language_import_failed']);
-        }
-    } elseif (isset($_POST['create']) && !empty($_POST['create']['code'])) {
-        if ($GLOBALS['language']->create($_POST['create'])) {
-            $GLOBALS['main']->successMessage($lang['translate']['notify_language_create']);
-            ## Set status to disabled to begin with
-            $GLOBALS['config']->set('languages', $_POST['create']['code'], "0");
-            httpredir(currentPage(null, array('language' => $_POST['create']['code'])));
-        } else {
-            $GLOBALS['main']->errorMessage($lang['translate']['error_language_create']);
-        }
-    } elseif (isset($_POST['status']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
+    if (isset($_POST['default_language']) && Admin::getInstance()->permissions('settings', CC_PERM_EDIT)) {
         if(is_array($_POST['domain'])) {
             foreach($_POST['domain'] as $lang_code => $domain) {
                 if(empty($domain)) {
@@ -284,17 +374,26 @@ if (isset($_GET['export'])) {
             }
         }
 
-        // We don't allow the default language to be disabled
-        $default_lang = $GLOBALS['config']->get('config', 'default_language');
-        $before = $GLOBALS['config']->set('languages', false, $_POST['status']);
-        if($_POST['status'][$default_lang]=='0') {
-            $_POST['status'][$default_lang] = '1';
-            $GLOBALS['main']->errorMessage(sprintf($lang['translate']['error_lang_status_fixed'],$default_lang));
+        // Build full status array: checkboxes only submit checked values
+        $checked = isset($_POST['status']) && is_array($_POST['status']) ? $_POST['status'] : array();
+        $all_languages = $GLOBALS['language']->listLanguages();
+        $status_array = array();
+        if ($all_languages) {
+            foreach ($all_languages as $code => $info) {
+                $status_array[$code] = isset($checked[$code]) ? '1' : '0';
+            }
         }
-        $GLOBALS['config']->set('languages', false, $_POST['status']);
+
+        // Handle default language change
+        $nowLang = $_POST['default_language'];
+        // Ensure default language is enabled
+        $status_array[$nowLang] = '1';
+        $GLOBALS['config']->set('config', 'default_language', $nowLang);
+
+        $GLOBALS['config']->set('languages', false, $status_array);
 
         // For each language being enabled, ensure all email content types are seeded
-        foreach ($_POST['status'] as $code => $status) {
+        foreach ($status_array as $code => $status) {
             if ($status == '1') {
                 $xml_file = CC_LANGUAGE_DIR.'email_'.$code.'.xml';
                 if (!file_exists($xml_file)) continue;
@@ -321,24 +420,21 @@ if (isset($_GET['export'])) {
             }
         }
 
-        $after = $GLOBALS['config']->get('config', 'default_language');
-        if (md5($before) !== md5($after)) {
-            $GLOBALS['main']->successMessage($lang['translate']['notify_language_status']);
-        } else {
-            $GLOBALS['main']->errorMessage($lang['translate']['error_language_status']);
-        }
+        $GLOBALS['main']->successMessage($lang['translate']['notify_language_status']);
         httpredir(currentPage());
     }
     $enabled = $GLOBALS['config']->get('languages');
 
-    $GLOBALS['main']->addTabControl($lang['translate']['title_languages'], 'lang_list');
-    
+    $GLOBALS['main']->addTabControl($lang['translate']['title_installed_languages'], 'lang_list');
+
     ## List available language files
     $url_parts = parse_url(CC_STORE_URL);
     $domain = ltrim($url_parts['host'],'www.');
+    $current_default = $GLOBALS['config']->get('config', 'default_language');
     if (($languageList = $GLOBALS['language']->listLanguages()) !== false) {
         foreach ($languageList as $code => $info) {
             $info['status'] = (isset($enabled[$code])) ? (int)$enabled[$code] : 1;
+            $info['is_default'] = ($code == $current_default);
             if (file_exists('language/flags/'.$info['code'].'.png')) {
                 $info['flag'] = 'language/flags/'.$info['code'].'.png';
             } else {
@@ -346,15 +442,42 @@ if (isset($_GET['export'])) {
             }
             $info['edit'] = currentPage(null, array('language' => $info['code']));
             $info['delete'] = currentPage(null, array('delete' => $info['code'], 'token' => SESSION_TOKEN));
-            $info['download'] = currentPage(null, array('download' => $info['code']));
-            $subdomain = ($GLOBALS['config']->get('config', 'default_language') == $info['code']) ? 'www' : substr($info['code'],0,2);
+            $subdomain = ($code == $current_default) ? 'www' : substr($info['code'],0,2);
             $info['placeholder'] = $subdomain.'.'.$domain;
             $smarty_data['languages'][] = $info;
         }
-        $GLOBALS['main']->addTabControl($lang['translate']['title_language_create'], 'lang_create');
-        $GLOBALS['main']->addTabControl($lang['translate']['title_language_import'], 'lang_import');
         $GLOBALS['smarty']->assign('LANGUAGES', $smarty_data['languages']);
     }
+
+    // Fetch available languages from API
+    $api_url_path = '/api/languages';
+    $request = new Request('extensions.cubecart.com', $api_url_path, 443, false, true, 10);
+    $request->setMethod('get');
+    $request->setSSL();
+    $request->setUserAgent('CubeCart');
+    $request->skiplog(true);
+    $request->cache(true);
+    if (!$json = $request->send()) {
+        $json = file_get_contents('https://extensions.cubecart.com'.$api_url_path);
+    }
+    if ($json) {
+        $api_data = json_decode($json, true);
+        if ($api_data && !empty($api_data['languages'])) {
+            $installed_codes = is_array($languageList) ? array_keys($languageList) : array();
+            $available = array();
+            foreach ($api_data['languages'] as $api_lang) {
+                if (!in_array($api_lang['code'], $installed_codes)) {
+                    $api_lang['install_url'] = currentPage(null, array('install' => $api_lang['code'], 'token' => SESSION_TOKEN));
+                    $available[] = $api_lang;
+                }
+            }
+            if (!empty($available)) {
+                $GLOBALS['smarty']->assign('AVAILABLE_LANGUAGES', $available);
+                $GLOBALS['main']->addTabControl($lang['translate']['title_available_languages'], 'lang_available');
+            }
+        }
+    }
+
     $GLOBALS['smarty']->assign('DOCUMENT_ROOT', $_SERVER['DOCUMENT_ROOT']);
 }
 

@@ -9,35 +9,28 @@
 * Email:  hello@cubecart.com
 * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
 *}
-<form action="{$VAL_SELF}" id="edit_phrases" method="post" enctype="multipart/form-data">
+<form action="{$VAL_SELF}" id="edit_phrases" method="post">
    {if isset($LANGUAGES)}
    <div id="lang_list" class="tab_content">
-      <h3>{$LANG.translate.title_languages}</h3>
+      <h3>{$LANG.translate.title_installed_languages}</h3>
       <table>
          <thead>
          <tr>
             <th>{$LANG.common.status}</th>
-            <th colspan="2">{$LANG.common.language}</th>
+            <th>{$LANG.settings.default_language}</th>
+            <th>{$LANG.common.language}</th>
             <th>{$LANG.common.domain} *</th>
             <th>{$LANG.form.action}</th>
          </tr>
          </thead>
          <tbody>
-         <tr>
-            <td></td>
-            <td><img src="language/flags/globe.png" alt="{$LANG.translate.master_language}"></td>
-            <td>{$LANG.translate.master_language}</td>
-            <td>&nbsp;</td>
-            <td class="actions"><a href="?_g=settings&node=language&download=definitions" title="{$LANG.common.download}"><i class="fa fa-download" title="{$LANG.common.download}"></i></a></td>
-         </tr>
          {foreach from=$LANGUAGES item=language}
          <tr>
-            <td style="text-align:center"><input type="hidden" name="status[{$language.code}]" id="status_{$language.code}" value="{$language.status}" class="toggle"></td>
-            <td><img src="{$language.flag}" alt="{$language.title}"></td>
+            <td style="text-align:center"><input type="checkbox" name="status[{$language.code}]" id="status_{$language.code}" value="1" class="check_lang"{if $language.status} checked="checked"{/if}></td>
+            <td style="text-align:center"><input type="radio" name="default_language" value="{$language.code}" class="check-default" rel="status_{$language.code}"{if $language.is_default} checked="checked"{/if}></td>
             <td><a href="{$language.edit}">{$language.title}</a></td>
             <td><input type="text" class="textbox" name="domain[{$language.code}]" style="max-width: 240px" placeholder="e.g. {$language.placeholder}" value="{$language.domain}"></td>
             <td class="actions">
-               <a href="{$language.download}" title="{$LANG.common.download}"><i class="fa fa-download" title="{$LANG.common.download}"></i></a>
                <a href="{$language.edit}" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
                <a href="{$language.delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
             </td>
@@ -46,36 +39,37 @@
          </tbody>
          </table>
          <p>* {$LANG.settings.domain_doc_root}</p>
+      {include file='templates/element.hook_form_content.php'}
+      <div class="form_control">
+         <input type="hidden" name="previous-tab" id="previous-tab" value="">
+         <input type="submit" name="save" value="{$LANG.common.save}">
+      </div>
    </div>
-   <div id="lang_create" class="tab_content">
-      <h3>{$LANG.translate.title_language_create}</h3>
-      <fieldset>
-         <div><label for="create_title">{$LANG.translate.language_name}</label><span><input id="create_title" type="text" name="create[title]" class="textbox required" placeholder="{$LANG.translate.language_name_eg}"></span></div>
-         <div><label for="create_code">{$LANG.translate.language_code}</label><span><input id="create_code" type="text" name="create[code]" class="textbox required" placeholder="{$LANG.translate.language_code_eg}"></span></div>
-         <div><label for="create_currency">{$LANG.translate.language_currency}</label><span><input id="create_currency" type="text" name="create[currency_iso]" class="textbox number" placeholder="{$LANG.translate.language_code_eg2}"></span> {$LANG.translate.language_currency_code_url}</div>
-         <div>
-            <label for="create_direction">{$LANG.translate.language_direction}</label>
-            <span>
-               <select id="create_direction" name="create[text_direction]" class="textbox">
-                  <option value="ltr">{$LANG.common.read_ltr}</option>
-                  <option value="rtl">{$LANG.common.read_rtl}</option>
-               </select>
-            </span>
-         </div>
-      </fieldset>
+   {if isset($AVAILABLE_LANGUAGES) && count($AVAILABLE_LANGUAGES) > 0}
+   <div id="lang_available" class="tab_content">
+      <h3>{$LANG.translate.title_available_languages}</h3>
+      <table>
+         <thead>
+         <tr>
+            <th>{$LANG.common.language}</th>
+            <th>{$LANG.common.version}</th>
+            <th>{$LANG.form.action}</th>
+         </tr>
+         </thead>
+         <tbody>
+         {foreach from=$AVAILABLE_LANGUAGES item=avail}
+         <tr>
+            <td>{$avail.name} ({$avail.code})</td>
+            <td>{$avail.version}</td>
+            <td class="actions">
+               <a href="{$avail.install_url}" title="{$LANG.common.install}"><i class="fa fa-plus-circle" title="{$LANG.common.install}"></i></a>
+            </td>
+         </tr>
+         {/foreach}
+         </tbody>
+      </table>
    </div>
-   <div id="lang_import" class="tab_content">
-      <h3>{$LANG.translate.title_language_import}</h3>
-      <fieldset>
-         <div><label for="import_overwrite">{$LANG.filemanager.overwrite}</label><span><input id="import_overwrite" type="checkbox" name="import[overwrite]"></span></div>
-         <div><label for="import_file">{$LANG.filemanager.file_upload}</label><span><input id="import_file" type="file" name="import[file]" class="textbox"> {$LANG.translate.example_upload}</span></div>
-      </fieldset>
-   </div>
-   {include file='templates/element.hook_form_content.php'}
-   <div class="form_control">
-      <input type="hidden" name="previous-tab" id="previous-tab" value="">
-      <input type="submit" name="save" value="{$LANG.common.save}">
-   </div>
+   {/if}
    {elseif !$DISPLAY_EDITOR && !$DISPLAY_EXPORT}
    <div id="lang_list" class="tab_content">
    <h3>{$LANG.translate.title_languages}</h3>
@@ -190,5 +184,5 @@
       <input type="submit" name="export" value="{$LANG.common.export}">
    </div>
    {/if}
-   
+
 </form>
