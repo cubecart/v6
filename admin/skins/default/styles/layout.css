@@ -2268,6 +2268,7 @@ textarea#query {
   #header {
     background: var(--header-bg) !important;
     border-bottom: 3px solid var(--primary-accent) !important;
+    color: #fff !important;
   }
   #navigation {
     background: var(--nav-bg) !important;
