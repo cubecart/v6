@@ -235,8 +235,7 @@
 	  		  <select name="action" class="textbox">
 	    	    <optgroup label="">
 	      	      <option value="">{$LANG.form.please_select}</option>
-		  		  <option value="OPTIMIZE">{$LANG.settings.optimize}</option>
-	      		  <option value="REPAIR">{$LANG.settings.repair}</option>
+		  		  <option value="REBUILD">{$LANG.settings.rebuild_tables}</option>
 	      		  <option value="CHECK">{$LANG.settings.check}</option>
 	      		  <option value="ANALYZE">{$LANG.settings.analyze}</option>
 	    	    </optgroup>

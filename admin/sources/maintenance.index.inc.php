@@ -475,8 +475,14 @@ if (!empty($_POST['database'])) {
         foreach ($_POST['tablename'] as $value) {
             $tableList[] = sprintf('`%s`', $value);
         }
-        if(in_array($_POST['action'], array('OPTIMIZE','REPAIR','CHECK','ANALYZE'))) {
-        $database_result = $GLOBALS['db']->query(sprintf("%s TABLE %s;", $_POST['action'], implode(',', $tableList)));
+        if(in_array($_POST['action'], array('REBUILD','CHECK','ANALYZE'))) {
+        if ($_POST['action'] === 'REBUILD') {
+            foreach ($tableList as $table) {
+                $GLOBALS['db']->query(sprintf("ALTER TABLE %s ENGINE=InnoDB;", $table));
+            }
+        } else {
+            $GLOBALS['db']->query(sprintf("%s TABLE %s;", $_POST['action'], implode(',', $tableList)));
+        }
         $GLOBALS['main']->successMessage(sprintf($lang['maintain']['notify_db_action'], $_POST['action']));
         } else {
             die('Action not allowed.');

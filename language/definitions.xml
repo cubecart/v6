@@ -2333,6 +2333,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="offline_enable" introduced="5.0.0"><![CDATA[Take store offline?]]></string>
     <string name="offline_message" introduced="5.0.0"><![CDATA[Offline Message]]></string>
     <string name="optimize" introduced="5.0.0"><![CDATA[Optimize]]></string>
+    <string name="rebuild_tables" introduced="6.6.0"><![CDATA[Rebuild]]></string>
     <string name="product_clone_acats" introduced="5.1.0"><![CDATA[Additional categories]]></string>
     <string name="product_clone_code" introduced="5.1.0"><![CDATA[Product code]]></string>
     <string name="product_clone_images" introduced="5.1.0"><![CDATA[Images]]></string>
