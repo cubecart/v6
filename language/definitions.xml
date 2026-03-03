@@ -1238,13 +1238,10 @@ This email is sent from the store's master email address but it is possible to r
     <string name="example_name_first" introduced="5.0.0"><![CDATA[(e.g. Amy)]]></string>
     <string name="example_name_last" introduced="5.0.0"><![CDATA[(e.g. Jones)]]></string>
     <string name="example_title" introduced="5.0.0"><![CDATA[(e.g. Miss)]]></string>
-    <string name="export_compress" introduced="5.0.0"><![CDATA[Compress Export]]></string>
     <string name="export_filename" introduced="5.0.0"><![CDATA[mailing-list]]></string>
     <string name="export_format" introduced="5.0.0"><![CDATA[Export Format]]></string>
     <string name="help_content_html" introduced="5.0.0"><![CDATA[Subscribers who have their email client set to prefer rich text HTML emails will see the contents of this field.]]></string>
     <string name="help_content_text" introduced="5.0.0"><![CDATA[Subscribers who have their email client set to prefer plain text emails will see the contents of this field. Please do not enter HTML here.]]></string>
-    <string name="help_email_export" introduced="5.0.0"><![CDATA[Export your email customizations to file. The file will be saved in the languages directory as 'email_&lt;language code&gt;-custom.xml'.]]></string>
-    <string name="help_email_import" introduced="5.0.0"><![CDATA[You can reinstall your email templates here, by selecting the language in the dropdown, then clicking 'save'.<br>Warning: This will replace ALL email contents for the specified language with their defaults]]></string>
     <string name="help_macro" introduced="5.0.0"><![CDATA[Note: Visitors only need to add their email address to subscribe to the mailing list. Some data will only be known if they are a registered customer.]]></string>
     <string name="help_test_send" introduced="5.0.0"><![CDATA[Please use this to send a test copy of the email before sending it out to your customers. The email received will be sent in multipart format.<br>To view the HTML or text version you may need to edit your mail client settings.<br>Your customers will either see rich HTML or plain text depending on their email client settings.]]></string>
     <string name="important" introduced="5.0.0"><![CDATA[IMPORTANT: Macros must be retained in the email content for it to be replaced with dynamic content.]]></string>
@@ -1333,9 +1330,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="notify_content_create" introduced="5.0.0"><![CDATA[Email content saved.]]></string>
     <string name="notify_content_delete" introduced="5.0.0"><![CDATA[Email content deleted.]]></string>
     <string name="notify_content_update" introduced="5.0.0"><![CDATA[Email content updated.]]></string>
-    <string name="notify_export" introduced="5.0.0"><![CDATA[Export complete.]]></string>
     <string name="notify_export_language" introduced="5.0.0"><![CDATA[Language has been exported from database to the file %1$s]]></string>
-    <string name="notify_import" introduced="5.0.0"><![CDATA[Import complete.]]></string>
     <string name="notify_news_delete" introduced="5.0.0"><![CDATA[Newsletter deleted.]]></string>
     <string name="notify_news_save" introduced="5.0.0"><![CDATA[Newsletter Saved.]]></string>
     <string name="notify_news_sent" introduced="5.0.0"><![CDATA[Newsletter sent.]]></string>
@@ -1350,7 +1345,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="test_email" introduced="5.0.0"><![CDATA[Recipient Email]]></string>
     <string name="title_content_create" introduced="5.0.0"><![CDATA[Add Email Content Translation]]></string>
     <string name="title_content_html" introduced="5.0.0"><![CDATA[HTML Content]]></string>
-    <string name="title_content_manage" introduced="5.0.0"><![CDATA[Import/Export Email Contents]]></string>
     <string name="title_content_update" introduced="5.0.0"><![CDATA[Edit Email Content]]></string>
     <string name="title_contents" introduced="5.0.0"><![CDATA[Email Contents]]></string>
     <string name="title_email" introduced="5.0.0"><![CDATA[Email Contents &amp; Templates]]></string>

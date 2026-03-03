@@ -303,43 +303,6 @@ foreach ($GLOBALS['hooks']->load('admin.documents.email.macros') as $hook) {
 
 $GLOBALS['gui']->addBreadcrumb($lang['email']['title_email'], currentPage(array('action', 'content_id', 'content_type', 'template_id')));
 
-if (isset($_POST['import']) && !empty($_POST['import']) && Admin::getInstance()->permissions('documents', CC_PERM_EDIT, true)) {
-    if (preg_match(Language::EMAIL_FILE, $_POST['import']) && $GLOBALS['language']->importEmail($_POST['import'])) {
-        $GLOBALS['main']->successMessage($lang['email']['notify_import']);
-        httpredir(currentPage());
-    }
-} elseif (isset($_POST['export']) && !empty($_POST['export']) && Admin::getInstance()->permissions('documents', CC_PERM_READ, true)) {
-    if (preg_match(Language::LANG_REGEX, $_POST['export'])) {
-        ## Export language to XML...
-        if (($emails = $GLOBALS['db']->select('CubeCart_email_content', false, array('language' => $_POST['export']))) !== false) {
-            $xml = new XML();
-            $xml->startElement('emails', array('version' => '1.0', 'language' => $_POST['export']));
-            foreach ($emails as $email) {
-                $xml->startElement('email', array('name' => $email['content_type']));
-                if (!empty($email['content_html'])) {
-                    $xml->setElement('content', $email['content_html'], array('type' => 'html'));
-                }
-                $xml->endElement();
-            }
-            $xml->endElement();
-            $data = $xml->getDocument();
-            $file = CC_ROOT_DIR.'/language/email_'.$_POST['export'].'-custom.xml';
-            if (isset($_POST['export_compress'])) {
-                $data = gzencode($data, 9, FORCE_GZIP);
-                $file = $file.'.gz';
-            }
-            if (file_put_contents($file, $data)) {
-                $GLOBALS['main']->successMessage($lang['email']['notify_export']);
-            } else {
-                $GLOBALS['main']->errorMessage($lang['email']['error_export']);
-            }
-        } else {
-            $GLOBALS['main']->errorMessage($lang['email']['error_export']);
-        }
-        httpredir(currentPage());
-    }
-}
-
 if (isset($_POST['template_default']) && ctype_digit($_POST['template_default']) && Admin::getInstance()->permissions('documents', CC_PERM_EDIT)) {
     $GLOBALS['db']->update('CubeCart_email_template', array('template_default' => '0'));
     $GLOBALS['db']->update('CubeCart_email_template', array('template_default' => '1'), array('template_id' => (int)$_POST['template_default']));
@@ -614,11 +577,10 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
 } else {
     $GLOBALS['main']->addTabControl($lang['email']['title_email_contents'], 'email_contents');
     $GLOBALS['main']->addTabControl($lang['email']['title_email_templates'], 'email_templates');
-    $GLOBALS['main']->addTabControl($lang['common']['import_export'], 'email_import');
     // List Contents
     if (is_array($email_types)) {
         $lang_list = $GLOBALS['language']->listLanguages();
-        $max_translations = count($lang_list);
+        $max_translations = is_array($lang_list) ? count($lang_list) : 0;
         $can_translate = false;
         foreach ($email_types as $key => $values) {
             $translations = $GLOBALS['db']->select('CubeCart_email_content', array('description','content_id', 'language'), array('content_type' => $key), array('language' => 'ASC'));
@@ -661,32 +623,6 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
         $GLOBALS['smarty']->assign('EMAIL_TEMPLATES', $smarty_data['e_templates']);
     }
     $GLOBALS['smarty']->assign('TEMPLATE_CREATE', currentPage(null, array('action' => 'create', 'type' => 'template')));
-    // Importer
-    $import = glob(CC_ROOT_DIR.'/language/email_*');
-    if ($import !== false && is_array($import)) {
-        foreach ($import as $source) {
-            if (preg_match(Language::EMAIL_FILE, basename($source), $match)) {
-                $emails[$match[1]] = basename($source);
-            }
-        }
-        if (isset($emails)) {
-            ksort($emails);
-            foreach ($emails as $code => $file) {
-                $smarty_data['imports'][] = array('code' => $code, 'file' => $file);
-            }
-        }
-        $GLOBALS['smarty']->assign('EMAIL_IMPORT', $smarty_data['imports']);
-    }
-    // Exporter
-    if (($export = $GLOBALS['db']->select('CubeCart_email_content', array('DISTINCT' => 'language'))) !== false) {
-        foreach ($export as $row) {
-            $distinct[$row['language']] = $row['language'];
-        }
-        ksort($distinct);
-        if ($distinct) {
-            $GLOBALS['smarty']->assign('EMAIL_EXPORTS', $distinct);
-        }
-    }
     $GLOBALS['smarty']->assign('DISPLAY_EMAIL_LIST', true);
 }
 $page_content = $GLOBALS['smarty']->fetch('templates/documents.email.php');

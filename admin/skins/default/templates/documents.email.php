@@ -80,34 +80,6 @@
 	<div><a href="{$TEMPLATE_CREATE}">{$LANG.email.template_create}</a></div>
   </div>
 
-  <div id="email_import" class="tab_content">
-  	<h3>{$LANG.email.title_content_manage}</h3>
-	{if isset($EMAIL_IMPORT)}
-	<fieldset><legend>{$LANG.common.import}</legend>
-	  <p>{$LANG.email.help_email_import}</p>
-	  <div>
-		<select name="import" class="textbox">
-		  <option value="">{$LANG.form.please_select}</option>
-		  {foreach from=$EMAIL_IMPORT item=import}<option value="{$import.file}">{$import.code}</option>{/foreach}
-		</select>
-	  </div>
-	</fieldset>
-	{/if}
-	{if isset($EMAIL_EXPORTS)}
-	<fieldset><legend>{$LANG.common.export}</legend>
-	  <p>{$LANG.email.help_email_export}</p>
-	  <div>
-		<select name="export" class="textbox">
-		  <option value="">{$LANG.form.please_select}</option>
-		  {foreach from=$EMAIL_EXPORTS item=export}
-		  <option value="{$export}">{$export}</option>
-		  {/foreach}
-		  </select>
-		<input type="checkbox" name="export_compress" value="1" checked="checked"> {$LANG.email.export_compress}
-	  </div>
-	</fieldset>
-	{/if}
-  </div>
   {/if}
 
   {if isset($DISPLAY_CONTENT_FORM)}
