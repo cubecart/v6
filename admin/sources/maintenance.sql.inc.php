@@ -18,11 +18,12 @@ Admin::getInstance()->permissions('maintenance', CC_PERM_FULL, true);
 global $lang, $glob;
 
 if (isset($_POST['execute'])) {
-    if (!empty($_POST['query'])) {
-        if (strstr($_POST['query'], '; #EOQ')) {
-            $db->parseSchema($_POST['query']);
+    $raw_query = isset($GLOBALS['RAW']['POST']['query']) ? $GLOBALS['RAW']['POST']['query'] : '';
+    if (!empty($raw_query)) {
+        if (strstr($raw_query, '; #EOQ')) {
+            $db->parseSchema($raw_query);
         } else {
-            $GLOBALS['db']->query(stripslashes($_POST['query']), false);
+            $GLOBALS['db']->query($raw_query, false);
         }
         if ($GLOBALS['db']->error()) {
             $GLOBALS['main']->errorMessage($GLOBALS['db']->errorInfo());
@@ -43,7 +44,7 @@ $GLOBALS['gui']->addBreadcrumb($lang['maintain']['tab_query_sql']);
 $GLOBALS['smarty']->assign('INFO', sprintf($lang['maintain']['title_db_info'], $GLOBALS['db']->serverVersion(), $glob['dbhost'], $glob['dbusername'], $glob['dbhost']));
 $prefix = (!$GLOBALS['config']->isEmpty('config', 'dbprefix')) ? $GLOBALS['config']->get('config', 'dbprefix') : false;
 $GLOBALS['smarty']->assign('PREFIX', $prefix);
-if (!empty($_POST['query'])) {
-    $GLOBALS['smarty']->assign('VAL_QUERY', stripslashes($_POST['query']));
+if (!empty($raw_query)) {
+    $GLOBALS['smarty']->assign('VAL_QUERY', htmlspecialchars($raw_query, ENT_QUOTES, 'UTF-8'));
 }
 $page_content = $GLOBALS['smarty']->fetch('templates/maintenance.sql.php');
