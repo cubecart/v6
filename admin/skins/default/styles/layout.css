@@ -1327,6 +1327,11 @@ input.search {
 .reorder-list>tr {
     height: 25px
 }
+.ui-sortable-helper {
+    display: table;
+    background: var(--bg);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
 a.handle {
     cursor: move
 }

@@ -778,6 +778,15 @@ $(document).ready(function() {
         placeholderElement: "> tr",
         revert: !0,
         scroll: !0,
+        helper: function(e, tr) {
+            var $orig = tr.children();
+            var $helper = tr.clone();
+            $helper.children().each(function(i) {
+                $(this).width($orig.eq(i).outerWidth());
+            });
+            $helper.width(tr.closest("table").outerWidth());
+            return $helper;
+        },
         stop: function() {}
     }), $(".revert").each(function() {
         var t = $(this).attr("rel");
