@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language version="3.0">
  <info>
-  <title>
-      English (US)
-    </title>
+  <title><![CDATA[English (US)]]></title>
   <code>en-US</code>
   <version>6.6.0</version>
   <default_currency>USD</default_currency>

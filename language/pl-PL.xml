@@ -12,7 +12,7 @@
 -->
 <language version="3.0">
  <info>
-  <title>Polski</title>
+  <title><![CDATA[Polski]]></title>
   <code>pl-PL</code>
   <version>6.6.0</version>
   <default_currency>PLN</default_currency>

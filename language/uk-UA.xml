@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language version="3.0">
   <info>
-    <title>Українська</title>
+    <title><![CDATA[Українська]]></title>
     <code>uk-UA</code>
     <version>6.6.0</version>
     <default_currency>UAH</default_currency>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language version="3.0">
   <info>
-    <title>Suomi</title>
+    <title><![CDATA[Suomi]]></title>
     <code>fi-FI</code>
     <version>6.6.0</version>
     <default_currency>EUR</default_currency>

@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language version="3.0">
  <info>
-  <title>
-      English (UK)
-    </title>
+  <title><![CDATA[English (UK)]]></title>
   <code>en-GB</code>
   <version>6.6.0</version>
   <default_currency>GBP</default_currency>

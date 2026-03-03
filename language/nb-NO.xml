@@ -12,7 +12,7 @@
 -->
 <language version="3.0">
  <info>
-  <title>Norsk bokmål</title>
+  <title><![CDATA[Norsk bokmål]]></title>
   <code>nb-NO</code>
   <version>6.6.0</version>
   <default_currency>NOK</default_currency>

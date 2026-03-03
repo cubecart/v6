@@ -12,7 +12,7 @@
 -->
 <language version="3.0">
  <info>
-  <title>Português (Portugal)</title>
+  <title><![CDATA[Português (Portugal)]]></title>
   <code>pt-PT</code>
   <version>6.6.0</version>
   <default_currency>EUR</default_currency>
