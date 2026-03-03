@@ -401,8 +401,8 @@ if (!$is_upgrade && !isset($_SESSION['language_selected'])) {
     // Compatibility Test
     $checks  = array(
     'PHP' => array(
-      'title' => 'PHP 8.1+ (8.3 Recommended)',
-      'status' => version_compare(PHP_VERSION, '8.1', '>='),
+      'title' => 'PHP 7.4+ (8.3 Recommended)',
+      'status' => version_compare(PHP_VERSION, '7.4', '>='),
       'pass' => PHP_VERSION,
       'fail' => PHP_VERSION
     ),
