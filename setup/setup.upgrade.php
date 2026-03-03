@@ -57,7 +57,7 @@ if (!isset($_SESSION['setup']['permissions'])) {
     $GLOBALS['smarty']->assign('MODE_PERMS', true);
 } else {
     ##### UPGRADE #####
-    require_once $global_file;
+    include $global_file;
     $config  = $glob;
     $db   = Database::getInstance($config);
     ## Admin Session thingy
