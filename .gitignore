@@ -14,6 +14,14 @@
 /robots.txt
 /sitemap_*
 
+# Language files (installed via API)
+/language/*.xml
+!/language/definitions.xml
+!/language/email_definitions.xml
+/language/flags/*
+!/language/flags/globe.png
+!/language/flags/unknown.png
+
 # Tests
 /tests/
 

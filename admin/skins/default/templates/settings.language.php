@@ -45,6 +45,12 @@
          <input type="submit" name="save" value="{$LANG.common.save}">
       </div>
    </div>
+   {elseif !$DISPLAY_EDITOR && !$DISPLAY_EXPORT}
+   <div id="lang_list" class="tab_content">
+   <h3>{$LANG.translate.title_installed_languages}</h3>
+   <p>{$LANG.common.none}</p>
+   </div>
+   {/if}
    {if isset($AVAILABLE_LANGUAGES) && count($AVAILABLE_LANGUAGES) > 0}
    <div id="lang_available" class="tab_content">
       <h3>{$LANG.translate.title_available_languages}</h3>
@@ -68,12 +74,6 @@
          {/foreach}
          </tbody>
       </table>
-   </div>
-   {/if}
-   {elseif !$DISPLAY_EDITOR && !$DISPLAY_EXPORT}
-   <div id="lang_list" class="tab_content">
-   <h3>{$LANG.translate.title_installed_languages}</h3>
-   <p>{$LANG.common.none}</p>
    </div>
    {/if}
    {if $DISPLAY_EDITOR}
