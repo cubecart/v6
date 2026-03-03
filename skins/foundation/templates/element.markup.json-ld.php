@@ -72,6 +72,30 @@
 </script>
 {/if}
 
+{if ($SECTION_NAME == 'category' || $SECTION_NAME == 'saleitems') && !empty($PRODUCTS)}
+<script type="application/ld+json">
+{literal}
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "itemListElement": [
+{/literal}
+{foreach from=$PRODUCTS item=prod name=prodlist}
+    {literal}{
+      "@type": "ListItem",
+      "position": {/literal}{$smarty.foreach.prodlist.iteration}{literal},
+      "url": "{/literal}{$prod.url}{literal}",
+      "name": "{/literal}{$prod.name}{literal}",
+      "image": "{/literal}{$prod.source}{literal}"
+    }{/literal}{if !$smarty.foreach.prodlist.last},{/if}
+{/foreach}
+{literal}
+  ]
+}
+{/literal}
+</script>
+{/if}
+
 {if $SECTION_NAME == 'product'}
   {assign var=product_description value=$PRODUCT.description|strip_tags|html_entity_decode|truncate:4900:"..."}
   <script type="application/ld+json">
@@ -126,7 +150,7 @@
       "url": "{/literal}{$VAL_SELF}{literal}",
       "priceValidUntil": "{/literal}{$future_date|date_format:'Y-m-d'}{literal}",
       "priceCurrency": "{/literal}{$CONFIG.default_currency}{literal}",
-      "price": "{/literal}{preg_replace('/[^0-9.]+/','',$PRODUCT.price_to_pay)}{literal}",
+      "price": "{/literal}{number_format(preg_replace('/[^0-9.]+/','',$PRODUCT.price_to_pay), 2, '.', '')}{literal}",
       "itemCondition": "https://schema.org/{/literal}{ucfirst($PRODUCT.condition)}{literal}Condition",
       "availability": "https://schema.org/{/literal}{if $CTRL_OUT_OF_STOCK}{literal}OutOfStock{/literal}{else}{literal}InStock{/literal}{/if}{literal}",
       "seller": {
