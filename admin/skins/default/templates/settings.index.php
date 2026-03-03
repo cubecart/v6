@@ -81,6 +81,8 @@
       <fieldset>
          <legend>{$LANG.settings.title_orders}</legend>
          <div><label for="basket_order_expire">{$LANG.settings.expire_pending}</label><span><input name="config[basket_order_expire]" id="basket_order_expire" class="textbox number" value="{$CONFIG.basket_order_expire}"> {$LANG.common.blank_to_disable}</span></div>
+         <div><label for="order_minimum">{$LANG.settings.order_minimum}</label><span><input name="config[order_minimum]" id="order_minimum" type="text" class="textbox number" value="{$CONFIG.order_minimum}"> {$LANG.common.blank_to_disable}</span></div>
+         <div><label for="order_maximum">{$LANG.settings.order_maximum}</label><span><input name="config[order_maximum]" id="order_maximum" type="text" class="textbox number" value="{$CONFIG.order_maximum}"> {$LANG.common.blank_to_disable}</span></div>
          <div><label for="oid_mode">{$LANG.orders.id_mode}</label><span><select name="config[oid_mode]" id="oid_mode" class="textbox preview_order" onchange="this.value == 'i' ? document.getElementById('i_options').style.display = 'block' :  document.getElementById('i_options').style.display = 'none';">
          {foreach from=$OPT_OID_MODE item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
             </select></span></div>

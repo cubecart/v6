@@ -781,6 +781,22 @@ class Cubecart
         if (!empty($this->_basket['contents']) && is_array($this->_basket['contents'])) {
             $gatway_proceed = (($_GET['_a']=='confirm' || $_GET['_a']=='checkout') && isset($_POST['proceed'])) ? true : false;
 
+            // Check minimum order value
+            $order_minimum = (float)$GLOBALS['config']->get('config', 'order_minimum');
+            if ($order_minimum > 0 && (float)$this->_basket['subtotal'] < $order_minimum) {
+                $GLOBALS['gui']->setError(sprintf($GLOBALS['language']->checkout['error_order_minimum'], $GLOBALS['tax']->priceFormat($this->_basket['subtotal']), $GLOBALS['tax']->priceFormat($order_minimum)));
+                $GLOBALS['smarty']->assign('DISABLE_CHECKOUT_BUTTON', true);
+                $gatway_proceed = false;
+            }
+
+            // Check maximum order value
+            $order_maximum = (float)$GLOBALS['config']->get('config', 'order_maximum');
+            if ($order_maximum > 0 && (float)$this->_basket['subtotal'] > $order_maximum) {
+                $GLOBALS['gui']->setError(sprintf($GLOBALS['language']->checkout['error_order_maximum'], $GLOBALS['tax']->priceFormat($this->_basket['subtotal']), $GLOBALS['tax']->priceFormat($order_maximum)));
+                $GLOBALS['smarty']->assign('DISABLE_CHECKOUT_BUTTON', true);
+                $gatway_proceed = false;
+            }
+
             // Check shipping has been defined for tangible orders
             if (!isset($this->_basket['digital_only']) && !isset($this->_basket['shipping'])) {
                 $de = $GLOBALS['config']->get('config', 'disable_estimates');

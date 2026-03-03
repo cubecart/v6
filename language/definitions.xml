@@ -648,6 +648,8 @@
     <string name="sort_stock" introduced="5.0.0"><![CDATA[Stock]]></string>
   </group>
   <group name="checkout">
+    <string name="error_order_minimum" introduced="6.6.0"><![CDATA[Your basket subtotal of %1$s does not meet our minimum order requirement of %2$s. Please add more items to continue.]]></string>
+    <string name="error_order_maximum" introduced="6.6.0"><![CDATA[Your basket subtotal of %1$s exceeds our maximum order limit of %2$s. Please reduce your basket to continue.]]></string>
     <string name="import_tariff" introduced="6.5.12"><![CDATA[%2$s-%1$s %4$s Tariff (%3$s&#37;)]]></string>
     <string name="shipping_required" introduced="6.5.12"><![CDATA[Please select a shipping method.]]></string>
     <string name="error_voucher_shipping" introduced="6.5.7"><![CDATA[Sorry but that voucher isn't allowed for the chosen shipping method.]]></string>
@@ -2093,6 +2095,8 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_search_products" introduced="5.0.0"><![CDATA[Search Products]]></string>
   </group>
   <group name="settings">
+    <string name="order_minimum" introduced="6.6.0"><![CDATA[Minimum Order Value]]></string>
+    <string name="order_maximum" introduced="6.6.0"><![CDATA[Maximum Order Value]]></string>
     <string name="note_tariff_grouping" introduced="6.5.12"><![CDATA[Tariffs with the same display text will be grouped at checkout. Unique tariff names will be split separately.]]></string>
     <string name="tariff_display_eg" introduced="6.5.12"><![CDATA[e.g. US Import Tariff]]></string>
     <string name="destination_country" introduced="6.5.12"><![CDATA[Destination Country]]></string>
