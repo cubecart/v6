@@ -710,7 +710,14 @@ fieldset div.clear {
     clear: left
 }
 #header .user_info {
-    margin-top: 7px
+    margin-top: 0
+}
+#header #admin_id {
+    color: #fff;
+    line-height: 1
+}
+#header #admin_id:hover {
+    color: var(--link-hover)
 }
 #header .user_info i,
 a, .fm-refresh {
@@ -728,7 +735,32 @@ img {
 }
 #header .user_info {
     float: right;
-    font-size: 12px
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    height: 30px
+}
+#header .btn-signout {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 12px;
+    margin-left: 10px;
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 3px;
+    font-size: 12px;
+    line-height: 1;
+    text-decoration: none;
+    transition: background 0.15s, border-color 0.15s
+}
+#header .btn-signout:hover {
+    background: rgba(255,255,255,0.22);
+    border-color: rgba(255,255,255,0.5);
+    color: #fff
+}
+#header .btn-signout i {
+    margin-right: 3px
 }
 .store_open {
     color: var(--success)
@@ -2269,6 +2301,16 @@ textarea#query {
     background: var(--header-bg) !important;
     border-bottom: 3px solid var(--primary-accent) !important;
     color: #fff !important;
+  }
+  #header .btn-signout {
+    background: rgba(255,255,255,0.08) !important;
+    border-color: rgba(255,255,255,0.2) !important;
+    color: #fff !important
+  }
+  #header .btn-signout:hover {
+    background: rgba(107,186,208,0.25) !important;
+    border-color: var(--primary-accent) !important;
+    color: #fff !important
   }
   #navigation {
     background: var(--nav-bg) !important;
