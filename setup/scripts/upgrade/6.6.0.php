@@ -113,12 +113,69 @@ if (is_dir($predis_path)) {
     recursiveDelete($predis_path);
 }
 
-// Import two-factor authentication email template for all active languages
-// Import admin new-device login notification email template
-if (is_array($languages)) {
-    foreach ($languages as $code => $lang) {
-        $language->importEmail('email_'.$code.'.xml', CC_LANGUAGE_DIR, 'admin.two_factor_code');
-        $language->importEmail('email_'.$code.'.xml', CC_LANGUAGE_DIR, 'admin.new_device_login');
-        $language->importEmail('email_'.$code.'.xml', CC_LANGUAGE_DIR, 'cart.abandoned');
+// Refresh all installed languages from API and import missing email content
+if (is_array($languages) && !empty($languages)) {
+    $api_url_path = '/api/languages';
+    $request = new Request('extensions.cubecart.com', $api_url_path, 443, false, true, 10);
+    $request->setMethod('get');
+    $request->setSSL();
+    $request->setUserAgent('CubeCart');
+    $request->skiplog(true);
+    if (!$json = $request->send()) {
+        $json = file_get_contents('https://extensions.cubecart.com'.$api_url_path);
+    }
+    if ($json) {
+        $api_data = json_decode($json, true);
+        if ($api_data && !empty($api_data['languages'])) {
+            $installed_codes = array_keys($languages);
+            foreach ($api_data['languages'] as $api_lang) {
+                if (!in_array($api_lang['code'], $installed_codes)) {
+                    continue;
+                }
+                $code = $api_lang['code'];
+
+                // Download the ZIP
+                $url_parts = parse_url($api_lang['download']);
+                $dl_request = new Request($url_parts['host'], $url_parts['path'], 443, false, true, 30);
+                $dl_request->setMethod('get');
+                $dl_request->setSSL();
+                $dl_request->setUserAgent('CubeCart');
+                $dl_request->skiplog(true);
+                $zip_data = $dl_request->send();
+                if (!$zip_data) {
+                    $zip_data = file_get_contents($api_lang['download']);
+                }
+                if (!$zip_data) {
+                    continue;
+                }
+
+                // Extract ZIP contents
+                $tmp_path = CC_BACKUP_DIR.$code.'.zip';
+                file_put_contents($tmp_path, $zip_data);
+                $zip = new ZipArchive();
+                if ($zip->open($tmp_path) === true) {
+                    for ($i = 0; $i < $zip->numFiles; $i++) {
+                        $entry = $zip->getNameIndex($i);
+                        $file_data = $zip->getFromIndex($i);
+                        if ($file_data === false) continue;
+                        if (preg_match('/\.png$/i', $entry)) {
+                            file_put_contents(CC_LANGUAGE_DIR.'flags/'.basename($entry), $file_data);
+                        } else {
+                            file_put_contents(CC_LANGUAGE_DIR.basename($entry), $file_data);
+                        }
+                    }
+                    $zip->close();
+                }
+                if (file_exists($tmp_path)) {
+                    unlink($tmp_path);
+                }
+
+                // Import all email content types for this language
+                $email_file = 'email_'.$code.'.xml';
+                if (file_exists(CC_LANGUAGE_DIR.$email_file)) {
+                    $language->importEmail($email_file);
+                }
+            }
+        }
     }
 }
