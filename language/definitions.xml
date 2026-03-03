@@ -2107,7 +2107,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="error_tax_tariff_add" introduced="6.5.12"><![CDATA[Failed to add tariff as it exists already.]]></string>
     <string name="title_tariffs" introduced="6.5.12"><![CDATA[Tariffs]]></string>
     <string name="redirect_error_not_found" introduced="6.5.10"><![CDATA[Error: Destination not found.]]></string>
-    <string name="installed_languages" introduced="6.5.10"><![CDATA[Installed Languages]]></string>
     <string name="installed_skins" introduced="6.5.10"><![CDATA[Installed Skins]]></string>
     <string name="install_extension" introduced="6.5.10"><![CDATA[Install / Upgrade Extension]]></string>
     <string name="captcha_warning" introduced="6.5.7"><![CDATA[The following bot protection service providers are not compatible with your current skin:]]></string>

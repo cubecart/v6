@@ -399,25 +399,6 @@ if (is_array($modules)) {
 $GLOBALS['smarty']->assign('SAVE_STATUS', $save_status); 
 $GLOBALS['smarty']->assign('MODULES', $modules);
 
-$languages_installed = $GLOBALS['language']->listLanguages();
-
-if (is_array($languages_installed)) {
-    $language_modules = array();
-    $enabled = $GLOBALS['config']->get('languages');
-    foreach ($languages_installed as $key => $value) {
-        $language_modules[$key] = array(
-            'status' 		=> (isset($enabled[$key])) ? (int)$enabled[$key] : 1,
-            'lang_code' 	=> $key,
-            'name' 			=> $value['title'],
-            'type' 			=> 'language',
-            'edit_url'		=> '?_g=settings&node=language&language='.$key,
-            'delete_url' 	=> '?_g=settings&node=language&delete='.$key.'&token='.SESSION_TOKEN
-        );
-        $i++;
-    }
-    $GLOBALS['smarty']->assign('LANGUAGES', $language_modules);
-}
-
 $skins = $GLOBALS['gui']->listSkins();
 
 if (is_array($skins)) {

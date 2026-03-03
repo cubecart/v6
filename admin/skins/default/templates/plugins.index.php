@@ -71,39 +71,6 @@
       {/if}
       
       </form>
-      <hr>
-      <h3>{$LANG.settings.installed_languages}</h3>
-      <form action="?_g=settings&node=language" method="post">
-      {if is_array($LANGUAGES)}
-      <table>
-         <thead>
-            <tr>
-               <th width="45">{$LANG.common.status}</th>
-               <th>{$LANG.common.name_and_desc}</th>
-               <th width="10">&nbsp;</th>
-            </tr>
-         </thead>
-         <tbody>
-            {foreach from=$LANGUAGES item=module}
-            <tr>
-               <td style="text-align:center">
-                  <input type="hidden" name="status[{$module.lang_code}]" id="status_{$module.lang_code}" value="{$module.status}" class="toggle">
-               </td>
-               <td><a href="{$module.edit_url}">{$module.name}</a></td>
-               <td nowrap>
-                  <a href="{$module.edit_url}" class="edit"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
-                  <a href="{$module.delete_url}"  class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
-               </td>
-            </tr>
-            {/foreach}
-         </tbody>
-      </table>
-      <div class="form_control">
-         <input type="submit" value="{$LANG.common.save}">
-      </div>
-      {/if}
-      
-      </form>
       {if is_array($SKINS)}
       <hr>
       <h3>{$LANG.settings.installed_skins}</h3>
