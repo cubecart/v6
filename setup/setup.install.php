@@ -204,8 +204,15 @@ if (!isset($_SESSION['setup']['permissions'])) {
             'UAH' => 'Ukrainian Hryvnia',
             'ZAR' => 'South African Rand'
         );
+        $lang_default_currency = $language->getData('default_currency');
         foreach ($currencies as $code => $name) {
-            $selected = (isset($_POST['config']['default_currency']) && $_POST['config']['default_currency'] == $code) ? ' selected="selected"' : '';
+            if (isset($_POST['config']['default_currency'])) {
+                $selected = ($_POST['config']['default_currency'] == $code) ? ' selected="selected"' : '';
+            } elseif ($lang_default_currency) {
+                $selected = ($lang_default_currency == $code) ? ' selected="selected"' : '';
+            } else {
+                $selected = '';
+            }
             $list_currency[] = array('code' => $code, 'selected' => $selected, 'name' => (!empty($name))?$name:$code);
         }
         $GLOBALS['smarty']->assign('CURRENCIES', $list_currency);

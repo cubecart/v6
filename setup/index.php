@@ -634,15 +634,15 @@ if (!$is_upgrade && !isset($_SESSION['language_selected'])) {
             if (empty($new_config['default_rss_feed']) || !isset($new_config['default_rss_feed']) || $new_config['default_rss_feed'] == 'http://forums.cubecart.com/index.php?act=rssout&id=1') {
                 $new_config['default_rss_feed'] = 'http://forums.cubecart.com/rss/forums/1-cubecart-news-announcements/';
             }
-            if (file_exists('language/' . $main_config['default_language'] . '.xml')) {
+            if (file_exists(CC_LANGUAGE_DIR . $main_config['default_language'] . '.xml')) {
                 $default_language = $main_config['default_language'];
-            } elseif (isset($_SESSION['setup']['long_lang_identifier']) && file_exists('language/' . $_SESSION['setup']['long_lang_identifier'] . '.xml')) {
+            } elseif (isset($_SESSION['setup']['long_lang_identifier']) && file_exists(CC_LANGUAGE_DIR . $_SESSION['setup']['long_lang_identifier'] . '.xml')) {
                 $default_language = $_SESSION['setup']['long_lang_identifier'];
             } else {
                 $default_language = isset($_SESSION['setup']['config']['default_language']) ? $_SESSION['setup']['config']['default_language'] : 'en-GB';
             }
 
-            if (!file_exists('language/' . $default_language . '.xml')) {
+            if (!file_exists(CC_LANGUAGE_DIR . $default_language . '.xml')) {
                 $default_language = 'en-GB';
             }
 
