@@ -227,29 +227,110 @@ $GLOBALS['smarty']->template_dir = dirname(__FILE__) . '/';
 $language  = Language::getInstance();
 $languages = $language->listLanguages();
 
-if (isset($_POST['language'])) {
-    $_SESSION['language'] = $_POST['language'];
-    httpredir('index.php', 'language');
-} else {
-    if (!isset($_SESSION['language'])) {
-        $_SESSION['language'] = 'en-GB';
-    }
+if (!isset($_SESSION['language'])) {
+    $_SESSION['language'] = 'en-GB';
 }
 
 $language->change($_SESSION['language']);
 
-if (is_array($languages)) {
-    foreach ($languages as $code => $lang) {
-        $lang['selected'] = ($code == $_SESSION['language']) ? ' selected="selected"' : '';
-        $GLOBALS['smarty']->append('LANG_LIST', $lang);
-    }
-}
 $strings = $language->getStrings();
+
+// Fallback strings when no language files exist on disk (fresh install)
+if (empty($strings['common']['continue'])) {
+    $strings['common']['continue'] = 'Continue';
+}
+if (empty($strings['setup']['button_restart'])) {
+    $strings['setup']['button_restart'] = 'Restart';
+}
+if (empty($strings['setup']['button_retry'])) {
+    $strings['setup']['button_retry'] = 'Retry';
+}
+if (empty($strings['gui_message']['errors_detected'])) {
+    $strings['gui_message']['errors_detected'] = 'Errors';
+}
+
 $GLOBALS['smarty']->assign('LANG', $strings);
 $GLOBALS['smarty']->assign('VERSION', CC_VERSION);
 $GLOBALS['smarty']->assign('ROOT', CC_ROOT_DIR);
 
-if (isset($_POST['proceed'])) {
+// Detect upgrade (skip language selection stage)
+$is_upgrade = false;
+if (file_exists($global_file)) {
+    include $global_file;
+    if (isset($glob['installed']) && $glob['installed']) {
+        $is_upgrade = true;
+    }
+    unset($glob);
+}
+
+// Handle language selection POST (fresh install only)
+if (isset($_POST['select_language'])) {
+    $selected_code = $_POST['select_language'];
+    $download_ok = false;
+
+    // Fetch API to get download URL
+    $api_url_path = '/api/languages';
+    $request = new Request('extensions.cubecart.com', $api_url_path, 443, false, true, 10);
+    $request->setMethod('get');
+    $request->setSSL();
+    $request->setUserAgent('CubeCart');
+    $request->skiplog(true);
+    $json = $request->send();
+    if (!$json) {
+        $json = file_get_contents('https://extensions.cubecart.com'.$api_url_path);
+    }
+    if ($json) {
+        $api_data = json_decode($json, true);
+        if ($api_data && !empty($api_data['languages'])) {
+            foreach ($api_data['languages'] as $api_lang) {
+                if ($api_lang['code'] === $selected_code) {
+                    // Download ZIP
+                    $url_parts = parse_url($api_lang['download']);
+                    $dl_request = new Request($url_parts['host'], $url_parts['path'], 443, false, true, 30);
+                    $dl_request->setMethod('get');
+                    $dl_request->setSSL();
+                    $dl_request->setUserAgent('CubeCart');
+                    $dl_request->skiplog(true);
+                    $zip_data = $dl_request->send();
+                    if (!$zip_data) {
+                        $zip_data = file_get_contents($api_lang['download']);
+                    }
+                    if ($zip_data) {
+                        $tmp_path = CC_CACHE_DIR . $selected_code . '.zip';
+                        file_put_contents($tmp_path, $zip_data);
+                        $zip = new ZipArchive();
+                        if ($zip->open($tmp_path) === true) {
+                            for ($i = 0; $i < $zip->numFiles; $i++) {
+                                $entry = $zip->getNameIndex($i);
+                                $file_data = $zip->getFromIndex($i);
+                                if ($file_data === false) continue;
+                                if (preg_match('/\.png$/i', $entry)) {
+                                    file_put_contents(CC_LANGUAGE_DIR . 'flags/' . basename($entry), $file_data);
+                                } else {
+                                    file_put_contents(CC_LANGUAGE_DIR . basename($entry), $file_data);
+                                }
+                            }
+                            $zip->close();
+                            $download_ok = true;
+                        }
+                        if (file_exists($tmp_path)) {
+                            unlink($tmp_path);
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    if ($download_ok) {
+        $_SESSION['language'] = $selected_code;
+        $_SESSION['language_selected'] = true;
+        httpredir('index.php');
+    } else {
+        $errors[] = 'Failed to download language pack. Please try again.';
+    }
+} elseif (isset($_POST['proceed'])) {
     $redir = true;
     if (!isset($_SESSION['setup'])) {
         $_SESSION['setup'] = array();
@@ -280,7 +361,40 @@ if (isset($_POST['proceed'])) {
     httpredir('index.php', 'cancelled');
 }
 
-if (!isset($_SESSION['setup'])) {
+if (!$is_upgrade && !isset($_SESSION['language_selected'])) {
+    // Language selection stage (fresh install only, no language files on disk yet)
+    $restart = false;
+    $api_url_path = '/api/languages';
+    $request = new Request('extensions.cubecart.com', $api_url_path, 443, false, true, 10);
+    $request->setMethod('get');
+    $request->setSSL();
+    $request->setUserAgent('CubeCart');
+    $request->skiplog(true);
+    $json = $request->send();
+    if (!$json) {
+        $json = file_get_contents('https://extensions.cubecart.com'.$api_url_path);
+    }
+    if ($json) {
+        $api_data = json_decode($json, true);
+        if ($api_data && !empty($api_data['languages'])) {
+            $api_lang_list = array();
+            foreach ($api_data['languages'] as $api_lang) {
+                $api_lang_list[] = array(
+                    'code' => $api_lang['code'],
+                    'name' => $api_lang['name'],
+                    'selected' => ($api_lang['code'] === 'en-GB') ? ' selected="selected"' : ''
+                );
+            }
+            $GLOBALS['smarty']->assign('API_LANGUAGES', $api_lang_list);
+        }
+    }
+    if (!isset($api_lang_list) || empty($api_lang_list)) {
+        $errors[] = 'Unable to fetch available languages. Please check your internet connection and try again.';
+        $retry = true;
+        $proceed = false;
+    }
+    $GLOBALS['smarty']->assign('MODE_LANGUAGE', true);
+} elseif (!isset($_SESSION['setup'])) {
     $restart = false;
     $step    = 1;
     // Compatibility Test

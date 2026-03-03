@@ -21,14 +21,6 @@
 <body>
 <div id="frame">
   <div id="header">
-	<div id="language">
-	  <form action="index.php" method="post" enctype="multipart/form-data">
-		<select name="language" id="language-select" class="textbox">
-		{foreach from=$LANG_LIST item=lang}<option value="{$lang.code}"{$lang.selected}>{$lang.title}</option>{/foreach}
-		</select>
-		<input type="submit" value="{$LANG.common.update}" class="mini_button" />
-	  </form>
-	</div>
   </div>
   <div id="promo">  
   Get official CubeCart optimised hosting only at <a href="https://hosted.cubecart.com" target="_blank">https://hosted.cubecart.com</a>.</div>
@@ -63,6 +55,23 @@
 
   <form action="index.php" method="post" enctype="multipart/form-data">
 	<div id="content">
+  {if isset($MODE_LANGUAGE)}
+	  <h3 class="first">Select Language</h3>
+	  <p>Please select your language. It will be downloaded and used for the setup process and your store.</p>
+	  {if isset($API_LANGUAGES)}
+	  <fieldset>
+		<div>
+		  <label for="select_language">Language</label>
+		  <span>
+			<select name="select_language" id="select_language" class="textbox">
+			  {foreach from=$API_LANGUAGES item=lang}<option value="{$lang.code}"{$lang.selected}>{$lang.name} ({$lang.code})</option>{/foreach}
+			</select>
+		  </span>
+		</div>
+	  </fieldset>
+	  {/if}
+  {/if}
+
   {if isset($MODE_COMPAT)}
 	  <h3 class="first">{$LANG.setup.title_compat_check}</h3>
 	  {foreach from=$CHECKS item=check}
