@@ -168,9 +168,10 @@ if (!isset($_SESSION['setup']['permissions'])) {
 
         $currencies = array(
             'USD' => 'US Dollar',
-            'GBP' => 'British Pound',
+            'GBP' => 'Pound Sterling',
             'EUR' => 'Euro',
             #####
+            'AED' => 'United Arab Emirates Dirham',
             'AUD' => 'Australian Dollar',
             'BGN' => 'Bulgarian Lev',
             'BRL' => 'Brazilian Real',
@@ -179,16 +180,13 @@ if (!isset($_SESSION['setup']['permissions'])) {
             'CNY' => 'Chinese Yuan',
             'CZK' => 'Czech Koruna',
             'DKK' => 'Danish Krone',
-            'EEK' => 'Estonian Kroon',
             'HKD' => 'Hong Kong Dollar',
-            'HRK' => 'Croatian Kuna',
             'HUF' => 'Hungarian Forint',
             'IDR' => 'Indonesian Rupiah',
+            'ILS' => 'Israeli New Shekel',
             'INR' => 'Indian Rupee',
             'JPY' => 'Japanese Yen',
             'KRW' => 'South Korean Won',
-            'LTL' => 'Lithuanian Litas',
-            'LVL' => 'Latvian Lat',
             'MXN' => 'Mexican Peso',
             'MYR' => 'Malaysian Ringgit',
             'NOK' => 'Norwegian Krone',
@@ -197,10 +195,13 @@ if (!isset($_SESSION['setup']['permissions'])) {
             'PLN' => 'Polish Zloty',
             'RON' => 'Romanian Leu',
             'RUB' => 'Russian Ruble',
+            'SAR' => 'Saudi Riyal',
             'SEK' => 'Swedish Krona',
             'SGD' => 'Singapore Dollar',
             'THB' => 'Thai Baht',
             'TRY' => 'Turkish Lira',
+            'TWD' => 'New Taiwan Dollar',
+            'UAH' => 'Ukrainian Hryvnia',
             'ZAR' => 'South African Rand'
         );
         foreach ($currencies as $code => $name) {

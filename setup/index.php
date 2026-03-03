@@ -401,13 +401,13 @@ if (!$is_upgrade && !isset($_SESSION['language_selected'])) {
     // Compatibility Test
     $checks  = array(
     'PHP' => array(
-      'title' => 'PHP 7.4+ (8.2 Recommended)',
-      'status' => version_compare(PHP_VERSION, '7.4', '>='),
+      'title' => 'PHP 8.1+ (8.3 Recommended)',
+      'status' => version_compare(PHP_VERSION, '8.1', '>='),
       'pass' => PHP_VERSION,
       'fail' => PHP_VERSION
     ),
     'MySQL' => array(
-      'title' => 'MySQL 5.6+',
+      'title' => 'MySQL 5.7+ / MariaDB 10.3+',
       'status' => extension_loaded('mysqli'),
       'pass' => (function_exists('mysqli_get_client_info')) ? mysqli_get_client_info() : "Bad database extension",
       'fail' => "PHP mysqli extension not installed"
