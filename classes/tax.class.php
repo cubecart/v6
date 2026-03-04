@@ -593,7 +593,7 @@ class Tax
                 }
                 return false;
             case 2:  ## Percentage off all stock
-                $value = $normal_price * ((100-Config::getInstance()->get('config', 'catalogue_sale_percentage'))/100);
+                $value = $normal_price * ((100-(float)Config::getInstance()->get('config', 'catalogue_sale_percentage'))/100);
                 if (is_numeric($value) && $value < $normal_price) {
                     return ($format) ? $this->priceFormat($value) : $value;
                 }
