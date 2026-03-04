@@ -13,6 +13,8 @@
 /.htaccess
 /robots.txt
 /sitemap_*
+/skins/*
+!/skins/foundation/*
 
 # Language files (installed via API)
 /language/*.xml
