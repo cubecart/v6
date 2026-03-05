@@ -32,6 +32,7 @@
 		<td>{$LANG.common.to}</td>
 		<td>{$LANG.common.from}</td>
 		<td colspan="2" align="center">{$LANG.common.read}</td>
+		<td>{$LANG.common.method}</td>
 		<td>{$LANG.common.date}</td>
 		<td>Attachments</td>
 		<td>{$LANG.common.edit}</td>
@@ -59,6 +60,7 @@
 			<a href="#" onclick="{literal}$.colorbox({title:'{/literal}{addslashes(htmlentities($log.subject))} ({$LANG.common.plain_text}){literal}',width:'90%', height:'90%', html:'<iframe width=\'100%\' height=\'95%\' frameBorder=\'0\' src=\'?_g=xml&amp;function=viewEmail&amp;id={/literal}{$log.id}{literal}&amp;mode=content_text\'></iframe>'}){/literal}">{$LANG.common.plain_text}</a>
 			{/if}
 		</td>
+		<td style="text-align:center">{$log.email_method|default:'—'}</td>
 		<td>{$log.date}</td>
 		<td>
 			{if !empty($log.attachment)}
@@ -72,7 +74,7 @@
 	  </tr>
 		{if !empty($log.fail_reason)}
 		<tr>
-			<td class="row_error" colspan="9">{$log.fail_reason}</td>
+			<td class="row_error" colspan="10">{$log.fail_reason}</td>
 		</tr>
 		{/if}
 	  {/foreach}

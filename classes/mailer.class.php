@@ -269,12 +269,15 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
             }
             $this->Sender = $GLOBALS['config']->get('config', 'email_address');
 
+            $result = false;
+            $disable_send = false;
+
             foreach ($GLOBALS['hooks']->load('class.mailer.presend') as $hook) {
                 include $hook;
             }
 
             // Send email
-            if(!isset($disable_send) || !$disable_send) {
+            if(!$disable_send) {
                 $result = $this->Send();
             }
             
@@ -286,6 +289,7 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
                 'to' => $email,
                 'from' => $from,
                 'result' => $result,
+                'email_method' => $GLOBALS['config']->get('config', 'email_method') ?: 'phpmail',
                 'email_content_id' => $this->_email_content_id,
                 'fail_reason' => !empty($this->ErrorInfo) ? htmlentities($this->ErrorInfo, ENT_QUOTES) : ''
             );

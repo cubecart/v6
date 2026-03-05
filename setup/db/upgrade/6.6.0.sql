@@ -488,3 +488,6 @@ ALTER TABLE `CubeCart_email_content` ADD UNIQUE KEY `content_language` (`content
 
 -- Allow merchants to disable individual email notifications
 ALTER TABLE `CubeCart_email_content` ADD COLUMN `enabled` TINYINT(1) UNSIGNED NOT NULL DEFAULT 1; #EOQ
+
+-- Log email delivery method
+ALTER TABLE `CubeCart_email_log` ADD COLUMN `email_method` VARCHAR(20) NOT NULL DEFAULT '' AFTER `result`; #EOQ

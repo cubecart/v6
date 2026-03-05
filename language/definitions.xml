@@ -681,6 +681,7 @@
     <string name="your_basket" introduced="5.0.0"><![CDATA[Your Shopping Basket]]></string>
   </group>
   <group name="common">
+    <string name="method" introduced="6.6.0"><![CDATA[Method]]></string>
     <string name="manufactuter" introduced="6.5.12"><![CDATA[Manufacturer]]></string>
     <string name="tariff" introduced="6.5.12"><![CDATA[Tariff]]></string>
     <string name="na" introduced="6.5.12"><![CDATA[N/A]]></string>
