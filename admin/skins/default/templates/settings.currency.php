@@ -15,6 +15,7 @@
 	<table>
 	  <thead>
 	  <tr>
+		<td style="text-align:center">{$LANG.common.default}</td>
 		<td style="text-align:center">{$LANG.common.status}</td>
 		<td style="text-align:center">{$LANG.settings.currency_iso}</td>
 		<td style="text-align:center">{$LANG.settings.currency_name}</td>
@@ -32,18 +33,19 @@
 	  <tbody>
 	  {foreach from=$CURRENCIES item=currency}
 	  <tr>
+		<td style="text-align:center"><input type="radio" name="default_currency" value="{$currency.code}" class="check-default-currency" rel="{$currency.code}"{if $currency.code == $DEFAULT_CURRENCY} checked="checked"{/if}></td>
 		<td style="text-align:center"><input type="hidden" name="currency[{$currency.code}][active]" id="{$currency.code}" class="toggle" value="{$currency.active}"></td>
 		<td><strong>{$currency.code}</strong></td>
 		<td><span class="editable" name="currency[{$currency.code}][name]">{$currency.name}</span></td>
-		<td style="text-align:center"><input type="text" name="currency[{$currency.code}][symbol_left]" class="textbox number edited" value="{$currency.symbol_left}"></td>
+		<td style="text-align:center"><span class="editable" style="width:40px;text-align:center" name="currency[{$currency.code}][symbol_left]">{$currency.symbol_left}</span></td>
 		<td style="text-align:right"><span class="editable number-right" name="currency[{$currency.code}][value]">{$currency.value}</span></td>
 		<td style="text-align:right"><span class="editable number-right" name="currency[{$currency.code}][adjustment]">{$currency.adjustment}</span></td>
-		<td style="text-align:center"><input type="text" name="currency[{$currency.code}][symbol_right]" class="textbox number edited" value="{$currency.symbol_right}"></td>
-		<td style="text-align:center"><input type="text" name="currency[{$currency.code}][decimal_places]" class="textbox number edited" value="{$currency.decimal_places}"></td>
-		<td style="text-align:center"><input type="text" name="currency[{$currency.code}][symbol_decimal]" class="textbox number edited" value="{$currency.symbol_decimal}" maxlength="10"></td>
-		<td style="text-align:center"><input type="text" name="currency[{$currency.code}][symbol_thousand]" class="textbox number edited" value="{$currency.symbol_thousand}" maxlength="10"></td>
+		<td style="text-align:center"><span class="editable" style="width:40px;text-align:center" name="currency[{$currency.code}][symbol_right]">{$currency.symbol_right}</span></td>
+		<td style="text-align:center"><span class="editable" style="width:30px;text-align:center" name="currency[{$currency.code}][decimal_places]">{$currency.decimal_places}</span></td>
+		<td style="text-align:center"><span class="editable" style="width:30px;text-align:center" name="currency[{$currency.code}][symbol_decimal]">{$currency.symbol_decimal}</span></td>
+		<td style="text-align:center"><span class="editable" style="width:30px;text-align:center" name="currency[{$currency.code}][symbol_thousand]">{$currency.symbol_thousand}</span></td>
 		<td style="text-align:center">{if $currency.updated}{$currency.updated}{else}{$LANG.common.unknown}{/if}</td>
-		<td style="text-align:center"><a href="{$VAL_SELF}&delete={$currency.code}&token={$SESSION_TOKEN}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a></td>
+		<td style="text-align:center">{if $currency.code != $DEFAULT_CURRENCY}<a href="{$VAL_SELF}&delete={$currency.code}&token={$SESSION_TOKEN}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>{/if}</td>
 	  </tr>
 	  {/foreach}
 	  </tbody>
@@ -58,7 +60,7 @@
 	
 	<div class="form_control">
 	  <input type="submit" name="update_manual" class="button" value="{$LANG.common.save}"> &nbsp;
-	  <input type="submit" name="autoupdate" class="button" value="{$LANG.settings.currency_ecb}">
+	  <a href="{$VAL_SELF}&autoupdate=1&token={$SESSION_TOKEN}" class="button">{$LANG.settings.currency_ecb}</a>
 	</div>
   </div>
   <div id="addrate" class="tab_content">

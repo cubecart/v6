@@ -30,10 +30,6 @@
       </fieldset>
       <fieldset>
          <legend>{$LANG.settings.title_tax_lang}</legend>
-         <div><label for="default_currency">{$LANG.settings.default_currency}</label><span><select name="config[default_currency]" id="default_currency" class="textbox">
-            {foreach from=$CURRENCIES item=currency}<option value="{$currency.code}"{$currency.selected}>{$currency.code} - {$currency.name}</option>{/foreach}
-            </select></span>
-         </div>
          <div><label for="product_weight_unit">{$LANG.settings.weight_unit}</label><span><select name="config[product_weight_unit]" id="product_weight_unit" class="textbox">
             {foreach from=$OPT_PRODUCT_WEIGHT_UNIT item=option}<option value="{$option.value}"{$option.selected}>{$option.title}</option>{/foreach}
             </select></span>

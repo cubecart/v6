@@ -193,9 +193,6 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
     }
 
     $config_new = $_POST['config'];
-    if($config_old['default_currency']!==$config_new['default_currency']) {
-        $GLOBALS['main']->successMessage($lang['settings']['currency_changed']);
-    }
     $config_new['enc_key'] =  $config_old['enc_key'] ?? ''; // Keep old encryption key
     $config_new['offline_content'] = $GLOBALS['RAW']['POST']['config']['offline_content'];
     $config_new['store_copyright'] = $GLOBALS['RAW']['POST']['config']['store_copyright'];
@@ -214,8 +211,8 @@ if (isset($_POST['config']) && Admin::getInstance()->permissions('settings', CC_
         $config_new[$t] = trim($config_new[$t]);
     }
 
-    ## Set default currency to have an exchange rate of 1
-    $GLOBALS['db']->update('CubeCart_currency', array('value' => 1), array('code' => $_POST['config']['default_currency']));
+    // Preserve current default_currency (now managed in Settings > Currencies)
+    $config_new['default_currency'] = $config_old['default_currency'];
 
     // Preserve current default_language (now managed in Settings > Languages)
     $config_new['default_language'] = $config_old['default_language'];
@@ -360,15 +357,6 @@ if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('numcode'
     $GLOBALS['smarty']->assign('VAL_JSON_COUNTY', state_json());
 }
 
-
-## Get Currencies
-if (($currencies = $GLOBALS['db']->select('CubeCart_currency', array('name', 'code'), array('active' => '1'), array('name' => 'ASC'))) !== false) {
-    foreach ($currencies as $currency) {
-        $currency['selected'] = ($currency['code'] == $GLOBALS['config']->get('config', 'default_currency')) ? ' selected="selected"' : '';
-        $smarty_data['currencies'][] = $currency;
-    }
-    $GLOBALS['smarty']->assign('CURRENCIES', $smarty_data['currencies']);
-}
 
 ## Get supported timezones from PHP
 if (class_exists('DateTimeZone')) {

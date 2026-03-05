@@ -611,6 +611,13 @@ $(document).ready(function() {
         }), $("#content_body").on("click", ".check-primary, .check-default", function() {
             var t = $(this).attr("rel");
             $("#" + t).parent().addClass("selected"), $("#" + t + ":checkbox").prop("checked", true)
+        }), $("#content_body").on("click", ".check-default-currency", function() {
+            var t = $(this).attr("rel");
+            var h = $("#" + t);
+            if (h.val() !== "1") {
+                h.val("1");
+                $("img.cbs[rel='#" + t + "']").attr("src", IMG_PATH + "1_checkbox.png").attr("alt", lang.enabled).attr("title", lang.enabled)
+            }
         }), $("#quickTour").on("click", function() {
             $("#navigation .submenu").show(), $("#joyrideTour").joyride()
         }), $("#rule-eu, #rule-rest").click(function(e) {
@@ -750,12 +757,12 @@ $(document).ready(function() {
             } else $(this).hasClass("no-drop") && $(t).hide()
         })
     }), $("span.editable").each(function() {
-        "" == $(this).html() && $(this).html("<em>null</em>")
+        "" == $(this).html() && $(this).html("&nbsp;")
     }), $("span.editable").each(function() {
         $(this).attr("title", "Click to edit")
     }).on("click", function() {
         var t = $(this).html();
-        "<em>null</em>" == t && (t = "");
+        ("<em>null</em>" == t || "\u00a0" == t) && (t = "");
         var e = $(this).attr("name"), s = $(this).attr("style"), i = $(this).attr("class");
         if ($(this).hasClass("select")) {
             var a = document.createElement("select");
