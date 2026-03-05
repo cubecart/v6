@@ -11,6 +11,7 @@
  *}
 {if isset($DISPLAY_ALL_TRANSACTIONS)}
 <div id="logs" class="tab_content">
+  {if isset($ALL_TRANSACTIONS)}<div class="right"><a href="?_g=maintenance&emptyTransLogs=true&redir=transactions" class="button delete" title="{$LANG.notification.confirm_continue}">{$LANG.maintain.clear_log}</a></div>{/if}
   <h3>{$LANG.orders.title_transaction_logs}</h3>
   <form action="{$VAL_SELF}" class="ignore-dirty" method="post">
 	<div>

@@ -1626,14 +1626,15 @@ This email is sent from the store's master email address but it is possible to r
     <string name="error_logs_email" introduced="6.1.0"><![CDATA[Email logs were not emptied.]]></string>
     <string name="error_logs_request" introduced="5.0.0"><![CDATA[Request logs were not emptied.]]></string>
     <string name="error_reset_product" introduced="5.0.0"><![CDATA[Product views have not been reset.]]></string>
-    <string name="logs_admin" introduced="5.0.0"><![CDATA[Clear admin activity logs]]></string>
-    <string name="logs_request" introduced="5.0.0"><![CDATA[Clear request logs]]></string>
-    <string name="logs_error" introduced="5.0.0"><![CDATA[Clear error logs]]></string>
-    <string name="logs_email" introduced="6.1.0"><![CDATA[Clear email logs]]></string>
-    <string name="logs_transaction" introduced="5.0.0"><![CDATA[Clear transaction logs]]></string>
-    <string name="clear_search" introduced="6.0.8"><![CDATA[Clear search log]]></string>
-    <string name="clear_cookie_consent" introduced="6.2.7"><![CDATA[Clear cookie consent log]]></string>
-    <string name="clear_sessions" introduced="6.4.0"><![CDATA[Clear all session data]]></string>
+    <string name="clear_log" introduced="6.6.0"><![CDATA[Clear log]]></string>
+    <string name="logs_admin" introduced="5.0.0"><![CDATA[Admin activity log]]></string>
+    <string name="logs_request" introduced="5.0.0"><![CDATA[Request log]]></string>
+    <string name="logs_error" introduced="5.0.0"><![CDATA[Error log]]></string>
+    <string name="logs_email" introduced="6.1.0"><![CDATA[Email log]]></string>
+    <string name="logs_transaction" introduced="5.0.0"><![CDATA[Transaction log]]></string>
+    <string name="clear_search" introduced="6.0.8"><![CDATA[Search terms]]></string>
+    <string name="clear_cookie_consent" introduced="6.2.7"><![CDATA[Cookie consent log]]></string>
+    <string name="clear_sessions" introduced="6.4.0"><![CDATA[All session data]]></string>
     <string name="sessions_cleared" introduced="6.4.0"><![CDATA[Session data has been cleared.]]></string>
     <string name="sessions_not_cleared" introduced="6.4.0"><![CDATA[Failed to clear session data.]]></string>
     <string name="cookie_consent_cleared" introduced="6.2.7"><![CDATA[Cookie consent log has been cleared.]]></string>
@@ -1693,7 +1694,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_rebuild" introduced="5.0.0"><![CDATA[Rebuild]]></string>
     <string name="title_rebuild_cache" introduced="5.0.0"><![CDATA[Cache]]></string>
     <string name="title_rebuild_catalogue" introduced="5.0.0"><![CDATA[Catalogue]]></string>
-    <string name="title_rebuild_logs" introduced="5.0.0"><![CDATA[Logs]]></string>
+    <string name="title_rebuild_logs" introduced="5.0.0"><![CDATA[Clear Logs]]></string>
     <string name="title_rebuild_misc" introduced="5.0.0"><![CDATA[Miscellaneous]]></string>
     <string name="title_query_db" introduced="5.0.0"><![CDATA[Query MySQL Database]]></string>
     <string name="query_box" introduced="5.0.0"><![CDATA[Query Box]]></string>

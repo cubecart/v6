@@ -38,6 +38,7 @@
 
 {if isset($ADMIN_ACTIVITY)}
 <div id="logs_activity" class="tab_content">
+  <div class="right"><a href="?_g=maintenance&clearLogs=true&redir=adminlogs" class="button delete" title="{$LANG.notification.confirm_continue}">{$LANG.maintain.clear_log}</a></div>
   <h3>{$LANG.settings.title_logs_activity_admin}</h3>
   <table>
 	<thead>

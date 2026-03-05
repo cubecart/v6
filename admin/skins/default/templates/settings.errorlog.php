@@ -12,7 +12,7 @@
 <div id="admin_error_log" class="tab_content">
   <h3>{$LANG.settings.title_error_log}</h3>
   {if $ADMIN_ERROR_LOG}
-  <p>[<a href="?_g=maintenance&clearLogs=true&redir=viewlog">{$LANG.maintain.logs_error}</a>]</p>
+  <div class="right"><a href="?_g=maintenance&clearLogs=true&redir=viewlog" class="button delete" title="{$LANG.notification.confirm_continue}">{$LANG.maintain.clear_log}</a></div>
   {/if}
   <form action="{$VAL_SELF}#admin_error_log" method="post" enctype="multipart/form-data">
 	  <table>
@@ -58,7 +58,9 @@
   <div class="pagination">{$PAGINATION_ADMIN_ERROR_LOG}</div>
 </div>
 <div id="system_error_log" class="tab_content">
-  <h3>{$LANG.settings.title_system_error_log}</h3>
+  {if $SYSTEM_ERROR_LOG}
+  <div class="right"><a href="?_g=maintenance&emptyErrorLogs=true&redir=viewlog" class="delete button" title="{$LANG.notification.confirm_continue}">{$LANG.maintain.clear_log}</a></div>
+  {/if}<h3>{$LANG.settings.title_system_error_log}</h3>
   <ul class="severity">
   	<li class="yellow">{$LANG.settings.error_notice_desc}</li>
   	<li class="orange">{$LANG.settings.error_warning_desc}</li>
@@ -67,9 +69,6 @@
 	<li class="red">{$LANG.settings.error_exception_desc}</li>
   </ul>
   <p>{$LANG.settings.error_general_desc}</p>
-  {if $SYSTEM_ERROR_LOG}
-  <p>[<a href="?_g=maintenance&emptyErrorLogs=true&redir=viewlog">{$LANG.maintain.logs_error}</a>]</p>
-  {/if}
   
   <form action="{$VAL_SELF}#system_error_log" method="post" enctype="multipart/form-data">
 	  <table>

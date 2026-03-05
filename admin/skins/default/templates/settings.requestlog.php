@@ -11,7 +11,7 @@
  *}
 <div id="request_log" class="tab_content">
 {if $REQUEST_LOG}
-  <p class="right"><a href="?_g=maintenance&emptyRequestLogs=true&redir=viewlog" class="button">{$LANG.maintain.logs_request}</a></p>
+  <div class="right"><a href="?_g=maintenance&emptyRequestLogs=true&redir=viewlog" class="button delete" title="{$LANG.notification.confirm_continue}">{$LANG.maintain.clear_log}</a></div>
   {/if}<h3>{$LANG.navigation.nav_request_log}</h3>
   {if $REQUEST_LOG}
 	{foreach from=$REQUEST_LOG item=log}

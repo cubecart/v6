@@ -123,7 +123,8 @@
 {/if}
 {if isset($SEARCH_TERMS)}
 <div id="stats_search" class="tab_content">
-   <h3>{$LANG.statistics.title_search}</h3>
+   {if $SEARCH_TERMS}<div class="right"><a href="?_g=maintenance&clearSearch=true&redir=searchlog" class="button delete" title="{$LANG.notification.confirm_continue}">{$LANG.maintain.clear_log}</a></div>{/if}
+   <h3 style="margin-bottom: 25px;">{$LANG.statistics.title_search}</h3>
    {if $SEARCH_TERMS}
    <div id="chart7" class="google_chart"></div>
    <div id="chart7-title" style="display:none">{$GRAPH_DATA.7.title}</div>

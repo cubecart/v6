@@ -379,13 +379,17 @@ if (isset($_POST['sitemap'])) {
     $clear_post = true;
 }
 
-if (isset($_POST['emptyTransLogs']) && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
+if (isset($_REQUEST['emptyTransLogs']) && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
     if ($GLOBALS['db']->truncate('CubeCart_transactions')) {
         $GLOBALS['main']->successMessage($lang['maintain']['notify_logs_transaction']);
     } else {
         $GLOBALS['main']->errorMessage($lang['maintain']['error_logs_transaction']);
     }
     $clear_post = true;
+    if(isset($_GET['redir']) && $_GET['redir']=='transactions') {
+        httpredir('?_g=orders&node=transactions');
+        exit;
+    }
 }
 
 if (isset($_REQUEST['emptyEmailLogs']) && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
@@ -395,6 +399,10 @@ if (isset($_REQUEST['emptyEmailLogs']) && Admin::getInstance()->permissions('mai
         $GLOBALS['main']->errorMessage($lang['maintain']['error_logs_email']);
     }
     $clear_post = true;
+    if(isset($_GET['redir']) && $_GET['redir']=='emaillog') {
+        httpredir('?_g=statistics&node=emaillog');
+        exit;
+    }
 }
 
 if (isset($_REQUEST['emptyErrorLogs']) && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
@@ -423,13 +431,17 @@ if (isset($_REQUEST['emptyRequestLogs']) && Admin::getInstance()->permissions('m
     }
 }
 
-if (isset($_POST['clearSearch']) && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
+if (isset($_REQUEST['clearSearch']) && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
     if ($GLOBALS['db']->truncate('CubeCart_search')) {
         $GLOBALS['main']->successMessage($lang['maintain']['notify_search_clear']);
     } else {
         $GLOBALS['main']->errorMessage($lang['maintain']['error_search_clear']);
     }
     $clear_post = true;
+    if(isset($_GET['redir']) && $_GET['redir']=='searchlog') {
+        httpredir('?_g=statistics');
+        exit;
+    }
 }
 
 if (isset($_POST['clearCache']) && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
@@ -489,6 +501,10 @@ if (isset($_REQUEST['clearLogs'])) {
     $clear_post = true;
     if(isset($_GET['redir']) && $_GET['redir']=='viewlog') {
         httpredir('?_g=settings&node=errorlog');
+        exit;
+    }
+    if(isset($_GET['redir']) && $_GET['redir']=='adminlogs') {
+        httpredir('?_g=settings&node=logs');
         exit;
     }
 }

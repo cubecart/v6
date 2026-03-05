@@ -10,7 +10,8 @@
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
 <div id="email_log" class="tab_content">
-  <h3>{$LANG.settings.title_email_log}</h3>
+    {if $EMAIL_LOG}<div class="right"><a href="?_g=maintenance&emptyEmailLogs=true&redir=emaillog" class="button delete" title="{$LANG.notification.confirm_continue}">{$LANG.maintain.clear_log}</a></div>{/if}
+	<h3>{$LANG.settings.title_email_log}</h3>
   <form action="{$VAL_SELF}" method="post" enctype="multipart/form-data">
       <fieldset class="width_30">
             <legend>{$LANG.common.filter}</legend>
