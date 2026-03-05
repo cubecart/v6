@@ -1342,7 +1342,7 @@ function ajaxElasticSearch(page) {
     const redirect = '?_g=maintenance&_=' + Math.floor(Date.now()/1000) + '#elasticsearch';
     if (res?.error === 'true') { window.location.href = redirect; return; }
 
-    if (res.es_count !== false && res.es_size !== false) {
+    if (res.es_count && res.es_size) {
       $("#es_count").text(Number(res.es_count).toLocaleString());
       $("#es_size").text(res.es_size);
     }
