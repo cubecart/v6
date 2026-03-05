@@ -65,6 +65,9 @@ class Cron
     public function clearCache() {
         return $GLOBALS['cache']->clear();
     }
+    public function rebuildSitemap() {
+        return $GLOBALS['seo']->sitemap() ? 'Sitemap rebuilt' : false;
+    }
     public function runSnippets() {
         foreach ($GLOBALS['hooks']->load('cron') as $hook) {
             include $hook;
@@ -254,6 +257,7 @@ class Cron
             array('method' => 'clearCache', 'label' => 'Clear Cache*', 'enabled' => 0, 'frequency' => 21600),
             array('method' => 'runSnippets', 'label' => 'Run Code Snippets / Hooks**', 'enabled' => 0, 'frequency' => 3600),
             array('method' => 'sendAbandonmentEmails', 'label' => 'Send Cart Abandonment Emails', 'enabled' => 0, 'frequency' => 3600),
+            array('method' => 'rebuildSitemap', 'label' => 'Rebuild Sitemap', 'enabled' => 1, 'frequency' => 86400),
         );
         foreach ($defaults as $task) {
             $exists = $GLOBALS['db']->select('CubeCart_cron_tasks', 'id', array('method' => $task['method']), false, false, false, false);

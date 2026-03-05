@@ -473,6 +473,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_cart_abandonment` (
 ALTER TABLE `CubeCart_customer` ADD COLUMN `abandon_optout` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0; #EOQ
 
 INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('sendAbandonmentEmails', 'Send Cart Abandonment Emails', 0, 3600) ON DUPLICATE KEY UPDATE `id`=`id`; #EOQ
+INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('rebuildSitemap', 'Rebuild Sitemap', 1, 86400) ON DUPLICATE KEY UPDATE `id`=`id`; #EOQ
 
 INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`, `array_serial`) VALUES ('config', 'abandoned_cart_notify_cooldown', '259200', '') ON DUPLICATE KEY UPDATE `name`=`name`; #EOQ
 INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`, `array_serial`) VALUES ('config', 'abandoned_cart_order_window', '259200', '') ON DUPLICATE KEY UPDATE `name`=`name`; #EOQ

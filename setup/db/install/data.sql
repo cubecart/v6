@@ -984,3 +984,4 @@ INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VA
 INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('clearCache', 'Clear Cache', 0, 21600); #EOQ
 INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('runSnippets', 'Run Code Snippets / Hooks*', 0, 3600); #EOQ
 INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('sendAbandonmentEmails', 'Send Cart Abandonment Emails', 0, 3600); #EOQ
+INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('rebuildSitemap', 'Rebuild Sitemap', 1, 86400); #EOQ
