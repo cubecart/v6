@@ -295,14 +295,14 @@ class Request
         $this->_request_headers = array();
         $this->_request_http_version = (!empty($this->_proxy_username) && !empty($this->_proxy_password)) ? 1.1 : $this->_request_http_version;
         if ($this->_send_headers) {
-            if ($this->_request_method == 'post') {
-                $this->_request_headers[] = sprintf('POST %s HTTP/%s', $this->_request_path, $this->_request_http_version);
+            if ($this->_request_method == 'get') {
+                $this->_request_headers[] = sprintf('GET %s HTTP/%s', (!empty($this->_request_body) ? $this->_request_path.'?'.$this->_request_body : $this->_request_path), $this->_request_http_version);
+            } else {
+                $this->_request_headers[] = sprintf('%s %s HTTP/%s', strtoupper($this->_request_method), $this->_request_path, $this->_request_http_version);
                 $this->_request_headers[] = 'Content-Type: application/x-www-form-urlencoded';
                 if (!empty($this->_request_body)) {
                     $this->_request_headers[] = 'Content-Length: '.strlen($this->_request_body);
                 }
-            } else {
-                $this->_request_headers[] = sprintf('GET %s HTTP/%s', (!empty($this->_request_body) ? $this->_request_path.'?'.$this->_request_body : $this->_request_path), $this->_request_http_version);
             }
             $this->_request_headers[]  = 'Host: '.$this->_request_url;
             $this->_request_headers[]  = 'Connection: Close';
@@ -343,6 +343,11 @@ class Request
             ## Use cURL
             if ($this->_request_method == 'post') {
                 $this->_curl_options[CURLOPT_POST] = true;
+                if (!empty($this->_request_body)) {
+                    $this->_curl_options[CURLOPT_POSTFIELDS] = $this->_request_body;
+                }
+            } elseif (in_array($this->_request_method, array('put', 'delete', 'patch'))) {
+                $this->_curl_options[CURLOPT_CUSTOMREQUEST] = strtoupper($this->_request_method);
                 if (!empty($this->_request_body)) {
                     $this->_curl_options[CURLOPT_POSTFIELDS] = $this->_request_body;
                 }
@@ -438,6 +443,9 @@ class Request
         switch (strtolower($method)) {
         case 'get':
         case 'post':
+        case 'put':
+        case 'delete':
+        case 'patch':
             $this->_request_method = strtolower($method);
             break;
         default:
