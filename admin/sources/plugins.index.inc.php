@@ -244,7 +244,6 @@ foreach ($module_paths as $module_path) {
         $modules[$key] = array(
             'uid' 				=> (string)$xml->info->uid,
             'type' 				=> (string)$xml->info->type,
-            'mobile_optimized' 	=> (string)$xml->info->mobile_optimized,
             'name' 				=> str_replace('_', ' ', (string)$xml->info->name),
             'description' 		=> (string)$xml->info->description,
             'version' 			=> (string)$xml->info->version,
@@ -252,7 +251,6 @@ foreach ($module_paths as $module_path) {
             'maxVersion' 		=> (string)$xml->info->maxVersion,
             'creator' 			=> (string)$xml->info->creator,
             'homepage' 			=> (string)$xml->info->homepage,
-            'block' 			=> (string)$xml->info->block,
             'basename' 			=> $basename,
             'config'			=> (is_array($module_config)) ? $module_config[0] : array('status' => 0),
             'configured'        => in_array((string)$basename, $config_isset),
