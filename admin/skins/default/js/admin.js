@@ -314,26 +314,15 @@ $(document).ready(function() {
     });
 
     $("#email_method").change(function() {
+        $(".email-plugin-settings").hide();
         switch($(this).val()) {
-            case 'mail':
-                $("#smtp_settings").slideUp();
-                $("#sendgrid").slideUp();
-                $("#mailgun").slideUp();
-              break;
-            case 'sendgrid':
-                $("#smtp_settings").slideUp();
-                $("#sendgrid").slideDown();
-                $("#mailgun").slideUp();
-              break;
-            case 'mailgun':
-                $("#smtp_settings").slideUp();
-                $("#sendgrid").slideUp();
-                $("#mailgun").slideDown();
-              break;
-            default:
+            case 'smtp':
+            case 'smtp_ssl':
+            case 'smtp_tls':
                 $("#smtp_settings").slideDown();
-                $("#sendgrid").slideUp();
-                $("#mailgun").slideUp();
+                break;
+            default:
+                $("#smtp_settings").slideUp();
         }
     });
     $("#es_t").change(function() {

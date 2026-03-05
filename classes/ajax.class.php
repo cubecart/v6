@@ -379,63 +379,29 @@ class Ajax
     public static function SMTPTest()
     {
         if (CC_IN_ADMIN) {
-            $methods = array('mail' => $GLOBALS['language']->settings['email_method_mail'], 'smtp' => $GLOBALS['language']->settings['email_method_smtp'], 'smtp_ssl' => $GLOBALS['language']->settings['email_method_smtp_ssl'], 'smtp_tls' => $GLOBALS['language']->settings['email_method_smtp_tls'], 'sendgrid' => 'SendGrid', 'mailgun' => 'Mailgun');
-            $method_name = $methods[$GLOBALS['RAW']['POST']['email_method']];
+            $methods = array('mail' => $GLOBALS['language']->settings['email_method_mail'], 'smtp' => $GLOBALS['language']->settings['email_method_smtp'], 'smtp_ssl' => $GLOBALS['language']->settings['email_method_smtp_ssl'], 'smtp_tls' => $GLOBALS['language']->settings['email_method_smtp_tls']);
+            // Allow plugins to register email method names
+            $email_methods = array();
+            foreach ($GLOBALS['hooks']->load('admin.settings.email.methods') as $hook) {
+                include $hook;
+            }
+            $methods = array_merge($methods, $email_methods);
+            $email_test_method = $GLOBALS['RAW']['POST']['email_method'];
+            $email_test_method_name = isset($methods[$email_test_method]) ? $methods[$email_test_method] : $email_test_method;
 
-            $subject = "Testing ".$method_name;
-            $body = "Testing email sent by &quot;".$method_name."&quot; from CubeCart v".CC_VERSION." at ".CC_STORE_URL.".<br><br>If you are reading this message then you can be sure that email from your store is working.";
-            $altbody = strip_tags($body);
-            $test_success = false;
-            if($GLOBALS['RAW']['POST']['email_method']=="mailgun") {
-                $domain = $GLOBALS['RAW']['POST']['mailgun_domain'];
-                $request = new Request('api.mailgun.net/v3/'.$domain.'/messages', '/', 443);
-                $request->setSSL();
-                $request->setMethod('post');
-                $request->authenticate('api', $GLOBALS['RAW']['POST']['mailgun_key']);
-                $request->setData(array(
-                    'from'    => html_entity_decode($GLOBALS['RAW']['POST']['email_name'], ENT_QUOTES).' <'.$GLOBALS['RAW']['POST']['email_address'].'>',
-                    'to'      => $GLOBALS['RAW']['POST']['email_address'],
-                    'subject' => $subject,
-                    'text'    => $altbody,
-                    'html'    => $body,
-                ));
-                $json = "<h3>Testing ".$method_name." - {{RESULT}}</h3>";
-                $response = $request->send();
-                $json .= '<strong>Response Code:</strong> '.$request->server_response_code."<br>";
-                if ($response !== false) {
-                    $json .= '<strong>Response:</strong> '.htmlspecialchars($response)."<br>";
-                    $test_success = true;
-                } else {
-                    $json .= '<strong>Error:</strong> HTTP '.$request->server_response_code."<br>";
-                }
-                return "<div class=\"default_modal\">".str_replace('{{RESULT}}', $test_success ? 'Success' : 'Fail', $json)."</div>";
+            $email_test_subject = "Testing ".$email_test_method_name;
+            $email_test_body = "Testing email sent by &quot;".$email_test_method_name."&quot; from CubeCart v".CC_VERSION." at ".CC_STORE_URL.".<br><br>If you are reading this message then you can be sure that email from your store is working.";
+            $email_test_altbody = strip_tags($email_test_body);
+            $email_test_success = false;
+            $email_test_handled = false;
+            $email_test_html = '';
 
-            } elseif($GLOBALS['RAW']['POST']['email_method']=="sendgrid") {
-                require_once CC_ROOT_DIR.'/classes/sendgrid/sendgrid-php.php';
-                $test_mailer = new \SendGrid\Mail\Mail(); 
-                $test_mailer->setFrom($GLOBALS['RAW']['POST']['email_address'], html_entity_decode($GLOBALS['RAW']['POST']['email_name'], ENT_QUOTES));
-                $test_mailer->setSubject($subject);
-                $test_mailer->addTo($GLOBALS['RAW']['POST']['email_address'], html_entity_decode($GLOBALS['RAW']['POST']['email_name'], ENT_QUOTES));
-                $test_mailer->addContent("text/plain", $altbody);
-                $test_mailer->addContent("text/html", $body);
-                $sendgrid = new \SendGrid($GLOBALS['RAW']['POST']['sendgrid_key']);
-                $json = "<h3>Testing ".$method_name." - {{RESULT}}</h3>";
-                try {
-                    $response = $sendgrid->send($test_mailer);
-                    $json .= '<strong>Response Code:</strong> '.$response->statusCode()."<br>";
-                    $json .= '<strong>Response Headers:</strong><br>';
-                    foreach($response->headers() as $h) {
-                        $json .= $h . "<br>";
-                    }
-                    $json .= $response->body()."<br>";
-                    if(substr($response->statusCode(), 0, 1)=='2') {
-                        $test_success = true;
-                    }
-                } catch (Exception $e) {
-                    $json .= $e->getMessage();
-                }
-                return "<div class=\"default_modal\">".str_replace('{{RESULT}}', $test_success ? 'Success' : 'Fail', $json)."</div>";
-
+            // Allow plugins to handle the test
+            foreach ($GLOBALS['hooks']->load('admin.settings.email.test') as $hook) {
+                include $hook;
+            }
+            if ($email_test_handled) {
+                return "<div class=\"default_modal\">".str_replace('{{RESULT}}', $email_test_success ? 'Success' : 'Fail', $email_test_html)."</div>";
             } else if ($GLOBALS['RAW']['POST']['email_method']!=="mail") {
                 @ob_start();
                 $test_mailer = new Mailer();
@@ -457,15 +423,15 @@ class Ajax
                     $test_mailer->Password = $GLOBALS['RAW']['POST']['email_smtp_password'];
                 }
                 $test_mailer->AddAddress($GLOBALS['RAW']['POST']['email_address']);
-                $test_mailer->Subject = $subject;
-                $test_mailer->Body = $body;
-                $test_mailer->AltBody = $altbody;
+                $test_mailer->Subject = $email_test_subject;
+                $test_mailer->Body = $email_test_body;
+                $test_mailer->AltBody = $email_test_altbody;
                 // Send email
                 $test_success = $test_mailer->Send();
                 $test_mailer_test_results = @ob_get_contents();
                 @ob_end_clean();
 
-                $json = "<h3>Testing ".$method_name." - {{RESULT}}</h3>";
+                $json = "<h3>Testing ".$email_test_method_name." - {{RESULT}}</h3>";
 
                 if (!empty($test_mailer_test_results)) {
                     $test_mailer_test_results_data = array(
@@ -484,12 +450,12 @@ class Ajax
                 $test_mailer = new Mailer();
                 $test_mailer->ClearAddresses();
                 $test_mailer->AddAddress($GLOBALS['RAW']['POST']['email_address']);
-                $test_mailer->Subject = $subject;
-                $test_mailer->Body = $body;
-                $test_mailer->AltBody = $altbody;
+                $test_mailer->Subject = $email_test_subject;
+                $test_mailer->Body = $email_test_body;
+                $test_mailer->AltBody = $email_test_altbody;
                 $test_mailer->Send();
 
-                return "<div class=\"default_modal\"><h3>Testing ".$method_name."</h3><p>It isn't possible  to get a definitive test result for the &quot;PHP mail() Function&quot; method.</p><p>We have attempted to send a test email to &quot;".$GLOBALS['RAW']['POST']['email_address']."&quot; with the subject of &quot;".$subject."&quot; Please note that it can take ten minutes or even longer for a busy mail server to deliver email. Don't forget to check your spam folder!</p><p>This method can fail if the server hasn't been configured properly and may refuse to send mail from &quot;untrusted&quot; sources such as Hotmail, Yahoo, AOL etc&hellip;. We recommend using an email address from a domain hosted on this server such as sales@".parse_url(CC_STORE_URL, PHP_URL_HOST)." for example and this may need to be setup form within your web hosting account.</p></div>";
+                return "<div class=\"default_modal\"><h3>Testing ".$email_test_method_name."</h3><p>It isn't possible  to get a definitive test result for the &quot;PHP mail() Function&quot; method.</p><p>We have attempted to send a test email to &quot;".$GLOBALS['RAW']['POST']['email_address']."&quot; with the subject of &quot;".$email_test_subject."&quot; Please note that it can take ten minutes or even longer for a busy mail server to deliver email. Don't forget to check your spam folder!</p><p>This method can fail if the server hasn't been configured properly and may refuse to send mail from &quot;untrusted&quot; sources such as Hotmail, Yahoo, AOL etc&hellip;. We recommend using an email address from a domain hosted on this server such as sales@".parse_url(CC_STORE_URL, PHP_URL_HOST)." for example and this may need to be setup form within your web hosting account.</p></div>";
             }
         }
         return false;

@@ -33,10 +33,6 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
     private $_email_content_id;
     private $_content_type = '';
     private $_import_new = false;
-    private $_sendgrid = false;
-    private $_sendgrid_key = '';
-    private $_mailgun_key = '';
-    private $_mailgun_domain = '';
     private $_method = '';
 
     protected static $_instance;
@@ -51,15 +47,6 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
         $this->CharSet   = 'UTF-8';
         $this->_method = $GLOBALS['config']->get('config', 'email_method');
         switch ($this->_method) {
-            case 'sendgrid':
-                require_once CC_ROOT_DIR.'/classes/sendgrid/sendgrid-php.php';
-                $this->_sendgrid_key = $GLOBALS['config']->get('config', 'sendgrid_key');
-                $this->_sendgrid = new \SendGrid\Mail\Mail();
-            break;
-            case 'mailgun':
-                $this->_mailgun_key = $GLOBALS['config']->get('config', 'mailgun_key');
-                $this->_mailgun_domain = $GLOBALS['config']->get('config', 'mailgun_domain');
-            break;
             case 'smtp':
             case 'smtp_ssl':
             case 'smtp_tls':
@@ -288,41 +275,7 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
 
             // Send email
             if(!isset($disable_send) || !$disable_send) {
-                if($this->_method=='mailgun') {
-                    $request = new Request('api.mailgun.net/v3/'.$this->_mailgun_domain.'/messages', '/', 443);
-                    $request->setSSL();
-                    $request->setMethod('post');
-                    $request->authenticate('api', $this->_mailgun_key);
-                    $request->setData(array(
-                        'from'    => $this->FromName.' <'.$this->From.'>',
-                        'to'      => implode(',', $send_grid_to),
-                        'subject' => $this->Subject,
-                        'text'    => $this->_text,
-                        'html'    => $this->_html,
-                    ));
-                    $response = $request->send();
-                    $result = ($response !== false);
-                    if (!$result) {
-                        $this->ErrorInfo = 'Mailgun API request failed (HTTP '.$request->server_response_code.')';
-                    }
-                } elseif($this->_method=='sendgrid') {
-                    $this->_sendgrid->setFrom($this->From, $this->FromName);
-                    $this->_sendgrid->setSubject($this->Subject);
-                    foreach($send_grid_to as $t) {
-                        $this->_sendgrid->addTo($t);
-                    }
-                    $this->_sendgrid->addContent("text/plain", $this->_text);
-                    $this->_sendgrid->addContent("text/html", $this->_html);
-                    $sendgrid = new \SendGrid($this->_sendgrid_key);
-                    try {
-                        $response = $sendgrid->send($this->_sendgrid);
-                        $result =  in_array($response->statusCode(), array(200, 202)) ? true : false;
-                    } catch (Exception $e) {
-                        $this->ErrorInfo = $e->getMessage();
-                    }
-                } else {
-                    $result = $this->Send();
-                }
+                $result = $this->Send();
             }
             
             // Log email

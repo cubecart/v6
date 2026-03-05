@@ -238,6 +238,9 @@
 	<hook trigger="class.gui.skin_data" deprecated="" />
 	<hook trigger="class.mailer.presend" deprecated="" />
 	<hook trigger="class.mailer.send" deprecated="" />
+	<hook trigger="admin.settings.email.methods" deprecated="" />
+	<hook trigger="admin.settings.email.fields" deprecated="" />
+	<hook trigger="admin.settings.email.test" deprecated="" />
 	<hook trigger="class.newsletter.subscribe" deprecated="" />
 	<hook trigger="class.newsletter.unsubscribe" deprecated="" />
 	<hook trigger="class.newsletter.validated" deprecated="" />

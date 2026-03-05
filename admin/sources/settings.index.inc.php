@@ -401,7 +401,7 @@ $select_options = array(
     'skin_change'   => array($lang['common']['no'], $lang['settings']['all_skin_select'], $lang['settings']['admin_only_skin_select']),
     'debug'     => array($lang['common']['disabled'], $lang['common']['enabled']),
     'catalogue_hide_prices' => null,
-    'email_method'			=> array('mail' => $lang['settings']['email_method_mail'], 'smtp' => $lang['settings']['email_method_smtp'], 'smtp_ssl' => $lang['settings']['email_method_smtp_ssl'].' ('.$lang['common']['recommended'].')', 'smtp_tls' => $lang['settings']['email_method_smtp_tls'].' ('.$lang['common']['recommended'].')', 'sendgrid' => 'SendGrid', 'mailgun' => 'Mailgun'),
+    'email_method'			=> array('mail' => $lang['settings']['email_method_mail'], 'smtp' => $lang['settings']['email_method_smtp'], 'smtp_ssl' => $lang['settings']['email_method_smtp_ssl'].' ('.$lang['common']['recommended'].')', 'smtp_tls' => $lang['settings']['email_method_smtp_tls'].' ('.$lang['common']['recommended'].')'),
     'offline'    => null,
     'basket_out_of_stock_purchase'  => null,
     'catalogue_popular_products_source' => array($lang['settings']['product_popular_views'], $lang['settings']['product_popular_sales']),
@@ -515,6 +515,25 @@ if ($active_coupons) {
 $smarty_data['config'] = $GLOBALS['config']->get('config');
 $GLOBALS['smarty']->assign('FIXED_CONFIG', $glob);
 $GLOBALS['smarty']->assign('CONFIG', $smarty_data['config']);
+
+// Allow plugins to add email delivery methods
+$email_methods = array();
+$email_plugin_fields = '';
+$email_plugin_js = '';
+$email_plugin_hide_smtp = array();
+foreach ($GLOBALS['hooks']->load('admin.settings.email.methods') as $hook) {
+    include $hook;
+}
+if (!empty($email_methods)) {
+    $select_options['email_method'] = array_merge($select_options['email_method'], $email_methods);
+}
+foreach ($GLOBALS['hooks']->load('admin.settings.email.fields') as $hook) {
+    include $hook;
+}
+$smtp_hidden_methods = array_merge(array('mail', ''), $email_plugin_hide_smtp);
+$GLOBALS['smarty']->assign('SHOW_SMTP', !in_array($GLOBALS['config']->get('config', 'email_method'), $smtp_hidden_methods));
+$GLOBALS['smarty']->assign('EMAIL_PLUGIN_FIELDS', $email_plugin_fields);
+$GLOBALS['smarty']->assign('EMAIL_PLUGIN_JS', $email_plugin_js);
 
 if (isset($select_options)) {
     foreach ($select_options as $field => $options) {
