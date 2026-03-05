@@ -379,14 +379,38 @@ class Ajax
     public static function SMTPTest()
     {
         if (CC_IN_ADMIN) {
-            $methods = array('mail' => $GLOBALS['language']->settings['email_method_mail'], 'smtp' => $GLOBALS['language']->settings['email_method_smtp'], 'smtp_ssl' => $GLOBALS['language']->settings['email_method_smtp_ssl'], 'smtp_tls' => $GLOBALS['language']->settings['email_method_smtp_tls'], 'sendgrid' => 'SendGrid');
+            $methods = array('mail' => $GLOBALS['language']->settings['email_method_mail'], 'smtp' => $GLOBALS['language']->settings['email_method_smtp'], 'smtp_ssl' => $GLOBALS['language']->settings['email_method_smtp_ssl'], 'smtp_tls' => $GLOBALS['language']->settings['email_method_smtp_tls'], 'sendgrid' => 'SendGrid', 'mailgun' => 'Mailgun');
             $method_name = $methods[$GLOBALS['RAW']['POST']['email_method']];
 
             $subject = "Testing ".$method_name;
             $body = "Testing email sent by &quot;".$method_name."&quot; from CubeCart v".CC_VERSION." at ".CC_STORE_URL.".<br><br>If you are reading this message then you can be sure that email from your store is working.";
             $altbody = strip_tags($body);
             $test_success = false;
-            if($GLOBALS['RAW']['POST']['email_method']=="sendgrid") {
+            if($GLOBALS['RAW']['POST']['email_method']=="mailgun") {
+                $domain = $GLOBALS['RAW']['POST']['mailgun_domain'];
+                $request = new Request('api.mailgun.net/v3/'.$domain.'/messages', '/', 443);
+                $request->setSSL();
+                $request->setMethod('post');
+                $request->authenticate('api', $GLOBALS['RAW']['POST']['mailgun_key']);
+                $request->setData(array(
+                    'from'    => html_entity_decode($GLOBALS['RAW']['POST']['email_name'], ENT_QUOTES).' <'.$GLOBALS['RAW']['POST']['email_address'].'>',
+                    'to'      => $GLOBALS['RAW']['POST']['email_address'],
+                    'subject' => $subject,
+                    'text'    => $altbody,
+                    'html'    => $body,
+                ));
+                $json = "<h3>Testing ".$method_name." - {{RESULT}}</h3>";
+                $response = $request->send();
+                $json .= '<strong>Response Code:</strong> '.$request->server_response_code."<br>";
+                if ($response !== false) {
+                    $json .= '<strong>Response:</strong> '.htmlspecialchars($response)."<br>";
+                    $test_success = true;
+                } else {
+                    $json .= '<strong>Error:</strong> HTTP '.$request->server_response_code."<br>";
+                }
+                return "<div class=\"default_modal\">".str_replace('{{RESULT}}', $test_success ? 'Success' : 'Fail', $json)."</div>";
+
+            } elseif($GLOBALS['RAW']['POST']['email_method']=="sendgrid") {
                 require_once CC_ROOT_DIR.'/classes/sendgrid/sendgrid-php.php';
                 $test_mailer = new \SendGrid\Mail\Mail(); 
                 $test_mailer->setFrom($GLOBALS['RAW']['POST']['email_address'], html_entity_decode($GLOBALS['RAW']['POST']['email_name'], ENT_QUOTES));

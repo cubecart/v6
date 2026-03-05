@@ -318,14 +318,22 @@ $(document).ready(function() {
             case 'mail':
                 $("#smtp_settings").slideUp();
                 $("#sendgrid").slideUp();
+                $("#mailgun").slideUp();
               break;
             case 'sendgrid':
                 $("#smtp_settings").slideUp();
                 $("#sendgrid").slideDown();
+                $("#mailgun").slideUp();
+              break;
+            case 'mailgun':
+                $("#smtp_settings").slideUp();
+                $("#sendgrid").slideUp();
+                $("#mailgun").slideDown();
               break;
             default:
                 $("#smtp_settings").slideDown();
                 $("#sendgrid").slideUp();
+                $("#mailgun").slideUp();
         }
     });
     $("#es_t").change(function() {
