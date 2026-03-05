@@ -980,8 +980,8 @@ INSERT INTO `CubeCart_geo_country` (`id`, `iso`, `name`, `iso3`, `numcode`) VALU
 INSERT INTO `CubeCart_geo_country` (`id`, `iso`, `name`, `iso3`, `numcode`) VALUES (254, 'XK', 'Kosovo', 'XKX', 000); #EOQ
 UPDATE `CubeCart_geo_country` SET `eu` = '1' WHERE `iso` IN('BE','BG','CZ','DK','DE','EE','GR','IE','ES','FR','HR','IT','CY','LV','LT','LU','HU','MT','NL','AT','PL','PT','RO','SI','SK','FI','SE'); #EOQ
 UPDATE `CubeCart_geo_country` SET `status` = 2 WHERE `iso` NOT IN('AR', 'BR', 'CA', 'CN', 'ID', 'IN', 'JP', 'MX', 'TH', 'US'); #EOQ
+INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('sendAbandonmentEmails', 'Send Cart Abandonment Emails', 0, 3600); #EOQ
+INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('rebuildSitemap', 'Rebuild Sitemap', 1, 86400); #EOQ
 INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('updateExchangeRates', 'Update Exchange Rates', 1, 86400); #EOQ
 INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('clearCache', 'Clear Cache', 0, 21600); #EOQ
 INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('runSnippets', 'Run Code Snippets / Hooks*', 0, 3600); #EOQ
-INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('sendAbandonmentEmails', 'Send Cart Abandonment Emails', 0, 3600); #EOQ
-INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('rebuildSitemap', 'Rebuild Sitemap', 1, 86400); #EOQ

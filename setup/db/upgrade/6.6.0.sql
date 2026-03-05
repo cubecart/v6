@@ -452,9 +452,11 @@ CREATE TABLE IF NOT EXISTS `CubeCart_cron_tasks` (
   UNIQUE KEY `method` (`method`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci; #EOQ
 
-INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('updateExchangeRates', 'Update Exchange Rates', 1, 86400) ON DUPLICATE KEY UPDATE `id`=`id`; #EOQ
-INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('clearCache', 'Clear Cache', 0, 21600) ON DUPLICATE KEY UPDATE `id`=`id`; #EOQ
-INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('runSnippets', 'Run Code Snippets / Hooks*', 0, 3600) ON DUPLICATE KEY UPDATE `id`=`id`; #EOQ
+INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('sendAbandonmentEmails', 'Send Cart Abandonment Emails', 0, 3600); #EOQ
+INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('rebuildSitemap', 'Rebuild Sitemap', 1, 86400); #EOQ
+INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('updateExchangeRates', 'Update Exchange Rates', 1, 86400); #EOQ
+INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('clearCache', 'Clear Cache', 0, 21600); #EOQ
+INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('runSnippets', 'Run Code Snippets / Hooks*', 0, 3600); #EOQ
 
 -- Cart abandonment notification system
 CREATE TABLE IF NOT EXISTS `CubeCart_cart_abandonment` (
@@ -471,9 +473,6 @@ CREATE TABLE IF NOT EXISTS `CubeCart_cart_abandonment` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 ALTER TABLE `CubeCart_customer` ADD COLUMN `abandon_optout` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0; #EOQ
-
-INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('sendAbandonmentEmails', 'Send Cart Abandonment Emails', 0, 3600) ON DUPLICATE KEY UPDATE `id`=`id`; #EOQ
-INSERT INTO `CubeCart_cron_tasks` (`method`, `label`, `enabled`, `frequency`) VALUES ('rebuildSitemap', 'Rebuild Sitemap', 1, 86400) ON DUPLICATE KEY UPDATE `id`=`id`; #EOQ
 
 INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`, `array_serial`) VALUES ('config', 'abandoned_cart_notify_cooldown', '259200', '') ON DUPLICATE KEY UPDATE `name`=`name`; #EOQ
 INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`, `array_serial`) VALUES ('config', 'abandoned_cart_order_window', '259200', '') ON DUPLICATE KEY UPDATE `name`=`name`; #EOQ
