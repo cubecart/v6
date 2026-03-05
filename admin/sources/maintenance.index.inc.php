@@ -202,27 +202,30 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 
 if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
     $contents = false;
-    ## Download the version we want
-    $request = new Request('www.cubecart.com', '/download/'.$_GET['upgrade'].'.zip', 80, false, true, 10);#
+    $upgrade_version = $_GET['upgrade'];
+    ## Download from GitHub
+    $download_url = '/cubecart/v6/legacy.zip/refs/tags/'.$upgrade_version;
+    $request = new Request('codeload.github.com', $download_url, 80, false, true, 120);
     $request->setMethod('get');
     $request->setSSL();
-    $request->setUserAgent('CubeCart');
+    $request->setUserAgent('CubeCart/'.CC_VERSION);
     $request->skiplog(true);
+    $request->customOption(CURLOPT_FOLLOWLOCATION, true);
 
     if (!$contents = $request->send()) {
-        $contents = file_get_contents('https://www.cubecart.com/download/'.$_GET['upgrade'].'.zip');
+        $contents = file_get_contents('https://codeload.github.com'.$download_url);
     }
 
     if (empty($contents)) {
         $GLOBALS['main']->errorMessage($lang['maintain']['files_upgrade_download_fail']);
         httpredir('?_g=maintenance&node=index', 'upgrade');
     } else {
-        if (stristr($contents, 'DOCTYPE')) {
-            $GLOBALS['main']->errorMessage("Sorry. CubeCart-".$_GET['upgrade'].".zip was not found. Please try again later.");
+        if (stristr($contents, 'DOCTYPE') || stristr($contents, 'Not Found')) {
+            $GLOBALS['main']->errorMessage("Sorry. CubeCart ".$upgrade_version." was not found on GitHub. Please try again later.");
             httpredir('?_g=maintenance&node=index', 'upgrade');
         }
 
-        $destination_path = CC_BACKUP_DIR.'CubeCart-'.$_GET['upgrade'].'.zip';
+        $destination_path = CC_BACKUP_DIR.'CubeCart-'.$upgrade_version.'.zip';
         $fp = fopen($destination_path, 'w');
         fwrite($fp, $contents);
         fclose($fp);
@@ -232,20 +235,41 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
             if ($zip->open($destination_path) === true) {
                 $crc_check_list = array();
 
+                ## Detect GitHub zip prefix directory (e.g. "cubecart-v6-6503165/")
+                $first_entry = $zip->statIndex(0);
+                $zip_prefix = (substr($first_entry['name'], -1) === '/') ? $first_entry['name'] : '';
+
+                ## Extract files individually, stripping prefix
                 for ($i = 0; $i < $zip->numFiles; $i++) {
                     $stat = $zip->statIndex($i);
+                    $name = $stat['name'];
 
-                    if (preg_match("#^admin/#", $stat['name'])) {
-                        $custom_file_name = preg_replace("#^admin#", $glob['adminFolder'], $stat['name']);
-                    } elseif ($stat['name']=='admin.php') {
+                    ## Strip prefix directory
+                    if (!empty($zip_prefix) && strpos($name, $zip_prefix) === 0) {
+                        $name = substr($name, strlen($zip_prefix));
+                    }
+                    if (empty($name)) continue;
+
+                    ## Build CRC check list with admin folder rename
+                    if (preg_match("#^admin/#", $name)) {
+                        $custom_file_name = preg_replace("#^admin#", $glob['adminFolder'], $name);
+                    } elseif ($name == 'admin.php') {
                         $custom_file_name = $glob['adminFile'];
                     } else {
-                        $custom_file_name = $stat['name'];
+                        $custom_file_name = $name;
                     }
                     $crc_check_list[$custom_file_name] = $stat['crc'];
-                }
 
-                $zip->extractTo(CC_ROOT_DIR);
+                    ## Write file to target location
+                    $target = CC_ROOT_DIR.'/'.$name;
+                    if (substr($name, -1) === '/') {
+                        if (!is_dir($target)) mkdir($target, 0755, true);
+                    } else {
+                        $dir = dirname($target);
+                        if (!is_dir($dir)) mkdir($dir, 0755, true);
+                        file_put_contents($target, $zip->getFromIndex($i));
+                    }
+                }
                 $zip->close();
 
                 $suffix = '-'.(string)time();
@@ -257,7 +281,7 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
                 recursiveDelete(CC_ROOT_DIR.'/'.$glob['adminFolder'].$suffix);
 
                 $errors = crc_integrity_check($crc_check_list, 'upgrade');
-                
+
                 if ($errors!==false) {
                     $GLOBALS['main']->errorMessage($lang['maintain']['files_upgrade_fail']);
                     httpredir('?_g=maintenance&node=index', 'upgrade');
@@ -1094,20 +1118,21 @@ if (count($files)>0) {
 $GLOBALS['smarty']->assign('EXISTING_BACKUPS', $existing_backups);
 
 ## Upgrade
-## Check current version
-if ($request = new Request('www.cubecart.com', '/version-check/'.CC_VERSION)) {
+## Check current version via GitHub releases
+if ($request = new Request('api.github.com', '/repos/cubecart/v6/releases/latest')) {
     $request->skiplog(true);
     $request->setMethod('get');
     $request->cache(true);
     $request->setSSL();
-    $request->setUserAgent('CubeCart');
-    $request->setData(array('version' => CC_VERSION));
+    $request->setUserAgent('CubeCart/'.CC_VERSION);
+    $request->customHeaders('Accept: application/vnd.github.v3+json');
 
     if (($response = $request->send()) !== false) {
-        $response_array = json_decode($response, true);
-        if (version_compare(trim($response_array['version']), CC_VERSION, '>')) {
-            $GLOBALS['smarty']->assign('OUT_OF_DATE', sprintf($lang['dashboard']['error_version_update'], $response_array['version'], CC_VERSION));
-            $GLOBALS['smarty']->assign('LATEST_VERSION', $response_array['version']);
+        $release = json_decode($response, true);
+        $latest_version = isset($release['tag_name']) ? trim($release['tag_name']) : CC_VERSION;
+        if (version_compare($latest_version, CC_VERSION, '>')) {
+            $GLOBALS['smarty']->assign('OUT_OF_DATE', sprintf($lang['dashboard']['error_version_update'], $latest_version, CC_VERSION));
+            $GLOBALS['smarty']->assign('LATEST_VERSION', $latest_version);
             $GLOBALS['smarty']->assign('UPGRADE_NOW', $lang['maintain']['upgrade_now']);
             $GLOBALS['smarty']->assign('FORCE', '0');
         } else {

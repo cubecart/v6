@@ -328,40 +328,6 @@
    
 </div>
 {/if}
-{if isset($EXTENSION_UPDATES)}
-<div id="extension_updates" class="tab_content">
-   <h3>{$LANG.dashboard.title_extension_updates}</h3>
-   <p>{$LANG.module.extensions_available_desc}</p>
-   <table>
-      <thead>
-         <tr>
-            <th>{$LANG.common.name}</th>
-            <th>{$LANG.common.auto}</th>
-            <th>{$LANG.common.manual}</th>
-            <th>{$LANG.common.ignore}</th>
-         </tr>
-      </thead>
-      <tbody>
-      {foreach from=$EXTENSION_UPDATES item=extension}
-         <tr>
-            <td>{$extension.name}</td>
-            <td class="text-center">
-            {if $extension.auto_upgrade}
-               <a href="?_g=plugins&install[type]=plugins&install[id]={$extension.file_id}&install[seller_id]={$extension.seller_id}" title="{$LANG.common.auto_upgrade}"><i class="fa fa-bolt"></i></a>
-            {else}
-               <i class="fa fa-ban" title="{$LANG.common.auto_upgrade_na}"></i>
-            {/if}
-            </td>
-            <td class="text-center">
-               <a href="https://www.cubecart.com/extensions/id/{$extension.file_id}" target="_blank" title="{$LANG.common.manual_upgrade}"><i class="fa fa-download"></i></a>
-            </td>
-            <td class="text-center"><a href="?ignore_update={$extension.file_id}" title="{$LANG.common.ignore}"><i class="fa fa-remove"></i></a></td>
-         </tr>
-      {/foreach}
-      </tbody>
-   </table>
-</div>
-{/if}
 {if isset($STOCK)}
 <div id="stock_warnings" class="tab_content">
    <h3>{$LANG.dashboard.title_stock_warnings}</h3>

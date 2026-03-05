@@ -28,13 +28,6 @@ if(file_exists($release_notes_path) && !$GLOBALS['config']->has('release_notes',
 ## Quick tour
 $GLOBALS['smarty']->assign('QUICK_TOUR', true);
 
-if (isset($_GET['ignore_update']) && $_GET['ignore_update']>0) {
-    $GLOBALS['db']->update('CubeCart_extension_info', array('modified' => time()), array('file_id' => (int)$_GET['ignore_update']));
-    $GLOBALS['main']->successMessage($lang['dashboard']['ignore_update']);
-    $GLOBALS['session']->delete('version_check');
-    httpredir(currentPage(array('ignore_update')));
-}
-
 ## Save notes
 if (isset($_POST['notes']['dashboard_notes'])) {
     $update = array('dashboard_notes' => $_POST['notes']['dashboard_notes']);
@@ -117,55 +110,23 @@ if ($GLOBALS['session']->has('recent_extensions')) {
     }
 }
 
-## Check current version
-if (!$GLOBALS['session']->has('version_check') && $request = new Request('www.cubecart.com', '/version-check/'.CC_VERSION)) {
+## Check current version via GitHub releases
+if (!$GLOBALS['session']->has('version_check') && $request = new Request('api.github.com', '/repos/cubecart/v6/releases/latest')) {
     $request->skiplog(true);
     $request->setMethod('get');
     $request->cache(true);
     $request->setSSL();
-    $request->setUserAgent('CubeCart');
-    $request->customHeaders('CC-Referer: '.CC_STORE_URL);
-    
-    $request_data = array('version' => CC_VERSION);
-
-    $extension_versions = $GLOBALS['db']->select('CubeCart_extension_info');
-    if (is_array($extension_versions)) {
-        $extension_check = array();
-        foreach ($extension_versions as $v) {
-            $parts = explode('/',$v['dir']);
-            $module = (isset($parts[2]) && !empty($parts[2])) ? '' : $parts[2];
-            $folder =  (isset($parts[3]) && !empty($parts[3])) ? '' : $parts[3];
-            if(($status = $GLOBALS['db']->select('CubeCart_modules', array('status'), array('module' => $module, 'folder' => $folder))) !== false){
-                if (file_exists(CC_ROOT_DIR.$v['dir'])) {
-                    if($status[0]['status']=='1') {
-                        $extension_check[$v['file_id']] = $v['modified'];
-                    }
-                } else {
-                    $GLOBALS['db']->delete('CubeCart_extension_info', array('file_id' => $v['file_id']));
-                }
-            }
-        }
-        if (count($extension_check)>0) {
-            $request_data['extensions'] = $extension_check;
-        }
-    }
-
-    $request->setData($request_data);
+    $request->setUserAgent('CubeCart/'.CC_VERSION);
+    $request->customHeaders('Accept: application/vnd.github.v3+json');
     $response = $request->send();
-    
     if ($response !== false) {
-        $response_array = json_decode($response, true);
-
-        if (version_compare($response_array['version'], CC_VERSION, '>')) {
-            $GLOBALS['main']->errorMessage(sprintf($lang['dashboard']['error_version_update'], $response_array['version'], CC_VERSION).' <a href="https://support.cubecart.com/hc/en-gb/articles/360003794198-How-do-I-upgrade-from-CubeCart-v6-to-latest-v6-" target="_blank">'.$lang['maintain']['upgrade_now'].'</a>');
+        $release = json_decode($response, true);
+        if (isset($release['tag_name']) && version_compare($release['tag_name'], CC_VERSION, '>')) {
+            $release_url = 'https://support.cubecart.com/hc/en-gb/articles/360003794198-How-do-I-upgrade-from-CubeCart-v6-to-latest-v6-';
+            $GLOBALS['main']->errorMessage(sprintf($lang['dashboard']['error_version_update'], $release['tag_name'], CC_VERSION).' <a href="'.$release_url.'" target="_blank">'.$lang['maintain']['upgrade_now'].'</a>');
         }
-        if (isset($response_array['updates']) && is_array($response_array['updates'])) {
-            $version_check = $response_array['updates'];
-        } else {
-            $version_check = true;
-        }
-        $GLOBALS['session']->set('version_check', $version_check);
     }
+    $GLOBALS['session']->set('version_check', true);
 }
 
 $GLOBALS['smarty']->assign('DASH_NOTES', Admin::getInstance()->get('dashboard_notes'));
@@ -413,27 +374,6 @@ if ($stock_c = $GLOBALS['db']->select($tables, $fields, $where)) {
 
     foreach ($GLOBALS['hooks']->load('admin.dashboard.stock.post') as $hook) {
         include $hook;
-    }
-}
-
-if ($GLOBALS['session']->has('version_check')) {
-    $extension_updates = $GLOBALS['session']->get('version_check');
-    $file_ids = (is_array($extension_updates) && !empty($extension_updates) ? array_keys($extension_updates) : array(-1));
-    $extension_updates = $GLOBALS['db']->select('CubeCart_extension_info', false, array('file_id' => $file_ids));
-    
-    if ($extension_updates) {
-        $eu = array();
-        $oeu = $GLOBALS['session']->get('version_check');
-        foreach($extension_updates as $u) {
-            $u['auto_upgrade'] = $oeu[$u['file_id']] === 'a' ? true : false;
-            $eu[] = $u;
-            if($u['keep_current'] == 1) {
-                httpredir('?_g=plugins&install[type]=plugins&install[id]='.$u['file_id'].'&install[seller_id]='.$u['seller_id']);
-                exit;
-            }
-        }
-        $GLOBALS['main']->addTabControl($lang['dashboard']['title_extension_updates'], 'extension_updates', null, null, count($eu));
-        $GLOBALS['smarty']->assign('EXTENSION_UPDATES', $eu);
     }
 }
 
