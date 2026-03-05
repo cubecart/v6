@@ -260,8 +260,8 @@ class Request
         }
         $data = array(
             'request_url'       => $this->_request_protocol.'://'.$this->_request_url.$this->_request_path,
-            'request'           => (!empty($request)) ? $this->mask_cc($request) : "",
-            'result'    	    => $this->mask_cc($result),
+            'request'           => (!empty($request)) ? $request : "",
+            'result'    	    => $result,
             'response_code'     => (string)$this->server_response_code,
             'error'   		    => $error,
             'is_curl'           => $this->_curl ? 1 : 0,
@@ -277,22 +277,7 @@ class Request
         $GLOBALS['db']->insert('CubeCart_request_log', $data);
     }
 
-    /**
-     * Mask credit card from request
-     *
-     * @param string $string
-     * @param string $mask_char
-     * @return string
-     */
-    private function mask_cc($string, $mask_char = '*')
-    {
-        if (preg_match('/([0-9]{12,16})/', $string, $matches)) {
-            $replacement = preg_replace('/(?!^.?)[0-9](?!(.){0,3}$)/', $mask_char, $matches[0]);
-            return preg_replace('/'.$matches[0].'/', $replacement, $string);
-        } else {
-            return $string;
-        }
-    }
+
 
     /**
      * Set the request data
