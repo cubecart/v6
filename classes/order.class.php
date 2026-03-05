@@ -684,6 +684,8 @@ class Order
                 return false;
             } // no order record
 
+            $this->_order_summary['total'] = Tax::getInstance()->priceFormat($this->_order_summary['total'], true);
+
             $mailer = new Mailer();
             switch ($status_id) {
             case self::PAYMENT_PENDING:
