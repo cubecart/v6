@@ -485,3 +485,6 @@ DELETE t1 FROM `CubeCart_email_content` t1 INNER JOIN `CubeCart_email_content` t
 
 -- Prevent duplicate email content rows
 ALTER TABLE `CubeCart_email_content` ADD UNIQUE KEY `content_language` (`content_type`, `language`); #EOQ
+
+-- Allow merchants to disable individual email notifications
+ALTER TABLE `CubeCart_email_content` ADD COLUMN `enabled` TINYINT(1) UNSIGNED NOT NULL DEFAULT 1; #EOQ

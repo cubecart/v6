@@ -121,6 +121,9 @@ class Mailer extends PHPMailer\PHPMailer\PHPMailer
                 unset($where['language']);
             }
             if (($contents =  $GLOBALS['db']->select('CubeCart_email_content', false, $where, false, 1)) !== false) {
+                if (isset($contents[0]['enabled']) && !$contents[0]['enabled']) {
+                    return false;
+                }
                 $this->_email_content_id = $contents[0]['content_id'];
                 $this->_content_type = $content_type;
                 $elements = array(

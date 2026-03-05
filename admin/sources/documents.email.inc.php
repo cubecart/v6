@@ -303,6 +303,15 @@ foreach ($GLOBALS['hooks']->load('admin.documents.email.macros') as $hook) {
 
 $GLOBALS['gui']->addBreadcrumb($lang['email']['title_email'], currentPage(array('action', 'content_id', 'content_type', 'template_id')));
 
+if (isset($_POST['email_enabled']) && isset($_POST['email_types']) && is_array($_POST['email_enabled']) && Admin::getInstance()->permissions('documents', CC_PERM_EDIT)) {
+    foreach ($_POST['email_types'] as $i => $content_type) {
+        $enabled = isset($_POST['email_enabled'][$i]) ? (int)$_POST['email_enabled'][$i] : 1;
+        $GLOBALS['db']->update('CubeCart_email_content', array('enabled' => $enabled), array('content_type' => (string)$content_type));
+    }
+    $GLOBALS['main']->successMessage($lang['common']['save_success']);
+    httpredir(currentPage());
+}
+
 if (isset($_POST['template_default']) && ctype_digit($_POST['template_default']) && Admin::getInstance()->permissions('documents', CC_PERM_EDIT)) {
     $GLOBALS['db']->update('CubeCart_email_template', array('template_default' => '0'));
     $GLOBALS['db']->update('CubeCart_email_template', array('template_default' => '1'), array('template_id' => (int)$_POST['template_default']));
@@ -583,7 +592,7 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
         $max_translations = is_array($lang_list) ? count($lang_list) : 0;
         $can_translate = false;
         foreach ($email_types as $key => $values) {
-            $translations = $GLOBALS['db']->select('CubeCart_email_content', array('description','content_id', 'language'), array('content_type' => $key), array('language' => 'ASC'));
+            $translations = $GLOBALS['db']->select('CubeCart_email_content', array('description','content_id', 'language', 'enabled'), array('content_type' => $key), array('language' => 'ASC'));
             if ($translations) {
                 // check language is installed
                 $enabled_translations = 0;
@@ -606,6 +615,8 @@ if (isset($_GET['action']) && isset($_GET['type'])) {
                 $can_translate = true;
             }
             $content['type']  = $values['description'];
+            $content['content_type'] = $key;
+            $content['enabled'] = isset($translations[0]['enabled']) ? $translations[0]['enabled'] : 1;
             $smarty_data['e_contents'][] = $content;
             unset($content);
         }

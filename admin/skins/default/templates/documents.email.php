@@ -18,11 +18,12 @@
 		<tr>
 		  <td width="300">{$LANG.email.email_type}</td>
 		  <td>{$LANG.translate.title_translations}</td>
+		  <td width="80" style="text-align:center">{$LANG.common.status}</td>
 		  {if $CAN_TRANSLATE}<td>&nbsp;</td>{/if}
 		</tr>
 	  </thead>
 	  <tbody>
-		{foreach from=$EMAIL_CONTENTS item=content}
+		{foreach from=$EMAIL_CONTENTS item=content name=email_loop}
 		<tr>
 		  <td><strong>{$content.type}</strong></td>
 		  <td style="text-align:center" class="language_list">
@@ -34,6 +35,7 @@
 			{$LANG.translate.trans_none}
 			{/if}
 		  </td>
+		  <td width="80" style="text-align:center"><input type="hidden" name="email_types[{$smarty.foreach.email_loop.index}]" value="{$content.content_type}"><input type="hidden" name="email_enabled[{$smarty.foreach.email_loop.index}]" id="email_enabled_{$smarty.foreach.email_loop.index}" value="{$content.enabled}" class="toggle"></td>
 		  {if $CAN_TRANSLATE}
 		  <td width="30" align="center">
 			{if $content.translate!==false}

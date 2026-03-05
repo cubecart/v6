@@ -383,6 +383,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_email_content` (
 	`language` VARCHAR(5) NOT NULL,
 	`subject` VARCHAR(250) NOT NULL,
 	`content_html` TEXT NOT NULL,
+	`enabled` TINYINT(1) UNSIGNED NOT NULL DEFAULT 1,
 	PRIMARY KEY (`content_id`),
 	UNIQUE KEY `content_language` (`content_type`, `language`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
