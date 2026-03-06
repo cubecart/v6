@@ -1592,11 +1592,6 @@ class Order
         }
 
         if ($GLOBALS['db']->select('CubeCart_order_summary', array('cart_order_id'), array('cart_order_id' => $this->_order_id), false, false, false, false)) {
-            $this->addNote(
-                $this->_order_id,
-                sprintf($GLOBALS['language']->orders['order_updated_via_basket'], $this->_basket['billing_address']['first_name']),
-                false
-            );
             $update = true;
         }
 
