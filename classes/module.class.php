@@ -30,7 +30,7 @@ class Module
 
 	##############################################
 
-	public function __construct($path = false, $folder_name = false, $template = 'index.tpl', $zones = false, $fetch = true)
+	public function __construct($path = false, $folder_name = false, $template = 'index.php', $zones = false, $fetch = true)
 	{
 		$this->_template = $template;
 
@@ -116,13 +116,14 @@ class Module
 		$title = (!empty($module_title)) ? $module_title : str_replace('_', ' ', $name);
 		// Primary: modules/{type}/{name}/images/logo.*
 		$images = glob(CC_ROOT_DIR.'/modules/'.$type.'/'.$name.'/images/logo.{png,jpg,jpeg,gif,svg,webp}', GLOB_BRACE);
+        $style = 'style="max-width:200px; max-height:50px;"';
 		if (is_array($images) && isset($images[0])) {
-			return '<img src="modules/'.$type.'/'.$name.'/images/'.basename($images[0]).'" alt="'.$title.'" title="'.$title.'" width="114" />';
+			return '<img src="modules/'.$type.'/'.$name.'/images/'.basename($images[0]).'" alt="'.$title.'" title="'.$title.'" '.$style.' />';
 		}
-		// Fallback: modules/{type}/{name}/admin/logo.*
+		// Legacy: modules/{type}/{name}/admin/logo.*
 		$images = glob(CC_ROOT_DIR.'/modules/'.$type.'/'.$name.'/admin/logo.{png,jpg,jpeg,gif,svg,webp}', GLOB_BRACE);
 		if (is_array($images) && isset($images[0])) {
-			return '<img src="modules/'.$type.'/'.$name.'/admin/'.basename($images[0]).'" alt="'.$title.'" title="'.$title.'" width="114" />';
+			return '<img src="modules/'.$type.'/'.$name.'/admin/'.basename($images[0]).'" alt="'.$title.'" title="'.$title.'" '.$style.' />';
 		}
 		return $title;
 	}
@@ -286,6 +287,11 @@ class Module
 	private function _setupTemplate($zones)
 	{
 		$GLOBALS['gui']->changeTemplateDir($this->_path.'/skin');
+
+		// Fall back to .tpl if .php template doesn't exist (third-party modules)
+		if (substr($this->_template, -4) === '.php' && !$GLOBALS['smarty']->templateExists($this->_template)) {
+			$this->_template = substr($this->_template, 0, -4) . '.tpl';
+		}
 
 		$lang = $GLOBALS['language']->getStrings(strtolower($this->_folder_name));
 		$xml_name = !empty($this->_info['name']) ? $this->_info['name'] : str_replace('_', ' ', $this->_folder_name);
