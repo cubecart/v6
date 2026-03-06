@@ -52,12 +52,6 @@ class Module
      */
     private $_module_name;
     /**
-     * Module package file
-     *
-     * @var string
-     */
-    private $_package_file = 'package.conf.inc';
-    /**
      * Module config dile
      *
      * @var string
@@ -102,12 +96,12 @@ class Module
 
     ##############################################
 
-    public function __construct($path = false, $local_name = false, $template = 'index.tpl', $zones = false, $fetch = true)
+    public function __construct($path = false, $base_name = false, $template = 'index.tpl', $zones = false, $fetch = true)
     {
         $this->_template = $template;
         if ($path) {
             // Load Package info
-            $this->_module_data($path, $local_name);
+            $this->_module_data($path, $base_name);
             // Include module classes
             $this->_module_classes();
             if (isset($_POST['module']['status']) && is_array($_POST['module'])) {
@@ -131,7 +125,7 @@ class Module
                     $GLOBALS['hooks']->uninstall($this->_module_name);
                 }
                 // Reload package data after save
-                $this->_module_data($path, $local_name);
+                $this->_module_data($path, $base_name);
             }
             // Add default tab
             $GLOBALS['main']->addTabControl($GLOBALS['language']->common['general'], $_GET['module']);
@@ -147,7 +141,7 @@ class Module
                 $GLOBALS['gui']->changeTemplateDir($this->_path.'/skin');
                 $module_lang_node = strtolower($this->_module_name);
                 $lang = $GLOBALS['language']->getStrings($module_lang_node);
-                $GLOBALS['smarty']->assign('TITLE', $this->module_fetch_logo($this->_info['type'], $this->_module_name, isset($lang['module_title']) ? $lang['module_title'] : str_replace('_',' ',$this->_module_name)));
+                $GLOBALS['smarty']->assign('TITLE', $this->get_logo($this->_info['type'], $this->_module_name, isset($lang['module_title']) ? $lang['module_title'] : str_replace('_',' ',$this->_module_name)));
 
                 // Get tax types for modules drop down box
                 if (($this->_taxes = $GLOBALS['db']->select('CubeCart_tax_class', array('id', 'tax_name'), false, array('tax_name' => 'ASC'))) !== false) {
@@ -303,27 +297,29 @@ class Module
      * @param string $module_title
      * @return string
      */
-    public function module_fetch_logo($type, $name, $module_title = '')
+    public function get_logo($type, $name, $module_title = '')
     {
-        $images = glob(CC_ROOT_DIR.'/modules/'.$type.'/'.$name.'/'.'admin/logo.{gif,jpg,png,svg}', GLOB_BRACE);
-        // $name is the module folder name, $module_title is the title set in the module lang file which is preferable
+        $title = (!empty($module_title)) ? $module_title : str_replace('_', ' ', $name);
+        // Primary location: modules/{type}/{name}/images/logo.*
+        $images = glob(CC_ROOT_DIR.'/modules/'.$type.'/'.$name.'/images/logo.{png,jpg,jpeg,gif,svg,webp}', GLOB_BRACE);
         if (is_array($images) && isset($images[0])) {
-            $title = (empty($module_title)) ? $name : $module_title;
-            return '<img src="modules/'.$type.'/'.$name.'/admin/'.basename($images[0]).'" alt="'.$title.'" title="'.$title.'" width="114" />';
-        } elseif (!empty($module_title)) {
-            return $module_title;
-        } else {
-            return str_replace('_', ' ', $name);
+            return '<img src="modules/'.$type.'/'.$name.'/images/'.basename($images[0]).'" alt="'.$title.'" title="'.$title.'" width="114" />';
         }
+        // Fallback: modules/{type}/{name}/admin/logo.*
+        $images = glob(CC_ROOT_DIR.'/modules/'.$type.'/'.$name.'/admin/logo.{png,jpg,jpeg,gif,svg,webp}', GLOB_BRACE);
+        if (is_array($images) && isset($images[0])) {
+            return '<img src="modules/'.$type.'/'.$name.'/admin/'.basename($images[0]).'" alt="'.$title.'" title="'.$title.'" width="114" />';
+        }
+        return $title;
     }
 
     /**
-     * Get module logo
+     * Get zones
      *
      * @param string $label
      * @return serialized string/empty
      */
-    public function module_fetch_zones($label)
+    public function get_zones($label)
     {
         if (!isset($_POST[$label]) || !is_array($_POST[$label])) {
             return '';
@@ -370,8 +366,8 @@ class Module
         if (!empty($settings) && is_array($settings)) {
             $updated = false;
 
-            $settings['countries']    = $this->module_fetch_zones('zones');
-            $settings['disabled_countries'] = $this->module_fetch_zones('disabled_zones');
+            $settings['countries']    = $this->get_zones('zones');
+            $settings['disabled_countries'] = $this->get_zones('disabled_zones');
 
             // Save packaging boxes to global config (shared across all shipping modules)
             if (isset($_POST['packaging_boxes'])) {
@@ -460,11 +456,12 @@ class Module
      * Get module data
      *
      * @param string $path
-     * @param string $local_name
+     * @param string $base_name
      */
-    private function _module_data($path = false, $local_name = false)
+    private function _module_data($path = false, $base_name = false)
     {
         // Set Module Path
+        echo $path;
         if ($path) {
             $drop = array( CC_DS.'admin',  CC_DS.'classes',  CC_DS.'skin',  CC_DS.'language');
             $this->_path = CC_ROOT_DIR.str_replace($drop, '', dirname(str_replace(CC_ROOT_DIR, '', $path)));
@@ -490,27 +487,12 @@ class Module
                 trigger_error($e->getMessage());
                 return false;
             }
-            //$this->_module_name = (isset($this->_info['folder']) && !empty($this->_info['folder'])) ? $this->_info['folder'] : str_replace(' ', '_', $this->_info['name']);
-        } elseif (file_exists($this->_path.'/'.$this->_package_file)) {
-            $this->_info  = unserialize(file_get_contents($this->_path.'/'.$this->_package_file, true));
-        //$this->_module_name = str_replace(' ', '_', $this->_info['name']);
-        } else {
-            $pathFolders = explode('/', $this->_path);
-            $noFolders = count($pathFolders);
-            $this->_info['type'] = $pathFolders[($noFolders-2)];
-            //$this->_module_name = $pathFolders[($noFolders-1)];
-        }
-
-        $this->_module_name = str_replace(' ', '_', $local_name);
-        $this->_local_name  = ($local_name) ? $local_name : $this->_module_name;
-
-        // Load module configuration
-        if (!empty($this->_module_name)) {
-            $config = $GLOBALS['config']->get($this->_local_name);
-            $module = $GLOBALS['db']->select('CubeCart_modules', false, array('folder' => $this->_module_name));
-            //unset($config['status'], $config['default']);
+            $this->_module_name = $this->_info['name'] ?? '';
+            $config = $GLOBALS['config']->get($base_name);
+            $module = $GLOBALS['db']->select('CubeCart_modules', false, array('folder' => $base_name));
             $this->_settings = ($module) ? array_merge($module[0], $config) : $config;
         }
+        return false;
     }
 
     /**
