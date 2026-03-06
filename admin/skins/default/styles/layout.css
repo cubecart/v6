@@ -1697,16 +1697,14 @@ ul.quick_links li#help_menu ul li:not(:last-child) {
     color: var(--success);
 }
 .row_warn {
-    background-color: #FF6600!important;
-    color: var(--text-invert);
+    border: 1px solid #FF6600;
+    color: #FF6600;
     padding-left: 5px;
-    border-bottom: 25px solid #FFF;
 }
 .row_error {
-    background-color: #FF0000!important;
-    color: var(--text-invert);
+    border: 1px solid #FF0000;
+    color: #FF0000;
     padding-left: 5px;
-    border-bottom: 25px solid #FFF;
 }
 #php_code {
     height: 300px;
@@ -2902,12 +2900,12 @@ textarea#query {
   }
   #help_menu > ul > li:last-child { border-right: 1px solid var(--border) !important; }
   .row_warn {
-    color: #ffffff !important;
     border: 1px solid #ff6600;
+    color: #ff6600;
   }
   .row_error {
-    color: #ffffff !important;
-    border-bottom: 1px solid #ff0000;
+    border: 1px solid #ff0000;
+    color: #ff0000;
   }
   @keyframes cache_animation_dark {
     0% { background-color: #e08600; }

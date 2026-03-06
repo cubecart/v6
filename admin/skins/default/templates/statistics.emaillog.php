@@ -74,6 +74,7 @@
 	  </tr>
 		{if !empty($log.fail_reason)}
 		<tr>
+			<td>&nbsp;</td>
 			<td class="row_error" colspan="10">{$log.fail_reason}</td>
 		</tr>
 		{/if}
