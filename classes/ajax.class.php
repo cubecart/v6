@@ -63,6 +63,9 @@ class Ajax
             case 'viewEmail':
                 $return_data = self::viewEmail((int)$_GET['id'], (string)$_GET['mode']);
             break;
+            case 'viewHookBackup':
+                $return_data = self::viewHookBackup((int)$_GET['hook_id'], (string)$_GET['backup']);
+            break;
             case 'SMTPTest':
                 $return_data = self::SMTPTest();
             break;
@@ -522,6 +525,41 @@ class Ajax
                 return '<div style="font-family: \'Courier New\', Courier">'.nl2br(htmlentities($test_mailer[0][$column], ENT_QUOTES)).'</div>';
             } else {
                 return $test_mailer[0][$column];
+            }
+        }
+        return false;
+    }
+
+    /**
+     * View hook file backup content
+     *
+     * @param int $hook_id
+     * @param string $backup
+     * @return string/false
+     */
+    public static function viewHookBackup($hook_id, $backup)
+    {
+        if (!CC_IN_ADMIN || !Admin::getInstance()->is()) {
+            return false;
+        }
+        if (($hook = $GLOBALS['db']->select('CubeCart_hooks', false, array('hook_id' => $hook_id))) !== false) {
+            $hook_data = $hook[0];
+            $filepath = (!empty($hook_data['filepath'])) ? $hook_data['filepath'] : 'hooks/'.$hook_data['trigger'].'.php';
+            $filepath = preg_replace(array('#[^a-z0-9.\\\\_/-]#i', '#\.{1,2}/#'), '', $filepath);
+            $hook_full_path = CC_ROOT_DIR.'/modules/plugins/'.$hook_data['plugin'].'/'.$filepath;
+
+            // Validate backup parameter
+            if (preg_match('/^v[\d.]+\.default$/', $backup)) {
+                $backup_file = $hook_full_path.'.'.$backup.'.bak';
+            } elseif (ctype_digit($backup)) {
+                $backup_file = $hook_full_path.'.'.$backup.'.bak';
+            } else {
+                return false;
+            }
+
+            if (file_exists($backup_file)) {
+                $code = file_get_contents($backup_file);
+                return '<div style="font-size:13px; padding:10px; margin:0; overflow:auto;">'.highlight_string($code, true).'</div>';
             }
         }
         return false;

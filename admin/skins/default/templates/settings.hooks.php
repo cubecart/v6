@@ -241,6 +241,16 @@
       </script>
       {/literal}
       {if $HOOK_FILE.backups}
+      <script>var hookBackupId = {$HOOK.hook_id};</script>
+      {literal}
+      <script>
+      function viewBackup(timestamp) {
+         $.get('?_g=xml&function=viewHookBackup&hook_id=' + hookBackupId + '&backup=' + timestamp, function(data) {
+            $.colorbox({html: data, width: '80%', height: '80%', title: timestamp});
+         });
+      }
+      </script>
+      {/literal}
       <h3>{$LANG.hooks.title_hook_backups}</h3>
       <p><small>{$LANG.hooks.max_backups_note}</small></p>
       <table width="70%">
@@ -257,6 +267,8 @@
                <td>{$backup.date}</td>
                <td>{($backup.size/1024)|string_format:"%.1f"} KB</td>
                <td style="text-align:center">
+                  <a href="#" title="{$LANG.common.view}" onclick="viewBackup('{$backup.timestamp}'); return false;"><i class="fa fa-eye"></i></a>
+                  &nbsp;
                   <a href="{$backup.restore_url}#hook_code" title="{$LANG.hooks.restore_backup}" onclick="return confirm('{$LANG.notification.confirm_continue}');"><i class="fa fa-undo"></i></a>
                   {if !$backup.is_default}&nbsp;
                   <a href="{$backup.delete_url}&amp;token={$SESSION_TOKEN}#hook_code" title="{$LANG.notification.confirm_continue}" class="delete"><i class="fa fa-trash"></i></a>{/if}
