@@ -71,12 +71,17 @@ foreach ($GLOBALS['hooks']->load('admin.product.manufacturer.pre_display') as $h
 $smarty_data = array();
 if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('id', 'numcode', 'name'), false, array('name' => 'ASC'))) !== false) {
     $smarty_data = array();
+    $store_country = $GLOBALS['config']->get('config', 'store_country');
     if (isset($_GET['edit']) && is_numeric($_GET['edit']) && ($geo = $GLOBALS['db']->select('CubeCart_manufacturers', array('country', 'eu_country'), array('id' => (int)$_GET['edit']))) !== false) {
-        
+        $sel_country = $geo[0]['country'];
+        $sel_eu_country = $geo[0]['eu_country'];
+    } else {
+        $sel_country = $store_country;
+        $sel_eu_country = $store_country;
     }
     foreach ($countries as $country) {
         $array = array(
-            'selected' => (isset($geo[0]['country']) && !empty($geo[0]['country']) && $country['numcode'] == $geo[0]['country']) ? 'selected="selected"' : '',
+            'selected' => (!empty($sel_country) && $country['numcode'] == $sel_country) ? 'selected="selected"' : '',
             'id'  => $country['numcode'],
             'name'  => $country['name'],
         );
@@ -86,7 +91,7 @@ if (($countries = $GLOBALS['db']->select('CubeCart_geo_country', array('id', 'nu
 
     foreach ($countries as $country) {
         $array = array(
-            'selected' => (isset($geo[0]['eu_country']) && !empty($geo[0]['eu_country']) && $country['numcode'] == $geo[0]['eu_country']) ? 'selected="selected"' : '',
+            'selected' => (!empty($sel_eu_country) && $country['numcode'] == $sel_eu_country) ? 'selected="selected"' : '',
             'id'  => $country['numcode'],
             'name'  => $country['name'],
         );
