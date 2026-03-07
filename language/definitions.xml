@@ -751,7 +751,7 @@
     <string name="days" introduced="6.1.0"><![CDATA[Days]]></string>
     <string name="staff" introduced="6.1.0"><![CDATA[Staff]]></string>
     <string name="initiator" introduced="6.1.0"><![CDATA[Initiator]]></string>
-    <string name="this_page" introduced="6.0.12"><![CDATA[About this page]]></string>
+    <string name="this_page" introduced="6.0.12"><![CDATA[Documentation]]></string>
     <string name="tech_support" introduced="6.0.12"><![CDATA[Technical Support]]></string>
     <string name="back" introduced="6.0.11"><![CDATA[Back]]></string>
     <string name="plain_text" introduced="6.1.0"><![CDATA[Plain Text]]></string>

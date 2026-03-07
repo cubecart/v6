@@ -16,7 +16,7 @@
       #help-panel { position:fixed; top:0; right:-420px; width:400px; height:100%; background:var(--panel); box-shadow:-2px 0 8px rgba(0,0,0,0.2); z-index:9999; transition:right 0.3s ease; display:flex; flex-direction:column; border-left:1px solid var(--border); }
       #help-panel.open { right:0; }
       #help-panel-overlay.open { display:block; }
-      #help-panel-header { display:flex; justify-content:space-between; align-items:center; padding:8px 16px; background:var(--primary); color:var(--text-invert); border-bottom:3px solid var(--primary-accent); flex-shrink:0; }
+      #help-panel-header { display:flex; justify-content:space-between; align-items:center; padding:9px 16px; background:var(--primary); color:var(--text-invert); border-bottom:3px solid var(--primary-accent); flex-shrink:0; }
       #help-panel-title { font-size:14px; font-weight:600; }
       #help-panel-close, #help-panel-close:hover, #help-panel-close .fa { color:#fff !important; font-size:16px; text-decoration:none; }
       #help-panel-close:hover { opacity:0.8; }
