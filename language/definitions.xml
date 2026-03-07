@@ -2432,6 +2432,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="tab_layout" introduced="5.0.0"><![CDATA[Layout]]></string>
     <string name="tab_logos" introduced="5.0.0"><![CDATA[Logos]]></string>
     <string name="tab_offline" introduced="5.0.0"><![CDATA[Offline]]></string>
+    <string name="tab_online" introduced="6.6.0"><![CDATA[Online]]></string>
     <string name="tab_seo" introduced="5.0.0"><![CDATA[Search Engines]]></string>
     <string name="tab_stock" introduced="5.0.0"><![CDATA[Stock]]></string>
     <string name="tax_apply_to" introduced="5.0.0"><![CDATA[Apply To]]></string>

@@ -62,6 +62,24 @@
     position: relative;
     top: 1px;
 }
+.acp_widget a.button.cache-clear {
+    background: linear-gradient(to bottom, #ffe0b2 5%, #ffcc80 100%);
+    border-color: #e09540;
+    color: #7a4a00;
+    text-shadow: none;
+}
+.acp_widget a.button.status-online {
+    background: linear-gradient(to bottom, #d4edda 5%, #c3e6cb 100%);
+    border-color: #5a9a68;
+    color: #155724;
+    text-shadow: none;
+}
+.acp_widget a.button.status-offline {
+    background: linear-gradient(to bottom, #f8d7da 5%, #f5c6cb 100%);
+    border-color: #c94050;
+    color: #721c24;
+    text-shadow: none;
+}
 .acp_widget .close a {
     position: absolute;
     top: 40%;
@@ -84,6 +102,22 @@
     color: #333333;
     text-decoration: none;
 }
+.acp_widget .acp_admin_name {
+    display: block;
+    padding: 2px 10px 4px;
+    color: #999;
+    font-size: 11px;
+    text-align: center;
+    font-weight: normal;
+    margin: 0;
+    border: none;
+    background: none;
+    box-shadow: none;
+    text-shadow: none;
+    text-decoration: none;
+    text-transform: none;
+    letter-spacing: normal;
+}
 @media only screen and (max-width: 40em) {
   .acp_widget {
       display: none;
@@ -92,9 +126,13 @@
 </style>
 <div class="acp_widget">
     <div class="close"><a href="#">&laquo;</a></div>
+    <span class="acp_admin_name">{$ACP_DATA.admin_name}</span>
     <a href="{$ACP_DATA.acp_path}" class="button" target="acp_window">{$LANG.navigation.acp_home}</a>
     {if isset($ACP_DATA.edit_url)}<br>
     <a href="{$ACP_DATA.edit_url}" class="button" target="acp_window">{$ACP_DATA.url_text}</a>
-    {/if}
+    {/if}<br>
+    <a href="?acp_action=clear_cache&amp;acp_redirect={$ACP_DATA.current_url}" class="button cache-clear">{$LANG.maintain.cache_clear|ucwords}</a><br>
+    <a href="?acp_action=toggle_maintenance&amp;acp_redirect={$ACP_DATA.current_url}" class="button {if $ACP_DATA.is_offline}status-offline{else}status-online{/if}">{if $ACP_DATA.is_offline}{$LANG.settings.tab_offline}{else}{$LANG.settings.tab_online}{/if}</a><br>
+    <a href="?acp_action=logout" class="button">{$LANG.account.logout}</a>
 </div>
 {/if}

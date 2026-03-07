@@ -1008,9 +1008,29 @@ class GUI
     }
 
     private function _displayAdminToolBar() {
-        
+
         if(!Admin::getInstance()->is()) return false;
-        
+
+        // Handle ACP widget actions
+        if (isset($_GET['acp_action'])) {
+            $action = $_GET['acp_action'];
+            $redirect = CC_ROOT_REL;
+            if (isset($_GET['acp_redirect']) && strpos($_GET['acp_redirect'], '/') === 0 && strpos($_GET['acp_redirect'], '//') !== 0) {
+                $redirect = $_GET['acp_redirect'];
+            }
+            if ($action === 'clear_cache' && Admin::getInstance()->permissions('maintenance', CC_PERM_DELETE)) {
+                $GLOBALS['cache']->clear();
+                $GLOBALS['cache']->tidy();
+            } elseif ($action === 'toggle_maintenance') {
+                $offline = $GLOBALS['config']->get('config', 'offline') ? 0 : 1;
+                $GLOBALS['config']->set('config', 'offline', $offline);
+                $GLOBALS['cache']->clear();
+            } elseif ($action === 'logout') {
+                Admin::getInstance()->logout('front');
+            }
+            httpredir($redirect);
+        }
+
         $acp_path = CC_ROOT_REL.$GLOBALS['config']->get('config', 'adminFile');
         $acp_data = array('acp_path' => $acp_path);
         if(isset($_GET['_a']) && !empty($_GET['_a'])) {
@@ -1034,6 +1054,12 @@ class GUI
                 $acp_data['url_text'] = $GLOBALS['language']->documents['edit_homepage'];
             }
         }
+
+        $admin = Admin::getInstance();
+        $acp_data['admin_name'] = ucwords($admin->name ?: $admin->username);
+        $acp_data['is_offline'] = (bool)$GLOBALS['config']->get('config', 'offline');
+        $acp_data['current_url'] = urlencode($_SERVER['REQUEST_URI']);
+
         $html = file_get_contents(CC_ROOT_DIR.'/'.$GLOBALS['config']->get('config', 'adminFolder').'/skins/default/templates/frontend.acp_toolbar.php');
         $GLOBALS['smarty']->assign('ACP_DATA', $acp_data);
         $GLOBALS['smarty']->assign('ACP_WIDGET', $GLOBALS['smarty']->fetch('string:'.$html));
