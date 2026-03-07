@@ -859,7 +859,7 @@
     <string name="guest" introduced="5.0.0"><![CDATA[Guest]]></string>
     <string name="height" introduced="5.0.0"><![CDATA[Height]]></string>
     <string name="type_to_search" introduced="6.0.0"><![CDATA[Start typing to search&hellip;]]></string>
-    <string name="help" introduced="5.0.0"><![CDATA[Help]]></string>
+    <string name="help" introduced="5.0.0"><![CDATA[Documentation]]></string>
     <string name="hide" introduced="5.0.0"><![CDATA[Hide]]></string>
     <string name="home" introduced="5.0.0"><![CDATA[Home]]></string>
     <string name="import" introduced="5.0.0"><![CDATA[Import]]></string>
