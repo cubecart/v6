@@ -77,7 +77,7 @@
       <div id="help-panel-overlay"></div>
       <div id="help-panel">
          <div id="help-panel-header">
-            <span id="help-panel-title">{$LANG.common.help}</span>
+            <span id="help-panel-title">{$LANG.common.this_page}</span>
             <a href="#" id="help-panel-close"><i class="fa fa-times"></i></a>
          </div>
          <iframe id="help-panel-iframe" src="about:blank"></iframe>
