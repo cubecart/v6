@@ -72,6 +72,66 @@ if (Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT)) {
     }
 
 
+    // Helper: resolve hook file path from DB record
+    $resolve_hook_path = function($hf_data) {
+        $hf_path = (!empty($hf_data['filepath'])) ? $hf_data['filepath'] : 'hooks/'.$hf_data['trigger'].'.php';
+        $hf_path = preg_replace(array('#[^a-z0-9.\\\\_/-]#i', '#\.{1,2}/#'), '', $hf_path);
+        return CC_ROOT_DIR.'/modules/plugins/'.$hf_data['plugin'].'/'.$hf_path;
+    };
+
+    // Sanitize hook_id — strip any URL fragment that may have been encoded
+    if (isset($_GET['hook_id'])) {
+        $_GET['hook_id'] = (int)$_GET['hook_id'];
+    }
+
+    // Restore hook file from backup
+    if (isset($_GET['restore_backup']) && isset($_GET['hook_id']) && is_numeric($_GET['hook_id'])) {
+        $backup_ts = preg_match('/^v[\d.]+\.default$/', $_GET['restore_backup']) ? $_GET['restore_backup'] : preg_replace('/[^0-9]/', '', $_GET['restore_backup']);
+        if (($hf = $GLOBALS['db']->select('CubeCart_hooks', false, array('hook_id' => (int)$_GET['hook_id']))) !== false) {
+            $hf_full = $resolve_hook_path($hf[0]);
+            $backup_file = $hf_full.'.'.$backup_ts.'.bak';
+            if (file_exists($backup_file) && file_exists($hf_full) && is_writable($hf_full)) {
+                // Backup current before restoring
+                copy($hf_full, $hf_full.'.'.time().'.bak');
+                if (copy($backup_file, $hf_full)) {
+                    $GLOBALS['main']->successMessage($lang['hooks']['notify_hook_file_restored']);
+                }
+            }
+        }
+        httpredir(currentPage(array('restore_backup')).'#hook_code');
+    }
+
+    // Delete hook file backup (protect default)
+    if (isset($_GET['delete_backup']) && isset($_GET['hook_id']) && is_numeric($_GET['hook_id'])) {
+        $backup_ts = preg_replace('/[^0-9]/', '', $_GET['delete_backup']);
+        if (!empty($backup_ts) && ($hf = $GLOBALS['db']->select('CubeCart_hooks', false, array('hook_id' => (int)$_GET['hook_id']))) !== false) {
+            $hf_full = $resolve_hook_path($hf[0]);
+            $backup_file = $hf_full.'.'.$backup_ts.'.bak';
+            if (file_exists($backup_file)) {
+                unlink($backup_file);
+                $GLOBALS['main']->successMessage($lang['hooks']['notify_hook_backup_deleted']);
+            }
+        }
+        httpredir(currentPage(array('delete_backup')).'#hook_code');
+    }
+
+    // Save hook file code if submitted (use RAW POST to avoid HTML entity encoding)
+    $raw_hook_code = isset($GLOBALS['RAW']['POST']['hook_file_code']) ? $GLOBALS['RAW']['POST']['hook_file_code'] : null;
+    if ($raw_hook_code !== null && strlen($raw_hook_code) > 0 && isset($_GET['hook_id']) && is_numeric($_GET['hook_id'])) {
+        if (($hf = $GLOBALS['db']->select('CubeCart_hooks', false, array('hook_id' => (int)$_GET['hook_id']))) !== false) {
+            $hf_full = $resolve_hook_path($hf[0]);
+            if (file_exists($hf_full) && is_writable($hf_full)) {
+                // Create backup before saving
+                copy($hf_full, $hf_full.'.'.time().'.bak');
+                if (file_put_contents($hf_full, $raw_hook_code) !== false) {
+                    $GLOBALS['main']->successMessage($lang['hooks']['notify_hook_file_saved']);
+                } else {
+                    $GLOBALS['main']->errorMessage($lang['hooks']['error_hook_file_save']);
+                }
+            }
+        }
+    }
+
     if (isset($_POST['hook']) && is_array($_POST['hook'])) {
         // Validation
         $error = array();
@@ -89,6 +149,10 @@ if (Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT)) {
             if (isset($_POST['hook']['hook_id']) && is_numeric($_POST['hook']['hook_id'])) {
                 if ($GLOBALS['db']->update('CubeCart_hooks', $_POST['hook'], array('hook_id' => $_POST['hook']['hook_id']))) {
                     $GLOBALS['main']->successMessage($lang['hooks']['notify_hook_update']);
+                    if (isset($_POST['submit_cont'])) {
+                        $tab = !empty($_POST['previous-tab']) ? preg_replace('/[^a-z0-9_#-]/i', '', $_POST['previous-tab']) : '#hook_code';
+                        httpredir(currentPage().$tab);
+                    }
                     httpredir(currentPage(array('action', 'hook_id')));
                 } else {
                     $GLOBALS['main']->errorMessage($lang['hooks']['error_hook_update']);
@@ -149,6 +213,62 @@ if (isset($_GET['plugin']) && isset($plugins[(string)$_GET['plugin']]) && !is_nu
                 $hook_data = $hook[0];
                 $GLOBALS['smarty']->assign('HOOK', $hook_data);
                 $GLOBALS['gui']->addBreadcrumb($hook_data['trigger']);
+
+                // Resolve hook file path for code viewer
+                $hook_filepath = (!empty($hook_data['filepath'])) ? $hook_data['filepath'] : 'hooks/'.$hook_data['trigger'].'.php';
+                $hook_filepath = preg_replace(array('#[^a-z0-9.\\\\_/-]#i', '#\.{1,2}/#'), '', $hook_filepath);
+                $hook_full_path = CC_ROOT_DIR.'/modules/plugins/'.$hook_data['plugin'].'/'.$hook_filepath;
+
+                if (file_exists($hook_full_path)) {
+                    $hook_writable = is_writable($hook_full_path);
+
+                    // Get plugin version for default backup naming
+                    $plugin_version = (isset($xml->info->version)) ? (string)$xml->info->version : '0.0.0';
+                    $default_backup = $hook_full_path.'.v'.$plugin_version.'.default.bak';
+                    if (!file_exists($default_backup)) {
+                        copy($hook_full_path, $default_backup);
+                    }
+
+                    // Find backups
+                    $hook_backups = array();
+                    $backup_pattern = $hook_full_path.'.*.bak';
+                    $backup_files = glob($backup_pattern);
+                    if ($backup_files) {
+                        rsort($backup_files); // newest first
+                        foreach ($backup_files as $bf) {
+                            if (preg_match('/\.(\d+)\.bak$/', $bf, $m)) {
+                                $hook_backups[] = array(
+                                    'timestamp' => $m[1],
+                                    'date' => date('Y-m-d H:i:s', (int)$m[1]),
+                                    'size' => filesize($bf),
+                                    'is_default' => false,
+                                    'restore_url' => currentPage(null, array('restore_backup' => $m[1])),
+                                    'delete_url' => currentPage(null, array('delete_backup' => $m[1])),
+                                );
+                            }
+                        }
+                    }
+                    // Append default backup at the end (current version only)
+                    if (file_exists($default_backup)) {
+                        $hook_backups[] = array(
+                            'timestamp' => 'v'.$plugin_version.'.default',
+                            'date' => $lang['hooks']['default_version'].' (v'.$plugin_version.')',
+                            'size' => filesize($default_backup),
+                            'is_default' => true,
+                            'restore_url' => currentPage(null, array('restore_backup' => 'v'.$plugin_version.'.default')),
+                            'delete_url' => '',
+                        );
+                    }
+
+                    $hook_file_data = array(
+                        'path' => 'modules/plugins/'.$hook_data['plugin'].'/'.$hook_filepath,
+                        'code' => base64_encode(file_get_contents($hook_full_path)),
+                        'writable' => $hook_writable,
+                        'backups' => $hook_backups,
+                    );
+                    $GLOBALS['smarty']->assign('HOOK_FILE', $hook_file_data);
+                    $GLOBALS['main']->AddTabControl($lang['hooks']['title_hook_code'], 'hook_code');
+                }
             } else {
                 httpredir(currentPage(array('hook_id')));
             }

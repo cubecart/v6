@@ -208,6 +208,65 @@
          <input type="hidden" name="hook[hook_id]" value="{$HOOK.hook_id}">
       </fieldset>
    </div>
+   {if isset($HOOK_FILE)}
+   <div id="hook_code" class="tab_content">
+      <h3>{$LANG.hooks.title_hook_code}</h3>
+      <p><small>{$HOOK_FILE.path}{if !$HOOK_FILE.writable} &mdash; <strong>{$LANG.hooks.hook_file_readonly}</strong>{/if}</small></p>
+      <fieldset>
+         <div id="hook_code_editor" style="height:500px; background:none !important; border-bottom:1px solid #ccc; border-right:1px solid #ccc; text-indent:0 !important;"></div>
+         <input type="hidden" id="hook_file_code_b64" value="{$HOOK_FILE.code}">
+         {if $HOOK_FILE.writable}<input type="hidden" name="hook_file_code" id="hook_file_code_input" value="">{/if}
+      </fieldset>
+      <script src="includes/ace/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+      {literal}
+      <script>
+         var hookEditor = ace.edit("hook_code_editor");
+         var hookInput = document.getElementById('hook_file_code_input');
+         var hookCode = window.atob(document.getElementById('hook_file_code_b64').value);
+         hookEditor.session.setUseWrapMode(true);
+         hookEditor.setOptions({
+            highlightActiveLine: true,
+            showPrintMargin: false,
+            theme: 'ace/theme/github',
+            mode: 'ace/mode/php',
+            readOnly: !hookInput
+         });
+         hookEditor.setValue(hookCode, 1);
+         if (hookInput) {
+            hookInput.value = hookCode;
+            hookEditor.getSession().on("change", function () {
+               hookInput.value = hookEditor.getSession().getValue();
+            });
+         }
+      </script>
+      {/literal}
+      {if $HOOK_FILE.backups}
+      <h3>{$LANG.hooks.title_hook_backups}</h3>
+      <table width="70%">
+         <thead>
+            <tr>
+               <th>{$LANG.common.date}</th>
+               <th>{$LANG.hooks.file_size}</th>
+               <th width="80" style="text-align:center">{$LANG.form.action}</th>
+            </tr>
+         </thead>
+         <tbody>
+            {foreach from=$HOOK_FILE.backups item=backup}
+            <tr>
+               <td>{$backup.date}</td>
+               <td>{($backup.size/1024)|string_format:"%.1f"} KB</td>
+               <td style="text-align:center">
+                  <a href="{$backup.restore_url}#hook_code" title="{$LANG.hooks.restore_backup}" onclick="return confirm('{$LANG.notification.confirm_continue}');"><i class="fa fa-undo"></i></a>
+                  {if !$backup.is_default}&nbsp;
+                  <a href="{$backup.delete_url}&amp;token={$SESSION_TOKEN}#hook_code" title="{$LANG.notification.confirm_continue}" class="delete"><i class="fa fa-trash"></i></a>{/if}
+               </td>
+            </tr>
+            {/foreach}
+         </tbody>
+      </table>
+      {/if}
+   </div>
+   {/if}
    {/if}
       {if isset($PLUGIN_TABS)}
    {foreach from=$PLUGIN_TABS item=tab}
@@ -215,5 +274,6 @@
    {/foreach}
    {/if}
 {include file='templates/element.hook_form_content.php'}
-   <div class="form_control"><input type="submit" value="{$LANG.common.save}"></div>
+   <input type="hidden" name="previous-tab" id="previous-tab" value="">
+   <div class="form_control"><input type="submit" value="{$LANG.common.save}">{if isset($HOOK_FILE)} <input type="submit" name="submit_cont" value="{$LANG.common.save} &amp; {$LANG.common.continue}">{/if}</div>
 </form>

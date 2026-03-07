@@ -1525,7 +1525,17 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_hook" introduced="5.0.0"><![CDATA[Hooks]]></string>
     <string name="title_hook_add" introduced="5.0.0"><![CDATA[Add Hook]]></string>
     <string name="title_hook_available" introduced="5.0.0"><![CDATA[Available Hooks]]></string>
+    <string name="title_hook_code" introduced="6.6.0"><![CDATA[Hook Code]]></string>
     <string name="title_hook_configure" introduced="5.0.0"><![CDATA[Edit Hook]]></string>
+    <string name="notify_hook_file_saved" introduced="6.6.0"><![CDATA[Hook file saved successfully.]]></string>
+    <string name="error_hook_file_save" introduced="6.6.0"><![CDATA[Failed to save hook file.]]></string>
+    <string name="hook_file_readonly" introduced="6.6.0"><![CDATA[This file is read-only.]]></string>
+    <string name="title_hook_backups" introduced="6.6.0"><![CDATA[Backups]]></string>
+    <string name="restore_backup" introduced="6.6.0"><![CDATA[Restore]]></string>
+    <string name="notify_hook_file_restored" introduced="6.6.0"><![CDATA[Hook file restored from backup.]]></string>
+    <string name="notify_hook_backup_deleted" introduced="6.6.0"><![CDATA[Backup deleted.]]></string>
+    <string name="file_size" introduced="6.6.0"><![CDATA[Size]]></string>
+    <string name="default_version" introduced="6.6.0"><![CDATA[Default]]></string>
     <string name="title_hook_optional" introduced="5.0.0"><![CDATA[Optional Configuration]]></string>
     <string name="title_hook_required" introduced="5.0.0"><![CDATA[Required Configuration]]></string>
     <string name="title_plugin" introduced="5.0.0"><![CDATA[Extension]]></string>
