@@ -5,7 +5,7 @@
     position: absolute;
     z-index: 999999;
     top: 0;
-    left: 0;
+    left: -200px;
     border-bottom-right-radius: 6px;
     padding: 5px 20px 10px 5px;
     background-color: #eee;

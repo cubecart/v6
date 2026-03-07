@@ -55,7 +55,8 @@ jQuery(document).ready(function ($) {
         var show = show_acp_widget($.cookie('show_acp_widget'), true);
         $.cookie('show_acp_widget', show, { expires: 30 });
     });
-    show_acp_widget($.cookie('show_acp_widget'), false);
+    var acpCookie = $.cookie('show_acp_widget');
+    show_acp_widget(acpCookie === undefined ? 1 : acpCookie, false);
 
     // -------------------------------
     // Coupon input animation
