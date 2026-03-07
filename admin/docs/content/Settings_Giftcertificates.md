@@ -6,7 +6,7 @@ Configure how gift certificates work in your store.
 
 | Field | Description |
 | --- | --- |
-| Status | Enable or disable gift certificate purchasing. |
+| Status | Disabled, Enabled for All Customers, or Enabled for Logged-In Customers Only. |
 | Minimum Value | The lowest amount a customer can purchase a gift certificate for. |
 | Maximum Value | The highest amount a customer can purchase a gift certificate for. |
 | Expiry | Number of days until the gift certificate expires. Leave blank for no expiry. |

@@ -2,6 +2,9 @@
 
 Execute raw SQL queries directly against the store database. For expert use only.
 
+> [!NOTE]
+> An "expert use only" warning is displayed each time you load this page as a reminder that incorrect queries can cause permanent damage.
+
 ## Database Information
 
 | Field | Description |

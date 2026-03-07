@@ -2,6 +2,13 @@
 
 Manage administrator accounts, permissions, and two-factor authentication.
 
+## Admin List
+
+The main view shows all admin users in a table. Each row includes:
+
+- **Status Toggle** -- enable or disable the admin account directly from the list.
+- **Edit** and **Delete** action links.
+
 ## Admin Details
 
 | Field | Description |
@@ -15,9 +22,22 @@ Manage administrator accounts, permissions, and two-factor authentication.
 | Link Account | Link this admin to a customer account for testing. |
 | Tour Shown | Reset the welcome tour for this admin. |
 
+### Notes
+
+A free-text field for internal notes about this admin account.
+
 ## Password
 
 Set a new password for the admin. Changing a password will log the admin out of all active sessions.
+
+## Overview
+
+Displays read-only account statistics for existing admin users:
+
+| Field | Description |
+| --- | --- |
+| Login Count | Total number of times this admin has logged in. |
+| Last Login | Date and time of the most recent login. |
 
 ## Two-Factor Authentication
 

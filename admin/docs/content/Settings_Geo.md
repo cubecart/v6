@@ -25,9 +25,25 @@ Each country has an editable name, ISO codes, and a status setting that controls
 | ISO Numeric | Numeric country code. |
 | EU | Toggle to mark the country as an EU member state (used by tax rules). |
 
+### Bulk Actions (Countries)
+
+Select multiple countries using the checkboxes, then choose an action from the dropdown:
+
+| Action | Description |
+| --- | --- |
+| Delete | Remove the selected countries and all their zones. |
+| Enabled (Zone Required) | Enable the selected countries with zone/state required. |
+| Enabled (Zone Optional) | Enable the selected countries with zone/state optional. |
+| Enabled (Zone Disabled) | Enable the selected countries with no zone/state field. |
+| Disable | Disable the selected countries. |
+
 ## Zones
 
 Zones are states, provinces, or regions within a country. Each zone has a name, abbreviation, and status toggle. Zones are used in shipping rules and tax calculations.
+
+### Bulk Actions (Zones)
+
+Select multiple zones using the checkboxes and choose **Delete** from the dropdown to remove them in bulk.
 
 ## Add Country / Add Zone
 

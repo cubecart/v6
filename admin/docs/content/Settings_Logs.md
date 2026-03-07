@@ -25,6 +25,8 @@ Records actions taken by administrators (creating, editing, or deleting items).
 | Date | When the action occurred. |
 | IP Address | Source IP address. |
 
+Use the **Clear Log** button to purge all activity log entries.
+
 ## Customer Access Logs
 
 Records customer login attempts on the storefront.

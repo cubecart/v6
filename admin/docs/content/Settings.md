@@ -45,7 +45,7 @@ Enable product reviews: Disabled, Enabled, or Enabled without Gravatar images.
 | Expire Pending Orders | Automatically cancel pending orders after this many days. Blank to disable. |
 | Minimum Order | Minimum order value required to checkout. Blank to disable. |
 | Maximum Order | Maximum order value allowed. Blank to disable. |
-| Order ID Mode | How order numbers are displayed: Internal ID, Incremental (with prefix/postfix, zero-padding, and start number), or Random. |
+| Order ID Mode | How order numbers are displayed: Traditional (internal database ID) or Incremental (with configurable prefix, postfix, zero-padding, and start number). |
 
 ### Sales
 
@@ -56,13 +56,17 @@ Enable product reviews: Disabled, Enabled, or Enabled without Gravatar images.
 | Start / Expiry Date | Date range for the global sale. |
 | Sale Items Count | Number of sale items to display on the sale page. |
 
-### Bot Protection (reCAPTCHA)
+### Bot Protection
 
 | Field | Description |
 | --- | --- |
-| Enable | Select reCAPTCHA version (v2 Checkbox, v2 Invisible, v3, or hCaptcha). |
-| Site Key | Your reCAPTCHA public site key. |
-| Secret Key | Your reCAPTCHA secret key. |
+| Enable | Select a bot protection provider: reCAPTCHA v2 Tickbox, reCAPTCHA v2 Invisible, hCaptcha, or Cloudflare Turnstile (recommended). Options may be greyed out if the current skin does not include the required template. |
+| Site Key | Your public site key from the chosen provider. |
+| Secret Key | Your secret key from the chosen provider. |
+
+### what3words
+
+Enable what3words address support. When enabled, an API key is automatically provisioned and customers can enter a what3words address during checkout. Requires skin compatibility -- if the current skin does not include the `element.w3w.php` template, a notice is shown.
 
 ### Newsletter
 
@@ -82,7 +86,7 @@ Enable product reviews: Disabled, Enabled, or Enabled without Gravatar images.
 | Catalogue Mode | Disable the basket and checkout entirely. |
 | Allow No Shipping | Allow checkout without selecting a shipping method. |
 | Disable Shipping Groups | Turn off shipping groups feature. |
-| Shipping Defaults | Pre-select cheapest or most expensive shipping option. |
+| Shipping Defaults | Pre-select a shipping option at checkout: Cheapest, Cheapest (Not Free), Most Expensive, or Force Choice (customer must select manually). |
 | Force Completed | Automatically mark paid orders as Completed. |
 | Disable Estimates | Hide shipping cost estimates before checkout. |
 | Different Delivery Address | Allow customers to ship to an address different from their billing address. |
@@ -121,6 +125,7 @@ Enable product reviews: Disabled, Enabled, or Enabled without Gravatar images.
 | Default Admin Skin | Select the admin panel skin. |
 | Allow Skin Change | Let customers switch between available skins. |
 | Mobile Skin | Select a separate skin for mobile devices (if available). |
+| Disable Mobile Skin | Toggle to disable the mobile skin entirely. Automatically enabled if the active storefront skin is responsive. |
 
 ## Stock
 
@@ -138,9 +143,9 @@ Enable product reviews: Disabled, Enabled, or Enabled without Gravatar images.
 | --- | --- |
 | Show Stock Level | Display stock quantities on the storefront. |
 | Allow Out of Stock Purchase | Let customers buy products that are out of stock. |
-| Stock Warning Method | How to warn about low stock: email, admin notification, or both. |
+| Stock Warning Method | How low-stock warnings are determined: Global (a single store-wide threshold) or Product (per-product threshold set on each product). |
 | Stock Warning Level | Threshold below which a stock warning is triggered. |
-| Reduce Stock | When stock is reduced: on order placement or when order status changes to Processing. |
+| Reduce Stock | When stock is reduced: on order status change to Pending, Processing, or Completed. |
 | Hide Out of Stock | Hide out-of-stock products from the storefront entirely. |
 | Update Main Stock | Deduct from the main stock level when option matrix stock is used. |
 | Delete Images with Products | Remove associated images when a product is deleted. |
@@ -176,12 +181,12 @@ Upload and manage store logos. Each logo can be scoped to a specific skin and st
 
 | Field | Description |
 | --- | --- |
-| Email Method | PHP mail() function or SMTP. |
+| Email Method | How outgoing emails are sent: PHP mail(), SMTP, SMTP with SSL (recommended), or SMTP with TLS (recommended). |
 | Sender Name | The "From" name on outgoing emails. |
 | Sender Address | The "From" email address. |
-| SMTP Host | SMTP server hostname (when using SMTP). |
+| SMTP Host | SMTP server hostname (when using an SMTP method). |
 | SMTP Port | SMTP server port (typically 587 or 465). |
-| SMTP Authentication | None, SSL, or TLS. |
+| SMTP Authentication | Yes/No toggle to enable authentication with the SMTP server. |
 | SMTP Username / Password | Credentials for SMTP authentication. |
 
 Use the **Test** button to send a test email and verify your settings.

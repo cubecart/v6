@@ -24,18 +24,24 @@ Tax rules link a tax class with a tax detail at a specific rate, optionally rest
 
 | Field | Description |
 | --- | --- |
+| Status | Enable or disable this tax rule. |
 | Tax Class | Which product tax class this rule applies to. |
 | Tax Detail | Which named tax to apply. |
 | Country | Restrict to a specific country, or apply to all EU countries, or all non-EU countries. |
 | State/Zone | Optionally restrict to a specific state or zone. |
-| Subtotal | Apply this tax to product subtotals. |
+| Goods | Apply this tax to product subtotals. |
 | Shipping | Apply this tax to shipping charges. |
 | Rate | The tax percentage (e.g. 20 for 20%). |
 
-### Shortcuts
+### Adding a Tax Rule
 
-- **Assign to EU** -- creates a rule for all EU member countries at once.
-- **Assign to Rest** -- creates a rule for all non-EU countries.
+When adding a new tax rule, the form includes all fields above plus:
+
+| Field | Description |
+| --- | --- |
+| Assign to EU | Checkbox to create a rule for all EU member countries at once. |
+| Assign to Rest | Checkbox to create a rule for all non-EU countries. |
+| Status | Set the new rule to Enabled or Disabled. |
 
 ## Tariffs
 

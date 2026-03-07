@@ -10,11 +10,24 @@ All documents are listed with drag-and-drop handles to control their display ord
 | --- | --- |
 | Arrange | Drag handle to reorder documents. |
 | Status | Toggle to enable or disable the page on the storefront. |
-| Document Title | Click to edit the document. |
-| Translations | Language flags showing which translations exist. |
-| Terms | Designate this document as the store's Terms & Conditions. |
-| Homepage | Designate this document as the store homepage content. |
-| Privacy | Designate this document as the Privacy Policy. |
+| ID | The unique document identifier. |
+| Primary Language | Flag icon showing the primary language of the document. |
+| Document Title | Click to edit the document. Titles with **Hide Title** enabled are shown with a strikethrough style. |
+| Translations | Language flags showing which translations exist. Click a flag to edit that translation. |
+| Terms | Radio button to designate this document as the store's Terms & Conditions. |
+| Homepage | Radio button to designate this document as the store homepage content. |
+| Privacy | Radio button to designate this document as the Privacy Policy. |
+
+### Row Actions
+
+Each document row has the following action icons:
+
+| Action | Description |
+| --- | --- |
+| View | Opens the document on the storefront in a new tab. |
+| Translate | Add a new translation for this document. |
+| Edit | Open the document editor. |
+| Delete | Delete the document and all its translations. |
 
 ## Editing a Document
 
@@ -38,9 +51,13 @@ Rich text editor for the page content. The **Parse Content** toggle allows Smart
 
 | Field | Description |
 | --- | --- |
-| Meta Title | Custom page title for search engines. |
+| Meta Title | Custom page title for search engines. Character count shown. |
 | SEO Path | The URL-friendly path for this page. Auto-generated from the title if left blank. |
-| Meta Description | Description shown in search engine results. |
+| Meta Description | Description shown in search engine results. Character count shown. |
+
+#### SEO Redirects
+
+If the SEO path has been changed previously, a redirects table is shown listing old paths that now redirect to the current path. Each redirect displays the old path, the HTTP status code, and a delete action to remove the redirect.
 
 ## Translations
 

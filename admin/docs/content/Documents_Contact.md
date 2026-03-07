@@ -8,7 +8,7 @@ Configure the store's contact page and submission settings.
 | --- | --- |
 | Status | Enable or disable the contact form on the storefront. |
 | Email Override | Send contact submissions to this email instead of the store email. Leave blank to use the default store email. |
-| Phone Field | Disabled (hidden), Optional, or Required. |
+| Phone Field | **Disabled**, **Enabled (Optional)**, or **Enabled (Required)**. |
 | Attachments | Allow customers to upload image, ZIP, or PDF files with their message. |
 
 ## Departments

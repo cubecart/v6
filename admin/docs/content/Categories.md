@@ -6,11 +6,12 @@ The category list shows all top-level categories, or sub-categories when browsin
 
 | Column | Description |
 | --- | --- |
+| ID | The category's unique database identifier. |
 | Drag handle | Drag rows to reorder categories. The display order on your storefront updates immediately on save. |
 | Visible | Toggle whether the category appears on the storefront. Hidden categories remain accessible by direct URL. |
 | Status | Enable or disable the category entirely. Disabled categories are not accessible at all. |
 | Name | The category name. Click to browse into sub-categories if any exist. |
-| Products | Number of products assigned. Shows primary and secondary counts separately. |
+| Products | Number of products assigned. Shows total count, with primary and secondary counts displayed separately. |
 | Translations | Flag icons for each language translation available. |
 
 ### Row Actions

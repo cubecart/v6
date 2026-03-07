@@ -6,23 +6,53 @@ Import products in bulk from a CSV file.
 
 | Field | Description |
 | --- | --- |
-| Source File | Select a CSV file to upload. |
-| Delimiter | The separator used in your file: comma, semicolon, or tab. |
+| Source File | Select a CSV file to upload. The maximum file size is shown (based on your server's `upload_max_filesize` setting). |
+| Format | Select a known format if available, or leave as unknown for manual column mapping. |
+| Delimiter | The separator used in your file: comma (`,`), semicolon (`;`), or tab. |
 
 ## Step 2: Column Mapping
 
-After uploading, map each CSV column to a product field. A sample of the data is shown to help identify columns. Available fields include:
+After uploading, map each CSV column to a product field. A sample value from the first row of your CSV is shown alongside each column to help identify the data. Select a target field from the dropdown, or choose "Ignore this column" to skip it.
 
-- name, product_code, description, description_short
-- price, sale_price, cost_price
-- stock_level, use_stock_level, stock_warning
-- cat_id (category ID or breadcrumb path)
-- manufacturer, image (comma-separated filenames)
-- tax_type, tax_inclusive, product_weight
-- seo_path, seo_meta_title, seo_meta_description
-- status, featured, latest, digital, condition
-- upc, ean, jan, isbn, brand, gtin, mpn
-- product_width, product_height, product_depth, dimension_unit
+### Mappable Fields
+
+- `available` -- Available for Purchase (toggle)
+- `status` -- Status (enabled/disabled)
+- `name` -- Product Name
+- `image` -- Images (comma-separated filenames)
+- `product_code` -- Product Code
+- `cat_id` -- Master Category ID (numeric ID or breadcrumb path e.g. `Clothing/Shirts`)
+- `description` -- Description
+- `description_short` -- Short Description
+- `manufacturer` -- Manufacturer (name or ID)
+- `price` -- Price
+- `sale_price` -- Sale Price
+- `cost_price` -- Cost Price
+- `product_weight` -- Weight
+- `use_stock_level` -- Use Stock Level
+- `stock_level` -- Stock Level
+- `stock_warning` -- Stock Level Warning
+- `digital` -- Digital (yes/no)
+- `digital_path` -- Digital File Path (legacy custom path)
+- `tax_type` -- Tax Class
+- `tax_inclusive` -- Tax Inclusive
+- `featured` -- Featured
+- `latest` -- Latest
+- `seo_path` -- SEO Path
+- `seo_meta_title` -- Meta Title
+- `seo_meta_description` -- Meta Description
+- `condition` -- Condition (new, refurbished, used)
+- `upc` -- UPC Code
+- `ean` -- EAN Code
+- `jan` -- JAN Code
+- `isbn` -- ISBN Code
+- `brand` -- Brand
+- `gtin` -- GTIN Code
+- `mpn` -- MPN Code
+- `product_width` -- Product Width
+- `product_height` -- Product Height
+- `product_depth` -- Product Depth
+- `dimension_unit` -- Dimension Unit (cm or in)
 
 ### Options
 
@@ -33,11 +63,11 @@ After uploading, map each CSV column to a product field. A sample of the data is
 
 ## Step 3: Processing
 
-The import processes in batches of 50 rows. Product codes are auto-generated if not provided. Manufacturers and categories are created automatically if they don't already exist. SEO URLs are generated for new products.
+The import processes in batches of 50 rows, with a progress page shown between each batch. Product codes are auto-generated if not provided. Manufacturers and categories are created automatically if they don't already exist. SEO URLs are generated for new products.
 
 ## Revert Import
 
-Previous imports are listed with their date and product count. Select an import batch and delete to remove all products from that import.
+Previous imports are listed in a separate tab showing their date and product count. Tick one or more import batches and save to delete all products from those imports.
 
 > [!NOTE]
-> The replace option permanently deletes all existing products, images, options, categories, and translations. Always export first as a backup.
+> The replace option permanently deletes all existing products, images, options, categories, reviews, translations, quantity pricing, group pricing, and SEO URLs. Always export first as a backup.
