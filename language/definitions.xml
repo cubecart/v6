@@ -1536,6 +1536,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="notify_hook_backup_deleted" introduced="6.6.0"><![CDATA[Backup deleted.]]></string>
     <string name="file_size" introduced="6.6.0"><![CDATA[Size]]></string>
     <string name="default_version" introduced="6.6.0"><![CDATA[Default]]></string>
+    <string name="max_backups_note" introduced="6.6.0"><![CDATA[A maximum of 10 backups are kept. The oldest backup is automatically removed when the limit is reached.]]></string>
     <string name="title_hook_optional" introduced="5.0.0"><![CDATA[Optional Configuration]]></string>
     <string name="title_hook_required" introduced="5.0.0"><![CDATA[Required Configuration]]></string>
     <string name="title_plugin" introduced="5.0.0"><![CDATA[Extension]]></string>

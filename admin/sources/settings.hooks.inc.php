@@ -79,6 +79,22 @@ if (Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT)) {
         return CC_ROOT_DIR.'/modules/plugins/'.$hf_data['plugin'].'/'.$hf_path;
     };
 
+    // Helper: prune timestamped backups to max 10, deleting oldest first
+    $prune_backups = function($hook_path) {
+        $backups = glob($hook_path.'.*.bak');
+        // Filter to only timestamped backups (not defaults)
+        $timestamped = array();
+        foreach ($backups as $bf) {
+            if (preg_match('/\.(\d+)\.bak$/', $bf)) {
+                $timestamped[] = $bf;
+            }
+        }
+        sort($timestamped); // oldest first
+        while (count($timestamped) > 10) {
+            unlink(array_shift($timestamped));
+        }
+    };
+
     // Sanitize hook_id — strip any URL fragment that may have been encoded
     if (isset($_GET['hook_id'])) {
         $_GET['hook_id'] = (int)$_GET['hook_id'];
@@ -91,8 +107,11 @@ if (Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT)) {
             $hf_full = $resolve_hook_path($hf[0]);
             $backup_file = $hf_full.'.'.$backup_ts.'.bak';
             if (file_exists($backup_file) && file_exists($hf_full) && is_writable($hf_full)) {
-                // Backup current before restoring
-                copy($hf_full, $hf_full.'.'.time().'.bak');
+                // Backup current before restoring (only if different)
+                if (md5_file($hf_full) !== md5_file($backup_file)) {
+                    copy($hf_full, $hf_full.'.'.time().'.bak');
+                    $prune_backups($hf_full);
+                }
                 if (copy($backup_file, $hf_full)) {
                     $GLOBALS['main']->successMessage($lang['hooks']['notify_hook_file_restored']);
                 }
@@ -121,8 +140,11 @@ if (Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT)) {
         if (($hf = $GLOBALS['db']->select('CubeCart_hooks', false, array('hook_id' => (int)$_GET['hook_id']))) !== false) {
             $hf_full = $resolve_hook_path($hf[0]);
             if (file_exists($hf_full) && is_writable($hf_full)) {
-                // Create backup before saving
-                copy($hf_full, $hf_full.'.'.time().'.bak');
+                // Create backup before saving (only if content changed)
+                if (md5($raw_hook_code) !== md5_file($hf_full)) {
+                    copy($hf_full, $hf_full.'.'.time().'.bak');
+                    $prune_backups($hf_full);
+                }
                 if (file_put_contents($hf_full, $raw_hook_code) !== false) {
                     $GLOBALS['main']->successMessage($lang['hooks']['notify_hook_file_saved']);
                 } else {
@@ -227,6 +249,12 @@ if (isset($_GET['plugin']) && isset($plugins[(string)$_GET['plugin']]) && !is_nu
                     $default_backup = $hook_full_path.'.v'.$plugin_version.'.default.bak';
                     if (!file_exists($default_backup)) {
                         copy($hook_full_path, $default_backup);
+                        // Remove older version defaults
+                        foreach (glob($hook_full_path.'.v*.default.bak') as $old_default) {
+                            if ($old_default !== $default_backup) {
+                                unlink($old_default);
+                            }
+                        }
                     }
 
                     // Find backups

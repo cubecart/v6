@@ -242,6 +242,7 @@
       {/literal}
       {if $HOOK_FILE.backups}
       <h3>{$LANG.hooks.title_hook_backups}</h3>
+      <p><small>{$LANG.hooks.max_backups_note}</small></p>
       <table width="70%">
          <thead>
             <tr>
