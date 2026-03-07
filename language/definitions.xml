@@ -2163,6 +2163,11 @@ This email is sent from the store's master email address but it is possible to r
     <string name="emailconf" introduced="6.4.5"><![CDATA[Require email address confirmation (double entry)]]></string>
     <string name="redirects" introduced="6.4.0"><![CDATA[Redirects]]></string>
     <string name="image_delete" introduced="6.4.0"><![CDATA[Delete associated images with product delete]]></string>
+    <string name="image_upload_format" introduced="6.6.0"><![CDATA[Image Upload Format]]></string>
+    <string name="image_upload_format_webp" introduced="6.6.0"><![CDATA[WebP (recommended)]]></string>
+    <string name="image_upload_format_jpeg" introduced="6.6.0"><![CDATA[JPEG]]></string>
+    <string name="image_upload_format_png" introduced="6.6.0"><![CDATA[PNG]]></string>
+    <string name="image_upload_format_original" introduced="6.6.0"><![CDATA[Original format]]></string>
     <string name="w3w_na" introduced="6.4.0"><![CDATA[Warning: It doesn't look like your current skin is compatible with what3words.]]></string>
     <string name="error_notice_desc" introduced="6.4.0"><![CDATA[Notice Error - These are unlikely to cause operational problems and can be thought of as best practice recommendations. Action is not required.]]></string>
     <string name="error_warning_desc" introduced="6.4.0"><![CDATA[Warning Error - These are unlikely to cause operational problems now but there is a problem, one that is likely to cause bigger issues in the future. Action is recommended.]]></string>

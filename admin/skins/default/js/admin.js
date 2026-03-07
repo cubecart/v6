@@ -391,56 +391,11 @@ $(document).ready(function() {
     if ($("div.dropzone").length) {
         Dropzone.autoDiscover = false;
         var dropzone_url = $("div#dropzone_url").text();
+        var imageUploadFormat = ($("#val_image_upload_format").text() || 'webp').trim();
 
-        $("div.dropzone").dropzone({
+        var dropzoneConfig = {
             url: dropzone_url,
             acceptedFiles: 'image/gif,image/jpeg,image/png,image/webp',
-            // Manual transformation to handle Firefox Canvas bugs
-            transformFile: function(file, done) {
-                var maxWidth = 2000;
-                var reader = new FileReader();
-
-                reader.onload = function(event) {
-                    var img = new Image();
-                    img.onload = function() {
-                        var canvas = document.createElement('canvas');
-                        var ctx = canvas.getContext('2d');
-                        
-                        var width = img.width;
-                        var height = img.height;
-
-                        // Only resize if the image is wider than the limit
-                        if (width > maxWidth) {
-                            height *= maxWidth / width;
-                            width = maxWidth;
-                        }
-
-                        canvas.width = width;
-                        canvas.height = height;
-                        ctx.drawImage(img, 0, 0, width, height);
-
-                        // Convert to WebP
-                        canvas.toBlob(function(blob) {
-                            if (!blob || blob.size === 0) {
-                                // FALLBACK: If Firefox fails to create the blob, send original
-                                console.warn("Resize failed, uploading original file.");
-                                done(file);
-                            } else {
-                                done(blob);
-                            }
-                        }, 'image/webp', 0.8);
-                    };
-                    img.src = event.target.result;
-                };
-                reader.readAsDataURL(file);
-            },
-
-            renameFile: function (file) {
-                // Ensure we append .webp since transformFile is converting the stream
-                var name = file.name.substr(0, file.name.lastIndexOf("."));
-                return name + ".webp";
-            },
-
             init: function () {
                 this.on("error", function(file, message) {
                     console.error("Dropzone Error:", message);
@@ -465,11 +420,59 @@ $(document).ready(function() {
                     var subdir = '';
                     if ($("#val_subdir").length) {
                         subdir = '&subdir=' + $("#val_subdir").text();
-                    }   
+                    }
                     this.options.url = dropzone_url + subdir;
                 });
             }
-        });        
+        };
+
+        if (imageUploadFormat === 'webp' || imageUploadFormat === 'jpeg' || imageUploadFormat === 'png') {
+            var formatMap = {
+                'webp': { mime: 'image/webp', ext: '.webp', quality: 0.8 },
+                'jpeg': { mime: 'image/jpeg', ext: '.jpg', quality: 0.85 },
+                'png':  { mime: 'image/png',  ext: '.png',  quality: undefined }
+            };
+            var targetMime = formatMap[imageUploadFormat].mime;
+            var targetExt = formatMap[imageUploadFormat].ext;
+            var targetQuality = formatMap[imageUploadFormat].quality;
+
+            dropzoneConfig.transformFile = function(file, done) {
+                var maxWidth = 2000;
+                var reader = new FileReader();
+                reader.onload = function(event) {
+                    var img = new Image();
+                    img.onload = function() {
+                        var canvas = document.createElement('canvas');
+                        var ctx = canvas.getContext('2d');
+                        var width = img.width;
+                        var height = img.height;
+                        if (width > maxWidth) {
+                            height *= maxWidth / width;
+                            width = maxWidth;
+                        }
+                        canvas.width = width;
+                        canvas.height = height;
+                        ctx.drawImage(img, 0, 0, width, height);
+                        canvas.toBlob(function(blob) {
+                            if (!blob || blob.size === 0) {
+                                console.warn("Resize failed, uploading original file.");
+                                done(file);
+                            } else {
+                                done(blob);
+                            }
+                        }, targetMime, targetQuality);
+                    };
+                    img.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            };
+            dropzoneConfig.renameFile = function(file) {
+                var name = file.name.substr(0, file.name.lastIndexOf("."));
+                return name + targetExt;
+            };
+        }
+
+        $("div.dropzone").dropzone(dropzoneConfig);
     }
 
     $(":input.required").blur(function() {
