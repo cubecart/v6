@@ -10,7 +10,7 @@
       {if $CONFIG.cache}<li id="clear_cache_master"{if $CLEAR_CACHE} class="clear"{/if}><a href="{$SKIN_VARS.clear_cache_link}">{$LANG.maintain.cache_clear}</a></li>{/if}
       <li id="help_menu"><i class="fa fa-life-ring" aria-hidden="true"></i> <a href="#">{$LANG.common.help}</a>
          <ul>
-            <li><i class="fa fa-book" aria-hidden="true"></i> <a href="{$HELP_URL}" id="wikihelp" class="colorbox wiki">{$LANG.common.this_page}</a></li>
+            {if $HELP_URL}<li><i class="fa fa-book" aria-hidden="true"></i> <a href="{$HELP_URL}" id="wikihelp" class="help-panel-trigger">{$LANG.common.this_page}</a></li>{/if}
             <li><i class="fa fa-comments-o" aria-hidden="true"></i> <a href="https://www.cubecart.com/technical-support" target="_blank">{$LANG.common.tech_support}</a></li>
             <li><i class="fa fa-users" aria-hidden="true"></i> <a href="https://forums.cubecart.com" target="_blank">CubeCart Forums</a></li>
          </ul>

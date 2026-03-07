@@ -62,7 +62,7 @@ class ACP
      *
      * @var string
      */
-    private $_wiki_page   = null;
+    private $_help_doc   = null;
 
     /**
      * Class instance
@@ -473,7 +473,7 @@ class ACP
     public function showHelp()
     {
         if (Admin::getInstance()->is()) {
-            if (empty($this->_wiki_page)) {
+            if (empty($this->_help_doc)) {
                 if (isset($_GET['_g']) && !empty($_GET['_g'])) {
                     $pages[] = $_GET['_g'];
                     if (isset($_GET['node']) && !empty($_GET['node']) && strtolower($_GET['node']) != 'index') {
@@ -482,14 +482,15 @@ class ACP
                     if (isset($_GET['action']) && !empty($_GET['action'])) {
                         $pages[] = $_GET['action'];
                     }
-                    $this->_wiki_page = implode(' ', $pages);
+                    $this->_help_doc = implode(' ', $pages);
                 }
             }
 
-            $this->_wiki_page = preg_replace('#\W#', '_', ucwords($this->_wiki_page));
-            $page = (!empty($this->_wiki_namespace)) ? ucfirst($this->_wiki_namespace).':'.$this->_wiki_page : $this->_wiki_page;
-            // Assign and Parse
-            $GLOBALS['smarty']->assign('HELP_URL', 'https://wiki.cubecart.com/'.$page.'?useskin=chick');
+            $this->_help_doc = preg_replace('#\W#', '_', ucwords($this->_help_doc));
+            $help_file = CC_ROOT_DIR.'/admin/docs/content/'.$this->_help_doc.'.md';
+            if (file_exists($help_file)) {
+                $GLOBALS['smarty']->assign('HELP_URL', $GLOBALS['rootRel'].'admin/docs/?page='.$this->_help_doc);
+            }
             $GLOBALS['smarty']->assign('STORE_STATUS', !(bool)Config::getInstance()->get('config', 'offline'));
         }
     }
@@ -597,7 +598,7 @@ class ACP
      */
     public function wikiPage($page = null)
     {
-        $this->_wiki_page = (!empty($page)) ? ucwords($page) : 'Index';
+        $this->_help_doc = (!empty($page)) ? ucwords($page) : 'Index';
     }
 
     //=====[ Private ]=======================================

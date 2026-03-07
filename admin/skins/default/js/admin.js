@@ -627,12 +627,19 @@ $(document).ready(function() {
                 $("#country-region").hide();
             }
             
-        }), $("a.colorbox.wiki").bind("cbox_complete", function() {
-            window.scrollTo(0, 0)
-        }).colorbox({
-            iframe: !0,
-            innerHeight: "450px",
-            innerWidth: "650px"
+        }), $(document).on("click", "a.help-panel-trigger", function(e) {
+            e.preventDefault();
+            var url = $(this).attr("href");
+            if (url && url !== "#") {
+                $("#help-panel-iframe").attr("src", url);
+                $("#help-panel").addClass("open");
+                $("#help-panel-overlay").addClass("open");
+            }
+        }), $(document).on("click", "#help-panel-close, #help-panel-overlay", function(e) {
+            e.preventDefault();
+            $("#help-panel").removeClass("open");
+            $("#help-panel-overlay").removeClass("open");
+            $("#help-panel-iframe").attr("src", "about:blank");
         }), $("a.colorbox.paypal").colorbox({
             height: "433px",
             iframe: !0,
