@@ -1748,9 +1748,6 @@ This email is sent from the store's master email address but it is possible to r
     <string name="social_location_document" introduced="5.0.0"><![CDATA[Site Documents Only]]></string>
     <string name="shipping_name_eg" introduced="5.0.0"><![CDATA[e.g. Next Day Delivery, Free Shipping etc&hellip;]]></string>
     <string name="scope" introduced="5.1.5"><![CDATA[Scope]]></string>
-    <string name="both" introduced="5.1.5"><![CDATA[Both Main Website and Mobile Website]]></string>
-    <string name="main" introduced="5.1.5"><![CDATA[Main Website Only]]></string>
-    <string name="mobile" introduced="5.1.5"><![CDATA[Mobile Website Only]]></string>
     <string name="position" introduced="5.2.0"><![CDATA[Priority]]></string>
   </group>
   <group name="navigation">
