@@ -107,10 +107,20 @@ if (Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT)) {
             $hf_full = $resolve_hook_path($hf[0]);
             $backup_file = $hf_full.'.'.$backup_ts.'.bak';
             if (file_exists($backup_file) && file_exists($hf_full) && is_writable($hf_full)) {
-                // Backup current before restoring (only if different)
+                // Backup current before restoring (only if different from backup and from default)
                 if (md5_file($hf_full) !== md5_file($backup_file)) {
-                    copy($hf_full, $hf_full.'.'.time().'.bak');
-                    $prune_backups($hf_full);
+                    $skip_backup = false;
+                    $def_files = glob($hf_full.'.v*.default.bak');
+                    foreach ($def_files as $df) {
+                        if (md5_file($hf_full) === md5_file($df)) {
+                            $skip_backup = true;
+                            break;
+                        }
+                    }
+                    if (!$skip_backup) {
+                        copy($hf_full, $hf_full.'.'.time().'.bak');
+                        $prune_backups($hf_full);
+                    }
                 }
                 if (copy($backup_file, $hf_full)) {
                     $GLOBALS['main']->successMessage($lang['hooks']['notify_hook_file_restored']);
@@ -140,15 +150,31 @@ if (Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT)) {
         if (($hf = $GLOBALS['db']->select('CubeCart_hooks', false, array('hook_id' => (int)$_GET['hook_id']))) !== false) {
             $hf_full = $resolve_hook_path($hf[0]);
             if (file_exists($hf_full) && is_writable($hf_full)) {
-                // Create backup before saving (only if content changed)
+                // Only save if content actually changed
                 if (md5($raw_hook_code) !== md5_file($hf_full)) {
-                    copy($hf_full, $hf_full.'.'.time().'.bak');
-                    $prune_backups($hf_full);
-                }
-                if (file_put_contents($hf_full, $raw_hook_code) !== false) {
-                    $GLOBALS['main']->successMessage($lang['hooks']['notify_hook_file_saved']);
-                } else {
-                    $GLOBALS['main']->errorMessage($lang['hooks']['error_hook_file_save']);
+                    // Create versioned default backup on first change
+                    $cfg_file = CC_ROOT_DIR.'/modules/plugins/'.$hf[0]['plugin'].'/config.xml';
+                    $ver = '0.0.0';
+                    if (file_exists($cfg_file)) {
+                        try { $cfg_xml = new SimpleXMLElement(file_get_contents($cfg_file)); $ver = (string)$cfg_xml->info->version; } catch (Exception $e) {}
+                    }
+                    $def_bak = $hf_full.'.v'.$ver.'.default.bak';
+                    if (!file_exists($def_bak)) {
+                        copy($hf_full, $def_bak);
+                        foreach (glob($hf_full.'.v*.default.bak') as $old_def) {
+                            if ($old_def !== $def_bak) unlink($old_def);
+                        }
+                    }
+                    // Only create timestamped backup if current file differs from default
+                    if (md5_file($hf_full) !== md5_file($def_bak)) {
+                        copy($hf_full, $hf_full.'.'.time().'.bak');
+                        $prune_backups($hf_full);
+                    }
+                    if (file_put_contents($hf_full, $raw_hook_code) !== false) {
+                        $GLOBALS['main']->successMessage($lang['hooks']['notify_hook_file_saved']);
+                    } else {
+                        $GLOBALS['main']->errorMessage($lang['hooks']['error_hook_file_save']);
+                    }
                 }
             }
         }
@@ -169,16 +195,15 @@ if (Admin::getInstance()->permissions('maintenance', CC_PERM_EDIT)) {
 
         if (empty($error)) {
             if (isset($_POST['hook']['hook_id']) && is_numeric($_POST['hook']['hook_id'])) {
-                if ($GLOBALS['db']->update('CubeCart_hooks', $_POST['hook'], array('hook_id' => $_POST['hook']['hook_id']))) {
+                $GLOBALS['db']->update('CubeCart_hooks', $_POST['hook'], array('hook_id' => $_POST['hook']['hook_id']));
+                if ($GLOBALS['db']->affected() > 0) {
                     $GLOBALS['main']->successMessage($lang['hooks']['notify_hook_update']);
-                    if (isset($_POST['submit_cont'])) {
-                        $tab = !empty($_POST['previous-tab']) ? preg_replace('/[^a-z0-9_#-]/i', '', $_POST['previous-tab']) : '#hook_code';
-                        httpredir(currentPage().$tab);
-                    }
-                    httpredir(currentPage(array('action', 'hook_id')));
-                } else {
-                    $GLOBALS['main']->errorMessage($lang['hooks']['error_hook_update']);
                 }
+                if (isset($_POST['submit_cont'])) {
+                    $tab = !empty($_POST['previous-tab']) ? preg_replace('/[^a-z0-9_#-]/i', '', $_POST['previous-tab']) : '#hook_code';
+                    httpredir(currentPage().$tab);
+                }
+                httpredir(currentPage(array('action', 'hook_id')));
             } else {
                 if ($GLOBALS['db']->insert('CubeCart_hooks', $_POST['hook'])) {
                     $GLOBALS['main']->successMessage($lang['hooks']['notify_hook_create']);
@@ -244,18 +269,9 @@ if (isset($_GET['plugin']) && isset($plugins[(string)$_GET['plugin']]) && !is_nu
                 if (file_exists($hook_full_path)) {
                     $hook_writable = is_writable($hook_full_path);
 
-                    // Get plugin version for default backup naming
+                    // Get plugin version for default backup display
                     $plugin_version = (isset($xml->info->version)) ? (string)$xml->info->version : '0.0.0';
                     $default_backup = $hook_full_path.'.v'.$plugin_version.'.default.bak';
-                    if (!file_exists($default_backup)) {
-                        copy($hook_full_path, $default_backup);
-                        // Remove older version defaults
-                        foreach (glob($hook_full_path.'.v*.default.bak') as $old_default) {
-                            if ($old_default !== $default_backup) {
-                                unlink($old_default);
-                            }
-                        }
-                    }
 
                     // Find backups
                     $hook_backups = array();
