@@ -202,8 +202,9 @@ class User
         if ($unregistered = $GLOBALS['db']->select('CubeCart_customer', array('customer_id'), array('type' => 2, 'email' => $username, 'status' => true), false, 1, false, false)) {
             $record = array(
                 'type' => 1,
-                'new_password' => 0,
-                'password' => md5($password)
+                'new_password' => 1,
+                'password' => Password::getInstance()->hashPassword($password),
+                'salt' => ''
             );
             $GLOBALS['db']->update('CubeCart_customer', $record, array('customer_id' => (int)$unregistered[0]['customer_id']));
             $this->authenticate($username, $password);
@@ -212,29 +213,35 @@ class User
         $hash_password = '';
         //Get customer_id, password, and salt for the user
         if (($user = $GLOBALS['db']->select('CubeCart_customer', array('customer_id', 'password', 'salt', 'new_password'), array('type' => 1, 'email' => $username, 'status' => true), false, 1, false, false)) !== false) {
-            //If there is no salt we need to make it
-            if (empty($user[0]['salt'])) {
-                //Get the salt
-                $salt = Password::getInstance()->createSalt();
-                //Update it to the newer MD5 so we can fix it later
-                $pass = Password::getInstance()->updateOld($user[0]['password'], $salt);
+            $pwd = Password::getInstance();
+            if ($pwd->isBcrypt($user[0]['password'])) {
+                // Bcrypt verification
+                if ($pwd->verifyPassword($password, $user[0]['password'])) {
+                    $hash_password = $user[0]['password'];
+                }
+            } elseif (empty($user[0]['salt'])) {
+                //Legacy: no salt - oldest format
+                $salt = $pwd->createSalt();
+                $pass = $pwd->updateOld($user[0]['password'], $salt);
                 $record = array(
                     'salt'   => $salt,
                     'password'  => $pass,
                 );
-
-                //Update the DB with the new salt and salted password
                 if ($GLOBALS['db']->update('CubeCart_customer', $record, array('customer_id' => (int)$user[0]['customer_id']))) {
                     $hash_password = $pass;
                 }
             } else {
                 if ($user[0]['new_password'] == 1) {
-                    //Get the salted new password
-                    $hash_password = Password::getInstance()->getSalted($password, $user[0]['salt']);
+                    $hash_password = $pwd->getSalted($password, $user[0]['salt']);
                 } else {
-                    //Get the salted old password
-                    $hash_password = Password::getInstance()->getSaltedOld($password, $user[0]['salt']);
+                    $hash_password = $pwd->getSaltedOld($password, $user[0]['salt']);
                 }
+            }
+            // Migrate to bcrypt on successful legacy login
+            if (!empty($hash_password) && $hash_password === $user[0]['password'] && !$pwd->isBcrypt($hash_password)) {
+                $bcrypt_hash = $pwd->hashPassword($password);
+                $GLOBALS['db']->update('CubeCart_customer', array('password' => $bcrypt_hash, 'salt' => '', 'new_password' => 1), array('customer_id' => (int)$user[0]['customer_id']));
+                $hash_password = $bcrypt_hash;
             }
         }
 
@@ -251,11 +258,10 @@ class User
         } else {
             $GLOBALS['session']->set('currency', $user[0]['currency'], 'client');
             $user[0]['language'] = $this->_validLanguage($user[0]['language']);
-            if ($user[0]['new_password'] != 1) {
-                $salt = Password::getInstance()->createSalt();
-                $pass = Password::getInstance()->getSalted($password, $salt);
+            if ($user[0]['new_password'] != 1 || !Password::getInstance()->isBcrypt($user[0]['password'])) {
+                $pass = Password::getInstance()->hashPassword($password);
                 $record = array(
-                    'salt'   => $salt,
+                    'salt'   => '',
                     'password'  => $pass,
                     'new_password' => 1,
                 );
@@ -362,8 +368,12 @@ class User
     public function changePassword()
     {
         //If everything lines up
-        if (Password::getInstance()->getSalted($_POST['passold'], $this->_user_data['salt']) == $this->_user_data['password']) {
-            
+        $pwd = Password::getInstance();
+        $old_ok = $pwd->isBcrypt($this->_user_data['password'])
+            ? $pwd->verifyPassword($_POST['passold'], $this->_user_data['password'])
+            : ($pwd->getSalted($_POST['passold'], $this->_user_data['salt']) == $this->_user_data['password']);
+        if ($old_ok) {
+
             if ($_POST['passnew'] !== $_POST['passconf']) {
                 $GLOBALS['gui']->setError($GLOBALS['language']->account['error_password_mismatch']);
                 return false;
@@ -376,9 +386,9 @@ class User
                 $GLOBALS['gui']->setError($GLOBALS['language']->account['error_password_length_max']);
                 return false;
             }
-            
+
             //Change it
-            $record = array('password' => Password::getInstance()->getSalted($_POST['passnew'], $this->_user_data['salt']));
+            $record = array('password' => $pwd->hashPassword($_POST['passnew']), 'salt' => '', 'new_password' => 1);
             if ($GLOBALS['db']->update('CubeCart_customer', $record, array('customer_id' => (int)$this->_user_data['customer_id']), true)) {
                 $this->_user_data['password'] = $record['password'];
                 return true;
@@ -785,8 +795,9 @@ class User
         if (!empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
             if (($check = $GLOBALS['db']->select('CubeCart_customer', false, "`email` = '$email' AND `type` = 1", false, 1, false, false)) !== false) {
                 // Generate validation key
-                $validation = Password::getInstance()->createSalt();
-                if (($GLOBALS['db']->update('CubeCart_customer', array('verify' => $validation), array('customer_id' => (int)$check[0]['customer_id']))) !== false) {
+                $validation = bin2hex(random_bytes(32));
+                $verify_expires = date('Y-m-d H:i:s', time() + 3600);
+                if (($GLOBALS['db']->update('CubeCart_customer', array('verify' => $validation, 'verify_expires' => $verify_expires), array('customer_id' => (int)$check[0]['customer_id']))) !== false) {
                     // Send email
                     if (($user = $GLOBALS['db']->select('CubeCart_customer', false, array('customer_id' => (int)$check[0]['customer_id']), false, 1, false, false)) !== false) {
                         $mailer = new Mailer();
@@ -821,16 +832,21 @@ class User
                 $GLOBALS['gui']->setError($GLOBALS['language']->account['error_password_length_max']);
                 return false;
             }
-            if (($check = $GLOBALS['db']->select('CubeCart_customer', array('customer_id', 'email'), array('email' => $email, 'verify' => $verification), false, 1, false, false)) !== false) {
+            if (($check = $GLOBALS['db']->select('CubeCart_customer', array('customer_id', 'email', 'verify_expires'), array('email' => $email, 'verify' => $verification), false, 1, false, false)) !== false) {
+                // Check token expiry
+                if (!empty($check[0]['verify_expires']) && strtotime($check[0]['verify_expires']) < time()) {
+                    $GLOBALS['db']->update('CubeCart_customer', array('verify' => null, 'verify_expires' => null), array('customer_id' => $check[0]['customer_id']));
+                    $GLOBALS['gui']->setError($GLOBALS['language']->account['error_password_recover']);
+                    return false;
+                }
                 // Remove any blocks
                 $GLOBALS['db']->delete('CubeCart_blocker', array('username' => $email));
 
-                $salt = Password::getInstance()->createSalt();
-
                 $record = array(
-                    'salt'   => $salt,
-                    'password'  => Password::getInstance()->getSalted((string)$password['password'], $salt),
+                    'salt'   => '',
+                    'password'  => Password::getInstance()->hashPassword((string)$password['password']),
                     'verify'  => null,
+                    'verify_expires' => null,
                     'new_password' => 1
                 );
                 $where = array(
@@ -929,8 +945,8 @@ class User
             $_POST['last_name']  = ucwords($_POST['last_name']);
 
             // Register the user
-            $_POST['salt']  = Password::getInstance()->createSalt();
-            $_POST['password'] = Password::getInstance()->getSalted($_POST['password'], $_POST['salt']);
+            $_POST['salt']  = '';
+            $_POST['password'] = Password::getInstance()->hashPassword($_POST['password']);
             $_POST['registered']= time();
             if (($_POST['ip_address'] = get_ip_address()) === false) {
                 $_POST['ip_address'] = 'Unknown';

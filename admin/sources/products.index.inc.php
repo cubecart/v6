@@ -1222,9 +1222,11 @@ if (isset($_GET['action'])) {
     $GLOBALS['smarty']->assign('PAGE_BREAK', $per_page);
     $GLOBALS['smarty']->assign('PAGE_BREAK_URL', $page_break_url);
     if (isset($_GET['char']) && !empty($_GET['char'])) {
-        $where  =  "`name` REGEXP '^[".$_GET['char']."]'";
+        $safe_char = $GLOBALS['db']->sqlSafe($_GET['char']);
+        $where  =  "`name` REGEXP '^[".$safe_char."]'";
     } elseif (isset($_GET['q']) && !empty($_GET['q'])) {
-        $where = "(`name` LIKE '%".$_GET['q']."%' OR `product_code` LIKE '%".$_GET['q']."%')";
+        $safe_q = $GLOBALS['db']->sqlSafe($_GET['q']);
+        $where = "(`name` LIKE '%".$safe_q."%' OR `product_code` LIKE '%".$safe_q."%')";
     } else {
         $where = false;
     }

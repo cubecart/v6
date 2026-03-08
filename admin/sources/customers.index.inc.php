@@ -68,10 +68,9 @@ if (isset($_POST['customer']) && is_array($_POST['customer']) && Admin::getInsta
     // Reset password
     if (isset($customer['password']) && !empty($customer['password'])) {
         if ($customer['password'] === $customer['passconf']) {
-            $salt = Password::getInstance()->createSalt();
-            $customer['salt'] = $salt;
+            $customer['salt'] = '';
             $customer['new_password'] = 1;
-            $customer['password'] = Password::getInstance()->getSalted($customer['password'], $salt);
+            $customer['password'] = Password::getInstance()->hashPassword($customer['password']);
         }
         //Or not
     } else {

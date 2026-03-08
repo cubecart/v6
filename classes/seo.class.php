@@ -1068,6 +1068,8 @@ IndexIgnore *
 
 <ifModule mod_headers.c>
   Header always append X-Frame-Options SAMEORIGIN
+  Header always set X-Content-Type-Options nosniff
+  Header always set Referrer-Policy strict-origin-when-cross-origin
 </ifModule>
 
 ### Rewrite rules for SEO functionality ###

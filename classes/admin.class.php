@@ -170,16 +170,21 @@ class Admin
         $email = preg_replace('/[^a-z0-9.@_\-\+]/i', '', $email);
         $validation = preg_replace('/[^a-z0-9]/i', '', $validation);
         if ($GLOBALS['session']->has('recover_login') && filter_var($email, FILTER_VALIDATE_EMAIL) && strlen($validation) == $this->_validate_key_len && !empty($password['new']) && !empty($password['confirm']) && ($password['new'] === $password['confirm'])) {
-            if (($check = $GLOBALS['db']->select('CubeCart_admin_users', array('admin_id', 'username'), array('email' => $email, 'verify' => $validation, 'status' => 1))) !== false) {
-
+            if (($check = $GLOBALS['db']->select('CubeCart_admin_users', array('admin_id', 'username', 'verify_expires'), array('email' => $email, 'verify' => $validation, 'status' => 1))) !== false) {
+                // Check token expiry
+                if (!empty($check[0]['verify_expires']) && strtotime($check[0]['verify_expires']) < time()) {
+                    $GLOBALS['db']->update('CubeCart_admin_users', array('verify' => null, 'verify_expires' => null), array('admin_id' => $check[0]['admin_id']));
+                    $GLOBALS['session']->delete('recover_login');
+                    return false;
+                }
                 // Remove any blocks
                 $GLOBALS['db']->delete('CubeCart_blocker', array('username' => $email));
-                
-                $salt = Password::getInstance()->createSalt();
+
                 $record = array(
-                    'salt'  => $salt,
-                    'password' => Password::getInstance()->getSalted($password['new'], $salt),
+                    'salt'  => '',
+                    'password' => Password::getInstance()->hashPassword($password['new']),
                     'verify' => null,
+                    'verify_expires' => null,
                     'new_password' => 1
                 );
                 $where = array(
@@ -210,8 +215,9 @@ class Admin
         if (!empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
             if ($check = $GLOBALS['db']->select('CubeCart_admin_users', array('admin_id', 'email', 'language', 'name'), array('email' => $email, 'status' => 1))) {
                 // Generate validation key
-                $validation = randomString($this->_validate_key_len);
-                if ($GLOBALS['db']->update('CubeCart_admin_users', array('verify' => $validation), array('admin_id' => (int)$check[0]['admin_id']))) {
+                $validation = bin2hex(random_bytes(16));
+                $verify_expires = date('Y-m-d H:i:s', time() + 3600);
+                if ($GLOBALS['db']->update('CubeCart_admin_users', array('verify' => $validation, 'verify_expires' => $verify_expires), array('admin_id' => (int)$check[0]['admin_id']))) {
                     // Send email
                     $mailer = new Mailer();
                     $data['link'] = $GLOBALS['storeURL'].'/'.$GLOBALS['config']->get('config', 'adminFile').'?_g=recovery&email='.$check[0]['email'].'&validate='.$validation;
@@ -316,13 +322,18 @@ class Admin
         $hash_password = '';
 
         if (!empty($username)) {
-            // Fetch salt
+            // Fetch user record
             if (($user = $GLOBALS['db']->select('CubeCart_admin_users', array('admin_id', 'password', 'salt', 'new_password'), array('username' => $username, 'status' => '1'), null, 1)) !== false) {
-                if (empty($user[0]['salt'])) {
-                    // Generate Salt
-                    $salt = Password::getInstance()->createSalt();
-                    //Update it to the newer MD5 so we can fix it later
-                    $pass = Password::getInstance()->updateOld($user[0]['password'], $salt);
+                $pwd = Password::getInstance();
+                if ($pwd->isBcrypt($user[0]['password'])) {
+                    // Bcrypt verification
+                    if ($pwd->verifyPassword($password, $user[0]['password'])) {
+                        $hash_password = $user[0]['password'];
+                    }
+                } elseif (empty($user[0]['salt'])) {
+                    // Legacy: no salt - oldest format
+                    $salt = $pwd->createSalt();
+                    $pass = $pwd->updateOld($user[0]['password'], $salt);
                     $update = array(
                         'salt'  => $salt,
                         'password' => $pass,
@@ -333,12 +344,16 @@ class Admin
                     }
                 } else {
                     if ($user[0]['new_password'] == 1) {
-                        //Get the salted new password
-                        $hash_password = Password::getInstance()->getSalted($password, $user[0]['salt']);
+                        $hash_password = $pwd->getSalted($password, $user[0]['salt']);
                     } else {
-                        //Get the salted old password
-                        $hash_password = Password::getInstance()->getSaltedOld($password, $user[0]['salt']);
+                        $hash_password = $pwd->getSaltedOld($password, $user[0]['salt']);
                     }
+                }
+                // Migrate to bcrypt on successful legacy login
+                if (!empty($hash_password) && $hash_password === $user[0]['password'] && !$pwd->isBcrypt($hash_password)) {
+                    $bcrypt_hash = $pwd->hashPassword($password);
+                    $GLOBALS['db']->update('CubeCart_admin_users', array('password' => $bcrypt_hash, 'salt' => '', 'new_password' => 1), array('admin_id' => (int)$user[0]['admin_id']));
+                    $hash_password = $bcrypt_hash;
                 }
             } else {
                 foreach ($GLOBALS['hooks']->load('admin.authenticate.failed_invalid_admin') as $hook) {
@@ -360,11 +375,10 @@ class Admin
                         'lastTime'  => time(),
                         'logins'  => $result[0]['logins'] +1,
                     );
-                    if ($result[0]['new_password'] != 1) {
-                        $salt = Password::getInstance()->createSalt();
-                        $pass = Password::getInstance()->getSalted($password, $salt);
+                    if ($result[0]['new_password'] != 1 || !Password::getInstance()->isBcrypt($result[0]['password'])) {
+                        $pass = Password::getInstance()->hashPassword($password);
                         $update = array_merge($update, array(
-                                'salt'   => $salt,
+                                'salt'   => '',
                                 'password'  => $pass,
                                 'new_password' => 1,
                             ));

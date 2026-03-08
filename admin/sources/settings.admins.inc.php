@@ -132,15 +132,8 @@ if (isset($_POST['admin']) && is_array($_POST['admin']) && Admin::getInstance()-
         ## Update existing admin
         if (!empty($record['password'])) {
             $logout = true;
-            if (($user = $GLOBALS['db']->select('CubeCart_admin_users', array('salt'), array('admin_id' => $_POST['admin_id']), null, 1)) !== false) {
-                if (empty($user[0]['salt'])) {
-                    $salt = Password::getInstance()->createSalt();
-                    $record['salt'] = $salt;
-                } else {
-                    $salt = $user[0]['salt'];
-                }
-                $record['password'] = Password::getInstance()->getSalted($record['password'], $salt);
-            }
+            $record['password'] = Password::getInstance()->hashPassword($record['password']);
+            $record['salt'] = '';
         }
 
         //If there only one super then don't allow demoting
@@ -160,8 +153,8 @@ if (isset($_POST['admin']) && is_array($_POST['admin']) && Admin::getInstance()-
     } else {
         ## Create new admin
         if (!empty($record['password'])) {
-            $record['salt']  = Password::getInstance()->createSalt();
-            $record['password'] = Password::getInstance()->getSalted($record['password'], $record['salt']);
+            $record['salt']  = '';
+            $record['password'] = Password::getInstance()->hashPassword($record['password']);
             $record['status'] = 1;
             if ($admin_id = $GLOBALS['db']->insert('CubeCart_admin_users', $record)) {
                 $added = true;

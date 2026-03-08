@@ -106,6 +106,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_admin_users` (
 	`twofa_backup_codes` TEXT NULL DEFAULT NULL,
 	`twofa_otp_hash` VARCHAR(255) NULL DEFAULT NULL,
 	`twofa_otp_expires` INT UNSIGNED NOT NULL DEFAULT 0,
+	`verify_expires` DATETIME DEFAULT NULL,
 	PRIMARY KEY `admin_id` (`admin_id`),
 	KEY `username` (`username`),
 	KEY `email` (`email`)
@@ -302,6 +303,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_customer` (
 	`notes` text,
 	`credit` DECIMAL(8,2) NOT NULL DEFAULT '0.00',
 	`abandon_optout` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+	`verify_expires` DATETIME DEFAULT NULL,
 	PRIMARY KEY (`customer_id`),
 	UNIQUE KEY `email` (`email`),
 	FULLTEXT KEY `fulltext` (`first_name`,`last_name`,`email`)

@@ -27,7 +27,7 @@ $oid_col = $GLOBALS['config']->get('config', 'oid_mode') =='i' ?  $GLOBALS['conf
 $table_join = '`'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_transactions` AS `T` INNER JOIN `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary` AS `S` ON `T`.`order_id` = `S`.`cart_order_id`';
 
 if (isset($_GET['order_id'])) {
-    $transactions = $GLOBALS['db']->select($table_join, '`T`.*, `S`.`id`, `S`.`custom_oid`', '`T`.`order_id` = "'.$_GET['order_id'].'"', array('time' => 'DESC'));
+    $transactions = $GLOBALS['db']->select($table_join, '`T`.*, `S`.`id`, `S`.`custom_oid`', '`T`.`order_id` = "'.$GLOBALS['db']->sqlSafe($_GET['order_id']).'"', array('time' => 'DESC'));
     if ($transactions) {
         $oid = $transactions[0][$oid_col] ? $transactions[0][$oid_col] : $transactions[0]['order_id'];
         foreach ($transactions as $transaction) {
@@ -51,7 +51,8 @@ if (isset($_GET['order_id'])) {
         if (Order::validOrderId($_GET['search'])) {
             $where[$oid_col] = $_GET['search'];
         } else {
-            $where = "`trans_id` LIKE '%".$_GET['search']."%' OR `amount` LIKE '%".$_GET['search']."%' OR `gateway` LIKE '%".$_GET['search']."%'";
+            $safe_search = $GLOBALS['db']->sqlSafe($_GET['search']);
+            $where = "`trans_id` LIKE '%".$safe_search."%' OR `amount` LIKE '%".$safe_search."%' OR `gateway` LIKE '%".$safe_search."%'";
         }
     } else {
         $where = false;

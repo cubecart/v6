@@ -51,13 +51,12 @@ class Password
     //=====[ Public ]=======================================
 
     /**
-     * Create salt for passwords
-     * @author http://www.richardlord.net/blog/php-password-security
+     * Create salt for passwords (legacy - kept for backward compatibility)
      * @return string
      */
     public function createSalt()
     {
-        return substr(str_pad(dechex(mt_rand()), 8, '0', STR_PAD_LEFT), -8);
+        return bin2hex(random_bytes(4));
     }
 
     /**
@@ -75,6 +74,40 @@ class Password
         }
         //Make it a hash and extra salty
         return hash('whirlpool', $salt.$value.$salt);
+    }
+
+    /**
+     * Hash a password using bcrypt
+     *
+     * @param string $password
+     * @return string
+     */
+    public function hashPassword($password)
+    {
+        return password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
+    }
+
+    /**
+     * Verify a password against a bcrypt hash
+     *
+     * @param string $password
+     * @param string $hash
+     * @return bool
+     */
+    public function verifyPassword($password, $hash)
+    {
+        return password_verify($password, $hash);
+    }
+
+    /**
+     * Check if a hash is bcrypt (starts with $2y$)
+     *
+     * @param string $hash
+     * @return bool
+     */
+    public function isBcrypt($hash)
+    {
+        return (substr($hash, 0, 4) === '$2y$');
     }
 
     /**

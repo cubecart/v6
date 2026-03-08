@@ -491,3 +491,7 @@ ALTER TABLE `CubeCart_email_content` ADD COLUMN `enabled` TINYINT(1) UNSIGNED NO
 
 -- Log email delivery method
 ALTER TABLE `CubeCart_email_log` ADD COLUMN `email_method` VARCHAR(20) NOT NULL DEFAULT '' AFTER `result`; #EOQ
+
+-- Password reset token expiry
+ALTER TABLE `CubeCart_customer` ADD COLUMN `verify_expires` DATETIME DEFAULT NULL; #EOQ
+ALTER TABLE `CubeCart_admin_users` ADD COLUMN `verify_expires` DATETIME DEFAULT NULL; #EOQ
