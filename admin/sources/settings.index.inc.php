@@ -249,8 +249,8 @@ if (isset($_GET['logo']) && isset($_GET['logo_id'])) {
                     'images/logos/'.$logo[0]['skin'].'.php'
                 );
                 foreach ($paths as $path) {
-                    if (file_exists($logo_path)) {
-                        unlink($logo_path);
+                    if (file_exists($path)) {
+                        unlink($path);
                     }
                 }
                 $GLOBALS['db']->delete('CubeCart_logo', array('logo_id' => $logo[0]['logo_id']));

@@ -148,7 +148,10 @@ class GUI
                 $this->rebuildLogos();
                 $this->_setLogo();
             }
-            $GLOBALS['smarty']->assign('STORE_LOGO', CC_STORE_URL.'/'.$this->_logo);
+            if (empty($this->_logo)) {
+                $this->_logo = $this->_getLogoDefault();
+            }
+            $GLOBALS['smarty']->assign('STORE_LOGO', !empty($this->_logo) ? CC_STORE_URL.'/'.$this->_logo : '');
 
             //CSS hooks
             /**
@@ -845,14 +848,13 @@ class GUI
      */
     public function rebuildLogos()
     {
+        $custom = array();
         if ($logos = $GLOBALS['db']->select('CubeCart_logo', false, array('status' => 1))) {
             foreach ($logos as $logo) {
                 $skin = (!empty($logo['skin'])) ? $logo['skin'] : 'all';
                 $style = (!empty($logo['style'])) ? $logo['style'] : 'all';
                 $custom[$skin][$style] = $logo['filename'];
             }
-        } else {
-            $custom = null;
         }
 
         $skins = glob(CC_ROOT_DIR.'/skins/*/config.xml');
@@ -860,6 +862,7 @@ class GUI
         /* Add logos for extra templates */
         $extra_templates = array('emails', 'invoices');
 
+        $default = array();
         if ($skins) {
             foreach ($skins as $skin) {
                 $xml = $this->getSkinConfig($skin);
@@ -875,32 +878,32 @@ class GUI
             }
         }
 
+        $logo_config = array();
         foreach ($default as $skin => $data) {
             if (is_array($data)) {
-                ## Has substyles
+                ## Has substyles
                 foreach ($data as $style => $value) {
-                    if (isset($custom['all'])) {
-                        $target = 'images/logos/'.$custom['all']['all'];
+                    ## Priority: exact match > skin-wide > all-skins+style > all-skins+all-styles > default
+                    if (isset($custom[$skin][$style])) {
+                        $target = 'images/logos/'.$custom[$skin][$style];
                     } elseif (isset($custom[$skin]['all'])) {
                         $target = 'images/logos/'.$custom[$skin]['all'];
-                    } elseif (isset($custom[$skin][$style])) {
-                        ## Use custom logo
-                        $target = 'images/logos/'.$custom[$skin][$style];
+                    } elseif (isset($custom['all'][$style])) {
+                        $target = 'images/logos/'.$custom['all'][$style];
+                    } elseif (isset($custom['all']['all'])) {
+                        $target = 'images/logos/'.$custom['all']['all'];
                     } else {
-                        ## Look for default logo
                         $target = $this->_getLogoDefault($skin, $style);
                     }
                     $logo_config[$skin.$style] = $target;
                 }
             } else {
-                ## Basic skin with no substyles
-                if (isset($custom['all'])) {
-                    $target = 'images/logos/'.$custom['all']['all'];
-                } elseif (isset($custom[$skin])) {
-                    ## Use custom logo
+                ## Basic skin with no substyles
+                if (isset($custom[$skin]['all'])) {
                     $target = 'images/logos/'.$custom[$skin]['all'];
+                } elseif (isset($custom['all']['all'])) {
+                    $target = 'images/logos/'.$custom['all']['all'];
                 } else {
-                    ## Look for default logo
                     $target = $this->_getLogoDefault($skin);
                 }
                 $logo_config[$skin] = $target;
@@ -908,22 +911,22 @@ class GUI
         }
 
         foreach ($extra_templates as $type) {
-            if (isset($custom[$type])) {
-                ## Use custom logo
+            if (isset($custom[$type]['all'])) {
+                ## Custom logo assigned to this template type
                 $target = 'images/logos/'.$custom[$type]['all'];
-            } elseif (isset($custom['all'])) {
-                ## Use the "All Skins" logo
+            } elseif (isset($custom['all']['all'])) {
+                ## Use the 'All Skins' logo
                 $target = 'images/logos/'.$custom['all']['all'];
             } elseif (!empty($logo_config)) {
                 ## Use the first skin logo already built
                 $target = reset($logo_config);
             } else {
-                ## Last resort: look for default logo from config/skin
-                $target = $this->getLogo();
+                ## Last resort: look for default logo
+                $target = $this->_getLogoDefault();
             }
             $logo_config[$type] = $target;
         }
-        $GLOBALS['config']->set('logos', false, str_replace('/', '/', $logo_config), true); // Save skin and extra templates
+        $GLOBALS['config']->set('logos', false, $logo_config, true);
     }
 
     /**
@@ -1865,8 +1868,22 @@ class GUI
             $style = $GLOBALS['config']->get('config', 'skin_style');
         }
 
-        $path = (!empty($style)) ? 'images/'.$style : 'images';
-        $source = glob('skins/'.$skin.'/'.$path.'/'.'logo/default.{gif,jpg,png,svg}', GLOB_BRACE);
+        // Try styled path first (e.g. images/blue/logo/default.png)
+        if (!empty($style)) {
+            $source = glob('skins/'.$skin.'/images/'.$style.'/logo/default.{gif,jpg,png,svg}', GLOB_BRACE);
+            if (!empty($source)) return $source[0];
+        }
+
+        // Try unstyled path (e.g. images/logo/default.png)
+        $source = glob('skins/'.$skin.'/images/logo/default.{gif,jpg,png,svg}', GLOB_BRACE);
+        if (!empty($source)) return $source[0];
+
+        // Try any style subfolder (e.g. images/*/logo/default.png)
+        $source = glob('skins/'.$skin.'/images/*/logo/default.{gif,jpg,png,svg}', GLOB_BRACE);
+        if (!empty($source)) return $source[0];
+
+        // Last resort: Foundation default
+        $source = glob('skins/foundation/images/*/logo/default.{gif,jpg,png,svg}', GLOB_BRACE);
         return (!empty($source)) ? $source[0] : null;
     }
 
