@@ -1696,10 +1696,6 @@ class GUI
      */
     private function _displaySkinSelect()
     {
-        if (!$GLOBALS['smarty']->templateExists('templates/box.skins.php')) {
-            return false;
-        }
-
         $skin_setting = $GLOBALS['config']->get('config', 'skin_change');
         if ($skin_setting == '1' || ($skin_setting == '2' && Admin::getInstance()->is())) {
             foreach ($this->_skins as $skin => $data) {
@@ -1719,7 +1715,15 @@ class GUI
                 include $hook;
             }
             $GLOBALS['smarty']->assign('SKINS', $vars);
-            $content = $GLOBALS['smarty']->fetch('templates/box.skins.php');
+            $template_file = CC_ROOT_DIR.'/'.$GLOBALS['config']->get('config', 'adminFolder').'/skins/default/templates/frontend.skin_select.php';
+            if (file_exists($template_file)) {
+                $html = file_get_contents($template_file);
+                $content = $GLOBALS['smarty']->fetch('string:'.$html);
+            } elseif ($GLOBALS['smarty']->templateExists('templates/box.skins.php')) {
+                $content = $GLOBALS['smarty']->fetch('templates/box.skins.php');
+            } else {
+                return false;
+            }
             $GLOBALS['smarty']->assign('SKIN_SELECT', $content);
         }
     }

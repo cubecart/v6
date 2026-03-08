@@ -99,7 +99,7 @@
             {include file='templates/element.js_foot.php'}
             {$LIVE_HELP}
             {$DEBUG_INFO}
-            {include file='templates/box.skins.php'}
+            {$SKIN_SELECT}
             <a class="exit-off-canvas"></a>
             {include file='templates/ccpower.php'}
          </div>
