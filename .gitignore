@@ -1,22 +1,38 @@
-# Logs
-/logs/*
-!/logs/.htaccess
+# ==========================
+# OS & Editor
+# ==========================
+.DS_Store
+Thumbs.db
+._*
+.claude/
 
-# CubeCart
-/includes/extra/snippet_*
-/includes/global.inc.*
-/includes/extra/importdata.tmp
-/includes/extra/es.json
-!/includes/global.inc.php-dist
-!/modules/plugins/hooks.xml
-/modules/*
+# ==========================
+# CubeCart Config & Generated
+# ==========================
 /.htaccess
 /robots.txt
 /sitemap_*
-/skins/*
-!/skins/foundation/*
+/includes/global.inc.*
+!/includes/global.inc.php-dist
+/includes/extra/snippet_*
+/includes/extra/importdata.tmp
+/includes/extra/es.json
 
-# Language files (installed via API)
+# ==========================
+# Modules (installed via ACP)
+# ==========================
+/modules/*
+!/modules/plugins/hooks.xml
+
+# ==========================
+# Skins (only Foundation tracked)
+# ==========================
+/skins/*
+!/skins/foundation/
+
+# ==========================
+# Language (installed via API)
+# ==========================
 /language/*.xml
 !/language/definitions.xml
 !/language/email_definitions.xml
@@ -24,13 +40,46 @@
 !/language/flags/globe.png
 !/language/flags/unknown.png
 
+# ==========================
+# Logs
+# ==========================
+/logs/*
+!/logs/.htaccess
+
+# ==========================
+# Cache (compiled templates, combined CSS/JS)
+# ==========================
+/cache/*
+!/cache/.htaccess
+
+# ==========================
+# Backup (store backups)
+# ==========================
+/backup/*
+!/backup/.htaccess
+!/backup/index.php
+
+# ==========================
+# Files (digital downloads)
+# ==========================
+/files/*
+!/files/.htaccess
+!/files/public/
+/files/public/*
+!/files/public/.htaccess
+
+# ==========================
+# Images (user uploads & cache)
+# ==========================
+/images/cache/*
+!/images/cache/.gitignore
+!/images/cache/index.php
+/images/logos/*
+!/images/logos/index.php
+/images/source/*
+!/images/source/.gitignore
+
+# ==========================
 # Tests
+# ==========================
 /tests/
-
-# Claude Code
-.claude/
-
-# OS General
-.DS_Store
-Thumbs.db
-._*

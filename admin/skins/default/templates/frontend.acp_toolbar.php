@@ -135,4 +135,33 @@
     <a href="?acp_action=toggle_maintenance&amp;acp_redirect={$ACP_DATA.current_url}" class="button {if $ACP_DATA.is_offline}status-offline{else}status-online{/if}">{if $ACP_DATA.is_offline}{$LANG.settings.tab_offline}{else}{$LANG.settings.tab_online}{/if}</a><br>
     <a href="?acp_action=logout" class="button">{$LANG.account.logout}</a>
 </div>
+<script>
+{literal}
+(function(){
+    var w = document.querySelector('.acp_widget');
+    if (!w) return;
+    var cookiePath = '{/literal}{$STORE_URL|regex_replace:"/^https?:\\/\\/[^\\/]+/":""}{literal}/';
+    function getCookie(n){ var m = document.cookie.match('(^|;)\\s*'+n+'\\s*=\\s*([^;]*)'); return m ? m[2] : null; }
+    function setCookie(n,v){ document.cookie = n+'='+v+';path='+cookiePath+';max-age=2592000'; }
+    function applyState(show, animate){
+        w.style.transition = animate ? 'left 0.3s ease' : 'none';
+        if (show) {
+            w.style.left = '0px';
+            w.querySelector('.close a').innerHTML = '&laquo;';
+        } else {
+            w.style.left = '-'+(w.offsetWidth - 15)+'px';
+            w.querySelector('.close a').innerHTML = '&raquo;';
+        }
+    }
+    var state = getCookie('show_acp_widget');
+    applyState(state !== '0', false);
+    w.querySelector('.close a').addEventListener('click', function(e){
+        e.preventDefault();
+        var cur = getCookie('show_acp_widget') !== '0';
+        setCookie('show_acp_widget', cur ? '0' : '1');
+        applyState(!cur, true);
+    });
+})();
+{/literal}
+</script>
 {/if}

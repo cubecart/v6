@@ -1,6 +1,1 @@
-# Ignore everything
-*
-
-# But not these files...
-!index.php
-!.gitignore
+# Rules managed in root .gitignore
