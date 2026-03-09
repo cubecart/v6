@@ -1,0 +1,73 @@
+.ext-toolbar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:15px; }
+.ext-search { flex:1; min-width:200px; padding:8px 12px; border:1px solid #ccc; border-radius:4px; font-size:14px; }
+.ext-filter-btn { display:inline-block; padding:5px 12px; border:1px solid #ccc; border-radius:3px; background:#f5f5f5; color:#333; cursor:pointer; font-size:12px; text-decoration:none; }
+.ext-filter-btn:hover, .ext-filter-btn.active { background:#0072bc; color:#fff; border-color:#0072bc; }
+.ext-filter-btn .badge { display:inline-block; background:rgba(0,0,0,0.15); color:inherit; padding:1px 6px; border-radius:10px; font-size:11px; margin-left:4px; }
+.ext-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:15px; margin-top:15px; }
+.ext-card { border:1px solid #ddd; border-radius:6px; padding:16px; background:#fff; position:relative; transition:box-shadow .2s; }
+.ext-card:hover { box-shadow:0 2px 8px rgba(0,0,0,0.12); }
+.ext-card-installed { background:#f0faf0; border-color:#c3e6c3; }
+.ext-card-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px; }
+.ext-card-name { font-size:14px; font-weight:700; color:#333; margin:0; line-height:1.3; }
+.ext-card-version { font-size:11px; color:#888; white-space:nowrap; }
+.ext-version-select { font-size:11px; padding:2px 4px; border:1px solid #ccc; border-radius:3px; background:#fff; color:#333; max-width:160px; }
+.ext-card-desc { font-size:12px; color:#666; margin:0 0 8px; line-height:1.4; }
+.ext-card-meta { display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap; }
+.ext-badge { display:inline-block; padding:2px 8px; border-radius:3px; font-size:11px; font-weight:600; text-transform:uppercase; }
+.ext-badge-type { background:#e8f4fd; color:#0072bc; }
+.ext-badge-cat { background:#f0f0f0; color:#666; }
+.ext-badge-installed { background:#dff0d8; color:#3c763d; }
+.ext-badge-upgrade { background:#fcf8e3; color:#8a6d3b; }
+.ext-badge-thirdparty { background:#e8e0f0; color:#6a4c93; }
+.ext-card-actions { display:flex; gap:6px; margin-top:12px; flex-wrap:wrap; }
+.ext-btn { display:inline-flex; align-items:center; gap:5px; padding:6px 14px; border:none; border-radius:4px; font-size:12px; font-weight:600; cursor:pointer; text-decoration:none; transition:opacity .2s; }
+.ext-btn:hover { opacity:0.85; }
+.ext-btn-install { background:#5cb85c; color:#fff; }
+.ext-btn-upgrade { background:#f0ad4e; color:#fff; }
+.ext-btn-delete { background:#d9534f; color:#fff; }
+.ext-btn-downgrade { background:#e67e22; color:#fff; }
+.ext-btn-configure { background:#0072bc; color:#fff; }
+.ext-btn-disabled { background:#ccc; color:#666; cursor:not-allowed; }
+.ext-btn i { font-size:12px; color:#fff !important; }
+.ext-btn-disabled i { color:#5cb85c !important; }
+.ext-spinner { display:inline-block; width:12px; height:12px; border:2px solid rgba(255,255,255,.3); border-top-color:#fff; border-radius:50%; animation:ext-spin .6s linear infinite; }
+@keyframes ext-spin { to { transform:rotate(360deg); } }
+.ext-toast { position:fixed; top:20px; right:20px; z-index:10000; padding:12px 20px; border-radius:6px; color:#fff; font-size:13px; font-weight:600; box-shadow:0 4px 12px rgba(0,0,0,.2); opacity:0; transform:translateY(-10px); transition:all .3s; }
+.ext-toast.show { opacity:1; transform:translateY(0); }
+.ext-toast-success { background:#5cb85c; }
+.ext-toast-error { background:#d9534f; }
+.ext-empty { text-align:center; padding:40px; color:#999; font-size:14px; }
+.ext-count { color:#888; font-size:13px; }
+
+@media (prefers-color-scheme: dark) {
+   .ext-search { background:var(--input-bg); border-color:var(--input-border); color:var(--text); }
+   .ext-search:focus { background:var(--input-bg-focus); border-color:var(--input-border-focus); }
+   .ext-search::placeholder { color:var(--text-muted); }
+   .ext-filter-btn { background:var(--btn-bg); color:var(--btn-text); border-color:var(--btn-border); }
+   .ext-filter-btn:hover, .ext-filter-btn.active { background:var(--primary); color:#fff; border-color:var(--primary-accent); }
+   .ext-card { background:var(--panel); border-color:var(--border); }
+   .ext-card:hover { box-shadow:0 2px 12px rgba(0,0,0,0.35); }
+   .ext-card-installed { background:rgba(92,184,92,0.08); border-color:rgba(92,184,92,0.25); }
+   .ext-card-name { color:var(--text); }
+   .ext-card-version { color:var(--text-muted); }
+   .ext-version-select { background:var(--input-bg); border-color:var(--input-border); color:var(--text); }
+   .ext-card-desc { color:var(--text-muted); }
+   .ext-badge-type { background:rgba(107,186,208,0.15); color:var(--primary-accent); }
+   .ext-badge-cat { background:var(--panel-muted); color:var(--text-muted); }
+   .ext-badge-installed { background:rgba(92,184,92,0.15); color:#8fd88f; }
+   .ext-badge-upgrade { background:rgba(240,173,78,0.15); color:#f0c078; }
+   .ext-badge-thirdparty { background:rgba(106,76,147,0.2); color:#c4a8e0; }
+   .ext-btn-install { background:#3a8c3a; }
+   .ext-btn-upgrade { background:#b8862e; }
+   .ext-btn-delete { background:#a83232; }
+   .ext-btn-downgrade { background:#b5651d; }
+   .ext-btn-configure { background:var(--primary); }
+   .ext-btn-disabled { background:var(--btn-bg); color:var(--text-muted); }
+   .ext-btn-disabled i { color:#5cb85c !important; }
+   .ext-empty { color:var(--text-muted); }
+   .ext-count { color:var(--text-muted); }
+   .ext-toast { box-shadow:0 4px 16px rgba(0,0,0,0.5); }
+   .ext-toast-success { background:#2d7a2d; }
+   .ext-toast-error { background:#a83232; }
+
+}

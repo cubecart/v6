@@ -1,98 +1,321 @@
 {*
-* CubeCart v6
-* ========================================
-* CubeCart is a registered trade mark of CubeCart Limited
-* Copyright CubeCart Limited 2026. All rights reserved.
-* UK Private Limited Company No. 5323904
-* ========================================
-* Web:   https://www.cubecart.com
-* Email:  hello@cubecart.com
-* License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
-*}
+ * CubeCart v6
+ * ========================================
+ * CubeCart is a registered trade mark of CubeCart Limited
+ * Copyright CubeCart Limited 2026. All rights reserved.
+ * UK Private Limited Company No. 5323904
+ * ========================================
+ * Web:   https://www.cubecart.com
+ * Email:  hello@cubecart.com
+ * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
+ *}
+<link rel="stylesheet" href="{$STORE_URL}/admin/skins/default/styles/extensions.css">
 
-   <div id="plugins" class="tab_content">
-      <h3><i class="fa fa-bolt"></i> {$LANG.module.token_title}</h3>
-      <p>{$LANG.module.token_desc}</p>
-      <form action="{$VAL_SELF}" method="post">
-      <fieldset>
-         <legend>{$LANG.module.token}</legend>
-         <div><label for="plugin_token">{$LANG.module.token}</label><span><input type="textbox" class="textbox" name="plugin_token" id="plugin_token" value="" placeholder="XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX"></span></div>
-         <div><label for="backup">{$LANG.module.backup_if_exists}</label><span><input type="hidden" id="backup" name="backup" value="1" class="toggle"></span></div>
-         <div><label for="abort">{$LANG.module.backup_abort}</label><span><input type="hidden" id="abort" name="abort" value="1" class="toggle"></span></div>
-      </fieldset>
-      <input type="submit" value="{$LANG.settings.install_extension}" class="button">
-      </form>
-      <hr>
-      <h3>{$LANG.module.available_plugins}</h3>
-      {if is_array($MODULES)}
-      <p>{$LANG.module.default_extensions}</p>
-      <form action="{$VAL_SELF}" method="post">
-      <table>
-         <thead>
-            <tr>
-               <th width="45" style="text-align:center">{$LANG.common.status}</th>
-               <th>{$LANG.common.name_and_desc}</th>
-               <th style="text-align:center">{$LANG.hooks.version}</th>
-               <th style="text-align:center">{$LANG.common.type}</th>
-               <th style="text-align:center">{$LANG.common.developer}</th>
-               <th width="10">&nbsp;</th>
-            </tr>
-         </thead>
-         <tbody>
-            {foreach from=$MODULES item=module}
-            <tr>
-               <td style="text-align:center">
-                  {if $module.configured}
-                  <input type="hidden" id="status_{$module.basename}" name="status[{$module.basename}]" value="{$module.config.status}" class="toggle">
-                  <input type="hidden" name="type[{$module.basename}]" value="{$module.type}" />
-                  {else}
-                     <a href="{$module.edit_url}" class="button mini_button">{$LANG.common.setup}</a>
-                  {/if}
-               </td>
-               <td><a href="{$module.edit_url}">{$module.name}</a><br>{$module.description}</td>
-               <td>{$module.version}</td>
-               <td>{ucfirst($module.type)}</td>
-               <td>{$module.creator}</td>
-               <td nowrap>
-                  <a href="{$module.delete_url}"  class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>
-                  {if $module.configured}<a href="{$module.edit_url}" class="edit"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>{/if}
-               </td>
-            </tr>
-            {/foreach}
-            </tbody>
-      </table>
-      {if $SAVE_STATUS}
-      <div class="form_control">
-         <input type="submit" value="{$LANG.common.save}">
+<div id="marketplace" class="tab_content">
+   <h3><i class="fa fa-cloud-download"></i> {$LANG.module.ext_marketplace}</h3>
+   <p>{$LANG.module.ext_marketplace_desc}</p>
+
+   <div class="ext-toolbar">
+      <input type="text" id="ext-search" class="ext-search" placeholder="{$LANG.common.search}...">
+      <span class="ext-count">{$EXT_COUNT} {$LANG.module.ext_available}</span>
+      <a href="?_g=plugins&refresh=1" class="ext-filter-btn" title="{$LANG.common.refresh}"><i class="fa fa-refresh"></i></a>
+   </div>
+
+   <div class="ext-toolbar" id="ext-filters">
+      <button type="button" class="ext-filter-btn active" data-filter="all">{$LANG.common.all} <span class="badge">{$EXT_COUNT}</span></button>
+      {foreach from=$CATEGORIES key=cat item=count}
+      <button type="button" class="ext-filter-btn" data-filter="{$cat}">{$cat|replace:'_':' '|ucwords} <span class="badge">{$count}</span></button>
+      {/foreach}
+   </div>
+
+   <div class="ext-grid" id="ext-marketplace-grid">
+      {if is_array($MARKETPLACE)}
+      {foreach from=$MARKETPLACE item=ext}
+      <div class="ext-card{if $ext.is_installed} ext-card-installed{/if}" data-category="{$ext.category}" data-name="{$ext.name|lower}" data-type="{$ext.type}" data-installed="{if $ext.is_installed}1{else}0{/if}" data-installed-version="{$ext.installed_version}" data-installed-basename="{$ext.installed_basename}">
+         <div class="ext-card-header">
+            <h4 class="ext-card-name">{$ext.name}</h4>
+            {if count($ext.versions) > 1}
+            <select class="ext-version-select" data-card-version>
+               {foreach from=$ext.versions item=ver}
+               <option value="{$ver.download}"{if $ext.is_installed && $ver.version == $ext.installed_version} selected{elseif !$ext.is_installed && $ver.version == $ext.latest_version} selected{/if}>{$ver.version}</option>
+               {/foreach}
+            </select>
+            {else}
+            <span class="ext-card-version">{if $ext.latest_version && $ext.latest_version != 'n/a'}v{$ext.latest_version}{else}n/a{/if}</span>
+            {/if}
+         </div>
+         {if $ext.description}<p class="ext-card-desc">{$ext.description}</p>{/if}
+         <div class="ext-card-meta">
+            {if $ext.category_label}<span class="ext-badge ext-badge-cat">{$ext.category_label}</span>{/if}
+            {if $ext.third_party}
+            <span class="ext-badge ext-badge-thirdparty"><i class="fa fa-cube"></i> 3rd Party</span>
+            {/if}
+            {if $ext.is_installed}
+            <span class="ext-badge ext-badge-installed"><i class="fa fa-check"></i> {$LANG.module.ext_installed}{if $ext.installed_version && $ext.installed_version != 'n/a'} v{$ext.installed_version}{/if}</span>
+            {/if}
+            {if $ext.has_upgrade}
+            <span class="ext-badge ext-badge-upgrade"><i class="fa fa-arrow-up"></i> {$LANG.module.ext_update_available}</span>
+            {/if}
+         </div>
+         <div class="ext-card-actions">
+            {if $ext.third_party}
+            {* 3rd party: configure and delete only *}
+            {elseif $ext.has_upgrade}
+            <button type="button" class="ext-btn ext-btn-upgrade btn-ext-action" data-action="install" data-url="{$ext.download_url}" data-name="{$ext.name}" data-type="{$ext.type}">
+               <i class="fa fa-arrow-up"></i> {$LANG.module.ext_upgrade}
+            </button>
+            {elseif !$ext.is_installed}
+            <button type="button" class="ext-btn ext-btn-install btn-ext-action" data-action="install" data-url="{$ext.download_url}" data-name="{$ext.name}" data-type="{$ext.type}">
+               <i class="fa fa-download"></i> {$LANG.common.install}
+            </button>
+            {else}
+            <button type="button" class="ext-btn ext-btn-disabled btn-ext-action" data-action="install" data-url="{$ext.download_url}" data-name="{$ext.name}" data-type="{$ext.type}" disabled>
+               <i class="fa fa-check"></i> {$LANG.module.ext_up_to_date}
+            </button>
+            {/if}
+            {if $ext.is_installed && $ext.edit_url}
+            <a href="{$ext.edit_url}" class="ext-btn ext-btn-configure"><i class="fa fa-cog"></i> {$LANG.common.configure}</a>
+            {/if}
+            {if $ext.is_installed}
+            <button type="button" class="ext-btn ext-btn-delete btn-ext-delete-market" data-type="{$ext.type}" data-module="{$ext.installed_basename}" data-name="{$ext.name}">
+               <i class="fa fa-trash"></i> {$LANG.common.delete}
+            </button>
+            {/if}
+         </div>
       </div>
+      {/foreach}
       {/if}
-      {else}
-      <p>{$LANG.form.none}</p>
-      {/if}
-      
-      </form>
-      {if is_array($SKINS)}
-      <hr>
-      <h3>{$LANG.settings.installed_skins}</h3>
-      <table>
-         <thead>
-            <tr>
-               <th width="50">{$LANG.common.default}</th>
-               <th>{$LANG.common.name}</th>
-               <th>{$LANG.common.developer}</th>
-               <th>{$LANG.hooks.version}</th>
-            </tr>
-         </thead>
-         <tbody>
-            {foreach from=$SKINS item=skin}
-            <tr>
-               <td width="10" align="center">{if $CONFIG.skin_folder == $skin.info.name}<i class="fa fa-check" aria-hidden="true"></i>{else}<i class="fa fa-times" aria-hidden="true"></i>{/if}</td>
-               <td>{$skin.info.display}</td>
-               <td>{$skin.info.creator}</td>
-               <td>{$skin.info.version}</td>
-            </tr>
-            {/foreach}
-         </tbody>
-      </table>
-      {/if}
+   </div>
 </div>
+
+<div id="ext-toast" class="ext-toast"></div>
+<input type="hidden" id="ext-csrf-token" value="{$SESSION_TOKEN}">
+
+{literal}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+   var ajaxUrl = window.location.href.split('#')[0].split('?')[0] + '?_g=plugins';
+   var csrfToken = $('#ext-csrf-token').val();
+
+   function reloadWithTab() {
+      var url = window.location.href.split('#')[0];
+      var activeTab = window.location.hash || '#marketplace';
+      window.location.href = url + activeTab;
+      window.location.reload();
+   }
+
+   // Toast notification
+   function showToast(message, type) {
+      var $toast = $('#ext-toast');
+      $toast.removeClass('show ext-toast-success ext-toast-error')
+            .addClass('ext-toast-' + type)
+            .text(message);
+      setTimeout(function() { $toast.addClass('show'); }, 10);
+      setTimeout(function() { $toast.removeClass('show'); }, 4000);
+   }
+
+   // Persist filter/search state across reloads
+   function saveFilterState() {
+      var filter = $('#ext-filters .ext-filter-btn.active').data('filter') || 'all';
+      var search = $('#ext-search').val() || '';
+      sessionStorage.setItem('ext_filter', filter);
+      sessionStorage.setItem('ext_search', search);
+   }
+
+   function restoreFilterState() {
+      var filter = sessionStorage.getItem('ext_filter') || 'all';
+      var search = sessionStorage.getItem('ext_search') || '';
+      if (filter !== 'all') {
+         $('#ext-filters .ext-filter-btn').removeClass('active');
+         var $btn = $('#ext-filters .ext-filter-btn[data-filter="' + filter + '"]');
+         if ($btn.length) {
+            $btn.addClass('active');
+         } else {
+            $('#ext-filters .ext-filter-btn[data-filter="all"]').addClass('active');
+         }
+      }
+      if (search) {
+         $('#ext-search').val(search);
+      }
+      applySearch();
+   }
+
+   // Category filter
+   $('#ext-filters').on('click', '.ext-filter-btn', function() {
+      var filter = $(this).data('filter');
+      $('#ext-filters .ext-filter-btn').removeClass('active');
+      $(this).addClass('active');
+
+      if (filter === 'all') {
+         $('.ext-card').show();
+      } else {
+         $('.ext-card').hide();
+         $('.ext-card[data-category="' + filter + '"]').show();
+      }
+      applySearch();
+      saveFilterState();
+   });
+
+   // Search
+   var searchTimer;
+   $('#ext-search').on('input', function() {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(function() {
+         applySearch();
+         saveFilterState();
+      }, 200);
+   });
+
+   function applySearch() {
+      var term = $('#ext-search').val().toLowerCase().trim();
+      var activeFilter = $('#ext-filters .ext-filter-btn.active').data('filter');
+
+      $('.ext-card').each(function() {
+         var $card = $(this);
+         var matchesFilter = (activeFilter === 'all' || $card.data('category') === activeFilter);
+         var matchesSearch = (!term || $card.data('name').indexOf(term) !== -1 || $card.data('type').indexOf(term) !== -1);
+         $card.toggle(matchesFilter && matchesSearch);
+      });
+   }
+
+   // Restore state on load
+   restoreFilterState();
+
+   // Version selector change — update action button dynamically
+   $(document).on('change', '[data-card-version]', function() {
+      var $select = $(this);
+      var $card = $select.closest('.ext-card');
+      var $btn = $card.find('.btn-ext-action');
+      if (!$btn.length) return;
+
+      var selectedVersion = $select.find('option:selected').text().trim();
+      var installedVersion = $card.data('installed-version');
+      var isInstalled = $card.data('installed') == '1';
+
+      if (!isInstalled) return;
+
+      $btn.prop('disabled', false);
+      if (selectedVersion === installedVersion) {
+         $btn.removeClass('ext-btn-install ext-btn-upgrade ext-btn-downgrade')
+             .addClass('ext-btn-disabled').prop('disabled', true)
+             .html('<i class="fa fa-check"></i> Installed');
+      } else if (versionCompare(selectedVersion, installedVersion) > 0) {
+         $btn.removeClass('ext-btn-disabled ext-btn-install ext-btn-downgrade')
+             .addClass('ext-btn-upgrade')
+             .html('<i class="fa fa-arrow-up"></i> Upgrade');
+      } else {
+         $btn.removeClass('ext-btn-disabled ext-btn-install ext-btn-upgrade')
+             .addClass('ext-btn-downgrade')
+             .html('<i class="fa fa-history"></i> Downgrade');
+      }
+   });
+
+   function versionCompare(a, b) {
+      var pa = a.split('.'), pb = b.split('.');
+      for (var i = 0; i < Math.max(pa.length, pb.length); i++) {
+         var na = parseInt(pa[i] || 0, 10);
+         var nb = parseInt(pb[i] || 0, 10);
+         if (na > nb) return 1;
+         if (na < nb) return -1;
+      }
+      return 0;
+   }
+
+   // Install / Upgrade / Downgrade
+   $(document).on('click', '.btn-ext-action', function() {
+      var $btn = $(this);
+      if ($btn.prop('disabled') || $btn.data('loading')) return;
+
+      var action = $btn.data('action');
+      var $card = $btn.closest('.ext-card');
+      var $versionSelect = $card.find('[data-card-version]');
+      var url = $versionSelect.length ? $versionSelect.val() : $btn.data('url');
+      var name = $btn.data('name');
+      var type = $btn.data('type');
+
+      var isDowngrade = $btn.hasClass('ext-btn-downgrade');
+      if (isDowngrade && !confirm('Downgrade "' + name + '"? This will overwrite the current version.')) return;
+
+      var originalHtml = $btn.html();
+      var loadingText = isDowngrade ? 'Downgrading...' : (action === 'install' ? 'Installing...' : 'Upgrading...');
+      $btn.data('loading', true).html('<span class="ext-spinner"></span> ' + loadingText);
+
+      $.ajax({
+         url: ajaxUrl,
+         type: 'POST',
+         dataType: 'json',
+         headers: { 'X-Requested-With': 'XMLHttpRequest' },
+         data: {
+            token: csrfToken,
+            ajax_action: 'install_extension',
+            download_url: url,
+            ext_name: name,
+            ext_type: type
+         },
+         success: function(resp) {
+            if (resp.success) {
+               showToast(resp.message, 'success');
+               $btn.removeClass('ext-btn-install ext-btn-upgrade')
+                   .addClass('ext-btn-disabled')
+                   .html('<i class="fa fa-check"></i> Installed')
+                   .data('loading', false);
+               // Refresh after short delay to update installed list
+               setTimeout(function() { reloadWithTab(); }, 1500);
+            } else {
+               showToast(resp.message, 'error');
+               $btn.html(originalHtml).data('loading', false);
+            }
+         },
+         error: function(xhr) {
+            console.error('Install AJAX error:', xhr.status, xhr.responseText);
+            showToast('Error: ' + xhr.status + ' - check console for details.', 'error');
+            $btn.html(originalHtml).data('loading', false);
+         }
+      });
+   });
+
+   // Delete extension from marketplace card
+   $(document).on('click', '.btn-ext-delete-market', function(e) {
+      e.preventDefault();
+      var $btn = $(this);
+      var type = $btn.data('type');
+      var module = $btn.data('module');
+      var name = $btn.data('name');
+
+      if (!confirm('Delete "' + name + '"? This will remove the extension files.')) return;
+
+      var originalHtml = $btn.html();
+      $btn.html('<span class="ext-spinner"></span> Deleting...');
+
+      $.ajax({
+         url: ajaxUrl,
+         type: 'POST',
+         dataType: 'json',
+         headers: { 'X-Requested-With': 'XMLHttpRequest' },
+         data: {
+            token: csrfToken,
+            ajax_action: 'delete_extension',
+            ext_type: type,
+            ext_module: module
+         },
+         success: function(resp) {
+            if (resp.success) {
+               showToast(resp.message, 'success');
+               setTimeout(function() { reloadWithTab(); }, 1500);
+            } else {
+               showToast(resp.message, 'error');
+               $btn.html(originalHtml);
+            }
+         },
+         error: function() {
+            showToast('Network error. Please try again.', 'error');
+            $btn.html(originalHtml);
+         }
+      });
+   });
+
+
+});
+</script>
+{/literal}
