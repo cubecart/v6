@@ -7,6 +7,7 @@
 	--> 
 	<uid>foundation-1.0@cubecart.com</uid>
 	<type>skin</type>
+	<category>skin</category>
 	<name><![CDATA[foundation]]></name>
 	<!-- Please leave this as foundation if your custom skin derives from it -->
 	<original_name><![CDATA[foundation]]></original_name>
@@ -17,8 +18,8 @@
 	<maxVersion>6.*.*</maxVersion>
 	<creator>CubeCart</creator>
 	<homepage>https://www.cubecart.com</homepage>
-	<mobile>false</mobile>
-	<responsive>true</responsive>
+	<layout_type>responsive</layout_type>
+	<framework>foundation</framework>
 	<csrf>true</csrf>
 	<newsletter_recaptcha>true</newsletter_recaptcha>
 	<gravatar_ajax>true</gravatar_ajax>
