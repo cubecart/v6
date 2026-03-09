@@ -31,7 +31,7 @@
    <div class="ext-grid" id="ext-marketplace-grid">
       {if is_array($MARKETPLACE)}
       {foreach from=$MARKETPLACE item=ext}
-      <div class="ext-card{if $ext.is_installed} ext-card-installed{/if}" data-category="{$ext.category}" data-name="{$ext.name|lower}" data-type="{$ext.type}" data-installed="{if $ext.is_installed}1{else}0{/if}" data-installed-version="{$ext.installed_version}" data-installed-basename="{$ext.installed_basename}">
+      <div class="ext-card{if $ext.has_upgrade} ext-card-has-upgrade{elseif $ext.is_installed} ext-card-installed{/if}" data-category="{$ext.category}" data-name="{$ext.name|lower}" data-type="{$ext.type}" data-installed="{if $ext.is_installed}1{else}0{/if}" data-installed-version="{$ext.installed_version}" data-installed-basename="{$ext.installed_basename}">
          <div class="ext-card-header">
             <h4 class="ext-card-name">{$ext.name}</h4>
             {if count($ext.versions) > 1}
