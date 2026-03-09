@@ -77,7 +77,7 @@
             <a href="{$ext.edit_url}" class="ext-btn ext-btn-configure"><i class="fa fa-cog"></i> {$LANG.common.configure}</a>
             {/if}
             {if $ext.is_installed}
-            <button type="button" class="ext-btn ext-btn-delete btn-ext-delete-market" data-type="{$ext.type}" data-module="{$ext.installed_basename}" data-name="{$ext.name}">
+            <button type="button" class="ext-btn ext-btn-delete btn-ext-delete-market" data-type="{$ext.installed_dir_type}" data-module="{$ext.installed_basename}" data-name="{$ext.name}">
                <i class="fa fa-trash"></i> {$LANG.common.delete}
             </button>
             {/if}

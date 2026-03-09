@@ -2591,7 +2591,6 @@ textarea#query {
     border-bottom: 1px solid var(--border) !important;
   }
   #tab_control {
-    background: var(--panel-subtle);
     border-bottom: 1px solid var(--border);
     height: 26px; /* keep your existing height */
     margin-top: 10px;

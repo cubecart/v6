@@ -173,7 +173,7 @@ if ($is_ajax && $_POST['ajax_action'] === 'delete_extension') {
         exit;
     }
 
-    if ($ext_type === 'skin') {
+    if ($ext_type === 'skins') {
         $dir = CC_ROOT_DIR.'/skins/'.$ext_module;
     } else {
         $dir = CC_ROOT_DIR.'/modules/'.$ext_type.'/'.$ext_module;
@@ -206,7 +206,7 @@ if (isset($_GET['delete']) && $_GET['delete']==1 && !empty($_GET['type']) && !em
     $type = basename($_GET['type']);
     $module = basename($_GET['module']);
     if (!empty($type) && !empty($module)) {
-        if ($type === 'skin') {
+        if ($type === 'skins') {
             $dir = CC_ROOT_DIR.'/skins/'.$module;
         } else {
             $dir = CC_ROOT_DIR.'/modules/'.$type.'/'.$module;
@@ -299,10 +299,12 @@ foreach ($module_paths as $module_path) {
     }
     if (is_object($xml)) {
         $basename = (string)basename(str_replace('config.xml', '', $module_path));
+        $dir_type = basename(dirname(dirname($module_path)));
         $module_config = $GLOBALS['db']->select('CubeCart_modules', '*', array('folder' => $basename, 'module' => (string)$xml->info->type));
         $installed[$basename] = array(
             'uid' => (string)$xml->info->uid,
             'type' => (string)$xml->info->type,
+            'dir_type' => $dir_type,
             'name' => str_replace('_', ' ', (string)$xml->info->name),
             'description' => (string)$xml->info->description,
             'version' => (string)$xml->info->version,
@@ -314,7 +316,7 @@ foreach ($module_paths as $module_path) {
             'config' => (is_array($module_config)) ? $module_config[0] : array('status' => 0),
             'configured' => in_array((string)$basename, $config_isset),
             'edit_url' => '?_g=plugins&type='.(string)$xml->info->type.'&module='.$basename,
-            'delete_url' => '?_g=plugins&type='.(string)$xml->info->type.'&module='.$basename.'&delete=1&token='.SESSION_TOKEN
+            'delete_url' => '?_g=plugins&type='.$dir_type.'&module='.$basename.'&delete=1&token='.SESSION_TOKEN
         );
         unset($xml);
     }
@@ -332,6 +334,7 @@ foreach ($skin_paths as $skin_path) {
         $basename = (string)basename(str_replace('/config.xml', '', $skin_path));
         $installed['skin_'.$basename] = array(
             'type' => 'skin',
+            'dir_type' => 'skins',
             'name' => (string)$xml->info->display,
             'version' => (string)$xml->info->version,
             'basename' => $basename,
@@ -375,6 +378,7 @@ foreach ($api_extensions as $ext) {
     $is_installed = false;
     $installed_version = '';
     $installed_basename = '';
+    $installed_dir_type = '';
     $has_upgrade = false;
     $configured = false;
     $edit_url = '';
@@ -385,6 +389,7 @@ foreach ($api_extensions as $ext) {
             $is_installed = true;
             $installed_version = $inst['version'];
             $installed_basename = $inst['basename'];
+            $installed_dir_type = $inst['dir_type'];
             $configured = !empty($inst['configured']);
             $edit_url = !empty($inst['edit_url']) ? $inst['edit_url'] : '';
             if (version_compare($latest['version'], $installed_version, '>')) {
@@ -419,6 +424,7 @@ foreach ($api_extensions as $ext) {
         'is_installed' => $is_installed,
         'installed_version' => $installed_version,
         'installed_basename' => $installed_basename,
+        'installed_dir_type' => $installed_dir_type,
         'has_upgrade' => $has_upgrade,
         'configured' => $configured,
         'edit_url' => $edit_url,
@@ -453,6 +459,7 @@ foreach ($installed as $key => $inst) {
         'is_installed' => true,
         'installed_version' => $inst['version'],
         'installed_basename' => $inst['basename'],
+        'installed_dir_type' => $inst['dir_type'],
         'has_upgrade' => false,
         'configured' => !empty($inst['configured']),
         'edit_url' => !empty($inst['edit_url']) ? $inst['edit_url'] : '',

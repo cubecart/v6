@@ -33,8 +33,8 @@
 .ext-btn-disabled i { color:#5cb85c !important; }
 .ext-spinner { display:inline-block; width:12px; height:12px; border:2px solid rgba(255,255,255,.3); border-top-color:#fff; border-radius:50%; animation:ext-spin .6s linear infinite; }
 @keyframes ext-spin { to { transform:rotate(360deg); } }
-.ext-toast { position:fixed; top:20px; right:20px; z-index:10000; padding:12px 20px; border-radius:6px; color:#fff; font-size:13px; font-weight:600; box-shadow:0 4px 12px rgba(0,0,0,.2); opacity:0; transform:translateY(-10px); transition:all .3s; }
-.ext-toast.show { opacity:1; transform:translateY(0); }
+.ext-toast { position:fixed; top:20px; right:20px; z-index:10000; padding:12px 20px; border-radius:6px; color:#fff; font-size:13px; font-weight:600; box-shadow:0 4px 12px rgba(0,0,0,.2); opacity:0; transform:translateY(-10px); transition:all .3s; pointer-events:none; }
+.ext-toast.show { opacity:1; transform:translateY(0); pointer-events:auto; }
 .ext-toast-success { background:#5cb85c; }
 .ext-toast-error { background:#d9534f; }
 .ext-empty { text-align:center; padding:40px; color:#999; font-size:14px; }
