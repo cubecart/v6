@@ -4,7 +4,7 @@
 .ext-filter-btn:hover, .ext-filter-btn.active { background:#0072bc; color:#fff; border-color:#0072bc; }
 .ext-filter-btn .badge { display:inline-block; background:rgba(0,0,0,0.15); color:inherit; padding:1px 6px; border-radius:10px; font-size:11px; margin-left:4px; }
 .ext-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:15px; margin-top:15px; }
-.ext-card { border:1px solid #ddd; border-radius:6px; padding:16px; background:#fff; position:relative; transition:box-shadow .2s; }
+.ext-card { border:1px solid #ddd; border-radius:6px; padding:16px; background:#fff; position:relative; transition:box-shadow .2s; display:flex; flex-direction:column; }
 .ext-card:hover { box-shadow:0 2px 8px rgba(0,0,0,0.12); }
 .ext-card-installed { background:#f0faf0; border-color:#c3e6c3; }
 .ext-card-has-upgrade { background:#fdf8ec; border-color:#f0d78c; }
@@ -13,14 +13,14 @@
 .ext-card-version { font-size:11px; color:#888; white-space:nowrap; }
 .ext-version-select { font-size:11px; padding:2px 4px; border:1px solid #ccc; border-radius:3px; background:#fff; color:#333; max-width:160px; }
 .ext-card-desc { font-size:12px; color:#666; margin:0 0 8px; line-height:1.4; }
-.ext-card-meta { display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap; }
+.ext-card-meta { display:flex; gap:8px; margin-bottom:0; padding-top:10px; flex-wrap:wrap; margin-top:auto; }
 .ext-badge { display:inline-block; padding:2px 8px; border-radius:3px; font-size:11px; font-weight:600; text-transform:uppercase; }
 .ext-badge-type { background:#e8f4fd; color:#0072bc; }
 .ext-badge-cat { background:#f0f0f0; color:#666; }
 .ext-badge-installed { background:#dff0d8; color:#3c763d; }
 .ext-badge-upgrade { background:#fcf8e3; color:#8a6d3b; }
 .ext-badge-thirdparty { background:#e8e0f0; color:#6a4c93; }
-.ext-card-actions { display:flex; gap:6px; margin-top:12px; flex-wrap:wrap; }
+.ext-card-actions { display:flex; gap:6px; margin-top:0; padding-top:8px; flex-wrap:wrap; }
 .ext-btn { display:inline-flex; align-items:center; gap:5px; padding:6px 14px; border:none; border-radius:4px; font-size:12px; font-weight:600; cursor:pointer; text-decoration:none; transition:opacity .2s; }
 .ext-btn:hover { opacity:0.85; }
 .ext-btn-install { background:#5cb85c; color:#fff; }
