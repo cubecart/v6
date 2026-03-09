@@ -19,6 +19,79 @@ include CC_ROOT_DIR.'/classes/autoloader.class.php';
 Autoloader::autoload_register(array('Autoloader', 'autoload'));
 
 /**
+ * GLOB_BRACE polyfill for systems where it is not available (e.g. Alpine Linux / musl libc).
+ * Expands {a,b,c} brace patterns into multiple glob() calls and merges the results.
+ *
+ * @param string $pattern  Glob pattern (may contain {a,b} braces)
+ * @param int    $flags    Additional glob flags (GLOB_BRACE is handled automatically)
+ * @return array|false
+ */
+function cc_glob($pattern, $flags = 0)
+{
+    if (defined('GLOB_BRACE')) {
+        return glob($pattern, $flags | GLOB_BRACE);
+    }
+
+    // Remove GLOB_BRACE from flags if somehow passed as a literal int
+    // On systems without GLOB_BRACE the constant won't exist, but be safe
+    $flags = $flags & ~(defined('GLOB_BRACE') ? GLOB_BRACE : 0);
+
+    // Expand brace patterns manually
+    $patterns = _cc_glob_expand_braces($pattern);
+    $results = array();
+    foreach ($patterns as $p) {
+        $matches = glob($p, $flags);
+        if ($matches) {
+            $results = array_merge($results, $matches);
+        }
+    }
+    return !empty($results) ? array_unique($results) : ($results ?: false);
+}
+
+/**
+ * Expand the first set of {a,b,c} braces in a glob pattern into multiple patterns.
+ * Handles nested or multiple brace groups by recursion.
+ *
+ * @param string $pattern
+ * @return array
+ */
+function _cc_glob_expand_braces($pattern)
+{
+    // Find the first top-level brace group
+    $start = strpos($pattern, '{');
+    if ($start === false) {
+        return array($pattern);
+    }
+
+    // Find matching closing brace (handles nesting)
+    $depth = 0;
+    $end = false;
+    for ($i = $start; $i < strlen($pattern); $i++) {
+        if ($pattern[$i] === '{') $depth++;
+        elseif ($pattern[$i] === '}') {
+            $depth--;
+            if ($depth === 0) { $end = $i; break; }
+        }
+    }
+
+    if ($end === false) {
+        return array($pattern); // Unmatched brace, return as-is
+    }
+
+    $prefix = substr($pattern, 0, $start);
+    $suffix = substr($pattern, $end + 1);
+    $alternatives = explode(',', substr($pattern, $start + 1, $end - $start - 1));
+
+    $expanded = array();
+    foreach ($alternatives as $alt) {
+        // Recurse to handle additional brace groups
+        $sub = _cc_glob_expand_braces($prefix . $alt . $suffix);
+        $expanded = array_merge($expanded, $sub);
+    }
+    return $expanded;
+}
+
+/**
  * Append DS to a path string (ie \ or /)
  *
  * @param string $path
@@ -862,7 +935,7 @@ function offline()
         ## Only show offline content if no admin session or admin is not allowed to view store front
         if (!Admin::getInstance()->is()) {
             $offlineContent = stripslashes($GLOBALS['config']->get('config', 'offline_content')); // No needs to base64_decode as the main config is already plain since 5.1.1
-            $offlineFiles = glob('offline.{php,htm,html,txt}', GLOB_BRACE);
+            $offlineFiles = cc_glob('offline.{php,htm,html,txt}');
             if (!empty($offlineFiles) && is_array($offlineFiles)) {
                 foreach ($offlineFiles as $file) {
                     include $file;
@@ -927,7 +1000,7 @@ function randomString($length = 30)
 function recursiveDelete($path)
 {
     if (is_dir($path)) {
-        $files	= glob($path.'/{,.}[!.,!..]*', GLOB_MARK|GLOB_BRACE);
+        $files	= cc_glob($path.'/{,.}[!.,!..]*', GLOB_MARK);
         foreach ($files as $file) {
             if (is_dir($file)) {
                 recursiveDelete($file);

@@ -1105,7 +1105,7 @@ if (isset($database_result) && $database_result) {
 
 
 ## Existing Backups
-$files = glob('{backup/*.sql,backup/*.zip}', GLOB_BRACE);
+$files = cc_glob('{backup/*.sql,backup/*.zip}');
 $existing_backups = array();
 if (count($files)>0) {
     foreach ($files as $file) {

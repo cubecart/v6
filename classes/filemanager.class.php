@@ -521,7 +521,7 @@ class FileManager
         $cache_path = substr($cache_path, 0, $strlen);
         $cache_path = $cache_path.'*.'.$ext;
         $i=0;
-        if (($caches = glob($cache_path, GLOB_BRACE)) !== false) {
+        if (($caches = glob($cache_path)) !== false) {
             foreach ($caches as $cached) {
                 if(unlink($cached)) {
                     $i++;
@@ -546,7 +546,7 @@ class FileManager
                     // Clean the image cache
                     if (preg_match('#(.*)(\.\w+)$#iu', $result[0]['filename'], $match)) {
                         $filename = sprintf('%s.*%s', $match[1], $match[2]);
-                        if (($caches = glob($this->_manage_cache.'/'.$this->_sub_dir.$filename, GLOB_BRACE)) !== false) {
+                        if (($caches = glob($this->_manage_cache.'/'.$this->_sub_dir.$filename)) !== false) {
                             foreach ($caches as $cached) {
                                 unlink($cached);
                             }

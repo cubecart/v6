@@ -1699,9 +1699,9 @@ class Catalogue
             $default = (string)$skins['images'][$mode]['default'];
             
             if (isset($skins['styles'][$GLOBALS['gui']->getStyle()]['images']) && !empty($skins['styles'][$GLOBALS['gui']->getStyle()]['images'])) { // do we use a separate style folder for images?
-                $files = glob('skins/'.$GLOBALS['gui']->getSkin().'/'.'images/{common,'.$GLOBALS['gui']->getStyle().'}/'.$default, GLOB_BRACE);
+                $files = cc_glob('skins/'.$GLOBALS['gui']->getSkin().'/'.'images/{common,'.$GLOBALS['gui']->getStyle().'}/'.$default);
             } else {
-                $files = glob('skins/'.$GLOBALS['gui']->getSkin().'/'.'images/'.$default, GLOB_BRACE);
+                $files = glob('skins/'.$GLOBALS['gui']->getSkin().'/'.'images/'.$default);
             }
             if ($files && !empty($files[0])) {
                 $placeholder_image = $files[0];

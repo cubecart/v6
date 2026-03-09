@@ -732,7 +732,7 @@ class Language
             return $GLOBALS['cache']->read('lang.list');
         } else {
             //Get all langauge files
-            if (($files = glob(CC_LANGUAGE_DIR.'*.{xml,gz}', GLOB_BRACE)) !== false) {
+            if (($files = cc_glob(CC_LANGUAGE_DIR.'*.{xml,gz}')) !== false) {
                 $d = array();
                 if(isset($GLOBALS['db']) && method_exists($GLOBALS['db'],'select') && $domains = $GLOBALS['db']->select('CubeCart_domains')) {
                     foreach($domains as $domain) {
@@ -1150,7 +1150,7 @@ class Language
      */
     private function _extractXML($language)
     {
-        if ((($files = glob($language.'*{-custom,}.xml*', GLOB_BRACE | GLOB_NOSORT)) !== false) && !empty($files)) {
+        if ((($files = cc_glob($language.'*{-custom,}.xml*', GLOB_NOSORT)) !== false) && !empty($files)) {
             $merged_addon_strings = '<?xml version="1.0"?><language version="2.0">';
             foreach ($files as $file) {
                 if (substr($file, -3) == '.gz') {

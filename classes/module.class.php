@@ -115,13 +115,13 @@ class Module
 	{
 		$title = (!empty($module_title)) ? $module_title : str_replace('_', ' ', $name);
 		// Primary: modules/{type}/{name}/images/logo.*
-		$images = glob(CC_ROOT_DIR.'/modules/'.$type.'/'.$name.'/images/logo.{png,jpg,jpeg,gif,svg,webp}', GLOB_BRACE);
+		$images = cc_glob(CC_ROOT_DIR.'/modules/'.$type.'/'.$name.'/images/logo.{png,jpg,jpeg,gif,svg,webp}');
         $style = 'style="max-width:200px; max-height:50px;"';
 		if (is_array($images) && isset($images[0])) {
 			return '<img src="modules/'.$type.'/'.$name.'/images/'.basename($images[0]).'" alt="'.$title.'" title="'.$title.'" '.$style.' />';
 		}
 		// Legacy: modules/{type}/{name}/admin/logo.*
-		$images = glob(CC_ROOT_DIR.'/modules/'.$type.'/'.$name.'/admin/logo.{png,jpg,jpeg,gif,svg,webp}', GLOB_BRACE);
+		$images = cc_glob(CC_ROOT_DIR.'/modules/'.$type.'/'.$name.'/admin/logo.{png,jpg,jpeg,gif,svg,webp}');
 		if (is_array($images) && isset($images[0])) {
 			return '<img src="modules/'.$type.'/'.$name.'/admin/'.basename($images[0]).'" alt="'.$title.'" title="'.$title.'" '.$style.' />';
 		}

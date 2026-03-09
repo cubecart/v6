@@ -194,7 +194,7 @@ class GUI
             $GLOBALS['smarty']->assign('BODY_JS', $body_js);
 
             //Put in the javascripts
-            $js = glob('skins/'.$this->_skin.'/'.'{js,scripts}/*.js', GLOB_BRACE);
+            $js = cc_glob('skins/'.$this->_skin.'/'.'{js,scripts}/*.js');
             foreach ($GLOBALS['hooks']->load('class.gui.javascripts') as $hook) {
                 include $hook;
             }
@@ -527,9 +527,9 @@ class GUI
             $default = $this->_skin_data['images'][$mode]['default'];
             
             if ($this->_style !== '' && $this->_skin_data['styles'][$this->_style]['images']) { // do we use a separate style folder for images?
-                $files = glob('skins/'.$this->_skin.'/'.'images/{common,'.$this->_style.'}/'.$default, GLOB_BRACE);
+                $files = cc_glob('skins/'.$this->_skin.'/'.'images/{common,'.$this->_style.'}/'.$default);
             } else {
-                $files = glob('skins/'.$this->_skin.'/'.'images/'.$default, GLOB_BRACE);
+                $files = glob('skins/'.$this->_skin.'/'.'images/'.$default);
             }
             if ($files) {
                 //echo str_replace(array('//', '/'), '/', $files[0]);
@@ -1870,20 +1870,20 @@ class GUI
 
         // Try styled path first (e.g. images/blue/logo/default.png)
         if (!empty($style)) {
-            $source = glob('skins/'.$skin.'/images/'.$style.'/logo/default.{gif,jpg,png,svg}', GLOB_BRACE);
+            $source = cc_glob('skins/'.$skin.'/images/'.$style.'/logo/default.{gif,jpg,png,svg}');
             if (!empty($source)) return $source[0];
         }
 
         // Try unstyled path (e.g. images/logo/default.png)
-        $source = glob('skins/'.$skin.'/images/logo/default.{gif,jpg,png,svg}', GLOB_BRACE);
+        $source = cc_glob('skins/'.$skin.'/images/logo/default.{gif,jpg,png,svg}');
         if (!empty($source)) return $source[0];
 
         // Try any style subfolder (e.g. images/*/logo/default.png)
-        $source = glob('skins/'.$skin.'/images/*/logo/default.{gif,jpg,png,svg}', GLOB_BRACE);
+        $source = cc_glob('skins/'.$skin.'/images/*/logo/default.{gif,jpg,png,svg}');
         if (!empty($source)) return $source[0];
 
         // Last resort: Foundation default
-        $source = glob('skins/foundation/images/*/logo/default.{gif,jpg,png,svg}', GLOB_BRACE);
+        $source = cc_glob('skins/foundation/images/*/logo/default.{gif,jpg,png,svg}');
         return (!empty($source)) ? $source[0] : null;
     }
 
