@@ -129,6 +129,67 @@ if (!$GLOBALS['session']->has('version_check') && $request = new Request('api.gi
     $GLOBALS['session']->set('version_check', true);
 }
 
+## Check for extension updates
+if (!$GLOBALS['session']->has('extension_update_check')) {
+    $ext_request = new Request('extensions.cubecart.com', '/api/extensions', 443, false, true, 15);
+    $ext_request->setMethod('get');
+    $ext_request->setSSL();
+    $ext_request->setUserAgent('CubeCart');
+    $ext_request->skiplog(true);
+    $ext_request->cache(true);
+    $ext_json = $ext_request->send();
+
+    if ($ext_json) {
+        $ext_data = json_decode($ext_json, true);
+        if ($ext_data && !empty($ext_data['success']) && !empty($ext_data['extensions'])) {
+            // Build installed modules list from filesystem
+            $ext_module_paths = glob(CC_ROOT_DIR.'/modules/*/*/config.xml');
+            $ext_installed = array();
+            if (is_array($ext_module_paths)) {
+                foreach ($ext_module_paths as $ext_mp) {
+                    try {
+                        $ext_xml = new SimpleXMLElement(file_get_contents($ext_mp));
+                    } catch (Exception $e) {
+                        continue;
+                    }
+                    if (is_object($ext_xml)) {
+                        $ext_bn = basename(dirname($ext_mp));
+                        $ext_installed[$ext_bn] = array(
+                            'name' => str_replace('_', ' ', (string)$ext_xml->info->name),
+                            'version' => (string)$ext_xml->info->version,
+                        );
+                        unset($ext_xml);
+                    }
+                }
+            }
+
+            // Compare installed versions against API
+            $ext_updates = array();
+            foreach ($ext_data['extensions'] as $ext_api) {
+                $ext_latest = end($ext_api['versions']);
+                $ext_api_name_lower = strtolower($ext_api['name']);
+                foreach ($ext_installed as $ext_key => $ext_inst) {
+                    $ext_inst_name_lower = strtolower($ext_inst['name']);
+                    if ($ext_inst_name_lower === $ext_api_name_lower || $ext_key === strtolower(str_replace(array(' ', '-'), '_', $ext_api['name']))) {
+                        if (version_compare($ext_latest['version'], $ext_inst['version'], '>')) {
+                            $ext_updates[] = $ext_inst['name'].' ('.$ext_inst['version'].' &rarr; '.$ext_latest['version'].')';
+                        }
+                        break;
+                    }
+                }
+            }
+
+            if (!empty($ext_updates)) {
+                $ext_msg = $lang['module']['extensions_available_desc'].' ';
+                $ext_msg .= implode(', ', $ext_updates).'. ';
+                $ext_msg .= '<a href="?_g=plugins">'.$lang['dashboard']['title_extension_updates'].'</a>';
+                $GLOBALS['main']->errorMessage($ext_msg);
+            }
+        }
+    }
+    $GLOBALS['session']->set('extension_update_check', true);
+}
+
 $GLOBALS['smarty']->assign('DASH_NOTES', Admin::getInstance()->get('dashboard_notes'));
 
 $GLOBALS['main']->wikiPage('Dashboard');

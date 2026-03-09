@@ -156,6 +156,7 @@ if ($is_ajax && $_POST['ajax_action'] === 'install_extension') {
     }
 
     $GLOBALS['session']->delete('version_check');
+    $GLOBALS['session']->delete('extension_update_check');
 
     echo json_encode(array('success' => true, 'message' => $lang['module']['success_install']));
     exit;
