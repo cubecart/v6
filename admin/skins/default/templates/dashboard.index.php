@@ -157,21 +157,6 @@
             <textarea name="notes[dashboard_notes]">{$DASH_NOTES}</textarea>
          </form>
       </div>
-      {if is_array($RECENT_EXTENSIONS)}
-         <h2>{$LANG.dashboard.recent_extensions}</h2>
-         <p>{$LANG.dashboard.more_extensions}</p>
-         <div class="extension-container">
-         {foreach from=$RECENT_EXTENSIONS item=extension name=extension}
-            <div class="extension">
-               <h4 title="{$extension.name}">{$extension.name|truncate:42:"&hellip;":true}</h4>
-               <div class="img-wrapper">
-                  <a href="?_g=marketplace&eurl={$extension.url|escape:'url'}" target="_blank" title="{$extension.name}"><span class="shunt"></span><img src="{$extension.image}" alt="{$extension.name}"></a>
-               </div>
-               <div class="price">{$extension.price}</div>
-            </div>
-         {/foreach}
-         </div>
-      {/if}
    </div>
 </div>
 {if isset($ORDERS)}

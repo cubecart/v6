@@ -91,25 +91,6 @@ if (stristr($mysql_mode[0]['@@sql_mode'], 'strict')) {
     $GLOBALS['main']->errorMessage($lang['setup']['error_strict_mode']);
 }
 
-## Get recent extensions
-if ($GLOBALS['session']->has('recent_extensions')) {
-    $GLOBALS['smarty']->assign("RECENT_EXTENSIONS", $GLOBALS['session']->get('recent_extensions'));
-} else {
-    $request = new Request('www.cubecart.com', '/extensions/json');
-    $request->skiplog(true);
-    $request->setMethod('get');
-    $request->cache(true);
-    $request->setSSL();
-    $request->setUserAgent('CubeCart');
-
-    $response = $request->send();
-    if ($response) {
-        $response = json_decode($response, true);
-        $GLOBALS['session']->set('recent_extensions', $response);
-        $GLOBALS['smarty']->assign("RECENT_EXTENSIONS", $response);
-    }
-}
-
 ## Check current version via GitHub releases
 if (!$GLOBALS['session']->has('version_check') && $request = new Request('api.github.com', '/repos/cubecart/v6/releases/latest')) {
     $request->skiplog(true);
