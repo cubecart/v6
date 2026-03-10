@@ -14,10 +14,7 @@
 /**
  * GUI controller
  *
- * @author Technocrat
- * @author Al Brookbanks
  * @author Sir William
- * @since 5.0.0
  */
 class GUI
 {

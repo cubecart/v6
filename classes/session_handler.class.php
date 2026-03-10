@@ -22,8 +22,6 @@ if (!defined('CC_INI_SET')) {
  * sessions are not lost when an in-memory cache (memcached/redis)
  * evicts entries under memory pressure.
  *
- * @author Al Brookbanks
- * @since 6.5.0
  */
 class Session_Handler implements SessionHandlerInterface
 {

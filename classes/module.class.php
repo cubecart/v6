@@ -14,8 +14,6 @@
 /**
  * Module controller
  *
- * @author Al Brookbanks
- * @since 5.0.0
  */
 class Module
 {

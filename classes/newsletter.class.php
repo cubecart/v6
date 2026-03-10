@@ -15,8 +15,6 @@
  * Newsletter management
  *
  * @author Martin Purcell
- * @author Al Brookbanks
- * @since 5.0.0
  */
 class Newsletter
 {

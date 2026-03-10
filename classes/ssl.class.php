@@ -14,7 +14,6 @@
 /**
  * SSL controller
  *
- * @since 5.0.0
  */
 class SSL
 {

@@ -14,9 +14,6 @@
 /**
  * SEO controller
  *
- * @author Technocrat
- * @author Al Brookbanks
- * @since 5.0.0
  */
 class SEO
 {

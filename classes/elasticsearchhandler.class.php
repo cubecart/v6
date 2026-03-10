@@ -17,8 +17,6 @@ if (!defined('CC_INI_SET')) {
 /**
  * Elasticsearch Handler
  *
- * @author Al Brookbanks
- * @since 6.5.0
  */
 
 use Elastic\Elasticsearch\ClientBuilder;

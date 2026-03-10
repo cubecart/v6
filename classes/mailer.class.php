@@ -21,8 +21,6 @@ require 'PHPMailer/src/Exception.php';
 /**
  * Language controller
  *
- * @author Al Brookbanks
- * @since 5.0.0
  */
 
 class Mailer extends PHPMailer\PHPMailer\PHPMailer
