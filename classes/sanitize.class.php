@@ -12,7 +12,7 @@
  */
 
 /**
- * Santize class
+ * Sanitize class
  *
  * @author Technocrat
  * @author Al Brookbanks
@@ -32,7 +32,7 @@ class Sanitize
             $csrf_path = CC_ROOT_DIR.'/'.$glob['adminFolder'].'/skins/'.$GLOBALS['config']->get('config', 'admin_skin').'/csrf.inc.php';
             if (file_exists($csrf_path)) {
                 require_once($csrf_path);
-                if (is_array($csrf_maps)) {
+                if (isset($csrf_maps) && is_array($csrf_maps)) {
                     // All CRSF mappings are lowercase
                     $g = array();
                     if(is_array($_GET)) {
