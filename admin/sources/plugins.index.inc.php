@@ -56,7 +56,7 @@ if ($is_ajax && $_POST['ajax_action'] === 'install_extension') {
             $destination = CC_ROOT_DIR.'/modules/livehelp';
             break;
         case 'skin':
-            $destination = CC_ROOT_DIR.'/skins';
+            $destination = CC_ROOT_DIR;
             break;
         default:
             $destination = CC_ROOT_DIR.'/modules/plugins';
@@ -135,6 +135,14 @@ if ($is_ajax && $_POST['ajax_action'] === 'install_extension') {
                 $has_ioncube = true;
                 $ioncube_sample_file = $file['name'];
             }
+        }
+    }
+
+    // For skins, check if zip already contains skins/ prefix
+    if ($ext_type === 'skin') {
+        $first_entry = $zip->getNameIndex(0);
+        if (strpos($first_entry, 'skins/') !== 0) {
+            $destination = CC_ROOT_DIR.'/skins';
         }
     }
 

@@ -215,8 +215,8 @@ document.addEventListener('DOMContentLoaded', function() {
       if (!$btn.length) return;
 
       var selectedVersion = $select.find('option:selected').text().trim();
-      var installedVersion = $card.data('installed-version');
-      var isInstalled = $card.data('installed') == '1';
+      var installedVersion = String($card.attr('data-installed-version') || '');
+      var isInstalled = $card.attr('data-installed') == '1';
 
       if (!isInstalled) return;
 
@@ -260,6 +260,7 @@ document.addEventListener('DOMContentLoaded', function() {
       var type = $btn.data('type');
 
       var isDowngrade = $btn.hasClass('ext-btn-downgrade');
+      console.log('Extension action:', {action: action, url: url, name: name, type: type, isDowngrade: isDowngrade, selectedVersion: $versionSelect.length ? $versionSelect.find('option:selected').text() : 'n/a'});
       if (isDowngrade && !confirm('Downgrade "' + name + '"? This will overwrite the current version.')) return;
 
       var originalHtml = $btn.html();
