@@ -20,6 +20,8 @@
  */
 class Admin
 {
+    const OTP_LIFETIME = 600;
+
     /**
      * Admin's data
      *
@@ -54,7 +56,7 @@ class Admin
     /**
      * Class instance
      *
-     * @var instance
+     * @var self
      */
     protected static $_instance;
 
@@ -239,8 +241,8 @@ class Admin
      * Check admin permissions
      *
      * @param mixed $sections
-     * @param unknown_type $level
-     * @param unknown_type $halt
+     * @param int $level
+     * @param bool $halt
      * @return bool
      */
     public function permissions($sections, $level = 4, $halt = false, $message = true)
@@ -251,6 +253,7 @@ class Admin
             return true;
         }
         // Lets update permissions to handle an array sections
+        $departments = [];
         if (is_array($sections)) {
             foreach ($sections as $section) {
                 $departments[] = (!is_numeric($section)) ? $this->_getSectionId($section) : (int)$section;
@@ -261,6 +264,7 @@ class Admin
         }
         $level = (!is_numeric($level)) ? $this->_convertPermission($level) : (int)$level;
 
+        $allowed = false;
         if (is_array($departments)) {
             foreach ($departments as $section_id) {
                 // Do they have permission to be here?
@@ -303,7 +307,7 @@ class Admin
      */
     public function superUser()
     {
-        return ($this->_admin_data['super_user']) ? true : false;
+        return !empty($this->_admin_data['super_user']);
     }
 
     //=====[ Private ]=======================================
@@ -362,7 +366,7 @@ class Admin
                 $GLOBALS['gui']->setError($GLOBALS['language']->account['error_login']);
                 return false;
             }
-            $result = $GLOBALS['db']->select('CubeCart_admin_users', array('admin_id', 'customer_id', 'logins', 'new_password', 'name', 'email', 'language', 'twofa_enabled', 'twofa_method', 'twofa_secret', 'ip_address', 'browser'), array('username' => $username, 'password' => $hash_password, 'status' => '1'));
+            $result = $GLOBALS['db']->select('CubeCart_admin_users', array('admin_id', 'customer_id', 'logins', 'new_password', 'password', 'name', 'email', 'language', 'twofa_enabled', 'twofa_method', 'twofa_secret', 'ip_address', 'browser'), array('username' => $username, 'password' => $hash_password, 'status' => '1'));
             $GLOBALS['session']->blocker($username, 0, (bool)$result, Session::BLOCKER_BACKEND, $GLOBALS['config']->get('config', 'bfattempts'), $GLOBALS['config']->get('config', 'bftime'));
             if ($result) {
                 if (!$GLOBALS['session']->blocked()) {
@@ -400,7 +404,7 @@ class Admin
                 }
             } else {
                 if (!$GLOBALS['session']->blocked()) {
-                    if (($user = $GLOBALS['db']->select('CubeCart_admin_users', false, array('username' => $_POST['username']))) !== false) {
+                    if (($user = $GLOBALS['db']->select('CubeCart_admin_users', false, array('username' => $username))) !== false) {
                         if ($user[0]['blockTime']>0 && $user[0]['blockTime'] < time()) {
                             // reset fail level and time
                             $newdata['failLevel'] = 1;
@@ -453,13 +457,13 @@ class Admin
                     // Prevent phishing attacks, or anything untoward, unless it's redirecting back to this store
                     if(!$GLOBALS['ssl']->validRedirect($redir)) {
                         trigger_error(sprintf("Possible Phishing attack - Redirection to '%s' is not allowed. Please check the value of 'Store URL' in the SSL section of your store settings.", $redir));
-                        $redir = '';
                         if ($GLOBALS['session']->has('back') && $redir == $GLOBALS['session']->get('back')) {
                             $GLOBALS['session']->delete('back');
                         }
                         if ($GLOBALS['session']->has('redir') && $redir == $GLOBALS['session']->get('redir')) {
                             $GLOBALS['session']->delete('redir');
                         }
+                        $redir = '';
                     }
                 }
 
@@ -502,8 +506,8 @@ class Admin
     /**
      * Get the admin section id
      *
-     * @param unknown_type $name
-     * @return int/false
+     * @param string $name
+     * @return int|false
      */
     private function _getSectionId($name)
     {
@@ -701,7 +705,7 @@ class Admin
         }
         $admin = $admin[0];
         // Allow resend only if at least 60 seconds have elapsed since last send
-        $sent_at = (int)$admin['twofa_otp_expires'] - 600;
+        $sent_at = (int)$admin['twofa_otp_expires'] - self::OTP_LIFETIME;
         if ((time() - $sent_at) < 60) {
             $GLOBALS['gui']->setError($GLOBALS['language']->account['error_twofa_wait']);
             return false;
@@ -764,7 +768,7 @@ class Admin
     {
         $code    = str_pad((string)random_int(0, 999999), 6, '0', STR_PAD_LEFT);
         $hash    = password_hash($code, PASSWORD_DEFAULT);
-        $expires = time() + 600;
+        $expires = time() + self::OTP_LIFETIME;
 
         $GLOBALS['db']->update('CubeCart_admin_users',
             array('twofa_otp_hash' => $hash, 'twofa_otp_expires' => $expires),
