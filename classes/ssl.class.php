@@ -12,7 +12,7 @@
  */
 
 /**
- * Configuration controller
+ * SSL controller
  *
  * @since 5.0.0
  */
@@ -51,9 +51,15 @@ class SSL
      */
     public function validRedirect($redir)
     {
-        if (preg_match('#^http#iU', $redir)) {
-            $standard_domain = preg_replace("#^https?://|^www.#", "", $GLOBALS['config']->get('config', 'standard_url'));
-            return stristr($redir, $standard_domain);
+        if (preg_match('#^https?://#i', $redir)) {
+            $standard_domain = preg_replace("#^https?://|^www\.#", "", $GLOBALS['config']->get('config', 'standard_url'));
+            $standard_domain = strtolower(rtrim($standard_domain, '/'));
+            $redir_host = parse_url($redir, PHP_URL_HOST);
+            if ($redir_host === false || $redir_host === null) {
+                return false;
+            }
+            $redir_host = strtolower(preg_replace("#^www\.#i", "", $redir_host));
+            return ($redir_host === $standard_domain || substr($redir_host, -strlen('.'.$standard_domain)) === '.'.$standard_domain);
         }
         return true;
     }
