@@ -149,17 +149,32 @@
   {else}
   <div id="admins" class="tab_content list">
 	<h3>{$LANG.admins.title_administrators}</h3>
-	<table width="300">
+	<table>
+		<thead>
+			<tr>
+				<th>{$LANG.common.status}</th>
+				<th>{$LANG.common.name}</th>
+				<th>{$LANG.account.username}</th>
+				<th>{$LANG.common.email}</th>
+				<th>{$LANG.account.logins}</th>
+				<th>{$LANG.admins.login_last}</th>
+				<th>{$LANG.common.action}</th>
+			</tr>
+		</thead>
 		<tbody>
 		{foreach from=$ADMINS item=admin}
 			<tr>
-				<td><input type="hidden" name="status[{$admin.admin_id}]" id="status_{$admin.admin_id}" value="{$admin.status}" class="toggle">
-		  <a href="{$admin.link_edit}" title="{$LANG.account.logins}: {$admin.logins}">{$admin.name}</a></td>
+				<td style="text-align:center"><input type="hidden" name="status[{$admin.admin_id}]" id="status_{$admin.admin_id}" value="{$admin.status}" class="toggle"></td>
+				<td><a href="{$admin.link_edit}">{$admin.name}</a>{if $admin.super_user} <i class="fa fa-star" title="{$LANG.admins.super_user}" style="color:#f0ad4e"></i>{/if}</td>
+				<td>{$admin.username}</td>
+				<td><a href="mailto:{$admin.email}">{$admin.email}</a></td>
+				<td style="text-align:center">{$admin.logins}</td>
+				<td>{$admin.last_login}</td>
 				<td>
-		  			<span class="actions">
+					<span class="actions">
 						<a href="{$admin.link_edit}" class="edit" title="{$LANG.common.edit}"><i class="fa fa-pencil-square-o" title="{$LANG.common.edit}"></i></a>
 						{if $admin.link_delete}<a href="{$admin.link_delete}" class="delete" title="{$LANG.notification.confirm_delete}"><i class="fa fa-trash" title="{$LANG.common.delete}"></i></a>{/if}
-		  			</span>
+					</span>
 				</td>
 			</tr>
 		{/foreach}

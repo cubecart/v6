@@ -372,6 +372,7 @@ if (isset($_GET['action']) && (Admin::getInstance()->superUser() || ((int)$_GET[
                 $admin['link_delete'] = currentPage(null, array('action' => 'delete', 'admin_id' => $admin['admin_id'], 'token' => SESSION_TOKEN));
             }
             $admin['link_edit'] = currentPage(null, array('action' => 'edit', 'admin_id' => $admin['admin_id']));
+            $admin['last_login'] = !empty($admin['lastTime']) ? formatTime($admin['lastTime']) : $lang['common']['never'];
             $smarty_data['admins'][] = $admin;
         }
         $GLOBALS['smarty']->assign('ADMINS', $smarty_data['admins']);
