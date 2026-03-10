@@ -111,6 +111,7 @@ if ($is_ajax && $_POST['ajax_action'] === 'install_extension') {
     $extract = true;
     $import_language = false;
     $install_dir = '';
+    $has_ioncube = false;
 
     for ($i = 0; $i < $zip->numFiles; $i++) {
         $file = $zip->statIndex($i);
@@ -126,6 +127,21 @@ if ($is_ajax && $_POST['ajax_action'] === 'install_extension') {
             echo json_encode(array('success' => false, 'message' => sprintf($lang['module']['exists_not_writable'], $root_path)));
             exit;
         }
+        // Check PHP files for ionCube encoding
+        if (!$has_ioncube && preg_match('/\.php$/i', $file['name'])) {
+            $header = $zip->getFromIndex($i, 200);
+            if ($header !== false && preg_match('/\<\?php\s+\/\/00[0-9a-f]/i', $header)) {
+                $has_ioncube = true;
+            }
+        }
+    }
+
+    // If ionCube-encoded files detected, check loader availability
+    if ($has_ioncube && !extension_loaded('ionCube Loader')) {
+        $zip->close();
+        @unlink($tmp_path);
+        echo json_encode(array('success' => false, 'message' => $lang['module']['ioncube_required']));
+        exit;
     }
 
     $zip->extractTo($destination);

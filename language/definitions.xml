@@ -1723,6 +1723,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="backup_created" introduced="6.0.0"><![CDATA[Backup of existing plugin created.]]></string>
     <string name="failed_install" introduced="6.0.0"><![CDATA[Failed to install plugin.]]></string>
     <string name="success_install" introduced="6.0.0"><![CDATA[Plugin installed successfully.]]></string>
+    <string name="ioncube_required" introduced="6.6.0"><![CDATA[This extension contains ionCube-encoded files but the ionCube Loader is not installed on this server. Please install the ionCube Loader PHP extension before installing this plugin.]]></string>
     <string name="read_fail" introduced="6.0.0"><![CDATA[Error: It's not been possible to read the contents of the file %1$s.]]></string>
     <string name="not_writable" introduced="6.0.0"><![CDATA[Error: %1$s is not writable by the web server.]]></string>
     <string name="not_exist" introduced="6.0.0"><![CDATA[Error: %1$s does not exist. Please create it and try again.]]></string>
