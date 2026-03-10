@@ -17,65 +17,53 @@ Admin::getInstance()->permissions('maintenance', CC_PERM_READ, true);
 
 global $lang, $glob;
 
+$extensions_url = 'dev2.cubecart.com';
+
 $is_ajax = isset($_POST['ajax_action']);
+
+function _ajax_respond($data) {
+    $GLOBALS['debug']->supress();
+    while (ob_get_level()) ob_end_clean();
+    header('Content-Type: application/json');
+    die(json_encode($data));
+}
 
 ## AJAX: Install or upgrade an extension from the API
 if ($is_ajax && $_POST['ajax_action'] === 'install_extension') {
-    header('Content-Type: application/json');
     $download_url = isset($_POST['download_url']) ? trim($_POST['download_url']) : '';
     $ext_name = isset($_POST['ext_name']) ? trim($_POST['ext_name']) : '';
     $ext_type = isset($_POST['ext_type']) ? trim($_POST['ext_type']) : '';
 
     if (empty($download_url) || !filter_var($download_url, FILTER_VALIDATE_URL)) {
-        echo json_encode(array('success' => false, 'message' => 'Invalid download URL.'));
-        exit;
+        _ajax_respond(array('success' => false, 'message' => 'Invalid download URL.'));
     }
 
-    // Only allow downloads from extensions.cubecart.com
+    // Only allow downloads from the extensions host
     $parsed = parse_url($download_url);
-    if (!isset($parsed['host']) || $parsed['host'] !== 'extensions.cubecart.com') {
-        echo json_encode(array('success' => false, 'message' => 'Downloads are only permitted from extensions.cubecart.com.'));
-        exit;
+    if (!isset($parsed['host']) || $parsed['host'] !== $extensions_url) {
+        _ajax_respond(array('success' => false, 'message' => 'Downloads are only permitted from '.$extensions_url.'.'));
     }
 
-    // Determine destination based on type
-    switch ($ext_type) {
-        case 'gateway':
-            $destination = CC_ROOT_DIR.'/modules/gateway';
-            break;
-        case 'shipping':
-            $destination = CC_ROOT_DIR.'/modules/shipping';
-            break;
-        case 'plugins':
-            $destination = CC_ROOT_DIR.'/modules/plugins';
-            break;
-        case 'affiliate':
-            $destination = CC_ROOT_DIR.'/modules/affiliate';
-            break;
-        case 'livehelp':
-            $destination = CC_ROOT_DIR.'/modules/livehelp';
-            break;
-        case 'skin':
-            $destination = CC_ROOT_DIR;
-            break;
-        default:
-            $destination = CC_ROOT_DIR.'/modules/plugins';
-            break;
+    // Determine destination based on type from API feed
+    if ($ext_type === 'skin') {
+        $destination = CC_ROOT_DIR;
+    } elseif (!empty($ext_type) && preg_match('/^[a-z0-9_]+$/i', $ext_type)) {
+        $destination = CC_ROOT_DIR.'/modules/'.$ext_type;
+    } else {
+        $destination = CC_ROOT_DIR.'/modules/plugins';
     }
 
     if (!file_exists($destination)) {
-        echo json_encode(array('success' => false, 'message' => sprintf($lang['module']['not_exist'], $destination)));
-        exit;
+        _ajax_respond(array('success' => false, 'message' => sprintf($lang['module']['not_exist'], $destination)));
     }
     if (!is_writable($destination)) {
-        echo json_encode(array('success' => false, 'message' => sprintf($lang['module']['not_writable'], $destination)));
-        exit;
+        _ajax_respond(array('success' => false, 'message' => sprintf($lang['module']['not_writable'], $destination)));
     }
 
     // Download the zip file
     $tmp_path = CC_BACKUP_DIR.basename($download_url);
 
-    $request = new Request('extensions.cubecart.com', $parsed['path'], 443, false, true, 30);
+    $request = new Request($extensions_url, $parsed['path'], 443, false, true, 30);
     $request->setMethod('get');
     $request->setSSL();
     $request->setUserAgent('CubeCart');
@@ -88,8 +76,7 @@ if ($is_ajax && $_POST['ajax_action'] === 'install_extension') {
     }
 
     if (!$file_data) {
-        echo json_encode(array('success' => false, 'message' => $lang['module']['get_file_failed']));
-        exit;
+        _ajax_respond(array('success' => false, 'message' => $lang['module']['get_file_failed']));
     }
 
     $fp = fopen($tmp_path, 'w');
@@ -97,22 +84,17 @@ if ($is_ajax && $_POST['ajax_action'] === 'install_extension') {
     fclose($fp);
 
     if (!file_exists($tmp_path)) {
-        echo json_encode(array('success' => false, 'message' => $lang['module']['get_file_failed']));
-        exit;
+        _ajax_respond(array('success' => false, 'message' => $lang['module']['get_file_failed']));
     }
 
     $zip = new ZipArchive();
     if ($zip->open($tmp_path) !== true) {
         @unlink($tmp_path);
-        echo json_encode(array('success' => false, 'message' => sprintf($lang['module']['read_fail'], basename($download_url))));
-        exit;
+        _ajax_respond(array('success' => false, 'message' => sprintf($lang['module']['read_fail'], basename($download_url))));
     }
 
-    $extract = true;
     $import_language = false;
     $install_dir = '';
-    $has_ioncube = false;
-    $ioncube_sample_file = '';
 
     for ($i = 0; $i < $zip->numFiles; $i++) {
         $file = $zip->statIndex($i);
@@ -125,16 +107,7 @@ if ($is_ajax && $_POST['ajax_action'] === 'install_extension') {
         }
         if (file_exists($root_path) && !is_writable($root_path)) {
             @unlink($tmp_path);
-            echo json_encode(array('success' => false, 'message' => sprintf($lang['module']['exists_not_writable'], $root_path)));
-            exit;
-        }
-        // Check PHP files for ionCube encoding
-        if (!$has_ioncube && preg_match('/\.php$/i', $file['name'])) {
-            $header = $zip->getFromIndex($i, 200);
-            if ($header !== false && preg_match('/\<\?php\s+\/\/00[0-9a-f]/i', $header)) {
-                $has_ioncube = true;
-                $ioncube_sample_file = $file['name'];
-            }
+            _ajax_respond(array('success' => false, 'message' => sprintf($lang['module']['exists_not_writable'], $root_path)));
         }
     }
 
@@ -146,43 +119,11 @@ if ($is_ajax && $_POST['ajax_action'] === 'install_extension') {
         }
     }
 
-    // If ionCube-encoded files detected, check loader availability
-    if ($has_ioncube && !extension_loaded('ionCube Loader')) {
-        $zip->close();
-        @unlink($tmp_path);
-        echo json_encode(array('success' => false, 'message' => $lang['module']['ioncube_required']));
-        exit;
-    }
-
     $zip->extractTo($destination);
     $zip->close();
     @unlink($tmp_path);
 
-    // If ionCube files detected and loader is present, check PHP version compatibility
-    if ($has_ioncube && !empty($ioncube_sample_file)) {
-        $test_file = $destination.'/'.$ioncube_sample_file;
-        if (file_exists($test_file) && function_exists('ioncube_file_properties')) {
-            $props = @ioncube_file_properties($test_file);
-            if (is_array($props) && isset($props['php_target_major'])) {
-                $current_major = PHP_MAJOR_VERSION;
-                $file_major = (int)$props['php_target_major'];
-                if ($file_major > 0 && $file_major !== $current_major) {
-                    $GLOBALS['gui']->setNotify('ioncube_version', sprintf(
-                        $lang['module']['ioncube_php_mismatch'],
-                        $file_major,
-                        PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION
-                    ));
-                }
-            }
-        }
-        // Fallback: try ioncube_file_info if ioncube_file_properties is unavailable
-        if (file_exists($test_file) && !function_exists('ioncube_file_properties') && function_exists('ioncube_file_info')) {
-            $info = @ioncube_file_info($test_file);
-            if ($info === false) {
-                $GLOBALS['gui']->setNotify('ioncube_version', $lang['module']['ioncube_version_warning']);
-            }
-        }
-    }
+
 
     // Import email templates if present
     if ($import_language) {
@@ -233,19 +174,16 @@ if ($is_ajax && $_POST['ajax_action'] === 'install_extension') {
         'ext_type' => $ext_type,
     ));
 
-    echo json_encode(array('success' => true, 'message' => $lang['module']['success_install'], 'configure_url' => $configure_url));
-    exit;
+    _ajax_respond(array('success' => true, 'message' => $lang['module']['success_install'], 'configure_url' => $configure_url));
 }
 
 ## AJAX: Delete an extension
 if ($is_ajax && $_POST['ajax_action'] === 'delete_extension') {
-    header('Content-Type: application/json');
     $ext_type = isset($_POST['ext_type']) ? basename($_POST['ext_type']) : '';
     $ext_module = isset($_POST['ext_module']) ? basename($_POST['ext_module']) : '';
 
     if (empty($ext_type) || empty($ext_module)) {
-        echo json_encode(array('success' => false, 'message' => 'Invalid extension details.'));
-        exit;
+        _ajax_respond(array('success' => false, 'message' => 'Invalid extension details.'));
     }
 
     if ($ext_type === 'skins') {
@@ -261,17 +199,16 @@ if ($is_ajax && $_POST['ajax_action'] === 'delete_extension') {
         $GLOBALS['db']->delete('CubeCart_hooks', array('plugin' => $ext_module));
 
         if (file_exists($dir)) {
-            echo json_encode(array('success' => false, 'message' => $lang['module']['plugin_still_exists']));
+            _ajax_respond(array('success' => false, 'message' => $lang['module']['plugin_still_exists']));
         } else {
-            echo json_encode(array('success' => true, 'message' => $lang['module']['plugin_deleted_successfully']));
+            _ajax_respond(array('success' => true, 'message' => $lang['module']['plugin_deleted_successfully']));
         }
     } else {
         $GLOBALS['db']->delete('CubeCart_config', array('name' => $ext_module));
         $GLOBALS['db']->delete('CubeCart_modules', array('folder' => $ext_module));
         $GLOBALS['db']->delete('CubeCart_hooks', array('plugin' => $ext_module));
-        echo json_encode(array('success' => true, 'message' => $lang['module']['plugin_deleted_already']));
+        _ajax_respond(array('success' => true, 'message' => $lang['module']['plugin_deleted_already']));
     }
-    exit;
 }
 
 ## Non-AJAX legacy POST handlers
@@ -332,7 +269,7 @@ if ($force_refresh) {
 }
 
 if (!$api_extensions || !$cache_time || (time() - $cache_time) > 3600) {
-    $request = new Request('extensions.cubecart.com', '/api/extensions', 443, false, true, 15);
+    $request = new Request($extensions_url, '/api/extensions', 443, false, true, 15);
     $request->setMethod('get');
     $request->setSSL();
     $request->setUserAgent('CubeCart');
@@ -340,7 +277,7 @@ if (!$api_extensions || !$cache_time || (time() - $cache_time) > 3600) {
     $json = $request->send();
 
     if (!$json) {
-        $json = file_get_contents('https://extensions.cubecart.com/api/extensions');
+        $json = file_get_contents('https://'.$extensions_url.'/api/extensions');
     }
 
     if ($json) {
@@ -422,19 +359,18 @@ foreach ($skin_paths as $skin_path) {
 
 ksort($installed);
 
+$type_to_category = array(
+    'gateway'   => 'payment',
+    'shipping'  => 'shipping',
+    'affiliate' => 'affiliate',
+);
+
 ## Build categories from the API data
 $categories = array();
 foreach ($api_extensions as $ext) {
     $cat = $ext['category'];
     if (empty($cat)) {
-        // Derive category from type
-        switch ($ext['type']) {
-            case 'gateway':   $cat = 'payment'; break;
-            case 'shipping':  $cat = 'shipping'; break;
-            case 'affiliate': $cat = 'affiliate'; break;
-            case 'skin':      $cat = 'skin'; break;
-            default:          $cat = 'other'; break;
-        }
+        $cat = isset($type_to_category[$ext['type']]) ? $type_to_category[$ext['type']] : 'other';
     }
     if (!isset($categories[$cat])) {
         $categories[$cat] = 0;
@@ -479,13 +415,7 @@ foreach ($api_extensions as $ext) {
     // Derive category from type if API category is empty
     $ext_category = $ext['category'];
     if (empty($ext_category)) {
-        switch ($ext['type']) {
-            case 'gateway':   $ext_category = 'payment'; break;
-            case 'shipping':  $ext_category = 'shipping'; break;
-            case 'affiliate': $ext_category = 'affiliate'; break;
-            case 'skin':      $ext_category = 'skin'; break;
-            default:          $ext_category = 'other'; break;
-        }
+        $ext_category = isset($type_to_category[$ext['type']]) ? $type_to_category[$ext['type']] : 'other';
     }
 
     // If installed locally, prefer name and description from config.xml
@@ -523,6 +453,8 @@ foreach ($api_extensions as $ext) {
         'has_upgrade' => $has_upgrade,
         'configured' => $configured,
         'edit_url' => $edit_url,
+        'purchase_url' => !empty($ext['purchase_url']) ? $ext['purchase_url'] : '',
+        'price' => !empty($ext['price']) ? $ext['price'] : '',
         'third_party' => false,
     );
 }

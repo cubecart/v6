@@ -50,6 +50,9 @@
             {if $ext.third_party}
             <span class="ext-badge ext-badge-thirdparty"><i class="fa fa-cube"></i> 3rd Party</span>
             {/if}
+            {if $ext.purchase_url || $ext.price}
+            <span class="ext-badge ext-badge-paid"><i class="fa fa-shopping-cart"></i> {if $ext.price}{$ext.price}{else}{$LANG.module.ext_paid|default:'Paid'}{/if}</span>
+            {/if}
             {if $ext.is_installed}
             <span class="ext-badge ext-badge-installed"><i class="fa fa-check"></i> {$LANG.module.ext_installed}{if $ext.installed_version && $ext.installed_version != 'n/a'} v{$ext.installed_version}{/if}</span>
             {/if}
@@ -62,6 +65,11 @@
             <button type="button" class="ext-btn ext-btn-gallery btn-ext-gallery" data-images='{$ext.images|@json_encode}' data-name="{$ext.name}">
                <i class="fa fa-picture-o"></i> {$LANG.catalogue.title_images|default:'Images'}
             </button>
+            {/if}
+            {if $ext.purchase_url}
+            <a href="{$ext.purchase_url}" target="_blank" class="ext-btn ext-btn-buy">
+               <i class="fa fa-external-link"></i> {$LANG.module.ext_buy|default:'Buy'}
+            </a>
             {/if}
             {if $ext.third_party}
             {* 3rd party: configure and delete only *}
@@ -292,8 +300,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
          },
          error: function(xhr) {
-            console.error('Install AJAX error:', xhr.status, xhr.responseText);
-            showToast('Error: ' + xhr.status + ' - check console for details.', 'error');
+            console.error('Install AJAX error:', xhr.status, 'Response:', xhr.responseText.substring(0, 500));
+            showToast('Error: ' + xhr.status + ' - ' + xhr.responseText.substring(0, 200), 'error');
             $btn.html(originalHtml).data('loading', false);
          }
       });

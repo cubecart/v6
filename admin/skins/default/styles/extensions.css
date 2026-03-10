@@ -20,6 +20,8 @@
 .ext-badge-installed { background:#dff0d8; color:#3c763d; }
 .ext-badge-upgrade { background:#fcf8e3; color:#8a6d3b; }
 .ext-badge-thirdparty { background:#e8e0f0; color:#6a4c93; }
+.ext-badge-paid { background:#fff3cd; color:#856404; }
+.ext-btn-buy { background:#6f42c1; color:#fff; }
 .ext-card-actions { display:flex; gap:6px; margin-top:0; padding-top:8px; flex-wrap:wrap; }
 .ext-btn { display:inline-flex; align-items:center; gap:5px; padding:6px 10px; border:none; border-radius:4px; font-size:12px; font-weight:600; cursor:pointer; text-decoration:none; transition:opacity .2s; white-space:nowrap; }
 .ext-btn:hover { opacity:0.85; }
@@ -83,6 +85,8 @@
    .ext-badge-installed { background:rgba(92,184,92,0.15); color:#8fd88f; }
    .ext-badge-upgrade { background:rgba(240,173,78,0.15); color:#f0c078; }
    .ext-badge-thirdparty { background:rgba(106,76,147,0.2); color:#c4a8e0; }
+   .ext-badge-paid { background:rgba(133,100,4,0.2); color:#f0d078; }
+   .ext-btn-buy { background:#5a32a8; }
    .ext-btn-install { background:#3a8c3a; }
    .ext-btn-upgrade { background:#b8862e; }
    .ext-btn-delete { background:#a83232; }
