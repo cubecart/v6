@@ -190,6 +190,7 @@ if ($is_ajax && $_POST['ajax_action'] === 'install_extension') {
     }
 
     // Store extension info
+    $ext_is_upgrade = false;
     if (!empty($install_dir)) {
         $extension_info = array(
             'dir' => $install_dir,
@@ -201,6 +202,7 @@ if ($is_ajax && $_POST['ajax_action'] === 'install_extension') {
             'keep_current' => 1
         );
         if ($GLOBALS['db']->select('CubeCart_extension_info', 'file_id', array('file_id' => $extension_info['file_id']))) {
+            $ext_is_upgrade = true;
             $GLOBALS['db']->update('CubeCart_extension_info', $extension_info, array('file_id' => $extension_info['file_id']));
         } else {
             $GLOBALS['db']->insert('CubeCart_extension_info', $extension_info);
@@ -225,6 +227,11 @@ if ($is_ajax && $_POST['ajax_action'] === 'install_extension') {
             } catch (Exception $e) {}
         }
     }
+
+    cc_track_event($ext_is_upgrade ? 'cubecart_extension_upgrade' : 'cubecart_extension_install', array(
+        'ext_name' => $ext_name,
+        'ext_type' => $ext_type,
+    ));
 
     echo json_encode(array('success' => true, 'message' => $lang['module']['success_install'], 'configure_url' => $configure_url));
     exit;

@@ -495,3 +495,6 @@ ALTER TABLE `CubeCart_email_log` ADD COLUMN `email_method` VARCHAR(20) NOT NULL 
 -- Password reset token expiry
 ALTER TABLE `CubeCart_customer` ADD COLUMN `verify_expires` DATETIME DEFAULT NULL; #EOQ
 ALTER TABLE `CubeCart_admin_users` ADD COLUMN `verify_expires` DATETIME DEFAULT NULL; #EOQ
+
+-- Anonymous telemetry opt-in (default enabled for existing stores)
+INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`) SELECT 'config', 'allow_telemetry', '1' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM `CubeCart_config` WHERE `name`='config' AND `config_key`='allow_telemetry'); #EOQ

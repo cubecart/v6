@@ -210,7 +210,8 @@ $default_config_settings = array(
   'admin_login_notify' => '1',
   'abandoned_cart_notify_cooldown' => '259200',
   'abandoned_cart_order_window' => '259200',
-  'abandoned_cart_coupon' => '0'
+  'abandoned_cart_coupon' => '0',
+  'allow_telemetry' => '1'
 );
 
 ksort($default_config_settings);

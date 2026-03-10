@@ -256,7 +256,8 @@ if (!isset($_SESSION['setup']['permissions'])) {
                     'email_address'      => $_SESSION['setup']['admin']['email'],
                     'store_title'      => $_SESSION['setup']['config']['store_name'],
                     'store_name'      => $_SESSION['setup']['config']['store_name'],
-                    'email_name'      => $_SESSION['setup']['config']['store_name']
+                    'email_name'      => $_SESSION['setup']['config']['store_name'],
+                    'allow_telemetry'  => !empty($_SESSION['setup']['config']['allow_telemetry']) ? '1' : '0'
                 )
             );
             Config::getInstance($glob)->set('config', '', $config_settings, true);
@@ -293,6 +294,11 @@ if (!isset($_SESSION['setup']['permissions'])) {
             $GLOBALS['db']->insert('CubeCart_history', array('version' => CC_VERSION, 'time' => time()));
 
             build_logos();
+
+            cc_track_event('cubecart_install', array(
+                'currency' => $_SESSION['setup']['config']['default_currency'],
+                'language' => $_SESSION['setup']['config']['default_language'],
+            ));
 
             $_SESSION['setup']['complete'] = true;
             httpredir('index.php');

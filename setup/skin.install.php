@@ -153,6 +153,7 @@
 	<h3>{$LANG.setup.title_advanced_settings}</h3>
 	<fieldset>
 	  <div><label for="form-drop" class="help" title="{$LANG.setup.install_drop_tables_explained}">{$LANG.setup.install_drop_tables}</label><span><input type="checkbox" name="drop" id="form-drop" value="1" /> {$LANG.setup.install_drop_tables_explained}</span></div>
+	  <div><label for="form-telemetry">Anonymous Statistics</label><span><input type="checkbox" name="config[allow_telemetry]" id="form-telemetry" value="1" checked="checked" /> Send anonymous install/upgrade statistics (version, PHP version) to help improve CubeCart. No personal data is collected. You can disable this later in Store Settings.</span></div>
 	</fieldset>
 	<input type="hidden" name="progress" value="0" />
   {/if}

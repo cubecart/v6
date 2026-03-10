@@ -2227,6 +2227,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="admin_only_skin_select" introduced="6.0.0"><![CDATA[Yes (Logged in admins only)]]></string>
     <string name="all_skin_select" introduced="6.0.0"><![CDATA[Yes (Everyone)]]></string>
     <string name="admin_login_notify" introduced="6.6.0"><![CDATA[Email admin on login from new IP or device]]></string>
+    <string name="allow_telemetry" introduced="6.6.0"><![CDATA[Send anonymous usage statistics to help improve CubeCart]]></string>
     <string name="admin_order_status_notification" introduced="5.0.0"><![CDATA[Order status for admin email notifications]]></string>
     <string name="analyze" introduced="5.0.0"><![CDATA[Analyze]]></string>
     <string name="allowed_zones" introduced="5.0.0"><![CDATA[Allowed Zones]]></string>

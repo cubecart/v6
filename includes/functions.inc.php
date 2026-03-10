@@ -1170,6 +1170,69 @@ function parseUrlToLink($text = '', $target = '_blank')
  *
  * @return string
  */
+/**
+ * Send event to Google Analytics 4 via Measurement Protocol.
+ * Used to track installs, upgrades, and extension installs.
+ *
+ * @param string $event_name  Event name (e.g. 'cubecart_install')
+ * @param array  $params      Event parameters
+ * @return void
+ */
+function cc_track_event($event_name, $params = array())
+{
+    // Check opt-out: config DB (admin context) or session (setup context)
+    if (isset($GLOBALS['config']) && is_object($GLOBALS['config']) && method_exists($GLOBALS['config'], 'get')) {
+        if (!$GLOBALS['config']->get('config', 'allow_telemetry')) {
+            return;
+        }
+    } elseif (isset($_SESSION['setup']['config']['allow_telemetry']) && empty($_SESSION['setup']['config']['allow_telemetry'])) {
+        return;
+    }
+
+    // GA4 Measurement Protocol credentials
+    $measurement_id = 'G-2YLHZBKQYK';
+    $api_secret     = 'AnItB430RlWCuZCbEblbkw';   // TODO: Replace with real GA4 API Secret
+
+    if ($measurement_id === 'G-XXXXXXXXXX' || $api_secret === 'XXXXXXXXXX') {
+        return; // Not configured
+    }
+
+    // Anonymous client ID based on domain hash
+    $domain = defined('CC_STORE_URL') ? CC_STORE_URL : ($_SERVER['HTTP_HOST'] ?? 'unknown');
+    $client_id = hash('sha256', $domain);
+
+    // Always include CC version and PHP version
+    $params['cc_version']  = defined('CC_VERSION') ? CC_VERSION : 'unknown';
+    $params['php_version'] = PHP_VERSION;
+
+    $payload = json_encode(array(
+        'client_id' => $client_id,
+        'events'    => array(
+            array(
+                'name'   => $event_name,
+                'params' => $params,
+            ),
+        ),
+    ));
+
+    $url = 'https://www.google-analytics.com/mp/collect?measurement_id=' . urlencode($measurement_id) . '&api_secret=' . urlencode($api_secret);
+
+    // Non-blocking: fire and forget via cURL
+    if (function_exists('curl_init')) {
+        $ch = curl_init($url);
+        curl_setopt_array($ch, array(
+            CURLOPT_POST           => true,
+            CURLOPT_POSTFIELDS     => $payload,
+            CURLOPT_HTTPHEADER     => array('Content-Type: application/json'),
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT        => 5,
+            CURLOPT_CONNECTTIMEOUT => 3,
+        ));
+        @curl_exec($ch);
+        curl_close($ch);
+    }
+}
+
 function shortHash($input, $length = 8, $exception = array())
 {
 

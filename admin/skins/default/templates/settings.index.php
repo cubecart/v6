@@ -204,6 +204,7 @@
          <div><label for="basket_allow_non_invoice_address">{$LANG.settings.dispatch_to_non_invoice}</label><span><input name="config[basket_allow_non_invoice_address]" id="basket_allow_non_invoice_address" type="hidden" class="toggle" value="{$CONFIG.basket_allow_non_invoice_address}"></span></div>
          <div><label for="emailconf">{$LANG.settings.emailconf}</label><span><input name="config[emailconf]" id="emailconf" type="hidden" class="toggle" value="{$CONFIG.emailconf}"></span></div>
          <div><label for="admin_login_notify">{$LANG.settings.admin_login_notify}</label><span><input name="config[admin_login_notify]" id="admin_login_notify" type="hidden" class="toggle" value="{$CONFIG.admin_login_notify}"></span></div>
+         <div><label for="allow_telemetry">{$LANG.settings.allow_telemetry}</label><span><input name="config[allow_telemetry]" id="allow_telemetry" type="hidden" class="toggle" value="{$CONFIG.allow_telemetry}"></span></div>
       </fieldset>
    </div>
    <div id="Layout" class="tab_content">

@@ -250,6 +250,10 @@ if (!isset($_SESSION['setup']['permissions'])) {
             }
 
             ## Progressive updates completed
+            cc_track_event('cubecart_upgrade', array(
+                'from_version' => $_SESSION['setup']['start_version'],
+            ));
+
             ## Redirect to the 'complete' page
             $_SESSION['setup']['complete'] = true;
             httpredir('index.php', 'upgraded');
