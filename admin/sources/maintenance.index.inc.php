@@ -205,7 +205,7 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
     $upgrade_version = $_GET['upgrade'];
     ## Download from GitHub
     $download_url = '/cubecart/v6/legacy.zip/refs/tags/'.$upgrade_version;
-    $request = new Request('codeload.github.com', $download_url, 80, false, true, 120);
+    $request = new Request('codeload.github.com', $download_url, 443, false, true, 120);
     $request->setMethod('get');
     $request->setSSL();
     $request->setUserAgent('CubeCart/'.CC_VERSION);

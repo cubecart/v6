@@ -260,7 +260,6 @@ document.addEventListener('DOMContentLoaded', function() {
       var type = $btn.data('type');
 
       var isDowngrade = $btn.hasClass('ext-btn-downgrade');
-      console.log('Extension action:', {action: action, url: url, name: name, type: type, isDowngrade: isDowngrade, selectedVersion: $versionSelect.length ? $versionSelect.find('option:selected').text() : 'n/a'});
       if (isDowngrade && !confirm('Downgrade "' + name + '"? This will overwrite the current version.')) return;
 
       var originalHtml = $btn.html();
