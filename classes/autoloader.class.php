@@ -163,7 +163,7 @@ class Autoloader
             return ;
         }
 
-        //Lop through the call backs and unload them
+        //Loop through the call backs and unload them
         $key = array_keys($callbacks);
         $size = sizeof($key);
         for ($i = 0; $i < $size; ++$i) {
