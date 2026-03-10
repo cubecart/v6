@@ -12,7 +12,7 @@
  */
 
 /**
- * Language controller
+ * SEO controller
  *
  * @author Technocrat
  * @author Al Brookbanks
@@ -720,7 +720,7 @@ class SEO
             $path = SEO::_safeUrl($path);
         }
         if($status_code!==0) {
-            if($GLOBALS['db']->count('CubeCart_seo_urls', 'id', "`path` = '$path'") > 0) {
+            if($GLOBALS['db']->count('CubeCart_seo_urls', 'id', "`path` = '".$GLOBALS['db']->sqlSafe($path)."'") > 0) {
                 return false;
             } else {
                 return $GLOBALS['db']->insert('CubeCart_seo_urls', array('type' => $type, 'item_id' => $item_id, 'path' => $this->_handleExtension($path), 'custom' => 1, 'redirect' => $status_code));
@@ -729,7 +729,7 @@ class SEO
             $custom = 1;
 
             // if path is empty or already taken generate one
-            if (empty($path) || $GLOBALS['db']->count('CubeCart_seo_urls', 'id', "`path` = '$path' AND `type` = '$type' AND `item_id` <> $item_id") > 0) {
+            if (empty($path) || $GLOBALS['db']->count('CubeCart_seo_urls', 'id', "`path` = '".$GLOBALS['db']->sqlSafe($path)."' AND `type` = '$type' AND `item_id` <> $item_id") > 0) {
                 // send warning if in use
                 if (!empty($path)) {
                     if ($show_error) {
@@ -1402,7 +1402,7 @@ EOD;
                 $result .= $char;
             } else {
                 // Convert to UTF-8 bytes and percent-encode
-                $bytes = mb_convert_encoding($char, 'UTF-8');
+                $bytes = $char;
                 foreach (str_split($bytes) as $b) {
                     $result .= sprintf("%%%02X", ord($b));
                 }
