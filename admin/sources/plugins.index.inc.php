@@ -112,6 +112,7 @@ if ($is_ajax && $_POST['ajax_action'] === 'install_extension') {
     $import_language = false;
     $install_dir = '';
     $has_ioncube = false;
+    $ioncube_sample_file = '';
 
     for ($i = 0; $i < $zip->numFiles; $i++) {
         $file = $zip->statIndex($i);
@@ -132,6 +133,7 @@ if ($is_ajax && $_POST['ajax_action'] === 'install_extension') {
             $header = $zip->getFromIndex($i, 200);
             if ($header !== false && preg_match('/\<\?php\s+\/\/00[0-9a-f]/i', $header)) {
                 $has_ioncube = true;
+                $ioncube_sample_file = $file['name'];
             }
         }
     }
@@ -147,6 +149,32 @@ if ($is_ajax && $_POST['ajax_action'] === 'install_extension') {
     $zip->extractTo($destination);
     $zip->close();
     @unlink($tmp_path);
+
+    // If ionCube files detected and loader is present, check PHP version compatibility
+    if ($has_ioncube && !empty($ioncube_sample_file)) {
+        $test_file = $destination.'/'.$ioncube_sample_file;
+        if (file_exists($test_file) && function_exists('ioncube_file_properties')) {
+            $props = @ioncube_file_properties($test_file);
+            if (is_array($props) && isset($props['php_target_major'])) {
+                $current_major = PHP_MAJOR_VERSION;
+                $file_major = (int)$props['php_target_major'];
+                if ($file_major > 0 && $file_major !== $current_major) {
+                    $GLOBALS['gui']->setNotify('ioncube_version', sprintf(
+                        $lang['module']['ioncube_php_mismatch'],
+                        $file_major,
+                        PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION
+                    ));
+                }
+            }
+        }
+        // Fallback: try ioncube_file_info if ioncube_file_properties is unavailable
+        if (file_exists($test_file) && !function_exists('ioncube_file_properties') && function_exists('ioncube_file_info')) {
+            $info = @ioncube_file_info($test_file);
+            if ($info === false) {
+                $GLOBALS['gui']->setNotify('ioncube_version', $lang['module']['ioncube_version_warning']);
+            }
+        }
+    }
 
     // Import email templates if present
     if ($import_language) {
