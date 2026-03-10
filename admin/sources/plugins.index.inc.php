@@ -17,7 +17,7 @@ Admin::getInstance()->permissions('maintenance', CC_PERM_READ, true);
 
 global $lang, $glob;
 
-$extensions_url = 'dev2.cubecart.com';
+$extensions_url = 'extensions.cubecart.com';
 
 $is_ajax = isset($_POST['ajax_action']);
 
