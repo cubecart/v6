@@ -45,7 +45,7 @@ class Ajax
 
         //Get the correct function/method
         $type = (isset($_GET['type'])) ? $_GET['type'] : '';
-        $string = ($_GET['q']) ? $_GET['q'] : '';
+        $string = isset($_GET['q']) ? $_GET['q'] : '';
         $function = (isset($_GET['function']) && !empty($_GET['function'])) ? $_GET['function'] : 'search';
         switch ($function) {
             case 'rebuildElasticsearch':
@@ -90,6 +90,13 @@ class Ajax
     }
 
     public static function doneToggle() {
+        if (!CC_IN_ADMIN) {
+            return json_encode(array('success' => '0'));
+        }
+        $allowed_tables = array('404_log');
+        if (!isset($_POST['table']) || !in_array($_POST['table'], $allowed_tables, true)) {
+            return json_encode(array('success' => '0'));
+        }
         if($_POST['status']=='warn') {
             $update = array('warn' => 0);
         } else {
@@ -99,7 +106,7 @@ class Ajax
                 $update['warn'] = 0;
             }
         }
-        if($GLOBALS['db']->update('CubeCart_'.(string)$_POST['table'], $update, array('id' => (int)$_POST['id']))) {
+        if($GLOBALS['db']->update('CubeCart_'.$_POST['table'], $update, array('id' => (int)$_POST['id']))) {
             return json_encode(array('success' =>'1', 'id' => (int)$_POST['id'], 'status' => (string)$_POST['status']));
         } else {
             return json_encode(array('success' =>'0', 'id' => (int)$_POST['id'], 'status' => (string)$_POST['status']));
@@ -109,11 +116,12 @@ class Ajax
     /**
      * Rebuild ElasticSearch
      *
-     * @param string $path
-     * @param int $item_id
-     * @return json string
+     * @return string
      */
-    public static function rebuildElasticSearch() { 
+    public static function rebuildElasticSearch() {
+        if (!CC_IN_ADMIN) {
+            return json_encode(false);
+        }
         $es = new ElasticsearchHandler;
         $status  = $es->rebuild($_GET['page']);
         if (is_array($status)) {
@@ -125,14 +133,17 @@ class Ajax
     }
 
     /**
-     * Get directory size
+     * Get SEO path
      *
-     * @param string $path
+     * @param string $type
      * @param int $item_id
-     * @return json string
+     * @return string
      */
     public static function seopath($type, $item_id)
     {
+        if (!CC_IN_ADMIN) {
+            return json_encode(false);
+        }
         return json_encode($GLOBALS['seo']->getdbPath($type, $item_id));
     }
 
@@ -144,6 +155,10 @@ class Ajax
      */
     public static function filesize($path, $total)
     {
+        if (!CC_IN_ADMIN) {
+            return json_encode(false);
+        }
+        $path = str_replace(array('..', "\0"), '', $path);
         return json_encode(dirsize(CC_ROOT_DIR.'/'.$path, $total));
     }
 
@@ -214,15 +229,13 @@ class Ajax
                 break;
             case 'files':
 
-                if ($_GET['dir'] == '/') {
-                    $dir = false;
-                } elseif ($_GET['dir'] == '/') {
+                if (!isset($_GET['dir']) || $_GET['dir'] == '/') {
                     $dir = false;
                 } else {
                     $dir = $_GET['dir'];
                 }
 
-                $filemanager = new FileManager($_GET['group'], $dir);
+                $filemanager = new FileManager(isset($_GET['group']) ? $_GET['group'] : '', $dir);
 
                 // Directories
                 $dirs = $filemanager->getDirectories();
@@ -317,7 +330,7 @@ class Ajax
                 for ($i = 1; $i <= 5; $i++) {
                     $html_out .= date('ymd-His-').rand(1000, 9999)."<br>";
                 }
-                $html_out .= "<p>Plese note that the last four digits are random.</p>";
+                $html_out .= "<p>Please note that the last four digits are random.</p>";
             } else {
                 $html_out = "<h3>Preview of next 5 Orders</h3>";
                 $next = $GLOBALS['db']->select('CubeCart_order_summary', 'MAX(`id`) as `max_oid`');
@@ -353,12 +366,13 @@ class Ajax
                         $preview = '';
                     }
                     $file = str_replace($path.'/','',$file);
+                    $file_escaped = htmlspecialchars($file, ENT_QUOTES, 'UTF-8');
                     $subdir = urlencode(ltrim(dirname($file),'/'));
                     $anchor = md5(urlencode(basename($file)));
                     if($action=='show') {
-                        $output .= "<li class=\"show\"><a href=\"?_g=filemanager&subdir=$subdir&mode=$mode&".time()."&file_id=file_$anchor\">$preview $file</a></li>";
+                        $output .= "<li class=\"show\"><a href=\"?_g=filemanager&subdir=$subdir&mode=$mode&".time()."&file_id=file_$anchor\">$preview $file_escaped</a></li>";
                     } else {
-                        $output .= "<li>$preview $file</li>";
+                        $output .= "<li>$preview $file_escaped</li>";
                     }
                     
                 }
@@ -370,12 +384,12 @@ class Ajax
             } else {
                 $output = "<p>".$GLOBALS['language']->filemanager['min_two_char']."</p>";
             }
-            return "<div class=\"mail_modal\"><h3>".sprintf($GLOBALS['language']->filemanager['search_result'], $_POST['term'])."</h3>$output</div>";
+            return "<div class=\"mail_modal\"><h3>".sprintf($GLOBALS['language']->filemanager['search_result'], htmlspecialchars($_POST['term'], ENT_QUOTES, 'UTF-8'))."</h3>$output</div>";
         }
     }
 
     /**
-     * Test SMPT
+     * Test SMTP
      *
      * @return data/false
      */
@@ -473,7 +487,7 @@ class Ajax
     {
         if (CC_IN_ADMIN) {
             if (filter_var($_GET['email'], FILTER_VALIDATE_EMAIL)) {
-                $html_out = "<h3>Log for ".$_GET['email']."</h3>";
+                $html_out = "<h3>Log for ".htmlspecialchars($_GET['email'], ENT_QUOTES, 'UTF-8')."</h3>";
                 if ($logs = $GLOBALS['db']->select('CubeCart_newsletter_subscriber_log', false, array('email' => $_GET['email']))) {
                     foreach ($logs as $log) {
                         $html_out .= '<strong>'.$log['date'].' - '.$log['ip_address'].'</strong><br>'.$log['log'].'<br>';
@@ -483,7 +497,7 @@ class Ajax
                     $html_out .= "<p>No logs found.</p>";
                 }
             } else {
-                $html_out .= "<p>Invalid email</p>";
+                $html_out = "<p>Invalid email</p>";
             }
             return "<div class=\"default_modal\">".$html_out."</div>";
         }
