@@ -67,7 +67,7 @@ class ACP
     /**
      * Class instance
      *
-     * @var instance
+     * @var self
      */
     protected static $_instance;
 
@@ -135,7 +135,7 @@ class ACP
      */
     public function addTabControl($name, $target = '', $url = null, $accesskey = null, $notify_count = false, $a_target = '_self', $priority = null, $onclick = '')
     {
-        if (!empty(settype($name,'string'))) {
+        if (!empty($name)) {
             $url = (!empty($url) && is_array($url)) ? currentPage(null, $url) : $url;
             $url = is_null($url) ? '' : preg_replace('/(#.*)$/i', '', $url);
             $priority = $this->_setTabPriority($priority);
@@ -206,13 +206,14 @@ class ACP
      *
      * @param int $cat_id
      * @param int $i
-     * @return data/false
+     * @return array|false
      */
     public function getCategoryPath($cat_id, $i = 0)
     {
         // get the path for a single category
-        if (is_int($cat_id)) {
-            if (($parent = $GLOBALS['db']->select('CubeCart_category', array('cat_id', 'cat_parent_id', 'cat_name'), array('cat_id' => $cat_id))) !== false) {
+        if (is_numeric($cat_id)) {
+            if (($parent = $GLOBALS['db']->select('CubeCart_category', array('cat_id', 'cat_parent_id', 'cat_name'), array('cat_id' => (int)$cat_id))) !== false) {
+                $data = [];
                 $data[$i] = $parent[0];
                 if (((int)$parent[0]['cat_parent_id']) != 0) {
                     ++$i;
@@ -296,13 +297,12 @@ class ACP
      * @return string
      */
     public function newFeatureRedir() {
-        $li = '';
         $release_notes_path = CC_ROOT_DIR.'/'.$GLOBALS['config']->get('config', 'adminFolder').'/sources/release_notes/*.inc.php';
         $list = glob($release_notes_path);
         arsort($list, SORT_NATURAL);
         foreach ($list as $filename) {
             $version = basename($filename);
-            $version = rtrim($version,'.inc.php');
+            $version = str_replace('.inc.php', '', $version);
             return '?_g=release_notes&node='.$version;
         }
     }
@@ -320,8 +320,8 @@ class ACP
         arsort($list, SORT_NATURAL);
         foreach ($list as $filename) {
             $version = basename($filename);
-            $version = rtrim($version,'.inc.php');
-            $selected = $_GET['node'] == $version ? ' selected="selected"' : '';
+            $version = str_replace('.inc.php', '', $version);
+            $selected = (isset($_GET['node']) && $_GET['node'] == $version) ? ' selected="selected"' : '';
             $options .= '<option value="?_g=release_notes&node='.$version.'"'.$selected.'>'.$version.'</option>';
         }
         $switcher = "<select name=\"version\" class=\"select_url\">".$options."</select>";
@@ -341,16 +341,17 @@ class ACP
         } else {
             $li = "<tr><td  colspan=\"2\">This is a maintenance release with no new features of any significance.</td></tr>";
         }
+        $node_escaped = htmlspecialchars($_GET['node'] ?? '', ENT_QUOTES, 'UTF-8');
         $page_content = <<<END
         <div id="general" class="tab_content">
-            <h3 style="clear: right;">CubeCart {$_GET['node']}</h3>
+            <h3 style="clear: right;">CubeCart {$node_escaped}</h3>
             <p>The table below shows changes in this version.</p>
             $notes
             <table class="new_features">
             <thead><tr><th>Issue</th><th><span>Version: $switcher</span>Description</th></tr></thead>
             <tbody>
             $li
-            <tr><td colspan="2" class="text-center"><a href="https://github.com/cubecart/v6/issues?q=is%3Aclosed+milestone%3A{$_GET['node']}" target="_blank" class="button">View all $total closed issues for {$_GET['node']}</a> <a href="?" target="_self" class="button">Dashboard</a></td></tr>
+            <tr><td colspan="2" class="text-center"><a href="https://github.com/cubecart/v6/issues?q=is%3Aclosed+milestone%3A{$node_escaped}" target="_blank" class="button">View all $total closed issues for {$node_escaped}</a> <a href="?" target="_self" class="button">Dashboard</a></td></tr>
             </tbody>
             </table>
         </div>
@@ -475,6 +476,7 @@ class ACP
         if (Admin::getInstance()->is()) {
             if (empty($this->_help_doc)) {
                 if (isset($_GET['_g']) && !empty($_GET['_g'])) {
+                    $pages = [];
                     $pages[] = $_GET['_g'];
                     if (isset($_GET['node']) && !empty($_GET['node']) && strtolower($_GET['node']) != 'index') {
                         $pages[] = $_GET['node'];
@@ -504,6 +506,7 @@ class ACP
     {
         if (Admin::getInstance()->is() && !empty($this->_tabs) && is_array($this->_tabs)) {
             ksort($this->_tabs);
+            $tabs = [];
             foreach ($this->_tabs as $tab) {
                 $tab['name'] = ucfirst($tab['name']);
                 $tab['tab_id'] = empty($tab['target']) ? '' : 'tab_'.str_replace(' ', '_', $tab['target']);
