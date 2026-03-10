@@ -337,8 +337,8 @@ class Request
             $this->_request_timeout = (int)$timeout;
         }
 
-        if ($this->_request_cache && $GLOBALS['cache']->exists('request.'.$this->_request_hash)) {
-            return $GLOBALS['cache']->read('request.'.$this->_request_hash);
+        if ($this->_request_cache && ($cached_response = $GLOBALS['cache']->read('request.'.$this->_request_hash)) !== false) {
+            return $cached_response;
         } elseif ($this->_curl) {
             ## Use cURL
             if ($this->_request_method == 'post') {

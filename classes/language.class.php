@@ -91,8 +91,9 @@ class Language
     final protected function __construct()
     {
         $d = array();
-        if(isset($GLOBALS['cache']) && is_object($GLOBALS['cache']) && $GLOBALS['cache']->exists('lang.domain.list')) {
-            $d = $GLOBALS['cache']->read('lang.domain.list');
+        $cached_domains = (isset($GLOBALS['cache']) && is_object($GLOBALS['cache'])) ? $GLOBALS['cache']->read('lang.domain.list') : false;
+        if (!empty($cached_domains) && is_array($cached_domains)) {
+            $d = $cached_domains;
         } elseif(isset($GLOBALS['db']) && method_exists($GLOBALS['db'],'select')) {
             if($domains = $GLOBALS['db']->select('CubeCart_domains')) {
                 foreach($domains as $domain) {
@@ -254,10 +255,10 @@ class Language
     }
 
     /**
-     * Clone language for transaltion
+     * Clone language for translation
      *
      * @param string $from
-     * @param string $to
+     * @param string $language
      */
     public function cloneModuleLanguage($from, $language)
     {
@@ -433,16 +434,16 @@ class Language
             );
             break;
         }
+        $result = true;
         // Break on false
         if (($languages = $this->listLanguages()) !== false) {
-            $result = true;
 
             foreach ($languages as $language) {
                 // skip default language if languages are stores in same table
                 if ($data['ignore_default'] && $language['code'] == $GLOBALS['config']->get('config', 'default_language')) {
                     continue;
                 }
-                $where = ($data['parent_id']) ? '`'.$data['language'].'` = \''.$language['code'].'\' AND (`'.$data['parent_id'].'` = '.$id.' || `'.$data['id_column'].'`= '.$id.')' : array($data['language'] => $language['code'], $data['id_column'] => $id);
+                $where = ($data['parent_id']) ? '`'.$data['language'].'` = \''.$language['code'].'\' AND (`'.$data['parent_id'].'` = '.(int)$id.' || `'.$data['id_column'].'`= '.(int)$id.')' : array($data['language'] => $language['code'], $data['id_column'] => (int)$id);
 
                 if ($result && !$GLOBALS['db']->select($data['table'], false, $where)) {
                     $result = false;
@@ -645,7 +646,6 @@ class Language
                                 $record['content_type'] = (string)$email->attributes()->name;
                                 $record['language']  = (string)$xml->attributes()->language;
                                 $record['subject']  = str_replace('DATA.'.$traditional_oid_col, 'DATA.'.$oid_col, (string)$email->subject);
-                                ;
                                 foreach ($email->content as $content) {
                                     // Plain text is auto-generated from HTML; skip legacy text entries
                                     if ((string)$content->attributes()->type === 'text') {
@@ -728,8 +728,8 @@ class Language
     public function listLanguages($cache = true)
     {
         //Try cache first
-        if ($cache && $GLOBALS['cache']->exists('lang.list')) {
-            return $GLOBALS['cache']->read('lang.list');
+        if ($cache && ($cached_list = $GLOBALS['cache']->read('lang.list')) !== false && is_array($cached_list)) {
+            return $cached_list;
         } else {
             //Get all langauge files
             if (($files = cc_glob(CC_LANGUAGE_DIR.'*.{xml,gz}')) !== false) {
@@ -799,10 +799,11 @@ class Language
             $path = appendDS($path);
         }
         // Load basic language string data into a multi-dimensional array
-        if ((isset($GLOBALS['cache']) && is_object($GLOBALS['cache'])) && ($GLOBALS['cache']->exists($name.'.definitions') && is_array($GLOBALS['cache']->read($name.'.definitions')))
-            && ($GLOBALS['cache']->exists($name.'.definition_data') && is_array($GLOBALS['cache']->read($name.'.definition_data')))) {
-            $this->_language_definitions = $GLOBALS['cache']->read($name.'.definitions');
-            $this->_language_definition_data = $GLOBALS['cache']->read($name.'.definition_data');
+        $cached_def = (isset($GLOBALS['cache']) && is_object($GLOBALS['cache'])) ? $GLOBALS['cache']->read($name.'.definitions') : false;
+        $cached_def_data = (isset($GLOBALS['cache']) && is_object($GLOBALS['cache'])) ? $GLOBALS['cache']->read($name.'.definition_data') : false;
+        if (is_array($cached_def) && is_array($cached_def_data)) {
+            $this->_language_definitions = $cached_def;
+            $this->_language_definition_data = $cached_def_data;
         } else {
             // Load language definitions
             $file = $path.$file_name;
@@ -893,10 +894,11 @@ class Language
         $cache_name_info = 'lang.info.'.$language;
         $cache_name_strings = 'lang.'.$name.'.xml.'.$language;
 
-        if ((isset($GLOBALS['cache']) && is_object($GLOBALS['cache'])) 
-            && ($GLOBALS['cache']->exists($cache_name_strings) && $GLOBALS['cache']->exists($cache_name_info) && is_array($GLOBALS['cache']->read($cache_name_strings)) && is_array($GLOBALS['cache']->read($cache_name_info)))) {
-            $strings = $GLOBALS['cache']->read($cache_name_strings);
-            $this->_language_data = $GLOBALS['cache']->read($cache_name_info);
+        $cached_strings = (isset($GLOBALS['cache']) && is_object($GLOBALS['cache'])) ? $GLOBALS['cache']->read($cache_name_strings) : false;
+        $cached_info = (isset($GLOBALS['cache']) && is_object($GLOBALS['cache'])) ? $GLOBALS['cache']->read($cache_name_info) : false;
+        if (is_array($cached_strings) && is_array($cached_info)) {
+            $strings = $cached_strings;
+            $this->_language_data = $cached_info;
         } else {
             $strings = array();
             $data = $this->_extractXML($path.$language);
