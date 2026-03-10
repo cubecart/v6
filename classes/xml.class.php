@@ -51,7 +51,7 @@ class XML extends XMLWriter
                         $this->addArray($data);
                         $this->endElement();
                     } else {
-                        $this->setElement($index, $data['value'], $data['attributes'], $data['cdata']);
+                        $this->setElement($index, $data['value'], isset($data['attributes']) ? $data['attributes'] : false, isset($data['cdata']) ? $data['cdata'] : true);
                     }
                 } else {
                     $this->setElement($index, false, $data);
@@ -89,7 +89,7 @@ class XML extends XMLWriter
 
     /**
      * Display XML
-     * @return XML
+     * @return void
      */
     public function output()
     {
