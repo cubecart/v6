@@ -13,7 +13,6 @@
 
 /**
  * AJAX controller
- *
  */
 class Ajax
 {

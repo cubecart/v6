@@ -13,7 +13,6 @@
 
 /**
  * ACP controller
- *
  */
 class ACP
 {

@@ -12,7 +12,6 @@
  */
 /**
  * Autoloader controller
- *
  */
 class Autoloader
 {

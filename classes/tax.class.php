@@ -13,7 +13,6 @@
 
 /**
  * Tax controller
- *
  */
 class Tax
 {

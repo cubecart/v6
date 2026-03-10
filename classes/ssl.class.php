@@ -13,7 +13,6 @@
 
 /**
  * SSL controller
- *
  */
 class SSL
 {

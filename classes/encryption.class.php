@@ -13,7 +13,6 @@
 
 /**
  * Encryption controller
- *
  */
 class Encryption
 {

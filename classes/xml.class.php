@@ -13,7 +13,6 @@
 
 /**
  * XML controller
- *
  */
 class XML extends XMLWriter
 {

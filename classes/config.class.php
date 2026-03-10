@@ -13,7 +13,6 @@
 
 /**
  * Configuration controller
- *
  */
 class Config
 {

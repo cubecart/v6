@@ -13,7 +13,6 @@
 
 /**
  * Sanitize class
- *
  */
 class Sanitize
 {

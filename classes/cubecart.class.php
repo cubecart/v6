@@ -13,7 +13,6 @@
 
 /**
  * Core controller
- *
  */
 class Cubecart
 {

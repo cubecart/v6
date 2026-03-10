@@ -14,7 +14,6 @@
 
 /**
  * Debug controller
- *
  */
 class Debug
 {

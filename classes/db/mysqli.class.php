@@ -17,7 +17,6 @@ require CC_ROOT_DIR.'/classes/db/database.class.php';
 
 /**
  * MySQLi database controller
- *
  */
 class Database extends Database_Contoller
 {

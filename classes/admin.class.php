@@ -13,7 +13,6 @@
 
 /**
  * Admin controller
- *
  */
 class Admin
 {

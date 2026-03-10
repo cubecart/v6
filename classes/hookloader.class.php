@@ -18,7 +18,6 @@
 
 /**
  * Hook controller
- *
  */
 class HookLoader
 {

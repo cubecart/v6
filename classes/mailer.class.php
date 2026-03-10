@@ -20,7 +20,6 @@ require 'PHPMailer/src/Exception.php';
 
 /**
  * Language controller
- *
  */
 
 class Mailer extends PHPMailer\PHPMailer\PHPMailer

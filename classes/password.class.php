@@ -13,7 +13,6 @@
 
 /**
  * Password functions
- *
  */
 class Password
 {

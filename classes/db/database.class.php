@@ -13,7 +13,6 @@
 
 /**
  * Database controller
- *
  */
 class Database_Contoller
 {

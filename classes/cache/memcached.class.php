@@ -19,7 +19,6 @@ require CC_ROOT_DIR.'/classes/cache/cache.class.php';
 
 /**
  * Cache specific class
- *
  */
 class Cache extends Cache_Controler
 {

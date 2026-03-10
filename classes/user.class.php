@@ -13,7 +13,6 @@
 
 /**
  * User controller
- *
  */
 class User
 {

@@ -13,7 +13,6 @@
 
 /**
  * SEO controller
- *
  */
 class SEO
 {

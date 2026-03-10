@@ -13,7 +13,6 @@
 
 /**
  * Order controller
- *
  */
 class Order
 {

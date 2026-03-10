@@ -13,7 +13,6 @@
 
 /**
  * Language controller
- *
  */
 class Language
 {

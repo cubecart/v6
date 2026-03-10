@@ -13,7 +13,6 @@
 
 /**
  * Module controller
- *
  */
 class Module
 {

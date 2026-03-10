@@ -12,8 +12,6 @@
  */
 /**
  * Cart controller
- *
- * @author Sir William
  */
 class Cart
 {

@@ -13,7 +13,6 @@
 
 /**
  * Catalogue controller
- *
  */
 class Catalogue
 {

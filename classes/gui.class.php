@@ -13,8 +13,6 @@
 
 /**
  * GUI controller
- *
- * @author Sir William
  */
 class GUI
 {

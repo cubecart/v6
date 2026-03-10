@@ -21,7 +21,6 @@ if (!defined('CC_INI_SET')) {
  * Stores PHP session data in the CubeCart_sessions table so that
  * sessions are not lost when an in-memory cache (memcached/redis)
  * evicts entries under memory pressure.
- *
  */
 class Session_Handler implements SessionHandlerInterface
 {

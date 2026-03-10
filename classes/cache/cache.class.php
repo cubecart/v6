@@ -13,7 +13,6 @@
 
 /**
  * Cache controller
- *
  */
 class Cache_Controler
 {

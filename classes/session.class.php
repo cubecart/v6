@@ -13,7 +13,6 @@
 
 /**
  * Session controller
- *
  */
 class Session
 {
