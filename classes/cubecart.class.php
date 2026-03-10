@@ -1034,6 +1034,7 @@ class Cubecart
             if (!isset($_POST['username']) && isset($_POST['user']) && isset($_POST['billing'])) {
                 $proceed = true;
                 $optional = array('mobile', 'line2');
+                $error_messages = [];
 
                 $handle_post = array(
                     'user'  => 'customer',
@@ -1061,7 +1062,7 @@ class Cubecart
                 if (!$GLOBALS['config']->get('config', 'disable_checkout_terms') && ($GLOBALS['db']->select('CubeCart_documents', false, array('doc_terms' => '1')) !== false) && !isset($_POST['terms_agree'])) {
                     $GLOBALS['gui']->setError($GLOBALS['language']->account['error_terms_agree']);
                     $errors['terms_agree'] = true;
-                } elseif ($_POST['terms_agree']) {
+                } elseif (isset($_POST['terms_agree']) && $_POST['terms_agree']) {
                     $this->_basket['terms_agree'] = true;
                 }
 
@@ -1463,7 +1464,7 @@ class Cubecart
                 foreach ($GLOBALS['hooks']->load('class.cubecart.order_summary') as $hook) {
                     include $hook;
                 }
-                $order['basket'] = unserialize($order['basket']);
+                $order['basket'] = unserialize($order['basket'], ['allowed_classes' => false]);
 
                 $GLOBALS['smarty']->assign('SUM', $order);
 
@@ -1599,7 +1600,6 @@ class Cubecart
                         'image/jpeg',
                         'image/png',
                         'image/gif',
-                        'image/png',
                         'application/zip',
                         'application/pdf'
                     );
@@ -1612,7 +1612,13 @@ class Cubecart
                             mkdir($attach_dir, 0755, true);
                         }
                         for ($i = 0; $i < $total_files; $i++) {
-                            if(in_array($_FILES['attachments']['type'][$i], $allowed) && file_exists($_FILES['attachments']['tmp_name'][$i])) {
+                            $detected_type = false;
+                            if (file_exists($_FILES['attachments']['tmp_name'][$i])) {
+                                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                                $detected_type = finfo_file($finfo, $_FILES['attachments']['tmp_name'][$i]);
+                                finfo_close($finfo);
+                            }
+                            if($detected_type && in_array($detected_type, $allowed)) {
                                 $mailer->AddAttachment($_FILES['attachments']['tmp_name'][$i], $attachment_prefix.$_FILES['attachments']['name'][$i]);
                                 $attachments[] = array('tmp_name' => $_FILES['attachments']['tmp_name'][$i], 'name' => $attachment_prefix.$_FILES['attachments']['name'][$i]);
                             } else {
@@ -1711,6 +1717,7 @@ class Cubecart
                 $selected = false;
             }
             // Loop addresses
+            $address_list = [];
             foreach ($addresses as $address) {
                 if ($selected) {
                     $address['selected'] = ($address['address_id'] == $selected) ? 'selected="selected"' : '';
@@ -1812,6 +1819,7 @@ class Cubecart
                 }
 
                 if (isset($this->_basket['coupons']) && is_array($this->_basket['coupons']) && !empty($this->_basket['coupons'])) {
+                    $coupons = [];
                     foreach ($this->_basket['coupons'] as $coupon) {
                         $coupon['remove_code'] = $coupon['voucher'];
                         // GC value_display is already in face-value (inclusive) terms; only scale regular coupons
@@ -2001,7 +2009,7 @@ class Cubecart
                 include $hook;
             }
 
-            // Check if new shipping methods are avialble and notify if they are
+            // Check if new shipping methods are available and notify if they are
             $shipping_hash = md5(serialize($shipping_list));
             if (isset($GLOBALS['cart']->basket['shipping_hash']) && !empty($GLOBALS['cart']->basket['shipping_hash']) && $shipping_hash!==$GLOBALS['cart']->basket['shipping_hash']){
                 $GLOBALS['gui']->setNotify($GLOBALS['language']->checkout['check_shipping']);
@@ -2054,7 +2062,8 @@ class Cubecart
                     $related[] = "'".$data['cart_order_id']."'";
                 }
                 if (($related_products = $GLOBALS['db']->select('CubeCart_order_inventory', array('DISTINCT' => 'product_id'), array('cart_order_id' => $related, '!product_id' => $product_list), false, 10)) !== false) {
-                    $i = 0; // Looking for 5 related products (possibly configurable in the future)
+                    $i = 0;
+                    $related_list = []; // Looking for 5 related products (possibly configurable in the future)
                     foreach ($related_products as $related) {
                         if (!empty($related['product_id']) && !in_array($related['product_id'], $product_list)) {
                             $related = $GLOBALS['catalogue']->getProductData($related['product_id']);
@@ -2225,8 +2234,8 @@ class Cubecart
                     }
                     $module = (isset($gateway['plugin']) && $gateway['plugin']) ? $gateway : $GLOBALS['config']->get($gateway['folder']);
 
-                    $countries = (!empty($module['countries'])) ? unserialize($module['countries']) : false;
-                    $disabled_countries = (!empty($module['disabled_countries'])) ? unserialize($module['disabled_countries']) : false;
+                    $countries = (!empty($module['countries'])) ? unserialize($module['countries'], ['allowed_classes' => false]) : false;
+                    $disabled_countries = (!empty($module['disabled_countries'])) ? unserialize($module['disabled_countries'], ['allowed_classes' => false]) : false;
 
                     // Check module isn't set for mobile / main only!
                     if (isset($module['scope']) && !empty($module['scope']) && ($module['scope']=='main' && $GLOBALS['gui']->mobile) || ($module['scope']=='mobile' && !$GLOBALS['gui']->mobile)) {
@@ -2509,8 +2518,8 @@ class Cubecart
                 }
                 $module = (isset($gateway['plugin']) && $gateway['plugin']) ? $gateway : $GLOBALS['config']->get($gateway['folder']);
 
-                $countries = (!empty($module['countries'])) ? unserialize($module['countries']) : false;
-                $disabled_countries = (!empty($module['disabled_countries'])) ? unserialize($module['disabled_countries']) : false;
+                $countries = (!empty($module['countries'])) ? unserialize($module['countries'], ['allowed_classes' => false]) : false;
+                $disabled_countries = (!empty($module['disabled_countries'])) ? unserialize($module['disabled_countries'], ['allowed_classes' => false]) : false;
 
                 // Check module isn't set for mobile / main only!
                 if (isset($module['scope']) && !empty($module['scope']) && ($module['scope']=='main' && $GLOBALS['gui']->mobile) || ($module['scope']=='mobile' && !$GLOBALS['gui']->mobile)) {
@@ -2812,7 +2821,7 @@ class Cubecart
                     foreach ($GLOBALS['hooks']->load('class.cubecart.order_summary') as $hook) {
                         include $hook;
                     }
-                    $order['basket'] = unserialize($order['basket']);
+                    $order['basket'] = unserialize($order['basket'], ['allowed_classes' => false]);
                     $GLOBALS['smarty']->assign('SUM', $order);
                     $GLOBALS['smarty']->assign('ORDER', $order);
                     $GLOBALS['session']->delete('ghost_customer_id');
@@ -2875,7 +2884,7 @@ class Cubecart
                     httpredir(currentPage(array('cancel')));
                 } elseif (isset($_GET['reorder']) && Order::validOrderId(trim($_GET['reorder']))) {
                     $basket = $GLOBALS['db']->select('CubeCart_order_summary', array('basket'), array('cart_order_id'=>$_GET['reorder'], 'customer_id' => $GLOBALS['user']->get('customer_id')));
-                    $past_data = unserialize($basket[0]['basket']);
+                    $past_data = unserialize($basket[0]['basket'], ['allowed_classes' => false]);
                     $GLOBALS['cart']->basket['contents'] = $past_data['contents'];
                     $GLOBALS['cart']->save();
                     httpredir('?_a=basket');
@@ -2968,7 +2977,7 @@ class Cubecart
                     foreach ($GLOBALS['hooks']->load('class.cubecart.order_summary') as $hook) {
                         include $hook;
                     }
-                    $order['basket'] = unserialize($order['basket']);
+                    $order['basket'] = unserialize($order['basket'], ['allowed_classes' => false]);
                     $GLOBALS['smarty']->assign('SUM', $order);
                     $GLOBALS['smarty']->assign('ORDER', $order);
                 } else {
@@ -3325,6 +3334,9 @@ class Cubecart
                 $redir = $_POST['redir'];
                 break;
             default:
+                $redir = '?_a=account';
+            }
+            if (!SSL::getInstance()->validRedirect($redir)) {
                 $redir = '?_a=account';
             }
             httpredir($redir);
