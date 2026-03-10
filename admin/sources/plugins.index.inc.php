@@ -455,7 +455,7 @@ foreach ($api_extensions as $ext) {
         'edit_url' => $edit_url,
         'purchase_url' => !empty($ext['purchase_url']) ? $ext['purchase_url'] : '',
         'price' => !empty($ext['price']) ? $ext['price'] : '',
-        'third_party' => false,
+        'third_party' => (empty($ext['creator']) || stripos($ext['creator'], 'cubecart') === false),
     );
 }
 
