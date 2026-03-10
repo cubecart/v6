@@ -33,7 +33,7 @@
       {foreach from=$MARKETPLACE item=ext}
       <div class="ext-card{if $ext.has_upgrade} ext-card-has-upgrade{elseif $ext.is_installed} ext-card-installed{/if}" data-category="{$ext.category}" data-name="{$ext.name|lower}" data-type="{$ext.type}" data-installed="{if $ext.is_installed}1{else}0{/if}" data-installed-version="{$ext.installed_version}" data-installed-basename="{$ext.installed_basename}">
          <div class="ext-card-header">
-            <h4 class="ext-card-name">{$ext.name}</h4>
+            <h4 class="ext-card-name">{if $ext.recommended}<i class="fa fa-star ext-recommended" title="{$LANG.common.recommended|default:'Recommended'}"></i> {/if}{$ext.name}</h4>
             {if count($ext.versions) > 1}
             <select class="ext-version-select" data-card-version>
                {foreach from=$ext.versions item=ver}
@@ -58,6 +58,11 @@
             {/if}
          </div>
          <div class="ext-card-actions">
+            {if $ext.images|@count > 0}
+            <button type="button" class="ext-btn ext-btn-gallery btn-ext-gallery" data-images='{$ext.images|@json_encode}' data-name="{$ext.name}">
+               <i class="fa fa-picture-o"></i> {$LANG.catalogue.title_images|default:'Images'}
+            </button>
+            {/if}
             {if $ext.third_party}
             {* 3rd party: configure and delete only *}
             {elseif $ext.has_upgrade}
@@ -90,6 +95,26 @@
 
 <div id="ext-toast" class="ext-toast"></div>
 <input type="hidden" id="ext-csrf-token" value="{$SESSION_TOKEN}">
+
+<div id="ext-gallery-modal" class="ext-gallery-overlay">
+   <div class="ext-gallery-modal">
+      <div class="ext-gallery-header">
+         <h4 id="ext-gallery-title"></h4>
+         <button type="button" class="ext-gallery-close" id="ext-gallery-close"><i class="fa fa-times"></i></button>
+      </div>
+      <div class="ext-gallery-body">
+         <button type="button" class="ext-gallery-nav ext-gallery-prev" id="ext-gallery-prev"><i class="fa fa-chevron-left"></i></button>
+         <div class="ext-gallery-img-wrap">
+            <img id="ext-gallery-img" src="" alt="">
+         </div>
+         <button type="button" class="ext-gallery-nav ext-gallery-next" id="ext-gallery-next"><i class="fa fa-chevron-right"></i></button>
+      </div>
+      <div class="ext-gallery-footer">
+         <span id="ext-gallery-counter"></span>
+         <div id="ext-gallery-thumbs" class="ext-gallery-thumbs"></div>
+      </div>
+   </div>
+</div>
 
 {literal}
 <script>
@@ -273,6 +298,78 @@ document.addEventListener('DOMContentLoaded', function() {
             $btn.html(originalHtml).data('loading', false);
          }
       });
+   });
+
+   // Image gallery modal
+   var galleryImages = [];
+   var galleryIndex = 0;
+
+   function openGallery(images, name, startIndex) {
+      galleryImages = images;
+      galleryIndex = startIndex || 0;
+      $('#ext-gallery-title').text(name);
+      updateGalleryImage();
+      buildThumbnails();
+      $('#ext-gallery-modal').addClass('show');
+      $(document).on('keydown.gallery', function(e) {
+         if (e.keyCode === 27) closeGallery();
+         if (e.keyCode === 37) navigateGallery(-1);
+         if (e.keyCode === 39) navigateGallery(1);
+      });
+   }
+
+   function closeGallery() {
+      $('#ext-gallery-modal').removeClass('show');
+      $(document).off('keydown.gallery');
+      galleryImages = [];
+   }
+
+   function navigateGallery(dir) {
+      if (!galleryImages.length) return;
+      galleryIndex = (galleryIndex + dir + galleryImages.length) % galleryImages.length;
+      updateGalleryImage();
+      updateActiveThumbnail();
+   }
+
+   function updateGalleryImage() {
+      var img = galleryImages[galleryIndex];
+      var src = (typeof img === 'string') ? img : (img.url || img.src || '');
+      $('#ext-gallery-img').attr('src', src);
+      $('#ext-gallery-counter').text((galleryIndex + 1) + ' / ' + galleryImages.length);
+      $('#ext-gallery-prev, #ext-gallery-next').toggle(galleryImages.length > 1);
+   }
+
+   function buildThumbnails() {
+      var $thumbs = $('#ext-gallery-thumbs').empty();
+      if (galleryImages.length <= 1) return;
+      $.each(galleryImages, function(i, img) {
+         var src = (typeof img === 'string') ? img : (img.thumb || img.url || img.src || '');
+         $('<img>').attr('src', src).addClass('ext-gallery-thumb' + (i === galleryIndex ? ' active' : ''))
+            .data('index', i).appendTo($thumbs);
+      });
+   }
+
+   function updateActiveThumbnail() {
+      $('#ext-gallery-thumbs .ext-gallery-thumb').removeClass('active')
+         .eq(galleryIndex).addClass('active');
+   }
+
+   $(document).on('click', '.btn-ext-gallery', function() {
+      var images = $(this).data('images');
+      var name = $(this).data('name');
+      if (images && images.length) openGallery(images, name, 0);
+   });
+
+   $('#ext-gallery-close').on('click', closeGallery);
+   $('#ext-gallery-prev').on('click', function() { navigateGallery(-1); });
+   $('#ext-gallery-next').on('click', function() { navigateGallery(1); });
+   $('#ext-gallery-modal').on('click', function(e) {
+      if ($(e.target).is('#ext-gallery-modal')) closeGallery();
+   });
+   $(document).on('click', '.ext-gallery-thumb', function() {
+      galleryIndex = $(this).data('index');
+      updateGalleryImage();
+      updateActiveThumbnail();
    });
 
    // Delete extension from marketplace card

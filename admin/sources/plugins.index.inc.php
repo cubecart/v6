@@ -336,6 +336,7 @@ foreach ($skin_paths as $skin_path) {
             'type' => 'skin',
             'dir_type' => 'skins',
             'name' => (string)$xml->info->display,
+            'description' => (string)$xml->info->description,
             'version' => (string)$xml->info->version,
             'basename' => $basename,
             'creator' => (string)$xml->info->creator,
@@ -412,15 +413,34 @@ foreach ($api_extensions as $ext) {
         }
     }
 
+    // If installed locally, prefer name and description from config.xml
+    $display_name = $ext['name'];
+    $display_desc = !empty($ext['description']) ? $ext['description'] : '';
+    if ($is_installed) {
+        foreach ($installed as $key => $inst) {
+            if (!empty($matched_installed[$key]) && (strtolower($inst['name']) === $ext_name_lower || $key === strtolower(str_replace(array(' ', '-'), '_', $ext['name'])))) {
+                if (!empty($inst['name'])) {
+                    $display_name = $inst['name'];
+                }
+                if (!empty($inst['description'])) {
+                    $display_desc = $inst['description'];
+                }
+                break;
+            }
+        }
+    }
+
     $marketplace[] = array(
-        'name' => $ext['name'],
+        'name' => $display_name,
         'type' => $ext['type'],
         'category' => $ext_category,
         'category_label' => ucwords(str_replace('_', ' ', $ext_category)),
-        'description' => !empty($ext['description']) ? $ext['description'] : '',
+        'description' => $display_desc,
         'latest_version' => $latest['version'],
         'download_url' => $latest['download'],
         'versions' => array_reverse($ext['versions']),
+        'images' => !empty($ext['images']) ? $ext['images'] : array(),
+        'recommended' => !empty($ext['recommended']),
         'is_installed' => $is_installed,
         'installed_version' => $installed_version,
         'installed_basename' => $installed_basename,
