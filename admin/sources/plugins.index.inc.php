@@ -56,7 +56,7 @@ if ($is_ajax && $_POST['ajax_action'] === 'install_extension') {
             $destination = CC_ROOT_DIR.'/modules/livehelp';
             break;
         case 'skin':
-            $destination = CC_ROOT_DIR;
+            $destination = CC_ROOT_DIR.'/skins';
             break;
         default:
             $destination = CC_ROOT_DIR.'/modules/plugins';
@@ -202,7 +202,23 @@ if ($is_ajax && $_POST['ajax_action'] === 'install_extension') {
     $GLOBALS['session']->delete('version_check');
     $GLOBALS['session']->delete('extension_update_check');
 
-    echo json_encode(array('success' => true, 'message' => $lang['module']['success_install']));
+    // Build configure URL from the installed extension's config.xml
+    $configure_url = '';
+    if (!empty($install_dir)) {
+        $config_xml_path = CC_ROOT_DIR.$install_dir.'/config.xml';
+        if (file_exists($config_xml_path)) {
+            try {
+                $inst_xml = new SimpleXMLElement(file_get_contents($config_xml_path));
+                $inst_type = (string)$inst_xml->info->type;
+                if ($inst_type !== 'skin') {
+                    $inst_folder = basename($install_dir);
+                    $configure_url = '?_g=plugins&type='.$inst_type.'&module='.$inst_folder;
+                }
+            } catch (Exception $e) {}
+        }
+    }
+
+    echo json_encode(array('success' => true, 'message' => $lang['module']['success_install'], 'configure_url' => $configure_url));
     exit;
 }
 
@@ -539,10 +555,16 @@ if (isset($categories['other'])) {
     $categories['other'] = $other_count;
 }
 
-// Sort marketplace: installed first, then alphabetical
+// Sort marketplace: installed first, then recommended, then alphabetical
 usort($marketplace, function($a, $b) {
     if ($a['is_installed'] && !$b['is_installed']) return -1;
     if (!$a['is_installed'] && $b['is_installed']) return 1;
+    if (!$a['is_installed'] && !$b['is_installed']) {
+        $a_rec = !empty($a['recommended']);
+        $b_rec = !empty($b['recommended']);
+        if ($a_rec && !$b_rec) return -1;
+        if (!$a_rec && $b_rec) return 1;
+    }
     return strcasecmp($a['name'], $b['name']);
 });
 

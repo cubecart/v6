@@ -280,13 +280,12 @@ document.addEventListener('DOMContentLoaded', function() {
          },
          success: function(resp) {
             if (resp.success) {
-               showToast(resp.message, 'success');
-               $btn.removeClass('ext-btn-install ext-btn-upgrade')
-                   .addClass('ext-btn-disabled')
-                   .html('<i class="fa fa-check"></i> Installed')
-                   .data('loading', false);
-               // Refresh after short delay to update installed list
-               setTimeout(function() { reloadWithTab(); }, 1500);
+               if (resp.configure_url) {
+                  window.location.href = resp.configure_url;
+               } else {
+                  $btn.data('loading', false);
+                  reloadWithTab();
+               }
             } else {
                showToast(resp.message, 'error');
                $btn.html(originalHtml).data('loading', false);
