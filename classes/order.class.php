@@ -187,7 +187,7 @@ class Order
      */
     public function createOrderId($return = false, $set_basket = true)
     {
-        // Self explainitory really...
+        // Self explanatory really...
         $this->_order_id = date('ymd-His-').rand(1000, 9999);
 
         if ($set_basket) {
@@ -575,7 +575,7 @@ class Order
                         foreach ($this->_order_inventory as $item) {
                             // Send Gift Certificate
                             if (!empty($item['custom']) && !empty($item['coupon_id']) && $item['digital']) {
-                                $this->_sendCoupon($item['coupon_id'], unserialize($item['custom']));
+                                $this->_sendCoupon($item['coupon_id'], unserialize($item['custom'], ['allowed_classes' => false]));
                             }
                         }
                     }
@@ -610,7 +610,7 @@ class Order
                         if (!$GLOBALS['config']->get('config', 'no_skip_processing_check')) {
                             $this->orderStatus(2, $order_id, $force, $send_email);
                         } else {
-                            // Send digital files when order status hasn't never been processing amd we are allowed to skip processing status
+                            // Send digital files when order status has never been processing and we are allowed to skip processing status
                             $this->_digitalDelivery($order_id, $this->_order_summary['email']);
                         }
                     }
@@ -721,7 +721,7 @@ class Order
             include $hook;
         }
 
-        if ($_GET['retrieve'] && isset($_GET['cart_order_id']) && !empty($_GET['cart_order_id'])) {
+        if (isset($_GET['retrieve']) && $_GET['retrieve'] && isset($_GET['cart_order_id']) && !empty($_GET['cart_order_id'])) {
             // Order retrieval
             if ($this->_retrieveOrder($_GET['cart_order_id'])) {
                 httpredir(currentPage(array('cart_order_id', 'retrieve'), array('_a' => 'confirm')));
@@ -852,9 +852,9 @@ class Order
             return $array;
         } else if (($array = cc_unserialize(base64_decode($option_string))) !== false) {
             return $array;
-        } else if(($array = unserialize($option_string)) !== false) {
+        } else if(($array = unserialize($option_string, ['allowed_classes' => false])) !== false) {
             return $array;
-        } else if (($array = unserialize(base64_decode($option_string))) !== false) {
+        } else if (($array = unserialize(base64_decode($option_string), ['allowed_classes' => false])) !== false) {
             return $array;
         } else {
             return explode("\n", $option_string);
@@ -871,6 +871,7 @@ class Order
     public function serializeOptions($options, $product_id)
     {
         if (isset($options) && !empty($options)) {
+            $option = array();
             foreach ($options as $option_id => $assign_id) {
                 if (!is_array($assign_id)) {
                     if (($value = $GLOBALS['catalogue']->getOptionData((int)$option_id, (int)$assign_id)) !== false) {
@@ -947,6 +948,8 @@ class Order
             if(empty($concat_params)) {
                 return false;
             } else {
+                $cart_order_id = $GLOBALS['db']->sqlSafe($cart_order_id);
+                $column = preg_replace('/[^a-z_]/', '', $column);
                 return $GLOBALS['db']->misc("UPDATE `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary` SET `custom_oid` = CONCAT($concat_params) WHERE `$column` = '$cart_order_id';");
             }
         }
@@ -1043,7 +1046,7 @@ class Order
         $oid_mode = $GLOBALS['config']->get('config', 'oid_mode');
         if (preg_match(self::TRADITIONAL_ORDER_FORMAT, $order_id)) {
             return true;
-        } elseif ($oid_mode=='i' && (ctype_digit($order_id) || preg_match('/[-\w\_]+/', $order_id))) {
+        } elseif ($oid_mode=='i' && (ctype_digit($order_id) || preg_match('/^[-\w\_]+$/', $order_id))) {
             return true;
         }
         return false;
@@ -1162,6 +1165,8 @@ class Order
     {
         if (!empty($order_id) && !empty($email)) {
             if (($digital = $GLOBALS['db']->select('CubeCart_downloads', false, array('cart_order_id' => $order_id), false, false, false, false)) !== false) {
+                $dkeys = array();
+                $downloads = array();
                 foreach ($digital as $offset => $download) {
                     // Get product name
                     $product = $GLOBALS['db']->select('CubeCart_order_inventory', array('name'), array('id' => $download['order_inv_id']));
@@ -1309,7 +1314,7 @@ class Order
                     // skip to the next item
                     continue;
                 }
-                // Traditonal stock if the product opts are not set or not set to use stock
+                // Traditional stock if the product opts are not set or not set to use stock
                 if (($product = $GLOBALS['db']->select('CubeCart_inventory', array('stock_level'), array('product_id' => (int)$item['product_id'], 'use_stock_level' => 1), false, false, false, false)) !== false) {
                     $stock = $product[0]['stock_level'];
 
@@ -1378,7 +1383,7 @@ class Order
     }
 
     /**
-     * Get list of admin email addresses to recieve order notification
+     * Get list of admin email addresses to receive order notification
      *
      * @return string
      */
@@ -1386,6 +1391,7 @@ class Order
     {
         if (($admins = $GLOBALS['db']->select('CubeCart_admin_users', array('email'), array('status' => 1, 'order_notify' => 1))) !== false) {
             ## Get their email addresses
+            $list = array();
             foreach ($admins as $admin) {
                 if (filter_var($admin['email'], FILTER_VALIDATE_EMAIL)) {
                     $list[] = $admin['email'];
@@ -1626,7 +1632,7 @@ class Order
         if (!empty($order_id)) {
             // Fetch summary
             if (($summary = $GLOBALS['db']->select('CubeCart_order_summary', 'basket', array('cart_order_id' => (string)$order_id), false, false, false, false)) !== false) {
-                if ($this->_basket = unserialize($summary[0]['basket'])) {
+                if ($this->_basket = unserialize($summary[0]['basket'], ['allowed_classes' => false])) {
                     $GLOBALS['cart']->save();
                     return true;
                 }
@@ -1666,7 +1672,7 @@ class Order
     }
 
     /**
-     * Send gift certificate va email
+     * Send gift certificate via email
      *
      * @param int $coupon_id
      * @param array $data
