@@ -467,7 +467,7 @@ class User
             } else {
                 $where['address_id'] = $delete;
                 $GLOBALS['db']->delete('CubeCart_addressbook', $where);
-                $this->_deleteBasketAddress($address);
+                $this->_deleteBasketAddress($delete);
             }
 
             return true;
@@ -561,13 +561,11 @@ class User
             $email = $input;
             $name = $input;
         } else {
-            preg_match('#\<(.*?)\>#', $input, $match);
-            if(filter_var($match[1], FILTER_VALIDATE_EMAIL)) {
-                $email = $match[1];
-                $name = trim(strip_tags($input));
-            } else {
+            if (!preg_match('#\<(.*?)\>#', $input, $match) || !filter_var($match[1], FILTER_VALIDATE_EMAIL)) {
                 return false;
             }
+            $email = $match[1];
+            $name = trim(strip_tags($input));
         }
         return array('name' => $name, 'email' => $email);
     }
@@ -731,6 +729,7 @@ class User
             foreach ($this->_bot_sigs as $signature) {
                 if (strpos($agent, $signature) !== false) {
                     $this->_bot = true;
+                    break;
                 }
             }
         }
@@ -774,7 +773,7 @@ class User
             // Unset the 'Remember Me' cookies
             $GLOBALS['session']->set_cookie('cc_username', '', time()-3600);
         }
-        // Destory the session
+        // Destroy the session
         $GLOBALS['session']->destroy();
         // Redirect to login
         $get = array('_a' => 'login');
@@ -793,7 +792,7 @@ class User
     public function passwordRequest($email)
     {
         if (!empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            if (($check = $GLOBALS['db']->select('CubeCart_customer', false, "`email` = '$email' AND `type` = 1", false, 1, false, false)) !== false) {
+            if (($check = $GLOBALS['db']->select('CubeCart_customer', false, array('email' => $email, 'type' => 1), false, 1, false, false)) !== false) {
                 // Generate validation key
                 $validation = bin2hex(random_bytes(32));
                 $verify_expires = date('Y-m-d H:i:s', time() + 3600);
@@ -1096,6 +1095,8 @@ class User
             }
             //Remove things that shouldn't be updated by post
             unset($update['salt']);
+            unset($update['password']);
+            unset($update['new_password']);
             unset($update['customer_id']);
             unset($update['status']);
             unset($update['type']);
@@ -1210,27 +1211,6 @@ class User
     private function _validCustomerId()
     {
         return false;
-        /* Kept for hiistorical purposes
-        $customers = $GLOBALS['db']->misc("SHOW TABLE STATUS LIKE '".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_customer'", false);
-        
-        $orders = $GLOBALS['db']->misc("SELECT MAX(`customer_id`) as `max_id` FROM `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary`", false);
-        
-        // Do we have any orders yet and is the max customer_id > 0?
-        if ($orders && $orders[0]['max_id'] > 0) {
-            // Do we have any customers yet and is the auto increment > 0?
-            if ($customers && $customers[0]['Auto_increment'] > 0) {
-                // Are there existing customers orders with higher customer id than next customer id?
-                if ($orders[0]['max_id'] >= $customers[0]['Auto_increment']) {
-                    // Finally be sure proposed ID isn't in use
-                    $id = $orders[0]['max_id']+1;
-                    if($GLOBALS['db']->select('CubeCart_customer', false, array('customer_id' => $id), false, 1, false, false) == false) {
-                        return $id;
-                    }
-                }
-            }
-        }
-        return false;
-        */
     }
 
     /**
