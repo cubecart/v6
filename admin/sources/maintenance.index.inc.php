@@ -305,6 +305,21 @@ if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
     }
 }
 
+if (isset($_GET['delete_all_backups'])) {
+    $backup_files = cc_glob(CC_BACKUP_DIR.'*.{sql,zip}');
+    $count = 0;
+    if (is_array($backup_files)) {
+        foreach ($backup_files as $bf) {
+            if (is_file($bf)) {
+                unlink($bf);
+                $count++;
+            }
+        }
+    }
+    $GLOBALS['main']->successMessage(sprintf($lang['maintain']['backups_deleted_all'], $count));
+    httpredir('?_g=maintenance&node=index', 'backup');
+}
+
 if (isset($_GET['delete'])) {
     $file = 'backup/'.basename($_GET['delete']);
     if (in_array($_GET['delete'], array('restore_error_log','upgrade_error_log'))) {

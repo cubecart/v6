@@ -103,7 +103,10 @@
 	
   </form>
   <br>
-  <h3>{$LANG.maintain.title_existing_backups}</h3>
+  <div style="display:flex; justify-content:space-between; align-items:center;">
+    <h3 style="margin:0;">{$LANG.maintain.title_existing_backups}</h3>
+    {if $EXISTING_BACKUPS}<a href="?_g=maintenance&node=index&delete_all_backups=1#backup" class="button delete" title="{$LANG.maintain.confirm_delete_all_backups}" onclick="return confirm('{$LANG.maintain.confirm_delete_all_backups}');"><i class="fa fa-trash"></i> {$LANG.maintain.delete_all_backups}</a>{/if}
+  </div>
   <fieldset><legend>{$LANG.common.downloads}</legend>
 	{if $EXISTING_BACKUPS}
 	{foreach from=$EXISTING_BACKUPS item=backup}

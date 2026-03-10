@@ -1610,6 +1610,9 @@ This email is sent from the store's master email address but it is possible to r
     <string name="files_upgrade_fail" introduced="5.1.0"><![CDATA[Upgrade file extraction failed. Please upload the files with an FTP client and then run the setup script.]]></string>
     <string name="files_upgrade_download_fail" introduced="5.1.0"><![CDATA[Failed to download latest version. Please attempt manual upgrade.]]></string>
     <string name="backup_deleted" introduced="5.1.0"><![CDATA[%1$s deleted.]]></string>
+    <string name="backups_deleted_all" introduced="6.6.0"><![CDATA[%1$s backup file(s) deleted.]]></string>
+    <string name="delete_all_backups" introduced="6.6.0"><![CDATA[Delete All Backups]]></string>
+    <string name="confirm_delete_all_backups" introduced="6.6.0"><![CDATA[Are you sure you want to delete all backup files? This cannot be undone.]]></string>
     <string name="db_backup_complete" introduced="5.1.0"><![CDATA[Database backup complete.]]></string>
     <string name="db_backup_desc" introduced="5.1.0"><![CDATA[Choose if you want to include the structure and/or data and click backup to create an export of your database. Please note that it is only possible to restore the database if every option is selected aside from compression.]]></string>
     <string name="db_compress_fail" introduced="6.1.0"><![CDATA[It hasn't been possible to compress the SQL backup. Please find uncompressed SQL file instead.]]></string>
