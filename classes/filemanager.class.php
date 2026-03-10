@@ -107,9 +107,9 @@ class FileManager
                             }
                         }
                         $record['description'] = strip_tags($_POST['details']['description'] ?? "");
-                        $record['title'] = $_POST['details']['title'] ?? "";
+                        $record['title'] = strip_tags($_POST['details']['title'] ?? "");
                         $record['stream'] = $_POST['details']['stream'] ?? "0"; // must be string "0" or "1"
-                        $record['alt'] = $_POST['details']['alt'] ?? "";
+                        $record['alt'] = strip_tags($_POST['details']['alt'] ?? "");
 
                         $update = false;
                         foreach ($record as $k => $v) {
@@ -296,10 +296,12 @@ class FileManager
                                 continue;
                             } else {
                                 try {
-                                    if(!imagecreatefromjpeg($file)) {
+                                    $img = imagecreatefromjpeg($file);
+                                    if(!$img) {
                                         trigger_error($file.' is not a valid jpg file.');
                                         continue;
                                     }
+                                    imagedestroy($img);
                                 } catch (Exception $e) {
                                     trigger_error($e->getMessage());
                                     continue;
@@ -312,10 +314,12 @@ class FileManager
                                 continue;
                             } else {
                                 try {
-                                    if(!imagecreatefromgif($file)) {
+                                    $img = imagecreatefromgif($file);
+                                    if(!$img) {
                                         trigger_error($file.' is not a valid gif file.');
                                         continue;
                                     }
+                                    imagedestroy($img);
                                 } catch (Exception $e) {
                                     trigger_error($e->getMessage());
                                     continue;
@@ -328,10 +332,12 @@ class FileManager
                                 continue;
                             } else {
                                 try {
-                                    if(!imagecreatefrompng($file)) {
+                                    $img = imagecreatefrompng($file);
+                                    if(!$img) {
                                         trigger_error($file.' is not a valid png file.');
                                         continue;
                                     }
+                                    imagedestroy($img);
                                 } catch (Exception $e) {
                                     trigger_error($e->getMessage());
                                     continue;
@@ -344,10 +350,12 @@ class FileManager
                                 continue;
                             } else {
                                 try {
-                                    if(!imagecreatefromwebp($file)) {
+                                    $img = imagecreatefromwebp($file);
+                                    if(!$img) {
                                         trigger_error($file.' is not a valid webp file.');
                                         continue;
                                     }
+                                    imagedestroy($img);
                                 } catch (Exception $e) {
                                     trigger_error($e->getMessage());
                                     continue;
@@ -517,6 +525,9 @@ class FileManager
     public function deleteCachedImages($source) {
         $cache_path = str_replace('/images/source/', '/images/cache/', $source);
         $ext = pathinfo($cache_path, PATHINFO_EXTENSION);
+        if (empty($ext)) {
+            return 0;
+        }
         $strlen = strlen($ext)*-1;
         $cache_path = substr($cache_path, 0, $strlen);
         $cache_path = $cache_path.'*.'.$ext;
@@ -554,7 +565,7 @@ class FileManager
                     }
                 }
                 $file = $this->_manage_root.'/'.$this->_sub_dir.$result[0]['filename'];
-                if (file_exists($file) && unlink($file) || !file_exists($file)) {
+                if ((file_exists($file) && unlink($file)) || !file_exists($file)) {
                     if ($GLOBALS['db']->delete('CubeCart_filemanager', array('file_id' => (int)$file_id))) {
                         // Remove associated product indexes
                         $GLOBALS['db']->delete('CubeCart_image_index', array('file_id' => (int)$file_id));
@@ -673,7 +684,7 @@ class FileManager
                                         header("Content-Range: bytes $start-$end/$size");
                                         exit;
                                     }
-                                    if ($range == '-') {
+                                    if ($range[0] == '-') {
                                         $c_start = $size - substr($range, 1);
                                     } else {
                                         $range = explode('-', $range);
@@ -848,7 +859,7 @@ class FileManager
 
     public function filenameIsIllegal($file_name)
     {
-        if (preg_match('/(\.sh\.inc\.ini|\.htaccess|\.php|\.phar|\.phtml|\.php[3-6])$/i', $file_name)) {
+        if (preg_match('/(\.sh\.inc\.ini|\.htaccess|\.php|\.phar|\.phtml|\.php[3-6]|\.shtml|\.svg|\.cgi|\.pl|\.py|\.rb)$/i', $file_name)) {
             return true;
         } elseif (preg_match('/\.php\./i', $file_name)) {
             return true;
@@ -1110,7 +1121,9 @@ class FileManager
                 $list_folders[] = $folder;
             }
             
-            $GLOBALS['smarty']->assign('FOLDERS', $list_folders);
+            if (isset($list_folders)) {
+                $GLOBALS['smarty']->assign('FOLDERS', $list_folders);
+            }
         }
 
         if (isset($_GET['subdir'])) {
@@ -1125,7 +1138,7 @@ class FileManager
             $GLOBALS['smarty']->assign('FOLDER_PARENT', $parent_link);
         }
 
-        $filepath_where  = empty($this->_sub_dir) ? 'IS NULL' : '= \''.str_replace('\\', '/', $this->_sub_dir).'\'';
+        $filepath_where  = empty($this->_sub_dir) ? 'IS NULL' : '= \''.$GLOBALS['db']->sqlSafe(str_replace('\\', '/', $this->_sub_dir)).'\'';
         $where = '`disabled` = 0 AND `type` = '.(int)$this->_mode.' AND `filepath` '.$filepath_where;
         $GLOBALS['smarty']->assign('FM_SIZE', isset($_COOKIE['cc_fm_size']) ? 'fm-item-'.$_COOKIE['cc_fm_size'] : 'fm-item-medium');
         
@@ -1355,7 +1368,7 @@ class FileManager
                         'filepath' => $filepath_record,
                         'filename' => $newfilename,
                         'filesize' => $file['size'],
-                        'mimetype' => $file['type'] ? $file['type'] : $this->getMimeType($file['tmp_name']),
+                        'mimetype' => $this->getMimeType($file['tmp_name']),
                         'md5hash' => $this->md5file($file['tmp_name'], $file['size'], true),
                     );
 
@@ -1460,11 +1473,11 @@ class FileManager
         return in_array($mime_parts['type'], array('video', 'audio'));
     }
 
-    function mimeParts($mimetype) {
-        $mime_parts = explode('/', $mimetype);
+    private function mimeParts($mimetype) {
+        $mime_parts = explode('/', $mimetype, 2);
         return array(
             'type' => $mime_parts[0],
-            'subtype' => $mime_parts[1]
+            'subtype' => isset($mime_parts[1]) ? $mime_parts[1] : ''
         );
     }
 
