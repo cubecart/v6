@@ -497,7 +497,7 @@ foreach ($installed as $key => $inst) {
         case 'gateway':   $derived_cat = 'payment'; break;
         case 'shipping':  $derived_cat = 'shipping'; break;
         case 'affiliate': $derived_cat = 'affiliate'; break;
-        case 'skin':      $derived_cat = 'skin'; break;
+        case 'skin':      $derived_cat = 'skins'; break;
         default:          $derived_cat = 'other'; break;
     }
     if (!isset($categories[$derived_cat])) {
