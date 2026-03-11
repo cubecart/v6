@@ -59,6 +59,7 @@ $features = array(
     '3796' => 'Gift card enhancements',
     '3855' => 'PHP 8.5 deprecations resolved',
     '3886' => 'Zero-rated tax lines hidden on checkout',
+    '3955' => 'Redeveloped Extension Marketplace',
 );
 $security = array('3928', '3912', '3930');
 $page_content = $GLOBALS['main']->newFeatures($_GET['node'], $features, 98, $notes, $security);
