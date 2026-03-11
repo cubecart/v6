@@ -269,7 +269,7 @@ class Debug
         }
 
         if ($this->_display && $this->_enabled) {
-            $output[] = "<div style='font-family: \"Courier New\",Courier,monospace;font-size: 10px;border-bottom: 5px dashed silver;border-top: 5px dashed silver;margin: 0 0 50px 0;color: #000;background-color: #E7E7E7; clear: both; padding: 5px;'>";
+            $output[] = "<div style='font-family: \"Courier New\",Courier,monospace;font-size: 10px;color: #000;background-color: #E7E7E7; clear: both; padding: 5px;'>";
             $output[] = "<h2>Debug Output - ".$_SERVER['REQUEST_URI']."</h2>";
             $output[] = "<div>This can be disabled via &quot;Store Settings&quot; &raquo; &quot;Advanced&quot; (Tab) &raquo; &quot;Enable Debugging&quot;.</div>";
             $output[] = "<hr/>";
@@ -309,13 +309,11 @@ class Debug
 
                 if (!empty($this->_sql['query'])) {
                     $output[] = '<strong>Queries ('.count($this->_sql['query']).')</strong>:<br />';
-                    $output[] = '<table>';
                     foreach ($this->_sql['query'] as $index => $query) {
                         if (!empty($query)) {
-                            $output[] = '<tr><td style="text-align:right;padding:5px"><strong>'.($index + 1).'.</strong></td><td style="text-align:left;padding:5px">'.$query.'</td></tr>';
+                            $output[] = '<div style="padding:3px 0;border-bottom:1px solid #eee"><strong>'.($index + 1).'.</strong> '.$query.'</div>';
                         }
                     }
-                    $output[] = '</table>';
                 }
                 if (!empty($this->_sql['error'])) {
                     $output[] = '<strong>Errors</strong>:<br />';
