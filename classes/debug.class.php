@@ -382,18 +382,37 @@ class Debug
                 return $content;
             } else {
                 $has_debug_spool = (is_object($GLOBALS['session']) && $GLOBALS['session']->has('debug_spool'));
-                $debug_html = implode(($has_debug_spool) ? $GLOBALS['session']->get('debug_spool') : array()).$content;
-                echo '<script type="text/javascript">
-                function debugConsole(content) {
-                    _cubecart_console = window.open("", "console:cubecart_debug", "width=1024,height=600,left=50,top=50,resizable,scrollbars=yes");
-                    _cubecart_console.document.write(`<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"><head><title>CubeCart Debug Console</title><style>body{margin:0}</style></head><body>`+content+`</body></html>`);
-                    _cubecart_console.blur();
-                    window.focus();
-                }
-                const debug_data = `'.str_replace('`','\`',implode(($has_debug_spool) ? $GLOBALS['session']->get('debug_spool') : array()).$content).'`;
-                debugConsole(debug_data);
-                </script>';
-                if ($has_debug_spool) $GLOBALS['session']->set('debug_spool',null);
+                $debug_html = str_replace('`', '\`', implode(($has_debug_spool) ? $GLOBALS['session']->get('debug_spool') : array()).$content);
+                echo '<style>
+                .cc_debug_widget{all:initial;position:fixed;z-index:999997;bottom:0;left:0;right:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:12px;line-height:normal;color:#333;direction:ltr;box-sizing:border-box}
+                .cc_debug_widget .cc_debug_toggle{display:inline-block;cursor:pointer;background-color:#f2f2f7;border:1px solid #d1d1d6;border-bottom:none;border-radius:12px 12px 0 0;padding:6px 14px;font-family:inherit;font-size:12px;font-weight:500;color:#666;text-decoration:none;position:absolute;bottom:0;left:20px}
+                .cc_debug_widget .cc_debug_toggle:hover{background-color:#e8e8ed;color:#333;text-decoration:none}
+                .cc_debug_widget .cc_debug_panel{display:none;background-color:#f2f2f7;border:1px solid #d1d1d6;border-bottom:none;border-radius:12px 12px 0 0;box-shadow:0 -2px 12px rgba(0,0,0,0.08);max-height:50vh;overflow:hidden;flex-direction:column}
+                .cc_debug_widget.open .cc_debug_panel{display:flex}
+                .cc_debug_widget.open .cc_debug_toggle{display:none}
+                .cc_debug_widget .cc_debug_header{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;border-bottom:1px solid #d1d1d6;flex-shrink:0;background:#f2f2f7;border-radius:12px 12px 0 0}
+                .cc_debug_widget .cc_debug_header strong{font-size:12px;font-weight:600;color:#333;font-family:inherit}
+                .cc_debug_widget .cc_debug_close{cursor:pointer;color:#999;font-size:16px;text-decoration:none;border:none;background:none;padding:0 4px;line-height:1;font-family:inherit}
+                .cc_debug_widget .cc_debug_close:hover{color:#333;text-decoration:none}
+                .cc_debug_widget .cc_debug_body{overflow-y:auto;padding:0;font-family:"Courier New",Courier,monospace;font-size:11px;line-height:1.4;color:#333;background:#fff}
+                .cc_debug_widget .cc_debug_body hr{border:none;border-top:1px solid #d1d1d6;margin:6px 0}
+                .cc_debug_widget .cc_debug_body table{border-collapse:collapse;width:100%}
+                .cc_debug_widget .cc_debug_body td{padding:2px 5px;border-bottom:1px solid #eee;font-size:11px;vertical-align:top;word-break:break-all}
+                .cc_debug_widget .cc_debug_body pre{margin:4px 0;white-space:pre-wrap;word-break:break-all}
+                @media only screen and (max-width:40em){.cc_debug_widget{display:none}}
+                </style>
+                <div class="cc_debug_widget" id="cc_debug_widget">
+                    <a href="#" class="cc_debug_toggle" onclick="document.getElementById(\'cc_debug_widget\').classList.add(\'open\');return false;">&#x1f41b; Debug</a>
+                    <div class="cc_debug_panel">
+                        <div class="cc_debug_header">
+                            <strong>Debug Console &mdash; '.$_SERVER['REQUEST_URI'].'</strong>
+                            <a href="#" class="cc_debug_close" onclick="document.getElementById(\'cc_debug_widget\').classList.remove(\'open\');return false;">&times;</a>
+                        </div>
+                        <div class="cc_debug_body" id="cc_debug_body"></div>
+                    </div>
+                </div>
+                <script>document.getElementById("cc_debug_body").innerHTML=`'.$debug_html.'`;</script>';
+                if ($has_debug_spool) $GLOBALS['session']->set('debug_spool', null);
             }
         }
     }
