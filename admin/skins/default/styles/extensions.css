@@ -28,7 +28,8 @@
 .ext-btn-buy { background:#6f42c1; color:#fff; }
 .ext-card-actions { display:flex; gap:6px; margin-top:0; padding-top:8px; flex-wrap:wrap; }
 .ext-btn { display:inline-flex; align-items:center; gap:5px; padding:6px 10px; border:none; border-radius:4px; font-size:12px; font-weight:600; cursor:pointer; text-decoration:none; transition:opacity .2s; white-space:nowrap; }
-.ext-btn:hover { opacity:0.85; }
+.ext-btn:hover, a.ext-btn:hover { opacity:0.85; color:#fff; }
+.ext-btn-disabled:hover { color:#666; }
 .ext-btn-install { background:#5cb85c; color:#fff; }
 .ext-btn-upgrade { background:#f0ad4e; color:#fff; }
 .ext-btn-delete { background:#d9534f; color:#fff; }
