@@ -19,6 +19,15 @@ global $lang, $glob;
 
 $extensions_url = 'extensions.cubecart.com';
 
+// Build active skins list early so AJAX handlers can reference it
+$active_skins = array();
+$active_skin_folder = $GLOBALS['config']->get('config', 'skin_folder');
+$active_skin_mobile = $GLOBALS['config']->get('config', 'skin_folder_mobile');
+$active_admin_skin  = $GLOBALS['config']->get('config', 'admin_skin');
+if (!empty($active_skin_folder)) $active_skins[] = $active_skin_folder;
+if (!empty($active_skin_mobile) && !in_array($active_skin_mobile, $active_skins)) $active_skins[] = $active_skin_mobile;
+if (!empty($active_admin_skin) && !in_array($active_admin_skin, $active_skins)) $active_skins[] = $active_admin_skin;
+
 $is_ajax = isset($_POST['ajax_action']);
 
 function _ajax_respond($data) {
@@ -345,14 +354,6 @@ foreach ($module_paths as $module_path) {
 }
 
 // Also scan installed skins
-$active_skins = array();
-$active_skin_folder = $GLOBALS['config']->get('config', 'skin_folder');
-$active_skin_mobile = $GLOBALS['config']->get('config', 'skin_folder_mobile');
-$active_admin_skin  = $GLOBALS['config']->get('config', 'admin_skin');
-if (!empty($active_skin_folder)) $active_skins[] = $active_skin_folder;
-if (!empty($active_skin_mobile) && !in_array($active_skin_mobile, $active_skins)) $active_skins[] = $active_skin_mobile;
-if (!empty($active_admin_skin) && !in_array($active_admin_skin, $active_skins)) $active_skins[] = $active_admin_skin;
-
 $skin_paths = glob("skins/*/config.xml");
 foreach ($skin_paths as $skin_path) {
     try {
