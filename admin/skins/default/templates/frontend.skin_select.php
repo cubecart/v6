@@ -5,7 +5,7 @@
     position: fixed;
     z-index: 999998;
     bottom: 0;
-    right: -10px;
+    right: 20px;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     font-size: 12px;
     line-height: normal;
