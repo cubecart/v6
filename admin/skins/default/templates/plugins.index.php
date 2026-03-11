@@ -9,7 +9,7 @@
  * Email:  hello@cubecart.com
  * License:  GPL-3.0 https://www.gnu.org/licenses/quick-guide-gplv3.html
  *}
-<link rel="stylesheet" href="{$STORE_URL}/admin/skins/default/styles/extensions.css">
+<link rel="stylesheet" type="text/css" href="{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/styles/extensions.css?{$VERSION_HASH}" media="screen">
 
 <div id="marketplace" class="tab_content">
    <h3><i class="fa fa-cloud-download"></i> {$LANG.module.ext_marketplace}</h3>
