@@ -53,6 +53,12 @@
             {if $ext.purchase_url || $ext.price}
             <span class="ext-badge ext-badge-paid"><i class="fa fa-shopping-cart"></i> {if $ext.price}{$ext.price}{else}{$LANG.module.ext_paid|default:'Paid'}{/if}</span>
             {/if}
+            {if $ext.ioncube}
+            <span class="ext-badge ext-badge-ioncube"><i class="fa fa-lock"></i> ionCube</span>
+            {/if}
+            {if $ext.php_versions}
+            <span class="ext-badge ext-badge-php{if !$ext.php_compatible} ext-badge-php-incompatible{/if}" title="{if !$ext.php_compatible}Your server runs PHP {$SERVER_PHP} which is not supported{/if}"><i class="fa fa-{if $ext.php_compatible}check{else}warning{/if}"></i> PHP {$ext.php_versions|replace:',':', '}</span>
+            {/if}
             {if $ext.is_installed}
             <span class="ext-badge ext-badge-installed"><i class="fa fa-check"></i> {$LANG.module.ext_installed}{if $ext.installed_version && $ext.installed_version != 'n/a'} v{$ext.installed_version}{/if}</span>
             {/if}
@@ -68,11 +74,15 @@
             {/if}
             {if $ext.purchase_url}
             <a href="{$ext.purchase_url}" target="_blank" class="ext-btn ext-btn-buy">
-               <i class="fa fa-external-link"></i> {$LANG.module.ext_buy|default:'Buy'}
+               <i class="fa fa-external-link"></i> {$LANG.module.ext_more_info|default:'More Info'}
             </a>
             {/if}
-            {if $ext.third_party}
-            {* 3rd party: configure and delete only *}
+            {if $ext.php_versions && !$ext.php_compatible && !$ext.is_installed}
+            <button type="button" class="ext-btn ext-btn-disabled" disabled title="Requires PHP {$ext.php_versions|replace:',':', '} — your server runs PHP {$SERVER_PHP}">
+               <i class="fa fa-ban"></i> Incompatible
+            </button>
+            {elseif $ext.third_party && !$ext.download_url}
+            {* 3rd party local-only: configure and delete only *}
             {elseif $ext.has_upgrade}
             <button type="button" class="ext-btn ext-btn-upgrade btn-ext-action" data-action="install" data-url="{$ext.download_url}" data-name="{$ext.name}" data-type="{$ext.type}">
                <i class="fa fa-arrow-up"></i> {$LANG.module.ext_upgrade}

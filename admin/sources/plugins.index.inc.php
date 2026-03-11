@@ -251,6 +251,8 @@ if (is_array($hash_files)) {
     }
 }
 
+$server_php_version = PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;
+
 $GLOBALS['main']->addTabControl($lang['module']['ext_marketplace'], 'marketplace');
 $GLOBALS['gui']->addBreadcrumb($lang['navigation']['nav_modules'], '?_g=plugins', true);
 
@@ -435,6 +437,14 @@ foreach ($api_extensions as $ext) {
         }
     }
 
+    // Determine PHP compatibility
+    $ext_php_versions = !empty($ext['php_versions']) ? $ext['php_versions'] : '';
+    $php_compatible = true;
+    if (!empty($ext_php_versions)) {
+        $supported = array_map('trim', explode(',', $ext_php_versions));
+        $php_compatible = in_array($server_php_version, $supported);
+    }
+
     $marketplace[] = array(
         'name' => $display_name,
         'type' => $ext['type'],
@@ -456,6 +466,9 @@ foreach ($api_extensions as $ext) {
         'purchase_url' => !empty($ext['purchase_url']) ? $ext['purchase_url'] : '',
         'price' => !empty($ext['price']) ? $ext['price'] : '',
         'third_party' => (empty($ext['creator']) || stripos($ext['creator'], 'cubecart') === false),
+        'ioncube' => !empty($ext['ioncube']) ? 1 : 0,
+        'php_versions' => $ext_php_versions,
+        'php_compatible' => $php_compatible,
     );
 }
 
@@ -519,5 +532,6 @@ $GLOBALS['smarty']->assign('MARKETPLACE', $marketplace);
 $GLOBALS['smarty']->assign('CATEGORIES', $categories);
 $GLOBALS['smarty']->assign('EXT_COUNT', count($api_extensions));
 $GLOBALS['smarty']->assign('SESSION_TOKEN', SESSION_TOKEN);
+$GLOBALS['smarty']->assign('SERVER_PHP', $server_php_version);
 
 $page_content = $GLOBALS['smarty']->fetch('templates/plugins.index.php');
