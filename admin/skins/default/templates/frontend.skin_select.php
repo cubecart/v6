@@ -5,11 +5,11 @@
     position: fixed;
     z-index: 999998;
     bottom: 0;
-    right: 20px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 13px;
+    right: -10px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 12px;
     line-height: normal;
-    color: #666666;
+    color: #333;
     text-align: left;
     direction: ltr;
     box-sizing: border-box;
@@ -17,31 +17,32 @@
 .skin_select_widget .ssw_toggle {
     display: inline-block;
     cursor: pointer;
-    background-color: #f5f5f5;
-    border: 1px solid #ccc;
+    background-color: #f2f2f7;
+    border: 1px solid #d1d1d6;
     border-bottom: none;
-    border-radius: 4px 4px 0 0;
-    padding: 4px 12px;
-    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 12px 12px 0 0;
+    padding: 6px 14px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     font-size: 12px;
-    color: #888;
+    font-weight: 500;
+    color: #666;
     text-decoration: none;
     text-transform: none;
     letter-spacing: normal;
 }
 .skin_select_widget .ssw_toggle:hover {
-    background-color: #eee;
-    color: #555;
+    background-color: #e8e8ed;
+    color: #333;
     text-decoration: none;
 }
 .skin_select_widget .ssw_panel {
     display: none;
-    background-color: #f5f5f5;
-    border: 1px solid #ccc;
+    background-color: #f2f2f7;
+    border: 1px solid #d1d1d6;
     border-bottom: none;
-    border-radius: 4px 4px 0 0;
-    padding: 8px 12px;
-    box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
+    border-radius: 12px 12px 0 0;
+    padding: 10px 14px;
+    box-shadow: 0 -2px 12px rgba(0,0,0,0.08);
 }
 .skin_select_widget.open .ssw_panel {
     display: block;
@@ -51,11 +52,11 @@
 }
 .skin_select_widget .ssw_panel label {
     display: block;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     font-size: 11px;
-    font-weight: bold;
-    color: #999;
-    margin: 0 0 4px 0;
+    font-weight: 500;
+    color: #666;
+    margin: 0 0 5px 0;
     padding: 0;
     text-transform: none;
     letter-spacing: normal;
@@ -65,12 +66,12 @@
 .skin_select_widget .ssw_panel select {
     display: block;
     width: 200px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 13px;
-    padding: 3px 5px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    padding: 5px 8px;
     margin: 0;
-    border: 1px solid #ccc;
-    border-radius: 3px;
+    border: 1px solid #d1d1d6;
+    border-radius: 7px;
     background-color: #fff;
     color: #333;
     box-sizing: border-box;
