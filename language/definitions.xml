@@ -1740,12 +1740,14 @@ This email is sent from the store's master email address but it is possible to r
     <string name="available_plugins" introduced="6.0.0"><![CDATA[Installed Extensions]]></string>
     <string name="extensions_available_desc" introduced="6.1.0"><![CDATA[Updates are available for the following extensions.]]></string>
     <string name="ext_marketplace" introduced="6.6.0"><![CDATA[Extension Marketplace]]></string>
-    <string name="ext_marketplace_desc" introduced="6.6.0"><![CDATA[Browse and install official CubeCart extensions directly from the marketplace. Extensions are downloaded and installed automatically.]]></string>
+    <string name="ext_marketplace_desc" introduced="6.6.0"><![CDATA[Browse, install and configure CubeCart extensions directly from the marketplace.]]></string>
     <string name="ext_available" introduced="6.6.0"><![CDATA[extensions available]]></string>
     <string name="ext_installed" introduced="6.6.0"><![CDATA[Installed]]></string>
     <string name="ext_update_available" introduced="6.6.0"><![CDATA[Update Available]]></string>
     <string name="ext_upgrade" introduced="6.6.0"><![CDATA[Upgrade]]></string>
     <string name="ext_up_to_date" introduced="6.6.0"><![CDATA[Up to Date]]></string>
+    <string name="ext_official" introduced="6.6.0"><![CDATA[Official]]></string>
+    <string name="ext_third_party" introduced="6.6.0"><![CDATA[3rd Party]]></string>
     <string name="token" introduced="6.0.0"><![CDATA[Token]]></string>
     <string name="get_file_failed" introduced="6.0.0"><![CDATA[Failed to retrieve file.]]></string>
     <string name="aff_sale" introduced="5.0.0"><![CDATA[Based on]]></string>

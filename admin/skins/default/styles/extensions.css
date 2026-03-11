@@ -20,6 +20,7 @@
 .ext-badge-installed { background:#dff0d8; color:#3c763d; }
 .ext-badge-upgrade { background:#fcf8e3; color:#8a6d3b; }
 .ext-badge-thirdparty { background:#e8e0f0; color:#6a4c93; }
+.ext-badge-official { background:#e3f2fd; color:#1565c0; }
 .ext-badge-paid { background:#fff3cd; color:#856404; }
 .ext-badge-ioncube { background:#fce4ec; color:#c62828; }
 .ext-badge-php { background:#e8f5e9; color:#2e7d32; }
@@ -88,6 +89,7 @@
    .ext-badge-installed { background:rgba(92,184,92,0.15); color:#8fd88f; }
    .ext-badge-upgrade { background:rgba(240,173,78,0.15); color:#f0c078; }
    .ext-badge-thirdparty { background:rgba(106,76,147,0.2); color:#c4a8e0; }
+   .ext-badge-official { background:rgba(21,101,192,0.2); color:#90caf9; }
    .ext-badge-paid { background:rgba(133,100,4,0.2); color:#f0d078; }
    .ext-badge-ioncube { background:rgba(198,40,40,0.2); color:#ef9a9a; }
    .ext-badge-php { background:rgba(46,125,50,0.2); color:#a5d6a7; }

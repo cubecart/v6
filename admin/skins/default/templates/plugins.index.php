@@ -48,7 +48,9 @@
          <div class="ext-card-meta">
             {if $ext.category_label}<span class="ext-badge ext-badge-cat">{$ext.category_label}</span>{/if}
             {if $ext.third_party}
-            <span class="ext-badge ext-badge-thirdparty"><i class="fa fa-cube"></i> 3rd Party</span>
+            <span class="ext-badge ext-badge-thirdparty"><i class="fa fa-cube"></i> {$LANG.module.ext_third_party}</span>
+            {else}
+            <span class="ext-badge ext-badge-official"><i class="fa fa-shield"></i> {$LANG.module.ext_official}</span>
             {/if}
             {if $ext.purchase_url || $ext.price}
             <span class="ext-badge ext-badge-paid"><i class="fa fa-shopping-cart"></i> {if $ext.price}{$ext.price}{else}{$LANG.module.ext_paid|default:'Paid'}{/if}</span>
