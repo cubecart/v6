@@ -186,6 +186,10 @@ if ($is_ajax && $_POST['ajax_action'] === 'delete_extension') {
         _ajax_respond(array('success' => false, 'message' => 'Invalid extension details.'));
     }
 
+    if ($ext_type === 'skins' && in_array($ext_module, $active_skins)) {
+        _ajax_respond(array('success' => false, 'message' => 'This skin is currently in use and cannot be deleted.'));
+    }
+
     if ($ext_type === 'skins') {
         $dir = CC_ROOT_DIR.'/skins/'.$ext_module;
     } else {
@@ -218,6 +222,10 @@ if (isset($_GET['delete']) && $_GET['delete']==1 && !empty($_GET['type']) && !em
     $type = basename($_GET['type']);
     $module = basename($_GET['module']);
     if (!empty($type) && !empty($module)) {
+        if ($type === 'skins' && in_array($module, $active_skins)) {
+            $GLOBALS['main']->errorMessage('This skin is currently in use and cannot be deleted.');
+            httpredir('?_g=plugins');
+        }
         if ($type === 'skins') {
             $dir = CC_ROOT_DIR.'/skins/'.$module;
         } else {
@@ -337,6 +345,14 @@ foreach ($module_paths as $module_path) {
 }
 
 // Also scan installed skins
+$active_skins = array();
+$active_skin_folder = $GLOBALS['config']->get('config', 'skin_folder');
+$active_skin_mobile = $GLOBALS['config']->get('config', 'skin_folder_mobile');
+$active_admin_skin  = $GLOBALS['config']->get('config', 'admin_skin');
+if (!empty($active_skin_folder)) $active_skins[] = $active_skin_folder;
+if (!empty($active_skin_mobile) && !in_array($active_skin_mobile, $active_skins)) $active_skins[] = $active_skin_mobile;
+if (!empty($active_admin_skin) && !in_array($active_admin_skin, $active_skins)) $active_skins[] = $active_admin_skin;
+
 $skin_paths = glob("skins/*/config.xml");
 foreach ($skin_paths as $skin_path) {
     try {
@@ -469,6 +485,7 @@ foreach ($api_extensions as $ext) {
         'ioncube' => !empty($ext['ioncube']) ? 1 : 0,
         'php_versions' => $ext_php_versions,
         'php_compatible' => $php_compatible,
+        'is_active_skin' => ($installed_dir_type === 'skins' && in_array($installed_basename, $active_skins)),
     );
 }
 
@@ -504,6 +521,7 @@ foreach ($installed as $key => $inst) {
         'configured' => !empty($inst['configured']),
         'edit_url' => !empty($inst['edit_url']) ? $inst['edit_url'] : '',
         'third_party' => (empty($inst['creator']) || stripos($inst['creator'], 'cubecart') === false),
+        'is_active_skin' => ($inst['dir_type'] === 'skins' && in_array($inst['basename'], $active_skins)),
     );
 }
 

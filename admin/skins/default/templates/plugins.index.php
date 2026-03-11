@@ -100,9 +100,15 @@
             <a href="{$ext.edit_url}" class="ext-btn ext-btn-configure"><i class="fa fa-cog"></i> {$LANG.common.configure}</a>
             {/if}
             {if $ext.is_installed}
-            <button type="button" class="ext-btn ext-btn-delete btn-ext-delete-market" data-type="{$ext.installed_dir_type}" data-module="{$ext.installed_basename}" data-name="{$ext.name}">
-               <i class="fa fa-trash"></i> {$LANG.common.delete}
-            </button>
+               {if $ext.is_active_skin}
+               <button type="button" class="ext-btn ext-btn-disabled" disabled title="This skin is currently in use and cannot be deleted">
+                  <i class="fa fa-trash"></i> {$LANG.common.delete}
+               </button>
+               {else}
+               <button type="button" class="ext-btn ext-btn-delete btn-ext-delete-market" data-type="{$ext.installed_dir_type}" data-module="{$ext.installed_basename}" data-name="{$ext.name}">
+                  <i class="fa fa-trash"></i> {$LANG.common.delete}
+               </button>
+               {/if}
             {/if}
          </div>
       </div>
