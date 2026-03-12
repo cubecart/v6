@@ -138,7 +138,6 @@ $default_config_settings = array(
   'skin_folder' => 'foundation',
   'skin_style' => 'default',
   'skin_change' => '0',
-  'default_rss_feed' => 'https://forums.cubecart.com/forum/1-news-announcements.xml',
   'email_method' => 'mail',
   'seo_metadata' => '2',
   'store_meta_description' => '',
@@ -549,7 +548,6 @@ if (!$is_upgrade && !isset($_SESSION['language_selected'])) {
         'defaultCurrency' => 'default_currency',
         'defaultLang' => 'default_language',
         'dirSymbol' => 'default_directory_symbol',
-        'latestNewsRRS' => 'default_rss_feed',
         'dnLoadExpire' => 'download_expire',
         'dnLoadTimes' => 'download_count',
         'mailMethod' => 'email_method',
@@ -630,10 +628,6 @@ if (!$is_upgrade && !isset($_SESSION['language_selected'])) {
 
             if ($new_config['recaptcha'] == 'recaptcha') {
                 $new_config['recaptcha'] = true;
-            }
-            ## Set default RSS feed to correct value if not set, empty or our of date
-            if (empty($new_config['default_rss_feed']) || !isset($new_config['default_rss_feed']) || $new_config['default_rss_feed'] == 'http://forums.cubecart.com/index.php?act=rssout&id=1') {
-                $new_config['default_rss_feed'] = 'http://forums.cubecart.com/rss/forums/1-cubecart-news-announcements/';
             }
             if (file_exists(CC_LANGUAGE_DIR . $main_config['default_language'] . '.xml')) {
                 $default_language = $main_config['default_language'];

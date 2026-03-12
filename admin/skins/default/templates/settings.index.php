@@ -237,7 +237,6 @@
          </div>
          <div><label for="disable_checkout_terms">{$LANG.settings.disable_checkout_terms}</label><span><input name="config[disable_checkout_terms]" id="disable_checkout_terms" type="hidden" class="toggle" value="{$CONFIG.disable_checkout_terms}"></span></div>
          <div><label for="show_basket_weight">{$LANG.settings.show_basket_weight}</label><span><input name="config[show_basket_weight]" id="show_basket_weight" type="hidden" class="toggle" value="{$CONFIG.show_basket_weight}"></span></div>
-         <div><label for="default_rss_feed">{$LANG.settings.default_rss}</label><span><input name="config[default_rss_feed]" id="default_rss_feed" class="textbox" value="{$CONFIG.default_rss_feed}"></span></div>
       </fieldset>
       <div style="display:none" id="per_page_note">
       <h3>{$LANG.settings.product_per_page}</h3>
