@@ -93,18 +93,16 @@ if (stristr($mysql_mode[0]['@@sql_mode'], 'strict')) {
 
 ## Check current version via GitHub releases
 if (!$GLOBALS['session']->has('version_check') && $request = new Request('version.cubecart.com', '/')) {
-
-    $domain = defined('CC_STORE_URL') ? CC_STORE_URL : ($_SERVER['HTTP_HOST'] ?? 'unknown');
-    $client_id = hash('sha256', $domain);
-
     $request->skiplog(true);
     $request->setMethod('get');
     $request->cache(true);
     $request->setSSL();
     $request->setUserAgent('CubeCart/'.CC_VERSION);
-    $request->customHeaders('CC-Referer: '.$client_id);
-    $request->setData($request_data);
-
+    if ($GLOBALS['config']->get('config', 'allow_telemetry')) {
+        $domain = defined('CC_STORE_URL') ? CC_STORE_URL : ($_SERVER['HTTP_HOST'] ?? 'unknown');
+        $client_id = hash('sha256', $domain);
+        $request->customHeaders('CC-Client-ID: '.$client_id);
+    }
     $response = $request->send();
     if ($response !== false) {
         if (isset($response) && version_compare($response, CC_VERSION, '>')) {
