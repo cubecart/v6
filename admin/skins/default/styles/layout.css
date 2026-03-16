@@ -1165,6 +1165,7 @@ form.note p {
     -webkit-border-radius: 6px;
     font-size: 12px;
     z-index: 50;
+    margin-top: 20px;
     margin-bottom: 5px
 }
 .note p {
