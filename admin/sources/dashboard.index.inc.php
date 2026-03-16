@@ -92,19 +92,24 @@ if (stristr($mysql_mode[0]['@@sql_mode'], 'strict')) {
 }
 
 ## Check current version via GitHub releases
-if (!$GLOBALS['session']->has('version_check') && $request = new Request('api.github.com', '/repos/cubecart/v6/releases/latest')) {
+if (!$GLOBALS['session']->has('version_check') && $request = new Request('version.cubecart.com', '/')) {
+
+    $domain = defined('CC_STORE_URL') ? CC_STORE_URL : ($_SERVER['HTTP_HOST'] ?? 'unknown');
+    $client_id = hash('sha256', $domain);
+
     $request->skiplog(true);
     $request->setMethod('get');
     $request->cache(true);
     $request->setSSL();
     $request->setUserAgent('CubeCart/'.CC_VERSION);
-    $request->customHeaders('Accept: application/vnd.github.v3+json');
+    $request->customHeaders('CC-Referer: '.$client_id);
+    $request->setData($request_data);
+
     $response = $request->send();
     if ($response !== false) {
-        $release = json_decode($response, true);
-        if (isset($release['tag_name']) && version_compare($release['tag_name'], CC_VERSION, '>')) {
-            $release_url = 'https://support.cubecart.com/hc/en-gb/articles/360003794198-How-do-I-upgrade-from-CubeCart-v6-to-latest-v6-';
-            $GLOBALS['main']->errorMessage(sprintf($lang['dashboard']['error_version_update'], $release['tag_name'], CC_VERSION).' <a href="'.$release_url.'" target="_blank">'.$lang['maintain']['upgrade_now'].'</a>');
+        if (isset($response) && version_compare($response, CC_VERSION, '>')) {
+            $release_url = 'https://cubecart.zendesk.com/hc/en-gb/articles/360003794198-How-do-I-upgrade-from-CubeCart-v6-to-latest-v6';
+            $GLOBALS['main']->errorMessage(sprintf($lang['dashboard']['error_version_update'], $response, CC_VERSION).' <a href="'.$release_url.'" target="_blank">'.$lang['maintain']['upgrade_now'].'</a>');
         }
     }
     $GLOBALS['session']->set('version_check', true);
