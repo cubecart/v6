@@ -159,6 +159,16 @@ class SEO
             include $hook;
         }
 
+        // Block known bad bots early
+        if (!empty($_SERVER['HTTP_USER_AGENT'])) {
+            foreach ($this->_blocked_bots as $bot) {
+                if (stripos($_SERVER['HTTP_USER_AGENT'], $bot) !== false) {
+                    header('HTTP/1.1 403 Forbidden');
+                    exit;
+                }
+            }
+        }
+
         $this->_sitemap_base_url = str_replace('http://','https://', $GLOBALS['config']->get('config', 'standard_url'));
 
         self::_checkModRewrite();
