@@ -17,6 +17,24 @@
 class SEO
 {
     /**
+     * Bots to block in robots.txt
+     * @var array
+     */
+    private $_blocked_bots = [
+        'AhrefsBot',
+        'SemrushBot',
+        'MJ12bot',
+        'DotBot',
+        'BLEXBot',
+        'SearchmetricsBot',
+        'PetalBot',
+        'Bytespider',
+        'GPTBot',
+        'CCBot',
+        'ClaudeBot',
+        'Google-Extended',
+    ];
+    /**
      * Category directories
      *
      * @var array of strings
@@ -1162,8 +1180,7 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
     /**
      * Write the robots.txt file
      *
-     * @param bool $index
-     * @return bool
+     * @return int|false Number of bytes written, or false on failure
      */
     private function _writeRobots() {
         $robots_path = CC_ROOT_DIR.'/robots.txt';
@@ -1175,13 +1192,20 @@ ErrorDocument 404 '.CC_ROOT_REL.'index.php
             } else {
                 $robots_content = preg_replace('/^Sitemap:.*$/m', "Sitemap: $sitemap_index", $robots_content);
             }
-            unlink($robots_path); // Remove old robots.txt
+            unlink($robots_path);
         } else {
-            $robots_content = <<<EOD
-User-agent: *
-Allow: /
-Sitemap: $sitemap_index
-EOD;
+            $bot_rules = '';
+            foreach ($this->_blocked_bots as $bot) {
+                $bot_rules .= "\nUser-agent: $bot\nDisallow: /\n";
+            }
+            $robots_content = "User-agent: *\n";
+            $robots_content .= "Crawl-delay: 10\n";
+            $robots_content .= "Disallow: /*?set_currency=*\n";
+            $robots_content .= "Disallow: /*?set_language=*\n";
+            $robots_content .= "Disallow: /*&set_currency=*\n";
+            $robots_content .= "Disallow: /*&set_language=*\n";
+            $robots_content .= $bot_rules;
+            $robots_content .= "\nSitemap: $sitemap_index";
         }
         return file_put_contents($robots_path, $robots_content);
     }
