@@ -286,7 +286,7 @@ function currentPage($excluded = null, $included = null, $remove_excluded = true
 {
     $url_path = '';
     $params = array();
-    $one_time = array('added', 'completed', 'deleted', 'edited', 'failed', 'removed', 'subscribed', 'submitted', 'unsubscribed', 'updated', session_name());
+    $one_time = array('added', 'completed', 'deleted', 'edited', 'failed', 'removed', 'subscribed', 'submitted', 'unsubscribed', 'updated', 'cc_session');
     // Always remove session token
     $get = $_GET;
     if (isset($get['token'])) {

@@ -498,3 +498,10 @@ ALTER TABLE `CubeCart_admin_users` ADD COLUMN `verify_expires` DATETIME DEFAULT 
 
 -- Anonymous telemetry opt-in (default enabled for existing stores)
 INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`) SELECT 'config', 'allow_telemetry', '1' FROM DUAL WHERE NOT EXISTS (SELECT 1 FROM `CubeCart_config` WHERE `name`='config' AND `config_key`='allow_telemetry'); #EOQ
+
+-- Widen session_id columns for new 64-char CSPRNG session IDs
+ALTER TABLE `CubeCart_sessions` MODIFY `session_id` varchar(64) NOT NULL; #EOQ
+ALTER TABLE `CubeCart_cookie_consent` MODIFY `session_id` varchar(64) DEFAULT NULL; #EOQ
+
+-- Clear old sessions (old PHP session format incompatible with new serialization)
+TRUNCATE TABLE `CubeCart_sessions`; #EOQ

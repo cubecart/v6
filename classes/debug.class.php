@@ -284,7 +284,7 @@ class Debug
             if (($ret = $this->_makeExportString('POST', $_POST)) !== false) {
                 $output[] = $ret;
             }
-            if (isset($_SESSION) && !empty($_SESSION) && ($ret = $this->_makeExportString('SESSION', $_SESSION)) !== false) {
+            if (isset($GLOBALS['session']) && ($session_data = $GLOBALS['session']->getAllData()) && ($ret = $this->_makeExportString('SESSION', $session_data)) !== false) {
                 $output[] = $ret;
             }
             if (($ret = $this->_makeExportString('COOKIE', merge_array(array('Received:' => $_COOKIE), array('Sent:' => $GLOBALS['SENT_COOKIES'])))) !== false) {

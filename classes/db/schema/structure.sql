@@ -991,7 +991,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_search` (
 
 CREATE TABLE IF NOT EXISTS `CubeCart_sessions` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `session_id` varchar(32) NOT NULL,
+  `session_id` varchar(64) NOT NULL,
   `session_start` int(10) unsigned NOT NULL DEFAULT 0,
   `session_last` int(10) unsigned NOT NULL DEFAULT 0,
   `admin_id` int(10) unsigned NOT NULL DEFAULT 0,
@@ -1162,7 +1162,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_invoice_template` (
 CREATE TABLE IF NOT EXISTS `CubeCart_cookie_consent` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `ip_address` varchar(45) DEFAULT NULL,
-  `session_id` varchar(32) DEFAULT NULL,
+  `session_id` varchar(64) DEFAULT NULL,
   `customer_id` int(11) DEFAULT NULL,
   `dialogue_id` int UNSIGNED NOT NULL,
   `time` INT UNSIGNED NOT NULL DEFAULT '0',
