@@ -1667,6 +1667,7 @@ class Catalogue
      */
     public function imagePath($input, $mode = 'medium', $path = 'relative', $return_placeholder = true)
     {
+        global $glob;
         foreach ($GLOBALS['hooks']->load('class.catalogue.imagepath') as $hook) {
             include $hook;
         }
@@ -1725,25 +1726,26 @@ class Catalogue
                     $filename = sprintf('%s.%d%s', $match[1], $size, $match[2]);
                     ## Find the source
                     $image  = CC_ROOT_DIR.'/images/'.$folder.'/'.$filename;
-                    
-                    if (!file_exists($image)) {
-                        ## Check if the target folder exists - if not, create it!
-                        if (!file_exists(dirname($image))) {
-                            mkdir(dirname($image), chmod_writable(), true);
+                    if(!isset($glob['block_thumbs']) || $glob['block_thumbs'] == 0) {
+                        if (!file_exists($image)) {
+                            ## Check if the target folder exists - if not, create it!
+                            if (!file_exists(dirname($image))) {
+                                mkdir(dirname($image), chmod_writable(), true);
+                            }
+                            ## Generate the image
+                            $gd  = new GD(dirname($image), $size, (int)$data['quality']);
+                            if (!$gd->gdLoadFile($source)) {
+                                $GLOBALS['gui']->setError(sprintf($GLOBALS['language']->catalogue['gd_memory_error'], $file), true);
+                                // Return source instead
+                                return $this->imagePath($input, 'source', $path, $return_placeholder);
+                            }
+                            $gd->gdSave(basename($image));
                         }
-                        ## Generate the image
-                        $gd  = new GD(dirname($image), $size, (int)$data['quality']);
-                        if (!$gd->gdLoadFile($source)) {
-                            $GLOBALS['gui']->setError(sprintf($GLOBALS['language']->catalogue['gd_memory_error'], $file), true);
-                            // Return source instead
-                            return $this->imagePath($input, 'source', $path, $return_placeholder);
+                        // panic for corrupt cached images
+                        if(filesize($image)===0) {
+                            $folder = 'source';
+                            $filename = $file;
                         }
-                        $gd->gdSave(basename($image));
-                    }
-                    // panic for corrupt cached images
-                    if(filesize($image)===0) {
-                        $folder = 'source';
-                        $filename = $file;
                     }
                 } else {
                     trigger_error('No image mode set', E_USER_NOTICE);
