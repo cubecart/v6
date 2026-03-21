@@ -221,6 +221,9 @@ if (!isset($_SESSION['setup']['permissions'])) {
         if (isset($existing_db) && is_array($existing_db)) {
             $GLOBALS['smarty']->assign('PRESET_DB', $existing_db);
         }
+        if (isset($cc_email) && !empty($cc_email)) {
+            $GLOBALS['smarty']->assign('PRESET_EMAIL', $cc_email);
+        }
     } else {
         ## Stage 5: Actual installation
         ## Write config file

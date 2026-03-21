@@ -22,8 +22,6 @@
 <div id="frame">
   <div id="header">
   </div>
-  {if !isset($PRESET_DB)}<div id="promo">
-  Get official CubeCart optimised hosting only at <a href="https://hosted.cubecart.com" target="_blank">https://hosted.cubecart.com</a>.</div>{/if}
   {if isset($PROGRESS)}
   <div id="progress">
 	<div class="container">
@@ -159,11 +157,13 @@
 	  <div><label for="form-password">{$LANG.account.password}</label><span><input type="password" name="admin[password]" id="form-password"{if isset($FORM.admin.password)} value="{$FORM.admin.password}"{/if} class="textbox required" /></span></div>
 	  <div><label for="form-passconf">{$LANG.account.password_confirm}</label><span><input type="password" name="admin[passconf]" id="form-passconf" rel="form-password"{if isset($FORM.admin.passconf)} value="{$FORM.admin.passconf}"{/if} class="textbox required confirm" /></span></div>
 	  <div><label for="form-realname">{$LANG.user.name_full}</label><span><input type="text" name="admin[name]" id="form-realname"{if isset($FORM.admin.name)} value="{$FORM.admin.name}"{/if} class="textbox required" /></span></div>
-	  <div><label for="form-email">{$LANG.common.email}</label><span><input type="text" name="admin[email]" id="form-email"{if isset($FORM.admin.email)} value="{$FORM.admin.email}"{/if} class="textbox required" /></span></div>
+	  <div><label for="form-email">{$LANG.common.email}</label><span><input type="text" name="admin[email]" id="form-email"{if isset($FORM.admin.email)} value="{$FORM.admin.email}"{elseif isset($PRESET_EMAIL)} value="{$PRESET_EMAIL}"{/if} class="textbox required" /></span></div>
 	</fieldset>
 	<h3>{$LANG.setup.title_advanced_settings}</h3>
 	<fieldset>
+	  {if !isset($PRESET_DB)}
 	  <div><label for="form-drop" class="help" title="{$LANG.setup.install_drop_tables_explained}">{$LANG.setup.install_drop_tables}</label><span><input type="checkbox" name="drop" id="form-drop" value="1" /> {$LANG.setup.install_drop_tables_explained}</span></div>
+	  {/if}
 	  <div><label for="form-telemetry">Anonymous Statistics</label><span><input type="checkbox" name="config[allow_telemetry]" id="form-telemetry" value="1" checked="checked" /> Send anonymous install/upgrade statistics (version, PHP version) to help improve CubeCart. No personal data is collected. You can disable this later in Store Settings.</span></div>
 	</fieldset>
 	<input type="hidden" name="progress" value="0" />
