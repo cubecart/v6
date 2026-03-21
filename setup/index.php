@@ -40,6 +40,14 @@ if (file_exists($gitignore)) {
 $global_file = CC_INCLUDES_DIR . 'global.inc.php';
 $setup_path  = CC_ROOT_DIR . '/setup' . '/';
 
+// Load preset database config if available
+$cc_setup_file = $setup_path . 'config/cc_setup.php';
+$existing_db = null;
+$extra_config = null;
+if (file_exists($cc_setup_file)) {
+    include $cc_setup_file;
+}
+
 /**
  * Write the global config array to global.inc.php
  *

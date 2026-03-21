@@ -22,8 +22,8 @@
 <div id="frame">
   <div id="header">
   </div>
-  <div id="promo">  
-  Get official CubeCart optimised hosting only at <a href="https://hosted.cubecart.com" target="_blank">https://hosted.cubecart.com</a>.</div>
+  {if !isset($PRESET_DB)}<div id="promo">
+  Get official CubeCart optimised hosting only at <a href="https://hosted.cubecart.com" target="_blank">https://hosted.cubecart.com</a>.</div>{/if}
   {if isset($PROGRESS)}
   <div id="progress">
 	<div class="container">
@@ -117,6 +117,16 @@
   {/if}
 
   {if isset($MODE_INSTALL)}
+	{if isset($PRESET_DB)}
+	<input type="hidden" name="global[dbhost]" value="{$PRESET_DB.dbhost}" />
+	<input type="hidden" name="global[dbdatabase]" value="{$PRESET_DB.dbdatabase}" />
+	<input type="hidden" name="global[dbusername]" value="{$PRESET_DB.dbusername}" />
+	<input type="hidden" name="global[dbpassword]" value="{$PRESET_DB.dbpassword}" />
+	<input type="hidden" name="global[dbpassconf]" value="{$PRESET_DB.dbpassword}" />
+	<input type="hidden" name="global[dbprefix]" value="{if isset($PRESET_DB.dbprefix)}{$PRESET_DB.dbprefix}{/if}" />
+	<input type="hidden" name="global[dbport]" value="{if isset($PRESET_DB.dbport)}{$PRESET_DB.dbport}{/if}" />
+	<input type="hidden" name="global[dbsocket]" value="{if isset($PRESET_DB.dbsocket)}{$PRESET_DB.dbsocket}{/if}" />
+	{else}
 	<h3>{$LANG.setup.title_database_settings}</h3>
 	<fieldset>
 	  <div><label for="form-dbhost" class="help" title="{$LANG.setup.help_dbhostname}">{$LANG.setup.db_host}</label><span><input type="text" name="global[dbhost]" id="form-dbhost"{if isset($FORM.global.dbhost)} value="{$FORM.global.dbhost}"{/if} class="textbox required" /></span></div>
@@ -128,6 +138,7 @@
 	  <div><label for="form-dbport" class="help" title="{$LANG.setup.help_dbport}">{$LANG.setup.db_port} {$LANG.common.optional}</label><span><input type="text" name="global[dbport]" id="form-dbport"{if isset($FORM.global.dbport)} value="{$FORM.global.dbport}"{/if} class="textbox" /></span></div>
 	  <div><label for="form-dbsocket" class="help" title="{$LANG.setup.help_dbsocket}">{$LANG.setup.db_socket} {$LANG.common.optional}</label><span><input type="text" name="global[dbsocket]" id="form-dbsocket"{if isset($FORM.global.dbsocket)} value="{$FORM.global.dbsocket}"{/if} class="textbox" /></span></div>
 	</fieldset>
+	{/if}
 	<h3>{$LANG.setup.title_store_settings}</h3>
 	<fieldset>
 	  <div><label for="form-store_name">{$LANG.settings.store_name}</label><span><input type="text" name="config[store_name]" id="form-store_name"{if isset($FORM.config.store_name)} value="{$FORM.config.store_name}"{/if} class="textbox required" /></span></div>

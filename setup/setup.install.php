@@ -216,11 +216,21 @@ if (!isset($_SESSION['setup']['permissions'])) {
             $list_currency[] = array('code' => $code, 'selected' => $selected, 'name' => (!empty($name))?$name:$code);
         }
         $GLOBALS['smarty']->assign('CURRENCIES', $list_currency);
+
+        // If preset DB config exists, pass to template for hidden fields
+        if (isset($existing_db) && is_array($existing_db)) {
+            $GLOBALS['smarty']->assign('PRESET_DB', $existing_db);
+        }
     } else {
         ## Stage 5: Actual installation
         ## Write config file
-        ksort($_SESSION['setup']['global']);
-        if (writeGlobalConfig($_SESSION['setup']['global'], $global_file)) {
+        $global_data = $_SESSION['setup']['global'];
+        // Merge extra_config from cc_setup.php into global config
+        if (isset($extra_config) && is_array($extra_config)) {
+            $global_data = array_merge($global_data, $extra_config);
+        }
+        ksort($global_data);
+        if (writeGlobalConfig($global_data, $global_file)) {
             ## Install database
             clearstatcache(true, $global_file);
             if (function_exists('opcache_invalidate')) {
