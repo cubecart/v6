@@ -692,6 +692,7 @@ if (!$is_upgrade && !isset($_SESSION['language_selected'])) {
         // delete setup folder on admin login
         $date = new Datetime(date('r',time()+7200));
         $attributes = '';
+        $attributes .= ';Path=/';
         $attributes .= ';Expires='.$date->format(DateTime::COOKIE);
         $attributes .= ';SameSite=None';
         $attributes .= ';Secure';
