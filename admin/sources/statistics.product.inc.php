@@ -23,7 +23,7 @@ if($product) {
 
     $join = "`".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_inventory` AS `I` INNER JOIN `".$GLOBALS['config']->get('config', 'dbprefix')."CubeCart_order_summary` AS `S` ON `I`.`cart_order_id` = `S`.`cart_order_id`";
     $columns = '`S`.`order_date`, `S`.`id`, `I`.`quantity`';
-    $where = '`I`.`product_id` = '.(string)$_GET['product_id'].' AND `S`.`status` IN(2, 3)';
+    $where = '`I`.`product_id` = '.(int)$_GET['product_id'].' AND `S`.`status` IN(2, 3)';
     $where_date = '';
     $reset = false;
     if(isset($_REQUEST['from']) && !empty($_REQUEST['from']) && isset($_REQUEST['to']) && !empty($_REQUEST['to'])) {

@@ -18,11 +18,12 @@ Admin::getInstance()->permissions('filemanager', CC_PERM_READ, true);
 
 if(isset($_GET['download_file']) && !empty($_GET['download_file'])) {
     $file = base64_decode($_GET['download_file']);
-    $file = str_replace(array('..'.DIRECTORY_SEPARATOR,'.'.DIRECTORY_SEPARATOR),'',$file);
     $file = ltrim($file, DIRECTORY_SEPARATOR);
+    $file = ltrim($file, '/');
     $file = CC_ROOT_DIR.'/'.$file;
-    if(file_exists($file)) { // It really should exist
-        deliverFile($file);
+    $real = realpath($file);
+    if($real !== false && strpos($real, realpath(CC_ROOT_DIR).DIRECTORY_SEPARATOR) === 0 && is_file($real)) {
+        deliverFile($real);
     }
 }
 
