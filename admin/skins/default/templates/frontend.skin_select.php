@@ -111,7 +111,7 @@
     <div class="ssw_panel">
         <a href="#" class="ssw_close" onclick="document.getElementById('skin_select_widget').classList.remove('open');return false;">&times;</a>
         <form action="{$VAL_SELF}" method="post">
-            <label>Change Skin</label>
+            <label>{$LANG.common.change_skin}</label>
             <select name="select_skin" onchange="this.form.submit()">
             {foreach from=$SKINS item=skin}
             {if isset($skin.styles)}

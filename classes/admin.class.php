@@ -396,7 +396,7 @@ class Admin
                         include $hook;
                     }
                     $minutes_blocked = ceil(($GLOBALS['config']->get('config', 'bftime')/60));
-                    $GLOBALS['gui']->setError(sprintf('Too many invalid logins have been made. Access has been blocked for %s minutes.', $minutes_blocked));
+                    $GLOBALS['gui']->setError(sprintf($GLOBALS['language']->account['error_login_blocked'], $minutes_blocked));
                 }
             } else {
                 if (!$GLOBALS['session']->blocked()) {
@@ -431,7 +431,7 @@ class Admin
                     $GLOBALS['gui']->setError($GLOBALS['language']->account['error_login']);
                 } else {
                     $minutes_blocked = ceil(($GLOBALS['config']->get('config', 'bftime')/60));
-                    $GLOBALS['gui']->setError(sprintf('Too many invalid logins have been made. Access has been blocked for %s minutes.', $minutes_blocked));
+                    $GLOBALS['gui']->setError(sprintf($GLOBALS['language']->account['error_login_blocked'], $minutes_blocked));
                 }
                 foreach ($GLOBALS['hooks']->load('admin.authenticate.failed_valid_admin') as $hook) {
                     include $hook;
@@ -466,7 +466,7 @@ class Admin
                 httpredir((isset($redir) && !empty($redir)) ? $redir : $GLOBALS['rootRel'].$GLOBALS['config']->get('config', 'adminFile'));
             } else {
                 $minutes_blocked = ceil(($GLOBALS['config']->get('config', 'bftime')/60));
-                $GLOBALS['gui']->setError(sprintf('Too many invalid logins have been made. Access has been blocked for %s minutes.', $minutes_blocked));
+                $GLOBALS['gui']->setError(sprintf($GLOBALS['language']->account['error_login_blocked'], $minutes_blocked));
             }
         } else {
             $GLOBALS['gui']->setError($GLOBALS['language']->account['error_login']);

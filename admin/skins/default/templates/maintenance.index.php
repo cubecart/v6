@@ -47,8 +47,8 @@
 </div>
 <div id="backup" class="tab_content">
   {if !isset($CONFIG.cid)}
-  <h3>Automated Backups</h3>
-  	<p>Official CubeCart hosting comes with automated hourly backups. Visit <a href="https://hosted.cubecart.com" target="_blank">https://hosted.cubecart.com</a> for more information. We offer a <a href="https://support.cubecart.com/hc/en-gb/articles/360004746498-How-do-I-transfer-my-existing-CubeCart-store-to-your-hosting-service-" target="_blank">free migration service</a>.</p>
+  <h3>{$LANG.maintain.automated_backups}</h3>
+  	<p>{$LANG.maintain.automated_backups_note}</p>
   {/if}
   <h3>{$LANG.maintain.title_files_backup}</h3>
   <ul class="severity">
@@ -307,10 +307,10 @@
   <div id="progress_bar_percent"></div>
   <input type="submit" value="{if $ES_STATS.count == 0}{$LANG.common.build}{else}{$LANG.common.rebuild}{/if}" id="rebuild_elastic">
   {else}
-  <h3>New in CubeCart 6.5</h3>
-  <p>Getting your products infront of your customers is critical. Elasticsearch brings lightening fast, search-as-you-type functionality to your store. This is included as standard with official <a href="https://hosted.cubecart.com/" target="_blank">CubeCart Hosting</a>.<br>Alternatively please contact your hosting company to check for availability. To configure and enable Elasticsearch please update your store <a href="?_g=settings#Advanced_Settings">settings</a>.</p>
-  <p>For more informarion contact <a href="mailto:hello@cubecart.com">hello@cubecart.com</a>.</p>
-  <h4>Example:</h4>
+  <h3>{$LANG.maintain.es_promo_title}</h3>
+  <p>{$LANG.maintain.es_promo_desc}</p>
+  <p>{$LANG.maintain.es_promo_contact}</p>
+  <h4>{$LANG.common.example}:</h4>
   <video width="750" loop="true" autoplay="autoplay" controls muted>
     <source src="./{$SKIN_VARS.admin_folder}/skins/{$SKIN_VARS.skin_folder}/media/movie.elasticsearch.mp4" type="video/mp4">
   </video>

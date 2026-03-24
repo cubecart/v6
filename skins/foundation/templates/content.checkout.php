@@ -20,7 +20,7 @@
    {if $CREDIT_AVAILABLE>0}
    <div class="row">
       <div class="medium-8 columns text-right">
-         Apply credit:
+         {$LANG.basket.apply_credit}:
       </div>
       <div class="medium-4 columns text-right">
         {if $CREDIT_USED && $CREDIT_USED !== $AVAILABLE_CREDIT}{sprintf($LANG.basket.credit_use, $CREDIT_USED, $AVAILABLE_CREDIT)}{else}{$AVAILABLE_CREDIT}{/if}

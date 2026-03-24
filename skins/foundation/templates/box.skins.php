@@ -12,7 +12,7 @@
 {if $SKINS}
 <form action="{$VAL_SELF}" method="post" class="autosubmit nomarg skin_selector pad-top" id="box-skin">
    <div class="row">
-      <div class="small-12 columns"><h4><a href="#" class="hide_skin_selector right" title="{$LANG.common.close}"><svg class="icon"><use xlink:href="#icon-times"></use></svg></a>Change Skin:</h4>
+      <div class="small-12 columns"><h4><a href="#" class="hide_skin_selector right" title="{$LANG.common.close}"><svg class="icon"><use xlink:href="#icon-times"></use></svg></a>{$LANG.common.change_skin}:</h4>
          <select name="select_skin" class="auto_submit">
          {foreach from=$SKINS item=skin}
          {if isset($skin.styles)}

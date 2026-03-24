@@ -44,8 +44,8 @@
    <textarea name="inv[{$product.id}][custom][{$k}]">{$v}</textarea>
    {elseif $k=='Method'}
    <select name="inv[{$product.id}][custom][{$k}]" class="textbox">
-      <option{if $v=='Email'} selected="selected"{/if} value="Email">Email</option>
-      <option{if $v=='Post'} selected="selected"{/if} value="Post">Post</option>
+      <option{if $v=='Email'} selected="selected"{/if} value="Email">{$LANG.common.email}</option>
+      <option{if $v=='Post'} selected="selected"{/if} value="Post">{$LANG.common.post}</option>
    </select>
    {else}
    <input type="text" name="inv[{$product.id}][custom][{$k}]" class="textbox" value="{$v}">

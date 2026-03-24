@@ -34,7 +34,7 @@
 		<td colspan="2" align="center">{$LANG.common.read}</td>
 		<td>{$LANG.common.method}</td>
 		<td>{$LANG.common.date}</td>
-		<td>Attachments</td>
+		<td>{$LANG.common.attachments}</td>
 		<td>{$LANG.common.edit}</td>
 		<td>{$LANG.common.resend}</td>
 	  </tr>

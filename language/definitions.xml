@@ -131,6 +131,7 @@
     <string name="error_twofa_locked" introduced="6.6.0"><![CDATA[Too many failed attempts. Please log in again and wait %d minutes before retrying.]]></string>
     <string name="error_twofa_wait" introduced="6.6.0"><![CDATA[Please wait before requesting a new code.]]></string>
     <string name="notify_twofa_resent" introduced="6.6.0"><![CDATA[A new verification code has been sent to your email.]]></string>
+    <string name="error_login_blocked" introduced="6.6.0"><![CDATA[Too many invalid logins have been made. Access has been blocked for %s minutes.]]></string>
   </group>
   <group name="address">
     <string name="contact_url" introduced="6.5.12"><![CDATA[Contact URL]]></string>
@@ -292,6 +293,7 @@
     <string name="view_basket" introduced="5.0.0"><![CDATA[View Basket]]></string>
     <string name="weight" introduced="5.0.0"><![CDATA[Basket Weight]]></string>
     <string name="your_comments" introduced="5.0.0"><![CDATA[Delivery Notes or Additional Comments]]></string>
+    <string name="apply_credit" introduced="6.6.0"><![CDATA[Apply credit]]></string>
   </group>
   <group name="catalogue">
     <string name="manufacturer_address" introduced="6.5.12"><![CDATA[Manufacturer Address]]></string>
@@ -965,6 +967,9 @@
     <string name="yesterday" introduced="5.0.0"><![CDATA[Yesterday]]></string>
     <string name="install" introduced="6.6.0"><![CDATA[Install]]></string>
     <string name="version" introduced="6.6.0"><![CDATA[Version]]></string>
+    <string name="attachment_types" introduced="6.6.0"><![CDATA[Image, Zip, PDF]]></string>
+
+    <string name="community" introduced="6.6.0"><![CDATA[CubeCart Community]]></string>
   </group>
   <group name="confirm">
     <string name="confirm_page" introduced="5.0.0"><![CDATA[Confirmation Page]]></string>
@@ -1563,6 +1568,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="notify_snippet_import_failed" introduced="5.2.0"><![CDATA[Failed to import code]]></string>
     <string name="author" introduced="5.2.0"><![CDATA[Author]]></string>
     <string name="example_code_snippet_xml" introduced="5.2.0"><![CDATA[An example of an import XML feed can be found <a href="docs/examples/code_snippet_import.php" target="blank">here</a>. Please use the &quot;Help&quot; link for further information.]]></string>
+    <string name="revert_default" introduced="6.6.0"><![CDATA[Revert to default hook configuration]]></string>
   </group>
   <group name="maintain">
     <string name="request_time" introduced="6.5.2"><![CDATA[Request Time]]></string>
@@ -1713,6 +1719,15 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_rebuild_misc" introduced="5.0.0"><![CDATA[Miscellaneous]]></string>
     <string name="title_query_db" introduced="5.0.0"><![CDATA[Query MySQL Database]]></string>
     <string name="query_box" introduced="5.0.0"><![CDATA[Query Box]]></string>
+    <string name="automated_backups" introduced="6.6.0"><![CDATA[Automated Backups]]></string>
+    <string name="automated_backups_note" introduced="6.6.0"><![CDATA[Official CubeCart hosting comes with automated hourly backups. Visit <a href="https://hosted.cubecart.com" target="_blank">https://hosted.cubecart.com</a> for more information. We offer a <a href="https://support.cubecart.com/hc/en-gb/articles/360004746498-How-do-I-transfer-my-existing-CubeCart-store-to-your-hosting-service-" target="_blank">free migration service</a>.]]></string>
+    <string name="es_promo_title" introduced="6.6.0"><![CDATA[New in CubeCart 6.5]]></string>
+    <string name="es_promo_desc" introduced="6.6.0"><![CDATA[Getting your products in front of your customers is critical. Elasticsearch brings lightning fast, search-as-you-type functionality to your store. This is included as standard with official <a href="https://hosted.cubecart.com/" target="_blank">CubeCart Hosting</a>.<br>Alternatively please contact your hosting company to check for availability. To configure and enable Elasticsearch please update your store <a href="?_g=settings#Advanced_Settings">settings</a>.]]></string>
+    <string name="es_promo_contact" introduced="6.6.0"><![CDATA[For more information contact <a href="mailto:hello@cubecart.com">hello@cubecart.com</a>.]]></string>
+    <string name="es_no_indices" introduced="6.6.0"><![CDATA[Elasticsearch has no indices. Please rebuild.]]></string>
+    <string name="es_error" introduced="6.6.0"><![CDATA[Elasticsearch error]]></string>
+    <string name="es_no_products" introduced="6.6.0"><![CDATA[No products to index.]]></string>
+
   </group>
   <group name="module">
     <string name="default_extensions" introduced="6.5.10"><![CDATA[CubeCart comes preinstalled with <a href="https://www.cubecart.com/extensions/plugins/paypal-commerce" target="_blank">PayPal Commerce</a> &amp; <a href="https://www.cubecart.com/extensions/shipping-methods/all-in-one-shipping" target="_blank">All in One Shipping</a> due to their huge popularity. These can, of course be deleted and replaced with other extensions from our marketplace.]]></string>
@@ -2623,6 +2638,24 @@ This email is sent from the store's master email address but it is possible to r
     <string name="help_dbprefix" introduced="5.0.0"><![CDATA[If you are hosting more than one store on one database please define a table prefix to prevent clashing table names.]]></string>
     <string name="help_defaultlang" introduced="5.0.0"><![CDATA[Please choose your store's default language.]]></string>
     <string name="help_defaultcurrency" introduced="5.0.0"><![CDATA[Please choose your store's default currency.]]></string>
+    <string name="telemetry_title" introduced="6.6.0"><![CDATA[Anonymous Statistics]]></string>
+    <string name="telemetry_note" introduced="6.6.0"><![CDATA[Send anonymous version info to help improve CubeCart. No personal data collected.]]></string>
+    <string name="upgrade_click_continue_error" introduced="6.6.0"><![CDATA[Please click continue to continue upgrade.]]></string>
+    <string name="ecommerce_by" introduced="6.6.0"><![CDATA[eCommerce by]]></string>
+    <string name="error_lang_download" introduced="6.6.0"><![CDATA[Failed to download language pack. Please try again.]]></string>
+    <string name="error_lang_fetch" introduced="6.6.0"><![CDATA[Unable to fetch available languages. Please check your internet connection and try again.]]></string>
+    <string name="error_bad_db_ext" introduced="6.6.0"><![CDATA[Bad database extension]]></string>
+    <string name="error_mysqli_missing" introduced="6.6.0"><![CDATA[PHP mysqli extension not installed]]></string>
+    <string name="error_hosting_compat" introduced="6.6.0"><![CDATA[Hosting not compatible. Please rectify or setup a hosted CubeCart store instantly at <a href="https://hosted.cubecart.com" target="_blank">https://hosted.cubecart.com</a>.]]></string>
+    <string name="email_admin_url_subject" introduced="6.6.0"><![CDATA[Store Admin URL]]></string>
+    <string name="email_admin_url_body" introduced="6.6.0"><![CDATA[Hi %1$s,
+
+Your store has been setup to CubeCart version %2$s.
+
+For security reasons the administrator URL has been obscured to divert any possible unwanted attention. Please set your bookmark to %3$s
+
+
+This email was sent automatically by the CubeCart setup tool.]]></string>
   </group>
   <group name="statistics">
     <string name="invalid_date_from" introduced="6.5.10"><![CDATA[The from date entered was invalid.]]></string>

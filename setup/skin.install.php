@@ -54,12 +54,12 @@
   <form action="index.php" method="post" enctype="multipart/form-data">
 	<div id="content">
   {if isset($MODE_LANGUAGE)}
-	  <h3 class="first">Select Language</h3>
-	  <p>Please select your language. It will be downloaded and used for the setup process and your store.</p>
+	  <h3 class="first">{$LANG.setup.title_select_language}</h3>
+	  <p>{$LANG.setup.select_language_note}</p>
 	  {if isset($API_LANGUAGES)}
 	  <fieldset>
 		<div>
-		  <label for="select_language">Language</label>
+		  <label for="select_language">{$LANG.common.language}</label>
 		  <span>
 			<select name="select_language" id="select_language" class="textbox">
 			  {foreach from=$API_LANGUAGES item=lang}<option value="{$lang.code}"{$lang.selected}>{$lang.name} ({$lang.code})</option>{/foreach}
@@ -164,7 +164,7 @@
 	  {if !isset($PRESET_DB)}
 	  <div><label for="form-drop" class="help" title="{$LANG.setup.install_drop_tables_explained}">{$LANG.setup.install_drop_tables}</label><span><input type="checkbox" name="drop" id="form-drop" value="1" /> {$LANG.setup.install_drop_tables_explained}</span></div>
 	  {/if}
-	  <div><label for="form-telemetry">Anonymous Statistics</label><span><input type="checkbox" name="config[allow_telemetry]" id="form-telemetry" value="1" checked="checked" /> Send anonymous install/upgrade statistics (version, PHP version) to help improve CubeCart. No personal data is collected. You can disable this later in Store Settings.</span></div>
+	  <div><label for="form-telemetry">{$LANG.setup.telemetry_title}</label><span><input type="checkbox" name="config[allow_telemetry]" id="form-telemetry" value="1" checked="checked" /> {$LANG.setup.telemetry_note}</span></div>
 	</fieldset>
 	<input type="hidden" name="progress" value="0" />
   {/if}
@@ -181,7 +181,7 @@
 	  <div>
 	  <p>{$LANG_UPGRADE_IN_PROGRESS}</p>
 	  {if isset($GUI_MESSAGE)}
-	  <p>Please click continue to continue upgrade.</p>
+	  <p>{$LANG.setup.upgrade_click_continue_error}</p>
 	  {else}
 	  <img src="images/loading.gif" align="middle" />
 	  {/if}
@@ -220,7 +220,7 @@
 	</div>
   </form>
 </div>
-<div id="footer">eCommerce by <a href="https://www.cubecart.com">CubeCart</a></div>
+<div id="footer">{$LANG.setup.ecommerce_by} <a href="https://www.cubecart.com">CubeCart</a></div>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
 <script type="text/javascript" src="../js/plugins/jquery.pstrength.js"></script>

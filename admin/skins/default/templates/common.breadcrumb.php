@@ -1,9 +1,7 @@
 <div id="breadcrumbs">
    <div class="inner">
       <ul class="quick_links">
-      {if !isset($CONFIG.cid)}
-      <li><a href="https://hosted.cubecart.com/offer" target="_blank">Boost Speed &#128640;</a></li>
-      {/if}
+
       {if $QUICK_TOUR}
       <li><a href="#" id="quickTour">{$LANG.dashboard.quick_tour}</a></li>
       {/if}
@@ -12,7 +10,7 @@
          <ul>
             {if $HELP_URL}<li><i class="fa fa-book" aria-hidden="true"></i> <a href="{$HELP_URL}" id="wikihelp" class="help-panel-trigger">{$LANG.common.this_page}</a></li>{/if}
             <li><i class="fa fa-comments-o" aria-hidden="true"></i> <a href="https://www.cubecart.com/technical-support" target="_blank">{$LANG.common.tech_support}</a></li>
-            <li><i class="fa fa-users" aria-hidden="true"></i> <a href="https://community.cubecart.com" target="_blank">CubeCart Community</a></li>
+            <li><i class="fa fa-users" aria-hidden="true"></i> <a href="https://community.cubecart.com" target="_blank">{$LANG.common.community}</a></li>
          </ul>
       </li>
       <li><a href="index.php" target="_blank">{$LANG.settings.store_status} - {if ($STORE_STATUS)}<span class="store_open">{$LANG.common.open}</span>{else}<span class="store_closed">{$LANG.common.closed}</span>{/if}</a></li>

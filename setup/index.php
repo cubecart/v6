@@ -256,6 +256,21 @@ if (empty($strings['setup']['button_retry'])) {
 if (empty($strings['gui_message']['errors_detected'])) {
     $strings['gui_message']['errors_detected'] = 'Errors';
 }
+if (empty($strings['setup']['error_lang_download'])) {
+    $strings['setup']['error_lang_download'] = 'Failed to download language pack. Please try again.';
+}
+if (empty($strings['setup']['error_lang_fetch'])) {
+    $strings['setup']['error_lang_fetch'] = 'Unable to fetch available languages. Please check your internet connection and try again.';
+}
+if (empty($strings['setup']['title_select_language'])) {
+    $strings['setup']['title_select_language'] = 'Select Language';
+}
+if (empty($strings['setup']['select_language_note'])) {
+    $strings['setup']['select_language_note'] = 'Please select your language. It will be downloaded and used for the setup process and your store.';
+}
+if (empty($strings['common']['language'])) {
+    $strings['common']['language'] = 'Language';
+}
 
 $GLOBALS['smarty']->assign('LANG', $strings);
 $GLOBALS['smarty']->assign('VERSION', CC_VERSION);
@@ -337,7 +352,7 @@ if (isset($_POST['select_language'])) {
         $_SESSION['language_selected'] = true;
         httpredir('index.php');
     } else {
-        $errors[] = 'Failed to download language pack. Please try again.';
+        $errors[] = $strings['setup']['error_lang_download'];
     }
 } elseif (isset($_POST['proceed'])) {
     $redir = true;
@@ -398,7 +413,7 @@ if (!$is_upgrade && !isset($_SESSION['language_selected'])) {
         }
     }
     if (!isset($api_lang_list) || empty($api_lang_list)) {
-        $errors[] = 'Unable to fetch available languages. Please check your internet connection and try again.';
+        $errors[] = $strings['setup']['error_lang_fetch'];
         $retry = true;
         $proceed = false;
     }
@@ -417,8 +432,8 @@ if (!$is_upgrade && !isset($_SESSION['language_selected'])) {
     'MySQL' => array(
       'title' => 'MySQL 5.7+ / MariaDB 10.3+',
       'status' => extension_loaded('mysqli'),
-      'pass' => (function_exists('mysqli_get_client_info')) ? mysqli_get_client_info() : "Bad database extension",
-      'fail' => "PHP mysqli extension not installed"
+      'pass' => (function_exists('mysqli_get_client_info')) ? mysqli_get_client_info() : $strings['setup']['error_bad_db_ext'],
+      'fail' => $strings['setup']['error_mysqli_missing']
     ),
     'GD' => array(
       'title' => 'GD Image Library',
@@ -463,7 +478,7 @@ if (!$is_upgrade && !isset($_SESSION['language_selected'])) {
     }
   }
   if(!$status) {
-    $errors[] = 'Hosting not compatible. Please rectify or setup a hosted CubeCart store instantly at <a href="https://hosted.cubecart.com" target="_blank">https://hosted.cubecart.com</a>.';
+    $errors[] = $strings['setup']['error_hosting_compat'];
     $retry = true;
     $proceed = false;
   }
@@ -732,7 +747,7 @@ if (!$is_upgrade && !isset($_SESSION['language_selected'])) {
             if ($admins = $db->select('CubeCart_admin_users', false, array('status'=> 1))) {
                 $headers = 'From: nobody@'.parse_url(CC_STORE_URL, PHP_URL_HOST);
                 foreach ($admins as $admin) {
-                    mail($admin['email'], "Store Admin URL", "Hi ".html_entity_decode($admin['name'], ENT_QUOTES).",\r\n\r\nYour store has been setup to CubeCart version ".CC_VERSION.".\r\n\r\nFor security reasons the administrator URL has been obscured to divert any possible unwanted attention. Please set your bookmark to ".$adminURL."\r\n\r\n\r\nThis email was sent automatically by the CubeCart setup tool.", $headers);
+                    mail($admin['email'], $strings['setup']['email_admin_url_subject'], sprintf($strings['setup']['email_admin_url_body'], html_entity_decode($admin['name'], ENT_QUOTES), CC_VERSION, $adminURL), $headers);
                 }
             }
             $GLOBALS['smarty']->assign('ADMIN_URL', $adminURL);

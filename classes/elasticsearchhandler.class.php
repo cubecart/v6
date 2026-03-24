@@ -242,11 +242,11 @@ class ElasticsearchHandler
             $error = json_decode($error,true);
 
             if(isset($error['error']['type']) && $error['error']['type'] == 'index_not_found_exception') {
-                $GLOBALS['gui']->setError('Elasticsearch has no indices. Please rebuild.');
+                $GLOBALS['gui']->setError($GLOBALS['language']->maintain['es_no_indices']);
             } elseif(isset($error['error']['reason'])) {
                 $GLOBALS['gui']->setError($error['error']['reason']);
             } else {
-                $GLOBALS['gui']->setError('Elasticsearch error: '.$e->getMessage());
+                $GLOBALS['gui']->setError($GLOBALS['language']->maintain['es_error'].': '.$e->getMessage());
             }
             return array('size' => '0b', 'count' => '0');
         } 
@@ -456,7 +456,7 @@ class ElasticsearchHandler
         $where = array('status' => 1);
         $total = (int)$GLOBALS['db']->count('CubeCart_inventory', 'status', $where);
         if($total==0 && $cycle==1) {
-            $GLOBALS['gui']->setError('No products to index.');
+            $GLOBALS['gui']->setError($GLOBALS['language']->maintain['es_no_products']);
         }
         if (($products = $GLOBALS['db']->select('CubeCart_inventory', array('product_id'), $where, false, $limit, $cycle)) !== false) {
             foreach ($products as $product) {

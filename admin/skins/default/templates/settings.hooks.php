@@ -166,7 +166,7 @@
         <p>{$LANG.hooks.error_hook_none}</p>
         {/if}
       <p>{$LANG.hooks.notify_hook_magic}</p>
-      <p><a href="?_g=settings&node=hooks&plugin={$HOOKS.0.plugin}&revert=1" title="{$LANG.notification.confirm_revert}" class="button small delete">Revert to default hook configuration</a></p>
+      <p><a href="?_g=settings&node=hooks&plugin={$HOOKS.0.plugin}&revert=1" title="{$LANG.notification.confirm_revert}" class="button small delete">{$LANG.hooks.revert_default}</a></p>
    </div>
    {/if}
    {if $DISPLAY_FORM}

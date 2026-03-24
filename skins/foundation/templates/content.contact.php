@@ -44,7 +44,7 @@
    </div>
    {if $ALLOW_ATTACHMENTS}
    <div class="row">
-      <div class="small-12 large-8 columns"><label for="contact_attachments">{$LANG.common.attachments} (Image, Zip, PDF)</label>
+      <div class="small-12 large-8 columns"><label for="contact_attachments">{$LANG.common.attachments} ({$LANG.common.attachment_types})</label>
       <input type="file" id="contact_attach" name="attachments[]" multiple accept="image/*,application/zip,application/pdf" /></div>
    </div>
    {/if}
