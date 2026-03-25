@@ -44,6 +44,9 @@ class ApiResource_Customers extends ApiResource
         if (isset($_GET['type'])) {
             $where['type'] = (int)$_GET['type'];
         }
+        if (isset($_GET['email'])) {
+            $where['email'] = trim($_GET['email']);
+        }
 
         $search = $this->_buildSearch(array('first_name', 'last_name', 'email'));
         $where = array_merge($where, $search);
