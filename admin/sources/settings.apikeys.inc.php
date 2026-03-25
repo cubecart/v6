@@ -28,7 +28,6 @@ $api_resources = array(
     'orders'     => 'Orders',
     'customers'  => 'Customers',
     'coupons'    => 'Coupons',
-    'shipping'   => 'Shipping',
     'tax'        => 'Tax',
     'settings'   => 'Settings',
     'reviews'    => 'Reviews',

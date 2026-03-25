@@ -32,7 +32,6 @@ class ApiRouter
         'orders'     => 'ApiResource_Orders',
         'customers'  => 'ApiResource_Customers',
         'coupons'    => 'ApiResource_Coupons',
-        'shipping'   => 'ApiResource_Shipping',
         'tax'        => 'ApiResource_Tax',
         'settings'   => 'ApiResource_Settings',
         'reviews'    => 'ApiResource_Reviews',

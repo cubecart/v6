@@ -49,25 +49,32 @@ class ApiResource_Orders extends ApiResource
             $where['customer_id'] = (int)$_GET['customer_id'];
         }
 
-        // Date range filters
+        // Date range filters - build as raw WHERE string parts
+        $rawWhere = array();
         if (isset($_GET['date_from'])) {
-            $ts = strtotime($_GET['date_from']);
-            if ($ts) $where['>'] = array('order_date' => $ts);
+            $ts = (int)strtotime($_GET['date_from']);
+            if ($ts) $rawWhere[] = "`order_date` >= " . $ts;
         }
         if (isset($_GET['date_to'])) {
-            $ts = strtotime($_GET['date_to']);
-            if ($ts) $where['<'] = array('order_date' => $ts);
+            $ts = (int)strtotime($_GET['date_to']);
+            if ($ts) $rawWhere[] = "`order_date` <= " . $ts;
         }
 
         // Search by order ID or name
         $search = $this->_buildSearch(array('cart_order_id', 'first_name', 'last_name', 'email'));
         $where = array_merge($where, $search);
 
+        // Merge raw date conditions into WHERE
+        if (!empty($rawWhere)) {
+            $where = !empty($where) ? $where : array();
+            $where[] = implode(' AND ', $rawWhere);
+        }
+
         $sort  = $this->_getSort($this->_sortableFields, 'order_date');
         if (!$sort) $sort = array('order_date' => 'DESC');
 
-        $total = $this->_db->count('CubeCart_order_summary', 'cart_order_id', $where);
-        $orders = $this->_db->select('CubeCart_order_summary', false, $where, $sort, $pagination['per_page'], $pagination['page']);
+        $total = $this->_db->count('CubeCart_order_summary', 'cart_order_id', $where ?: false);
+        $orders = $this->_db->select('CubeCart_order_summary', false, $where ?: false, $sort, $pagination['per_page'], $pagination['page']);
 
         $data = array();
         if ($orders) {
@@ -125,12 +132,12 @@ class ApiResource_Orders extends ApiResource
             'ip_address'    => $this->_auth->getClientIp(),
         );
 
-        // Address and customer fields
+        // Address and customer fields (delivery uses _d suffix in DB)
         $addressFields = array(
-            'title', 'first_name', 'last_name', 'email', 'phone',
+            'first_name', 'last_name', 'email', 'phone', 'mobile',
             'company_name', 'line1', 'line2', 'town', 'state', 'postcode', 'country',
-            'ship_address', 'ship_company_name', 'ship_first_name', 'ship_last_name',
-            'ship_line1', 'ship_line2', 'ship_town', 'ship_state', 'ship_postcode', 'ship_country',
+            'first_name_d', 'last_name_d', 'company_name_d',
+            'line1_d', 'line2_d', 'town_d', 'state_d', 'postcode_d', 'country_d',
         );
         foreach ($addressFields as $f) {
             if (isset($data[$f])) {

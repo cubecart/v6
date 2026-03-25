@@ -13,13 +13,19 @@
 
 /**
  * Tax API resource controller
+ *
+ * Schema:
+ *   CubeCart_tax_class:   id, tax_name
+ *   CubeCart_tax_details: id, name, display, status
+ *   CubeCart_tax_rates:   id, type_id (->tax_class), details_id (->tax_details),
+ *                         country_id, county_id, tax_percent, goods, shipping, active
  */
 class ApiResource_Tax extends ApiResource
 {
     protected $_resourceName = 'tax';
 
     /**
-     * GET /tax - overview of tax classes and rates
+     * GET /tax - overview of tax classes, details, and rates
      */
     public function listing()
     {
@@ -27,6 +33,7 @@ class ApiResource_Tax extends ApiResource
 
         $data = array(
             'classes' => $this->_getClasses(),
+            'details' => $this->_getDetails(),
             'rates'   => $this->_getRates(),
         );
 
@@ -35,7 +42,7 @@ class ApiResource_Tax extends ApiResource
 
     /**
      * GET /tax/{id}
-     * Routes: classes, rates, or specific rate ID
+     * Routes: classes, details, rates, or specific rate by ID
      */
     public function get($id)
     {
@@ -44,6 +51,9 @@ class ApiResource_Tax extends ApiResource
         switch ($id) {
             case 'classes':
                 ApiResponse::success($this->_getClasses());
+                return;
+            case 'details':
+                ApiResponse::success($this->_getDetails());
                 return;
             case 'rates':
                 ApiResponse::success($this->_getRates());
@@ -56,15 +66,22 @@ class ApiResource_Tax extends ApiResource
             if (!$result) {
                 ApiResponse::error('Tax rate not found', 'NOT_FOUND', 404);
             }
-            // Get details
-            $details = $this->_db->select('CubeCart_tax_details', false, array('id' => (int)$id));
             $rate = $result[0];
-            $rate['details'] = $details ?: array();
+            // Include the tax detail name
+            if ($rate['details_id']) {
+                $detail = $this->_db->select('CubeCart_tax_details', false, array('id' => (int)$rate['details_id']));
+                $rate['detail_name'] = $detail ? $detail[0]['name'] : '';
+            }
+            // Include the tax class name
+            if ($rate['type_id']) {
+                $class = $this->_db->select('CubeCart_tax_class', false, array('id' => (int)$rate['type_id']));
+                $rate['class_name'] = $class ? $class[0]['tax_name'] : '';
+            }
             ApiResponse::success($rate);
             return;
         }
 
-        ApiResponse::error('Invalid tax resource. Use /tax/classes or /tax/rates', 'BAD_REQUEST', 400);
+        ApiResponse::error('Invalid tax resource. Use /tax/classes, /tax/details, or /tax/rates', 'BAD_REQUEST', 400);
     }
 
     /**
@@ -74,22 +91,17 @@ class ApiResource_Tax extends ApiResource
     {
         $this->_requireWrite();
         $data = $this->_getRequestBody();
-        $this->_validateRequired($data, array('name'));
 
-        $rateFields = array('name', 'tax_id', 'type_id', 'status');
+        $rateFields = array('type_id', 'details_id', 'country_id', 'county_id', 'tax_percent', 'goods', 'shipping', 'active');
         $record = $this->_filterFields($data, $rateFields);
+
+        if (empty($record['type_id']) && empty($record['details_id'])) {
+            ApiResponse::error('At least type_id or details_id is required', 'VALIDATION_ERROR', 422);
+        }
 
         $rateId = $this->_db->insert('CubeCart_tax_rates', $record);
         if (!$rateId) {
             ApiResponse::error('Failed to create tax rate', 'INTERNAL_ERROR', 500);
-        }
-
-        // Insert details if provided
-        if (isset($data['details']) && is_array($data['details'])) {
-            foreach ($data['details'] as $detail) {
-                $detail['id'] = $rateId;
-                $this->_db->insert('CubeCart_tax_details', $detail);
-            }
         }
 
         $result = $this->_db->select('CubeCart_tax_rates', false, array('id' => $rateId));
@@ -113,20 +125,11 @@ class ApiResource_Tax extends ApiResource
         }
 
         $data = $this->_getRequestBody();
-        $rateFields = array('name', 'tax_id', 'type_id', 'status');
+        $rateFields = array('type_id', 'details_id', 'country_id', 'county_id', 'tax_percent', 'goods', 'shipping', 'active');
         $record = $this->_filterFields($data, $rateFields);
 
         if (!empty($record)) {
             $this->_db->update('CubeCart_tax_rates', $record, array('id' => (int)$id));
-        }
-
-        // Update details if provided
-        if (isset($data['details']) && is_array($data['details'])) {
-            $this->_db->delete('CubeCart_tax_details', array('id' => (int)$id));
-            foreach ($data['details'] as $detail) {
-                $detail['id'] = (int)$id;
-                $this->_db->insert('CubeCart_tax_details', $detail);
-            }
         }
 
         $result = $this->_db->select('CubeCart_tax_rates', false, array('id' => (int)$id));
@@ -149,7 +152,6 @@ class ApiResource_Tax extends ApiResource
             ApiResponse::error('Tax rate not found', 'NOT_FOUND', 404);
         }
 
-        $this->_db->delete('CubeCart_tax_details', array('id' => (int)$id));
         $this->_db->delete('CubeCart_tax_rates', array('id' => (int)$id));
         ApiResponse::noContent();
     }
@@ -189,9 +191,15 @@ class ApiResource_Tax extends ApiResource
         return $classes ?: array();
     }
 
+    private function _getDetails()
+    {
+        $details = $this->_db->select('CubeCart_tax_details', false, false, array('name' => 'ASC'));
+        return $details ?: array();
+    }
+
     private function _getRates()
     {
-        $rates = $this->_db->select('CubeCart_tax_rates', false, false, array('name' => 'ASC'));
+        $rates = $this->_db->select('CubeCart_tax_rates', false, false, array('id' => 'ASC'));
         return $rates ?: array();
     }
 }

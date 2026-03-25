@@ -175,7 +175,7 @@ class ApiResource_Files extends ApiResource
             'filepath'    => $subdir,
             'filename'    => $filename,
             'filesize'    => filesize($dest),
-            'mime_type'   => $file['type'],
+            'mimetype'   => $file['type'],
             'md5hash'     => md5_file($dest),
             'description' => isset($_POST['description']) ? $_POST['description'] : '',
         ));
@@ -203,14 +203,14 @@ class ApiResource_Files extends ApiResource
             ApiResponse::error('Failed to write file', 'INTERNAL_ERROR', 500);
         }
 
-        $mimeType = isset($data['mime_type']) ? $data['mime_type'] : 'application/octet-stream';
+        $mimeType = isset($data['mimetype']) ? $data['mimetype'] : 'application/octet-stream';
 
         $fileId = $this->_db->insert('CubeCart_filemanager', array(
             'type'        => $this->_getFileType($filename),
             'filepath'    => $subdir,
             'filename'    => $filename,
             'filesize'    => strlen($content),
-            'mime_type'   => $mimeType,
+            'mimetype'   => $mimeType,
             'md5hash'     => md5($content),
             'description' => isset($data['description']) ? $data['description'] : '',
         ));

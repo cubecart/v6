@@ -24,9 +24,9 @@ class ApiResource_Customers extends ApiResource
     private $_sensitiveFields = array('password', 'salt', 'verify', 'new_password');
 
     private $_writableFields = array(
-        'title', 'first_name', 'last_name', 'email', 'phone',
-        'mobile', 'type', 'status', 'customer_group_id', 'tax_exempt',
-        'language', 'notes',
+        'first_name', 'last_name', 'email', 'phone',
+        'mobile', 'type', 'status', 'country',
+        'language', 'currency', 'notes',
     );
 
     /**
@@ -41,8 +41,8 @@ class ApiResource_Customers extends ApiResource
         if (isset($_GET['status'])) {
             $where['status'] = (int)$_GET['status'];
         }
-        if (isset($_GET['customer_group_id'])) {
-            $where['customer_group_id'] = (int)$_GET['customer_group_id'];
+        if (isset($_GET['type'])) {
+            $where['type'] = (int)$_GET['type'];
         }
 
         $search = $this->_buildSearch(array('first_name', 'last_name', 'email'));
@@ -237,8 +237,8 @@ class ApiResource_Customers extends ApiResource
                 $data = $this->_getRequestBody();
                 $this->_validateRequired($data, array('line1', 'town', 'postcode', 'country'));
                 $addrFields = array(
-                    'title', 'first_name', 'last_name', 'company_name',
-                    'line1', 'line2', 'town', 'state', 'postcode', 'country', 'phone',
+                    'first_name', 'last_name', 'company_name', 'description',
+                    'line1', 'line2', 'town', 'state', 'postcode', 'country',
                     'billing', 'default',
                 );
                 $record = $this->_filterFields($data, $addrFields);
@@ -265,8 +265,8 @@ class ApiResource_Customers extends ApiResource
                 }
                 $data = $this->_getRequestBody();
                 $addrFields = array(
-                    'title', 'first_name', 'last_name', 'company_name',
-                    'line1', 'line2', 'town', 'state', 'postcode', 'country', 'phone',
+                    'first_name', 'last_name', 'company_name', 'description',
+                    'line1', 'line2', 'town', 'state', 'postcode', 'country',
                     'billing', 'default',
                 );
                 $record = $this->_filterFields($data, $addrFields);
@@ -290,7 +290,7 @@ class ApiResource_Customers extends ApiResource
             unset($customer[$f]);
         }
 
-        $intFields = array('customer_id', 'customer_group_id', 'status', 'type', 'tax_exempt');
+        $intFields = array('customer_id', 'status', 'type', 'country');
         foreach ($intFields as $f) {
             if (isset($customer[$f])) {
                 $customer[$f] = (int)$customer[$f];

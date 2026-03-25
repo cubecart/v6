@@ -19,10 +19,11 @@ class ApiResource_Coupons extends ApiResource
     protected $_resourceName = 'coupons';
 
     private $_writableFields = array(
-        'code', 'description', 'discount_type', 'discount_price', 'discount_percent',
-        'expires', 'min_subtotal', 'max_subtotal', 'count', 'max_usage',
-        'product_id', 'category', 'status', 'allowed_customers', 'per_customer',
-        'free_shipping', 'exclude_sale_items',
+        'code', 'description', 'discount_price', 'discount_percent',
+        'starts', 'expires', 'min_subtotal', 'allowed_uses', 'count',
+        'product_id', 'manufacturer_id', 'category_id', 'shipping_id',
+        'status', 'archived', 'shipping', 'subtotal',
+        'coupon_per_customer', 'free_shipping', 'exclude_sale_items',
     );
 
     /**
@@ -167,10 +168,10 @@ class ApiResource_Coupons extends ApiResource
         if ($coupon['status'] != 1) {
             $reasons[] = 'Coupon is disabled';
         }
-        if ($coupon['expires'] > 0 && $coupon['expires'] < time()) {
+        if (!empty($coupon['expires']) && $coupon['expires'] !== '0000-00-00' && strtotime($coupon['expires']) < time()) {
             $reasons[] = 'Coupon has expired';
         }
-        if ($coupon['max_usage'] > 0 && $coupon['count'] >= $coupon['max_usage']) {
+        if ($coupon['allowed_uses'] > 0 && $coupon['count'] >= $coupon['allowed_uses']) {
             $reasons[] = 'Coupon usage limit reached';
         }
 

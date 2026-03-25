@@ -21,7 +21,7 @@ class ApiResource_Categories extends ApiResource
     private $_writableFields = array(
         'cat_name', 'cat_desc', 'cat_parent_id', 'status', 'hide', 'priority',
         'seo_meta_title', 'seo_meta_description', 'seo_meta_keywords',
-        'cat_image', 'cat_breadcrumb',
+        'cat_image', 'guest_access',
     );
 
     /**
