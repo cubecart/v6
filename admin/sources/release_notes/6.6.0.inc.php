@@ -60,6 +60,7 @@ $features = array(
     '3855' => 'PHP 8.5 deprecations resolved',
     '3886' => 'Zero-rated tax lines hidden on checkout',
     '3955' => 'Redeveloped Extension Marketplace',
+    '3979' => 'REST API for CubeCart &mdash; 10 resources, Bearer token auth, admin UI for key management',
 );
 $security = array('3928', '3912', '3930');
-$page_content = $GLOBALS['main']->newFeatures($_GET['node'], $features, 98, $notes, $security);
+$page_content = $GLOBALS['main']->newFeatures($_GET['node'], $features, 125, $notes, $security);
