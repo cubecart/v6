@@ -187,6 +187,8 @@ function inline($text) {
     $text = htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
     // Code (backticks) - process first to protect contents
     $text = preg_replace('/`([^`]+)`/', '<code>$1</code>', $text);
+    // Links [text](url)
+    $text = preg_replace('/\[([^\]]+)\]\(([^)]+)\)/', '<a href="$2" target="_blank">$1</a>', $text);
     // Bold
     $text = preg_replace('/\*\*(.+?)\*\*/', '<strong>$1</strong>', $text);
     // Italic
