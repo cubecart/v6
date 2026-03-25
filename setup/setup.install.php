@@ -277,6 +277,10 @@ if (!isset($_SESSION['setup']['permissions'])) {
             $GLOBALS['config'] = array_merge($GLOBALS['config'], $config_settings);
             // Create admin user
             $GLOBALS['db']->insert('CubeCart_admin_users', $_SESSION['setup']['admin']);
+            // Mark release notes as seen so fresh installs don't redirect to them
+            $admin_id = $GLOBALS['db']->insertid();
+            Config::getInstance($glob)->set('release_notes', CC_VERSION.'_'.$admin_id, '1');
+
             // Set the current exchange rates
             $cron = new Cron();
             $cron->updateExchangeRates($_SESSION['setup']['config']['default_currency']);
