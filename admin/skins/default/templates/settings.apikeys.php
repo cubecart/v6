@@ -127,7 +127,7 @@
         <td>
           <a href="?_g=settings&node=apikeys&action=edit&key_id={$key.key_id}" class="edit" title="Edit"><i class="fa fa-pencil-square-o" title="Edit"></i></a>
           <a href="?_g=settings&node=apikeys&regenerate_key={$key.key_id}" title="Regenerate" onclick="return confirm('Regenerate this API key? The old key will stop working immediately.');"><i class="fa fa-refresh" title="Regenerate"></i></a>
-          <a href="?_g=settings&node=apikeys&delete_key={$key.key_id}" class="delete" title="Delete" onclick="return confirm('Delete this API key? This cannot be undone.');"><i class="fa fa-trash" title="Delete"></i></a>
+          <a href="?_g=settings&node=apikeys&delete_key={$key.key_id}" class="delete" title="Delete"><i class="fa fa-trash" title="Delete"></i></a>
         </td>
       </tr>
     {/foreach}
