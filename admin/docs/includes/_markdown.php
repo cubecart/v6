@@ -46,7 +46,31 @@ function markdown_to_html($text) {
         }
     };
 
+    $in_code = false;
+    $code_lines = [];
+
     foreach ($lines as $line) {
+        // Fenced code blocks (```)
+        if (preg_match('/^```/', $line)) {
+            if (!$in_code) {
+                $flush_paragraph();
+                $flush_list();
+                $flush_table();
+                $flush_block();
+                $in_code = true;
+                $code_lines = [];
+            } else {
+                $html .= '<pre><code>' . htmlspecialchars(implode("\n", $code_lines), ENT_QUOTES, 'UTF-8') . "</code></pre>\n";
+                $in_code = false;
+                $code_lines = [];
+            }
+            continue;
+        }
+        if ($in_code) {
+            $code_lines[] = $line;
+            continue;
+        }
+
         // Blockquote lines (tip/note blocks)
         if (preg_match('/^>\s?(.*)$/', $line, $m)) {
             $flush_paragraph();
@@ -147,6 +171,10 @@ function markdown_to_html($text) {
         $paragraph[] = inline($line);
     }
 
+    // Flush unclosed code block
+    if ($in_code && !empty($code_lines)) {
+        $html .= '<pre><code>' . htmlspecialchars(implode("\n", $code_lines), ENT_QUOTES, 'UTF-8') . "</code></pre>\n";
+    }
     $flush_block();
     $flush_paragraph();
     $flush_list();
