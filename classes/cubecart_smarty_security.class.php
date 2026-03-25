@@ -30,7 +30,7 @@ class CubeCart_Smarty_Security extends Smarty_Security
         'round', 'ceil', 'floor', 'abs', 'max', 'min',
         'date', 'strtotime', 'array_merge', 'is_numeric',
         'preg_replace', 'str_pad', 'chunk_split',
-        'base64_encode',
+        'base64_encode', 'is_bool', 'is_null', 'strpos',
     );
 
     /**

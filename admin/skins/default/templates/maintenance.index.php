@@ -34,6 +34,7 @@
 	<div><label for="clearSearch">{$LANG.maintain.clear_search}</label><span><input type="checkbox" id="clearSearch" name="clearSearch" value="1"></span></div>
 	<div><label for="clearCookieConsent">{$LANG.maintain.clear_cookie_consent}</label><span><input type="checkbox" id="clearCookieConsent" name="clearCookieConsent" value="1"></span></div>
 	<div><label for="clear_sessions">{$LANG.maintain.clear_sessions}</label><span><input type="checkbox" id="clear_sessions" name="clear_sessions" value="1"></span></div>
+	<div><label for="clearApiLog">API Request Log</label><span><input type="checkbox" id="clearApiLog" name="clearApiLog" value="1"></span></div>
   </fieldset>
   <fieldset><legend>{$LANG.maintain.title_rebuild_misc}</legend>
 	<div><label for="sitemap">{$LANG.maintain.sitemap}</label><span><input type="checkbox" id="sitemap" name="sitemap" value="1"></span></div>

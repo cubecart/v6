@@ -505,3 +505,38 @@ ALTER TABLE `CubeCart_cookie_consent` MODIFY `session_id` varchar(64) DEFAULT NU
 
 -- Clear old sessions (old PHP session format incompatible with new serialization)
 TRUNCATE TABLE `CubeCart_sessions`; #EOQ
+
+-- REST API: API keys table
+CREATE TABLE IF NOT EXISTS `CubeCart_api_keys` (
+  `key_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `admin_id` int UNSIGNED NOT NULL,
+  `api_key` varchar(64) NOT NULL,
+  `api_secret_hash` varchar(128) NOT NULL,
+  `label` varchar(100) NOT NULL DEFAULT '',
+  `permissions` text NOT NULL,
+  `rate_limit` int UNSIGNED NOT NULL DEFAULT '60',
+  `status` tinyint(1) UNSIGNED NOT NULL DEFAULT '1',
+  `last_used` int UNSIGNED NOT NULL DEFAULT '0',
+  `ip_whitelist` text NULL,
+  `created` int UNSIGNED NOT NULL DEFAULT '0',
+  `expires` int UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (`key_id`),
+  UNIQUE KEY `api_key` (`api_key`),
+  KEY `admin_id` (`admin_id`),
+  KEY `status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
+
+-- REST API: request log
+CREATE TABLE IF NOT EXISTS `CubeCart_api_log` (
+  `log_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  `key_id` int UNSIGNED NOT NULL,
+  `method` varchar(7) NOT NULL,
+  `endpoint` varchar(255) NOT NULL,
+  `status_code` smallint UNSIGNED NOT NULL,
+  `ip_address` varchar(45) NOT NULL,
+  `request_time` int UNSIGNED NOT NULL,
+  `response_ms` int UNSIGNED NOT NULL DEFAULT '0',
+  PRIMARY KEY (`log_id`),
+  KEY `key_id_time` (`key_id`, `request_time`),
+  KEY `request_time` (`request_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ

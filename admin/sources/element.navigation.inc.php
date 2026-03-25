@@ -64,7 +64,8 @@ $nav_items['settings']  = array(
     $lang['navigation']['nav_currencies']  => '?_g=settings&node=currency',
     $lang['navigation']['nav_taxes']   => '?_g=settings&node=tax',
     $lang['navigation']['nav_regions']   => '?_g=settings&node=geo',
-    $lang['navigation']['nav_languages']  => '?_g=settings&node=language'
+    $lang['navigation']['nav_languages']  => '?_g=settings&node=language',
+    'API Keys'          => '?_g=settings&node=apikeys'
 );
 
 $nav_items['modules']  = array(

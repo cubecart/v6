@@ -96,3 +96,9 @@ DROP TABLE IF EXISTS `CubeCart_taxes`; #EOQ
 DROP TABLE IF EXISTS `CubeCart_transactions`; #EOQ
 DROP TABLE IF EXISTS `CubeCart_cookie_consent_text`; #EOQ
 DROP TABLE IF EXISTS `CubeCart_tariff`; #EOQ
+DROP TABLE IF EXISTS `CubeCart_cart_abandonment`; #EOQ
+DROP TABLE IF EXISTS `CubeCart_category_discount`; #EOQ
+DROP TABLE IF EXISTS `CubeCart_category_group`; #EOQ
+DROP TABLE IF EXISTS `CubeCart_cron_tasks`; #EOQ
+DROP TABLE IF EXISTS `CubeCart_api_keys`; #EOQ
+DROP TABLE IF EXISTS `CubeCart_api_log`; #EOQ

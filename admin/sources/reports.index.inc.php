@@ -167,7 +167,7 @@ if ($orders) {
             if ($i == 0) {
                 $headers[] = $field;
             }
-            $values[] = (is_numeric($value) || !strpos($value, ',')) ? $value : sprintf('"%s"', addslashes($value));
+            $values[] = (is_numeric($value) || !strpos((string)$value, ',')) ? $value : sprintf('"%s"', addslashes($value));
         }
         if ($i == 0 && $add_headers) {
             $data[] = implode(',', $headers);

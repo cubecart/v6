@@ -524,6 +524,19 @@ if (isset($_REQUEST['clearLogs'])) {
     }
 }
 
+if (isset($_REQUEST['clearApiLog'])) {
+    if ($GLOBALS['db']->truncate('CubeCart_api_log')) {
+        $GLOBALS['main']->successMessage('API request log cleared.');
+    } else {
+        $GLOBALS['main']->errorMessage('Failed to clear API request log.');
+    }
+    $clear_post = true;
+    if (isset($_GET['redir']) && $_GET['redir'] == 'apikeys') {
+        httpredir('?_g=settings&node=apikeys#apilog');
+        exit;
+    }
+}
+
 ########## Database ##########
 if (!empty($_POST['database'])) {
     if (is_array($_POST['tablename'])) {
