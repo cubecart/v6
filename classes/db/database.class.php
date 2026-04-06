@@ -729,7 +729,8 @@ class Database_Contoller
                 foreach ($order as $field => $sort) {
                     if (isset($allowed) && is_array($allowed)) {
                         if (in_array($field, $allowed)) {
-                            $orderArray[] = "`$field` ".$this->sqlSafe($sort);
+                            $dir = (is_string($sort) && strtoupper(trim($sort)) === 'DESC') ? 'DESC' : 'ASC';
+                            $orderArray[] = "`$field` ".$dir;
                         }
                     }
                 }
