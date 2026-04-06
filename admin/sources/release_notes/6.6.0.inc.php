@@ -61,6 +61,7 @@ $features = array(
     '3886' => 'Zero-rated tax lines hidden on checkout',
     '3955' => 'Redeveloped Extension Marketplace',
     '3979' => 'REST API for CubeCart &mdash; 9 resources, Bearer token auth, admin UI for key management',
+    '3980' => 'Fix blind SQL injection in admin sort parameters (GHSA-8gj6-9fwc-h4gh)',
 );
-$security = array('3928', '3912', '3930');
+$security = array('3928', '3912', '3930', '3980');
 $page_content = $GLOBALS['main']->newFeatures($_GET['node'], $features, 125, $notes, $security);
