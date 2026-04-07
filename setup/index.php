@@ -674,6 +674,7 @@ if (!$is_upgrade && !isset($_SESSION['language_selected'])) {
             ## Set some defaults
             $defaults   = array(
         'admin_skin' => 'default',
+        'cache' => '1',
         'enable_reviews' => true,
         'show_basket_weight' => true
       );
