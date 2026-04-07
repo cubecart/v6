@@ -62,6 +62,7 @@ $features = array(
     '3955' => 'Redeveloped Extension Marketplace',
     '3979' => 'REST API for CubeCart &mdash; 9 resources, Bearer token auth, admin UI for key management',
     'GHSA-8gj6-9fwc-h4gh' => 'Fix blind SQL injection in admin sort parameters',
+    'GHSA-gvxc-5v7r-272m' => 'Stored Cross-Site Scripting (XSS) in CubeCart v6.x.x',
 );
 $security = array();
 $page_content = $GLOBALS['main']->newFeatures($_GET['node'], $features, 125, $notes, $security);
