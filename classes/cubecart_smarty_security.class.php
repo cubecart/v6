@@ -86,7 +86,6 @@ class CubeCart_Smarty_Security extends Smarty_Security
 
     /**
      * Secure directories for {include} file access.
-     * js/ is needed for legacy v5 skins that include js/common.html.
      *
      * @var array
      */
@@ -96,5 +95,18 @@ class CubeCart_Smarty_Security extends Smarty_Security
     {
         parent::__construct($smarty);
         $this->secure_dir = array(CC_ROOT_DIR . '/js/');
+    }
+
+    /**
+     * Add a trusted directory path for Smarty template access.
+     *
+     * @param string $path Absolute path to trust
+     */
+    public function addTrustedDir($path)
+    {
+        $real = realpath($path);
+        if ($real !== false) {
+            $this->secure_dir[] = $real;
+        }
     }
 }
