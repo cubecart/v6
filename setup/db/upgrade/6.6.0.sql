@@ -540,3 +540,5 @@ CREATE TABLE IF NOT EXISTS `CubeCart_api_log` (
   KEY `key_id_time` (`key_id`, `request_time`),
   KEY `request_time` (`request_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
+
+INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`) VALUES ('config', 'cache', 1); #EOQ
