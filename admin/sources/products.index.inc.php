@@ -51,9 +51,27 @@ if (isset($_POST['save']) && Admin::getInstance()->permissions('products', CC_PE
     }
 
     $record = $_POST;
-    $record['description'] = $GLOBALS['RAW']['POST']['description'];
-    $record['description_short'] = $GLOBALS['RAW']['POST']['description_short'];
-    $record['spec_copy'] = $GLOBALS['RAW']['POST']['spec_copy'];
+    $record['description'] = preg_replace('/<script\b[^>]*>.*?<\/script>/is', '', $GLOBALS['RAW']['POST']['description']);
+    $record['description_short'] = preg_replace('/<script\b[^>]*>.*?<\/script>/is', '', $GLOBALS['RAW']['POST']['description_short']);
+    $record['spec_copy'] = strip_tags($GLOBALS['RAW']['POST']['spec_copy']);
+    if (!empty($record['name'])) {
+        $record['name'] = strip_tags($record['name']);
+    }
+    if (!empty($record['spec_array'])) {
+        $spec_decoded = json_decode(base64_decode($record['spec_array']), true);
+        if (is_array($spec_decoded)) {
+            foreach ($spec_decoded as &$spec_row) {
+                if (is_array($spec_row)) {
+                    foreach ($spec_row as &$spec_val) {
+                        $spec_val = strip_tags($spec_val);
+                    }
+                    unset($spec_val);
+                }
+            }
+            unset($spec_row);
+            $record['spec_array'] = base64_encode(json_encode($spec_decoded));
+        }
+    }
     unset($record['categories'], $record['group'], $record['image']);
 
     if ((isset($record['product_code_auto']) && $record['product_code_auto']==1) || (empty($record['product_code']) && $record['product_code_auto']==0)) {
