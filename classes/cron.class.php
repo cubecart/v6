@@ -91,7 +91,7 @@ class Cron
 
         $notify_cooldown = (int)$GLOBALS['config']->get('config', 'abandoned_cart_notify_cooldown');
         if ($notify_cooldown < 3600) {
-            $notify_cooldown = 259200;
+            $notify_cooldown = 604800;
         }
         $order_window = (int)$GLOBALS['config']->get('config', 'abandoned_cart_order_window');
         if ($order_window < 3600) {
