@@ -105,7 +105,7 @@ class CubeCart_Smarty_Security extends Smarty_Security
     public function __construct($smarty)
     {
         parent::__construct($smarty);
-        $this->secure_dir = array(CC_ROOT_DIR . '/js/');
+        $this->secure_dir = array(CC_ROOT_DIR . '/js/', CC_ROOT_DIR . '/modules/');
     }
 
     /**
