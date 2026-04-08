@@ -99,6 +99,7 @@ class Cron
         }
         $notify_cutoff = time() - $notify_cooldown;
         $order_cutoff = time() - $order_window;
+        $max_age_cutoff = time() - ($delay * 2); // ignore carts with no session activity beyond twice the delay
 
         // Find customers with saved carts who have abandoned
         $pfx = $GLOBALS['config']->get('config', 'dbprefix');
@@ -119,6 +120,10 @@ class Cron
                 SELECT 1 FROM `{$pfx}CubeCart_order_summary` os
                 WHERE os.customer_id = sc.customer_id AND os.order_date > ".(int)$order_cutoff."
                   AND os.status IN (2, 3)
+              )
+              AND EXISTS (
+                SELECT 1 FROM `{$pfx}CubeCart_sessions` s2
+                WHERE s2.customer_id = sc.customer_id AND s2.session_last >= ".(int)$max_age_cutoff."
               )";
 
         $results = $GLOBALS['db']->query($query);
