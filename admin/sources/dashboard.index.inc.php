@@ -106,7 +106,7 @@ if (!$GLOBALS['session']->has('version_check') && $request = new Request('versio
     $response = $request->send();
     if ($response !== false) {
         if (isset($response) && version_compare($response, CC_VERSION, '>')) {
-            $release_url = 'https://cubecart.zendesk.com/hc/en-gb/articles/360003794198-How-do-I-upgrade-from-CubeCart-v6-to-latest-v6';
+            $release_url = 'https://kb.cubecart.com/getting-started/upgrading/how-do-i-upgrade-from-cubecart-v6-to-latest-v6';
             $GLOBALS['main']->errorMessage(sprintf($lang['dashboard']['error_version_update'], $response, CC_VERSION).' <a href="'.$release_url.'" target="_blank">'.$lang['maintain']['upgrade_now'].'</a>');
         }
     }
