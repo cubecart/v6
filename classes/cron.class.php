@@ -99,7 +99,7 @@ class Cron
         }
         $notify_cutoff = time() - $notify_cooldown;
         $order_cutoff = time() - $order_window;
-        $max_age_cutoff = time() - ($delay * 2); // ignore carts with no session activity beyond twice the delay
+        $max_age_cutoff = time() - 604800; // 7 days - ignore carts with no session activity beyond this
 
         // Find customers with saved carts who have abandoned
         $pfx = $GLOBALS['config']->get('config', 'dbprefix');
