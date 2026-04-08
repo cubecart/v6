@@ -2,51 +2,63 @@
 /**
  * CubeCart Smarty Security Policy
  *
- * Restricts dangerous Smarty tags ({math}, {eval}, {php}) that can
- * execute arbitrary PHP code while allowing all functionality used
- * by CubeCart templates.
+ * Blocks dangerous PHP functions/modifiers and Smarty tags while
+ * allowing all safe ones — no whitelist to maintain.
  *
  * @package CubeCart
  */
 class CubeCart_Smarty_Security extends Smarty_Security
 {
     /**
-     * Allowed PHP functions in templates.
-     * If empty, all functions are allowed — we explicitly list those used
-     * by CubeCart templates plus common safe functions.
+     * PHP functions that must NEVER be callable from templates.
+     * Covers code execution, file system writes, process control,
+     * and information disclosure.
      *
      * @var array
      */
-    public $php_functions = array(
-        // Smarty defaults
-        'isset', 'empty', 'count', 'sizeof', 'in_array', 'is_array', 'time',
-        // Used in CubeCart templates
-        'sprintf', 'number_format', 'strlen', 'http_build_query',
-        'str_replace', 'ucwords', 'floatval', 'ucfirst', 'strip_tags',
-        'addslashes', 'substr', 'intval', 'array_key_exists', 'strtolower',
-        'strtoupper', 'trim', 'nl2br', 'urlencode', 'urldecode',
-        'htmlspecialchars', 'htmlentities', 'html_entity_decode',
-        'json_encode', 'json_decode', 'implode', 'explode',
-        'round', 'ceil', 'floor', 'abs', 'max', 'min',
-        'date', 'strtotime', 'array_merge', 'is_numeric',
-        'preg_replace', 'str_pad', 'chunk_split',
-        'base64_encode', 'is_bool', 'is_null', 'strpos', 'formatTime',
+    private $dangerous_php = array(
+        // Code execution
+        'exec', 'system', 'passthru', 'shell_exec', 'popen', 'proc_open',
+        'pcntl_exec', 'eval', 'assert', 'create_function', 'call_user_func',
+        'call_user_func_array', 'preg_replace_callback', 'usort', 'uasort',
+        'uksort', 'array_map', 'array_filter', 'array_walk',
+        // File system writes / destructive
+        'file_put_contents', 'fwrite', 'fputs', 'fopen', 'tmpfile',
+        'mkdir', 'rmdir', 'rename', 'unlink', 'copy', 'move_uploaded_file',
+        'chmod', 'chown', 'chgrp', 'symlink', 'link', 'tempnam',
+        // File reads (templates should use Smarty includes, not raw reads)
+        'file_get_contents', 'file', 'readfile', 'fgets', 'fread',
+        'highlight_file', 'show_source', 'parse_ini_file',
+        // Include / require
+        'include', 'include_once', 'require', 'require_once',
+        // Network
+        'curl_init', 'curl_exec', 'fsockopen', 'pfsockopen',
+        'stream_socket_client', 'stream_socket_server',
+        'mail', 'header', 'setcookie',
+        // Info disclosure
+        'phpinfo', 'php_uname', 'getenv', 'putenv',
+        'get_defined_vars', 'get_defined_functions', 'get_defined_constants',
+        'getmypid', 'getmyuid',
+        // Dangerous misc
+        'extract', 'parse_str', 'compact',
+        'serialize', 'unserialize',
+        'ob_start', 'ob_end_clean', 'ob_get_contents',
+        'ini_set', 'ini_alter', 'set_time_limit', 'set_include_path',
+        'dl', 'register_shutdown_function', 'register_tick_function',
+        'define',
     );
 
     /**
-     * Allowed PHP modifiers in templates.
-     *
+     * Allow all PHP functions except dangerous ones (populated in constructor).
      * @var array
      */
-    public $php_modifiers = array(
-        'escape', 'count', 'sizeof', 'nl2br',
-        'ucwords', 'strip_tags', 'html_entity_decode',
-        'json_encode', 'sprintf', 'number_format',
-        'strlen', 'strtolower', 'strtoupper', 'trim',
-        'urlencode', 'intval', 'floatval', 'round',
-        'str_replace', 'addslashes', 'substr',
-        'ucfirst',
-    );
+    public $php_functions = array();
+
+    /**
+     * Allow all PHP modifiers except dangerous ones (populated in constructor).
+     * @var array
+     */
+    public $php_modifiers = array();
 
     /**
      * Disabled Smarty tags — these can execute arbitrary PHP code.
@@ -71,15 +83,13 @@ class CubeCart_Smarty_Security extends Smarty_Security
 
     /**
      * Trusted static classes — empty means all allowed.
-     * CubeCart templates don't use static class calls,
-     * but plugins might, so we leave this open.
      *
      * @var array
      */
     public $static_classes = array();
 
     /**
-     * Allow all streams (default).
+     * Allow file streams.
      *
      * @var array
      */
@@ -96,6 +106,30 @@ class CubeCart_Smarty_Security extends Smarty_Security
     {
         parent::__construct($smarty);
         $this->secure_dir = array(CC_ROOT_DIR . '/js/');
+    }
+
+    /**
+     * Check if PHP function is trusted (blacklist approach).
+     */
+    public function isTrustedPhpFunction($function_name, $compiler)
+    {
+        if (in_array($function_name, $this->dangerous_php)) {
+            $compiler->trigger_template_error("PHP function '{$function_name}' not allowed by security setting");
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Check if PHP modifier is trusted (blacklist approach).
+     */
+    public function isTrustedPhpModifier($modifier_name, $compiler)
+    {
+        if (in_array($modifier_name, $this->dangerous_php)) {
+            $compiler->trigger_template_error("modifier '{$modifier_name}' not allowed by security setting");
+            return false;
+        }
+        return true;
     }
 
     /**
