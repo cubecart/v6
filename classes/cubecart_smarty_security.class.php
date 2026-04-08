@@ -45,6 +45,7 @@ class CubeCart_Smarty_Security extends Smarty_Security
         'strlen', 'strtolower', 'strtoupper', 'trim',
         'urlencode', 'intval', 'floatval', 'round',
         'str_replace', 'addslashes', 'substr',
+        'ucfirst',
     );
 
     /**
