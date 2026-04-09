@@ -86,7 +86,7 @@
             {elseif $ext.third_party && !$ext.download_url}
             {* 3rd party local-only: configure and delete only *}
             {elseif $ext.has_upgrade}
-            <button type="button" class="ext-btn ext-btn-upgrade btn-ext-action" data-action="install" data-url="{$ext.download_url}" data-name="{$ext.name}" data-type="{$ext.type}">
+            <button type="button" class="ext-btn ext-btn-upgrade btn-ext-action" data-action="install" data-url="{$ext.download_url}" data-latest-url="{$ext.download_url}" data-name="{$ext.name}" data-type="{$ext.type}">
                <i class="fa fa-arrow-up"></i> {$LANG.module.ext_upgrade}
             </button>
             {elseif !$ext.is_installed}
@@ -246,11 +246,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
       if (!isInstalled) return;
 
-      $btn.prop('disabled', false);
+      // Find the latest available version (first option, since versions are newest-first)
+      var $firstOpt = $select.find('option:first');
+      var latestVersion = $firstOpt.text().trim();
+      var latestUrl = $firstOpt.val();
+
+      $btn.prop('disabled', false).removeData('latest-url');
       if (selectedVersion === installedVersion) {
-         $btn.removeClass('ext-btn-install ext-btn-upgrade ext-btn-downgrade')
-             .addClass('ext-btn-disabled').prop('disabled', true)
-             .html('<i class="fa fa-check"></i> Installed');
+         // Dropdown matches installed — offer upgrade to latest if available
+         if (versionCompare(latestVersion, installedVersion) > 0) {
+            $btn.removeClass('ext-btn-disabled ext-btn-install ext-btn-downgrade')
+                .addClass('ext-btn-upgrade')
+                .data('latest-url', latestUrl)
+                .html('<i class="fa fa-arrow-up"></i> Upgrade to ' + latestVersion);
+         } else {
+            $btn.removeClass('ext-btn-install ext-btn-upgrade ext-btn-downgrade')
+                .addClass('ext-btn-disabled').prop('disabled', true)
+                .html('<i class="fa fa-check"></i> Installed');
+         }
       } else if (versionCompare(selectedVersion, installedVersion) > 0) {
          $btn.removeClass('ext-btn-disabled ext-btn-install ext-btn-downgrade')
              .addClass('ext-btn-upgrade')
@@ -281,7 +294,8 @@ document.addEventListener('DOMContentLoaded', function() {
       var action = $btn.data('action');
       var $card = $btn.closest('.ext-card');
       var $versionSelect = $card.find('[data-card-version]');
-      var url = $versionSelect.length ? $versionSelect.val() : $btn.data('url');
+      var latestUrl = $btn.data('latest-url');
+      var url = latestUrl ? latestUrl : ($versionSelect.length ? $versionSelect.val() : $btn.data('url'));
       var name = $btn.data('name');
       var type = $btn.data('type');
 
