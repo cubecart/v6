@@ -28,10 +28,12 @@ if (Admin::getInstance()->superUser()) {
     $per_page = 25;
     $page = (isset($_GET['page'])) ? $_GET['page'] : 1;
 
+    $search_highlight = false;
     if (isset($_GET['q']) && !empty($_GET['q'])) {
         $safe_q = $GLOBALS['db']->sqlSafe(trim($_GET['q']));
         $where = "(`request_url` LIKE '%".$safe_q."%' OR `request` LIKE '%".$safe_q."%' OR `result` LIKE '%".$safe_q."%' OR `error` LIKE '%".$safe_q."%' OR `response_code` LIKE '%".$safe_q."%')";
-        $GLOBALS['smarty']->assign('SEARCH_QUERY', htmlspecialchars(trim($_GET['q'])));
+        $search_highlight = htmlspecialchars(trim($_GET['q']));
+        $GLOBALS['smarty']->assign('SEARCH_QUERY', $search_highlight);
     } else {
         $where = false;
     }
@@ -49,18 +51,27 @@ if (Admin::getInstance()->superUser()) {
                 $error = false;
             }
 
-            $smarty_data['request_log'][] = array(
+            $row = array(
                 'time'    => formatTime(strtotime($log['time'])),
                 'request'   => htmlspecialchars($log['request']),
                 'result'   => htmlspecialchars($log['result']),
                 'response_code'   => $log['response_code'],
                 'response_code_description'   => Request::getResponseCodeDescription($log['response_code']),
                 'is_curl'   => $log['is_curl'],
-                'request_url' => $log['request_url'],
+                'request_url' => htmlspecialchars($log['request_url']),
                 'error' => $error,
-                'response_headers' => $log['response_headers'],
-                'request_headers' => $log['request_headers']
+                'response_headers' => htmlspecialchars($log['response_headers']),
+                'request_headers' => htmlspecialchars($log['request_headers'])
             );
+            if ($search_highlight) {
+                $hl_pattern = '/('.preg_quote($search_highlight, '/').')/i';
+                foreach (array('request_url', 'request', 'result', 'error', 'response_code', 'response_headers', 'request_headers') as $field) {
+                    if (!empty($row[$field]) && is_string($row[$field])) {
+                        $row[$field] = preg_replace($hl_pattern, '<mark>$1</mark>', $row[$field]);
+                    }
+                }
+            }
+            $smarty_data['request_log'][] = $row;
         }
     }
 
