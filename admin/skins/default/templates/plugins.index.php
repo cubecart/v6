@@ -149,6 +149,27 @@ document.addEventListener('DOMContentLoaded', function() {
    var ajaxUrl = window.location.href.split('#')[0].split('?')[0] + '?_g=plugins';
    var csrfToken = $('#ext-csrf-token').val();
 
+   // Highlight configure button after install/upgrade
+   var params = new URLSearchParams(window.location.search);
+   var installed = params.get('installed');
+   if (installed) {
+      var needle = installed.toLowerCase();
+      var $card = $('.ext-card').filter(function() {
+         return $(this).attr('data-name') === needle;
+      });
+      if ($card.length) {
+         var $configBtn = $card.find('.ext-btn-configure');
+         if ($configBtn.length) {
+            setTimeout(function() {
+               $card[0].scrollIntoView({ behavior:'smooth', block:'center' });
+               setTimeout(function() {
+                  $configBtn.addClass('ext-btn-highlight');
+               }, 400);
+            }, 500);
+         }
+      }
+   }
+
    function reloadWithTab() {
       var url = window.location.href.split('#')[0];
       var activeTab = window.location.hash || '#marketplace';
@@ -320,12 +341,8 @@ document.addEventListener('DOMContentLoaded', function() {
          },
          success: function(resp) {
             if (resp.success) {
-               if (resp.configure_url) {
-                  window.location.href = resp.configure_url;
-               } else {
-                  $btn.data('loading', false);
-                  reloadWithTab();
-               }
+               $btn.data('loading', false);
+               window.location.href = window.location.href.split('#')[0].split('?')[0] + '?_g=plugins&installed=' + encodeURIComponent(name) + '&t=' + Date.now() + '#marketplace';
             } else {
                showToast(resp.message, 'error');
                $btn.html(originalHtml).data('loading', false);
