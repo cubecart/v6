@@ -20,10 +20,23 @@ $GLOBALS['main']->addTabControl($lang['navigation']['nav_request_log'], 'request
 $GLOBALS['gui']->addBreadcrumb($lang['navigation']['nav_request_log'], currentPage());
 
 if (Admin::getInstance()->superUser()) {
-    //System errors
+
+    if (isset($_POST['search']) && !empty($_POST['search'])) {
+        httpredir(currentPage(null, array('q' => $_POST['search'])));
+    }
+
     $per_page = 25;
     $page = (isset($_GET['page'])) ? $_GET['page'] : 1;
-    $request_log = $GLOBALS['db']->select('CubeCart_request_log', '*', false, array('time' => 'DESC'), $per_page, $page, false);
+
+    if (isset($_GET['q']) && !empty($_GET['q'])) {
+        $safe_q = $GLOBALS['db']->sqlSafe(trim($_GET['q']));
+        $where = "(`request_url` LIKE '%".$safe_q."%' OR `request` LIKE '%".$safe_q."%' OR `result` LIKE '%".$safe_q."%' OR `error` LIKE '%".$safe_q."%' OR `response_code` LIKE '%".$safe_q."%')";
+        $GLOBALS['smarty']->assign('SEARCH_QUERY', htmlspecialchars(trim($_GET['q'])));
+    } else {
+        $where = false;
+    }
+
+    $request_log = $GLOBALS['db']->select('CubeCart_request_log', '*', $where, array('time' => 'DESC'), $per_page, $page, false);
     $count = $GLOBALS['db']->getFoundRows();
     if (is_array($request_log)) {
         foreach ($request_log as $log) {

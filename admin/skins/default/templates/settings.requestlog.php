@@ -13,6 +13,12 @@
 {if $REQUEST_LOG}
   <div class="right"><a href="?_g=maintenance&emptyRequestLogs=true&redir=viewlog" class="button delete" title="{$LANG.notification.confirm_continue}">{$LANG.maintain.clear_log}</a></div>
   {/if}<h3>{$LANG.navigation.nav_request_log}</h3>
+  <form action="{$VAL_SELF}" method="post" class="ignore-dirty">
+      <input type="text" name="search" value="{if isset($SEARCH_QUERY)}{$SEARCH_QUERY}{/if}" placeholder="{$LANG.common.search}..." class="textbox">
+      <input type="submit" value="{$LANG.common.go}" class="button tiny">
+      {if isset($SEARCH_QUERY)}&nbsp;<a href="?_g=settings&node=requestlog">{$LANG.common.reset}</a>{/if}
+  </form>
+  <hr>
   {if $REQUEST_LOG}
 	{foreach from=$REQUEST_LOG item=log}
 	<table class="request{if $log.error && !is_bool($log.error)} error{/if}" width="100%">
