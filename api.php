@@ -115,7 +115,7 @@ foreach ($GLOBALS['hooks']->load('api.bootstrap') as $hook) {
 // Purge old API log entries (~5% of requests, older than 30 days)
 if (executionChance(5)) {
     $cutoff = time() - (30 * 86400);
-    $GLOBALS['db']->delete('CubeCart_api_log', array('<' => array('request_time' => $cutoff)));
+    $GLOBALS['db']->delete('CubeCart_api_log', array('request_time' => '<'.$cutoff)));
 }
 
 // Route and dispatch
