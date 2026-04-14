@@ -36,12 +36,13 @@
             <input type="text" name="price[value]" value="" class="textbox number">
             <span id="bulk_price_percent_symbol" style="display:none">%</span>
             <select name="price[field]" class="textbox">
-               <option value="all">{$LANG.common.price_standard}, {$LANG.common.price_sale}, {$LANG.common.price_cost}, {$LANG.catalogue.quantity_discounts} &amp; {$LANG.catalogue.title_product_options}</option>
+               <option value="all">{$LANG.common.all}</option>
                <option value="price">{$LANG.common.price_standard}</option>
                <option value="sale_price">{$LANG.common.price_sale}</option>
                <option value="cost_price">{$LANG.common.price_cost}</option>
                <option value="quantity_discounts">{$LANG.catalogue.quantity_discounts}</option>
                <option value="product_options">{$LANG.catalogue.title_product_options}</option>
+               <option value="group_pricing">{$LANG.catalogue.customer_group_pricing}</option>
             </select>
          </div>
       </fieldset>

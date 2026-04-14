@@ -60,7 +60,16 @@ if (Admin::getInstance()->permissions('products', CC_PERM_EDIT, true) && isset($
                     continue;
                 }
 
-                $fields = ($_POST['price']['field'] == 'all') ? array('price', 'sale_price', 'cost_price','quantity_discounts', 'product_options') : array($_POST['price']['field']);
+                switch ($_POST['price']['field']) {
+                    case 'all':
+                        $fields = array('price', 'sale_price', 'cost_price', 'quantity_discounts', 'product_options', 'group_price', 'group_sale_price');
+                        break;
+                    case 'group_pricing':
+                        $fields = array('group_price', 'group_sale_price');
+                        break;
+                    default:
+                        $fields = array($_POST['price']['field']);
+                }
 
                 $action	= $_POST['price']['action'];
                 $value	= $_POST['price']['value'];
@@ -88,6 +97,13 @@ if (Admin::getInstance()->permissions('products', CC_PERM_EDIT, true) && isset($
                             $id_column = 'product_id';
                             $product_id_column = 'product_id';
                         break;
+                        case 'group_price':
+                        case 'group_sale_price':
+                            $table = 'CubeCart_pricing_group';
+                            $price_column = ($field == 'group_price') ? 'price' : 'sale_price';
+                            $id_column = 'price_id';
+                            $product_id_column = 'product_id';
+                        break;
                     }
 
                     if (($price_rows = $GLOBALS['db']->select($table, array($price_column,$id_column), array($product_id_column => (int)$product_id))) !== false) {
@@ -106,6 +122,36 @@ if (Admin::getInstance()->permissions('products', CC_PERM_EDIT, true) && isset($
                             }
                             if($GLOBALS['db']->update($table, array($price_column => $price), array($id_column => (int)$price_row[$id_column]))) {
                                 $prices_updated = true;
+                            }
+                        }
+                    } elseif ($field == 'group_price') {
+                        // No group pricing rows exist for this product - create one per group
+                        if (($product_data = $GLOBALS['db']->select('CubeCart_inventory', array('price', 'tax_type', 'tax_inclusive'), array('product_id' => (int)$product_id))) !== false) {
+                            if (($groups = $GLOBALS['db']->select('CubeCart_customer_group', array('group_id'))) !== false) {
+                                $base = $product_data[0]['price'];
+                                switch (strtolower($_POST['price']['method'])) {
+                                    case 'percent':
+                                        $new_price = $base * (($value/100)+(int)$shift);
+                                        break;
+                                    default:
+                                        if ($action === '2') {
+                                            $new_price = $value;
+                                        } else {
+                                            $new_price = $base + (($action) ? $value : $value-($value*2));
+                                        }
+                                }
+                                foreach ($groups as $group) {
+                                    if ($GLOBALS['db']->insert('CubeCart_pricing_group', array(
+                                        'group_id' => (int)$group['group_id'],
+                                        'product_id' => (int)$product_id,
+                                        'price' => $new_price,
+                                        'sale_price' => 0,
+                                        'tax_type' => $product_data[0]['tax_type'],
+                                        'tax_inclusive' => $product_data[0]['tax_inclusive'],
+                                    ))) {
+                                        $prices_updated = true;
+                                    }
+                                }
                             }
                         }
                     }

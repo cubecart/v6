@@ -636,6 +636,7 @@
     <string name="write_review" introduced="5.0.0"><![CDATA[Write Review]]></string>
     <string name="your_email" introduced="5.0.0"><![CDATA[Your Email]]></string>
     <string name="your_name" introduced="5.0.0"><![CDATA[Your Name]]></string>
+    <string name="customer_group_pricing" introduced="6.6.0"><![CDATA[Customer Group Pricing]]></string>
   </group>
   <group name="category">
     <string name="edit_category" introduced="6.5.9"><![CDATA[Edit Category]]></string>
