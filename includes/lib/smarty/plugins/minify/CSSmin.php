@@ -274,21 +274,11 @@ class CSSmin
         }
 
 
+        // Preserve CSS rules containing parentheses with arithmetic operators (clamp, calc expressions, etc.)
+        $css = $this->minExtra($css);
+
         // Normalize all whitespace strings to single spaces. Easier to work with that way.
         $css = preg_replace('/\s+/', ' ', $css);
-
-        # preserve CSS clamp(s)
-        if (preg_match_all('/clamp/i', $css, $matches, PREG_OFFSET_CAPTURE)) {
-            $adj = 0;
-            foreach ($matches[0] as $match) {
-                $clampStart = $match[1] + $adj;
-                $clampLen = strpos($css, ';', $clampStart) - $clampStart + 1;
-                $this->preserved_tokens[] = substr($css, $clampStart, $clampLen);
-                $token_tring = self::TOKEN . (count($this->preserved_tokens) - 1) . '___';
-                $css = substr_replace($css, $token_tring, $clampStart, $clampLen);
-                $adj += strlen($token_tring) - $clampLen;
-            }
-        }
 
         // Shorten & preserve calculations calc(...) since spaces are important
         $css = preg_replace_callback('/calc(\(((?:[^\(\)]+|(?1))*)\))/i', array($this, 'replace_calc'), $css);
@@ -786,5 +776,90 @@ class CSSmin
         }
 
         return (int) $size;
+    }
+
+    /**
+     * Preserve CSS rules containing parentheses with arithmetic operators.
+     * Handles clamp(), calc(), and other complex CSS functions that require
+     * spaces around operators (+, -, /, *) to remain valid.
+     * Must be called BEFORE whitespace normalization.
+     *
+     * @param string $css
+     * @return string
+     */
+    private function minExtra($css)
+    {
+        /*
+            \S+\s*          -> first word before ':'
+            (?<!:):(?!:)    -> single ':'
+            (?:\s*.+)+      -> one or more character strings
+            (?:\s*\;|\s*\}) -> terminated first of ';' OR '}'
+        */
+        if (preg_match_all('/\S+\s*(?<!:):(?!:)(?:\s*.+)+\s*(?:\;|\})/iU', $css, $matches, PREG_OFFSET_CAPTURE)) {
+
+            $cssOffset = 0;
+            $rulesToReplace = [];
+            $tokenCount = count($this->preserved_tokens) - 1;
+
+            foreach ($matches[0] as $match) {
+
+                // ignore already tokenized strings
+                if (strpos($match[0], self::TOKEN) === false) {
+
+                    // if final rule in selector, rule may not be terminated by ';', but would be followed by '}'
+                    preg_match('@(?:;|})@', $match[0], $m, PREG_OFFSET_CAPTURE, 0);
+                    $mStr = substr($match[0], 0, ($m[0][1] + ($m[0][0] === ';' ? 1 : 0)));
+
+                    // regexp could not remove CSS pseudo classes or media definitions without conflict, do it here
+                    if (strrpos($mStr, '{') !== false) {
+                        $ruleOffset = strrpos($mStr, '{') + 1;
+                        $cssRule = substr($mStr, $ruleOffset);
+                        $cssStart = $cssOffset + $match[1] + $ruleOffset;
+                    } else {
+                        $cssStart = $cssOffset + $match[1];
+                        $cssRule = $mStr;
+                    }
+
+                    if (
+                        // only rules that contain parentheses could need correction
+                        ! (strpos($cssRule, '(') === false
+                            ||
+                            // furthermore the rule should contain a css arithmetic operator [+,-,/,*] but not [--]
+                            preg_match('@(?:(?<!-)\s+-\s+(?!-)|\s+\+\s+|\s+\/\s+|\*)@iU', substr($cssRule, 1 + strrpos($cssRule, ':'))) === 0)
+                    ) {
+                        $tokenCount += 1;
+
+                        // compress rule and save for recomposition
+                        $rulesToReplace[$tokenCount] = trim(preg_replace(
+                            [
+                                // whitespace before ';' -> ';'
+                                '/\s*\;/',
+                                // many whitespace -> ' '
+                                '/\s+/',
+                                // whitespace surrounding ':' -> ''
+                                '/\s*(:)\s*/',
+                                // whitespace within and adjacent parentheses -> ''
+                                '/(?<=[(]) +| +(?=[)])|/'
+                            ],
+                            [';', ' ', "$1", ''],
+                            $cssRule
+                        ));
+
+                        $cssEnd = strlen($cssRule);
+                        $new_token = self::TOKEN . ($tokenCount) . '___';
+                        $css = substr_replace($css, $new_token, $cssStart, $cssEnd);
+
+                        // adjust next rule start position since css length has changed
+                        $cssOffset += strlen($new_token) - $cssEnd;
+                    }
+                }
+            }
+        }
+
+        if (!empty($rulesToReplace)) {
+            $this->preserved_tokens = array_merge($this->preserved_tokens, $rulesToReplace);
+        }
+
+        return $css;
     }
 }
