@@ -1068,7 +1068,7 @@ class GUI
      */
     private function _displayCookieDialogue()
     {
-        if (CC_IN_ADMIN) {
+        if (CC_IN_ADMIN || $GLOBALS['user']->isBot()) {
             return false;
         }
 
