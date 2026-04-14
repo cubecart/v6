@@ -452,7 +452,7 @@ class Admin
                 if (!empty($redir)) {
                     // Prevent phishing attacks, or anything untoward, unless it's redirecting back to this store
                     if(!$GLOBALS['ssl']->validRedirect($redir)) {
-                        trigger_error(sprintf("Possible Phishing attack - Redirection to '%s' is not allowed. Please check the value of 'Store URL' in the SSL section of your store settings.", $redir));
+                        trigger_error(sprintf("Possible Phishing attack - Redirection to '%s' is not allowed. Please check the value of 'Store URL' in the SSL section of your store settings.", $redir), E_USER_WARNING);
                         if ($GLOBALS['session']->has('back') && $redir == $GLOBALS['session']->get('back')) {
                             $GLOBALS['session']->delete('back');
                         }

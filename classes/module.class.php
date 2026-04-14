@@ -207,7 +207,7 @@ class Module
 					$rawvars[] = (string)$value;
 				}
 			} catch (Exception $e) {
-				trigger_error($e->getMessage());
+				trigger_error($e->getMessage(), E_USER_WARNING);
 			}
 		}
 		return $rawvars;
@@ -272,7 +272,7 @@ class Module
 				}
 			}
 		} catch (Exception $e) {
-			trigger_error($e->getMessage());
+			trigger_error($e->getMessage(), E_USER_WARNING);
 			return;
 		}
 

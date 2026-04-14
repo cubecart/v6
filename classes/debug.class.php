@@ -109,7 +109,7 @@ class Debug
         if (isset($GLOBALS['config']) && is_object($GLOBALS['config'])) {
             $this->_enabled = (bool)$GLOBALS['config']->get('config', 'debug');
             if (!$this->_enabled) {
-                error_reporting(E_ALL ^ (E_NOTICE | E_DEPRECATED | E_USER_DEPRECATED));
+                error_reporting(E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_USER_WARNING | E_USER_NOTICE);
             }
             $ip_string = $GLOBALS['config']->get('config', 'debug_ip_addresses');
             if (!empty($ip_string)) {

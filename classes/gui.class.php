@@ -621,7 +621,7 @@ class GUI
             try {
                 return new SimpleXMLElement($xml);
             } catch (Exception $e) {
-                trigger_error($e->getMessage());
+                trigger_error($e->getMessage(), E_USER_WARNING);
                 return false;
             }
         }

@@ -52,7 +52,7 @@ class Cron
                         $GLOBALS['db']->update('CubeCart_currency', array('value' => $value, 'updated' => $updated), array('code' => $code), true);
                     }
                 } catch (Exception $e) {
-                    trigger_error($e->getMessage());
+                    trigger_error($e->getMessage(), E_USER_WARNING);
                 }
             }
         }
