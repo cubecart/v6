@@ -107,15 +107,15 @@ set_exception_handler(function ($e) {
     ApiResponse::error('Internal server error', 'INTERNAL_ERROR', 500);
 });
 
-// Allow hooks to intercept API requests
-foreach ($GLOBALS['hooks']->load('api.bootstrap') as $hook) {
-    include $hook;
-}
-
 // Purge old API log entries (~5% of requests, older than 30 days)
 if (executionChance(5)) {
     $cutoff = time() - (30 * 86400);
     $GLOBALS['db']->delete('CubeCart_api_log', array('<' => array('request_time' => $cutoff)));
+}
+
+// Allow hooks to intercept API requests
+foreach ($GLOBALS['hooks']->load('api.bootstrap') as $hook) {
+    include $hook;
 }
 
 // Route and dispatch
