@@ -44,23 +44,24 @@ function imagesToFolders() {
 function crc_integrity_check($files, $mode = 'upgrade')
 {
     $errors = array();
-    
+
     $log_path = CC_BACKUP_DIR.$mode.'_error_log';
     if (file_exists($log_path)) {
         unlink($log_path);
     }
 
     foreach ($files as $file => $value) {
-        if (!file_exists($file)) {
+        $abs_file = CC_ROOT_DIR.'/'.$file;
+        if (!file_exists($abs_file)) {
             $errors[] = "$file - Missing but expected after extract";
-        } elseif (is_file($file)) {
+        } elseif (is_file($abs_file)) {
             ## Open the source file
-            if (($v_file = fopen($file, "rb")) == 0) {
+            if (($v_file = fopen($abs_file, "rb")) == 0) {
                 $errors[] = "$file - Unable to read in order to validate integrity";
             }
 
             ## Read the file content
-            $filesize = filesize($file);
+            $filesize = filesize($abs_file);
             $v_content = ((int)$filesize > 0) ? fread($v_file, $filesize) : '';
             fclose($v_file);
 
@@ -201,6 +202,8 @@ if (isset($_GET['restore']) && !empty($_GET['restore'])) {
 }
 
 if (isset($_GET['upgrade']) && !empty($_GET['upgrade'])) {
+    ignore_user_abort(true);
+    set_time_limit(300);
     $contents = false;
     $upgrade_version = $_GET['upgrade'];
     ## Download from GitHub
