@@ -491,6 +491,50 @@ class Database_Contoller
     }
 
     /**
+     * Insert or update on duplicate key
+     *
+     * @param string $table
+     * @param array $record
+     * @param array $update_fields Fields to update on duplicate (defaults to all non-key fields)
+     * @param bool $purge
+     * @return bool
+     */
+    public function upsert($table, $record, $update_fields = array(), $purge = true)
+    {
+        if (is_array($record)) {
+            $allowed = $this->getFields($table);
+            $fields = array();
+            $values = array();
+            foreach ($record as $field => $value) {
+                if (in_array($field, $allowed) && !is_numeric($field)) {
+                    $fields[] = "`$field`";
+                    $values[] = ($value==='NULL') ? 'NULL' : $this->sqlSafe($value, true);
+                }
+            }
+            if (!empty($fields) && !empty($values)) {
+                if (empty($update_fields)) {
+                    $update_fields = array_keys($record);
+                }
+                $updates = array();
+                foreach ($update_fields as $field) {
+                    if (in_array($field, $allowed) && isset($record[$field])) {
+                        $updates[] = "`$field` = ".($record[$field]==='NULL' ? 'NULL' : $this->sqlSafe($record[$field], true));
+                    }
+                }
+                if (!empty($updates)) {
+                    $this->_query = "INSERT INTO `{$this->_prefix}$table` (".implode(',', $fields).') VALUES ('.implode(',', $values).') ON DUPLICATE KEY UPDATE '.implode(', ', $updates).';';
+                    $this->_execute(false);
+                    $affected = ($this->affected() > 0);
+                    $this->_clearCacheNotice($purge, $affected, $table);
+                    return $affected;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Execute a misc query
      *
      * @param string $query

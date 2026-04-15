@@ -407,14 +407,15 @@ class Config
                     continue;
                 }
                 $this->_pre_enc_config = $data;
-                // Delete existing rows for this section then insert new ones
-                $db->delete('CubeCart_config', array('name' => $config));
+                // Upsert each key to avoid race conditions
+                // The old DELETE + INSERT pattern was not atomic — concurrent
+                // requests could read an empty table mid-write and lose config
                 foreach ($data as $key => $value) {
-                    $db->insert('CubeCart_config', array(
+                    $db->upsert('CubeCart_config', array(
                         'name'         => $config,
                         'config_key'   => $key,
                         'config_value' => $this->_encodeValue($value)
-                    ));
+                    ), array('config_value'));
                 }
             }
         }
