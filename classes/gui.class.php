@@ -1969,15 +1969,14 @@ class GUI
                         break;
                     }
                 }
-                if (!empty($this->_skin)) {
-                    $GLOBALS['config']->set('config', 'skin_folder'.$this->_skin_config_postfix, $this->_skin);
+                if (empty($this->_skin)) {
+                    $this->_skin = 'foundation';
                 }
             }
         }
 
         if (empty($this->_skin)) {
             $this->_skin = 'foundation';
-            $GLOBALS['config']->set('config', 'skin_folder'.$this->_skin_config_postfix, $this->_skin);
         }
 
         if (($custom = $GLOBALS['cache']->read('skin.'.$this->_skin.'.custom')) === false && file_exists(CC_ROOT_DIR.'/skins/'.$this->_skin.'/'.'config.xml')) {
