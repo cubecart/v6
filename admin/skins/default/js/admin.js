@@ -295,13 +295,76 @@ $(document).ready(function() {
 
         $("#bulk_price_method").change(function() {
             if($(this).val()=='percent') {
-                $("#bulk_price_action").hide().prop('disabled', true);
+                $("#bulk_price_action").hide();
                 $("#bulk_price_percent_symbol").show();
             } else {
-                $("#bulk_price_action").show().prop('disabled', false);
+                $("#bulk_price_action").show();
                 $("#bulk_price_percent_symbol").hide();
             }
         });
+
+        if ($("#bulk_price_save").length) {
+
+            var steps = [
+                { el: '#bulk_price_target', th: '#th_target', valid: function() { return $(this.el).val() !== null; } },
+                { el: '#bulk_price_method', th: '#th_method', valid: function() { return $(this.el).val() !== null; } },
+                { el: '#bulk_price_action', th: '#th_action', valid: function() { return $(this.el).val() !== null || $(this.el).is(':hidden'); } },
+                { el: '#bulk_price_value',  th: '#th_value',  valid: function() { var v = $.trim($(this.el).val()); return v !== '' && $.isNumeric(v); } },
+                { el: '#bulk_price_field',  th: '#th_field',  valid: function() { return ($(this.el).val() || []).length > 0; } }
+            ];
+
+            function bulkPriceActivateStep(index) {
+                if (index >= steps.length) return;
+                var s = steps[index];
+                $(s.el).prop('disabled', false);
+                $(s.th).removeClass('bulk-price-inactive');
+            }
+
+            function bulkPriceDeactivateFrom(index) {
+                for (var i = index; i < steps.length; i++) {
+                    var s = steps[i];
+                    $(s.el).prop('disabled', true).css('border-color', '');
+                    $(s.th).addClass('bulk-price-inactive');
+                }
+            }
+
+            function bulkPriceValidate() {
+                var allValid = true;
+                for (var i = 0; i < steps.length; i++) {
+                    var s = steps[i];
+                    if ($(s.el).prop('disabled')) {
+                        allValid = false;
+                        break;
+                    }
+                    var ok = s.valid();
+                    $(s.el).css('border-color', ok ? '#5cb85c' : '#d9534f');
+                    if (ok) {
+                        bulkPriceActivateStep(i + 1);
+                    } else {
+                        bulkPriceDeactivateFrom(i + 1);
+                        allValid = false;
+                        break;
+                    }
+                }
+                var itemsValid = $("input.products:checked").length > 0 || ($("input[name='category[]']:checked").length > 0 && $("#bulk_price_target").val() === 'categories');
+                if (!itemsValid) allValid = false;
+                $("#bulk_price_save").prop('disabled', !allValid);
+            }
+
+            $("#bulk_price_field").on('mousedown', function(e) {
+                var option = $(e.target);
+                if (option.is('option') && option.val() == 'all') {
+                    e.preventDefault();
+                    var allSelected = option.prop('selected');
+                    $(this).find('option').prop('selected', !allSelected);
+                    bulkPriceValidate();
+                }
+            });
+
+            $("#bulk_price_target, #bulk_price_method, #bulk_price_action, #bulk_price_field").on('change', bulkPriceValidate);
+            $("#bulk_price_value").on('input', bulkPriceValidate);
+            $("input.products, input[name='category[]']").on('change', bulkPriceValidate);
+        }
     
     $("#redirect_type").change(function() {
         var static = $('option:selected', this).attr("data-static");

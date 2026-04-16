@@ -349,6 +349,29 @@ input[type=submit].delete {
     color: #FF0000 !important;
     font-weight: bold;
 }
+input[type=submit][disabled],
+input[type=button][disabled] {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+/* Bulk price update */
+.bulk-price td {
+    vertical-align: top;
+}
+.bulk-price select,
+.bulk-price input.textbox {
+    border-width: 2px;
+}
+.bulk-price select[disabled],
+.bulk-price input[disabled] {
+    opacity: 0.4;
+}
+.bulk-price-inactive {
+    color: #ccc;
+}
+#bulk_price_percent_symbol {
+    display: none;
+}
 input[type=submit].tiny,
 input[type=button].tiny,
 button.tiny {

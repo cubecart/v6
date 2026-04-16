@@ -606,7 +606,6 @@
     <string name="title_option_set" introduced="6.1.5"><![CDATA[Option Set]]></string>
     <string name="title_options" introduced="5.0.0"><![CDATA[Options]]></string>
     <string name="title_popular" introduced="5.0.0"><![CDATA[Best Sellers]]></string>
-    <string name="title_prices_update" introduced="5.0.0"><![CDATA[Update Product Prices]]></string>
     <string name="title_pricing" introduced="5.0.0"><![CDATA[Pricing]]></string>
     <string name="title_product_create" introduced="5.0.0"><![CDATA[Add Product]]></string>
     <string name="title_product_inventory" introduced="5.0.0"><![CDATA[Product Inventory]]></string>

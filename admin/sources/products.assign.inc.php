@@ -60,16 +60,29 @@ if (Admin::getInstance()->permissions('products', CC_PERM_EDIT, true) && isset($
                     continue;
                 }
 
-                switch ($_POST['price']['field']) {
-                    case 'all':
+                $selected_fields = (array)$_POST['price']['field'];
+                $fields = array();
+                $group_id_filters = array();
+                $all_groups = in_array('group_pricing', $selected_fields);
+
+                foreach ($selected_fields as $sf) {
+                    if ($sf === 'all') {
                         $fields = array('price', 'sale_price', 'cost_price', 'quantity_discounts', 'product_options', 'group_price', 'group_sale_price');
+                        $all_groups = true;
                         break;
-                    case 'group_pricing':
-                        $fields = array('group_price', 'group_sale_price');
-                        break;
-                    default:
-                        $fields = array($_POST['price']['field']);
+                    } elseif ($sf === 'group_pricing' || preg_match('/^group_pricing_(\d+)$/', $sf, $m)) {
+                        if (!in_array('group_price', $fields)) {
+                            $fields[] = 'group_price';
+                            $fields[] = 'group_sale_price';
+                        }
+                        if (!$all_groups && isset($m[1])) {
+                            $group_id_filters[] = (int)$m[1];
+                        }
+                    } else {
+                        $fields[] = $sf;
+                    }
                 }
+                $fields = array_unique($fields);
 
                 $action	= $_POST['price']['action'];
                 $value	= $_POST['price']['value'];
@@ -106,7 +119,12 @@ if (Admin::getInstance()->permissions('products', CC_PERM_EDIT, true) && isset($
                         break;
                     }
 
-                    if (($price_rows = $GLOBALS['db']->select($table, array($price_column,$id_column), array($product_id_column => (int)$product_id))) !== false) {
+                    $where = array($product_id_column => (int)$product_id);
+                    // Filter group pricing by selected customer groups
+                    if (($field == 'group_price' || $field == 'group_sale_price') && !empty($group_id_filters)) {
+                        $where['group_id'] = $group_id_filters;
+                    }
+                    if (($price_rows = $GLOBALS['db']->select($table, array($price_column,$id_column), $where)) !== false) {
                         foreach ($price_rows as $price_row) {
                             $price	= $price_row[$price_column];
                             switch (strtolower($_POST['price']['method'])) {
@@ -125,9 +143,10 @@ if (Admin::getInstance()->permissions('products', CC_PERM_EDIT, true) && isset($
                             }
                         }
                     } elseif ($field == 'group_price') {
-                        // No group pricing rows exist for this product - create one per group
+                        // No group pricing rows exist for this product - create for selected or all groups
                         if (($product_data = $GLOBALS['db']->select('CubeCart_inventory', array('price', 'tax_type', 'tax_inclusive'), array('product_id' => (int)$product_id))) !== false) {
-                            if (($groups = $GLOBALS['db']->select('CubeCart_customer_group', array('group_id'))) !== false) {
+                            $group_where = !empty($group_id_filters) ? array('group_id' => $group_id_filters) : false;
+                            if (($groups = $GLOBALS['db']->select('CubeCart_customer_group', array('group_id'), $group_where)) !== false) {
                                 $base = $product_data[0]['price'];
                                 switch (strtolower($_POST['price']['method'])) {
                                     case 'percent':
@@ -186,6 +205,10 @@ if (!isset($_GET['prices'])) {
 ## Product list
 if (($products = $GLOBALS['db']->select('CubeCart_inventory', array('product_id', 'name', 'product_code'), false, array('name' => 'ASC'))) !== false) {
     $GLOBALS['smarty']->assign('PRODUCTS', $products);
+}
+## Customer groups (for bulk pricing group selector)
+if (($customer_groups = $GLOBALS['db']->select('CubeCart_customer_group', array('group_id', 'group_name'), false, array('group_name' => 'ASC'))) !== false) {
+    $GLOBALS['smarty']->assign('CUSTOMER_GROUPS', $customer_groups);
 }
 ## Category list
 if (($category_array = $GLOBALS['db']->select('CubeCart_category', array('cat_name', 'cat_parent_id', 'cat_id'))) !== false) {

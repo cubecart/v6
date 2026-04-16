@@ -18,33 +18,63 @@
       {else}
       <h3>{$LANG.catalogue.title_bulk_prices}</h3>
       <fieldset>
-         <legend>{$LANG.catalogue.title_prices_update}</legend>
-         <div>
-            <select name="price[what]" id="bulk_price_target" class="textbox">
-               <option value="products">{$LANG.catalogue.update_checked_products}</option>
-               <option value="categories">{$LANG.catalogue.update_checked_categories}</option>
-            </select>
-            <select name="price[method]" id="bulk_price_method" class="textbox">
-               <option value="fixed">{$LANG.catalogue.update_by_amount}</option>
-               <option value="percent">{$LANG.catalogue.update_by_percent}</option>
-            </select>
-            <select name="price[action]" id="bulk_price_action" class="textbox">
-               <option value="0">{$LANG.common.subtract}</option>
-               <option value="1">{$LANG.common.add}</option>
-               <option value="2">{$LANG.common.set_to}</option>
-            </select>
-            <input type="text" name="price[value]" value="" class="textbox number">
-            <span id="bulk_price_percent_symbol" style="display:none">%</span>
-            <select name="price[field]" class="textbox">
-               <option value="all">{$LANG.common.all}</option>
-               <option value="price">{$LANG.common.price_standard}</option>
-               <option value="sale_price">{$LANG.common.price_sale}</option>
-               <option value="cost_price">{$LANG.common.price_cost}</option>
-               <option value="quantity_discounts">{$LANG.catalogue.quantity_discounts}</option>
-               <option value="product_options">{$LANG.catalogue.title_product_options}</option>
-               <option value="group_pricing">{$LANG.catalogue.customer_group_pricing}</option>
-            </select>
-         </div>
+         <table class="bulk-price">
+            <thead>
+               <tr>
+                  <th id="th_target">{$LANG.common.apply}</th>
+                  <th id="th_method" class="bulk-price-inactive">{$LANG.common.method}</th>
+                  <th id="th_action" class="bulk-price-inactive">{$LANG.form.action}</th>
+                  <th id="th_value" class="bulk-price-inactive">{$LANG.common.value}</th>
+                  <th id="th_field" class="bulk-price-inactive">{$LANG.common.price}</th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr>
+                  <td>
+                     <select name="price[what]" id="bulk_price_target" class="textbox" size="2">
+                        <option value="products">{$LANG.catalogue.update_checked_products}</option>
+                        <option value="categories">{$LANG.catalogue.update_checked_categories}</option>
+                     </select>
+                  </td>
+                  <td>
+                     <select name="price[method]" id="bulk_price_method" class="textbox" size="2" disabled>
+                        <option value="fixed">{$LANG.catalogue.update_by_amount|strtolower}</option>
+                        <option value="percent">{$LANG.catalogue.update_by_percent|strtolower}</option>
+                     </select>
+                  </td>
+                  <td>
+                     <select name="price[action]" id="bulk_price_action" class="textbox" size="3" disabled>
+                        <option value="0">{$LANG.common.subtract|strtolower}</option>
+                        <option value="1">{$LANG.common.add|strtolower}</option>
+                        <option value="2">{$LANG.common.set_to|strtolower}</option>
+                     </select>
+                  </td>
+                  <td>
+                     <input type="text" name="price[value]" id="bulk_price_value" value="" class="textbox number" disabled>
+                     <span id="bulk_price_percent_symbol">&percnt;</span>
+                  </td>
+                  <td>
+                     <select name="price[field][]" id="bulk_price_field" class="textbox" multiple size="6" disabled>
+                        <option value="all">{$LANG.common.all}</option>
+                        <option value="price">{$LANG.common.price_standard}</option>
+                        <option value="sale_price">{$LANG.common.price_sale}</option>
+                        <option value="cost_price">{$LANG.common.price_cost}</option>
+                        <option value="quantity_discounts">{$LANG.catalogue.quantity_discounts}</option>
+                        <option value="product_options">{$LANG.catalogue.title_product_options}</option>
+                        {if $CUSTOMER_GROUPS}
+                        <optgroup label="{$LANG.catalogue.customer_group_pricing}">
+                           <option value="group_pricing">{$LANG.common.all} {$LANG.customer.title_groups}</option>
+                           {foreach from=$CUSTOMER_GROUPS item=group}
+                           <option value="group_pricing_{$group.group_id}">{$group.group_name}</option>
+                           {/foreach}
+                        </optgroup>
+                        {/if}
+                     </select>
+                  </td>
+               </tr>
+            </tbody>
+         </table>
+         <input type="submit" name="save" id="bulk_price_save" value="{$LANG.common.save}" disabled>
       </fieldset>
       {/if}
       <fieldset id="bulk_update_products">
@@ -108,8 +138,10 @@
    {/foreach}
    {/if}
 {include file='templates/element.hook_form_content.php'}
+   {if $MODE!=='prices'}
    <div class="form_control">
       <input type="submit" value="{$LANG.common.save}">
    </div>
+   {/if}
    
 </form>
