@@ -346,9 +346,20 @@ $(document).ready(function() {
                         break;
                     }
                 }
+                var stepsComplete = allValid;
                 var itemsValid = $("input.products:checked").length > 0 || ($("input[name='category[]']:checked").length > 0 && $("#bulk_price_target").val() === 'categories');
                 if (!itemsValid) allValid = false;
                 $("#bulk_price_save").prop('disabled', !allValid);
+
+                var $products = $("#bulk_update_products");
+                if (stepsComplete && !itemsValid) {
+                    if (!$products.hasClass('bulk-price-attention')) {
+                        $products.addClass('bulk-price-attention');
+                        $('html, body').animate({ scrollTop: $products.offset().top - 20 }, 300);
+                    }
+                } else {
+                    $products.removeClass('bulk-price-attention');
+                }
             }
 
             $("#bulk_price_field").on('mousedown', function(e) {

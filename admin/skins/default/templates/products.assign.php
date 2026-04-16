@@ -74,7 +74,6 @@
                </tr>
             </tbody>
          </table>
-         <input type="submit" name="save" id="bulk_price_save" value="{$LANG.common.save}" disabled>
       </fieldset>
       {/if}
       <fieldset id="bulk_update_products">
@@ -138,10 +137,8 @@
    {/foreach}
    {/if}
 {include file='templates/element.hook_form_content.php'}
-   {if $MODE!=='prices'}
    <div class="form_control">
-      <input type="submit" value="{$LANG.common.save}">
+      <input type="submit" {if $MODE=='prices'}name="save" id="bulk_price_save" disabled{/if} value="{if $MODE=='prices'}{$LANG.common.update}{else}{$LANG.common.save}{/if}">
    </div>
-   {/if}
    
 </form>

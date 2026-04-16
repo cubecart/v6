@@ -372,6 +372,17 @@ input[type=button][disabled] {
 #bulk_price_percent_symbol {
     display: none;
 }
+#bulk_update_products.bulk-price-attention {
+    border: 2px solid #d9534f;
+    border-radius: 3px;
+}
+#bulk_update_products.bulk-price-attention > .cat_product_assign {
+    animation: bulkPriceFlash 1s ease-in-out 2;
+}
+@keyframes bulkPriceFlash {
+    0%, 100% { background: transparent; }
+    50% { background: #fcf8e3; }
+}
 input[type=submit].tiny,
 input[type=button].tiny,
 button.tiny {
