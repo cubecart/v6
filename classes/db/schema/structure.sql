@@ -796,7 +796,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_inventory` (
 	KEY `product_id` (`product_id`),
 	KEY `cart_order_id` (`cart_order_id`),
 	KEY `options_identifier` (`options_identifier`),
-	KEY `quantity` (`quantity`)
+	KEY `cartorder_product_qty` (`cart_order_id`, `product_id`, `quantity`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_order_notes` (
@@ -874,7 +874,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_summary` (
 	UNIQUE KEY `cart_order_id` (`cart_order_id`),
 	UNIQUE KEY `custom_oid` (`custom_oid`),
 	KEY `customer_id` (`customer_id`),
-	KEY `status` (`status`),
+	KEY `status_cartorder` (`status`, `cart_order_id`),
 	KEY `email` (`email`),
 	KEY `order_date` (`order_date`),
 	KEY `dashboard` (`dashboard`),

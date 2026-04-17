@@ -162,12 +162,14 @@ if (!empty($earliest_order[0]['MIN_order_date'])) {
 ## Product Sales
 $per_page = 15;
 $page = (isset($_GET['page_sales']) && is_numeric($_GET['page_sales'])) ? $_GET['page_sales'] : 1;
-$query = "SELECT sum(`O`.`quantity`) AS `quan`, `O`.`product_id`, `I`.`name` FROM `".$glob['dbprefix']."CubeCart_order_inventory` AS `O` INNER JOIN `".$glob['dbprefix']."CubeCart_order_summary` AS `S` ON `S`.`cart_order_id` = `O`.`cart_order_id` INNER JOIN `".$glob['dbprefix']."CubeCart_inventory` AS `I` ON `O`.`product_id` = `I`.`product_id` WHERE `S`.`status` IN (2,3) GROUP BY `I`.`product_id` ORDER BY `quan` DESC";
+$offset = ($page-1)*$per_page;
+$query = "SELECT `t`.`quan`, `t`.`product_id`, `I`.`name` FROM (SELECT SUM(`O`.`quantity`) AS `quan`, `O`.`product_id` FROM `".$glob['dbprefix']."CubeCart_order_inventory` AS `O` INNER JOIN `".$glob['dbprefix']."CubeCart_order_summary` AS `S` ON `S`.`cart_order_id` = `O`.`cart_order_id` WHERE `S`.`status` IN (2,3) GROUP BY `O`.`product_id` ORDER BY `quan` DESC LIMIT ".(int)$per_page." OFFSET ".(int)$offset.") AS `t` INNER JOIN `".$glob['dbprefix']."CubeCart_inventory` AS `I` ON `I`.`product_id` = `t`.`product_id` ORDER BY `t`.`quan` DESC";
 
-if (($results = $GLOBALS['db']->query($query, $per_page, $page)) !== false) {
+if (($results = $GLOBALS['db']->query($query)) !== false) {
     $GLOBALS['main']->addTabControl($lang['statistics']['title_popular'], 'stats_prod_sales');
-    $numrows = $GLOBALS['db']->numrows($query);
-    $divider = $GLOBALS['db']->query("SELECT SUM(`O`.`quantity`) as `totalProducts` FROM `".$glob['dbprefix']."CubeCart_order_inventory` AS `O` INNER JOIN `".$glob['dbprefix']."CubeCart_order_summary` AS `S` ON `S`.`cart_order_id` = `O`.`cart_order_id` INNER JOIN `".$glob['dbprefix']."CubeCart_inventory` AS `I` ON `O`.`product_id` = `I`.`product_id` WHERE `S`.`status` IN (2,3)");
+    $numrows_result = $GLOBALS['db']->query("SELECT COUNT(DISTINCT `O`.`product_id`) AS `c` FROM `".$glob['dbprefix']."CubeCart_order_inventory` AS `O` INNER JOIN `".$glob['dbprefix']."CubeCart_order_summary` AS `S` ON `S`.`cart_order_id` = `O`.`cart_order_id` WHERE `S`.`status` IN (2,3)");
+    $numrows = $numrows_result ? (int)$numrows_result[0]['c'] : 0;
+    $divider = $GLOBALS['db']->query("SELECT SUM(`O`.`quantity`) as `totalProducts` FROM `".$glob['dbprefix']."CubeCart_order_inventory` AS `O` INNER JOIN `".$glob['dbprefix']."CubeCart_order_summary` AS `S` ON `S`.`cart_order_id` = `O`.`cart_order_id` WHERE `S`.`status` IN (2,3)");
     
     $g_graph_data[5]['data'] = "['".$lang['statistics']['percentage_of_sales']."','".$lang['common']['percentage']."'],";
     
