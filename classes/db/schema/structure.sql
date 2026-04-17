@@ -1133,7 +1133,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_seo_urls` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_email_log` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `subject` varchar(255) NOT NULL,
   `content_html` mediumtext NOT NULL,
   `content_text` mediumtext NOT NULL,
@@ -1145,10 +1145,9 @@ CREATE TABLE IF NOT EXISTS `CubeCart_email_log` (
   `email_method` varchar(20) NOT NULL DEFAULT '',
   `fail_reason` text,
   `attachment` text DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `to` (`to`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
-ALTER TABLE `CubeCart_email_log` ADD PRIMARY KEY (`id`); #EOQ
-ALTER TABLE `CubeCart_email_log` ADD INDEX(`to`); #EOQ
-ALTER TABLE `CubeCart_email_log` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_invoice_template` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
