@@ -108,11 +108,12 @@ class CubeCart_Smarty_Security extends Smarty_Security
         $this->secure_dir = array(CC_ROOT_DIR . '/js/', CC_ROOT_DIR . '/modules/');
 
         // Auto-register safe PHP functions as modifiers to avoid Smarty deprecation warnings.
-        // Any callable PHP function not in $dangerous_php will be registered on first use.
+        // Sets $callback by reference so Smarty compiles a direct function call ({$name}(...))
+        // rather than a runtime registered_plugins lookup that wouldn't persist to cache execution.
         $dangerous = $this->dangerous_php;
-        $smarty->registerDefaultPluginHandler(function ($name, $type) use ($smarty, $dangerous) {
+        $smarty->registerDefaultPluginHandler(function ($name, $type, $template, &$callback, &$script, &$cacheable) use ($dangerous) {
             if ($type === Smarty::PLUGIN_MODIFIER && is_callable($name) && !in_array($name, $dangerous)) {
-                $smarty->registerPlugin('modifier', $name, $name);
+                $callback = $name;
                 return true;
             }
             return false;
