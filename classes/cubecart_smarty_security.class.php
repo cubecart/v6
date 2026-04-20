@@ -102,15 +102,68 @@ class CubeCart_Smarty_Security extends Smarty_Security
      */
     public $secure_dir = array();
 
+    /**
+     * Commonly-used PHP functions pre-registered as Smarty modifiers so the
+     * compiler matches them in case 1 (registered modifier) before reaching
+     * case 5 (PHP function) which emits E_USER_DEPRECATED. Also ensures the
+     * compiled template's $_smarty_tpl->registered_plugins[...] lookup finds
+     * the callable at cache-execution time (registration happens every request).
+     *
+     * @var array
+     */
+    private $safe_modifiers = array(
+        'json_encode', 'json_decode',
+        'html_entity_decode', 'htmlspecialchars', 'htmlspecialchars_decode',
+        'strtolower', 'strtoupper', 'ucfirst', 'ucwords',
+        'sprintf', 'printf',
+        'print_r', 'var_export',
+        'intval', 'floatval', 'boolval', 'strval',
+        'stripslashes', 'addslashes',
+        'urlencode', 'urldecode', 'rawurlencode', 'rawurldecode',
+        'base64_encode', 'base64_decode',
+        'md5', 'sha1', 'crc32', 'hash',
+        'strtotime', 'mktime', 'time', 'microtime',
+        'implode', 'explode',
+        'ltrim', 'rtrim', 'trim',
+        'str_replace', 'preg_replace', 'preg_match', 'str_ireplace',
+        'str_pad',
+        'substr', 'strpos', 'strrpos', 'stripos', 'strstr', 'stristr', 'strrev',
+        'strcmp', 'strcasecmp',
+        'floor', 'ceil', 'abs', 'min', 'max', 'pow', 'sqrt',
+        'array_reverse', 'array_keys', 'array_values', 'array_merge',
+        'array_slice', 'array_sum', 'array_unique', 'in_array',
+        'count', 'sizeof',
+        'nl2br', 'wordwrap',
+        'filter_var', 'is_numeric', 'is_array', 'is_string',
+    );
+
     public function __construct($smarty)
     {
         parent::__construct($smarty);
         $this->secure_dir = array(CC_ROOT_DIR . '/js/', CC_ROOT_DIR . '/modules/');
 
-        // Auto-register safe PHP functions as modifiers to avoid Smarty deprecation warnings.
-        // Sets $callback by reference so Smarty compiles a direct function call ({$name}(...))
-        // rather than a runtime registered_plugins lookup that wouldn't persist to cache execution.
         $dangerous = $this->dangerous_php;
+
+        // Pre-register safe PHP functions as modifiers. Registering at
+        // construction (every request) means the cache file's runtime
+        // lookup into $_smarty_tpl->registered_plugins['modifier'][$name]
+        // always finds the callable.
+        foreach ($this->safe_modifiers as $fn) {
+            if (in_array($fn, $dangerous)) {
+                continue;
+            }
+            if (isset($smarty->registered_plugins[Smarty::PLUGIN_MODIFIER][$fn])) {
+                continue;
+            }
+            if (!is_callable($fn)) {
+                continue;
+            }
+            $smarty->registered_plugins[Smarty::PLUGIN_MODIFIER][$fn] = array($fn, true, array());
+        }
+
+        // Fallback for any PHP function not in the pre-registered list.
+        // Sets $callback by reference so Smarty compiles a direct function
+        // call ({$name}(...)) rather than a registered_plugins lookup.
         $smarty->registerDefaultPluginHandler(function ($name, $type, $template, &$callback, &$script, &$cacheable) use ($dangerous) {
             if ($type === Smarty::PLUGIN_MODIFIER && is_callable($name) && !in_array($name, $dangerous)) {
                 $callback = $name;
