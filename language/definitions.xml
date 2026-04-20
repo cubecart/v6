@@ -1153,6 +1153,7 @@ This email is sent from the store's master email address but it is possible to r
     <string name="title_my_notes" introduced="5.0.0"><![CDATA[My Notes]]></string>
     <string name="title_orders_unsettled" introduced="5.0.0"><![CDATA[Unsettled Orders]]></string>
     <string name="title_reviews_pending" introduced="5.0.0"><![CDATA[Pending Reviews]]></string>
+    <string name="title_extensions_recent" introduced="6.6.3"><![CDATA[New Extensions]]></string>
     <string name="title_sales_average" introduced="5.0.0"><![CDATA[Average Sale]]></string>
     <string name="title_sales_stats" introduced="5.0.0"><![CDATA[Sales Statistics]]></string>
     <string name="title_sales_total" introduced="5.0.0"><![CDATA[Total Sales]]></string>

@@ -17,6 +17,17 @@ if (!defined('CC_INI_SET')) {
 
 global $glob, $lang, $admin_data;
 
+## Acknowledge "New Extensions" dashboard tab — updates per-admin
+## last-seen timestamp so items roll off once read.
+if (isset($_GET['ack']) && $_GET['ack'] === 'extensions') {
+    $ack_admin_id = (int)Admin::getInstance()->getId();
+    if ($ack_admin_id > 0) {
+        $GLOBALS['db']->update('CubeCart_admin_users', array('extensions_last_seen' => time()), array('admin_id' => $ack_admin_id));
+    }
+    httpredir('?_g=dashboard');
+    exit;
+}
+
 ## Release Notification
 $notification_id = CC_VERSION.'_'.Admin::getInstance()->getId();
 $release_notes_path = CC_ROOT_DIR.'/'.$GLOBALS['config']->get('config', 'adminFolder').'/sources/release_notes/'.CC_VERSION.'.inc.php';
@@ -419,6 +430,85 @@ if ($stock_c = $GLOBALS['db']->select($tables, $fields, $where)) {
 
     foreach ($GLOBALS['hooks']->load('admin.dashboard.stock.post') as $hook) {
         include $hook;
+    }
+}
+
+## Most recent extensions from the marketplace (shares cache with Plugins page, 1h TTL)
+$recent_cache_key = 'extensions_api_list';
+$recent_raw       = $GLOBALS['session']->get($recent_cache_key, 'extensions_cache');
+$recent_cache_ts  = $GLOBALS['session']->get($recent_cache_key.'_time', 'extensions_cache');
+
+if (!$recent_raw || !$recent_cache_ts || (time() - $recent_cache_ts) > 3600) {
+    $recent_req = new Request('extensions.cubecart.com', '/api/extensions', 443, false, true, 10);
+    $recent_req->setMethod('get');
+    $recent_req->setSSL();
+    $recent_req->setUserAgent('CubeCart');
+    $recent_req->skiplog(true);
+    if (($recent_json = $recent_req->send()) !== false) {
+        $recent_data = json_decode($recent_json, true);
+        if ($recent_data && !empty($recent_data['success']) && !empty($recent_data['extensions'])) {
+            $recent_raw = $recent_data['extensions'];
+            $GLOBALS['session']->set($recent_cache_key, $recent_raw, 'extensions_cache');
+            $GLOBALS['session']->set($recent_cache_key.'_time', time(), 'extensions_cache');
+        }
+    }
+}
+
+if (is_array($recent_raw) && !empty($recent_raw)) {
+    // Build a lightweight installed-name index to mark already-installed items
+    $recent_installed = array();
+    foreach (glob(CC_ROOT_DIR.'/modules/*/*/config.xml') as $recent_mp) {
+        try {
+            $recent_xml = new SimpleXMLElement(file_get_contents($recent_mp));
+            if (is_object($recent_xml) && !empty($recent_xml->info->name)) {
+                $recent_installed[strtolower((string)$recent_xml->info->name)] = true;
+            }
+        } catch (Exception $e) {
+            continue;
+        }
+    }
+
+    // Per-admin "last seen" timestamp. Baseline of 2026-04-20 00:00:00 local
+    // means existing marketplace extensions aren't counted as "new" for a
+    // fresh install — only versions released after that point surface here.
+    $recent_baseline = mktime(0, 0, 0, 4, 20, 2026);
+    $recent_admin_row = $GLOBALS['db']->select('CubeCart_admin_users', array('extensions_last_seen'), array('admin_id' => (int)Admin::getInstance()->getId()));
+    $recent_last_seen = (!empty($recent_admin_row[0]['extensions_last_seen'])) ? (int)$recent_admin_row[0]['extensions_last_seen'] : 0;
+    $recent_threshold = max($recent_last_seen, $recent_baseline);
+
+    $recent_candidates = array();
+    foreach ($recent_raw as $recent_ext) {
+        if (empty($recent_ext['versions']) || !is_array($recent_ext['versions'])) {
+            continue;
+        }
+        $recent_latest = end($recent_ext['versions']);
+        $recent_ts = !empty($recent_ext['created_at']) ? (int)strtotime($recent_ext['created_at']) : 0;
+        if ($recent_ts <= 0 || $recent_ts <= $recent_threshold) {
+            continue;
+        }
+        $recent_candidates[] = array(
+            'name'         => $recent_ext['name'],
+            'description'  => !empty($recent_ext['description']) ? $recent_ext['description'] : '',
+            'type'         => !empty($recent_ext['type']) ? $recent_ext['type'] : '',
+            'category'     => !empty($recent_ext['category']) ? ucwords(str_replace('_', ' ', $recent_ext['category'])) : '',
+            'version'      => $recent_latest['version'],
+            'timestamp'    => $recent_ts,
+            'date'         => formatTime($recent_ts),
+            'purchase_url' => !empty($recent_ext['purchase_url']) ? $recent_ext['purchase_url'] : '',
+            'price'        => !empty($recent_ext['price']) ? $recent_ext['price'] : '',
+            'recommended'  => !empty($recent_ext['recommended']),
+            'is_installed' => isset($recent_installed[strtolower($recent_ext['name'])]),
+        );
+    }
+
+    usort($recent_candidates, function ($a, $b) {
+        return $b['timestamp'] - $a['timestamp'];
+    });
+    $recent_candidates = array_slice($recent_candidates, 0, 5);
+
+    if (!empty($recent_candidates)) {
+        $GLOBALS['smarty']->assign('RECENT_EXTENSIONS', $recent_candidates);
+        $GLOBALS['main']->addTabControl($lang['dashboard']['title_extensions_recent'], 'extensions_recent', null, null, count($recent_candidates));
     }
 }
 

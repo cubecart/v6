@@ -356,6 +356,41 @@
    <div class="pagination">{$STOCK_PAGINATION}</div>
 </div>
 {/if}
+{if isset($RECENT_EXTENSIONS)}
+<div id="extensions_recent" class="tab_content">
+   <h3>{$LANG.dashboard.title_extensions_recent}</h3>
+   <table width="100%">
+      <thead>
+         <tr>
+            <th>{$LANG.common.name}</th>
+            <th>{$LANG.common.details}</th>
+            <th>{$LANG.common.version}</th>
+            <th>{$LANG.common.date}</th>
+         </tr>
+      </thead>
+      <tbody>
+      {foreach from=$RECENT_EXTENSIONS item=ext}
+         <tr>
+            <td>
+               {if $ext.recommended}<i class="fa fa-star" style="color:#e88e22" title="{$LANG.common.recommended|default:'Recommended'}"></i> {/if}
+               <strong>{$ext.name}</strong>
+               {if $ext.category} <small style="color:#888">&middot; {$ext.category}</small>{/if}
+               {if $ext.is_installed} <span class="ext-badge ext-badge-installed" style="margin-left:4px"><i class="fa fa-check"></i> {$LANG.module.ext_installed|default:'Installed'}</span>{/if}
+               {if $ext.price} <span class="ext-badge ext-badge-paid" style="margin-left:4px"><i class="fa fa-shopping-cart"></i> {$ext.price}</span>{/if}
+            </td>
+            <td>{if $ext.description}{$ext.description|truncate:140:"&hellip;"}{/if}</td>
+            <td nowrap="nowrap">v{$ext.version}</td>
+            <td nowrap="nowrap">{$ext.date}</td>
+         </tr>
+      {/foreach}
+      </tbody>
+   </table>
+   <p style="text-align:right;margin-top:8px">
+      <a href="?_g=dashboard&amp;ack=extensions#extensions_recent" style="margin-right:12px"><i class="fa fa-check"></i> {$LANG.common.mark_seen|default:'Mark all as seen'}</a>
+      <a href="?_g=plugins">{$LANG.module.ext_marketplace|default:'View marketplace'} &rarr;</a>
+   </p>
+</div>
+{/if}
 {if isset($PLUGIN_TABS)}
 	{foreach from=$PLUGIN_TABS item=tab}
 		{$tab}

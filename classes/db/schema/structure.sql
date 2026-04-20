@@ -106,6 +106,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_admin_users` (
 	`twofa_backup_codes` TEXT NULL DEFAULT NULL,
 	`twofa_otp_hash` VARCHAR(255) NULL DEFAULT NULL,
 	`twofa_otp_expires` INT UNSIGNED NOT NULL DEFAULT 0,
+	`extensions_last_seen` INT UNSIGNED NOT NULL DEFAULT 0,
 	`verify_expires` DATETIME DEFAULT NULL,
 	PRIMARY KEY `admin_id` (`admin_id`),
 	KEY `username` (`username`),
