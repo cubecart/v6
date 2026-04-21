@@ -639,6 +639,7 @@ class Order
                     }
             }
             if ($this->_email_enabled && isset($content)) {
+                $this->assignOrderDetails();
                 $mailer->sendEmail($this->_order_summary['email'], $content);
             }
 
@@ -674,13 +675,11 @@ class Order
     public function paymentStatus($status_id, $order_id)
     {
         if (!empty($status_id) && !empty($order_id)) {
-            $this->getSummary($order_id);
+            $this->getOrderDetails($order_id);
 
             if ((int)$this->_order_summary['status'] == 0) {
                 return false;
             } // no order record
-
-            $this->_order_summary['total'] = Tax::getInstance()->priceFormat($this->_order_summary['total'], true);
 
             $mailer = new Mailer();
             switch ($status_id) {
@@ -700,6 +699,7 @@ class Order
                 break;
             }
             if ($this->_email_enabled && isset($content)) {
+                $this->assignOrderDetails();
                 $mailer->sendEmail($this->_order_summary['email'], $content);
             }
         }
