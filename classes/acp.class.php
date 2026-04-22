@@ -509,15 +509,38 @@ class ACP
         $perf = $GLOBALS['session']->get('status', 'performance');
         if (!is_array($perf)) {
             global $glob;
+
+            // Memory cache: driver configured + PHP extension loaded + a write/read roundtrip succeeds
             $cache_driver = isset($glob['cache']) ? strtolower((string)$glob['cache']) : '';
-            $memcache = in_array($cache_driver, array('redis', 'memcached'));
+            $memcache = false;
+            if (in_array($cache_driver, array('redis', 'memcached'), true) && extension_loaded($cache_driver)) {
+                $memcache = $this->_perfTestCache();
+            }
 
-            $elasticsearch = ((string)$GLOBALS['config']->get('config', 'elasticsearch') === '1');
+            // Elasticsearch: enabled in config + the configured host actually responds
+            $elasticsearch = false;
+            if ((string)$GLOBALS['config']->get('config', 'elasticsearch') === '1' && class_exists('ElasticsearchHandler')) {
+                try {
+                    $es = new ElasticsearchHandler();
+                    // indexExists() wraps the client call and returns true only when the server
+                    // responded successfully. Any connection failure throws internally and returns false.
+                    $elasticsearch = (bool)$es->indexExists();
+                } catch (Exception $e) {
+                    $elasticsearch = false;
+                }
+            }
 
+            // CDN: look for a real RewriteRule redirecting to an external http(s) origin — not just
+            // the word "cdn" (which anyone could drop into a comment)
             $cdn = false;
             $htaccess = CC_ROOT_DIR.'/images/cache/.htaccess';
             if (is_readable($htaccess)) {
-                $cdn = (stripos((string)file_get_contents($htaccess), 'cdn') !== false);
+                $content = (string)file_get_contents($htaccess);
+                // Strip comments so a `# cdn note` line can't satisfy the match
+                $content = preg_replace('/^\s*#.*$/m', '', $content);
+                if (preg_match('/^\s*RewriteRule\s+\S+\s+https?:\/\//mi', $content)) {
+                    $cdn = true;
+                }
             }
 
             $perf = array(
@@ -530,6 +553,37 @@ class ACP
             $GLOBALS['session']->set('status', $perf, 'performance');
         }
         $GLOBALS['smarty']->assign('PERFORMANCE', $perf);
+    }
+
+    /**
+     * Verify the configured memory cache is actually online.
+     *
+     * CubeCart disables its cache wrapper in the ACP (see Cache_Controler::status),
+     * so a write/read roundtrip via $GLOBALS['cache'] always fails from admin.
+     * Instead we reach the underlying Redis/Memcached connection and ping it directly.
+     */
+    private function _perfTestCache()
+    {
+        if (!isset($GLOBALS['cache']) || !is_object($GLOBALS['cache']) || !method_exists($GLOBALS['cache'], 'getConnection')) {
+            return false;
+        }
+        try {
+            $conn = $GLOBALS['cache']->getConnection();
+            if (!is_object($conn)) {
+                return false;
+            }
+            if ($conn instanceof Redis) {
+                $result = $conn->ping();
+                return ($result !== false);
+            }
+            if ($conn instanceof Memcached) {
+                $versions = $conn->getVersion();
+                return (is_array($versions) && !empty($versions));
+            }
+            return false;
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     /**
