@@ -169,12 +169,12 @@ class ElasticsearchHandler
                     'properties' => [
                         'name' => [
                             'type' => 'text',
-                            'analyzer' => 'autocomplete'
+                            'analyzer' => 'autocomplete',
+                            'fields' => [
+                                'keyword' => ['type' => 'keyword']
+                            ]
                         ],
                         'date_added' => [
-                            'type' => 'keyword'
-                        ],
-                        'product_name' => [
                             'type' => 'keyword'
                         ],
                         'product_code' => ['type' => 'keyword'],
@@ -411,12 +411,12 @@ class ElasticsearchHandler
             ]
         ];
         if(!empty($sort)) {
-            // Map: stock_level, price_to_pay, date_added, product_name
+            // Map: stock_level, price_to_pay, date_added, name.keyword
             $sort_fields = [];
             foreach ($sort as $field => $direction) {
                 switch(strtolower($field)) {
                     case 'name':
-                        $f = 'product_name';
+                        $f = 'name.keyword';
                     break;
                     case 'date_added':
                         $f = 'date_added';
@@ -665,8 +665,7 @@ class ElasticsearchHandler
         }
         // Sorters / numeric / always-present fields
         $this->_index_body = array(
-            'name'          => (string)$product['name'], ## We can't sort on autocomplete mappings (hence `product_name`)
-            'product_name'  => (string)$product['name'], ## Sorter
+            'name'          => (string)$product['name'], ## Searchable (autocomplete) and sortable via name.keyword multi-field
             'date_added'    => (string)$product['date_added'], ## Sorter
             'stock_level'   => (int)$GLOBALS['catalogue']->getProductStock($product['product_id']), ## Sorter
             'price_to_pay'  => (float)round($product['price_to_pay'],2), ## Sorter
