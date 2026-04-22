@@ -1669,6 +1669,18 @@ ul.quick_links li#help_menu ul li {
 ul.quick_links li#help_menu ul li:not(:last-child) {
     border-bottom: 1px solid var(--border)
 }
+ul.quick_links li#performance_tile .perf-badge {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 10px;
+    font-size: 11px;
+    margin-left: 4px;
+    background: rgba(0,0,0,0.15);
+}
+ul.quick_links li#performance_tile.perf-score-3 .perf-badge { background: rgba(92,184,92,0.25); color: #3c763d; }
+ul.quick_links li#performance_tile.perf-score-2 .perf-badge,
+ul.quick_links li#performance_tile.perf-score-1 .perf-badge { background: rgba(240,173,78,0.25); color: #8a6d3b; }
+ul.quick_links li#performance_tile.perf-score-0 .perf-badge { background: rgba(217,83,79,0.2); color: #a94442; }
 #breadcrumbs a:hover {
     text-decoration: none;
     color: #000

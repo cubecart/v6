@@ -494,6 +494,45 @@ class ACP
     }
 
     /**
+     * Show performance status tile (memory cache / Elasticsearch / CDN).
+     * Cached for the admin session to avoid per-request filesystem checks.
+     */
+    public function showPerformance()
+    {
+        if (!Admin::getInstance()->is()) {
+            return;
+        }
+        // Skip the tile entirely if the store is already running on CubeCart's own hosting
+        if (stripos((string)php_uname('n'), 'cubecart.com') !== false) {
+            return;
+        }
+        $perf = $GLOBALS['session']->get('status', 'performance');
+        if (!is_array($perf)) {
+            global $glob;
+            $cache_driver = isset($glob['cache']) ? strtolower((string)$glob['cache']) : '';
+            $memcache = in_array($cache_driver, array('redis', 'memcached'));
+
+            $elasticsearch = ((string)$GLOBALS['config']->get('config', 'elasticsearch') === '1');
+
+            $cdn = false;
+            $htaccess = CC_ROOT_DIR.'/images/cache/.htaccess';
+            if (is_readable($htaccess)) {
+                $cdn = (stripos((string)file_get_contents($htaccess), 'cdn') !== false);
+            }
+
+            $perf = array(
+                'memcache'      => $memcache,
+                'cache_driver'  => $memcache ? $cache_driver : '',
+                'elasticsearch' => $elasticsearch,
+                'cdn'           => $cdn,
+                'enabled_count' => (int)$memcache + (int)$elasticsearch + (int)$cdn,
+            );
+            $GLOBALS['session']->set('status', $perf, 'performance');
+        }
+        $GLOBALS['smarty']->assign('PERFORMANCE', $perf);
+    }
+
+    /**
      * Show admin tabs
      *
      * @return bool

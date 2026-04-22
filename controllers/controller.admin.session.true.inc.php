@@ -119,6 +119,7 @@ if (!empty($_GET['_g'])) {
     include CC_ROOT_DIR.'/'.$GLOBALS['config']->get('config', 'adminFolder').'/'.'sources/dashboard.index.inc.php';
 }
 $GLOBALS['main']->showHelp();
+$GLOBALS['main']->showPerformance();
 
 include CC_ROOT_DIR.'/'.$glob['adminFolder'].'/sources/element.navigation.inc.php';
 if (is_array($nav_sections)) {

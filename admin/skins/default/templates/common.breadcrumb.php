@@ -13,6 +13,9 @@
             <li><i class="fa fa-users" aria-hidden="true"></i> <a href="https://community.cubecart.com" target="_blank">{$LANG.common.community}</a></li>
          </ul>
       </li>
+      {if isset($PERFORMANCE)}
+      <li id="performance_tile" class="perf-score-{$PERFORMANCE.enabled_count}"><i class="fa fa-tachometer" aria-hidden="true"></i> <a href="?_g=performance">Performance <span class="perf-badge">{$PERFORMANCE.enabled_count}/3</span></a></li>
+      {/if}
       <li><a href="index.php" target="_blank">{$LANG.settings.store_status} - {if ($STORE_STATUS)}<span class="store_open">{$LANG.common.open}</span>{else}<span class="store_closed">{$LANG.common.closed}</span>{/if}</a></li>
       </ul>
       <ul class="location">
