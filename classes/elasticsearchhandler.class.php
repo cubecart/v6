@@ -31,6 +31,7 @@ class ElasticsearchHandler
     private $_index = '';
     private $_config = array();
     private $_config_file = './includes/extra/es.json';
+    private $_index_exists_cache = null;
 
     public function __construct($config = array(), $write = false)
     {
@@ -189,24 +190,28 @@ class ElasticsearchHandler
         ];
         try {
             $response = $this->_client->indices()->create($params);
-            return $response->getStatusCode() == 200 ? true : false;
+            $ok = ($response->getStatusCode() == 200);
+            if ($ok) $this->_index_exists_cache = true;
+            return $ok;
         } catch (Exception $e) {
             $this->_logError($e->getMessage());
             return false;
-        } 
+        }
     }
-    
+
     /**
      * Delete index
      */
     public function deleteIndex() {
         try {
             $response =  $this->_client->indices()->delete(['index' => $this->_index]);
-            return $response->getStatusCode() == 200 ? true : false;
+            $ok = ($response->getStatusCode() == 200);
+            if ($ok) $this->_index_exists_cache = false;
+            return $ok;
         } catch (Exception $e) {
             $this->_logError($e->getMessage());
             return false;
-        } 
+        }
     }
 
     /**
@@ -265,9 +270,13 @@ class ElasticsearchHandler
      * Check index exists
      */
     public function indexExists() {
+        if ($this->_index_exists_cache !== null) {
+            return $this->_index_exists_cache;
+        }
         try {
             $response = $this->_client->indices()->exists(['index' => $this->_index]);
-            return $response->getStatusCode() == 200 ? true : false;
+            $this->_index_exists_cache = ($response->getStatusCode() == 200);
+            return $this->_index_exists_cache;
         } catch (Exception $e) {
             $this->_logError($e->getMessage());
             return false;
@@ -464,7 +473,7 @@ class ElasticsearchHandler
     /**
      * Rebuild index
      */
-    public function rebuild($cycle, $limit = 50) {
+    public function rebuild($cycle, $limit = 500) {
         ini_set('ignore_user_abort', true);
         if($cycle == 1) {
             if($this->indexExists()) {
@@ -472,27 +481,43 @@ class ElasticsearchHandler
             }
             $this->createIndex();
         }
-    
+
         $where = array('status' => 1);
         $total = (int)$GLOBALS['db']->count('CubeCart_inventory', 'status', $where);
         if($total==0 && $cycle==1) {
             $GLOBALS['gui']->setError($GLOBALS['language']->maintain['es_no_products']);
         }
         if (($products = $GLOBALS['db']->select('CubeCart_inventory', array('product_id'), $where, false, $limit, $cycle)) !== false) {
+            // Build a single _bulk payload for the whole batch instead of
+            // one index request per product.
+            $bulk_body = array();
+            $exclude_stock_outs = ($this->_config['es_is']=='1');
             foreach ($products as $product) {
-                $this->add($product['product_id']);
+                $this->_indexBody($product['product_id']);
+                if($exclude_stock_outs && isset($this->_index_body['stock_level']) && $this->_index_body['stock_level']<=0) {
+                    continue;
+                }
+                $bulk_body[] = array('index' => array('_index' => $this->_index, '_id' => $product['product_id']));
+                $bulk_body[] = $this->_index_body;
+            }
+            if (!empty($bulk_body)) {
+                try {
+                    $this->_client->bulk(array('body' => $bulk_body));
+                } catch (Exception $e) {
+                    $this->_logError($e->getMessage());
+                }
             }
             $sent_to = $limit * $cycle;
             if ($total > $sent_to) {
                 $percent = ($sent_to/$total)*100;
-                
+
                 if($percent % 10 == 0 && !isset($this->marker[$percent])) {
                     $this->marker[$percent] = true;
                     $stats = $this->getStats();
                 } else {
                     $stats = array('count' => false, 'size' => false);
                 }
-                
+
                 $data = array(
                     'count'  => $sent_to,
                     'total'  => $total,
@@ -506,8 +531,8 @@ class ElasticsearchHandler
             }
         } else {
             return false;
-        } 
-        
+        }
+
     }
 
     /**
