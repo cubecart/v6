@@ -638,8 +638,21 @@ class ElasticsearchHandler
                 if (!empty($path)) $category_paths[] = (string)$path;
             }
         }
+        // Sorters / numeric / always-present fields
         $this->_index_body = array(
             'name'          => (string)$product['name'], ## We can't sort on autocomplete mappings (hence `product_name`)
+            'product_name'  => (string)$product['name'], ## Sorter
+            'date_added'    => (string)$product['date_added'], ## Sorter
+            'stock_level'   => (int)$GLOBALS['catalogue']->getProductStock($product['product_id']), ## Sorter
+            'price_to_pay'  => (float)round($product['price_to_pay'],2), ## Sorter
+            'manufacturer_id' => (int)$product['manufacturer'],
+            'featured'      => (int)$product['featured'],
+            'digital'       => (int)$product['digital']
+        );
+
+        // Optional fields — only include when populated so empty strings
+        // don't pollute keyword mappings or `exists` queries
+        $optional = array(
             'product_code'  => (string)$product['product_code'],
             'upc'           => (string)$product['upc'],
             'ean'           => (string)$product['ean'],
@@ -650,14 +663,12 @@ class ElasticsearchHandler
             'thumbnail'     => (string)$GLOBALS['gui']->getProductImage($product['product_id'], 'thumbnail', 'relative'),
             'description'   => (string)$this->_indexToPlainText($product['description']),
             'category'      => implode(' ', $category_paths),
-            'manufacturer'  => (string)$GLOBALS['catalogue']->getManufacturer($product['manufacturer']),
-            'manufacturer_id'  => (int)$product['manufacturer'],
-            'featured'      => (int)$product['featured'],
-            'digital'       => (int)$product['digital'],
-            'date_added'       => (string)$product['date_added'], ## Sorter
-            'product_name'  => (string)$product['name'], ## Sorter
-            'stock_level'   => (int)$GLOBALS['catalogue']->getProductStock($product['product_id']), ## Sorter
-            'price_to_pay'  => (float)round($product['price_to_pay'],2) ## Sorter
+            'manufacturer'  => (string)$GLOBALS['catalogue']->getManufacturer($product['manufacturer'])
         );
+        foreach ($optional as $k => $v) {
+            if ($v !== '' && $v !== null) {
+                $this->_index_body[$k] = $v;
+            }
+        }
     }
 }
