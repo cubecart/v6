@@ -61,22 +61,25 @@
             {if $ext.php_versions}
             <span class="ext-badge ext-badge-php{if !$ext.php_compatible} ext-badge-php-incompatible{/if}" title="{if !$ext.php_compatible}Your server runs PHP {$SERVER_PHP} which is not supported{/if}"><i class="fa fa-{if $ext.php_compatible}check{else}warning{/if}"></i> PHP {$ext.php_versions|replace:',':', '}</span>
             {/if}
-            {if $ext.is_installed}
-            <span class="ext-badge ext-badge-installed"><i class="fa fa-check"></i> {$LANG.module.ext_installed}{if $ext.installed_version && $ext.installed_version != 'n/a'} v{$ext.installed_version}{/if}</span>
-            {/if}
             {if $ext.has_upgrade}
             <span class="ext-badge ext-badge-upgrade"><i class="fa fa-arrow-up"></i> {$LANG.module.ext_update_available}</span>
             {/if}
          </div>
          <div class="ext-card-actions">
-            {if $ext.images|@count > 0}
-            <button type="button" class="ext-btn ext-btn-gallery btn-ext-gallery" data-images='{$ext.images|@json_encode}' data-name="{$ext.name}">
-               <i class="fa fa-picture-o"></i> {$LANG.catalogue.title_images|default:'Images'}
+            {if $ext.is_installed && $ext.type !== 'skin'}
+            <label class="ext-toggle" title="{if $ext.is_enabled}{$LANG.common.disable|default:'Disable'}{else}{$LANG.common.enable|default:'Enable'}{/if}">
+               <input type="checkbox" class="ext-toggle-input btn-ext-toggle" data-module="{$ext.installed_basename}" data-type="{$ext.type}"{if $ext.is_enabled} checked{/if}>
+               <span class="ext-toggle-slider"></span>
+            </label>
+            {/if}
+            {if !$ext.is_installed && $ext.images|@count > 0}
+            <button type="button" class="ext-btn ext-btn-gallery btn-ext-gallery ext-btn-icon" title="{$LANG.catalogue.title_images|default:'Images'}" data-images='{$ext.images|@json_encode}' data-name="{$ext.name}">
+               <i class="fa fa-picture-o"></i>
             </button>
             {/if}
             {if $ext.purchase_url}
-            <a href="{$ext.purchase_url}" target="_blank" class="ext-btn ext-btn-buy">
-               <i class="fa fa-external-link"></i> {$LANG.module.ext_more_info|default:'More Info'}
+            <a href="{$ext.purchase_url}" target="_blank" class="ext-btn ext-btn-buy{if $ext.is_installed} ext-btn-icon{/if}" title="{$LANG.module.ext_more_info|default:'More Info'}">
+               <i class="fa fa-external-link"></i>{if !$ext.is_installed} {$LANG.module.ext_more_info|default:'More Info'}{/if}
             </a>
             {/if}
             {if $ext.php_versions && !$ext.php_compatible && !$ext.is_installed}
@@ -98,19 +101,21 @@
                <i class="fa fa-check"></i> {$LANG.module.ext_up_to_date}
             </button>
             {/if}
-            {if $ext.is_installed && $ext.edit_url}
-            <a href="{$ext.edit_url}" class="ext-btn ext-btn-configure"><i class="fa fa-cog"></i> {$LANG.common.configure}</a>
-            {/if}
             {if $ext.is_installed}
+            <div class="ext-card-actions-right">
+               {if $ext.edit_url}
+               <a href="{$ext.edit_url}" class="ext-btn ext-btn-configure ext-btn-icon" title="{$LANG.common.configure}"><i class="fa fa-cog"></i></a>
+               {/if}
                {if $ext.is_active_skin}
-               <button type="button" class="ext-btn ext-btn-disabled" disabled title="This skin is currently in use and cannot be deleted">
-                  <i class="fa fa-trash"></i> {$LANG.common.delete}
+               <button type="button" class="ext-btn ext-btn-disabled ext-btn-icon" disabled title="This skin is currently in use and cannot be deleted">
+                  <i class="fa fa-trash"></i>
                </button>
                {else}
-               <button type="button" class="ext-btn ext-btn-delete btn-ext-delete-market" data-type="{$ext.installed_dir_type}" data-module="{$ext.installed_basename}" data-name="{$ext.name}">
-                  <i class="fa fa-trash"></i> {$LANG.common.delete}
+               <button type="button" class="ext-btn ext-btn-delete btn-ext-delete-market ext-btn-icon" title="{$LANG.common.delete}" data-type="{$ext.installed_dir_type}" data-module="{$ext.installed_basename}" data-name="{$ext.name}">
+                  <i class="fa fa-trash"></i>
                </button>
                {/if}
+            </div>
             {/if}
          </div>
       </div>
@@ -426,6 +431,49 @@ document.addEventListener('DOMContentLoaded', function() {
       galleryIndex = $(this).data('index');
       updateGalleryImage();
       updateActiveThumbnail();
+   });
+
+   // Enable/disable toggle
+   $(document).on('change', '.btn-ext-toggle', function() {
+      var $input = $(this);
+      var $card = $input.closest('.ext-card');
+      var enabled = $input.is(':checked') ? 1 : 0;
+      var module = $input.data('module');
+      var type = $input.data('type');
+
+      $input.prop('disabled', true);
+
+      $.ajax({
+         url: ajaxUrl,
+         type: 'POST',
+         dataType: 'json',
+         headers: { 'X-Requested-With': 'XMLHttpRequest' },
+         data: {
+            token: csrfToken,
+            ajax_action: 'toggle_module',
+            ext_module: module,
+            ext_type: type,
+            enabled: enabled
+         },
+         success: function(resp) {
+            if (resp.success) {
+               if (resp.enabled) {
+                  $card.removeClass('ext-card-disabled').addClass('ext-card-enabled');
+               } else {
+                  $card.removeClass('ext-card-enabled').addClass('ext-card-disabled');
+               }
+               showToast(resp.enabled ? 'Enabled' : 'Disabled', 'success');
+            } else {
+               showToast(resp.message || 'Failed to toggle.', 'error');
+               $input.prop('checked', !enabled);
+            }
+            $input.prop('disabled', false);
+         },
+         error: function() {
+            showToast('Network error. Please try again.', 'error');
+            $input.prop('checked', !enabled).prop('disabled', false);
+         }
+      });
    });
 
    // Delete extension from marketplace card

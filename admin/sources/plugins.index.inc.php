@@ -224,6 +224,31 @@ if ($is_ajax && $_POST['ajax_action'] === 'delete_extension') {
     }
 }
 
+## AJAX: Enable or disable an installed module
+// Status is mirrored in CubeCart_modules.status and CubeCart_config (config_key='status')
+if ($is_ajax && $_POST['ajax_action'] === 'toggle_module') {
+    $ext_module = isset($_POST['ext_module']) ? basename($_POST['ext_module']) : '';
+    $ext_type = isset($_POST['ext_type']) ? basename($_POST['ext_type']) : '';
+    $enabled = !empty($_POST['enabled']) ? 1 : 0;
+
+    if (empty($ext_module) || empty($ext_type) || $ext_type === 'skin') {
+        _ajax_respond(array('success' => false, 'message' => 'Invalid module details.'));
+    }
+
+    // Mirror 1: CubeCart_modules row
+    $existing = $GLOBALS['db']->select('CubeCart_modules', '*', array('folder' => $ext_module, 'module' => $ext_type));
+    if ($existing) {
+        $GLOBALS['db']->update('CubeCart_modules', array('status' => $enabled), array('folder' => $ext_module, 'module' => $ext_type));
+    } else {
+        $GLOBALS['db']->insert('CubeCart_modules', array('folder' => $ext_module, 'module' => $ext_type, 'status' => $enabled, 'position' => 0));
+    }
+
+    // Mirror 2: CubeCart_config row for this module
+    $GLOBALS['config']->set($ext_module, 'status', $enabled, true);
+
+    _ajax_respond(array('success' => true, 'enabled' => $enabled));
+}
+
 ## Non-AJAX legacy POST handlers
 
 // Delete via GET (legacy)
