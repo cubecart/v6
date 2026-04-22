@@ -55,20 +55,21 @@ class ElasticsearchHandler
             'id'        => $id,
             'body'      => $this->_index_body
         ];
+        $out_of_stock_excluded = ($this->_config['es_is']=='1' && isset($this->_index_body['stock_level']) && $this->_index_body['stock_level']<=0);
         try {
             if(!$this->indexExists()) {
-                if($this->_config['es_is']=='1' && $this->_index_body['stock_level']<=0) {
+                if($out_of_stock_excluded) {
                     return false;
                 } else {
                     $this->createIndex();
                 }
-            } else if ($this->_config['es_is']=='1' && $this->_index_body['stock_level']<=0) {
+            } else if ($out_of_stock_excluded) {
                 return $this->delete($id);
             }
             $response = $this->_client->index($params);
             return $response->getStatusCode() == 200 ? true : false;
         } catch (Exception $e) {
-            $this->last_error = $e->getMessage();
+            $this->_logError($e->getMessage());
             return false;
         }
     }
@@ -145,12 +146,12 @@ class ElasticsearchHandler
         $params = [
             'index' => $this->_index,
             'body' => [
-                'settings' => [ 
-                    'analysis' => [ 
+                'settings' => [
+                    'analysis' => [
                         'filter' => [
                             'autocomplete_filter' => [
                                 'type' => 'edge_ngram',
-                                'min_gram' => 1,
+                                'min_gram' => 2,
                                 'max_gram' => 20
                             ]
                         ],
@@ -163,7 +164,7 @@ class ElasticsearchHandler
                         ]
                     ]
                 ],
-                'mappings' => [ 
+                'mappings' => [
                     'properties' => [
                         'name' => [
                             'type' => 'text',
@@ -174,7 +175,14 @@ class ElasticsearchHandler
                         ],
                         'product_name' => [
                             'type' => 'keyword'
-                        ]
+                        ],
+                        'product_code' => ['type' => 'keyword'],
+                        'upc'          => ['type' => 'keyword'],
+                        'ean'          => ['type' => 'keyword'],
+                        'jan'          => ['type' => 'keyword'],
+                        'isbn'         => ['type' => 'keyword'],
+                        'gtin'         => ['type' => 'keyword'],
+                        'mpn'          => ['type' => 'keyword']
                     ]
                 ]
             ]
@@ -379,18 +387,23 @@ class ElasticsearchHandler
                 array_push($must, $inStock);
             }
         }
-        $this->_search_body = 
+        $inner_bool = ['should' => $should];
+        if (!empty($q)) {
+            $inner_bool['minimum_should_match'] = 1;
+        }
+        $this->_search_body =
         [
             'query' =>
             [
                 'bool' =>
                 [
-                    'must'      => array_merge($must,[['bool' => ['should' => $should]]])   
+                    'must'      => array_merge($must,[['bool' => $inner_bool]])
                 ]
             ]
         ];
         if(!empty($sort)) {
             // Map: stock_level, price_to_pay, date_added, product_name
+            $sort_fields = [];
             foreach ($sort as $field => $direction) {
                 switch(strtolower($field)) {
                     case 'name':
@@ -418,9 +431,12 @@ class ElasticsearchHandler
                     default:
                         $d = '';
                 }
+                if(!empty($f) && !empty($d)) {
+                    $sort_fields[] = [$f => $d];
+                }
             }
-            if(!empty($f) && !empty($d)) {
-                $this->_search_body = array_merge($this->_search_body, ['sort' => [$f => $d]]);
+            if(!empty($sort_fields)) {
+                $this->_search_body['sort'] = $sort_fields;
             }
         }
     }
@@ -511,12 +527,16 @@ class ElasticsearchHandler
             'body'  => array('doc' => $this->_index_body)
         );
         try {
-            if($this->_config['es_is']=='1' && $this->_index_body['stock_level']<=0) {
-                return $this->delete($id);
-            } else {
-                return $this->_client->update($params);
+            if(!$this->indexExists()) {
+                $this->createIndex();
+                return $this->add($id);
             }
+            if($field === 'stock_level' && $this->_config['es_is']=='1' && isset($this->_index_body['stock_level']) && $this->_index_body['stock_level']<=0) {
+                return $this->delete($id);
+            }
+            return $this->_client->update($params);
         } catch (Exception $e) {
+            $this->_logError($e->getMessage());
             return false;
         }
     }
