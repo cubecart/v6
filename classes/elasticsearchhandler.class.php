@@ -522,7 +522,7 @@ class ElasticsearchHandler
                     'count'  => $sent_to,
                     'total'  => $total,
                     'percent' => $percent,
-                    'es_count' => number_format($stats['count']),
+                    'es_count' => $stats['count'], // raw int; JS applies toLocaleString
                     'es_size' => $stats['size']
                 );
                 return $data;
