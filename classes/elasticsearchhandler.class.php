@@ -283,12 +283,13 @@ class ElasticsearchHandler
         if(!isset($search['keywords'])) return false;
         $q = $search['keywords'];
         $must = [];
-        $should = 
+        $should =
         [
-            ['match' => 
-                ['name' => 
-                    ['query' => $q, 
-                    'analyzer' => 'standard'
+            ['match' =>
+                ['name' =>
+                    ['query' => $q,
+                    'analyzer' => 'standard',
+                    'boost' => 3
                     ]
                 ]
             ],
@@ -300,9 +301,12 @@ class ElasticsearchHandler
             ['match' => ['gtin' => $q]],
             ['match' => ['mpn' => $q]]
         ];
-        
-        if(count($search)>1) { // Form submitted search 
-            $should = array_merge($should, [['match' => ['description' => $q]]]);
+
+        if(count($search)>1) { // Form submitted search
+            $should = array_merge($should, [
+                ['match' => ['description' => ['query' => $q, 'boost' => 0.5]]],
+                ['match' => ['category' => ['query' => $q, 'boost' => 1]]]
+            ]);
             if(isset($search['featured']) && $search['featured']=='1') {
                 $featured =
                 [
@@ -605,8 +609,15 @@ class ElasticsearchHandler
     private function _indexBody($product_id) {
         $product = $GLOBALS['catalogue']->getProductData($product_id);
         if (empty($product)) return;
-        $cat = $GLOBALS['db']->select('CubeCart_category_index', array('cat_id'), array('product_id' => $product['product_id'], 'primary' => 1));
+        $cats = $GLOBALS['db']->select('CubeCart_category_index', array('cat_id'), array('product_id' => $product['product_id']));
         $seo = SEO::getInstance();
+        $category_paths = array();
+        if (!empty($cats)) {
+            foreach ($cats as $c) {
+                $path = $seo->getDirectory((int)$c['cat_id'], false, ' ', false, false);
+                if (!empty($path)) $category_paths[] = (string)$path;
+            }
+        }
         $this->_index_body = array(
             'name'          => (string)$product['name'], ## We can't sort on autocomplete mappings (hence `product_name`)
             'product_code'  => (string)$product['product_code'],
@@ -618,7 +629,7 @@ class ElasticsearchHandler
             'mpn'           => (string)$product['mpn'],
             'thumbnail'     => (string)$GLOBALS['gui']->getProductImage($product['product_id'], 'thumbnail', 'relative'),
             'description'   => (string)$this->_indexToPlainText($product['description']),
-            'category'      => !empty($cat) ? (string)$seo->getDirectory((int)$cat[0]['cat_id'], false, ' ', false, false) : '',
+            'category'      => implode(' ', $category_paths),
             'manufacturer'  => (string)$GLOBALS['catalogue']->getManufacturer($product['manufacturer']),
             'manufacturer_id'  => (int)$product['manufacturer'],
             'featured'      => (int)$product['featured'],
