@@ -6,7 +6,9 @@
 .ext-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:15px; margin-top:15px; }
 .ext-card { border:1px solid #ddd; border-radius:6px; padding:16px; background:#fff; position:relative; transition:box-shadow .2s; display:flex; flex-direction:column; }
 .ext-card:hover { box-shadow:0 2px 8px rgba(0,0,0,0.12); }
-.ext-card-installed { background:#f0faf0; border-color:#c3e6c3; }
+.ext-card-installed { background:#f0faf0; border-color:#f0faf0; }
+.ext-card-enabled { border:2px solid #c3e6c3; padding:15px; }
+.ext-card-disabled { background:#faf0f0; border:2px solid #e6c3c3; padding:15px; }
 .ext-card-has-upgrade { background:#fdf8ec; border-color:#f0d78c; }
 .ext-card-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px; }
 .ext-card-name { font-size:14px; font-weight:700; color:#333; margin:0; line-height:1.3; }
@@ -81,7 +83,9 @@
    .ext-filter-btn:hover, .ext-filter-btn.active { background:var(--primary); color:#fff; border-color:var(--primary-accent); }
    .ext-card { background:var(--panel); border-color:var(--border); }
    .ext-card:hover { box-shadow:0 2px 12px rgba(0,0,0,0.35); }
-   .ext-card-installed { background:rgba(92,184,92,0.08); border-color:rgba(92,184,92,0.25); }
+   .ext-card-installed { background:rgba(92,184,92,0.08); border-color:rgba(92,184,92,0.08); }
+   .ext-card-enabled { border:2px solid rgba(92,184,92,0.5); padding:15px; }
+   .ext-card-disabled { background:rgba(217,83,79,0.08); border:2px solid rgba(217,83,79,0.5); padding:15px; }
    .ext-card-has-upgrade { background:rgba(240,193,78,0.1); border-color:rgba(240,193,78,0.3); }
    .ext-card-name { color:var(--text); }
    .ext-card-version { color:var(--text-muted); }

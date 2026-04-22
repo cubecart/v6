@@ -412,6 +412,7 @@ foreach ($api_extensions as $ext) {
     $installed_dir_type = '';
     $has_upgrade = false;
     $configured = false;
+    $is_enabled = false;
     $edit_url = '';
 
     foreach ($installed as $key => $inst) {
@@ -422,6 +423,7 @@ foreach ($api_extensions as $ext) {
             $installed_basename = $inst['basename'];
             $installed_dir_type = $inst['dir_type'];
             $configured = !empty($inst['configured']);
+            $is_enabled = !empty($inst['config']['status']) || ($inst['dir_type'] === 'skins' && in_array($inst['basename'], $active_skins));
             $edit_url = !empty($inst['edit_url']) ? $inst['edit_url'] : '';
             if (version_compare($latest['version'], $installed_version, '>')) {
                 $has_upgrade = true;
@@ -479,6 +481,7 @@ foreach ($api_extensions as $ext) {
         'installed_dir_type' => $installed_dir_type,
         'has_upgrade' => $has_upgrade,
         'configured' => $configured,
+        'is_enabled' => $is_enabled,
         'edit_url' => $edit_url,
         'purchase_url' => !empty($ext['purchase_url']) ? $ext['purchase_url'] : '',
         'price' => !empty($ext['price']) ? $ext['price'] : '',
@@ -514,14 +517,22 @@ foreach ($installed as $key => $inst) {
         'latest_version' => $inst['version'],
         'download_url' => '',
         'versions' => array(),
+        'images' => array(),
+        'recommended' => false,
         'is_installed' => true,
         'installed_version' => $inst['version'],
         'installed_basename' => $inst['basename'],
         'installed_dir_type' => $inst['dir_type'],
         'has_upgrade' => false,
         'configured' => !empty($inst['configured']),
+        'is_enabled' => !empty($inst['config']['status']) || ($inst['dir_type'] === 'skins' && in_array($inst['basename'], $active_skins)),
         'edit_url' => !empty($inst['edit_url']) ? $inst['edit_url'] : '',
+        'purchase_url' => '',
+        'price' => '',
         'third_party' => (empty($inst['creator']) || stripos($inst['creator'], 'cubecart') === false),
+        'ioncube' => 0,
+        'php_versions' => '',
+        'php_compatible' => true,
         'is_active_skin' => ($inst['dir_type'] === 'skins' && in_array($inst['basename'], $active_skins)),
     );
 }
