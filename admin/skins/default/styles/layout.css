@@ -930,6 +930,9 @@ div.tab-selected {
     border-bottom-color: var(--bg)!important;
     background-image: none!important
 }
+div.tab.tab-overflow {
+    opacity: 0.75
+}
 div.tab:hover {
     background-color: var(--bg)
 }

@@ -1553,13 +1553,18 @@ function ccRepositionActiveTab() {
         var t = this.offsetTop;
         if (t < minTop) minTop = t;
     });
+    $refreshed.removeClass('tab-overflow');
     if (maxTop === minTop) return; // not wrapped
-    // Bottom row is maxTop (visual bottom = first flex line with wrap-reverse is
-    // actually... depends on flow). Use position().top relative to container.
-    // Simpler: if selected not on the row with the largest offsetTop, move to start.
+    // If selected not on the bottom (max offsetTop) row, move it to the start
+    // so it lands on the first flex line (the bottom row under wrap-reverse).
     if ($selected[0].offsetTop !== maxTop) {
         $tc.prepend($selected);
     }
+    // Re-query after potential reorder, then mark any tab not on the bottom row
+    // as an overflow tab so CSS can de-emphasise it.
+    $tc.find('.tab').each(function() {
+        if (this.offsetTop !== maxTop) $(this).addClass('tab-overflow');
+    });
 }
 $(document).ready(ccRepositionActiveTab);
 $(window).on('load resize', ccRepositionActiveTab);
