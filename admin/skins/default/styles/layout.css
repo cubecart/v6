@@ -1087,6 +1087,15 @@ td {
 .right {
     float: right
 }
+.address-book-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px
+}
+.address-book-header h3 {
+    margin: 0
+}
 th a .right {
     color: var(--text-muted);
     margin-right: 3px

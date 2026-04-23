@@ -243,7 +243,7 @@
 
 	  {if isset($DISPLAY_ADDRESS_LIST)}
 	  {if isset($CUSTOMER.customer_id)}
-	  <p class="right"><a href="?_g=customers&action=edit&customer_id={$CUSTOMER.customer_id}&address_id=add#address" class="button">{$LANG.address.address_add}</a></p><h3>{$LANG.address.address_book}</h3>
+	  <div class="address-book-header"><h3>{$LANG.address.address_book}</h3><a href="?_g=customers&action=edit&customer_id={$CUSTOMER.customer_id}&address_id=add#address" class="button">{$LANG.address.address_add}</a></div>
 	  <div id="address-list">
 		{if isset($ADDRESS_LIST)}
 		<table width="100%">
@@ -281,6 +281,8 @@
 		<div>{$LANG.address.notify_address_none}</div>
 		{/if}
 	  </div>
+	  {else}
+	  <p>{$LANG.address.address_save_customer_first}</p>
 	  {/if}
 	  {/if}
 	</div>
