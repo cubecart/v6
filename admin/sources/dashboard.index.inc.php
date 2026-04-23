@@ -373,21 +373,32 @@ if (Admin::getInstance()->permissions('statistics', CC_PERM_READ, false, false))
         $abandon_totals  = array('sent' => 0, 'clicked' => 0, 'recovered' => 0);
         if ($abandon_rows) {
             foreach ($abandon_rows as $row) {
-                $abandon_by_date[$row['d']] = (int)$row['sent'];
+                $abandon_by_date[$row['d']] = array(
+                    'sent'      => (int)$row['sent'],
+                    'clicked'   => (int)$row['clicked'],
+                    'recovered' => (int)$row['recovered'],
+                );
                 $abandon_totals['sent']      += (int)$row['sent'];
                 $abandon_totals['clicked']   += (int)$row['clicked'];
                 $abandon_totals['recovered'] += (int)$row['recovered'];
             }
         }
-        $spark_max = $abandon_by_date ? max($abandon_by_date) : 0;
+        $spark_max = 0;
+        foreach ($abandon_by_date as $d) {
+            if ($d['sent'] > $spark_max) $spark_max = $d['sent'];
+        }
         $abandon_spark = array();
         for ($i = 13; $i >= 0; $i--) {
-            $d = date('Y-m-d', strtotime('-'.$i.' days'));
-            $count = $abandon_by_date[$d] ?? 0;
+            $ts = strtotime('-'.$i.' days');
+            $d  = date('Y-m-d', $ts);
+            $day = $abandon_by_date[$d] ?? array('sent' => 0, 'clicked' => 0, 'recovered' => 0);
             $abandon_spark[] = array(
-                'date'    => $d,
-                'count'   => $count,
-                'percent' => $spark_max > 0 ? round(($count / $spark_max) * 100) : 0,
+                'date'      => date('D j M', $ts),
+                'label'     => date('j', $ts),
+                'sent'      => $day['sent'],
+                'clicked'   => $day['clicked'],
+                'recovered' => $day['recovered'],
+                'percent'   => $spark_max > 0 ? round(($day['sent'] / $spark_max) * 100) : 0,
             );
         }
         $abandon_totals['rate'] = $abandon_totals['sent'] > 0

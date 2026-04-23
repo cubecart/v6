@@ -296,7 +296,10 @@
             <div class="abandon-body">
                <div class="abandon-spark">
                   {foreach from=$ABANDON_SPARK item=d}
-                  <span class="abandon-spark__bar" title="{$d.date}: {$d.count}"><span style="height: {$d.percent}%"></span></span>
+                  <div class="abandon-spark__col" title="{$d.date} — {$d.sent} sent, {$d.clicked} clicked, {$d.recovered} recovered">
+                     <span class="abandon-spark__bar"><span style="height: {$d.percent}%"></span></span>
+                     <span class="abandon-spark__day">{$d.label}</span>
+                  </div>
                   {/foreach}
                </div>
                <div class="abandon-funnel">
