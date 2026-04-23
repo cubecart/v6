@@ -141,7 +141,7 @@
             </ul>
          </div>
          <div class="dash-card">
-            <h4>{$LANG.dashboard.title_last_orders}</h4>
+            <h4>{$LANG.dashboard.title_last_orders}<a href="?_g=orders">{$LANG.common.view_all}</a></h4>
             {if isset($LAST_ORDERS)}
             <ul class="tile-list">
                {foreach from=$LAST_ORDERS item=order}
@@ -188,7 +188,7 @@
          </div>
          {/if}
          <div class="dash-card">
-            <h4>{$LANG.dashboard.title_top_searches}</h4>
+            <h4>{$LANG.dashboard.title_top_searches}<a href="?_g=statistics#stats_search">{$LANG.common.view_all}</a></h4>
             {if !empty($TOP_SEARCHES)}
             <ul class="tile-list tile-list--search">
                {foreach from=$TOP_SEARCHES item=s}
@@ -263,16 +263,9 @@
          </script>
          {/literal}
          <div class="dash-card">
-            <h4>{$LANG.dashboard.title_alerts}</h4>
-            <div class="alerts-grid">
-               <div class="alert-metric">
-                  <div class="alert-label">{$LANG.dashboard.title_stock_warnings}</div>
-                  <div class="alert-value{if $LOW_STOCK_COUNT > 0} tile-count-warn{/if}"><a href="?#stock_warnings">{$LOW_STOCK_COUNT}</a></div>
-               </div>
-               <div class="alert-metric">
-                  <div class="alert-label">{$LANG.dashboard.title_abandoned_carts}</div>
-                  <div class="alert-value{if $ABANDONED_COUNT > 0} tile-count-warn{/if}">{$ABANDONED_COUNT}</div>
-               </div>
+            <h4>{$LANG.dashboard.title_abandoned_carts}</h4>
+            <div class="alert-metric alert-metric--solo">
+               <div class="alert-value{if $ABANDONED_COUNT > 0} tile-count-warn{/if}">{$ABANDONED_COUNT}</div>
             </div>
          </div>
       </div>

@@ -1245,7 +1245,22 @@ td {
     font-weight: 600;
     color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.5px
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between
+}
+.dashboard_content .dash-card h4 a {
+    font-size: 10px;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--text-light);
+    text-decoration: none
+}
+.dashboard_content .dash-card h4 a:hover {
+    color: var(--primary-accent);
+    text-decoration: underline
 }
 .dash-card > *:not(h4) {
     padding: 14px 18px
@@ -1334,6 +1349,16 @@ td {
 }
 .alert-metric {
     padding: 4px 0
+}
+.alert-metric--solo {
+    text-align: center;
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+.alert-metric--solo .alert-value {
+    font-size: 48px
 }
 .alert-label {
     font-size: 10px;

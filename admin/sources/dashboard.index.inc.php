@@ -345,18 +345,6 @@ if (Admin::getInstance()->permissions('statistics', CC_PERM_READ, false, false))
         $top_searches = $GLOBALS['db']->select('CubeCart_search', array('searchstr', 'hits'), false, array('hits' => 'DESC'), 5);
         $GLOBALS['smarty']->assign('TOP_SEARCHES', $top_searches ?: array());
 
-        ## Low-stock count (approximates the Stock Warnings tab, ignores option-matrix for speed)
-        $stock_warn_type  = $GLOBALS['config']->get('config', 'stock_warn_type');
-        $stock_warn_level = (int)$GLOBALS['config']->get('config', 'stock_warn_level');
-        $low_stock_where  = ($stock_warn_type == '1')
-            ? '`stock_level` <= `stock_warning`'
-            : '`stock_level` <= '.$stock_warn_level;
-        $low_stock_row = $GLOBALS['db']->query(
-            'SELECT COUNT(*) AS `n` FROM `'.$dbp.'CubeCart_inventory` '.
-            'WHERE `use_stock_level` = 1 AND `digital` = 0 AND '.$low_stock_where
-        );
-        $GLOBALS['smarty']->assign('LOW_STOCK_COUNT', ($low_stock_row && isset($low_stock_row[0]['n'])) ? (int)$low_stock_row[0]['n'] : 0);
-
         ## Abandoned carts awaiting recovery
         $abandoned_row = $GLOBALS['db']->query(
             'SELECT COUNT(*) AS `n` FROM `'.$dbp.'CubeCart_cart_abandonment` '.
