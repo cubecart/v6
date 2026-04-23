@@ -6,3 +6,6 @@ ALTER TABLE `CubeCart_order_summary` ADD INDEX `status_cartorder` (`status`, `ca
 CREATE TABLE IF NOT EXISTS `CubeCart_email_log` (`id` int(11) NOT NULL AUTO_INCREMENT, `subject` varchar(255) NOT NULL, `content_html` mediumtext NOT NULL, `content_text` mediumtext NOT NULL, `to` varchar(255) NOT NULL, `from` varchar(255) NOT NULL, `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `email_content_id` int(11) NOT NULL, `result` tinyint(1) NOT NULL, `email_method` varchar(20) NOT NULL DEFAULT '', `fail_reason` text, `attachment` text DEFAULT NULL, PRIMARY KEY (`id`), KEY `to` (`to`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 ALTER TABLE `CubeCart_admin_users` ADD COLUMN `extensions_last_seen` INT UNSIGNED NOT NULL DEFAULT 0; #EOQ
 ALTER TABLE `CubeCart_filemanager` DROP INDEX `md5hash`, ADD INDEX `md5hash` (`md5hash`); #EOQ
+UPDATE `CubeCart_order_summary` SET `custom_oid` = NULL WHERE `custom_oid` = ''; #EOQ
+ALTER TABLE `CubeCart_order_summary` DROP INDEX `custom_oid`; #EOQ
+ALTER TABLE `CubeCart_order_summary` ADD UNIQUE KEY `custom_oid` (`custom_oid`); #EOQ
