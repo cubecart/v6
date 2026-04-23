@@ -658,7 +658,7 @@ $GLOBALS['smarty']->assign('PLUGIN_TABS', ($smarty_data['plugin_tabs'] ?? false)
 if ($GLOBALS['session']->has('rss_news')) {
     $GLOBALS['smarty']->assign('NEWS', $GLOBALS['session']->get('rss_news'));
 } else {
-    $request = new Request('community.cubecart.com', '/c/cubecart-news-announcements/5.rss');
+    $request = new Request('community.cubecart.com', '/c/news-announcements/5.rss');
     $request->setSSL();
     $request->cache(true);
     $request->skiplog(true);
@@ -672,6 +672,9 @@ if ($GLOBALS['session']->has('rss_news')) {
                         continue;
                     }
                     $news[$key] = (string)$value;
+                }
+                if (!empty($news['title'])) {
+                    $news['title'] = trim(explode('-', $news['title'], 2)[0]);
                 }
                 if ($data['version'] >= 2) {
                     $i = 1;
