@@ -9,3 +9,9 @@ ALTER TABLE `CubeCart_filemanager` DROP INDEX `md5hash`, ADD INDEX `md5hash` (`m
 UPDATE `CubeCart_order_summary` SET `custom_oid` = NULL WHERE `custom_oid` = ''; #EOQ
 ALTER TABLE `CubeCart_order_summary` DROP INDEX `custom_oid`; #EOQ
 ALTER TABLE `CubeCart_order_summary` ADD UNIQUE KEY `custom_oid` (`custom_oid`); #EOQ
+INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`, `array_serial`) VALUES ('config', 'abandoned_cart_delay', '86400', '') ON DUPLICATE KEY UPDATE `name`=`name`; #EOQ
+UPDATE `CubeCart_config` SET `config_value` = '86400' WHERE `name` = 'config' AND `config_key` = 'abandoned_cart_delay' AND `config_value` = '3600'; #EOQ
+INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`, `array_serial`) VALUES ('config', 'abandoned_cart_notify_cooldown', '604800', '') ON DUPLICATE KEY UPDATE `name`=`name`; #EOQ
+UPDATE `CubeCart_config` SET `config_value` = '604800' WHERE `name` = 'config' AND `config_key` = 'abandoned_cart_notify_cooldown' AND `config_value` = '3600'; #EOQ
+INSERT INTO `CubeCart_config` (`name`, `config_key`, `config_value`, `array_serial`) VALUES ('config', 'abandoned_cart_order_window', '259200', '') ON DUPLICATE KEY UPDATE `name`=`name`; #EOQ
+UPDATE `CubeCart_config` SET `config_value` = '259200' WHERE `name` = 'config' AND `config_key` = 'abandoned_cart_order_window' AND `config_value` = '3600'; #EOQ
