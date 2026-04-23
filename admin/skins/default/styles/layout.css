@@ -669,11 +669,14 @@ hr {
     margin-left: 128px;
     background-color: var(--panel);
     border-bottom: 1px solid var(--border);
-    border-left: 1px solid var(--border)
+    border-left: 1px solid var(--border);
+    font-size: 11px
 }
 #breadcrumbs .inner {
     padding: 0;
-    margin: 0
+    margin: 0;
+    display: flex;
+    align-items: stretch
 }
 #breadcrumbs a {
     text-decoration: none;
@@ -683,28 +686,36 @@ hr {
 #breadcrumbs a:hover {
     text-decoration: underline
 }
-#breadcrumbs ul.location {
-    list-style: none;
+#breadcrumbs ul.location,
+#breadcrumbs ul.quick_links {
     margin: 0;
-    padding: 0
+    padding: 0;
+    list-style: none;
+    display: flex;
+    align-items: stretch
 }
 #breadcrumbs ul.location .fa-chevron-right {
     color: var(--border)
 }
 #breadcrumbs ul.quick_links {
-    float: right;
-    padding: 0;
-    margin: 0;
-    list-style: none;
+    order: 2;
+    margin-left: auto;
     border-left: 1px solid var(--border)
 }
-#breadcrumbs .location li {
-    display: inline-block;
-    padding: 5px
+#breadcrumbs ul.location li {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    gap: 10px
 }
-#breadcrumbs ul.quick_links li {
-    float: left;
-    padding: 5px 10px 5px 10px;
+#breadcrumbs ul.quick_links > li {
+    padding: 0;
+    display: flex;
+    align-items: center
+}
+#breadcrumbs ul.quick_links > li > a {
+    display: block;
+    padding: 5px 10px
 }
 #breadcrumbs a {
     color: var(--text-light)
@@ -786,19 +797,29 @@ img {
     align-items: center;
     padding: 5px 12px;
     margin-left: 10px;
-    background: rgba(255,255,255,0.12);
     color: #fff;
-    border: 1px solid rgba(255,255,255,0.3);
     border-radius: 3px;
     font-size: 12px;
     line-height: 1;
     text-decoration: none;
     transition: background 0.15s, border-color 0.15s
 }
-#header .btn-signout:hover,
-#header .btn-clear-cache:hover {
+#header .btn-signout {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.3)
+}
+#header .btn-signout:hover {
     background: rgba(255,255,255,0.22);
     border-color: rgba(255,255,255,0.5);
+    color: #fff
+}
+#header .btn-clear-cache {
+    background: rgba(255, 165, 0, 0.55);
+    border: 1px solid rgba(255, 183, 77, 0.85)
+}
+#header .btn-clear-cache:hover {
+    background: rgba(255, 165, 0, 0.75);
+    border-color: rgba(255, 183, 77, 1);
     color: #fff
 }
 #header .btn-signout i,
@@ -807,13 +828,7 @@ img {
     color: #fff
 }
 #header #clear_cache_master.clear .btn-clear-cache {
-    background: rgba(255, 165, 0, 0.35);
-    border-color: rgba(255, 183, 77, 0.6);
     animation: cache_pulse_header 1.5s ease-in-out infinite
-}
-#header #clear_cache_master.clear .btn-clear-cache:hover {
-    background: rgba(255, 165, 0, 0.55);
-    border-color: rgba(255, 183, 77, 0.85)
 }
 @keyframes cache_pulse_header {
     0%, 100% { background: rgba(255, 165, 0, 0.30) }
@@ -1673,12 +1688,16 @@ ul.quick_links li#help_menu {
 ul.quick_links li#help_menu ul {
     display: none;
     position: absolute;
-    background-color: var(--panel);
+    top: 100%;
+    right: -2px;
+    margin: 0;
     padding: 0;
-    right: -1px;
-    margin-top: 5px;
+    min-width: 200px;
+    background-color: var(--panel);
     border: 1px solid var(--border);
-    border-right: none;
+    border-radius: 0 0 0 4px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+    z-index: 10
 }
 ul.quick_links li#help_menu:hover ul {
     display: block !important
@@ -1686,12 +1705,30 @@ ul.quick_links li#help_menu:hover ul {
 ul.quick_links li#help_menu ul li {
     list-style: none;
     text-align: left;
-    float: left;
+    float: none;
+    display: block;
+    padding: 0;
     border: none;
-    width: 10rem;
+    width: auto
 }
 ul.quick_links li#help_menu ul li:not(:last-child) {
     border-bottom: 1px solid var(--border)
+}
+ul.quick_links li#help_menu ul li a {
+    display: block;
+    padding: 8px 14px;
+    color: var(--text);
+    text-decoration: none;
+    white-space: nowrap
+}
+ul.quick_links li#help_menu ul li a:hover {
+    background: var(--rowHover)
+}
+ul.quick_links li#help_menu ul li i.fa {
+    display: inline-block;
+    margin-right: 8px;
+    width: 16px;
+    text-align: center
 }
 ul.quick_links li#performance_tile .perf-badge {
     display: inline-block;
