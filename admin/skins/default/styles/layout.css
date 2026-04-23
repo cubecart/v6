@@ -648,14 +648,20 @@ hr {
     min-height: 100%
 }
 #tab_control {
-    height: 26px;
-    margin-top: 10px;
-    padding: 0 0 1px;
-    border-bottom: 1px solid var(--border)
+    min-height: 28px;
+    margin: 10px 0 -1px 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap-reverse;
+    align-items: flex-end;
+    gap: 0 2px;
+    position: relative;
+    z-index: 2
 }
 #content_body {
     background-color: var(--bg);
     padding-top: 5px;
+    border-top: 1px solid var(--border);
     border-left: 1px solid var(--border)
 }
 #breadcrumbs {
@@ -899,21 +905,16 @@ optgroup>option {
 }
 div.tab {
     position: relative;
-    height: 26px;
+    height: 28px;
     padding: 0 8px;
-    float: left;
-    line-height: 27px;
+    line-height: 26px;
+    box-sizing: border-box;
     background: var(--panel-subtle);
     text-align: center;
     cursor: pointer;
-    margin-right: 2px;
+    flex: 0 0 auto;
     border: 1px solid var(--border);
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    -webkit-border-top-left-radius: 5px;
-    -webkit-border-top-right-radius: 5px;
     border-radius: 5px 5px 0 0;
-    -moz-border-radius: 5px 5px 0 0;
     color: #ccc
 }
 div.tab>a {
@@ -926,9 +927,8 @@ div.tab-selected>a {
 div.tab-selected {
     background-color: var(--bg)!important;
     border-color: var(--border)!important;
-    border-bottom: none!important;
-    background-image: none!important;
-    height: 27px
+    border-bottom-color: var(--bg)!important;
+    background-image: none!important
 }
 div.tab:hover {
     background-color: var(--bg)
@@ -2601,10 +2601,9 @@ textarea#query {
     border-bottom: 1px solid var(--border) !important;
   }
   #tab_control {
-    border-bottom: 1px solid var(--border);
-    height: 26px; /* keep your existing height */
-    margin-top: 10px;
-    padding: 0 0 1px;
+    min-height: 28px;
+    margin: 10px 0 -1px 0;
+    padding: 0;
   }
   #breadcrumbs ul.quick_links {
     background: var(--panel-subtle) !important;

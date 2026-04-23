@@ -1522,3 +1522,45 @@ function fmSearch(mode, term, token) {
        }
     });
 }
+
+/* When the tab row wraps, move the active tab to the end of #tab_control so it
+   lands on the last (bottom) row, keeping its visual merge with the page below. */
+function ccRepositionActiveTab() {
+    var $tc = $('#tab_control');
+    if (!$tc.length) return;
+    var $tabs = $tc.find('.tab');
+    if ($tabs.length < 2) return;
+    if (!$tc.data('ccOrigOrderSet')) {
+        $tabs.each(function(i) { $(this).attr('data-cc-order', i); });
+        $tc.data('ccOrigOrderSet', true);
+    }
+    var sorted = $tc.find('.tab').get().sort(function(a, b) {
+        return parseInt(a.getAttribute('data-cc-order'), 10) - parseInt(b.getAttribute('data-cc-order'), 10);
+    });
+    $.each(sorted, function() { $tc.append(this); });
+    var $refreshed = $tc.find('.tab');
+    var $selected = $refreshed.filter('.tab-selected').first();
+    if (!$selected.length) return;
+    // With flex-wrap: wrap-reverse the first flex line sits at the bottom.
+    // Determine the bottom row's top-offset (max of all tabs' offsetTop).
+    var maxTop = 0;
+    $refreshed.each(function() {
+        var t = this.offsetTop;
+        if (t > maxTop) maxTop = t;
+    });
+    var minTop = Number.MAX_SAFE_INTEGER;
+    $refreshed.each(function() {
+        var t = this.offsetTop;
+        if (t < minTop) minTop = t;
+    });
+    if (maxTop === minTop) return; // not wrapped
+    // Bottom row is maxTop (visual bottom = first flex line with wrap-reverse is
+    // actually... depends on flow). Use position().top relative to container.
+    // Simpler: if selected not on the row with the largest offsetTop, move to start.
+    if ($selected[0].offsetTop !== maxTop) {
+        $tc.prepend($selected);
+    }
+}
+$(document).ready(ccRepositionActiveTab);
+$(window).on('load resize', ccRepositionActiveTab);
+$(document).on('click', '#tab_control .tab', function() { setTimeout(ccRepositionActiveTab, 0); });
