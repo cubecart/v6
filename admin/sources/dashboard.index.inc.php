@@ -677,16 +677,19 @@ if ($GLOBALS['session']->has('rss_news')) {
                     $news['title'] = trim(explode('-', $news['title'], 2)[0]);
                 }
                 if ($data['version'] >= 2) {
-                    $i = 1;
                     foreach ($data->channel->item as $item) {
+                        $title = (string)$item->title;
+                        // Skip Discourse's boilerplate "About the X" category-intro post.
+                        if (stripos($title, 'About the ') === 0) {
+                            continue;
+                        }
                         $news['items'][] = array(
-                            'title'   => (string)$item->title,
-                            'link'   => (string)$item->link,
+                            'title' => $title,
+                            'link'  => (string)$item->link,
                         );
-                        if ($i==5) {
+                        if (count($news['items']) >= 5) {
                             break;
                         }
-                        $i++;
                     }
                 }
                 $GLOBALS['session']->set('rss_news', $news);
