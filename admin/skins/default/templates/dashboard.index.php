@@ -13,149 +13,268 @@
    <h3>{$LANG.dashboard.title_dashboard}</h3>
    <div class="dashboard_content">
       {if isset($QUICK_STATS)}
-      {literal}
       <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
       <script type="text/javascript">
-         function drawChart() {
-            var data = google.visualization.arrayToDataTable([{/literal}{$CHART.data}{literal}]);
-            var yMax;
-            var columnRange = data.getColumnRange(2);
-            if (columnRange.max < 20) {
-               yMax = 20;
-            }
-            var yMax = 0, gNOR = data.getNumberOfRows(), gNOC = data.getNumberOfColumns();
-            for(var x = 1; x < gNOC; x++) {
-              for(var y = 0; y < gNOR; y++) {
-                yMax = Math.max(data.getValue(y,x), yMax);
-              }
-            }
+         var dashChartSeed = {
+            data: [{$CHART.data}],
+            colors: {$CHART.colors},
+            title: '{$CHART.title}',
+            yAxisTitle: '{$CONFIG.default_currency}'
+         };
+         {literal}
+         (function() {
+            var masterData = null;
+            var chart = null;
+            var visible = {};
 
-            var log10yMax = Math.log10(yMax);
-            var floorexp = Math.floor(log10yMax);
-            var normyMax = yMax/Math.pow(10,floorexp);
-            var ceilnormyMax = Math.ceil(normyMax);
-            yMax = ceilnormyMax * Math.pow(10,floorexp);
-
-            if (yMax < 20 || isNaN(yMax)) { yMax = 20; }
-
-            const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const theme = isDark ? {
-               backgroundColor: '#171b1f',
-               chartAreaBg: '#171b1f',
-               text: '#e6e6e6',
-               gridline: '#2c343b'
-            } : {
-               backgroundColor: '#ffffff',
-               chartAreaBg: '#ffffff',
-               text: '#555555',
-               gridline: '#ddd'
-            };
-            var options = {
-               titleTextStyle: {
-                  color: theme.text,
-               },
-               backgroundColor: theme.backgroundColor,
-               chartArea: { backgroundColor: theme.chartAreaBg },
-               legend: { textStyle: { color: theme.text } },
-               hAxis: {
-                  textStyle: { color: theme.text },
-                  gridlines: { color: theme.gridline },
-               },
-               vAxis: {
-                  textStyle: { color: theme.text },
-                  gridlines: { color: theme.gridline },
-               },
-               title: '{/literal}{$CHART.title}{literal}',
-               width:'100%',
-               height:300,
-               vAxis:{
-                  title:'{/literal}{$CONFIG.default_currency}{literal}',
-                  viewWindowMode:'explicit',
-                  viewWindow:{min:0,max:yMax}
+            function computeYMax() {
+               var yMax = 0, nRows = masterData.getNumberOfRows(), nCols = masterData.getNumberOfColumns();
+               for (var c = 1; c < nCols; c++) {
+                  if (visible[c] === false) continue;
+                  for (var r = 0; r < nRows; r++) {
+                     var v = masterData.getValue(r, c);
+                     if (typeof v === 'number') yMax = Math.max(v, yMax);
+                  }
                }
-            };
-            var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
-            chart.draw(data, options);
-         }
-         google.charts.load('current', {packages: ['corechart']});
-         const listener = ['resize','load'];
-         listener.forEach(addEL);
-         function addEL(l) {
-            addEventListener(l, (event) => {drawChart()});
-         }
+               if (yMax < 20 || !isFinite(yMax)) return 20;
+               var exp = Math.floor(Math.log10(yMax));
+               return Math.ceil(yMax / Math.pow(10, exp)) * Math.pow(10, exp);
+            }
+
+            function drawChart() {
+               if (!masterData) return;
+               var cols = [0], colors = [];
+               for (var c = 1; c < masterData.getNumberOfColumns(); c++) {
+                  if (visible[c] !== false) {
+                     cols.push(c);
+                     colors.push(dashChartSeed.colors[c - 1]);
+                  }
+               }
+               var view = new google.visualization.DataView(masterData);
+               view.setColumns(cols);
+
+               var isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+               var theme = isDark
+                  ? { backgroundColor: '#171b1f', chartAreaBg: '#171b1f', text: '#e6e6e6', gridline: '#2c343b' }
+                  : { backgroundColor: '#ffffff', chartAreaBg: '#ffffff', text: '#555555', gridline: '#ddd' };
+
+               var options = {
+                  titleTextStyle: { color: theme.text },
+                  backgroundColor: theme.backgroundColor,
+                  chartArea: { backgroundColor: theme.chartAreaBg },
+                  legend: { position: 'none' },
+                  hAxis: { textStyle: { color: theme.text }, gridlines: { color: theme.gridline } },
+                  title: dashChartSeed.title,
+                  width: '100%', height: 300,
+                  colors: colors.length ? colors : undefined,
+                  vAxis: {
+                     title: dashChartSeed.yAxisTitle,
+                     textStyle: { color: theme.text },
+                     gridlines: { color: theme.gridline },
+                     viewWindowMode: 'explicit',
+                     viewWindow: { min: 0, max: computeYMax() }
+                  }
+               };
+               chart.draw(view, options);
+            }
+
+            function toggleYear(colIdx, card) {
+               var willHide = visible[colIdx] !== false;
+               if (willHide) {
+                  // Refuse if this is the last visible year — Google Charts errors without at least one series.
+                  var remaining = 0;
+                  for (var c = 1; c < masterData.getNumberOfColumns(); c++) {
+                     if (c !== colIdx && visible[c] !== false) remaining++;
+                  }
+                  if (remaining === 0) return;
+               }
+               visible[colIdx] = visible[colIdx] === false;
+               card.classList.toggle('annual-sales__card--hidden', visible[colIdx] === false);
+               drawChart();
+            }
+
+            function initChart() {
+               // Skip render if we only have the header row (no real years with sales).
+               if (!dashChartSeed.data || dashChartSeed.data.length < 2 || !dashChartSeed.data[0] || dashChartSeed.data[0].length < 2) {
+                  return;
+               }
+               masterData = google.visualization.arrayToDataTable(dashChartSeed.data);
+               chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+               document.querySelectorAll('.annual-sales__card').forEach(function(card) {
+                  card.addEventListener('click', function() {
+                     var c = parseInt(card.getAttribute('data-col'), 10);
+                     if (!isNaN(c)) toggleYear(c, card);
+                  });
+               });
+               drawChart();
+            }
+
+            google.charts.load('current', { packages: ['corechart'] });
+            google.charts.setOnLoadCallback(initChart);
+            window.addEventListener('resize', function() { if (chart) drawChart(); });
+         })();
+         {/literal}
       </script>
-      {/literal}	
+      {if !empty($ANNUAL_SALES)}
+      <div class="annual-sales">
+         {foreach from=$ANNUAL_SALES item=a name=years}
+         <div class="annual-sales__card{if $a.empty} annual-sales__card--ghost{/if}"{if !$a.empty} data-col="{$a.chart_col}" style="border-top: 3px solid hsl({$a.hue}, 60%, 50%)"{/if}>
+            <div class="annual-sales__year">{$a.year}</div>
+            <div class="annual-sales__total">{if $a.empty}&mdash;{else}{$a.total}{/if}</div>
+            <div class="annual-sales__bar">{if !$a.empty}<span style="width: {$a.percent}%; background: linear-gradient(90deg, hsl({$a.hue}, 45%, 70%), hsl({$a.hue}, 65%, 45%))"></span>{/if}</div>
+         </div>
+         {/foreach}
+      </div>
+      {/if}
       <div id="chart_div"></div>
       {/if}
-      <table width="100%">
-         <tr>
-            <td valign="top" nowrap="nowrap" width="25%">
-               <h4>{$LANG.dashboard.title_tasks}</h4>
-               <ul>
-                  {foreach from=$CUSTOM_QUICK_TASKS key=k item=task}
-                  <li><a href="{$task.url}">{$task.name}</a></li>
-                  {/foreach}
-                  {foreach from=$DEFAULT_QUICK_TASKS key=url item=name}
-                  <li><a href="{$url}">{$name}</a></li>
-                  {/foreach}
-               </ul>
-            </td>
-            <td valign="top" nowrap="nowrap" width="25%">
-               <h4>{$LANG.dashboard.title_last_orders}</h4>
-               {if isset($LAST_ORDERS)}
-               {foreach from=$LAST_ORDERS item=order}
-               <div><a href="?_g=orders&action=edit&order_id={$order.cart_order_id}" title="{$LANG.common.edit}">{$order.{$CONFIG.oid_col}|default:$order.cart_order_id}</a> - {if empty($order.first_name) && empty($order.last_name)}
-                  {$order.name}
-                  {else}
-                  <span class="capitalize">{$order.first_name} {$order.last_name}</span>
-                  {/if}
-               </div>
+      <div class="dash-grid">
+         <div class="dash-card">
+            <h4>{$LANG.dashboard.title_tasks}</h4>
+            <ul class="tile-list">
+               {foreach from=$CUSTOM_QUICK_TASKS key=k item=task}
+               <li><a href="{$task.url}">{$task.name}</a></li>
                {/foreach}
-               {else}
-               <div>{$LANG.form.none}</div>
-               {/if}
-            </td>
-            {if isset($QUICK_STATS)}
-            <td valign="top" nowrap="nowrap" width="25%">
-               <table width="100%">
-                  <tr>
-                     <th align="center" width="50%" class="nostripe">{$LANG.dashboard.title_sales_total}</th>
-                     <th align="center" width="50%" class="nostripe">{$LANG.dashboard.title_sales_average}</th>
-                  </tr>
-                  <tr>
-                     <td style="text-align:center" width="50%" class="nostripe">{$QUICK_STATS.total_sales}</td>
-                     <td style="text-align:center" width="50%" class="nostripe">{$QUICK_STATS.ave_order}</td>
-                  </tr>
-                  <tr>
-                     <th align="center" width="50%" class="nostripe">{$LANG.dashboard.title_month_this}</th>
-                     <th align="center" width="50%" class="nostripe">{$LANG.dashboard.title_month_last}</th>
-                  </tr>
-                  <tr>
-                     <td style="text-align:center" width="50%" class="nostripe">{$QUICK_STATS.this_month}</td>
-                     <td style="text-align:center" width="50%" class="nostripe">{$QUICK_STATS.last_month}</td>
-                  </tr>
-               </table>
-            </td>
+               {foreach from=$DEFAULT_QUICK_TASKS key=url item=name}
+               <li><a href="{$url}">{$name}</a></li>
+               {/foreach}
+            </ul>
+         </div>
+         <div class="dash-card">
+            <h4>{$LANG.dashboard.title_last_orders}</h4>
+            {if isset($LAST_ORDERS)}
+            <ul class="tile-list">
+               {foreach from=$LAST_ORDERS item=order}
+               <li><a href="?_g=orders&action=edit&order_id={$order.cart_order_id}" title="{$LANG.common.edit}">{$order.{$CONFIG.oid_col}|default:$order.cart_order_id}</a> &mdash; {if empty($order.first_name) && empty($order.last_name)}{$order.name}{else}<span class="capitalize">{$order.first_name} {$order.last_name}</span>{/if}</li>
+               {/foreach}
+            </ul>
+            {else}
+            <div class="muted">{$LANG.form.none}</div>
             {/if}
-            <td valign="top" nowrap="nowrap" width="25%">
-               {if isset($NEWS)}
-               <h4><strong title="{$NEWS.description}">{$NEWS.title}</strong></h4>
-               <ul>
-                  {foreach from=$NEWS.items item=item}
-                  <li><a href="{$item.link}" target="_blank">{$item.title}</a></li>
-                  {/foreach}
-                  <li><a href="{$NEWS.link}" target="_blank">{$LANG.common.more} &raquo;</a></li>
-               </ul>
-               {/if}
-            </td>
-         </tr>
-      </table>
-      <div>
-         <form class="note" action="?" method="post">
-            <span class="actions"><input type="submit" value="{$LANG.common.save}" name="notes" class="mini_button"></span>
-            <p><i class="fa fa-sticky-note" title="{$LANG.common.notes}" aria-hidden="true"></i> {$LANG.dashboard.title_my_notes}</p>
-            <textarea name="notes[dashboard_notes]">{$DASH_NOTES}</textarea>
+         </div>
+         {if isset($QUICK_STATS)}
+         <div class="dash-card">
+            <h4>{$LANG.dashboard.title_store_overview}</h4>
+            <div class="stat-grid">
+               <div class="stat-cell">
+                  <div class="stat-label">{$LANG.dashboard.title_sales_total}</div>
+                  <div class="stat-value">{$QUICK_STATS.total_sales}</div>
+               </div>
+               <div class="stat-cell">
+                  <div class="stat-label">{$LANG.dashboard.title_sales_average}</div>
+                  <div class="stat-value">{$QUICK_STATS.ave_order}</div>
+               </div>
+               <div class="stat-cell">
+                  <div class="stat-label">{$LANG.dashboard.title_month_this}</div>
+                  <div class="stat-value">{$QUICK_STATS.this_month}</div>
+                  {if isset($QUICK_STATS.this_month_delta)}<span class="delta delta-{$QUICK_STATS.this_month_delta.direction}" title="{$LANG.dashboard.vs_last_month}">{if $QUICK_STATS.this_month_delta.direction=='up'}&uarr;{else}&darr;{/if} {$QUICK_STATS.this_month_delta.value}</span>{/if}
+               </div>
+               <div class="stat-cell">
+                  <div class="stat-label">{$LANG.dashboard.title_month_last}</div>
+                  <div class="stat-value">{$QUICK_STATS.last_month}</div>
+               </div>
+            </div>
+         </div>
+         {/if}
+         {if isset($NEWS)}
+         <div class="dash-card">
+            <h4 title="{$NEWS.description}">{$NEWS.title}</h4>
+            <ul class="tile-list">
+               {foreach from=$NEWS.items item=item}
+               <li><a href="{$item.link}" target="_blank">{$item.title}</a></li>
+               {/foreach}
+               <li><a href="{$NEWS.link}" target="_blank">{$LANG.common.more} &raquo;</a></li>
+            </ul>
+         </div>
+         {/if}
+         <div class="dash-card">
+            <h4>{$LANG.dashboard.title_top_searches}</h4>
+            {if !empty($TOP_SEARCHES)}
+            <ul class="tile-list tile-list--search">
+               {foreach from=$TOP_SEARCHES item=s}
+               <li><span class="search-term">{$s.searchstr}</span><span class="search-count">{$s.hits}</span></li>
+               {/foreach}
+            </ul>
+            {else}
+            <div class="muted">{$LANG.form.none}</div>
+            {/if}
+         </div>
+      </div>
+      <div class="dash-bottom">
+         <form class="note" id="dash-notes-form" action="?" method="post" data-saved="{$LANG.dashboard.notice_notes_save}" data-error="{$LANG.dashboard.error_notes_save}" data-token="{$SESSION_TOKEN}">
+            <p><i class="fa fa-sticky-note" title="{$LANG.common.notes}" aria-hidden="true"></i> {$LANG.dashboard.title_my_notes} <span id="dash-notes-status" class="note-status" aria-live="polite"></span></p>
+            <textarea name="notes[dashboard_notes]" id="dash-notes-textarea">{$DASH_NOTES}</textarea>
+            <input type="hidden" name="token" value="{$SESSION_TOKEN}">
          </form>
+         {literal}
+         <script>
+         (function() {
+            var form = document.getElementById('dash-notes-form');
+            if (!form) return;
+            var ta = document.getElementById('dash-notes-textarea');
+            var status = document.getElementById('dash-notes-status');
+            var lastSaved = ta.value;
+
+            function setStatus(text, cls) {
+               status.textContent = text;
+               status.className = 'note-status' + (cls ? ' note-status--' + cls : '');
+               if (cls === 'ok') {
+                  setTimeout(function() {
+                     if (status.textContent === text) {
+                        status.textContent = '';
+                        status.className = 'note-status';
+                     }
+                  }, 2000);
+               }
+            }
+
+            function save() {
+               if (ta.value === lastSaved) return;
+               var value = ta.value;
+               var fd = new FormData();
+               fd.append('notes[dashboard_notes]', value);
+               fd.append('ajax', '1');
+               fd.append('token', form.dataset.token || '');
+               fetch('?_g=dashboard', { method: 'POST', body: fd, credentials: 'same-origin' })
+                  .then(function(r) { return r.json(); })
+                  .then(function(j) {
+                     if (j && j.status === 'ok') {
+                        lastSaved = value;
+                        setStatus(form.dataset.saved || 'Saved', 'ok');
+                     } else {
+                        setStatus(form.dataset.error || 'Save failed', 'err');
+                     }
+                  })
+                  .catch(function() { setStatus(form.dataset.error || 'Save failed', 'err'); });
+            }
+
+            ta.addEventListener('blur', save);
+            form.addEventListener('submit', function(e) { e.preventDefault(); save(); });
+            window.addEventListener('beforeunload', function() {
+               if (ta.value !== lastSaved && navigator.sendBeacon) {
+                  var fd = new FormData();
+                  fd.append('notes[dashboard_notes]', ta.value);
+                  fd.append('ajax', '1');
+                  fd.append('token', form.dataset.token || '');
+                  navigator.sendBeacon('?_g=dashboard', fd);
+               }
+            });
+         })();
+         </script>
+         {/literal}
+         <div class="dash-card">
+            <h4>{$LANG.dashboard.title_alerts}</h4>
+            <div class="alerts-grid">
+               <div class="alert-metric">
+                  <div class="alert-label">{$LANG.dashboard.title_stock_warnings}</div>
+                  <div class="alert-value{if $LOW_STOCK_COUNT > 0} tile-count-warn{/if}"><a href="?#stock_warnings">{$LOW_STOCK_COUNT}</a></div>
+               </div>
+               <div class="alert-metric">
+                  <div class="alert-label">{$LANG.dashboard.title_abandoned_carts}</div>
+                  <div class="alert-value{if $ABANDONED_COUNT > 0} tile-count-warn{/if}">{$ABANDONED_COUNT}</div>
+               </div>
+            </div>
+         </div>
       </div>
    </div>
 </div>

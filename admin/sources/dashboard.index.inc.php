@@ -41,9 +41,17 @@ $GLOBALS['smarty']->assign('QUICK_TOUR', true);
 
 ## Save notes
 if (isset($_POST['notes']['dashboard_notes'])) {
-    $update = array('dashboard_notes' => $_POST['notes']['dashboard_notes']);
-    if ($GLOBALS['db']->update('CubeCart_admin_users', $update, array('admin_id' => Admin::getInstance()->get('admin_id')))) {
+    $update  = array('dashboard_notes' => $_POST['notes']['dashboard_notes']);
+    $success = (bool)$GLOBALS['db']->update('CubeCart_admin_users', $update, array('admin_id' => Admin::getInstance()->get('admin_id')));
+    if ($success) {
         $GLOBALS['session']->delete('', 'admin_data');
+    }
+    if (!empty($_POST['ajax'])) {
+        header('Content-Type: application/json');
+        echo json_encode(array('status' => $success ? 'ok' : 'error'));
+        exit;
+    }
+    if ($success) {
         $GLOBALS['main']->successMessage($lang['dashboard']['notice_notes_save']);
     } else {
         $GLOBALS['main']->errorMessage($lang['dashboard']['error_notes_save']);
@@ -214,37 +222,147 @@ if (Admin::getInstance()->permissions('statistics', CC_PERM_READ, false, false))
         $this_month_sales  = $GLOBALS['db']->query('SELECT SUM(`total`) as `this_month` FROM `'.$GLOBALS['config']->get('config', 'dbprefix').'CubeCart_order_summary` WHERE `status` in(2,3) AND `order_date` > '.$this_month_start.';');
         $quick_stats['this_month'] = Tax::getInstance()->priceFormat((float)$this_month_sales[0]['this_month']);
 
+        // Month-over-month delta for the "this month" tile. Cap giant swings at 100% to avoid comical badges.
+        $this_month_val = (float)$this_month_sales[0]['this_month'];
+        $last_month_val = (float)$last_month_sales[0]['last_month'];
+        if ($last_month_val > 0) {
+            $delta_pct = (($this_month_val - $last_month_val) / $last_month_val) * 100;
+            $abs = abs($delta_pct);
+            $quick_stats['this_month_delta'] = array(
+                'value'     => $abs >= 100 ? '100%+' : number_format($abs, 1).'%',
+                'direction' => $delta_pct >= 0 ? 'up' : 'down',
+            );
+        }
+
         $GLOBALS['smarty']->assign('QUICK_STATS', $quick_stats);
 
-        ## Statistics (Google Charts)
-        $sales = $GLOBALS['db']->select('CubeCart_order_summary', array('order_date', 'total'), array('order_date' => '>='.$last_year_start, 'status' => array(2, 3), 'total' => '>0'));
-        $data= array();
-        if ($sales) { ## Get data to put in chart
-            foreach ($sales as $sale) {
-                $year = date('Y', $sale['order_date']);
-                $month = date('M', $sale['order_date']);
-                if (isset($data[$year][$month])) {
-                    $data[$year][$month] += sprintf('%0.2f', $sale['total']);
-                } else {
-                    $data[$year][$month] = sprintf('%0.2f', $sale['total']);
-                }
+        ## Chart + annual totals — one combined monthly query feeds both.
+        $dbp = $GLOBALS['config']->get('config', 'dbprefix');
+        $month_rows = $GLOBALS['db']->query(
+            'SELECT YEAR(FROM_UNIXTIME(`order_date`)) AS `y`, '.
+                   'MONTH(FROM_UNIXTIME(`order_date`)) AS `m`, '.
+                   'SUM(`total`) AS `total` '.
+            'FROM `'.$dbp.'CubeCart_order_summary` '.
+            'WHERE `status` IN (2,3) AND `total` > 0 AND `order_date` > 0 '.
+            'GROUP BY `y`, `m` ORDER BY `y`, `m`'
+        );
+        $monthly = array();
+        $annual_totals = array();
+        if ($month_rows) {
+            foreach ($month_rows as $row) {
+                $yr = (int)$row['y'];
+                $mo = (int)$row['m'];
+                if ($yr < 1970 || $mo < 1 || $mo > 12) continue;
+                $monthly[$yr][$mo] = (float)$row['total'];
+                $annual_totals[$yr] = ($annual_totals[$yr] ?? 0) + (float)$row['total'];
             }
         }
 
-        $this_year = date('Y');
-        $last_year = $this_year - 1;
+        // HSL → hex so Google Charts can use the same per-year colour as the year cards.
+        $hsl_to_hex = function ($h, $s, $l) {
+            $h = (($h % 360) + 360) % 360 / 360;
+            $q = $l < 0.5 ? $l * (1 + $s) : $l + $s - $l * $s;
+            $p = 2 * $l - $q;
+            $hue = function ($t) use ($p, $q) {
+                if ($t < 0) $t += 1;
+                if ($t > 1) $t -= 1;
+                if ($t < 1/6) return $p + ($q - $p) * 6 * $t;
+                if ($t < 1/2) return $q;
+                if ($t < 2/3) return $p + ($q - $p) * (2/3 - $t) * 6;
+                return $p;
+            };
+            return sprintf('#%02x%02x%02x', (int)round($hue($h + 1/3) * 255), (int)round($hue($h) * 255), (int)round($hue($h - 1/3) * 255));
+        };
 
-        $chart_data['data'] = "['Month', '$this_year', '$last_year'],";
-
-        for ($month = 1; $month <= 12; $month++) {
-            $empty = (int)($this_year.sprintf("%02d", $month)) <= (int)(date('Ym')) ? '0' : null;
-            $m = date("M", mktime(0, 0, 0, $month, 10));
-            $last_year_month = (isset($data[$last_year][$m]) && $data[$last_year][$m]>0) ? $data[$last_year][$m] : 0;
-            $this_year_month = (isset($data[$this_year][$m]) && $data[$this_year][$m]>0) ? $data[$this_year][$m] : $empty;
-            $chart_data['data'] .= "['$m',  $this_year_month, $last_year_month],";
+        $annual_display = array();
+        $chart_data = array('data' => "['Month']", 'title' => '', 'colors' => '[]');
+        // Always show the last 5 years, even when there are no sales for some (or any) of them.
+        $earliest = $this_year - 4;
+        for ($y = $earliest; $y <= $this_year; $y++) {
+            if (!isset($annual_totals[$y])) $annual_totals[$y] = 0.0;
         }
+        ksort($annual_totals);
+        $years_ordered = array();
+        foreach ($annual_totals as $yr => $_) {
+            if ($yr >= $earliest) $years_ordered[] = $yr;
+        }
+        $n = count($years_ordered);
+        $annual_max = max($annual_totals) ?: 0;
+        if ($n > 0) {
 
-        $chart_data['title'] = $lang['dashboard']['title_sales_stats'].': '.$last_year.' - '.$this_year;
+            // Golden-angle hue rotation (~137.5°) maximises visual distance between adjacent years.
+            // Only real (non-empty) years get chart columns; ghost years are placeholder cards only.
+            $chart_years = array();
+            $chart_colors = array();
+            foreach ($years_ordered as $idx => $yr) {
+                $empty = $annual_totals[$yr] <= 0;
+                $hue = (int)round(fmod(210 + $idx * 137.5, 360));
+                $chart_col = null;
+                if (!$empty) {
+                    $chart_years[] = $yr;
+                    $chart_colors[] = "'".$hsl_to_hex($hue, 0.65, 0.45)."'";
+                    $chart_col = count($chart_years); // 1-indexed position after the 'Month' column
+                }
+                $annual_display[] = array(
+                    'year'      => $yr,
+                    'total'     => Tax::getInstance()->priceFormat($annual_totals[$yr]),
+                    'percent'   => ($annual_max > 0) ? round(($annual_totals[$yr] / $annual_max) * 100) : 0,
+                    'hue'       => $hue,
+                    'empty'     => $empty,
+                    'chart_col' => $chart_col,
+                );
+            }
+
+            if (!empty($chart_years)) {
+                $header = "['Month'";
+                foreach ($chart_years as $yr) $header .= ", '".$yr."'";
+                $header .= "],";
+                $chart_data['data'] = $header;
+
+                $now_ym = (int)date('Ym');
+                for ($month = 1; $month <= 12; $month++) {
+                    $m_label = date('M', mktime(0, 0, 0, $month, 10));
+                    $line = "['".$m_label."'";
+                    foreach ($chart_years as $yr) {
+                        $key_ym = (int)($yr.sprintf('%02d', $month));
+                        if ($yr == $this_year && $key_ym > $now_ym) {
+                            $line .= ", null"; // future months of current year left blank
+                        } else {
+                            $line .= ", ".number_format($monthly[$yr][$month] ?? 0, 2, '.', '');
+                        }
+                    }
+                    $line .= "],";
+                    $chart_data['data'] .= $line;
+                }
+
+                $chart_data['colors'] = '['.implode(',', $chart_colors).']';
+                $chart_data['title']  = $lang['dashboard']['title_sales_stats'].': '.reset($chart_years).' - '.end($chart_years);
+            }
+        }
+        $GLOBALS['smarty']->assign('ANNUAL_SALES', $annual_display);
+
+        ## Top 5 search terms
+        $top_searches = $GLOBALS['db']->select('CubeCart_search', array('searchstr', 'hits'), false, array('hits' => 'DESC'), 5);
+        $GLOBALS['smarty']->assign('TOP_SEARCHES', $top_searches ?: array());
+
+        ## Low-stock count (approximates the Stock Warnings tab, ignores option-matrix for speed)
+        $stock_warn_type  = $GLOBALS['config']->get('config', 'stock_warn_type');
+        $stock_warn_level = (int)$GLOBALS['config']->get('config', 'stock_warn_level');
+        $low_stock_where  = ($stock_warn_type == '1')
+            ? '`stock_level` <= `stock_warning`'
+            : '`stock_level` <= '.$stock_warn_level;
+        $low_stock_row = $GLOBALS['db']->query(
+            'SELECT COUNT(*) AS `n` FROM `'.$dbp.'CubeCart_inventory` '.
+            'WHERE `use_stock_level` = 1 AND `digital` = 0 AND '.$low_stock_where
+        );
+        $GLOBALS['smarty']->assign('LOW_STOCK_COUNT', ($low_stock_row && isset($low_stock_row[0]['n'])) ? (int)$low_stock_row[0]['n'] : 0);
+
+        ## Abandoned carts awaiting recovery
+        $abandoned_row = $GLOBALS['db']->query(
+            'SELECT COUNT(*) AS `n` FROM `'.$dbp.'CubeCart_cart_abandonment` '.
+            'WHERE `recovered_at` IS NULL AND `expires_at` > NOW()'
+        );
+        $GLOBALS['smarty']->assign('ABANDONED_COUNT', ($abandoned_row && isset($abandoned_row[0]['n'])) ? (int)$abandoned_row[0]['n'] : 0);
     } else {
         $chart_data = $GLOBALS['session']->get('chart_data');
     }
