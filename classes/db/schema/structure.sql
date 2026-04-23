@@ -429,7 +429,7 @@ CREATE TABLE IF NOT EXISTS `CubeCart_filemanager` (
 	KEY (`type`),
 	KEY (`filepath`),
 	KEY (`filename`),
-	UNIQUE KEY (`md5hash`)
+	KEY (`md5hash`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ
 
 CREATE TABLE IF NOT EXISTS `CubeCart_geo_country` (
@@ -795,7 +795,6 @@ CREATE TABLE IF NOT EXISTS `CubeCart_order_inventory` (
 	`options_identifier` VARCHAR(32) NULL,
 	PRIMARY KEY (`id`),
 	KEY `product_id` (`product_id`),
-	KEY `cart_order_id` (`cart_order_id`),
 	KEY `options_identifier` (`options_identifier`),
 	KEY `cartorder_product_qty` (`cart_order_id`, `product_id`, `quantity`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; #EOQ

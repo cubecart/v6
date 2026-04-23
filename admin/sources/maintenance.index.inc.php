@@ -952,10 +952,6 @@ if (isset($database_result) && $database_result) {
                 $key_type = 'KEY';
             }
             $table_name = $GLOBALS['config']->get('config', 'dbprefix').str_replace('cubecart', 'CubeCart', $index['Table']);
-            $duplicate = false;
-            if (isset($actual_map[$index['Table']][$index['Column_name']]) && in_array($key_type, $actual_map[$index['Table']][$index['Column_name']])) {
-                $duplicate = sprintf($lang['maintain']['duplicate_index'], $table_name.'.'.$index['Column_name'], $key_type);
-            }
             if (!isset($actual_map[$index['Table']][$index['Column_name']])) {
                 $actual_map[$index['Table']][$index['Column_name']] = array();
             }
@@ -983,8 +979,30 @@ if (isset($database_result) && $database_result) {
             }
         }
 
-        if ($duplicate !== false) {
-            $index_errors[] = $duplicate;
+        // Redundant indexes: a non-unique index is redundant only when its columns
+        // are a leftmost prefix of another non-unique index. Comparing column names
+        // alone (ignoring position) gives false positives for composites like
+        // KEY (a, b) + KEY (b) — the second can't use the composite's leftmost prefix.
+        // UNIQUE/PRIMARY/FULLTEXT are skipped because shorter != redundant for them.
+        $names = array_keys($actual_full_indexes);
+        sort($names);
+        foreach ($names as $a_name) {
+            $a = $actual_full_indexes[$a_name];
+            if ($a['type'] !== 'KEY') continue;
+            ksort($a['columns']);
+            $a_cols = array_values($a['columns']);
+            foreach ($names as $b_name) {
+                if ($a_name === $b_name) continue;
+                $b = $actual_full_indexes[$b_name];
+                if ($b['type'] !== 'KEY') continue;
+                ksort($b['columns']);
+                $b_cols = array_values($b['columns']);
+                if (count($a_cols) > count($b_cols)) continue;
+                if (array_slice($b_cols, 0, count($a_cols)) !== $a_cols) continue;
+                if (count($a_cols) === count($b_cols) && $a_name < $b_name) continue;
+                $index_errors[] = sprintf($lang['maintain']['duplicate_index'], $table_name.'.'.trim($a_cols[0], '`'), $a['type']);
+                break;
+            }
         }
 
         // Check for missing columns
