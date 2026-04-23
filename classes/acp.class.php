@@ -480,13 +480,20 @@ class ACP
                     if (isset($_GET['action']) && !empty($_GET['action'])) {
                         $pages[] = $_GET['action'];
                     }
-                    $this->_help_doc = implode(' ', $pages);
+                    while (!empty($pages)) {
+                        $doc = preg_replace('#\W#', '_', ucwords(implode(' ', $pages)));
+                        if (file_exists(CC_ROOT_DIR.'/admin/docs/content/'.$doc.'.md')) {
+                            $this->_help_doc = $doc;
+                            break;
+                        }
+                        array_pop($pages);
+                    }
                 }
+            } else {
+                $this->_help_doc = preg_replace('#\W#', '_', ucwords($this->_help_doc));
             }
 
-            $this->_help_doc = preg_replace('#\W#', '_', ucwords($this->_help_doc));
-            $help_file = CC_ROOT_DIR.'/admin/docs/content/'.$this->_help_doc.'.md';
-            if (file_exists($help_file)) {
+            if (!empty($this->_help_doc) && file_exists(CC_ROOT_DIR.'/admin/docs/content/'.$this->_help_doc.'.md')) {
                 $GLOBALS['smarty']->assign('HELP_URL', $GLOBALS['rootRel'].'admin/docs/?page='.$this->_help_doc);
             }
             $GLOBALS['smarty']->assign('STORE_STATUS', !(bool)Config::getInstance()->get('config', 'offline'));
